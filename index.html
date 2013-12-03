@@ -1,0 +1,76 @@
+<html>
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Tonyu System 2">
+<meta name="author" content="hoge1e3">
+<link rel="shortcut icon" type="image/x-icon" href="images/tnu.ico">
+
+<title>プログラミング入門講座</title>
+
+<!-- Bootstrap core CSS -->
+<link href="css/bootstrap.css" rel="stylesheet">
+
+<!-- Custom styles for this template -->
+<link href="css/tonyu.css" rel="stylesheet">
+
+
+<script src="js/lib/jquery-1.7.2.js" type="text/javascript"></script>
+<script src="js/lib/jquery.tmpl.js" type="text/javascript"></script>
+<script src="js/lib/jquery.hotkeys.js" type="text/javascript"></script>
+<script src="js/lib/disp.js" type="text/javascript"></script>
+<script src="js/lib/profiler.js" type="text/javascript"></script>
+<script src="js/help/Arrow.js" type="text/javascript"></script>
+<script src="js/ide/fs.js" type="text/javascript"></script>
+<script src="js/runtime/TonyuLib.js" type="text/javascript"></script>
+<script src="js/ide/TonyuProject.js" type="text/javascript"></script>
+<script src="js/ide/selProject.js" type="text/javascript"></script>
+<script src="js/ide/ROM.js" type="text/javascript"></script>
+<script src="js/help/HttpHelper.js" type="text/javascript"></script>
+<script src="js/help/wiki.js" type="text/javascript"></script>
+
+<script id="fileItem" type="text/x-jquery-tmpl">
+	<li class=file><a href="${href}">${name}</a></li>
+</script>
+
+</head>
+<body>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".navbar-collapse">
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">プログラミング入門講座</a>
+			</div>
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="#">Home</a></li>
+
+					</li>
+				</ul>
+			</div>
+			<!--/.nav-collapse -->
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="row">
+			<div id=prjViewer class="col-xs-8">
+			<h1>プロジェクト一覧</h1>
+			<button id="newPrj" class="btn btn-primary">新規作成</button>
+				<div id="prjItemList"></div>
+			</div>
+			<div id=wikiViewArea class="col-xs-4">
+			</div>
+		</div>
+	</div>
+
+	<!-- /.container -->
+    <script src="js/lib/bootstrap.min.js"></script>
+
+</body>
+</html>
