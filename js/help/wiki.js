@@ -5,32 +5,49 @@ Wiki=function (placeHolder, home, options, plugins) {
     var LINEMARK="marker_"+Math.floor(Math.random()*100000);
     var on={};
     var history=[];
+    var tocFile=home.rel("toc.json");
     W.on=on;
-    W.parse=function (body) {
-        var wikiCtx={};
+    W.parse=function (body,name) {
+        var ctx={};
         var $h=HttpHelper({lineMark:LINEMARK});
-        wikiCtx.out=$h;
-        wikiCtx.lines=body.split(/\r?\n/);
-        wikiCtx.lineNo=0;
-        wikiCtx.ul=0;
-        wikiCtx.beginMark="[[";
-        wikiCtx.endMark="]]";
+        ctx.out=$h;
+        ctx.name=name;
+        ctx.lines=body.split(/\r?\n/);
+        ctx.lineNo=0;
+        ctx.ul=0;
+        ctx.beginMark="[[";
+        ctx.endMark="]]";
+        ctx.blocks=[];
         var figInfo=refInfo("figures");
         var plistInfo=refInfo("plists");
-        //wikiCtx.figures={};
-        //wikiCtx.figseq=1;
-        wikiCtx.lines.forEach(parseLine);
+        //ctx.figures={};
+        //ctx.figseq=1;
+        var toc=[];
+        if (tocFile.exists()) toc=tocFile.obj();
+        var idx=toc.indexOf(name);
+        if (idx>=0) {
+            var navBar="";
+            var prev=toc[idx-1];
+            if (prev) navBar+="[[前へ>"+prev+"]]";
+            var next=toc[idx+1];
+            if (next) navBar+=" - [[次へ>"+next+"]]";
+            var top=toc[0];
+            if (idx!=0) navBar+=" - [[目次>"+top+"]]";
+            ctx.lines.unshift(navBar);
+            ctx.lines.push(navBar);
+        }
+        ctx.lines.forEach(parseLine);
         function refInfo(type) {// figures / plists
-            wikiCtx[type]={};
+            ctx[type]={};
             var seq=1;
             var res=function (name, register) {
-                var fi=wikiCtx[type][name];
+                var fi=ctx[type][name];
                 if (!fi) {
                     fi={
                         refs:[]
                     };
                     console.log("reg "+type+" "+name);
-                    wikiCtx[type][name]=fi;
+                    ctx[type][name]=fi;
                 }
                 if (register) {
                     fi.no=seq++;
@@ -46,11 +63,11 @@ Wiki=function (placeHolder, home, options, plugins) {
 
         return $h.buf;
         function parseLine(line) {
-            $h.lineNo=wikiCtx.lineNo;
+            $h.lineNo=ctx.lineNo;
             function unul(to) {
                 if (to==null) to=0;
-                while (wikiCtx.ul>to) {
-                    wikiCtx.ul--;
+                while (ctx.ul>to) {
+                    ctx.ul--;
                     $h.exit();//$.p("</ul>");
                 }
             }
@@ -58,9 +75,9 @@ Wiki=function (placeHolder, home, options, plugins) {
             if (line.match(/^-+/)) {
                 uld=RegExp.lastMatch.length;
             }
-            if (uld>wikiCtx.ul) {
-                while(uld>wikiCtx.ul) {
-                    wikiCtx.ul++;
+            if (uld>ctx.ul) {
+                while(uld>ctx.ul) {
+                    ctx.ul++;
                     $h.enter("<ul>");
                 }
             } else unul(uld);
@@ -76,6 +93,12 @@ Wiki=function (placeHolder, home, options, plugins) {
             } else if (line.match(/^$/)) {
                 unul();
                 $h.p($("<p>")); //$.p("<p>\n");
+            } else if (line.match(/^<<toc(.*)/)) {
+                ctx.toc=[ctx.name];
+                ctx.blocks.push({name: "toc", exit: function () {
+                    tocFile.obj(ctx.toc);
+                    ctx.toc=null;
+                }});
             } else if (line.match(/^<<code(.*)/)) {
                 var s=RegExp.$1;
                 s=s.replace(/^ */,"");
@@ -92,11 +115,13 @@ Wiki=function (placeHolder, home, options, plugins) {
                     }
                 }
                 $h.enter("<pre>");
+                ctx.blocks.push({name: "code", exit: function () {$h.exit();}});
             } else if (line.match(/^>>/)) {
-                $h.exit();
+                var b=ctx.blocks.pop();
+                if (b && b.exit) b.exit(ctx);
             } else if (line.match(/^@@@@(.*)/)) {
                 //unul();
-                if (wikiCtx.pclose) $h.exit();//$.p("</pre>");
+                if (ctx.pclose) $h.exit();//$.p("</pre>");
                 else {
                     if (RegExp.$1.length>0) {
                         var pi=plistInfo(RegExp.$1, true);
@@ -104,18 +129,18 @@ Wiki=function (placeHolder, home, options, plugins) {
                     }
                     $h.enter("<pre>");
                 }
-                wikiCtx.pclose=!wikiCtx.pclose;
+                ctx.pclose=!ctx.pclose;
             } else {
                 //unul();
                 parseLink(line);
                 $h.p("\n");
             }
             if (uld>0) $h.exit();
-            wikiCtx.lineNo++;
+            ctx.lineNo++;
         }
         function parseLink(line) {
             var w=(typeof line=="string"?
-                    WikiBraces(line, wikiCtx.beginMark,wikiCtx.endMark)
+                    WikiBraces(line, ctx.beginMark,ctx.endMark)
                     : line);
             w.forEach(function (e) {
                 if (typeof e=="string") {
@@ -165,6 +190,7 @@ Wiki=function (placeHolder, home, options, plugins) {
                         name=cn[1]+"";
                         caption=cn[0];
                     } else caption=name;
+                    if (ctx.toc) ctx.toc.push(name);
                     if (name.match(/\.(png|jpg|gif)$/)) {
                         var fi=figInfo(name, true);
                         a=$("<div>").addClass("figure").append(
@@ -201,7 +227,7 @@ Wiki=function (placeHolder, home, options, plugins) {
                 else f.text("");
             }
             if ( f.exists()) {
-                var ht=W.parse(f.text());
+                var ht=W.parse(f.text(), f.name().replace(/\.txt$/,""));
                 placeHolder.empty();
                 placeHolder.append(ht);
                 placeHolder.append($("<div>").css({height:"100px"}).text(""));

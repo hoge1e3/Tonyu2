@@ -161,6 +161,9 @@ FS=function () {
             dir.text=function () {
                 return lcs(path);
             };
+            dir.obj =function () {
+                return JSON.parse(dir.text());
+            };
         } else {
             var file=res={};
 
@@ -177,6 +180,13 @@ FS=function () {
                 } else {
                     lcs(path, arguments[0]);
                     file.touch();
+                }
+            };
+            file.obj=function () {
+                if (arguments.length==0) {
+                    return JSON.parse( file.text() );
+                } else {
+                    file.text(JSON.stringify(arguments[0]));
                 }
             };
         }

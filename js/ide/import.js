@@ -1,8 +1,4 @@
 $(function () {
-    $("#export").click(function () {
-        var t=FS.exportDir( $("#base").val() );
-        $("#text").val(JSON.stringify(t));
-    });
     $("#import").click(function () {
         var exported=JSON.parse($("#text").val());
         exported.confirm=true;

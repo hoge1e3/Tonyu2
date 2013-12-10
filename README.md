@@ -13,5 +13,5 @@ Windows 7/8
   Firefox 25
   Internet Explorer 10 (*)
 
-(* Does not work if opened as local files.)
+(*) Does not work when the program runs on local file system.
 
