@@ -32,8 +32,12 @@ native Key;
     if (!_sprite) _sprite=Sprites.add();
     _sprite.x=x;
     _sprite.y=y;
-    _sprite.p=p;
+    if (p!=null) _sprite.p=p;
     update();
+}
+\change(p) {
+    if (!_sprite) _sprite=Sprites.add();
+    _sprite.p=p;
 }
 \getkey(k) {
     return Key.getkey(k);

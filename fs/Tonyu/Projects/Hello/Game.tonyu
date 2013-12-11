@@ -1,0 +1,8 @@
+a=new Apple();
+a.x=200;
+a.y=50;
+a=new Apple();
+a.x=100;
+a.y=150;
+
+$cat=new Cat();

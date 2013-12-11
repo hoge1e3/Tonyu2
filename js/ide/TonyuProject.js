@@ -72,6 +72,7 @@ Tonyu.Project=function (dir, kernelDir) {
         thg.addObj(main);
         TPR.currentThreadGroup=thg;
         $LASTPOS=0;
+        $pat_fruits=30;
         Sprites.clear();
         thg.run(33, function () {
             Key.update();

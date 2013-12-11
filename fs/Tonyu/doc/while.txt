@@ -2,7 +2,7 @@
 
 さきほどのプログラムをよく見てみましょう．
 
-<<code Test 50to100inc
+<<code Cat 50to100inc
 x=50;
 go(x,100);
 x+=10;
@@ -19,7 +19,7 @@ go(x,100);
 
 最初の[[@cfrag x=50;]]を除いて，あとはずっと
 
-<<code
+<<code 
 x+=10;
 go(x,100);
 >>
@@ -30,7 +30,7 @@ go(x,100);
 
 [[@plistref 50to100inc]] を，[[@plistref firstWhile]]のように書き換えてみましょう．
 
-<<code Test firstWhile
+<<code Cat firstWhile
 x=50;
 while (x<=100) {
   go(x,100);
@@ -60,7 +60,7 @@ while([[@arg 条件]]) {
 
 さて，この仕組みを使って，猫の絵を横位置300まで動かしてみましょう．
 
-<<code Test w300
+<<code Cat w300
 x=50;
 while (x<=300) {
   go(x,100);
@@ -73,4 +73,3 @@ while (x<=300) {
 
 以前は，300まで動かすにはたくさんのプログラムを書かなければならなかったのに比べると
 かなり楽になりました．
-

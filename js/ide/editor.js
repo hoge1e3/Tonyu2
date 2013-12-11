@@ -45,12 +45,19 @@ $(function () {
     curPrj.env.options.compiler.defaultSuperClass="NigariObj";
     var curFile=null;
     var EXT=".tonyu";
+    var runMenuOrd=[];
     $("#dirName").text(curDir.path());
     //TextUtil.attachIndentAdaptor("prog");
     function ls() {
         $("#fileItemList").empty();
         curDir.ls().forEach(function (name) {
             var f=curDir.rel(name);
+            if (f.endsWith(".tonyu")) {
+                var n=f.name().replace(/\.tonyu$/,"");
+                if (runMenuOrd.indexOf(n)<0) {
+                    runMenuOrd.unshift(n);
+                }
+            }
             $("<li>").append(
                 $("<span>").addClass("fileItem").text( (f.isReadOnly()?"[RO]":"")+dispName(name))
             ).appendTo("#fileItemList").click(function () {
@@ -58,6 +65,23 @@ $(function () {
             });
              //$("#fileItem").tmpl({name: dispName(name)}).appendTo("#fileItemList").click(function () {
 
+        });
+        refreshRunMenu();
+    }
+    function refreshRunMenu() {
+        $("#runMenu").empty();
+        var i=0;
+        runMenuOrd.forEach(function(n) {
+            var ii=i;
+            $("#runMenu").append(
+                    $("<li>").append(
+                            $("<a>").attr("href","#").text(n+"を実行"+(i==0?"(F9)":"")).click(function () {
+                                run(n);
+                                runMenuOrd.splice(ii, 1);
+                                runMenuOrd.unshift(n);
+                                refreshRunMenu();
+                            })));
+            i++;
         });
     }
     function dispName(name) {
@@ -110,7 +134,7 @@ $(function () {
     });
     $("#prog").bind("keydown","F9",run);
     $(document).bind("keydown","F9",run);
-    $("#run").click(run);
+    //$("#run").click(run);
     //var rowsOnEdit=$("#prog").attr("rows");
     function displayMode(mode, next) {
         // mode == run     compile_error     runtime_error    edit
@@ -139,15 +163,18 @@ $(function () {
             $("#prog").attr("rows",rowsOnEdit);
         }*/
     }
-    function run() {
-        if (!curFile) {
-            alert("ファイルを開いてください");
-            return;
+    function run(name) {
+        if (!name) {
+            if (runMenuOrd.length==0) {
+                alert("ファイルを作成してください");
+                return;
+            }
+            name=runMenuOrd[0];// curFile.name().replace(/\.tonyu$/,"");
         }
-        save();
+        if (curFile) save();
         displayMode("run");
         try {
-            curPrj.run(curFile.name().replace(/\.tonyu$/,"") );
+            curPrj.run(name);
         } catch(e){
             if (e.isTError) {
                 showErrorPos($("#errorPos"),e);
