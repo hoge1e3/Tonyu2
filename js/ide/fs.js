@@ -149,10 +149,10 @@ FS=function () {
                 var lis=dir.ls();
                 if (lis.length>0) throw path+": Directory not empty";
                 lcs(path, null);
-
-                var pinfo=getDirInfo(parent);
-                removeEntry(pinfo, parent, name);
-
+                if (parent!=null) {
+                    var pinfo=getDirInfo(parent);
+                    removeEntry(pinfo, parent, name);
+                }
             };
             dir.mkdir=function () {
                 dir.touch();
@@ -171,8 +171,10 @@ FS=function () {
             file.rm=function () {
                 if (!file.exists()) throw path+": No such file.";
                 lcs(path, null);
-                var pinfo=getDirInfo(parent);
-                removeEntry(pinfo, parent, name);
+                if (parent!=null) {
+                    var pinfo=getDirInfo(parent);
+                    removeEntry(pinfo, parent, name);
+                }
             };
             file.text=function () {
                 if (arguments.length==0) {
