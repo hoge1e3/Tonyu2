@@ -1,0 +1,14 @@
+native console;
+native alert;
+
+x=100;
+y=100;
+vy=0;
+while (true) {
+    if (getkey("left")) x-=10;
+    if (getkey("Right")) x+=10;
+    if (getkey("up")==1) vy=-10;
+    y+=vy;
+    vy++;
+    go(x,y);
+}

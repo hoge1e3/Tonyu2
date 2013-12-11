@@ -1,0 +1,40 @@
+extends null;
+native Sprites;
+native Tonyu;
+native Key;
+
+\new() {
+    var thg=Tonyu.currentProject.currentThreadGroup;
+    if (thg) thg.addObj(this);
+}
+
+\update() {
+    ifwait {
+        _thread.suspend();
+    }
+}
+\sleep(n) {
+    if(!n) n=1;
+    for(n;n>0;n--) update();
+}
+\say(text,size) {
+    if (!size) size=15;
+    if (!_sprite) _sprite=Sprites.add();
+    _sprite.fukidashi={text:text, size:size, c:30};
+}
+\sprite(x,y,p) {
+    go(x,y,p);
+}
+\show(x,y,p) {
+    go(x,y,p);
+}
+\go(x,y,p) {
+    if (!_sprite) _sprite=Sprites.add();
+    _sprite.x=x;
+    _sprite.y=y;
+    _sprite.p=p;
+    update();
+}
+\getkey(k) {
+    return Key.getkey(k);
+} 

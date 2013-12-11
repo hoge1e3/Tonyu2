@@ -1,5 +1,3 @@
-[[目次へ>projectIndex]]
-
 * 新しくファイルを作りましょう
 
 - メニューの「[[@blink ファイル>#fileMenu]]」→「[[@blink 新規>#newFile]]」を選びます
@@ -16,4 +14,3 @@
 go(50,100);
 >>
 
-[[次へ>firstRun]]

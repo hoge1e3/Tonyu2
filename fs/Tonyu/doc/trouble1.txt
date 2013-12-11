@@ -10,8 +10,4 @@
 
 [[命令の名前が違うエラー>runtimeError.png]]
 
-
-
-
 [[戻る>firstRun]]
-
