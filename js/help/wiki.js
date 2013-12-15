@@ -96,7 +96,7 @@ Wiki=function (placeHolder, home, options, plugins) {
             } else if (line.match(/^<<toc(.*)/)) {
                 ctx.toc=[ctx.name];
                 ctx.blocks.push({name: "toc", exit: function () {
-                    tocFile.obj(ctx.toc);
+                    if (!tocFile.isReadOnly()) tocFile.obj(ctx.toc);
                     ctx.toc=null;
                 }});
             } else if (line.match(/^<<code(.*)/)) {
