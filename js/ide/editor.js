@@ -45,7 +45,8 @@ $(function () {
     curPrj.env.options.compiler.defaultSuperClass="NigariObj";
     var curFile=null;
     var EXT=".tonyu";
-    var runMenuOrd=[];
+    var desktopEnv=loadDesktopEnv();
+    var runMenuOrd=desktopEnv.runMenuOrd;
     $("#dirName").text(curDir.path());
     //TextUtil.attachIndentAdaptor("prog");
     function ls() {
@@ -57,14 +58,12 @@ $(function () {
                 if (runMenuOrd.indexOf(n)<0) {
                     runMenuOrd.unshift(n);
                 }
+                $("<li>").append(
+                        $("<span>").addClass("fileItem").text( (f.isReadOnly()?"[RO]":"")+dispName(name))
+                    ).appendTo("#fileItemList").click(function () {
+                        open(f);
+                    });
             }
-            $("<li>").append(
-                $("<span>").addClass("fileItem").text( (f.isReadOnly()?"[RO]":"")+dispName(name))
-            ).appendTo("#fileItemList").click(function () {
-                open(f);
-            });
-             //$("#fileItem").tmpl({name: dispName(name)}).appendTo("#fileItemList").click(function () {
-
         });
         refreshRunMenu();
     }
@@ -73,9 +72,11 @@ $(function () {
         var i=0;
         runMenuOrd.forEach(function(n) {
             var ii=i;
+            if (typeof n!="string") {console.log(n); alert("not a string: "+n);}
             $("#runMenu").append(
                     $("<li>").append(
                             $("<a>").attr("href","#").text(n+"を実行"+(i==0?"(F9)":"")).click(function () {
+                                if (typeof n!="string") {console.log(n); alert("not a string2: "+n);}
                                 run(n);
                                 runMenuOrd.splice(ii, 1);
                                 runMenuOrd.unshift(n);
@@ -83,6 +84,7 @@ $(function () {
                             })));
             i++;
         });
+        saveDesktopEnv();
     }
     function dispName(name) {
         if (name.substring(name.length-EXT.length)==EXT) return name.substring(0,name.length-EXT.length);
@@ -140,6 +142,7 @@ $(function () {
         // mode == run     compile_error     runtime_error    edit
         switch(mode) {
         case "run":
+            prog.blur();
             showErrorPos($("#errorPos"));
             //$("#errorPos").hide();// (1000,next);
             //$("#runArea").slideDown(1000, next);
@@ -164,13 +167,14 @@ $(function () {
         }*/
     }
     function run(name) {
-        if (!name) {
+        if (typeof name!="string") {
             if (runMenuOrd.length==0) {
                 alert("ファイルを作成してください");
                 return;
             }
             name=runMenuOrd[0];// curFile.name().replace(/\.tonyu$/,"");
         }
+        if (typeof name!="string") {console.log(name); alert("not a string3: "+name);}
         if (curFile) save();
         displayMode("run");
         try {
@@ -230,4 +234,20 @@ $(function () {
     };
     var w=Wiki($("#wikiViewArea"), FS.get("/Tonyu/doc/"));
     w.show("projectIndex");
+
+    function loadDesktopEnv() {
+        var d=curProjectDir.rel(".desktop");
+        var res;
+        if (d.exists()) {
+            res=d.obj();
+        } else {
+            res={};
+        }
+        if (!res.runMenuOrd) res.runMenuOrd=[];
+        return desktopEnv=res;
+    }
+    function saveDesktopEnv() {
+        var d=curProjectDir.rel(".desktop");
+        d.obj(desktopEnv);
+    }
 });

@@ -25,6 +25,12 @@ ObjectMatcher=ObjMatcher=function () {
     function m(obj, tmpl, res) {
         if (obj===tmpl) return true;
         if (obj==null) return false;
+        if (typeof obj=="string" && tmpl instanceof RegExp) {
+            return obj.match(tmpl);
+        }
+        if (typeof tmpl=="function") {
+            return tmpl(obj,res);
+        }
         if (typeof tmpl=="object") {
             //if (typeof obj!="object") obj={$this:obj};
             for (var i in tmpl) {

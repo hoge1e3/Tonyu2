@@ -67,16 +67,19 @@ Tonyu.Project=function (dir, kernelDir) {
             eval(c.src.js);
         });
         var thg=Tonyu.threadGroup();
-        var main=new window[mainClassName]();
-        if (!main) throw TError( mainClassName+" というクラスはありません", "不明" ,0);
+        var mainClass=window[mainClassName];
+        if (!mainClass) throw TError( mainClassName+" というクラスはありません", "不明" ,0);
+        var main=new mainClass();
         thg.addObj(main);
         TPR.currentThreadGroup=thg;
         $LASTPOS=0;
+
         $pat_fruits=30;
         Sprites.clear();
         thg.run(33, function () {
             Key.update();
             Sprites.draw($("canvas")[0]);
+            Sprites.checkHit();
         });
     };
     return TPR;

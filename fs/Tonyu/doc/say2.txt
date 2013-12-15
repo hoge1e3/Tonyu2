@@ -1,0 +1,16 @@
+* メッセージを表示しましょう．
+
+
+ゲームスタートしたときに，
+猫にメッセージを表示させてみましょう．
+
+<<code Game
+new Cat;
+apple1=new Apple;
+apple1.x=200;
+apple1.y=150;
+apple2=new Apple;
+apple2.x=300;
+apple2.y=100;
+>>
+

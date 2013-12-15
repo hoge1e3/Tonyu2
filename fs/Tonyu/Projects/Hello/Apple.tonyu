@@ -1,2 +1,3 @@
 change($pat_fruits);
 go(x,y);
+//say("x="+x+"  y="+y);

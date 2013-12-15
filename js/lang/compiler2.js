@@ -78,7 +78,7 @@ function genJS(klass, env,pass) {
     var ctx=context();
     var fiberCallTmpl={
             type:"postfix",
-            op:{$var:"A",type:"call"},
+            op:{$var:"A",type:"call" },
             left:{type:"varAccess", name: {text:OM.T}}
          };
     var noRetFiberCallTmpl={
@@ -145,6 +145,21 @@ function genJS(klass, env,pass) {
             });
         };
     }
+    function varAccess(n) {
+        var t=ctx.scope[n];
+        if (n.match(/^\$/)) t=ST.NATIVE;
+        if (!t) {
+            topLevelScope[n]=ST.FIELD;
+            t=ST.FIELD;
+        }
+        if (t==ST.THVAR) {
+            buf.printf("%s",TH);
+        } else if (t==ST.FIELD || t==ST.METHOD) {
+            buf.printf("%s.%s",THIZ, n);
+        } else {
+            buf.printf("%s",n);
+        }
+    }
     v=buf.visitor=Visitor({
         dummy: function (node) {
             buf.printf("",node);
@@ -203,29 +218,53 @@ function genJS(klass, env,pass) {
             }
         },
         jsonElem: function (node) {
-            buf.printf("%v: %v", node.key, node.value);
+            if (node.value) {
+                buf.printf("%v: %v", node.key, node.value);
+            } else {
+                buf.printf("%v: %f", node.key, function () {
+                    varAccess( node.key.text) ;
+                });
+            }
         },
         objlit: function (node) {
             buf.printf("{%j}", [",", node.elems]);
+        },
+        arylit: function (node) {
+            buf.printf("[%j]", [",", node.elems]);
+        },
+        funcExpr: function (node) {
+            var m,ps;
+            var body=node.body;
+            if (m=OM.match( node, {head:{params:{params:OM.P}}})) {
+                ps=m.P;
+            } else {
+                ps=[];
+            }
+            buf.printf("function (%j) {%{"+
+                          "%f"+
+                       "%}}"
+                     ,
+                          [",", ps],
+                           fbody
+            );
+            function fbody() {
+                var ns=newScope(ctx.scope);
+                ps.forEach(function (p) {
+                    ns[p.name.text]=ST.PARAM;
+                });
+                ctx.enter({scope: ns }, function () {
+                    body.stmts.forEach(function (stmt) {
+                        printf("%v%n", stmt);
+                    });
+                });
+            }
         },
         parenExpr: function (node) {
             buf.printf("(%v)",node.expr);
         },
         varAccess: function (node) {
             var n=node.name.text;
-            var t=ctx.scope[n];
-            if (n.match(/^\$/)) t=ST.NATIVE;
-            if (!t) {
-                topLevelScope[n]=ST.FIELD;
-                t=ST.FIELD;
-            }
-            if (t==ST.THVAR) {
-                buf.printf("%s",TH);
-            } else if (t==ST.FIELD || t==ST.METHOD) {
-                buf.printf("%s.%s",THIZ, n);
-            } else {
-                buf.printf("%s",n);
-            }
+            varAccess(n);
         },
         exprstmt: function (node) {
             var t;
@@ -262,7 +301,11 @@ function genJS(klass, env,pass) {
             buf.printf("%v%v", node.op, node.right);
         },
         postfix: function (node) {
-            buf.printf("%v%v", node.left, node.op);
+            if (node.op.type=="objlit") {
+                buf.printf("%v(%v)", node.left, node.op);
+            } else {
+                buf.printf("%v%v", node.left, node.op);
+            }
         },
         "break": function (node) {
             if (!ctx.noWait) {
@@ -389,12 +432,22 @@ function genJS(klass, env,pass) {
                 }
             }
         },
+        objlitArg: function (node) {
+            buf.printf("(%v)",node.obj);
+        },
         call: function (node) {
+            buf.printf("%v",node.args);
+        },
+        argList: function (node) {
             buf.printf("(%j)",[",",node.args]);
         },
         newExpr: function (node) {
             var p=node.params;
-            buf.printf("new %v%v",node.name,p);
+            if (p) {
+                buf.printf("new %v%v",node.name,p);
+            } else {
+                buf.printf("new %v",node.name);
+            }
         },
         arrayElem: function (node) {
             buf.printf("[%v]",node.subscript);

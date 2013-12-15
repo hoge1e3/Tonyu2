@@ -1,4 +1,4 @@
-x=50;
+x=80;
 y=100;
 while(true) {
     k=getkey("right");

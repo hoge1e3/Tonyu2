@@ -21,7 +21,7 @@ TonyuLang=function () {
     var G=g.get;
 
     var sp=p.StringParser;//(str);
-    var spaceRaw=sp.reg(/^(\s*(\/\*([^\/]|[^*]\/|\r|\n)*\*\/)*(\/\/.*\n)*)*/);
+    var spaceRaw=sp.reg(/^(\s*(\/\*([^\/]|[^*]\/|\r|\n)*\*\/)*(\/\/.*\r?\n)*)*/);
     /*var space=Parser.create(function (s) {
         var res=spaceCache[s.pos];
         if (res) {
@@ -92,7 +92,7 @@ TonyuLang=function () {
     };
     var num=tk(/^[0-9\.]+/).ret(function (n) {
         n.type="number";
-        n.value=parseInt(n.text);
+        n.value=parseFloat(n.text);
         //console.log("n.val="+n.value);
         return n;
     }).first(space,"0123456789");
@@ -155,13 +155,14 @@ TonyuLang=function () {
 
     var e=ExpressionParser() ;
     var arrayElem=g("arrayElem").ands(tk("["), e.lazy() , tk("]")).ret(null,"subscript");
-    var call=g("call").ands(tk("("), e.lazy().sep0(tk(","),true) , tk(")")).ret(null,"args");
+    var argList=g("argList").ands(tk("("), e.lazy().sep0(tk(","),true) , tk(")")).ret(null,"args");
     var member=g("member").ands(tk(".") , symbol ).ret(null,     "name" );
     var parenExpr = g("parenExpr").ands(tk("("), e.lazy() , tk(")")).ret(null,"expr");
     var varAccess = g("varAccess").ands(symbol).ret("name");
     var objlit_l=G("objlit").first(space,"{");
-    var newParams= g("newParams").ors(call, objlit_l);
-    var newExpr = g("newExpr").ands(tk("new"),symbol, newParams).ret(null, "name","params");
+    var objlitArg=g("objlitArg").ands(objlit_l).ret("obj");
+    var call=g("call").ands( argList.or(objlitArg) ).ret("args");
+    var newExpr = g("newExpr").ands(tk("new"),symbol, call.opt()).ret(null, "name","params");
     var reservedConst = tk("true").or(tk("false")).or(tk("null")).or(tk("undefined")).or(tk("this")).ret(function (t) {
         t.type="reservedConst";
         return t;
@@ -172,7 +173,7 @@ TonyuLang=function () {
     e.element(literal);
     e.element(parenExpr);
     e.element(newExpr);
-    e.element(G("funcExpr").first(space,"f"));
+    e.element(G("funcExpr").first(space,"f\\"));
     e.element(objlit_l);
     e.element(G("arylit").first(space,"["));
     e.element(varAccess);
@@ -274,8 +275,11 @@ TonyuLang=function () {
     var paramDecl= g("paramDecl").ands(symbol ).ret("name");
     var paramDecls=g("paramDecls").ands(tk("("), paramDecl.sep0(tk(","),true), tk(")")  ).ret(null, "params");
     g("funcExprHead").ands(tk("function").or(tk("\\")), symbol.opt() ,paramDecls.opt() ).ret(null,"name","params");
-    var funcExpr=g("funcExpr").ands("funcExprHead","compound").ret("-head","-body");
-    var jsonElem=g("jsonElem").ands(symbol.or(literal), tk(":"), expr  ).ret("key",null,"value");
+    var funcExpr=g("funcExpr").ands("funcExprHead","compound").ret("head","body");
+    var jsonElem=g("jsonElem").ands(
+            symbol.or(literal),
+            tk(":").and(expr).ret(function (c,v) {return v;}).opt()
+    ).ret("key","value");
     var objlit=g("objlit").ands(tk("{"), jsonElem.sep0(tk(","),true),  tk("}")).ret(null, "elems");
     var arylit=g("arylit").ands(tk("["), expr.sep0(tk(","),true),  tk("]")).ret(null, "elems");
     var ext=g("extends").ands(tk("extends"),symbol.or(tk("null")), tk(";")).ret(null, "superClassName");

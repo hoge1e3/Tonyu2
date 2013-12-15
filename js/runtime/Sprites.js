@@ -1,6 +1,6 @@
 Sprites=function () {
     var sprites=[];
-    function add() {
+    function add(params) {
         var s={width:32, height:32};
         s.draw=function (ctx) {
             if (s.x==null || s.y==null) return;
@@ -30,6 +30,21 @@ Sprites=function () {
             */
             //ctx.drawImage( img.image, 32,32,32,32, 32,32,32,32);
         };
+        s.crashTo=function (t) {
+            if (s.x!=null && s.y!=null && s.width && s.height &&
+                    t && t.x!=null && t.y!=null && t.width && t.height ) {
+                if (Math.abs(s.x-t.x)*2<s.width+t.width &&
+                    Math.abs(s.y-t.y)*2<s.height+t.height) {
+                    return true;
+                }
+            }
+            return false;
+        };
+        s.hitTo=s.crashTo;
+        s.toString=function () {
+            return "spr";
+        };
+        Tonyu.extend(s,params);
         sprites.push(s);
         return s;
     }
@@ -48,7 +63,31 @@ Sprites=function () {
             sprite.draw(ctx);
         });
     }
-    return {add:add, remove:remove, draw:draw, clear:clear, sprites:sprites};
+    var hitWatchers=[];
+    function checkHit() {
+        hitWatchers.forEach(function (w) {
+            sprites.forEach(function (a) {
+                //console.log("a:",  a.owner);
+                if (! (a.owner instanceof w.A)) return;
+                sprites.forEach(function (b) {
+                    if (a===b) return;
+                    if (! (b.owner instanceof w.B)) return;
+                    //console.log("b:",  b.owner);
+                    if (a.hitTo(b)) {
+                        //console.log("hit", a.owner, b.owner);
+                        w.h(a.owner,b.owner);
+                    }
+                });
+            });
+        });
+    }
+    function watchHit(typeA, typeB, onHit) {
+        var p={A: typeA, B:typeB, h:onHit};
+        //console.log(p);
+        hitWatchers.push(p);
+    }
+    return {add:add, remove:remove, draw:draw, clear:clear, sprites:sprites,
+        checkHit:checkHit, watchHit:watchHit};
 }();
 
 $(function () {

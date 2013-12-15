@@ -114,8 +114,10 @@ Tonyu=function () {
         return extend( new klass() , val);
     }
     function extend (dst, src) {
-        for (var i in src) {
-            dst[i]=src[i];
+        if (src && typeof src=="object") {
+            for (var i in src) {
+                dst[i]=src[i];
+            }
         }
         return dst;
     }

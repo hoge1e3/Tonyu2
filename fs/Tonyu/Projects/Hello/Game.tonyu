@@ -1,8 +1,18 @@
-a=new Apple();
-a.x=200;
-a.y=50;
-a=new Apple();
-a.x=100;
-a.y=150;
+cat=new Cat;
+cat.say("いただきま～す！");
+apple1=new Apple;
+apple1.x=200;
+apple1.y=150;
+apple2=new Apple;
+apple2.x=300;
+apple2.y=100;
+watchHit(Cat, Apple, hitCatApple);
+nokori=2;
 
-$cat=new Cat();
+function hitCatApple(cat,apple) {
+    apple.hide();
+    nokori--;
+    if (nokori<=0) {
+        cat.say("ごちそうさま！");
+    }
+}
