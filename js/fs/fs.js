@@ -229,6 +229,9 @@ FS=function () {
         res.endsWith=function (post) {
             return endsWith(name, post);
         };
+        res.equals=function (o) {
+            return (o && typeof o.path=="function" && o.path()==path);
+        };
         return res;
     };
     function up(path) {

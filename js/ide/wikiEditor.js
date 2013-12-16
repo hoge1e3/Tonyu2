@@ -5,10 +5,10 @@ $(function () {
     var t=TextEditor($("#editorArea"));
     var prevRow=null;
 
-    f.on.open=function (f) {
+    f.on.select=function (f) {
         if (!f.isDir()) {
             showWiki(f);
-            return true;
+            //return true;
         }
     };
     w.on.show=function (fi) {
@@ -28,7 +28,7 @@ $(function () {
         }
         return n;
     };
-    f.open(home);
+    f.ls(home);
     function onResize() {
         var h=$(window).height()-$("#navbar").height();
         t.setHeight(h);

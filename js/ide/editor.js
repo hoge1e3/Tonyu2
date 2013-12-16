@@ -39,7 +39,14 @@ $(function () {
     $("body")[0].spellcheck=false;
     var dir=getQueryString("dir", "/Tonyu/Projects/SandBox/");
     var curProjectDir=FS.get(dir);
-    var curDir=curProjectDir;
+    var fl=FileList($("#fileItemList"),{
+        topDir: curProjectDir,
+        on:{
+            select: open,
+            displayName: dispName
+        }
+    });
+    //var curDir=curProjectDir;
     var kernelDir=FS.get("/Tonyu/Kernel/");
     var curPrj=Tonyu.Project(curProjectDir, kernelDir);
     curPrj.env.options.compiler.defaultSuperClass="NigariObj";
@@ -47,12 +54,30 @@ $(function () {
     var EXT=".tonyu";
     var desktopEnv=loadDesktopEnv();
     var runMenuOrd=desktopEnv.runMenuOrd;
-    $("#dirName").text(curDir.path());
+    fl.ls(curProjectDir);
+    refreshRunMenu();
+    function ls(){
+        fl.ls(curProjectDir);
+        refreshRunMenu();
+    }
+    //$("#dirName").text(curDir.path());
     //TextUtil.attachIndentAdaptor("prog");
-    function ls() {
+    /*function ls() {
+        fl.ls();
+        curProjectDir.each(function (f) {
+            if (f.endsWith(".tonyu")) {
+                var n=f.name().replace(/\.tonyu$/,"");
+                if (runMenuOrd.indexOf(n)<0) {
+                    runMenuOrd.unshift(n);
+                }
+            }
+        });
+        refreshRunMenu();
+        return;
+        //--------
         $("#fileItemList").empty();
         curDir.ls().forEach(function (name) {
-            var f=curDir.rel(name);
+                var f=curDir.rel(name);
             if (f.endsWith(".tonyu")) {
                 var n=f.name().replace(/\.tonyu$/,"");
                 if (runMenuOrd.indexOf(n)<0) {
@@ -66,10 +91,25 @@ $(function () {
             }
         });
         refreshRunMenu();
-    }
+    }*/
     function refreshRunMenu() {
+        curProjectDir.each(function (f) {
+            if (f.endsWith(".tonyu")) {
+                var n=f.name().replace(/\.tonyu$/,"");
+                if (runMenuOrd.indexOf(n)<0) {
+                    runMenuOrd.push(n);
+                }
+            }
+        });
+        var i;
+        for (i=runMenuOrd.length-1; i>=0 ; i--) {
+            var f=curProjectDir.rel(runMenuOrd[i]+EXT);
+            if (!f.exists()) {
+                runMenuOrd.splice(i,1);
+            }
+        }
         $("#runMenu").empty();
-        var i=0;
+        i=0;
         runMenuOrd.forEach(function(n) {
             var ii=i;
             if (typeof n!="string") {console.log(n); alert("not a string: "+n);}
@@ -86,16 +126,17 @@ $(function () {
         });
         saveDesktopEnv();
     }
-    function dispName(name) {
-        if (name.substring(name.length-EXT.length)==EXT) return name.substring(0,name.length-EXT.length);
-        return name;
+    function dispName(f) {
+        var name=f.name();
+        if (f.isDir()) return name;
+        if (f.endsWith(EXT)) return name.substring(0,name.length-EXT.length);
+        return null;
     }
-    ls();
     $("#newFile").click(function () {
         var name=prompt("ファイル名を入力してください");
         name=fixName(name);
         if (!name) return;
-        var f=curDir.rel(name);
+        var f=fl.curDir().rel(name);
         if (!f.exists()) {
             f.text("");
             ls();
@@ -103,6 +144,7 @@ $(function () {
         }
     });
     function fixName(name) {
+        if (!name) return null;
         if (name.match(/^[A-Za-z_][a-zA-Z0-9_]*$/)) {
             return name+EXT;
         }
@@ -114,7 +156,7 @@ $(function () {
         var newName=prompt("新しいファイル名を入力してください",curFile.name());
         newName=fixName(newName);
         if (!newName) return;
-        var nf=curDir.rel(newName);
+        var nf=fl.curDir().rel(newName);
         if (nf.exists()) {
             alert(newName+" は存在します");
             return;
@@ -221,6 +263,11 @@ $(function () {
         }
     }
     function open(f) {
+        if (f.isDir()) {
+            //curDir=f;
+            return;
+        }
+        //if (!f.endsWith(".tonyu")) return true;
         save();
         curFile=f;
         //$("#prog").attr("disabled",false);
