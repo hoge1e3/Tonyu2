@@ -5,21 +5,25 @@ FileMenu=function () {
     };
     FM.on.close=function () {};
     FM.on.open=function (f){
-        if (typeof FileList=="object") {
-            FileList.open(f);
-        }
     };
     FM.on.ls=function () {
-        if (typeof FileList=="object") {
-            FileList.ls();
+        if (typeof FM.fileList=="object") {
+            FM.fileList.ls();
         }
     };
     FM.on.getCurFile=function () {
-        if (typeof FileList=="object") {
-            return FileList.curFile();
+        if (typeof FM.fileList=="object") {
+            return FM.fileList.curFile();
         }
         throw "on.getCurFile is missing";
     };
+    FM.on.getCurDir=function () {
+        if (typeof FM.fileList=="object") {
+            return FM.fileList.curDir();
+        }
+        throw "on.getCurDir is missing";
+    };
+
     $(function () {
         $("#newFile").click(function () {
             var name=prompt("ファイル名を入力してください");
@@ -61,4 +65,4 @@ FileMenu=function () {
         });
     });
     return FM;
-};
+}();

@@ -1,23 +1,11 @@
 $(function () {
-    //var home=FS.get("/Tonyu/");
-    //var projects=home.rel("Projects/");
-    //=projects.rel("SandBox/");
     function onResize() {
         var h=$(window).height()-$("#navBar").height();
-        //if ($.browser.msie)
         h-=20;
-        //var ph=$("#prog").height();
-        //var txh=ph/$("#prog").attr("rows");
-        //$("#prog").attr("rows", Math.floor(h/2/txh) );
         var mw=$("#mainArea").width();
-        //var pw=$("#prog").width();
-        //var txw=pw/$("#prog").attr("cols");
-        //$("#prog").attr("cols", Math.floor(mw/txw) );
         $("#prog").css("height",h/2+"px");
-        //console.log($("#prog").css("height"));
         $("#cv").attr("height", h/2).attr("width", mw);
         cv=$("#cv")[0].getContext("2d");
-
         $("#helpFrame").attr("height", h);
     }
     onResize();
@@ -37,7 +25,7 @@ $(function () {
 
     $(window).resize(onResize);
     $("body")[0].spellcheck=false;
-    var dir=getQueryString("dir", "/Tonyu/Projects/SandBox/");
+    var dir=Util.getQueryString("dir", "/Tonyu/Projects/SandBox/");
     var curProjectDir=FS.get(dir);
     var fl=FileList($("#fileItemList"),{
         topDir: curProjectDir,
@@ -60,38 +48,6 @@ $(function () {
         fl.ls(curProjectDir);
         refreshRunMenu();
     }
-    //$("#dirName").text(curDir.path());
-    //TextUtil.attachIndentAdaptor("prog");
-    /*function ls() {
-        fl.ls();
-        curProjectDir.each(function (f) {
-            if (f.endsWith(".tonyu")) {
-                var n=f.name().replace(/\.tonyu$/,"");
-                if (runMenuOrd.indexOf(n)<0) {
-                    runMenuOrd.unshift(n);
-                }
-            }
-        });
-        refreshRunMenu();
-        return;
-        //--------
-        $("#fileItemList").empty();
-        curDir.ls().forEach(function (name) {
-                var f=curDir.rel(name);
-            if (f.endsWith(".tonyu")) {
-                var n=f.name().replace(/\.tonyu$/,"");
-                if (runMenuOrd.indexOf(n)<0) {
-                    runMenuOrd.unshift(n);
-                }
-                $("<li>").append(
-                        $("<span>").addClass("fileItem").text( (f.isReadOnly()?"[RO]":"")+dispName(name))
-                    ).appendTo("#fileItemList").click(function () {
-                        open(f);
-                    });
-            }
-        });
-        refreshRunMenu();
-    }*/
     function refreshRunMenu() {
         curProjectDir.each(function (f) {
             if (f.endsWith(".tonyu")) {

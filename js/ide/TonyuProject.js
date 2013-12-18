@@ -57,12 +57,12 @@ Tonyu.Project=function (dir, kernelDir) {
         }
         for (var n in env.classes) {
             console.log("initClassDecl: "+n);
-            initClassDecls(env.classes[n], env);
+            Tonyu.Compiler.initClassDecls(env.classes[n], env);
         }
         var ord=orderByInheritance(env.classes);
         ord.forEach(function (c) {
             console.log("genJS :"+c.name);
-            genJS(c, env);
+            Tonyu.Compiler.genJS(c, env);
             //console.log(c.src.js);
             eval(c.src.js);
         });
@@ -84,3 +84,4 @@ Tonyu.Project=function (dir, kernelDir) {
     };
     return TPR;
 };
+if (typeof getReq=="function") getReq.exports("Tonyu.Project");

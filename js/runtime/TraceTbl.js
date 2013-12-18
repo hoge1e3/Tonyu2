@@ -31,3 +31,4 @@ Tonyu.TraceTbl=function () {
     };
     return TTB;
 };
+if (typeof getReq=="function") getReq.exports("Tonyu.TraceTbl");

@@ -1,3 +1,5 @@
+Util=function () {
+
 function getQueryString(key, default_)
 {
    if (default_==null) default_="";
@@ -15,3 +17,6 @@ function endsWith(str,postfix) {
 function startsWith(str,prefix) {
     return str.substring(0, prefix.length)===prefix;
 }
+
+return {getQueryString:getQueryString, endsWith: endsWith, startsWith: startsWith};
+}();

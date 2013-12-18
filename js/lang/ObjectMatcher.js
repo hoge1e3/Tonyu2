@@ -1,23 +1,23 @@
-ObjectMatcher=ObjMatcher=function () {
-    var ObjMatcher={};
+ObjectMatcher=function () {
+    var OM={};
     var VAR="$var",THIZ="$this";
-    ObjMatcher.v=v;
+    OM.v=v;
     function v(name, cond) {
         var res={};
         res[VAR]=name;
         if (cond) res[THIZ]=cond;
         return res;
     }
-    ObjMatcher.isVar=isVar;
+    OM.isVar=isVar;
     var names="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     for (var i =0 ; i<names.length ; i++) {
         var c=names.substring(i,i+1);
-        ObjMatcher[c]=v(c);
+        OM[c]=v(c);
     }
     function isVar(o) {
         return o && o[VAR];
     }
-    ObjMatcher.match=function (obj, tmpl) {
+    OM.match=function (obj, tmpl) {
         var res={};
         if (m(obj,tmpl,res)) return res;
         return null;
@@ -46,5 +46,5 @@ ObjectMatcher=ObjMatcher=function () {
         }
         return false;
     }
-    return ObjMatcher;
+    return OM;
 }();

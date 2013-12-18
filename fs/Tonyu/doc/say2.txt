@@ -4,8 +4,11 @@
 ゲームスタートしたときに，
 猫にメッセージを表示させてみましょう．
 
+それにはまず，猫に名前をつける必要があります．
+白いので[[@cfrag siro]] と名前をつけましょう．
+
 <<code Game
-new Cat;
+siro=new Cat;
 apple1=new Apple;
 apple1.x=200;
 apple1.y=150;
@@ -14,3 +17,22 @@ apple2.x=300;
 apple2.y=100;
 >>
 
+そして，[[@cfrag siro]]にメッセージを表示させます．
+メッセージを表示するには，[[@cfrag say]]という命令を使います．
+
+<<code Game
+siro=new Cat;
+siro.say("いただきまーす");
+apple1=new Apple;
+apple1.x=200;
+apple1.y=150;
+apple2=new Apple;
+apple2.x=300;
+apple2.y=100;
+>>
+
+命令を実行するとき，実行する相手のキャラクタを指定するときは次の形式を使います．
+
+<<code
+キャラクタ名 . 命令名 (   )
+>>

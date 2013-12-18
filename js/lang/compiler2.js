@@ -1,12 +1,13 @@
+Tonyu.Compiler=function () {
 // TonyuソースファイルをJavascriptに変換する
 var TH="_thread",THIZ="_this", FIBPRE="fiber$", FRMPC="pc", LASTPOS="$LASTPOS";
 var GET_THIS="this.isTonyuObject?this:'not_a_tonyu_object'";
 var ScopeTypes={FIELD:"field", METHOD:"method", NATIVE:"native",
         LOCAL:"local", THVAR:"threadvar", PARAM:"param"};
-function compile(klass, env) {
+/*function compile(klass, env) {
     initClassDecls(klass, env );
     return genJS(klass, env);
-}
+}*/
 function initClassDecls(klass, env ) {
     var s=klass.src.tonyu; //file object
     var node=TonyuLang.parse(s);
@@ -59,7 +60,7 @@ function initClassDecls(klass, env ) {
 function genJS(klass, env,pass) {
     var srcFile=klass.src.tonyu; //file object
 
-    var OM=ObjMatcher;
+    var OM=ObjectMatcher;
     var className=klass.name;
     var traceTbl=env.traceTbl;
     // method := fiber | function
@@ -583,4 +584,6 @@ function genJS(klass, env,pass) {
     klass.src.js=buf.buf;
     return buf.buf;
 }
-
+return {initClassDecls:initClassDecls, genJS:genJS};
+}();
+if (typeof getReq=="function") getReq.exports("Tonyu.Compiler");

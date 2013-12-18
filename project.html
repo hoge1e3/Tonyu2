@@ -19,41 +19,12 @@
 <script src="js/lib/jquery-1.7.2.js" type="text/javascript"></script>
 <script src="js/lib/jquery.tmpl.js" type="text/javascript"></script>
 <script src="js/lib/jquery.hotkeys.js" type="text/javascript"></script>
-<script src="js/lib/disp.js" type="text/javascript"></script>
-<script src="js/lib/util.js" type="text/javascript"></script>
-<script src="js/lib/profiler.js" type="text/javascript"></script>
-<script src="js/lib/TextUtil.js" type="text/javascript"></script>
-<script src="js/lang/ObjMatcher.js" type="text/javascript"></script>
-<script src="js/help/Arrow.js" type="text/javascript"></script>
-<script src="js/lang/context.js" type="text/javascript"></script>
-<script src="js/lang/IndentBuffer.js" type="text/javascript"></script>
-<script src="js/lang/ExpressionParser2.js" type="text/javascript"></script>
-<script src="js/lang/Grammar.js" type="text/javascript"></script>
-<script src="js/lang/parser.js" type="text/javascript"></script>
-<script src="js/lang/parse_tonyu2.js" type="text/javascript"></script>
-<script src="js/lang/Visitor.js" type="text/javascript"></script>
-<script src="js/lang/XMLBuffer.js" type="text/javascript"></script>
-<script src="js/lang/compiler2.js" type="text/javascript"></script>
-<script src="js/lang/indent.js" type="text/javascript"></script>
-<script src="js/runtime/TonyuLib.js" type="text/javascript"></script>
-<script src="js/runtime/TraceTbl.js" type="text/javascript"></script>
-<script src="js/runtime/Sprites.js" type="text/javascript"></script>
-<script src="js/runtime/Key.js" type="text/javascript"></script>
-<script src="js/runtime/fukidashi.js" type="text/javascript"></script>
-<script src="js/fs/fs.js" type="text/javascript"></script>
-<script src="js/ide/TonyuProject.js" type="text/javascript"></script>
-<script src="js/ide/ErrorPos.js" type="text/javascript"></script>
-<script src="js/ide/TError.js" type="text/javascript"></script>
-<script src="js/ide/editor.js" type="text/javascript"></script>
-<script src="js/fs/ROM.js" type="text/javascript"></script>
-<script src="js/fs/FileList.js" type="text/javascript"></script>
-<script src="js/help/HttpHelper.js" type="text/javascript"></script>
-<script src="js/help/wiki.js" type="text/javascript"></script>
-<script src="js/lib/ace-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 
-
-<script id="fileItem" type="text/x-jquery-tmpl">
-	<li><span class="fileItem">${name}</span></li>
+<script src="js/reqConf.js"></script>
+<script src="js/lib/require.js"></script>
+<script>
+requirejs.config(reqConf);
+requirejs(["ide/editor"],function (){});
 </script>
 
 </head>

@@ -86,6 +86,37 @@ Sprites=function () {
         //console.log(p);
         hitWatchers.push(p);
     }
+    function drawGrid(c) {
+        var ctx=c.getContext("2d");
+        ctx.save();
+        ctx.strokeStyle="rgb(40,100,200)";
+        for (var i=0 ; i<c.width ; i+=10) {
+            ctx.beginPath();
+            ctx.lineWidth=(i % 100 ==0 ? 4 : 1);
+            ctx.moveTo(i,0);
+            ctx.lineTo(i,c.height);
+            ctx.closePath();
+            ctx.stroke();
+        }
+
+        for (var i=0 ; i<c.height ; i+=10) {
+            ctx.beginPath();
+            ctx.lineWidth=(i % 100 ==0 ? 4 : 1);
+            ctx.moveTo(0,i);
+            ctx.lineTo(c.width,i);
+            ctx.closePath();
+            ctx.stroke();
+        }
+        ctx.fillStyle="white";
+        ctx.font="15px monospaced";
+        for (var i=100 ; i<c.width ; i+=100) {
+            ctx.fillText(i, i,15);
+        }
+        for (var i=100 ; i<c.height ; i+=100) {
+            ctx.fillText(i, 0,i);
+        }
+        ctx.restore();
+    }
     return {add:add, remove:remove, draw:draw, clear:clear, sprites:sprites,
         checkHit:checkHit, watchHit:watchHit};
 }();
@@ -108,36 +139,4 @@ $(function () {
     });
 
 });
-
-function drawGrid(c) {
-    var ctx=c.getContext("2d");
-    ctx.save();
-    ctx.strokeStyle="rgb(40,100,200)";
-    for (var i=0 ; i<c.width ; i+=10) {
-        ctx.beginPath();
-        ctx.lineWidth=(i % 100 ==0 ? 4 : 1);
-        ctx.moveTo(i,0);
-        ctx.lineTo(i,c.height);
-        ctx.closePath();
-        ctx.stroke();
-    }
-
-    for (var i=0 ; i<c.height ; i+=10) {
-        ctx.beginPath();
-        ctx.lineWidth=(i % 100 ==0 ? 4 : 1);
-        ctx.moveTo(0,i);
-        ctx.lineTo(c.width,i);
-        ctx.closePath();
-        ctx.stroke();
-    }
-    ctx.fillStyle="white";
-    ctx.font="15px monospaced";
-    for (var i=100 ; i<c.width ; i+=100) {
-        ctx.fillText(i, i,15);
-    }
-    for (var i=100 ; i<c.height ; i+=100) {
-        ctx.fillText(i, 0,i);
-    }
-    ctx.restore();
-}
 

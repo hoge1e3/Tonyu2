@@ -28,7 +28,7 @@ function FileList(elem, options) {
             $("<li>").append(
                     $("<span>").addClass("fileItem").text("..")
             ).appendTo(items).click(function () {
-                FL.on.select(p);
+                select(p);
             });
         }
 
@@ -38,7 +38,7 @@ function FileList(elem, options) {
             $("<li>").append(
                 $("<span>").addClass("fileItem").text( (f.isReadOnly()?"[RO]":"")+n)
             ).appendTo(items).click(function () {
-                FL.on.select(f);
+                select(f);
             });
         });
     }

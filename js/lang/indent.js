@@ -70,17 +70,17 @@ function fixIndent(str, indentStr) {
         }
         return res;
     }
-}
-function pos2RC(str, pos) {
-    var res={row:0, col:0};
-    var len=Math.min(str.length,pos);
-    for (var i=0 ; i<len ;i++) {
-        if (str.substring(i,i+1)=="\n") {
-            res.row++;
-            res.col=0;
-        } else {
-            res.col++;
+    function pos2RC(str, pos) {
+        var res={row:0, col:0};
+        var len=Math.min(str.length,pos);
+        for (var i=0 ; i<len ;i++) {
+            if (str.substring(i,i+1)=="\n") {
+                res.row++;
+                res.col=0;
+            } else {
+                res.col++;
+            }
         }
+        return res;
     }
-    return res;
 }

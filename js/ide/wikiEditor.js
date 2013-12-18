@@ -4,6 +4,7 @@ $(function () {
     var f=FileList($("#fileList"));
     var t=TextEditor($("#editorArea"));
     var prevRow=null;
+    FileMenu.fileList=f;
 
     f.on.select=function (f) {
         if (!f.isDir()) {

@@ -22,7 +22,7 @@ $(function () {
     onResize();
     $(window).resize(onResize);
     $("body")[0].spellcheck=false;
-    var dir=getQueryString("dir", "/Tonyu/Projects/SandBox/");
+    var dir=Util.getQueryString("dir", "/Tonyu/Projects/SandBox/");
     var curProjectDir=FS.get(dir);
     var curDir=curProjectDir;
     var kernelDir=FS.get("/Tonyu/Kernel/");

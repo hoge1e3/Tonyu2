@@ -269,138 +269,91 @@ Wiki=function (placeHolder, home, options, plugins) {
         function mark(startElem) {
             var e=startElem.next();
             while (e.length>0) {
-                if (startsWith( e.attr("id"), LINEMARK)) break;
+                if (Util.startsWith( e.attr("id"), LINEMARK)) break;
 
             }
         }
     };
     return W;
-};
-WikiBraces=function (str, begin ,end) {
-    var c=0;
-    function init() {
-        var w=[];
-        while(true) {
-            var i=str.indexOf(begin,c);
-            var j=str.indexOf(end,c);
-            if (j>=0 && (i<0 || i>j)) {  // ]]
-                w.push(str.substring(c,j));
-                c=j;  // ]] は含めずおわり
-                break;
+    function WikiBraces(str, begin ,end) {
+        var c=0;
+        function init() {
+            var w=[];
+            while(true) {
+                var i=str.indexOf(begin,c);
+                var j=str.indexOf(end,c);
+                if (j>=0 && (i<0 || i>j)) {  // ]]
+                    w.push(str.substring(c,j));
+                    c=j;  // ]] は含めずおわり
+                    break;
+                }
+                if (i<0) {  // [[ ]] なし
+                    w.push(str.substring(c));
+                    c=str.length;
+                    break;
+                }
+                // [[
+                w.push(str.substring(c,i));
+                c=i+begin.length;
+                var we=init();
+                we.hasBrace=true;
+                if (c<str.length) {  // ]] あり
+                    c+=end.length;
+                }
+                w.push(we);
             }
-            if (i<0) {  // [[ ]] なし
-                w.push(str.substring(c));
-                c=str.length;
-                break;
-            }
-            // [[
-            w.push(str.substring(c,i));
-            c=i+begin.length;
-            var we=init();
-            we.hasBrace=true;
-            if (c<str.length) {  // ]] あり
-                c+=end.length;
-            }
-            w.push(we);
+            bless(w);
+            return w;
         }
-        bless(w);
-        return w;
-    }
-    function bless(w) {
-        w.split=function (sp, lim) {
-            if (lim==1) return this;
-            var res=[], cur=bless([]);
-            this.forEach(function (e) {
-                if (typeof e=="string") {
-                    var i =e.indexOf(sp);
-                    if (res.length>=lim) i=-1;
-                    if (i>=0) {  //  ,bbb   aaa,bbb
-                        if (i>0) {  //   aaa,bbb
-                            var s=e.substring(0,i); // aaa
-                            cur.push(s);
+        function bless(w) {
+            w.split=function (sp, lim) {
+                if (lim==1) return this;
+                var res=[], cur=bless([]);
+                this.forEach(function (e) {
+                    if (typeof e=="string") {
+                        var i =e.indexOf(sp);
+                        if (res.length>=lim) i=-1;
+                        if (i>=0) {  //  ,bbb   aaa,bbb
+                            if (i>0) {  //   aaa,bbb
+                                var s=e.substring(0,i); // aaa
+                                cur.push(s);
+                            }
+                            i+=sp.length;   //  bbb  bbb
+                            if (cur.length!=1) res.push(cur);
+                            else res.push(cur[0]);
+                            cur=bless([]);
+                            if (i<e.length) {  // ,bbb
+                                var s=e.substring(i) ;
+                                cur.push(s);
+                            }
+                        } else {  //aaabbb
+                            cur.push(e);
                         }
-                        i+=sp.length;   //  bbb  bbb
-                        if (cur.length!=1) res.push(cur);
-                        else res.push(cur[0]);
-                        cur=bless([]);
-                        if (i<e.length) {  // ,bbb
-                            var s=e.substring(i) ;
-                            cur.push(s);
-                        }
-                    } else {  //aaabbb
+                    } else {
                         cur.push(e);
                     }
-                } else {
-                    cur.push(e);
-                }
-            });
-            if (cur.length!=1) res.push(cur);
-            else res.push(cur[0]);
-            return res;
-        };
-        w.text=function (includeBrace) {
-           var res=(this.hasBrace && includeBrace ? begin :"");
-           this.forEach(function (e) {
-               if (typeof e=="string") {
-                   res+=e;
-               } else {
-                   res+=e.text(true);
-               }
-           });
-           res+=(this.hasBrace && includeBrace ? end :"");
-           return res;
-        };
-        w.toString=function () {
-            return this.text(true);
-        };
-        return w;
-    }
-    return init(0);
-};
-/*
-  function parseLinkold(s) {
-            if(s.match(/\[\[([^\]]+)\]\]/)) {
-                var name=RegExp.$1;
-                var r=RegExp.rightContext;
-                parseLink(RegExp.leftContext);
-                var a;
-                //console.log("name="+name);
-                if (name.match(/^@blink ([^>]+)>([^\s]+)/)) {
-                    caption=RegExp.$1;
-                    var target=RegExp.$2;
-                    a=$("<span>").addClass("clickable").text(caption).hover(function () {
-                        parent.Arrow.show( target );
-                    });
-                } else if (name.match(/^@plistref (.*)/)) {
-                    var fi=plistInfo(RegExp.$1);
-                    a=$("<strong>").text(fi.name);
-                    fi.refs.push(a);
-                } else if (name.match(/^@figref (.*)/)) {
-                    var fi=figInfo(RegExp.$1);
-                    a=$("<strong>").text(fi.name);
-                    fi.refs.push(a);
-                } else {
-                    var cn=name.split(/>/,2);
-                    if (cn.length==2) {
-                        name=cn[1];
-                        caption=cn[0];
-                    } else caption=name;
-                    if (name.match(/\.(png|jpg|gif)$/)) {
-                        var fi=figInfo(name, true);
-                        a=$("<div>").addClass("figure").append(
-                                $("<div>").append(  $("<img>").attr("src", "doc/images/"+name) )
-                           ).append(
-                                $("<div>").text(refers.figures+fi.no+".  "+caption)
-                           );
-                    } else {
-                        a=$("<a>").attr("href","help.html?page="+name).text(caption);
-                    }
-                }
-                $h.p(a);
-                //$.p("<a href='"+name+"'>"+name+"</a>");
-                parseLink(r);
-            } else {
-                $h.p(s);
-            }
+                });
+                if (cur.length!=1) res.push(cur);
+                else res.push(cur[0]);
+                return res;
+            };
+            w.text=function (includeBrace) {
+               var res=(this.hasBrace && includeBrace ? begin :"");
+               this.forEach(function (e) {
+                   if (typeof e=="string") {
+                       res+=e;
+                   } else {
+                       res+=e.text(true);
+                   }
+               });
+               res+=(this.hasBrace && includeBrace ? end :"");
+               return res;
+            };
+            w.toString=function () {
+                return this.text(true);
+            };
+            return w;
         }
-        */
+        return init(0);
+    };
+};
