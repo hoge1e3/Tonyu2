@@ -5,9 +5,11 @@
 [[@figref syntaxError.png]]の例では，命令の最後にセミコロン ;  をつけていないためにエラーになっています．
 セミコロンを追加して，再度実行してください．
 
-[[@figref runtimeError.png]]の例では，命令の名前を間違えています．(sprit ではなく sprite ）
+[[@figref runtimeError.png]]の例では，命令の名前を間違えています．(goo ではなく go ）
 正しい命令になおしてください．
 
 [[命令の名前が違うエラー>runtimeError.png]]
+
+なお，命令の名前は大文字と小文字が区別されます．[[@cfrag go]]の代わりに[[@cfrag Go]]と書くことはできません．
 
 [[戻る>firstRun]]

@@ -88,6 +88,7 @@ Sprites=function () {
     }
     function drawGrid(c) {
         var ctx=c.getContext("2d");
+        ctx.textBaseline="top";
         ctx.save();
         ctx.strokeStyle="rgb(40,100,200)";
         for (var i=0 ; i<c.width ; i+=10) {
@@ -110,7 +111,7 @@ Sprites=function () {
         ctx.fillStyle="white";
         ctx.font="15px monospaced";
         for (var i=100 ; i<c.width ; i+=100) {
-            ctx.fillText(i, i,15);
+            ctx.fillText(i, i,0);
         }
         for (var i=100 ; i<c.height ; i+=100) {
             ctx.fillText(i, 0,i);

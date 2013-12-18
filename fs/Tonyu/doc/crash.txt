@@ -1,46 +1,36 @@
 *キャラクタの衝突判定をしましょう
 
-次に，猫がリンゴにぶつかると，リンゴを取る（リンゴが消える）ようにしてみましょう．
+次に，猫(Cat)がリンゴ(Apple)にぶつかると，リンゴを取る（リンゴが消える）ようにしてみましょう．
 
-まず，猫のキャラクタに名前をつけましょう．次のように変更します．
-
-<<code Game hitc
-cat=new Cat;
-apple1=new Apple;
-apple1.x=200;
-apple1.y=150;
-apple2=new Apple;
-apple2.x=300;
-apple2.y=100;
->>
-
-次に，猫(Cat) と リンゴ(Apple) がぶつかっているかどうかを判定しましょう．
 [[@cfrag watchHit]] という命令を使うと，２つのキャラクタがぶつかったときに，
 特定の命令を実行することができます．
 
-[[@plistref hitc]]の最後に次のように書くと，猫（[[@cfrag Cat]]）とリンゴ（[[@cfrag Apple]]）がぶつかったときに，
-[[@cfrag hitCatApple]] という命令が実行されます
+[[@plistref addw]]の[[@editadd]]で示した部分を追加してみましょう．
 （まだプログラムは実行しないでください）
 
-<<code Game(追加)
-watchHit(Cat, Apple, hitCatApple);
+<<code Game addw
+siro=new Cat;
+siro.say("いただきまーす");
+apple1=new Apple;
+apple1.x=200;
+apple1.y=150;
+apple2=new Apple;
+apple2.x=300;
+apple2.y=100;
+watchHit(Cat, Apple, hitCatApple);[[@editadd]]
 >>
+
+[[@cfrag watchHit(Cat, Apple, hitCatApple)]]と書くと，
+猫（[[@cfrag Cat]]）とリンゴ（[[@cfrag Apple]]）がぶつかったときに，
+[[@cfrag hitCatApple]] という命令が実行されるようになります．
 
 ところで，[[@cfrag hitCatApple]] ってどんな命令でしょうか？
 実はこの時点ではそんな命令はありません．この命令は自分で作ってあげる必要があります．
-さらに，次のように追加してみましょう．
+さらに[[@plistref addf]]のように追加してみましょう．
 
-<<code Game(追加)
-function hitCatApple(cat,apple) {
-    apple.hide();
-}
->>
-
-最終的に[[@plistref hitc2]] のようになっているかを確認して，
-実行してみましょう．
-
-<<code Game hitc2
-cat=new Cat;
+<<code Game addf
+siro=new Cat;
+siro.say("いただきまーす");
 apple1=new Apple;
 apple1.x=200;
 apple1.y=150;
@@ -48,9 +38,9 @@ apple2=new Apple;
 apple2.x=300;
 apple2.y=100;
 watchHit(Cat, Apple, hitCatApple);
-function hitCatApple(cat,apple) {
-    apple.hide();
-}
+function hitCatApple(cat,apple) {[[@editadd]]
+    apple.hide();[[@editadd]]
+}[[@editadd]]
 >>
 
 実行すると，猫とリンゴが触れたときにリンゴが消えるようになります．
@@ -69,7 +59,6 @@ function hitCatApple(cat,apple) {
 [[@cfrag apple2]] かもしれませんが，とにかく猫が触れていたほうのリンゴに，[[@cfrag apple]]という名前がつけられます．
 
 そして，その[[@cfrag apple]] に， [[@cfrag apple.hide()]] という命令を行っています．これは，そのキャラクタ（ここでは[[@cfrag apple]]）を隠す（画面から見えなくする）命令です．
-
 
 
 

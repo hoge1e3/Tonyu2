@@ -7,7 +7,7 @@
 <<code Cat true
 x=50;
 while(true) {
-   go(x,100);
+   go(x,100);sleep();
    x+=10;
 }
 >>

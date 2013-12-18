@@ -168,6 +168,8 @@ Wiki=function (placeHolder, home, options, plugins) {
                     console.log("fi = "+fi.name);
                     a=$("<strong>").text(fi.name);
                     fi.refs.push(a);
+                } else if (name.match(/^@editadd/)) {
+                    $h.p($("<img>").attr("src","images/editAdd.png"));
                 } else if (name.match(/^@figref (.*)/)) {
                     var fi=figInfo(RegExp.$1);
                     a=$("<strong>").text(fi.name);
@@ -229,6 +231,7 @@ Wiki=function (placeHolder, home, options, plugins) {
             if ( f.exists()) {
                 var ht=W.parse(f.text(), f.name().replace(/\.txt$/,""));
                 placeHolder.empty();
+                placeHolder.scrollTop(0);
                 placeHolder.append(ht);
                 placeHolder.append($("<div>").css({height:"100px"}).text(""));
                 if (on.show) on.show.apply(W, [f]);

@@ -23,7 +23,6 @@ while(true) {
    if (k>0) {
       y-=10;
    }
-   go(x,y);
+   go(x,y);sleep();
 }
 >>
-

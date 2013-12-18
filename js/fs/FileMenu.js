@@ -26,7 +26,7 @@ FileMenu=function () {
 
     $(function () {
         $("#newFile").click(function () {
-            var name=prompt("ファイル名を入力してください");
+            var name=prompt("ファイル名を入力してください","");
             name=FM.on.validateName(name);
             if (!name) return;
             var f=curDir.rel(name);

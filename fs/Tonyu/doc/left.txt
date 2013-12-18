@@ -1,0 +1,53 @@
+*ゲームクリアの判定をしましょう
+
+すべてのリンゴを取ったら，猫が「ごちそうさま」といって，
+ゲームクリアになるようにしましょう．
+
+それには，「リンゴがあといくつ残っているか」を数える必要があります．
+そこで，リンゴの残り数を表す[[@cfrag left]]という変数を用意します．
+リンゴは2つあるので，2を覚えさせておきます．
+
+[[@plistref addl]]の[[@editadd]]の部分を追加しましょう．
+
+<<code Game addl
+siro=new Cat;
+siro.say("いただきまーす");
+apple1=new Apple;
+apple1.x=200;
+apple1.y=150;
+apple2=new Apple;
+apple2.x=300;
+apple2.y=100;
+watchHit(Cat, Apple, hitCatApple);
+left=2;[[@editadd]]
+function hitCatApple(cat,apple) {
+    apple.hide();
+}
+>>
+
+さらに，リンゴを取った時に，[[@cfrag left]]の値を減らします．
+
+<<code
+変数名--; 
+>>
+と書くと，変数の値を1減らすことができます．
+
+<<code Game(hitCatApple内部のみ) adddec
+function hitCatApple(cat,apple) {
+    apple.hide();
+    left--;[[@editadd]]
+}
+>>
+
+さらに，[[@cfrag left]] が0になったときに，猫に「ごちそうさま」というメッセージを表示させます．
+
+<<code Game(hitCatApple内部のみ) addif
+function hitCatApple(cat,apple) {
+    apple.hide();
+    left--;
+    if (left<=0) {[[@editadd]]
+        cat.say("ごちそうさま");[[@editadd]]
+    }[[@editadd]]
+}
+>>
+

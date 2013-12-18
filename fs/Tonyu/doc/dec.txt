@@ -6,7 +6,7 @@
 <<code Cat dec
 x=300;
 while(true) {
-   go(x,100);
+   go(x,100);sleep();
    x-=10;
 }
 >>

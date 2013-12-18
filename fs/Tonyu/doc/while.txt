@@ -4,24 +4,24 @@
 
 <<code Cat 50to100inc
 x=50;
-go(x,100);
+go(x,100);sleep();
 x+=10;
-go(x,100);
+go(x,100);sleep();
 x+=10;
-go(x,100);
+go(x,100);sleep();
 x+=10;
-go(x,100);
+go(x,100);sleep();
 x+=10;
-go(x,100);
+go(x,100);sleep();
 x+=10;
-go(x,100);
+go(x,100);sleep();
 >>
 
 最初の[[@cfrag x=50;]]を除いて，あとはずっと
 
 <<code 
+go(x,100);sleep();
 x+=10;
-go(x,100);
 >>
 が繰り返されていることがわかります．
 
@@ -33,7 +33,7 @@ go(x,100);
 <<code Cat firstWhile
 x=50;
 while (x<=100) {
-  go(x,100);
+  go(x,100);sleep();
   x+=10;
 }
 >>
@@ -63,7 +63,7 @@ while([[@arg 条件]]) {
 <<code Cat w300
 x=50;
 while (x<=300) {
-  go(x,100);
+  go(x,100);sleep();
   x+=10;
 }
 >>

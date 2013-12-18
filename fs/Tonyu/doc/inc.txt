@@ -4,9 +4,9 @@
 
 <<code Cat 50to60
 x=50;
-go(x,100);
+go(x,100);sleep();
 x=60;
-go(x,100);
+go(x,100);sleep();
 >>
 
 [[@plistref 50to60]]では，[[@cfrag x=50;]]で，xに50覚えさせてから，
@@ -18,9 +18,9 @@ go(x,100);
 
 <<code Cat 50to60inc
 x=50;
-go(x,100);
+go(x,100);sleep();
 x+=10;
-go(x,100);
+go(x,100);sleep();
 >>
 
 [[@cfrag x+=10;]]という書き方が出てきました．これは
@@ -38,15 +38,15 @@ xは50を覚えていますので，
 
 <<code Cat 50to100inc
 x=50;
-go(x,100);
+go(x,100);sleep();
 x+=10;
-go(x,100);
+go(x,100);sleep();
 x+=10;
-go(x,100);
+go(x,100);sleep();
 x+=10;
-go(x,100);
+go(x,100);sleep();
 x+=10;
-go(x,100);
+go(x,100);sleep();
 x+=10;
-go(x,100);
+go(x,100);sleep();
 >>

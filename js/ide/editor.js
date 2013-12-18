@@ -89,7 +89,7 @@ $(function () {
         return null;
     }
     $("#newFile").click(function () {
-        var name=prompt("ファイル名を入力してください");
+        var name=prompt("ファイル名を入力してください","");
         name=fixName(name);
         if (!name) return;
         var f=fl.curDir().rel(name);
