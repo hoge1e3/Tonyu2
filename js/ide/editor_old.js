@@ -27,7 +27,7 @@ $(function () {
     var curDir=curProjectDir;
     var kernelDir=FS.get("/Tonyu/Kernel/");
     var curPrj=Tonyu.Project(curProjectDir, kernelDir);
-    curPrj.env.options.compiler.defaultSuperClass="NigariObj";
+    curPrj.env.options.compiler.defaultSuperClass="BasicActor";
     var curFile=null;
     var EXT=".tonyu";
     $("#dirName").text(curDir.path());

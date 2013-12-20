@@ -19,7 +19,8 @@ $(function () {
             run();
         }
     }]);
-    prog.setValue("←左のリストからファイルを選択してください．\nファイルがない場合はメニューの「ファイル」→「新規」を選んでください");
+    var closedMsg="←左のリストからファイルを選択してください．\nファイルがない場合はメニューの「ファイル」→「新規」を選んでください";
+    prog.setValue(closedMsg);
     prog.setReadOnly(true);
     prog.clearSelection();
 
@@ -34,11 +35,24 @@ $(function () {
             displayName: dispName
         }
     });
-    //var curDir=curProjectDir;
+    FileMenu.fileList=fl;
+    FileMenu.on.close=close;
+    FileMenu.on.ls=ls;
+    FileMenu.on.validateName=fixName;
+    FileMenu.on.displayName=function (f) {
+        var r=dispName(f);
+        if (r) {
+            if (f.endsWith(EXT)) return {
+                name: r, mode:EXT
+            };
+            return r;
+        }
+        return f.name();
+    };
+
     var kernelDir=FS.get("/Tonyu/Kernel/");
     var curPrj=Tonyu.Project(curProjectDir, kernelDir);
-    curPrj.env.options.compiler.defaultSuperClass="NigariObj";
-    var curFile=null;
+    curPrj.env.options.compiler.defaultSuperClass="NoviceActor";
     var EXT=".tonyu";
     var desktopEnv=loadDesktopEnv();
     var runMenuOrd=desktopEnv.runMenuOrd;
@@ -50,8 +64,8 @@ $(function () {
     }
     function refreshRunMenu() {
         curProjectDir.each(function (f) {
-            if (f.endsWith(".tonyu")) {
-                var n=f.name().replace(/\.tonyu$/,"");
+            if (f.endsWith(EXT)) {
+                var n=f.truncExt(EXT);
                 if (runMenuOrd.indexOf(n)<0) {
                     runMenuOrd.push(n);
                 }
@@ -85,20 +99,9 @@ $(function () {
     function dispName(f) {
         var name=f.name();
         if (f.isDir()) return name;
-        if (f.endsWith(EXT)) return name.substring(0,name.length-EXT.length);
+        if (f.endsWith(EXT)) return f.truncExt(EXT);
         return null;
     }
-    $("#newFile").click(function () {
-        var name=prompt("ファイル名を入力してください","");
-        name=fixName(name);
-        if (!name) return;
-        var f=fl.curDir().rel(name);
-        if (!f.exists()) {
-            f.text("");
-            ls();
-            open(f);
-        }
-    });
     function fixName(name) {
         if (!name) return null;
         if (name.match(/^[A-Za-z_][a-zA-Z0-9_]*$/)) {
@@ -107,35 +110,8 @@ $(function () {
         alert("名前は，半角英数字とアンダースコア(_)のみが使えます．先頭は英大文字にしてください．");
         return null;
     }
-    $("#mvFile").click(function () {
-        if (!curFile) return;
-        var newName=prompt("新しいファイル名を入力してください",curFile.name());
-        newName=fixName(newName);
-        if (!newName) return;
-        var nf=fl.curDir().rel(newName);
-        if (nf.exists()) {
-            alert(newName+" は存在します");
-            return;
-        }
-        var t=curFile.text();
-        curFile.rm();
-        curFile=nf;
-        nf.text(t);
-        ls();
-        open(curFile);
-    });
-    $("#rmFile").click(function () {
-        if (!curFile) return;
-        if (!confirm(curFile.name()+"を削除しますか？")) return;
-        curFile.rm();
-        ls();
-        curFile=null;
-        close();
-    });
     $("#prog").bind("keydown","F9",run);
     $(document).bind("keydown","F9",run);
-    //$("#run").click(run);
-    //var rowsOnEdit=$("#prog").attr("rows");
     function displayMode(mode, next) {
         // mode == run     compile_error     runtime_error    edit
         switch(mode) {
@@ -173,7 +149,7 @@ $(function () {
             name=runMenuOrd[0];// curFile.name().replace(/\.tonyu$/,"");
         }
         if (typeof name!="string") {console.log(name); alert("not a string3: "+name);}
-        if (curFile) save();
+        save();
         displayMode("run");
         try {
             curPrj.run(name);
@@ -200,37 +176,30 @@ $(function () {
         displayMode("edit");
     });
     function close() {
-        prog.setValue("");//$("#prog").val("");
-        $("#prog").attr("disabled",true);
+        prog.setValue(closedMsg);
+        prog.setReadOnly(true);
     }
     function fixEditorIndent() {
         var cur=prog.getCursorPosition();
-        //console.log(cur);
         prog.setValue(fixIndent( prog.getValue() ));
         prog.clearSelection();
         prog.moveCursorTo(cur.row, cur.column);
-        //$("#prog").val(fixIndent($("#prog").val()));
     }
     function save() {
+        var curFile=fl.curFile();
         if (curFile && !curFile.isReadOnly()) {
             fixEditorIndent();
             curFile.text(prog.getValue());
-            //curFile.text($("#prog").val());
         }
     }
     function open(f) {
         if (f.isDir()) {
-            //curDir=f;
             return;
         }
-        //if (!f.endsWith(".tonyu")) return true;
         save();
-        curFile=f;
-        //$("#prog").attr("disabled",false);
         prog.setValue( f.text(),0 );
         prog.setReadOnly(false);
         prog.clearSelection();
-        //$("#prog").val( f.text() );
     }
     d=function () {
         Tonyu.currentProject.dumpJS.apply(this,arguments);
@@ -253,4 +222,51 @@ $(function () {
         var d=curProjectDir.rel(".desktop");
         d.obj(desktopEnv);
     }
+
+    /*$("#newFile").click(function () {
+    var name=prompt("ファイル名を入力してください","");
+    name=fixName(name);
+    if (!name) return;
+    var f=fl.curDir().rel(name);
+    if (!f.exists()) {
+        f.text("");
+        ls();
+        open(f);
+    }
+});*/
+    /*$("#mvFile").click(function () {
+        if (!curFile) return;
+        var fix;
+        var name=curFile.name();
+        if (curFile.endsWith(EXT)) {
+            fix=true;
+            name=curFile.truncExt(EXT);
+        } else {
+            fix=false;
+            name=curFile.name();
+        }
+        var newName=prompt("新しいファイル名を入力してください",name);
+        if (fix) newName=fixName(newName);
+        if (!newName) return;
+        var nf=fl.curDir().rel(newName);
+        if (nf.exists()) {
+            alert(newName+" は存在します");
+            return;
+        }
+        var t=curFile.text();
+        curFile.rm();
+        curFile=nf;
+        nf.text(t);
+        ls();
+        open(curFile);
+    });
+    $("#rmFile").click(function () {
+        if (!curFile) return;
+        if (!confirm(curFile.name()+"を削除しますか？")) return;
+        curFile.rm();
+        ls();
+        curFile=null;
+        close();
+    });*/
+
 });

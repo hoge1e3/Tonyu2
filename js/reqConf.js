@@ -101,7 +101,7 @@ var reqConf={
                 "exports": "TError"
             },
             "ide/editor": {
-                "deps": ["fs/ROM","ace", "Util", "Tonyu", "FS", "FileList", "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project"]
+                "deps": ["fs/ROM","ace", "Util", "Tonyu", "FS", "FileList", "FileMenu", "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project"]
             },
             "fs/ROM": {
                 "deps": ["FS"]

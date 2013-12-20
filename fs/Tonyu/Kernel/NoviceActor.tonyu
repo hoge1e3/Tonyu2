@@ -1,0 +1,66 @@
+extends null;
+native Sprites;
+native Tonyu;
+native Key;
+
+\new(p) {
+    var thg=Tonyu.currentProject.currentThreadGroup;
+    if (thg) thg.addObj(this);
+    if (p) Tonyu.extend(this, p);
+}
+
+\update() {
+    ifwait {
+        _thread.suspend();
+    }
+}
+\sleep(n) {
+    if(!n) n=1;
+    for(n;n>0;n--) update();
+}
+\initSprite() {
+    if (!_sprite) _sprite=Sprites.add{owner:this};
+}
+\say(text,size) {
+    if (!size) size=15;
+    initSprite();
+    _sprite.fukidashi={text:text, size:size, c:30};
+}
+\sprite(x,y,p) {
+    go(x,y,p);
+}
+\show(x,y,p) {
+    go(x,y,p);
+}
+\go(x,y,p) {
+    initSprite();
+    _sprite.x=x;
+    _sprite.y=y;
+    if (p!=null) _sprite.p=p;
+    //update();
+}
+\change(p) {
+    initSprite();
+    _sprite.p=p;
+}
+\getkey(k) {
+    return Key.getkey(k);
+}
+\hide(t) {
+    Sprites.remove(_sprite);
+    _sprite=null;
+}
+\crashTo(t) {
+    return hitTo(t);
+}
+\hitTo(t) {
+    if (_sprite && t._sprite) {
+        return _sprite.crashTo(t._sprite);
+    }
+    return false;
+}
+\watchHit(typeA,typeB,onHit) {
+    Sprites.watchHit(typeA , typeB, \(a,b) {
+        onHit.apply(this,[a,b]);
+    });
+}

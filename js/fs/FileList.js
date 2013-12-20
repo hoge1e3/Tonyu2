@@ -2,7 +2,7 @@ function FileList(elem, options) {
     var _curDir;
     var _curFile;
     if (!options) options={};
-    var FL={open:open, ls:ls, on:(options.on?options.on:{}), curFile:curFile, curDir: curDir};
+    var FL={select:select, ls:ls, on:(options.on?options.on:{}), curFile:curFile, curDir: curDir};
     var path=$("<div>");
     var items=$("<div>");
     elem.append(path).append(items);
@@ -31,7 +31,9 @@ function FileList(elem, options) {
                 select(p);
             });
         }
-
+        if (_curFile && !_curFile.exists()) {
+            _curFile=null;
+        }
         _curDir.each(function (f) {
             var n=displayName(f);
             if (!n) return;

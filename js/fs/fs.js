@@ -214,6 +214,9 @@ FS=function () {
         };
         res.path=function () {return path;};
         res.name=function () {return name;};
+        res.truncExt=function (ext) {
+            return name.substring(0,name.length-ext.length);
+        };
         res.touch=function () {
             if (parent==null) return ; //  path=/
             var pinfo=getDirInfo(parent);
