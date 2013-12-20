@@ -1,5 +1,7 @@
+requirejs(["Util","Wiki","TextEditor","FileList","FileMenu","FS","TextUtil"],
+        function (Util,Wiki,TextEditor,FileList,FileMenu,FS,TextUtil) {
 $(function () {
-    var home=FS.get("/Tonyu/doc/");
+    var home=FS.get(Util.getQueryString("home","/Tonyu/doc/"));
     var w=Wiki($("#wikiViewArea"),home);
     var f=FileList($("#fileList"));
     var t=TextEditor($("#editorArea"));
@@ -52,4 +54,5 @@ $(function () {
         prevRow=row;
         w.highlightLine(row);
     };
+});
 });

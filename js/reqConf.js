@@ -1,9 +1,9 @@
 //"var reqConf="+JSON.stringify( getReq.genConf({base:"http://localhost:3002/js/", baseUrl:"js"})+";"
 var reqConf={
         "shim": {
-            "ide/wikiEditor": {
+            /*"ide/wikiEditor": {
                  deps: ["Wiki","TextEditor","FileList","FileMenu","FS","TextUtil"]
-            },
+            },*/
             TextEditor: {
                 exports: "TextEditor"
             },
@@ -100,6 +100,9 @@ var reqConf={
             "TError": {
                 "exports": "TError"
             },
+            "ide/noviceEditor": {
+                "deps": ["fs/ROM","ace", "Util", "Tonyu", "FS", "FileList", "FileMenu", "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project"]
+            },
             "ide/editor": {
                 "deps": ["fs/ROM","ace", "Util", "Tonyu", "FS", "FileList", "FileMenu", "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project"]
             },
@@ -127,6 +130,9 @@ var reqConf={
                 deps: ["FS"]
             },
             "ide/selProject": {
+                deps: ["fs/ROM", "FS","Wiki"]
+            },
+            "ide/noviceSelProject": {
                 deps: ["fs/ROM", "FS","Wiki"]
             }
         },
@@ -165,7 +171,10 @@ var reqConf={
             "FileList": "fs/FileList",
             "HttpHelper": "help/HttpHelper",
             "Wiki": "help/wiki",
-            "ace": "lib/ace-noconflict/ace"
+            "ace": "lib/ace-noconflict/ace",
+            "ide/noviceSelProject": "ide/noviceSelProject",
+            "ide/noviceEditor": "ide/noviceEditor",
+            "foo":"bar"
         },
         "baseUrl": "js"
 };

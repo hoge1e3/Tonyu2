@@ -68,6 +68,7 @@ TonyuLang=function () {
     }
     var reserved={"function":true, "var":true , "return":true, "typeof": true, "if":true,
                  "for":true,
+                 "super": true,
                  "while":true,
                  "break":true,
                  "do":true,
@@ -151,7 +152,11 @@ TonyuLang=function () {
         s.type="regex";
         return s;
     }).first(space,"/");
-
+    function retF(n) {
+        return function () {
+            return arguments[n];
+        };
+    }
 
     var e=ExpressionParser() ;
     var arrayElem=g("arrayElem").ands(tk("["), e.lazy() , tk("]")).ret(null,"subscript");
@@ -162,7 +167,11 @@ TonyuLang=function () {
     var objlit_l=G("objlit").first(space,"{");
     var objlitArg=g("objlitArg").ands(objlit_l).ret("obj");
     var call=g("call").ands( argList.or(objlitArg) ).ret("args");
+    var scall=g("scall").ands( argList.or(objlitArg) ).ret("args");
     var newExpr = g("newExpr").ands(tk("new"),symbol, call.opt()).ret(null, "name","params");
+    var superExpr =g("superExpr").ands(
+            tk("super"), tk(".").and(symbol).ret(retF(1)).opt() , scall).ret(
+            null,                 "name",                       "params");
     var reservedConst = tk("true").or(tk("false")).or(tk("null")).or(tk("undefined")).or(tk("this")).ret(function (t) {
         t.type="reservedConst";
         return t;
@@ -173,6 +182,7 @@ TonyuLang=function () {
     e.element(literal);
     e.element(parenExpr);
     e.element(newExpr);
+    e.element(superExpr);
     e.element(G("funcExpr").first(space,"f\\"));
     e.element(objlit_l);
     e.element(G("arylit").first(space,"["));

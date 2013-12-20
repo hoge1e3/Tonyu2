@@ -37,6 +37,7 @@ Tonyu.Project=function (dir, kernelDir) {
         }
     };
     TPR.run=function (mainClassName) {
+        Tonyu.runMode=false;
         env.classes={};
         Tonyu.currentProject=TPR;
         if (TPR.currentThreadGroup) TPR.currentThreadGroup.kill();
@@ -63,19 +64,25 @@ Tonyu.Project=function (dir, kernelDir) {
         ord.forEach(function (c) {
             console.log("genJS :"+c.name);
             Tonyu.Compiler.genJS(c, env);
-            //console.log(c.src.js);
-            eval(c.src.js);
+            try {
+                eval(c.src.js);
+            } catch(e){
+                console.log(c.src.js);
+                throw e;
+            }
         });
         var thg=Tonyu.threadGroup();
         var mainClass=window[mainClassName];
         if (!mainClass) throw TError( mainClassName+" というクラスはありません", "不明" ,0);
+        Sprites.clear();
+        Tonyu.runMode=true;
         var main=new mainClass();
+        console.log("tp",Sprites);
         thg.addObj(main);
         TPR.currentThreadGroup=thg;
         $LASTPOS=0;
 
         $pat_fruits=30;
-        Sprites.clear();
         thg.run(33, function () {
             Key.update();
             Sprites.draw($("canvas")[0]);

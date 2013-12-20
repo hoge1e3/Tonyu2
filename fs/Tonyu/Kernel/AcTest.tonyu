@@ -1,0 +1,7 @@
+extends Actor;
+
+while (true) {
+    x+=vx;
+    y+=vy;
+    update();
+}

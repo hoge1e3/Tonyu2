@@ -43,6 +43,7 @@ Tonyu=function () {
             var th=thread();
             th.enter(obj.fiber$main());
             add(th);
+            return th;
         }
         function steps() {
             threads.forEach(function (th){
@@ -100,11 +101,16 @@ Tonyu=function () {
             prot=arguments[1];
         }
         prot=defunct(prot);
-        var res=function () {
+        var res=(prot.initialize? prot.initialize:
+            (parent? function () {
+                parent.apply(this,arguments);
+            }:function (){})
+        );
+        /*res=function () {
             if (this.initialize) {
-                 this.initialize.apply(this, arguments);
+                this.initialize.apply(this, arguments);
             }
-        };
+        };*/
         res.prototype=bless(parent, prot);
         res.prototype.isTonyuObject=true;
         return res;

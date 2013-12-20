@@ -1,7 +1,7 @@
 Visitor = function (funcs) {
 	var $={funcs:funcs};
 	$.visit=function (node) {
-		//console.log("visit - "+node.type);
+		if ($.debug) console.log("visit ",node.type, node.pos);
 		var v=(node ? funcs[node.type] :null);
 		if (v) return v.call($, node);
 		else if ($.def) return $.def(node);

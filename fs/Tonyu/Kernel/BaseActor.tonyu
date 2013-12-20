@@ -1,0 +1,53 @@
+extends null;
+native Sprites;
+native Tonyu;
+native Key;
+native console;
+
+\new(p) {
+    if (Tonyu.runMode) {
+        var thg=Tonyu.currentProject.currentThreadGroup;
+        if (thg) _th=thg.addObj(this);
+    }
+    if (p) Tonyu.extend(this, p);
+}
+
+\print(c) {
+    console.log(c);
+}
+\update() {
+    ifwait {
+        _thread.suspend();
+    }
+}
+\getkey(k) {
+    return Key.getkey(k);
+}
+\crashTo(t) {
+    return hitTo(t);
+}
+\hitTo(t) {
+    if (_sprite && t._sprite) {
+        return _sprite.crashTo(t._sprite);
+    }
+    return false;
+}
+\watchHit(typeA,typeB,onHit) {
+    Sprites.watchHit(typeA , typeB, \(a,b) {
+        onHit.apply(this,[a,b]);
+    });
+}
+\currentThreadGroup() {
+    return Tonyu.currentProject.currentThreadGroup;
+}
+\die() {
+    if (_th) {
+        _th.kill();
+    }
+    hide();
+    isDead=true;
+}
+\hide() {
+    Sprites.remove(_sprite);
+    _sprite=null;
+}

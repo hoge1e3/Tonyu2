@@ -7,7 +7,7 @@
 <meta name="author" content="hoge1e3">
 <link rel="shortcut icon" type="image/x-icon" href="images/tnu.ico">
 
-<title>Tonyu System 2</title>
+<title>プログラミング体験講座</title>
 
 <!-- Bootstrap core CSS -->
 <link href="css/bootstrap.css" rel="stylesheet">
@@ -26,7 +26,7 @@
 <script>
 ProgressBar(41);
 requirejs.config(reqConf);
-requirejs(["ide/editor"],function (){});
+requirejs(["ide/noviceEditor"],function (){});
 </script>
 
 </head>
@@ -39,11 +39,11 @@ requirejs(["ide/editor"],function (){});
 					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">Tonyu System 2</a>
+				<a class="navbar-brand" href="#">プログラミング体験講座</a>
 			</div>
 			<div class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="index.html">Home</a></li>
+					<li class="active"><a href="novice.html">Home</a></li>
 					<li><a id="fileMenu" href="#" class="dropdown-toggle" data-toggle="dropdown">ファイル</a>
 						<ul class="dropdown-menu">
 							<li><a href="#" id="newFile">新規</a></li>
@@ -63,18 +63,22 @@ requirejs(["ide/editor"],function (){});
 
 	<div class="container">
 		<div class="row">
-			<div id=fileViewer class="col-xs-1">
+			<div id=fileViewer class="col-xs-2">
+
+				<!-- div id="dirName"></div>
+				<div>
+				</div>-->
 				<div id="fileItemList"></div>
 			</div>
 			<div id=mainArea class="col-xs-6">
 				<div id=errorPos >
 				</div>
 				<pre id=prog></pre>
-			</div>
-			<div id=runAreaParent class="col-xs-5">
 				<div id="runArea" style="text-align : center ;" class="runArea">
 					<canvas id="cv" width=400 height=400 style=" margin-left : auto ; margin-right : auto ;"></canvas>
 				</div>
+			</div>
+			<div id=wikiViewArea class="col-xs-4">
 			</div>
 		</div>
 	</div>

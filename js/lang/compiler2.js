@@ -61,7 +61,7 @@ function genJS(klass, env,pass) {
     var srcFile=klass.src.tonyu; //file object
 
     var OM=ObjectMatcher;
-    var className=klass.name;
+    var className=getClassName(klass);
     var traceTbl=env.traceTbl;
     // method := fiber | function
     var decls=klass.decls;
@@ -77,6 +77,7 @@ function genJS(klass, env,pass) {
     var printf=buf.printf;
     var v=null;
     var ctx=context();
+    var debug=false;
     var fiberCallTmpl={
             type:"postfix",
             op:{$var:"A",type:"call" },
@@ -93,6 +94,20 @@ function genJS(klass, env,pass) {
             right: fiberCallTmpl
         }
     };
+    var noRetSuperFiberCallTmpl={
+        expr: {type:"superExpr", $var:"S"}
+    };
+    var retSuperFiberCallTmpl={
+            expr: {
+                type: "infix",
+                op: OM.O,
+                left: OM.L,
+                right: {type:"superExpr", $var:"S"}
+            }
+        };
+    function getClassName(klass){
+        return klass.name;
+    }
     //console.log(JSON.stringify( retFiberCallTmpl));
     function initTopLevelScope2(klass) {
         var s=topLevelScope;
@@ -253,7 +268,7 @@ function genJS(klass, env,pass) {
                 ps.forEach(function (p) {
                     ns[p.name.text]=ST.PARAM;
                 });
-                ctx.enter({scope: ns }, function () {
+                ctx.enter({noWait: true, scope: ns }, function () {
                     body.stmts.forEach(function (stmt) {
                         printf("%v%n", stmt);
                     });
@@ -291,6 +306,18 @@ function genJS(klass, env,pass) {
                             ctx.pc++,
                             t.L, t.O, TH
                 );
+            } else if (!ctx.noWait && (t=OM.match(node,noRetSuperFiberCallTmpl)) ) {
+                var p=getClassName(klass.superClass);
+                if (t.S.name) {
+                    buf.printf(
+                            "%s.enter( %s.prototype.%s%s( %s, %v) );%n" +
+                            "break;%n" +
+                            "%}case %s:%{",
+                                TH,   p,  FIBPRE, t.S.name.text,  THIZ,  t.S.params,
+                                // break;
+                                ctx.pc++
+                    );
+                }
             } else {
                 buf.printf("%s=%s;%v;",  LASTPOS, traceTbl.add(klass.src.tonyu,node.pos ), node.expr );
             }
@@ -433,14 +460,14 @@ function genJS(klass, env,pass) {
                 }
             }
         },
-        objlitArg: function (node) {
-            buf.printf("(%v)",node.obj);
-        },
         call: function (node) {
-            buf.printf("%v",node.args);
+            buf.printf("(%v)",node.args);
+        },
+        objlitArg: function (node) {
+            buf.printf("%v",node.obj);
         },
         argList: function (node) {
-            buf.printf("(%j)",[",",node.args]);
+            buf.printf("%j",[",",node.args]);
         },
         newExpr: function (node) {
             var p=node.params;
@@ -448,6 +475,20 @@ function genJS(klass, env,pass) {
                 buf.printf("new %v%v",node.name,p);
             } else {
                 buf.printf("new %v",node.name);
+            }
+        },
+        scall: function (node) {
+            buf.printf("[%v]",node.args);
+        },
+        superExpr: function (node) {
+            var name;
+            if (node.name) {
+                name=node.name.text;
+                buf.printf("%s.prototype.%s.apply( %s, %v)",
+                        getClassName(klass.superClass),  name, THIZ, node.params);
+            } else {
+                buf.printf("%s.apply( %s, %v)",
+                        getClassName(klass.superClass), THIZ, node.params);
             }
         },
         arrayElem: function (node) {
@@ -473,6 +514,7 @@ function genJS(klass, env,pass) {
             buf.printf("%s",node.text);
         }
     });
+    //v.debug=debug;
     v.def=function (node) {
         if (!node) buf.printf("/*null*/");
         else buf.printf("DEF ! type=%s",node.type);
@@ -484,18 +526,22 @@ function genJS(klass, env,pass) {
     function genSource() {
         ctx.enter({scope:topLevelScope}, function () {
             if (klass.superClass) {
-                printf("%s=Tonyu.klass(%s,{%{", className, klass.superClass.name);
+                printf("%s=Tonyu.klass(%s,{%{", className, getClassName(klass.superClass));
             } else {
                 printf("%s=Tonyu.klass({%{", className);
             }
             for (var name in methods) {
+                if (debug) console.log("method1", name);
                 var method=methods[name];
                 ctx.enter({noWait:true}, function () {
                     genFunc(method);
                 });
+                if (debug) console.log("method2", name);
+                //v.debug=debug;
                 ctx.enter({noWait:false}, function () {
                     genFiber(method);
                 });
+                if (debug) console.log("method3", name);
             }
             printf("%}});");
         });
@@ -582,6 +628,11 @@ function genJS(klass, env,pass) {
     initTopLevelScope();
     genSource();
     klass.src.js=buf.buf;
+    if (debug) {
+        console.log("method4", buf.buf);
+        //throw "ERR";
+    }
+
     return buf.buf;
 }
 return {initClassDecls:initClassDecls, genJS:genJS};

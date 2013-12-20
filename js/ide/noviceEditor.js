@@ -2,9 +2,9 @@ $(function () {
     function onResize() {
         var h=$(window).height()-$("#navBar").height();
         h-=20;
-        var rw=$("#runArea").width();
-        $("#prog").css("height",h+"px");
-        $("#cv").attr("height", h).attr("width", rw);
+        var mw=$("#mainArea").width();
+        $("#prog").css("height",h/2+"px");
+        $("#cv").attr("height", h/2).attr("width", mw);
         cv=$("#cv")[0].getContext("2d");
     }
     onResize();

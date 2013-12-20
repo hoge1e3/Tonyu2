@@ -6,7 +6,7 @@ $(function () {
         $("#prjItemList").empty();
         curDir.ls().forEach(function (name) {
             var f=curDir.rel(name);
-            $("#fileItem").tmpl({name: name, href:"project.html?dir="+f.path()}).appendTo("#prjItemList");
+            $("#fileItem").tmpl({name: name, href:"noviceProject.html?dir="+f.path()}).appendTo("#prjItemList");
         });
     }
     $("#newPrj").click(function (){

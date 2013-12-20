@@ -20,6 +20,7 @@ while (true) {
     move{vx,vy};
     // console.log(x+","+y);
     go(x,y);
+    sleep();
     /*if (crashTo(t)) {
     t.hide();
     }*/
