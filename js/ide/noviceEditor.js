@@ -1,4 +1,10 @@
+requirejs(["fs/ROM","ace", "Util", "Tonyu", "FS", "FileList", "FileMenu",
+                         "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project","ImageList","Sprites"],
+function (rom,ace, Util, Tonyu, FS, FileList, FileMenu,
+        showErrorPos, fixIndent, Wiki, Tonyu_Project,ImageList,Sprites) {
 $(function () {
+    Tonyu.noviceMode=true;
+    ImageList([{url: "images/neko.png", pwidth:32, pheight:32}], Sprites.setImageList);
     function onResize() {
         var h=$(window).height()-$("#navBar").height();
         h-=20;
@@ -50,7 +56,7 @@ $(function () {
     };
 
     var kernelDir=FS.get("/Tonyu/Kernel/");
-    var curPrj=Tonyu.Project(curProjectDir, kernelDir);
+    var curPrj=Tonyu_Project(curProjectDir, kernelDir);
     curPrj.env.options.compiler.defaultSuperClass="NoviceActor";
     var EXT=".tonyu";
     var desktopEnv=loadDesktopEnv();
@@ -222,6 +228,7 @@ $(function () {
         d.obj(desktopEnv);
     }
 
+
     /*$("#newFile").click(function () {
     var name=prompt("ファイル名を入力してください","");
     name=fixName(name);
@@ -268,4 +275,5 @@ $(function () {
         close();
     });*/
 
+});
 });

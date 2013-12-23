@@ -1,19 +1,27 @@
 Sprites=function () {
     var sprites=[];
+    var SP;
+    var imageList=[];
     function add(params) {
         var s={width:32, height:32};
         s.draw=function (ctx) {
             if (s.x==null || s.y==null) return;
             if (s.p==null) s.p=0;
             s.p=Math.floor(s.p);
-            var img=baseImg;
-
+            //var img=baseImg;
+            var e=imageList[s.p];
+            if (!e) return;
+            s.width=e.width;
+            s.height=e.height;
+            ctx.drawImage(e.image, e.x, e.y, e.width, e.height,
+                                    s.x-s.width/2, s.y-s.height/2, s.width, s.height);
+            /*
             ctx.drawImage( img.image ,
                     img.pwidth*(s.p % img.rows), img.pheight*(Math.floor(s.p/img.rows)) ,
                     img.pwidth, img.pheight,
                     s.x-s.width/2, s.y-s.height/2,
                     img.pwidth, img.pheight
-                    );
+                    );*/
             if (s.fukidashi) {
                 if (s.fukidashi.c>0) {
                     s.fukidashi.c--;
@@ -57,7 +65,7 @@ Sprites=function () {
         //ctx.drawImage( baseImg.image , 32,32,32,32, 50,50,32,32);
         ctx.fillStyle="rgb(20,80,180)";
         ctx.fillRect(0,0,cv.width,cv.height);
-        drawGrid(cv);
+        if (SP.drawGrid) drawGrid(cv);
         //console.log("draw!");
         sprites.forEach(function (sprite) {
             sprite.draw(ctx);
@@ -118,8 +126,11 @@ Sprites=function () {
         }
         ctx.restore();
     }
-    return {add:add, remove:remove, draw:draw, clear:clear, sprites:sprites,
-        checkHit:checkHit, watchHit:watchHit};
+    function setImageList(il) {
+        imageList=il;
+    }
+    return SP={add:add, remove:remove, draw:draw, clear:clear, sprites:sprites,
+        checkHit:checkHit, watchHit:watchHit,setImageList:setImageList};
 }();
 
 $(function () {

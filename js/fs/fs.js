@@ -120,6 +120,7 @@ FS=function () {
     };
     FS.get=function (path) {
         if (path==null) throw "FS.get: Null path";
+        if (path.isDir) return path;
         if (!isPath(path)) throw "Path must starts with '/'";
         var parent=up(path);
         var name=getName(path);
@@ -130,6 +131,12 @@ FS=function () {
                 dir.ls().forEach(function (n) {
                     var subd=dir.rel(n);
                     f(subd);
+                });
+            };
+            dir.recursive=function (fun) {
+                dir.each(function (f) {
+                    if (f.isDir()) f.recursive(fun);
+                    else fun(f);
                 });
             };
             dir.ls=function () {
@@ -191,8 +198,10 @@ FS=function () {
                     file.text(JSON.stringify(arguments[0]));
                 }
             };
+            file.copyFrom=function (src) {
+                file.text(src.text());
+            };
         }
-
         res.relPath=function (base) {
             //  path= /a/b/c   base=/a/b/  res=c
             //  path= /a/b/c/   base=/a/b/  res=c/
@@ -234,6 +243,9 @@ FS=function () {
         };
         res.equals=function (o) {
             return (o && typeof o.path=="function" && o.path()==path);
+        };
+        res.toString=function (){
+            return path;
         };
         return res;
     };

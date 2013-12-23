@@ -72,9 +72,11 @@ Tonyu.Project=function (dir, kernelDir) {
             }
         });
         var thg=Tonyu.threadGroup();
+        var cv=$("canvas")[0];
         var mainClass=window[mainClassName];
         if (!mainClass) throw TError( mainClassName+" というクラスはありません", "不明" ,0);
         Sprites.clear();
+        Sprites.drawGrid=Tonyu.noviceMode;
         Tonyu.runMode=true;
         var main=new mainClass();
         console.log("tp",Sprites);
@@ -83,9 +85,13 @@ Tonyu.Project=function (dir, kernelDir) {
         $LASTPOS=0;
 
         $pat_fruits=30;
+        $screenWidth=cv.width;
+        $screenHeight=cv.height;
         thg.run(33, function () {
             Key.update();
-            Sprites.draw($("canvas")[0]);
+            $screenWidth=cv.width;
+            $screenHeight=cv.height;
+            Sprites.draw(cv);
             Sprites.checkHit();
         });
     };

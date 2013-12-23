@@ -1,4 +1,15 @@
+requirejs(["fs/ROM","ace", "Util", "Tonyu", "FS", "FileList", "FileMenu",
+                         "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project","ImageList","Sprites"],
+function (rom,ace, Util, Tonyu, FS, FileList, FileMenu,
+        showErrorPos, fixIndent, Wiki, Tonyu_Project,ImageList,Sprites) {
+
 $(function () {
+    ImageList([
+        {url: "images/base.png", pwidth:32, pheight:32},
+        {url: "images/Sample.png"},
+        {url: "images/neko.png", pwidth:32, pheight:32}
+      ],Sprites.setImageList);
+
     function onResize() {
         var h=$(window).height()-$("#navBar").height();
         h-=20;
@@ -50,8 +61,8 @@ $(function () {
     };
 
     var kernelDir=FS.get("/Tonyu/Kernel/");
-    var curPrj=Tonyu.Project(curProjectDir, kernelDir);
-    curPrj.env.options.compiler.defaultSuperClass="NoviceActor";
+    var curPrj=Tonyu_Project(curProjectDir, kernelDir);
+    curPrj.env.options.compiler.defaultSuperClass="Actor";
     var EXT=".tonyu";
     var desktopEnv=loadDesktopEnv();
     var runMenuOrd=desktopEnv.runMenuOrd;
@@ -268,4 +279,5 @@ $(function () {
         close();
     });*/
 
+});
 });

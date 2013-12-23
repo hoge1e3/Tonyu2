@@ -1,5 +1,5 @@
-cat=new Cat;
-cat.say("いただきま～す！");
+siro=new Cat;
+siro.say("いただきまーす");
 apple1=new Apple;
 apple1.x=200;
 apple1.y=150;
@@ -7,12 +7,12 @@ apple2=new Apple;
 apple2.x=300;
 apple2.y=100;
 watchHit(Cat, Apple, hitCatApple);
-nokori=2;
+left=2;
 
 function hitCatApple(cat,apple) {
     apple.hide();
-    nokori--;
-    if (nokori<=0) {
+    left--;
+    if (left<=0) {
         cat.say("ごちそうさま！");
     }
 }

@@ -100,12 +100,14 @@ var reqConf={
             "TError": {
                 "exports": "TError"
             },
-            "ide/noviceEditor": {
-                "deps": ["fs/ROM","ace", "Util", "Tonyu", "FS", "FileList", "FileMenu", "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project"]
+            /*"ide/noviceEditor": {
+                "deps": ["fs/ROM","ace", "Util", "Tonyu", "FS", "FileList", "FileMenu",
+                         "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project","ImageList"]
             },
             "ide/editor": {
-                "deps": ["fs/ROM","ace", "Util", "Tonyu", "FS", "FileList", "FileMenu", "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project"]
-            },
+                "deps": ["fs/ROM","ace", "Util", "Tonyu", "FS", "FileList", "FileMenu",
+                         "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project"]
+            },*/
             "fs/ROM": {
                 "deps": ["FS"]
             },
@@ -137,9 +139,11 @@ var reqConf={
             }
         },
         "paths": {
+            "Shell": "fs/Shell",
             "ide/wikiEditor": "ide/wikiEditor",
             TextEditor: "ide/TextEditor",
             FileMenu: "fs/FileMenu",
+            ImageList: "graphics/ImageList",
             "disp": "lib/disp",
             "Util": "lib/util",
             "Profiler": "lib/profiler",
@@ -158,10 +162,10 @@ var reqConf={
             "Tonyu.Compiler": "lang/compiler2",
             "fixIndent": "lang/indent",
             "Tonyu.TraceTbl": "runtime/TraceTbl",
-            "Sprites": "runtime/Sprites",
+            "Sprites": "graphics/Sprites",
             "Key": "runtime/Key",
-            "TextRect": "runtime/TextRect",
-            "fukidashi": "runtime/fukidashi",
+            "TextRect": "graphics/TextRect",
+            "fukidashi": "graphics/fukidashi",
             "FS": "fs/fs",
             "Tonyu.Project": "ide/TonyuProject",
             "showErrorPos": "ide/ErrorPos",
@@ -174,6 +178,7 @@ var reqConf={
             "ace": "lib/ace-noconflict/ace",
             "ide/noviceSelProject": "ide/noviceSelProject",
             "ide/noviceEditor": "ide/noviceEditor",
+            PatternParser:"graphics/PatternParser",
             "foo":"bar"
         },
         "baseUrl": "js"
