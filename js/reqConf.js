@@ -62,7 +62,7 @@ var reqConf={
                 "exports": "Tonyu"
             },
             "Tonyu.Compiler": {
-                "deps": ["Tonyu", "TonyuLang", "ObjectMatcher", "TError", "IndentBuffer", "context", "Visitor"],
+                "deps": ["Tonyu", "Tonyu.Iterator", "TonyuLang", "ObjectMatcher", "TError", "IndentBuffer", "context", "Visitor"],
                 "exports": "Tonyu.Compiler"
             },
             "fixIndent": {
@@ -159,6 +159,7 @@ var reqConf={
             "Visitor": "lang/Visitor",
             "XMLBuffer": "lang/XMLBuffer",
             "Tonyu": "runtime/TonyuLib",
+            "Tonyu.Iterator": "runtime/Iterator",
             "Tonyu.Compiler": "lang/compiler2",
             "fixIndent": "lang/indent",
             "Tonyu.TraceTbl": "runtime/TraceTbl",

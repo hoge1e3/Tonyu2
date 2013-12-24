@@ -202,7 +202,7 @@ TonyuLang=function () {
     e.infixl(prio,andand);
     prio++;
     e.infix(prio,tk("instanceof"));
-    e.infix(prio,tk("in"));
+    //e.infix(prio,tk("in"));
     e.infix(prio,eqq);
     e.infix(prio,nee);
     e.infix(prio,eq);
@@ -257,14 +257,21 @@ TonyuLang=function () {
     var elseP=tk("else").and(stmt).ret(retF(1));
     var returns=g("return").ands(tk("return"),expr.opt(),tk(";") ).ret(null,"value");
     var ifs=g("if").ands(tk("if"), tk("("), expr, tk(")"), stmt, elseP.opt() ).ret(null, null,"cond",null,"then","_else");
-    var trailFor=tk(";").and(expr.opt()).and(tk(";")).and(expr.opt()).ret(function (s, cond, s2, next) {
+    /*var trailFor=tk(";").and(expr.opt()).and(tk(";")).and(expr.opt()).ret(function (s, cond, s2, next) {
         return {cond: cond, next:next  };
-    });
-    var infor=expr.and(trailFor.opt()).ret(function (a,b) {
+    });*/
+    var forin=g("forin").ands(tk("var").opt(), symbol.sep1(tk(","),true), tk("in"), expr).ret(
+                                       "isVar", "vars",null, "set" );
+    var normalFor=g("normalFor").ands(stmt, expr.opt() , tk(";") , expr.opt()).ret(
+                                     "init", "cond",     null, "next");
+    /*var infor=expr.and(trailFor.opt()).ret(function (a,b) {
         if (b==null) return {type:"forin", expr: a};
         return {type:"normalFor", init:a, cond: b.cond, next:b.next  };
-    });
-    var fors=g("for").ands(tk("for"),tk("("), tk("var").opt() , infor , tk(")"),"stmt" ).ret(null,null,"isVar", "inFor",null, "loop");
+    });*/
+    var infor=normalFor.or(forin);
+    var fors=g("for").ands(tk("for"),tk("("), infor , tk(")"),"stmt" ).ret(
+                               null,null,    "inFor", null   ,"loop");
+    //var fors=g("for").ands(tk("for"),tk("("), tk("var").opt() , infor , tk(")"),"stmt" ).ret(null,null,"isVar", "inFor",null, "loop");
     var whiles=g("while").ands(tk("while"), tk("("), expr, tk(")"), "stmt").ret(null,null,"cond",null,"loop");
     var breaks=g("break").ands(tk("break"), tk(";")).ret("brk");
     var fins=g("finally").ands(tk("finally"), "stmt" ).ret(null, "stmt");

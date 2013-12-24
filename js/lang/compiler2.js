@@ -2,6 +2,7 @@ Tonyu.Compiler=function () {
 // TonyuソースファイルをJavascriptに変換する
 var TH="_thread",THIZ="_this", FIBPRE="fiber$", FRMPC="pc", LASTPOS="$LASTPOS";
 var GET_THIS="this.isTonyuObject?this:'not_a_tonyu_object'";
+var ITER="Tonyu.iterator";
 var ScopeTypes={FIELD:"field", METHOD:"method", NATIVE:"native",
         LOCAL:"local", THVAR:"threadvar", PARAM:"param"};
 /*function compile(klass, env) {
@@ -161,6 +162,9 @@ function genJS(klass, env,pass) {
             });
         };
     }
+    function genSym(prefix) {
+        return prefix+(Math.random()+"").replace(/\./g,"");
+    }
     function varAccess(n) {
         var t=ctx.scope[n];
         if (n.match(/^\$/)) t=ST.NATIVE;
@@ -287,7 +291,7 @@ function genJS(klass, env,pass) {
             if (!ctx.noWait && (t=OM.match(node,noRetFiberCallTmpl)) && ctx.scope[t.T]==ST.METHOD) {
                 buf.printf(
                         "%s.enter( %s.%s%s%v );%n" +
-                        "break;%n" +
+                        "break;%n" +/*B*/
                         "%}case %s:%{",
                             TH, THIZ, FIBPRE, t.T, t.A,
                             // break;
@@ -298,7 +302,7 @@ function genJS(klass, env,pass) {
                 //console.log(t);
                 buf.printf(
                         "%s.enter( %s.%s%s%v );%n" +
-                        "break;%n" +
+                        "break;%n" +/*B*/
                         "%}case %s:%{"+
                         "%v%v%s.retVal();%n",
                             TH, THIZ, FIBPRE, t.T, t.A,
@@ -311,7 +315,7 @@ function genJS(klass, env,pass) {
                 if (t.S.name) {
                     buf.printf(
                             "%s.enter( %s.prototype.%s%s( %s, %v) );%n" +
-                            "break;%n" +
+                            "break;%n" +/*B*/
                             "%}case %s:%{",
                                 TH,   p,  FIBPRE, t.S.name.text,  THIZ,  t.S.params,
                                 // break;
@@ -326,14 +330,14 @@ function genJS(klass, env,pass) {
             buf.printf("%v%v%v", node.left, node.op, node.right);
         },
         prefix: function (node) {
-            buf.printf("%v%v", node.op, node.right);
+            buf.printf("%v %v", node.op, node.right);
         },
         postfix: function (node) {
-            if (node.op.type=="objlit") {
+            /*if (node.op.type=="objlit") {
                 buf.printf("%v(%v)", node.left, node.op);
-            } else {
+            } else {*/
                 buf.printf("%v%v", node.left, node.op);
-            }
+            //}
         },
         "break": function (node) {
             if (!ctx.noWait) {
@@ -352,7 +356,7 @@ function genJS(klass, env,pass) {
                 var pc=ctx.pc++;
                 var isTrue= node.cond.type=="reservedConst" && node.cond.text=="true";
                 buf.printf(
-                        "break;%n" +
+                        "break;%n" +/*B*/
                         "%}case %s:%{" +
                         (isTrue?"%D%D%D":"if (!(%v)) { %s=%z; break; }%n") +
                         "%f%n" +
@@ -371,30 +375,89 @@ function genJS(klass, env,pass) {
             }
         },
         "for": function (node) {
-            if (!ctx.noWait) {
-                var brkpos={};
-                var pc=ctx.pc++;
-                buf.printf(
-                        "%v;%n"+
-                        "break;%n" +
-                        "%}case %s:%{" +
-                        "if (!(%v)) { %s=%z; break; }%n" +
-                        "%v%n" +
-                        "%v;%n" +
-                        "%s=%s;break;%n" +
-                        "%}case %f:%{",
-                            node.inFor.init ,
-                            // break;
-                            pc,
-                            node.inFor.cond, FRMPC, brkpos,
-                            node.loop,
-                            node.inFor.next,
-                            FRMPC, pc,
-                            function (buf) { buf.print(brkpos.put(ctx.pc++)); }
-                );
-                //brkpos.put(ctx.pc++);
+            if (node.inFor.type=="forin") {
+                var itn=genSym("_it_");
+                ctx.scope[itn]=ST.LOCAL;
+                if (!ctx.noWait) {
+                    var brkpos={};
+                    var pc=ctx.pc++;
+                    buf.printf(
+                            "%s=%s(%v,%s);%n"+
+                            "break;%n"+/*B*/
+                            "%}case %s:%{" +
+                            "if (!(%s.next())) { %s=%z; break; }%n" +
+                            "%f%n" +
+                            "%v%n" +
+                            "%s=%s;break;%n" +
+                            "%}case %f:%{",
+                                itn, ITER, node.inFor.set, node.inFor.vars.length,
+                                pc,
+                                itn, FRMPC, brkpos,
+                                getElemF(itn, node.inFor.isVar, node.inFor.vars),
+                                node.loop,
+                                FRMPC, pc,
+                                function (buf) { buf.print(brkpos.put(ctx.pc++)); }
+                    );
+                } else {
+                    buf.printf(
+                            "var %s=%s(%v,%s);%n"+
+                            "while(%s.next()) {%{" +
+                               "%f%n"+
+                               "%v%n" +
+                            "%}}",
+                            itn, ITER, node.inFor.set, node.inFor.vars.length,
+                            itn,
+                            getElemF(itn, node.inFor.isVar, node.inFor.vars),
+                            node.loop
+                    );
+                }
+
             } else {
-                buf.printf("for (%s%v) { %v }",(node.isVar?"var ":""), node.inFor, node.loop);
+                if (!ctx.noWait) {
+                    var brkpos={};
+                    var pc=ctx.pc++;
+                    buf.printf(
+                            "%v;%n"+
+                            "break;%n"+/*B*/
+                            "%}case %s:%{" +
+                            "if (!(%v)) { %s=%z; break; }%n" +
+                            "%v%n" +
+                            "%v;%n" +
+                            "%s=%s;break;%n" +
+                            "%}case %f:%{",
+                                node.inFor.init ,
+                                // break;
+                                pc,
+                                node.inFor.cond, FRMPC, brkpos,
+                                node.loop,
+                                node.inFor.next,
+                                FRMPC, pc,
+                                function (buf) { buf.print(brkpos.put(ctx.pc++)); }
+                    );
+                    //brkpos.put(ctx.pc++);
+                } else {
+                    buf.printf(
+                            "%v%n"+
+                            "while(%v) {%{" +
+                               "%v%n" +
+                               "%v;%n" +
+                            "%}}",
+                            node.inFor.init ,
+                            node.inFor.cond,
+                                node.loop,
+                                node.inFor.next
+                    );
+                    //buf.printf("for (%s%v) { %v }",(node.isVar?"var ":""), node.inFor, node.loop);
+                }
+            }
+            function getElemF(itn, isVar, vars) {
+                return function () {
+                    //var va=(isVar?"var ":"");
+                    vars.forEach(function (v,i) {
+                        /*if (isVar) */ctx.scope[v.text]=ST.LOCAL;
+                        buf.printf("%s=%s[%s];%n", v.text, itn, i);
+                    });
+                };
             }
         },
         "if": function (node) {
@@ -408,7 +471,7 @@ function genJS(klass, env,pass) {
                             "break;%n" +
                             "%}case %f:%{" +
                             "%v%n" +
-                            "break;%n"     +
+                            "break;%n"     +/*B*/
                             "%}case %f:%{"   ,
                                 node.cond, FRMPC, elpos,
                                 node.then,
@@ -424,7 +487,7 @@ function genJS(klass, env,pass) {
                     buf.printf(
                             "if (!(%v)) { %s=%z; break; }%n" +
                             "%v%n" +
-                            "break;%n" +
+                            "break;%n" +/*B*/
                             "%}case %f:%{",
                                 node.cond, FRMPC, fipos,
                                 node.then,
