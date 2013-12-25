@@ -1,6 +1,6 @@
 Tonyu.Compiler=function () {
 // TonyuソースファイルをJavascriptに変換する
-var TH="_thread",THIZ="_this", FIBPRE="fiber$", FRMPC="pc", LASTPOS="$LASTPOS";
+var TH="_thread",THIZ="_this", FIBPRE="fiber$", FRMPC="__pc", LASTPOS="$LASTPOS";
 var GET_THIS="this.isTonyuObject?this:'not_a_tonyu_object'";
 var ITER="Tonyu.iterator";
 var ScopeTypes={FIELD:"field", METHOD:"method", NATIVE:"native",
@@ -41,6 +41,7 @@ function initClassDecls(klass, env ) {
             if (stmt.type=="funcDecl") {
                 var head=stmt.head;
                 methods[head.name.text]={
+                        nowait: !!head.nowait,
                         ftype:  head.ftype.text,
                         name:  head.name.text,
                         head:  head,
@@ -138,6 +139,12 @@ function genJS(klass, env,pass) {
         f.prototype=s;
         return new f();
     }
+    function getMethod(name) {
+        for (var k=klass; k ; k=k.superClass) {
+            if (k.decls.methods[name]) return k.decls.methods[name];
+        }
+        return null;
+    }
 
     function nc(o, mesg) {
         if (!o) throw mesg+" is null";
@@ -203,7 +210,7 @@ function genJS(klass, env,pass) {
         },
         "return": function (node) {
             if (!ctx.noWait) {
-                buf.printf("%s.exit(%v);break;",TH,node.value);
+                buf.printf("%s.exit(%v);return;",TH,node.value);
             } else {
                 buf.printf("return %v;",node.value);
             }
@@ -286,27 +293,31 @@ function genJS(klass, env,pass) {
             var n=node.name.text;
             varAccess(n);
         },
-        exprstmt: function (node) {
+        exprstmt: function (node) {//exprStmt
             var t;
-            if (!ctx.noWait && (t=OM.match(node,noRetFiberCallTmpl)) && ctx.scope[t.T]==ST.METHOD) {
+            if (!ctx.noWait && (t=OM.match(node,noRetFiberCallTmpl)) &&
+                    ctx.scope[t.T]==ST.METHOD &&
+                    !getMethod(t.T).nowait) {
                 buf.printf(
                         "%s.enter( %s.%s%s%v );%n" +
-                        "break;%n" +/*B*/
-                        "%}case %s:%{",
+                        "%s=%s;return;%n" +/*B*/
+                        "%}case %d:%{",
                             TH, THIZ, FIBPRE, t.T, t.A,
-                            // break;
+                            FRMPC, ctx.pc,
                             ctx.pc++
                 );
-            } else if (!ctx.noWait && (t=OM.match(node,retFiberCallTmpl)) && ctx.scope[t.T]==ST.METHOD) {
+            } else if (!ctx.noWait && (t=OM.match(node,retFiberCallTmpl)) &&
+                    ctx.scope[t.T]==ST.METHOD &&
+                    !getMethod(t.T).nowait) {
                 //console.log("match: ");
                 //console.log(t);
                 buf.printf(
                         "%s.enter( %s.%s%s%v );%n" +
-                        "break;%n" +/*B*/
-                        "%}case %s:%{"+
+                        "%s=%s;return;%n" +/*B*/
+                        "%}case %d:%{"+
                         "%v%v%s.retVal();%n",
                             TH, THIZ, FIBPRE, t.T, t.A,
-                            // break;
+                            FRMPC, ctx.pc,
                             ctx.pc++,
                             t.L, t.O, TH
                 );
@@ -315,10 +326,10 @@ function genJS(klass, env,pass) {
                 if (t.S.name) {
                     buf.printf(
                             "%s.enter( %s.prototype.%s%s( %s, %v) );%n" +
-                            "break;%n" +/*B*/
-                            "%}case %s:%{",
+                            "%s=%s;return;%n" +/*B*/
+                            "%}case %d:%{",
                                 TH,   p,  FIBPRE, t.S.name.text,  THIZ,  t.S.params,
-                                // break;
+                                FRMPC, ctx.pc,
                                 ctx.pc++
                     );
                 }
@@ -356,13 +367,12 @@ function genJS(klass, env,pass) {
                 var pc=ctx.pc++;
                 var isTrue= node.cond.type=="reservedConst" && node.cond.text=="true";
                 buf.printf(
-                        "break;%n" +/*B*/
-                        "%}case %s:%{" +
+                        /*B*/
+                        "%}case %d:%{" +
                         (isTrue?"%D%D%D":"if (!(%v)) { %s=%z; break; }%n") +
                         "%f%n" +
                         "%s=%s;break;%n" +
                         "%}case %f:%{",
-                            //break
                             pc,
                             node.cond, FRMPC, brkpos,
                             enterV({closestBrk:brkpos}, node.loop),
@@ -383,8 +393,8 @@ function genJS(klass, env,pass) {
                     var pc=ctx.pc++;
                     buf.printf(
                             "%s=%s(%v,%s);%n"+
-                            "break;%n"+/*B*/
-                            "%}case %s:%{" +
+                            /*B*/
+                            "%}case %d:%{" +
                             "if (!(%s.next())) { %s=%z; break; }%n" +
                             "%f%n" +
                             "%v%n" +
@@ -418,15 +428,14 @@ function genJS(klass, env,pass) {
                     var pc=ctx.pc++;
                     buf.printf(
                             "%v;%n"+
-                            "break;%n"+/*B*/
-                            "%}case %s:%{" +
+                            /*B*/
+                            "%}case %d:%{" +
                             "if (!(%v)) { %s=%z; break; }%n" +
                             "%v%n" +
                             "%v;%n" +
                             "%s=%s;break;%n" +
                             "%}case %f:%{",
                                 node.inFor.init ,
-                                // break;
                                 pc,
                                 node.inFor.cond, FRMPC, brkpos,
                                 node.loop,
@@ -467,19 +476,17 @@ function genJS(klass, env,pass) {
                     buf.printf(
                             "if (!(%v)) { %s=%z; break; }%n" +
                             "%v%n" +
-                            "%s=%z;%n" +
-                            "break;%n" +
+                            "%s=%z;break;%n" +
                             "%}case %f:%{" +
                             "%v%n" +
-                            "break;%n"     +/*B*/
+                            /*B*/
                             "%}case %f:%{"   ,
                                 node.cond, FRMPC, elpos,
                                 node.then,
                                 FRMPC, fipos,
-                                // break;
                                 function () { buf.print(elpos.put(ctx.pc++)); },
                                 node._else,
-                                // break;
+
                                 function () { buf.print(fipos.put(ctx.pc++)); }
                     );
 
@@ -487,11 +494,11 @@ function genJS(klass, env,pass) {
                     buf.printf(
                             "if (!(%v)) { %s=%z; break; }%n" +
                             "%v%n" +
-                            "break;%n" +/*B*/
+                            /*B*/
                             "%}case %f:%{",
                                 node.cond, FRMPC, fipos,
                                 node.then,
-                                //break;
+
                                 function () { buf.print(fipos.put(ctx.pc++)); }
                     );
                 }
@@ -618,10 +625,10 @@ function genJS(klass, env,pass) {
                  "var %s=0;%n"+
                  "%z%n"+
                  "return function (%s) {%{"+
-                   "switch (%s++) {%{"+
+                   "switch (%s) {%{"+
                       "%}case 0:%{"+
                       "%f" +
-                      "%s.exit(%s);%n"+
+                      "%s.exit(%s);return;%n"+
                    "%}};%n"+
                  "%}};%n"+
                "%}},%n",

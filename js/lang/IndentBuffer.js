@@ -5,7 +5,13 @@ IndentBuffer=function () {
 		//console.log(fmt+ " -- "+arguments[0]+" --- "+arguments.length);
 		var ai=0;
 		function shiftArg() {
-			ai++;return args[ai];
+			ai++;
+			var res=args[ai];
+			if (res==null) {
+			    console.log(arguments);
+			    throw (ai+"th null param: fmt="+fmt);
+			}
+			return res;
 		}
 		function nc(val, msg) {
 		    if(val==null) throw msg;
@@ -24,6 +30,11 @@ IndentBuffer=function () {
 				else if (str.text) str=str.text;
 				$.buf+=str;
 				i++;
+			} else if (fstr=="d") {
+                var n=shiftArg();
+                if (typeof n!="number") throw (n+" is not a number: fmt="+fmt);
+                $.buf+=n;
+                i++;
 			} else if (fstr=="n") {
 				$.ln();
 				i++;
@@ -50,19 +61,18 @@ IndentBuffer=function () {
                     $.buf+=place.val;
                     return;
                 }
-                if (!place.src) {
-                    place.gen=("GENERETID"+Math.random()+"DITERENEG").replace(/\W/g,"");
+                if (!place.gen) {
+                    /*place.gen=("GENERETID"+Math.random()+"DITERENEG").replace(/\W/g,"");
                     place.reg=new RegExp(place.gen,"g");
-                    place.src=place.gen;
+                    //place.src=place.gen;
                     place.put=function (val) {
                         this.val=val;
                         $.buf=$.buf.replace(this.reg, val);
                         return val;
-                    };
-                    $.buf+=place.gen;
-                } else {
-                    $.buf+=place.src;
+                    };*/
+                    $.lazy(place);
                 }
+                $.buf+=place.gen;
                 i++;
 			} else if (fstr=="j") {
                 var sp_node=shiftArg();
@@ -93,8 +103,18 @@ IndentBuffer=function () {
 	};
 	$.printf=$;
 	$.buf="";
-	$.lazy=function () {
-	    return {put: function () {} };
+	$.lazy=function (place) {
+	    if (!place) place={};
+	    place.gen=("GENERETID"+Math.random()+"DITERENEG").replace(/\W/g,"");
+        place.reg=new RegExp(place.gen,"g");
+        //place.src=place.gen;
+        place.put=function (val) {
+            this.val=val;
+            $.buf=$.buf.replace(this.reg, val);
+            return val;
+        };
+        return place;
+        //return {put: function () {} };
 	};
 	$.ln=function () {
 		$.buf+="\n"+$.indentBuf;

@@ -89,7 +89,8 @@ TonyuLang=function () {
                  "undefined": true,
                  "usethread": true,
                  "constructor": true,
-                 ifwait:true
+                 ifwait:true,
+                 nowait:true
     };
     var num=tk(/^[0-9\.]+/).ret(function (n) {
         n.type="number";
@@ -281,8 +282,9 @@ TonyuLang=function () {
     var varDecl=g("varDecl").ands(symbol, tk("=").and(expr).ret(retF(1)).opt() ).ret("name","value");
     var varsDecl= g("varsDecl").ands(tk("var"), varDecl.sep1(tk(","),true), tk(";") ).ret(null ,"decls");
     g("funcDeclHead").ands(
+            tk("nowait").opt(),
             tk("function").or(tk("fiber")).or(tk("constructor")).or(tk("\\")).opt(),
-            symbol.or(tk("new")) ,"paramDecls").ret("ftype","name","params");
+            symbol.or(tk("new")) ,"paramDecls").ret("nowait","ftype","name","params");
     var funcDecl=g("funcDecl").ands("funcDeclHead","compound").ret("head","body");
     var nativeDecl=g("nativeDecl").ands(tk("native"),symbol,tk(";")).ret(null, "name");
     var ifwait=g("ifWait").ands(tk("ifwait"),"stmt",elseP.opt()).ret(null, "then","_else");
