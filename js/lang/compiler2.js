@@ -1,6 +1,6 @@
 Tonyu.Compiler=function () {
 // TonyuソースファイルをJavascriptに変換する
-var TH="_thread",THIZ="_this", FIBPRE="fiber$", FRMPC="__pc", LASTPOS="$LASTPOS";
+var TH="_thread",THIZ="_this", FIBPRE="fiber$", FRMPC="__pc", LASTPOS="$LASTPOS",CNTV="__cnt",CNTC=100;
 var GET_THIS="this.isTonyuObject?this:'not_a_tonyu_object'";
 var ITER="Tonyu.iterator";
 var ScopeTypes={FIELD:"field", METHOD:"method", NATIVE:"native",
@@ -625,11 +625,13 @@ function genJS(klass, env,pass) {
                  "var %s=0;%n"+
                  "%z%n"+
                  "return function (%s) {%{"+
-                   "switch (%s) {%{"+
-                      "%}case 0:%{"+
-                      "%f" +
-                      "%s.exit(%s);return;%n"+
-                   "%}};%n"+
+                   "for(var %s=%d ; %s--;) {%{"+
+                     "switch (%s) {%{"+
+                        "%}case 0:%{"+
+                        "%f" +
+                        "%s.exit(%s);return;%n"+
+                     "%}}%n"+
+                   "%}}%n"+
                  "%}};%n"+
                "%}},%n",
 
@@ -638,6 +640,7 @@ function genJS(klass, env,pass) {
                    FRMPC,
                    locals,
                    TH,
+                   CNTV, CNTC, CNTV,
                         FRMPC,
                         // case 0:
                       fbody,

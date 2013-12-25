@@ -1,5 +1,5 @@
 Tonyu=function () {
-    var preemptionTime=60;
+    var preemptionTime=10;
     function thread() {
         var fb={enter:enter, exit:exit, steps:steps, step:step, isAlive:isAlive,  suspend:suspend,retVal:retVal};
         var frame=null;
@@ -26,7 +26,9 @@ Tonyu=function () {
             return retVal;
         }
         function steps() {
-            cnt=preemptionTime;
+            //var lim=new Date().getTime()+preemptionTime;
+            cnt=60;
+            //while (new Date().getTime()<lim) {
             while (cnt-->0) {
                 step();
             }
