@@ -1,4 +1,5 @@
 $(function () {
+    sh.cd("/Tonyu/Projects/");
     $("#export").click(function () {
         var t=FS.exportDir( $("#base").val() );
         $("#text").val(JSON.stringify(t));

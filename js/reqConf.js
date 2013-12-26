@@ -129,7 +129,7 @@ var reqConf={
                 deps: ["FS"]
             },
             "fs/export": {
-                deps: ["FS"]
+                deps: ["Shell","FS"]
             },
             "ide/selProject": {
                 deps: ["fs/ROM", "FS","Wiki"]
