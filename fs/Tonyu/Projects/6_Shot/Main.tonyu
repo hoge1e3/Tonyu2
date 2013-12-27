@@ -1,0 +1,6 @@
+// 実行 → Mainを実行
+
+// $ で始まる変数はグローバル変数です．他のクラスからも参照できます．
+$player=new Player;
+new Chaser{x:20,y:20,p:5};
+new Chaser{x:300,y:250,p:5};

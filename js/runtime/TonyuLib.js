@@ -1,12 +1,14 @@
 Tonyu=function () {
     var preemptionTime=60;
     function thread() {
-        var fb={enter:enter, exit:exit, steps:steps, step:step, isAlive:isAlive,  suspend:suspend,retVal:retVal};
+        var fb={enter:enter, exit:exit, steps:steps, step:step, isAlive:isAlive,
+                suspend:suspend,retVal:retVal, kill:kill};
         var frame=null;
+        var isAlive=true;
         var cnt=0;
         var retVal;
         function isAlive() {
-            return frame!=null;
+            return frame!=null && isAlive;
         }
         function suspend() {
             cnt=0;
@@ -33,6 +35,9 @@ Tonyu=function () {
                 step();
             }
         }
+        function kill() {
+            isAlive=false;
+        }
         return fb;
     }
     function threadGroup() {
@@ -48,6 +53,10 @@ Tonyu=function () {
             return th;
         }
         function steps() {
+            for (var i=threads.length-1; i>=0 ;i--) {
+                if (threads[i].isAlive()) continue;
+                threads.splice(i,1);
+            }
             threads.forEach(function (th){
                 th.steps();
             });

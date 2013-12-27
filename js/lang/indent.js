@@ -6,9 +6,9 @@ function fixIndent(str, indentStr) {
         var node=TonyuLang.parse(str);
         var v=Visitor({
             token: function (node) {
+                var r=pos2RC(str, node.pos);
+                if (!linfo[r.row]) linfo[r.row]="";
                 if (incdec[node.text]) {
-                    var r=pos2RC(str, node.pos);
-                    if (!linfo[r.row]) linfo[r.row]="";
                     if (incdec[node.text]) linfo[r.row]+=node.text;
                 }
             }
@@ -34,7 +34,7 @@ function fixIndent(str, indentStr) {
         for (var i=0 ; i<len ;i++) {
             var c=str.substring(i,i+1);
             if (incdec[c]) {
-                if (!linfo[r.row]) linfo[r.row]=0;
+                if (!linfo[r.row]) linfo[r.row]="";
                 if(incdec[c]) linfo[r.row]+=incdec[c];
             } else if (c=="\n") {
                 r.row++;
@@ -49,15 +49,16 @@ function fixIndent(str, indentStr) {
     var curDepth=0;
     var row=0;
     lines.forEach(function (line) {
-        line=line.replace(/^\s*/,"");
-        if (!linfo[row]) linfo[row]="";
-        linfo[row].match(/^(\}*)/);
-        var closes=RegExp.$1.length;
-        linfo[row].match(/(\{*)$/);
-        var opens=RegExp.$1.length;
-        curDepth-=closes;
-        line=indStr()+line;
-        curDepth+=opens;
+        if (linfo[row]!=null) {
+            line=line.replace(/^\s*/,"");
+            linfo[row].match(/^(\}*)/);
+            var closes=RegExp.$1.length;
+            linfo[row].match(/(\{*)$/);
+            var opens=RegExp.$1.length;
+            curDepth-=closes;
+            line=indStr()+line;
+            curDepth+=opens;
+        }
         res+=line+"\n";
         row++;
     });

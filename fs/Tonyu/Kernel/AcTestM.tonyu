@@ -1,14 +1,16 @@
 extends Actor;
 new AcTest{x:10, y:100, vx:5, vy:0, p:0};
 new AcTest{x:320, y:100, vx:-5, vy:0, p:10};
+new AcTest(50,150,3);
 
+/*
 watchHit(AcTest,AcTest,\(a,b) {
-    if (a.x>b.x) {
-        a.vx=5; 
-        b.vx=-5;
-    } else {
-        a.vx=-5; 
-        b.vx=5;
-    }
-    print("Hit!");
-});
+if (a.x>b.x) {
+a.vx=5; 
+b.vx=-5;
+} else {
+a.vx=-5; 
+b.vx=5;
+}
+print("Hit!");
+});*/

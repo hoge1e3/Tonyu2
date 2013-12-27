@@ -4,15 +4,20 @@ native Tonyu;
 native Key;
 native console;
 
-\new(p) {
+\new(x,y,p) {
     if (Tonyu.runMode) {
         var thg=Tonyu.currentProject.currentThreadGroup;
         if (thg) _th=thg.addObj(this);
     }
-    if (p) Tonyu.extend(this, p);
+    if (typeof x=="object") Tonyu.extend(this, x);
+    else if (typeof x=="number") {
+        this.x=x;
+        this.y=y;
+        this.p=p;
+    }
 }
 
-\print(c) {
+nowait \print(c) {
     console.log(c);
 }
 \update() {
@@ -20,34 +25,51 @@ native console;
         _thread.suspend();
     }
 }
-\getkey(k) {
+nowait \getkey(k) {
     return Key.getkey(k);
 }
-\crashTo(t) {
+nowait \crashTo(t) {
     return hitTo(t);
 }
-\hitTo(t) {
-    if (_sprite && t._sprite) {
+nowait \allCrash(t) {
+    var res=[];
+    if (!_sprite) return res;
+    Sprites.sprites.forEach(\(s) {
+        //print (s.owner instanceof t);
+        if (s.owner!=this && 
+        s.owner instanceof t && 
+        s.crashTo(_sprite)) {
+            res.push(s.owner);    
+        }
+    });
+    return res;
+}
+nowait \hitTo(t) {
+    if (!_sprite) return false;
+    if (typeof t=="function") {
+        return allCrash(t)[0];
+    }
+    if (t._sprite) {
         return _sprite.crashTo(t._sprite);
     }
     return false;
 }
-\watchHit(typeA,typeB,onHit) {
+nowait \watchHit(typeA,typeB,onHit) {
     Sprites.watchHit(typeA , typeB, \(a,b) {
         onHit.apply(this,[a,b]);
     });
 }
-\currentThreadGroup() {
+nowait \currentThreadGroup() {
     return Tonyu.currentProject.currentThreadGroup;
 }
-\die() {
+nowait \die() {
     if (_th) {
         _th.kill();
     }
     hide();
     isDead=true;
 }
-\hide() {
+nowait \hide() {
     Sprites.remove(_sprite);
     _sprite=null;
 }

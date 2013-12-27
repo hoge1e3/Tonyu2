@@ -581,7 +581,13 @@ function genJS(klass, env,pass) {
             }
         },
         token: function (node) {
-            buf.printf("%s",node.text);
+            if (node.text=="typeof") {
+                buf.printf("%s ",node.text);
+            } else if (node.text=="instanceof") {
+                buf.printf(" %s ",node.text);
+            } else {
+                buf.printf("%s",node.text);
+            }
         }
     });
     //v.debug=debug;

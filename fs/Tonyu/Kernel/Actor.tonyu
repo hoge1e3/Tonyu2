@@ -2,8 +2,8 @@ extends BaseActor;
 native Sprites;
 native Tonyu;
 
-\new(p) {
-    super(p);
+\new(x,y,p) {
+    super(x,y,p);
     if (Tonyu.runMode) initSprite();
 }
 \initSprite() {
@@ -15,7 +15,9 @@ native Tonyu;
 
 \update() {
     super.update();
-    _sprite.x=x;
-    _sprite.y=y;
-    _sprite.p=p;
+    if (_sprite) {
+        _sprite.x=x;
+        _sprite.y=y;
+        _sprite.p=p;
+    }
 }
