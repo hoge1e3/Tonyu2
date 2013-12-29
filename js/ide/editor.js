@@ -1,7 +1,11 @@
 requirejs(["fs/ROM","ace", "Util", "Tonyu", "FS", "FileList", "FileMenu",
-                         "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project","ImageList","Sprites"],
+           "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project","ImageList","Sprites",
+           "copySample","Shell"
+          ],
 function (rom,ace, Util, Tonyu, FS, FileList, FileMenu,
-        showErrorPos, fixIndent, Wiki, Tonyu_Project,ImageList,Sprites) {
+          showErrorPos, fixIndent, Wiki, Tonyu_Project,ImageList,Sprites,
+          copySample,sh
+          ) {
 
 $(function () {
     ImageList([
@@ -214,8 +218,8 @@ $(function () {
     d=function () {
         Tonyu.currentProject.dumpJS.apply(this,arguments);
     };
-    var w=Wiki($("#wikiViewArea"), FS.get("/Tonyu/doc/"));
-    w.show("projectIndex");
+    //var w=Wiki($("#wikiViewArea"), FS.get("/Tonyu/doc/"));
+    //w.show("projectIndex");
 
     function loadDesktopEnv() {
         var d=curProjectDir.rel(".desktop");
@@ -232,7 +236,18 @@ $(function () {
         var d=curProjectDir.rel(".desktop");
         d.obj(desktopEnv);
     }
-
+    $("#restore").click(restore);
+    function restore() {
+        var n=curProjectDir.name();
+        if (!copySample.available(curProjectDir)) {
+            return alert("このプロジェクトは初期状態に戻せません");
+        };
+        if (confirm(curProjectDir+" を初期状態に戻しますか？")) {
+            sh.rm(curProjectDir,{r:1});
+            copySample(n);
+            ls();
+        }
+    }
     /*$("#newFile").click(function () {
     var name=prompt("ファイル名を入力してください","");
     name=fixName(name);

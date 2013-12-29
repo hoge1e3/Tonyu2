@@ -1,0 +1,12 @@
+x=200;
+y=200;
+while (true) { // [!=Tonyu1] 無限ループはwhile(1)よりwhile(true)が推奨されます
+    // getkey(キーの名前) で，キーの押した状態が取得できます．
+    // 0: 押されていない  1：押されたばかり  2以上：押しっぱなし
+    // [!=Tonyu1] 引数には従来通り数値も使えますが，文字列が推奨されます
+    if (getkey("up")) y-=8;
+    if (getkey("down")) y+=8;
+    if (getkey("left")) x-=8;
+    if (getkey("right")) x+=8;
+    update();
+}

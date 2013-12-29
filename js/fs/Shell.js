@@ -21,9 +21,12 @@ define(["FS","Util"],function (FS,Util) {
         return Shell.cwd.ls();
     };
     Shell.cp=function (from ,to ,options) {
+        if (!options) options={};
+        if (options.v) {
+            console.log("cp", from ,to);
+        }
         var f=resolve(from);
         var t=resolve(to);
-        if (!options) options={};
         if (!f.exists()) throw f+": No such file or dir.";
         if (f.isDir() && t.isDir()) {
             f.recursive(function (src) {
@@ -38,6 +41,21 @@ define(["FS","Util"],function (FS,Util) {
             });
         } else {
             throw "notimpl";
+        }
+    };
+    Shell.rm=function (file, options) {
+        if (!options) options={};
+        file=resolve(file);
+        if (file.isDir() && options.r) {
+            var dir=file;
+            dir.each(function (f) {
+                if (f.exists()) {
+                    Shell.rm(f, options);
+                }
+            });
+            dir.rm();
+        } else {
+            file.rm();
         }
     };
     sh=Shell;

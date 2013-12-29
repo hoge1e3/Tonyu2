@@ -1,0 +1,38 @@
+while (y>0) {
+    y-=8;
+    // c=crashTo(クラス名) は，そのクラスのオブジェクトのどれかと
+    // 衝突しているかを判定します．
+    // [!=Tonyu1] 従来のcrashToではクラス名は指定できませんでした
+    c=crashTo(Chaser);
+    // どのCheseオブジェクトとも衝突していない 
+    //      -> c==undefined
+    // 1つ以上のChaseオブジェクトと衝突している 
+    //      -> c==衝突しているChaseオブジェクトのうちどれか1つ
+    if (c) {
+        c.die();
+        die();
+    }
+    update();
+}
+// [!=Tonyu1] 処理の最後で消滅させたいときはdie(); を書きます．
+die();
+
+/* 衝突しているすべてのオブジェクトに対して処理を行うには，
+次の書き方もあります.
+
+for (var c in allCrash(Chaser)) {
+  c.die();
+  die();
+}
+*/
+
+
+/*
+[!=Tonyu1] 従来の衝突判定の書き方は，準備中です．
+for (t in $chars) {
+  if (t is Chaser && crashTo(t)) {
+     
+  }
+}
+
+*/

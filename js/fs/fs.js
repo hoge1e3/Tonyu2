@@ -76,6 +76,9 @@ FS=function () {
             putDirInfo(path ,dinfo);
         }
     }
+    FS.orderByName=function (a,b) {
+        return (a>b ? 1 : (a<b ? -1 : 0));
+    };
     FS.importDir=function (exported) {
         var base=FS.get(exported.base);
         if (!exported.confirm) base.mkdir();
@@ -139,21 +142,22 @@ FS=function () {
                     else fun(f);
                 });
             };
-            dir.ls=function () {
+            dir.ls=function (ord) {
                 var dinfo=getDirInfo(path);
                 var res=[];
                 for (var i in dinfo) {
                     res.push(i);
                 }
+                if (typeof ord=="function" && res.sort) res.sort(ord);
                 return res;
             };
             dir.isDir=function () {return true;};
             dir.rel=function (relPath){
                 return FS.get(path+relPath);
             };
-            dir.rm=function () {
+            dir.rm=function (ord) {
                 if (!dir.exists()) throw path+": No such dir.";
-                var lis=dir.ls();
+                var lis=dir.ls(ord);
                 if (lis.length>0) throw path+": Directory not empty";
                 lcs(path, null);
                 if (parent!=null) {

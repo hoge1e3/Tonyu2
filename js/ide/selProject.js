@@ -1,10 +1,13 @@
+define(["Shell","FS","copySample"],function (sh, FS,copySample) {
 $(function () {
+    copySample();
     var home=FS.get("/Tonyu/");
     var projects=home.rel("Projects/");
+    sh.cd(projects);
     var curDir=projects;
     function ls() {
         $("#prjItemList").empty();
-        curDir.ls().forEach(function (name) {
+        curDir.ls(FS.orderByName).forEach(function (name) {
             var f=curDir.rel(name);
             $("#fileItem").tmpl({name: name, href:"project.html?dir="+f.path()}).appendTo("#prjItemList");
         });
@@ -20,4 +23,5 @@ $(function () {
     ls();
     var w=Wiki($("#wikiViewArea"), FS.get("/Tonyu/doc/"));
     w.show("index");
+});
 });

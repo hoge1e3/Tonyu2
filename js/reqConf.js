@@ -139,6 +139,7 @@ var reqConf={
             }
         },
         "paths": {
+            copySample: "ide/copySample",
             "Shell": "fs/Shell",
             "ide/wikiEditor": "ide/wikiEditor",
             TextEditor: "ide/TextEditor",
