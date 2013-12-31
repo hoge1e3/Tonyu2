@@ -36,6 +36,12 @@ Tonyu.Project=function (dir, kernelDir) {
             for (var n in env.classes) dumpn(n);
         }
     };
+    TPR.stop=function () {
+        if (TPR.currentThreadGroup) TPR.currentThreadGroup.kill();
+        /*Sprites.clear();
+        var cv=$("canvas")[0];
+        Sprites.draw(cv);*/
+    };
     TPR.run=function (mainClassName) {
         Tonyu.runMode=false;
         env.classes={};

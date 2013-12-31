@@ -8,6 +8,8 @@ function (rom,ace, Util, Tonyu, FS, FileList, FileMenu,
           ) {
 
 $(function () {
+    copySample();
+
     ImageList([
         {url: "images/base.png", pwidth:32, pheight:32},
         {url: "images/Sample.png"},
@@ -33,6 +35,19 @@ $(function () {
             run();
         }
     }]);
+    $("#prog").bind("keydown","F9",run);
+    $(document).bind("keydown","F9",run);
+    prog.commands.addCommands([{
+        name: "stop",
+        bindKey: {win: "F2", mac: "F2"},
+        exec: function(editor, line) {
+            stop();
+        }
+    }]);
+    $("#prog").bind("keydown","F2",stop);
+    $(document).bind("keydown","F2",stop);
+
+
     var closedMsg="←左のリストからファイルを選択してください．\nファイルがない場合はメニューの「ファイル」→「新規」を選んでください";
     prog.setValue(closedMsg);
     prog.setReadOnly(true);
@@ -42,6 +57,8 @@ $(function () {
     $("body")[0].spellcheck=false;
     var dir=Util.getQueryString("dir", "/Tonyu/Projects/SandBox/");
     var curProjectDir=FS.get(dir);
+    sh.cd(curProjectDir);
+
     var fl=FileList($("#fileItemList"),{
         topDir: curProjectDir,
         on:{
@@ -108,6 +125,11 @@ $(function () {
                             })));
             i++;
         });
+        $("#runMenu").append(
+                $("<li>").append(
+                        $("<a>").attr("href","#").text("停止(F2)").click(function () {
+                            stop();
+                        })));
         saveDesktopEnv();
     }
     function dispName(f) {
@@ -124,8 +146,6 @@ $(function () {
         alert("名前は，半角英数字とアンダースコア(_)のみが使えます．先頭は英大文字にしてください．");
         return null;
     }
-    $("#prog").bind("keydown","F9",run);
-    $(document).bind("keydown","F9",run);
     function displayMode(mode, next) {
         // mode == run     compile_error     runtime_error    edit
         switch(mode) {
@@ -153,6 +173,9 @@ $(function () {
         } else {
             $("#prog").attr("rows",rowsOnEdit);
         }*/
+    }
+    function stop() {
+        curPrj.stop();
     }
     function run(name) {
         if (typeof name!="string") {
@@ -248,51 +271,6 @@ $(function () {
             ls();
         }
     }
-    /*$("#newFile").click(function () {
-    var name=prompt("ファイル名を入力してください","");
-    name=fixName(name);
-    if (!name) return;
-    var f=fl.curDir().rel(name);
-    if (!f.exists()) {
-        f.text("");
-        ls();
-        open(f);
-    }
-});*/
-    /*$("#mvFile").click(function () {
-        if (!curFile) return;
-        var fix;
-        var name=curFile.name();
-        if (curFile.endsWith(EXT)) {
-            fix=true;
-            name=curFile.truncExt(EXT);
-        } else {
-            fix=false;
-            name=curFile.name();
-        }
-        var newName=prompt("新しいファイル名を入力してください",name);
-        if (fix) newName=fixName(newName);
-        if (!newName) return;
-        var nf=fl.curDir().rel(newName);
-        if (nf.exists()) {
-            alert(newName+" は存在します");
-            return;
-        }
-        var t=curFile.text();
-        curFile.rm();
-        curFile=nf;
-        nf.text(t);
-        ls();
-        open(curFile);
-    });
-    $("#rmFile").click(function () {
-        if (!curFile) return;
-        if (!confirm(curFile.name()+"を削除しますか？")) return;
-        curFile.rm();
-        ls();
-        curFile=null;
-        close();
-    });*/
 
 });
 });

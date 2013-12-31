@@ -3,6 +3,7 @@ native Sprites;
 native Tonyu;
 native Key;
 native console;
+native Math;
 
 \new(x,y,p) {
     if (Tonyu.runMode) {
@@ -72,4 +73,10 @@ nowait \die() {
 nowait \hide() {
     Sprites.remove(_sprite);
     _sprite=null;
+}
+nowait \rnd(r) {
+    if (typeof r=="number") {
+        return Math.floor(Math.random()*r);
+    }
+    return Math.random();
 }
