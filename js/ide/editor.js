@@ -271,6 +271,7 @@ $(function () {
             ls();
         }
     }
+    if (typeof progBar=="object") {progBar.clear();}
 
 });
 });
