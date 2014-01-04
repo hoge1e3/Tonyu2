@@ -6,7 +6,7 @@ define(["PatternParser","Util"], function (PP,Util) {
         resImgs.forEach(function (resImg,i) {
             console.log("loaded", resImg,i);
             var url=resImg.url;
-            if (Util.startsWith(url,"http")) url+="?" + new Date().getTime();
+            if (!Util.startsWith(url,"data")) url+="?" + new Date().getTime();
             var im=$("<img>").attr("src",url);
             im.load(function () {
                 var pw,ph;

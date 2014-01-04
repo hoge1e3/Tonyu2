@@ -210,9 +210,17 @@ function genJS(klass, env,pass) {
         },
         "return": function (node) {
             if (!ctx.noWait) {
-                buf.printf("%s.exit(%v);return;",TH,node.value);
+                if (node.value) {
+                    buf.printf("%s.exit(%v);return;",TH,node.value);
+                } else {
+                    buf.printf("%s.exit(%s);return;",TH,THIZ);
+                }
             } else {
-                buf.printf("return %v;",node.value);
+                if (node.value) {
+                    buf.printf("return %v;",node.value);
+                } else {
+                    buf.printf("return %s;",THIZ);
+                }
             }
         },
         program: function (node) {

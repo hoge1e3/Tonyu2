@@ -3,6 +3,14 @@ new AcTest{x:10, y:100, vx:5, vy:0, p:0};
 new AcTest{x:320, y:100, vx:-5, vy:0, p:10};
 new AcTest(50,150,3);
 
+fillStyle="yellow";
+for (i=0; i<300; i++) {
+    size=40;
+    text="スコア："+i;
+    x=200;
+    y=100;
+    update();
+}
 /*
 watchHit(AcTest,AcTest,\(a,b) {
 if (a.x>b.x) {

@@ -4,13 +4,22 @@
 <script src="js/lib/requireSimulator.js"></script>
 <script src="js/concat/runScript.js"></script>
 </head>
-<script type="text/tonyu" data-filename="Player.tonyu" >
+<script type="text/tonyu" data-filename="Main.tonyu" data-main="true">
+new Main2;
+x=0;
+y=100;
+p=24;
 while(x<300) {
   x++;
   update();
 }
 </script>
-<script type="text/tonyu" data-filename="Main.tonyu" data-name="true">
-new Player{x:50, y:100};
-new Player{x:30, y:150};
+<script type="text/tonyu" data-filename="Main2.tonyu">
+x=10;
+y=200;
+while(x<300) {
+  x++;
+  text=x;
+  update();
+}
 </script>

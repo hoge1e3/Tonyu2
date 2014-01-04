@@ -7,11 +7,13 @@ native Tonyu;
     if (Tonyu.runMode) initSprite();
 }
 \initSprite() {
-    if (!_sprite) {
+    /*if (!_sprite) {
         _sprite=Sprites.add{owner:this};
-    }
+    }*/
+    Sprites.addT(this);
 }
 
+/*
 \update() {
     super.update();
     if (_sprite) {
@@ -19,4 +21,4 @@ native Tonyu;
         _sprite.y=y;
         _sprite.p=p;
     }
-}
+}*/

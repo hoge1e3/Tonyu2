@@ -209,7 +209,7 @@ $(function () {
     d=function () {
         Tonyu.currentProject.dumpJS.apply(this,arguments);
     };
-    var w=Wiki($("#wikiViewArea"), FS.get("/Tonyu/doc/"));
+    var w=Wiki($("#wikiViewArea"), FS.get("/Tonyu/doc/novice/"));
     w.show("projectIndex");
 
     function loadDesktopEnv() {

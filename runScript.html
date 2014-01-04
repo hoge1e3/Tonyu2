@@ -6,12 +6,22 @@ requirejs.config(reqConf);
 requirejs(["dumpScript", "runScript"],function (){});
 </script>
 
-<script type="text/tonyu" data-filename="Main2.tonyu" data-main="true">
+<script type="text/tonyu" data-filename="Main.tonyu" data-main="true">
+new Main2;
 x=0;
 y=100;
 p=24;
 while(x<300) {
   x++;
+  update();
+}
+</script>
+<script type="text/tonyu" data-filename="Main2.tonyu">
+x=10;
+y=200;
+while(x<300) {
+  x++;
+  text=x;
   update();
 }
 </script>
