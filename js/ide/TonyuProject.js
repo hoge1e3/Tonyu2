@@ -37,17 +37,21 @@ Tonyu.Project=function (dir, kernelDir) {
         }
     };
     TPR.stop=function () {
-        if (TPR.currentThreadGroup) TPR.currentThreadGroup.kill();
+        if (Tonyu.currentThreadGroup) Tonyu.currentThreadGroup.kill();
         /*Sprites.clear();
         var cv=$("canvas")[0];
         Sprites.draw(cv);*/
     };
     TPR.run=function (mainClassName) {
+        TPR.compile();
+        TPR.boot(mainClassName);
+    };
+    TPR.compile=function () {
         Tonyu.runMode=false;
         env.classes={};
         Tonyu.currentProject=TPR;
-        if (TPR.currentThreadGroup) TPR.currentThreadGroup.kill();
-        delete TPR.currentThreadGroup;
+        if (Tonyu.currentThreadGroup) Tonyu.currentThreadGroup.kill();
+        delete Tonyu.currentThreadGroup;
         dir.each(collect);
         kernelDir.each(collect);
         function collect(f) {
@@ -77,6 +81,8 @@ Tonyu.Project=function (dir, kernelDir) {
                 throw e;
             }
         });
+    };
+    TPR.boot=function (mainClassName) {
         var thg=Tonyu.threadGroup();
         var cv=$("canvas")[0];
         var mainClass=window[mainClassName];
@@ -85,9 +91,10 @@ Tonyu.Project=function (dir, kernelDir) {
         Sprites.drawGrid=Tonyu.noviceMode;
         Tonyu.runMode=true;
         var main=new mainClass();
-        console.log("tp",Sprites);
+        //console.log("tp",Sprites);
         thg.addObj(main);
-        TPR.currentThreadGroup=thg;
+        //TPR.currentThreadGroup=
+        Tonyu.currentThreadGroup=thg;
         $LASTPOS=0;
 
         $pat_fruits=30;

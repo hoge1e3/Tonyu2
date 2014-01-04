@@ -131,6 +131,7 @@ $(function () {
                             stop();
                         })));
         saveDesktopEnv();
+        $("#exportToJsdoit").attr("href", "exportToJsdoit.html?dir="+curProjectDir.path()+"&main="+runMenuOrd[0]);
     }
     function dispName(f) {
         var name=f.name();

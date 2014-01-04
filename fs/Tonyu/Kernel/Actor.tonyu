@@ -9,7 +9,6 @@ native Tonyu;
 \initSprite() {
     if (!_sprite) {
         _sprite=Sprites.add{owner:this};
-        print(Sprites);
     }
 }
 

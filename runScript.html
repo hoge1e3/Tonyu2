@@ -1,0 +1,17 @@
+<script src="js/lib/jquery-1.7.2.js" type="text/javascript"></script>
+<script src="js/reqConf.js"></script>
+<script src="js/lib/require.js"></script>
+<script>
+requirejs.config(reqConf);
+requirejs(["dumpScript", "runScript"],function (){});
+</script>
+
+<script type="text/tonyu" data-filename="Main2.tonyu" data-main="true">
+x=0;
+y=100;
+p=24;
+while(x<300) {
+  x++;
+  update();
+}
+</script>

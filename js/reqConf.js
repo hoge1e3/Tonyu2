@@ -139,6 +139,9 @@ var reqConf={
             }
         },
         "paths": {
+            reqConf: "reqConf",
+            dumpScript: "lib/dumpScript",
+            runScript: "runtime/runScript",
             copySample: "ide/copySample",
             "Shell": "fs/Shell",
             "ide/wikiEditor": "ide/wikiEditor",

@@ -1,11 +1,13 @@
-define(["PatternParser"], function (PP) {
+define(["PatternParser","Util"], function (PP,Util) {
     function IL(resImgs, onLoad) {
         //  resImgs:[{url: , [pwidth: , pheight:]?  }]
         var resa=[];
         var cnt=resImgs.length;
         resImgs.forEach(function (resImg,i) {
             console.log("loaded", resImg,i);
-            var im=$("<img>").attr("src",resImg.url+"?" + new Date().getTime());
+            var url=resImg.url;
+            if (Util.startsWith(url,"http")) url+="?" + new Date().getTime();
+            var im=$("<img>").attr("src",url);
             im.load(function () {
                 var pw,ph;
                 if ((pw=resImg.pwidth) && (ph=resImg.pheight)) {
