@@ -1,20 +1,24 @@
 requirejs(["fs/ROM","ace", "Util", "Tonyu", "FS", "FileList", "FileMenu",
            "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project","ImageList","Sprites",
-           "copySample","Shell"
+           "copySample","Shell","ImageResEditor"
           ],
 function (rom,ace, Util, Tonyu, FS, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,ImageList,Sprites,
-          copySample,sh
+          copySample,sh, ImgResEdit
           ) {
 
 $(function () {
     copySample();
-
-    ImageList([
-        {url: "images/base.png", pwidth:32, pheight:32},
-        {url: "images/Sample.png"},
-        {url: "images/neko.png", pwidth:32, pheight:32}
-      ],Sprites.setImageList);
+    //if (!Tonyu.ide) Tonyu.ide={};
+    Tonyu.defaultResource={
+       images:[
+          {name:"$pat_base", url: "images/base.png", pwidth:32, pheight:32},
+          {name:"$pat_sample", url: "images/Sample.png"},
+          {name:"$pat_neko", url: "images/neko.png", pwidth:32, pheight:32}
+       ],
+       sounds:[]
+    };
+    ImageList(Tonyu.defaultResource.images, Sprites.setImageList);
 
     function onResize() {
         var h=$(window).height()-$("#navBar").height();
@@ -272,6 +276,9 @@ $(function () {
             ls();
         }
     }
+    $("#imgResEditor").click(function () {
+        ImgResEdit(curPrj);
+    });
     if (typeof progBar=="object") {progBar.clear();}
 
 });

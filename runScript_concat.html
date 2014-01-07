@@ -4,22 +4,25 @@
 <script src="js/lib/requireSimulator.js"></script>
 <script src="js/concat/runScript.js"></script>
 </head>
-<script type="text/tonyu" data-filename="Main.tonyu" data-main="true">
-new Main2;
+<script type='text/tonyu' data-filename='.desktop' >{"runMenuOrd":["Main","Main2"]}</script>
+
+<script type='text/tonyu' data-filename='res.json' >{"images":[{"name":"$pat_base","url":"images/base.png","pwidth":32,"pheight":32},{"name":"$pat_racket","url":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAAAeCAYAAADKFzdqAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAJPSURBVHhe7ZRNUsJAEIWz8GDuvJSLXMZ7cALXVskVLPe6wOmGFzudJjRhJIy8r+oVZH6gZ/qrdDtCKkKhSFUoFKkKhSJVUaG6rmNcPNGauXiiNXNpFQp1JB4//7bdjuLnPZP5/nGUyXyjLBbKIk+aYN21A4aaJMG6U/HYOUj08fmpiaTyjOYOEn2/PGgiqVpFK7cHyUZ4fv3SyGPX9YfPdWPr0trKc1T/qXgwDpGAlWqz2ZzcD5HKyCDUINVhTbS/FbRyHCIbYWhYr/dQUoSS31o5wlAXUsaic8zFI2N4E1mhBCsUpPLomJEJ8UJJov2toJXLAc6JMGqa3kP5ciP8pVB4IwEvU9/LmzreD6EgVSSTJNrfClq5HOCslD2RUDJ+C5kIpTUG55iJR8bsGwrBWFYoK9UgkxHq/Sn+/1bQyuUA6ZT1k4bpXfQ6vnbC+rTGfaOz8cgY5PGxMmWEmkTmSkSmuxSqfLhmScpF2rG1UuqbCIX6cIZEPBjPyDS3PyNTtL8VtHIcIhttmNyDb5ht4lop5xkJhdoOtWfjsXOQ6JhMEs9ozsXLpGsaRSu3B8nk3oWSQKJIJolnMl8CkbxMOt8oWrk/TCpo1qhp+L5eRKZBKB07XyaJJ1ozF0+0Zi6topVHBzod2VdyJ0KRHHpz0YXmgqahceunhkwSsgy9uehCc0HjLmtezahQUo9KRaGujd5cdKG5/L4ZbkmovVSX1UOWcaFQ/zdkGRTqSMgyeHOkKhSKVIVCkapQKFIVCkWqQqFIVSgUqQqFIhXZ7X4AqAmKKZI31x0AAAAASUVORK5CYII="}],"sounds":[]}</script>
+
+<script type='text/tonyu' data-filename='Main.tonyu'  data-main='true'>new Main2;
 x=0;
 y=100;
-p=24;
+p=$pat_racket;
 while(x<300) {
-  x++;
-  update();
-}
-</script>
-<script type="text/tonyu" data-filename="Main2.tonyu">
-x=10;
+    x++;
+    update();
+}</script>
+
+<script type='text/tonyu' data-filename='Main2.tonyu' >x=10;
 y=200;
+p=$pat_racket+1;
 while(x<300) {
-  x++;
-  text=x;
-  update();
-}
+    x++;
+    text=x;
+    update();
+}</script>
 </script>

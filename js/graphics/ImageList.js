@@ -27,12 +27,16 @@ define(["PatternParser","Util"], function (PP,Util) {
                     var p=new PP(this);
                     resa[i]=p.parse();
                 }
+                resa[i].name=resImg.name;
                 cnt--;
                 if (cnt==0) {
                     var res=[];
+                    var names={};
                     resa.forEach(function (a) {
+                        names[a.name]=res.length;
                         res=res.concat(a);
                     });
+                    res.names=names;
                     onLoad(res);
                 }
             });

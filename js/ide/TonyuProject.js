@@ -1,4 +1,6 @@
-Tonyu.Project=function (dir, kernelDir) {
+define(["Tonyu", "Tonyu.Compiler", "TError", "FS", "Tonyu.TraceTbl","ImageList", "Sprites", "Key"],
+        function (Tonyu, Tonyu_Compiler, TError, FS, Tonyu_TraceTbl, ImageList, Sprites, Key) {
+return Tonyu.Project=function (dir, kernelDir) {
     var TPR={};
     var traceTbl=Tonyu.TraceTbl();
     var env={classes:{}, traceTbl:traceTbl, options:{compiler:{}} };
@@ -82,7 +84,29 @@ Tonyu.Project=function (dir, kernelDir) {
             }
         });
     };
+    TPR.getResource=function () {
+        var resFile=dir.rel("res.json");
+        if (resFile.exists()) return resFile.obj();
+        return Tonyu.defaultResource;
+    };
+    TPR.setResource=function (rsrc) {
+        var resFile=dir.rel("res.json");
+        resFile.obj(rsrc);
+    };
+    TPR.loadResource=function (next) {
+        var r=TPR.getResource();
+        ImageList( r.images, function (r) {
+            Sprites.setImageList(r);
+            for (var i in r.names) {
+                Tonyu.setGlobal(i, r.names[i]);
+            }
+            if (next) next();
+        });
+    };
     TPR.boot=function (mainClassName) {
+        TPR.loadResource(function () {ld(mainClassName);});
+    };
+    function ld(mainClassName){
         var thg=Tonyu.threadGroup();
         var cv=$("canvas")[0];
         var mainClass=window[mainClassName];
@@ -97,9 +121,9 @@ Tonyu.Project=function (dir, kernelDir) {
         Tonyu.currentThreadGroup=thg;
         $LASTPOS=0;
 
-        $pat_fruits=30;
-        $screenWidth=cv.width;
-        $screenHeight=cv.height;
+        Tonyu.setGlobal("$pat_fruits",30);
+        Tonyu.setGlobal("$screenWidth",cv.width);
+        Tonyu.setGlobal("$screenHeight",cv.height);
         thg.run(33, function () {
             Key.update();
             $screenWidth=cv.width;
@@ -111,3 +135,4 @@ Tonyu.Project=function (dir, kernelDir) {
     return TPR;
 };
 if (typeof getReq=="function") getReq.exports("Tonyu.Project");
+});

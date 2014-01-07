@@ -90,10 +90,10 @@ var reqConf={
             "FS": {
                 "exports": "FS"
             },
-            "Tonyu.Project": {
+            /*"Tonyu.Project": {
                 "deps": ["Tonyu", "Tonyu.Compiler", "TError", "FS", "Sprites", "Key", "Tonyu.TraceTbl"],
                 "exports": "Tonyu.Project"
-            },
+            },*/
             "showErrorPos": {
                 "exports": "showErrorPos"
             },
@@ -139,6 +139,8 @@ var reqConf={
             }
         },
         "paths": {
+            UI:"lib/UI",
+            ImageResEditor: "ide/ImageResEditor",
             reqConf: "reqConf",
             dumpScript: "lib/dumpScript",
             runScript: "runtime/runScript",

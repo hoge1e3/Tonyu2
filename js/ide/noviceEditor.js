@@ -4,7 +4,11 @@ function (rom,ace, Util, Tonyu, FS, FileList, FileMenu,
         showErrorPos, fixIndent, Wiki, Tonyu_Project,ImageList,Sprites) {
 $(function () {
     Tonyu.noviceMode=true;
-    ImageList([{url: "images/neko.png", pwidth:32, pheight:32}], Sprites.setImageList);
+    Tonyu.defaultResource={
+            images:[{url: "images/neko.png", pwidth:32, pheight:32}]
+    };
+
+    ImageList(Tonyu.defaultResource.images, Sprites.setImageList);
     function onResize() {
         var h=$(window).height()-$("#navBar").height();
         h-=20;

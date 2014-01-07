@@ -138,5 +138,13 @@ Tonyu=function () {
         }
         return dst;
     }
-    return Tonyu={thread:thread, threadGroup:threadGroup, klass:klass, bless:bless, extend:extend};
+    var globals=window;
+    function setGlobal(n,v) {
+        globals[n]=v;
+    }
+    function getGlobal(n) {
+        return globals[n];
+    }
+    return Tonyu={thread:thread, threadGroup:threadGroup, klass:klass, bless:bless, extend:extend,
+            globals:globals, setGlobal:setGlobal, getGlobal:getGlobal};
 }();
