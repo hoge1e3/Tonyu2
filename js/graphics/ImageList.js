@@ -1,4 +1,4 @@
-define(["PatternParser","Util"], function (PP,Util) {
+define(["PatternParser","Util","WebSite"], function (PP,Util,WebSite) {
     function IL(resImgs, onLoad) {
         //  resImgs:[{url: , [pwidth: , pheight:]?  }]
         var resa=[];
@@ -6,6 +6,7 @@ define(["PatternParser","Util"], function (PP,Util) {
         resImgs.forEach(function (resImg,i) {
             console.log("loaded", resImg,i);
             var url=resImg.url;
+            if (WebSite.urlAliases[url]) url=WebSite.urlAliases[url];
             if (!Util.startsWith(url,"data")) url+="?" + new Date().getTime();
             var im=$("<img>").attr("src",url);
             im.load(function () {

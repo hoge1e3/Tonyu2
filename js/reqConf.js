@@ -139,6 +139,7 @@ var reqConf={
             }
         },
         "paths": {
+            WebSite: "runtime/WebSite",
             UI:"lib/UI",
             ImageResEditor: "ide/ImageResEditor",
             reqConf: "reqConf",

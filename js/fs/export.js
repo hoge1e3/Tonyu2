@@ -2,7 +2,7 @@ $(function () {
     sh.cd("/Tonyu/Projects/");
     $("#export").click(function () {
         var t=FS.exportDir( $("#base").val() );
-        $("#text").val(JSON.stringify(t));
+        $("#text").val(JSON.stringify(t,null,2));
     });
     $("#exportSrv").click(function () {
         $.ajax({
