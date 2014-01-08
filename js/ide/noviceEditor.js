@@ -1,6 +1,6 @@
-requirejs(["fs/ROM","ace", "Util", "Tonyu", "FS", "FileList", "FileMenu",
+requirejs(["fs/ROMk","fs/ROMds","ace", "Util", "Tonyu", "FS", "FileList", "FileMenu",
                          "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project","ImageList","Sprites"],
-function (rom,ace, Util, Tonyu, FS, FileList, FileMenu,
+function (romk, romds,ace, Util, Tonyu, FS, FileList, FileMenu,
         showErrorPos, fixIndent, Wiki, Tonyu_Project,ImageList,Sprites) {
 $(function () {
     Tonyu.noviceMode=true;

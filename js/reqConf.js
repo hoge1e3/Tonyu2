@@ -100,15 +100,10 @@ var reqConf={
             "TError": {
                 "exports": "TError"
             },
-            /*"ide/noviceEditor": {
-                "deps": ["fs/ROM","ace", "Util", "Tonyu", "FS", "FileList", "FileMenu",
-                         "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project","ImageList"]
+            "fs/ROMk": {
+                "deps": ["FS"]
             },
-            "ide/editor": {
-                "deps": ["fs/ROM","ace", "Util", "Tonyu", "FS", "FileList", "FileMenu",
-                         "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project"]
-            },*/
-            "fs/ROM": {
+            "fs/ROMds": {
                 "deps": ["FS"]
             },
             "FileList": {
@@ -132,10 +127,10 @@ var reqConf={
                 deps: ["Shell","FS"]
             },
             "ide/selProject": {
-                deps: ["fs/ROM", "FS","Wiki"]
+                deps: ["fs/ROMk","fs/ROMds", "FS","Wiki"]
             },
             "ide/noviceSelProject": {
-                deps: ["fs/ROM", "FS","Wiki"]
+                deps: ["fs/ROMk","fs/ROMds", "FS","Wiki"]
             }
         },
         "paths": {
@@ -179,7 +174,8 @@ var reqConf={
             "showErrorPos": "ide/ErrorPos",
             "TError": "ide/TError",
             "ide/editor": "ide/editor",
-            "fs/ROM": "fs/ROM",
+            "fs/ROMk": "fs/ROMk",
+            "fs/ROMds": "fs/ROMds",
             "FileList": "fs/FileList",
             "HttpHelper": "help/HttpHelper",
             "Wiki": "help/wiki",

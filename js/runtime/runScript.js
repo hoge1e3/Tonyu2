@@ -1,5 +1,5 @@
-define(["fs/ROM","FS","Tonyu.Project","Shell","Sprites","ImageList"],
-        function (rom,FS,Tonyu_Project, sh, Sprites, ImageList) {
+define(["fs/ROMk","FS","Tonyu.Project","Shell","Sprites","ImageList"],
+        function (romk,FS,Tonyu_Project, sh, Sprites, ImageList) {
     $(function () {
         Tonyu.defaultResource={
                 images:[
@@ -27,7 +27,13 @@ define(["fs/ROM","FS","Tonyu.Project","Shell","Sprites","ImageList"],
                 if (fn) {
                     var f=curProjectDir.rel(fn);
                     //console.log(f);
-                    f.text(s.innerHTML);
+                    var w=$(s).data("wrap");
+                    if (w) {
+                        w=parseInt(w);
+                        f.text(unwrap(s.innerHTML, w));
+                    } else {
+                        f.text(s.innerHTML);
+                    }
                     if ($(s).data("main")) {
                         name=f.truncExt(".tonyu");
                     }
@@ -38,6 +44,17 @@ define(["fs/ROM","FS","Tonyu.Project","Shell","Sprites","ImageList"],
         var curPrj=Tonyu_Project(curProjectDir, kernelDir);
         curPrj.env.options.compiler.defaultSuperClass="Actor";
         curPrj.run(name);
-
+        function unwrap(str, cols) {
+            var lines=str.split("\n");
+            var buf="";
+            lines.forEach(function (line) {
+                if (line.length>cols) {
+                    buf+=line.substring(0,cols);
+                } else {
+                    buf+=line+"\n";
+                }
+            });
+            return buf;
+        }
     });
 });
