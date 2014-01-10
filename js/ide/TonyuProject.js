@@ -39,10 +39,15 @@ return Tonyu.Project=function (dir, kernelDir) {
         }
     };
     TPR.stop=function () {
-        if (Tonyu.currentThreadGroup) Tonyu.currentThreadGroup.kill();
+        var cur=TPR.runningThread; //Tonyu.getGlobal("$currentThreadGroup");
+        if (cur) cur.kill();
         /*Sprites.clear();
         var cv=$("canvas")[0];
         Sprites.draw(cv);*/
+    };
+    TPR.rawRun=function (mainClassName) {
+        TPR.compile();
+        TPR.rawBoot(mainClassName);
     };
     TPR.run=function (mainClassName) {
         TPR.compile();
@@ -52,8 +57,8 @@ return Tonyu.Project=function (dir, kernelDir) {
         Tonyu.runMode=false;
         env.classes={};
         Tonyu.currentProject=TPR;
-        if (Tonyu.currentThreadGroup) Tonyu.currentThreadGroup.kill();
-        delete Tonyu.currentThreadGroup;
+        /*if (Tonyu.currentThreadGroup) Tonyu.currentThreadGroup.kill();
+        delete Tonyu.currentThreadGroup;*/
         dir.each(collect);
         kernelDir.each(collect);
         function collect(f) {
@@ -103,13 +108,23 @@ return Tonyu.Project=function (dir, kernelDir) {
             if (next) next();
         });
     };
+    TPR.rawBoot=function (mainClassName) {
+        var thg=Tonyu.threadGroup();
+        var mainClass=Tonyu.getClass(mainClassName);// window[mainClassName];
+        if (!mainClass) throw TError( mainClassName+" というクラスはありません", "不明" ,0);
+        //Tonyu.runMode=true;
+        var main=new mainClass();
+        TPR.runningThread=thg.addObj(main);
+        $LASTPOS=0;
+        thg.run(0);
+    };
     TPR.boot=function (mainClassName) {
         TPR.loadResource(function () {ld(mainClassName);});
     };
     function ld(mainClassName){
         var thg=Tonyu.threadGroup();
         var cv=$("canvas")[0];
-        var mainClass=window[mainClassName];
+        var mainClass=Tonyu.getClass(mainClassName);// window[mainClassName];
         if (!mainClass) throw TError( mainClassName+" というクラスはありません", "不明" ,0);
         Sprites.clear();
         Sprites.drawGrid=Tonyu.noviceMode;
@@ -118,7 +133,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         //console.log("tp",Sprites);
         thg.addObj(main);
         //TPR.currentThreadGroup=
-        Tonyu.currentThreadGroup=thg;
+        Tonyu.setGlobal("$currentThreadGroup",thg);
         $LASTPOS=0;
 
         Tonyu.setGlobal("$pat_fruits",30);

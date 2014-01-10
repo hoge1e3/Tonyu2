@@ -183,6 +183,7 @@ $(function () {
         curPrj.stop();
     }
     function run(name) {
+        curPrj.stop();
         if (typeof name!="string") {
             if (runMenuOrd.length==0) {
                 alert("ファイルを作成してください");
@@ -194,7 +195,9 @@ $(function () {
         save();
         displayMode("run");
         try {
-            curPrj.run(name);
+            Tonyu.setGlobal("$mainClassName", name);
+            curPrj.rawRun("Boot");
+            //curPrj.run(name);
         } catch(e){
             if (e.isTError) {
                 showErrorPos($("#errorPos"),e);

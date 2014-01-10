@@ -268,7 +268,8 @@ define(["fs/ROMk","FS","Tonyu.Project","Shell","Sprites","ImageList"],
         var kernelDir=FS.get("/Tonyu/Kernel/");
         var curPrj=Tonyu_Project(curProjectDir, kernelDir);
         curPrj.env.options.compiler.defaultSuperClass="Actor";
-        curPrj.run(name);
+        Tonyu.setGlobal("$mainClassName", name);
+        curPrj.rawRun("Boot");
         function unwrap(str, cols) {
             var lines=str.split("\n");
             var buf="";
@@ -326,10 +327,15 @@ return Tonyu.Project=function (dir, kernelDir) {
         }
     };
     TPR.stop=function () {
-        if (Tonyu.currentThreadGroup) Tonyu.currentThreadGroup.kill();
+        var cur=TPR.runningThread; //Tonyu.getGlobal("$currentThreadGroup");
+        if (cur) cur.kill();
         /*Sprites.clear();
         var cv=$("canvas")[0];
         Sprites.draw(cv);*/
+    };
+    TPR.rawRun=function (mainClassName) {
+        TPR.compile();
+        TPR.rawBoot(mainClassName);
     };
     TPR.run=function (mainClassName) {
         TPR.compile();
@@ -339,8 +345,8 @@ return Tonyu.Project=function (dir, kernelDir) {
         Tonyu.runMode=false;
         env.classes={};
         Tonyu.currentProject=TPR;
-        if (Tonyu.currentThreadGroup) Tonyu.currentThreadGroup.kill();
-        delete Tonyu.currentThreadGroup;
+        /*if (Tonyu.currentThreadGroup) Tonyu.currentThreadGroup.kill();
+        delete Tonyu.currentThreadGroup;*/
         dir.each(collect);
         kernelDir.each(collect);
         function collect(f) {
@@ -390,13 +396,23 @@ return Tonyu.Project=function (dir, kernelDir) {
             if (next) next();
         });
     };
+    TPR.rawBoot=function (mainClassName) {
+        var thg=Tonyu.threadGroup();
+        var mainClass=Tonyu.getClass(mainClassName);// window[mainClassName];
+        if (!mainClass) throw TError( mainClassName+" というクラスはありません", "不明" ,0);
+        //Tonyu.runMode=true;
+        var main=new mainClass();
+        TPR.runningThread=thg.addObj(main);
+        $LASTPOS=0;
+        thg.run(0);
+    };
     TPR.boot=function (mainClassName) {
         TPR.loadResource(function () {ld(mainClassName);});
     };
     function ld(mainClassName){
         var thg=Tonyu.threadGroup();
         var cv=$("canvas")[0];
-        var mainClass=window[mainClassName];
+        var mainClass=Tonyu.getClass(mainClassName);// window[mainClassName];
         if (!mainClass) throw TError( mainClassName+" というクラスはありません", "不明" ,0);
         Sprites.clear();
         Sprites.drawGrid=Tonyu.noviceMode;
@@ -405,7 +421,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         //console.log("tp",Sprites);
         thg.addObj(main);
         //TPR.currentThreadGroup=
-        Tonyu.currentThreadGroup=thg;
+        Tonyu.setGlobal("$currentThreadGroup",thg);
         $LASTPOS=0;
 
         Tonyu.setGlobal("$pat_fruits",30);
@@ -844,14 +860,18 @@ requirejs.setName('Tonyu');
 Tonyu=function () {
     var preemptionTime=60;
     function thread() {
-        var fb={enter:enter, exit:exit, steps:steps, step:step, isAlive:isAlive,
-                suspend:suspend,retVal:retVal, kill:kill};
+        var fb={enter:enter, exit:exit, steps:steps, step:step, isAlive:isAlive, isWaiting:isWaiting,
+                suspend:suspend,retVal:retVal, kill:kill, waitFor: waitFor};
         var frame=null;
-        var isAlive=true;
+        var _isAlive=true;
         var cnt=0;
         var retVal;
+        var _isWaiting=false;
         function isAlive() {
-            return frame!=null && isAlive;
+            return frame!=null && _isAlive;
+        }
+        function isWaiting() {
+            return _isWaiting;
         }
         function suspend() {
             cnt=0;
@@ -867,26 +887,77 @@ Tonyu=function () {
             //if (frame) frame.res=res;
             retVal=res;
         }
+        function waitFor(j) {
+            _isWaiting=true;
+            if (j && j.addTerminatedListener) j.addTerminatedListener(function () {
+                _isWaiting=false;
+                if (fb.group) fb.group.notifyResume();
+                //fb.group.add(fb);
+            });
+        }
+
         function retVal() {
             return retVal;
         }
         function steps() {
+            var sv=Tonyu.currentThread;
+            Tonyu.currentThread=fb;
             //var lim=new Date().getTime()+preemptionTime;
             cnt=preemptionTime;
             //while (new Date().getTime()<lim) {
             while (cnt-->0) {
                 step();
             }
+            Tonyu.currentThread=sv;
         }
         function kill() {
-            isAlive=false;
+            _isAlive=false;
         }
         return fb;
     }
+    function timeout(t) {
+        var res={};
+        var ls=[];
+        res.addTerminatedListener=function (l) {
+            ls.push(l);
+        };
+        setTimeout(function () {
+            ls.forEach(function (l) {
+                l();
+            });
+        },t);
+        return res;
+    }
+    function asyncResult() {
+        var res=[];
+        var ls=[];
+        var hasRes=false;
+        res.addTerminatedListener=function (l) {
+            if (hasRes) l();
+            else ls.push(l);
+        };
+        res.receiver=function () {
+            hasRes=true;
+            for (var i=0; i<arguments.length; i++) {
+                res[i]=arguments[i];
+            }
+            res.notify();
+        };
+        res.notify=function () {
+            ls.forEach(function (l) {
+                l();
+            });
+        };
+        return res;
+    }
     function threadGroup() {
         var threads=[];
-        var isAlive=true;
+        var waits=[];
+        var _isAlive=true;
+        var thg;
+        var _isWaiting=false;
         function add(thread) {
+            thread.group=thg;
             threads.push(thread);
         }
         function addObj(obj) {
@@ -900,29 +971,30 @@ Tonyu=function () {
                 if (threads[i].isAlive()) continue;
                 threads.splice(i,1);
             }
+            _isWaiting=true;
             threads.forEach(function (th){
+                if (th.isWaiting()) return;
+                _isWaiting=false;
                 th.steps();
             });
         }
         function kill() {
-            isAlive=false;
+            _isAlive=false;
         }
-        function run(wait, onStepsEnd) {
-            if (!isAlive) return;
-            if(!wait) wait=0;
+        var _interval=0, _onStepsEnd;
+        function run(interval, onStepsEnd) {
+            if (interval!=null) _interval=interval;
+            if (onStepsEnd!=null) _onStepsEnd=onStepsEnd;
+            if (!_isAlive) return;
             try {
-                //console.log("step..");
                 steps();
-                if (onStepsEnd) onStepsEnd();
-                setTimeout(function () {
-                    run(wait,onStepsEnd);
-                },wait);
+                if (_onStepsEnd) _onStepsEnd();
+                if (!_isWaiting) {
+                    setTimeout(run,_interval);
+                } else {
+                    //console.log("all wait!");
+                }
             } catch (e) {
-                /*var tb=TraceTbl.decode($LASTPOS);
-                if (tb) {
-                    tb.mesg=e;
-                    e=tb;
-                }*/
                 if (Tonyu.onRuntimeError) {
                     Tonyu.onRuntimeError(e);
                 } else {
@@ -930,7 +1002,13 @@ Tonyu=function () {
                 }
             }
         }
-        return {add:add, addObj:addObj,  steps:steps, run:run, kill:kill};
+        function notifyResume() {
+            if (_isWaiting) {
+                //console.log("resume!");
+                run();
+            }
+        }
+        return thg={add:add, addObj:addObj,  steps:steps, run:run, kill:kill, notifyResume: notifyResume};
     }
     function defunct(f) {
         if (f===Function) {
@@ -981,15 +1059,21 @@ Tonyu=function () {
         }
         return dst;
     }
-    var globals=window;
+    //alert("init");
+    var globals={};
+    var classes={};
     function setGlobal(n,v) {
         globals[n]=v;
     }
     function getGlobal(n) {
         return globals[n];
     }
+    function getClass(n) {
+        return classes[n];
+    }
     return Tonyu={thread:thread, threadGroup:threadGroup, klass:klass, bless:bless, extend:extend,
-            globals:globals, setGlobal:setGlobal, getGlobal:getGlobal};
+            globals:globals, classes:classes, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
+            timeout:timeout,asyncResult:asyncResult};
 }();
 
 requirejs.setName('TextRect');
@@ -1173,8 +1257,24 @@ requirejs.setName('fs/ROMk');
 */
 if (!localStorage.norom) {
 FS.mountROM(
-        {"base":"/Tonyu/Kernel/","data":{"":"{\"NObjTest.tonyu\":{\"lastUpdate\":1387528337834},\".desktop\":{\"lastUpdate\":1388824770872},\"NObjTest2.tonyu\":{\"lastUpdate\":1388112059908},\"NoviceActor.tonyu\":{\"lastUpdate\":1388823357617},\"BaseActor.tonyu\":{\"lastUpdate\":1388824668670},\"Actor.tonyu\":{\"lastUpdate\":1388823273967},\"AcTest.tonyu\":{\"lastUpdate\":1388823696678},\"AcTestM.tonyu\":{\"lastUpdate\":1388823687788}}","NObjTest.tonyu":"native console;\nnative alert;\n\n\\move(p) {\n    x+=p.vx;\n    y+=p.vy;\n}\n\nx=100;\ny=100;\nvy=0;vx=0;\nt=new NObjTest2{x:200, y: 50};\nwatchHit(NObjTest, NObjTest2, onH);\nwhile (true) {\n    if (getkey(\"left\")) vx=-2;\n    if (getkey(\"Right\")) vx=2;\n    if (getkey(\"up\")==1) vy=-2;\n    y+=vy;\n    vy+=0.1;\n    move{vx,vy};\n    // console.log(x+\",\"+y);\n    go(x,y);\n    sleep();\n    /*if (crashTo(t)) {\n    t.hide();\n    }*/\n}\n\\onH(a,b) {\n    b.hide();\n    a.vy=5;\n}",".desktop":"{\"runMenuOrd\":[\"AcTestM\",\"NObjTest\",\"NObjTest2\",\"AcTest\",\"NoviceActor\",\"BaseActor\",\"Actor\"]}","NObjTest2.tonyu":"change(10);\ngo(x,y);\n","NoviceActor.tonyu":"extends BaseActor;\nnative Sprites;\nnative Tonyu;\n\n\\sleep(n) {\n    if(!n) n=1;\n    for(n;n>0;n--) update();\n}\n\\initSprite() {\n    if (!_sprite) _sprite=Sprites.add{owner:this};\n}\n\\say(text,size) {\n    if (!size) size=15;\n    initSprite();\n    _sprite.fukidashi={text:text, size:size, c:30};\n}\n\\sprite(x,y,p) {\n    go(x,y,p);\n}\n\\show(x,y,p) {\n    go(x,y,p);\n}\n\\go(x,y,p) {\n    initSprite();\n    _sprite.x=x;\n    _sprite.y=y;\n    if (p!=null) _sprite.p=p;\n    //update();\n}\n\\change(p) {\n    initSprite();\n    _sprite.p=p;\n}\n","BaseActor.tonyu":"extends null;\nnative Sprites;\nnative Tonyu;\nnative Key;\nnative console;\nnative Math;\nnative fukidashi;\nnative TextRect;\n\n\\new(x,y,p) {\n    if (Tonyu.runMode) {\n        var thg=currentThreadGroup();\n        if (thg) _th=thg.addObj(this);\n    }\n    if (typeof x==\"object\") Tonyu.extend(this, x);\n    else if (typeof x==\"number\") {\n        this.x=x;\n        this.y=y;\n        this.p=p;\n    }\n}\n\nnowait \\print(c) {\n    console.log(c);\n}\n\\update() {\n    ifwait {\n        _thread.suspend();\n    }\n}\nnowait \\getkey(k) {\n    return Key.getkey(k);\n}\nnowait \\hitTo(t) {\n    return crashTo(t);\n}\nnowait \\allCrash(t) {\n    var res=[];\n    var sp;\n    if (_sprite) sp=_sprite; else sp=this;\n    Sprites.sprites.forEach(\\(s) {\n        if (s!==this && \n        s instanceof t && \n        s.crashTo(sp)) {\n            res.push(s);    \n        }\n    });\n    return res;\n}\nnowait \\crashTo(t) {\n    if (!t) return false;\n    if (typeof t==\"function\") {\n        return allCrash(t)[0];\n    }\n    if (_sprite && t._sprite) {\n        return _sprite.crashTo(t._sprite);\n    }\n    //print([this, t]);\n    return (x!=null && y!=null && width && height &&\n    t && !t._isDead && t.x!=null && t.y!=null && t.width && t.height &&\n    Math.abs(x-t.x)*2<width+t.width &&\n    Math.abs(y-t.y)*2<height+t.height);\n}\nnowait \\watchHit(typeA,typeB,onHit) {\n    Sprites.watchHit(typeA , typeB, \\(a,b) {\n        onHit.apply(this,[a,b]);\n    });\n}\nnowait \\currentThreadGroup() {\n    return Tonyu.currentThreadGroup;\n}\nnowait \\die() {\n    if (_th) {\n        _th.kill();\n    }\n    hide();\n    _isDead=true;\n}\nnowait \\hide() {\n    if (_sprite) {\n        Sprites.remove(_sprite);\n        _sprite=null;\n    } else {\n        Sprites.remove(this);\n    }\n}\nnowait \\rnd(r) {\n    if (typeof r==\"number\") {\n        return Math.floor(Math.random()*r);\n    }\n    return Math.random();\n}\nnowait \\detectShape() {\n    if (typeof p!=\"number\") {\n        if (text) return;\n        p=0;\n    }\n    p=Math.floor(p);\n    pImg=Sprites.getImageList()[p];\n    if (!pImg) return;\n    width=pImg.width;\n    height=pImg.height;\n}\nnowait \\isDead() {\n    return _isDead;\n}\nnowait \\draw(ctx) {\n    if (x==null || y==null) return;\n    detectShape();\n    if (pImg) {\n        ctx.drawImage(\n        pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,\n        x-width/2, y-height/2, width, height);\n    } else if (text) {\n        if (!size) size=15;\n        if (!align) align=\"center\";\n        if (!fillStyle) fillStyle=\"white\";\n        ctx.fillStyle=fillStyle;\n        TextRect.draw(ctx, text, x, y, size, align , \"fill\");\n    }\n    if (_fukidashi) {\n        if (_fukidashi.c>0) {\n            _fukidashi.c--;\n            ctx.fillStyle=\"white\";\n            ctx.strokeStyle=\"black\";\n            fukidashi ( ctx , _fukidashi.text, \n            x, y-height/2-10, _fukidashi.size);\n        }\n    }\n}","Actor.tonyu":"extends BaseActor;\nnative Sprites;\nnative Tonyu;\n\n\\new(x,y,p) {\n    super(x,y,p);\n    if (Tonyu.runMode) initSprite();\n}\n\\initSprite() {\n    /*if (!_sprite) {\n        _sprite=Sprites.add{owner:this};\n    }*/\n    Sprites.addT(this);\n}\n\n/*\n\\update() {\n    super.update();\n    if (_sprite) {\n        _sprite.x=x;\n        _sprite.y=y;\n        _sprite.p=p;\n    }\n}*/","AcTest.tonyu":"extends Actor;\n\nif (!vx) vx=0;\nif (!vy) vy=0;\nwhile (true) {\n    x+=vx;\n    y+=vy;\n    c=crashTo(AcTest);\n    if (c) {\n        if (x>c.x) {\n            vx=5; \n            c.vx=-5;\n        } else {\n            vx=-5; \n            c.vx=5;\n        }\n        print(\"Hit!!\");\n    }\n    update();\n}","AcTestM.tonyu":"extends Actor;\nnew AcTest{x:10, y:100, vx:5, vy:0, p:0};\nnew AcTest{x:320, y:100, vx:-5, vy:0, p:10};\nnew AcTest(50,150,3);\n\nfillStyle=\"yellow\";\nfor (i=0; i<300; i++) {\n    size=40;\n    text=\"スコア：\"+i;\n    x=200;\n    y=100;\n    update();\n}\n/*\nwatchHit(AcTest,AcTest,\\(a,b) {\nif (a.x>b.x) {\na.vx=5; \nb.vx=-5;\n} else {\na.vx=-5; \nb.vx=5;\n}\nprint(\"Hit!\");\n});*/"}}
-        );
+   //---- paste start
+        {
+            "base": "/Tonyu/Kernel/",
+            "data": {
+              "": "{\"NObjTest.tonyu\":{\"lastUpdate\":1387528337834},\".desktop\":{\"lastUpdate\":1389322242054},\"NObjTest2.tonyu\":{\"lastUpdate\":1389262967101},\"NoviceActor.tonyu\":{\"lastUpdate\":1389262971304},\"BaseActor.tonyu\":{\"lastUpdate\":1389272494341},\"Actor.tonyu\":{\"lastUpdate\":1389272429739},\"AcTest.tonyu\":{\"lastUpdate\":1389262980476},\"AcTestM.tonyu\":{\"lastUpdate\":1389263815817},\"Boot.tonyu\":{\"lastUpdate\":1389273731180}}",
+              "NObjTest.tonyu": "native console;\nnative alert;\n\n\\move(p) {\n    x+=p.vx;\n    y+=p.vy;\n}\n\nx=100;\ny=100;\nvy=0;vx=0;\nt=new NObjTest2{x:200, y: 50};\nwatchHit(NObjTest, NObjTest2, onH);\nwhile (true) {\n    if (getkey(\"left\")) vx=-2;\n    if (getkey(\"Right\")) vx=2;\n    if (getkey(\"up\")==1) vy=-2;\n    y+=vy;\n    vy+=0.1;\n    move{vx,vy};\n    // console.log(x+\",\"+y);\n    go(x,y);\n    sleep();\n    /*if (crashTo(t)) {\n    t.hide();\n    }*/\n}\n\\onH(a,b) {\n    b.hide();\n    a.vy=5;\n}",
+              ".desktop": "{\"runMenuOrd\":[\"AcTestM\",\"NObjTest\",\"NObjTest2\",\"AcTest\",\"NoviceActor\",\"BaseActor\",\"Actor\",\"Boot\"]}",
+              "NObjTest2.tonyu": "change(10);\ngo(x,y);\n",
+              "NoviceActor.tonyu": "extends BaseActor;\nnative Sprites;\nnative Tonyu;\n\n\\sleep(n) {\n    if(!n) n=1;\n    for(n;n>0;n--) update();\n}\n\\initSprite() {\n    if (!_sprite) _sprite=Sprites.add{owner:this};\n}\n\\say(text,size) {\n    if (!size) size=15;\n    initSprite();\n    _sprite.fukidashi={text:text, size:size, c:30};\n}\n\\sprite(x,y,p) {\n    go(x,y,p);\n}\n\\show(x,y,p) {\n    go(x,y,p);\n}\n\\go(x,y,p) {\n    initSprite();\n    _sprite.x=x;\n    _sprite.y=y;\n    if (p!=null) _sprite.p=p;\n    //update();\n}\n\\change(p) {\n    initSprite();\n    _sprite.p=p;\n}\n",
+              "BaseActor.tonyu": "extends null;\nnative Sprites;\nnative Tonyu;\nnative Key;\nnative console;\nnative Math;\nnative fukidashi;\nnative TextRect;\n\n\\new(x,y,p) {\n    if (Tonyu.runMode) {\n        var thg=currentThreadGroup();\n        if (thg) _th=thg.addObj(this);\n    }\n    if (typeof x==\"object\") Tonyu.extend(this, x);\n    else if (typeof x==\"number\") {\n        this.x=x;\n        this.y=y;\n        this.p=p;\n    }\n}\n\nnowait \\print(c) {\n    console.log(c);\n}\n\\update() {\n    ifwait {\n        _thread.suspend();\n    }\n}\nnowait \\getkey(k) {\n    return Key.getkey(k);\n}\nnowait \\hitTo(t) {\n    return crashTo(t);\n}\nnowait \\allCrash(t) {\n    var res=[];\n    var sp;\n    if (_sprite) sp=_sprite; else sp=this;\n    Sprites.sprites.forEach(\\(s) {\n        if (s!==this && \n        s instanceof t && \n        s.crashTo(sp)) {\n            res.push(s);    \n        }\n    });\n    return res;\n}\nnowait \\crashTo(t) {\n    if (!t) return false;\n    if (typeof t==\"function\") {\n        return allCrash(t)[0];\n    }\n    if (_sprite && t._sprite) {\n        return _sprite.crashTo(t._sprite);\n    }\n    //print([this, t]);\n    return (x!=null && y!=null && width && height &&\n    t && !t._isDead && t.x!=null && t.y!=null && t.width && t.height &&\n    Math.abs(x-t.x)*2<width+t.width &&\n    Math.abs(y-t.y)*2<height+t.height);\n}\nnowait \\watchHit(typeA,typeB,onHit) {\n    Sprites.watchHit(typeA , typeB, \\(a,b) {\n        onHit.apply(this,[a,b]);\n    });\n}\nnowait \\currentThreadGroup() {\n    return $currentThreadGroup; //Tonyu.currentThread.group;\n}\nnowait \\die() {\n    if (_th) {\n        _th.kill();\n    }\n    hide();\n    _isDead=true;\n}\nnowait \\hide() {\n    if (_sprite) {\n        Sprites.remove(_sprite);\n        _sprite=null;\n    } else {\n        Sprites.remove(this);\n    }\n}\nnowait \\rnd(r) {\n    if (typeof r==\"number\") {\n        return Math.floor(Math.random()*r);\n    }\n    return Math.random();\n}\nnowait \\detectShape() {\n    if (typeof p!=\"number\") {\n        if (text) return;\n        p=0;\n    }\n    p=Math.floor(p);\n    pImg=Sprites.getImageList()[p];\n    if (!pImg) return;\n    width=pImg.width;\n    height=pImg.height;\n}\n\\waitFor(f) {\n    ifwait {\n        _thread.waitFor(f);\n    }\n    update();\n}\nnowait \\isDead() {\n    return _isDead;\n}\nnowait \\draw(ctx) {\n    if (x==null || y==null) return;\n    detectShape();\n    if (pImg) {\n        ctx.drawImage(\n        pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,\n        x-width/2, y-height/2, width, height);\n    } else if (text) {\n        if (!size) size=15;\n        if (!align) align=\"center\";\n        if (!fillStyle) fillStyle=\"white\";\n        ctx.fillStyle=fillStyle;\n        TextRect.draw(ctx, text, x, y, size, align , \"fill\");\n    }\n    if (_fukidashi) {\n        if (_fukidashi.c>0) {\n            _fukidashi.c--;\n            ctx.fillStyle=\"white\";\n            ctx.strokeStyle=\"black\";\n            fukidashi ( ctx , _fukidashi.text, \n            x, y-height/2-10, _fukidashi.size);\n        }\n    }\n}",
+              "Actor.tonyu": "extends BaseActor;\nnative Sprites;\nnative Tonyu;\n\n\\new(x,y,p) {\n    super(x,y,p);\n    if (Tonyu.runMode) initSprite();\n}\n\\initSprite() {\n    /*if (!_sprite) {\n        _sprite=Sprites.add{owner:this};\n    }*/\n    Sprites.addT(this);\n}\n\n/*\n\\update() {\n    super.update();\n    if (_sprite) {\n        _sprite.x=x;\n        _sprite.y=y;\n        _sprite.p=p;\n    }\n}*/",
+              "AcTest.tonyu": "extends Actor;\n\nif (!vx) vx=0;\nif (!vy) vy=0;\nwhile (true) {\n    x+=vx;\n    y+=vy;\n    c=crashTo(AcTest);\n    if (c) {\n        if (x>c.x) {\n            vx=5; \n            c.vx=-5;\n        } else {\n            vx=-5; \n            c.vx=5;\n        }\n        print(\"Hit!!\");\n    }\n    update();\n}",
+              "AcTestM.tonyu": "extends Actor;\nnative Tonyu;\nnew AcTest{x:10, y:100, vx:5, vy:0, p:0};\nnew AcTest{x:320, y:100, vx:-5, vy:0, p:10};\nnew AcTest(50,150,3);\n\nfillStyle=\"yellow\";\nfor (i=0; i<300; i++) {\n    size=40;\n    text=\"スコア：\"+i;\n    x=200;\n    y=100;\n    if (i==50) waitFor(Tonyu.timeout(1000));\n    update();\n}\n/*\nwatchHit(AcTest,AcTest,\\(a,b) {\nif (a.x>b.x) {\na.vx=5; \nb.vx=-5;\n} else {\na.vx=-5; \nb.vx=5;\n}\nprint(\"Hit!\");\n});*/",
+              "Boot.tonyu": "native Tonyu;\r\nnative $;\r\nnative TError;\r\nnative Sprites;\r\nnative $LASTPOS;\r\nnative Key;\r\nnative Date;\r\n\r\nprint (\"Loading pats..\");\r\na=Tonyu.asyncResult();\r\nTonyu.currentProject.loadResource(a.receiver);\r\nwaitFor(a);\r\nprint (\"Loading pats done.\");\r\n    \r\nthg=Tonyu.threadGroup();\r\ncv=$(\"canvas\")[0];\r\nmainClass=Tonyu.getClass($mainClassName);\r\nif (!mainClass) {\r\n    TError( $mainClassName+\" というクラスはありません\", \r\n    \"不明\" ,0).raise();\r\n}\r\nSprites.clear();\r\nSprites.drawGrid=Tonyu.noviceMode;\r\nTonyu.runMode=true;\r\n$currentThreadGroup=thg;\r\nvar main=new mainClass();\r\n//thg.addObj(main);\r\n//Tonyu.currentThreadGroup=thg;\r\n$screenWidth=cv.width;\r\n$screenHeight=cv.height;\r\n$pat_fruits=30;\r\n//Tonyu.runMode=true;\r\nwhile (true) {\r\n    ti=new Date().getTime();\r\n    thg.steps();\r\n    Key.update();\r\n    $screenWidth=cv.width;\r\n    $screenHeight=cv.height;\r\n    Sprites.draw(cv);\r\n    Sprites.checkHit();\r\n    wt=33-(new Date().getTime()-ti);\r\n    if (wt<0) wt=0;\r\n    waitFor(Tonyu.timeout(wt));\r\n}\r\n    \r\n"
+            }
+          }
+    //-----paste end
+    );
 }
 
 requirejs.setName('fukidashi');
@@ -1205,6 +1305,29 @@ function fukidashi(ctx, text, x, y, sz) {
    ctx.fillStyle=fs;
 }
 
+requirejs.setName('Util');
+Util=function () {
+
+function getQueryString(key, default_)
+{
+   if (default_==null) default_="";
+   key = key.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+   var regex = new RegExp("[\\?&]"+key+"=([^&#]*)");
+   var qs = regex.exec(window.location.href);
+   if(qs == null)
+    return default_;
+   else
+    return qs[1];
+}
+function endsWith(str,postfix) {
+    return str.substring(str.length-postfix.length)===postfix;
+}
+function startsWith(str,prefix) {
+    return str.substring(0, prefix.length)===prefix;
+}
+
+return {getQueryString:getQueryString, endsWith: endsWith, startsWith: startsWith};
+}();
 requirejs.setName('Tonyu.Iterator');
 define(["Tonyu"], function (T) {
    function IT(set, arity) {
@@ -1238,16 +1361,32 @@ define(["Tonyu"], function (T) {
 requirejs.setName('TError');
 function TError(mesg, src, pos) {
     if (typeof src=="string") {
-        return {isTError:true, mesg:mesg,src:{name:function () { return src;}},pos:pos, toString:function (){
-            return this.mesg+" at "+src+":"+this.pos;
-        }};
+        return {
+            isTError:true,
+            mesg:mesg,
+            src:{name:function () { return src;}},
+            pos:pos,
+            toString:function (){
+                return this.mesg+" at "+src+":"+this.pos;
+            },
+            raise: function () {
+                throw this;
+            }
+        };
     }
     if (typeof src.name!=="function") {
         throw "src="+src+" should be file object";
     }
-    return {isTError:true, mesg:mesg,src:src,pos:pos, toString:function (){
-        return this.mesg+" at "+this.src.name()+":"+this.pos;
-    }};
+    return {
+        isTError:true,
+        mesg:mesg,src:src,pos:pos,
+        toString:function (){
+            return this.mesg+" at "+this.src.name()+":"+this.pos;
+        },
+        raise: function () {
+            throw this;
+        }
+    };
 }
 requirejs.setName('Key');
 Key=function () {
@@ -1282,29 +1421,6 @@ $(document).keydown(function (e) {
 $(document).keyup(function (e) {
     Key.stats[e.keyCode]=0;
 });
-requirejs.setName('Util');
-Util=function () {
-
-function getQueryString(key, default_)
-{
-   if (default_==null) default_="";
-   key = key.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-   var regex = new RegExp("[\\?&]"+key+"=([^&#]*)");
-   var qs = regex.exec(window.location.href);
-   if(qs == null)
-    return default_;
-   else
-    return qs[1];
-}
-function endsWith(str,postfix) {
-    return str.substring(str.length-postfix.length)===postfix;
-}
-function startsWith(str,prefix) {
-    return str.substring(0, prefix.length)===prefix;
-}
-
-return {getQueryString:getQueryString, endsWith: endsWith, startsWith: startsWith};
-}();
 requirejs.setName('ObjectMatcher');
 ObjectMatcher=function () {
     var OM={};
@@ -1560,6 +1676,41 @@ Visitor = function (funcs) {
     };
     return $;
 };
+requirejs.setName('Tonyu.TraceTbl');
+Tonyu.TraceTbl=function () {
+    var TTB={};
+    var POSMAX=1000000;
+    var pathIdSeq=1;
+    var PATHIDMAX=10000;
+    var path2Id={}, id2Path=[];
+    TTB.add=function (file, pos){
+        var path=file.path();
+        var pathId=path2Id[path];
+        if (pathId==undefined) {
+            pathId=pathIdSeq++;
+            if (pathIdSeq>PATHIDMAX) pathIdSeq=0;
+            path2Id[path]=pathId;
+            id2Path[pathId]=path;
+        }
+        if (pos>=POSMAX) pos=POSMAX-1;
+        var id=pathId*POSMAX+pos;
+        return id;
+    };
+    TTB.decode=function (id) {
+        var pos=id%POSMAX;
+        var pathId=(id-pos)/POSMAX;
+        var path=id2Path[pathId];
+        if (path) {
+            var f=FS.get(path);
+            return TError("Trace info", f, pos);
+        } else {
+            return null;
+            //return TError("Trace info", "unknown src id="+id, pos);
+        }
+    };
+    return TTB;
+};
+if (typeof getReq=="function") getReq.exports("Tonyu.TraceTbl");
 requirejs.setName('Sprites');
 Sprites=function () {
     var sprites=[];
@@ -1706,41 +1857,6 @@ $(function () {
 });
 
 
-requirejs.setName('Tonyu.TraceTbl');
-Tonyu.TraceTbl=function () {
-    var TTB={};
-    var POSMAX=1000000;
-    var pathIdSeq=1;
-    var PATHIDMAX=10000;
-    var path2Id={}, id2Path=[];
-    TTB.add=function (file, pos){
-        var path=file.path();
-        var pathId=path2Id[path];
-        if (pathId==undefined) {
-            pathId=pathIdSeq++;
-            if (pathIdSeq>PATHIDMAX) pathIdSeq=0;
-            path2Id[path]=pathId;
-            id2Path[pathId]=path;
-        }
-        if (pos>=POSMAX) pos=POSMAX-1;
-        var id=pathId*POSMAX+pos;
-        return id;
-    };
-    TTB.decode=function (id) {
-        var pos=id%POSMAX;
-        var pathId=(id-pos)/POSMAX;
-        var path=id2Path[pathId];
-        if (path) {
-            var f=FS.get(path);
-            return TError("Trace info", f, pos);
-        } else {
-            return null;
-            //return TError("Trace info", "unknown src id="+id, pos);
-        }
-    };
-    return TTB;
-};
-if (typeof getReq=="function") getReq.exports("Tonyu.TraceTbl");
 requirejs.setName('disp');
 // オブジェクトの内容を表示する． デバッグ用
 function disp(a) {
@@ -2790,8 +2906,8 @@ TonyuLang=function () {
     var objlit_l=G("objlit").first(space,"{");
     var objlitArg=g("objlitArg").ands(objlit_l).ret("obj");
     var call=g("call").ands( argList.or(objlitArg) ).ret("args");
-    var scall=g("scall").ands( argList.or(objlitArg) ).ret("args");
-    var newExpr = g("newExpr").ands(tk("new"),symbol, call.opt()).ret(null, "name","params");
+    var scall=g("scall").ands( argList.or(objlitArg) ).ret("args");//supercall
+    var newExpr = g("newExpr").ands(tk("new"),varAccess, call.opt()).ret(null, "klass","params");
     var superExpr =g("superExpr").ands(
             tk("super"), tk(".").and(symbol).ret(retF(1)).opt() , scall).ret(
             null,                 "name",                       "params");
@@ -2958,10 +3074,11 @@ requirejs.setName('Tonyu.Compiler');
 Tonyu.Compiler=function () {
 // TonyuソースファイルをJavascriptに変換する
 var TH="_thread",THIZ="_this", FIBPRE="fiber$", FRMPC="__pc", LASTPOS="$LASTPOS",CNTV="__cnt",CNTC=100;
+var CLASS_HEAD="Tonyu.classes.", GLOBAL_HEAD="Tonyu.globals.";
 var GET_THIS="this.isTonyuObject?this:'not_a_tonyu_object'";
 var ITER="Tonyu.iterator";
 var ScopeTypes={FIELD:"field", METHOD:"method", NATIVE:"native",
-        LOCAL:"local", THVAR:"threadvar", PARAM:"param"};
+        LOCAL:"local", THVAR:"threadvar", PARAM:"param", GLOBAL:"global", CLASS:"class"};
 /*function compile(klass, env) {
     initClassDecls(klass, env );
     return genJS(klass, env);
@@ -3065,7 +3182,8 @@ function genJS(klass, env,pass) {
             }
         };
     function getClassName(klass){
-        return klass.name;
+        if (typeof klass=="string") return CLASS_HEAD+klass;
+        return CLASS_HEAD+klass.name;
     }
     //console.log(JSON.stringify( retFiberCallTmpl));
     function initTopLevelScope2(klass) {
@@ -3088,7 +3206,7 @@ function genJS(klass, env,pass) {
             s[i]=ST.NATIVE;
         }
         for (var i in env.classes) {
-            s[i]=ST.NATIVE;
+            s[i]=ST.CLASS; //ST.NATIVE;
         }
     }
     function newScope(s) {
@@ -3131,7 +3249,7 @@ function genJS(klass, env,pass) {
     }
     function varAccess(n) {
         var t=ctx.scope[n];
-        if (n.match(/^\$/)) t=ST.NATIVE;
+        if (t!=ST.NATIVE && n.match(/^\$/)) t=ST.GLOBAL; //ST.NATIVE;
         if (!t) {
             topLevelScope[n]=ST.FIELD;
             t=ST.FIELD;
@@ -3140,6 +3258,10 @@ function genJS(klass, env,pass) {
             buf.printf("%s",TH);
         } else if (t==ST.FIELD || t==ST.METHOD) {
             buf.printf("%s.%s",THIZ, n);
+        } else if (t==ST.CLASS) {
+            buf.printf("%s",getClassName(n));
+        } else if (t==ST.GLOBAL) {
+            buf.printf("%s%s",GLOBAL_HEAD, n);
         } else {
             buf.printf("%s",n);
         }
@@ -3507,9 +3629,9 @@ function genJS(klass, env,pass) {
         newExpr: function (node) {
             var p=node.params;
             if (p) {
-                buf.printf("new %v%v",node.name,p);
+                buf.printf("new %v%v",node.klass,p);
             } else {
-                buf.printf("new %v",node.name);
+                buf.printf("new %v",node.klass);
             }
         },
         scall: function (node) {
@@ -3567,9 +3689,9 @@ function genJS(klass, env,pass) {
     function genSource() {
         ctx.enter({scope:topLevelScope}, function () {
             if (klass.superClass) {
-                printf("%s=Tonyu.klass(%s,{%{", className, getClassName(klass.superClass));
+                printf("%s=Tonyu.klass(%s,{%{", getClassName(klass), getClassName(klass.superClass));
             } else {
-                printf("%s=Tonyu.klass({%{", className);
+                printf("%s=Tonyu.klass({%{", getClassName(klass));
             }
             for (var name in methods) {
                 if (debug) console.log("method1", name);

@@ -43,7 +43,8 @@ define(["fs/ROMk","FS","Tonyu.Project","Shell","Sprites","ImageList"],
         var kernelDir=FS.get("/Tonyu/Kernel/");
         var curPrj=Tonyu_Project(curProjectDir, kernelDir);
         curPrj.env.options.compiler.defaultSuperClass="Actor";
-        curPrj.run(name);
+        Tonyu.setGlobal("$mainClassName", name);
+        curPrj.rawRun("Boot");
         function unwrap(str, cols) {
             var lines=str.split("\n");
             var buf="";

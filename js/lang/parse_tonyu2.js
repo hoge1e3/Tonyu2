@@ -168,8 +168,8 @@ TonyuLang=function () {
     var objlit_l=G("objlit").first(space,"{");
     var objlitArg=g("objlitArg").ands(objlit_l).ret("obj");
     var call=g("call").ands( argList.or(objlitArg) ).ret("args");
-    var scall=g("scall").ands( argList.or(objlitArg) ).ret("args");
-    var newExpr = g("newExpr").ands(tk("new"),symbol, call.opt()).ret(null, "name","params");
+    var scall=g("scall").ands( argList.or(objlitArg) ).ret("args");//supercall
+    var newExpr = g("newExpr").ands(tk("new"),varAccess, call.opt()).ret(null, "klass","params");
     var superExpr =g("superExpr").ands(
             tk("super"), tk(".").and(symbol).ret(retF(1)).opt() , scall).ret(
             null,                 "name",                       "params");

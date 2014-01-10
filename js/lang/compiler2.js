@@ -1,10 +1,11 @@
 Tonyu.Compiler=function () {
 // TonyuソースファイルをJavascriptに変換する
 var TH="_thread",THIZ="_this", FIBPRE="fiber$", FRMPC="__pc", LASTPOS="$LASTPOS",CNTV="__cnt",CNTC=100;
+var CLASS_HEAD="Tonyu.classes.", GLOBAL_HEAD="Tonyu.globals.";
 var GET_THIS="this.isTonyuObject?this:'not_a_tonyu_object'";
 var ITER="Tonyu.iterator";
 var ScopeTypes={FIELD:"field", METHOD:"method", NATIVE:"native",
-        LOCAL:"local", THVAR:"threadvar", PARAM:"param"};
+        LOCAL:"local", THVAR:"threadvar", PARAM:"param", GLOBAL:"global", CLASS:"class"};
 /*function compile(klass, env) {
     initClassDecls(klass, env );
     return genJS(klass, env);
@@ -108,7 +109,8 @@ function genJS(klass, env,pass) {
             }
         };
     function getClassName(klass){
-        return klass.name;
+        if (typeof klass=="string") return CLASS_HEAD+klass;
+        return CLASS_HEAD+klass.name;
     }
     //console.log(JSON.stringify( retFiberCallTmpl));
     function initTopLevelScope2(klass) {
@@ -131,7 +133,7 @@ function genJS(klass, env,pass) {
             s[i]=ST.NATIVE;
         }
         for (var i in env.classes) {
-            s[i]=ST.NATIVE;
+            s[i]=ST.CLASS; //ST.NATIVE;
         }
     }
     function newScope(s) {
@@ -174,7 +176,7 @@ function genJS(klass, env,pass) {
     }
     function varAccess(n) {
         var t=ctx.scope[n];
-        if (n.match(/^\$/)) t=ST.NATIVE;
+        if (t!=ST.NATIVE && n.match(/^\$/)) t=ST.GLOBAL; //ST.NATIVE;
         if (!t) {
             topLevelScope[n]=ST.FIELD;
             t=ST.FIELD;
@@ -183,6 +185,10 @@ function genJS(klass, env,pass) {
             buf.printf("%s",TH);
         } else if (t==ST.FIELD || t==ST.METHOD) {
             buf.printf("%s.%s",THIZ, n);
+        } else if (t==ST.CLASS) {
+            buf.printf("%s",getClassName(n));
+        } else if (t==ST.GLOBAL) {
+            buf.printf("%s%s",GLOBAL_HEAD, n);
         } else {
             buf.printf("%s",n);
         }
@@ -550,9 +556,9 @@ function genJS(klass, env,pass) {
         newExpr: function (node) {
             var p=node.params;
             if (p) {
-                buf.printf("new %v%v",node.name,p);
+                buf.printf("new %v%v",node.klass,p);
             } else {
-                buf.printf("new %v",node.name);
+                buf.printf("new %v",node.klass);
             }
         },
         scall: function (node) {
@@ -610,9 +616,9 @@ function genJS(klass, env,pass) {
     function genSource() {
         ctx.enter({scope:topLevelScope}, function () {
             if (klass.superClass) {
-                printf("%s=Tonyu.klass(%s,{%{", className, getClassName(klass.superClass));
+                printf("%s=Tonyu.klass(%s,{%{", getClassName(klass), getClassName(klass.superClass));
             } else {
-                printf("%s=Tonyu.klass({%{", className);
+                printf("%s=Tonyu.klass({%{", getClassName(klass));
             }
             for (var name in methods) {
                 if (debug) console.log("method1", name);

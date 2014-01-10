@@ -1,14 +1,18 @@
 Tonyu=function () {
     var preemptionTime=60;
     function thread() {
-        var fb={enter:enter, exit:exit, steps:steps, step:step, isAlive:isAlive,
-                suspend:suspend,retVal:retVal, kill:kill};
+        var fb={enter:enter, exit:exit, steps:steps, step:step, isAlive:isAlive, isWaiting:isWaiting,
+                suspend:suspend,retVal:retVal, kill:kill, waitFor: waitFor};
         var frame=null;
-        var isAlive=true;
+        var _isAlive=true;
         var cnt=0;
         var retVal;
+        var _isWaiting=false;
         function isAlive() {
-            return frame!=null && isAlive;
+            return frame!=null && _isAlive;
+        }
+        function isWaiting() {
+            return _isWaiting;
         }
         function suspend() {
             cnt=0;
@@ -24,26 +28,77 @@ Tonyu=function () {
             //if (frame) frame.res=res;
             retVal=res;
         }
+        function waitFor(j) {
+            _isWaiting=true;
+            if (j && j.addTerminatedListener) j.addTerminatedListener(function () {
+                _isWaiting=false;
+                if (fb.group) fb.group.notifyResume();
+                //fb.group.add(fb);
+            });
+        }
+
         function retVal() {
             return retVal;
         }
         function steps() {
+            var sv=Tonyu.currentThread;
+            Tonyu.currentThread=fb;
             //var lim=new Date().getTime()+preemptionTime;
             cnt=preemptionTime;
             //while (new Date().getTime()<lim) {
             while (cnt-->0) {
                 step();
             }
+            Tonyu.currentThread=sv;
         }
         function kill() {
-            isAlive=false;
+            _isAlive=false;
         }
         return fb;
     }
+    function timeout(t) {
+        var res={};
+        var ls=[];
+        res.addTerminatedListener=function (l) {
+            ls.push(l);
+        };
+        setTimeout(function () {
+            ls.forEach(function (l) {
+                l();
+            });
+        },t);
+        return res;
+    }
+    function asyncResult() {
+        var res=[];
+        var ls=[];
+        var hasRes=false;
+        res.addTerminatedListener=function (l) {
+            if (hasRes) l();
+            else ls.push(l);
+        };
+        res.receiver=function () {
+            hasRes=true;
+            for (var i=0; i<arguments.length; i++) {
+                res[i]=arguments[i];
+            }
+            res.notify();
+        };
+        res.notify=function () {
+            ls.forEach(function (l) {
+                l();
+            });
+        };
+        return res;
+    }
     function threadGroup() {
         var threads=[];
-        var isAlive=true;
+        var waits=[];
+        var _isAlive=true;
+        var thg;
+        var _isWaiting=false;
         function add(thread) {
+            thread.group=thg;
             threads.push(thread);
         }
         function addObj(obj) {
@@ -57,29 +112,30 @@ Tonyu=function () {
                 if (threads[i].isAlive()) continue;
                 threads.splice(i,1);
             }
+            _isWaiting=true;
             threads.forEach(function (th){
+                if (th.isWaiting()) return;
+                _isWaiting=false;
                 th.steps();
             });
         }
         function kill() {
-            isAlive=false;
+            _isAlive=false;
         }
-        function run(wait, onStepsEnd) {
-            if (!isAlive) return;
-            if(!wait) wait=0;
+        var _interval=0, _onStepsEnd;
+        function run(interval, onStepsEnd) {
+            if (interval!=null) _interval=interval;
+            if (onStepsEnd!=null) _onStepsEnd=onStepsEnd;
+            if (!_isAlive) return;
             try {
-                //console.log("step..");
                 steps();
-                if (onStepsEnd) onStepsEnd();
-                setTimeout(function () {
-                    run(wait,onStepsEnd);
-                },wait);
+                if (_onStepsEnd) _onStepsEnd();
+                if (!_isWaiting) {
+                    setTimeout(run,_interval);
+                } else {
+                    //console.log("all wait!");
+                }
             } catch (e) {
-                /*var tb=TraceTbl.decode($LASTPOS);
-                if (tb) {
-                    tb.mesg=e;
-                    e=tb;
-                }*/
                 if (Tonyu.onRuntimeError) {
                     Tonyu.onRuntimeError(e);
                 } else {
@@ -87,7 +143,13 @@ Tonyu=function () {
                 }
             }
         }
-        return {add:add, addObj:addObj,  steps:steps, run:run, kill:kill};
+        function notifyResume() {
+            if (_isWaiting) {
+                //console.log("resume!");
+                run();
+            }
+        }
+        return thg={add:add, addObj:addObj,  steps:steps, run:run, kill:kill, notifyResume: notifyResume};
     }
     function defunct(f) {
         if (f===Function) {
@@ -138,13 +200,19 @@ Tonyu=function () {
         }
         return dst;
     }
-    var globals=window;
+    //alert("init");
+    var globals={};
+    var classes={};
     function setGlobal(n,v) {
         globals[n]=v;
     }
     function getGlobal(n) {
         return globals[n];
     }
+    function getClass(n) {
+        return classes[n];
+    }
     return Tonyu={thread:thread, threadGroup:threadGroup, klass:klass, bless:bless, extend:extend,
-            globals:globals, setGlobal:setGlobal, getGlobal:getGlobal};
+            globals:globals, classes:classes, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
+            timeout:timeout,asyncResult:asyncResult};
 }();
