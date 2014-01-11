@@ -1,10 +1,10 @@
 requirejs(["fs/ROMk","fs/ROMds","ace", "Util", "Tonyu", "FS", "FileList", "FileMenu",
            "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project","ImageList","Sprites",
-           "copySample","Shell","ImageResEditor"
+           "copySample","Shell","ImageResEditor","ProjectOptionsEditor"
           ],
 function (romk, romds, ace, Util, Tonyu, FS, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,ImageList,Sprites,
-          copySample,sh, ImgResEdit
+          copySample,sh, ImgResEdit,ProjectOptionsEditor
           ) {
 
 $(function () {
@@ -17,6 +17,11 @@ $(function () {
           {name:"$pat_neko", url: "images/neko.png", pwidth:32, pheight:32}
        ],
        sounds:[]
+    };
+    Tonyu.defaultOptions={
+        compiler: { defaultSuperClass: "Actor"},
+        run: {mainClass: "Main", bootClass: "Boot"},
+        kernelEditable: false
     };
     ImageList(Tonyu.defaultResource.images, Sprites.setImageList);
 
@@ -70,16 +75,26 @@ $(function () {
             displayName: dispName
         }
     });
-    FileMenu.fileList=fl;
-    FileMenu.on.close=close;
-    FileMenu.on.ls=ls;
-    FileMenu.on.validateName=fixName;
-    FileMenu.on.displayName=function (f) {
+    var FM=FileMenu();
+    FM.fileList=fl;
+    $("#newFile").click(FM.create);
+    $("#mvFile").click(FM.mv);
+    $("#rmFile").click(FM.rm);
+    FM.on.close=close;
+    FM.on.ls=ls;
+    FM.on.validateName=fixName;
+    FM.on.close=close;
+    FM.on.createContent=function (f) {
+        var k=curPrj.isKernel(f.truncExt(EXT));
+        if (k) {
+            f.text(k.text());
+        } else {
+            f.text("");
+        }
+    }
+    FM.on.displayName=function (f) {
         var r=dispName(f);
         if (r) {
-            if (f.endsWith(EXT)) return {
-                name: r, mode:EXT
-            };
             return r;
         }
         return f.name();
@@ -87,8 +102,7 @@ $(function () {
 
     var kernelDir=FS.get("/Tonyu/Kernel/");
     var curPrj=Tonyu_Project(curProjectDir, kernelDir);
-    curPrj.env.options.compiler.defaultSuperClass="Actor";
-    var EXT=".tonyu";
+    var EXT=curPrj.EXT;
     var desktopEnv=loadDesktopEnv();
     var runMenuOrd=desktopEnv.runMenuOrd;
     fl.ls(curProjectDir);
@@ -144,12 +158,19 @@ $(function () {
         return null;
     }
     function fixName(name) {
-        if (!name) return null;
         if (name.match(/^[A-Za-z_][a-zA-Z0-9_]*$/)) {
-            return name+EXT;
+            if (curPrj.isKernel(name)) {
+                if (curPrj.getOptions().kernelEditable) {
+                    return {ok:true, file: curProjectDir.rel(name+EXT),
+                        note:"Kernelから"+name+"をコピーします"};
+                } else {
+                    return {ok:false, reason:name+"はシステムで利用されている名前なので使用できません"};
+                }
+            }
+            return {ok:true, file: curProjectDir.rel(name+EXT)};
+        } else {
+            return {ok:false, reason:"名前は，半角英数字とアンダースコア(_)のみが使えます．先頭は英大文字にしてください．"};
         }
-        alert("名前は，半角英数字とアンダースコア(_)のみが使えます．先頭は英大文字にしてください．");
-        return null;
     }
     function displayMode(mode, next) {
         // mode == run     compile_error     runtime_error    edit
@@ -282,7 +303,11 @@ $(function () {
     $("#imgResEditor").click(function () {
         ImgResEdit(curPrj);
     });
+    $("#prjOptEditor").click(function () {
+        ProjectOptionsEditor(curPrj);
+    });
     if (typeof progBar=="object") {progBar.clear();}
 
+    FileMenu.onMenuStart=save;
 });
 });

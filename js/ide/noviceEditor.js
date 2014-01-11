@@ -7,6 +7,11 @@ $(function () {
     Tonyu.defaultResource={
             images:[{url: "images/neko.png", pwidth:32, pheight:32}]
     };
+    Tonyu.defaultOptions={
+            compiler: { defaultSuperClass: "NoviceActor"},
+            bootClass: "Boot",
+            kernelEditable: false
+        };
 
     ImageList(Tonyu.defaultResource.images, Sprites.setImageList);
     function onResize() {
@@ -44,11 +49,16 @@ $(function () {
             displayName: dispName
         }
     });
-    FileMenu.fileList=fl;
-    FileMenu.on.close=close;
-    FileMenu.on.ls=ls;
-    FileMenu.on.validateName=fixName;
-    FileMenu.on.displayName=function (f) {
+    var FM=FileMenu();
+    FM.fileList=fl;
+    $("#newFile").click(FM.create);
+    $("#mvFile").click(FM.mv);
+    $("#rmFile").click(FM.rm);
+    FM.on.close=close;
+    FM.on.ls=ls;
+    var vnorg=FM.on.validateName;
+    FM.on.validateName=fixName;
+    FM.on.displayName=function (f) {
         var r=dispName(f);
         if (r) {
             if (f.endsWith(EXT)) return {
@@ -61,7 +71,7 @@ $(function () {
 
     var kernelDir=FS.get("/Tonyu/Kernel/");
     var curPrj=Tonyu_Project(curProjectDir, kernelDir);
-    curPrj.env.options.compiler.defaultSuperClass="NoviceActor";
+    //curPrj.env.options.compiler.defaultSuperClass="NoviceActor";
     var EXT=".tonyu";
     var desktopEnv=loadDesktopEnv();
     var runMenuOrd=desktopEnv.runMenuOrd;
@@ -112,13 +122,13 @@ $(function () {
         return null;
     }
     function fixName(name) {
-        if (!name) return null;
         if (name.match(/^[A-Za-z_][a-zA-Z0-9_]*$/)) {
-            return name+EXT;
+            return {ok:true, file: curProjectDir.rel(name+EXT)};
+        } else {
+            return {ok:false, reason:"名前は，半角英数字とアンダースコア(_)のみが使えます．先頭は英大文字にしてください．"};
         }
-        alert("名前は，半角英数字とアンダースコア(_)のみが使えます．先頭は英大文字にしてください．");
-        return null;
     }
+
     $("#prog").bind("keydown","F9",run);
     $(document).bind("keydown","F9",run);
     function displayMode(mode, next) {

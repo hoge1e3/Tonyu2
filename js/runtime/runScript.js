@@ -11,6 +11,11 @@ define(["fs/ROMk","FS","Tonyu.Project","Shell","Sprites","ImageList"],
                 ],
                 sounds:[]
         };
+        Tonyu.defaultOptions={
+                compiler: { defaultSuperClass: "Actor"},
+                run: {mainClass: "Main", bootClass: "Boot"},
+                kernelEditable: false
+            };
 
         var w=$(window).width()-20;
         var h=$(window).height()-20;

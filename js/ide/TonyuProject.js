@@ -4,6 +4,7 @@ return Tonyu.Project=function (dir, kernelDir) {
     var TPR={};
     var traceTbl=Tonyu.TraceTbl();
     var env={classes:{}, traceTbl:traceTbl, options:{compiler:{}} };
+    TPR.EXT=".tonyu";
     function orderByInheritance(classes) {
         var added={};
         var res=[];
@@ -54,17 +55,17 @@ return Tonyu.Project=function (dir, kernelDir) {
         TPR.boot(mainClassName);
     };
     TPR.compile=function () {
+        TPR.getOptions();
         Tonyu.runMode=false;
         env.classes={};
         Tonyu.currentProject=TPR;
         /*if (Tonyu.currentThreadGroup) Tonyu.currentThreadGroup.kill();
         delete Tonyu.currentThreadGroup;*/
-        dir.each(collect);
         kernelDir.each(collect);
+        dir.each(collect);
         function collect(f) {
-            var n=f.name();
-            if (FS.endsWith(n, ".tonyu")) {
-                var nb=n.replace(/\.tonyu$/,"");
+            if (f.endsWith(TPR.EXT)) {
+                var nb=f.truncExt(TPR.EXT);
                 env.classes[nb]={
                         name:nb,
                         src:{
@@ -108,6 +109,19 @@ return Tonyu.Project=function (dir, kernelDir) {
             if (next) next();
         });
     };
+    TPR.getOptions=function () {
+        var resFile=dir.rel("options.json");
+        if (resFile.exists()) env.options=resFile.obj();
+        else {
+            env.options=Tonyu.defaultOptions;
+        }
+        return env.options;
+    };
+    TPR.setOptions=function (r) {
+        if (r) env.options=r;
+        var resFile=dir.rel("options.json");
+        resFile.obj(env.options);
+    };
     TPR.rawBoot=function (mainClassName) {
         var thg=Tonyu.threadGroup();
         var mainClass=Tonyu.getClass(mainClassName);// window[mainClassName];
@@ -147,6 +161,12 @@ return Tonyu.Project=function (dir, kernelDir) {
             Sprites.checkHit();
         });
     };
+    TPR.isKernel=function (className) {
+        var r=kernelDir.rel(className+TPR.EXT);
+        if (r.exists()) return r;
+        return null;
+    };
+
     return TPR;
 };
 if (typeof getReq=="function") getReq.exports("Tonyu.Project");

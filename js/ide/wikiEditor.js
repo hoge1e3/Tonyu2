@@ -6,7 +6,11 @@ $(function () {
     var f=FileList($("#fileList"));
     var t=TextEditor($("#editorArea"));
     var prevRow=null;
-    FileMenu.fileList=f;
+    var FM=FileMenu();
+    FM.fileList=f;
+    $("#newFile").click(FM.create);
+    $("#mvFile").click(FM.mv);
+    $("#rmFile").click(FM.rm);
 
     f.on.select=function (f) {
         if (!f.isDir()) {

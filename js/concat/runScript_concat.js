@@ -177,6 +177,7 @@ var reqConf={
             "ide/editor": "ide/editor",
             "fs/ROMk": "fs/ROMk",
             "fs/ROMds": "fs/ROMds",
+            "ProjectOptionsEditor": "ide/ProjectOptionsEditor",
             "FileList": "fs/FileList",
             "HttpHelper": "help/HttpHelper",
             "Wiki": "help/wiki",
@@ -236,6 +237,11 @@ define(["fs/ROMk","FS","Tonyu.Project","Shell","Sprites","ImageList"],
                 ],
                 sounds:[]
         };
+        Tonyu.defaultOptions={
+                compiler: { defaultSuperClass: "Actor"},
+                run: {mainClass: "Main", bootClass: "Boot"},
+                kernelEditable: false
+            };
 
         var w=$(window).width()-20;
         var h=$(window).height()-20;
@@ -292,6 +298,7 @@ return Tonyu.Project=function (dir, kernelDir) {
     var TPR={};
     var traceTbl=Tonyu.TraceTbl();
     var env={classes:{}, traceTbl:traceTbl, options:{compiler:{}} };
+    TPR.EXT=".tonyu";
     function orderByInheritance(classes) {
         var added={};
         var res=[];
@@ -342,17 +349,17 @@ return Tonyu.Project=function (dir, kernelDir) {
         TPR.boot(mainClassName);
     };
     TPR.compile=function () {
+        TPR.getOptions();
         Tonyu.runMode=false;
         env.classes={};
         Tonyu.currentProject=TPR;
         /*if (Tonyu.currentThreadGroup) Tonyu.currentThreadGroup.kill();
         delete Tonyu.currentThreadGroup;*/
-        dir.each(collect);
         kernelDir.each(collect);
+        dir.each(collect);
         function collect(f) {
-            var n=f.name();
-            if (FS.endsWith(n, ".tonyu")) {
-                var nb=n.replace(/\.tonyu$/,"");
+            if (f.endsWith(TPR.EXT)) {
+                var nb=f.truncExt(TPR.EXT);
                 env.classes[nb]={
                         name:nb,
                         src:{
@@ -396,6 +403,19 @@ return Tonyu.Project=function (dir, kernelDir) {
             if (next) next();
         });
     };
+    TPR.getOptions=function () {
+        var resFile=dir.rel("options.json");
+        if (resFile.exists()) env.options=resFile.obj();
+        else {
+            env.options=Tonyu.defaultOptions;
+        }
+        return env.options;
+    };
+    TPR.setOptions=function (r) {
+        if (r) env.options=r;
+        var resFile=dir.rel("options.json");
+        resFile.obj(env.options);
+    };
     TPR.rawBoot=function (mainClassName) {
         var thg=Tonyu.threadGroup();
         var mainClass=Tonyu.getClass(mainClassName);// window[mainClassName];
@@ -435,6 +455,12 @@ return Tonyu.Project=function (dir, kernelDir) {
             Sprites.checkHit();
         });
     };
+    TPR.isKernel=function (className) {
+        var r=kernelDir.rel(className+TPR.EXT);
+        if (r.exists()) return r;
+        return null;
+    };
+
     return TPR;
 };
 if (typeof getReq=="function") getReq.exports("Tonyu.Project");
@@ -499,6 +525,10 @@ define(["FS","Util"],function (FS,Util) {
         } else {
             file.rm();
         }
+    };
+    Shell.cat=function (file) {
+        file=resolve(file);
+        console.log(file.text());
     };
     sh=Shell;
     return Shell;
@@ -856,6 +886,148 @@ FS=function () {
     };
     return FS;
 }();
+requirejs.setName('PatternParser');
+define(["Tonyu"], function (Tonyu) {return Tonyu.klass({
+    initialize: function (img) {
+        this.img=img;
+        this.height = img.height;
+        this.width = img.width;
+        var cv=this.newImage(img.width, img.height);
+        var ctx=cv.getContext("2d");
+        ctx.drawImage(img, 0,0);
+        this.ctx=ctx;
+        this.pixels=this.ctx.getImageData(0, 0, img.width, img.height).data;
+        this.base=this.getPixel(0,0);
+    },
+    newImage: function (w,h) {
+        var cv=document.createElement("canvas");
+        cv.width=w;
+        cv.height=h;
+        return cv;
+    },
+    getPixel: function (x,y) {
+        var imagePixelData = this.pixels;
+        var ofs=(x+y*this.width)*4;
+        var R = imagePixelData[0+ofs];
+        var G = imagePixelData[1+ofs];
+        var B = imagePixelData[2+ofs];
+        var A = imagePixelData[3+ofs];
+        return ((((A*256)+B)*256)+G)*256+R;
+    },
+    setPixel: function (x,y,p) {
+        var ofs=(x+y*this.width)*4;
+        this.pixels[0+ofs]=p & 255;
+        p=(p-(p&255))/256;
+        this.pixels[1+ofs]=p & 255;
+        p=(p-(p&255))/256;
+        this.pixels[2+ofs]=p & 255;
+        p=(p-(p&255))/256;
+        this.pixels[3+ofs]=p & 255;
+    },
+    parse: function () {
+        try {
+            console.log("parse()");
+            var res=[];// List of charpattern
+            for (var y=0; y<this.height ;y++) {
+                for (var x=0; x<this.width ;x++) {
+                    var c=this.getPixel(x, y);
+                    if (c!=this.base) {
+                        res.push(this.parse1Pattern(x,y));
+                    }
+                }
+            }
+            console.log("parsed:"+res.lenth);
+            return res;
+        } catch (p) {
+            if (p.isParseError) {
+                console.log("parse error! "+p);
+                return {image: this.img, x:0, y:0, width:this.width, height:this.height};
+            }
+            throw p;
+        }
+    },
+    parse1Pattern:function (x,y) {
+        function hex(s){return s;}
+        var trans=this.getPixel(x, y);
+        var dx=x,dy=y;
+        var base=this.base;
+        var width=this.width, height=this.height;
+        while (dx<width) {
+            var pixel = this.getPixel(dx,dy);
+            if (pixel!=trans) break;
+            dx++;
+        }
+        if (dx>=width || this.getPixel(dx,dy)!=base) {
+            throw PatterParseError(dx,dy,hex(this.getPixel(dx,dy))+"!="+hex(base));
+        }
+        dx--;
+        while (dy<height) {
+            if (this.getPixel(dx,dy)!=trans) break;
+            dy++;
+        }
+        if (dy>=height || this.getPixel(dx,dy)!=base) {
+            throw PatterParseError(dx,dy,hex(this.getPixel(dx,dy))+"!="+hex(base));
+        }
+        dy--;
+        var sx=x+1,sy=y+1,w=dx-sx,h=dy-sy;
+        console.log(sx,sy,w,h,dx,dy);
+        if (w*h==0) throw PatterParseError(dx, dy,"w*h==0");
+
+        var newim=this.newImage(w,h);
+        var nc=newim.getContext("2d");
+        var newImD=nc.getImageData(0,0,w,h);
+        var newD=newImD.data;
+        var di=0;
+        for (var ey=sy ; ey<dy ; ey++) {
+            for (var ex=sx ; ex<dx ; ex++) {
+                var p=this.getPixel(ex, ey);
+                if (p==trans) {
+                    newD[di++]=0;
+                    newD[di++]=(0);
+                    newD[di++]=(0);
+                    newD[di++]=(0);
+                } else {
+                    newD[di++]=(p&255);
+                    p=(p-(p&255))/256;
+                    newD[di++]=(p&255);
+                    p=(p-(p&255))/256;
+                    newD[di++]=(p&255);
+                    p=(p-(p&255))/256;
+                    newD[di++]=(p&255);
+                }
+            }
+        }
+        nc.putImageData(newImD,0,0);
+        for (var yy=sy-1; yy<=dy; yy++) {
+            for (var xx=sx-1; xx<=dx; xx++) {
+                this.setPixel(xx,yy, base);
+            }
+        }
+        return {image:newim, x:0, y:0, width:w, height:h};
+        function PatterParseError(x,y,msg) {
+            return {toString: function () {
+                return "at ("+x+","+y+") :"+msg;
+            }, isParseError:true};
+        }
+    }
+
+});});
+requirejs.setName('WebSite');
+define([], function () {
+    var loc=document.location.href;
+    if (loc.match(/jsrun\.it/)) {
+        return {
+            urlAliases: {
+                "images/base.png":"http://jsrun.it/assets/6/F/y/3/6Fy3B.png",
+                "images/Sample.png":"http://jsrun.it/assets/s/V/S/l/sVSlZ.png",
+                "images/neko.png":"http://jsrun.it/assets/j/D/9/q/jD9qQ.png"
+            }
+        };
+    }
+    return {
+        urlAliases: {}
+    };
+});
 requirejs.setName('Tonyu');
 Tonyu=function () {
     var preemptionTime=60;
@@ -1076,235 +1248,6 @@ Tonyu=function () {
             timeout:timeout,asyncResult:asyncResult};
 }();
 
-requirejs.setName('TextRect');
-TextRect=function () {
- // テキストを描いて(type=="test"なら描いたふりをするだけ)， 描かれた部分の矩形領域を返す
-    function draw(ctx, text, x, topY, h, align , type) {
-        if (!align) align="center";
-        ctx.textBaseline="top";
-        setFontSize(ctx, h);
-        var met=ctx.measureText(text);
-        var res={y:topY, w: met.width, h:h};
-        switch (align.substring(0,1).toLowerCase()) {
-            case "l":
-                res.x=x;
-                break;
-            case "r":
-                res.x=x-met.width;
-                break;
-            case "c":
-                res.x=x-met.width/2;
-                break;
-        }
-        if (type=="fill") ctx.fillText(text, res.x,topY);
-        if (type=="stroke") ctx.strokeText(text, res.x,topY);
-        return res;
-    }
-    function setFontSize(ctx,sz) {
-        var post=ctx.font.replace(/^[0-9\.]+/,"");
-        ctx.font=sz+post;
-    };
-    return {draw:draw, setFontSize: setFontSize};
-}();
-requirejs.setName('PatternParser');
-define(["Tonyu"], function (Tonyu) {return Tonyu.klass({
-    initialize: function (img) {
-        this.img=img;
-        this.height = img.height;
-        this.width = img.width;
-        var cv=this.newImage(img.width, img.height);
-        var ctx=cv.getContext("2d");
-        ctx.drawImage(img, 0,0);
-        this.ctx=ctx;
-        this.pixels=this.ctx.getImageData(0, 0, img.width, img.height).data;
-        this.base=this.getPixel(0,0);
-    },
-    newImage: function (w,h) {
-        var cv=document.createElement("canvas");
-        cv.width=w;
-        cv.height=h;
-        return cv;
-    },
-    getPixel: function (x,y) {
-        var imagePixelData = this.pixels;
-        var ofs=(x+y*this.width)*4;
-        var R = imagePixelData[0+ofs];
-        var G = imagePixelData[1+ofs];
-        var B = imagePixelData[2+ofs];
-        var A = imagePixelData[3+ofs];
-        return ((((A*256)+B)*256)+G)*256+R;
-    },
-    setPixel: function (x,y,p) {
-        var ofs=(x+y*this.width)*4;
-        this.pixels[0+ofs]=p & 255;
-        p=(p-(p&255))/256;
-        this.pixels[1+ofs]=p & 255;
-        p=(p-(p&255))/256;
-        this.pixels[2+ofs]=p & 255;
-        p=(p-(p&255))/256;
-        this.pixels[3+ofs]=p & 255;
-    },
-    parse: function () {
-        try {
-            console.log("parse()");
-            var res=[];// List of charpattern
-            for (var y=0; y<this.height ;y++) {
-                for (var x=0; x<this.width ;x++) {
-                    var c=this.getPixel(x, y);
-                    if (c!=this.base) {
-                        res.push(this.parse1Pattern(x,y));
-                    }
-                }
-            }
-            console.log("parsed:"+res.lenth);
-            return res;
-        } catch (p) {
-            if (p.isParseError) {
-                console.log("parse error! "+p);
-                return {image: this.img, x:0, y:0, width:this.width, height:this.height};
-            }
-            throw p;
-        }
-    },
-    parse1Pattern:function (x,y) {
-        function hex(s){return s;}
-        var trans=this.getPixel(x, y);
-        var dx=x,dy=y;
-        var base=this.base;
-        var width=this.width, height=this.height;
-        while (dx<width) {
-            var pixel = this.getPixel(dx,dy);
-            if (pixel!=trans) break;
-            dx++;
-        }
-        if (dx>=width || this.getPixel(dx,dy)!=base) {
-            throw PatterParseError(dx,dy,hex(this.getPixel(dx,dy))+"!="+hex(base));
-        }
-        dx--;
-        while (dy<height) {
-            if (this.getPixel(dx,dy)!=trans) break;
-            dy++;
-        }
-        if (dy>=height || this.getPixel(dx,dy)!=base) {
-            throw PatterParseError(dx,dy,hex(this.getPixel(dx,dy))+"!="+hex(base));
-        }
-        dy--;
-        var sx=x+1,sy=y+1,w=dx-sx,h=dy-sy;
-        console.log(sx,sy,w,h,dx,dy);
-        if (w*h==0) throw PatterParseError(dx, dy,"w*h==0");
-
-        var newim=this.newImage(w,h);
-        var nc=newim.getContext("2d");
-        var newImD=nc.getImageData(0,0,w,h);
-        var newD=newImD.data;
-        var di=0;
-        for (var ey=sy ; ey<dy ; ey++) {
-            for (var ex=sx ; ex<dx ; ex++) {
-                var p=this.getPixel(ex, ey);
-                if (p==trans) {
-                    newD[di++]=0;
-                    newD[di++]=(0);
-                    newD[di++]=(0);
-                    newD[di++]=(0);
-                } else {
-                    newD[di++]=(p&255);
-                    p=(p-(p&255))/256;
-                    newD[di++]=(p&255);
-                    p=(p-(p&255))/256;
-                    newD[di++]=(p&255);
-                    p=(p-(p&255))/256;
-                    newD[di++]=(p&255);
-                }
-            }
-        }
-        nc.putImageData(newImD,0,0);
-        for (var yy=sy-1; yy<=dy; yy++) {
-            for (var xx=sx-1; xx<=dx; xx++) {
-                this.setPixel(xx,yy, base);
-            }
-        }
-        return {image:newim, x:0, y:0, width:w, height:h};
-        function PatterParseError(x,y,msg) {
-            return {toString: function () {
-                return "at ("+x+","+y+") :"+msg;
-            }, isParseError:true};
-        }
-    }
-
-});});
-requirejs.setName('WebSite');
-define([], function () {
-    var loc=document.location.href;
-    if (loc.match(/jsrun\.it/)) {
-        return {
-            urlAliases: {
-                "images/base.png":"http://jsrun.it/assets/6/F/y/3/6Fy3B.png",
-                "images/Sample.png":"http://jsrun.it/assets/s/V/S/l/sVSlZ.png",
-                "images/neko.png":"http://jsrun.it/assets/j/D/9/q/jD9qQ.png"
-            }
-        };
-    }
-    return {
-        urlAliases: {}
-    };
-});
-requirejs.setName('fs/ROMk');
-/*
- rom on:
-   delete localStorage.norom
- rom off:
-   localStorage.norom=1
-*/
-if (!localStorage.norom) {
-FS.mountROM(
-   //---- paste start
-        {
-            "base": "/Tonyu/Kernel/",
-            "data": {
-              "": "{\"NObjTest.tonyu\":{\"lastUpdate\":1387528337834},\".desktop\":{\"lastUpdate\":1389322242054},\"NObjTest2.tonyu\":{\"lastUpdate\":1389262967101},\"NoviceActor.tonyu\":{\"lastUpdate\":1389262971304},\"BaseActor.tonyu\":{\"lastUpdate\":1389272494341},\"Actor.tonyu\":{\"lastUpdate\":1389272429739},\"AcTest.tonyu\":{\"lastUpdate\":1389262980476},\"AcTestM.tonyu\":{\"lastUpdate\":1389263815817},\"Boot.tonyu\":{\"lastUpdate\":1389273731180}}",
-              "NObjTest.tonyu": "native console;\nnative alert;\n\n\\move(p) {\n    x+=p.vx;\n    y+=p.vy;\n}\n\nx=100;\ny=100;\nvy=0;vx=0;\nt=new NObjTest2{x:200, y: 50};\nwatchHit(NObjTest, NObjTest2, onH);\nwhile (true) {\n    if (getkey(\"left\")) vx=-2;\n    if (getkey(\"Right\")) vx=2;\n    if (getkey(\"up\")==1) vy=-2;\n    y+=vy;\n    vy+=0.1;\n    move{vx,vy};\n    // console.log(x+\",\"+y);\n    go(x,y);\n    sleep();\n    /*if (crashTo(t)) {\n    t.hide();\n    }*/\n}\n\\onH(a,b) {\n    b.hide();\n    a.vy=5;\n}",
-              ".desktop": "{\"runMenuOrd\":[\"AcTestM\",\"NObjTest\",\"NObjTest2\",\"AcTest\",\"NoviceActor\",\"BaseActor\",\"Actor\",\"Boot\"]}",
-              "NObjTest2.tonyu": "change(10);\ngo(x,y);\n",
-              "NoviceActor.tonyu": "extends BaseActor;\nnative Sprites;\nnative Tonyu;\n\n\\sleep(n) {\n    if(!n) n=1;\n    for(n;n>0;n--) update();\n}\n\\initSprite() {\n    if (!_sprite) _sprite=Sprites.add{owner:this};\n}\n\\say(text,size) {\n    if (!size) size=15;\n    initSprite();\n    _sprite.fukidashi={text:text, size:size, c:30};\n}\n\\sprite(x,y,p) {\n    go(x,y,p);\n}\n\\show(x,y,p) {\n    go(x,y,p);\n}\n\\go(x,y,p) {\n    initSprite();\n    _sprite.x=x;\n    _sprite.y=y;\n    if (p!=null) _sprite.p=p;\n    //update();\n}\n\\change(p) {\n    initSprite();\n    _sprite.p=p;\n}\n",
-              "BaseActor.tonyu": "extends null;\nnative Sprites;\nnative Tonyu;\nnative Key;\nnative console;\nnative Math;\nnative fukidashi;\nnative TextRect;\n\n\\new(x,y,p) {\n    if (Tonyu.runMode) {\n        var thg=currentThreadGroup();\n        if (thg) _th=thg.addObj(this);\n    }\n    if (typeof x==\"object\") Tonyu.extend(this, x);\n    else if (typeof x==\"number\") {\n        this.x=x;\n        this.y=y;\n        this.p=p;\n    }\n}\n\nnowait \\print(c) {\n    console.log(c);\n}\n\\update() {\n    ifwait {\n        _thread.suspend();\n    }\n}\nnowait \\getkey(k) {\n    return Key.getkey(k);\n}\nnowait \\hitTo(t) {\n    return crashTo(t);\n}\nnowait \\allCrash(t) {\n    var res=[];\n    var sp;\n    if (_sprite) sp=_sprite; else sp=this;\n    Sprites.sprites.forEach(\\(s) {\n        if (s!==this && \n        s instanceof t && \n        s.crashTo(sp)) {\n            res.push(s);    \n        }\n    });\n    return res;\n}\nnowait \\crashTo(t) {\n    if (!t) return false;\n    if (typeof t==\"function\") {\n        return allCrash(t)[0];\n    }\n    if (_sprite && t._sprite) {\n        return _sprite.crashTo(t._sprite);\n    }\n    //print([this, t]);\n    return (x!=null && y!=null && width && height &&\n    t && !t._isDead && t.x!=null && t.y!=null && t.width && t.height &&\n    Math.abs(x-t.x)*2<width+t.width &&\n    Math.abs(y-t.y)*2<height+t.height);\n}\nnowait \\watchHit(typeA,typeB,onHit) {\n    Sprites.watchHit(typeA , typeB, \\(a,b) {\n        onHit.apply(this,[a,b]);\n    });\n}\nnowait \\currentThreadGroup() {\n    return $currentThreadGroup; //Tonyu.currentThread.group;\n}\nnowait \\die() {\n    if (_th) {\n        _th.kill();\n    }\n    hide();\n    _isDead=true;\n}\nnowait \\hide() {\n    if (_sprite) {\n        Sprites.remove(_sprite);\n        _sprite=null;\n    } else {\n        Sprites.remove(this);\n    }\n}\nnowait \\rnd(r) {\n    if (typeof r==\"number\") {\n        return Math.floor(Math.random()*r);\n    }\n    return Math.random();\n}\nnowait \\detectShape() {\n    if (typeof p!=\"number\") {\n        if (text) return;\n        p=0;\n    }\n    p=Math.floor(p);\n    pImg=Sprites.getImageList()[p];\n    if (!pImg) return;\n    width=pImg.width;\n    height=pImg.height;\n}\n\\waitFor(f) {\n    ifwait {\n        _thread.waitFor(f);\n    }\n    update();\n}\nnowait \\isDead() {\n    return _isDead;\n}\nnowait \\draw(ctx) {\n    if (x==null || y==null) return;\n    detectShape();\n    if (pImg) {\n        ctx.drawImage(\n        pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,\n        x-width/2, y-height/2, width, height);\n    } else if (text) {\n        if (!size) size=15;\n        if (!align) align=\"center\";\n        if (!fillStyle) fillStyle=\"white\";\n        ctx.fillStyle=fillStyle;\n        TextRect.draw(ctx, text, x, y, size, align , \"fill\");\n    }\n    if (_fukidashi) {\n        if (_fukidashi.c>0) {\n            _fukidashi.c--;\n            ctx.fillStyle=\"white\";\n            ctx.strokeStyle=\"black\";\n            fukidashi ( ctx , _fukidashi.text, \n            x, y-height/2-10, _fukidashi.size);\n        }\n    }\n}",
-              "Actor.tonyu": "extends BaseActor;\nnative Sprites;\nnative Tonyu;\n\n\\new(x,y,p) {\n    super(x,y,p);\n    if (Tonyu.runMode) initSprite();\n}\n\\initSprite() {\n    /*if (!_sprite) {\n        _sprite=Sprites.add{owner:this};\n    }*/\n    Sprites.addT(this);\n}\n\n/*\n\\update() {\n    super.update();\n    if (_sprite) {\n        _sprite.x=x;\n        _sprite.y=y;\n        _sprite.p=p;\n    }\n}*/",
-              "AcTest.tonyu": "extends Actor;\n\nif (!vx) vx=0;\nif (!vy) vy=0;\nwhile (true) {\n    x+=vx;\n    y+=vy;\n    c=crashTo(AcTest);\n    if (c) {\n        if (x>c.x) {\n            vx=5; \n            c.vx=-5;\n        } else {\n            vx=-5; \n            c.vx=5;\n        }\n        print(\"Hit!!\");\n    }\n    update();\n}",
-              "AcTestM.tonyu": "extends Actor;\nnative Tonyu;\nnew AcTest{x:10, y:100, vx:5, vy:0, p:0};\nnew AcTest{x:320, y:100, vx:-5, vy:0, p:10};\nnew AcTest(50,150,3);\n\nfillStyle=\"yellow\";\nfor (i=0; i<300; i++) {\n    size=40;\n    text=\"スコア：\"+i;\n    x=200;\n    y=100;\n    if (i==50) waitFor(Tonyu.timeout(1000));\n    update();\n}\n/*\nwatchHit(AcTest,AcTest,\\(a,b) {\nif (a.x>b.x) {\na.vx=5; \nb.vx=-5;\n} else {\na.vx=-5; \nb.vx=5;\n}\nprint(\"Hit!\");\n});*/",
-              "Boot.tonyu": "native Tonyu;\r\nnative $;\r\nnative TError;\r\nnative Sprites;\r\nnative $LASTPOS;\r\nnative Key;\r\nnative Date;\r\n\r\nprint (\"Loading pats..\");\r\na=Tonyu.asyncResult();\r\nTonyu.currentProject.loadResource(a.receiver);\r\nwaitFor(a);\r\nprint (\"Loading pats done.\");\r\n    \r\nthg=Tonyu.threadGroup();\r\ncv=$(\"canvas\")[0];\r\nmainClass=Tonyu.getClass($mainClassName);\r\nif (!mainClass) {\r\n    TError( $mainClassName+\" というクラスはありません\", \r\n    \"不明\" ,0).raise();\r\n}\r\nSprites.clear();\r\nSprites.drawGrid=Tonyu.noviceMode;\r\nTonyu.runMode=true;\r\n$currentThreadGroup=thg;\r\nvar main=new mainClass();\r\n//thg.addObj(main);\r\n//Tonyu.currentThreadGroup=thg;\r\n$screenWidth=cv.width;\r\n$screenHeight=cv.height;\r\n$pat_fruits=30;\r\n//Tonyu.runMode=true;\r\nwhile (true) {\r\n    ti=new Date().getTime();\r\n    thg.steps();\r\n    Key.update();\r\n    $screenWidth=cv.width;\r\n    $screenHeight=cv.height;\r\n    Sprites.draw(cv);\r\n    Sprites.checkHit();\r\n    wt=33-(new Date().getTime()-ti);\r\n    if (wt<0) wt=0;\r\n    waitFor(Tonyu.timeout(wt));\r\n}\r\n    \r\n"
-            }
-          }
-    //-----paste end
-    );
-}
-
-requirejs.setName('fukidashi');
-// From http://jsdo.it/hoge1e4/4wCX
-//  (x,y) の位置に  V（←これ何て言うんだっけ） の先端が来るようにふきだし表示
-function fukidashi(ctx, text, x, y, sz) {
-    var align="c";
-   var theight=20;
-   var margin=5;
-   var r=TextRect.draw(ctx, text, x,y-theight-margin-sz, sz, align);
-   ctx.beginPath();
-   ctx.moveTo(x , y);
-   ctx.lineTo(x+margin , y-theight);
-   ctx.lineTo(x+r.w/2+margin , y-theight);
-   ctx.lineTo(x+r.w/2+margin , y-theight-r.h-margin*2);
-   ctx.lineTo(x-r.w/2-margin , y-theight-r.h-margin*2);
-   ctx.lineTo(x-r.w/2-margin , y-theight);
-   ctx.lineTo(x-margin , y-theight);
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
-   //ctx.fillRect(r.x-margin, r.y-margin , r.w+margin*2 , r.h+margin*2);
-   //ctx.strokeRect(r.x-margin, r.y-margin , r.w+margin*2 , r.h+margin*2);
-
-   var fs=ctx.fillStyle;
-   ctx.fillStyle=ctx.strokeStyle;
-   TextRect.draw(ctx, text, x, y-theight-margin-sz, sz, align, "fill");
-   ctx.fillStyle=fs;
-}
-
 requirejs.setName('Util');
 Util=function () {
 
@@ -1421,6 +1364,65 @@ $(document).keydown(function (e) {
 $(document).keyup(function (e) {
     Key.stats[e.keyCode]=0;
 });
+requirejs.setName('TextRect');
+TextRect=function () {
+ // テキストを描いて(type=="test"なら描いたふりをするだけ)， 描かれた部分の矩形領域を返す
+    function draw(ctx, text, x, topY, h, align , type) {
+        if (!align) align="center";
+        ctx.textBaseline="top";
+        setFontSize(ctx, h);
+        var met=ctx.measureText(text);
+        var res={y:topY, w: met.width, h:h};
+        switch (align.substring(0,1).toLowerCase()) {
+            case "l":
+                res.x=x;
+                break;
+            case "r":
+                res.x=x-met.width;
+                break;
+            case "c":
+                res.x=x-met.width/2;
+                break;
+        }
+        if (type=="fill") ctx.fillText(text, res.x,topY);
+        if (type=="stroke") ctx.strokeText(text, res.x,topY);
+        return res;
+    }
+    function setFontSize(ctx,sz) {
+        var post=ctx.font.replace(/^[0-9\.]+/,"");
+        ctx.font=sz+post;
+    };
+    return {draw:draw, setFontSize: setFontSize};
+}();
+requirejs.setName('fs/ROMk');
+/*
+ rom on:
+   delete localStorage.norom
+ rom off:
+   localStorage.norom=1
+*/
+if (!localStorage.norom) {
+FS.mountROM(
+   //---- paste start
+        {
+            "base": "/Tonyu/Kernel/",
+            "data": {
+              "": "{\"NObjTest.tonyu\":{\"lastUpdate\":1387528337834},\".desktop\":{\"lastUpdate\":1389322242054},\"NObjTest2.tonyu\":{\"lastUpdate\":1389262967101},\"NoviceActor.tonyu\":{\"lastUpdate\":1389262971304},\"BaseActor.tonyu\":{\"lastUpdate\":1389272494341},\"Actor.tonyu\":{\"lastUpdate\":1389272429739},\"AcTest.tonyu\":{\"lastUpdate\":1389262980476},\"AcTestM.tonyu\":{\"lastUpdate\":1389263815817},\"Boot.tonyu\":{\"lastUpdate\":1389273731180}}",
+              "NObjTest.tonyu": "native console;\nnative alert;\n\n\\move(p) {\n    x+=p.vx;\n    y+=p.vy;\n}\n\nx=100;\ny=100;\nvy=0;vx=0;\nt=new NObjTest2{x:200, y: 50};\nwatchHit(NObjTest, NObjTest2, onH);\nwhile (true) {\n    if (getkey(\"left\")) vx=-2;\n    if (getkey(\"Right\")) vx=2;\n    if (getkey(\"up\")==1) vy=-2;\n    y+=vy;\n    vy+=0.1;\n    move{vx,vy};\n    // console.log(x+\",\"+y);\n    go(x,y);\n    sleep();\n    /*if (crashTo(t)) {\n    t.hide();\n    }*/\n}\n\\onH(a,b) {\n    b.hide();\n    a.vy=5;\n}",
+              ".desktop": "{\"runMenuOrd\":[\"AcTestM\",\"NObjTest\",\"NObjTest2\",\"AcTest\",\"NoviceActor\",\"BaseActor\",\"Actor\",\"Boot\"]}",
+              "NObjTest2.tonyu": "change(10);\ngo(x,y);\n",
+              "NoviceActor.tonyu": "extends BaseActor;\nnative Sprites;\nnative Tonyu;\n\n\\sleep(n) {\n    if(!n) n=1;\n    for(n;n>0;n--) update();\n}\n\\initSprite() {\n    if (!_sprite) _sprite=Sprites.add{owner:this};\n}\n\\say(text,size) {\n    if (!size) size=15;\n    initSprite();\n    _sprite.fukidashi={text:text, size:size, c:30};\n}\n\\sprite(x,y,p) {\n    go(x,y,p);\n}\n\\show(x,y,p) {\n    go(x,y,p);\n}\n\\go(x,y,p) {\n    initSprite();\n    _sprite.x=x;\n    _sprite.y=y;\n    if (p!=null) _sprite.p=p;\n    //update();\n}\n\\change(p) {\n    initSprite();\n    _sprite.p=p;\n}\n",
+              "BaseActor.tonyu": "extends null;\nnative Sprites;\nnative Tonyu;\nnative Key;\nnative console;\nnative Math;\nnative fukidashi;\nnative TextRect;\n\n\\new(x,y,p) {\n    if (Tonyu.runMode) {\n        var thg=currentThreadGroup();\n        if (thg) _th=thg.addObj(this);\n    }\n    if (typeof x==\"object\") Tonyu.extend(this, x);\n    else if (typeof x==\"number\") {\n        this.x=x;\n        this.y=y;\n        this.p=p;\n    }\n}\n\nnowait \\print(c) {\n    console.log(c);\n}\n\\update() {\n    ifwait {\n        _thread.suspend();\n    }\n}\nnowait \\getkey(k) {\n    return Key.getkey(k);\n}\nnowait \\hitTo(t) {\n    return crashTo(t);\n}\nnowait \\allCrash(t) {\n    var res=[];\n    var sp;\n    if (_sprite) sp=_sprite; else sp=this;\n    Sprites.sprites.forEach(\\(s) {\n        if (s!==this && \n        s instanceof t && \n        s.crashTo(sp)) {\n            res.push(s);    \n        }\n    });\n    return res;\n}\nnowait \\crashTo(t) {\n    if (!t) return false;\n    if (typeof t==\"function\") {\n        return allCrash(t)[0];\n    }\n    if (_sprite && t._sprite) {\n        return _sprite.crashTo(t._sprite);\n    }\n    //print([this, t]);\n    return (x!=null && y!=null && width && height &&\n    t && !t._isDead && t.x!=null && t.y!=null && t.width && t.height &&\n    Math.abs(x-t.x)*2<width+t.width &&\n    Math.abs(y-t.y)*2<height+t.height);\n}\nnowait \\watchHit(typeA,typeB,onHit) {\n    Sprites.watchHit(typeA , typeB, \\(a,b) {\n        onHit.apply(this,[a,b]);\n    });\n}\nnowait \\currentThreadGroup() {\n    return $currentThreadGroup; //Tonyu.currentThread.group;\n}\nnowait \\die() {\n    if (_th) {\n        _th.kill();\n    }\n    hide();\n    _isDead=true;\n}\nnowait \\hide() {\n    if (_sprite) {\n        Sprites.remove(_sprite);\n        _sprite=null;\n    } else {\n        Sprites.remove(this);\n    }\n}\nnowait \\rnd(r) {\n    if (typeof r==\"number\") {\n        return Math.floor(Math.random()*r);\n    }\n    return Math.random();\n}\nnowait \\detectShape() {\n    if (typeof p!=\"number\") {\n        if (text) return;\n        p=0;\n    }\n    p=Math.floor(p);\n    pImg=Sprites.getImageList()[p];\n    if (!pImg) return;\n    width=pImg.width;\n    height=pImg.height;\n}\n\\waitFor(f) {\n    ifwait {\n        _thread.waitFor(f);\n    }\n    update();\n}\nnowait \\isDead() {\n    return _isDead;\n}\nnowait \\draw(ctx) {\n    if (x==null || y==null) return;\n    detectShape();\n    if (pImg) {\n        ctx.drawImage(\n        pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,\n        x-width/2, y-height/2, width, height);\n    } else if (text) {\n        if (!size) size=15;\n        if (!align) align=\"center\";\n        if (!fillStyle) fillStyle=\"white\";\n        ctx.fillStyle=fillStyle;\n        TextRect.draw(ctx, text, x, y, size, align , \"fill\");\n    }\n    if (_fukidashi) {\n        if (_fukidashi.c>0) {\n            _fukidashi.c--;\n            ctx.fillStyle=\"white\";\n            ctx.strokeStyle=\"black\";\n            fukidashi ( ctx , _fukidashi.text, \n            x, y-height/2-10, _fukidashi.size);\n        }\n    }\n}",
+              "Actor.tonyu": "extends BaseActor;\nnative Sprites;\nnative Tonyu;\n\n\\new(x,y,p) {\n    super(x,y,p);\n    if (Tonyu.runMode) initSprite();\n}\n\\initSprite() {\n    /*if (!_sprite) {\n        _sprite=Sprites.add{owner:this};\n    }*/\n    Sprites.addT(this);\n}\n\n/*\n\\update() {\n    super.update();\n    if (_sprite) {\n        _sprite.x=x;\n        _sprite.y=y;\n        _sprite.p=p;\n    }\n}*/",
+              "AcTest.tonyu": "extends Actor;\n\nif (!vx) vx=0;\nif (!vy) vy=0;\nwhile (true) {\n    x+=vx;\n    y+=vy;\n    c=crashTo(AcTest);\n    if (c) {\n        if (x>c.x) {\n            vx=5; \n            c.vx=-5;\n        } else {\n            vx=-5; \n            c.vx=5;\n        }\n        print(\"Hit!!\");\n    }\n    update();\n}",
+              "AcTestM.tonyu": "extends Actor;\nnative Tonyu;\nnew AcTest{x:10, y:100, vx:5, vy:0, p:0};\nnew AcTest{x:320, y:100, vx:-5, vy:0, p:10};\nnew AcTest(50,150,3);\n\nfillStyle=\"yellow\";\nfor (i=0; i<300; i++) {\n    size=40;\n    text=\"スコア：\"+i;\n    x=200;\n    y=100;\n    if (i==50) waitFor(Tonyu.timeout(1000));\n    update();\n}\n/*\nwatchHit(AcTest,AcTest,\\(a,b) {\nif (a.x>b.x) {\na.vx=5; \nb.vx=-5;\n} else {\na.vx=-5; \nb.vx=5;\n}\nprint(\"Hit!\");\n});*/",
+              "Boot.tonyu": "native Tonyu;\r\nnative $;\r\nnative TError;\r\nnative Sprites;\r\nnative $LASTPOS;\r\nnative Key;\r\nnative Date;\r\n\r\nprint (\"Loading pats..\");\r\na=Tonyu.asyncResult();\r\nTonyu.currentProject.loadResource(a.receiver);\r\nwaitFor(a);\r\nprint (\"Loading pats done.\");\r\n    \r\nthg=Tonyu.threadGroup();\r\ncv=$(\"canvas\")[0];\r\nmainClass=Tonyu.getClass($mainClassName);\r\nif (!mainClass) {\r\n    TError( $mainClassName+\" というクラスはありません\", \r\n    \"不明\" ,0).raise();\r\n}\r\nSprites.clear();\r\nSprites.drawGrid=Tonyu.noviceMode;\r\nTonyu.runMode=true;\r\n$currentThreadGroup=thg;\r\nvar main=new mainClass();\r\n//thg.addObj(main);\r\n//Tonyu.currentThreadGroup=thg;\r\n$screenWidth=cv.width;\r\n$screenHeight=cv.height;\r\n$pat_fruits=30;\r\n//Tonyu.runMode=true;\r\nwhile (true) {\r\n    ti=new Date().getTime();\r\n    thg.steps();\r\n    Key.update();\r\n    $screenWidth=cv.width;\r\n    $screenHeight=cv.height;\r\n    Sprites.draw(cv);\r\n    Sprites.checkHit();\r\n    wt=33-(new Date().getTime()-ti);\r\n    if (wt<0) wt=0;\r\n    waitFor(Tonyu.timeout(wt));\r\n}\r\n    \r\n"
+            }
+          }
+    //-----paste end
+    );
+}
+
 requirejs.setName('ObjectMatcher');
 ObjectMatcher=function () {
     var OM={};
@@ -1711,6 +1713,59 @@ Tonyu.TraceTbl=function () {
     return TTB;
 };
 if (typeof getReq=="function") getReq.exports("Tonyu.TraceTbl");
+requirejs.setName('fukidashi');
+// From http://jsdo.it/hoge1e4/4wCX
+//  (x,y) の位置に  V（←これ何て言うんだっけ） の先端が来るようにふきだし表示
+function fukidashi(ctx, text, x, y, sz) {
+    var align="c";
+   var theight=20;
+   var margin=5;
+   var r=TextRect.draw(ctx, text, x,y-theight-margin-sz, sz, align);
+   ctx.beginPath();
+   ctx.moveTo(x , y);
+   ctx.lineTo(x+margin , y-theight);
+   ctx.lineTo(x+r.w/2+margin , y-theight);
+   ctx.lineTo(x+r.w/2+margin , y-theight-r.h-margin*2);
+   ctx.lineTo(x-r.w/2-margin , y-theight-r.h-margin*2);
+   ctx.lineTo(x-r.w/2-margin , y-theight);
+   ctx.lineTo(x-margin , y-theight);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+   //ctx.fillRect(r.x-margin, r.y-margin , r.w+margin*2 , r.h+margin*2);
+   //ctx.strokeRect(r.x-margin, r.y-margin , r.w+margin*2 , r.h+margin*2);
+
+   var fs=ctx.fillStyle;
+   ctx.fillStyle=ctx.strokeStyle;
+   TextRect.draw(ctx, text, x, y-theight-margin-sz, sz, align, "fill");
+   ctx.fillStyle=fs;
+}
+
+requirejs.setName('disp');
+// オブジェクトの内容を表示する． デバッグ用
+function disp(a) {
+    var p=IndentBuffer();
+    function disp2(a) {
+        if (a==null) return p("null%n");
+        if (typeof a == "string" )
+            return p("'%s'%n",a);
+        if (typeof a =="number")
+            return p("%s%n",a);
+        if (typeof a=="function") return p("func%n");
+        if (a instanceof Array) p("[%{");
+        else p("{%{");
+        var c = "";
+        for (var i in a) {
+            p(c + i+":");
+            disp2(a[i]);
+        }
+        if (a instanceof Array) p("%}]%n");
+        else  p("%}}%n");
+    }
+    disp2(a);
+    return p.buf;
+}
+
 requirejs.setName('Sprites');
 Sprites=function () {
     var sprites=[];
@@ -1856,31 +1911,6 @@ $(function () {
 
 });
 
-
-requirejs.setName('disp');
-// オブジェクトの内容を表示する． デバッグ用
-function disp(a) {
-    var p=IndentBuffer();
-    function disp2(a) {
-        if (a==null) return p("null%n");
-        if (typeof a == "string" )
-            return p("'%s'%n",a);
-        if (typeof a =="number")
-            return p("%s%n",a);
-        if (typeof a=="function") return p("func%n");
-        if (a instanceof Array) p("[%{");
-        else p("{%{");
-        var c = "";
-        for (var i in a) {
-            p(c + i+":");
-            disp2(a[i]);
-        }
-        if (a instanceof Array) p("%}]%n");
-        else  p("%}}%n");
-    }
-    disp2(a);
-    return p.buf;
-}
 
 requirejs.setName('Parser');
 Parser=function () {

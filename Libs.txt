@@ -1,7 +1,7 @@
 Tonyu System 2 includes these third party libraries:
  css/bootstrap.css (Twitter, Inc)
  js/lib/bootstrap.min.js (Twitter, Inc)
- js/lib/jquery-1.7.2.js
+ js/lib/jquery-1.10.1.js
  js/lib/jquery.hotkeys.js
  js/lib/jquery.tmpl.js
  js/lib/require.js (http://requirejs.org/docs/release/2.1.9/comments/require.js)

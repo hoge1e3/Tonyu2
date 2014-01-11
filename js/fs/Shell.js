@@ -58,6 +58,10 @@ define(["FS","Util"],function (FS,Util) {
             file.rm();
         }
     };
+    Shell.cat=function (file) {
+        file=resolve(file);
+        console.log(file.text());
+    };
     sh=Shell;
     return Shell;
 });

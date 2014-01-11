@@ -176,6 +176,7 @@ var reqConf={
             "ide/editor": "ide/editor",
             "fs/ROMk": "fs/ROMk",
             "fs/ROMds": "fs/ROMds",
+            "ProjectOptionsEditor": "ide/ProjectOptionsEditor",
             "FileList": "fs/FileList",
             "HttpHelper": "help/HttpHelper",
             "Wiki": "help/wiki",
