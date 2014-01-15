@@ -4,7 +4,13 @@ define(["FS","Util"],function (FS,Util) {
         Shell.cwd=resolve(dir);
         return Shell.pwd();
     };
-    function resolve(v) {
+    function resolve(v, mustExist) {
+        var r=resolve2(v);
+        if (mustExist && !r.exists()) throw r+": no such file or directory";
+        return r;
+    }
+    Shell.resolve=resolve;
+    function resolve2(v) {
         if (typeof v!="string") return v;
         if (Util.startsWith(v,"/")) return FS.get(v);
         var c=Shell.cwd;
@@ -15,7 +21,7 @@ define(["FS","Util"],function (FS,Util) {
         return c.rel(v);
     }
     Shell.pwd=function () {
-        return Shell.cwd.path();
+        return Shell.cwd;
     };
     Shell.ls=function (){
         return Shell.cwd.ls();
@@ -25,10 +31,10 @@ define(["FS","Util"],function (FS,Util) {
         if (options.v) {
             console.log("cp", from ,to);
         }
-        var f=resolve(from);
+        var f=resolve(from, true);
         var t=resolve(to);
-        if (!f.exists()) throw f+": No such file or dir.";
         if (f.isDir() && t.isDir()) {
+            var sum=0;
             f.recursive(function (src) {
                 var rel=src.relPath(f);
                 var dst=t.rel(rel);
@@ -38,29 +44,39 @@ define(["FS","Util"],function (FS,Util) {
                 if (!options.test) {
                     dst.copyFrom(src);
                 }
+                sum++;
             });
+            return sum;
+        } else if (!f.isDir() && !t.isDir()) {
+            t.text(f.text());
+        } else if (!f.isDir() && t.isDir()) {
+            t.rel(f.name()).text(f.text());
         } else {
-            throw "notimpl";
+            throw "Cannot copy file "+f+" to directory "+t;
         }
     };
     Shell.rm=function (file, options) {
         if (!options) options={};
-        file=resolve(file);
+        file=resolve(file, true);
         if (file.isDir() && options.r) {
             var dir=file;
+            var sum=0;
             dir.each(function (f) {
                 if (f.exists()) {
-                    Shell.rm(f, options);
+                    sum+=Shell.rm(f, options);
                 }
             });
             dir.rm();
+            return sum+1;
         } else {
             file.rm();
+            return 1;
         }
     };
     Shell.cat=function (file) {
-        file=resolve(file);
+        file=resolve(file, true);
         console.log(file.text());
+        return "";
     };
     sh=Shell;
     return Shell;

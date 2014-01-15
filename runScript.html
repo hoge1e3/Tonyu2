@@ -1,9 +1,11 @@
-<script src="js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="js/lib/jquery-1.10.1.js" type="text/javascript" data-nocat="true"></script>
 <script src="js/reqConf.js"></script>
-<script src="js/lib/require.js"></script>
+<script src="js/lib/require.js" data-nocat="true"></script>
+<script src="js/fs/genROM.js" data-nocat="true"></script>
+<script src="js/lib/dumpScript.js" data-nocat="true"></script>
 <script>
 requirejs.config(reqConf);
-requirejs(["dumpScript", "runScript"],function (){});
+requirejs(["runScript"],function (){});
 </script>
 <script type='text/tonyu' data-filename='.desktop'  data-wrap='80'>{"runMenuOrd":["Main","Ball"]}
 </script>

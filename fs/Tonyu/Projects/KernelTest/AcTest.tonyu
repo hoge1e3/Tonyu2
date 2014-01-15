@@ -1,0 +1,20 @@
+extends Actor;
+
+if (!vx) vx=0;
+if (!vy) vy=0;
+while (true) {
+    x+=vx;
+    y+=vy;
+    c=crashTo(AcTest);
+    if (c) {
+        if (x>c.x) {
+            vx=5; 
+            c.vx=-5;
+        } else {
+            vx=-5; 
+            c.vx=5;
+        }
+        print("Hit!!");
+    }
+    update();
+}

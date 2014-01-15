@@ -9,8 +9,8 @@ $(function () {
             type:"POST",
             url:"LS2File",
             data:{json: $("#text").val()},
-            success: function () {
-                alert("OK");
+            success: function (r) {
+                alert("OK: " + r);
             }
         });
     });

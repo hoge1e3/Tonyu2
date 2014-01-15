@@ -1,0 +1,24 @@
+extends BaseActor;
+native Sprites;
+native Tonyu;
+
+\new(x,y,p) {
+    super(x,y,p);
+    if (Tonyu.runMode) initSprite();
+}
+\initSprite() {
+    /*if (!_sprite) {
+        _sprite=Sprites.add{owner:this};
+    }*/
+    Sprites.addT(this);
+}
+
+/*
+\update() {
+    super.update();
+    if (_sprite) {
+        _sprite.x=x;
+        _sprite.y=y;
+        _sprite.p=p;
+    }
+}*/

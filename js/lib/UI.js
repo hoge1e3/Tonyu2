@@ -1,122 +1,174 @@
 define(["Util"],function (Util) {
-     var res={};
-     res=function () {
-            var expr=[];
-            for (var i=0 ; i<arguments.length ; i++) {
-                expr[i]=arguments[i];
+    var UI={};
+    UI=function () {
+        var expr=[];
+        for (var i=0 ; i<arguments.length ; i++) {
+            expr[i]=arguments[i];
+        }
+        var listeners=[];
+        var $vars={};
+        var $edits=[];
+        var res=parse(expr);
+        res.$edits=$edits;
+        res.$vars=$vars;
+        $edits.load=function (model) {
+            $edits.model=model;
+            $edits.forEach(function (edit) {
+                $edits.writeToJq(edit.params.$edit, edit.jq);
+            });
+        };
+        $edits.writeToJq=function ($edit, jq) {
+            var m=$edits.model;
+            if (!m) return;
+            var name = $edit.name;
+            var a=name.split(".");
+            for (var i=0 ; i<a.length ;i++) {
+                m=m[a[i]];
             }
-            var ctx={subParts:{}};
-            var listeners=[];
-            var $edits=[];
-            var res=parse(expr, ctx);
-            /*for (var i in ctx.subParts) {
-            	res[i]=ctx.subParts[i];
-            }*/
-            if ($edits.length>0) {
-                res.$edits=$edits;
-                $edits.load=function (model) {
-                    $edits.model=model;
-                    $edits.forEach(function (edit) {
-                        var name= edit.params.$edit.name || edit.params.$edit;
-                        var m=model;
-                        var a=name.split(".");
-                        console.log("Load ",edit.jq[0], edit.params, a);
-                        for (var i=0 ; i<a.length ;i++) {
-                            m=m[a[i]];
-                        }
-                        if (edit.params.type=="checkbox") {
-                            edit.jq.prop("checked",!!m);
-                        } else {
-                            edit.jq.val(m);
-                        }
-                    });
-                };
+            m=$edit.type.toVal(m);
+            if (jq.attr("type")=="checkbox") {
+                jq.prop("checked",!!m);
+            } else {
+                jq.val(m);
             }
-            res.$vars=ctx.subParts;
-            if (listeners.length>0) {
-                setTimeout(l,10);
+        };
+        $edits.validation={status:{}, onChange: function (name, err, jq) {
+            if ($vars.validationMessage) {
+                $vars.validationMessage.empty();
+                for (var name in $edits.validation.status) {
+                    $vars.validationMessage.append(UI("div", $edits.validation.status.err));
+                }
             }
-            function l() {
-                listeners.forEach(function (li) {
-                    li();
-                });
-                setTimeout(l,10);
+        }};
+        $edits.writeToModel=function ($edit, val ,jq) {
+            var m=$edits.model;
+            if (!m) return;
+            var name = $edit.name;
+            try {
+                val=$edit.type.fromVal(val);
+            } catch (e) {
+                $edits.validation.status[name]={err:e, jq:jq};
+                $edits.validation.onChange(name, e, jq);
+                return;
+            }
+            if ($edits.validation.status[name]) {
+                delete $edits.validation.status[name];
+                $edits.validation.onChange(name, null, jq);
+            }
+            var a=name.split(".");
+            for (var i=0 ; i<a.length ;i++) {
+                if (i==a.length-1) {
+                    if ($edits.onWriteToModel(name,val)) {
+
+                    } else {
+                        m[a[i]]=val;
+                    }
+                } else {
+                    m=m[a[i]];
+                }
+            }
+        };
+        $edits.onWriteToModel= function (name, val) {};
+
+        if (listeners.length>0) {
+            setTimeout(l,10);
+        }
+        function l() {
+            listeners.forEach(function (li) {
+                li();
+            });
+            setTimeout(l,10);
+        }
+        return res;
+        function parse(expr) {
+            if (expr instanceof Array) return parseArray(expr);
+            else if (typeof expr=="string") return parseString(expr);
+            else return expr;
+        }
+        function parseArray(a) {
+            var tag=a[0];
+            var i=1;
+            var res=$("<"+tag+">");
+            if (typeof a[i]=="object" && !(a[i] instanceof Array) ) {
+                parseAttr(res, a[i],tag);
+                i++;
+            }
+            while (i<a.length) {
+                res.append(parse(a[i]));
+                i++;
             }
             return res;
-            function parse(expr, ctx) {
-                if (expr instanceof Array) return parseArray(expr, ctx);
-                else if (typeof expr=="string") return parseString(expr, ctx);
-                else return expr;
+        }
+        function parseAttr(jq, o, tag) {
+            if (o.$var) {
+                $vars[o.$var]=jq;
             }
-            function parseArray(a, ctx) {
-                var tag=a[0];
-                var i=1;
-                var res=$("<"+tag+">");
-                if (typeof a[i]=="object" && !(a[i] instanceof Array) ) {
-                    var o=a[i];
-                    if (o.$var) {
-                        ctx.subParts[o.$var]=res;
-                    }
-                    if (o.$edit) {
-                        if (!o.on) o.on={};
-                        o.on.realtimechange=function (val) {
-                            console.log("Set", o.$edit, val);
-                            var m=$edits.model;
-                            if (!m) return;
-                            var name=o.$edit.name || o.$edit;
-                            var a=name.split(".");
-                            for (var i=0 ; i<a.length ;i++) {
-                                if (i==a.length-1) m[a[i]]=val;
-                                else m=m[a[i]];
-                            }
-                        };
-                        $edits.push({jq:res,params:o});
-                    }
-                    for (var k in o) {
-                        if (k=="on") {
-                            for (var e in o.on) (function (li) {
-                                if (e=="enterkey") {
-                                    res.on("keypress",function (ev) {
-                                        if (ev.which==13) li.apply(res,arguments);
-                                    });
-                                } else if (e=="realtimechange") {
-                                    var first=true,prev;
-                                    listeners.push(function () {
-                                        var cur;
-                                        if (o.type=="checkbox") {
-                                            cur=!!res.prop("checked");
-                                            //console.log("checkbox", cur);
-                                        } else {
-                                            cur=res.val();
-                                        }
-                                        if (first || prev!=cur) {
-                                            li.apply(res,[cur,prev]);
-                                            prev=cur;
-                                        }
-                                        first=false;
-                                    });
-                                } else {
-                                    res.on(e, li);
-                                }
-                            })(o.on[e]);
-
-                        } else if (k=="css") {
-                            res.css(o[k]);
-                        } else if (!Util.startsWith(k,"$")){
-                            res.attr(k,o[k]);
+            if (o.$edit) {
+                if (typeof o.$edit=="string") {
+                    o.$edit={name: o.$edit, type: UI.types.String};
+                }
+                if (!o.on) o.on={};
+                o.on.realtimechange=function (val) {
+                    $edits.writeToModel(o.$edit, val, jq);
+                };
+                if (!$vars[o.$edit.name]) $vars[o.$edit.name]=jq;
+                $edits.push({jq:jq,params:o});
+            }
+            for (var k in o) {
+                if (k=="on") {
+                    for (var e in o.on) on(e, o.on[e]);
+                } else if (k=="css") {
+                    jq.css(o[k]);
+                } else if (!Util.startsWith(k,"$")){
+                    jq.attr(k,o[k]);
+                }
+            }
+            function on(eType, li) {
+                if (eType=="enterkey") {
+                    jq.on("keypress",function (ev) {
+                        if (ev.which==13) li.apply(jq,arguments);
+                    });
+                } else if (eType=="realtimechange") {
+                    var first=true, prev;
+                    listeners.push(function () {
+                        var cur;
+                        if (o.type=="checkbox") {
+                            cur=!!jq.prop("checked");
+                        } else {
+                            cur=jq.val();
                         }
-                    }
-                    i++;
+                        if (first || prev!=cur) {
+                            li.apply(jq,[cur,prev]);
+                            prev=cur;
+                        }
+                        first=false;
+                    });
+                } else {
+                    jq.on(eType, li);
                 }
-                while (i<a.length) {
-                    res.append(parse(a[i],ctx));
-                    i++;
-                }
-                return res;
             }
-            function parseString(str) {
-                return $("<span>").text(str);
-            }
+        }
+        function parseString(str) {
+            return $("<span>").text(str);
+        }
     };
-    return res;
+    UI.types={
+       String: {
+           toVal: function (val) {
+               return val;
+           },
+           fromVal: function (val) {
+               return val;
+           }
+       },
+       Number: {
+           toVal: function (val) {
+               return val+"";
+           },
+           fromVal: function (val) {
+               return parseFloat(val);
+           }
+       }
+   };
+    return UI;
 });

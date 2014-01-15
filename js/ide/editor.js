@@ -307,7 +307,16 @@ $(function () {
         ProjectOptionsEditor(curPrj);
     });
     if (typeof progBar=="object") {progBar.clear();}
-
+    $("#rmPRJ").click(function () {
+        if (prompt(curProjectDir+"内のファイルをすべて削除しますか？削除する場合はDELETE と入力してください．","")!="DELETE") {
+            return;
+        }
+        sh.rm(curProjectDir,{r:1});
+        document.location.href="index.html";
+    });
+    sh.curFile=function () {
+        return fl.curFile();
+    };
     FileMenu.onMenuStart=save;
 });
 });

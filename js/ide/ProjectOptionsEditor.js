@@ -9,6 +9,12 @@ define(["UI"], function (UI) {
                 kernelEditable: false
              };
          */
+        var FType={
+                fromVal: function (val){
+                    return val;
+                },
+                toVal: function (v){ return val;}
+        };
         if (!TPR.odiag) {
             TPR.odiag=UI("div",{title:"プロジェクト オプション"},
                     ["h5","コンパイラ"],
@@ -20,7 +26,8 @@ define(["UI"], function (UI) {
                      ["h5","開発"],
                      ["div",
                       ["input", {type:"checkbox", $edit: "kernelEditable"}],
-                      "Kernelの開発を行う"]
+                      "Kernelの開発を行う"],
+                      ["div", {$var:"validationMessage", css:{color:"red"}}]
             );
         }
         TPR.odiag.$edits.load(opt);
@@ -29,9 +36,9 @@ define(["UI"], function (UI) {
             buttons: {
                 OK: function () {
                     TPR.odiag.dialog("close");
-                    console.log("Project opt Saved ",opt);
+                    console.log("Project opt Saved ",JSON.stringify(opt));
                     TPR.setOptions();
-                    console.log("new opt ",TPR.getOptions());
+                    console.log("new opt ",JSON.stringify(TPR.getOptions()));
                 }
             }
         });

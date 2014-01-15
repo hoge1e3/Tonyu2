@@ -1,0 +1,10 @@
+// 実行-> Main を実行
+t=0;
+while(true) {
+    if (t%5==0) {
+        new Ball{x:rnd($screenHeight),y:0, p:$pat_balls+rnd(25)};
+    }
+    t++;
+    update();
+}
+

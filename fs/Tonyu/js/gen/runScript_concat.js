@@ -2,9 +2,6 @@ requirejs.setName('reqConf');
 //"var reqConf="+JSON.stringify( getReq.genConf({base:"http://localhost:3002/js/", baseUrl:"js"})+";"
 var reqConf={
         "shim": {
-            /*"ide/wikiEditor": {
-                 deps: ["Wiki","TextEditor","FileList","FileMenu","FS","TextUtil"]
-            },*/
             TextEditor: {
                 exports: "TextEditor"
             },
@@ -91,10 +88,6 @@ var reqConf={
             "FS": {
                 "exports": "FS"
             },
-            /*"Tonyu.Project": {
-                "deps": ["Tonyu", "Tonyu.Compiler", "TError", "FS", "Sprites", "Key", "Tonyu.TraceTbl"],
-                "exports": "Tonyu.Project"
-            },*/
             "showErrorPos": {
                 "exports": "showErrorPos"
             },
@@ -175,8 +168,8 @@ var reqConf={
             "showErrorPos": "ide/ErrorPos",
             "TError": "ide/TError",
             "ide/editor": "ide/editor",
-            "fs/ROMk": "fs/ROMk",
-            "fs/ROMds": "fs/ROMds",
+            "fs/ROMk": "../fs/Tonyu/js/gen/ROMk",
+            "fs/ROMds": "../fs/Tonyu/js/gen/ROMds",
             "ProjectOptionsEditor": "ide/ProjectOptionsEditor",
             "FileList": "fs/FileList",
             "HttpHelper": "help/HttpHelper",
@@ -189,40 +182,6 @@ var reqConf={
         },
         "baseUrl": "js"
 };
-requirejs.setName('dumpScript');
-function dumpScript() {
-    var scrs=$("script");
-    var i=0;
-    var buf="";
-    var path2Name=genPath2Name();
-    g();
-    function g() {
-        var sc=scrs[i].src;
-        sc=sc.replace(/^.*\/js\//,"").replace(/\.js$/,"");
-        $.get(scrs[i].src,function (s) {
-            if (sc.length>0 && !sc.match(/jquery/) && !sc.match(/require/) ) {
-                if (!path2Name[sc]) throw "no path2name "+sc;
-                buf+="requirejs.setName('"+path2Name[sc]+"');\n";
-                buf+=s+"\n";
-            }
-            i++;
-            if (i<scrs.length) g();
-            else {
-                buf+="requirejs.start();\n";
-                $("<textarea>").attr({rows:24,cols:120}).val(buf).appendTo("body");
-                //console.log(buf);
-            }
-        });
-    }
-    function genPath2Name() {
-        var res={};
-        for (var k in reqConf.paths) {
-            var v=reqConf.paths[k];
-            res[v]=k;
-        }
-        return res;
-    }
-}
 requirejs.setName('runScript');
 define(["fs/ROMk","FS","Tonyu.Project","Shell","Sprites","ImageList"],
         function (romk,FS,Tonyu_Project, sh, Sprites, ImageList) {
@@ -472,7 +431,12 @@ define(["FS","Util"],function (FS,Util) {
         Shell.cwd=resolve(dir);
         return Shell.pwd();
     };
-    function resolve(v) {
+    function resolve(v, mustExist) {
+        var r=resolve2(v);
+        if (mustExist && !r.exists()) throw r+": no such file or directory";
+        return r;
+    }
+    function resolve2(v) {
         if (typeof v!="string") return v;
         if (Util.startsWith(v,"/")) return FS.get(v);
         var c=Shell.cwd;
@@ -493,10 +457,10 @@ define(["FS","Util"],function (FS,Util) {
         if (options.v) {
             console.log("cp", from ,to);
         }
-        var f=resolve(from);
+        var f=resolve(from, true);
         var t=resolve(to);
-        if (!f.exists()) throw f+": No such file or dir.";
         if (f.isDir() && t.isDir()) {
+            var sum=0;
             f.recursive(function (src) {
                 var rel=src.relPath(f);
                 var dst=t.rel(rel);
@@ -506,29 +470,39 @@ define(["FS","Util"],function (FS,Util) {
                 if (!options.test) {
                     dst.copyFrom(src);
                 }
+                sum++;
             });
+            return sum;
+        } else if (!f.isDir() && !t.isDir()) {
+            t.text(f.text());
+        } else if (!f.isDir() && t.isDir()) {
+            t.rel(f.name()).text(f.text());
         } else {
-            throw "notimpl";
+            throw "Cannot copy file "+f+" to directory "+t;
         }
     };
     Shell.rm=function (file, options) {
         if (!options) options={};
-        file=resolve(file);
+        file=resolve(file, true);
         if (file.isDir() && options.r) {
             var dir=file;
+            var sum=0;
             dir.each(function (f) {
                 if (f.exists()) {
-                    Shell.rm(f, options);
+                    sum+=Shell.rm(f, options);
                 }
             });
             dir.rm();
+            return sum+1;
         } else {
             file.rm();
+            return 1;
         }
     };
     Shell.cat=function (file) {
-        file=resolve(file);
+        file=resolve(file, true);
         console.log(file.text());
+        return "";
     };
     sh=Shell;
     return Shell;
@@ -886,148 +860,6 @@ FS=function () {
     };
     return FS;
 }();
-requirejs.setName('PatternParser');
-define(["Tonyu"], function (Tonyu) {return Tonyu.klass({
-    initialize: function (img) {
-        this.img=img;
-        this.height = img.height;
-        this.width = img.width;
-        var cv=this.newImage(img.width, img.height);
-        var ctx=cv.getContext("2d");
-        ctx.drawImage(img, 0,0);
-        this.ctx=ctx;
-        this.pixels=this.ctx.getImageData(0, 0, img.width, img.height).data;
-        this.base=this.getPixel(0,0);
-    },
-    newImage: function (w,h) {
-        var cv=document.createElement("canvas");
-        cv.width=w;
-        cv.height=h;
-        return cv;
-    },
-    getPixel: function (x,y) {
-        var imagePixelData = this.pixels;
-        var ofs=(x+y*this.width)*4;
-        var R = imagePixelData[0+ofs];
-        var G = imagePixelData[1+ofs];
-        var B = imagePixelData[2+ofs];
-        var A = imagePixelData[3+ofs];
-        return ((((A*256)+B)*256)+G)*256+R;
-    },
-    setPixel: function (x,y,p) {
-        var ofs=(x+y*this.width)*4;
-        this.pixels[0+ofs]=p & 255;
-        p=(p-(p&255))/256;
-        this.pixels[1+ofs]=p & 255;
-        p=(p-(p&255))/256;
-        this.pixels[2+ofs]=p & 255;
-        p=(p-(p&255))/256;
-        this.pixels[3+ofs]=p & 255;
-    },
-    parse: function () {
-        try {
-            console.log("parse()");
-            var res=[];// List of charpattern
-            for (var y=0; y<this.height ;y++) {
-                for (var x=0; x<this.width ;x++) {
-                    var c=this.getPixel(x, y);
-                    if (c!=this.base) {
-                        res.push(this.parse1Pattern(x,y));
-                    }
-                }
-            }
-            console.log("parsed:"+res.lenth);
-            return res;
-        } catch (p) {
-            if (p.isParseError) {
-                console.log("parse error! "+p);
-                return {image: this.img, x:0, y:0, width:this.width, height:this.height};
-            }
-            throw p;
-        }
-    },
-    parse1Pattern:function (x,y) {
-        function hex(s){return s;}
-        var trans=this.getPixel(x, y);
-        var dx=x,dy=y;
-        var base=this.base;
-        var width=this.width, height=this.height;
-        while (dx<width) {
-            var pixel = this.getPixel(dx,dy);
-            if (pixel!=trans) break;
-            dx++;
-        }
-        if (dx>=width || this.getPixel(dx,dy)!=base) {
-            throw PatterParseError(dx,dy,hex(this.getPixel(dx,dy))+"!="+hex(base));
-        }
-        dx--;
-        while (dy<height) {
-            if (this.getPixel(dx,dy)!=trans) break;
-            dy++;
-        }
-        if (dy>=height || this.getPixel(dx,dy)!=base) {
-            throw PatterParseError(dx,dy,hex(this.getPixel(dx,dy))+"!="+hex(base));
-        }
-        dy--;
-        var sx=x+1,sy=y+1,w=dx-sx,h=dy-sy;
-        console.log(sx,sy,w,h,dx,dy);
-        if (w*h==0) throw PatterParseError(dx, dy,"w*h==0");
-
-        var newim=this.newImage(w,h);
-        var nc=newim.getContext("2d");
-        var newImD=nc.getImageData(0,0,w,h);
-        var newD=newImD.data;
-        var di=0;
-        for (var ey=sy ; ey<dy ; ey++) {
-            for (var ex=sx ; ex<dx ; ex++) {
-                var p=this.getPixel(ex, ey);
-                if (p==trans) {
-                    newD[di++]=0;
-                    newD[di++]=(0);
-                    newD[di++]=(0);
-                    newD[di++]=(0);
-                } else {
-                    newD[di++]=(p&255);
-                    p=(p-(p&255))/256;
-                    newD[di++]=(p&255);
-                    p=(p-(p&255))/256;
-                    newD[di++]=(p&255);
-                    p=(p-(p&255))/256;
-                    newD[di++]=(p&255);
-                }
-            }
-        }
-        nc.putImageData(newImD,0,0);
-        for (var yy=sy-1; yy<=dy; yy++) {
-            for (var xx=sx-1; xx<=dx; xx++) {
-                this.setPixel(xx,yy, base);
-            }
-        }
-        return {image:newim, x:0, y:0, width:w, height:h};
-        function PatterParseError(x,y,msg) {
-            return {toString: function () {
-                return "at ("+x+","+y+") :"+msg;
-            }, isParseError:true};
-        }
-    }
-
-});});
-requirejs.setName('WebSite');
-define([], function () {
-    var loc=document.location.href;
-    if (loc.match(/jsrun\.it/)) {
-        return {
-            urlAliases: {
-                "images/base.png":"http://jsrun.it/assets/6/F/y/3/6Fy3B.png",
-                "images/Sample.png":"http://jsrun.it/assets/s/V/S/l/sVSlZ.png",
-                "images/neko.png":"http://jsrun.it/assets/j/D/9/q/jD9qQ.png"
-            }
-        };
-    }
-    return {
-        urlAliases: {}
-    };
-});
 requirejs.setName('Tonyu');
 Tonyu=function () {
     var preemptionTime=60;
@@ -1248,6 +1080,36 @@ Tonyu=function () {
             timeout:timeout,asyncResult:asyncResult};
 }();
 
+requirejs.setName('TextRect');
+TextRect=function () {
+ // テキストを描いて(type=="test"なら描いたふりをするだけ)， 描かれた部分の矩形領域を返す
+    function draw(ctx, text, x, topY, h, align , type) {
+        if (!align) align="center";
+        ctx.textBaseline="top";
+        setFontSize(ctx, h);
+        var met=ctx.measureText(text);
+        var res={y:topY, w: met.width, h:h};
+        switch (align.substring(0,1).toLowerCase()) {
+            case "l":
+                res.x=x;
+                break;
+            case "r":
+                res.x=x-met.width;
+                break;
+            case "c":
+                res.x=x-met.width/2;
+                break;
+        }
+        if (type=="fill") ctx.fillText(text, res.x,topY);
+        if (type=="stroke") ctx.strokeText(text, res.x,topY);
+        return res;
+    }
+    function setFontSize(ctx,sz) {
+        var post=ctx.font.replace(/^[0-9\.]+/,"");
+        ctx.font=sz+post;
+    };
+    return {draw:draw, setFontSize: setFontSize};
+}();
 requirejs.setName('Util');
 Util=function () {
 
@@ -1271,6 +1133,205 @@ function startsWith(str,prefix) {
 
 return {getQueryString:getQueryString, endsWith: endsWith, startsWith: startsWith};
 }();
+requirejs.setName('PatternParser');
+define(["Tonyu"], function (Tonyu) {return Tonyu.klass({
+	initialize: function (img) {
+		this.img=img;
+		this.height = img.height;
+		this.width = img.width;
+		var cv=this.newImage(img.width, img.height);
+		var ctx=cv.getContext("2d");
+		ctx.drawImage(img, 0,0);
+		this.ctx=ctx;
+		this.pixels=this.ctx.getImageData(0, 0, img.width, img.height).data;
+		this.base=this.getPixel(0,0);
+	},
+	newImage: function (w,h) {
+        var cv=document.createElement("canvas");
+        cv.width=w;
+        cv.height=h;
+        return cv;
+	},
+	getPixel: function (x,y) {
+		var imagePixelData = this.pixels;
+		var ofs=(x+y*this.width)*4;
+		var R = imagePixelData[0+ofs];
+  		var G = imagePixelData[1+ofs];
+  		var B = imagePixelData[2+ofs];
+  		var A = imagePixelData[3+ofs];
+  		return ((((A*256)+B)*256)+G)*256+R;
+	},
+	setPixel: function (x,y,p) {
+	    var ofs=(x+y*this.width)*4;
+	    this.pixels[0+ofs]=p & 255;
+	    p=(p-(p&255))/256;
+        this.pixels[1+ofs]=p & 255;
+        p=(p-(p&255))/256;
+        this.pixels[2+ofs]=p & 255;
+        p=(p-(p&255))/256;
+        this.pixels[3+ofs]=p & 255;
+	},
+	parse: function () {
+  		try {
+			console.log("parse()");
+  			var res=[];// List of charpattern
+			for (var y=0; y<this.height ;y++) {
+				for (var x=0; x<this.width ;x++) {
+					var c=this.getPixel(x, y);
+					if (c!=this.base) {
+						res.push(this.parse1Pattern(x,y));
+					}
+				}
+			}
+			console.log("parsed:"+res.lenth);
+			return res;
+  		} catch (p) {
+  		    if (p.isParseError) {
+  	            console.log("parse error! "+p);
+  	            return {image: this.img, x:0, y:0, width:this.width, height:this.height};
+  		    }
+  		    throw p;
+  		}
+	},
+  	parse1Pattern:function (x,y) {
+		function hex(s){return s;}
+		var trans=this.getPixel(x, y);
+		var dx=x,dy=y;
+		var base=this.base;
+		var width=this.width, height=this.height;
+		while (dx<width) {
+			var pixel = this.getPixel(dx,dy);
+			if (pixel!=trans) break;
+			dx++;
+		}
+		if (dx>=width || this.getPixel(dx,dy)!=base) {
+		    throw PatterParseError(dx,dy,hex(this.getPixel(dx,dy))+"!="+hex(base));
+		}
+		dx--;
+		while (dy<height) {
+			if (this.getPixel(dx,dy)!=trans) break;
+			dy++;
+		}
+		if (dy>=height || this.getPixel(dx,dy)!=base) {
+		    throw PatterParseError(dx,dy,hex(this.getPixel(dx,dy))+"!="+hex(base));
+		}
+		dy--;
+		var sx=x+1,sy=y+1,w=dx-sx,h=dy-sy;
+        console.log(sx,sy,w,h,dx,dy);
+		if (w*h==0) throw PatterParseError(dx, dy,"w*h==0");
+
+        var newim=this.newImage(w,h);
+        var nc=newim.getContext("2d");
+        var newImD=nc.getImageData(0,0,w,h);
+		var newD=newImD.data;
+		var di=0;
+		for (var ey=sy ; ey<dy ; ey++) {
+			for (var ex=sx ; ex<dx ; ex++) {
+			    var p=this.getPixel(ex, ey);
+				if (p==trans) {
+					newD[di++]=0;
+					newD[di++]=(0);
+					newD[di++]=(0);
+					newD[di++]=(0);
+				} else {
+                    newD[di++]=(p&255);
+                    p=(p-(p&255))/256;
+                    newD[di++]=(p&255);
+                    p=(p-(p&255))/256;
+                    newD[di++]=(p&255);
+                    p=(p-(p&255))/256;
+                    newD[di++]=(p&255);
+				}
+			}
+		}
+        nc.putImageData(newImD,0,0);
+		for (var yy=sy-1; yy<=dy; yy++) {
+		    for (var xx=sx-1; xx<=dx; xx++) {
+		        this.setPixel(xx,yy, base);
+		    }
+		}
+		return {image:newim, x:0, y:0, width:w, height:h};
+		function PatterParseError(x,y,msg) {
+		    return {toString: function () {
+		        return "at ("+x+","+y+") :"+msg;
+		    }, isParseError:true};
+		}
+	}
+
+});});
+requirejs.setName('WebSite');
+define([], function () {
+    var loc=document.location.href;
+    if (loc.match(/jsrun\.it/)) {
+        return {
+            urlAliases: {
+                "images/base.png":"http://jsrun.it/assets/6/F/y/3/6Fy3B.png",
+                "images/Sample.png":"http://jsrun.it/assets/s/V/S/l/sVSlZ.png",
+                "images/neko.png":"http://jsrun.it/assets/j/D/9/q/jD9qQ.png"
+            }
+        };
+    }
+    return {
+        urlAliases: {}
+    };
+});
+requirejs.setName('fs/ROMk');
+/*
+ rom on:
+   delete localStorage.norom
+ rom off:
+   localStorage.norom=1
+*/
+if (!localStorage.norom) {
+FS.mountROM(
+   //---- paste start
+        {
+            "base": "/Tonyu/Kernel/",
+            "data": {
+              "": "{\"NObjTest.tonyu\":{\"lastUpdate\":1387528337834},\".desktop\":{\"lastUpdate\":1389322242054},\"NObjTest2.tonyu\":{\"lastUpdate\":1389262967101},\"NoviceActor.tonyu\":{\"lastUpdate\":1389262971304},\"BaseActor.tonyu\":{\"lastUpdate\":1389272494341},\"Actor.tonyu\":{\"lastUpdate\":1389272429739},\"AcTest.tonyu\":{\"lastUpdate\":1389262980476},\"AcTestM.tonyu\":{\"lastUpdate\":1389263815817},\"Boot.tonyu\":{\"lastUpdate\":1389273731180}}",
+              "NObjTest.tonyu": "native console;\nnative alert;\n\n\\move(p) {\n    x+=p.vx;\n    y+=p.vy;\n}\n\nx=100;\ny=100;\nvy=0;vx=0;\nt=new NObjTest2{x:200, y: 50};\nwatchHit(NObjTest, NObjTest2, onH);\nwhile (true) {\n    if (getkey(\"left\")) vx=-2;\n    if (getkey(\"Right\")) vx=2;\n    if (getkey(\"up\")==1) vy=-2;\n    y+=vy;\n    vy+=0.1;\n    move{vx,vy};\n    // console.log(x+\",\"+y);\n    go(x,y);\n    sleep();\n    /*if (crashTo(t)) {\n    t.hide();\n    }*/\n}\n\\onH(a,b) {\n    b.hide();\n    a.vy=5;\n}",
+              ".desktop": "{\"runMenuOrd\":[\"AcTestM\",\"NObjTest\",\"NObjTest2\",\"AcTest\",\"NoviceActor\",\"BaseActor\",\"Actor\",\"Boot\"]}",
+              "NObjTest2.tonyu": "change(10);\ngo(x,y);\n",
+              "NoviceActor.tonyu": "extends BaseActor;\nnative Sprites;\nnative Tonyu;\n\n\\sleep(n) {\n    if(!n) n=1;\n    for(n;n>0;n--) update();\n}\n\\initSprite() {\n    if (!_sprite) _sprite=Sprites.add{owner:this};\n}\n\\say(text,size) {\n    if (!size) size=15;\n    initSprite();\n    _sprite.fukidashi={text:text, size:size, c:30};\n}\n\\sprite(x,y,p) {\n    go(x,y,p);\n}\n\\show(x,y,p) {\n    go(x,y,p);\n}\n\\go(x,y,p) {\n    initSprite();\n    _sprite.x=x;\n    _sprite.y=y;\n    if (p!=null) _sprite.p=p;\n    //update();\n}\n\\change(p) {\n    initSprite();\n    _sprite.p=p;\n}\n",
+              "BaseActor.tonyu": "extends null;\nnative Sprites;\nnative Tonyu;\nnative Key;\nnative console;\nnative Math;\nnative fukidashi;\nnative TextRect;\n\n\\new(x,y,p) {\n    if (Tonyu.runMode) {\n        var thg=currentThreadGroup();\n        if (thg) _th=thg.addObj(this);\n    }\n    if (typeof x==\"object\") Tonyu.extend(this, x);\n    else if (typeof x==\"number\") {\n        this.x=x;\n        this.y=y;\n        this.p=p;\n    }\n}\n\nnowait \\print(c) {\n    console.log(c);\n}\n\\update() {\n    ifwait {\n        _thread.suspend();\n    }\n}\nnowait \\getkey(k) {\n    return Key.getkey(k);\n}\nnowait \\hitTo(t) {\n    return crashTo(t);\n}\nnowait \\allCrash(t) {\n    var res=[];\n    var sp;\n    if (_sprite) sp=_sprite; else sp=this;\n    Sprites.sprites.forEach(\\(s) {\n        if (s!==this && \n        s instanceof t && \n        s.crashTo(sp)) {\n            res.push(s);    \n        }\n    });\n    return res;\n}\nnowait \\crashTo(t) {\n    if (!t) return false;\n    if (typeof t==\"function\") {\n        return allCrash(t)[0];\n    }\n    if (_sprite && t._sprite) {\n        return _sprite.crashTo(t._sprite);\n    }\n    //print([this, t]);\n    return (x!=null && y!=null && width && height &&\n    t && !t._isDead && t.x!=null && t.y!=null && t.width && t.height &&\n    Math.abs(x-t.x)*2<width+t.width &&\n    Math.abs(y-t.y)*2<height+t.height);\n}\nnowait \\watchHit(typeA,typeB,onHit) {\n    Sprites.watchHit(typeA , typeB, \\(a,b) {\n        onHit.apply(this,[a,b]);\n    });\n}\nnowait \\currentThreadGroup() {\n    return $currentThreadGroup; //Tonyu.currentThread.group;\n}\nnowait \\die() {\n    if (_th) {\n        _th.kill();\n    }\n    hide();\n    _isDead=true;\n}\nnowait \\hide() {\n    if (_sprite) {\n        Sprites.remove(_sprite);\n        _sprite=null;\n    } else {\n        Sprites.remove(this);\n    }\n}\nnowait \\rnd(r) {\n    if (typeof r==\"number\") {\n        return Math.floor(Math.random()*r);\n    }\n    return Math.random();\n}\nnowait \\detectShape() {\n    if (typeof p!=\"number\") {\n        if (text) return;\n        p=0;\n    }\n    p=Math.floor(p);\n    pImg=Sprites.getImageList()[p];\n    if (!pImg) return;\n    width=pImg.width;\n    height=pImg.height;\n}\n\\waitFor(f) {\n    ifwait {\n        _thread.waitFor(f);\n    }\n    update();\n}\nnowait \\isDead() {\n    return _isDead;\n}\nnowait \\draw(ctx) {\n    if (x==null || y==null) return;\n    detectShape();\n    if (pImg) {\n        ctx.drawImage(\n        pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,\n        x-width/2, y-height/2, width, height);\n    } else if (text) {\n        if (!size) size=15;\n        if (!align) align=\"center\";\n        if (!fillStyle) fillStyle=\"white\";\n        ctx.fillStyle=fillStyle;\n        TextRect.draw(ctx, text, x, y, size, align , \"fill\");\n    }\n    if (_fukidashi) {\n        if (_fukidashi.c>0) {\n            _fukidashi.c--;\n            ctx.fillStyle=\"white\";\n            ctx.strokeStyle=\"black\";\n            fukidashi ( ctx , _fukidashi.text, \n            x, y-height/2-10, _fukidashi.size);\n        }\n    }\n}",
+              "Actor.tonyu": "extends BaseActor;\nnative Sprites;\nnative Tonyu;\n\n\\new(x,y,p) {\n    super(x,y,p);\n    if (Tonyu.runMode) initSprite();\n}\n\\initSprite() {\n    /*if (!_sprite) {\n        _sprite=Sprites.add{owner:this};\n    }*/\n    Sprites.addT(this);\n}\n\n/*\n\\update() {\n    super.update();\n    if (_sprite) {\n        _sprite.x=x;\n        _sprite.y=y;\n        _sprite.p=p;\n    }\n}*/",
+              "AcTest.tonyu": "extends Actor;\n\nif (!vx) vx=0;\nif (!vy) vy=0;\nwhile (true) {\n    x+=vx;\n    y+=vy;\n    c=crashTo(AcTest);\n    if (c) {\n        if (x>c.x) {\n            vx=5; \n            c.vx=-5;\n        } else {\n            vx=-5; \n            c.vx=5;\n        }\n        print(\"Hit!!\");\n    }\n    update();\n}",
+              "AcTestM.tonyu": "extends Actor;\nnative Tonyu;\nnew AcTest{x:10, y:100, vx:5, vy:0, p:0};\nnew AcTest{x:320, y:100, vx:-5, vy:0, p:10};\nnew AcTest(50,150,3);\n\nfillStyle=\"yellow\";\nfor (i=0; i<300; i++) {\n    size=40;\n    text=\"スコア：\"+i;\n    x=200;\n    y=100;\n    if (i==50) waitFor(Tonyu.timeout(1000));\n    update();\n}\n/*\nwatchHit(AcTest,AcTest,\\(a,b) {\nif (a.x>b.x) {\na.vx=5; \nb.vx=-5;\n} else {\na.vx=-5; \nb.vx=5;\n}\nprint(\"Hit!\");\n});*/",
+              "Boot.tonyu": "native Tonyu;\r\nnative $;\r\nnative TError;\r\nnative Sprites;\r\nnative $LASTPOS;\r\nnative Key;\r\nnative Date;\r\n\r\nprint (\"Loading pats..\");\r\na=Tonyu.asyncResult();\r\nTonyu.currentProject.loadResource(a.receiver);\r\nwaitFor(a);\r\nprint (\"Loading pats done.\");\r\n    \r\nthg=Tonyu.threadGroup();\r\ncv=$(\"canvas\")[0];\r\nmainClass=Tonyu.getClass($mainClassName);\r\nif (!mainClass) {\r\n    TError( $mainClassName+\" というクラスはありません\", \r\n    \"不明\" ,0).raise();\r\n}\r\nSprites.clear();\r\nSprites.drawGrid=Tonyu.noviceMode;\r\nTonyu.runMode=true;\r\n$currentThreadGroup=thg;\r\nvar main=new mainClass();\r\n//thg.addObj(main);\r\n//Tonyu.currentThreadGroup=thg;\r\n$screenWidth=cv.width;\r\n$screenHeight=cv.height;\r\n$pat_fruits=30;\r\n//Tonyu.runMode=true;\r\nwhile (true) {\r\n    ti=new Date().getTime();\r\n    thg.steps();\r\n    Key.update();\r\n    $screenWidth=cv.width;\r\n    $screenHeight=cv.height;\r\n    Sprites.draw(cv);\r\n    Sprites.checkHit();\r\n    wt=33-(new Date().getTime()-ti);\r\n    if (wt<0) wt=0;\r\n    waitFor(Tonyu.timeout(wt));\r\n}\r\n    \r\n"
+            }
+          }
+    //-----paste end
+    );
+}
+
+requirejs.setName('fukidashi');
+// From http://jsdo.it/hoge1e4/4wCX
+//  (x,y) の位置に  V（←これ何て言うんだっけ） の先端が来るようにふきだし表示
+function fukidashi(ctx, text, x, y, sz) {
+    var align="c";
+   var theight=20;
+   var margin=5;
+   var r=TextRect.draw(ctx, text, x,y-theight-margin-sz, sz, align);
+   ctx.beginPath();
+   ctx.moveTo(x , y);
+   ctx.lineTo(x+margin , y-theight);
+   ctx.lineTo(x+r.w/2+margin , y-theight);
+   ctx.lineTo(x+r.w/2+margin , y-theight-r.h-margin*2);
+   ctx.lineTo(x-r.w/2-margin , y-theight-r.h-margin*2);
+   ctx.lineTo(x-r.w/2-margin , y-theight);
+   ctx.lineTo(x-margin , y-theight);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+   //ctx.fillRect(r.x-margin, r.y-margin , r.w+margin*2 , r.h+margin*2);
+   //ctx.strokeRect(r.x-margin, r.y-margin , r.w+margin*2 , r.h+margin*2);
+
+   var fs=ctx.fillStyle;
+   ctx.fillStyle=ctx.strokeStyle;
+   TextRect.draw(ctx, text, x, y-theight-margin-sz, sz, align, "fill");
+   ctx.fillStyle=fs;
+}
+
 requirejs.setName('Tonyu.Iterator');
 define(["Tonyu"], function (T) {
    function IT(set, arity) {
@@ -1364,65 +1425,6 @@ $(document).keydown(function (e) {
 $(document).keyup(function (e) {
     Key.stats[e.keyCode]=0;
 });
-requirejs.setName('TextRect');
-TextRect=function () {
- // テキストを描いて(type=="test"なら描いたふりをするだけ)， 描かれた部分の矩形領域を返す
-    function draw(ctx, text, x, topY, h, align , type) {
-        if (!align) align="center";
-        ctx.textBaseline="top";
-        setFontSize(ctx, h);
-        var met=ctx.measureText(text);
-        var res={y:topY, w: met.width, h:h};
-        switch (align.substring(0,1).toLowerCase()) {
-            case "l":
-                res.x=x;
-                break;
-            case "r":
-                res.x=x-met.width;
-                break;
-            case "c":
-                res.x=x-met.width/2;
-                break;
-        }
-        if (type=="fill") ctx.fillText(text, res.x,topY);
-        if (type=="stroke") ctx.strokeText(text, res.x,topY);
-        return res;
-    }
-    function setFontSize(ctx,sz) {
-        var post=ctx.font.replace(/^[0-9\.]+/,"");
-        ctx.font=sz+post;
-    };
-    return {draw:draw, setFontSize: setFontSize};
-}();
-requirejs.setName('fs/ROMk');
-/*
- rom on:
-   delete localStorage.norom
- rom off:
-   localStorage.norom=1
-*/
-if (!localStorage.norom) {
-FS.mountROM(
-   //---- paste start
-        {
-            "base": "/Tonyu/Kernel/",
-            "data": {
-              "": "{\"NObjTest.tonyu\":{\"lastUpdate\":1387528337834},\".desktop\":{\"lastUpdate\":1389322242054},\"NObjTest2.tonyu\":{\"lastUpdate\":1389262967101},\"NoviceActor.tonyu\":{\"lastUpdate\":1389262971304},\"BaseActor.tonyu\":{\"lastUpdate\":1389272494341},\"Actor.tonyu\":{\"lastUpdate\":1389272429739},\"AcTest.tonyu\":{\"lastUpdate\":1389262980476},\"AcTestM.tonyu\":{\"lastUpdate\":1389263815817},\"Boot.tonyu\":{\"lastUpdate\":1389273731180}}",
-              "NObjTest.tonyu": "native console;\nnative alert;\n\n\\move(p) {\n    x+=p.vx;\n    y+=p.vy;\n}\n\nx=100;\ny=100;\nvy=0;vx=0;\nt=new NObjTest2{x:200, y: 50};\nwatchHit(NObjTest, NObjTest2, onH);\nwhile (true) {\n    if (getkey(\"left\")) vx=-2;\n    if (getkey(\"Right\")) vx=2;\n    if (getkey(\"up\")==1) vy=-2;\n    y+=vy;\n    vy+=0.1;\n    move{vx,vy};\n    // console.log(x+\",\"+y);\n    go(x,y);\n    sleep();\n    /*if (crashTo(t)) {\n    t.hide();\n    }*/\n}\n\\onH(a,b) {\n    b.hide();\n    a.vy=5;\n}",
-              ".desktop": "{\"runMenuOrd\":[\"AcTestM\",\"NObjTest\",\"NObjTest2\",\"AcTest\",\"NoviceActor\",\"BaseActor\",\"Actor\",\"Boot\"]}",
-              "NObjTest2.tonyu": "change(10);\ngo(x,y);\n",
-              "NoviceActor.tonyu": "extends BaseActor;\nnative Sprites;\nnative Tonyu;\n\n\\sleep(n) {\n    if(!n) n=1;\n    for(n;n>0;n--) update();\n}\n\\initSprite() {\n    if (!_sprite) _sprite=Sprites.add{owner:this};\n}\n\\say(text,size) {\n    if (!size) size=15;\n    initSprite();\n    _sprite.fukidashi={text:text, size:size, c:30};\n}\n\\sprite(x,y,p) {\n    go(x,y,p);\n}\n\\show(x,y,p) {\n    go(x,y,p);\n}\n\\go(x,y,p) {\n    initSprite();\n    _sprite.x=x;\n    _sprite.y=y;\n    if (p!=null) _sprite.p=p;\n    //update();\n}\n\\change(p) {\n    initSprite();\n    _sprite.p=p;\n}\n",
-              "BaseActor.tonyu": "extends null;\nnative Sprites;\nnative Tonyu;\nnative Key;\nnative console;\nnative Math;\nnative fukidashi;\nnative TextRect;\n\n\\new(x,y,p) {\n    if (Tonyu.runMode) {\n        var thg=currentThreadGroup();\n        if (thg) _th=thg.addObj(this);\n    }\n    if (typeof x==\"object\") Tonyu.extend(this, x);\n    else if (typeof x==\"number\") {\n        this.x=x;\n        this.y=y;\n        this.p=p;\n    }\n}\n\nnowait \\print(c) {\n    console.log(c);\n}\n\\update() {\n    ifwait {\n        _thread.suspend();\n    }\n}\nnowait \\getkey(k) {\n    return Key.getkey(k);\n}\nnowait \\hitTo(t) {\n    return crashTo(t);\n}\nnowait \\allCrash(t) {\n    var res=[];\n    var sp;\n    if (_sprite) sp=_sprite; else sp=this;\n    Sprites.sprites.forEach(\\(s) {\n        if (s!==this && \n        s instanceof t && \n        s.crashTo(sp)) {\n            res.push(s);    \n        }\n    });\n    return res;\n}\nnowait \\crashTo(t) {\n    if (!t) return false;\n    if (typeof t==\"function\") {\n        return allCrash(t)[0];\n    }\n    if (_sprite && t._sprite) {\n        return _sprite.crashTo(t._sprite);\n    }\n    //print([this, t]);\n    return (x!=null && y!=null && width && height &&\n    t && !t._isDead && t.x!=null && t.y!=null && t.width && t.height &&\n    Math.abs(x-t.x)*2<width+t.width &&\n    Math.abs(y-t.y)*2<height+t.height);\n}\nnowait \\watchHit(typeA,typeB,onHit) {\n    Sprites.watchHit(typeA , typeB, \\(a,b) {\n        onHit.apply(this,[a,b]);\n    });\n}\nnowait \\currentThreadGroup() {\n    return $currentThreadGroup; //Tonyu.currentThread.group;\n}\nnowait \\die() {\n    if (_th) {\n        _th.kill();\n    }\n    hide();\n    _isDead=true;\n}\nnowait \\hide() {\n    if (_sprite) {\n        Sprites.remove(_sprite);\n        _sprite=null;\n    } else {\n        Sprites.remove(this);\n    }\n}\nnowait \\rnd(r) {\n    if (typeof r==\"number\") {\n        return Math.floor(Math.random()*r);\n    }\n    return Math.random();\n}\nnowait \\detectShape() {\n    if (typeof p!=\"number\") {\n        if (text) return;\n        p=0;\n    }\n    p=Math.floor(p);\n    pImg=Sprites.getImageList()[p];\n    if (!pImg) return;\n    width=pImg.width;\n    height=pImg.height;\n}\n\\waitFor(f) {\n    ifwait {\n        _thread.waitFor(f);\n    }\n    update();\n}\nnowait \\isDead() {\n    return _isDead;\n}\nnowait \\draw(ctx) {\n    if (x==null || y==null) return;\n    detectShape();\n    if (pImg) {\n        ctx.drawImage(\n        pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,\n        x-width/2, y-height/2, width, height);\n    } else if (text) {\n        if (!size) size=15;\n        if (!align) align=\"center\";\n        if (!fillStyle) fillStyle=\"white\";\n        ctx.fillStyle=fillStyle;\n        TextRect.draw(ctx, text, x, y, size, align , \"fill\");\n    }\n    if (_fukidashi) {\n        if (_fukidashi.c>0) {\n            _fukidashi.c--;\n            ctx.fillStyle=\"white\";\n            ctx.strokeStyle=\"black\";\n            fukidashi ( ctx , _fukidashi.text, \n            x, y-height/2-10, _fukidashi.size);\n        }\n    }\n}",
-              "Actor.tonyu": "extends BaseActor;\nnative Sprites;\nnative Tonyu;\n\n\\new(x,y,p) {\n    super(x,y,p);\n    if (Tonyu.runMode) initSprite();\n}\n\\initSprite() {\n    /*if (!_sprite) {\n        _sprite=Sprites.add{owner:this};\n    }*/\n    Sprites.addT(this);\n}\n\n/*\n\\update() {\n    super.update();\n    if (_sprite) {\n        _sprite.x=x;\n        _sprite.y=y;\n        _sprite.p=p;\n    }\n}*/",
-              "AcTest.tonyu": "extends Actor;\n\nif (!vx) vx=0;\nif (!vy) vy=0;\nwhile (true) {\n    x+=vx;\n    y+=vy;\n    c=crashTo(AcTest);\n    if (c) {\n        if (x>c.x) {\n            vx=5; \n            c.vx=-5;\n        } else {\n            vx=-5; \n            c.vx=5;\n        }\n        print(\"Hit!!\");\n    }\n    update();\n}",
-              "AcTestM.tonyu": "extends Actor;\nnative Tonyu;\nnew AcTest{x:10, y:100, vx:5, vy:0, p:0};\nnew AcTest{x:320, y:100, vx:-5, vy:0, p:10};\nnew AcTest(50,150,3);\n\nfillStyle=\"yellow\";\nfor (i=0; i<300; i++) {\n    size=40;\n    text=\"スコア：\"+i;\n    x=200;\n    y=100;\n    if (i==50) waitFor(Tonyu.timeout(1000));\n    update();\n}\n/*\nwatchHit(AcTest,AcTest,\\(a,b) {\nif (a.x>b.x) {\na.vx=5; \nb.vx=-5;\n} else {\na.vx=-5; \nb.vx=5;\n}\nprint(\"Hit!\");\n});*/",
-              "Boot.tonyu": "native Tonyu;\r\nnative $;\r\nnative TError;\r\nnative Sprites;\r\nnative $LASTPOS;\r\nnative Key;\r\nnative Date;\r\n\r\nprint (\"Loading pats..\");\r\na=Tonyu.asyncResult();\r\nTonyu.currentProject.loadResource(a.receiver);\r\nwaitFor(a);\r\nprint (\"Loading pats done.\");\r\n    \r\nthg=Tonyu.threadGroup();\r\ncv=$(\"canvas\")[0];\r\nmainClass=Tonyu.getClass($mainClassName);\r\nif (!mainClass) {\r\n    TError( $mainClassName+\" というクラスはありません\", \r\n    \"不明\" ,0).raise();\r\n}\r\nSprites.clear();\r\nSprites.drawGrid=Tonyu.noviceMode;\r\nTonyu.runMode=true;\r\n$currentThreadGroup=thg;\r\nvar main=new mainClass();\r\n//thg.addObj(main);\r\n//Tonyu.currentThreadGroup=thg;\r\n$screenWidth=cv.width;\r\n$screenHeight=cv.height;\r\n$pat_fruits=30;\r\n//Tonyu.runMode=true;\r\nwhile (true) {\r\n    ti=new Date().getTime();\r\n    thg.steps();\r\n    Key.update();\r\n    $screenWidth=cv.width;\r\n    $screenHeight=cv.height;\r\n    Sprites.draw(cv);\r\n    Sprites.checkHit();\r\n    wt=33-(new Date().getTime()-ti);\r\n    if (wt<0) wt=0;\r\n    waitFor(Tonyu.timeout(wt));\r\n}\r\n    \r\n"
-            }
-          }
-    //-----paste end
-    );
-}
-
 requirejs.setName('ObjectMatcher');
 ObjectMatcher=function () {
     var OM={};
@@ -1476,62 +1478,62 @@ ObjectMatcher=function () {
 }();
 requirejs.setName('IndentBuffer');
 IndentBuffer=function () {
-    var $=function () {
-        var args=arguments;
-        var fmt=args[0];
-        //console.log(fmt+ " -- "+arguments[0]+" --- "+arguments.length);
-        var ai=0;
-        function shiftArg() {
-            ai++;
-            var res=args[ai];
-            if (res==null) {
-                console.log(arguments);
-                throw (ai+"th null param: fmt="+fmt);
-            }
-            return res;
-        }
-        function nc(val, msg) {
-            if(val==null) throw msg;
-            return val;
-        }
-        while (true) {
-            var i=fmt.indexOf("%");
-            if (i<0) {$.buf+=fmt; break;}
-            $.buf+=fmt.substring(0,i);
-            i++;
-            var fstr=fmt.charAt(i);
-            if (fstr=="s") {
-                var str=shiftArg();
-                if (typeof str == "string" || typeof str =="number") {}
-                else if (str==null) str="null";
-                else if (str.text) str=str.text;
-                $.buf+=str;
-                i++;
-            } else if (fstr=="d") {
+	var $=function () {
+		var args=arguments;
+		var fmt=args[0];
+		//console.log(fmt+ " -- "+arguments[0]+" --- "+arguments.length);
+		var ai=0;
+		function shiftArg() {
+			ai++;
+			var res=args[ai];
+			if (res==null) {
+			    console.log(arguments);
+			    throw (ai+"th null param: fmt="+fmt);
+			}
+			return res;
+		}
+		function nc(val, msg) {
+		    if(val==null) throw msg;
+		    return val;
+		}
+		while (true) {
+			var i=fmt.indexOf("%");
+			if (i<0) {$.buf+=fmt; break;}
+			$.buf+=fmt.substring(0,i);
+			i++;
+			var fstr=fmt.charAt(i);
+			if (fstr=="s") {
+				var str=shiftArg();
+				if (typeof str == "string" || typeof str =="number") {}
+				else if (str==null) str="null";
+				else if (str.text) str=str.text;
+				$.buf+=str;
+				i++;
+			} else if (fstr=="d") {
                 var n=shiftArg();
                 if (typeof n!="number") throw (n+" is not a number: fmt="+fmt);
                 $.buf+=n;
                 i++;
-            } else if (fstr=="n") {
-                $.ln();
-                i++;
-            } else if (fstr=="{") {
-                $.indent();
-                i++;
-            } else if (fstr=="}") {
-                $.dedent();
-                i++;
-            } else if (fstr=="%") {
-                $.buf+="%";
-            } else if (fstr=="f") {
-                shiftArg()($);
-                i++;
-            } else if (fstr=="v") {
-                var a=shiftArg();
-                if (!a) throw "Null %v";
+			} else if (fstr=="n") {
+				$.ln();
+				i++;
+			} else if (fstr=="{") {
+				$.indent();
+				i++;
+			} else if (fstr=="}") {
+				$.dedent();
+				i++;
+			} else if (fstr=="%") {
+				$.buf+="%";
+			} else if (fstr=="f") {
+				shiftArg()($);
+				i++;
+			} else if (fstr=="v") {
+			    var a=shiftArg();
+			    if (!a) throw "Null %v";
                 if (typeof a!="object") throw "nonobject %v:"+a;
-                $.visitor.visit(a);
-                i++;
+				$.visitor.visit(a);
+				i++;
             } else if (fstr=="z") {
                 var place=shiftArg();
                 if ("val" in place) {
@@ -1551,7 +1553,7 @@ IndentBuffer=function () {
                 }
                 $.buf+=place.gen;
                 i++;
-            } else if (fstr=="j") {
+			} else if (fstr=="j") {
                 var sp_node=shiftArg();
                 var sp=sp_node[0];
                 var node=sp_node[1];
@@ -1566,23 +1568,23 @@ IndentBuffer=function () {
                     $.visitor.visit(n);
                 });
                 i++;
-            } else if (fstr=="D"){
-                shiftArg();
-                i++;
-            } else {
-                i+=2;
-            }
-            fmt=fmt.substring(i);
-        }
-    };
-    $.print=function (v) {
-        $.buf+=v;
-    };
-    $.printf=$;
-    $.buf="";
-    $.lazy=function (place) {
-        if (!place) place={};
-        place.gen=("GENERETID"+Math.random()+"DITERENEG").replace(/\W/g,"");
+			} else if (fstr=="D"){
+			    shiftArg();
+			    i++;
+			} else {
+				i+=2;
+			}
+			fmt=fmt.substring(i);
+		}
+	};
+	$.print=function (v) {
+	    $.buf+=v;
+	};
+	$.printf=$;
+	$.buf="";
+	$.lazy=function (place) {
+	    if (!place) place={};
+	    place.gen=("GENERETID"+Math.random()+"DITERENEG").replace(/\W/g,"");
         place.reg=new RegExp(place.gen,"g");
         //place.src=place.gen;
         place.put=function (val) {
@@ -1592,22 +1594,22 @@ IndentBuffer=function () {
         };
         return place;
         //return {put: function () {} };
-    };
-    $.ln=function () {
-        $.buf+="\n"+$.indentBuf;
-    };
-    $.indent=function () {
-        $.indentBuf+=$.indentStr;
-        $.buf+="\n"+$.indentBuf;
-    };
-    $.dedent = function () {
-        var len=$.indentStr.length;
-        $.buf=$.buf.substring(0,$.buf.length-len);
-        $.indentBuf=$.indentBuf.substring(0 , $.indentBuf.length-len);
-    };
-    $.indentBuf="";
-    $.indentStr="  ";
-    return $;
+	};
+	$.ln=function () {
+		$.buf+="\n"+$.indentBuf;
+	};
+	$.indent=function () {
+		$.indentBuf+=$.indentStr;
+		$.buf+="\n"+$.indentBuf;
+	};
+	$.dedent = function () {
+		var len=$.indentStr.length;
+		$.buf=$.buf.substring(0,$.buf.length-len);
+		$.indentBuf=$.indentBuf.substring(0 , $.indentBuf.length-len);
+	};
+	$.indentBuf="";
+	$.indentStr="  ";
+	return $;
 };
 requirejs.setName('context');
 /*
@@ -1654,118 +1656,30 @@ function context() {
 }
 requirejs.setName('Visitor');
 Visitor = function (funcs) {
-    var $={funcs:funcs};
-    $.visit=function (node) {
-        if ($.debug) console.log("visit ",node.type, node.pos);
-        var v=(node ? funcs[node.type] :null);
-        if (v) return v.call($, node);
-        else if ($.def) return $.def(node);
-    };
-    $.replace=function (node) {
-        if (!$.def) {
-            $.def=function (node) {
-                if (typeof node=="object"){
-                    for (var i in node) {
-                        if (node[i] && typeof node[i]=="object") {
-                            node[i]=$.visit(node[i]);
-                        }
-                    }
-                }
-                return node;
-            };
-        }
-        return $.visit(node);
-    };
-    return $;
+	var $={funcs:funcs};
+	$.visit=function (node) {
+		if ($.debug) console.log("visit ",node.type, node.pos);
+		var v=(node ? funcs[node.type] :null);
+		if (v) return v.call($, node);
+		else if ($.def) return $.def(node);
+	};
+	$.replace=function (node) {
+		if (!$.def) {
+			$.def=function (node) {
+				if (typeof node=="object"){
+					for (var i in node) {
+						if (node[i] && typeof node[i]=="object") {
+							node[i]=$.visit(node[i]);
+						}
+					}
+				}
+				return node;
+			};
+		}
+		return $.visit(node);
+	};
+	return $;
 };
-requirejs.setName('Tonyu.TraceTbl');
-Tonyu.TraceTbl=function () {
-    var TTB={};
-    var POSMAX=1000000;
-    var pathIdSeq=1;
-    var PATHIDMAX=10000;
-    var path2Id={}, id2Path=[];
-    TTB.add=function (file, pos){
-        var path=file.path();
-        var pathId=path2Id[path];
-        if (pathId==undefined) {
-            pathId=pathIdSeq++;
-            if (pathIdSeq>PATHIDMAX) pathIdSeq=0;
-            path2Id[path]=pathId;
-            id2Path[pathId]=path;
-        }
-        if (pos>=POSMAX) pos=POSMAX-1;
-        var id=pathId*POSMAX+pos;
-        return id;
-    };
-    TTB.decode=function (id) {
-        var pos=id%POSMAX;
-        var pathId=(id-pos)/POSMAX;
-        var path=id2Path[pathId];
-        if (path) {
-            var f=FS.get(path);
-            return TError("Trace info", f, pos);
-        } else {
-            return null;
-            //return TError("Trace info", "unknown src id="+id, pos);
-        }
-    };
-    return TTB;
-};
-if (typeof getReq=="function") getReq.exports("Tonyu.TraceTbl");
-requirejs.setName('fukidashi');
-// From http://jsdo.it/hoge1e4/4wCX
-//  (x,y) の位置に  V（←これ何て言うんだっけ） の先端が来るようにふきだし表示
-function fukidashi(ctx, text, x, y, sz) {
-    var align="c";
-   var theight=20;
-   var margin=5;
-   var r=TextRect.draw(ctx, text, x,y-theight-margin-sz, sz, align);
-   ctx.beginPath();
-   ctx.moveTo(x , y);
-   ctx.lineTo(x+margin , y-theight);
-   ctx.lineTo(x+r.w/2+margin , y-theight);
-   ctx.lineTo(x+r.w/2+margin , y-theight-r.h-margin*2);
-   ctx.lineTo(x-r.w/2-margin , y-theight-r.h-margin*2);
-   ctx.lineTo(x-r.w/2-margin , y-theight);
-   ctx.lineTo(x-margin , y-theight);
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
-   //ctx.fillRect(r.x-margin, r.y-margin , r.w+margin*2 , r.h+margin*2);
-   //ctx.strokeRect(r.x-margin, r.y-margin , r.w+margin*2 , r.h+margin*2);
-
-   var fs=ctx.fillStyle;
-   ctx.fillStyle=ctx.strokeStyle;
-   TextRect.draw(ctx, text, x, y-theight-margin-sz, sz, align, "fill");
-   ctx.fillStyle=fs;
-}
-
-requirejs.setName('disp');
-// オブジェクトの内容を表示する． デバッグ用
-function disp(a) {
-    var p=IndentBuffer();
-    function disp2(a) {
-        if (a==null) return p("null%n");
-        if (typeof a == "string" )
-            return p("'%s'%n",a);
-        if (typeof a =="number")
-            return p("%s%n",a);
-        if (typeof a=="function") return p("func%n");
-        if (a instanceof Array) p("[%{");
-        else p("{%{");
-        var c = "";
-        for (var i in a) {
-            p(c + i+":");
-            disp2(a[i]);
-        }
-        if (a instanceof Array) p("%}]%n");
-        else  p("%}}%n");
-    }
-    disp2(a);
-    return p.buf;
-}
-
 requirejs.setName('Sprites');
 Sprites=function () {
     var sprites=[];
@@ -1912,6 +1826,66 @@ $(function () {
 });
 
 
+requirejs.setName('Tonyu.TraceTbl');
+Tonyu.TraceTbl=function () {
+    var TTB={};
+    var POSMAX=1000000;
+    var pathIdSeq=1;
+    var PATHIDMAX=10000;
+    var path2Id={}, id2Path=[];
+    TTB.add=function (file, pos){
+        var path=file.path();
+        var pathId=path2Id[path];
+        if (pathId==undefined) {
+            pathId=pathIdSeq++;
+            if (pathIdSeq>PATHIDMAX) pathIdSeq=0;
+            path2Id[path]=pathId;
+            id2Path[pathId]=path;
+        }
+        if (pos>=POSMAX) pos=POSMAX-1;
+        var id=pathId*POSMAX+pos;
+        return id;
+    };
+    TTB.decode=function (id) {
+        var pos=id%POSMAX;
+        var pathId=(id-pos)/POSMAX;
+        var path=id2Path[pathId];
+        if (path) {
+            var f=FS.get(path);
+            return TError("Trace info", f, pos);
+        } else {
+            return null;
+            //return TError("Trace info", "unknown src id="+id, pos);
+        }
+    };
+    return TTB;
+};
+if (typeof getReq=="function") getReq.exports("Tonyu.TraceTbl");
+requirejs.setName('disp');
+// オブジェクトの内容を表示する． デバッグ用
+function disp(a) {
+	var p=IndentBuffer();
+	function disp2(a) {
+		if (a==null) return p("null%n");
+		if (typeof a == "string" )
+			return p("'%s'%n",a);
+		if (typeof a =="number")
+			return p("%s%n",a);
+		if (typeof a=="function") return p("func%n");
+		if (a instanceof Array) p("[%{");
+		else p("{%{");
+		var c = "";
+		for (var i in a) {
+			p(c + i+":");
+			disp2(a[i]);
+		}
+		if (a instanceof Array) p("%}]%n");
+		else  p("%}}%n");
+	}
+	disp2(a);
+	return p.buf;
+}
+
 requirejs.setName('Parser');
 Parser=function () {
     function extend(dst, src) {
@@ -1929,18 +1903,18 @@ Parser=function () {
         nc: nc
     };
     $.dispTbl=function (tbl) {
-        var buf="";
-        var h={};
-        if (!tbl) return buf;
-        for (var i in tbl) {
-            var n=tbl[i].name;
-            if (!h[n]) h[n]="";
-            h[n]+=i;
-        }
-        for (var n in h) {
-            buf+=h[n]+"->"+n+",";
-        }
-        return buf;
+    	var buf="";
+    	var h={};
+    	if (!tbl) return buf;
+    	for (var i in tbl) {
+    		var n=tbl[i].name;
+    		if (!h[n]) h[n]="";
+    		h[n]+=i;
+    	}
+    	for (var n in h) {
+    		buf+=h[n]+"->"+n+",";
+    	}
+    	return buf;
     }
     //var console={log:function (s) { $.consoleBuffer+=s; }};
     function _debug(s) {console.log(s);}
@@ -1952,21 +1926,21 @@ Parser=function () {
     };
     $.create=Parser.create;
     function nc(v,name) {
-        if (v==null) throw name+" is null!";
-        return v;
+    	if (v==null) throw name+" is null!";
+    	return v;
     }
     extend(Parser.prototype, {// class Parser
         // Parser.parse:: State->State
         except: function (f) {
-            var t=this;
-            return Parser.create(function (s) {
-                var res=t.parse(s);
-                if (!res.success) return res;
-                if (f.apply({}, res.result)) {
-                    res.success=false;
-                }
-                return res;
-            }).setName("(except "+t.name+")");
+        	var t=this;
+        	return Parser.create(function (s) {
+        		var res=t.parse(s);
+        		if (!res.success) return res;
+        		if (f.apply({}, res.result)) {
+        			res.success=false;
+        		}
+        		return res;
+        	}).setName("(except "+t.name+")");
         },
         noFollow: function (p) {
             var t=this;
@@ -1980,10 +1954,10 @@ Parser=function () {
             }).setName("("+t.name+" noFollow "+p.name+")");
         },
         and: function(next) {// Parser.and:: (Function|Parser)  -> Parser
-            nc(next,"next"); // next==next
-            var t=this; // Parser
+        	nc(next,"next"); // next==next
+        	var t=this; // Parser
             var res=Parser.create(function(s){ //s:State
-                var r1=t.parse(s); // r1:State
+            	var r1=t.parse(s); // r1:State
                 if (!r1.success) return r1;
                 var r2=next.parse(r1); //r2:State
                 if (r2.success) {
@@ -2008,210 +1982,210 @@ Parser=function () {
             return res;
         },
         first: function (space, ct) {
-            if (space==null) throw "Space is null2!";
-            if (typeof ct=="string") {
-                this._first={space: space, chars:ct};
-            } else {
-                this._first={space: space, tbl:ct};
-            }
-            return this;
+        	if (space==null) throw "Space is null2!";
+        	if (typeof ct=="string") {
+        		this._first={space: space, chars:ct};
+        	} else {
+        		this._first={space: space, tbl:ct};
+        	}
+        	return this;
         },
         inheritFirst: function (p) {
             this._first=p._first;
             return this;
         },
         unifyFirst: function (other) {
-            //return null;
-            var tbl={}; // tbl.* includes tbl.ALL
-            function setTbl(src) {// src:Parser
-                var cs=src._first.chars;
-                function mk(c) {
-                    if (!tbl[c]) {
-                        if (!tbl.ALL) tbl[c]=src;
-                        else tbl[c]=tbl.ALL.orNoUnify(src);
-                    } else {
-                        tbl[c]=tbl[c].orNoUnify(src);
-                    }
-                }
-                if (cs) {
-                    for (var i=0; i<cs.length ; i++) {
-                        var c=cs.substring(i,i+1);
-                        mk(c);
-                    }
-                } else {
-                    mk("ALL");
-                    for (var i in tbl) {
-                        if (i==="ALL") continue;
-                        tbl[i]=tbl[i].orNoUnify(src);
-                    }
-                }
-            }
-            function mergeTbl() {
-                var t2=other._first.tbl;
-                if ("ALL" in t2) {
-                    for (var c in tbl) {
-                        tbl[c]=tbl[c].orNoUnify(other);
-                    }
-                    for (var c in t2) {
-                        if (!tbl[c]) {
-                            tbl[c]=other;
-                        }
-                    }
-                } else {
-                    for (var c in t2) {
-                        if (!tbl[c]) {
-                            tbl[c]=other;
-                        } else {
-                            tbl[c]=tbl[c].orNoUnify(other);
-                        }
-                    }
-                }
-            }
-            if (!this._first) return null;
-            if (!other._first) return null;
-            var space=this._first.space;
-            if (space!==other._first.space) return null;
-            if (space==null) throw "Space is null!";
-            if (this._first.tbl) extend(tbl, this._first.tbl);
-            else setTbl(this);
-            if (other._first.tbl) mergeTbl();
-            else setTbl(other);
-            var res=Parser.create(function (s0) {
-                var s=space.parse(s0);
-                var f=s.src.str.substring(s.pos,s.pos+1);
-                //console.log("name= "+this.name+" pos="+s.pos+" fst="+f+"  tbl="+$.dispTbl(tbl));
-                if (tbl[f]) {
-                    //console.log("tbl[f].name="+tbl[f].name);
-                    return tbl[f].parse(s);
-                }
-                if (tbl.ALL) return tbl.ALL.parse(s);
-                s.success=false;
-                return s;
-            });
-            res.first(space, tbl).setName("("+this.name+")U("+other.name+")");
-            if ($.options.verboseFirst) console.log("Created unify name=" +res.name+" tbl="+$.dispTbl(tbl));
-            return res;
+        	//return null;
+        	var tbl={}; // tbl.* includes tbl.ALL
+        	function setTbl(src) {// src:Parser
+        		var cs=src._first.chars;
+        		function mk(c) {
+        			if (!tbl[c]) {
+        				if (!tbl.ALL) tbl[c]=src;
+        				else tbl[c]=tbl.ALL.orNoUnify(src);
+        			} else {
+        				tbl[c]=tbl[c].orNoUnify(src);
+        			}
+        		}
+        		if (cs) {
+            		for (var i=0; i<cs.length ; i++) {
+            			var c=cs.substring(i,i+1);
+            			mk(c);
+            		}
+            	} else {
+        			mk("ALL");
+        			for (var i in tbl) {
+        				if (i==="ALL") continue;
+        				tbl[i]=tbl[i].orNoUnify(src);
+        			}
+            	}
+        	}
+        	function mergeTbl() {
+        		var t2=other._first.tbl;
+        		if ("ALL" in t2) {
+            		for (var c in tbl) {
+            			tbl[c]=tbl[c].orNoUnify(other);
+            		}
+            		for (var c in t2) {
+            			if (!tbl[c]) {
+            				tbl[c]=other;
+            			}
+            		}
+        		} else {
+        			for (var c in t2) {
+        				if (!tbl[c]) {
+        					tbl[c]=other;
+        				} else {
+        					tbl[c]=tbl[c].orNoUnify(other);
+        				}
+        			}
+        		}
+        	}
+        	if (!this._first) return null;
+        	if (!other._first) return null;
+        	var space=this._first.space;
+        	if (space!==other._first.space) return null;
+        	if (space==null) throw "Space is null!";
+        	if (this._first.tbl) extend(tbl, this._first.tbl);
+        	else setTbl(this);
+        	if (other._first.tbl) mergeTbl();
+        	else setTbl(other);
+        	var res=Parser.create(function (s0) {
+        		var s=space.parse(s0);
+        		var f=s.src.str.substring(s.pos,s.pos+1);
+        		//console.log("name= "+this.name+" pos="+s.pos+" fst="+f+"  tbl="+$.dispTbl(tbl));
+        		if (tbl[f]) {
+            		//console.log("tbl[f].name="+tbl[f].name);
+            		return tbl[f].parse(s);
+        		}
+        		if (tbl.ALL) return tbl.ALL.parse(s);
+        		s.success=false;
+        		return s;
+        	});
+        	res.first(space, tbl).setName("("+this.name+")U("+other.name+")");
+        	if ($.options.verboseFirst) console.log("Created unify name=" +res.name+" tbl="+$.dispTbl(tbl));
+        	return res;
         },
         or: function(other) { // Parser->Parser
-            nc(other,"other");
-            var u=($.options.optimizeFirst ? this.unifyFirst(other): null);
-            if (u) return u;
-            else return this.orNoUnify(other);
+        	nc(other,"other");
+        	var u=($.options.optimizeFirst ? this.unifyFirst(other): null);
+        	if (u) return u;
+        	else return this.orNoUnify(other);
         },
         orNoUnify: function (other) {
-            var t=this;  // t:Parser
-            var res=Parser.create(function(s){
-                var r1=t.parse(s); // r1:State
-                if (!r1.success){
-                    var r2=other.parse(s); // r2:State
-                    return r2;
-                } else {
-                    return r1;
-                }
-            });
-            res.name="("+this.name+")|("+other.name+")";
-            return res;
+           	var t=this;  // t:Parser
+        	var res=Parser.create(function(s){
+        		var r1=t.parse(s); // r1:State
+        		if (!r1.success){
+        			var r2=other.parse(s); // r2:State
+        			return r2;
+        		} else {
+        		    return r1;
+        		}
+        	});
+        	res.name="("+this.name+")|("+other.name+")";
+        	return res;
         },
         setName: function (n) {
-            this.name=n;
-            return this;
+        	this.name=n;
+        	return this;
         },
         profile: function () {
             if ($.options.profile) {
                 this.parse=this.parse.profile(this.name);
             }
-            return this;
+        	return this;
         },
         repN: function(min){
-            var p=this;
-            if (!min) min=0;
-            var res=Parser.create(function(s) {
-                var current=s;
-                var result=[];
-                while(true){
-                    var next=p.parse(current);
-                    if(!next.success) {
-                        var res;
-                        if (result.length>=min) {
-                            res=current.clone();
-                            res.result=[result];
-                            res.success=true;
-                            //console.log("rep0 res="+disp(res.result));
-                            return res;
-                        } else {
-                            res=s.clone();
-                            res.success=false;
-                            return res;
-                        }
-                    } else {
-                        result.push(next.result[0]);
-                        current=next;
-                    }
-                }
-            });
-            if (min>0) res._first=p._first;
-            return res.setName("("+p.name+" * "+min+")");
+        	var p=this;
+        	if (!min) min=0;
+        	var res=Parser.create(function(s) {
+        		var current=s;
+        		var result=[];
+        		while(true){
+        			var next=p.parse(current);
+        			if(!next.success) {
+        				var res;
+        				if (result.length>=min) {
+        					res=current.clone();
+        					res.result=[result];
+        					res.success=true;
+        					//console.log("rep0 res="+disp(res.result));
+        					return res;
+        				} else {
+        					res=s.clone();
+        					res.success=false;
+        					return res;
+        				}
+        			} else {
+        				result.push(next.result[0]);
+        				current=next;
+        			}
+        		}
+        	});
+        	if (min>0) res._first=p._first;
+        	return res.setName("("+p.name+" * "+min+")");
         },
         rep0: function () { return this.repN(0); },
         rep1: function () { return this.repN(1); },
         opt: function () {
-            var t=this;
-            return Parser.create(function (s) {
-                var r=t.parse(s);
-                if (r.success) {
-                    return r;
-                } else {
-                    s=s.clone();
-                    s.success=true;
-                    s.result=[null];
-                    return s;
-                }
-            }).setName("("+t.name+")?");
+        	var t=this;
+        	return Parser.create(function (s) {
+        		var r=t.parse(s);
+        		if (r.success) {
+        			return r;
+        		} else {
+        			s=s.clone();
+        			s.success=true;
+        			s.result=[null];
+        			return s;
+        		}
+        	}).setName("("+t.name+")?");
         },
         sep1: function(sep, valuesToArray) {
-            var value=this;
-            nc(value,"value");nc(sep,"sep");
-            var tail=sep.and(value).ret(function(r1, r2) {
+        	var value=this;
+        	nc(value,"value");nc(sep,"sep");
+        	var tail=sep.and(value).ret(function(r1, r2) {
                 if(valuesToArray) return r2;
                 return {sep:r1, value:r2};
             });
             return value.and(tail.rep0()).ret(function(r1, r2){
-                var i;
+            	var i;
                 if (valuesToArray) {
-                    var r=[r1];
-                    for (i in r2) {
-                        r.push(r2[i]);
-                    }
-                    return r;
-                } else {
-                    return {head:r1,tails:r2};
-                }
+            		var r=[r1];
+          			for (i in r2) {
+           				r.push(r2[i]);
+           			}
+            		return r;
+            	} else {
+            		return {head:r1,tails:r2};
+            	}
             }).setName("(sep1 "+value.name+"~~"+sep.name+")");
         },
         sep0: function(s){
-            return this.sep1(s,true).opt().ret(function (r) {
-                if (!r) return [];
-                return r;
-            });
+        	return this.sep1(s,true).opt().ret(function (r) {
+        		if (!r) return [];
+        		return r;
+        	});
         },
         tap: function (msg) {
-            if (!$.options.traceTap) return this;
-            if (!msg) msg="";
-            var t=this;
-            var res=Parser.create(function(s){
-                console.log("tap:"+msg+" name:"+t.name+"  pos="+(s?s.pos:"?"));
-                var r=t.parse(s);
-                var img=r.src.str.substring(r.pos-3,r.pos)+"^"+r.src.str.substring(r.pos,r.pos+3);
-                console.log("/tap:"+msg+" name:"+t.name+" pos="+(s?s.pos:"?")+"->"+(r?r.pos:"?")+" "+img+" res="+(r?r.success:"?"));
-                return r;
-            });
-            res._first=this._first;
-            return res.setName("(Tap "+t.name+")");
+        	if (!$.options.traceTap) return this;
+        	if (!msg) msg="";
+        	var t=this;
+        	var res=Parser.create(function(s){
+        		console.log("tap:"+msg+" name:"+t.name+"  pos="+(s?s.pos:"?"));
+        		var r=t.parse(s);
+        		var img=r.src.str.substring(r.pos-3,r.pos)+"^"+r.src.str.substring(r.pos,r.pos+3);
+        		console.log("/tap:"+msg+" name:"+t.name+" pos="+(s?s.pos:"?")+"->"+(r?r.pos:"?")+" "+img+" res="+(r?r.success:"?"));
+        		return r;
+        	});
+        	res._first=this._first;
+        	return res.setName("(Tap "+t.name+")");
         },
         retN: function (i) {
-            return this.ret(function () {
-                return arguments[i];
-            });
+        	return this.ret(function () {
+        		return arguments[i];
+        	});
         }
     });
     function State(str) { // class State
@@ -2232,44 +2206,44 @@ Parser=function () {
             return s;
         },
         updateMaxPos:function (npos) {
-            if (npos > this.src.maxPos) {
-                this.src.maxPos=npos;
-            }
+        	if (npos > this.src.maxPos) {
+        		this.src.maxPos=npos;
+        	}
         },
         isSuccess: function () {
-            return this.success;
+        	return this.success;
         }
     });
     var StringParser={
         empty: Parser.create(function(state) {
-            var res=state.clone();
-            res.success=true;
-            res.result=[null]; //{length:0, isEmpty:true}];
-            return res;
+        	var res=state.clone();
+        	res.success=true;
+        	res.result=[null]; //{length:0, isEmpty:true}];
+        	return res;
         }).setName("E"),
-        fail: Parser.create(function(s){
-            s.success=false;
-            return s;
-        }).setName("F"),
+    	fail: Parser.create(function(s){
+    	    s.success=false;
+    	    return s;
+    	}).setName("F"),
         str: function (st) { // st:String
-            return this.strLike(function (str,pos) {
-                if (str.substring(pos, pos+st.length)===st) return {len:st.length};
-                return null;
-            });
+        	return this.strLike(function (str,pos) {
+        		if (str.substring(pos, pos+st.length)===st) return {len:st.length};
+        		return null;
+        	});
         },
         reg: function (r) {//r: regex (must have ^ at the head)
-            if (!(r+"").match(/^\/\^/)) console.log("Waring regex should have ^ at the head:"+(r+""));
-            return this.strLike(function (str,pos) {
-                var res=r.exec( str.substring(pos) );
-                if (res) {
-                    res.len=res[0].length;
-                    return res;
-                }
-                return null;
-            });
+        	if (!(r+"").match(/^\/\^/)) console.log("Waring regex should have ^ at the head:"+(r+""));
+        	return this.strLike(function (str,pos) {
+        		var res=r.exec( str.substring(pos) );
+        		if (res) {
+        			res.len=res[0].length;
+        			return res;
+        		}
+        		return null;
+        	});
         },
         strLike: function (func) {
-            // func :: str,pos, state? -> {len:int, other...}  (null for no match )
+        	// func :: str,pos, state? -> {len:int, other...}  (null for no match )
             return Parser.create(function(state){
                 var str= state.src.str;
                 if (str==null) throw "strLike: str is null!";
@@ -2278,100 +2252,100 @@ Parser=function () {
                 var r1=func(str, spos, state);
                 if ($.options.traceToken) console.log("pos="+spos+" r="+r1);
                 if(r1) {
-                    if ($.options.traceToken) console.log("str:succ");
-                    r1.pos=spos;
-                    r1.src=state.src; // insert 2013/05/01
-                    var ns=state.clone();
+                	if ($.options.traceToken) console.log("str:succ");
+                	r1.pos=spos;
+                	r1.src=state.src; // insert 2013/05/01
+                	var ns=state.clone();
                     extend(ns, {pos:spos+r1.len, success:true, result:[r1]});
                     state.updateMaxPos(ns.pos);
                     return ns;
                 }else{
-                    if ($.options.traceToken) console.log("str:fail");
+                	if ($.options.traceToken) console.log("str:fail");
                     state.success=false;
                     return state;
                 }
             }).setName("STRLIKE");
         },
-        parse: function (parser, str) {
-            var st=new State(str);
-            return parser.parse(st);
-        }
+    	parse: function (parser, str) {
+    		var st=new State(str);
+    		return parser.parse(st);
+    	}
     };
     StringParser.eof=StringParser.strLike(function (str,pos) {
-        if (pos==str.length) return {len:0};
-        return null;
+    	if (pos==str.length) return {len:0};
+    	return null;
     }).setName("EOF");
     $.StringParser=StringParser;
 
     $.lazy=function (pf) { //   ( ()->Parser ) ->Parser
-        var p=null;
-        return Parser.create(function (st) {
-            if (!p) p=pf();
-            if (!p) throw pf+" returned null!";
-            this.name=pf.name;
-            return p.parse(st);
-        }).setName("LZ");
+    	var p=null;
+    	return Parser.create(function (st) {
+    		if (!p) p=pf();
+    		if (!p) throw pf+" returned null!";
+    		this.name=pf.name;
+    		return p.parse(st);
+    	}).setName("LZ");
     };
     $.addRange=function(res, newr) {
-        if (newr==null) return res;
-        if (typeof (res.pos)!="number") {
-            res.pos=newr.pos;
-            res.len=newr.len;
-            return res;
-        }
-        var newEnd=newr.pos+newr.len;
-        var curEnd=res.pos+res.len;
-        if (newr.pos<res.pos) res.pos=newr.pos;
-        if (newEnd>curEnd) res.len= newEnd-res.pos;
-        return res;
+    	if (newr==null) return res;
+    	if (typeof (res.pos)!="number") {
+    		res.pos=newr.pos;
+    		res.len=newr.len;
+    		return res;
+    	}
+    	var newEnd=newr.pos+newr.len;
+    	var curEnd=res.pos+res.len;
+    	if (newr.pos<res.pos) res.pos=newr.pos;
+    	if (newEnd>curEnd) res.len= newEnd-res.pos;
+    	return res;
     };
     $.setRange=function (res) {
-        if (res==null || typeof res=="string" || typeof res=="number") return;
-        var exRange=$.getRange(res);
-        if (exRange!=null) return res;
-        for (var i in res) {
-            if (!res.hasOwnProperty(i)) continue;
-            var range=$.setRange(res[i]);
-            $.addRange(res,range);
-        }
-        return res;
+    	if (res==null || typeof res=="string" || typeof res=="number") return;
+    	var exRange=$.getRange(res);
+    	if (exRange!=null) return res;
+    	for (var i in res) {
+    		if (!res.hasOwnProperty(i)) continue;
+    		var range=$.setRange(res[i]);
+    		$.addRange(res,range);
+    	}
+    	return res;
     };
 
-    $.getRange=function(e) {
-        if (e==null) return null;
-        if (typeof e.pos!="number") return null;
-        if (typeof e.len=="number") return e;
-        return null;
-    };
+	$.getRange=function(e) {
+    	if (e==null) return null;
+		if (typeof e.pos!="number") return null;
+		if (typeof e.len=="number") return e;
+		return null;
+	};
     return $;
 }();
 
 requirejs.setName('Grammar');
 Grammar=function () {
-    var p=Parser;
+	var p=Parser;
 
-    var $=null;
-    function trans(name) {
-        if (typeof name=="string") return $.get(name);
-        return name;
-    }
-    function tap(name) {
-        return p.Parser.create(function (st) {
-            console.log("Parsing "+name+" at "+st.pos+"  "+st.src.str.substring(st.pos, st.pos+20).replace(/[\r\n]/g,"\\n"));
-            return st;
-        });
-    }
-    $=function (name){
-        var $$={};
-        $$.ands=function() {
-            var p=trans(arguments[0]);  //  ;
-            for (var i=1 ; i<arguments.length ;i++) {
-                p=p.and( trans(arguments[i]) );
-            }
-            p=p.tap(name);
-            $.defs[name]=p;
-            var $$$={};
-            $$$.autoNode=function () {
+	var $=null;
+	function trans(name) {
+		if (typeof name=="string") return $.get(name);
+		return name;
+	}
+	function tap(name) {
+		return p.Parser.create(function (st) {
+			console.log("Parsing "+name+" at "+st.pos+"  "+st.src.str.substring(st.pos, st.pos+20).replace(/[\r\n]/g,"\\n"));
+			return st;
+		});
+	}
+	$=function (name){
+		var $$={};
+		$$.ands=function() {
+			var p=trans(arguments[0]);  //  ;
+			for (var i=1 ; i<arguments.length ;i++) {
+				p=p.and( trans(arguments[i]) );
+			}
+			p=p.tap(name);
+			$.defs[name]=p;
+			var $$$={};
+			$$$.autoNode=function () {
                 var res=p.ret(function () {
                     var res={type:name};
                     for (var i=0 ; i<arguments.length ;i++) {
@@ -2385,62 +2359,62 @@ Grammar=function () {
                     };
                 }).setName(name);
                 return $.defs[name]=res;
-            };
-            $$$.ret=function (f) {
-                if (arguments.length==0) return p;
-                if (typeof f=="function") {
-                    return $.defs[name]=p.ret(f);
-                }
-                var names=[];
-                var fn=function(e){return e;};
-                for (var i=0 ; i<arguments.length ;i++) {
-                    if (typeof arguments[i]=="function") {
-                        fn=arguments[i];
-                        break;
-                    }
-                    names[i]=arguments[i];
-                }
-                var res=p.ret(function () {
-                    var res={type:name};
-                    res[Grammar.SUBELEMENTS]=[];
-                    for (var i=0 ; i<arguments.length ;i++) {
-                        var e=arguments[i];
-                        var rg=Parser.setRange(e);
-                        Parser.addRange(res, rg);
-                        if (names[i]) {
-                            res[names[i]]=e;
-                        }
-                        res[Grammar.SUBELEMENTS].push(e);
-                    }
-                    res.toString=function () {
-                        return "("+this.type+")";
-                    };
-                    return fn(res);
-                }).setName(name);
-                return  $.defs[name]=res;
-            };
-            return $$$;
-        };
-        $$.ors= function () {
-            var p=trans(arguments[0]);
-            for (var i=1 ; i<arguments.length ;i++) {
-                p=p.or( trans(arguments[i]) );
-            }
-            return $.defs[name]=p.setName(name);
-        };
-        return $$;
-    };
+			};
+			$$$.ret=function (f) {
+				if (arguments.length==0) return p;
+				if (typeof f=="function") {
+					return $.defs[name]=p.ret(f);
+				}
+				var names=[];
+				var fn=function(e){return e;};
+				for (var i=0 ; i<arguments.length ;i++) {
+					if (typeof arguments[i]=="function") {
+						fn=arguments[i];
+						break;
+					}
+					names[i]=arguments[i];
+				}
+				var res=p.ret(function () {
+					var res={type:name};
+					res[Grammar.SUBELEMENTS]=[];
+					for (var i=0 ; i<arguments.length ;i++) {
+						var e=arguments[i];
+						var rg=Parser.setRange(e);
+						Parser.addRange(res, rg);
+						if (names[i]) {
+							res[names[i]]=e;
+						}
+						res[Grammar.SUBELEMENTS].push(e);
+					}
+					res.toString=function () {
+						return "("+this.type+")";
+					};
+					return fn(res);
+				}).setName(name);
+				return  $.defs[name]=res;
+			};
+			return $$$;
+		};
+		$$.ors= function () {
+			var p=trans(arguments[0]);
+			for (var i=1 ; i<arguments.length ;i++) {
+				p=p.or( trans(arguments[i]) );
+			}
+			return $.defs[name]=p.setName(name);
+		};
+		return $$;
+	};
 
-    $.defs={};
-    $.get=function (name) {
-        if ($.defs[name]) return $.defs[name];
-        return p.lazy(function () {
-            var r=$.defs[name];
-            if (!r) throw "grammar named '"+name +"' is undefined";
-            return r;
-        }).setName("(Lazy of "+name+")");
-    };
-    return $;
+	$.defs={};
+	$.get=function (name) {
+		if ($.defs[name]) return $.defs[name];
+		return p.lazy(function () {
+			var r=$.defs[name];
+		    if (!r) throw "grammar named '"+name +"' is undefined";
+			return r;
+		}).setName("(Lazy of "+name+")");
+	};
+	return $;
 };
 Grammar.SUBELEMENTS="[SUBELEMENTS]";
 requirejs.setName('XMLBuffer');
@@ -2448,126 +2422,126 @@ requirejs.setName('XMLBuffer');
 // b(node);
 // console.log(b.buf);
 function XMLBuffer(src) {
-    var $;
-    $=function (node, attrName){
-        //console.log("genX: "+node+ " typeof = "+typeof node+"  pos="+node.pos+" attrName="+attrName+" ary?="+(node instanceof Array));
-        if (node==null || typeof node=="string" || typeof node=="number") return;
-        var r=Parser.getRange(node);
-        if (r) {
-            while ($.srcLen < r.pos) {
-                $.src(src.substring($.srcLen, r.pos));
-            }
-        }
-        if (node==null) return;
-        if (attrName) $.tag("<attr_"+attrName+">");
-        if (node.type) $.tag("<"+node.type+">");
-        if (node.text) $.src(r.text);
-        else {
-            var n=$.orderByPos(node);
-            n.forEach(function (subnode) {
-                if (subnode.name && subnode.name.match(/^-/)) {
-                    $(subnode.value);
-                } else {
-                    $(subnode.value, subnode.name);
-                }
-            });
-        }
-        if (r) {
-            while ($.srcLen < r.pos+r.len) {
-                $.src(src.substring($.srcLen, r.pos+r.len));
-            }
-        }
-        if (node.type) $.tag("</"+node.type+">");
-        if (attrName) $.tag("</attr_"+attrName+">");
-    };
-    $.orderByPos=XMLBuffer.orderByPos;/*function (node) {
-        var res=[];
-        if (node[XMLBuffer.SUBELEMENTS]) {
-            node[XMLBuffer.SUBELEMENTS].forEach(function (e) {
-                res.push(e);
-            });
-        } else {
-            for (var i in node) {
-                if (!node.hasOwnProperty(i)) continue;
-                if (node[i]==null || typeof node[i]=="string" || typeof node[i]=="number") continue;
-                if (typeof(node[i].pos)!="number") continue;
-                if (isNaN(parseInt(i)) && !(i+"").match(/-/)) {             res.push({name: i, value: node[i]}); }
-                else {          res.push({value: node[i]}); }
-            }
-        }
-        res=res.sort(function (a,b) {
-            return a.value.pos-b.value.pos;
-        });
-        return res;
-    };*/
-    $.src=function (str) {
-        $.buf+=str.replace(/&/g,"&amp;").replace(/>/g,"&gt;").replace(/</g,"&lt;");
-        $.srcLen+=str.length;
-    };
-    $.tag=function (str) {
-        $.buf+=str;
-    };
+	var $;
+	$=function (node, attrName){
+		//console.log("genX: "+node+ " typeof = "+typeof node+"  pos="+node.pos+" attrName="+attrName+" ary?="+(node instanceof Array));
+		if (node==null || typeof node=="string" || typeof node=="number") return;
+		var r=Parser.getRange(node);
+		if (r) {
+			while ($.srcLen < r.pos) {
+				$.src(src.substring($.srcLen, r.pos));
+			}
+		}
+		if (node==null) return;
+		if (attrName) $.tag("<attr_"+attrName+">");
+		if (node.type) $.tag("<"+node.type+">");
+		if (node.text) $.src(r.text);
+		else {
+			var n=$.orderByPos(node);
+			n.forEach(function (subnode) {
+				if (subnode.name && subnode.name.match(/^-/)) {
+					$(subnode.value);
+				} else {
+					$(subnode.value, subnode.name);
+				}
+			});
+		}
+		if (r) {
+			while ($.srcLen < r.pos+r.len) {
+				$.src(src.substring($.srcLen, r.pos+r.len));
+			}
+		}
+		if (node.type) $.tag("</"+node.type+">");
+		if (attrName) $.tag("</attr_"+attrName+">");
+	};
+	$.orderByPos=XMLBuffer.orderByPos;/*function (node) {
+		var res=[];
+		if (node[XMLBuffer.SUBELEMENTS]) {
+			node[XMLBuffer.SUBELEMENTS].forEach(function (e) {
+				res.push(e);
+			});
+		} else {
+			for (var i in node) {
+				if (!node.hasOwnProperty(i)) continue;
+				if (node[i]==null || typeof node[i]=="string" || typeof node[i]=="number") continue;
+				if (typeof(node[i].pos)!="number") continue;
+				if (isNaN(parseInt(i)) && !(i+"").match(/-/)) { 			res.push({name: i, value: node[i]}); }
+				else { 			res.push({value: node[i]}); }
+			}
+		}
+		res=res.sort(function (a,b) {
+			return a.value.pos-b.value.pos;
+		});
+		return res;
+	};*/
+	$.src=function (str) {
+		$.buf+=str.replace(/&/g,"&amp;").replace(/>/g,"&gt;").replace(/</g,"&lt;");
+		$.srcLen+=str.length;
+	};
+	$.tag=function (str) {
+		$.buf+=str;
+	};
 
-    $.buf="";
-    $.srcLen=0;
-    return $;
+	$.buf="";
+	$.srcLen=0;
+	return $;
 }
 XMLBuffer.orderByPos=function (node) {
-    var res=[];
-    if (node[XMLBuffer.SUBELEMENTS]) {
-        node[XMLBuffer.SUBELEMENTS].forEach(function (e) {
-            res.push(e);
-        });
-    } else {
-        for (var i in node) {
-            if (!node.hasOwnProperty(i)) continue;
-            if (node[i]==null || typeof node[i]=="string" || typeof node[i]=="number") continue;
-            if (typeof(node[i].pos)!="number") continue;
-            if (isNaN(parseInt(i)) && !(i+"").match(/-/)) {             res.push({name: i, value: node[i]}); }
-            else {          res.push({value: node[i]}); }
-        }
-    }
-    res=res.sort(function (a,b) {
-        return a.value.pos-b.value.pos;
-    });
-    return res;
+	var res=[];
+	if (node[XMLBuffer.SUBELEMENTS]) {
+		node[XMLBuffer.SUBELEMENTS].forEach(function (e) {
+			res.push(e);
+		});
+	} else {
+		for (var i in node) {
+			if (!node.hasOwnProperty(i)) continue;
+			if (node[i]==null || typeof node[i]=="string" || typeof node[i]=="number") continue;
+			if (typeof(node[i].pos)!="number") continue;
+			if (isNaN(parseInt(i)) && !(i+"").match(/-/)) { 			res.push({name: i, value: node[i]}); }
+			else { 			res.push({value: node[i]}); }
+		}
+	}
+	res=res.sort(function (a,b) {
+		return a.value.pos-b.value.pos;
+	});
+	return res;
 };
 XMLBuffer.SUBELEMENTS="[SUBELEMENTS]";
 requirejs.setName('ExpressionParser');
 // parser.js の補助ライブラリ．式の解析を担当する
 function ExpressionParser() {
-    var $={};
-    var EXPSTAT="EXPSTAT";
-    //  first 10     *  +  <>  &&  ||  =     0  later
-    function opType(type, prio) {
-        var $={};
-        $.eq=function (o) {return type==o.type() && prio==o.prio(); };
+	var $={};
+	var EXPSTAT="EXPSTAT";
+	//  first 10     *  +  <>  &&  ||  =     0  later
+	function opType(type, prio) {
+	    var $={};
+	    $.eq=function (o) {return type==o.type() && prio==o.prio(); };
         $.type=function (t) { if (!t) return type; else return t==type;};
-        $.prio=function () {return prio;};
-        $.toString=function () {return "["+type+":"+prio+"]"; }
-        return $;
-    }
-    function composite(a) {
-        var $={};
-        var e=a;
-        $.add=function (a) {
-            if (!e) {
-                e=a;
-            } else {
-                e=e.or(a);
-            }
-        };
-        $.get=function () {
-            return e;
-        };
-        return $;
-    }
-    function typeComposite() {
-        var built=composite();
-        //var lastOP , isBuilt;
-        var $={};
-        $.reg=function (type, prio, a) {
-            var opt=opType(type, prio);
+	    $.prio=function () {return prio;};
+	    $.toString=function () {return "["+type+":"+prio+"]"; }
+	    return $;
+	}
+	function composite(a) {
+	    var $={};
+	    var e=a;
+	    $.add=function (a) {
+	        if (!e) {
+	            e=a;
+	        } else {
+	            e=e.or(a);
+	        }
+	    };
+	    $.get=function () {
+	        return e;
+	    };
+	    return $;
+	}
+	function typeComposite() {
+	    var built=composite();
+	    //var lastOP , isBuilt;
+	    var $={};
+	    $.reg=function (type, prio, a) {
+	        var opt=opType(type, prio);
             built.add(Parser.create(function (st) {
                 if (st.src==null) console.log("st src null! at "+eg.name);
                 var r=a.parse(st);
@@ -2576,151 +2550,151 @@ function ExpressionParser() {
                 }
                 return r;
             }).setName("(opType "+opt+" "+a.name+")").inheritFirst(a));
-        };
-        $.get=function () {return built.get();};
-        $.parse=function (st) {
-            return $.get().parse(st);
-        };
-        return $;
-    }
-    var prefixOrElement=typeComposite(), postfixOrInfix=typeComposite();
-    var element=composite();
-    $.element=function (e) {
+	    };
+	    $.get=function () {return built.get();};
+	    $.parse=function (st) {
+	        return $.get().parse(st);
+	    };
+	    return $;
+	}
+	var prefixOrElement=typeComposite(), postfixOrInfix=typeComposite();
+	var element=composite();
+	$.element=function (e) {
         prefixOrElement.reg("element", -1, e);
         element.add(e);
-    };
-    $.getElement=function () {return element.get();};
-    $.prefix=function (prio, pre) {
-        prefixOrElement.reg("prefix", prio, pre);
-    };
-    $.postfix=function (prio, post) {
+	};
+	$.getElement=function () {return element.get();};
+	$.prefix=function (prio, pre) {
+	    prefixOrElement.reg("prefix", prio, pre);
+	};
+	$.postfix=function (prio, post) {
         postfixOrInfix.reg("postfix", prio, post);
-    };
-    $.infixl =function (prio, inf) {
+	};
+	$.infixl =function (prio, inf) {
         postfixOrInfix.reg("infixl", prio, inf);
-    };
-    $.infixr =function (prio, inf) {
+	};
+	$.infixr =function (prio, inf) {
         postfixOrInfix.reg("infixr", prio, inf);
-    };
-    $.infix =function (prio, inf) {
+	};
+	$.infix =function (prio, inf) {
         postfixOrInfix.reg("infix", prio, inf);
-    };
-    $.custom = function (prio, func) {
-        // func :: Elem(of next higher) -> Parser
-    };
-    $.mkInfix=function (f) {
-        $.mkInfix.def=f;
-    };
-    $.mkInfix.def=function (left,op,right) {
-        return Parser.setRange({type:"infix", op:op, left: left, right: right});
-    }
-    $.mkInfixl=function (f) {
-        $.mkInfixl.def=f;
-    };
-    $.mkInfixl.def=function (left, op , right) {
-        return Parser.setRange({type:"infixl",op:op ,left:left, right:right});
-    };
-    $.mkInfixr=function (f) {
-        $.mkInfixr.def=f;
-    };
-    $.mkInfixr.def=function (left, op , right) {
-        return Parser.setRange({type:"infixr",op:op ,left:left, right:right});
-    };
-    $.mkPrefix=function (f) {
-        $.mkPrefix.def=f;
-    };
-    $.mkPrefix.def=function (op , right) {
-        return Parser.setRange({type:"prefix", op:op, right:right});
-    };
-    $.mkPostfix=function (f) {
-        $.mkPostfix.def=f;
-    };
-    $.mkPostfix.def=function (left, op) {
-        return Parser.setRange({type:"postfix", left:left, op:op});
-    };
-    $.build= function () {
-        //postfixOrInfix.build();
+	};
+	$.custom = function (prio, func) {
+		// func :: Elem(of next higher) -> Parser
+	};
+	$.mkInfix=function (f) {
+		$.mkInfix.def=f;
+	};
+	$.mkInfix.def=function (left,op,right) {
+		return Parser.setRange({type:"infix", op:op, left: left, right: right});
+	}
+	$.mkInfixl=function (f) {
+		$.mkInfixl.def=f;
+	};
+	$.mkInfixl.def=function (left, op , right) {
+		return Parser.setRange({type:"infixl",op:op ,left:left, right:right});
+	};
+	$.mkInfixr=function (f) {
+		$.mkInfixr.def=f;
+	};
+	$.mkInfixr.def=function (left, op , right) {
+		return Parser.setRange({type:"infixr",op:op ,left:left, right:right});
+	};
+	$.mkPrefix=function (f) {
+		$.mkPrefix.def=f;
+	};
+	$.mkPrefix.def=function (op , right) {
+		return Parser.setRange({type:"prefix", op:op, right:right});
+	};
+	$.mkPostfix=function (f) {
+		$.mkPostfix.def=f;
+	};
+	$.mkPostfix.def=function (left, op) {
+		return Parser.setRange({type:"postfix", left:left, op:op});
+	};
+	$.build= function () {
+	    //postfixOrInfix.build();
         //prefixOrElement.build();
-        $.built= Parser.create(function (st) {
-            return parse(0,st);
-        }).setName("ExpBuilt");
-        return $.built;
-    };
-    function dump(st, lbl) {
-        return ;
-        var s=st.src.str;
-        console.log("["+lbl+"] "+s.substring(0,st.pos)+"^"+s.substring(st.pos)+
-                " opType="+ st.opType+"  Succ = "+st.isSuccess()+" res="+st.result[0]);
-    }
-    function parse(minPrio, st) {
-        var stat=0, res=st ,  opt;
-        dump(st," start minprio= "+minPrio);
-        st=prefixOrElement.parse(st);
+	    $.built= Parser.create(function (st) {
+	        return parse(0,st);
+	    }).setName("ExpBuilt");
+	    return $.built;
+	};
+	function dump(st, lbl) {
+	    return ;
+	    var s=st.src.str;
+	    console.log("["+lbl+"] "+s.substring(0,st.pos)+"^"+s.substring(st.pos)+
+	            " opType="+ st.opType+"  Succ = "+st.isSuccess()+" res="+st.result[0]);
+	}
+	function parse(minPrio, st) {
+	    var stat=0, res=st ,  opt;
+	    dump(st," start minprio= "+minPrio);
+	    st=prefixOrElement.parse(st);
         dump(st," prefixorelem "+minPrio);
-        if (!st.isSuccess()) {
-            return st;
-        }
-        //p2=st.result[0];
+	    if (!st.isSuccess()) {
+	        return st;
+	    }
+	    //p2=st.result[0];
         opt=st.opType;
-        if (opt.type("prefix") ) {
-            // st = -^elem
-            pre=st.result[0];
-            st=parse(opt.prio(), st);
-            if (!st.isSuccess()) {
-                return st;
-            }
-            // st: Expr    st.pos = -elem^
-            var pex=$.mkPrefix.def(pre, st.result[0]);
-            res=st.clone();  //  res:Expr
-            res.result=[pex]; // res:prefixExpr  res.pos= -elem^
-            if (!st.nextPostfixOrInfix) {
-                return res;
-            }
-            // st.next =  -elem+^elem
-            st=st.nextPostfixOrInfix;  // st: postfixOrInfix
-        } else { //elem
-            //p=p2;
-            res=st.clone(); // res:elemExpr   res =  elem^
+	    if (opt.type("prefix") ) {
+	        // st = -^elem
+	        pre=st.result[0];
+	        st=parse(opt.prio(), st);
+	        if (!st.isSuccess()) {
+	            return st;
+	        }
+  	        // st: Expr    st.pos = -elem^
+	        var pex=$.mkPrefix.def(pre, st.result[0]);
+	        res=st.clone();  //  res:Expr
+	        res.result=[pex]; // res:prefixExpr  res.pos= -elem^
+	        if (!st.nextPostfixOrInfix) {
+	            return res;
+	        }
+	        // st.next =  -elem+^elem
+	        st=st.nextPostfixOrInfix;  // st: postfixOrInfix
+	    } else { //elem
+	        //p=p2;
+	        res=st.clone(); // res:elemExpr   res =  elem^
             st=postfixOrInfix.parse(st);
             if (!st.isSuccess()) {
                 return res;
             }
-        }
-        // assert st:postfixOrInfix  res:Expr
-        while (true) {
-            dump(st,"st:pi"); dump(res,"res:ex");
-            opt=st.opType;
-            if (opt.prio()<minPrio) {
-                res.nextPostfixOrInfix=st;
-                return res;
-            }
-            // assert st:postfixOrInfix  res:Expr
-            if (opt.type("postfix")) {
-                // st:postfix
-                var pex=$.mkPostfix.def(res.result[0],st.result[0]);
-                res=st.clone();
-                res.result=[pex]; // res.pos= expr++^
-                dump(st, "185");
-                st=postfixOrInfix.parse(st); // st. pos= expr++--^
-                if (!st.isSuccess()) {
-                    return res;
-                }
-            } else if (opt.type("infixl")){  //x+y+z
-                // st: infixl
-                var inf=st.result[0];
-                st=parse(opt.prio()+1, st);
-                if (!st.isSuccess()) {
-                    return res;
-                }
-                // st: expr   st.pos=  expr+expr^
-                var pex=$.mkInfixl.def(res.result[0], inf , st.result[0]);
-                res=st.clone();
-                res.result=[pex]; //res:infixlExpr
-                if (!st.nextPostfixOrInfix) {
-                    return res;
-                }
-                st=st.nextPostfixOrInfix;
-            } else if (opt.type("infixr")) { //a=b=c
+	    }
+	    // assert st:postfixOrInfix  res:Expr
+	    while (true) {
+	        dump(st,"st:pi"); dump(res,"res:ex");
+	        opt=st.opType;
+	        if (opt.prio()<minPrio) {
+	            res.nextPostfixOrInfix=st;
+	            return res;
+	        }
+	        // assert st:postfixOrInfix  res:Expr
+	        if (opt.type("postfix")) {
+	            // st:postfix
+	            var pex=$.mkPostfix.def(res.result[0],st.result[0]);
+	            res=st.clone();
+	            res.result=[pex]; // res.pos= expr++^
+	            dump(st, "185");
+	            st=postfixOrInfix.parse(st); // st. pos= expr++--^
+	            if (!st.isSuccess()) {
+	                return res;
+	            }
+	        } else if (opt.type("infixl")){  //x+y+z
+	            // st: infixl
+	            var inf=st.result[0];
+	            st=parse(opt.prio()+1, st);
+	            if (!st.isSuccess()) {
+	                return res;
+	            }
+	            // st: expr   st.pos=  expr+expr^
+	            var pex=$.mkInfixl.def(res.result[0], inf , st.result[0]);
+	            res=st.clone();
+	            res.result=[pex]; //res:infixlExpr
+	            if (!st.nextPostfixOrInfix) {
+	                return res;
+	            }
+	            st=st.nextPostfixOrInfix;
+	        } else if (opt.type("infixr")) { //a=b=c
                 // st: infixr
                 var inf=st.result[0];
                 st=parse(opt.prio() ,st);
@@ -2735,7 +2709,7 @@ function ExpressionParser() {
                     return res;
                 }
                 st=st.nextPostfixOrInfix;
-            } else { // infix
+	        } else { // infix
                 // st: infixl
                 var inf=st.result[0];
                 st=parse(opt.prio()+1 ,st);
@@ -2754,16 +2728,16 @@ function ExpressionParser() {
                     res.success=false;
                     return res;
                 }
-            }
-            // assert st:postfixOrInfix  res:Expr
-        }
-    }
-    $.lazy = function () {
-        return Parser.create(function (st) {
-            return $.built.parse(st);
-        });
-    };
-    return $;
+	        }
+	        // assert st:postfixOrInfix  res:Expr
+	    }
+	}
+	$.lazy = function () {
+		return Parser.create(function (st) {
+			return $.built.parse(st);
+		});
+	};
+	return $;
 }
 requirejs.setName('TonyuLang');
 /*
@@ -2783,9 +2757,9 @@ sys.load("js/profiler.js");
 
 
 TonyuLang=function () {
-    var p=Parser;
-    var $={};
-    var g=Grammar();
+	var p=Parser;
+	var $={};
+	var g=Grammar();
     var G=g.get;
 
     var sp=p.StringParser;//(str);
@@ -3082,22 +3056,22 @@ TonyuLang=function () {
             str=file.text();
         }
         str+="\n"; // For end with // comment with no \n
-        //console.log("Parse Start");
-        var res=sp.parse(program, str);
-        //console.log("POS="+res.src.maxPos);
-        if (res.isSuccess() ) {
-            var node=res.result[0];
-            return node;
-        }
-        throw TError("文法エラー", file ,  res.src.maxPos);
-        //throw "ERROR\nSyntax error at "+res.src.maxPos+"\n"+res.src.str.substring(0,res.src.maxPos)+"!!HERE!!"+res.src.str.substring(res.src.maxPos);
-    };
-    $.genXML= function (src, node) {
-        var x=XMLBuffer(src) ;
-        x(node);
+	    //console.log("Parse Start");
+		var res=sp.parse(program, str);
+		//console.log("POS="+res.src.maxPos);
+		if (res.isSuccess() ) {
+			var node=res.result[0];
+			return node;
+		}
+		throw TError("文法エラー", file ,  res.src.maxPos);
+		//throw "ERROR\nSyntax error at "+res.src.maxPos+"\n"+res.src.str.substring(0,res.src.maxPos)+"!!HERE!!"+res.src.str.substring(res.src.maxPos);
+	};
+	$.genXML= function (src, node) {
+		var x=XMLBuffer(src) ;
+		x(node);
         return x.buf;
-    };
-    return $;
+	};
+	return $;
 }();
 
 requirejs.setName('Tonyu.Compiler');

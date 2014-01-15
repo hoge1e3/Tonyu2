@@ -1,0 +1,136 @@
+extends null;
+native Sprites;
+native Tonyu;
+native Key;
+native console;
+native Math;
+native fukidashi;
+native TextRect;
+
+\new(x,y,p) {
+    if (Tonyu.runMode) {
+        var thg=currentThreadGroup();
+        if (thg) _th=thg.addObj(this);
+    }
+    if (typeof x=="object") Tonyu.extend(this, x);
+    else if (typeof x=="number") {
+        this.x=x;
+        this.y=y;
+        this.p=p;
+    }
+}
+
+nowait \print(c) {
+    console.log(c);
+}
+\update() {
+    ifwait {
+        _thread.suspend();
+    }
+}
+nowait \getkey(k) {
+    return Key.getkey(k);
+}
+nowait \hitTo(t) {
+    return crashTo(t);
+}
+nowait \allCrash(t) {
+    var res=[];
+    var sp;
+    if (_sprite) sp=_sprite; else sp=this;
+    Sprites.sprites.forEach(\(s) {
+        if (s!==this && 
+        s instanceof t && 
+        s.crashTo(sp)) {
+            res.push(s);    
+        }
+    });
+    return res;
+}
+nowait \crashTo(t) {
+    if (!t) return false;
+    if (typeof t=="function") {
+        return allCrash(t)[0];
+    }
+    if (_sprite && t._sprite) {
+        return _sprite.crashTo(t._sprite);
+    }
+    //print([this, t]);
+    return (x!=null && y!=null && width && height &&
+    t && !t._isDead && t.x!=null && t.y!=null && t.width && t.height &&
+    Math.abs(x-t.x)*2<width+t.width &&
+    Math.abs(y-t.y)*2<height+t.height);
+}
+nowait \watchHit(typeA,typeB,onHit) {
+    Sprites.watchHit(typeA , typeB, \(a,b) {
+        onHit.apply(this,[a,b]);
+    });
+}
+nowait \currentThreadGroup() {
+    return $currentThreadGroup; //Tonyu.currentThread.group;
+}
+nowait \die() {
+    if (_th) {
+        _th.kill();
+    }
+    hide();
+    _isDead=true;
+}
+nowait \hide() {
+    if (_sprite) {
+        Sprites.remove(_sprite);
+        _sprite=null;
+    } else {
+        Sprites.remove(this);
+    }
+}
+nowait \rnd(r) {
+    if (typeof r=="number") {
+        return Math.floor(Math.random()*r);
+    }
+    return Math.random();
+}
+nowait \detectShape() {
+    if (typeof p!="number") {
+        if (text) return;
+        p=0;
+    }
+    p=Math.floor(p);
+    pImg=Sprites.getImageList()[p];
+    if (!pImg) return;
+    width=pImg.width;
+    height=pImg.height;
+}
+\waitFor(f) {
+    ifwait {
+        _thread.waitFor(f);
+    }
+    update();
+}
+nowait \isDead() {
+    return _isDead;
+}
+nowait \draw(ctx) {
+    if (x==null || y==null) return;
+    detectShape();
+    if (pImg) {
+        ctx.drawImage(
+        pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,
+        x-width/2, y-height/2, width, height);
+    } else if (text) {
+        if (!size) size=15;
+        if (!align) align="center";
+        if (!fillStyle) fillStyle="white";
+        ctx.fillStyle=fillStyle;
+        TextRect.draw(ctx, text, x, y, size, align , "fill");
+    }
+    if (_fukidashi) {
+        if (_fukidashi.c>0) {
+            _fukidashi.c--;
+            ctx.fillStyle="white";
+            ctx.strokeStyle="black";
+            fukidashi ( ctx , _fukidashi.text, 
+            x, y-height/2-10, _fukidashi.size);
+        }
+    }
+}

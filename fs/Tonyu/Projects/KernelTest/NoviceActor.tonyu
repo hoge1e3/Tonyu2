@@ -1,0 +1,33 @@
+extends BaseActor;
+native Sprites;
+native Tonyu;
+
+\sleep(n) {
+    if(!n) n=1;
+    for(n;n>0;n--) update();
+}
+\initSprite() {
+    if (!_sprite) _sprite=Sprites.add{owner:this};
+}
+\say(text,size) {
+    if (!size) size=15;
+    initSprite();
+    _sprite.fukidashi={text:text, size:size, c:30};
+}
+\sprite(x,y,p) {
+    go(x,y,p);
+}
+\show(x,y,p) {
+    go(x,y,p);
+}
+\go(x,y,p) {
+    initSprite();
+    _sprite.x=x;
+    _sprite.y=y;
+    if (p!=null) _sprite.p=p;
+    //update();
+}
+\change(p) {
+    initSprite();
+    _sprite.p=p;
+}

@@ -1,9 +1,6 @@
 //"var reqConf="+JSON.stringify( getReq.genConf({base:"http://localhost:3002/js/", baseUrl:"js"})+";"
 var reqConf={
         "shim": {
-            /*"ide/wikiEditor": {
-                 deps: ["Wiki","TextEditor","FileList","FileMenu","FS","TextUtil"]
-            },*/
             TextEditor: {
                 exports: "TextEditor"
             },
@@ -90,10 +87,6 @@ var reqConf={
             "FS": {
                 "exports": "FS"
             },
-            /*"Tonyu.Project": {
-                "deps": ["Tonyu", "Tonyu.Compiler", "TError", "FS", "Sprites", "Key", "Tonyu.TraceTbl"],
-                "exports": "Tonyu.Project"
-            },*/
             "showErrorPos": {
                 "exports": "showErrorPos"
             },
@@ -174,8 +167,8 @@ var reqConf={
             "showErrorPos": "ide/ErrorPos",
             "TError": "ide/TError",
             "ide/editor": "ide/editor",
-            "fs/ROMk": "fs/ROMk",
-            "fs/ROMds": "fs/ROMds",
+            "fs/ROMk": "../fs/Tonyu/js/gen/ROMk",
+            "fs/ROMds": "../fs/Tonyu/js/gen/ROMds",
             "ProjectOptionsEditor": "ide/ProjectOptionsEditor",
             "FileList": "fs/FileList",
             "HttpHelper": "help/HttpHelper",
