@@ -102,6 +102,11 @@ return Tonyu.Project=function (dir, kernelDir) {
     TPR.loadResource=function (next) {
         var r=TPR.getResource();
         ImageList( r.images, function (r) {
+            var sp=Tonyu.getGlobal("$Sprites");
+            if (sp) {
+                console.log("$Sprites set!");
+                sp.setImageList(r);
+            }
             Sprites.setImageList(r);
             for (var i in r.names) {
                 Tonyu.setGlobal(i, r.names[i]);
@@ -110,9 +115,11 @@ return Tonyu.Project=function (dir, kernelDir) {
         });
     };
     TPR.getOptions=function () {
+        env.options=null;
         var resFile=dir.rel("options.json");
         if (resFile.exists()) env.options=resFile.obj();
-        else {
+        if (env.options && !env.options.run) env.options=null;
+        if (!env.options) {
             env.options=Tonyu.defaultOptions;
         }
         return env.options;

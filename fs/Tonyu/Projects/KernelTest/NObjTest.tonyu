@@ -1,3 +1,4 @@
+extends NoviceActor;
 native console;
 native alert;
 
@@ -27,5 +28,6 @@ while (true) {
 }
 \onH(a,b) {
     b.hide();
+    a.say("あたっ！");
     a.vy=5;
 }

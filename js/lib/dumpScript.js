@@ -25,9 +25,10 @@ function dumpScript() {
             i++;
             if (i<scrs.length) g();
             else {
+                genROM(FS.get("/Tonyu/Kernel/"), FS.get("/Tonyu/js/gen/ROM_k.js"));
+                genROM(FS.get("/Tonyu/doc/"), FS.get("/Tonyu/js/gen/ROM_d.js"));
+                genROM(FS.get("/Tonyu/SampleROM/"), FS.get("/Tonyu/js/gen/ROM_s.js"));
                 buf+="requirejs.start();\n";
-                //$("<textarea>").attr({rows:24,cols:120}).val(buf).appendTo("body");
-                //console.log(buf);
                 rsc=FS.get("/Tonyu/js/gen/runScript_concat.js");
                 rsc.text(buf);
                 var json= JSON.stringify( FS.exportDir("/") );

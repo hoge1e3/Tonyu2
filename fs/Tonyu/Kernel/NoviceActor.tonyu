@@ -1,5 +1,4 @@
 extends BaseActor;
-native Sprites;
 native Tonyu;
 
 \sleep(n) {
@@ -7,12 +6,15 @@ native Tonyu;
     for(n;n>0;n--) update();
 }
 \initSprite() {
-    if (!_sprite) _sprite=Sprites.add{owner:this};
+    if (!_sprite) {
+        _sprite=new BaseActor{owner:this};// Sprites.add{owner:this};
+        $Sprites.add(_sprite);
+    }
 }
 \say(text,size) {
     if (!size) size=15;
     initSprite();
-    _sprite.fukidashi={text:text, size:size, c:30};
+    _sprite._fukidashi={text:text, size:size, c:30};
 }
 \sprite(x,y,p) {
     go(x,y,p);
@@ -27,6 +29,7 @@ native Tonyu;
     if (p!=null) _sprite.p=p;
     //update();
 }
+\draw(){}
 \change(p) {
     initSprite();
     _sprite.p=p;

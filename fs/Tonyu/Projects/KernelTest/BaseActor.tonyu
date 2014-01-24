@@ -1,5 +1,4 @@
 extends null;
-native Sprites;
 native Tonyu;
 native Key;
 native console;
@@ -36,9 +35,8 @@ nowait \hitTo(t) {
 }
 nowait \allCrash(t) {
     var res=[];
-    var sp;
-    if (_sprite) sp=_sprite; else sp=this;
-    Sprites.sprites.forEach(\(s) {
+    var sp=_sprite || this;
+    $Sprites.sprites.forEach(\(s) {
         if (s!==this && 
         s instanceof t && 
         s.crashTo(sp)) {
@@ -62,7 +60,7 @@ nowait \crashTo(t) {
     Math.abs(y-t.y)*2<height+t.height);
 }
 nowait \watchHit(typeA,typeB,onHit) {
-    Sprites.watchHit(typeA , typeB, \(a,b) {
+    $Sprites.watchHit(typeA , typeB, \(a,b) {
         onHit.apply(this,[a,b]);
     });
 }
@@ -78,10 +76,10 @@ nowait \die() {
 }
 nowait \hide() {
     if (_sprite) {
-        Sprites.remove(_sprite);
+        $Sprites.remove(_sprite);
         _sprite=null;
     } else {
-        Sprites.remove(this);
+        $Sprites.remove(this);
     }
 }
 nowait \rnd(r) {
@@ -96,7 +94,7 @@ nowait \detectShape() {
         p=0;
     }
     p=Math.floor(p);
-    pImg=Sprites.getImageList()[p];
+    pImg=$Sprites.getImageList()[p];
     if (!pImg) return;
     width=pImg.width;
     height=pImg.height;

@@ -354,6 +354,9 @@ function genJS(klass, env,pass) {
         infix: function (node) {
             buf.printf("%v%v%v", node.left, node.op, node.right);
         },
+        trifixr:function (node) {
+            buf.printf("%v%v%v%v%v", node.left, node.op1, node.mid, node.op2, node.right);
+        },
         prefix: function (node) {
             buf.printf("%v %v", node.op, node.right);
         },
@@ -407,7 +410,6 @@ function genJS(klass, env,pass) {
                     var pc=ctx.pc++;
                     buf.printf(
                             "%s=%s(%v,%s);%n"+
-                            /*B*/
                             "%}case %d:%{" +
                             "if (!(%s.next())) { %s=%z; break; }%n" +
                             "%f%n" +
@@ -442,7 +444,6 @@ function genJS(klass, env,pass) {
                     var pc=ctx.pc++;
                     buf.printf(
                             "%v;%n"+
-                            /*B*/
                             "%}case %d:%{" +
                             "if (!(%v)) { %s=%z; break; }%n" +
                             "%v%n" +

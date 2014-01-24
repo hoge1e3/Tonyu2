@@ -49,10 +49,12 @@ define(["FS","Util"],function (FS,Util) {
             return sum;
         } else if (!f.isDir() && !t.isDir()) {
             t.text(f.text());
+            return 1;
         } else if (!f.isDir() && t.isDir()) {
             t.rel(f.name()).text(f.text());
+            return 1;
         } else {
-            throw "Cannot copy file "+f+" to directory "+t;
+            throw "Cannot copy directory "+f+" to file "+t;
         }
     };
     Shell.rm=function (file, options) {

@@ -1,4 +1,4 @@
-// 実行-> Main を実行
+// 螳溯｡�> Main 繧貞ｮ溯｡�
 while (y<$screenHeight) {
     y+=3;
     update();

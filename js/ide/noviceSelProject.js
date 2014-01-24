@@ -15,7 +15,7 @@ $(function () {
         n+="/";
         var prjDir=projects.rel(n);
         prjDir.mkdir();
-        document.location.href="project.html?dir="+prjDir.path();
+        document.location.href="noviceProject.html?dir="+prjDir.path();
     });
     ls();
     var w=Wiki($("#wikiViewArea"), FS.get("/Tonyu/doc/"));

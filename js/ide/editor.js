@@ -1,10 +1,10 @@
-requirejs(["fs/ROMk","fs/ROMds","ace", "Util", "Tonyu", "FS", "FileList", "FileMenu",
+requirejs(["fs/ROMk","fs/ROMd","fs/ROMs","ace", "Util", "Tonyu", "FS", "FileList", "FileMenu",
            "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project","ImageList","Sprites",
-           "copySample","Shell","ImageResEditor","ProjectOptionsEditor"
+           "copySample","Shell","ImageResEditor","ProjectOptionsEditor","copyToKernel"
           ],
-function (romk, romds, ace, Util, Tonyu, FS, FileList, FileMenu,
+function (romk, romd, roms, ace, Util, Tonyu, FS, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,ImageList,Sprites,
-          copySample,sh, ImgResEdit,ProjectOptionsEditor
+          copySample,sh, ImgResEdit,ProjectOptionsEditor, ctk
           ) {
 
 $(function () {
@@ -26,6 +26,7 @@ $(function () {
     ImageList(Tonyu.defaultResource.images, Sprites.setImageList);
 
     function onResize() {
+        //console.log($(window).height(), $("#navBar").height());
         var h=$(window).height()-$("#navBar").height();
         h-=20;
         var rw=$("#runArea").width();
@@ -216,8 +217,11 @@ $(function () {
         save();
         displayMode("run");
         try {
-            Tonyu.setGlobal("$mainClassName", name);
-            curPrj.rawRun("Boot");
+            var o=curPrj.getOptions();
+            o.run.mainClass=name;
+            curPrj.setOptions();
+            //Tonyu.setGlobal("$mainClassName", name);
+            curPrj.rawRun(o.run.bootClass);
             //curPrj.run(name);
         } catch(e){
             if (e.isTError) {

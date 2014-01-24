@@ -19,8 +19,34 @@ define(["Tonyu"], function (T) {
                    return true;
                };
            }
+       } else if (set instanceof Object){
+           res.i=0;
+           var elems=[];
+           if (arity==1) {
+               for (var k in set) {
+                   elems.push(k);
+               }
+               res.next=function () {
+                   if (res.i>=elems.length) return false;
+                   this[0]=elems[res.i];
+                   res.i++;
+                   return true;
+               };
+           } else {
+               for (var k in set) {
+                   elems.push([k, set[k]]);
+               }
+               res.next=function () {
+                   if (res.i>=elems.length) return false;
+                   this[0]=elems[res.i][0];
+                   this[1]=elems[res.i][1];
+                   res.i++;
+                   return true;
+               };
+           }
        } else {
-
+           console.log(set);
+           throw "Cannot iterable";
        }
        return res;
    }

@@ -96,7 +96,10 @@ var reqConf={
             "fs/ROMk": {
                 "deps": ["FS"]
             },
-            "fs/ROMds": {
+            "fs/ROMd": {
+                "deps": ["FS"]
+            },
+            "fs/ROMs": {
                 "deps": ["FS"]
             },
             "FileList": {
@@ -120,10 +123,10 @@ var reqConf={
                 deps: ["Shell","FS"]
             },
             "ide/selProject": {
-                deps: ["fs/ROMk","fs/ROMds", "FS","Wiki"]
+                deps: ["fs/ROMk","fs/ROMd","fs/ROMs", "FS","Wiki"]
             },
             "ide/noviceSelProject": {
-                deps: ["fs/ROMk","fs/ROMds", "FS","Wiki"]
+                deps: ["fs/ROMk","fs/ROMd","fs/ROMs", "FS","Wiki"]
             }
         },
         "paths": {
@@ -167,8 +170,9 @@ var reqConf={
             "showErrorPos": "ide/ErrorPos",
             "TError": "ide/TError",
             "ide/editor": "ide/editor",
-            "fs/ROMk": "../fs/Tonyu/js/gen/ROMk",
-            "fs/ROMds": "../fs/Tonyu/js/gen/ROMds",
+            "fs/ROMk": "../fs/Tonyu/js/gen/ROM_k",
+            "fs/ROMd": "../fs/Tonyu/js/gen/ROM_d",
+            "fs/ROMs": "../fs/Tonyu/js/gen/ROM_s",
             "ProjectOptionsEditor": "ide/ProjectOptionsEditor",
             "FileList": "fs/FileList",
             "HttpHelper": "help/HttpHelper",
@@ -177,6 +181,7 @@ var reqConf={
             "ide/noviceSelProject": "ide/noviceSelProject",
             "ide/noviceEditor": "ide/noviceEditor",
             PatternParser:"graphics/PatternParser",
+            copyToKernel: "fs/copyToKernel",
             "foo":"bar"
         },
         "baseUrl": "js"

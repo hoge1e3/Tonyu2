@@ -1,43 +1,55 @@
 native Tonyu;
 native $;
 native TError;
-native Sprites;
 native $LASTPOS;
 native Key;
 native Date;
+native ImageList;
 
-print ("Loading pats..");
-a=Tonyu.asyncResult();
-Tonyu.currentProject.loadResource(a.receiver);
-waitFor(a);
-print ("Loading pats done.");
-    
-thg=Tonyu.threadGroup();
-cv=$("canvas")[0];
-mainClass=Tonyu.getClass($mainClassName);
-if (!mainClass) {
-    TError( $mainClassName+" というクラスはありません", 
-    "不明" ,0).raise();
+\initSprites() {
+    $Sprites=new Sprites();
+    print ("Loading pats..");
+    var rs=Tonyu.currentProject.getResource();
+    var a=Tonyu.asyncResult();
+    ImageList( rs.images, a.receiver);
+    waitFor(a);
+    var r=a[0];
+    $Sprites.setImageList(r);
+    for (var name,val in r.names) {
+        Tonyu.setGlobal(name, val);
+    }
+    print ("Loading pats done.");
+    cv=$("canvas")[0];
 }
-Sprites.clear();
-Sprites.drawGrid=Tonyu.noviceMode;
-Tonyu.runMode=true;
-$currentThreadGroup=thg;
-var main=new mainClass();
-//thg.addObj(main);
-//Tonyu.currentThreadGroup=thg;
+
+\initThread() {
+    thg=Tonyu.threadGroup();
+    var o=Tonyu.currentProject.getOptions();
+    var mainClassName=o.run.mainClass;
+    //print("MainClass= "+mainClassName);
+    mainClass=Tonyu.getClass(mainClassName);
+    if (!mainClass) {
+        TError( $mainClassName+" というクラスはありません", 
+        "不明" ,0).raise();
+    }
+    Tonyu.runMode=true;
+    $currentThreadGroup=thg;
+    new mainClass();
+}
+
+initSprites();
+initThread();
 $screenWidth=cv.width;
 $screenHeight=cv.height;
 $pat_fruits=30;
-//Tonyu.runMode=true;
 while (true) {
     ti=new Date().getTime();
     thg.steps();
     Key.update();
     $screenWidth=cv.width;
     $screenHeight=cv.height;
-    Sprites.draw(cv);
-    Sprites.checkHit();
+    $Sprites.draw(cv);
+    $Sprites.checkHit();
     wt=33-(new Date().getTime()-ti);
     if (wt<0) wt=0;
     waitFor(Tonyu.timeout(wt));

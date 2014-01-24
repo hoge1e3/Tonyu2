@@ -198,6 +198,8 @@ TonyuLang=function () {
     e.infixr(prio,tk("|="));
     e.infixr(prio,tk("&="));
     prio++;
+    e.trifixr(prio,tk("?"), tk(":"));
+    prio++;
     e.infixl(prio,oror);
     prio++;
     e.infixl(prio,andand);

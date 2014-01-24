@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html><head>
 <script src="js/lib/jquery-1.10.1.js" type="text/javascript" data-nocat="true"></script>
 <script src="js/reqConf.js"></script>
 <script src="js/lib/require.js" data-nocat="true"></script>
@@ -8,6 +10,29 @@ requirejs.config(reqConf);
 requirejs(["runScript"],function (){});
 </script>
 <script type='text/tonyu' data-filename='.desktop'  data-wrap='80'>{"runMenuOrd":["Main","Ball"]}
+</script>
+
+<script type='text/tonyu' data-filename='Ball.tonyu'  data-wrap='80'>// Ëû≥Ê∫ØÔΩ°ÔøΩ> Main ÁπßË≤ûÔΩÆÊ∫ØÔΩ°ÔøΩ
+while (y<$screenHeight) {
+    y+=3;
+    update();
+}
+die();
+
+</script>
+
+<script type='text/tonyu' data-filename='Main.tonyu'  data-main='true' data-wrap='80'>// Ëû≥Ê∫ØÔΩ°ÔøΩ> Main ÁπßË≤ûÔΩÆÊ∫ØÔΩ°ÔøΩ
+native dumpScript;
+t=0;
+while(true) {
+    if (t%5==0) {
+        new Ball{x:rnd($screenHeight),y:0, p:$pat_balls+rnd(25)};
+    }
+    t++;
+    if (t>200) break;
+    update();
+}
+dumpScript();
 </script>
 
 <script type='text/tonyu' data-filename='res.json'  data-wrap='80'>{"images":[{"name":"$pat_base","url":"images/base.png","pwidth":32,"pheight":32}\
@@ -925,23 +950,5 @@ w3OUSIZjPwsQdTggmYLrr0RzlEiGYz8rEG82nCOEslgpF9BlEgkPw0yiBKJCyCDKJG4ADKIEokLIIMok
 bgAMogSiQsggyiRXHP+iP8Pv3NiIMkpJLsAAAAASUVORK5CYII="}],"sounds":[]}
 </script>
 
-<script type='text/tonyu' data-filename='Ball.tonyu'  data-wrap='80'>// é¿çs-> Main Çé¿çs
-while (y<$screenHeight) {
-    y+=3;
-    update();
-}
-die();
-
-</script>
-
-<script type='text/tonyu' data-filename='Main.tonyu'  data-main='true' data-wrap='80'>// é¿çs-> Main Çé¿çs
-t=0;
-while(true) {
-    if (t%5==0) {
-        new Ball{x:rnd($screenHeight),y:0, p:$pat_balls+rnd(25)};
-    }
-    t++;
-    update();
-}
-</script>
-
+</head>
+</html>

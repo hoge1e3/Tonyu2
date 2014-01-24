@@ -10,7 +10,7 @@ native Tonyu;
     /*if (!_sprite) {
         _sprite=Sprites.add{owner:this};
     }*/
-    Sprites.addT(this);
+    $Sprites.add(this);
 }
 
 /*

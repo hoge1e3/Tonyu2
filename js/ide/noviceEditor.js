@@ -1,6 +1,6 @@
-requirejs(["fs/ROMk","fs/ROMds","ace", "Util", "Tonyu", "FS", "FileList", "FileMenu",
+requirejs(["fs/ROMk","fs/ROMd","fs/ROMs","ace", "Util", "Tonyu", "FS", "FileList", "FileMenu",
                          "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project","ImageList","Sprites"],
-function (romk, romds,ace, Util, Tonyu, FS, FileList, FileMenu,
+function (romk, romd , roms, ace, Util, Tonyu, FS, FileList, FileMenu,
         showErrorPos, fixIndent, Wiki, Tonyu_Project,ImageList,Sprites) {
 $(function () {
     Tonyu.noviceMode=true;
@@ -9,7 +9,7 @@ $(function () {
     };
     Tonyu.defaultOptions={
             compiler: { defaultSuperClass: "NoviceActor"},
-            bootClass: "Boot",
+            run: {mainClass: "Main", bootClass: "Boot"},
             kernelEditable: false
         };
 
@@ -20,6 +20,7 @@ $(function () {
         var mw=$("#mainArea").width();
         $("#prog").css("height",h/2+"px");
         $("#cv").attr("height", h/2).attr("width", mw);
+        $("#wikiViewArea").css("height", h);
         cv=$("#cv")[0].getContext("2d");
     }
     onResize();
@@ -172,8 +173,13 @@ $(function () {
         save();
         displayMode("run");
         try {
-            Tonyu.setGlobal("$mainClassName", name);
-            curPrj.rawRun("Boot");
+            var o=curPrj.getOptions();
+            o.run.mainClass=name;
+            curPrj.setOptions();
+            //Tonyu.setGlobal("$mainClassName", name);
+            curPrj.rawRun(o.run.bootClass);
+
+            //curPrj.rawRun("Boot");
             //curPrj.run(name);
         } catch(e){
             if (e.isTError) {
