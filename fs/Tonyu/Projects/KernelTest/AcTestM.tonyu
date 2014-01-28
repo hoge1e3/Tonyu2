@@ -8,8 +8,8 @@ fillStyle="yellow";
 for (i=0; i<300; i++) {
     size=40;
     text="スコア："+i;
-    x=200;
-    y=100;
+    x=$mouseX;
+    y=$mouseY;
     if (i==50) waitFor(Tonyu.timeout(1000));
     update();
 }

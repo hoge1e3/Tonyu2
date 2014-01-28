@@ -193,6 +193,11 @@ function genJS(klass, env,pass) {
             buf.printf("%s",n);
         }
     }
+    function lastPosF(node) {
+        return function () {
+            buf.printf("%s=%s;%n",  LASTPOS, traceTbl.add(klass.src.tonyu,node.pos ));
+        };
+    }
     v=buf.visitor=Visitor({
         dummy: function (node) {
             buf.printf("",node);
@@ -252,6 +257,7 @@ function genJS(klass, env,pass) {
             }
         },
         varsDecl: function (node) {
+            lastPosF(node)();
             if (!ctx.noWait) {
                 buf.printf("%j;", [";",node.decls]);
             }else {
@@ -309,6 +315,7 @@ function genJS(klass, env,pass) {
         },
         exprstmt: function (node) {//exprStmt
             var t;
+            lastPosF(node)();
             if (!ctx.noWait && (t=OM.match(node,noRetFiberCallTmpl)) &&
                     ctx.scope[t.T]==ST.METHOD &&
                     !getMethod(t.T).nowait) {
@@ -348,7 +355,8 @@ function genJS(klass, env,pass) {
                     );
                 }
             } else {
-                buf.printf("%s=%s;%v;",  LASTPOS, traceTbl.add(klass.src.tonyu,node.pos ), node.expr );
+                buf.printf("%v;", node.expr );
+                //buf.printf("%s=%s;%v;",  LASTPOS, traceTbl.add(klass.src.tonyu,node.pos ), node.expr );
             }
         },
         infix: function (node) {
@@ -379,6 +387,7 @@ function genJS(klass, env,pass) {
             }
         },
         "while": function (node) {
+            lastPosF(node)();
             if (!ctx.noWait) {
                 var brkpos=buf.lazy();
                 var pc=ctx.pc++;
@@ -402,6 +411,7 @@ function genJS(klass, env,pass) {
             }
         },
         "for": function (node) {
+            lastPosF(node)();
             if (node.inFor.type=="forin") {
                 var itn=genSym("_it_");
                 ctx.scope[itn]=ST.LOCAL;

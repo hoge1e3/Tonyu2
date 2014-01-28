@@ -9,6 +9,29 @@
 <script type='text/tonyu' data-filename='.desktop'  data-wrap='80'>{"runMenuOrd":["Main","Ball"]}
 </script>
 
+<script type='text/tonyu' data-filename='Ball.tonyu'  data-wrap='80'>
+while (y<$screenHeight) {
+    y+=3;
+    update();
+}
+die();
+
+</script>
+
+<script type='text/tonyu' data-filename='Main.tonyu'  data-main='true' data-wrap='80'>
+native dumpScript;
+t=0;
+while(true) {
+    if (t%5==0) {
+        new Ball{x:$mouseX,y:0, p:$pat_balls+rnd(25)};
+    }
+    t++;
+    if (t>200) break;
+    update();
+}
+dumpScript();
+</script>
+
 <script type='text/tonyu' data-filename='res.json'  data-wrap='80'>{"images":[{"name":"$pat_base","url":"images/base.png","pwidth":32,"pheight":32}\
 ,{"name":"$pat_balls","url":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOIAA\
 AFLCAYAAADLdFBFAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrD\
@@ -922,25 +945,5 @@ BhRC5T+01lEfc5RIhmMXLUgauH4MZ/OIuoLOEeJZDByVWdELSQD+ewPoo2Ac5RIBiM/2a6pFhh7nwNBt
 NXgHCWSwchPGsSrjXEMzlEiGYz8pCdruDANFK5/zlEiGYz8pEEUcKHqL1y/As5RIhmM/ORBFHDhchauP\
 w3OUSIZjPwsQdTggmYLrr0RzlEiGYz8rEG82nCOEslgpF9BlEgkPw0yiBKJCyCDKJG4ADKIEokLIIMok\
 bgAMogSiQsggyiRXHP+iP8Pv3NiIMkpJLsAAAAASUVORK5CYII="}],"sounds":[]}
-</script>
-
-<script type='text/tonyu' data-filename='Ball.tonyu'  data-wrap='80'>// 実行-> Main を実行
-while (y<$screenHeight) {
-    y+=3;
-    update();
-}
-die();
-
-</script>
-
-<script type='text/tonyu' data-filename='Main.tonyu'  data-main='true' data-wrap='80'>// 実行-> Main を実行
-t=0;
-while(true) {
-    if (t%5==0) {
-        new Ball{x:rnd($screenHeight),y:0, p:$pat_balls+rnd(25)};
-    }
-    t++;
-    update();
-}
 </script>
 

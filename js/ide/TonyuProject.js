@@ -59,6 +59,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         Tonyu.runMode=false;
         env.classes={};
         Tonyu.currentProject=TPR;
+        Tonyu.globals.$currentProject=TPR;
         /*if (Tonyu.currentThreadGroup) Tonyu.currentThreadGroup.kill();
         delete Tonyu.currentThreadGroup;*/
         kernelDir.each(collect);

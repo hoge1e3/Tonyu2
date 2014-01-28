@@ -12,7 +12,7 @@ requirejs(["runScript"],function (){});
 <script type='text/tonyu' data-filename='.desktop'  data-wrap='80'>{"runMenuOrd":["Main","Ball"]}
 </script>
 
-<script type='text/tonyu' data-filename='Ball.tonyu'  data-wrap='80'>// 螳溯｡�> Main 繧貞ｮ溯｡�
+<script type='text/tonyu' data-filename='Ball.tonyu'  data-wrap='80'>
 while (y<$screenHeight) {
     y+=3;
     update();
@@ -21,12 +21,12 @@ die();
 
 </script>
 
-<script type='text/tonyu' data-filename='Main.tonyu'  data-main='true' data-wrap='80'>// 螳溯｡�> Main 繧貞ｮ溯｡�
+<script type='text/tonyu' data-filename='Main.tonyu'  data-main='true' data-wrap='80'>
 native dumpScript;
 t=0;
 while(true) {
     if (t%5==0) {
-        new Ball{x:rnd($screenHeight),y:0, p:$pat_balls+rnd(25)};
+        new Ball{x:$mouseX,y:0, p:$pat_balls+rnd(25)};
     }
     t++;
     if (t>200) break;

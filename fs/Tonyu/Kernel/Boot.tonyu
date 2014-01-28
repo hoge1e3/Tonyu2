@@ -1,16 +1,15 @@
-native Tonyu;
 native $;
 native TError;
 native $LASTPOS;
 native Key;
 native Date;
 native ImageList;
+native Tonyu;
 
 \initSprites() {
     $Sprites=new Sprites();
     print ("Loading pats..");
-    
-    var rs=Tonyu.currentProject.getResource();
+    var rs=$currentProject.getResource();
     var a=Tonyu.asyncResult();
     ImageList( rs.images, a.receiver);
     waitFor(a);
@@ -20,7 +19,36 @@ native ImageList;
         Tonyu.setGlobal(name, val);
     }
     print ("Loading pats done.");
-    cv=$("canvas")[0];
+    cvj=$("canvas");
+    cv=cvj[0];
+}
+\initCanvasEvents() {
+    $handleMouse=\(e) {
+        var p=cvj.offset();
+        $mouseX=e.clientX-p.left;
+        $mouseY=e.clientY-p.top;
+    };
+    $handleTouch=\(e) {
+        var p=cvj.offset();
+        e.preventDefault();
+        var ts=e.originalEvent.touches;
+        $mouseX=ts[0].pageX-p.left;
+        $mouseY=ts[0].pageY-p.top;
+        $touches=[];
+        ts.forEach(\(t) {
+            $touches.push{x: t.pageX-p.left, y: t.pageY-p.top};
+        });
+    };
+    var handleMouse=\(e){$handleMouse(e);};
+    var handleTouch=\(e){$handleTouch(e);};
+    var d=$.data(cv,"events");
+    if (!d) {
+        $.data(cv,"events","true");
+        cvj.mousedown(handleMouse);
+        cvj.mousemove(handleMouse);
+        cvj.on("touchstart",handleTouch);
+        cvj.on("touchmove",handleTouch);
+    }
 }
 
 \initThread() {
@@ -39,6 +67,7 @@ native ImageList;
 }
 
 initSprites();
+initCanvasEvents();
 initThread();
 $screenWidth=cv.width;
 $screenHeight=cv.height;
@@ -55,4 +84,3 @@ while (true) {
     if (wt<0) wt=0;
     waitFor(Tonyu.timeout(wt));
 }
-    
