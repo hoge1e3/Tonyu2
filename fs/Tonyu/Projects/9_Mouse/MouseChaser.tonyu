@@ -1,0 +1,5 @@
+while(true) {
+    x=$mouseX;
+    y=$mouseY;
+    update();
+}
