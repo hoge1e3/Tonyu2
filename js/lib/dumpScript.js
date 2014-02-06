@@ -2,6 +2,7 @@ function dumpScript() {
     var scrs=$("script");
     var i=0;
     var buf="";
+    buf+="// Created at "+new Date()+"\n";
     var path2Name=genPath2Name();
     g();
     function g() {
@@ -37,7 +38,7 @@ function dumpScript() {
                     url:"LS2File",
                     data:{json: json},
                     success: function (r) {
-                        alert("OK: " + r);
+                        alert("OK!: " + r);
                     }
                 });
             }

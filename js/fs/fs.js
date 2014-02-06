@@ -79,6 +79,33 @@ FS=function () {
     FS.orderByName=function (a,b) {
         return (a>b ? 1 : (a<b ? -1 : 0));
     };
+    FS.orderByNumberedName=function (a,b) {
+        function splitByNums(s) {
+            var array=[];
+            var pnum=/^[0-9]*/, pNnum=/^[^0-9]*/;
+            while (s) {
+                s.match(pNnum);
+                array.push(RegExp.lastMatch);
+                s=s.replace(pNnum,"");
+                if (!s) break;
+                s.match(pnum);
+                var v=parseInt(RegExp.lastMatch);
+                array.push(v);
+                s=s.replace(pnum,"");
+            }
+            return array;
+        }
+        var aa=splitByNums(a);
+        var bb=splitByNums(b);
+        var i;
+        for (i=0 ; i<aa.length ; i++) {
+            if (i>=bb.length) return 1; // a = 123_abc2   b=123_abc
+            if (aa[i]>bb[i]) return 1;
+            if (aa[i]<bb[i]) return -1;
+        }
+        if (i<bb.length) return -1;  // a = 123_abc   b=123_abc2
+        return 0;
+    };
     FS.importDir=function (exported) {
         var base=FS.get(exported.base);
         if (!exported.confirm) base.mkdir();

@@ -7,7 +7,7 @@ $(function () {
     var curDir=projects;
     function ls() {
         $("#prjItemList").empty();
-        curDir.ls(FS.orderByName).forEach(function (name) {
+        curDir.ls(FS.orderByNumberedName).forEach(function (name) {
             var f=curDir.rel(name);
             $("#fileItem").tmpl({name: name, href:"project.html?dir="+f.path()}).appendTo("#prjItemList");
         });

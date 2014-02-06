@@ -2,7 +2,7 @@ extends Actor;
 native Tonyu;
 new AcTest{x:10, y:100, vx:5, vy:0, p:0};
 new AcTest{x:320, y:100, vx:-5, vy:0, p:10};
-new AcTest(50,150,3);
+t=new AcTest(50,150,3);
 
 fillStyle="yellow";
 for (i=0; i<300; i++) {
@@ -10,6 +10,10 @@ for (i=0; i<300; i++) {
     text="スコア："+i;
     x=$mouseX;
     y=$mouseY;
+    if ($touches.length>=2) {
+        t.x=$touches[1].x;
+        t.y=$touches[1].y;
+    }
     if (i==50) waitFor(Tonyu.timeout(1000));
     update();
 }

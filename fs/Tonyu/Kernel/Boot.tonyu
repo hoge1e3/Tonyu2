@@ -28,19 +28,39 @@ native Tonyu;
         $mouseX=e.clientX-p.left;
         $mouseY=e.clientY-p.top;
     };
+    $touches=[{},{},{},{}];
     $handleTouch=\(e) {
         var p=cvj.offset();
         e.preventDefault();
         var ts=e.originalEvent.touches;
         $mouseX=ts[0].pageX-p.left;
         $mouseY=ts[0].pageY-p.top;
-        $touches=[];
-        ts.forEach(\(t) {
-            $touches.push{x: t.pageX-p.left, y: t.pageY-p.top};
-        });
+        for (var i =0 ; i<$touches.length ; i++) {
+            $touches[i].touched=false;
+        }
+        for (var i =0 ; i<ts.length ; i++) {
+            var src=ts[i];
+            var dst=$touches[src.identifier];
+            if (dst) {
+                dst.x=src.pageX-p.left;
+                dst.y=src.pageY-p.top;
+                dst.touched=true;
+            }
+        }
+    };
+    $handleTouchEnd=\(e) {
+        var ts=e.originalEvent.changedTouches;
+        for (var i =0 ; i<ts.length ; i++) {
+            var src=ts[i];
+            var dst=$touches[src.identifier];
+            if (dst) {
+                dst.touched=false;
+            }
+        }
     };
     var handleMouse=\(e){$handleMouse(e);};
     var handleTouch=\(e){$handleTouch(e);};
+    var handleTouchEnd=\(e){$handleTouchEnd(e);};
     var d=$.data(cv,"events");
     if (!d) {
         $.data(cv,"events","true");
@@ -48,6 +68,7 @@ native Tonyu;
         cvj.mousemove(handleMouse);
         cvj.on("touchstart",handleTouch);
         cvj.on("touchmove",handleTouch);
+        cvj.on("touchend",handleTouchEnd);
     }
 }
 
