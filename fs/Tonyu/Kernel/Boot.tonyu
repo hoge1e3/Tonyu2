@@ -20,7 +20,7 @@ native Tonyu;
     }
     print ("Loading pats done.");
     cvj=$("canvas");
-    $Screen=new ScaledCanvas{canvas:cvj, width:512, height:512};
+    $Screen=new ScaledCanvas{canvas:cvj, width:465, height:465};
 }
 \initCanvasEvents() {
     cv=cvj[0];
@@ -43,13 +43,6 @@ native Tonyu;
         var p=cvj.offset();
         e.preventDefault();
         var ts=e.originalEvent.changedTouches;
-        /*var mp={x:ts[0].pageX-p.left, y:ts[0].pageY-p.top};
-        mp=$Screen.canvas2buf(mp);
-        $mouseX=mp.x;//ts[0].pageX-p.left;
-        $mouseY=mp.y;//ts[0].pageY-p.top;
-        /*for (var i =0 ; i<$touches.length ; i++) {
-            $touches[i].nowTouched=false;
-        }*/
         for (var i =0 ; i<ts.length ; i++) {
             var src=ts[i];
             var dst=$touches.findById(src.identifier);

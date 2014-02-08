@@ -17,9 +17,16 @@ define(["fs/ROMk","FS","Tonyu.Project","Shell","Sprites","ImageList"],
                 kernelEditable: false
             };
 
-        var w=$(window).width()-20;
-        var h=$(window).height()-20;
-        $("<canvas>").attr({width: w, height:h}).appendTo("body");
+        var w=$(window).width();
+        var h=$(window).height();
+        $("body").css({overflow:"hidden", margin:"0px"});
+        $(window).resize(onResize);
+        var cv=$("<canvas>").attr({width: w, height:h}).appendTo("body");
+        function onResize() {
+            w=$(window).width();
+            h=$(window).height();
+        	cv.attr({width: w, height: h});
+        }
         var scrs=$("script");
         var curProjectDir=FS.get("/Tonyu/runscript/");
         if (curProjectDir.exists()) sh.rm(curProjectDir,{r:1});
