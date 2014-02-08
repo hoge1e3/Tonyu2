@@ -18,7 +18,7 @@ define(["Util"],function (Util) {
             });
         };
         $edits.writeToJq=function ($edit, jq) {
-            var m=$edits.model;
+        	var m=$edits.model;
             if (!m) return;
             var name = $edit.name;
             var a=name.split(".");
@@ -32,33 +32,64 @@ define(["Util"],function (Util) {
                 jq.val(m);
             }
         };
-        $edits.validation={status:{}, onChange: function (name, err, jq) {
-            if ($vars.validationMessage) {
-                $vars.validationMessage.empty();
-                for (var name in $edits.validation.status) {
-                    $vars.validationMessage.append(UI("div", $edits.validation.status.err));
-                }
-            }
-        }};
+        $edits.validator={
+       		errors:{},
+       		show: function () {
+       			if ($vars.validationMessage) {
+       				$vars.validationMessage.empty();
+       				for (var name in this.errors) {
+       					$vars.validationMessage.append(UI("div", this.errors[name].mesg));
+       				}
+       			}
+       			if ($vars.OKButton) {
+       				var ok=true;
+       				for (var name in this.errors) {
+       					ok=false;
+       				}
+       				$vars.OKButton.attr("disabled", !ok);
+       			}
+       		},
+       		on: {
+       			validate: function () {}
+       		},
+       		addError: function (name, mesg, jq) {
+       			this.errors[name]={mesg:mesg, jq:jq};
+       			this.show();
+       		},
+       		removeError: function (name) {
+       			delete this.errors[name];
+       			this.show();
+       		},
+       		allOK: function () {
+       			for (var i in this.errors) {
+       				delete this.errors[i];
+       			}
+       			this.show();
+       		}
+        };
         $edits.writeToModel=function ($edit, val ,jq) {
             var m=$edits.model;
+        	//console.log($edit, m);
             if (!m) return;
             var name = $edit.name;
             try {
                 val=$edit.type.fromVal(val);
             } catch (e) {
-                $edits.validation.status[name]={err:e, jq:jq};
-                $edits.validation.onChange(name, e, jq);
+            	$edits.validator.addError(name, e, jq);
+            	//$edits.validator.errors[name]={mesg:e, jq:jq};
+                //$edits.validator.change(name, e, jq);
                 return;
             }
-            if ($edits.validation.status[name]) {
-                delete $edits.validation.status[name];
-                $edits.validation.onChange(name, null, jq);
-            }
+            $edits.validator.removeError(name);
+            /*
+            if ($edits.validator.errors[name]) {
+                delete $edits.validator.errors[name];
+                $edits.validator.change(name, null, jq);
+            }*/
             var a=name.split(".");
             for (var i=0 ; i<a.length ;i++) {
                 if (i==a.length-1) {
-                    if ($edits.onWriteToModel(name,val)) {
+                    if ($edits.on.writeToModel(name,val)) {
 
                     } else {
                         m[a[i]]=val;
@@ -67,8 +98,10 @@ define(["Util"],function (Util) {
                     m=m[a[i]];
                 }
             }
+            $edits.validator.on.validate.call($edits.validator, $edits.model);
         };
-        $edits.onWriteToModel= function (name, val) {};
+        $edits.on={};
+        $edits.on.writeToModel= function (name, val) {};
 
         if (listeners.length>0) {
             setTimeout(l,10);

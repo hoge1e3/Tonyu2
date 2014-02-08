@@ -18,6 +18,9 @@ native TextRect;
         this.p=p;
     }
 }
+nowait \extend(obj) {
+    return Tonyu.extend(this,obj);
+}
 
 nowait \print(c) {
     console.log(c);

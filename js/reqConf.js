@@ -130,6 +130,7 @@ var reqConf={
             }
         },
         "paths": {
+        	NewProjectDialog: "ide/NewProjectDialog",
             WebSite: "runtime/WebSite",
             UI:"lib/UI",
             ImageResEditor: "ide/ImageResEditor",

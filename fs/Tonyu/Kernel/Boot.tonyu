@@ -20,41 +20,67 @@ native Tonyu;
     }
     print ("Loading pats done.");
     cvj=$("canvas");
-    cv=cvj[0];
+    $Screen=new ScaledCanvas{canvas:cvj, width:512, height:512};
 }
 \initCanvasEvents() {
+    cv=cvj[0];
     $handleMouse=\(e) {
         var p=cvj.offset();
-        $mouseX=e.clientX-p.left;
-        $mouseY=e.clientY-p.top;
+        var mp={x:e.clientX-p.left, y:e.clientY-p.top};
+        mp=$Screen.canvas2buf(mp);
+        $mouseX=mp.x;//e.clientX-p.left;
+        $mouseY=mp.y;//e.clientY-p.top;
     };
-    $touches=[{},{},{},{}];
+    $touches=[{},{},{},{},{}];
+    $touches.findById=\(id) {
+        for (var j=0 ; j<$touches.length ; j++) {
+            if ($touches[j].identifier==id) {
+                return $touches[j];
+            }
+        }
+    };
     $handleTouch=\(e) {
         var p=cvj.offset();
         e.preventDefault();
-        var ts=e.originalEvent.touches;
-        $mouseX=ts[0].pageX-p.left;
-        $mouseY=ts[0].pageY-p.top;
-        for (var i =0 ; i<$touches.length ; i++) {
-            $touches[i].touched=false;
-        }
+        var ts=e.originalEvent.changedTouches;
+        /*var mp={x:ts[0].pageX-p.left, y:ts[0].pageY-p.top};
+        mp=$Screen.canvas2buf(mp);
+        $mouseX=mp.x;//ts[0].pageX-p.left;
+        $mouseY=mp.y;//ts[0].pageY-p.top;
+        /*for (var i =0 ; i<$touches.length ; i++) {
+            $touches[i].nowTouched=false;
+        }*/
         for (var i =0 ; i<ts.length ; i++) {
             var src=ts[i];
-            var dst=$touches[src.identifier];
+            var dst=$touches.findById(src.identifier);
+            if (!dst) {
+                for (var j=0 ; j<$touches.length ; j++) {
+                    if (!$touches[j].touched) {
+                        dst=$touches[j];
+                        dst.identifier=src.identifier;
+                        break;
+                    }
+                }
+            }
             if (dst) {
-                dst.x=src.pageX-p.left;
-                dst.y=src.pageY-p.top;
+                mp={x:src.pageX-p.left, y:src.pageY-p.top};
+                mp=$Screen.canvas2buf(mp);
+                dst.x=mp.x;//src.pageX-p.left;
+                dst.y=mp.y;//src.pageY-p.top;
                 dst.touched=true;
             }
         }
+        $mouseX=$touches[0].x;
+        $mouseY=$touches[0].y;
     };
     $handleTouchEnd=\(e) {
         var ts=e.originalEvent.changedTouches;
         for (var i =0 ; i<ts.length ; i++) {
             var src=ts[i];
-            var dst=$touches[src.identifier];
+            var dst=$touches.findById(src.identifier);
             if (dst) {
                 dst.touched=false;
+                dst.identifier=-1;
             }
         }
     };
@@ -97,9 +123,10 @@ while (true) {
     ti=new Date().getTime();
     thg.steps();
     Key.update();
-    $screenWidth=cv.width;
-    $screenHeight=cv.height;
-    $Sprites.draw(cv);
+    $screenWidth=$Screen.width;
+    $screenHeight=$Screen.height;
+    $Sprites.draw($Screen.buf[0]);
+    $Screen.draw();
     $Sprites.checkHit();
     wt=33-(new Date().getTime()-ti);
     if (wt<0) wt=0;

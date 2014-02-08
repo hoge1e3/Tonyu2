@@ -1,4 +1,4 @@
-define(["Shell","FS","copySample"],function (sh, FS,copySample) {
+define(["Shell","FS","copySample","NewProjectDialog"],function (sh, FS,copySample,NPD) {
 $(function () {
     copySample();
     var home=FS.get("/Tonyu/");
@@ -13,12 +13,18 @@ $(function () {
         });
     }
     $("#newPrj").click(function (){
+    	NPD.open(projects, function (prjDir) {
+            prjDir.mkdir();
+            document.location.href="project.html?dir="+prjDir.path();
+    	});
+    	/*
         var n=prompt("新しいプロジェクトの名前","");
         if (!n) return;
         n+="/";
         var prjDir=projects.rel(n);
         prjDir.mkdir();
         document.location.href="project.html?dir="+prjDir.path();
+        */
     });
     ls();
     var w=Wiki($("#wikiViewArea"), FS.get("/Tonyu/doc/"));

@@ -1,5 +1,5 @@
 define(["UI","FS"], function (UI,FS) {
-return FileMenu=function () {
+var FileMenu=function () {
     var FM={on:{}};
     FM.on.validateName=function (name) {
         if (!name) return {ok:false, reason:"ファイル名を入力してください"};
@@ -121,5 +121,6 @@ return FileMenu=function () {
     });*/
     return FM;
 };
+return FileMenu;
 
 });
