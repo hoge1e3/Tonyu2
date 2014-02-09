@@ -1,4 +1,4 @@
-// Created at Sat Feb 08 2014 16:11:36 GMT+0900 (東京 (標準時))
+// Created at Sun Feb 09 2014 19:06:04 GMT+0900 (東京 (標準時))
 requirejs.setName('reqConf');
 //"var reqConf="+JSON.stringify( getReq.genConf({base:"http://localhost:3002/js/", baseUrl:"js"})+";"
 var reqConf={
@@ -132,6 +132,8 @@ var reqConf={
             }
         },
         "paths": {
+        	ScriptTagFS:"fs/ScriptTagFS",
+        	KeyEventChecker: "lib/KeyEventChecker",
         	NewProjectDialog: "ide/NewProjectDialog",
             WebSite: "runtime/WebSite",
             UI:"lib/UI",
@@ -190,40 +192,29 @@ var reqConf={
         "baseUrl": "js"
 };
 requirejs.setName('runScript');
-define(["fs/ROMk","FS","Tonyu.Project","Shell","Sprites","ImageList"],
-        function (romk,FS,Tonyu_Project, sh, Sprites, ImageList) {
+define(["fs/ROMk","FS","Tonyu.Project","Shell","Sprites","ImageList","KeyEventChecker","ScriptTagFS"],
+        function (romk,FS,Tonyu_Project, sh, Sprites, ImageList, KeyEventChecker, ScriptTagFS) {
     $(function () {
         Tonyu.defaultResource={
                 images:[
                         {name:"$pat_base", url: "images/base.png", pwidth:32, pheight:32},
-                        //{url: "http://jsrun.it/assets/6/F/y/3/6Fy3B.png", pwidth:32, pheight:32},
                         {name:"$pat_sample", url: "images/Sample.png"},
                         {name:"$pat_neko", url: "images/neko.png", pwidth:32, pheight:32},
-                        //{url: "http://jsrun.it/assets/j/D/9/q/jD9qQ.png", pwidth:32, pheight:32}
                 ],
                 sounds:[]
         };
-        Tonyu.defaultOptions={
-                compiler: { defaultSuperClass: "Actor"},
-                run: {mainClass: "Main", bootClass: "Boot"},
-                kernelEditable: false
-            };
-
         var w=$(window).width();
         var h=$(window).height();
         $("body").css({overflow:"hidden", margin:"0px"});
-        $(window).resize(onResize);
         var cv=$("<canvas>").attr({width: w, height:h}).appendTo("body");
+        $(window).resize(onResize);
         function onResize() {
             w=$(window).width();
             h=$(window).height();
         	cv.attr({width: w, height: h});
         }
-        var scrs=$("script");
-        var curProjectDir=FS.get("/Tonyu/runscript/");
-        if (curProjectDir.exists()) sh.rm(curProjectDir,{r:1});
-        var name="Main";
-        scrs.each(function (){
+        //var scrs=$("script");
+        /*scrs.each(function (){
             var s=this;
             //console.log(s.type, s.dataset.filename);
             if (s.type=="text/tonyu") {
@@ -244,11 +235,6 @@ define(["fs/ROMk","FS","Tonyu.Project","Shell","Sprites","ImageList"],
                 }
             }
         });
-        var kernelDir=FS.get("/Tonyu/Kernel/");
-        var curPrj=Tonyu_Project(curProjectDir, kernelDir);
-        curPrj.env.options.compiler.defaultSuperClass="Actor";
-        Tonyu.setGlobal("$mainClassName", name);
-        curPrj.rawRun("Boot");
         function unwrap(str, cols) {
             var lines=str.split("\n");
             var buf="";
@@ -260,7 +246,37 @@ define(["fs/ROMk","FS","Tonyu.Project","Shell","Sprites","ImageList"],
                 }
             });
             return buf;
+        }*/
+        var curProjectDir=FS.get("/Tonyu/runscript/");
+        if (curProjectDir.exists()) sh.rm(curProjectDir,{r:1});
+        var fo=ScriptTagFS.toObj();
+        for (var fn in fo) {
+        	var f=curProjectDir.rel(fn);
+           	f.text(fo[fn]);
         }
+        var main="Main";
+        var scrs=$("script");
+        scrs.each(function (){
+            var s=this;
+            if (s.type=="text/tonyu") {
+                var fn=$(s).data("filename");
+                if (fn) {
+                    var f=curProjectDir.rel(fn);
+                    if ($(s).data("main")) {
+                        main=f.truncExt(".tonyu");
+                    }
+                }
+            }
+        });
+        Tonyu.defaultOptions={
+                compiler: { defaultSuperClass: "Actor"},
+                run: {mainClass: main, bootClass: "Boot"},
+                kernelEditable: false
+            };
+        var kernelDir=FS.get("/Tonyu/Kernel/");
+        var curPrj=Tonyu_Project(curProjectDir, kernelDir);
+        var o=curPrj.getOptions();
+        curPrj.rawRun(o.run.bootClass);
     });
 });
 
@@ -580,10 +596,83 @@ define(["PatternParser","Util","WebSite"], function (PP,Util,WebSite) {
     }
     return IL;
 });
+requirejs.setName('KeyEventChecker');
+define([],function () {
+	var KEC={};
+	KEC.down=function (elem, name, handler) {
+		if (!(elem instanceof $)) elem=$(elem);
+		elem.bind("keydown", function (e) {
+			if (KEC.is(e, name)) {
+				return handler.call(elem[0],e);
+			}
+		});
+	};
+	KEC.is=function (e,name) {
+		name=name.toLowerCase();
+		e = e.originalEvent || e;
+		var s="";
+		if (e.altKey) {
+			s+="alt+";
+		}
+		if (e.ctrlKey) {
+			s+="ctrl+";
+		}
+		if (e.shiftKey) {
+			s+="shift+";
+		}
+		if (e.keyCode>=112 && e.keyCode<=123) {
+			s+="f"+(e.keyCode-111);
+		} else {
+			s+=String.fromCharCode(e.keyCode);
+		}
+		s=s.toLowerCase();
+		//console.log(s);
+		return name==s;
+	};
+	return KEC;
+});
+requirejs.setName('ScriptTagFS');
+define([],function () {
+	var STF={};
+	STF.toObj=function () {
+	    var scrs=$("script");
+	    var res={};
+	    scrs.each(function (){
+	        var s=this;
+	        if (s.type=="text/tonyu") {
+	            var fn=$(s).data("filename");
+	            if (fn) {
+	                var w=$(s).data("wrap");
+	                if (w) {
+	                    w=parseInt(w);
+	                    res[fn]=unwrap(s.innerHTML, w);
+	                } else {
+	                    res[fn]=s.innerHTML;
+	                }
+	            }
+	        }
+	    });
+	    return res;
+	    function unwrap(str, cols) {
+	        var lines=str.split("\n");
+	        var buf="";
+	        lines.forEach(function (line) {
+	            if (line.length>cols) {
+	                buf+=line.substring(0,cols);
+	            } else {
+	                buf+=line+"\n";
+	            }
+	        });
+	        return buf;
+	    }
+	};
+	return STF;
+});
 requirejs.setName('FS');
 FS=function () {
     var FS={};
     var roms={};
+    FS.roms=roms;
     function endsWith(str,postfix) {
         return str.substring(str.length-postfix.length)===postfix;
     }
@@ -607,6 +696,9 @@ FS=function () {
             }
         }
         return null;
+    }
+    function isReadonly(path) {
+    	return resolveROM(path);
     }
     function lcs(path, text) {
         var r=resolveROM(path);
@@ -642,8 +734,12 @@ FS=function () {
         try {
             dinfo=JSON.parse(dinfo);
         } catch (e) {
+            if (!isReadonly(path)) {
+                lcs(path,"{}");
+            } else {
+            	console.log("dinfo err : "+path+" - "+dinfo);
+            }
             dinfo={};
-            lcs(path,"{}");
         }
         return dinfo;
     }
@@ -734,7 +830,7 @@ FS=function () {
     FS.get=function (path) {
         if (path==null) throw "FS.get: Null path";
         if (path.isDir) return path;
-        if (!isPath(path)) throw "Path must starts with '/'";
+        if (!isPath(path)) throw path+": Path must starts with '/'";
         var parent=up(path);
         var name=getName(path);
         var res;
@@ -1274,24 +1370,59 @@ define([], function () {
         urlAliases: {}
     };
 });
-requirejs.setName('fs/ROMk');
-if (!localStorage.norom) {
-    FS.mountROM(
+requirejs.setName('Util');
+Util=function () {
+
+function getQueryString(key, default_)
 {
-  "base": "/Tonyu/Kernel/",
-  "data": {
-    "": "{\".desktop\":{\"lastUpdate\":1390990613871},\"NoviceActor.tonyu\":{\"lastUpdate\":1389925045983},\"BaseActor.tonyu\":{\"lastUpdate\":1391824676373},\"Actor.tonyu\":{\"lastUpdate\":1389925068455},\"Boot.tonyu\":{\"lastUpdate\":1391825929565},\"Sprites.tonyu\":{\"lastUpdate\":1390393149017},\"ScaledCanvas.tonyu\":{\"lastUpdate\":1391824592593}}",
-    ".desktop": "{\"runMenuOrd\":[\"NoviceActor\",\"BaseActor\",\"Actor\",\"Boot\",\"Sprites\"]}",
-    "NoviceActor.tonyu": "extends BaseActor;\nnative Tonyu;\n\n\\sleep(n) {\n    if(!n) n=1;\n    for(n;n>0;n--) update();\n}\n\\initSprite() {\n    if (!_sprite) {\n        _sprite=new BaseActor{owner:this};// Sprites.add{owner:this};\n        $Sprites.add(_sprite);\n    }\n}\n\\say(text,size) {\n    if (!size) size=15;\n    initSprite();\n    _sprite._fukidashi={text:text, size:size, c:30};\n}\n\\sprite(x,y,p) {\n    go(x,y,p);\n}\n\\show(x,y,p) {\n    go(x,y,p);\n}\n\\go(x,y,p) {\n    initSprite();\n    _sprite.x=x;\n    _sprite.y=y;\n    if (p!=null) _sprite.p=p;\n    //update();\n}\n\\draw(){}\n\\change(p) {\n    initSprite();\n    _sprite.p=p;\n}\n",
-    "BaseActor.tonyu": "extends null;\nnative Tonyu;\nnative Key;\nnative console;\nnative Math;\nnative fukidashi;\nnative TextRect;\n\n\\new(x,y,p) {\n    if (Tonyu.runMode) {\n        var thg=currentThreadGroup();\n        if (thg) _th=thg.addObj(this);\n    }\n    if (typeof x==\"object\") Tonyu.extend(this, x);\n    else if (typeof x==\"number\") {\n        this.x=x;\n        this.y=y;\n        this.p=p;\n    }\n}\nnowait \\extend(obj) {\n    return Tonyu.extend(this,obj);\n}\n\nnowait \\print(c) {\n    console.log(c);\n}\n\\update() {\n    ifwait {\n        _thread.suspend();\n    }\n}\nnowait \\getkey(k) {\n    return Key.getkey(k);\n}\nnowait \\hitTo(t) {\n    return crashTo(t);\n}\nnowait \\allCrash(t) {\n    var res=[];\n    var sp=_sprite || this;\n    $Sprites.sprites.forEach(\\(s) {\n        if (s!==this && \n        s instanceof t && \n        s.crashTo(sp)) {\n            res.push(s);    \n        }\n    });\n    return res;\n}\nnowait \\crashTo(t) {\n    if (!t) return false;\n    if (typeof t==\"function\") {\n        return allCrash(t)[0];\n    }\n    if (_sprite && t._sprite) {\n        return _sprite.crashTo(t._sprite);\n    }\n    //print([this, t]);\n    return (x!=null && y!=null && width && height &&\n    t && !t._isDead && t.x!=null && t.y!=null && t.width && t.height &&\n    Math.abs(x-t.x)*2<width+t.width &&\n    Math.abs(y-t.y)*2<height+t.height);\n}\nnowait \\watchHit(typeA,typeB,onHit) {\n    $Sprites.watchHit(typeA , typeB, \\(a,b) {\n        onHit.apply(this,[a,b]);\n    });\n}\nnowait \\currentThreadGroup() {\n    return $currentThreadGroup; //Tonyu.currentThread.group;\n}\nnowait \\die() {\n    if (_th) {\n        _th.kill();\n    }\n    hide();\n    _isDead=true;\n}\nnowait \\hide() {\n    if (_sprite) {\n        $Sprites.remove(_sprite);\n        _sprite=null;\n    } else {\n        $Sprites.remove(this);\n    }\n}\nnowait \\rnd(r) {\n    if (typeof r==\"number\") {\n        return Math.floor(Math.random()*r);\n    }\n    return Math.random();\n}\nnowait \\detectShape() {\n    if (typeof p!=\"number\") {\n        if (text) return;\n        p=0;\n    }\n    p=Math.floor(p);\n    pImg=$Sprites.getImageList()[p];\n    if (!pImg) return;\n    width=pImg.width;\n    height=pImg.height;\n}\n\\waitFor(f) {\n    ifwait {\n        _thread.waitFor(f);\n    }\n    update();\n}\nnowait \\isDead() {\n    return _isDead;\n}\nnowait \\draw(ctx) {\n    if (x==null || y==null) return;\n    detectShape();\n    if (pImg) {\n        ctx.drawImage(\n        pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,\n        x-width/2, y-height/2, width, height);\n    } else if (text) {\n        if (!size) size=15;\n        if (!align) align=\"center\";\n        if (!fillStyle) fillStyle=\"white\";\n        ctx.fillStyle=fillStyle;\n        TextRect.draw(ctx, text, x, y, size, align , \"fill\");\n    }\n    if (_fukidashi) {\n        if (_fukidashi.c>0) {\n            _fukidashi.c--;\n            ctx.fillStyle=\"white\";\n            ctx.strokeStyle=\"black\";\n            fukidashi ( ctx , _fukidashi.text, \n            x, y-height/2-10, _fukidashi.size);\n        }\n    }\n}",
-    "Actor.tonyu": "extends BaseActor;\nnative Sprites;\nnative Tonyu;\n\n\\new(x,y,p) {\n    super(x,y,p);\n    if (Tonyu.runMode) initSprite();\n}\n\\initSprite() {\n    /*if (!_sprite) {\n        _sprite=Sprites.add{owner:this};\n    }*/\n    $Sprites.add(this);\n}\n\n/*\n\\update() {\n    super.update();\n    if (_sprite) {\n        _sprite.x=x;\n        _sprite.y=y;\n        _sprite.p=p;\n    }\n}*/",
-    "Boot.tonyu": "native $;\nnative TError;\nnative $LASTPOS;\nnative Key;\nnative Date;\nnative ImageList;\nnative Tonyu;\n\n\\initSprites() {\n    $Sprites=new Sprites();\n    print (\"Loading pats..\");\n    var rs=$currentProject.getResource();\n    var a=Tonyu.asyncResult();\n    ImageList( rs.images, a.receiver);\n    waitFor(a);\n    var r=a[0];\n    $Sprites.setImageList(r);\n    for (var name,val in r.names) {\n        Tonyu.setGlobal(name, val);\n    }\n    print (\"Loading pats done.\");\n    cvj=$(\"canvas\");\n    $Screen=new ScaledCanvas{canvas:cvj, width:512, height:512};\n}\n\\initCanvasEvents() {\n    cv=cvj[0];\n    $handleMouse=\\(e) {\n        var p=cvj.offset();\n        var mp={x:e.clientX-p.left, y:e.clientY-p.top};\n        mp=$Screen.canvas2buf(mp);\n        $mouseX=mp.x;//e.clientX-p.left;\n        $mouseY=mp.y;//e.clientY-p.top;\n    };\n    $touches=[{},{},{},{},{}];\n    $touches.findById=\\(id) {\n        for (var j=0 ; j<$touches.length ; j++) {\n            if ($touches[j].identifier==id) {\n                return $touches[j];\n            }\n        }\n    };\n    $handleTouch=\\(e) {\n        var p=cvj.offset();\n        e.preventDefault();\n        var ts=e.originalEvent.changedTouches;\n        /*var mp={x:ts[0].pageX-p.left, y:ts[0].pageY-p.top};\n        mp=$Screen.canvas2buf(mp);\n        $mouseX=mp.x;//ts[0].pageX-p.left;\n        $mouseY=mp.y;//ts[0].pageY-p.top;\n        /*for (var i =0 ; i<$touches.length ; i++) {\n            $touches[i].nowTouched=false;\n        }*/\n        for (var i =0 ; i<ts.length ; i++) {\n            var src=ts[i];\n            var dst=$touches.findById(src.identifier);\n            if (!dst) {\n                for (var j=0 ; j<$touches.length ; j++) {\n                    if (!$touches[j].touched) {\n                        dst=$touches[j];\n                        dst.identifier=src.identifier;\n                        break;\n                    }\n                }\n            }\n            if (dst) {\n                mp={x:src.pageX-p.left, y:src.pageY-p.top};\n                mp=$Screen.canvas2buf(mp);\n                dst.x=mp.x;//src.pageX-p.left;\n                dst.y=mp.y;//src.pageY-p.top;\n                dst.touched=true;\n            }\n        }\n        $mouseX=$touches[0].x;\n        $mouseY=$touches[0].y;\n    };\n    $handleTouchEnd=\\(e) {\n        var ts=e.originalEvent.changedTouches;\n        for (var i =0 ; i<ts.length ; i++) {\n            var src=ts[i];\n            var dst=$touches.findById(src.identifier);\n            if (dst) {\n                dst.touched=false;\n                dst.identifier=-1;\n            }\n        }\n    };\n    var handleMouse=\\(e){$handleMouse(e);};\n    var handleTouch=\\(e){$handleTouch(e);};\n    var handleTouchEnd=\\(e){$handleTouchEnd(e);};\n    var d=$.data(cv,\"events\");\n    if (!d) {\n        $.data(cv,\"events\",\"true\");\n        cvj.mousedown(handleMouse);\n        cvj.mousemove(handleMouse);\n        cvj.on(\"touchstart\",handleTouch);\n        cvj.on(\"touchmove\",handleTouch);\n        cvj.on(\"touchend\",handleTouchEnd);\n    }\n}\n\n\\initThread() {\n    thg=Tonyu.threadGroup();\n    var o=Tonyu.currentProject.getOptions();\n    var mainClassName=o.run.mainClass;\n    print(\"MainClass= \"+mainClassName);\n    mainClass=Tonyu.getClass(mainClassName);\n    if (!mainClass) {\n        TError( $mainClassName+\" というクラスはありません\", \n        \"不明\" ,0).raise();\n    }\n    Tonyu.runMode=true;\n    $currentThreadGroup=thg;\n    new mainClass();\n}\n\ninitSprites();\ninitCanvasEvents();\ninitThread();\n$screenWidth=cv.width;\n$screenHeight=cv.height;\n$pat_fruits=30;\nwhile (true) {\n    ti=new Date().getTime();\n    thg.steps();\n    Key.update();\n    $screenWidth=$Screen.width;\n    $screenHeight=$Screen.height;\n    $Sprites.draw($Screen.buf[0]);\n    $Screen.draw();\n    $Sprites.checkHit();\n    wt=33-(new Date().getTime()-ti);\n    if (wt<0) wt=0;\n    waitFor(Tonyu.timeout(wt));\n}",
-    "Sprites.tonyu": "native Tonyu;\r\n\\new() {\r\n    sprites=[];\r\n    imageList=[];\r\n    hitWatchers=[];\r\n    isDrawGrid=Tonyu.noviceMode;\r\n}\r\nfunction add(s) {\r\n    sprites.push(s);\r\n    return s;\r\n}\r\nfunction remove(s) {\r\n    sprites.splice(sprites.indexOf(s),1);\r\n}\r\nfunction clear() {sprites.splice(0,sprites.length);}\r\nfunction draw(cv) {\r\n    var ctx=cv.getContext(\"2d\");\r\n    ctx.fillStyle=\"rgb(20,80,180)\";\r\n    ctx.fillRect(0,0,cv.width,cv.height);\r\n    if (isDrawGrid) drawGrid(cv);\r\n    sprites.forEach(\\(sprite) {\r\n        sprite.draw(ctx);\r\n    });\r\n}\r\nfunction checkHit() {\r\n    hitWatchers.forEach(function (w) {\r\n        sprites.forEach(function (a) {\r\n                //console.log(\"a:\",  a.owner);\r\n            var a_owner=a.owner|| a;\r\n            if (! (a_owner instanceof w.A)) return;\r\n            sprites.forEach(function (b) {\r\n                var b_owner=b.owner|| b;\r\n                if (a===b) return;\r\n                if (! (b_owner instanceof w.B)) return;\r\n                //console.log(\"b:\",  b.owner);\r\n                if (a.hitTo(b)) {\r\n                    //console.log(\"hit\", a.owner, b.owner);\r\n                    w.h(a_owner,b_owner);\r\n                }\r\n            });\r\n        });\r\n    });\r\n}\r\nfunction watchHit(typeA, typeB, onHit) {\r\n    var p={A: typeA, B:typeB, h:onHit};\r\n    //console.log(p);\r\n    hitWatchers.push(p);\r\n}\r\nfunction drawGrid(c) {\r\n    var ctx=c.getContext(\"2d\");\r\n    ctx.textBaseline=\"top\";\r\n    ctx.save();\r\n    ctx.strokeStyle=\"rgb(40,100,200)\";\r\n    for (var i=0 ; i<c.width ; i+=10) {\r\n        ctx.beginPath();\r\n        ctx.lineWidth=(i % 100 ==0 ? 4 : 1);\r\n        ctx.moveTo(i,0);\r\n        ctx.lineTo(i,c.height);\r\n        ctx.closePath();\r\n        ctx.stroke();\r\n    }\r\n\r\n    for (var i=0 ; i<c.height ; i+=10) {\r\n        ctx.beginPath();\r\n        ctx.lineWidth=(i % 100 ==0 ? 4 : 1);\r\n        ctx.moveTo(0,i);\r\n        ctx.lineTo(c.width,i);\r\n        ctx.closePath();\r\n        ctx.stroke();\r\n    }\r\n    ctx.fillStyle=\"white\";\r\n    ctx.font=\"15px monospaced\";\r\n    for (var i=100 ; i<c.width ; i+=100) {\r\n        ctx.fillText(i, i,0);\r\n    }\r\n    for (var i=100 ; i<c.height ; i+=100) {\r\n        ctx.fillText(i, 0,i);\r\n    }\r\n    ctx.restore();\r\n}\r\nfunction setImageList(il) {\r\n    imageList=il;\r\n}\r\nfunction getImageList() {\r\n    return imageList;\r\n}\r\n",
-    "ScaledCanvas.tonyu": "native $;\n\n// canvas:phisical  buf: logical\n\\new (opt) {\n    extend(opt);\n    // canvas/ width,height\n    resize(width, height);\n    cw=canvas.width();\n    ch=canvas.height();\n    cctx=canvas[0].getContext(\"2d\");\n}\n\\resize(width,height) {\n    this.width=width;\n    this.height=height;\n    buf=$(\"<canvas>\").attr{width,height};\n    ctx=buf[0].getContext(\"2d\");  \n}\n\\draw() {\n    cw=canvas.width();\n    ch=canvas.height();\n    var calcw=ch/height*width; // calch=ch\n    var calch=cw/width*height; // calcw=cw\n    if (calch>ch) calch=ch;\n    if (calcw>cw) calcw=cw;\n    cctx.clearRect(0,0,cw,ch);\n    cctx.drawImage(buf[0],\n    0,0,width, height, \n    0,0,calcw, calch );\n}\n\\canvas2buf(point) {\n    var calcw=ch/height*width; // calch=ch\n    var calch=cw/width*height; // calcw=cw\n    if (calch>ch) calch=ch;\n    if (calcw>cw) calcw=cw;\n    return {x: point.x/calcw*width, y: point.y/calch*height};\n}"
-  }
+   if (default_==null) default_="";
+   key = key.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+   var regex = new RegExp("[\\?&]"+key+"=([^&#]*)");
+   var qs = regex.exec(window.location.href);
+   if(qs == null)
+    return default_;
+   else
+    return qs[1];
 }
-    );
+function endsWith(str,postfix) {
+    return str.substring(str.length-postfix.length)===postfix;
 }
+function startsWith(str,prefix) {
+    return str.substring(0, prefix.length)===prefix;
+}
+
+return {getQueryString:getQueryString, endsWith: endsWith, startsWith: startsWith};
+}();
+requirejs.setName('TextRect');
+TextRect=function () {
+ // テキストを描いて(type=="test"なら描いたふりをするだけ)， 描かれた部分の矩形領域を返す
+    function draw(ctx, text, x, topY, h, align , type) {
+        if (!align) align="center";
+        ctx.textBaseline="top";
+        setFontSize(ctx, h);
+        var met=ctx.measureText(text);
+        var res={y:topY, w: met.width, h:h};
+        switch (align.substring(0,1).toLowerCase()) {
+            case "l":
+                res.x=x;
+                break;
+            case "r":
+                res.x=x-met.width;
+                break;
+            case "c":
+                res.x=x-met.width/2;
+                break;
+        }
+        if (type=="fill") ctx.fillText(text, res.x,topY);
+        if (type=="stroke") ctx.strokeText(text, res.x,topY);
+        return res;
+    }
+    function setFontSize(ctx,sz) {
+        var post=ctx.font.replace(/^[0-9\.]+/,"");
+        ctx.font=sz+post;
+    };
+    return {draw:draw, setFontSize: setFontSize};
+}();
 requirejs.setName('Tonyu.Iterator');
 define(["Tonyu"], function (T) {
    function IT(set, arity) {
@@ -1383,8 +1514,15 @@ Key=function () {
     var Key;
     var stats={};
     var codes={
-            left: 37 , up:38 , right: 39, down:40, space:32, enter:13
+            left: 37 , up:38 , right: 39, down:40, space:32, enter:13,
+            shift:16, ctrl:17, alt:18
         };
+    for (var i=65 ; i<65+26; i++) {
+    	codes[String.fromCharCode(i).toLowerCase()]=i;
+    }
+    for (var i=48 ; i<58; i++) {
+    	codes[String.fromCharCode(i)]=i;
+    }
     function getkey(code) {
         if (typeof code=="string") {
             code=codes[code.toLowerCase()];
@@ -1405,65 +1543,30 @@ Key=function () {
 $(document).keydown(function (e) {
     var s=Key.stats[e.keyCode];
     if (!s) {
-        Key.stats[e.keyCode]=-1;
+    	Key.stats[e.keyCode]=-1;
     }
 });
 $(document).keyup(function (e) {
     Key.stats[e.keyCode]=0;
 });
-requirejs.setName('TextRect');
-TextRect=function () {
- // テキストを描いて(type=="test"なら描いたふりをするだけ)， 描かれた部分の矩形領域を返す
-    function draw(ctx, text, x, topY, h, align , type) {
-        if (!align) align="center";
-        ctx.textBaseline="top";
-        setFontSize(ctx, h);
-        var met=ctx.measureText(text);
-        var res={y:topY, w: met.width, h:h};
-        switch (align.substring(0,1).toLowerCase()) {
-            case "l":
-                res.x=x;
-                break;
-            case "r":
-                res.x=x-met.width;
-                break;
-            case "c":
-                res.x=x-met.width/2;
-                break;
-        }
-        if (type=="fill") ctx.fillText(text, res.x,topY);
-        if (type=="stroke") ctx.strokeText(text, res.x,topY);
-        return res;
-    }
-    function setFontSize(ctx,sz) {
-        var post=ctx.font.replace(/^[0-9\.]+/,"");
-        ctx.font=sz+post;
-    };
-    return {draw:draw, setFontSize: setFontSize};
-}();
-requirejs.setName('Util');
-Util=function () {
-
-function getQueryString(key, default_)
+requirejs.setName('fs/ROMk');
+if (!localStorage.norom) {
+    FS.mountROM(
 {
-   if (default_==null) default_="";
-   key = key.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-   var regex = new RegExp("[\\?&]"+key+"=([^&#]*)");
-   var qs = regex.exec(window.location.href);
-   if(qs == null)
-    return default_;
-   else
-    return qs[1];
+  "base": "/Tonyu/Kernel/",
+  "data": {
+    "": "{\".desktop\":{\"lastUpdate\":1390990613871},\"NoviceActor.tonyu\":{\"lastUpdate\":1389925045983},\"BaseActor.tonyu\":{\"lastUpdate\":1391824676373},\"Actor.tonyu\":{\"lastUpdate\":1389925068455},\"Boot.tonyu\":{\"lastUpdate\":1391934927399},\"Sprites.tonyu\":{\"lastUpdate\":1390393149017},\"ScaledCanvas.tonyu\":{\"lastUpdate\":1391824592593}}",
+    ".desktop": "{\"runMenuOrd\":[\"NoviceActor\",\"BaseActor\",\"Actor\",\"Boot\",\"Sprites\"]}",
+    "NoviceActor.tonyu": "extends BaseActor;\nnative Tonyu;\n\n\\sleep(n) {\n    if(!n) n=1;\n    for(n;n>0;n--) update();\n}\n\\initSprite() {\n    if (!_sprite) {\n        _sprite=new BaseActor{owner:this};// Sprites.add{owner:this};\n        $Sprites.add(_sprite);\n    }\n}\n\\say(text,size) {\n    if (!size) size=15;\n    initSprite();\n    _sprite._fukidashi={text:text, size:size, c:30};\n}\n\\sprite(x,y,p) {\n    go(x,y,p);\n}\n\\show(x,y,p) {\n    go(x,y,p);\n}\n\\go(x,y,p) {\n    initSprite();\n    _sprite.x=x;\n    _sprite.y=y;\n    if (p!=null) _sprite.p=p;\n    //update();\n}\n\\draw(){}\n\\change(p) {\n    initSprite();\n    _sprite.p=p;\n}\n",
+    "BaseActor.tonyu": "extends null;\nnative Tonyu;\nnative Key;\nnative console;\nnative Math;\nnative fukidashi;\nnative TextRect;\n\n\\new(x,y,p) {\n    if (Tonyu.runMode) {\n        var thg=currentThreadGroup();\n        if (thg) _th=thg.addObj(this);\n    }\n    if (typeof x==\"object\") Tonyu.extend(this, x);\n    else if (typeof x==\"number\") {\n        this.x=x;\n        this.y=y;\n        this.p=p;\n    }\n}\nnowait \\extend(obj) {\n    return Tonyu.extend(this,obj);\n}\n\nnowait \\print(c) {\n    console.log(c);\n}\n\\update() {\n    ifwait {\n        _thread.suspend();\n    }\n}\nnowait \\getkey(k) {\n    return Key.getkey(k);\n}\nnowait \\hitTo(t) {\n    return crashTo(t);\n}\nnowait \\allCrash(t) {\n    var res=[];\n    var sp=_sprite || this;\n    $Sprites.sprites.forEach(\\(s) {\n        if (s!==this && \n        s instanceof t && \n        s.crashTo(sp)) {\n            res.push(s);    \n        }\n    });\n    return res;\n}\nnowait \\crashTo(t) {\n    if (!t) return false;\n    if (typeof t==\"function\") {\n        return allCrash(t)[0];\n    }\n    if (_sprite && t._sprite) {\n        return _sprite.crashTo(t._sprite);\n    }\n    //print([this, t]);\n    return (x!=null && y!=null && width && height &&\n    t && !t._isDead && t.x!=null && t.y!=null && t.width && t.height &&\n    Math.abs(x-t.x)*2<width+t.width &&\n    Math.abs(y-t.y)*2<height+t.height);\n}\nnowait \\watchHit(typeA,typeB,onHit) {\n    $Sprites.watchHit(typeA , typeB, \\(a,b) {\n        onHit.apply(this,[a,b]);\n    });\n}\nnowait \\currentThreadGroup() {\n    return $currentThreadGroup; //Tonyu.currentThread.group;\n}\nnowait \\die() {\n    if (_th) {\n        _th.kill();\n    }\n    hide();\n    _isDead=true;\n}\nnowait \\hide() {\n    if (_sprite) {\n        $Sprites.remove(_sprite);\n        _sprite=null;\n    } else {\n        $Sprites.remove(this);\n    }\n}\nnowait \\rnd(r) {\n    if (typeof r==\"number\") {\n        return Math.floor(Math.random()*r);\n    }\n    return Math.random();\n}\nnowait \\detectShape() {\n    if (typeof p!=\"number\") {\n        if (text) return;\n        p=0;\n    }\n    p=Math.floor(p);\n    pImg=$Sprites.getImageList()[p];\n    if (!pImg) return;\n    width=pImg.width;\n    height=pImg.height;\n}\n\\waitFor(f) {\n    ifwait {\n        _thread.waitFor(f);\n    }\n    update();\n}\nnowait \\isDead() {\n    return _isDead;\n}\nnowait \\draw(ctx) {\n    if (x==null || y==null) return;\n    detectShape();\n    if (pImg) {\n        ctx.drawImage(\n        pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,\n        x-width/2, y-height/2, width, height);\n    } else if (text) {\n        if (!size) size=15;\n        if (!align) align=\"center\";\n        if (!fillStyle) fillStyle=\"white\";\n        ctx.fillStyle=fillStyle;\n        TextRect.draw(ctx, text, x, y, size, align , \"fill\");\n    }\n    if (_fukidashi) {\n        if (_fukidashi.c>0) {\n            _fukidashi.c--;\n            ctx.fillStyle=\"white\";\n            ctx.strokeStyle=\"black\";\n            fukidashi ( ctx , _fukidashi.text, \n            x, y-height/2-10, _fukidashi.size);\n        }\n    }\n}",
+    "Actor.tonyu": "extends BaseActor;\nnative Sprites;\nnative Tonyu;\n\n\\new(x,y,p) {\n    super(x,y,p);\n    if (Tonyu.runMode) initSprite();\n}\n\\initSprite() {\n    /*if (!_sprite) {\n        _sprite=Sprites.add{owner:this};\n    }*/\n    $Sprites.add(this);\n}\n\n/*\n\\update() {\n    super.update();\n    if (_sprite) {\n        _sprite.x=x;\n        _sprite.y=y;\n        _sprite.p=p;\n    }\n}*/",
+    "Boot.tonyu": "native $;\nnative TError;\nnative $LASTPOS;\nnative Key;\nnative Date;\nnative ImageList;\nnative Tonyu;\n\n\\initSprites() {\n    $Sprites=new Sprites();\n    print (\"Loading pats..\");\n    var rs=$currentProject.getResource();\n    var a=Tonyu.asyncResult();\n    ImageList( rs.images, a.receiver);\n    waitFor(a);\n    var r=a[0];\n    $Sprites.setImageList(r);\n    for (var name,val in r.names) {\n        Tonyu.setGlobal(name, val);\n    }\n    print (\"Loading pats done.\");\n    cvj=$(\"canvas\");\n    $Screen=new ScaledCanvas{canvas:cvj, width:465, height:465};\n}\n\\initCanvasEvents() {\n    cv=cvj[0];\n    $handleMouse=\\(e) {\n        var p=cvj.offset();\n        var mp={x:e.clientX-p.left, y:e.clientY-p.top};\n        mp=$Screen.canvas2buf(mp);\n        $mouseX=mp.x;//e.clientX-p.left;\n        $mouseY=mp.y;//e.clientY-p.top;\n    };\n    $touches=[{},{},{},{},{}];\n    $touches.findById=\\(id) {\n        for (var j=0 ; j<$touches.length ; j++) {\n            if ($touches[j].identifier==id) {\n                return $touches[j];\n            }\n        }\n    };\n    $handleTouch=\\(e) {\n        var p=cvj.offset();\n        e.preventDefault();\n        var ts=e.originalEvent.changedTouches;\n        for (var i =0 ; i<ts.length ; i++) {\n            var src=ts[i];\n            var dst=$touches.findById(src.identifier);\n            if (!dst) {\n                for (var j=0 ; j<$touches.length ; j++) {\n                    if (!$touches[j].touched) {\n                        dst=$touches[j];\n                        dst.identifier=src.identifier;\n                        break;\n                    }\n                }\n            }\n            if (dst) {\n                mp={x:src.pageX-p.left, y:src.pageY-p.top};\n                mp=$Screen.canvas2buf(mp);\n                dst.x=mp.x;//src.pageX-p.left;\n                dst.y=mp.y;//src.pageY-p.top;\n                dst.touched=true;\n            }\n        }\n        $mouseX=$touches[0].x;\n        $mouseY=$touches[0].y;\n    };\n    $handleTouchEnd=\\(e) {\n        var ts=e.originalEvent.changedTouches;\n        for (var i =0 ; i<ts.length ; i++) {\n            var src=ts[i];\n            var dst=$touches.findById(src.identifier);\n            if (dst) {\n                dst.touched=false;\n                dst.identifier=-1;\n            }\n        }\n    };\n    var handleMouse=\\(e){$handleMouse(e);};\n    var handleTouch=\\(e){$handleTouch(e);};\n    var handleTouchEnd=\\(e){$handleTouchEnd(e);};\n    var d=$.data(cv,\"events\");\n    if (!d) {\n        $.data(cv,\"events\",\"true\");\n        cvj.mousedown(handleMouse);\n        cvj.mousemove(handleMouse);\n        cvj.on(\"touchstart\",handleTouch);\n        cvj.on(\"touchmove\",handleTouch);\n        cvj.on(\"touchend\",handleTouchEnd);\n    }\n}\n\n\\initThread() {\n    thg=Tonyu.threadGroup();\n    var o=Tonyu.currentProject.getOptions();\n    var mainClassName=o.run.mainClass;\n    print(\"MainClass= \"+mainClassName);\n    mainClass=Tonyu.getClass(mainClassName);\n    if (!mainClass) {\n        TError( mainClassName+\" というクラスはありません\", \n        \"不明\" ,0).raise();\n    }\n    Tonyu.runMode=true;\n    $currentThreadGroup=thg;\n    new mainClass();\n}\n\ninitSprites();\ninitCanvasEvents();\ninitThread();\n$screenWidth=cv.width;\n$screenHeight=cv.height;\n$pat_fruits=30;\nwhile (true) {\n    ti=new Date().getTime();\n    thg.steps();\n    Key.update();\n    $screenWidth=$Screen.width;\n    $screenHeight=$Screen.height;\n    $Sprites.draw($Screen.buf[0]);\n    $Screen.draw();\n    $Sprites.checkHit();\n    wt=33-(new Date().getTime()-ti);\n    if (wt<0) wt=0;\n    waitFor(Tonyu.timeout(wt));\n}",
+    "Sprites.tonyu": "native Tonyu;\r\n\\new() {\r\n    sprites=[];\r\n    imageList=[];\r\n    hitWatchers=[];\r\n    isDrawGrid=Tonyu.noviceMode;\r\n}\r\nfunction add(s) {\r\n    sprites.push(s);\r\n    return s;\r\n}\r\nfunction remove(s) {\r\n    sprites.splice(sprites.indexOf(s),1);\r\n}\r\nfunction clear() {sprites.splice(0,sprites.length);}\r\nfunction draw(cv) {\r\n    var ctx=cv.getContext(\"2d\");\r\n    ctx.fillStyle=\"rgb(20,80,180)\";\r\n    ctx.fillRect(0,0,cv.width,cv.height);\r\n    if (isDrawGrid) drawGrid(cv);\r\n    sprites.forEach(\\(sprite) {\r\n        sprite.draw(ctx);\r\n    });\r\n}\r\nfunction checkHit() {\r\n    hitWatchers.forEach(function (w) {\r\n        sprites.forEach(function (a) {\r\n                //console.log(\"a:\",  a.owner);\r\n            var a_owner=a.owner|| a;\r\n            if (! (a_owner instanceof w.A)) return;\r\n            sprites.forEach(function (b) {\r\n                var b_owner=b.owner|| b;\r\n                if (a===b) return;\r\n                if (! (b_owner instanceof w.B)) return;\r\n                //console.log(\"b:\",  b.owner);\r\n                if (a.hitTo(b)) {\r\n                    //console.log(\"hit\", a.owner, b.owner);\r\n                    w.h(a_owner,b_owner);\r\n                }\r\n            });\r\n        });\r\n    });\r\n}\r\nfunction watchHit(typeA, typeB, onHit) {\r\n    var p={A: typeA, B:typeB, h:onHit};\r\n    //console.log(p);\r\n    hitWatchers.push(p);\r\n}\r\nfunction drawGrid(c) {\r\n    var ctx=c.getContext(\"2d\");\r\n    ctx.textBaseline=\"top\";\r\n    ctx.save();\r\n    ctx.strokeStyle=\"rgb(40,100,200)\";\r\n    for (var i=0 ; i<c.width ; i+=10) {\r\n        ctx.beginPath();\r\n        ctx.lineWidth=(i % 100 ==0 ? 4 : 1);\r\n        ctx.moveTo(i,0);\r\n        ctx.lineTo(i,c.height);\r\n        ctx.closePath();\r\n        ctx.stroke();\r\n    }\r\n\r\n    for (var i=0 ; i<c.height ; i+=10) {\r\n        ctx.beginPath();\r\n        ctx.lineWidth=(i % 100 ==0 ? 4 : 1);\r\n        ctx.moveTo(0,i);\r\n        ctx.lineTo(c.width,i);\r\n        ctx.closePath();\r\n        ctx.stroke();\r\n    }\r\n    ctx.fillStyle=\"white\";\r\n    ctx.font=\"15px monospaced\";\r\n    for (var i=100 ; i<c.width ; i+=100) {\r\n        ctx.fillText(i, i,0);\r\n    }\r\n    for (var i=100 ; i<c.height ; i+=100) {\r\n        ctx.fillText(i, 0,i);\r\n    }\r\n    ctx.restore();\r\n}\r\nfunction setImageList(il) {\r\n    imageList=il;\r\n}\r\nfunction getImageList() {\r\n    return imageList;\r\n}\r\n",
+    "ScaledCanvas.tonyu": "native $;\n\n// canvas:phisical  buf: logical\n\\new (opt) {\n    extend(opt);\n    // canvas/ width,height\n    resize(width, height);\n    cw=canvas.width();\n    ch=canvas.height();\n    cctx=canvas[0].getContext(\"2d\");\n}\n\\resize(width,height) {\n    this.width=width;\n    this.height=height;\n    buf=$(\"<canvas>\").attr{width,height};\n    ctx=buf[0].getContext(\"2d\");  \n}\n\\draw() {\n    cw=canvas.width();\n    ch=canvas.height();\n    var calcw=ch/height*width; // calch=ch\n    var calch=cw/width*height; // calcw=cw\n    if (calch>ch) calch=ch;\n    if (calcw>cw) calcw=cw;\n    cctx.clearRect(0,0,cw,ch);\n    cctx.drawImage(buf[0],\n    0,0,width, height, \n    0,0,calcw, calch );\n}\n\\canvas2buf(point) {\n    var calcw=ch/height*width; // calch=ch\n    var calch=cw/width*height; // calcw=cw\n    if (calch>ch) calch=ch;\n    if (calcw>cw) calcw=cw;\n    return {x: point.x/calcw*width, y: point.y/calch*height};\n}"
+  }
 }
-function endsWith(str,postfix) {
-    return str.substring(str.length-postfix.length)===postfix;
+    );
 }
-function startsWith(str,prefix) {
-    return str.substring(0, prefix.length)===prefix;
-}
-
-return {getQueryString:getQueryString, endsWith: endsWith, startsWith: startsWith};
-}();
 requirejs.setName('ObjectMatcher');
 ObjectMatcher=function () {
     var OM={};
@@ -1719,6 +1822,34 @@ Visitor = function (funcs) {
 	};
 	return $;
 };
+requirejs.setName('fukidashi');
+// From http://jsdo.it/hoge1e4/4wCX
+//  (x,y) の位置に  V（←これ何て言うんだっけ） の先端が来るようにふきだし表示
+function fukidashi(ctx, text, x, y, sz) {
+    var align="c";
+   var theight=20;
+   var margin=5;
+   var r=TextRect.draw(ctx, text, x,y-theight-margin-sz, sz, align);
+   ctx.beginPath();
+   ctx.moveTo(x , y);
+   ctx.lineTo(x+margin , y-theight);
+   ctx.lineTo(x+r.w/2+margin , y-theight);
+   ctx.lineTo(x+r.w/2+margin , y-theight-r.h-margin*2);
+   ctx.lineTo(x-r.w/2-margin , y-theight-r.h-margin*2);
+   ctx.lineTo(x-r.w/2-margin , y-theight);
+   ctx.lineTo(x-margin , y-theight);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+   //ctx.fillRect(r.x-margin, r.y-margin , r.w+margin*2 , r.h+margin*2);
+   //ctx.strokeRect(r.x-margin, r.y-margin , r.w+margin*2 , r.h+margin*2);
+
+   var fs=ctx.fillStyle;
+   ctx.fillStyle=ctx.strokeStyle;
+   TextRect.draw(ctx, text, x, y-theight-margin-sz, sz, align, "fill");
+   ctx.fillStyle=fs;
+}
+
 requirejs.setName('Tonyu.TraceTbl');
 Tonyu.TraceTbl=function () {
     var TTB={};
@@ -1754,34 +1885,6 @@ Tonyu.TraceTbl=function () {
     return TTB;
 };
 if (typeof getReq=="function") getReq.exports("Tonyu.TraceTbl");
-requirejs.setName('fukidashi');
-// From http://jsdo.it/hoge1e4/4wCX
-//  (x,y) の位置に  V（←これ何て言うんだっけ） の先端が来るようにふきだし表示
-function fukidashi(ctx, text, x, y, sz) {
-    var align="c";
-   var theight=20;
-   var margin=5;
-   var r=TextRect.draw(ctx, text, x,y-theight-margin-sz, sz, align);
-   ctx.beginPath();
-   ctx.moveTo(x , y);
-   ctx.lineTo(x+margin , y-theight);
-   ctx.lineTo(x+r.w/2+margin , y-theight);
-   ctx.lineTo(x+r.w/2+margin , y-theight-r.h-margin*2);
-   ctx.lineTo(x-r.w/2-margin , y-theight-r.h-margin*2);
-   ctx.lineTo(x-r.w/2-margin , y-theight);
-   ctx.lineTo(x-margin , y-theight);
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
-   //ctx.fillRect(r.x-margin, r.y-margin , r.w+margin*2 , r.h+margin*2);
-   //ctx.strokeRect(r.x-margin, r.y-margin , r.w+margin*2 , r.h+margin*2);
-
-   var fs=ctx.fillStyle;
-   ctx.fillStyle=ctx.strokeStyle;
-   TextRect.draw(ctx, text, x, y-theight-margin-sz, sz, align, "fill");
-   ctx.fillStyle=fs;
-}
-
 requirejs.setName('disp');
 // オブジェクトの内容を表示する． デバッグ用
 function disp(a) {

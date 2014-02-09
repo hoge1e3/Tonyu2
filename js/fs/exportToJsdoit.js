@@ -1,7 +1,12 @@
 define(["FS","Util"], function (FS,Util) {
     var dir=Util.getQueryString("dir", "/Tonyu/Projects/1_Animation/");
-    var main=Util.getQueryString("main", "Main");
+    //var main=Util.getQueryString("main", "Main");
     var buf="";
+    buf+="<!--\n";
+    buf+="このプログラムをTonyuの開発環境で編集するには，\n";
+    buf+="http://tonyuedit.appspot.com/edit/importFromJsdoit.html\n";
+    buf+="を開きます．\n";
+    buf+="-->\n";
     var nonTonyu=[];
     dir=FS.get(dir);
     dir.each(function (f) {
@@ -10,8 +15,8 @@ define(["FS","Util"], function (FS,Util) {
             return;
         }
         var rel=f.relPath(dir);
-        var name=f.truncExt(".tonyu");
-        var m=(name==main?" data-main='true'":"");
+        //var name=f.truncExt(".tonyu");
+        var m="";//(name==main?" data-main='true'":"");
         buf+="<script type='text/tonyu' data-filename='"+rel+"'"+m+">";
         buf+=f.text();
         buf+="</script>\n\n";

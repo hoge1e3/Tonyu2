@@ -1,10 +1,10 @@
 requirejs(["fs/ROMk","fs/ROMd","fs/ROMs","ace", "Util", "Tonyu", "FS", "FileList", "FileMenu",
            "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project","ImageList","Sprites",
-           "copySample","Shell","ImageResEditor","ProjectOptionsEditor","copyToKernel"
+           "copySample","Shell","ImageResEditor","ProjectOptionsEditor","copyToKernel","KeyEventChecker"
           ],
 function (romk, romd, roms, ace, Util, Tonyu, FS, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,ImageList,Sprites,
-          copySample,sh, ImgResEdit,ProjectOptionsEditor, ctk
+          copySample,sh, ImgResEdit,ProjectOptionsEditor, ctk, KeyEventChecker
           ) {
 
 $(function () {
@@ -38,25 +38,40 @@ $(function () {
     var prog=ace.edit("prog");
     prog.setTheme("ace/theme/eclipse");
     prog.getSession().setMode("ace/mode/tonyu");
-    prog.commands.addCommands([{
+    /*prog.commands.addCommands([{
         name: "run",
         bindKey: {win: "F9", mac: "F9"},
         exec: function(editor, line) {
             run();
         }
-    }]);
-    $("#prog").bind("keydown","F9",run);
-    $(document).bind("keydown","F9",run);
-    prog.commands.addCommands([{
+    }]);*/
+    /*KeyEventChecker.down(document,"Ctrl+E",function (e) {
+    	alert("E");
+    	e.stopPropagation();
+    	e.preventDefault();
+    	return false;
+    });*/
+    KeyEventChecker.down(document,"F9",run);
+    //$("#prog").bind("keydown","F9",run);
+    //$(document).bind("keydown","F9",run);
+    /*prog.commands.addCommands([{
         name: "stop",
         bindKey: {win: "F2", mac: "F2"},
         exec: function(editor, line) {
             stop();
         }
-    }]);
-    $("#prog").bind("keydown","F2",stop);
-    $(document).bind("keydown","F2",stop);
+    }]);*/
+    //$("#prog").bind("keydown","F2",stop);
+    //$(document).bind("keydown","F2",stop);
+    KeyEventChecker.down(document,"F2",stop);
 
+    /*$(document).bind("keydown","ctrl+shift+e",function (e) {
+    	alert(e);
+    	e.preventDefault();
+    	e.stopPropagation();
+    	return false;
+    	//if (e.originalEvent)
+    });*/
 
     var closedMsg="←左のリストからファイルを選択してください．\nファイルがない場合はメニューの「ファイル」→「新規」を選んでください";
     prog.setValue(closedMsg);
@@ -150,7 +165,7 @@ $(function () {
                             stop();
                         })));
         saveDesktopEnv();
-        $("#exportToJsdoit").attr("href", "exportToJsdoit.html?dir="+curProjectDir.path()+"&main="+runMenuOrd[0]);
+        $("#exportToJsdoit").attr("href", "exportToJsdoit.html?dir="+curProjectDir.path());//+"&main="+runMenuOrd[0]);
     }
     function dispName(f) {
         var name=f.name();

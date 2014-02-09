@@ -98,7 +98,7 @@ native Tonyu;
     print("MainClass= "+mainClassName);
     mainClass=Tonyu.getClass(mainClassName);
     if (!mainClass) {
-        TError( $mainClassName+" というクラスはありません", 
+        TError( mainClassName+" というクラスはありません", 
         "不明" ,0).raise();
     }
     Tonyu.runMode=true;

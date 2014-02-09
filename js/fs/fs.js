@@ -1,6 +1,7 @@
 FS=function () {
     var FS={};
     var roms={};
+    FS.roms=roms;
     function endsWith(str,postfix) {
         return str.substring(str.length-postfix.length)===postfix;
     }
@@ -24,6 +25,9 @@ FS=function () {
             }
         }
         return null;
+    }
+    function isReadonly(path) {
+    	return resolveROM(path);
     }
     function lcs(path, text) {
         var r=resolveROM(path);
@@ -59,8 +63,12 @@ FS=function () {
         try {
             dinfo=JSON.parse(dinfo);
         } catch (e) {
+            if (!isReadonly(path)) {
+                lcs(path,"{}");
+            } else {
+            	console.log("dinfo err : "+path+" - "+dinfo);
+            }
             dinfo={};
-            lcs(path,"{}");
         }
         return dinfo;
     }
@@ -151,7 +159,7 @@ FS=function () {
     FS.get=function (path) {
         if (path==null) throw "FS.get: Null path";
         if (path.isDir) return path;
-        if (!isPath(path)) throw "Path must starts with '/'";
+        if (!isPath(path)) throw path+": Path must starts with '/'";
         var parent=up(path);
         var name=getName(path);
         var res;

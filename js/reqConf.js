@@ -130,6 +130,8 @@ var reqConf={
             }
         },
         "paths": {
+        	ScriptTagFS:"fs/ScriptTagFS",
+        	KeyEventChecker: "lib/KeyEventChecker",
         	NewProjectDialog: "ide/NewProjectDialog",
             WebSite: "runtime/WebSite",
             UI:"lib/UI",

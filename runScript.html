@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html><head>
 <script src="js/lib/jquery-1.10.1.js" type="text/javascript" data-nocat="true"></script>
+<script src="js/lib/jquery.hotkeys.js" type="text/javascript" data-nocat="true"></script>
 <script src="js/reqConf.js"></script>
 <script src="js/lib/require.js" data-nocat="true"></script>
 <script src="js/fs/genROM.js" data-nocat="true"></script>
@@ -26,10 +27,10 @@ native dumpScript;
 t=0;
 while(true) {
     if (t%5==0) {
-        new Ball{x:$mouseX,y:0, p:$pat_balls+rnd(25)};
+        new Ball{x:rnd($screenWidth),y:0, p:$pat_balls+rnd(25)};
     }
     t++;
-    if (t>200) break;
+    if (getkey("U")) break;
     update();
 }
 dumpScript();

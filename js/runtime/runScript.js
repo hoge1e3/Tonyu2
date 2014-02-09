@@ -1,37 +1,26 @@
-define(["fs/ROMk","FS","Tonyu.Project","Shell","Sprites","ImageList"],
-        function (romk,FS,Tonyu_Project, sh, Sprites, ImageList) {
+define(["fs/ROMk","FS","Tonyu.Project","Shell","Sprites","ImageList","KeyEventChecker","ScriptTagFS"],
+        function (romk,FS,Tonyu_Project, sh, Sprites, ImageList, KeyEventChecker, ScriptTagFS) {
     $(function () {
         Tonyu.defaultResource={
                 images:[
                         {name:"$pat_base", url: "images/base.png", pwidth:32, pheight:32},
-                        //{url: "http://jsrun.it/assets/6/F/y/3/6Fy3B.png", pwidth:32, pheight:32},
                         {name:"$pat_sample", url: "images/Sample.png"},
                         {name:"$pat_neko", url: "images/neko.png", pwidth:32, pheight:32},
-                        //{url: "http://jsrun.it/assets/j/D/9/q/jD9qQ.png", pwidth:32, pheight:32}
                 ],
                 sounds:[]
         };
-        Tonyu.defaultOptions={
-                compiler: { defaultSuperClass: "Actor"},
-                run: {mainClass: "Main", bootClass: "Boot"},
-                kernelEditable: false
-            };
-
         var w=$(window).width();
         var h=$(window).height();
         $("body").css({overflow:"hidden", margin:"0px"});
-        $(window).resize(onResize);
         var cv=$("<canvas>").attr({width: w, height:h}).appendTo("body");
+        $(window).resize(onResize);
         function onResize() {
             w=$(window).width();
             h=$(window).height();
         	cv.attr({width: w, height: h});
         }
-        var scrs=$("script");
-        var curProjectDir=FS.get("/Tonyu/runscript/");
-        if (curProjectDir.exists()) sh.rm(curProjectDir,{r:1});
-        var name="Main";
-        scrs.each(function (){
+        //var scrs=$("script");
+        /*scrs.each(function (){
             var s=this;
             //console.log(s.type, s.dataset.filename);
             if (s.type=="text/tonyu") {
@@ -52,11 +41,6 @@ define(["fs/ROMk","FS","Tonyu.Project","Shell","Sprites","ImageList"],
                 }
             }
         });
-        var kernelDir=FS.get("/Tonyu/Kernel/");
-        var curPrj=Tonyu_Project(curProjectDir, kernelDir);
-        curPrj.env.options.compiler.defaultSuperClass="Actor";
-        Tonyu.setGlobal("$mainClassName", name);
-        curPrj.rawRun("Boot");
         function unwrap(str, cols) {
             var lines=str.split("\n");
             var buf="";
@@ -68,6 +52,36 @@ define(["fs/ROMk","FS","Tonyu.Project","Shell","Sprites","ImageList"],
                 }
             });
             return buf;
+        }*/
+        var curProjectDir=FS.get("/Tonyu/runscript/");
+        if (curProjectDir.exists()) sh.rm(curProjectDir,{r:1});
+        var fo=ScriptTagFS.toObj();
+        for (var fn in fo) {
+        	var f=curProjectDir.rel(fn);
+           	f.text(fo[fn]);
         }
+        var main="Main";
+        var scrs=$("script");
+        scrs.each(function (){
+            var s=this;
+            if (s.type=="text/tonyu") {
+                var fn=$(s).data("filename");
+                if (fn) {
+                    var f=curProjectDir.rel(fn);
+                    if ($(s).data("main")) {
+                        main=f.truncExt(".tonyu");
+                    }
+                }
+            }
+        });
+        Tonyu.defaultOptions={
+                compiler: { defaultSuperClass: "Actor"},
+                run: {mainClass: main, bootClass: "Boot"},
+                kernelEditable: false
+            };
+        var kernelDir=FS.get("/Tonyu/Kernel/");
+        var curPrj=Tonyu_Project(curProjectDir, kernelDir);
+        var o=curPrj.getOptions();
+        curPrj.rawRun(o.run.bootClass);
     });
 });
