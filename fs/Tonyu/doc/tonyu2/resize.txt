@@ -1,0 +1,21 @@
+[[ScaledCanvas]]
+
+*$Screen.resizeメソッド
+
+ゲーム画面のサイズを変更します．
+
+<<code
+$Screen.resize(w,h);
+>>
+
+wとh に画面幅と高さを指定します．
+
+
+*例
+
+<<code
+$Screen.resize(500,300);
+>>
+
+
+※実際の画面（Canvas）の大きさが変わるのではなく，画面内に表示される仮想画面の大きさが変わります．

@@ -1,0 +1,12 @@
+[[BaseActor]]
+
+*isDeadメソッド
+
+オブジェクトに[[die]]メソッドが呼ばれたかどうかを返します
+
+<<code
+b=isDead();
+>>
+
+このオブジェクトにdieメソッドが呼ばれていれば，[[@arg b]]に[[@cfrag true]]を，そうでなければ[[@cfrag false]]を返します．
+

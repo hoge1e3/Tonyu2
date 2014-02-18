@@ -1,0 +1,23 @@
+[[BaseActor]]
+
+*extendメソッド
+
+オブジェクトを受け取り，それらの属性値を書き込みます．
+
+**書式
+<<code
+extend(obj)
+>>
+[[@arg obj]]のもつ値をすべて自分自身に書き込みます．
+
+
+**例
+
+<<code
+extend{x:5, y:10, score:20};
+// x=5 y=10 score=20 になる
+print (x);
+print (y);
+print (score);
+>>
+

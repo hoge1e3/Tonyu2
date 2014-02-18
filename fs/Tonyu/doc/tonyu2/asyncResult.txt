@@ -1,0 +1,30 @@
+[[BaseActor]]
+
+*asyncResultメソッド
+
+AsyncResultオブジェクトを作成します
+
+AsyncResultオブジェクトは，ajaxなどの「非同期で実行を行い，結果をコールバック関数で受け取る」形式のメソッド（非同期メソッド）を[[待機可能モード>waitmode]]で扱うためのオブジェクトです．
+
+**使い方
+
+※必ず待機可能モードで実行してください．
+
+-asyncResult()メソッドで，AsyncResultオブジェクトを作成します．これを[[@cfrag a]]とします．
+-非同期メソッドを呼び出します． このとき，[[@cfrag a.receiver]] をコールバック関数として渡します．
+-[[waitFor]]メソッドを呼び出します．非同期メソッドが結果を返すまで処理を待機します．
+-非同期メソッドの結果が[[@cfrag a[n]]]に返されます．[[@cfrag a[n]]]はコールバック関数に渡された第n引数（0が最初の引数）です．
+
+**使用例
+
+<<code
+native $;
+//asyncResultオブジェクトを作成
+a=asyncResult();
+//jqueryのgetメソッドを呼び出す．コールバック関数に a.receiverを指定
+$.get("http://tonyuedit.appspot.com/edit/", a.receiver);
+//getメソッドが終わるまで待つ
+waitFor(a);
+//結果がa[0]に返される
+print(a[0]);
+>>

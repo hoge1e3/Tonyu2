@@ -1,0 +1,9 @@
+[[print]]
+
+*コンソール
+
+Tonyu2のコンソールは，JavaScriptのコンソールと同じです．次のキーで表示できます．
+
+-Chrome/Firefox: Ctrl+Shift+J
+-IE: F12
+

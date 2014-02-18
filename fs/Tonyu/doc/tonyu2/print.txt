@@ -1,0 +1,13 @@
+[[BaseActor]]
+
+*printメソッド
+
+[[コンソール>console]]に値を表示します．(JavaScriptのconsole.logと同じ)
+
+**書式
+
+<<code
+print(value...);
+>>
+value（複数指定可）の値をコンソールに表示します．
+
