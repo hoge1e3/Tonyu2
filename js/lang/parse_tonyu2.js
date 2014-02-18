@@ -90,7 +90,9 @@ TonyuLang=function () {
                  "usethread": true,
                  "constructor": true,
                  ifwait:true,
-                 nowait:true
+                 nowait:true,
+                 arguments:true,
+                 "delete": true
     };
     var num=tk(/^[0-9\.]+/).ret(function (n) {
         n.type="number";
@@ -173,7 +175,11 @@ TonyuLang=function () {
     var superExpr =g("superExpr").ands(
             tk("super"), tk(".").and(symbol).ret(retF(1)).opt() , scall).ret(
             null,                 "name",                       "params");
-    var reservedConst = tk("true").or(tk("false")).or(tk("null")).or(tk("undefined")).or(tk("this")).ret(function (t) {
+    var reservedConst = tk("true").or(tk("false")).
+    or(tk("null")).
+    or(tk("undefined")).
+    or(tk("this")).
+    or(tk("arguments")).ret(function (t) {
         t.type="reservedConst";
         return t;
     });
@@ -225,6 +231,7 @@ TonyuLang=function () {
     e.infixl(prio,mod);
     prio++;
     e.prefix(prio,tk("typeof"));
+    e.prefix(prio,tk("delete"));
     e.prefix(prio,tk("++"));
     e.prefix(prio,tk("--"));
     e.prefix(prio,tk("+"));

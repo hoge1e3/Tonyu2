@@ -22,8 +22,8 @@ nowait \extend(obj) {
     return Tonyu.extend(this,obj);
 }
 
-nowait \print(c) {
-    console.log(c);
+nowait \print() {
+    console.log.apply(console,arguments);
 }
 \update() {
     ifwait {
@@ -38,11 +38,14 @@ nowait \hitTo(t) {
 }
 nowait \allCrash(t) {
     var res=[];
-    var sp=_sprite || this;
+    var sp=this; //_sprite || this;
+    var t1=getCrashRect();
     $Sprites.sprites.forEach(\(s) {
+        var t2=s.getCrashRect();
         if (s!==this && 
         s instanceof t && 
-        s.crashTo(sp)) {
+        Math.abs(t1.x-t2.x)*2<t1.width+t2.width &&
+        Math.abs(t1.y-t2.y)*2<t1.height+t2.height) {
             res.push(s);    
         }
     });
@@ -53,14 +56,23 @@ nowait \crashTo(t) {
     if (typeof t=="function") {
         return allCrash(t)[0];
     }
-    if (_sprite && t._sprite) {
+    return crashTo1(t);
+}
+nowait \crashTo1(t) {
+    if (!t || t._isDead) return false;
+/*if (_sprite && t._sprite) {
         return _sprite.crashTo(t._sprite);
-    }
-    //print([this, t]);
-    return (x!=null && y!=null && width && height &&
-    t && !t._isDead && t.x!=null && t.y!=null && t.width && t.height &&
-    Math.abs(x-t.x)*2<width+t.width &&
-    Math.abs(y-t.y)*2<height+t.height);
+}*/
+    var t1=getCrashRect();
+    var t2=t.getCrashRect();
+    return (
+    //    t1.x!=null && t1.y!=null && t1.width && t1.height &&
+    //    t2.x!=null && t2.y!=null && t2.width && t2.height &&
+    Math.abs(t1.x-t2.x)*2<t1.width+t2.width &&
+    Math.abs(t1.y-t2.y)*2<t1.height+t2.height);
+}
+nowait \getCrashRect() {
+    return {x,y,width,height};
 }
 nowait \watchHit(typeA,typeB,onHit) {
     $Sprites.watchHit(typeA , typeB, \(a,b) {
@@ -78,13 +90,20 @@ nowait \die() {
     _isDead=true;
 }
 nowait \hide() {
-    if (_sprite) {
+/*if (_sprite) {
         $Sprites.remove(_sprite);
         _sprite=null;
-    } else {
-        $Sprites.remove(this);
-    }
+} else {*/
+    $Sprites.remove(this);
+//}
 }
+nowait \show(x,y,p) {
+    $Sprites.add(this);
+    if (x!=null) this.x=x;
+    if (y!=null) this.y=y;
+    if (p!=null) this.p=p;
+}
+
 nowait \rnd(r) {
     if (typeof r=="number") {
         return Math.floor(Math.random()*r);
@@ -123,7 +142,9 @@ nowait \draw(ctx) {
         if (!align) align="center";
         if (!fillStyle) fillStyle="white";
         ctx.fillStyle=fillStyle;
-        TextRect.draw(ctx, text, x, y, size, align , "fill");
+        var rect=TextRect.draw(ctx, text, x, y, size, align , "fill");
+        width=rect.w;
+        height=rect.h;
     }
     if (_fukidashi) {
         if (_fukidashi.c>0) {
@@ -134,4 +155,7 @@ nowait \draw(ctx) {
             x, y-height/2-10, _fukidashi.size);
         }
     }
+}
+nowait \asyncResult() {
+    return Tonyu.asyncResult();
 }

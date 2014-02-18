@@ -5,6 +5,13 @@ new AcTest{x:10, y:100, vx:5, vy:0, p:0};
 new AcTest{x:320, y:100, vx:-5, vy:0, p:10};
 t=new AcTest(50,150);
 
+/*native $;
+a=asyncResult();
+$.get("http://localhost:3002/", a.receiver);
+waitFor(a);
+print(a[0]);
+*/
+
 fillStyle="yellow";
 for (i=0; i<3000; i++) {
     size=40;
@@ -15,6 +22,8 @@ for (i=0; i<3000; i++) {
     y=$mouseY;
     t.x=$touches[1].x;
     t.y=$touches[1].y;
+    if (i==50) hide();
+    if (i==60) show();
     //if (i==50) waitFor(Tonyu.timeout(1000));
     update();
 }

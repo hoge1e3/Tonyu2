@@ -6,11 +6,14 @@ native Tonyu;
     isDrawGrid=Tonyu.noviceMode;
 }
 function add(s) {
+    if (s.__addedToSprites) return;
     sprites.push(s);
+    s.__addedToSprites=this;
     return s;
 }
 function remove(s) {
     sprites.splice(sprites.indexOf(s),1);
+    delete s.__addedToSprites;
 }
 function clear() {sprites.splice(0,sprites.length);}
 function draw(cv) {
@@ -26,14 +29,14 @@ function checkHit() {
     hitWatchers.forEach(function (w) {
         sprites.forEach(function (a) {
                 //console.log("a:",  a.owner);
-            var a_owner=a.owner|| a;
+            var a_owner=a;//a.owner|| a;
             if (! (a_owner instanceof w.A)) return;
             sprites.forEach(function (b) {
-                var b_owner=b.owner|| b;
+                var b_owner=b;//b.owner|| b;
                 if (a===b) return;
                 if (! (b_owner instanceof w.B)) return;
                 //console.log("b:",  b.owner);
-                if (a.hitTo(b)) {
+                if (a.crashTo1(b)) {
                     //console.log("hit", a.owner, b.owner);
                     w.h(a_owner,b_owner);
                 }

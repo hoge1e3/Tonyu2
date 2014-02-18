@@ -1,0 +1,21 @@
+extends Actor;
+x=0;
+y=0;
+while(true){
+    x++;
+    if (getkey("down")) y++;
+    update();
+}
+
+
+native alert;
+// main関数
+x=3;
+rate=5;
+y=mult(x);
+alert(y); // 15
+// main関数終わり
+\mult(a) {
+    var res=a*rate;
+    return res;
+}

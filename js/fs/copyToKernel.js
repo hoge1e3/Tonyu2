@@ -6,7 +6,7 @@ define(["Shell","FS"], function (sh,FS) {
         } else {
             var cps=0;
             ker.each(function (f) {
-                var src=sh.pwd().rel(f.name());
+                var src=sh.cwd.rel(f.name());
                 if (src.exists()) {
                     cps+=sh.cp(src, ker);
                 }

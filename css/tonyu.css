@@ -18,6 +18,13 @@ textarea{
 	cursor:pointer;
   color: #428bca;
 }
+.fileItem.selected {
+  cursor:default;
+  color: black;
+  font-weight: bold;
+  background-color: #dddddd;
+}
+
 .fileItem:hover {
    color: #2a6496;
 }
@@ -28,6 +35,11 @@ textarea{
 .clickable:hover {
    color: #2a6496;
 }
+.clickable.notexist {
+	cursor:pointer;
+  color: #ca6b42;
+}
+
 
 
 .tutorial-highlight {
@@ -38,6 +50,9 @@ textarea{
 }
 h1 {
 	font-size: 20px;
+}
+h2 {
+	font-size: 18px;
 }
 #wikiViewArea {
 	overflow-y: scroll;

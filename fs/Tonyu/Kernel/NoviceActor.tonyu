@@ -8,7 +8,7 @@ native Tonyu;
 \initSprite() {
     if (!_sprite) {
         _sprite=new BaseActor{owner:this};// Sprites.add{owner:this};
-        $Sprites.add(_sprite);
+        $Sprites.add(this);
     }
 }
 \say(text,size) {
@@ -22,6 +22,12 @@ native Tonyu;
 \show(x,y,p) {
     go(x,y,p);
 }
+nowait \draw(ctx) {
+    _sprite.draw(ctx);
+}
+\getCrashRect() {
+    return _sprite.getCrashRect();
+}
 \go(x,y,p) {
     initSprite();
     _sprite.x=x;
@@ -29,7 +35,6 @@ native Tonyu;
     if (p!=null) _sprite.p=p;
     //update();
 }
-\draw(){}
 \change(p) {
     initSprite();
     _sprite.p=p;

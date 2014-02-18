@@ -1,10 +1,12 @@
 requirejs(["fs/ROMk","fs/ROMd","fs/ROMs","ace", "Util", "Tonyu", "FS", "FileList", "FileMenu",
            "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project","ImageList","Sprites",
-           "copySample","Shell","ImageResEditor","ProjectOptionsEditor","copyToKernel","KeyEventChecker"
+           "copySample","Shell","ImageResEditor","ProjectOptionsEditor","copyToKernel","KeyEventChecker",
+           "WikiDialog"
           ],
 function (romk, romd, roms, ace, Util, Tonyu, FS, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,ImageList,Sprites,
-          copySample,sh, ImgResEdit,ProjectOptionsEditor, ctk, KeyEventChecker
+          copySample,sh, ImgResEdit,ProjectOptionsEditor, ctk, KeyEventChecker,
+          WikiDialog
           ) {
 
 $(function () {
@@ -324,6 +326,11 @@ $(function () {
     });
     $("#prjOptEditor").click(function () {
         ProjectOptionsEditor(curPrj);
+    });
+    var helpd=null;
+    $("#refHelp").click(function () {
+    	if (!helpd) helpd=WikiDialog.create(FS.get("/Tonyu/doc/tonyu2/"));
+    	helpd.show();
     });
     if (typeof progBar=="object") {progBar.clear();}
     $("#rmPRJ").click(function () {

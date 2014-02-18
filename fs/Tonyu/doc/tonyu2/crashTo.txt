@@ -1,0 +1,36 @@
+[[BaseActor]]
+
+*crashToメソッド
+
+他のオブジェクトと衝突しているかを判定します．
+
+**書式1
+
+<<code
+crashTo(obj)
+>>
+
+このオブジェクトが[[@arg obj]]と衝突していれば[[@cfrag true]]，そうでなければ[[@cfrag false]]を返します．
+
+*書式2
+
+<<code
+crashTo(Class)
+>>
+
+このオブジェクトが[[@arg Class]]で指定されるクラスのオブジェクトのうちどれかと衝突していれば，そのうちどれか1つのオブジェクトを返します．そうでなければ[[@cfrag null]]を返します
+
+*例
+
+<<code
+// $playerというオブジェクトにぶつかっていたら，$playerを消します
+if (crashTo($player)) {
+   $player.die();
+}
+>>
+
+*参考
+
+-[[crashTo1]]
+-[[allCrash]]
+-[[getCrashRect]]

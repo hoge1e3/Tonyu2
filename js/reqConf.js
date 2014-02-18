@@ -180,6 +180,7 @@ var reqConf={
             "FileList": "fs/FileList",
             "HttpHelper": "help/HttpHelper",
             "Wiki": "help/wiki",
+            "WikiDialog": "help/wikiDialog",
             "ace": "lib/ace-noconflict/ace",
             "ide/noviceSelProject": "ide/noviceSelProject",
             "ide/noviceEditor": "ide/noviceEditor",

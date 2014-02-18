@@ -21,6 +21,9 @@ div.figure img {
 h1 {
 	font-size: 20px;
 }
+h2 {
+	font-size: 18px;
+}
 .clickable {
 	cursor:pointer;
   color: #428bca;

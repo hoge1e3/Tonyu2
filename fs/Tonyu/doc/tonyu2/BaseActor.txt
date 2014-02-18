@@ -1,0 +1,62 @@
+[[api]]
+
+*BaseActor
+
+画面に表示されるオブジェクトの基本クラスです．実際には[[Actor]]を継承してクラスを作成してください．
+
+* コンストラクタ(1)
+
+<<code
+\new(params)
+>>
+
+paramsにはオブジェクトを指定します．paramsの値をフィールドに書き込みます
+
+例： 
+<<code
+// MyActorはBaseActorの子クラスとする
+a=new MyActor{x:50,y:30, power:20, hp:50};
+// a.x=50  a.y=30 a.power=20  a.hp=50 となる
+>>
+
+* コンストラクタ(2)
+
+<<code
+\new(x,y,p)
+>>
+
+x,y,pの値をフィールドに書き込みます
+
+* フィールド
+
+-x : オブジェクトのx座標をあらわします
+-y : オブジェクトのy座標をあらわします
+-p : 表示する[[キャラクタパターン]]の番号をあらわします 
+-text : textに値がセットされると，文字を表示します（キャラクタパターンは表示されなくなります）
+--size : 文字の大きさをあらわします
+--fillStyle : 文字の色などをあらわします(JavascriptのCanvasにおけるfillStyleと同じ書式です）
+--align:  "center" "left" "right"のいずれかを指定します．xの値であらわされる横位置がそれぞれ文字の中央，左端，右端になるように表示します．
+
+* メソッド
+
+-[[update]]
+-[[getkey]]
+-[[crashTo]]
+-[[crashTo1]]
+-[[allCrash]]
+-[[getCrashRect]]
+-[[die]]
+-[[isDead]] 
+-[[hide]]
+-[[show]]
+-[[rnd]]
+-[[draw]]
+-[[extend]]
+-[[print]]
+-[[asyncResult]]
+-[[waitFor]]
+-[[currentThreadGroup]]
+-[[detectShape]]
+-[[hitTo]]
+-[[watchHit]]
+

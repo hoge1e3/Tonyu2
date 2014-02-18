@@ -1,17 +1,33 @@
 function FileList(elem, options) {
-    var _curDir;
-    var _curFile;
+    var _curDir=null;
+    var _curFile=null;
     if (!options) options={};
     var FL={select:select, ls:ls, on:(options.on?options.on:{}), curFile:curFile, curDir: curDir};
     var path=$("<div>");
     var items=$("<div>");
+    function item(f) {
+    	var res=$();
+    	if (!f) return res;
+    	var fn=f.path();
+    	items.find("span").each(function () {
+    		var t=$(this);
+    		if ( t.data("filename")==fn) {
+    			res=t;
+    		}
+    	});
+    	return res;
+    }
     elem.append(path).append(items);
     function select(f) {
         if (FL.on.select && FL.on.select(f)) return;
         if (f.isDir()) {
             ls(f);
         } else {
+        	//console.log("unsel", _curFile+"");
+        	item(_curFile).removeClass("selected");
             _curFile=f;
+        	//console.log("sel", _curFile+"");
+            item(_curFile).addClass("selected");
         }
     }
     function ls(dir) {
@@ -37,9 +53,9 @@ function FileList(elem, options) {
         _curDir.each(function (f) {
             var n=displayName(f);
             if (!n) return;
-            $("<li>").append(
-                $("<span>").addClass("fileItem").text( (f.isReadOnly()?"[RO]":"")+n)
-            ).appendTo(items).click(function () {
+            var s=$("<span>").addClass("fileItem").text( (f.isReadOnly()?"[RO]":"")+n).data("filename",f.path());
+            if (_curFile && _curFile.path()==f.path()) { s.addClass("selected");}
+            $("<li>").append(s).appendTo(items).click(function () {
                 select(f);
             });
         });

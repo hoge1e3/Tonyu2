@@ -12,16 +12,20 @@ $(function () {
     $("#mvFile").click(FM.mv);
     $("#rmFile").click(FM.rm);
 
-    f.on.select=function (f) {
-        if (!f.isDir()) {
-            showWiki(f);
+    var showfl=false;
+    f.on.select=function (file) {
+        if (!file.isDir()) {
+        	if (!showfl) showWiki(file);
             //return true;
         }
     };
-    w.on.show=function (fi) {
+    w.on.show=function (file) {
         //console.log("onsho "+f);
-        t.open(fi);
+        t.open(file);
         f.ls();
+    	showfl=true;
+    	f.select(file);
+    	showfl=false;
     };
     function showWiki(f) {
         //var n=f.name();
@@ -39,6 +43,7 @@ $(function () {
     function onResize() {
         var h=$(window).height()-$("#navbar").height();
         t.setHeight(h);
+        $("#wikiViewArea").height(h);
     }
     $(window).resize(onResize);
     onResize();

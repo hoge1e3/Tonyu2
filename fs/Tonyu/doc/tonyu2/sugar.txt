@@ -1,0 +1,39 @@
+[[lang]]
+
+*拡張構文
+
+** \ による関数・メソッド定義
+
+-[[@cfrag function]] と書く代わりに [[@cfrag \]] と書くことができます．[[@plistref fun]]と[[@plistref back]]は等価です．
+
+<<code functionでメソッド定義 fun
+function a(x,y) {
+   return x+y;
+}
+>>
+<<code \でメソッド定義 back
+\a(x,y) {
+   return x+y;
+}
+>>
+
+-無名関数にも使えます．
+
+<<code
+onComplete=\(evt) { alert("Complete") };
+>>
+
+**引数渡しにおける()の省略
+
+関数・メソッド呼び出し時に，オブジェクトリテラルで書かれた引数１つだけを渡す場合，()を省略できます．
+
+<<code
+$("a").attr{target:"_top"};
+// $("a").attr({target:"_top"}); と等価
+>>
+
+**オブジェクトリテラルの省略記法
+
+[[@cfrag {x:x}]]のように，属性名と値が同じ場合，[[@cfrag {x}]]と記述できます．
+
+

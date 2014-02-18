@@ -1,6 +1,6 @@
 Tonyu.Compiler=function () {
 // TonyuソースファイルをJavascriptに変換する
-var TH="_thread",THIZ="_this", FIBPRE="fiber$", FRMPC="__pc", LASTPOS="$LASTPOS",CNTV="__cnt",CNTC=100;
+var TH="_thread",THIZ="_this", ARGS="_arguments",FIBPRE="fiber$", FRMPC="__pc", LASTPOS="$LASTPOS",CNTV="__cnt",CNTC=100;
 var CLASS_HEAD="Tonyu.classes.", GLOBAL_HEAD="Tonyu.globals.";
 var GET_THIS="this.isTonyuObject?this:'not_a_tonyu_object'";
 var ITER="Tonyu.iterator";
@@ -244,6 +244,8 @@ function genJS(klass, env,pass) {
         reservedConst: function (node) {
             if (node.text=="this") {
                 buf.printf("%s",THIZ);
+            } else if (node.text=="arguments" && !ctx.noWait) {
+                buf.printf("%s",ARGS);
             } else {
                 buf.printf("%s", node.text);
             }
@@ -653,6 +655,7 @@ function genJS(klass, env,pass) {
         printf(
                "%s%s :function (%j) {%{"+
                  "var %s=%s;%n"+
+                 "var %s=%s;%n"+
                  "var %s=0;%n"+
                  "%z%n"+
                  "return function (%s) {%{"+
@@ -668,6 +671,7 @@ function genJS(klass, env,pass) {
 
                FIBPRE, fiber.name, [",",getParams(fiber)],
                    THIZ, GET_THIS,
+                   ARGS, "arguments",
                    FRMPC,
                    locals,
                    TH,

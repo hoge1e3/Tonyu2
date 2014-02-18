@@ -10,7 +10,7 @@ native Tonyu;
     $Sprites=new Sprites();
     print ("Loading pats..");
     var rs=$currentProject.getResource();
-    var a=Tonyu.asyncResult();
+    var a=asyncResult();
     ImageList( rs.images, a.receiver);
     waitFor(a);
     var r=a[0];
@@ -20,7 +20,11 @@ native Tonyu;
     }
     print ("Loading pats done.");
     cvj=$("canvas");
-    $Screen=new ScaledCanvas{canvas:cvj, width:465, height:465};
+    if (Tonyu.noviceMode) {
+        $Screen=new ScaledCanvas{canvas:cvj, width:600, height:300};
+    } else {
+        $Screen=new ScaledCanvas{canvas:cvj, width:465, height:465};
+    }
 }
 \initCanvasEvents() {
     cv=cvj[0];

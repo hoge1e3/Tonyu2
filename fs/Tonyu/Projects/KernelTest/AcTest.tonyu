@@ -18,3 +18,8 @@ while (true) {
     }
     update();
 }
+isDead();
+
+/*\isDead() {
+    
+}*/

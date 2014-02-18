@@ -1,0 +1,12 @@
+[[index]]
+
+*標準クラス
+
+Tonyu2で最初から使えるクラス群です．[[ファイルシステム>fs]]上の/Tonyu/Kernel/ で定義されています．
+
+-[[Actor]]
+-[[BaseActor]]
+-[[Boot]]
+-[[Sprites]]
+-[[ScaledCanvas]]
+-[[NoviceActor]]

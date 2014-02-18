@@ -21,7 +21,7 @@ define(["FS","Util"],function (FS,Util) {
         return c.rel(v);
     }
     Shell.pwd=function () {
-        return Shell.cwd;
+        return Shell.cwd+"";
     };
     Shell.ls=function (){
         return Shell.cwd.ls();
