@@ -5,9 +5,15 @@ Wiki=function (placeHolder, home, options, plugins) {
     var LINEMARK="marker_"+Math.floor(Math.random()*100000);
     var on={};
     var history=[];
+    var EXT=".txt";
     if (!home.isDir()) throw home+": not a dir";
-    var tocFile=home.rel("toc.json");
+    var cwd;
     W.on=on;
+    W.cd=function (dir) {
+    	cwd=dir;
+    	tocFile=cwd.rel("toc.json");
+    };
+    W.cd(home);
     W.parse=function (body,name) {
         var ctx={};
         var $h=HttpHelper({lineMark:LINEMARK});
@@ -206,23 +212,19 @@ Wiki=function (placeHolder, home, options, plugins) {
                         $h.exit();
                         $h.exit();
                     } else {
-                        //if (home) {
-                        	if (name.match(/^https?:\/\//)) {
-                        		a=$("<a>").attr({href:name,target:"ext"}).text(caption);
-                        	} else {
-                        		var f=W.resolveFile(name);
-                        		if (!f.exists() && f.isReadOnly()) {
-                        			a=$("<span>").text(caption);
-                        		} else {
-                                    a=$("<span>").addClass("clickable").text(caption).click(function () {
-                                        W.show(name);
-                                    });
-                            		if (!f.exists()) a.addClass("notexist");
-                        		}
-                        	}
-                        /*} else {
-                            a=$("<a>").attr("href","help.html?page="+name).text(caption);
-                        }*/
+                    	if (name.match(/^https?:\/\//)) {
+                    		a=$("<a>").attr({href:name,target:"ext"}).text(caption);
+                    	} else {
+                    		var f=W.resolveFile(name);
+                    		if (!f.exists() && f.isReadOnly()) {
+                    			a=$("<span>").text(caption);
+                    		} else {
+                    			a=$("<span>").addClass("clickable").text(caption).click(function () {
+                    				W.show(f);
+                    			});
+                    			if (!f.exists()) a.addClass("notexist");
+                    		}
+                    	}
                     }
                 }
                 $h.p(a);
@@ -232,39 +234,31 @@ Wiki=function (placeHolder, home, options, plugins) {
     W.resolveFile=function (name) {
         var f;
         if (name.isDir) f=name;
-        else f=home.rel(name+".txt");
+        else f=cwd.rel(name+EXT);
         return f;
     };
-    W.show=function (name) {
-        //if (home) {
-            var f=W.resolveFile(name);
-            /*if (name.isDir) f=name;
-            else f=home.rel(name+".txt");*/
-            if (!f.exists() && !f.isReadOnly()) {
-                var p=history[history.length-1];
-                if (p) f.text("[["+p.name().replace(/\.txt$/,"")+"]]\n");
-                else f.text("");
-            }
-            if ( f.exists()) {
-                var ht=W.parse(f.text(), f.name().replace(/\.txt$/,""));
-                placeHolder.empty();
-                placeHolder.scrollTop(0);
-                placeHolder.append(ht);
-                placeHolder.append($("<div>").css({height:"100px"}).text(""));
-                console.log("wikijs.on.show",f+"");
-                if (on.show) on.show.apply(W, [f,name]);
-                history.push(f);
-            } else {
-                alert(name+" というページはありません");
-            	//placeHolder.text(name+" not found.");
-            }
-            return;
-        //}
-        /*$.get("doc/"+name+".txt?key="+Math.random(), function (res) {
-            var ht=W.parse(res);
-            placeHolder.empty();
-            placeHolder.append(ht);
-        });*/
+    W.show=function (nameOrFile) {
+    	var f=W.resolveFile(nameOrFile);
+		var fn=f.truncExt(EXT);
+    	if (!f.exists() && !f.isReadOnly()) {
+    		var p=history[history.length-1];
+    		if (p) f.text("[["+p.truncExt(EXT)+"]]\n");
+    		else f.text("");
+    	}
+    	if ( f.exists()) {
+    		var ht=W.parse(f.text(), fn);
+    		placeHolder.empty();
+    		placeHolder.scrollTop(0);
+    		placeHolder.append(ht);
+    		placeHolder.append($("<div>").css({height:"100px"}).text(""));
+    		//console.log("wikijs.on.show",f+"");
+    		if (on.show) on.show.apply(W, [f,fn]);
+    		history.push(f);
+    	} else {
+    		alert(nameOrFile+" というページはありません");
+    		//placeHolder.text(name+" not found.");
+    	}
+    	return;
     };
     W.back=function () {
         var f=history.pop();

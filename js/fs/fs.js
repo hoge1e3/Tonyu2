@@ -1,6 +1,7 @@
 FS=function () {
     var FS={};
     var roms={};
+    var SEP="/";
     FS.roms=roms;
     function endsWith(str,postfix) {
         return str.substring(str.length-postfix.length)===postfix;
@@ -14,7 +15,12 @@ FS=function () {
     }
     FS.splitPath=splitPath;
     function splitPath(path) {
-        return path.split("/");
+    	var res=path.split(SEP);
+    	if (res[res.length-1]=="") {
+    		res[res.length-2]+=SEP;
+    		res.pop();
+   		}
+        return res;
     }
     function resolveROM(path) {
         for (var romPath in roms) {
@@ -58,7 +64,7 @@ FS=function () {
     }
     function getDirInfo(path) {
         if (path==null) throw "getDir: Null path";
-        if (!endsWith(path,"/")) path+="/";
+        if (!endsWith(path,SEP)) path+=SEP;
         var dinfo=lcs(path);
         try {
             dinfo=JSON.parse(dinfo);
@@ -188,7 +194,19 @@ FS=function () {
             };
             dir.isDir=function () {return true;};
             dir.rel=function (relPath){
-                return FS.get(path+relPath);
+            	var paths=splitPath(relPath);
+            	var resPath=dir.path();
+            	resPath=resPath.replace(/\/$/,"");
+            	console.log(resPath,paths);
+            	paths.forEach(function (n) {
+                	console.log(resPath,paths,n);
+            		if (n==".." || n=="../") resPath=up(resPath);
+            		else {
+                    	resPath=resPath.replace(/\/$/,"");
+            			resPath+=SEP+n;
+            		}
+            	});
+                return FS.get(resPath);
             };
             dir.rm=function (ord) {
                 if (!dir.exists()) throw path+": No such dir.";
@@ -245,7 +263,7 @@ FS=function () {
             //  path= /a/b/c   base=/a/b/  res=c
             //  path= /a/b/c/   base=/a/b/  res=c/
             var bp=(base.path ? base.path() : base);
-            if (bp.substring(bp.length-1)!="/") {
+            if (bp.substring(bp.length-1)!=SEP) {
                 throw bp+" is not a directory.";
             }
             if (path.substring(0,bp.length)!=bp) {
@@ -289,33 +307,43 @@ FS=function () {
         return res;
     };
     function up(path) {
-        if (path=="/") return null;
-        var s=splitPath(path);
-        var name=s[s.length-1];
-        var isDir=name=="";
+        if (path==SEP) return null;
+        //                       path=/a/b/c/               /a/b/c
+        var s=splitPath(path);  //  s=["","a","b","c/"]     ["","a","b","c"]
+        s[s.length-1]=""; //        s=["","a","b",""]       ["","a","b",""]
+        return  s.join(SEP) ;  //     /a/b/                 /a/b/
+
+        /*var name=s[s.length-1];
+        var isDir=endsWith(name, SEP);
         if (!isDir) {
-            s[s.length-1]="";
-            return  s.join("/") ;
+        	// path=/a/b/c
+        	// s=["a", "b", "c"]
+            s[s.length-1]=""; // s=["a","b",""]
+            return  s.join(SEP) ;  // /a/b/
         } else {
-            s.pop();
-            s[s.length-1]="";
-            return  s.join("/") ;
-        }
+        	// path=/a/b/c/
+        	// s=["a", "b", "c/"]
+        	//s.pop();
+            s[s.length-1]="";     // s=["a", "b", ""]
+            return  s.join(SEP) ;  // /a/b/
+        }*/
     }
     function isPath(path) {
-        return startsWith(path,"/");
+        return startsWith(path,SEP);
     }
     function isDir(path) {
-        return endsWith(path,"/");
+        return endsWith(path,SEP);
     }
     function getName(path) {  //  a/b/c  => c    a/b/c/  => c/
         var patha=splitPath(path);
+        return patha[patha.length-1];
+        /*
         if (patha[patha.length-1]=="") {
-            name=patha[patha.length-2]+"/";
+            name=patha[patha.length-2]+SEP;
         } else {
             name=patha[patha.length-1];
         }
-        return name;
+        return name;*/
     }
     FS.scan=function () {
         for (var path in localStorage) {

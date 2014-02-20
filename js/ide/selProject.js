@@ -13,7 +13,7 @@ $(function () {
         });
     }
     $("#newPrj").click(function (){
-    	NPD.open(projects, function (prjDir) {
+    	NPD.show(projects, function (prjDir) {
             prjDir.mkdir();
             document.location.href="project.html?dir="+prjDir.path();
     	});
