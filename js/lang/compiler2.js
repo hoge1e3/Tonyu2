@@ -215,7 +215,7 @@ function genJS(klass, env,pass) {
             buf.printf("function %v %v",node.name, node.params);
         },
         funcDecl: function (node) {
-        	genSubFunc(node);
+        	//genSubFunc(node);
         },
         "return": function (node) {
             if (!ctx.noWait) {
@@ -258,11 +258,11 @@ function genJS(klass, env,pass) {
         },
         varsDecl: function (node) {
             lastPosF(node)();
-            if (!ctx.noWait) {
+            //if (!ctx.noWait) {
                 buf.printf("%j;", [";",node.decls]);
-            }else {
+            /*}else {
                 buf.printf("var %j;", [",", node.decls]);
-            }
+            }*/
         },
         jsonElem: function (node) {
             if (node.value) {
@@ -605,12 +605,12 @@ function genJS(klass, env,pass) {
     var scopeChecker=Visitor({
     	varDecl: function (node) {
     		ctx.locals.varDecls[node.name.text]=node;
-            console.log("varDecl!", node.name.text);
+            //console.log("varDecl!", node.name.text);
     		//ctx.scope[node.name.text]=ST.LOCAL;
     	},
     	funcDecl: function (node) {/*FDITSELFIGNORE*/
     		ctx.locals.subFuncDecls[node.head.name.text]=node;
-    		console.log("funcDecl!", node);
+    		//console.log("funcDecl!", node);
             //ctx.scope[node.head.name.text]=ST.LOCAL;
     	},
         funcExpr: function (node) {/*FEIGNORE*/
@@ -631,34 +631,41 @@ function genJS(klass, env,pass) {
     		t.visit(e);
     	});
     };
-    function checkLocals(node) {
+    function checkLocals(node, scope) {
     	var locals={varDecls:{}, subFuncDecls:{}};
     	ctx.enter({locals:locals},function () {
         	scopeChecker.visit(node);
     	});
-    	buf.print("/*");
+    	//buf.print("/*");
     	for (var i in locals.varDecls) {
-    		buf.printf("%s,",i);
+    		scope[i]=ST.LOCAL;
+    		//buf.printf("%s,",i);
     	}
     	for (var i in locals.subFuncDecls) {
-    		buf.printf("%s,",i);
+    		scope[i]=ST.LOCAL;
+    		//buf.printf("%s,",i);
     	}
-    	buf.print("*/");
+    	//buf.print("*/");
     	return locals;
     }
-    function genLocalsF(locals) {
-    	for (var i in locals.varDecls) {
-    		buf.printf("var %s;%n",i);
-    	}
-    	for (var i in locals.subFuncDecls) {
-    		genSubFunc(locals.subFuncDecls[i]);
-    	}
+    function genLocalsF(locals,scope) {
+    	return f;
+    	function f() {
+    		ctx.enter({scope:scope}, function (){
+    			for (var i in locals.varDecls) {
+    				buf.printf("var %s;%n",i);
+    			}
+    			for (var i in locals.subFuncDecls) {
+    				genSubFunc(locals.subFuncDecls[i]);
+    			}
+    		});
+    	};
     }
-    function checkLocalsF(node) {
+    /*function checkLocalsF(node) {
     	return function () {
     		return checkLocals(node);
     	};
-    }
+    }*/
     function genSource() {
         ctx.enter({scope:topLevelScope}, function () {
             if (klass.superClass) {
@@ -683,20 +690,21 @@ function genJS(klass, env,pass) {
         });
     }
     function genFiber(fiber) {
-        var locals={};
+    	//var locals={};
         //console.log("Gen fiber");
         var ps=getParams(fiber);
         var ns=newScope(ctx.scope);
         ps.forEach(function (p) {
             ns[p.name.text]=ST.PARAM;
         });
+        var locals=checkLocals(fiber.stmts , ns);
         printf(
                "%s%s :function (%j) {%{"+
                  "var %s=%s;%n"+
                  "var %s=%s;%n"+
                  "var %s=0;%n"+
                  "%f%n"+
-                 "%z%n"+
+//                 "%z%n"+
                  "return function (%s) {%{"+
                    "for(var %s=%d ; %s--;) {%{"+
                      "switch (%s) {%{"+
@@ -712,8 +720,8 @@ function genJS(klass, env,pass) {
                    THIZ, GET_THIS,
                    ARGS, "arguments",
                    FRMPC,
-                   checkLocalsF(fiber.stmts),
-                   locals,
+                   genLocalsF(locals, ns),
+//                   locals,
                    TH,
                    CNTV, CNTC, CNTV,
                         FRMPC,
@@ -726,7 +734,7 @@ function genJS(klass, env,pass) {
                 fiber.stmts.forEach(function (stmt) {
                     printf("%v%n", stmt);
                 });
-
+                /*
                 var lcl=[];
                 for (var i in ctx.scope) {
                     //console.log("scp: "+i+"="+ctx.scope[i]);
@@ -736,9 +744,9 @@ function genJS(klass, env,pass) {
                 }
                 if (lcl.length>0) {
                     locals.put("var "+lcl.join(", ")+";");
-                } else {
-                    locals.put("/*NOVAR*/");
-                }
+                } else {*/
+//                    locals.put("/*NOVAR*/");
+                 //}
             });
         }
     }
@@ -749,6 +757,7 @@ function genJS(klass, env,pass) {
         ps.forEach(function (p) {
             ns[p.name.text]=ST.PARAM;
         });
+        var locals=checkLocals(func.stmts,ns);
         printf("%s :function (%j) {%{"+
                   "var %s=%s;%n"+
                   "%f%n" +
@@ -756,7 +765,7 @@ function genJS(klass, env,pass) {
                "%}},%n",
                fname, [",",getParams(func)],
                THIZ, GET_THIS,
-               	      checkLocalsF(func.stmts),
+               	      genLocalsF(locals, ns),
                       fbody
         );
         function fbody() {
@@ -779,13 +788,14 @@ function genJS(klass, env,pass) {
         ps.forEach(function (p) {
             ns[p.name.text]=ST.PARAM;
         });
+        var locals=checkLocals(body, ns);
         buf.printf("function (%j) {%{"+
                        "%f%n"+
                        "%f"+
                    "%}}"
                  ,
                     [",", ps],
-                 	checkLocalsF(body),
+                 	genLocalsF(locals, ns),
                        fbody
         );
         function fbody() {
@@ -809,13 +819,14 @@ function genJS(klass, env,pass) {
         ps.forEach(function (p) {
             ns[p.name.text]=ST.PARAM;
         });
+        var locals=checkLocals(body, ns);
         buf.printf("function %s(%j) {%{"+
                       "%f%n"+
                       "%f"+
                    "%}}"
                  ,
                      name,[",", ps],
-                  	checkLocalsF(body),
+                  	genLocalsF(locals,ns),
                        fbody
         );
         function fbody() {
