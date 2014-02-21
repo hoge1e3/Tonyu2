@@ -81,7 +81,7 @@ IndentBuffer=function () {
                 var sep=false;
                 if (!node || !node.forEach) {
                     console.log(node);
-                    throw node+" is not array. cannot join";
+                    throw node+" is not array. cannot join fmt:"+fmt;
                 }
                 node.forEach(function (n) {
                     if (sep) $.printf(sp);

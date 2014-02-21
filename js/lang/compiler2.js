@@ -215,9 +215,7 @@ function genJS(klass, env,pass) {
             buf.printf("function %v %v",node.name, node.params);
         },
         funcDecl: function (node) {
-            this.inFunc=true;
-            buf.printf("%v %v",node.head, node.body);
-            this.inFunc=false;
+        	genSubFunc(node);
         },
         "return": function (node) {
             if (!ctx.noWait) {
@@ -282,31 +280,7 @@ function genJS(klass, env,pass) {
             buf.printf("[%j]", [",", node.elems]);
         },
         funcExpr: function (node) {
-            var m,ps;
-            var body=node.body;
-            if (m=OM.match( node, {head:{params:{params:OM.P}}})) {
-                ps=m.P;
-            } else {
-                ps=[];
-            }
-            buf.printf("function (%j) {%{"+
-                          "%f"+
-                       "%}}"
-                     ,
-                          [",", ps],
-                           fbody
-            );
-            function fbody() {
-                var ns=newScope(ctx.scope);
-                ps.forEach(function (p) {
-                    ns[p.name.text]=ST.PARAM;
-                });
-                ctx.enter({noWait: true, scope: ns }, function () {
-                    body.stmts.forEach(function (stmt) {
-                        printf("%v%n", stmt);
-                    });
-                });
-            }
+        	genFuncExpr(node);
         },
         parenExpr: function (node) {
             buf.printf("(%v)",node.expr);
@@ -628,6 +602,63 @@ function genJS(klass, env,pass) {
         throw node.type+" is not defined in visitor:compiler2";
     };
     v.cnt=0;
+    var scopeChecker=Visitor({
+    	varDecl: function (node) {
+    		ctx.locals.varDecls[node.name.text]=node;
+            console.log("varDecl!", node.name.text);
+    		//ctx.scope[node.name.text]=ST.LOCAL;
+    	},
+    	funcDecl: function (node) {/*FDITSELFIGNORE*/
+    		ctx.locals.subFuncDecls[node.head.name.text]=node;
+    		console.log("funcDecl!", node);
+            //ctx.scope[node.head.name.text]=ST.LOCAL;
+    	},
+        funcExpr: function (node) {/*FEIGNORE*/
+        },
+        exprstmt: function (node) {
+        }
+    });
+    scopeChecker.def=function (node) {
+    	var t=this;
+    	if (!node) return;
+    	var es;
+    	if (node instanceof Array) es=node;
+    	else es=node[Grammar.SUBELEMENTS];
+    	if (!es) {
+        	return;
+    	}
+    	es.forEach(function (e) {
+    		t.visit(e);
+    	});
+    };
+    function checkLocals(node) {
+    	var locals={varDecls:{}, subFuncDecls:{}};
+    	ctx.enter({locals:locals},function () {
+        	scopeChecker.visit(node);
+    	});
+    	buf.print("/*");
+    	for (var i in locals.varDecls) {
+    		buf.printf("%s,",i);
+    	}
+    	for (var i in locals.subFuncDecls) {
+    		buf.printf("%s,",i);
+    	}
+    	buf.print("*/");
+    	return locals;
+    }
+    function genLocalsF(locals) {
+    	for (var i in locals.varDecls) {
+    		buf.printf("var %s;%n",i);
+    	}
+    	for (var i in locals.subFuncDecls) {
+    		genSubFunc(locals.subFuncDecls[i]);
+    	}
+    }
+    function checkLocalsF(node) {
+    	return function () {
+    		return checkLocals(node);
+    	};
+    }
     function genSource() {
         ctx.enter({scope:topLevelScope}, function () {
             if (klass.superClass) {
@@ -654,11 +685,17 @@ function genJS(klass, env,pass) {
     function genFiber(fiber) {
         var locals={};
         //console.log("Gen fiber");
+        var ps=getParams(fiber);
+        var ns=newScope(ctx.scope);
+        ps.forEach(function (p) {
+            ns[p.name.text]=ST.PARAM;
+        });
         printf(
                "%s%s :function (%j) {%{"+
                  "var %s=%s;%n"+
                  "var %s=%s;%n"+
                  "var %s=0;%n"+
+                 "%f%n"+
                  "%z%n"+
                  "return function (%s) {%{"+
                    "for(var %s=%d ; %s--;) {%{"+
@@ -675,6 +712,7 @@ function genJS(klass, env,pass) {
                    THIZ, GET_THIS,
                    ARGS, "arguments",
                    FRMPC,
+                   checkLocalsF(fiber.stmts),
                    locals,
                    TH,
                    CNTV, CNTC, CNTV,
@@ -684,11 +722,6 @@ function genJS(klass, env,pass) {
                       TH,THIZ
         );
         function fbody() {
-            var ps=getParams(fiber);
-            var ns=newScope(ctx.scope);
-            ps.forEach(function (p) {
-                ns[p.name.text]=ST.PARAM;
-            });
             ctx.enter({method:fiber, scope: ns, pc:1}, function () {
                 fiber.stmts.forEach(function (stmt) {
                     printf("%v%n", stmt);
@@ -711,20 +744,22 @@ function genJS(klass, env,pass) {
     }
     function genFunc(func) {
         var fname= isConstructor(func) ? "initialize" : func.name;
+        var ps=getParams(func);
+        var ns=newScope(ctx.scope);
+        ps.forEach(function (p) {
+            ns[p.name.text]=ST.PARAM;
+        });
         printf("%s :function (%j) {%{"+
                   "var %s=%s;%n"+
+                  "%f%n" +
                   "%f" +
                "%}},%n",
                fname, [",",getParams(func)],
                THIZ, GET_THIS,
+               	      checkLocalsF(func.stmts),
                       fbody
         );
         function fbody() {
-            var ps=getParams(func);
-            var ns=newScope(ctx.scope);
-            ps.forEach(function (p) {
-                ns[p.name.text]=ST.PARAM;
-            });
             ctx.enter({method:func, scope: ns }, function () {
                 func.stmts.forEach(function (stmt) {
                     printf("%v%n", stmt);
@@ -732,6 +767,66 @@ function genJS(klass, env,pass) {
             });
         }
     }
+    function genFuncExpr(node) {
+        var m,ps;
+        var body=node.body;
+        if (m=OM.match( node, {head:{params:{params:OM.P}}})) {
+            ps=m.P;
+        } else {
+            ps=[];
+        }
+        var ns=newScope(ctx.scope);
+        ps.forEach(function (p) {
+            ns[p.name.text]=ST.PARAM;
+        });
+        buf.printf("function (%j) {%{"+
+                       "%f%n"+
+                       "%f"+
+                   "%}}"
+                 ,
+                    [",", ps],
+                 	checkLocalsF(body),
+                       fbody
+        );
+        function fbody() {
+            ctx.enter({noWait: true, scope: ns }, function () {
+                body.stmts.forEach(function (stmt) {
+                    printf("%v%n", stmt);
+                });
+            });
+        }
+    }
+    function genSubFunc(node) {
+    	var m,ps;
+        var body=node.body;
+        var name=node.head.name.text;
+        if (m=OM.match( node, {head:{params:{params:OM.P}}})) {
+            ps=m.P;
+        } else {
+            ps=[];
+        }
+        var ns=newScope(ctx.scope);
+        ps.forEach(function (p) {
+            ns[p.name.text]=ST.PARAM;
+        });
+        buf.printf("function %s(%j) {%{"+
+                      "%f%n"+
+                      "%f"+
+                   "%}}"
+                 ,
+                     name,[",", ps],
+                  	checkLocalsF(body),
+                       fbody
+        );
+        function fbody() {
+            ctx.enter({noWait: true, scope: ns }, function () {
+                body.stmts.forEach(function (stmt) {
+                    printf("%v%n", stmt);
+                });
+            });
+        }
+    }
+
     function isConstructor(f) {
         return OM.match(f, {ftype:"constructor"}) || OM.match(f, {name:"new"});
     }
