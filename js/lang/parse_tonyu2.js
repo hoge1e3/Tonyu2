@@ -167,10 +167,29 @@ TonyuLang=function () {
     var member=g("member").ands(tk(".") , symbol ).ret(null,     "name" );
     var parenExpr = g("parenExpr").ands(tk("("), e.lazy() , tk(")")).ret(null,"expr");
     var varAccess = g("varAccess").ands(symbol).ret("name");
+    var funcExpr_l=G("funcExpr").first(space,"f\\");
+    var funcExprArg=g("funcExprArg").ands(funcExpr_l).ret("obj");
     var objlit_l=G("objlit").first(space,"{");
     var objlitArg=g("objlitArg").ands(objlit_l).ret("obj");
-    var call=g("call").ands( argList.or(objlitArg) ).ret("args");
-    var scall=g("scall").ands( argList.or(objlitArg) ).ret("args");//supercall
+    var objOrFuncArg=objlitArg.or(funcExprArg);
+    function genCallBody(argList, oof) {
+    	var res=[];
+    	if (argList) argList.args.forEach(function (arg) {
+    		res.push(arg);
+    	});
+    	oof.forEach(function (o) {
+    		res.push(o.obj);
+    	});
+    	return res;
+    }
+    var callBody=argList.and(objOrFuncArg.rep0()).ret(function(a,oof) {
+    	return genCallBody(a,oof);
+    }).or(objOrFuncArg.rep1().ret(function (oof) {
+    	return genCallBody(null,oof);
+    }));
+    var callBodyOld=argList.or(objlitArg);
+    var call=g("call").ands( callBody ).ret("args");
+    var scall=g("scall").ands( callBody ).ret("args");//supercall
     var newExpr = g("newExpr").ands(tk("new"),varAccess, call.opt()).ret(null, "klass","params");
     var superExpr =g("superExpr").ands(
             tk("super"), tk(".").and(symbol).ret(retF(1)).opt() , scall).ret(
@@ -190,7 +209,7 @@ TonyuLang=function () {
     e.element(parenExpr);
     e.element(newExpr);
     e.element(superExpr);
-    e.element(G("funcExpr").first(space,"f\\"));
+    e.element(funcExpr_l);
     e.element(objlit_l);
     e.element(G("arylit").first(space,"["));
     e.element(varAccess);

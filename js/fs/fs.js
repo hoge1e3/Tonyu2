@@ -197,9 +197,9 @@ FS=function () {
             	var paths=splitPath(relPath);
             	var resPath=dir.path();
             	resPath=resPath.replace(/\/$/,"");
-            	console.log(resPath,paths);
+            	//console.log(resPath,paths);
             	paths.forEach(function (n) {
-                	console.log(resPath,paths,n);
+                	//console.log(resPath,paths,n);
             		if (n==".." || n=="../") resPath=up(resPath);
             		else {
                     	resPath=resPath.replace(/\/$/,"");

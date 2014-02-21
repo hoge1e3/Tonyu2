@@ -558,7 +558,8 @@ function genJS(klass, env,pass) {
             }
         },
         call: function (node) {
-            buf.printf("(%v)",node.args);
+        	buf.printf("(%j)", [",",node.args]);
+        	//buf.printf("(%v)",node.args);
         },
         objlitArg: function (node) {
             buf.printf("%v",node.obj);
@@ -575,7 +576,8 @@ function genJS(klass, env,pass) {
             }
         },
         scall: function (node) {
-            buf.printf("[%v]",node.args);
+        	buf.printf("[%j]", [",",node.args]);
+        	//buf.printf("[%v]",node.args);
         },
         superExpr: function (node) {
             var name;

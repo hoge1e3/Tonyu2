@@ -239,6 +239,7 @@ Wiki=function (placeHolder, home, options, plugins) {
     };
     W.show=function (nameOrFile) {
     	var f=W.resolveFile(nameOrFile);
+    	W.cd(f.up());
 		var fn=f.truncExt(EXT);
     	if (!f.exists() && !f.isReadOnly()) {
     		var p=history[history.length-1];
