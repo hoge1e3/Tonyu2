@@ -212,7 +212,12 @@ Tonyu=function () {
     function getClass(n) {
         return classes[n];
     }
+    function bindFunc(t,meth) {
+    	return function () {
+    		return meth.apply(t,arguments);
+    	}
+    }
     return Tonyu={thread:thread, threadGroup:threadGroup, klass:klass, bless:bless, extend:extend,
             globals:globals, classes:classes, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
-            timeout:timeout,asyncResult:asyncResult};
+            timeout:timeout,asyncResult:asyncResult,bindFunc:bindFunc};
 }();

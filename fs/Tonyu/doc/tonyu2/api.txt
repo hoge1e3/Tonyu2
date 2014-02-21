@@ -10,3 +10,9 @@ Tonyu2で最初から使えるクラス群です．[[ファイルシステム>fs
 -[[Sprites]]
 -[[ScaledCanvas]]
 -[[NoviceActor]]
+
+*グローバル変数
+
+-[[$Screen>ScaledCanvas]]
+-[[$mouseX, $mouseY]]
+-[[$touches]]

@@ -1,21 +1,45 @@
 extends Actor;
-x=0;
-y=0;
-while(true){
-    x++;
-    if (getkey("down")) y++;
-    update();
+
+native $;
+
+$("canvas").click \(e) {
+    print(test(5)); 
+    \test(x) {
+        return x*2;
+    }
+};
+if (false) {
+    $("canvas").click(foo);
+    
 }
 
+native sh;
+sh.cp("/Tonyu/Projects/SandBox/", "/Tonyu/Projects/SandBag/") {
+    test:true, v:true
+};
 
-native alert;
-// main関数
-x=3;
-rate=5;
-y=mult(x);
-alert(y); // 15
-// main関数終わり
-\mult(a) {
-    var res=a*rate;
-    return res;
+
+ary=[2,5,10];
+ary2=[20,15,3];
+p=foo (ary,ary2) {x:5, y:2} \(e1,e2,opt){ 
+    print(e1,e2,opt); 
+}.res;
+print(p);
+
+\foo(a1,a2,opt,f) {
+    opt.x++;
+    opt.y++;
+    for (var i=0; i<a1.length; i++) {
+        f(a1[i],a2[i],opt);
+    }
+    return {
+        res:a1.length
+    };
+    \fuga(){
+        print("");
+        \hoge() {
+            
+        }
+    }
 }
+

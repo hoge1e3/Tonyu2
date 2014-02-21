@@ -1,6 +1,7 @@
 Tonyu.Compiler=function () {
 // TonyuソースファイルをJavascriptに変換する
 var TH="_thread",THIZ="_this", ARGS="_arguments",FIBPRE="fiber$", FRMPC="__pc", LASTPOS="$LASTPOS",CNTV="__cnt",CNTC=100;
+var BINDF="Tonyu.bindFunc";
 var CLASS_HEAD="Tonyu.classes.", GLOBAL_HEAD="Tonyu.globals.";
 var GET_THIS="this.isTonyuObject?this:'not_a_tonyu_object'";
 var ITER="Tonyu.iterator";
@@ -174,7 +175,7 @@ function genJS(klass, env,pass) {
     function genSym(prefix) {
         return prefix+(Math.random()+"").replace(/\./g,"");
     }
-    function varAccess(n) {
+    function varAccess(n, postfixIsCall) {
         var t=ctx.scope[n];
         if (t!=ST.NATIVE && n.match(/^\$/)) t=ST.GLOBAL; //ST.NATIVE;
         if (!t) {
@@ -183,8 +184,14 @@ function genJS(klass, env,pass) {
         }
         if (t==ST.THVAR) {
             buf.printf("%s",TH);
-        } else if (t==ST.FIELD || t==ST.METHOD) {
+        } else if (t==ST.FIELD) {
             buf.printf("%s.%s",THIZ, n);
+        } else if (t==ST.METHOD) {
+        	if (postfixIsCall) {
+                buf.printf("%s.%s",THIZ, n);
+        	} else {
+                buf.printf("%s(%s,%s.%s)",BINDF, THIZ, THIZ, n);
+        	}
         } else if (t==ST.CLASS) {
             buf.printf("%s",getClassName(n));
         } else if (t==ST.GLOBAL) {
@@ -269,7 +276,7 @@ function genJS(klass, env,pass) {
                 buf.printf("%v: %v", node.key, node.value);
             } else {
                 buf.printf("%v: %f", node.key, function () {
-                    varAccess( node.key.text) ;
+                    varAccess( node.key.text,false) ;
                 });
             }
         },
@@ -287,7 +294,7 @@ function genJS(klass, env,pass) {
         },
         varAccess: function (node) {
             var n=node.name.text;
-            varAccess(n);
+            varAccess(n,false);
         },
         exprstmt: function (node) {//exprStmt
             var t;
@@ -345,11 +352,12 @@ function genJS(klass, env,pass) {
             buf.printf("%v %v", node.op, node.right);
         },
         postfix: function (node) {
-            /*if (node.op.type=="objlit") {
-                buf.printf("%v(%v)", node.left, node.op);
-            } else {*/
+            if (OM.match(node, {left:{type:"varAccess"}, op:{type:"call"} })) {
+            	varAccess(node.left.name.text,true);
+                buf.printf("%v", node.op);
+            } else {
                 buf.printf("%v%v", node.left, node.op);
-            //}
+            }
         },
         "break": function (node) {
             if (!ctx.noWait) {
