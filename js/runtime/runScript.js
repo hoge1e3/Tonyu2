@@ -1,5 +1,5 @@
-define(["fs/ROMk","FS","Tonyu.Project","Shell","ImageList","KeyEventChecker","ScriptTagFS"],
-        function (romk,FS,Tonyu_Project, sh,  ImageList, KeyEventChecker, ScriptTagFS) {
+define(["fs/ROMk","FS","Tonyu.Project","Shell","ImageList","KeyEventChecker","ScriptTagFS","TextRect","fukidashi"],
+        function (romk,FS,Tonyu_Project, sh,  ImageList, KeyEventChecker, ScriptTagFS,TextRect,fukidashi) {
     $(function () {
         Tonyu.defaultResource={
                 images:[
