@@ -1,5 +1,5 @@
-define(["Tonyu", "Tonyu.Compiler", "TError", "FS", "Tonyu.TraceTbl","ImageList", "Sprites", "Key"],
-        function (Tonyu, Tonyu_Compiler, TError, FS, Tonyu_TraceTbl, ImageList, Sprites, Key) {
+define(["Tonyu", "Tonyu.Compiler", "TError", "FS", "Tonyu.TraceTbl","ImageList",  "Key"],
+        function (Tonyu, Tonyu_Compiler, TError, FS, Tonyu_TraceTbl, ImageList, Key) {
 return Tonyu.Project=function (dir, kernelDir) {
     var TPR={};
     var traceTbl=Tonyu.TraceTbl();
@@ -42,9 +42,6 @@ return Tonyu.Project=function (dir, kernelDir) {
     TPR.stop=function () {
         var cur=TPR.runningThread; //Tonyu.getGlobal("$currentThreadGroup");
         if (cur) cur.kill();
-        /*Sprites.clear();
-        var cv=$("canvas")[0];
-        Sprites.draw(cv);*/
     };
     TPR.rawRun=function (mainClassName) {
         TPR.compile();
@@ -76,12 +73,12 @@ return Tonyu.Project=function (dir, kernelDir) {
             }
         }
         for (var n in env.classes) {
-            console.log("initClassDecl: "+n);
+            //console.log("initClassDecl: "+n);
             Tonyu.Compiler.initClassDecls(env.classes[n], env);
         }
         var ord=orderByInheritance(env.classes);
         ord.forEach(function (c) {
-            console.log("genJS :"+c.name);
+            //console.log("genJS :"+c.name);
             Tonyu.Compiler.genJS(c, env);
             try {
                 eval(c.src.js);
@@ -105,10 +102,10 @@ return Tonyu.Project=function (dir, kernelDir) {
         ImageList( r.images, function (r) {
             var sp=Tonyu.getGlobal("$Sprites");
             if (sp) {
-                console.log("$Sprites set!");
+                //console.log("$Sprites set!");
                 sp.setImageList(r);
             }
-            Sprites.setImageList(r);
+            //Sprites.setImageList(r);
             for (var i in r.names) {
                 Tonyu.setGlobal(i, r.names[i]);
             }
@@ -148,11 +145,10 @@ return Tonyu.Project=function (dir, kernelDir) {
         var cv=$("canvas")[0];
         var mainClass=Tonyu.getClass(mainClassName);// window[mainClassName];
         if (!mainClass) throw TError( mainClassName+" というクラスはありません", "不明" ,0);
-        Sprites.clear();
-        Sprites.drawGrid=Tonyu.noviceMode;
+        //Sprites.clear();
+        //Sprites.drawGrid=Tonyu.noviceMode;
         Tonyu.runMode=true;
         var main=new mainClass();
-        //console.log("tp",Sprites);
         thg.addObj(main);
         //TPR.currentThreadGroup=
         Tonyu.setGlobal("$currentThreadGroup",thg);
@@ -165,8 +161,8 @@ return Tonyu.Project=function (dir, kernelDir) {
             Key.update();
             $screenWidth=cv.width;
             $screenHeight=cv.height;
-            Sprites.draw(cv);
-            Sprites.checkHit();
+            //Sprites.draw(cv);
+            //Sprites.checkHit();
         });
     };
     TPR.isKernel=function (className) {

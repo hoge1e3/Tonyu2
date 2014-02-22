@@ -70,7 +70,7 @@ TextUtil = function () {
                     e.returnValue = false;
                     e.cancelBubble = true;
                     setSelText(elem, "\n" + indDepth);
-                    console.log(spos+","+(spos+ 1+ indDepth.length) );
+                    //console.log(spos+","+(spos+ 1+ indDepth.length) );
                     setRange(elem, spos+ 1+ indDepth.length);
                     nextInd = false;
                 }

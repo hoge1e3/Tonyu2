@@ -53,7 +53,7 @@ Wiki=function (placeHolder, home, options, plugins) {
                     fi={
                         refs:[]
                     };
-                    console.log("reg "+type+" "+name);
+                    //console.log("reg "+type+" "+name);
                     ctx[type][name]=fi;
                 }
                 if (register) {
@@ -170,9 +170,9 @@ Wiki=function (placeHolder, home, options, plugins) {
                     });
                 } else if (name.match(/^@plistref (.*)/)) {
                     var label=RegExp.$1;
-                    console.log("fi.l ="+label);
+                    //console.log("fi.l ="+label);
                     var fi=plistInfo(label);
-                    console.log("fi = "+fi.name);
+                    //console.log("fi = "+fi.name);
                     a=$("<strong>").text(fi.name);
                     fi.refs.push(a);
                 } else if (name.match(/^@editadd/)) {

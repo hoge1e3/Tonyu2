@@ -2,7 +2,7 @@ define(["UI"], function (UI) {
     return function (TPR) {
         var opt=TPR.getOptions();
         //opt.id=Math.random();
-        console.log("Project got",opt);
+        //console.log("Project got",opt);
         /*   Tonyu.defaultOptions={
                 compiler: { defaultSuperClass: "Actor"},
                 bootClass: "Boot",
@@ -36,9 +36,9 @@ define(["UI"], function (UI) {
             buttons: {
                 OK: function () {
                     TPR.odiag.dialog("close");
-                    console.log("Project opt Saved ",JSON.stringify(opt));
+                    //console.log("Project opt Saved ",JSON.stringify(opt));
                     TPR.setOptions();
-                    console.log("new opt ",JSON.stringify(TPR.getOptions()));
+                    //console.log("new opt ",JSON.stringify(TPR.getOptions()));
                 }
             }
         });

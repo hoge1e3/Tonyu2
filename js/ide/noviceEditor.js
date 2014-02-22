@@ -1,7 +1,7 @@
 requirejs(["fs/ROMk","fs/ROMd","fs/ROMs","ace", "Util", "Tonyu", "FS", "FileList", "FileMenu",
-                         "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project","ImageList","Sprites"],
+                         "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project","ImageList","TextRect","fukidashi"],
 function (romk, romd , roms, ace, Util, Tonyu, FS, FileList, FileMenu,
-        showErrorPos, fixIndent, Wiki, Tonyu_Project,ImageList,Sprites) {
+        showErrorPos, fixIndent, Wiki, Tonyu_Project,ImageList,TextRect,fukidashi) {
 $(function () {
     Tonyu.noviceMode=true;
     Tonyu.defaultResource={
@@ -13,7 +13,7 @@ $(function () {
             kernelEditable: false
         };
 
-    ImageList(Tonyu.defaultResource.images, Sprites.setImageList);
+    //ImageList(Tonyu.defaultResource.images, Sprites.setImageList);
     function onResize() {
         var h=$(window).height()-$("#navBar").height();
         h-=20;

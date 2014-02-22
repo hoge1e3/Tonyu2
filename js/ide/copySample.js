@@ -13,7 +13,7 @@ define(["Shell","FS"],function (sh,fs) {
         if (!n) return all();
         var src=samples.rel(n);
         var dst=projects.rel(n);
-        console.log(n,src,dst,dst.exists());
+        //console.log(n,src,dst,dst.exists());
         if (!dst.exists()) {
             sh.cp(src,dst);//,{v:1});
         }

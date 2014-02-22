@@ -4,7 +4,7 @@ define(["PatternParser","Util","WebSite"], function (PP,Util,WebSite) {
         var resa=[];
         var cnt=resImgs.length;
         resImgs.forEach(function (resImg,i) {
-            console.log("loaded", resImg,i);
+            //console.log("loaded", resImg,i);
             var url=resImg.url;
             if (WebSite.urlAliases[url]) url=WebSite.urlAliases[url];
             if (!Util.startsWith(url,"data")) url+="?" + new Date().getTime();

@@ -37,7 +37,7 @@ define(["Tonyu"], function (Tonyu) {return Tonyu.klass({
 	},
 	parse: function () {
   		try {
-			console.log("parse()");
+			//console.log("parse()");
   			var res=[];// List of charpattern
 			for (var y=0; y<this.height ;y++) {
 				for (var x=0; x<this.width ;x++) {
@@ -47,7 +47,7 @@ define(["Tonyu"], function (Tonyu) {return Tonyu.klass({
 					}
 				}
 			}
-			console.log("parsed:"+res.lenth);
+			//console.log("parsed:"+res.lenth);
 			return res;
   		} catch (p) {
   		    if (p.isParseError) {
@@ -81,7 +81,7 @@ define(["Tonyu"], function (Tonyu) {return Tonyu.klass({
 		}
 		dy--;
 		var sx=x+1,sy=y+1,w=dx-sx,h=dy-sy;
-        console.log(sx,sy,w,h,dx,dy);
+        //console.log(sx,sy,w,h,dx,dy);
 		if (w*h==0) throw PatterParseError(dx, dy,"w*h==0");
 
         var newim=this.newImage(w,h);

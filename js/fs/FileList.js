@@ -23,10 +23,8 @@ function FileList(elem, options) {
         if (f.isDir()) {
             ls(f);
         } else {
-        	//console.log("unsel", _curFile+"");
         	item(_curFile).removeClass("selected");
             _curFile=f;
-        	//console.log("sel", _curFile+"");
             item(_curFile).addClass("selected");
         }
     }

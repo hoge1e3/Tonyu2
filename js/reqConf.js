@@ -70,10 +70,10 @@ var reqConf={
                 "deps": ["Tonyu", "FS", "TError"],
                 "exports": "Tonyu.TraceTbl"
             },
-            "Sprites": {
+            /*"Sprites": {
                 "deps": ["fukidashi", "Tonyu"],
                 "exports": "Sprites"
-            },
+            },*/
             "Key": {
                 "exports": "Key"
             },
