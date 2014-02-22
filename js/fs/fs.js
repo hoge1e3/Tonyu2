@@ -148,7 +148,9 @@ FS=function () {
     FS.mountROM=function (exported) {
         roms[exported.base]=exported.data;
     };
-    FS.exportDir=function (dir) {
+    var DONOTEXPORT="DONOTEXPORT";
+    FS.exportDir=function (dir,options) {
+    	if (!options) options={};
         if (typeof dir=="string") dir=FS.get(dir);
         var res={base: dir.path()};
         var data=res.data={};
@@ -158,6 +160,7 @@ FS=function () {
             var rp=cfd.relPath(dir);
             data[rp]=cfd.text();
             if (cfd.isDir()) {
+            	if (cfd.rel(DONOTEXPORT).exists()) return;
                 cfd.each(e);
             }
         }
@@ -201,7 +204,7 @@ FS=function () {
             		if (n==".." || n=="../") resPath=up(resPath);
             		else {
                     	resPath=resPath.replace(/\/$/,"");
-            			resPath+=SEP+n;
+            			resPath+=SEP+(n=="."||n=="./" ? "": n);
             		}
             	});
                 return FS.get(resPath);
@@ -245,6 +248,9 @@ FS=function () {
                     lcs(path, arguments[0]);
                     file.touch();
                 }
+            };
+            file.lines=function () {
+            	return file.text().split("\n");
             };
             file.obj=function () {
                 if (arguments.length==0) {

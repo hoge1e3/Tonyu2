@@ -14,17 +14,19 @@ define(["FS","Util"],function (FS,Util) {
         if (typeof v!="string") return v;
         if (Util.startsWith(v,"/")) return FS.get(v);
         var c=Shell.cwd;
-        while (Util.startsWith(v,"../")) {
+        /*while (Util.startsWith(v,"../")) {
             c=c.up();
             v=v.substring(3);
-        }
+        }*/
         return c.rel(v);
     }
     Shell.pwd=function () {
         return Shell.cwd+"";
     };
-    Shell.ls=function (){
-        return Shell.cwd.ls();
+    Shell.ls=function (dir){
+    	if (!dir) dir=Shell.cwd;
+    	else dir=resolve(dir, true);
+        return dir.ls();
     };
     Shell.cp=function (from ,to ,options) {
         if (!options) options={};
@@ -79,6 +81,35 @@ define(["FS","Util"],function (FS,Util) {
         file=resolve(file, true);
         console.log(file.text());
         return "";
+    };
+    Shell.grep=function (pattern, file, options) {
+    	file=resolve(file, true);
+    	if (!options) options={};
+    	if (file.isDir()) {
+    		file.each(function (e) {
+    			Shell.grep(pattern, e, options);
+    		});
+    	} else {
+			if (typeof pattern=="string") {
+	    		file.lines().forEach(function (line, i) {
+	    			if (line.indexOf(pattern)>=0) {
+	    				report(file, i+1, line);
+	    			}
+	    		});
+			}
+    	}
+    	function report(file, lineNo, line) {
+			if (options.res) {
+				options.res.push({file:file, lineNo:lineNo,line:line});
+			} else {
+				console.log(file+"("+lineNo+"): "+line);
+			}
+    	}
+    };
+    Shell.touch=function (f) {
+    	f=resolve(f);
+    	f.text(f.exists() ? f.text() : "");
+    	return 1;
     };
     sh=Shell;
     return Shell;
