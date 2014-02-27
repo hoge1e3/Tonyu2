@@ -18,7 +18,7 @@ function remove(s) {
 function clear() {sprites.splice(0,sprites.length);}
 function draw(cv) {
     var ctx=cv.getContext("2d");
-    ctx.fillStyle="rgb(20,80,180)";
+    ctx.fillStyle=$Screen.color;
     ctx.fillRect(0,0,cv.width,cv.height);
     if (isDrawGrid) drawGrid(cv);
     sprites.forEach(\(sprite) {

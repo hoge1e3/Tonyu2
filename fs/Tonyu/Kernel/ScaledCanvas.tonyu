@@ -8,6 +8,7 @@ native $;
     cw=canvas.width();
     ch=canvas.height();
     cctx=canvas[0].getContext("2d");
+    this.color="rgb(20,80,180)";
 }
 \resize(width,height) {
     this.width=width;
@@ -33,4 +34,7 @@ native $;
     if (calch>ch) calch=ch;
     if (calcw>cw) calcw=cw;
     return {x: point.x/calcw*width, y: point.y/calch*height};
+}
+\setBGColor(color){
+    this.color=color;
 }

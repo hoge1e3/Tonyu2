@@ -116,11 +116,10 @@ initThread();
 $screenWidth=cv.width;
 $screenHeight=cv.height;
 $pat_fruits=30;
-$Keys=new Keys;
 while (true) {
     ti=new Date().getTime();
     thg.steps();
-    $Keys.update();
+    Key.update();
     $screenWidth=$Screen.width;
     $screenHeight=$Screen.height;
     $Sprites.draw($Screen.buf[0]);

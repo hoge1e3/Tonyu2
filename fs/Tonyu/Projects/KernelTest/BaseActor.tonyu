@@ -31,7 +31,7 @@ nowait \print() {
     }
 }
 nowait \getkey(k) {
-    return Key.getkey(k);
+    return $Keys.getkey(k);
 }
 nowait \hitTo(t) {
     return crashTo(t);
@@ -80,12 +80,6 @@ nowait \getCrashRect() {
     typeof width=="number" &&
     typeof height=="number" && 
     {x,y,width,height};
-    /*    return {
-        x:typeof x=="number"?x:0,
-        y:typeof y=="number"?y:0,
-        width:typeof width=="number"?width:0,
-        height:typeof height=="number"?height:0
-    };*/
 }
 nowait \watchHit(typeA,typeB,onHit) {
     $Sprites.watchHit(typeA , typeB, \(a,b) {

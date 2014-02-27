@@ -1,0 +1,33 @@
+extends NoviceActor;
+native console;
+native alert;
+
+\move(p) {
+    x+=p.vx;
+    y+=p.vy;
+}
+
+x=100;
+y=100;
+vy=0;vx=0;
+t=new NObjTest2{x:200, y: 50};
+watchHit(NObjTest, NObjTest2, onH);
+while (true) {
+    if (getkey("left")) vx=-2;
+    if (getkey("Right")) vx=2;
+    if (getkey("up")==1) vy=-2;
+    y+=vy;
+    vy+=0.1;
+    move{vx,vy};
+    // console.log(x+","+y);
+    go(x,y);
+    sleep();
+    /*if (crashTo(t)) {
+    t.hide();
+    }*/
+}
+\onH(a,b) {
+    b.hide();
+    a.say("あたっ！");
+    a.vy=5;
+}

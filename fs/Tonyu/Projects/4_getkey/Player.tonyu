@@ -8,5 +8,6 @@ while (true) { // [!=Tonyu1] 無限ループはwhile(1)よりwhile(true)が推�
     if (getkey("down")) y+=8;
     if (getkey("left")) x-=8;
     if (getkey("right")) x+=8;
+    if (getkey("mouseleft")) p=10; else p=0;
     update();
 }

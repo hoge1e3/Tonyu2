@@ -1,8 +1,8 @@
 
 y=100;
-$Keys=new Keys;
+//$Keys=new Keys;
 while(true){
-    x=$Keys.getkey("mouseLeft");
+    x=/*$Keys.*/getkey("mouseLeft");
     update();
-    $Keys.update();
+    //$Keys.update();
 }
