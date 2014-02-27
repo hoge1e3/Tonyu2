@@ -26,9 +26,11 @@
 <script id="fileItem" type="text/x-jquery-tmpl">
 	<li class=file><a href="${href}">${name}</a></li>
 </script>
+<script src="js/lib/SplashScreen.js"></script>
 <script src="js/reqConf.js"></script>
 <script src="js/lib/require.js"></script>
 <script>
+$(function () { SplashScreen.show(); });
 requirejs.config(reqConf);
 requirejs(["ide/selProject"],function (){});
 </script>

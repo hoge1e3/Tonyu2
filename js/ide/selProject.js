@@ -29,5 +29,6 @@ $(function () {
     ls();
     var w=Wiki($("#wikiViewArea"), FS.get("/Tonyu/doc/"));
     w.show("index");
+    SplashScreen.hide();
 });
 });
