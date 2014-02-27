@@ -165,9 +165,13 @@ FS=function () {
             }
         }
     };
-    FS.get=function (path) {
+    FS.get=function (path, securityDomain) {
+    	if (!securityDomain) securityDomain={};
         if (path==null) throw "FS.get: Null path";
         if (path.isDir) return path;
+        if (securityDomain.topDir && !startsWith(path,securityDomain.topDir)) {
+        	throw path+" is out of securtyDomain";
+        }
         if (!isPath(path)) throw path+": Path must starts with '/'";
         var parent=up(path);
         var name=getName(path);
@@ -207,7 +211,7 @@ FS=function () {
             			resPath+=SEP+(n=="."||n=="./" ? "": n);
             		}
             	});
-                return FS.get(resPath);
+                return FS.get(resPath, securityDomain);
             };
             dir.rm=function (ord) {
                 if (!dir.exists()) throw path+": No such dir.";
@@ -280,7 +284,7 @@ FS=function () {
         };
         res.up=function () {
             if (parent==null) return null; //  path=/
-            return FS.get(parent);
+            return FS.get(parent, securityDomain);
         };
         res.path=function () {return path;};
         res.name=function () {return name;};

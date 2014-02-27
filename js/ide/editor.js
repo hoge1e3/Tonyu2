@@ -1,12 +1,12 @@
 requirejs(["fs/ROMk","fs/ROMd","fs/ROMs","ace", "Util", "Tonyu", "FS", "FileList", "FileMenu",
            "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project","ImageList",
            "copySample","Shell","ImageResEditor","ProjectOptionsEditor","copyToKernel","KeyEventChecker",
-           "WikiDialog","TextRect","fukidashi"
+           "WikiDialog","TextRect","fukidashi", "KernelDiffDialog"
           ],
 function (romk, romd, roms, ace, Util, Tonyu, FS, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,ImageList,
           copySample,sh, ImgResEdit,ProjectOptionsEditor, ctk, KeyEventChecker,
-          WikiDialog,TextRect,fukidashi
+          WikiDialog,TextRect,fukidashi, KDD
           ) {
 
 $(function () {
@@ -67,6 +67,7 @@ $(function () {
     //$(document).bind("keydown","F2",stop);
     KeyEventChecker.down(document,"F2",stop);
 
+
     /*$(document).bind("keydown","ctrl+shift+e",function (e) {
     	alert(e);
     	e.preventDefault();
@@ -109,7 +110,7 @@ $(function () {
         } else {
             f.text("");
         }
-    }
+    };
     FM.on.displayName=function (f) {
         var r=dispName(f);
         if (r) {
@@ -125,6 +126,11 @@ $(function () {
     var runMenuOrd=desktopEnv.runMenuOrd;
     fl.ls(curProjectDir);
     refreshRunMenu();
+    KeyEventChecker.down(document,"Alt+Ctrl+D",function () {
+        //var curFile=fl.curFile();
+        //if (!curFile) return;
+        KDD.show(curProjectDir, kernelDir);// DiffDialog.show(curFile,kernelDir.rel(curFile.name()));
+    });
     function ls(){
         fl.ls(curProjectDir);
         refreshRunMenu();

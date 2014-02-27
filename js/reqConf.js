@@ -7,6 +7,15 @@ var reqConf={
             FileMenu: {
                 exports: "FileMenu"
             },
+            difflib: {
+            	exports: "difflib"
+            },
+            diffview: {
+            	exports: "diffview"
+            },
+            timbre: {
+                exports: "T"
+            },
             "disp": {
                 "deps": ["IndentBuffer"],
                 "exports": "disp"
@@ -130,6 +139,11 @@ var reqConf={
             }
         },
         "paths": {
+            difflib: "lib/difflib",
+            diffview: "lib/diffview",
+            timbre: "lib/timbre",
+            KernelDiffDialog: "ide/KernelDiffDialog",
+        	DiffDialog: "ide/DiffDialog",
         	ScriptTagFS:"fs/ScriptTagFS",
         	KeyEventChecker: "lib/KeyEventChecker",
         	NewProjectDialog: "ide/NewProjectDialog",
