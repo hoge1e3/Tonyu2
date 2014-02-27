@@ -350,5 +350,6 @@ $(function () {
         return fl.curFile();
     };
     FileMenu.onMenuStart=save;
+    SplashScreen.hide();
 });
 });
