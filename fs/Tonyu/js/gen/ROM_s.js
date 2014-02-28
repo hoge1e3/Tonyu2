@@ -3,7 +3,7 @@ if (!localStorage.norom) {
 {
   "base": "/Tonyu/SampleROM/",
   "data": {
-    "": "{\"6_Shot/\":{\"lastUpdate\":1388123276922},\"1_Animation/\":{\"lastUpdate\":1389065333049},\"3_NewParam/\":{\"lastUpdate\":1388123276922},\"2_MultipleObj/\":{\"lastUpdate\":1388123335478},\"4_getkey/\":{\"lastUpdate\":1388123276922},\"5_Chase/\":{\"lastUpdate\":1388123276938},\"7_Text/\":{\"lastUpdate\":1388839315004},\"8_Patterns/\":{\"lastUpdate\":1389234681200},\"9_Mouse/\":{\"lastUpdate\":1390990648793},\"10_MultiTouch/\":{\"lastUpdate\":1391665218222},\"11_Resize/\":{\"lastUpdate\":1391840453472}}",
+    "": "{\"6_Shot/\":{\"lastUpdate\":1388123276922},\"1_Animation/\":{\"lastUpdate\":1389065333049},\"3_NewParam/\":{\"lastUpdate\":1388123276922},\"2_MultipleObj/\":{\"lastUpdate\":1388123335478},\"4_getkey/\":{\"lastUpdate\":1388123276922},\"5_Chase/\":{\"lastUpdate\":1388123276938},\"7_Text/\":{\"lastUpdate\":1388839315004},\"8_Patterns/\":{\"lastUpdate\":1389234681200},\"9_Mouse/\":{\"lastUpdate\":1390990648793},\"10_MultiTouch/\":{\"lastUpdate\":1391665218222},\"11_Resize/\":{\"lastUpdate\":1391840453472},\"12_Sound/\":{\"lastUpdate\":1393572753130}}",
     "6_Shot/": "{\"Chaser.tonyu\":1388122397075,\".desktop\":1388122397070,\"Main.tonyu\":1388122397076,\"Player.tonyu\":1388122397074,\"Bullet.tonyu\":1388122397080}",
     "6_Shot/Chaser.tonyu": "// 実行 → Mainを実行\n\n// $player は，Mainで初期化されているグローバル変数です（Mainを参照）\nwhile (true) {\n    if (x<$player.x) x+=2;\n    if (x>$player.x) x-=2;\n    if (y<$player.y) y+=2;\n    if (y>$player.y) y-=2;\n    // crashToは，指定されたオブジェクトと衝突しているかどうかを判定します．\n    if (crashTo($player)) {\n        // die メソッドは，オブジェクトを消滅させます．\n        // そのオブジェクトの処理も停止させます．\n        $player.die();\n    }\n    update();\n}",
     "6_Shot/.desktop": "{\"runMenuOrd\":[\"Main\",\"Player\",\"Chaser\",\"Bullet\"]}",
@@ -56,7 +56,12 @@ if (!localStorage.norom) {
     "11_Resize/.desktop": "{\"runMenuOrd\":[\"Main\",\"Bounce\"]}",
     "11_Resize/Main.tonyu": "for (i=0; i<20 ;i++) {\n    new Bounce();\n}\ntext=\"↑ Portrait   → Landscape\";\nsize=20;\nwhile (true) {\n    x=$screenWidth/2;\n    y=$screenHeight/2;\n    if (getkey(\"right\")==1) {\n        // ゲーム画面のサイズを変更（横長）\n        $Screen.resize(400,300);\n    }\n    if (getkey(\"up\")==1) {\n        // ゲーム画面のサイズを変更（縦長）\n        $Screen.resize(300,400);\n    }\n    update();\n}",
     "11_Resize/Bounce.tonyu": "x=rnd($screenWidth);\ny=rnd($screenHeight);\nvx=spd();\nvy=spd();\nwhile (true) {\n    x+=vx;\n    y+=vy;\n    if (x<0) {\n        x=0;\n        vx=spd();\n    }\n    if (y<0) {\n        y=0;\n        vy=spd();\n    }\n    if (x>$screenWidth) {\n        x=$screenWidth;\n        vx=-spd();\n    }\n    if (y>$screenHeight) {\n        y=$screenHeight;\n        vy=-spd();\n    }\n    update();\n}\n\\spd() {\n    return rnd()*10;\n}",
-    "11_Resize/options.json": "{\"compiler\":{\"defaultSuperClass\":\"Actor\"},\"run\":{\"mainClass\":\"Main\",\"bootClass\":\"Boot\"},\"kernelEditable\":false}"
+    "11_Resize/options.json": "{\"compiler\":{\"defaultSuperClass\":\"Actor\"},\"run\":{\"mainClass\":\"Main\",\"bootClass\":\"Boot\"},\"kernelEditable\":false}",
+    "12_Sound/": "{\".desktop\":{\"lastUpdate\":1393572753125},\"MMLTest.tonyu\":{\"lastUpdate\":1393572753127},\"SETest.tonyu\":{\"lastUpdate\":1393572753128},\"options.json\":{\"lastUpdate\":1393572753130}}",
+    "12_Sound/.desktop": "{\"runMenuOrd\":[\"SETest\",\"MMLTest\"]}",
+    "12_Sound/MMLTest.tonyu": "x=200; y=150;\nsize=40;\nwhile (true) {\n    text=\"oo\";\n    play(\"l8cde4\",\">l8c4ge\");\n    text=\"^^\";\n    play(\"l8edc4\",\">l8e4dc\");\n}",
+    "12_Sound/SETest.tonyu": "new MMLTest;\n\ntext=\"Press Space\";\nx=200; y=200;\nwhile (true) {\n    if (getkey(32)==1) {\n        playSE(\"l16<ceg\");\n    }\n    update();\n}",
+    "12_Sound/options.json": "{\"compiler\":{\"defaultSuperClass\":\"Actor\"},\"run\":{\"mainClass\":\"SETest\",\"bootClass\":\"Boot\"},\"kernelEditable\":false}"
   }
 }
     );
