@@ -1,0 +1,34 @@
+extends TObject;
+native T;
+
+mmlBuf=[];
+\play(mmls) {
+    mmlBuf.push(mmls);
+    if (!playing) {
+        playNext();
+    }
+}
+\playNext() {
+    var mml=mmlBuf.shift();
+    if (!mml) {
+        playing=false;
+        return;
+    }
+    m=T("mml", {mml}, $WaveTable.get(0).play());
+    m.on("ended", playNext);
+    m.start();
+    if (!id) id=rnd();
+    $MMLS[id]=this;
+    playing=true;
+}
+\bufferCount() {
+    return mmlBuf.length;
+}
+\stop() {
+    if (m) {
+        m.pause();
+        m.stop();
+    }
+}
+//mml0 = "l8< cde4 cde4 gedcded4 cde4 cde4 gedcdec";
+//mml1 = "l8 c4gec4ge cgegfgde c4ge c4ge cgegfgeg";

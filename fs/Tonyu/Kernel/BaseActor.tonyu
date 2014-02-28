@@ -166,3 +166,23 @@ nowait \draw(ctx) {
 nowait \asyncResult() {
     return Tonyu.asyncResult();
 }
+\play() {
+    if (!_mml) _mml=new MML;
+    while (_mml.bufferCount()>1) {
+        update();
+    }
+    var mmls=[];
+    for (var i=0; i<arguments.length; i++) {
+        mmls.push(arguments[i]);
+    }
+    _mml.play(mmls);
+}
+nowait \playSE() {
+    var mml=new MML;
+    var mmls=[];
+    for (var i=0; i<arguments.length; i++) {
+        mmls.push(arguments[i]);
+    }
+    mml.play(mmls);
+    return mml;
+}

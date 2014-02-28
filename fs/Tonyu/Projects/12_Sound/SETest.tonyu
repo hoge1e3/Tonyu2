@@ -1,0 +1,10 @@
+new MMLTest;
+
+text="Press Space";
+x=200; y=200;
+while (true) {
+    if (getkey(32)==1) {
+        playSE("l16<ceg");
+    }
+    update();
+}

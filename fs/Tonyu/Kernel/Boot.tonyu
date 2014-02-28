@@ -109,7 +109,12 @@ native Tonyu;
     $currentThreadGroup=thg;
     new mainClass();
 }
-
+\stop() {
+    //print("STOP!!");
+    for (var k,v in $MMLS) {
+        v.stop();
+    }
+}
 initSprites();
 initCanvasEvents();
 initThread();
@@ -117,6 +122,8 @@ $screenWidth=cv.width;
 $screenHeight=cv.height;
 $pat_fruits=30;
 $Keys=new Keys;
+$MMLS={};
+$WaveTable=new WaveTable;
 while (true) {
     ti=new Date().getTime();
     thg.steps();

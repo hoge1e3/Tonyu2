@@ -5,6 +5,7 @@ function dumpScript() {
     buf+="// Created at "+new Date()+"\n";
     var path2Name=genPath2Name();
     g();
+    var nocats={timbre:true};
     function g() {
         var sc=scrs[i].src;
                     // http: / /lcl:300/
@@ -18,7 +19,7 @@ function dumpScript() {
         }
         sc=sc.replace(/\.js$/,"");
         $.get(scrs[i].src,function (s) {
-            if (sc.length>0 && !$(scrs[i]).data("nocat")) {
+            if (sc.length>0 && !$(scrs[i]).data("nocat") && !nocats[path2Name[sc]]  ) {
                 if (!path2Name[sc]) throw "no path2name "+sc;
                 buf+="requirejs.setName('"+path2Name[sc]+"');\n";
                 buf+=s+"\n";

@@ -1,7 +1,7 @@
 requirejs(["fs/ROMk","fs/ROMd","fs/ROMs","ace", "Util", "Tonyu", "FS", "FileList", "FileMenu",
-                         "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project","ImageList","TextRect","fukidashi"],
+                         "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project","runtime"],
 function (romk, romd , roms, ace, Util, Tonyu, FS, FileList, FileMenu,
-        showErrorPos, fixIndent, Wiki, Tonyu_Project,ImageList,TextRect,fukidashi) {
+        showErrorPos, fixIndent, Wiki, Tonyu_Project,runtime) {
 $(function () {
     Tonyu.noviceMode=true;
     Tonyu.defaultResource={

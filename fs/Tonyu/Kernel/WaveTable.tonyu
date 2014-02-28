@@ -1,0 +1,17 @@
+extends TObject;
+native T;
+
+tbl={};
+\set(num, synth) {
+    tbl[num]=synth;
+}
+\get(num) {
+    return tbl[num];
+}
+
+if (typeof T!=="undefined") {
+    table=[1, [0,300]];
+    env= T("env") {table};
+    synth=T("OscGen") {wave:"pulse", env, mul:0.25};
+    set(0,synth);    
+}

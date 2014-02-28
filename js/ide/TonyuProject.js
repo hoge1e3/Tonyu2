@@ -42,6 +42,8 @@ return Tonyu.Project=function (dir, kernelDir) {
     TPR.stop=function () {
         var cur=TPR.runningThread; //Tonyu.getGlobal("$currentThreadGroup");
         if (cur) cur.kill();
+        var main=TPR.runningObj;
+        if (main && main.stop) main.stop();
     };
     TPR.rawRun=function (mainClassName) {
         TPR.compile();
@@ -136,6 +138,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         TPR.runningThread=thg.addObj(main);
         $LASTPOS=0;
         thg.run(0);
+        TPR.runningObj=main;
     };
     TPR.boot=function (mainClassName) {
         TPR.loadResource(function () {ld(mainClassName);});

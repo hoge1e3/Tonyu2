@@ -139,6 +139,7 @@ var reqConf={
             }
         },
         "paths": {
+            runtime: "runtime/runtime",
             difflib: "lib/difflib",
             diffview: "lib/diffview",
             timbre: "lib/timbre",

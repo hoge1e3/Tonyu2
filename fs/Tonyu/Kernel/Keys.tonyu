@@ -1,7 +1,8 @@
+extends TObject;
 native String;
 native $;
 native document;
-\new () {main();}
+//\new () {this.main();}
 stats={};
 codes={
     left: 37 , up:38 , right: 39, down:40, space:32, enter:13,

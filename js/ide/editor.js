@@ -1,12 +1,12 @@
 requirejs(["fs/ROMk","fs/ROMd","fs/ROMs","ace", "Util", "Tonyu", "FS", "FileList", "FileMenu",
-           "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project","ImageList",
+           "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project",
            "copySample","Shell","ImageResEditor","ProjectOptionsEditor","copyToKernel","KeyEventChecker",
-           "WikiDialog","TextRect","fukidashi", "KernelDiffDialog"
+           "WikiDialog","runtime", "KernelDiffDialog"
           ],
 function (romk, romd, roms, ace, Util, Tonyu, FS, FileList, FileMenu,
-          showErrorPos, fixIndent, Wiki, Tonyu_Project,ImageList,
+          showErrorPos, fixIndent, Wiki, Tonyu_Project,
           copySample,sh, ImgResEdit,ProjectOptionsEditor, ctk, KeyEventChecker,
-          WikiDialog,TextRect,fukidashi, KDD
+          WikiDialog, rt , KDD
           ) {
 
 $(function () {
@@ -191,6 +191,10 @@ $(function () {
                     return {ok:false, reason:name+"はシステムで利用されている名前なので使用できません"};
                 }
             }
+            if (name.match(/^[a-z]/)) {
+                name= name.substring(0,1).toUpperCase()+name.substring(1);
+                return {ok:true, file: curProjectDir.rel(name+EXT), note: "先頭を大文字("+name+") にして作成します．"};
+            }
             return {ok:true, file: curProjectDir.rel(name+EXT)};
         } else {
             return {ok:false, reason:"名前は，半角英数字とアンダースコア(_)のみが使えます．先頭は英大文字にしてください．"};
@@ -216,13 +220,6 @@ $(function () {
             //$("#errorPos").slideUp(1000, next);
             break;
         }
-    }
-    function mimimizeTextArea(t) {
-        /*if (t) {
-            $("#prog").attr("rows",5);
-        } else {
-            $("#prog").attr("rows",rowsOnEdit);
-        }*/
     }
     function stop() {
         curPrj.stop();
@@ -262,7 +259,8 @@ $(function () {
             te.mesg=e;
             showErrorPos($("#errorPos"),te);
             displayMode("runtime_error");
-            if(!$.browser.msie) throw e;
+            var userAgent = window.navigator.userAgent.toLowerCase();
+            if(userAgent.indexOf('msie')<0) throw e;
         } else throw e;
     };
     $("#prog").click(function () {

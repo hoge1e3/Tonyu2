@@ -215,9 +215,20 @@ Tonyu=function () {
     function bindFunc(t,meth) {
     	return function () {
     		return meth.apply(t,arguments);
-    	}
+    	};
+    }
+    function A(args) {
+        var res=[];
+        for (var i=0 ; i<args.length; i++) {
+            res[i]=args[i];
+        }
+        return res;
+    }
+    function not_a_tonyu_object(o) {
+        console.log(o);
+        throw o+" is not a tonyu object";
     }
     return Tonyu={thread:thread, threadGroup:threadGroup, klass:klass, bless:bless, extend:extend,
             globals:globals, classes:classes, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
-            timeout:timeout,asyncResult:asyncResult,bindFunc:bindFunc};
+            timeout:timeout,asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object, A:A};
 }();
