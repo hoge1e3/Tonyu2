@@ -6,9 +6,9 @@ size=40;
 //m=new MML;
 while (true) {
     text="oo";
-    play("l8cde4",">l8c4ge");
+    play("l8cder","v5>l8c4ge");
     text="^^";
-    play("l8edc4",">l8e4dc");
+    play("l8edc4","v5>l8e4dc");
     /*
     m.play(["l8cde4",">l8c4ge"]);
     m.play(["l8edc4",">l8e4dc"]);

@@ -19,40 +19,6 @@ define(["fs/ROMk","FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS","
             h=$(window).height();
         	cv.attr({width: w, height: h});
         }
-        //var scrs=$("script");
-        /*scrs.each(function (){
-            var s=this;
-            //console.log(s.type, s.dataset.filename);
-            if (s.type=="text/tonyu") {
-                var fn=$(s).data("filename");
-                if (fn) {
-                    var f=curProjectDir.rel(fn);
-                    //console.log(f);
-                    var w=$(s).data("wrap");
-                    if (w) {
-                        w=parseInt(w);
-                        f.text(unwrap(s.innerHTML, w));
-                    } else {
-                        f.text(s.innerHTML);
-                    }
-                    if ($(s).data("main")) {
-                        name=f.truncExt(".tonyu");
-                    }
-                }
-            }
-        });
-        function unwrap(str, cols) {
-            var lines=str.split("\n");
-            var buf="";
-            lines.forEach(function (line) {
-                if (line.length>cols) {
-                    buf+=line.substring(0,cols);
-                } else {
-                    buf+=line+"\n";
-                }
-            });
-            return buf;
-        }*/
         var curProjectDir=FS.get("/Tonyu/runscript/");
         if (curProjectDir.exists()) sh.rm(curProjectDir,{r:1});
         var fo=ScriptTagFS.toObj();

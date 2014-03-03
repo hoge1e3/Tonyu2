@@ -4,30 +4,37 @@ native T;
 mmlBuf=[];
 \play(mmls) {
     mmlBuf.push(mmls);
-    if (!playing) {
+    if (!isPlaying()) {
         playNext();
     }
 }
 \playNext() {
     var mml=mmlBuf.shift();
     if (!mml) {
-        playing=false;
+        m=null;
         return;
     }
     m=T("mml", {mml}, $WaveTable.get(0).play());
     m.on("ended", playNext);
     m.start();
+    $MMLS[id()]=this;
+}
+\id() {
     if (!id) id=rnd();
-    $MMLS[id]=this;
-    playing=true;
+    return id;
 }
 \bufferCount() {
     return mmlBuf.length;
+}
+\isPlaying() {
+    return m;
 }
 \stop() {
     if (m) {
         m.pause();
         m.stop();
+        m=null;
+        delete $MMLS[id()];
     }
 }
 //mml0 = "l8< cde4 cde4 gedcded4 cde4 cde4 gedcdec";

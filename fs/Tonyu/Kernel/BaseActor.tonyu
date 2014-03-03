@@ -11,12 +11,16 @@ native TextRect;
         var thg=currentThreadGroup();
         if (thg) _th=thg.addObj(this);
     }
-    if (typeof x=="object") Tonyu.extend(this, x);
+    if (typeof x=="object") {
+        Tonyu.extend(this, x);
+    }
     else if (typeof x=="number") {
         this.x=x;
         this.y=y;
         this.p=p;
     }
+    this.scaleX=1;
+    this.scaleY=1;
 }
 nowait \extend(obj) {
     return Tonyu.extend(this,obj);
@@ -141,9 +145,11 @@ nowait \draw(ctx) {
     if (x==null || y==null) return;
     detectShape();
     if (pImg) {
+        ctx.scale(this.scaleX,this.scaleY);
         ctx.drawImage(
         pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,
-        x-width/2, y-height/2, width, height);
+        x/this.scaleX-width/2, y/this.scaleY-height/2, width, height);
+        ctx.scale(1/this.scaleX,1/this.scaleY);
     } else if (text) {
         if (!size) size=15;
         if (!align) align="center";

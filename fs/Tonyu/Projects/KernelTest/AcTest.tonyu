@@ -3,6 +3,7 @@ extends Actor;
 if (!vx) vx=0;
 if (!vy) vy=0;
 while (true) {
+    scaleY=1+rnd();
     x+=vx;
     y+=vy;
     c=crashTo(AcTest);
