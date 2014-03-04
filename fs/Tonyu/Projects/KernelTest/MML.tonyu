@@ -14,7 +14,8 @@ mmlBuf=[];
         m=null;
         return;
     }
-    m=T("mml", {mml}, $WaveTable.get(0).play());
+    mwav=$WaveTable.get(0,0).play();
+    m=T("mml", {mml}, mwav);
     m.on("ended", playNext);
     m.start();
     $MMLS[id()]=this;
@@ -31,6 +32,8 @@ mmlBuf=[];
 }
 \stop() {
     if (m) {
+        mwav.pause();
+        mwav.stop();
         m.pause();
         m.stop();
         m=null;

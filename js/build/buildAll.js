@@ -2,7 +2,10 @@
 define(["genROM","dumpScript","Util","FS"], function (genROM,dumpScript,Util,FS) {
     var build=Util.getQueryString("build",0);
     if (!build) return;
+    build=parseInt(build);
+    console.log("Build=", build);
     setTimeout(function () {
+        console.log("Build start=", build);
      // start with index.html?build=1
         switch (build) {
         case 1:
@@ -32,21 +35,21 @@ define(["genROM","dumpScript","Util","FS"], function (genROM,dumpScript,Util,FS)
             dumpScript({onend:function (buf) {
                 var rsc=FS.get("/Tonyu/js/gen/runScript_concat.js");
                 rsc.text(buf);
+                upload("/Tonyu/js/gen/", function () {
+                    next("../build/index.html");
+                });
             }});
-            upload("/Tonyu/js/gen/", function () {
-                next("../build/index.html");
-            });
-
             break;
 
         }
     },2000);
     function upload(dir, onend) {
+    	console.log("Uploading "+dir);
         var json= JSON.stringify( FS.exportDir(dir) );
         $.ajax({
             type:"POST",
             url:"../../LS2File",
-            data:{json: json, base:dir},
+            data:{json: json},
             success: onend
         });
     }

@@ -7,6 +7,7 @@ define([], function () {
         "    );",
         "}"].join("\n");
         file.text(tmpl);
+        console.log("GenROM  "+ dir + " -> " +file);
     }
     return genROM;
 });

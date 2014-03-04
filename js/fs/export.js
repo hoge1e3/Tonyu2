@@ -8,7 +8,7 @@ $(function () {
         $.ajax({
             type:"POST",
             url:"../../LS2File",
-            data:{json: $("#text").val(), base:$("#base").val()},
+            data:{json: $("#text").val()/*, base:$("#base").val()*/}, // jsonの中にbase入っているよー
             success: function (r) {
                 alert("OK: " + r);
             }
