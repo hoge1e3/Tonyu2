@@ -55,6 +55,8 @@ x,y,pの値をフィールドに書き込みます
 -[[print]]
 -[[asyncResult]]
 -[[waitFor]]
+-[[play]]
+-[[playSE]]
 -[[currentThreadGroup]]
 -[[detectShape]]
 -[[hitTo]]
