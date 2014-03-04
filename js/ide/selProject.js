@@ -1,4 +1,4 @@
-define(["Shell","FS","copySample","NewProjectDialog"],function (sh, FS,copySample,NPD) {
+define(["Shell","FS","copySample","NewProjectDialog","UI"],function (sh, FS,copySample,NPD,UI) {
 $(function () {
     copySample();
     var home=FS.get("/Tonyu/");
@@ -9,7 +9,8 @@ $(function () {
         $("#prjItemList").empty();
         curDir.ls(FS.orderByNumberedName).forEach(function (name) {
             var f=curDir.rel(name);
-            $("#fileItem").tmpl({name: name, href:"project.html?dir="+f.path()}).appendTo("#prjItemList");
+            UI("li", {"class":"file"}, ["a", {href:"project.html?dir="+f.path()}, name]).appendTo("#prjItemList");
+            //$("#fileItem").tmpl({name: name, href:"project.html?dir="+f.path()}).appendTo("#prjItemList");
         });
     }
     $("#newPrj").click(function (){

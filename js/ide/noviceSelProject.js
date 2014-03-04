@@ -1,3 +1,4 @@
+define(["Shell","FS","UI"],function (sh, FS,UI) {
 $(function () {
     var home=FS.get("/Tonyu/");
     var projects=home.rel("Projects/");
@@ -6,7 +7,8 @@ $(function () {
         $("#prjItemList").empty();
         curDir.ls(FS.orderByNumberedName).forEach(function (name) {
             var f=curDir.rel(name);
-            $("#fileItem").tmpl({name: name, href:"noviceProject.html?dir="+f.path()}).appendTo("#prjItemList");
+            UI("li", {"class":"file"}, ["a", {href:"noviceProject.html?dir="+f.path()}, name]).appendTo("#prjItemList");
+            //$("#fileItem").tmpl({name: name, href:"noviceProject.html?dir="+f.path()}).appendTo("#prjItemList");
         });
     }
     $("#newPrj").click(function (){
@@ -20,4 +22,5 @@ $(function () {
     ls();
     var w=Wiki($("#wikiViewArea"), FS.get("/Tonyu/doc/"));
     w.show("index");
+});
 });

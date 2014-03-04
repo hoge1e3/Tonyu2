@@ -98,6 +98,7 @@ nowait \die() {
         _th.kill();
     }
     hide();
+    play().stop();
     _isDead=true;
 }
 nowait \hide() {
@@ -174,14 +175,16 @@ nowait \asyncResult() {
 }
 \play() {
     if (!_mml) _mml=new MML;
-    while (_mml.bufferCount()>1) {
-        update();
-    }
+    if (arguments.length==0) return _mml;
     var mmls=[];
     for (var i=0; i<arguments.length; i++) {
         mmls.push(arguments[i]);
     }
     _mml.play(mmls);
+    while (_mml.bufferCount()>2) {
+        update();
+    }
+    return _mml;
 }
 nowait \playSE() {
     var mml=new MML;

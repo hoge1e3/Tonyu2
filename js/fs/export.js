@@ -7,8 +7,8 @@ $(function () {
     $("#exportSrv").click(function () {
         $.ajax({
             type:"POST",
-            url:"LS2File",
-            data:{json: $("#text").val()},
+            url:"../../LS2File",
+            data:{json: $("#text").val(), base:$("#base").val()},
             success: function (r) {
                 alert("OK: " + r);
             }

@@ -152,7 +152,8 @@ var reqConf={
             UI:"lib/UI",
             ImageResEditor: "ide/ImageResEditor",
             reqConf: "reqConf",
-            dumpScript: "lib/dumpScript",
+            dumpScript: "build/dumpScript",
+            buildAll: "build/buildAll",
             runScript: "runtime/runScript",
             copySample: "ide/copySample",
             "Shell": "fs/Shell",
@@ -201,7 +202,8 @@ var reqConf={
             "ide/noviceEditor": "ide/noviceEditor",
             PatternParser:"graphics/PatternParser",
             copyToKernel: "fs/copyToKernel",
+            genROM: "build/genROM",
             "foo":"bar"
         },
-        "baseUrl": "js"
+        "baseUrl": "../../js"
 };

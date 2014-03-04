@@ -1,212 +1,13 @@
-// Created at Mon Mar 03 2014 12:31:25 GMT+0900 (東京 (標準時))
-requirejs.setName('reqConf');
-//"var reqConf="+JSON.stringify( getReq.genConf({base:"http://localhost:3002/js/", baseUrl:"js"})+";"
-var reqConf={
-        "shim": {
-            TextEditor: {
-                exports: "TextEditor"
-            },
-            FileMenu: {
-                exports: "FileMenu"
-            },
-            difflib: {
-            	exports: "difflib"
-            },
-            diffview: {
-            	exports: "diffview"
-            },
-            timbre: {
-                exports: "T"
-            },
-            "disp": {
-                "deps": ["IndentBuffer"],
-                "exports": "disp"
-            },
-            "Util": {
-                "exports": "Util"
-            },
-            "Profiler": {
-                "exports": "Profiler"
-            },
-            "TextUtil": {
-                "exports": "TextUtil"
-            },
-            "ObjectMatcher": {
-                "exports": "ObjectMatcher"
-            },
-            "Arrow": {
-                "exports": "Arrow"
-            },
-            "context": {
-                "exports": "context"
-            },
-            "IndentBuffer": {
-                "exports": "IndentBuffer"
-            },
-            "ExpressionParser": {
-                "deps": ["Parser"],
-                "exports": "ExpressionParser"
-            },
-            "Grammar": {
-                "deps": ["Parser"],
-                "exports": "Grammar"
-            },
-            "Parser": {
-                "deps": ["disp"],
-                "exports": "Parser"
-            },
-            "TonyuLang": {
-                "deps": ["Grammar", "XMLBuffer", "IndentBuffer", "disp", "Parser", "ExpressionParser", "TError"],
-                "exports": "TonyuLang"
-            },
-            "Visitor": {
-                "exports": "Visitor"
-            },
-            "XMLBuffer": {
-                "deps": ["Parser"],
-                "exports": "XMLBuffer"
-            },
-            "Tonyu": {
-                "exports": "Tonyu"
-            },
-            "Tonyu.Compiler": {
-                "deps": ["Tonyu", "Tonyu.Iterator", "TonyuLang", "ObjectMatcher", "TError", "IndentBuffer", "context", "Visitor"],
-                "exports": "Tonyu.Compiler"
-            },
-            "fixIndent": {
-                "deps": ["TonyuLang", "Visitor", "Grammar"],
-                "exports": "fixIndent"
-            },
-            "Tonyu.TraceTbl": {
-                "deps": ["Tonyu", "FS", "TError"],
-                "exports": "Tonyu.TraceTbl"
-            },
-            /*"Sprites": {
-                "deps": ["fukidashi", "Tonyu"],
-                "exports": "Sprites"
-            },*/
-            "Key": {
-                "exports": "Key"
-            },
-            "TextRect": {
-                "exports": "TextRect"
-            },
-            "fukidashi": {
-                "deps": ["TextRect"],
-                "exports": "fukidashi"
-            },
-            "FS": {
-                "exports": "FS"
-            },
-            "showErrorPos": {
-                "exports": "showErrorPos"
-            },
-            "TError": {
-                "exports": "TError"
-            },
-            "fs/ROMk": {
-                "deps": ["FS"]
-            },
-            "fs/ROMd": {
-                "deps": ["FS"]
-            },
-            "fs/ROMs": {
-                "deps": ["FS"]
-            },
-            "FileList": {
-                "deps": ["FS"],
-                "exports": "FileList"
-            },
-            "HttpHelper": {
-                "exports": "HttpHelper"
-            },
-            "Wiki": {
-                "deps": ["HttpHelper", "Arrow", "Util"],
-                "exports": "Wiki"
-            },
-            "ace": {
-                "exports": "ace"
-            },
-            "fs/import": {
-                deps: ["FS"]
-            },
-            "fs/export": {
-                deps: ["Shell","FS"]
-            },
-            "ide/selProject": {
-                deps: ["fs/ROMk","fs/ROMd","fs/ROMs", "FS","Wiki"]
-            },
-            "ide/noviceSelProject": {
-                deps: ["fs/ROMk","fs/ROMd","fs/ROMs", "FS","Wiki"]
-            }
-        },
-        "paths": {
-            runtime: "runtime/runtime",
-            difflib: "lib/difflib",
-            diffview: "lib/diffview",
-            timbre: "lib/timbre",
-            KernelDiffDialog: "ide/KernelDiffDialog",
-        	DiffDialog: "ide/DiffDialog",
-        	ScriptTagFS:"fs/ScriptTagFS",
-        	KeyEventChecker: "lib/KeyEventChecker",
-        	NewProjectDialog: "ide/NewProjectDialog",
-            WebSite: "runtime/WebSite",
-            UI:"lib/UI",
-            ImageResEditor: "ide/ImageResEditor",
-            reqConf: "reqConf",
-            dumpScript: "lib/dumpScript",
-            runScript: "runtime/runScript",
-            copySample: "ide/copySample",
-            "Shell": "fs/Shell",
-            "ide/wikiEditor": "ide/wikiEditor",
-            TextEditor: "ide/TextEditor",
-            FileMenu: "fs/FileMenu",
-            ImageList: "graphics/ImageList",
-            "disp": "lib/disp",
-            "Util": "lib/util",
-            "Profiler": "lib/profiler",
-            "TextUtil": "lib/TextUtil",
-            "ObjectMatcher": "lang/ObjectMatcher",
-            "Arrow": "help/Arrow",
-            "context": "lang/context",
-            "IndentBuffer": "lang/IndentBuffer",
-            "ExpressionParser": "lang/ExpressionParser2",
-            "Grammar": "lang/Grammar",
-            "Parser": "lang/parser",
-            "TonyuLang": "lang/parse_tonyu2",
-            "Visitor": "lang/Visitor",
-            "XMLBuffer": "lang/XMLBuffer",
-            "Tonyu": "runtime/TonyuLib",
-            "Tonyu.Iterator": "runtime/Iterator",
-            "Tonyu.Compiler": "lang/compiler2",
-            "fixIndent": "lang/indent",
-            "Tonyu.TraceTbl": "runtime/TraceTbl",
-            "Sprites": "graphics/Sprites",
-            "Key": "runtime/Key",
-            "TextRect": "graphics/TextRect",
-            "fukidashi": "graphics/fukidashi",
-            "FS": "fs/fs",
-            "Tonyu.Project": "ide/TonyuProject",
-            "showErrorPos": "ide/ErrorPos",
-            "TError": "ide/TError",
-            "ide/editor": "ide/editor",
-            "fs/ROMk": "../fs/Tonyu/js/gen/ROM_k",
-            "fs/ROMd": "../fs/Tonyu/js/gen/ROM_d",
-            "fs/ROMs": "../fs/Tonyu/js/gen/ROM_s",
-            "ProjectOptionsEditor": "ide/ProjectOptionsEditor",
-            "FileList": "fs/FileList",
-            "HttpHelper": "help/HttpHelper",
-            "Wiki": "help/wiki",
-            "WikiDialog": "help/wikiDialog",
-            "ace": "lib/ace-noconflict/ace",
-            "ide/noviceSelProject": "ide/noviceSelProject",
-            "ide/noviceEditor": "ide/noviceEditor",
-            PatternParser:"graphics/PatternParser",
-            copyToKernel: "fs/copyToKernel",
-            "foo":"bar"
-        },
-        "baseUrl": "js"
-};
+// Created at Tue Mar 04 2014 15:46:57 GMT+0900 (東京 (標準時))
+// Skipped http://localhost:3002/js/lib/jquery-1.10.1.js
+// Skipped http://localhost:3002/js/lib/jquery.hotkeys.js
+// Skipped http://localhost:3002/js/reqConf.js
+// Skipped http://localhost:3002/js/lib/require.js
+// Skipped requirejs.config(reqConf);requirejs(["runScript"
+// Skipped {"runMenuOrd":["Main","Ball"]}
+// Skipped while (y<$screenHeight) {    y+=3;    update();
+// Skipped native dumpScript;t=0;while(true) {    if (t%5
+// Skipped {"images":[{"name":"$pat_base","url":"images/base.
 requirejs.setName('runScript');
 define(["fs/ROMk","FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS","runtime"],
  function (romk,   FS,  Tonyu_Project, sh,      KeyEventChecker, ScriptTagFS,   rt) {
@@ -262,6 +63,9 @@ define(["fs/ROMk","FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS","
     });
 });
 
+// Skipped http://localhost:3002/js/build/buildAll.js
+// Skipped http://localhost:3002/js/build/genROM.js
+// Skipped http://localhost:3002/js/build/dumpScript.js
 requirejs.setName('Tonyu.Project');
 define(["Tonyu", "Tonyu.Compiler", "TError", "FS", "Tonyu.TraceTbl","ImageList",  "Key"],
         function (Tonyu, Tonyu_Compiler, TError, FS, Tonyu_TraceTbl, ImageList, Key) {
@@ -636,6 +440,229 @@ requirejs.setName('runtime');
 define(["ImageList","TextRect","fukidashi","timbre"], function () {
 
 });
+requirejs.setName('ImageList');
+define(["PatternParser","Util","WebSite"], function (PP,Util,WebSite) {
+    function IL(resImgs, onLoad) {
+        //  resImgs:[{url: , [pwidth: , pheight:]?  }]
+        var resa=[];
+        var cnt=resImgs.length;
+        resImgs.forEach(function (resImg,i) {
+            //console.log("loaded", resImg,i);
+            var url=resImg.url;
+            if (WebSite.urlAliases[url]) url=WebSite.urlAliases[url];
+            if (!Util.startsWith(url,"data")) url+="?" + new Date().getTime();
+            var im=$("<img>").attr("src",url);
+            im.load(function () {
+                var pw,ph;
+                if ((pw=resImg.pwidth) && (ph=resImg.pheight)) {
+                    var x=0, y=0, w=this.width, h=this.height;
+                    var r=[];
+                    while (true) {
+                        r.push({image:this, x:x,y:y, width:pw, height:ph});
+                        x+=pw;
+                        if (x+pw>w) {
+                            x=0;
+                            y+=ph;
+                            if (y+ph>h) break;
+                        }
+                    }
+                    resa[i]=r;
+                } else {
+                    var p=new PP(this);
+                    resa[i]=p.parse();
+                }
+                resa[i].name=resImg.name;
+                cnt--;
+                if (cnt==0) {
+                    var res=[];
+                    var names={};
+                    resa.forEach(function (a) {
+                        names[a.name]=res.length;
+                        res=res.concat(a);
+                    });
+                    res.names=names;
+                    onLoad(res);
+                }
+            });
+        });
+    }
+    return IL;
+});
+requirejs.setName('PatternParser');
+define(["Tonyu"], function (Tonyu) {return Tonyu.klass({
+	initialize: function (img) {
+		this.img=img;
+		this.height = img.height;
+		this.width = img.width;
+		var cv=this.newImage(img.width, img.height);
+		var ctx=cv.getContext("2d");
+		ctx.drawImage(img, 0,0);
+		this.ctx=ctx;
+		this.pixels=this.ctx.getImageData(0, 0, img.width, img.height).data;
+		this.base=this.getPixel(0,0);
+	},
+	newImage: function (w,h) {
+        var cv=document.createElement("canvas");
+        cv.width=w;
+        cv.height=h;
+        return cv;
+	},
+	getPixel: function (x,y) {
+		var imagePixelData = this.pixels;
+		var ofs=(x+y*this.width)*4;
+		var R = imagePixelData[0+ofs];
+  		var G = imagePixelData[1+ofs];
+  		var B = imagePixelData[2+ofs];
+  		var A = imagePixelData[3+ofs];
+  		return ((((A*256)+B)*256)+G)*256+R;
+	},
+	setPixel: function (x,y,p) {
+	    var ofs=(x+y*this.width)*4;
+	    this.pixels[0+ofs]=p & 255;
+	    p=(p-(p&255))/256;
+        this.pixels[1+ofs]=p & 255;
+        p=(p-(p&255))/256;
+        this.pixels[2+ofs]=p & 255;
+        p=(p-(p&255))/256;
+        this.pixels[3+ofs]=p & 255;
+	},
+	parse: function () {
+  		try {
+			//console.log("parse()");
+  			var res=[];// List of charpattern
+			for (var y=0; y<this.height ;y++) {
+				for (var x=0; x<this.width ;x++) {
+					var c=this.getPixel(x, y);
+					if (c!=this.base) {
+						res.push(this.parse1Pattern(x,y));
+					}
+				}
+			}
+			//console.log("parsed:"+res.lenth);
+			return res;
+  		} catch (p) {
+  		    if (p.isParseError) {
+  	            console.log("parse error! "+p);
+  	            return {image: this.img, x:0, y:0, width:this.width, height:this.height};
+  		    }
+  		    throw p;
+  		}
+	},
+  	parse1Pattern:function (x,y) {
+		function hex(s){return s;}
+		var trans=this.getPixel(x, y);
+		var dx=x,dy=y;
+		var base=this.base;
+		var width=this.width, height=this.height;
+		while (dx<width) {
+			var pixel = this.getPixel(dx,dy);
+			if (pixel!=trans) break;
+			dx++;
+		}
+		if (dx>=width || this.getPixel(dx,dy)!=base) {
+		    throw PatterParseError(dx,dy,hex(this.getPixel(dx,dy))+"!="+hex(base));
+		}
+		dx--;
+		while (dy<height) {
+			if (this.getPixel(dx,dy)!=trans) break;
+			dy++;
+		}
+		if (dy>=height || this.getPixel(dx,dy)!=base) {
+		    throw PatterParseError(dx,dy,hex(this.getPixel(dx,dy))+"!="+hex(base));
+		}
+		dy--;
+		var sx=x+1,sy=y+1,w=dx-sx,h=dy-sy;
+        //console.log(sx,sy,w,h,dx,dy);
+		if (w*h==0) throw PatterParseError(dx, dy,"w*h==0");
+
+        var newim=this.newImage(w,h);
+        var nc=newim.getContext("2d");
+        var newImD=nc.getImageData(0,0,w,h);
+		var newD=newImD.data;
+		var di=0;
+		for (var ey=sy ; ey<dy ; ey++) {
+			for (var ex=sx ; ex<dx ; ex++) {
+			    var p=this.getPixel(ex, ey);
+				if (p==trans) {
+					newD[di++]=0;
+					newD[di++]=(0);
+					newD[di++]=(0);
+					newD[di++]=(0);
+				} else {
+                    newD[di++]=(p&255);
+                    p=(p-(p&255))/256;
+                    newD[di++]=(p&255);
+                    p=(p-(p&255))/256;
+                    newD[di++]=(p&255);
+                    p=(p-(p&255))/256;
+                    newD[di++]=(p&255);
+				}
+			}
+		}
+        nc.putImageData(newImD,0,0);
+		for (var yy=sy-1; yy<=dy; yy++) {
+		    for (var xx=sx-1; xx<=dx; xx++) {
+		        this.setPixel(xx,yy, base);
+		    }
+		}
+		return {image:newim, x:0, y:0, width:w, height:h};
+		function PatterParseError(x,y,msg) {
+		    return {toString: function () {
+		        return "at ("+x+","+y+") :"+msg;
+		    }, isParseError:true};
+		}
+	}
+
+});});
+requirejs.setName('WebSite');
+define([], function () {
+    var loc=document.location.href;
+    if (loc.match(/jsrun\.it/)) {
+        return {
+            urlAliases: {
+                "images/base.png":"http://jsrun.it/assets/6/F/y/3/6Fy3B.png",
+                "images/Sample.png":"http://jsrun.it/assets/s/V/S/l/sVSlZ.png",
+                "images/neko.png":"http://jsrun.it/assets/j/D/9/q/jD9qQ.png"
+            }
+        };
+    }
+    if (loc.match(/localhost/) || loc.match(/tonyuedit\.appspot\.com/)) {
+        return {
+            urlAliases: {
+                "images/base.png":"../../images/base.png",
+                "images/Sample.png":"../../images/Sample.png",
+                "images/neko.png":"../../images/neko.png"
+            }
+        };
+    }
+
+    return {
+        urlAliases: {}
+    };
+});
+requirejs.setName('Util');
+Util=function () {
+
+function getQueryString(key, default_)
+{
+   if (default_==null) default_="";
+   key = key.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+   var regex = new RegExp("[\\?&]"+key+"=([^&#]*)");
+   var qs = regex.exec(window.location.href);
+   if(qs == null)
+    return default_;
+   else
+    return qs[1];
+}
+function endsWith(str,postfix) {
+    return str.substring(str.length-postfix.length)===postfix;
+}
+function startsWith(str,prefix) {
+    return str.substring(0, prefix.length)===prefix;
+}
+
+return {getQueryString:getQueryString, endsWith: endsWith, startsWith: startsWith};
+}();
 requirejs.setName('FS');
 FS=function () {
     var FS={};
@@ -1012,54 +1039,37 @@ FS=function () {
     };
     return FS;
 }();
-requirejs.setName('ImageList');
-define(["PatternParser","Util","WebSite"], function (PP,Util,WebSite) {
-    function IL(resImgs, onLoad) {
-        //  resImgs:[{url: , [pwidth: , pheight:]?  }]
-        var resa=[];
-        var cnt=resImgs.length;
-        resImgs.forEach(function (resImg,i) {
-            //console.log("loaded", resImg,i);
-            var url=resImg.url;
-            if (WebSite.urlAliases[url]) url=WebSite.urlAliases[url];
-            if (!Util.startsWith(url,"data")) url+="?" + new Date().getTime();
-            var im=$("<img>").attr("src",url);
-            im.load(function () {
-                var pw,ph;
-                if ((pw=resImg.pwidth) && (ph=resImg.pheight)) {
-                    var x=0, y=0, w=this.width, h=this.height;
-                    var r=[];
-                    while (true) {
-                        r.push({image:this, x:x,y:y, width:pw, height:ph});
-                        x+=pw;
-                        if (x+pw>w) {
-                            x=0;
-                            y+=ph;
-                            if (y+ph>h) break;
-                        }
-                    }
-                    resa[i]=r;
-                } else {
-                    var p=new PP(this);
-                    resa[i]=p.parse();
-                }
-                resa[i].name=resImg.name;
-                cnt--;
-                if (cnt==0) {
-                    var res=[];
-                    var names={};
-                    resa.forEach(function (a) {
-                        names[a.name]=res.length;
-                        res=res.concat(a);
-                    });
-                    res.names=names;
-                    onLoad(res);
-                }
-            });
-        });
+requirejs.setName('TextRect');
+TextRect=function () {
+ // テキストを描いて(type=="test"なら描いたふりをするだけ)， 描かれた部分の矩形領域を返す
+    function draw(ctx, text, x, topY, h, align , type) {
+        if (!align) align="center";
+        ctx.textBaseline="top";
+        setFontSize(ctx, h);
+        var met=ctx.measureText(text);
+        var res={y:topY, w: met.width, h:h};
+        switch (align.substring(0,1).toLowerCase()) {
+            case "l":
+                res.x=x;
+                break;
+            case "r":
+                res.x=x-met.width;
+                break;
+            case "c":
+                res.x=x-met.width/2;
+                break;
+        }
+        if (type=="fill") ctx.fillText(text, res.x,topY);
+        if (type=="stroke") ctx.strokeText(text, res.x,topY);
+        return res;
     }
-    return IL;
-});
+    function setFontSize(ctx,sz) {
+        var post=ctx.font.replace(/^[0-9\.]+/,"");
+        ctx.font=sz+post;
+    };
+    return {draw:draw, setFontSize: setFontSize};
+}();
+// Skipped http://localhost:3002/js/lib/timbre.js
 requirejs.setName('Tonyu');
 Tonyu=function () {
     var preemptionTime=60;
@@ -1382,28 +1392,6 @@ function TError(mesg, src, pos) {
         }
     };
 }
-requirejs.setName('fs/ROMk');
-if (!localStorage.norom) {
-    FS.mountROM(
-{
-  "base": "/Tonyu/Kernel/",
-  "data": {
-    "": "{\".desktop\":{\"lastUpdate\":1393572218029},\"NoviceActor.tonyu\":{\"lastUpdate\":1393570800074},\"BaseActor.tonyu\":{\"lastUpdate\":1393655615228},\"Actor.tonyu\":{\"lastUpdate\":1393570800076},\"Boot.tonyu\":{\"lastUpdate\":1393570800078},\"Sprites.tonyu\":{\"lastUpdate\":1393469207288},\"ScaledCanvas.tonyu\":{\"lastUpdate\":1393469207288},\"Keys.tonyu\":{\"lastUpdate\":1393570800080},\"MML.tonyu\":{\"lastUpdate\":1393570800080},\"WaveTable.tonyu\":{\"lastUpdate\":1393572060877},\"TObject.tonyu\":{\"lastUpdate\":1393570916190}}",
-    ".desktop": "{\"runMenuOrd\":[\"NoviceActor\",\"Actor\",\"Boot\",\"Keys\",\"BaseActor\",\"TObject\",\"WaveTable\",\"MML\",\"Sprites\",\"ScaledCanvas\"]}",
-    "NoviceActor.tonyu": "extends BaseActor;\nnative Tonyu;\n\n\\sleep(n) {\n    if(!n) n=1;\n    for(n;n>0;n--) update();\n}\n\\initSprite() {\n    if (!_sprite) {\n        _sprite=new BaseActor{owner:this};// Sprites.add{owner:this};\n        $Sprites.add(this);\n    }\n}\n\\say(text,size) {\n    if (!size) size=15;\n    initSprite();\n    _sprite._fukidashi={text:text, size:size, c:30};\n}\n\\sprite(x,y,p) {\n    go(x,y,p);\n}\n\\show(x,y,p) {\n    go(x,y,p);\n}\nnowait \\draw(ctx) {\n    _sprite.draw(ctx);\n}\n\\getCrashRect() {\n    return _sprite.getCrashRect();\n}\n\\go(x,y,p) {\n    initSprite();\n    _sprite.x=x;\n    _sprite.y=y;\n    if (p!=null) _sprite.p=p;\n    //update();\n}\n\\change(p) {\n    initSprite();\n    _sprite.p=p;\n}",
-    "BaseActor.tonyu": "extends null;\nnative Tonyu;\nnative Key;\nnative console;\nnative Math;\nnative fukidashi;\nnative TextRect;\n\n\\new(x,y,p) {\n    if (Tonyu.runMode) {\n        var thg=currentThreadGroup();\n        if (thg) _th=thg.addObj(this);\n    }\n    if (typeof x==\"object\") {\n        Tonyu.extend(this, x);\n    }\n    else if (typeof x==\"number\") {\n        this.x=x;\n        this.y=y;\n        this.p=p;\n    }\n    this.scaleX=1;\n    this.scaleY=1;\n}\nnowait \\extend(obj) {\n    return Tonyu.extend(this,obj);\n}\n\nnowait \\print() {\n    console.log.apply(console,arguments);\n}\n\\update() {\n    ifwait {\n        _thread.suspend();\n    }\n}\nnowait \\getkey(k) {\n    return $Keys.getkey(k);\n}\nnowait \\hitTo(t) {\n    return crashTo(t);\n}\nnowait \\allCrash(t) {\n    var res=[];\n    var sp=this; //_sprite || this;\n    var t1=getCrashRect();\n    if (!t1) return res;\n    $Sprites.sprites.forEach(\\(s) {\n        var t2;\n        if (s!==this && \n        s instanceof t && \n        (t2=s.getCrashRect()) &&\n        Math.abs(t1.x-t2.x)*2<t1.width+t2.width &&\n        Math.abs(t1.y-t2.y)*2<t1.height+t2.height) {\n            res.push(s);    \n        }\n    });\n    return res;\n}\nnowait \\crashTo(t) {\n    if (!t) return false;\n    if (typeof t==\"function\") {\n        return allCrash(t)[0];\n    }\n    return crashTo1(t);\n}\nnowait \\crashTo1(t) {\n    if (!t || t._isDead) return false;\n/*if (_sprite && t._sprite) {\n        return _sprite.crashTo(t._sprite);\n}*/\n    var t1=getCrashRect();\n    var t2=t.getCrashRect();\n    return \n    //    t1.x!=null && t1.y!=null && t1.width && t1.height &&\n    //    t2.x!=null && t2.y!=null && t2.width && t2.height &&\n    t1 && t2 &&\n    Math.abs(t1.x-t2.x)*2<t1.width+t2.width &&\n    Math.abs(t1.y-t2.y)*2<t1.height+t2.height;\n}\nnowait \\getCrashRect() {\n    return typeof x==\"number\" &&\n    typeof y==\"number\" &&\n    typeof width==\"number\" &&\n    typeof height==\"number\" && \n    {x,y,width,height};\n}\nnowait \\watchHit(typeA,typeB,onHit) {\n    $Sprites.watchHit(typeA , typeB, \\(a,b) {\n        onHit.apply(this,[a,b]);\n    });\n}\nnowait \\currentThreadGroup() {\n    return $currentThreadGroup; //Tonyu.currentThread.group;\n}\nnowait \\die() {\n    if (_th) {\n        _th.kill();\n    }\n    hide();\n    _isDead=true;\n}\nnowait \\hide() {\n/*if (_sprite) {\n        $Sprites.remove(_sprite);\n        _sprite=null;\n} else {*/\n    $Sprites.remove(this);\n//}\n}\nnowait \\show(x,y,p) {\n    $Sprites.add(this);\n    if (x!=null) this.x=x;\n    if (y!=null) this.y=y;\n    if (p!=null) this.p=p;\n}\n\nnowait \\rnd(r) {\n    if (typeof r==\"number\") {\n        return Math.floor(Math.random()*r);\n    }\n    return Math.random();\n}\nnowait \\detectShape() {\n    if (typeof p!=\"number\") {\n        if (text) return;\n        p=0;\n    }\n    p=Math.floor(p);\n    pImg=$Sprites.getImageList()[p];\n    if (!pImg) return;\n    width=pImg.width;\n    height=pImg.height;\n}\n\\waitFor(f) {\n    ifwait {\n        _thread.waitFor(f);\n    }\n    update();\n}\nnowait \\isDead() {\n    return _isDead;\n}\nnowait \\draw(ctx) {\n    if (x==null || y==null) return;\n    detectShape();\n    if (pImg) {\n        ctx.scale(this.scaleX,this.scaleY);\n        ctx.drawImage(\n        pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,\n        x/this.scaleX-width/2, y/this.scaleY-height/2, width, height);\n        ctx.scale(1/this.scaleX,1/this.scaleY);\n    } else if (text) {\n        if (!size) size=15;\n        if (!align) align=\"center\";\n        if (!fillStyle) fillStyle=\"white\";\n        ctx.fillStyle=fillStyle;\n        var rect=TextRect.draw(ctx, text, x, y, size, align , \"fill\");\n        width=rect.w;\n        height=rect.h;\n    }\n    if (_fukidashi) {\n        if (_fukidashi.c>0) {\n            _fukidashi.c--;\n            ctx.fillStyle=\"white\";\n            ctx.strokeStyle=\"black\";\n            fukidashi ( ctx , _fukidashi.text, \n            x, y-height/2-10, _fukidashi.size);\n        }\n    }\n}\nnowait \\asyncResult() {\n    return Tonyu.asyncResult();\n}\n\\play() {\n    if (!_mml) _mml=new MML;\n    while (_mml.bufferCount()>1) {\n        update();\n    }\n    var mmls=[];\n    for (var i=0; i<arguments.length; i++) {\n        mmls.push(arguments[i]);\n    }\n    _mml.play(mmls);\n}\nnowait \\playSE() {\n    var mml=new MML;\n    var mmls=[];\n    for (var i=0; i<arguments.length; i++) {\n        mmls.push(arguments[i]);\n    }\n    mml.play(mmls);\n    return mml;\n}",
-    "Actor.tonyu": "extends BaseActor;\nnative Sprites;\nnative Tonyu;\n\n\\new(x,y,p) {\n    super(x,y,p);\n    if (Tonyu.runMode) initSprite();\n}\n\\initSprite() {\n    /*if (!_sprite) {\n        _sprite=Sprites.add{owner:this};\n    }*/\n    $Sprites.add(this);\n}\n\n/*\n\\update() {\n    super.update();\n    if (_sprite) {\n        _sprite.x=x;\n        _sprite.y=y;\n        _sprite.p=p;\n    }\n}*/",
-    "Boot.tonyu": "native $;\nnative TError;\nnative $LASTPOS;\nnative Key;\nnative Date;\nnative ImageList;\nnative Tonyu;\n\n\\initSprites() {\n    $Sprites=new Sprites();\n    print (\"Loading pats..\");\n    var rs=$currentProject.getResource();\n    var a=asyncResult();\n    ImageList( rs.images, a.receiver);\n    waitFor(a);\n    var r=a[0];\n    $Sprites.setImageList(r);\n    for (var name,val in r.names) {\n        Tonyu.setGlobal(name, val);\n    }\n    print (\"Loading pats done.\");\n    cvj=$(\"canvas\");\n    if (Tonyu.noviceMode) {\n        $Screen=new ScaledCanvas{canvas:cvj, width:600, height:300};\n    } else {\n        $Screen=new ScaledCanvas{canvas:cvj, width:465, height:465};\n    }\n}\n\\initCanvasEvents() {\n    cv=cvj[0];\n    $handleMouse=\\(e) {\n        var p=cvj.offset();\n        var mp={x:e.clientX-p.left, y:e.clientY-p.top};\n        mp=$Screen.canvas2buf(mp);\n        $mouseX=mp.x;//e.clientX-p.left;\n        $mouseY=mp.y;//e.clientY-p.top;\n    };\n    $touches=[{},{},{},{},{}];\n    $touches.findById=\\(id) {\n        for (var j=0 ; j<$touches.length ; j++) {\n            if ($touches[j].identifier==id) {\n                return $touches[j];\n            }\n        }\n    };\n    $handleTouch=\\(e) {\n        var p=cvj.offset();\n        e.preventDefault();\n        var ts=e.originalEvent.changedTouches;\n        for (var i =0 ; i<ts.length ; i++) {\n            var src=ts[i];\n            var dst=$touches.findById(src.identifier);\n            if (!dst) {\n                for (var j=0 ; j<$touches.length ; j++) {\n                    if (!$touches[j].touched) {\n                        dst=$touches[j];\n                        dst.identifier=src.identifier;\n                        break;\n                    }\n                }\n            }\n            if (dst) {\n                mp={x:src.pageX-p.left, y:src.pageY-p.top};\n                mp=$Screen.canvas2buf(mp);\n                dst.x=mp.x;//src.pageX-p.left;\n                dst.y=mp.y;//src.pageY-p.top;\n                dst.touched=true;\n            }\n        }\n        $mouseX=$touches[0].x;\n        $mouseY=$touches[0].y;\n    };\n    $handleTouchEnd=\\(e) {\n        var ts=e.originalEvent.changedTouches;\n        for (var i =0 ; i<ts.length ; i++) {\n            var src=ts[i];\n            var dst=$touches.findById(src.identifier);\n            if (dst) {\n                dst.touched=false;\n                dst.identifier=-1;\n            }\n        }\n    };\n    var handleMouse=\\(e){$handleMouse(e);};\n    var handleTouch=\\(e){$handleTouch(e);};\n    var handleTouchEnd=\\(e){$handleTouchEnd(e);};\n    var d=$.data(cv,\"events\");\n    if (!d) {\n        $.data(cv,\"events\",\"true\");\n        cvj.mousedown(handleMouse);\n        cvj.mousemove(handleMouse);\n        cvj.on(\"touchstart\",handleTouch);\n        cvj.on(\"touchmove\",handleTouch);\n        cvj.on(\"touchend\",handleTouchEnd);\n    }\n}\n\n\\initThread() {\n    thg=Tonyu.threadGroup();\n    var o=Tonyu.currentProject.getOptions();\n    var mainClassName=o.run.mainClass;\n    print(\"MainClass= \"+mainClassName);\n    mainClass=Tonyu.getClass(mainClassName);\n    if (!mainClass) {\n        TError( mainClassName+\" というクラスはありません\", \n        \"不明\" ,0).raise();\n    }\n    Tonyu.runMode=true;\n    $currentThreadGroup=thg;\n    new mainClass();\n}\n\\stop() {\n    //print(\"STOP!!\");\n    for (var k,v in $MMLS) {\n        v.stop();\n    }\n}\ninitSprites();\ninitCanvasEvents();\ninitThread();\n$screenWidth=cv.width;\n$screenHeight=cv.height;\n$pat_fruits=30;\n$Keys=new Keys;\n$MMLS={};\n$WaveTable=new WaveTable;\nwhile (true) {\n    ti=new Date().getTime();\n    thg.steps();\n    $Keys.update();\n    $screenWidth=$Screen.width;\n    $screenHeight=$Screen.height;\n    $Sprites.draw($Screen.buf[0]);\n    $Screen.draw();\n    $Sprites.checkHit();\n    wt=33-(new Date().getTime()-ti);\n    if (wt<0) wt=0;\n    waitFor(Tonyu.timeout(wt));\n}",
-    "Sprites.tonyu": "native Tonyu;\n\\new() {\n    sprites=[];\n    imageList=[];\n    hitWatchers=[];\n    isDrawGrid=Tonyu.noviceMode;\n}\nfunction add(s) {\n    if (s.__addedToSprites) return;\n    sprites.push(s);\n    s.__addedToSprites=this;\n    return s;\n}\nfunction remove(s) {\n    sprites.splice(sprites.indexOf(s),1);\n    delete s.__addedToSprites;\n}\nfunction clear() {sprites.splice(0,sprites.length);}\nfunction draw(cv) {\n    var ctx=cv.getContext(\"2d\");\n    ctx.fillStyle=$Screen.color;\n    ctx.fillRect(0,0,cv.width,cv.height);\n    if (isDrawGrid) drawGrid(cv);\n    sprites.forEach(\\(sprite) {\n        sprite.draw(ctx);\n    });\n}\nfunction checkHit() {\n    hitWatchers.forEach(function (w) {\n        sprites.forEach(function (a) {\n                //console.log(\"a:\",  a.owner);\n            var a_owner=a;//a.owner|| a;\n            if (! (a_owner instanceof w.A)) return;\n            sprites.forEach(function (b) {\n                var b_owner=b;//b.owner|| b;\n                if (a===b) return;\n                if (! (b_owner instanceof w.B)) return;\n                //console.log(\"b:\",  b.owner);\n                if (a.crashTo1(b)) {\n                    //console.log(\"hit\", a.owner, b.owner);\n                    w.h(a_owner,b_owner);\n                }\n            });\n        });\n    });\n}\nfunction watchHit(typeA, typeB, onHit) {\n    var p={A: typeA, B:typeB, h:onHit};\n    //console.log(p);\n    hitWatchers.push(p);\n}\nfunction drawGrid(c) {\n    var ctx=c.getContext(\"2d\");\n    ctx.textBaseline=\"top\";\n    ctx.save();\n    ctx.strokeStyle=\"rgb(40,100,200)\";\n    for (var i=0 ; i<c.width ; i+=10) {\n        ctx.beginPath();\n        ctx.lineWidth=(i % 100 ==0 ? 4 : 1);\n        ctx.moveTo(i,0);\n        ctx.lineTo(i,c.height);\n        ctx.closePath();\n        ctx.stroke();\n    }\n\n    for (var i=0 ; i<c.height ; i+=10) {\n        ctx.beginPath();\n        ctx.lineWidth=(i % 100 ==0 ? 4 : 1);\n        ctx.moveTo(0,i);\n        ctx.lineTo(c.width,i);\n        ctx.closePath();\n        ctx.stroke();\n    }\n    ctx.fillStyle=\"white\";\n    ctx.font=\"15px monospaced\";\n    for (var i=100 ; i<c.width ; i+=100) {\n        ctx.fillText(i, i,0);\n    }\n    for (var i=100 ; i<c.height ; i+=100) {\n        ctx.fillText(i, 0,i);\n    }\n    ctx.restore();\n}\nfunction setImageList(il) {\n    imageList=il;\n}\nfunction getImageList() {\n    return imageList;\n}",
-    "ScaledCanvas.tonyu": "native $;\n\n// canvas:phisical  buf: logical\n\\new (opt) {\n    extend(opt);\n    // canvas/ width,height\n    resize(width, height);\n    cw=canvas.width();\n    ch=canvas.height();\n    cctx=canvas[0].getContext(\"2d\");\n    this.color=\"rgb(20,80,180)\";\n}\n\\resize(width,height) {\n    this.width=width;\n    this.height=height;\n    buf=$(\"<canvas>\").attr{width,height};\n    ctx=buf[0].getContext(\"2d\");  \n}\n\\draw() {\n    cw=canvas.width();\n    ch=canvas.height();\n    var calcw=ch/height*width; // calch=ch\n    var calch=cw/width*height; // calcw=cw\n    if (calch>ch) calch=ch;\n    if (calcw>cw) calcw=cw;\n    cctx.clearRect(0,0,cw,ch);\n    cctx.drawImage(buf[0],\n    0,0,width, height, \n    0,0,calcw, calch );\n}\n\\canvas2buf(point) {\n    var calcw=ch/height*width; // calch=ch\n    var calch=cw/width*height; // calcw=cw\n    if (calch>ch) calch=ch;\n    if (calcw>cw) calcw=cw;\n    return {x: point.x/calcw*width, y: point.y/calch*height};\n}\n\\setBGColor(color){\n    this.color=color;\n}",
-    "Keys.tonyu": "extends TObject;\nnative String;\nnative $;\nnative document;\n//\\new () {this.main();}\nstats={};\ncodes={\n    left: 37 , up:38 , right: 39, down:40, space:32, enter:13,\n    shift:16, ctrl:17, alt:18, mouseleft: 1\n};\nfor (var i=65 ; i<65+26; i++) {\n    codes[String.fromCharCode(i).toLowerCase()]=i;\n}\nfor (var i=48 ; i<58; i++) {\n    codes[String.fromCharCode(i)]=i;\n}\nif (!$.data(document,\"key_event\")) {\n    $.data(document,\"key_event\",true);\n    $(document).keydown \\(e) {$Keys.keydown(e);};\n    $(document).keyup \\(e) {$Keys.keyup(e);};\n    $(document).mousedown \\(e) {\n        $Keys.keydown{keyCode:1};\n    };\n    $(document).mouseup \\(e) {\n        $Keys.keyup{keyCode:1};\n    };\n}\nfunction getkey(code) {\n    if (typeof code==\"string\") {\n        code=codes[code.toLowerCase()];\n    }\n    if (!code) return 0;\n    if (stats[code]==-1) return 0;\n    if (!stats[code]) stats[code]=0;\n    return stats[code];\n}\nfunction update() {\n    for (var i in stats) {\n        if (stats[i]>0) {stats[i]++;}\n        if (stats[i]==-1) stats[i]=1;\n    }\n}\n\\keydown(e) {\n    var s=stats[e.keyCode];\n    if (!s) {\n        stats[e.keyCode]=-1;\n    }\n}\n\\keyup(e) {\n    stats[e.keyCode]=0;\n}",
-    "MML.tonyu": "extends TObject;\nnative T;\n\nmmlBuf=[];\n\\play(mmls) {\n    mmlBuf.push(mmls);\n    if (!playing) {\n        playNext();\n    }\n}\n\\playNext() {\n    var mml=mmlBuf.shift();\n    if (!mml) {\n        playing=false;\n        return;\n    }\n    m=T(\"mml\", {mml}, $WaveTable.get(0).play());\n    m.on(\"ended\", playNext);\n    m.start();\n    if (!id) id=rnd();\n    $MMLS[id]=this;\n    playing=true;\n}\n\\bufferCount() {\n    return mmlBuf.length;\n}\n\\stop() {\n    if (m) {\n        m.pause();\n        m.stop();\n    }\n}\n//mml0 = \"l8< cde4 cde4 gedcded4 cde4 cde4 gedcdec\";\n//mml1 = \"l8 c4gec4ge cgegfgde c4ge c4ge cgegfgeg\";\n",
-    "WaveTable.tonyu": "extends TObject;\nnative T;\n\ntbl={};\n\\set(num, synth) {\n    tbl[num]=synth;\n}\n\\get(num) {\n    return tbl[num];\n}\n\nif (typeof T!==\"undefined\") {\n    table=[1, [0,300]];\n    env= T(\"env\") {table};\n    synth=T(\"OscGen\") {wave:\"pulse\", env, mul:0.25};\n    set(0,synth);    \n}\n",
-    "TObject.tonyu": "\\new () {this.main();}"
-  }
-}
-    );
-}
 requirejs.setName('Key');
 Key=function () {
     var Key;
@@ -1444,6 +1432,91 @@ $(document).keydown(function (e) {
 $(document).keyup(function (e) {
     Key.stats[e.keyCode]=0;
 });
+requirejs.setName('fs/ROMk');
+if (!localStorage.norom) {
+    FS.mountROM(
+{
+  "base": "/Tonyu/Kernel/",
+  "data": {
+    "": "{\".desktop\":{\"lastUpdate\":1393572218029},\"NoviceActor.tonyu\":{\"lastUpdate\":1393570800074},\"BaseActor.tonyu\":{\"lastUpdate\":1393655615228},\"Actor.tonyu\":{\"lastUpdate\":1393570800076},\"Boot.tonyu\":{\"lastUpdate\":1393570800078},\"Sprites.tonyu\":{\"lastUpdate\":1393469207288},\"ScaledCanvas.tonyu\":{\"lastUpdate\":1393469207288},\"Keys.tonyu\":{\"lastUpdate\":1393570800080},\"MML.tonyu\":{\"lastUpdate\":1393570800080},\"WaveTable.tonyu\":{\"lastUpdate\":1393572060877},\"TObject.tonyu\":{\"lastUpdate\":1393570916190}}",
+    ".desktop": "{\"runMenuOrd\":[\"NoviceActor\",\"Actor\",\"Boot\",\"Keys\",\"BaseActor\",\"TObject\",\"WaveTable\",\"MML\",\"Sprites\",\"ScaledCanvas\"]}",
+    "NoviceActor.tonyu": "extends BaseActor;\nnative Tonyu;\n\n\\sleep(n) {\n    if(!n) n=1;\n    for(n;n>0;n--) update();\n}\n\\initSprite() {\n    if (!_sprite) {\n        _sprite=new BaseActor{owner:this};// Sprites.add{owner:this};\n        $Sprites.add(this);\n    }\n}\n\\say(text,size) {\n    if (!size) size=15;\n    initSprite();\n    _sprite._fukidashi={text:text, size:size, c:30};\n}\n\\sprite(x,y,p) {\n    go(x,y,p);\n}\n\\show(x,y,p) {\n    go(x,y,p);\n}\nnowait \\draw(ctx) {\n    _sprite.draw(ctx);\n}\n\\getCrashRect() {\n    return _sprite.getCrashRect();\n}\n\\go(x,y,p) {\n    initSprite();\n    _sprite.x=x;\n    _sprite.y=y;\n    if (p!=null) _sprite.p=p;\n    //update();\n}\n\\change(p) {\n    initSprite();\n    _sprite.p=p;\n}",
+    "BaseActor.tonyu": "extends null;\nnative Tonyu;\nnative Key;\nnative console;\nnative Math;\nnative fukidashi;\nnative TextRect;\n\n\\new(x,y,p) {\n    if (Tonyu.runMode) {\n        var thg=currentThreadGroup();\n        if (thg) _th=thg.addObj(this);\n    }\n    if (typeof x==\"object\") {\n        Tonyu.extend(this, x);\n    }\n    else if (typeof x==\"number\") {\n        this.x=x;\n        this.y=y;\n        this.p=p;\n    }\n    this.scaleX=1;\n    this.scaleY=1;\n}\nnowait \\extend(obj) {\n    return Tonyu.extend(this,obj);\n}\n\nnowait \\print() {\n    console.log.apply(console,arguments);\n}\n\\update() {\n    ifwait {\n        _thread.suspend();\n    }\n}\nnowait \\getkey(k) {\n    return $Keys.getkey(k);\n}\nnowait \\hitTo(t) {\n    return crashTo(t);\n}\nnowait \\allCrash(t) {\n    var res=[];\n    var sp=this; //_sprite || this;\n    var t1=getCrashRect();\n    if (!t1) return res;\n    $Sprites.sprites.forEach(\\(s) {\n        var t2;\n        if (s!==this && \n        s instanceof t && \n        (t2=s.getCrashRect()) &&\n        Math.abs(t1.x-t2.x)*2<t1.width+t2.width &&\n        Math.abs(t1.y-t2.y)*2<t1.height+t2.height) {\n            res.push(s);    \n        }\n    });\n    return res;\n}\nnowait \\crashTo(t) {\n    if (!t) return false;\n    if (typeof t==\"function\") {\n        return allCrash(t)[0];\n    }\n    return crashTo1(t);\n}\nnowait \\crashTo1(t) {\n    if (!t || t._isDead) return false;\n/*if (_sprite && t._sprite) {\n        return _sprite.crashTo(t._sprite);\n}*/\n    var t1=getCrashRect();\n    var t2=t.getCrashRect();\n    return \n    //    t1.x!=null && t1.y!=null && t1.width && t1.height &&\n    //    t2.x!=null && t2.y!=null && t2.width && t2.height &&\n    t1 && t2 &&\n    Math.abs(t1.x-t2.x)*2<t1.width+t2.width &&\n    Math.abs(t1.y-t2.y)*2<t1.height+t2.height;\n}\nnowait \\getCrashRect() {\n    return typeof x==\"number\" &&\n    typeof y==\"number\" &&\n    typeof width==\"number\" &&\n    typeof height==\"number\" && \n    {x,y,width,height};\n}\nnowait \\watchHit(typeA,typeB,onHit) {\n    $Sprites.watchHit(typeA , typeB, \\(a,b) {\n        onHit.apply(this,[a,b]);\n    });\n}\nnowait \\currentThreadGroup() {\n    return $currentThreadGroup; //Tonyu.currentThread.group;\n}\nnowait \\die() {\n    if (_th) {\n        _th.kill();\n    }\n    hide();\n    _isDead=true;\n}\nnowait \\hide() {\n/*if (_sprite) {\n        $Sprites.remove(_sprite);\n        _sprite=null;\n} else {*/\n    $Sprites.remove(this);\n//}\n}\nnowait \\show(x,y,p) {\n    $Sprites.add(this);\n    if (x!=null) this.x=x;\n    if (y!=null) this.y=y;\n    if (p!=null) this.p=p;\n}\n\nnowait \\rnd(r) {\n    if (typeof r==\"number\") {\n        return Math.floor(Math.random()*r);\n    }\n    return Math.random();\n}\nnowait \\detectShape() {\n    if (typeof p!=\"number\") {\n        if (text) return;\n        p=0;\n    }\n    p=Math.floor(p);\n    pImg=$Sprites.getImageList()[p];\n    if (!pImg) return;\n    width=pImg.width;\n    height=pImg.height;\n}\n\\waitFor(f) {\n    ifwait {\n        _thread.waitFor(f);\n    }\n    update();\n}\nnowait \\isDead() {\n    return _isDead;\n}\nnowait \\draw(ctx) {\n    if (x==null || y==null) return;\n    detectShape();\n    if (pImg) {\n        ctx.scale(this.scaleX,this.scaleY);\n        ctx.drawImage(\n        pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,\n        x/this.scaleX-width/2, y/this.scaleY-height/2, width, height);\n        ctx.scale(1/this.scaleX,1/this.scaleY);\n    } else if (text) {\n        if (!size) size=15;\n        if (!align) align=\"center\";\n        if (!fillStyle) fillStyle=\"white\";\n        ctx.fillStyle=fillStyle;\n        var rect=TextRect.draw(ctx, text, x, y, size, align , \"fill\");\n        width=rect.w;\n        height=rect.h;\n    }\n    if (_fukidashi) {\n        if (_fukidashi.c>0) {\n            _fukidashi.c--;\n            ctx.fillStyle=\"white\";\n            ctx.strokeStyle=\"black\";\n            fukidashi ( ctx , _fukidashi.text, \n            x, y-height/2-10, _fukidashi.size);\n        }\n    }\n}\nnowait \\asyncResult() {\n    return Tonyu.asyncResult();\n}\n\\play() {\n    if (!_mml) _mml=new MML;\n    while (_mml.bufferCount()>1) {\n        update();\n    }\n    var mmls=[];\n    for (var i=0; i<arguments.length; i++) {\n        mmls.push(arguments[i]);\n    }\n    _mml.play(mmls);\n}\nnowait \\playSE() {\n    var mml=new MML;\n    var mmls=[];\n    for (var i=0; i<arguments.length; i++) {\n        mmls.push(arguments[i]);\n    }\n    mml.play(mmls);\n    return mml;\n}",
+    "Actor.tonyu": "extends BaseActor;\nnative Sprites;\nnative Tonyu;\n\n\\new(x,y,p) {\n    super(x,y,p);\n    if (Tonyu.runMode) initSprite();\n}\n\\initSprite() {\n    /*if (!_sprite) {\n        _sprite=Sprites.add{owner:this};\n    }*/\n    $Sprites.add(this);\n}\n\n/*\n\\update() {\n    super.update();\n    if (_sprite) {\n        _sprite.x=x;\n        _sprite.y=y;\n        _sprite.p=p;\n    }\n}*/",
+    "Boot.tonyu": "native $;\nnative TError;\nnative $LASTPOS;\nnative Key;\nnative Date;\nnative ImageList;\nnative Tonyu;\n\n\\initSprites() {\n    $Sprites=new Sprites();\n    print (\"Loading pats..\");\n    var rs=$currentProject.getResource();\n    var a=asyncResult();\n    ImageList( rs.images, a.receiver);\n    waitFor(a);\n    var r=a[0];\n    $Sprites.setImageList(r);\n    for (var name,val in r.names) {\n        Tonyu.setGlobal(name, val);\n    }\n    print (\"Loading pats done.\");\n    cvj=$(\"canvas\");\n    if (Tonyu.noviceMode) {\n        $Screen=new ScaledCanvas{canvas:cvj, width:600, height:300};\n    } else {\n        $Screen=new ScaledCanvas{canvas:cvj, width:465, height:465};\n    }\n}\n\\initCanvasEvents() {\n    cv=cvj[0];\n    $handleMouse=\\(e) {\n        var p=cvj.offset();\n        var mp={x:e.clientX-p.left, y:e.clientY-p.top};\n        mp=$Screen.canvas2buf(mp);\n        $mouseX=mp.x;//e.clientX-p.left;\n        $mouseY=mp.y;//e.clientY-p.top;\n    };\n    $touches=[{},{},{},{},{}];\n    $touches.findById=\\(id) {\n        for (var j=0 ; j<$touches.length ; j++) {\n            if ($touches[j].identifier==id) {\n                return $touches[j];\n            }\n        }\n    };\n    $handleTouch=\\(e) {\n        var p=cvj.offset();\n        e.preventDefault();\n        var ts=e.originalEvent.changedTouches;\n        for (var i =0 ; i<ts.length ; i++) {\n            var src=ts[i];\n            var dst=$touches.findById(src.identifier);\n            if (!dst) {\n                for (var j=0 ; j<$touches.length ; j++) {\n                    if (!$touches[j].touched) {\n                        dst=$touches[j];\n                        dst.identifier=src.identifier;\n                        break;\n                    }\n                }\n            }\n            if (dst) {\n                mp={x:src.pageX-p.left, y:src.pageY-p.top};\n                mp=$Screen.canvas2buf(mp);\n                dst.x=mp.x;//src.pageX-p.left;\n                dst.y=mp.y;//src.pageY-p.top;\n                dst.touched=true;\n            }\n        }\n        $mouseX=$touches[0].x;\n        $mouseY=$touches[0].y;\n    };\n    $handleTouchEnd=\\(e) {\n        var ts=e.originalEvent.changedTouches;\n        for (var i =0 ; i<ts.length ; i++) {\n            var src=ts[i];\n            var dst=$touches.findById(src.identifier);\n            if (dst) {\n                dst.touched=false;\n                dst.identifier=-1;\n            }\n        }\n    };\n    var handleMouse=\\(e){$handleMouse(e);};\n    var handleTouch=\\(e){$handleTouch(e);};\n    var handleTouchEnd=\\(e){$handleTouchEnd(e);};\n    var d=$.data(cv,\"events\");\n    if (!d) {\n        $.data(cv,\"events\",\"true\");\n        cvj.mousedown(handleMouse);\n        cvj.mousemove(handleMouse);\n        cvj.on(\"touchstart\",handleTouch);\n        cvj.on(\"touchmove\",handleTouch);\n        cvj.on(\"touchend\",handleTouchEnd);\n    }\n}\n\n\\initThread() {\n    thg=Tonyu.threadGroup();\n    var o=Tonyu.currentProject.getOptions();\n    var mainClassName=o.run.mainClass;\n    print(\"MainClass= \"+mainClassName);\n    mainClass=Tonyu.getClass(mainClassName);\n    if (!mainClass) {\n        TError( mainClassName+\" というクラスはありません\", \n        \"不明\" ,0).raise();\n    }\n    Tonyu.runMode=true;\n    $currentThreadGroup=thg;\n    new mainClass();\n}\n\\stop() {\n    //print(\"STOP!!\");\n    for (var k,v in $MMLS) {\n        v.stop();\n    }\n}\ninitSprites();\ninitCanvasEvents();\ninitThread();\n$screenWidth=cv.width;\n$screenHeight=cv.height;\n$pat_fruits=30;\n$Keys=new Keys;\n$MMLS={};\n$WaveTable=new WaveTable;\nwhile (true) {\n    ti=new Date().getTime();\n    thg.steps();\n    $Keys.update();\n    $screenWidth=$Screen.width;\n    $screenHeight=$Screen.height;\n    $Sprites.draw($Screen.buf[0]);\n    $Screen.draw();\n    $Sprites.checkHit();\n    wt=33-(new Date().getTime()-ti);\n    if (wt<0) wt=0;\n    waitFor(Tonyu.timeout(wt));\n}",
+    "Sprites.tonyu": "native Tonyu;\n\\new() {\n    sprites=[];\n    imageList=[];\n    hitWatchers=[];\n    isDrawGrid=Tonyu.noviceMode;\n}\nfunction add(s) {\n    if (s.__addedToSprites) return;\n    sprites.push(s);\n    s.__addedToSprites=this;\n    return s;\n}\nfunction remove(s) {\n    sprites.splice(sprites.indexOf(s),1);\n    delete s.__addedToSprites;\n}\nfunction clear() {sprites.splice(0,sprites.length);}\nfunction draw(cv) {\n    var ctx=cv.getContext(\"2d\");\n    ctx.fillStyle=$Screen.color;\n    ctx.fillRect(0,0,cv.width,cv.height);\n    if (isDrawGrid) drawGrid(cv);\n    sprites.forEach(\\(sprite) {\n        sprite.draw(ctx);\n    });\n}\nfunction checkHit() {\n    hitWatchers.forEach(function (w) {\n        sprites.forEach(function (a) {\n                //console.log(\"a:\",  a.owner);\n            var a_owner=a;//a.owner|| a;\n            if (! (a_owner instanceof w.A)) return;\n            sprites.forEach(function (b) {\n                var b_owner=b;//b.owner|| b;\n                if (a===b) return;\n                if (! (b_owner instanceof w.B)) return;\n                //console.log(\"b:\",  b.owner);\n                if (a.crashTo1(b)) {\n                    //console.log(\"hit\", a.owner, b.owner);\n                    w.h(a_owner,b_owner);\n                }\n            });\n        });\n    });\n}\nfunction watchHit(typeA, typeB, onHit) {\n    var p={A: typeA, B:typeB, h:onHit};\n    //console.log(p);\n    hitWatchers.push(p);\n}\nfunction drawGrid(c) {\n    var ctx=c.getContext(\"2d\");\n    ctx.textBaseline=\"top\";\n    ctx.save();\n    ctx.strokeStyle=\"rgb(40,100,200)\";\n    for (var i=0 ; i<c.width ; i+=10) {\n        ctx.beginPath();\n        ctx.lineWidth=(i % 100 ==0 ? 4 : 1);\n        ctx.moveTo(i,0);\n        ctx.lineTo(i,c.height);\n        ctx.closePath();\n        ctx.stroke();\n    }\n\n    for (var i=0 ; i<c.height ; i+=10) {\n        ctx.beginPath();\n        ctx.lineWidth=(i % 100 ==0 ? 4 : 1);\n        ctx.moveTo(0,i);\n        ctx.lineTo(c.width,i);\n        ctx.closePath();\n        ctx.stroke();\n    }\n    ctx.fillStyle=\"white\";\n    ctx.font=\"15px monospaced\";\n    for (var i=100 ; i<c.width ; i+=100) {\n        ctx.fillText(i, i,0);\n    }\n    for (var i=100 ; i<c.height ; i+=100) {\n        ctx.fillText(i, 0,i);\n    }\n    ctx.restore();\n}\nfunction setImageList(il) {\n    imageList=il;\n}\nfunction getImageList() {\n    return imageList;\n}",
+    "ScaledCanvas.tonyu": "native $;\n\n// canvas:phisical  buf: logical\n\\new (opt) {\n    extend(opt);\n    // canvas/ width,height\n    resize(width, height);\n    cw=canvas.width();\n    ch=canvas.height();\n    cctx=canvas[0].getContext(\"2d\");\n    this.color=\"rgb(20,80,180)\";\n}\n\\resize(width,height) {\n    this.width=width;\n    this.height=height;\n    buf=$(\"<canvas>\").attr{width,height};\n    ctx=buf[0].getContext(\"2d\");  \n}\n\\draw() {\n    cw=canvas.width();\n    ch=canvas.height();\n    var calcw=ch/height*width; // calch=ch\n    var calch=cw/width*height; // calcw=cw\n    if (calch>ch) calch=ch;\n    if (calcw>cw) calcw=cw;\n    cctx.clearRect(0,0,cw,ch);\n    cctx.drawImage(buf[0],\n    0,0,width, height, \n    0,0,calcw, calch );\n}\n\\canvas2buf(point) {\n    var calcw=ch/height*width; // calch=ch\n    var calch=cw/width*height; // calcw=cw\n    if (calch>ch) calch=ch;\n    if (calcw>cw) calcw=cw;\n    return {x: point.x/calcw*width, y: point.y/calch*height};\n}\n\\setBGColor(color){\n    this.color=color;\n}",
+    "Keys.tonyu": "extends TObject;\nnative String;\nnative $;\nnative document;\n//\\new () {this.main();}\nstats={};\ncodes={\n    left: 37 , up:38 , right: 39, down:40, space:32, enter:13,\n    shift:16, ctrl:17, alt:18, mouseleft: 1\n};\nfor (var i=65 ; i<65+26; i++) {\n    codes[String.fromCharCode(i).toLowerCase()]=i;\n}\nfor (var i=48 ; i<58; i++) {\n    codes[String.fromCharCode(i)]=i;\n}\nif (!$.data(document,\"key_event\")) {\n    $.data(document,\"key_event\",true);\n    $(document).keydown \\(e) {$Keys.keydown(e);};\n    $(document).keyup \\(e) {$Keys.keyup(e);};\n    $(document).mousedown \\(e) {\n        $Keys.keydown{keyCode:1};\n    };\n    $(document).mouseup \\(e) {\n        $Keys.keyup{keyCode:1};\n    };\n}\nfunction getkey(code) {\n    if (typeof code==\"string\") {\n        code=codes[code.toLowerCase()];\n    }\n    if (!code) return 0;\n    if (stats[code]==-1) return 0;\n    if (!stats[code]) stats[code]=0;\n    return stats[code];\n}\nfunction update() {\n    for (var i in stats) {\n        if (stats[i]>0) {stats[i]++;}\n        if (stats[i]==-1) stats[i]=1;\n    }\n}\n\\keydown(e) {\n    var s=stats[e.keyCode];\n    if (!s) {\n        stats[e.keyCode]=-1;\n    }\n}\n\\keyup(e) {\n    stats[e.keyCode]=0;\n}",
+    "MML.tonyu": "extends TObject;\nnative T;\n\nmmlBuf=[];\n\\play(mmls) {\n    mmlBuf.push(mmls);\n    if (!playing) {\n        playNext();\n    }\n}\n\\playNext() {\n    var mml=mmlBuf.shift();\n    if (!mml) {\n        playing=false;\n        return;\n    }\n    m=T(\"mml\", {mml}, $WaveTable.get(0).play());\n    m.on(\"ended\", playNext);\n    m.start();\n    if (!id) id=rnd();\n    $MMLS[id]=this;\n    playing=true;\n}\n\\bufferCount() {\n    return mmlBuf.length;\n}\n\\stop() {\n    if (m) {\n        m.pause();\n        m.stop();\n    }\n}\n//mml0 = \"l8< cde4 cde4 gedcded4 cde4 cde4 gedcdec\";\n//mml1 = \"l8 c4gec4ge cgegfgde c4ge c4ge cgegfgeg\";\n",
+    "WaveTable.tonyu": "extends TObject;\nnative T;\n\ntbl={};\n\\set(num, synth) {\n    tbl[num]=synth;\n}\n\\get(num) {\n    return tbl[num];\n}\n\nif (typeof T!==\"undefined\") {\n    table=[1, [0,300]];\n    env= T(\"env\") {table};\n    synth=T(\"OscGen\") {wave:\"pulse\", env, mul:0.25};\n    set(0,synth);    \n}\n",
+    "TObject.tonyu": "\\new () {this.main();}"
+  }
+}
+    );
+}
+requirejs.setName('fukidashi');
+// From http://jsdo.it/hoge1e4/4wCX
+//  (x,y) の位置に  V（←これ何て言うんだっけ） の先端が来るようにふきだし表示
+function fukidashi(ctx, text, x, y, sz) {
+    var align="c";
+   var theight=20;
+   var margin=5;
+   var r=TextRect.draw(ctx, text, x,y-theight-margin-sz, sz, align);
+   ctx.beginPath();
+   ctx.moveTo(x , y);
+   ctx.lineTo(x+margin , y-theight);
+   ctx.lineTo(x+r.w/2+margin , y-theight);
+   ctx.lineTo(x+r.w/2+margin , y-theight-r.h-margin*2);
+   ctx.lineTo(x-r.w/2-margin , y-theight-r.h-margin*2);
+   ctx.lineTo(x-r.w/2-margin , y-theight);
+   ctx.lineTo(x-margin , y-theight);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+   //ctx.fillRect(r.x-margin, r.y-margin , r.w+margin*2 , r.h+margin*2);
+   //ctx.strokeRect(r.x-margin, r.y-margin , r.w+margin*2 , r.h+margin*2);
+
+   var fs=ctx.fillStyle;
+   ctx.fillStyle=ctx.strokeStyle;
+   TextRect.draw(ctx, text, x, y-theight-margin-sz, sz, align, "fill");
+   ctx.fillStyle=fs;
+}
+
+requirejs.setName('Tonyu.TraceTbl');
+Tonyu.TraceTbl=function () {
+    var TTB={};
+    var POSMAX=1000000;
+    var pathIdSeq=1;
+    var PATHIDMAX=10000;
+    var path2Id={}, id2Path=[];
+    TTB.add=function (file, pos){
+        var path=file.path();
+        var pathId=path2Id[path];
+        if (pathId==undefined) {
+            pathId=pathIdSeq++;
+            if (pathIdSeq>PATHIDMAX) pathIdSeq=0;
+            path2Id[path]=pathId;
+            id2Path[pathId]=path;
+        }
+        if (pos>=POSMAX) pos=POSMAX-1;
+        var id=pathId*POSMAX+pos;
+        return id;
+    };
+    TTB.decode=function (id) {
+        var pos=id%POSMAX;
+        var pathId=(id-pos)/POSMAX;
+        var path=id2Path[pathId];
+        if (path) {
+            var f=FS.get(path);
+            return TError("Trace info", f, pos);
+        } else {
+            return null;
+            //return TError("Trace info", "unknown src id="+id, pos);
+        }
+    };
+    return TTB;
+};
+if (typeof getReq=="function") getReq.exports("Tonyu.TraceTbl");
 requirejs.setName('ObjectMatcher');
 ObjectMatcher=function () {
     var OM={};
@@ -1699,236 +1772,6 @@ Visitor = function (funcs) {
 	};
 	return $;
 };
-requirejs.setName('Util');
-Util=function () {
-
-function getQueryString(key, default_)
-{
-   if (default_==null) default_="";
-   key = key.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-   var regex = new RegExp("[\\?&]"+key+"=([^&#]*)");
-   var qs = regex.exec(window.location.href);
-   if(qs == null)
-    return default_;
-   else
-    return qs[1];
-}
-function endsWith(str,postfix) {
-    return str.substring(str.length-postfix.length)===postfix;
-}
-function startsWith(str,prefix) {
-    return str.substring(0, prefix.length)===prefix;
-}
-
-return {getQueryString:getQueryString, endsWith: endsWith, startsWith: startsWith};
-}();
-requirejs.setName('TextRect');
-TextRect=function () {
- // テキストを描いて(type=="test"なら描いたふりをするだけ)， 描かれた部分の矩形領域を返す
-    function draw(ctx, text, x, topY, h, align , type) {
-        if (!align) align="center";
-        ctx.textBaseline="top";
-        setFontSize(ctx, h);
-        var met=ctx.measureText(text);
-        var res={y:topY, w: met.width, h:h};
-        switch (align.substring(0,1).toLowerCase()) {
-            case "l":
-                res.x=x;
-                break;
-            case "r":
-                res.x=x-met.width;
-                break;
-            case "c":
-                res.x=x-met.width/2;
-                break;
-        }
-        if (type=="fill") ctx.fillText(text, res.x,topY);
-        if (type=="stroke") ctx.strokeText(text, res.x,topY);
-        return res;
-    }
-    function setFontSize(ctx,sz) {
-        var post=ctx.font.replace(/^[0-9\.]+/,"");
-        ctx.font=sz+post;
-    };
-    return {draw:draw, setFontSize: setFontSize};
-}();
-requirejs.setName('PatternParser');
-define(["Tonyu"], function (Tonyu) {return Tonyu.klass({
-	initialize: function (img) {
-		this.img=img;
-		this.height = img.height;
-		this.width = img.width;
-		var cv=this.newImage(img.width, img.height);
-		var ctx=cv.getContext("2d");
-		ctx.drawImage(img, 0,0);
-		this.ctx=ctx;
-		this.pixels=this.ctx.getImageData(0, 0, img.width, img.height).data;
-		this.base=this.getPixel(0,0);
-	},
-	newImage: function (w,h) {
-        var cv=document.createElement("canvas");
-        cv.width=w;
-        cv.height=h;
-        return cv;
-	},
-	getPixel: function (x,y) {
-		var imagePixelData = this.pixels;
-		var ofs=(x+y*this.width)*4;
-		var R = imagePixelData[0+ofs];
-  		var G = imagePixelData[1+ofs];
-  		var B = imagePixelData[2+ofs];
-  		var A = imagePixelData[3+ofs];
-  		return ((((A*256)+B)*256)+G)*256+R;
-	},
-	setPixel: function (x,y,p) {
-	    var ofs=(x+y*this.width)*4;
-	    this.pixels[0+ofs]=p & 255;
-	    p=(p-(p&255))/256;
-        this.pixels[1+ofs]=p & 255;
-        p=(p-(p&255))/256;
-        this.pixels[2+ofs]=p & 255;
-        p=(p-(p&255))/256;
-        this.pixels[3+ofs]=p & 255;
-	},
-	parse: function () {
-  		try {
-			//console.log("parse()");
-  			var res=[];// List of charpattern
-			for (var y=0; y<this.height ;y++) {
-				for (var x=0; x<this.width ;x++) {
-					var c=this.getPixel(x, y);
-					if (c!=this.base) {
-						res.push(this.parse1Pattern(x,y));
-					}
-				}
-			}
-			//console.log("parsed:"+res.lenth);
-			return res;
-  		} catch (p) {
-  		    if (p.isParseError) {
-  	            console.log("parse error! "+p);
-  	            return {image: this.img, x:0, y:0, width:this.width, height:this.height};
-  		    }
-  		    throw p;
-  		}
-	},
-  	parse1Pattern:function (x,y) {
-		function hex(s){return s;}
-		var trans=this.getPixel(x, y);
-		var dx=x,dy=y;
-		var base=this.base;
-		var width=this.width, height=this.height;
-		while (dx<width) {
-			var pixel = this.getPixel(dx,dy);
-			if (pixel!=trans) break;
-			dx++;
-		}
-		if (dx>=width || this.getPixel(dx,dy)!=base) {
-		    throw PatterParseError(dx,dy,hex(this.getPixel(dx,dy))+"!="+hex(base));
-		}
-		dx--;
-		while (dy<height) {
-			if (this.getPixel(dx,dy)!=trans) break;
-			dy++;
-		}
-		if (dy>=height || this.getPixel(dx,dy)!=base) {
-		    throw PatterParseError(dx,dy,hex(this.getPixel(dx,dy))+"!="+hex(base));
-		}
-		dy--;
-		var sx=x+1,sy=y+1,w=dx-sx,h=dy-sy;
-        //console.log(sx,sy,w,h,dx,dy);
-		if (w*h==0) throw PatterParseError(dx, dy,"w*h==0");
-
-        var newim=this.newImage(w,h);
-        var nc=newim.getContext("2d");
-        var newImD=nc.getImageData(0,0,w,h);
-		var newD=newImD.data;
-		var di=0;
-		for (var ey=sy ; ey<dy ; ey++) {
-			for (var ex=sx ; ex<dx ; ex++) {
-			    var p=this.getPixel(ex, ey);
-				if (p==trans) {
-					newD[di++]=0;
-					newD[di++]=(0);
-					newD[di++]=(0);
-					newD[di++]=(0);
-				} else {
-                    newD[di++]=(p&255);
-                    p=(p-(p&255))/256;
-                    newD[di++]=(p&255);
-                    p=(p-(p&255))/256;
-                    newD[di++]=(p&255);
-                    p=(p-(p&255))/256;
-                    newD[di++]=(p&255);
-				}
-			}
-		}
-        nc.putImageData(newImD,0,0);
-		for (var yy=sy-1; yy<=dy; yy++) {
-		    for (var xx=sx-1; xx<=dx; xx++) {
-		        this.setPixel(xx,yy, base);
-		    }
-		}
-		return {image:newim, x:0, y:0, width:w, height:h};
-		function PatterParseError(x,y,msg) {
-		    return {toString: function () {
-		        return "at ("+x+","+y+") :"+msg;
-		    }, isParseError:true};
-		}
-	}
-
-});});
-requirejs.setName('WebSite');
-define([], function () {
-    var loc=document.location.href;
-    if (loc.match(/jsrun\.it/)) {
-        return {
-            urlAliases: {
-                "images/base.png":"http://jsrun.it/assets/6/F/y/3/6Fy3B.png",
-                "images/Sample.png":"http://jsrun.it/assets/s/V/S/l/sVSlZ.png",
-                "images/neko.png":"http://jsrun.it/assets/j/D/9/q/jD9qQ.png"
-            }
-        };
-    }
-    return {
-        urlAliases: {}
-    };
-});
-requirejs.setName('Tonyu.TraceTbl');
-Tonyu.TraceTbl=function () {
-    var TTB={};
-    var POSMAX=1000000;
-    var pathIdSeq=1;
-    var PATHIDMAX=10000;
-    var path2Id={}, id2Path=[];
-    TTB.add=function (file, pos){
-        var path=file.path();
-        var pathId=path2Id[path];
-        if (pathId==undefined) {
-            pathId=pathIdSeq++;
-            if (pathIdSeq>PATHIDMAX) pathIdSeq=0;
-            path2Id[path]=pathId;
-            id2Path[pathId]=path;
-        }
-        if (pos>=POSMAX) pos=POSMAX-1;
-        var id=pathId*POSMAX+pos;
-        return id;
-    };
-    TTB.decode=function (id) {
-        var pos=id%POSMAX;
-        var pathId=(id-pos)/POSMAX;
-        var path=id2Path[pathId];
-        if (path) {
-            var f=FS.get(path);
-            return TError("Trace info", f, pos);
-        } else {
-            return null;
-            //return TError("Trace info", "unknown src id="+id, pos);
-        }
-    };
-    return TTB;
-};
-if (typeof getReq=="function") getReq.exports("Tonyu.TraceTbl");
 requirejs.setName('disp');
 // オブジェクトの内容を表示する． デバッグ用
 function disp(a) {
@@ -1952,34 +1795,6 @@ function disp(a) {
 	}
 	disp2(a);
 	return p.buf;
-}
-
-requirejs.setName('fukidashi');
-// From http://jsdo.it/hoge1e4/4wCX
-//  (x,y) の位置に  V（←これ何て言うんだっけ） の先端が来るようにふきだし表示
-function fukidashi(ctx, text, x, y, sz) {
-    var align="c";
-   var theight=20;
-   var margin=5;
-   var r=TextRect.draw(ctx, text, x,y-theight-margin-sz, sz, align);
-   ctx.beginPath();
-   ctx.moveTo(x , y);
-   ctx.lineTo(x+margin , y-theight);
-   ctx.lineTo(x+r.w/2+margin , y-theight);
-   ctx.lineTo(x+r.w/2+margin , y-theight-r.h-margin*2);
-   ctx.lineTo(x-r.w/2-margin , y-theight-r.h-margin*2);
-   ctx.lineTo(x-r.w/2-margin , y-theight);
-   ctx.lineTo(x-margin , y-theight);
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
-   //ctx.fillRect(r.x-margin, r.y-margin , r.w+margin*2 , r.h+margin*2);
-   //ctx.strokeRect(r.x-margin, r.y-margin , r.w+margin*2 , r.h+margin*2);
-
-   var fs=ctx.fillStyle;
-   ctx.fillStyle=ctx.strokeStyle;
-   TextRect.draw(ctx, text, x, y-theight-margin-sz, sz, align, "fill");
-   ctx.fillStyle=fs;
 }
 
 requirejs.setName('Parser');
@@ -2416,193 +2231,6 @@ Parser=function () {
     return $;
 }();
 
-requirejs.setName('Grammar');
-Grammar=function () {
-	var p=Parser;
-
-	var $=null;
-	function trans(name) {
-		if (typeof name=="string") return $.get(name);
-		return name;
-	}
-	function tap(name) {
-		return p.Parser.create(function (st) {
-			console.log("Parsing "+name+" at "+st.pos+"  "+st.src.str.substring(st.pos, st.pos+20).replace(/[\r\n]/g,"\\n"));
-			return st;
-		});
-	}
-	$=function (name){
-		var $$={};
-		$$.ands=function() {
-			var p=trans(arguments[0]);  //  ;
-			for (var i=1 ; i<arguments.length ;i++) {
-				p=p.and( trans(arguments[i]) );
-			}
-			p=p.tap(name);
-			$.defs[name]=p;
-			var $$$={};
-			$$$.autoNode=function () {
-                var res=p.ret(function () {
-                    var res={type:name};
-                    for (var i=0 ; i<arguments.length ;i++) {
-                        var e=arguments[i];
-                        var rg=Parser.setRange(e);
-                        Parser.addRange(res, rg);
-                        res["-element"+i]=e;
-                    }
-                    res.toString=function () {
-                        return "("+this.type+")";
-                    };
-                }).setName(name);
-                return $.defs[name]=res;
-			};
-			$$$.ret=function (f) {
-				if (arguments.length==0) return p;
-				if (typeof f=="function") {
-					return $.defs[name]=p.ret(f);
-				}
-				var names=[];
-				var fn=function(e){return e;};
-				for (var i=0 ; i<arguments.length ;i++) {
-					if (typeof arguments[i]=="function") {
-						fn=arguments[i];
-						break;
-					}
-					names[i]=arguments[i];
-				}
-				var res=p.ret(function () {
-					var res={type:name};
-					res[Grammar.SUBELEMENTS]=[];
-					for (var i=0 ; i<arguments.length ;i++) {
-						var e=arguments[i];
-						var rg=Parser.setRange(e);
-						Parser.addRange(res, rg);
-						if (names[i]) {
-							res[names[i]]=e;
-						}
-						res[Grammar.SUBELEMENTS].push(e);
-					}
-					res.toString=function () {
-						return "("+this.type+")";
-					};
-					return fn(res);
-				}).setName(name);
-				return  $.defs[name]=res;
-			};
-			return $$$;
-		};
-		$$.ors= function () {
-			var p=trans(arguments[0]);
-			for (var i=1 ; i<arguments.length ;i++) {
-				p=p.or( trans(arguments[i]) );
-			}
-			return $.defs[name]=p.setName(name);
-		};
-		return $$;
-	};
-
-	$.defs={};
-	$.get=function (name) {
-		if ($.defs[name]) return $.defs[name];
-		return p.lazy(function () {
-			var r=$.defs[name];
-		    if (!r) throw "grammar named '"+name +"' is undefined";
-			return r;
-		}).setName("(Lazy of "+name+")");
-	};
-	return $;
-};
-Grammar.SUBELEMENTS="[SUBELEMENTS]";
-requirejs.setName('XMLBuffer');
-// var b=XMLBuffer(src);
-// b(node);
-// console.log(b.buf);
-function XMLBuffer(src) {
-	var $;
-	$=function (node, attrName){
-		//console.log("genX: "+node+ " typeof = "+typeof node+"  pos="+node.pos+" attrName="+attrName+" ary?="+(node instanceof Array));
-		if (node==null || typeof node=="string" || typeof node=="number") return;
-		var r=Parser.getRange(node);
-		if (r) {
-			while ($.srcLen < r.pos) {
-				$.src(src.substring($.srcLen, r.pos));
-			}
-		}
-		if (node==null) return;
-		if (attrName) $.tag("<attr_"+attrName+">");
-		if (node.type) $.tag("<"+node.type+">");
-		if (node.text) $.src(r.text);
-		else {
-			var n=$.orderByPos(node);
-			n.forEach(function (subnode) {
-				if (subnode.name && subnode.name.match(/^-/)) {
-					$(subnode.value);
-				} else {
-					$(subnode.value, subnode.name);
-				}
-			});
-		}
-		if (r) {
-			while ($.srcLen < r.pos+r.len) {
-				$.src(src.substring($.srcLen, r.pos+r.len));
-			}
-		}
-		if (node.type) $.tag("</"+node.type+">");
-		if (attrName) $.tag("</attr_"+attrName+">");
-	};
-	$.orderByPos=XMLBuffer.orderByPos;/*function (node) {
-		var res=[];
-		if (node[XMLBuffer.SUBELEMENTS]) {
-			node[XMLBuffer.SUBELEMENTS].forEach(function (e) {
-				res.push(e);
-			});
-		} else {
-			for (var i in node) {
-				if (!node.hasOwnProperty(i)) continue;
-				if (node[i]==null || typeof node[i]=="string" || typeof node[i]=="number") continue;
-				if (typeof(node[i].pos)!="number") continue;
-				if (isNaN(parseInt(i)) && !(i+"").match(/-/)) { 			res.push({name: i, value: node[i]}); }
-				else { 			res.push({value: node[i]}); }
-			}
-		}
-		res=res.sort(function (a,b) {
-			return a.value.pos-b.value.pos;
-		});
-		return res;
-	};*/
-	$.src=function (str) {
-		$.buf+=str.replace(/&/g,"&amp;").replace(/>/g,"&gt;").replace(/</g,"&lt;");
-		$.srcLen+=str.length;
-	};
-	$.tag=function (str) {
-		$.buf+=str;
-	};
-
-	$.buf="";
-	$.srcLen=0;
-	return $;
-}
-XMLBuffer.orderByPos=function (node) {
-	var res=[];
-	if (node[XMLBuffer.SUBELEMENTS]) {
-		node[XMLBuffer.SUBELEMENTS].forEach(function (e) {
-			res.push(e);
-		});
-	} else {
-		for (var i in node) {
-			if (!node.hasOwnProperty(i)) continue;
-			if (node[i]==null || typeof node[i]=="string" || typeof node[i]=="number") continue;
-			if (typeof(node[i].pos)!="number") continue;
-			if (isNaN(parseInt(i)) && !(i+"").match(/-/)) { 			res.push({name: i, value: node[i]}); }
-			else { 			res.push({value: node[i]}); }
-		}
-	}
-	res=res.sort(function (a,b) {
-		return a.value.pos-b.value.pos;
-	});
-	return res;
-};
-XMLBuffer.SUBELEMENTS="[SUBELEMENTS]";
 requirejs.setName('ExpressionParser');
 // parser.js の補助ライブラリ．式の解析を担当する
 function ExpressionParser() {
@@ -2876,6 +2504,193 @@ function ExpressionParser() {
 	};
 	return $;
 }
+requirejs.setName('XMLBuffer');
+// var b=XMLBuffer(src);
+// b(node);
+// console.log(b.buf);
+function XMLBuffer(src) {
+	var $;
+	$=function (node, attrName){
+		//console.log("genX: "+node+ " typeof = "+typeof node+"  pos="+node.pos+" attrName="+attrName+" ary?="+(node instanceof Array));
+		if (node==null || typeof node=="string" || typeof node=="number") return;
+		var r=Parser.getRange(node);
+		if (r) {
+			while ($.srcLen < r.pos) {
+				$.src(src.substring($.srcLen, r.pos));
+			}
+		}
+		if (node==null) return;
+		if (attrName) $.tag("<attr_"+attrName+">");
+		if (node.type) $.tag("<"+node.type+">");
+		if (node.text) $.src(r.text);
+		else {
+			var n=$.orderByPos(node);
+			n.forEach(function (subnode) {
+				if (subnode.name && subnode.name.match(/^-/)) {
+					$(subnode.value);
+				} else {
+					$(subnode.value, subnode.name);
+				}
+			});
+		}
+		if (r) {
+			while ($.srcLen < r.pos+r.len) {
+				$.src(src.substring($.srcLen, r.pos+r.len));
+			}
+		}
+		if (node.type) $.tag("</"+node.type+">");
+		if (attrName) $.tag("</attr_"+attrName+">");
+	};
+	$.orderByPos=XMLBuffer.orderByPos;/*function (node) {
+		var res=[];
+		if (node[XMLBuffer.SUBELEMENTS]) {
+			node[XMLBuffer.SUBELEMENTS].forEach(function (e) {
+				res.push(e);
+			});
+		} else {
+			for (var i in node) {
+				if (!node.hasOwnProperty(i)) continue;
+				if (node[i]==null || typeof node[i]=="string" || typeof node[i]=="number") continue;
+				if (typeof(node[i].pos)!="number") continue;
+				if (isNaN(parseInt(i)) && !(i+"").match(/-/)) { 			res.push({name: i, value: node[i]}); }
+				else { 			res.push({value: node[i]}); }
+			}
+		}
+		res=res.sort(function (a,b) {
+			return a.value.pos-b.value.pos;
+		});
+		return res;
+	};*/
+	$.src=function (str) {
+		$.buf+=str.replace(/&/g,"&amp;").replace(/>/g,"&gt;").replace(/</g,"&lt;");
+		$.srcLen+=str.length;
+	};
+	$.tag=function (str) {
+		$.buf+=str;
+	};
+
+	$.buf="";
+	$.srcLen=0;
+	return $;
+}
+XMLBuffer.orderByPos=function (node) {
+	var res=[];
+	if (node[XMLBuffer.SUBELEMENTS]) {
+		node[XMLBuffer.SUBELEMENTS].forEach(function (e) {
+			res.push(e);
+		});
+	} else {
+		for (var i in node) {
+			if (!node.hasOwnProperty(i)) continue;
+			if (node[i]==null || typeof node[i]=="string" || typeof node[i]=="number") continue;
+			if (typeof(node[i].pos)!="number") continue;
+			if (isNaN(parseInt(i)) && !(i+"").match(/-/)) { 			res.push({name: i, value: node[i]}); }
+			else { 			res.push({value: node[i]}); }
+		}
+	}
+	res=res.sort(function (a,b) {
+		return a.value.pos-b.value.pos;
+	});
+	return res;
+};
+XMLBuffer.SUBELEMENTS="[SUBELEMENTS]";
+requirejs.setName('Grammar');
+Grammar=function () {
+	var p=Parser;
+
+	var $=null;
+	function trans(name) {
+		if (typeof name=="string") return $.get(name);
+		return name;
+	}
+	function tap(name) {
+		return p.Parser.create(function (st) {
+			console.log("Parsing "+name+" at "+st.pos+"  "+st.src.str.substring(st.pos, st.pos+20).replace(/[\r\n]/g,"\\n"));
+			return st;
+		});
+	}
+	$=function (name){
+		var $$={};
+		$$.ands=function() {
+			var p=trans(arguments[0]);  //  ;
+			for (var i=1 ; i<arguments.length ;i++) {
+				p=p.and( trans(arguments[i]) );
+			}
+			p=p.tap(name);
+			$.defs[name]=p;
+			var $$$={};
+			$$$.autoNode=function () {
+                var res=p.ret(function () {
+                    var res={type:name};
+                    for (var i=0 ; i<arguments.length ;i++) {
+                        var e=arguments[i];
+                        var rg=Parser.setRange(e);
+                        Parser.addRange(res, rg);
+                        res["-element"+i]=e;
+                    }
+                    res.toString=function () {
+                        return "("+this.type+")";
+                    };
+                }).setName(name);
+                return $.defs[name]=res;
+			};
+			$$$.ret=function (f) {
+				if (arguments.length==0) return p;
+				if (typeof f=="function") {
+					return $.defs[name]=p.ret(f);
+				}
+				var names=[];
+				var fn=function(e){return e;};
+				for (var i=0 ; i<arguments.length ;i++) {
+					if (typeof arguments[i]=="function") {
+						fn=arguments[i];
+						break;
+					}
+					names[i]=arguments[i];
+				}
+				var res=p.ret(function () {
+					var res={type:name};
+					res[Grammar.SUBELEMENTS]=[];
+					for (var i=0 ; i<arguments.length ;i++) {
+						var e=arguments[i];
+						var rg=Parser.setRange(e);
+						Parser.addRange(res, rg);
+						if (names[i]) {
+							res[names[i]]=e;
+						}
+						res[Grammar.SUBELEMENTS].push(e);
+					}
+					res.toString=function () {
+						return "("+this.type+")";
+					};
+					return fn(res);
+				}).setName(name);
+				return  $.defs[name]=res;
+			};
+			return $$$;
+		};
+		$$.ors= function () {
+			var p=trans(arguments[0]);
+			for (var i=1 ; i<arguments.length ;i++) {
+				p=p.or( trans(arguments[i]) );
+			}
+			return $.defs[name]=p.setName(name);
+		};
+		return $$;
+	};
+
+	$.defs={};
+	$.get=function (name) {
+		if ($.defs[name]) return $.defs[name];
+		return p.lazy(function () {
+			var r=$.defs[name];
+		    if (!r) throw "grammar named '"+name +"' is undefined";
+			return r;
+		}).setName("(Lazy of "+name+")");
+	};
+	return $;
+};
+Grammar.SUBELEMENTS="[SUBELEMENTS]";
 requirejs.setName('TonyuLang');
 /*
  * Tonyu2 の構文解析を行う．

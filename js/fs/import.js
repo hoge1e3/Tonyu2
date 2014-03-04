@@ -26,7 +26,7 @@ $(function () {
     $("#importSrv").click(function () {
         $.ajax({
             type:"GET",
-            url:"File2LS",
+            url:"../../File2LS",
             data:{base: $("#base").val()},
             success: function (r) {
                 $("#text").val(r);

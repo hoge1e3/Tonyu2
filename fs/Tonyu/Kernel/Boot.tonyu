@@ -114,6 +114,7 @@ native Tonyu;
     for (var k,v in $MMLS) {
         v.stop();
     }
+    $WaveTable.stop();
 }
 initSprites();
 initCanvasEvents();

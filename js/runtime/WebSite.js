@@ -9,6 +9,16 @@ define([], function () {
             }
         };
     }
+    if (loc.match(/localhost/) || loc.match(/tonyuedit\.appspot\.com/)) {
+        return {
+            urlAliases: {
+                "images/base.png":"../../images/base.png",
+                "images/Sample.png":"../../images/Sample.png",
+                "images/neko.png":"../../images/neko.png"
+            }
+        };
+    }
+
     return {
         urlAliases: {}
     };

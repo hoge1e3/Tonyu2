@@ -8,10 +8,16 @@ tbl={};
 \get(num) {
     return tbl[num];
 }
+\stop() {
+    for (var k,v in tbl) {
+        v.pause();
+        v.stop();
+    }
+}
 
 if (typeof T!=="undefined") {
-    table=[1, [0,300]];
-    env= T("env") {table};
+    //env=T("adsr", {a:0,d:200,s:0.5,r:10});
+    env = T("env",{table:[1, [0.6, 50], [0, 100]], releaseNode:2});
     synth=T("OscGen") {wave:"pulse", env, mul:0.25};
     set(0,synth);    
 }
