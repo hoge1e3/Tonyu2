@@ -176,7 +176,7 @@ Wiki=function (placeHolder, home, options, plugins) {
                     a=$("<strong>").text(fi.name);
                     fi.refs.push(a);
                 } else if (name.match(/^@editadd/)) {
-                    $h.p($("<img>").attr("src","images/editAdd.png"));
+                    $h.p($("<img>").attr("src",WebSite.top+"images/editAdd.png"));
                 } else if (name.match(/^@figref (.*)/)) {
                     var fi=figInfo(RegExp.$1);
                     a=$("<strong>").text(fi.name);
@@ -203,7 +203,7 @@ Wiki=function (placeHolder, home, options, plugins) {
                     if (name.match(/\.(png|jpg|gif)$/)) {
                         var fi=figInfo(name, true);
                         a=$("<div>").addClass("figure").append(
-                                $("<div>").append(  $("<img>").attr("src", "doc/images/"+name) )
+                                $("<div>").append(  $("<img>").attr("src", WebSite.top+"doc/images/"+name) )
                            );
                         $h.enter(a);
                         $h.enter($("<div>"));

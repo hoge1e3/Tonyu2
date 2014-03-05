@@ -42,7 +42,7 @@ define(["genROM","dumpScript","Util","FS"], function (genROM,dumpScript,Util,FS)
             break;
 
         }
-    },2000);
+    },10000);
     function upload(dir, onend) {
     	console.log("Uploading "+dir);
         var json= JSON.stringify( FS.exportDir(dir) );

@@ -2,12 +2,11 @@ x=rnd($Screen.width);
 y=rnd($Screen.height);
 vx=spd();
 vy=spd();
-scaleX=3;
+scaleX=1.5;
 scaleY=2;
 while (true) {
     x+=vx;
     y+=vy;
-    scaleX=(x%20)/10-1;
     if (x<0) {
         x=0;
         vx=spd();

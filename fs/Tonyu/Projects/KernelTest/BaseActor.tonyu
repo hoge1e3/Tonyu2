@@ -175,7 +175,7 @@ nowait \asyncResult() {
 }
 \play() {
     if (!_mml) _mml=new MML;
-    if (arguments.length==0) return _mml;
+    if (isDead() || arguments.length==0) return _mml;
     var mmls=[];
     for (var i=0; i<arguments.length; i++) {
         mmls.push(arguments[i]);

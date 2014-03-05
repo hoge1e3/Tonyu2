@@ -181,12 +181,12 @@ $(function () {
         if (f.endsWith(EXT)) return f.truncExt(EXT);
         return null;
     }
-    function fixName(name) {
+    function fixName(name, options) {
         if (name.match(/^[A-Za-z_][a-zA-Z0-9_]*$/)) {
             if (curPrj.isKernel(name)) {
                 if (curPrj.getOptions().kernelEditable) {
                     return {ok:true, file: curProjectDir.rel(name+EXT),
-                        note:"Kernelから"+name+"をコピーします"};
+                        note: options.action=="create"? "Kernelから"+name+"をコピーします" :""};
                 } else {
                     return {ok:false, reason:name+"はシステムで利用されている名前なので使用できません"};
                 }
@@ -278,6 +278,7 @@ $(function () {
     }
     function save() {
         var curFile=fl.curFile();
+        //console.log(curFile+"Saved ");
         if (curFile && !curFile.isReadOnly()) {
             fixEditorIndent();
             curFile.text(prog.getValue());
@@ -347,7 +348,7 @@ $(function () {
     sh.curFile=function () {
         return fl.curFile();
     };
-    FileMenu.onMenuStart=save;
+    FM.onMenuStart=save;
     SplashScreen.hide();
 });
 });

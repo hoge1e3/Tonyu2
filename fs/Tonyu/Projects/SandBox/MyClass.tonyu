@@ -14,9 +14,11 @@ if (false) {
 }
 
 native sh;
-sh.cp("/Tonyu/Projects/SandBox/", "/Tonyu/Projects/SandBag/") {
+
+neko();
+/*sh.cp("/Tonyu/Projects/SandBox/", "/Tonyu/Projects/SandBag/") {
     test:true, v:true
-};
+};*/
 
 
 ary=[2,5,10];

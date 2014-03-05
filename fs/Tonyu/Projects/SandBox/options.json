@@ -1,1 +1,1 @@
-{"compiler":{"defaultSuperClass":"Actor"},"run":{"mainClass":"Colors","bootClass":"Boot"},"kernelEditable":false}
+{"compiler":{"defaultSuperClass":"Actor"},"run":{"mainClass":"MyClass","bootClass":"Boot"},"kernelEditable":true}

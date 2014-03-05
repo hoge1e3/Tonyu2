@@ -1,7 +1,7 @@
 define(["UI","FS"], function (UI,FS) {
 var FileMenu=function () {
     var FM={on:{}};
-    FM.on.validateName=function (name) {
+    FM.on.validateName=function (name,action) {
         if (!name) return {ok:false, reason:"ファイル名を入力してください"};
         // return {ok:true, file:File } || {ok: false, reason:String}
         var curDir=FM.on.getCurDir();
@@ -39,30 +39,46 @@ var FileMenu=function () {
     };
     FM.onMenuStart=function (){};
     FM.dialog=function (title, name, onend) {
-        var t;
+    	return FM.dialogOpt({title:title, name:name, onend:onend});
+    };
+    FM.dialogOpt=function (options) {
+    	var title=options.title;
+    	var name=options.name || "";
+    	var onend=options.onend || function (){};
+        //var t;
         if (!FM.d) FM.d=UI(["div"], {title: title},
              "ファイル名を入力してください",["br"],
              ["input", {
                  $var: "name",
-                 on:{enterkey:done, realtimechange: chg}
+                 on:{
+                	 enterkey:function () {
+                		 FM.d.$vars.done();
+                	 },
+                	 realtimechange: function (v) {
+                		 FM.d.$vars.chg(v);
+                	 }
+                 }
              }],
              ["br"],
              ["div",{$var:"msg"}],
-            ["button", {$var:"b", on:{click: done}}, "OK"]
+            ["button", {$var:"b", on:{click: function () {
+            	FM.d.$vars.done();
+       	 	}}}, "OK"]
         );
+        FM.d.attr({title:title});
         var v=FM.d.$vars;
         //console.log(name);
         v.name.val(name);
-        FM.d.dialog();
-        var r;
-        function done() {
-            if (!r.ok) return;
-            clearInterval(t);
+        FM.d.dialog({title:title});
+        var r=null;
+        v.done=function() {
+            if (!r || !r.ok) return;
+            //clearInterval(t);
             onend(r.file);
             FM.d.dialog("close");
-        }
-        function chg(s) {
-            r=FM.on.validateName(s);
+        };
+        v.chg=function (s) {
+            r=FM.on.validateName(s,options);
             if (r.ok && r.file.exists()) r={ok:false, reason:s+"は存在します"};
             if (!r.ok) {
                 v.msg.css({"color":"red"});
@@ -73,29 +89,29 @@ var FileMenu=function () {
                 v.msg.text(r.note || "");
                 v.b.removeAttr("disabled");
             }
-        }
+        };
 
     };
 
     FM.create=function () {
-        FM.onMenuStart();
-        FM.dialog("新規作成", "", function (f) {
+        FM.onMenuStart("create");
+        FM.dialogOpt({title:"新規作成", action:"create", onend:function (f) {
             if (!f.exists()) {
                 FM.on.createContent(f); //f.text("");
                 FM.on.ls();
                 FM.on.open(f);
             }
-        });
+        }});
     };
     FM.mv=function () {
-        FM.onMenuStart();
+        FM.onMenuStart("mv");
         var curFile=FM.on.getCurFile();
         if (!curFile) return;
         var oldName=FM.on.displayName(curFile);
         /*var oldName,  mode;
         if (typeof oldNameD=="string") oldName=oldNameD;
         else { oldName=oldNameD.name; mode=oldNameD.mode;}*/
-        FM.dialog("名前変更", oldName, function (nf) {
+        FM.dialogOpt({title:"名前変更", name:oldName, action:"mv", onend:function (nf) {
             if (!nf) return;
             var t=curFile.text();
             curFile.rm();
@@ -103,10 +119,10 @@ var FileMenu=function () {
             nf.text(t);
             FM.on.ls();
             FM.on.open(curFile);
-        });
+        }});
     };
     FM.rm=function (){
-        FM.onMenuStart();
+        FM.onMenuStart("rm");
         var curFile=FM.on.getCurFile();
         if (!curFile) return;
         if (!confirm(curFile.name()+"を削除しますか？")) return;

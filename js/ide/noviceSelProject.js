@@ -20,7 +20,7 @@ $(function () {
         document.location.href="noviceProject.html?dir="+prjDir.path();
     });
     ls();
-    var w=Wiki($("#wikiViewArea"), FS.get("/Tonyu/doc/"));
+    var w=Wiki($("#wikiViewArea"), FS.get("/Tonyu/doc/novice/"));
     w.show("index");
 });
 });

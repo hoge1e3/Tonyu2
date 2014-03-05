@@ -1,5 +1,5 @@
 extends Actor;
-
+//scaleX=2;
 if (!vx) vx=0;
 if (!vy) vy=0;
 while (true) {
@@ -8,11 +8,13 @@ while (true) {
     c=crashTo(AcTest);
     if (c) {
         if (x>c.x) {
-            vx=5; 
-            c.vx=-5;
+            //vx=5; 
+            //c.vx=-5;
         } else {
-            vx=-5; 
-            c.vx=5;
+            //vx=-5;
+            vx=0;
+            c.vx=0;
+            //c.vx=5;
         }
         print("Hit!!");
     }

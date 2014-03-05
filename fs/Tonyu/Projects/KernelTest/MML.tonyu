@@ -9,6 +9,7 @@ mmlBuf=[];
     }
 }
 \playNext() {
+    //print("play!", id(), bufferCount());
     var mml=mmlBuf.shift();
     if (!mml) {
         m=null;
@@ -21,8 +22,8 @@ mmlBuf=[];
     $MMLS[id()]=this;
 }
 \id() {
-    if (!id) id=rnd();
-    return id;
+    if (!_id) _id=rnd()+"";
+    return _id;
 }
 \bufferCount() {
     return mmlBuf.length;
@@ -32,13 +33,15 @@ mmlBuf=[];
 }
 \stop() {
     if (m) {
-        mwav.pause();
-        mwav.stop();
+        if (mwav) {
+            mwav.pause();
+            mwav.stop();
+        }
         m.pause();
         m.stop();
         m=null;
+        mmlBuf=[];
+        //print("stop!", id(), bufferCount());
         delete $MMLS[id()];
     }
 }
-//mml0 = "l8< cde4 cde4 gedcded4 cde4 cde4 gedcdec";
-//mml1 = "l8 c4gec4ge cgegfgde c4ge c4ge cgegfgeg";

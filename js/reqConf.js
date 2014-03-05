@@ -97,6 +97,7 @@ var reqConf={
                 "exports": "FS"
             },
             "showErrorPos": {
+            	deps:[ "WebSite"],
                 "exports": "showErrorPos"
             },
             "TError": {
@@ -119,7 +120,7 @@ var reqConf={
                 "exports": "HttpHelper"
             },
             "Wiki": {
-                "deps": ["HttpHelper", "Arrow", "Util"],
+                "deps": ["HttpHelper", "Arrow", "Util","WebSite"],
                 "exports": "Wiki"
             },
             "ace": {
