@@ -11,16 +11,15 @@ native TextRect;
         var thg=currentThreadGroup();
         if (thg) _th=thg.addObj(this);
     }
-    if (typeof x=="object") {
-        Tonyu.extend(this, x);
-    }
+    if (typeof x=="object") Tonyu.extend(this,x); 
     else if (typeof x=="number") {
         this.x=x;
         this.y=y;
         this.p=p;
     }
-    this.scaleX=1;
-    this.scaleY=1;
+    if (scaleX==null) scaleX=1;
+    if (rotate==null) rotate=0;
+    if (alpha==null) alpha=255;
 }
 nowait \extend(obj) {
     return Tonyu.extend(this,obj);
@@ -79,11 +78,17 @@ nowait \crashTo1(t) {
     Math.abs(t1.y-t2.y)*2<t1.height+t2.height;
 }
 nowait \getCrashRect() {
+    var actWidth=width*scaleX, actHeight;
+    if(typeof scaleY==="undefined"){
+        actHeight=height*scaleX;
+    }else{
+        actHeight=height*scaleY;
+    }
     return typeof x=="number" &&
     typeof y=="number" &&
     typeof width=="number" &&
     typeof height=="number" && 
-    {x,y,width,height};
+    {x,y,width:actWidth,height:actHeight};
 }
 nowait \watchHit(typeA,typeB,onHit) {
     $Sprites.watchHit(typeA , typeB, \(a,b) {
@@ -91,7 +96,7 @@ nowait \watchHit(typeA,typeB,onHit) {
     });
 }
 nowait \currentThreadGroup() {
-    return $currentThreadGroup; //Tonyu.currentThread.group;
+    return $currentThreadGroup; 
 }
 nowait \die() {
     if (_th) {
@@ -146,11 +151,19 @@ nowait \draw(ctx) {
     if (x==null || y==null) return;
     detectShape();
     if (pImg) {
-        ctx.scale(this.scaleX,this.scaleY);
+        ctx.save();
+        ctx.translate(x,y);
+        ctx.rotate(this.rotate/180*Math.PI);
+        if(typeof this.scaleY==="undefined") {
+            ctx.scale(this.scaleX,this.scaleX);
+        }else{
+            ctx.scale(this.scaleX,this.scaleY);
+        }
+        ctx.globalAlpha=this.alpha/255;
         ctx.drawImage(
         pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,
-        x/this.scaleX-width/2, y/this.scaleY-height/2, width, height);
-        ctx.scale(1/this.scaleX,1/this.scaleY);
+        -width/2, -height/2, width, height);
+        ctx.restore();
     } else if (text) {
         if (!size) size=15;
         if (!align) align="center";

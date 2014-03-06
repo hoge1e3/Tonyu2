@@ -1,5 +1,7 @@
 extends Actor;
-//scaleX=2;
+scaleX=2;
+scaleY=3;
+//rotate=45;
 if (!vx) vx=0;
 if (!vy) vy=0;
 while (true) {
@@ -9,6 +11,8 @@ while (true) {
     if (c) {
         if (x>c.x) {
             //vx=5; 
+            vx=0;
+            c.vx=0;
             //c.vx=-5;
         } else {
             //vx=-5;
@@ -16,6 +20,8 @@ while (true) {
             c.vx=0;
             //c.vx=5;
         }
+        vy=0;
+        c.vy=0;
         print("Hit!!");
     }
     update();

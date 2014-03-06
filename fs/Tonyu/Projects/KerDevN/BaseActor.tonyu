@@ -18,6 +18,8 @@ native TextRect;
         this.p=p;
     }
     this.scaleX=1;
+    this.rotate=0;
+    this.alpha=255;
 }
 nowait \extend(obj) {
     return Tonyu.extend(this,obj);
@@ -76,11 +78,17 @@ nowait \crashTo1(t) {
     Math.abs(t1.y-t2.y)*2<t1.height+t2.height;
 }
 nowait \getCrashRect() {
+    var actWidth=width*scaleX, actHeight;
+    if(typeof scaleY==="undefined"){
+        actHeight=height*scaleX;
+    }else{
+        actHeight=height*scaleY;
+    }
     return typeof x=="number" &&
     typeof y=="number" &&
     typeof width=="number" &&
     typeof height=="number" && 
-    {x,y,width,height};
+    {x,y,width:actWidth,height:actHeight};
 }
 nowait \watchHit(typeA,typeB,onHit) {
     $Sprites.watchHit(typeA , typeB, \(a,b) {
@@ -88,13 +96,14 @@ nowait \watchHit(typeA,typeB,onHit) {
     });
 }
 nowait \currentThreadGroup() {
-    return $currentThreadGroup; //Tonyu.currentThread.group;
+    return $currentThreadGroup; 
 }
 nowait \die() {
     if (_th) {
         _th.kill();
     }
     hide();
+    play().stop();
     _isDead=true;
 }
 nowait \hide() {
@@ -143,12 +152,17 @@ nowait \draw(ctx) {
     detectShape();
     if (pImg) {
         ctx.save();
-        if(scaleY==undefined) this.scaleY=this.scaleX;
-        ctx.translate(-x*(this.scaleX-1),-y*(this.scaleY-1));
-        ctx.scale(this.scaleX,this.scaleY);
+        ctx.translate(x,y);
+        ctx.rotate(this.rotate/180*Math.PI);
+        if(typeof this.scaleY==="undefined") {
+            ctx.scale(this.scaleX,this.scaleX);
+        }else{
+            ctx.scale(this.scaleX,this.scaleY);
+        }
+        ctx.globalAlpha=this.alpha/255;
         ctx.drawImage(
         pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,
-        x-width/2, y-height/2, width, height);
+        -width/2, -height/2, width, height);
         ctx.restore();
     } else if (text) {
         if (!size) size=15;
@@ -174,14 +188,16 @@ nowait \asyncResult() {
 }
 \play() {
     if (!_mml) _mml=new MML;
-    while (_mml.bufferCount()>1) {
-        update();
-    }
+    if (isDead() || arguments.length==0) return _mml;
     var mmls=[];
     for (var i=0; i<arguments.length; i++) {
         mmls.push(arguments[i]);
     }
     _mml.play(mmls);
+    while (_mml.bufferCount()>2) {
+        update();
+    }
+    return _mml;
 }
 nowait \playSE() {
     var mml=new MML;

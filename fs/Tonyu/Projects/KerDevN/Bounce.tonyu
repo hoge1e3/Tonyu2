@@ -4,6 +4,8 @@ vx=spd();
 vy=spd();
 scaleX=1.5;
 scaleY=2;
+rotate=90;
+alpha=255;
 while (true) {
     x+=vx;
     y+=vy;

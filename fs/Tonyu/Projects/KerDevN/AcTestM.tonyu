@@ -2,9 +2,9 @@ extends Actor;
 native Tonyu;
 $Screen.resize(800,600);
 at1=new AcTest{x:10, y:100, vx:5, vy:0, p:0};
-at2=new AcTest{x:320, y:100, vx:-5, vy:0, p:10};
+at2=new AcTest{x:320, y:300, vx:-5, vy:-5, p:10};
 t=new AcTest(50,150);
-
+at1.alpha=100;
 /*native $;
 a=asyncResult();
 $.get("http://localhost:3002/", a.receiver);
@@ -15,7 +15,7 @@ print(a[0]);
 fillStyle="yellow";
 for (i=0; i<3000; i++) {
     size=40;
-    text="スコア："+at2.x+" "+at1.x;
+    text="スコア："+at1.x+" "+at2.x;
     //x=$touches[0].x;
     //y=$touches[0].y;
     x=$mouseX;
