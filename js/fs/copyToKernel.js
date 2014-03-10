@@ -1,4 +1,4 @@
-define(["Shell","FS"], function (sh,FS) {
+requirejs(["Shell","FS"], function (sh,FS) {
     sh.copyToKernel=function (name) {
         var ker=FS.get("/Tonyu/Kernel/");
         if (name) {

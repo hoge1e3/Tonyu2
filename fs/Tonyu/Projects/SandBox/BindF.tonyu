@@ -4,6 +4,6 @@ f{};
 $("canvas").click(f);
 
 \f(e) {
-    x+=20;
+    x+=10;
     print(x,e);
 }

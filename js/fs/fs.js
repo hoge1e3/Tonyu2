@@ -146,6 +146,7 @@ FS=function () {
         return res;
     };
     FS.mountROM=function (exported) {
+    	console.log("ROM mouted on ",exported.base);
         roms[exported.base]=exported.data;
     };
     var DONOTEXPORT="DONOTEXPORT";

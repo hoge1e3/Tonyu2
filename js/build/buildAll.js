@@ -4,7 +4,7 @@ define(["genROM","dumpScript","Util","FS"], function (genROM,dumpScript,Util,FS)
     if (!build) return;
     build=parseInt(build);
     console.log("Build=", build);
-    setTimeout(function () {
+    $(function () {
         console.log("Build start=", build);
      // start with index.html?build=1
         switch (build) {
@@ -13,8 +13,16 @@ define(["genROM","dumpScript","Util","FS"], function (genROM,dumpScript,Util,FS)
             genROM(FS.get("/Tonyu/doc/"), FS.get("/Tonyu/js/gen/ROM_d.js"));
             genROM(FS.get("/Tonyu/SampleROM/"), FS.get("/Tonyu/js/gen/ROM_s.js"));
             upload("/", function () {
-                next(".");
+                //next(".");
+                concat({name: "ide/selProject", outfile:"index"},function () {
+                    concat({name: "ide/editor", outfile:"project"},function () {
+                        concat({name: "runScript", outfile:"runScript"},function (res) {
+                            alert(res.mesg);
+                        });
+                    });
+                });
             });
+
             break;
         case 2:
             dumpScript({onend:function (buf) {
@@ -42,7 +50,21 @@ define(["genROM","dumpScript","Util","FS"], function (genROM,dumpScript,Util,FS)
             break;
 
         }
-    },10000);
+    });
+    function concat(params ,onend) {
+        console.log("uploading",params);
+        $.ajax({
+            type:"GET",
+            url:"../../concat",
+            data:params
+        }).done(function (r) {
+                console.log("uploaded",params,"res=",r);
+                onend(r);
+        }).fail(function (XMLHttpRequest, textStatus, errorThrown)  {
+                console.log(XMLHttpRequest, textStatus, errorThrown);
+                alert("Error "+textStatus);
+        });
+    }
     function upload(dir, onend) {
     	console.log("Uploading "+dir);
         var json= JSON.stringify( FS.exportDir(dir) );

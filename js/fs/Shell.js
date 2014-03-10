@@ -1,7 +1,7 @@
 define(["FS","Util"],function (FS,Util) {
     var Shell={cwd:FS.get("/")};
     Shell.cd=function (dir) {
-        Shell.cwd=resolve(dir);
+        Shell.cwd=resolve(dir,true);
         return Shell.pwd();
     };
     function resolve(v, mustExist) {

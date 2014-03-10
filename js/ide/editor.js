@@ -1,9 +1,9 @@
-requirejs(["fs/ROMk","fs/ROMd","fs/ROMs","ace", "Util", "Tonyu", "FS", "FileList", "FileMenu",
+requirejs(["fs/ROMk","fs/ROMd","fs/ROMs", "Util", "Tonyu", "FS", "FileList", "FileMenu",
            "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project",
            "copySample","Shell","ImageResEditor","ProjectOptionsEditor","copyToKernel","KeyEventChecker",
            "WikiDialog","runtime", "KernelDiffDialog"
           ],
-function (romk, romd, roms, ace, Util, Tonyu, FS, FileList, FileMenu,
+function (romk, romd, roms,  Util, Tonyu, FS, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,
           copySample,sh, ImgResEdit,ProjectOptionsEditor, ctk, KeyEventChecker,
           WikiDialog, rt , KDD

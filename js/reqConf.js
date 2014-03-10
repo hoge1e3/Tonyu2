@@ -4,9 +4,9 @@ var reqConf={
             TextEditor: {
                 exports: "TextEditor"
             },
-            FileMenu: {
+/*            FileMenu: {
                 exports: "FileMenu"
-            },
+            },*/
             difflib: {
             	exports: "difflib"
             },
@@ -104,13 +104,13 @@ var reqConf={
                 "exports": "TError"
             },
             "fs/ROMk": {
-                "deps": ["FS"]
+                "deps": ["FS","WebSite"]
             },
             "fs/ROMd": {
-                "deps": ["FS"]
+                "deps": ["FS","WebSite"]
             },
             "fs/ROMs": {
-                "deps": ["FS"]
+                "deps": ["FS","WebSite"]
             },
             "FileList": {
                 "deps": ["FS"],
@@ -131,13 +131,13 @@ var reqConf={
             },
             "fs/export": {
                 deps: ["Shell","FS"]
-            },
-            "ide/selProject": {
-                deps: ["fs/ROMk","fs/ROMd","fs/ROMs", "FS","Wiki"]
-            },
-            "ide/noviceSelProject": {
-                deps: ["fs/ROMk","fs/ROMd","fs/ROMs", "FS","Wiki"]
             }
+            /*"ide/selProject": {
+                deps: ["fs/ROMk","fs/ROMd","fs/ROMs", "FS","Wiki"]
+            }*/
+            /*"ide/noviceSelProject": {
+                deps: ["fs/ROMk","fs/ROMd","fs/ROMs", "FS","Wiki"]
+            }*/
         },
         "paths": {
             runtime: "runtime/runtime",
@@ -181,7 +181,7 @@ var reqConf={
             "Tonyu.Compiler": "lang/compiler2",
             "fixIndent": "lang/indent",
             "Tonyu.TraceTbl": "runtime/TraceTbl",
-            "Sprites": "graphics/Sprites",
+            //"Sprites": "graphics/Sprites",
             "Key": "runtime/Key",
             "TextRect": "graphics/TextRect",
             "fukidashi": "graphics/fukidashi",
@@ -199,12 +199,16 @@ var reqConf={
             "Wiki": "help/wiki",
             "WikiDialog": "help/wikiDialog",
             "ace": "lib/ace-noconflict/ace",
+            "ide/selProject": "ide/selProject",
+            "ide/editor": "ide/editor",
             "ide/noviceSelProject": "ide/noviceSelProject",
             "ide/noviceEditor": "ide/noviceEditor",
             PatternParser:"graphics/PatternParser",
             copyToKernel: "fs/copyToKernel",
+            JSONCol: "lib/JSONCol",
             genROM: "build/genROM",
             "foo":"bar"
         },
         "baseUrl": "../../js"
 };
+if (typeof exports!=="undefined") exports.conf=reqConf;

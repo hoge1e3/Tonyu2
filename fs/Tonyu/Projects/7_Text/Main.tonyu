@@ -3,8 +3,6 @@
 // $ で始まる変数はグローバル変数です．他のクラスからも参照できます．
 $score=0;
 $player=new Player;
+new Chaser{x:20,y:20,p:5};
+new Chaser{x:300,y:250,p:5};
 new Status;
-for (i=0 ; i<10; i++) {
-    new Chaser{x:rnd($screenWidth),y:0,p:5};
-    for (j=0 ; j<20 ; j++) update();
-}

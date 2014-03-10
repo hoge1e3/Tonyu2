@@ -1,4 +1,5 @@
-define(["Shell","FS","UI"],function (sh, FS,UI) {
+define(["fs/ROMk","fs/ROMd","fs/ROMs", "Shell","FS","Wiki","UI"],
+        function (romk, romd, roms,     sh, FS, Wiki, UI) {
 $(function () {
     var home=FS.get("/Tonyu/");
     var projects=home.rel("Projects/");

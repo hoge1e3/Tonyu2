@@ -1,4 +1,5 @@
-define(["Shell","FS","copySample","NewProjectDialog","UI"],function (sh, FS,copySample,NPD,UI) {
+requirejs(["fs/ROMk","fs/ROMd","fs/ROMs", "FS","Wiki","Shell","copySample","NewProjectDialog","UI"],
+  function (romk, romd, roms,           FS, Wiki,   sh,      copySample,  NPD,           UI) {
 $(function () {
     copySample();
     var home=FS.get("/Tonyu/");

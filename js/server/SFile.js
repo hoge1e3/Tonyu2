@@ -1,7 +1,7 @@
 var fs=require("fs");
 var SEP="/";
 function SFile(path) {
-	this._path=fs.realpathSync(path).replace(/\\/g,SEP);
+    this._path=toCanonicalPath(path);
 }
 function extend(dst,src) {
 	for (var i in src) dst[i]=src[i];
@@ -11,6 +11,24 @@ function endsWith(str,postfix) {
 }
 function startsWith(str,prefix) {
     return str.substring(0, prefix.length)===prefix;
+}
+function isAbsolute(path) {
+    return startsWith(path,SEP) || path.match(/^[a-zA-Z]:/);
+}
+function toCanonicalPath(path) {
+    if (!isAbsolute(path)) path=process.cwd().replace(/\\/g,SEP)+SEP+path.replace(/\\/g,SEP);
+    var paths=path.split(SEP);
+    var built=[];
+    paths.forEach(function (p) {
+        if (p=="") return;
+        if (p==".") return;
+        if (p=="..") {
+            built.pop();
+            return;
+        }
+        built.push(p);
+    });
+    return built.join(SEP);
 }
 extend(SFile.prototype,{
 	text:function () {
@@ -23,11 +41,17 @@ extend(SFile.prototype,{
 	path: function () { return this._path; },
 	name: function () {
 		var p=this._path;
-		if (endsWith(p,SEP)) {
+		/*if (endsWith(p,SEP)) {
 			p=p.substring(0,p.length-1);
-		}
+		}*/
 		return p.split(SEP).pop();
 	},
+	endsWith: function (postfix) {
+	    return endsWith(this.name(), postfix);
+	},
+    exists: function () {
+        return fs.existsSync(this._path);
+    },
 	each:function (it) {
 		if (!this.isDir()) throw this+" cannot each. not a dir.";
 		var r=fs.readdirSync(this._path);
@@ -51,7 +75,7 @@ extend(SFile.prototype,{
 	},
 	rel: function (n) {
 		if (!this.isDir()) throw this+" cannot rel. not a dir.";
-		return new SFile(this._path+(endsWith(this._path,SEP)?"":SEP)+n);
+		return new SFile(this._path+SEP+n);
 	},
 	relPath: function (base) {
 		//console.log("relpath "+this+" - "+base);
@@ -60,7 +84,9 @@ extend(SFile.prototype,{
 		}
 		if (this.parent() == null)
 			throw this + " is not in " + base;
-		return this.parent().relPath(base) + SEP + this.name();
+		var pp=this.parent().relPath(base);
+		if (pp==".") return this.name();
+		return pp + SEP + this.name();
 	},
 	equals: function (f) {
 		return (f instanceof SFile) && f.path()==this.path();
@@ -69,13 +95,17 @@ extend(SFile.prototype,{
 		return this.stat().mtime.getTime();
 	},
 	up: function () {
-		var p=this._path;
-		while (p.length>0) {
+	    var p=this._path;
+		/*while (p.length>0) {
 			p=p.substring(0,p.length-1);
 			if (endsWith(p,SEP)) break;
-		}
-		if (p=="") return null;
+		}*/
+	    var pp=p.split(SEP);
+	    pp.pop();
+	    p=pp.join(SEP);
+        if (p=="") return null;
 		return new SFile(p);
+		//return this.rel(".."); //new SFile(p+SEP+"..");
 	},
 	isDir: function () {
 		return this.stat().isDirectory();

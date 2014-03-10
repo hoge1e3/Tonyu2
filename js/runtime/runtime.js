@@ -1,3 +1,3 @@
-define(["ImageList","TextRect","fukidashi","timbre"], function () {
+requirejs(["ImageList","TextRect","fukidashi"], function () {
 
 });
