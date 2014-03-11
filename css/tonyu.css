@@ -18,6 +18,9 @@ textarea{
 	cursor:pointer;
   color: #428bca;
 }
+#fileItemList li {
+	  list-style: none;
+}
 .fileItem.selected {
   cursor:default;
   color: black;

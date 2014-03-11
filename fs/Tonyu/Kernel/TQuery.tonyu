@@ -1,0 +1,42 @@
+extends TObject;
+native Tonyu;
+
+\tonyuIterator(arity) {
+    return Tonyu.iterator(objects,arity);
+}
+\attr(key,val) {
+    if (objects.length==0) return;
+    if (arguments.length==1) {
+        return objects[0][key];
+    } else {
+        for (var e in objects) {
+            e[key]=val;
+        }
+    }
+}
+\max(key) {
+    var f;
+    if (typeof key!="function") {
+        f=\(o) {return o[key];};
+    } else {
+        f=key;
+    }
+    var res;
+    for (var o in objects) {
+        var v=f(o);
+        if (res==null || v<res) res=v;
+    }
+    return res;
+}
+\size() {return objects.length;}
+\find(f) {
+    var no=[];
+    for (var o in objects) {
+        if (f(o)) no.push(o);
+    }
+    return new TQuery{objects:o};
+} 
+
+\klass(k) {
+    return find \(o) { return o instanceof k; };
+}

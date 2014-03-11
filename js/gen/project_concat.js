@@ -1,4 +1,4 @@
-// Created at Mon Mar 10 2014 17:05:10 GMT+0900 (東京 (標準時))
+// Created at Tue Mar 11 2014 12:15:08 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -495,8 +495,8 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":1394071743000,"Actor.tonyu":1394071743000,"BaseActor.tonyu":1394071743000,"Boot.tonyu":1394071743000,"Keys.tonyu":1394071743000,"MML.tonyu":1394071743000,"NoviceActor.tonyu":1394071743000,"ScaledCanvas.tonyu":1394071743000,"Sprites.tonyu":1394071743000,"TObject.tonyu":1394071743000,"WaveTable.tonyu":1394071743000}',
-      '.desktop': '{"runMenuOrd":["SETest","AcTestM","MMLTest","KeyTest","NObjTest","NObjTest2","AcTest","NoviceActor","Actor","Boot","AltBoot","Keys","BaseActor","TObject","WaveTable","MML"]}',
+      '': '{".desktop":{"lastUpdate":1394507432315},"Actor.tonyu":{"lastUpdate":1394507432316},"BaseActor.tonyu":{"lastUpdate":1394507432317},"Boot.tonyu":{"lastUpdate":1394507432318},"Keys.tonyu":{"lastUpdate":1394507432319},"MML.tonyu":{"lastUpdate":1394507432320},"NoviceActor.tonyu":{"lastUpdate":1394507432320},"ScaledCanvas.tonyu":1394071743000,"Sprites.tonyu":1394071743000,"TObject.tonyu":{"lastUpdate":1394507432322},"WaveTable.tonyu":{"lastUpdate":1394507432323},"TQuery.tonyu":{"lastUpdate":1394507446418}}',
+      '.desktop': '{"runMenuOrd":["AcTestM","SETest","MMLTest","KeyTest","NObjTest","NObjTest2","AcTest","NoviceActor","Actor","Boot","AltBoot","Keys","TObject","WaveTable","MML","BaseActor","TQuery"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
         'native Sprites;\n'+
@@ -564,6 +564,16 @@ requireSimulator.setName('fs/ROMk');
         '}\n'+
         'nowait \\hitTo(t) {\n'+
         '    return crashTo(t);\n'+
+        '}\n'+
+        'nowait \\all(c) {\n'+
+        '    var res=[];\n'+
+        '    $Sprites.sprites.forEach \\(s) {\n'+
+        '        if (s===this) return;\n'+
+        '        if (!c || s instanceof c) {\n'+
+        '            res.push(s);\n'+
+        '        }\n'+
+        '    };\n'+
+        '    return new TQuery{objects:res};\n'+
         '}\n'+
         'nowait \\allCrash(t) {\n'+
         '    var res=[];\n'+
@@ -1155,7 +1165,16 @@ requireSimulator.setName('fs/ROMk');
         '    return imageList;\n'+
         '}'
       ,
-      'TObject.tonyu': '\\new () {this.main();}',
+      'TObject.tonyu': 
+        'native Tonyu;\n'+
+        '\\new (options) {\n'+
+        '    if (typeof options=="object") extend(options);\n'+
+        '    this.main();\n'+
+        '}\n'+
+        'nowait \\extend(obj) {\n'+
+        '    return Tonyu.extend(this,obj);\n'+
+        '}'
+      ,
       'WaveTable.tonyu': 
         'extends TObject;\n'+
         'native T;\n'+
@@ -1187,6 +1206,50 @@ requireSimulator.setName('fs/ROMk');
         '    //    synth=T("OscGen") {wave:"pulse", env, mul:0.25};\n'+
         '    //set(0,synth);    \n'+
         '}\n'
+      ,
+      'TQuery.tonyu': 
+        'extends TObject;\n'+
+        'native Tonyu;\n'+
+        '\n'+
+        '\\tonyuIterator(arity) {\n'+
+        '    return Tonyu.iterator(objects,arity);\n'+
+        '}\n'+
+        '\\attr(key,val) {\n'+
+        '    if (objects.length==0) return;\n'+
+        '    if (arguments.length==1) {\n'+
+        '        return objects[0][key];\n'+
+        '    } else {\n'+
+        '        for (var e in objects) {\n'+
+        '            e[key]=val;\n'+
+        '        }\n'+
+        '    }\n'+
+        '}\n'+
+        '\\max(key) {\n'+
+        '    var f;\n'+
+        '    if (typeof key!="function") {\n'+
+        '        f=\\(o) {return o[key];};\n'+
+        '    } else {\n'+
+        '        f=key;\n'+
+        '    }\n'+
+        '    var res;\n'+
+        '    for (var o in objects) {\n'+
+        '        var v=f(o);\n'+
+        '        if (res==null || v<res) res=v;\n'+
+        '    }\n'+
+        '    return res;\n'+
+        '}\n'+
+        '\\size() {return objects.length;}\n'+
+        '\\find(f) {\n'+
+        '    var no=[];\n'+
+        '    for (var o in objects) {\n'+
+        '        if (f(o)) no.push(o);\n'+
+        '    }\n'+
+        '    return new TQuery{objects:o};\n'+
+        '} \n'+
+        '\n'+
+        '\\klass(k) {\n'+
+        '    return find \\(o) { return o instanceof k; };\n'+
+        '}'
       
     }
   };
@@ -4127,8 +4190,10 @@ requireSimulator.setName('FileList');
 function FileList(elem, options) {
     var _curDir=null;
     var _curFile=null;
+    var _mod=false;
     if (!options) options={};
-    var FL={select:select, ls:ls, on:(options.on?options.on:{}), curFile:curFile, curDir: curDir};
+    var FL={select:select, ls:ls, on:(options.on?options.on:{}), curFile:curFile, curDir: curDir,
+    		setModified:setModified, isModified:isModified};
     var path=$("<div>");
     var items=$("<div>");
     function item(f) {
@@ -4146,13 +4211,23 @@ function FileList(elem, options) {
     elem.append(path).append(items);
     function select(f) {
         if (FL.on.select && FL.on.select(f)) return;
+        _mod=false;
         if (f.isDir()) {
+            _curFile=null;
             ls(f);
         } else {
         	item(_curFile).removeClass("selected");
             _curFile=f;
             item(_curFile).addClass("selected");
         }
+    }
+    function setModified(m) {
+    	if (!_curFile) return;
+    	_mod=m;
+       	item(_curFile).text(itemText(_curFile,m));
+    }
+    function isModified() {
+    	return _mod;
     }
     function ls(dir) {
         if (typeof dir=="string") dir=FS.get(dir);
@@ -4177,12 +4252,16 @@ function FileList(elem, options) {
         _curDir.each(function (f) {
             var n=displayName(f);
             if (!n) return;
-            var s=$("<span>").addClass("fileItem").text( (f.isReadOnly()?"[RO]":"")+n).data("filename",f.path());
-            if (_curFile && _curFile.path()==f.path()) { s.addClass("selected");}
+            var isCur=_curFile && _curFile.path()==f.path();
+            var s=$("<span>").addClass("fileItem").text(itemText(f)).data("filename",f.path());
+            if (isCur) { s.addClass("selected");}
             $("<li>").append(s).appendTo(items).click(function () {
                 select(f);
             });
         });
+    }
+    function itemText(f, mod) {
+    	return (mod?"*":"")+(f.isReadOnly()?"[RO]":"")+displayName(f);
     }
     function displayName(f) {
         if (FL.on.displayName) return FL.on.displayName.apply(FL, arguments );
@@ -4709,7 +4788,7 @@ IndentBuffer=function () {
 		var len=$.indentStr.length;
 		if (!$.buf.substring($.buf.length-len).match(/^\s*$/)) {
 			console.log($.buf);
-			throw "No sppce truncated ";
+			throw "Non-space truncated ";
 		}
 		$.buf=$.buf.substring(0,$.buf.length-len);
 		$.indentBuf=$.indentBuf.substring(0 , $.indentBuf.length-len);
@@ -6628,7 +6707,9 @@ requireSimulator.setName('Tonyu.Iterator');
 define(["Tonyu"], function (T) {
    function IT(set, arity) {
        var res={};
-       if (set instanceof Array) {
+       if (set.tonyuIterator) {
+    	   return set.tonyuIterator(arity);
+       } else if (set instanceof Array) {
            res.i=0;
            if (arity==1) {
                res.next=function () {
@@ -9293,34 +9374,16 @@ $(function () {
             run();
         }
     }]);*/
-    /*KeyEventChecker.down(document,"Ctrl+E",function (e) {
-    	alert("E");
-    	e.stopPropagation();
-    	e.preventDefault();
-    	return false;
-    });*/
+
     KeyEventChecker.down(document,"F9",run);
-    //$("#prog").bind("keydown","F9",run);
-    //$(document).bind("keydown","F9",run);
-    /*prog.commands.addCommands([{
-        name: "stop",
-        bindKey: {win: "F2", mac: "F2"},
-        exec: function(editor, line) {
-            stop();
-        }
-    }]);*/
-    //$("#prog").bind("keydown","F2",stop);
-    //$(document).bind("keydown","F2",stop);
     KeyEventChecker.down(document,"F2",stop);
-
-
-    /*$(document).bind("keydown","ctrl+shift+e",function (e) {
-    	alert(e);
-    	e.preventDefault();
+    KeyEventChecker.down(document,"ctrl+s",function (e) {
+    	save();
     	e.stopPropagation();
+    	e.preventDefault();
     	return false;
-    	//if (e.originalEvent)
-    });*/
+    });
+
 
     var closedMsg="←左のリストからファイルを選択してください．\nファイルがない場合はメニューの「ファイル」→「新規」を選んでください";
     prog.setValue(closedMsg);
@@ -9529,7 +9592,17 @@ $(function () {
             fixEditorIndent();
             curFile.text(prog.getValue());
         }
+        fl.setModified(false);
     }
+    function watchModified() {
+    	var curFile=fl.curFile();
+    	if (!curFile) return;
+    	if (fl.isModified()) return;
+    	if (curFile.text()!=prog.getValue()) {
+    		fl.setModified(true);
+    	}
+    }
+    setInterval(watchModified,1000);
     function open(f) {
         if (f.isDir()) {
             return;

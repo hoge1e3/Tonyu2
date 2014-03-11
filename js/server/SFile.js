@@ -108,6 +108,7 @@ extend(SFile.prototype,{
 		//return this.rel(".."); //new SFile(p+SEP+"..");
 	},
 	isDir: function () {
+		if (!this.exists()) return false;
 		return this.stat().isDirectory();
 	},
 	stat: function () {

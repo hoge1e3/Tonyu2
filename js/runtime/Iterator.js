@@ -1,7 +1,9 @@
 define(["Tonyu"], function (T) {
    function IT(set, arity) {
        var res={};
-       if (set instanceof Array) {
+       if (set.tonyuIterator) {
+    	   return set.tonyuIterator(arity);
+       } else if (set instanceof Array) {
            res.i=0;
            if (arity==1) {
                res.next=function () {

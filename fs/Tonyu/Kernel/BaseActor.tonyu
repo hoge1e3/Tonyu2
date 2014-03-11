@@ -39,6 +39,16 @@ nowait \getkey(k) {
 nowait \hitTo(t) {
     return crashTo(t);
 }
+nowait \all(c) {
+    var res=[];
+    $Sprites.sprites.forEach \(s) {
+        if (s===this) return;
+        if (!c || s instanceof c) {
+            res.push(s);
+        }
+    };
+    return new TQuery{objects:res};
+}
 nowait \allCrash(t) {
     var res=[];
     var sp=this; //_sprite || this;

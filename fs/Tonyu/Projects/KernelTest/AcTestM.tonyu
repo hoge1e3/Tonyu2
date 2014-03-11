@@ -14,8 +14,11 @@ print(a[0]);
 
 fillStyle="yellow";
 for (i=0; i<3000; i++) {
+    for (a in all(AcTest)) {
+        a.y++;
+    }
     size=40;
-    text="スコア："+i;
+    text="スコア："+i+"/"+all(AcTest).max("y");
     //x=$touches[0].x;
     //y=$touches[0].y;
     x=$mouseX;
@@ -24,6 +27,7 @@ for (i=0; i<3000; i++) {
     t.y=$touches[1].y;
     if (i==50) {hide(); $Screen.setBGColor("black"); }
     if (i==60) {show();$Screen.setBGColor("green"); }
+    
     //if (i==50) waitFor(Tonyu.timeout(1000));
     update();
 }

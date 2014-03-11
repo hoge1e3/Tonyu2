@@ -47,34 +47,16 @@ $(function () {
             run();
         }
     }]);*/
-    /*KeyEventChecker.down(document,"Ctrl+E",function (e) {
-    	alert("E");
-    	e.stopPropagation();
-    	e.preventDefault();
-    	return false;
-    });*/
+
     KeyEventChecker.down(document,"F9",run);
-    //$("#prog").bind("keydown","F9",run);
-    //$(document).bind("keydown","F9",run);
-    /*prog.commands.addCommands([{
-        name: "stop",
-        bindKey: {win: "F2", mac: "F2"},
-        exec: function(editor, line) {
-            stop();
-        }
-    }]);*/
-    //$("#prog").bind("keydown","F2",stop);
-    //$(document).bind("keydown","F2",stop);
     KeyEventChecker.down(document,"F2",stop);
-
-
-    /*$(document).bind("keydown","ctrl+shift+e",function (e) {
-    	alert(e);
-    	e.preventDefault();
+    KeyEventChecker.down(document,"ctrl+s",function (e) {
+    	save();
     	e.stopPropagation();
+    	e.preventDefault();
     	return false;
-    	//if (e.originalEvent)
-    });*/
+    });
+
 
     var closedMsg="←左のリストからファイルを選択してください．\nファイルがない場合はメニューの「ファイル」→「新規」を選んでください";
     prog.setValue(closedMsg);
@@ -283,7 +265,17 @@ $(function () {
             fixEditorIndent();
             curFile.text(prog.getValue());
         }
+        fl.setModified(false);
     }
+    function watchModified() {
+    	var curFile=fl.curFile();
+    	if (!curFile) return;
+    	if (fl.isModified()) return;
+    	if (curFile.text()!=prog.getValue()) {
+    		fl.setModified(true);
+    	}
+    }
+    setInterval(watchModified,1000);
     function open(f) {
         if (f.isDir()) {
             return;

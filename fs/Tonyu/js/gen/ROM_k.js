@@ -2,8 +2,8 @@
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":1394071743000,"Actor.tonyu":1394071743000,"BaseActor.tonyu":1394071743000,"Boot.tonyu":1394071743000,"Keys.tonyu":1394071743000,"MML.tonyu":1394071743000,"NoviceActor.tonyu":1394071743000,"ScaledCanvas.tonyu":1394071743000,"Sprites.tonyu":1394071743000,"TObject.tonyu":1394071743000,"WaveTable.tonyu":1394071743000}',
-      '.desktop': '{"runMenuOrd":["SETest","AcTestM","MMLTest","KeyTest","NObjTest","NObjTest2","AcTest","NoviceActor","Actor","Boot","AltBoot","Keys","BaseActor","TObject","WaveTable","MML"]}',
+      '': '{".desktop":{"lastUpdate":1394507432315},"Actor.tonyu":{"lastUpdate":1394507432316},"BaseActor.tonyu":{"lastUpdate":1394507432317},"Boot.tonyu":{"lastUpdate":1394507432318},"Keys.tonyu":{"lastUpdate":1394507432319},"MML.tonyu":{"lastUpdate":1394507432320},"NoviceActor.tonyu":{"lastUpdate":1394507432320},"ScaledCanvas.tonyu":1394071743000,"Sprites.tonyu":1394071743000,"TObject.tonyu":{"lastUpdate":1394507432322},"WaveTable.tonyu":{"lastUpdate":1394507432323},"TQuery.tonyu":{"lastUpdate":1394507446418}}',
+      '.desktop': '{"runMenuOrd":["AcTestM","SETest","MMLTest","KeyTest","NObjTest","NObjTest2","AcTest","NoviceActor","Actor","Boot","AltBoot","Keys","TObject","WaveTable","MML","BaseActor","TQuery"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
         'native Sprites;\n'+
@@ -71,6 +71,16 @@
         '}\n'+
         'nowait \\hitTo(t) {\n'+
         '    return crashTo(t);\n'+
+        '}\n'+
+        'nowait \\all(c) {\n'+
+        '    var res=[];\n'+
+        '    $Sprites.sprites.forEach \\(s) {\n'+
+        '        if (s===this) return;\n'+
+        '        if (!c || s instanceof c) {\n'+
+        '            res.push(s);\n'+
+        '        }\n'+
+        '    };\n'+
+        '    return new TQuery{objects:res};\n'+
         '}\n'+
         'nowait \\allCrash(t) {\n'+
         '    var res=[];\n'+
@@ -662,7 +672,16 @@
         '    return imageList;\n'+
         '}'
       ,
-      'TObject.tonyu': '\\new () {this.main();}',
+      'TObject.tonyu': 
+        'native Tonyu;\n'+
+        '\\new (options) {\n'+
+        '    if (typeof options=="object") extend(options);\n'+
+        '    this.main();\n'+
+        '}\n'+
+        'nowait \\extend(obj) {\n'+
+        '    return Tonyu.extend(this,obj);\n'+
+        '}'
+      ,
       'WaveTable.tonyu': 
         'extends TObject;\n'+
         'native T;\n'+
@@ -694,6 +713,50 @@
         '    //    synth=T("OscGen") {wave:"pulse", env, mul:0.25};\n'+
         '    //set(0,synth);    \n'+
         '}\n'
+      ,
+      'TQuery.tonyu': 
+        'extends TObject;\n'+
+        'native Tonyu;\n'+
+        '\n'+
+        '\\tonyuIterator(arity) {\n'+
+        '    return Tonyu.iterator(objects,arity);\n'+
+        '}\n'+
+        '\\attr(key,val) {\n'+
+        '    if (objects.length==0) return;\n'+
+        '    if (arguments.length==1) {\n'+
+        '        return objects[0][key];\n'+
+        '    } else {\n'+
+        '        for (var e in objects) {\n'+
+        '            e[key]=val;\n'+
+        '        }\n'+
+        '    }\n'+
+        '}\n'+
+        '\\max(key) {\n'+
+        '    var f;\n'+
+        '    if (typeof key!="function") {\n'+
+        '        f=\\(o) {return o[key];};\n'+
+        '    } else {\n'+
+        '        f=key;\n'+
+        '    }\n'+
+        '    var res;\n'+
+        '    for (var o in objects) {\n'+
+        '        var v=f(o);\n'+
+        '        if (res==null || v<res) res=v;\n'+
+        '    }\n'+
+        '    return res;\n'+
+        '}\n'+
+        '\\size() {return objects.length;}\n'+
+        '\\find(f) {\n'+
+        '    var no=[];\n'+
+        '    for (var o in objects) {\n'+
+        '        if (f(o)) no.push(o);\n'+
+        '    }\n'+
+        '    return new TQuery{objects:o};\n'+
+        '} \n'+
+        '\n'+
+        '\\klass(k) {\n'+
+        '    return find \\(o) { return o instanceof k; };\n'+
+        '}'
       
     }
   };
