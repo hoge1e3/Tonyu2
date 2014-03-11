@@ -1,4 +1,4 @@
-// Created at Tue Mar 11 2014 12:15:08 GMT+0900 (東京 (標準時))
+// Created at Tue Mar 11 2014 14:09:28 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -495,7 +495,7 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1394507432315},"Actor.tonyu":{"lastUpdate":1394507432316},"BaseActor.tonyu":{"lastUpdate":1394507432317},"Boot.tonyu":{"lastUpdate":1394507432318},"Keys.tonyu":{"lastUpdate":1394507432319},"MML.tonyu":{"lastUpdate":1394507432320},"NoviceActor.tonyu":{"lastUpdate":1394507432320},"ScaledCanvas.tonyu":1394071743000,"Sprites.tonyu":1394071743000,"TObject.tonyu":{"lastUpdate":1394507432322},"WaveTable.tonyu":{"lastUpdate":1394507432323},"TQuery.tonyu":{"lastUpdate":1394507446418}}',
+      '': '{".desktop":{"lastUpdate":1394514547718},"Actor.tonyu":{"lastUpdate":1394514547720},"BaseActor.tonyu":{"lastUpdate":1394514547722},"Boot.tonyu":{"lastUpdate":1394514547723},"Keys.tonyu":{"lastUpdate":1394514547724},"MML.tonyu":{"lastUpdate":1394514547725},"NoviceActor.tonyu":{"lastUpdate":1394514547726},"ScaledCanvas.tonyu":1394071743000,"Sprites.tonyu":1394071743000,"TObject.tonyu":{"lastUpdate":1394514547727},"WaveTable.tonyu":{"lastUpdate":1394514547727},"TQuery.tonyu":{"lastUpdate":1394514547728}}',
       '.desktop': '{"runMenuOrd":["AcTestM","SETest","MMLTest","KeyTest","NObjTest","NObjTest2","AcTest","NoviceActor","Actor","Boot","AltBoot","Keys","TObject","WaveTable","MML","BaseActor","TQuery"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -1234,7 +1234,7 @@ requireSimulator.setName('fs/ROMk');
         '    var res;\n'+
         '    for (var o in objects) {\n'+
         '        var v=f(o);\n'+
-        '        if (res==null || v<res) res=v;\n'+
+        '        if (res==null || v>res) res=v;\n'+
         '    }\n'+
         '    return res;\n'+
         '}\n'+

@@ -24,7 +24,7 @@ native Tonyu;
     var res;
     for (var o in objects) {
         var v=f(o);
-        if (res==null || v<res) res=v;
+        if (res==null || v>res) res=v;
     }
     return res;
 }
