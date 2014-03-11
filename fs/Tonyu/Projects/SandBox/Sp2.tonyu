@@ -1,0 +1,7 @@
+
+//text="hoge";
+p=5;
+while(true) {
+    x++;
+    update();
+}

@@ -97,9 +97,14 @@ Tonyu=function () {
         var _isAlive=true;
         var thg;
         var _isWaiting=false;
+        var willAdd=null;
         function add(thread) {
             thread.group=thg;
-            threads.push(thread);
+            if (willAdd) {
+                willAdd.push(thread);
+            } else {
+                threads.push(thread);
+            }
         }
         function addObj(obj) {
             var th=thread();
@@ -113,11 +118,22 @@ Tonyu=function () {
                 threads.splice(i,1);
             }
             _isWaiting=true;
-            threads.forEach(function (th){
+            willAdd=[];
+            threads.forEach(iter);
+            while (willAdd.length>0) {
+                w=willAdd;
+                willAdd=[];
+                w.forEach(function (th) {
+                    threads.push(th);
+                    iter(th);
+                });
+            }
+            willAdd=null;
+            function iter(th){
                 if (th.isWaiting()) return;
                 _isWaiting=false;
                 th.steps();
-            });
+            }
         }
         function kill() {
             _isAlive=false;

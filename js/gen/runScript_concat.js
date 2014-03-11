@@ -1,4 +1,4 @@
-// Created at Tue Mar 11 2014 14:09:28 GMT+0900 (東京 (標準時))
+// Created at Tue Mar 11 2014 18:21:29 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -1358,9 +1358,14 @@ Tonyu=function () {
         var _isAlive=true;
         var thg;
         var _isWaiting=false;
+        var willAdd=null;
         function add(thread) {
             thread.group=thg;
-            threads.push(thread);
+            if (willAdd) {
+                willAdd.push(thread);
+            } else {
+                threads.push(thread);
+            }
         }
         function addObj(obj) {
             var th=thread();
@@ -1374,11 +1379,22 @@ Tonyu=function () {
                 threads.splice(i,1);
             }
             _isWaiting=true;
-            threads.forEach(function (th){
+            willAdd=[];
+            threads.forEach(iter);
+            while (willAdd.length>0) {
+                w=willAdd;
+                willAdd=[];
+                w.forEach(function (th) {
+                    threads.push(th);
+                    iter(th);
+                });
+            }
+            willAdd=null;
+            function iter(th){
                 if (th.isWaiting()) return;
                 _isWaiting=false;
                 th.steps();
-            });
+            }
         }
         function kill() {
             _isAlive=false;
