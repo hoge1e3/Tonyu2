@@ -5,6 +5,7 @@ native Key;
 native Date;
 native ImageList;
 native Tonyu;
+native SplashScreen;
 
 \initSprites() {
     $Sprites=new Sprites();
@@ -125,6 +126,7 @@ $pat_fruits=30;
 $Keys=new Keys;
 $MMLS={};
 $WaveTable=new WaveTable;
+if (typeof SplashScreen!="undefined") SplashScreen.hide();
 while (true) {
     ti=new Date().getTime();
     thg.steps();

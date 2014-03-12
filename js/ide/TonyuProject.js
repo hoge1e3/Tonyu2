@@ -49,20 +49,30 @@ return Tonyu.Project=function (dir, kernelDir) {
         TPR.compile();
         TPR.rawBoot(mainClassName);
     };
-    TPR.run=function (mainClassName) {
+    /*TPR.run=function (mainClassName) {
         TPR.compile();
         TPR.boot(mainClassName);
-    };
+    };*/
     TPR.compile=function () {
+    	if (!env.kernelClasses) TPR.compileKernel();
+    	TPR.compileUser();
+    };
+    TPR.compileKernel=function () {
+    	TPR.compileDir(kernelDir);
+    	env.kernelClasses=env.classes;
+    };
+    TPR.compileUser=function () {
+    	TPR.compileDir(dir,env.kernelClasses);
+    };
+    TPR.compileDir=function (cdir, baseClasses) {
         TPR.getOptions();
         Tonyu.runMode=false;
-        env.classes={};
+        env.classes=Tonyu.extend({}, baseClasses || {});
+        var skip=Tonyu.extend({}, baseClasses || {});
         Tonyu.currentProject=TPR;
         Tonyu.globals.$currentProject=TPR;
-        /*if (Tonyu.currentThreadGroup) Tonyu.currentThreadGroup.kill();
-        delete Tonyu.currentThreadGroup;*/
-        kernelDir.each(collect);
-        dir.each(collect);
+        //kernelDir.each(collect);
+        cdir.each(collect);
         function collect(f) {
             if (f.endsWith(TPR.EXT)) {
                 var nb=f.truncExt(TPR.EXT);
@@ -72,15 +82,18 @@ return Tonyu.Project=function (dir, kernelDir) {
                             tonyu: f
                         }
                 };
+                delete skip[nb];
             }
         }
         for (var n in env.classes) {
-            //console.log("initClassDecl: "+n);
+        	if (skip[n]) continue;
+            console.log("initClassDecl: "+n);
             Tonyu.Compiler.initClassDecls(env.classes[n], env);
         }
         var ord=orderByInheritance(env.classes);
         ord.forEach(function (c) {
-            //console.log("genJS :"+c.name);
+        	if (skip[c.name]) return;
+            console.log("genJS :"+c.name);
             Tonyu.Compiler.genJS(c, env);
             try {
                 eval(c.src.js);
@@ -140,7 +153,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         thg.run(0);
         TPR.runningObj=main;
     };
-    TPR.boot=function (mainClassName) {
+/*    TPR.boot=function (mainClassName) {
         TPR.loadResource(function () {ld(mainClassName);});
     };
     function ld(mainClassName){
@@ -167,7 +180,7 @@ return Tonyu.Project=function (dir, kernelDir) {
             //Sprites.draw(cv);
             //Sprites.checkHit();
         });
-    };
+    };*/
     TPR.isKernel=function (className) {
         var r=kernelDir.rel(className+TPR.EXT);
         if (r.exists()) return r;

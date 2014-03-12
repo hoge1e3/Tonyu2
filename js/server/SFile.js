@@ -35,6 +35,8 @@ extend(SFile.prototype,{
 		if (arguments.length==0) {
 			return fs.readFileSync(this._path, {encoding:"utf8"});
 		} else {
+			var p=this.up();
+			if (p) p.mkdir();
 			fs.writeFileSync(this._path, arguments[0]);
 		}
 	},
@@ -76,6 +78,18 @@ extend(SFile.prototype,{
 	rel: function (n) {
 		if (!this.isDir()) throw this+" cannot rel. not a dir.";
 		return new SFile(this._path+SEP+n);
+	},
+	mkdir: function () {
+		if (this.exists()){
+			if (this.isDir()) {
+				return;
+			} else {
+				throw this+" is a file. not a dir.";
+			}
+		}
+		var p=this.up();
+		if (p) p.mkdir();
+		fs.mkdirSync(this.path());
 	},
 	relPath: function (base) {
 		//console.log("relpath "+this+" - "+base);

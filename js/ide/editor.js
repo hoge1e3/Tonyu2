@@ -218,21 +218,22 @@ $(function () {
         if (typeof name!="string") {console.log(name); alert("not a string3: "+name);}
         save();
         displayMode("run");
-        try {
-            var o=curPrj.getOptions();
-            o.run.mainClass=name;
-            curPrj.setOptions();
-            //Tonyu.setGlobal("$mainClassName", name);
-            curPrj.rawRun(o.run.bootClass);
-            //curPrj.run(name);
-        } catch(e){
-            if (e.isTError) {
-                showErrorPos($("#errorPos"),e);
-                displayMode("compile_error");
-            }else{
-                throw e;
+        if (typeof SplashScreen!="undefined") SplashScreen.show();
+        setTimeout(function () {
+            try {
+                var o=curPrj.getOptions();
+                o.run.mainClass=name;
+                curPrj.setOptions();
+                curPrj.rawRun(o.run.bootClass);
+            } catch(e){
+                if (e.isTError) {
+                    showErrorPos($("#errorPos"),e);
+                    displayMode("compile_error");
+                }else{
+                    throw e;
+                }
             }
-        }
+        },0);
     }
     Tonyu.onRuntimeError=function (e) {
         var t=curPrj.env.traceTbl;
@@ -341,6 +342,7 @@ $(function () {
         return fl.curFile();
     };
     FM.onMenuStart=save;
+    curPrj.compileKernel();
     SplashScreen.hide();
 });
 });

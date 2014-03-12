@@ -1,4 +1,4 @@
-// Created at Tue Mar 11 2014 18:21:28 GMT+0900 (東京 (標準時))
+// Created at Wed Mar 12 2014 12:56:05 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -495,7 +495,7 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1394514547718},"Actor.tonyu":{"lastUpdate":1394514547720},"BaseActor.tonyu":{"lastUpdate":1394514547722},"Boot.tonyu":{"lastUpdate":1394514547723},"Keys.tonyu":{"lastUpdate":1394514547724},"MML.tonyu":{"lastUpdate":1394514547725},"NoviceActor.tonyu":{"lastUpdate":1394514547726},"ScaledCanvas.tonyu":1394071743000,"Sprites.tonyu":1394071743000,"TObject.tonyu":{"lastUpdate":1394514547727},"WaveTable.tonyu":{"lastUpdate":1394514547727},"TQuery.tonyu":{"lastUpdate":1394514547728}}',
+      '': '{".desktop":{"lastUpdate":1394594360332},"Actor.tonyu":{"lastUpdate":1394594360332},"BaseActor.tonyu":{"lastUpdate":1394594360333},"Boot.tonyu":{"lastUpdate":1394594360334},"Keys.tonyu":{"lastUpdate":1394594360335},"MML.tonyu":{"lastUpdate":1394594360335},"NoviceActor.tonyu":{"lastUpdate":1394594360336},"ScaledCanvas.tonyu":1394071743000,"Sprites.tonyu":1394071743000,"TObject.tonyu":{"lastUpdate":1394594360337},"WaveTable.tonyu":{"lastUpdate":1394594360337},"TQuery.tonyu":{"lastUpdate":1394594360338}}',
       '.desktop': '{"runMenuOrd":["AcTestM","SETest","MMLTest","KeyTest","NObjTest","NObjTest2","AcTest","NoviceActor","Actor","Boot","AltBoot","Keys","TObject","WaveTable","MML","BaseActor","TQuery"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -753,6 +753,7 @@ requireSimulator.setName('fs/ROMk');
         'native Date;\n'+
         'native ImageList;\n'+
         'native Tonyu;\n'+
+        'native SplashScreen;\n'+
         '\n'+
         '\\initSprites() {\n'+
         '    $Sprites=new Sprites();\n'+
@@ -873,6 +874,7 @@ requireSimulator.setName('fs/ROMk');
         '$Keys=new Keys;\n'+
         '$MMLS={};\n'+
         '$WaveTable=new WaveTable;\n'+
+        'if (typeof SplashScreen!="undefined") SplashScreen.hide();\n'+
         'while (true) {\n'+
         '    ti=new Date().getTime();\n'+
         '    thg.steps();\n'+

@@ -22,6 +22,7 @@ SplashScreen=function () {
     },100);
     SS.hide=function () {
     	if (!SS.showing) return;
+    	console.log("Hide");
     	s.remove();
     	SS.showing=false;
     };

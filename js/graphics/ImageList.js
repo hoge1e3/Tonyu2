@@ -1,15 +1,25 @@
 define(["PatternParser","Util","WebSite"], function (PP,Util,WebSite) {
-    function IL(resImgs, onLoad) {
+    var cache={};
+	function IL(resImgs, onLoad) {
         //  resImgs:[{url: , [pwidth: , pheight:]?  }]
         var resa=[];
         var cnt=resImgs.length;
         resImgs.forEach(function (resImg,i) {
             //console.log("loaded", resImg,i);
             var url=resImg.url;
+            var urlKey=url;
+            if (cache[urlKey]) {
+            	proc.apply(cache[urlKey],[]);
+            	return;
+            }
             if (WebSite.urlAliases[url]) url=WebSite.urlAliases[url];
             if (!Util.startsWith(url,"data")) url+="?" + new Date().getTime();
             var im=$("<img>").attr("src",url);
             im.load(function () {
+            	cache[urlKey]=this;
+            	proc.apply(this,[]);
+            });
+            function proc() {
                 var pw,ph;
                 if ((pw=resImg.pwidth) && (ph=resImg.pheight)) {
                     var x=0, y=0, w=this.width, h=this.height;
@@ -40,7 +50,7 @@ define(["PatternParser","Util","WebSite"], function (PP,Util,WebSite) {
                     res.names=names;
                     onLoad(res);
                 }
-            });
+            }
         });
     }
     return IL;

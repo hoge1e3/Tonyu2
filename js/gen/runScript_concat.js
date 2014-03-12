@@ -1,4 +1,4 @@
-// Created at Tue Mar 11 2014 18:21:29 GMT+0900 (東京 (標準時))
+// Created at Wed Mar 12 2014 12:56:05 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -495,7 +495,7 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1394514547718},"Actor.tonyu":{"lastUpdate":1394514547720},"BaseActor.tonyu":{"lastUpdate":1394514547722},"Boot.tonyu":{"lastUpdate":1394514547723},"Keys.tonyu":{"lastUpdate":1394514547724},"MML.tonyu":{"lastUpdate":1394514547725},"NoviceActor.tonyu":{"lastUpdate":1394514547726},"ScaledCanvas.tonyu":1394071743000,"Sprites.tonyu":1394071743000,"TObject.tonyu":{"lastUpdate":1394514547727},"WaveTable.tonyu":{"lastUpdate":1394514547727},"TQuery.tonyu":{"lastUpdate":1394514547728}}',
+      '': '{".desktop":{"lastUpdate":1394594360332},"Actor.tonyu":{"lastUpdate":1394594360332},"BaseActor.tonyu":{"lastUpdate":1394594360333},"Boot.tonyu":{"lastUpdate":1394594360334},"Keys.tonyu":{"lastUpdate":1394594360335},"MML.tonyu":{"lastUpdate":1394594360335},"NoviceActor.tonyu":{"lastUpdate":1394594360336},"ScaledCanvas.tonyu":1394071743000,"Sprites.tonyu":1394071743000,"TObject.tonyu":{"lastUpdate":1394594360337},"WaveTable.tonyu":{"lastUpdate":1394594360337},"TQuery.tonyu":{"lastUpdate":1394594360338}}',
       '.desktop': '{"runMenuOrd":["AcTestM","SETest","MMLTest","KeyTest","NObjTest","NObjTest2","AcTest","NoviceActor","Actor","Boot","AltBoot","Keys","TObject","WaveTable","MML","BaseActor","TQuery"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -753,6 +753,7 @@ requireSimulator.setName('fs/ROMk');
         'native Date;\n'+
         'native ImageList;\n'+
         'native Tonyu;\n'+
+        'native SplashScreen;\n'+
         '\n'+
         '\\initSprites() {\n'+
         '    $Sprites=new Sprites();\n'+
@@ -873,6 +874,7 @@ requireSimulator.setName('fs/ROMk');
         '$Keys=new Keys;\n'+
         '$MMLS={};\n'+
         '$WaveTable=new WaveTable;\n'+
+        'if (typeof SplashScreen!="undefined") SplashScreen.hide();\n'+
         'while (true) {\n'+
         '    ti=new Date().getTime();\n'+
         '    thg.steps();\n'+
@@ -4190,17 +4192,27 @@ return {getQueryString:getQueryString, endsWith: endsWith, startsWith: startsWit
 }();
 requireSimulator.setName('ImageList');
 define(["PatternParser","Util","WebSite"], function (PP,Util,WebSite) {
-    function IL(resImgs, onLoad) {
+    var cache={};
+	function IL(resImgs, onLoad) {
         //  resImgs:[{url: , [pwidth: , pheight:]?  }]
         var resa=[];
         var cnt=resImgs.length;
         resImgs.forEach(function (resImg,i) {
             //console.log("loaded", resImg,i);
             var url=resImg.url;
+            var urlKey=url;
+            if (cache[urlKey]) {
+            	proc.apply(cache[urlKey],[]);
+            	return;
+            }
             if (WebSite.urlAliases[url]) url=WebSite.urlAliases[url];
             if (!Util.startsWith(url,"data")) url+="?" + new Date().getTime();
             var im=$("<img>").attr("src",url);
             im.load(function () {
+            	cache[urlKey]=this;
+            	proc.apply(this,[]);
+            });
+            function proc() {
                 var pw,ph;
                 if ((pw=resImg.pwidth) && (ph=resImg.pheight)) {
                     var x=0, y=0, w=this.width, h=this.height;
@@ -4231,7 +4243,7 @@ define(["PatternParser","Util","WebSite"], function (PP,Util,WebSite) {
                     res.names=names;
                     onLoad(res);
                 }
-            });
+            }
         });
     }
     return IL;
@@ -4328,20 +4340,30 @@ return Tonyu.Project=function (dir, kernelDir) {
         TPR.compile();
         TPR.rawBoot(mainClassName);
     };
-    TPR.run=function (mainClassName) {
+    /*TPR.run=function (mainClassName) {
         TPR.compile();
         TPR.boot(mainClassName);
-    };
+    };*/
     TPR.compile=function () {
+    	if (!env.kernelClasses) TPR.compileKernel();
+    	TPR.compileUser();
+    };
+    TPR.compileKernel=function () {
+    	TPR.compileDir(kernelDir);
+    	env.kernelClasses=env.classes;
+    };
+    TPR.compileUser=function () {
+    	TPR.compileDir(dir,env.kernelClasses);
+    };
+    TPR.compileDir=function (cdir, baseClasses) {
         TPR.getOptions();
         Tonyu.runMode=false;
-        env.classes={};
+        env.classes=Tonyu.extend({}, baseClasses || {});
+        var skip=Tonyu.extend({}, baseClasses || {});
         Tonyu.currentProject=TPR;
         Tonyu.globals.$currentProject=TPR;
-        /*if (Tonyu.currentThreadGroup) Tonyu.currentThreadGroup.kill();
-        delete Tonyu.currentThreadGroup;*/
-        kernelDir.each(collect);
-        dir.each(collect);
+        //kernelDir.each(collect);
+        cdir.each(collect);
         function collect(f) {
             if (f.endsWith(TPR.EXT)) {
                 var nb=f.truncExt(TPR.EXT);
@@ -4351,15 +4373,18 @@ return Tonyu.Project=function (dir, kernelDir) {
                             tonyu: f
                         }
                 };
+                delete skip[nb];
             }
         }
         for (var n in env.classes) {
-            //console.log("initClassDecl: "+n);
+        	if (skip[n]) continue;
+            console.log("initClassDecl: "+n);
             Tonyu.Compiler.initClassDecls(env.classes[n], env);
         }
         var ord=orderByInheritance(env.classes);
         ord.forEach(function (c) {
-            //console.log("genJS :"+c.name);
+        	if (skip[c.name]) return;
+            console.log("genJS :"+c.name);
             Tonyu.Compiler.genJS(c, env);
             try {
                 eval(c.src.js);
@@ -4419,7 +4444,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         thg.run(0);
         TPR.runningObj=main;
     };
-    TPR.boot=function (mainClassName) {
+/*    TPR.boot=function (mainClassName) {
         TPR.loadResource(function () {ld(mainClassName);});
     };
     function ld(mainClassName){
@@ -4446,7 +4471,7 @@ return Tonyu.Project=function (dir, kernelDir) {
             //Sprites.draw(cv);
             //Sprites.checkHit();
         });
-    };
+    };*/
     TPR.isKernel=function (className) {
         var r=kernelDir.rel(className+TPR.EXT);
         if (r.exists()) return r;
