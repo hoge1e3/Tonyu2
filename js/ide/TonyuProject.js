@@ -19,7 +19,7 @@ return Tonyu.Project=function (dir, kernelDir) {
                 if (added[n]) continue;
                 var c=classes[n];
                 var spc=c.superClass;
-                if (!spc || added[spc.name]) {
+                if (!spc || spc.builtin || added[spc.name]) {
                     res.push(c);
                     added[n]=true;
                 }

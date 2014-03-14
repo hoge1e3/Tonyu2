@@ -1,0 +1,29 @@
+[[TQuery]]
+
+*TQuery.min / TQuery.max メソッド
+
+このTQueryオブジェクトが格納しているすべてのActorのうち，指定された値の最小（最大）値を返します．
+
+** 書式1
+
+<<code
+t.min(key)
+>>
+<<code
+t.max(key)
+>>
+
+このTQueryオブジェクトが格納しているすべてのActorにおける，
+[[@arg key]](文字列)で指定された名前をもつフィールドの値の最小（最大）値
+
+** 書式2
+
+<<code
+t.min(func)
+>>
+<<code
+t.max(func)
+>>
+
+このTQueryオブジェクトが格納しているすべてのActorについて，そえｒぞれ
+そのActorを第1引数に渡して[[@arg func]](関数)を呼び出した結果の最小（最大）値

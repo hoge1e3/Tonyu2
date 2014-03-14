@@ -1,0 +1,19 @@
+[[TQuery]]
+
+*TQuery.find
+
+このTQueryオブジェクトが格納しているActorのうち，指定された条件に合うものだけを格納した新しいTQueryオブジェクトを返します．
+
+**書式
+
+<<code
+t.find(f)
+>>
+
+このTQueryオブジェクトが格納しているActorそれぞれについて，
+第1引数にそのActorを渡して関数[[@arg f]] を呼び出し，
+[[@cfrag true]]相当の値が返されたActorだけを格納した新しいTQueryオブジェクト
+
+
+
+

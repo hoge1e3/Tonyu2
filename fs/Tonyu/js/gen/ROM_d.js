@@ -2,7 +2,7 @@
   var rom={
     base: '/Tonyu/doc/',
     data: {
-      '': '{"index.txt":{"lastUpdate":1394438053570},"novice/":{"lastUpdate":1394262273479},"projectIndex.txt":1393045284000,"tonyu2/":{"lastUpdate":1394262273479}}',
+      '': '{"index.txt":{"lastUpdate":1394438053570},"novice/":{"lastUpdate":1394262273479},"projectIndex.txt":1393045284000,"tonyu2/":{"lastUpdate":1394784345962}}',
       'index.txt': 
         '* サンプルを見る\n'+
         '\n'+
@@ -1002,7 +1002,7 @@
         '名前は，半角英字とアンダースコア(_)が使えます．2文字以上でも構いません．2文字目以降は数字も使うことができます．'
       ,
       'projectIndex.txt': '',
-      'tonyu2/': '{"$mouseX, $mouseY.txt":1394071744000,"$touches.txt":1394071744000,"Actor.txt":1394071743000,"allCrash.txt":1394071744000,"api.txt":1394071743000,"asyncResult.txt":1394071744000,"BaseActor.txt":1394071743000,"Boot.txt":1394071744000,"classDef.txt":1394071744000,"console.txt":1394071744000,"cpats.txt":1394071744000,"crashTo.txt":1394071744000,"crashTo1.txt":1394071744000,"die.txt":1394071744000,"draw.txt":1394071744000,"extend.txt":1394071744000,"forin.txt":1394071744000,"frame.txt":1394071744000,"fs.txt":1394071743000,"getCrashRect.txt":1394071744000,"getkey.txt":1394071744000,"hide.txt":1394071744000,"ide.txt":1394071744000,"index.txt":1394071743000,"isDead.txt":1394071744000,"kernel.txt":1393045285000,"lang.txt":1394071743000,"options.txt":1394071744000,"play.txt":1394071744000,"playSE.txt":1394071744000,"print.txt":1394071744000,"resize.txt":1394071744000,"rnd.txt":1394071744000,"ScaledCanvas.txt":1394071744000,"setBGColor.txt":1394071744000,"show.txt":1394071744000,"sugar.txt":1394071743000,"super.txt":1394071744000,"update.txt":1394071744000,"waitFor.txt":1394071744000,"waitmode.txt":1394071743000}',
+      'tonyu2/': '{"$mouseX, $mouseY.txt":1394071744000,"$touches.txt":1394071744000,"Actor.txt":1394071743000,"allCrash.txt":{"lastUpdate":1394782870908},"api.txt":1394071743000,"asyncResult.txt":1394071744000,"BaseActor.txt":{"lastUpdate":1394598180246},"Boot.txt":1394071744000,"classDef.txt":1394071744000,"console.txt":1394071744000,"cpats.txt":1394071744000,"crashTo.txt":1394071744000,"crashTo1.txt":1394071744000,"die.txt":{"lastUpdate":1394780376677},"draw.txt":1394071744000,"extend.txt":{"lastUpdate":1394783789118},"forin.txt":1394071744000,"frame.txt":1394071744000,"fs.txt":1394071743000,"getCrashRect.txt":{"lastUpdate":1394783671409},"getkey.txt":1394071744000,"hide.txt":1394071744000,"ide.txt":1394071744000,"index.txt":1394071743000,"isDead.txt":1394071744000,"kernel.txt":1393045285000,"lang.txt":1394071743000,"options.txt":1394071744000,"play.txt":1394071744000,"playSE.txt":1394071744000,"print.txt":1394071744000,"resize.txt":1394071744000,"rnd.txt":1394071744000,"ScaledCanvas.txt":1394071744000,"setBGColor.txt":1394071744000,"show.txt":1394071744000,"sugar.txt":{"lastUpdate":1394784345961},"super.txt":1394071744000,"update.txt":1394071744000,"waitFor.txt":1394071744000,"waitmode.txt":1394071743000,"all.txt":{"lastUpdate":1394598485413},"TQuery.txt":{"lastUpdate":1394783379982},"TQuery.die.txt":{"lastUpdate":1394783543386},"TQuery.attr.txt":{"lastUpdate":1394781196480},"TQuery.alive.txt":{"lastUpdate":1394781461083},"TQuery.find.txt":{"lastUpdate":1394781711767},"TQuery.apply.txt":{"lastUpdate":1394782816170},"TQuery.minmax.txt":{"lastUpdate":1394783301386}}',
       'tonyu2/$mouseX, $mouseY.txt': 
         '[[api]]\n'+
         '\n'+
@@ -1058,14 +1058,14 @@
         '\n'+
         '* allCrashメソッド\n'+
         '\n'+
-        '指定されたクラスのオブジェクトのうち，自分と衝突しているすべてのオブジェクトを配列で返します．\n'+
+        '指定されたクラスのオブジェクトのうち，自分と衝突しているすべてのオブジェクトをあらわす[[TQuery]]オブジェクトを返します．\n'+
         '\n'+
         '**書式\n'+
         '<<code\n'+
         'allCrash(Class)\n'+
         '>>\n'+
         '\n'+
-        '[[@arg Class]]で指定されたクラスのオブジェクトのうち，自分と衝突しているすべてのオブジェクトを配列で返します．\n'+
+        '[[@arg Class]]で指定されたクラスのオブジェクトのうち，自分と衝突しているすべてのオブジェクトをあらわす[[TQuery]]オブジェクトを返します．\n'+
         '\n'+
         '\n'+
         '*例\n'+
@@ -1076,7 +1076,16 @@
         '    for (t in allCrash(Target)) {\n'+
         '        t.die();\n'+
         '    }\n'+
-        '>>\n'
+        '>>\n'+
+        '\n'+
+        '上の例は，次のように書くこともできます．\n'+
+        '\n'+
+        '<<code\n'+
+        '    // このオブジェクトがTargetクラスのオブジェクトとぶつかっていたら，\n'+
+        '    // そのオブジェクトを消す\n'+
+        '    allCrash(Target).die();\n'+
+        '>>\n'+
+        '\n'
       ,
       'tonyu2/api.txt': 
         '[[index]]\n'+
@@ -1177,6 +1186,7 @@
         '-[[crashTo]]\n'+
         '-[[crashTo1]]\n'+
         '-[[allCrash]]\n'+
+        '-[[all]]\n'+
         '-[[getCrashRect]]\n'+
         '-[[die]]\n'+
         '-[[isDead]] \n'+
@@ -1481,7 +1491,7 @@
         '<<code\n'+
         'extend(obj)\n'+
         '>>\n'+
-        '[[@arg obj]]のもつ値をすべて自分自身に書き込みます．\n'+
+        '[[@arg obj]]（通常はオブジェクトリテラルを用いる）のもつ値をすべて自分自身に書き込みます．\n'+
         '\n'+
         '\n'+
         '**例\n'+
@@ -1552,7 +1562,8 @@
         '\n'+
         '*getCrashRect\n'+
         '\n'+
-        '当たり判定に使う矩形領域を返します．[[crashTo]]，[[crashTo1]]，[[allCrash]]で用いられます\n'+
+        '当たり判定に使う矩形領域を返します．\n'+
+        '[[crashTo]]，[[crashTo1]]，[[allCrash]]で用いられます\n'+
         '\n'+
         '**書式\n'+
         '\n'+
@@ -1970,17 +1981,29 @@
         '\n'+
         '**引数渡しにおける()の省略\n'+
         '\n'+
-        '関数・メソッド呼び出し時に，オブジェクトリテラルで書かれた引数１つだけを渡す場合，()を省略できます．\n'+
+        '関数・メソッド呼び出し時に，引数がオブジェクトリテラルまたは関数リテラルのみで構成される場合，()を省略できます．\n'+
         '\n'+
         '<<code\n'+
         '$("a").attr{target:"_top"};\n'+
         '// $("a").attr({target:"_top"}); と等価\n'+
+        '\n'+
+        '$("a").click \\(e) { alert("click"); };\n'+
+        '// $("a").click(\\(e) { alert("click"); }); と等価\n'+
+        '\n'+
         '>>\n'+
+        '\n'+
+        'また，通常の引数リスト＋オブジェクトリテラルまたは関数リテラルのみで構成される引数リストを組み合わせて書くこともできます\n'+
+        '\n'+
+        '<<code\n'+
+        'sh.cp("src.txt","dst.txt") {v:true};\n'+
+        '// sh.cp("src.txt","dst.txt",{v:true}); と等価\n'+
+        '>>\n'+
+        '\n'+
+        '\n'+
         '\n'+
         '**オブジェクトリテラルの省略記法\n'+
         '\n'+
         '[[@cfrag {x:x}]]のように，属性名と値が同じ場合，[[@cfrag {x}]]と記述できます．\n'+
-        '\n'+
         '\n'
       ,
       'tonyu2/super.txt': 
@@ -2093,6 +2116,217 @@
         '\n'+
         '\n'+
         '\n'
+      ,
+      'tonyu2/all.txt': 
+        '[[BaseActor]]\n'+
+        '\n'+
+        '*allメソッド\n'+
+        '\n'+
+        '自分以外のすべてのオブジェクト（あるいは，指定されたクラスのオブジェクト）をあらわす[[TQuery]]オブジェクトを取得します．\n'+
+        '\n'+
+        '**書式1\n'+
+        '\n'+
+        '自分以外のすべてのオブジェクトをあらわすTQueryオブジェクトを返します．\n'+
+        '\n'+
+        '<<code\n'+
+        'all()\n'+
+        '>>\n'+
+        '\n'+
+        '[[@arg Class]]で指定されたクラスのオブジェクト（自分以外）をあらわすTQueryオブジェクトを返します．\n'+
+        '\n'+
+        '<<code\n'+
+        'all(Class)\n'+
+        '>>\n'+
+        '\n'
+      ,
+      'tonyu2/TQuery.txt': 
+        '[[BaseActor]]\n'+
+        '\n'+
+        '*TQuery\n'+
+        '\n'+
+        '[[all]]メソッド， [[allCrash]]メソッドなどで返されるオブジェクトです．複数の[[Actor]]に対して一斉に動作を行わせることができます．\n'+
+        '\n'+
+        '* 要素数・要素へのアクセス\n'+
+        '\n'+
+        'TQueryオブジェクトに格納しているActorの個数は[[@cfrag .length]]で取得します．\n'+
+        '\n'+
+        '各Actorへは[[@cfrag [添字] ]]でアクセスします．\n'+
+        '\n'+
+        '**例\n'+
+        '\n'+
+        '<<code\n'+
+        'a=all(Enemy);\n'+
+        'print("敵の数=", a.length);\n'+
+        'if (a.length>0) print("最初の敵のx座標",a[0].x);\n'+
+        '>>\n'+
+        '\n'+
+        '* for ... in の使用\n'+
+        '\n'+
+        'for ... in を使って各Actorへに同じ処理を一斉に行うことができます．\n'+
+        '\n'+
+        '<<code\n'+
+        'for (e in all(Enemy)) {\n'+
+        '   e.die();\n'+
+        '}\n'+
+        '>>\n'+
+        '\n'+
+        '* メソッド\n'+
+        '\n'+
+        '-[[die>TQuery.die]]\n'+
+        '-[[alive>TQuery.alive]]\n'+
+        '-[[attr>TQuery.attr]]\n'+
+        '-[[find>TQuery.find]]\n'+
+        '-[[apply>TQuery.apply]]\n'+
+        '-[[min, max>TQuery.minmax]]\n'+
+        '\n'+
+        '\n'
+      ,
+      'tonyu2/TQuery.die.txt': 
+        '[[TQuery]]\n'+
+        '\n'+
+        '*TQuery.dieメソッド\n'+
+        '\n'+
+        'このTQueryオブジェクトが格納しているすべての「生きている」Actorに対して，[[die]]メソッドを呼びます．\n'+
+        '\n'+
+        '※「生きている」Actorとは，dieメソッドが一度も呼ばれていないActorを指す\n'+
+        '\n'+
+        '**書式\n'+
+        '\n'+
+        '<<code\n'+
+        't.die()\n'+
+        '>>\n'+
+        '\n'+
+        '**戻り値\n'+
+        '\n'+
+        'このTQueryオブジェクトが格納しているすべてのActorのうち，少なくとも1つが「生きている」Actorであれば [[@cfrag true]] ，そうでなければ[[@cfrag false]]\n'+
+        '\n'+
+        '\n'
+      ,
+      'tonyu2/TQuery.attr.txt': 
+        '[[TQuery]]\n'+
+        '\n'+
+        '*TQuery.attrメソッド\n'+
+        '\n'+
+        'このTQueryオブジェクトが格納しているActorについて，フィールドの読み込みまたは書き込みを行います．\n'+
+        '\n'+
+        '** 書式1\n'+
+        '\n'+
+        '<<code\n'+
+        't.attr(key)\n'+
+        '>>\n'+
+        '\n'+
+        '最初のActor ( [[@cfrag t[0] ]] ) の，[[@arg key]] で指定した名前をもつフィールドの値を読み出します\n'+
+        '\n'+
+        '** 書式2\n'+
+        '\n'+
+        '<<code\n'+
+        't.attr(key1, value1, key2, value2 ...)\n'+
+        '>>\n'+
+        '\n'+
+        'すべてのActorについて，[[@arg key]] と [[@arg value]]  の組で表されるフィールドを書き込みます．\n'+
+        '\n'+
+        '** 書式3\n'+
+        '\n'+
+        '<<code\n'+
+        't.attr(obj)\n'+
+        '>>\n'+
+        '\n'+
+        'すべてのActorについて，[[@arg obj]](通常はオブジェクトリテラルで指定)で指定されたオブジェクトの内容をフィールドに書き込みます．\n'+
+        '\n'
+      ,
+      'tonyu2/TQuery.alive.txt': 
+        '[[TQuery]]\n'+
+        '\n'+
+        '* TQuery.alive メソッド\n'+
+        '\n'+
+        'このTQueryオブジェクトが格納しているActorのうち，生きている（[[die]]メソッドが1回も呼ばれていない）ものだけを格納した新しいTQueryオブジェクトを返します．\n'+
+        '\n'+
+        '**書式\n'+
+        '\n'+
+        '<<code\n'+
+        't.alive()\n'+
+        '>>\n'+
+        '\n'+
+        '**戻り値\n'+
+        '\n'+
+        'このTQueryオブジェクトが格納しているActorのうち，生きているものだけを格納した新しいTQueryオブジェクト\n'+
+        '\n'
+      ,
+      'tonyu2/TQuery.find.txt': 
+        '[[TQuery]]\n'+
+        '\n'+
+        '*TQuery.find\n'+
+        '\n'+
+        'このTQueryオブジェクトが格納しているActorのうち，指定された条件に合うものだけを格納した新しいTQueryオブジェクトを返します．\n'+
+        '\n'+
+        '**書式\n'+
+        '\n'+
+        '<<code\n'+
+        't.find(f)\n'+
+        '>>\n'+
+        '\n'+
+        'このTQueryオブジェクトが格納しているActorそれぞれについて，\n'+
+        '第1引数にそのActorを渡して関数[[@arg f]] を呼び出し，\n'+
+        '[[@cfrag true]]相当の値が返されたActorだけを格納した新しいTQueryオブジェクト\n'+
+        '\n'+
+        '\n'+
+        '\n'+
+        '\n'
+      ,
+      'tonyu2/TQuery.apply.txt': 
+        '[[TQuery]]\n'+
+        '\n'+
+        '*TQuery.applyメソッド\n'+
+        '\n'+
+        'このTQueryオブジェクトが指すすべてのActorに対して，指定されたメソッドを呼びます．\n'+
+        '\n'+
+        '**書式\n'+
+        '\n'+
+        '<<code\n'+
+        't.apply(name, args)\n'+
+        '>>\n'+
+        '\n'+
+        'すべてのActorについて，\n'+
+        '[[@arg name]]で指定されたをメソッドを，配列[[@arg args]]で指定された引数を渡して呼び出します．\n'+
+        '\n'+
+        '**戻り値\n'+
+        '\n'+
+        '一番最後にメソッドが呼び出されたActorに対するメソッドの戻り値．メソッドが呼ばれたActorがなければ[[@cfrag undefined]]．\n'+
+        '\n'+
+        '\n'+
+        '\n'+
+        '\n'
+      ,
+      'tonyu2/TQuery.minmax.txt': 
+        '[[TQuery]]\n'+
+        '\n'+
+        '*TQuery.min / TQuery.max メソッド\n'+
+        '\n'+
+        'このTQueryオブジェクトが格納しているすべてのActorのうち，指定された値の最小（最大）値を返します．\n'+
+        '\n'+
+        '** 書式1\n'+
+        '\n'+
+        '<<code\n'+
+        't.min(key)\n'+
+        '>>\n'+
+        '<<code\n'+
+        't.max(key)\n'+
+        '>>\n'+
+        '\n'+
+        'このTQueryオブジェクトが格納しているすべてのActorにおける，\n'+
+        '[[@arg key]](文字列)で指定された名前をもつフィールドの値の最小（最大）値\n'+
+        '\n'+
+        '** 書式2\n'+
+        '\n'+
+        '<<code\n'+
+        't.min(func)\n'+
+        '>>\n'+
+        '<<code\n'+
+        't.max(func)\n'+
+        '>>\n'+
+        '\n'+
+        'このTQueryオブジェクトが格納しているすべてのActorについて，そえｒぞれ\n'+
+        'そのActorを第1引数に渡して[[@arg func]](関数)を呼び出した結果の最小（最大）値\n'
       
     }
   };

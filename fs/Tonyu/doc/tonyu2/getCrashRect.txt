@@ -2,7 +2,8 @@
 
 *getCrashRect
 
-当たり判定に使う矩形領域を返します．[[crashTo]]，[[crashTo1]]，[[allCrash]]で用いられます
+当たり判定に使う矩形領域を返します．
+[[crashTo]]，[[crashTo1]]，[[allCrash]]で用いられます
 
 **書式
 

@@ -40,17 +40,17 @@ nowait \hitTo(t) {
     return crashTo(t);
 }
 nowait \all(c) {
-    var res=[];
+    var res=new TQuery;
     $Sprites.sprites.forEach \(s) {
         if (s===this) return;
         if (!c || s instanceof c) {
             res.push(s);
         }
     };
-    return new TQuery{objects:res};
+    return res;// new TQuery{objects:res};
 }
 nowait \allCrash(t) {
-    var res=[];
+    var res=new TQuery;
     var sp=this; //_sprite || this;
     var t1=getCrashRect();
     if (!t1) return res;

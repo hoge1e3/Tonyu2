@@ -1,0 +1,40 @@
+[[BaseActor]]
+
+*TQuery
+
+[[all]]メソッド， [[allCrash]]メソッドなどで返されるオブジェクトです．複数の[[Actor]]に対して一斉に動作を行わせることができます．
+
+* 要素数・要素へのアクセス
+
+TQueryオブジェクトに格納しているActorの個数は[[@cfrag .length]]で取得します．
+
+各Actorへは[[@cfrag [添字] ]]でアクセスします．
+
+**例
+
+<<code
+a=all(Enemy);
+print("敵の数=", a.length);
+if (a.length>0) print("最初の敵のx座標",a[0].x);
+>>
+
+* for ... in の使用
+
+for ... in を使って各Actorへに同じ処理を一斉に行うことができます．
+
+<<code
+for (e in all(Enemy)) {
+   e.die();
+}
+>>
+
+* メソッド
+
+-[[die>TQuery.die]]
+-[[alive>TQuery.alive]]
+-[[attr>TQuery.attr]]
+-[[find>TQuery.find]]
+-[[apply>TQuery.apply]]
+-[[min, max>TQuery.minmax]]
+
+

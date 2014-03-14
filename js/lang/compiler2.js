@@ -34,7 +34,9 @@ function initClassDecls(klass, env ) {
             //console.log("Match!  "+JSON.stringify(t));
             if (spcn=="null") spcn=null;
         }
-        if (spcn) {
+        if (spcn=="Array") {
+            klass.superClass={name:"Array",builtin:true};
+        } else if (spcn) {
             var spc=env.classes[spcn];
             if (!spc) throw TError ( "親クラス "+spcn+"は定義されていません", s, pos);
             klass.superClass=spc;
@@ -111,10 +113,12 @@ function genJS(klass, env,pass) {
         };
     function getClassName(klass){
         if (typeof klass=="string") return CLASS_HEAD+klass;
+        if (klass.builtin) return klass.name;
         return CLASS_HEAD+klass.name;
     }
     //console.log(JSON.stringify( retFiberCallTmpl));
     function initTopLevelScope2(klass) {
+    	if (klass.builtin) return;
         var s=topLevelScope;
         var decls=klass.decls;
         for (var i in decls.fields) {

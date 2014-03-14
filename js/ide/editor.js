@@ -271,10 +271,7 @@ $(function () {
     function watchModified() {
     	var curFile=fl.curFile();
     	if (!curFile) return;
-    	if (fl.isModified()) return;
-    	if (curFile.text()!=prog.getValue()) {
-    		fl.setModified(true);
-    	}
+    	fl.setModified(curFile.text()!=prog.getValue());
     }
     setInterval(watchModified,1000);
     function open(f) {

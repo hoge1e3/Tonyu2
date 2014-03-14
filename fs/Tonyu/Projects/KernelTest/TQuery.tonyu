@@ -1,41 +1,108 @@
 extends TObject;
-native Tonyu;
-
-\tonyuIterator(arity) {
-    return Tonyu.iterator(objects,arity);
+\new () {
+    length=0;
 }
-\attr(key,val) {
-    if (objects.length==0) return;
-    if (arguments.length==1) {
-        return objects[0][key];
+\tonyuIterator(arity) {
+    var res={};
+    res.i=0;
+    if (arity==1) {
+        res.next=function () {
+            if (res.i>=this.length) return false;
+            res[0]=this[res.i];
+            res.i++;
+            return true;
+        };
     } else {
-        for (var e in objects) {
-            e[key]=val;
+        res.next=function () {
+            if (res.i>=this.length) return false;
+            res[0]=res.i;
+            res[1]=this[res.i];
+            res.i++;
+            return true;
+        };
+    }
+    return res;
+}
+\attr() {
+    var values;
+    if (length==0) return;
+    if (arguments.length==1 && typeof arguments[0]=="string") {
+        return this[0][arguments[0]];
+    }
+    if (arguments.length>=2) {
+        values={};
+        for (var i=0 ; i<arguments.length-1 ;i+=2) {
+            values[arguments[i]]=arguments[i+1];
+        }
+    } else {
+        values=arguments[0];
+    }
+    if (values) {
+        for (var e in this) {
+            e.extend( values);
         }
     }
 }
-\max(key) {
-    var f;
+\genKeyfunc(key) {
     if (typeof key!="function") {
-        f=\(o) {return o[key];};
+        return \(o) {return o[key];};
     } else {
-        f=key;
+        return key;
     }
+}
+\max(key) {
+    var f=genKeyfunc(key);
     var res;
-    for (var o in objects) {
+    for (var o in this) {
         var v=f(o);
         if (res==null || v>res) res=v;
     }
     return res;
 }
-\size() {return objects.length;}
+\min(key) {
+    var f=genKeyfunc(key);
+    var res;
+    for (var o in this) {
+        var v=f(o);
+        if (res==null || v<res) res=v;
+    }
+    return res;
+}
+\push(e) {
+    this[length]=e;
+    length++;
+}
+\size() {return length;}
 \find(f) {
-    var no=[];
-    for (var o in objects) {
+    var no=new TQuery;
+    for (var o in this) {
         if (f(o)) no.push(o);
     }
-    return new TQuery{objects:o};
+    return no;
 } 
+\apply(name, args) {
+    var res;
+    if (!args) args=[];
+    for (var o in this) {
+        var f=o[name];
+        if (typeof f=="function") {
+            res=f.apply(o, args);
+        }
+    }
+    return res;
+}
+// \alive => find \(o) => !o.isDead()  //  (in future)
+\alive() {
+    return find \(o) {
+        return !o.isDead();
+    };
+}
+\die() {
+    var a=alive();
+    if (a.length==0) return false;
+    a.apply("die");
+    return true;
+}
 
 \klass(k) {
     return find \(o) { return o instanceof k; };

@@ -5,20 +5,13 @@ new AcTest{x:10, y:100, vx:5, vy:0, p:0,scaleX:2};
 new AcTest{x:320, y:100, vx:-5, vy:0, p:10,alpha:100};
 t=new AcTest(50,150);
 
-/*native $;
-a=asyncResult();
-$.get("http://localhost:3002/", a.receiver);
-waitFor(a);
-print(a[0]);
-*/
-
 fillStyle="yellow";
 for (i=0; i<3000; i++) {
     for (a in all(AcTest)) {
-        a.y++;
+        a.y+=0.1;
     }
     size=40;
-    text="スコア："+i+"/"+all(AcTest).max("y");
+    text="スコア："+i+"/"+all(AcTest).min("y")+"--"+all(AcTest).max("y");
     //x=$touches[0].x;
     //y=$touches[0].y;
     x=$mouseX;
@@ -27,7 +20,13 @@ for (i=0; i<3000; i++) {
     t.y=$touches[1].y;
     if (i==50) {hide(); $Screen.setBGColor("black"); }
     if (i==60) {show();$Screen.setBGColor("green"); }
-    
+    if (getkey("d")==1) {
+        print( all(AcTest).die() );
+    }
+    if (getkey("a")==1) all(AcTest).attr{p:10, scaleX:2};
+    if (getkey("b")==1) all(AcTest).attr("p",5);
+    if (getkey("c")==1) print(all(AcTest).attr("x"));
+
     //if (i==50) waitFor(Tonyu.timeout(1000));
     update();
 }

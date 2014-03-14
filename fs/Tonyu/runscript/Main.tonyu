@@ -1,13 +1,31 @@
 
-native dumpScript;
-t=0;
-while(true) {
-    if (t%5==0) {
-        new Ball{x:rnd($screenWidth),y:0, p:$pat_balls+rnd(25)};
+$spd=1;
+$gov=false;
+$prev=null;
+tick=32;
+new MayGet{x:200, y:250, t:-1};
+new MayGet{x:100, y:300, t:0};
+new MayGet{x:100, y:350, t:1};
+new MayGet{x:320, y:300, t:2};
+new MayGet{x:320, y:350, t:3};
+//x=20;
+//y=20;
+while(!$gov) {
+    if (tick>32) {
+        new Ball{p:$pat_balls+rnd(25),x:rnd($screenWidth),y:0};
+        tick-=32;
     }
-    t++;
-    if (getkey("U")) break;
+    if (all(Ball).max("y")<$screenHeight-200) {
+        $spd=5;
+    } else {
+        $spd=1;
+    }
+    tick+=$spd;
+    if (all(X).size()>=3) $gov=true;
     update();
 }
-dumpScript();
-
+size=30;
+x=$screenWidth/2; y=$screenHeight/2;
+play("o4l16v15av10>av5>a");
+text="Game Over";
+//for (a in all(Ball)) a.dieEffect();

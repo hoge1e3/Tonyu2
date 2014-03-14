@@ -44,6 +44,7 @@ x,y,pの値をフィールドに書き込みます
 -[[crashTo]]
 -[[crashTo1]]
 -[[allCrash]]
+-[[all]]
 -[[getCrashRect]]
 -[[die]]
 -[[isDead]] 

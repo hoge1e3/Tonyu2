@@ -187,6 +187,7 @@ Tonyu=function () {
         }
         if (arguments.length==2) {
             parent=arguments[0];
+            if (!parent) throw "No parent class";
             prot=arguments[1];
         }
         prot=defunct(prot);

@@ -1,8 +1,47 @@
 
-while (y<$screenHeight) {
-    y+=3;
+
+
+while(y<$screenHeight && !$gov) {
+    y+=$spd;
+    if ( dist2($mouseX-x,$mouseY-y)<400 ) {
+        if (check()) {
+            playSE("l64o4v10gfev5dc>g v3fedc");
+        } else {
+            playSE("l16 o3 b-b-4");
+            new X{x,y,text:"x"};
+        }
+        $prev=p;
+        dieEffect();
+    }
     update();
 }
-die();
+$gov=true;
+dieEffect();
 
+\dist2(x,y) {
+    return x*x+y*y;
+}
 
+\dieEffect() {
+    while (true) {
+        scaleX+=0.1;
+        alpha-=20;
+        rotate+=20;
+        if (alpha<=0) break;
+        update();
+    }
+    die();
+}
+
+\getCol(p) {
+    var pp=p-$pat_balls;
+    var c=pp%5;
+    var r=(pp-c)/5;
+    return {c,r};
+}
+\check(){
+    if (!$prev) return true;
+    var p1=getCol($prev);
+    var p2=getCol(p);
+    return p1.c==p2.c || p1.c==p2.r || p1.r==p2.c || p1.r==p2.r;
+}

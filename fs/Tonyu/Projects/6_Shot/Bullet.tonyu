@@ -3,6 +3,10 @@ while (y>0) {
     // c=crashTo(クラス名) は，そのクラスのオブジェクトのどれかと
     // 衝突しているかを判定します．
     // [!=Tonyu1] 従来のcrashToではクラス名は指定できませんでした
+    if (allCrash(Chaser).die()) {
+        die();
+    }
+    /*
     c=crashTo(Chaser);
     // どのCheseオブジェクトとも衝突していない 
     //      -> c==undefined
@@ -11,7 +15,7 @@ while (y>0) {
     if (c) {
         c.die();
         die();
-    }
+    }*/
     update();
 }
 // [!=Tonyu1] 処理の最後で消滅させたいときはdie(); を書きます．

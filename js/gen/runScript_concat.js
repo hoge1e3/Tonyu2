@@ -1,4 +1,4 @@
-// Created at Wed Mar 12 2014 12:56:05 GMT+0900 (東京 (標準時))
+// Created at Fri Mar 14 2014 17:09:12 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -495,7 +495,7 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1394594360332},"Actor.tonyu":{"lastUpdate":1394594360332},"BaseActor.tonyu":{"lastUpdate":1394594360333},"Boot.tonyu":{"lastUpdate":1394594360334},"Keys.tonyu":{"lastUpdate":1394594360335},"MML.tonyu":{"lastUpdate":1394594360335},"NoviceActor.tonyu":{"lastUpdate":1394594360336},"ScaledCanvas.tonyu":1394071743000,"Sprites.tonyu":1394071743000,"TObject.tonyu":{"lastUpdate":1394594360337},"WaveTable.tonyu":{"lastUpdate":1394594360337},"TQuery.tonyu":{"lastUpdate":1394594360338}}',
+      '': '{".desktop":{"lastUpdate":1394676087192},"Actor.tonyu":{"lastUpdate":1394676087192},"BaseActor.tonyu":{"lastUpdate":1394676087193},"Boot.tonyu":{"lastUpdate":1394676087194},"Keys.tonyu":{"lastUpdate":1394676087195},"MML.tonyu":{"lastUpdate":1394676087195},"NoviceActor.tonyu":{"lastUpdate":1394676087196},"ScaledCanvas.tonyu":1394071743000,"Sprites.tonyu":1394071743000,"TObject.tonyu":{"lastUpdate":1394676087196},"WaveTable.tonyu":{"lastUpdate":1394676087197},"TQuery.tonyu":{"lastUpdate":1394782945577}}',
       '.desktop': '{"runMenuOrd":["AcTestM","SETest","MMLTest","KeyTest","NObjTest","NObjTest2","AcTest","NoviceActor","Actor","Boot","AltBoot","Keys","TObject","WaveTable","MML","BaseActor","TQuery"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -566,17 +566,17 @@ requireSimulator.setName('fs/ROMk');
         '    return crashTo(t);\n'+
         '}\n'+
         'nowait \\all(c) {\n'+
-        '    var res=[];\n'+
+        '    var res=new TQuery;\n'+
         '    $Sprites.sprites.forEach \\(s) {\n'+
         '        if (s===this) return;\n'+
         '        if (!c || s instanceof c) {\n'+
         '            res.push(s);\n'+
         '        }\n'+
         '    };\n'+
-        '    return new TQuery{objects:res};\n'+
+        '    return res;// new TQuery{objects:res};\n'+
         '}\n'+
         'nowait \\allCrash(t) {\n'+
-        '    var res=[];\n'+
+        '    var res=new TQuery;\n'+
         '    var sp=this; //_sprite || this;\n'+
         '    var t1=getCrashRect();\n'+
         '    if (!t1) return res;\n'+
@@ -1211,43 +1211,110 @@ requireSimulator.setName('fs/ROMk');
       ,
       'TQuery.tonyu': 
         'extends TObject;\n'+
-        'native Tonyu;\n'+
-        '\n'+
-        '\\tonyuIterator(arity) {\n'+
-        '    return Tonyu.iterator(objects,arity);\n'+
+        '\\new () {\n'+
+        '    length=0;\n'+
         '}\n'+
-        '\\attr(key,val) {\n'+
-        '    if (objects.length==0) return;\n'+
-        '    if (arguments.length==1) {\n'+
-        '        return objects[0][key];\n'+
+        '\\tonyuIterator(arity) {\n'+
+        '    var res={};\n'+
+        '    res.i=0;\n'+
+        '    if (arity==1) {\n'+
+        '        res.next=function () {\n'+
+        '            if (res.i>=this.length) return false;\n'+
+        '            res[0]=this[res.i];\n'+
+        '            res.i++;\n'+
+        '            return true;\n'+
+        '        };\n'+
         '    } else {\n'+
-        '        for (var e in objects) {\n'+
-        '            e[key]=val;\n'+
+        '        res.next=function () {\n'+
+        '            if (res.i>=this.length) return false;\n'+
+        '            res[0]=res.i;\n'+
+        '            res[1]=this[res.i];\n'+
+        '            res.i++;\n'+
+        '            return true;\n'+
+        '        };\n'+
+        '    }\n'+
+        '    return res;\n'+
+        '}\n'+
+        '\\attr() {\n'+
+        '    var values;\n'+
+        '    if (length==0) return;\n'+
+        '    if (arguments.length==1 && typeof arguments[0]=="string") {\n'+
+        '        return this[0][arguments[0]];\n'+
+        '    }\n'+
+        '    if (arguments.length>=2) {\n'+
+        '        values={};\n'+
+        '        for (var i=0 ; i<arguments.length-1 ;i+=2) {\n'+
+        '            values[arguments[i]]=arguments[i+1];\n'+
+        '        }\n'+
+        '    } else {\n'+
+        '        values=arguments[0];\n'+
+        '    }\n'+
+        '    if (values) {\n'+
+        '        for (var e in this) {\n'+
+        '            e.extend( values);\n'+
         '        }\n'+
         '    }\n'+
         '}\n'+
-        '\\max(key) {\n'+
-        '    var f;\n'+
+        '\\genKeyfunc(key) {\n'+
         '    if (typeof key!="function") {\n'+
-        '        f=\\(o) {return o[key];};\n'+
+        '        return \\(o) {return o[key];};\n'+
         '    } else {\n'+
-        '        f=key;\n'+
+        '        return key;\n'+
         '    }\n'+
+        '}\n'+
+        '\\max(key) {\n'+
+        '    var f=genKeyfunc(key);\n'+
         '    var res;\n'+
-        '    for (var o in objects) {\n'+
+        '    for (var o in this) {\n'+
         '        var v=f(o);\n'+
         '        if (res==null || v>res) res=v;\n'+
         '    }\n'+
         '    return res;\n'+
         '}\n'+
-        '\\size() {return objects.length;}\n'+
+        '\\min(key) {\n'+
+        '    var f=genKeyfunc(key);\n'+
+        '    var res;\n'+
+        '    for (var o in this) {\n'+
+        '        var v=f(o);\n'+
+        '        if (res==null || v<res) res=v;\n'+
+        '    }\n'+
+        '    return res;\n'+
+        '}\n'+
+        '\\push(e) {\n'+
+        '    this[length]=e;\n'+
+        '    length++;\n'+
+        '}\n'+
+        '\\size() {return length;}\n'+
         '\\find(f) {\n'+
-        '    var no=[];\n'+
-        '    for (var o in objects) {\n'+
+        '    var no=new TQuery;\n'+
+        '    for (var o in this) {\n'+
         '        if (f(o)) no.push(o);\n'+
         '    }\n'+
-        '    return new TQuery{objects:o};\n'+
+        '    return no;\n'+
         '} \n'+
+        '\\apply(name, args) {\n'+
+        '    var res;\n'+
+        '    if (!args) args=[];\n'+
+        '    for (var o in this) {\n'+
+        '        var f=o[name];\n'+
+        '        if (typeof f=="function") {\n'+
+        '            res=f.apply(o, args);\n'+
+        '        }\n'+
+        '    }\n'+
+        '    return res;\n'+
+        '}\n'+
+        '// \\alive => find \\(o) => !o.isDead()  //  (in future)\n'+
+        '\\alive() {\n'+
+        '    return find \\(o) {\n'+
+        '        return !o.isDead();\n'+
+        '    };\n'+
+        '}\n'+
+        '\\die() {\n'+
+        '    var a=alive();\n'+
+        '    if (a.length==0) return false;\n'+
+        '    a.apply("die");\n'+
+        '    return true;\n'+
+        '}\n'+
         '\n'+
         '\\klass(k) {\n'+
         '    return find \\(o) { return o instanceof k; };\n'+
@@ -1450,6 +1517,7 @@ Tonyu=function () {
         }
         if (arguments.length==2) {
             parent=arguments[0];
+            if (!parent) throw "No parent class";
             prot=arguments[1];
         }
         prot=defunct(prot);
@@ -3178,7 +3246,9 @@ function initClassDecls(klass, env ) {
             //console.log("Match!  "+JSON.stringify(t));
             if (spcn=="null") spcn=null;
         }
-        if (spcn) {
+        if (spcn=="Array") {
+            klass.superClass={name:"Array",builtin:true};
+        } else if (spcn) {
             var spc=env.classes[spcn];
             if (!spc) throw TError ( "親クラス "+spcn+"は定義されていません", s, pos);
             klass.superClass=spc;
@@ -3255,10 +3325,12 @@ function genJS(klass, env,pass) {
         };
     function getClassName(klass){
         if (typeof klass=="string") return CLASS_HEAD+klass;
+        if (klass.builtin) return klass.name;
         return CLASS_HEAD+klass.name;
     }
     //console.log(JSON.stringify( retFiberCallTmpl));
     function initTopLevelScope2(klass) {
+    	if (klass.builtin) return;
         var s=topLevelScope;
         var decls=klass.decls;
         for (var i in decls.fields) {
@@ -4310,7 +4382,7 @@ return Tonyu.Project=function (dir, kernelDir) {
                 if (added[n]) continue;
                 var c=classes[n];
                 var spc=c.superClass;
-                if (!spc || added[spc.name]) {
+                if (!spc || spc.builtin || added[spc.name]) {
                     res.push(c);
                     added[n]=true;
                 }

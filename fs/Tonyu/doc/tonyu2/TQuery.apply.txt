@@ -1,0 +1,22 @@
+[[TQuery]]
+
+*TQuery.applyメソッド
+
+このTQueryオブジェクトが指すすべてのActorに対して，指定されたメソッドを呼びます．
+
+**書式
+
+<<code
+t.apply(name, args)
+>>
+
+すべてのActorについて，
+[[@arg name]]で指定されたをメソッドを，配列[[@arg args]]で指定された引数を渡して呼び出します．
+
+**戻り値
+
+一番最後にメソッドが呼び出されたActorに対するメソッドの戻り値．メソッドが呼ばれたActorがなければ[[@cfrag undefined]]．
+
+
+
+

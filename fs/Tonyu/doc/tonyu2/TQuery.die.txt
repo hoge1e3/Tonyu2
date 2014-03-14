@@ -1,0 +1,19 @@
+[[TQuery]]
+
+*TQuery.dieメソッド
+
+このTQueryオブジェクトが格納しているすべての「生きている」Actorに対して，[[die]]メソッドを呼びます．
+
+※「生きている」Actorとは，dieメソッドが一度も呼ばれていないActorを指す
+
+**書式
+
+<<code
+t.die()
+>>
+
+**戻り値
+
+このTQueryオブジェクトが格納しているすべてのActorのうち，少なくとも1つが「生きている」Actorであれば [[@cfrag true]] ，そうでなければ[[@cfrag false]]
+
+
