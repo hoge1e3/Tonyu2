@@ -120,8 +120,7 @@ native SplashScreen;
 initSprites();
 initCanvasEvents();
 initThread();
-$screenWidth=cv.width;
-$screenHeight=cv.height;
+
 $pat_fruits=30;
 $Keys=new Keys;
 $MMLS={};

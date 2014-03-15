@@ -2,8 +2,8 @@
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1394676087192},"Actor.tonyu":{"lastUpdate":1394676087192},"BaseActor.tonyu":{"lastUpdate":1394676087193},"Boot.tonyu":{"lastUpdate":1394676087194},"Keys.tonyu":{"lastUpdate":1394676087195},"MML.tonyu":{"lastUpdate":1394676087195},"NoviceActor.tonyu":{"lastUpdate":1394676087196},"ScaledCanvas.tonyu":1394071743000,"Sprites.tonyu":1394071743000,"TObject.tonyu":{"lastUpdate":1394676087196},"WaveTable.tonyu":{"lastUpdate":1394676087197},"TQuery.tonyu":{"lastUpdate":1394782945577}}',
-      '.desktop': '{"runMenuOrd":["AcTestM","SETest","MMLTest","KeyTest","NObjTest","NObjTest2","AcTest","NoviceActor","Actor","Boot","AltBoot","Keys","TObject","WaveTable","MML","BaseActor","TQuery"]}',
+      '': '{".desktop":{"lastUpdate":1394850873938},"Actor.tonyu":{"lastUpdate":1394850873939},"BaseActor.tonyu":{"lastUpdate":1394850873940},"Boot.tonyu":{"lastUpdate":1394850873940},"Keys.tonyu":{"lastUpdate":1394850873941},"MML.tonyu":{"lastUpdate":1394850873942},"NoviceActor.tonyu":{"lastUpdate":1394850873942},"ScaledCanvas.tonyu":{"lastUpdate":1394850873943},"Sprites.tonyu":1394071743000,"TObject.tonyu":{"lastUpdate":1394850873943},"WaveTable.tonyu":{"lastUpdate":1394850873944},"TQuery.tonyu":{"lastUpdate":1394850873944}}',
+      '.desktop': '{"runMenuOrd":["AcTestM","NObjTest","SETest","MMLTest","KeyTest","NObjTest2","AcTest","NoviceActor","Actor","Boot","AltBoot","Keys","TObject","WaveTable","MML","BaseActor","TQuery","ScaledCanvas"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
         'native Sprites;\n'+
@@ -172,7 +172,7 @@
         '}\n'+
         'nowait \\detectShape() {\n'+
         '    if (typeof p!="number") {\n'+
-        '        if (text) return;\n'+
+        '        if (text!=null) return;\n'+
         '        p=0;\n'+
         '    }\n'+
         '    p=Math.floor(p);\n'+
@@ -375,8 +375,7 @@
         'initSprites();\n'+
         'initCanvasEvents();\n'+
         'initThread();\n'+
-        '$screenWidth=cv.width;\n'+
-        '$screenHeight=cv.height;\n'+
+        '\n'+
         '$pat_fruits=30;\n'+
         '$Keys=new Keys;\n'+
         '$MMLS={};\n'+
@@ -559,6 +558,8 @@
         '    this.height=height;\n'+
         '    buf=$("<canvas>").attr{width,height};\n'+
         '    ctx=buf[0].getContext("2d");  \n'+
+        '    $screenWidth=width;\n'+
+        '    $screenHeight=height;\n'+
         '}\n'+
         '\\draw() {\n'+
         '    cw=canvas.width();\n'+

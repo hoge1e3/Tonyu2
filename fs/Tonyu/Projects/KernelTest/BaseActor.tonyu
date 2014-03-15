@@ -139,7 +139,7 @@ nowait \rnd(r) {
 }
 nowait \detectShape() {
     if (typeof p!="number") {
-        if (text) return;
+        if (text!=null) return;
         p=0;
     }
     p=Math.floor(p);

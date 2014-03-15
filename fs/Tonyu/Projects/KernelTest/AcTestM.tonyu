@@ -1,6 +1,7 @@
 extends Actor;
 native Tonyu;
 $Screen.resize(800,600);
+print($screenWidth, $screenHeight);
 new AcTest{x:10, y:100, vx:5, vy:0, p:0,scaleX:2};
 new AcTest{x:320, y:100, vx:-5, vy:0, p:10,alpha:100};
 t=new AcTest(50,150);

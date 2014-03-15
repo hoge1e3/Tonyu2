@@ -1,4 +1,9 @@
 FS=function () {
+	var ramDisk=null;
+	if (typeof localStorage=="undefined" || localStorage==null) {
+		console.log("FS: Using RAMDisk");
+		ramDisk={};
+	}
     var FS={};
     var roms={};
     var SEP="/";
@@ -36,6 +41,7 @@ FS=function () {
     	return resolveROM(path);
     }
     function lcs(path, text) {
+    	if (ramDisk) return lcsRAM(path, text);
         var r=resolveROM(path);
         if (arguments.length==2) {
             if (r) throw path+" is Read only.";
@@ -49,10 +55,30 @@ FS=function () {
         }
     }
     function lcsExists(path) {
+    	if (ramDisk) return lcsExistsRAM(path);
         var r=resolveROM(path);
         if (r) return r.rel in r.rom;
         return path in localStorage;
     }
+    function lcsRAM(path, text) {
+        var r=resolveROM(path);
+        if (arguments.length==2) {
+            if (r) throw path+" is Read only.";
+            if (text==null) delete ramDisk[path];
+            else return ramDisk[path]=text;
+        } else {
+            if (r) {
+                return r.rom[r.rel];
+            }
+            return ramDisk[path];
+        }
+    }
+    function lcsExistsRAM(path) {
+        var r=resolveROM(path);
+        if (r) return r.rel in r.rom;
+        return path in ramDisk;
+    }
+
     function putDirInfo(path, dinfo) {
         if (path==null) throw "putDir: Null path";
         if (!isDir(path)) throw "Not a directory : "+path;
