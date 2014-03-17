@@ -2,7 +2,7 @@
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1394850873938},"Actor.tonyu":{"lastUpdate":1394850873939},"BaseActor.tonyu":{"lastUpdate":1394850873940},"Boot.tonyu":{"lastUpdate":1394850873940},"Keys.tonyu":{"lastUpdate":1394850873941},"MML.tonyu":{"lastUpdate":1394850873942},"NoviceActor.tonyu":{"lastUpdate":1394850873942},"ScaledCanvas.tonyu":{"lastUpdate":1394850873943},"Sprites.tonyu":1394071743000,"TObject.tonyu":{"lastUpdate":1394850873943},"WaveTable.tonyu":{"lastUpdate":1394850873944},"TQuery.tonyu":{"lastUpdate":1394850873944}}',
+      '': '{".desktop":{"lastUpdate":1394940780578},"Actor.tonyu":{"lastUpdate":1394940780578},"BaseActor.tonyu":{"lastUpdate":1394940780580},"Boot.tonyu":{"lastUpdate":1394940780580},"Keys.tonyu":{"lastUpdate":1394940780581},"MML.tonyu":{"lastUpdate":1394940780581},"NoviceActor.tonyu":{"lastUpdate":1394940780582},"ScaledCanvas.tonyu":{"lastUpdate":1394940780583},"Sprites.tonyu":1394071743000,"TObject.tonyu":{"lastUpdate":1394940780583},"WaveTable.tonyu":{"lastUpdate":1394940780584},"TQuery.tonyu":{"lastUpdate":1394940780584}}',
       '.desktop': '{"runMenuOrd":["AcTestM","NObjTest","SETest","MMLTest","KeyTest","NObjTest2","AcTest","NoviceActor","Actor","Boot","AltBoot","Keys","TObject","WaveTable","MML","BaseActor","TQuery","ScaledCanvas"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -542,6 +542,7 @@
       ,
       'ScaledCanvas.tonyu': 
         'native $;\n'+
+        'native Math;\n'+
         '\n'+
         '// canvas:phisical  buf: logical\n'+
         '\\new (opt) {\n'+
@@ -561,6 +562,13 @@
         '    $screenWidth=width;\n'+
         '    $screenHeight=height;\n'+
         '}\n'+
+        '\\shouldDraw1x1(srcw,srch,dstw,dsth) {\n'+
+        '    // srcw=465 -> dstw=460...665\n'+
+        '    var larger=200;\n'+
+        '    var smaller=5;\n'+
+        '    return srcw-smaller<=dstw && dstw<=srcw+larger &&\n'+
+        '    srch-smaller<=dsth && dsth<=srch+larger;\n'+
+        '}\n'+
         '\\draw() {\n'+
         '    cw=canvas.width();\n'+
         '    ch=canvas.height();\n'+
@@ -569,16 +577,28 @@
         '    if (calch>ch) calch=ch;\n'+
         '    if (calcw>cw) calcw=cw;\n'+
         '    cctx.clearRect(0,0,cw,ch);\n'+
+        '    if (shouldDraw1x1(width,height,calcw,calch)) {\n'+
+        '        calcw=width;calch=height;\n'+
+        '    }\n'+
+        '    var marginw=Math.floor((cw-calcw)/2);\n'+
+        '    var marginh=Math.floor((ch-calch)/2);\n'+
         '    cctx.drawImage(buf[0],\n'+
         '    0,0,width, height, \n'+
-        '    0,0,calcw, calch );\n'+
+        '    marginw,marginh,calcw, calch );\n'+
         '}\n'+
         '\\canvas2buf(point) {\n'+
         '    var calcw=ch/height*width; // calch=ch\n'+
         '    var calch=cw/width*height; // calcw=cw\n'+
         '    if (calch>ch) calch=ch;\n'+
         '    if (calcw>cw) calcw=cw;\n'+
-        '    return {x: point.x/calcw*width, y: point.y/calch*height};\n'+
+        '    if (shouldDraw1x1(width,height,calcw,calch)) {\n'+
+        '        calcw=width;calch=height;\n'+
+        '    }\n'+
+        '    var marginw=Math.floor((cw-calcw)/2);\n'+
+        '    var marginh=Math.floor((ch-calch)/2);\n'+
+        '\n'+
+        '    return {x: (point.x-marginw)/calcw*width, \n'+
+        '    y: (point.y-marginh)/calch*height};\n'+
         '}\n'+
         '\\setBGColor(color){\n'+
         '    this.color=color;\n'+
