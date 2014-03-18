@@ -13,19 +13,24 @@ return Tonyu.Project=function (dir, kernelDir) {
             added[n]=false;
             ccnt++;
         }
-        var lpc=0;
         while (res.length<ccnt) {
+	    var p=res.length;
             for (var n in classes) {
                 if (added[n]) continue;
                 var c=classes[n];
                 var spc=c.superClass;
-                if (!spc || spc.builtin || added[spc.name]) {
+		var deps=[spc];
+		var ready=true;
+		if (c.includes) deps=deps.concat(c.includes);
+		deps.forEach(function (cl) {
+		    ready=ready && (!cl || cl.builtin || added[cl.name]);
+		});
+                if (ready) {
                     res.push(c);
                     added[n]=true;
                 }
             }
-            lpc++;
-            if (lpc>100) throw TError( "クラスの循環参照があります", "不明" ,0);
+            if (res.length==p) throw TError( "クラスの循環参照があります", "不明" ,0);
         }
         return res;
     }

@@ -2,8 +2,8 @@
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1394940780578},"Actor.tonyu":{"lastUpdate":1394940780578},"BaseActor.tonyu":{"lastUpdate":1394940780580},"Boot.tonyu":{"lastUpdate":1394940780580},"Keys.tonyu":{"lastUpdate":1394940780581},"MML.tonyu":{"lastUpdate":1394940780581},"NoviceActor.tonyu":{"lastUpdate":1394940780582},"ScaledCanvas.tonyu":{"lastUpdate":1394940780583},"Sprites.tonyu":1394071743000,"TObject.tonyu":{"lastUpdate":1394940780583},"WaveTable.tonyu":{"lastUpdate":1394940780584},"TQuery.tonyu":{"lastUpdate":1394940780584}}',
-      '.desktop': '{"runMenuOrd":["AcTestM","NObjTest","SETest","MMLTest","KeyTest","NObjTest2","AcTest","NoviceActor","Actor","Boot","AltBoot","Keys","TObject","WaveTable","MML","BaseActor","TQuery","ScaledCanvas"]}',
+      '': '{".desktop":{"lastUpdate":1395119956503},"Actor.tonyu":{"lastUpdate":1395119956503},"BaseActor.tonyu":{"lastUpdate":1395119956504},"Boot.tonyu":{"lastUpdate":1395119956505},"Keys.tonyu":{"lastUpdate":1395119956505},"MML.tonyu":{"lastUpdate":1395119956506},"NoviceActor.tonyu":{"lastUpdate":1395119956506},"ScaledCanvas.tonyu":{"lastUpdate":1395119956507},"Sprites.tonyu":1394071743000,"TObject.tonyu":{"lastUpdate":1395119956508},"WaveTable.tonyu":{"lastUpdate":1395119956508},"TQuery.tonyu":{"lastUpdate":1395119956508},"MathMod.tonyu":{"lastUpdate":1395119956509}}',
+      '.desktop': '{"runMenuOrd":["AcTestM","NObjTest","SETest","MMLTest","KeyTest","NObjTest2","AcTest","NoviceActor","Actor","Boot","AltBoot","Keys","TObject","WaveTable","MML","BaseActor","TQuery","ScaledCanvas","MathMod"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
         'native Sprites;\n'+
@@ -32,6 +32,7 @@
       ,
       'BaseActor.tonyu': 
         'extends null;\n'+
+        'includes MathMod;\n'+
         'native Tonyu;\n'+
         'native Key;\n'+
         'native console;\n'+
@@ -846,6 +847,26 @@
         '\n'+
         '\\klass(k) {\n'+
         '    return find \\(o) { return o instanceof k; };\n'+
+        '}'
+      ,
+      'MathMod.tonyu': 
+        'extends null;\n'+
+        'native Math;\n'+
+        '\n'+
+        '\\sin(d) {\n'+
+        '    return Math.sin(rad(d));\n'+
+        '}\n'+
+        '\\cos(d) {\n'+
+        '    return Math.cos(rad(d));\n'+
+        '}\n'+
+        '\\rad(d) {\n'+
+        '    return d/180*Math.PI;\n'+
+        '}\n'+
+        '\\abs(v) {\n'+
+        '    return Math.abs(v);\n'+
+        '}\n'+
+        '\\atan2(x,y) {\n'+
+        '    return Math.atan2(x,y);\n'+
         '}'
       
     }

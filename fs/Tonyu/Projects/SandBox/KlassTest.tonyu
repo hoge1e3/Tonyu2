@@ -1,0 +1,6 @@
+includes Parent,BindF;
+
+print("KlasTest");
+foo();
+f("ふえたよー");
+f("ふえたよー");

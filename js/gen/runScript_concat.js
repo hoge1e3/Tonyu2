@@ -1,4 +1,4 @@
-// Created at Mon Mar 17 2014 09:33:39 GMT+0900 (東京 (標準時))
+// Created at Tue Mar 18 2014 14:23:23 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -521,8 +521,8 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1394940780578},"Actor.tonyu":{"lastUpdate":1394940780578},"BaseActor.tonyu":{"lastUpdate":1394940780580},"Boot.tonyu":{"lastUpdate":1394940780580},"Keys.tonyu":{"lastUpdate":1394940780581},"MML.tonyu":{"lastUpdate":1394940780581},"NoviceActor.tonyu":{"lastUpdate":1394940780582},"ScaledCanvas.tonyu":{"lastUpdate":1394940780583},"Sprites.tonyu":1394071743000,"TObject.tonyu":{"lastUpdate":1394940780583},"WaveTable.tonyu":{"lastUpdate":1394940780584},"TQuery.tonyu":{"lastUpdate":1394940780584}}',
-      '.desktop': '{"runMenuOrd":["AcTestM","NObjTest","SETest","MMLTest","KeyTest","NObjTest2","AcTest","NoviceActor","Actor","Boot","AltBoot","Keys","TObject","WaveTable","MML","BaseActor","TQuery","ScaledCanvas"]}',
+      '': '{".desktop":{"lastUpdate":1395119956503},"Actor.tonyu":{"lastUpdate":1395119956503},"BaseActor.tonyu":{"lastUpdate":1395119956504},"Boot.tonyu":{"lastUpdate":1395119956505},"Keys.tonyu":{"lastUpdate":1395119956505},"MML.tonyu":{"lastUpdate":1395119956506},"NoviceActor.tonyu":{"lastUpdate":1395119956506},"ScaledCanvas.tonyu":{"lastUpdate":1395119956507},"Sprites.tonyu":1394071743000,"TObject.tonyu":{"lastUpdate":1395119956508},"WaveTable.tonyu":{"lastUpdate":1395119956508},"TQuery.tonyu":{"lastUpdate":1395119956508},"MathMod.tonyu":{"lastUpdate":1395119956509}}',
+      '.desktop': '{"runMenuOrd":["AcTestM","NObjTest","SETest","MMLTest","KeyTest","NObjTest2","AcTest","NoviceActor","Actor","Boot","AltBoot","Keys","TObject","WaveTable","MML","BaseActor","TQuery","ScaledCanvas","MathMod"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
         'native Sprites;\n'+
@@ -551,6 +551,7 @@ requireSimulator.setName('fs/ROMk');
       ,
       'BaseActor.tonyu': 
         'extends null;\n'+
+        'includes MathMod;\n'+
         'native Tonyu;\n'+
         'native Key;\n'+
         'native console;\n'+
@@ -1366,6 +1367,26 @@ requireSimulator.setName('fs/ROMk');
         '\\klass(k) {\n'+
         '    return find \\(o) { return o instanceof k; };\n'+
         '}'
+      ,
+      'MathMod.tonyu': 
+        'extends null;\n'+
+        'native Math;\n'+
+        '\n'+
+        '\\sin(d) {\n'+
+        '    return Math.sin(rad(d));\n'+
+        '}\n'+
+        '\\cos(d) {\n'+
+        '    return Math.cos(rad(d));\n'+
+        '}\n'+
+        '\\rad(d) {\n'+
+        '    return d/180*Math.PI;\n'+
+        '}\n'+
+        '\\abs(v) {\n'+
+        '    return Math.abs(v);\n'+
+        '}\n'+
+        '\\atan2(x,y) {\n'+
+        '    return Math.atan2(x,y);\n'+
+        '}'
       
     }
   };
@@ -1558,26 +1579,40 @@ Tonyu=function () {
         return f;
     }
     function klass() {
-        var parent, prot;
+        var parent, prot, includes=[];
         if (arguments.length==1) {
             prot=arguments[0];
-        }
-        if (arguments.length==2) {
+        } else if (arguments.length==2 && typeof arguments[0]=="function") {
+            parent=arguments[0];
+            prot=arguments[1];
+        } else if (arguments.length==2 && arguments[0] instanceof Array) {
+	    includes=arguments[0];
+	    prot=arguments[1];
+	} else if (arguments.length==3) {
             parent=arguments[0];
             if (!parent) throw "No parent class";
-            prot=arguments[1];
-        }
+	    includes=arguments[1];
+	    prot=arguments[2];
+	} else {
+	    console.log(arguments);
+	    throw "Invalid argument spec";
+	}
         prot=defunct(prot);
         var res=(prot.initialize? prot.initialize:
             (parent? function () {
                 parent.apply(this,arguments);
             }:function (){})
         );
-        /*res=function () {
-            if (this.initialize) {
-                this.initialize.apply(this, arguments);
-            }
-        };*/
+	delete prot.initialize;
+	includes.forEach(function (m) {
+	    if (!m.methods) throw m+" Does not have methods";
+	    for (var n in m.methods) {
+		if (!(n in prot)) {
+		    prot[n]=m.methods[n];
+		} 
+	    }
+	});
+	res.methods=prot;
         res.prototype=bless(parent, prot);
         res.prototype.isTonyuObject=true;
         return res;
@@ -1696,7 +1731,7 @@ IndentBuffer=function () {
 			ai++;
 			var res=args[ai];
 			if (res==null) {
-			    console.log(arguments);
+			    console.log(args);
 			    throw (ai+"th null param: fmt="+fmt);
 			}
 			return res;
@@ -1824,6 +1859,7 @@ IndentBuffer=function () {
 	$.indentStr="  ";
 	return $;
 };
+
 requireSimulator.setName('disp');
 // オブジェクトの内容を表示する． デバッグ用
 function disp(a) {
@@ -2868,7 +2904,9 @@ TonyuLang=function () {
                  ifwait:true,
                  nowait:true,
                  arguments:true,
-                 "delete": true
+                 "delete": true,
+		  "extends":true,
+		  "includes":true
     };
     var num=tk(/^[0-9\.]+/).ret(function (n) {
         n.type="number";
@@ -3105,8 +3143,13 @@ TonyuLang=function () {
     ).ret("key","value");
     var objlit=g("objlit").ands(tk("{"), jsonElem.sep0(tk(","),true),  tk("}")).ret(null, "elems");
     var arylit=g("arylit").ands(tk("["), expr.sep0(tk(","),true),  tk("]")).ret(null, "elems");
-    var ext=g("extends").ands(tk("extends"),symbol.or(tk("null")), tk(";")).ret(null, "superClassName");
-    var program=g("program").ands(ext.opt(),stmt.rep0(), space, sp.eof).ret("ext","stmts");
+    var ext=g("extends").ands(tk("extends"),symbol.or(tk("null")), tk(";")).
+	ret(null, "superClassName");
+    var incl=g("includes").ands(tk("includes"), symbol.sep1(tk(","),true),tk(";")).
+	ret(null, "includeClassNames");
+    var program=g("program").
+	ands(ext.opt(),incl.opt(),stmt.rep0(), space, sp.eof).
+	ret("ext","incl","stmts");
 
     for (var i in g.defs) {
         g.defs[i].profile();
@@ -3288,11 +3331,20 @@ function initClassDecls(klass, env ) {
         var pos=0;
         var t;
         if (t=OM.match( program , {ext:{superClassName:{text:OM.T, pos:OM.P}}})) {
-            spcn=t.T; //program.ext.superClassName.text;
-            pos=t.P;  //program.ext.superClassName.pos;
-            //console.log("Match!  "+JSON.stringify(t));
+            spcn=t.T;
+            pos=t.P; 
             if (spcn=="null") spcn=null;
         }
+	klass.includes=[];
+        if (t=OM.match( program , {incl:{includeClassNames:OM.C}})) {
+	    t.C.forEach(function (i) {
+		var n=i.text;
+		var p=i.pos;
+		var incc=env.classes[n];
+		if (!incc) throw TError ( "クラス "+n+"は定義されていません", s, p);
+		klass.includes.push(incc);
+            });
+	}
         if (spcn=="Array") {
             klass.superClass={name:"Array",builtin:true};
         } else if (spcn) {
@@ -3866,10 +3918,10 @@ function genJS(klass, env,pass) {
     });
     //v.debug=debug;
     v.def=function (node) {
-        if (!node) buf.printf("/*null*/");
-        else buf.printf("DEF ! type=%s",node.type);
         console.log("Err node=");
         console.log(node);
+        //if (!node) buf.printf("/*null*/");
+        //else buf.printf("DEF ! type=%s",node.type);
         throw node.type+" is not defined in visitor:compiler2";
     };
     v.cnt=0;
@@ -3937,12 +3989,22 @@ function genJS(klass, env,pass) {
     		return checkLocals(node);
     	};
     }*/
+    function getClassNames(cs){
+	var res=[];
+	cs.forEach(function (c) { res.push(getClassName(c)); });
+	return res;
+    }
     function genSource() {
         ctx.enter({scope:topLevelScope}, function () {
             if (klass.superClass) {
-                printf("%s=Tonyu.klass(%s,{%{", getClassName(klass), getClassName(klass.superClass));
+                printf("%s=Tonyu.klass(%s,[%s],{%{", 
+		       getClassName(klass), 
+		       getClassName(klass.superClass),
+		       getClassNames(klass.includes).join(","));
             } else {
-                printf("%s=Tonyu.klass({%{", getClassName(klass));
+                printf("%s=Tonyu.klass([%s],{%{", 
+		       getClassName(klass),
+		       getClassNames(klass.includes).join(","));
             }
             for (var name in methods) {
                 if (debug) console.log("method1", name);
@@ -4125,6 +4187,7 @@ function genJS(klass, env,pass) {
 return {initClassDecls:initClassDecls, genJS:genJS};
 }();
 if (typeof getReq=="function") getReq.exports("Tonyu.Compiler");
+
 requireSimulator.setName('Tonyu.TraceTbl');
 Tonyu.TraceTbl=function () {
     var TTB={};
@@ -4423,19 +4486,24 @@ return Tonyu.Project=function (dir, kernelDir) {
             added[n]=false;
             ccnt++;
         }
-        var lpc=0;
         while (res.length<ccnt) {
+	    var p=res.length;
             for (var n in classes) {
                 if (added[n]) continue;
                 var c=classes[n];
                 var spc=c.superClass;
-                if (!spc || spc.builtin || added[spc.name]) {
+		var deps=[spc];
+		var ready=true;
+		if (c.includes) deps=deps.concat(c.includes);
+		deps.forEach(function (cl) {
+		    ready=ready && (!cl || cl.builtin || added[cl.name]);
+		});
+                if (ready) {
                     res.push(c);
                     added[n]=true;
                 }
             }
-            lpc++;
-            if (lpc>100) throw TError( "クラスの循環参照があります", "不明" ,0);
+            if (res.length==p) throw TError( "クラスの循環参照があります", "不明" ,0);
         }
         return res;
     }
@@ -4601,6 +4669,7 @@ return Tonyu.Project=function (dir, kernelDir) {
 };
 if (typeof getReq=="function") getReq.exports("Tonyu.Project");
 });
+
 requireSimulator.setName('Shell');
 define(["FS","Util"],function (FS,Util) {
     var Shell={cwd:FS.get("/")};

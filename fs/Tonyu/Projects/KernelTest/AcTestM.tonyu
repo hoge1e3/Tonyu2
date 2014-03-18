@@ -17,8 +17,8 @@ for (i=0; i<3000; i++) {
     //y=$touches[0].y;
     x=$mouseX;
     y=$mouseY;
-    t.x=$touches[1].x;
-    t.y=$touches[1].y;
+    t.x=$touches[1].x+cos(i*10)*30;
+    t.y=$touches[1].y+sin(i*10)*30;
     if (i==50) {hide(); $Screen.setBGColor("black"); }
     if (i==60) {show();$Screen.setBGColor("green"); }
     if (getkey("d")==1) {

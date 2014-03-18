@@ -1,0 +1,18 @@
+extends null;
+native Math;
+
+\sin(d) {
+    return Math.sin(rad(d));
+}
+\cos(d) {
+    return Math.cos(rad(d));
+}
+\rad(d) {
+    return d/180*Math.PI;
+}
+\abs(v) {
+    return Math.abs(v);
+}
+\atan2(x,y) {
+    return Math.atan2(x,y);
+}

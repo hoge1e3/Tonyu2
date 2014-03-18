@@ -29,11 +29,20 @@ function initClassDecls(klass, env ) {
         var pos=0;
         var t;
         if (t=OM.match( program , {ext:{superClassName:{text:OM.T, pos:OM.P}}})) {
-            spcn=t.T; //program.ext.superClassName.text;
-            pos=t.P;  //program.ext.superClassName.pos;
-            //console.log("Match!  "+JSON.stringify(t));
+            spcn=t.T;
+            pos=t.P; 
             if (spcn=="null") spcn=null;
         }
+	klass.includes=[];
+        if (t=OM.match( program , {incl:{includeClassNames:OM.C}})) {
+	    t.C.forEach(function (i) {
+		var n=i.text;
+		var p=i.pos;
+		var incc=env.classes[n];
+		if (!incc) throw TError ( "クラス "+n+"は定義されていません", s, p);
+		klass.includes.push(incc);
+            });
+	}
         if (spcn=="Array") {
             klass.superClass={name:"Array",builtin:true};
         } else if (spcn) {
@@ -607,10 +616,10 @@ function genJS(klass, env,pass) {
     });
     //v.debug=debug;
     v.def=function (node) {
-        if (!node) buf.printf("/*null*/");
-        else buf.printf("DEF ! type=%s",node.type);
         console.log("Err node=");
         console.log(node);
+        //if (!node) buf.printf("/*null*/");
+        //else buf.printf("DEF ! type=%s",node.type);
         throw node.type+" is not defined in visitor:compiler2";
     };
     v.cnt=0;
@@ -678,12 +687,22 @@ function genJS(klass, env,pass) {
     		return checkLocals(node);
     	};
     }*/
+    function getClassNames(cs){
+	var res=[];
+	cs.forEach(function (c) { res.push(getClassName(c)); });
+	return res;
+    }
     function genSource() {
         ctx.enter({scope:topLevelScope}, function () {
             if (klass.superClass) {
-                printf("%s=Tonyu.klass(%s,{%{", getClassName(klass), getClassName(klass.superClass));
+                printf("%s=Tonyu.klass(%s,[%s],{%{", 
+		       getClassName(klass), 
+		       getClassName(klass.superClass),
+		       getClassNames(klass.includes).join(","));
             } else {
-                printf("%s=Tonyu.klass({%{", getClassName(klass));
+                printf("%s=Tonyu.klass([%s],{%{", 
+		       getClassName(klass),
+		       getClassNames(klass.includes).join(","));
             }
             for (var name in methods) {
                 if (debug) console.log("method1", name);

@@ -92,7 +92,9 @@ TonyuLang=function () {
                  ifwait:true,
                  nowait:true,
                  arguments:true,
-                 "delete": true
+                 "delete": true,
+		  "extends":true,
+		  "includes":true
     };
     var num=tk(/^[0-9\.]+/).ret(function (n) {
         n.type="number";
@@ -329,8 +331,13 @@ TonyuLang=function () {
     ).ret("key","value");
     var objlit=g("objlit").ands(tk("{"), jsonElem.sep0(tk(","),true),  tk("}")).ret(null, "elems");
     var arylit=g("arylit").ands(tk("["), expr.sep0(tk(","),true),  tk("]")).ret(null, "elems");
-    var ext=g("extends").ands(tk("extends"),symbol.or(tk("null")), tk(";")).ret(null, "superClassName");
-    var program=g("program").ands(ext.opt(),stmt.rep0(), space, sp.eof).ret("ext","stmts");
+    var ext=g("extends").ands(tk("extends"),symbol.or(tk("null")), tk(";")).
+	ret(null, "superClassName");
+    var incl=g("includes").ands(tk("includes"), symbol.sep1(tk(","),true),tk(";")).
+	ret(null, "includeClassNames");
+    var program=g("program").
+	ands(ext.opt(),incl.opt(),stmt.rep0(), space, sp.eof).
+	ret("ext","incl","stmts");
 
     for (var i in g.defs) {
         g.defs[i].profile();

@@ -181,26 +181,40 @@ Tonyu=function () {
         return f;
     }
     function klass() {
-        var parent, prot;
+        var parent, prot, includes=[];
         if (arguments.length==1) {
             prot=arguments[0];
-        }
-        if (arguments.length==2) {
+        } else if (arguments.length==2 && typeof arguments[0]=="function") {
+            parent=arguments[0];
+            prot=arguments[1];
+        } else if (arguments.length==2 && arguments[0] instanceof Array) {
+	    includes=arguments[0];
+	    prot=arguments[1];
+	} else if (arguments.length==3) {
             parent=arguments[0];
             if (!parent) throw "No parent class";
-            prot=arguments[1];
-        }
+	    includes=arguments[1];
+	    prot=arguments[2];
+	} else {
+	    console.log(arguments);
+	    throw "Invalid argument spec";
+	}
         prot=defunct(prot);
         var res=(prot.initialize? prot.initialize:
             (parent? function () {
                 parent.apply(this,arguments);
             }:function (){})
         );
-        /*res=function () {
-            if (this.initialize) {
-                this.initialize.apply(this, arguments);
-            }
-        };*/
+	delete prot.initialize;
+	includes.forEach(function (m) {
+	    if (!m.methods) throw m+" Does not have methods";
+	    for (var n in m.methods) {
+		if (!(n in prot)) {
+		    prot[n]=m.methods[n];
+		} 
+	    }
+	});
+	res.methods=prot;
         res.prototype=bless(parent, prot);
         res.prototype.isTonyuObject=true;
         return res;

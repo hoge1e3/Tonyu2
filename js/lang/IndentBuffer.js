@@ -8,7 +8,7 @@ IndentBuffer=function () {
 			ai++;
 			var res=args[ai];
 			if (res==null) {
-			    console.log(arguments);
+			    console.log(args);
 			    throw (ai+"th null param: fmt="+fmt);
 			}
 			return res;

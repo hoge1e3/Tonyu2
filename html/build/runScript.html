@@ -15,12 +15,18 @@ http://tonyuedit.appspot.com/edit/importFromJsdoit.html
 
 while(y<$screenHeight && !$gov) {
     y+=$spd;
-    if ( dist2($mouseX-x,$mouseY-y)<400 ) {
-        if (check()) {
-            playSE("l64o4v10gfev5dc>g v3fedc");
+    //print(y, $spd);
+    ok=check();
+    if ( crash() ) {
+        if (ok) {
+            if ($sound) playSE("l64o4v10gfev5dc>g v3fedc");
+            $combo.inc();
+            $score.inc();
+            $level.get();
         } else {
-            playSE("l16 o3 b-b-4");
+            if ($sound) playSE("l16 o3 b-b-4");
             new X{x,y,text:"x"};
+            $combo.count=0;
         }
         $prev=p;
         dieEffect();
@@ -49,50 +55,129 @@ dieEffect();
     var pp=p-$pat_balls;
     var c=pp%5;
     var r=(pp-c)/5;
-    return {c,r};
+    return {c,r};    
 }
 \check(){
     if (!$prev) return true;
     var p1=getCol($prev);
     var p2=getCol(p);
     return p1.c==p2.c || p1.c==p2.r || p1.r==p2.c || p1.r==p2.r;
-}</script>
+}
+
+\crash() {
+    if ($useTouch && !$touches[0].touched) return false;
+    var s=ok?800:400;
+    if (dist2($mouseX-x,$mouseY-y)<s ) return true;
+    if ($trace.length<2) return false;
+    var r=distPointLine($trace[0].x,$trace[0].y,
+    $trace[1].x,$trace[1].y,x,y);
+    return r.k>=0 && r.k<=1 && r.d<s;
+}
+
+\distPointLine(ax,ay,bx,by,cx,cy) {
+/*
+   C
+   |
+A--H-----B
+
+A=0   H=k*B       C
+*/
+    cx-=ax;
+    cy-=ay;
+    bx-=ax;
+    by-=ay;
+
+/*
+(C-H)*B=0
+(C-(k*B)) * B = 0
+CB - k B^2 = 0
+CB = k B^2
+cx*bx+cy*by = k*(bx*bx+by*by)
+
+*/
+    var k= (cx*bx+cy*by)/(bx*bx+by*by);
+// H= k*B 
+    var hx = k * bx;
+    var hy = k * by;
+    var d= (cx-hx)*(cx-hx)+(cy-hy)*(cy-hy);
+    return {k,d};
+}
+</script>
 
 <script type='text/tonyu' data-filename='Main.tonyu'>
-$spd=1;
-$gov=false;
-$prev=null;
-tick=32;
-new MayGet{x:200, y:250, t:-1};
-new MayGet{x:100, y:300, t:0};
-new MayGet{x:100, y:350, t:1};
-new MayGet{x:320, y:300, t:2};
-new MayGet{x:320, y:350, t:3};
+$sound=false;
+while (true) {
+    size=30;
+    x=$screenWidth/2; 
+    y=$screenHeight/4;
+    text="いろ色文字もじ Tiny";
+    sb=new Button{y:200, text:"",size:30};
+    st=new Button{y:300, text:"Start",size:30};
+    update();
+    //text="x=" + x+" y="+y;
+    while (st.clicked==0) {
+        if (sb.clicked==1) {
+            $sound=!$sound;
+            if ($sound) playSE("l8o5cg");
+        }
+        sb.text="Sound "+($sound?"on":"off");
+        update();
+    }
+    $useTouch=st.clickedBy=="touch";
+    for (i=0; i<30; i++) {
+        text= (i%2==0?"":"Game Start");
+        update();
+    }
+    text="";
+    all().die();
+
+    $level=new Level;
+    $spd=1;
+    $gov=false;
+    $prev=null;
+    $trace=[];
+    tick=32;
+    $score=new Score;
+    new MayGet{x:200, y:260, t:-1};
+    new MayGet{x:100, y:300, t:0};
+    new MayGet{x:100, y:360, t:1};
+    new MayGet{x:320, y:300, t:2};
+    new MayGet{x:320, y:360, t:3};
+    $combo=new Combo;
+
 //x=20;
 //y=20;
-while(!$gov) {
-    if (tick>32) {
-        new Ball{p:$pat_balls+rnd(25),x:rnd($screenWidth),y:0};
-        tick-=32;
-    }
-    if (all(Ball).max("y")<$screenHeight-200) {
-        $spd=5;
-    } else {
-        $spd=1;
-    }
-    tick+=$spd;
-    if (all(X).size()>=3) $gov=true;
+    $spd=0.1;
     update();
+    while(!$gov) {
+        bs=all(Ball);
+        if (bs.length==0 || tick>32) {
+            new Ball{p:$level.genP(),x:rnd($screenWidth-64)+32,y:0};
+            tick-=32;
+        }
+        if (bs.max("y")<$screenHeight-200) {
+            $spd=10;
+        } else {
+            $spd=$level.speed();
+        }
+        tick+=$spd;
+        if (all(X).length>=3) $gov=true;
+        $trace.push{x:$mouseX,y:$mouseY};
+        if ($trace.length>=3) $trace.shift();
+        if ($useTouch && !$touches[0].touched) $trace=[];
+        update();
+    }
+    if ($sound) play("o4l16v15av10>av5>a");
+    text="Game Over";
+
+    for (i=0; i<60; i++) {
+        update();
+    }
 }
-size=30;
-x=$screenWidth/2; y=$screenHeight/2;
-play("o4l16v15av10>av5>a");
-text="Game Over";
-//for (a in all(Ball)) a.dieEffect();
 </script>
 
 <script type='text/tonyu' data-filename='MayGet.tonyu'>
-text="-";
+text=" ";
 col=["青","赤","黄","緑","紫"];
 while (true) {
     if (t==-1) {
@@ -112,7 +197,7 @@ while (true) {
         } else if (t==3) {
             text="「"+col[pc]+"」という文字が書かれたボール";
         }
-
+        if ($combo.count>3 || $gov) text=" ";
     }
     update();
 }</script>
@@ -120,30 +205,122 @@ while (true) {
 <script type='text/tonyu' data-filename='X.tonyu'>text="X";
 fillStyle="red";
 size=10;
+tx=all(X).length*30+30;
+ty=$screenHeight-50;
 while (size<50) {
     size+=5;
     update();
 }
-while (x<all(X).max("x")+32) {
-    x+=32;
-    update();
-}
-while (y<$screenHeight-50) {
-    y+=32;
-    update();
-}
-y=$screenHeight-50;
-while (x>50) {
-    x-=10;
-    if (crashTo(X)) {
-        x+=10;
-        break;
-    }
+for (i=0 ; i<32; i++) {
+    y+=(ty-y)/5;
+    x+=(tx-x)/5;
     update();
 }
 </script>
 
-<script type='text/tonyu' data-filename='.desktop' data-wrap='80'>{"runMenuOrd":["Main","Ball","MayGet","X"]}
+<script type='text/tonyu' data-filename='Combo.tonyu'>
+
+y=50;
+x=$screenWidth/2;
+
+count=0;
+cdec=0;
+while (true) {
+    if (count==0 || (cdec<10 && cdec%2==1)) text=" ";
+    else text=count+" Combo";
+    if (cdec>0) {
+        cdec--;
+        if (cdec==0) count=0;
+    }
+    update();
+}
+
+\inc() {
+    count++;
+    cdec=50;
+}
+</script>
+
+<script type='text/tonyu' data-filename='Level.tonyu'>y=40;
+x=$screenWidth/4*3;
+exp=0;
+val=0;
+size=20;
+
+while (true) {
+    text="Level "+val;
+    update();
+}
+\genP(){
+    var c1,c2;
+    while (true) {
+        if (val<40) {
+            c1=rnd(4); c2=rnd(4);
+        } else {
+            c1=rnd(5); c2=rnd(5);
+        }
+        if (val>80 || val % 40>=20 || c1!=c2) break;
+    }
+    return $pat_balls+c1*5+c2;
+}
+\get() {
+    exp++;
+    if (exp>=10) {
+        exp=0;
+        val++;
+    }
+}
+\speed(){
+    return ((val%10)+val*0.1)*0.1+0.1;
+}</script>
+
+<script type='text/tonyu' data-filename='Button.tonyu'>
+padding=10;
+bwidth=$screenWidth*0.8;
+x=$screenWidth/2;
+clicked=0;
+while (true) {
+    if (clicked>0) {
+        clicked++;
+        if (clicked>25) clicked=0;
+    }
+    r=getCrashRect();
+    mouseClicked=getkey(1)==1;
+    touched=!ptouch && $touches[0].touched ;
+    ptouch=$touches[0].touched;
+    if ((mouseClicked || touched) &&
+    $mouseX>r.x-r.width/2 && $mouseX<r.x+r.width/2 && 
+    $mouseY>r.y-r.height/2 && $mouseY<r.y+r.height/2) {
+        clickedBy=mouseClicked ?"mouse":"touch";
+        clicked=1;
+    }    
+    update();
+}
+\draw(c) {
+    c.fillStyle="rgb("+(clicked ? 255-clicked*10: 0)+",200,0)";
+    c.fillRect(x-bwidth/2,y-padding,
+    bwidth,height+padding*2);
+    super.draw(c);
+}
+\getCrashRect() {
+    return {x,y:y-padding+height/2,
+    width:bwidth+padding*2,height:height+padding*2};
+}</script>
+
+<script type='text/tonyu' data-filename='Score.tonyu'>y=40;
+x=$screenWidth/4*1;
+val=0;
+size=20;
+while (true) {
+    text="Score: "+val;
+    update();
+}
+
+\inc() {
+    val+=$combo.count*10;
+}</script>
+
+<script type='text/tonyu' data-filename='.desktop' data-wrap='80'>{"runMenuOrd":["Main","Ball","MayGet","X","Combo","Level","Button","Score"]}
 </script>
 
 <script type='text/tonyu' data-filename='res.json' data-wrap='80'>{"images":[{"name":"$pat_base","url":"images/base.png","pwidth":32,"pheight":32}\
@@ -160,5 +337,6 @@ while (x>50) {
 <script type='text/tonyu' data-filename='options.json' data-wrap='80'>{"compiler":{"defaultSuperClass":"Actor"},"run":{"mainClass":"Main","bootClass":\
 "Boot"},"kernelEditable":false}
 </script>
+
 
 

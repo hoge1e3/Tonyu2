@@ -1,4 +1,5 @@
 extends null;
+includes MathMod;
 native Tonyu;
 native Key;
 native console;
