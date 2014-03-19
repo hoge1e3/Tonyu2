@@ -4,3 +4,4 @@ print("KlasTest");
 foo();
 f("ふえたよー");
 f("ふえたよー");
+print(angleDiff(30,350));

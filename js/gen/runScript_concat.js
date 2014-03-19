@@ -1,4 +1,4 @@
-// Created at Wed Mar 19 2014 11:34:42 GMT+0900 (東京 (標準時))
+// Created at Wed Mar 19 2014 11:56:16 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -521,7 +521,7 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1395196463414},"Actor.tonyu":{"lastUpdate":1395196463414},"BaseActor.tonyu":{"lastUpdate":1395196463415},"Boot.tonyu":{"lastUpdate":1395196463416},"Keys.tonyu":{"lastUpdate":1395196463418},"MML.tonyu":{"lastUpdate":1395196463418},"NoviceActor.tonyu":{"lastUpdate":1395196463419},"ScaledCanvas.tonyu":{"lastUpdate":1395196463420},"Sprites.tonyu":1394071743000,"TObject.tonyu":{"lastUpdate":1395196463420},"WaveTable.tonyu":{"lastUpdate":1395196463421},"TQuery.tonyu":{"lastUpdate":1395196463421},"MathMod.tonyu":{"lastUpdate":1395196463421}}',
+      '': '{".desktop":{"lastUpdate":1395197749964},"Actor.tonyu":{"lastUpdate":1395197749965},"BaseActor.tonyu":{"lastUpdate":1395197749965},"Boot.tonyu":{"lastUpdate":1395197749966},"Keys.tonyu":{"lastUpdate":1395197749967},"MML.tonyu":{"lastUpdate":1395197749969},"NoviceActor.tonyu":{"lastUpdate":1395197749969},"ScaledCanvas.tonyu":{"lastUpdate":1395197749970},"Sprites.tonyu":1394071743000,"TObject.tonyu":{"lastUpdate":1395197749970},"WaveTable.tonyu":{"lastUpdate":1395197749971},"TQuery.tonyu":{"lastUpdate":1395197749971},"MathMod.tonyu":{"lastUpdate":1395197749972}}',
       '.desktop': '{"runMenuOrd":["AcTestM","NObjTest","SETest","MMLTest","KeyTest","NObjTest2","AcTest","NoviceActor","Actor","Boot","AltBoot","Keys","TObject","WaveTable","MML","BaseActor","TQuery","ScaledCanvas","MathMod"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -1406,7 +1406,16 @@ requireSimulator.setName('fs/ROMk');
         '        if (c<-180) c+=360;\n'+
         '    }\n'+
         '    return c;\n'+
-        '   \n'+
+        '}\n'+
+        '\\sqrt(t) {\n'+
+        '    return Math.sqrt(t);\n'+
+        '}\n'+
+        '\\dist(dx,dy) {\n'+
+        '    if (typeof dx=="object") {\n'+
+        '        var t=dx;\n'+
+        '        dx=t.x-x;dy=t.y-y;\n'+
+        '    }\n'+
+        '    return sqrt(dx*dx+dy*dy);\n'+
         '}'
       
     }
