@@ -12,7 +12,8 @@ for (i=0; i<3000; i++) {
         a.y+=0.1;
     }
     size=40;
-    text="スコア："+i+"/"+all(AcTest).min("y")+"--"+all(AcTest).max("y");
+    text="スコア："+i+"/"+atan2(x-t.x,y-t.y);
+    // text="スコア："+i+"/"+all(AcTest).min("y")+"--"+all(AcTest).max("y");
     //x=$touches[0].x;
     //y=$touches[0].y;
     x=$mouseX;

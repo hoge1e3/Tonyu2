@@ -10,9 +10,13 @@ native Math;
 \rad(d) {
     return d/180*Math.PI;
 }
+\deg(d) {
+    return d/Math.PI*180;
+}
+
 \abs(v) {
     return Math.abs(v);
 }
 \atan2(x,y) {
-    return Math.atan2(x,y);
+    return deg(Math.atan2(x,y));
 }

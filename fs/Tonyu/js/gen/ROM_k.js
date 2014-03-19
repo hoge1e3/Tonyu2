@@ -2,7 +2,7 @@
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1395119956503},"Actor.tonyu":{"lastUpdate":1395119956503},"BaseActor.tonyu":{"lastUpdate":1395119956504},"Boot.tonyu":{"lastUpdate":1395119956505},"Keys.tonyu":{"lastUpdate":1395119956505},"MML.tonyu":{"lastUpdate":1395119956506},"NoviceActor.tonyu":{"lastUpdate":1395119956506},"ScaledCanvas.tonyu":{"lastUpdate":1395119956507},"Sprites.tonyu":1394071743000,"TObject.tonyu":{"lastUpdate":1395119956508},"WaveTable.tonyu":{"lastUpdate":1395119956508},"TQuery.tonyu":{"lastUpdate":1395119956508},"MathMod.tonyu":{"lastUpdate":1395119956509}}',
+      '': '{".desktop":{"lastUpdate":1395195297550},"Actor.tonyu":{"lastUpdate":1395195297551},"BaseActor.tonyu":{"lastUpdate":1395195297552},"Boot.tonyu":{"lastUpdate":1395195297553},"Keys.tonyu":{"lastUpdate":1395195297554},"MML.tonyu":{"lastUpdate":1395195297555},"NoviceActor.tonyu":{"lastUpdate":1395195297555},"ScaledCanvas.tonyu":{"lastUpdate":1395195297556},"Sprites.tonyu":1394071743000,"TObject.tonyu":{"lastUpdate":1395195297556},"WaveTable.tonyu":{"lastUpdate":1395195297557},"TQuery.tonyu":{"lastUpdate":1395195297557},"MathMod.tonyu":{"lastUpdate":1395195297557}}',
       '.desktop': '{"runMenuOrd":["AcTestM","NObjTest","SETest","MMLTest","KeyTest","NObjTest2","AcTest","NoviceActor","Actor","Boot","AltBoot","Keys","TObject","WaveTable","MML","BaseActor","TQuery","ScaledCanvas","MathMod"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -862,11 +862,15 @@
         '\\rad(d) {\n'+
         '    return d/180*Math.PI;\n'+
         '}\n'+
+        '\\deg(d) {\n'+
+        '    return d/Math.PI*180;\n'+
+        '}\n'+
+        '\n'+
         '\\abs(v) {\n'+
         '    return Math.abs(v);\n'+
         '}\n'+
         '\\atan2(x,y) {\n'+
-        '    return Math.atan2(x,y);\n'+
+        '    return deg(Math.atan2(x,y));\n'+
         '}'
       
     }

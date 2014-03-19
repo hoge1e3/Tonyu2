@@ -11,6 +11,7 @@ requirejs(["Shell","FS"], function (sh,FS) {
                     cps+=sh.cp(src, ker);
                 }
             });
+            return cps;
         }
     };
 });

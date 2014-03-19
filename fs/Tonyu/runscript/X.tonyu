@@ -1,24 +1,14 @@
 text="X";
 fillStyle="red";
 size=10;
+tx=all(X).length*30+30;
+ty=$screenHeight-50;
 while (size<50) {
     size+=5;
     update();
 }
-while (x<all(X).max("x")+32) {
-    x+=32;
-    update();
-}
-while (y<$screenHeight-50) {
-    y+=32;
-    update();
-}
-y=$screenHeight-50;
-while (x>50) {
-    x-=10;
-    if (crashTo(X)) {
-        x+=10;
-        break;
-    }
+for (i=0 ; i<32; i++) {
+    y+=(ty-y)/5;
+    x+=(tx-x)/5;
     update();
 }

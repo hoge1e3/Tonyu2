@@ -1,5 +1,5 @@
 
-text="-";
+text=" ";
 col=["青","赤","黄","緑","紫"];
 while (true) {
     if (t==-1) {
@@ -19,7 +19,7 @@ while (true) {
         } else if (t==3) {
             text="「"+col[pc]+"」という文字が書かれたボール";
         }
-
+        if ($combo.count>3 || $gov) text=" ";
     }
     update();
 }
