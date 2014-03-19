@@ -20,3 +20,20 @@ native Math;
 \atan2(x,y) {
     return deg(Math.atan2(x,y));
 }
+\floor(x) {
+    return Math.floor(x);
+}
+\angleDiff(a,b) {
+    var c;
+    a=floor(a);
+    b=floor(b);
+    if (a>=b) {
+        c=(a-b) % 360;
+        if (c>=180) c-=360;
+    } else {
+        c=-((b-a) % 360);
+        if (c<-180) c+=360;
+    }
+    return c;
+   
+}

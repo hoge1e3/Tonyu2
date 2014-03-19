@@ -2,7 +2,7 @@
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1395195297550},"Actor.tonyu":{"lastUpdate":1395195297551},"BaseActor.tonyu":{"lastUpdate":1395195297552},"Boot.tonyu":{"lastUpdate":1395195297553},"Keys.tonyu":{"lastUpdate":1395195297554},"MML.tonyu":{"lastUpdate":1395195297555},"NoviceActor.tonyu":{"lastUpdate":1395195297555},"ScaledCanvas.tonyu":{"lastUpdate":1395195297556},"Sprites.tonyu":1394071743000,"TObject.tonyu":{"lastUpdate":1395195297556},"WaveTable.tonyu":{"lastUpdate":1395195297557},"TQuery.tonyu":{"lastUpdate":1395195297557},"MathMod.tonyu":{"lastUpdate":1395195297557}}',
+      '': '{".desktop":{"lastUpdate":1395196463414},"Actor.tonyu":{"lastUpdate":1395196463414},"BaseActor.tonyu":{"lastUpdate":1395196463415},"Boot.tonyu":{"lastUpdate":1395196463416},"Keys.tonyu":{"lastUpdate":1395196463418},"MML.tonyu":{"lastUpdate":1395196463418},"NoviceActor.tonyu":{"lastUpdate":1395196463419},"ScaledCanvas.tonyu":{"lastUpdate":1395196463420},"Sprites.tonyu":1394071743000,"TObject.tonyu":{"lastUpdate":1395196463420},"WaveTable.tonyu":{"lastUpdate":1395196463421},"TQuery.tonyu":{"lastUpdate":1395196463421},"MathMod.tonyu":{"lastUpdate":1395196463421}}',
       '.desktop': '{"runMenuOrd":["AcTestM","NObjTest","SETest","MMLTest","KeyTest","NObjTest2","AcTest","NoviceActor","Actor","Boot","AltBoot","Keys","TObject","WaveTable","MML","BaseActor","TQuery","ScaledCanvas","MathMod"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -871,6 +871,23 @@
         '}\n'+
         '\\atan2(x,y) {\n'+
         '    return deg(Math.atan2(x,y));\n'+
+        '}\n'+
+        '\\floor(x) {\n'+
+        '    return Math.floor(x);\n'+
+        '}\n'+
+        '\\angleDiff(a,b) {\n'+
+        '    var c;\n'+
+        '    a=floor(a);\n'+
+        '    b=floor(b);\n'+
+        '    if (a>=b) {\n'+
+        '        c=(a-b) % 360;\n'+
+        '        if (c>=180) c-=360;\n'+
+        '    } else {\n'+
+        '        c=-((b-a) % 360);\n'+
+        '        if (c<-180) c+=360;\n'+
+        '    }\n'+
+        '    return c;\n'+
+        '   \n'+
         '}'
       
     }
