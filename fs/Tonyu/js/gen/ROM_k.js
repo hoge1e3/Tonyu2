@@ -2,7 +2,7 @@
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1395197749964},"Actor.tonyu":{"lastUpdate":1395197749965},"BaseActor.tonyu":{"lastUpdate":1395197749965},"Boot.tonyu":{"lastUpdate":1395197749966},"Keys.tonyu":{"lastUpdate":1395197749967},"MML.tonyu":{"lastUpdate":1395197749969},"NoviceActor.tonyu":{"lastUpdate":1395197749969},"ScaledCanvas.tonyu":{"lastUpdate":1395197749970},"Sprites.tonyu":1394071743000,"TObject.tonyu":{"lastUpdate":1395197749970},"WaveTable.tonyu":{"lastUpdate":1395197749971},"TQuery.tonyu":{"lastUpdate":1395197749971},"MathMod.tonyu":{"lastUpdate":1395197749972}}',
+      '': '{".desktop":{"lastUpdate":1395320514617},"Actor.tonyu":{"lastUpdate":1395320514618},"BaseActor.tonyu":{"lastUpdate":1395320514619},"Boot.tonyu":{"lastUpdate":1395320514620},"Keys.tonyu":{"lastUpdate":1395320514621},"MML.tonyu":{"lastUpdate":1395320514621},"NoviceActor.tonyu":{"lastUpdate":1395320514622},"ScaledCanvas.tonyu":{"lastUpdate":1395320514622},"Sprites.tonyu":1394071743000,"TObject.tonyu":{"lastUpdate":1395320514623},"WaveTable.tonyu":{"lastUpdate":1395320514623},"TQuery.tonyu":{"lastUpdate":1395320514624},"MathMod.tonyu":{"lastUpdate":1395320514624}}',
       '.desktop': '{"runMenuOrd":["AcTestM","NObjTest","SETest","MMLTest","KeyTest","NObjTest2","AcTest","NoviceActor","Actor","Boot","AltBoot","Keys","TObject","WaveTable","MML","BaseActor","TQuery","ScaledCanvas","MathMod"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -230,6 +230,19 @@
         'nowait \\asyncResult() {\n'+
         '    return Tonyu.asyncResult();\n'+
         '}\n'+
+        '\n'+
+        '\\screenOut(a) {\n'+
+        '//オブジェクトが画面外に出たかどうかを判定します。\n'+
+        '    if (!a) a=0;\n'+
+        '    var r=0;\n'+
+        '    var viewX=0,viewY=0;\n'+
+        '    if (x<viewX+a)               r+=viewX+a-x;\n'+
+        '    if (y<viewY+a)               r+=viewY+a-y;\n'+
+        '    if (x>$screenWidth +viewX-a) r+=x-($screenWidth +viewX-a);\n'+
+        '    if (y>$screenHeight+viewY-a) r+=y-($screenHeight+viewY-a);\n'+
+        '    return r;\n'+
+        '}\n'+
+        '\n'+
         '\\play() {\n'+
         '    if (!_mml) _mml=new MML;\n'+
         '    if (isDead() || arguments.length==0) return _mml;\n'+

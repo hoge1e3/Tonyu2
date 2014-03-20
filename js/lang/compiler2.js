@@ -30,7 +30,7 @@ function initClassDecls(klass, env ) {
         var t;
         if (t=OM.match( program , {ext:{superClassName:{text:OM.T, pos:OM.P}}})) {
             spcn=t.T;
-            pos=t.P; 
+            pos=t.P;
             if (spcn=="null") spcn=null;
         }
 	klass.includes=[];
@@ -413,21 +413,21 @@ function genJS(klass, env,pass) {
                 var itn=genSym("_it_");
                 ctx.scope[itn]=ST.LOCAL;
                 if (!ctx.noWait) {
-                    var brkpos={};
+                    var brkpos=buf.lazy();
                     var pc=ctx.pc++;
                     buf.printf(
                             "%s=%s(%v,%s);%n"+
                             "%}case %d:%{" +
                             "if (!(%s.next())) { %s=%z; break; }%n" +
                             "%f%n" +
-                            "%v%n" +
+                            "%f%n" +
                             "%s=%s;break;%n" +
                             "%}case %f:%{",
                                 itn, ITER, node.inFor.set, node.inFor.vars.length,
                                 pc,
                                 itn, FRMPC, brkpos,
                                 getElemF(itn, node.inFor.isVar, node.inFor.vars),
-                                node.loop,
+                                enterV({closestBrk:brkpos}, node.loop),//node.loop,
                                 FRMPC, pc,
                                 function (buf) { buf.print(brkpos.put(ctx.pc++)); }
                     );
@@ -447,20 +447,20 @@ function genJS(klass, env,pass) {
 
             } else {
                 if (!ctx.noWait) {
-                    var brkpos={};
+                    var brkpos=buf.lazy();
                     var pc=ctx.pc++;
                     buf.printf(
                             "%v;%n"+
                             "%}case %d:%{" +
                             "if (!(%v)) { %s=%z; break; }%n" +
-                            "%v%n" +
+                            "%f%n" +
                             "%v;%n" +
                             "%s=%s;break;%n" +
                             "%}case %f:%{",
                                 node.inFor.init ,
                                 pc,
                                 node.inFor.cond, FRMPC, brkpos,
-                                node.loop,
+                                enterV({closestBrk:brkpos}, node.loop),//node.loop,
                                 node.inFor.next,
                                 FRMPC, pc,
                                 function (buf) { buf.print(brkpos.put(ctx.pc++)); }
@@ -695,12 +695,12 @@ function genJS(klass, env,pass) {
     function genSource() {
         ctx.enter({scope:topLevelScope}, function () {
             if (klass.superClass) {
-                printf("%s=Tonyu.klass(%s,[%s],{%{", 
-		       getClassName(klass), 
+                printf("%s=Tonyu.klass(%s,[%s],{%{",
+		       getClassName(klass),
 		       getClassName(klass.superClass),
 		       getClassNames(klass.includes).join(","));
             } else {
-                printf("%s=Tonyu.klass([%s],{%{", 
+                printf("%s=Tonyu.klass([%s],{%{",
 		       getClassName(klass),
 		       getClassNames(klass.includes).join(","));
             }
