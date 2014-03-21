@@ -1,0 +1,23 @@
+
+p=$pat_r2b+1;
+scaleX=0.8;
+tx=rnd($screenWidth);
+ty=$screenHeight-20;
+d=dist(tx-x,ty-y);
+spd=0.5+($level%10)*0.05;
+vx=(tx-x)/d*spd;
+vy=(ty-y)/d*spd;
+while (y<$screenHeight) {
+    y+=vy;
+    x+=vx;
+    //vy+=0.01;
+    //vx*=0.99;
+    //vy*=0.99;
+    if (x<0) vx=abs(vx);
+    if (x>$screenWidth) vx=-abs(vx);
+    if (y<-100) vy=1;
+    scaleX=0.8+sin(y*80)*0.1;
+    update();
+}
+$gov=true;
+if ($head) $head.die();

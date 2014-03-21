@@ -1,0 +1,10 @@
+t=new Actor{x:200, y:200};
+print ("t", t.isDead());
+y=100;
+x=200;
+p=1;
+while (true) {
+    x++;
+    t.text="out="+screenOut();
+    update();
+}

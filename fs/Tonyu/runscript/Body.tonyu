@@ -1,0 +1,44 @@
+p=12;
+
+print(ofs, head.trace.length);
+while(!head.isDead()) {
+    x=head.trace[ofs].x;
+    y=head.trace[ofs].y;
+    e=head.trace[ofs].entering;
+    if (p==12) {
+        for (r in all(Rock)) {
+            d=dist(r);
+            if (d<32) {
+                p=23;
+                r.die();
+                $exp++;
+                print("Exp="+$exp);
+                if ($exp>=5) {
+                    $level++;
+                    $exp=0;
+                }
+                break;
+            }
+            if (d<50) {
+                dx=x-r.x;
+                dy=y-r.y;
+                r.vx+=dx/(d+10)*0.5;
+                r.vy+=dy/(d+10)*0.5;
+            }
+        }
+    }
+    if (p!=1 && e){
+        p=-1;
+        head.outFrom.bo();
+    }
+    update();
+}
+vx=rnd()*8-4;
+vy=-2;
+while (y<$screenHeight) {
+    y+=vy;
+    x+=vx;
+    vy+=1;
+    update();
+}
+die();

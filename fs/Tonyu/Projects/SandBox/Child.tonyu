@@ -1,3 +1,9 @@
 extends Parent;
 
+\foo() {
+    print("Child foo");
+    r=super.foo();
+    print("r=",r);
+}
+id=500;
 foo();

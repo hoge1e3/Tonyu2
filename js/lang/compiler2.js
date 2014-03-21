@@ -342,12 +342,26 @@ function genJS(klass, env,pass) {
                 var p=getClassName(klass.superClass);
                 if (t.S.name) {
                     buf.printf(
-                            "%s.enter( %s.prototype.%s%s( %s, %v) );%n" +
+                            "%s.enter( %s.prototype.%s%s.apply( %s, %v) );%n" +
                             "%s=%s;return;%n" +/*B*/
                             "%}case %d:%{",
                                 TH,   p,  FIBPRE, t.S.name.text,  THIZ,  t.S.params,
                                 FRMPC, ctx.pc,
                                 ctx.pc++
+                    );
+                }
+            } else if (!ctx.noWait && (t=OM.match(node,retSuperFiberCallTmpl)) ) {
+                var p=getClassName(klass.superClass);
+                if (t.S.name) {
+                    buf.printf(
+                            "%s.enter( %s.prototype.%s%s.apply( %s, %v) );%n" +
+                            "%s=%s;return;%n" +/*B*/
+                            "%}case %d:%{"+
+                            "%v%v%s.retVal();%n",
+                                TH,   p,  FIBPRE, t.S.name.text,  THIZ,  t.S.params,
+                                FRMPC, ctx.pc,
+                                ctx.pc++,
+                                t.L, t.O, TH
                     );
                 }
             } else {

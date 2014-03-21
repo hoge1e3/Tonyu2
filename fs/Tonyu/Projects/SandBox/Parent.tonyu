@@ -1,5 +1,6 @@
 
 \foo() {
-    print("Foo1");   
+    print("Parent Foo id=",id);   
     text="123";x=46; y=67;
+    return x+y;
 }

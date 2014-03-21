@@ -1,1 +1,1 @@
-{"compiler":{"defaultSuperClass":"Actor"},"run":{"mainClass":"ForEachTest","bootClass":"Boot"},"kernelEditable":true}
+{"compiler":{"defaultSuperClass":"Actor"},"run":{"mainClass":"Child","bootClass":"Boot"},"kernelEditable":true}

@@ -1,0 +1,65 @@
+p=13;
+d=-90;
+spd=3;
+rot=5;
+len=0;
+pitch=floor(32/spd);
+trace=[];
+while(true) {
+    if (t.active) {
+        td=atan2(t.y-y,t.x-x);
+        if (angleDiff(td,d)<0) {
+            d-=rot;
+        }
+        if (angleDiff(td,d)>0) {
+            d+=rot;
+        }
+        if (dist(t)<16) t.active=false;
+    }
+    x+=cos(d)*spd;
+    y+=sin(d)*spd;
+    trace.unshift{x,y,entering};
+    if (trace.length>maxLen*pitch) {
+        las=trace.pop();
+        if (las.entering) {
+            die();
+        }
+    }
+    if (trace.length>(len+1)*pitch) {
+        len++;
+        new Body{head:this, ofs:len*pitch};
+        outFrom.bo();
+    }
+    if (!entering) {
+        for (b in all(Body)) {
+            if (dist(b)<16) die();
+        }
+        if (crashTo(Rock)) die();
+        if (screenOut()>100) die();
+        pp=crashTo(Pipe);
+        //if (pp) print("Enter",pp,y,pp.y,spd,d, abs(angleDiff(d,90)));
+        if (pp && y<pp.y-(5-spd) && abs(angleDiff(d,90))<60) {
+            p=-1;
+            entering=pp;
+            $head=null;
+            pp.accept(this);
+            t.active=false;
+        }
+    }
+    update();
+}
+\getCrashRect() {
+    return {x,y,width:16,height:16};
+}
+
+function screenOut(a) {
+//オブジェクトが画面外に出たかどうかを判定します。
+    if (!a) a=0;
+    var r=0;
+    $viewX=0;$viewY=0;
+    if (x<$viewX+a)               r+=$viewX+a-x;
+    if (y<$viewY+a)               r+=$viewY+a-y;
+    if (x>$screenWidth +$viewX-a) r+=x-($screenWidth +$viewX-a);
+    if (y>$screenHeight+$viewY-a) r+=y-($screenHeight+$viewY-a);
+    return r;
+}
