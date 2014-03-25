@@ -1,4 +1,4 @@
-// Created at Fri Mar 21 2014 17:56:50 GMT+0900 (東京 (標準時))
+// Created at Tue Mar 25 2014 11:23:48 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -4589,6 +4589,13 @@ return Tonyu.Project=function (dir, kernelDir) {
         TPR.boot(mainClassName);
     };*/
     TPR.compile=function () {
+    	if (TPR.isKernelEditable()) {
+    		//  BaseActor  <-  Actor            <- MyActor
+    		//   ^ in user     ^ only in kernel   ^ in user
+    		//    => Actor does not inherit BaseActor in user but BaseActor in kernel
+    		TPR.compileDir(dir);
+        	return;
+    	}
     	if (!env.kernelClasses) TPR.compileKernel();
     	TPR.compileUser();
     };
@@ -4606,7 +4613,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         var skip=Tonyu.extend({}, baseClasses || {});
         Tonyu.currentProject=TPR;
         Tonyu.globals.$currentProject=TPR;
-        //kernelDir.each(collect);
+        if (TPR.isKernelEditable()) kernelDir.each(collect);
         cdir.each(collect);
         function collect(f) {
             if (f.endsWith(TPR.EXT)) {
@@ -4720,6 +4727,9 @@ return Tonyu.Project=function (dir, kernelDir) {
         var r=kernelDir.rel(className+TPR.EXT);
         if (r.exists()) return r;
         return null;
+    };
+    TPR.isKernelEditable=function () {
+    	return env.options.kernelEditable;
     };
 
     return TPR;
