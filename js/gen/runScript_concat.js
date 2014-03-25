@@ -1,4 +1,4 @@
-// Created at Tue Mar 25 2014 11:23:48 GMT+0900 (東京 (標準時))
+// Created at Tue Mar 25 2014 11:54:13 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -521,7 +521,7 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1395320514617},"Actor.tonyu":{"lastUpdate":1395320514618},"BaseActor.tonyu":{"lastUpdate":1395320514619},"Boot.tonyu":{"lastUpdate":1395320514620},"Keys.tonyu":{"lastUpdate":1395320514621},"MML.tonyu":{"lastUpdate":1395320514621},"NoviceActor.tonyu":{"lastUpdate":1395320514622},"ScaledCanvas.tonyu":{"lastUpdate":1395320514622},"Sprites.tonyu":1394071743000,"TObject.tonyu":{"lastUpdate":1395320514623},"WaveTable.tonyu":{"lastUpdate":1395320514623},"TQuery.tonyu":{"lastUpdate":1395320514624},"MathMod.tonyu":{"lastUpdate":1395320514624}}',
+      '': '{".desktop":{"lastUpdate":1395320514617},"Actor.tonyu":{"lastUpdate":1395320514618},"BaseActor.tonyu":{"lastUpdate":1395320514619},"Boot.tonyu":{"lastUpdate":1395320514620},"Keys.tonyu":{"lastUpdate":1395320514621},"MML.tonyu":{"lastUpdate":1395320514621},"NoviceActor.tonyu":{"lastUpdate":1395320514622},"ScaledCanvas.tonyu":{"lastUpdate":1395320514622},"Sprites.tonyu":{"lastUpdate":1395716036539},"TObject.tonyu":{"lastUpdate":1395320514623},"WaveTable.tonyu":{"lastUpdate":1395320514623},"TQuery.tonyu":{"lastUpdate":1395320514624},"MathMod.tonyu":{"lastUpdate":1395320514624}}',
       '.desktop': '{"runMenuOrd":["AcTestM","NObjTest","SETest","MMLTest","KeyTest","NObjTest2","AcTest","NoviceActor","Actor","Boot","AltBoot","Keys","TObject","WaveTable","MML","BaseActor","TQuery","ScaledCanvas","MathMod"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -1152,7 +1152,9 @@ requireSimulator.setName('fs/ROMk');
         '    return s;\n'+
         '}\n'+
         'function remove(s) {\n'+
-        '    sprites.splice(sprites.indexOf(s),1);\n'+
+        '    var idx=sprites.indexOf(s);\n'+
+        '    if (idx<0) return;\n'+
+        '    sprites.splice(idx,1);\n'+
         '    delete s.__addedToSprites;\n'+
         '}\n'+
         'function clear() {sprites.splice(0,sprites.length);}\n'+
