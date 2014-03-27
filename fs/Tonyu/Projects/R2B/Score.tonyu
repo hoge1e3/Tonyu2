@@ -1,0 +1,6 @@
+val=0;
+while (true) {
+    text="Score: "+val;
+    update();
+    
+}

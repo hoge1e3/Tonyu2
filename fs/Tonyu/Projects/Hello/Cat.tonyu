@@ -17,5 +17,9 @@ while(true) {
     if (k>0) {
         y-=10;
     }
+    a=crashTo(Apple);
+    if (a) {
+        a.hide();
+    }
     go(x,y);sleep();
 }

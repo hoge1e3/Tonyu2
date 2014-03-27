@@ -62,4 +62,4 @@ x,y,pの値をフィールドに書き込みます
 -[[detectShape]]
 -[[hitTo]]
 -[[watchHit]]
-
+-[[MathMod]]モジュールクラスがもつメソッド

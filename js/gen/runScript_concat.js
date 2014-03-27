@@ -1,4 +1,4 @@
-// Created at Tue Mar 25 2014 12:38:10 GMT+0900 (東京 (標準時))
+// Created at Thu Mar 27 2014 14:08:34 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -1624,43 +1624,47 @@ Tonyu=function () {
         return f;
     }
     function klass() {
-        var parent, prot, includes=[];
-        if (arguments.length==1) {
-            prot=arguments[0];
-        } else if (arguments.length==2 && typeof arguments[0]=="function") {
-            parent=arguments[0];
-            prot=arguments[1];
-        } else if (arguments.length==2 && arguments[0] instanceof Array) {
-	    includes=arguments[0];
-	    prot=arguments[1];
-	} else if (arguments.length==3) {
-            parent=arguments[0];
-            if (!parent) throw "No parent class";
-	    includes=arguments[1];
-	    prot=arguments[2];
-	} else {
-	    console.log(arguments);
-	    throw "Invalid argument spec";
-	}
-        prot=defunct(prot);
-        var res=(prot.initialize? prot.initialize:
-            (parent? function () {
-                parent.apply(this,arguments);
-            }:function (){})
-        );
-	delete prot.initialize;
-	includes.forEach(function (m) {
-	    if (!m.methods) throw m+" Does not have methods";
-	    for (var n in m.methods) {
-		if (!(n in prot)) {
-		    prot[n]=m.methods[n];
-		} 
-	    }
-	});
-	res.methods=prot;
-        res.prototype=bless(parent, prot);
-        res.prototype.isTonyuObject=true;
-        return res;
+    	var parent, prot, includes=[];
+    	if (arguments.length==1) {
+    		prot=arguments[0];
+    	} else if (arguments.length==2 && typeof arguments[0]=="function") {
+    		parent=arguments[0];
+    		prot=arguments[1];
+    	} else if (arguments.length==2 && arguments[0] instanceof Array) {
+    		includes=arguments[0];
+    		prot=arguments[1];
+    	} else if (arguments.length==3) {
+    		parent=arguments[0];
+    		if (!parent) throw "No parent class";
+    		includes=arguments[1];
+    		prot=arguments[2];
+    	} else {
+    		console.log(arguments);
+    		throw "Invalid argument spec";
+    	}
+    	prot=defunct(prot);
+    	var res=(prot.initialize? prot.initialize:
+    		(parent? function () {
+    			parent.apply(this,arguments);
+    		}:function (){})
+    	);
+    	delete prot.initialize;
+    	//A includes B  B includes C  B extends D
+    	//A extends E   E includes F
+    	//A has methods in B,C,E,F. A does not have methods in D
+    	//(B shoule be treated as modules. Modules should not extend)
+    	includes.forEach(function (m) {
+    		if (!m.methods) throw m+" Does not have methods";
+    		for (var n in m.methods) {
+    			if (!(n in prot)) {
+    				prot[n]=m.methods[n];
+    			}
+    		}
+    	});
+    	res.methods=prot;
+    	res.prototype=bless(parent, prot);
+    	res.prototype.isTonyuObject=true;
+    	return res;
     }
     function bless( klass, val) {
         if (!klass) return val;
@@ -3472,6 +3476,24 @@ function genJS(klass, env,pass) {
         if (klass.builtin) return klass.name;
         return CLASS_HEAD+klass.name;
     }
+    function getDependingClasses(klass) {
+        var visited={};
+        var incls=[];
+        var res=[];
+        for (var k=klass ; k ; k=k.superClass) {
+        	incls=incls.concat(k.includes);
+        	visited[getClassName(k)]=true;
+        	res.push(k);
+        }
+        while (incls.length>0) {
+        	var k=incls.shift();
+        	if (visited[getClassName(k)]) continue;
+        	visited[getClassName(k)]=true;
+        	res.push(k);
+            incls=incls.concat(k.includes);
+        }
+    	return res;
+    }
     //console.log(JSON.stringify( retFiberCallTmpl));
     function initTopLevelScope2(klass) {
     	if (klass.builtin) return;
@@ -3486,9 +3508,21 @@ function genJS(klass, env,pass) {
     }
     function initTopLevelScope() {
         var s=topLevelScope;
+        getDependingClasses(klass).forEach(initTopLevelScope2);
+        /*
+        var inclV={};
         for (var k=klass ; k ; k=k.superClass) {
+            inclV[getClassName(k)]=true;
             initTopLevelScope2(k);
         }
+        var incls=klass.includes.concat([]);
+        while (incls.length>0) {
+        	var k=incls.shift();
+        	if (inclV[getClassName(k)]) continue;
+        	inclV[getClassName(k)]=true;
+            initTopLevelScope2(k);
+            incls=incls.concat(k.includes);
+        }*/
         var decls=klass.decls;// Do not inherit parents' natives
         for (var i in decls.natives) {
             s[i]=ST.NATIVE;
@@ -3503,10 +3537,16 @@ function genJS(klass, env,pass) {
         return new f();
     }
     function getMethod(name) {
-        for (var k=klass; k ; k=k.superClass) {
+    	var res=null;
+    	getDependingClasses(klass).forEach(function (k) {
+    		if (res) return;
+            res=k.decls.methods[name];
+    	});
+    	return res; /*
+    	for (var k=klass; k ; k=k.superClass) {
             if (k.decls.methods[name]) return k.decls.methods[name];
         }
-        return null;
+        return null;*/
     }
 
     function nc(o, mesg) {

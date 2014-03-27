@@ -1,0 +1,7 @@
+p=$pat_sample+4;
+for(i=0 ;i<3;i++)update();
+p=$pat_sample+5;
+for(i=0 ;i<3;i++)update();
+p=$pat_sample+6;
+for(i=0 ;i<3;i++)update();
+die();

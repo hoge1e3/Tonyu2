@@ -2,7 +2,7 @@
   var rom={
     base: '/Tonyu/doc/',
     data: {
-      '': '{"index.txt":{"lastUpdate":1394438053570},"novice/":{"lastUpdate":1394262273479},"projectIndex.txt":1393045284000,"tonyu2/":{"lastUpdate":1394784345962}}',
+      '': '{"index.txt":{"lastUpdate":1394438053570},"novice/":{"lastUpdate":1394262273479},"projectIndex.txt":1393045284000,"tonyu2/":{"lastUpdate":1395896794408}}',
       'index.txt': 
         '* サンプルを見る\n'+
         '\n'+
@@ -1002,7 +1002,7 @@
         '名前は，半角英字とアンダースコア(_)が使えます．2文字以上でも構いません．2文字目以降は数字も使うことができます．'
       ,
       'projectIndex.txt': '',
-      'tonyu2/': '{"$mouseX, $mouseY.txt":1394071744000,"$touches.txt":1394071744000,"Actor.txt":1394071743000,"allCrash.txt":{"lastUpdate":1394782870908},"api.txt":1394071743000,"asyncResult.txt":1394071744000,"BaseActor.txt":{"lastUpdate":1394598180246},"Boot.txt":1394071744000,"classDef.txt":1394071744000,"console.txt":1394071744000,"cpats.txt":1394071744000,"crashTo.txt":1394071744000,"crashTo1.txt":1394071744000,"die.txt":{"lastUpdate":1394780376677},"draw.txt":1394071744000,"extend.txt":{"lastUpdate":1394783789118},"forin.txt":1394071744000,"frame.txt":1394071744000,"fs.txt":1394071743000,"getCrashRect.txt":{"lastUpdate":1394783671409},"getkey.txt":1394071744000,"hide.txt":1394071744000,"ide.txt":1394071744000,"index.txt":1394071743000,"isDead.txt":1394071744000,"kernel.txt":1393045285000,"lang.txt":1394071743000,"options.txt":1394071744000,"play.txt":1394071744000,"playSE.txt":1394071744000,"print.txt":1394071744000,"resize.txt":1394071744000,"rnd.txt":1394071744000,"ScaledCanvas.txt":1394071744000,"setBGColor.txt":1394071744000,"show.txt":1394071744000,"sugar.txt":{"lastUpdate":1394784345961},"super.txt":1394071744000,"update.txt":1394071744000,"waitFor.txt":1394071744000,"waitmode.txt":1394071743000,"all.txt":{"lastUpdate":1394598485413},"TQuery.txt":{"lastUpdate":1394783379982},"TQuery.die.txt":{"lastUpdate":1394783543386},"TQuery.attr.txt":{"lastUpdate":1394781196480},"TQuery.alive.txt":{"lastUpdate":1394781461083},"TQuery.find.txt":{"lastUpdate":1394781711767},"TQuery.apply.txt":{"lastUpdate":1394782816170},"TQuery.minmax.txt":{"lastUpdate":1394783301386}}',
+      'tonyu2/': '{"$mouseX, $mouseY.txt":1394071744000,"$touches.txt":1394071744000,"Actor.txt":1394071743000,"allCrash.txt":{"lastUpdate":1394782870908},"api.txt":{"lastUpdate":1395896240393},"asyncResult.txt":1394071744000,"BaseActor.txt":{"lastUpdate":1395896260895},"Boot.txt":1394071744000,"classDef.txt":{"lastUpdate":1395896126293},"console.txt":1394071744000,"cpats.txt":1394071744000,"crashTo.txt":1394071744000,"crashTo1.txt":1394071744000,"die.txt":{"lastUpdate":1394780376677},"draw.txt":1394071744000,"extend.txt":{"lastUpdate":1394783789118},"forin.txt":{"lastUpdate":1395896165966},"frame.txt":1394071744000,"fs.txt":1394071743000,"getCrashRect.txt":{"lastUpdate":1394783671409},"getkey.txt":1394071744000,"hide.txt":1394071744000,"ide.txt":1394071744000,"index.txt":1394071743000,"isDead.txt":1394071744000,"kernel.txt":1393045285000,"lang.txt":1394071743000,"options.txt":1394071744000,"play.txt":1394071744000,"playSE.txt":1394071744000,"print.txt":1394071744000,"resize.txt":1394071744000,"rnd.txt":1394071744000,"ScaledCanvas.txt":1394071744000,"setBGColor.txt":1394071744000,"show.txt":1394071744000,"sugar.txt":{"lastUpdate":1394784345961},"super.txt":1394071744000,"update.txt":1394071744000,"waitFor.txt":1394071744000,"waitmode.txt":1394071743000,"all.txt":{"lastUpdate":1394598485413},"TQuery.txt":{"lastUpdate":1394783379982},"TQuery.die.txt":{"lastUpdate":1394783543386},"TQuery.attr.txt":{"lastUpdate":1394781196480},"TQuery.alive.txt":{"lastUpdate":1394781461083},"TQuery.find.txt":{"lastUpdate":1394781711767},"TQuery.apply.txt":{"lastUpdate":1394782816170},"TQuery.minmax.txt":{"lastUpdate":1394783301386},"MathMod.txt":{"lastUpdate":1395896794408}}',
       'tonyu2/$mouseX, $mouseY.txt': 
         '[[api]]\n'+
         '\n'+
@@ -1100,6 +1100,7 @@
         '-[[Sprites]]\n'+
         '-[[ScaledCanvas]]\n'+
         '-[[NoviceActor]]\n'+
+        '-[[MathMod]]\n'+
         '\n'+
         '*グローバル変数\n'+
         '\n'+
@@ -1204,7 +1205,7 @@
         '-[[detectShape]]\n'+
         '-[[hitTo]]\n'+
         '-[[watchHit]]\n'+
-        '\n'
+        '-[[MathMod]]モジュールクラスがもつメソッド\n'
       ,
       'tonyu2/Boot.txt': 
         '[[api]]\n'+
@@ -1233,8 +1234,9 @@
         '-ファイル名は <<クラス名>>.tonyu という形式になります．\n'+
         '-- 例えば，Hello.tonyu という名前のファイルは，Hello という名前のクラスを定義します．\n'+
         '-クラスを定義するための構文（例えば，Javaの[[@cfrag class クラス名 {...  }]]など）はありません．\n'+
-        '- ファイルには，次のいずれかを記述します．\n'+
+        '- ファイルには，次のいずれかを複数記述できます．\n'+
         '--継承宣言\n'+
+        '--組み込み宣言\n'+
         '--native宣言\n'+
         '--mainメソッドの処理内容\n'+
         '--非mainメソッドの定義\n'+
@@ -1250,6 +1252,22 @@
         '\n'+
         '-継承宣言を省略すると，[[プロジェクト設定>options]]によって設定されている親クラスを自動的に継承します．\n'+
         '-親クラス名 に [[@cfrag null]]を設定すると，親クラスがないクラスになります．\n'+
+        '-継承は，JavaScriptの一般的な継承の方法（このクラスを表す関数オブジェクトのprototypeが，親クラスのオブジェクトになる）で行われます．\n'+
+        '\n'+
+        '**組み込み宣言\n'+
+        '\n'+
+        'このクラスに組み込むクラス（モジュールクラス）を設定します．ファイルの先頭，または継承宣言続いて次のように宣言します\n'+
+        '\n'+
+        '<<code 継承宣言の書式\n'+
+        'includes モジュールクラス名[, モジュールクラス名...];\n'+
+        '>>\n'+
+        '\n'+
+        '-このクラスでは，組み込んだモジュールクラスがもつメソッドを利用できます．\n'+
+        '-組み込みは継承とは異なり，複数のクラスを組み込むことができます\n'+
+        '-モジュールクラスの実体は通常のクラスと同じ方法で作成します．\n'+
+        '-モジュールクラスが他のモジュールクラスを組み込んでいる場合，組み込んだ先のクラスでもそれらのモジュールクラスのメソッドが組み込まれます．\n'+
+        '-モジュールクラスが他のクラスを継承していても，組み込んだ先のクラスではその親クラスのメソッドは組み込まれません．\n'+
+        '-組み込みは，モジュールクラスがもつメソッドの一覧を，このクラスの関数オブジェクトのprototypeオブジェクトに追記する方式で行われます．継承とは異なり，[[@cfrag instanceof]]演算子によって検査されるオブジェクトのクラスが，特定のモジュールクラスを組み込んでいるかどうかは判定できません．\n'+
         '\n'+
         '**native宣言\n'+
         '\n'+
@@ -1299,7 +1317,7 @@
         '--native宣言によって宣言された名前の変数です．Javascriptのトップレベルスコープにおける同名の変数を参照します．\n'+
         '-フィールド\n'+
         '--そのクラスのオブジェクトがもつ値です．上のどれにもあてはまらない変数はフィールドとして解釈されます．\n'+
-        '--Javascriptではいわゆる[[@cfrag this.x]]という形式で参照されるものです．\n'+
+        '--Javascriptではいわゆる[[@cfrag this.x]]という形式で参照されるものです．Tonyu2でもこの方式でも参照できます．\n'+
         '\n'+
         '*例\n'+
         '\n'+
@@ -1512,7 +1530,7 @@
         '\n'+
         '[[@cfrag for (e in set)]] はJavaScriptとは動作が異なります．\n'+
         '\n'+
-        '-setが配列の場合，eには（添字ではなく）値を入れながら繰り返します．\n'+
+        '-setが配列または[[TQuery]]オブジェクトの場合，eには（添字ではなく）値を入れながら繰り返します．\n'+
         '-setがオブジェクトの場合，eには(キーではなく）値を入れながら繰り返します．\n'+
         '\n'+
         'また，[[@cfrag for (k,v in set)]]という構文があります． \n'+
@@ -2327,6 +2345,36 @@
         '\n'+
         'このTQueryオブジェクトが格納しているすべてのActorについて，そえｒぞれ\n'+
         'そのActorを第1引数に渡して[[@arg func]](関数)を呼び出した結果の最小（最大）値\n'
+      ,
+      'tonyu2/MathMod.txt': 
+        '[[BaseActor]]\n'+
+        '\n'+
+        '*MathModモジュールクラス\n'+
+        '\n'+
+        '数学関数を提供するモジュールクラスです．\n'+
+        '\n'+
+        '-sin(d), cos(d)\n'+
+        '-- 角度d（度数法）の正弦，余弦を返します\n'+
+        '-rad(d)\n'+
+        '-- 角度d（度数法）をラジアンに変換します\n'+
+        '-deg(r)\n'+
+        '-- 角度r（ラジアン）を度数法に変換します\n'+
+        '-atan2(x,y)\n'+
+        '-- 線分(0,0)-(x,y)とx軸のなす角を度数法で返します\n'+
+        '-abs(v)\n'+
+        '-- 絶対値 |v| を返します\n'+
+        '-floor(x)\n'+
+        '-- xを超えない最大の整数を返します\n'+
+        '-sqrt(t)\n'+
+        '-- 平方根 √t を返します\n'+
+        '-dist(dx,dy)\n'+
+        '-- 線分(0,0)-(dx,dy)の長さを返します\n'+
+        '-dist(obj)\n'+
+        '-- オブジェクト obj とこのオブジェクト間の距離を返します\n'+
+        '-angleDiff(a,b)\n'+
+        '-- 角度a-b と同じ向きを持つ、-180 から 179 までの角度を返します．\n'+
+        '-- angleDiff(a,b)の値が正のとき、a から b に 至るには 左回り（aを減らす)が近く、負のときは右回り(aを増やす) のほうが近くなります．\n'+
+        '\n'
       
     }
   };

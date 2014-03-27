@@ -1,0 +1,8 @@
+
+\fire() {
+    for (i=0 ; i<20 ; i++) {
+        new RockEffect{x,y};
+        update();
+    }
+    $gov=true;
+}

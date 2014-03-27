@@ -1,0 +1,6 @@
+extends D;
+includes C;
+
+\b() {
+    print("B!");
+}

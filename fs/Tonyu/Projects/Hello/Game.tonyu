@@ -6,13 +6,17 @@ apple1.y=150;
 apple2=new Apple;
 apple2.x=300;
 apple2.y=100;
-watchHit(Cat, Apple, hitCatApple);
-left=2;
+sleep();
+//watchHit(Cat, Apple, hitCatApple);
+while (all(Apple).length>0) {
+    sleep();
+}
+siro.say("ごちそうさま！");
 
-function hitCatApple(cat,apple) {
+/*function hitCatApple(cat,apple) {
     apple.hide();
     left--;
     if (left<=0) {
         cat.say("ごちそうさま！");
     }
-}
+}*/

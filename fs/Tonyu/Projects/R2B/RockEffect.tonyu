@@ -1,0 +1,11 @@
+p=$pat_r2b+1;
+scaleX=0.8;
+
+while(alpha>0) {
+    update();
+    scaleX+=0.3;
+    y-=20;
+    alpha-=30;
+}
+alpha=0;
+die();   

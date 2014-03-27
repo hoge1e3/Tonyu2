@@ -2,5 +2,6 @@
 \foo() {
     print("Parent Foo id=",id);   
     text="123";x=46; y=67;
+    while (x<100) {x++;update();}
     return x+y;
 }

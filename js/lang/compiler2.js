@@ -125,6 +125,24 @@ function genJS(klass, env,pass) {
         if (klass.builtin) return klass.name;
         return CLASS_HEAD+klass.name;
     }
+    function getDependingClasses(klass) {
+        var visited={};
+        var incls=[];
+        var res=[];
+        for (var k=klass ; k ; k=k.superClass) {
+        	incls=incls.concat(k.includes);
+        	visited[getClassName(k)]=true;
+        	res.push(k);
+        }
+        while (incls.length>0) {
+        	var k=incls.shift();
+        	if (visited[getClassName(k)]) continue;
+        	visited[getClassName(k)]=true;
+        	res.push(k);
+            incls=incls.concat(k.includes);
+        }
+    	return res;
+    }
     //console.log(JSON.stringify( retFiberCallTmpl));
     function initTopLevelScope2(klass) {
     	if (klass.builtin) return;
@@ -139,9 +157,21 @@ function genJS(klass, env,pass) {
     }
     function initTopLevelScope() {
         var s=topLevelScope;
+        getDependingClasses(klass).forEach(initTopLevelScope2);
+        /*
+        var inclV={};
         for (var k=klass ; k ; k=k.superClass) {
+            inclV[getClassName(k)]=true;
             initTopLevelScope2(k);
         }
+        var incls=klass.includes.concat([]);
+        while (incls.length>0) {
+        	var k=incls.shift();
+        	if (inclV[getClassName(k)]) continue;
+        	inclV[getClassName(k)]=true;
+            initTopLevelScope2(k);
+            incls=incls.concat(k.includes);
+        }*/
         var decls=klass.decls;// Do not inherit parents' natives
         for (var i in decls.natives) {
             s[i]=ST.NATIVE;
@@ -156,10 +186,16 @@ function genJS(klass, env,pass) {
         return new f();
     }
     function getMethod(name) {
-        for (var k=klass; k ; k=k.superClass) {
+    	var res=null;
+    	getDependingClasses(klass).forEach(function (k) {
+    		if (res) return;
+            res=k.decls.methods[name];
+    	});
+    	return res; /*
+    	for (var k=klass; k ; k=k.superClass) {
             if (k.decls.methods[name]) return k.decls.methods[name];
         }
-        return null;
+        return null;*/
     }
 
     function nc(o, mesg) {

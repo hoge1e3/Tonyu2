@@ -19,8 +19,7 @@ native TextRect;
         this.p=p;
     }
     if (scaleX==null) scaleX=1;
-    if (rotate==null) rotate=0; // 削除予定
-    if (rotation==null) rotation=0;
+    if (rotate==null) rotate=0;
     if (alpha==null) alpha=255;
 }
 nowait \extend(obj) {
@@ -165,8 +164,7 @@ nowait \draw(ctx) {
     if (pImg) {
         ctx.save();
         ctx.translate(x,y);
-        if (typeof rotate=="number" ) rotation=rotate;// 削除予定
-        ctx.rotate(this.rotation/180*Math.PI);
+        ctx.rotate(this.rotate/180*Math.PI);
         if(typeof this.scaleY==="undefined") {
             ctx.scale(this.scaleX,this.scaleX);
         }else{
@@ -211,7 +209,9 @@ nowait \asyncResult() {
     if (y>$screenHeight+viewY-a) r+=y-($screenHeight+viewY-a);
     return r;
 }
-
+\foo() {
+    return "FOO";
+}
 \play() {
     if (!_mml) _mml=new MML;
     if (isDead() || arguments.length==0) return _mml;

@@ -10,6 +10,7 @@ Tonyu2で最初から使えるクラス群です．[[ファイルシステム>fs
 -[[Sprites]]
 -[[ScaledCanvas]]
 -[[NoviceActor]]
+-[[MathMod]]
 
 *グローバル変数
 

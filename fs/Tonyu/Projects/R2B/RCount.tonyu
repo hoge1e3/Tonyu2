@@ -1,0 +1,33 @@
+x=100;y=100;
+c=[];
+tick=0;
+while (true) {
+    text="count="+c.length+"  "+tick;
+    tick++;
+    prec=c;
+    c=[];
+    update();
+}
+\report(t) {
+    if (c) {
+        c.push(t);
+    }
+}
+\draw(ctx) {
+    ctx.fillStyle="cyan";
+    var i=y+30;
+    prec.forEach \(e) {
+        ctx.fillRect(e.x,e.y,20,20);
+        ctx.fillText(e+" ? "+e.isDead(),x,i);
+        i+=20;
+    };
+    ctx.fillStyle="lime";
+    for (var e in all()) {
+        if (e instanceof Rock) {
+            ctx.fillRect(e.x+15,e.y-10,10,10);
+            ctx.fillText(e+" ? "+e.isDead(),x,i);
+            i+=20;
+        }
+    }
+    super.draw(ctx);
+}

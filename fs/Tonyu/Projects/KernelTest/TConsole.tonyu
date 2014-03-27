@@ -1,0 +1,22 @@
+extends null;
+includes MathMod;
+native $;
+mat=[];
+\setup(options) {
+    // oneof: row col size
+    if (!options) options={};
+    screen=options.screen || $Screen;
+    width=screen.width;
+    height=screen.height;
+    buf=$("<canvas>").attr{width, height};
+    if (options.row) {
+        row=options.row;
+        size=floor(height/row);
+        
+    }
+    
+}
+
+\locate(col,row) {
+    
+}

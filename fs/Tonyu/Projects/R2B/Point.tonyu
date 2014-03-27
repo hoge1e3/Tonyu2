@@ -1,0 +1,10 @@
+if (!mul) mul=1;
+$score.val+=val*mul;
+for(vy=20;vy>0 ;vy--) {
+    y-=vy;
+    size=10+val/2;
+    text=(mul>1?val+"x"+mul:val);
+    update();
+}
+for (i=0; i<5 ;i++) update();
+die();
