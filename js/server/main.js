@@ -1,5 +1,5 @@
 var express = require('express');
-var app = express.createServer();
+var app = express();
 var LSFile= require("./LSFile");
 var dumpScript= require("./dumpScript");
 
