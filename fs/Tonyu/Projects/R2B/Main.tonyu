@@ -34,7 +34,7 @@ while(true) {
         }
     }
     new Actor{x:$screenWidth/2,y:200,text:"Game Over",size:30};
-    for (i=0; i<60 ; i++) update();
+    for (i=0; i<80 ; i++) update();
     all().die();
     //for (i=0; i<60 ; i++) update();
 }

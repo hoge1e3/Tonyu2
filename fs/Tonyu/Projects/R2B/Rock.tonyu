@@ -17,10 +17,12 @@ while (true) {
         dd=dist(dx,dy)+1;
         x+=dx/dd*7;
         y+=dy/dd*7;
-        if (!$gov && capture.isDead()) {
-            new Point{x,y,val:(++capture.head.combo)*10, 
-            mul: capture.head.combo==capture.head.maxLen-1?2:1};
-            new RockEffect{x,y};
+        if (capture.isDead()) {
+            if (!$gov) {
+                new Point{x,y,val:(++capture.head.combo)*10, 
+                mul: capture.head.combo==capture.head.maxLen-1?2:1};
+                new RockEffect{x,y};
+            }
             die();
         }
         if (capture.p==$pat_r2b+3) {
@@ -40,9 +42,6 @@ while (true) {
     update();
 }
 fire();
-if ($head) {
-    if (!$head.isDead()) $head.die("blue");
-}
 die();
 
 
@@ -55,11 +54,11 @@ die();
     tx=rnd($screenWidth);
     ty=$screenHeight-20;
     d=dist(tx-x,ty-y);
-    spd=0.5+($level%10)*0.05+($level>=3 && rnd()<0.2 ? 1:0);
+    spd=0.5+($level%10)*(0.03+rnd()*0.04)+($level>=10 && rnd()<0.2 ? 1:0);
     spd*=s;
     vx=(tx-x)/d*spd;
     vy=(ty-y)/d*spd;
 }
-\toString() {
+/*\toString() {
     return "Rock<"+uniqueID()+">";
-}
+}*/
