@@ -1,4 +1,4 @@
-// Created at Wed Apr 16 2014 11:56:24 GMT+0900 (東京 (標準時))
+// Created at Wed Apr 16 2014 17:49:21 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -521,989 +521,989 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1395320514617},"Actor.tonyu":{"lastUpdate":1395320514618},"BaseActor.tonyu":{"lastUpdate":1395320514619},"Boot.tonyu":{"lastUpdate":1395320514620},"Keys.tonyu":{"lastUpdate":1395320514621},"MML.tonyu":{"lastUpdate":1395320514621},"NoviceActor.tonyu":{"lastUpdate":1395320514622},"ScaledCanvas.tonyu":{"lastUpdate":1395320514622},"Sprites.tonyu":{"lastUpdate":1395716036539},"TObject.tonyu":{"lastUpdate":1395320514623},"WaveTable.tonyu":{"lastUpdate":1395320514623},"TQuery.tonyu":{"lastUpdate":1395320514624},"MathMod.tonyu":{"lastUpdate":1395320514624},"Map.tonyu":{"lastUpdate":1397614562872}}',
+      '': '{".desktop":1397119075000,"Actor.tonyu":1397119075000,"BaseActor.tonyu":1397119075000,"Boot.tonyu":1397119075000,"Keys.tonyu":1397119075000,"Map.tonyu":1397636169000,"MathMod.tonyu":1397119075000,"MML.tonyu":1397119075000,"NoviceActor.tonyu":1397119075000,"ScaledCanvas.tonyu":1397119075000,"Sprites.tonyu":1397119075000,"TObject.tonyu":1397119075000,"TQuery.tonyu":1397119075000,"WaveTable.tonyu":1397119075000}',
       '.desktop': '{"runMenuOrd":["AcTestM","NObjTest","SETest","MMLTest","KeyTest","NObjTest2","AcTest","NoviceActor","Actor","Boot","AltBoot","Keys","TObject","WaveTable","MML","BaseActor","TQuery","ScaledCanvas","MathMod"]}',
       'Actor.tonyu': 
-        'extends BaseActor;\n'+
-        'native Sprites;\n'+
-        'native Tonyu;\n'+
-        '\n'+
-        '\\new(x,y,p) {\n'+
-        '    super(x,y,p);\n'+
-        '    if (Tonyu.runMode) initSprite();\n'+
-        '}\n'+
-        '\\initSprite() {\n'+
-        '    /*if (!_sprite) {\n'+
-        '        _sprite=Sprites.add{owner:this};\n'+
-        '    }*/\n'+
-        '    $Sprites.add(this);\n'+
-        '}\n'+
-        '\n'+
-        '/*\n'+
-        '\\update() {\n'+
-        '    super.update();\n'+
-        '    if (_sprite) {\n'+
-        '        _sprite.x=x;\n'+
-        '        _sprite.y=y;\n'+
-        '        _sprite.p=p;\n'+
-        '    }\n'+
+        'extends BaseActor;\r\n'+
+        'native Sprites;\r\n'+
+        'native Tonyu;\r\n'+
+        '\r\n'+
+        '\\new(x,y,p) {\r\n'+
+        '    super(x,y,p);\r\n'+
+        '    if (Tonyu.runMode) initSprite();\r\n'+
+        '}\r\n'+
+        '\\initSprite() {\r\n'+
+        '    /*if (!_sprite) {\r\n'+
+        '        _sprite=Sprites.add{owner:this};\r\n'+
+        '    }*/\r\n'+
+        '    $Sprites.add(this);\r\n'+
+        '}\r\n'+
+        '\r\n'+
+        '/*\r\n'+
+        '\\update() {\r\n'+
+        '    super.update();\r\n'+
+        '    if (_sprite) {\r\n'+
+        '        _sprite.x=x;\r\n'+
+        '        _sprite.y=y;\r\n'+
+        '        _sprite.p=p;\r\n'+
+        '    }\r\n'+
         '}*/'
       ,
       'BaseActor.tonyu': 
-        'extends null;\n'+
-        'includes MathMod;\n'+
-        'native Tonyu;\n'+
-        'native Key;\n'+
-        'native console;\n'+
-        'native Math;\n'+
-        'native fukidashi;\n'+
-        'native TextRect;\n'+
-        '\n'+
-        '\\new(x,y,p) {\n'+
-        '    if (Tonyu.runMode) {\n'+
-        '        var thg=currentThreadGroup();\n'+
-        '        if (thg) _th=thg.addObj(this);\n'+
-        '    }\n'+
-        '    if (typeof x=="object") Tonyu.extend(this,x); \n'+
-        '    else if (typeof x=="number") {\n'+
-        '        this.x=x;\n'+
-        '        this.y=y;\n'+
-        '        this.p=p;\n'+
-        '    }\n'+
-        '    if (scaleX==null) scaleX=1;\n'+
-        '    if (rotate==null) rotate=0;\n'+
-        '    if (alpha==null) alpha=255;\n'+
-        '}\n'+
-        'nowait \\extend(obj) {\n'+
-        '    return Tonyu.extend(this,obj);\n'+
-        '}\n'+
-        '\n'+
-        'nowait \\print() {\n'+
-        '    console.log.apply(console,arguments);\n'+
-        '}\n'+
-        '\\update() {\n'+
-        '    ifwait {\n'+
-        '        _thread.suspend();\n'+
-        '    }\n'+
-        '}\n'+
-        'nowait \\getkey(k) {\n'+
-        '    return $Keys.getkey(k);\n'+
-        '}\n'+
-        'nowait \\hitTo(t) {\n'+
-        '    return crashTo(t);\n'+
-        '}\n'+
-        'nowait \\all(c) {\n'+
-        '    var res=new TQuery;\n'+
-        '    $Sprites.sprites.forEach \\(s) {\n'+
-        '        if (s===this) return;\n'+
-        '        if (!c || s instanceof c) {\n'+
-        '            res.push(s);\n'+
-        '        }\n'+
-        '    };\n'+
-        '    return res;// new TQuery{objects:res};\n'+
-        '}\n'+
-        'nowait \\allCrash(t) {\n'+
-        '    var res=new TQuery;\n'+
-        '    var sp=this; //_sprite || this;\n'+
-        '    var t1=getCrashRect();\n'+
-        '    if (!t1) return res;\n'+
-        '    $Sprites.sprites.forEach(\\(s) {\n'+
-        '        var t2;\n'+
-        '        if (s!==this && \n'+
-        '        s instanceof t && \n'+
-        '        (t2=s.getCrashRect()) &&\n'+
-        '        Math.abs(t1.x-t2.x)*2<t1.width+t2.width &&\n'+
-        '        Math.abs(t1.y-t2.y)*2<t1.height+t2.height) {\n'+
-        '            res.push(s);    \n'+
-        '        }\n'+
-        '    });\n'+
-        '    return res;\n'+
-        '}\n'+
-        'nowait \\crashTo(t) {\n'+
-        '    if (!t) return false;\n'+
-        '    if (typeof t=="function") {\n'+
-        '        return allCrash(t)[0];\n'+
-        '    }\n'+
-        '    return crashTo1(t);\n'+
-        '}\n'+
-        'nowait \\crashTo1(t) {\n'+
-        '    if (!t || t._isDead) return false;\n'+
-        '/*if (_sprite && t._sprite) {\n'+
-        '        return _sprite.crashTo(t._sprite);\n'+
-        '}*/\n'+
-        '    var t1=getCrashRect();\n'+
-        '    var t2=t.getCrashRect();\n'+
-        '    return \n'+
-        '    //    t1.x!=null && t1.y!=null && t1.width && t1.height &&\n'+
-        '    //    t2.x!=null && t2.y!=null && t2.width && t2.height &&\n'+
-        '    t1 && t2 &&\n'+
-        '    Math.abs(t1.x-t2.x)*2<t1.width+t2.width &&\n'+
-        '    Math.abs(t1.y-t2.y)*2<t1.height+t2.height;\n'+
-        '}\n'+
-        'nowait \\getCrashRect() {\n'+
-        '    var actWidth=width*scaleX, actHeight;\n'+
-        '    if(typeof scaleY==="undefined"){\n'+
-        '        actHeight=height*scaleX;\n'+
-        '    }else{\n'+
-        '        actHeight=height*scaleY;\n'+
-        '    }\n'+
-        '    return typeof x=="number" &&\n'+
-        '    typeof y=="number" &&\n'+
-        '    typeof width=="number" &&\n'+
-        '    typeof height=="number" && \n'+
-        '    {x,y,width:actWidth,height:actHeight};\n'+
-        '}\n'+
-        'nowait \\watchHit(typeA,typeB,onHit) {\n'+
-        '    $Sprites.watchHit(typeA , typeB, \\(a,b) {\n'+
-        '        onHit.apply(this,[a,b]);\n'+
-        '    });\n'+
-        '}\n'+
-        'nowait \\currentThreadGroup() {\n'+
-        '    return $currentThreadGroup; \n'+
-        '}\n'+
-        'nowait \\die() {\n'+
-        '    if (_th) {\n'+
-        '        _th.kill();\n'+
-        '    }\n'+
-        '    hide();\n'+
-        '    play().stop();\n'+
-        '    _isDead=true;\n'+
-        '}\n'+
-        'nowait \\hide() {\n'+
-        '/*if (_sprite) {\n'+
-        '        $Sprites.remove(_sprite);\n'+
-        '        _sprite=null;\n'+
-        '} else {*/\n'+
-        '    $Sprites.remove(this);\n'+
-        '//}\n'+
-        '}\n'+
-        'nowait \\show(x,y,p) {\n'+
-        '    $Sprites.add(this);\n'+
-        '    if (x!=null) this.x=x;\n'+
-        '    if (y!=null) this.y=y;\n'+
-        '    if (p!=null) this.p=p;\n'+
-        '}\n'+
-        '\n'+
-        'nowait \\rnd(r) {\n'+
-        '    if (typeof r=="number") {\n'+
-        '        return Math.floor(Math.random()*r);\n'+
-        '    }\n'+
-        '    return Math.random();\n'+
-        '}\n'+
-        'nowait \\detectShape() {\n'+
-        '    if (typeof p!="number") {\n'+
-        '        if (text!=null) return;\n'+
-        '        p=0;\n'+
-        '    }\n'+
-        '    p=Math.floor(p);\n'+
-        '    pImg=$Sprites.getImageList()[p];\n'+
-        '    if (!pImg) return;\n'+
-        '    width=pImg.width;\n'+
-        '    height=pImg.height;\n'+
-        '}\n'+
-        '\\waitFor(f) {\n'+
-        '    ifwait {\n'+
-        '        _thread.waitFor(f);\n'+
-        '    }\n'+
-        '    update();\n'+
-        '}\n'+
-        'nowait \\isDead() {\n'+
-        '    return _isDead;\n'+
-        '}\n'+
-        'nowait \\draw(ctx) {\n'+
-        '    if (x==null || y==null) return;\n'+
-        '    detectShape();\n'+
-        '    if (pImg) {\n'+
-        '        ctx.save();\n'+
-        '        ctx.translate(x,y);\n'+
-        '        ctx.rotate(this.rotate/180*Math.PI);\n'+
-        '        if(typeof this.scaleY==="undefined") {\n'+
-        '            ctx.scale(this.scaleX,this.scaleX);\n'+
-        '        }else{\n'+
-        '            ctx.scale(this.scaleX,this.scaleY);\n'+
-        '        }\n'+
-        '        ctx.globalAlpha=this.alpha/255;\n'+
-        '        ctx.drawImage(\n'+
-        '        pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,\n'+
-        '        -width/2, -height/2, width, height);\n'+
-        '        ctx.restore();\n'+
-        '    } else if (text) {\n'+
-        '        if (!size) size=15;\n'+
-        '        if (!align) align="center";\n'+
-        '        if (!fillStyle) fillStyle="white";\n'+
-        '        ctx.fillStyle=fillStyle;\n'+
-        '        var rect=TextRect.draw(ctx, text, x, y, size, align , "fill");\n'+
-        '        width=rect.w;\n'+
-        '        height=rect.h;\n'+
-        '    }\n'+
-        '    if (_fukidashi) {\n'+
-        '        if (_fukidashi.c>0) {\n'+
-        '            _fukidashi.c--;\n'+
-        '            ctx.fillStyle="white";\n'+
-        '            ctx.strokeStyle="black";\n'+
-        '            fukidashi ( ctx , _fukidashi.text, \n'+
-        '            x, y-height/2-10, _fukidashi.size);\n'+
-        '        }\n'+
-        '    }\n'+
-        '}\n'+
-        'nowait \\asyncResult() {\n'+
-        '    return Tonyu.asyncResult();\n'+
-        '}\n'+
-        '\n'+
-        '\\screenOut(a) {\n'+
-        '//オブジェクトが画面外に出たかどうかを判定します。\n'+
-        '    if (!a) a=0;\n'+
-        '    var r=0;\n'+
-        '    var viewX=0,viewY=0;\n'+
-        '    if (x<viewX+a)               r+=viewX+a-x;\n'+
-        '    if (y<viewY+a)               r+=viewY+a-y;\n'+
-        '    if (x>$screenWidth +viewX-a) r+=x-($screenWidth +viewX-a);\n'+
-        '    if (y>$screenHeight+viewY-a) r+=y-($screenHeight+viewY-a);\n'+
-        '    return r;\n'+
-        '}\n'+
-        '\n'+
-        '\\play() {\n'+
-        '    if (!_mml) _mml=new MML;\n'+
-        '    if (isDead() || arguments.length==0) return _mml;\n'+
-        '    var mmls=[];\n'+
-        '    for (var i=0; i<arguments.length; i++) {\n'+
-        '        mmls.push(arguments[i]);\n'+
-        '    }\n'+
-        '    _mml.play(mmls);\n'+
-        '    while (_mml.bufferCount()>2) {\n'+
-        '        update();\n'+
-        '    }\n'+
-        '    return _mml;\n'+
-        '}\n'+
-        'nowait \\playSE() {\n'+
-        '    var mml=new MML;\n'+
-        '    var mmls=[];\n'+
-        '    for (var i=0; i<arguments.length; i++) {\n'+
-        '        mmls.push(arguments[i]);\n'+
-        '    }\n'+
-        '    mml.play(mmls);\n'+
-        '    return mml;\n'+
+        'extends null;\r\n'+
+        'includes MathMod;\r\n'+
+        'native Tonyu;\r\n'+
+        'native Key;\r\n'+
+        'native console;\r\n'+
+        'native Math;\r\n'+
+        'native fukidashi;\r\n'+
+        'native TextRect;\r\n'+
+        '\r\n'+
+        '\\new(x,y,p) {\r\n'+
+        '    if (Tonyu.runMode) {\r\n'+
+        '        var thg=currentThreadGroup();\r\n'+
+        '        if (thg) _th=thg.addObj(this);\r\n'+
+        '    }\r\n'+
+        '    if (typeof x=="object") Tonyu.extend(this,x); \r\n'+
+        '    else if (typeof x=="number") {\r\n'+
+        '        this.x=x;\r\n'+
+        '        this.y=y;\r\n'+
+        '        this.p=p;\r\n'+
+        '    }\r\n'+
+        '    if (scaleX==null) scaleX=1;\r\n'+
+        '    if (rotate==null) rotate=0;\r\n'+
+        '    if (alpha==null) alpha=255;\r\n'+
+        '}\r\n'+
+        'nowait \\extend(obj) {\r\n'+
+        '    return Tonyu.extend(this,obj);\r\n'+
+        '}\r\n'+
+        '\r\n'+
+        'nowait \\print() {\r\n'+
+        '    console.log.apply(console,arguments);\r\n'+
+        '}\r\n'+
+        '\\update() {\r\n'+
+        '    ifwait {\r\n'+
+        '        _thread.suspend();\r\n'+
+        '    }\r\n'+
+        '}\r\n'+
+        'nowait \\getkey(k) {\r\n'+
+        '    return $Keys.getkey(k);\r\n'+
+        '}\r\n'+
+        'nowait \\hitTo(t) {\r\n'+
+        '    return crashTo(t);\r\n'+
+        '}\r\n'+
+        'nowait \\all(c) {\r\n'+
+        '    var res=new TQuery;\r\n'+
+        '    $Sprites.sprites.forEach \\(s) {\r\n'+
+        '        if (s===this) return;\r\n'+
+        '        if (!c || s instanceof c) {\r\n'+
+        '            res.push(s);\r\n'+
+        '        }\r\n'+
+        '    };\r\n'+
+        '    return res;// new TQuery{objects:res};\r\n'+
+        '}\r\n'+
+        'nowait \\allCrash(t) {\r\n'+
+        '    var res=new TQuery;\r\n'+
+        '    var sp=this; //_sprite || this;\r\n'+
+        '    var t1=getCrashRect();\r\n'+
+        '    if (!t1) return res;\r\n'+
+        '    $Sprites.sprites.forEach(\\(s) {\r\n'+
+        '        var t2;\r\n'+
+        '        if (s!==this && \r\n'+
+        '        s instanceof t && \r\n'+
+        '        (t2=s.getCrashRect()) &&\r\n'+
+        '        Math.abs(t1.x-t2.x)*2<t1.width+t2.width &&\r\n'+
+        '        Math.abs(t1.y-t2.y)*2<t1.height+t2.height) {\r\n'+
+        '            res.push(s);    \r\n'+
+        '        }\r\n'+
+        '    });\r\n'+
+        '    return res;\r\n'+
+        '}\r\n'+
+        'nowait \\crashTo(t) {\r\n'+
+        '    if (!t) return false;\r\n'+
+        '    if (typeof t=="function") {\r\n'+
+        '        return allCrash(t)[0];\r\n'+
+        '    }\r\n'+
+        '    return crashTo1(t);\r\n'+
+        '}\r\n'+
+        'nowait \\crashTo1(t) {\r\n'+
+        '    if (!t || t._isDead) return false;\r\n'+
+        '/*if (_sprite && t._sprite) {\r\n'+
+        '        return _sprite.crashTo(t._sprite);\r\n'+
+        '}*/\r\n'+
+        '    var t1=getCrashRect();\r\n'+
+        '    var t2=t.getCrashRect();\r\n'+
+        '    return \r\n'+
+        '    //    t1.x!=null && t1.y!=null && t1.width && t1.height &&\r\n'+
+        '    //    t2.x!=null && t2.y!=null && t2.width && t2.height &&\r\n'+
+        '    t1 && t2 &&\r\n'+
+        '    Math.abs(t1.x-t2.x)*2<t1.width+t2.width &&\r\n'+
+        '    Math.abs(t1.y-t2.y)*2<t1.height+t2.height;\r\n'+
+        '}\r\n'+
+        'nowait \\getCrashRect() {\r\n'+
+        '    var actWidth=width*scaleX, actHeight;\r\n'+
+        '    if(typeof scaleY==="undefined"){\r\n'+
+        '        actHeight=height*scaleX;\r\n'+
+        '    }else{\r\n'+
+        '        actHeight=height*scaleY;\r\n'+
+        '    }\r\n'+
+        '    return typeof x=="number" &&\r\n'+
+        '    typeof y=="number" &&\r\n'+
+        '    typeof width=="number" &&\r\n'+
+        '    typeof height=="number" && \r\n'+
+        '    {x,y,width:actWidth,height:actHeight};\r\n'+
+        '}\r\n'+
+        'nowait \\watchHit(typeA,typeB,onHit) {\r\n'+
+        '    $Sprites.watchHit(typeA , typeB, \\(a,b) {\r\n'+
+        '        onHit.apply(this,[a,b]);\r\n'+
+        '    });\r\n'+
+        '}\r\n'+
+        'nowait \\currentThreadGroup() {\r\n'+
+        '    return $currentThreadGroup; \r\n'+
+        '}\r\n'+
+        'nowait \\die() {\r\n'+
+        '    if (_th) {\r\n'+
+        '        _th.kill();\r\n'+
+        '    }\r\n'+
+        '    hide();\r\n'+
+        '    play().stop();\r\n'+
+        '    _isDead=true;\r\n'+
+        '}\r\n'+
+        'nowait \\hide() {\r\n'+
+        '/*if (_sprite) {\r\n'+
+        '        $Sprites.remove(_sprite);\r\n'+
+        '        _sprite=null;\r\n'+
+        '} else {*/\r\n'+
+        '    $Sprites.remove(this);\r\n'+
+        '//}\r\n'+
+        '}\r\n'+
+        'nowait \\show(x,y,p) {\r\n'+
+        '    $Sprites.add(this);\r\n'+
+        '    if (x!=null) this.x=x;\r\n'+
+        '    if (y!=null) this.y=y;\r\n'+
+        '    if (p!=null) this.p=p;\r\n'+
+        '}\r\n'+
+        '\r\n'+
+        'nowait \\rnd(r) {\r\n'+
+        '    if (typeof r=="number") {\r\n'+
+        '        return Math.floor(Math.random()*r);\r\n'+
+        '    }\r\n'+
+        '    return Math.random();\r\n'+
+        '}\r\n'+
+        'nowait \\detectShape() {\r\n'+
+        '    if (typeof p!="number") {\r\n'+
+        '        if (text!=null) return;\r\n'+
+        '        p=0;\r\n'+
+        '    }\r\n'+
+        '    p=Math.floor(p);\r\n'+
+        '    pImg=$Sprites.getImageList()[p];\r\n'+
+        '    if (!pImg) return;\r\n'+
+        '    width=pImg.width;\r\n'+
+        '    height=pImg.height;\r\n'+
+        '}\r\n'+
+        '\\waitFor(f) {\r\n'+
+        '    ifwait {\r\n'+
+        '        _thread.waitFor(f);\r\n'+
+        '    }\r\n'+
+        '    update();\r\n'+
+        '}\r\n'+
+        'nowait \\isDead() {\r\n'+
+        '    return _isDead;\r\n'+
+        '}\r\n'+
+        'nowait \\draw(ctx) {\r\n'+
+        '    if (x==null || y==null) return;\r\n'+
+        '    detectShape();\r\n'+
+        '    if (pImg) {\r\n'+
+        '        ctx.save();\r\n'+
+        '        ctx.translate(x,y);\r\n'+
+        '        ctx.rotate(this.rotate/180*Math.PI);\r\n'+
+        '        if(typeof this.scaleY==="undefined") {\r\n'+
+        '            ctx.scale(this.scaleX,this.scaleX);\r\n'+
+        '        }else{\r\n'+
+        '            ctx.scale(this.scaleX,this.scaleY);\r\n'+
+        '        }\r\n'+
+        '        ctx.globalAlpha=this.alpha/255;\r\n'+
+        '        ctx.drawImage(\r\n'+
+        '        pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,\r\n'+
+        '        -width/2, -height/2, width, height);\r\n'+
+        '        ctx.restore();\r\n'+
+        '    } else if (text) {\r\n'+
+        '        if (!size) size=15;\r\n'+
+        '        if (!align) align="center";\r\n'+
+        '        if (!fillStyle) fillStyle="white";\r\n'+
+        '        ctx.fillStyle=fillStyle;\r\n'+
+        '        var rect=TextRect.draw(ctx, text, x, y, size, align , "fill");\r\n'+
+        '        width=rect.w;\r\n'+
+        '        height=rect.h;\r\n'+
+        '    }\r\n'+
+        '    if (_fukidashi) {\r\n'+
+        '        if (_fukidashi.c>0) {\r\n'+
+        '            _fukidashi.c--;\r\n'+
+        '            ctx.fillStyle="white";\r\n'+
+        '            ctx.strokeStyle="black";\r\n'+
+        '            fukidashi ( ctx , _fukidashi.text, \r\n'+
+        '            x, y-height/2-10, _fukidashi.size);\r\n'+
+        '        }\r\n'+
+        '    }\r\n'+
+        '}\r\n'+
+        'nowait \\asyncResult() {\r\n'+
+        '    return Tonyu.asyncResult();\r\n'+
+        '}\r\n'+
+        '\r\n'+
+        '\\screenOut(a) {\r\n'+
+        '//オブジェクトが画面外に出たかどうかを判定します。\r\n'+
+        '    if (!a) a=0;\r\n'+
+        '    var r=0;\r\n'+
+        '    var viewX=0,viewY=0;\r\n'+
+        '    if (x<viewX+a)               r+=viewX+a-x;\r\n'+
+        '    if (y<viewY+a)               r+=viewY+a-y;\r\n'+
+        '    if (x>$screenWidth +viewX-a) r+=x-($screenWidth +viewX-a);\r\n'+
+        '    if (y>$screenHeight+viewY-a) r+=y-($screenHeight+viewY-a);\r\n'+
+        '    return r;\r\n'+
+        '}\r\n'+
+        '\r\n'+
+        '\\play() {\r\n'+
+        '    if (!_mml) _mml=new MML;\r\n'+
+        '    if (isDead() || arguments.length==0) return _mml;\r\n'+
+        '    var mmls=[];\r\n'+
+        '    for (var i=0; i<arguments.length; i++) {\r\n'+
+        '        mmls.push(arguments[i]);\r\n'+
+        '    }\r\n'+
+        '    _mml.play(mmls);\r\n'+
+        '    while (_mml.bufferCount()>2) {\r\n'+
+        '        update();\r\n'+
+        '    }\r\n'+
+        '    return _mml;\r\n'+
+        '}\r\n'+
+        'nowait \\playSE() {\r\n'+
+        '    var mml=new MML;\r\n'+
+        '    var mmls=[];\r\n'+
+        '    for (var i=0; i<arguments.length; i++) {\r\n'+
+        '        mmls.push(arguments[i]);\r\n'+
+        '    }\r\n'+
+        '    mml.play(mmls);\r\n'+
+        '    return mml;\r\n'+
         '}'
       ,
       'Boot.tonyu': 
-        'native $;\n'+
-        'native TError;\n'+
-        'native $LASTPOS;\n'+
-        'native Key;\n'+
-        'native Date;\n'+
-        'native ImageList;\n'+
-        'native Tonyu;\n'+
-        'native SplashScreen;\n'+
-        '\n'+
-        '\\initSprites() {\n'+
-        '    $Sprites=new Sprites();\n'+
-        '    print ("Loading pats..");\n'+
-        '    var rs=$currentProject.getResource();\n'+
-        '    var a=asyncResult();\n'+
-        '    ImageList( rs.images, a.receiver);\n'+
-        '    waitFor(a);\n'+
-        '    var r=a[0];\n'+
-        '    $Sprites.setImageList(r);\n'+
-        '    for (var name,val in r.names) {\n'+
-        '        Tonyu.setGlobal(name, val);\n'+
-        '    }\n'+
-        '    print ("Loading pats done.");\n'+
-        '    cvj=$("canvas");\n'+
-        '    if (Tonyu.noviceMode) {\n'+
-        '        $Screen=new ScaledCanvas{canvas:cvj, width:600, height:300};\n'+
-        '    } else {\n'+
-        '        $Screen=new ScaledCanvas{canvas:cvj, width:465, height:465};\n'+
-        '    }\n'+
-        '}\n'+
-        '\\initCanvasEvents() {\n'+
-        '    cv=cvj[0];\n'+
-        '    $handleMouse=\\(e) {\n'+
-        '        var p=cvj.offset();\n'+
-        '        var mp={x:e.clientX-p.left, y:e.clientY-p.top};\n'+
-        '        mp=$Screen.canvas2buf(mp);\n'+
-        '        $mouseX=mp.x;//e.clientX-p.left;\n'+
-        '        $mouseY=mp.y;//e.clientY-p.top;\n'+
-        '    };\n'+
-        '    $touches=[{},{},{},{},{}];\n'+
-        '    $touches.findById=\\(id) {\n'+
-        '        for (var j=0 ; j<$touches.length ; j++) {\n'+
-        '            if ($touches[j].identifier==id) {\n'+
-        '                return $touches[j];\n'+
-        '            }\n'+
-        '        }\n'+
-        '    };\n'+
-        '    $handleTouch=\\(e) {\n'+
-        '        var p=cvj.offset();\n'+
-        '        e.preventDefault();\n'+
-        '        var ts=e.originalEvent.changedTouches;\n'+
-        '        for (var i =0 ; i<ts.length ; i++) {\n'+
-        '            var src=ts[i];\n'+
-        '            var dst=$touches.findById(src.identifier);\n'+
-        '            if (!dst) {\n'+
-        '                for (var j=0 ; j<$touches.length ; j++) {\n'+
-        '                    if (!$touches[j].touched) {\n'+
-        '                        dst=$touches[j];\n'+
-        '                        dst.identifier=src.identifier;\n'+
-        '                        break;\n'+
-        '                    }\n'+
-        '                }\n'+
-        '            }\n'+
-        '            if (dst) {\n'+
-        '                mp={x:src.pageX-p.left, y:src.pageY-p.top};\n'+
-        '                mp=$Screen.canvas2buf(mp);\n'+
-        '                dst.x=mp.x;//src.pageX-p.left;\n'+
-        '                dst.y=mp.y;//src.pageY-p.top;\n'+
-        '                dst.touched=true;\n'+
-        '            }\n'+
-        '        }\n'+
-        '        $mouseX=$touches[0].x;\n'+
-        '        $mouseY=$touches[0].y;\n'+
-        '    };\n'+
-        '    $handleTouchEnd=\\(e) {\n'+
-        '        var ts=e.originalEvent.changedTouches;\n'+
-        '        for (var i =0 ; i<ts.length ; i++) {\n'+
-        '            var src=ts[i];\n'+
-        '            var dst=$touches.findById(src.identifier);\n'+
-        '            if (dst) {\n'+
-        '                dst.touched=false;\n'+
-        '                dst.identifier=-1;\n'+
-        '            }\n'+
-        '        }\n'+
-        '    };\n'+
-        '    var handleMouse=\\(e){$handleMouse(e);};\n'+
-        '    var handleTouch=\\(e){$handleTouch(e);};\n'+
-        '    var handleTouchEnd=\\(e){$handleTouchEnd(e);};\n'+
-        '    var d=$.data(cv,"events");\n'+
-        '    if (!d) {\n'+
-        '        $.data(cv,"events","true");\n'+
-        '        cvj.mousedown(handleMouse);\n'+
-        '        cvj.mousemove(handleMouse);\n'+
-        '        cvj.on("touchstart",handleTouch);\n'+
-        '        cvj.on("touchmove",handleTouch);\n'+
-        '        cvj.on("touchend",handleTouchEnd);\n'+
-        '    }\n'+
-        '}\n'+
-        '\n'+
-        '\\initThread() {\n'+
-        '    thg=Tonyu.threadGroup();\n'+
-        '    var o=Tonyu.currentProject.getOptions();\n'+
-        '    var mainClassName=o.run.mainClass;\n'+
-        '    print("MainClass= "+mainClassName);\n'+
-        '    mainClass=Tonyu.getClass(mainClassName);\n'+
-        '    if (!mainClass) {\n'+
-        '        TError( mainClassName+" というクラスはありません", \n'+
-        '        "不明" ,0).raise();\n'+
-        '    }\n'+
-        '    Tonyu.runMode=true;\n'+
-        '    $currentThreadGroup=thg;\n'+
-        '    new mainClass();\n'+
-        '}\n'+
-        '\\stop() {\n'+
-        '    //print("STOP!!");\n'+
-        '    for (var k,v in $MMLS) {\n'+
-        '        v.stop();\n'+
-        '    }\n'+
-        '    $WaveTable.stop();\n'+
-        '}\n'+
-        'initSprites();\n'+
-        'initCanvasEvents();\n'+
-        'initThread();\n'+
-        '\n'+
-        '$pat_fruits=30;\n'+
-        '$Keys=new Keys;\n'+
-        '$MMLS={};\n'+
-        '$WaveTable=new WaveTable;\n'+
-        'if (typeof SplashScreen!="undefined") SplashScreen.hide();\n'+
-        'while (true) {\n'+
-        '    ti=new Date().getTime();\n'+
-        '    thg.steps();\n'+
-        '    $Keys.update();\n'+
-        '    $screenWidth=$Screen.width;\n'+
-        '    $screenHeight=$Screen.height;\n'+
-        '    $Sprites.draw($Screen.buf[0]);\n'+
-        '    $Screen.draw();\n'+
-        '    $Sprites.checkHit();\n'+
-        '    wt=33-(new Date().getTime()-ti);\n'+
-        '    if (wt<0) wt=0;\n'+
-        '    waitFor(Tonyu.timeout(wt));\n'+
+        'native $;\r\n'+
+        'native TError;\r\n'+
+        'native $LASTPOS;\r\n'+
+        'native Key;\r\n'+
+        'native Date;\r\n'+
+        'native ImageList;\r\n'+
+        'native Tonyu;\r\n'+
+        'native SplashScreen;\r\n'+
+        '\r\n'+
+        '\\initSprites() {\r\n'+
+        '    $Sprites=new Sprites();\r\n'+
+        '    print ("Loading pats..");\r\n'+
+        '    var rs=$currentProject.getResource();\r\n'+
+        '    var a=asyncResult();\r\n'+
+        '    ImageList( rs.images, a.receiver);\r\n'+
+        '    waitFor(a);\r\n'+
+        '    var r=a[0];\r\n'+
+        '    $Sprites.setImageList(r);\r\n'+
+        '    for (var name,val in r.names) {\r\n'+
+        '        Tonyu.setGlobal(name, val);\r\n'+
+        '    }\r\n'+
+        '    print ("Loading pats done.");\r\n'+
+        '    cvj=$("canvas");\r\n'+
+        '    if (Tonyu.noviceMode) {\r\n'+
+        '        $Screen=new ScaledCanvas{canvas:cvj, width:600, height:300};\r\n'+
+        '    } else {\r\n'+
+        '        $Screen=new ScaledCanvas{canvas:cvj, width:465, height:465};\r\n'+
+        '    }\r\n'+
+        '}\r\n'+
+        '\\initCanvasEvents() {\r\n'+
+        '    cv=cvj[0];\r\n'+
+        '    $handleMouse=\\(e) {\r\n'+
+        '        var p=cvj.offset();\r\n'+
+        '        var mp={x:e.clientX-p.left, y:e.clientY-p.top};\r\n'+
+        '        mp=$Screen.canvas2buf(mp);\r\n'+
+        '        $mouseX=mp.x;//e.clientX-p.left;\r\n'+
+        '        $mouseY=mp.y;//e.clientY-p.top;\r\n'+
+        '    };\r\n'+
+        '    $touches=[{},{},{},{},{}];\r\n'+
+        '    $touches.findById=\\(id) {\r\n'+
+        '        for (var j=0 ; j<$touches.length ; j++) {\r\n'+
+        '            if ($touches[j].identifier==id) {\r\n'+
+        '                return $touches[j];\r\n'+
+        '            }\r\n'+
+        '        }\r\n'+
+        '    };\r\n'+
+        '    $handleTouch=\\(e) {\r\n'+
+        '        var p=cvj.offset();\r\n'+
+        '        e.preventDefault();\r\n'+
+        '        var ts=e.originalEvent.changedTouches;\r\n'+
+        '        for (var i =0 ; i<ts.length ; i++) {\r\n'+
+        '            var src=ts[i];\r\n'+
+        '            var dst=$touches.findById(src.identifier);\r\n'+
+        '            if (!dst) {\r\n'+
+        '                for (var j=0 ; j<$touches.length ; j++) {\r\n'+
+        '                    if (!$touches[j].touched) {\r\n'+
+        '                        dst=$touches[j];\r\n'+
+        '                        dst.identifier=src.identifier;\r\n'+
+        '                        break;\r\n'+
+        '                    }\r\n'+
+        '                }\r\n'+
+        '            }\r\n'+
+        '            if (dst) {\r\n'+
+        '                mp={x:src.pageX-p.left, y:src.pageY-p.top};\r\n'+
+        '                mp=$Screen.canvas2buf(mp);\r\n'+
+        '                dst.x=mp.x;//src.pageX-p.left;\r\n'+
+        '                dst.y=mp.y;//src.pageY-p.top;\r\n'+
+        '                dst.touched=true;\r\n'+
+        '            }\r\n'+
+        '        }\r\n'+
+        '        $mouseX=$touches[0].x;\r\n'+
+        '        $mouseY=$touches[0].y;\r\n'+
+        '    };\r\n'+
+        '    $handleTouchEnd=\\(e) {\r\n'+
+        '        var ts=e.originalEvent.changedTouches;\r\n'+
+        '        for (var i =0 ; i<ts.length ; i++) {\r\n'+
+        '            var src=ts[i];\r\n'+
+        '            var dst=$touches.findById(src.identifier);\r\n'+
+        '            if (dst) {\r\n'+
+        '                dst.touched=false;\r\n'+
+        '                dst.identifier=-1;\r\n'+
+        '            }\r\n'+
+        '        }\r\n'+
+        '    };\r\n'+
+        '    var handleMouse=\\(e){$handleMouse(e);};\r\n'+
+        '    var handleTouch=\\(e){$handleTouch(e);};\r\n'+
+        '    var handleTouchEnd=\\(e){$handleTouchEnd(e);};\r\n'+
+        '    var d=$.data(cv,"events");\r\n'+
+        '    if (!d) {\r\n'+
+        '        $.data(cv,"events","true");\r\n'+
+        '        cvj.mousedown(handleMouse);\r\n'+
+        '        cvj.mousemove(handleMouse);\r\n'+
+        '        cvj.on("touchstart",handleTouch);\r\n'+
+        '        cvj.on("touchmove",handleTouch);\r\n'+
+        '        cvj.on("touchend",handleTouchEnd);\r\n'+
+        '    }\r\n'+
+        '}\r\n'+
+        '\r\n'+
+        '\\initThread() {\r\n'+
+        '    thg=Tonyu.threadGroup();\r\n'+
+        '    var o=Tonyu.currentProject.getOptions();\r\n'+
+        '    var mainClassName=o.run.mainClass;\r\n'+
+        '    print("MainClass= "+mainClassName);\r\n'+
+        '    mainClass=Tonyu.getClass(mainClassName);\r\n'+
+        '    if (!mainClass) {\r\n'+
+        '        TError( mainClassName+" というクラスはありません", \r\n'+
+        '        "不明" ,0).raise();\r\n'+
+        '    }\r\n'+
+        '    Tonyu.runMode=true;\r\n'+
+        '    $currentThreadGroup=thg;\r\n'+
+        '    new mainClass();\r\n'+
+        '}\r\n'+
+        '\\stop() {\r\n'+
+        '    //print("STOP!!");\r\n'+
+        '    for (var k,v in $MMLS) {\r\n'+
+        '        v.stop();\r\n'+
+        '    }\r\n'+
+        '    $WaveTable.stop();\r\n'+
+        '}\r\n'+
+        'initSprites();\r\n'+
+        'initCanvasEvents();\r\n'+
+        'initThread();\r\n'+
+        '\r\n'+
+        '$pat_fruits=30;\r\n'+
+        '$Keys=new Keys;\r\n'+
+        '$MMLS={};\r\n'+
+        '$WaveTable=new WaveTable;\r\n'+
+        'if (typeof SplashScreen!="undefined") SplashScreen.hide();\r\n'+
+        'while (true) {\r\n'+
+        '    ti=new Date().getTime();\r\n'+
+        '    thg.steps();\r\n'+
+        '    $Keys.update();\r\n'+
+        '    $screenWidth=$Screen.width;\r\n'+
+        '    $screenHeight=$Screen.height;\r\n'+
+        '    $Sprites.draw($Screen.buf[0]);\r\n'+
+        '    $Screen.draw();\r\n'+
+        '    $Sprites.checkHit();\r\n'+
+        '    wt=33-(new Date().getTime()-ti);\r\n'+
+        '    if (wt<0) wt=0;\r\n'+
+        '    waitFor(Tonyu.timeout(wt));\r\n'+
         '}'
       ,
       'Keys.tonyu': 
-        'extends TObject;\n'+
-        'native String;\n'+
-        'native $;\n'+
-        'native document;\n'+
-        '//\\new () {this.main();}\n'+
-        'stats={};\n'+
-        'codes={\n'+
-        '    left: 37 , up:38 , right: 39, down:40, space:32, enter:13,\n'+
-        '    shift:16, ctrl:17, alt:18, mouseleft: 1\n'+
-        '};\n'+
-        'for (var i=65 ; i<65+26; i++) {\n'+
-        '    codes[String.fromCharCode(i).toLowerCase()]=i;\n'+
-        '}\n'+
-        'for (var i=48 ; i<58; i++) {\n'+
-        '    codes[String.fromCharCode(i)]=i;\n'+
-        '}\n'+
-        'if (!$.data(document,"key_event")) {\n'+
-        '    $.data(document,"key_event",true);\n'+
-        '    $(document).keydown \\(e) {$Keys.keydown(e);};\n'+
-        '    $(document).keyup \\(e) {$Keys.keyup(e);};\n'+
-        '    $(document).mousedown \\(e) {\n'+
-        '        $Keys.keydown{keyCode:1};\n'+
-        '    };\n'+
-        '    $(document).mouseup \\(e) {\n'+
-        '        $Keys.keyup{keyCode:1};\n'+
-        '    };\n'+
-        '}\n'+
-        'function getkey(code) {\n'+
-        '    if (typeof code=="string") {\n'+
-        '        code=codes[code.toLowerCase()];\n'+
-        '    }\n'+
-        '    if (!code) return 0;\n'+
-        '    if (stats[code]==-1) return 0;\n'+
-        '    if (!stats[code]) stats[code]=0;\n'+
-        '    return stats[code];\n'+
-        '}\n'+
-        'function update() {\n'+
-        '    for (var i in stats) {\n'+
-        '        if (stats[i]>0) {stats[i]++;}\n'+
-        '        if (stats[i]==-1) stats[i]=1;\n'+
-        '    }\n'+
-        '}\n'+
-        '\\keydown(e) {\n'+
-        '    var s=stats[e.keyCode];\n'+
-        '    if (!s) {\n'+
-        '        stats[e.keyCode]=-1;\n'+
-        '    }\n'+
-        '}\n'+
-        '\\keyup(e) {\n'+
-        '    stats[e.keyCode]=0;\n'+
-        '}'
-      ,
-      'MML.tonyu': 
-        'extends TObject;\n'+
-        'native T;\n'+
-        '\n'+
-        'mmlBuf=[];\n'+
-        '\\play(mmls) {\n'+
-        '    mmlBuf.push(mmls);\n'+
-        '    if (!isPlaying()) {\n'+
-        '        playNext();\n'+
-        '    }\n'+
-        '}\n'+
-        '\\playNext() {\n'+
-        '    //print("play!", id(), bufferCount());\n'+
-        '    var mml=mmlBuf.shift();\n'+
-        '    if (!mml) {\n'+
-        '        m=null;\n'+
-        '        return;\n'+
-        '    }\n'+
-        '    mwav=$WaveTable.get(0,0).play();\n'+
-        '    m=T("mml", {mml}, mwav);\n'+
-        '    m.on("ended", playNext);\n'+
-        '    m.start();\n'+
-        '    $MMLS[id()]=this;\n'+
-        '}\n'+
-        '\\id() {\n'+
-        '    if (!_id) _id=rnd()+"";\n'+
-        '    return _id;\n'+
-        '}\n'+
-        '\\bufferCount() {\n'+
-        '    return mmlBuf.length;\n'+
-        '}\n'+
-        '\\isPlaying() {\n'+
-        '    return m;\n'+
-        '}\n'+
-        '\\stop() {\n'+
-        '    if (m) {\n'+
-        '        if (mwav) {\n'+
-        '            mwav.pause();\n'+
-        '            mwav.stop();\n'+
-        '        }\n'+
-        '        m.pause();\n'+
-        '        m.stop();\n'+
-        '        m=null;\n'+
-        '        mmlBuf=[];\n'+
-        '        //print("stop!", id(), bufferCount());\n'+
-        '        delete $MMLS[id()];\n'+
-        '    }\n'+
-        '}\n'
-      ,
-      'NoviceActor.tonyu': 
-        'extends BaseActor;\n'+
-        'native Tonyu;\n'+
-        '\n'+
-        '\\sleep(n) {\n'+
-        '    if(!n) n=1;\n'+
-        '    for(n;n>0;n--) update();\n'+
-        '}\n'+
-        '\\initSprite() {\n'+
-        '    if (!_sprite) {\n'+
-        '        _sprite=new BaseActor{owner:this};// Sprites.add{owner:this};\n'+
-        '        $Sprites.add(this);\n'+
-        '    }\n'+
-        '}\n'+
-        '\\say(text,size) {\n'+
-        '    if (!size) size=15;\n'+
-        '    initSprite();\n'+
-        '    _sprite._fukidashi={text:text, size:size, c:30};\n'+
-        '}\n'+
-        '\\sprite(x,y,p) {\n'+
-        '    go(x,y,p);\n'+
-        '}\n'+
-        '\\show(x,y,p) {\n'+
-        '    go(x,y,p);\n'+
-        '}\n'+
-        'nowait \\draw(ctx) {\n'+
-        '    _sprite.draw(ctx);\n'+
-        '}\n'+
-        '\\getCrashRect() {\n'+
-        '    return _sprite.getCrashRect();\n'+
-        '}\n'+
-        '\\go(x,y,p) {\n'+
-        '    initSprite();\n'+
-        '    _sprite.x=x;\n'+
-        '    _sprite.y=y;\n'+
-        '    if (p!=null) _sprite.p=p;\n'+
-        '    //update();\n'+
-        '}\n'+
-        '\\change(p) {\n'+
-        '    initSprite();\n'+
-        '    _sprite.p=p;\n'+
-        '}'
-      ,
-      'ScaledCanvas.tonyu': 
-        'native $;\n'+
-        'native Math;\n'+
-        '\n'+
-        '// canvas:phisical  buf: logical\n'+
-        '\\new (opt) {\n'+
-        '    extend(opt);\n'+
-        '    // canvas/ width,height\n'+
-        '    resize(width, height);\n'+
-        '    cw=canvas.width();\n'+
-        '    ch=canvas.height();\n'+
-        '    cctx=canvas[0].getContext("2d");\n'+
-        '    this.color="rgb(20,80,180)";\n'+
-        '}\n'+
-        '\\resize(width,height) {\n'+
-        '    this.width=width;\n'+
-        '    this.height=height;\n'+
-        '    buf=$("<canvas>").attr{width,height};\n'+
-        '    ctx=buf[0].getContext("2d");  \n'+
-        '    $screenWidth=width;\n'+
-        '    $screenHeight=height;\n'+
-        '}\n'+
-        '\\shouldDraw1x1(srcw,srch,dstw,dsth) {\n'+
-        '    // srcw=465 -> dstw=460...665\n'+
-        '    var larger=200;\n'+
-        '    var smaller=5;\n'+
-        '    return srcw-smaller<=dstw && dstw<=srcw+larger &&\n'+
-        '    srch-smaller<=dsth && dsth<=srch+larger;\n'+
-        '}\n'+
-        '\\draw() {\n'+
-        '    cw=canvas.width();\n'+
-        '    ch=canvas.height();\n'+
-        '    var calcw=ch/height*width; // calch=ch\n'+
-        '    var calch=cw/width*height; // calcw=cw\n'+
-        '    if (calch>ch) calch=ch;\n'+
-        '    if (calcw>cw) calcw=cw;\n'+
-        '    cctx.clearRect(0,0,cw,ch);\n'+
-        '    if (shouldDraw1x1(width,height,calcw,calch)) {\n'+
-        '        calcw=width;calch=height;\n'+
-        '    }\n'+
-        '    var marginw=Math.floor((cw-calcw)/2);\n'+
-        '    var marginh=Math.floor((ch-calch)/2);\n'+
-        '    cctx.drawImage(buf[0],\n'+
-        '    0,0,width, height, \n'+
-        '    marginw,marginh,calcw, calch );\n'+
-        '}\n'+
-        '\\canvas2buf(point) {\n'+
-        '    var calcw=ch/height*width; // calch=ch\n'+
-        '    var calch=cw/width*height; // calcw=cw\n'+
-        '    if (calch>ch) calch=ch;\n'+
-        '    if (calcw>cw) calcw=cw;\n'+
-        '    if (shouldDraw1x1(width,height,calcw,calch)) {\n'+
-        '        calcw=width;calch=height;\n'+
-        '    }\n'+
-        '    var marginw=Math.floor((cw-calcw)/2);\n'+
-        '    var marginh=Math.floor((ch-calch)/2);\n'+
-        '\n'+
-        '    return {x: (point.x-marginw)/calcw*width, \n'+
-        '    y: (point.y-marginh)/calch*height};\n'+
-        '}\n'+
-        '\\setBGColor(color){\n'+
-        '    this.color=color;\n'+
-        '}'
-      ,
-      'Sprites.tonyu': 
-        'native Tonyu;\n'+
-        '\\new() {\n'+
-        '    sprites=[];\n'+
-        '    imageList=[];\n'+
-        '    hitWatchers=[];\n'+
-        '    isDrawGrid=Tonyu.noviceMode;\n'+
-        '}\n'+
-        'function add(s) {\n'+
-        '    if (s.__addedToSprites) return;\n'+
-        '    sprites.push(s);\n'+
-        '    s.__addedToSprites=this;\n'+
-        '    return s;\n'+
-        '}\n'+
-        'function remove(s) {\n'+
-        '    var idx=sprites.indexOf(s);\n'+
-        '    if (idx<0) return;\n'+
-        '    sprites.splice(idx,1);\n'+
-        '    delete s.__addedToSprites;\n'+
-        '}\n'+
-        'function clear() {sprites.splice(0,sprites.length);}\n'+
-        'function draw(cv) {\n'+
-        '    var ctx=cv.getContext("2d");\n'+
-        '    ctx.fillStyle=$Screen.color;\n'+
-        '    ctx.fillRect(0,0,cv.width,cv.height);\n'+
-        '    if (isDrawGrid) drawGrid(cv);\n'+
-        '    sprites.forEach(\\(sprite) {\n'+
-        '        sprite.draw(ctx);\n'+
-        '    });\n'+
-        '}\n'+
-        'function checkHit() {\n'+
-        '    hitWatchers.forEach(function (w) {\n'+
-        '        sprites.forEach(function (a) {\n'+
-        '                //console.log("a:",  a.owner);\n'+
-        '            var a_owner=a;//a.owner|| a;\n'+
-        '            if (! (a_owner instanceof w.A)) return;\n'+
-        '            sprites.forEach(function (b) {\n'+
-        '                var b_owner=b;//b.owner|| b;\n'+
-        '                if (a===b) return;\n'+
-        '                if (! (b_owner instanceof w.B)) return;\n'+
-        '                //console.log("b:",  b.owner);\n'+
-        '                if (a.crashTo1(b)) {\n'+
-        '                    //console.log("hit", a.owner, b.owner);\n'+
-        '                    w.h(a_owner,b_owner);\n'+
-        '                }\n'+
-        '            });\n'+
-        '        });\n'+
-        '    });\n'+
-        '}\n'+
-        'function watchHit(typeA, typeB, onHit) {\n'+
-        '    var p={A: typeA, B:typeB, h:onHit};\n'+
-        '    //console.log(p);\n'+
-        '    hitWatchers.push(p);\n'+
-        '}\n'+
-        'function drawGrid(c) {\n'+
-        '    var ctx=c.getContext("2d");\n'+
-        '    ctx.textBaseline="top";\n'+
-        '    ctx.save();\n'+
-        '    ctx.strokeStyle="rgb(40,100,200)";\n'+
-        '    for (var i=0 ; i<c.width ; i+=10) {\n'+
-        '        ctx.beginPath();\n'+
-        '        ctx.lineWidth=(i % 100 ==0 ? 4 : 1);\n'+
-        '        ctx.moveTo(i,0);\n'+
-        '        ctx.lineTo(i,c.height);\n'+
-        '        ctx.closePath();\n'+
-        '        ctx.stroke();\n'+
-        '    }\n'+
-        '\n'+
-        '    for (var i=0 ; i<c.height ; i+=10) {\n'+
-        '        ctx.beginPath();\n'+
-        '        ctx.lineWidth=(i % 100 ==0 ? 4 : 1);\n'+
-        '        ctx.moveTo(0,i);\n'+
-        '        ctx.lineTo(c.width,i);\n'+
-        '        ctx.closePath();\n'+
-        '        ctx.stroke();\n'+
-        '    }\n'+
-        '    ctx.fillStyle="white";\n'+
-        '    ctx.font="15px monospaced";\n'+
-        '    for (var i=100 ; i<c.width ; i+=100) {\n'+
-        '        ctx.fillText(i, i,0);\n'+
-        '    }\n'+
-        '    for (var i=100 ; i<c.height ; i+=100) {\n'+
-        '        ctx.fillText(i, 0,i);\n'+
-        '    }\n'+
-        '    ctx.restore();\n'+
-        '}\n'+
-        'function setImageList(il) {\n'+
-        '    imageList=il;\n'+
-        '}\n'+
-        'function getImageList() {\n'+
-        '    return imageList;\n'+
-        '}'
-      ,
-      'TObject.tonyu': 
-        'native Tonyu;\n'+
-        '\\new (options) {\n'+
-        '    if (typeof options=="object") extend(options);\n'+
-        '    this.main();\n'+
-        '}\n'+
-        'nowait \\extend(obj) {\n'+
-        '    return Tonyu.extend(this,obj);\n'+
-        '}'
-      ,
-      'WaveTable.tonyu': 
-        'extends TObject;\n'+
-        'native T;\n'+
-        '\n'+
-        'wav={};\n'+
-        'env={};\n'+
-        '\\setWav(num, synth) {\n'+
-        '    wav[num]=synth;\n'+
-        '}\n'+
-        '\\setEnv(num, synth) {\n'+
-        '    env[num]=synth;\n'+
-        '}\n'+
-        '\\get(w,e) {\n'+
-        '    var synth=T("OscGen") {osc:wav[w], env:env[e], mul:0.25};\n'+
-        '    return synth;\n'+
-        '}\n'+
-        '\\stop() {\n'+
-        '    /*for (var k,v in tbl) {\n'+
-        '        v.pause();\n'+
-        '        v.stop();\n'+
-        '    }*/\n'+
-        '}\n'+
-        '\n'+
-        'if (typeof T!=="undefined") {\n'+
-        '    //env=T("adsr", {a:0,d:200,s:0.5,r:10});\n'+
-        '    env = T("env",{table:[1, [0.6, 50], [0, 100]], releaseNode:2});\n'+
-        '    setEnv(0, env);\n'+
-        '    setWav(0, T("pulse"));\n'+
-        '    //    synth=T("OscGen") {wave:"pulse", env, mul:0.25};\n'+
-        '    //set(0,synth);    \n'+
-        '}\n'
-      ,
-      'TQuery.tonyu': 
-        'extends TObject;\n'+
-        '\\new () {\n'+
-        '    length=0;\n'+
-        '}\n'+
-        '\\tonyuIterator(arity) {\n'+
-        '    var res={};\n'+
-        '    res.i=0;\n'+
-        '    if (arity==1) {\n'+
-        '        res.next=function () {\n'+
-        '            if (res.i>=this.length) return false;\n'+
-        '            res[0]=this[res.i];\n'+
-        '            res.i++;\n'+
-        '            return true;\n'+
-        '        };\n'+
-        '    } else {\n'+
-        '        res.next=function () {\n'+
-        '            if (res.i>=this.length) return false;\n'+
-        '            res[0]=res.i;\n'+
-        '            res[1]=this[res.i];\n'+
-        '            res.i++;\n'+
-        '            return true;\n'+
-        '        };\n'+
-        '    }\n'+
-        '    return res;\n'+
-        '}\n'+
-        '\\attr() {\n'+
-        '    var values;\n'+
-        '    if (length==0) return;\n'+
-        '    if (arguments.length==1 && typeof arguments[0]=="string") {\n'+
-        '        return this[0][arguments[0]];\n'+
-        '    }\n'+
-        '    if (arguments.length>=2) {\n'+
-        '        values={};\n'+
-        '        for (var i=0 ; i<arguments.length-1 ;i+=2) {\n'+
-        '            values[arguments[i]]=arguments[i+1];\n'+
-        '        }\n'+
-        '    } else {\n'+
-        '        values=arguments[0];\n'+
-        '    }\n'+
-        '    if (values) {\n'+
-        '        for (var e in this) {\n'+
-        '            e.extend( values);\n'+
-        '        }\n'+
-        '    }\n'+
-        '}\n'+
-        '\\genKeyfunc(key) {\n'+
-        '    if (typeof key!="function") {\n'+
-        '        return \\(o) {return o[key];};\n'+
-        '    } else {\n'+
-        '        return key;\n'+
-        '    }\n'+
-        '}\n'+
-        '\\max(key) {\n'+
-        '    var f=genKeyfunc(key);\n'+
-        '    var res;\n'+
-        '    for (var o in this) {\n'+
-        '        var v=f(o);\n'+
-        '        if (res==null || v>res) res=v;\n'+
-        '    }\n'+
-        '    return res;\n'+
-        '}\n'+
-        '\\min(key) {\n'+
-        '    var f=genKeyfunc(key);\n'+
-        '    var res;\n'+
-        '    for (var o in this) {\n'+
-        '        var v=f(o);\n'+
-        '        if (res==null || v<res) res=v;\n'+
-        '    }\n'+
-        '    return res;\n'+
-        '}\n'+
-        '\\push(e) {\n'+
-        '    this[length]=e;\n'+
-        '    length++;\n'+
-        '}\n'+
-        '\\size() {return length;}\n'+
-        '\\find(f) {\n'+
-        '    var no=new TQuery;\n'+
-        '    for (var o in this) {\n'+
-        '        if (f(o)) no.push(o);\n'+
-        '    }\n'+
-        '    return no;\n'+
-        '} \n'+
-        '\\apply(name, args) {\n'+
-        '    var res;\n'+
-        '    if (!args) args=[];\n'+
-        '    for (var o in this) {\n'+
-        '        var f=o[name];\n'+
-        '        if (typeof f=="function") {\n'+
-        '            res=f.apply(o, args);\n'+
-        '        }\n'+
-        '    }\n'+
-        '    return res;\n'+
-        '}\n'+
-        '// \\alive => find \\(o) => !o.isDead()  //  (in future)\n'+
-        '\\alive() {\n'+
-        '    return find \\(o) {\n'+
-        '        return !o.isDead();\n'+
-        '    };\n'+
-        '}\n'+
-        '\\die() {\n'+
-        '    var a=alive();\n'+
-        '    if (a.length==0) return false;\n'+
-        '    a.apply("die");\n'+
-        '    return true;\n'+
-        '}\n'+
-        '\n'+
-        '\\klass(k) {\n'+
-        '    return find \\(o) { return o instanceof k; };\n'+
-        '}'
-      ,
-      'MathMod.tonyu': 
-        'extends null;\n'+
-        'native Math;\n'+
-        '\n'+
-        '\\sin(d) {\n'+
-        '    return Math.sin(rad(d));\n'+
-        '}\n'+
-        '\\cos(d) {\n'+
-        '    return Math.cos(rad(d));\n'+
-        '}\n'+
-        '\\rad(d) {\n'+
-        '    return d/180*Math.PI;\n'+
-        '}\n'+
-        '\\deg(d) {\n'+
-        '    return d/Math.PI*180;\n'+
-        '}\n'+
-        '\n'+
-        '\\abs(v) {\n'+
-        '    return Math.abs(v);\n'+
-        '}\n'+
-        '\\atan2(x,y) {\n'+
-        '    return deg(Math.atan2(x,y));\n'+
-        '}\n'+
-        '\\floor(x) {\n'+
-        '    return Math.floor(x);\n'+
-        '}\n'+
-        '\\angleDiff(a,b) {\n'+
-        '    var c;\n'+
-        '    a=floor(a);\n'+
-        '    b=floor(b);\n'+
-        '    if (a>=b) {\n'+
-        '        c=(a-b) % 360;\n'+
-        '        if (c>=180) c-=360;\n'+
-        '    } else {\n'+
-        '        c=-((b-a) % 360);\n'+
-        '        if (c<-180) c+=360;\n'+
-        '    }\n'+
-        '    return c;\n'+
-        '}\n'+
-        '\\sqrt(t) {\n'+
-        '    return Math.sqrt(t);\n'+
-        '}\n'+
-        '\\dist(dx,dy) {\n'+
-        '    if (typeof dx=="object") {\n'+
-        '        var t=dx;\n'+
-        '        dx=t.x-x;dy=t.y-y;\n'+
-        '    }\n'+
-        '    return sqrt(dx*dx+dy*dy);\n'+
+        'extends TObject;\r\n'+
+        'native String;\r\n'+
+        'native $;\r\n'+
+        'native document;\r\n'+
+        '//\\new () {this.main();}\r\n'+
+        'stats={};\r\n'+
+        'codes={\r\n'+
+        '    left: 37 , up:38 , right: 39, down:40, space:32, enter:13,\r\n'+
+        '    shift:16, ctrl:17, alt:18, mouseleft: 1\r\n'+
+        '};\r\n'+
+        'for (var i=65 ; i<65+26; i++) {\r\n'+
+        '    codes[String.fromCharCode(i).toLowerCase()]=i;\r\n'+
+        '}\r\n'+
+        'for (var i=48 ; i<58; i++) {\r\n'+
+        '    codes[String.fromCharCode(i)]=i;\r\n'+
+        '}\r\n'+
+        'if (!$.data(document,"key_event")) {\r\n'+
+        '    $.data(document,"key_event",true);\r\n'+
+        '    $(document).keydown \\(e) {$Keys.keydown(e);};\r\n'+
+        '    $(document).keyup \\(e) {$Keys.keyup(e);};\r\n'+
+        '    $(document).mousedown \\(e) {\r\n'+
+        '        $Keys.keydown{keyCode:1};\r\n'+
+        '    };\r\n'+
+        '    $(document).mouseup \\(e) {\r\n'+
+        '        $Keys.keyup{keyCode:1};\r\n'+
+        '    };\r\n'+
+        '}\r\n'+
+        'function getkey(code) {\r\n'+
+        '    if (typeof code=="string") {\r\n'+
+        '        code=codes[code.toLowerCase()];\r\n'+
+        '    }\r\n'+
+        '    if (!code) return 0;\r\n'+
+        '    if (stats[code]==-1) return 0;\r\n'+
+        '    if (!stats[code]) stats[code]=0;\r\n'+
+        '    return stats[code];\r\n'+
+        '}\r\n'+
+        'function update() {\r\n'+
+        '    for (var i in stats) {\r\n'+
+        '        if (stats[i]>0) {stats[i]++;}\r\n'+
+        '        if (stats[i]==-1) stats[i]=1;\r\n'+
+        '    }\r\n'+
+        '}\r\n'+
+        '\\keydown(e) {\r\n'+
+        '    var s=stats[e.keyCode];\r\n'+
+        '    if (!s) {\r\n'+
+        '        stats[e.keyCode]=-1;\r\n'+
+        '    }\r\n'+
+        '}\r\n'+
+        '\\keyup(e) {\r\n'+
+        '    stats[e.keyCode]=0;\r\n'+
         '}'
       ,
       'Map.tonyu': 
-        'native Math;\n'+
-        'native $;\n'+
-        '\\new (param){\n'+
-        '    sx=0;\n'+
-        '    sy=0;\n'+
-        '    super(param);\n'+
-        '    buf=$("<canvas>").attr{width:col*chipWidth,height:row*chipHeight};\n'+
-        '    mapTable = [];\n'+
-        '    for(var j=0;j<row;j++){\n'+
-        '        rows = [];\n'+
-        '        for(var i=0;i<col;i++){\n'+
-        '            rows.push(-1);\n'+
-        '        }\n'+
-        '        mapTable.push(rows);\n'+
-        '    }\n'+
-        '/*for(var i=0;i<col;i++){\n'+
-        '        mapTable[i]=[];\n'+
-        '}*/\n'+
-        '    \n'+
-        '}\n'+
-        '\n'+
-        '\\set(setCol,setRow,p){\n'+
-        '    if(setCol>col || setRow>row || setCol<0 || setRow<0) return;\n'+
-        '    mapTable[setRow][setCol]=p;\n'+
-        '    ctx=buf[0].getContext("2d");\n'+
-        '    p=Math.floor(p);\n'+
-        '    pImg=$Sprites.getImageList()[p];\n'+
-        '    if (!pImg) {\n'+
-        '        ctx.clearRect(setCol*chipWidth,setRow*chipHeight,chipWidth,chipHeight);\n'+
-        '        return;\n'+
-        '    }\n'+
-        '    ctx.save();\n'+
-        '    ctx.drawImage(\n'+
-        '    pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,\n'+
-        '    setCol*chipWidth, setRow*chipHeight, chipWidth, chipHeight);\n'+
-        '    ctx.restore();\n'+
-        '}\n'+
-        '\\get(getCol,getRow){\n'+
-        '    if(getCol>col || getRow>row || getCol<0 || getRow<0) return;\n'+
-        '    return mapTable[getRow][getCol];\n'+
-        '}\n'+
-        '\\getAt(getX,getY){\n'+
-        '    return get(Math.floor(getX/chipWidth),Math.floor(getY/chipHeight));\n'+
-        '}\n'+
-        '\\scrollTo(scrollX,scrollY){\n'+
-        '    sx=scrollX;\n'+
-        '    sy=scrollY;\n'+
-        '}\n'+
-        '\\draw(ctx) {\n'+
-        '    pImg=buf[0];\n'+
-        '    ctx.save();\n'+
-        '    ctx.drawImage(\n'+
-        '    pImg, 0, 0,col*chipWidth, row*chipHeight,\n'+
-        '    sx, sy, col*chipWidth, row*chipHeight);\n'+
-        '    ctx.restore();\n'+
-        '    /*for(var i=0;i<row;i++){\n'+
-        '        for(var j=0;j<col;j++){\n'+
-        '            p=Math.floor(get(j,i));\n'+
-        '            pImg=$Sprites.getImageList()[p];\n'+
-        '            if (!pImg) return;\n'+
-        '            ctx.save();\n'+
-        '            ctx.drawImage(\n'+
-        '            pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,\n'+
-        '            j*chipWidth, i*chipHeight, chipWidth, chipHeight);\n'+
-        '            ctx.restore();\n'+
-        '            if($screenWidth<j*chipWidth) break;\n'+
-        '        }\n'+
-        '        if($screenHeight<i*chipHeight) break;\n'+
-        '    }*/\n'+
-        '}\n'
+        'native Math;\r\n'+
+        'native $;\r\n'+
+        '\\new (param){\r\n'+
+        '    sx=0;\r\n'+
+        '    sy=0;\r\n'+
+        '    super(param);\r\n'+
+        '    buf=$("<canvas>").attr{width:col*chipWidth,height:row*chipHeight};\r\n'+
+        '    mapTable = [];\r\n'+
+        '    for(var j=0;j<row;j++){\r\n'+
+        '        rows = [];\r\n'+
+        '        for(var i=0;i<col;i++){\r\n'+
+        '            rows.push(-1);\r\n'+
+        '        }\r\n'+
+        '        mapTable.push(rows);\r\n'+
+        '    }\r\n'+
+        '/*for(var i=0;i<col;i++){\r\n'+
+        '        mapTable[i]=[];\r\n'+
+        '}*/\r\n'+
+        '    \r\n'+
+        '}\r\n'+
+        '\r\n'+
+        '\\set(setCol,setRow,p){\r\n'+
+        '    if(setCol>col || setRow>row || setCol<0 || setRow<0) return;\r\n'+
+        '    mapTable[setRow][setCol]=p;\r\n'+
+        '    ctx=buf[0].getContext("2d");\r\n'+
+        '    p=Math.floor(p);\r\n'+
+        '    pImg=$Sprites.getImageList()[p];\r\n'+
+        '    if (!pImg) {\r\n'+
+        '        ctx.clearRect(setCol*chipWidth,setRow*chipHeight,chipWidth,chipHeight);\r\n'+
+        '        return;\r\n'+
+        '    }\r\n'+
+        '    ctx.save();\r\n'+
+        '    ctx.drawImage(\r\n'+
+        '    pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,\r\n'+
+        '    setCol*chipWidth, setRow*chipHeight, chipWidth, chipHeight);\r\n'+
+        '    ctx.restore();\r\n'+
+        '}\r\n'+
+        '\\get(getCol,getRow){\r\n'+
+        '    if(getCol>col || getRow>row || getCol<0 || getRow<0) return;\r\n'+
+        '    return mapTable[getRow][getCol];\r\n'+
+        '}\r\n'+
+        '\\getAt(getX,getY){\r\n'+
+        '    return get(Math.floor(getX/chipWidth),Math.floor(getY/chipHeight));\r\n'+
+        '}\r\n'+
+        '\\scrollTo(scrollX,scrollY){\r\n'+
+        '    sx=scrollX;\r\n'+
+        '    sy=scrollY;\r\n'+
+        '}\r\n'+
+        '\\draw(ctx) {\r\n'+
+        '    pImg=buf[0];\r\n'+
+        '    ctx.save();\r\n'+
+        '    ctx.drawImage(\r\n'+
+        '    pImg, 0, 0,col*chipWidth, row*chipHeight,\r\n'+
+        '    sx, sy, col*chipWidth, row*chipHeight);\r\n'+
+        '    ctx.restore();\r\n'+
+        '    /*for(var i=0;i<row;i++){\r\n'+
+        '        for(var j=0;j<col;j++){\r\n'+
+        '            p=Math.floor(get(j,i));\r\n'+
+        '            pImg=$Sprites.getImageList()[p];\r\n'+
+        '            if (!pImg) return;\r\n'+
+        '            ctx.save();\r\n'+
+        '            ctx.drawImage(\r\n'+
+        '            pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,\r\n'+
+        '            j*chipWidth, i*chipHeight, chipWidth, chipHeight);\r\n'+
+        '            ctx.restore();\r\n'+
+        '            if($screenWidth<j*chipWidth) break;\r\n'+
+        '        }\r\n'+
+        '        if($screenHeight<i*chipHeight) break;\r\n'+
+        '    }*/\r\n'+
+        '}\r\n'
+      ,
+      'MathMod.tonyu': 
+        'extends null;\r\n'+
+        'native Math;\r\n'+
+        '\r\n'+
+        '\\sin(d) {\r\n'+
+        '    return Math.sin(rad(d));\r\n'+
+        '}\r\n'+
+        '\\cos(d) {\r\n'+
+        '    return Math.cos(rad(d));\r\n'+
+        '}\r\n'+
+        '\\rad(d) {\r\n'+
+        '    return d/180*Math.PI;\r\n'+
+        '}\r\n'+
+        '\\deg(d) {\r\n'+
+        '    return d/Math.PI*180;\r\n'+
+        '}\r\n'+
+        '\r\n'+
+        '\\abs(v) {\r\n'+
+        '    return Math.abs(v);\r\n'+
+        '}\r\n'+
+        '\\atan2(x,y) {\r\n'+
+        '    return deg(Math.atan2(x,y));\r\n'+
+        '}\r\n'+
+        '\\floor(x) {\r\n'+
+        '    return Math.floor(x);\r\n'+
+        '}\r\n'+
+        '\\angleDiff(a,b) {\r\n'+
+        '    var c;\r\n'+
+        '    a=floor(a);\r\n'+
+        '    b=floor(b);\r\n'+
+        '    if (a>=b) {\r\n'+
+        '        c=(a-b) % 360;\r\n'+
+        '        if (c>=180) c-=360;\r\n'+
+        '    } else {\r\n'+
+        '        c=-((b-a) % 360);\r\n'+
+        '        if (c<-180) c+=360;\r\n'+
+        '    }\r\n'+
+        '    return c;\r\n'+
+        '}\r\n'+
+        '\\sqrt(t) {\r\n'+
+        '    return Math.sqrt(t);\r\n'+
+        '}\r\n'+
+        '\\dist(dx,dy) {\r\n'+
+        '    if (typeof dx=="object") {\r\n'+
+        '        var t=dx;\r\n'+
+        '        dx=t.x-x;dy=t.y-y;\r\n'+
+        '    }\r\n'+
+        '    return sqrt(dx*dx+dy*dy);\r\n'+
+        '}'
+      ,
+      'MML.tonyu': 
+        'extends TObject;\r\n'+
+        'native T;\r\n'+
+        '\r\n'+
+        'mmlBuf=[];\r\n'+
+        '\\play(mmls) {\r\n'+
+        '    mmlBuf.push(mmls);\r\n'+
+        '    if (!isPlaying()) {\r\n'+
+        '        playNext();\r\n'+
+        '    }\r\n'+
+        '}\r\n'+
+        '\\playNext() {\r\n'+
+        '    //print("play!", id(), bufferCount());\r\n'+
+        '    var mml=mmlBuf.shift();\r\n'+
+        '    if (!mml) {\r\n'+
+        '        m=null;\r\n'+
+        '        return;\r\n'+
+        '    }\r\n'+
+        '    mwav=$WaveTable.get(0,0).play();\r\n'+
+        '    m=T("mml", {mml}, mwav);\r\n'+
+        '    m.on("ended", playNext);\r\n'+
+        '    m.start();\r\n'+
+        '    $MMLS[id()]=this;\r\n'+
+        '}\r\n'+
+        '\\id() {\r\n'+
+        '    if (!_id) _id=rnd()+"";\r\n'+
+        '    return _id;\r\n'+
+        '}\r\n'+
+        '\\bufferCount() {\r\n'+
+        '    return mmlBuf.length;\r\n'+
+        '}\r\n'+
+        '\\isPlaying() {\r\n'+
+        '    return m;\r\n'+
+        '}\r\n'+
+        '\\stop() {\r\n'+
+        '    if (m) {\r\n'+
+        '        if (mwav) {\r\n'+
+        '            mwav.pause();\r\n'+
+        '            mwav.stop();\r\n'+
+        '        }\r\n'+
+        '        m.pause();\r\n'+
+        '        m.stop();\r\n'+
+        '        m=null;\r\n'+
+        '        mmlBuf=[];\r\n'+
+        '        //print("stop!", id(), bufferCount());\r\n'+
+        '        delete $MMLS[id()];\r\n'+
+        '    }\r\n'+
+        '}\r\n'
+      ,
+      'NoviceActor.tonyu': 
+        'extends BaseActor;\r\n'+
+        'native Tonyu;\r\n'+
+        '\r\n'+
+        '\\sleep(n) {\r\n'+
+        '    if(!n) n=1;\r\n'+
+        '    for(n;n>0;n--) update();\r\n'+
+        '}\r\n'+
+        '\\initSprite() {\r\n'+
+        '    if (!_sprite) {\r\n'+
+        '        _sprite=new BaseActor{owner:this};// Sprites.add{owner:this};\r\n'+
+        '        $Sprites.add(this);\r\n'+
+        '    }\r\n'+
+        '}\r\n'+
+        '\\say(text,size) {\r\n'+
+        '    if (!size) size=15;\r\n'+
+        '    initSprite();\r\n'+
+        '    _sprite._fukidashi={text:text, size:size, c:30};\r\n'+
+        '}\r\n'+
+        '\\sprite(x,y,p) {\r\n'+
+        '    go(x,y,p);\r\n'+
+        '}\r\n'+
+        '\\show(x,y,p) {\r\n'+
+        '    go(x,y,p);\r\n'+
+        '}\r\n'+
+        'nowait \\draw(ctx) {\r\n'+
+        '    _sprite.draw(ctx);\r\n'+
+        '}\r\n'+
+        '\\getCrashRect() {\r\n'+
+        '    return _sprite.getCrashRect();\r\n'+
+        '}\r\n'+
+        '\\go(x,y,p) {\r\n'+
+        '    initSprite();\r\n'+
+        '    _sprite.x=x;\r\n'+
+        '    _sprite.y=y;\r\n'+
+        '    if (p!=null) _sprite.p=p;\r\n'+
+        '    //update();\r\n'+
+        '}\r\n'+
+        '\\change(p) {\r\n'+
+        '    initSprite();\r\n'+
+        '    _sprite.p=p;\r\n'+
+        '}'
+      ,
+      'ScaledCanvas.tonyu': 
+        'native $;\r\n'+
+        'native Math;\r\n'+
+        '\r\n'+
+        '// canvas:phisical  buf: logical\r\n'+
+        '\\new (opt) {\r\n'+
+        '    extend(opt);\r\n'+
+        '    // canvas/ width,height\r\n'+
+        '    resize(width, height);\r\n'+
+        '    cw=canvas.width();\r\n'+
+        '    ch=canvas.height();\r\n'+
+        '    cctx=canvas[0].getContext("2d");\r\n'+
+        '    this.color="rgb(20,80,180)";\r\n'+
+        '}\r\n'+
+        '\\resize(width,height) {\r\n'+
+        '    this.width=width;\r\n'+
+        '    this.height=height;\r\n'+
+        '    buf=$("<canvas>").attr{width,height};\r\n'+
+        '    ctx=buf[0].getContext("2d");  \r\n'+
+        '    $screenWidth=width;\r\n'+
+        '    $screenHeight=height;\r\n'+
+        '}\r\n'+
+        '\\shouldDraw1x1(srcw,srch,dstw,dsth) {\r\n'+
+        '    // srcw=465 -> dstw=460...665\r\n'+
+        '    var larger=200;\r\n'+
+        '    var smaller=5;\r\n'+
+        '    return srcw-smaller<=dstw && dstw<=srcw+larger &&\r\n'+
+        '    srch-smaller<=dsth && dsth<=srch+larger;\r\n'+
+        '}\r\n'+
+        '\\draw() {\r\n'+
+        '    cw=canvas.width();\r\n'+
+        '    ch=canvas.height();\r\n'+
+        '    var calcw=ch/height*width; // calch=ch\r\n'+
+        '    var calch=cw/width*height; // calcw=cw\r\n'+
+        '    if (calch>ch) calch=ch;\r\n'+
+        '    if (calcw>cw) calcw=cw;\r\n'+
+        '    cctx.clearRect(0,0,cw,ch);\r\n'+
+        '    if (shouldDraw1x1(width,height,calcw,calch)) {\r\n'+
+        '        calcw=width;calch=height;\r\n'+
+        '    }\r\n'+
+        '    var marginw=Math.floor((cw-calcw)/2);\r\n'+
+        '    var marginh=Math.floor((ch-calch)/2);\r\n'+
+        '    cctx.drawImage(buf[0],\r\n'+
+        '    0,0,width, height, \r\n'+
+        '    marginw,marginh,calcw, calch );\r\n'+
+        '}\r\n'+
+        '\\canvas2buf(point) {\r\n'+
+        '    var calcw=ch/height*width; // calch=ch\r\n'+
+        '    var calch=cw/width*height; // calcw=cw\r\n'+
+        '    if (calch>ch) calch=ch;\r\n'+
+        '    if (calcw>cw) calcw=cw;\r\n'+
+        '    if (shouldDraw1x1(width,height,calcw,calch)) {\r\n'+
+        '        calcw=width;calch=height;\r\n'+
+        '    }\r\n'+
+        '    var marginw=Math.floor((cw-calcw)/2);\r\n'+
+        '    var marginh=Math.floor((ch-calch)/2);\r\n'+
+        '\r\n'+
+        '    return {x: (point.x-marginw)/calcw*width, \r\n'+
+        '    y: (point.y-marginh)/calch*height};\r\n'+
+        '}\r\n'+
+        '\\setBGColor(color){\r\n'+
+        '    this.color=color;\r\n'+
+        '}'
+      ,
+      'Sprites.tonyu': 
+        'native Tonyu;\r\n'+
+        '\\new() {\r\n'+
+        '    sprites=[];\r\n'+
+        '    imageList=[];\r\n'+
+        '    hitWatchers=[];\r\n'+
+        '    isDrawGrid=Tonyu.noviceMode;\r\n'+
+        '}\r\n'+
+        'function add(s) {\r\n'+
+        '    if (s.__addedToSprites) return;\r\n'+
+        '    sprites.push(s);\r\n'+
+        '    s.__addedToSprites=this;\r\n'+
+        '    return s;\r\n'+
+        '}\r\n'+
+        'function remove(s) {\r\n'+
+        '    var idx=sprites.indexOf(s);\r\n'+
+        '    if (idx<0) return;\r\n'+
+        '    sprites.splice(idx,1);\r\n'+
+        '    delete s.__addedToSprites;\r\n'+
+        '}\r\n'+
+        'function clear() {sprites.splice(0,sprites.length);}\r\n'+
+        'function draw(cv) {\r\n'+
+        '    var ctx=cv.getContext("2d");\r\n'+
+        '    ctx.fillStyle=$Screen.color;\r\n'+
+        '    ctx.fillRect(0,0,cv.width,cv.height);\r\n'+
+        '    if (isDrawGrid) drawGrid(cv);\r\n'+
+        '    sprites.forEach(\\(sprite) {\r\n'+
+        '        sprite.draw(ctx);\r\n'+
+        '    });\r\n'+
+        '}\r\n'+
+        'function checkHit() {\r\n'+
+        '    hitWatchers.forEach(function (w) {\r\n'+
+        '        sprites.forEach(function (a) {\r\n'+
+        '                //console.log("a:",  a.owner);\r\n'+
+        '            var a_owner=a;//a.owner|| a;\r\n'+
+        '            if (! (a_owner instanceof w.A)) return;\r\n'+
+        '            sprites.forEach(function (b) {\r\n'+
+        '                var b_owner=b;//b.owner|| b;\r\n'+
+        '                if (a===b) return;\r\n'+
+        '                if (! (b_owner instanceof w.B)) return;\r\n'+
+        '                //console.log("b:",  b.owner);\r\n'+
+        '                if (a.crashTo1(b)) {\r\n'+
+        '                    //console.log("hit", a.owner, b.owner);\r\n'+
+        '                    w.h(a_owner,b_owner);\r\n'+
+        '                }\r\n'+
+        '            });\r\n'+
+        '        });\r\n'+
+        '    });\r\n'+
+        '}\r\n'+
+        'function watchHit(typeA, typeB, onHit) {\r\n'+
+        '    var p={A: typeA, B:typeB, h:onHit};\r\n'+
+        '    //console.log(p);\r\n'+
+        '    hitWatchers.push(p);\r\n'+
+        '}\r\n'+
+        'function drawGrid(c) {\r\n'+
+        '    var ctx=c.getContext("2d");\r\n'+
+        '    ctx.textBaseline="top";\r\n'+
+        '    ctx.save();\r\n'+
+        '    ctx.strokeStyle="rgb(40,100,200)";\r\n'+
+        '    for (var i=0 ; i<c.width ; i+=10) {\r\n'+
+        '        ctx.beginPath();\r\n'+
+        '        ctx.lineWidth=(i % 100 ==0 ? 4 : 1);\r\n'+
+        '        ctx.moveTo(i,0);\r\n'+
+        '        ctx.lineTo(i,c.height);\r\n'+
+        '        ctx.closePath();\r\n'+
+        '        ctx.stroke();\r\n'+
+        '    }\r\n'+
+        '\r\n'+
+        '    for (var i=0 ; i<c.height ; i+=10) {\r\n'+
+        '        ctx.beginPath();\r\n'+
+        '        ctx.lineWidth=(i % 100 ==0 ? 4 : 1);\r\n'+
+        '        ctx.moveTo(0,i);\r\n'+
+        '        ctx.lineTo(c.width,i);\r\n'+
+        '        ctx.closePath();\r\n'+
+        '        ctx.stroke();\r\n'+
+        '    }\r\n'+
+        '    ctx.fillStyle="white";\r\n'+
+        '    ctx.font="15px monospaced";\r\n'+
+        '    for (var i=100 ; i<c.width ; i+=100) {\r\n'+
+        '        ctx.fillText(i, i,0);\r\n'+
+        '    }\r\n'+
+        '    for (var i=100 ; i<c.height ; i+=100) {\r\n'+
+        '        ctx.fillText(i, 0,i);\r\n'+
+        '    }\r\n'+
+        '    ctx.restore();\r\n'+
+        '}\r\n'+
+        'function setImageList(il) {\r\n'+
+        '    imageList=il;\r\n'+
+        '}\r\n'+
+        'function getImageList() {\r\n'+
+        '    return imageList;\r\n'+
+        '}'
+      ,
+      'TObject.tonyu': 
+        'native Tonyu;\r\n'+
+        '\\new (options) {\r\n'+
+        '    if (typeof options=="object") extend(options);\r\n'+
+        '    this.main();\r\n'+
+        '}\r\n'+
+        'nowait \\extend(obj) {\r\n'+
+        '    return Tonyu.extend(this,obj);\r\n'+
+        '}'
+      ,
+      'TQuery.tonyu': 
+        'extends TObject;\r\n'+
+        '\\new () {\r\n'+
+        '    length=0;\r\n'+
+        '}\r\n'+
+        '\\tonyuIterator(arity) {\r\n'+
+        '    var res={};\r\n'+
+        '    res.i=0;\r\n'+
+        '    if (arity==1) {\r\n'+
+        '        res.next=function () {\r\n'+
+        '            if (res.i>=this.length) return false;\r\n'+
+        '            res[0]=this[res.i];\r\n'+
+        '            res.i++;\r\n'+
+        '            return true;\r\n'+
+        '        };\r\n'+
+        '    } else {\r\n'+
+        '        res.next=function () {\r\n'+
+        '            if (res.i>=this.length) return false;\r\n'+
+        '            res[0]=res.i;\r\n'+
+        '            res[1]=this[res.i];\r\n'+
+        '            res.i++;\r\n'+
+        '            return true;\r\n'+
+        '        };\r\n'+
+        '    }\r\n'+
+        '    return res;\r\n'+
+        '}\r\n'+
+        '\\attr() {\r\n'+
+        '    var values;\r\n'+
+        '    if (length==0) return;\r\n'+
+        '    if (arguments.length==1 && typeof arguments[0]=="string") {\r\n'+
+        '        return this[0][arguments[0]];\r\n'+
+        '    }\r\n'+
+        '    if (arguments.length>=2) {\r\n'+
+        '        values={};\r\n'+
+        '        for (var i=0 ; i<arguments.length-1 ;i+=2) {\r\n'+
+        '            values[arguments[i]]=arguments[i+1];\r\n'+
+        '        }\r\n'+
+        '    } else {\r\n'+
+        '        values=arguments[0];\r\n'+
+        '    }\r\n'+
+        '    if (values) {\r\n'+
+        '        for (var e in this) {\r\n'+
+        '            e.extend( values);\r\n'+
+        '        }\r\n'+
+        '    }\r\n'+
+        '}\r\n'+
+        '\\genKeyfunc(key) {\r\n'+
+        '    if (typeof key!="function") {\r\n'+
+        '        return \\(o) {return o[key];};\r\n'+
+        '    } else {\r\n'+
+        '        return key;\r\n'+
+        '    }\r\n'+
+        '}\r\n'+
+        '\\max(key) {\r\n'+
+        '    var f=genKeyfunc(key);\r\n'+
+        '    var res;\r\n'+
+        '    for (var o in this) {\r\n'+
+        '        var v=f(o);\r\n'+
+        '        if (res==null || v>res) res=v;\r\n'+
+        '    }\r\n'+
+        '    return res;\r\n'+
+        '}\r\n'+
+        '\\min(key) {\r\n'+
+        '    var f=genKeyfunc(key);\r\n'+
+        '    var res;\r\n'+
+        '    for (var o in this) {\r\n'+
+        '        var v=f(o);\r\n'+
+        '        if (res==null || v<res) res=v;\r\n'+
+        '    }\r\n'+
+        '    return res;\r\n'+
+        '}\r\n'+
+        '\\push(e) {\r\n'+
+        '    this[length]=e;\r\n'+
+        '    length++;\r\n'+
+        '}\r\n'+
+        '\\size() {return length;}\r\n'+
+        '\\find(f) {\r\n'+
+        '    var no=new TQuery;\r\n'+
+        '    for (var o in this) {\r\n'+
+        '        if (f(o)) no.push(o);\r\n'+
+        '    }\r\n'+
+        '    return no;\r\n'+
+        '} \r\n'+
+        '\\apply(name, args) {\r\n'+
+        '    var res;\r\n'+
+        '    if (!args) args=[];\r\n'+
+        '    for (var o in this) {\r\n'+
+        '        var f=o[name];\r\n'+
+        '        if (typeof f=="function") {\r\n'+
+        '            res=f.apply(o, args);\r\n'+
+        '        }\r\n'+
+        '    }\r\n'+
+        '    return res;\r\n'+
+        '}\r\n'+
+        '// \\alive => find \\(o) => !o.isDead()  //  (in future)\r\n'+
+        '\\alive() {\r\n'+
+        '    return find \\(o) {\r\n'+
+        '        return !o.isDead();\r\n'+
+        '    };\r\n'+
+        '}\r\n'+
+        '\\die() {\r\n'+
+        '    var a=alive();\r\n'+
+        '    if (a.length==0) return false;\r\n'+
+        '    a.apply("die");\r\n'+
+        '    return true;\r\n'+
+        '}\r\n'+
+        '\r\n'+
+        '\\klass(k) {\r\n'+
+        '    return find \\(o) { return o instanceof k; };\r\n'+
+        '}'
+      ,
+      'WaveTable.tonyu': 
+        'extends TObject;\r\n'+
+        'native T;\r\n'+
+        '\r\n'+
+        'wav={};\r\n'+
+        'env={};\r\n'+
+        '\\setWav(num, synth) {\r\n'+
+        '    wav[num]=synth;\r\n'+
+        '}\r\n'+
+        '\\setEnv(num, synth) {\r\n'+
+        '    env[num]=synth;\r\n'+
+        '}\r\n'+
+        '\\get(w,e) {\r\n'+
+        '    var synth=T("OscGen") {osc:wav[w], env:env[e], mul:0.25};\r\n'+
+        '    return synth;\r\n'+
+        '}\r\n'+
+        '\\stop() {\r\n'+
+        '    /*for (var k,v in tbl) {\r\n'+
+        '        v.pause();\r\n'+
+        '        v.stop();\r\n'+
+        '    }*/\r\n'+
+        '}\r\n'+
+        '\r\n'+
+        'if (typeof T!=="undefined") {\r\n'+
+        '    //env=T("adsr", {a:0,d:200,s:0.5,r:10});\r\n'+
+        '    env = T("env",{table:[1, [0.6, 50], [0, 100]], releaseNode:2});\r\n'+
+        '    setEnv(0, env);\r\n'+
+        '    setWav(0, T("pulse"));\r\n'+
+        '    //    synth=T("OscGen") {wave:"pulse", env, mul:0.25};\r\n'+
+        '    //set(0,synth);    \r\n'+
+        '}\r\n'
       
     }
   };
