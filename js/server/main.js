@@ -8,11 +8,28 @@ var app = express.createServer();*/
 var LSFile= require("./LSFile");
 var dumpScript= require("./dumpScript");
 var bp=require("body-parser");
+/*var getRawBody = require('raw-body');
 
+app.use(function (req, res, next) {
+  getRawBody(req, {
+    length: req.headers['content-length'],
+    limit: '10mb',
+    encoding: 'utf8'
+  }, function (err, string) {
+    if (err)
+      return next(err);
+    req.text = string;
+    next();
+  });
+});*/
+
+//app.use(express.json({limit: '50mb'}));
 //app.configure(function () {
+//app.use(express.limit(100000000));
 app.use(express.static(__dirname+"/../../" ,{maxAge:864000000}));
     //app.use(express.staticCache());
-app.use(bp());
+app.use(bp({limit: '50mb'}));
+
 //    app.use(express.bodyParser());
 //    app.use(express.methodOverride());
 //});

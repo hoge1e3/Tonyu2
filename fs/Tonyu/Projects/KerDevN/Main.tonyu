@@ -1,0 +1,26 @@
+$Screen.resize(448,400);
+$map=new Map{chipWidth:32,chipHeight:32,col:30,row:30};
+p=3;
+for(var j=1;j<7;j++){
+    for(var i=2;i<28;i++){
+        $map.set(i,j,p);
+    }
+    p++;
+}
+
+$ball=new Ball();
+new Bar();
+var i=0;
+var dir=-1;
+while(true){
+    i=i+dir;
+    //print(0-i,$map.chipWidth*$map.col-$screenWidth);
+    if($map.chipWidth*$map.col-$screenWidth==0-i){
+        dir=1;
+    }
+    if(i==0){
+        dir=-1;
+    }
+    $map.scrollTo(i,0);
+    update();
+}

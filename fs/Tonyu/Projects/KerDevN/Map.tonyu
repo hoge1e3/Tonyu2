@@ -1,0 +1,70 @@
+native Math;
+native $;
+\new (param){
+    sx=0;
+    sy=0;
+    super(param);
+    buf=$("<canvas>").attr{width:col*chipWidth,height:row*chipHeight};
+    mapTable = [];
+    for(var j=0;j<row;j++){
+        rows = [];
+        for(var i=0;i<col;i++){
+            rows.push(-1);
+        }
+        mapTable.push(rows);
+    }
+/*for(var i=0;i<col;i++){
+        mapTable[i]=[];
+}*/
+    
+}
+
+\set(setCol,setRow,p){
+    if(setCol>col || setRow>row || setCol<0 || setRow<0) return;
+    mapTable[setRow][setCol]=p;
+    ctx=buf[0].getContext("2d");
+    p=Math.floor(p);
+    pImg=$Sprites.getImageList()[p];
+    if (!pImg) {
+        ctx.clearRect(setCol*chipWidth,setRow*chipHeight,chipWidth,chipHeight);
+        return;
+    }
+    ctx.save();
+    ctx.drawImage(
+    pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,
+    setCol*chipWidth, setRow*chipHeight, chipWidth, chipHeight);
+    ctx.restore();
+}
+\get(getCol,getRow){
+    if(getCol>col || getRow>row || getCol<0 || getRow<0) return;
+    return mapTable[getRow][getCol];
+}
+\getAt(getX,getY){
+    return get(Math.floor(getX/chipWidth),Math.floor(getY/chipHeight));
+}
+\scrollTo(scrollX,scrollY){
+    sx=scrollX;
+    sy=scrollY;
+}
+\draw(ctx) {
+    pImg=buf[0];
+    ctx.save();
+    ctx.drawImage(
+    pImg, 0, 0,col*chipWidth, row*chipHeight,
+    sx, sy, col*chipWidth, row*chipHeight);
+    ctx.restore();
+    /*for(var i=0;i<row;i++){
+        for(var j=0;j<col;j++){
+            p=Math.floor(get(j,i));
+            pImg=$Sprites.getImageList()[p];
+            if (!pImg) return;
+            ctx.save();
+            ctx.drawImage(
+            pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,
+            j*chipWidth, i*chipHeight, chipWidth, chipHeight);
+            ctx.restore();
+            if($screenWidth<j*chipWidth) break;
+        }
+        if($screenHeight<i*chipHeight) break;
+    }*/
+}

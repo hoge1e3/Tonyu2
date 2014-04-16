@@ -1,0 +1,20 @@
+native Math;
+x=220;
+y=350;
+p=0;
+scaleX=1;
+scaleY=0.1;
+
+while(true){
+    if(crashTo($ball) && $ball.vy>0){
+        $ball.vy=$ball.vy*-1;
+        $ball.vx=($ball.x-x)/2;
+    }
+    if(getkey("right")>1){
+        x+=5;
+    }
+    if(getkey("left")>1){
+        x-=5;
+    }
+    update();
+}

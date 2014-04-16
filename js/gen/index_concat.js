@@ -1,4 +1,4 @@
-// Created at Thu Mar 27 2014 14:39:49 GMT+0900 (東京 (標準時))
+// Created at Wed Apr 16 2014 11:56:24 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -521,7 +521,7 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1395320514617},"Actor.tonyu":{"lastUpdate":1395320514618},"BaseActor.tonyu":{"lastUpdate":1395320514619},"Boot.tonyu":{"lastUpdate":1395320514620},"Keys.tonyu":{"lastUpdate":1395320514621},"MML.tonyu":{"lastUpdate":1395320514621},"NoviceActor.tonyu":{"lastUpdate":1395320514622},"ScaledCanvas.tonyu":{"lastUpdate":1395320514622},"Sprites.tonyu":{"lastUpdate":1395716036539},"TObject.tonyu":{"lastUpdate":1395320514623},"WaveTable.tonyu":{"lastUpdate":1395320514623},"TQuery.tonyu":{"lastUpdate":1395320514624},"MathMod.tonyu":{"lastUpdate":1395320514624}}',
+      '': '{".desktop":{"lastUpdate":1395320514617},"Actor.tonyu":{"lastUpdate":1395320514618},"BaseActor.tonyu":{"lastUpdate":1395320514619},"Boot.tonyu":{"lastUpdate":1395320514620},"Keys.tonyu":{"lastUpdate":1395320514621},"MML.tonyu":{"lastUpdate":1395320514621},"NoviceActor.tonyu":{"lastUpdate":1395320514622},"ScaledCanvas.tonyu":{"lastUpdate":1395320514622},"Sprites.tonyu":{"lastUpdate":1395716036539},"TObject.tonyu":{"lastUpdate":1395320514623},"WaveTable.tonyu":{"lastUpdate":1395320514623},"TQuery.tonyu":{"lastUpdate":1395320514624},"MathMod.tonyu":{"lastUpdate":1395320514624},"Map.tonyu":{"lastUpdate":1397614562872}}',
       '.desktop': '{"runMenuOrd":["AcTestM","NObjTest","SETest","MMLTest","KeyTest","NObjTest2","AcTest","NoviceActor","Actor","Boot","AltBoot","Keys","TObject","WaveTable","MML","BaseActor","TQuery","ScaledCanvas","MathMod"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -1432,6 +1432,78 @@ requireSimulator.setName('fs/ROMk');
         '    }\n'+
         '    return sqrt(dx*dx+dy*dy);\n'+
         '}'
+      ,
+      'Map.tonyu': 
+        'native Math;\n'+
+        'native $;\n'+
+        '\\new (param){\n'+
+        '    sx=0;\n'+
+        '    sy=0;\n'+
+        '    super(param);\n'+
+        '    buf=$("<canvas>").attr{width:col*chipWidth,height:row*chipHeight};\n'+
+        '    mapTable = [];\n'+
+        '    for(var j=0;j<row;j++){\n'+
+        '        rows = [];\n'+
+        '        for(var i=0;i<col;i++){\n'+
+        '            rows.push(-1);\n'+
+        '        }\n'+
+        '        mapTable.push(rows);\n'+
+        '    }\n'+
+        '/*for(var i=0;i<col;i++){\n'+
+        '        mapTable[i]=[];\n'+
+        '}*/\n'+
+        '    \n'+
+        '}\n'+
+        '\n'+
+        '\\set(setCol,setRow,p){\n'+
+        '    if(setCol>col || setRow>row || setCol<0 || setRow<0) return;\n'+
+        '    mapTable[setRow][setCol]=p;\n'+
+        '    ctx=buf[0].getContext("2d");\n'+
+        '    p=Math.floor(p);\n'+
+        '    pImg=$Sprites.getImageList()[p];\n'+
+        '    if (!pImg) {\n'+
+        '        ctx.clearRect(setCol*chipWidth,setRow*chipHeight,chipWidth,chipHeight);\n'+
+        '        return;\n'+
+        '    }\n'+
+        '    ctx.save();\n'+
+        '    ctx.drawImage(\n'+
+        '    pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,\n'+
+        '    setCol*chipWidth, setRow*chipHeight, chipWidth, chipHeight);\n'+
+        '    ctx.restore();\n'+
+        '}\n'+
+        '\\get(getCol,getRow){\n'+
+        '    if(getCol>col || getRow>row || getCol<0 || getRow<0) return;\n'+
+        '    return mapTable[getRow][getCol];\n'+
+        '}\n'+
+        '\\getAt(getX,getY){\n'+
+        '    return get(Math.floor(getX/chipWidth),Math.floor(getY/chipHeight));\n'+
+        '}\n'+
+        '\\scrollTo(scrollX,scrollY){\n'+
+        '    sx=scrollX;\n'+
+        '    sy=scrollY;\n'+
+        '}\n'+
+        '\\draw(ctx) {\n'+
+        '    pImg=buf[0];\n'+
+        '    ctx.save();\n'+
+        '    ctx.drawImage(\n'+
+        '    pImg, 0, 0,col*chipWidth, row*chipHeight,\n'+
+        '    sx, sy, col*chipWidth, row*chipHeight);\n'+
+        '    ctx.restore();\n'+
+        '    /*for(var i=0;i<row;i++){\n'+
+        '        for(var j=0;j<col;j++){\n'+
+        '            p=Math.floor(get(j,i));\n'+
+        '            pImg=$Sprites.getImageList()[p];\n'+
+        '            if (!pImg) return;\n'+
+        '            ctx.save();\n'+
+        '            ctx.drawImage(\n'+
+        '            pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,\n'+
+        '            j*chipWidth, i*chipHeight, chipWidth, chipHeight);\n'+
+        '            ctx.restore();\n'+
+        '            if($screenWidth<j*chipWidth) break;\n'+
+        '        }\n'+
+        '        if($screenHeight<i*chipHeight) break;\n'+
+        '    }*/\n'+
+        '}\n'
       
     }
   };
