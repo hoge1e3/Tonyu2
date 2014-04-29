@@ -1,0 +1,15 @@
+[[Map]]
+*scrollToメソッド
+
+マップをスクロールします．
+
+<<code
+map.scrollTo(scrollX,scrollY);
+>>
+
+
+
+-scrollX : 最初の位置からずらすx座標をあらわします
+-scrollY : 最初の位置からずらすy座標をあらわします
+
+最初の位置から右方向にscrollXドット，下方向にscrollYドットずらして表示します．左や上にずらす場合はscrollXとscrollYを負の値にします．

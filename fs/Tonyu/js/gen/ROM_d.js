@@ -2,7 +2,7 @@
   var rom={
     base: '/Tonyu/doc/',
     data: {
-      '': '{"index.txt":{"lastUpdate":1397638103410},"novice/":{"lastUpdate":1397637120272},"projectIndex.txt":1397119075000,"tonyu2/":{"lastUpdate":1397638123811}}',
+      '': '{"index.txt":{"lastUpdate":1397638103410},"novice/":{"lastUpdate":1397637120272},"projectIndex.txt":1397119075000,"tonyu2/":{"lastUpdate":1398750394966}}',
       'index.txt': 
         '* サンプルを見る\n'+
         '\n'+
@@ -1002,7 +1002,7 @@
         '名前は，半角英字とアンダースコア(_)が使えます．2文字以上でも構いません．2文字目以降は数字も使うことができます．'
       ,
       'projectIndex.txt': '',
-      'tonyu2/': '{"$mouseX, $mouseY.txt":{"lastUpdate":1397637145831},"$touches.txt":{"lastUpdate":1397637150059},"Actor.txt":{"lastUpdate":1397637313340},"all.txt":1397119076000,"allCrash.txt":{"lastUpdate":1397637204337},"api.txt":{"lastUpdate":1397637247201},"asyncResult.txt":1397119076000,"BaseActor.txt":1397119075000,"Boot.txt":1397119075000,"classDef.txt":1397119076000,"console.txt":1397119076000,"cpats.txt":1397119076000,"crashTo.txt":1397119076000,"crashTo1.txt":1397119076000,"die.txt":1397119076000,"draw.txt":1397119076000,"extend.txt":1397119076000,"forin.txt":1397119076000,"frame.txt":1397119076000,"fs.txt":1397119076000,"getCrashRect.txt":1397119076000,"getkey.txt":1397119076000,"hide.txt":1397119076000,"ide.txt":1397119076000,"index.txt":{"lastUpdate":1397637218111},"isDead.txt":1397119076000,"kernel.txt":1397119076000,"lang.txt":1397119076000,"MathMod.txt":1397119075000,"options.txt":1397119076000,"play.txt":1397119076000,"playSE.txt":1397119076000,"print.txt":1397119076000,"resize.txt":1397119076000,"rnd.txt":1397119076000,"ScaledCanvas.txt":1397119075000,"setBGColor.txt":1397119076000,"show.txt":1397119076000,"sugar.txt":1397119076000,"super.txt":1397119076000,"TQuery.alive.txt":1397119075000,"TQuery.apply.txt":1397119075000,"TQuery.attr.txt":1397119075000,"TQuery.die.txt":1397119075000,"TQuery.find.txt":1397119075000,"TQuery.minmax.txt":1397119075000,"TQuery.txt":1397119075000,"update.txt":{"lastUpdate":1397637287043},"waitFor.txt":1397119076000,"waitmode.txt":1397119076000,"Map.txt":{"lastUpdate":1397638123810}}',
+      'tonyu2/': '{"$mouseX, $mouseY.txt":{"lastUpdate":1397637145831},"$touches.txt":{"lastUpdate":1397637150059},"Actor.txt":{"lastUpdate":1397637313340},"all.txt":1397119076000,"allCrash.txt":{"lastUpdate":1397637204337},"api.txt":{"lastUpdate":1397637247201},"asyncResult.txt":1397119076000,"BaseActor.txt":{"lastUpdate":1397886729734},"Boot.txt":1397119075000,"classDef.txt":1397119076000,"console.txt":1397119076000,"cpats.txt":1397119076000,"crashTo.txt":1397119076000,"crashTo1.txt":1397119076000,"die.txt":1397119076000,"draw.txt":1397119076000,"extend.txt":1397119076000,"forin.txt":1397119076000,"frame.txt":1397119076000,"fs.txt":1397119076000,"getCrashRect.txt":1397119076000,"getkey.txt":1397119076000,"hide.txt":1397119076000,"ide.txt":1397119076000,"index.txt":{"lastUpdate":1397637218111},"isDead.txt":1397119076000,"kernel.txt":1397119076000,"lang.txt":1397119076000,"MathMod.txt":1397119075000,"options.txt":1397119076000,"play.txt":1397119076000,"playSE.txt":1397119076000,"print.txt":1397119076000,"resize.txt":{"lastUpdate":1397887473627},"rnd.txt":1397119076000,"ScaledCanvas.txt":{"lastUpdate":1397887467691},"setBGColor.txt":1397119076000,"show.txt":1397119076000,"sugar.txt":1397119076000,"super.txt":1397119076000,"TQuery.alive.txt":1397119075000,"TQuery.apply.txt":1397119075000,"TQuery.attr.txt":1397119075000,"TQuery.die.txt":1397119075000,"TQuery.find.txt":1397119075000,"TQuery.minmax.txt":1397119075000,"TQuery.txt":1397119075000,"update.txt":{"lastUpdate":1397637287043},"waitFor.txt":1397119076000,"waitmode.txt":1397119076000,"Map.txt":{"lastUpdate":1398750305570},"set.txt":{"lastUpdate":1398750394965},"get.txt":{"lastUpdate":1397974707264},"getAt.txt":{"lastUpdate":1397974686208},"scrollTo.txt":{"lastUpdate":1397975063505}}',
       'tonyu2/$mouseX, $mouseY.txt': 
         '[[api]]\n'+
         '\n'+
@@ -1164,71 +1164,71 @@
         '>>\r\n'
       ,
       'tonyu2/BaseActor.txt': 
-        '[[api]]\r\n'+
-        '\r\n'+
-        '*BaseActor\r\n'+
-        '\r\n'+
-        '画面に表示されるオブジェクトの基本クラスです．実際には[[Actor]]を継承してクラスを作成してください．\r\n'+
-        '\r\n'+
-        '* コンストラクタ(1)\r\n'+
-        '\r\n'+
-        '<<code\r\n'+
-        '\\new(params)\r\n'+
-        '>>\r\n'+
-        '\r\n'+
-        'paramsにはオブジェクトを指定します．paramsの値をフィールドに書き込みます\r\n'+
-        '\r\n'+
-        '例： \r\n'+
-        '<<code\r\n'+
-        '// MyActorはBaseActorの子クラスとする\r\n'+
-        'a=new MyActor{x:50,y:30, power:20, hp:50};\r\n'+
-        '// a.x=50  a.y=30 a.power=20  a.hp=50 となる\r\n'+
-        '>>\r\n'+
-        '\r\n'+
-        '* コンストラクタ(2)\r\n'+
-        '\r\n'+
-        '<<code\r\n'+
-        '\\new(x,y,p)\r\n'+
-        '>>\r\n'+
-        '\r\n'+
-        'x,y,pの値をフィールドに書き込みます\r\n'+
-        '\r\n'+
-        '* フィールド\r\n'+
-        '\r\n'+
-        '-x : オブジェクトのx座標をあらわします\r\n'+
-        '-y : オブジェクトのy座標をあらわします\r\n'+
-        '-p : 表示する[[キャラクタパターン]]の番号をあらわします \r\n'+
-        '-text : textに値がセットされると，文字を表示します（キャラクタパターンは表示されなくなります）\r\n'+
-        '--size : 文字の大きさをあらわします\r\n'+
-        '--fillStyle : 文字の色などをあらわします(JavascriptのCanvasにおけるfillStyleと同じ書式です）\r\n'+
-        '--align:  "center" "left" "right"のいずれかを指定します．xの値であらわされる横位置がそれぞれ文字の中央，左端，右端になるように表示します．\r\n'+
-        '\r\n'+
-        '* メソッド\r\n'+
-        '\r\n'+
-        '-[[update]]\r\n'+
-        '-[[getkey]]\r\n'+
-        '-[[crashTo]]\r\n'+
-        '-[[crashTo1]]\r\n'+
-        '-[[allCrash]]\r\n'+
-        '-[[all]]\r\n'+
-        '-[[getCrashRect]]\r\n'+
-        '-[[die]]\r\n'+
-        '-[[isDead]] \r\n'+
-        '-[[hide]]\r\n'+
-        '-[[show]]\r\n'+
-        '-[[rnd]]\r\n'+
-        '-[[draw]]\r\n'+
-        '-[[extend]]\r\n'+
-        '-[[print]]\r\n'+
-        '-[[asyncResult]]\r\n'+
-        '-[[waitFor]]\r\n'+
-        '-[[play]]\r\n'+
-        '-[[playSE]]\r\n'+
-        '-[[currentThreadGroup]]\r\n'+
-        '-[[detectShape]]\r\n'+
-        '-[[hitTo]]\r\n'+
-        '-[[watchHit]]\r\n'+
-        '-[[MathMod]]モジュールクラスがもつメソッド\r\n'
+        '[[api]]\n'+
+        '\n'+
+        '*BaseActor\n'+
+        '\n'+
+        '画面に表示されるオブジェクトの基本クラスです．実際には[[Actor]]を継承してクラスを作成してください．\n'+
+        '\n'+
+        '* コンストラクタ(1)\n'+
+        '\n'+
+        '<<code\n'+
+        '\\new(params)\n'+
+        '>>\n'+
+        '\n'+
+        'paramsにはオブジェクトを指定します．paramsの値をフィールドに書き込みます\n'+
+        '\n'+
+        '例： \n'+
+        '<<code\n'+
+        '// MyActorはBaseActorの子クラスとする\n'+
+        'a=new MyActor{x:50,y:30, power:20, hp:50};\n'+
+        '// a.x=50  a.y=30 a.power=20  a.hp=50 となる\n'+
+        '>>\n'+
+        '\n'+
+        '* コンストラクタ(2)\n'+
+        '\n'+
+        '<<code\n'+
+        '\\new(x,y,p)\n'+
+        '>>\n'+
+        '\n'+
+        'x,y,pの値をフィールドに書き込みます\n'+
+        '\n'+
+        '* フィールド\n'+
+        '\n'+
+        '-x : オブジェクトのx座標をあらわします\n'+
+        '-y : オブジェクトのy座標をあらわします\n'+
+        '-p : 表示する[[キャラクタパターン]]の番号をあらわします \n'+
+        '-text : textに値がセットされると，文字を表示します（キャラクタパターンは表示されなくなります）\n'+
+        '--size : 文字の大きさをあらわします\n'+
+        '--fillStyle : 文字の色などをあらわします(JavascriptのCanvasにおけるfillStyleと同じ書式です）\n'+
+        '--align:  "center" "left" "right"のいずれかを指定します．xの値であらわされる横位置がそれぞれ文字の中央，左端，右端になるように表示します．\n'+
+        '\n'+
+        '* メソッド\n'+
+        '\n'+
+        '-[[update]]\n'+
+        '-[[getkey]]\n'+
+        '-[[crashTo]]\n'+
+        '-[[crashTo1]]\n'+
+        '-[[allCrash]]\n'+
+        '-[[all]]\n'+
+        '-[[getCrashRect]]\n'+
+        '-[[die]]\n'+
+        '-[[isDead]] \n'+
+        '-[[hide]]\n'+
+        '-[[show]]\n'+
+        '-[[rnd]]\n'+
+        '-[[draw]]\n'+
+        '-[[extend]]\n'+
+        '-[[print]]\n'+
+        '-[[asyncResult]]\n'+
+        '-[[waitFor]]\n'+
+        '-[[play]]\n'+
+        '-[[playSE]]\n'+
+        '-[[currentThreadGroup]]\n'+
+        '-[[detectShape]]\n'+
+        '-[[hitTo]]\n'+
+        '-[[watchHit]]\n'+
+        '-[[MathMod]]モジュールクラスがもつメソッド\n'
       ,
       'tonyu2/Boot.txt': 
         '[[api]]\r\n'+
@@ -1906,27 +1906,27 @@
         '\r\n'
       ,
       'tonyu2/resize.txt': 
-        '[[ScaledCanvas]]\r\n'+
-        '\r\n'+
-        '*$Screen.resizeメソッド\r\n'+
-        '\r\n'+
-        'ゲーム画面のサイズを変更します．\r\n'+
-        '\r\n'+
-        '<<code\r\n'+
-        '$Screen.resize(w,h);\r\n'+
-        '>>\r\n'+
-        '\r\n'+
-        'wとh に画面幅と高さを指定します．\r\n'+
-        '\r\n'+
-        '\r\n'+
-        '*例\r\n'+
-        '\r\n'+
-        '<<code\r\n'+
-        '$Screen.resize(500,300);\r\n'+
-        '>>\r\n'+
-        '\r\n'+
-        '\r\n'+
-        '※実際の画面（Canvas）の大きさが変わるのではなく，画面内に表示される仮想画面の大きさが変わります．\r\n'
+        '[[ScaledCanvas]]\n'+
+        '\n'+
+        '*$Screen.resizeメソッド\n'+
+        '\n'+
+        'ゲーム画面のサイズを変更します．\n'+
+        '\n'+
+        '<<code\n'+
+        '$Screen.resize(w,h);\n'+
+        '>>\n'+
+        '\n'+
+        'wとh に画面幅と高さを指定します．\n'+
+        '\n'+
+        '\n'+
+        '*例\n'+
+        '\n'+
+        '<<code\n'+
+        '$Screen.resize(500,300);\n'+
+        '>>\n'+
+        '\n'+
+        '\n'+
+        '※実際の画面（Canvas）の大きさが変わるのではなく，画面内に表示される仮想画面の大きさが変わります．\n'
       ,
       'tonyu2/rnd.txt': 
         '[[BaseActor]]\r\n'+
@@ -1967,17 +1967,17 @@
         '\r\n'
       ,
       'tonyu2/ScaledCanvas.txt': 
-        '[[api]]\r\n'+
-        '\r\n'+
-        '*ScaledCanvasクラス\r\n'+
-        '\r\n'+
-        'ゲーム画面をあらわすオブジェクトです．[[Boot]]クラスで[[@cfrag $Screen]] というオブジェクトで初期化されます．\r\n'+
-        '\r\n'+
-        '**メソッド\r\n'+
-        '\r\n'+
-        '-[[resize]]\r\n'+
-        '-[[setBGColor]]\r\n'+
-        '\r\n'+
+        '[[api]]\n'+
+        '\n'+
+        '*ScaledCanvasクラス\n'+
+        '\n'+
+        'ゲーム画面をあらわすオブジェクトです．[[Boot]]クラスで[[@cfrag $Screen]] というオブジェクトで初期化されます．\n'+
+        '\n'+
+        '**メソッド\n'+
+        '\n'+
+        '-[[resize]]\n'+
+        '-[[setBGColor]]\n'+
+        '\n'+
         ' '
       ,
       'tonyu2/setBGColor.txt': 
@@ -2382,7 +2382,90 @@
         '\n'+
         '*Mapクラス\n'+
         '\n'+
-        'Mapのクラスです。'
+        'マップの表示クラスです．\n'+
+        '* コンストラクタ\n'+
+        '\n'+
+        '<<code\n'+
+        '\\new(param)\n'+
+        '>>\n'+
+        '\n'+
+        'paramでマップのチップサイズとその個数を指定します．\n'+
+        '\n'+
+        '例： \n'+
+        '<<code\n'+
+        '// 16*16のチップを横に15，縦に10並べる\n'+
+        '$map=new Map{chipWidth:16,chipHeight:16, col:15, row:10};\n'+
+        '>>\n'+
+        '\n'+
+        '*メソッド\n'+
+        '-[[set]]\n'+
+        '-[[get]]\n'+
+        '-[[getAt]]\n'+
+        '-[[scrollTo]]\n'
+      ,
+      'tonyu2/set.txt': 
+        '[[Map]]\n'+
+        '*setメソッド\n'+
+        '\n'+
+        'マップにチップをはめ込みます．\n'+
+        '一番左上のチップを(0,0)，その右隣のチップを(1,0)として指定された座標のパターンを設定します．\n'+
+        '\n'+
+        '<<code\n'+
+        'map.set(setCol,setRow,p);\n'+
+        '//マップのsetCol，setRow座標のパターンをpに設定します．\n'+
+        '>>\n'+
+        '\n'+
+        '\n'+
+        '-setCol : セットするx座標をあらわします\n'+
+        '-setRow : セットするy座標をあらわします\n'+
+        '-p : 表示するパターンの番号をあらわします \n'
+      ,
+      'tonyu2/get.txt': 
+        '[[Map]]\n'+
+        '*getメソッド\n'+
+        '\n'+
+        '指定したマップ上の座標に対応するマップパターンを取得します．\n'+
+        '\n'+
+        '<<code\n'+
+        'map.get(getCol,getRow);\n'+
+        '>>\n'+
+        '\n'+
+        '\n'+
+        '\n'+
+        '-getCol : パターンを取得するx座標をあらわします\n'+
+        '-getRow : パターンを取得するy座標をあらわします\n'
+      ,
+      'tonyu2/getAt.txt': 
+        '[[Map]]\n'+
+        '*getAtメソッド\n'+
+        '\n'+
+        '指定した画面上の座標に対応するマップパターンを取得します．\n'+
+        '\n'+
+        '<<code\n'+
+        'map.get(getX,getY);\n'+
+        '>>\n'+
+        '\n'+
+        '\n'+
+        '\n'+
+        '-getX : パターンを取得するx座標をあらわします\n'+
+        '-getY : パターンを取得するy座標をあらわします\n'
+      ,
+      'tonyu2/scrollTo.txt': 
+        '[[Map]]\n'+
+        '*scrollToメソッド\n'+
+        '\n'+
+        'マップをスクロールします．\n'+
+        '\n'+
+        '<<code\n'+
+        'map.scrollTo(scrollX,scrollY);\n'+
+        '>>\n'+
+        '\n'+
+        '\n'+
+        '\n'+
+        '-scrollX : 最初の位置からずらすx座標をあらわします\n'+
+        '-scrollY : 最初の位置からずらすy座標をあらわします\n'+
+        '\n'+
+        '最初の位置から右方向にscrollXドット，下方向にscrollYドットずらして表示します．左や上にずらす場合はscrollXとscrollYを負の値にします．'
       
     }
   };

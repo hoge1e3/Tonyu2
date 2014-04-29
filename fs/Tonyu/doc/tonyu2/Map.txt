@@ -2,4 +2,23 @@
 
 *Mapクラス
 
-Mapのクラスです。
+マップの表示クラスです．
+* コンストラクタ
+
+<<code
+\new(param)
+>>
+
+paramでマップのチップサイズとその個数を指定します．
+
+例： 
+<<code
+// 16*16のチップを横に15，縦に10並べる
+$map=new Map{chipWidth:16,chipHeight:16, col:15, row:10};
+>>
+
+*メソッド
+-[[set]]
+-[[get]]
+-[[getAt]]
+-[[scrollTo]]
