@@ -1,4 +1,4 @@
-// Created at Fri May 02 2014 15:31:51 GMT+0900 (東京 (標準時))
+// Created at Fri May 02 2014 16:58:21 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -5137,7 +5137,7 @@ requirejs(["fs/ROMk","FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS
 	var loc=locs.pop();
 	if (loc.length<0) locs="runscript";
         var curProjectDir=FS.get("/Tonyu/"+loc+"/");
-        if (curProjectDir.exists()) sh.rm(curProjectDir,{r:1});
+        //if (curProjectDir.exists()) sh.rm(curProjectDir,{r:1});
         var fo=ScriptTagFS.toObj();
         for (var fn in fo) {
         	var f=curProjectDir.rel(fn);
