@@ -1,0 +1,13 @@
+
+native dumpScript;
+t=0;
+while(true) {
+    if (t%5==0) {
+        new Ball{x:rnd($screenWidth),y:0, p:$pat_balls+rnd(25)};
+    }
+    t++;
+    if (getkey("U")) break;
+    update();
+}
+dumpScript();
+

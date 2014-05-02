@@ -1,0 +1,17 @@
+saveDataFile=file("save.json");
+saveData=saveDataFile.obj();
+if (!saveData) saveData={count:0};
+saveData.count++;
+saveDataFile.obj(saveData);
+x=200;y=20;size=20;
+text="count="+saveData.count+" F9:inc SPACE:reset";
+while (true) {
+    if (getkey("space")==1) {
+        saveDataFile.rm();
+        text="Reset ! press F9";
+    }
+    update();    
+}
+
+
+

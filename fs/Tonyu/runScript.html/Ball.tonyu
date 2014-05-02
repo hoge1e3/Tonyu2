@@ -1,0 +1,8 @@
+
+while (y<$screenHeight) {
+    y+=3;
+    update();
+}
+die();
+
+
