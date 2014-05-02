@@ -5,6 +5,13 @@ print($screenWidth, $screenHeight);
 new AcTest{x:10, y:100, vx:5, vy:0, p:0,scaleX:2};
 new AcTest{x:320, y:100, vx:-5, vy:0, p:10,alpha:100};
 t=new AcTest(50,150);
+scf=file("sc.txt");
+o=scf.obj();
+if (!o) o={score:0};
+o.score++;
+scf.obj(o);
+sc=o.score;
+print(file("../AcTestM.tonyu").text());
 
 fillStyle="yellow";
 for (i=0; i<3000; i++) {
@@ -12,7 +19,7 @@ for (i=0; i<3000; i++) {
         a.y+=0.1;
     }
     size=40;
-    text="スコア："+i+"/"+floor(dist(t));
+    text="スコア："+sc+"/"+floor(dist(t));
     // text="スコア："+i+"/"+all(AcTest).min("y")+"--"+all(AcTest).max("y");
     //x=$touches[0].x;
     //y=$touches[0].y;

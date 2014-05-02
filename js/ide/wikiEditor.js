@@ -44,6 +44,7 @@ $(function () {
         var h=$(window).height()-$("#navbar").height();
         t.setHeight(h);
         $("#wikiViewArea").height(h);
+        $("#fileList").height(h);
     }
     $(window).resize(onResize);
     onResize();

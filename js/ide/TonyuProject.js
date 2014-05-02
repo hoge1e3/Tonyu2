@@ -201,7 +201,7 @@ return Tonyu.Project=function (dir, kernelDir) {
     TPR.isKernelEditable=function () {
     	return env.options.kernelEditable;
     };
-
+    TPR.getDir=function () {return dir;};
     return TPR;
 };
 if (typeof getReq=="function") getReq.exports("Tonyu.Project");

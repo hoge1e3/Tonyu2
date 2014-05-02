@@ -6,6 +6,7 @@ native console;
 native Math;
 native fukidashi;
 native TextRect;
+native FS;
 
 \new(x,y,p) {
     if (Tonyu.runMode) {
@@ -208,6 +209,11 @@ nowait \asyncResult() {
     if (x>$screenWidth +viewX-a) r+=x-($screenWidth +viewX-a);
     if (y>$screenHeight+viewY-a) r+=y-($screenHeight+viewY-a);
     return r;
+}
+\file(path) {
+    var d=Tonyu.currentProject.getDir();
+    var files=d.rel("files/");
+    return FS.get(files.rel(path)) {topDir:d};
 }
 
 \play() {

@@ -11,7 +11,6 @@ Tonyu2で最初から使えるクラス群です．[[ファイルシステム>fs
 -[[ScaledCanvas]]
 -[[NoviceActor]]
 -[[MathMod]]
--[[Map]]
 
 *グローバル変数
 

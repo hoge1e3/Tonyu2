@@ -18,6 +18,10 @@ textarea{
 	cursor:pointer;
   color: #428bca;
 }
+#fileItemList {
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
 #fileItemList li {
 	  list-style: none;
 }

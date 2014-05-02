@@ -44,7 +44,7 @@ function FileList(elem, options) {
         if (typeof dir=="string") dir=FS.get(dir);
         if (dir) {
             _curDir=dir;
-            path.text(dir.path());
+            path.text(dir.name()).attr({title:dir.path()});
         }
         if (!_curDir) return;
         if (!_curDir.isDir()) return;

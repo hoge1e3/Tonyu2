@@ -1,0 +1,34 @@
+[[BaseActor]]
+
+*file メソッド
+
+ファイルシステム(FS)オブジェクトを取得します．
+FSオブジェクトは，[[ファイルシステム>fs]]へのアクセスを提供します．
+
+**書式
+
+<<code
+file([[@arg path]])
+>>
+
+-pathに，次のディレクトリからの相対パスを指定します．
+--現在のプロジェクトディレクトリ/files
+-ディレクトリを指定する場合，pathの末尾に必ず / をつけて下さい
+-fileメソッドによって取得されたFSオブジェクトがアクセス可能な範囲は，このプロジェクトディレクトリとそのサブディレクトリ内のファイル・ディレクトリのみです．
+
+FSオブジェクトには，次のメソッドが提供されます
+
+-[[text>FS.text]]
+-[[obj>FS.obj]]
+-[[each>FS.each]]
+-[[recursive>FS.recursive]]
+-[[rel>FS.rel]]
+-[[exists>FS.exists]]
+-[[isDir>FS.isDir]]
+-[[rm>FS.rm]]
+-[[path>FS.path]]
+-[[name>FS.name]]
+-[[endsWith>FS.endsWith]]
+-[[copyFrom>FS.copyFrom]]
+
+

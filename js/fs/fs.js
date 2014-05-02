@@ -186,6 +186,7 @@ FS=function () {
         function e(cfd) {
             var rp=cfd.relPath(dir);
             data[rp]=cfd.text();
+            if (!options.keepCR) data[rp]=data[rp].replace(/\r/g,"");
             if (cfd.isDir()) {
             	if (cfd.rel(DONOTEXPORT).exists()) return;
                 cfd.each(e);
@@ -285,7 +286,9 @@ FS=function () {
             };
             file.obj=function () {
                 if (arguments.length==0) {
-                    return JSON.parse( file.text() );
+                	var t=file.text();
+                	if (!t) return null;
+                    return JSON.parse(t);
                 } else {
                     file.text(JSON.stringify(arguments[0]));
                 }

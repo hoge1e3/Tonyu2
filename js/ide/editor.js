@@ -35,6 +35,7 @@ $(function () {
         $("#prog").css("height",h+"px");
         $("#cv").attr("height", h).attr("width", rw);
         cv=$("#cv")[0].getContext("2d");
+        $("#fileItemList").height(h);
     }
     onResize();
     var prog=ace.edit("prog");
