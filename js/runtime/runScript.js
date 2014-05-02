@@ -19,13 +19,17 @@ requirejs(["fs/ROMk","FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS
             h=$(window).height();
         	cv.attr({width: w, height: h});
         }
-        var curProjectDir=FS.get("/Tonyu/runscript/");
+	var locs=location.href.replace(/\?.*/,"").split(/\//);
+	var loc=locs.pop();
+	if (loc.length<0) locs="runscript";
+        var curProjectDir=FS.get("/Tonyu/"+loc+"/");
         if (curProjectDir.exists()) sh.rm(curProjectDir,{r:1});
         var fo=ScriptTagFS.toObj();
         for (var fn in fo) {
         	var f=curProjectDir.rel(fn);
            	f.text(fo[fn]);
         }
+	sh.cd(curProjectDir);
         var main="Main";
         var scrs=$("script");
         scrs.each(function (){

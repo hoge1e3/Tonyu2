@@ -2,7 +2,7 @@
   var rom={
     base: '/Tonyu/doc/',
     data: {
-      '': '{"index.txt":1398776806000,"novice/":{"lastUpdate":1398837307837},"projectIndex.txt":1398776806000,"tonyu2/":{"lastUpdate":1398837328930}}',
+      '': '{"index.txt":1398776806000,"novice/":{"lastUpdate":1398837307837},"projectIndex.txt":1398776806000,"tonyu2/":{"lastUpdate":1398998194985}}',
       'index.txt': 
         '* サンプルを見る\n'+
         '\n'+
@@ -1002,7 +1002,7 @@
         '名前は，半角英字とアンダースコア(_)が使えます．2文字以上でも構いません．2文字目以降は数字も使うことができます．'
       ,
       'projectIndex.txt': '',
-      'tonyu2/': '{"$mouseX, $mouseY.txt":1398776806000,"$touches.txt":1398776806000,"Actor.txt":1398776806000,"all.txt":1398776807000,"allCrash.txt":1398776806000,"api.txt":{"lastUpdate":1398837328929},"asyncResult.txt":1398776806000,"BaseActor.txt":1398834836000,"Boot.txt":1398776806000,"classDef.txt":1398776806000,"console.txt":1398776806000,"cpats.txt":1398776806000,"crashTo.txt":1398776806000,"crashTo1.txt":1398776806000,"die.txt":1398776806000,"draw.txt":1398776806000,"extend.txt":1398776806000,"file.txt":1398834836000,"forin.txt":1398776806000,"frame.txt":1398776806000,"FS.each.txt":1398834836000,"FS.obj.txt":1398834836000,"FS.recursive.txt":1398834836000,"FS.rel.txt":1398834836000,"FS.text.txt":1398834836000,"fs.txt":1398776806000,"get.txt":1398834835000,"getAt.txt":1398834835000,"getCrashRect.txt":1398776806000,"getkey.txt":1398776806000,"hide.txt":1398776806000,"ide.txt":1398776806000,"index.txt":1398776806000,"isDead.txt":1398776806000,"kernel.txt":1398776806000,"lang.txt":1398776806000,"Map.txt":1398834835000,"MathMod.txt":1398776807000,"options.txt":1398776806000,"play.txt":1398776807000,"playSE.txt":1398776807000,"print.txt":1398776807000,"resize.txt":1398776807000,"rnd.txt":1398776807000,"ScaledCanvas.txt":1398776807000,"scrollTo.txt":1398834835000,"set.txt":1398834835000,"setBGColor.txt":1398776807000,"show.txt":1398776807000,"sugar.txt":1398776807000,"super.txt":1398776807000,"TQuery.alive.txt":1398776807000,"TQuery.apply.txt":1398776807000,"TQuery.attr.txt":1398776807000,"TQuery.die.txt":1398776807000,"TQuery.find.txt":1398776807000,"TQuery.minmax.txt":1398776807000,"TQuery.txt":1398776807000,"update.txt":1398776807000,"waitFor.txt":1398776807000,"waitmode.txt":1398776807000}',
+      'tonyu2/': '{"$mouseX, $mouseY.txt":1398776806000,"$touches.txt":1398776806000,"Actor.txt":1398776806000,"all.txt":1398776807000,"allCrash.txt":1398776806000,"api.txt":{"lastUpdate":1398998107420},"asyncResult.txt":1398776806000,"BaseActor.txt":1398834836000,"Boot.txt":1398776806000,"classDef.txt":1398776806000,"console.txt":1398776806000,"cpats.txt":1398776806000,"crashTo.txt":1398776806000,"crashTo1.txt":1398776806000,"die.txt":1398776806000,"draw.txt":1398776806000,"extend.txt":1398776806000,"file.txt":1398834836000,"forin.txt":1398776806000,"frame.txt":1398776806000,"FS.each.txt":1398834836000,"FS.obj.txt":1398834836000,"FS.recursive.txt":1398834836000,"FS.rel.txt":1398834836000,"FS.text.txt":1398834836000,"fs.txt":1398776806000,"get.txt":1398834835000,"getAt.txt":1398834835000,"getCrashRect.txt":1398776806000,"getkey.txt":1398776806000,"hide.txt":1398776806000,"ide.txt":1398776806000,"index.txt":1398776806000,"isDead.txt":1398776806000,"kernel.txt":1398776806000,"lang.txt":1398776806000,"Map.txt":1398834835000,"MathMod.txt":1398776807000,"options.txt":1398776806000,"play.txt":1398776807000,"playSE.txt":1398776807000,"print.txt":1398776807000,"resize.txt":1398776807000,"rnd.txt":1398776807000,"ScaledCanvas.txt":1398776807000,"scrollTo.txt":1398834835000,"set.txt":1398834835000,"setBGColor.txt":1398776807000,"show.txt":1398776807000,"sugar.txt":1398776807000,"super.txt":1398776807000,"TQuery.alive.txt":1398776807000,"TQuery.apply.txt":1398776807000,"TQuery.attr.txt":1398776807000,"TQuery.die.txt":1398776807000,"TQuery.find.txt":1398776807000,"TQuery.minmax.txt":1398776807000,"TQuery.txt":1398776807000,"update.txt":1398776807000,"waitFor.txt":1398776807000,"waitmode.txt":1398776807000,"FS.exists.txt":{"lastUpdate":1398998194985}}',
       'tonyu2/$mouseX, $mouseY.txt': 
         '[[api]]\n'+
         '\n'+
@@ -2610,6 +2610,21 @@
         '\n'+
         '\n'+
         '\n'
+      ,
+      'tonyu2/FS.exists.txt': 
+        '[[file]]\n'+
+        '\n'+
+        '*FS.exitsメソッド\n'+
+        '\n'+
+        'ファイルまたはディレクトリが存在するかどうかを返します\n'+
+        '\n'+
+        '**書式\n'+
+        '\n'+
+        '<<code\n'+
+        'fs.exits()\n'+
+        '>>\n'+
+        '\n'+
+        '[[@arg fs]]があらわすファイルまたはディレクトリが存在すれば[[@cfrag true]]を，なければ[[@cfrag false]]を返します'
       
     }
   };

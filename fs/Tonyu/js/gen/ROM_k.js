@@ -2,7 +2,7 @@
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1395320514617},"Actor.tonyu":{"lastUpdate":1395320514618},"BaseActor.tonyu":{"lastUpdate":1398776778069},"Boot.tonyu":{"lastUpdate":1395320514620},"Keys.tonyu":{"lastUpdate":1395320514621},"MML.tonyu":{"lastUpdate":1395320514621},"NoviceActor.tonyu":{"lastUpdate":1395320514622},"ScaledCanvas.tonyu":{"lastUpdate":1395320514622},"Sprites.tonyu":{"lastUpdate":1395716036539},"TObject.tonyu":{"lastUpdate":1395320514623},"WaveTable.tonyu":{"lastUpdate":1395320514623},"TQuery.tonyu":{"lastUpdate":1395320514624},"MathMod.tonyu":{"lastUpdate":1395320514624},"Map.tonyu":{"lastUpdate":1397614562872}}',
+      '': '{".desktop":1398776807000,"Actor.tonyu":1398776807000,"BaseActor.tonyu":1398834836000,"Boot.tonyu":1398776807000,"Keys.tonyu":1398776807000,"Map.tonyu":1398776807000,"MathMod.tonyu":1398776807000,"MML.tonyu":1398776807000,"NoviceActor.tonyu":1398776807000,"ScaledCanvas.tonyu":1398776807000,"Sprites.tonyu":1398776807000,"TObject.tonyu":1398776807000,"TQuery.tonyu":1398776807000,"WaveTable.tonyu":1398776807000}',
       '.desktop': '{"runMenuOrd":["AcTestM","NObjTest","SETest","MMLTest","KeyTest","NObjTest2","AcTest","NoviceActor","Actor","Boot","AltBoot","Keys","TObject","WaveTable","MML","BaseActor","TQuery","ScaledCanvas","MathMod"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -468,6 +468,128 @@
         '    stats[e.keyCode]=0;\n'+
         '}'
       ,
+      'Map.tonyu': 
+        'native Math;\n'+
+        'native $;\n'+
+        '\\new (param){\n'+
+        '    sx=0;\n'+
+        '    sy=0;\n'+
+        '    super(param);\n'+
+        '    buf=$("<canvas>").attr{width:col*chipWidth,height:row*chipHeight};\n'+
+        '    mapTable = [];\n'+
+        '    for(var j=0;j<row;j++){\n'+
+        '        rows = [];\n'+
+        '        for(var i=0;i<col;i++){\n'+
+        '            rows.push(-1);\n'+
+        '        }\n'+
+        '        mapTable.push(rows);\n'+
+        '    }\n'+
+        '/*for(var i=0;i<col;i++){\n'+
+        '        mapTable[i]=[];\n'+
+        '}*/\n'+
+        '    \n'+
+        '}\n'+
+        '\n'+
+        '\\set(setCol,setRow,p){\n'+
+        '    if(setCol>col || setRow>row || setCol<0 || setRow<0) return;\n'+
+        '    mapTable[setRow][setCol]=p;\n'+
+        '    ctx=buf[0].getContext("2d");\n'+
+        '    p=Math.floor(p);\n'+
+        '    pImg=$Sprites.getImageList()[p];\n'+
+        '    if (!pImg) {\n'+
+        '        ctx.clearRect(setCol*chipWidth,setRow*chipHeight,chipWidth,chipHeight);\n'+
+        '        return;\n'+
+        '    }\n'+
+        '    ctx.save();\n'+
+        '    ctx.drawImage(\n'+
+        '    pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,\n'+
+        '    setCol*chipWidth, setRow*chipHeight, chipWidth, chipHeight);\n'+
+        '    ctx.restore();\n'+
+        '}\n'+
+        '\\get(getCol,getRow){\n'+
+        '    if(getCol>col || getRow>row || getCol<0 || getRow<0) return;\n'+
+        '    return mapTable[getRow][getCol];\n'+
+        '}\n'+
+        '\\getAt(getX,getY){\n'+
+        '    return get(Math.floor(getX/chipWidth),Math.floor(getY/chipHeight));\n'+
+        '}\n'+
+        '\\scrollTo(scrollX,scrollY){\n'+
+        '    sx=scrollX;\n'+
+        '    sy=scrollY;\n'+
+        '}\n'+
+        '\\draw(ctx) {\n'+
+        '    pImg=buf[0];\n'+
+        '    ctx.save();\n'+
+        '    ctx.drawImage(\n'+
+        '    pImg, 0, 0,col*chipWidth, row*chipHeight,\n'+
+        '    sx, sy, col*chipWidth, row*chipHeight);\n'+
+        '    ctx.restore();\n'+
+        '    /*for(var i=0;i<row;i++){\n'+
+        '        for(var j=0;j<col;j++){\n'+
+        '            p=Math.floor(get(j,i));\n'+
+        '            pImg=$Sprites.getImageList()[p];\n'+
+        '            if (!pImg) return;\n'+
+        '            ctx.save();\n'+
+        '            ctx.drawImage(\n'+
+        '            pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,\n'+
+        '            j*chipWidth, i*chipHeight, chipWidth, chipHeight);\n'+
+        '            ctx.restore();\n'+
+        '            if($screenWidth<j*chipWidth) break;\n'+
+        '        }\n'+
+        '        if($screenHeight<i*chipHeight) break;\n'+
+        '    }*/\n'+
+        '}\n'
+      ,
+      'MathMod.tonyu': 
+        'extends null;\n'+
+        'native Math;\n'+
+        '\n'+
+        '\\sin(d) {\n'+
+        '    return Math.sin(rad(d));\n'+
+        '}\n'+
+        '\\cos(d) {\n'+
+        '    return Math.cos(rad(d));\n'+
+        '}\n'+
+        '\\rad(d) {\n'+
+        '    return d/180*Math.PI;\n'+
+        '}\n'+
+        '\\deg(d) {\n'+
+        '    return d/Math.PI*180;\n'+
+        '}\n'+
+        '\n'+
+        '\\abs(v) {\n'+
+        '    return Math.abs(v);\n'+
+        '}\n'+
+        '\\atan2(x,y) {\n'+
+        '    return deg(Math.atan2(x,y));\n'+
+        '}\n'+
+        '\\floor(x) {\n'+
+        '    return Math.floor(x);\n'+
+        '}\n'+
+        '\\angleDiff(a,b) {\n'+
+        '    var c;\n'+
+        '    a=floor(a);\n'+
+        '    b=floor(b);\n'+
+        '    if (a>=b) {\n'+
+        '        c=(a-b) % 360;\n'+
+        '        if (c>=180) c-=360;\n'+
+        '    } else {\n'+
+        '        c=-((b-a) % 360);\n'+
+        '        if (c<-180) c+=360;\n'+
+        '    }\n'+
+        '    return c;\n'+
+        '}\n'+
+        '\\sqrt(t) {\n'+
+        '    return Math.sqrt(t);\n'+
+        '}\n'+
+        '\\dist(dx,dy) {\n'+
+        '    if (typeof dx=="object") {\n'+
+        '        var t=dx;\n'+
+        '        dx=t.x-x;dy=t.y-y;\n'+
+        '    }\n'+
+        '    return sqrt(dx*dx+dy*dy);\n'+
+        '}'
+      ,
       'MML.tonyu': 
         'extends TObject;\n'+
         'native T;\n'+
@@ -727,38 +849,6 @@
         '    return Tonyu.extend(this,obj);\n'+
         '}'
       ,
-      'WaveTable.tonyu': 
-        'extends TObject;\n'+
-        'native T;\n'+
-        '\n'+
-        'wav={};\n'+
-        'env={};\n'+
-        '\\setWav(num, synth) {\n'+
-        '    wav[num]=synth;\n'+
-        '}\n'+
-        '\\setEnv(num, synth) {\n'+
-        '    env[num]=synth;\n'+
-        '}\n'+
-        '\\get(w,e) {\n'+
-        '    var synth=T("OscGen") {osc:wav[w], env:env[e], mul:0.25};\n'+
-        '    return synth;\n'+
-        '}\n'+
-        '\\stop() {\n'+
-        '    /*for (var k,v in tbl) {\n'+
-        '        v.pause();\n'+
-        '        v.stop();\n'+
-        '    }*/\n'+
-        '}\n'+
-        '\n'+
-        'if (typeof T!=="undefined") {\n'+
-        '    //env=T("adsr", {a:0,d:200,s:0.5,r:10});\n'+
-        '    env = T("env",{table:[1, [0.6, 50], [0, 100]], releaseNode:2});\n'+
-        '    setEnv(0, env);\n'+
-        '    setWav(0, T("pulse"));\n'+
-        '    //    synth=T("OscGen") {wave:"pulse", env, mul:0.25};\n'+
-        '    //set(0,synth);    \n'+
-        '}\n'
-      ,
       'TQuery.tonyu': 
         'extends TObject;\n'+
         '\\new () {\n'+
@@ -870,126 +960,36 @@
         '    return find \\(o) { return o instanceof k; };\n'+
         '}'
       ,
-      'MathMod.tonyu': 
-        'extends null;\n'+
-        'native Math;\n'+
+      'WaveTable.tonyu': 
+        'extends TObject;\n'+
+        'native T;\n'+
         '\n'+
-        '\\sin(d) {\n'+
-        '    return Math.sin(rad(d));\n'+
+        'wav={};\n'+
+        'env={};\n'+
+        '\\setWav(num, synth) {\n'+
+        '    wav[num]=synth;\n'+
         '}\n'+
-        '\\cos(d) {\n'+
-        '    return Math.cos(rad(d));\n'+
+        '\\setEnv(num, synth) {\n'+
+        '    env[num]=synth;\n'+
         '}\n'+
-        '\\rad(d) {\n'+
-        '    return d/180*Math.PI;\n'+
+        '\\get(w,e) {\n'+
+        '    var synth=T("OscGen") {osc:wav[w], env:env[e], mul:0.25};\n'+
+        '    return synth;\n'+
         '}\n'+
-        '\\deg(d) {\n'+
-        '    return d/Math.PI*180;\n'+
-        '}\n'+
-        '\n'+
-        '\\abs(v) {\n'+
-        '    return Math.abs(v);\n'+
-        '}\n'+
-        '\\atan2(x,y) {\n'+
-        '    return deg(Math.atan2(x,y));\n'+
-        '}\n'+
-        '\\floor(x) {\n'+
-        '    return Math.floor(x);\n'+
-        '}\n'+
-        '\\angleDiff(a,b) {\n'+
-        '    var c;\n'+
-        '    a=floor(a);\n'+
-        '    b=floor(b);\n'+
-        '    if (a>=b) {\n'+
-        '        c=(a-b) % 360;\n'+
-        '        if (c>=180) c-=360;\n'+
-        '    } else {\n'+
-        '        c=-((b-a) % 360);\n'+
-        '        if (c<-180) c+=360;\n'+
-        '    }\n'+
-        '    return c;\n'+
-        '}\n'+
-        '\\sqrt(t) {\n'+
-        '    return Math.sqrt(t);\n'+
-        '}\n'+
-        '\\dist(dx,dy) {\n'+
-        '    if (typeof dx=="object") {\n'+
-        '        var t=dx;\n'+
-        '        dx=t.x-x;dy=t.y-y;\n'+
-        '    }\n'+
-        '    return sqrt(dx*dx+dy*dy);\n'+
-        '}'
-      ,
-      'Map.tonyu': 
-        'native Math;\n'+
-        'native $;\n'+
-        '\\new (param){\n'+
-        '    sx=0;\n'+
-        '    sy=0;\n'+
-        '    super(param);\n'+
-        '    buf=$("<canvas>").attr{width:col*chipWidth,height:row*chipHeight};\n'+
-        '    mapTable = [];\n'+
-        '    for(var j=0;j<row;j++){\n'+
-        '        rows = [];\n'+
-        '        for(var i=0;i<col;i++){\n'+
-        '            rows.push(-1);\n'+
-        '        }\n'+
-        '        mapTable.push(rows);\n'+
-        '    }\n'+
-        '/*for(var i=0;i<col;i++){\n'+
-        '        mapTable[i]=[];\n'+
-        '}*/\n'+
-        '    \n'+
-        '}\n'+
-        '\n'+
-        '\\set(setCol,setRow,p){\n'+
-        '    if(setCol>col || setRow>row || setCol<0 || setRow<0) return;\n'+
-        '    mapTable[setRow][setCol]=p;\n'+
-        '    ctx=buf[0].getContext("2d");\n'+
-        '    p=Math.floor(p);\n'+
-        '    pImg=$Sprites.getImageList()[p];\n'+
-        '    if (!pImg) {\n'+
-        '        ctx.clearRect(setCol*chipWidth,setRow*chipHeight,chipWidth,chipHeight);\n'+
-        '        return;\n'+
-        '    }\n'+
-        '    ctx.save();\n'+
-        '    ctx.drawImage(\n'+
-        '    pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,\n'+
-        '    setCol*chipWidth, setRow*chipHeight, chipWidth, chipHeight);\n'+
-        '    ctx.restore();\n'+
-        '}\n'+
-        '\\get(getCol,getRow){\n'+
-        '    if(getCol>col || getRow>row || getCol<0 || getRow<0) return;\n'+
-        '    return mapTable[getRow][getCol];\n'+
-        '}\n'+
-        '\\getAt(getX,getY){\n'+
-        '    return get(Math.floor(getX/chipWidth),Math.floor(getY/chipHeight));\n'+
-        '}\n'+
-        '\\scrollTo(scrollX,scrollY){\n'+
-        '    sx=scrollX;\n'+
-        '    sy=scrollY;\n'+
-        '}\n'+
-        '\\draw(ctx) {\n'+
-        '    pImg=buf[0];\n'+
-        '    ctx.save();\n'+
-        '    ctx.drawImage(\n'+
-        '    pImg, 0, 0,col*chipWidth, row*chipHeight,\n'+
-        '    sx, sy, col*chipWidth, row*chipHeight);\n'+
-        '    ctx.restore();\n'+
-        '    /*for(var i=0;i<row;i++){\n'+
-        '        for(var j=0;j<col;j++){\n'+
-        '            p=Math.floor(get(j,i));\n'+
-        '            pImg=$Sprites.getImageList()[p];\n'+
-        '            if (!pImg) return;\n'+
-        '            ctx.save();\n'+
-        '            ctx.drawImage(\n'+
-        '            pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,\n'+
-        '            j*chipWidth, i*chipHeight, chipWidth, chipHeight);\n'+
-        '            ctx.restore();\n'+
-        '            if($screenWidth<j*chipWidth) break;\n'+
-        '        }\n'+
-        '        if($screenHeight<i*chipHeight) break;\n'+
+        '\\stop() {\n'+
+        '    /*for (var k,v in tbl) {\n'+
+        '        v.pause();\n'+
+        '        v.stop();\n'+
         '    }*/\n'+
+        '}\n'+
+        '\n'+
+        'if (typeof T!=="undefined") {\n'+
+        '    //env=T("adsr", {a:0,d:200,s:0.5,r:10});\n'+
+        '    env = T("env",{table:[1, [0.6, 50], [0, 100]], releaseNode:2});\n'+
+        '    setEnv(0, env);\n'+
+        '    setWav(0, T("pulse"));\n'+
+        '    //    synth=T("OscGen") {wave:"pulse", env, mul:0.25};\n'+
+        '    //set(0,synth);    \n'+
         '}\n'
       
     }
