@@ -1,4 +1,4 @@
-// Created at Fri May 02 2014 16:58:21 GMT+0900 (東京 (標準時))
+// Created at Wed May 07 2014 16:58:38 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -524,8 +524,8 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":1398776807000,"Actor.tonyu":1398776807000,"BaseActor.tonyu":1398834836000,"Boot.tonyu":1398776807000,"Keys.tonyu":1398776807000,"Map.tonyu":1398776807000,"MathMod.tonyu":1398776807000,"MML.tonyu":1398776807000,"NoviceActor.tonyu":1398776807000,"ScaledCanvas.tonyu":1398776807000,"Sprites.tonyu":1398776807000,"TObject.tonyu":1398776807000,"TQuery.tonyu":1398776807000,"WaveTable.tonyu":1398776807000}',
-      '.desktop': '{"runMenuOrd":["AcTestM","NObjTest","SETest","MMLTest","KeyTest","NObjTest2","AcTest","NoviceActor","Actor","Boot","AltBoot","Keys","TObject","WaveTable","MML","BaseActor","TQuery","ScaledCanvas","MathMod"]}',
+      '': '{".desktop":{"lastUpdate":1399449501882},"Actor.tonyu":{"lastUpdate":1399448258921},"BaseActor.tonyu":{"lastUpdate":1399449501883},"Boot.tonyu":{"lastUpdate":1399448258922},"Keys.tonyu":{"lastUpdate":1399448258923},"Map.tonyu":{"lastUpdate":1399449501884},"MathMod.tonyu":{"lastUpdate":1399448258924},"MML.tonyu":{"lastUpdate":1399448258924},"NoviceActor.tonyu":{"lastUpdate":1399448258925},"ScaledCanvas.tonyu":{"lastUpdate":1399448258926},"Sprites.tonyu":{"lastUpdate":1399448258926},"TObject.tonyu":{"lastUpdate":1399448258927},"TQuery.tonyu":{"lastUpdate":1399448258928},"WaveTable.tonyu":{"lastUpdate":1399448258929}}',
+      '.desktop': '{"runMenuOrd":["MapTest2nd","Main","MapTest","AcTestM","Map","SetBGCTest","Bounce","AcTest","NObjTest","NObjTest2","AltBoot","Ball","Bar","Pad","BaseActor"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
         'native Sprites;\n'+
@@ -561,7 +561,6 @@ requireSimulator.setName('fs/ROMk');
         'native Math;\n'+
         'native fukidashi;\n'+
         'native TextRect;\n'+
-        'native FS;\n'+
         '\n'+
         '\\new(x,y,p) {\n'+
         '    if (Tonyu.runMode) {\n'+
@@ -575,7 +574,8 @@ requireSimulator.setName('fs/ROMk');
         '        this.p=p;\n'+
         '    }\n'+
         '    if (scaleX==null) scaleX=1;\n'+
-        '    if (rotate==null) rotate=0;\n'+
+        '    if (rotate==null) rotate=0; // 削除予定\n'+
+        '    if (rotation==null) rotation=0;\n'+
         '    if (alpha==null) alpha=255;\n'+
         '}\n'+
         'nowait \\extend(obj) {\n'+
@@ -588,6 +588,11 @@ requireSimulator.setName('fs/ROMk');
         '\\update() {\n'+
         '    ifwait {\n'+
         '        _thread.suspend();\n'+
+        '    }\n'+
+        '}\n'+
+        '\\updateEx(updateT){\n'+
+        '    for(var updateCount=0;updateCount<updateT;updateCount++){\n'+
+        '        update();\n'+
         '    }\n'+
         '}\n'+
         'nowait \\getkey(k) {\n'+
@@ -720,7 +725,13 @@ requireSimulator.setName('fs/ROMk');
         '    if (pImg) {\n'+
         '        ctx.save();\n'+
         '        ctx.translate(x,y);\n'+
-        '        ctx.rotate(this.rotate/180*Math.PI);\n'+
+        '        //if (typeof rotate=="number" ) rotation=rotate;// 削除予定\n'+
+        '        //ctx.rotate(this.rotation/180*Math.PI);\n'+
+        '        if(this.rotation!=null){\n'+
+        '            ctx.rotate(this.rotation/180*Math.PI);\n'+
+        '        }else{\n'+
+        '            ctx.rotate(this.rotate/180*Math.PI);\n'+
+        '        }\n'+
         '        if(typeof this.scaleY==="undefined") {\n'+
         '            ctx.scale(this.scaleX,this.scaleX);\n'+
         '        }else{\n'+
@@ -764,11 +775,6 @@ requireSimulator.setName('fs/ROMk');
         '    if (x>$screenWidth +viewX-a) r+=x-($screenWidth +viewX-a);\n'+
         '    if (y>$screenHeight+viewY-a) r+=y-($screenHeight+viewY-a);\n'+
         '    return r;\n'+
-        '}\n'+
-        '\\file(path) {\n'+
-        '    var d=Tonyu.currentProject.getDir();\n'+
-        '    var files=d.rel("files/");\n'+
-        '    return FS.get(files.rel(path)) {topDir:d};\n'+
         '}\n'+
         '\n'+
         '\\play() {\n'+
@@ -1022,11 +1028,15 @@ requireSimulator.setName('fs/ROMk');
         '        ctx.clearRect(setCol*chipWidth,setRow*chipHeight,chipWidth,chipHeight);\n'+
         '        return;\n'+
         '    }\n'+
+        '    ctx.clearRect(setCol*chipWidth,setRow*chipHeight,chipWidth,chipHeight);\n'+
         '    ctx.save();\n'+
         '    ctx.drawImage(\n'+
         '    pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,\n'+
         '    setCol*chipWidth, setRow*chipHeight, chipWidth, chipHeight);\n'+
         '    ctx.restore();\n'+
+        '}\n'+
+        '\\setAt(setX,setY,p){\n'+
+        '    set(Math.floor(setX/chipWidth),Math.floor(setY/chipHeight),p);\n'+
         '}\n'+
         '\\get(getCol,getRow){\n'+
         '    if(getCol>col || getRow>row || getCol<0 || getRow<0) return;\n'+

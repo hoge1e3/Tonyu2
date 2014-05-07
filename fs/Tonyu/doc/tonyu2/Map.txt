@@ -19,6 +19,7 @@ $map=new Map{chipWidth:16,chipHeight:16, col:15, row:10};
 
 *メソッド
 -[[set]]
+-[[setAt]]
 -[[get]]
 -[[getAt]]
 -[[scrollTo]]

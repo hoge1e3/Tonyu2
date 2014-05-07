@@ -6,7 +6,6 @@ native console;
 native Math;
 native fukidashi;
 native TextRect;
-native FS;
 
 \new(x,y,p) {
     if (Tonyu.runMode) {
@@ -20,7 +19,8 @@ native FS;
         this.p=p;
     }
     if (scaleX==null) scaleX=1;
-    if (rotate==null) rotate=0;
+    if (rotate==null) rotate=0; // 削除予定
+    if (rotation==null) rotation=0;
     if (alpha==null) alpha=255;
 }
 nowait \extend(obj) {
@@ -165,7 +165,8 @@ nowait \draw(ctx) {
     if (pImg) {
         ctx.save();
         ctx.translate(x,y);
-        ctx.rotate(this.rotate/180*Math.PI);
+        if (typeof rotate=="number" ) rotation=rotate;// 削除予定
+        ctx.rotate(this.rotation/180*Math.PI);
         if(typeof this.scaleY==="undefined") {
             ctx.scale(this.scaleX,this.scaleX);
         }else{
@@ -209,11 +210,6 @@ nowait \asyncResult() {
     if (x>$screenWidth +viewX-a) r+=x-($screenWidth +viewX-a);
     if (y>$screenHeight+viewY-a) r+=y-($screenHeight+viewY-a);
     return r;
-}
-\file(path) {
-    var d=Tonyu.currentProject.getDir();
-    var files=d.rel("files/");
-    return FS.get(files.rel(path)) {topDir:d};
 }
 
 \play() {

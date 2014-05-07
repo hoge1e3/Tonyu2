@@ -54,7 +54,6 @@ x,y,pの値をフィールドに書き込みます
 -[[draw]]
 -[[extend]]
 -[[print]]
--[[file]]
 -[[asyncResult]]
 -[[waitFor]]
 -[[play]]

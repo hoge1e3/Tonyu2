@@ -29,11 +29,15 @@ native $;
         ctx.clearRect(setCol*chipWidth,setRow*chipHeight,chipWidth,chipHeight);
         return;
     }
+    ctx.clearRect(setCol*chipWidth,setRow*chipHeight,chipWidth,chipHeight);
     ctx.save();
     ctx.drawImage(
     pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,
     setCol*chipWidth, setRow*chipHeight, chipWidth, chipHeight);
     ctx.restore();
+}
+\setAt(setX,setY,p){
+    set(Math.floor(setX/chipWidth),Math.floor(setY/chipHeight),p);
 }
 \get(getCol,getRow){
     if(getCol>col || getRow>row || getCol<0 || getRow<0) return;

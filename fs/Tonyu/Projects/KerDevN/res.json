@@ -1,6 +1,2 @@
-{"images":[{"name":"$pat_base","url":"images/base.png","pwidth":32,"pheight":32},{"name":"$pat_sample","url":"images/Sample.png"},{"name":"$pat_neko","url":"images/neko.png","pwidth":32,"pheight":32}],"sounds":[]}
-
-
-
-
+{"images":[{"name":"$pat_base","url":"images/base.png","pwidth":32,"pheight":32},{"name":"$pat_sample","url":"images/Sample.png"},{"name":"$pat_neko","url":"images/neko.png","pwidth":32,"pheight":32},{"name":"$pat_map1","url":"data:image/gif;base64,R0lGODlhIAAgAIAAAP//AOYAEyH5BAEAAAAALAAAAAAgACAAAAJWhI+pm+EPo5zO0IufzVzuDgZfyI0kZp5UqnpAm7Eig1wyXa/vhB/27ur9dEIdETfk9YCuIy0ZRBqVRaWTAY0smVquZpmFNcVT8tjcRZ/VFS9aRt7KFQUAOw==","pwidth":32,"pheight":32},{"name":"$pat_map2","url":"data:image/gif;base64,R0lGODdhIAAgAKEAAAAAAP//AOYAEwAAACwAAAAAIAAgAAACVoyPqZviD6OcztCLn81c7g4KX8iNJGaeVKp6QZuxIoNcMl2v74Qf9u7q/XRCHRE35PWAriMtGUQalUWlkwGNLJlarmaZhTXFU/LY3EWf1RUvWkbeyhUFADs=","pwidth":32,"pheight":32}],"sounds":[]}
 

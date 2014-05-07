@@ -1,0 +1,43 @@
+\new(opt){
+    super(opt);
+    p=$pat_pad;
+    padUp=0;
+    padDown=0;
+    padLeft=0;
+    padRight=0;
+    if(padSize==null)padSize=1;
+    scaleX=4*padSize;
+}
+
+while (true) {
+    var t=$touches[0];
+    if (t.touched) {//index番目の指がタッチされていれば
+        if(t.x-x > 15 && t.x-x < 64){
+            padRight+=1;
+        }else{
+            padRight=0;
+        }
+        if(x-t.x > 15 && x-t.x < 64){
+            padLeft+=1;
+        }else{
+            padLeft=0;
+        }
+        if(t.y-y > 15 && t.y-y < 64){
+            padDown+=1;
+        }else{
+            padDown=0;
+        }
+        if(y-t.y > 15 && y-t.y < 64){
+            padUp+=1;
+        }else{
+            padUp=0;
+        }
+        print(padLeft,padUp,padRight,padDown);
+    } else{
+        padLeft=0;
+        padRight=0;
+        padUp=0;
+        padDown=0;
+    }
+    update();
+}

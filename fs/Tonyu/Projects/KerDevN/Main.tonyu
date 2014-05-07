@@ -11,7 +11,7 @@ for(var j=1;j<7;j++){
 $ball=new Ball();
 new Bar();
 var i=0;
-var dir=-1;
+var dir=1;
 while(true){
     i=i+dir;
     //print(0-i,$map.chipWidth*$map.col-$screenWidth);
@@ -21,6 +21,7 @@ while(true){
     if(i==0){
         dir=-1;
     }
-    $map.scrollTo(i,0);
+    //$map.scrollTo(i,0);
+    $Screen.scrollTo(i,0);
     update();
 }

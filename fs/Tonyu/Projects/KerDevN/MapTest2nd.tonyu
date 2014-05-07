@@ -1,0 +1,26 @@
+//$map=new Map{}
+$map=new Map{chipWidth: 32 ,chipHeight: 32 ,col: 50 ,row: 20};
+m=[];
+m[0]=$pat_map1;
+m[1]=$pat_map2;
+m[2]=0;
+m[3]=1;
+i=0;
+//$map.set(6,6,1);
+/*$map.setAt(32,32,m1);
+$map.setAt(32,64,m2);
+$map.setAt(66,32,m1);
+$map.setAt(64,70,m2);*/
+//$map.set(2,2,-1);
+//$map.set(10,0,2);
+//$map.setAt(0,32,2);
+new Bounce();
+while(true){
+    //updateEx(100);
+    $map.set(1,1,m[i%4]);
+    $map.setAt(32,64,m[(i+1)%4]);
+    $map.setAt(64,64,m[(i+2)%4]);
+    $map.setAt(64,32,m[(i+3)%4]);
+    updateEx(30);
+    i++;
+}
