@@ -1,4 +1,4 @@
-// Created at Wed May 07 2014 16:58:38 GMT+0900 (東京 (標準時))
+// Created at Wed May 07 2014 17:55:12 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -524,7 +524,7 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1399449501882},"Actor.tonyu":{"lastUpdate":1399448258921},"BaseActor.tonyu":{"lastUpdate":1399449501883},"Boot.tonyu":{"lastUpdate":1399448258922},"Keys.tonyu":{"lastUpdate":1399448258923},"Map.tonyu":{"lastUpdate":1399449501884},"MathMod.tonyu":{"lastUpdate":1399448258924},"MML.tonyu":{"lastUpdate":1399448258924},"NoviceActor.tonyu":{"lastUpdate":1399448258925},"ScaledCanvas.tonyu":{"lastUpdate":1399448258926},"Sprites.tonyu":{"lastUpdate":1399448258926},"TObject.tonyu":{"lastUpdate":1399448258927},"TQuery.tonyu":{"lastUpdate":1399448258928},"WaveTable.tonyu":{"lastUpdate":1399448258929}}',
+      '': '{".desktop":1399451544000,"Actor.tonyu":1399451544000,"BaseActor.tonyu":1399452048000,"Boot.tonyu":1399451544000,"Keys.tonyu":1399451544000,"Map.tonyu":1399451544000,"MathMod.tonyu":1399451544000,"MML.tonyu":1399451544000,"NoviceActor.tonyu":1399451544000,"ScaledCanvas.tonyu":1399451544000,"Sprites.tonyu":1399451544000,"TObject.tonyu":1399451544000,"TQuery.tonyu":1399451544000,"WaveTable.tonyu":1399451544000}',
       '.desktop': '{"runMenuOrd":["MapTest2nd","Main","MapTest","AcTestM","Map","SetBGCTest","Bounce","AcTest","NObjTest","NObjTest2","AltBoot","Ball","Bar","Pad","BaseActor"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -561,6 +561,7 @@ requireSimulator.setName('fs/ROMk');
         'native Math;\n'+
         'native fukidashi;\n'+
         'native TextRect;\n'+
+        'native FS;\n'+
         '\n'+
         '\\new(x,y,p) {\n'+
         '    if (Tonyu.runMode) {\n'+
@@ -574,8 +575,7 @@ requireSimulator.setName('fs/ROMk');
         '        this.p=p;\n'+
         '    }\n'+
         '    if (scaleX==null) scaleX=1;\n'+
-        '    if (rotate==null) rotate=0; // 削除予定\n'+
-        '    if (rotation==null) rotation=0;\n'+
+        '    if (rotate==null) rotate=0;\n'+
         '    if (alpha==null) alpha=255;\n'+
         '}\n'+
         'nowait \\extend(obj) {\n'+
@@ -775,6 +775,11 @@ requireSimulator.setName('fs/ROMk');
         '    if (x>$screenWidth +viewX-a) r+=x-($screenWidth +viewX-a);\n'+
         '    if (y>$screenHeight+viewY-a) r+=y-($screenHeight+viewY-a);\n'+
         '    return r;\n'+
+        '}\n'+
+        '\\file(path) {\n'+
+        '    var d=Tonyu.currentProject.getDir();\n'+
+        '    var files=d.rel("files/");\n'+
+        '    return FS.get(files.rel(path)) {topDir:d};\n'+
         '}\n'+
         '\n'+
         '\\play() {\n'+

@@ -2,7 +2,7 @@
   var rom={
     base: '/Tonyu/doc/',
     data: {
-      '': '{"index.txt":{"lastUpdate":1397638103410},"novice/":{"lastUpdate":1397637120272},"projectIndex.txt":1397119075000,"tonyu2/":{"lastUpdate":1399447843977}}',
+      '': '{"index.txt":1399451544000,"novice/":{"lastUpdate":1399452627415},"projectIndex.txt":1399451544000,"tonyu2/":{"lastUpdate":1399452664005}}',
       'index.txt': 
         '* サンプルを見る\n'+
         '\n'+
@@ -17,7 +17,7 @@
         '\n'+
         '-[[リファレンス>tonyu2/index]]\n'
       ,
-      'novice/': '{"crash.txt":1397119075000,"dec.txt":1397119075000,"firstRun.txt":1397119075000,"getkey.txt":1397119075000,"inc.txt":1397119075000,"index.txt":1397119075000,"item.txt":1397119075000,"key.txt":1397119075000,"left.txt":1397119075000,"new.txt":1397119075000,"newFile.txt":1397119075000,"param.txt":1397119075000,"projectIndex.txt":1397119075000,"say.txt":1397119075000,"say2.txt":1397119075000,"sleep.txt":1397119075000,"sprite.txt":1397119075000,"spriteMove.txt":1397119075000,"toc.json":1397119075000,"trouble1.txt":1397119075000,"true.txt":1397119075000,"udlr.txt":1397119075000,"variable.txt":1397119075000,"variable2.txt":1397119075000,"variable3.txt":1397119075000,"while.txt":1397119075000,"xy.txt":1397119075000}',
+      'novice/': '{"crash.txt":1399451544000,"dec.txt":1399451544000,"firstRun.txt":1399451544000,"getkey.txt":1399451544000,"inc.txt":1399451544000,"index.txt":1399451544000,"item.txt":1399451544000,"key.txt":1399451544000,"left.txt":1399451544000,"new.txt":1399451544000,"newFile.txt":1399451544000,"param.txt":1399451544000,"projectIndex.txt":1399451544000,"say.txt":1399451544000,"say2.txt":1399451544000,"sleep.txt":1399451544000,"sprite.txt":1399451544000,"spriteMove.txt":1399451544000,"toc.json":1399451544000,"trouble1.txt":1399451544000,"true.txt":1399451544000,"udlr.txt":1399451544000,"variable.txt":1399451544000,"variable2.txt":1399451544000,"variable3.txt":1399451544000,"while.txt":1399451544000,"xy.txt":1399451544000}',
       'novice/crash.txt': 
         '*キャラクタの衝突判定をしましょう\n'+
         '\n'+
@@ -1002,7 +1002,7 @@
         '名前は，半角英字とアンダースコア(_)が使えます．2文字以上でも構いません．2文字目以降は数字も使うことができます．'
       ,
       'projectIndex.txt': '',
-      'tonyu2/': '{"$mouseX, $mouseY.txt":{"lastUpdate":1397637145831},"$touches.txt":{"lastUpdate":1397637150059},"Actor.txt":{"lastUpdate":1397637313340},"all.txt":{"lastUpdate":1399446695829},"allCrash.txt":{"lastUpdate":1397637204337},"api.txt":{"lastUpdate":1397637247201},"asyncResult.txt":1397119076000,"BaseActor.txt":{"lastUpdate":1397886729734},"Boot.txt":1397119075000,"classDef.txt":1397119076000,"console.txt":1397119076000,"cpats.txt":1397119076000,"crashTo.txt":1397119076000,"crashTo1.txt":1397119076000,"die.txt":1397119076000,"draw.txt":{"lastUpdate":1399447235131},"extend.txt":1397119076000,"forin.txt":1397119076000,"frame.txt":1397119076000,"fs.txt":1397119076000,"getCrashRect.txt":1397119076000,"getkey.txt":1397119076000,"hide.txt":1397119076000,"ide.txt":1397119076000,"index.txt":{"lastUpdate":1397637218111},"isDead.txt":1397119076000,"kernel.txt":1397119076000,"lang.txt":1397119076000,"MathMod.txt":1397119075000,"options.txt":1397119076000,"play.txt":1397119076000,"playSE.txt":1397119076000,"print.txt":1397119076000,"resize.txt":{"lastUpdate":1397887473627},"rnd.txt":1397119076000,"ScaledCanvas.txt":{"lastUpdate":1397887467691},"setBGColor.txt":1397119076000,"show.txt":1397119076000,"sugar.txt":1397119076000,"super.txt":1397119076000,"TQuery.alive.txt":1397119075000,"TQuery.apply.txt":1397119075000,"TQuery.attr.txt":1397119075000,"TQuery.die.txt":1397119075000,"TQuery.find.txt":1397119075000,"TQuery.minmax.txt":1397119075000,"TQuery.txt":1397119075000,"update.txt":{"lastUpdate":1397637287043},"waitFor.txt":1397119076000,"waitmode.txt":{"lastUpdate":1399447843977},"Map.txt":{"lastUpdate":1399447832029},"set.txt":{"lastUpdate":1398750394965},"get.txt":{"lastUpdate":1397974707264},"getAt.txt":{"lastUpdate":1397974686208},"scrollTo.txt":{"lastUpdate":1397975063505}}',
+      'tonyu2/': '{"$mouseX, $mouseY.txt":1399451544000,"$touches.txt":1399451544000,"Actor.txt":1399451544000,"all.txt":1399451544000,"allCrash.txt":1399451544000,"api.txt":{"lastUpdate":1399452650834},"asyncResult.txt":1399451544000,"BaseActor.txt":{"lastUpdate":1399452653598},"Boot.txt":1399451544000,"classDef.txt":1399451544000,"console.txt":1399451544000,"cpats.txt":1399451544000,"crashTo.txt":1399451544000,"crashTo1.txt":1399451544000,"die.txt":1399451544000,"draw.txt":1399451544000,"extend.txt":1399451544000,"file.txt":{"lastUpdate":1399452658033},"forin.txt":1399451544000,"frame.txt":1399451544000,"FS.each.txt":1399451544000,"FS.exists.txt":1399451544000,"FS.obj.txt":1399451544000,"FS.recursive.txt":1399451544000,"FS.rel.txt":1399451544000,"FS.text.txt":1399451544000,"fs.txt":1399451544000,"get.txt":1399451544000,"getAt.txt":1399451544000,"getCrashRect.txt":1399451544000,"getkey.txt":1399451544000,"hide.txt":1399451544000,"ide.txt":1399451544000,"index.txt":{"lastUpdate":1399452649018},"isDead.txt":1399451544000,"kernel.txt":1399451544000,"lang.txt":1399451544000,"Map.txt":{"lastUpdate":1399452664005},"MathMod.txt":1399451544000,"options.txt":1399451544000,"play.txt":1399451544000,"playSE.txt":1399451544000,"print.txt":1399451544000,"resize.txt":1399451544000,"rnd.txt":1399451544000,"ScaledCanvas.txt":1399451544000,"scrollTo.txt":1399451544000,"set.txt":1399451544000,"setBGColor.txt":1399451544000,"show.txt":1399451544000,"sugar.txt":1399451544000,"super.txt":1399451544000,"TQuery.alive.txt":1399451544000,"TQuery.apply.txt":1399451544000,"TQuery.attr.txt":1399451544000,"TQuery.die.txt":1399451544000,"TQuery.find.txt":1399451544000,"TQuery.minmax.txt":1399451544000,"TQuery.txt":1399451544000,"update.txt":1399451544000,"waitFor.txt":1399451544000,"waitmode.txt":1399451544000}',
       'tonyu2/$mouseX, $mouseY.txt': 
         '[[api]]\n'+
         '\n'+
@@ -1220,6 +1220,7 @@
         '-[[draw]]\n'+
         '-[[extend]]\n'+
         '-[[print]]\n'+
+        '-[[file]]\n'+
         '-[[asyncResult]]\n'+
         '-[[waitFor]]\n'+
         '-[[play]]\n'+
@@ -1546,6 +1547,42 @@
         '>>\n'+
         '\n'
       ,
+      'tonyu2/file.txt': 
+        '[[BaseActor]]\n'+
+        '\n'+
+        '*file メソッド\n'+
+        '\n'+
+        'ファイルシステム(FS)オブジェクトを取得します．\n'+
+        'FSオブジェクトは，[[ファイルシステム>fs]]へのアクセスを提供します．\n'+
+        '\n'+
+        '**書式\n'+
+        '\n'+
+        '<<code\n'+
+        'file([[@arg path]])\n'+
+        '>>\n'+
+        '\n'+
+        '-pathに，次のディレクトリからの相対パスを指定します．\n'+
+        '--現在のプロジェクトディレクトリ/files\n'+
+        '-ディレクトリを指定する場合，pathの末尾に必ず / をつけて下さい\n'+
+        '-fileメソッドによって取得されたFSオブジェクトがアクセス可能な範囲は，このプロジェクトディレクトリとそのサブディレクトリ内のファイル・ディレクトリのみです．\n'+
+        '\n'+
+        'FSオブジェクトには，次のメソッドが提供されます\n'+
+        '\n'+
+        '-[[text>FS.text]]\n'+
+        '-[[obj>FS.obj]]\n'+
+        '-[[each>FS.each]]\n'+
+        '-[[recursive>FS.recursive]]\n'+
+        '-[[rel>FS.rel]]\n'+
+        '-[[exists>FS.exists]]\n'+
+        '-[[isDir>FS.isDir]]\n'+
+        '-[[rm>FS.rm]]\n'+
+        '-[[path>FS.path]]\n'+
+        '-[[name>FS.name]]\n'+
+        '-[[endsWith>FS.endsWith]]\n'+
+        '-[[copyFrom>FS.copyFrom]]\n'+
+        '\n'+
+        '\n'
+      ,
       'tonyu2/forin.txt': 
         '[[lang]]\n'+
         '\n'+
@@ -1581,6 +1618,128 @@
         'スレッドの実行中に[[update]]メソッドが呼ばれるとそのフレームでの処理を終了させ，他のオブジェクトのスレッドに動作を譲ります．\n'+
         '\n'
       ,
+      'tonyu2/FS.each.txt': 
+        '[[file]]\n'+
+        '\n'+
+        '*FS.each メソッド\n'+
+        '\n'+
+        'ディレクトリ直下のすべてのファイルまたはディレクトリに対して処理を行います．\n'+
+        '\n'+
+        '**書式\n'+
+        '\n'+
+        '<<code\n'+
+        'fs.each(func)\n'+
+        '>>\n'+
+        '\n'+
+        '[[@arg fs]]があらわすディレクトリ直下のすべてのファイルまたはディレクトリに対して，関数[[@arg func]]を実行します．[[@arg func]]の第1引数にそれぞれのファイルまたはディレクトリをあらわすFSオブジェクトが渡されます．\n'+
+        '\n'+
+        '\n'+
+        '\n'+
+        '\n'+
+        '\n'
+      ,
+      'tonyu2/FS.exists.txt': 
+        '[[file]]\n'+
+        '\n'+
+        '*FS.exitsメソッド\n'+
+        '\n'+
+        'ファイルまたはディレクトリが存在するかどうかを返します\n'+
+        '\n'+
+        '**書式\n'+
+        '\n'+
+        '<<code\n'+
+        'fs.exits()\n'+
+        '>>\n'+
+        '\n'+
+        '[[@arg fs]]があらわすファイルまたはディレクトリが存在すれば[[@cfrag true]]を，なければ[[@cfrag false]]を返します'
+      ,
+      'tonyu2/FS.obj.txt': 
+        '[[file]]\n'+
+        '\n'+
+        '* FS.objメソッド\n'+
+        '\n'+
+        'ファイルに対して，オブジェクトデータ（JSON形式の文字列）を読み書きします．\n'+
+        '\n'+
+        '**読み出し\n'+
+        '\n'+
+        '<<code\n'+
+        'fs.obj()\n'+
+        '>>\n'+
+        '\n'+
+        '[[@arg fs]] があらわすファイルの内容をJSON形式で解釈し，そのオブジェクトを返します．\n'+
+        '-ファイルが存在しない場合，[[@cfrag null]]を返します\n'+
+        '\n'+
+        '**書き込み\n'+
+        '\n'+
+        '<<code\n'+
+        'fs.obj(o)\n'+
+        '>>\n'+
+        '\n'+
+        '[[@arg fs]]があらわすファイルにオブジェクト[[@arg o]] のJSON表現を書き込みます．\n'+
+        '-ファイルが存在しない場合，ファイルが自動的に新規作成されます．\n'+
+        '-ファイルが存在する場合，これまでのファイルの内容は削除され，新しくオブジェクトが上書きされます．\n'+
+        '\n'
+      ,
+      'tonyu2/FS.recursive.txt': 
+        '[[file]]\n'+
+        '\n'+
+        '*FS.recursiveメソッド\n'+
+        '\n'+
+        'ディレクトリとそのサブディレクトリ内にあるすべてのファイルに対して処理を行います．\n'+
+        '\n'+
+        '**書式\n'+
+        '\n'+
+        '<<code\n'+
+        'fs.recursive(func)\n'+
+        '>>\n'+
+        '\n'+
+        '[[@arg fs]]があらわすディレクトリ内とそのサブディレクトリ内にあるすべてのファイルに対して，[[@arg func]]を実行します．[[@arg func]]の第１引数に各ファイルのFSオブジェクトが渡されます．（ディレクトリに対しては[[@arg func]]を実行しません）\n'+
+        '\n'
+      ,
+      'tonyu2/FS.rel.txt': 
+        '[[file]]\n'+
+        '\n'+
+        '*FS.relメソッド\n'+
+        '\n'+
+        'このディレクトリを基準に，相対パスによって指定のされるファイルまたはディレクトリを取得します．\n'+
+        '\n'+
+        '**書式\n'+
+        '\n'+
+        '<<code\n'+
+        'fs.rel(path)\n'+
+        '>>\n'+
+        '\n'+
+        '[[@arg fs]]があらわすディレクトリを基準に，相対パス[[@arg path]]で指定されたファイルまたはディレクトリをあらわす新しいFSオブジェクトを返します．\n'+
+        '\n'+
+        'ディレクトリを取得しようとする場合，[[@arg path]]の末尾は / で終わる必要があります．\n'
+      ,
+      'tonyu2/FS.text.txt': 
+        '[[file]]\n'+
+        '\n'+
+        '* FS.text メソッド\n'+
+        '\n'+
+        'ファイルに対して，文字列データを読み書きします．\n'+
+        '\n'+
+        '**読み出し\n'+
+        '\n'+
+        '<<code\n'+
+        'fs.text()\n'+
+        '>>\n'+
+        '\n'+
+        '[[@arg fs]] があらわすファイルの内容を文字列で返します．\n'+
+        '-ファイルが存在しない場合，[[@cfrag undefined]]を返します\n'+
+        '\n'+
+        '**書き込み\n'+
+        '\n'+
+        '<<code\n'+
+        'fs.text(t)\n'+
+        '>>\n'+
+        '\n'+
+        '[[@arg fs]] があらわすファイルに文字列[[@arg t]] を書き込みます．\n'+
+        '-ファイルが存在しない場合，ファイルが自動的に新規作成されます．\n'+
+        '-ファイルが存在する場合，これまでのファイルの内容は削除され，新しく文字列が上書きされます．\n'+
+        '\n'
+      ,
       'tonyu2/fs.txt': 
         '[[index]]\n'+
         '*ファイルシステム\n'+
@@ -1597,6 +1756,36 @@
         '\n'+
         '今のところ，他のWebブラウザ等とプログラムを送受信するには，[[jsdo.itへのインポート・エクスポート>jsdoit]]を用いてください．\n'+
         '\n'
+      ,
+      'tonyu2/get.txt': 
+        '[[Map]]\n'+
+        '*getメソッド\n'+
+        '\n'+
+        '指定したマップ上の座標に対応するマップパターンを取得します．\n'+
+        '\n'+
+        '<<code\n'+
+        'map.get(getCol,getRow);\n'+
+        '>>\n'+
+        '\n'+
+        '\n'+
+        '\n'+
+        '-getCol : パターンを取得するx座標をあらわします\n'+
+        '-getRow : パターンを取得するy座標をあらわします\n'
+      ,
+      'tonyu2/getAt.txt': 
+        '[[Map]]\n'+
+        '*getAtメソッド\n'+
+        '\n'+
+        '指定した画面上の座標に対応するマップパターンを取得します．\n'+
+        '\n'+
+        '<<code\n'+
+        'map.get(getX,getY);\n'+
+        '>>\n'+
+        '\n'+
+        '\n'+
+        '\n'+
+        '-getX : パターンを取得するx座標をあらわします\n'+
+        '-getY : パターンを取得するy座標をあらわします\n'
       ,
       'tonyu2/getCrashRect.txt': 
         '[[BaseActor]]\n'+
@@ -1762,6 +1951,33 @@
         '\n'+
         '\n'+
         '\n'
+      ,
+      'tonyu2/Map.txt': 
+        '[[api]]\n'+
+        '\n'+
+        '*Mapクラス\n'+
+        '\n'+
+        'マップの表示クラスです．\n'+
+        '* コンストラクタ\n'+
+        '\n'+
+        '<<code\n'+
+        '\\new(param)\n'+
+        '>>\n'+
+        '\n'+
+        'paramでマップのチップサイズとその個数を指定します．\n'+
+        '\n'+
+        '例： \n'+
+        '<<code\n'+
+        '// 16*16のチップを横に15，縦に10並べる\n'+
+        '$map=new Map{chipWidth:16,chipHeight:16, col:15, row:10};\n'+
+        '>>\n'+
+        '\n'+
+        '*メソッド\n'+
+        '-[[set]]\n'+
+        '-[[setAt]]\n'+
+        '-[[get]]\n'+
+        '-[[getAt]]\n'+
+        '-[[scrollTo]]\n'
       ,
       'tonyu2/MathMod.txt': 
         '[[BaseActor]]\n'+
@@ -1979,6 +2195,40 @@
         '-[[setBGColor]]\n'+
         '\n'+
         ' '
+      ,
+      'tonyu2/scrollTo.txt': 
+        '[[Map]]\n'+
+        '*scrollToメソッド\n'+
+        '\n'+
+        'マップをスクロールします．\n'+
+        '\n'+
+        '<<code\n'+
+        'map.scrollTo(scrollX,scrollY);\n'+
+        '>>\n'+
+        '\n'+
+        '\n'+
+        '\n'+
+        '-scrollX : 最初の位置からずらすx座標をあらわします\n'+
+        '-scrollY : 最初の位置からずらすy座標をあらわします\n'+
+        '\n'+
+        '最初の位置から右方向にscrollXドット，下方向にscrollYドットずらして表示します．左や上にずらす場合はscrollXとscrollYを負の値にします．'
+      ,
+      'tonyu2/set.txt': 
+        '[[Map]]\n'+
+        '*setメソッド\n'+
+        '\n'+
+        'マップにチップをはめ込みます．\n'+
+        '一番左上のチップを(0,0)，その右隣のチップを(1,0)として指定された座標のパターンを設定します．\n'+
+        '\n'+
+        '<<code\n'+
+        'map.set(setCol,setRow,p);\n'+
+        '//マップのsetCol，setRow座標のパターンをpに設定します．\n'+
+        '>>\n'+
+        '\n'+
+        '\n'+
+        '-setCol : セットするx座標をあらわします\n'+
+        '-setRow : セットするy座標をあらわします\n'+
+        '-p : 表示するパターンの番号をあらわします \n'
       ,
       'tonyu2/setBGColor.txt': 
         '[[ScaledCanvas]]\n'+
@@ -2376,97 +2626,6 @@
         '\n'+
         '\n'+
         '\n'
-      ,
-      'tonyu2/Map.txt': 
-        '[[api]]\n'+
-        '\n'+
-        '*Mapクラス\n'+
-        '\n'+
-        'マップの表示クラスです．\n'+
-        '* コンストラクタ\n'+
-        '\n'+
-        '<<code\n'+
-        '\\new(param)\n'+
-        '>>\n'+
-        '\n'+
-        'paramでマップのチップサイズとその個数を指定します．\n'+
-        '\n'+
-        '例： \n'+
-        '<<code\n'+
-        '// 16*16のチップを横に15，縦に10並べる\n'+
-        '$map=new Map{chipWidth:16,chipHeight:16, col:15, row:10};\n'+
-        '>>\n'+
-        '\n'+
-        '*メソッド\n'+
-        '-[[set]]\n'+
-        '-[[setAt]]\n'+
-        '-[[get]]\n'+
-        '-[[getAt]]\n'+
-        '-[[scrollTo]]\n'
-      ,
-      'tonyu2/set.txt': 
-        '[[Map]]\n'+
-        '*setメソッド\n'+
-        '\n'+
-        'マップにチップをはめ込みます．\n'+
-        '一番左上のチップを(0,0)，その右隣のチップを(1,0)として指定された座標のパターンを設定します．\n'+
-        '\n'+
-        '<<code\n'+
-        'map.set(setCol,setRow,p);\n'+
-        '//マップのsetCol，setRow座標のパターンをpに設定します．\n'+
-        '>>\n'+
-        '\n'+
-        '\n'+
-        '-setCol : セットするx座標をあらわします\n'+
-        '-setRow : セットするy座標をあらわします\n'+
-        '-p : 表示するパターンの番号をあらわします \n'
-      ,
-      'tonyu2/get.txt': 
-        '[[Map]]\n'+
-        '*getメソッド\n'+
-        '\n'+
-        '指定したマップ上の座標に対応するマップパターンを取得します．\n'+
-        '\n'+
-        '<<code\n'+
-        'map.get(getCol,getRow);\n'+
-        '>>\n'+
-        '\n'+
-        '\n'+
-        '\n'+
-        '-getCol : パターンを取得するx座標をあらわします\n'+
-        '-getRow : パターンを取得するy座標をあらわします\n'
-      ,
-      'tonyu2/getAt.txt': 
-        '[[Map]]\n'+
-        '*getAtメソッド\n'+
-        '\n'+
-        '指定した画面上の座標に対応するマップパターンを取得します．\n'+
-        '\n'+
-        '<<code\n'+
-        'map.get(getX,getY);\n'+
-        '>>\n'+
-        '\n'+
-        '\n'+
-        '\n'+
-        '-getX : パターンを取得するx座標をあらわします\n'+
-        '-getY : パターンを取得するy座標をあらわします\n'
-      ,
-      'tonyu2/scrollTo.txt': 
-        '[[Map]]\n'+
-        '*scrollToメソッド\n'+
-        '\n'+
-        'マップをスクロールします．\n'+
-        '\n'+
-        '<<code\n'+
-        'map.scrollTo(scrollX,scrollY);\n'+
-        '>>\n'+
-        '\n'+
-        '\n'+
-        '\n'+
-        '-scrollX : 最初の位置からずらすx座標をあらわします\n'+
-        '-scrollY : 最初の位置からずらすy座標をあらわします\n'+
-        '\n'+
-        '最初の位置から右方向にscrollXドット，下方向にscrollYドットずらして表示します．左や上にずらす場合はscrollXとscrollYを負の値にします．'
       
     }
   };
