@@ -1,4 +1,4 @@
-// Created at Wed May 07 2014 17:55:12 GMT+0900 (東京 (標準時))
+// Created at Thu May 15 2014 11:16:06 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -191,6 +191,11 @@ FS=function () {
             }
             dinfo={};
         }
+	for (var i in dinfo) {
+	    if (typeof dinfo[i]=="number") {
+		dinfo[i]={lastUpdate:dinfo[i]};
+	    }
+	}
         return dinfo;
     }
     function touch(dinfo, path, name) { // path:path of dinfo
@@ -201,7 +206,8 @@ FS=function () {
     }
     function removeEntry(dinfo, path, name) {// path:path of dinfo
         if (dinfo[name]) {
-            delete dinfo[name];
+	    dinfo[name]={lastUpdate:now(),trashed:true};
+            //delete dinfo[name];
             putDirInfo(path ,dinfo);
         }
     }
@@ -311,7 +317,8 @@ FS=function () {
                 var dinfo=getDirInfo(path);
                 var res=[];
                 for (var i in dinfo) {
-                    res.push(i);
+                    if (dinfo[i].trashed) continue;
+		    res.push(i);
                 }
                 if (typeof ord=="function" && res.sort) res.sort(ord);
                 return res;
@@ -492,6 +499,7 @@ FS=function () {
     };
     return FS;
 }();
+
 requireSimulator.setName('WebSite');
 define([], function () {
     var loc=document.location.href;
@@ -524,7 +532,7 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":1399451544000,"Actor.tonyu":1399451544000,"BaseActor.tonyu":1399452048000,"Boot.tonyu":1399451544000,"Keys.tonyu":1399451544000,"Map.tonyu":1399451544000,"MathMod.tonyu":1399451544000,"MML.tonyu":1399451544000,"NoviceActor.tonyu":1399451544000,"ScaledCanvas.tonyu":1399451544000,"Sprites.tonyu":1399451544000,"TObject.tonyu":1399451544000,"TQuery.tonyu":1399451544000,"WaveTable.tonyu":1399451544000}',
+      '': '{".desktop":{"lastUpdate":1399454260000},"Actor.tonyu":{"lastUpdate":1399454260000},"BaseActor.tonyu":{"lastUpdate":1399454260000},"Boot.tonyu":{"lastUpdate":1399454260000},"Keys.tonyu":{"lastUpdate":1399454260000},"Map.tonyu":{"lastUpdate":1399454260000},"MathMod.tonyu":{"lastUpdate":1399454260000},"MML.tonyu":{"lastUpdate":1399454260000},"NoviceActor.tonyu":{"lastUpdate":1399454260000},"ScaledCanvas.tonyu":{"lastUpdate":1399454260000},"Sprites.tonyu":{"lastUpdate":1399454260000},"TObject.tonyu":{"lastUpdate":1399454260000},"TQuery.tonyu":{"lastUpdate":1399454260000},"WaveTable.tonyu":{"lastUpdate":1399454260000}}',
       '.desktop': '{"runMenuOrd":["MapTest2nd","Main","MapTest","AcTestM","Map","SetBGCTest","Bounce","AcTest","NObjTest","NObjTest2","AltBoot","Ball","Bar","Pad","BaseActor"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -4134,7 +4142,13 @@ function genJS(klass, env,pass) {
         funcExpr: function (node) {/*FEIGNORE*/
         },
         exprstmt: function (node) {
-        }
+        },
+	"forin": function (node) {
+            var isVar=node.isVar;
+	    node.vars.forEach(function (v) {
+		/* if (isVar) */ctx.locals.varDecls[v.text]=node;
+	    });
+	}
     });
     scopeChecker.def=function (node) {
     	var t=this;

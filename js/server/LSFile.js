@@ -22,7 +22,7 @@ exports.File2LS=function(req, resp){
         var pp=toLSPath(basef, d);
         var ddata={};
         d.each(function (f) {
-            ddata[f.name()+ (f.isDir()?"/":"")]=f.lastModified();
+            ddata[f.name()+ (f.isDir()?"/":"")]={lastUpdate:f.lastModified()};
         });
         var pdatas=JSON.stringify(ddata);
         data[pp]=pdatas;
@@ -73,3 +73,51 @@ function fromLSPath(path) {
     if (startsWith(path,"/")) path=path.substring(1);
     return fsHome.rel(path);
 }
+function dirInfoFile(dir) {
+    return dir.rel(".dinfo");
+}
+exports.getDirInfo=function(req, resp){
+    resp.setHeader("Content-Type", "text/plain;charset=utf8");
+    var base=req.query.base;
+    var basef;
+    if (base==null) {
+        basef=fsHome;
+        base="/";
+    } else {
+        basef=fsHome.rel(base.substring(1));
+    }
+    var data={},dirs={};
+    function recDir(dir,f) {
+	f(dir);
+	dir.each(function (fi) {
+	    if (fi.isDir()) recDir(fi, f);
+	});
+    }
+    recDir(basef,function (dir) {
+        var p=toLSPath(basef, dir);
+        data[p]= dirInfoFile(dir).text();
+    });
+    var res={base:base, data:data};
+    resp.send( res);
+};
+exports.File2LSSync=function(req, resp){
+    resp.setHeader("Content-Type", "text/plain;charset=utf8");
+    var paths=req.query.paths;
+    var base=req.query.base;
+    var basef;
+    if (base==null) {
+        basef=fsHome;
+        base="/";
+    } else {
+        basef=fsHome.rel(base.substring(1));
+    }
+    var data={};
+    paths.forEach(function (path) {
+	var f=basef.rel(path);
+	data[path]={lastUpdate:f.lastUpdate(), text:f.text()};
+    });
+    var res={base:base, data:data};
+    resp.send( res);
+};
+
+

@@ -102,6 +102,11 @@ FS=function () {
             }
             dinfo={};
         }
+	for (var i in dinfo) {
+	    if (typeof dinfo[i]=="number") {
+		dinfo[i]={lastUpdate:dinfo[i]};
+	    }
+	}
         return dinfo;
     }
     function touch(dinfo, path, name) { // path:path of dinfo
@@ -112,7 +117,8 @@ FS=function () {
     }
     function removeEntry(dinfo, path, name) {// path:path of dinfo
         if (dinfo[name]) {
-            delete dinfo[name];
+	    dinfo[name]={lastUpdate:now(),trashed:true};
+            //delete dinfo[name];
             putDirInfo(path ,dinfo);
         }
     }
@@ -222,7 +228,8 @@ FS=function () {
                 var dinfo=getDirInfo(path);
                 var res=[];
                 for (var i in dinfo) {
-                    res.push(i);
+                    if (dinfo[i].trashed) continue;
+		    res.push(i);
                 }
                 if (typeof ord=="function" && res.sort) res.sort(ord);
                 return res;

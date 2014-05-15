@@ -687,7 +687,13 @@ function genJS(klass, env,pass) {
         funcExpr: function (node) {/*FEIGNORE*/
         },
         exprstmt: function (node) {
-        }
+        },
+	"forin": function (node) {
+            var isVar=node.isVar;
+	    node.vars.forEach(function (v) {
+		/* if (isVar) */ctx.locals.varDecls[v.text]=node;
+	    });
+	}
     });
     scopeChecker.def=function (node) {
     	var t=this;
