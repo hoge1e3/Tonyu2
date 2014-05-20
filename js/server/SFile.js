@@ -40,6 +40,16 @@ extend(SFile.prototype,{
 			fs.writeFileSync(this._path, arguments[0]);
 		}
 	},
+	obj:function () {
+		if (arguments.length==0) {
+			return JSON.parse(this.text());
+		} else {
+			this.text(JSON.stringify(arguments[0]));
+		}
+	},
+    rm: function () {
+	return fs.unlinkSync(this._path);
+    },
 	path: function () { return this._path; },
 	name: function () {
 		var p=this._path;
@@ -76,7 +86,7 @@ extend(SFile.prototype,{
 		return this._path;
 	},
 	rel: function (n) {
-		if (!this.isDir()) throw this+" cannot rel. not a dir.";
+		if (!this.isDir()) throw new Error(this+" cannot rel. not a dir.");
 		return new SFile(this._path+SEP+n);
 	},
 	mkdir: function () {
@@ -107,6 +117,9 @@ extend(SFile.prototype,{
 	},
 	lastModified: function () {
 		return this.stat().mtime.getTime();
+	},
+	lastUpdate: function () {
+		return this.lastModified();
 	},
 	up: function () {
 	    var p=this._path;

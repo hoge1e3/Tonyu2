@@ -38,6 +38,10 @@ app.get('/genShim', dumpScript.genShim );
 app.get('/concat', dumpScript.concat );
 app.get('/File2LS', LSFile.File2LS);
 app.post('/LS2File', LSFile.LS2File);
+app.post('/File2LSSync', LSFile.File2LSSync);
+app.post('/LS2FileSync', LSFile.LS2FileSync);
+app.get('/getDirInfo', LSFile.getDirInfo);
+
 
 var http = require('http');
 //var server = http.createServer(app);

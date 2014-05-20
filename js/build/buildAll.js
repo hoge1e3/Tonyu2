@@ -1,5 +1,5 @@
 
-define(["genROM","dumpScript","Util","FS"], function (genROM,dumpScript,Util,FS) {
+define(["genROM","dumpScript","Util","FS","Sync"], function (genROM,dumpScript,Util,FS,Sync) {
     var build=Util.getQueryString("build",0);
     if (!build) return;
     build=parseInt(build);
@@ -12,7 +12,7 @@ define(["genROM","dumpScript","Util","FS"], function (genROM,dumpScript,Util,FS)
             genROM(FS.get("/Tonyu/Kernel/"), FS.get("/Tonyu/js/gen/ROM_k.js"));
             genROM(FS.get("/Tonyu/doc/"), FS.get("/Tonyu/js/gen/ROM_d.js"));
             genROM(FS.get("/Tonyu/SampleROM/"), FS.get("/Tonyu/js/gen/ROM_s.js"));
-            upload("/", function () {
+            sync("/", function () {
                 //next(".");
                 concat({name: "ide/selProject", outfile:"index"},function () {
                     concat({name: "ide/editor", outfile:"project"},function () {
@@ -24,7 +24,7 @@ define(["genROM","dumpScript","Util","FS"], function (genROM,dumpScript,Util,FS)
             });
 
             break;
-        case 2:
+        /*case 2:
             dumpScript({onend:function (buf) {
                 var rsc=FS.get("/Tonyu/js/gen/index_concat.js");
                 rsc.text(buf);
@@ -48,7 +48,7 @@ define(["genROM","dumpScript","Util","FS"], function (genROM,dumpScript,Util,FS)
                 });
             }});
             break;
-
+*/
         }
     });
     function concat(params ,onend) {
@@ -65,6 +65,11 @@ define(["genROM","dumpScript","Util","FS"], function (genROM,dumpScript,Util,FS)
                 alert("Error "+textStatus);
         });
     }
+    function sync(dir, onend) {
+    	console.log("Syncing "+dir);
+        Sync.sync(FS.get(dir),onend);
+    }
+
     function upload(dir, onend) {
     	console.log("Uploading "+dir);
         var json= JSON.stringify( FS.exportDir(dir) );
@@ -75,9 +80,9 @@ define(["genROM","dumpScript","Util","FS"], function (genROM,dumpScript,Util,FS)
             success: onend
         });
     }
-	function next(url) {
+    /*function next(url) {
 		document.location.href=url+(url.indexOf("?")>=0?"&":"?")+"build="+(build+1);
-	}
+	}*/
 	function urlMatch(reg) {
 		return document.location.href.match(reg);
 	}

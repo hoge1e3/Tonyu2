@@ -13,6 +13,7 @@ exports.File2LS=function(req, resp){
     }
     var data={},dirs={};
     basef.recursive(function (f) {
+	if (f.name()==".dirinfo") return;
         var p=toLSPath(basef, f);
         data[p]= f.text();
         dirs[f.parent().path()]=1;
@@ -21,9 +22,15 @@ exports.File2LS=function(req, resp){
         var d=SFile.get(dirn);
         var pp=toLSPath(basef, d);
         var ddata={};
-        d.each(function (f) {
-            ddata[f.name()+ (f.isDir()?"/":"")]={lastUpdate:f.lastModified()};
-        });
+	var dirinfof=d.rel(".dirinfo");
+	if (dirinfof.exists()) {
+	   ddata=dirinfof.obj(); 
+	} else {
+            d.each(function (f) {
+		//if (f.name()==".dirinfo") return;
+		ddata[f.name()+ (f.isDir()?"/":"")]={lastUpdate:f.lastModified()};
+            });
+	}
         var pdatas=JSON.stringify(ddata);
         data[pp]=pdatas;
     }
@@ -73,13 +80,10 @@ function fromLSPath(path) {
     if (startsWith(path,"/")) path=path.substring(1);
     return fsHome.rel(path);
 }
-function dirInfoFile(dir) {
-    return dir.rel(".dinfo");
-}
 exports.getDirInfo=function(req, resp){
-    resp.setHeader("Content-Type", "text/plain;charset=utf8");
     var base=req.query.base;
     var basef;
+    resp.setHeader("Content-Type", "text/plain;charset=utf8");
     if (base==null) {
         basef=fsHome;
         base="/";
@@ -94,16 +98,57 @@ exports.getDirInfo=function(req, resp){
 	});
     }
     recDir(basef,function (dir) {
-        var p=toLSPath(basef, dir);
-        data[p]= dirInfoFile(dir).text();
+        var o=dirInfoF(dir).obj();
+	for (var fn in o) {
+	    var f=dir.rel(fn);
+	    if (f.isDir()) continue;
+	    var p=toLSPath(basef, f);
+	    data[p]=o[fn];
+	} 
     });
     var res={base:base, data:data};
     resp.send( res);
 };
+function dirInfoF(dir) {
+    var res=dir.rel(".dirinfo");
+    if (!res.exists()) {
+	var data={};
+	dir.each(function (f) {
+	    if (f.isDir()) return;
+	    data[f.name()]={lastUpdate:f.lastUpdate()};
+	});
+	res.obj(data);
+    }
+    return res;
+}
+function getMeta(f) {
+    if (f.isDir()) {
+	var res= dirInfoF(f).obj();
+	delete res[".dirinfo"];
+	return res;
+    } else {
+	var mo=dirInfoF(f.up()).obj();
+	if (!mo[f.name()]) {
+	    if (f.exists()) {
+		mo[f.name()]={lastUpdate:f.lastUpdate()};
+	    } else {
+		mo[f.name()]={lastUpdate:0,trashed:true};
+	    }
+	}
+	return mo[f.name()];
+    }
+}
+function setMeta(f, meta) {
+    if (f.isDir()) return;
+    var o=dirInfoF(f.up()).obj();
+    o[f.name()]=meta;
+    delete o[".dirinfo"];
+    dirInfoF(f.up()).obj(o);
+}
 exports.File2LSSync=function(req, resp){
+    var paths=JSON.parse(req.body.paths);
+    var base=req.body.base;
     resp.setHeader("Content-Type", "text/plain;charset=utf8");
-    var paths=req.query.paths;
-    var base=req.query.base;
     var basef;
     if (base==null) {
         basef=fsHome;
@@ -114,10 +159,39 @@ exports.File2LSSync=function(req, resp){
     var data={};
     paths.forEach(function (path) {
 	var f=basef.rel(path);
-	data[path]={lastUpdate:f.lastUpdate(), text:f.text()};
+	var m=getMeta(f);
+	if (f.exists()) m.text=f.text();
+	data[path]=m;
     });
     var res={base:base, data:data};
     resp.send( res);
 };
 
+exports.LS2FileSync=function(req, res){
+    var base=req.body.base;
+    var data=JSON.parse(req.body.data);
+    var basef;
+    if (base==null) {
+        basef=fsHome;
+        base="/";
+    } else {
+        basef=fsHome.rel(base.substring(1));
+    }
+    for (var path in data) {
+        var o=data[path];
+        if (endsWith(path,"/")) continue;
+        var dst=basef.rel(path);
+        console.log(path+"->"+dst);
+        if (dst.isDir()) continue;
+	if (o.trashed && dst.exists()) dst.rm();
+	else {
+	    if (!dst.exists() || dst.text()!==o.text) {
+		dst.text(o.text);
+	    }
+	}
+	delete o.text;
+        setMeta(dst,o);
+    }
+    res.send("OK!!");
+}
 

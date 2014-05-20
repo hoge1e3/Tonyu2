@@ -140,6 +140,7 @@ var reqConf={
             }*/
         },
         "paths": {
+	    Sync: "fs/sync",
             runtime: "runtime/runtime",
             difflib: "lib/difflib",
             diffview: "lib/diffview",

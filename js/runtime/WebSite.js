@@ -10,7 +10,10 @@ define([], function () {
             },top:"",devMode:devMode
         };
     }
-    if (loc.match(/localhost/) || loc.match(/tonyuedit\.appspot\.com/)) {
+    if (
+	(loc.match(/^file:/) || loc.match(/localhost/) || loc.match(/tonyuedit\.appspot\.com/)) &&
+	    loc.match(/\/html\/((dev)|(build))\//)
+    ) {
         return window.WebSite={
             urlAliases: {
                 "images/base.png":"../../images/base.png",

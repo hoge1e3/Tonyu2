@@ -82,6 +82,11 @@ define(["FS","Util"],function (FS,Util) {
         console.log(file.text());
         return "";
     };
+    Shell.resolve=function (file) {
+	if (!file) file=".";
+	file=resolve(file);
+	return file;
+    };
     Shell.grep=function (pattern, file, options) {
     	file=resolve(file, true);
     	if (!options) options={};

@@ -66,11 +66,11 @@ exports.concat=function (req,res) {
     }
     var buf="";
     buf+="// Created at "+new Date()+"\n";
-    var reqSim=FS.get("js/lib/requireSimulator.js").text();
+    var reqSim=FS.get("js/lib/requireSimulator.js").text().replace(/\r/g,"");
     buf+=reqSim+"\n";
     progs.forEach(function (name) {
         buf+="requireSimulator.setName('"+name+"');\n";
-        buf+=js.rel(reqConf.paths[name]+".js").text()+"\n";
+        buf+=js.rel(reqConf.paths[name]+".js").text().replace(/\r/g,"")+"\n";
     });
     buf+="requireSimulator.setName();\n";
     console.log("Done generate "+name);

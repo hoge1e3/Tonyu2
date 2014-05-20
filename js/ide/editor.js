@@ -1,12 +1,12 @@
 requirejs(["fs/ROMk","fs/ROMd","fs/ROMs", "Util", "Tonyu", "FS", "FileList", "FileMenu",
            "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project",
            "copySample","Shell","ImageResEditor","ProjectOptionsEditor","copyToKernel","KeyEventChecker",
-           "WikiDialog","runtime", "KernelDiffDialog"
+           "WikiDialog","runtime", "KernelDiffDialog","Sync"
           ],
 function (romk, romd, roms,  Util, Tonyu, FS, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,
           copySample,sh, ImgResEdit,ProjectOptionsEditor, ctk, KeyEventChecker,
-          WikiDialog, rt , KDD
+          WikiDialog, rt , KDD,Sync
           ) {
 
 $(function () {

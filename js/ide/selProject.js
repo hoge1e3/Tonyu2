@@ -1,5 +1,5 @@
-requirejs(["fs/ROMk","fs/ROMd","fs/ROMs", "FS","Wiki","Shell","copySample","NewProjectDialog","UI"],
-  function (romk, romd, roms,           FS, Wiki,   sh,      copySample,  NPD,           UI) {
+requirejs(["fs/ROMk","fs/ROMd","fs/ROMs", "FS","Wiki","Shell","copySample","NewProjectDialog","UI","Sync"],
+  function (romk, romd, roms,           FS, Wiki,   sh,      copySample,  NPD,           UI, Sync) {
 $(function () {
     copySample();
     var home=FS.get("/Tonyu/");

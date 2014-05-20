@@ -212,23 +212,27 @@ FS=function () {
         var res;
         if (isDir(path)) {
             var dir=res={};
-            dir.each=function (f) {
-                dir.ls().forEach(function (n) {
+            dir.each=function (f,options) {
+                dir.ls(options).forEach(function (n) {
                     var subd=dir.rel(n);
                     f(subd);
                 });
             };
-            dir.recursive=function (fun) {
+            dir.recursive=function (fun,options) {
                 dir.each(function (f) {
                     if (f.isDir()) f.recursive(fun);
                     else fun(f);
-                });
+                },options);
             };
-            dir.ls=function (ord) {
+            dir.ls=function (options) {
+		var ord;
+		if (typeof options=="function") ord=options;
+		if (!options) options={};
+		if (!ord) ord=options.order;
                 var dinfo=getDirInfo(path);
                 var res=[];
                 for (var i in dinfo) {
-                    if (dinfo[i].trashed) continue;
+                    if (!options.includeTrashed && dinfo[i].trashed) continue;
 		    res.push(i);
                 }
                 if (typeof ord=="function" && res.sort) res.sort(ord);
@@ -316,6 +320,18 @@ FS=function () {
             }
             return path.substring(bp.length);
         };
+	res.metaInfo=function () {
+	    if (parent!=null) {
+                var pinfo=getDirInfo(parent);
+		if (arguments.length==0) {
+		    return pinfo[name];
+		} else {
+		    pinfo[name]=arguments[0];
+		    putDirInfo(parent, pinfo);
+		}
+            }
+	    return {};
+	};
         res.exists=function () {
             return lcsExists(path);
         };

@@ -1,4 +1,4 @@
-// Created at Thu May 15 2014 11:16:06 GMT+0900 (東京 (標準時))
+// Created at Tue May 20 2014 17:39:37 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -301,23 +301,27 @@ FS=function () {
         var res;
         if (isDir(path)) {
             var dir=res={};
-            dir.each=function (f) {
-                dir.ls().forEach(function (n) {
+            dir.each=function (f,options) {
+                dir.ls(options).forEach(function (n) {
                     var subd=dir.rel(n);
                     f(subd);
                 });
             };
-            dir.recursive=function (fun) {
+            dir.recursive=function (fun,options) {
                 dir.each(function (f) {
                     if (f.isDir()) f.recursive(fun);
                     else fun(f);
-                });
+                },options);
             };
-            dir.ls=function (ord) {
+            dir.ls=function (options) {
+		var ord;
+		if (typeof options=="function") ord=options;
+		if (!options) options={};
+		if (!ord) ord=options.order;
                 var dinfo=getDirInfo(path);
                 var res=[];
                 for (var i in dinfo) {
-                    if (dinfo[i].trashed) continue;
+                    if (!options.includeTrashed && dinfo[i].trashed) continue;
 		    res.push(i);
                 }
                 if (typeof ord=="function" && res.sort) res.sort(ord);
@@ -405,6 +409,18 @@ FS=function () {
             }
             return path.substring(bp.length);
         };
+	res.metaInfo=function () {
+	    if (parent!=null) {
+                var pinfo=getDirInfo(parent);
+		if (arguments.length==0) {
+		    return pinfo[name];
+		} else {
+		    pinfo[name]=arguments[0];
+		    putDirInfo(parent, pinfo);
+		}
+            }
+	    return {};
+	};
         res.exists=function () {
             return lcsExists(path);
         };
@@ -513,7 +529,10 @@ define([], function () {
             },top:"",devMode:devMode
         };
     }
-    if (loc.match(/localhost/) || loc.match(/tonyuedit\.appspot\.com/)) {
+    if (
+	(loc.match(/^file:/) || loc.match(/localhost/) || loc.match(/tonyuedit\.appspot\.com/)) &&
+	    loc.match(/\/html\/((dev)|(build))\//)
+    ) {
         return window.WebSite={
             urlAliases: {
                 "images/base.png":"../../images/base.png",
@@ -527,13 +546,14 @@ define([], function () {
         urlAliases: {}, top: "../../",devMode:devMode
     };
 });
+
 requireSimulator.setName('fs/ROMk');
 (function () {
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1399454260000},"Actor.tonyu":{"lastUpdate":1399454260000},"BaseActor.tonyu":{"lastUpdate":1399454260000},"Boot.tonyu":{"lastUpdate":1399454260000},"Keys.tonyu":{"lastUpdate":1399454260000},"Map.tonyu":{"lastUpdate":1399454260000},"MathMod.tonyu":{"lastUpdate":1399454260000},"MML.tonyu":{"lastUpdate":1399454260000},"NoviceActor.tonyu":{"lastUpdate":1399454260000},"ScaledCanvas.tonyu":{"lastUpdate":1399454260000},"Sprites.tonyu":{"lastUpdate":1399454260000},"TObject.tonyu":{"lastUpdate":1399454260000},"TQuery.tonyu":{"lastUpdate":1399454260000},"WaveTable.tonyu":{"lastUpdate":1399454260000}}',
-      '.desktop': '{"runMenuOrd":["MapTest2nd","Main","MapTest","AcTestM","Map","SetBGCTest","Bounce","AcTest","NObjTest","NObjTest2","AltBoot","Ball","Bar","Pad","BaseActor"]}',
+      '': '{".desktop":{"lastUpdate":1400573339495},"Actor.tonyu":{"lastUpdate":1400120164000},"BaseActor.tonyu":{"lastUpdate":1400120164000},"Boot.tonyu":{"lastUpdate":1400120164000},"Keys.tonyu":{"lastUpdate":1400120164000},"Map.tonyu":{"lastUpdate":1400120164000},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1400120164000},"NoviceActor.tonyu":{"lastUpdate":1400120164000},"ScaledCanvas.tonyu":{"lastUpdate":1400120164000},"Sprites.tonyu":{"lastUpdate":1400120164000},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1400120164000},"WaveTable.tonyu":{"lastUpdate":1400120164000}}',
+      '.desktop': '{"runMenuOrd":["Map","BaseActor","Actor","Boot","Keys","MathMod","MML","NoviceActor","ScaledCanvas","Sprites","TObject","TQuery","WaveTable"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
         'native Sprites;\n'+
@@ -4974,6 +4994,11 @@ define(["FS","Util"],function (FS,Util) {
         console.log(file.text());
         return "";
     };
+    Shell.resolve=function (file) {
+	if (!file) file=".";
+	file=resolve(file);
+	return file;
+    };
     Shell.grep=function (pattern, file, options) {
     	file=resolve(file, true);
     	if (!options) options={};
@@ -5006,6 +5031,7 @@ define(["FS","Util"],function (FS,Util) {
     sh=Shell;
     return Shell;
 });
+
 requireSimulator.setName('KeyEventChecker');
 define([],function () {
 	var KEC={};
