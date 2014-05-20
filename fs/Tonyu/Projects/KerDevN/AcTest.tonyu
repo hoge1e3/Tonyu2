@@ -1,4 +1,5 @@
 extends Actor;
+//てすと！
 scaleX=2;
 scaleY=3;
 //rotate=45;
