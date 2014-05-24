@@ -1,13 +1,13 @@
 $Screen.resize(448,400);
 $map=new Map{chipWidth:32,chipHeight:32,col:30,row:30};
 p=3;
+$pad=new Pad{x:72,y:$screenHeight-72};
 for(var j=1;j<7;j++){
     for(var i=2;i<28;i++){
         $map.set(i,j,p);
     }
     p++;
 }
-
 $ball=new Ball();
 new Bar();
 var i=0;
@@ -22,6 +22,6 @@ while(true){
         dir=-1;
     }
     //$map.scrollTo(i,0);
-    $Screen.scrollTo(i,0);
+    //$Screen.scrollTo(i,0);
     update();
 }

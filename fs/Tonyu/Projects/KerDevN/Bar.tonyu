@@ -10,10 +10,10 @@ while(true){
         $ball.vy=$ball.vy*-1;
         $ball.vx=($ball.x-x)/2;
     }
-    if(getkey("right")>1){
+    if($pad.padRight>1){
         x+=5;
     }
-    if(getkey("left")>1){
+    if($pad.padLeft>1){
         x-=5;
     }
     update();

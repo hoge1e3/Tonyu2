@@ -10,29 +10,29 @@
 }
 
 while (true) {
-    var t=$touches[0];
-    if (t.touched) {//index番目の指がタッチされていれば
-        if(t.x-x > 15 && t.x-x < 64){
-            padRight+=1;
-        }else{
-            padRight=0;
-        }
-        if(x-t.x > 15 && x-t.x < 64){
-            padLeft+=1;
-        }else{
-            padLeft=0;
-        }
-        if(t.y-y > 15 && t.y-y < 64){
-            padDown+=1;
-        }else{
-            padDown=0;
-        }
-        if(y-t.y > 15 && y-t.y < 64){
+    tAngle=atan2(x-$mouseX,y-$mouseY);
+    t=$touches[0];
+    if (t.touched || getkey(1)>0) {
+        if(tAngle>=-60 && tAngle<=60){
             padUp+=1;
         }else{
             padUp=0;
         }
-        print(padLeft,padUp,padRight,padDown);
+        if(tAngle>=30 && tAngle<=150){
+            padLeft+=1;
+        }else{
+            padLeft=0;
+        }
+        if(tAngle>=120 || tAngle<=-120){
+            padDown+=1;
+        }else{
+            padDown=0;
+        }
+        if(tAngle>=-150 && tAngle<=-30){
+            padRight+=1;
+        }else{
+            padRight=0;
+        }
     } else{
         padLeft=0;
         padRight=0;
