@@ -4,7 +4,7 @@
 指定した画面上の座標に対応するマップパターンを取得します．
 
 <<code
-map.get(getX,getY);
+map.getAt(getX,getY);
 >>
 
 

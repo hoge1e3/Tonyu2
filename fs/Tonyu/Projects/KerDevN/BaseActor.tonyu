@@ -188,7 +188,7 @@ nowait \draw(ctx) {
         pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,
         -width/2, -height/2, width, height);
         ctx.restore();
-    } else if (text) {
+    } else if (text!==null) {
         if (!size) size=15;
         if (!align) align="center";
         if (!fillStyle) fillStyle="white";
