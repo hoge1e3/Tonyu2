@@ -4,8 +4,13 @@ p=3;
 $pad=new Pad{x:72,y:$screenHeight-72};
 score=0;
 label=new Label{x:100,y:200,text:score,size:30};
-
-
+panel= new Panel();
+panel.setPanel(200,200);
+panel.setFillStyle("green");
+pw=200;
+ph=200;
+panel.x=50;
+panel.y=200;
 for(var j=1;j<7;j++){
     for(var i=2;i<28;i++){
         $map.set(i,j,p);
@@ -17,6 +22,12 @@ new Bar();
 var i=0;
 var dir=1;
 while(true){
+    panel.clearRect(0,0,panel.width,panel.height);
+    panel.fillRect(0,0,pw,ph);
+    pw--;
+    if(pw<=0) pw=200;
+    score++;
+    label.text=score;
     i=i+dir;
     //print(0-i,$map.chipWidth*$map.col-$screenWidth);
     if($map.chipWidth*$map.col-$screenWidth==0-i){

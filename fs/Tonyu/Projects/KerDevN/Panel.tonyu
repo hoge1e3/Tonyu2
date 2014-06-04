@@ -1,0 +1,47 @@
+native $;
+\new(opt){
+    super(opt);
+    this.width=width;
+    this.height=height;
+    buf=$("<canvas>").attr{width,height};
+}
+\setPanel(width,height){
+    this.width=width;
+    this.height=height;
+    buf=$("<canvas>").attr{width,height};
+}
+\setFillStyle(color){
+    this.color=color;
+}
+\fillRect(x,y,rectWidth,rectHeight){
+    ctx=buf[0].getContext("2d");
+    ctx.save();
+    //ctx.clearRect(0,0,this.width,this.height);
+    ctx.fillStyle=color;
+    ctx.fillRect(x,y,rectWidth,rectHeight);
+    ctx.restore();
+}
+\fillText(text,x,y,size,align){
+    ctx=buf[0].getContext("2d");
+    ctx.save();
+    //ctx.clearRect(0,0,this.width,this.height);
+    ctx.textAlign = align;
+    ctx.fillStyle=color;
+    ctx.font=size+"px 'Courier New'";
+    ctx.fillText(text,x,y);
+    ctx.restore();
+}
+\clearRect(clearX,clearY,clearW,clearH){
+    ctx=buf[0].getContext("2d");
+    ctx.save();
+    ctx.clearRect(clearX,clearY,clearW,clearH);
+    ctx.restore();
+}
+\draw(ctx){
+    pImg=buf[0];
+    ctx.save();
+    ctx.drawImage(
+    pImg, 0, 0,width,height,
+    x, y, width ,height);
+    ctx.restore();
+}
