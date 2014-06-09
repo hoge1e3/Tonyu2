@@ -1,5 +1,6 @@
 var SFile = require("./SFile");
 var fsHome=SFile.get("fs");
+var DINFO=".dirinfo";
 exports.File2LS=function(req, resp){
     //res.send(req.query.base);
     resp.setHeader("Content-Type", "text/plain;charset=utf8");
@@ -13,7 +14,7 @@ exports.File2LS=function(req, resp){
     }
     var data={},dirs={};
     basef.recursive(function (f) {
-	if (f.name()==".dirinfo") return;
+	if (f.name()==DINFO) return;
         var p=toLSPath(basef, f);
         data[p]= f.text();
         dirs[f.parent().path()]=1;
@@ -21,16 +22,7 @@ exports.File2LS=function(req, resp){
     for (var dirn in dirs) {
         var d=SFile.get(dirn);
         var pp=toLSPath(basef, d);
-        var ddata={};
-	var dirinfof=d.rel(".dirinfo");
-	if (dirinfof.exists()) {
-	   ddata=dirinfof.obj(); 
-	} else {
-            d.each(function (f) {
-		//if (f.name()==".dirinfo") return;
-		ddata[f.name()+ (f.isDir()?"/":"")]={lastUpdate:f.lastModified()};
-            });
-	}
+	var ddata=getMeta(d);
         var pdatas=JSON.stringify(ddata);
         data[pp]=pdatas;
     }
@@ -81,6 +73,7 @@ function fromLSPath(path) {
     return fsHome.rel(path);
 }
 exports.getDirInfo=function(req, resp){
+    //console.log("getDirInfo");
     var base=req.query.base;
     var basef;
     resp.setHeader("Content-Type", "text/plain;charset=utf8");
@@ -98,52 +91,70 @@ exports.getDirInfo=function(req, resp){
 	});
     }
     recDir(basef,function (dir) {
-        var o=dirInfoF(dir).obj();
-	for (var fn in o) {
-	    var f=dir.rel(fn);
-	    if (f.isDir()) continue;
+	if (dir.name()==DINFO) return;
+	//console.log("getDirInfo "+dir);
+        var o=dirInfoF(dir);
+	o.each(function (o_f) {
+	    var f=dir.rel(o_f.name());
+	    if (f.isDir()) return; //continue;
 	    var p=toLSPath(basef, f);
-	    data[p]=o[fn];
-	} 
+	    data[p]=o_f.obj(); //o[fn];
+	});
     });
     var res={base:base, data:data};
     resp.send( res);
 };
 function dirInfoF(dir) {
-    var res=dir.rel(".dirinfo");
+    if (dir.name()==DINFO) return null;
+    var res=dir.rel(DINFO);
     if (!res.exists()) {
-	var data={};
+	res.mkdir();
 	dir.each(function (f) {
 	    if (f.isDir()) return;
-	    data[f.name()]={lastUpdate:f.lastUpdate()};
+	    res.rel(f.name()).obj({lastUpdate:f.lastUpdate()});
 	});
-	res.obj(data);
+    } else if (!res.isDir()) {
+	var data=res.obj();
+	res.rm();
+	res.mkdir();
+	for (var n in data) {
+	    if (!valid(n)) continue;
+	    res.rel(n).obj(data[n]);
+	}
     }
     return res;
 }
 function getMeta(f) {
+    if (f.name()==DINFO) return null;
     if (f.isDir()) {
-	var res= dirInfoF(f).obj();
-	delete res[".dirinfo"];
+	var res={};
+	var mf=dirInfoF(f);
+	mf.each(function (mff) {
+	    res[mff.name()]=mff.obj();
+	});
 	return res;
     } else {
-	var mo=dirInfoF(f.up()).obj();
-	if (!mo[f.name()]) {
+	var mf=dirInfoF(f.up()).rel(f.name());
+	var res;
+	if (!mf.exists()) {
 	    if (f.exists()) {
-		mo[f.name()]={lastUpdate:f.lastUpdate()};
+		res={lastUpdate:f.lastUpdate()};
 	    } else {
-		mo[f.name()]={lastUpdate:0,trashed:true};
+		res={lastUpdate:0,trashed:true};
 	    }
+	    mf.obj(res);
+	    return res;
 	}
-	return mo[f.name()];
+	return mf.obj();
     }
+}
+function valid(name) {
+    return !name.match(/[\\\:\?\*\>\<\|\"]/);
 }
 function setMeta(f, meta) {
     if (f.isDir()) return;
-    var o=dirInfoF(f.up()).obj();
-    o[f.name()]=meta;
-    delete o[".dirinfo"];
-    dirInfoF(f.up()).obj(o);
+    var o=dirInfoF(f.up()).rel(f.name()); //.obj();
+    o.obj(meta);
 }
 exports.File2LSSync=function(req, resp){
     var paths=JSON.parse(req.body.paths);
@@ -159,6 +170,7 @@ exports.File2LSSync=function(req, resp){
     var data={};
     paths.forEach(function (path) {
 	var f=basef.rel(path);
+	if (f.name()==DINFO) return;
 	var m=getMeta(f);
 	if (f.exists()) m.text=f.text();
 	data[path]=m;
@@ -180,6 +192,7 @@ exports.LS2FileSync=function(req, res){
     for (var path in data) {
         var o=data[path];
         if (endsWith(path,"/")) continue;
+	if (!valid(path)) continue;
         var dst=basef.rel(path);
         console.log(path+"->"+dst);
         if (dst.isDir()) continue;
