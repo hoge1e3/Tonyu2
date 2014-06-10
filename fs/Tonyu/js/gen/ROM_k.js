@@ -2,7 +2,7 @@
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1400573339495},"Actor.tonyu":{"lastUpdate":1400120164000},"BaseActor.tonyu":{"lastUpdate":1400120164000},"Boot.tonyu":{"lastUpdate":1400120164000},"Keys.tonyu":{"lastUpdate":1400120164000},"Map.tonyu":{"lastUpdate":1400120164000},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1400120164000},"NoviceActor.tonyu":{"lastUpdate":1400120164000},"ScaledCanvas.tonyu":{"lastUpdate":1400120164000},"Sprites.tonyu":{"lastUpdate":1400120164000},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1400120164000},"WaveTable.tonyu":{"lastUpdate":1400120164000}}',
+      '': '{".desktop":{"lastUpdate":1400573339495},"Actor.tonyu":{"lastUpdate":1400120164000},"BaseActor.tonyu":{"lastUpdate":1400120164000},"Boot.tonyu":{"lastUpdate":1400120164000},"Keys.tonyu":{"lastUpdate":1400120164000},"Map.tonyu":{"lastUpdate":1400120164000},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1400120164000},"NoviceActor.tonyu":{"lastUpdate":1400120164000},"ScaledCanvas.tonyu":{"lastUpdate":1400120164000},"Sprites.tonyu":{"lastUpdate":1400120164000},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1400120164000},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1402373376274}}',
       '.desktop': '{"runMenuOrd":["Map","BaseActor","Actor","Boot","Keys","MathMod","MML","NoviceActor","ScaledCanvas","Sprites","TObject","TQuery","WaveTable"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -1006,6 +1006,62 @@
         '    //    synth=T("OscGen") {wave:"pulse", env, mul:0.25};\n'+
         '    //set(0,synth);    \n'+
         '}\n'
+      ,
+      'Panel.tonyu': 
+        'native $;\n'+
+        '\\new(opt){\n'+
+        '    super(opt);\n'+
+        '    this.width=width;\n'+
+        '    this.height=height;\n'+
+        '    buf=$("<canvas>").attr{width,height};\n'+
+        '}\n'+
+        '\\setPanel(width,height){\n'+
+        '    this.width=width;\n'+
+        '    this.height=height;\n'+
+        '    buf=$("<canvas>").attr{width,height};\n'+
+        '}\n'+
+        '\\setFillStyle(color){\n'+
+        '    this.color=color;\n'+
+        '}\n'+
+        '\\fillRect(x,y,rectWidth,rectHeight){\n'+
+        '    ctx=buf[0].getContext("2d");\n'+
+        '    ctx.save();\n'+
+        '    //ctx.clearRect(0,0,this.width,this.height);\n'+
+        '    ctx.fillStyle=color;\n'+
+        '    ctx.fillRect(x,y,rectWidth,rectHeight);\n'+
+        '    ctx.restore();\n'+
+        '}\n'+
+        '\\fillText(text,x,y,size,align){\n'+
+        '    ctx=buf[0].getContext("2d");\n'+
+        '    ctx.save();\n'+
+        '    //ctx.clearRect(0,0,this.width,this.height);\n'+
+        '    ctx.textAlign = align;\n'+
+        '    ctx.fillStyle=color;\n'+
+        '    ctx.font=size+"px \'Courier New\'";\n'+
+        '    ctx.fillText(text,x,y);\n'+
+        '    ctx.restore();\n'+
+        '}\n'+
+        '\\clearRect(clearX,clearY,clearW,clearH){\n'+
+        '    ctx=buf[0].getContext("2d");\n'+
+        '    ctx.save();\n'+
+        '    ctx.clearRect(clearX,clearY,clearW,clearH);\n'+
+        '    ctx.restore();\n'+
+        '}\n'+
+        '\\getPixel(getX,getY){\n'+
+        '    ctx=buf[0].getContext("2d");\n'+
+        '    imagedata=ctx.getImageData(getX,getY,1,1);\n'+
+        '    colordata=[imagedata.data[0],imagedata.data[1],imagedata.data[2]];\n'+
+        '    //print(colordata);\n'+
+        '    return(colordata);\n'+
+        '}\n'+
+        '\\draw(ctx){\n'+
+        '    pImg=buf[0];\n'+
+        '    ctx.save();\n'+
+        '    ctx.drawImage(\n'+
+        '    pImg, 0, 0,width,height,\n'+
+        '    x, y, width ,height);\n'+
+        '    ctx.restore();\n'+
+        '}'
       
     }
   };

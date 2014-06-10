@@ -22,3 +22,4 @@ panel=new Panel();
 -[[fillRect]]
 -[[fillText]]
 -[[clearRect]]
+-[[getPixel]]
