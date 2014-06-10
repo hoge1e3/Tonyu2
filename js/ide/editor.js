@@ -144,9 +144,12 @@ $(function () {
                             $("<a>").attr("href","#").text(n+"を実行"+(i==0?"(F9)":"")).click(function () {
                                 if (typeof n!="string") {console.log(n); alert("not a string2: "+n);}
                                 run(n);
-                                runMenuOrd.splice(ii, 1);
-                                runMenuOrd.unshift(n);
-                                refreshRunMenu();
+                                if (ii>0) {
+				    runMenuOrd.splice(ii, 1);
+                                    runMenuOrd.unshift(n);
+                                    refreshRunMenu();
+				    saveDesktopEnv();
+				}
                             })));
             i++;
         });
@@ -155,7 +158,7 @@ $(function () {
                         $("<a>").attr("href","#").text("停止(F2)").click(function () {
                             stop();
                         })));
-        saveDesktopEnv();
+        //saveDesktopEnv();
         $("#exportToJsdoit").attr("href", "exportToJsdoit.html?dir="+curProjectDir.path());//+"&main="+runMenuOrd[0]);
     }
     function dispName(f) {
@@ -223,9 +226,11 @@ $(function () {
         setTimeout(function () {
             try {
                 var o=curPrj.getOptions();
-                o.run.mainClass=name;
-                curPrj.setOptions();
-                curPrj.rawRun(o.run.bootClass);
+		if (o.run.mainClass!=name) {
+                    o.run.mainClass=name;
+                    curPrj.setOptions();
+                }
+		curPrj.rawRun(o.run.bootClass);
             } catch(e){
                 if (e.isTError) {
                     showErrorPos($("#errorPos"),e);
