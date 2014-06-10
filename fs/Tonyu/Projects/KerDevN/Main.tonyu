@@ -6,7 +6,7 @@ score=0;
 label=new Label{x:100,y:200,text:score,size:30};
 panel= new Panel();
 panel.setPanel(200,200);
-panel.setFillStyle("green");
+panel.setFillStyle("rgb(200,100,50");
 pw=200;
 ph=200;
 panel.x=50;

@@ -1,0 +1,25 @@
+[[Panel]]
+*setFillStyleメソッド
+
+パネルの色を設定します．
+
+
+<<code
+panel.setFillStyle(color)
+>>
+
+[[@arg color]]は，画面の背景色をあらわす文字列（HTMLの色指定方法に準ずる）を指定します．
+
+**例
+
+<<code
+panel.setFillStyle("green");
+>>
+
+<<code
+panel.setFillStyle("#ffeedd");
+>>
+
+<<code
+panel.setFillStyle("rgb(200,100,50)");
+>>

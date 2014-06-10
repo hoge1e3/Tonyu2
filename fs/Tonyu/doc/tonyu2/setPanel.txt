@@ -1,0 +1,13 @@
+[[Panel]]
+*setPanelメソッド
+
+パネルのサイズを設定します．
+
+<<code
+panel.setPanel(width,height);
+//パネルのサイズをwidth*heightに設定します．
+>>
+
+
+-width : パネルの横幅をあらわします
+-height : パネルの縦幅をあらわします

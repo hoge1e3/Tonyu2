@@ -1,0 +1,23 @@
+[[Panel]]
+
+*fillTextメソッド
+
+パネルに文字列を描画します．
+
+<<code
+panel.fillText(text,x,y,size,align);
+>>
+
+
+-text : 表示させたい文字列をあらわします
+-x : 文字を書くパネル内のx座標をあらわします
+-y : 文字を書くパネル内のy座標をあらわします
+-size : 描画する文字のサイズあらわします
+-align : 文字を描画する位置をあらわします
+
+
+**例
+
+<<code
+panel.fillText("text",50,50,30,"center");
+>>

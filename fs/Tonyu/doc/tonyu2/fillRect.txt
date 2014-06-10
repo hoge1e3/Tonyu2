@@ -1,0 +1,16 @@
+[[Panel]]
+
+*fillRectメソッド
+
+パネルに四角形を描画します．
+
+<<code
+panel.fillRect(x,y,rectWidth,rectHeight);
+>>
+
+
+
+-x : 四角形を描き始めるパネル内のx座標をあらわします
+-y : 四角形を描き始めるパネル内のy座標をあらわします
+-rectWidth : 描画する四角形の横幅をあらわします
+-rectHeight : 描画する四角形の縦幅をあらわします

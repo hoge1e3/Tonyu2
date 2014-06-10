@@ -1,0 +1,24 @@
+[[api]]
+*Panelクラス
+
+パネルの表示クラスです．
+* コンストラクタ
+
+<<code
+\new(param)
+>>
+
+paramでパネルの横幅と縦幅を設定します．paramに何も与えずにsetPanelメソッドを使用してサイズを設定することもできます．
+
+例： 
+<<code
+panel=new Panel();
+>>
+
+*メソッド
+
+-[[setPanel]]
+-[[setFillStyle]]
+-[[fillRect]]
+-[[fillText]]
+-[[clearRect]]

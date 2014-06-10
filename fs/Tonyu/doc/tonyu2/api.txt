@@ -12,6 +12,7 @@ Tonyu2で最初から使えるクラス群です．[[ファイルシステム>fs
 -[[NoviceActor]]
 -[[MathMod]]
 -[[Map]]
+-[[Panel]]
 
 *グローバル変数
 
