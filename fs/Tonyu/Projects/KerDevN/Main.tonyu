@@ -9,8 +9,10 @@ panel.setPanel(200,200);
 panel.setFillStyle("rgb(200,100,50");
 pw=200;
 ph=200;
-panel.x=50;
-panel.y=200;
+panel.x=500;
+panel.y=120;
+panel.vx=2;
+panel.vy=2;
 for(var j=1;j<7;j++){
     for(var i=2;i<28;i++){
         $map.set(i,j,p);
@@ -22,10 +24,18 @@ new Bar();
 var i=0;
 var dir=1;
 while(true){
+    //panel.rotation++;
     panel.clearRect(0,0,panel.width,panel.height);
     panel.fillRect(0,0,pw,ph);
-    print(panel.getPixel($mouseX-panel.x,$mouseY-panel.y));
-    pw--;
+    panel.x+=panel.vx;
+    panel.y+=panel.vy;
+    if(panel.x>$screenWidth) panel.vx=-2;
+    if(panel.x<0) panel.vx=2;
+    if(panel.y>$screenHeight) panel.vy=-2;
+    if(panel.y<0) panel.vy=2;
+    
+    print(panel.getPixel($mouseX-(panel.x-panel.width/2),$mouseY-(panel.y-panel.height/2)));
+    //pw--;
     if(pw<=0) pw=200;
     score++;
     label.text=score;
