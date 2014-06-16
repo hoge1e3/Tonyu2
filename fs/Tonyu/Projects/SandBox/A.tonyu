@@ -15,8 +15,13 @@ b();
 c();
 e();
 f();
-panel= new Panel{x:50,y:50};
+panel= new Panel{x:50, y:50};
 panel.setPanel(200,200);
-panel.setFillStyle("rgb(200,100,50");
+panel.setFillStyle("red");
 panel.fillRect(0,0,50,50);
+while (panel.x<200) {
+    panel.x++;
+    panel.rotation=30;
+    update();
+}
 //d();

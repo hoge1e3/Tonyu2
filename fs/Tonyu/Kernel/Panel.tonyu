@@ -1,4 +1,5 @@
 native $;
+native Math;
 \new(opt){
     super(opt);
     this.width=width;
@@ -40,15 +41,21 @@ native $;
 \getPixel(getX,getY){
     ctx=buf[0].getContext("2d");
     imagedata=ctx.getImageData(getX,getY,1,1);
-    colordata=[imagedata.data[0],imagedata.data[1],imagedata.data[2]];
-    //print(colordata);
+    colordata=[imagedata.data[0],imagedata.data[1],imagedata.data[2],imagedata.data[3]];
+    //print(imagedata.data);
     return(colordata);
 }
 \draw(ctx){
     pImg=buf[0];
     ctx.save();
+    ctx.translate(x,y);
+    if(this.rotation!=0){
+        ctx.rotate(this.rotation/180*Math.PI);
+    }else{
+        ctx.rotate(this.rotate/180*Math.PI);
+    }
     ctx.drawImage(
     pImg, 0, 0,width,height,
-    x, y, width ,height);
+    -width/2, -height/2, width ,height);
     ctx.restore();
 }
