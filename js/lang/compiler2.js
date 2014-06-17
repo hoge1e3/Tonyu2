@@ -654,6 +654,13 @@ function genJS(klass, env,pass) {
                 buf.printf("{%{%j%n%}}", ["%n",node.stmts]);
             }
         },
+	"typeof": function (node) {
+	    buf.printf("typeof ");
+	},
+	"instanceof": function (node) {
+	    buf.printf(" instanceof ");
+	}
+	/*,
         token: function (node) {
             if (node.text=="typeof") {
                 buf.printf("%s ",node.text);
@@ -662,7 +669,17 @@ function genJS(klass, env,pass) {
             } else {
                 buf.printf("%s",node.text);
             }
-        }
+        }*/
+    });
+    var opTokens=["++", "--", "!==", "===", "+=", "-=", "*=", "/=", 
+		  "%=", ">=", "<=",
+    "!=", "==", ">>", "<<", "&&", "||", ">", "<", "+", "?", "=", "*",
+    "%", "/", "^", "~", "\\", ":", ";", ",", "!", "&", "|", "-"
+	,"delete"	 ];
+    opTokens.forEach(function (opt) {
+	v.funcs[opt]=function (node) {
+	    buf.printf("%s",opt);
+	};
     });
     //v.debug=debug;
     v.def=function (node) {

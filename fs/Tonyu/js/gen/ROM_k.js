@@ -2,7 +2,7 @@
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1400573339495},"Actor.tonyu":{"lastUpdate":1400120164000},"BaseActor.tonyu":{"lastUpdate":1400120164000},"Boot.tonyu":{"lastUpdate":1400120164000},"Keys.tonyu":{"lastUpdate":1400120164000},"Map.tonyu":{"lastUpdate":1400120164000},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1400120164000},"NoviceActor.tonyu":{"lastUpdate":1400120164000},"ScaledCanvas.tonyu":{"lastUpdate":1400120164000},"Sprites.tonyu":{"lastUpdate":1400120164000},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1400120164000},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1402373376274}}',
+      '': '{".desktop":{"lastUpdate":1400573339495},"Actor.tonyu":{"lastUpdate":1400120164000},"BaseActor.tonyu":{"lastUpdate":1400120164000},"Boot.tonyu":{"lastUpdate":1400120164000},"Keys.tonyu":{"lastUpdate":1400120164000},"Map.tonyu":{"lastUpdate":1400120164000},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1400120164000},"NoviceActor.tonyu":{"lastUpdate":1400120164000},"ScaledCanvas.tonyu":{"lastUpdate":1400120164000},"Sprites.tonyu":{"lastUpdate":1400120164000},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1400120164000},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1402914810093}}',
       '.desktop': '{"runMenuOrd":["Map","BaseActor","Actor","Boot","Keys","MathMod","MML","NoviceActor","ScaledCanvas","Sprites","TObject","TQuery","WaveTable"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -1009,6 +1009,7 @@
       ,
       'Panel.tonyu': 
         'native $;\n'+
+        'native Math;\n'+
         '\\new(opt){\n'+
         '    super(opt);\n'+
         '    this.width=width;\n'+
@@ -1050,16 +1051,22 @@
         '\\getPixel(getX,getY){\n'+
         '    ctx=buf[0].getContext("2d");\n'+
         '    imagedata=ctx.getImageData(getX,getY,1,1);\n'+
-        '    colordata=[imagedata.data[0],imagedata.data[1],imagedata.data[2]];\n'+
-        '    //print(colordata);\n'+
+        '    colordata=[imagedata.data[0],imagedata.data[1],imagedata.data[2],imagedata.data[3]];\n'+
+        '    //print(imagedata.data);\n'+
         '    return(colordata);\n'+
         '}\n'+
         '\\draw(ctx){\n'+
         '    pImg=buf[0];\n'+
         '    ctx.save();\n'+
+        '    ctx.translate(x,y);\n'+
+        '    if(this.rotation!=0){\n'+
+        '        ctx.rotate(this.rotation/180*Math.PI);\n'+
+        '    }else{\n'+
+        '        ctx.rotate(this.rotate/180*Math.PI);\n'+
+        '    }\n'+
         '    ctx.drawImage(\n'+
         '    pImg, 0, 0,width,height,\n'+
-        '    x, y, width ,height);\n'+
+        '    -width/2, -height/2, width ,height);\n'+
         '    ctx.restore();\n'+
         '}'
       

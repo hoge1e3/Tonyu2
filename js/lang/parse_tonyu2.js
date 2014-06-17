@@ -3,16 +3,18 @@
  * TonyuLang.parse(src);
  *   - srcを解析して構文木を返す．構文エラーがあれば例外を投げる．
  */
-/*
-sys.load("js/parser.js");
-sys.load("js/ExpressionParser2.js");
-sys.load("js/Grammar.js");
+/*sys.load("js/parser.js");
+sys.load("js/ExpressionParser2Tonyu.js");
+sys.load("js/GrammarTonyu.js");
+sys.load("js/TError.js");
 sys.load("js/XMLBuffer.js");
 sys.load("js/IndentBuffer.js");
 sys.load("js/disp.js");
 sys.load("js/profiler.js");
+Parser.options.traceTap=false;
+sys.load("js/parser/tonyu2_token.js");
+//Parser.options.traceTap=true;
 */
-
 
 TonyuLang=function () {
 	var p=Parser;
@@ -21,92 +23,15 @@ TonyuLang=function () {
     var G=g.get;
 
     var sp=p.StringParser;//(str);
-    var spaceRaw=sp.reg(/^(\s*(\/\*([^\/]|[^*]\/|\r|\n)*\*\/)*(\/\/.*\r?\n)*)*/);
-    /*var space=Parser.create(function (s) {
-        var res=spaceCache[s.pos];
-        if (res) {
-            res.success=true;
-            return res;
-        }
-        res=spaceRaw.parse(s);
-        spaceCache[s.pos]=res;
-        return res;
-    }).setName("space").profile();*/
-    var space=spaceRaw;
-    //var space=sp.reg(/^(\s*(\/\*([^\/]|[^*]\/|\r|\n)*\*\/)*(\/\/.*\n)*)*/).setName("space").profile();
-    function tk(r, f) {
-        var pat;
-        var fst;
-        if (typeof r=="string") {
-            pat=sp.str(r);
-            if (r.length>0) fst=r.substring(0,1);
-        } else {
-            pat=sp.reg(r);
-        }
-        var res=space.ret(function (t) {
-            //console.log(r+" - "+t.src.str.substring(t.pos, t.pos+20).replace(/\r?\n/g,""));
-            return t;
-        }).and(pat).ret(function(a, b) {
-            if (typeof f == "function")
-                return f(b);
-            if (typeof f == "number")
-                return b[f];
-            var res={};
-            res.pos=b.pos;
-            res.len=b.len;
-            res.text=b.src.str.substring(res.pos, res.pos+res.len);
-            res.toString=function (){
-                return this.text;//+"("+this.pos+")";
-            };
-            //res.text=str.substring(b.pos, b.pos+b.len);
-            //console.log("b.text="+b.text);
-            res.type="token";
-            return res;
-        });
-        if (fst) res.first(space, fst);
-        return res.setName(r+"").profile();
-    }
-    var reserved={"function":true, "var":true , "return":true, "typeof": true, "if":true,
-                 "for":true,
-                 "super": true,
-                 "while":true,
-                 "break":true,
-                 "do":true,
-                 "switch":true,
-                 "try": true,
-                 "catch": true,
-                 "finally": true,
-                 "in": true,
-                 fiber:true,
-                 "native": true,
-                 "instanceof":true,
-                 "new": true,
-                 "is": true,
-                 "true": true,
-                 "false": true,
-                 "null":true,
-                 "this":true,
-                 "undefined": true,
-                 "usethread": true,
-                 "constructor": true,
-                 ifwait:true,
-                 nowait:true,
-                 arguments:true,
-                 "delete": true,
-		  "extends":true,
-		  "includes":true
-    };
-    var num=tk(/^[0-9\.]+/).ret(function (n) {
+    var tk=p.TokensParser.token;
+    var num=tk("number").ret(function (n) {
         n.type="number";
+        if (typeof n.text!="string") throw "No text for "+disp(n);
         n.value=parseFloat(n.text);
-        //console.log("n.val="+n.value);
+        if (isNaN(n.value)) throw "No value for "+disp(n);
         return n;
-    }).first(space,"0123456789");
-    var symbol=tk(/^[a-zA-Z_$][a-zA-Z0-9_$]*/).except(function (s) {
-        return reserved.hasOwnProperty(s.text);
-    }).ret(function (s) {
-        s.type="symbol";return s;
-    }).first(space/*,"_0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$"*/).setName("symbol");
+    });
+    var symbol=tk("symbol");
     var eqq=tk("===");
     var nee=tk("!==");
     var eq=tk("==");
@@ -123,40 +48,9 @@ TonyuLang=function () {
     var mul=tk("*");
     var div=tk("/");
     var mod=tk("%");
-    var assign=tk("=").noFollow(sp.str("="));
-    var literal=tk({exec: function (s) {
-        var head=s.substring(0,1);
-        if (head!=='"' && head!=="'") return false;
-        for (var i=1 ;i<s.length ; i++) {
-            var c=s.substring(i,i+1);
-            if (c===head) {
-                return [s.substring(0,i+1)];
-            } else if (c==="\\") {
-                i++;
-            }
-        }
-        return false;
-    },toString:function(){return"/^literal";}
-    }).ret(function (s) {
-        s.type="literal";
-        return s;
-    }).first(space,"\"'");
-    var regex=tk({exec: function (s) {
-        if (s.substring(0,1)!=='/') return false;
-        for (var i=1 ;i<s.length ; i++) {
-            var c=s.substring(i,i+1);
-            if (c==='/') {
-                return [s.substring(0,i+1)];
-            } else if (c==="\\") {
-                i++;
-            }
-        }
-        return false;
-    },toString:function(){return"/^regex";}
-    }).ret(function (s) {
-        s.type="regex";
-        return s;
-    }).first(space,"/");
+    var assign=tk("=");
+    var literal=tk("literal");
+    var regex=tk("regex");
     function retF(n) {
         return function () {
             return arguments[n];
@@ -169,13 +63,16 @@ TonyuLang=function () {
     var member=g("member").ands(tk(".") , symbol ).ret(null,     "name" );
     var parenExpr = g("parenExpr").ands(tk("("), e.lazy() , tk(")")).ret(null,"expr");
     var varAccess = g("varAccess").ands(symbol).ret("name");
-    var funcExpr_l=G("funcExpr").first(space,"f\\");
+    var funcExpr_l=G("funcExpr").firstTokens(["function","\\"]);
     var funcExprArg=g("funcExprArg").ands(funcExpr_l).ret("obj");
-    var objlit_l=G("objlit").first(space,"{");
+    var objlit_l=G("objlit").firstTokens("{");
     var objlitArg=g("objlitArg").ands(objlit_l).ret("obj");
     var objOrFuncArg=objlitArg.or(funcExprArg);
     function genCallBody(argList, oof) {
     	var res=[];
+    	if (argList && !argList.args) {
+    		throw disp(argList);
+    	}
     	if (argList) argList.args.forEach(function (arg) {
     		res.push(arg);
     	});
@@ -213,7 +110,7 @@ TonyuLang=function () {
     e.element(superExpr);
     e.element(funcExpr_l);
     e.element(objlit_l);
-    e.element(G("arylit").first(space,"["));
+    e.element(G("arylit").firstTokens("["));
     e.element(varAccess);
     var prio=0;
     e.infixr(prio,assign);
@@ -282,7 +179,7 @@ TonyuLang=function () {
     var expr=e.build().setName("expr").profile();
     var retF=function (i) { return function (){ return arguments[i];}; };
 
-    var stmt=G("stmt").first(space);
+    var stmt=G("stmt").firstTokens();
     var exprstmt=g("exprstmt").ands(expr,tk(";")).ret("expr");
     g("compound").ands(tk("{"), stmt.rep0(),tk("}")).ret(null,"stmts") ;
     var elseP=tk("else").and(stmt).ret(retF(1));
@@ -313,7 +210,7 @@ TonyuLang=function () {
     var varsDecl= g("varsDecl").ands(tk("var"), varDecl.sep1(tk(","),true), tk(";") ).ret(null ,"decls");
     g("funcDeclHead").ands(
             tk("nowait").opt(),
-            tk("function").or(tk("fiber")).or(tk("constructor")).or(tk("\\")).opt(),
+            tk("function").or(tk("fiber")).or(tk("tk_constructor")).or(tk("\\")).opt(),
             symbol.or(tk("new")) ,"paramDecls").ret("nowait","ftype","name","params");
     var funcDecl=g("funcDecl").ands("funcDeclHead","compound").ret("head","body");
     var nativeDecl=g("nativeDecl").ands(tk("native"),symbol,tk(";")).ret(null, "name");
@@ -336,7 +233,7 @@ TonyuLang=function () {
     var incl=g("includes").ands(tk("includes"), symbol.sep1(tk(","),true),tk(";")).
 	ret(null, "includeClassNames");
     var program=g("program").
-	ands(ext.opt(),incl.opt(),stmt.rep0(), space, sp.eof).
+	ands(ext.opt(),incl.opt(),stmt.rep0(), Parser.TokensParser.eof).
 	ret("ext","incl","stmts");
 
     for (var i in g.defs) {
@@ -349,20 +246,35 @@ TonyuLang=function () {
             str=file.text();
         }
         str+="\n"; // For end with // comment with no \n
-	    //console.log("Parse Start");
-		var res=sp.parse(program, str);
+	    var tokenRes=TT.parse(str);
+	    if (!tokenRes.isSuccess() ) {
+	    	//return "ERROR\nToken error at "+tokenRes.src.maxPos+"\n"+
+		//	str.substring(0,tokenRes.src.maxPos)+"!!HERE!!"+str.substring(tokenRes.src.maxPos);
+		throw TError("文法エラー(Token)", file ,  tokenRes.src.maxPos);
+	    }
+	    var tokens=tokenRes.result[0];
+        //console.log("Tokens: "+tokens.join(","));
+	    var res=p.TokensParser.parse(program, tokens);
 		//console.log("POS="+res.src.maxPos);
 		if (res.isSuccess() ) {
 			var node=res.result[0];
+			//console.log(disp(node));
 			return node;
+		    //var xmlsrc=$.genXML(str, node);
+		    //return "<program>"+xmlsrc+"</program>";
+
 		}
-		throw TError("文法エラー", file ,  res.src.maxPos);
-		//throw "ERROR\nSyntax error at "+res.src.maxPos+"\n"+res.src.str.substring(0,res.src.maxPos)+"!!HERE!!"+res.src.str.substring(res.src.maxPos);
+		var lt=tokens[res.src.maxPos];
+		var mp=(lt?lt.pos+lt.len: str.length);
+		throw TError("文法エラー", file ,  mp );
+		/*return "ERROR\nSyntax error at "+mp+"\n"+
+		str.substring(0,mp)+"!!HERE!!"+str.substring(mp);*/
 	};
 	$.genXML= function (src, node) {
 		var x=XMLBuffer(src) ;
 		x(node);
         return x.buf;
 	};
+	$.extension="tonyu";
 	return $;
 }();

@@ -1,4 +1,4 @@
-// Created at Wed Jun 11 2014 15:48:36 GMT+0900 (東京 (標準時))
+// Created at Tue Jun 17 2014 10:38:27 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -552,7 +552,7 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1400573339495},"Actor.tonyu":{"lastUpdate":1400120164000},"BaseActor.tonyu":{"lastUpdate":1400120164000},"Boot.tonyu":{"lastUpdate":1400120164000},"Keys.tonyu":{"lastUpdate":1400120164000},"Map.tonyu":{"lastUpdate":1400120164000},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1400120164000},"NoviceActor.tonyu":{"lastUpdate":1400120164000},"ScaledCanvas.tonyu":{"lastUpdate":1400120164000},"Sprites.tonyu":{"lastUpdate":1400120164000},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1400120164000},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1402373376274}}',
+      '': '{".desktop":{"lastUpdate":1400573339495},"Actor.tonyu":{"lastUpdate":1400120164000},"BaseActor.tonyu":{"lastUpdate":1400120164000},"Boot.tonyu":{"lastUpdate":1400120164000},"Keys.tonyu":{"lastUpdate":1400120164000},"Map.tonyu":{"lastUpdate":1400120164000},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1400120164000},"NoviceActor.tonyu":{"lastUpdate":1400120164000},"ScaledCanvas.tonyu":{"lastUpdate":1400120164000},"Sprites.tonyu":{"lastUpdate":1400120164000},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1400120164000},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1402914810093}}',
       '.desktop': '{"runMenuOrd":["Map","BaseActor","Actor","Boot","Keys","MathMod","MML","NoviceActor","ScaledCanvas","Sprites","TObject","TQuery","WaveTable"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -1559,6 +1559,7 @@ requireSimulator.setName('fs/ROMk');
       ,
       'Panel.tonyu': 
         'native $;\n'+
+        'native Math;\n'+
         '\\new(opt){\n'+
         '    super(opt);\n'+
         '    this.width=width;\n'+
@@ -1600,16 +1601,22 @@ requireSimulator.setName('fs/ROMk');
         '\\getPixel(getX,getY){\n'+
         '    ctx=buf[0].getContext("2d");\n'+
         '    imagedata=ctx.getImageData(getX,getY,1,1);\n'+
-        '    colordata=[imagedata.data[0],imagedata.data[1],imagedata.data[2]];\n'+
-        '    //print(colordata);\n'+
+        '    colordata=[imagedata.data[0],imagedata.data[1],imagedata.data[2],imagedata.data[3]];\n'+
+        '    //print(imagedata.data);\n'+
         '    return(colordata);\n'+
         '}\n'+
         '\\draw(ctx){\n'+
         '    pImg=buf[0];\n'+
         '    ctx.save();\n'+
+        '    ctx.translate(x,y);\n'+
+        '    if(this.rotation!=0){\n'+
+        '        ctx.rotate(this.rotation/180*Math.PI);\n'+
+        '    }else{\n'+
+        '        ctx.rotate(this.rotate/180*Math.PI);\n'+
+        '    }\n'+
         '    ctx.drawImage(\n'+
         '    pImg, 0, 0,width,height,\n'+
-        '    x, y, width ,height);\n'+
+        '    -width/2, -height/2, width ,height);\n'+
         '    ctx.restore();\n'+
         '}'
       
@@ -2125,7 +2132,8 @@ Parser=function () {
     }
     var $={
         consoleBuffer:"",
-        options: {traceTap:false, optimizeFirst: true, profile: false ,verboseFirst: false},
+        options: {traceTap:false, optimizeFirst: true, profile: false ,
+        verboseFirst: false,traceFirstTbl:false},
         Parser: Parser,
         StringParser: StringParser,
         nc: nc
@@ -2134,7 +2142,7 @@ Parser=function () {
     	var buf="";
     	var h={};
     	if (!tbl) return buf;
-    	for (var i in tbl) {
+    	for (var i in tbl) {// tbl:{char:Parser}   i:char
     		var n=tbl[i].name;
     		if (!h[n]) h[n]="";
     		h[n]+=i;
@@ -2147,7 +2155,25 @@ Parser=function () {
     //var console={log:function (s) { $.consoleBuffer+=s; }};
     function _debug(s) {console.log(s);}
     function Parser(parseFunc){
-        this.parse=parseFunc;
+    	if ($.options.traceTap) {
+    		this.parse=function(s){
+    			console.log("tap: name="+this.name+"  pos="+(s?s.pos:"?"));
+    			var r=parseFunc.apply(this,[s]);
+    			var img="NOIMG";
+    			if (r.src && r.src.str) {
+    				img=r.src.str.substring(r.pos-3,r.pos)+"^"+r.src.str.substring(r.pos,r.pos+3);
+    			}
+    			if (r.src && r.src.tokens) {
+					img=r.src.tokens[r.pos-1]+"["+r.src.tokens[r.pos]+"]"+r.src.tokens[r.pos+1];
+    			}
+
+    			console.log("/tap: name="+this.name+
+    					" pos="+(s?s.pos:"?")+"->"+(r?r.pos:"?")+" "+img+" res="+(r?r.success:"?"));
+    			return r;
+    		};
+    	} else {
+            this.parse=parseFunc;
+    	}
     };
     Parser.create=function(parseFunc) { // (State->State)->Parser
         return new Parser(parseFunc);
@@ -2161,27 +2187,27 @@ Parser=function () {
         // Parser.parse:: State->State
         except: function (f) {
         	var t=this;
-        	return Parser.create(function (s) {
-        		var res=t.parse(s);
-        		if (!res.success) return res;
+        	return this.ret(Parser.create(function (res) {
+                //var res=t.parse(s);
+                //if (!res.success) return res;
         		if (f.apply({}, res.result)) {
         			res.success=false;
         		}
         		return res;
-        	}).setName("(except "+t.name+")");
+        	}).setName("(except "+t.name+")"));
         },
         noFollow: function (p) {
             var t=this;
             nc(p,"p");
-            return Parser.create(function (s) {
-                var res=t.parse(s);
-                if (!res.success) return res;
+            return this.ret(Parser.create(function (res) {
+                //var res=t.parse(s);
+                //if (!res.success) return res;
                 var res2=p.parse(res);
                 res.success=!res2.success;
                 return res;
-            }).setName("("+t.name+" noFollow "+p.name+")");
+            }).setName("("+t.name+" noFollow "+p.name+")"));
         },
-        and: function(next) {// Parser.and:: (Function|Parser)  -> Parser
+        andNoUnify: function(next) {// Parser.and:: (Function|Parser)  -> Parser
         	nc(next,"next"); // next==next
         	var t=this; // Parser
             var res=Parser.create(function(s){ //s:State
@@ -2193,112 +2219,152 @@ Parser=function () {
                 }
                 return r2;
             });
-            res._first=this._first;
             return res.setName("("+this.name+" "+next.name+")");
         },
-        ret: function (f) {
-            nc(f,"f");
+        and: function(next) {// Parser.and:: Parser  -> Parser
+            var res=this.andNoUnify(next);
+            //if (!$.options.optimizeFirst) return res;
+            if (!this._first) return res;
+            var tbl=this._first.tbl;
+            var ntbl={};
+            //  tbl           ALL:a1  b:b1     c:c1
+            //  next.tbl      ALL:a2           c:c2     d:d2
+            //           ALL:a1>>next   b:b1>>next c:c1>>next
+            for (var c in tbl) {
+            	ntbl[c]=tbl[c].andNoUnify(next);
+            }
+            res=Parser.fromFirst(this._first.space, ntbl);
+        	res.setName("("+this.name+" >> "+next.name+")");
+            if ($.options.verboseFirst) {
+            	console.log("Created aunify name=" +res.name+" tbl="+$.dispTbl(ntbl));
+            }
+            return res;
+        },
+        retNoUnify: function (f) {
             var t=this;
+            var p;
+            if (typeof f=="function") {
+            	p=Parser.create(function (r1) {
+                    var r2=r1.clone();
+                    r2.result=[ f.apply({}, r1.result) ];
+                    return r2;
+            	}).setName("retfunc");
+            } else p=f;
             var res=Parser.create(function(s){ //s:State
                 var r1=t.parse(s); // r1:State
                 if (!r1.success) return r1;
-                var r2=r1.clone();
+                return p.parse(r1);
+                /*var r2=r1.clone();
                 r2.result=[ f.apply({}, r1.result) ];
-                return r2;
-            });
-            res._first=this._first;
+                return r2;*/
+            }).setName("("+this.name+" >= "+p.name+")");
             return res;
         },
+        ret: function(next) {// Parser.ret:: (Function|Parser)  -> Parser
+        	if (!this._first) return this.retNoUnify(next);
+            var tbl=this._first.tbl;
+            var ntbl={};
+            for (var c in tbl) {
+            	ntbl[c]=tbl[c].retNoUnify(next);
+            }
+            res=Parser.fromFirst(this._first.space, ntbl);
+        	res.setName("("+this.name+" >>= "+next.name+")");
+            if ($.options.verboseFirst) {
+            	console.log("Created runify name=" +res.name+" tbl="+$.dispTbl(ntbl));
+            }
+            return res;
+        },
+
+        /*
+        this._first={space: space, chars:String};
+        this._first={space: space, tbl:{char:Parser}};
+	*/
         first: function (space, ct) {
+        	if (!$.options.optimizeFirst) return this;
         	if (space==null) throw "Space is null2!";
         	if (typeof ct=="string") {
-        		this._first={space: space, chars:ct};
-        	} else {
-        		this._first={space: space, tbl:ct};
+        	        var tbl={};
+        	        for (var i=0; i<ct.length ; i++) {
+        	            tbl[ct.substring(i,i+1)]=this;
+        	        }
+        	    //this._first={space: space, tbl:tbl};
+        		return Parser.fromFirst(space,tbl).setName("(fst "+this.name+")");
+//        		this._first={space: space, chars:ct};
+        	} else if (ct==null) {
+        		return Parser.fromFirst(space,{ALL:this}).setName("(fst "+this.name+")");
+        		//this._first={space:space, tbl:{ALL:this}};
+        	} else if (typeof ct=="object") {
+        		throw "this._first={space: space, tbl:ct}";
         	}
         	return this;
         },
-        inheritFirst: function (p) {
-            this._first=p._first;
-            return this;
+        firstTokens: function (tokens) {
+        	if (!$.options.optimizeFirst) return this;
+        	if (typeof tokens=="string") tokens=[tokens];
+            var tbl={};
+       	    if (tokens) {
+       	    	var t=this;
+       	        tokens.forEach(function (token) {
+    	            tbl[token]=t;
+    	        });
+        	} else {
+        		tbl.ALL=this;
+        	}
+    		return Parser.fromFirstTokens(tbl).setName("(fstT "+this.name+")");
         },
         unifyFirst: function (other) {
-        	//return null;
+        	var thiz=this;
+        	function or(a,b) {
+        	     if (!a) return b;
+        	     if (!b) return a;
+        	     return a.orNoUnify(b).checkTbl();
+        	}
         	var tbl={}; // tbl.* includes tbl.ALL
-        	function setTbl(src) {// src:Parser
-        		var cs=src._first.chars;
-        		function mk(c) {
-        			if (!tbl[c]) {
-        				if (!tbl.ALL) tbl[c]=src;
-        				else tbl[c]=tbl.ALL.orNoUnify(src);
-        			} else {
-        				tbl[c]=tbl[c].orNoUnify(src);
-        			}
-        		}
-        		if (cs) {
-            		for (var i=0; i<cs.length ; i++) {
-            			var c=cs.substring(i,i+1);
-            			mk(c);
-            		}
-            	} else {
-        			mk("ALL");
-        			for (var i in tbl) {
-        				if (i==="ALL") continue;
-        				tbl[i]=tbl[i].orNoUnify(src);
-        			}
-            	}
-        	}
+        	this.checkTbl();
+        	other.checkTbl();
         	function mergeTbl() {
+        	//   {except_ALL: contains_ALL}
         		var t2=other._first.tbl;
-        		if ("ALL" in t2) {
-            		for (var c in tbl) {
-            			tbl[c]=tbl[c].orNoUnify(other);
-            		}
-            		for (var c in t2) {
-            			if (!tbl[c]) {
-            				tbl[c]=other;
-            			}
-            		}
-        		} else {
-        			for (var c in t2) {
-        				if (!tbl[c]) {
-        					tbl[c]=other;
-        				} else {
-        					tbl[c]=tbl[c].orNoUnify(other);
-        				}
-        			}
-        		}
+	        	//before tbl={ALL:a1, b:b1, c:c1}   t2={ALL:a2,c:c2,d:d2}
+	        	//       b1 conts a1  c1 conts a1     c2 conts a2   d2 conts a2
+	        	//after  tbl={ALL:a1|a2 , b:b1|a2    c:c1|c2    d:a1|d2 }
+	        	var keys={};
+	        	for (var k in tbl) { /*if (d) console.log("tbl.k="+k);*/ keys[k]=1;}
+	        	for (var k in t2)  { /*if (d) console.log("t2.k="+k);*/ keys[k]=1;}
+	        	delete keys.ALL;
+	        	if (tbl.ALL || t2.ALL) {
+	        	    tbl.ALL=or(tbl.ALL, t2.ALL);
+	        	}
+	        	for (var k in keys ) {
+	        		//if (d) console.log("k="+k);
+	        		//if (tbl[k] && !tbl[k].parse) throw "tbl["+k+"] = "+tbl[k];
+	        		//if (t2[k] && !t2[k].parse) throw "t2["+k+"] = "+tbl[k];
+	        	     if (tbl[k] && t2[k]) {
+	        	         tbl[k]=or(tbl[k],t2[k]);
+	        	     } else if (tbl[k] && !t2[k]) {
+	        	         tbl[k]=or(tbl[k],t2.ALL);
+	        	     } else if (!tbl[k] && t2[k]) {
+	        	         tbl[k]=or(tbl.ALL, t2[k]);
+	        	     }
+	        	}
         	}
-        	if (!this._first) return null;
-        	if (!other._first) return null;
-        	var space=this._first.space;
-        	if (space!==other._first.space) return null;
-        	if (space==null) throw "Space is null!";
-        	if (this._first.tbl) extend(tbl, this._first.tbl);
-        	else setTbl(this);
-        	if (other._first.tbl) mergeTbl();
-        	else setTbl(other);
-        	var res=Parser.create(function (s0) {
-        		var s=space.parse(s0);
-        		var f=s.src.str.substring(s.pos,s.pos+1);
-        		//console.log("name= "+this.name+" pos="+s.pos+" fst="+f+"  tbl="+$.dispTbl(tbl));
-        		if (tbl[f]) {
-            		//console.log("tbl[f].name="+tbl[f].name);
-            		return tbl[f].parse(s);
-        		}
-        		if (tbl.ALL) return tbl.ALL.parse(s);
-        		s.success=false;
-        		return s;
-        	});
-        	res.first(space, tbl).setName("("+this.name+")U("+other.name+")");
+        	extend(tbl, this._first.tbl);
+        	mergeTbl();
+        	var res=Parser.fromFirst(this._first.space, tbl).setName("("+this.name+")U("+other.name+")");
         	if ($.options.verboseFirst) console.log("Created unify name=" +res.name+" tbl="+$.dispTbl(tbl));
         	return res;
         },
         or: function(other) { // Parser->Parser
         	nc(other,"other");
-        	var u=($.options.optimizeFirst ? this.unifyFirst(other): null);
-        	if (u) return u;
-        	else return this.orNoUnify(other);
+          	if (this._first && other._first &&
+          			this._first.space && this._first.space===other._first.space) {
+            	return this.unifyFirst(other);
+          	} else {
+          		if ($.options.verboseFirst) {
+          			console.log("Cannot unify"+this.name+" || "+other.name+" "+this._first+" - "+other._first);
+          		}
+          		return this.orNoUnify(other);
+          	}
         },
         orNoUnify: function (other) {
            	var t=this;  // t:Parser
@@ -2316,11 +2382,17 @@ Parser=function () {
         },
         setName: function (n) {
         	this.name=n;
+        	if (this._first) {
+        		/*var tbl=this._first.tbl;
+        		for (var i in tbl) {
+        			tbl[i].setName("(elm "+i+" of "+n+")");
+        		}*/
+        	}
         	return this;
         },
-        profile: function () {
+        profile: function (name) {
             if ($.options.profile) {
-                this.parse=this.parse.profile(this.name);
+                this.parse=this.parse.profile(name || this.name);
             }
         	return this;
         },
@@ -2351,7 +2423,7 @@ Parser=function () {
         			}
         		}
         	});
-        	if (min>0) res._first=p._first;
+        	//if (min>0) res._first=p._first;
         	return res.setName("("+p.name+" * "+min+")");
         },
         rep0: function () { return this.repN(0); },
@@ -2397,6 +2469,7 @@ Parser=function () {
         	});
         },
         tap: function (msg) {
+        	return this;
         	if (!$.options.traceTap) return this;
         	if (!msg) msg="";
         	var t=this;
@@ -2407,18 +2480,41 @@ Parser=function () {
         		console.log("/tap:"+msg+" name:"+t.name+" pos="+(s?s.pos:"?")+"->"+(r?r.pos:"?")+" "+img+" res="+(r?r.success:"?"));
         		return r;
         	});
-        	res._first=this._first;
+        	/*if (this._first) {
+        		var ntbl={},tbl=this._first.tbl;
+        		for (var c in tbl) {
+        			ntbl=tbl[c].
+        		}
+        	}*/
         	return res.setName("(Tap "+t.name+")");
         },
         retN: function (i) {
         	return this.ret(function () {
         		return arguments[i];
-        	});
-        }
+        	})
+        },
+        parseStr: function (str,global) {
+            var st=new State(str,global);
+            return this.parse(st);
+        },
+    	checkTbl: function () {
+    		if (!this._first) return this;
+    		var tbl=this._first.tbl;
+    		for (var k in tbl) {
+    			if (!tbl[k].parse) throw this.name+": tbl."+k+" is not a parser :"+tbl[k];
+    		}
+    		return this;
+    	}
     });
-    function State(str) { // class State
-        if (typeof str=="string") {
-            this.src={str:str, maxPos:0};// maxPos is shared by all state
+    function State(strOrTokens, global) { // class State
+        if (strOrTokens!=null) {
+            this.src={maxPos:0, global:global};// maxPos is shared by all state
+            if (typeof strOrTokens=="string") {
+            	this.src.str=strOrTokens;
+            }
+            if (strOrTokens instanceof Array) {
+            	this.src.tokens=strOrTokens;
+            }
             this.pos=0;
             this.result=[]
             this.success=true;
@@ -2440,8 +2536,52 @@ Parser=function () {
         },
         isSuccess: function () {
         	return this.success;
+        },
+        getGlobal: function () {
+                if (!this.src.global) this.src.global={};
+                return this.src.global;
         }
     });
+    Parser.fromFirst=function (space, tbl) {
+    	if (space=="TOKEN") {
+    		return Parser.fromFirstTokens(tbl);
+    	}
+    	var res=Parser.create(function (s0) {
+    		var s=space.parse(s0);
+    		var f=s.src.str.substring(s.pos,s.pos+1);
+    		if ($.options.traceFirstTbl) {
+    			console.log(this.name+": first="+f+" tbl="+( tbl[f]?tbl[f].name:"-") );
+    		}
+    		if (tbl[f]) {
+        		return tbl[f].parse(s);
+    		}
+    		if (tbl.ALL) return tbl.ALL.parse(s);
+    		s.success=false;
+    		return s;
+    	});
+    	res._first={space:space,tbl:tbl};
+    	res.checkTbl();
+    	return res;
+    };
+    Parser.fromFirstTokens=function (tbl) {
+    	var res=Parser.create(function (s) {
+    		var t=s.src.tokens[s.pos];
+    		var f=t?t.type:null;
+    		if ($.options.traceFirstTbl) {
+    			console.log(this.name+": firstT="+f+" tbl="+( tbl[f]?tbl[f].name:"-") );
+    		}
+    		if (f!=null && tbl[f]) {
+        		return tbl[f].parse(s);
+    		}
+    		if (tbl.ALL) return tbl.ALL.parse(s);
+    		s.success=false;
+    		return s;
+    	});
+    	res._first={space:"TOKEN",tbl:tbl};
+    	res.checkTbl();
+    	return res;
+    };
+
     var StringParser={
         empty: Parser.create(function(state) {
         	var res=state.clone();
@@ -2457,7 +2597,7 @@ Parser=function () {
         	return this.strLike(function (str,pos) {
         		if (str.substring(pos, pos+st.length)===st) return {len:st.length};
         		return null;
-        	});
+        	}).setName(st);
         },
         reg: function (r) {//r: regex (must have ^ at the head)
         	if (!(r+"").match(/^\/\^/)) console.log("Waring regex should have ^ at the head:"+(r+""));
@@ -2468,7 +2608,7 @@ Parser=function () {
         			return res;
         		}
         		return null;
-        	});
+        	}).setName(r+"");
         },
         strLike: function (func) {
         	// func :: str,pos, state? -> {len:int, other...}  (null for no match )
@@ -2494,17 +2634,43 @@ Parser=function () {
                 }
             }).setName("STRLIKE");
         },
-    	parse: function (parser, str) {
-    		var st=new State(str);
+    	parse: function (parser, str,global) {
+    		var st=new State(str,global);
     		return parser.parse(st);
     	}
     };
+    //  why not eof: ? because StringParser.strLike
     StringParser.eof=StringParser.strLike(function (str,pos) {
     	if (pos==str.length) return {len:0};
     	return null;
     }).setName("EOF");
     $.StringParser=StringParser;
-
+    var TokensParser={
+    	token: function (type) {
+    		return Parser.create(function (s) {
+        		var t=s.src.tokens[s.pos];
+        		s.success=false;
+        		if (!t) return s;
+        		if (t.type==type) {
+            		s=s.clone();
+        		    s.updateMaxPos(s.pos);
+			    s.pos++;
+        		    s.success=true;
+        		    s.result=[t];
+        		}
+        		return s;
+        	}).setName(type).firstTokens(type);
+    	},
+    	parse:function (parser, tokens, global) {
+    		var st=new State(tokens,global);
+    		return parser.parse(st);
+    	},
+    	eof: Parser.create(function (s) {
+    		s.success=(s.pos>=s.src.tokens.length);
+    		return s;
+    	}).setName("EOT")
+    };
+    $.TokensParser=TokensParser;
     $.lazy=function (pf) { //   ( ()->Parser ) ->Parser
     	var p=null;
     	return Parser.create(function (st) {
@@ -2528,7 +2694,7 @@ Parser=function () {
     	return res;
     };
     $.setRange=function (res) {
-    	if (res==null || typeof res=="string" || typeof res=="number") return;
+    	if (res==null || typeof res=="string" || typeof res=="number" || typeof res=="boolean") return;
     	var exRange=$.getRange(res);
     	if (exRange!=null) return res;
     	for (var i in res) {
@@ -2735,6 +2901,297 @@ XMLBuffer.orderByPos=function (node) {
 	return res;
 };
 XMLBuffer.SUBELEMENTS="[SUBELEMENTS]";
+requireSimulator.setName('TError');
+function TError(mesg, src, pos) {
+    if (typeof src=="string") {
+        return {
+            isTError:true,
+            mesg:mesg,
+            src:{name:function () { return src;}},
+            pos:pos,
+            toString:function (){
+                return this.mesg+" at "+src+":"+this.pos;
+            },
+            raise: function () {
+                throw this;
+            }
+        };
+    }
+    if (typeof src.name!=="function") {
+        throw "src="+src+" should be file object";
+    }
+    return {
+        isTError:true,
+        mesg:mesg,src:src,pos:pos,
+        toString:function (){
+            return this.mesg+" at "+this.src.name()+":"+this.pos;
+        },
+        raise: function () {
+            throw this;
+        }
+    };
+}
+requireSimulator.setName('TT');
+/*sys.load("js/parser.js");
+sys.load("js/ExpressionParser2Tonyu.js");
+sys.load("js/GrammarTonyu.js");
+sys.load("js/XMLBuffer.js");
+sys.load("js/IndentBuffer.js");
+sys.load("js/disp.js");
+sys.load("js/profiler.js");
+*/
+
+TT=function () {
+	function profileTbl(parser, name) {
+		var tbl=parser._first.tbl;
+		for (var c in tbl) {
+			tbl[c].profile();//(c+" of "+tbl[name);
+		}
+	}
+	var sp=Parser.StringParser;
+	var SAMENAME="SAMENAME";
+	var DIV=1,REG=2;
+    var space=sp.reg(/^(\s*(\/\*([^\/]|[^*]\/|\r|\n)*\*\/)*(\/\/.*\n)*)*/).setName("space");
+    function tk(r, name) {
+        var pat;
+        var fst;
+        if (typeof r=="string") {
+            pat=sp.str(r);
+            if (r.length>0) fst=r.substring(0,1);
+            if (!name) name=r;
+        } else {
+            pat=sp.reg(r);
+            if (!name) name=r+"";
+        }
+        var res=space.and(pat).ret(function(a, b) {
+            var res={};
+            res.pos=b.pos;
+            if (typeof res.pos!="number") throw "no pos for "+name+" "+disp(b);
+            res.len=b.len;
+            res.text=b.src.str.substring(res.pos, res.pos+res.len);
+            if (typeof res.text!="string") throw "no text("+res.text+") for "+name+" "+disp(b);
+            res.toString=function (){
+                return this.text;
+            };
+            return res;
+        });
+        if (fst) res=res.first(space, fst);
+        return res.setName(name);//.profile();
+    }
+    var parsers={},posts={};
+    function dtk2(prev, name, parser, post) {
+    	//console.log("2reg="+prev+" name="+name);
+    	if (typeof parser=="string") parser=tk(parser);
+    	parsers[prev]=or(parsers[prev], parser.ret(function (res) {
+    		res.type=name;
+    		return res;
+    	}).setName(name) );
+    }
+    function dtk(prev, name, parser, post) {
+    	if(name==SAMENAME) name=parser;
+    	for (var m=1; m<=prev; m*=2) {
+    		//prev=1  -> m=1
+    		//prev=2  -> m=1x,2
+    		//XXprev=3  -> m=1,2,3
+    		if ((prev&m)!=0) dtk2(prev&m, name,parser,post);
+    	}
+    	posts[name]=post;
+    }
+    function or(a,b){
+    	if (!a) return b;
+    	return a.or(b);
+    }
+
+    var all=Parser.create(function (st) {
+    	var mode=REG;
+    	var res=[];
+    	while (true) {
+        	st=parsers[mode].parse(st);
+        	if (!st.success) break;
+        	var e=st.result[0];
+    		mode=posts[e.type];
+    		res.push(e);
+    	}
+    	st=space.parse(st);
+    	console.log(st.src.maxPos+"=="+st.src.str.length)
+    	st.success=st.src.maxPos==st.src.str.length;
+    	st.result[0]=res;
+    	return st;
+    });
+    /*function exprHead(name, parser) {
+    	dtk(REG, name, parser, DIV);
+    }
+    function exprMid(name, parser) {
+    	dtk(DIV, name, parser, REG);
+    }
+    function exprTail(name, parser) {
+    	dtk(DIV, name, parser, DIV);
+    }*/
+    var reserved={"function":true, "var":true , "return":true, "typeof": true, "if":true,
+            "for":true,
+            "else": true,
+            "super": true,
+            "while":true,
+            "break":true,
+            "do":true,
+            "switch":true,
+            "try": true,
+            "catch": true,
+            "finally": true,
+            "in": true,
+            fiber:true,
+            "native": true,
+            "instanceof":true,
+            "new": true,
+            "is": true,
+            "true": true,
+            "false": true,
+            "null":true,
+            "this":true,
+            "undefined": true,
+            "usethread": true,
+            "constructor": true,
+            ifwait:true,
+            nowait:true,
+            arguments:true,
+            "delete": true,
+            "extends":true,
+            "includes":true
+    };
+
+	var num=tk(/^[0-9\.]+/).ret(function (n) {
+        n.type="number";
+        n.value=parseInt(n.text);
+        return n;
+    }).first(space,"0123456789");
+	var literal=tk({exec: function (s) {
+        var head=s.substring(0,1);
+        if (head!=='"' && head!=="'") return false;
+        for (var i=1 ;i<s.length ; i++) {
+            var c=s.substring(i,i+1);
+            if (c===head) {
+                return [s.substring(0,i+1)];
+            } else if (c==="\\") {
+                i++;
+            }
+        }
+        return false;
+    },toString:function(){return"literal";}
+    }).first(space,"\"'");
+    var regex=tk({exec: function (s) {
+        if (s.substring(0,1)!=='/') return false;
+        for (var i=1 ;i<s.length ; i++) {
+            var c=s.substring(i,i+1);
+            if (c==='/') {
+                return [s.substring(0,i+1)];
+            } else if (c==="\\") {
+                i++;
+            }
+        }
+        return false;
+    },toString:function(){return"regex";}
+    }).first(space,"/");
+
+	dtk(REG|DIV, "number", num,DIV );
+	dtk(REG,  "regex" ,regex,DIV );
+	dtk(REG|DIV,  "literal" ,literal,DIV );
+
+	dtk(REG|DIV,SAMENAME ,"++",DIV );
+	dtk(REG|DIV,SAMENAME ,"--",DIV );
+
+	dtk(REG|DIV,SAMENAME ,"!==",REG );
+	dtk(REG|DIV,SAMENAME ,"===",REG );
+	dtk(REG|DIV,SAMENAME ,"+=",REG );
+	dtk(REG|DIV,SAMENAME ,"-=",REG );
+	dtk(REG|DIV,SAMENAME ,"*=",REG );
+	dtk(REG|DIV,SAMENAME ,"/=",REG );
+	dtk(REG|DIV,SAMENAME ,"%=",REG );
+	dtk(REG|DIV,SAMENAME ,">=",REG );
+	dtk(REG|DIV,SAMENAME ,"<=",REG );
+	dtk(REG|DIV,SAMENAME ,"!=",REG );
+	dtk(REG|DIV,SAMENAME ,"==",REG );
+	dtk(REG|DIV,SAMENAME ,">>",REG );
+	dtk(REG|DIV,SAMENAME ,"<<",REG );
+
+	dtk(REG|DIV,SAMENAME ,"&&",REG );
+	dtk(REG|DIV,SAMENAME ,"||",REG );
+
+
+	dtk(REG|DIV,SAMENAME ,"(",REG );
+	dtk(REG|DIV,SAMENAME ,")",DIV );
+
+
+	dtk(REG|DIV,SAMENAME ,"[",REG );
+	dtk(REG|DIV,SAMENAME ,"]",REG );
+
+	dtk(REG|DIV,SAMENAME ,"{",REG );
+	//dtk(REG|DIV,SAMENAME ,"}",REG );  // if () { .. }  /[a-z]/.exec()
+	dtk(REG|DIV,SAMENAME ,"}",DIV ); //in tonyu:  a{x:5}/3
+
+	dtk(REG|DIV,SAMENAME ,">",REG );
+	dtk(REG|DIV,SAMENAME ,"<",REG );
+	dtk(REG|DIV,SAMENAME ,"+",REG );
+	dtk(REG|DIV,SAMENAME ,"-",REG );
+	dtk(REG|DIV, SAMENAME ,".",REG );
+	dtk(REG|DIV,SAMENAME ,"?",REG );
+
+	dtk(REG|DIV, SAMENAME ,"=",REG );
+	dtk(REG|DIV, SAMENAME ,"*",REG );
+	dtk(REG|DIV, SAMENAME ,"%",REG );
+	dtk(DIV, SAMENAME ,"/",REG );
+
+	dtk(DIV|REG, SAMENAME ,"^",REG );
+	dtk(DIV|REG, SAMENAME ,"~",REG );
+
+	dtk(DIV|REG, SAMENAME ,"\\",REG );
+	dtk(DIV|REG, SAMENAME ,":",REG );
+	dtk(DIV|REG, SAMENAME ,";",REG );
+	dtk(DIV|REG, SAMENAME ,",",REG );
+	dtk(REG|DIV,SAMENAME ,"!",REG );
+	dtk(REG|DIV,SAMENAME ,"&",REG );
+	dtk(REG|DIV,SAMENAME ,"|",REG );
+
+	dtk(REG|DIV, "symbol", tk(/^[a-zA-Z_$][a-zA-Z0-9_$]*/,"ident_reg").except(function (s) {
+        return reserved.hasOwnProperty(s.text);
+    }).first(space/*, "_0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$"*/), DIV);
+    dtk(REG|DIV, "tk_constructor", "constructor", REG);
+    var resvs=[];
+    for (var n in reserved) {
+    	if (n!="constructor") resvs.push(n);
+    }
+    resvs.sort(function (a,b) {
+    	return b.length-a.length;
+    });
+    resvs.forEach(function (n) {
+    	dtk(REG|DIV, SAMENAME, n, REG);
+    });
+
+	//profileTbl( parsers[REG],"reg");
+	//profileTbl( parsers[DIV],"div");
+	//profileTbl( parsers[REG|DIV],"regdiv");
+	//parsers[REG|DIV]=parsers[REG].or(parsers[DIV]);
+    function parse(str) {
+    	//if (str.length>100000) return;
+    	var t1=new Date().getTime();
+		var res=Parser.StringParser.parse(all, str);
+		//console.log("Time="+(new Date().getTime()-t1));
+		if (res.success) {
+			/*res.result[0].forEach(function (e) {
+				if (e.type=="REGEX" || e.type=="DIV") {
+					console.log(e.type+"\t"+ str.substring(e.pos-5,e.pos+6));
+					//console.log( e.text+"\t"+e.type+"\t"+e.pos+"-"+e.len);
+				}
+			});*/
+		} else {
+			console.log("Stopped at "+str.substring( res.src.maxPos-5, res.src.maxPos+5));
+		}
+		return res;
+		//console.log(Profiler.report());
+		//console.log( disp(res.result[0]) );
+    }
+    return {parse:parse, extension:"js"};
+}();
+
 requireSimulator.setName('ExpressionParser');
 // parser.js の補助ライブラリ．式の解析を担当する
 function ExpressionParser() {
@@ -2769,15 +3226,11 @@ function ExpressionParser() {
 	    //var lastOP , isBuilt;
 	    var $={};
 	    $.reg=function (type, prio, a) {
-	        var opt=opType(type, prio);
-            built.add(Parser.create(function (st) {
-                if (st.src==null) console.log("st src null! at "+eg.name);
-                var r=a.parse(st);
-                if (r.isSuccess()) {
-                    r.opType=opt;
-                }
+	    	var opt=opType(type, prio);
+	        built.add(a.ret(Parser.create(function (r) {
+                r.opType=opt;
                 return r;
-            }).setName("(opType "+opt+" "+a.name+")").inheritFirst(a));
+            })).setName("(opType "+opt+" "+a.name+")") );
 	    };
 	    $.get=function () {return built.get();};
 	    $.parse=function (st) {
@@ -3008,52 +3461,24 @@ function ExpressionParser() {
 	};
 	return $;
 }
-requireSimulator.setName('TError');
-function TError(mesg, src, pos) {
-    if (typeof src=="string") {
-        return {
-            isTError:true,
-            mesg:mesg,
-            src:{name:function () { return src;}},
-            pos:pos,
-            toString:function (){
-                return this.mesg+" at "+src+":"+this.pos;
-            },
-            raise: function () {
-                throw this;
-            }
-        };
-    }
-    if (typeof src.name!=="function") {
-        throw "src="+src+" should be file object";
-    }
-    return {
-        isTError:true,
-        mesg:mesg,src:src,pos:pos,
-        toString:function (){
-            return this.mesg+" at "+this.src.name()+":"+this.pos;
-        },
-        raise: function () {
-            throw this;
-        }
-    };
-}
 requireSimulator.setName('TonyuLang');
 /*
  * Tonyu2 の構文解析を行う．
  * TonyuLang.parse(src);
  *   - srcを解析して構文木を返す．構文エラーがあれば例外を投げる．
  */
-/*
-sys.load("js/parser.js");
-sys.load("js/ExpressionParser2.js");
-sys.load("js/Grammar.js");
+/*sys.load("js/parser.js");
+sys.load("js/ExpressionParser2Tonyu.js");
+sys.load("js/GrammarTonyu.js");
+sys.load("js/TError.js");
 sys.load("js/XMLBuffer.js");
 sys.load("js/IndentBuffer.js");
 sys.load("js/disp.js");
 sys.load("js/profiler.js");
+Parser.options.traceTap=false;
+sys.load("js/parser/tonyu2_token.js");
+//Parser.options.traceTap=true;
 */
-
 
 TonyuLang=function () {
 	var p=Parser;
@@ -3062,92 +3487,15 @@ TonyuLang=function () {
     var G=g.get;
 
     var sp=p.StringParser;//(str);
-    var spaceRaw=sp.reg(/^(\s*(\/\*([^\/]|[^*]\/|\r|\n)*\*\/)*(\/\/.*\r?\n)*)*/);
-    /*var space=Parser.create(function (s) {
-        var res=spaceCache[s.pos];
-        if (res) {
-            res.success=true;
-            return res;
-        }
-        res=spaceRaw.parse(s);
-        spaceCache[s.pos]=res;
-        return res;
-    }).setName("space").profile();*/
-    var space=spaceRaw;
-    //var space=sp.reg(/^(\s*(\/\*([^\/]|[^*]\/|\r|\n)*\*\/)*(\/\/.*\n)*)*/).setName("space").profile();
-    function tk(r, f) {
-        var pat;
-        var fst;
-        if (typeof r=="string") {
-            pat=sp.str(r);
-            if (r.length>0) fst=r.substring(0,1);
-        } else {
-            pat=sp.reg(r);
-        }
-        var res=space.ret(function (t) {
-            //console.log(r+" - "+t.src.str.substring(t.pos, t.pos+20).replace(/\r?\n/g,""));
-            return t;
-        }).and(pat).ret(function(a, b) {
-            if (typeof f == "function")
-                return f(b);
-            if (typeof f == "number")
-                return b[f];
-            var res={};
-            res.pos=b.pos;
-            res.len=b.len;
-            res.text=b.src.str.substring(res.pos, res.pos+res.len);
-            res.toString=function (){
-                return this.text;//+"("+this.pos+")";
-            };
-            //res.text=str.substring(b.pos, b.pos+b.len);
-            //console.log("b.text="+b.text);
-            res.type="token";
-            return res;
-        });
-        if (fst) res.first(space, fst);
-        return res.setName(r+"").profile();
-    }
-    var reserved={"function":true, "var":true , "return":true, "typeof": true, "if":true,
-                 "for":true,
-                 "super": true,
-                 "while":true,
-                 "break":true,
-                 "do":true,
-                 "switch":true,
-                 "try": true,
-                 "catch": true,
-                 "finally": true,
-                 "in": true,
-                 fiber:true,
-                 "native": true,
-                 "instanceof":true,
-                 "new": true,
-                 "is": true,
-                 "true": true,
-                 "false": true,
-                 "null":true,
-                 "this":true,
-                 "undefined": true,
-                 "usethread": true,
-                 "constructor": true,
-                 ifwait:true,
-                 nowait:true,
-                 arguments:true,
-                 "delete": true,
-		  "extends":true,
-		  "includes":true
-    };
-    var num=tk(/^[0-9\.]+/).ret(function (n) {
+    var tk=p.TokensParser.token;
+    var num=tk("number").ret(function (n) {
         n.type="number";
+        if (typeof n.text!="string") throw "No text for "+disp(n);
         n.value=parseFloat(n.text);
-        //console.log("n.val="+n.value);
+        if (isNaN(n.value)) throw "No value for "+disp(n);
         return n;
-    }).first(space,"0123456789");
-    var symbol=tk(/^[a-zA-Z_$][a-zA-Z0-9_$]*/).except(function (s) {
-        return reserved.hasOwnProperty(s.text);
-    }).ret(function (s) {
-        s.type="symbol";return s;
-    }).first(space/*,"_0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$"*/).setName("symbol");
+    });
+    var symbol=tk("symbol");
     var eqq=tk("===");
     var nee=tk("!==");
     var eq=tk("==");
@@ -3164,40 +3512,9 @@ TonyuLang=function () {
     var mul=tk("*");
     var div=tk("/");
     var mod=tk("%");
-    var assign=tk("=").noFollow(sp.str("="));
-    var literal=tk({exec: function (s) {
-        var head=s.substring(0,1);
-        if (head!=='"' && head!=="'") return false;
-        for (var i=1 ;i<s.length ; i++) {
-            var c=s.substring(i,i+1);
-            if (c===head) {
-                return [s.substring(0,i+1)];
-            } else if (c==="\\") {
-                i++;
-            }
-        }
-        return false;
-    },toString:function(){return"/^literal";}
-    }).ret(function (s) {
-        s.type="literal";
-        return s;
-    }).first(space,"\"'");
-    var regex=tk({exec: function (s) {
-        if (s.substring(0,1)!=='/') return false;
-        for (var i=1 ;i<s.length ; i++) {
-            var c=s.substring(i,i+1);
-            if (c==='/') {
-                return [s.substring(0,i+1)];
-            } else if (c==="\\") {
-                i++;
-            }
-        }
-        return false;
-    },toString:function(){return"/^regex";}
-    }).ret(function (s) {
-        s.type="regex";
-        return s;
-    }).first(space,"/");
+    var assign=tk("=");
+    var literal=tk("literal");
+    var regex=tk("regex");
     function retF(n) {
         return function () {
             return arguments[n];
@@ -3210,13 +3527,16 @@ TonyuLang=function () {
     var member=g("member").ands(tk(".") , symbol ).ret(null,     "name" );
     var parenExpr = g("parenExpr").ands(tk("("), e.lazy() , tk(")")).ret(null,"expr");
     var varAccess = g("varAccess").ands(symbol).ret("name");
-    var funcExpr_l=G("funcExpr").first(space,"f\\");
+    var funcExpr_l=G("funcExpr").firstTokens(["function","\\"]);
     var funcExprArg=g("funcExprArg").ands(funcExpr_l).ret("obj");
-    var objlit_l=G("objlit").first(space,"{");
+    var objlit_l=G("objlit").firstTokens("{");
     var objlitArg=g("objlitArg").ands(objlit_l).ret("obj");
     var objOrFuncArg=objlitArg.or(funcExprArg);
     function genCallBody(argList, oof) {
     	var res=[];
+    	if (argList && !argList.args) {
+    		throw disp(argList);
+    	}
     	if (argList) argList.args.forEach(function (arg) {
     		res.push(arg);
     	});
@@ -3254,7 +3574,7 @@ TonyuLang=function () {
     e.element(superExpr);
     e.element(funcExpr_l);
     e.element(objlit_l);
-    e.element(G("arylit").first(space,"["));
+    e.element(G("arylit").firstTokens("["));
     e.element(varAccess);
     var prio=0;
     e.infixr(prio,assign);
@@ -3323,7 +3643,7 @@ TonyuLang=function () {
     var expr=e.build().setName("expr").profile();
     var retF=function (i) { return function (){ return arguments[i];}; };
 
-    var stmt=G("stmt").first(space);
+    var stmt=G("stmt").firstTokens();
     var exprstmt=g("exprstmt").ands(expr,tk(";")).ret("expr");
     g("compound").ands(tk("{"), stmt.rep0(),tk("}")).ret(null,"stmts") ;
     var elseP=tk("else").and(stmt).ret(retF(1));
@@ -3354,7 +3674,7 @@ TonyuLang=function () {
     var varsDecl= g("varsDecl").ands(tk("var"), varDecl.sep1(tk(","),true), tk(";") ).ret(null ,"decls");
     g("funcDeclHead").ands(
             tk("nowait").opt(),
-            tk("function").or(tk("fiber")).or(tk("constructor")).or(tk("\\")).opt(),
+            tk("function").or(tk("fiber")).or(tk("tk_constructor")).or(tk("\\")).opt(),
             symbol.or(tk("new")) ,"paramDecls").ret("nowait","ftype","name","params");
     var funcDecl=g("funcDecl").ands("funcDeclHead","compound").ret("head","body");
     var nativeDecl=g("nativeDecl").ands(tk("native"),symbol,tk(";")).ret(null, "name");
@@ -3377,7 +3697,7 @@ TonyuLang=function () {
     var incl=g("includes").ands(tk("includes"), symbol.sep1(tk(","),true),tk(";")).
 	ret(null, "includeClassNames");
     var program=g("program").
-	ands(ext.opt(),incl.opt(),stmt.rep0(), space, sp.eof).
+	ands(ext.opt(),incl.opt(),stmt.rep0(), Parser.TokensParser.eof).
 	ret("ext","incl","stmts");
 
     for (var i in g.defs) {
@@ -3390,21 +3710,36 @@ TonyuLang=function () {
             str=file.text();
         }
         str+="\n"; // For end with // comment with no \n
-	    //console.log("Parse Start");
-		var res=sp.parse(program, str);
+	    var tokenRes=TT.parse(str);
+	    if (!tokenRes.isSuccess() ) {
+	    	//return "ERROR\nToken error at "+tokenRes.src.maxPos+"\n"+
+		//	str.substring(0,tokenRes.src.maxPos)+"!!HERE!!"+str.substring(tokenRes.src.maxPos);
+		throw TError("文法エラー(Token)", file ,  tokenRes.src.maxPos);
+	    }
+	    var tokens=tokenRes.result[0];
+        //console.log("Tokens: "+tokens.join(","));
+	    var res=p.TokensParser.parse(program, tokens);
 		//console.log("POS="+res.src.maxPos);
 		if (res.isSuccess() ) {
 			var node=res.result[0];
+			//console.log(disp(node));
 			return node;
+		    //var xmlsrc=$.genXML(str, node);
+		    //return "<program>"+xmlsrc+"</program>";
+
 		}
-		throw TError("文法エラー", file ,  res.src.maxPos);
-		//throw "ERROR\nSyntax error at "+res.src.maxPos+"\n"+res.src.str.substring(0,res.src.maxPos)+"!!HERE!!"+res.src.str.substring(res.src.maxPos);
+		var lt=tokens[res.src.maxPos];
+		var mp=(lt?lt.pos+lt.len: str.length);
+		throw TError("文法エラー", file ,  mp );
+		/*return "ERROR\nSyntax error at "+mp+"\n"+
+		str.substring(0,mp)+"!!HERE!!"+str.substring(mp);*/
 	};
 	$.genXML= function (src, node) {
 		var x=XMLBuffer(src) ;
 		x(node);
         return x.buf;
 	};
+	$.extension="tonyu";
 	return $;
 }();
 
@@ -4185,6 +4520,13 @@ function genJS(klass, env,pass) {
                 buf.printf("{%{%j%n%}}", ["%n",node.stmts]);
             }
         },
+	"typeof": function (node) {
+	    buf.printf("typeof ");
+	},
+	"instanceof": function (node) {
+	    buf.printf(" instanceof ");
+	}
+	/*,
         token: function (node) {
             if (node.text=="typeof") {
                 buf.printf("%s ",node.text);
@@ -4193,7 +4535,17 @@ function genJS(klass, env,pass) {
             } else {
                 buf.printf("%s",node.text);
             }
-        }
+        }*/
+    });
+    var opTokens=["++", "--", "!==", "===", "+=", "-=", "*=", "/=", 
+		  "%=", ">=", "<=",
+    "!=", "==", ">>", "<<", "&&", "||", ">", "<", "+", "?", "=", "*",
+    "%", "/", "^", "~", "\\", ":", ";", ",", "!", "&", "|", "-"
+	,"delete"	 ];
+    opTokens.forEach(function (opt) {
+	v.funcs[opt]=function (node) {
+	    buf.printf("%s",opt);
+	};
     });
     //v.debug=debug;
     v.def=function (node) {

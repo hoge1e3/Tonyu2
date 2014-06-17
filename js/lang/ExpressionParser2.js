@@ -31,15 +31,11 @@ function ExpressionParser() {
 	    //var lastOP , isBuilt;
 	    var $={};
 	    $.reg=function (type, prio, a) {
-	        var opt=opType(type, prio);
-            built.add(Parser.create(function (st) {
-                if (st.src==null) console.log("st src null! at "+eg.name);
-                var r=a.parse(st);
-                if (r.isSuccess()) {
-                    r.opType=opt;
-                }
+	    	var opt=opType(type, prio);
+	        built.add(a.ret(Parser.create(function (r) {
+                r.opType=opt;
                 return r;
-            }).setName("(opType "+opt+" "+a.name+")").inheritFirst(a));
+            })).setName("(opType "+opt+" "+a.name+")") );
 	    };
 	    $.get=function () {return built.get();};
 	    $.parse=function (st) {
