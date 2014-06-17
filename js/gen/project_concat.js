@@ -1,4 +1,4 @@
-// Created at Tue Jun 17 2014 10:38:26 GMT+0900 (東京 (標準時))
+// Created at Tue Jun 17 2014 11:10:10 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -5791,7 +5791,7 @@ function showErrorPos(elem, err) {
     }
     close();
     var mesgd=$("<div>").text(mesg+" 場所："+src.name());
-    mesgd.append($("<button>").text("閉じる").click(close));
+    //mesgd.append($("<button>").text("閉じる").click(close));
     elem.append(mesgd);
     var str=src.text();
     var srcd=$("<pre>");
@@ -5799,7 +5799,11 @@ function showErrorPos(elem, err) {
     srcd.append($("<img>").attr("src",WebSite.top+"images/ecl.png"));
     srcd.append($("<span>").text(str.substring(pos)));
     elem.append(srcd);
+    //elem.attr("title",mesg+" 場所："+src.name());
+    elem.attr("title","エラー");
+    elem.dialog({width:600,height:400});
 }
+
 requireSimulator.setName('IndentBuffer');
 IndentBuffer=function () {
 	var $=function () {
@@ -11233,9 +11237,11 @@ $(function () {
             break;
         case "compile_error":
             //$("#errorPos").show();// slideDown(1000, next);
-            break;
+            if (typeof SplashScreen!="undefined") SplashScreen.hide();
+	    break;
         case "runtime_error":
             //$("#errorPos").slideDown(1000, next);
+            if (typeof SplashScreen!="undefined") SplashScreen.hide();
             break;
         case "edit":
             //$("#runArea").slideUp(1000);

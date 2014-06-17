@@ -1,0 +1,16 @@
+text="+";
+size=30;
+fillStyle="red";
+active=true;
+x=300;y=300;
+while (true) {
+    if (active && $mouseX>0 && $mouseY>0) {
+        x=$mouseX;
+        y=$mouseY;
+    }
+    text=active?"+":"";
+    if (!active && ($mouseX!=x || $mouseY!=y)) {
+        active=true;
+    }
+    update();
+}

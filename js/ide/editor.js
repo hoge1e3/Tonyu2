@@ -197,9 +197,11 @@ $(function () {
             break;
         case "compile_error":
             //$("#errorPos").show();// slideDown(1000, next);
-            break;
+            if (typeof SplashScreen!="undefined") SplashScreen.hide();
+	    break;
         case "runtime_error":
             //$("#errorPos").slideDown(1000, next);
+            if (typeof SplashScreen!="undefined") SplashScreen.hide();
             break;
         case "edit":
             //$("#runArea").slideUp(1000);

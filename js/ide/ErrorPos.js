@@ -18,7 +18,7 @@ function showErrorPos(elem, err) {
     }
     close();
     var mesgd=$("<div>").text(mesg+" 場所："+src.name());
-    mesgd.append($("<button>").text("閉じる").click(close));
+    //mesgd.append($("<button>").text("閉じる").click(close));
     elem.append(mesgd);
     var str=src.text();
     var srcd=$("<pre>");
@@ -26,4 +26,7 @@ function showErrorPos(elem, err) {
     srcd.append($("<img>").attr("src",WebSite.top+"images/ecl.png"));
     srcd.append($("<span>").text(str.substring(pos)));
     elem.append(srcd);
+    //elem.attr("title",mesg+" 場所："+src.name());
+    elem.attr("title","エラー");
+    elem.dialog({width:600,height:400});
 }

@@ -1,0 +1,32 @@
+
+padding=10;
+bwidth=$screenWidth*0.8;
+x=$screenWidth/2;
+clicked=0;
+while (true) {
+    if (clicked>0) {
+        clicked++;
+        if (clicked>25) clicked=0;
+    }
+    r=getCrashRect();
+    mouseClicked=getkey(1)==1;
+    touched=!ptouch && $touches[0].touched ;
+    ptouch=$touches[0].touched;
+    if ((mouseClicked || touched) &&
+    $mouseX>r.x-r.width/2 && $mouseX<r.x+r.width/2 && 
+    $mouseY>r.y-r.height/2 && $mouseY<r.y+r.height/2) {
+        clickedBy=mouseClicked ?"mouse":"touch";
+        clicked=1;
+    }    
+    update();
+}
+\draw(c) {
+    c.fillStyle="rgb("+(clicked ? 255-clicked*10: 0)+",200,0)";
+    c.fillRect(x-bwidth/2,y-padding,
+    bwidth,height+padding*2);
+    super.draw(c);
+}
+\getCrashRect() {
+    return {x,y:y-padding+height/2,
+    width:bwidth+padding*2,height:height+padding*2};
+}
