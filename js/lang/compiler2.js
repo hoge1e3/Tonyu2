@@ -659,6 +659,9 @@ function genJS(klass, env,pass) {
 	},
 	"instanceof": function (node) {
 	    buf.printf(" instanceof ");
+	},
+	regex: function (node) {
+	    buf.printf("%s",node.text);
 	}
 	/*,
         token: function (node) {
