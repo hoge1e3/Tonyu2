@@ -1,4 +1,4 @@
-// Created at Tue Jun 17 2014 11:10:11 GMT+0900 (東京 (標準時))
+// Created at Tue Jun 17 2014 13:03:22 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -2951,7 +2951,7 @@ TT=function () {
 	var sp=Parser.StringParser;
 	var SAMENAME="SAMENAME";
 	var DIV=1,REG=2;
-    var space=sp.reg(/^(\s*(\/\*([^\/]|[^*]\/|\r|\n)*\*\/)*(\/\/.*\n)*)*/).setName("space");
+    var space=sp.reg(/^(\s*(\/\*([^\/]|[^*]\/|\r|\n)*\*\/)*(\/\/.*\r?\n)*)*/).setName("space");
     function tk(r, name) {
         var pat;
         var fst;

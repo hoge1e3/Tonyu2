@@ -17,7 +17,7 @@ TT=function () {
 	var sp=Parser.StringParser;
 	var SAMENAME="SAMENAME";
 	var DIV=1,REG=2;
-    var space=sp.reg(/^(\s*(\/\*([^\/]|[^*]\/|\r|\n)*\*\/)*(\/\/.*\n)*)*/).setName("space");
+    var space=sp.reg(/^(\s*(\/\*([^\/]|[^*]\/|\r|\n)*\*\/)*(\/\/.*\r?\n)*)*/).setName("space");
     function tk(r, name) {
         var pat;
         var fst;

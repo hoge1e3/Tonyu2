@@ -1,6 +1,6 @@
 $Screen.resize(448,400);
 $map=new Map{chipWidth:32,chipHeight:32,col:30,row:30};
-p=3;
+p=3;//test
 $pad=new Pad{x:72,y:$screenHeight-72};
 score=0;
 label=new Label{x:100,y:200,text:score,size:30};
