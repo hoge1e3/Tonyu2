@@ -1,4 +1,4 @@
-// Created at Tue Jun 17 2014 13:03:22 GMT+0900 (東京 (標準時))
+// Created at Tue Jun 17 2014 15:33:49 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -6999,9 +6999,22 @@ TT=function () {
 	dtk(REG|DIV,SAMENAME ,"&",REG );
 	dtk(REG|DIV,SAMENAME ,"|",REG );
 
-	dtk(REG|DIV, "symbol", tk(/^[a-zA-Z_$][a-zA-Z0-9_$]*/,"ident_reg").except(function (s) {
-        return reserved.hasOwnProperty(s.text);
-    }).first(space/*, "_0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$"*/), DIV);
+    var symresv=tk(/^[a-zA-Z_$][a-zA-Z0-9_$]*/,"symresv_reg").ret(function (s) {
+	s.type=(s.text=="constructor" ? "tk_constructor" :
+		reserved.hasOwnProperty(s.text) ? s.text : "symbol");
+	return s;
+    }).first(space);
+    for (var n in reserved) {
+    	posts[n]=REG;
+    }
+    posts.tk_constructor=REG;
+    posts.symbol=DIV;
+    parsers[REG]=or(parsers[REG],symresv);
+    parsers[DIV]=or(parsers[DIV],symresv);
+
+//	dtk(REG|DIV, "symbol", tk(/^[a-zA-Z_$][a-zA-Z0-9_$]*/,"ident_reg").except(function (s) {
+  /*      return reserved.hasOwnProperty(s.text);
+    }).first(space), DIV);
     dtk(REG|DIV, "tk_constructor", "constructor", REG);
     var resvs=[];
     for (var n in reserved) {
@@ -7013,7 +7026,7 @@ TT=function () {
     resvs.forEach(function (n) {
     	dtk(REG|DIV, SAMENAME, n, REG);
     });
-
+*/
 	//profileTbl( parsers[REG],"reg");
 	//profileTbl( parsers[DIV],"div");
 	//profileTbl( parsers[REG|DIV],"regdiv");
@@ -8999,6 +9012,9 @@ function genJS(klass, env,pass) {
 	},
 	"instanceof": function (node) {
 	    buf.printf(" instanceof ");
+	},
+	regex: function (node) {
+	    buf.printf("%s",node.text);
 	}
 	/*,
         token: function (node) {
