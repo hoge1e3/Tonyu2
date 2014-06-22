@@ -2,6 +2,9 @@ define(["FS","Util"], function (FS,Util) {
     var dir=Util.getQueryString("dir", "/Tonyu/Projects/1_Animation/");
     //var main=Util.getQueryString("main", "Main");
     var buf="";
+    buf+="<div id='splash' style='position:relative'>\n";
+    buf+="<!--ここに，ロード中に表示する内容を記述できます-->\n";
+    buf+="</div>\n";
     buf+="<!--\n";
     buf+="このプログラムをTonyuの開発環境で編集するには，\n";
     buf+="http://tonyuedit.appspot.com/edit/html/build/importFromJsdoit.html\n";

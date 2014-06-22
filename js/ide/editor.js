@@ -262,6 +262,7 @@ $(function () {
         prog.setReadOnly(true);
     }
     function fixEditorIndent() {
+	return;
         var cur=prog.getCursorPosition();
         prog.setValue(fixIndent( prog.getValue() ));
         prog.clearSelection();
