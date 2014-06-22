@@ -1,4 +1,4 @@
-// Created at Sun Jun 22 2014 16:57:20 GMT+0900 (東京 (標準時))
+// Created at Sun Jun 22 2014 17:34:17 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -3013,7 +3013,7 @@ TT=function () {
     		res.push(e);
     	}
     	st=space.parse(st);
-    	console.log(st.src.maxPos+"=="+st.src.str.length)
+    	//console.log(st.src.maxPos+"=="+st.src.str.length)
     	st.success=st.src.maxPos==st.src.str.length;
     	st.result[0]=res;
     	return st;

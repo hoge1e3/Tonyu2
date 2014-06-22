@@ -79,7 +79,7 @@ TT=function () {
     		res.push(e);
     	}
     	st=space.parse(st);
-    	console.log(st.src.maxPos+"=="+st.src.str.length)
+    	//console.log(st.src.maxPos+"=="+st.src.str.length)
     	st.success=st.src.maxPos==st.src.str.length;
     	st.result[0]=res;
     	return st;

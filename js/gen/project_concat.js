@@ -1,4 +1,4 @@
-// Created at Sun Jun 22 2014 16:57:19 GMT+0900 (東京 (標準時))
+// Created at Sun Jun 22 2014 17:34:16 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -6861,7 +6861,7 @@ TT=function () {
     		res.push(e);
     	}
     	st=space.parse(st);
-    	console.log(st.src.maxPos+"=="+st.src.str.length)
+    	//console.log(st.src.maxPos+"=="+st.src.str.length)
     	st.success=st.src.maxPos==st.src.str.length;
     	st.result[0]=res;
     	return st;
@@ -7636,14 +7636,24 @@ function fixIndent(str, indentStr) {
     var incdec={"{":1, "}":-1};
     var linfo=[];
     try {
-        var node=TonyuLang.parse(str);
-        var v=Visitor({
-            token: function (node) {
+        var tokenRes=TT.parse(str);
+	var tokens=tokenRes.result[0];
+	tokens.forEach(function (token) {
+	    if (incdec[token.type]) {
+		if (!linfo[r.row]) linfo[r.row]="";
+                linfo[r.row]+=token.type;
+	    }
+	});
+        /*var v=Visitor({
+            "{": function (node) {
                 var r=pos2RC(str, node.pos);
                 if (!linfo[r.row]) linfo[r.row]="";
-                if (incdec[node.text]) {
-                    if (incdec[node.text]) linfo[r.row]+=node.text;
-                }
+                linfo[r.row]+=node.text;
+            },
+	    "}": function (node) {
+                var r=pos2RC(str, node.pos);
+                if (!linfo[r.row]) linfo[r.row]="";
+                linfo[r.row]+=node.text;
             }
         });
         v.def=function (node) {
@@ -7660,7 +7670,7 @@ function fixIndent(str, indentStr) {
                 }
             }
         };
-        v.visit(node);
+        v.visit(node);*/
     }catch(e) {
         var r={row:0, col:0};
         var len=str.length;
@@ -7668,7 +7678,7 @@ function fixIndent(str, indentStr) {
             var c=str.substring(i,i+1);
             if (incdec[c]) {
                 if (!linfo[r.row]) linfo[r.row]="";
-                if(incdec[c]) linfo[r.row]+=incdec[c];
+                linfo[r.row]+=c;
             } else if (c=="\n") {
                 r.row++;
                 r.col=0;
@@ -7677,25 +7687,28 @@ function fixIndent(str, indentStr) {
             }
         }
     }
+    //console.log(linfo);
     var res="";
     var lines=str.split("\n");
     var curDepth=0;
     var row=0;
     lines.forEach(function (line) {
+	var opens=0, closes=0;
+        line=line.replace(/^\s*/,"");
         if (linfo[row]!=null) {
-            line=line.replace(/^\s*/,"");
             linfo[row].match(/^(\}*)/);
-            var closes=RegExp.$1.length;
+            closes=RegExp.$1.length;
             linfo[row].match(/(\{*)$/);
-            var opens=RegExp.$1.length;
-            curDepth-=closes;
-            line=indStr()+line;
-            curDepth+=opens;
-        }
+            opens=RegExp.$1.length;
+	}
+        curDepth-=closes;
+        line=indStr()+line;
+        curDepth+=opens;
         res+=line+"\n";
         row++;
     });
     res=res.replace(/\n$/,"");
+    //console.log(res);
     return res;
     function indStr() {
         var res="";
@@ -11318,7 +11331,6 @@ $(function () {
         prog.setReadOnly(true);
     }
     function fixEditorIndent() {
-	return;
         var cur=prog.getCursorPosition();
         prog.setValue(fixIndent( prog.getValue() ));
         prog.clearSelection();
