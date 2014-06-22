@@ -1,4 +1,4 @@
-// Created at Tue Jun 17 2014 15:33:49 GMT+0900 (東京 (標準時))
+// Created at Sun Jun 22 2014 16:57:20 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -5602,6 +5602,9 @@ requirejs(["fs/ROMk","FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS
                 ],
                 sounds:[]
         };
+	SplashScreen={hide: function () {
+	    $("#splash").hide();
+	},show:function(){}};
         var w=$(window).width();
         var h=$(window).height();
         $("body").css({overflow:"hidden", margin:"0px"});
