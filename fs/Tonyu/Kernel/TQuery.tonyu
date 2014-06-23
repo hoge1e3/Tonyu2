@@ -1,4 +1,5 @@
 extends TObject;
+includes MathMod;
 \new () {
     length=0;
 }
@@ -50,6 +51,62 @@ extends TObject;
         return key;
     }
 }
+\maxs(key) {
+    var f=genKeyfunc(key);
+    var res,reso=new TQuery;
+    for (var o in this) {
+        var v=f(o);
+        if (res==null || v>=res) {
+            if (v>res) reso=new TQuery;
+            reso.push(o);
+            res=v;
+        }
+    }
+    return reso;
+}
+\mins(key) {
+    var f=genKeyfunc(key);
+    var res,reso=new TQuery;
+    for (var o in this) {
+        var v=f(o);
+        if (res==null || v<=res) {
+            if (v<res) reso=new TQuery;
+            reso.push(o);
+            res=v;
+        }
+    }
+    return reso;
+}
+\minObj(key) {
+    return mins(key)[0];
+}
+\maxObj(key) {
+    return maxs(key)[0];
+}
+\nearests(x,y) {
+    if (typeof x=="object") {y=x.y;x=x.x;}
+    return mins \(o) {
+        return dist(o.x-x,o.y-y);
+    };
+}
+\nearest(x,y) {
+    return nearests(x,y)[0];
+}
+\withins(xo,yd,d) {
+    var x,y;
+    if (typeof xo=="object") {
+        x=xo.x;y=xo.y;d=yd;
+    } else {
+        x=xo;y=yd;
+    }
+    return find \(o) {
+        return dist(o.x-x,o.y-y)<=d;
+    };
+}
+\within(xo,yd,d) {
+    return withins(xo,yd,d).nearest();
+}
+
 \max(key) {
     var f=genKeyfunc(key);
     var res;

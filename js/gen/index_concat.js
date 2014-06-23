@@ -1,4 +1,4 @@
-// Created at Sun Jun 22 2014 17:34:16 GMT+0900 (東京 (標準時))
+// Created at Mon Jun 23 2014 18:54:12 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -552,7 +552,7 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1400573339495},"Actor.tonyu":{"lastUpdate":1400120164000},"BaseActor.tonyu":{"lastUpdate":1400120164000},"Boot.tonyu":{"lastUpdate":1400120164000},"Keys.tonyu":{"lastUpdate":1400120164000},"Map.tonyu":{"lastUpdate":1400120164000},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1400120164000},"NoviceActor.tonyu":{"lastUpdate":1400120164000},"ScaledCanvas.tonyu":{"lastUpdate":1400120164000},"Sprites.tonyu":{"lastUpdate":1400120164000},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1400120164000},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1402914810093}}',
+      '': '{".desktop":{"lastUpdate":1400573339495},"Actor.tonyu":{"lastUpdate":1400120164000},"BaseActor.tonyu":{"lastUpdate":1400120164000},"Boot.tonyu":{"lastUpdate":1400120164000},"Keys.tonyu":{"lastUpdate":1400120164000},"Map.tonyu":{"lastUpdate":1400120164000},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1400120164000},"NoviceActor.tonyu":{"lastUpdate":1400120164000},"ScaledCanvas.tonyu":{"lastUpdate":1400120164000},"Sprites.tonyu":{"lastUpdate":1400120164000},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1402914810093}}',
       '.desktop': '{"runMenuOrd":["Map","BaseActor","Actor","Boot","Keys","MathMod","MML","NoviceActor","ScaledCanvas","Sprites","TObject","TQuery","WaveTable"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -1416,6 +1416,7 @@ requireSimulator.setName('fs/ROMk');
       ,
       'TQuery.tonyu': 
         'extends TObject;\n'+
+        'includes MathMod;\n'+
         '\\new () {\n'+
         '    length=0;\n'+
         '}\n'+
@@ -1467,6 +1468,62 @@ requireSimulator.setName('fs/ROMk');
         '        return key;\n'+
         '    }\n'+
         '}\n'+
+        '\\maxs(key) {\n'+
+        '    var f=genKeyfunc(key);\n'+
+        '    var res,reso=new TQuery;\n'+
+        '    for (var o in this) {\n'+
+        '        var v=f(o);\n'+
+        '        if (res==null || v>=res) {\n'+
+        '            if (v>res) reso=new TQuery;\n'+
+        '            reso.push(o);\n'+
+        '            res=v;\n'+
+        '        }\n'+
+        '    }\n'+
+        '    return reso;\n'+
+        '}\n'+
+        '\\mins(key) {\n'+
+        '    var f=genKeyfunc(key);\n'+
+        '    var res,reso=new TQuery;\n'+
+        '    for (var o in this) {\n'+
+        '        var v=f(o);\n'+
+        '        if (res==null || v<=res) {\n'+
+        '            if (v<res) reso=new TQuery;\n'+
+        '            reso.push(o);\n'+
+        '            res=v;\n'+
+        '        }\n'+
+        '    }\n'+
+        '    return reso;\n'+
+        '}\n'+
+        '\\minObj(key) {\n'+
+        '    return mins(key)[0];\n'+
+        '}\n'+
+        '\\maxObj(key) {\n'+
+        '    return maxs(key)[0];\n'+
+        '}\n'+
+        '\\nearests(x,y) {\n'+
+        '    if (typeof x=="object") {y=x.y;x=x.x;}\n'+
+        '    return mins \\(o) {\n'+
+        '        return dist(o.x-x,o.y-y);\n'+
+        '    };\n'+
+        '}\n'+
+        '\\nearest(x,y) {\n'+
+        '    return nearests(x,y)[0];\n'+
+        '}\n'+
+        '\\withins(xo,yd,d) {\n'+
+        '    var x,y;\n'+
+        '    if (typeof xo=="object") {\n'+
+        '        x=xo.x;y=xo.y;d=yd;\n'+
+        '    } else {\n'+
+        '        x=xo;y=yd;\n'+
+        '    }\n'+
+        '    return find \\(o) {\n'+
+        '        return dist(o.x-x,o.y-y)<=d;\n'+
+        '    };\n'+
+        '}\n'+
+        '\\within(xo,yd,d) {\n'+
+        '    return withins(xo,yd,d).nearest();\n'+
+        '}\n'+
+        '\n'+
         '\\max(key) {\n'+
         '    var f=genKeyfunc(key);\n'+
         '    var res;\n'+
