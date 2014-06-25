@@ -1,1 +1,141 @@
-undefined
+native $;
+native TError;
+native $LASTPOS;
+native Key;
+native Date;
+native ImageList;
+native Tonyu;
+native SplashScreen;
+
+\initSprites() {
+    $Sprites=new Sprites();
+    print ("Loading pats..");
+    var rs=$currentProject.getResource();
+    var a=asyncResult();
+    ImageList( rs.images, a.receiver);
+    waitFor(a);
+    var r=a[0];
+    $Sprites.setImageList(r);
+for (var name,val in r.names) {
+        Tonyu.setGlobal(name, val);
+}
+    print ("Loading pats done.");
+    cvj=$("canvas");
+if (Tonyu.noviceMode) {
+$Screen=new ScaledCanvas{canvas:cvj, width:600, height:300};
+} else {
+$Screen=new ScaledCanvas{canvas:cvj, width:465, height:465};
+}
+}
+\initCanvasEvents() {
+    cv=cvj[0];
+$handleMouse=\(e) {
+        var p=cvj.offset();
+var mp={x:e.clientX-p.left, y:e.clientY-p.top};
+        mp=$Screen.canvas2buf(mp);
+        $mouseX=mp.x;
+        $mouseY=mp.y;
+};
+$touches=[{},{},{},{},{}];
+$touches.findById=\(id) {
+for (var j=0 ; j<$touches.length ; j++) {
+if ($touches[j].identifier==id) {
+                return $touches[j];
+}
+}
+};
+$handleTouch=\(e) {
+        var p=cvj.offset();
+        e.preventDefault();
+        var ts=e.originalEvent.changedTouches;
+for (var i =0 ; i<ts.length ; i++) {
+            var src=ts[i];
+            var dst=$touches.findById(src.identifier);
+if (!dst) {
+for (var j=0 ; j<$touches.length ; j++) {
+if (!$touches[j].touched) {
+                        dst=$touches[j];
+                        dst.identifier=src.identifier;
+                        break;
+}
+}
+}
+if (dst) {
+mp={x:src.pageX-p.left, y:src.pageY-p.top};
+                mp=$Screen.canvas2buf(mp);
+                dst.x=mp.x;
+                dst.y=mp.y;
+                dst.touched=true;
+}
+}
+        $mouseX=$touches[0].x;
+        $mouseY=$touches[0].y;
+};
+$handleTouchEnd=\(e) {
+        var ts=e.originalEvent.changedTouches;
+for (var i =0 ; i<ts.length ; i++) {
+            var src=ts[i];
+            var dst=$touches.findById(src.identifier);
+if (dst) {
+                dst.touched=false;
+                dst.identifier=-1;
+}
+}
+};
+var handleMouse=\(e){$handleMouse(e);};
+var handleTouch=\(e){$handleTouch(e);};
+var handleTouchEnd=\(e){$handleTouchEnd(e);};
+    var d=$.data(cv,"events");
+if (!d) {
+        $.data(cv,"events","true");
+        cvj.mousedown(handleMouse);
+        cvj.mousemove(handleMouse);
+        cvj.on("touchstart",handleTouch);
+        cvj.on("touchmove",handleTouch);
+        cvj.on("touchend",handleTouchEnd);
+}
+}
+
+\initThread() {
+    thg=Tonyu.threadGroup();
+    var o=Tonyu.currentProject.getOptions();
+    var mainClassName=o.run.mainClass;
+    print("MainClass= "+mainClassName);
+    mainClass=Tonyu.getClass(mainClassName);
+if (!mainClass) {
+        TError( mainClassName+" というクラスはありません", 
+        "不明" ,0).raise();
+}
+    Tonyu.runMode=true;
+    $currentThreadGroup=thg;
+    new mainClass();
+}
+\stop() {
+   
+for (var k,v in $MMLS) {
+        v.stop();
+}
+    $WaveTable.stop();
+}
+initSprites();
+initCanvasEvents();
+initThread();
+
+$pat_fruits=30;
+$Keys=new Keys;
+$MMLS={};
+$WaveTable=new WaveTable;
+if (typeof SplashScreen!="undefined") SplashScreen.hide();
+while (true) {
+    ti=new Date().getTime();
+    thg.steps();
+    $Keys.update();
+    $screenWidth=$Screen.width;
+    $screenHeight=$Screen.height;
+    $Sprites.draw($Screen.buf[0]);
+    $Screen.draw();
+    $Sprites.checkHit();
+    wt=33-(new Date().getTime()-ti);
+    if (wt<0) wt=0;
+    waitFor(Tonyu.timeout(wt));
+}

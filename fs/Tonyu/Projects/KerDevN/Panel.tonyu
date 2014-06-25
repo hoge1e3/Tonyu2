@@ -1,5 +1,6 @@
 native $;
 native Math;
+native isNaN;
 \new(opt){
     super(opt);
     this.width=width;
@@ -39,10 +40,15 @@ native Math;
     ctx.restore();
 }
 \getPixel(getX,getY){
-    ctx=buf[0].getContext("2d");
-    imagedata=ctx.getImageData(getX,getY,1,1);
-    colordata=[imagedata.data[0],imagedata.data[1],imagedata.data[2],imagedata.data[3]];
-    //print(imagedata.data);
+    if(typeof getX=="number" && !isNaN(getX) && 
+    typeof getY=="number" && !isNaN(getY)){
+        ctx=buf[0].getContext("2d");
+        imagedata=ctx.getImageData(getX,getY,1,1);
+        colordata=[imagedata.data[0],imagedata.data[1],imagedata.data[2],imagedata.data[3]];
+        //print(imagedata.data);
+    }else{
+        colordata=[0,0,0,0];
+    }
     return(colordata);
 }
 \draw(ctx){

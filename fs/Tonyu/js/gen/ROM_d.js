@@ -2,7 +2,7 @@
   var rom={
     base: '/Tonyu/doc/',
     data: {
-      '': '{"index.txt":{"lastUpdate":1400120163000},"novice/":{"lastUpdate":1400579960587},"projectIndex.txt":{"lastUpdate":1400120163000},"tonyu2/":{"lastUpdate":1402914680662}}',
+      '': '{"index.txt":{"lastUpdate":1400120163000},"novice/":{"lastUpdate":1400646750363},"projectIndex.txt":{"lastUpdate":1400120163000},"tonyu2/":{"lastUpdate":1402467081226}}',
       'index.txt': 
         '* サンプルを見る\n'+
         '\n'+
@@ -1002,7 +1002,7 @@
         '名前は，半角英字とアンダースコア(_)が使えます．2文字以上でも構いません．2文字目以降は数字も使うことができます．'
       ,
       'projectIndex.txt': '',
-      'tonyu2/': '{"$mouseX, $mouseY.txt":{"lastUpdate":1400120163000},"$touches.txt":{"lastUpdate":1400120163000},"Actor.txt":{"lastUpdate":1400120163000},"all.txt":{"lastUpdate":1400120163000},"allCrash.txt":{"lastUpdate":1400120163000},"api.txt":{"lastUpdate":1401941215219},"asyncResult.txt":{"lastUpdate":1400120163000},"BaseActor.txt":{"lastUpdate":1401255240110},"Boot.txt":{"lastUpdate":1401941267461},"classDef.txt":{"lastUpdate":1400120163000},"console.txt":{"lastUpdate":1400120163000},"cpats.txt":{"lastUpdate":1400120163000},"crashTo.txt":{"lastUpdate":1400120164000},"crashTo1.txt":{"lastUpdate":1400120164000},"die.txt":{"lastUpdate":1400120164000},"draw.txt":{"lastUpdate":1400120164000},"extend.txt":{"lastUpdate":1400120164000},"file.txt":{"lastUpdate":1400120164000},"forin.txt":{"lastUpdate":1400120164000},"frame.txt":{"lastUpdate":1401255298602},"FS.each.txt":{"lastUpdate":1400120164000},"FS.exists.txt":{"lastUpdate":1400120164000},"FS.obj.txt":{"lastUpdate":1400120164000},"FS.recursive.txt":{"lastUpdate":1400120164000},"FS.rel.txt":{"lastUpdate":1400120164000},"FS.text.txt":{"lastUpdate":1400120164000},"fs.txt":{"lastUpdate":1400120164000},"get.txt":{"lastUpdate":1401255650741},"getAt.txt":{"lastUpdate":1401255658905},"getCrashRect.txt":{"lastUpdate":1400120164000},"getkey.txt":{"lastUpdate":1400120164000},"hide.txt":{"lastUpdate":1400120164000},"ide.txt":{"lastUpdate":1400120164000},"index.txt":{"lastUpdate":1400120164000},"isDead.txt":{"lastUpdate":1400120164000},"kernel.txt":{"lastUpdate":1400120164000},"lang.txt":{"lastUpdate":1400120164000},"Map.txt":{"lastUpdate":1401255487455},"MathMod.txt":{"lastUpdate":1400120164000},"options.txt":{"lastUpdate":1400120164000},"play.txt":{"lastUpdate":1400120164000},"playSE.txt":{"lastUpdate":1400120164000},"print.txt":{"lastUpdate":1400120164000},"resize.txt":{"lastUpdate":1400120164000},"rnd.txt":{"lastUpdate":1400120164000},"ScaledCanvas.txt":{"lastUpdate":1401255697009},"scrollTo.txt":{"lastUpdate":1401255664750},"set.txt":{"lastUpdate":1401255540844},"setBGColor.txt":{"lastUpdate":1401255686147},"show.txt":{"lastUpdate":1400120164000},"sugar.txt":{"lastUpdate":1400120164000},"super.txt":{"lastUpdate":1400120164000},"TQuery.alive.txt":{"lastUpdate":1400120164000},"TQuery.apply.txt":{"lastUpdate":1400120164000},"TQuery.attr.txt":{"lastUpdate":1400120164000},"TQuery.die.txt":{"lastUpdate":1400120164000},"TQuery.find.txt":{"lastUpdate":1400120164000},"TQuery.minmax.txt":{"lastUpdate":1400120164000},"TQuery.txt":{"lastUpdate":1400120164000},"update.txt":{"lastUpdate":1401255209313},"waitFor.txt":{"lastUpdate":1400120164000},"waitmode.txt":{"lastUpdate":1400120164000},"setAt.txt":{"lastUpdate":1401255643995},"updateEx.txt":{"lastUpdate":1401255346149},"clearRect.txt":{"lastUpdate":1401943178040},"fillRect.txt":{"lastUpdate":1401942274402},"fillText.txt":{"lastUpdate":1401942864666},"getPixel.txt":{"lastUpdate":1402467081226},"Panel.txt":{"lastUpdate":1401945627455},"setFillStyle.txt":{"lastUpdate":1401941975499},"setPanel.txt":{"lastUpdate":1401941697100}}',
+      'tonyu2/': '{"$mouseX, $mouseY.txt":{"lastUpdate":1400120163000},"$touches.txt":{"lastUpdate":1400120163000},"Actor.txt":{"lastUpdate":1400120163000},"all.txt":{"lastUpdate":1400120163000},"allCrash.txt":{"lastUpdate":1400120163000},"api.txt":{"lastUpdate":1401941215219},"asyncResult.txt":{"lastUpdate":1400120163000},"BaseActor.txt":{"lastUpdate":1401255240110},"Boot.txt":{"lastUpdate":1401941267461},"classDef.txt":{"lastUpdate":1400120163000},"console.txt":{"lastUpdate":1400120163000},"cpats.txt":{"lastUpdate":1400120163000},"crashTo.txt":{"lastUpdate":1400120164000},"crashTo1.txt":{"lastUpdate":1400120164000},"die.txt":{"lastUpdate":1400120164000},"draw.txt":{"lastUpdate":1400120164000},"extend.txt":{"lastUpdate":1400120164000},"file.txt":{"lastUpdate":1400120164000},"forin.txt":{"lastUpdate":1400120164000},"frame.txt":{"lastUpdate":1401255298602},"FS.each.txt":{"lastUpdate":1400120164000},"FS.exists.txt":{"lastUpdate":1400120164000},"FS.obj.txt":{"lastUpdate":1400120164000},"FS.recursive.txt":{"lastUpdate":1400120164000},"FS.rel.txt":{"lastUpdate":1400120164000},"FS.text.txt":{"lastUpdate":1400120164000},"fs.txt":{"lastUpdate":1400120164000},"get.txt":{"lastUpdate":1401255650741},"getAt.txt":{"lastUpdate":1401255658905},"getCrashRect.txt":{"lastUpdate":1400120164000},"getkey.txt":{"lastUpdate":1400120164000},"hide.txt":{"lastUpdate":1400120164000},"ide.txt":{"lastUpdate":1400120164000},"index.txt":{"lastUpdate":1400120164000},"isDead.txt":{"lastUpdate":1400120164000},"kernel.txt":{"lastUpdate":1400120164000},"lang.txt":{"lastUpdate":1400120164000},"Map.txt":{"lastUpdate":1401255487455},"MathMod.txt":{"lastUpdate":1400120164000},"options.txt":{"lastUpdate":1400120164000},"play.txt":{"lastUpdate":1400120164000},"playSE.txt":{"lastUpdate":1400120164000},"print.txt":{"lastUpdate":1400120164000},"resize.txt":{"lastUpdate":1400120164000},"rnd.txt":{"lastUpdate":1400120164000},"ScaledCanvas.txt":{"lastUpdate":1401255697009},"scrollTo.txt":{"lastUpdate":1401255664750},"set.txt":{"lastUpdate":1401255540844},"setBGColor.txt":{"lastUpdate":1401255686147},"show.txt":{"lastUpdate":1400120164000},"sugar.txt":{"lastUpdate":1400120164000},"super.txt":{"lastUpdate":1400120164000},"TQuery.alive.txt":{"lastUpdate":1400120164000},"TQuery.apply.txt":{"lastUpdate":1400120164000},"TQuery.attr.txt":{"lastUpdate":1400120164000},"TQuery.die.txt":{"lastUpdate":1400120164000},"TQuery.find.txt":{"lastUpdate":1400120164000},"TQuery.minmax.txt":{"lastUpdate":1400120164000},"TQuery.txt":{"lastUpdate":1400120164000},"update.txt":{"lastUpdate":1401255209313},"waitFor.txt":{"lastUpdate":1400120164000},"waitmode.txt":{"lastUpdate":1400120164000},"updateEx.txt":{"lastUpdate":1401255346149},"setAt.txt":{"lastUpdate":1401255643995},"Panel.txt":{"lastUpdate":1401945627455},"setPanel.txt":{"lastUpdate":1401941697100},"setFillStyle.txt":{"lastUpdate":1401941975499},"fillRect.txt":{"lastUpdate":1401942274402},"fillText.txt":{"lastUpdate":1401942864666},"clearRect.txt":{"lastUpdate":1401943178040},"getPixel.txt":{"lastUpdate":1402467081226}}',
       'tonyu2/$mouseX, $mouseY.txt': 
         '[[api]]\n'+
         '\n'+
@@ -2629,22 +2629,6 @@
         '\n'+
         '\n'
       ,
-      'tonyu2/setAt.txt': 
-        '[[Map]]\n'+
-        '*setAtメソッド\n'+
-        '\n'+
-        '指定した画面上の座標にマップパターンを設定します．\n'+
-        '\n'+
-        '<<code\n'+
-        'map.setAt(setX,setY,p);\n'+
-        '//画面のsetX，setY座標のパターンをpに設定します．\n'+
-        '>>\n'+
-        '\n'+
-        '\n'+
-        '-setX : セットする画面のx座標をあらわします\n'+
-        '-setY : セットする画面のy座標をあらわします\n'+
-        '-p : 表示するパターンの番号をあらわします \n'
-      ,
       'tonyu2/updateEx.txt': 
         '[[BaseActor]]\n'+
         '\n'+
@@ -2664,23 +2648,90 @@
         '\n'+
         'このメソッドは待機系メソッドです．待機不能モードでは何も動作を行いません．（詳細は[[動作モード>waitmode]]を参照してください）'
       ,
-      'tonyu2/clearRect.txt': 
-        '[[Panel]]\n'+
+      'tonyu2/setAt.txt': 
+        '[[Map]]\n'+
+        '*setAtメソッド\n'+
         '\n'+
-        '*clearRectメソッド\n'+
-        '\n'+
-        'パネルから指定した四角形の範囲を消します．\n'+
+        '指定した画面上の座標にマップパターンを設定します．\n'+
         '\n'+
         '<<code\n'+
-        'panel.clearRect(x,y,clearW,clearH);\n'+
+        'map.setAt(setX,setY,p);\n'+
+        '//画面のsetX，setY座標のパターンをpに設定します．\n'+
         '>>\n'+
         '\n'+
         '\n'+
+        '-setX : セットする画面のx座標をあらわします\n'+
+        '-setY : セットする画面のy座標をあらわします\n'+
+        '-p : 表示するパターンの番号をあらわします \n'
+      ,
+      'tonyu2/Panel.txt': 
+        '[[api]]\n'+
+        '*Panelクラス\n'+
         '\n'+
-        '-x : パネル内から消す左上のx座標をあらわします\n'+
-        '-y : パネル内から消す左上のy座標をあらわします\n'+
-        '-clearW : パネルから消す範囲の横幅をあらわします\n'+
-        '-clearH : パネルから消す範囲の縦幅をあらわします\n'
+        'パネルの表示クラスです．\n'+
+        '* コンストラクタ\n'+
+        '\n'+
+        '<<code\n'+
+        '\\new(param)\n'+
+        '>>\n'+
+        '\n'+
+        'paramでパネルの横幅と縦幅を設定します．paramに何も与えずにsetPanelメソッドを使用してサイズを設定することもできます．\n'+
+        '\n'+
+        '例： \n'+
+        '<<code\n'+
+        'panel=new Panel();\n'+
+        '>>\n'+
+        '\n'+
+        '*メソッド\n'+
+        '\n'+
+        '-[[setPanel]]\n'+
+        '-[[setFillStyle]]\n'+
+        '-[[fillRect]]\n'+
+        '-[[fillText]]\n'+
+        '-[[clearRect]]\n'+
+        '-[[getPixel]]\n'
+      ,
+      'tonyu2/setPanel.txt': 
+        '[[Panel]]\n'+
+        '*setPanelメソッド\n'+
+        '\n'+
+        'パネルのサイズを設定します．\n'+
+        '\n'+
+        '<<code\n'+
+        'panel.setPanel(width,height);\n'+
+        '//パネルのサイズをwidth*heightに設定します．\n'+
+        '>>\n'+
+        '\n'+
+        '\n'+
+        '-width : パネルの横幅をあらわします\n'+
+        '-height : パネルの縦幅をあらわします\n'
+      ,
+      'tonyu2/setFillStyle.txt': 
+        '[[Panel]]\n'+
+        '*setFillStyleメソッド\n'+
+        '\n'+
+        'パネルの色を設定します．\n'+
+        '\n'+
+        '\n'+
+        '<<code\n'+
+        'panel.setFillStyle(color)\n'+
+        '>>\n'+
+        '\n'+
+        '[[@arg color]]は，画面の背景色をあらわす文字列（HTMLの色指定方法に準ずる）を指定します．\n'+
+        '\n'+
+        '**例\n'+
+        '\n'+
+        '<<code\n'+
+        'panel.setFillStyle("green");\n'+
+        '>>\n'+
+        '\n'+
+        '<<code\n'+
+        'panel.setFillStyle("#ffeedd");\n'+
+        '>>\n'+
+        '\n'+
+        '<<code\n'+
+        'panel.setFillStyle("rgb(200,100,50)");\n'+
+        '>>'
       ,
       'tonyu2/fillRect.txt': 
         '[[Panel]]\n'+
@@ -2725,6 +2776,24 @@
         'panel.fillText("text",50,50,30,"center");\n'+
         '>>'
       ,
+      'tonyu2/clearRect.txt': 
+        '[[Panel]]\n'+
+        '\n'+
+        '*clearRectメソッド\n'+
+        '\n'+
+        'パネルから指定した四角形の範囲を消します．\n'+
+        '\n'+
+        '<<code\n'+
+        'panel.clearRect(x,y,clearW,clearH);\n'+
+        '>>\n'+
+        '\n'+
+        '\n'+
+        '\n'+
+        '-x : パネル内から消す左上のx座標をあらわします\n'+
+        '-y : パネル内から消す左上のy座標をあらわします\n'+
+        '-clearW : パネルから消す範囲の横幅をあらわします\n'+
+        '-clearH : パネルから消す範囲の縦幅をあらわします\n'
+      ,
       'tonyu2/getPixel.txt': 
         '[[Panel]]\n'+
         '\n'+
@@ -2740,75 +2809,6 @@
         '\n'+
         '-x : 色を取得したいx座標をあらわします\n'+
         '-y : 色を取得したいy座標をあらわします\n'
-      ,
-      'tonyu2/Panel.txt': 
-        '[[api]]\n'+
-        '*Panelクラス\n'+
-        '\n'+
-        'パネルの表示クラスです．\n'+
-        '* コンストラクタ\n'+
-        '\n'+
-        '<<code\n'+
-        '\\new(param)\n'+
-        '>>\n'+
-        '\n'+
-        'paramでパネルの横幅と縦幅を設定します．paramに何も与えずにsetPanelメソッドを使用してサイズを設定することもできます．\n'+
-        '\n'+
-        '例： \n'+
-        '<<code\n'+
-        'panel=new Panel();\n'+
-        '>>\n'+
-        '\n'+
-        '*メソッド\n'+
-        '\n'+
-        '-[[setPanel]]\n'+
-        '-[[setFillStyle]]\n'+
-        '-[[fillRect]]\n'+
-        '-[[fillText]]\n'+
-        '-[[clearRect]]\n'+
-        '-[[getPixel]]\n'
-      ,
-      'tonyu2/setFillStyle.txt': 
-        '[[Panel]]\n'+
-        '*setFillStyleメソッド\n'+
-        '\n'+
-        'パネルの色を設定します．\n'+
-        '\n'+
-        '\n'+
-        '<<code\n'+
-        'panel.setFillStyle(color)\n'+
-        '>>\n'+
-        '\n'+
-        '[[@arg color]]は，画面の背景色をあらわす文字列（HTMLの色指定方法に準ずる）を指定します．\n'+
-        '\n'+
-        '**例\n'+
-        '\n'+
-        '<<code\n'+
-        'panel.setFillStyle("green");\n'+
-        '>>\n'+
-        '\n'+
-        '<<code\n'+
-        'panel.setFillStyle("#ffeedd");\n'+
-        '>>\n'+
-        '\n'+
-        '<<code\n'+
-        'panel.setFillStyle("rgb(200,100,50)");\n'+
-        '>>'
-      ,
-      'tonyu2/setPanel.txt': 
-        '[[Panel]]\n'+
-        '*setPanelメソッド\n'+
-        '\n'+
-        'パネルのサイズを設定します．\n'+
-        '\n'+
-        '<<code\n'+
-        'panel.setPanel(width,height);\n'+
-        '//パネルのサイズをwidth*heightに設定します．\n'+
-        '>>\n'+
-        '\n'+
-        '\n'+
-        '-width : パネルの横幅をあらわします\n'+
-        '-height : パネルの縦幅をあらわします\n'
       
     }
   };
