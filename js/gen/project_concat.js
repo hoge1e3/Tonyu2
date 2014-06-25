@@ -1,4 +1,4 @@
-// Created at Mon Jun 23 2014 18:54:13 GMT+0900 (東京 (標準時))
+// Created at Wed Jun 25 2014 14:02:46 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -519,7 +519,7 @@ FS=function () {
 requireSimulator.setName('WebSite');
 define([], function () {
     var loc=document.location.href;
-    var devMode=!!loc.match(/dev\/[^\/]+\.html/);
+    var devMode=!!loc.match(/html\/dev\//);
     if (loc.match(/jsrun\.it/)) {
         return window.WebSite={
             urlAliases: {

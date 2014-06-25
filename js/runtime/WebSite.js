@@ -1,6 +1,6 @@
 define([], function () {
     var loc=document.location.href;
-    var devMode=!!loc.match(/dev\/[^\/]+\.html/);
+    var devMode=!!loc.match(/html\/dev\//);
     if (loc.match(/jsrun\.it/)) {
         return window.WebSite={
             urlAliases: {
