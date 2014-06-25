@@ -24,11 +24,11 @@ new Bar();
 var i=0;
 var dir=1;
 while(true){
-    //panel.rotation++;
+    panel.rotation++;
     panel.clearRect(0,0,panel.width,panel.height);
     panel.fillRect(0,0,pw,ph);
-    panel.x+=panel.vx;
-    panel.y+=panel.vy;
+    //panel.x+=panel.vx;
+    //panel.y+=panel.vy;
     if(panel.x>$screenWidth) panel.vx=-2;
     if(panel.x<0) panel.vx=2;
     if(panel.y>$screenHeight) panel.vy=-2;
@@ -40,6 +40,7 @@ while(true){
     score++;
     label.text=score;
     i=i+dir;
+    
     //print(0-i,$map.chipWidth*$map.col-$screenWidth);
     if($map.chipWidth*$map.col-$screenWidth==0-i){
         dir=1;
