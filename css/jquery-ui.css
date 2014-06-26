@@ -419,7 +419,7 @@ button.ui-button::-moz-focus-inner {
 	margin: -10px 0 0 0;
 	padding: 1px;
 	height: 20px;
-	background-image: url(../../css/images/ui-icons_222222_256x240.png);
+	background-image: url(images/ui-icons_222222_256x240.png);
 	background-position: -96px -128px;
 }
 .ui-dialog .ui-dialog-content {
