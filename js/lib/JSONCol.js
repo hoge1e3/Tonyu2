@@ -17,13 +17,16 @@ define(["IndentBuffer"],function (ib) {
             } else if (typeof obj=="object") {
             	buf.printf("{%{");
             	var first=true;
-            	for (var i in obj) {
+		var attrs=[];
+            	for (var i in obj) {attrs.push[i];}
+		attrs.sort();
+		attrs.forEach(function (i) {
             		var e=obj[i];
             		if (!first) buf.printf(",%n");
             		first=false;
             		buf.printf("%s: ", toAttr(i));
                		conv(e);
-               	}
+               	});
             	buf.printf("%n%}}");
             } else if (typeof obj=="number") {
             	buf.print(obj);
