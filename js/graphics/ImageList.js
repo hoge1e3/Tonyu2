@@ -1,11 +1,20 @@
 define(["PatternParser","Util","WebSite"], function (PP,Util,WebSite) {
     var cache={};
+    function excludeEmpty(resImgs) {
+        var r=[];
+        resImgs.forEach(function (resImg,i) {
+            if (!resImg || resImg.url=="") return;
+            r.push(resImg); 
+        });       
+        return r;
+    }
 	function IL(resImgs, onLoad) {
         //  resImgs:[{url: , [pwidth: , pheight:]?  }]
+        resImgs=excludeEmpty(resImgs);
         var resa=[];
         var cnt=resImgs.length;
         resImgs.forEach(function (resImg,i) {
-            //console.log("loaded", resImg,i);
+            console.log("loading", resImg,i);
             var url=resImg.url;
             var urlKey=url;
             if (cache[urlKey]) {

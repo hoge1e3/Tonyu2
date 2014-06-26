@@ -2,7 +2,7 @@ x=200; y=150;
 size=40;
 while (true) {
     text="oo";
-    play("l8cde4",">l8c4ge");
+    play("l8cde-4",">l8c4ge");
     text="^^";
-    play("l8edc4",">l8e4dc");
+    play("l8e-dc4",">l8e4dc");
 }

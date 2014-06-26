@@ -1,4 +1,4 @@
-// Created at Wed Jun 25 2014 14:45:31 GMT+0900 (東京 (標準時))
+// Created at Wed Jun 25 2014 16:04:22 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -9549,12 +9549,21 @@ define(["Tonyu"], function (Tonyu) {return Tonyu.klass({
 requireSimulator.setName('ImageList');
 define(["PatternParser","Util","WebSite"], function (PP,Util,WebSite) {
     var cache={};
+    function excludeEmpty(resImgs) {
+        var r=[];
+        resImgs.forEach(function (resImg,i) {
+            if (!resImg || resImg.url=="") return;
+            r.push(resImg); 
+        });       
+        return r;
+    }
 	function IL(resImgs, onLoad) {
         //  resImgs:[{url: , [pwidth: , pheight:]?  }]
+        resImgs=excludeEmpty(resImgs);
         var resa=[];
         var cnt=resImgs.length;
         resImgs.forEach(function (resImg,i) {
-            //console.log("loaded", resImg,i);
+            console.log("loading", resImg,i);
             var url=resImg.url;
             var urlKey=url;
             if (cache[urlKey]) {

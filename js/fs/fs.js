@@ -252,11 +252,11 @@ FS=function () {
             	});
                 return FS.get(resPath, securityDomain);
             };
-            dir.rm=function (ord) {
+            dir.rm=function () {
                 if (!dir.exists()) throw path+": No such dir.";
-                var lis=dir.ls(ord);
+                var lis=dir.ls();
                 if (lis.length>0) throw path+": Directory not empty";
-                lcs(path, null);
+                //lcs(path, null);
                 if (parent!=null) {
                     var pinfo=getDirInfo(parent);
                     removeEntry(pinfo, parent, name);
