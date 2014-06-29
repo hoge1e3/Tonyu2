@@ -18,7 +18,7 @@ define(["IndentBuffer"],function (ib) {
             	buf.printf("{%{");
             	var first=true;
 		var attrs=[];
-            	for (var i in obj) {attrs.push[i];}
+            	for (var i in obj) {attrs.push(i);}
 		attrs.sort();
 		attrs.forEach(function (i) {
             		var e=obj[i];
