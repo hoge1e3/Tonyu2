@@ -79,14 +79,15 @@ FS=function () {
         return path in ramDisk;
     }
 
-    function putDirInfo(path, dinfo) {
-        if (path==null) throw "putDir: Null path";
+    function putDirInfo(path, dinfo, trashed) {
+        // trashed: putDirInfo is caused by trashing the file/dir.
+	if (path==null) throw "putDir: Null path";
         if (!isDir(path)) throw "Not a directory : "+path;
         lcs(path, JSON.stringify(dinfo));
         var ppath=up(path);
         if (ppath==null) return;
         var pdinfo=getDirInfo(ppath);
-        touch(pdinfo, ppath, getName(path));
+        touch(pdinfo, ppath, getName(path), trashed);
     }
     function getDirInfo(path) {
         if (path==null) throw "getDir: Null path";
@@ -109,17 +110,27 @@ FS=function () {
 	}
         return dinfo;
     }
-    function touch(dinfo, path, name) { // path:path of dinfo
-        //if (!dinfo[name]) {
+    function touch(dinfo, path, name, trashed) { 
+	// path:path of dinfo
+	// trashed: this touch is caused by trashing the file/dir.
+	if (!dinfo[name]) {
+	    dinfo[name]={};
+	    if (trashed) dinfo[name].trashed=true;
+	}
+	if (!trashed) delete dinfo[name].trashed;
+	dinfo[name].lastUpdate=now();
+	/*if (trashed && (!dinfo[name] || dinfo[name].trashed)) {
+	    dinfo[name]={lastUpdate:now(),trashed:true};
+        } else {
             dinfo[name]={lastUpdate:now()};
-            putDirInfo(path ,dinfo);
-        //}
+	}*/
+	putDirInfo(path ,dinfo, trashed);
     }
     function removeEntry(dinfo, path, name) {// path:path of dinfo
         if (dinfo[name]) {
 	    dinfo[name]={lastUpdate:now(),trashed:true};
             //delete dinfo[name];
-            putDirInfo(path ,dinfo);
+            putDirInfo(path ,dinfo, true);
         }
     }
     FS.orderByName=function (a,b) {
@@ -169,7 +180,7 @@ FS=function () {
                     for (var k in ovr) {
                         dinfo[k]=ovr[k];
                     }
-                    putDirInfo(p, dinfo);
+                    putDirInfo(p, dinfo,false);
                 } else {
                     lcs(p, data[i]);
                 }
@@ -327,7 +338,7 @@ FS=function () {
 		    return pinfo[name];
 		} else {
 		    pinfo[name]=arguments[0];
-		    putDirInfo(parent, pinfo);
+		    putDirInfo(parent, pinfo, pinfo[name].trashed);
 		}
             }
 	    return {};
@@ -347,7 +358,7 @@ FS=function () {
         res.touch=function () {
             if (parent==null) return ; //  path=/
             var pinfo=getDirInfo(parent);
-            touch(pinfo, parent, name);
+            touch(pinfo, parent, name, false);
         };
         res.isReadOnly=function () {
             var r=resolveROM(path);
@@ -413,7 +424,7 @@ FS=function () {
             if (p==null) continue;
             var dinfo=getDirInfo(p);
             var name=getName(path);
-            touch(dinfo, p , name);
+            touch(dinfo, p , name, dinfo[name] && dinfo[name].trashed);
         }
     };
     FS.dump=function () {

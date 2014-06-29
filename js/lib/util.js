@@ -9,7 +9,10 @@ function getQueryString(key, default_)
    if(qs == null)
     return default_;
    else
-    return qs[1];
+    return decodeURLComponentEx(qs[1]);
+}
+function decodeURLComponentEx(s){
+    return decodeURIComponent(s.replace(/\+/g, '%20'));
 }
 function endsWith(str,postfix) {
     return str.substring(str.length-postfix.length)===postfix;

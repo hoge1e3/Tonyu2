@@ -14,7 +14,7 @@ exports.File2LS=function(req, resp){
     }
     var data={},dirs={};
     basef.recursive(function (f) {
-	if (f.name()==DINFO) return;
+	if (f.up().name()==DINFO) return;
         var p=toLSPath(basef, f);
         data[p]= f.text();
         dirs[f.parent().path()]=1;
