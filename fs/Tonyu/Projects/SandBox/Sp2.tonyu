@@ -3,6 +3,7 @@ b=5;
 x=200;y=20;
 size=50;
 text=(a/b)+typeof /b/+sub{v:20}/5;
+p=$pat_mglogo;
 
 panel=new Panel{x:200, y:100};
 panel.setPanel(200, 10);
