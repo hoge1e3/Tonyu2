@@ -25,8 +25,8 @@ define(["FS","Tonyu","UI"], function (FS, Tonyu, UI) {
                                 ["button",{on:{click:del}}, "削除"]],
                         ["div", "パターン解析方法",
                             ["select", {$var:"ptype"},
-                              ["option",{value:"t1",  selected:!isFix}, "Tonyu1フォーマット"],
                               ["option",{value:"fix", selected:isFix}, "固定サイズ"]],
+                              ["option",{value:"t1",  selected:!isFix}, "Tonyu1フォーマット"],
                             ["span", "大きさ",
                                ["input", {$var:"pwidth", size:3, value:im.pwidth}],"x",
                                ["input", {$var:"pheight",size:3, value:im.pheight}]],
@@ -71,7 +71,7 @@ define(["FS","Tonyu","UI"], function (FS, Tonyu, UI) {
                 return res;
             }
             function add() {
-                ims.push({});
+                ims.push({pwidth:32,pheight:32});
                 update();
             }
         }
