@@ -1,4 +1,4 @@
-// Created at Mon Jun 30 2014 14:39:52 GMT+0900 (東京 (標準時))
+// Created at Tue Jul 01 2014 16:32:24 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -10034,6 +10034,31 @@ define(["FS","Tonyu","UI"], function (FS, Tonyu, UI) {
         var rsrc=prj.getResource();
         var itemUIs=[];
         if (!rsrc) prj.setResource();
+	function convURL(u) {
+	    return ((typeof WebSite=="object") && WebSite.urlAliases[u]) || u;
+	}
+	function getSize(im) {
+	    if (typeof im.pwidth=="number" && typeof im.pheight=="number") {
+		if (im.pwidth==im.pheight) return ""+im.pwidth;
+		return im.pwidth+"x"+im.pheight;
+	    } else return "";
+	}
+	function setSize(im,str){
+	    if (!str || str=="") {
+		delete im.pwidth;
+		delete im.pheight;
+	    } else if (str.match(/([0-9]+)x([0-9]+)/)) {
+		im.pwidth=parseInt(RegExp.$1);
+		im.pheight=parseInt(RegExp.$2);
+	    } else if (str.match(/([0-9]+)/)) {
+		im.pwidth=parseInt(RegExp.$1);
+		im.pheight=im.pwidth;
+	    } else {
+		delete im.pwidth;
+		delete im.pheight;
+	    }
+	}
+
         function reload() {
             d.empty();
 	    d.append(UI("div", {style:"margin:10px; padding:10px; border:solid blue 2px;", on:{dragover: s, dragenter: s, drop:dropAdd}}, 
@@ -10043,14 +10068,14 @@ define(["FS","Tonyu","UI"], function (FS, Tonyu, UI) {
             rsrc=prj.getResource();
             var ims=rsrc.images;
 	    itemUIs=[];
-	    var itemTbl=UI("table",["tr",["th","名前"],["th","URL"],["th","1個の大きさ"],["th",""]]).appendTo(d);
+	    var itemTbl=UI("table",["tr",["th"],["th","名前"],["th","URL"],["th","1個の大きさ"],["th",""]]).appendTo(d);
             ims.forEach(function (im){
                 var itemUI=imgItem(im);
                 itemUIs.push(itemUI);
                 itemUI.appendTo(itemTbl);
             });
             d.append(UI("button", {on:{click:function (){ add();}}}, "追加"));
-            d.append(UI("button", {on:{click:close}}, "完了"));
+            d.append(UI("button", {on:{click:function (){ d.dialog("close"); }}}, "完了"));
 	    function dropAdd(e) {
                 eo=e.originalEvent;
                 var file = eo.dataTransfer.files[0];
@@ -10077,10 +10102,11 @@ define(["FS","Tonyu","UI"], function (FS, Tonyu, UI) {
                 e.preventDefault();
 	
             }
-
             function imgItem(im) {
                 var isFix=!!(im.pwidth && im.pheight);
                 var res=UI("tr",
+			   ["td", ["img", {src: convURL(im.url),width:16,height:16, 
+					   on:{mouseenter: magOn, mouseout:magOff} }]],
                            ["td", ["input", {$var:"name", size:12,value:im.name}]],
                             ["td", ["input",{$var:"url", size:20,value:im.url,
                                     on:{dragover: s, dragenter: s, drop:drop}}]],
@@ -10088,13 +10114,27 @@ define(["FS","Tonyu","UI"], function (FS, Tonyu, UI) {
                              ["select", {$var:"ptype"},
                               ["option",{value:"fix", selected:isFix}, "固定サイズ"],
                               ["option",{value:"t1",  selected:!isFix}, "Tonyu1互換"]],
-                             ["input", {$var:"pwidth", size:3, value:im.pwidth}],"x",
-                             ["input", {$var:"pheight",size:3, value:im.pheight}],
+                             //["inpnt", {$var:"pwidth", size:3, value:im.pwidth}],"x",
+                             //["input", {$var:"pheight",size:3, value:im.pheight}],
+			     ["input",{$var:"size", size:6, value: getSize(im)}]
 			    ],
 			     ["td",["button",{on:{click:del}}, "削除"]]
 			  );
+		var mag=UI("div",{style:"position:absolute; background: rgba(0,0,0,0.5);"},
+			   ["img",{src: convURL(im.url)}]).hide().appendTo(res);
+		function magOn() {
+		    var ofs=$(this).position();
+		    //console.log(this);
+		    //console.log(ofs);
+		    mag.show().css({left: ofs.left+16, top:ofs.top}); 
+		}
+		function magOff() {
+		    //console.log("Off");
+		    mag.hide();
+		}
+
                 var v=res.$vars;
-                v.data=im;
+		v.data=im;
                 function drop(e) {
                     eo=e.originalEvent;
                     var file = eo.dataTransfer.files[0];
@@ -10136,8 +10176,13 @@ define(["FS","Tonyu","UI"], function (FS, Tonyu, UI) {
                 var im=v.data;
                 im.name=v.name.val();
                 im.url=v.url.val();
-                im.pwidth=toi(v.pwidth.val());
-                im.pheight=toi(v.pheight.val());
+		if (v.ptype.val()=="t1") {
+		    setSize(im,"");
+		} else {
+		    setSize(im,v.size.val());
+                }
+		//im.pwidth=toi(v.pwidth.val());
+                //im.pheight=toi(v.pheight.val());
             });
 	    console.log(rsrc);
             prj.setResource(rsrc);
