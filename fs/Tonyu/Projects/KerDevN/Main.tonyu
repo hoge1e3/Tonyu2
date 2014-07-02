@@ -9,6 +9,7 @@ panel.setPanel(200,200);
 panel.setFillStyle("rgb(200,100,50");
 pw=200;
 ph=200;
+panel.zOrder=5;
 panel.x=500;
 panel.y=120;
 panel.vx=2;

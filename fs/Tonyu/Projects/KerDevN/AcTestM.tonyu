@@ -17,7 +17,7 @@ $map.set(5,5,1);
 /*Mapクラスのdrawメソッドをオーバーライドして，描画処理を変更：
 
 \draw(ctx) {
-
+    
 }*/
 
 /*native $;
@@ -44,12 +44,12 @@ for (i=0; i<3000; i++) {
 }
 /*
 watchHit(AcTest,AcTest,\(a,b) {
-if (a.x>b.x) {
-a.vx=5; 
-b.vx=-5;
-} else {
-a.vx=-5; 
-b.vx=5;
-}
-print("Hit!");
+    if (a.x>b.x) {
+        a.vx=5; 
+        b.vx=-5;
+    } else {
+        a.vx=-5; 
+        b.vx=5;
+    }
+    print("Hit!");
 });*/

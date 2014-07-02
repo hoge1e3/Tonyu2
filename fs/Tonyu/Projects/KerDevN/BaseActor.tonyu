@@ -23,6 +23,7 @@ native FS;
     if (rotation==null) rotation=0;
     if (rotate==null) rotate=0;
     if (alpha==null) alpha=255;
+    if (zOrder==null) zOrder=0;
 }
 nowait \extend(obj) {
     return Tonyu.extend(this,obj);
@@ -83,9 +84,9 @@ nowait \crashTo(t) {
 }
 nowait \crashTo1(t) {
     if (!t || t._isDead) return false;
-/*if (_sprite && t._sprite) {
+    /*if (_sprite && t._sprite) {
         return _sprite.crashTo(t._sprite);
-}*/
+    }*/
     var t1=getCrashRect();
     var t2=t.getCrashRect();
     return 
@@ -108,6 +109,13 @@ nowait \getCrashRect() {
     typeof height=="number" && 
     {x,y,width:actWidth,height:actHeight};
 }
+nowait \within(t,distance){
+    if(!t || t._isDead) return false;
+    if(Math.sqrt(Math.abs(x-t.x)*Math.abs(x-t.x)+ Math.abs(y-t.y)*Math.abs(y-t.y))<distance){
+        return true;
+    }
+    return false;
+}
 nowait \watchHit(typeA,typeB,onHit) {
     $Sprites.watchHit(typeA , typeB, \(a,b) {
         onHit.apply(this,[a,b]);
@@ -125,12 +133,12 @@ nowait \die() {
     _isDead=true;
 }
 nowait \hide() {
-/*if (_sprite) {
+    /*if (_sprite) {
         $Sprites.remove(_sprite);
         _sprite=null;
-} else {*/
-    $Sprites.remove(this);
-//}
+    } else {*/
+        $Sprites.remove(this);
+    //}
 }
 nowait \show(x,y,p) {
     $Sprites.add(this);
@@ -212,7 +220,7 @@ nowait \asyncResult() {
 }
 
 \screenOut(a) {
-//オブジェクトが画面外に出たかどうかを判定します。
+    //オブジェクトが画面外に出たかどうかを判定します。
     if (!a) a=0;
     var r=0;
     var viewX=0,viewY=0;
