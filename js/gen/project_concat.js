@@ -1,4 +1,4 @@
-// Created at Wed Jul 02 2014 16:05:50 GMT+0900 (東京 (標準時))
+// Created at Wed Jul 02 2014 17:39:34 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -571,7 +571,7 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1404284722737},"Actor.tonyu":{"lastUpdate":1404284722738},"BaseActor.tonyu":{"lastUpdate":1404284722739},"Boot.tonyu":{"lastUpdate":1404284722739},"Keys.tonyu":{"lastUpdate":1400120164000},"Map.tonyu":{"lastUpdate":1404284722740},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1400120164000},"NoviceActor.tonyu":{"lastUpdate":1404284722741},"ScaledCanvas.tonyu":{"lastUpdate":1400120164000},"Sprites.tonyu":{"lastUpdate":1404284722741},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1404284722742}}',
+      '': '{".desktop":{"lastUpdate":1404290329618},"Actor.tonyu":{"lastUpdate":1404290329619},"BaseActor.tonyu":{"lastUpdate":1404290329620},"Boot.tonyu":{"lastUpdate":1404290329621},"Keys.tonyu":{"lastUpdate":1400120164000},"Map.tonyu":{"lastUpdate":1404290329621},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1400120164000},"NoviceActor.tonyu":{"lastUpdate":1404290329622},"ScaledCanvas.tonyu":{"lastUpdate":1400120164000},"Sprites.tonyu":{"lastUpdate":1404290329623},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1404290329623}}',
       '.desktop': '{"runMenuOrd":["Main","Sprites","PanelTest","MapEditor","NoviceActor","AcTestM","MapTest2nd","MapTest","Map","SetBGCTest","Bounce","AcTest","NObjTest","NObjTest2","AltBoot","Ball","Bar","Pad","BaseActor","Actor","Label","Panel","Boot"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -1446,9 +1446,9 @@ requireSimulator.setName('fs/ROMk');
         '    ctx.fillRect(0,0,cv.width,cv.height);\n'+
         '    if (isDrawGrid) drawGrid(cv);\n'+
         '    var orderArray=[];\n'+
-        '    orderArray=sprites;\n'+
+        '    orderArray=orderArray.concat(sprites);\n'+
         '    orderArray.sort(compOrder);\n'+
-        '    sprites.forEach(\\(orderArray){\n'+
+        '    orderArray.forEach(\\(orderArray){\n'+
         '        orderArray.draw(ctx);\n'+
         '    });\n'+
         '}\n'+

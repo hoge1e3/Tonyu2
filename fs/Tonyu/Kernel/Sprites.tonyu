@@ -35,9 +35,9 @@ function draw(cv) {
     ctx.fillRect(0,0,cv.width,cv.height);
     if (isDrawGrid) drawGrid(cv);
     var orderArray=[];
-    orderArray=sprites;
+    orderArray=orderArray.concat(sprites);
     orderArray.sort(compOrder);
-    sprites.forEach(\(orderArray){
+    orderArray.forEach(\(orderArray){
         orderArray.draw(ctx);
     });
 }
