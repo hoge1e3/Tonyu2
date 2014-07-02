@@ -1,4 +1,4 @@
-// Created at Wed Jul 02 2014 10:44:36 GMT+0900 (東京 (標準時))
+// Created at Wed Jul 02 2014 10:53:06 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -11583,6 +11583,7 @@ $(function () {
     });
     $("#mvPRJ").click(function () {
 	var np=prompt("新しいプロジェクトの名前を入れてください", curProjectDir.name().replace(/\//g,""));
+	if (!np || np=="") return;
 	if (!np.match(/\/$/)) np+="/";
 	var npd=curProjectDir.up().rel(np);
 	if (npd.exists()) {

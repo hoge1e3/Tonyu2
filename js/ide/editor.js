@@ -345,6 +345,7 @@ $(function () {
     });
     $("#mvPRJ").click(function () {
 	var np=prompt("新しいプロジェクトの名前を入れてください", curProjectDir.name().replace(/\//g,""));
+	if (!np || np=="") return;
 	if (!np.match(/\/$/)) np+="/";
 	var npd=curProjectDir.up().rel(np);
 	if (npd.exists()) {
