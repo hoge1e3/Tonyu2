@@ -33,8 +33,8 @@ native SplashScreen;
         var p=cvj.offset();
         var mp={x:e.clientX-p.left, y:e.clientY-p.top};
         mp=$Screen.canvas2buf(mp);
-        $mouseX=mp.x;//e.clientX-p.left;
-        $mouseY=mp.y;//e.clientY-p.top;
+        $mouseX=mp.x;
+        $mouseY=mp.y;
     };
     $touches=[{},{},{},{},{}];
     $touches.findById=\(id) {
@@ -63,8 +63,8 @@ native SplashScreen;
             if (dst) {
                 mp={x:src.pageX-p.left, y:src.pageY-p.top};
                 mp=$Screen.canvas2buf(mp);
-                dst.x=mp.x;//src.pageX-p.left;
-                dst.y=mp.y;//src.pageY-p.top;
+                dst.x=mp.x;
+                dst.y=mp.y;
                 dst.touched=true;
             }
         }
@@ -111,7 +111,7 @@ native SplashScreen;
     new mainClass();
 }
 \stop() {
-    //print("STOP!!");
+    
     for (var k,v in $MMLS) {
         v.stop();
     }

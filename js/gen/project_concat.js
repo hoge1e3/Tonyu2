@@ -1,4 +1,4 @@
-// Created at Wed Jul 02 2014 15:56:00 GMT+0900 (東京 (標準時))
+// Created at Wed Jul 02 2014 16:05:50 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -571,8 +571,8 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1400573339495},"Actor.tonyu":{"lastUpdate":1400120164000},"BaseActor.tonyu":{"lastUpdate":1400120164000},"Boot.tonyu":{"lastUpdate":1400120164000},"Keys.tonyu":{"lastUpdate":1400120164000},"Map.tonyu":{"lastUpdate":1400120164000},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1400120164000},"NoviceActor.tonyu":{"lastUpdate":1400120164000},"ScaledCanvas.tonyu":{"lastUpdate":1400120164000},"Sprites.tonyu":{"lastUpdate":1400120164000},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1402914810093}}',
-      '.desktop': '{"runMenuOrd":["Map","BaseActor","Actor","Boot","Keys","MathMod","MML","NoviceActor","ScaledCanvas","Sprites","TObject","TQuery","WaveTable"]}',
+      '': '{".desktop":{"lastUpdate":1404284722737},"Actor.tonyu":{"lastUpdate":1404284722738},"BaseActor.tonyu":{"lastUpdate":1404284722739},"Boot.tonyu":{"lastUpdate":1404284722739},"Keys.tonyu":{"lastUpdate":1400120164000},"Map.tonyu":{"lastUpdate":1404284722740},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1400120164000},"NoviceActor.tonyu":{"lastUpdate":1404284722741},"ScaledCanvas.tonyu":{"lastUpdate":1400120164000},"Sprites.tonyu":{"lastUpdate":1404284722741},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1404284722742}}',
+      '.desktop': '{"runMenuOrd":["Main","Sprites","PanelTest","MapEditor","NoviceActor","AcTestM","MapTest2nd","MapTest","Map","SetBGCTest","Bounce","AcTest","NObjTest","NObjTest2","AltBoot","Ball","Bar","Pad","BaseActor","Actor","Label","Panel","Boot"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
         'native Sprites;\n'+
@@ -622,8 +622,10 @@ requireSimulator.setName('fs/ROMk');
         '        this.p=p;\n'+
         '    }\n'+
         '    if (scaleX==null) scaleX=1;\n'+
+        '    if (rotation==null) rotation=0;\n'+
         '    if (rotate==null) rotate=0;\n'+
         '    if (alpha==null) alpha=255;\n'+
+        '    if (zOrder==null) zOrder=0;\n'+
         '}\n'+
         'nowait \\extend(obj) {\n'+
         '    return Tonyu.extend(this,obj);\n'+
@@ -684,9 +686,9 @@ requireSimulator.setName('fs/ROMk');
         '}\n'+
         'nowait \\crashTo1(t) {\n'+
         '    if (!t || t._isDead) return false;\n'+
-        '/*if (_sprite && t._sprite) {\n'+
+        '    /*if (_sprite && t._sprite) {\n'+
         '        return _sprite.crashTo(t._sprite);\n'+
-        '}*/\n'+
+        '    }*/\n'+
         '    var t1=getCrashRect();\n'+
         '    var t2=t.getCrashRect();\n'+
         '    return \n'+
@@ -709,6 +711,13 @@ requireSimulator.setName('fs/ROMk');
         '    typeof height=="number" && \n'+
         '    {x,y,width:actWidth,height:actHeight};\n'+
         '}\n'+
+        'nowait \\within(t,distance){\n'+
+        '    if(!t || t._isDead) return false;\n'+
+        '    if(Math.sqrt(Math.abs(x-t.x)*Math.abs(x-t.x)+ Math.abs(y-t.y)*Math.abs(y-t.y))<distance){\n'+
+        '        return true;\n'+
+        '    }\n'+
+        '    return false;\n'+
+        '}\n'+
         'nowait \\watchHit(typeA,typeB,onHit) {\n'+
         '    $Sprites.watchHit(typeA , typeB, \\(a,b) {\n'+
         '        onHit.apply(this,[a,b]);\n'+
@@ -726,12 +735,12 @@ requireSimulator.setName('fs/ROMk');
         '    _isDead=true;\n'+
         '}\n'+
         'nowait \\hide() {\n'+
-        '/*if (_sprite) {\n'+
+        '    /*if (_sprite) {\n'+
         '        $Sprites.remove(_sprite);\n'+
         '        _sprite=null;\n'+
-        '} else {*/\n'+
-        '    $Sprites.remove(this);\n'+
-        '//}\n'+
+        '    } else {*/\n'+
+        '        $Sprites.remove(this);\n'+
+        '    //}\n'+
         '}\n'+
         'nowait \\show(x,y,p) {\n'+
         '    $Sprites.add(this);\n'+
@@ -774,7 +783,7 @@ requireSimulator.setName('fs/ROMk');
         '        ctx.translate(x,y);\n'+
         '        //if (typeof rotate=="number" ) rotation=rotate;// 削除予定\n'+
         '        //ctx.rotate(this.rotation/180*Math.PI);\n'+
-        '        if(this.rotation!=null){\n'+
+        '        if(this.rotation!=0){\n'+
         '            ctx.rotate(this.rotation/180*Math.PI);\n'+
         '        }else{\n'+
         '            ctx.rotate(this.rotate/180*Math.PI);\n'+
@@ -789,7 +798,7 @@ requireSimulator.setName('fs/ROMk');
         '        pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,\n'+
         '        -width/2, -height/2, width, height);\n'+
         '        ctx.restore();\n'+
-        '    } else if (text) {\n'+
+        '    } else if (text!==null) {\n'+
         '        if (!size) size=15;\n'+
         '        if (!align) align="center";\n'+
         '        if (!fillStyle) fillStyle="white";\n'+
@@ -813,7 +822,7 @@ requireSimulator.setName('fs/ROMk');
         '}\n'+
         '\n'+
         '\\screenOut(a) {\n'+
-        '//オブジェクトが画面外に出たかどうかを判定します。\n'+
+        '    //オブジェクトが画面外に出たかどうかを判定します。\n'+
         '    if (!a) a=0;\n'+
         '    var r=0;\n'+
         '    var viewX=0,viewY=0;\n'+
@@ -888,8 +897,8 @@ requireSimulator.setName('fs/ROMk');
         '        var p=cvj.offset();\n'+
         '        var mp={x:e.clientX-p.left, y:e.clientY-p.top};\n'+
         '        mp=$Screen.canvas2buf(mp);\n'+
-        '        $mouseX=mp.x;//e.clientX-p.left;\n'+
-        '        $mouseY=mp.y;//e.clientY-p.top;\n'+
+        '        $mouseX=mp.x;\n'+
+        '        $mouseY=mp.y;\n'+
         '    };\n'+
         '    $touches=[{},{},{},{},{}];\n'+
         '    $touches.findById=\\(id) {\n'+
@@ -918,8 +927,8 @@ requireSimulator.setName('fs/ROMk');
         '            if (dst) {\n'+
         '                mp={x:src.pageX-p.left, y:src.pageY-p.top};\n'+
         '                mp=$Screen.canvas2buf(mp);\n'+
-        '                dst.x=mp.x;//src.pageX-p.left;\n'+
-        '                dst.y=mp.y;//src.pageY-p.top;\n'+
+        '                dst.x=mp.x;\n'+
+        '                dst.y=mp.y;\n'+
         '                dst.touched=true;\n'+
         '            }\n'+
         '        }\n'+
@@ -966,7 +975,7 @@ requireSimulator.setName('fs/ROMk');
         '    new mainClass();\n'+
         '}\n'+
         '\\stop() {\n'+
-        '    //print("STOP!!");\n'+
+        '    \n'+
         '    for (var k,v in $MMLS) {\n'+
         '        v.stop();\n'+
         '    }\n'+
@@ -1120,7 +1129,7 @@ requireSimulator.setName('fs/ROMk');
         '}\n'+
         '\n'+
         '\\set(setCol,setRow,p){\n'+
-        '    if(setCol>col || setRow>row || setCol<0 || setRow<0) return;\n'+
+        '    if(setCol>=col || setRow>=row || setCol<0 || setRow<0) return;\n'+
         '    mapTable[setRow][setCol]=p;\n'+
         '    ctx=buf[0].getContext("2d");\n'+
         '    p=Math.floor(p);\n'+
@@ -1140,7 +1149,7 @@ requireSimulator.setName('fs/ROMk');
         '    set(Math.floor(setX/chipWidth),Math.floor(setY/chipHeight),p);\n'+
         '}\n'+
         '\\get(getCol,getRow){\n'+
-        '    if(getCol>col || getRow>row || getCol<0 || getRow<0) return;\n'+
+        '    if(getCol>=col || getRow>=row || getCol<0 || getRow<0) return;\n'+
         '    return mapTable[getRow][getCol];\n'+
         '}\n'+
         '\\getAt(getX,getY){\n'+
@@ -1269,6 +1278,7 @@ requireSimulator.setName('fs/ROMk');
       'Panel.tonyu': 
         'native $;\n'+
         'native Math;\n'+
+        'native isNaN;\n'+
         '\\new(opt){\n'+
         '    super(opt);\n'+
         '    this.width=width;\n'+
@@ -1308,10 +1318,15 @@ requireSimulator.setName('fs/ROMk');
         '    ctx.restore();\n'+
         '}\n'+
         '\\getPixel(getX,getY){\n'+
-        '    ctx=buf[0].getContext("2d");\n'+
-        '    imagedata=ctx.getImageData(getX,getY,1,1);\n'+
-        '    colordata=[imagedata.data[0],imagedata.data[1],imagedata.data[2],imagedata.data[3]];\n'+
-        '    //print(imagedata.data);\n'+
+        '    if(typeof getX=="number" && !isNaN(getX) && \n'+
+        '    typeof getY=="number" && !isNaN(getY)){\n'+
+        '        ctx=buf[0].getContext("2d");\n'+
+        '        imagedata=ctx.getImageData(getX,getY,1,1);\n'+
+        '        colordata=[imagedata.data[0],imagedata.data[1],imagedata.data[2],imagedata.data[3]];\n'+
+        '        //print(imagedata.data);\n'+
+        '    }else{\n'+
+        '        colordata=[0,0,0,0];\n'+
+        '    }\n'+
         '    return(colordata);\n'+
         '}\n'+
         '\\draw(ctx){\n'+
@@ -1414,19 +1429,33 @@ requireSimulator.setName('fs/ROMk');
         '    delete s.__addedToSprites;\n'+
         '}\n'+
         'function clear() {sprites.splice(0,sprites.length);}\n'+
+        'function compOrder(obj1, obj2){\n'+
+        '    var val1=obj1.zOrder;\n'+
+        '    var val2=obj2.zOrder;\n'+
+        '    if(val1>val2){\n'+
+        '        return -1;\n'+
+        '    }else if(val1<val2){\n'+
+        '        return 1;\n'+
+        '    }else{\n'+
+        '        return 0;\n'+
+        '    }\n'+
+        '}\n'+
         'function draw(cv) {\n'+
         '    var ctx=cv.getContext("2d");\n'+
         '    ctx.fillStyle=$Screen.color;\n'+
         '    ctx.fillRect(0,0,cv.width,cv.height);\n'+
         '    if (isDrawGrid) drawGrid(cv);\n'+
-        '    sprites.forEach(\\(sprite) {\n'+
-        '        sprite.draw(ctx);\n'+
+        '    var orderArray=[];\n'+
+        '    orderArray=sprites;\n'+
+        '    orderArray.sort(compOrder);\n'+
+        '    sprites.forEach(\\(orderArray){\n'+
+        '        orderArray.draw(ctx);\n'+
         '    });\n'+
         '}\n'+
         'function checkHit() {\n'+
         '    hitWatchers.forEach(function (w) {\n'+
         '        sprites.forEach(function (a) {\n'+
-        '                //console.log("a:",  a.owner);\n'+
+        '            //console.log("a:",  a.owner);\n'+
         '            var a_owner=a;//a.owner|| a;\n'+
         '            if (! (a_owner instanceof w.A)) return;\n'+
         '            sprites.forEach(function (b) {\n'+
@@ -1460,7 +1489,7 @@ requireSimulator.setName('fs/ROMk');
         '        ctx.closePath();\n'+
         '        ctx.stroke();\n'+
         '    }\n'+
-        '\n'+
+        '    \n'+
         '    for (var i=0 ; i<c.height ; i+=10) {\n'+
         '        ctx.beginPath();\n'+
         '        ctx.lineWidth=(i % 100 ==0 ? 4 : 1);\n'+

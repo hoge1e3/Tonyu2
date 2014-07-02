@@ -20,7 +20,7 @@ native $;
 }
 
 \set(setCol,setRow,p){
-    if(setCol>col || setRow>row || setCol<0 || setRow<0) return;
+    if(setCol>=col || setRow>=row || setCol<0 || setRow<0) return;
     mapTable[setRow][setCol]=p;
     ctx=buf[0].getContext("2d");
     p=Math.floor(p);
@@ -40,7 +40,7 @@ native $;
     set(Math.floor(setX/chipWidth),Math.floor(setY/chipHeight),p);
 }
 \get(getCol,getRow){
-    if(getCol>col || getRow>row || getCol<0 || getRow<0) return;
+    if(getCol>=col || getRow>=row || getCol<0 || getRow<0) return;
     return mapTable[getRow][getCol];
 }
 \getAt(getX,getY){
