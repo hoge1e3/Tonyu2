@@ -343,6 +343,18 @@ $(function () {
         sh.rm(curProjectDir,{r:1});
         document.location.href="index.html";
     });
+    $("#mvPRJ").click(function () {
+	var np=prompt("新しいプロジェクトの名前を入れてください", curProjectDir.name().replace(/\//g,""));
+	if (!np.match(/\/$/)) np+="/";
+	var npd=curProjectDir.up().rel(np);
+	if (npd.exists()) {
+	    alert(npd+" はすでに存在します");
+	    return;
+	}
+	sh.cp(curProjectDir,npd);
+	sh.rm(curProjectDir,{r:1});
+        document.location.href="project.html?dir="+npd;
+    });
     sh.curFile=function () {
         return fl.curFile();
     };

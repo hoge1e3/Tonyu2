@@ -283,6 +283,12 @@ FS=function () {
             dir.obj =function () {
                 return JSON.parse(dir.text());
             };
+	    dir.exists=function () {
+		if (path=="/") return true;
+		var pinfo=getDirInfo(parent);
+		return pinfo && pinfo[name] && !pinfo[name].trashed;
+            };
+
         } else {
             var file=res={};
 
@@ -315,9 +321,14 @@ FS=function () {
                     file.text(JSON.stringify(arguments[0]));
                 }
             };
-            file.copyFrom=function (src) {
+            file.copyFrom=function (src, options) {
                 file.text(src.text());
+		if (options.a) file.metaInfo(src.metaInfo());
             };
+	    file.exists=function () {
+		return lcsExists(path);
+            };
+
         }
         res.relPath=function (base) {
             //  path= /a/b/c   base=/a/b/  res=c
@@ -343,9 +354,6 @@ FS=function () {
             }
 	    return {};
 	};
-        res.exists=function () {
-            return lcsExists(path);
-        };
         res.up=function () {
             if (parent==null) return null; //  path=/
             return FS.get(parent, securityDomain);

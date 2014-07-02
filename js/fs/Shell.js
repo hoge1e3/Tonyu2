@@ -44,7 +44,7 @@ define(["FS","Util"],function (FS,Util) {
                     console.log((dst.exists()?"[ovr]":"[new]")+dst+"<-"+src);
                 }
                 if (!options.test) {
-                    dst.copyFrom(src);
+                    dst.copyFrom(src,options);
                 }
                 sum++;
             });

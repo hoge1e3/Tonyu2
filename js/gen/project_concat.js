@@ -1,4 +1,4 @@
-// Created at Tue Jul 01 2014 16:32:24 GMT+0900 (東京 (標準時))
+// Created at Wed Jul 02 2014 10:44:36 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -372,6 +372,12 @@ FS=function () {
             dir.obj =function () {
                 return JSON.parse(dir.text());
             };
+	    dir.exists=function () {
+		if (path=="/") return true;
+		var pinfo=getDirInfo(parent);
+		return pinfo && pinfo[name] && !pinfo[name].trashed;
+            };
+
         } else {
             var file=res={};
 
@@ -404,9 +410,14 @@ FS=function () {
                     file.text(JSON.stringify(arguments[0]));
                 }
             };
-            file.copyFrom=function (src) {
+            file.copyFrom=function (src, options) {
                 file.text(src.text());
+		if (options.a) file.metaInfo(src.metaInfo());
             };
+	    file.exists=function () {
+		return lcsExists(path);
+            };
+
         }
         res.relPath=function (base) {
             //  path= /a/b/c   base=/a/b/  res=c
@@ -432,9 +443,6 @@ FS=function () {
             }
 	    return {};
 	};
-        res.exists=function () {
-            return lcsExists(path);
-        };
         res.up=function () {
             if (parent==null) return null; //  path=/
             return FS.get(parent, securityDomain);
@@ -9925,7 +9933,7 @@ define(["FS","Util"],function (FS,Util) {
                     console.log((dst.exists()?"[ovr]":"[new]")+dst+"<-"+src);
                 }
                 if (!options.test) {
-                    dst.copyFrom(src);
+                    dst.copyFrom(src,options);
                 }
                 sum++;
             });
@@ -11572,6 +11580,18 @@ $(function () {
         }
         sh.rm(curProjectDir,{r:1});
         document.location.href="index.html";
+    });
+    $("#mvPRJ").click(function () {
+	var np=prompt("新しいプロジェクトの名前を入れてください", curProjectDir.name().replace(/\//g,""));
+	if (!np.match(/\/$/)) np+="/";
+	var npd=curProjectDir.up().rel(np);
+	if (npd.exists()) {
+	    alert(npd+" はすでに存在します");
+	    return;
+	}
+	sh.cp(curProjectDir,npd);
+	sh.rm(curProjectDir,{r:1});
+        document.location.href="project.html?dir="+npd;
     });
     sh.curFile=function () {
         return fl.curFile();
