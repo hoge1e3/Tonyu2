@@ -12,6 +12,14 @@ function (romk, romd, roms,  Util, Tonyu, FS, FileList, FileMenu,
 $(function () {
     copySample();
     //if (!Tonyu.ide) Tonyu.ide={};
+    var kernelDir=FS.get("/Tonyu/Kernel/");
+    var dir=Util.getQueryString("dir", "/Tonyu/Projects/SandBox/");
+    var curProjectDir=FS.get(dir);
+    var curPrj=Tonyu_Project(curProjectDir, kernelDir);
+    var EXT=curPrj.EXT;
+    var desktopEnv=loadDesktopEnv();
+    var runMenuOrd=desktopEnv.runMenuOrd;
+
     Tonyu.defaultResource={
        images:[
           {name:"$pat_base", url: "images/base.png", pwidth:32, pheight:32},
@@ -39,15 +47,9 @@ $(function () {
     }
     onResize();
     var prog=ace.edit("prog");
+    if (typeof desktopEnv.editorFontSize=="number") prog.setFontSize(desktopEnv.editorFontSize);
     prog.setTheme("ace/theme/eclipse");
     prog.getSession().setMode("ace/mode/tonyu");
-    /*prog.commands.addCommands([{
-        name: "run",
-        bindKey: {win: "F9", mac: "F9"},
-        exec: function(editor, line) {
-            run();
-        }
-    }]);*/
 
     KeyEventChecker.down(document,"F9",run);
     KeyEventChecker.down(document,"F2",stop);
@@ -66,8 +68,6 @@ $(function () {
 
     $(window).resize(onResize);
     $("body")[0].spellcheck=false;
-    var dir=Util.getQueryString("dir", "/Tonyu/Projects/SandBox/");
-    var curProjectDir=FS.get(dir);
     sh.cd(curProjectDir);
 
     var fl=FileList($("#fileItemList"),{
@@ -102,11 +102,7 @@ $(function () {
         return f.name();
     };
 
-    var kernelDir=FS.get("/Tonyu/Kernel/");
-    var curPrj=Tonyu_Project(curProjectDir, kernelDir);
-    var EXT=curPrj.EXT;
-    var desktopEnv=loadDesktopEnv();
-    var runMenuOrd=desktopEnv.runMenuOrd;
+    
     fl.ls(curProjectDir);
     refreshRunMenu();
     KeyEventChecker.down(document,"Alt+Ctrl+D",function () {
@@ -355,6 +351,12 @@ $(function () {
 	sh.cp(curProjectDir,npd);
 	sh.rm(curProjectDir,{r:1});
         document.location.href="project.html?dir="+npd;
+    });
+    $("#editorEditor").click(function () {
+	var s=prompt("エディタの文字の大きさ", desktopEnv.editorFontSize||12);
+	desktopEnv.editorFontSize=parseInt(s);
+	prog.setFontSize(desktopEnv.editorFontSize||12);
+	saveDesktopEnv();
     });
     sh.curFile=function () {
         return fl.curFile();
