@@ -28,6 +28,9 @@ $(function () {
        ],
        sounds:[]
     };
+    if (location.href.match(/^file/)) {
+       Tonyu.defaultResource.images.splice(1,1);
+    }
     Tonyu.defaultOptions={
         compiler: { defaultSuperClass: "Actor"},
         run: {mainClass: "Main", bootClass: "Boot"},
