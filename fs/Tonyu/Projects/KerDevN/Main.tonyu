@@ -34,7 +34,7 @@ while(true){
     if(panel.x<0) panel.vx=2;
     if(panel.y>$screenHeight) panel.vy=-2;
     if(panel.y<0) panel.vy=2;
-    
+    print(rnd(100));
     //print(panel.getPixel($mouseX-(panel.x-panel.width/2),$mouseY-(panel.y-panel.height/2)));
     //pw--;
     if(pw<=0) pw=200;

@@ -1,4 +1,4 @@
-// Created at Tue Jul 08 2014 13:22:37 GMT+0900 (東京 (標準時))
+// Created at Tue Jul 08 2014 14:05:08 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -571,7 +571,7 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1404290329618},"Actor.tonyu":{"lastUpdate":1404290329619},"BaseActor.tonyu":{"lastUpdate":1404290329620},"Boot.tonyu":{"lastUpdate":1404290329621},"Keys.tonyu":{"lastUpdate":1400120164000},"Map.tonyu":{"lastUpdate":1404290329621},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1400120164000},"NoviceActor.tonyu":{"lastUpdate":1404290329622},"ScaledCanvas.tonyu":{"lastUpdate":1400120164000},"Sprites.tonyu":{"lastUpdate":1404290329623},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1404290329623}}',
+      '': '{".desktop":{"lastUpdate":1404795893616},"Actor.tonyu":{"lastUpdate":1404795893617},"BaseActor.tonyu":{"lastUpdate":1404795893617},"Boot.tonyu":{"lastUpdate":1404795893618},"Keys.tonyu":{"lastUpdate":1400120164000},"Map.tonyu":{"lastUpdate":1404795893619},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1400120164000},"NoviceActor.tonyu":{"lastUpdate":1404795893620},"ScaledCanvas.tonyu":{"lastUpdate":1400120164000},"Sprites.tonyu":{"lastUpdate":1404795893620},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1404795893621}}',
       '.desktop': '{"runMenuOrd":["Main","Sprites","PanelTest","MapEditor","NoviceActor","AcTestM","MapTest2nd","MapTest","Map","SetBGCTest","Bounce","AcTest","NObjTest","NObjTest2","AltBoot","Ball","Bar","Pad","BaseActor","Actor","Label","Panel","Boot"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -631,8 +631,13 @@ requireSimulator.setName('fs/ROMk');
         '    return Tonyu.extend(this,obj);\n'+
         '}\n'+
         '\n'+
-        'nowait \\print() {\n'+
+        'nowait \\print(pt) {\n'+
         '    console.log.apply(console,arguments);\n'+
+        '    if($consolePanel){\n'+
+        '        $consolePanel.scroll(0,20);\n'+
+        '        $consolePanel.setFillStyle("white");\n'+
+        '        $consolePanel.fillText(pt,0,$consolePrintY,20,"left");\n'+
+        '    }\n'+
         '}\n'+
         '\\update() {\n'+
         '    ifwait {\n'+
@@ -989,6 +994,8 @@ requireSimulator.setName('fs/ROMk');
         '$Keys=new Keys;\n'+
         '$MMLS={};\n'+
         '$WaveTable=new WaveTable;\n'+
+        '$consolePanel=new Panel{x:465/2,y:465/2,width:465,height:465,zOrder:-1};\n'+
+        '$consolePrintY=465-15;\n'+
         'if (typeof SplashScreen!="undefined") SplashScreen.hide();\n'+
         'while (true) {\n'+
         '    ti=new Date().getTime();\n'+
@@ -1328,6 +1335,14 @@ requireSimulator.setName('fs/ROMk');
         '        colordata=[0,0,0,0];\n'+
         '    }\n'+
         '    return(colordata);\n'+
+        '}\n'+
+        '\\scroll(scrollX,scrollY){\n'+
+        '    ctx=buf[0].getContext("2d");\n'+
+        '    ctx.save();\n'+
+        '    imagedata=ctx.getImageData(0,0,this.width,this.height);\n'+
+        '    clearRect(0,0,width,height);\n'+
+        '    ctx.putImageData(imagedata,-scrollX,-scrollY);\n'+
+        '    ctx.restore();\n'+
         '}\n'+
         '\\draw(ctx){\n'+
         '    pImg=buf[0];\n'+

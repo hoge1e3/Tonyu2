@@ -51,6 +51,14 @@ native isNaN;
     }
     return(colordata);
 }
+\scroll(scrollX,scrollY){
+    ctx=buf[0].getContext("2d");
+    ctx.save();
+    imagedata=ctx.getImageData(0,0,this.width,this.height);
+    clearRect(0,0,width,height);
+    ctx.putImageData(imagedata,-scrollX,-scrollY);
+    ctx.restore();
+}
 \draw(ctx){
     pImg=buf[0];
     ctx.save();

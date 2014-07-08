@@ -29,8 +29,13 @@ nowait \extend(obj) {
     return Tonyu.extend(this,obj);
 }
 
-nowait \print() {
+nowait \print(pt) {
     console.log.apply(console,arguments);
+    if($consolePanel){
+        $consolePanel.scroll(0,20);
+        $consolePanel.setFillStyle("white");
+        $consolePanel.fillText(pt,0,$consolePrintY,20,"left");
+    }
 }
 \update() {
     ifwait {
