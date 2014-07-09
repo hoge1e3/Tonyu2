@@ -1,4 +1,4 @@
-// Created at Tue Jul 08 2014 14:05:08 GMT+0900 (東京 (標準時))
+// Created at Wed Jul 09 2014 15:47:29 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -571,8 +571,8 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1404795893616},"Actor.tonyu":{"lastUpdate":1404795893617},"BaseActor.tonyu":{"lastUpdate":1404795893617},"Boot.tonyu":{"lastUpdate":1404795893618},"Keys.tonyu":{"lastUpdate":1400120164000},"Map.tonyu":{"lastUpdate":1404795893619},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1400120164000},"NoviceActor.tonyu":{"lastUpdate":1404795893620},"ScaledCanvas.tonyu":{"lastUpdate":1400120164000},"Sprites.tonyu":{"lastUpdate":1404795893620},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1404795893621}}',
-      '.desktop': '{"runMenuOrd":["Main","Sprites","PanelTest","MapEditor","NoviceActor","AcTestM","MapTest2nd","MapTest","Map","SetBGCTest","Bounce","AcTest","NObjTest","NObjTest2","AltBoot","Ball","Bar","Pad","BaseActor","Actor","Label","Panel","Boot"]}',
+      '': '{".desktop":{"lastUpdate":1404888429573},"Actor.tonyu":{"lastUpdate":1404888429574},"BaseActor.tonyu":{"lastUpdate":1404888429574},"Boot.tonyu":{"lastUpdate":1404888429575},"Keys.tonyu":{"lastUpdate":1400120164000},"Map.tonyu":{"lastUpdate":1404888429575},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1400120164000},"NoviceActor.tonyu":{"lastUpdate":1404888429576},"ScaledCanvas.tonyu":{"lastUpdate":1400120164000},"Sprites.tonyu":{"lastUpdate":1404888429577},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1404888429577}}',
+      '.desktop': '{"runMenuOrd":["Main","PanelTest","Sprites","MapEditor","NoviceActor","AcTestM","MapTest2nd","MapTest","Map","SetBGCTest","Bounce","AcTest","NObjTest","NObjTest2","AltBoot","Ball","Bar","Pad","BaseActor","Actor","Label","Panel","Boot"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
         'native Sprites;\n'+
@@ -658,7 +658,7 @@ requireSimulator.setName('fs/ROMk');
         'nowait \\all(c) {\n'+
         '    var res=new TQuery;\n'+
         '    $Sprites.sprites.forEach \\(s) {\n'+
-        '        if (s===this) return;\n'+
+        '        if (s===this || s.excludeFromAll) return;\n'+
         '        if (!c || s instanceof c) {\n'+
         '            res.push(s);\n'+
         '        }\n'+
@@ -673,6 +673,7 @@ requireSimulator.setName('fs/ROMk');
         '    $Sprites.sprites.forEach(\\(s) {\n'+
         '        var t2;\n'+
         '        if (s!==this && \n'+
+        '        !s.excludeFromAll &&\n'+
         '        s instanceof t && \n'+
         '        (t2=s.getCrashRect()) &&\n'+
         '        Math.abs(t1.x-t2.x)*2<t1.width+t2.width &&\n'+
@@ -994,7 +995,7 @@ requireSimulator.setName('fs/ROMk');
         '$Keys=new Keys;\n'+
         '$MMLS={};\n'+
         '$WaveTable=new WaveTable;\n'+
-        '$consolePanel=new Panel{x:465/2,y:465/2,width:465,height:465,zOrder:-1};\n'+
+        '$consolePanel=new Panel{x:465/2,y:465/2,width:465,height:465,zOrder:-1,excludeFromAll:true};\n'+
         '$consolePrintY=465-15;\n'+
         'if (typeof SplashScreen!="undefined") SplashScreen.hide();\n'+
         'while (true) {\n'+

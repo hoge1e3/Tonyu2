@@ -56,7 +56,7 @@ nowait \hitTo(t) {
 nowait \all(c) {
     var res=new TQuery;
     $Sprites.sprites.forEach \(s) {
-        if (s===this) return;
+        if (s===this || s.excludeFromAll) return;
         if (!c || s instanceof c) {
             res.push(s);
         }
@@ -71,6 +71,7 @@ nowait \allCrash(t) {
     $Sprites.sprites.forEach(\(s) {
         var t2;
         if (s!==this && 
+        !s.excludeFromAll &&
         s instanceof t && 
         (t2=s.getCrashRect()) &&
         Math.abs(t1.x-t2.x)*2<t1.width+t2.width &&

@@ -125,7 +125,7 @@ $pat_fruits=30;
 $Keys=new Keys;
 $MMLS={};
 $WaveTable=new WaveTable;
-$consolePanel=new Panel{x:465/2,y:465/2,width:465,height:465,zOrder:-1};
+$consolePanel=new Panel{x:465/2,y:465/2,width:465,height:465,zOrder:-1,excludeFromAll:true};
 $consolePrintY=465-15;
 if (typeof SplashScreen!="undefined") SplashScreen.hide();
 while (true) {
