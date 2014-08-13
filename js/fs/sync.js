@@ -10,7 +10,7 @@ define(["FS","Shell"],function (FS,sh) {
 	n0();
 	var uploads={},downloads=[],visited={};
 	function n0() {
-	    $.get("../../getDirInfo",{base:dir.path()},n1);
+	    $.get("../../edit/getDirInfo",{base:dir.path()},n1);
 	}
 	function n1(info) {
 	    info=JSON.parse(info);
@@ -33,7 +33,7 @@ define(["FS","Shell"],function (FS,sh) {
 		console.log("uploads:",uploads);
 		console.log("downloads:",downloads);
 	    }
-	    $.post("../../File2LSSync",
+	    $.post("../../edit/File2LSSync",
 		   {base:info.base,paths:JSON.stringify(downloads)},n2);
 	}
 	function n2(dlData) {
@@ -53,7 +53,7 @@ define(["FS","Shell"],function (FS,sh) {
 		delete d.text;
 		dlf.metaInfo(d);
 	    }
-	    $.post("../../LS2FileSync",
+	    $.post("../../edit/LS2FileSync",
 		   {base:dlData.base,data:JSON.stringify(uploads)},n3);
     	}
 	function n3(res){

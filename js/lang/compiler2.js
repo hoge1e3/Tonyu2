@@ -812,7 +812,7 @@ function genJS(klass, env,pass) {
                  "var %s=0;%n"+
                  "%f%n"+
 //                 "%z%n"+
-                 "return function (%s) {%{"+
+                 "return function %s(%s) {%{"+
                    "for(var %s=%d ; %s--;) {%{"+
                      "switch (%s) {%{"+
                         "%}case 0:%{"+
@@ -829,7 +829,7 @@ function genJS(klass, env,pass) {
                    FRMPC,
                    genLocalsF(locals, ns),
 //                   locals,
-                   TH,
+                   genFn(),TH,
                    CNTV, CNTC, CNTV,
                         FRMPC,
                         // case 0:
@@ -865,12 +865,12 @@ function genJS(klass, env,pass) {
             ns[p.name.text]=ST.PARAM;
         });
         var locals=checkLocals(func.stmts,ns);
-        printf("%s :function (%j) {%{"+
+        printf("%s :function %s(%j) {%{"+
                   "var %s=%s;%n"+
                   "%f%n" +
                   "%f" +
                "%}},%n",
-               fname, [",",getParams(func)],
+               fname, genFn(), [",",getParams(func)],
                THIZ, GET_THIS,
                	      genLocalsF(locals, ns),
                       fbody
@@ -912,6 +912,9 @@ function genJS(klass, env,pass) {
                 });
             });
         }
+    }
+    function genFn() {
+        return ("_"+Math.random()).replace(/\./g,"");
     }
     function genSubFunc(node) {
     	var m,ps;

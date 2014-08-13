@@ -3,3 +3,4 @@ while(true) {
     x++;
     update();
 }
+a=5;

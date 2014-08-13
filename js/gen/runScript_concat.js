@@ -1,4 +1,4 @@
-// Created at Wed Jul 09 2014 15:47:30 GMT+0900 (東京 (標準時))
+// Created at Wed Aug 13 2014 15:12:44 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -571,7 +571,7 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1404888429573},"Actor.tonyu":{"lastUpdate":1404888429574},"BaseActor.tonyu":{"lastUpdate":1404888429574},"Boot.tonyu":{"lastUpdate":1404888429575},"Keys.tonyu":{"lastUpdate":1400120164000},"Map.tonyu":{"lastUpdate":1404888429575},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1400120164000},"NoviceActor.tonyu":{"lastUpdate":1404888429576},"ScaledCanvas.tonyu":{"lastUpdate":1400120164000},"Sprites.tonyu":{"lastUpdate":1404888429577},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1404888429577}}',
+      '': '{".desktop":{"lastUpdate":1404888429573},"Actor.tonyu":{"lastUpdate":1404888429574},"BaseActor.tonyu":{"lastUpdate":1404888429574},"Boot.tonyu":{"lastUpdate":1404888429575},"Keys.tonyu":{"lastUpdate":1400120164000},"Map.tonyu":{"lastUpdate":1404888429575},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1404888429576},"ScaledCanvas.tonyu":{"lastUpdate":1400120164000},"Sprites.tonyu":{"lastUpdate":1404888429577},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1404888429577}}',
       '.desktop': '{"runMenuOrd":["Main","PanelTest","Sprites","MapEditor","NoviceActor","AcTestM","MapTest2nd","MapTest","Map","SetBGCTest","Bounce","AcTest","NObjTest","NObjTest2","AltBoot","Ball","Bar","Pad","BaseActor","Actor","Label","Panel","Boot"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -1078,9 +1078,15 @@ requireSimulator.setName('fs/ROMk');
         '}\n'+
         '\\playNext() {\n'+
         '    //print("play!", id(), bufferCount());\n'+
+        '    if (cTimeBase==null) cTimeBase=0;\n'+
+        '    if (m) {\n'+
+        '        cTimeBase+=m.currentTime;\n'+
+        '        //print(m.currentTime);\n'+
+        '    }\n'+
         '    var mml=mmlBuf.shift();\n'+
         '    if (!mml) {\n'+
         '        m=null;\n'+
+        '        cTimeBase=0;\n'+
         '        return;\n'+
         '    }\n'+
         '    mwav=$WaveTable.get(0,0).play();\n'+
@@ -1098,6 +1104,10 @@ requireSimulator.setName('fs/ROMk');
         '}\n'+
         '\\isPlaying() {\n'+
         '    return m;\n'+
+        '}\n'+
+        '\\currentTime() {\n'+
+        '    if (m) return m.currentTime+cTimeBase;\n'+
+        '    return -1;\n'+
         '}\n'+
         '\\stop() {\n'+
         '    if (m) {\n'+
@@ -4812,7 +4822,7 @@ function genJS(klass, env,pass) {
                  "var %s=0;%n"+
                  "%f%n"+
 //                 "%z%n"+
-                 "return function (%s) {%{"+
+                 "return function %s(%s) {%{"+
                    "for(var %s=%d ; %s--;) {%{"+
                      "switch (%s) {%{"+
                         "%}case 0:%{"+
@@ -4829,7 +4839,7 @@ function genJS(klass, env,pass) {
                    FRMPC,
                    genLocalsF(locals, ns),
 //                   locals,
-                   TH,
+                   genFn(),TH,
                    CNTV, CNTC, CNTV,
                         FRMPC,
                         // case 0:
@@ -4865,12 +4875,12 @@ function genJS(klass, env,pass) {
             ns[p.name.text]=ST.PARAM;
         });
         var locals=checkLocals(func.stmts,ns);
-        printf("%s :function (%j) {%{"+
+        printf("%s :function %s(%j) {%{"+
                   "var %s=%s;%n"+
                   "%f%n" +
                   "%f" +
                "%}},%n",
-               fname, [",",getParams(func)],
+               fname, genFn(), [",",getParams(func)],
                THIZ, GET_THIS,
                	      genLocalsF(locals, ns),
                       fbody
@@ -4912,6 +4922,9 @@ function genJS(klass, env,pass) {
                 });
             });
         }
+    }
+    function genFn() {
+        return ("_"+Math.random()).replace(/\./g,"");
     }
     function genSubFunc(node) {
     	var m,ps;

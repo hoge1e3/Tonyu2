@@ -243,6 +243,7 @@ $(function () {
         },0);
     }
     Tonyu.onRuntimeError=function (e) {
+        Tonyu.globals.$lastError=e;
         var t=curPrj.env.traceTbl;
         var te=t.decode($LASTPOS);
         if (te) {

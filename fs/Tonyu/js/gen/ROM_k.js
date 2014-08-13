@@ -2,7 +2,7 @@
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1404888429573},"Actor.tonyu":{"lastUpdate":1404888429574},"BaseActor.tonyu":{"lastUpdate":1404888429574},"Boot.tonyu":{"lastUpdate":1404888429575},"Keys.tonyu":{"lastUpdate":1400120164000},"Map.tonyu":{"lastUpdate":1404888429575},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1400120164000},"NoviceActor.tonyu":{"lastUpdate":1404888429576},"ScaledCanvas.tonyu":{"lastUpdate":1400120164000},"Sprites.tonyu":{"lastUpdate":1404888429577},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1404888429577}}',
+      '': '{".desktop":{"lastUpdate":1404888429573},"Actor.tonyu":{"lastUpdate":1404888429574},"BaseActor.tonyu":{"lastUpdate":1404888429574},"Boot.tonyu":{"lastUpdate":1404888429575},"Keys.tonyu":{"lastUpdate":1400120164000},"Map.tonyu":{"lastUpdate":1404888429575},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1404888429576},"ScaledCanvas.tonyu":{"lastUpdate":1400120164000},"Sprites.tonyu":{"lastUpdate":1404888429577},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1404888429577}}',
       '.desktop': '{"runMenuOrd":["Main","PanelTest","Sprites","MapEditor","NoviceActor","AcTestM","MapTest2nd","MapTest","Map","SetBGCTest","Bounce","AcTest","NObjTest","NObjTest2","AltBoot","Ball","Bar","Pad","BaseActor","Actor","Label","Panel","Boot"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -509,9 +509,15 @@
         '}\n'+
         '\\playNext() {\n'+
         '    //print("play!", id(), bufferCount());\n'+
+        '    if (cTimeBase==null) cTimeBase=0;\n'+
+        '    if (m) {\n'+
+        '        cTimeBase+=m.currentTime;\n'+
+        '        //print(m.currentTime);\n'+
+        '    }\n'+
         '    var mml=mmlBuf.shift();\n'+
         '    if (!mml) {\n'+
         '        m=null;\n'+
+        '        cTimeBase=0;\n'+
         '        return;\n'+
         '    }\n'+
         '    mwav=$WaveTable.get(0,0).play();\n'+
@@ -529,6 +535,10 @@
         '}\n'+
         '\\isPlaying() {\n'+
         '    return m;\n'+
+        '}\n'+
+        '\\currentTime() {\n'+
+        '    if (m) return m.currentTime+cTimeBase;\n'+
+        '    return -1;\n'+
         '}\n'+
         '\\stop() {\n'+
         '    if (m) {\n'+

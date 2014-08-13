@@ -42,6 +42,10 @@ app.post('/File2LSSync', LSFile.File2LSSync);
 app.post('/LS2FileSync', LSFile.LS2FileSync);
 app.get('/getDirInfo', LSFile.getDirInfo);
 
+app.post('/edit/File2LSSync', LSFile.File2LSSync);
+app.post('/edit/LS2FileSync', LSFile.LS2FileSync);
+app.get('/edit/getDirInfo', LSFile.getDirInfo);
+
 
 var http = require('http');
 //var server = http.createServer(app);

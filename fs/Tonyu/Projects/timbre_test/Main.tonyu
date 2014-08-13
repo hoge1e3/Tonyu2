@@ -1,0 +1,4 @@
+new TimeWatch;
+$pl=play("t120cdefg");
+play("gfedc");
+//print($pl.currentTime);
