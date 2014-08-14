@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Sync Project Files</title>
+<meta charset="utf-8">
+<script src="../../js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="../../js/reqConf.js"></script>
+<script src="../../js/lib/require.js"></script>
+<script>
+requirejs.config(reqConf);
+requirejs(["fs/syncProjects"],function (){});
+</script>
+</head>
+<body>
+<h1 id=status>同期中... </h1>
+<div id=res></div>
+
+</body>
+
+</html>

@@ -5,6 +5,7 @@ define(["FS","Shell"],function (FS,sh) {
     };
     Sync.sync=function (dir,options,onend) {
 	if (!onend && typeof options=="function") { onend=options; options={};}
+	if (!onend && options.onend) onend=options.onend;
 	if (!options) options={};
 	if (options.test) options.v=1;
 	n0();
@@ -14,7 +15,7 @@ define(["FS","Shell"],function (FS,sh) {
 	}
 	function n1(info) {
 	    info=JSON.parse(info);
-	    if (options.v) console.log(info);
+	    if (options.v) console.log("getDirInfo",info);
 	    var base=FS.get(info.base);
 	    var data=info.data;
 	    for (var rel in data) {
@@ -37,6 +38,7 @@ define(["FS","Shell"],function (FS,sh) {
 		   {base:info.base,paths:JSON.stringify(downloads)},n2);
 	}
 	function n2(dlData) {
+		console.log("dlData=",dlData);
 	    dlData=JSON.parse(dlData);
 	    if (options.v) console.log("dlData:",dlData);
 	    var base=FS.get(dlData.base);
@@ -58,6 +60,9 @@ define(["FS","Shell"],function (FS,sh) {
     	}
 	function n3(res){
 	    if (options.v) console.log(res);
+	    var upds=[];
+	    for (var i in uploads) upds.push(i);
+	    res={msg:res,uploads:upds,downloads: downloads};
 	    if (typeof onend=="function") onend(res);
 	}
 	function cmp(f,rel,lcm,rmm) {
@@ -65,7 +70,7 @@ define(["FS","Shell"],function (FS,sh) {
 	    visited[rel]=1;
 	    if (rmm && (!lcm || lcm.lastUpdate<rmm.lastUpdate)) {
 		downloads.push(rel);
-		if (options.v) 
+		if (options.v)
 		    console.log((!lcm?"New":"")+
 			    "Download "+f+
 			    " trash="+!!rmm.trashed);
@@ -74,12 +79,12 @@ define(["FS","Shell"],function (FS,sh) {
 		var m=f.metaInfo();
 		for (var i in m) o[i]=m[i];
 		uploads[rel]=o;
-		if (options.v) 
+		if (options.v)
 		    console.log((!rmm?"New":"")+
 			    "Upload "+f+
 			    " trash="+!!lcm.trashed);
 	    }
-	    
+
 	}
     };
     return Sync;
