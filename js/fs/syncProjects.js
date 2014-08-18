@@ -1,8 +1,8 @@
-requirejs(["Sync", "UI"],function (Sync,UI) {
-	$(function () {
-		Sync.sync(FS.get("/Tonyu/Projects/"),{v:true,onend:onend});
-
-	});
+requirejs(["Sync", "UI","Util"],function (Sync,UI) {
+    $(function () {
+        var user=Util.getQueryString("user");
+        Sync.sync(FS.get("/Tonyu/Projects/"), FS.get("/home/"+user+"/"), {v:true,onend:onend});
+    });
 	function onend(res) {
 		console.log(res);
 		$("#status").append(res.msg);

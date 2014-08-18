@@ -15,7 +15,7 @@ $(function () {
         });
     }
     if (WebSite.devMode) {
-	Sync.sync(FS.get("/"),{v:1});
+	Sync.sync(FS.get("/Tonyu/"),{v:1});
     }
     $("#newPrj").click(function (){
     	NPD.show(projects, function (prjDir) {
