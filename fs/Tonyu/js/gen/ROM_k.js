@@ -2,8 +2,8 @@
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1404888429573},"Actor.tonyu":{"lastUpdate":1404888429574},"BaseActor.tonyu":{"lastUpdate":1404888429574},"Boot.tonyu":{"lastUpdate":1404888429575},"Keys.tonyu":{"lastUpdate":1400120164000},"Map.tonyu":{"lastUpdate":1404888429575},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1404888429576},"ScaledCanvas.tonyu":{"lastUpdate":1400120164000},"Sprites.tonyu":{"lastUpdate":1404888429577},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1404888429577},"MapEditor.tonyu":{"lastUpdate":1408716251517}}',
-      '.desktop': '{"runMenuOrd":["Main","PanelTest","Sprites","MapEditor","NoviceActor","AcTestM","MapTest2nd","MapTest","Map","SetBGCTest","Bounce","AcTest","NObjTest","NObjTest2","AltBoot","Ball","Bar","Pad","BaseActor","Actor","Label","Panel","Boot"]}',
+      '': '{".desktop":{"lastUpdate":1408716523305},"Actor.tonyu":{"lastUpdate":1408716523306},"BaseActor.tonyu":{"lastUpdate":1408716523307},"Boot.tonyu":{"lastUpdate":1408716523308},"Keys.tonyu":{"lastUpdate":1400120164000},"Map.tonyu":{"lastUpdate":1408716523309},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1408716523309},"ScaledCanvas.tonyu":{"lastUpdate":1408716523310},"Sprites.tonyu":{"lastUpdate":1408716523310},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1408716523311},"MapEditor.tonyu":{"lastUpdate":1408716523312}}',
+      '.desktop': '{"runMenuOrd":["MapEditor","Main","PanelTest","Sprites","NoviceActor","AcTestM","MapTest2nd","MapTest","Map","SetBGCTest","Bounce","AcTest","NObjTest","NObjTest2","AltBoot","Ball","Bar","Pad","BaseActor","Actor","Label","Panel","Boot","ScaledCanvas","ScrollTest"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
         'native Sprites;\n'+
@@ -564,6 +564,7 @@
         '    super(param);\n'+
         '    buf=$("<canvas>").attr{width:col*chipWidth,height:row*chipHeight};\n'+
         '    mapTable = [];\n'+
+        '    mapOnTable = [];\n'+
         '    for(var j=0;j<row;j++){\n'+
         '        rows = [];\n'+
         '        for(var i=0;i<col;i++){\n'+
@@ -571,15 +572,36 @@
         '        }\n'+
         '        mapTable.push(rows);\n'+
         '    }\n'+
-        '/*for(var i=0;i<col;i++){\n'+
+        '    for(var j=0;j<row;j++){\n'+
+        '        rows = [];\n'+
+        '        for(var i=0;i<col;i++){\n'+
+        '            rows.push(-1);\n'+
+        '        }\n'+
+        '        mapOnTable.push(rows);\n'+
+        '    }\n'+
+        '    /*for(var i=0;i<col;i++){\n'+
         '        mapTable[i]=[];\n'+
-        '}*/\n'+
-        '    \n'+
+        '    }*/\n'+
+        '    initMap();\n'+
         '}\n'+
-        '\n'+
+        '\\initMap(){\n'+
+        '    if(!mapData) return;\n'+
+        '    for(var i=0;i<row;i++){\n'+
+        '        for(var j=0;j<col;j++){\n'+
+        '            set(j,i,mapData[i][j]);\n'+
+        '        }\n'+
+        '    }\n'+
+        '    if(!mapOnData) return;\n'+
+        '    for(var i=0;i<row;i++){\n'+
+        '        for(var j=0;j<col;j++){\n'+
+        '            setOn(j,i,mapOnData[i][j]);\n'+
+        '        }\n'+
+        '    }\n'+
+        '}\n'+
         '\\set(setCol,setRow,p){\n'+
         '    if(setCol>=col || setRow>=row || setCol<0 || setRow<0) return;\n'+
         '    mapTable[setRow][setCol]=p;\n'+
+        '    //mapOnTable[setRow][setCol]=-1;\n'+
         '    ctx=buf[0].getContext("2d");\n'+
         '    p=Math.floor(p);\n'+
         '    pImg=$Sprites.getImageList()[p];\n'+
@@ -593,6 +615,22 @@
         '    pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,\n'+
         '    setCol*chipWidth, setRow*chipHeight, chipWidth, chipHeight);\n'+
         '    ctx.restore();\n'+
+        '}\n'+
+        '\\setOn(setCol,setRow,p){\n'+
+        '    if(setCol>=col || setRow>=row || setCol<0 || setRow<0) return;\n'+
+        '    mapOnTable[setRow][setCol]=p;\n'+
+        '    ctx=buf[0].getContext("2d");\n'+
+        '    p=Math.floor(p);\n'+
+        '    pImg=$Sprites.getImageList()[p];\n'+
+        '    if (!pImg) return;\n'+
+        '    ctx.save();\n'+
+        '    ctx.drawImage(\n'+
+        '    pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,\n'+
+        '    setCol*chipWidth, setRow*chipHeight, chipWidth, chipHeight);\n'+
+        '    ctx.restore();\n'+
+        '}\n'+
+        '\\setOnAt(setX,setY,p){\n'+
+        '    setOn(Math.floor(setX/chipWidth),Math.floor(setY/chipHeight),p);\n'+
         '}\n'+
         '\\setAt(setX,setY,p){\n'+
         '    set(Math.floor(setX/chipWidth),Math.floor(setY/chipHeight),p);\n'+
@@ -1041,12 +1079,23 @@
         '    }\n'+
         '    var marginw=Math.floor((cw-calcw)/2);\n'+
         '    var marginh=Math.floor((ch-calch)/2);\n'+
-        '\n'+
+        '    \n'+
         '    return {x: (point.x-marginw)/calcw*width, \n'+
         '    y: (point.y-marginh)/calch*height};\n'+
         '}\n'+
         '\\setBGColor(color){\n'+
         '    this.color=color;\n'+
+        '}\n'+
+        '\\scrollTo(scrollX,scrollY){\n'+
+        '    for(o in all()){\n'+
+        '        print(o.mapObj);\n'+
+        '        if(o.mapObj){\n'+
+        '            o.scrollTo(o.sx+scrollX,o.sy+scrollY);\n'+
+        '        }else{\n'+
+        '            o.x+=scrollX;\n'+
+        '            o.y+=scrollY;\n'+
+        '        }\n'+
+        '    }\n'+
         '}'
       ,
       'Sprites.tonyu': 

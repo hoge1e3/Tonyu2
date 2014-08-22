@@ -53,10 +53,21 @@ native Math;
     }
     var marginw=Math.floor((cw-calcw)/2);
     var marginh=Math.floor((ch-calch)/2);
-
+    
     return {x: (point.x-marginw)/calcw*width, 
     y: (point.y-marginh)/calch*height};
 }
 \setBGColor(color){
     this.color=color;
+}
+\scrollTo(scrollX,scrollY){
+    for(o in all()){
+        print(o.mapObj);
+        if(o.mapObj){
+            o.scrollTo(o.sx+scrollX,o.sy+scrollY);
+        }else{
+            o.x+=scrollX;
+            o.y+=scrollY;
+        }
+    }
 }
