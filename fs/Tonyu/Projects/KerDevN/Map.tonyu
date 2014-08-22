@@ -1,6 +1,7 @@
 native Math;
 native $;
 \new (param){
+    mapObj=true;
     sx=0;
     sy=0;
     super(param);
@@ -13,9 +14,9 @@ native $;
         }
         mapTable.push(rows);
     }
-/*for(var i=0;i<col;i++){
+    /*for(var i=0;i<col;i++){
         mapTable[i]=[];
-}*/
+    }*/
     
 }
 

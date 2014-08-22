@@ -2,7 +2,7 @@
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1404888429573},"Actor.tonyu":{"lastUpdate":1404888429574},"BaseActor.tonyu":{"lastUpdate":1404888429574},"Boot.tonyu":{"lastUpdate":1404888429575},"Keys.tonyu":{"lastUpdate":1400120164000},"Map.tonyu":{"lastUpdate":1404888429575},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1404888429576},"ScaledCanvas.tonyu":{"lastUpdate":1400120164000},"Sprites.tonyu":{"lastUpdate":1404888429577},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1404888429577}}',
+      '': '{".desktop":{"lastUpdate":1404888429573},"Actor.tonyu":{"lastUpdate":1404888429574},"BaseActor.tonyu":{"lastUpdate":1404888429574},"Boot.tonyu":{"lastUpdate":1404888429575},"Keys.tonyu":{"lastUpdate":1400120164000},"Map.tonyu":{"lastUpdate":1404888429575},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1404888429576},"ScaledCanvas.tonyu":{"lastUpdate":1400120164000},"Sprites.tonyu":{"lastUpdate":1404888429577},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1404888429577},"MapEditor.tonyu":{"lastUpdate":1408716251517}}',
       '.desktop': '{"runMenuOrd":["Main","PanelTest","Sprites","MapEditor","NoviceActor","AcTestM","MapTest2nd","MapTest","Map","SetBGCTest","Bounce","AcTest","NObjTest","NObjTest2","AltBoot","Ball","Bar","Pad","BaseActor","Actor","Label","Panel","Boot"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -630,6 +630,190 @@
         '        if($screenHeight<i*chipHeight) break;\n'+
         '    }*/\n'+
         '}\n'
+      ,
+      'MapEditor.tonyu': 
+        'loadMode=false;\n'+
+        'mapDataFile=file("map.json");\n'+
+        'mapData=mapDataFile.obj();\n'+
+        'mapOnDataFile=file("mapOn.json");\n'+
+        'mapOnData=mapOnDataFile.obj();\n'+
+        'if(mapData){\n'+
+        '    print("Load Data?: Y or N");\n'+
+        '    while(true){\n'+
+        '        if(getkey("y")==1){\n'+
+        '            loadMode=true;\n'+
+        '            break;\n'+
+        '        }\n'+
+        '        if(getkey("n")==1){\n'+
+        '            loadMode=false;\n'+
+        '            break;\n'+
+        '        }\n'+
+        '    }\n'+
+        '}\n'+
+        'if(!loadMode){\n'+
+        '    print("input row");\n'+
+        '    input=0;\n'+
+        '    enter=false;\n'+
+        '    while(!enter){\n'+
+        '        for(var num=48;num<58;num++){\n'+
+        '            if(getkey(num)==1){\n'+
+        '                num=num-0;\n'+
+        '                input=input*10+(num-48);\n'+
+        '            }\n'+
+        '        }\n'+
+        '        if(getkey(13)==1){\n'+
+        '            enter=true;\n'+
+        '        }\n'+
+        '        update();\n'+
+        '    }\n'+
+        '    print(input);\n'+
+        '    row=input;\n'+
+        '    \n'+
+        '    update();\n'+
+        '    enter=false;\n'+
+        '    print("input col");\n'+
+        '    input=0;\n'+
+        '    while(!enter){\n'+
+        '        for(var num=48;num<58;num++){\n'+
+        '            if(getkey(num)==1){\n'+
+        '                num=num-0;\n'+
+        '                input=input*10+(num-48);\n'+
+        '            }\n'+
+        '        }\n'+
+        '        if(getkey(13)==1){\n'+
+        '            enter=true;\n'+
+        '        }\n'+
+        '        update();\n'+
+        '    }\n'+
+        '    print(input);\n'+
+        '    col=input;\n'+
+        '    panel=new Panel{width:col*32,height:row*32};\n'+
+        '    panel.x=panel.width/2+10;\n'+
+        '    panel.y=panel.height/2;\n'+
+        '    panel.setFillStyle("cyan");\n'+
+        '    panel.fillRect(0,0,panel.width,panel.height);\n'+
+        '    $map=new Map{row,col,chipWidth:32,chipHeight:32};\n'+
+        '}else{\n'+
+        '    if(!mapOnData){\n'+
+        '        $map=new Map{row:mapData.length,col:mapData[0].length,chipWidth:32,chipHeight:32,mapData};\n'+
+        '    }else{\n'+
+        '        $map=new Map{row:mapData.length,col:mapData[0].length,chipWidth:32,chipHeight:32,mapData,mapOnData};\n'+
+        '    }\n'+
+        '    panel=new Panel{width:$map.col*32,height:$map.row*32,zOrder:100};\n'+
+        '    panel.x=panel.width/2;\n'+
+        '    panel.y=panel.height/2;\n'+
+        '    panel.setFillStyle("cyan");\n'+
+        '    panel.fillRect(0,0,panel.width,panel.height);\n'+
+        '}\n'+
+        '$mp=new Map{row:16,col:8,chipWidth:32,chipHeight:32};\n'+
+        'counter=0;\n'+
+        'for(var i=0;i<16;i++){\n'+
+        '    for(var j=0;j<8;j++){\n'+
+        '        $mp.set(j,i,$pat_mapchip+counter);\n'+
+        '        counter++;\n'+
+        '    }\n'+
+        '}\n'+
+        'mode="set";\n'+
+        'prevMode="set";\n'+
+        'mapp=0;\n'+
+        'mx=0;\n'+
+        'my=0;\n'+
+        'chipX=0;\n'+
+        'chipY=0;\n'+
+        'x=$screenWidth-16;\n'+
+        'y=$screenHeight-16;\n'+
+        'while(true){\n'+
+        '    p=mapp;\n'+
+        '    if(getkey("e")==1){\n'+
+        '        $mp.scrollTo(1000,1000);\n'+
+        '        mode="erase";\n'+
+        '        print(mode+" mode");\n'+
+        '    }\n'+
+        '    if(getkey("s")==1){\n'+
+        '        $mp.scrollTo(1000,1000);\n'+
+        '        if(mode=="set"){\n'+
+        '            mode="setOn";\n'+
+        '        }else{\n'+
+        '            mode="set";\n'+
+        '        }\n'+
+        '        print(mode+" mode");\n'+
+        '    }\n'+
+        '    if(getkey("o")==1){\n'+
+        '        $mp.scrollTo(1000,1000);\n'+
+        '        mode="setOn";\n'+
+        '    }\n'+
+        '    if(getkey("g")==1){\n'+
+        '        if(mode!="get"){\n'+
+        '            prevMode=mode;\n'+
+        '            $mp.scrollTo(0,0);\n'+
+        '            mode="get";\n'+
+        '            chipX=0;\n'+
+        '            chipY=0;\n'+
+        '        }else{\n'+
+        '            $mp.scrollTo(1000,1000);\n'+
+        '            mode=prevMode;\n'+
+        '        }\n'+
+        '        print(mode+" mode");\n'+
+        '    }\n'+
+        '    if(getkey("p")==1){\n'+
+        '        print("mapTable=[");\n'+
+        '        data="[";\n'+
+        '        for(var i=0;i<$map.row-1;i++){\n'+
+        '            var tmp=[];\n'+
+        '            tmp=$map.mapTable[i].concat(tmp);\n'+
+        '            print("["+tmp+"],");\n'+
+        '            data+="["+tmp+"],";\n'+
+        '        }\n'+
+        '        var tmp=[];\n'+
+        '        tmp=$map.mapTable[i].concat(tmp);\n'+
+        '        print("["+tmp+"]");\n'+
+        '        data+="["+tmp+"]";\n'+
+        '        print("];");\n'+
+        '        data+="]";\n'+
+        '        mapDataFile.obj($map.mapTable);\n'+
+        '        mapOnDataFile.obj($map.mapOnTable);\n'+
+        '    }\n'+
+        '    if(getkey("c")==1){\n'+
+        '        $mp.scrollTo(1000,1000);\n'+
+        '        mode="spuit";\n'+
+        '        print(mode+" mode");\n'+
+        '    }\n'+
+        '    if(mode!="get"){\n'+
+        '        if(getkey("left")>0) mx=mx-1;\n'+
+        '        if(getkey("right")>0) mx=mx+1;\n'+
+        '        if(getkey("up")>0) my=my-1;\n'+
+        '        if(getkey("down")>0) my=my+1;\n'+
+        '        $map.scrollTo(mx,my);\n'+
+        '    }else{\n'+
+        '        if(getkey("left")>0) chipX=chipX-1;\n'+
+        '        if(getkey("right")>0) chipX=chipX+1;\n'+
+        '        if(getkey("up")>0) chipY=chipY-1;\n'+
+        '        if(getkey("down")>0) chipY=chipY+1;\n'+
+        '        $mp.scrollTo(chipX,chipY);\n'+
+        '    }\n'+
+        '    panel.x=panel.width/2+mx;\n'+
+        '    panel.y=panel.height/2+my;\n'+
+        '    if(mode=="set" && getkey(1)>0){\n'+
+        '        $map.setAt($mouseX-mx,$mouseY-my,mapp);\n'+
+        '        $map.setOnAt($mouseX-mx,$mouseY-my,-1);\n'+
+        '    }else if(mode=="erase" && getkey(1)>0){\n'+
+        '        $map.setAt($mouseX-mx,$mouseY-my,-1);\n'+
+        '    }else if(mode=="get" && getkey(1)>0){\n'+
+        '        mapp=$mp.getAt($mouseX-chipX,$mouseY-chipY);\n'+
+        '        mode=prevMode;\n'+
+        '        $mp.scrollTo(1000,1000);\n'+
+        '        print(mode+" mode");\n'+
+        '        updateEx(10);\n'+
+        '    }else if(mode=="setOn" && getkey(1)>0){\n'+
+        '        $map.setOnAt($mouseX-mx,$mouseY-my,mapp);\n'+
+        '    }else if(mode=="spuit" && getkey(1)>0){\n'+
+        '        mapp=$map.getAt($mouseX-mx,$mouseY-my);\n'+
+        '        mode="set";\n'+
+        '        print(mode+" mode");\n'+
+        '        updateEx(10);\n'+
+        '    }\n'+
+        '    update();\n'+
+        '}'
       ,
       'MathMod.tonyu': 
         'extends null;\n'+

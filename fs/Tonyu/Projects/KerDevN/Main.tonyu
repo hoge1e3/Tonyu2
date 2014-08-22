@@ -1,6 +1,6 @@
 $Screen.resize(448,400);
 $map=new Map{chipWidth:32,chipHeight:32,col:30,row:30};
-p=3;//test
+mapp=3;//test
 $pad=new Pad{x:72,y:$screenHeight-72};
 score=0;
 label=new Label{x:100,y:200,text:score,size:30,zOrder:-1};
@@ -16,15 +16,17 @@ panel.vx=2;
 panel.vy=2;
 for(var j=1;j<7;j++){
     for(var i=2;i<28;i++){
-        $map.set(i,j,p);
+        $map.set(i,j,mapp);
     }
-    p++;
+    mapp++;
 }
 $ball=new Ball();
 new Bar();
 var i=0;
 var dir=1;
 while(true){
+    $Screen.scrollTo(-1,0);
+    //$map.scrollTo(-2,0);
     panel.rotation++;
     panel.clearRect(0,0,panel.width,panel.height);
     panel.fillRect(0,0,pw,ph);
@@ -34,21 +36,21 @@ while(true){
     if(panel.x<0) panel.vx=2;
     if(panel.y>$screenHeight) panel.vy=-2;
     if(panel.y<0) panel.vy=2;
-    print(rnd(100));
+    //print(rnd(100));
     //print(panel.getPixel($mouseX-(panel.x-panel.width/2),$mouseY-(panel.y-panel.height/2)));
     //pw--;
-    if(pw<=0) pw=200;
-    score++;
-    label.text=score;
-    i=i+dir;
+    //if(pw<=0) pw=200;
+    //score++;
+    //label.text=score;
+    //i=i+dir;
     
     //print(0-i,$map.chipWidth*$map.col-$screenWidth);
-    if($map.chipWidth*$map.col-$screenWidth==0-i){
-        dir=1;
-    }
-    if(i==0){
-        dir=-1;
-    }
+    //if($map.chipWidth*$map.col-$screenWidth==0-i){
+        //    dir=1;
+    //}
+    //if(i==0){
+        //    dir=-1;
+    //}
     //$map.scrollTo(i,0);
     //$Screen.scrollTo(i,0);
     update();

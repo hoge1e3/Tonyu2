@@ -1,4 +1,4 @@
-// Created at Fri Aug 15 2014 15:05:29 GMT+0900 (東京 (標準時))
+// Created at Fri Aug 22 2014 23:04:41 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -199,7 +199,7 @@ FS=function () {
 	}
         return dinfo;
     }
-    function touch(dinfo, path, name, trashed) { 
+    function touch(dinfo, path, name, trashed) {
 	// path:path of dinfo
 	// trashed: this touch is caused by trashing the file/dir.
 	if (!dinfo[name]) {
@@ -328,11 +328,18 @@ FS=function () {
 		var ord;
 		if (typeof options=="function") ord=options;
 		if (!options) options={};
+		if (!options.excludes) options.excludes={};
+		if (options.excludes instanceof Array) {
+		    var excludes={};
+		    options.excludes.forEach(function (e) {excludes[e]=1;});
+		    options.excludes=excludes;
+		}
 		if (!ord) ord=options.order;
                 var dinfo=getDirInfo(path);
                 var res=[];
                 for (var i in dinfo) {
                     if (!options.includeTrashed && dinfo[i].trashed) continue;
+                    if (options.excludes[path+i] ) continue;
 		    res.push(i);
                 }
                 if (typeof ord=="function" && res.sort) res.sort(ord);
@@ -571,7 +578,7 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1404888429573},"Actor.tonyu":{"lastUpdate":1404888429574},"BaseActor.tonyu":{"lastUpdate":1404888429574},"Boot.tonyu":{"lastUpdate":1404888429575},"Keys.tonyu":{"lastUpdate":1400120164000},"Map.tonyu":{"lastUpdate":1404888429575},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1404888429576},"ScaledCanvas.tonyu":{"lastUpdate":1400120164000},"Sprites.tonyu":{"lastUpdate":1404888429577},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1404888429577}}',
+      '': '{".desktop":{"lastUpdate":1404888429573},"Actor.tonyu":{"lastUpdate":1404888429574},"BaseActor.tonyu":{"lastUpdate":1404888429574},"Boot.tonyu":{"lastUpdate":1404888429575},"Keys.tonyu":{"lastUpdate":1400120164000},"Map.tonyu":{"lastUpdate":1404888429575},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1404888429576},"ScaledCanvas.tonyu":{"lastUpdate":1400120164000},"Sprites.tonyu":{"lastUpdate":1404888429577},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1404888429577},"MapEditor.tonyu":{"lastUpdate":1408716251517}}',
       '.desktop': '{"runMenuOrd":["Main","PanelTest","Sprites","MapEditor","NoviceActor","AcTestM","MapTest2nd","MapTest","Map","SetBGCTest","Bounce","AcTest","NObjTest","NObjTest2","AltBoot","Ball","Bar","Pad","BaseActor","Actor","Label","Panel","Boot"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -1200,6 +1207,190 @@ requireSimulator.setName('fs/ROMk');
         '    }*/\n'+
         '}\n'
       ,
+      'MapEditor.tonyu': 
+        'loadMode=false;\n'+
+        'mapDataFile=file("map.json");\n'+
+        'mapData=mapDataFile.obj();\n'+
+        'mapOnDataFile=file("mapOn.json");\n'+
+        'mapOnData=mapOnDataFile.obj();\n'+
+        'if(mapData){\n'+
+        '    print("Load Data?: Y or N");\n'+
+        '    while(true){\n'+
+        '        if(getkey("y")==1){\n'+
+        '            loadMode=true;\n'+
+        '            break;\n'+
+        '        }\n'+
+        '        if(getkey("n")==1){\n'+
+        '            loadMode=false;\n'+
+        '            break;\n'+
+        '        }\n'+
+        '    }\n'+
+        '}\n'+
+        'if(!loadMode){\n'+
+        '    print("input row");\n'+
+        '    input=0;\n'+
+        '    enter=false;\n'+
+        '    while(!enter){\n'+
+        '        for(var num=48;num<58;num++){\n'+
+        '            if(getkey(num)==1){\n'+
+        '                num=num-0;\n'+
+        '                input=input*10+(num-48);\n'+
+        '            }\n'+
+        '        }\n'+
+        '        if(getkey(13)==1){\n'+
+        '            enter=true;\n'+
+        '        }\n'+
+        '        update();\n'+
+        '    }\n'+
+        '    print(input);\n'+
+        '    row=input;\n'+
+        '    \n'+
+        '    update();\n'+
+        '    enter=false;\n'+
+        '    print("input col");\n'+
+        '    input=0;\n'+
+        '    while(!enter){\n'+
+        '        for(var num=48;num<58;num++){\n'+
+        '            if(getkey(num)==1){\n'+
+        '                num=num-0;\n'+
+        '                input=input*10+(num-48);\n'+
+        '            }\n'+
+        '        }\n'+
+        '        if(getkey(13)==1){\n'+
+        '            enter=true;\n'+
+        '        }\n'+
+        '        update();\n'+
+        '    }\n'+
+        '    print(input);\n'+
+        '    col=input;\n'+
+        '    panel=new Panel{width:col*32,height:row*32};\n'+
+        '    panel.x=panel.width/2+10;\n'+
+        '    panel.y=panel.height/2;\n'+
+        '    panel.setFillStyle("cyan");\n'+
+        '    panel.fillRect(0,0,panel.width,panel.height);\n'+
+        '    $map=new Map{row,col,chipWidth:32,chipHeight:32};\n'+
+        '}else{\n'+
+        '    if(!mapOnData){\n'+
+        '        $map=new Map{row:mapData.length,col:mapData[0].length,chipWidth:32,chipHeight:32,mapData};\n'+
+        '    }else{\n'+
+        '        $map=new Map{row:mapData.length,col:mapData[0].length,chipWidth:32,chipHeight:32,mapData,mapOnData};\n'+
+        '    }\n'+
+        '    panel=new Panel{width:$map.col*32,height:$map.row*32,zOrder:100};\n'+
+        '    panel.x=panel.width/2;\n'+
+        '    panel.y=panel.height/2;\n'+
+        '    panel.setFillStyle("cyan");\n'+
+        '    panel.fillRect(0,0,panel.width,panel.height);\n'+
+        '}\n'+
+        '$mp=new Map{row:16,col:8,chipWidth:32,chipHeight:32};\n'+
+        'counter=0;\n'+
+        'for(var i=0;i<16;i++){\n'+
+        '    for(var j=0;j<8;j++){\n'+
+        '        $mp.set(j,i,$pat_mapchip+counter);\n'+
+        '        counter++;\n'+
+        '    }\n'+
+        '}\n'+
+        'mode="set";\n'+
+        'prevMode="set";\n'+
+        'mapp=0;\n'+
+        'mx=0;\n'+
+        'my=0;\n'+
+        'chipX=0;\n'+
+        'chipY=0;\n'+
+        'x=$screenWidth-16;\n'+
+        'y=$screenHeight-16;\n'+
+        'while(true){\n'+
+        '    p=mapp;\n'+
+        '    if(getkey("e")==1){\n'+
+        '        $mp.scrollTo(1000,1000);\n'+
+        '        mode="erase";\n'+
+        '        print(mode+" mode");\n'+
+        '    }\n'+
+        '    if(getkey("s")==1){\n'+
+        '        $mp.scrollTo(1000,1000);\n'+
+        '        if(mode=="set"){\n'+
+        '            mode="setOn";\n'+
+        '        }else{\n'+
+        '            mode="set";\n'+
+        '        }\n'+
+        '        print(mode+" mode");\n'+
+        '    }\n'+
+        '    if(getkey("o")==1){\n'+
+        '        $mp.scrollTo(1000,1000);\n'+
+        '        mode="setOn";\n'+
+        '    }\n'+
+        '    if(getkey("g")==1){\n'+
+        '        if(mode!="get"){\n'+
+        '            prevMode=mode;\n'+
+        '            $mp.scrollTo(0,0);\n'+
+        '            mode="get";\n'+
+        '            chipX=0;\n'+
+        '            chipY=0;\n'+
+        '        }else{\n'+
+        '            $mp.scrollTo(1000,1000);\n'+
+        '            mode=prevMode;\n'+
+        '        }\n'+
+        '        print(mode+" mode");\n'+
+        '    }\n'+
+        '    if(getkey("p")==1){\n'+
+        '        print("mapTable=[");\n'+
+        '        data="[";\n'+
+        '        for(var i=0;i<$map.row-1;i++){\n'+
+        '            var tmp=[];\n'+
+        '            tmp=$map.mapTable[i].concat(tmp);\n'+
+        '            print("["+tmp+"],");\n'+
+        '            data+="["+tmp+"],";\n'+
+        '        }\n'+
+        '        var tmp=[];\n'+
+        '        tmp=$map.mapTable[i].concat(tmp);\n'+
+        '        print("["+tmp+"]");\n'+
+        '        data+="["+tmp+"]";\n'+
+        '        print("];");\n'+
+        '        data+="]";\n'+
+        '        mapDataFile.obj($map.mapTable);\n'+
+        '        mapOnDataFile.obj($map.mapOnTable);\n'+
+        '    }\n'+
+        '    if(getkey("c")==1){\n'+
+        '        $mp.scrollTo(1000,1000);\n'+
+        '        mode="spuit";\n'+
+        '        print(mode+" mode");\n'+
+        '    }\n'+
+        '    if(mode!="get"){\n'+
+        '        if(getkey("left")>0) mx=mx-1;\n'+
+        '        if(getkey("right")>0) mx=mx+1;\n'+
+        '        if(getkey("up")>0) my=my-1;\n'+
+        '        if(getkey("down")>0) my=my+1;\n'+
+        '        $map.scrollTo(mx,my);\n'+
+        '    }else{\n'+
+        '        if(getkey("left")>0) chipX=chipX-1;\n'+
+        '        if(getkey("right")>0) chipX=chipX+1;\n'+
+        '        if(getkey("up")>0) chipY=chipY-1;\n'+
+        '        if(getkey("down")>0) chipY=chipY+1;\n'+
+        '        $mp.scrollTo(chipX,chipY);\n'+
+        '    }\n'+
+        '    panel.x=panel.width/2+mx;\n'+
+        '    panel.y=panel.height/2+my;\n'+
+        '    if(mode=="set" && getkey(1)>0){\n'+
+        '        $map.setAt($mouseX-mx,$mouseY-my,mapp);\n'+
+        '        $map.setOnAt($mouseX-mx,$mouseY-my,-1);\n'+
+        '    }else if(mode=="erase" && getkey(1)>0){\n'+
+        '        $map.setAt($mouseX-mx,$mouseY-my,-1);\n'+
+        '    }else if(mode=="get" && getkey(1)>0){\n'+
+        '        mapp=$mp.getAt($mouseX-chipX,$mouseY-chipY);\n'+
+        '        mode=prevMode;\n'+
+        '        $mp.scrollTo(1000,1000);\n'+
+        '        print(mode+" mode");\n'+
+        '        updateEx(10);\n'+
+        '    }else if(mode=="setOn" && getkey(1)>0){\n'+
+        '        $map.setOnAt($mouseX-mx,$mouseY-my,mapp);\n'+
+        '    }else if(mode=="spuit" && getkey(1)>0){\n'+
+        '        mapp=$map.getAt($mouseX-mx,$mouseY-my);\n'+
+        '        mode="set";\n'+
+        '        print(mode+" mode");\n'+
+        '        updateEx(10);\n'+
+        '    }\n'+
+        '    update();\n'+
+        '}'
+      ,
       'MathMod.tonyu': 
         'extends null;\n'+
         'native Math;\n'+
@@ -1763,7 +1954,7 @@ requireSimulator.setName('fs/ROMd');
   var rom={
     base: '/Tonyu/doc/',
     data: {
-      '': '{"index.txt":{"lastUpdate":1407228921607},"novice/":{"lastUpdate":1400579960587},"projectIndex.txt":{"lastUpdate":1400120163000},"tonyu2/":{"lastUpdate":1404106758682}}',
+      '': '{"index.txt":{"lastUpdate":1407228921607},"novice/":{"lastUpdate":1400646750363},"projectIndex.txt":{"lastUpdate":1400120163000},"tonyu2/":{"lastUpdate":1404283771285}}',
       'index.txt': 
         '* サンプルを見る\n'+
         '\n'+
@@ -2763,7 +2954,7 @@ requireSimulator.setName('fs/ROMd');
         '名前は，半角英字とアンダースコア(_)が使えます．2文字以上でも構いません．2文字目以降は数字も使うことができます．'
       ,
       'projectIndex.txt': '',
-      'tonyu2/': '{"$mouseX, $mouseY.txt":{"lastUpdate":1400120163000},"$touches.txt":{"lastUpdate":1400120163000},"Actor.txt":{"lastUpdate":1400120163000},"all.txt":{"lastUpdate":1400120163000},"allCrash.txt":{"lastUpdate":1400120163000},"api.txt":{"lastUpdate":1401941215219},"asyncResult.txt":{"lastUpdate":1400120163000},"BaseActor.txt":{"lastUpdate":1401255240110},"Boot.txt":{"lastUpdate":1401941267461},"classDef.txt":{"lastUpdate":1400120163000},"console.txt":{"lastUpdate":1400120163000},"cpats.txt":{"lastUpdate":1404106758681},"crashTo.txt":{"lastUpdate":1400120164000},"crashTo1.txt":{"lastUpdate":1400120164000},"die.txt":{"lastUpdate":1400120164000},"draw.txt":{"lastUpdate":1400120164000},"extend.txt":{"lastUpdate":1400120164000},"file.txt":{"lastUpdate":1400120164000},"forin.txt":{"lastUpdate":1400120164000},"frame.txt":{"lastUpdate":1401255298602},"FS.each.txt":{"lastUpdate":1400120164000},"FS.exists.txt":{"lastUpdate":1400120164000},"FS.obj.txt":{"lastUpdate":1400120164000},"FS.recursive.txt":{"lastUpdate":1400120164000},"FS.rel.txt":{"lastUpdate":1400120164000},"FS.text.txt":{"lastUpdate":1400120164000},"fs.txt":{"lastUpdate":1400120164000},"get.txt":{"lastUpdate":1401255650741},"getAt.txt":{"lastUpdate":1401255658905},"getCrashRect.txt":{"lastUpdate":1400120164000},"getkey.txt":{"lastUpdate":1400120164000},"hide.txt":{"lastUpdate":1400120164000},"ide.txt":{"lastUpdate":1400120164000},"index.txt":{"lastUpdate":1400120164000},"isDead.txt":{"lastUpdate":1400120164000},"kernel.txt":{"lastUpdate":1400120164000},"lang.txt":{"lastUpdate":1400120164000},"Map.txt":{"lastUpdate":1401255487455},"MathMod.txt":{"lastUpdate":1400120164000},"options.txt":{"lastUpdate":1400120164000},"play.txt":{"lastUpdate":1400120164000},"playSE.txt":{"lastUpdate":1400120164000},"print.txt":{"lastUpdate":1400120164000},"resize.txt":{"lastUpdate":1400120164000},"rnd.txt":{"lastUpdate":1400120164000},"ScaledCanvas.txt":{"lastUpdate":1401255697009},"scrollTo.txt":{"lastUpdate":1401255664750},"set.txt":{"lastUpdate":1401255540844},"setBGColor.txt":{"lastUpdate":1401255686147},"show.txt":{"lastUpdate":1400120164000},"sugar.txt":{"lastUpdate":1400120164000},"super.txt":{"lastUpdate":1400120164000},"TQuery.alive.txt":{"lastUpdate":1400120164000},"TQuery.apply.txt":{"lastUpdate":1400120164000},"TQuery.attr.txt":{"lastUpdate":1400120164000},"TQuery.die.txt":{"lastUpdate":1400120164000},"TQuery.find.txt":{"lastUpdate":1400120164000},"TQuery.minmax.txt":{"lastUpdate":1400120164000},"TQuery.txt":{"lastUpdate":1400120164000},"update.txt":{"lastUpdate":1401255209313},"waitFor.txt":{"lastUpdate":1400120164000},"waitmode.txt":{"lastUpdate":1400120164000},"setAt.txt":{"lastUpdate":1401255643995},"updateEx.txt":{"lastUpdate":1401255346149},"clearRect.txt":{"lastUpdate":1401943178040},"fillRect.txt":{"lastUpdate":1401942274402},"fillText.txt":{"lastUpdate":1401942864666},"getPixel.txt":{"lastUpdate":1402467081226},"Panel.txt":{"lastUpdate":1401945627455},"setFillStyle.txt":{"lastUpdate":1401941975499},"setPanel.txt":{"lastUpdate":1401941697100}}',
+      'tonyu2/': '{"$mouseX, $mouseY.txt":{"lastUpdate":1400120163000},"$touches.txt":{"lastUpdate":1400120163000},"Actor.txt":{"lastUpdate":1400120163000},"all.txt":{"lastUpdate":1400120163000},"allCrash.txt":{"lastUpdate":1400120163000},"api.txt":{"lastUpdate":1401941215219},"asyncResult.txt":{"lastUpdate":1400120163000},"BaseActor.txt":{"lastUpdate":1401255240110},"Boot.txt":{"lastUpdate":1401941267461},"classDef.txt":{"lastUpdate":1400120163000},"console.txt":{"lastUpdate":1400120163000},"cpats.txt":{"lastUpdate":1404106758681},"crashTo.txt":{"lastUpdate":1400120164000},"crashTo1.txt":{"lastUpdate":1400120164000},"die.txt":{"lastUpdate":1400120164000},"draw.txt":{"lastUpdate":1400120164000},"extend.txt":{"lastUpdate":1400120164000},"file.txt":{"lastUpdate":1400120164000},"forin.txt":{"lastUpdate":1400120164000},"frame.txt":{"lastUpdate":1401255298602},"FS.each.txt":{"lastUpdate":1400120164000},"FS.exists.txt":{"lastUpdate":1400120164000},"FS.obj.txt":{"lastUpdate":1400120164000},"FS.recursive.txt":{"lastUpdate":1400120164000},"FS.rel.txt":{"lastUpdate":1400120164000},"FS.text.txt":{"lastUpdate":1400120164000},"fs.txt":{"lastUpdate":1400120164000},"get.txt":{"lastUpdate":1401255650741},"getAt.txt":{"lastUpdate":1401255658905},"getCrashRect.txt":{"lastUpdate":1400120164000},"getkey.txt":{"lastUpdate":1400120164000},"hide.txt":{"lastUpdate":1400120164000},"ide.txt":{"lastUpdate":1400120164000},"index.txt":{"lastUpdate":1400120164000},"isDead.txt":{"lastUpdate":1400120164000},"kernel.txt":{"lastUpdate":1400120164000},"lang.txt":{"lastUpdate":1400120164000},"Map.txt":{"lastUpdate":1401255487455},"MathMod.txt":{"lastUpdate":1400120164000},"options.txt":{"lastUpdate":1400120164000},"play.txt":{"lastUpdate":1400120164000},"playSE.txt":{"lastUpdate":1400120164000},"print.txt":{"lastUpdate":1400120164000},"resize.txt":{"lastUpdate":1400120164000},"rnd.txt":{"lastUpdate":1400120164000},"ScaledCanvas.txt":{"lastUpdate":1401255697009},"scrollTo.txt":{"lastUpdate":1401255664750},"set.txt":{"lastUpdate":1401255540844},"setBGColor.txt":{"lastUpdate":1401255686147},"show.txt":{"lastUpdate":1400120164000},"sugar.txt":{"lastUpdate":1400120164000},"super.txt":{"lastUpdate":1400120164000},"TQuery.alive.txt":{"lastUpdate":1400120164000},"TQuery.apply.txt":{"lastUpdate":1400120164000},"TQuery.attr.txt":{"lastUpdate":1400120164000},"TQuery.die.txt":{"lastUpdate":1400120164000},"TQuery.find.txt":{"lastUpdate":1400120164000},"TQuery.minmax.txt":{"lastUpdate":1400120164000},"TQuery.txt":{"lastUpdate":1400120164000},"update.txt":{"lastUpdate":1401255209313},"waitFor.txt":{"lastUpdate":1400120164000},"waitmode.txt":{"lastUpdate":1400120164000},"updateEx.txt":{"lastUpdate":1401255346149},"setAt.txt":{"lastUpdate":1401255643995},"Panel.txt":{"lastUpdate":1401945627455},"setPanel.txt":{"lastUpdate":1401941697100},"setFillStyle.txt":{"lastUpdate":1401941975499},"fillRect.txt":{"lastUpdate":1401942274402},"fillText.txt":{"lastUpdate":1401942864666},"clearRect.txt":{"lastUpdate":1401943178040},"getPixel.txt":{"lastUpdate":1402467081226}}',
       'tonyu2/$mouseX, $mouseY.txt': 
         '[[api]]\n'+
         '\n'+
@@ -4583,7 +4774,7 @@ requireSimulator.setName('fs/ROMs');
   var rom={
     base: '/Tonyu/SampleROM/',
     data: {
-      '': '{"10_MultiTouch/":{"lastUpdate":1400579961000},"11_Resize/":{"lastUpdate":1400579961005},"12_Sound/":{"lastUpdate":1400579961010},"13_DX/":{"lastUpdate":1400579961016},"14_File/":{"lastUpdate":1400579961020},"1_Animation/":{"lastUpdate":1400579961024},"2_MultipleObj/":{"lastUpdate":1400579961029},"3_NewParam/":{"lastUpdate":1400579961034},"4_getkey/":{"lastUpdate":1400579961037},"5_Chase/":{"lastUpdate":1400579961042},"6_Shot/":{"lastUpdate":1400579961051},"7_Text/":{"lastUpdate":1400579961059},"8_Patterns/":{"lastUpdate":1400579961067},"9_Mouse/":{"lastUpdate":1400579961070}}',
+      '': '{"10_MultiTouch/":{"lastUpdate":1400646750379},"11_Resize/":{"lastUpdate":1400646750380},"12_Sound/":{"lastUpdate":1400646750380},"13_DX/":{"lastUpdate":1400646750381},"14_File/":{"lastUpdate":1400646750381},"1_Animation/":{"lastUpdate":1400646750382},"2_MultipleObj/":{"lastUpdate":1400646750382},"3_NewParam/":{"lastUpdate":1400646750382},"4_getkey/":{"lastUpdate":1400646750383},"5_Chase/":{"lastUpdate":1400646750384},"6_Shot/":{"lastUpdate":1400646750384},"7_Text/":{"lastUpdate":1400646750385},"8_Patterns/":{"lastUpdate":1400646750385},"9_Mouse/":{"lastUpdate":1400646750386}}',
       '10_MultiTouch/': '{".desktop":{"lastUpdate":1400120165000},"Main.tonyu":{"lastUpdate":1400120165000},"options.json":{"lastUpdate":1400120165000},"Touch.tonyu":{"lastUpdate":1400120165000}}',
       '10_MultiTouch/.desktop': '{"runMenuOrd":["Main","Touch"]}',
       '10_MultiTouch/Main.tonyu': 
@@ -11255,7 +11446,7 @@ define(["FS","Shell"],function (FS,sh) {
 	n0();
 	var uploads={},downloads=[],visited={};
 	function n0() {
-	    $.get("../../edit/getDirInfo",{base:remote.path()},n1);
+	    $.get("../../edit/getDirInfo",{base:remote.path(),excludes:options.excludes},n1);
 	}
 	function n1(info) {
 	    info=JSON.parse(info);
