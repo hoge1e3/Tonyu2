@@ -2,7 +2,7 @@
   var rom={
     base: '/Tonyu/doc/',
     data: {
-      '': '{"index.txt":{"lastUpdate":1407228921607},"novice/":{"lastUpdate":1400579960587},"projectIndex.txt":{"lastUpdate":1400120163000},"tonyu2/":{"lastUpdate":1404106758682}}',
+      '': '{"index.txt":{"lastUpdate":1408782761511},"novice/":{"lastUpdate":1400579960587},"projectIndex.txt":{"lastUpdate":1400120163000},"tonyu2/":{"lastUpdate":1404106758682}}',
       'index.txt': 
         '* サンプルを見る\n'+
         '\n'+
@@ -15,7 +15,17 @@
         '\n'+
         '* リファレンス\n'+
         '\n'+
-        '-[[リファレンス>tonyu2/index]]\n'
+        '-[[リファレンス>tonyu2/index]]\n'+
+        '\n'+
+        '* ログイン\n'+
+        '\n'+
+        '-ログインをしなくても使うことができます\n'+
+        '--ログインしない場合，作成したプロジェクトは今使っているブラウザに保存され，他のブラウザからは同じプロジェクトを見たり編集したりすることができません．\n'+
+        '-ログインすると，このブラウザで作成したプロジェクトを，他のブラウザからも見たり編集したりすることができます\n'+
+        '-ログインは[[@blink メニューのログイン>#login]]から行います\n'+
+        '-- GoogleまたはTwitterのアカウントが必要です\n'+
+        '\n'+
+        '\n'
       ,
       'novice/': '{"crash.txt":{"lastUpdate":1400120163000},"dec.txt":{"lastUpdate":1400120163000},"firstRun.txt":{"lastUpdate":1400120163000},"getkey.txt":{"lastUpdate":1400120163000},"inc.txt":{"lastUpdate":1400120163000},"index.txt":{"lastUpdate":1400120163000},"item.txt":{"lastUpdate":1400120163000},"key.txt":{"lastUpdate":1400120163000},"left.txt":{"lastUpdate":1400120163000},"new.txt":{"lastUpdate":1400120163000},"newFile.txt":{"lastUpdate":1400120163000},"param.txt":{"lastUpdate":1400120163000},"projectIndex.txt":{"lastUpdate":1400120163000},"say.txt":{"lastUpdate":1400120163000},"say2.txt":{"lastUpdate":1400120163000},"sleep.txt":{"lastUpdate":1400120163000},"sprite.txt":{"lastUpdate":1400120163000},"spriteMove.txt":{"lastUpdate":1400120163000},"toc.json":{"lastUpdate":1400120163000},"trouble1.txt":{"lastUpdate":1400120163000},"true.txt":{"lastUpdate":1400120163000},"udlr.txt":{"lastUpdate":1400120163000},"variable.txt":{"lastUpdate":1400120163000},"variable2.txt":{"lastUpdate":1400120163000},"variable3.txt":{"lastUpdate":1400120163000},"while.txt":{"lastUpdate":1400120163000},"xy.txt":{"lastUpdate":1400120163000}}',
       'novice/crash.txt': 
