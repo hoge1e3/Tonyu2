@@ -54,12 +54,12 @@ var reqConf={
                 "exports": "Parser"
             },
             "TonyuLang": {
-                "deps": ["Grammar", "XMLBuffer", "IndentBuffer", "TT", 
+                "deps": ["Grammar", "XMLBuffer", "IndentBuffer", "TT",
 			 "disp", "Parser", "ExpressionParser", "TError"],
                 "exports": "TonyuLang"
             },
 	    "TT": {
-                "deps": ["Grammar", "XMLBuffer", "IndentBuffer",  
+                "deps": ["Grammar", "XMLBuffer", "IndentBuffer",
 			 "disp", "Parser","TError"],
 		"exports": "TT"
 	    },
@@ -148,6 +148,7 @@ var reqConf={
         "paths": {
 	    Sync: "fs/sync",
 	    TT: "lang/tonyu2_token",
+	    Auth: "fs/auth",
             runtime: "runtime/runtime",
             difflib: "lib/difflib",
             diffview: "lib/diffview",

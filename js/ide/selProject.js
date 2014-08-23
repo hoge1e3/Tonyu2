@@ -1,5 +1,7 @@
-requirejs(["fs/ROMk","fs/ROMd","fs/ROMs", "FS","Wiki","Shell","copySample","NewProjectDialog","UI","Sync"],
-  function (romk, romd, roms,           FS, Wiki,   sh,      copySample,  NPD,           UI, Sync) {
+requirejs(["fs/ROMk","fs/ROMd","fs/ROMs", "FS","Wiki","Shell",
+           "copySample","NewProjectDialog","UI","Sync","Auth"],
+  function (romk, romd, roms,               FS, Wiki,   sh,
+            copySample,  NPD,           UI, Sync, Auth) {
 $(function () {
     copySample();
     var home=FS.get("/Tonyu/");
@@ -14,6 +16,14 @@ $(function () {
             //$("#fileItem").tmpl({name: name, href:"project.html?dir="+f.path()}).appendTo("#prjItemList");
         });
     }
+    Auth.currentUser(function (r){
+        if (r) {
+            $(".while-logged-out").hide();
+            $("#login").text(r);
+        } else {
+            $(".while-logged-in").hide();
+        }
+    });
     if (WebSite.devMode) {
 	Sync.sync(FS.get("/Tonyu/"),{v:1});
     }

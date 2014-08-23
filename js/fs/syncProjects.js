@@ -1,7 +1,13 @@
-requirejs(["Sync", "UI","Util"],function (Sync,UI) {
+requirejs(["Sync", "UI","Util", "Auth"],function (Sync,UI,Util,Auth) {
     $(function () {
-        var user=Util.getQueryString("user");
-        Sync.sync(FS.get("/Tonyu/Projects/"), FS.get("/home/"+user+"/"), {v:true,onend:onend});
+        //var user=Util.getQueryString("user");
+        Auth.currentUser(function (user) {
+            if (!user) document.location.href="../../edit/login";
+            else {
+                $("#status").text(user+"のファイルを同期中...");
+                Sync.sync(FS.get("/Tonyu/Projects/"), FS.get("/home/"+user+"/"), {v:true,onend:onend});
+            }
+        });
     });
 	function onend(res) {
 		console.log(res);
