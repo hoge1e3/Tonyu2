@@ -236,25 +236,35 @@ FS=function () {
                 },options);
             };
             dir.ls=function (options) {
-		var ord;
-		if (typeof options=="function") ord=options;
-		if (!options) options={};
-		if (!options.excludes) options.excludes={};
-		if (options.excludes instanceof Array) {
-		    var excludes={};
-		    options.excludes.forEach(function (e) {excludes[e]=1;});
-		    options.excludes=excludes;
-		}
-		if (!ord) ord=options.order;
+                var ord;
+                if (typeof options=="function") ord=options;
+                options=dir.convertOptions(options);
+                if (!ord) ord=options.order;
                 var dinfo=getDirInfo(path);
                 var res=[];
                 for (var i in dinfo) {
                     if (!options.includeTrashed && dinfo[i].trashed) continue;
                     if (options.excludes[path+i] ) continue;
-		    res.push(i);
+                    res.push(i);
                 }
                 if (typeof ord=="function" && res.sort) res.sort(ord);
                 return res;
+            };
+            dir.convertOptions=function(options) {
+                if (!options) options={};
+                if (!options.excludes) options.excludes={};
+                if (options.excludes instanceof Array) {
+                    var excludes={};
+                    options.excludes.forEach(function (e) {
+                        if (startsWith(e,"/")) {
+                            excludes[e]=1;
+                        } else {
+                            excludes[path+e]=1;
+                        }
+                    });
+                    options.excludes=excludes;
+                }
+                return options;
             };
             dir.isDir=function () {return true;};
             dir.rel=function (relPath){

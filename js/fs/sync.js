@@ -46,8 +46,16 @@ define(["FS","Shell"],function (FS,sh) {
 	if (options.test) options.v=1;
 	n0();
 	var uploads={},downloads=[],visited={};
+	function status(name, param) {
+	    console.log("Status: "+name+" param:",param);
+	    if (options.onstatus) {
+	        options.onstatus(name, param);
+	    }
+	}
 	function n0() {
-	    $.get("../../edit/getDirInfo",{base:remote.path(),excludes:options.excludes},n1);
+	    var req={base:remote.path(),excludes:JSON.stringify(options.excludes)};
+	    status("getDirInfo", req);
+	    $.get("../../edit/getDirInfo",req,n1);
 	}
 	function n1(info) {
 	    info=JSON.parse(info);
@@ -65,13 +73,15 @@ define(["FS","Shell"],function (FS,sh) {
 		var rel=file.relPath(local);
 		var rmm=data[rel];
 		cmp(file,rel,lcm,rmm);
-	    },{includeTrashed:true});
+	    },{includeTrashed:true, excludes:options.excludes});
 	    if (options.v) {
 		console.log("uploads:",uploads);
 		console.log("downloads:",downloads);
 	    }
-	    $.post("../../edit/File2LSSync",
-		   {base:remote.path(),paths:JSON.stringify(downloads)},n2);
+
+	    var req={base:remote.path(),paths:JSON.stringify(downloads)};
+        status("File2LSSync", req);
+	    $.post("../../edit/File2LSSync",req,n2);
 	}
 	function n2(dlData) {
 		console.log("dlData=",dlData);
@@ -91,8 +101,9 @@ define(["FS","Shell"],function (FS,sh) {
 		delete d.text;
 		dlf.metaInfo(d);
 	    }
-	    $.post("../../edit/LS2FileSync",
-		   {base:remote.path(),data:JSON.stringify(uploads)},n3);
+	    var req={base:remote.path(),data:JSON.stringify(uploads)};
+	    status("LS2FileSync", req);
+	    $.post("../../edit/LS2FileSync",req,n3);
     	}
 	function n3(res){
 	    if (options.v) console.log(res);
