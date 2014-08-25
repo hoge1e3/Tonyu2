@@ -20,7 +20,7 @@ requirejs(["Sync", "UI","Util", "Auth"],function (Sync,UI,Util,Auth) {
                               "12_Sound/",
                               "13_DX/",
                               "14_File/"],
-                    v:true,onend:onend, onstatus: onstatus});
+                              v:true,onend:onend, onstatus: onstatus});
             }
         });
         $("#skipButton").click(function () {
@@ -41,33 +41,33 @@ requirejs(["Sync", "UI","Util", "Auth"],function (Sync,UI,Util,Auth) {
         $("#status").text("Step "+step+"/3: "+msgs[name]);
         step++;
     }
-	function onend(res) {
-		console.log(res);
-		$("#skip").empty();
-		$("#status").text(res.msg);
-		$("#res").append(UI(
-				"div",
-			["div",["a",{href:"index.html"},"Homeへ"]],
-			["h2","ダウンロードされたファイル"],
-			dls(),
-			["h2","アップロードされたファイル"],
-			ups()
-		));
-		function dls() {
-			if (res.downloads.length==0) return "ダウンロードされたファイルはありません";
-			var r=["ul"];
-			res.downloads.forEach(function (n) {
-				r.push(["li",n]);
-			});
-			return r;
-		}
-		function ups() {
-			if (res.uploads.length==0) return "アップロードされたファイルはありません";
-			var r=["ul"];
-			res.uploads.forEach(function (n) {
-				r.push(["li",n]);
-			});
-			return r;
-		}
-	}
+    function onend(res) {
+        console.log(res);
+        $("#skip").empty();
+        $("#status").text(res.msg);
+        $("#res").append(UI(
+                "div",
+                ["div",["a",{href:"index.html"},"Homeへ"]],
+                ["h2","ダウンロードされたファイル"],
+                dls(),
+                ["h2","アップロードされたファイル"],
+                ups()
+        ));
+        function dls() {
+            if (res.downloads.length==0) return "ダウンロードされたファイルはありません";
+            var r=["ul"];
+            res.downloads.forEach(function (n) {
+                r.push(["li",n]);
+            });
+            return r;
+        }
+        function ups() {
+            if (res.uploads.length==0) return "アップロードされたファイルはありません";
+            var r=["ul"];
+            res.uploads.forEach(function (n) {
+                r.push(["li",n]);
+            });
+            return r;
+        }
+    }
 });
