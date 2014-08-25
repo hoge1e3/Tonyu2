@@ -20,7 +20,7 @@ requirejs(["Sync", "UI","Util", "Auth"],function (Sync,UI,Util,Auth) {
                               "12_Sound/",
                               "13_DX/",
                               "14_File/"],
-                              v:true,onend:onend, onstatus: onstatus});
+                              v:true,onend:onend, onstatus: onstatus,onerror:onerror});
             }
         });
         $("#skipButton").click(function () {
@@ -40,6 +40,9 @@ requirejs(["Sync", "UI","Util", "Auth"],function (Sync,UI,Util,Auth) {
     function onstatus(name) {
         $("#status").text("Step "+step+"/3: "+msgs[name]);
         step++;
+    }
+    function onerror(xml,text,thrown) {
+        $("#res").text("エラー："+text+": "+thrown);
     }
     function onend(res) {
         console.log(res);

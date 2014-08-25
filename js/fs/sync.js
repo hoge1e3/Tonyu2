@@ -52,10 +52,21 @@ define(["FS","Shell"],function (FS,sh) {
                 options.onstatus(name, param);
             }
         }
+        function onError() {
+            if (options.onerror) {
+                options.onerror.apply(this, arguments);
+            }
+        }
         function n0() {
             var req={base:remote.path(),excludes:JSON.stringify(options.excludes)};
             status("getDirInfo", req);
-            $.get("../../edit/getDirInfo",req,n1);
+            $.ajax({
+                type:"get",
+                url:"../../edit/getDirInfo",
+                data:req,
+                success:n1,
+                error:onError
+            });
         }
         function n1(info) {
             info=JSON.parse(info);
@@ -81,7 +92,13 @@ define(["FS","Shell"],function (FS,sh) {
 
             var req={base:remote.path(),paths:JSON.stringify(downloads)};
             status("File2LSSync", req);
-            $.post("../../edit/File2LSSync",req,n2);
+            $.ajax({
+                type:"post",
+                url:"../../edit/File2LSSync",
+                data:req,
+                success:n2,
+                error:onError
+            });
         }
         function n2(dlData) {
             console.log("dlData=",dlData);
@@ -103,7 +120,13 @@ define(["FS","Shell"],function (FS,sh) {
             }
             var req={base:remote.path(),data:JSON.stringify(uploads)};
             status("LS2FileSync", req);
-            $.post("../../edit/LS2FileSync",req,n3);
+            $.ajax({
+                type:"post",
+                url:"../../edit/LS2FileSync",
+                data:req,
+                success:n3,
+                error:onError
+            });
         }
         function n3(res){
             if (options.v) console.log(res);

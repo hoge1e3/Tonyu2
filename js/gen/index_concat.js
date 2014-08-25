@@ -1,4 +1,4 @@
-// Created at Sat Aug 23 2014 17:35:07 GMT+0900 (東京 (標準時))
+// Created at Mon Aug 25 2014 10:13:58 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -325,25 +325,35 @@ FS=function () {
                 },options);
             };
             dir.ls=function (options) {
-		var ord;
-		if (typeof options=="function") ord=options;
-		if (!options) options={};
-		if (!options.excludes) options.excludes={};
-		if (options.excludes instanceof Array) {
-		    var excludes={};
-		    options.excludes.forEach(function (e) {excludes[e]=1;});
-		    options.excludes=excludes;
-		}
-		if (!ord) ord=options.order;
+                var ord;
+                if (typeof options=="function") ord=options;
+                options=dir.convertOptions(options);
+                if (!ord) ord=options.order;
                 var dinfo=getDirInfo(path);
                 var res=[];
                 for (var i in dinfo) {
                     if (!options.includeTrashed && dinfo[i].trashed) continue;
                     if (options.excludes[path+i] ) continue;
-		    res.push(i);
+                    res.push(i);
                 }
                 if (typeof ord=="function" && res.sort) res.sort(ord);
                 return res;
+            };
+            dir.convertOptions=function(options) {
+                if (!options) options={};
+                if (!options.excludes) options.excludes={};
+                if (options.excludes instanceof Array) {
+                    var excludes={};
+                    options.excludes.forEach(function (e) {
+                        if (startsWith(e,"/")) {
+                            excludes[e]=1;
+                        } else {
+                            excludes[path+e]=1;
+                        }
+                    });
+                    options.excludes=excludes;
+                }
+                return options;
             };
             dir.isDir=function () {return true;};
             dir.rel=function (relPath){
@@ -2003,7 +2013,7 @@ requireSimulator.setName('fs/ROMd');
   var rom={
     base: '/Tonyu/doc/',
     data: {
-      '': '{"index.txt":{"lastUpdate":1408782761511},"novice/":{"lastUpdate":1400579960587},"projectIndex.txt":{"lastUpdate":1400120163000},"tonyu2/":{"lastUpdate":1404106758682}}',
+      '': '{"index.txt":{"lastUpdate":1408929166645},"novice/":{"lastUpdate":1400579960587},"projectIndex.txt":{"lastUpdate":1400120163000},"tonyu2/":{"lastUpdate":1404106758682}}',
       'index.txt': 
         '* サンプルを見る\n'+
         '\n'+
@@ -2018,15 +2028,14 @@ requireSimulator.setName('fs/ROMd');
         '\n'+
         '-[[リファレンス>tonyu2/index]]\n'+
         '\n'+
-        '* ログイン\n'+
+        '* プロジェクトの保存について\n'+
         '\n'+
-        '-ログインをしなくても使うことができます\n'+
-        '--ログインしない場合，作成したプロジェクトは今使っているブラウザに保存され，他のブラウザからは同じプロジェクトを見たり編集したりすることができません．\n'+
-        '-ログインすると，このブラウザで作成したプロジェクトを，他のブラウザからも見たり編集したりすることができます\n'+
-        '-ログインは[[@blink メニューのログイン>#login]]から行います\n'+
+        '-作成したプロジェクトは今使っているブラウザ(localStorage)に保存されます．\n'+
+        '-[[@blink ログイン>#login]]をすると，サーバにプロジェクトを保存し，他のブラウザとプロジェクトを共有できます．\n'+
         '-- GoogleまたはTwitterのアカウントが必要です\n'+
-        '\n'+
-        '\n'
+        '-ログイン後[[@blink メニューのログイン>#login]]から[[@blink プロジェクトの同期>#syncProjects]]を選ぶと，プロジェクトが同期されます\n'+
+        '-- 同期には数分間かかることがあります\n'+
+        '-- サンプルプロジェクト（1_Animation ～ 14_File）は同期されません．\n'
       ,
       'novice/': '{"crash.txt":{"lastUpdate":1400120163000},"dec.txt":{"lastUpdate":1400120163000},"firstRun.txt":{"lastUpdate":1400120163000},"getkey.txt":{"lastUpdate":1400120163000},"inc.txt":{"lastUpdate":1400120163000},"index.txt":{"lastUpdate":1400120163000},"item.txt":{"lastUpdate":1400120163000},"key.txt":{"lastUpdate":1400120163000},"left.txt":{"lastUpdate":1400120163000},"new.txt":{"lastUpdate":1400120163000},"newFile.txt":{"lastUpdate":1400120163000},"param.txt":{"lastUpdate":1400120163000},"projectIndex.txt":{"lastUpdate":1400120163000},"say.txt":{"lastUpdate":1400120163000},"say2.txt":{"lastUpdate":1400120163000},"sleep.txt":{"lastUpdate":1400120163000},"sprite.txt":{"lastUpdate":1400120163000},"spriteMove.txt":{"lastUpdate":1400120163000},"toc.json":{"lastUpdate":1400120163000},"trouble1.txt":{"lastUpdate":1400120163000},"true.txt":{"lastUpdate":1400120163000},"udlr.txt":{"lastUpdate":1400120163000},"variable.txt":{"lastUpdate":1400120163000},"variable2.txt":{"lastUpdate":1400120163000},"variable3.txt":{"lastUpdate":1400120163000},"while.txt":{"lastUpdate":1400120163000},"xy.txt":{"lastUpdate":1400120163000}}',
       'novice/crash.txt': 
@@ -6334,127 +6343,161 @@ requireSimulator.setName('Sync');
 define(["FS","Shell"],function (FS,sh) {
     var Sync={};
     sh.sync=function () {
-    	// sync options:o onend:f     local=remote=cwd
-    	// sync dir:s|file options:o onend:f  local=remote=dir
-    	// sync local:s|file remote:s|file options:o onend:f
-    	var local,remote,options,onend;
-    	var i=0;
-    	if (typeof arguments[i]=="string" || isFile(arguments[i])) {
-    		local=sh.resolve(arguments[i], true);
-    		i++;
-    		if (typeof arguments[i]=="string" || isFile(arguments[i])) {
-    			remote=sh.resolve(arguments[i], false);
-    			i++;
-    		}
-    	}
-    	if (typeof arguments[i]=="object") { options=arguments[i]; i++;}
-    	if (typeof arguments[i]=="function") { onend=arguments[i]; i++;}
-    	if (!local) remote=local=sh.cwd;
-    	console.log(local,remote,options,onend);
-    	Sync.sync(local,remote,options,onend);
+        // sync options:o onend:f     local=remote=cwd
+        // sync dir:s|file options:o onend:f  local=remote=dir
+        // sync local:s|file remote:s|file options:o onend:f
+        var local,remote,options,onend;
+        var i=0;
+        if (typeof arguments[i]=="string" || isFile(arguments[i])) {
+            local=sh.resolve(arguments[i], true);
+            i++;
+            if (typeof arguments[i]=="string" || isFile(arguments[i])) {
+                remote=sh.resolve(arguments[i], false);
+                i++;
+            }
+        }
+        if (typeof arguments[i]=="object") { options=arguments[i]; i++;}
+        if (typeof arguments[i]=="function") { onend=arguments[i]; i++;}
+        if (!local) remote=local=sh.cwd;
+        console.log(local,remote,options,onend);
+        Sync.sync(local,remote,options,onend);
     };
     function isFile(v) {
-    	return v && v.isDir;
+        return v && v.isDir;
     }
     Sync.sync=function () {
-    	// sync dir:file options:o onend:f  local=remote=dir
-    	// sync local:file remote:file options:o onend:f
-    	var local,remote,options,onend;
-    	var i=0;
-    	if (isFile(arguments[i])) {
-    		local=arguments[i];
-    		i++;
-    		if (isFile(arguments[i])) {
-    			remote=arguments[i];
-    			i++;
-    		}
-    	}
-    	if (typeof arguments[i]=="object") { options=arguments[i]; i++;}
-    	if (typeof arguments[i]=="function") { onend=arguments[i]; i++;}
+        // sync dir:file options:o onend:f  local=remote=dir
+        // sync local:file remote:file options:o onend:f
+        var local,remote,options,onend;
+        var i=0;
+        if (isFile(arguments[i])) {
+            local=arguments[i];
+            i++;
+            if (isFile(arguments[i])) {
+                remote=arguments[i];
+                i++;
+            }
+        }
+        if (typeof arguments[i]=="object") { options=arguments[i]; i++;}
+        if (typeof arguments[i]=="function") { onend=arguments[i]; i++;}
 
-    	if (!local) throw "Sync.sync: Local dir must be specified as file object";
-    	if (!remote) remote=local;
-    	if (!options) options={};
-    	if (!onend && options.onend) onend=options.onend;
-	if (options.test) options.v=1;
-	n0();
-	var uploads={},downloads=[],visited={};
-	function n0() {
-	    $.get("../../edit/getDirInfo",{base:remote.path(),excludes:options.excludes},n1);
-	}
-	function n1(info) {
-	    info=JSON.parse(info);
-	    if (options.v) console.log("getDirInfo",info);
-	    var base=local;//FS.get(info.base);
-	    var data=info.data;
-	    for (var rel in data) {
-		var file=base.rel(rel);
-		var lcm=file.metaInfo();
-		var rmm=data[rel];
-		cmp(file,rel,lcm,rmm);
-	    }
-	    local.recursive(function (file) {
-		var lcm=file.metaInfo();
-		var rel=file.relPath(local);
-		var rmm=data[rel];
-		cmp(file,rel,lcm,rmm);
-	    },{includeTrashed:true});
-	    if (options.v) {
-		console.log("uploads:",uploads);
-		console.log("downloads:",downloads);
-	    }
-	    $.post("../../edit/File2LSSync",
-		   {base:remote.path(),paths:JSON.stringify(downloads)},n2);
-	}
-	function n2(dlData) {
-		console.log("dlData=",dlData);
-	    dlData=JSON.parse(dlData);
-	    if (options.v) console.log("dlData:",dlData);
-	    var base=local;//FS.get(dlData.base);
-	    if (options.test) return;
-	    for (var rel in dlData.data) {
-		var dlf=base.rel(rel);
-		var d=dlData.data[rel];
-		//if (options.v) console.log(dlf.path(), d);
-		if (d.trashed) {
-		    if (dlf.exists()) dlf.rm();
-		} else {
-		    dlf.text(d.text);
-		}
-		delete d.text;
-		dlf.metaInfo(d);
-	    }
-	    $.post("../../edit/LS2FileSync",
-		   {base:remote.path(),data:JSON.stringify(uploads)},n3);
-    	}
-	function n3(res){
-	    if (options.v) console.log(res);
-	    var upds=[];
-	    for (var i in uploads) upds.push(i);
-	    res={msg:res,uploads:upds,downloads: downloads};
-	    if (typeof onend=="function") onend(res);
-	}
-	function cmp(f,rel,lcm,rmm) {
-	    if (visited[rel]) return ;
-	    visited[rel]=1;
-	    if (rmm && (!lcm || lcm.lastUpdate<rmm.lastUpdate)) {
-		downloads.push(rel);
-		if (options.v)
-		    console.log((!lcm?"New":"")+
-			    "Download "+f+
-			    " trash="+!!rmm.trashed);
-	    } else if (lcm && (!rmm || lcm.lastUpdate>rmm.lastUpdate)) {
-		var o={text:f.text()};
-		var m=f.metaInfo();
-		for (var i in m) o[i]=m[i];
-		uploads[rel]=o;
-		if (options.v)
-		    console.log((!rmm?"New":"")+
-			    "Upload "+f+
-			    " trash="+!!lcm.trashed);
-	    }
+        if (!local) throw "Sync.sync: Local dir must be specified as file object";
+        if (!remote) remote=local;
+        if (!options) options={};
+        if (!onend && options.onend) onend=options.onend;
+        if (options.test) options.v=1;
+        n0();
+        var uploads={},downloads=[],visited={};
+        function status(name, param) {
+            console.log("Status: "+name+" param:",param);
+            if (options.onstatus) {
+                options.onstatus(name, param);
+            }
+        }
+        function onError() {
+            if (options.onerror) {
+                options.onerror.apply(this, arguments);
+            }
+        }
+        function n0() {
+            var req={base:remote.path(),excludes:JSON.stringify(options.excludes)};
+            status("getDirInfo", req);
+            $.ajax({
+                type:"get",
+                url:"../../edit/getDirInfo",
+                data:req,
+                success:n1,
+                error:onError
+            });
+        }
+        function n1(info) {
+            info=JSON.parse(info);
+            if (options.v) console.log("getDirInfo",info);
+            var base=local;//FS.get(info.base);
+            var data=info.data;
+            for (var rel in data) {
+                var file=base.rel(rel);
+                var lcm=file.metaInfo();
+                var rmm=data[rel];
+                cmp(file,rel,lcm,rmm);
+            }
+            local.recursive(function (file) {
+                var lcm=file.metaInfo();
+                var rel=file.relPath(local);
+                var rmm=data[rel];
+                cmp(file,rel,lcm,rmm);
+            },{includeTrashed:true, excludes:options.excludes});
+            if (options.v) {
+                console.log("uploads:",uploads);
+                console.log("downloads:",downloads);
+            }
 
-	}
+            var req={base:remote.path(),paths:JSON.stringify(downloads)};
+            status("File2LSSync", req);
+            $.ajax({
+                type:"post",
+                url:"../../edit/File2LSSync",
+                data:req,
+                success:n2,
+                error:onError
+            });
+        }
+        function n2(dlData) {
+            console.log("dlData=",dlData);
+            dlData=JSON.parse(dlData);
+            if (options.v) console.log("dlData:",dlData);
+            var base=local;//FS.get(dlData.base);
+            if (options.test) return;
+            for (var rel in dlData.data) {
+                var dlf=base.rel(rel);
+                var d=dlData.data[rel];
+                //if (options.v) console.log(dlf.path(), d);
+                if (d.trashed) {
+                    if (dlf.exists()) dlf.rm();
+                } else {
+                    dlf.text(d.text);
+                }
+                delete d.text;
+                dlf.metaInfo(d);
+            }
+            var req={base:remote.path(),data:JSON.stringify(uploads)};
+            status("LS2FileSync", req);
+            $.ajax({
+                type:"post",
+                url:"../../edit/LS2FileSync",
+                data:req,
+                success:n3,
+                error:onError
+            });
+        }
+        function n3(res){
+            if (options.v) console.log(res);
+            var upds=[];
+            for (var i in uploads) upds.push(i);
+            res={msg:res,uploads:upds,downloads: downloads};
+            if (typeof onend=="function") onend(res);
+        }
+        function cmp(f,rel,lcm,rmm) {
+            if (visited[rel]) return ;
+            visited[rel]=1;
+            if (rmm && (!lcm || lcm.lastUpdate<rmm.lastUpdate)) {
+                downloads.push(rel);
+                if (options.v)
+                    console.log((!lcm?"New":"")+
+                            "Download "+f+
+                            " trash="+!!rmm.trashed);
+            } else if (lcm && (!rmm || lcm.lastUpdate>rmm.lastUpdate)) {
+                var o={text:f.text()};
+                var m=f.metaInfo();
+                for (var i in m) o[i]=m[i];
+                uploads[rel]=o;
+                if (options.v)
+                    console.log((!rmm?"New":"")+
+                            "Upload "+f+
+                            " trash="+!!lcm.trashed);
+            }
+
+        }
     };
     return Sync;
 });
