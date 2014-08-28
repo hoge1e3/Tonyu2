@@ -20,18 +20,18 @@ define(["FS","Util"], function (FS,Util) {
         var rel=f.relPath(dir);
         //var name=f.truncExt(".tonyu");
         var m="";//(name==main?" data-main='true'":"");
-        buf+="<script type='text/tonyu' data-filename='"+rel+"'"+m+">";
+        buf+="<script language='text/tonyu' type='text/tonyu' data-filename='"+rel+"'"+m+">";
         buf+=f.text();
         buf+="</script>\n\n";
     });
     nonTonyu.forEach(function (f) {
         var rel=f.relPath(dir);
-        buf+="<script type='text/tonyu' data-filename='"+rel+"' data-wrap='80'>";
+        buf+="<script language='text/tonyu' type='text/tonyu' data-filename='"+rel+"' data-wrap='80'>";
         buf+=wrap(f.text(),80);
         buf+="</script>\n\n";
     });
 
-    $("<textarea>").attr({cols:100, rows:24}).val(buf).appendTo("body");
+    $("textarea").val(buf);
     function wrap(str, cols) {
         var lines=str.split("\n");
         var buf="";

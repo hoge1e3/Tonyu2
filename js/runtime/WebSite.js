@@ -11,8 +11,16 @@ define([], function () {
         };
     }
     if (
-	(loc.match(/^file:/) || loc.match(/localhost/) || loc.match(/tonyuedit\.appspot\.com/)) &&
+      loc.match(/tonyuexe\.appspot\.com/) ||
+      loc.match(/localhost:8887/) ||
+ 	  (
+ 	    (
+ 	       loc.match(/^file:/) || 
+ 	       loc.match(/localhost/) || 
+	       loc.match(/tonyuedit\.appspot\.com/)
+	    ) &&
 	    loc.match(/\/html\/((dev)|(build))\//)
+	  )
     ) {
         return window.WebSite={
             urlAliases: {

@@ -1,4 +1,4 @@
-// Created at Mon Aug 25 2014 10:13:58 GMT+0900 (東京 (標準時))
+// Created at Thu Aug 28 2014 14:20:06 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -566,8 +566,16 @@ define([], function () {
         };
     }
     if (
-	(loc.match(/^file:/) || loc.match(/localhost/) || loc.match(/tonyuedit\.appspot\.com/)) &&
+      loc.match(/tonyuexe\.appspot\.com/) ||
+      loc.match(/localhost:8887/) ||
+ 	  (
+ 	    (
+ 	       loc.match(/^file:/) || 
+ 	       loc.match(/localhost/) || 
+	       loc.match(/tonyuedit\.appspot\.com/)
+	    ) &&
 	    loc.match(/\/html\/((dev)|(build))\//)
+	  )
     ) {
         return window.WebSite={
             urlAliases: {

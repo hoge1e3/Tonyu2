@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Export to tonyuexe</title>
+<meta charset="utf-8">
+<script src="../../js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="../../js/reqConf.js"></script>
+<script src="../../js/lib/require.js"></script>
+<style>
+.on-logged-in { display:none; }
+</style>
+<script>
+requirejs.config(reqConf);
+requirejs(["Auth","Util","fs/exportToJsdoit"],function (Auth,Util){
+  $(function () {
+   var dir=Util.getQueryString("dir", "/Tonyu/Projects/1_Animation/");
+   var dirs=dir.split("/");
+   dirs.pop();
+   var name=dirs.pop();
+   $("#prjName").val(name);
+   Auth.currentUser(function(res) {
+      if (res) {
+          $(".on-logged-in").hide();
+          $(".on-logged-out").show();
+      } else {
+          $(".on-logged-out").hide();
+          $(".on-logged-in").show();
+      }
+   });
+  });
+});
+</script>
+</head>
+<body>
+<div class="on-logged-out"><a href="../../edit/login">ログイン</a>をしてください</div>
+<div class="on-logged-in">
+<h1>tonyuexe.appspot.comで公開する </h1>
+<div>※<a target="terms" href="../../doc/terms.html">利用規約</a>を確認してください</div>
+<!--ul>
+<li> 他者の著作権、肖像権、パブリシティー権等を侵害する行為を禁止します．</li>
+<li> 他者に不利益、損害を与える行為，特に他者を差別、誹謗中傷する行為、他者の名誉または信用を損ねる行為を禁止します．</li>
+<li> プロジェクトの投稿者は、本サービスの利用を通じて発生した結果について、一切の責任を負います．
+万が一問題が発生した場合には、当該投稿者の自己責任で解決するものとし，運営者に何ら迷惑を及ぼさないものとします．
+</li>
+</ul-->
+
+<form action="../../edit/upload-project" method="POST">
+プロジェクト名<input id="prjName" name="project"/><br/>
+<textarea cols=100 rows=24></textarea><br/>
+<input type="submit"/>
+</form>
+</div>
+
+
+</body>
+
+</html>
