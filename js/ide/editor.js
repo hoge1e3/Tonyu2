@@ -105,7 +105,7 @@ $(function () {
         return f.name();
     };
 
-    
+
     fl.ls(curProjectDir);
     refreshRunMenu();
     KeyEventChecker.down(document,"Alt+Ctrl+D",function () {
@@ -159,6 +159,7 @@ $(function () {
                         })));
         //saveDesktopEnv();
         $("#exportToJsdoit").attr("href", "exportToJsdoit.html?dir="+curProjectDir.path());//+"&main="+runMenuOrd[0]);
+        $("#exportToExe").attr("href", "exportToExe.html?dir="+curProjectDir.path());//+"&main="+runMenuOrd[0]);
     }
     function dispName(f) {
         var name=f.name();
