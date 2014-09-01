@@ -1,6 +1,9 @@
+native prompt;
+a=prompt("a");
+print(a);
 
 while(true) {
-    print(getkay("Left"));
+    print(getkey("Left"));
     update();
 }
 

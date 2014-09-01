@@ -258,6 +258,10 @@ $(function () {
     $("#prog").click(function () {
         displayMode("edit");
     });
+    $("#mapEditor").click(function () {
+        console.log("run map");
+        run("MapEditor");
+    });
     function close() {
         prog.setValue(closedMsg);
         prog.setReadOnly(true);
