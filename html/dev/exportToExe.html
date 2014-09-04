@@ -17,11 +17,24 @@ requirejs(["Auth","Util","fs/exportToJsdoit"],function (Auth,Util){
    var dirs=dir.split("/");
    dirs.pop();
    var name=dirs.pop();
+   $("#prjNameSpan").text(name);
    $("#prjName").val(name);
    Auth.currentUser(function(res) {
       if (res) {
           $(".on-logged-out").hide();
           $(".on-logged-in").show();
+          $.ajax({ type:"get", url:"../../edit/get-project-info",data:{project:name},
+              success:function (res) {
+                  console.log("get-prj",res);
+                  var data=JSON.parse(res);
+                  if (data.license!="null") $("#license").val(data.license);
+                  $("#allowFork").attr("checked",data.allowFork!="false");
+                  $("#publishToList").attr("checked",data.publishToList!="false");
+              },
+              error: function () {
+                  alert("Error "+arguments)
+              }
+          });
       } else {
           $(".on-logged-in").hide();
           $(".on-logged-out").show();
@@ -34,20 +47,37 @@ requirejs(["Auth","Util","fs/exportToJsdoit"],function (Auth,Util){
 <body>
 <div class="on-logged-out"><a href="../../edit/login">ログイン</a>をしてください</div>
 <div class="on-logged-in">
-<h1>tonyuexe.appspot.comで公開する </h1>
+<h1><span id="prjNameSpan"></span>をtonyuexe.appspot.comで公開する </h1>
 <div>※<a target="terms" href="../../doc/terms.html">利用規約</a>を確認してください</div>
-<!--ul>
-<li> 他者の著作権、肖像権、パブリシティー権等を侵害する行為を禁止します．</li>
-<li> 他者に不利益、損害を与える行為，特に他者を差別、誹謗中傷する行為、他者の名誉または信用を損ねる行為を禁止します．</li>
-<li> プロジェクトの投稿者は、本サービスの利用を通じて発生した結果について、一切の責任を負います．
-万が一問題が発生した場合には、当該投稿者の自己責任で解決するものとし，運営者に何ら迷惑を及ぼさないものとします．
-</li>
-</ul-->
+
 
 <form action="../../edit/upload-project" method="POST">
-プロジェクト名<input id="prjName" name="project"/><br/>
-<textarea name="prog" cols=100 rows=24></textarea><br/>
-<input type="submit"/>
+<input type="hidden" id="prjName" name="project"/>
+<textarea name="prog" cols=100 rows=24 style="display:none;"></textarea>
+
+<div><input type="checkbox" id="publishToList" name="publishToList" value="true">このプロジェクトをプロジェクト一覧に表示する</div>
+<ul>
+<li>プロジェクト一覧は，tonyuedit（プロジェクト開発環境），tonyuexe（プロジェクト実行専用サイト）いずれの利用者からも見ることができます．
+(現段階では未実装)</li>
+</ul>
+
+<div><input type="checkbox" id="allowFork" name="allowFork" value="true">このプロジェクトのForkを許可する</div>
+<ul>
+<li>Forkとは，他の投稿者がこのプロジェクトのコピーに変更を加えることです．このプロジェクト自身が他の投稿者に変更されることはありません．(現段階では未実装)
+</li></ul>
+
+<div>ライセンス
+<select name="license" id="license">
+<option value="mit">MIT License</option>
+<option value="gpl3">GPLv3</option>
+</select>
+</div>
+
+<hr/>
+<input type="submit" value="公開する"/>
+
+
+
 </form>
 </div>
 
