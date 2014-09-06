@@ -155,15 +155,19 @@ return Tonyu.Project=function (dir, kernelDir) {
         resFile.obj(env.options);
     };
     TPR.rawBoot=function (mainClassName) {
-        var thg=Tonyu.threadGroup();
+        //var thg=Tonyu.threadGroup();
         var mainClass=Tonyu.getClass(mainClassName);// window[mainClassName];
         if (!mainClass) throw TError( mainClassName+" というクラスはありません", "不明" ,0);
         //Tonyu.runMode=true;
         var main=new mainClass();
-        TPR.runningThread=thg.addObj(main);
-        $LASTPOS=0;
-        thg.run(0);
+        var th=Tonyu.thread();
+        th.enter(main.fiber$main());
+
+        TPR.runningThread=th; //thg.addObj(main);
         TPR.runningObj=main;
+        $LASTPOS=0;
+	th.steps();
+        //thg.run(0);
     };
 /*    TPR.boot=function (mainClassName) {
         TPR.loadResource(function () {ld(mainClassName);});

@@ -1,10 +1,51 @@
-native prompt;
-a=prompt("a");
-print(a);
 
+x=5;
+y=10;
+c=0;
 while(true) {
-    print(getkey("Left"));
+    x=x+1;
+    c++;
+    if (c==20) {
+        /*ifwait {
+            _thread.setGroup(null);
+        }*/
+        while (c<100) {
+            /*a=asyncResult();
+            $mouseTouchListener.push(a.receiver);
+            waitFor(a);
+            */
+            waitMouseTouch();
+            print(c+" "+$mouseTouchListener.length);
+            x=$mouseX;
+            y=$mouseY;
+            c++;
+        }
+        c=0;
+        waitMouseTouch(false);
+    }
     update();
 }
+/*
 
+\waitMouseTouch(fl) {
+    if (fl!==false) {
+        if (!origTG) {
+            ifwait {
+                origTG=_thread.group;
+                _thread.setGroup(null);
+            }
+        }
+        a=asyncResult();
+        $mouseTouchListener.push(a.receiver);
+        waitFor(a);
+    } else {
+        if (origTG) {
+            ifwait {
+                _thread.setGroup(origTG);
+                origTG=null;
+            }
+        }
+    }
+}
+*/
 //new Sp2{x:50, y:50};

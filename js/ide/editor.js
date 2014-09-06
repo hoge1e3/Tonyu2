@@ -238,7 +238,10 @@ $(function () {
                     showErrorPos($("#errorPos"),e);
                     displayMode("compile_error");
                 }else{
-                    throw e;
+		    if (e.stack) {
+			console.log("stack trace:",e.stack);
+		    }
+		    throw e;
                 }
             }
         },0);

@@ -1,9 +1,0 @@
-native $;
-x=0;
-f{};
-$("canvas").click(f);
-
-\f(e) {
-    x++;
-    print(x,e);
-}

@@ -1,8 +1,9 @@
 Tonyu=function () {
     var preemptionTime=60;
     function thread() {
+	//var stpd=0;
         var fb={enter:enter, exit:exit, steps:steps, step:step, isAlive:isAlive, isWaiting:isWaiting,
-                suspend:suspend,retVal:retVal, kill:kill, waitFor: waitFor};
+                suspend:suspend,retVal:retVal, kill:kill, waitFor: waitFor,setGroup:setGroup};
         var frame=null;
         var _isAlive=true;
         var cnt=0;
@@ -33,15 +34,25 @@ Tonyu=function () {
             if (j && j.addTerminatedListener) j.addTerminatedListener(function () {
                 _isWaiting=false;
                 if (fb.group) fb.group.notifyResume();
-                //fb.group.add(fb);
+		else if (isAlive()) {
+		    try {
+			fb.steps();
+		    }catch(e) {handleEx(e);}
+                }
+		//fb.group.add(fb);
             });
         }
-
+	function setGroup(g) {
+	    fb.group=g;
+	    if (g) g.add(fb);
+	}
         function retVal() {
             return retVal;
         }
         function steps() {
-            var sv=Tonyu.currentThread;
+            //stpd++;
+	    //if (stpd>5) throw new Error("Depth too much");
+	    var sv=Tonyu.currentThread;
             Tonyu.currentThread=fb;
             //var lim=new Date().getTime()+preemptionTime;
             cnt=preemptionTime;
@@ -49,6 +60,7 @@ Tonyu=function () {
             while (cnt-->0) {
                 step();
             }
+	    //stpd--;
             Tonyu.currentThread=sv;
         }
         function kill() {
@@ -74,7 +86,7 @@ Tonyu=function () {
         var ls=[];
         var hasRes=false;
         res.addTerminatedListener=function (l) {
-            if (hasRes) l();
+            if (hasRes) setTimeout(l,0);
             else ls.push(l);
         };
         res.receiver=function () {
@@ -113,8 +125,16 @@ Tonyu=function () {
             return th;
         }
         function steps() {
+	    try {
+		stepsNoEx();
+	    } catch(e) {
+		handleEx(e);
+	    }
+	}
+        function stepsNoEx() {
             for (var i=threads.length-1; i>=0 ;i--) {
-                if (threads[i].isAlive()) continue;
+		var thr=threads[i];
+                if (thr.isAlive() && thr.group===thg) continue;
                 threads.splice(i,1);
             }
             _isWaiting=true;
@@ -139,7 +159,7 @@ Tonyu=function () {
             _isAlive=false;
         }
         var _interval=0, _onStepsEnd;
-        function run(interval, onStepsEnd) {
+        /*function run(interval, onStepsEnd) {
             if (interval!=null) _interval=interval;
             if (onStepsEnd!=null) _onStepsEnd=onStepsEnd;
             if (!_isAlive) return;
@@ -158,7 +178,7 @@ Tonyu=function () {
                     alert ("エラー! at "+$LASTPOS+" メッセージ  : "+e);
                 }
             }
-        }
+        }*/
         function notifyResume() {
             if (_isWaiting) {
                 //console.log("resume!");
@@ -166,6 +186,13 @@ Tonyu=function () {
             }
         }
         return thg={add:add, addObj:addObj,  steps:steps, run:run, kill:kill, notifyResume: notifyResume};
+    }
+    function handleEx(e) {
+        if (Tonyu.onRuntimeError) {
+            Tonyu.onRuntimeError(e);
+        } else {
+            alert ("エラー! at "+$LASTPOS+" メッセージ  : "+e);
+        }
     }
     function defunct(f) {
         if (f===Function) {
