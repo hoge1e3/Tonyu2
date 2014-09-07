@@ -1,4 +1,4 @@
-// Created at Mon Sep 01 2014 16:12:20 GMT+0900 (東京 (標準時))
+// Created at Sun Sep 07 2014 15:23:02 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -596,7 +596,7 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1408716523305},"Actor.tonyu":{"lastUpdate":1408716523306},"BaseActor.tonyu":{"lastUpdate":1408716523307},"Boot.tonyu":{"lastUpdate":1408716523308},"Keys.tonyu":{"lastUpdate":1400120164000},"Map.tonyu":{"lastUpdate":1408716523309},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1408716523309},"ScaledCanvas.tonyu":{"lastUpdate":1408716523310},"Sprites.tonyu":{"lastUpdate":1408716523310},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1408716523311},"MapEditor.tonyu":{"lastUpdate":1408716523312}}',
+      '': '{".desktop":{"lastUpdate":1410004569669},"Actor.tonyu":{"lastUpdate":1410004569670},"BaseActor.tonyu":{"lastUpdate":1410070333673},"Boot.tonyu":{"lastUpdate":1410008233885},"Keys.tonyu":{"lastUpdate":1400120164000},"Map.tonyu":{"lastUpdate":1410004569671},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1410004569672},"ScaledCanvas.tonyu":{"lastUpdate":1410004569672},"Sprites.tonyu":{"lastUpdate":1410004569673},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1410004569673},"MapEditor.tonyu":{"lastUpdate":1410004569674}}',
       '.desktop': '{"runMenuOrd":["MapEditor","Main","PanelTest","Sprites","NoviceActor","AcTestM","MapTest2nd","MapTest","Map","SetBGCTest","Bounce","AcTest","NObjTest","NObjTest2","AltBoot","Ball","Bar","Pad","BaseActor","Actor","Label","Panel","Boot","ScaledCanvas","ScrollTest"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -868,7 +868,30 @@ requireSimulator.setName('fs/ROMk');
         '    var files=d.rel("files/");\n'+
         '    return FS.get(files.rel(path)) {topDir:d};\n'+
         '}\n'+
-        '\n'+
+        '\\waitMouseTouch(fl) {\n'+
+        '    if (fl!==false) {\n'+
+        '        if (!origTG) {\n'+
+        '            ifwait {\n'+
+        '                origTG=_thread.group;\n'+
+        '                _thread.setGroup(null);\n'+
+        '            }\n'+
+        '        }\n'+
+        '        a=asyncResult();\n'+
+        '        $mouseTouchListener.push(a.receiver);\n'+
+        '        waitFor(a);\n'+
+        '    } else {\n'+
+        '        if (origTG) {\n'+
+        '            ifwait {\n'+
+        '                _thread.setGroup(origTG);\n'+
+        '                origTG=null;\n'+
+        '            }\n'+
+        '        }\n'+
+        '    }\n'+
+        '}\n'+
+        '\\redrawScreen() {\n'+
+        '    $Sprites.draw($Screen.buf[0]);\n'+
+        '    $Screen.draw();\n'+
+        '}\n'+
         '\\play() {\n'+
         '    if (!_mml) _mml=new MML;\n'+
         '    if (isDead() || arguments.length==0) return _mml;\n'+
@@ -924,12 +947,19 @@ requireSimulator.setName('fs/ROMk');
         '}\n'+
         '\\initCanvasEvents() {\n'+
         '    cv=cvj[0];\n'+
+        '    $mouseTouchListener=[];\n'+
+        '    var handleMouseTouchListener=\\() {\n'+
+        '        var l=$mouseTouchListener;\n'+
+        '        $mouseTouchListener=[];\n'+
+        '        while (l.length>0) { (l.shift())(); }\n'+
+        '    };\n'+
         '    $handleMouse=\\(e) {\n'+
         '        var p=cvj.offset();\n'+
         '        var mp={x:e.clientX-p.left, y:e.clientY-p.top};\n'+
         '        mp=$Screen.canvas2buf(mp);\n'+
         '        $mouseX=mp.x;\n'+
         '        $mouseY=mp.y;\n'+
+        '        handleMouseTouchListener();\n'+
         '    };\n'+
         '    $touches=[{},{},{},{},{}];\n'+
         '    $touches.findById=\\(id) {\n'+
@@ -965,6 +995,7 @@ requireSimulator.setName('fs/ROMk');
         '        }\n'+
         '        $mouseX=$touches[0].x;\n'+
         '        $mouseY=$touches[0].y;\n'+
+        '        handleMouseTouchListener();\n'+
         '    };\n'+
         '    $handleTouchEnd=\\(e) {\n'+
         '        var ts=e.originalEvent.changedTouches;\n'+
@@ -976,6 +1007,7 @@ requireSimulator.setName('fs/ROMk');
         '                dst.identifier=-1;\n'+
         '            }\n'+
         '        }\n'+
+        '        handleMouseTouchListener();\n'+
         '    };\n'+
         '    var handleMouse=\\(e){$handleMouse(e);};\n'+
         '    var handleTouch=\\(e){$handleTouch(e);};\n'+
@@ -992,7 +1024,7 @@ requireSimulator.setName('fs/ROMk');
         '}\n'+
         '\n'+
         '\\initThread() {\n'+
-        '    thg=Tonyu.threadGroup();\n'+
+        '    $mainThreadGroup=thg=Tonyu.threadGroup();\n'+
         '    var o=Tonyu.currentProject.getOptions();\n'+
         '    var mainClassName=o.run.mainClass;\n'+
         '    print("MainClass= "+mainClassName);\n'+
@@ -2020,8 +2052,9 @@ requireSimulator.setName('Tonyu');
 Tonyu=function () {
     var preemptionTime=60;
     function thread() {
+	//var stpd=0;
         var fb={enter:enter, exit:exit, steps:steps, step:step, isAlive:isAlive, isWaiting:isWaiting,
-                suspend:suspend,retVal:retVal, kill:kill, waitFor: waitFor};
+                suspend:suspend,retVal:retVal, kill:kill, waitFor: waitFor,setGroup:setGroup};
         var frame=null;
         var _isAlive=true;
         var cnt=0;
@@ -2052,15 +2085,25 @@ Tonyu=function () {
             if (j && j.addTerminatedListener) j.addTerminatedListener(function () {
                 _isWaiting=false;
                 if (fb.group) fb.group.notifyResume();
-                //fb.group.add(fb);
+		else if (isAlive()) {
+		    try {
+			fb.steps();
+		    }catch(e) {handleEx(e);}
+                }
+		//fb.group.add(fb);
             });
         }
-
+	function setGroup(g) {
+	    fb.group=g;
+	    if (g) g.add(fb);
+	}
         function retVal() {
             return retVal;
         }
         function steps() {
-            var sv=Tonyu.currentThread;
+            //stpd++;
+	    //if (stpd>5) throw new Error("Depth too much");
+	    var sv=Tonyu.currentThread;
             Tonyu.currentThread=fb;
             //var lim=new Date().getTime()+preemptionTime;
             cnt=preemptionTime;
@@ -2068,6 +2111,7 @@ Tonyu=function () {
             while (cnt-->0) {
                 step();
             }
+	    //stpd--;
             Tonyu.currentThread=sv;
         }
         function kill() {
@@ -2093,7 +2137,7 @@ Tonyu=function () {
         var ls=[];
         var hasRes=false;
         res.addTerminatedListener=function (l) {
-            if (hasRes) l();
+            if (hasRes) setTimeout(l,0);
             else ls.push(l);
         };
         res.receiver=function () {
@@ -2132,8 +2176,16 @@ Tonyu=function () {
             return th;
         }
         function steps() {
+	    try {
+		stepsNoEx();
+	    } catch(e) {
+		handleEx(e);
+	    }
+	}
+        function stepsNoEx() {
             for (var i=threads.length-1; i>=0 ;i--) {
-                if (threads[i].isAlive()) continue;
+		var thr=threads[i];
+                if (thr.isAlive() && thr.group===thg) continue;
                 threads.splice(i,1);
             }
             _isWaiting=true;
@@ -2158,7 +2210,7 @@ Tonyu=function () {
             _isAlive=false;
         }
         var _interval=0, _onStepsEnd;
-        function run(interval, onStepsEnd) {
+        /*function run(interval, onStepsEnd) {
             if (interval!=null) _interval=interval;
             if (onStepsEnd!=null) _onStepsEnd=onStepsEnd;
             if (!_isAlive) return;
@@ -2177,7 +2229,7 @@ Tonyu=function () {
                     alert ("エラー! at "+$LASTPOS+" メッセージ  : "+e);
                 }
             }
-        }
+        }*/
         function notifyResume() {
             if (_isWaiting) {
                 //console.log("resume!");
@@ -2185,6 +2237,13 @@ Tonyu=function () {
             }
         }
         return thg={add:add, addObj:addObj,  steps:steps, run:run, kill:kill, notifyResume: notifyResume};
+    }
+    function handleEx(e) {
+        if (Tonyu.onRuntimeError) {
+            Tonyu.onRuntimeError(e);
+        } else {
+            alert ("エラー! at "+$LASTPOS+" メッセージ  : "+e);
+        }
     }
     function defunct(f) {
         if (f===Function) {
@@ -5686,15 +5745,19 @@ return Tonyu.Project=function (dir, kernelDir) {
         resFile.obj(env.options);
     };
     TPR.rawBoot=function (mainClassName) {
-        var thg=Tonyu.threadGroup();
+        //var thg=Tonyu.threadGroup();
         var mainClass=Tonyu.getClass(mainClassName);// window[mainClassName];
         if (!mainClass) throw TError( mainClassName+" というクラスはありません", "不明" ,0);
         //Tonyu.runMode=true;
         var main=new mainClass();
-        TPR.runningThread=thg.addObj(main);
-        $LASTPOS=0;
-        thg.run(0);
+        var th=Tonyu.thread();
+        th.enter(main.fiber$main());
+
+        TPR.runningThread=th; //thg.addObj(main);
         TPR.runningObj=main;
+        $LASTPOS=0;
+	th.steps();
+        //thg.run(0);
     };
 /*    TPR.boot=function (mainClassName) {
         TPR.loadResource(function () {ld(mainClassName);});

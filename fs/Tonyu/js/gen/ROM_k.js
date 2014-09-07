@@ -2,7 +2,7 @@
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1408716523305},"Actor.tonyu":{"lastUpdate":1408716523306},"BaseActor.tonyu":{"lastUpdate":1408716523307},"Boot.tonyu":{"lastUpdate":1408716523308},"Keys.tonyu":{"lastUpdate":1400120164000},"Map.tonyu":{"lastUpdate":1408716523309},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1408716523309},"ScaledCanvas.tonyu":{"lastUpdate":1408716523310},"Sprites.tonyu":{"lastUpdate":1408716523310},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1408716523311},"MapEditor.tonyu":{"lastUpdate":1408716523312}}',
+      '': '{".desktop":{"lastUpdate":1410004569669},"Actor.tonyu":{"lastUpdate":1410004569670},"BaseActor.tonyu":{"lastUpdate":1410070333673},"Boot.tonyu":{"lastUpdate":1410008233885},"Keys.tonyu":{"lastUpdate":1400120164000},"Map.tonyu":{"lastUpdate":1410004569671},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1410004569672},"ScaledCanvas.tonyu":{"lastUpdate":1410004569672},"Sprites.tonyu":{"lastUpdate":1410004569673},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1410004569673},"MapEditor.tonyu":{"lastUpdate":1410004569674}}',
       '.desktop': '{"runMenuOrd":["MapEditor","Main","PanelTest","Sprites","NoviceActor","AcTestM","MapTest2nd","MapTest","Map","SetBGCTest","Bounce","AcTest","NObjTest","NObjTest2","AltBoot","Ball","Bar","Pad","BaseActor","Actor","Label","Panel","Boot","ScaledCanvas","ScrollTest"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -274,7 +274,30 @@
         '    var files=d.rel("files/");\n'+
         '    return FS.get(files.rel(path)) {topDir:d};\n'+
         '}\n'+
-        '\n'+
+        '\\waitMouseTouch(fl) {\n'+
+        '    if (fl!==false) {\n'+
+        '        if (!origTG) {\n'+
+        '            ifwait {\n'+
+        '                origTG=_thread.group;\n'+
+        '                _thread.setGroup(null);\n'+
+        '            }\n'+
+        '        }\n'+
+        '        a=asyncResult();\n'+
+        '        $mouseTouchListener.push(a.receiver);\n'+
+        '        waitFor(a);\n'+
+        '    } else {\n'+
+        '        if (origTG) {\n'+
+        '            ifwait {\n'+
+        '                _thread.setGroup(origTG);\n'+
+        '                origTG=null;\n'+
+        '            }\n'+
+        '        }\n'+
+        '    }\n'+
+        '}\n'+
+        '\\redrawScreen() {\n'+
+        '    $Sprites.draw($Screen.buf[0]);\n'+
+        '    $Screen.draw();\n'+
+        '}\n'+
         '\\play() {\n'+
         '    if (!_mml) _mml=new MML;\n'+
         '    if (isDead() || arguments.length==0) return _mml;\n'+
@@ -330,12 +353,19 @@
         '}\n'+
         '\\initCanvasEvents() {\n'+
         '    cv=cvj[0];\n'+
+        '    $mouseTouchListener=[];\n'+
+        '    var handleMouseTouchListener=\\() {\n'+
+        '        var l=$mouseTouchListener;\n'+
+        '        $mouseTouchListener=[];\n'+
+        '        while (l.length>0) { (l.shift())(); }\n'+
+        '    };\n'+
         '    $handleMouse=\\(e) {\n'+
         '        var p=cvj.offset();\n'+
         '        var mp={x:e.clientX-p.left, y:e.clientY-p.top};\n'+
         '        mp=$Screen.canvas2buf(mp);\n'+
         '        $mouseX=mp.x;\n'+
         '        $mouseY=mp.y;\n'+
+        '        handleMouseTouchListener();\n'+
         '    };\n'+
         '    $touches=[{},{},{},{},{}];\n'+
         '    $touches.findById=\\(id) {\n'+
@@ -371,6 +401,7 @@
         '        }\n'+
         '        $mouseX=$touches[0].x;\n'+
         '        $mouseY=$touches[0].y;\n'+
+        '        handleMouseTouchListener();\n'+
         '    };\n'+
         '    $handleTouchEnd=\\(e) {\n'+
         '        var ts=e.originalEvent.changedTouches;\n'+
@@ -382,6 +413,7 @@
         '                dst.identifier=-1;\n'+
         '            }\n'+
         '        }\n'+
+        '        handleMouseTouchListener();\n'+
         '    };\n'+
         '    var handleMouse=\\(e){$handleMouse(e);};\n'+
         '    var handleTouch=\\(e){$handleTouch(e);};\n'+
@@ -398,7 +430,7 @@
         '}\n'+
         '\n'+
         '\\initThread() {\n'+
-        '    thg=Tonyu.threadGroup();\n'+
+        '    $mainThreadGroup=thg=Tonyu.threadGroup();\n'+
         '    var o=Tonyu.currentProject.getOptions();\n'+
         '    var mainClassName=o.run.mainClass;\n'+
         '    print("MainClass= "+mainClassName);\n'+
