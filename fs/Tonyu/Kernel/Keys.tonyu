@@ -43,9 +43,11 @@ function update() {
 \keydown(e) {
     var s=stats[e.keyCode];
     if (!s) {
-        stats[e.keyCode]=-1;
+        stats[e.keyCode]=1;
     }
+    $InputDevice.handleListeners();
 }
 \keyup(e) {
     stats[e.keyCode]=0;
+    $InputDevice.handleListeners();
 }

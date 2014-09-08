@@ -241,7 +241,7 @@ nowait \asyncResult() {
     var files=d.rel("files/");
     return FS.get(files.rel(path)) {topDir:d};
 }
-\waitMouseTouch(fl) {
+\waitInputDevice(fl) {
     if (fl!==false) {
         if (!origTG) {
             ifwait {
@@ -250,7 +250,7 @@ nowait \asyncResult() {
             }
         }
         a=asyncResult();
-        $mouseTouchListener.push(a.receiver);
+        $InputDevice.addOnetimeListener(a.receiver);
         waitFor(a);
     } else {
         if (origTG) {

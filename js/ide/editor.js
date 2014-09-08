@@ -268,7 +268,10 @@ $(function () {
     $("#search").click(function () {
 	console.log("src diag");
 	searchDialog.show(curProjectDir,function (info){
-	    open(info.file, info.lineNo);
+	    fl.select(info.file);
+	    setTimeout(function () {
+		prog.gotoLine(info.lineNo);
+	    },0);
 	});
     });
     function close() {
@@ -296,7 +299,8 @@ $(function () {
     	fl.setModified(curFile.text()!=prog.getValue());
     }
     setInterval(watchModified,1000);
-    function open(f,line) {
+    function open(f) {
+	// do not call directly !!  it doesnt change fl.curFile
         if (f.isDir()) {
             return;
         }
@@ -304,11 +308,6 @@ $(function () {
         prog.setValue( f.text(),0 );
         prog.setReadOnly(false);
         prog.clearSelection();
-	if (line) {
-	    setTimeout(function () {
-		prog.gotoLine(line);
-	    },0);
-	}
     }
     d=function () {
         Tonyu.currentProject.dumpJS.apply(this,arguments);

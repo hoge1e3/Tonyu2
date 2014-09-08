@@ -6,5 +6,6 @@ p=1;
 while (true) {
     x++;
     t.text="out="+screenOut();
+    // print(getkey(32));
     update();
 }

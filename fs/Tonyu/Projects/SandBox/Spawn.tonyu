@@ -14,15 +14,15 @@ while(true) {
             $mouseTouchListener.push(a.receiver);
             waitFor(a);
             */
-            waitMouseTouch();
-            print(c+" "+$mouseTouchListener.length);
+            waitInputDevice();
+            print(c+" "+getkey(1));//+" "+$mouseTouchListener.length);
             x=$mouseX;
             y=$mouseY;
             redrawScreen();
             c++;
         }
         c=0;
-        waitMouseTouch(false);
+        waitInputDevice(false);
     }
     update();
 }
@@ -30,8 +30,8 @@ while(true) {
     $Sprites.draw($Screen.buf[0]);
     $Screen.draw();
 }*/
-/*
 
+/*
 \waitMouseTouch(fl) {
     if (fl!==false) {
         if (!origTG) {
@@ -41,7 +41,7 @@ while(true) {
             }
         }
         a=asyncResult();
-        $mouseTouchListener.push(a.receiver);
+        $InputDevice.addOnetimeListener(a.receiver);
         waitFor(a);
     } else {
         if (origTG) {
@@ -51,6 +51,6 @@ while(true) {
             }
         }
     }
-}
-*/
+}*/
+
 //new Sp2{x:50, y:50};

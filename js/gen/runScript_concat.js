@@ -1,4 +1,4 @@
-// Created at Mon Sep 08 2014 12:35:29 GMT+0900 (東京 (標準時))
+// Created at Mon Sep 08 2014 14:20:17 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -596,8 +596,8 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1410004569669},"Actor.tonyu":{"lastUpdate":1410004569670},"BaseActor.tonyu":{"lastUpdate":1410070333673},"Boot.tonyu":{"lastUpdate":1410008233885},"Keys.tonyu":{"lastUpdate":1400120164000},"Map.tonyu":{"lastUpdate":1410004569671},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1410004569672},"ScaledCanvas.tonyu":{"lastUpdate":1410004569672},"Sprites.tonyu":{"lastUpdate":1410004569673},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1410004569673},"MapEditor.tonyu":{"lastUpdate":1410004569674}}',
-      '.desktop': '{"runMenuOrd":["MapEditor","Main","PanelTest","Sprites","NoviceActor","AcTestM","MapTest2nd","MapTest","Map","SetBGCTest","Bounce","AcTest","NObjTest","NObjTest2","AltBoot","Ball","Bar","Pad","BaseActor","Actor","Label","Panel","Boot","ScaledCanvas","ScrollTest"]}',
+      '': '{".desktop":{"lastUpdate":1410153147926},"Actor.tonyu":{"lastUpdate":1410004569670},"BaseActor.tonyu":{"lastUpdate":1410153147927},"Boot.tonyu":{"lastUpdate":1410153147928},"Keys.tonyu":{"lastUpdate":1410153147928},"Map.tonyu":{"lastUpdate":1410004569671},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1410004569672},"ScaledCanvas.tonyu":{"lastUpdate":1410004569672},"Sprites.tonyu":{"lastUpdate":1410004569673},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1410004569673},"MapEditor.tonyu":{"lastUpdate":1410004569674},"InputDevice.tonyu":{"lastUpdate":1410153160821}}',
+      '.desktop': '{"runMenuOrd":["Spawn","ScreenOutTest","Sp2","A","Colors","KlassTest","Child","ForEachTest","MyClass","BindF","Parent","B","C","D","E","F","Boot","Keys","InputDevice"],"editorFontSize":12}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
         'native Sprites;\n'+
@@ -868,7 +868,7 @@ requireSimulator.setName('fs/ROMk');
         '    var files=d.rel("files/");\n'+
         '    return FS.get(files.rel(path)) {topDir:d};\n'+
         '}\n'+
-        '\\waitMouseTouch(fl) {\n'+
+        '\\waitInputDevice(fl) {\n'+
         '    if (fl!==false) {\n'+
         '        if (!origTG) {\n'+
         '            ifwait {\n'+
@@ -877,7 +877,7 @@ requireSimulator.setName('fs/ROMk');
         '            }\n'+
         '        }\n'+
         '        a=asyncResult();\n'+
-        '        $mouseTouchListener.push(a.receiver);\n'+
+        '        $InputDevice.addOnetimeListener(a.receiver);\n'+
         '        waitFor(a);\n'+
         '    } else {\n'+
         '        if (origTG) {\n'+
@@ -945,21 +945,79 @@ requireSimulator.setName('fs/ROMk');
         '        $Screen=new ScaledCanvas{canvas:cvj, width:465, height:465};\n'+
         '    }\n'+
         '}\n'+
-        '\\initCanvasEvents() {\n'+
-        '    cv=cvj[0];\n'+
-        '    $mouseTouchListener=[];\n'+
-        '    var handleMouseTouchListener=\\() {\n'+
-        '        var l=$mouseTouchListener;\n'+
-        '        $mouseTouchListener=[];\n'+
-        '        while (l.length>0) { (l.shift())(); }\n'+
-        '    };\n'+
+        '\n'+
+        '\n'+
+        '\\initThread() {\n'+
+        '    $mainThreadGroup=thg=Tonyu.threadGroup();\n'+
+        '    var o=Tonyu.currentProject.getOptions();\n'+
+        '    var mainClassName=o.run.mainClass;\n'+
+        '    print("MainClass= "+mainClassName);\n'+
+        '    mainClass=Tonyu.getClass(mainClassName);\n'+
+        '    if (!mainClass) {\n'+
+        '        TError( mainClassName+" というクラスはありません", \n'+
+        '        "不明" ,0).raise();\n'+
+        '    }\n'+
+        '    Tonyu.runMode=true;\n'+
+        '    $currentThreadGroup=thg;\n'+
+        '    new mainClass();\n'+
+        '}\n'+
+        '\\stop() {\n'+
+        '    \n'+
+        '    for (var k,v in $MMLS) {\n'+
+        '        v.stop();\n'+
+        '    }\n'+
+        '    $WaveTable.stop();\n'+
+        '}\n'+
+        'initSprites();\n'+
+        '$InputDevice=new InputDevice;\n'+
+        '$InputDevice.initCanvasEvents(cvj);\n'+
+        'initThread();\n'+
+        '\n'+
+        '$pat_fruits=30;\n'+
+        '$Keys=new Keys;\n'+
+        '$MMLS={};\n'+
+        '$WaveTable=new WaveTable;\n'+
+        '$consolePanel=new Panel{x:465/2,y:465/2,width:465,height:465,zOrder:-1,excludeFromAll:true};\n'+
+        '$consolePrintY=465-15;\n'+
+        'if (typeof SplashScreen!="undefined") SplashScreen.hide();\n'+
+        'while (true) {\n'+
+        '    ti=new Date().getTime();\n'+
+        '    thg.steps();\n'+
+        '    $Keys.update();\n'+
+        '    $screenWidth=$Screen.width;\n'+
+        '    $screenHeight=$Screen.height;\n'+
+        '    $Sprites.draw($Screen.buf[0]);\n'+
+        '    $Screen.draw();\n'+
+        '    $Sprites.checkHit();\n'+
+        '    wt=33-(new Date().getTime()-ti);\n'+
+        '    if (wt<0) wt=0;\n'+
+        '    waitFor(Tonyu.timeout(wt));\n'+
+        '}'
+      ,
+      'InputDevice.tonyu': 
+        'extends null;\n'+
+        'native $;\n'+
+        '\n'+
+        '\\new() {\n'+
+        '    listeners=[];\n'+
+        '}\n'+
+        '\\handleListeners() {\n'+
+        '    var l=listeners;\n'+
+        '    listeners=[];\n'+
+        '    while (l.length>0) { (l.shift())(); }\n'+
+        '}\n'+
+        '\\addOnetimeListener(l){\n'+
+        '    listeners.push(l);\n'+
+        '}\n'+
+        '\\initCanvasEvents(cvj) {\n'+
+        '    var cv=cvj[0];\n'+
         '    $handleMouse=\\(e) {\n'+
         '        var p=cvj.offset();\n'+
         '        var mp={x:e.clientX-p.left, y:e.clientY-p.top};\n'+
         '        mp=$Screen.canvas2buf(mp);\n'+
         '        $mouseX=mp.x;\n'+
         '        $mouseY=mp.y;\n'+
-        '        handleMouseTouchListener();\n'+
+        '        handleListeners();\n'+
         '    };\n'+
         '    $touches=[{},{},{},{},{}];\n'+
         '    $touches.findById=\\(id) {\n'+
@@ -995,7 +1053,7 @@ requireSimulator.setName('fs/ROMk');
         '        }\n'+
         '        $mouseX=$touches[0].x;\n'+
         '        $mouseY=$touches[0].y;\n'+
-        '        handleMouseTouchListener();\n'+
+        '        handleListeners();\n'+
         '    };\n'+
         '    $handleTouchEnd=\\(e) {\n'+
         '        var ts=e.originalEvent.changedTouches;\n'+
@@ -1007,7 +1065,7 @@ requireSimulator.setName('fs/ROMk');
         '                dst.identifier=-1;\n'+
         '            }\n'+
         '        }\n'+
-        '        handleMouseTouchListener();\n'+
+        '        handleListeners();\n'+
         '    };\n'+
         '    var handleMouse=\\(e){$handleMouse(e);};\n'+
         '    var handleTouch=\\(e){$handleTouch(e);};\n'+
@@ -1021,52 +1079,6 @@ requireSimulator.setName('fs/ROMk');
         '        cvj.on("touchmove",handleTouch);\n'+
         '        cvj.on("touchend",handleTouchEnd);\n'+
         '    }\n'+
-        '}\n'+
-        '\n'+
-        '\\initThread() {\n'+
-        '    $mainThreadGroup=thg=Tonyu.threadGroup();\n'+
-        '    var o=Tonyu.currentProject.getOptions();\n'+
-        '    var mainClassName=o.run.mainClass;\n'+
-        '    print("MainClass= "+mainClassName);\n'+
-        '    mainClass=Tonyu.getClass(mainClassName);\n'+
-        '    if (!mainClass) {\n'+
-        '        TError( mainClassName+" というクラスはありません", \n'+
-        '        "不明" ,0).raise();\n'+
-        '    }\n'+
-        '    Tonyu.runMode=true;\n'+
-        '    $currentThreadGroup=thg;\n'+
-        '    new mainClass();\n'+
-        '}\n'+
-        '\\stop() {\n'+
-        '    \n'+
-        '    for (var k,v in $MMLS) {\n'+
-        '        v.stop();\n'+
-        '    }\n'+
-        '    $WaveTable.stop();\n'+
-        '}\n'+
-        'initSprites();\n'+
-        'initCanvasEvents();\n'+
-        'initThread();\n'+
-        '\n'+
-        '$pat_fruits=30;\n'+
-        '$Keys=new Keys;\n'+
-        '$MMLS={};\n'+
-        '$WaveTable=new WaveTable;\n'+
-        '$consolePanel=new Panel{x:465/2,y:465/2,width:465,height:465,zOrder:-1,excludeFromAll:true};\n'+
-        '$consolePrintY=465-15;\n'+
-        'if (typeof SplashScreen!="undefined") SplashScreen.hide();\n'+
-        'while (true) {\n'+
-        '    ti=new Date().getTime();\n'+
-        '    thg.steps();\n'+
-        '    $Keys.update();\n'+
-        '    $screenWidth=$Screen.width;\n'+
-        '    $screenHeight=$Screen.height;\n'+
-        '    $Sprites.draw($Screen.buf[0]);\n'+
-        '    $Screen.draw();\n'+
-        '    $Sprites.checkHit();\n'+
-        '    wt=33-(new Date().getTime()-ti);\n'+
-        '    if (wt<0) wt=0;\n'+
-        '    waitFor(Tonyu.timeout(wt));\n'+
         '}'
       ,
       'Keys.tonyu': 
@@ -1115,11 +1127,13 @@ requireSimulator.setName('fs/ROMk');
         '\\keydown(e) {\n'+
         '    var s=stats[e.keyCode];\n'+
         '    if (!s) {\n'+
-        '        stats[e.keyCode]=-1;\n'+
+        '        stats[e.keyCode]=1;\n'+
         '    }\n'+
+        '    $InputDevice.handleListeners();\n'+
         '}\n'+
         '\\keyup(e) {\n'+
         '    stats[e.keyCode]=0;\n'+
+        '    $InputDevice.handleListeners();\n'+
         '}'
       ,
       'MML.tonyu': 
