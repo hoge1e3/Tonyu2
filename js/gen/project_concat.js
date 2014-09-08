@@ -1,4 +1,4 @@
-// Created at Mon Sep 08 2014 14:40:49 GMT+0900 (東京 (標準時))
+// Created at Mon Sep 08 2014 15:33:50 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -5693,7 +5693,7 @@ Tonyu=function () {
                 run();
             }
         }
-        return thg={add:add, addObj:addObj,  steps:steps, run:run, kill:kill, notifyResume: notifyResume};
+        return thg={add:add, addObj:addObj,  steps:steps, kill:kill, notifyResume: notifyResume};
     }
     function handleEx(e) {
         if (Tonyu.onRuntimeError) {

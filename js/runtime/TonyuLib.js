@@ -185,7 +185,7 @@ Tonyu=function () {
                 run();
             }
         }
-        return thg={add:add, addObj:addObj,  steps:steps, run:run, kill:kill, notifyResume: notifyResume};
+        return thg={add:add, addObj:addObj,  steps:steps, kill:kill, notifyResume: notifyResume};
     }
     function handleEx(e) {
         if (Tonyu.onRuntimeError) {
