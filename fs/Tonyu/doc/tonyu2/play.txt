@@ -49,10 +49,31 @@ a.play().stop()
 a.die()
 >>
 
+**演奏時間の取得
+
+演奏開始からの経過時間を取得するには，次のcurrentTimeメソッドを使います．
+<<code
+c.play().currentTime()
+>>
+ここで，cは演奏中のオブジェクトを指します．
+
+例：
+<<code BGMObj
+while (true) {
+    play("cdefgfedc");
+}
+>>
+<<code CurTimeDisp
+c=new BGMObj;
+while (true) {
+    print(c.play().currentTime());
+    update();
+}
+>>
+
 
 **参照
 
 [[playSE]]
-
 
 
