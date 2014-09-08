@@ -1,12 +1,12 @@
 requirejs(["fs/ROMk","fs/ROMd","fs/ROMs", "Util", "Tonyu", "FS", "FileList", "FileMenu",
            "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project",
            "copySample","Shell","ImageResEditor","ProjectOptionsEditor","copyToKernel","KeyEventChecker",
-           "WikiDialog","runtime", "KernelDiffDialog","Sync"
+           "WikiDialog","runtime", "KernelDiffDialog","Sync","searchDialog"
           ],
 function (romk, romd, roms,  Util, Tonyu, FS, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,
           copySample,sh, ImgResEdit,ProjectOptionsEditor, ctk, KeyEventChecker,
-          WikiDialog, rt , KDD,Sync
+          WikiDialog, rt , KDD,Sync,searchDialog
           ) {
 
 $(function () {
@@ -265,6 +265,12 @@ $(function () {
         console.log("run map");
         run("MapEditor");
     });
+    $("#search").click(function () {
+	console.log("src diag");
+	searchDialog.show(curProjectDir,function (info){
+	    open(info.file, info.lineNo);
+	});
+    });
     function close() {
         prog.setValue(closedMsg);
         prog.setReadOnly(true);
@@ -290,7 +296,7 @@ $(function () {
     	fl.setModified(curFile.text()!=prog.getValue());
     }
     setInterval(watchModified,1000);
-    function open(f) {
+    function open(f,line) {
         if (f.isDir()) {
             return;
         }
@@ -298,6 +304,11 @@ $(function () {
         prog.setValue( f.text(),0 );
         prog.setReadOnly(false);
         prog.clearSelection();
+	if (line) {
+	    setTimeout(function () {
+		prog.gotoLine(line);
+	    },0);
+	}
     }
     d=function () {
         Tonyu.currentProject.dumpJS.apply(this,arguments);

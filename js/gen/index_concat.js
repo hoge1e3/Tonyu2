@@ -1,4 +1,4 @@
-// Created at Sun Sep 07 2014 15:23:01 GMT+0900 (東京 (標準時))
+// Created at Mon Sep 08 2014 12:35:29 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -6063,7 +6063,8 @@ define(["FS","Util"],function (FS,Util) {
     Shell.grep=function (pattern, file, options) {
     	file=resolve(file, true);
     	if (!options) options={};
-    	if (file.isDir()) {
+    	if (!options.res) options.res=[];
+	if (file.isDir()) {
     		file.each(function (e) {
     			Shell.grep(pattern, e, options);
     		});
@@ -6076,12 +6077,13 @@ define(["FS","Util"],function (FS,Util) {
 	    		});
 			}
     	}
+	return options.res;
     	function report(file, lineNo, line) {
-			if (options.res) {
-				options.res.push({file:file, lineNo:lineNo,line:line});
-			} else {
-				console.log(file+"("+lineNo+"): "+line);
-			}
+	    if (options.res) {
+		options.res.push({file:file, lineNo:lineNo,line:line});
+	    }
+	    console.log(file+"("+lineNo+"): "+line);
+	
     	}
     };
     Shell.touch=function (f) {
@@ -6345,7 +6347,9 @@ define(["UI"], function (UI) {
         	res.d=UI("div",{title:"新規プロジェクト"},
         			["div",
         			 ["span","プロジェクト名"],
-        			 ["input",{$edit:"name"}]],
+        			 ["input",{$edit:"name",on:{enterkey:function () {
+                		     res.d.done();
+				 }}}]],
          			["div",
         			 ["span","親フォルダ"],
         			 ["input",{$edit:{name:"parentDir",type:FType}}]],
@@ -6379,6 +6383,7 @@ define(["UI"], function (UI) {
     };
     return res;
 });
+
 requireSimulator.setName('Sync');
 define(["FS","Shell"],function (FS,sh) {
     var Sync={};

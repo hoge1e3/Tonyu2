@@ -154,6 +154,7 @@ var reqConf={
             diffview: "lib/diffview",
             timbre: "lib/timbre",
             KernelDiffDialog: "ide/KernelDiffDialog",
+            searchDialog: "ide/searchDialog",
         	DiffDialog: "ide/DiffDialog",
         	ScriptTagFS:"fs/ScriptTagFS",
         	KeyEventChecker: "lib/KeyEventChecker",

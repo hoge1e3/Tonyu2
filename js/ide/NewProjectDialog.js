@@ -15,7 +15,9 @@ define(["UI"], function (UI) {
         	res.d=UI("div",{title:"新規プロジェクト"},
         			["div",
         			 ["span","プロジェクト名"],
-        			 ["input",{$edit:"name"}]],
+        			 ["input",{$edit:"name",on:{enterkey:function () {
+                		     res.d.done();
+				 }}}]],
          			["div",
         			 ["span","親フォルダ"],
         			 ["input",{$edit:{name:"parentDir",type:FType}}]],
