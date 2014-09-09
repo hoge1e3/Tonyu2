@@ -1,8 +1,11 @@
+native prompt;
 loadMode=false;
 mapDataFile=file("map.json");
-mapData=mapDataFile.obj();
-mapOnDataFile=file("mapOn.json");
-mapOnData=mapOnDataFile.obj();
+baseData=mapDataFile.obj();
+if(baseData){
+    mapData=baseData[0];
+    mapOnData=baseData[1];
+}
 if(mapData){
     print("Load Data?: Y or N");
     while(true){
@@ -17,42 +20,9 @@ if(mapData){
     }
 }
 if(!loadMode){
-    print("input row");
-    input=0;
-    enter=false;
-    while(!enter){
-        for(var num=48;num<58;num++){
-            if(getkey(num)==1){
-                num=num-0;
-                input=input*10+(num-48);
-            }
-        }
-        if(getkey(13)==1){
-            enter=true;
-        }
-        update();
-    }
-    print(input);
-    row=input;
-    
+    row=prompt("input row");
     update();
-    enter=false;
-    print("input col");
-    input=0;
-    while(!enter){
-        for(var num=48;num<58;num++){
-            if(getkey(num)==1){
-                num=num-0;
-                input=input*10+(num-48);
-            }
-        }
-        if(getkey(13)==1){
-            enter=true;
-        }
-        update();
-    }
-    print(input);
-    col=input;
+    col=prompt("imput col");
     panel=new Panel{width:col*32,height:row*32};
     panel.x=panel.width/2+10;
     panel.y=panel.height/2;
@@ -79,7 +49,7 @@ for(var i=0;i<16;i++){
         counter++;
     }
 }
-mode="set";
+mode="get";
 prevMode="set";
 mapp=0;
 mx=0;
@@ -136,8 +106,8 @@ while(true){
         data+="["+tmp+"]";
         print("];");
         data+="]";
-        mapDataFile.obj($map.mapTable);
-        mapOnDataFile.obj($map.mapOnTable);
+        data=[$map.mapTable,$map.mapOnTable];
+        mapDataFile.obj(data);
     }
     if(getkey("c")==1){
         $mp.scrollTo(1000,1000);

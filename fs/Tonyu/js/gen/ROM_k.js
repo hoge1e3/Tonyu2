@@ -2,8 +2,8 @@
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1410153147926},"Actor.tonyu":{"lastUpdate":1410004569670},"BaseActor.tonyu":{"lastUpdate":1410153147927},"Boot.tonyu":{"lastUpdate":1410153147928},"Keys.tonyu":{"lastUpdate":1410153147928},"Map.tonyu":{"lastUpdate":1410004569671},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1410004569672},"ScaledCanvas.tonyu":{"lastUpdate":1410004569672},"Sprites.tonyu":{"lastUpdate":1410004569673},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1410004569673},"MapEditor.tonyu":{"lastUpdate":1410004569674},"InputDevice.tonyu":{"lastUpdate":1410153160821}}',
-      '.desktop': '{"runMenuOrd":["Spawn","ScreenOutTest","Sp2","A","Colors","KlassTest","Child","ForEachTest","MyClass","BindF","Parent","B","C","D","E","F","Boot","Keys","InputDevice"],"editorFontSize":12}',
+      '': '{".desktop":{"lastUpdate":1410239542810},"Actor.tonyu":{"lastUpdate":1410239542811},"BaseActor.tonyu":{"lastUpdate":1410239416749},"Boot.tonyu":{"lastUpdate":1410153147928},"Keys.tonyu":{"lastUpdate":1410153147928},"Map.tonyu":{"lastUpdate":1410239542811},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1410239542812},"ScaledCanvas.tonyu":{"lastUpdate":1410239416751},"Sprites.tonyu":{"lastUpdate":1410239416752},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1410239416753},"MapEditor.tonyu":{"lastUpdate":1410239542813},"InputDevice.tonyu":{"lastUpdate":1410153160821}}',
+      '.desktop': '{"runMenuOrd":["MapLoad","MapEditor","Main","PanelTest","Sprites","NoviceActor","AcTestM","MapTest2nd","MapTest","Map","SetBGCTest","Bounce","AcTest","NObjTest","NObjTest2","AltBoot","Ball","Bar","Pad","BaseActor","Actor","Label","Panel","ScaledCanvas"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
         'native Sprites;\n'+
@@ -274,7 +274,7 @@
         '    var files=d.rel("files/");\n'+
         '    return FS.get(files.rel(path)) {topDir:d};\n'+
         '}\n'+
-        '\\waitInputDevice(fl) {\n'+
+        '\\waitMouseTouch(fl) {\n'+
         '    if (fl!==false) {\n'+
         '        if (!origTG) {\n'+
         '            ifwait {\n'+
@@ -283,7 +283,7 @@
         '            }\n'+
         '        }\n'+
         '        a=asyncResult();\n'+
-        '        $InputDevice.addOnetimeListener(a.receiver);\n'+
+        '        $mouseTouchListener.push(a.receiver);\n'+
         '        waitFor(a);\n'+
         '    } else {\n'+
         '        if (origTG) {\n'+
@@ -294,10 +294,7 @@
         '        }\n'+
         '    }\n'+
         '}\n'+
-        '\\redrawScreen() {\n'+
-        '    $Sprites.draw($Screen.buf[0]);\n'+
-        '    $Screen.draw();\n'+
-        '}\n'+
+        '\n'+
         '\\play() {\n'+
         '    if (!_mml) _mml=new MML;\n'+
         '    if (isDead() || arguments.length==0) return _mml;\n'+
@@ -644,6 +641,17 @@
         '        }\n'+
         '    }\n'+
         '}\n'+
+        '\\load(dataFile){\n'+
+        '    baseData=file(dataFile).obj();\n'+
+        '    mapTable=baseData[0];\n'+
+        '    mapData=mapTable;\n'+
+        '    row=mapTable.length;\n'+
+        '    col=mapTable[0].length;\n'+
+        '    mapOnTable=baseData[1];\n'+
+        '    mapOnData=mapOnTable;\n'+
+        '    buf=$("<canvas>").attr{width:col*chipWidth,height:row*chipHeight};\n'+
+        '    initMap();\n'+
+        '}\n'+
         '\\set(setCol,setRow,p){\n'+
         '    if(setCol>=col || setRow>=row || setCol<0 || setRow<0) return;\n'+
         '    mapTable[setRow][setCol]=p;\n'+
@@ -716,11 +724,14 @@
         '}\n'
       ,
       'MapEditor.tonyu': 
+        'native prompt;\n'+
         'loadMode=false;\n'+
         'mapDataFile=file("map.json");\n'+
-        'mapData=mapDataFile.obj();\n'+
-        'mapOnDataFile=file("mapOn.json");\n'+
-        'mapOnData=mapOnDataFile.obj();\n'+
+        'baseData=mapDataFile.obj();\n'+
+        'if(baseData){\n'+
+        '    mapData=baseData[0];\n'+
+        '    mapOnData=baseData[1];\n'+
+        '}\n'+
         'if(mapData){\n'+
         '    print("Load Data?: Y or N");\n'+
         '    while(true){\n'+
@@ -735,42 +746,9 @@
         '    }\n'+
         '}\n'+
         'if(!loadMode){\n'+
-        '    print("input row");\n'+
-        '    input=0;\n'+
-        '    enter=false;\n'+
-        '    while(!enter){\n'+
-        '        for(var num=48;num<58;num++){\n'+
-        '            if(getkey(num)==1){\n'+
-        '                num=num-0;\n'+
-        '                input=input*10+(num-48);\n'+
-        '            }\n'+
-        '        }\n'+
-        '        if(getkey(13)==1){\n'+
-        '            enter=true;\n'+
-        '        }\n'+
-        '        update();\n'+
-        '    }\n'+
-        '    print(input);\n'+
-        '    row=input;\n'+
-        '    \n'+
+        '    row=prompt("input row");\n'+
         '    update();\n'+
-        '    enter=false;\n'+
-        '    print("input col");\n'+
-        '    input=0;\n'+
-        '    while(!enter){\n'+
-        '        for(var num=48;num<58;num++){\n'+
-        '            if(getkey(num)==1){\n'+
-        '                num=num-0;\n'+
-        '                input=input*10+(num-48);\n'+
-        '            }\n'+
-        '        }\n'+
-        '        if(getkey(13)==1){\n'+
-        '            enter=true;\n'+
-        '        }\n'+
-        '        update();\n'+
-        '    }\n'+
-        '    print(input);\n'+
-        '    col=input;\n'+
+        '    col=prompt("imput col");\n'+
         '    panel=new Panel{width:col*32,height:row*32};\n'+
         '    panel.x=panel.width/2+10;\n'+
         '    panel.y=panel.height/2;\n'+
@@ -797,7 +775,7 @@
         '        counter++;\n'+
         '    }\n'+
         '}\n'+
-        'mode="set";\n'+
+        'mode="get";\n'+
         'prevMode="set";\n'+
         'mapp=0;\n'+
         'mx=0;\n'+
@@ -854,8 +832,8 @@
         '        data+="["+tmp+"]";\n'+
         '        print("];");\n'+
         '        data+="]";\n'+
-        '        mapDataFile.obj($map.mapTable);\n'+
-        '        mapOnDataFile.obj($map.mapOnTable);\n'+
+        '        data=[$map.mapTable,$map.mapOnTable];\n'+
+        '        mapDataFile.obj(data);\n'+
         '    }\n'+
         '    if(getkey("c")==1){\n'+
         '        $mp.scrollTo(1000,1000);\n'+

@@ -1,1 +1,1 @@
-{"compiler":{"defaultSuperClass":"Actor"},"run":{"mainClass":"MapEditor","bootClass":"Boot"},"kernelEditable":true}
+{"compiler":{"defaultSuperClass":"Actor"},"run":{"mainClass":"MapLoad","bootClass":"Boot"},"kernelEditable":true}

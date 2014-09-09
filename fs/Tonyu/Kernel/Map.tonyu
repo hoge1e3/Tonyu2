@@ -40,6 +40,17 @@ native $;
         }
     }
 }
+\load(dataFile){
+    baseData=file(dataFile).obj();
+    mapTable=baseData[0];
+    mapData=mapTable;
+    row=mapTable.length;
+    col=mapTable[0].length;
+    mapOnTable=baseData[1];
+    mapOnData=mapOnTable;
+    buf=$("<canvas>").attr{width:col*chipWidth,height:row*chipHeight};
+    initMap();
+}
 \set(setCol,setRow,p){
     if(setCol>=col || setRow>=row || setCol<0 || setRow<0) return;
     mapTable[setRow][setCol]=p;

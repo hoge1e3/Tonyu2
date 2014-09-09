@@ -23,7 +23,7 @@ while (true) {
     go(x,y);
     sleep();
     /*if (crashTo(t)) {
-    t.hide();
+        t.hide();
     }*/
 }
 \onH(a,b) {

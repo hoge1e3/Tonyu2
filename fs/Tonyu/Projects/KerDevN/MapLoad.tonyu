@@ -1,0 +1,2 @@
+map=new Map{chipWidth:32,chipHeight:32};
+map.load("map.json");
