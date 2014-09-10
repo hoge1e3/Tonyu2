@@ -274,7 +274,7 @@
         '    var files=d.rel("files/");\n'+
         '    return FS.get(files.rel(path)) {topDir:d};\n'+
         '}\n'+
-        '\\waitMouseTouch(fl) {\n'+
+        '\\waitInputDevice(fl) {\n'+
         '    if (fl!==false) {\n'+
         '        if (!origTG) {\n'+
         '            ifwait {\n'+
@@ -283,7 +283,7 @@
         '            }\n'+
         '        }\n'+
         '        a=asyncResult();\n'+
-        '        $mouseTouchListener.push(a.receiver);\n'+
+        '        $InputDevice.addOnetimeListener(a.receiver);\n'+
         '        waitFor(a);\n'+
         '    } else {\n'+
         '        if (origTG) {\n'+
@@ -294,7 +294,10 @@
         '        }\n'+
         '    }\n'+
         '}\n'+
-        '\n'+
+        '\\redrawScreen() {\n'+
+        '    $Sprites.draw($Screen.buf[0]);\n'+
+        '    $Screen.draw();\n'+
+        '}\n'+
         '\\play() {\n'+
         '    if (!_mml) _mml=new MML;\n'+
         '    if (isDead() || arguments.length==0) return _mml;\n'+

@@ -1,4 +1,4 @@
-// Created at Tue Sep 09 2014 14:12:31 GMT+0900 (東京 (標準時))
+// Created at Wed Sep 10 2014 10:39:40 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -868,7 +868,7 @@ requireSimulator.setName('fs/ROMk');
         '    var files=d.rel("files/");\n'+
         '    return FS.get(files.rel(path)) {topDir:d};\n'+
         '}\n'+
-        '\\waitMouseTouch(fl) {\n'+
+        '\\waitInputDevice(fl) {\n'+
         '    if (fl!==false) {\n'+
         '        if (!origTG) {\n'+
         '            ifwait {\n'+
@@ -877,7 +877,7 @@ requireSimulator.setName('fs/ROMk');
         '            }\n'+
         '        }\n'+
         '        a=asyncResult();\n'+
-        '        $mouseTouchListener.push(a.receiver);\n'+
+        '        $InputDevice.addOnetimeListener(a.receiver);\n'+
         '        waitFor(a);\n'+
         '    } else {\n'+
         '        if (origTG) {\n'+
@@ -888,7 +888,10 @@ requireSimulator.setName('fs/ROMk');
         '        }\n'+
         '    }\n'+
         '}\n'+
-        '\n'+
+        '\\redrawScreen() {\n'+
+        '    $Sprites.draw($Screen.buf[0]);\n'+
+        '    $Screen.draw();\n'+
+        '}\n'+
         '\\play() {\n'+
         '    if (!_mml) _mml=new MML;\n'+
         '    if (isDead() || arguments.length==0) return _mml;\n'+
