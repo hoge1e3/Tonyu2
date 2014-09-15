@@ -1,4 +1,4 @@
-// Created at Mon Sep 15 2014 12:04:28 GMT+0900 (東京 (標準時))
+// Created at Mon Sep 15 2014 14:45:33 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -599,8 +599,8 @@ define([], function () {
       loc.match(/localhost:8887/) ||
  	  (
  	    (
- 	       loc.match(/^file:/) || 
- 	       loc.match(/localhost/) || 
+ 	       loc.match(/^file:/) ||
+ 	       loc.match(/localhost/) ||
 	       loc.match(/tonyuedit\.appspot\.com/)
 	    ) &&
 	    loc.match(/\/html\/((dev)|(build))\//)
@@ -618,6 +618,7 @@ define([], function () {
            urlAliases: {}, top: "../../",devMode:devMode
         };
     }
+    window.WebSite.disableROM={};
 	if (loc.match(/tonyuedit\.appspot\.com/) || loc.match(/localhost:8888/) ) {
 	    window.WebSite.disableROM={"ROM_d.js":true};
 	}

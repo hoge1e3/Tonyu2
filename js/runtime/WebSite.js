@@ -14,8 +14,8 @@ define([], function () {
       loc.match(/localhost:8887/) ||
  	  (
  	    (
- 	       loc.match(/^file:/) || 
- 	       loc.match(/localhost/) || 
+ 	       loc.match(/^file:/) ||
+ 	       loc.match(/localhost/) ||
 	       loc.match(/tonyuedit\.appspot\.com/)
 	    ) &&
 	    loc.match(/\/html\/((dev)|(build))\//)
@@ -33,6 +33,7 @@ define([], function () {
            urlAliases: {}, top: "../../",devMode:devMode
         };
     }
+    window.WebSite.disableROM={};
 	if (loc.match(/tonyuedit\.appspot\.com/) || loc.match(/localhost:8888/) ) {
 	    window.WebSite.disableROM={"ROM_d.js":true};
 	}
