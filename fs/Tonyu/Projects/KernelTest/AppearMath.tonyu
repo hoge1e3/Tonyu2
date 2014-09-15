@@ -1,0 +1,10 @@
+
+\onAppear() {
+    t=[];
+}
+
+t.push(2.71828);
+t.push(5);
+print(t);
+
+print($Math.log(t[0]));

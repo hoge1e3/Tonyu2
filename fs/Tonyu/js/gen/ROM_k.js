@@ -2,8 +2,8 @@
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1410239542810},"Actor.tonyu":{"lastUpdate":1410239542811},"BaseActor.tonyu":{"lastUpdate":1410239416749},"Boot.tonyu":{"lastUpdate":1410153147928},"Keys.tonyu":{"lastUpdate":1410153147928},"Map.tonyu":{"lastUpdate":1410239542811},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1410239542812},"ScaledCanvas.tonyu":{"lastUpdate":1410239416751},"Sprites.tonyu":{"lastUpdate":1410239416752},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1410239416753},"MapEditor.tonyu":{"lastUpdate":1410239542813},"InputDevice.tonyu":{"lastUpdate":1410153160821}}',
-      '.desktop': '{"runMenuOrd":["MapLoad","MapEditor","Main","PanelTest","Sprites","NoviceActor","AcTestM","MapTest2nd","MapTest","Map","SetBGCTest","Bounce","AcTest","NObjTest","NObjTest2","AltBoot","Ball","Bar","Pad","BaseActor","Actor","Label","Panel","ScaledCanvas"]}',
+      '': '{".desktop":{"lastUpdate":1410768624170},"Actor.tonyu":{"lastUpdate":1410768624171},"BaseActor.tonyu":{"lastUpdate":1410239416749},"Boot.tonyu":{"lastUpdate":1410768624171},"Keys.tonyu":{"lastUpdate":1410153147928},"Map.tonyu":{"lastUpdate":1410239542811},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1410239542812},"ScaledCanvas.tonyu":{"lastUpdate":1410239416751},"Sprites.tonyu":{"lastUpdate":1410239416752},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1410239416753},"MapEditor.tonyu":{"lastUpdate":1410239542813},"InputDevice.tonyu":{"lastUpdate":1410153160821}}',
+      '.desktop': '{"runMenuOrd":["AppearMath","NearTest","AcTestM","NObjTest","SETest","MMLTest","KeyTest","NObjTest2","AcTest","AltBoot","TConsole","Actor","Boot"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
         'native Sprites;\n'+
@@ -14,21 +14,12 @@
         '    if (Tonyu.runMode) initSprite();\n'+
         '}\n'+
         '\\initSprite() {\n'+
-        '    /*if (!_sprite) {\n'+
-        '        _sprite=Sprites.add{owner:this};\n'+
-        '    }*/\n'+
         '    $Sprites.add(this);\n'+
+        '    onAppear();\n'+
         '}\n'+
-        '\n'+
-        '/*\n'+
-        '\\update() {\n'+
-        '    super.update();\n'+
-        '    if (_sprite) {\n'+
-        '        _sprite.x=x;\n'+
-        '        _sprite.y=y;\n'+
-        '        _sprite.p=p;\n'+
-        '    }\n'+
-        '}*/'
+        '\\onAppear() {\n'+
+        '}\n'+
+        '\n'
       ,
       'BaseActor.tonyu': 
         'extends null;\n'+
@@ -330,6 +321,7 @@
         'native ImageList;\n'+
         'native Tonyu;\n'+
         'native SplashScreen;\n'+
+        'native Math;\n'+
         '\n'+
         '\\initSprites() {\n'+
         '    $Sprites=new Sprites();\n'+
@@ -382,6 +374,7 @@
         '$pat_fruits=30;\n'+
         '$Keys=new Keys;\n'+
         '$MMLS={};\n'+
+        '$Math=Math;\n'+
         '$WaveTable=new WaveTable;\n'+
         '$consolePanel=new Panel{x:465/2,y:465/2,width:465,height:465,zOrder:-1,excludeFromAll:true};\n'+
         '$consolePrintY=465-15;\n'+

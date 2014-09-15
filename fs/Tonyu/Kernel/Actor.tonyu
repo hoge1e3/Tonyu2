@@ -7,18 +7,9 @@ native Tonyu;
     if (Tonyu.runMode) initSprite();
 }
 \initSprite() {
-    /*if (!_sprite) {
-        _sprite=Sprites.add{owner:this};
-    }*/
     $Sprites.add(this);
+    onAppear();
+}
+\onAppear() {
 }
 
-/*
-\update() {
-    super.update();
-    if (_sprite) {
-        _sprite.x=x;
-        _sprite.y=y;
-        _sprite.p=p;
-    }
-}*/

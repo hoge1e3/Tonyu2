@@ -6,6 +6,7 @@ native Date;
 native ImageList;
 native Tonyu;
 native SplashScreen;
+native Math;
 
 \initSprites() {
     $Sprites=new Sprites();
@@ -58,6 +59,7 @@ initThread();
 $pat_fruits=30;
 $Keys=new Keys;
 $MMLS={};
+$Math=Math;
 $WaveTable=new WaveTable;
 $consolePanel=new Panel{x:465/2,y:465/2,width:465,height:465,zOrder:-1,excludeFromAll:true};
 $consolePrintY=465-15;
