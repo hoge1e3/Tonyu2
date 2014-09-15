@@ -1,0 +1,6 @@
+x=20;y=20;
+while(true) {
+    x++;
+    update();
+}
+a=5;

@@ -1,4 +1,4 @@
-// Created at Wed Sep 10 2014 10:39:40 GMT+0900 (東京 (標準時))
+// Created at Mon Sep 15 2014 11:08:23 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -222,6 +222,13 @@ FS=function () {
             putDirInfo(path ,dinfo, true);
         }
     }
+    function removeEntryWithoutTrash(dinfo, path, name) {// path:path of dinfo
+        if (dinfo[name]) {
+            delete dinfo[name];
+            putDirInfo(path ,dinfo, true);
+        }
+    }
+
     FS.orderByName=function (a,b) {
         return (a>b ? 1 : (a<b ? -1 : 0));
     };
@@ -379,6 +386,16 @@ FS=function () {
                     removeEntry(pinfo, parent, name);
                 }
             };
+            dir.removeWithoutTrash=function() {
+                dir.each(function (f) {
+                    f.removeWithoutTrash();
+                },{includeTrashed:true});
+                lcs(path,null);
+                if (parent!=null) {
+                    var pinfo=getDirInfo(parent);
+                    removeEntryWithoutTrash(pinfo, parent, name);
+                }
+            };
             dir.mkdir=function () {
                 dir.touch();
                 getDirInfo(path);
@@ -407,6 +424,14 @@ FS=function () {
                     removeEntry(pinfo, parent, name);
                 }
             };
+            file.removeWithoutTrash=function () {
+                if (!file.exists() && !file.isTrashed()) throw path+": No such file.";
+                lcs(path, null);
+                if (parent!=null) {
+                    var pinfo=getDirInfo(parent);
+                    removeEntryWithoutTrash(pinfo, parent, name);
+                }
+            }
             file.text=function () {
                 if (arguments.length==0) {
                     return lcs(path);
@@ -448,18 +473,23 @@ FS=function () {
             }
             return path.substring(bp.length);
         };
-	res.metaInfo=function () {
-	    if (parent!=null) {
+        res.isTrashed=function () {
+            var m=res.metaInfo();
+            if (!m) return false;
+            return m.trashed;
+        };
+        res.metaInfo=function () {
+            if (parent!=null) {
                 var pinfo=getDirInfo(parent);
-		if (arguments.length==0) {
-		    return pinfo[name];
-		} else {
-		    pinfo[name]=arguments[0];
-		    putDirInfo(parent, pinfo, pinfo[name].trashed);
-		}
+                if (arguments.length==0) {
+                    return pinfo[name];
+                } else {
+                    pinfo[name]=arguments[0];
+                    putDirInfo(parent, pinfo, pinfo[name].trashed);
+                }
             }
-	    return {};
-	};
+            return {};
+        };
         res.up=function () {
             if (parent==null) return null; //  path=/
             return FS.get(parent, securityDomain);
@@ -557,15 +587,14 @@ define([], function () {
     var loc=document.location.href;
     var devMode=!!loc.match(/html\/dev\//) && !!loc.match(/localhost:3/);
     if (loc.match(/jsrun\.it/)) {
-        return window.WebSite={
+        window.WebSite={
             urlAliases: {
                 "images/base.png":"http://jsrun.it/assets/6/F/y/3/6Fy3B.png",
                 "images/Sample.png":"http://jsrun.it/assets/s/V/S/l/sVSlZ.png",
                 "images/neko.png":"http://jsrun.it/assets/j/D/9/q/jD9qQ.png"
             },top:"",devMode:devMode
         };
-    }
-    if (
+    } else if (
       loc.match(/tonyuexe\.appspot\.com/) ||
       loc.match(/localhost:8887/) ||
  	  (
@@ -577,18 +606,22 @@ define([], function () {
 	    loc.match(/\/html\/((dev)|(build))\//)
 	  )
     ) {
-        return window.WebSite={
+        window.WebSite={
             urlAliases: {
                 "images/base.png":"../../images/base.png",
                 "images/Sample.png":"../../images/Sample.png",
                 "images/neko.png":"../../images/neko.png"
             },top:"../../",devMode:devMode
         };
+    } else {
+        window.WebSite={
+           urlAliases: {}, top: "../../",devMode:devMode
+        };
     }
-
-    return window.WebSite={
-        urlAliases: {}, top: "../../",devMode:devMode
-    };
+	if (loc.match(/tonyuedit\.appspot\.com/) || loc.match(/localhost:8888/) ) {
+	    window.WebSite.disableROM={"ROM_d.js":true};
+	}
+    return window.WebSite;
 });
 
 requireSimulator.setName('fs/ROMk');
@@ -2038,7 +2071,7 @@ requireSimulator.setName('fs/ROMk');
       
     }
   };
-  if (WebSite.devMode) {
+  if (WebSite.devMode || WebSite.disableROM['ROM_k.js']) {
     rom.base='/ROM'+rom.base;
   }
   FS.mountROM(rom);

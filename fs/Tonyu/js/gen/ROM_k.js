@@ -1444,7 +1444,7 @@
       
     }
   };
-  if (WebSite.devMode) {
+  if (WebSite.devMode || WebSite.disableROM['ROM_k.js']) {
     rom.base='/ROM'+rom.base;
   }
   FS.mountROM(rom);

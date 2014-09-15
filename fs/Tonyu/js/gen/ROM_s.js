@@ -579,7 +579,7 @@
       '9_Mouse/options.json': '{"compiler":{"defaultSuperClass":"Actor"},"run":{"mainClass":"MouseChaser","bootClass":"Boot"},"kernelEditable":false}'
     }
   };
-  if (WebSite.devMode) {
+  if (WebSite.devMode || WebSite.disableROM['ROM_s.js']) {
     rom.base='/ROM'+rom.base;
   }
   FS.mountROM(rom);

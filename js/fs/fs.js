@@ -133,6 +133,13 @@ FS=function () {
             putDirInfo(path ,dinfo, true);
         }
     }
+    function removeEntryWithoutTrash(dinfo, path, name) {// path:path of dinfo
+        if (dinfo[name]) {
+            delete dinfo[name];
+            putDirInfo(path ,dinfo, true);
+        }
+    }
+
     FS.orderByName=function (a,b) {
         return (a>b ? 1 : (a<b ? -1 : 0));
     };
@@ -290,6 +297,16 @@ FS=function () {
                     removeEntry(pinfo, parent, name);
                 }
             };
+            dir.removeWithoutTrash=function() {
+                dir.each(function (f) {
+                    f.removeWithoutTrash();
+                },{includeTrashed:true});
+                lcs(path,null);
+                if (parent!=null) {
+                    var pinfo=getDirInfo(parent);
+                    removeEntryWithoutTrash(pinfo, parent, name);
+                }
+            };
             dir.mkdir=function () {
                 dir.touch();
                 getDirInfo(path);
@@ -318,6 +335,14 @@ FS=function () {
                     removeEntry(pinfo, parent, name);
                 }
             };
+            file.removeWithoutTrash=function () {
+                if (!file.exists() && !file.isTrashed()) throw path+": No such file.";
+                lcs(path, null);
+                if (parent!=null) {
+                    var pinfo=getDirInfo(parent);
+                    removeEntryWithoutTrash(pinfo, parent, name);
+                }
+            }
             file.text=function () {
                 if (arguments.length==0) {
                     return lcs(path);
@@ -359,18 +384,23 @@ FS=function () {
             }
             return path.substring(bp.length);
         };
-	res.metaInfo=function () {
-	    if (parent!=null) {
+        res.isTrashed=function () {
+            var m=res.metaInfo();
+            if (!m) return false;
+            return m.trashed;
+        };
+        res.metaInfo=function () {
+            if (parent!=null) {
                 var pinfo=getDirInfo(parent);
-		if (arguments.length==0) {
-		    return pinfo[name];
-		} else {
-		    pinfo[name]=arguments[0];
-		    putDirInfo(parent, pinfo, pinfo[name].trashed);
-		}
+                if (arguments.length==0) {
+                    return pinfo[name];
+                } else {
+                    pinfo[name]=arguments[0];
+                    putDirInfo(parent, pinfo, pinfo[name].trashed);
+                }
             }
-	    return {};
-	};
+            return {};
+        };
         res.up=function () {
             if (parent==null) return null; //  path=/
             return FS.get(parent, securityDomain);

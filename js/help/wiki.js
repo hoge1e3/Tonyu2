@@ -6,6 +6,7 @@ Wiki=function (placeHolder, home, options, plugins) {
     var on={};
     var history=[];
     var EXT=".txt";
+    if (!options) options={};
     if (!home.isDir()) throw home+": not a dir";
     var cwd;
     W.on=on;
@@ -216,7 +217,7 @@ Wiki=function (placeHolder, home, options, plugins) {
                     		a=$("<a>").attr({href:name,target:"ext"}).text(caption);
                     	} else {
                     		var f=W.resolveFile(name);
-                    		if (!f.exists() && f.isReadOnly()) {
+                    		if (!f.exists() && (f.isReadOnly() || !options.editMode)) {
                     			a=$("<span>").text(caption);
                     		} else {
                     			a=$("<span>").addClass("clickable").text(caption).click(function () {
@@ -241,7 +242,7 @@ Wiki=function (placeHolder, home, options, plugins) {
     	var f=W.resolveFile(nameOrFile);
     	W.cd(f.up());
 		var fn=f.truncExt(EXT);
-    	if (!f.exists() && !f.isReadOnly()) {
+    	if (!f.exists() && !f.isReadOnly() && options.editMode) {
     		var p=history[history.length-1];
     		if (p) f.text("[["+p.truncExt(EXT)+"]]\n");
     		else f.text("");

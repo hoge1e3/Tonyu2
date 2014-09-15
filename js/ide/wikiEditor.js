@@ -2,7 +2,7 @@ requirejs(["Util","Wiki","TextEditor","FileList","FileMenu","FS","TextUtil"],
         function (Util,Wiki,TextEditor,FileList,FileMenu,FS,TextUtil) {
 $(function () {
     var home=FS.get(Util.getQueryString("home","/Tonyu/doc/"));
-    var w=Wiki($("#wikiViewArea"),home);
+    var w=Wiki($("#wikiViewArea"),home,{editMode:true});
     var f=FileList($("#fileList"));
     var t=TextEditor($("#editorArea"));
     var prevRow=null;

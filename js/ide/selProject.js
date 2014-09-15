@@ -24,9 +24,21 @@ $(function () {
             $(".while-logged-in").hide();
         }
     });
+    var w=Wiki($("#wikiViewArea"), FS.get("/Tonyu/doc/"));
+    var syncDoc=false;
     if (WebSite.devMode) {
-	Sync.sync(FS.get("/Tonyu/"),{v:1});
+        Sync.sync(FS.get("/Tonyu/"),{v:1});
+    } else if (WebSite.disableROM["ROM_d.js"]) {
+        syncDoc=true;
+        Sync.sync(FS.get("/Tonyu/doc/"),{v:1, onend:function () {
+            if (FS.get("/Tonyu/doc/index.txt").exists()) {
+                w.show("index");
+            }
+        }});
     }
+    if (!syncDoc) w.show("index");
+
+
     $("#newPrj").click(function (){
     	NPD.show(projects, function (prjDir) {
             prjDir.mkdir();
@@ -34,8 +46,6 @@ $(function () {
     	});
     });
     ls();
-    var w=Wiki($("#wikiViewArea"), FS.get("/Tonyu/doc/"));
-    w.show("index");
     SplashScreen.hide();
 });
 });

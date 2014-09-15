@@ -2,7 +2,7 @@
   var rom={
     base: '/Tonyu/doc/',
     data: {
-      '': '{"index.txt":{"lastUpdate":1408929166645},"novice/":{"lastUpdate":1400579960587},"projectIndex.txt":{"lastUpdate":1400120163000},"tonyu2/":{"lastUpdate":1410160432674}}',
+      '': '{"index.txt":{"lastUpdate":1410745963624},"novice/":{"lastUpdate":1400579960587},"projectIndex.txt":{"lastUpdate":1400120163000},"tonyu2/":{"lastUpdate":1410160432674},"isodex.txt":{"lastUpdate":1410745945670,"trashed":true}}',
       'index.txt': 
         '* サンプルを見る\n'+
         '\n'+
@@ -24,7 +24,8 @@
         '-- GoogleまたはTwitterのアカウントが必要です\n'+
         '-ログイン後[[@blink メニューのログイン>#login]]から[[@blink プロジェクトの同期>#syncProjects]]を選ぶと，プロジェクトが同期されます\n'+
         '-- 同期には数分間かかることがあります\n'+
-        '-- サンプルプロジェクト（1_Animation ～ 14_File）は同期されません．\n'
+        '-- サンプルプロジェクト（1_Animation ～ 14_File）は同期されません．\n'+
+        '\n'
       ,
       'novice/': '{"crash.txt":{"lastUpdate":1400120163000},"dec.txt":{"lastUpdate":1400120163000},"firstRun.txt":{"lastUpdate":1400120163000},"getkey.txt":{"lastUpdate":1400120163000},"inc.txt":{"lastUpdate":1400120163000},"index.txt":{"lastUpdate":1400120163000},"item.txt":{"lastUpdate":1400120163000},"key.txt":{"lastUpdate":1400120163000},"left.txt":{"lastUpdate":1400120163000},"new.txt":{"lastUpdate":1400120163000},"newFile.txt":{"lastUpdate":1400120163000},"param.txt":{"lastUpdate":1400120163000},"projectIndex.txt":{"lastUpdate":1400120163000},"say.txt":{"lastUpdate":1400120163000},"say2.txt":{"lastUpdate":1400120163000},"sleep.txt":{"lastUpdate":1400120163000},"sprite.txt":{"lastUpdate":1400120163000},"spriteMove.txt":{"lastUpdate":1400120163000},"toc.json":{"lastUpdate":1400120163000},"trouble1.txt":{"lastUpdate":1400120163000},"true.txt":{"lastUpdate":1400120163000},"udlr.txt":{"lastUpdate":1400120163000},"variable.txt":{"lastUpdate":1400120163000},"variable2.txt":{"lastUpdate":1400120163000},"variable3.txt":{"lastUpdate":1400120163000},"while.txt":{"lastUpdate":1400120163000},"xy.txt":{"lastUpdate":1400120163000}}',
       'novice/crash.txt': 
@@ -2842,7 +2843,7 @@
       
     }
   };
-  if (WebSite.devMode) {
+  if (WebSite.devMode || WebSite.disableROM['ROM_d.js']) {
     rom.base='/ROM'+rom.base;
   }
   FS.mountROM(rom);
