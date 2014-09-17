@@ -1,4 +1,4 @@
-// Created at Wed Sep 17 2014 15:08:30 GMT+0900 (東京 (標準時))
+// Created at Wed Sep 17 2014 16:00:39 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -2075,7 +2075,9 @@ requireSimulator.setName('fs/ROMd');
   var rom={
     base: '/Tonyu/doc/',
     data: {
-      '': '{"index.txt":{"lastUpdate":1410747166098},"novice/":{"lastUpdate":1400579960587},"projectIndex.txt":{"lastUpdate":1400120163000},"tonyu2/":{"lastUpdate":1410160432674},"isodex.txt":{"lastUpdate":1410745945670,"trashed":true}}',
+      '': '{"index.txt":{"lastUpdate":1410937227258},"novice/":{"lastUpdate":1400579960587},"projectIndex.txt":{"lastUpdate":1400120163000},"tonyu2/":{"lastUpdate":1410160432674},"isodex.txt":{"lastUpdate":1410745945670,"trashed":true},"images/":{"lastUpdate":1410937196190}}',
+      'images/': '{"test.png":{"lastUpdate":1410937196189}}',
+      'images/test.png': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAADAFBMVEUAAACAAAAAgACAgAAAAICAAIAAgIDAwMCAgID/AAAA/wD//wAAAP//AP8A//////8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADZddjEAAAAB3RSTlP///////8AGksDRgAAAfxJREFUeJy1l9uOxCAIhrnYDtz1/d92PEEVQbSTJdmkXYav+GuBwudHg38C7HPVLxGpGFz4ApCC8WZLqFMAtUhh0A6iA2AjlDSwXR4ugbOvf/kyRIwiNg0eAt6RFHoXaCRguI5pwwlZyUKp6zgBiBK9LQjWkcO88mKYTgOuCQpQ4266igjFKsklCACyXXP2bTf/yNES+MklUSe+QgAsRgVMp9iypAbNpxv249tiaAZw5juAZBcpAHLgEtDpM2xJyYAqY6nh4Ly0BhQCcEyPBgDv/gqgfTRkgBBlgJM+NCwBowxmFysJEr7cBcMlgKcS+xmQdUmSASO2ADADkojXG0AlVEAkou1BBsQi2h7EpoHcu/GOpwH6fvIKkBG4+Jnvoc9T0u6lBCFAmolHcP4tS6g8H+C4GBCXxDUAw5McADZqqu2So0wUiTj6+InPuxDuglpDvsuVWDWW7QxKe+lf553GZNQ0lMZiPyUAdDUxTwAhQBNwqMoYiqjfh6fRb4o4uvsO3Yu4R1ANfr+9c7SaUtq7UEpKlAFZc1JprtmRRiCwy4qMfFPwc5SrpZHuBuDJToyR9qSn58R2D1Me3sA7TaoogPzobvo7+roqukKLpcUCPAB1sW1+OgIcxJsAiZcPl8VHoPO9IPHrx1sAUtXLGI+jJYynaBltA87sZ8AX7yunlTfylJkAAAAASUVORK5CYII=',
       'index.txt': 
         '* サンプルを見る\n'+
         '\n'+
@@ -2097,8 +2099,7 @@ requireSimulator.setName('fs/ROMd');
         '-- GoogleまたはTwitterのアカウントが必要です\n'+
         '-ログイン後[[@blink メニューのログイン>#login]]から[[@blink プロジェクトの同期>#syncProjects]]を選ぶと，プロジェクトが同期されます\n'+
         '-- 同期には数分間かかることがあります\n'+
-        '-- サンプルプロジェクト（1_Animation ～ 14_File）は同期されません．\n'+
-        '\n'
+        '-- サンプルプロジェクト（1_Animation ～ 14_File）は同期されません．\n'
       ,
       'novice/': '{"crash.txt":{"lastUpdate":1400120163000},"dec.txt":{"lastUpdate":1400120163000},"firstRun.txt":{"lastUpdate":1400120163000},"getkey.txt":{"lastUpdate":1400120163000},"inc.txt":{"lastUpdate":1400120163000},"index.txt":{"lastUpdate":1400120163000},"item.txt":{"lastUpdate":1400120163000},"key.txt":{"lastUpdate":1400120163000},"left.txt":{"lastUpdate":1400120163000},"new.txt":{"lastUpdate":1400120163000},"newFile.txt":{"lastUpdate":1400120163000},"param.txt":{"lastUpdate":1400120163000},"projectIndex.txt":{"lastUpdate":1400120163000},"say.txt":{"lastUpdate":1400120163000},"say2.txt":{"lastUpdate":1400120163000},"sleep.txt":{"lastUpdate":1400120163000},"sprite.txt":{"lastUpdate":1400120163000},"spriteMove.txt":{"lastUpdate":1400120163000},"toc.json":{"lastUpdate":1400120163000},"trouble1.txt":{"lastUpdate":1400120163000},"true.txt":{"lastUpdate":1400120163000},"udlr.txt":{"lastUpdate":1400120163000},"variable.txt":{"lastUpdate":1400120163000},"variable2.txt":{"lastUpdate":1400120163000},"variable3.txt":{"lastUpdate":1400120163000},"while.txt":{"lastUpdate":1400120163000},"xy.txt":{"lastUpdate":1400120163000}}',
       'novice/crash.txt': 
@@ -5664,8 +5665,8 @@ define(["FS"], function () {
     return Log;
 });
 requireSimulator.setName('Wiki');
-define(["HttpHelper", "Arrow", "Util","WebSite","Log"],
-function (HttpHelper, Arrow, Util, WebSite,Log) {
+define(["HttpHelper", "Arrow", "Util","WebSite","Log","UI"],
+function (HttpHelper, Arrow, Util, WebSite,Log,UI) {
 return Wiki=function (placeHolder, home, options, plugins) {
     var W={};
     var refers={figures:"図", plists: "リスト"};
@@ -5872,7 +5873,7 @@ return Wiki=function (placeHolder, home, options, plugins) {
                     if (name.match(/\.(png|jpg|gif)$/)) {
                         var fi=figInfo(name, true);
                         a=$("<div>").addClass("figure").append(
-                                $("<div>").append(  $("<img>").attr("src", WebSite.top+"doc/images/"+name) )
+                                  imageHolder(name)
                            );
                         $h.enter(a);
                         $h.enter($("<div>"));
@@ -5900,6 +5901,46 @@ return Wiki=function (placeHolder, home, options, plugins) {
             }
         }
     };
+    function imageHolder(name) {
+        var res;
+        if (W.builtinImages[name]) {
+            return $("<div>").append( $("<img>").attr("src", WebSite.top+"doc/images/"+name) );
+        } else {
+            res=UI("div", {style:"margin:10px; padding:10px; border:solid black 1px;",
+                on:{dragover: s, dragenter: s, drop:dropAdd}},
+                    "ここに画像ファイル(png/gif/jpg)をドラッグ＆ドロップして追加"
+            );
+            var imfile=FS.get("/Tonyu/doc/images/").rel(name);
+            if (imfile.exists()) {
+                res.empty().append(UI("img",{src:imfile.text() }));
+            }
+            return res;
+            function s(e) {
+                e.stopPropagation();
+                e.preventDefault();
+            }
+            function dropAdd(e) {
+                if (!options.editMode) return;
+                var eo=e.originalEvent;
+                var file = eo.dataTransfer.files[0];
+                if(!file.type.match(/image\/(png|gif|jpg)/)[1]) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    return false;
+                }
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var fileContent = reader.result;
+                    imfile.text(fileContent);
+                    res.empty().append(UI("img",{src:fileContent}));
+                };
+                reader.readAsDataURL(file);
+                e.stopPropagation();
+                e.preventDefault();
+                return false;
+            }
+        }
+    }
     W.resolveFile=function (name) {
         var f;
         if (name.isDir) f=name;
@@ -5960,6 +6001,22 @@ return Wiki=function (placeHolder, home, options, plugins) {
 
             }
         }
+    };
+    W.builtinImages={
+            "50_100.png":1,
+            "50_160.png":1,
+            "50_300.png":1,
+            "apple1apple2.png":1,
+            "coords.png":1,
+            "copy60_100.png":1,
+            "firstRunRes.png":1,
+            "firstVarRes.png":1,
+            "itadaki.png":1,
+            "noWaitCat.png":1,
+            "runtimeError.png":1,
+            "sample.png":1,
+            "sayonara.png":1,
+            "syntaxError.png":1
     };
     return W;
     function WikiBraces(str, begin ,end) {

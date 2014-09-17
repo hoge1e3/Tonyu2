@@ -1,5 +1,5 @@
-define(["HttpHelper", "Arrow", "Util","WebSite","Log"],
-function (HttpHelper, Arrow, Util, WebSite,Log) {
+define(["HttpHelper", "Arrow", "Util","WebSite","Log","UI"],
+function (HttpHelper, Arrow, Util, WebSite,Log,UI) {
 return Wiki=function (placeHolder, home, options, plugins) {
     var W={};
     var refers={figures:"図", plists: "リスト"};
@@ -206,7 +206,7 @@ return Wiki=function (placeHolder, home, options, plugins) {
                     if (name.match(/\.(png|jpg|gif)$/)) {
                         var fi=figInfo(name, true);
                         a=$("<div>").addClass("figure").append(
-                                $("<div>").append(  $("<img>").attr("src", WebSite.top+"doc/images/"+name) )
+                                  imageHolder(name)
                            );
                         $h.enter(a);
                         $h.enter($("<div>"));
@@ -234,6 +234,46 @@ return Wiki=function (placeHolder, home, options, plugins) {
             }
         }
     };
+    function imageHolder(name) {
+        var res;
+        if (W.builtinImages[name]) {
+            return $("<div>").append( $("<img>").attr("src", WebSite.top+"doc/images/"+name) );
+        } else {
+            res=UI("div", {style:"margin:10px; padding:10px; border:solid black 1px;",
+                on:{dragover: s, dragenter: s, drop:dropAdd}},
+                    "ここに画像ファイル(png/gif/jpg)をドラッグ＆ドロップして追加"
+            );
+            var imfile=FS.get("/Tonyu/doc/images/").rel(name);
+            if (imfile.exists()) {
+                res.empty().append(UI("img",{src:imfile.text() }));
+            }
+            return res;
+            function s(e) {
+                e.stopPropagation();
+                e.preventDefault();
+            }
+            function dropAdd(e) {
+                if (!options.editMode) return;
+                var eo=e.originalEvent;
+                var file = eo.dataTransfer.files[0];
+                if(!file.type.match(/image\/(png|gif|jpg)/)[1]) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    return false;
+                }
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var fileContent = reader.result;
+                    imfile.text(fileContent);
+                    res.empty().append(UI("img",{src:fileContent}));
+                };
+                reader.readAsDataURL(file);
+                e.stopPropagation();
+                e.preventDefault();
+                return false;
+            }
+        }
+    }
     W.resolveFile=function (name) {
         var f;
         if (name.isDir) f=name;
@@ -294,6 +334,22 @@ return Wiki=function (placeHolder, home, options, plugins) {
 
             }
         }
+    };
+    W.builtinImages={
+            "50_100.png":1,
+            "50_160.png":1,
+            "50_300.png":1,
+            "apple1apple2.png":1,
+            "coords.png":1,
+            "copy60_100.png":1,
+            "firstRunRes.png":1,
+            "firstVarRes.png":1,
+            "itadaki.png":1,
+            "noWaitCat.png":1,
+            "runtimeError.png":1,
+            "sample.png":1,
+            "sayonara.png":1,
+            "syntaxError.png":1
     };
     return W;
     function WikiBraces(str, begin ,end) {
