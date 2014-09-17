@@ -12,7 +12,7 @@ define(["genROM","dumpScript","Util","FS","Sync"], function (genROM,dumpScript,U
             genROM(FS.get("/Tonyu/Kernel/"), FS.get("/Tonyu/js/gen/ROM_k.js"));
             genROM(FS.get("/Tonyu/doc/"), FS.get("/Tonyu/js/gen/ROM_d.js"));
             genROM(FS.get("/Tonyu/SampleROM/"), FS.get("/Tonyu/js/gen/ROM_s.js"));
-            sync("/", function () {
+            sync("/Tonyu/", function () {
                 //next(".");
                 concat({name: "ide/selProject", outfile:"index"},function () {
                     concat({name: "ide/editor", outfile:"project"},function () {
