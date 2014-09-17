@@ -1,0 +1,41 @@
+extends BaseActor;
+native Tonyu;
+
+\sleep(n) {
+    if(!n) n=1;
+    for(n;n>0;n--) update();
+}
+\initSprite() {
+    if (!_sprite) {
+        _sprite=new BaseActor{owner:this};// Sprites.add{owner:this};
+        $Sprites.add(this);
+    }
+}
+\say(text,size) {
+    if (!size) size=15;
+    initSprite();
+    _sprite._fukidashi={text:text, size:size, c:30};
+}
+\sprite(x,y,p) {
+    go(x,y,p);
+}
+\show(x,y,p) {
+    go(x,y,p);
+}
+nowait \draw(ctx) {
+    _sprite.draw(ctx);
+}
+\getCrashRect() {
+    return _sprite.getCrashRect();
+}
+\go(x,y,p) {
+    initSprite();
+    _sprite.x=x;
+    _sprite.y=y;
+    if (p!=null) _sprite.p=p;
+    //update();
+}
+\change(p) {
+    initSprite();
+    _sprite.p=p;
+}

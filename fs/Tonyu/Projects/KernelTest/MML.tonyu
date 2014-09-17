@@ -1,0 +1,47 @@
+extends TObject;
+native T;
+
+mmlBuf=[];
+\play(mmls) {
+    mmlBuf.push(mmls);
+    if (!isPlaying()) {
+        playNext();
+    }
+}
+\playNext() {
+    //print("play!", id(), bufferCount());
+    var mml=mmlBuf.shift();
+    if (!mml) {
+        m=null;
+        return;
+    }
+    mwav=$WaveTable.get(0,0).play();
+    m=T("mml", {mml}, mwav);
+    m.on("ended", playNext);
+    m.start();
+    $MMLS[id()]=this;
+}
+\id() {
+    if (!_id) _id=rnd()+"";
+    return _id;
+}
+\bufferCount() {
+    return mmlBuf.length;
+}
+\isPlaying() {
+    return m;
+}
+\stop() {
+    if (m) {
+        if (mwav) {
+            mwav.pause();
+            mwav.stop();
+        }
+        m.pause();
+        m.stop();
+        m=null;
+        mmlBuf=[];
+        //print("stop!", id(), bufferCount());
+        delete $MMLS[id()];
+    }
+}
