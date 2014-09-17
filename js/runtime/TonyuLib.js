@@ -194,6 +194,7 @@ Tonyu=function () {
             Tonyu.onRuntimeError(e);
         } else {
             alert ("エラー! at "+$LASTPOS+" メッセージ  : "+e);
+            throw e;
         }
     }
     function defunct(f) {

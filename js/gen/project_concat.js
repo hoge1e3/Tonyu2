@@ -1,4 +1,4 @@
-// Created at Wed Sep 17 2014 14:53:51 GMT+0900 (東京 (標準時))
+// Created at Wed Sep 17 2014 15:08:31 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -5732,6 +5732,7 @@ Tonyu=function () {
             Tonyu.onRuntimeError(e);
         } else {
             alert ("エラー! at "+$LASTPOS+" メッセージ  : "+e);
+            throw e;
         }
     }
     function defunct(f) {
