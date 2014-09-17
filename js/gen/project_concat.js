@@ -1,4 +1,4 @@
-// Created at Wed Sep 17 2014 16:00:39 GMT+0900 (東京 (標準時))
+// Created at Wed Sep 17 2014 16:29:26 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -8609,7 +8609,7 @@ return Wiki=function (placeHolder, home, options, plugins) {
         }
     };
     function imageHolder(name) {
-        var res;
+        var res,imfile;
         if (W.builtinImages[name]) {
             return $("<div>").append( $("<img>").attr("src", WebSite.top+"doc/images/"+name) );
         } else {
@@ -8617,35 +8617,35 @@ return Wiki=function (placeHolder, home, options, plugins) {
                 on:{dragover: s, dragenter: s, drop:dropAdd}},
                     "ここに画像ファイル(png/gif/jpg)をドラッグ＆ドロップして追加"
             );
-            var imfile=FS.get("/Tonyu/doc/images/").rel(name);
+            imfile=FS.get("/Tonyu/doc/images/").rel(name);
             if (imfile.exists()) {
                 res.empty().append(UI("img",{src:imfile.text() }));
             }
             return res;
-            function s(e) {
-                e.stopPropagation();
-                e.preventDefault();
-            }
-            function dropAdd(e) {
-                if (!options.editMode) return;
-                var eo=e.originalEvent;
-                var file = eo.dataTransfer.files[0];
-                if(!file.type.match(/image\/(png|gif|jpg)/)[1]) {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    return false;
-                }
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    var fileContent = reader.result;
-                    imfile.text(fileContent);
-                    res.empty().append(UI("img",{src:fileContent}));
-                };
-                reader.readAsDataURL(file);
+        }
+        function s(e) {
+            e.stopPropagation();
+            e.preventDefault();
+        }
+        function dropAdd(e) {
+            if (!options.editMode) return;
+            var eo=e.originalEvent;
+            var file = eo.dataTransfer.files[0];
+            if(!file.type.match(/image\/(png|gif|jpg)/)[1]) {
                 e.stopPropagation();
                 e.preventDefault();
                 return false;
             }
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var fileContent = reader.result;
+                imfile.text(fileContent);
+                res.empty().append(UI("img",{src:fileContent}));
+            };
+            reader.readAsDataURL(file);
+            e.stopPropagation();
+            e.preventDefault();
+            return false;
         }
     }
     W.resolveFile=function (name) {
