@@ -15,7 +15,7 @@ while(true) {
             waitFor(a);
             */
             waitInputDevice();
-            print(c+" "+getkey(1));//+" "+$mouseTouchListener.length);
+            //                print(c+" "+getkey(1));//+" "+$mouseTouchListener.length);
             x=$mouseX;
             y=$mouseY;
             redrawScreen();

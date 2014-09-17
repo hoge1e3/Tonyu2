@@ -1,4 +1,4 @@
-// Created at Mon Sep 15 2014 17:11:30 GMT+0900 (東京 (標準時))
+// Created at Wed Sep 17 2014 11:19:27 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -9326,7 +9326,7 @@ function genJS(klass, env,pass) {
                 );
                 //brkpos.put(ctx.pc++);
             } else {
-                buf.printf("while (%v) { %v }", node.cond, node.loop);
+                buf.printf("while (%v) {%f}", node.cond, enterV({noSurroundBrace:true}, node.loop));
             }
         },
         "for": function (node) {
@@ -9414,6 +9414,7 @@ function genJS(klass, env,pass) {
             }
         },
         "if": function (node) {
+            lastPosF(node)();
             if (!ctx.noWait) {
                 var fipos={}, elpos={};
                 if (node._else) {
@@ -9448,9 +9449,12 @@ function genJS(klass, env,pass) {
                 }
             } else {
                 if (node._else) {
-                    buf.printf("if (%v) { %v } else { %v }", node.cond, node.then, node._else);
+                    buf.printf("if (%v) {%f} else {%f}", node.cond,
+                            enterV({noSurroundBrace:true},node.then),
+                            enterV({noSurroundBrace:true},node._else));
                 } else {
-                    buf.printf("if (%v) { %v }", node.cond, node.then);
+                    buf.printf("if (%v) {%f}", node.cond,
+                            enterV({noSurroundBrace:true},node.then));
                 }
             }
         },
@@ -9523,7 +9527,13 @@ function genJS(klass, env,pass) {
             if (!ctx.noWait) {
                 buf.printf("%j", ["%n",node.stmts]);
             } else {
-                buf.printf("{%{%j%n%}}", ["%n",node.stmts]);
+                if (ctx.noSurroundBrace) {
+                    ctx.enter({noSurroundBrace:false},function () {
+                        buf.printf("%{%j%n%}", ["%n",node.stmts]);
+                    });
+                } else {
+                    buf.printf("{%{%j%n%}}", ["%n",node.stmts]);
+                }
             }
         },
 	"typeof": function (node) {
@@ -9546,7 +9556,7 @@ function genJS(klass, env,pass) {
             }
         }*/
     });
-    var opTokens=["++", "--", "!==", "===", "+=", "-=", "*=", "/=", 
+    var opTokens=["++", "--", "!==", "===", "+=", "-=", "*=", "/=",
 		  "%=", ">=", "<=",
     "!=", "==", ">>", "<<", "&&", "||", ">", "<", "+", "?", "=", "*",
     "%", "/", "^", "~", "\\", ":", ";", ",", "!", "&", "|", "-"

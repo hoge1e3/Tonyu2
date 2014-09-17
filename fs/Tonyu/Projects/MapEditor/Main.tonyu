@@ -1,0 +1,9 @@
+map=new Map{chipWidth:32,chipHeight:32};
+map.load("map.json");
+i=0;
+while(map.sx<20){
+    map.scrollTo(i,0);
+    i++;
+    update();
+}
+map.load("map4.json");
