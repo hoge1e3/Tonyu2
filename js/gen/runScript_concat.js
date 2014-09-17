@@ -1,4 +1,4 @@
-// Created at Wed Sep 17 2014 11:19:27 GMT+0900 (東京 (標準時))
+// Created at Wed Sep 17 2014 14:53:51 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -2107,12 +2107,14 @@ Tonyu=function () {
             if (j && j.addTerminatedListener) j.addTerminatedListener(function () {
                 _isWaiting=false;
                 if (fb.group) fb.group.notifyResume();
-		else if (isAlive()) {
-		    try {
-			fb.steps();
-		    }catch(e) {handleEx(e);}
+                else if (isAlive()) {
+                    try {
+                        fb.steps();
+                    }catch(e) {
+                        handleEx(e);
+                    }
                 }
-		//fb.group.add(fb);
+                //fb.group.add(fb);
             });
         }
 	function setGroup(g) {

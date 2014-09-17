@@ -1,4 +1,4 @@
-// Created at Wed Sep 17 2014 11:19:27 GMT+0900 (東京 (標準時))
+// Created at Wed Sep 17 2014 14:53:51 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -2075,7 +2075,7 @@ requireSimulator.setName('fs/ROMd');
   var rom={
     base: '/Tonyu/doc/',
     data: {
-      '': '{"index.txt":{"lastUpdate":1410745963624},"novice/":{"lastUpdate":1400579960587},"projectIndex.txt":{"lastUpdate":1400120163000},"tonyu2/":{"lastUpdate":1410160432674},"isodex.txt":{"lastUpdate":1410745945670,"trashed":true}}',
+      '': '{"index.txt":{"lastUpdate":1410747166098},"novice/":{"lastUpdate":1400579960587},"projectIndex.txt":{"lastUpdate":1400120163000},"tonyu2/":{"lastUpdate":1410160432674},"isodex.txt":{"lastUpdate":1410745945670,"trashed":true}}',
       'index.txt': 
         '* サンプルを見る\n'+
         '\n'+
@@ -5572,12 +5572,14 @@ Tonyu=function () {
             if (j && j.addTerminatedListener) j.addTerminatedListener(function () {
                 _isWaiting=false;
                 if (fb.group) fb.group.notifyResume();
-		else if (isAlive()) {
-		    try {
-			fb.steps();
-		    }catch(e) {handleEx(e);}
+                else if (isAlive()) {
+                    try {
+                        fb.steps();
+                    }catch(e) {
+                        handleEx(e);
+                    }
                 }
-		//fb.group.add(fb);
+                //fb.group.add(fb);
             });
         }
 	function setGroup(g) {
@@ -6275,8 +6277,36 @@ return FileMenu;
 
 });
 
+requireSimulator.setName('Log');
+define(["FS"], function () {
+    var Log={};
+    Log.curFile=function () {
+        var d=new Date();
+        var y=d.getFullYear();
+        var m=d.getMonth()+1;
+        var da=d.getDate();
+        return FS.get("/var/log/").rel(y+"/").rel(m+"/").rel(y+"-"+m+"-"+da+".log");
+    };
+    Log.append=function (line) {
+        var f=Log.curFile();
+        //console.log(Log, "append "+f);
+        var t=(f.exists()?f.text():"");
+        f.text(t+line+"\n");
+    };
+    function mul(con) {
+        return con.replace(/\n/g,"\n|");
+    }
+    Log.d=function (tag,con) {
+        Log.append(new Date()+": ["+tag+"]"+mul(con));
+    };
+    Log.e=function (tag,con) {
+        Log.append(new Date()+": ERROR["+tag+"]"+mul(con));
+    };
+    return Log;
+});
 requireSimulator.setName('showErrorPos');
-function showErrorPos(elem, err) {
+define(["WebSite","Log"],function (WebSite,Log) {
+return function showErrorPos(elem, err) {
     var mesg, src, pos;
     if (!err) {
         close();
@@ -6307,8 +6337,9 @@ function showErrorPos(elem, err) {
     //elem.attr("title",mesg+" 場所："+src.name());
     elem.attr("title","エラー");
     elem.dialog({width:600,height:400});
-}
-
+    Log.d("error", mesg+"\nat "+src+":"+err.pos+"\n"+str.substring(0,err.pos)+"!!HERE!!"+str.substring(err.pos));
+};
+});
 requireSimulator.setName('IndentBuffer');
 IndentBuffer=function () {
 	var $=function () {
@@ -8339,7 +8370,9 @@ Arrow=function () {
     return A;
 }();
 requireSimulator.setName('Wiki');
-Wiki=function (placeHolder, home, options, plugins) {
+define(["HttpHelper", "Arrow", "Util","WebSite","Log"],
+function (HttpHelper, Arrow, Util, WebSite,Log) {
+return Wiki=function (placeHolder, home, options, plugins) {
     var W={};
     var refers={figures:"図", plists: "リスト"};
     var SEQ="__seq__";
@@ -8580,7 +8613,8 @@ Wiki=function (placeHolder, home, options, plugins) {
         return f;
     };
     W.show=function (nameOrFile) {
-    	var f=W.resolveFile(nameOrFile);
+        var f=W.resolveFile(nameOrFile);
+        if (!options.editMode) Log.d("wiki","show "+f);
     	W.cd(f.up());
 		var fn=f.truncExt(EXT);
     	if (!f.exists() && !f.isReadOnly() && options.editMode) {
@@ -8716,7 +8750,7 @@ Wiki=function (placeHolder, home, options, plugins) {
         return init(0);
     };
 };
-
+});
 requireSimulator.setName('Tonyu.Iterator');
 define(["Tonyu"], function (T) {
    function IT(set, arity) {
@@ -12038,6 +12072,8 @@ $(function () {
 		curPrj.rawRun(o.run.bootClass);
             } catch(e){
                 if (e.isTError) {
+                    console.log("showErr: run");
+
                     showErrorPos($("#errorPos"),e);
                     displayMode("compile_error");
                 }else{
@@ -12057,8 +12093,10 @@ $(function () {
             te.mesg=e;
             showErrorPos($("#errorPos"),te);
             displayMode("runtime_error");
-            var userAgent = window.navigator.userAgent.toLowerCase();
-            if(userAgent.indexOf('msie')<0) throw e;
+            console.log("showErr: onRunTimeErr",e.stack);
+            stop();
+            //var userAgent = window.navigator.userAgent.toLowerCase();
+            //if(userAgent.indexOf('msie')<0) throw e;
         } else throw e;
     };
     $("#prog").click(function () {

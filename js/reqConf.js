@@ -102,10 +102,10 @@ var reqConf={
             "FS": {
                 "exports": "FS"
             },
-            "showErrorPos": {
+            /*"showErrorPos": {
             	deps:[ "WebSite"],
                 "exports": "showErrorPos"
-            },
+            },*/
             "TError": {
                 "exports": "TError"
             },
@@ -125,10 +125,10 @@ var reqConf={
             "HttpHelper": {
                 "exports": "HttpHelper"
             },
-            "Wiki": {
+            /*"Wiki": {
                 "deps": ["HttpHelper", "Arrow", "Util","WebSite"],
                 "exports": "Wiki"
-            },
+            },*/
             "ace": {
                 "exports": "ace"
             },
@@ -217,6 +217,7 @@ var reqConf={
             copyToKernel: "fs/copyToKernel",
             JSONCol: "lib/JSONCol",
             genROM: "build/genROM",
+            Log:"ide/log",
             "foo":"bar"
         },
         "baseUrl": "../../js"

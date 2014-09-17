@@ -1,4 +1,5 @@
-function showErrorPos(elem, err) {
+define(["WebSite","Log"],function (WebSite,Log) {
+return function showErrorPos(elem, err) {
     var mesg, src, pos;
     if (!err) {
         close();
@@ -29,4 +30,6 @@ function showErrorPos(elem, err) {
     //elem.attr("title",mesg+" 場所："+src.name());
     elem.attr("title","エラー");
     elem.dialog({width:600,height:400});
-}
+    Log.d("error", mesg+"\nat "+src+":"+err.pos+"\n"+str.substring(0,err.pos)+"!!HERE!!"+str.substring(err.pos));
+};
+});

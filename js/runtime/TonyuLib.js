@@ -34,12 +34,14 @@ Tonyu=function () {
             if (j && j.addTerminatedListener) j.addTerminatedListener(function () {
                 _isWaiting=false;
                 if (fb.group) fb.group.notifyResume();
-		else if (isAlive()) {
-		    try {
-			fb.steps();
-		    }catch(e) {handleEx(e);}
+                else if (isAlive()) {
+                    try {
+                        fb.steps();
+                    }catch(e) {
+                        handleEx(e);
+                    }
                 }
-		//fb.group.add(fb);
+                //fb.group.add(fb);
             });
         }
 	function setGroup(g) {

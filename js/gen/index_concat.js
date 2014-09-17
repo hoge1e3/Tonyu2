@@ -1,4 +1,4 @@
-// Created at Wed Sep 17 2014 11:19:27 GMT+0900 (東京 (標準時))
+// Created at Wed Sep 17 2014 14:53:50 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -2075,7 +2075,7 @@ requireSimulator.setName('fs/ROMd');
   var rom={
     base: '/Tonyu/doc/',
     data: {
-      '': '{"index.txt":{"lastUpdate":1410745963624},"novice/":{"lastUpdate":1400579960587},"projectIndex.txt":{"lastUpdate":1400120163000},"tonyu2/":{"lastUpdate":1410160432674},"isodex.txt":{"lastUpdate":1410745945670,"trashed":true}}',
+      '': '{"index.txt":{"lastUpdate":1410747166098},"novice/":{"lastUpdate":1400579960587},"projectIndex.txt":{"lastUpdate":1400120163000},"tonyu2/":{"lastUpdate":1410160432674},"isodex.txt":{"lastUpdate":1410745945670,"trashed":true}}',
       'index.txt': 
         '* サンプルを見る\n'+
         '\n'+
@@ -5636,8 +5636,37 @@ function startsWith(str,prefix) {
 return {getQueryString:getQueryString, endsWith: endsWith, startsWith: startsWith};
 }();
 
+requireSimulator.setName('Log');
+define(["FS"], function () {
+    var Log={};
+    Log.curFile=function () {
+        var d=new Date();
+        var y=d.getFullYear();
+        var m=d.getMonth()+1;
+        var da=d.getDate();
+        return FS.get("/var/log/").rel(y+"/").rel(m+"/").rel(y+"-"+m+"-"+da+".log");
+    };
+    Log.append=function (line) {
+        var f=Log.curFile();
+        //console.log(Log, "append "+f);
+        var t=(f.exists()?f.text():"");
+        f.text(t+line+"\n");
+    };
+    function mul(con) {
+        return con.replace(/\n/g,"\n|");
+    }
+    Log.d=function (tag,con) {
+        Log.append(new Date()+": ["+tag+"]"+mul(con));
+    };
+    Log.e=function (tag,con) {
+        Log.append(new Date()+": ERROR["+tag+"]"+mul(con));
+    };
+    return Log;
+});
 requireSimulator.setName('Wiki');
-Wiki=function (placeHolder, home, options, plugins) {
+define(["HttpHelper", "Arrow", "Util","WebSite","Log"],
+function (HttpHelper, Arrow, Util, WebSite,Log) {
+return Wiki=function (placeHolder, home, options, plugins) {
     var W={};
     var refers={figures:"図", plists: "リスト"};
     var SEQ="__seq__";
@@ -5878,7 +5907,8 @@ Wiki=function (placeHolder, home, options, plugins) {
         return f;
     };
     W.show=function (nameOrFile) {
-    	var f=W.resolveFile(nameOrFile);
+        var f=W.resolveFile(nameOrFile);
+        if (!options.editMode) Log.d("wiki","show "+f);
     	W.cd(f.up());
 		var fn=f.truncExt(EXT);
     	if (!f.exists() && !f.isReadOnly() && options.editMode) {
@@ -6014,7 +6044,7 @@ Wiki=function (placeHolder, home, options, plugins) {
         return init(0);
     };
 };
-
+});
 requireSimulator.setName('Shell');
 define(["FS","Util"],function (FS,Util) {
     var Shell={cwd:FS.get("/")};

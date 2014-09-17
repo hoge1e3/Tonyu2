@@ -1,4 +1,6 @@
-Wiki=function (placeHolder, home, options, plugins) {
+define(["HttpHelper", "Arrow", "Util","WebSite","Log"],
+function (HttpHelper, Arrow, Util, WebSite,Log) {
+return Wiki=function (placeHolder, home, options, plugins) {
     var W={};
     var refers={figures:"図", plists: "リスト"};
     var SEQ="__seq__";
@@ -239,7 +241,8 @@ Wiki=function (placeHolder, home, options, plugins) {
         return f;
     };
     W.show=function (nameOrFile) {
-    	var f=W.resolveFile(nameOrFile);
+        var f=W.resolveFile(nameOrFile);
+        if (!options.editMode) Log.d("wiki","show "+f);
     	W.cd(f.up());
 		var fn=f.truncExt(EXT);
     	if (!f.exists() && !f.isReadOnly() && options.editMode) {
@@ -375,3 +378,4 @@ Wiki=function (placeHolder, home, options, plugins) {
         return init(0);
     };
 };
+});

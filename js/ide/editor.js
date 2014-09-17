@@ -235,6 +235,8 @@ $(function () {
 		curPrj.rawRun(o.run.bootClass);
             } catch(e){
                 if (e.isTError) {
+                    console.log("showErr: run");
+
                     showErrorPos($("#errorPos"),e);
                     displayMode("compile_error");
                 }else{
@@ -254,8 +256,10 @@ $(function () {
             te.mesg=e;
             showErrorPos($("#errorPos"),te);
             displayMode("runtime_error");
-            var userAgent = window.navigator.userAgent.toLowerCase();
-            if(userAgent.indexOf('msie')<0) throw e;
+            console.log("showErr: onRunTimeErr",e.stack);
+            stop();
+            //var userAgent = window.navigator.userAgent.toLowerCase();
+            //if(userAgent.indexOf('msie')<0) throw e;
         } else throw e;
     };
     $("#prog").click(function () {

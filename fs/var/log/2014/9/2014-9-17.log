@@ -1,0 +1,28 @@
+Wed Sep 17 2014 14:31:29 GMT+0900 (東京 (標準時)): [error]/Tonyu/Projects/日本語/Err.tonyu:14
+|
+|print("test")!!HERE!!
+|print(t.x);
+|
+Wed Sep 17 2014 14:31:52 GMT+0900 (東京 (標準時)): [error]文法エラー
+|at /Tonyu/Projects/日本語/Err.tonyu:14
+|
+|print("test")!!HERE!!
+|print(t.x);
+|
+Wed Sep 17 2014 14:32:08 GMT+0900 (東京 (標準時)): [error]TypeError: Cannot read property 'x' of undefined
+|at /Tonyu/Projects/日本語/Err.tonyu:16
+|
+|print("test");
+|!!HERE!!print(t.x);
+|
+Wed Sep 17 2014 14:33:29 GMT+0900 (東京 (標準時)): [wiki]show /Tonyu/doc/index.txt
+Wed Sep 17 2014 14:41:04 GMT+0900 (東京 (標準時)): [error]TypeError: Cannot read property 'x' of undefined
+|at /Tonyu/Projects/日本語/Err.tonyu:16
+|
+|print("test");
+|!!HERE!!print(t.x);
+|
+Wed Sep 17 2014 14:45:27 GMT+0900 (東京 (標準時)): [wiki]show /Tonyu/doc/index.txt
+Wed Sep 17 2014 14:45:31 GMT+0900 (東京 (標準時)): [wiki]show /Tonyu/doc/index.txt
+Wed Sep 17 2014 14:45:43 GMT+0900 (東京 (標準時)): [wiki]show /Tonyu/doc/index.txt
+Wed Sep 17 2014 14:49:00 GMT+0900 (東京 (標準時)): [wiki]show /Tonyu/doc/index.txt
