@@ -218,6 +218,7 @@ var reqConf={
             JSONCol: "lib/JSONCol",
             genROM: "build/genROM",
             Log:"ide/log",
+            StackTrace:"runtime/StackTrace",
             "foo":"bar"
         },
         "baseUrl": "../../js"

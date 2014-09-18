@@ -1,12 +1,12 @@
 requirejs(["fs/ROMk","fs/ROMd","fs/ROMs", "Util", "Tonyu", "FS", "FileList", "FileMenu",
            "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project",
            "copySample","Shell","ImageResEditor","ProjectOptionsEditor","copyToKernel","KeyEventChecker",
-           "WikiDialog","runtime", "KernelDiffDialog","Sync","searchDialog"
+           "WikiDialog","runtime", "KernelDiffDialog","Sync","searchDialog","StackTrace"
           ],
 function (romk, romd, roms,  Util, Tonyu, FS, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,
           copySample,sh, ImgResEdit,ProjectOptionsEditor, ctk, KeyEventChecker,
-          WikiDialog, rt , KDD,Sync,searchDialog
+          WikiDialog, rt , KDD,Sync,searchDialog,StackTrace
           ) {
 
 $(function () {
@@ -251,7 +251,8 @@ $(function () {
     Tonyu.onRuntimeError=function (e) {
         Tonyu.globals.$lastError=e;
         var t=curPrj.env.traceTbl;
-        var te=t.decode($LASTPOS);
+        var trc=StackTrace.get(e,t);
+        var te=(trc? trc[0] : t.decode($LASTPOS));
         if (te) {
             te.mesg=e;
             showErrorPos($("#errorPos"),te);

@@ -13,7 +13,7 @@ while(!head.isDead()) {
                 if (d<70) {
                     p=$pat_r2b+2;
                     r.capture=this;
-
+                    
                     break;
                 }       
             }

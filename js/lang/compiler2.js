@@ -14,7 +14,7 @@ var ScopeTypes={FIELD:"field", METHOD:"method", NATIVE:"native",
 function initClassDecls(klass, env ) {
     var s=klass.src.tonyu; //file object
     var node=TonyuLang.parse(s);
-    var MAIN={name:"main",stmts:[]};
+    var MAIN={name:"main",stmts:[],pos:0};
     // method := fiber | function
     var fields={}, methods={main: MAIN}, natives={};
     klass.decls={fields:fields, methods:methods, natives: natives};
@@ -58,6 +58,7 @@ function initClassDecls(klass, env ) {
                         ftype:  head.ftype.text,
                         name:  head.name.text,
                         head:  head,
+                        pos: head.pos,
                         stmts: stmt.body.stmts
                 };
             } else if (stmt.type=="nativeDecl") {
@@ -89,6 +90,7 @@ function genJS(klass, env,pass) {
     // ↑ このソースコードのトップレベル変数の種類 ，親クラスの宣言を含む
     //  キー： 変数名   値： ScopeTypesのいずれか
     var buf=IndentBuffer();
+    var fnSeq=0;
     var printf=buf.printf;
     var v=null;
     var ctx=context();
@@ -251,7 +253,7 @@ function genJS(klass, env,pass) {
     }
     function lastPosF(node) {
         return function () {
-            buf.printf("%s=%s;%n",  LASTPOS, traceTbl.add(klass.src.tonyu,node.pos ));
+            buf.printf("%s=%s;%n",  LASTPOS, traceTbl.add(klass/*.src.tonyu*/,node.pos ));
         };
     }
     v=buf.visitor=Visitor({
@@ -839,7 +841,7 @@ function genJS(klass, env,pass) {
                    FRMPC,
                    genLocalsF(locals, ns),
 //                   locals,
-                   genFn(),TH,
+                   genFn(fiber.pos),TH,
                    CNTV, CNTC, CNTV,
                         FRMPC,
                         // case 0:
@@ -880,7 +882,7 @@ function genJS(klass, env,pass) {
                   "%f%n" +
                   "%f" +
                "%}},%n",
-               fname, genFn(), [",",getParams(func)],
+               fname, genFn(func.pos), [",",getParams(func)],
                THIZ, GET_THIS,
                	      genLocalsF(locals, ns),
                       fbody
@@ -923,8 +925,8 @@ function genJS(klass, env,pass) {
             });
         }
     }
-    function genFn() {
-        return ("_"+Math.random()).replace(/\./g,"");
+    function genFn(pos) {
+        return ("_trc_func_"+traceTbl.add(klass/*.src.tonyu*/,pos )+"_"+(fnSeq++));//  Math.random()).replace(/\./g,"");
     }
     function genSubFunc(node) {
     	var m,ps;

@@ -13,12 +13,17 @@ function TError(mesg, src, pos) {
             }
         };
     }
+    var klass=null;
+    if (src && src.src) {
+        klass=src;
+        src=klass.src.tonyu;
+    }
     if (typeof src.name!=="function") {
         throw "src="+src+" should be file object";
     }
     return {
         isTError:true,
-        mesg:mesg,src:src,pos:pos,
+        mesg:mesg,src:src,pos:pos,klass:klass,
         toString:function (){
             return this.mesg+" at "+this.src.name()+":"+this.pos;
         },

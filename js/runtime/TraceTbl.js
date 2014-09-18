@@ -4,7 +4,9 @@ Tonyu.TraceTbl=function () {
     var pathIdSeq=1;
     var PATHIDMAX=10000;
     var path2Id={}, id2Path=[];
-    TTB.add=function (file, pos){
+    var path2Class={};
+    TTB.add=function (klass, pos){
+        var file=klass.src.tonyu;
         var path=file.path();
         var pathId=path2Id[path];
         if (pathId==undefined) {
@@ -13,6 +15,7 @@ Tonyu.TraceTbl=function () {
             path2Id[path]=pathId;
             id2Path[pathId]=path;
         }
+        path2Class[path]=klass;
         if (pos>=POSMAX) pos=POSMAX-1;
         var id=pathId*POSMAX+pos;
         return id;
@@ -23,7 +26,8 @@ Tonyu.TraceTbl=function () {
         var path=id2Path[pathId];
         if (path) {
             var f=FS.get(path);
-            return TError("Trace info", f, pos);
+            var klass=path2Class[path];
+            return TError("Trace info", klass || f, pos);
         } else {
             return null;
             //return TError("Trace info", "unknown src id="+id, pos);

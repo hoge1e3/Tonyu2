@@ -18,10 +18,19 @@ return function showErrorPos(elem, err) {
         elem.empty();
     }
     close();
-    var mesgd=$("<div>").text(mesg+" 場所："+src.name());
+    var mesgd=$("<div>").text(mesg+" 場所："+src.name()+(typeof pos=="object"?":"+pos.row+":"+pos.col:""));
     //mesgd.append($("<button>").text("閉じる").click(close));
     elem.append(mesgd);
     var str=src.text();
+    if (str && typeof pos=="object") {
+        var npos=0;
+        var lines=str.split(/\n/);
+        for (var i=0 ; i<lines.length && i+1<pos.row ; i++) {
+            npos+=lines[i].length;
+        }
+        npos+=pos.col;
+        pos=npos;
+    }
     var srcd=$("<pre>");
     srcd.append($("<span>").text(str.substring(0,pos)));
     srcd.append($("<img>").attr("src",WebSite.top+"images/ecl.png"));
