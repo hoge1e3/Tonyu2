@@ -1,4 +1,4 @@
-// Created at Wed Sep 17 2014 16:29:26 GMT+0900 (東京 (標準時))
+// Created at Thu Sep 18 2014 15:58:02 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -630,8 +630,8 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1410768624170},"Actor.tonyu":{"lastUpdate":1410768624171},"BaseActor.tonyu":{"lastUpdate":1410239416749},"Boot.tonyu":{"lastUpdate":1410768624171},"Keys.tonyu":{"lastUpdate":1410153147928},"Map.tonyu":{"lastUpdate":1410239542811},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1410239542812},"ScaledCanvas.tonyu":{"lastUpdate":1410239416751},"Sprites.tonyu":{"lastUpdate":1410239416752},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1410239416753},"MapEditor.tonyu":{"lastUpdate":1410239542813},"InputDevice.tonyu":{"lastUpdate":1410153160821}}',
-      '.desktop': '{"runMenuOrd":["AppearMath","NearTest","AcTestM","NObjTest","SETest","MMLTest","KeyTest","NObjTest2","AcTest","AltBoot","TConsole","Actor","Boot"]}',
+      '': '{".desktop":{"lastUpdate":1411021950730},"Actor.tonyu":{"lastUpdate":1411023260959},"BaseActor.tonyu":{"lastUpdate":1411023468657},"Boot.tonyu":{"lastUpdate":1410768624171},"Keys.tonyu":{"lastUpdate":1410153147928},"Map.tonyu":{"lastUpdate":1411021950731},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1410239416751},"Sprites.tonyu":{"lastUpdate":1410239416752},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1410239416753},"MapEditor.tonyu":{"lastUpdate":1411021950733},"InputDevice.tonyu":{"lastUpdate":1410153160821}}',
+      '.desktop': '{"runMenuOrd":["MapEditor","MapLoad","Main","PanelTest","NoviceActor","AcTestM","MapTest2nd","MapTest","Map","SetBGCTest","Bounce","AcTest","NObjTest","NObjTest2","AltBoot","Ball","Bar","Label"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
         'native Sprites;\n'+
@@ -646,8 +646,7 @@ requireSimulator.setName('fs/ROMk');
         '    onAppear();\n'+
         '}\n'+
         '\\onAppear() {\n'+
-        '}\n'+
-        '\n'
+        '}\n'
       ,
       'BaseActor.tonyu': 
         'extends null;\n'+
@@ -1314,8 +1313,8 @@ requireSimulator.setName('fs/ROMk');
         '    set(Math.floor(setX/chipWidth),Math.floor(setY/chipHeight),p);\n'+
         '}\n'+
         '\\get(getCol,getRow){\n'+
-        '    if(getCol>=col || getRow>=row || getCol<0 || getRow<0) return;\n'+
-        '    return mapTable[getRow][getCol];\n'+
+        '    if(getCol<col && getRow<row && getCol>=0 && getRow>=0) return mapTable[getRow][getCol];\n'+
+        '    return -1;\n'+
         '}\n'+
         '\\getAt(getX,getY){\n'+
         '    return get(Math.floor(getX/chipWidth),Math.floor(getY/chipHeight));\n'+
@@ -1350,13 +1349,40 @@ requireSimulator.setName('fs/ROMk');
       'MapEditor.tonyu': 
         'native prompt;\n'+
         'loadMode=false;\n'+
-        'mapDataFile=file("map.json");\n'+
-        'baseData=mapDataFile.obj();\n'+
-        'if(baseData){\n'+
-        '    mapData=baseData[0];\n'+
-        '    mapOnData=baseData[1];\n'+
+        'print("Load Data?: Y or N");\n'+
+        '//var l=prompt("LoadData?: yes or no");\n'+
+        'while(true){\n'+
+        '    if(getkey("y")>0){\n'+
+        '        loadMode=true;\n'+
+        '        break;\n'+
+        '    }\n'+
+        '    if(getkey("n")>0){\n'+
+        '        loadMode=false;\n'+
+        '        break;\n'+
+        '    }\n'+
+        '    update();\n'+
         '}\n'+
-        'if(mapData){\n'+
+        'if(loadMode){\n'+
+        '    //add\n'+
+        '    fileName=prompt("Input json file (*.json)","map.json");\n'+
+        '    if(fileName){\n'+
+        '        //end\n'+
+        '        mapDataFile=file(fileName);\n'+
+        '    }\n'+
+        '    if(mapDataFile.obj()){\n'+
+        '        baseData=mapDataFile.obj();\n'+
+        '    }\n'+
+        '    if(baseData==undefined){\n'+
+        '        print("Load failed");\n'+
+        '        loadMode=false;\n'+
+        '    }else if(baseData[0] && baseData[1]){\n'+
+        '        mapData=baseData[0];\n'+
+        '        mapOnData=baseData[1];\n'+
+        '    }\n'+
+        '}\n'+
+        'update();\n'+
+        '//if(mapData){\n'+
+        '    /*\n'+
         '    print("Load Data?: Y or N");\n'+
         '    while(true){\n'+
         '        if(getkey("y")==1){\n'+
@@ -1367,12 +1393,12 @@ requireSimulator.setName('fs/ROMk');
         '            loadMode=false;\n'+
         '            break;\n'+
         '        }\n'+
-        '    }\n'+
-        '}\n'+
+        '    }*/\n'+
+        '//}\n'+
         'if(!loadMode){\n'+
         '    row=prompt("input row");\n'+
         '    update();\n'+
-        '    col=prompt("imput col");\n'+
+        '    col=prompt("input col");\n'+
         '    panel=new Panel{width:col*32,height:row*32};\n'+
         '    panel.x=panel.width/2+10;\n'+
         '    panel.y=panel.height/2;\n'+
@@ -1442,7 +1468,9 @@ requireSimulator.setName('fs/ROMk');
         '        print(mode+" mode");\n'+
         '    }\n'+
         '    if(getkey("p")==1){\n'+
-        '        print("mapTable=[");\n'+
+        '        //add\n'+
+        '        saveFileName=prompt("input json file(*.json)","map.json");\n'+
+        '        /*print("mapTable=[");\n'+
         '        data="[";\n'+
         '        for(var i=0;i<$map.row-1;i++){\n'+
         '            var tmp=[];\n'+
@@ -1455,9 +1483,16 @@ requireSimulator.setName('fs/ROMk');
         '        print("["+tmp+"]");\n'+
         '        data+="["+tmp+"]";\n'+
         '        print("];");\n'+
-        '        data+="]";\n'+
+        '        data+="]";*/\n'+
+        '        //add\n'+
+        '        saveDataFile=file(saveFileName);\n'+
         '        data=[$map.mapTable,$map.mapOnTable];\n'+
-        '        mapDataFile.obj(data);\n'+
+        '        //comment\n'+
+        '        //mapDataFile.obj(data);\n'+
+        '        //add\n'+
+        '        saveDataFile.obj(data);\n'+
+        '        print(saveFileName+" Saved");\n'+
+        '        //mapDataFile.obj.push($map.mapOnTable);\n'+
         '    }\n'+
         '    if(getkey("c")==1){\n'+
         '        $mp.scrollTo(1000,1000);\n'+
@@ -1465,16 +1500,16 @@ requireSimulator.setName('fs/ROMk');
         '        print(mode+" mode");\n'+
         '    }\n'+
         '    if(mode!="get"){\n'+
-        '        if(getkey("left")>0) mx=mx-1;\n'+
-        '        if(getkey("right")>0) mx=mx+1;\n'+
-        '        if(getkey("up")>0) my=my-1;\n'+
-        '        if(getkey("down")>0) my=my+1;\n'+
+        '        if(getkey("left")>0) mx=mx-8;\n'+
+        '        if(getkey("right")>0) mx=mx+8;\n'+
+        '        if(getkey("up")>0) my=my-8;\n'+
+        '        if(getkey("down")>0) my=my+8;\n'+
         '        $map.scrollTo(mx,my);\n'+
         '    }else{\n'+
-        '        if(getkey("left")>0) chipX=chipX-1;\n'+
-        '        if(getkey("right")>0) chipX=chipX+1;\n'+
-        '        if(getkey("up")>0) chipY=chipY-1;\n'+
-        '        if(getkey("down")>0) chipY=chipY+1;\n'+
+        '        if(getkey("left")>0) chipX=chipX-8;\n'+
+        '        if(getkey("right")>0) chipX=chipX+8;\n'+
+        '        if(getkey("up")>0) chipY=chipY-8;\n'+
+        '        if(getkey("down")>0) chipY=chipY+8;\n'+
         '        $mp.scrollTo(chipX,chipY);\n'+
         '    }\n'+
         '    panel.x=panel.width/2+mx;\n'+

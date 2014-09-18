@@ -1,4 +1,4 @@
-// Created at Wed Sep 17 2014 16:29:25 GMT+0900 (東京 (標準時))
+// Created at Thu Sep 18 2014 15:58:01 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -630,8 +630,8 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1410768624170},"Actor.tonyu":{"lastUpdate":1410768624171},"BaseActor.tonyu":{"lastUpdate":1410239416749},"Boot.tonyu":{"lastUpdate":1410768624171},"Keys.tonyu":{"lastUpdate":1410153147928},"Map.tonyu":{"lastUpdate":1410239542811},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1410239542812},"ScaledCanvas.tonyu":{"lastUpdate":1410239416751},"Sprites.tonyu":{"lastUpdate":1410239416752},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1410239416753},"MapEditor.tonyu":{"lastUpdate":1410239542813},"InputDevice.tonyu":{"lastUpdate":1410153160821}}',
-      '.desktop': '{"runMenuOrd":["AppearMath","NearTest","AcTestM","NObjTest","SETest","MMLTest","KeyTest","NObjTest2","AcTest","AltBoot","TConsole","Actor","Boot"]}',
+      '': '{".desktop":{"lastUpdate":1411021950730},"Actor.tonyu":{"lastUpdate":1411023260959},"BaseActor.tonyu":{"lastUpdate":1411023468657},"Boot.tonyu":{"lastUpdate":1410768624171},"Keys.tonyu":{"lastUpdate":1410153147928},"Map.tonyu":{"lastUpdate":1411021950731},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1410239416751},"Sprites.tonyu":{"lastUpdate":1410239416752},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1410239416753},"MapEditor.tonyu":{"lastUpdate":1411021950733},"InputDevice.tonyu":{"lastUpdate":1410153160821}}',
+      '.desktop': '{"runMenuOrd":["MapEditor","MapLoad","Main","PanelTest","NoviceActor","AcTestM","MapTest2nd","MapTest","Map","SetBGCTest","Bounce","AcTest","NObjTest","NObjTest2","AltBoot","Ball","Bar","Label"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
         'native Sprites;\n'+
@@ -646,8 +646,7 @@ requireSimulator.setName('fs/ROMk');
         '    onAppear();\n'+
         '}\n'+
         '\\onAppear() {\n'+
-        '}\n'+
-        '\n'
+        '}\n'
       ,
       'BaseActor.tonyu': 
         'extends null;\n'+
@@ -1314,8 +1313,8 @@ requireSimulator.setName('fs/ROMk');
         '    set(Math.floor(setX/chipWidth),Math.floor(setY/chipHeight),p);\n'+
         '}\n'+
         '\\get(getCol,getRow){\n'+
-        '    if(getCol>=col || getRow>=row || getCol<0 || getRow<0) return;\n'+
-        '    return mapTable[getRow][getCol];\n'+
+        '    if(getCol<col && getRow<row && getCol>=0 && getRow>=0) return mapTable[getRow][getCol];\n'+
+        '    return -1;\n'+
         '}\n'+
         '\\getAt(getX,getY){\n'+
         '    return get(Math.floor(getX/chipWidth),Math.floor(getY/chipHeight));\n'+
@@ -1350,13 +1349,40 @@ requireSimulator.setName('fs/ROMk');
       'MapEditor.tonyu': 
         'native prompt;\n'+
         'loadMode=false;\n'+
-        'mapDataFile=file("map.json");\n'+
-        'baseData=mapDataFile.obj();\n'+
-        'if(baseData){\n'+
-        '    mapData=baseData[0];\n'+
-        '    mapOnData=baseData[1];\n'+
+        'print("Load Data?: Y or N");\n'+
+        '//var l=prompt("LoadData?: yes or no");\n'+
+        'while(true){\n'+
+        '    if(getkey("y")>0){\n'+
+        '        loadMode=true;\n'+
+        '        break;\n'+
+        '    }\n'+
+        '    if(getkey("n")>0){\n'+
+        '        loadMode=false;\n'+
+        '        break;\n'+
+        '    }\n'+
+        '    update();\n'+
         '}\n'+
-        'if(mapData){\n'+
+        'if(loadMode){\n'+
+        '    //add\n'+
+        '    fileName=prompt("Input json file (*.json)","map.json");\n'+
+        '    if(fileName){\n'+
+        '        //end\n'+
+        '        mapDataFile=file(fileName);\n'+
+        '    }\n'+
+        '    if(mapDataFile.obj()){\n'+
+        '        baseData=mapDataFile.obj();\n'+
+        '    }\n'+
+        '    if(baseData==undefined){\n'+
+        '        print("Load failed");\n'+
+        '        loadMode=false;\n'+
+        '    }else if(baseData[0] && baseData[1]){\n'+
+        '        mapData=baseData[0];\n'+
+        '        mapOnData=baseData[1];\n'+
+        '    }\n'+
+        '}\n'+
+        'update();\n'+
+        '//if(mapData){\n'+
+        '    /*\n'+
         '    print("Load Data?: Y or N");\n'+
         '    while(true){\n'+
         '        if(getkey("y")==1){\n'+
@@ -1367,12 +1393,12 @@ requireSimulator.setName('fs/ROMk');
         '            loadMode=false;\n'+
         '            break;\n'+
         '        }\n'+
-        '    }\n'+
-        '}\n'+
+        '    }*/\n'+
+        '//}\n'+
         'if(!loadMode){\n'+
         '    row=prompt("input row");\n'+
         '    update();\n'+
-        '    col=prompt("imput col");\n'+
+        '    col=prompt("input col");\n'+
         '    panel=new Panel{width:col*32,height:row*32};\n'+
         '    panel.x=panel.width/2+10;\n'+
         '    panel.y=panel.height/2;\n'+
@@ -1442,7 +1468,9 @@ requireSimulator.setName('fs/ROMk');
         '        print(mode+" mode");\n'+
         '    }\n'+
         '    if(getkey("p")==1){\n'+
-        '        print("mapTable=[");\n'+
+        '        //add\n'+
+        '        saveFileName=prompt("input json file(*.json)","map.json");\n'+
+        '        /*print("mapTable=[");\n'+
         '        data="[";\n'+
         '        for(var i=0;i<$map.row-1;i++){\n'+
         '            var tmp=[];\n'+
@@ -1455,9 +1483,16 @@ requireSimulator.setName('fs/ROMk');
         '        print("["+tmp+"]");\n'+
         '        data+="["+tmp+"]";\n'+
         '        print("];");\n'+
-        '        data+="]";\n'+
+        '        data+="]";*/\n'+
+        '        //add\n'+
+        '        saveDataFile=file(saveFileName);\n'+
         '        data=[$map.mapTable,$map.mapOnTable];\n'+
-        '        mapDataFile.obj(data);\n'+
+        '        //comment\n'+
+        '        //mapDataFile.obj(data);\n'+
+        '        //add\n'+
+        '        saveDataFile.obj(data);\n'+
+        '        print(saveFileName+" Saved");\n'+
+        '        //mapDataFile.obj.push($map.mapOnTable);\n'+
         '    }\n'+
         '    if(getkey("c")==1){\n'+
         '        $mp.scrollTo(1000,1000);\n'+
@@ -1465,16 +1500,16 @@ requireSimulator.setName('fs/ROMk');
         '        print(mode+" mode");\n'+
         '    }\n'+
         '    if(mode!="get"){\n'+
-        '        if(getkey("left")>0) mx=mx-1;\n'+
-        '        if(getkey("right")>0) mx=mx+1;\n'+
-        '        if(getkey("up")>0) my=my-1;\n'+
-        '        if(getkey("down")>0) my=my+1;\n'+
+        '        if(getkey("left")>0) mx=mx-8;\n'+
+        '        if(getkey("right")>0) mx=mx+8;\n'+
+        '        if(getkey("up")>0) my=my-8;\n'+
+        '        if(getkey("down")>0) my=my+8;\n'+
         '        $map.scrollTo(mx,my);\n'+
         '    }else{\n'+
-        '        if(getkey("left")>0) chipX=chipX-1;\n'+
-        '        if(getkey("right")>0) chipX=chipX+1;\n'+
-        '        if(getkey("up")>0) chipY=chipY-1;\n'+
-        '        if(getkey("down")>0) chipY=chipY+1;\n'+
+        '        if(getkey("left")>0) chipX=chipX-8;\n'+
+        '        if(getkey("right")>0) chipX=chipX+8;\n'+
+        '        if(getkey("up")>0) chipY=chipY-8;\n'+
+        '        if(getkey("down")>0) chipY=chipY+8;\n'+
         '        $mp.scrollTo(chipX,chipY);\n'+
         '    }\n'+
         '    panel.x=panel.width/2+mx;\n'+
@@ -2075,7 +2110,7 @@ requireSimulator.setName('fs/ROMd');
   var rom={
     base: '/Tonyu/doc/',
     data: {
-      '': '{"index.txt":{"lastUpdate":1410937227258},"novice/":{"lastUpdate":1400579960587},"projectIndex.txt":{"lastUpdate":1400120163000},"tonyu2/":{"lastUpdate":1410160432674},"isodex.txt":{"lastUpdate":1410745945670,"trashed":true},"images/":{"lastUpdate":1410937196190}}',
+      '': '{"index.txt":{"lastUpdate":1410937227258},"novice/":{"lastUpdate":1400646750363},"projectIndex.txt":{"lastUpdate":1400120163000},"tonyu2/":{"lastUpdate":1410238840762},"images/":{"lastUpdate":1411020699980}}',
       'images/': '{"test.png":{"lastUpdate":1410937196189}}',
       'images/test.png': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAADAFBMVEUAAACAAAAAgACAgAAAAICAAIAAgIDAwMCAgID/AAAA/wD//wAAAP//AP8A//////8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADZddjEAAAAB3RSTlP///////8AGksDRgAAAfxJREFUeJy1l9uOxCAIhrnYDtz1/d92PEEVQbSTJdmkXYav+GuBwudHg38C7HPVLxGpGFz4ApCC8WZLqFMAtUhh0A6iA2AjlDSwXR4ugbOvf/kyRIwiNg0eAt6RFHoXaCRguI5pwwlZyUKp6zgBiBK9LQjWkcO88mKYTgOuCQpQ4266igjFKsklCACyXXP2bTf/yNES+MklUSe+QgAsRgVMp9iypAbNpxv249tiaAZw5juAZBcpAHLgEtDpM2xJyYAqY6nh4Ly0BhQCcEyPBgDv/gqgfTRkgBBlgJM+NCwBowxmFysJEr7cBcMlgKcS+xmQdUmSASO2ADADkojXG0AlVEAkou1BBsQi2h7EpoHcu/GOpwH6fvIKkBG4+Jnvoc9T0u6lBCFAmolHcP4tS6g8H+C4GBCXxDUAw5McADZqqu2So0wUiTj6+InPuxDuglpDvsuVWDWW7QxKe+lf553GZNQ0lMZiPyUAdDUxTwAhQBNwqMoYiqjfh6fRb4o4uvsO3Yu4R1ANfr+9c7SaUtq7UEpKlAFZc1JprtmRRiCwy4qMfFPwc5SrpZHuBuDJToyR9qSn58R2D1Me3sA7TaoogPzobvo7+roqukKLpcUCPAB1sW1+OgIcxJsAiZcPl8VHoPO9IPHrx1sAUtXLGI+jJYynaBltA87sZ8AX7yunlTfylJkAAAAASUVORK5CYII=',
       'index.txt': 
@@ -3086,7 +3121,7 @@ requireSimulator.setName('fs/ROMd');
         '名前は，半角英字とアンダースコア(_)が使えます．2文字以上でも構いません．2文字目以降は数字も使うことができます．'
       ,
       'projectIndex.txt': '',
-      'tonyu2/': '{"$mouseX, $mouseY.txt":{"lastUpdate":1400120163000},"$touches.txt":{"lastUpdate":1400120163000},"Actor.txt":{"lastUpdate":1400120163000},"all.txt":{"lastUpdate":1400120163000},"allCrash.txt":{"lastUpdate":1400120163000},"api.txt":{"lastUpdate":1401941215219},"asyncResult.txt":{"lastUpdate":1400120163000},"BaseActor.txt":{"lastUpdate":1401255240110},"Boot.txt":{"lastUpdate":1401941267461},"classDef.txt":{"lastUpdate":1400120163000},"console.txt":{"lastUpdate":1400120163000},"cpats.txt":{"lastUpdate":1404106758681},"crashTo.txt":{"lastUpdate":1400120164000},"crashTo1.txt":{"lastUpdate":1400120164000},"die.txt":{"lastUpdate":1400120164000},"draw.txt":{"lastUpdate":1400120164000},"extend.txt":{"lastUpdate":1400120164000},"file.txt":{"lastUpdate":1400120164000},"forin.txt":{"lastUpdate":1400120164000},"frame.txt":{"lastUpdate":1401255298602},"FS.each.txt":{"lastUpdate":1400120164000},"FS.exists.txt":{"lastUpdate":1400120164000},"FS.obj.txt":{"lastUpdate":1400120164000},"FS.recursive.txt":{"lastUpdate":1400120164000},"FS.rel.txt":{"lastUpdate":1400120164000},"FS.text.txt":{"lastUpdate":1400120164000},"fs.txt":{"lastUpdate":1400120164000},"get.txt":{"lastUpdate":1401255650741},"getAt.txt":{"lastUpdate":1401255658905},"getCrashRect.txt":{"lastUpdate":1400120164000},"getkey.txt":{"lastUpdate":1400120164000},"hide.txt":{"lastUpdate":1400120164000},"ide.txt":{"lastUpdate":1400120164000},"index.txt":{"lastUpdate":1400120164000},"isDead.txt":{"lastUpdate":1400120164000},"kernel.txt":{"lastUpdate":1400120164000},"lang.txt":{"lastUpdate":1400120164000},"Map.txt":{"lastUpdate":1401255487455},"MathMod.txt":{"lastUpdate":1400120164000},"options.txt":{"lastUpdate":1400120164000},"play.txt":{"lastUpdate":1410160432673},"playSE.txt":{"lastUpdate":1400120164000},"print.txt":{"lastUpdate":1400120164000},"resize.txt":{"lastUpdate":1400120164000},"rnd.txt":{"lastUpdate":1400120164000},"ScaledCanvas.txt":{"lastUpdate":1401255697009},"scrollTo.txt":{"lastUpdate":1401255664750},"set.txt":{"lastUpdate":1401255540844},"setBGColor.txt":{"lastUpdate":1401255686147},"show.txt":{"lastUpdate":1400120164000},"sugar.txt":{"lastUpdate":1400120164000},"super.txt":{"lastUpdate":1400120164000},"TQuery.alive.txt":{"lastUpdate":1400120164000},"TQuery.apply.txt":{"lastUpdate":1400120164000},"TQuery.attr.txt":{"lastUpdate":1400120164000},"TQuery.die.txt":{"lastUpdate":1400120164000},"TQuery.find.txt":{"lastUpdate":1400120164000},"TQuery.minmax.txt":{"lastUpdate":1400120164000},"TQuery.txt":{"lastUpdate":1400120164000},"update.txt":{"lastUpdate":1401255209313},"waitFor.txt":{"lastUpdate":1400120164000},"waitmode.txt":{"lastUpdate":1400120164000},"setAt.txt":{"lastUpdate":1401255643995},"updateEx.txt":{"lastUpdate":1401255346149},"clearRect.txt":{"lastUpdate":1401943178040},"fillRect.txt":{"lastUpdate":1401942274402},"fillText.txt":{"lastUpdate":1401942864666},"getPixel.txt":{"lastUpdate":1402467081226},"Panel.txt":{"lastUpdate":1401945627455},"setFillStyle.txt":{"lastUpdate":1401941975499},"setPanel.txt":{"lastUpdate":1401941697100}}',
+      'tonyu2/': '{"$mouseX, $mouseY.txt":{"lastUpdate":1400120163000},"$touches.txt":{"lastUpdate":1400120163000},"Actor.txt":{"lastUpdate":1400120163000},"all.txt":{"lastUpdate":1400120163000},"allCrash.txt":{"lastUpdate":1400120163000},"api.txt":{"lastUpdate":1401941215219},"asyncResult.txt":{"lastUpdate":1400120163000},"BaseActor.txt":{"lastUpdate":1401255240110},"Boot.txt":{"lastUpdate":1401941267461},"classDef.txt":{"lastUpdate":1400120163000},"console.txt":{"lastUpdate":1400120163000},"cpats.txt":{"lastUpdate":1404106758681},"crashTo.txt":{"lastUpdate":1400120164000},"crashTo1.txt":{"lastUpdate":1400120164000},"die.txt":{"lastUpdate":1400120164000},"draw.txt":{"lastUpdate":1400120164000},"extend.txt":{"lastUpdate":1400120164000},"file.txt":{"lastUpdate":1400120164000},"forin.txt":{"lastUpdate":1400120164000},"frame.txt":{"lastUpdate":1401255298602},"FS.each.txt":{"lastUpdate":1400120164000},"FS.exists.txt":{"lastUpdate":1400120164000},"FS.obj.txt":{"lastUpdate":1400120164000},"FS.recursive.txt":{"lastUpdate":1400120164000},"FS.rel.txt":{"lastUpdate":1400120164000},"FS.text.txt":{"lastUpdate":1400120164000},"fs.txt":{"lastUpdate":1400120164000},"get.txt":{"lastUpdate":1401255650741},"getAt.txt":{"lastUpdate":1401255658905},"getCrashRect.txt":{"lastUpdate":1400120164000},"getkey.txt":{"lastUpdate":1400120164000},"hide.txt":{"lastUpdate":1400120164000},"ide.txt":{"lastUpdate":1400120164000},"index.txt":{"lastUpdate":1400120164000},"isDead.txt":{"lastUpdate":1400120164000},"kernel.txt":{"lastUpdate":1400120164000},"lang.txt":{"lastUpdate":1400120164000},"Map.txt":{"lastUpdate":1401255487455},"MathMod.txt":{"lastUpdate":1400120164000},"options.txt":{"lastUpdate":1400120164000},"play.txt":{"lastUpdate":1410160432673},"playSE.txt":{"lastUpdate":1400120164000},"print.txt":{"lastUpdate":1400120164000},"resize.txt":{"lastUpdate":1400120164000},"rnd.txt":{"lastUpdate":1400120164000},"ScaledCanvas.txt":{"lastUpdate":1401255697009},"scrollTo.txt":{"lastUpdate":1401255664750},"set.txt":{"lastUpdate":1401255540844},"setBGColor.txt":{"lastUpdate":1401255686147},"show.txt":{"lastUpdate":1400120164000},"sugar.txt":{"lastUpdate":1400120164000},"super.txt":{"lastUpdate":1400120164000},"TQuery.alive.txt":{"lastUpdate":1400120164000},"TQuery.apply.txt":{"lastUpdate":1400120164000},"TQuery.attr.txt":{"lastUpdate":1400120164000},"TQuery.die.txt":{"lastUpdate":1400120164000},"TQuery.find.txt":{"lastUpdate":1400120164000},"TQuery.minmax.txt":{"lastUpdate":1400120164000},"TQuery.txt":{"lastUpdate":1400120164000},"update.txt":{"lastUpdate":1401255209313},"waitFor.txt":{"lastUpdate":1400120164000},"waitmode.txt":{"lastUpdate":1400120164000},"updateEx.txt":{"lastUpdate":1401255346149},"setAt.txt":{"lastUpdate":1401255643995},"Panel.txt":{"lastUpdate":1401945627455},"setPanel.txt":{"lastUpdate":1401941697100},"setFillStyle.txt":{"lastUpdate":1401941975499},"fillRect.txt":{"lastUpdate":1401942274402},"fillText.txt":{"lastUpdate":1401942864666},"clearRect.txt":{"lastUpdate":1401943178040},"getPixel.txt":{"lastUpdate":1402467081226}}',
       'tonyu2/$mouseX, $mouseY.txt': 
         '[[api]]\n'+
         '\n'+
@@ -4927,7 +4962,7 @@ requireSimulator.setName('fs/ROMs');
   var rom={
     base: '/Tonyu/SampleROM/',
     data: {
-      '': '{"10_MultiTouch/":{"lastUpdate":1400579961000},"11_Resize/":{"lastUpdate":1400579961005},"12_Sound/":{"lastUpdate":1400579961010},"13_DX/":{"lastUpdate":1400579961016},"14_File/":{"lastUpdate":1400579961020},"1_Animation/":{"lastUpdate":1400579961024},"2_MultipleObj/":{"lastUpdate":1400579961029},"3_NewParam/":{"lastUpdate":1400579961034},"4_getkey/":{"lastUpdate":1400579961037},"5_Chase/":{"lastUpdate":1400579961042},"6_Shot/":{"lastUpdate":1400579961051},"7_Text/":{"lastUpdate":1400579961059},"8_Patterns/":{"lastUpdate":1400579961067},"9_Mouse/":{"lastUpdate":1400579961070}}',
+      '': '{"10_MultiTouch/":{"lastUpdate":1400646750379},"11_Resize/":{"lastUpdate":1400646750380},"12_Sound/":{"lastUpdate":1400646750380},"13_DX/":{"lastUpdate":1400646750381},"14_File/":{"lastUpdate":1400646750381},"1_Animation/":{"lastUpdate":1400646750382},"2_MultipleObj/":{"lastUpdate":1400646750382},"3_NewParam/":{"lastUpdate":1400646750382},"4_getkey/":{"lastUpdate":1400646750383},"5_Chase/":{"lastUpdate":1400646750384},"6_Shot/":{"lastUpdate":1400646750384},"7_Text/":{"lastUpdate":1400646750385},"8_Patterns/":{"lastUpdate":1400646750385},"9_Mouse/":{"lastUpdate":1400646750386}}',
       '10_MultiTouch/': '{".desktop":{"lastUpdate":1400120165000},"Main.tonyu":{"lastUpdate":1400120165000},"options.json":{"lastUpdate":1400120165000},"Touch.tonyu":{"lastUpdate":1400120165000}}',
       '10_MultiTouch/.desktop': '{"runMenuOrd":["Main","Touch"]}',
       '10_MultiTouch/Main.tonyu': 
@@ -5664,6 +5699,215 @@ define(["FS"], function () {
     };
     return Log;
 });
+requireSimulator.setName('UI');
+define(["Util"],function (Util) {
+    var UI={};
+    UI=function () {
+        var expr=[];
+        for (var i=0 ; i<arguments.length ; i++) {
+            expr[i]=arguments[i];
+        }
+        var listeners=[];
+        var $vars={};
+        var $edits=[];
+        var res=parse(expr);
+        res.$edits=$edits;
+        res.$vars=$vars;
+        $edits.load=function (model) {
+            $edits.model=model;
+            $edits.forEach(function (edit) {
+                $edits.writeToJq(edit.params.$edit, edit.jq);
+            });
+        };
+        $edits.writeToJq=function ($edit, jq) {
+        	var m=$edits.model;
+            if (!m) return;
+            var name = $edit.name;
+            var a=name.split(".");
+            for (var i=0 ; i<a.length ;i++) {
+                m=m[a[i]];
+            }
+            m=$edit.type.toVal(m);
+            if (jq.attr("type")=="checkbox") {
+                jq.prop("checked",!!m);
+            } else {
+                jq.val(m);
+            }
+        };
+        $edits.validator={
+       		errors:{},
+       		show: function () {
+       			if ($vars.validationMessage) {
+       				$vars.validationMessage.empty();
+       				for (var name in this.errors) {
+       					$vars.validationMessage.append(UI("div", this.errors[name].mesg));
+       				}
+       			}
+       			if ($vars.OKButton) {
+       				var ok=true;
+       				for (var name in this.errors) {
+       					ok=false;
+       				}
+       				$vars.OKButton.attr("disabled", !ok);
+       			}
+       		},
+       		on: {
+       			validate: function () {}
+       		},
+       		addError: function (name, mesg, jq) {
+       			this.errors[name]={mesg:mesg, jq:jq};
+       			this.show();
+       		},
+       		removeError: function (name) {
+       			delete this.errors[name];
+       			this.show();
+       		},
+       		allOK: function () {
+       			for (var i in this.errors) {
+       				delete this.errors[i];
+       			}
+       			this.show();
+       		}
+        };
+        $edits.writeToModel=function ($edit, val ,jq) {
+            var m=$edits.model;
+        	//console.log($edit, m);
+            if (!m) return;
+            var name = $edit.name;
+            try {
+                val=$edit.type.fromVal(val);
+            } catch (e) {
+            	$edits.validator.addError(name, e, jq);
+            	//$edits.validator.errors[name]={mesg:e, jq:jq};
+                //$edits.validator.change(name, e, jq);
+                return;
+            }
+            $edits.validator.removeError(name);
+            /*
+            if ($edits.validator.errors[name]) {
+                delete $edits.validator.errors[name];
+                $edits.validator.change(name, null, jq);
+            }*/
+            var a=name.split(".");
+            for (var i=0 ; i<a.length ;i++) {
+                if (i==a.length-1) {
+                    if ($edits.on.writeToModel(name,val)) {
+
+                    } else {
+                        m[a[i]]=val;
+                    }
+                } else {
+                    m=m[a[i]];
+                }
+            }
+            $edits.validator.on.validate.call($edits.validator, $edits.model);
+        };
+        $edits.on={};
+        $edits.on.writeToModel= function (name, val) {};
+
+        if (listeners.length>0) {
+            setTimeout(l,10);
+        }
+        function l() {
+            listeners.forEach(function (li) {
+                li();
+            });
+            setTimeout(l,10);
+        }
+        return res;
+        function parse(expr) {
+            if (expr instanceof Array) return parseArray(expr);
+            else if (typeof expr=="string") return parseString(expr);
+            else return expr;
+        }
+        function parseArray(a) {
+            var tag=a[0];
+            var i=1;
+            var res=$("<"+tag+">");
+            if (typeof a[i]=="object" && !(a[i] instanceof Array) ) {
+                parseAttr(res, a[i],tag);
+                i++;
+            }
+            while (i<a.length) {
+                res.append(parse(a[i]));
+                i++;
+            }
+            return res;
+        }
+        function parseAttr(jq, o, tag) {
+            if (o.$var) {
+                $vars[o.$var]=jq;
+            }
+            if (o.$edit) {
+                if (typeof o.$edit=="string") {
+                    o.$edit={name: o.$edit, type: UI.types.String};
+                }
+                if (!o.on) o.on={};
+                o.on.realtimechange=function (val) {
+                    $edits.writeToModel(o.$edit, val, jq);
+                };
+                if (!$vars[o.$edit.name]) $vars[o.$edit.name]=jq;
+                $edits.push({jq:jq,params:o});
+            }
+            for (var k in o) {
+                if (k=="on") {
+                    for (var e in o.on) on(e, o.on[e]);
+                } else if (k=="css") {
+                    jq.css(o[k]);
+                } else if (!Util.startsWith(k,"$")){
+                    jq.attr(k,o[k]);
+                }
+            }
+            function on(eType, li) {
+                if (eType=="enterkey") {
+                    jq.on("keypress",function (ev) {
+                        if (ev.which==13) li.apply(jq,arguments);
+                    });
+                } else if (eType=="realtimechange") {
+                    var first=true, prev;
+                    listeners.push(function () {
+                        var cur;
+                        if (o.type=="checkbox") {
+                            cur=!!jq.prop("checked");
+                        } else {
+                            cur=jq.val();
+                        }
+                        if (first || prev!=cur) {
+                            li.apply(jq,[cur,prev]);
+                            prev=cur;
+                        }
+                        first=false;
+                    });
+                } else {
+                    jq.on(eType, li);
+                }
+            }
+        }
+        function parseString(str) {
+            return $("<span>").text(str);
+        }
+    };
+    UI.types={
+       String: {
+           toVal: function (val) {
+               return val;
+           },
+           fromVal: function (val) {
+               return val;
+           }
+       },
+       Number: {
+           toVal: function (val) {
+               return val+"";
+           },
+           fromVal: function (val) {
+               return parseFloat(val);
+           }
+       }
+   };
+    return UI;
+});
+
 requireSimulator.setName('Wiki');
 define(["HttpHelper", "Arrow", "Util","WebSite","Log","UI"],
 function (HttpHelper, Arrow, Util, WebSite,Log,UI) {
@@ -6252,215 +6496,6 @@ define(["Shell","FS"],function (sh,fs) {
     cs.all=all;
     return cs;
 });
-requireSimulator.setName('UI');
-define(["Util"],function (Util) {
-    var UI={};
-    UI=function () {
-        var expr=[];
-        for (var i=0 ; i<arguments.length ; i++) {
-            expr[i]=arguments[i];
-        }
-        var listeners=[];
-        var $vars={};
-        var $edits=[];
-        var res=parse(expr);
-        res.$edits=$edits;
-        res.$vars=$vars;
-        $edits.load=function (model) {
-            $edits.model=model;
-            $edits.forEach(function (edit) {
-                $edits.writeToJq(edit.params.$edit, edit.jq);
-            });
-        };
-        $edits.writeToJq=function ($edit, jq) {
-        	var m=$edits.model;
-            if (!m) return;
-            var name = $edit.name;
-            var a=name.split(".");
-            for (var i=0 ; i<a.length ;i++) {
-                m=m[a[i]];
-            }
-            m=$edit.type.toVal(m);
-            if (jq.attr("type")=="checkbox") {
-                jq.prop("checked",!!m);
-            } else {
-                jq.val(m);
-            }
-        };
-        $edits.validator={
-       		errors:{},
-       		show: function () {
-       			if ($vars.validationMessage) {
-       				$vars.validationMessage.empty();
-       				for (var name in this.errors) {
-       					$vars.validationMessage.append(UI("div", this.errors[name].mesg));
-       				}
-       			}
-       			if ($vars.OKButton) {
-       				var ok=true;
-       				for (var name in this.errors) {
-       					ok=false;
-       				}
-       				$vars.OKButton.attr("disabled", !ok);
-       			}
-       		},
-       		on: {
-       			validate: function () {}
-       		},
-       		addError: function (name, mesg, jq) {
-       			this.errors[name]={mesg:mesg, jq:jq};
-       			this.show();
-       		},
-       		removeError: function (name) {
-       			delete this.errors[name];
-       			this.show();
-       		},
-       		allOK: function () {
-       			for (var i in this.errors) {
-       				delete this.errors[i];
-       			}
-       			this.show();
-       		}
-        };
-        $edits.writeToModel=function ($edit, val ,jq) {
-            var m=$edits.model;
-        	//console.log($edit, m);
-            if (!m) return;
-            var name = $edit.name;
-            try {
-                val=$edit.type.fromVal(val);
-            } catch (e) {
-            	$edits.validator.addError(name, e, jq);
-            	//$edits.validator.errors[name]={mesg:e, jq:jq};
-                //$edits.validator.change(name, e, jq);
-                return;
-            }
-            $edits.validator.removeError(name);
-            /*
-            if ($edits.validator.errors[name]) {
-                delete $edits.validator.errors[name];
-                $edits.validator.change(name, null, jq);
-            }*/
-            var a=name.split(".");
-            for (var i=0 ; i<a.length ;i++) {
-                if (i==a.length-1) {
-                    if ($edits.on.writeToModel(name,val)) {
-
-                    } else {
-                        m[a[i]]=val;
-                    }
-                } else {
-                    m=m[a[i]];
-                }
-            }
-            $edits.validator.on.validate.call($edits.validator, $edits.model);
-        };
-        $edits.on={};
-        $edits.on.writeToModel= function (name, val) {};
-
-        if (listeners.length>0) {
-            setTimeout(l,10);
-        }
-        function l() {
-            listeners.forEach(function (li) {
-                li();
-            });
-            setTimeout(l,10);
-        }
-        return res;
-        function parse(expr) {
-            if (expr instanceof Array) return parseArray(expr);
-            else if (typeof expr=="string") return parseString(expr);
-            else return expr;
-        }
-        function parseArray(a) {
-            var tag=a[0];
-            var i=1;
-            var res=$("<"+tag+">");
-            if (typeof a[i]=="object" && !(a[i] instanceof Array) ) {
-                parseAttr(res, a[i],tag);
-                i++;
-            }
-            while (i<a.length) {
-                res.append(parse(a[i]));
-                i++;
-            }
-            return res;
-        }
-        function parseAttr(jq, o, tag) {
-            if (o.$var) {
-                $vars[o.$var]=jq;
-            }
-            if (o.$edit) {
-                if (typeof o.$edit=="string") {
-                    o.$edit={name: o.$edit, type: UI.types.String};
-                }
-                if (!o.on) o.on={};
-                o.on.realtimechange=function (val) {
-                    $edits.writeToModel(o.$edit, val, jq);
-                };
-                if (!$vars[o.$edit.name]) $vars[o.$edit.name]=jq;
-                $edits.push({jq:jq,params:o});
-            }
-            for (var k in o) {
-                if (k=="on") {
-                    for (var e in o.on) on(e, o.on[e]);
-                } else if (k=="css") {
-                    jq.css(o[k]);
-                } else if (!Util.startsWith(k,"$")){
-                    jq.attr(k,o[k]);
-                }
-            }
-            function on(eType, li) {
-                if (eType=="enterkey") {
-                    jq.on("keypress",function (ev) {
-                        if (ev.which==13) li.apply(jq,arguments);
-                    });
-                } else if (eType=="realtimechange") {
-                    var first=true, prev;
-                    listeners.push(function () {
-                        var cur;
-                        if (o.type=="checkbox") {
-                            cur=!!jq.prop("checked");
-                        } else {
-                            cur=jq.val();
-                        }
-                        if (first || prev!=cur) {
-                            li.apply(jq,[cur,prev]);
-                            prev=cur;
-                        }
-                        first=false;
-                    });
-                } else {
-                    jq.on(eType, li);
-                }
-            }
-        }
-        function parseString(str) {
-            return $("<span>").text(str);
-        }
-    };
-    UI.types={
-       String: {
-           toVal: function (val) {
-               return val;
-           },
-           fromVal: function (val) {
-               return val;
-           }
-       },
-       Number: {
-           toVal: function (val) {
-               return val+"";
-           },
-           fromVal: function (val) {
-               return parseFloat(val);
-           }
-       }
-   };
-    return UI;
-});
-
 requireSimulator.setName('NewProjectDialog');
 define(["UI"], function (UI) {
     var res={};

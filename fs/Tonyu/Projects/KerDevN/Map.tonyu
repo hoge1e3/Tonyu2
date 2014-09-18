@@ -89,8 +89,8 @@ native $;
     set(Math.floor(setX/chipWidth),Math.floor(setY/chipHeight),p);
 }
 \get(getCol,getRow){
-    if(getCol>=col || getRow>=row || getCol<0 || getRow<0) return;
-    return mapTable[getRow][getCol];
+    if(getCol<col && getRow<row && getCol>=0 && getRow>=0) return mapTable[getRow][getCol];
+    return -1;
 }
 \getAt(getX,getY){
     return get(Math.floor(getX/chipWidth),Math.floor(getY/chipHeight));
