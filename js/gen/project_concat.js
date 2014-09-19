@@ -1,4 +1,4 @@
-// Created at Thu Sep 18 2014 15:58:01 GMT+0900 (東京 (標準時))
+// Created at Fri Sep 19 2014 13:10:33 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -2110,9 +2110,10 @@ requireSimulator.setName('fs/ROMd');
   var rom={
     base: '/Tonyu/doc/',
     data: {
-      '': '{"index.txt":{"lastUpdate":1410937227258},"novice/":{"lastUpdate":1400646750363},"projectIndex.txt":{"lastUpdate":1400120163000},"tonyu2/":{"lastUpdate":1410238840762},"images/":{"lastUpdate":1411020699980}}',
-      'images/': '{"test.png":{"lastUpdate":1410937196189}}',
-      'images/test.png': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAADAFBMVEUAAACAAAAAgACAgAAAAICAAIAAgIDAwMCAgID/AAAA/wD//wAAAP//AP8A//////8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADZddjEAAAAB3RSTlP///////8AGksDRgAAAfxJREFUeJy1l9uOxCAIhrnYDtz1/d92PEEVQbSTJdmkXYav+GuBwudHg38C7HPVLxGpGFz4ApCC8WZLqFMAtUhh0A6iA2AjlDSwXR4ugbOvf/kyRIwiNg0eAt6RFHoXaCRguI5pwwlZyUKp6zgBiBK9LQjWkcO88mKYTgOuCQpQ4266igjFKsklCACyXXP2bTf/yNES+MklUSe+QgAsRgVMp9iypAbNpxv249tiaAZw5juAZBcpAHLgEtDpM2xJyYAqY6nh4Ly0BhQCcEyPBgDv/gqgfTRkgBBlgJM+NCwBowxmFysJEr7cBcMlgKcS+xmQdUmSASO2ADADkojXG0AlVEAkou1BBsQi2h7EpoHcu/GOpwH6fvIKkBG4+Jnvoc9T0u6lBCFAmolHcP4tS6g8H+C4GBCXxDUAw5McADZqqu2So0wUiTj6+InPuxDuglpDvsuVWDWW7QxKe+lf553GZNQ0lMZiPyUAdDUxTwAhQBNwqMoYiqjfh6fRb4o4uvsO3Yu4R1ANfr+9c7SaUtq7UEpKlAFZc1JprtmRRiCwy4qMfFPwc5SrpZHuBuDJToyR9qSn58R2D1Me3sA7TaoogPzobvo7+roqukKLpcUCPAB1sW1+OgIcxJsAiZcPl8VHoPO9IPHrx1sAUtXLGI+jJYynaBltA87sZ8AX7yunlTfylJkAAAAASUVORK5CYII=',
+      '': '{"index.txt":{"lastUpdate":1411099630340},"novice/":{"lastUpdate":1400579960587},"projectIndex.txt":{"lastUpdate":1400120163000},"tonyu2/":{"lastUpdate":1410160432674},"isodex.txt":{"lastUpdate":1410745945670,"trashed":true},"images/":{"lastUpdate":1411099634209}}',
+      'images/': '{"test.png":{"lastUpdate":1410938917586},"toste.png":{"lastUpdate":1410937500503}}',
+      'images/test.png': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAADAFBMVEUAAACAAAAztzN91mMAAICAAIAAgIDA+6KAgID/AAAA/wD//wAAAP//AP8A//////8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBZ06cAAAAEHRSTlP///////////////////8A4CNdGQAAAFZJREFUeJzt0jEOwDAIQ9HIDIy9/21L1VSBBik4c/6I30i7QmrFSyOAunigSXWQjQNVgFjZCKsO/gg9DnwILh6IAAfsgqcMhJ9cgoH8yIIX+XEHzC3BDcwPH+GHmXyUAAAAAElFTkSuQmCC',
+      'images/toste.png': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAADAFBMVEUAAACAAAAztzN91mMAAICAAIAAgIDA+6KAgID/AAAA/wD//wAAAP//AP8A//////8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBZ06cAAAAEHRSTlP///////////////////8A4CNdGQAAAFZJREFUeJzt0jEOwDAIQ9HIDIy9/21L1VSBBik4c/6I30i7QmrFSyOAunigSXWQjQNVgFjZCKsO/gg9DnwILh6IAAfsgqcMhJ9cgoH8yIIX+XEHzC3BDcwPH+GHmXyUAAAAAElFTkSuQmCC',
       'index.txt': 
         '* サンプルを見る\n'+
         '\n'+
@@ -2134,7 +2135,8 @@ requireSimulator.setName('fs/ROMd');
         '-- GoogleまたはTwitterのアカウントが必要です\n'+
         '-ログイン後[[@blink メニューのログイン>#login]]から[[@blink プロジェクトの同期>#syncProjects]]を選ぶと，プロジェクトが同期されます\n'+
         '-- 同期には数分間かかることがあります\n'+
-        '-- サンプルプロジェクト（1_Animation ～ 14_File）は同期されません．\n'
+        '-- サンプルプロジェクト（1_Animation ～ 14_File）は同期されません．\n'+
+        '\n'
       ,
       'novice/': '{"crash.txt":{"lastUpdate":1400120163000},"dec.txt":{"lastUpdate":1400120163000},"firstRun.txt":{"lastUpdate":1400120163000},"getkey.txt":{"lastUpdate":1400120163000},"inc.txt":{"lastUpdate":1400120163000},"index.txt":{"lastUpdate":1400120163000},"item.txt":{"lastUpdate":1400120163000},"key.txt":{"lastUpdate":1400120163000},"left.txt":{"lastUpdate":1400120163000},"new.txt":{"lastUpdate":1400120163000},"newFile.txt":{"lastUpdate":1400120163000},"param.txt":{"lastUpdate":1400120163000},"projectIndex.txt":{"lastUpdate":1400120163000},"say.txt":{"lastUpdate":1400120163000},"say2.txt":{"lastUpdate":1400120163000},"sleep.txt":{"lastUpdate":1400120163000},"sprite.txt":{"lastUpdate":1400120163000},"spriteMove.txt":{"lastUpdate":1400120163000},"toc.json":{"lastUpdate":1400120163000},"trouble1.txt":{"lastUpdate":1400120163000},"true.txt":{"lastUpdate":1400120163000},"udlr.txt":{"lastUpdate":1400120163000},"variable.txt":{"lastUpdate":1400120163000},"variable2.txt":{"lastUpdate":1400120163000},"variable3.txt":{"lastUpdate":1400120163000},"while.txt":{"lastUpdate":1400120163000},"xy.txt":{"lastUpdate":1400120163000}}',
       'novice/crash.txt': 
@@ -3121,7 +3123,7 @@ requireSimulator.setName('fs/ROMd');
         '名前は，半角英字とアンダースコア(_)が使えます．2文字以上でも構いません．2文字目以降は数字も使うことができます．'
       ,
       'projectIndex.txt': '',
-      'tonyu2/': '{"$mouseX, $mouseY.txt":{"lastUpdate":1400120163000},"$touches.txt":{"lastUpdate":1400120163000},"Actor.txt":{"lastUpdate":1400120163000},"all.txt":{"lastUpdate":1400120163000},"allCrash.txt":{"lastUpdate":1400120163000},"api.txt":{"lastUpdate":1401941215219},"asyncResult.txt":{"lastUpdate":1400120163000},"BaseActor.txt":{"lastUpdate":1401255240110},"Boot.txt":{"lastUpdate":1401941267461},"classDef.txt":{"lastUpdate":1400120163000},"console.txt":{"lastUpdate":1400120163000},"cpats.txt":{"lastUpdate":1404106758681},"crashTo.txt":{"lastUpdate":1400120164000},"crashTo1.txt":{"lastUpdate":1400120164000},"die.txt":{"lastUpdate":1400120164000},"draw.txt":{"lastUpdate":1400120164000},"extend.txt":{"lastUpdate":1400120164000},"file.txt":{"lastUpdate":1400120164000},"forin.txt":{"lastUpdate":1400120164000},"frame.txt":{"lastUpdate":1401255298602},"FS.each.txt":{"lastUpdate":1400120164000},"FS.exists.txt":{"lastUpdate":1400120164000},"FS.obj.txt":{"lastUpdate":1400120164000},"FS.recursive.txt":{"lastUpdate":1400120164000},"FS.rel.txt":{"lastUpdate":1400120164000},"FS.text.txt":{"lastUpdate":1400120164000},"fs.txt":{"lastUpdate":1400120164000},"get.txt":{"lastUpdate":1401255650741},"getAt.txt":{"lastUpdate":1401255658905},"getCrashRect.txt":{"lastUpdate":1400120164000},"getkey.txt":{"lastUpdate":1400120164000},"hide.txt":{"lastUpdate":1400120164000},"ide.txt":{"lastUpdate":1400120164000},"index.txt":{"lastUpdate":1400120164000},"isDead.txt":{"lastUpdate":1400120164000},"kernel.txt":{"lastUpdate":1400120164000},"lang.txt":{"lastUpdate":1400120164000},"Map.txt":{"lastUpdate":1401255487455},"MathMod.txt":{"lastUpdate":1400120164000},"options.txt":{"lastUpdate":1400120164000},"play.txt":{"lastUpdate":1410160432673},"playSE.txt":{"lastUpdate":1400120164000},"print.txt":{"lastUpdate":1400120164000},"resize.txt":{"lastUpdate":1400120164000},"rnd.txt":{"lastUpdate":1400120164000},"ScaledCanvas.txt":{"lastUpdate":1401255697009},"scrollTo.txt":{"lastUpdate":1401255664750},"set.txt":{"lastUpdate":1401255540844},"setBGColor.txt":{"lastUpdate":1401255686147},"show.txt":{"lastUpdate":1400120164000},"sugar.txt":{"lastUpdate":1400120164000},"super.txt":{"lastUpdate":1400120164000},"TQuery.alive.txt":{"lastUpdate":1400120164000},"TQuery.apply.txt":{"lastUpdate":1400120164000},"TQuery.attr.txt":{"lastUpdate":1400120164000},"TQuery.die.txt":{"lastUpdate":1400120164000},"TQuery.find.txt":{"lastUpdate":1400120164000},"TQuery.minmax.txt":{"lastUpdate":1400120164000},"TQuery.txt":{"lastUpdate":1400120164000},"update.txt":{"lastUpdate":1401255209313},"waitFor.txt":{"lastUpdate":1400120164000},"waitmode.txt":{"lastUpdate":1400120164000},"updateEx.txt":{"lastUpdate":1401255346149},"setAt.txt":{"lastUpdate":1401255643995},"Panel.txt":{"lastUpdate":1401945627455},"setPanel.txt":{"lastUpdate":1401941697100},"setFillStyle.txt":{"lastUpdate":1401941975499},"fillRect.txt":{"lastUpdate":1401942274402},"fillText.txt":{"lastUpdate":1401942864666},"clearRect.txt":{"lastUpdate":1401943178040},"getPixel.txt":{"lastUpdate":1402467081226}}',
+      'tonyu2/': '{"$mouseX, $mouseY.txt":{"lastUpdate":1400120163000},"$touches.txt":{"lastUpdate":1400120163000},"Actor.txt":{"lastUpdate":1400120163000},"all.txt":{"lastUpdate":1400120163000},"allCrash.txt":{"lastUpdate":1400120163000},"api.txt":{"lastUpdate":1401941215219},"asyncResult.txt":{"lastUpdate":1400120163000},"BaseActor.txt":{"lastUpdate":1401255240110},"Boot.txt":{"lastUpdate":1401941267461},"classDef.txt":{"lastUpdate":1400120163000},"console.txt":{"lastUpdate":1400120163000},"cpats.txt":{"lastUpdate":1404106758681},"crashTo.txt":{"lastUpdate":1400120164000},"crashTo1.txt":{"lastUpdate":1400120164000},"die.txt":{"lastUpdate":1400120164000},"draw.txt":{"lastUpdate":1400120164000},"extend.txt":{"lastUpdate":1400120164000},"file.txt":{"lastUpdate":1400120164000},"forin.txt":{"lastUpdate":1400120164000},"frame.txt":{"lastUpdate":1401255298602},"FS.each.txt":{"lastUpdate":1400120164000},"FS.exists.txt":{"lastUpdate":1400120164000},"FS.obj.txt":{"lastUpdate":1400120164000},"FS.recursive.txt":{"lastUpdate":1400120164000},"FS.rel.txt":{"lastUpdate":1400120164000},"FS.text.txt":{"lastUpdate":1400120164000},"fs.txt":{"lastUpdate":1400120164000},"get.txt":{"lastUpdate":1401255650741},"getAt.txt":{"lastUpdate":1401255658905},"getCrashRect.txt":{"lastUpdate":1400120164000},"getkey.txt":{"lastUpdate":1400120164000},"hide.txt":{"lastUpdate":1400120164000},"ide.txt":{"lastUpdate":1400120164000},"index.txt":{"lastUpdate":1400120164000},"isDead.txt":{"lastUpdate":1400120164000},"kernel.txt":{"lastUpdate":1400120164000},"lang.txt":{"lastUpdate":1400120164000},"Map.txt":{"lastUpdate":1401255487455},"MathMod.txt":{"lastUpdate":1400120164000},"options.txt":{"lastUpdate":1400120164000},"play.txt":{"lastUpdate":1410160432673},"playSE.txt":{"lastUpdate":1400120164000},"print.txt":{"lastUpdate":1400120164000},"resize.txt":{"lastUpdate":1400120164000},"rnd.txt":{"lastUpdate":1400120164000},"ScaledCanvas.txt":{"lastUpdate":1401255697009},"scrollTo.txt":{"lastUpdate":1401255664750},"set.txt":{"lastUpdate":1401255540844},"setBGColor.txt":{"lastUpdate":1401255686147},"show.txt":{"lastUpdate":1400120164000},"sugar.txt":{"lastUpdate":1400120164000},"super.txt":{"lastUpdate":1400120164000},"TQuery.alive.txt":{"lastUpdate":1400120164000},"TQuery.apply.txt":{"lastUpdate":1400120164000},"TQuery.attr.txt":{"lastUpdate":1400120164000},"TQuery.die.txt":{"lastUpdate":1400120164000},"TQuery.find.txt":{"lastUpdate":1400120164000},"TQuery.minmax.txt":{"lastUpdate":1400120164000},"TQuery.txt":{"lastUpdate":1400120164000},"update.txt":{"lastUpdate":1401255209313},"waitFor.txt":{"lastUpdate":1400120164000},"waitmode.txt":{"lastUpdate":1400120164000},"setAt.txt":{"lastUpdate":1401255643995},"updateEx.txt":{"lastUpdate":1401255346149},"clearRect.txt":{"lastUpdate":1401943178040},"fillRect.txt":{"lastUpdate":1401942274402},"fillText.txt":{"lastUpdate":1401942864666},"getPixel.txt":{"lastUpdate":1402467081226},"Panel.txt":{"lastUpdate":1401945627455},"setFillStyle.txt":{"lastUpdate":1401941975499},"setPanel.txt":{"lastUpdate":1401941697100}}',
       'tonyu2/$mouseX, $mouseY.txt': 
         '[[api]]\n'+
         '\n'+
@@ -4962,7 +4964,7 @@ requireSimulator.setName('fs/ROMs');
   var rom={
     base: '/Tonyu/SampleROM/',
     data: {
-      '': '{"10_MultiTouch/":{"lastUpdate":1400646750379},"11_Resize/":{"lastUpdate":1400646750380},"12_Sound/":{"lastUpdate":1400646750380},"13_DX/":{"lastUpdate":1400646750381},"14_File/":{"lastUpdate":1400646750381},"1_Animation/":{"lastUpdate":1400646750382},"2_MultipleObj/":{"lastUpdate":1400646750382},"3_NewParam/":{"lastUpdate":1400646750382},"4_getkey/":{"lastUpdate":1400646750383},"5_Chase/":{"lastUpdate":1400646750384},"6_Shot/":{"lastUpdate":1400646750384},"7_Text/":{"lastUpdate":1400646750385},"8_Patterns/":{"lastUpdate":1400646750385},"9_Mouse/":{"lastUpdate":1400646750386}}',
+      '': '{"10_MultiTouch/":{"lastUpdate":1400579961000},"11_Resize/":{"lastUpdate":1400579961005},"12_Sound/":{"lastUpdate":1400579961010},"13_DX/":{"lastUpdate":1400579961016},"14_File/":{"lastUpdate":1400579961020},"1_Animation/":{"lastUpdate":1400579961024},"2_MultipleObj/":{"lastUpdate":1400579961029},"3_NewParam/":{"lastUpdate":1400579961034},"4_getkey/":{"lastUpdate":1400579961037},"5_Chase/":{"lastUpdate":1400579961042},"6_Shot/":{"lastUpdate":1400579961051},"7_Text/":{"lastUpdate":1400579961059},"8_Patterns/":{"lastUpdate":1400579961067},"9_Mouse/":{"lastUpdate":1400579961070}}',
       '10_MultiTouch/': '{".desktop":{"lastUpdate":1400120165000},"Main.tonyu":{"lastUpdate":1400120165000},"options.json":{"lastUpdate":1400120165000},"Touch.tonyu":{"lastUpdate":1400120165000}}',
       '10_MultiTouch/.desktop': '{"runMenuOrd":["Main","Touch"]}',
       '10_MultiTouch/Main.tonyu': 
@@ -6362,10 +6364,19 @@ return function showErrorPos(elem, err) {
         elem.empty();
     }
     close();
-    var mesgd=$("<div>").text(mesg+" 場所："+src.name());
+    var mesgd=$("<div>").text(mesg+" 場所："+src.name()+(typeof pos=="object"?":"+pos.row+":"+pos.col:""));
     //mesgd.append($("<button>").text("閉じる").click(close));
     elem.append(mesgd);
     var str=src.text();
+    if (str && typeof pos=="object") {
+        var npos=0;
+        var lines=str.split(/\n/);
+        for (var i=0 ; i<lines.length && i+1<pos.row ; i++) {
+            npos+=lines[i].length;
+        }
+        npos+=pos.col;
+        pos=npos;
+    }
     var srcd=$("<pre>");
     srcd.append($("<span>").text(str.substring(0,pos)));
     srcd.append($("<img>").attr("src",WebSite.top+"images/ecl.png"));
@@ -7338,12 +7349,17 @@ function TError(mesg, src, pos) {
             }
         };
     }
+    var klass=null;
+    if (src && src.src) {
+        klass=src;
+        src=klass.src.tonyu;
+    }
     if (typeof src.name!=="function") {
         throw "src="+src+" should be file object";
     }
     return {
         isTError:true,
-        mesg:mesg,src:src,pos:pos,
+        mesg:mesg,src:src,pos:pos,klass:klass,
         toString:function (){
             return this.mesg+" at "+this.src.name()+":"+this.pos;
         },
@@ -9013,7 +9029,7 @@ var ScopeTypes={FIELD:"field", METHOD:"method", NATIVE:"native",
 function initClassDecls(klass, env ) {
     var s=klass.src.tonyu; //file object
     var node=TonyuLang.parse(s);
-    var MAIN={name:"main",stmts:[]};
+    var MAIN={name:"main",stmts:[],pos:0};
     // method := fiber | function
     var fields={}, methods={main: MAIN}, natives={};
     klass.decls={fields:fields, methods:methods, natives: natives};
@@ -9057,6 +9073,7 @@ function initClassDecls(klass, env ) {
                         ftype:  head.ftype.text,
                         name:  head.name.text,
                         head:  head,
+                        pos: head.pos,
                         stmts: stmt.body.stmts
                 };
             } else if (stmt.type=="nativeDecl") {
@@ -9088,6 +9105,7 @@ function genJS(klass, env,pass) {
     // ↑ このソースコードのトップレベル変数の種類 ，親クラスの宣言を含む
     //  キー： 変数名   値： ScopeTypesのいずれか
     var buf=IndentBuffer();
+    var fnSeq=0;
     var printf=buf.printf;
     var v=null;
     var ctx=context();
@@ -9250,7 +9268,8 @@ function genJS(klass, env,pass) {
     }
     function lastPosF(node) {
         return function () {
-            buf.printf("%s=%s;%n",  LASTPOS, traceTbl.add(klass.src.tonyu,node.pos ));
+            buf.printf("%s%s=%s;%n", (env.options.compiler.commentLastPos?"//":""),
+                    LASTPOS, traceTbl.add(klass/*.src.tonyu*/,node.pos ));
         };
     }
     v=buf.visitor=Visitor({
@@ -9838,7 +9857,7 @@ function genJS(klass, env,pass) {
                    FRMPC,
                    genLocalsF(locals, ns),
 //                   locals,
-                   genFn(),TH,
+                   genFn(fiber.pos),TH,
                    CNTV, CNTC, CNTV,
                         FRMPC,
                         // case 0:
@@ -9879,7 +9898,7 @@ function genJS(klass, env,pass) {
                   "%f%n" +
                   "%f" +
                "%}},%n",
-               fname, genFn(), [",",getParams(func)],
+               fname, genFn(func.pos), [",",getParams(func)],
                THIZ, GET_THIS,
                	      genLocalsF(locals, ns),
                       fbody
@@ -9922,8 +9941,8 @@ function genJS(klass, env,pass) {
             });
         }
     }
-    function genFn() {
-        return ("_"+Math.random()).replace(/\./g,"");
+    function genFn(pos) {
+        return ("_trc_func_"+traceTbl.add(klass/*.src.tonyu*/,pos )+"_"+(fnSeq++));//  Math.random()).replace(/\./g,"");
     }
     function genSubFunc(node) {
     	var m,ps;
@@ -9981,7 +10000,9 @@ Tonyu.TraceTbl=function () {
     var pathIdSeq=1;
     var PATHIDMAX=10000;
     var path2Id={}, id2Path=[];
-    TTB.add=function (file, pos){
+    var path2Class={};
+    TTB.add=function (klass, pos){
+        var file=klass.src.tonyu;
         var path=file.path();
         var pathId=path2Id[path];
         if (pathId==undefined) {
@@ -9990,6 +10011,7 @@ Tonyu.TraceTbl=function () {
             path2Id[path]=pathId;
             id2Path[pathId]=path;
         }
+        path2Class[path]=klass;
         if (pos>=POSMAX) pos=POSMAX-1;
         var id=pathId*POSMAX+pos;
         return id;
@@ -10000,7 +10022,8 @@ Tonyu.TraceTbl=function () {
         var path=id2Path[pathId];
         if (path) {
             var f=FS.get(path);
-            return TError("Trace info", f, pos);
+            var klass=path2Class[path];
+            return TError("Trace info", klass || f, pos);
         } else {
             return null;
             //return TError("Trace info", "unknown src id="+id, pos);
@@ -10202,49 +10225,66 @@ define(["PatternParser","Util","WebSite"], function (PP,Util,WebSite) {
     }
     return IL;
 });
-requireSimulator.setName('Key');
-Key=function () {
-    var Key;
-    var stats={};
-    var codes={
-            left: 37 , up:38 , right: 39, down:40, space:32, enter:13,
-            shift:16, ctrl:17, alt:18
-        };
-    for (var i=65 ; i<65+26; i++) {
-    	codes[String.fromCharCode(i).toLowerCase()]=i;
-    }
-    for (var i=48 ; i<58; i++) {
-    	codes[String.fromCharCode(i)]=i;
-    }
-    function getkey(code) {
-        if (typeof code=="string") {
-            code=codes[code.toLowerCase()];
+requireSimulator.setName('StackTrace');
+define([],function (){
+    var trc={};
+    var pat=/_trc_func_([0-9]+)_.*[^0-9]([0-9]+):([0-9]+)[\s\)]*\r?$/;
+    trc.isAvailable=function () {
+        var scr=
+            "({\n"+
+            "    main :function _trc_func_17000000_0() {\n"+
+            "      var a=(this.t.x);\n"+
+            "    }\n"+
+            "}).main();\n";
+        var s;
+        try {
+            eval(scr);
+        } catch (e) {
+            s=e.stack;
+            if (typeof s!="string") return false;
+            var lines=s.split(/\n/);
+            for (var i=0 ; i<lines.length; i++) {
+                var p=pat.exec(lines[i]);
+                if (p) return true;
+            }
         }
-        if (!code) return 0;
-        if (stats[code]==-1) return 0;
-        return stats[code];
-    }
-    function update() {
-        for (var i in stats) {
-            if (stats[i]>0) {stats[i]++;}
-            if (stats[i]==-1) stats[i]=1;
+        return false;
+    };
+    trc.get=function (e,ttb) {
+        s=e.stack;
+        if (typeof s!="string") return false;
+        var lines=s.split(/\n/);
+        var res=[];
+        for (var i=0 ; i<lines.length; i++) {
+            var p=pat.exec(lines[i]);
+            if (!p) continue;
+            var id=p[1];
+            var row=p[2];
+            var col=p[3];
+            var tri=ttb.decode(id);
+            if (tri && tri.klass) {
+                var str=tri.klass.src.js;
+                var slines=str.split(/\n/);
+                var sid=null;
+                for (var i=0 ; i<slines.length && i+1<row ; i++) {
+                    var lp=/\$LASTPOS=([0-9]+)/.exec(slines[i]);
+                    if (lp) sid=parseInt(lp[1]);
+                }
+                console.log("slines,row,sid",slines,row,sid);
+                if (sid) {
+                    var stri=ttb.decode(sid);
+                    if (stri) res.push(stri);
+                }
+            }
         }
-    }
-
-    return Key={getkey:getkey, update:update, stats:stats, codes: codes};
-}();
-$(document).keydown(function (e) {
-    var s=Key.stats[e.keyCode];
-    if (!s) {
-    	Key.stats[e.keyCode]=-1;
-    }
-});
-$(document).keyup(function (e) {
-    Key.stats[e.keyCode]=0;
+        console.log("ttc.get",lines,res);
+        return res;
+    };
+    return trc;
 });
 requireSimulator.setName('Tonyu.Project');
-define(["Tonyu", "Tonyu.Compiler", "TError", "FS", "Tonyu.TraceTbl","ImageList",  "Key"],
-        function (Tonyu, Tonyu_Compiler, TError, FS, Tonyu_TraceTbl, ImageList, Key) {
+define(["Tonyu", "Tonyu.Compiler", "TError", "FS", "Tonyu.TraceTbl","ImageList","StackTrace"],
+        function (Tonyu, Tonyu_Compiler, TError, FS, Tonyu_TraceTbl, ImageList,StackTrace) {
 return Tonyu.Project=function (dir, kernelDir) {
     var TPR={};
     var traceTbl=Tonyu.TraceTbl();
@@ -10392,6 +10432,8 @@ return Tonyu.Project=function (dir, kernelDir) {
         if (!env.options) {
             env.options=Tonyu.defaultOptions;
         }
+        if (!env.options.compiler) env.options.compiler={};
+        env.options.compiler.commentLastPos=TPR.runScriptMode || StackTrace.isAvailable();
         return env.options;
     };
     TPR.setOptions=function (r) {
@@ -11931,12 +11973,12 @@ requireSimulator.setName('ide/editor');
 requirejs(["fs/ROMk","fs/ROMd","fs/ROMs", "Util", "Tonyu", "FS", "FileList", "FileMenu",
            "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project",
            "copySample","Shell","ImageResEditor","ProjectOptionsEditor","copyToKernel","KeyEventChecker",
-           "WikiDialog","runtime", "KernelDiffDialog","Sync","searchDialog"
+           "WikiDialog","runtime", "KernelDiffDialog","Sync","searchDialog","StackTrace"
           ],
 function (romk, romd, roms,  Util, Tonyu, FS, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,
           copySample,sh, ImgResEdit,ProjectOptionsEditor, ctk, KeyEventChecker,
-          WikiDialog, rt , KDD,Sync,searchDialog
+          WikiDialog, rt , KDD,Sync,searchDialog,StackTrace
           ) {
 
 $(function () {
@@ -12181,7 +12223,8 @@ $(function () {
     Tonyu.onRuntimeError=function (e) {
         Tonyu.globals.$lastError=e;
         var t=curPrj.env.traceTbl;
-        var te=t.decode($LASTPOS);
+        var trc=StackTrace.get(e,t);
+        var te=(trc? trc[0] : t.decode($LASTPOS));
         if (te) {
             te.mesg=e;
             showErrorPos($("#errorPos"),te);

@@ -1,4 +1,4 @@
-// Created at Thu Sep 18 2014 15:58:02 GMT+0900 (東京 (標準時))
+// Created at Fri Sep 19 2014 13:10:33 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -3425,12 +3425,17 @@ function TError(mesg, src, pos) {
             }
         };
     }
+    var klass=null;
+    if (src && src.src) {
+        klass=src;
+        src=klass.src.tonyu;
+    }
     if (typeof src.name!=="function") {
         throw "src="+src+" should be file object";
     }
     return {
         isTError:true,
-        mesg:mesg,src:src,pos:pos,
+        mesg:mesg,src:src,pos:pos,klass:klass,
         toString:function (){
             return this.mesg+" at "+this.src.name()+":"+this.pos;
         },
@@ -4401,7 +4406,7 @@ var ScopeTypes={FIELD:"field", METHOD:"method", NATIVE:"native",
 function initClassDecls(klass, env ) {
     var s=klass.src.tonyu; //file object
     var node=TonyuLang.parse(s);
-    var MAIN={name:"main",stmts:[]};
+    var MAIN={name:"main",stmts:[],pos:0};
     // method := fiber | function
     var fields={}, methods={main: MAIN}, natives={};
     klass.decls={fields:fields, methods:methods, natives: natives};
@@ -4445,6 +4450,7 @@ function initClassDecls(klass, env ) {
                         ftype:  head.ftype.text,
                         name:  head.name.text,
                         head:  head,
+                        pos: head.pos,
                         stmts: stmt.body.stmts
                 };
             } else if (stmt.type=="nativeDecl") {
@@ -4476,6 +4482,7 @@ function genJS(klass, env,pass) {
     // ↑ このソースコードのトップレベル変数の種類 ，親クラスの宣言を含む
     //  キー： 変数名   値： ScopeTypesのいずれか
     var buf=IndentBuffer();
+    var fnSeq=0;
     var printf=buf.printf;
     var v=null;
     var ctx=context();
@@ -4638,7 +4645,8 @@ function genJS(klass, env,pass) {
     }
     function lastPosF(node) {
         return function () {
-            buf.printf("%s=%s;%n",  LASTPOS, traceTbl.add(klass.src.tonyu,node.pos ));
+            buf.printf("%s%s=%s;%n", (env.options.compiler.commentLastPos?"//":""),
+                    LASTPOS, traceTbl.add(klass/*.src.tonyu*/,node.pos ));
         };
     }
     v=buf.visitor=Visitor({
@@ -5226,7 +5234,7 @@ function genJS(klass, env,pass) {
                    FRMPC,
                    genLocalsF(locals, ns),
 //                   locals,
-                   genFn(),TH,
+                   genFn(fiber.pos),TH,
                    CNTV, CNTC, CNTV,
                         FRMPC,
                         // case 0:
@@ -5267,7 +5275,7 @@ function genJS(klass, env,pass) {
                   "%f%n" +
                   "%f" +
                "%}},%n",
-               fname, genFn(), [",",getParams(func)],
+               fname, genFn(func.pos), [",",getParams(func)],
                THIZ, GET_THIS,
                	      genLocalsF(locals, ns),
                       fbody
@@ -5310,8 +5318,8 @@ function genJS(klass, env,pass) {
             });
         }
     }
-    function genFn() {
-        return ("_"+Math.random()).replace(/\./g,"");
+    function genFn(pos) {
+        return ("_trc_func_"+traceTbl.add(klass/*.src.tonyu*/,pos )+"_"+(fnSeq++));//  Math.random()).replace(/\./g,"");
     }
     function genSubFunc(node) {
     	var m,ps;
@@ -5369,7 +5377,9 @@ Tonyu.TraceTbl=function () {
     var pathIdSeq=1;
     var PATHIDMAX=10000;
     var path2Id={}, id2Path=[];
-    TTB.add=function (file, pos){
+    var path2Class={};
+    TTB.add=function (klass, pos){
+        var file=klass.src.tonyu;
         var path=file.path();
         var pathId=path2Id[path];
         if (pathId==undefined) {
@@ -5378,6 +5388,7 @@ Tonyu.TraceTbl=function () {
             path2Id[path]=pathId;
             id2Path[pathId]=path;
         }
+        path2Class[path]=klass;
         if (pos>=POSMAX) pos=POSMAX-1;
         var id=pathId*POSMAX+pos;
         return id;
@@ -5388,7 +5399,8 @@ Tonyu.TraceTbl=function () {
         var path=id2Path[pathId];
         if (path) {
             var f=FS.get(path);
-            return TError("Trace info", f, pos);
+            var klass=path2Class[path];
+            return TError("Trace info", klass || f, pos);
         } else {
             return null;
             //return TError("Trace info", "unknown src id="+id, pos);
@@ -5617,49 +5629,66 @@ define(["PatternParser","Util","WebSite"], function (PP,Util,WebSite) {
     }
     return IL;
 });
-requireSimulator.setName('Key');
-Key=function () {
-    var Key;
-    var stats={};
-    var codes={
-            left: 37 , up:38 , right: 39, down:40, space:32, enter:13,
-            shift:16, ctrl:17, alt:18
-        };
-    for (var i=65 ; i<65+26; i++) {
-    	codes[String.fromCharCode(i).toLowerCase()]=i;
-    }
-    for (var i=48 ; i<58; i++) {
-    	codes[String.fromCharCode(i)]=i;
-    }
-    function getkey(code) {
-        if (typeof code=="string") {
-            code=codes[code.toLowerCase()];
+requireSimulator.setName('StackTrace');
+define([],function (){
+    var trc={};
+    var pat=/_trc_func_([0-9]+)_.*[^0-9]([0-9]+):([0-9]+)[\s\)]*\r?$/;
+    trc.isAvailable=function () {
+        var scr=
+            "({\n"+
+            "    main :function _trc_func_17000000_0() {\n"+
+            "      var a=(this.t.x);\n"+
+            "    }\n"+
+            "}).main();\n";
+        var s;
+        try {
+            eval(scr);
+        } catch (e) {
+            s=e.stack;
+            if (typeof s!="string") return false;
+            var lines=s.split(/\n/);
+            for (var i=0 ; i<lines.length; i++) {
+                var p=pat.exec(lines[i]);
+                if (p) return true;
+            }
         }
-        if (!code) return 0;
-        if (stats[code]==-1) return 0;
-        return stats[code];
-    }
-    function update() {
-        for (var i in stats) {
-            if (stats[i]>0) {stats[i]++;}
-            if (stats[i]==-1) stats[i]=1;
+        return false;
+    };
+    trc.get=function (e,ttb) {
+        s=e.stack;
+        if (typeof s!="string") return false;
+        var lines=s.split(/\n/);
+        var res=[];
+        for (var i=0 ; i<lines.length; i++) {
+            var p=pat.exec(lines[i]);
+            if (!p) continue;
+            var id=p[1];
+            var row=p[2];
+            var col=p[3];
+            var tri=ttb.decode(id);
+            if (tri && tri.klass) {
+                var str=tri.klass.src.js;
+                var slines=str.split(/\n/);
+                var sid=null;
+                for (var i=0 ; i<slines.length && i+1<row ; i++) {
+                    var lp=/\$LASTPOS=([0-9]+)/.exec(slines[i]);
+                    if (lp) sid=parseInt(lp[1]);
+                }
+                console.log("slines,row,sid",slines,row,sid);
+                if (sid) {
+                    var stri=ttb.decode(sid);
+                    if (stri) res.push(stri);
+                }
+            }
         }
-    }
-
-    return Key={getkey:getkey, update:update, stats:stats, codes: codes};
-}();
-$(document).keydown(function (e) {
-    var s=Key.stats[e.keyCode];
-    if (!s) {
-    	Key.stats[e.keyCode]=-1;
-    }
-});
-$(document).keyup(function (e) {
-    Key.stats[e.keyCode]=0;
+        console.log("ttc.get",lines,res);
+        return res;
+    };
+    return trc;
 });
 requireSimulator.setName('Tonyu.Project');
-define(["Tonyu", "Tonyu.Compiler", "TError", "FS", "Tonyu.TraceTbl","ImageList",  "Key"],
-        function (Tonyu, Tonyu_Compiler, TError, FS, Tonyu_TraceTbl, ImageList, Key) {
+define(["Tonyu", "Tonyu.Compiler", "TError", "FS", "Tonyu.TraceTbl","ImageList","StackTrace"],
+        function (Tonyu, Tonyu_Compiler, TError, FS, Tonyu_TraceTbl, ImageList,StackTrace) {
 return Tonyu.Project=function (dir, kernelDir) {
     var TPR={};
     var traceTbl=Tonyu.TraceTbl();
@@ -5807,6 +5836,8 @@ return Tonyu.Project=function (dir, kernelDir) {
         if (!env.options) {
             env.options=Tonyu.defaultOptions;
         }
+        if (!env.options.compiler) env.options.compiler={};
+        env.options.compiler.commentLastPos=TPR.runScriptMode || StackTrace.isAvailable();
         return env.options;
     };
     TPR.setOptions=function (r) {
@@ -6188,6 +6219,7 @@ requirejs(["fs/ROMk","FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS
         var kernelDir=FS.get("/Tonyu/Kernel/");
         var curPrj=Tonyu_Project(curProjectDir, kernelDir);
         var o=curPrj.getOptions();
+        curPrj.runScriptMode=true;
         curPrj.rawRun(o.run.bootClass);
     });
 });

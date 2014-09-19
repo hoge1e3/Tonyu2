@@ -55,6 +55,7 @@ requirejs(["fs/ROMk","FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS
         var kernelDir=FS.get("/Tonyu/Kernel/");
         var curPrj=Tonyu_Project(curProjectDir, kernelDir);
         var o=curPrj.getOptions();
+        curPrj.runScriptMode=true;
         curPrj.rawRun(o.run.bootClass);
     });
 });

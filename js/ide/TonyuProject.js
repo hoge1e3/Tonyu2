@@ -1,5 +1,5 @@
-define(["Tonyu", "Tonyu.Compiler", "TError", "FS", "Tonyu.TraceTbl","ImageList",  "Key"],
-        function (Tonyu, Tonyu_Compiler, TError, FS, Tonyu_TraceTbl, ImageList, Key) {
+define(["Tonyu", "Tonyu.Compiler", "TError", "FS", "Tonyu.TraceTbl","ImageList","StackTrace"],
+        function (Tonyu, Tonyu_Compiler, TError, FS, Tonyu_TraceTbl, ImageList,StackTrace) {
 return Tonyu.Project=function (dir, kernelDir) {
     var TPR={};
     var traceTbl=Tonyu.TraceTbl();
@@ -147,6 +147,8 @@ return Tonyu.Project=function (dir, kernelDir) {
         if (!env.options) {
             env.options=Tonyu.defaultOptions;
         }
+        if (!env.options.compiler) env.options.compiler={};
+        env.options.compiler.commentLastPos=TPR.runScriptMode || StackTrace.isAvailable();
         return env.options;
     };
     TPR.setOptions=function (r) {

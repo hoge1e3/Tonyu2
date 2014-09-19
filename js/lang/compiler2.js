@@ -253,7 +253,8 @@ function genJS(klass, env,pass) {
     }
     function lastPosF(node) {
         return function () {
-            buf.printf("%s=%s;%n",  LASTPOS, traceTbl.add(klass/*.src.tonyu*/,node.pos ));
+            buf.printf("%s%s=%s;%n", (env.options.compiler.commentLastPos?"//":""),
+                    LASTPOS, traceTbl.add(klass/*.src.tonyu*/,node.pos ));
         };
     }
     v=buf.visitor=Visitor({
