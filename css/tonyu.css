@@ -47,7 +47,12 @@ textarea{
   color: #ca6b42;
 }
 
-
+.shell {
+	font-family: monospace;
+}
+.shell.error {
+    color: red;
+}
 
 .tutorial-highlight {
 	background-color: #ffdd88;

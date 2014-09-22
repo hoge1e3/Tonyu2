@@ -31,7 +31,7 @@ define(["FS","Util"],function (FS,Util) {
     Shell.cp=function (from ,to ,options) {
         if (!options) options={};
         if (options.v) {
-            console.log("cp", from ,to);
+            Shell.echo("cp", from ,to);
         }
         var f=resolve(from, true);
         var t=resolve(to);
@@ -41,7 +41,7 @@ define(["FS","Util"],function (FS,Util) {
                 var rel=src.relPath(f);
                 var dst=t.rel(rel);
                 if (options.test || options.v) {
-                    console.log((dst.exists()?"[ovr]":"[new]")+dst+"<-"+src);
+                    Shell.echo((dst.exists()?"[ovr]":"[new]")+dst+"<-"+src);
                 }
                 if (!options.test) {
                     dst.copyFrom(src,options);
@@ -77,10 +77,10 @@ define(["FS","Util"],function (FS,Util) {
             return 1;
         }
     };
-    Shell.cat=function (file) {
+    Shell.cat=function (file,options) {
         file=resolve(file, true);
-        console.log(file.text());
-        return "";
+        Shell.echo(file.text());
+        //else return file.text();
     };
     Shell.resolve=function (file) {
 	if (!file) file=".";
@@ -88,36 +88,45 @@ define(["FS","Util"],function (FS,Util) {
 	return file;
     };
     Shell.grep=function (pattern, file, options) {
-    	file=resolve(file, true);
-    	if (!options) options={};
-    	if (!options.res) options.res=[];
-	if (file.isDir()) {
-    		file.each(function (e) {
-    			Shell.grep(pattern, e, options);
-    		});
-    	} else {
-			if (typeof pattern=="string") {
-	    		file.lines().forEach(function (line, i) {
-	    			if (line.indexOf(pattern)>=0) {
-	    				report(file, i+1, line);
-	    			}
-	    		});
-			}
-    	}
-	return options.res;
-    	function report(file, lineNo, line) {
-	    if (options.res) {
-		options.res.push({file:file, lineNo:lineNo,line:line});
-	    }
-	    console.log(file+"("+lineNo+"): "+line);
-	
-    	}
+        file=resolve(file, true);
+        if (!options) options={};
+        if (!options.res) options.res=[];
+        if (file.isDir()) {
+            file.each(function (e) {
+                Shell.grep(pattern, e, options);
+            });
+        } else {
+            if (typeof pattern=="string") {
+                file.lines().forEach(function (line, i) {
+                    if (line.indexOf(pattern)>=0) {
+                        report(file, i+1, line);
+                    }
+                });
+            }
+        }
+        return options.res;
+        function report(file, lineNo, line) {
+            if (options.res) {
+                options.res.push({file:file, lineNo:lineNo,line:line});
+            }
+            Shell.echo(file+"("+lineNo+"): "+line);
+
+        }
     };
     Shell.touch=function (f) {
     	f=resolve(f);
     	f.text(f.exists() ? f.text() : "");
     	return 1;
     };
+    Shell.setout=function (ui) {
+        Shell.outUI=ui;
+    };
+    Shell.echo=function () {
+        console.log.apply(console,arguments);
+        if (Shell.outUI && Shell.outUI.log) Shell.outUI.log.apply(Shell.outUI,arguments);
+    };
+    Shell.prompt=function () {};
+    Shell.ASYNC={r:"SH_ASYNC"};
     sh=Shell;
     return Shell;
 });

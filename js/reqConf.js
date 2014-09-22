@@ -219,6 +219,8 @@ var reqConf={
             genROM: "build/genROM",
             Log:"ide/log",
             StackTrace:"runtime/StackTrace",
+            Shell2:"fs/Shell2",
+            syncWithKernel:"fs/syncWithKernel",
             "foo":"bar"
         },
         "baseUrl": "../../js"

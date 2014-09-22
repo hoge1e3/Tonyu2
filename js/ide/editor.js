@@ -1,12 +1,12 @@
 requirejs(["fs/ROMk","fs/ROMd","fs/ROMs", "Util", "Tonyu", "FS", "FileList", "FileMenu",
            "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project",
-           "copySample","Shell","ImageResEditor","ProjectOptionsEditor","copyToKernel","KeyEventChecker",
-           "WikiDialog","runtime", "KernelDiffDialog","Sync","searchDialog","StackTrace"
+           "copySample","Shell","Shell2","ImageResEditor","ProjectOptionsEditor","copyToKernel","KeyEventChecker",
+           "WikiDialog","runtime", "KernelDiffDialog","Sync","searchDialog","StackTrace","syncWithKernel"
           ],
 function (romk, romd, roms,  Util, Tonyu, FS, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,
-          copySample,sh, ImgResEdit,ProjectOptionsEditor, ctk, KeyEventChecker,
-          WikiDialog, rt , KDD,Sync,searchDialog,StackTrace
+          copySample,sh,sh2, ImgResEdit,ProjectOptionsEditor, ctk, KeyEventChecker,
+          WikiDialog, rt , KDD,Sync,searchDialog,StackTrace,swk
           ) {
 
 $(function () {
@@ -113,6 +113,10 @@ $(function () {
         //if (!curFile) return;
         KDD.show(curProjectDir, kernelDir);// DiffDialog.show(curFile,kernelDir.rel(curFile.name()));
     });
+    sh.kernelDiff=function () {
+        KDD.show(curProjectDir, kernelDir);
+    };
+    sh.kernelDiff.description="Compare Kernel file and this project.";
     function ls(){
         fl.ls(curProjectDir);
         refreshRunMenu();

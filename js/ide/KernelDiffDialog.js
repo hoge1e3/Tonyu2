@@ -1,4 +1,4 @@
-define(["UI","DiffDialog"], function (UI,dd) {
+define(["UI","DiffDialog","Shell"], function (UI,dd,sh) {
     var res={};
 	res.show=function (devDir, kernelDir , options) {
     	var d=res.embed(devDir, kernelDir, options);

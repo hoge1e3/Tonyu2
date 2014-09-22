@@ -4,7 +4,7 @@ define(["FS","Shell"],function (FS,sh) {
         // sync options:o onend:f     local=remote=cwd
         // sync dir:s|file options:o onend:f  local=remote=dir
         // sync local:s|file remote:s|file options:o onend:f
-        var local,remote,options,onend;
+        var local,remote,options,onend=function(){};
         var i=0;
         if (typeof arguments[i]=="string" || isFile(arguments[i])) {
             local=sh.resolve(arguments[i], true);
@@ -17,8 +17,18 @@ define(["FS","Shell"],function (FS,sh) {
         if (typeof arguments[i]=="object") { options=arguments[i]; i++;}
         if (typeof arguments[i]=="function") { onend=arguments[i]; i++;}
         if (!local) remote=local=sh.cwd;
-        console.log(local,remote,options,onend);
-        Sync.sync(local,remote,options,onend);
+        if (options && options.onend) options.onend=promptAfter(options.onend);
+        if (!remote) remote=local;
+        sh.echo("sync args=",local,remote,options,onend);
+        Sync.sync(local,remote,options,promptAfter(onend));
+        return sh.ASYNC;
+        function promptAfter(f) {
+            return function () {
+                //alert("pro");
+                if (f) f.apply({},arguments);
+                sh.prompt();
+            };
+        }
     };
     function isFile(v) {
         return v && v.isDir;
@@ -47,7 +57,7 @@ define(["FS","Shell"],function (FS,sh) {
         n0();
         var uploads={},downloads=[],visited={};
         function status(name, param) {
-            console.log("Status: "+name+" param:",param);
+            sh.echo("Status: "+name+" param:",param);
             if (options.onstatus) {
                 options.onstatus(name, param);
             }
@@ -70,7 +80,7 @@ define(["FS","Shell"],function (FS,sh) {
         }
         function n1(info) {
             info=JSON.parse(info);
-            if (options.v) console.log("getDirInfo",info);
+            if (options.v) sh.echo("getDirInfo",info);
             var base=local;//FS.get(info.base);
             var data=info.data;
             for (var rel in data) {
@@ -86,8 +96,8 @@ define(["FS","Shell"],function (FS,sh) {
                 cmp(file,rel,lcm,rmm);
             },{includeTrashed:true, excludes:options.excludes});
             if (options.v) {
-                console.log("uploads:",uploads);
-                console.log("downloads:",downloads);
+                sh.echo("uploads:",uploads);
+                sh.echo("downloads:",downloads);
             }
 
             var req={base:remote.path(),paths:JSON.stringify(downloads)};
@@ -101,15 +111,15 @@ define(["FS","Shell"],function (FS,sh) {
             });
         }
         function n2(dlData) {
-            console.log("dlData=",dlData);
+            sh.echo("dlData=",dlData);
             dlData=JSON.parse(dlData);
-            if (options.v) console.log("dlData:",dlData);
+            if (options.v) sh.echo("dlData:",dlData);
             var base=local;//FS.get(dlData.base);
             if (options.test) return;
             for (var rel in dlData.data) {
                 var dlf=base.rel(rel);
                 var d=dlData.data[rel];
-                //if (options.v) console.log(dlf.path(), d);
+                //if (options.v) sh.echo(dlf.path(), d);
                 if (d.trashed) {
                     if (dlf.exists()) dlf.rm();
                 } else {
@@ -129,10 +139,11 @@ define(["FS","Shell"],function (FS,sh) {
             });
         }
         function n3(res){
-            if (options.v) console.log(res);
+            if (options.v) sh.echo("LS2FileSync res=",res);
             var upds=[];
             for (var i in uploads) upds.push(i);
             res={msg:res,uploads:upds,downloads: downloads};
+            //if (options.v) sh.echo("onend",onend);
             if (typeof onend=="function") onend(res);
         }
         function cmp(f,rel,lcm,rmm) {
@@ -141,7 +152,7 @@ define(["FS","Shell"],function (FS,sh) {
             if (rmm && (!lcm || lcm.lastUpdate<rmm.lastUpdate)) {
                 downloads.push(rel);
                 if (options.v)
-                    console.log((!lcm?"New":"")+
+                    sh.echo((!lcm?"New":"")+
                             "Download "+f+
                             " trash="+!!rmm.trashed);
             } else if (lcm && (!rmm || lcm.lastUpdate>rmm.lastUpdate)) {
@@ -150,7 +161,7 @@ define(["FS","Shell"],function (FS,sh) {
                 for (var i in m) o[i]=m[i];
                 uploads[rel]=o;
                 if (options.v)
-                    console.log((!rmm?"New":"")+
+                    sh.echo((!rmm?"New":"")+
                             "Upload "+f+
                             " trash="+!!lcm.trashed);
             }

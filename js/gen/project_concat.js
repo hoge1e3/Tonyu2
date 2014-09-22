@@ -1,4 +1,4 @@
-// Created at Fri Sep 19 2014 13:10:33 GMT+0900 (東京 (標準時))
+// Created at Mon Sep 22 2014 15:33:22 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -229,6 +229,7 @@ FS=function () {
         }
     }
 
+
     FS.orderByName=function (a,b) {
         return (a>b ? 1 : (a<b ? -1 : 0));
     };
@@ -319,6 +320,13 @@ FS=function () {
         var res;
         if (isDir(path)) {
             var dir=res={};
+            dir.files=function (f,options) {
+                var res=[];
+                dir.each(function (f) {
+                    res.add(f);
+                },options);
+                return res;
+            };
             dir.each=function (f,options) {
                 dir.ls(options).forEach(function (n) {
                     var subd=dir.rel(n);
@@ -2110,7 +2118,7 @@ requireSimulator.setName('fs/ROMd');
   var rom={
     base: '/Tonyu/doc/',
     data: {
-      '': '{"index.txt":{"lastUpdate":1411099630340},"novice/":{"lastUpdate":1400579960587},"projectIndex.txt":{"lastUpdate":1400120163000},"tonyu2/":{"lastUpdate":1410160432674},"isodex.txt":{"lastUpdate":1410745945670,"trashed":true},"images/":{"lastUpdate":1411099634209}}',
+      '': '{"index.txt":{"lastUpdate":1411099955927},"novice/":{"lastUpdate":1400579960587},"projectIndex.txt":{"lastUpdate":1400120163000},"tonyu2/":{"lastUpdate":1410160432674},"isodex.txt":{"lastUpdate":1410745945670,"trashed":true},"images/":{"lastUpdate":1411099634209}}',
       'images/': '{"test.png":{"lastUpdate":1410938917586},"toste.png":{"lastUpdate":1410937500503}}',
       'images/test.png': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAADAFBMVEUAAACAAAAztzN91mMAAICAAIAAgIDA+6KAgID/AAAA/wD//wAAAP//AP8A//////8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBZ06cAAAAEHRSTlP///////////////////8A4CNdGQAAAFZJREFUeJzt0jEOwDAIQ9HIDIy9/21L1VSBBik4c/6I30i7QmrFSyOAunigSXWQjQNVgFjZCKsO/gg9DnwILh6IAAfsgqcMhJ9cgoH8yIIX+XEHzC3BDcwPH+GHmXyUAAAAAElFTkSuQmCC',
       'images/toste.png': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAADAFBMVEUAAACAAAAztzN91mMAAICAAIAAgIDA+6KAgID/AAAA/wD//wAAAP//AP8A//////8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBZ06cAAAAEHRSTlP///////////////////8A4CNdGQAAAFZJREFUeJzt0jEOwDAIQ9HIDIy9/21L1VSBBik4c/6I30i7QmrFSyOAunigSXWQjQNVgFjZCKsO/gg9DnwILh6IAAfsgqcMhJ9cgoH8yIIX+XEHzC3BDcwPH+GHmXyUAAAAAElFTkSuQmCC',
@@ -10532,7 +10540,7 @@ define(["FS","Util"],function (FS,Util) {
     Shell.cp=function (from ,to ,options) {
         if (!options) options={};
         if (options.v) {
-            console.log("cp", from ,to);
+            Shell.echo("cp", from ,to);
         }
         var f=resolve(from, true);
         var t=resolve(to);
@@ -10542,7 +10550,7 @@ define(["FS","Util"],function (FS,Util) {
                 var rel=src.relPath(f);
                 var dst=t.rel(rel);
                 if (options.test || options.v) {
-                    console.log((dst.exists()?"[ovr]":"[new]")+dst+"<-"+src);
+                    Shell.echo((dst.exists()?"[ovr]":"[new]")+dst+"<-"+src);
                 }
                 if (!options.test) {
                     dst.copyFrom(src,options);
@@ -10578,10 +10586,10 @@ define(["FS","Util"],function (FS,Util) {
             return 1;
         }
     };
-    Shell.cat=function (file) {
+    Shell.cat=function (file,options) {
         file=resolve(file, true);
-        console.log(file.text());
-        return "";
+        Shell.echo(file.text());
+        //else return file.text();
     };
     Shell.resolve=function (file) {
 	if (!file) file=".";
@@ -10589,36 +10597,45 @@ define(["FS","Util"],function (FS,Util) {
 	return file;
     };
     Shell.grep=function (pattern, file, options) {
-    	file=resolve(file, true);
-    	if (!options) options={};
-    	if (!options.res) options.res=[];
-	if (file.isDir()) {
-    		file.each(function (e) {
-    			Shell.grep(pattern, e, options);
-    		});
-    	} else {
-			if (typeof pattern=="string") {
-	    		file.lines().forEach(function (line, i) {
-	    			if (line.indexOf(pattern)>=0) {
-	    				report(file, i+1, line);
-	    			}
-	    		});
-			}
-    	}
-	return options.res;
-    	function report(file, lineNo, line) {
-	    if (options.res) {
-		options.res.push({file:file, lineNo:lineNo,line:line});
-	    }
-	    console.log(file+"("+lineNo+"): "+line);
-	
-    	}
+        file=resolve(file, true);
+        if (!options) options={};
+        if (!options.res) options.res=[];
+        if (file.isDir()) {
+            file.each(function (e) {
+                Shell.grep(pattern, e, options);
+            });
+        } else {
+            if (typeof pattern=="string") {
+                file.lines().forEach(function (line, i) {
+                    if (line.indexOf(pattern)>=0) {
+                        report(file, i+1, line);
+                    }
+                });
+            }
+        }
+        return options.res;
+        function report(file, lineNo, line) {
+            if (options.res) {
+                options.res.push({file:file, lineNo:lineNo,line:line});
+            }
+            Shell.echo(file+"("+lineNo+"): "+line);
+
+        }
     };
     Shell.touch=function (f) {
     	f=resolve(f);
     	f.text(f.exists() ? f.text() : "");
     	return 1;
     };
+    Shell.setout=function (ui) {
+        Shell.outUI=ui;
+    };
+    Shell.echo=function () {
+        console.log.apply(console,arguments);
+        if (Shell.outUI && Shell.outUI.log) Shell.outUI.log.apply(Shell.outUI,arguments);
+    };
+    Shell.prompt=function () {};
+    Shell.ASYNC={r:"SH_ASYNC"};
     sh=Shell;
     return Shell;
 });
@@ -10647,6 +10664,132 @@ define(["Shell","FS"],function (sh,fs) {
     cs.available=available;
     cs.all=all;
     return cs;
+});
+requireSimulator.setName('Shell2');
+define(["Shell","UI","FS","Util"], function (sh,UI,FS,Util) {
+    var res={};
+    res.show=function (dir) {
+        var d=res.embed(dir);
+        d.dialog({width:600,height:500});
+    };
+    res.embed=function (dir) {
+        if (!res.d) {
+            res.d=UI("div",{title:"Shell"},["div",{$var:"inner"}]);
+            res.inner=res.d.$vars.inner;
+            sh.prompt();
+        }
+        var d=res.d;
+        return d;
+    };
+    sh.prompt=function () {
+        var line=UI("div",
+            ["input",{$var:"cmd",size:40,on:{keydown: kd}}],
+            ["pre",{$var:"out","class":"shell out"},["div",{$var:"cand","class":"shell cand"}]]
+        );
+        var cmd=line.$vars.cmd;
+        var out=line.$vars.out;
+        var cand=line.$vars.cand;
+        sh.setout({log:function () {
+            var a=[];
+            for (var i=0; i<arguments.length; i++) {
+                a.push(arguments[i]);
+            }
+            out.append(a.join(" ")+"\n");
+        }});
+        line.appendTo(res.inner);
+        cmd.focus();
+        res.inner.closest(".ui-dialog-content").scrollTop(res.inner.height());
+        return sh.ASYNC;
+        function kd(e) {
+            //var eo=e.originalEvent();
+            //console.log(e.which);
+            if (e.which==9) {
+                e.stopPropagation();
+                e.preventDefault();
+                comp();
+                return false;
+            }
+            if (e.which==13) {
+                cand.empty();
+                exec(cmd.val());
+            }
+        }
+        function exec() {
+            var c=cmd.val().replace(/^ */,"").replace(/ *$/,"");
+            if (c.length==0) return;
+            var cs=c.split(/ +/);
+            var cn=cs.shift();
+            var f=sh[cn];
+            if (typeof f!="function") return out.append(cn+": command not found.");
+            try {
+                var args=[],options=null;
+                cs.forEach(function (ce) {
+                    var opt=/^-([A-Za-z_0-9]+)(=(.*))?/.exec(ce);
+                    if (opt) {
+                        if (!options) options={};
+                        options[opt[1]]=opt[3]!=null ? opt[3] : 1;
+                    } else args.push(ce);
+                });
+                if (options) args.push(options);
+                var sres=f.apply(sh, args);
+                if (typeof sres=="object") {
+                    if (sres instanceof Array) {
+                        var table=UI("table");
+                        var tr=null;
+                        var cnt=0;
+                        sres.forEach(function (r) {
+                            if (!tr) tr=UI("tr").appendTo(table);
+                            tr.append(UI("td",r));
+                            cnt++;if(cnt%3==0) tr=null;
+                        });
+                        table.appendTo(out);
+                    } else {
+                        out.append(JSON.stringify(sres));
+                    }
+                } else {
+                    out.append(sres);
+                }
+                if (sres!==sh.ASYNC) sh.prompt();
+            } catch(e) {
+                out.append(UI("div",{"class": "shell error"},e));
+                sh.prompt();
+            }
+        }
+        function comp(){
+            var c=cmd.val();
+            var cs=c.split(" ");
+            var fn=cs.pop();
+            var f=sh.resolve(fn,false);
+            //console.log(fn,f);
+            if (!f) return;
+            var d=(f.isDir() ? f : f.up());
+            var canda=[];
+            d.each(function (e) {
+                if ( Util.startsWith(e.path(), f.path()) ) {
+                    canda.push(e.name());
+                }
+            });
+            if (canda.length==1) {
+                var fns=fn.split("/");
+                fns.pop();
+                fns.push(canda[0]);
+                cs.push(fns.join("/"));
+                cmd.val(cs.join(" "));
+                cand.empty();
+            } else {
+                cand.text(canda.join(", "));
+            }
+            //console.log(canda);
+            //cmd.val(cmd.val()+"hokan");
+        }
+    };
+    sh.window=function () {
+        res.show(sh.cwd);
+    };
+    sh.atest=function (a,b,options) {
+        console.log(a,b,options);
+    };
+    return res;
 });
 requireSimulator.setName('ImageResEditor');
 define(["FS","Tonyu","UI"], function (FS, Tonyu, UI) {
@@ -11768,7 +11911,7 @@ define(["FS","Shell"],function (FS,sh) {
         // sync options:o onend:f     local=remote=cwd
         // sync dir:s|file options:o onend:f  local=remote=dir
         // sync local:s|file remote:s|file options:o onend:f
-        var local,remote,options,onend;
+        var local,remote,options,onend=function(){};
         var i=0;
         if (typeof arguments[i]=="string" || isFile(arguments[i])) {
             local=sh.resolve(arguments[i], true);
@@ -11781,8 +11924,18 @@ define(["FS","Shell"],function (FS,sh) {
         if (typeof arguments[i]=="object") { options=arguments[i]; i++;}
         if (typeof arguments[i]=="function") { onend=arguments[i]; i++;}
         if (!local) remote=local=sh.cwd;
-        console.log(local,remote,options,onend);
-        Sync.sync(local,remote,options,onend);
+        if (options && options.onend) options.onend=promptAfter(options.onend);
+        if (!remote) remote=local;
+        sh.echo("sync args=",local,remote,options,onend);
+        Sync.sync(local,remote,options,promptAfter(onend));
+        return sh.ASYNC;
+        function promptAfter(f) {
+            return function () {
+                //alert("pro");
+                if (f) f.apply({},arguments);
+                sh.prompt();
+            };
+        }
     };
     function isFile(v) {
         return v && v.isDir;
@@ -11811,7 +11964,7 @@ define(["FS","Shell"],function (FS,sh) {
         n0();
         var uploads={},downloads=[],visited={};
         function status(name, param) {
-            console.log("Status: "+name+" param:",param);
+            sh.echo("Status: "+name+" param:",param);
             if (options.onstatus) {
                 options.onstatus(name, param);
             }
@@ -11834,7 +11987,7 @@ define(["FS","Shell"],function (FS,sh) {
         }
         function n1(info) {
             info=JSON.parse(info);
-            if (options.v) console.log("getDirInfo",info);
+            if (options.v) sh.echo("getDirInfo",info);
             var base=local;//FS.get(info.base);
             var data=info.data;
             for (var rel in data) {
@@ -11850,8 +12003,8 @@ define(["FS","Shell"],function (FS,sh) {
                 cmp(file,rel,lcm,rmm);
             },{includeTrashed:true, excludes:options.excludes});
             if (options.v) {
-                console.log("uploads:",uploads);
-                console.log("downloads:",downloads);
+                sh.echo("uploads:",uploads);
+                sh.echo("downloads:",downloads);
             }
 
             var req={base:remote.path(),paths:JSON.stringify(downloads)};
@@ -11865,15 +12018,15 @@ define(["FS","Shell"],function (FS,sh) {
             });
         }
         function n2(dlData) {
-            console.log("dlData=",dlData);
+            sh.echo("dlData=",dlData);
             dlData=JSON.parse(dlData);
-            if (options.v) console.log("dlData:",dlData);
+            if (options.v) sh.echo("dlData:",dlData);
             var base=local;//FS.get(dlData.base);
             if (options.test) return;
             for (var rel in dlData.data) {
                 var dlf=base.rel(rel);
                 var d=dlData.data[rel];
-                //if (options.v) console.log(dlf.path(), d);
+                //if (options.v) sh.echo(dlf.path(), d);
                 if (d.trashed) {
                     if (dlf.exists()) dlf.rm();
                 } else {
@@ -11893,10 +12046,11 @@ define(["FS","Shell"],function (FS,sh) {
             });
         }
         function n3(res){
-            if (options.v) console.log(res);
+            if (options.v) sh.echo("LS2FileSync res=",res);
             var upds=[];
             for (var i in uploads) upds.push(i);
             res={msg:res,uploads:upds,downloads: downloads};
+            //if (options.v) sh.echo("onend",onend);
             if (typeof onend=="function") onend(res);
         }
         function cmp(f,rel,lcm,rmm) {
@@ -11905,7 +12059,7 @@ define(["FS","Shell"],function (FS,sh) {
             if (rmm && (!lcm || lcm.lastUpdate<rmm.lastUpdate)) {
                 downloads.push(rel);
                 if (options.v)
-                    console.log((!lcm?"New":"")+
+                    sh.echo((!lcm?"New":"")+
                             "Download "+f+
                             " trash="+!!rmm.trashed);
             } else if (lcm && (!rmm || lcm.lastUpdate>rmm.lastUpdate)) {
@@ -11914,7 +12068,7 @@ define(["FS","Shell"],function (FS,sh) {
                 for (var i in m) o[i]=m[i];
                 uploads[rel]=o;
                 if (options.v)
-                    console.log((!rmm?"New":"")+
+                    sh.echo((!rmm?"New":"")+
                             "Upload "+f+
                             " trash="+!!lcm.trashed);
             }
@@ -11972,12 +12126,12 @@ define(["UI","Shell"], function (UI,sh) {
 requireSimulator.setName('ide/editor');
 requirejs(["fs/ROMk","fs/ROMd","fs/ROMs", "Util", "Tonyu", "FS", "FileList", "FileMenu",
            "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project",
-           "copySample","Shell","ImageResEditor","ProjectOptionsEditor","copyToKernel","KeyEventChecker",
+           "copySample","Shell","Shell2","ImageResEditor","ProjectOptionsEditor","copyToKernel","KeyEventChecker",
            "WikiDialog","runtime", "KernelDiffDialog","Sync","searchDialog","StackTrace"
           ],
 function (romk, romd, roms,  Util, Tonyu, FS, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,
-          copySample,sh, ImgResEdit,ProjectOptionsEditor, ctk, KeyEventChecker,
+          copySample,sh,sh2, ImgResEdit,ProjectOptionsEditor, ctk, KeyEventChecker,
           WikiDialog, rt , KDD,Sync,searchDialog,StackTrace
           ) {
 

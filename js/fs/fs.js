@@ -140,6 +140,7 @@ FS=function () {
         }
     }
 
+
     FS.orderByName=function (a,b) {
         return (a>b ? 1 : (a<b ? -1 : 0));
     };
@@ -230,6 +231,13 @@ FS=function () {
         var res;
         if (isDir(path)) {
             var dir=res={};
+            dir.files=function (f,options) {
+                var res=[];
+                dir.each(function (f) {
+                    res.add(f);
+                },options);
+                return res;
+            };
             dir.each=function (f,options) {
                 dir.ls(options).forEach(function (n) {
                     var subd=dir.rel(n);
