@@ -409,6 +409,9 @@ FS=function () {
             }
             return {};
         };
+        res.lastUpdate=function () {
+            return res.metaInfo().lastUpdate;
+        };
         res.up=function () {
             if (parent==null) return null; //  path=/
             return FS.get(parent, securityDomain);

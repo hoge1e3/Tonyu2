@@ -106,18 +106,4 @@ native $;
     pImg, 0, 0,col*chipWidth, row*chipHeight,
     sx, sy, col*chipWidth, row*chipHeight);
     ctx.restore();
-    /*for(var i=0;i<row;i++){
-        for(var j=0;j<col;j++){
-            p=Math.floor(get(j,i));
-            pImg=$Sprites.getImageList()[p];
-            if (!pImg) return;
-            ctx.save();
-            ctx.drawImage(
-            pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,
-            j*chipWidth, i*chipHeight, chipWidth, chipHeight);
-            ctx.restore();
-            if($screenWidth<j*chipWidth) break;
-        }
-        if($screenHeight<i*chipHeight) break;
-    }*/
 }

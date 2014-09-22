@@ -5,6 +5,7 @@ define(["genROM","dumpScript","Util","FS","Sync","Shell"], function (genROM,dump
         $(doBuild);
     }
     sh.build=doBuild;
+    sh.build.description="Build files before commit.";
     function doBuild() {
         genROM(FS.get("/Tonyu/Kernel/"), FS.get("/Tonyu/js/gen/ROM_k.js"));
         genROM(FS.get("/Tonyu/doc/"), FS.get("/Tonyu/js/gen/ROM_d.js"));

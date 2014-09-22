@@ -14,10 +14,11 @@ define(["UI","difflib","diffview"], function (UI,difflib,diffview) {
             };
         	res.d=UI("div",{title:"比較"},
         			["div",
-        			 ["span","元のファイル"],
-        			 ["input",{$edit:{name:"baseFile",type:FType},size:60}],["br"],
-                     ["span","新しいファイル"],
-                     ["input",{$var:"newFile",$edit:{name:"newFile",type:FType},size:60}]
+        			 ["input",{style:"background-color: #f88;",
+        			     $edit:{name:"baseFile",type:FType},size:60}],["br"],
+                     ["input",{style:"background-color: #8f8;",
+                         $var:"newFile",
+                         $edit:{name:"newFile",type:FType},size:60}]
         			],
                     ["div", {$var:"validationMessage", css:{color:"red"}}],
                  ["button", {$var:"OKButton", on:{click: function () {

@@ -127,6 +127,14 @@ define(["FS","Util"],function (FS,Util) {
     };
     Shell.prompt=function () {};
     Shell.ASYNC={r:"SH_ASYNC"};
+    Shell.help=function () {
+        for (var k in Shell) {
+            var c=Shell[k];
+            if (typeof c=="function") {
+                Shell.echo(k+(c.description?" - "+c.description:""));
+            }
+        }
+    };
     sh=Shell;
     return Shell;
 });

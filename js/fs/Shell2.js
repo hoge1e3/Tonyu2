@@ -6,12 +6,15 @@ define(["Shell","UI","FS","Util"], function (sh,UI,FS,Util) {
     };
     res.embed=function (dir) {
         if (!res.d) {
-            res.d=UI("div",{title:"Shell"},["div",{$var:"inner"}]);
+            res.d=UI("div",{title:"Shell"},["div",{$var:"inner"},"Type 'help' to show commands.",["br"]]);
             res.inner=res.d.$vars.inner;
             sh.prompt();
         }
         var d=res.d;
         return d;
+    };
+    sh.cls=function () {
+        res.d.$vars.inner.empty();
     };
     sh.prompt=function () {
         var line=UI("div",
@@ -91,16 +94,24 @@ define(["Shell","UI","FS","Util"], function (sh,UI,FS,Util) {
             var c=cmd.val();
             var cs=c.split(" ");
             var fn=cs.pop();
-            var f=sh.resolve(fn,false);
-            //console.log(fn,f);
-            if (!f) return;
-            var d=(f.isDir() ? f : f.up());
             var canda=[];
-            d.each(function (e) {
-                if ( Util.startsWith(e.path(), f.path()) ) {
-                    canda.push(e.name());
+            if (cs.length==0) {
+                for (var k in sh) {
+                    if (typeof sh[k]=="function" && Util.startsWith(k, fn)) {
+                        canda.push(k);
+                    }
                 }
-            });
+            } else {
+                var f=sh.resolve(fn,false);
+                //console.log(fn,f);
+                if (!f) return;
+                var d=(f.isDir() ? f : f.up());
+                d.each(function (e) {
+                    if ( Util.startsWith(e.path(), f.path()) ) {
+                        canda.push(e.name());
+                    }
+                });
+            }
             if (canda.length==1) {
                 var fns=fn.split("/");
                 fns.pop();
