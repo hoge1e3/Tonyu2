@@ -28,18 +28,18 @@ for (i=0; i<3000; i++) {
     if (getkey("a")==1) all(AcTest).attr{p:10, scaleX:2};
     if (getkey("b")==1) all(AcTest).attr("p",5);
     if (getkey("c")==1) print(all(AcTest).attr("x"));
-
+    
     //if (i==50) waitFor(Tonyu.timeout(1000));
     update();
 }
 /*
 watchHit(AcTest,AcTest,\(a,b) {
-if (a.x>b.x) {
-a.vx=5; 
-b.vx=-5;
-} else {
-a.vx=-5; 
-b.vx=5;
-}
-print("Hit!");
+    if (a.x>b.x) {
+        a.vx=5; 
+        b.vx=-5;
+    } else {
+        a.vx=-5; 
+        b.vx=5;
+    }
+    print("Hit!");
 });*/

@@ -1,4 +1,4 @@
-// Created at Wed Sep 24 2014 11:41:46 GMT+0900 (東京 (標準時))
+// Created at Wed Sep 24 2014 12:25:00 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -641,7 +641,7 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1411525191309},"Actor.tonyu":{"lastUpdate":1411023260959},"BaseActor.tonyu":{"lastUpdate":1411023468657},"Boot.tonyu":{"lastUpdate":1410768624171},"Keys.tonyu":{"lastUpdate":1411525191313},"Map.tonyu":{"lastUpdate":1411371312235},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1410239416751},"Sprites.tonyu":{"lastUpdate":1410239416752},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1410239416753},"MapEditor.tonyu":{"lastUpdate":1411371312237},"InputDevice.tonyu":{"lastUpdate":1411525191318}}',
+      '': '{".desktop":{"lastUpdate":1411525191309},"Actor.tonyu":{"lastUpdate":1411023260959},"BaseActor.tonyu":{"lastUpdate":1411023468657},"Boot.tonyu":{"lastUpdate":1410768624171},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1411371312235},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1410239416751},"Sprites.tonyu":{"lastUpdate":1410239416752},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1410239416753},"MapEditor.tonyu":{"lastUpdate":1411371312237},"InputDevice.tonyu":{"lastUpdate":1411529063835}}',
       '.desktop': '{"runMenuOrd":["TouchTest","AppearMath","NearTest","AcTestM","NObjTest","SETest","MMLTest","KeyTest","NObjTest2","AcTest","AltBoot","TConsole","Keys","InputDevice"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -1147,16 +1147,16 @@ requireSimulator.setName('fs/ROMk');
         '    $(document).keydown \\(e) {$Keys.keydown(e);};\n'+
         '    $(document).keyup \\(e) {$Keys.keyup(e);};\n'+
         '    $(document).mousedown \\(e) {\n'+
-        '        $Keys.keydown{keyCode:1};\n'+
         '        if ($InputDevice.touchEmu) {\n'+
         '            $touches[0].touched=1;\n'+
         '        }\n'+
+        '        $Keys.keydown{keyCode:1};\n'+
         '    };\n'+
         '    $(document).mouseup \\(e) {\n'+
-        '        $Keys.keyup{keyCode:1};\n'+
         '        if ($InputDevice.touchEmu) {\n'+
         '            $touches[0].touched=0;\n'+
         '        }\n'+
+        '        $Keys.keyup{keyCode:1};\n'+
         '    };\n'+
         '}\n'+
         'function getkey(code) {\n'+
