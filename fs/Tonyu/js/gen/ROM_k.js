@@ -2,8 +2,8 @@
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1411525191309},"Actor.tonyu":{"lastUpdate":1411023260959},"BaseActor.tonyu":{"lastUpdate":1411023468657},"Boot.tonyu":{"lastUpdate":1410768624171},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1411371312235},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1410239416751},"Sprites.tonyu":{"lastUpdate":1410239416752},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1410239416753},"MapEditor.tonyu":{"lastUpdate":1411371312237},"InputDevice.tonyu":{"lastUpdate":1411529063835}}',
-      '.desktop': '{"runMenuOrd":["TouchTest","AppearMath","NearTest","AcTestM","NObjTest","SETest","MMLTest","KeyTest","NObjTest2","AcTest","AltBoot","TConsole","Keys","InputDevice"]}',
+      '': '{".desktop":{"lastUpdate":1411550826406},"Actor.tonyu":{"lastUpdate":1411023260959},"BaseActor.tonyu":{"lastUpdate":1411550826406},"Boot.tonyu":{"lastUpdate":1410768624171},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1411550826407},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1411550826408},"Sprites.tonyu":{"lastUpdate":1410239416752},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1410239416753},"MapEditor.tonyu":{"lastUpdate":1411550826409},"InputDevice.tonyu":{"lastUpdate":1411529063835}}',
+      '.desktop': '{"runMenuOrd":["Main2","Main","AcTestM","NObjTest","NObjTest2","AcTest","AltBoot","Ball","Bar","Bounce","Map","MapTest","MapTest2nd","SetBGCTest","Label","PanelTest","MapEditor","MapLoad","BaseActor","ScaledCanvas"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
         'native Sprites;\n'+
@@ -225,7 +225,7 @@
         '        pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,\n'+
         '        -width/2, -height/2, width, height);\n'+
         '        ctx.restore();\n'+
-        '    } else if (text!==null) {\n'+
+        '    } else if (text!==null && text!==undefined) {\n'+
         '        if (!size) size=15;\n'+
         '        if (!align) align="center";\n'+
         '        if (!fillStyle) fillStyle="white";\n'+
@@ -614,6 +614,7 @@
         '    sy=0;\n'+
         '    super(param);\n'+
         '    buf=$("<canvas>").attr{width:col*chipWidth,height:row*chipHeight};\n'+
+        '    mapObj=true;\n'+
         '    mapTable = [];\n'+
         '    mapOnTable = [];\n'+
         '    for(var j=0;j<row;j++){\n'+
@@ -680,6 +681,7 @@
         '}\n'+
         '\\setOn(setCol,setRow,p){\n'+
         '    if(setCol>=col || setRow>=row || setCol<0 || setRow<0) return;\n'+
+        '    set(setCol,setRow,mapTable[setRow][setCol]);\n'+
         '    mapOnTable[setRow][setCol]=p;\n'+
         '    ctx=buf[0].getContext("2d");\n'+
         '    p=Math.floor(p);\n'+
@@ -703,6 +705,13 @@
         '}\n'+
         '\\getAt(getX,getY){\n'+
         '    return get(Math.floor(getX/chipWidth),Math.floor(getY/chipHeight));\n'+
+        '}\n'+
+        '\\getOn(getCol,getRow){\n'+
+        '    if(getCol<col && getRow<row && getCol>=0 && getRow>=0) return mapOnTable[getRow][getCol];\n'+
+        '    return -1;\n'+
+        '}\n'+
+        '\\getOnAt(getX,getY){\n'+
+        '    return getOn(Math.floor(getX/chipWidth),Math.floor(getY/chipHeight));\n'+
         '}\n'+
         '\\scrollTo(scrollX,scrollY){\n'+
         '    sx=scrollX;\n'+
@@ -1142,10 +1151,10 @@
         '}\n'+
         '\\scrollTo(scrollX,scrollY){\n'+
         '    for(o in all()){\n'+
-        '        print(o.mapObj);\n'+
+        '        //print(o.mapObj);\n'+
         '        if(o.mapObj){\n'+
         '            o.scrollTo(o.sx+scrollX,o.sy+scrollY);\n'+
-        '        }else{\n'+
+        '        }else if(o.x!=undefined && o.y!=undefined){\n'+
         '            o.x+=scrollX;\n'+
         '            o.y+=scrollY;\n'+
         '        }\n'+

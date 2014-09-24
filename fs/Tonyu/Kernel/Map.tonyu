@@ -5,6 +5,7 @@ native $;
     sy=0;
     super(param);
     buf=$("<canvas>").attr{width:col*chipWidth,height:row*chipHeight};
+    mapObj=true;
     mapTable = [];
     mapOnTable = [];
     for(var j=0;j<row;j++){
@@ -71,6 +72,7 @@ native $;
 }
 \setOn(setCol,setRow,p){
     if(setCol>=col || setRow>=row || setCol<0 || setRow<0) return;
+    set(setCol,setRow,mapTable[setRow][setCol]);
     mapOnTable[setRow][setCol]=p;
     ctx=buf[0].getContext("2d");
     p=Math.floor(p);
@@ -94,6 +96,13 @@ native $;
 }
 \getAt(getX,getY){
     return get(Math.floor(getX/chipWidth),Math.floor(getY/chipHeight));
+}
+\getOn(getCol,getRow){
+    if(getCol<col && getRow<row && getCol>=0 && getRow>=0) return mapOnTable[getRow][getCol];
+    return -1;
+}
+\getOnAt(getX,getY){
+    return getOn(Math.floor(getX/chipWidth),Math.floor(getY/chipHeight));
 }
 \scrollTo(scrollX,scrollY){
     sx=scrollX;

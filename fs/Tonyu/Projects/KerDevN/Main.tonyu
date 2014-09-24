@@ -1,7 +1,7 @@
 $Screen.resize(448,400);
 $map=new Map{chipWidth:32,chipHeight:32,col:30,row:30};
 mapp=3;//test
-$pad=new Pad{x:72,y:$screenHeight-72};
+//$pad=new Pad{x:72,y:$screenHeight-72};
 score=0;
 label=new Label{x:100,y:200,text:score,size:30,zOrder:-1};
 panel= new Panel();

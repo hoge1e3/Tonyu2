@@ -62,10 +62,10 @@ native Math;
 }
 \scrollTo(scrollX,scrollY){
     for(o in all()){
-        print(o.mapObj);
+        //print(o.mapObj);
         if(o.mapObj){
             o.scrollTo(o.sx+scrollX,o.sy+scrollY);
-        }else{
+        }else if(o.x!=undefined && o.y!=undefined){
             o.x+=scrollX;
             o.y+=scrollY;
         }

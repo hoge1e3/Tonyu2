@@ -1,0 +1,17 @@
+map=new Map{chipWidth:32,chipHeight:32};
+map.load("map.json");
+
+x=10;
+y=10;
+p=0;
+
+print(map.getOnAt($mouseX,$mouseY));
+
+while(true){
+    x=$mouseX;
+    y=$mouseY;
+    if(map.getOnAt(x,y)==170){
+        map.setOnAt(x,y,-1);
+    }
+    update();
+}
