@@ -1,4 +1,4 @@
-// Created at Mon Sep 22 2014 16:57:12 GMT+0900 (東京 (標準時))
+// Created at Wed Sep 24 2014 11:22:35 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -641,8 +641,8 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1411371312232},"Actor.tonyu":{"lastUpdate":1411023260959},"BaseActor.tonyu":{"lastUpdate":1411023468657},"Boot.tonyu":{"lastUpdate":1410768624171},"Keys.tonyu":{"lastUpdate":1410153147928},"Map.tonyu":{"lastUpdate":1411371312235},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1410239416751},"Sprites.tonyu":{"lastUpdate":1410239416752},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1410239416753},"MapEditor.tonyu":{"lastUpdate":1411371312237},"InputDevice.tonyu":{"lastUpdate":1410153160821}}',
-      '.desktop': '{"runMenuOrd":["MapEditor","MapLoad","Main","PanelTest","NoviceActor","AcTestM","MapTest2nd","MapTest","Map","SetBGCTest","Bounce","AcTest","NObjTest","NObjTest2","AltBoot","Ball","Bar","Label"]}',
+      '': '{".desktop":{"lastUpdate":1411525191309},"Actor.tonyu":{"lastUpdate":1411023260959},"BaseActor.tonyu":{"lastUpdate":1411023468657},"Boot.tonyu":{"lastUpdate":1410768624171},"Keys.tonyu":{"lastUpdate":1411525191313},"Map.tonyu":{"lastUpdate":1411371312235},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1410239416751},"Sprites.tonyu":{"lastUpdate":1410239416752},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1410239416753},"MapEditor.tonyu":{"lastUpdate":1411371312237},"InputDevice.tonyu":{"lastUpdate":1411525191318}}',
+      '.desktop': '{"runMenuOrd":["TouchTest","AppearMath","NearTest","AcTestM","NObjTest","SETest","MMLTest","KeyTest","NObjTest2","AcTest","AltBoot","TConsole","Keys","InputDevice"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
         'native Sprites;\n'+
@@ -1034,9 +1034,11 @@ requireSimulator.setName('fs/ROMk');
       'InputDevice.tonyu': 
         'extends null;\n'+
         'native $;\n'+
-        '\n'+
+        'native window;\n'+
+        'native Tonyu;\n'+
         '\\new() {\n'+
         '    listeners=[];\n'+
+        '    touchEmu=true;\n'+
         '}\n'+
         '\\handleListeners() {\n'+
         '    var l=listeners;\n'+
@@ -1054,6 +1056,10 @@ requireSimulator.setName('fs/ROMk');
         '        mp=$Screen.canvas2buf(mp);\n'+
         '        $mouseX=mp.x;\n'+
         '        $mouseY=mp.y;\n'+
+        '        if (touchEmu) {\n'+
+        '            $touches[0].x=mp.x;\n'+
+        '            $touches[0].y=mp.y;\n'+
+        '        }\n'+
         '        handleListeners();\n'+
         '    };\n'+
         '    $touches=[{},{},{},{},{}];\n'+
@@ -1065,6 +1071,7 @@ requireSimulator.setName('fs/ROMk');
         '        }\n'+
         '    };\n'+
         '    $handleTouch=\\(e) {\n'+
+        '        touchEmu=false;\n'+
         '        var p=cvj.offset();\n'+
         '        e.preventDefault();\n'+
         '        var ts=e.originalEvent.changedTouches;\n'+
@@ -1141,9 +1148,15 @@ requireSimulator.setName('fs/ROMk');
         '    $(document).keyup \\(e) {$Keys.keyup(e);};\n'+
         '    $(document).mousedown \\(e) {\n'+
         '        $Keys.keydown{keyCode:1};\n'+
+        '        if ($InputDevice.touchEmu) {\n'+
+        '            $touches[0].touched=1;\n'+
+        '        }\n'+
         '    };\n'+
         '    $(document).mouseup \\(e) {\n'+
         '        $Keys.keyup{keyCode:1};\n'+
+        '        if ($InputDevice.touchEmu) {\n'+
+        '            $touches[0].touched=0;\n'+
+        '        }\n'+
         '    };\n'+
         '}\n'+
         'function getkey(code) {\n'+
@@ -2398,9 +2411,14 @@ Tonyu=function () {
         console.log(o);
         throw o+" is not a tonyu object";
     }
+    function hasKey(k, obj) {
+        return k in obj;
+    }
     return Tonyu={thread:thread, threadGroup:threadGroup, klass:klass, bless:bless, extend:extend,
             globals:globals, classes:classes, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
-            timeout:timeout,asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object, A:A};
+            timeout:timeout,asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
+            hasKey:hasKey,
+            A:A};
 }();
 
 requireSimulator.setName('Tonyu.Iterator');
@@ -4396,6 +4414,17 @@ var GET_THIS="this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this)";
 var ITER="Tonyu.iterator";
 var ScopeTypes={FIELD:"field", METHOD:"method", NATIVE:"native",
         LOCAL:"local", THVAR:"threadvar", PARAM:"param", GLOBAL:"global", CLASS:"class"};
+function genSt(st, options) {
+    var res={type:st};
+    if (options) {
+        for (var k in options) res[k]=options[k];
+    }
+    if (!res.name) res.name=genSym("_"+st+"_");
+    return res;
+}
+function tOfSc(st) {
+    return st ? st.type : null;
+}
 /*function compile(klass, env) {
     initClassDecls(klass, env );
     return genJS(klass, env);
@@ -4459,6 +4488,20 @@ function initClassDecls(klass, env ) {
     }
     // if(pass==1)
     initMethods(node);        // node=program
+}
+function genSym(prefix) {
+    return prefix+(Math.random()+"").replace(/\./g,"");
+}
+function describe(node, desc) {
+    node.DESC=desc; //typeof desc=="object"?JSON.stringify(desc)+desc;
+}
+function addTypeHint(expr, type) {
+    if (!window.typeHints) window.typeHints=[];
+    window.typeHints.push({expr:expr, type:type});
+}
+function getDesc(node) {
+    if (node.DESC) return node.DESC;
+    return node;
 }
 
 
@@ -4540,10 +4583,10 @@ function genJS(klass, env,pass) {
         var s=topLevelScope;
         var decls=klass.decls;
         for (var i in decls.fields) {
-            s[i]=ST.FIELD;
+            s[i]=genSt(ST.FIELD,{name:klass.name+"::"+i});
         }
         for (var i in decls.methods) {
-            s[i]=ST.METHOD;
+            s[i]=genSt(ST.METHOD,{name:klass.name+"->"+i});
         }
     }
     function initTopLevelScope() {
@@ -4565,10 +4608,10 @@ function genJS(klass, env,pass) {
         }*/
         var decls=klass.decls;// Do not inherit parents' natives
         for (var i in decls.natives) {
-            s[i]=ST.NATIVE;
+            s[i]=genSt(ST.NATIVE,{name:"native::"+i});
         }
         for (var i in env.classes) {
-            s[i]=ST.CLASS; //ST.NATIVE;
+            s[i]=genSt(ST.CLASS,{name:"class::"+i});
         }
     }
     function newScope(s) {
@@ -4600,11 +4643,11 @@ function genJS(klass, env,pass) {
         if (!res.forEach) throw method+" is not array ";
         return res;
     }
-    function genParamTbl(method) {
+    /*function genParamTbl(method) {
         var r=getParams(method);
         method.scope={};
-        r.forEach(function (n) { method.scope[n.text]=ST.PARAM; });
-    }
+        r.forEach(function (n) { method.scope[n.text]=genSt(ST.PARAM); });
+    }*/
     function enterV(obj, node) {
         return function (buf) {
             ctx.enter(obj,function () {
@@ -4612,15 +4655,13 @@ function genJS(klass, env,pass) {
             });
         };
     }
-    function genSym(prefix) {
-        return prefix+(Math.random()+"").replace(/\./g,"");
-    }
     function varAccess(n, postfixIsCall) {
-        var t=ctx.scope[n];
-        if (t!=ST.NATIVE && n.match(/^\$/)) t=ST.GLOBAL; //ST.NATIVE;
+        var si=ctx.scope[n];
+        var t=tOfSc(si);
         if (!t) {
-            topLevelScope[n]=ST.FIELD;
-            t=ST.FIELD;
+            var isg=n.match(/^\$/);
+            t=isg?ST.GLOBAL:ST.FIELD;
+            si=topLevelScope[n]=genSt(t,{name:(isg?"":klass.name+"::")+n});
         }
         if (t==ST.THVAR) {
             buf.printf("%s",TH);
@@ -4636,9 +4677,14 @@ function genJS(klass, env,pass) {
             buf.printf("%s",getClassName(n));
         } else if (t==ST.GLOBAL) {
             buf.printf("%s%s",GLOBAL_HEAD, n);
-        } else {
+        } else if (t==ST.PARAM || t==ST.LOCAL || t==ST.NATIVE) {
             buf.printf("%s",n);
+        } else {
+            console.log("Unknown scope type: ",t);
+            throw "Unknown scope type: "+t;
         }
+        return si;
+        //buf.printf("/*%s*/",si.name);
     }
     function lastPosF(node) {
         return function () {
@@ -4652,6 +4698,7 @@ function genJS(klass, env,pass) {
         },
         literal: function (node) {
             buf.printf("%s",node.text);
+            describe(node,"string");
         },
         paramDecl: function (node) {
             buf.printf("%v",node.name);
@@ -4686,10 +4733,12 @@ function genJS(klass, env,pass) {
         },
         number: function (node) {
             buf.printf("%s", node.value );
+            describe(node,"number");
         },
         reservedConst: function (node) {
             if (node.text=="this") {
                 buf.printf("%s",THIZ);
+                describe(node,klass.name);
             } else if (node.text=="arguments" && !ctx.noWait) {
                 buf.printf("%s",ARGS);
             } else {
@@ -4697,7 +4746,7 @@ function genJS(klass, env,pass) {
             }
         },
         varDecl: function (node) {
-            ctx.scope[node.name.text]=ST.LOCAL;
+            ctx.scope[node.name.text]=genSt(ST.LOCAL);
             if (node.value) {
                 buf.printf("%v = %v", node.name, node.value );
             } else {
@@ -4735,13 +4784,14 @@ function genJS(klass, env,pass) {
         },
         varAccess: function (node) {
             var n=node.name.text;
-            varAccess(n,false);
+            var si=varAccess(n,false);
+            describe(node,si.name);
         },
         exprstmt: function (node) {//exprStmt
             var t;
             lastPosF(node)();
             if (!ctx.noWait && (t=OM.match(node,noRetFiberCallTmpl)) &&
-                    ctx.scope[t.T]==ST.METHOD &&
+                    tOfSc(ctx.scope[t.T])==ST.METHOD &&
                     !getMethod(t.T).nowait) {
                 buf.printf(
                         "%s.enter( %s.%s%s%v );%n" +
@@ -4752,7 +4802,7 @@ function genJS(klass, env,pass) {
                             ctx.pc++
                 );
             } else if (!ctx.noWait && (t=OM.match(node,retFiberCallTmpl)) &&
-                    ctx.scope[t.T]==ST.METHOD &&
+                    tOfSc(ctx.scope[t.T])==ST.METHOD &&
                     !getMethod(t.T).nowait) {
                 //console.log("match: ");
                 //console.log(t);
@@ -4798,7 +4848,23 @@ function genJS(klass, env,pass) {
             }
         },
         infix: function (node) {
+            // node.op.text=="="
+            //   (in (typeof ${node.left.DESC}) (typeof ${node.right.DESC}))
             buf.printf("%v%v%v", node.left, node.op, node.right);
+            if (node.op.text=="=") {
+                addTypeHint( node.left , {$typeof: node.right} );
+            }
+            // No! NaN!
+            /*if (node.op.text=="-" || node.op.text=="*" || node.op.text=="/" || node.op.text=="%") {
+                describe(node, "number");
+            }
+            if (node.op.text=="+") {
+                describe(node, {$or:["number","string"]});
+            }
+            if (node.op.text==">=" || node.op.text=="<=" || node.op.text=="==" || node.op.text=="!=" ||
+                    node.op.text==">" || node.op.text=="<" || node.op.text=="===" || node.op.text=="!=="   ) {
+                describe(node, "boolean");
+            }*/
         },
         trifixr:function (node) {
             buf.printf("%v%v%v%v%v", node.left, node.op1, node.mid, node.op2, node.right);
@@ -4811,7 +4877,12 @@ function genJS(klass, env,pass) {
             	varAccess(node.left.name.text,true);
                 buf.printf("%v", node.op);
             } else {
+                // node.op.type=="member"
+                // (in (typeof (member (typeof ${node.left.DESC}) ${node.op.name.text}) (typeof ${node.DESC}))
                 buf.printf("%v%v", node.left, node.op);
+                if (node.op.type=="member") {
+                    addTypeHint({$member: {type:{$typeof:node.left} ,name:node.op.name.text}},{$typeof:node});
+                }
             }
         },
         "break": function (node) {
@@ -4853,7 +4924,7 @@ function genJS(klass, env,pass) {
             lastPosF(node)();
             if (node.inFor.type=="forin") {
                 var itn=genSym("_it_");
-                ctx.scope[itn]=ST.LOCAL;
+                ctx.scope[itn]=genSt(ST.LOCAL);
                 if (!ctx.noWait) {
                     var brkpos=buf.lazy();
                     var pc=ctx.pc++;
@@ -4927,7 +4998,7 @@ function genJS(klass, env,pass) {
                 return function () {
                     //var va=(isVar?"var ":"");
                     vars.forEach(function (v,i) {
-                        /*if (isVar) */ctx.scope[v.text]=ST.LOCAL;
+                        /*if (isVar) */ctx.scope[v.text]=genSt(ST.LOCAL);
                         buf.printf("%s=%s[%s];%n", v.text, itn, i);
                     });
                 };
@@ -4980,7 +5051,7 @@ function genJS(klass, env,pass) {
         },
         useThread: function (node) {
             var ns=newScope(ctx.scope);
-            ns[node.threadVarName.text]=ST.THVAR;
+            ns[node.threadVarName.text]=genSt(ST.THVAR);
             ctx.enter({scope:ns}, function () {
                 buf.printf("%v",node.stmt);
             });
@@ -4988,7 +5059,7 @@ function genJS(klass, env,pass) {
         ifWait: function (node) {
             if (!ctx.noWait) {
                 var ns=newScope(ctx.scope);
-                ns[TH]=ST.THVAR;
+                ns[TH]=genSt(ST.THVAR);
                 ctx.enter({scope:ns}, function () {
                     buf.printf("%v",node.then);
                 });
@@ -5039,6 +5110,7 @@ function genJS(klass, env,pass) {
         },
         symbol: function (node) {
             buf.print(node.text);
+            describe(node,node.text);
         },
         "normalFor": function (node) {
             buf.printf("%v; %v; %v", node.init, node.cond, node.next);
@@ -5098,13 +5170,9 @@ function genJS(klass, env,pass) {
     var scopeChecker=Visitor({
     	varDecl: function (node) {
     		ctx.locals.varDecls[node.name.text]=node;
-            //console.log("varDecl!", node.name.text);
-    		//ctx.scope[node.name.text]=ST.LOCAL;
     	},
     	funcDecl: function (node) {/*FDITSELFIGNORE*/
     		ctx.locals.subFuncDecls[node.head.name.text]=node;
-    		//console.log("funcDecl!", node);
-            //ctx.scope[node.head.name.text]=ST.LOCAL;
     	},
         funcExpr: function (node) {/*FEIGNORE*/
         },
@@ -5137,11 +5205,11 @@ function genJS(klass, env,pass) {
     	});
     	//buf.print("/*");
     	for (var i in locals.varDecls) {
-    		scope[i]=ST.LOCAL;
+    		scope[i]=genSt(ST.LOCAL);
     		//buf.printf("%s,",i);
     	}
     	for (var i in locals.subFuncDecls) {
-    		scope[i]=ST.LOCAL;
+    		scope[i]=genSt(ST.LOCAL);
     		//buf.printf("%s,",i);
     	}
     	//buf.print("*/");
@@ -5203,8 +5271,8 @@ function genJS(klass, env,pass) {
         //console.log("Gen fiber");
         var ps=getParams(fiber);
         var ns=newScope(ctx.scope);
-        ps.forEach(function (p) {
-            ns[p.name.text]=ST.PARAM;
+        ps.forEach(function (p,cnt) {
+            ns[p.name.text]=genSt(ST.PARAM,{name:klass.name+"::"+fiber.name+"."+cnt});
         });
         var locals=checkLocals(fiber.stmts , ns);
         printf(
@@ -5243,19 +5311,6 @@ function genJS(klass, env,pass) {
                 fiber.stmts.forEach(function (stmt) {
                     printf("%v%n", stmt);
                 });
-                /*
-                var lcl=[];
-                for (var i in ctx.scope) {
-                    //console.log("scp: "+i+"="+ctx.scope[i]);
-                    if (ctx.scope[i]==ST.LOCAL) {
-                        lcl.push(i);
-                    }
-                }
-                if (lcl.length>0) {
-                    locals.put("var "+lcl.join(", ")+";");
-                } else {*/
-//                    locals.put("/*NOVAR*/");
-                 //}
             });
         }
     }
@@ -5263,8 +5318,8 @@ function genJS(klass, env,pass) {
         var fname= isConstructor(func) ? "initialize" : func.name;
         var ps=getParams(func);
         var ns=newScope(ctx.scope);
-        ps.forEach(function (p) {
-            ns[p.name.text]=ST.PARAM;
+        ps.forEach(function (p,cnt) {
+            ns[p.name.text]=genSt(ST.PARAM,{name:klass.name+"::"+func.name+"."+cnt});
         });
         var locals=checkLocals(func.stmts,ns);
         printf("%s :function %s(%j) {%{"+
@@ -5295,7 +5350,7 @@ function genJS(klass, env,pass) {
         }
         var ns=newScope(ctx.scope);
         ps.forEach(function (p) {
-            ns[p.name.text]=ST.PARAM;
+            ns[p.name.text]=genSt(ST.PARAM);
         });
         var locals=checkLocals(body, ns);
         buf.printf("function (%j) {%{"+
@@ -5329,7 +5384,7 @@ function genJS(klass, env,pass) {
         }
         var ns=newScope(ctx.scope);
         ps.forEach(function (p) {
-            ns[p.name.text]=ST.PARAM;
+            ns[p.name.text]=genSt(ST.PARAM);
         });
         var locals=checkLocals(body, ns);
         buf.printf("function %s(%j) {%{"+
@@ -5684,8 +5739,8 @@ define([],function (){
     return trc;
 });
 requireSimulator.setName('Tonyu.Project');
-define(["Tonyu", "Tonyu.Compiler", "TError", "FS", "Tonyu.TraceTbl","ImageList","StackTrace"],
-        function (Tonyu, Tonyu_Compiler, TError, FS, Tonyu_TraceTbl, ImageList,StackTrace) {
+define(["Tonyu", "Tonyu.Compiler", "TError", "FS", "Tonyu.TraceTbl","ImageList","StackTrace","typeCheck"],
+        function (Tonyu, Tonyu_Compiler, TError, FS, Tonyu_TraceTbl, ImageList,StackTrace,tc) {
 return Tonyu.Project=function (dir, kernelDir) {
     var TPR={};
     var traceTbl=Tonyu.TraceTbl();

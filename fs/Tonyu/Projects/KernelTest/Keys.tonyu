@@ -20,9 +20,15 @@ if (!$.data(document,"key_event")) {
     $(document).keyup \(e) {$Keys.keyup(e);};
     $(document).mousedown \(e) {
         $Keys.keydown{keyCode:1};
+        if ($InputDevice.touchEmu) {
+            $touches[0].touched=1;
+        }
     };
     $(document).mouseup \(e) {
         $Keys.keyup{keyCode:1};
+        if ($InputDevice.touchEmu) {
+            $touches[0].touched=0;
+        }
     };
 }
 function getkey(code) {
@@ -43,9 +49,11 @@ function update() {
 \keydown(e) {
     var s=stats[e.keyCode];
     if (!s) {
-        stats[e.keyCode]=-1;
+        stats[e.keyCode]=1;
     }
+    $InputDevice.handleListeners();
 }
 \keyup(e) {
     stats[e.keyCode]=0;
+    $InputDevice.handleListeners();
 }

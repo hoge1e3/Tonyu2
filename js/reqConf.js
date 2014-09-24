@@ -221,6 +221,7 @@ var reqConf={
             StackTrace:"runtime/StackTrace",
             Shell2:"fs/Shell2",
             syncWithKernel:"fs/syncWithKernel",
+            typeCheck:"lang/typeCheck",
             "foo":"bar"
         },
         "baseUrl": "../../js"

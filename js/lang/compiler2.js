@@ -7,6 +7,17 @@ var GET_THIS="this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this)";
 var ITER="Tonyu.iterator";
 var ScopeTypes={FIELD:"field", METHOD:"method", NATIVE:"native",
         LOCAL:"local", THVAR:"threadvar", PARAM:"param", GLOBAL:"global", CLASS:"class"};
+function genSt(st, options) {
+    var res={type:st};
+    if (options) {
+        for (var k in options) res[k]=options[k];
+    }
+    if (!res.name) res.name=genSym("_"+st+"_");
+    return res;
+}
+function tOfSc(st) {
+    return st ? st.type : null;
+}
 /*function compile(klass, env) {
     initClassDecls(klass, env );
     return genJS(klass, env);
@@ -70,6 +81,20 @@ function initClassDecls(klass, env ) {
     }
     // if(pass==1)
     initMethods(node);        // node=program
+}
+function genSym(prefix) {
+    return prefix+(Math.random()+"").replace(/\./g,"");
+}
+function describe(node, desc) {
+    node.DESC=desc; //typeof desc=="object"?JSON.stringify(desc)+desc;
+}
+function addTypeHint(expr, type) {
+    if (!window.typeHints) window.typeHints=[];
+    window.typeHints.push({expr:expr, type:type});
+}
+function getDesc(node) {
+    if (node.DESC) return node.DESC;
+    return node;
 }
 
 
@@ -151,10 +176,10 @@ function genJS(klass, env,pass) {
         var s=topLevelScope;
         var decls=klass.decls;
         for (var i in decls.fields) {
-            s[i]=ST.FIELD;
+            s[i]=genSt(ST.FIELD,{name:klass.name+"::"+i});
         }
         for (var i in decls.methods) {
-            s[i]=ST.METHOD;
+            s[i]=genSt(ST.METHOD,{name:klass.name+"->"+i});
         }
     }
     function initTopLevelScope() {
@@ -176,10 +201,10 @@ function genJS(klass, env,pass) {
         }*/
         var decls=klass.decls;// Do not inherit parents' natives
         for (var i in decls.natives) {
-            s[i]=ST.NATIVE;
+            s[i]=genSt(ST.NATIVE,{name:"native::"+i});
         }
         for (var i in env.classes) {
-            s[i]=ST.CLASS; //ST.NATIVE;
+            s[i]=genSt(ST.CLASS,{name:"class::"+i});
         }
     }
     function newScope(s) {
@@ -211,11 +236,11 @@ function genJS(klass, env,pass) {
         if (!res.forEach) throw method+" is not array ";
         return res;
     }
-    function genParamTbl(method) {
+    /*function genParamTbl(method) {
         var r=getParams(method);
         method.scope={};
-        r.forEach(function (n) { method.scope[n.text]=ST.PARAM; });
-    }
+        r.forEach(function (n) { method.scope[n.text]=genSt(ST.PARAM); });
+    }*/
     function enterV(obj, node) {
         return function (buf) {
             ctx.enter(obj,function () {
@@ -223,15 +248,13 @@ function genJS(klass, env,pass) {
             });
         };
     }
-    function genSym(prefix) {
-        return prefix+(Math.random()+"").replace(/\./g,"");
-    }
     function varAccess(n, postfixIsCall) {
-        var t=ctx.scope[n];
-        if (t!=ST.NATIVE && n.match(/^\$/)) t=ST.GLOBAL; //ST.NATIVE;
+        var si=ctx.scope[n];
+        var t=tOfSc(si);
         if (!t) {
-            topLevelScope[n]=ST.FIELD;
-            t=ST.FIELD;
+            var isg=n.match(/^\$/);
+            t=isg?ST.GLOBAL:ST.FIELD;
+            si=topLevelScope[n]=genSt(t,{name:(isg?"":klass.name+"::")+n});
         }
         if (t==ST.THVAR) {
             buf.printf("%s",TH);
@@ -247,9 +270,14 @@ function genJS(klass, env,pass) {
             buf.printf("%s",getClassName(n));
         } else if (t==ST.GLOBAL) {
             buf.printf("%s%s",GLOBAL_HEAD, n);
-        } else {
+        } else if (t==ST.PARAM || t==ST.LOCAL || t==ST.NATIVE) {
             buf.printf("%s",n);
+        } else {
+            console.log("Unknown scope type: ",t);
+            throw "Unknown scope type: "+t;
         }
+        return si;
+        //buf.printf("/*%s*/",si.name);
     }
     function lastPosF(node) {
         return function () {
@@ -263,6 +291,7 @@ function genJS(klass, env,pass) {
         },
         literal: function (node) {
             buf.printf("%s",node.text);
+            describe(node,"string");
         },
         paramDecl: function (node) {
             buf.printf("%v",node.name);
@@ -297,10 +326,12 @@ function genJS(klass, env,pass) {
         },
         number: function (node) {
             buf.printf("%s", node.value );
+            describe(node,"number");
         },
         reservedConst: function (node) {
             if (node.text=="this") {
                 buf.printf("%s",THIZ);
+                describe(node,klass.name);
             } else if (node.text=="arguments" && !ctx.noWait) {
                 buf.printf("%s",ARGS);
             } else {
@@ -308,7 +339,7 @@ function genJS(klass, env,pass) {
             }
         },
         varDecl: function (node) {
-            ctx.scope[node.name.text]=ST.LOCAL;
+            ctx.scope[node.name.text]=genSt(ST.LOCAL);
             if (node.value) {
                 buf.printf("%v = %v", node.name, node.value );
             } else {
@@ -346,13 +377,14 @@ function genJS(klass, env,pass) {
         },
         varAccess: function (node) {
             var n=node.name.text;
-            varAccess(n,false);
+            var si=varAccess(n,false);
+            describe(node,si.name);
         },
         exprstmt: function (node) {//exprStmt
             var t;
             lastPosF(node)();
             if (!ctx.noWait && (t=OM.match(node,noRetFiberCallTmpl)) &&
-                    ctx.scope[t.T]==ST.METHOD &&
+                    tOfSc(ctx.scope[t.T])==ST.METHOD &&
                     !getMethod(t.T).nowait) {
                 buf.printf(
                         "%s.enter( %s.%s%s%v );%n" +
@@ -363,7 +395,7 @@ function genJS(klass, env,pass) {
                             ctx.pc++
                 );
             } else if (!ctx.noWait && (t=OM.match(node,retFiberCallTmpl)) &&
-                    ctx.scope[t.T]==ST.METHOD &&
+                    tOfSc(ctx.scope[t.T])==ST.METHOD &&
                     !getMethod(t.T).nowait) {
                 //console.log("match: ");
                 //console.log(t);
@@ -409,7 +441,23 @@ function genJS(klass, env,pass) {
             }
         },
         infix: function (node) {
+            // node.op.text=="="
+            //   (in (typeof ${node.left.DESC}) (typeof ${node.right.DESC}))
             buf.printf("%v%v%v", node.left, node.op, node.right);
+            if (node.op.text=="=") {
+                addTypeHint( node.left , {$typeof: node.right} );
+            }
+            // No! NaN!
+            /*if (node.op.text=="-" || node.op.text=="*" || node.op.text=="/" || node.op.text=="%") {
+                describe(node, "number");
+            }
+            if (node.op.text=="+") {
+                describe(node, {$or:["number","string"]});
+            }
+            if (node.op.text==">=" || node.op.text=="<=" || node.op.text=="==" || node.op.text=="!=" ||
+                    node.op.text==">" || node.op.text=="<" || node.op.text=="===" || node.op.text=="!=="   ) {
+                describe(node, "boolean");
+            }*/
         },
         trifixr:function (node) {
             buf.printf("%v%v%v%v%v", node.left, node.op1, node.mid, node.op2, node.right);
@@ -422,7 +470,12 @@ function genJS(klass, env,pass) {
             	varAccess(node.left.name.text,true);
                 buf.printf("%v", node.op);
             } else {
+                // node.op.type=="member"
+                // (in (typeof (member (typeof ${node.left.DESC}) ${node.op.name.text}) (typeof ${node.DESC}))
                 buf.printf("%v%v", node.left, node.op);
+                if (node.op.type=="member") {
+                    addTypeHint({$member: {type:{$typeof:node.left} ,name:node.op.name.text}},{$typeof:node});
+                }
             }
         },
         "break": function (node) {
@@ -464,7 +517,7 @@ function genJS(klass, env,pass) {
             lastPosF(node)();
             if (node.inFor.type=="forin") {
                 var itn=genSym("_it_");
-                ctx.scope[itn]=ST.LOCAL;
+                ctx.scope[itn]=genSt(ST.LOCAL);
                 if (!ctx.noWait) {
                     var brkpos=buf.lazy();
                     var pc=ctx.pc++;
@@ -538,7 +591,7 @@ function genJS(klass, env,pass) {
                 return function () {
                     //var va=(isVar?"var ":"");
                     vars.forEach(function (v,i) {
-                        /*if (isVar) */ctx.scope[v.text]=ST.LOCAL;
+                        /*if (isVar) */ctx.scope[v.text]=genSt(ST.LOCAL);
                         buf.printf("%s=%s[%s];%n", v.text, itn, i);
                     });
                 };
@@ -591,7 +644,7 @@ function genJS(klass, env,pass) {
         },
         useThread: function (node) {
             var ns=newScope(ctx.scope);
-            ns[node.threadVarName.text]=ST.THVAR;
+            ns[node.threadVarName.text]=genSt(ST.THVAR);
             ctx.enter({scope:ns}, function () {
                 buf.printf("%v",node.stmt);
             });
@@ -599,7 +652,7 @@ function genJS(klass, env,pass) {
         ifWait: function (node) {
             if (!ctx.noWait) {
                 var ns=newScope(ctx.scope);
-                ns[TH]=ST.THVAR;
+                ns[TH]=genSt(ST.THVAR);
                 ctx.enter({scope:ns}, function () {
                     buf.printf("%v",node.then);
                 });
@@ -650,6 +703,7 @@ function genJS(klass, env,pass) {
         },
         symbol: function (node) {
             buf.print(node.text);
+            describe(node,node.text);
         },
         "normalFor": function (node) {
             buf.printf("%v; %v; %v", node.init, node.cond, node.next);
@@ -709,13 +763,9 @@ function genJS(klass, env,pass) {
     var scopeChecker=Visitor({
     	varDecl: function (node) {
     		ctx.locals.varDecls[node.name.text]=node;
-            //console.log("varDecl!", node.name.text);
-    		//ctx.scope[node.name.text]=ST.LOCAL;
     	},
     	funcDecl: function (node) {/*FDITSELFIGNORE*/
     		ctx.locals.subFuncDecls[node.head.name.text]=node;
-    		//console.log("funcDecl!", node);
-            //ctx.scope[node.head.name.text]=ST.LOCAL;
     	},
         funcExpr: function (node) {/*FEIGNORE*/
         },
@@ -748,11 +798,11 @@ function genJS(klass, env,pass) {
     	});
     	//buf.print("/*");
     	for (var i in locals.varDecls) {
-    		scope[i]=ST.LOCAL;
+    		scope[i]=genSt(ST.LOCAL);
     		//buf.printf("%s,",i);
     	}
     	for (var i in locals.subFuncDecls) {
-    		scope[i]=ST.LOCAL;
+    		scope[i]=genSt(ST.LOCAL);
     		//buf.printf("%s,",i);
     	}
     	//buf.print("*/");
@@ -814,8 +864,8 @@ function genJS(klass, env,pass) {
         //console.log("Gen fiber");
         var ps=getParams(fiber);
         var ns=newScope(ctx.scope);
-        ps.forEach(function (p) {
-            ns[p.name.text]=ST.PARAM;
+        ps.forEach(function (p,cnt) {
+            ns[p.name.text]=genSt(ST.PARAM,{name:klass.name+"::"+fiber.name+"."+cnt});
         });
         var locals=checkLocals(fiber.stmts , ns);
         printf(
@@ -854,19 +904,6 @@ function genJS(klass, env,pass) {
                 fiber.stmts.forEach(function (stmt) {
                     printf("%v%n", stmt);
                 });
-                /*
-                var lcl=[];
-                for (var i in ctx.scope) {
-                    //console.log("scp: "+i+"="+ctx.scope[i]);
-                    if (ctx.scope[i]==ST.LOCAL) {
-                        lcl.push(i);
-                    }
-                }
-                if (lcl.length>0) {
-                    locals.put("var "+lcl.join(", ")+";");
-                } else {*/
-//                    locals.put("/*NOVAR*/");
-                 //}
             });
         }
     }
@@ -874,8 +911,8 @@ function genJS(klass, env,pass) {
         var fname= isConstructor(func) ? "initialize" : func.name;
         var ps=getParams(func);
         var ns=newScope(ctx.scope);
-        ps.forEach(function (p) {
-            ns[p.name.text]=ST.PARAM;
+        ps.forEach(function (p,cnt) {
+            ns[p.name.text]=genSt(ST.PARAM,{name:klass.name+"::"+func.name+"."+cnt});
         });
         var locals=checkLocals(func.stmts,ns);
         printf("%s :function %s(%j) {%{"+
@@ -906,7 +943,7 @@ function genJS(klass, env,pass) {
         }
         var ns=newScope(ctx.scope);
         ps.forEach(function (p) {
-            ns[p.name.text]=ST.PARAM;
+            ns[p.name.text]=genSt(ST.PARAM);
         });
         var locals=checkLocals(body, ns);
         buf.printf("function (%j) {%{"+
@@ -940,7 +977,7 @@ function genJS(klass, env,pass) {
         }
         var ns=newScope(ctx.scope);
         ps.forEach(function (p) {
-            ns[p.name.text]=ST.PARAM;
+            ns[p.name.text]=genSt(ST.PARAM);
         });
         var locals=checkLocals(body, ns);
         buf.printf("function %s(%j) {%{"+

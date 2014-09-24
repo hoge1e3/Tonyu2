@@ -1,4 +1,4 @@
-x=20;y=20;
+x=20;y=t;
 while(true) {
     x++;
     update();

@@ -293,7 +293,12 @@ Tonyu=function () {
         console.log(o);
         throw o+" is not a tonyu object";
     }
+    function hasKey(k, obj) {
+        return k in obj;
+    }
     return Tonyu={thread:thread, threadGroup:threadGroup, klass:klass, bless:bless, extend:extend,
             globals:globals, classes:classes, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
-            timeout:timeout,asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object, A:A};
+            timeout:timeout,asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
+            hasKey:hasKey,
+            A:A};
 }();

@@ -2,8 +2,8 @@
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1411371312232},"Actor.tonyu":{"lastUpdate":1411023260959},"BaseActor.tonyu":{"lastUpdate":1411023468657},"Boot.tonyu":{"lastUpdate":1410768624171},"Keys.tonyu":{"lastUpdate":1410153147928},"Map.tonyu":{"lastUpdate":1411371312235},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1410239416751},"Sprites.tonyu":{"lastUpdate":1410239416752},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1410239416753},"MapEditor.tonyu":{"lastUpdate":1411371312237},"InputDevice.tonyu":{"lastUpdate":1410153160821}}',
-      '.desktop': '{"runMenuOrd":["MapEditor","MapLoad","Main","PanelTest","NoviceActor","AcTestM","MapTest2nd","MapTest","Map","SetBGCTest","Bounce","AcTest","NObjTest","NObjTest2","AltBoot","Ball","Bar","Label"]}',
+      '': '{".desktop":{"lastUpdate":1411525191309},"Actor.tonyu":{"lastUpdate":1411023260959},"BaseActor.tonyu":{"lastUpdate":1411023468657},"Boot.tonyu":{"lastUpdate":1410768624171},"Keys.tonyu":{"lastUpdate":1411525191313},"Map.tonyu":{"lastUpdate":1411371312235},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1410239416751},"Sprites.tonyu":{"lastUpdate":1410239416752},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1410239416753},"MapEditor.tonyu":{"lastUpdate":1411371312237},"InputDevice.tonyu":{"lastUpdate":1411525191318}}',
+      '.desktop': '{"runMenuOrd":["TouchTest","AppearMath","NearTest","AcTestM","NObjTest","SETest","MMLTest","KeyTest","NObjTest2","AcTest","AltBoot","TConsole","Keys","InputDevice"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
         'native Sprites;\n'+
@@ -395,9 +395,11 @@
       'InputDevice.tonyu': 
         'extends null;\n'+
         'native $;\n'+
-        '\n'+
+        'native window;\n'+
+        'native Tonyu;\n'+
         '\\new() {\n'+
         '    listeners=[];\n'+
+        '    touchEmu=true;\n'+
         '}\n'+
         '\\handleListeners() {\n'+
         '    var l=listeners;\n'+
@@ -415,6 +417,10 @@
         '        mp=$Screen.canvas2buf(mp);\n'+
         '        $mouseX=mp.x;\n'+
         '        $mouseY=mp.y;\n'+
+        '        if (touchEmu) {\n'+
+        '            $touches[0].x=mp.x;\n'+
+        '            $touches[0].y=mp.y;\n'+
+        '        }\n'+
         '        handleListeners();\n'+
         '    };\n'+
         '    $touches=[{},{},{},{},{}];\n'+
@@ -426,6 +432,7 @@
         '        }\n'+
         '    };\n'+
         '    $handleTouch=\\(e) {\n'+
+        '        touchEmu=false;\n'+
         '        var p=cvj.offset();\n'+
         '        e.preventDefault();\n'+
         '        var ts=e.originalEvent.changedTouches;\n'+
@@ -502,9 +509,15 @@
         '    $(document).keyup \\(e) {$Keys.keyup(e);};\n'+
         '    $(document).mousedown \\(e) {\n'+
         '        $Keys.keydown{keyCode:1};\n'+
+        '        if ($InputDevice.touchEmu) {\n'+
+        '            $touches[0].touched=1;\n'+
+        '        }\n'+
         '    };\n'+
         '    $(document).mouseup \\(e) {\n'+
         '        $Keys.keyup{keyCode:1};\n'+
+        '        if ($InputDevice.touchEmu) {\n'+
+        '            $touches[0].touched=0;\n'+
+        '        }\n'+
         '    };\n'+
         '}\n'+
         'function getkey(code) {\n'+
