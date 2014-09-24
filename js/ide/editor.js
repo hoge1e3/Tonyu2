@@ -256,7 +256,7 @@ $(function () {
         Tonyu.globals.$lastError=e;
         var t=curPrj.env.traceTbl;
         var trc=StackTrace.get(e,t);
-        var te=(trc? trc[0] : t.decode($LASTPOS));
+        var te=((trc && trc[0]) ? trc[0] : t.decode($LASTPOS));
         if (te) {
             te.mesg=e;
             showErrorPos($("#errorPos"),te);
