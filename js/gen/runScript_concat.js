@@ -1,4 +1,4 @@
-// Created at Wed Sep 24 2014 11:22:35 GMT+0900 (東京 (標準時))
+// Created at Wed Sep 24 2014 11:41:47 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -5738,6 +5738,35 @@ define([],function (){
     };
     return trc;
 });
+requireSimulator.setName('typeCheck');
+TypeCheck=function () {
+    var ex={"[SUBELEMENTS]":1,pos:1,len:1};
+    typeHints.forEach(function (e){
+        console.log(str(e));
+    });
+    function lit(s) {
+        return "'"+s+"'";
+    }
+    function str(o) {
+        if (!o || typeof o=="number" || typeof o=="boolean") return o;
+        if (typeof o=="string") return lit(o);
+        if (o.DESC) return str(o.DESC);
+        var keys=[];
+        for (var i in o) {
+            if (ex[i]) continue;
+            keys.push(i);
+        }
+        keys=keys.sort();
+        var buf="{";
+        var com="";
+        keys.forEach(function (key) {
+            buf+=com+key+":"+str(o[key]);
+            com=",";
+        });
+        buf+="}";
+        return buf;
+    }
+};
 requireSimulator.setName('Tonyu.Project');
 define(["Tonyu", "Tonyu.Compiler", "TError", "FS", "Tonyu.TraceTbl","ImageList","StackTrace","typeCheck"],
         function (Tonyu, Tonyu_Compiler, TError, FS, Tonyu_TraceTbl, ImageList,StackTrace,tc) {

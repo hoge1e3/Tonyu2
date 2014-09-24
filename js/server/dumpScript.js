@@ -22,17 +22,25 @@ exports.genShim=function (req,res) {
         }
         var src=f.text();
         src=src.replace(com,"");
+        var isModule=src.match(/(\brequirejs\b)|(\brequire\b)|(\bdefine\b)/);
         if (name in shim) {
-            if (src.match(/(\brequire\b)|(\bdefine\b)/)) {
+            if (isModule) {
                 console.log(f+" has both shim and require/define");
             }
             continue;
         }
-        if (src.match(/\[([^\]]*)\]/)) {
-            var reqs=RegExp.lastMatch;
-            shim[name]={deps:eval(reqs), exports:name ,srcHead: src.substring(0,50) };
-        } else {
-            console.log(name+" does not match / "+f);
+        if (isModule) {
+            if (src.match(/\[([^\]]*)\]/)) {
+                var reqs=RegExp.lastMatch;
+                try {
+                    shim[name]={deps:eval(reqs), exports:name ,srcHead: src.substring(0,50) };
+                } catch(e) {
+                    console.log("dumpScript:Error eval "+name+" src:\n"+reqs);
+                    throw e;
+                }
+            } else {
+                console.log(name+" does not have dependencty section / "+f);
+            }
         }
     }
     var excludes=/(ace-noconflict)|(^server)/;
@@ -70,7 +78,9 @@ exports.concat=function (req,res) {
     buf+=reqSim+"\n";
     progs.forEach(function (name) {
         buf+="requireSimulator.setName('"+name+"');\n";
-        buf+=js.rel(reqConf.paths[name]+".js").text().replace(/\r/g,"")+"\n";
+        var fn=reqConf.paths[name];
+        if (!fn) console.log("dumpScript.js: file not found for module "+name);
+        buf+=js.rel(fn+".js").text().replace(/\r/g,"")+"\n";
     });
     buf+="requireSimulator.setName();\n";
     console.log("Done generate "+name);

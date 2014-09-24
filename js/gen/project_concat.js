@@ -1,4 +1,4 @@
-// Created at Wed Sep 24 2014 11:22:34 GMT+0900 (東京 (標準時))
+// Created at Wed Sep 24 2014 11:41:46 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -10334,6 +10334,35 @@ define([],function (){
     };
     return trc;
 });
+requireSimulator.setName('typeCheck');
+TypeCheck=function () {
+    var ex={"[SUBELEMENTS]":1,pos:1,len:1};
+    typeHints.forEach(function (e){
+        console.log(str(e));
+    });
+    function lit(s) {
+        return "'"+s+"'";
+    }
+    function str(o) {
+        if (!o || typeof o=="number" || typeof o=="boolean") return o;
+        if (typeof o=="string") return lit(o);
+        if (o.DESC) return str(o.DESC);
+        var keys=[];
+        for (var i in o) {
+            if (ex[i]) continue;
+            keys.push(i);
+        }
+        keys=keys.sort();
+        var buf="{";
+        var com="";
+        keys.forEach(function (key) {
+            buf+=com+key+":"+str(o[key]);
+            com=",";
+        });
+        buf+="}";
+        return buf;
+    }
+};
 requireSimulator.setName('Tonyu.Project');
 define(["Tonyu", "Tonyu.Compiler", "TError", "FS", "Tonyu.TraceTbl","ImageList","StackTrace","typeCheck"],
         function (Tonyu, Tonyu_Compiler, TError, FS, Tonyu_TraceTbl, ImageList,StackTrace,tc) {
@@ -12187,6 +12216,35 @@ define(["UI","Shell"], function (UI,sh) {
     return res;
 });
 
+requireSimulator.setName('syncWithKernel');
+requirejs(["Shell","FS"], function (sh,FS) {
+    sh.syncWithKernel=function (name) {
+        var ker=FS.get("/Tonyu/Kernel/");
+        if (name) {
+            var prj=sh.resolve(name);
+            var inKer=ker.rel(name);
+            if (prj.lastUpdate()>inKer.lastUpdate()) {
+                sh.cp(prj, inKer,{v:1});
+                return 1;
+            }
+            if (prj.lastUpdate()<inKer.lastUpdate()) {
+                sh.cp(inKer,prj,{v:1});
+                return 1;
+            }
+            return 0;
+            //return sh.cp( name, ker.rel(name));
+        } else {
+            var cps=0;
+            ker.each(function (f) {
+                var src=sh.resolve(f.name());
+                if (src.exists()) {
+                    cps+= sh.syncWithKernel(f.name());
+                }
+            });
+            return cps;
+        }
+    };
+});
 requireSimulator.setName('ide/editor');
 requirejs(["fs/ROMk","fs/ROMd","fs/ROMs", "Util", "Tonyu", "FS", "FileList", "FileMenu",
            "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project",
