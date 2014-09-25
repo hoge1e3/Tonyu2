@@ -2,6 +2,7 @@ new ScreenOutTest;
 x=5;
 y=10;
 c=0;
+p=$pat_2011_12_04_12_57_51;
 while(true) {
     x=x+1;
     c++;

@@ -1,5 +1,5 @@
 define(["FS","Shell"],function (FS,sh) {
-    if (!JSZip) return;
+    if (typeof JSZip=="undefined") return;
     var zip={};
     zip.zip=function (dir,options) {
         var zip = new JSZip();
@@ -20,7 +20,7 @@ define(["FS","Shell"],function (FS,sh) {
         var content = zip.generate({type:"blob"});
         return content;
     };
-    if (saveAs) {
+    if (typeof saveAs!="undefined") {
         sh.dlzip=function (dir) {
             dir=sh.resolve(dir);
             var content=zip.zip(dir);
