@@ -1,5 +1,5 @@
 define(["FS","Shell"],function (FS,sh) {
-    if (typeof JSZip=="undefined") return;
+    if (typeof JSZip=="undefined") return {};
     var zip={};
     zip.zip=function (dir,options) {
         var zip = new JSZip();
