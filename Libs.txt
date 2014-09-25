@@ -8,3 +8,5 @@ Tonyu System 2 includes these third party libraries:
  js/lib/ace-noconflict (http://ace.c9.io/   https://github.com/ajaxorg/ace-builds)
  js/lib/difflib.js, js/lib/diffview.js and css/diffview.css   https://github.com/cemerick/jsdifflib
  js/lib/timbre.js   https://github.com/mohayonao/timbre.js/
+ js/lib/jszip.min.js    http://stuk.github.io/jszip/
+ js/lib/FileSaver.min.js    https://github.com/eligrey/FileSaver.js/#filesaverjs

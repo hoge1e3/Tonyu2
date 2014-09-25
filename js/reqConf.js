@@ -222,6 +222,7 @@ var reqConf={
             Shell2:"fs/Shell2",
             syncWithKernel:"fs/syncWithKernel",
             typeCheck:"lang/typeCheck",
+            zip: "fs/zip",
             "foo":"bar"
         },
         "baseUrl": "../../js"

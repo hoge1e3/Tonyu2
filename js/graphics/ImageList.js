@@ -4,12 +4,13 @@ define(["PatternParser","Util","WebSite"], function (PP,Util,WebSite) {
         var r=[];
         resImgs.forEach(function (resImg,i) {
             if (!resImg || resImg.url=="") return;
-            r.push(resImg); 
-        });       
+            r.push(resImg);
+        });
         return r;
     }
-	function IL(resImgs, onLoad) {
+	function IL(resImgs, onLoad,options) {
         //  resImgs:[{url: , [pwidth: , pheight:]?  }]
+	    if (!options) options={};
         resImgs=excludeEmpty(resImgs);
         var resa=[];
         var cnt=resImgs.length;
@@ -22,7 +23,13 @@ define(["PatternParser","Util","WebSite"], function (PP,Util,WebSite) {
             	return;
             }
             if (WebSite.urlAliases[url]) url=WebSite.urlAliases[url];
-            if (!Util.startsWith(url,"data")) url+="?" + new Date().getTime();
+            if (Util.startsWith(url,"ls:")) {
+                var rel=url.substring("ls:".length);
+                if (!options.baseFile) throw "Baesfile not specified";
+                var f=options.baseFile.rel(rel);
+                if (!f.exists()) throw "ImageList file not found: "+f;
+                url=f.text();
+            } else if (!Util.startsWith(url,"data")) url+="?" + new Date().getTime();
             var im=$("<img>").attr("src",url);
             im.load(function () {
             	cache[urlKey]=this;
