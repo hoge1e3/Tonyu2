@@ -7,8 +7,11 @@ define(["FS","Tonyu","UI","ImageList"], function (FS, Tonyu, UI,IL) {
         var itemUIs=[];
         if (!rsrc) prj.setResource();
         function convURL(u) {
-            return IL.convURL(u,prj.getDir());
-            //return ((typeof WebSite=="object") && WebSite.urlAliases[u]) || u;
+            try {
+                return IL.convURL(u,prj.getDir());
+            }catch(e) {
+                return WebSite.urlAliases["images/ecl.png"];
+            }//return ((typeof WebSite=="object") && WebSite.urlAliases[u]) || u;
         }
         function getSize(im) {
             if (typeof im.pwidth=="number" && typeof im.pheight=="number") {
@@ -167,6 +170,23 @@ define(["FS","Tonyu","UI","ImageList"], function (FS, Tonyu, UI,IL) {
             prj.setResource(rsrc);
             reload();
         }
+        function cleanImgFiles() {
+            var cleanImg={};
+            imgDir.each(function (f) {
+                cleanImg["ls:"+f.relPath(prj.getDir())]=f;
+            });
+            rsrc=prj.getResource();
+            var ims=rsrc.images;
+            ims.forEach(function (im){
+                delete cleanImg[im.url];
+            })
+            console.log(cleanImg);
+            for (var ci in cleanImg) {
+                var cf=cleanImg[ci];
+                console.log(cf+" is removed");
+                cf.rm();
+            }
+        }
         function toi(s) {
             if (!s || s=="") return undefined;
             return parseInt(s);
@@ -178,6 +198,7 @@ define(["FS","Tonyu","UI","ImageList"], function (FS, Tonyu, UI,IL) {
             height: 400,
             close: function () {
                 update();
+                cleanImgFiles();
             }
         /*buttons: {
 		OK: function(){

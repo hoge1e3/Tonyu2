@@ -25,7 +25,8 @@ define([], function () {
             urlAliases: {
                 "images/base.png":"../../images/base.png",
                 "images/Sample.png":"../../images/Sample.png",
-                "images/neko.png":"../../images/neko.png"
+                "images/neko.png":"../../images/neko.png",
+                    "images/ecl.png":"../../images/ecl.png"
             },top:"../../",devMode:devMode
         };
     } else {

@@ -1,4 +1,4 @@
-// Created at Fri Sep 26 2014 11:59:06 GMT+0900 (東京 (標準時))
+// Created at Fri Sep 26 2014 12:28:08 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -621,7 +621,8 @@ define([], function () {
             urlAliases: {
                 "images/base.png":"../../images/base.png",
                 "images/Sample.png":"../../images/Sample.png",
-                "images/neko.png":"../../images/neko.png"
+                "images/neko.png":"../../images/neko.png",
+                    "images/ecl.png":"../../images/ecl.png"
             },top:"../../",devMode:devMode
         };
     } else {
