@@ -1,12 +1,14 @@
-define(["FS","Tonyu","UI"], function (FS, Tonyu, UI) {
+define(["FS","Tonyu","UI","ImageList"], function (FS, Tonyu, UI,IL) {
     var ImageResEditor=function (prj) {
         var d=UI("div", {title:"画像リスト"});
         d.css({height:200+"px", "overflow-v":"scroll"});
         var rsrc=prj.getResource();
+        var imgDir=prj.getDir().rel("images/");
         var itemUIs=[];
         if (!rsrc) prj.setResource();
         function convURL(u) {
-            return ((typeof WebSite=="object") && WebSite.urlAliases[u]) || u;
+            return IL.convURL(u,prj.getDir());
+            //return ((typeof WebSite=="object") && WebSite.urlAliases[u]) || u;
         }
         function getSize(im) {
             if (typeof im.pwidth=="number" && typeof im.pheight=="number") {
@@ -55,17 +57,23 @@ define(["FS","Tonyu","UI"], function (FS, Tonyu, UI) {
                     e.preventDefault();
                     return false;
                 }
+                var imgName=file.name.replace(/\.(png|gif)$/,"").replace(/\W/g,"_");
+                var imgExt="";
+                if (file.name.match(/\.(png|gif)$/)) {
+                    imgExt=RegExp.lastMatch;
+                }
+                var v={pwidth:32,pheight:32,name:"$pat_"+imgName};
                 var reader = new FileReader();
-                var v={pwidth:32,pheight:32};
                 reader.onload = function(e) {
                     var fileContent = reader.result;
-                    v.url=fileContent;
+                    var imgFile=imgDir.rel(imgName+imgExt);
+                    imgFile.text(fileContent);
+                    v.url="ls:"+imgFile.relPath(prj.getDir());// fileContent;
                     add(v);
                 };
                 reader.readAsDataURL(file);
                 e.stopPropagation();
                 e.preventDefault();
-                v.name=("$pat_"+file.name.replace(/\.(png|gif)$/,"").replace(/\W/g,"_"));
                 return false;
             }
             function s(e) {

@@ -13,7 +13,8 @@ native Math;
     print ("Loading pats..");
     var rs=$currentProject.getResource();
     var a=asyncResult();
-    ImageList( rs.images, a.receiver);
+    ImageList.load( rs.images, a.receiver)
+    {baseDir:$currentProject.getDir()};
     waitFor(a);
     var r=a[0];
     $Sprites.setImageList(r);

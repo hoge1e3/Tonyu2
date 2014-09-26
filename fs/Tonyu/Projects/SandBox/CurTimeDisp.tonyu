@@ -1,5 +1,0 @@
-c=new CurTime;
-while (true) {
-    print(c.play().currentTime());
-    update();
-}

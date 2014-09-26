@@ -232,11 +232,11 @@ $(function () {
         setTimeout(function () {
             try {
                 var o=curPrj.getOptions();
-		if (o.run.mainClass!=name) {
+                if (o.run.mainClass!=name) {
                     o.run.mainClass=name;
                     curPrj.setOptions();
                 }
-		curPrj.rawRun(o.run.bootClass);
+                curPrj.rawRun(o.run.bootClass);
             } catch(e){
                 if (e.isTError) {
                     console.log("showErr: run");
@@ -244,10 +244,11 @@ $(function () {
                     showErrorPos($("#errorPos"),e);
                     displayMode("compile_error");
                 }else{
-		    if (e.stack) {
-			console.log("stack trace:",e.stack);
-		    }
-		    throw e;
+                    Tonyu.onRuntimeError(e);
+                    /*if (e.stack) {
+                        console.log("stack trace:",e.stack);
+                    }
+                    throw e;*/
                 }
             }
         },0);
@@ -257,11 +258,11 @@ $(function () {
         var t=curPrj.env.traceTbl;
         var trc=StackTrace.get(e,t);
         var te=((trc && trc[0]) ? trc[0] : t.decode($LASTPOS));
+        console.log("onRunTimeError:stackTrace",e.stack);
         if (te) {
             te.mesg=e;
             showErrorPos($("#errorPos"),te);
             displayMode("runtime_error");
-            console.log("showErr: onRunTimeErr",e.stack);
             stop();
             //var userAgent = window.navigator.userAgent.toLowerCase();
             //if(userAgent.indexOf('msie')<0) throw e;

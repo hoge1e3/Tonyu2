@@ -12,7 +12,7 @@ define(["FS","Util"], function (FS,Util) {
     buf+="-->\n";
     var nonTonyu=[];
     dir=FS.get(dir);
-    dir.each(function (f) {
+    dir.recursive(function (f) {
         if (!f.endsWith(".tonyu")) {
             nonTonyu.push(f);
             return;
@@ -23,7 +23,7 @@ define(["FS","Util"], function (FS,Util) {
         buf+="<script language='text/tonyu' type='text/tonyu' data-filename='"+rel+"'"+m+">";
         buf+=f.text();
         buf+="</script>\n\n";
-    });
+    },{excludes:["files/"]});
     nonTonyu.forEach(function (f) {
         var rel=f.relPath(dir);
         buf+="<script language='text/tonyu' type='text/tonyu' data-filename='"+rel+"' data-wrap='80'>";
