@@ -18,6 +18,9 @@ define(["UI"], function (UI) {
         if (!TPR.odiag) {
             TPR.odiag=UI("div",{title:"プロジェクト オプション"},
                     ["h5","コンパイラ"],
+                    ["div",
+                     ["input", {type:"checkbox", $edit: "compiler.diagnose"}],
+                     "診断モード(速度が落ちますが，プログラムの不具合を見つけやすくします)"],
                     ["div", "デフォルトの親クラス",
                      ["input", {$edit: "compiler.defaultSuperClass"}]],
                      ["h5","実行"],
