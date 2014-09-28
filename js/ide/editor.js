@@ -270,11 +270,12 @@ $(function () {
         console.log("onRunTimeError:stackTrace",e.stack);
         if (te) {
             te.mesg=e;
-            showErrorPos($("#errorPos"),te);
+            var diag=showErrorPos($("#errorPos"),te);
             displayMode("runtime_error");
             $("#errorPos").find(".quickFix").append(
                     UI("button",{on:{click: function () {
                         setDiagMode(true);
+                        diag.dialog("close");
                         run();
                     }}},"診断モードで実行しなおす"));
             stop();

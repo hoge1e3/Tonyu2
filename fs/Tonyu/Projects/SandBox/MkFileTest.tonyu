@@ -7,6 +7,6 @@ while (true) {
     for (var pp in ps) {
         p=pp;
         updateEx(30);
-        x+=vx;
+        //x+=vx;
     }
 }

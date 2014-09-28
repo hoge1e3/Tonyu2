@@ -1,4 +1,4 @@
-// Created at Sun Sep 28 2014 16:04:39 GMT+0900 (東京 (標準時))
+// Created at Sun Sep 28 2014 16:28:35 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -6425,8 +6425,9 @@ return function showErrorPos(elem, err) {
     elem.append(srcd);
     //elem.attr("title",mesg+" 場所："+src.name());
     elem.attr("title","エラー");
-    elem.dialog({width:600,height:400});
+    var diag=elem.dialog({width:600,height:400});
     Log.d("error", mesg+"\nat "+src+":"+err.pos+"\n"+str.substring(0,err.pos)+"!!HERE!!"+str.substring(err.pos));
+    return diag;
 };
 });
 requireSimulator.setName('IndentBuffer');
@@ -12637,11 +12638,12 @@ $(function () {
         console.log("onRunTimeError:stackTrace",e.stack);
         if (te) {
             te.mesg=e;
-            showErrorPos($("#errorPos"),te);
+            var diag=showErrorPos($("#errorPos"),te);
             displayMode("runtime_error");
             $("#errorPos").find(".quickFix").append(
                     UI("button",{on:{click: function () {
                         setDiagMode(true);
+                        diag.dialog("close");
                         run();
                     }}},"診断モードで実行しなおす"));
             stop();
