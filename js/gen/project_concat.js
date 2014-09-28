@@ -1,4 +1,4 @@
-// Created at Sun Sep 28 2014 16:28:35 GMT+0900 (東京 (標準時))
+// Created at Sun Sep 28 2014 20:04:57 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -12396,7 +12396,6 @@ $(function () {
             curPrj.setOptions(opt);
         }
     }
-    setDiagMode(false);
     Tonyu.defaultResource={
        images:[
           {name:"$pat_base", url: "images/base.png", pwidth:32, pheight:32},
@@ -12413,6 +12412,7 @@ $(function () {
         run: {mainClass: "Main", bootClass: "Boot"},
         kernelEditable: false
     };
+    setDiagMode(false);
     //ImageList(Tonyu.defaultResource.images, Sprites.setImageList);
 
     function onResize() {

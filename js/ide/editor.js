@@ -28,7 +28,6 @@ $(function () {
             curPrj.setOptions(opt);
         }
     }
-    setDiagMode(false);
     Tonyu.defaultResource={
        images:[
           {name:"$pat_base", url: "images/base.png", pwidth:32, pheight:32},
@@ -45,6 +44,7 @@ $(function () {
         run: {mainClass: "Main", bootClass: "Boot"},
         kernelEditable: false
     };
+    setDiagMode(false);
     //ImageList(Tonyu.defaultResource.images, Sprites.setImageList);
 
     function onResize() {
