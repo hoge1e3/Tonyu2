@@ -1,8 +1,8 @@
+define(["Visitor"],function (Visitor) {
 TypeCheck=function () {
     var ex={"[SUBELEMENTS]":1,pos:1,len:1};
-    typeHints.forEach(function (e){
-        console.log(str(e));
-    });
+
+
     function lit(s) {
         return "'"+s+"'";
     }
@@ -26,3 +26,5 @@ TypeCheck=function () {
         return buf;
     }
 };
+return TypeCheck;
+});

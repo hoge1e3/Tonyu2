@@ -21,6 +21,7 @@ return function showErrorPos(elem, err) {
     var mesgd=$("<div>").text(mesg+" 場所："+src.name()+(typeof pos=="object"?":"+pos.row+":"+pos.col:""));
     //mesgd.append($("<button>").text("閉じる").click(close));
     elem.append(mesgd);
+    elem.append($("<div>").attr("class","quickFix"));
     var str=src.text();
     if (str && typeof pos=="object") {
         var npos=0;

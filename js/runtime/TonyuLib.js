@@ -282,6 +282,20 @@ Tonyu=function () {
     		return meth.apply(t,arguments);
     	};
     }
+    function invokeMethod(t, name, args, objName) {
+        if (!t) throw new Error(objName+"(="+t+")のメソッド "+name+"を呼び出せません");
+        var f=t[name];
+        if (typeof f!="function") throw new Error((objName=="this"? "": objName+".")+name+"(="+f+")はメソッドではありません");
+        return f.apply(t,args);
+    }
+    function callFunc(f,args, fName) {
+        if (typeof f!="function") throw new Error(fName+"は関数ではありません");
+        return f.apply({},args);
+    }
+    function checkNonNull(v, name) {
+        if (v!=v || v==null) throw new Error(name+"(="+v+")は初期化されていません");
+        return v;
+    }
     function A(args) {
         var res=[];
         for (var i=0 ; i<args.length; i++) {
@@ -299,6 +313,6 @@ Tonyu=function () {
     return Tonyu={thread:thread, threadGroup:threadGroup, klass:klass, bless:bless, extend:extend,
             globals:globals, classes:classes, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
             timeout:timeout,asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
-            hasKey:hasKey,
+            hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             A:A};
 }();

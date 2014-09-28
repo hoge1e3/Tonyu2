@@ -49,6 +49,10 @@ IndentBuffer=function () {
 			} else if (fstr=="f") {
 				shiftArg()($);
 				i++;
+            } else if (fstr=="l") {
+                var lit=shiftArg();
+                $.buf+=$.toLiteral(lit);
+                i++;
 			} else if (fstr=="v") {
 			    var a=shiftArg();
 			    if (!a) throw "Null %v";
@@ -132,6 +136,15 @@ IndentBuffer=function () {
 		$.buf=$.buf.substring(0,$.buf.length-len);
 		$.indentBuf=$.indentBuf.substring(0 , $.indentBuf.length-len);
 	};
+	$.toLiteral= function (s, quote) {
+        if (!quote) quote="'";
+        s = s.replace(/\\/g, "\\\\");
+        s = s.replace(/\r/g, "\\r");
+        s = s.replace(/\n/g, "\\n");
+        if (quote=="'") s = s.replace(/'/g, "\\'");
+        else s = s.replace(/"/g, '\\"');
+        return quote + s + quote;
+    };
 	$.indentBuf="";
 	$.indentStr="  ";
 	return $;

@@ -1,12 +1,14 @@
 requirejs(["fs/ROMk","fs/ROMd","fs/ROMs", "Util", "Tonyu", "FS", "FileList", "FileMenu",
            "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project",
            "copySample","Shell","Shell2","ImageResEditor","ProjectOptionsEditor","copyToKernel","KeyEventChecker",
-           "WikiDialog","runtime", "KernelDiffDialog","Sync","searchDialog","StackTrace","syncWithKernel"
+           "WikiDialog","runtime", "KernelDiffDialog","Sync","searchDialog","StackTrace","syncWithKernel",
+           "UI"
           ],
 function (romk, romd, roms,  Util, Tonyu, FS, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,
           copySample,sh,sh2, ImgResEdit,ProjectOptionsEditor, ctk, KeyEventChecker,
-          WikiDialog, rt , KDD,Sync,searchDialog,StackTrace,swk
+          WikiDialog, rt , KDD,Sync,searchDialog,StackTrace,swk,
+          UI
           ) {
 
 $(function () {
@@ -19,7 +21,14 @@ $(function () {
     var EXT=curPrj.EXT;
     var desktopEnv=loadDesktopEnv();
     var runMenuOrd=desktopEnv.runMenuOrd;
-
+    function setDiagMode(d) {
+        var opt=curPrj.getOptions();
+        if (opt.compiler.diagnose!=d) {
+            opt.compiler.diagnose=d;
+            curPrj.setOptions(opt);
+        }
+    }
+    setDiagMode(false);
     Tonyu.defaultResource={
        images:[
           {name:"$pat_base", url: "images/base.png", pwidth:32, pheight:32},
@@ -263,6 +272,11 @@ $(function () {
             te.mesg=e;
             showErrorPos($("#errorPos"),te);
             displayMode("runtime_error");
+            $("#errorPos").find(".quickFix").append(
+                    UI("button",{on:{click: function () {
+                        setDiagMode(true);
+                        run();
+                    }}},"診断モードで実行しなおす"));
             stop();
             //var userAgent = window.navigator.userAgent.toLowerCase();
             //if(userAgent.indexOf('msie')<0) throw e;
