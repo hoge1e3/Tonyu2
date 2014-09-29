@@ -1,6 +1,6 @@
 //file("../maps/").rel("map.json").obj{a:4};
 x=200;y=100;
-ps=[$pat_base,$pat_sample,$pat_neko,$pat_mglogo,$pat_tonyu];
+ps=[$pat_2011_12_04_12_57_51,$pat_base,$pat_sample,$pat_neko,$pat_mglogo,$pat_tonyu];
 //x=xx.t;
 while (true) {
     

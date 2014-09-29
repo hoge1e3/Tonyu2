@@ -1,4 +1,4 @@
-// Created at Sun Sep 28 2014 20:04:57 GMT+0900 (東京 (標準時))
+// Created at Mon Sep 29 2014 19:13:59 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -11012,7 +11012,7 @@ define(["FS","Tonyu","UI","ImageList"], function (FS, Tonyu, UI,IL) {
         function reload() {
             d.empty();
             d.append(UI("div", {style:"margin:10px; padding:10px; border:solid blue 2px;", on:{dragover: s, dragenter: s, drop:dropAdd}},
-                    "ここに画像ファイル(png/gif)をドラッグ＆ドロップして追加"
+                    "ここに画像ファイル(png/gif/jpg)をドラッグ＆ドロップして追加"
             ));
             //UI("div","※「URL」欄に画像ファイル(png/gif)をドラッグ＆ドロップできます．").appendTo(d);
             rsrc=prj.getResource();
@@ -11029,14 +11029,14 @@ define(["FS","Tonyu","UI","ImageList"], function (FS, Tonyu, UI,IL) {
             function dropAdd(e) {
                 eo=e.originalEvent;
                 var file = eo.dataTransfer.files[0];
-                if(!file.type.match(/image\/(png|gif)/)[1]) {
+                if(!file.type.match(/image\/(png|gif|jpe?g)/)[1]) {
                     e.stopPropagation();
                     e.preventDefault();
                     return false;
                 }
-                var imgName=file.name.replace(/\.(png|gif)$/,"").replace(/\W/g,"_");
+                var imgName=file.name.replace(/\.(png|gif|jpe?g)$/,"").replace(/\W/g,"_");
                 var imgExt="";
-                if (file.name.match(/\.(png|gif)$/)) {
+                if (file.name.match(/\.(png|gif|jpe?g)$/)) {
                     imgExt=RegExp.lastMatch;
                 }
                 var v={pwidth:32,pheight:32,name:"$pat_"+imgName};
@@ -11067,9 +11067,11 @@ define(["FS","Tonyu","UI","ImageList"], function (FS, Tonyu, UI,IL) {
                             ["td", ["input",{$var:"url", size:20,value:im.url,
                                 on:{dragover: s, dragenter: s, drop:drop}}]],
                                 ["td",
-                                 ["select", {$var:"ptype"},
-                                  ["option",{value:"fix", selected:isFix}, "固定サイズ"],
-                                  ["option",{value:"t1",  selected:!isFix}, "Tonyu1互換"]],
+                                 ["select", {$var:"ptype",on:{change: ptypeChanged }},
+                                  ["option",{value:"fix", selected:isFix}, "固定サイズ分割"],
+                                  ["option",{value:"t1",  selected:!isFix}, "Tonyu1互換"],
+                                  ["option",{value:"full",  selected:false}, "分割なし"]
+                                  ],
                                   //["inpnt", {$var:"pwidth", size:3, value:im.pwidth}],"x",
                                   //["input", {$var:"pheight",size:3, value:im.pheight}],
                                   ["input",{$var:"size", size:6, value: getSize(im)}]
@@ -11088,13 +11090,28 @@ define(["FS","Tonyu","UI","ImageList"], function (FS, Tonyu, UI,IL) {
                     //console.log("Off");
                     mag.hide();
                 }
-
                 var v=res.$vars;
+                v.mag=mag;
                 v.data=im;
+                function ptypeChanged() {
+                    var pt=$(this).val();
+                    if (pt=="t1") {
+                        v.size.val("");
+                    }
+                    if (pt=="full") {
+                        magOn.apply(this,[]);
+                        setTimeout(function () {
+                            var w=mag.width();
+                            var h=mag.height();
+                            if (w && h) v.size.val(w+"x"+h);
+                            magOff();
+                        },100);
+                    }
+                }
                 function drop(e) {
                     eo=e.originalEvent;
                     var file = eo.dataTransfer.files[0];
-                    if(!file.type.match(/image\/(png|gif)/)[1]) {
+                    if(!file.type.match(/image\/(png|gif|jpe?g)/)[1]) {
                         e.stopPropagation();
                         e.preventDefault();
                         return false;
@@ -11107,7 +11124,7 @@ define(["FS","Tonyu","UI","ImageList"], function (FS, Tonyu, UI,IL) {
                     reader.readAsDataURL(file);
                     e.stopPropagation();
                     e.preventDefault();
-                    if (!v.name.val()) v.name.val("$pat_"+file.name.replace(/\.(png|gif)$/,"").replace(/\W/g,"_"));
+                    if (!v.name.val()) v.name.val("$pat_"+file.name.replace(/\.(png|gif|jpe?g)$/,"").replace(/\W/g,"_"));
                     return false;
                 }
                 function del() {
