@@ -1,7 +1,6 @@
 native prompt;
 loadMode=false;
 print("Load Data?: Y or N");
-//var l=prompt("LoadData?: yes or no");
 while(true){
     if(getkey("y")>0){
         loadMode=true;
@@ -14,14 +13,17 @@ while(true){
     update();
 }
 if(loadMode){
-    //add
     fileName=prompt("Input json file (*.json)","map.json");
     if(fileName){
-        //end
-        mapDataFile=file(fileName);
+        mapDataFile=file("../maps/").rel(fileName);
     }
     if(mapDataFile.obj()){
         baseData=mapDataFile.obj();
+    }else{
+        mapDataFile=file(fileName);
+        if(mapDataFile.obj()){
+            baseData=mapDataFile.obj();
+        }
     }
     if(baseData==undefined){
         print("Load failed");
@@ -136,7 +138,7 @@ while(true){
         print("];");
         data+="]";*/
         //add
-        saveDataFile=file(saveFileName);
+        saveDataFile=file("../maps/").rel(saveFileName);
         data=[$map.mapTable,$map.mapOnTable];
         //comment
         //mapDataFile.obj(data);

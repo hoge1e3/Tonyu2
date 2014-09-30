@@ -42,7 +42,8 @@ native $;
     }
 }
 \load(dataFile){
-    baseData=file(dataFile).obj();
+    baseData=file("../maps/").rel(dataFile).obj();
+    if(!baseData) baseData=file(dataFile).obj();
     mapTable=baseData[0];
     mapData=mapTable;
     row=mapTable.length;

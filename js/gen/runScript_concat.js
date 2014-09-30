@@ -1,4 +1,4 @@
-// Created at Mon Sep 29 2014 19:13:59 GMT+0900 (東京 (標準時))
+// Created at Tue Sep 30 2014 14:43:34 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -642,8 +642,8 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1411550826406},"Actor.tonyu":{"lastUpdate":1411023260959},"BaseActor.tonyu":{"lastUpdate":1411550826406},"Boot.tonyu":{"lastUpdate":1411699443780},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1411550826407},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1411550826408},"Sprites.tonyu":{"lastUpdate":1410239416752},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1410239416753},"MapEditor.tonyu":{"lastUpdate":1411550826409},"InputDevice.tonyu":{"lastUpdate":1411529063835}}',
-      '.desktop': '{"runMenuOrd":["Main2","Main","AcTestM","NObjTest","NObjTest2","AcTest","AltBoot","Ball","Bar","Bounce","Map","MapTest","MapTest2nd","SetBGCTest","Label","PanelTest","MapEditor","MapLoad","BaseActor","ScaledCanvas"]}',
+      '': '{".desktop":{"lastUpdate":1412055786264},"Actor.tonyu":{"lastUpdate":1411023260959},"BaseActor.tonyu":{"lastUpdate":1411550826406},"Boot.tonyu":{"lastUpdate":1411699443780},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1412055786266},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1411550826408},"Sprites.tonyu":{"lastUpdate":1410239416752},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1410239416753},"MapEditor.tonyu":{"lastUpdate":1412055786267},"InputDevice.tonyu":{"lastUpdate":1411529063835}}',
+      '.desktop': '{"runMenuOrd":["MapLoad","MapEditor","Main2","Main","AcTestM","NObjTest","NObjTest2","AcTest","AltBoot","Ball","Bar","Bounce","Map","MapTest","MapTest2nd","SetBGCTest","Label","PanelTest"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
         'native Sprites;\n'+
@@ -1292,7 +1292,8 @@ requireSimulator.setName('fs/ROMk');
         '    }\n'+
         '}\n'+
         '\\load(dataFile){\n'+
-        '    baseData=file(dataFile).obj();\n'+
+        '    baseData=file("../maps/").rel(dataFile).obj();\n'+
+        '    if(!baseData) baseData=file(dataFile).obj();\n'+
         '    mapTable=baseData[0];\n'+
         '    mapData=mapTable;\n'+
         '    row=mapTable.length;\n'+
@@ -1371,7 +1372,6 @@ requireSimulator.setName('fs/ROMk');
         'native prompt;\n'+
         'loadMode=false;\n'+
         'print("Load Data?: Y or N");\n'+
-        '//var l=prompt("LoadData?: yes or no");\n'+
         'while(true){\n'+
         '    if(getkey("y")>0){\n'+
         '        loadMode=true;\n'+
@@ -1384,14 +1384,17 @@ requireSimulator.setName('fs/ROMk');
         '    update();\n'+
         '}\n'+
         'if(loadMode){\n'+
-        '    //add\n'+
         '    fileName=prompt("Input json file (*.json)","map.json");\n'+
         '    if(fileName){\n'+
-        '        //end\n'+
-        '        mapDataFile=file(fileName);\n'+
+        '        mapDataFile=file("../maps/").rel(fileName);\n'+
         '    }\n'+
         '    if(mapDataFile.obj()){\n'+
         '        baseData=mapDataFile.obj();\n'+
+        '    }else{\n'+
+        '        mapDataFile=file(fileName);\n'+
+        '        if(mapDataFile.obj()){\n'+
+        '            baseData=mapDataFile.obj();\n'+
+        '        }\n'+
         '    }\n'+
         '    if(baseData==undefined){\n'+
         '        print("Load failed");\n'+
@@ -1506,7 +1509,7 @@ requireSimulator.setName('fs/ROMk');
         '        print("];");\n'+
         '        data+="]";*/\n'+
         '        //add\n'+
-        '        saveDataFile=file(saveFileName);\n'+
+        '        saveDataFile=file("../maps/").rel(saveFileName);\n'+
         '        data=[$map.mapTable,$map.mapOnTable];\n'+
         '        //comment\n'+
         '        //mapDataFile.obj(data);\n'+
