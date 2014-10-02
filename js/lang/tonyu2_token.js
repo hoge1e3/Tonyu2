@@ -150,6 +150,8 @@ TT=function () {
             var c=s.substring(i,i+1);
             if (c==='/') {
                 return [s.substring(0,i+1)];
+            } else if (c=="\n") {
+                return false;
             } else if (c==="\\") {
                 i++;
             }

@@ -1,4 +1,4 @@
-// Created at Tue Sep 30 2014 14:43:34 GMT+0900 (東京 (標準時))
+// Created at Thu Oct 02 2014 10:56:04 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -3653,6 +3653,8 @@ TT=function () {
             var c=s.substring(i,i+1);
             if (c==='/') {
                 return [s.substring(0,i+1)];
+            } else if (c=="\n") {
+                return false;
             } else if (c==="\\") {
                 i++;
             }

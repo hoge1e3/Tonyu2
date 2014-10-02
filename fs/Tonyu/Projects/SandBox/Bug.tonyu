@@ -1,0 +1,5 @@
+$Screen.setBGColor("black");
+while(true) {
+    updateEx(5);
+    new Prominence;
+}

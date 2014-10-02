@@ -1,0 +1,6 @@
+p=$pat_prominenceburn;
+x=rnd(300);y=rnd(300);
+for(i=0;i<16; i++) {
+    p++;
+    update();
+}
