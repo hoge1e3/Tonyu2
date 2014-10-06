@@ -1,11 +1,11 @@
 define(["WebSite"],function (WebSite) {
     var FR={};
-    var THRESH=1000*500;
     FR.ajax=function (options) {
+        var THRESH=options.THRESH || 1000*800;
         var d=options.data;
         if (typeof d!="object") throw "Data should be object: "+d;
         d=JSON.stringify(d);
-        if (WebSite.serverType!="GAE" || d.length<THRESH) return $.ajax(options);
+        if (!options.redirectTo && (WebSite.serverType!="GAE" || d.length<THRESH)) return $.ajax(options);
         var frags=[];
         var cnt=0;
         var id=Math.random();
@@ -17,10 +17,14 @@ define(["WebSite"],function (WebSite) {
         var len=frags.length;
         var sent=0;
         var waitTime=1000;
+        function addRedir(p) {
+            if (options.redirectTo) p.redirectTo=options.redirectTo;
+            return p;
+        }
         frags.forEach(function (frag,i) {
-            $.ajax({type:"post",url:WebSite.top+"edit/sendFragment",data:{
+            $.ajax({type:"post",url:WebSite.top+"edit/sendFragment",data:addRedir({
                 id:id, seq:i, len:len, content:frag
-            },success: function (res) {
+            }),success: function (res) {
                 console.log("sendFrag",res,i);//,frag);
                 sent++;
                 if (sent>=len) setTimeout(runFrag,waitTime);
@@ -28,8 +32,7 @@ define(["WebSite"],function (WebSite) {
             });
         });
         function runFrag() {
-            $.ajax({type:"post",url:WebSite.top+"edit/runFragments",data:{
-                id:id},
+            $.ajax({type:"post",url:WebSite.top+"edit/runFragments",data:addRedir({id:id}),
                 success: function (res) {
                     //console.log("runFrag res1=",res,arguments.length);
                     if (typeof res=="string") {

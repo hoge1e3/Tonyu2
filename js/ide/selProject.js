@@ -45,12 +45,6 @@ $(function () {
             document.location.href="project.html?dir="+prjDir.path();
     	});
     });
-    /*requestFragment.ajax({
-        url:"../../edit/testSync",
-        data:{pathInfo:"/testSync",a:"testuto",b:"desukane"},
-        success: function (res) { console.log("succ",res); },
-        error: function (res) { console.log("err",res); }
-        });*/
     ls();
     SplashScreen.hide();
 });
