@@ -1,7 +1,7 @@
 requirejs(["fs/ROMk","fs/ROMd","fs/ROMs", "FS","Wiki","Shell","Shell2",
-           "copySample","NewProjectDialog","UI","Sync","Auth","zip"],
+           "copySample","NewProjectDialog","UI","Sync","Auth","zip","requestFragment"],
   function (romk, romd, roms,               FS, Wiki,   sh,sh2,
-            copySample,  NPD,           UI, Sync, Auth,zip) {
+            copySample,  NPD,           UI, Sync, Auth,zip,requestFragment) {
 $(function () {
     copySample();
     var home=FS.get("/Tonyu/");
@@ -45,6 +45,12 @@ $(function () {
             document.location.href="project.html?dir="+prjDir.path();
     	});
     });
+    /*requestFragment.ajax({
+        url:"../../edit/testSync",
+        data:{pathInfo:"/testSync",a:"testuto",b:"desukane"},
+        success: function (res) { console.log("succ",res); },
+        error: function (res) { console.log("err",res); }
+        });*/
     ls();
     SplashScreen.hide();
 });

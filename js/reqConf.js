@@ -223,6 +223,7 @@ var reqConf={
             syncWithKernel:"fs/syncWithKernel",
             typeCheck:"lang/typeCheck",
             zip: "fs/zip",
+            requestFragment: "fs/requestFragment",
             "foo":"bar"
         },
         "baseUrl": "../../js"

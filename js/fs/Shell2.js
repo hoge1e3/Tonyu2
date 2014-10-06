@@ -30,6 +30,8 @@ define(["Shell","UI","FS","Util"], function (sh,UI,FS,Util) {
                 a.push(arguments[i]);
             }
             out.append(a.join(" ")+"\n");
+        },err:function (e) {
+            out.append(UI("div",{"class": "shell error"},e,["br"],["pre",e.stack]));
         }});
         line.appendTo(res.inner);
         cmd.focus();
@@ -67,6 +69,7 @@ define(["Shell","UI","FS","Util"], function (sh,UI,FS,Util) {
                 });
                 if (options) args.push(options);
                 var sres=f.apply(sh, args);
+                if (sres===sh.ASYNC) return;
                 if (typeof sres=="object") {
                     if (sres instanceof Array) {
                         var table=UI("table");
@@ -84,9 +87,10 @@ define(["Shell","UI","FS","Util"], function (sh,UI,FS,Util) {
                 } else {
                     out.append(sres);
                 }
-                if (sres!==sh.ASYNC) sh.prompt();
+                sh.prompt();
             } catch(e) {
-                out.append(UI("div",{"class": "shell error"},e,["br"],["pre",e.stack]));
+                sh.err(r);
+                //out.append(UI("div",{"class": "shell error"},e,["br"],["pre",e.stack]));
                 sh.prompt();
             }
         }

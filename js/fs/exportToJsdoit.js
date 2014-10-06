@@ -7,7 +7,7 @@ define(["FS","Util"], function (FS,Util) {
     buf+="</div>\n";
     buf+="<!--\n";
     buf+="このプログラムをTonyuの開発環境で編集するには，\n";
-    buf+="http://tonyuedit.appspot.com/edit/html/build/importFromJsdoit.html\n";
+    buf+="http://tonyuedit.appspot.com/html/build/importFromJsdoit.html\n";
     buf+="を開きます．\n";
     buf+="-->\n";
     var nonTonyu=[];

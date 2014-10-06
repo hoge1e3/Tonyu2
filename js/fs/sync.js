@@ -1,4 +1,4 @@
-define(["FS","Shell"],function (FS,sh) {
+define(["FS","Shell","requestFragment","WebSite"],function (FS,sh,rf,WebSite) {
     var Sync={};
     sh.sync=function () {
         // sync options:o onend:f     local=remote=cwd
@@ -72,7 +72,7 @@ define(["FS","Shell"],function (FS,sh) {
             status("getDirInfo", req);
             $.ajax({
                 type:"get",
-                url:"../../edit/getDirInfo",
+                url:WebSite.top+"edit/getDirInfo",
                 data:req,
                 success:n1,
                 error:onError
@@ -104,7 +104,7 @@ define(["FS","Shell"],function (FS,sh) {
             status("File2LSSync", req);
             $.ajax({
                 type:"post",
-                url:"../../edit/File2LSSync",
+                url:WebSite.top+"edit/File2LSSync",
                 data:req,
                 success:n2,
                 error:onError
@@ -129,10 +129,11 @@ define(["FS","Shell"],function (FS,sh) {
                 dlf.metaInfo(d);
             }
             var req={base:remote.path(),data:JSON.stringify(uploads)};
+            req.pathInfo="/LS2FileSync";
             status("LS2FileSync", req);
-            $.ajax({
+            rf.ajax({
                 type:"post",
-                url:"../../edit/LS2FileSync",
+                url:WebSite.top+"edit/LS2FileSync",
                 data:req,
                 success:n3,
                 error:onError
@@ -167,6 +168,22 @@ define(["FS","Shell"],function (FS,sh) {
             }
 
         }
+    };
+    sh.rsh=function () {
+        var a=[];
+        for (var i=0; i<arguments.length; i++) a[i]=arguments[i];
+        $.ajax({
+            url:WebSite.top+"edit/rsh",
+            data:{args:JSON.stringify(a)},
+            success:function (r) {
+                sh.echo(r);
+            },error:function (req,e,mesg) {
+                sh.err(mesg);
+            },complete:function (){
+                sh.prompt();
+            }
+        });
+        return sh.ASYNC;
     };
     return Sync;
 });

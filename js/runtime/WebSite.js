@@ -38,5 +38,11 @@ define([], function () {
 	if (loc.match(/tonyuedit\.appspot\.com/) || loc.match(/localhost:8888/) ) {
 	    window.WebSite.disableROM={"ROM_d.js":true};
 	}
+    if (loc.match(/\.appspot\.com/) ||  loc.match(/localhost:888[87]/)) {
+        window.WebSite.serverType="GAE";
+    }
+    if (loc.match(/localhost:3000/) ) {
+        window.WebSite.serverType="Node";
+    }
     return window.WebSite;
 });

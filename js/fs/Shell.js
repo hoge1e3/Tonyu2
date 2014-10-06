@@ -61,6 +61,11 @@ define(["FS","Util"],function (FS,Util) {
     };
     Shell.rm=function (file, options) {
         if (!options) options={};
+        if (options.notrash) {
+            file=resolve(file, false);
+            file.removeWithoutTrash();
+            return 1;
+        }
         file=resolve(file, true);
         if (file.isDir() && options.r) {
             var dir=file;
@@ -125,6 +130,11 @@ define(["FS","Util"],function (FS,Util) {
         console.log.apply(console,arguments);
         if (Shell.outUI && Shell.outUI.log) Shell.outUI.log.apply(Shell.outUI,arguments);
     };
+    Shell.err=function () {
+        console.log.apply(console,arguments);
+        if (Shell.outUI && Shell.outUI.err) Shell.outUI.err.apply(Shell.outUI,arguments);
+    };
+
     Shell.prompt=function () {};
     Shell.ASYNC={r:"SH_ASYNC"};
     Shell.help=function () {
