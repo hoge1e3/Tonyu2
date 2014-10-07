@@ -1,4 +1,4 @@
-// Created at Thu Oct 02 2014 10:56:04 GMT+0900 (東京 (標準時))
+// Created at Tue Oct 07 2014 10:03:15 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -634,6 +634,12 @@ define([], function () {
 	if (loc.match(/tonyuedit\.appspot\.com/) || loc.match(/localhost:8888/) ) {
 	    window.WebSite.disableROM={"ROM_d.js":true};
 	}
+    if (loc.match(/\.appspot\.com/) ||  loc.match(/localhost:888[87]/)) {
+        window.WebSite.serverType="GAE";
+    }
+    if (loc.match(/localhost:3000/) ) {
+        window.WebSite.serverType="Node";
+    }
     return window.WebSite;
 });
 
@@ -10736,6 +10742,11 @@ define(["FS","Util"],function (FS,Util) {
     };
     Shell.rm=function (file, options) {
         if (!options) options={};
+        if (options.notrash) {
+            file=resolve(file, false);
+            file.removeWithoutTrash();
+            return 1;
+        }
         file=resolve(file, true);
         if (file.isDir() && options.r) {
             var dir=file;
@@ -10800,6 +10811,11 @@ define(["FS","Util"],function (FS,Util) {
         console.log.apply(console,arguments);
         if (Shell.outUI && Shell.outUI.log) Shell.outUI.log.apply(Shell.outUI,arguments);
     };
+    Shell.err=function () {
+        console.log.apply(console,arguments);
+        if (Shell.outUI && Shell.outUI.err) Shell.outUI.err.apply(Shell.outUI,arguments);
+    };
+
     Shell.prompt=function () {};
     Shell.ASYNC={r:"SH_ASYNC"};
     Shell.help=function () {
@@ -10872,6 +10888,8 @@ define(["Shell","UI","FS","Util"], function (sh,UI,FS,Util) {
                 a.push(arguments[i]);
             }
             out.append(a.join(" ")+"\n");
+        },err:function (e) {
+            out.append(UI("div",{"class": "shell error"},e,["br"],["pre",e.stack]));
         }});
         line.appendTo(res.inner);
         cmd.focus();
@@ -10909,6 +10927,7 @@ define(["Shell","UI","FS","Util"], function (sh,UI,FS,Util) {
                 });
                 if (options) args.push(options);
                 var sres=f.apply(sh, args);
+                if (sres===sh.ASYNC) return;
                 if (typeof sres=="object") {
                     if (sres instanceof Array) {
                         var table=UI("table");
@@ -10926,9 +10945,10 @@ define(["Shell","UI","FS","Util"], function (sh,UI,FS,Util) {
                 } else {
                     out.append(sres);
                 }
-                if (sres!==sh.ASYNC) sh.prompt();
+                sh.prompt();
             } catch(e) {
-                out.append(UI("div",{"class": "shell error"},e,["br"],["pre",e.stack]));
+                sh.err(r);
+                //out.append(UI("div",{"class": "shell error"},e,["br"],["pre",e.stack]));
                 sh.prompt();
             }
         }
@@ -12139,8 +12159,65 @@ define(["UI","DiffDialog","Shell"], function (UI,dd,sh) {
     }
     return res;
 });
+requireSimulator.setName('requestFragment');
+define(["WebSite"],function (WebSite) {
+    var FR={};
+    FR.ajax=function (options) {
+        var THRESH=options.THRESH || 1000*800;
+        var d=options.data;
+        if (typeof d!="object") throw "Data should be object: "+d;
+        d=JSON.stringify(d);
+        if (!options.redirectTo && (WebSite.serverType!="GAE" || d.length<THRESH)) return $.ajax(options);
+        var frags=[];
+        var cnt=0;
+        var id=Math.random();
+        while (d.length>0) {
+            frags.push(d.substring(0,THRESH));
+            d=d.substring(THRESH);
+
+        }
+        var len=frags.length;
+        var sent=0;
+        var waitTime=1000;
+        function addRedir(p) {
+            if (options.redirectTo) p.redirectTo=options.redirectTo;
+            return p;
+        }
+        frags.forEach(function (frag,i) {
+            $.ajax({type:"post",url:WebSite.top+"edit/sendFragment",data:addRedir({
+                id:id, seq:i, len:len, content:frag
+            }),success: function (res) {
+                console.log("sendFrag",res,i);//,frag);
+                sent++;
+                if (sent>=len) setTimeout(runFrag,waitTime);
+            }, error: options.error
+            });
+        });
+        function runFrag() {
+            $.ajax({type:"post",url:WebSite.top+"edit/runFragments",data:addRedir({id:id}),
+                success: function (res) {
+                    //console.log("runFrag res1=",res,arguments.length);
+                    if (typeof res=="string") {
+                        if (res.match(/^notCompleted:([\-\d]+)\/([\-\d]+)$/)) {
+                            console.log("notcomp",res);
+                            waitTime*=2;
+                            setTimeout(runFrag,waitTime);
+                            return;
+                        }
+                    }
+                    options.success(res);
+                },
+                error: options.error,
+                complete: options.complete
+            });
+        }
+
+    };
+
+    return FR;
+});
 requireSimulator.setName('Sync');
-define(["FS","Shell"],function (FS,sh) {
+define(["FS","Shell","requestFragment","WebSite"],function (FS,sh,rf,WebSite) {
     var Sync={};
     sh.sync=function () {
         // sync options:o onend:f     local=remote=cwd
@@ -12214,7 +12291,7 @@ define(["FS","Shell"],function (FS,sh) {
             status("getDirInfo", req);
             $.ajax({
                 type:"get",
-                url:"../../edit/getDirInfo",
+                url:WebSite.top+"edit/getDirInfo",
                 data:req,
                 success:n1,
                 error:onError
@@ -12246,7 +12323,7 @@ define(["FS","Shell"],function (FS,sh) {
             status("File2LSSync", req);
             $.ajax({
                 type:"post",
-                url:"../../edit/File2LSSync",
+                url:WebSite.top+"edit/File2LSSync",
                 data:req,
                 success:n2,
                 error:onError
@@ -12271,10 +12348,11 @@ define(["FS","Shell"],function (FS,sh) {
                 dlf.metaInfo(d);
             }
             var req={base:remote.path(),data:JSON.stringify(uploads)};
+            req.pathInfo="/LS2FileSync";
             status("LS2FileSync", req);
-            $.ajax({
+            rf.ajax({
                 type:"post",
-                url:"../../edit/LS2FileSync",
+                url:WebSite.top+"edit/LS2FileSync",
                 data:req,
                 success:n3,
                 error:onError
@@ -12309,6 +12387,22 @@ define(["FS","Shell"],function (FS,sh) {
             }
 
         }
+    };
+    sh.rsh=function () {
+        var a=[];
+        for (var i=0; i<arguments.length; i++) a[i]=arguments[i];
+        $.ajax({
+            url:WebSite.top+"edit/rsh",
+            data:{args:JSON.stringify(a)},
+            success:function (r) {
+                sh.echo(r);
+            },error:function (req,e,mesg) {
+                sh.err(mesg);
+            },complete:function (){
+                sh.prompt();
+            }
+        });
+        return sh.ASYNC;
     };
     return Sync;
 });

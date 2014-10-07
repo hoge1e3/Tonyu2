@@ -31,7 +31,7 @@ define(["FS","Util"], function (FS,Util) {
         buf+="</script>\n\n";
     });
 
-    $("textarea").val(buf);
+    $("#prog").val(buf);
     function wrap(str, cols) {
         var lines=str.split("\n");
         var buf="";

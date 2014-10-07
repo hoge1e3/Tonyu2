@@ -32,6 +32,9 @@ requirejs(["Auth","Util","fs/exportToJsdoit","requestFragment"],function (Auth,U
                   console.log("get-prj",res);
                   var data=JSON.parse(res);
                   if (data.license!="null") $("#license").val(data.license);
+                  if (data.title!="null") $("#prjTitle").val(data.title);
+                  else $("#prjTitle").val(data.name);
+                  if (data.description!="null") $("#desc").val(data.description);
                   $("#allowFork").attr("checked",data.allowFork!="false");
                   $("#publishToList").attr("checked",data.publishToList!="false");
                   $(".submit-wait").hide();
@@ -39,18 +42,13 @@ requirejs(["Auth","Util","fs/exportToJsdoit","requestFragment"],function (Auth,U
                       $(".submit-wait").show();
                       $(this).hide();
                       var data={pathInfo:"/upload-project"};
-                      $("#theForm input").each(function () {
+                      function setData() {
                           var t=$(this);
                           data[t.attr("name")]=t.val();
-                      });
-                      $("#theForm select").each(function () {
-                          var t=$(this);
-                          data[t.attr("name")]=t.val();
-                      });
-                      $("#theForm textarea").each(function () {
-                          var t=$(this);
-                          data[t.attr("name")]=t.val();
-                      });
+                      }
+                      $("#theForm input").each(setData);
+                      $("#theForm select").each(setData);
+                      $("#theForm textarea").each(setData);
                       console.log("upload-project data",data);
                       rf.ajax({type:"post", redirectTo:"tonyuexe",
                           data:data,
@@ -59,7 +57,7 @@ requirejs(["Auth","Util","fs/exportToJsdoit","requestFragment"],function (Auth,U
                               res=JSON.parse(res);
                               $("#complete").show();
                               $("#url").attr("href",res.url);
-
+                              $(".submit-wait").hide();
                           },error: function () {
                               alert("Error "+arguments)
                           }
@@ -93,8 +91,14 @@ requirejs(["Auth","Util","fs/exportToJsdoit","requestFragment"],function (Auth,U
 
 <form id="theForm"><!--   action="../../edit/upload-project" method="POST"-->
 <input type="hidden" id="prjName" name="project"/>
-<textarea name="prog" cols=100 rows=24 style="display:none;"></textarea>
+<textarea id="prog" name="prog" cols=100 rows=24 style="display:none;"></textarea>
 
+<p>タイトル
+<input id="prjTitle" name="title"></input></p>
+
+<p>説明<br/>
+<textarea id="desc" name="description" cols=100 rows=24></textarea>
+</p>
 <div><input type="checkbox" id="publishToList" name="publishToList" value="true">このプロジェクトをプロジェクト一覧に表示する</div>
 <ul>
 <li>プロジェクト一覧は，tonyuedit（プロジェクト開発環境），tonyuexe（プロジェクト実行専用サイト）いずれの利用者からも見ることができます．

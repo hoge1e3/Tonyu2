@@ -1,4 +1,4 @@
-// Created at Thu Oct 02 2014 10:56:04 GMT+0900 (東京 (標準時))
+// Created at Tue Oct 07 2014 10:03:16 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -634,6 +634,12 @@ define([], function () {
 	if (loc.match(/tonyuedit\.appspot\.com/) || loc.match(/localhost:8888/) ) {
 	    window.WebSite.disableROM={"ROM_d.js":true};
 	}
+    if (loc.match(/\.appspot\.com/) ||  loc.match(/localhost:888[87]/)) {
+        window.WebSite.serverType="GAE";
+    }
+    if (loc.match(/localhost:3000/) ) {
+        window.WebSite.serverType="Node";
+    }
     return window.WebSite;
 });
 
@@ -6138,6 +6144,11 @@ define(["FS","Util"],function (FS,Util) {
     };
     Shell.rm=function (file, options) {
         if (!options) options={};
+        if (options.notrash) {
+            file=resolve(file, false);
+            file.removeWithoutTrash();
+            return 1;
+        }
         file=resolve(file, true);
         if (file.isDir() && options.r) {
             var dir=file;
@@ -6202,6 +6213,11 @@ define(["FS","Util"],function (FS,Util) {
         console.log.apply(console,arguments);
         if (Shell.outUI && Shell.outUI.log) Shell.outUI.log.apply(Shell.outUI,arguments);
     };
+    Shell.err=function () {
+        console.log.apply(console,arguments);
+        if (Shell.outUI && Shell.outUI.err) Shell.outUI.err.apply(Shell.outUI,arguments);
+    };
+
     Shell.prompt=function () {};
     Shell.ASYNC={r:"SH_ASYNC"};
     Shell.help=function () {
