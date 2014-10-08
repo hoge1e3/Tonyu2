@@ -1,4 +1,4 @@
-// Created at Tue Oct 07 2014 13:16:31 GMT+0900 (東京 (標準時))
+// Created at Wed Oct 08 2014 21:46:03 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -648,7 +648,7 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1412055786264},"Actor.tonyu":{"lastUpdate":1411023260959},"BaseActor.tonyu":{"lastUpdate":1411550826406},"Boot.tonyu":{"lastUpdate":1411699443780},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1412055786266},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1411550826408},"Sprites.tonyu":{"lastUpdate":1410239416752},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1410239416753},"MapEditor.tonyu":{"lastUpdate":1412055786267},"InputDevice.tonyu":{"lastUpdate":1411529063835}}',
+      '': '{".desktop":{"lastUpdate":1412055786264},"Actor.tonyu":{"lastUpdate":1411023260959},"BaseActor.tonyu":{"lastUpdate":1411550826406},"Boot.tonyu":{"lastUpdate":1411699443780},"InputDevice.tonyu":{"lastUpdate":1411529063835},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1412055786266},"MapEditor.tonyu":{"lastUpdate":1412055786267},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"Panel.tonyu":{"lastUpdate":1410239416753},"ScaledCanvas.tonyu":{"lastUpdate":1411550826408},"Sprites.tonyu":{"lastUpdate":1410239416752},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000}}',
       '.desktop': '{"runMenuOrd":["MapLoad","MapEditor","Main2","Main","AcTestM","NObjTest","NObjTest2","AcTest","AltBoot","Ball","Bar","Bounce","Map","MapTest","MapTest2nd","SetBGCTest","Label","PanelTest"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -2140,7 +2140,7 @@ requireSimulator.setName('fs/ROMd');
   var rom={
     base: '/Tonyu/doc/',
     data: {
-      '': '{"index.txt":{"lastUpdate":1411099955927},"novice/":{"lastUpdate":1400579960587},"projectIndex.txt":{"lastUpdate":1400120163000},"tonyu2/":{"lastUpdate":1410160432674},"isodex.txt":{"lastUpdate":1410745945670,"trashed":true},"images/":{"lastUpdate":1411099634209}}',
+      '': '{"index.txt":{"lastUpdate":1411099955927},"projectIndex.txt":{"lastUpdate":1400120163000},"images/":{"lastUpdate":1412764399457},"novice/":{"lastUpdate":1412764399496},"tonyu2/":{"lastUpdate":1412764399619}}',
       'images/': '{"test.png":{"lastUpdate":1410938917586},"toste.png":{"lastUpdate":1410937500503}}',
       'images/test.png': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAADAFBMVEUAAACAAAAztzN91mMAAICAAIAAgIDA+6KAgID/AAAA/wD//wAAAP//AP8A//////8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBZ06cAAAAEHRSTlP///////////////////8A4CNdGQAAAFZJREFUeJzt0jEOwDAIQ9HIDIy9/21L1VSBBik4c/6I30i7QmrFSyOAunigSXWQjQNVgFjZCKsO/gg9DnwILh6IAAfsgqcMhJ9cgoH8yIIX+XEHzC3BDcwPH+GHmXyUAAAAAElFTkSuQmCC',
       'images/toste.png': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAADAFBMVEUAAACAAAAztzN91mMAAICAAIAAgIDA+6KAgID/AAAA/wD//wAAAP//AP8A//////8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBZ06cAAAAEHRSTlP///////////////////8A4CNdGQAAAFZJREFUeJzt0jEOwDAIQ9HIDIy9/21L1VSBBik4c/6I30i7QmrFSyOAunigSXWQjQNVgFjZCKsO/gg9DnwILh6IAAfsgqcMhJ9cgoH8yIIX+XEHzC3BDcwPH+GHmXyUAAAAAElFTkSuQmCC',
@@ -3153,7 +3153,7 @@ requireSimulator.setName('fs/ROMd');
         '名前は，半角英字とアンダースコア(_)が使えます．2文字以上でも構いません．2文字目以降は数字も使うことができます．'
       ,
       'projectIndex.txt': '',
-      'tonyu2/': '{"$mouseX, $mouseY.txt":{"lastUpdate":1400120163000},"$touches.txt":{"lastUpdate":1400120163000},"Actor.txt":{"lastUpdate":1400120163000},"all.txt":{"lastUpdate":1400120163000},"allCrash.txt":{"lastUpdate":1400120163000},"api.txt":{"lastUpdate":1401941215219},"asyncResult.txt":{"lastUpdate":1400120163000},"BaseActor.txt":{"lastUpdate":1401255240110},"Boot.txt":{"lastUpdate":1401941267461},"classDef.txt":{"lastUpdate":1400120163000},"console.txt":{"lastUpdate":1400120163000},"cpats.txt":{"lastUpdate":1404106758681},"crashTo.txt":{"lastUpdate":1400120164000},"crashTo1.txt":{"lastUpdate":1400120164000},"die.txt":{"lastUpdate":1400120164000},"draw.txt":{"lastUpdate":1400120164000},"extend.txt":{"lastUpdate":1400120164000},"file.txt":{"lastUpdate":1400120164000},"forin.txt":{"lastUpdate":1400120164000},"frame.txt":{"lastUpdate":1401255298602},"FS.each.txt":{"lastUpdate":1400120164000},"FS.exists.txt":{"lastUpdate":1400120164000},"FS.obj.txt":{"lastUpdate":1400120164000},"FS.recursive.txt":{"lastUpdate":1400120164000},"FS.rel.txt":{"lastUpdate":1400120164000},"FS.text.txt":{"lastUpdate":1400120164000},"fs.txt":{"lastUpdate":1400120164000},"get.txt":{"lastUpdate":1401255650741},"getAt.txt":{"lastUpdate":1401255658905},"getCrashRect.txt":{"lastUpdate":1400120164000},"getkey.txt":{"lastUpdate":1400120164000},"hide.txt":{"lastUpdate":1400120164000},"ide.txt":{"lastUpdate":1400120164000},"index.txt":{"lastUpdate":1400120164000},"isDead.txt":{"lastUpdate":1400120164000},"kernel.txt":{"lastUpdate":1400120164000},"lang.txt":{"lastUpdate":1400120164000},"Map.txt":{"lastUpdate":1401255487455},"MathMod.txt":{"lastUpdate":1400120164000},"options.txt":{"lastUpdate":1400120164000},"play.txt":{"lastUpdate":1410160432673},"playSE.txt":{"lastUpdate":1400120164000},"print.txt":{"lastUpdate":1400120164000},"resize.txt":{"lastUpdate":1400120164000},"rnd.txt":{"lastUpdate":1400120164000},"ScaledCanvas.txt":{"lastUpdate":1401255697009},"scrollTo.txt":{"lastUpdate":1401255664750},"set.txt":{"lastUpdate":1401255540844},"setBGColor.txt":{"lastUpdate":1401255686147},"show.txt":{"lastUpdate":1400120164000},"sugar.txt":{"lastUpdate":1400120164000},"super.txt":{"lastUpdate":1400120164000},"TQuery.alive.txt":{"lastUpdate":1400120164000},"TQuery.apply.txt":{"lastUpdate":1400120164000},"TQuery.attr.txt":{"lastUpdate":1400120164000},"TQuery.die.txt":{"lastUpdate":1400120164000},"TQuery.find.txt":{"lastUpdate":1400120164000},"TQuery.minmax.txt":{"lastUpdate":1400120164000},"TQuery.txt":{"lastUpdate":1400120164000},"update.txt":{"lastUpdate":1401255209313},"waitFor.txt":{"lastUpdate":1400120164000},"waitmode.txt":{"lastUpdate":1400120164000},"setAt.txt":{"lastUpdate":1401255643995},"updateEx.txt":{"lastUpdate":1401255346149},"clearRect.txt":{"lastUpdate":1401943178040},"fillRect.txt":{"lastUpdate":1401942274402},"fillText.txt":{"lastUpdate":1401942864666},"getPixel.txt":{"lastUpdate":1402467081226},"Panel.txt":{"lastUpdate":1401945627455},"setFillStyle.txt":{"lastUpdate":1401941975499},"setPanel.txt":{"lastUpdate":1401941697100}}',
+      'tonyu2/': '{"$mouseX, $mouseY.txt":{"lastUpdate":1400120163000},"$touches.txt":{"lastUpdate":1400120163000},"Actor.txt":{"lastUpdate":1400120163000},"all.txt":{"lastUpdate":1400120163000},"allCrash.txt":{"lastUpdate":1400120163000},"api.txt":{"lastUpdate":1401941215219},"asyncResult.txt":{"lastUpdate":1400120163000},"BaseActor.txt":{"lastUpdate":1401255240110},"Boot.txt":{"lastUpdate":1401941267461},"classDef.txt":{"lastUpdate":1400120163000},"clearRect.txt":{"lastUpdate":1401943178040},"console.txt":{"lastUpdate":1400120163000},"cpats.txt":{"lastUpdate":1404106758681},"crashTo.txt":{"lastUpdate":1400120164000},"crashTo1.txt":{"lastUpdate":1400120164000},"die.txt":{"lastUpdate":1400120164000},"draw.txt":{"lastUpdate":1400120164000},"extend.txt":{"lastUpdate":1400120164000},"file.txt":{"lastUpdate":1400120164000},"fillRect.txt":{"lastUpdate":1401942274402},"fillText.txt":{"lastUpdate":1401942864666},"forin.txt":{"lastUpdate":1400120164000},"frame.txt":{"lastUpdate":1401255298602},"FS.each.txt":{"lastUpdate":1400120164000},"FS.exists.txt":{"lastUpdate":1400120164000},"FS.obj.txt":{"lastUpdate":1400120164000},"FS.recursive.txt":{"lastUpdate":1400120164000},"FS.rel.txt":{"lastUpdate":1400120164000},"FS.text.txt":{"lastUpdate":1400120164000},"fs.txt":{"lastUpdate":1400120164000},"get.txt":{"lastUpdate":1401255650741},"getAt.txt":{"lastUpdate":1401255658905},"getCrashRect.txt":{"lastUpdate":1400120164000},"getkey.txt":{"lastUpdate":1400120164000},"getPixel.txt":{"lastUpdate":1402467081226},"hide.txt":{"lastUpdate":1400120164000},"ide.txt":{"lastUpdate":1400120164000},"index.txt":{"lastUpdate":1400120164000},"isDead.txt":{"lastUpdate":1400120164000},"kernel.txt":{"lastUpdate":1400120164000},"lang.txt":{"lastUpdate":1400120164000},"Map.txt":{"lastUpdate":1401255487455},"MathMod.txt":{"lastUpdate":1400120164000},"options.txt":{"lastUpdate":1400120164000},"Panel.txt":{"lastUpdate":1401945627455},"play.txt":{"lastUpdate":1410160432673},"playSE.txt":{"lastUpdate":1400120164000},"print.txt":{"lastUpdate":1400120164000},"resize.txt":{"lastUpdate":1400120164000},"rnd.txt":{"lastUpdate":1400120164000},"ScaledCanvas.txt":{"lastUpdate":1401255697009},"scrollTo.txt":{"lastUpdate":1401255664750},"set.txt":{"lastUpdate":1401255540844},"setAt.txt":{"lastUpdate":1401255643995},"setBGColor.txt":{"lastUpdate":1401255686147},"setFillStyle.txt":{"lastUpdate":1401941975499},"setPanel.txt":{"lastUpdate":1401941697100},"show.txt":{"lastUpdate":1400120164000},"sugar.txt":{"lastUpdate":1400120164000},"super.txt":{"lastUpdate":1400120164000},"TQuery.alive.txt":{"lastUpdate":1400120164000},"TQuery.apply.txt":{"lastUpdate":1400120164000},"TQuery.attr.txt":{"lastUpdate":1400120164000},"TQuery.die.txt":{"lastUpdate":1400120164000},"TQuery.find.txt":{"lastUpdate":1400120164000},"TQuery.minmax.txt":{"lastUpdate":1400120164000},"TQuery.txt":{"lastUpdate":1400120164000},"update.txt":{"lastUpdate":1401255209313},"updateEx.txt":{"lastUpdate":1401255346149},"waitFor.txt":{"lastUpdate":1400120164000},"waitmode.txt":{"lastUpdate":1400120164000}}',
       'tonyu2/$mouseX, $mouseY.txt': 
         '[[api]]\n'+
         '\n'+
@@ -4994,7 +4994,7 @@ requireSimulator.setName('fs/ROMs');
   var rom={
     base: '/Tonyu/SampleROM/',
     data: {
-      '': '{"10_MultiTouch/":{"lastUpdate":1400579961000},"11_Resize/":{"lastUpdate":1400579961005},"12_Sound/":{"lastUpdate":1400579961010},"13_DX/":{"lastUpdate":1400579961016},"14_File/":{"lastUpdate":1400579961020},"1_Animation/":{"lastUpdate":1400579961024},"2_MultipleObj/":{"lastUpdate":1400579961029},"3_NewParam/":{"lastUpdate":1400579961034},"4_getkey/":{"lastUpdate":1400579961037},"5_Chase/":{"lastUpdate":1400579961042},"6_Shot/":{"lastUpdate":1400579961051},"7_Text/":{"lastUpdate":1400579961059},"8_Patterns/":{"lastUpdate":1400579961067},"9_Mouse/":{"lastUpdate":1400579961070}}',
+      '': '{"10_MultiTouch/":{"lastUpdate":1412764400045},"11_Resize/":{"lastUpdate":1412764400050},"12_Sound/":{"lastUpdate":1412764400056},"13_DX/":{"lastUpdate":1412764400060},"14_File/":{"lastUpdate":1412764400063},"1_Animation/":{"lastUpdate":1412764400065},"2_MultipleObj/":{"lastUpdate":1412764400069},"3_NewParam/":{"lastUpdate":1412764400075},"4_getkey/":{"lastUpdate":1412764400078},"5_Chase/":{"lastUpdate":1412764400082},"6_Shot/":{"lastUpdate":1412764400088},"7_Text/":{"lastUpdate":1412764400096},"8_Patterns/":{"lastUpdate":1412764400102},"9_Mouse/":{"lastUpdate":1412764400106}}',
       '10_MultiTouch/': '{".desktop":{"lastUpdate":1400120165000},"Main.tonyu":{"lastUpdate":1400120165000},"options.json":{"lastUpdate":1400120165000},"Touch.tonyu":{"lastUpdate":1400120165000}}',
       '10_MultiTouch/.desktop': '{"runMenuOrd":["Main","Touch"]}',
       '10_MultiTouch/Main.tonyu': 
@@ -5978,7 +5978,7 @@ function FileList(elem, options) {
         var p=_curDir.up();
         if (p && !_curDir.equals(options.topDir)) {
             $("<li>").append(
-                    $("<span>").addClass("fileItem").text("..")
+                    $("<span>").addClass("fileItem").text("[Up]")
             ).appendTo(items).click(function () {
                 select(p);
             });
@@ -6352,7 +6352,7 @@ var FileMenu=function () {
         if (!confirm(curFile.name()+"を削除しますか？")) return;
         curFile.rm();
         FM.on.ls();
-        FM.on.close();
+        FM.on.close(curFile);
     };
     /*$(function () {
         $("#newFile").click(FM.create);
@@ -12531,21 +12531,20 @@ $(function () {
     setDiagMode(false);
     //ImageList(Tonyu.defaultResource.images, Sprites.setImageList);
 
+    var screenH;
     function onResize() {
         //console.log($(window).height(), $("#navBar").height());
         var h=$(window).height()-$("#navBar").height();
         h-=20;
+        screenH=h;
         var rw=$("#runArea").width();
-        $("#prog").css("height",h+"px");
+        $("#progs pre").css("height",h+"px");
         $("#cv").attr("height", h).attr("width", rw);
         cv=$("#cv")[0].getContext("2d");
         $("#fileItemList").height(h);
     }
     onResize();
-    var prog=ace.edit("prog");
-    if (typeof desktopEnv.editorFontSize=="number") prog.setFontSize(desktopEnv.editorFontSize);
-    prog.setTheme("ace/theme/eclipse");
-    prog.getSession().setMode("ace/mode/tonyu");
+    var editors={};
 
     KeyEventChecker.down(document,"F9",run);
     KeyEventChecker.down(document,"F2",stop);
@@ -12555,13 +12554,6 @@ $(function () {
     	e.preventDefault();
     	return false;
     });
-
-
-    var closedMsg="←左のリストからファイルを選択してください．\nファイルがない場合はメニューの「ファイル」→「新規」を選んでください";
-    prog.setValue(closedMsg);
-    prog.setReadOnly(true);
-    prog.clearSelection();
-
     $(window).resize(onResize);
     $("body")[0].spellcheck=false;
     sh.cd(curProjectDir);
@@ -12581,7 +12573,6 @@ $(function () {
     FM.on.close=close;
     FM.on.ls=ls;
     FM.on.validateName=fixName;
-    FM.on.close=close;
     FM.on.createContent=function (f) {
         var k=curPrj.isKernel(f.truncExt(EXT));
         if (k) {
@@ -12683,11 +12674,22 @@ $(function () {
             return {ok:false, reason:"名前は，半角英数字とアンダースコア(_)のみが使えます．先頭は英大文字にしてください．"};
         }
     }
+    function getCurrentEditorInfo() {
+        var f=fl.curFile();
+        if (!f) return null;
+        return editors[f.path()];
+    }
+    function getCurrentEditor() {
+        var i=getCurrentEditorInfo();
+        if (i) return i.editor;
+        return null;
+    }
     function displayMode(mode, next) {
         // mode == run     compile_error     runtime_error    edit
+        var prog=getCurrentEditor();
         switch(mode) {
         case "run":
-            prog.blur();
+            if (prog) prog.blur();
             showErrorPos($("#errorPos"));
             //$("#errorPos").hide();// (1000,next);
             //$("#runArea").slideDown(1000, next);
@@ -12767,44 +12769,47 @@ $(function () {
             //if(userAgent.indexOf('msie')<0) throw e;
         } else throw e;
     };
-    $("#prog").click(function () {
-        displayMode("edit");
-    });
     $("#mapEditor").click(function () {
         console.log("run map");
         run("MapEditor");
     });
     $("#search").click(function () {
-	console.log("src diag");
-	searchDialog.show(curProjectDir,function (info){
-	    fl.select(info.file);
-	    setTimeout(function () {
-		prog.gotoLine(info.lineNo);
-	    },0);
-	});
+        console.log("src diag");
+        searchDialog.show(curProjectDir,function (info){
+            fl.select(info.file);
+            setTimeout(function () {
+                var prog=getCurrentEditor();
+                if (prog) prog.gotoLine(info.lineNo);
+            },50);
+        });
     });
-    function close() {
-        prog.setValue(closedMsg);
-        prog.setReadOnly(true);
+    function close(rm) {
+        var i=editors[rm.path()]; //getCurrentEditorInfo();
+        i.editor.destroy();
+        i.dom.remove();
     }
-    function fixEditorIndent() {
+    function fixEditorIndent(prog) {
         var cur=prog.getCursorPosition();
         prog.setValue(fixIndent( prog.getValue() ));
         prog.clearSelection();
         prog.moveCursorTo(cur.row, cur.column);
     }
     function save() {
-        var curFile=fl.curFile();
-        //console.log(curFile+"Saved ");
-        if (curFile && !curFile.isReadOnly()) {
-            fixEditorIndent();
+        var inf=getCurrentEditorInfo();
+        if (!inf) return;
+        var curFile=inf.file; //fl.curFile();
+        var prog=inf.editor; //getCurrentEditor();
+        if (curFile && prog && !curFile.isReadOnly()) {
+            fixEditorIndent(prog);
             curFile.text(prog.getValue());
         }
         fl.setModified(false);
     }
     function watchModified() {
-    	var curFile=fl.curFile();
-    	if (!curFile) return;
+        var inf=getCurrentEditorInfo();
+        if (!inf) return;
+        var curFile=inf.file; //fl.curFile();
+    	var prog=inf.editor;//getCurrentEditor();
     	fl.setModified(curFile.text()!=prog.getValue());
     }
     setInterval(watchModified,1000);
@@ -12814,9 +12819,29 @@ $(function () {
             return;
         }
         save();
-        prog.setValue( f.text(),0 );
-        prog.setReadOnly(false);
-        prog.clearSelection();
+        var prevF=fl.curFile();
+        if (prevF!=null) {
+            var prev=editors[prevF.path()];
+            if (prev) {
+                prev.dom.hide();
+            }
+        }
+        if (!editors[f.path()]) {
+            var progDOM=$("<pre>").css("height", screenH+"px").text(f.text()).appendTo("#progs");
+            var prog=ace.edit(progDOM[0]);
+            if (typeof desktopEnv.editorFontSize=="number") prog.setFontSize(desktopEnv.editorFontSize);
+            prog.setTheme("ace/theme/eclipse");
+            prog.getSession().setMode("ace/mode/tonyu");
+            editors[f.path()]={file:f , editor: prog, dom:progDOM};
+            progDOM.click(function () {
+                displayMode("edit");
+            });
+            prog.setReadOnly(false);
+            prog.clearSelection();
+        }
+        var inf=editors[f.path()];
+        inf.dom.show();
+        inf.editor.focus();
     }
     d=function () {
         Tonyu.currentProject.dumpJS.apply(this,arguments);
@@ -12884,10 +12909,11 @@ $(function () {
         document.location.href="project.html?dir="+npd;
     });
     $("#editorEditor").click(function () {
-	var s=prompt("エディタの文字の大きさ", desktopEnv.editorFontSize||12);
-	desktopEnv.editorFontSize=parseInt(s);
-	prog.setFontSize(desktopEnv.editorFontSize||12);
-	saveDesktopEnv();
+        var prog=getCurrentEditor();
+        var s=prompt("エディタの文字の大きさ", desktopEnv.editorFontSize||12);
+        desktopEnv.editorFontSize=parseInt(s);
+        prog.setFontSize(desktopEnv.editorFontSize||12);
+        saveDesktopEnv();
     });
     sh.curFile=function () {
         return fl.curFile();

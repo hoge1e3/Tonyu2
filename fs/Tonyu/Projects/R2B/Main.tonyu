@@ -1,5 +1,5 @@
 while(true) {
-    $Screen.setBGColor("rgb(0,0,80)");
+    $Screen.setBGColor("rgb(0,0,100)");
     //$rcnt=new RCount;
     $p1=new Pipe{x:$screenWidth/3,y:$screenHeight-12,cnt:-1};
     $p2=new Pipe{x:$screenWidth/3*2,y:$screenHeight-12,out:$p1,cnt:5,

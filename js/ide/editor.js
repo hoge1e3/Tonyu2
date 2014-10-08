@@ -70,13 +70,6 @@ $(function () {
     	e.preventDefault();
     	return false;
     });
-
-
-    /*var closedMsg="←左のリストからファイルを選択してください．\nファイルがない場合はメニューの「ファイル」→「新規」を選んでください";
-    prog.setValue(closedMsg);
-    prog.setReadOnly(true);
-    prog.clearSelection();*/
-
     $(window).resize(onResize);
     $("body")[0].spellcheck=false;
     sh.cd(curProjectDir);
@@ -311,27 +304,28 @@ $(function () {
         i.editor.destroy();
         i.dom.remove();
     }
-    function fixEditorIndent() {
-        var prog=getCurrentEditor();
+    function fixEditorIndent(prog) {
         var cur=prog.getCursorPosition();
         prog.setValue(fixIndent( prog.getValue() ));
         prog.clearSelection();
         prog.moveCursorTo(cur.row, cur.column);
     }
     function save() {
-        var curFile=fl.curFile();
-        var prog=getCurrentEditor();
+        var inf=getCurrentEditorInfo();
+        if (!inf) return;
+        var curFile=inf.file; //fl.curFile();
+        var prog=inf.editor; //getCurrentEditor();
         if (curFile && prog && !curFile.isReadOnly()) {
-            fixEditorIndent();
+            fixEditorIndent(prog);
             curFile.text(prog.getValue());
         }
         fl.setModified(false);
     }
     function watchModified() {
-    	var curFile=fl.curFile();
-    	if (!curFile) return;
-    	var prog=getCurrentEditor();
-        if (!prog) return;
+        var inf=getCurrentEditorInfo();
+        if (!inf) return;
+        var curFile=inf.file; //fl.curFile();
+    	var prog=inf.editor;//getCurrentEditor();
     	fl.setModified(curFile.text()!=prog.getValue());
     }
     setInterval(watchModified,1000);
@@ -431,10 +425,11 @@ $(function () {
         document.location.href="project.html?dir="+npd;
     });
     $("#editorEditor").click(function () {
-	var s=prompt("エディタの文字の大きさ", desktopEnv.editorFontSize||12);
-	desktopEnv.editorFontSize=parseInt(s);
-	prog.setFontSize(desktopEnv.editorFontSize||12);
-	saveDesktopEnv();
+        var prog=getCurrentEditor();
+        var s=prompt("エディタの文字の大きさ", desktopEnv.editorFontSize||12);
+        desktopEnv.editorFontSize=parseInt(s);
+        prog.setFontSize(desktopEnv.editorFontSize||12);
+        saveDesktopEnv();
     });
     sh.curFile=function () {
         return fl.curFile();

@@ -52,7 +52,7 @@ function FileList(elem, options) {
         var p=_curDir.up();
         if (p && !_curDir.equals(options.topDir)) {
             $("<li>").append(
-                    $("<span>").addClass("fileItem").text("..")
+                    $("<span>").addClass("fileItem").text("[Up]")
             ).appendTo(items).click(function () {
                 select(p);
             });
