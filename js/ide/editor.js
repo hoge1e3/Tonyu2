@@ -47,21 +47,20 @@ $(function () {
     setDiagMode(false);
     //ImageList(Tonyu.defaultResource.images, Sprites.setImageList);
 
+    var screenH;
     function onResize() {
         //console.log($(window).height(), $("#navBar").height());
         var h=$(window).height()-$("#navBar").height();
         h-=20;
+        screenH=h;
         var rw=$("#runArea").width();
-        $("#prog").css("height",h+"px");
+        $("#progs pre").css("height",h+"px");
         $("#cv").attr("height", h).attr("width", rw);
         cv=$("#cv")[0].getContext("2d");
         $("#fileItemList").height(h);
     }
     onResize();
-    var prog=ace.edit("prog");
-    if (typeof desktopEnv.editorFontSize=="number") prog.setFontSize(desktopEnv.editorFontSize);
-    prog.setTheme("ace/theme/eclipse");
-    prog.getSession().setMode("ace/mode/tonyu");
+    var editors={};
 
     KeyEventChecker.down(document,"F9",run);
     KeyEventChecker.down(document,"F2",stop);
@@ -73,10 +72,10 @@ $(function () {
     });
 
 
-    var closedMsg="←左のリストからファイルを選択してください．\nファイルがない場合はメニューの「ファイル」→「新規」を選んでください";
+    /*var closedMsg="←左のリストからファイルを選択してください．\nファイルがない場合はメニューの「ファイル」→「新規」を選んでください";
     prog.setValue(closedMsg);
     prog.setReadOnly(true);
-    prog.clearSelection();
+    prog.clearSelection();*/
 
     $(window).resize(onResize);
     $("body")[0].spellcheck=false;
@@ -97,7 +96,6 @@ $(function () {
     FM.on.close=close;
     FM.on.ls=ls;
     FM.on.validateName=fixName;
-    FM.on.close=close;
     FM.on.createContent=function (f) {
         var k=curPrj.isKernel(f.truncExt(EXT));
         if (k) {
@@ -199,11 +197,22 @@ $(function () {
             return {ok:false, reason:"名前は，半角英数字とアンダースコア(_)のみが使えます．先頭は英大文字にしてください．"};
         }
     }
+    function getCurrentEditorInfo() {
+        var f=fl.curFile();
+        if (!f) return null;
+        return editors[f.path()];
+    }
+    function getCurrentEditor() {
+        var i=getCurrentEditorInfo();
+        if (i) return i.editor;
+        return null;
+    }
     function displayMode(mode, next) {
         // mode == run     compile_error     runtime_error    edit
+        var prog=getCurrentEditor();
         switch(mode) {
         case "run":
-            prog.blur();
+            if (prog) prog.blur();
             showErrorPos($("#errorPos"));
             //$("#errorPos").hide();// (1000,next);
             //$("#runArea").slideDown(1000, next);
@@ -283,27 +292,27 @@ $(function () {
             //if(userAgent.indexOf('msie')<0) throw e;
         } else throw e;
     };
-    $("#prog").click(function () {
-        displayMode("edit");
-    });
     $("#mapEditor").click(function () {
         console.log("run map");
         run("MapEditor");
     });
     $("#search").click(function () {
-	console.log("src diag");
-	searchDialog.show(curProjectDir,function (info){
-	    fl.select(info.file);
-	    setTimeout(function () {
-		prog.gotoLine(info.lineNo);
-	    },0);
-	});
+        console.log("src diag");
+        searchDialog.show(curProjectDir,function (info){
+            fl.select(info.file);
+            setTimeout(function () {
+                var prog=getCurrentEditor();
+                if (prog) prog.gotoLine(info.lineNo);
+            },50);
+        });
     });
-    function close() {
-        prog.setValue(closedMsg);
-        prog.setReadOnly(true);
+    function close(rm) {
+        var i=editors[rm.path()]; //getCurrentEditorInfo();
+        i.editor.destroy();
+        i.dom.remove();
     }
     function fixEditorIndent() {
+        var prog=getCurrentEditor();
         var cur=prog.getCursorPosition();
         prog.setValue(fixIndent( prog.getValue() ));
         prog.clearSelection();
@@ -311,8 +320,8 @@ $(function () {
     }
     function save() {
         var curFile=fl.curFile();
-        //console.log(curFile+"Saved ");
-        if (curFile && !curFile.isReadOnly()) {
+        var prog=getCurrentEditor();
+        if (curFile && prog && !curFile.isReadOnly()) {
             fixEditorIndent();
             curFile.text(prog.getValue());
         }
@@ -321,6 +330,8 @@ $(function () {
     function watchModified() {
     	var curFile=fl.curFile();
     	if (!curFile) return;
+    	var prog=getCurrentEditor();
+        if (!prog) return;
     	fl.setModified(curFile.text()!=prog.getValue());
     }
     setInterval(watchModified,1000);
@@ -330,9 +341,29 @@ $(function () {
             return;
         }
         save();
-        prog.setValue( f.text(),0 );
-        prog.setReadOnly(false);
-        prog.clearSelection();
+        var prevF=fl.curFile();
+        if (prevF!=null) {
+            var prev=editors[prevF.path()];
+            if (prev) {
+                prev.dom.hide();
+            }
+        }
+        if (!editors[f.path()]) {
+            var progDOM=$("<pre>").css("height", screenH+"px").text(f.text()).appendTo("#progs");
+            var prog=ace.edit(progDOM[0]);
+            if (typeof desktopEnv.editorFontSize=="number") prog.setFontSize(desktopEnv.editorFontSize);
+            prog.setTheme("ace/theme/eclipse");
+            prog.getSession().setMode("ace/mode/tonyu");
+            editors[f.path()]={file:f , editor: prog, dom:progDOM};
+            progDOM.click(function () {
+                displayMode("edit");
+            });
+            prog.setReadOnly(false);
+            prog.clearSelection();
+        }
+        var inf=editors[f.path()];
+        inf.dom.show();
+        inf.editor.focus();
     }
     d=function () {
         Tonyu.currentProject.dumpJS.apply(this,arguments);

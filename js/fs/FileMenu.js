@@ -128,7 +128,7 @@ var FileMenu=function () {
         if (!confirm(curFile.name()+"を削除しますか？")) return;
         curFile.rm();
         FM.on.ls();
-        FM.on.close();
+        FM.on.close(curFile);
     };
     /*$(function () {
         $("#newFile").click(FM.create);
