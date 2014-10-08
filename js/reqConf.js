@@ -224,6 +224,7 @@ var reqConf={
             typeCheck:"lang/typeCheck",
             zip: "fs/zip",
             requestFragment: "fs/requestFragment",
+            Blob: "fs/blob",
             "foo":"bar"
         },
         "baseUrl": "../../js"

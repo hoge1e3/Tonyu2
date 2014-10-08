@@ -1,7 +1,7 @@
-define([],function () {
+define(["WebSite"],function (WebSite) {
     var auth={};
     auth.currentUser=function (onend) {
-        $.get("../../edit/currentUser", function (res) {
+        $.get(WebSite.serverTop+"currentUser", function (res) {
             if (res=="null") res=null;
             onend(res);
         });
