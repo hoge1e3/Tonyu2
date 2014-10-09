@@ -1,0 +1,13 @@
+$map=new Map{chipWidth:32, chipHeight:32};
+$map.load("map.json");
+$map.zOrder=1000;
+x=20;y=20;
+
+while(true) {
+    x++;
+    y++;
+    $Screen.scrollTo(x-$screenWidth/2,y-$screenHeight/2);
+    print(x);
+    update();
+}
+a=6601;

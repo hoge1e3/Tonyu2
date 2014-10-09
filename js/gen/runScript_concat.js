@@ -1,4 +1,4 @@
-// Created at Thu Oct 09 2014 17:45:18 GMT+0900 (東京 (標準時))
+// Created at Thu Oct 09 2014 21:19:25 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -657,7 +657,7 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1412840047453},"Actor.tonyu":{"lastUpdate":1411023260959},"BaseActor.tonyu":{"lastUpdate":1411550826406},"Boot.tonyu":{"lastUpdate":1411699443780},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1412840047455},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1412840047457},"Sprites.tonyu":{"lastUpdate":1412844296184},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1410239416753},"MapEditor.tonyu":{"lastUpdate":1412055786267},"InputDevice.tonyu":{"lastUpdate":1411529063835}}',
+      '': '{".desktop":{"lastUpdate":1412840047453},"Actor.tonyu":{"lastUpdate":1411023260959},"BaseActor.tonyu":{"lastUpdate":1411550826406},"Boot.tonyu":{"lastUpdate":1411699443780},"InputDevice.tonyu":{"lastUpdate":1411529063835},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1412840047455},"MapEditor.tonyu":{"lastUpdate":1412055786267},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"Panel.tonyu":{"lastUpdate":1410239416753},"ScaledCanvas.tonyu":{"lastUpdate":1412840047457},"Sprites.tonyu":{"lastUpdate":1412844296184},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000}}',
       '.desktop': '{"runMenuOrd":["Main2","MapLoad","MapEditor","Main","AcTestM","NObjTest","NObjTest2","AcTest","AltBoot","Ball","Bar","Bounce","Map","MapTest","MapTest2nd","SetBGCTest","Label","PanelTest","ScaledCanvas","Sprites"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+

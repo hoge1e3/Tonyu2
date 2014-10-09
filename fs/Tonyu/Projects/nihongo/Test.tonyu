@@ -1,6 +1,0 @@
-x=20;y=t;
-while(true) {
-    x++;
-    update();
-}
-a=6601;
