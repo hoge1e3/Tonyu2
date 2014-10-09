@@ -39,10 +39,13 @@ function draw(cv) {
     orderArray=orderArray.concat(sprites);
     orderArray.sort(compOrder);
     ctx.translate(-$Screen.sx,-$Screen.sy);
-    orderArray.forEach(\(orderArray){
-        orderArray.draw(ctx);
+    orderArray.forEach(\(s){
+        if(s!==$consolePanel){
+            s.draw(ctx);
+        }
     });
     ctx.restore();
+    $consolePanel.draw(ctx);
 }
 function checkHit() {
     hitWatchers.forEach(function (w) {

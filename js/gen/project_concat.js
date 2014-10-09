@@ -1,4 +1,4 @@
-// Created at Thu Oct 09 2014 16:37:16 GMT+0900 (東京 (標準時))
+// Created at Thu Oct 09 2014 17:45:17 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -646,8 +646,8 @@ define([], function () {
     } else {
         window.WebSite.serverTop=window.WebSite.top+"edit/";
     }
-    window.WebSite.env={sampleImg:window.WebSite.top+"images/", top:window.WebSite.top,
-            serverTop:window.WebSite.serverTop };
+    window.WebSite.sampleImg=window.WebSite.top+"images";
+    window.WebSite.blobPath=window.WebSite.serverTop+"serveBlob";
 
     return window.WebSite;
 });
@@ -657,7 +657,7 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1412840047453},"Actor.tonyu":{"lastUpdate":1411023260959},"BaseActor.tonyu":{"lastUpdate":1411550826406},"Boot.tonyu":{"lastUpdate":1411699443780},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1412840047455},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1412840047457},"Sprites.tonyu":{"lastUpdate":1412840047459},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1410239416753},"MapEditor.tonyu":{"lastUpdate":1412055786267},"InputDevice.tonyu":{"lastUpdate":1411529063835}}',
+      '': '{".desktop":{"lastUpdate":1412840047453},"Actor.tonyu":{"lastUpdate":1411023260959},"BaseActor.tonyu":{"lastUpdate":1411550826406},"Boot.tonyu":{"lastUpdate":1411699443780},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1412840047455},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1412840047457},"Sprites.tonyu":{"lastUpdate":1412844296184},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1410239416753},"MapEditor.tonyu":{"lastUpdate":1412055786267},"InputDevice.tonyu":{"lastUpdate":1411529063835}}',
       '.desktop': '{"runMenuOrd":["Main2","MapLoad","MapEditor","Main","AcTestM","NObjTest","NObjTest2","AcTest","AltBoot","Ball","Bar","Bounce","Map","MapTest","MapTest2nd","SetBGCTest","Label","PanelTest","ScaledCanvas","Sprites"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -1866,10 +1866,13 @@ requireSimulator.setName('fs/ROMk');
         '    orderArray=orderArray.concat(sprites);\n'+
         '    orderArray.sort(compOrder);\n'+
         '    ctx.translate(-$Screen.sx,-$Screen.sy);\n'+
-        '    orderArray.forEach(\\(orderArray){\n'+
-        '        orderArray.draw(ctx);\n'+
+        '    orderArray.forEach(\\(s){\n'+
+        '        if(s!==$consolePanel){\n'+
+        '            s.draw(ctx);\n'+
+        '        }\n'+
         '    });\n'+
         '    ctx.restore();\n'+
+        '    $consolePanel.draw(ctx);\n'+
         '}\n'+
         'function checkHit() {\n'+
         '    hitWatchers.forEach(function (w) {\n'+
@@ -10377,6 +10380,9 @@ define(["PatternParser","Util","WebSite"], function (PP,Util,WebSite) {
     };
     IL.load=IL;
 	IL.convURL=function (url, baseDir) {
+	    url=url.replace(/\$\{([a-zA-Z0-9_]+)\}/g, function (t,name) {
+	        return WebSite[name];
+	    });
         if (WebSite.urlAliases[url]) url=WebSite.urlAliases[url];
 	    if (Util.startsWith(url,"ls:")) {
 	        var rel=url.substring("ls:".length);
@@ -10689,6 +10695,7 @@ return Tonyu.Project=function (dir, kernelDir) {
     	return env.options.kernelEditable;
     };
     TPR.getDir=function () {return dir;};
+    TPR.getName=function () { return dir.name().replace(/\/$/,""); };
     return TPR;
 };
 if (typeof getReq=="function") getReq.exports("Tonyu.Project");
@@ -11012,8 +11019,56 @@ define(["Shell","UI","FS","Util"], function (sh,UI,FS,Util) {
     };
     return res;
 });
+requireSimulator.setName('Auth');
+define(["WebSite"],function (WebSite) {
+    var auth={};
+    auth.currentUser=function (onend) {
+        $.get(WebSite.serverTop+"currentUser", function (res) {
+            if (res=="null") res=null;
+            onend(res);
+        });
+    };
+    window.Auth=auth;
+    return auth;
+});
+requireSimulator.setName('Blob');
+define(["Auth","WebSite"],function (a,WebSite) {
+    var Blob={};
+    Blob.upload=function(user, project, file, options) {
+        var fd = new FormData(document.getElementById("fileinfo"));
+        if (options.error) {
+            options.error=function (r) {alert(r);};
+        }
+        fd.append("theFile", file);
+        fd.append("user",user);
+        fd.append("project",project);
+        fd.append("fileName",file.name);
+        $.ajax({
+            type : "get",
+            url : WebSite.serverTop+"blobURL",
+            success : function(url) {
+                $.ajax({
+                    url : url,
+                    type : "POST",
+                    data : fd,
+                    processData : false, // jQuery がデータを処理しないよう指定
+                    contentType : false, // jQuery が contentType を設定しないよう指定
+                    success : function(res) {
+                        console.log("Res = " + res);
+                        options.success.apply({},arguments);// $("#drag").append(res);
+                    },
+                    error: options.error
+                });
+            }
+        });
+    };
+    Blob.url=function(user,project,fileName) {
+        return WebSite.blobPath+user+"/"+project+"/"+fileName;
+    };
+    return Blob;
+});
 requireSimulator.setName('ImageResEditor');
-define(["FS","Tonyu","UI","ImageList"], function (FS, Tonyu, UI,IL) {
+define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"], function (FS, Tonyu, UI,IL,Blob,Auth,WebSite) {
     var ImageResEditor=function (prj) {
         var d=UI("div", {title:"画像リスト"});
         d.css({height:200+"px", "overflow-v":"scroll"});
@@ -11070,6 +11125,7 @@ define(["FS","Tonyu","UI","ImageList"], function (FS, Tonyu, UI,IL) {
             function dropAdd(e) {
                 eo=e.originalEvent;
                 var file = eo.dataTransfer.files[0];
+                var useBlob=(file.size>1000*100);
                 if(!file.type.match(/image\/(png|gif|jpe?g)/)[1]) {
                     e.stopPropagation();
                     e.preventDefault();
@@ -11081,15 +11137,26 @@ define(["FS","Tonyu","UI","ImageList"], function (FS, Tonyu, UI,IL) {
                     imgExt=RegExp.lastMatch;
                 }
                 var v={pwidth:32,pheight:32,name:"$pat_"+imgName};
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    var fileContent = reader.result;
-                    var imgFile=imgDir.rel(imgName+imgExt);
-                    imgFile.text(fileContent);
-                    v.url="ls:"+imgFile.relPath(prj.getDir());// fileContent;
-                    add(v);
-                };
-                reader.readAsDataURL(file);
+                if (useBlob) {
+                    Auth.currentUser(function (u) {
+                        if (u==null) return alert("大きいイメージを追加するには，ログインが必要です．");
+                        var prjN=prj.getName();
+                        Blob.upload(u,prjN,file,{success:function (){
+                            v.url="${blobPath}/"+u+"/"+prjN+"/"+file.name;
+                            add(v);
+                        }});
+                    });
+                } else {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        var fileContent = reader.result;
+                        var imgFile=imgDir.rel(imgName+imgExt);
+                        imgFile.text(fileContent);
+                        v.url="ls:"+imgFile.relPath(prj.getDir());// fileContent;
+                        add(v);
+                    };
+                    reader.readAsDataURL(file);
+                }
                 e.stopPropagation();
                 e.preventDefault();
                 return false;
@@ -11105,8 +11172,7 @@ define(["FS","Tonyu","UI","ImageList"], function (FS, Tonyu, UI,IL) {
                         ["td", ["img", {src: convURL(im.url),width:16,height:16,
                             on:{mouseenter: magOn, mouseout:magOff} }]],
                             ["td", ["input", {$var:"name", size:12,value:im.name}]],
-                            ["td", ["input",{$var:"url", size:20,value:im.url,
-                                on:{dragover: s, dragenter: s, drop:drop}}]],
+                            ["td", ["input",{$var:"url", size:20,value:im.url}]],
                                 ["td",
                                  ["select", {$var:"ptype",on:{change: ptypeChanged }},
                                   ["option",{value:"fix", selected:isFix}, "固定サイズ分割"],
@@ -11149,25 +11215,6 @@ define(["FS","Tonyu","UI","ImageList"], function (FS, Tonyu, UI,IL) {
                         },100);
                     }
                 }
-                function drop(e) {
-                    eo=e.originalEvent;
-                    var file = eo.dataTransfer.files[0];
-                    if(!file.type.match(/image\/(png|gif|jpe?g)/)[1]) {
-                        e.stopPropagation();
-                        e.preventDefault();
-                        return false;
-                    }
-                    var reader = new FileReader();
-                    reader.onload = function(e) {
-                        var fileContent = reader.result;
-                        v.url.val(fileContent);
-                    }
-                    reader.readAsDataURL(file);
-                    e.stopPropagation();
-                    e.preventDefault();
-                    if (!v.name.val()) v.name.val("$pat_"+file.name.replace(/\.(png|gif|jpe?g)$/,"").replace(/\W/g,"_"));
-                    return false;
-                }
                 function del() {
                     for (var i=ims.length-1; i>=0 ; i--) {
                         if (ims[i]===im) {
@@ -11203,12 +11250,27 @@ define(["FS","Tonyu","UI","ImageList"], function (FS, Tonyu, UI,IL) {
             reload();
         }
         function cleanImgFiles() {
+            var ims=rsrc.images;
+            Auth.currentUser(function (u) {
+                if (!u) return;
+                var rtf=[];
+                ims.forEach(function (im) {
+                    if (im.url.match(/^\$\{blobPath\}/)) {
+                        var a=im.url.split("/");
+                        //  ${blobPath}/root/SandBox/yusya.png
+                        rtf.push(a[3]);
+                    }
+                });
+                $.ajax({url:WebSite.serverTop+"retainBlobs",
+                    user:u,project:prj.getName(),
+                    retainFileNames:JSON.stringify(rtf)
+                });
+            })
             var cleanImg={};
             imgDir.each(function (f) {
                 cleanImg["ls:"+f.relPath(prj.getDir())]=f;
             });
             rsrc=prj.getResource();
-            var ims=rsrc.images;
             ims.forEach(function (im){
                 delete cleanImg[im.url];
             })

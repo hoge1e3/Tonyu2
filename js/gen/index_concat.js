@@ -1,4 +1,4 @@
-// Created at Thu Oct 09 2014 16:37:16 GMT+0900 (東京 (標準時))
+// Created at Thu Oct 09 2014 17:45:17 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -646,8 +646,8 @@ define([], function () {
     } else {
         window.WebSite.serverTop=window.WebSite.top+"edit/";
     }
-    window.WebSite.env={sampleImg:window.WebSite.top+"images/", top:window.WebSite.top,
-            serverTop:window.WebSite.serverTop };
+    window.WebSite.sampleImg=window.WebSite.top+"images";
+    window.WebSite.blobPath=window.WebSite.serverTop+"serveBlob";
 
     return window.WebSite;
 });
@@ -657,7 +657,7 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1412840047453},"Actor.tonyu":{"lastUpdate":1411023260959},"BaseActor.tonyu":{"lastUpdate":1411550826406},"Boot.tonyu":{"lastUpdate":1411699443780},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1412840047455},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1412840047457},"Sprites.tonyu":{"lastUpdate":1412840047459},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1410239416753},"MapEditor.tonyu":{"lastUpdate":1412055786267},"InputDevice.tonyu":{"lastUpdate":1411529063835}}',
+      '': '{".desktop":{"lastUpdate":1412840047453},"Actor.tonyu":{"lastUpdate":1411023260959},"BaseActor.tonyu":{"lastUpdate":1411550826406},"Boot.tonyu":{"lastUpdate":1411699443780},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1412840047455},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1412840047457},"Sprites.tonyu":{"lastUpdate":1412844296184},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1410239416753},"MapEditor.tonyu":{"lastUpdate":1412055786267},"InputDevice.tonyu":{"lastUpdate":1411529063835}}',
       '.desktop': '{"runMenuOrd":["Main2","MapLoad","MapEditor","Main","AcTestM","NObjTest","NObjTest2","AcTest","AltBoot","Ball","Bar","Bounce","Map","MapTest","MapTest2nd","SetBGCTest","Label","PanelTest","ScaledCanvas","Sprites"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -1866,10 +1866,13 @@ requireSimulator.setName('fs/ROMk');
         '    orderArray=orderArray.concat(sprites);\n'+
         '    orderArray.sort(compOrder);\n'+
         '    ctx.translate(-$Screen.sx,-$Screen.sy);\n'+
-        '    orderArray.forEach(\\(orderArray){\n'+
-        '        orderArray.draw(ctx);\n'+
+        '    orderArray.forEach(\\(s){\n'+
+        '        if(s!==$consolePanel){\n'+
+        '            s.draw(ctx);\n'+
+        '        }\n'+
         '    });\n'+
         '    ctx.restore();\n'+
+        '    $consolePanel.draw(ctx);\n'+
         '}\n'+
         'function checkHit() {\n'+
         '    hitWatchers.forEach(function (w) {\n'+
