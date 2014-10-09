@@ -1,4 +1,4 @@
-// Created at Wed Oct 08 2014 21:46:04 GMT+0900 (東京 (標準時))
+// Created at Thu Oct 09 2014 10:24:59 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -640,6 +640,15 @@ define([], function () {
     if (loc.match(/localhost:3000/) ) {
         window.WebSite.serverType="Node";
     }
+    if (loc.match(/tonyuexe\.appspot\.com/) ||
+        loc.match(/localhost:8887/)) {
+        window.WebSite.serverTop=window.WebSite.top+"exe/";
+    } else {
+        window.WebSite.serverTop=window.WebSite.top+"edit/";
+    }
+    window.WebSite.env={sampleImg:window.WebSite.top+"images/", top:window.WebSite.top,
+            serverTop:window.WebSite.serverTop };
+
     return window.WebSite;
 });
 

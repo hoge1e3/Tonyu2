@@ -44,5 +44,14 @@ define([], function () {
     if (loc.match(/localhost:3000/) ) {
         window.WebSite.serverType="Node";
     }
+    if (loc.match(/tonyuexe\.appspot\.com/) ||
+        loc.match(/localhost:8887/)) {
+        window.WebSite.serverTop=window.WebSite.top+"exe/";
+    } else {
+        window.WebSite.serverTop=window.WebSite.top+"edit/";
+    }
+    window.WebSite.env={sampleImg:window.WebSite.top+"images/", top:window.WebSite.top,
+            serverTop:window.WebSite.serverTop };
+
     return window.WebSite;
 });
