@@ -191,9 +191,9 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"], function (FS, To
                         rtf.push(a[3]);
                     }
                 });
-                $.ajax({url:WebSite.serverTop+"retainBlobs",
-                    user:u,project:prj.getName(),
-                    retainFileNames:JSON.stringify(rtf)
+                $.ajax({url:WebSite.serverTop+"retainBlobs",type:"get",
+                    data:{user:u,project:prj.getName(),
+                    retainFileNames:JSON.stringify(rtf)}
                 });
             })
             var cleanImg={};
