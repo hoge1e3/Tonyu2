@@ -208,6 +208,7 @@ return Tonyu.Project=function (dir, kernelDir) {
     	return env.options.kernelEditable;
     };
     TPR.getDir=function () {return dir;};
+    TPR.getName=function () { return dir.name().replace(/\/$/,""); };
     return TPR;
 };
 if (typeof getReq=="function") getReq.exports("Tonyu.Project");

@@ -1,6 +1,6 @@
 define(["Auth","WebSite"],function (a,WebSite) {
     var Blob={};
-    Blob.upload=function(file, user, project, options) {
+    Blob.upload=function(user, project, file, options) {
         var fd = new FormData(document.getElementById("fileinfo"));
         if (options.error) {
             options.error=function (r) {alert(r);};
@@ -29,7 +29,7 @@ define(["Auth","WebSite"],function (a,WebSite) {
         });
     };
     Blob.url=function(user,project,fileName) {
-        return WebSite.serverTop+"serverBlob/"+user+"/"+project+"/"+fileName;
+        return WebSite.blobPath+user+"/"+project+"/"+fileName;
     };
-
-})
+    return Blob;
+});

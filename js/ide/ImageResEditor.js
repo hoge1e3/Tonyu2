@@ -1,4 +1,4 @@
-define(["FS","Tonyu","UI","ImageList"], function (FS, Tonyu, UI,IL) {
+define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"], function (FS, Tonyu, UI,IL,Blob,Auth,WebSite) {
     var ImageResEditor=function (prj) {
         var d=UI("div", {title:"画像リスト"});
         d.css({height:200+"px", "overflow-v":"scroll"});
@@ -55,6 +55,7 @@ define(["FS","Tonyu","UI","ImageList"], function (FS, Tonyu, UI,IL) {
             function dropAdd(e) {
                 eo=e.originalEvent;
                 var file = eo.dataTransfer.files[0];
+                var useBlob=(file.size>1000*100);
                 if(!file.type.match(/image\/(png|gif|jpe?g)/)[1]) {
                     e.stopPropagation();
                     e.preventDefault();
@@ -66,15 +67,26 @@ define(["FS","Tonyu","UI","ImageList"], function (FS, Tonyu, UI,IL) {
                     imgExt=RegExp.lastMatch;
                 }
                 var v={pwidth:32,pheight:32,name:"$pat_"+imgName};
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    var fileContent = reader.result;
-                    var imgFile=imgDir.rel(imgName+imgExt);
-                    imgFile.text(fileContent);
-                    v.url="ls:"+imgFile.relPath(prj.getDir());// fileContent;
-                    add(v);
-                };
-                reader.readAsDataURL(file);
+                if (useBlob) {
+                    Auth.currentUser(function (u) {
+                        if (u==null) return alert("大きいイメージを追加するには，ログインが必要です．");
+                        var prjN=prj.getName();
+                        Blob.upload(u,prjN,file,{success:function (){
+                            v.url="${blobPath}/"+u+"/"+prjN+"/"+file.name;
+                            add(v);
+                        }});
+                    });
+                } else {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        var fileContent = reader.result;
+                        var imgFile=imgDir.rel(imgName+imgExt);
+                        imgFile.text(fileContent);
+                        v.url="ls:"+imgFile.relPath(prj.getDir());// fileContent;
+                        add(v);
+                    };
+                    reader.readAsDataURL(file);
+                }
                 e.stopPropagation();
                 e.preventDefault();
                 return false;
@@ -90,8 +102,7 @@ define(["FS","Tonyu","UI","ImageList"], function (FS, Tonyu, UI,IL) {
                         ["td", ["img", {src: convURL(im.url),width:16,height:16,
                             on:{mouseenter: magOn, mouseout:magOff} }]],
                             ["td", ["input", {$var:"name", size:12,value:im.name}]],
-                            ["td", ["input",{$var:"url", size:20,value:im.url,
-                                on:{dragover: s, dragenter: s, drop:drop}}]],
+                            ["td", ["input",{$var:"url", size:20,value:im.url}]],
                                 ["td",
                                  ["select", {$var:"ptype",on:{change: ptypeChanged }},
                                   ["option",{value:"fix", selected:isFix}, "固定サイズ分割"],
@@ -134,25 +145,6 @@ define(["FS","Tonyu","UI","ImageList"], function (FS, Tonyu, UI,IL) {
                         },100);
                     }
                 }
-                function drop(e) {
-                    eo=e.originalEvent;
-                    var file = eo.dataTransfer.files[0];
-                    if(!file.type.match(/image\/(png|gif|jpe?g)/)[1]) {
-                        e.stopPropagation();
-                        e.preventDefault();
-                        return false;
-                    }
-                    var reader = new FileReader();
-                    reader.onload = function(e) {
-                        var fileContent = reader.result;
-                        v.url.val(fileContent);
-                    }
-                    reader.readAsDataURL(file);
-                    e.stopPropagation();
-                    e.preventDefault();
-                    if (!v.name.val()) v.name.val("$pat_"+file.name.replace(/\.(png|gif|jpe?g)$/,"").replace(/\W/g,"_"));
-                    return false;
-                }
                 function del() {
                     for (var i=ims.length-1; i>=0 ; i--) {
                         if (ims[i]===im) {
@@ -188,12 +180,27 @@ define(["FS","Tonyu","UI","ImageList"], function (FS, Tonyu, UI,IL) {
             reload();
         }
         function cleanImgFiles() {
+            var ims=rsrc.images;
+            Auth.currentUser(function (u) {
+                if (!u) return;
+                var rtf=[];
+                ims.forEach(function (im) {
+                    if (im.url.match(/^\$\{blobPath\}/)) {
+                        var a=im.url.split("/");
+                        //  ${blobPath}/root/SandBox/yusya.png
+                        rtf.push(a[3]);
+                    }
+                });
+                $.ajax({url:WebSite.serverTop+"retainBlobs",
+                    user:u,project:prj.getName(),
+                    retainFileNames:JSON.stringify(rtf)
+                });
+            })
             var cleanImg={};
             imgDir.each(function (f) {
                 cleanImg["ls:"+f.relPath(prj.getDir())]=f;
             });
             rsrc=prj.getResource();
-            var ims=rsrc.images;
             ims.forEach(function (im){
                 delete cleanImg[im.url];
             })

@@ -66,6 +66,9 @@ define(["PatternParser","Util","WebSite"], function (PP,Util,WebSite) {
     };
     IL.load=IL;
 	IL.convURL=function (url, baseDir) {
+	    url=url.replace(/\$\{([a-zA-Z0-9_]+)\}/g, function (t,name) {
+	        return WebSite[name];
+	    });
         if (WebSite.urlAliases[url]) url=WebSite.urlAliases[url];
 	    if (Util.startsWith(url,"ls:")) {
 	        var rel=url.substring("ls:".length);

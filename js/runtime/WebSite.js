@@ -50,8 +50,8 @@ define([], function () {
     } else {
         window.WebSite.serverTop=window.WebSite.top+"edit/";
     }
-    window.WebSite.env={sampleImg:window.WebSite.top+"images/", top:window.WebSite.top,
-            serverTop:window.WebSite.serverTop };
+    window.WebSite.sampleImg=window.WebSite.top+"images";
+    window.WebSite.blobPath=window.WebSite.serverTop+"serveBlob";
 
     return window.WebSite;
 });
