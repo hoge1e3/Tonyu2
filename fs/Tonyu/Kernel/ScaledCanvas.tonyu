@@ -10,6 +10,8 @@ native Math;
     ch=canvas.height();
     cctx=canvas[0].getContext("2d");
     this.color="rgb(20,80,180)";
+    sx=0;
+    sy=0;
 }
 \resize(width,height) {
     this.width=width;
@@ -61,7 +63,7 @@ native Math;
     this.color=color;
 }
 \scrollTo(scrollX,scrollY){
-    for(o in all()){
+    /*for(o in all()){
         //print(o.mapObj);
         if(o.mapObj){
             o.scrollTo(o.sx+scrollX,o.sy+scrollY);
@@ -69,5 +71,7 @@ native Math;
             o.x+=scrollX;
             o.y+=scrollY;
         }
-    }
+    }*/
+    sx=scrollX;
+    sy=scrollY;
 }

@@ -106,8 +106,8 @@ native $;
     return getOn(Math.floor(getX/chipWidth),Math.floor(getY/chipHeight));
 }
 \scrollTo(scrollX,scrollY){
-    sx=scrollX;
-    sy=scrollY;
+    sx=-scrollX;
+    sy=-scrollY;
 }
 \draw(ctx) {
     pImg=buf[0];

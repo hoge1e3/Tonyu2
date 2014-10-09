@@ -1,4 +1,4 @@
-// Created at Thu Oct 09 2014 10:24:59 GMT+0900 (東京 (標準時))
+// Created at Thu Oct 09 2014 16:37:17 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -657,8 +657,8 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1412055786264},"Actor.tonyu":{"lastUpdate":1411023260959},"BaseActor.tonyu":{"lastUpdate":1411550826406},"Boot.tonyu":{"lastUpdate":1411699443780},"InputDevice.tonyu":{"lastUpdate":1411529063835},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1412055786266},"MapEditor.tonyu":{"lastUpdate":1412055786267},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"Panel.tonyu":{"lastUpdate":1410239416753},"ScaledCanvas.tonyu":{"lastUpdate":1411550826408},"Sprites.tonyu":{"lastUpdate":1410239416752},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000}}',
-      '.desktop': '{"runMenuOrd":["MapLoad","MapEditor","Main2","Main","AcTestM","NObjTest","NObjTest2","AcTest","AltBoot","Ball","Bar","Bounce","Map","MapTest","MapTest2nd","SetBGCTest","Label","PanelTest"]}',
+      '': '{".desktop":{"lastUpdate":1412840047453},"Actor.tonyu":{"lastUpdate":1411023260959},"BaseActor.tonyu":{"lastUpdate":1411550826406},"Boot.tonyu":{"lastUpdate":1411699443780},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1412840047455},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1412840047457},"Sprites.tonyu":{"lastUpdate":1412840047459},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1410239416753},"MapEditor.tonyu":{"lastUpdate":1412055786267},"InputDevice.tonyu":{"lastUpdate":1411529063835}}',
+      '.desktop': '{"runMenuOrd":["Main2","MapLoad","MapEditor","Main","AcTestM","NObjTest","NObjTest2","AcTest","AltBoot","Ball","Bar","Bounce","Map","MapTest","MapTest2nd","SetBGCTest","Label","PanelTest","ScaledCanvas","Sprites"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
         'native Sprites;\n'+
@@ -1371,8 +1371,8 @@ requireSimulator.setName('fs/ROMk');
         '    return getOn(Math.floor(getX/chipWidth),Math.floor(getY/chipHeight));\n'+
         '}\n'+
         '\\scrollTo(scrollX,scrollY){\n'+
-        '    sx=scrollX;\n'+
-        '    sy=scrollY;\n'+
+        '    sx=-scrollX;\n'+
+        '    sy=-scrollY;\n'+
         '}\n'+
         '\\draw(ctx) {\n'+
         '    pImg=buf[0];\n'+
@@ -1758,6 +1758,8 @@ requireSimulator.setName('fs/ROMk');
         '    ch=canvas.height();\n'+
         '    cctx=canvas[0].getContext("2d");\n'+
         '    this.color="rgb(20,80,180)";\n'+
+        '    sx=0;\n'+
+        '    sy=0;\n'+
         '}\n'+
         '\\resize(width,height) {\n'+
         '    this.width=width;\n'+
@@ -1809,7 +1811,7 @@ requireSimulator.setName('fs/ROMk');
         '    this.color=color;\n'+
         '}\n'+
         '\\scrollTo(scrollX,scrollY){\n'+
-        '    for(o in all()){\n'+
+        '    /*for(o in all()){\n'+
         '        //print(o.mapObj);\n'+
         '        if(o.mapObj){\n'+
         '            o.scrollTo(o.sx+scrollX,o.sy+scrollY);\n'+
@@ -1817,7 +1819,9 @@ requireSimulator.setName('fs/ROMk');
         '            o.x+=scrollX;\n'+
         '            o.y+=scrollY;\n'+
         '        }\n'+
-        '    }\n'+
+        '    }*/\n'+
+        '    sx=scrollX;\n'+
+        '    sy=scrollY;\n'+
         '}'
       ,
       'Sprites.tonyu': 
@@ -1854,15 +1858,18 @@ requireSimulator.setName('fs/ROMk');
         '}\n'+
         'function draw(cv) {\n'+
         '    var ctx=cv.getContext("2d");\n'+
+        '    ctx.save();\n'+
         '    ctx.fillStyle=$Screen.color;\n'+
         '    ctx.fillRect(0,0,cv.width,cv.height);\n'+
         '    if (isDrawGrid) drawGrid(cv);\n'+
         '    var orderArray=[];\n'+
         '    orderArray=orderArray.concat(sprites);\n'+
         '    orderArray.sort(compOrder);\n'+
+        '    ctx.translate(-$Screen.sx,-$Screen.sy);\n'+
         '    orderArray.forEach(\\(orderArray){\n'+
         '        orderArray.draw(ctx);\n'+
         '    });\n'+
+        '    ctx.restore();\n'+
         '}\n'+
         'function checkHit() {\n'+
         '    hitWatchers.forEach(function (w) {\n'+
