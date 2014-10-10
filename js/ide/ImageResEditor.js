@@ -55,7 +55,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"], function (FS, To
             function dropAdd(e) {
                 eo=e.originalEvent;
                 var file = eo.dataTransfer.files[0];
-                var useBlob=(file.size>1000*100);
+                var useBlob=false;//(file.size>1000*100);
                 if(!file.type.match(/image\/(png|gif|jpe?g)/)[1]) {
                     e.stopPropagation();
                     e.preventDefault();

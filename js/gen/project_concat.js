@@ -1,4 +1,4 @@
-// Created at Thu Oct 09 2014 21:19:24 GMT+0900 (東京 (標準時))
+// Created at Fri Oct 10 2014 13:03:18 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -11125,7 +11125,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"], function (FS, To
             function dropAdd(e) {
                 eo=e.originalEvent;
                 var file = eo.dataTransfer.files[0];
-                var useBlob=(file.size>1000*100);
+                var useBlob=false;//(file.size>1000*100);
                 if(!file.type.match(/image\/(png|gif|jpe?g)/)[1]) {
                     e.stopPropagation();
                     e.preventDefault();
