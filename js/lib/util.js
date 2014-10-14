@@ -1,4 +1,4 @@
-Util=function () {
+Util=(function () {
 
 function getQueryString(key, default_)
 {
@@ -22,4 +22,4 @@ function startsWith(str,prefix) {
 }
 
 return {getQueryString:getQueryString, endsWith: endsWith, startsWith: startsWith};
-}();
+})();

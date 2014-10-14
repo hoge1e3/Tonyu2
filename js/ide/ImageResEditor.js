@@ -37,9 +37,10 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"], function (FS, To
 
         function reload() {
             d.empty();
-            d.append(UI("div", {style:"margin:10px; padding:10px; border:solid blue 2px;", on:{dragover: s, dragenter: s, drop:dropAdd}},
-                    "ここに画像ファイル(png/gif/jpg)をドラッグ＆ドロップして追加"
-            ));
+            var dragMsg="ここに画像ファイル(png/gif/jpg)をドラッグ＆ドロップして追加";
+            var dragPoint=UI("div", {style:"margin:10px; padding:10px; border:solid blue 2px;",
+                on:{dragover: s, dragenter: s, drop:dropAdd}},dragMsg
+            ).appendTo(d);
             //UI("div","※「URL」欄に画像ファイル(png/gif)をドラッグ＆ドロップできます．").appendTo(d);
             rsrc=prj.getResource();
             var ims=rsrc.images;
@@ -55,7 +56,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"], function (FS, To
             function dropAdd(e) {
                 eo=e.originalEvent;
                 var file = eo.dataTransfer.files[0];
-                var useBlob=false;//(file.size>1000*100);
+                var useBlob=WebSite.serverType=="GAE" && (file.size>1000*300);
                 if(!file.type.match(/image\/(png|gif|jpe?g)/)[1]) {
                     e.stopPropagation();
                     e.preventDefault();
@@ -68,13 +69,20 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"], function (FS, To
                 }
                 var v={pwidth:32,pheight:32,name:"$pat_"+imgName};
                 if (useBlob) {
-                    Auth.currentUser(function (u) {
-                        if (u==null) return alert("大きいイメージを追加するには，ログインが必要です．");
-                        var prjN=prj.getName();
-                        Blob.upload(u,prjN,file,{success:function (){
-                            v.url="${blobPath}/"+u+"/"+prjN+"/"+file.name;
-                            add(v);
-                        }});
+                    Auth.assertLogin({
+                        showLoginLink:function (u) {
+                            dragPoint.css("border","solid red 2px").empty().append(
+                                    UI("div","大きいイメージを追加するには，ログインが必要です：",
+                                       ["a",{href:u,target:"login",style:"color: blue;"},"ログインする"])
+                            );
+                        },complete:function (u) {
+                            dragPoint.text(dragMsg);
+                            var prjN=prj.getName();
+                            Blob.upload(u,prjN,file,{success:function (){
+                                v.url="${blobPath}/"+u+"/"+prjN+"/"+file.name;
+                                add(v);
+                            }});
+                        }
                     });
                 } else {
                     var reader = new FileReader();
@@ -185,10 +193,9 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"], function (FS, To
                 if (!u) return;
                 var rtf=[];
                 ims.forEach(function (im) {
-                    if (im.url.match(/^\$\{blobPath\}/)) {
-                        var a=im.url.split("/");
-                        //  ${blobPath}/root/SandBox/yusya.png
-                        rtf.push(a[3]);
+                    var a;
+                    if (a=Blob.isBlobURL(im.url)) {
+                        rtf.push(a.fileName);
                     }
                 });
                 $.ajax({url:WebSite.serverTop+"retainBlobs",type:"get",

@@ -1,4 +1,4 @@
-// Created at Fri Oct 10 2014 13:03:18 GMT+0900 (東京 (標準時))
+// Created at Tue Oct 14 2014 19:47:45 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -5697,7 +5697,7 @@ Arrow=function () {
     return A;
 }();
 requireSimulator.setName('Util');
-Util=function () {
+Util=(function () {
 
 function getQueryString(key, default_)
 {
@@ -5721,7 +5721,7 @@ function startsWith(str,prefix) {
 }
 
 return {getQueryString:getQueryString, endsWith: endsWith, startsWith: startsWith};
-}();
+})();
 
 requireSimulator.setName('Log');
 define(["FS"], function () {
@@ -7025,6 +7025,23 @@ define(["WebSite"],function (WebSite) {
         $.get(WebSite.serverTop+"currentUser", function (res) {
             if (res=="null") res=null;
             onend(res);
+        });
+    };
+    auth.assertLogin=function (options) {
+        /*if (typeof options=="function") options={complete:options};
+        if (!options.confirm) options.confirm="この操作を行なうためにはログインが必要です．ログインしますか？";
+        if (typeof options.confirm=="string") {
+            var mesg=options.confirm;
+            options.confirm=function () {
+                return confirm(mesg);
+            };
+        }*/
+        auth.currentUser(function (user) {
+            if (user) {
+                return options.complete(user);
+            }
+            window.onLoggedIn=options.complete;
+            options.showLoginLink(WebSite.serverTop+"login");
         });
     };
     window.Auth=auth;

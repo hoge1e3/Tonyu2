@@ -1,4 +1,4 @@
-define(["Auth","WebSite"],function (a,WebSite) {
+define(["Auth","WebSite","Util"],function (a,WebSite,Util) {
     var Blob={};
     Blob.upload=function(user, project, file, options) {
         var fd = new FormData(document.getElementById("fileinfo"));
@@ -28,8 +28,31 @@ define(["Auth","WebSite"],function (a,WebSite) {
             }
         });
     };
+    Blob.isBlobURL=function (url) {
+        if (Util.startsWith(url,"${blobPath}")) {
+            var a=url.split("/");
+            return {user:a[1], project:a[2], fileName:a[3]};
+        }
+    };
     Blob.url=function(user,project,fileName) {
         return WebSite.blobPath+user+"/"+project+"/"+fileName;
+    };
+    Blob.uploadToExe=function (prj, options) {
+        var bis=prj.getBlobInfos();
+        var cnt=bis.length;
+        if (cnt==0) return options.complete();
+        if (!options.progress) options.progress=function (cnt) {
+            console.log("uploadBlobToExe cnt=",cnt);
+        };
+        bis.forEach(function (bi) {
+             $.ajax({type:"get", url: WebSite.serverTop+"uploadBlobToExe",
+                 data:bi,complete: function () {
+                     cnt--;
+                     if (cnt==0) return options.complete();
+                     else options.progress(cnt);
+                 },error:options.error
+             });
+        });
     };
     return Blob;
 });

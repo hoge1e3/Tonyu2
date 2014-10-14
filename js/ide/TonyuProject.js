@@ -1,5 +1,5 @@
-define(["Tonyu", "Tonyu.Compiler", "TError", "FS", "Tonyu.TraceTbl","ImageList","StackTrace","typeCheck"],
-        function (Tonyu, Tonyu_Compiler, TError, FS, Tonyu_TraceTbl, ImageList,StackTrace,tc) {
+define(["Tonyu", "Tonyu.Compiler", "TError", "FS", "Tonyu.TraceTbl","ImageList","StackTrace","typeCheck","Blob"],
+        function (Tonyu, Tonyu_Compiler, TError, FS, Tonyu_TraceTbl, ImageList,StackTrace,tc,Blob) {
 return Tonyu.Project=function (dir, kernelDir) {
     var TPR={};
     var traceTbl=Tonyu.TraceTbl();
@@ -123,6 +123,26 @@ return Tonyu.Project=function (dir, kernelDir) {
     TPR.setResource=function (rsrc) {
         var resFile=dir.rel("res.json");
         resFile.obj(rsrc);
+    };
+    TPR.getBlobInfos=function () {
+        var rsrc=TPR.getResource();
+        var res=[];
+        function loop(o) {
+            if (typeof o!="object") return;
+            for (var k in o) {
+                if (!o.hasOwnProperty(k)) continue;
+                var v=o[k];
+                if (k=="url") {
+                    var a;
+                    if (a=Blob.isBlobURL(v)) {
+                        res.push(a);
+                    }
+                }
+                loop(v);
+            }
+        }
+        loop(rsrc);
+        return res;
     };
     TPR.loadResource=function (next) {
         var r=TPR.getResource();

@@ -1,4 +1,4 @@
-// Created at Fri Oct 10 2014 13:03:18 GMT+0900 (東京 (標準時))
+// Created at Tue Oct 14 2014 19:47:45 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -5596,7 +5596,7 @@ requireSimulator.setName('fs/ROMs');
   FS.mountROM(rom);
 })();
 requireSimulator.setName('Util');
-Util=function () {
+Util=(function () {
 
 function getQueryString(key, default_)
 {
@@ -5620,7 +5620,7 @@ function startsWith(str,prefix) {
 }
 
 return {getQueryString:getQueryString, endsWith: endsWith, startsWith: startsWith};
-}();
+})();
 
 requireSimulator.setName('Tonyu');
 Tonyu=function () {
@@ -10484,9 +10484,97 @@ TypeCheck=function () {
 };
 return TypeCheck;
 });
+requireSimulator.setName('Auth');
+define(["WebSite"],function (WebSite) {
+    var auth={};
+    auth.currentUser=function (onend) {
+        $.get(WebSite.serverTop+"currentUser", function (res) {
+            if (res=="null") res=null;
+            onend(res);
+        });
+    };
+    auth.assertLogin=function (options) {
+        /*if (typeof options=="function") options={complete:options};
+        if (!options.confirm) options.confirm="この操作を行なうためにはログインが必要です．ログインしますか？";
+        if (typeof options.confirm=="string") {
+            var mesg=options.confirm;
+            options.confirm=function () {
+                return confirm(mesg);
+            };
+        }*/
+        auth.currentUser(function (user) {
+            if (user) {
+                return options.complete(user);
+            }
+            window.onLoggedIn=options.complete;
+            options.showLoginLink(WebSite.serverTop+"login");
+        });
+    };
+    window.Auth=auth;
+    return auth;
+});
+requireSimulator.setName('Blob');
+define(["Auth","WebSite","Util"],function (a,WebSite,Util) {
+    var Blob={};
+    Blob.upload=function(user, project, file, options) {
+        var fd = new FormData(document.getElementById("fileinfo"));
+        if (options.error) {
+            options.error=function (r) {alert(r);};
+        }
+        fd.append("theFile", file);
+        fd.append("user",user);
+        fd.append("project",project);
+        fd.append("fileName",file.name);
+        $.ajax({
+            type : "get",
+            url : WebSite.serverTop+"blobURL",
+            success : function(url) {
+                $.ajax({
+                    url : url,
+                    type : "POST",
+                    data : fd,
+                    processData : false, // jQuery がデータを処理しないよう指定
+                    contentType : false, // jQuery が contentType を設定しないよう指定
+                    success : function(res) {
+                        console.log("Res = " + res);
+                        options.success.apply({},arguments);// $("#drag").append(res);
+                    },
+                    error: options.error
+                });
+            }
+        });
+    };
+    Blob.isBlobURL=function (url) {
+        if (Util.startsWith(url,"${blobPath}")) {
+            var a=url.split("/");
+            return {user:a[1], project:a[2], fileName:a[3]};
+        }
+    };
+    Blob.url=function(user,project,fileName) {
+        return WebSite.blobPath+user+"/"+project+"/"+fileName;
+    };
+    Blob.uploadToExe=function (prj, options) {
+        var bis=prj.getBlobInfos();
+        var cnt=bis.length;
+        if (cnt==0) return options.complete();
+        if (!options.progress) options.progress=function (cnt) {
+            console.log("uploadBlobToExe cnt=",cnt);
+        };
+        bis.forEach(function (bi) {
+             $.ajax({type:"get", url: WebSite.serverTop+"uploadBlobToExe",
+                 data:bi,complete: function () {
+                     cnt--;
+                     if (cnt==0) return options.complete();
+                     else options.progress(cnt);
+                 },error:options.error
+             });
+        });
+    };
+    return Blob;
+});
 requireSimulator.setName('Tonyu.Project');
-define(["Tonyu", "Tonyu.Compiler", "TError", "FS", "Tonyu.TraceTbl","ImageList","StackTrace","typeCheck"],
-        function (Tonyu, Tonyu_Compiler, TError, FS, Tonyu_TraceTbl, ImageList,StackTrace,tc) {
+define(["Tonyu", "Tonyu.Compiler", "TError", "FS", "Tonyu.TraceTbl","ImageList","StackTrace","typeCheck","Blob"],
+        function (Tonyu, Tonyu_Compiler, TError, FS, Tonyu_TraceTbl, ImageList,StackTrace,tc,Blob) {
 return Tonyu.Project=function (dir, kernelDir) {
     var TPR={};
     var traceTbl=Tonyu.TraceTbl();
@@ -10610,6 +10698,26 @@ return Tonyu.Project=function (dir, kernelDir) {
     TPR.setResource=function (rsrc) {
         var resFile=dir.rel("res.json");
         resFile.obj(rsrc);
+    };
+    TPR.getBlobInfos=function () {
+        var rsrc=TPR.getResource();
+        var res=[];
+        function loop(o) {
+            if (typeof o!="object") return;
+            for (var k in o) {
+                if (!o.hasOwnProperty(k)) continue;
+                var v=o[k];
+                if (k=="url") {
+                    var a;
+                    if (a=Blob.isBlobURL(v)) {
+                        res.push(a);
+                    }
+                }
+                loop(v);
+            }
+        }
+        loop(rsrc);
+        return res;
     };
     TPR.loadResource=function (next) {
         var r=TPR.getResource();
@@ -11019,54 +11127,6 @@ define(["Shell","UI","FS","Util"], function (sh,UI,FS,Util) {
     };
     return res;
 });
-requireSimulator.setName('Auth');
-define(["WebSite"],function (WebSite) {
-    var auth={};
-    auth.currentUser=function (onend) {
-        $.get(WebSite.serverTop+"currentUser", function (res) {
-            if (res=="null") res=null;
-            onend(res);
-        });
-    };
-    window.Auth=auth;
-    return auth;
-});
-requireSimulator.setName('Blob');
-define(["Auth","WebSite"],function (a,WebSite) {
-    var Blob={};
-    Blob.upload=function(user, project, file, options) {
-        var fd = new FormData(document.getElementById("fileinfo"));
-        if (options.error) {
-            options.error=function (r) {alert(r);};
-        }
-        fd.append("theFile", file);
-        fd.append("user",user);
-        fd.append("project",project);
-        fd.append("fileName",file.name);
-        $.ajax({
-            type : "get",
-            url : WebSite.serverTop+"blobURL",
-            success : function(url) {
-                $.ajax({
-                    url : url,
-                    type : "POST",
-                    data : fd,
-                    processData : false, // jQuery がデータを処理しないよう指定
-                    contentType : false, // jQuery が contentType を設定しないよう指定
-                    success : function(res) {
-                        console.log("Res = " + res);
-                        options.success.apply({},arguments);// $("#drag").append(res);
-                    },
-                    error: options.error
-                });
-            }
-        });
-    };
-    Blob.url=function(user,project,fileName) {
-        return WebSite.blobPath+user+"/"+project+"/"+fileName;
-    };
-    return Blob;
-});
 requireSimulator.setName('ImageResEditor');
 define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"], function (FS, Tonyu, UI,IL,Blob,Auth,WebSite) {
     var ImageResEditor=function (prj) {
@@ -11107,9 +11167,10 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"], function (FS, To
 
         function reload() {
             d.empty();
-            d.append(UI("div", {style:"margin:10px; padding:10px; border:solid blue 2px;", on:{dragover: s, dragenter: s, drop:dropAdd}},
-                    "ここに画像ファイル(png/gif/jpg)をドラッグ＆ドロップして追加"
-            ));
+            var dragMsg="ここに画像ファイル(png/gif/jpg)をドラッグ＆ドロップして追加";
+            var dragPoint=UI("div", {style:"margin:10px; padding:10px; border:solid blue 2px;",
+                on:{dragover: s, dragenter: s, drop:dropAdd}},dragMsg
+            ).appendTo(d);
             //UI("div","※「URL」欄に画像ファイル(png/gif)をドラッグ＆ドロップできます．").appendTo(d);
             rsrc=prj.getResource();
             var ims=rsrc.images;
@@ -11125,7 +11186,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"], function (FS, To
             function dropAdd(e) {
                 eo=e.originalEvent;
                 var file = eo.dataTransfer.files[0];
-                var useBlob=false;//(file.size>1000*100);
+                var useBlob=WebSite.serverType=="GAE" && (file.size>1000*300);
                 if(!file.type.match(/image\/(png|gif|jpe?g)/)[1]) {
                     e.stopPropagation();
                     e.preventDefault();
@@ -11138,13 +11199,20 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"], function (FS, To
                 }
                 var v={pwidth:32,pheight:32,name:"$pat_"+imgName};
                 if (useBlob) {
-                    Auth.currentUser(function (u) {
-                        if (u==null) return alert("大きいイメージを追加するには，ログインが必要です．");
-                        var prjN=prj.getName();
-                        Blob.upload(u,prjN,file,{success:function (){
-                            v.url="${blobPath}/"+u+"/"+prjN+"/"+file.name;
-                            add(v);
-                        }});
+                    Auth.assertLogin({
+                        showLoginLink:function (u) {
+                            dragPoint.css("border","solid red 2px").empty().append(
+                                    UI("div","大きいイメージを追加するには，ログインが必要です：",
+                                       ["a",{href:u,target:"login",style:"color: blue;"},"ログインする"])
+                            );
+                        },complete:function (u) {
+                            dragPoint.text(dragMsg);
+                            var prjN=prj.getName();
+                            Blob.upload(u,prjN,file,{success:function (){
+                                v.url="${blobPath}/"+u+"/"+prjN+"/"+file.name;
+                                add(v);
+                            }});
+                        }
                     });
                 } else {
                     var reader = new FileReader();
@@ -11255,10 +11323,9 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"], function (FS, To
                 if (!u) return;
                 var rtf=[];
                 ims.forEach(function (im) {
-                    if (im.url.match(/^\$\{blobPath\}/)) {
-                        var a=im.url.split("/");
-                        //  ${blobPath}/root/SandBox/yusya.png
-                        rtf.push(a[3]);
+                    var a;
+                    if (a=Blob.isBlobURL(im.url)) {
+                        rtf.push(a.fileName);
                     }
                 });
                 $.ajax({url:WebSite.serverTop+"retainBlobs",type:"get",

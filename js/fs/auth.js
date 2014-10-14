@@ -6,6 +6,23 @@ define(["WebSite"],function (WebSite) {
             onend(res);
         });
     };
+    auth.assertLogin=function (options) {
+        /*if (typeof options=="function") options={complete:options};
+        if (!options.confirm) options.confirm="この操作を行なうためにはログインが必要です．ログインしますか？";
+        if (typeof options.confirm=="string") {
+            var mesg=options.confirm;
+            options.confirm=function () {
+                return confirm(mesg);
+            };
+        }*/
+        auth.currentUser(function (user) {
+            if (user) {
+                return options.complete(user);
+            }
+            window.onLoggedIn=options.complete;
+            options.showLoginLink(WebSite.serverTop+"login");
+        });
+    };
     window.Auth=auth;
     return auth;
 });

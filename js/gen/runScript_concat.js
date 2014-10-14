@@ -1,4 +1,4 @@
-// Created at Fri Oct 10 2014 13:03:18 GMT+0900 (東京 (標準時))
+// Created at Tue Oct 14 2014 19:47:45 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -5687,7 +5687,7 @@ define(["Tonyu"], function (Tonyu) {return Tonyu.klass({
 
 });});
 requireSimulator.setName('Util');
-Util=function () {
+Util=(function () {
 
 function getQueryString(key, default_)
 {
@@ -5711,7 +5711,7 @@ function startsWith(str,prefix) {
 }
 
 return {getQueryString:getQueryString, endsWith: endsWith, startsWith: startsWith};
-}();
+})();
 
 requireSimulator.setName('ImageList');
 define(["PatternParser","Util","WebSite"], function (PP,Util,WebSite) {
@@ -5886,9 +5886,97 @@ TypeCheck=function () {
 };
 return TypeCheck;
 });
+requireSimulator.setName('Auth');
+define(["WebSite"],function (WebSite) {
+    var auth={};
+    auth.currentUser=function (onend) {
+        $.get(WebSite.serverTop+"currentUser", function (res) {
+            if (res=="null") res=null;
+            onend(res);
+        });
+    };
+    auth.assertLogin=function (options) {
+        /*if (typeof options=="function") options={complete:options};
+        if (!options.confirm) options.confirm="この操作を行なうためにはログインが必要です．ログインしますか？";
+        if (typeof options.confirm=="string") {
+            var mesg=options.confirm;
+            options.confirm=function () {
+                return confirm(mesg);
+            };
+        }*/
+        auth.currentUser(function (user) {
+            if (user) {
+                return options.complete(user);
+            }
+            window.onLoggedIn=options.complete;
+            options.showLoginLink(WebSite.serverTop+"login");
+        });
+    };
+    window.Auth=auth;
+    return auth;
+});
+requireSimulator.setName('Blob');
+define(["Auth","WebSite","Util"],function (a,WebSite,Util) {
+    var Blob={};
+    Blob.upload=function(user, project, file, options) {
+        var fd = new FormData(document.getElementById("fileinfo"));
+        if (options.error) {
+            options.error=function (r) {alert(r);};
+        }
+        fd.append("theFile", file);
+        fd.append("user",user);
+        fd.append("project",project);
+        fd.append("fileName",file.name);
+        $.ajax({
+            type : "get",
+            url : WebSite.serverTop+"blobURL",
+            success : function(url) {
+                $.ajax({
+                    url : url,
+                    type : "POST",
+                    data : fd,
+                    processData : false, // jQuery がデータを処理しないよう指定
+                    contentType : false, // jQuery が contentType を設定しないよう指定
+                    success : function(res) {
+                        console.log("Res = " + res);
+                        options.success.apply({},arguments);// $("#drag").append(res);
+                    },
+                    error: options.error
+                });
+            }
+        });
+    };
+    Blob.isBlobURL=function (url) {
+        if (Util.startsWith(url,"${blobPath}")) {
+            var a=url.split("/");
+            return {user:a[1], project:a[2], fileName:a[3]};
+        }
+    };
+    Blob.url=function(user,project,fileName) {
+        return WebSite.blobPath+user+"/"+project+"/"+fileName;
+    };
+    Blob.uploadToExe=function (prj, options) {
+        var bis=prj.getBlobInfos();
+        var cnt=bis.length;
+        if (cnt==0) return options.complete();
+        if (!options.progress) options.progress=function (cnt) {
+            console.log("uploadBlobToExe cnt=",cnt);
+        };
+        bis.forEach(function (bi) {
+             $.ajax({type:"get", url: WebSite.serverTop+"uploadBlobToExe",
+                 data:bi,complete: function () {
+                     cnt--;
+                     if (cnt==0) return options.complete();
+                     else options.progress(cnt);
+                 },error:options.error
+             });
+        });
+    };
+    return Blob;
+});
 requireSimulator.setName('Tonyu.Project');
-define(["Tonyu", "Tonyu.Compiler", "TError", "FS", "Tonyu.TraceTbl","ImageList","StackTrace","typeCheck"],
-        function (Tonyu, Tonyu_Compiler, TError, FS, Tonyu_TraceTbl, ImageList,StackTrace,tc) {
+define(["Tonyu", "Tonyu.Compiler", "TError", "FS", "Tonyu.TraceTbl","ImageList","StackTrace","typeCheck","Blob"],
+        function (Tonyu, Tonyu_Compiler, TError, FS, Tonyu_TraceTbl, ImageList,StackTrace,tc,Blob) {
 return Tonyu.Project=function (dir, kernelDir) {
     var TPR={};
     var traceTbl=Tonyu.TraceTbl();
@@ -6012,6 +6100,26 @@ return Tonyu.Project=function (dir, kernelDir) {
     TPR.setResource=function (rsrc) {
         var resFile=dir.rel("res.json");
         resFile.obj(rsrc);
+    };
+    TPR.getBlobInfos=function () {
+        var rsrc=TPR.getResource();
+        var res=[];
+        function loop(o) {
+            if (typeof o!="object") return;
+            for (var k in o) {
+                if (!o.hasOwnProperty(k)) continue;
+                var v=o[k];
+                if (k=="url") {
+                    var a;
+                    if (a=Blob.isBlobURL(v)) {
+                        res.push(a);
+                    }
+                }
+                loop(v);
+            }
+        }
+        loop(rsrc);
+        return res;
     };
     TPR.loadResource=function (next) {
         var r=TPR.getResource();

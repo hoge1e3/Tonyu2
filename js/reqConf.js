@@ -225,6 +225,7 @@ var reqConf={
             zip: "fs/zip",
             requestFragment: "fs/requestFragment",
             Blob: "fs/blob",
+            exportAsScriptTags: "fs/exportAsScriptTags",
             "foo":"bar"
         },
         "baseUrl": "../../js"
