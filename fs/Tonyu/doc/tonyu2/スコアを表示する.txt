@@ -1,0 +1,23 @@
+[[用途別リファレンス]]
+
+[[文字を表示する]]
+
+[[文字をテキストオブジェクトとして表示する]]
+
+<<code Main
+$score=0;
+new Score;
+while(true){
+  if(getkey("z")==1) $score+=10;
+  update();
+}
+>>
+<<code Score
+x=200;
+y=200;
+while(true) {
+  text="Score:"+$score;
+  update();
+}
+>>
+zキーを押すとscoreが10増える。

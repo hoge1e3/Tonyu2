@@ -1,0 +1,25 @@
+[[用途別リファレンス]]
+
+[[乱数を使う]]
+
+*確率でオブジェクトを出現させる
+
+<<code　Main
+while(true){
+  if(rnd(100)<5){
+    new Chara1{x:rnd($screenWidth),y:0,p:1};
+  }
+  update();
+}
+>>
+<<code Chara1
+while(true){
+  y+=4;
+  if(y>$screenHeight){
+    die();
+  }
+  update();
+}
+>>
+
+毎フレーム0～99の値をランダムに決めて、それが5未満(1/20の確率)ならば画面の上部からオブジェクトが落ちてくる。

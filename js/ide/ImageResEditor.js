@@ -75,10 +75,11 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"], function (FS, To
                                     UI("div","大きいイメージを追加するには，ログインが必要です：",
                                        ["a",{href:u,target:"login",style:"color: blue;"},"ログインする"])
                             );
-                        },complete:function (u) {
-                            dragPoint.text(dragMsg);
+                        },success:function (u) {
+                            dragPoint.text("アップロード中...");
                             var prjN=prj.getName();
                             Blob.upload(u,prjN,file,{success:function (){
+                                dragPoint.text(dragMsg);
                                 v.url="${blobPath}/"+u+"/"+prjN+"/"+file.name;
                                 add(v);
                             }});

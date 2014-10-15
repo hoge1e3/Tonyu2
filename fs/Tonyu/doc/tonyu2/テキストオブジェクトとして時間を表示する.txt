@@ -1,0 +1,20 @@
+[[用途別リファレンス]]
+
+[[時間を計る]]
+*テキストオブジェクトとして時間を表示する
+<<code
+・Main.Tonyu
+$time=0;
+new Text{x:100,y:100};
+while(true){
+    $time++;
+    update();
+}
+
+・Text.Tonyu
+while(true){
+    text=floor($time/30);
+    update();
+}
+>>
+print()で表示すると画面が埋まってしまうため、テキストオブジェクトとして表示することで一箇所に時間を表示できる。

@@ -1,0 +1,27 @@
+[[用途別リファレンス]]
+*プログラム内でマップを描く
+
+*☆マップをはじめから作る場合
+<<code
+・Main.Tonyu
+$map=new Map{chipWidth:32,chipHeight:32,row:10,col:10};
+>>
+
+
+*☆マップの配列を指定して描く
+<<code
+・Main.Tonyu
+//事前にマップを作っておく
+//set(マップ配列のx番目,マップ配列のy番目,チップ);
+$map.set(2,3,$pat_base+2);
+>>
+
+
+*☆画面の座標を指定して描く
+<<code
+・Main.Tonyu
+//事前にマップを作っておく
+//setAt(スクリーンのx座標,スクリーンのy座標,チップ);
+$map.setAt($mouseX,$mouseY,$pat_base+2);
+>>
+

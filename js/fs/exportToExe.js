@@ -14,7 +14,7 @@ $(function () {
    };
    $("#prjNameSpan").text(name);
    $("#prjName").val(name);
-   Auth.assertLogin({complete:function(res) {
+   Auth.assertLogin({success:function(res) {
        $(".on-logged-out").hide();
        $(".on-logged-in").show();
        $("#prog").val(east(dir));
@@ -35,17 +35,17 @@ $(function () {
                function bClk(e) {
                    //alert("bckl");
                    $(".submit-wait").show();
-                   Blob.uploadToExe(prj, {complete:afterUpBlob,error:error,progress:progress});
+                   Blob.uploadToExe(prj, {success:afterUpBlob,error:error,progress:progress});
                    e.preventDefault();
                    return false;
                }
-               function progress() {
-                   //alert("pgr");
+               function progress(cnt) {
+                   console.log("progress",cnt);
                    $(".submit-wait").append("...");
                }
                function afterUpBlob() {
                    progress();
-                   //alert("aft");
+                   console.log("Comp");//alert("aft");
                    button.hide();
                    var data={pathInfo:"/upload-project"};
                    function setData() {

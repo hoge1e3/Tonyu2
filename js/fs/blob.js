@@ -40,15 +40,16 @@ define(["Auth","WebSite","Util"],function (a,WebSite,Util) {
     Blob.uploadToExe=function (prj, options) {
         var bis=prj.getBlobInfos();
         var cnt=bis.length;
-        if (cnt==0) return options.complete();
+        console.log("uploadBlobToExe cnt=",cnt);
+        if (cnt==0) return options.success();
         if (!options.progress) options.progress=function (cnt) {
             console.log("uploadBlobToExe cnt=",cnt);
         };
         bis.forEach(function (bi) {
              $.ajax({type:"get", url: WebSite.serverTop+"uploadBlobToExe",
-                 data:bi,complete: function () {
+                 data:bi,success: function () {
                      cnt--;
-                     if (cnt==0) return options.complete();
+                     if (cnt==0) return options.success();
                      else options.progress(cnt);
                  },error:options.error
              });

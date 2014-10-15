@@ -1,4 +1,4 @@
-// Created at Tue Oct 14 2014 19:47:45 GMT+0900 (東京 (標準時))
+// Created at Tue Oct 14 2014 21:36:12 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -7038,9 +7038,9 @@ define(["WebSite"],function (WebSite) {
         }*/
         auth.currentUser(function (user) {
             if (user) {
-                return options.complete(user);
+                return options.success(user);
             }
-            window.onLoggedIn=options.complete;
+            window.onLoggedIn=options.success;
             options.showLoginLink(WebSite.serverTop+"login");
         });
     };

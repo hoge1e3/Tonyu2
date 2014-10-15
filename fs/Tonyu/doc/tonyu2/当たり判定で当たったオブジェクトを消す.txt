@@ -1,0 +1,34 @@
+[[用途別リファレンス]]
+
+[[オブジェクトを消す]]
+*当たり判定で当たったオブジェクトを消す
+<<code Main
+x=$screenWidth/2;
+y=$screenHeight/2;
+new Enemy{x:100, y:100, p:4};
+new Enemy{x:100, y:200, p:4};
+new Enemy{x:100, y:300, p:4};
+while(true){
+    if(getkey("right")>0)	x+=3;
+    if(getkey("left")>0)	x-=3;
+    if(getkey("down")>0)	y+=3;
+    if(getkey("up")>0)	y-=3;
+    e=crashTo(Enemy);
+    if(e){
+        e.die();
+    }
+    update();
+}
+>>
+<<code Enemy
+何も書かなくてよい
+>>
+上下左右に動かせる中央のオブジェクトにぶつかったEnemyが消える。
+
+※crashTo()...()内のオブジェクトと当たり判定を行い値を返す。
+-当たってる=true
+-当たってない=false
+
+当たり判定を変更するにはgetCrashRect()という命令を使う。
+
+→[[当たり判定を変更する]]

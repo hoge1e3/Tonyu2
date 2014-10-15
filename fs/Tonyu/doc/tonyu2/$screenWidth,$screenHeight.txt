@@ -1,0 +1,3 @@
+[[api]]
+*$screenWidth,$screenHeight
+それぞれ画面の右端と下端の座標を返します。

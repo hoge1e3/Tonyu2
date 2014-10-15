@@ -1,0 +1,13 @@
+[[用途別リファレンス]]
+
+[[乱数を使う]]
+*オブジェクトをランダムな位置に表示する
+<<code Main
+new Chara1{x:rnd($screenWidth),y:rnd($screenHeight),p:1};
+new Chara1{x:rnd($screenWidth),y:rnd($screenHeight),p:2};
+new Chara1{x:rnd($screenWidth),y:rnd($screenHeight),p:3};
+>>
+<<code Chara1
+何も書かないでよい
+>>
+実行すると画面上にランダムで3つのオブジェクトが表示される。

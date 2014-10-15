@@ -19,3 +19,10 @@ Tonyu2で最初から使えるクラス群です．[[ファイルシステム>fs
 -[[$Screen>ScaledCanvas]]
 -[[$mouseX, $mouseY]]
 -[[$touches]]
+-[[$screenWidth,$screenHeight]]
+
+*[[用途別リファレンス]]
+
+
+
+

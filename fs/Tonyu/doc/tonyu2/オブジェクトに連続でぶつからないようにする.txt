@@ -1,0 +1,38 @@
+[[用途別リファレンス]]
+
+[[時間を計る]]
+*フレーム数を条件にオブジェクトとの接触時の処理を書く
+
+<<code Main
+$effectLimit=0;
+x=$screenWidth/2;
+y=$screenHeight;
+p=0;
+new Item{x:rnd($screenWidth),y:0,vy:3,p:8};
+new Item{x:rnd($screenWidth),y:0,vy:3,p:8};
+new Item{x:rnd($screenWidth),y:0,vy:3,p:8};
+while(true){
+    x=$mouseX;
+    y=$mouseY;
+    $effectLimit--;
+    update();
+}
+>>
+<<code Item
+while(y<$screenHeight){
+    y+=vy;
+    if(crashTo(Main) && $effectLimit<0){
+        $effectLimit=90;
+        die();
+    }
+    update();
+}
+die();
+>>
+
+$effectLimitは0から始まり毎フレーム1ずつ減少している。
+
+Itemに接触した時、$effectLimitの値が0未満であれば値が90になりItemは消える。
+
+$effectLimitの値が0未満でなければItemに触れても接触時の処理は行われないため、2個目以降のItemは90フレーム＝3秒経過するまで触れても消えない。
+

@@ -17,9 +17,9 @@ define(["WebSite"],function (WebSite) {
         }*/
         auth.currentUser(function (user) {
             if (user) {
-                return options.complete(user);
+                return options.success(user);
             }
-            window.onLoggedIn=options.complete;
+            window.onLoggedIn=options.success;
             options.showLoginLink(WebSite.serverTop+"login");
         });
     };

@@ -1,4 +1,4 @@
-// Created at Tue Oct 14 2014 19:47:45 GMT+0900 (東京 (標準時))
+// Created at Tue Oct 14 2014 21:36:12 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -10504,9 +10504,9 @@ define(["WebSite"],function (WebSite) {
         }*/
         auth.currentUser(function (user) {
             if (user) {
-                return options.complete(user);
+                return options.success(user);
             }
-            window.onLoggedIn=options.complete;
+            window.onLoggedIn=options.success;
             options.showLoginLink(WebSite.serverTop+"login");
         });
     };
@@ -10556,15 +10556,16 @@ define(["Auth","WebSite","Util"],function (a,WebSite,Util) {
     Blob.uploadToExe=function (prj, options) {
         var bis=prj.getBlobInfos();
         var cnt=bis.length;
-        if (cnt==0) return options.complete();
+        console.log("uploadBlobToExe cnt=",cnt);
+        if (cnt==0) return options.success();
         if (!options.progress) options.progress=function (cnt) {
             console.log("uploadBlobToExe cnt=",cnt);
         };
         bis.forEach(function (bi) {
              $.ajax({type:"get", url: WebSite.serverTop+"uploadBlobToExe",
-                 data:bi,complete: function () {
+                 data:bi,success: function () {
                      cnt--;
-                     if (cnt==0) return options.complete();
+                     if (cnt==0) return options.success();
                      else options.progress(cnt);
                  },error:options.error
              });
@@ -11205,10 +11206,11 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"], function (FS, To
                                     UI("div","大きいイメージを追加するには，ログインが必要です：",
                                        ["a",{href:u,target:"login",style:"color: blue;"},"ログインする"])
                             );
-                        },complete:function (u) {
-                            dragPoint.text(dragMsg);
+                        },success:function (u) {
+                            dragPoint.text("アップロード中...");
                             var prjN=prj.getName();
                             Blob.upload(u,prjN,file,{success:function (){
+                                dragPoint.text(dragMsg);
                                 v.url="${blobPath}/"+u+"/"+prjN+"/"+file.name;
                                 add(v);
                             }});

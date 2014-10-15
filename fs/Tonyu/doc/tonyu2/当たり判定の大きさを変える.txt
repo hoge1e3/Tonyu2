@@ -1,0 +1,8 @@
+[[用途別リファレンス]]
+
+<<code
+//当たり判定の大きさを5*5に設定する
+\getCrashRect() {
+   return {x,y,width:5, height:5};
+}
+>>
