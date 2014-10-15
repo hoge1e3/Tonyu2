@@ -1,0 +1,31 @@
+[[用途別リファレンス]]
+
+[[オブジェクトを消す]]
+
+[[当たり判定で当たったオブジェクトを消す]]
+*当たり判定を変更する
+<<code Main
+x=$screenWidth/2;
+y=$screenHeight/2;
+\getCrashRect() {
+  return {x,y,width:5, height:5};
+}
+new Enemy{x:100, y:100, p:4};
+new Enemy{x:100, y:200, p:4};
+new Enemy{x:100, y:300, p:4};
+while(true){
+  if(getkey("right")>0)	x+=3;
+  if(getkey("left")>0)	x-=3;
+  if(getkey("down")>0)	y+=3;
+  if(getkey("up")>0)	y-=3;
+  e=crashTo(Enemy);
+  if(e){
+    e.die();
+  }
+  update();
+}
+>>
+<<code Enemy
+何も書かなくてよい
+>>
+\getCrashRect()...オブジェクトの当たり判定をreturnで返した値に変更する。

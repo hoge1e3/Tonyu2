@@ -1,0 +1,22 @@
+[[用途別リファレンス]]
+
+[[オブジェクトを動かす]]
+*弾を撃つ
+<<code Main
+if(getkey("space")==1){
+  $b = new Bullet;
+  $b.x=x;
+  $b.y=y;
+  $b.p=25;
+}
+>>
+<<code Bullet
+while(y>0){
+  y=y-4;
+  update();
+}
+die();
+>>
+スペースキーを押すとBulletオブジェクトが出現する。
+
+Bulletは画面上端に到達するまで上に移動していき、上端に到達すると消える。

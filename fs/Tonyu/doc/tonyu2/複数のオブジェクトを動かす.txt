@@ -1,0 +1,31 @@
+[[用途別リファレンス]]
+
+[[オブジェクトを表示する]]
+<<code Main
+new Chara1;
+new Chara2;
+>>
+<<code Chara1
+x=100;
+y=100;
+while(true){
+  x++;
+  update();
+}
+>>
+<<code Chara2
+x=100;
+y=200;
+vy=0;
+while(true){
+  x++;
+  y+=vy;
+  vy+=0.1;
+  if(y>$screenHeight){
+    y=$screenHeight;
+    vy=-vy;
+  }
+  update();
+}
+>>
+「new ～」で呼び出したファイルはその中に書いてある動作を実行する。

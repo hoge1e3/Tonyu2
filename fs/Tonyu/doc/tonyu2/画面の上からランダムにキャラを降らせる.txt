@@ -1,0 +1,20 @@
+[[用途別リファレンス]]
+
+[[乱数を使う]]
+*画面の上からランダムにキャラを降らせる
+<<code Main
+new Chara1{x:rnd($screenWidth),y:0,p:1};
+new Chara1{x:rnd($screenWidth),y:0,p:1};
+new Chara1{x:rnd($screenWidth),y:0,p:1};
+>>
+<<code Chara1
+while(true){
+  y+=4;
+  if(y>$screenHeight){
+    y=0;
+    x=rnd($screenWidth);
+  }
+  update();
+}
+>>
+実行すると画面の上部からオブジェクトが3つ落ちてきて、Chara1が画面下端に到達した時yを0にしてxを再度ランダムに決めている。

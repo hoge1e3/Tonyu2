@@ -1,0 +1,19 @@
+[[用途別リファレンス]]
+
+[[オブジェクトを消す]]
+*他のオブジェクトを消す
+<<code Main
+$enemy=new Enemy{x:100, y:100};
+$enemy2=new Enemy{x:100, y:200};
+new Enemy{x:100, y:300};
+while(true){
+  if(getkey("z")) $enemy.die();
+  update();
+}
+>>
+<<code Enemy
+何も書かなくてよい
+>>
+zキーを押すと$enemyだけが消える。
+
+※～.die()...～で指定したオブジェクトを消す。

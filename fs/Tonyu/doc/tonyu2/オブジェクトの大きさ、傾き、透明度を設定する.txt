@@ -1,0 +1,16 @@
+[[用途別リファレンス]]
+
+[[オブジェクトを表示する]]
+**オブジェクトの大きさ、傾き、透明度を設定する
+<<code Main
+new Chara1{x:100, y:100, scaleX:2};
+new Chara1{x:200, y:200, rotation:45};
+new Chara1{x:300, y:300, alpha:128};
+>>
+<<code Chara1
+while(true){
+  rotation++;
+  update();
+}
+>>
+オブジェクトの大きさ、傾き、透明度はそれぞれscaleX、rotate、alphaで管理されている。これらの値も加減算することで回転や拡大などをさせることができる。

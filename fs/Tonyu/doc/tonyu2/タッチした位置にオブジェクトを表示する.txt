@@ -1,0 +1,17 @@
+[[用途別リファレンス]]
+
+[[オブジェクトを動かす]]
+*タッチした位置にオブジェクトを表示する
+<<code
+while(true){
+    if($touches[0].touched){
+        x=$touches[0].x;
+        y=$touches[0].y;
+    }
+    update();
+}
+>>
+$touches[0].touchedでタッチされているかどうかの判定を行う。
+-touched=true...タッチされていない
+-touched=false...タッチされている
+また、タッチした座標はそれぞれ$touches[0].xと$touches[0].yに入っている。
