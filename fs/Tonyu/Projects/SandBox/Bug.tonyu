@@ -3,6 +3,6 @@ while(true) {
     updateEx(10);
     new Prominence;
 }*/
-if (x=3) {
+if (x[3]=3) {
     
 }

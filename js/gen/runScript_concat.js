@@ -1,4 +1,4 @@
-// Created at Wed Oct 15 2014 10:45:31 GMT+0900 (東京 (標準時))
+// Created at Thu Oct 16 2014 10:10:07 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -4146,10 +4146,16 @@ TonyuLang=function () {
     	if (argList && !argList.args) {
     		throw disp(argList);
     	}
-    	if (argList) argList.args.forEach(function (arg) {
-    		res.push(arg);
-    	});
+    	if (argList) {
+            var rg=Parser.getRange(argList);
+            Parser.addRange(res,rg);
+    	    argList.args.forEach(function (arg) {
+                res.push(arg);
+            });
+    	}
     	oof.forEach(function (o) {
+            var rg=Parser.getRange(o);
+            Parser.addRange(res,rg);
     		res.push(o.obj);
     	});
     	return res;
@@ -4723,6 +4729,14 @@ function genJS(klass, env,pass) {
         method.scope={};
         r.forEach(function (n) { method.scope[n.text]=genSt(ST.PARAM); });
     }*/
+    function checkLVal(node) {
+        if (node.type=="varAccess" ||
+                node.type=="postfix" && (node.op.type=="member" || node.op.type=="arrayElem") ) {
+            return true;
+        }
+        console.log("LVal",node);
+        throw TError( "'"+getSource(node)+"'は左辺には書けません．" , srcFile, node.pos);
+    }
     function enterV(obj, node) {
         return function (buf) {
             ctx.enter(obj,function () {
@@ -4931,8 +4945,11 @@ function genJS(klass, env,pass) {
             }
         },
         infix: function (node) {
+            var opn=node.op.text;
+            if (opn=="=" || opn=="+=" || opn=="-=" || opn=="*=" ||  opn=="/=" || opn=="%=" ) {
+                checkLVal(node.left);
+            }
             if (diagnose) {
-                var opn=node.op.text;
                 if (opn=="+" || opn=="-" || opn=="*" ||  opn=="/" || opn=="%" ) {
                     buf.printf("%s(%v,%l)%v%s(%v,%l)", CHK_NN, node.left, getSource(node.left), node.op,
                             CHK_NN, node.right, getSource(node.right));
