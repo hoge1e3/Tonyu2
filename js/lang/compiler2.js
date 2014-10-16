@@ -248,6 +248,14 @@ function genJS(klass, env,pass) {
         method.scope={};
         r.forEach(function (n) { method.scope[n.text]=genSt(ST.PARAM); });
     }*/
+    function checkLVal(node) {
+        if (node.type=="varAccess" ||
+                node.type=="postfix" && (node.op.type=="member" || node.op.type=="arrayElem") ) {
+            return true;
+        }
+        console.log("LVal",node);
+        throw TError( "'"+getSource(node)+"'は左辺には書けません．" , srcFile, node.pos);
+    }
     function enterV(obj, node) {
         return function (buf) {
             ctx.enter(obj,function () {
@@ -456,8 +464,11 @@ function genJS(klass, env,pass) {
             }
         },
         infix: function (node) {
+            var opn=node.op.text;
+            if (opn=="=" || opn=="+=" || opn=="-=" || opn=="*=" ||  opn=="/=" || opn=="%=" ) {
+                checkLVal(node.left);
+            }
             if (diagnose) {
-                var opn=node.op.text;
                 if (opn=="+" || opn=="-" || opn=="*" ||  opn=="/" || opn=="%" ) {
                     buf.printf("%s(%v,%l)%v%s(%v,%l)", CHK_NN, node.left, getSource(node.left), node.op,
                             CHK_NN, node.right, getSource(node.right));

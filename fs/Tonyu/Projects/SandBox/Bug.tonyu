@@ -1,5 +1,8 @@
-$Screen.setBGColor("black");
+/*$Screen.setBGColor("black");
 while(true) {
     updateEx(10);
     new Prominence;
+}*/
+if (x=3) {
+    
 }

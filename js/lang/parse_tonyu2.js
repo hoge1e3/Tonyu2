@@ -73,10 +73,16 @@ TonyuLang=function () {
     	if (argList && !argList.args) {
     		throw disp(argList);
     	}
-    	if (argList) argList.args.forEach(function (arg) {
-    		res.push(arg);
-    	});
+    	if (argList) {
+            var rg=Parser.getRange(argList);
+            Parser.addRange(res,rg);
+    	    argList.args.forEach(function (arg) {
+                res.push(arg);
+            });
+    	}
     	oof.forEach(function (o) {
+            var rg=Parser.getRange(o);
+            Parser.addRange(res,rg);
     		res.push(o.obj);
     	});
     	return res;
