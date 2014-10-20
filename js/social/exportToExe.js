@@ -50,7 +50,11 @@ $(function () {
                    var data={pathInfo:"/upload-project"};
                    function setData() {
                        var t=$(this);
-                       data[t.attr("name")]=t.val();
+                       if (t.attr("type")=="checkbox") {
+                           data[t.attr("name")]=t[0].checked;
+                       } else {
+                           data[t.attr("name")]=t.val();
+                       }
                    }
                    $("#theForm input").each(setData);
                    $("#theForm select").each(setData);
