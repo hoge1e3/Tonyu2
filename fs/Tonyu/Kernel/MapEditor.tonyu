@@ -153,35 +153,35 @@ while(true){
         print(mode+" mode");
     }
     if(mode!="get"){
-        if(getkey("left")>0) mx=mx-8;
-        if(getkey("right")>0) mx=mx+8;
-        if(getkey("up")>0) my=my-8;
-        if(getkey("down")>0) my=my+8;
+        if(getkey("left")>0) mx=mx+8;
+        if(getkey("right")>0) mx=mx-8;
+        if(getkey("up")>0) my=my+8;
+        if(getkey("down")>0) my=my-8;
         $map.scrollTo(mx,my);
     }else{
-        if(getkey("left")>0) chipX=chipX-8;
-        if(getkey("right")>0) chipX=chipX+8;
-        if(getkey("up")>0) chipY=chipY-8;
-        if(getkey("down")>0) chipY=chipY+8;
+        if(getkey("left")>0) chipX=chipX+8;
+        if(getkey("right")>0) chipX=chipX-8;
+        if(getkey("up")>0) chipY=chipY+8;
+        if(getkey("down")>0) chipY=chipY-8;
         $mp.scrollTo(chipX,chipY);
     }
-    panel.x=panel.width/2+mx;
-    panel.y=panel.height/2+my;
+    panel.x=panel.width/2-mx;
+    panel.y=panel.height/2-my;
     if(mode=="set" && getkey(1)>0){
-        $map.setAt($mouseX-mx,$mouseY-my,mapp);
-        $map.setOnAt($mouseX-mx,$mouseY-my,-1);
+        $map.setAt($mouseX+mx,$mouseY+my,mapp);
+        $map.setOnAt($mouseX+mx,$mouseY+my,-1);
     }else if(mode=="erase" && getkey(1)>0){
-        $map.setAt($mouseX-mx,$mouseY-my,-1);
+        $map.setAt($mouseX+mx,$mouseY+my,-1);
     }else if(mode=="get" && getkey(1)>0){
-        mapp=$mp.getAt($mouseX-chipX,$mouseY-chipY);
+        mapp=$mp.getAt($mouseX+chipX,$mouseY+chipY);
         mode=prevMode;
         $mp.scrollTo(1000,1000);
         print(mode+" mode");
         updateEx(10);
     }else if(mode=="setOn" && getkey(1)>0){
-        $map.setOnAt($mouseX-mx,$mouseY-my,mapp);
+        $map.setOnAt($mouseX+mx,$mouseY+my,mapp);
     }else if(mode=="spuit" && getkey(1)>0){
-        mapp=$map.getAt($mouseX-mx,$mouseY-my);
+        mapp=$map.getAt($mouseX+mx,$mouseY+my);
         mode="set";
         print(mode+" mode");
         updateEx(10);

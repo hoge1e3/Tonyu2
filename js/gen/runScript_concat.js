@@ -1,4 +1,4 @@
-// Created at Mon Oct 20 2014 12:50:45 GMT+0900 (東京 (標準時))
+// Created at Wed Oct 22 2014 14:00:47 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -657,8 +657,8 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1412840047453},"Actor.tonyu":{"lastUpdate":1411023260959},"BaseActor.tonyu":{"lastUpdate":1411550826406},"Boot.tonyu":{"lastUpdate":1411699443780},"InputDevice.tonyu":{"lastUpdate":1411529063835},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1412840047455},"MapEditor.tonyu":{"lastUpdate":1412055786267},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"Panel.tonyu":{"lastUpdate":1410239416753},"ScaledCanvas.tonyu":{"lastUpdate":1412840047457},"Sprites.tonyu":{"lastUpdate":1412844296184},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000}}',
-      '.desktop': '{"runMenuOrd":["Main2","MapLoad","MapEditor","Main","AcTestM","NObjTest","NObjTest2","AcTest","AltBoot","Ball","Bar","Bounce","Map","MapTest","MapTest2nd","SetBGCTest","Label","PanelTest","ScaledCanvas","Sprites"]}',
+      '': '{".desktop":{"lastUpdate":1413954028921},"Actor.tonyu":{"lastUpdate":1411023260959},"BaseActor.tonyu":{"lastUpdate":1411550826406},"Boot.tonyu":{"lastUpdate":1411699443780},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1412840047455},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1412840047457},"Sprites.tonyu":{"lastUpdate":1412844296184},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1410239416753},"MapEditor.tonyu":{"lastUpdate":1413954028924},"InputDevice.tonyu":{"lastUpdate":1411529063835}}',
+      '.desktop': '{"runMenuOrd":["MapEditor","Main2","MapLoad","Main","AcTestM","NObjTest","NObjTest2","AcTest","AltBoot","Ball","Bar","Bounce","MapTest","MapTest2nd","SetBGCTest","Label","PanelTest"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
         'native Sprites;\n'+
@@ -1539,35 +1539,35 @@ requireSimulator.setName('fs/ROMk');
         '        print(mode+" mode");\n'+
         '    }\n'+
         '    if(mode!="get"){\n'+
-        '        if(getkey("left")>0) mx=mx-8;\n'+
-        '        if(getkey("right")>0) mx=mx+8;\n'+
-        '        if(getkey("up")>0) my=my-8;\n'+
-        '        if(getkey("down")>0) my=my+8;\n'+
+        '        if(getkey("left")>0) mx=mx+8;\n'+
+        '        if(getkey("right")>0) mx=mx-8;\n'+
+        '        if(getkey("up")>0) my=my+8;\n'+
+        '        if(getkey("down")>0) my=my-8;\n'+
         '        $map.scrollTo(mx,my);\n'+
         '    }else{\n'+
-        '        if(getkey("left")>0) chipX=chipX-8;\n'+
-        '        if(getkey("right")>0) chipX=chipX+8;\n'+
-        '        if(getkey("up")>0) chipY=chipY-8;\n'+
-        '        if(getkey("down")>0) chipY=chipY+8;\n'+
+        '        if(getkey("left")>0) chipX=chipX+8;\n'+
+        '        if(getkey("right")>0) chipX=chipX-8;\n'+
+        '        if(getkey("up")>0) chipY=chipY+8;\n'+
+        '        if(getkey("down")>0) chipY=chipY-8;\n'+
         '        $mp.scrollTo(chipX,chipY);\n'+
         '    }\n'+
-        '    panel.x=panel.width/2+mx;\n'+
-        '    panel.y=panel.height/2+my;\n'+
+        '    panel.x=panel.width/2-mx;\n'+
+        '    panel.y=panel.height/2-my;\n'+
         '    if(mode=="set" && getkey(1)>0){\n'+
-        '        $map.setAt($mouseX-mx,$mouseY-my,mapp);\n'+
-        '        $map.setOnAt($mouseX-mx,$mouseY-my,-1);\n'+
+        '        $map.setAt($mouseX+mx,$mouseY+my,mapp);\n'+
+        '        $map.setOnAt($mouseX+mx,$mouseY+my,-1);\n'+
         '    }else if(mode=="erase" && getkey(1)>0){\n'+
-        '        $map.setAt($mouseX-mx,$mouseY-my,-1);\n'+
+        '        $map.setAt($mouseX+mx,$mouseY+my,-1);\n'+
         '    }else if(mode=="get" && getkey(1)>0){\n'+
-        '        mapp=$mp.getAt($mouseX-chipX,$mouseY-chipY);\n'+
+        '        mapp=$mp.getAt($mouseX+chipX,$mouseY+chipY);\n'+
         '        mode=prevMode;\n'+
         '        $mp.scrollTo(1000,1000);\n'+
         '        print(mode+" mode");\n'+
         '        updateEx(10);\n'+
         '    }else if(mode=="setOn" && getkey(1)>0){\n'+
-        '        $map.setOnAt($mouseX-mx,$mouseY-my,mapp);\n'+
+        '        $map.setOnAt($mouseX+mx,$mouseY+my,mapp);\n'+
         '    }else if(mode=="spuit" && getkey(1)>0){\n'+
-        '        mapp=$map.getAt($mouseX-mx,$mouseY-my);\n'+
+        '        mapp=$map.getAt($mouseX+mx,$mouseY+my);\n'+
         '        mode="set";\n'+
         '        print(mode+" mode");\n'+
         '        updateEx(10);\n'+
@@ -5757,12 +5757,13 @@ define(["PatternParser","Util","WebSite"], function (PP,Util,WebSite) {
             	return;
             }
             url=IL.convURL(url,options.baseDir);
-            if (!Util.startsWith(url,"data:")) url+="?" + new Date().getTime();
-            var im=$("<img>").attr("src",url);
+            //if (!Util.startsWith(url,"data:")) url+="?" + new Date().getTime();
+            var im=$("<img>");
             im.load(function () {
             	cache[urlKey]=this;
             	proc.apply(this,[]);
             });
+            im.attr("src",url);
             function proc() {
                 var pw,ph;
                 if ((pw=resImg.pwidth) && (ph=resImg.pheight)) {
