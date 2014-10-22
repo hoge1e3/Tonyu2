@@ -24,12 +24,13 @@ define(["PatternParser","Util","WebSite"], function (PP,Util,WebSite) {
             	return;
             }
             url=IL.convURL(url,options.baseDir);
-            if (!Util.startsWith(url,"data:")) url+="?" + new Date().getTime();
-            var im=$("<img>").attr("src",url);
+            //if (!Util.startsWith(url,"data:")) url+="?" + new Date().getTime();
+            var im=$("<img>");
             im.load(function () {
             	cache[urlKey]=this;
             	proc.apply(this,[]);
             });
+            im.attr("src",url);
             function proc() {
                 var pw,ph;
                 if ((pw=resImg.pwidth) && (ph=resImg.pheight)) {

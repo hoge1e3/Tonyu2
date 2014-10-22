@@ -1,4 +1,7 @@
-define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"], function (FS, Tonyu, UI,IL,Blob,Auth,WebSite) {
+define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
+        ,"ImageDetailEditor"],
+        function (FS, Tonyu, UI,IL,Blob,Auth,WebSite,
+                ImageDetailEditor) {
     var ImageResEditor=function (prj) {
         var d=UI("div", {title:"画像リスト"});
         d.css({height:200+"px", "overflow-v":"scroll"});
@@ -109,7 +112,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"], function (FS, To
                 var isFix=!!(im.pwidth && im.pheight);
                 var res=UI("tr",
                         ["td", ["img", {src: convURL(im.url),width:16,height:16,
-                            on:{mouseenter: magOn, mouseout:magOff} }]],
+                            on:{click: detail, mouseenter: magOn, mouseout:magOff} }]],
                             ["td", ["input", {$var:"name", size:12,value:im.name}]],
                             ["td", ["input",{$var:"url", size:20,value:im.url}]],
                                 ["td",
@@ -135,6 +138,9 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"], function (FS, To
                 function magOff() {
                     //console.log("Off");
                     mag.hide();
+                }
+                function detail() {
+                    ImageDetailEditor.show(im,prj.getDir());
                 }
                 var v=res.$vars;
                 v.mag=mag;

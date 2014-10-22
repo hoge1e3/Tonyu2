@@ -122,7 +122,7 @@ define(["Util"],function (Util) {
             var tag=a[0];
             var i=1;
             var res=$("<"+tag+">");
-            if (typeof a[i]=="object" && !(a[i] instanceof Array) ) {
+            if (typeof a[i]=="object" && !(a[i] instanceof Array) && !(a[i] instanceof $) ) {
                 parseAttr(res, a[i],tag);
                 i++;
             }

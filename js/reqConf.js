@@ -172,6 +172,8 @@ var reqConf={
             TextEditor: "ide/TextEditor",
             FileMenu: "fsui/FileMenu",
             ImageList: "graphics/ImageList",
+            ImageRect: "graphics/ImageRect",
+            ImageDetailEditor: "ide/ImageDetailEditor",
             "disp": "lib/disp",
             "Util": "lib/util",
             "Profiler": "lib/profiler",
