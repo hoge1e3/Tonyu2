@@ -140,7 +140,12 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                     mag.hide();
                 }
                 function detail() {
-                    ImageDetailEditor.show(im,prj.getDir());
+                    ImageDetailEditor.show(im,prj.getDir(), im.name, {
+                        onclose: function () {
+                            prj.setResource(rsrc);
+                            reload();
+                        }
+                    });
                 }
                 var v=res.$vars;
                 v.mag=mag;

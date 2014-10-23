@@ -22,14 +22,21 @@ function FileList(elem, options) {
     elem.append(path).append(items);
     function select(f) {
         if (FL.on.select && FL.on.select(f)) return;
+        if (!f) return;
         _mod=false;
         if (f.isDir()) {
-            _curFile=null;
+            //_curFile=null;
             ls(f);
         } else {
-        	item(_curFile).removeClass("selected");
-            _curFile=f;
-            item(_curFile).addClass("selected");
+            var nDir=f.up();
+            if (_curDir.path()!=nDir.path() ) {
+                _curFile=f;
+                ls(nDir);
+            } else {
+                item(_curFile).removeClass("selected");
+                _curFile=f;
+                item(_curFile).addClass("selected");
+            }
         }
     }
     function setModified(m) {

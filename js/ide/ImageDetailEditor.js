@@ -20,7 +20,10 @@ define(["UI","ImageList","ImageRect"],function (UI,ImageList,ImageRect) {
     var w,h,rows,cols;
     var IMD={};
     var item;
-    IMD.show=function (_item,baseDir, itemName) {
+    var onclose;
+    IMD.show=function (_item,baseDir, itemName, options) {
+        if (!options) options={};
+        onclose=options.onclose;
         item=_item;
         d.dialog({width:600,height:500});
         var url=ImageList.convURL(item.url,baseDir);
@@ -31,8 +34,10 @@ define(["UI","ImageList","ImageRect"],function (UI,ImageList,ImageRect) {
             h=im.height;
             var ctx=v.cv[0].getContext("2d");
             if (item.pwidth && item.pheight) {
+                v.pwidth.val(item.pwidth);
+                v.pheight.val(item.pheight);
                 calcRC();
-                ctx.strokeStyle="magenda";
+                ctx.strokeStyle="#f0f";
                 ctx.beginPath();
                 ctx.moveTo(res.left,res.top);
                 ctx.lineTo(res.left+res.width,res.top);
@@ -43,27 +48,37 @@ define(["UI","ImageList","ImageRect"],function (UI,ImageList,ImageRect) {
             }
         });
     };
+    function nNan(val,def) {
+        if (val===val) return val;
+        return def;
+    }
     function setRC() {
-        cols=parseInt(v.cols.val());
-        rows=parseInt(v.rows.val());
+        if (!item) return false;
+        //console.log("setRC");
+        cols=nNan( parseInt(v.cols.val()) ,cols);
+        rows=nNan( parseInt(v.rows.val()) ,rows);
         calcWH();
         return false;
     }
     function calcWH() {
-        item.pwidth=Math.floor(w/cols);
-        item.pheight=Math.floor(h/rows);
+        if (!item) return false;
+        item.pwidth=nNan( Math.floor(w/cols), item.pwidth);
+        item.pheight=nNan( Math.floor(h/rows), item.pheight);
         v.pwidth.val(item.pwidth);
         v.pheight.val(item.pheight);
     }
     function setWH() {
-        item.pwidth=parseInt(v.pwidth.val());
-        item.pheight=parseInt(v.pheight.val());
+        if (!item) return false;
+        //console.log("setWH");
+        item.pwidth=nNan( parseInt(v.pwidth.val()), item.pwidth);
+        item.pheight=nNan( parseInt(v.pheight.val()), item.pheight);
         calcRC();
         return false;
     }
     function calcRC() {
-        cols=Math.floor(w/item.pwidth);
-        rows=Math.floor(h/item.pheight);
+        if (!item) return false;
+        cols=nNan( Math.floor(w/item.pwidth),cols);
+        rows=nNan( Math.floor(h/item.pheight),rows);
         v.rows.val(rows);
         v.cols.val(cols);
     }
@@ -73,6 +88,7 @@ define(["UI","ImageList","ImageRect"],function (UI,ImageList,ImageRect) {
     }
     function close() {
         d.dialog("close");
+        if (onclose) onclose();
         return false;
     }
     return IMD;

@@ -172,7 +172,12 @@ $(function () {
         return null;
     }
     function fixName(name, options) {
-        if (name.match(/^[A-Za-z_][a-zA-Z0-9_]*$/)) {
+        var upcased=false;
+        if (name.match(/^[a-z]/)) {
+            name= name.substring(0,1).toUpperCase()+name.substring(1);
+            upcased=true;
+        }
+        if (name.match(/^[A-Z_][a-zA-Z0-9_]*$/)) {
             if (curPrj.isKernel(name)) {
                 if (curPrj.getOptions().kernelEditable) {
                     return {ok:true, file: curProjectDir.rel(name+EXT),
@@ -181,8 +186,8 @@ $(function () {
                     return {ok:false, reason:name+"はシステムで利用されている名前なので使用できません"};
                 }
             }
-            if (name.match(/^[a-z]/)) {
-                name= name.substring(0,1).toUpperCase()+name.substring(1);
+            if (upcased) {
+                //name= name.substring(0,1).toUpperCase()+name.substring(1);
                 return {ok:true, file: curProjectDir.rel(name+EXT), note: "先頭を大文字("+name+") にして作成します．"};
             }
             return {ok:true, file: curProjectDir.rel(name+EXT)};
@@ -329,20 +334,16 @@ $(function () {
     	fl.setModified(curFile.text()!=prog.getValue());
     }
     setInterval(watchModified,1000);
+    var curDOM;
     function open(f) {
 	// do not call directly !!  it doesnt change fl.curFile
         if (f.isDir()) {
             return;
         }
         save();
-        var prevF=fl.curFile();
-        if (prevF!=null) {
-            var prev=editors[prevF.path()];
-            if (prev) {
-                prev.dom.hide();
-            }
-        }
-        if (!editors[f.path()]) {
+        if (curDOM) curDOM.hide();
+        var inf=editors[f.path()];
+        if (!inf) {
             var progDOM=$("<pre>").css("height", screenH+"px").text(f.text()).appendTo("#progs");
             var prog=ace.edit(progDOM[0]);
             if (typeof desktopEnv.editorFontSize=="number") prog.setFontSize(desktopEnv.editorFontSize);
@@ -354,10 +355,13 @@ $(function () {
             });
             prog.setReadOnly(false);
             prog.clearSelection();
+            prog.focus();
+            curDOM=progDOM;
+        } else {
+            inf.dom.show();
+            inf.editor.focus();
+            curDOM=inf.dom;
         }
-        var inf=editors[f.path()];
-        inf.dom.show();
-        inf.editor.focus();
     }
     d=function () {
         Tonyu.currentProject.dumpJS.apply(this,arguments);
