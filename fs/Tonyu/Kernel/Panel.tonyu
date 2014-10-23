@@ -5,6 +5,7 @@ native isNaN;
     super(opt);
     this.width=width;
     this.height=height;
+    if(align==null) align="center";
     buf=$("<canvas>").attr{width,height};
 }
 \setPanel(width,height){
@@ -62,7 +63,13 @@ native isNaN;
 \draw(ctx){
     pImg=buf[0];
     ctx.save();
-    ctx.translate(x,y);
+    if(align=="left"){
+        ctx.translate(x+width/2,y+height/2);
+    }else if(align=="center"){
+        ctx.translate(x,y);
+    }else if(align=="right"){
+        ctx.translate(x-width/2,y-height/2);
+    }
     if(this.rotation!=0){
         ctx.rotate(this.rotation/180*Math.PI);
     }else{

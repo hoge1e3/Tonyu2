@@ -2,8 +2,8 @@
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1413954028921},"Actor.tonyu":{"lastUpdate":1411023260959},"BaseActor.tonyu":{"lastUpdate":1411550826406},"Boot.tonyu":{"lastUpdate":1411699443780},"InputDevice.tonyu":{"lastUpdate":1411529063835},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1412840047455},"MapEditor.tonyu":{"lastUpdate":1413954028924},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"Panel.tonyu":{"lastUpdate":1410239416753},"ScaledCanvas.tonyu":{"lastUpdate":1412840047457},"Sprites.tonyu":{"lastUpdate":1412844296184},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000}}',
-      '.desktop': '{"runMenuOrd":["MapEditor","Main2","MapLoad","Main","AcTestM","NObjTest","NObjTest2","AcTest","AltBoot","Ball","Bar","Bounce","MapTest","MapTest2nd","SetBGCTest","Label","PanelTest"]}',
+      '': '{".desktop":{"lastUpdate":1414051292628},"Actor.tonyu":{"lastUpdate":1414051292629},"BaseActor.tonyu":{"lastUpdate":1414051292630},"Boot.tonyu":{"lastUpdate":1414051292631},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1412840047455},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1414051292632},"Sprites.tonyu":{"lastUpdate":1414051292632},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1414051292634},"MapEditor.tonyu":{"lastUpdate":1413954028924},"InputDevice.tonyu":{"lastUpdate":1411529063835},"Pad.tonyu":{"lastUpdate":1414052339153}}',
+      '.desktop': '{"runMenuOrd":["Main1023","Main2","MapLoad","Main","AcTestM","NObjTest","NObjTest2","AcTest","AltBoot","Ball","Bar","Bounce","MapTest","MapTest2nd","SetBGCTest","Label","PanelTest","Actor","BaseActor","Boot","Panel","ScaledCanvas","Sprites","Pad"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
         'native Sprites;\n'+
@@ -14,7 +14,11 @@
         '    if (Tonyu.runMode) initSprite();\n'+
         '}\n'+
         '\\initSprite() {\n'+
-        '    $Sprites.add(this);\n'+
+        '    if(layer && typeof layer.add=="function"){\n'+
+        '        layer.add(this);\n'+
+        '    }else{\n'+
+        '        $Sprites.add(this);\n'+
+        '    }\n'+
         '    onAppear();\n'+
         '}\n'+
         '\\onAppear() {\n'+
@@ -79,7 +83,7 @@
         'nowait \\all(c) {\n'+
         '    var res=new TQuery;\n'+
         '    $Sprites.sprites.forEach \\(s) {\n'+
-        '        if (s===this || s.excludeFromAll) return;\n'+
+        '        if (s===this) return;\n'+
         '        if (!c || s instanceof c) {\n'+
         '            res.push(s);\n'+
         '        }\n'+
@@ -166,11 +170,20 @@
         '        $Sprites.remove(_sprite);\n'+
         '        _sprite=null;\n'+
         '    } else {*/\n'+
-        '        $Sprites.remove(this);\n'+
+        '        //$Sprites.remove(this);\n'+
         '    //}\n'+
+        '    if(layer && typeof layer.remove=="function"){\n'+
+        '        layer.remove(this);\n'+
+        '    }else{\n'+
+        '        $Sprites.remove(this);\n'+
+        '    }\n'+
         '}\n'+
         'nowait \\show(x,y,p) {\n'+
-        '    $Sprites.add(this);\n'+
+        '    if(layer && typeof layer.add=="function"){\n'+
+        '        layer.add(this);\n'+
+        '    }else{\n'+
+        '        $Sprites.add(this);\n'+
+        '    }\n'+
         '    if (x!=null) this.x=x;\n'+
         '    if (y!=null) this.y=y;\n'+
         '    if (p!=null) this.p=p;\n'+
@@ -324,6 +337,7 @@
         '\n'+
         '\\initSprites() {\n'+
         '    $Sprites=new Sprites();\n'+
+        '    $FrontSprites=new Sprites();\n'+
         '    print ("Loading pats..");\n'+
         '    var rs=$currentProject.getResource();\n'+
         '    var a=asyncResult();\n'+
@@ -376,8 +390,9 @@
         '$MMLS={};\n'+
         '$Math=Math;\n'+
         '$WaveTable=new WaveTable;\n'+
-        '$consolePanel=new Panel{x:465/2,y:465/2,width:465,height:465,zOrder:-1,excludeFromAll:true};\n'+
+        '$consolePanel=new Panel{align:"center",x:465/2,y:465/2,width:465,height:465,zOrder:-10,layer:$FrontSprites};\n'+
         '$consolePrintY=465-15;\n'+
+        '$panel=new Panel{align:"center",x:$screenWidth/2,y:$screenHeight/2,width:$screenWidth,height:$screenHeight,zOrder:-1,layer:$FrontSprites};\n'+
         'if (typeof SplashScreen!="undefined") SplashScreen.hide();\n'+
         'while (true) {\n'+
         '    ti=new Date().getTime();\n'+
@@ -385,7 +400,9 @@
         '    $Keys.update();\n'+
         '    $screenWidth=$Screen.width;\n'+
         '    $screenHeight=$Screen.height;\n'+
+        '    $Screen.fillCanvas($Screen.buf[0]);\n'+
         '    $Sprites.draw($Screen.buf[0]);\n'+
+        '    $FrontSprites.draw($Screen.buf[0]);\n'+
         '    $Screen.draw();\n'+
         '    $Sprites.checkHit();\n'+
         '    wt=33-(new Date().getTime()-ti);\n'+
@@ -1013,6 +1030,100 @@
         '    _sprite.p=p;\n'+
         '}'
       ,
+      'Pad.tonyu': 
+        '\\new(opt) {\n'+
+        '    super(opt);\n'+
+        '    padImageP = $pat_inputPad;\n'+
+        '    jujiKey = new Actor{x:96+1, y:$screenHeight-96-1, p:padImageP+0,zOrder:-9,layer:$FrontSprites};\n'+
+        '    no1Key = new Actor{x:$screenWidth-96, y:$screenHeight-96, p:padImageP+1,zOrder:-9,layer:$FrontSprites};\n'+
+        '    jujiKey.show();\n'+
+        '    no1Key.show();\n'+
+        '    \n'+
+        '    jujiKeyPushU = new Actor{x:jujiKey.x, y:jujiKey.y-60, p:padImageP+2, zOrder:-10,layer:$FrontSprites};\n'+
+        '    jujiKeyPushL = new Actor{x:jujiKey.x-60, y:jujiKey.y, p:padImageP+2, zOrder:-10,layer:$FrontSprites};\n'+
+        '    jujiKeyPushR = new Actor{x:jujiKey.x+60, y:jujiKey.y, p:padImageP+2, zOrder:-10,layer:$FrontSprites};\n'+
+        '    jujiKeyPushD = new Actor{x:jujiKey.x, y:jujiKey.y+60, p:padImageP+2, zOrder:-10,layer:$FrontSprites};\n'+
+        '    jujiKeyPush1 = new Actor{x:no1Key.x, y:no1Key.y, p:padImageP+2, scaleX:2, zOrder:-10,layer:$FrontSprites};\n'+
+        '    jujiKeyPushU.hide();\n'+
+        '    jujiKeyPushL.hide();\n'+
+        '    jujiKeyPushR.hide();\n'+
+        '    jujiKeyPushD.hide();\n'+
+        '    jujiKeyPush1.hide();\n'+
+        '}\n'+
+        '\\die(){\n'+
+        '    jujiKey.die();\n'+
+        '    no1Key.die();\n'+
+        '    jujiKeyPushU.die();\n'+
+        '    jujiKeyPushL.die();\n'+
+        '    jujiKeyPushR.die();\n'+
+        '    jujiKeyPushD.die();\n'+
+        '    jujiKeyPush1.die();\n'+
+        '    super.die();\n'+
+        '}\n'+
+        'APAD_DIAG_SIZE = 96;\n'+
+        '\\padUpdate() {\n'+
+        '    // 操作 //\n'+
+        '    keyPushL = 0;\n'+
+        '    keyPushR = 0;\n'+
+        '    keyPushU = 0;\n'+
+        '    keyPushD = 0;\n'+
+        '    keyPush1 = 0;\n'+
+        '    \n'+
+        '    padKeyNotapCnt ++;\n'+
+        '    for (var i=0; i<5; i++) { // タップ判定・マウス判定 //\n'+
+        '        var t = $touches[i];\n'+
+        '        if (t.touched) {\n'+
+        '            if (isOnRectWH(t.x, t.y, jujiKey.x-32-APAD_DIAG_SIZE/2, jujiKey.y-32-64, 64+APAD_DIAG_SIZE, 64)) keyPushU = 1;\n'+
+        '            if (isOnRectWH(t.x, t.y, jujiKey.x-32-APAD_DIAG_SIZE/2, jujiKey.y-32+64, 64+APAD_DIAG_SIZE, 64)) keyPushD = 1;\n'+
+        '            if (isOnRectWH(t.x, t.y, jujiKey.x-32-64, jujiKey.y-32-APAD_DIAG_SIZE/2, 64, 64+APAD_DIAG_SIZE)) keyPushL = 1;\n'+
+        '            if (isOnRectWH(t.x, t.y, jujiKey.x-32+64, jujiKey.y-32-APAD_DIAG_SIZE/2, 64, 64+APAD_DIAG_SIZE)) keyPushR = 1;\n'+
+        '            if (isOnRectWH(t.x, t.y, no1Key.x-64, no1Key.y-64, 128, 128)) keyPush1 = 1;\n'+
+        '            padKeySW = 1;\n'+
+        '            padKeyNotapCnt = 0;\n'+
+        '        }\n'+
+        '    }\n'+
+        '    \n'+
+        '    // カウントアップ\n'+
+        '    if (keyPushL) keyCntL ++; else keyCntL = 0;\n'+
+        '    if (keyPushR) keyCntR ++; else keyCntR = 0;\n'+
+        '    if (keyPushU) keyCntU ++; else keyCntU = 0;\n'+
+        '    if (keyPushD) keyCntD ++; else keyCntD = 0;\n'+
+        '    if (keyPush1) keyCnt1 ++; else keyCnt1 = 0;\n'+
+        '    \n'+
+        '    // 表示\n'+
+        '    if (keyPushL) jujiKeyPushL.show(); else jujiKeyPushL.hide();\n'+
+        '    if (keyPushR) jujiKeyPushR.show(); else jujiKeyPushR.hide();\n'+
+        '    if (keyPushU) jujiKeyPushU.show(); else jujiKeyPushU.hide();\n'+
+        '    if (keyPushD) jujiKeyPushD.show(); else jujiKeyPushD.hide();\n'+
+        '    if (keyPush1) jujiKeyPush1.show(); else jujiKeyPush1.hide();\n'+
+        '    \n'+
+        '}\n'+
+        '\n'+
+        '\\getPadUp()    { return keyCntU; }\n'+
+        '\\getPadDown()  { return keyCntD; }\n'+
+        '\\getPadLeft()  { return keyCntL; }\n'+
+        '\\getPadRight() { return keyCntR; }\n'+
+        '\\getPadButton(i) {\n'+
+        '    var value;\n'+
+        '    if (i == 0) value = keyCnt1;\n'+
+        '    return value;\n'+
+        '}\n'+
+        '\n'+
+        '// 範囲 //\n'+
+        '\\isOnRect(mx, my, rx, ry, rx2, ry2) {\n'+
+        '    return (rx <= mx && mx < rx2 && ry <= my && my < ry2);\n'+
+        '}\n'+
+        '\n'+
+        '// 範囲 //\n'+
+        '\\isOnRectWH(mx, my, rx, ry, rw, rh) {\n'+
+        '    return (rx <= mx && mx < rx+rw && ry <= my && my < ry+rh);\n'+
+        '}\n'+
+        '\n'+
+        'while(true) {\n'+
+        '    padUpdate();\n'+
+        '    update();\n'+
+        '}'
+      ,
       'Panel.tonyu': 
         'native $;\n'+
         'native Math;\n'+
@@ -1021,6 +1132,7 @@
         '    super(opt);\n'+
         '    this.width=width;\n'+
         '    this.height=height;\n'+
+        '    if(align==null) align="center";\n'+
         '    buf=$("<canvas>").attr{width,height};\n'+
         '}\n'+
         '\\setPanel(width,height){\n'+
@@ -1078,7 +1190,13 @@
         '\\draw(ctx){\n'+
         '    pImg=buf[0];\n'+
         '    ctx.save();\n'+
-        '    ctx.translate(x,y);\n'+
+        '    if(align=="left"){\n'+
+        '        ctx.translate(x+width/2,y+height/2);\n'+
+        '    }else if(align=="center"){\n'+
+        '        ctx.translate(x,y);\n'+
+        '    }else if(align=="right"){\n'+
+        '        ctx.translate(x-width/2,y-height/2);\n'+
+        '    }\n'+
         '    if(this.rotation!=0){\n'+
         '        ctx.rotate(this.rotation/180*Math.PI);\n'+
         '    }else{\n'+
@@ -1105,6 +1223,7 @@
         '    this.color="rgb(20,80,180)";\n'+
         '    sx=0;\n'+
         '    sy=0;\n'+
+        '    isDrawGrid=$Sprites.isDrawGrid;\n'+
         '}\n'+
         '\\resize(width,height) {\n'+
         '    this.width=width;\n'+
@@ -1113,6 +1232,9 @@
         '    ctx=buf[0].getContext("2d");  \n'+
         '    $screenWidth=width;\n'+
         '    $screenHeight=height;\n'+
+        '    if($panel){\n'+
+        '        $panel.setPanel($screenWidth,$screenHeight);\n'+
+        '    }\n'+
         '}\n'+
         '\\shouldDraw1x1(srcw,srch,dstw,dsth) {\n'+
         '    // srcw=465 -> dstw=460...665\n'+
@@ -1155,6 +1277,15 @@
         '\\setBGColor(color){\n'+
         '    this.color=color;\n'+
         '}\n'+
+        '\\fillCanvas(cv){\n'+
+        '    var ctx=cv.getContext("2d");\n'+
+        '    ctx.save();\n'+
+        '    ctx.fillStyle=$Screen.color;\n'+
+        '    ctx.fillStyle=color;\n'+
+        '    ctx.fillRect(0,0,cv.width,cv.height);\n'+
+        '    if (isDrawGrid) drawGrid(cv);\n'+
+        '    ctx.restore();\n'+
+        '}\n'+
         '\\scrollTo(scrollX,scrollY){\n'+
         '    /*for(o in all()){\n'+
         '        //print(o.mapObj);\n'+
@@ -1165,8 +1296,9 @@
         '            o.y+=scrollY;\n'+
         '        }\n'+
         '    }*/\n'+
-        '    sx=scrollX;\n'+
-        '    sy=scrollY;\n'+
+        '    //sx=scrollX;\n'+
+        '    //sy=scrollY;\n'+
+        '    $Sprites.scrollTo(scrollX,scrollY);\n'+
         '}'
       ,
       'Sprites.tonyu': 
@@ -1176,6 +1308,8 @@
         '    imageList=[];\n'+
         '    hitWatchers=[];\n'+
         '    isDrawGrid=Tonyu.noviceMode;\n'+
+        '    sx=0;\n'+
+        '    sy=0;\n'+
         '}\n'+
         'function add(s) {\n'+
         '    if (s.__addedToSprites) return;\n'+
@@ -1204,20 +1338,19 @@
         'function draw(cv) {\n'+
         '    var ctx=cv.getContext("2d");\n'+
         '    ctx.save();\n'+
+        '    /*\n'+
         '    ctx.fillStyle=$Screen.color;\n'+
         '    ctx.fillRect(0,0,cv.width,cv.height);\n'+
         '    if (isDrawGrid) drawGrid(cv);\n'+
+        '    */\n'+
         '    var orderArray=[];\n'+
         '    orderArray=orderArray.concat(sprites);\n'+
         '    orderArray.sort(compOrder);\n'+
-        '    ctx.translate(-$Screen.sx,-$Screen.sy);\n'+
+        '    ctx.translate(-sx,-sy);\n'+
         '    orderArray.forEach(\\(s){\n'+
-        '        if(s!==$consolePanel){\n'+
-        '            s.draw(ctx);\n'+
-        '        }\n'+
+        '        s.draw(ctx);\n'+
         '    });\n'+
         '    ctx.restore();\n'+
-        '    $consolePanel.draw(ctx);\n'+
         '}\n'+
         'function checkHit() {\n'+
         '    hitWatchers.forEach(function (w) {\n'+
@@ -1280,6 +1413,10 @@
         '}\n'+
         'function getImageList() {\n'+
         '    return imageList;\n'+
+        '}\n'+
+        'function scrollTo(scrollX,scrollY){\n'+
+        '    sx=scrollX;\n'+
+        '    sy=scrollY;\n'+
         '}'
       ,
       'TObject.tonyu': 

@@ -10,6 +10,7 @@ native Math;
 
 \initSprites() {
     $Sprites=new Sprites();
+    $FrontSprites=new Sprites();
     print ("Loading pats..");
     var rs=$currentProject.getResource();
     var a=asyncResult();
@@ -62,8 +63,9 @@ $Keys=new Keys;
 $MMLS={};
 $Math=Math;
 $WaveTable=new WaveTable;
-$consolePanel=new Panel{x:465/2,y:465/2,width:465,height:465,zOrder:-1,excludeFromAll:true};
+$consolePanel=new Panel{align:"center",x:465/2,y:465/2,width:465,height:465,zOrder:-10,layer:$FrontSprites};
 $consolePrintY=465-15;
+$panel=new Panel{align:"center",x:$screenWidth/2,y:$screenHeight/2,width:$screenWidth,height:$screenHeight,zOrder:-1,layer:$FrontSprites};
 if (typeof SplashScreen!="undefined") SplashScreen.hide();
 while (true) {
     ti=new Date().getTime();
@@ -71,7 +73,9 @@ while (true) {
     $Keys.update();
     $screenWidth=$Screen.width;
     $screenHeight=$Screen.height;
+    $Screen.fillCanvas($Screen.buf[0]);
     $Sprites.draw($Screen.buf[0]);
+    $FrontSprites.draw($Screen.buf[0]);
     $Screen.draw();
     $Sprites.checkHit();
     wt=33-(new Date().getTime()-ti);

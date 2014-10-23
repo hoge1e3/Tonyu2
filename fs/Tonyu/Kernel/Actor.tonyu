@@ -7,7 +7,11 @@ native Tonyu;
     if (Tonyu.runMode) initSprite();
 }
 \initSprite() {
-    $Sprites.add(this);
+    if(layer && typeof layer.add=="function"){
+        layer.add(this);
+    }else{
+        $Sprites.add(this);
+    }
     onAppear();
 }
 \onAppear() {

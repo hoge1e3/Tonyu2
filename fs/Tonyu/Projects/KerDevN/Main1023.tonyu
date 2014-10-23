@@ -1,0 +1,48 @@
+for(var i=0;i<10;i++){
+    new Actor{x:rnd($screenWidth),y:rnd($screenHeight),p:0};
+}
+label=new Actor{x:300,y:200,text:"スコア",layer:$FrontSprites};
+pad=new Pad{layer:$FrontSprites};
+s=0;
+x=$screenWidth/2;
+y=$screenHeight/2;
+p=2;
+sx=0;
+sy=0;
+$panel.setFillStyle("cyan");
+w=0;h=0;
+$panel.fillText("test",200,200,30,"center");
+while(true){
+    w++;
+    h++;
+    print(pad.getPadUp());
+    $panel.fillRect(0,0,w,h);
+    if(w==30){
+        $Screen.resize(500,500);
+        pad.die();
+        pad=new Pad{layer:$FrontSprites};
+    }
+    //print(pad.left);
+    if(pad.left>0){
+        sx--;
+        x--;
+    }
+    if(pad.right>0){
+        sx++;
+        x++;
+    }
+    if(pad.up>0){
+        sy--;
+        y--;
+    }
+    if(pad.down>0){
+        sy++;
+        y++;
+    }
+    if(pad.button>0){
+        all().die();
+    }
+    $Screen.scrollTo(sx,sy);
+    //print(s);
+    update();
+}

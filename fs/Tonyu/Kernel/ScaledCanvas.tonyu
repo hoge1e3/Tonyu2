@@ -12,6 +12,7 @@ native Math;
     this.color="rgb(20,80,180)";
     sx=0;
     sy=0;
+    isDrawGrid=$Sprites.isDrawGrid;
 }
 \resize(width,height) {
     this.width=width;
@@ -20,6 +21,9 @@ native Math;
     ctx=buf[0].getContext("2d");  
     $screenWidth=width;
     $screenHeight=height;
+    if($panel){
+        $panel.setPanel($screenWidth,$screenHeight);
+    }
 }
 \shouldDraw1x1(srcw,srch,dstw,dsth) {
     // srcw=465 -> dstw=460...665
@@ -62,6 +66,15 @@ native Math;
 \setBGColor(color){
     this.color=color;
 }
+\fillCanvas(cv){
+    var ctx=cv.getContext("2d");
+    ctx.save();
+    ctx.fillStyle=$Screen.color;
+    ctx.fillStyle=color;
+    ctx.fillRect(0,0,cv.width,cv.height);
+    if (isDrawGrid) drawGrid(cv);
+    ctx.restore();
+}
 \scrollTo(scrollX,scrollY){
     /*for(o in all()){
         //print(o.mapObj);
@@ -72,6 +85,7 @@ native Math;
             o.y+=scrollY;
         }
     }*/
-    sx=scrollX;
-    sy=scrollY;
+    //sx=scrollX;
+    //sy=scrollY;
+    $Sprites.scrollTo(scrollX,scrollY);
 }

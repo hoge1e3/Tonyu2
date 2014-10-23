@@ -4,6 +4,8 @@ native Tonyu;
     imageList=[];
     hitWatchers=[];
     isDrawGrid=Tonyu.noviceMode;
+    sx=0;
+    sy=0;
 }
 function add(s) {
     if (s.__addedToSprites) return;
@@ -32,20 +34,19 @@ function compOrder(obj1, obj2){
 function draw(cv) {
     var ctx=cv.getContext("2d");
     ctx.save();
+    /*
     ctx.fillStyle=$Screen.color;
     ctx.fillRect(0,0,cv.width,cv.height);
     if (isDrawGrid) drawGrid(cv);
+    */
     var orderArray=[];
     orderArray=orderArray.concat(sprites);
     orderArray.sort(compOrder);
-    ctx.translate(-$Screen.sx,-$Screen.sy);
+    ctx.translate(-sx,-sy);
     orderArray.forEach(\(s){
-        if(s!==$consolePanel){
-            s.draw(ctx);
-        }
+        s.draw(ctx);
     });
     ctx.restore();
-    $consolePanel.draw(ctx);
 }
 function checkHit() {
     hitWatchers.forEach(function (w) {
@@ -108,4 +109,8 @@ function setImageList(il) {
 }
 function getImageList() {
     return imageList;
+}
+function scrollTo(scrollX,scrollY){
+    sx=scrollX;
+    sy=scrollY;
 }

@@ -56,7 +56,7 @@ nowait \hitTo(t) {
 nowait \all(c) {
     var res=new TQuery;
     $Sprites.sprites.forEach \(s) {
-        if (s===this || s.excludeFromAll) return;
+        if (s===this) return;
         if (!c || s instanceof c) {
             res.push(s);
         }
@@ -143,11 +143,20 @@ nowait \hide() {
         $Sprites.remove(_sprite);
         _sprite=null;
     } else {*/
-        $Sprites.remove(this);
+        //$Sprites.remove(this);
     //}
+    if(layer && typeof layer.remove=="function"){
+        layer.remove(this);
+    }else{
+        $Sprites.remove(this);
+    }
 }
 nowait \show(x,y,p) {
-    $Sprites.add(this);
+    if(layer && typeof layer.add=="function"){
+        layer.add(this);
+    }else{
+        $Sprites.add(this);
+    }
     if (x!=null) this.x=x;
     if (y!=null) this.y=y;
     if (p!=null) this.p=p;
