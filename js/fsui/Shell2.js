@@ -89,7 +89,7 @@ define(["Shell","UI","FS","Util"], function (sh,UI,FS,Util) {
                 }
                 sh.prompt();
             } catch(e) {
-                sh.err(r);
+                sh.err(e);
                 //out.append(UI("div",{"class": "shell error"},e,["br"],["pre",e.stack]));
                 sh.prompt();
             }
