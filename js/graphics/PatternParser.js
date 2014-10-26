@@ -1,5 +1,6 @@
 define(["Tonyu"], function (Tonyu) {return Tonyu.klass({
-	initialize: function (img) {
+	initialize: function (img, options) {
+	    this.options=options || {};
 		this.img=img;
 		this.height = img.height;
 		this.width = img.width;
@@ -81,9 +82,8 @@ define(["Tonyu"], function (Tonyu) {return Tonyu.klass({
 		}
 		dy--;
 		var sx=x+1,sy=y+1,w=dx-sx,h=dy-sy;
-        //console.log(sx,sy,w,h,dx,dy);
+        console.log("PP",sx,sy,w,h,dx,dy);
 		if (w*h==0) throw PatterParseError(dx, dy,"w*h==0");
-
         var newim=this.newImage(w,h);
         var nc=newim.getContext("2d");
         var newImD=nc.getImageData(0,0,w,h);
@@ -114,6 +114,9 @@ define(["Tonyu"], function (Tonyu) {return Tonyu.klass({
 		        this.setPixel(xx,yy, base);
 		    }
 		}
+        if (this.options.boundsInSrc) {
+            return {x:sx,y:sy,width:w,height:h};
+        }
 		return {image:newim, x:0, y:0, width:w, height:h};
 		function PatterParseError(x,y,msg) {
 		    return {toString: function () {

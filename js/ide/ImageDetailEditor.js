@@ -1,16 +1,17 @@
-define(["UI","ImageList","ImageRect"],function (UI,ImageList,ImageRect) {
+define(["UI","ImageList","ImageRect","PatternParser"],function (UI,ImageList,ImageRect,PP) {
     var d=UI("div",{title:"画像詳細"},
             ["div",
-             ["canvas",{$edit:"cv",width:500,height:300}] ],
-             ["form",
+             ["canvas",{$edit:"cv",width:500,height:300,on:{mousemove:cvMouse,mousedown:cvClick}}] ],
+             ["form",{$var:"theForm"},
               ["div",radio("rc"),"分割数指定：",
-               ["input",{$var:"cols",size:5,on:{realtimechange:setRC}}],"x",
-               ["input",{$var:"rows",size:5,on:{realtimechange:setRC}}]],
+               ["input",{$var:"cols",size:5,on:{realtimechange:setRC,focus:selRC}}],"x",
+               ["input",{$var:"rows",size:5,on:{realtimechange:setRC,focus:selRC}}]],
                ["div",radio("wh"),"1パターンの大きさ指定：",
-                ["input",{$var:"pwidth",size:5,on:{realtimechange:setWH}}],"x",
-                ["input",{$var:"pheight",size:5,on:{realtimechange:setWH}}]],
+                ["input",{$var:"pwidth",size:5,on:{realtimechange:setWH,focus:selWH}}],"x",
+                ["input",{$var:"pheight",size:5,on:{realtimechange:setWH,focus:selWH}}]],
                ["div",radio("t1"),"Tonyu1互換",
                  ["button",{on:{click:tonyu1}},"解析"]],
+               ["div","パターン番号:",["input",{$var:"patName"}] ],
                ["button",{on:{click:close}},"OK"]]
     );
     function radio(v) {
@@ -20,44 +21,120 @@ define(["UI","ImageList","ImageRect"],function (UI,ImageList,ImageRect) {
     var w,h,rows,cols;
     var IMD={};
     var item;
+    var srcImg;
     var onclose;
+    var canvasRect;
+    var chipRects, curChipIndex=-1;
+    var curItemName;
+    function selRC() {
+        v.theForm[0].type.value="rc";
+    }
+    function selWH() {
+        v.theForm[0].type.value="wh";
+    }
     IMD.show=function (_item,baseDir, itemName, options) {
         if (!options) options={};
         onclose=options.onclose;
         item=_item;
+        curItemName=itemName;
         d.dialog({width:600,height:500});
         var url=ImageList.convURL(item.url,baseDir);
         ImageRect(url, v.cv[0])(function (res) {
+            canvasRect=res;
             console.log(res);
-            var im=res.src;
-            w=im.width;
-            h=im.height;
-            var ctx=v.cv[0].getContext("2d");
+            srcImg=res.src;
+            w=srcImg.width;
+            h=srcImg.height;
             if (item.pwidth && item.pheight) {
                 v.pwidth.val(item.pwidth);
                 v.pheight.val(item.pheight);
                 calcRC();
-                ctx.strokeStyle="#f0f";
-                ctx.beginPath();
-                ctx.moveTo(res.left,res.top);
-                ctx.lineTo(res.left+res.width,res.top);
-                ctx.lineTo(res.left+res.width,res.top+res.height);
-                ctx.lineTo(res.left,res.top+res.height);
-                ctx.closePath();
-                ctx.stroke();
+                v.theForm[0].type.value="wh";
+            } else {
+                v.theForm[0].type.value="t1";
             }
+            drawFrame();
         });
     };
+    function redrawImage() {
+        var ctx=v.cv[0].getContext("2d");
+        var r=canvasRect;
+        if (!r) return;
+        if (!srcImg) return;
+        ctx.clearRect( r.left, r.top, r.width, r.height);
+        ctx.drawImage(srcImg, 0,0,w,h, r.left, r.top, r.width, r.height);
+        drawFrame();
+    }
+    function drawFrame() {
+        var rects=ImageList.parse1(item, srcImg, {boundsInSrc:true});
+        console.log("drawFrame", rects);
+        var ctx=v.cv[0].getContext("2d");
+        rects.forEach(function (r) {
+            rect(ctx,calcRect(r));
+        });
+        chipRects=rects;
+    }
+    function inRect(point,rect) {
+        return rect.left<= point.x && point.x<= rect.left+rect.width &&
+               rect.top<=point.y && point.y<=rect.top+rect.height ;
+    }
+    function calcRect(r) { // rect in srcImg:{x,y,width,height}
+        var s={};  // returns rect in canvas(v.cv):{left,top,width,hegiht};
+        var scaleX=canvasRect.width/w;
+        var scaleY=canvasRect.height/h;
+        s.left=canvasRect.left+r.x*scaleX;
+        s.top=canvasRect.top+r.y*scaleY;
+        s.width=r.width*scaleX;
+        s.height=r.height*scaleY;
+        return s;
+    }
+    function cvMouse(e) {
+        var ctx=v.cv[0].getContext("2d");
+        var o=v.cv.offset();
+        var p={x:e.pageX-o.left, y:e.pageY-o.top};
+
+        chipRects.forEach(function (r,i) {
+            var cr=calcRect(r);
+            //console.log(p.x, p.y, cr);
+            if (inRect(p,cr )) {
+                var pc=chipRects[curChipIndex];
+                if (pc) {
+                    var pcr=calcRect(pc);
+                    rect(ctx,pcr);
+                }
+                curChipIndex=i;
+                rect(ctx,cr,"#ff0");
+            }
+        })
+    }
+    function cvClick() {
+        var pc=chipRects[curChipIndex];
+        if (pc) {
+            v.patName.val(curItemName+"+"+curChipIndex);
+        }
+    }
+    function rect(ctx,rect,col) {
+        ctx.strokeStyle=col || "#f0f";
+        ctx.beginPath();
+        ctx.moveTo(rect.left,rect.top);
+        ctx.lineTo(rect.left+rect.width,rect.top);
+        ctx.lineTo(rect.left+rect.width,rect.top+rect.height);
+        ctx.lineTo(rect.left,rect.top+rect.height);
+        ctx.closePath();
+        ctx.stroke();
+    }
     function nNan(val,def) {
         if (val===val) return val;
         return def;
     }
     function setRC() {
+        if (v.theForm[0].type.value!="rc") return false;
         if (!item) return false;
         //console.log("setRC");
         cols=nNan( parseInt(v.cols.val()) ,cols);
         rows=nNan( parseInt(v.rows.val()) ,rows);
         calcWH();
+        redrawImage();
         return false;
     }
     function calcWH() {
@@ -68,11 +145,13 @@ define(["UI","ImageList","ImageRect"],function (UI,ImageList,ImageRect) {
         v.pheight.val(item.pheight);
     }
     function setWH() {
+        if (v.theForm[0].type.value!="wh") return false;
         if (!item) return false;
         //console.log("setWH");
         item.pwidth=nNan( parseInt(v.pwidth.val()), item.pwidth);
         item.pheight=nNan( parseInt(v.pheight.val()), item.pheight);
         calcRC();
+        redrawImage();
         return false;
     }
     function calcRC() {
@@ -83,7 +162,14 @@ define(["UI","ImageList","ImageRect"],function (UI,ImageList,ImageRect) {
         v.cols.val(cols);
     }
     function tonyu1() {
-
+        if (!item) return false;
+        delete item.pwidth;
+        delete item.pheight;
+        v.theForm[0].type.value="t1";
+        drawFrame();
+        /*var p=new PP(srcImg);
+        p.parse();
+        */
         return false;
     }
     function close() {

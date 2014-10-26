@@ -1,8 +1,11 @@
 /*$Screen.setBGColor("black");
 while(true) {
-    updateEx(10);
-    new Prominence;
+updateEx(10);
+new Prominence;
 }*/
-if (x[3]=3) {
-    
-}
+x=20;
+y=20;
+p=$pat_sample;
+/*if (x[3]=3) {
+
+}*/

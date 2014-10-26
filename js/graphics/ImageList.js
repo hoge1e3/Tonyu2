@@ -66,6 +66,29 @@ define(["PatternParser","Util","WebSite"], function (PP,Util,WebSite) {
         });
     };
     IL.load=IL;
+    IL.parse1=function (resImg, imgDOM, options) {
+        var pw,ph;
+        var res;
+        if ((pw=resImg.pwidth) && (ph=resImg.pheight)) {
+            var x=0, y=0, w=imgDOM.width, h=imgDOM.height;
+            var r=[];
+            while (true) {
+                r.push({image:this, x:x,y:y, width:pw, height:ph});
+                x+=pw;
+                if (x+pw>w) {
+                    x=0;
+                    y+=ph;
+                    if (y+ph>h) break;
+                }
+            }
+            res=r;
+        } else {
+            var p=new PP(imgDOM,options);
+            res=p.parse();
+        }
+        res.name=resImg.name;
+        return res;
+    };
 	IL.convURL=function (url, baseDir) {
 	    url=url.replace(/\$\{([a-zA-Z0-9_]+)\}/g, function (t,name) {
 	        return WebSite[name];
