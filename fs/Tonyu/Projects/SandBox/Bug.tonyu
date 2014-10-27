@@ -6,6 +6,8 @@ new Prominence;
 x=20;
 y=20;
 p=$pat_sample;
+pad=new Pad;
+
 /*if (x[3]=3) {
 
 }*/

@@ -1,4 +1,4 @@
-// Created at Thu Oct 23 2014 17:20:31 GMT+0900 (東京 (標準時))
+// Created at Mon Oct 27 2014 12:37:58 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -602,7 +602,8 @@ define([], function () {
             urlAliases: {
                 "images/base.png":"http://jsrun.it/assets/6/F/y/3/6Fy3B.png",
                 "images/Sample.png":"http://jsrun.it/assets/s/V/S/l/sVSlZ.png",
-                "images/neko.png":"http://jsrun.it/assets/j/D/9/q/jD9qQ.png"
+                "images/neko.png":"http://jsrun.it/assets/j/D/9/q/jD9qQ.png",
+                "images/inputPad.png":"http://jsrun.it/assets/r/K/T/Y/rKTY9.png"
             },top:"",devMode:devMode
         };
     } else if (
@@ -622,6 +623,7 @@ define([], function () {
                 "images/base.png":"../../images/base.png",
                 "images/Sample.png":"../../images/Sample.png",
                 "images/neko.png":"../../images/neko.png",
+                "images/inputPad.png":"../../images/inputPad.png",
                     "images/ecl.png":"../../images/ecl.png"
             },top:"../../",devMode:devMode
         };
@@ -657,7 +659,7 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1414051292628},"Actor.tonyu":{"lastUpdate":1414051292629},"BaseActor.tonyu":{"lastUpdate":1414051292630},"Boot.tonyu":{"lastUpdate":1414051292631},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1412840047455},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1414051292632},"Sprites.tonyu":{"lastUpdate":1414051292632},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1414051292634},"MapEditor.tonyu":{"lastUpdate":1413954028924},"InputDevice.tonyu":{"lastUpdate":1411529063835},"Pad.tonyu":{"lastUpdate":1414052339153}}',
+      '': '{".desktop":{"lastUpdate":1414051292628},"Actor.tonyu":{"lastUpdate":1414051292629},"BaseActor.tonyu":{"lastUpdate":1414051292630},"Boot.tonyu":{"lastUpdate":1414051292631},"InputDevice.tonyu":{"lastUpdate":1411529063835},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1412840047455},"MapEditor.tonyu":{"lastUpdate":1413954028924},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"Panel.tonyu":{"lastUpdate":1414051292634},"ScaledCanvas.tonyu":{"lastUpdate":1414051292632},"Sprites.tonyu":{"lastUpdate":1414051292632},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Pad.tonyu":{"lastUpdate":1414052339153}}',
       '.desktop': '{"runMenuOrd":["Main1023","Main2","MapLoad","Main","AcTestM","NObjTest","NObjTest2","AcTest","AltBoot","Ball","Bar","Bounce","MapTest","MapTest2nd","SetBGCTest","Label","PanelTest","Actor","BaseActor","Boot","Panel","ScaledCanvas","Sprites","Pad"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -5716,7 +5718,8 @@ Tonyu.TraceTbl=function () {
 if (typeof getReq=="function") getReq.exports("Tonyu.TraceTbl");
 requireSimulator.setName('PatternParser');
 define(["Tonyu"], function (Tonyu) {return Tonyu.klass({
-	initialize: function (img) {
+	initialize: function (img, options) {
+	    this.options=options || {};
 		this.img=img;
 		this.height = img.height;
 		this.width = img.width;
@@ -5798,9 +5801,8 @@ define(["Tonyu"], function (Tonyu) {return Tonyu.klass({
 		}
 		dy--;
 		var sx=x+1,sy=y+1,w=dx-sx,h=dy-sy;
-        //console.log(sx,sy,w,h,dx,dy);
+        console.log("PP",sx,sy,w,h,dx,dy);
 		if (w*h==0) throw PatterParseError(dx, dy,"w*h==0");
-
         var newim=this.newImage(w,h);
         var nc=newim.getContext("2d");
         var newImD=nc.getImageData(0,0,w,h);
@@ -5831,6 +5833,9 @@ define(["Tonyu"], function (Tonyu) {return Tonyu.klass({
 		        this.setPixel(xx,yy, base);
 		    }
 		}
+        if (this.options.boundsInSrc) {
+            return {x:sx,y:sy,width:w,height:h};
+        }
 		return {image:newim, x:0, y:0, width:w, height:h};
 		function PatterParseError(x,y,msg) {
 		    return {toString: function () {
@@ -5936,6 +5941,29 @@ define(["PatternParser","Util","WebSite"], function (PP,Util,WebSite) {
         });
     };
     IL.load=IL;
+    IL.parse1=function (resImg, imgDOM, options) {
+        var pw,ph;
+        var res;
+        if ((pw=resImg.pwidth) && (ph=resImg.pheight)) {
+            var x=0, y=0, w=imgDOM.width, h=imgDOM.height;
+            var r=[];
+            while (true) {
+                r.push({image:this, x:x,y:y, width:pw, height:ph});
+                x+=pw;
+                if (x+pw>w) {
+                    x=0;
+                    y+=ph;
+                    if (y+ph>h) break;
+                }
+            }
+            res=r;
+        } else {
+            var p=new PP(imgDOM,options);
+            res=p.parse();
+        }
+        res.name=resImg.name;
+        return res;
+    };
 	IL.convURL=function (url, baseDir) {
 	    url=url.replace(/\$\{([a-zA-Z0-9_]+)\}/g, function (t,name) {
 	        return WebSite[name];

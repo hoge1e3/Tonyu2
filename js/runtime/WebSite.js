@@ -6,7 +6,8 @@ define([], function () {
             urlAliases: {
                 "images/base.png":"http://jsrun.it/assets/6/F/y/3/6Fy3B.png",
                 "images/Sample.png":"http://jsrun.it/assets/s/V/S/l/sVSlZ.png",
-                "images/neko.png":"http://jsrun.it/assets/j/D/9/q/jD9qQ.png"
+                "images/neko.png":"http://jsrun.it/assets/j/D/9/q/jD9qQ.png",
+                "images/inputPad.png":"http://jsrun.it/assets/r/K/T/Y/rKTY9.png"
             },top:"",devMode:devMode
         };
     } else if (
@@ -26,6 +27,7 @@ define([], function () {
                 "images/base.png":"../../images/base.png",
                 "images/Sample.png":"../../images/Sample.png",
                 "images/neko.png":"../../images/neko.png",
+                "images/inputPad.png":"../../images/inputPad.png",
                     "images/ecl.png":"../../images/ecl.png"
             },top:"../../",devMode:devMode
         };

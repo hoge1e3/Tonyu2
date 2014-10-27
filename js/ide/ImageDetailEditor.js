@@ -1,7 +1,9 @@
 define(["UI","ImageList","ImageRect","PatternParser"],function (UI,ImageList,ImageRect,PP) {
     var d=UI("div",{title:"画像詳細"},
             ["div",
-             ["canvas",{$edit:"cv",width:500,height:300,on:{mousemove:cvMouse,mousedown:cvClick}}] ],
+             ["div","URL:",["input",{$var:"url",size:40,on:{change:setURL}}],
+               ["a",{$var:"openImg",target:"img"},"画像を確認..."]],
+             ["canvas",{$edit:"cv",width:500,height:250,on:{mousemove:cvMouse,mousedown:cvClick}}] ],
              ["form",{$var:"theForm"},
               ["div",radio("rc"),"分割数指定：",
                ["input",{$var:"cols",size:5,on:{realtimechange:setRC,focus:selRC}}],"x",
@@ -26,6 +28,9 @@ define(["UI","ImageList","ImageRect","PatternParser"],function (UI,ImageList,Ima
     var canvasRect;
     var chipRects, curChipIndex=-1;
     var curItemName;
+    function setURL() {
+        if (item) item.url=v.url.val();
+    }
     function selRC() {
         v.theForm[0].type.value="rc";
     }
@@ -37,8 +42,10 @@ define(["UI","ImageList","ImageRect","PatternParser"],function (UI,ImageList,Ima
         onclose=options.onclose;
         item=_item;
         curItemName=itemName;
-        d.dialog({width:600,height:500});
+        d.dialog({width:600,height:520});
+        v.url.val(item.url);
         var url=ImageList.convURL(item.url,baseDir);
+        v.openImg.attr("href",url);
         ImageRect(url, v.cv[0])(function (res) {
             canvasRect=res;
             console.log(res);
@@ -166,7 +173,11 @@ define(["UI","ImageList","ImageRect","PatternParser"],function (UI,ImageList,Ima
         delete item.pwidth;
         delete item.pheight;
         v.theForm[0].type.value="t1";
-        drawFrame();
+        try {
+            redrawImage();
+        } catch (e) {
+            alert(e);
+        }
         /*var p=new PP(srcImg);
         p.parse();
         */

@@ -127,8 +127,10 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                                 ],
                                 ["td",["button",{on:{click:del}}, "削除"]]
                 );
-                var mag=UI("div",{style:"position:absolute; background: rgba(0,0,0,0.5);"},
-                        ["img",{src: convURL(im.url)}]).hide().appendTo(res);
+                var mag=UI("div",{style:"position:absolute; background: rgba(255,255,200,1);"},
+                        //["img",{src: convURL(im.url)}]
+                        "画像をクリックして詳細設定..."
+                ).hide().appendTo(res);
                 function magOn() {
                     var ofs=$(this).position();
                     //console.log(this);
