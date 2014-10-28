@@ -41,6 +41,7 @@ textarea{
 }
 .clickable:hover {
    color: #2a6496;
+   background-color: #aaa;
 }
 .clickable.notexist {
 	cursor:pointer;

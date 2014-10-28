@@ -162,6 +162,7 @@ var reqConf={
             WebSite: "runtime/WebSite",
             UI:"lib/UI",
             ImageResEditor: "ide/ImageResEditor",
+            ResEditor: "ide/ResEditor",
             reqConf: "reqConf",
             dumpScript: "build/dumpScript",
             buildAll: "build/buildAll",
