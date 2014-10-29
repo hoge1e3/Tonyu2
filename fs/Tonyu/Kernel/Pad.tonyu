@@ -76,6 +76,16 @@ APAD_DIAG_SIZE = 96;
     return value;
 }
 
+\getUp()    { return keyCntU; }
+\getDown()  { return keyCntD; }
+\getLeft()  { return keyCntL; }
+\getRight() { return keyCntR; }
+\getButton(i) {
+    var value;
+    if (i == 0) value = keyCnt1;
+    return value;
+}
+
 // 範囲 //
 \isOnRect(mx, my, rx, ry, rx2, ry2) {
     return (rx <= mx && mx < rx2 && ry <= my && my < ry2);

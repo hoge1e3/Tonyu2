@@ -2,7 +2,7 @@
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1414051292628},"Actor.tonyu":{"lastUpdate":1414051292629},"BaseActor.tonyu":{"lastUpdate":1414051292630},"Boot.tonyu":{"lastUpdate":1414051292631},"InputDevice.tonyu":{"lastUpdate":1411529063835},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1412840047455},"MapEditor.tonyu":{"lastUpdate":1413954028924},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"Panel.tonyu":{"lastUpdate":1414051292634},"ScaledCanvas.tonyu":{"lastUpdate":1414051292632},"Sprites.tonyu":{"lastUpdate":1414051292632},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Pad.tonyu":{"lastUpdate":1414052339153}}',
+      '': '{".desktop":{"lastUpdate":1414051292628},"Actor.tonyu":{"lastUpdate":1414051292629},"BaseActor.tonyu":{"lastUpdate":1414051292630},"Boot.tonyu":{"lastUpdate":1414051292631},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1412840047455},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1414051292632},"Sprites.tonyu":{"lastUpdate":1414051292632},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1414051292634},"MapEditor.tonyu":{"lastUpdate":1413954028924},"InputDevice.tonyu":{"lastUpdate":1411529063835},"Pad.tonyu":{"lastUpdate":1414554218357}}',
       '.desktop': '{"runMenuOrd":["Main1023","Main2","MapLoad","Main","AcTestM","NObjTest","NObjTest2","AcTest","AltBoot","Ball","Bar","Bounce","MapTest","MapTest2nd","SetBGCTest","Label","PanelTest","Actor","BaseActor","Boot","Panel","ScaledCanvas","Sprites","Pad"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -1104,6 +1104,16 @@
         '\\getPadLeft()  { return keyCntL; }\n'+
         '\\getPadRight() { return keyCntR; }\n'+
         '\\getPadButton(i) {\n'+
+        '    var value;\n'+
+        '    if (i == 0) value = keyCnt1;\n'+
+        '    return value;\n'+
+        '}\n'+
+        '\n'+
+        '\\getUp()    { return keyCntU; }\n'+
+        '\\getDown()  { return keyCntD; }\n'+
+        '\\getLeft()  { return keyCntL; }\n'+
+        '\\getRight() { return keyCntR; }\n'+
+        '\\getButton(i) {\n'+
         '    var value;\n'+
         '    if (i == 0) value = keyCnt1;\n'+
         '    return value;\n'+
