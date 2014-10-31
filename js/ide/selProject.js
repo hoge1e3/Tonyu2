@@ -10,9 +10,21 @@ $(function () {
     var curDir=projects;
     function ls() {
         $("#prjItemList").empty();
-        curDir.ls(FS.orderByNumberedName).forEach(function (name) {
+        curDir.ls(FS.orderByNewest).forEach(function (name) {
             var f=curDir.rel(name);
-            UI("li", {"class":"file"}, ["a", {href:"project.html?dir="+f.path()}, name]).appendTo("#prjItemList");
+            var u=UI("div", {"class":"project"},
+                    ["a", {href:"project.html?dir="+f.path()},
+                     ["img",{$var:"t",src:"../../images/nowprint.png"}],
+                     ["div", name]
+                     ]);
+            u.appendTo("#prjItemList");
+            setTimeout(function () {
+                var tn=f.rel("images/").rel("icon_thumbnail.png");
+                //console.log(tn.path());
+                if (tn.exists()) {
+                    u.$vars.t.attr("src",tn.text());
+                }
+            },10);
             //$("#fileItem").tmpl({name: name, href:"project.html?dir="+f.path()}).appendTo("#prjItemList");
         });
     }

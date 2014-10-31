@@ -200,6 +200,7 @@ var reqConf={
             "fukidashi": "graphics/fukidashi",
             "FS": "fs/fs",
             "Tonyu.Project": "ide/TonyuProject",
+            "thumbnail": "ide/thumbnail",
             "showErrorPos": "ide/ErrorPos",
             "TError": "ide/TError",
             "ide/editor": "ide/editor",

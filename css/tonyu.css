@@ -6,6 +6,12 @@ body {
   text-align: center;
 }
 
+.project {
+	float: left;
+	width: 132px;
+	margin: 16px;
+    text-align: center;
+}
 textarea{
 	font-family: monospace;
 	line-height: 1em;

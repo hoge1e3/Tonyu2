@@ -95,7 +95,7 @@ while(true) {
     super.die();
 }*/
 function screenOut(a) {
-//オブジェクトが画面外に出たかどうかを判定します。
+    //オブジェクトが画面外に出たかどうかを判定します。
     if (!a) a=0;
     var r=0;
     $viewX=0;$viewY=0;

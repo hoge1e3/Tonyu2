@@ -139,12 +139,24 @@ FS=function () {
             putDirInfo(path ,dinfo, true);
         }
     }
-
-
+    FS.orderByNewest=function (af,bf) {
+        if (!af || !bf || !af.lastUpdate || !bf.lastUpdate) return 0;
+        var a=af.lastUpdate();
+        var b=bf.lastUpdate();
+        return (a<b ? 1 : (a>b ? -1 : 0));
+    };
     FS.orderByName=function (a,b) {
+        if (a.name && b.name) {
+            a=a.name();
+            b=b.name();
+        }
         return (a>b ? 1 : (a<b ? -1 : 0));
     };
     FS.orderByNumberedName=function (a,b) {
+        if (a.name && b.name) {
+            a=a.name();
+            b=b.name();
+        }
         function splitByNums(s) {
             var array=[];
             var pnum=/^[0-9]*/, pNnum=/^[^0-9]*/;
@@ -250,7 +262,7 @@ FS=function () {
                     else fun(f);
                 },options);
             };
-            dir.ls=function (options) {
+            dir.listFiles=function (options) {
                 var ord;
                 if (typeof options=="function") ord=options;
                 options=dir.convertOptions(options);
@@ -260,10 +272,18 @@ FS=function () {
                 for (var i in dinfo) {
                     if (!options.includeTrashed && dinfo[i].trashed) continue;
                     if (options.excludes[path+i] ) continue;
-                    res.push(i);
+                    res.push(dir.rel(i));
                 }
                 if (typeof ord=="function" && res.sort) res.sort(ord);
                 return res;
+            };
+            dir.ls=function (options) {
+                var res=dir.listFiles(options);
+                var r=[];
+                res.forEach(function (f) {
+                    r.push(f.name());
+                });
+                return r;
             };
             dir.convertOptions=function(options) {
                 if (!options) options={};
