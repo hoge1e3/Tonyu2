@@ -1,4 +1,4 @@
-// Created at Wed Oct 29 2014 12:43:58 GMT+0900 (東京 (標準時))
+// Created at Fri Oct 31 2014 14:45:18 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -228,12 +228,24 @@ FS=function () {
             putDirInfo(path ,dinfo, true);
         }
     }
-
-
+    FS.orderByNewest=function (af,bf) {
+        if (!af || !bf || !af.lastUpdate || !bf.lastUpdate) return 0;
+        var a=af.lastUpdate();
+        var b=bf.lastUpdate();
+        return (a<b ? 1 : (a>b ? -1 : 0));
+    };
     FS.orderByName=function (a,b) {
+        if (a.name && b.name) {
+            a=a.name();
+            b=b.name();
+        }
         return (a>b ? 1 : (a<b ? -1 : 0));
     };
     FS.orderByNumberedName=function (a,b) {
+        if (a.name && b.name) {
+            a=a.name();
+            b=b.name();
+        }
         function splitByNums(s) {
             var array=[];
             var pnum=/^[0-9]*/, pNnum=/^[^0-9]*/;
@@ -339,7 +351,7 @@ FS=function () {
                     else fun(f);
                 },options);
             };
-            dir.ls=function (options) {
+            dir.listFiles=function (options) {
                 var ord;
                 if (typeof options=="function") ord=options;
                 options=dir.convertOptions(options);
@@ -349,10 +361,18 @@ FS=function () {
                 for (var i in dinfo) {
                     if (!options.includeTrashed && dinfo[i].trashed) continue;
                     if (options.excludes[path+i] ) continue;
-                    res.push(i);
+                    res.push(dir.rel(i));
                 }
                 if (typeof ord=="function" && res.sort) res.sort(ord);
                 return res;
+            };
+            dir.ls=function (options) {
+                var res=dir.listFiles(options);
+                var r=[];
+                res.forEach(function (f) {
+                    r.push(f.name());
+                });
+                return r;
             };
             dir.convertOptions=function(options) {
                 if (!options) options={};
@@ -659,7 +679,7 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1414051292628},"Actor.tonyu":{"lastUpdate":1414051292629},"BaseActor.tonyu":{"lastUpdate":1414051292630},"Boot.tonyu":{"lastUpdate":1414051292631},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1412840047455},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1414051292632},"Sprites.tonyu":{"lastUpdate":1414051292632},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1414051292634},"MapEditor.tonyu":{"lastUpdate":1413954028924},"InputDevice.tonyu":{"lastUpdate":1411529063835},"Pad.tonyu":{"lastUpdate":1414554218357}}',
+      '': '{".desktop":{"lastUpdate":1414051292628},"Actor.tonyu":{"lastUpdate":1414051292629},"BaseActor.tonyu":{"lastUpdate":1414051292630},"Boot.tonyu":{"lastUpdate":1414051292631},"InputDevice.tonyu":{"lastUpdate":1411529063835},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1412840047455},"MapEditor.tonyu":{"lastUpdate":1413954028924},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"Panel.tonyu":{"lastUpdate":1414051292634},"ScaledCanvas.tonyu":{"lastUpdate":1414051292632},"Sprites.tonyu":{"lastUpdate":1414051292632},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Pad.tonyu":{"lastUpdate":1414554218357}}',
       '.desktop': '{"runMenuOrd":["Main1023","Main2","MapLoad","Main","AcTestM","NObjTest","NObjTest2","AcTest","AltBoot","Ball","Bar","Bounce","MapTest","MapTest2nd","SetBGCTest","Label","PanelTest","Actor","BaseActor","Boot","Panel","ScaledCanvas","Sprites","Pad"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -6168,9 +6188,101 @@ define(["Auth","WebSite","Util"],function (a,WebSite,Util) {
     };
     return Blob;
 });
+requireSimulator.setName('ImageRect');
+define([],function () {
+    function draw(img, canvas) {
+        if (typeof img=="string") {
+            var i=new Image();
+            var res=null;
+            var callback=null;
+            var onld=function (clb) {
+                if (clb) callback=clb;
+                if (callback && res) {
+                    callback(res);
+                }
+            };
+            i.onload=function () {
+                res=draw(i,canvas);
+                onld();
+            };
+            i.src=img;
+            return onld;
+        }
+        var cw=canvas.width;
+        var ch=canvas.height;
+        var cctx=canvas.getContext("2d");
+        var width=img.width;
+        var height=img.height;
+        var calcw=ch/height*width; // calch=ch
+        var calch=cw/width*height; // calcw=cw
+        if (calch>ch) calch=ch;
+        if (calcw>cw) calcw=cw;
+        cctx.clearRect(0,0,cw,ch);
+        var marginw=Math.floor((cw-calcw)/2);
+        var marginh=Math.floor((ch-calch)/2);
+        cctx.drawImage(img,
+                0,0,width, height,
+                marginw,marginh,calcw, calch );
+        return {left: marginw, top:marginh, width:calcw, height:calch,src:img};
+    }
+    return draw;
+});
+requireSimulator.setName('thumbnail');
+define(["ImageRect"],function (IR) {
+    var TN={};
+    var createThumbnail;
+    var NAME="$icon_thumbnail";
+    TN.set=function (prj,delay) {
+        setTimeout(function () { crt(prj);} ,delay);
+    };
+    TN.get=function (prj) {
+        var f=TN.file(prj);
+        if (f.exists()) return null;
+        return f.text();
+    };
+    TN.file=function (prj) {
+        var prjdir=prj.getDir();
+        var imfile= prjdir.rel("images/").rel("icon_thumbnail.png");
+        return imfile;
+    };
+    function crt(prj) {
+        try {
+            var img=Tonyu.globals.$Screen.buf[0];
+            var cv=$("<canvas>").attr({width:100,height:100});
+            IR(img, cv[0]);
+            var url=cv[0].toDataURL();
+            //window.open(url);
+            var rsrc=prj.getResource();
+            var prjdir=prj.getDir();
+            var imfile=TN.file(prj);
+            imfile.text(url);
+            var item={
+                name:NAME,
+                pwidth:100,pheight:100,url:"ls:"+imfile.relPath(prjdir)
+            };
+            var imgs=rsrc.images;
+            var add=false;
+            for (var i=0 ; i<imgs.length ; i++) {
+                if (imgs[i].name==NAME) {
+                    imgs[i]=item;
+                    add=true;
+                }
+            }
+            if (!add) imgs.push(item);
+
+            prj.setResource(rsrc);
+            console.log("setRSRC",rsrc);
+        } catch (e) {
+            console.log("Create thumbnail failed",e);
+        }
+    };
+    return TN;
+});
 requireSimulator.setName('Tonyu.Project');
-define(["Tonyu", "Tonyu.Compiler", "TError", "FS", "Tonyu.TraceTbl","ImageList","StackTrace","typeCheck","Blob"],
-        function (Tonyu, Tonyu_Compiler, TError, FS, Tonyu_TraceTbl, ImageList,StackTrace,tc,Blob) {
+define(["Tonyu", "Tonyu.Compiler", "TError", "FS", "Tonyu.TraceTbl","ImageList","StackTrace",
+        "typeCheck","Blob","thumbnail"],
+        function (Tonyu, Tonyu_Compiler, TError, FS, Tonyu_TraceTbl, ImageList,StackTrace,
+                tc,Blob,thumbnail) {
 return Tonyu.Project=function (dir, kernelDir) {
     var TPR={};
     var traceTbl=Tonyu.TraceTbl();
@@ -6223,6 +6335,7 @@ return Tonyu.Project=function (dir, kernelDir) {
     };
     TPR.rawRun=function (mainClassName) {
         TPR.compile();
+        thumbnail.set(TPR, 2000);
         TPR.rawBoot(mainClassName);
     };
     /*TPR.run=function (mainClassName) {
@@ -6294,6 +6407,9 @@ return Tonyu.Project=function (dir, kernelDir) {
     TPR.setResource=function (rsrc) {
         var resFile=dir.rel("res.json");
         resFile.obj(rsrc);
+    };
+    TPR.getThumbnail=function () {
+        return thumbnail.get(TPR);
     };
     TPR.getBlobInfos=function () {
         var rsrc=TPR.getResource();
