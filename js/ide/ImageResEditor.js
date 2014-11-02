@@ -203,7 +203,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
         }
         function cleanImgFiles() {
             var ims=rsrc.images;
-            Auth.currentUser(function (u) {
+            Auth.currentUser(function (u,ct) {
                 if (!u) return;
                 var rtf=[];
                 ims.forEach(function (im) {
@@ -213,8 +213,12 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                     }
                 });
                 $.ajax({url:WebSite.serverTop+"retainBlobs",type:"get",
-                    data:{user:u,project:prj.getName(),
-                    retainFileNames:JSON.stringify(rtf)}
+                    data:{
+                        user:u,
+                        project:prj.getName(),
+                        csrfToken:ct,
+                        retainFileNames:JSON.stringify(rtf)
+                    }
                 });
             })
             var cleanImg={};

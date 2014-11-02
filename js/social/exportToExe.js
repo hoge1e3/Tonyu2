@@ -14,7 +14,7 @@ $(function () {
    };
    $("#prjNameSpan").text(name);
    $("#prjName").val(name);
-   Auth.assertLogin({success:function(res) {
+   Auth.assertLogin({success:function(res, ct) {
        $(".on-logged-out").hide();
        $(".on-logged-in").show();
        $("#prog").val(east(dir));
@@ -30,12 +30,19 @@ $(function () {
                if (data.description!="null") $("#desc").val(data.description);
                $("#allowFork").attr("checked",data.allowFork!="false");
                $("#publishToList").attr("checked",data.publishToList!="false");
+               var th=prj.getThumbnail();
+               if (th) {
+                   $("#thumbSize").text("("+th.length+"bytes)");
+                   $("#thumbnail").val(th);
+                   $("#thumbImg").attr("src",th);
+               }
                $(".submit-wait").hide();
                var button=$("<button>").text("公開する").click(bClk);
                function bClk(e) {
                    //alert("bckl");
                    $(".submit-wait").show();
-                   Blob.uploadToExe(prj, {success:afterUpBlob,error:error,progress:progress});
+                   Blob.uploadToExe(prj, {success:afterUpBlob,error:error,progress:progress,
+                       csrfToken:ct});
                    e.preventDefault();
                    return false;
                }
@@ -47,7 +54,7 @@ $(function () {
                    progress();
                    console.log("Comp");//alert("aft");
                    button.hide();
-                   var data={pathInfo:"/upload-project"};
+                   var data={pathInfo:"/upload-project",csrfToken:ct};
                    function setData() {
                        var t=$(this);
                        if (t.attr("type")=="checkbox") {

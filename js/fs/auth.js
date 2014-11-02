@@ -1,9 +1,15 @@
 define(["WebSite"],function (WebSite) {
     var auth={};
     auth.currentUser=function (onend) {
-        $.get(WebSite.serverTop+"currentUser", function (res) {
-            if (res=="null") res=null;
-            onend(res);
+        $.ajax({type:"get",url:WebSite.serverTop+"currentUser",data:{withCsrfToken:true},
+            success:function (res) {
+                console.log("auth.currentUser",res);
+                res=JSON.parse(res);
+                var u=res.user;
+                if (u=="null") u=null;
+                console.log("user", u, "csrfToken",res.csrfToken);
+                onend(u,res.csrfToken);
+            }
         });
     };
     auth.assertLogin=function (options) {
@@ -15,9 +21,9 @@ define(["WebSite"],function (WebSite) {
                 return confirm(mesg);
             };
         }*/
-        auth.currentUser(function (user) {
+        auth.currentUser(function (user,csrfToken) {
             if (user) {
-                return options.success(user);
+                return options.success(user,csrfToken);
             }
             window.onLoggedIn=options.success;
             options.showLoginLink(WebSite.serverTop+"login");

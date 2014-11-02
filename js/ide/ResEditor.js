@@ -152,7 +152,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
         }
         function cleanFiles() {
             var items=rsrc[mediaInfo.key];
-            Auth.currentUser(function (u) {
+            Auth.currentUser(function (u,ct) {
                 if (!u) return;
                 var rtf=[];
                 items.forEach(function (item) {
@@ -161,9 +161,16 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                         rtf.push(a.fileName);
                     }
                 });
+                var data={
+                        user:u,
+                        project:prj.getName(),
+                        mediaType:mediaType,
+                        csrfToken:ct,
+                        retainFileNames:JSON.stringify(rtf)
+                };
+                console.log("retainBlobs",data);
                 $.ajax({url:WebSite.serverTop+"retainBlobs",type:"get",
-                    data:{user:u,project:prj.getName(),mediaType:mediaType,
-                    retainFileNames:JSON.stringify(rtf)}
+                    data:data
                 });
             })
             var cleanFile={};

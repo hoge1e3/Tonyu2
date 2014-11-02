@@ -33,6 +33,8 @@ requirejs(["exportToExe"],function (){});
 			<input type="hidden" id="prjName" name="project" />
 			<textarea id="prog" name="prog" cols=100 rows=24
 				style="display: none;"></textarea>
+            <textarea id="thumbnail" name="thumbnail" cols=100 rows=24
+                style="display: none;"></textarea>
 
 			<p>
 				タイトル <input id="prjTitle" name="title"></input>
@@ -41,6 +43,10 @@ requirejs(["exportToExe"],function (){});
 			<p>
 				説明<br />
 				<textarea id="desc" name="description" cols=100 rows=24></textarea>
+			</p>
+			<p>
+			アイコン<div id="thumbSize"></div><br/>
+			    <img src="../../images/nowprint.png" id="thumbImg"/>
 			</p>
 			<div>
 				<input type="checkbox" id="publishToList" name="publishToList"

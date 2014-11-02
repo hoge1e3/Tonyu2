@@ -15,7 +15,7 @@ function decodeURLComponentEx(s){
     return decodeURIComponent(s.replace(/\+/g, '%20'));
 }
 try {
-    window.opener.onLoggedIn(getQueryString("user"));
+    window.opener.onLoggedIn(getQueryString("user"), getQueryString("csrfToken"));
     window.close();
 } catch (e) {
     location.href="index.html";

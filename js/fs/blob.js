@@ -46,12 +46,18 @@ define(["Auth","WebSite","Util"],function (a,WebSite,Util) {
             console.log("uploadBlobToExe cnt=",cnt);
         };
         bis.forEach(function (bi) {
-             $.ajax({type:"get", url: WebSite.serverTop+"uploadBlobToExe",
-                 data:bi,success: function () {
+            var data={csrfToken:options.csrfToken};
+            for (var i in bi) data[i]=bi[i];
+            $.ajax({
+                type:"get",
+                url: WebSite.serverTop+"uploadBlobToExe",
+                data:data,
+                success: function () {
                      cnt--;
                      if (cnt==0) return options.success();
                      else options.progress(cnt);
-                 },error:options.error
+                },
+                error:options.error
              });
         });
     };

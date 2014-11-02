@@ -7,12 +7,13 @@ define(["ImageRect"],function (IR) {
     };
     TN.get=function (prj) {
         var f=TN.file(prj);
-        if (f.exists()) return null;
+        if (!f.exists()) return null;
         return f.text();
     };
     TN.file=function (prj) {
         var prjdir=prj.getDir();
         var imfile= prjdir.rel("images/").rel("icon_thumbnail.png");
+        //console.log("Thumb file=",imfile.path(),imfile.exists());
         return imfile;
     };
     function crt(prj) {
