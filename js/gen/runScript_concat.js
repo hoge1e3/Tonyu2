@@ -1,4 +1,4 @@
-// Created at Fri Oct 31 2014 14:45:18 GMT+0900 (東京 (標準時))
+// Created at Sun Nov 02 2014 22:34:31 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -6103,9 +6103,15 @@ requireSimulator.setName('Auth');
 define(["WebSite"],function (WebSite) {
     var auth={};
     auth.currentUser=function (onend) {
-        $.get(WebSite.serverTop+"currentUser", function (res) {
-            if (res=="null") res=null;
-            onend(res);
+        $.ajax({type:"get",url:WebSite.serverTop+"currentUser",data:{withCsrfToken:true},
+            success:function (res) {
+                console.log("auth.currentUser",res);
+                res=JSON.parse(res);
+                var u=res.user;
+                if (u=="null") u=null;
+                console.log("user", u, "csrfToken",res.csrfToken);
+                onend(u,res.csrfToken);
+            }
         });
     };
     auth.assertLogin=function (options) {
@@ -6117,9 +6123,9 @@ define(["WebSite"],function (WebSite) {
                 return confirm(mesg);
             };
         }*/
-        auth.currentUser(function (user) {
+        auth.currentUser(function (user,csrfToken) {
             if (user) {
-                return options.success(user);
+                return options.success(user,csrfToken);
             }
             window.onLoggedIn=options.success;
             options.showLoginLink(WebSite.serverTop+"login");
@@ -6177,12 +6183,18 @@ define(["Auth","WebSite","Util"],function (a,WebSite,Util) {
             console.log("uploadBlobToExe cnt=",cnt);
         };
         bis.forEach(function (bi) {
-             $.ajax({type:"get", url: WebSite.serverTop+"uploadBlobToExe",
-                 data:bi,success: function () {
+            var data={csrfToken:options.csrfToken};
+            for (var i in bi) data[i]=bi[i];
+            $.ajax({
+                type:"get",
+                url: WebSite.serverTop+"uploadBlobToExe",
+                data:data,
+                success: function () {
                      cnt--;
                      if (cnt==0) return options.success();
                      else options.progress(cnt);
-                 },error:options.error
+                },
+                error:options.error
              });
         });
     };
@@ -6237,12 +6249,13 @@ define(["ImageRect"],function (IR) {
     };
     TN.get=function (prj) {
         var f=TN.file(prj);
-        if (f.exists()) return null;
+        if (!f.exists()) return null;
         return f.text();
     };
     TN.file=function (prj) {
         var prjdir=prj.getDir();
         var imfile= prjdir.rel("images/").rel("icon_thumbnail.png");
+        //console.log("Thumb file=",imfile.path(),imfile.exists());
         return imfile;
     };
     function crt(prj) {

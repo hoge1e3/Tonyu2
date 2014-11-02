@@ -1,4 +1,4 @@
-// Created at Fri Oct 31 2014 14:45:18 GMT+0900 (東京 (標準時))
+// Created at Sun Nov 02 2014 22:34:31 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -12076,9 +12076,15 @@ requireSimulator.setName('Auth');
 define(["WebSite"],function (WebSite) {
     var auth={};
     auth.currentUser=function (onend) {
-        $.get(WebSite.serverTop+"currentUser", function (res) {
-            if (res=="null") res=null;
-            onend(res);
+        $.ajax({type:"get",url:WebSite.serverTop+"currentUser",data:{withCsrfToken:true},
+            success:function (res) {
+                console.log("auth.currentUser",res);
+                res=JSON.parse(res);
+                var u=res.user;
+                if (u=="null") u=null;
+                console.log("user", u, "csrfToken",res.csrfToken);
+                onend(u,res.csrfToken);
+            }
         });
     };
     auth.assertLogin=function (options) {
@@ -12090,9 +12096,9 @@ define(["WebSite"],function (WebSite) {
                 return confirm(mesg);
             };
         }*/
-        auth.currentUser(function (user) {
+        auth.currentUser(function (user,csrfToken) {
             if (user) {
-                return options.success(user);
+                return options.success(user,csrfToken);
             }
             window.onLoggedIn=options.success;
             options.showLoginLink(WebSite.serverTop+"login");
@@ -12150,12 +12156,18 @@ define(["Auth","WebSite","Util"],function (a,WebSite,Util) {
             console.log("uploadBlobToExe cnt=",cnt);
         };
         bis.forEach(function (bi) {
-             $.ajax({type:"get", url: WebSite.serverTop+"uploadBlobToExe",
-                 data:bi,success: function () {
+            var data={csrfToken:options.csrfToken};
+            for (var i in bi) data[i]=bi[i];
+            $.ajax({
+                type:"get",
+                url: WebSite.serverTop+"uploadBlobToExe",
+                data:data,
+                success: function () {
                      cnt--;
                      if (cnt==0) return options.success();
                      else options.progress(cnt);
-                 },error:options.error
+                },
+                error:options.error
              });
         });
     };
@@ -12210,12 +12222,13 @@ define(["ImageRect"],function (IR) {
     };
     TN.get=function (prj) {
         var f=TN.file(prj);
-        if (f.exists()) return null;
+        if (!f.exists()) return null;
         return f.text();
     };
     TN.file=function (prj) {
         var prjdir=prj.getDir();
         var imfile= prjdir.rel("images/").rel("icon_thumbnail.png");
+        //console.log("Thumb file=",imfile.path(),imfile.exists());
         return imfile;
     };
     function crt(prj) {
@@ -13211,7 +13224,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
         }
         function cleanImgFiles() {
             var ims=rsrc.images;
-            Auth.currentUser(function (u) {
+            Auth.currentUser(function (u,ct) {
                 if (!u) return;
                 var rtf=[];
                 ims.forEach(function (im) {
@@ -13221,8 +13234,12 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                     }
                 });
                 $.ajax({url:WebSite.serverTop+"retainBlobs",type:"get",
-                    data:{user:u,project:prj.getName(),
-                    retainFileNames:JSON.stringify(rtf)}
+                    data:{
+                        user:u,
+                        project:prj.getName(),
+                        csrfToken:ct,
+                        retainFileNames:JSON.stringify(rtf)
+                    }
                 });
             })
             var cleanImg={};
@@ -14673,7 +14690,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
         }
         function cleanFiles() {
             var items=rsrc[mediaInfo.key];
-            Auth.currentUser(function (u) {
+            Auth.currentUser(function (u,ct) {
                 if (!u) return;
                 var rtf=[];
                 items.forEach(function (item) {
@@ -14682,9 +14699,16 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                         rtf.push(a.fileName);
                     }
                 });
+                var data={
+                        user:u,
+                        project:prj.getName(),
+                        mediaType:mediaType,
+                        csrfToken:ct,
+                        retainFileNames:JSON.stringify(rtf)
+                };
+                console.log("retainBlobs",data);
                 $.ajax({url:WebSite.serverTop+"retainBlobs",type:"get",
-                    data:{user:u,project:prj.getName(),mediaType:mediaType,
-                    retainFileNames:JSON.stringify(rtf)}
+                    data:data
                 });
             })
             var cleanFile={};
