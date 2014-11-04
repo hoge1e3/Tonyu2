@@ -1,4 +1,4 @@
-// Created at Sun Nov 02 2014 22:34:31 GMT+0900 (東京 (標準時))
+// Created at Tue Nov 04 2014 15:00:18 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -14662,11 +14662,36 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                     }
                     update();
                 }
+                function up() {
+                    for (var i=items.length-1; i>=1 ; i--) {
+                        if (items[i]===item) {
+                            items.splice(i,1);
+                            items.splice(i-1,0,item);
+                            break;
+                        }
+                    }
+                    update();
+                }
+                function down() {
+                    for (var i=items.length-2; i>=0 ; i--) {
+                        if (items[i]===item) {
+                            items.splice(i,1);
+                            items.splice(i+1,0,item);
+                            break;
+                        }
+                    }
+                    update();
+                }
+
                 var res=UI("div",{style:"float:left;"},
                         ["canvas",{$var:"c",width:100,height:100,"class":"clickable",on:{click: detail}}],
+                        ["div",{style:"float:right;"},
+                        ["button",{on:{click:del}}, "×"],["br"],
+                        ["button",{on:{click:up}}, "←"],["br"],
+                        ["button",{on:{click:down}}, "→"]],
                         ["div",
-                            ["input", {$var:"name", size:12,value:item.name}],
-                            ["button",{on:{click:del}}, "削除"]]
+                            ["input", {$var:"name", size:12,value:item.name}]
+                            ]
                    );
                 draw(convURL(item.url),res.$vars.c[0]);
                 var v=res.$vars;
