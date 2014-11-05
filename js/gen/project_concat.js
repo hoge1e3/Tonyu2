@@ -1,4 +1,4 @@
-// Created at Tue Nov 04 2014 15:00:18 GMT+0900 (東京 (標準時))
+// Created at Wed Nov 05 2014 11:19:20 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -15240,6 +15240,18 @@ $(function () {
     FM.onMenuStart=save;
     curPrj.compileKernel();
     SplashScreen.hide();
+    if (curPrj.getBlobInfos().length>0) {
+        var ld=UI("div",{title:"ログイン"},["div","このプロジェクトを正常に動作させるにはログインが必要です"]);
+        Auth.assertLogin({
+            showLoginLink:function (u) {
+                ld.append(UI("a",{href:u,target:"login",style:"font-size: 20px;"},"ログインする"));
+            },
+            success:function () {
+                ld.dialog("close");
+            }
+        });
+        ld.dialog({modal:true});
+    }
 });
 });
 
