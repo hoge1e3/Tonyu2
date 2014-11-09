@@ -1,4 +1,4 @@
-// Created at Sun Nov 09 2014 22:25:52 GMT+0900 (東京 (標準時))
+// Created at Sun Nov 09 2014 22:56:09 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -6580,7 +6580,7 @@ return Tonyu.Project=function (dir, kernelDir) {
                 changes.forEach(function (ch) {
                     src=src.substring(0,ch.pos)+n+src.substring(ch.pos+ch.len);
                 });
-                if (ssrc!=src) {
+                if (ssrc!=src && !f.isReadOnly()) {
                     console.log("Refact:",f.path(),src);
                     f.text(src);
                 }

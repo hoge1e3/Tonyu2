@@ -270,7 +270,7 @@ return Tonyu.Project=function (dir, kernelDir) {
                 changes.forEach(function (ch) {
                     src=src.substring(0,ch.pos)+n+src.substring(ch.pos+ch.len);
                 });
-                if (ssrc!=src) {
+                if (ssrc!=src && !f.isReadOnly()) {
                     console.log("Refact:",f.path(),src);
                     f.text(src);
                 }
