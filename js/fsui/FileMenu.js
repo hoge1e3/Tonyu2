@@ -60,6 +60,7 @@ var FileMenu=function () {
                  }
              }],
              ["br"],
+             ["div",{$var:"extra"}],
              ["div",{$var:"msg"}],
             ["button", {$var:"b", on:{click: function () {
             	FM.d.$vars.done();
@@ -90,7 +91,10 @@ var FileMenu=function () {
                 v.b.removeAttr("disabled");
             }
         };
-
+        v.extra.empty();
+        if (options.extraUI) {
+            options.extraUI(v.extra);
+        }
     };
 
     FM.create=function () {
@@ -111,8 +115,9 @@ var FileMenu=function () {
         /*var oldName,  mode;
         if (typeof oldNameD=="string") oldName=oldNameD;
         else { oldName=oldNameD.name; mode=oldNameD.mode;}*/
-        FM.dialogOpt({title:"名前変更", name:oldName, action:"mv", onend:function (nf) {
+        FM.dialogOpt({title:"名前変更", name:oldName, action:"mv", extraUI:FM.on.mvExtraUI, onend:function (nf) {
             if (!nf) return;
+            if (FM.on.mv) FM.on.mv(curFile,nf);
             var t=curFile.text();
             curFile.rm();
             curFile=nf;

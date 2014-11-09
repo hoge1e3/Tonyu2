@@ -105,7 +105,23 @@ $(function () {
         }
         return f.name();
     };
-
+    var refactorUI;
+    FM.on.mvExtraUI=function (d) {
+        refactorUI=UI("div",["input",{type:"checkbox",$var:"chk",checked:"true",value:"chked"}],"プログラム中のクラス名も変更する");
+        d.append(refactorUI);
+    };
+    FM.on.mv=function (old,_new) {
+        if (!refactorUI) return;
+        var oldCN=old.truncExt(EXT);
+        var newCN=_new.truncExt(EXT);
+        if (refactorUI.$vars.chk.prop("checked")) {
+            //alert(oldCN+"=>"+newCN);
+            save();
+            curPrj.renameClassName(oldCN,newCN);
+            reloadFromFiles();
+        }
+        refactorUI=null;
+    };
 
     fl.ls(curProjectDir);
     refreshRunMenu();
@@ -315,6 +331,17 @@ $(function () {
         prog.setValue(fixIndent( prog.getValue() ));
         prog.clearSelection();
         prog.moveCursorTo(cur.row, cur.column);
+    }
+    function reloadFromFiles() {
+        for (var path in editors) {
+            var inf=editors[path];
+            var curFile=inf.file; //fl.curFile();
+            var prog=inf.editor; //getCurrentEditor();
+            if (curFile.exists() && prog) {
+                prog.setValue(curFile.text());
+                prog.clearSelection();
+            }
+        }
     }
     function save() {
         var inf=getCurrentEditorInfo();

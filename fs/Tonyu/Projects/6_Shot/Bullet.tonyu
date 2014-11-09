@@ -6,13 +6,13 @@ while (y>0) {
     if (allCrash(Chaser).die()) {
         die();
     }
-    /*
-    c=crashTo(Chaser);
+    
+    /*c=crashTo(Chaser);
     // どのCheseオブジェクトとも衝突していない 
     //      -> c==undefined
-    // 1つ以上のChaseオブジェクトと衝突している 
+    //  1つ以上のChaseオブジェクトと衝突している 
     //      -> c==衝突しているChaseオブジェクトのうちどれか1つ
-    if (c) {
+    if (c && c instanceof Chaser) {
         c.die();
         die();
     }*/
@@ -25,8 +25,8 @@ die();
 次の書き方もあります.
 
 for (var c in allCrash(Chaser)) {
-  c.die();
-  die();
+    c.die();
+    die();
 }
 */
 
@@ -34,9 +34,9 @@ for (var c in allCrash(Chaser)) {
 /*
 [!=Tonyu1] 従来の衝突判定の書き方は，準備中です．
 for (t in $chars) {
-  if (t is Chaser && crashTo(t)) {
-     
-  }
+    if (t is Chaser && crashTo(t)) {
+        
+    }
 }
 
 */

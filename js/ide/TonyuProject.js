@@ -235,6 +235,48 @@ return Tonyu.Project=function (dir, kernelDir) {
     };
     TPR.getDir=function () {return dir;};
     TPR.getName=function () { return dir.name().replace(/\/$/,""); };
+    TPR.renameClassName=function (o,n) {
+        TPR.compile();
+        var cls=TPR.env.classes;
+        for (var cln in cls) {
+            var klass=cls[cln];
+            var f=klass.src.tonyu;
+            var a=klass.annotation;
+            var changes=[];
+            if (a && f) {
+                for (var id in a) {
+                    try {
+                        var an=a[id];
+                        var si=an.scopeInfo;
+                        if (si && si.type=="class") {
+                            if (si.name==o) {
+                                var pos=an.node.pos;
+                                var len=an.node.len;
+                                var sub=f.text().substring(pos,pos+len);
+                                if (sub==o) {
+                                    changes.push({pos:pos,len:len});
+                                    console.log(f.path(), pos, len, f.text().substring(pos-5,pos+len+5) ,"->",n);
+                                }
+                            }
+                        }
+                    } catch(e) {
+                        console.log(e);
+                    }
+                }
+                changes=changes.sort(function (a,b) {return b.pos-a.pos;});
+                console.log(f.path(),changes);
+                var src=f.text();
+                var ssrc=src;
+                changes.forEach(function (ch) {
+                    src=src.substring(0,ch.pos)+n+src.substring(ch.pos+ch.len);
+                });
+                if (ssrc!=src) {
+                    console.log("Refact:",f.path(),src);
+                    f.text(src);
+                }
+            }
+        }
+    };
     return TPR;
 };
 if (typeof getReq=="function") getReq.exports("Tonyu.Project");

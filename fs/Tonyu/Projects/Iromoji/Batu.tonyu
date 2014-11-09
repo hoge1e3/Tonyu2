@@ -1,7 +1,7 @@
 text="X";
 fillStyle="red";
 size=10;
-tx=all(X).length*30+30;
+tx=all(Batu).length*30+30;
 ty=$screenHeight-50;
 while (size<50) {
     size+=5;

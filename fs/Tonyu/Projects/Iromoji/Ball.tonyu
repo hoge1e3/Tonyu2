@@ -13,7 +13,7 @@ while(y<$screenHeight && !$gov) {
             $level.get();
         } else {
             if ($sound) playSE("l16 o3 b-b-4");
-            new X{x,y,text:"x"};
+            new Batu{x,y,text:"x"};
             $combo.count=0;
         }
         $prev=p;
@@ -63,28 +63,28 @@ dieEffect();
 }
 
 \distPointLine(ax,ay,bx,by,cx,cy) {
-/*
-   C
-   |
-A--H-----B
-
-A=0   H=k*B       C
-*/
+    /*
+    C
+    |
+    A--H-----B
+    
+    A=0   H=k*B       C
+    */
     cx-=ax;
     cy-=ay;
     bx-=ax;
     by-=ay;
-
-/*
-(C-H)*B=0
-(C-(k*B)) * B = 0
-CB - k B^2 = 0
-CB = k B^2
-cx*bx+cy*by = k*(bx*bx+by*by)
-
-*/
+    
+    /*
+    (C-H)*B=0
+    (C-(k*B)) * B = 0
+    CB - k B^2 = 0
+    CB = k B^2
+    cx*bx+cy*by = k*(bx*bx+by*by)
+    
+    */
     var k= (cx*bx+cy*by)/(bx*bx+by*by);
-// H= k*B 
+    // H= k*B 
     var hx = k * bx;
     var hy = k * by;
     var d= (cx-hx)*(cx-hx)+(cy-hy)*(cy-hy);

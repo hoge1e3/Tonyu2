@@ -55,7 +55,7 @@ while (true) {
             $spd=$level.speed();
         }
         tick+=$spd;
-        if (all(X).length>=3) $gov=true;
+        if (all(Batu).length>=3) $gov=true;
         $trace.push{x:$mouseX,y:$mouseY};
         if ($trace.length>=3) $trace.shift();
         if ($useTouch && !$touches[0].touched) $trace=[];
