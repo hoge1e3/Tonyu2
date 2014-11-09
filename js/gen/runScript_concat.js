@@ -1,4 +1,4 @@
-// Created at Wed Nov 05 2014 11:19:20 GMT+0900 (東京 (標準時))
+// Created at Sun Nov 09 2014 22:25:52 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -4648,7 +4648,7 @@ Visitor = function (funcs) {
 	return $;
 };
 requireSimulator.setName('Tonyu.Compiler');
-Tonyu.Compiler=function () {
+Tonyu.Compiler=(function () {
 // TonyuソースファイルをJavascriptに変換する
 var TH="_thread",THIZ="_this", ARGS="_arguments",FIBPRE="fiber$", FRMPC="__pc", LASTPOS="$LASTPOS",CNTV="__cnt",CNTC=100;
 var BINDF="Tonyu.bindFunc";
@@ -4738,18 +4738,29 @@ function initClassDecls(klass, env ) {
 function genSym(prefix) {
     return prefix+(Math.random()+"").replace(/\./g,"");
 }
-function describe(node, desc) {
+/*function describe(node, desc) {
     node.DESC=desc; //typeof desc=="object"?JSON.stringify(desc)+desc;
-}
-function addTypeHint(expr, type) {
+}*/
+/*function addTypeHint(expr, type) {
     if (!window.typeHints) window.typeHints=[];
     window.typeHints.push({expr:expr, type:type});
-}
-function getDesc(node) {
+}*/
+/*function getDesc(node) {
     if (node.DESC) return node.DESC;
     return node;
+}*/
+function annotation3(aobjs, node, aobj) {
+    if (!node._id) {
+        if (!aobjs._idseq) aobjs._idseq=0;
+        node._id=++aobjs._idseq;
+    }
+    var res=aobjs[node._id];
+    if (!res) res=aobjs[node._id]={node:node};
+    if (aobj) {
+        for (var i in aobj) res[i]=aobj[i];
+    }
+    return res;
 }
-
 
 function genJS(klass, env,pass) {
     var srcFile=klass.src.tonyu; //file object
@@ -4801,6 +4812,10 @@ function genJS(klass, env,pass) {
                 right: {type:"superExpr", $var:"S"}
             }
         };
+    klass.annotation={};
+    function annotation(node, aobj) {
+        return annotation3(klass.annotation,node,aobj);
+    }
     function getSource(node) {
         return srcCont.substring(node.pos,node.pos+node.len);
     }
@@ -5031,7 +5046,7 @@ function genJS(klass, env,pass) {
                 buf.printf("%v: %v", node.key, node.value);
             } else {
                 buf.printf("%v: %f", node.key, function () {
-                    node.scopeInfo=varAccess( node.key.text,false) ;
+                    annotation(node,{scopeInfo:varAccess( node.key.text,false)});
                 });
             }
         },
@@ -5050,7 +5065,7 @@ function genJS(klass, env,pass) {
         varAccess: function (node) {
             var n=node.name.text;
             var si=varAccess(n,false);
-            node.scopeInfo=si;
+            annotation(node,{scopeInfo:si});//node.scopeInfo=si;
             //describe(node,si.name);
         },
         exprstmt: function (node) {//exprStmt
@@ -5164,7 +5179,8 @@ function genJS(klass, env,pass) {
                 return;
             }
             if (OM.match(node, {left:{type:"varAccess"}, op:{type:"call"} })) {
-                node.left.scopeInfo=varAccess(node.left.name.text,true);
+                annotation(node.left,{scopeInfo:varAccess(node.left.name.text,true)});
+                //node.left.scopeInfo=varAccess(node.left.name.text,true);
                 buf.printf("%v", node.op);
             } else {
                 buf.printf("%v%v", node.left, node.op);
@@ -5704,7 +5720,7 @@ function genJS(klass, env,pass) {
     return buf.buf;
 }
 return {initClassDecls:initClassDecls, genJS:genJS};
-}();
+})();
 if (typeof getReq=="function") getReq.exports("Tonyu.Compiler");
 
 requireSimulator.setName('Tonyu.TraceTbl');
@@ -6529,6 +6545,48 @@ return Tonyu.Project=function (dir, kernelDir) {
     };
     TPR.getDir=function () {return dir;};
     TPR.getName=function () { return dir.name().replace(/\/$/,""); };
+    TPR.renameClassName=function (o,n) {
+        TPR.compile();
+        var cls=TPR.env.classes;
+        for (var cln in cls) {
+            var klass=cls[cln];
+            var f=klass.src.tonyu;
+            var a=klass.annotation;
+            var changes=[];
+            if (a && f) {
+                for (var id in a) {
+                    try {
+                        var an=a[id];
+                        var si=an.scopeInfo;
+                        if (si && si.type=="class") {
+                            if (si.name==o) {
+                                var pos=an.node.pos;
+                                var len=an.node.len;
+                                var sub=f.text().substring(pos,pos+len);
+                                if (sub==o) {
+                                    changes.push({pos:pos,len:len});
+                                    console.log(f.path(), pos, len, f.text().substring(pos-5,pos+len+5) ,"->",n);
+                                }
+                            }
+                        }
+                    } catch(e) {
+                        console.log(e);
+                    }
+                }
+                changes=changes.sort(function (a,b) {return b.pos-a.pos;});
+                console.log(f.path(),changes);
+                var src=f.text();
+                var ssrc=src;
+                changes.forEach(function (ch) {
+                    src=src.substring(0,ch.pos)+n+src.substring(ch.pos+ch.len);
+                });
+                if (ssrc!=src) {
+                    console.log("Refact:",f.path(),src);
+                    f.text(src);
+                }
+            }
+        }
+    };
     return TPR;
 };
 if (typeof getReq=="function") getReq.exports("Tonyu.Project");
