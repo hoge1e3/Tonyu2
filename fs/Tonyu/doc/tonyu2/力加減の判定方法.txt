@@ -1,0 +1,48 @@
+[[用途別リファレンス]]
+
+新規ファイル作成　ファイル名「PowerLabel」
+mainファイルのループ外に下記を打ち込む
+
+<<codemainループ外　　
+　　ptime =0;
+    power = new PowerLabel{x:80,y:50,size:20};
+    power.text = "";
+
+>>
+
+mainファイルのループ内に下記を打ち込む
+
+<<codemainループ内　
+　　power.text  = "power gauge"+floor(ptime);
+
+　　　　if(getkey("mouseleft")>=2){
+            ptime+=1; //左クリックするとptimeに＋1していく
+        }
+        if(getkey("mouseleft")==0 && ptime>0){
+            //左クリックを離した時new Shotを実行する。
+            new Shot{ ox:0,oy:0,z:0 ,p:2,zOrder:1,ptime};
+            
+            ptime=0;
+        }
+
+>>
+
+実行し、左クリックするとパワーゲージがたまり離すと弾を撃ちパワーゲージを0にする
+
+
+
+以前のプログラム↓　の左クリックすると弾が出る処理はコメント化しても消しても構わない
+
+
+<<code
+　　if(getkey(1)==1){
+        new Shot{ ox:0,oy:0,z:0 ,p:2,zOrder:1};
+    //左クリックをしたときnew Shotを実行する。
+    }
+>>
+
+前　[[あたり判定をつける]]　
+次　[[力加減を弾に適用する]]　
+
+
+

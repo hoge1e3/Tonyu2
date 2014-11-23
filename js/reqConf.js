@@ -212,6 +212,7 @@ var reqConf={
             "HttpHelper": "help/HttpHelper",
             "Wiki": "help/wiki",
             "WikiDialog": "help/wikiDialog",
+            "wikiFullScreen": "help/wikiFullScreen",
             "ace": "lib/ace-noconflict/ace",
             "ide/selProject": "ide/selProject",
             "ide/editor": "ide/editor",

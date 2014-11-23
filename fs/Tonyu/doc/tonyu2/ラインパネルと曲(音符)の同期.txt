@@ -1,0 +1,19 @@
+[[用途別リファレンス]]
+***ラインパネルと曲(音符)の同期
+-既にOnpuクラスとLineクラスに書かれているが、以下の文で作成したラインのyの位置が$screenHeight*3/4の位置しているため、その位置÷2000ms(2秒）で音符の1拍目が自作したラインの中心に常に当たるようになる。
+
+
+
+<<code Onpu
+while(true){
+    t=$c.play().currentTime();
+    y=(t-start)*($screenHeight*3/4)/2000;
+    update();
+}
+>>
+<<code Line
+$linePanel=new Panel{x:$screenWidth/2, 
+y:$screenHeight*3/4};
+>>
+
+前へ  [[ラインパネルの作成]] 次へ　[[評価方法(1)]]

@@ -1,0 +1,31 @@
+[[用途別リファレンス]]
+
+***ラインパネルの作成
+
+ラインパネル(タッチして得点を得る部分)を作成する。
+
+**ラインパネルの作成の仕方
+(例)
+<<code Line
+$linePanel=new Panel{x:$screenWidth/2, 
+y:$screenHeight*3/4};
+$linePanel.setPanel($screenWidth,30);
+
+$linePanel.setFillStyle("yellow");
+$linePanel.fillRect(0,0,$screenWidth,30);
+>>
+
+<<code Main
+new Line;
+>>
+-MainでLineクラスを呼び出す。
+*解説
+-まずPanelを作り、その中心の点の座標を設定する。例ではxを画面の横幅の中心、yを画面の縦幅の上から3/4の位置に設定している。
+
+-次にsetPanelでそのPanelの大きさを設定する。例ではwidthを画面の横幅全て、heightを30の長さで設定している。
+
+-そしてsetFillStyleで色を設定する。例ではyellow(黄)としている。
+
+-最後にfillRectでPanelの書き始めのx,yを指定し、指定した場所からの横幅と縦幅を設定し、四角形を描写する。例では書き始めのx,yをPanelの左上に設定し、横幅を端から端まで、縦幅を上から30という長さで設定している。
+
+前へ [[音符を降らせる]]　次へ [[ラインパネルと曲(音符)の同期]]

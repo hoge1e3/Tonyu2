@@ -1,0 +1,40 @@
+[[用途別リファレンス]]
+
+新しいファイル「PowerLabel」を作成する
+Mainファイルのループ外に下記を打ち込む
+
+<<codeMain
+
+    ptime =0;   
+    power = new PowerLabel{x:80,y:380,size:20};
+    power.text = "";
+
+>>
+
+Mainファイルのループ内に下記を打ち込む
+
+<<code
+
+   power.text  = "power gauge"+floor(ptime);
+   if(getkey("mouseleft")>=2){
+            ptime+=1;//左クリックした時にptimeに＋１していく
+   }
+   if(getkey("mouseleft")==0 && ptime>0){
+            //左クリックを離した時new Shotを実行する。
+            new Shot{ ox:0,oy:20000,z:3000 ,p:2,zOrder:1,ptime};  
+            ptime=0;//ptimeを０にする
+   }
+
+>>
+
+以前の3D弾を打つ　↓のプログラムはデリートして構わない
+
+<<codeMain
+if(getkey(1)==1){
+        new Shot{ ox:230,oy:200,z:2000 ,p:2,zOrder:1};
+    //左クリックをしたときnew Shotを実行する。
+    }
+>>
+
+
+以上を打ち込むと左クリックし続けるとパワーゲージが溜まっていき離すと弾が発射される処理が行われる。

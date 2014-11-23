@@ -1,1 +1,52 @@
 [[用途別リファレンス]]
+
+曲を作成したら、次にその曲の演奏時間（タイミングチャート）を図る。
+ある一定にタイミングで音を降らし、特定の場所に音符を落とすためには演奏時間を図り、それに伴いどこのタイミングで一拍としての音符を降らせるかどうかということになる。
+
+
+
+**ラインの作成の仕方
+(例)
+<<code
+$linePanel=new Panel{x:$screenWidth/2, y:$screenHeight*3/4};
+//xはスクリーンの横幅の真ん中の点を描写し、
+yはスクリーンの縦幅の3/4の点を表示する
+$linePanel.setPanel($screenWidth,30);
+//xの点からの長さを決める(スクリーンの横幅)、
+yの点からの長さを決める(30の長さ)
+
+$linePanel.setFillStyle("blue");
+//パネルの色を設定する(今回は青)
+$linePanel.fillRect(0,0,465,20);
+//1つ目の数値はパネル内のxの座標を表示する(0)、
+2つ目の数値はパネル内のyの座標を表示する(0)、
+//3つ目の数値は四角形の横幅の長さを設定する(465)、
+4つ目の数値は四角形の縦幅の長さを表示する(20)
+>>
+
+
+**演奏時間の取得
+
+演奏開始からの経過時間を取得するには，次のcurrentTimeメソッドを使います．
+<<code
+c.play().currentTime()
+>>
+ここで，cは演奏中のオブジェクトを指します．
+
+例：
+<<code BGMObj
+while (true) {
+    play("cdefgfedc");
+}
+>>
+<<code CurTimeDisp
+c=new BGMObj;
+while (true) {
+    print(c.play().currentTime());
+    update();
+}
+>>
+
+
+
+参照メソッド [[play]] [[]]

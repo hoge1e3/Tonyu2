@@ -1,0 +1,24 @@
+[[用途別リファレンス]]
+
+[[オブジェクトを表示する]]
+
+*オブジェクトに奥行きを設定する
+<<code Main
+new Chara1{x:100, y:100, p:0, zOrder:0};
+new Chara1{x:100, y:116, p:5, zOrder:1};
+new Chara1{x:100, y:132, p:9, zOrder:2};
+
+new Chara1{x:200, y:100, p:0, zOrder:0};
+new Chara1{x:200, y:116, p:5, zOrder:2};
+new Chara1{x:200, y:132, p:9, zOrder:1};
+
+new Chara1{x:300, y:100, p:0, zOrder:1};
+new Chara1{x:300, y:116, p:5, zOrder:0};
+new Chara1{x:300, y:132, p:9, zOrder:2};
+>>
+
+<<code Chara1
+何も書かなくてよい
+>>
+
+zOrderの値を設定することでオブジェクトの奥行きを決められる。値が小さいほど手前に表示される。

@@ -1,0 +1,58 @@
+[[用途別リファレンス]]
+
+***曲の演奏時間の取得
+
+曲を作成したら、次にその曲の演奏時間（タイミングチャート）を測定する。
+ある一定のタイミングで音符を降らし、特定の場所に音符を重ねるためには演奏時間を測定しなければならない。なのでここでは演奏時間の取得の仕方を説明する。
+
+
+
+**演奏時間の取得
+
+演奏開始からの経過時間を取得するには，次のCurrentTimeメソッドを使う。
+<<code (例)
+c.play().currentTime();
+>>
+-ここで，cは演奏中のオブジェクトを指す。
+
+<<code BGMObj(例)
+while (true) {
+    play("cdefgabc<");
+}
+>>
+-本来while文は、update();が必要であるが、play命令はplay文の中の演奏が終わるまで実行していくため、省略しても良い。
+-例ではドレミファソラシドと演奏する。
+
+<<code CurrentTime(例)
+c=new BGMObj;
+while (true) {
+    print(c.play().currentTime());
+    update();
+}
+>>
+-例ではBGMObjクラスを呼び出し、BGMObjの演奏時間を取得する。
+
+
+<<code Main
+new CurrentTime;
+>>
+
+<<code CurrentTime(例)
+size=50;
+x=100;
+y=100;
+text=0;
+
+while(true){
+ct=$c.play().currentTime();
+if(ct>-1){
+　　　text=(floor(ct/100));
+}
+}
+>>
+-演奏時間を画面に表示する。
+-MainでCurrentTimeクラスを呼び出す。
+
+参照メソッド [[play]] 
+
+前へ [[画像の挿入]]　次へ [[音符を降らせる]]

@@ -1,0 +1,51 @@
+[[用途別リファレンス]]
+
+[[オブジェクトを動かす]]
+
+[[上下左右に移動させる]]
+
+*当たり判定で壁にぶつかる
+<<code Main
+new Chara1{x:100, y:100, p:5};
+new Chara1{x:100, y:132, p:5};
+new Chara1{x:100, y:164, p:5};
+x=$screenWidth/2;
+y=$screenHeight/2;
+while(true){
+  if(getkey("right")>0){
+    x+=3;
+    if(crashTo(Chara1)){
+      x-=3;
+    }
+  }
+  if(getkey("left")>0){
+    x-=3;
+    if(crashTo(Chara1)){
+      x+=3;
+    }
+  }
+  if(getkey("down")>0){
+    y+=3;
+    if(crashTo(Chara1)){
+      y-=3;
+    }
+  }
+  if(getkey("up")>0){
+    y-=3;
+    if(crashTo(Chara1)){
+      y+=3;
+    }
+  }
+  update();
+}
+>>
+
+<<code Chara1
+何も書かなくてよい
+>>
+
+上下左右に動かせる中央のオブジェクトがChara1とぶつかると押し戻されるようにし、重なることができないようにする。
+
+※crashTo()...()内のオブジェクトと当たり判定を行い値を返す。
+-当たってる=true
+-当たってない=false

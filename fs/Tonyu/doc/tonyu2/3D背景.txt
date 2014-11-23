@@ -1,0 +1,37 @@
+[[用途別リファレンス]]
+
+**・3D背景
+
+Mainクラスのループ外に下記を打ち込む
+<<codeMain
+  $Screen.setBGColor("black");
+  frame=0;
+>>
+
+Mainクラスのループ内に下記を打ち込む 
+
+<<codeMain
+   frame++;
+    if(frame%2 == 0){
+        new Star{ ox:rnd(10000)-5000,oy:rnd(10000)-5000,z:5000 ,p:3,zOrder:2};
+    }
+>>
+
+「Star」ファイルを作成し下記を打ち込む。
+
+<<codeStar
+  extends ThreeD;
+  while(true){
+    threeD();
+    z-=100;
+    
+    if(z<0){
+        die();
+    }
+    update(); // 追加
+  }
+>>
+
+黒い背景を星が流れているように見える
+
+前　[[あたり判定をつける]]

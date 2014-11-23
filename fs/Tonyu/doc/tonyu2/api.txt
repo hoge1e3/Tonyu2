@@ -13,6 +13,7 @@ Tonyu2で最初から使えるクラス群です．[[ファイルシステム>fs
 -[[MathMod]]
 -[[Map]]
 -[[Panel]]
+-[[Pad]]
 
 *グローバル変数
 
@@ -20,6 +21,8 @@ Tonyu2で最初から使えるクラス群です．[[ファイルシステム>fs
 -[[$mouseX, $mouseY]]
 -[[$touches]]
 -[[$screenWidth,$screenHeight]]
+
+*[[チュートリアル]]
 
 *[[用途別リファレンス]]
 

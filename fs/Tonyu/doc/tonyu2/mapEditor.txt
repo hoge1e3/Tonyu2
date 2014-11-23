@@ -35,8 +35,7 @@
 
 *描いたマップをプログラム内で使用する
 
-<<code
-・Main.Tonyu
+<<code Main
 $map=new Map{chipWidth:32,chipHeight:32};
 $map.load("stage1.json");
 >>

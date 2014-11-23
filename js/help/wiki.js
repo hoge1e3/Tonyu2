@@ -222,9 +222,13 @@ return Wiki=function (placeHolder, home, options, plugins) {
                     		if (!f.exists() && (f.isReadOnly() || !options.editMode)) {
                     			a=$("<span>").text(caption);
                     		} else {
-                    			a=$("<span>").addClass("clickable").text(caption).click(function () {
-                    				W.show(f);
-                    			});
+                    		    if (options.useAnchor) {
+                    		        a=$("<a>").attr({href:"wiki.html?file="+f.path()}).text(caption);
+                    		    } else {
+                                    a=$("<span>").addClass("clickable").text(caption).click(function () {
+                                        W.show(f);
+                                    });
+                    		    }
                     			if (!f.exists()) a.addClass("notexist");
                     		}
                     	}

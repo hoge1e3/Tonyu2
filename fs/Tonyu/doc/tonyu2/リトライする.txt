@@ -4,18 +4,41 @@
 
 [[すべてのオブジェクトを消す]]
 *Main全体をwhileで囲う
-<<code
+<<code Main
 while(true){
-  //x,yなどの初期設定
+//プレイヤーの配置などの初期設定
+  p=new Player{x:300,y:300,HP:1};
+  e=new Enemy{x:100,y:100,p:5};
+  l=new Label{x:230,y:400,text:"GAMESTART"};
+//初期設定ここまで
+
   while(true){
-    //ゲームの中身
-    if(/*ゲームオーバーになったら*/){
+    if(p.HP==0)l.text="GAMEOVER rを押すとリトライ";
+    if(p.HP==0 && getkey("r")==1) {
       all().die();
       break;
     }
+    update();
   }
-  //ゲームの中身ここまで
+  update();
 }
 >>
+<<code Player
+while(true){
+  if(getkey("right")>0)	x+=3;
+  if(getkey("left")>0)	x-=3;
+  if(getkey("down")>0)	y+=3;
+  if(getkey("up")>0)	y-=3;
+  if(crashTo(Enemy))    HP-=1;
+  if(HP==0)             die();
+  update();
+}
+>>
+<<code Enemy
+何も書かなくてよい
+>>
+<<code Label
+何も書かなくてよい
+>>
 
-プログラム全体をループさせる事で、ゲームオーバーになった時にすべてのオブジェクトを消してゲームのループをbreak、再度ゲームを実行してゲームを繰り返しプレイする事が出来る。
+ゲームの初期設定などを再度行うためにプログラム全体をループさせる事で、ゲームオーバーになった後に再度ゲームを実行してゲームを繰り返しプレイする事が出来る。

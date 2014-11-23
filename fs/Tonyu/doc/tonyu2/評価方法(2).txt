@@ -1,0 +1,52 @@
+[[用途別リファレンス]]
+
+***評価方法(2)
+
+-ここでは既に前のページで作成したOnpuクラスに、更に追加することによって、coolやbadなどの評価を分けることができることを書き記している。
+
+-「追加」と書かれている行を追加する。
+
+<<code Onpu(追加)
+beforeTouched=false; //追加
+start=$c.play().currentTime();
+while(y<$screenHeight){
+    t=$c.play().currentTime();
+    y=(t-start)*($screenHeight*3/4)/2000;
+
+//ここから
+if($touches[0].touched && !beforeTouched && abs($linePanel.y-y)<43) {
+        
+        print("            "+$linePanel.y-y);
+        die();
+        if(abs($linePanel.y-y)<10){
+            $score=$score+300;
+            print("cool");
+        }
+        else if(abs($linePanel.y-y)<30){
+            $score=$score+200;
+            print("good");
+        }
+        
+        else{
+            $score=$score+0;
+            print("bad");
+        }
+        
+        
+    }
+    
+    beforeTouched=$touches[0].touched;
+//ここまで追加
+    update();
+}
+
+die();
+print("miss");
+
+
+>>
+
+**解説
+-$touches[0].touchedだけだとタッチされたままでも反応してしまうのでbeforeTouchedで前のフレームでタッチされたかどうかの判定を入れておき、if文の条件式に加えることによってタッチされたかどうかという判定を作ることができる。
+-タッチされたとき、音符のyとラインのyの差の絶対値を取って得点を決める。上記では、yの範囲が10未満の場合はcool、30未満の場合はgood、43未満の場合はbad、タッチしないで画面下まで音符が落ちた時はmissを表示させるようにした。
+前へ [[評価方法(1)]]

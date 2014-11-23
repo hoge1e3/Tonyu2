@@ -1,0 +1,23 @@
+[[用途別リファレンス]]
+
+[[オブジェクトを動かす]]
+
+[[上下左右に移動させる]]
+
+*キャラが画面端から出ないようにする
+<<code Main
+x=$screenWidth/2;
+y=$screenHeight/2;
+while(true){
+  if(getkey("right")>0)	x+=3;
+  if(getkey("left")>0)	x-=3;
+  if(getkey("down")>0)	y+=3;
+  if(getkey("up")>0)	y-=3;
+  if(x<0)            x=0;
+  if(x>$screenWidth) x=$screenWidth;
+  if(y<0)            y=0;
+  if(y>$screenHeight)y=$screenHeight;
+  update();
+}
+>>
+画面端(左がx=0,右がx=$screenWidth,上がy=0,下がy=$screenHeight)を設定して、それを超えそうになったら画面端に戻るようにする。

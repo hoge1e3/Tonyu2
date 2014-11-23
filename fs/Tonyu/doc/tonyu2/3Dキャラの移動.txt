@@ -1,1 +1,38 @@
-[[とある計算]]
+[[用途別リファレンス]]
+
+キャラの出現を行ったため今度はカーソルキーでの移動を行う
+ファイル「Pchara」を作成し下記を打ち込む。
+
+
+<<codePchara
+　　extends ThreeD;
+while(true){       
+    threeD();
+      
+    if(getkey("right")>0)	ox+=1000; //右キーを押したとき右に移動
+    if(getkey("left")>0)	ox-=1000;
+    if(getkey("up")>0){                   //上キーを押したとき上と奥側に移動
+        oy-=300; 
+        z+=200;
+    }
+    if(getkey("down")>0){	
+        oy+=300; 
+        z-=200;
+        
+    }
+    update(); 
+}
+>>
+
+Mainのループ外に下記を書き込む
+
+<<codeMain
+
+  new Pchara{ ox:0,oy:10000,z:4000 ,p:2,zOrder:1,ptime};
+
+>>
+
+画面下部にオブジェクトが現れカーソルキーで移動できる
+
+
+今後移動はox,oyを使用する
