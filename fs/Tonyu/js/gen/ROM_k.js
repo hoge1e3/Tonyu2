@@ -2,8 +2,8 @@
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1414051292628},"Actor.tonyu":{"lastUpdate":1414051292629},"BaseActor.tonyu":{"lastUpdate":1414051292630},"Boot.tonyu":{"lastUpdate":1414051292631},"InputDevice.tonyu":{"lastUpdate":1411529063835},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1412840047455},"MapEditor.tonyu":{"lastUpdate":1413954028924},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"Panel.tonyu":{"lastUpdate":1414051292634},"ScaledCanvas.tonyu":{"lastUpdate":1414051292632},"Sprites.tonyu":{"lastUpdate":1414051292632},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Pad.tonyu":{"lastUpdate":1414554218357}}',
-      '.desktop': '{"runMenuOrd":["Main1023","Main2","MapLoad","Main","AcTestM","NObjTest","NObjTest2","AcTest","AltBoot","Ball","Bar","Bounce","MapTest","MapTest2nd","SetBGCTest","Label","PanelTest","Actor","BaseActor","Boot","Panel","ScaledCanvas","Sprites","Pad"]}',
+      '': '{".desktop":{"lastUpdate":1416889517768},"Actor.tonyu":{"lastUpdate":1414051292629},"BaseActor.tonyu":{"lastUpdate":1416889517769},"Boot.tonyu":{"lastUpdate":1416889517769},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1412840047455},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1414051292632},"Sprites.tonyu":{"lastUpdate":1416889517770},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1414051292634},"MapEditor.tonyu":{"lastUpdate":1413954028924},"InputDevice.tonyu":{"lastUpdate":1416889517771},"Pad.tonyu":{"lastUpdate":1414554218357}}',
+      '.desktop': '{"runMenuOrd":["TouchedTestMain","Main1023","Main2","MapLoad","Main","AcTestM","NObjTest","NObjTest2","AcTest","AltBoot","Ball","Bar","Bounce","MapTest","MapTest2nd","SetBGCTest","Label","PanelTest","Boot","InputDevice","Sprites","BaseActor"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
         'native Sprites;\n'+
@@ -34,6 +34,7 @@
         'native fukidashi;\n'+
         'native TextRect;\n'+
         'native FS;\n'+
+        'native Array;\n'+
         '\n'+
         '\\new(x,y,p) {\n'+
         '    if (Tonyu.runMode) {\n'+
@@ -51,6 +52,14 @@
         '    if (rotate==null) rotate=0;\n'+
         '    if (alpha==null) alpha=255;\n'+
         '    if (zOrder==null) zOrder=0;\n'+
+        '    if (age==null) age=0;\n'+
+        '    if (anim!=null && typeof anim=="object"){\n'+
+        '        animMode=true;\n'+
+        '        animFrame=0;\n'+
+        '    }else{\n'+
+        '        animMode=false;\n'+
+        '    }\n'+
+        '    if (animFps==null) animFps=1;\n'+
         '}\n'+
         'nowait \\extend(obj) {\n'+
         '    return Tonyu.extend(this,obj);\n'+
@@ -63,6 +72,18 @@
         '        $consolePanel.setFillStyle("white");\n'+
         '        $consolePanel.fillText(pt,0,$consolePrintY,20,"left");\n'+
         '    }\n'+
+        '}\n'+
+        '\n'+
+        'nowait \\setAnimFps(f){\n'+
+        '    this.animFps=f;\n'+
+        '    this.animFrame=0;\n'+
+        '    this.animMode=true;\n'+
+        '}\n'+
+        'nowait \\startAnim(){\n'+
+        '    this.animMode=true;\n'+
+        '}\n'+
+        'nowait \\stopAnim(){\n'+
+        '    this.animMode=false;\n'+
         '}\n'+
         '\\update() {\n'+
         '    ifwait {\n'+
@@ -215,6 +236,14 @@
         'nowait \\isDead() {\n'+
         '    return _isDead;\n'+
         '}\n'+
+        '\n'+
+        'nowait \\animation(){\n'+
+        '    age++;\n'+
+        '    if(animMode && age%animFps==0){\n'+
+        '        p=anim[animFrame%anim.length];\n'+
+        '        animFrame++;\n'+
+        '    }\n'+
+        '}\n'+
         'nowait \\draw(ctx) {\n'+
         '    if (x==null || y==null) return;\n'+
         '    detectShape();\n'+
@@ -223,6 +252,7 @@
         '        ctx.translate(x,y);\n'+
         '        //if (typeof rotate=="number" ) rotation=rotate;// 削除予定\n'+
         '        //ctx.rotate(this.rotation/180*Math.PI);\n'+
+        '        animation();\n'+
         '        if(this.rotation!=0){\n'+
         '            ctx.rotate(this.rotation/180*Math.PI);\n'+
         '        }else{\n'+
@@ -398,6 +428,7 @@
         '    ti=new Date().getTime();\n'+
         '    thg.steps();\n'+
         '    $Keys.update();\n'+
+        '    $InputDevice.update();\n'+
         '    $screenWidth=$Screen.width;\n'+
         '    $screenHeight=$Screen.height;\n'+
         '    $Screen.fillCanvas($Screen.buf[0]);\n'+
@@ -471,7 +502,7 @@
         '                mp=$Screen.canvas2buf(mp);\n'+
         '                dst.x=mp.x;\n'+
         '                dst.y=mp.y;\n'+
-        '                dst.touched=true;\n'+
+        '                if(!dst.touched) dst.touched=1;\n'+
         '            }\n'+
         '        }\n'+
         '        $mouseX=$touches[0].x;\n'+
@@ -484,7 +515,7 @@
         '            var src=ts[i];\n'+
         '            var dst=$touches.findById(src.identifier);\n'+
         '            if (dst) {\n'+
-        '                dst.touched=false;\n'+
+        '                dst.touched=0;\n'+
         '                dst.identifier=-1;\n'+
         '            }\n'+
         '        }\n'+
@@ -501,6 +532,13 @@
         '        cvj.on("touchstart",handleTouch);\n'+
         '        cvj.on("touchmove",handleTouch);\n'+
         '        cvj.on("touchend",handleTouchEnd);\n'+
+        '    }\n'+
+        '}\n'+
+        '\n'+
+        '\\update() {\n'+
+        '    for (var i in $touches) {\n'+
+        '        if (i.touched>0) {i.touched++;}\n'+
+        '        if (i.touched==-1) i.touched=1;\n'+
         '    }\n'+
         '}'
       ,
@@ -1320,10 +1358,15 @@
         '    isDrawGrid=Tonyu.noviceMode;\n'+
         '    sx=0;\n'+
         '    sy=0;\n'+
+        '    objId=0;\n'+
         '}\n'+
         'function add(s) {\n'+
         '    if (s.__addedToSprites) return;\n'+
         '    sprites.push(s);\n'+
+        '    if(s.__genId==null){\n'+
+        '        s.__genId=objId;\n'+
+        '        objId++;\n'+
+        '    }\n'+
         '    s.__addedToSprites=this;\n'+
         '    return s;\n'+
         '}\n'+
@@ -1341,7 +1384,12 @@
         '        return -1;\n'+
         '    }else if(val1<val2){\n'+
         '        return 1;\n'+
-        '    }else{\n'+
+        '    }else if(val1==val2){\n'+
+        '        if(obj1.__genId>obj2.__genId){\n'+
+        '            return 1;\n'+
+        '        }else{\n'+
+        '            return -1;\n'+
+        '        }\n'+
         '        return 0;\n'+
         '    }\n'+
         '}\n'+
