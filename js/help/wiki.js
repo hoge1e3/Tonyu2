@@ -1,5 +1,5 @@
-define(["HttpHelper", "Arrow", "Util","WebSite","Log","UI"],
-function (HttpHelper, Arrow, Util, WebSite,Log,UI) {
+define(["HttpHelper", "Arrow", "Util","WebSite","Log","UI","FS"],
+function (HttpHelper, Arrow, Util, WebSite,Log,UI,FS) {
 return Wiki=function (placeHolder, home, options, plugins) {
     var W={};
     var refers={figures:"図", plists: "リスト"};
@@ -9,15 +9,15 @@ return Wiki=function (placeHolder, home, options, plugins) {
     var history=[];
     var EXT=".txt";
     if (!options) options={};
-    if (!home.isDir()) throw home+": not a dir";
-    var cwd;
+    if (home && !home.isDir()) throw home+": not a dir";
+    var cwd,tocFile;
     W.on=on;
     W.cd=function (dir) {
     	cwd=dir;
     	tocFile=cwd.rel("toc.json");
     };
-    W.cd(home);
-    W.parse=function (body,name) {
+    if (home) W.cd(home);
+    W.parse=function (body,name,file) {
         var ctx={};
         var $h=HttpHelper({lineMark:LINEMARK});
         ctx.out=$h;
@@ -33,7 +33,7 @@ return Wiki=function (placeHolder, home, options, plugins) {
         //ctx.figures={};
         //ctx.figseq=1;
         var toc=[];
-        if (tocFile.exists()) toc=tocFile.obj();
+        if (tocFile && tocFile.exists()) toc=tocFile.obj();
         var idx=toc.indexOf(name);
         if (idx>=0) {
             var navBar="";
@@ -106,7 +106,7 @@ return Wiki=function (placeHolder, home, options, plugins) {
             } else if (line.match(/^<<toc(.*)/)) {
                 ctx.toc=[ctx.name];
                 ctx.blocks.push({name: "toc", exit: function () {
-                    if (!tocFile.isReadOnly()) tocFile.obj(ctx.toc);
+                    if (tocFile && !tocFile.isReadOnly()) tocFile.obj(ctx.toc);
                     ctx.toc=null;
                 }});
             } else if (line.match(/^<<code(.*)/)) {
@@ -223,7 +223,9 @@ return Wiki=function (placeHolder, home, options, plugins) {
                     			a=$("<span>").text(caption);
                     		} else {
                     		    if (options.useAnchor) {
-                    		        a=$("<a>").attr({href:"wiki.html?file="+f.path()}).text(caption);
+                    		       // a=$("<a>").attr({href:"wiki.html?file="+f.path()}).text(caption);
+                                    a=$("<a>").attr({href:f.relPath(file.up()).replace(/\.txt$/,".html")}).text(caption);
+                                    //a=$("<a>").attr({href:"?file="+f.path()}).text(caption);
                     		    } else {
                                     a=$("<span>").addClass("clickable").text(caption).click(function () {
                                         W.show(f);
@@ -281,7 +283,8 @@ return Wiki=function (placeHolder, home, options, plugins) {
     W.resolveFile=function (name) {
         var f;
         if (name.isDir) f=name;
-        else f=cwd.rel(name+EXT);
+        else if (cwd && name.substring(0,1)!="/") f=cwd.rel(name+EXT);
+        else f=FS.get(name);
         return f;
     };
     W.show=function (nameOrFile) {
@@ -295,7 +298,7 @@ return Wiki=function (placeHolder, home, options, plugins) {
     		else f.text("");
     	}
     	if ( f.exists()) {
-    		var ht=W.parse(f.text(), fn);
+    		var ht=W.parse(f.text(), fn, f);
     		placeHolder.empty();
     		placeHolder.scrollTop(0);
     		placeHolder.append(ht);

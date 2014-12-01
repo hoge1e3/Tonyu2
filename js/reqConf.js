@@ -213,6 +213,7 @@ var reqConf={
             "Wiki": "help/wiki",
             "WikiDialog": "help/wikiDialog",
             "wikiFullScreen": "help/wikiFullScreen",
+            "wikiExporter": "help/wikiExporter",
             "ace": "lib/ace-noconflict/ace",
             "ide/selProject": "ide/selProject",
             "ide/editor": "ide/editor",

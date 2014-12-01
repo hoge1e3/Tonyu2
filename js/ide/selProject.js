@@ -42,7 +42,8 @@ $(function () {
         Sync.sync(FS.get("/Tonyu/"),{v:1});
     } else if (WebSite.disableROM["ROM_d.js"]) {
         syncDoc=true;
-        Sync.sync(FS.get("/Tonyu/doc/"),{v:1, onend:function () {
+        Sync.sync(FS.get("/Tonyu/doc/"),{v:1, excludes:["/Tonyu/doc/html/"],
+            onend:function () {
             if (FS.get("/Tonyu/doc/index.txt").exists()) {
                 w.show("index");
             }

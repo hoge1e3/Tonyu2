@@ -403,12 +403,15 @@ FS=function () {
         res.relPath=function (base) {
             //  path= /a/b/c   base=/a/b/  res=c
             //  path= /a/b/c/   base=/a/b/  res=c/
+            //  path= /a/b/c/   base=/a/b/c/d  res= ../
+            //  path= /a/b/c/   base=/a/b/e/f  res= ../../c/
             var bp=(base.path ? base.path() : base);
             if (bp.substring(bp.length-1)!=SEP) {
                 throw bp+" is not a directory.";
             }
             if (path.substring(0,bp.length)!=bp) {
-                throw path+" is not in "+bp;
+                return "../"+res.relPath(base.up());
+                //throw path+" is not in "+bp;
             }
             return path.substring(bp.length);
         };
