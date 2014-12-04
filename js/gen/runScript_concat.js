@@ -1,4 +1,4 @@
-// Created at Tue Nov 25 2014 13:25:39 GMT+0900 (東京 (標準時))
+// Created at Thu Dec 04 2014 11:03:16 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -492,12 +492,15 @@ FS=function () {
         res.relPath=function (base) {
             //  path= /a/b/c   base=/a/b/  res=c
             //  path= /a/b/c/   base=/a/b/  res=c/
+            //  path= /a/b/c/   base=/a/b/c/d  res= ../
+            //  path= /a/b/c/   base=/a/b/e/f  res= ../../c/
             var bp=(base.path ? base.path() : base);
             if (bp.substring(bp.length-1)!=SEP) {
                 throw bp+" is not a directory.";
             }
             if (path.substring(0,bp.length)!=bp) {
-                throw path+" is not in "+bp;
+                return "../"+res.relPath(base.up());
+                //throw path+" is not in "+bp;
             }
             return path.substring(bp.length);
         };
@@ -679,7 +682,7 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1416889517768},"Actor.tonyu":{"lastUpdate":1414051292629},"BaseActor.tonyu":{"lastUpdate":1416889517769},"Boot.tonyu":{"lastUpdate":1416889517769},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1412840047455},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1414051292632},"Sprites.tonyu":{"lastUpdate":1416889517770},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1414051292634},"MapEditor.tonyu":{"lastUpdate":1413954028924},"InputDevice.tonyu":{"lastUpdate":1416889517771},"Pad.tonyu":{"lastUpdate":1414554218357}}',
+      '': '{".desktop":{"lastUpdate":1416889517768},"Actor.tonyu":{"lastUpdate":1414051292629},"BaseActor.tonyu":{"lastUpdate":1416889517769},"Boot.tonyu":{"lastUpdate":1416889517769},"InputDevice.tonyu":{"lastUpdate":1416889517771},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1412840047455},"MapEditor.tonyu":{"lastUpdate":1413954028924},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"Panel.tonyu":{"lastUpdate":1414051292634},"ScaledCanvas.tonyu":{"lastUpdate":1414051292632},"Sprites.tonyu":{"lastUpdate":1416889517770},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Pad.tonyu":{"lastUpdate":1414554218357}}',
       '.desktop': '{"runMenuOrd":["TouchedTestMain","Main1023","Main2","MapLoad","Main","AcTestM","NObjTest","NObjTest2","AcTest","AltBoot","Ball","Bar","Bounce","MapTest","MapTest2nd","SetBGCTest","Label","PanelTest","Boot","InputDevice","Sprites","BaseActor"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -6928,19 +6931,19 @@ requirejs(["ImageList","TextRect","fukidashi"], function () {
 });
 requireSimulator.setName('runScript');
 requirejs(["fs/ROMk","FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS","runtime"],
- function (romk,   FS,  Tonyu_Project, sh,      KeyEventChecker, ScriptTagFS,   rt) {
+        function (romk,   FS,  Tonyu_Project, sh,      KeyEventChecker, ScriptTagFS,   rt) {
     $(function () {
         Tonyu.defaultResource={
                 images:[
                         {name:"$pat_base", url: "images/base.png", pwidth:32, pheight:32},
                         {name:"$pat_sample", url: "images/Sample.png"},
                         {name:"$pat_neko", url: "images/neko.png", pwidth:32, pheight:32},
-                ],
-                sounds:[]
+                        ],
+                        sounds:[]
         };
-	SplashScreen={hide: function () {
-	    $("#splash").hide();
-	},show:function(){}};
+        SplashScreen={hide: function () {
+            $("#splash").hide();
+        },show:function(){}};
         var w=$(window).width();
         var h=$(window).height();
         $("body").css({overflow:"hidden", margin:"0px"});
@@ -6949,19 +6952,19 @@ requirejs(["fs/ROMk","FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS
         function onResize() {
             w=$(window).width();
             h=$(window).height();
-        	cv.attr({width: w, height: h});
+            cv.attr({width: w, height: h});
         }
-	var locs=location.href.replace(/\?.*/,"").split(/\//);
-	var loc=locs.pop();
-	if (loc.length<0) locs="runscript";
+        var locs=location.href.replace(/\?.*/,"").split(/\//);
+        var loc=locs.pop();
+        if (loc.length<0) locs="runscript";
         var curProjectDir=FS.get("/Tonyu/"+loc+"/");
         //if (curProjectDir.exists()) sh.rm(curProjectDir,{r:1});
         var fo=ScriptTagFS.toObj();
         for (var fn in fo) {
-        	var f=curProjectDir.rel(fn);
-           	f.text(fo[fn]);
+            var f=curProjectDir.rel(fn);
+            f.text(fo[fn]);
         }
-	sh.cd(curProjectDir);
+        sh.cd(curProjectDir);
         var main="Main";
         var scrs=$("script");
         scrs.each(function (){
@@ -6980,10 +6983,14 @@ requirejs(["fs/ROMk","FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS
                 compiler: { defaultSuperClass: "Actor"},
                 run: {mainClass: main, bootClass: "Boot"},
                 kernelEditable: false
-            };
+        };
         var kernelDir=FS.get("/Tonyu/Kernel/");
         var curPrj=Tonyu_Project(curProjectDir, kernelDir);
         var o=curPrj.getOptions();
+        if (o.compiler && o.compiler.diagnose) {
+            o.compiler.diagnose=false;
+            curPrj.setOptions(o);
+        }
         curPrj.runScriptMode=true;
         curPrj.rawRun(o.run.bootClass);
     });
