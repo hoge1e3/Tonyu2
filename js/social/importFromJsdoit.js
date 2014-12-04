@@ -2,7 +2,19 @@ requirejs(["FS","Util","NewProjectDialog","ScriptTagFS","UI"], function (FS,Util
 	$("button.selDir").click(selDir);
 	$("#diag").append($("<h1>").text("インポート先のフォルダを入力してください"));
 	$("#diag").append( NPD.embed(FS.get("/Tonyu/Projects/"), confirm) );
-	function mode(n) {
+	var user=Util.getQueryString("user");
+    var project=Util.getQueryString("project");
+	if (user && project) {
+	    var url="http://tonyuexe.appspot.com";
+	    if (location.href.match(/localhost/)) {
+	        url="http://localhost:8887";
+	    }
+	    window.projectInfoIs=function (s){
+	        $("#prog").val(s);
+	    };
+	    $("<script>").attr("src",url+"/exe/fork?user="+user+"&"+"project="+project).appendTo("head");
+	}
+    function mode(n) {
 		$("#src").hide();
 		$("#diag").hide();
 		$("#confirm").hide();

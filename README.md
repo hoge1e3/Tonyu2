@@ -3,7 +3,7 @@ Tonyu2
 
 Language and IDE for action game development using html5+js.
 
-Quick start: http://tonyuedit.appspot.com/
+Quick start: http://tonyuedit.appspot.com/ (Japanese)
 
 Download as zip file and extract to local file or web server.
 open index.html for tutorial.(Current version contains only Japanese documents.)
