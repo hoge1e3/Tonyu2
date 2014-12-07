@@ -1,4 +1,4 @@
-// Created at Thu Dec 04 2014 11:03:16 GMT+0900 (東京 (標準時))
+// Created at Sun Dec 07 2014 12:31:23 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -6204,6 +6204,8 @@ define(["WebSite"],function (WebSite) {
 requireSimulator.setName('Blob');
 define(["Auth","WebSite","Util"],function (a,WebSite,Util) {
     var Blob={};
+    var BLOB_PATH_EXPR="${blobPath}";
+    Blob.BLOB_PATH_EXPR=BLOB_PATH_EXPR;
     Blob.upload=function(user, project, file, options) {
         var fd = new FormData(document.getElementById("fileinfo"));
         if (options.error) {
@@ -6233,11 +6235,12 @@ define(["Auth","WebSite","Util"],function (a,WebSite,Util) {
         });
     };
     Blob.isBlobURL=function (url) {
-        if (Util.startsWith(url,"${blobPath}")) {
+        if (Util.startsWith(url,BLOB_PATH_EXPR)) {
             var a=url.split("/");
             return {user:a[1], project:a[2], fileName:a[3]};
         }
     };
+    // actualURL;
     Blob.url=function(user,project,fileName) {
         return WebSite.blobPath+user+"/"+project+"/"+fileName;
     };
@@ -6365,6 +6368,7 @@ define(["Tonyu", "Tonyu.Compiler", "TError", "FS", "Tonyu.TraceTbl","ImageList",
                 tc,Blob,thumbnail) {
 return Tonyu.Project=function (dir, kernelDir) {
     var TPR={};
+    if (!kernelDir) kernelDir=FS.get("/Tonyu/Kernel/");
     var traceTbl=Tonyu.TraceTbl();
     var env={classes:{}, traceTbl:traceTbl, options:{compiler:{}} };
     TPR.EXT=".tonyu";
@@ -6490,6 +6494,26 @@ return Tonyu.Project=function (dir, kernelDir) {
     };
     TPR.getThumbnail=function () {
         return thumbnail.get(TPR);
+    };
+    TPR.convertBlobInfos=function (user) {
+        var rsrc=TPR.getResource();
+        var name=TPR.getName();
+        function loop(o) {
+            if (typeof o!="object") return;
+            for (var k in o) {
+                if (!o.hasOwnProperty(k)) continue;
+                var v=o[k];
+                if (k=="url") {
+                    var a;
+                    if (a=Blob.isBlobURL(v)) {
+                        o[k]=[Blob.BLOB_PATH_EXPR,user,name,a.fileName].join("/");
+                    }
+                }
+                loop(v);
+            }
+        }
+        loop(rsrc);
+        TPR.setResource(rsrc);
     };
     TPR.getBlobInfos=function () {
         var rsrc=TPR.getResource();
