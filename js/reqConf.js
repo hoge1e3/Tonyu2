@@ -235,6 +235,7 @@ var reqConf={
             exportToJsdoit: "social/exportToJsdoit",
             exportAsScriptTags: "social/exportAsScriptTags",
             importFromJsdoit: "social/importFromJsdoit",
+            forkBlobs: "social/forkBlobs",
             "foo":"bar"
         },
         "baseUrl": "../../js"

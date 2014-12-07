@@ -4,6 +4,7 @@ define(["Tonyu", "Tonyu.Compiler", "TError", "FS", "Tonyu.TraceTbl","ImageList",
                 tc,Blob,thumbnail) {
 return Tonyu.Project=function (dir, kernelDir) {
     var TPR={};
+    if (!kernelDir) kernelDir=FS.get("/Tonyu/Kernel/");
     var traceTbl=Tonyu.TraceTbl();
     var env={classes:{}, traceTbl:traceTbl, options:{compiler:{}} };
     TPR.EXT=".tonyu";
@@ -129,6 +130,26 @@ return Tonyu.Project=function (dir, kernelDir) {
     };
     TPR.getThumbnail=function () {
         return thumbnail.get(TPR);
+    };
+    TPR.convertBlobInfos=function (user) {
+        var rsrc=TPR.getResource();
+        var name=TPR.getName();
+        function loop(o) {
+            if (typeof o!="object") return;
+            for (var k in o) {
+                if (!o.hasOwnProperty(k)) continue;
+                var v=o[k];
+                if (k=="url") {
+                    var a;
+                    if (a=Blob.isBlobURL(v)) {
+                        o[k]=[Blob.BLOB_PATH_EXPR,user,name,a.fileName].join("/");
+                    }
+                }
+                loop(v);
+            }
+        }
+        loop(rsrc);
+        TPR.setResource(rsrc);
     };
     TPR.getBlobInfos=function () {
         var rsrc=TPR.getResource();

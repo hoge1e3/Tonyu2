@@ -1,5 +1,7 @@
 define(["Auth","WebSite","Util"],function (a,WebSite,Util) {
     var Blob={};
+    var BLOB_PATH_EXPR="${blobPath}";
+    Blob.BLOB_PATH_EXPR=BLOB_PATH_EXPR;
     Blob.upload=function(user, project, file, options) {
         var fd = new FormData(document.getElementById("fileinfo"));
         if (options.error) {
@@ -29,11 +31,12 @@ define(["Auth","WebSite","Util"],function (a,WebSite,Util) {
         });
     };
     Blob.isBlobURL=function (url) {
-        if (Util.startsWith(url,"${blobPath}")) {
+        if (Util.startsWith(url,BLOB_PATH_EXPR)) {
             var a=url.split("/");
             return {user:a[1], project:a[2], fileName:a[3]};
         }
     };
+    // actualURL;
     Blob.url=function(user,project,fileName) {
         return WebSite.blobPath+user+"/"+project+"/"+fileName;
     };
