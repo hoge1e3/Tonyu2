@@ -87,9 +87,25 @@ exports.concat=function (req,res) {
     if (outfile) {
         var ouf=FS.get("js/gen/"+outfile+"_concat.js");
         ouf.text(buf);
-        res.send({mesg: "Wrote to "+ouf});
+
+        var ugf=FS.get("js/gen/"+outfile+"_concat.min.js");
+        uglify(ouf, ugf);
+
+        res.send({mesg: "Wrote to "+ouf+" and "+ugf});
+
     } else {
         res.setHeader("Content-type","text/javascript;charset=utf-8");
         res.send(buf);
     }
 };
+function uglify(srcF, dstF) {
+    try {
+        var UglifyJS = require("uglify-js");
+        var r=UglifyJS.minify(srcF.path());
+        dstF.text(r.code);
+
+    }catch(e) {
+        console.log("Uglify fail "+e);
+        dstF.text(srcF.text());
+    }
+}
