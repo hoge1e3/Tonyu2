@@ -14,6 +14,17 @@ $(function () {
    };
    $("#prjNameSpan").text(name);
    $("#prjName").val(name);
+   function forked(title) {
+       var pat=/^forked([0-9]*)_(.*)$/;
+       var r=pat.exec(title);
+       if (r) {
+           var num=1+parseInt(r[1]);
+           if (num!==num) num=2;
+           return "forked"+num+"_"+r[2];
+       } else {
+           return "forked_"+title;
+       }
+   }
    Auth.assertLogin({success:function(res, ct) {
        $(".on-logged-out").hide();
        $(".on-logged-in").show();
@@ -24,10 +35,25 @@ $(function () {
            success:function (res) {
                console.log("get-prj",res);
                var data=JSON.parse(res);
+               var forkedFrom={};
+               try {
+                   forkedFrom=dir.rel("forkedFrom.json").obj();
+               }catch(e){}
+
                if (data.license!="null") $("#license").val(data.license);
+               else if (forkedFrom.license) $("#license").val(forkedFrom.license);
+
                if (data.title!="null") $("#prjTitle").val(data.title);
+               else if (forkedFrom.title) $("#prjTitle").val(forked(forkedFrom.title));
                else $("#prjTitle").val(data.name);
+
                if (data.description!="null") $("#desc").val(data.description);
+               else if (forkedFrom.description) $("#desc").val(
+                       "Forked from: "+forkedFrom.user+"'s "+forkedFrom.title+"\n"+
+                       "---- Fork元より ----\n"+
+                       forkedFrom.description
+               );
+
                $("#allowFork").attr("checked",data.allowFork!="false");
                $("#publishToList").attr("checked",data.publishToList!="false");
                var th=prj.getThumbnail();
