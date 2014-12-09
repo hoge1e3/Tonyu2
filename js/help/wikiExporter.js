@@ -51,6 +51,7 @@ require(["Shell","Wiki","FS","requestFragment"], function (sh,Wiki,FS,rf) {
                 src+="<style>"+
                 "body{padding-top:20px; margin-left: 20px; margin-right:20px;}"+
                 "</style>\n";
+                src+="<title>"+txtFile.truncExt(".txt")+"</title>\n";
                 src+=h.html();
                 data[FS.get(dst).relPath(base)]=src;
                 sh.echo("generated ",txtFile.relPath(base),"->",dst);

@@ -39,6 +39,7 @@ $(function () {
                try {
                    forkedFrom=dir.rel("forkedFrom.json").obj();
                }catch(e){}
+               if (!forkedFrom) forkedFrom={};
 
                if (data.license!="null") $("#license").val(data.license);
                else if (forkedFrom.license) $("#license").val(forkedFrom.license);
