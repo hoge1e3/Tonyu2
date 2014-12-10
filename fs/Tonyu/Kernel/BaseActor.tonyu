@@ -246,6 +246,7 @@ nowait \draw(ctx) {
         if (!align) align="center";
         if (!fillStyle) fillStyle="white";
         ctx.fillStyle=fillStyle;
+        ctx.globalAlpha=this.alpha/255;
         var rect=TextRect.draw(ctx, text, x, y, size, align , "fill");
         width=rect.w;
         height=rect.h;
