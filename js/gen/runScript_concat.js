@@ -1,4 +1,4 @@
-// Created at Wed Dec 10 2014 10:20:37 GMT+0900 (東京 (標準時))
+// Created at Wed Dec 10 2014 17:07:55 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -682,7 +682,7 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1416889517768},"Actor.tonyu":{"lastUpdate":1414051292629},"BaseActor.tonyu":{"lastUpdate":1416889517769},"Boot.tonyu":{"lastUpdate":1416889517769},"InputDevice.tonyu":{"lastUpdate":1416889517771},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1412840047455},"MapEditor.tonyu":{"lastUpdate":1413954028924},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"Panel.tonyu":{"lastUpdate":1414051292634},"ScaledCanvas.tonyu":{"lastUpdate":1414051292632},"Sprites.tonyu":{"lastUpdate":1416889517770},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Pad.tonyu":{"lastUpdate":1414554218357}}',
+      '': '{".desktop":{"lastUpdate":1416889517768},"Actor.tonyu":{"lastUpdate":1414051292629},"BaseActor.tonyu":{"lastUpdate":1416889517769},"Boot.tonyu":{"lastUpdate":1416889517769},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1412840047455},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1414051292632},"Sprites.tonyu":{"lastUpdate":1416889517770},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1418198857560},"MapEditor.tonyu":{"lastUpdate":1413954028924},"InputDevice.tonyu":{"lastUpdate":1416889517771},"Pad.tonyu":{"lastUpdate":1414554218357}}',
       '.desktop': '{"runMenuOrd":["TouchedTestMain","Main1023","Main2","MapLoad","Main","AcTestM","NObjTest","NObjTest2","AcTest","AltBoot","Ball","Bar","Bounce","MapTest","MapTest2nd","SetBGCTest","Label","PanelTest","Boot","InputDevice","Sprites","BaseActor"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -1861,6 +1861,7 @@ requireSimulator.setName('fs/ROMk');
         '    this.width=width;\n'+
         '    this.height=height;\n'+
         '    if(align==null) align="center";\n'+
+        '    if(alpha==null) alpha=255;\n'+
         '    buf=$("<canvas>").attr{width,height};\n'+
         '}\n'+
         '\\setPanel(width,height){\n'+
@@ -1930,6 +1931,7 @@ requireSimulator.setName('fs/ROMk');
         '    }else{\n'+
         '        ctx.rotate(this.rotate/180*Math.PI);\n'+
         '    }\n'+
+        '    ctx.globalAlpha=this.alpha/255;\n'+
         '    ctx.drawImage(\n'+
         '    pImg, 0, 0,width,height,\n'+
         '    -width/2, -height/2, width ,height);\n'+

@@ -6,6 +6,7 @@ native isNaN;
     this.width=width;
     this.height=height;
     if(align==null) align="center";
+    if(alpha==null) alpha=255;
     buf=$("<canvas>").attr{width,height};
 }
 \setPanel(width,height){
@@ -75,6 +76,7 @@ native isNaN;
     }else{
         ctx.rotate(this.rotate/180*Math.PI);
     }
+    ctx.globalAlpha=this.alpha/255;
     ctx.drawImage(
     pImg, 0, 0,width,height,
     -width/2, -height/2, width ,height);
