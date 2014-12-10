@@ -37,7 +37,10 @@ define(["PatternParser","Util","WebSite"], function (PP,Util,WebSite) {
                     var x=0, y=0, w=this.width, h=this.height;
                     var r=[];
                     while (true) {
-                        r.push({image:this, x:x,y:y, width:pw, height:ph});
+                        var rw=pw,rh=ph;
+                        if (x+pw>w) rw=w-x;
+                        if (y+ph>h) rh=h-y;
+                        r.push({image:this, x:x,y:y, width:rw, height:rh});
                         x+=pw;
                         if (x+pw>w) {
                             x=0;
