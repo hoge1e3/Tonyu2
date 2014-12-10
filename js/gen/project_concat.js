@@ -1,4 +1,4 @@
-// Created at Sun Dec 07 2014 21:00:56 GMT+0900 (東京 (標準時))
+// Created at Wed Dec 10 2014 10:20:33 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -13267,7 +13267,10 @@ define(["PatternParser","Util","WebSite"], function (PP,Util,WebSite) {
                     var x=0, y=0, w=this.width, h=this.height;
                     var r=[];
                     while (true) {
-                        r.push({image:this, x:x,y:y, width:pw, height:ph});
+                        var rw=pw,rh=ph;
+                        if (x+pw>w) rw=w-x;
+                        if (y+ph>h) rh=h-y;
+                        r.push({image:this, x:x,y:y, width:rw, height:rh});
                         x+=pw;
                         if (x+pw>w) {
                             x=0;
