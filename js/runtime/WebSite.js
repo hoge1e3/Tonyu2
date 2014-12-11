@@ -48,9 +48,9 @@ define([], function () {
     }
     if (loc.match(/tonyuexe\.appspot\.com/) ||
         loc.match(/localhost:8887/)) {
-        window.WebSite.serverTop=window.WebSite.top+"exe/";
+        window.WebSite.serverTop=window.WebSite.top+"exe/"; // Fix NetModule.tonyu!!
     } else {
-        window.WebSite.serverTop=window.WebSite.top+"edit/";
+        window.WebSite.serverTop=window.WebSite.top+"edit/";// Fix NetModule.tonyu!!
     }
     window.WebSite.sampleImg=window.WebSite.top+"images";
     window.WebSite.blobPath=window.WebSite.serverTop+"serveBlob";

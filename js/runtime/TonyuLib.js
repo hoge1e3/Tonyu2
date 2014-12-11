@@ -184,7 +184,7 @@ Tonyu=function () {
         function notifyResume() {
             if (_isWaiting) {
                 //console.log("resume!");
-                run();
+                //run();
             }
         }
         return thg={add:add, addObj:addObj,  steps:steps, kill:kill, notifyResume: notifyResume};
