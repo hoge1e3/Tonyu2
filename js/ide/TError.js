@@ -3,7 +3,10 @@ function TError(mesg, src, pos) {
         return {
             isTError:true,
             mesg:mesg,
-            src:{name:function () { return src;}},
+            src:{
+                name:function () { return src;},
+                text:function () { return src;}
+            },
             pos:pos,
             toString:function (){
                 return this.mesg+" at "+src+":"+this.pos;

@@ -4,18 +4,27 @@ jsdo.it -> load from tonyuexe
 ファイルが増えるとメニューがあふれる
  Main Selector
 Library 公開
+ Merge project
+
+Doc同期を省力化
 
 Kernel
  ThreadGroup
  colorメソッド
 
 RibbonMania
+Fork お待ちください
 
 言語仕様
+ bug  a[i]/10  / = reg??
  \()=>
  \{  }
  \myProp {}
  \myProp=val {}
+ Exception
+
+Rapid Kernel read
+ (pre-compiled kernel)
 
 OK Loading Proejct list
  OK animation

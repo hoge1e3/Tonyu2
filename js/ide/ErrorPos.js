@@ -10,7 +10,9 @@ return function showErrorPos(elem, err) {
         src=err.src;
         pos=err.pos;
     } else {
-        src={name:function (){return "不明";}};
+        src={name:function (){return "不明";},text:function () {
+            return null;
+        }};
         pos=0;
         mesg=err;
     }
@@ -22,6 +24,7 @@ return function showErrorPos(elem, err) {
     //mesgd.append($("<button>").text("閉じる").click(close));
     elem.append(mesgd);
     elem.append($("<div>").attr("class","quickFix"));
+    console.log("src=",src);
     var str=src.text();
     if (str && typeof pos=="object") {
         var npos=0;

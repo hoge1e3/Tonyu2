@@ -17,17 +17,17 @@ return Tonyu.Project=function (dir, kernelDir) {
             ccnt++;
         }
         while (res.length<ccnt) {
-	    var p=res.length;
+            var p=res.length;
             for (var n in classes) {
                 if (added[n]) continue;
                 var c=classes[n];
                 var spc=c.superClass;
-		var deps=[spc];
-		var ready=true;
-		if (c.includes) deps=deps.concat(c.includes);
-		deps.forEach(function (cl) {
-		    ready=ready && (!cl || cl.builtin || added[cl.name]);
-		});
+                var deps=[spc];
+                var ready=true;
+                if (c.includes) deps=deps.concat(c.includes);
+                deps.forEach(function (cl) {
+                    ready=ready && (!cl || cl.builtin || added[cl.name]);
+                });
                 if (ready) {
                     res.push(c);
                     added[n]=true;
@@ -63,6 +63,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         TPR.boot(mainClassName);
     };*/
     TPR.compile=function () {
+        console.log("Kernel editable",TPR.isKernelEditable());
     	if (TPR.isKernelEditable()) {
     		//  BaseActor  <-  Actor            <- MyActor
     		//   ^ in user     ^ only in kernel   ^ in user
