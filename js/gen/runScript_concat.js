@@ -1,4 +1,4 @@
-// Created at Thu Dec 11 2014 12:06:27 GMT+0900 (東京 (標準時))
+// Created at Wed Dec 17 2014 21:17:07 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -3719,7 +3719,10 @@ function TError(mesg, src, pos) {
         return {
             isTError:true,
             mesg:mesg,
-            src:{name:function () { return src;}},
+            src:{
+                name:function () { return src;},
+                text:function () { return src;}
+            },
             pos:pos,
             toString:function (){
                 return this.mesg+" at "+src+":"+this.pos;
@@ -3941,7 +3944,7 @@ TT=function () {
 
 
 	dtk(REG|DIV,SAMENAME ,"[",REG );
-	dtk(REG|DIV,SAMENAME ,"]",REG );
+	dtk(REG|DIV,SAMENAME ,"]",DIV );  // a[i]/3
 
 	dtk(REG|DIV,SAMENAME ,"{",REG );
 	//dtk(REG|DIV,SAMENAME ,"}",REG );  // if () { .. }  /[a-z]/.exec()
@@ -6387,17 +6390,17 @@ return Tonyu.Project=function (dir, kernelDir) {
             ccnt++;
         }
         while (res.length<ccnt) {
-	    var p=res.length;
+            var p=res.length;
             for (var n in classes) {
                 if (added[n]) continue;
                 var c=classes[n];
                 var spc=c.superClass;
-		var deps=[spc];
-		var ready=true;
-		if (c.includes) deps=deps.concat(c.includes);
-		deps.forEach(function (cl) {
-		    ready=ready && (!cl || cl.builtin || added[cl.name]);
-		});
+                var deps=[spc];
+                var ready=true;
+                if (c.includes) deps=deps.concat(c.includes);
+                deps.forEach(function (cl) {
+                    ready=ready && (!cl || cl.builtin || added[cl.name]);
+                });
                 if (ready) {
                     res.push(c);
                     added[n]=true;
@@ -6433,6 +6436,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         TPR.boot(mainClassName);
     };*/
     TPR.compile=function () {
+        console.log("Kernel editable",TPR.isKernelEditable());
     	if (TPR.isKernelEditable()) {
     		//  BaseActor  <-  Actor            <- MyActor
     		//   ^ in user     ^ only in kernel   ^ in user

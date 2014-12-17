@@ -190,7 +190,7 @@ TT=function () {
 
 
 	dtk(REG|DIV,SAMENAME ,"[",REG );
-	dtk(REG|DIV,SAMENAME ,"]",REG );
+	dtk(REG|DIV,SAMENAME ,"]",DIV );  // a[i]/3
 
 	dtk(REG|DIV,SAMENAME ,"{",REG );
 	//dtk(REG|DIV,SAMENAME ,"}",REG );  // if () { .. }  /[a-z]/.exec()
