@@ -7,13 +7,13 @@ Library 公開
  Merge project
 
 Doc同期を省力化
+ ls -json
 
+RAM disk
 Kernel
  ThreadGroup
  colorメソッド
 
-RibbonMania
-Fork お待ちください
 
 言語仕様
  bug  a[i]/10  / = reg??
@@ -26,6 +26,7 @@ Fork お待ちください
 Rapid Kernel read
  (pre-compiled kernel)
 
+OK Fork お待ちください
 OK Loading Proejct list
  OK animation
  OK limit 10 and next
