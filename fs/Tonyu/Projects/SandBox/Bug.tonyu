@@ -1,0 +1,13 @@
+$Screen.setBGColor("black");
+while(true) {
+    updateEx(10);
+    new Honoo;
+}
+x=20;
+y=20;
+p=$pat_sample;
+pad=new Pad;
+
+/*if (x[3]=3) {
+    
+}*/

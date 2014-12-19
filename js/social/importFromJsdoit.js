@@ -7,6 +7,7 @@ requirejs(["FS","Util","NewProjectDialog","ScriptTagFS","UI","forkBlobs"],
     var project=Util.getQueryString("project");
     var forkFromExe=(user && project);
 	if (forkFromExe) {
+	    $("#prog").attr("placeholder", "コードを取得中です．しばらくお待ちください．");
 	    var url="http://tonyuexe.appspot.com";
 	    if (location.href.match(/localhost/)) {
 	        url="http://localhost:8887";

@@ -7,6 +7,9 @@ Library 公開
  Merge project
 Timestamp on Appauth
 
+OK tonyuexe公開後トップに移動・別Window
+View source
+
 Doc同期を省力化
  ls -json
 
