@@ -4,6 +4,7 @@ define([], function () {
     if (loc.match(/jsrun\.it/)) {
         window.WebSite={
             urlAliases: {
+                "images/Ball.png":"http://jsrun.it/assets/9/X/T/b/9XTbt.png",
                 "images/base.png":"http://jsrun.it/assets/6/F/y/3/6Fy3B.png",
                 "images/Sample.png":"http://jsrun.it/assets/s/V/S/l/sVSlZ.png",
                 "images/neko.png":"http://jsrun.it/assets/j/D/9/q/jD9qQ.png",
@@ -24,6 +25,7 @@ define([], function () {
     ) {
         window.WebSite={
             urlAliases: {
+                "images/Ball.png":"../../images/Ball.png",
                 "images/base.png":"../../images/base.png",
                 "images/Sample.png":"../../images/Sample.png",
                 "images/neko.png":"../../images/neko.png",

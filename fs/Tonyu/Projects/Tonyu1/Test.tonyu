@@ -1,0 +1,8 @@
+extends SpriteChar;
+
+y=20;
+while(x<200) {
+    x++;
+    f=(x%2==1);
+    update();
+}

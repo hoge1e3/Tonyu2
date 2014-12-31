@@ -6,30 +6,33 @@ jsdo.it -> load from tonyuexe
 Library 公開
  Merge project
 Timestamp on Appauth
-
-OK tonyuexe公開後トップに移動・別Window
 View source
+View count
 
 Doc同期を省力化
  ls -json
 
 RAM disk
+Disk usage
 Kernel
  ThreadGroup
  colorメソッド
 
 
 言語仕様
- bug  a[i]/10  / = reg??
+ OK bug  a[i]/10  / = reg??
  \()=>
  \{  }
  \myProp {}
  \myProp=val {}
  Exception
+ nowait {  }
 
+Graphic editor
 Rapid Kernel read
  (pre-compiled kernel)
 
+OK tonyuexe公開後トップに移動・別Window
 OK Fork お待ちください
 OK Loading Proejct list
  OK animation

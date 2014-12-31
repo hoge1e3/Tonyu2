@@ -1,10 +1,11 @@
 define(["UI"], function (UI) {
     var res={};
-	res.show=function (prjDir, onOK) {
-    	var d=res.embed(prjDir,onOK);
+	res.show=function (prjDir, onOK,options) {
+    	var d=res.embed(prjDir,onOK,options);
     	d.dialog({width:600});
 	};
-	res.embed=function (prjDir, onOK) {
+	res.embed=function (prjDir, onOK, options) {
+	    if (!options) options={};
         if (!res.d) {
             var FType={
                     fromVal: function (val){
@@ -15,7 +16,8 @@ define(["UI"], function (UI) {
         	res.d=UI("div",{title:"新規プロジェクト"},
         			["div",
         			 ["span","プロジェクト名"],
-        			 ["input",{$edit:"name",on:{enterkey:function () {
+        			 ["input",{$edit:"name",value:options.defName||"",
+        			     on:{enterkey:function () {
                 		     res.d.done();
 				 }}}]],
          			["div",
@@ -32,7 +34,7 @@ define(["UI"], function (UI) {
             );
         }
         var d=res.d;
-        var model={name:"", parentDir:prjDir};
+        var model={name:options.defName||"", parentDir:prjDir};
         d.$edits.load(model);
     	d.$edits.validator.on.validate=function (model) {
     		if (model.name=="") {

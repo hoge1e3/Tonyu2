@@ -10,6 +10,7 @@ Tonyu System 2 includes these third party libraries:
  js/lib/timbre.js   https://github.com/mohayonao/timbre.js/
  js/lib/jszip.min.js    http://stuk.github.io/jszip/
  js/lib/FileSaver.min.js    https://github.com/eligrey/FileSaver.js/#filesaverjs
+ js/lib/encoding.min.js https://github.com/polygonplanet/encoding.js
 
 Special thanks to:
  @makkii_bcr  Inproves Boot.tonyu and Contributes Pad.tonyu

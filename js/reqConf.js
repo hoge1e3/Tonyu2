@@ -137,6 +137,15 @@ var reqConf={
             },
             "fs/export": {
                 deps: ["Shell","FS"]
+            },
+            JSZip: {
+                exports:"JSZip"
+            },
+            Encoding: {
+                exports:"Encoding"
+            },
+            Base64: {
+                exports:"Base64"
             }
             /*"ide/selProject": {
                 deps: ["fs/ROMk","fs/ROMd","fs/ROMs", "FS","Wiki"]
@@ -149,6 +158,8 @@ var reqConf={
 	    Sync: "fs/sync",
 	    TT: "lang/tonyu2_token",
 	    Auth: "fs/auth",
+	    Encoding:"lib/encoding.min",
+	    Base64:"lib/base64.min",
             runtime: "runtime/runtime",
             difflib: "lib/difflib",
             diffview: "lib/diffview",
@@ -235,7 +246,9 @@ var reqConf={
             exportToJsdoit: "social/exportToJsdoit",
             exportAsScriptTags: "social/exportAsScriptTags",
             importFromJsdoit: "social/importFromJsdoit",
+            importFromTonyu1:"tonyu1/importFromTonyu1",
             forkBlobs: "social/forkBlobs",
+            JSZip:"lib/jszip.min",
             "foo":"bar"
         },
         "baseUrl": "../../js"
