@@ -149,7 +149,8 @@ TT=function () {
         for (var i=1 ;i<s.length ; i++) {
             var c=s.substring(i,i+1);
             if (c==='/') {
-                return [s.substring(0,i+1)];
+                var r=/^[ig]*/.exec( s.substring(i+1) );
+                return [s.substring(0,i+1+r[0].length)];
             } else if (c=="\n") {
                 return false;
             } else if (c==="\\") {
