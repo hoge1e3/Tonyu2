@@ -5,9 +5,11 @@ jsdo.it -> load from tonyuexe
  Main Selector
 Library 公開
  Merge project
+ namespace? package?
 Timestamp on Appauth
 View source
 View count
+クラス名変更時にコンパイルエラーがあると...
 
 Doc同期を省力化
  ls -json
@@ -27,6 +29,9 @@ Kernel
  \myProp=val {}
  Exception
  nowait {  }
+ do..while
+ switch
+ annotation?? (スコープチェックとコード出力の分離)
 
 Graphic editor
 Rapid Kernel read

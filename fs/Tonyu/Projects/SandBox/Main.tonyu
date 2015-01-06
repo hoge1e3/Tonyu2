@@ -2,3 +2,4 @@ a=[13,430,210, 21, 120 ,23];
 for (i=0 ; i<a.length; i++) {
     print(a[i]/2);
 }
+new A;

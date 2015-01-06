@@ -1,4 +1,4 @@
-// Created at Wed Dec 17 2014 21:17:07 GMT+0900 (東京 (標準時))
+// Created at Tue Jan 06 2015 17:04:44 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -623,6 +623,7 @@ define([], function () {
     if (loc.match(/jsrun\.it/)) {
         window.WebSite={
             urlAliases: {
+                "images/Ball.png":"http://jsrun.it/assets/9/X/T/b/9XTbt.png",
                 "images/base.png":"http://jsrun.it/assets/6/F/y/3/6Fy3B.png",
                 "images/Sample.png":"http://jsrun.it/assets/s/V/S/l/sVSlZ.png",
                 "images/neko.png":"http://jsrun.it/assets/j/D/9/q/jD9qQ.png",
@@ -643,6 +644,7 @@ define([], function () {
     ) {
         window.WebSite={
             urlAliases: {
+                "images/Ball.png":"../../images/Ball.png",
                 "images/base.png":"../../images/base.png",
                 "images/Sample.png":"../../images/Sample.png",
                 "images/neko.png":"../../images/neko.png",
@@ -2500,9 +2502,10 @@ Tonyu=function () {
                 threads.push(thread);
             }
         }
-        function addObj(obj) {
+        function addObj(obj, methodName) {
             var th=thread();
-            th.enter(obj.fiber$main());
+            if (!methodName) methodName="main";
+            th.enter(obj["fiber$"+methodName]());
             add(th);
             return th;
         }
@@ -2684,7 +2687,7 @@ Tonyu=function () {
         return res;
     }
     function not_a_tonyu_object(o) {
-        console.log(o);
+        console.log("Not a tonyu object: ",o);
         throw o+" is not a tonyu object";
     }
     function hasKey(k, obj) {
@@ -4020,6 +4023,15 @@ TT=function () {
 		} else {
 			console.log("Stopped at "+str.substring( res.src.maxPos-5, res.src.maxPos+5));
 		}
+		if (typeof WebSite=="object" && WebSite.devMode) {
+		    window.tokenStat=window.tokenStat||{};
+		    res.result[0].forEach(function (r) {
+		        window.tokenStat[ r.text ]= window.tokenStat[ r.text ] || 0;
+		        window.tokenStat[ r.text ]++;
+		    });
+		    //buf=""; for (var k in tokenStat) {  buf+=k+"\t"+tokenStat[k]+"\n"; }; buf;
+		    //console.log(res);
+		}
 		return res;
 		//console.log(Profiler.report());
 		//console.log( disp(res.result[0]) );
@@ -4434,6 +4446,7 @@ TonyuLang=function () {
     e.infixl(prio,andand);
     prio++;
     e.infix(prio,tk("instanceof"));
+    e.infix(prio,tk("is"));
     //e.infix(prio,tk("in"));
     e.infix(prio,eqq);
     e.infix(prio,nee);
@@ -5492,6 +5505,9 @@ function genJS(klass, env,pass) {
 	"instanceof": function (node) {
 	    buf.printf(" instanceof ");
 	},
+    "is": function (node) {
+        buf.printf(" instanceof ");
+    },
 	regex: function (node) {
 	    buf.printf("%s",node.text);
 	}

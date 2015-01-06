@@ -1,4 +1,4 @@
-// Created at Wed Dec 17 2014 21:17:00 GMT+0900 (東京 (標準時))
+// Created at Tue Jan 06 2015 17:04:38 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -623,6 +623,7 @@ define([], function () {
     if (loc.match(/jsrun\.it/)) {
         window.WebSite={
             urlAliases: {
+                "images/Ball.png":"http://jsrun.it/assets/9/X/T/b/9XTbt.png",
                 "images/base.png":"http://jsrun.it/assets/6/F/y/3/6Fy3B.png",
                 "images/Sample.png":"http://jsrun.it/assets/s/V/S/l/sVSlZ.png",
                 "images/neko.png":"http://jsrun.it/assets/j/D/9/q/jD9qQ.png",
@@ -643,6 +644,7 @@ define([], function () {
     ) {
         window.WebSite={
             urlAliases: {
+                "images/Ball.png":"../../images/Ball.png",
                 "images/base.png":"../../images/base.png",
                 "images/Sample.png":"../../images/Sample.png",
                 "images/neko.png":"../../images/neko.png",
@@ -9589,11 +9591,12 @@ define(["Shell","FS"],function (sh,fs) {
 requireSimulator.setName('NewProjectDialog');
 define(["UI"], function (UI) {
     var res={};
-	res.show=function (prjDir, onOK) {
-    	var d=res.embed(prjDir,onOK);
+	res.show=function (prjDir, onOK,options) {
+    	var d=res.embed(prjDir,onOK,options);
     	d.dialog({width:600});
 	};
-	res.embed=function (prjDir, onOK) {
+	res.embed=function (prjDir, onOK, options) {
+	    if (!options) options={};
         if (!res.d) {
             var FType={
                     fromVal: function (val){
@@ -9604,7 +9607,8 @@ define(["UI"], function (UI) {
         	res.d=UI("div",{title:"新規プロジェクト"},
         			["div",
         			 ["span","プロジェクト名"],
-        			 ["input",{$edit:"name",on:{enterkey:function () {
+        			 ["input",{$edit:"name",value:options.defName||"",
+        			     on:{enterkey:function () {
                 		     res.d.done();
 				 }}}]],
          			["div",
@@ -9621,7 +9625,7 @@ define(["UI"], function (UI) {
             );
         }
         var d=res.d;
-        var model={name:"", parentDir:prjDir};
+        var model={name:options.defName||"", parentDir:prjDir};
         d.$edits.load(model);
     	d.$edits.validator.on.validate=function (model) {
     		if (model.name=="") {

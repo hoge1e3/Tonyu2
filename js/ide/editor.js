@@ -117,9 +117,16 @@ $(function () {
         if (refactorUI.$vars.chk.prop("checked")) {
             //alert(oldCN+"=>"+newCN);
             save();
-            curPrj.renameClassName(oldCN,newCN);
-            reloadFromFiles();
+            try {
+                curPrj.renameClassName(oldCN,newCN);
+            } catch (e) {
+                alert("プログラム内にエラーがあります．エラーを修正するか，「プログラム中のクラス名も変更する」のチェックを外してもう一度やり直してください．");
+                console.log(e);
+                return false;
+            }
         }
+        //close(old);  does in FileMenu
+        reloadFromFiles();
         refactorUI=null;
     };
 
@@ -321,10 +328,13 @@ $(function () {
             },50);
         });
     });
-    function close(rm) {
+    function close(rm) { // rm or mv
         var i=editors[rm.path()]; //getCurrentEditorInfo();
-        i.editor.destroy();
-        i.dom.remove();
+        if (i) {
+            i.editor.destroy();
+            i.dom.remove();
+            delete editors[rm.path()];
+        }
     }
     function fixEditorIndent(prog) {
         var cur=prog.getCursorPosition();
