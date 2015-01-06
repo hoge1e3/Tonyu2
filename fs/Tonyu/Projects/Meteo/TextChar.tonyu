@@ -1,0 +1,17 @@
+extends PlainChar;
+
+\new (xx,yy,t,c,s){
+    super(xx,yy);
+    text="";
+    col=$clWhite;
+    size=20;
+    if (!this.x) this.x=0;
+    if (!this.y) this.y=0;
+    if (t) text=t;
+    if (c) fillStyle=c;
+    if (s) size=s;
+}
+\draw(ctx) {
+    fillStyle=col;
+    super.draw(ctx);
+}

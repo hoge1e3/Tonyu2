@@ -7,5 +7,5 @@ while(x<200) {
     angle++;
     //print([x,y,p,f,scaleX,scaleY,alpha,angle]);
     f=(x%2==1);
-    update();
+    wait();
 }

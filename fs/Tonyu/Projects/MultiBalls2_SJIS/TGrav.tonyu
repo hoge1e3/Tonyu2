@@ -1,0 +1,13 @@
+extends SecretChar;
+
+// カーソルキーでフィールド全体の重力を決定するオブジェクト
+while(1){
+  vx=0;
+  vy=0;
+  if (getkey(39)) vx=1;
+  if (getkey(37)) vx=-1; 
+  if (getkey(38)) vy=-1;
+  if (getkey(40)) vy=1; 
+  
+  update();
+}

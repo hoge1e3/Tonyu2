@@ -1,0 +1,15 @@
+extends PlainChar;
+
+\initGlobals() {
+    $chars=$Sprites.sprites;
+    $Boot.setFrameRate(60);
+    $clBlack=color(0,0,0);
+    $clRed=color(255,0,0);
+    $clGreen=color(0,255,0);
+    $clYellow=color(255,255,0);
+    $clBlue=color(0,0,255);
+    $clPink=color(255,0,255);
+    $clAqua=color(0,255,255);
+    $clWhite=color(255,255,255);
+    $mplayer=new MediaPlayer;
+}

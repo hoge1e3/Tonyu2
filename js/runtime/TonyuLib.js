@@ -305,7 +305,7 @@ Tonyu=function () {
         return res;
     }
     function not_a_tonyu_object(o) {
-        console.log(o);
+        console.log("Not a tonyu object: ",o);
         throw o+" is not a tonyu object";
     }
     function hasKey(k, obj) {

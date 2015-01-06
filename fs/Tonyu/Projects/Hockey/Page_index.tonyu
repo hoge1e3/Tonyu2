@@ -1,0 +1,16 @@
+extends T1Page;
+initGlobals();
+$screenWidth=560;
+$screenHeight=384;
+$Screen.resize($screenWidth,$screenHeight);
+$player=$Player= new Player{p: 5, x: 77, y: 316, manplay: 1};
+$ball=$Ball= new Ball{p: 20, x: 222, y: 200};
+$Racket= new Racket{p: 17, x: 64, y: 86};
+$Racket_1= new Racket{p: 21, x: 128.575592041016, y: 58.8583068847656};
+$Enemy= new Enemy{p: 6, x: 477, y: 279, tracket: $Racket_1};
+$tokuten= new Tokuten{alpha: 255, angle: 0, p: $pat_tokuten+0, scaleX: 1, x: 236, y: 65};
+$tokuten_1= new Tokuten{scaleX: 1, angle: 0, alpha: 255, p: $pat_tokuten+0, x: 306, y: 64};
+$Replay_1= new Replay{p: 4, size: 25, x: 138, y: 101, text: "Click Here to Replay"};
+$Enemy_2= new Enemy{p: 6, x: 192, y: 293, tracket: $Racket, dir: 1};
+$map=new T1Map{zOrder:1000};
+$map.load("index.map");

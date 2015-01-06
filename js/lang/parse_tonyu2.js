@@ -135,6 +135,7 @@ TonyuLang=function () {
     e.infixl(prio,andand);
     prio++;
     e.infix(prio,tk("instanceof"));
+    e.infix(prio,tk("is"));
     //e.infix(prio,tk("in"));
     e.infix(prio,eqq);
     e.infix(prio,nee);

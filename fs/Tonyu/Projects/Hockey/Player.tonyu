@@ -1,0 +1,17 @@
+extends SpriteChar;
+
+dir=1;
+rs=0.4;
+setVisible(0);
+// プレイヤーのラケットを動かす
+while(1){
+    if (manPlay) {
+        // マウスの位置にラケットをもっていく
+        $Racket.x=$mouseX*rs+$Racket.x*(1-rs);
+        // 相手フィールドに入れないようにする
+        if (($Racket.x-$screenWidth/2)*dir>=0) $Racket.x=$screenWidth/2;
+        $Racket.y=$mouseY*rs+$Racket.y*(1-rs);
+    }
+    if (getkey(32)==1) manPlay=!manPlay;
+    update();
+}

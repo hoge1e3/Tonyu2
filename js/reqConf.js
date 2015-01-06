@@ -160,6 +160,7 @@ var reqConf={
 	    Auth: "fs/auth",
 	    Encoding:"lib/encoding.min",
 	    Base64:"lib/base64.min",
+	    T1Map:"tonyu1/t1map",
             runtime: "runtime/runtime",
             difflib: "lib/difflib",
             diffview: "lib/diffview",

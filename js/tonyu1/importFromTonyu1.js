@@ -1,5 +1,5 @@
-requirejs(["JSZip","UI","FS","NewProjectDialog","Encoding"],
-        function (JSZip,UI,FS,NPD,Encoding) {
+requirejs(["JSZip","UI","FS","NewProjectDialog","Encoding","T1Map"],
+        function (JSZip,UI,FS,NPD,Encoding,T1Map) {
     var dragMsg="ここにTonyu1プロジェクトフォルダのzipファイルをドラッグ＆ドロップ";
     var dragPoint=UI("div", {style:"margin:10px; padding:10px; border:solid blue 2px;",
         on:{dragover: s, dragenter: s, drop:dropAdd}},dragMsg
@@ -52,7 +52,10 @@ requirejs(["JSZip","UI","FS","NewProjectDialog","Encoding"],
     var rsrc;
     function extract(dir) {
         mem={};
-        rsrc=[{name:"$pat_ball1",url:"images/Ball.png"}];
+        rsrc={
+                images:[{name:"$pat_ball1",url:"images/Ball.png"}],
+                sounds:[]
+        };
         var base;
         dstDir=dir;
         for (var fn in zip.files) {
@@ -86,7 +89,27 @@ requirejs(["JSZip","UI","FS","NewProjectDialog","Encoding"],
         copyClasses(classes);
         copyPages(pages);
         mem[dstDir.rel("res.json")]=JSON.stringify(rsrc);
+        //console.log(mem);
+        cpTmp("SpriteChar");
+        cpTmp("PlainChar");
+        cpTmp("TextChar");
+        cpTmp("SecretChar");
+        cpTmp("DxChar");
+        cpTmp("T1Text");
+        cpTmp("T1Line");
+        cpTmp("T1Map");
+        cpTmp("T1Page");
+        cpTmp("MediaPlayer");
+        cpTmp("Boot");
         console.log(mem);
+        //console.log(JSON.stringify(mem));
+        for (var fn in mem) {
+            FS.get(fn).text(mem[fn]);
+        }
+    }
+    function cpTmp(fn) {
+        mem[dstDir.rel(fn+".tonyu")]=FS.get("/Tonyu/Projects/Tonyu1/").
+        rel(fn+".tonyu").text();
     }
     function copyClasses(classes) {
         classes.each(function () {
@@ -108,32 +131,66 @@ requirejs(["JSZip","UI","FS","NewProjectDialog","Encoding"],
         var fn="Page_"+pageF.truncExt(".cmml")+".tonyu";
         console.log("Page", fn);
         var globals=pg.find("globalvalue");
-        var buf="";
+        var buf="extends T1Page;\n";
+        buf+="initGlobals();\n";
         globals.each(function () {
             buf+=$(this).attr("name")+"="+$(this).attr("value")+";\n";
         });
+        buf+="$Screen.resize($screenWidth,$screenHeight);\n";
+        var pats=pg.find("cpattern");
+        copyImages(pats);
+
         var gens=pg.find("generator");
         gens.each(function () {
             var a=this.attributes;
-            buf+=$(this).attr("name")+"= new "+$(this).attr("classname")+"{";
+            var klass=$(this).attr("classname");
+            if (klass=="Map") {
+                buf+=genMap( $(this) );
+                return;
+            }
+            buf+=$(this).attr("name")+"= new "+klass+"{";
             var com="";
             for (var i=0 ; i<a.length; i++) {
                 var n=a[i].name;
                 var r=/inst_(.*)/.exec(n);
                 if (r) {
-                    buf+=com+r[1]+": "+a[i].value;
+                    buf+=com+r[1]+": "+val(a[i].value);
                     com=", ";
                 }
             }
             buf+="};\n";
         });
-        mem[pageF.path()]=buf;
-        var pats=pg.find("cpattern");
+        mem[dstDir.rel(fn).path()]=buf;
+    }
+    function val(v) {
+        return v.replace(/%22/g,"\"");
+    }
+    function genMap(map) {
+        console.log("map", map);
+        var src=map.attr("src");
+        var mapF=convFiles[dstDir.rel(src)];
+        var ary=mapF.asUint8Array();
+        var pwidth=map.attr("inst_pwidth");
+        var pheight=map.attr("inst_pheight");
+        var width=map.attr("inst_width");
+        var height=map.attr("inst_height");
+        console.log(pwidth, pheight, width, height,ary);
+        var buf="";
+        var mapFile=dstDir.rel("maps/").rel(dstDir.rel(src).name());
+        buf+=T1Map(pwidth, pheight, width, height,ary,mapFile, mem);
+        return buf;
+    }
+    function copyImages(pats) {
         pats.each(function () {
             var name=$(this).attr("name");
-            name=name.replace(/^\$/,"$pat_");
+            //name=name.replace(/^\$/,"$pat_");
             var src=$(this).attr("src");
-            var o=convFiles[dstDir.rel(src).path()];
+            var imgFile=dstDir.rel(src).path();
+            var o=convFiles[imgFile];
+            if (!o) {
+                console.log(convFiles);
+                throw "Image file not found :"+imgFile;
+            }
             var fn=dstDir.rel(src).name();
             //console.log("pats", o);
             var buf="";
@@ -144,10 +201,8 @@ requirejs(["JSZip","UI","FS","NewProjectDialog","Encoding"],
             //console.log("patss", s);
             var url="images/"+fn;
             mem[dstDir.rel(url)]=s;
-            rsrc.push({name:name , url:url });
+            rsrc.images.push({name:name , url:"ls:"+url });
         });
-    }
-    function copyImages(images) {
 
     }
 });

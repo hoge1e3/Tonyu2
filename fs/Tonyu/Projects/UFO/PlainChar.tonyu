@@ -1,0 +1,79 @@
+native Tonyu;
+native Math;
+\new(x,y,p) {
+    if (Tonyu.runMode) {
+        var thg=currentThreadGroup();
+        if (thg) _th=thg.addObj(this,"tMain");
+        initSprite();
+    }
+    if (typeof x=="object") Tonyu.extend(this,x); 
+    else if (typeof x=="number") {
+        this.x=x;
+        this.y=y;
+        this.p=p;
+    }
+}
+\draw(c) {
+    onDraw();
+    if (_isInvisible) return;
+    super.draw(c);
+}
+\setVisible(v) {
+    _isInvisible=!v;
+}
+\onDraw() {
+    
+}
+\update() {
+    onUpdate();
+    super.update();
+}
+\onUpdate() {
+    
+}
+\initSprite() {
+    if(layer && typeof layer.add=="function"){
+        layer.add(this);
+    }else{
+        $Sprites.add(this);
+    }
+    onAppear();
+}
+\tMain() {
+    main();
+    die();
+}
+\color(r,g,b) {
+    return "rgb("+[r,g,b].join(",")+")";
+}
+\drawText(x,y,text,col,size) {
+    if ($debug) return;
+    if (!size) size=15;
+    if (!col) col="cyan";
+    var tp=all(T1Text).find \(t) {return t.hidden;};
+    if (tp.length>0) {
+        tp[0].extend{x,y,text,fillStyle:col, size,hidden:false};
+    }else {
+        new T1Text{x,y,text,fillStyle:col, size};  
+    }
+}
+\drawLine(x,y,tx,ty,col) {
+    if (!col) col="white";
+    var tp=all(T1Line).find \(t) {return t.hidden;};
+    if (tp.length>0) {
+        tp[0].extend{x,y,tx,ty,col};
+    }else {
+        new T1Line{x,y,tx,ty,col};  
+    }
+}
+\appear(t) {
+    return t;
+}
+\trunc(f) {
+    return Math.trunc(f);
+}
+\loadPage(page,arg){
+    all().die();
+    new page(arg);
+    die();
+}

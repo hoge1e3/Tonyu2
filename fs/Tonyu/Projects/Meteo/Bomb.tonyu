@@ -1,0 +1,10 @@
+extends DxChar;
+
+// 爆発
+scaleX=0.5;
+zOrder=-1000;
+while (scaleX<2.5) {
+  scaleX+=0.1; // 大きくする
+  alpha=(3-scaleX)*128; // 透明にしていく    
+  update();
+}      

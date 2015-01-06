@@ -1,0 +1,69 @@
+extends SpriteChar;
+
+function tokuten(s) {
+    var i;
+    // 左右のあいているところにはいれば得点とみなし、1を返す。それ以外は0をかえす
+    // s: 入った場所 s=1 左端   s=-1 右端
+    if (abs(y-$screenHeight/2)<$screenHeight/5) {
+        $mplayer.play($se_in);
+        i=0; while (i<10) {
+            i+=1;
+            x+=vx;y+=vy;update();vy=vy/2;
+        }
+        $mplayer.play($se_jingle);
+        // どちらに入ったかにより、得点をふやす
+        if (s<0) {$tokuten.setValue($tokuten.value+1);}
+        else {$tokuten_1.setValue($tokuten_1.value+1);}
+        x-=s*150;
+        wait(60);
+        if ($tokuten_1.value>=$pat_tokuten+7 ||
+        $tokuten.value>=$pat_tokuten+7) {
+            $Replay_1.show(1);wait();
+        }
+        x=$cX-s*200;vx=0;vy=0;y=rnd(200)-100+$cy;
+        return 1; 
+    }
+    return 0;
+}
+
+vx=vy=0;
+$cy=$screenHeight/2;
+while(1){
+    x+=vx;
+    y+=vy;
+    if (x<32) {
+        // 左端に来たとき、得点してなければ跳ね返る
+        t=tokuten(1);
+        if (!t) {
+            $mplayer.play($se_bound);
+            vx=abs(vx); x=32;
+        }
+    }
+    if (x>$screenWidth-32) {
+        // 右端に来たとき、得点してなければ跳ね返る
+        t=tokuten(-1);
+        if (!t) {
+            $mplayer.play($se_bound);
+            vx=-abs(vx); x=$screenWidth-32;
+        }
+    }
+    // 上下の跳ね返り
+    if (y<32) {
+        $mplayer.play($se_bound);
+        vy=abs(vy);y=32;
+    }
+    if (y>$screenHeight-32) {
+        $mplayer.play($se_bound);
+        vy=-abs(vy);y=$screenHeight-32;
+    }
+    // 摩擦による減速
+    spd=dist(vx,vy);
+    vx=vx*0.99;
+    vy=vy*0.99;
+    // 速度30以上にならないようにする
+    if (spd>30) {
+        vx=vx*30/spd;
+        vy=vy*30/spd;
+    }
+    update();
+}

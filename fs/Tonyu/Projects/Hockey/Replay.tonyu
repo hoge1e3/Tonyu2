@@ -1,0 +1,30 @@
+extends TextChar;
+
+function onMouseDown(){
+    //$projectManager.loadPage($page_index);
+    if (!$_design_Mode){
+        replay();
+    }
+}
+
+setVisible(0);
+cnt=0;
+while (1) {
+    cnt--;
+    if (cnt==0) {
+        replay();
+    }
+    update();
+}
+
+function show() {
+    setVisible(1);
+    cnt=600;
+}
+function replay() {
+    $tokuten_1.setValue($pat_tokuten+0);
+    $tokuten.setValue($pat_tokuten+0);
+    $ball.notify();
+    cnt=0;
+    setVisible(0);
+}

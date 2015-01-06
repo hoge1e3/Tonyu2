@@ -1,0 +1,13 @@
+extends TextChar;
+
+//constructor Score(x,y,s) {
+//  super(x,y,s);
+//}
+
+size=text/10;
+c=255;
+while (c>0) {
+  c--;
+  col=color(c,c,c);
+  update();
+}

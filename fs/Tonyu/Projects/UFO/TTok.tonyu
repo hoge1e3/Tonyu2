@@ -1,0 +1,20 @@
+extends TextChar;
+
+// 得点表示
+ey=y-50;
+size=10;
+
+// 出現位置から50だけ上に上がる
+while (y>ey) {
+    update();
+    y=y-1;
+    text=sc;
+}
+// 10ずつ減らしながら得点が入る
+while (sc>=10) {
+    text=sc;
+    update();
+    sc=sc-10;
+    $score=$score+10;
+}
+$score=$score+sc;

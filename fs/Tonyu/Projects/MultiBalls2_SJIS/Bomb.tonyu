@@ -1,0 +1,16 @@
+extends SpriteChar;
+
+update();
+update();
+update();
+update();
+p=p+1;
+update();
+update();
+update();
+update();
+p=p+1;
+update();
+update();
+update();
+update();

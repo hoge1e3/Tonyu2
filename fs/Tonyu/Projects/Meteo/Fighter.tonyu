@@ -1,0 +1,53 @@
+extends DxChar;
+
+function onUpdate(){
+  // アニメーション
+  p=pa+trunc(an/2);
+  an=(an+1) % 4;   
+}
+
+$mplayer.play($se_Fighter);
+pa=p;
+
+$score=0;
+sx=x;sy=y;
+dying=1;
+while(1) {
+  y=-100;
+  vx=0;      
+  // スペースキーを押すまで待機
+  while(!getkey(32)) {
+    drawText(174,163,"Press Space Key",$clWhite,20,-200);   
+    update(); 
+  }   
+  $score=0;
+  $mplayer.play($se_start);
+  
+  // 出現
+  scaleX=2;         
+  while(scaleX>1) {
+    x=sx+(scaleX-1)*200;
+    y=sy-(scaleX-1)*200;               
+    angle=-(scaleX-1)*50; 
+    scaleX=(scaleX-0.93)*0.95+0.93; 
+    update();              
+  }              
+  scaleX=1;
+  
+  dying=0;        
+  // メインループ
+  while(!dying) {
+    // キーで移動する
+    if (getkey(39)>0 && x<$screenWidth-70) vx+=1;
+    if (getkey(37)>0 && x>70) vx+=-1; 
+    if (getkey(40)>0 && y<$screenHeight-70) vy+=1;
+    if (getkey(38)>0 && y>70) vy+=-1;
+    x+=vx; y+=vy;
+    vx=vx*0.8;vy=vy*0.8;  
+    angle=vx*10; // 横方向の移動速度により機体を傾ける
+    update();
+  }
+  // 死亡
+  $mplayer.play($se_die);
+  appear(new Bomb(x,y,$pat_bomb+0));
+}
