@@ -26,7 +26,7 @@ return Tonyu.Project=function (dir, kernelDir) {
                 var ready=true;
                 if (c.includes) deps=deps.concat(c.includes);
                 deps.forEach(function (cl) {
-                    ready=ready && (!cl || cl.builtin || added[cl.name]);//CFN cl.name -> cl.fullName
+                    ready=ready && (!cl || cl.builtin || added[cl.fullName]);//CFN cl.name -> cl.fullName
                 });
                 if (ready) {
                     res.push(c);
@@ -100,7 +100,7 @@ return Tonyu.Project=function (dir, kernelDir) {
             if (f.endsWith(TPR.EXT)) {
                 var nb=f.truncExt(TPR.EXT);
                 var fullCn=nsp+"."+nb;
-                env.classes[nb]={/*ENVC*/ //CFN nb->fullCn
+                env.classes[fullCn]={/*ENVC*/ //CFN nb->fullCn
                         name:nb,
                         fullName: fullCn,
                         shortName: nb,
@@ -110,7 +110,7 @@ return Tonyu.Project=function (dir, kernelDir) {
                         }
                 };
                 env.aliases[nb]=fullCn;
-                delete skip[nb];//CFN nb->fullCn
+                delete skip[fullCn];//CFN nb->fullCn
             }
         }
         for (var n in env.classes) {/*ENVC*/
@@ -120,7 +120,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         }
         var ord=orderByInheritance(env.classes);/*ENVC*/
         ord.forEach(function (c) {
-        	if (skip[c.name]) return;//CFN c.name->c.fullName
+        	if (skip[c.fullName]) return;//CFN c.name->c.fullName
             console.log("genJS :"+c.fullName);
             Tonyu.Compiler.genJS(c, env);
             try {
@@ -217,7 +217,7 @@ return Tonyu.Project=function (dir, kernelDir) {
     };
     TPR.rawBoot=function (mainClassName) {
         //var thg=Tonyu.threadGroup();
-        var mainClass=Tonyu.getClass(mainClassName);// window[mainClassName];
+        var mainClass=Tonyu.getClass(mainClassName);
         if (!mainClass) throw TError( mainClassName+" というクラスはありません", "不明" ,0);
         //Tonyu.runMode=true;
         var main=new mainClass();
