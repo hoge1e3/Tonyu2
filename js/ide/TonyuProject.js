@@ -8,19 +8,19 @@ return Tonyu.Project=function (dir, kernelDir) {
     var traceTbl=Tonyu.TraceTbl();
     var env={classes:{}, traceTbl:traceTbl, options:{compiler:{}} };
     TPR.EXT=".tonyu";
-    function orderByInheritance(classes) {
+    function orderByInheritance(classes) {/*ENVC*/
         var added={};
         var res=[];
         var ccnt=0;
-        for (var n in classes) {
+        for (var n in classes) {/*ENVC*/
             added[n]=false;
             ccnt++;
         }
         while (res.length<ccnt) {
             var p=res.length;
-            for (var n in classes) {
+            for (var n in classes) {/*ENVC*/
                 if (added[n]) continue;
-                var c=classes[n];
+                var c=classes[n];/*ENVC*/
                 var spc=c.superClass;
                 var deps=[spc];
                 var ready=true;
@@ -84,8 +84,8 @@ return Tonyu.Project=function (dir, kernelDir) {
     TPR.compileDir=function (cdir, baseClasses) {
         TPR.getOptions();
         Tonyu.runMode=false;
-        env.classes=Tonyu.extend({}, baseClasses || {});
-        var skip=Tonyu.extend({}, baseClasses || {});
+        env.classes=Tonyu.extend({}, baseClasses || {});/*ENVC*/
+        var skip=Tonyu.extend({}, baseClasses || {});/*ENVC*/
         Tonyu.currentProject=TPR;
         Tonyu.globals.$currentProject=TPR;
         if (TPR.isKernelEditable()) kernelDir.each(collect);
@@ -93,7 +93,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         function collect(f) {
             if (f.endsWith(TPR.EXT)) {
                 var nb=f.truncExt(TPR.EXT);
-                env.classes[nb]={
+                env.classes[nb]={/*ENVC*/
                         name:nb,
                         src:{
                             tonyu: f
@@ -102,12 +102,12 @@ return Tonyu.Project=function (dir, kernelDir) {
                 delete skip[nb];
             }
         }
-        for (var n in env.classes) {
-        	if (skip[n]) continue;
+        for (var n in env.classes) {/*ENVC*/
+        	if (skip[n]) continue;/*ENVC*/
             console.log("initClassDecl: "+n);
-            Tonyu.Compiler.initClassDecls(env.classes[n], env);
+            Tonyu.Compiler.initClassDecls(env.classes[n], env);/*ENVC*/
         }
-        var ord=orderByInheritance(env.classes);
+        var ord=orderByInheritance(env.classes);/*ENVC*/
         ord.forEach(function (c) {
         	if (skip[c.name]) return;
             console.log("genJS :"+c.name);
@@ -259,9 +259,9 @@ return Tonyu.Project=function (dir, kernelDir) {
     TPR.getName=function () { return dir.name().replace(/\/$/,""); };
     TPR.renameClassName=function (o,n) {
         TPR.compile();
-        var cls=TPR.env.classes;
-        for (var cln in cls) {
-            var klass=cls[cln];
+        var cls=TPR.env.classes;/*ENVC*/
+        for (var cln in cls) {/*ENVC*/
+            var klass=cls[cln];/*ENVC*/
             var f=klass.src.tonyu;
             var a=klass.annotation;
             var changes=[];

@@ -47,20 +47,20 @@ function initClassDecls(klass, env ) {
             pos=t.P;
             if (spcn=="null") spcn=null;
         }
-	klass.includes=[];
+        klass.includes=[];
         if (t=OM.match( program , {incl:{includeClassNames:OM.C}})) {
-	    t.C.forEach(function (i) {
-		var n=i.text;
-		var p=i.pos;
-		var incc=env.classes[n];
-		if (!incc) throw TError ( "クラス "+n+"は定義されていません", s, p);
-		klass.includes.push(incc);
+            t.C.forEach(function (i) {
+                var n=i.text;/*ENVC*/
+                var p=i.pos;
+                var incc=env.classes[n];/*ENVC*/
+                if (!incc) throw TError ( "クラス "+n+"は定義されていません", s, p);
+                klass.includes.push(incc);
             });
-	}
+        }
         if (spcn=="Array") {
             klass.superClass={name:"Array",builtin:true};
         } else if (spcn) {
-            var spc=env.classes[spcn];
+            var spc=env.classes[spcn];/*ENVC*/
             if (!spc) throw TError ( "親クラス "+spcn+"は定義されていません", s, pos);
             klass.superClass=spc;
         }
@@ -207,25 +207,11 @@ function genJS(klass, env,pass) {
     function initTopLevelScope() {
         var s=topLevelScope;
         getDependingClasses(klass).forEach(initTopLevelScope2);
-        /*
-        var inclV={};
-        for (var k=klass ; k ; k=k.superClass) {
-            inclV[getClassName(k)]=true;
-            initTopLevelScope2(k);
-        }
-        var incls=klass.includes.concat([]);
-        while (incls.length>0) {
-        	var k=incls.shift();
-        	if (inclV[getClassName(k)]) continue;
-        	inclV[getClassName(k)]=true;
-            initTopLevelScope2(k);
-            incls=incls.concat(k.includes);
-        }*/
         var decls=klass.decls;// Do not inherit parents' natives
         for (var i in decls.natives) {
             s[i]=genSt(ST.NATIVE,{name:"native::"+i});
         }
-        for (var i in env.classes) {
+        for (var i in env.classes) {/*ENVC*/
             s[i]=genSt(ST.CLASS,{name:i});
         }
     }
