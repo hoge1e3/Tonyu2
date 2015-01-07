@@ -26,7 +26,7 @@ return Tonyu.Project=function (dir, kernelDir) {
                 var ready=true;
                 if (c.includes) deps=deps.concat(c.includes);
                 deps.forEach(function (cl) {
-                    ready=ready && (!cl || cl.builtin || added[cl.name]);
+                    ready=ready && (!cl || cl.builtin || added[cl.name]);//CFN cl.name -> cl.fullName
                 });
                 if (ready) {
                     res.push(c);
@@ -68,38 +68,49 @@ return Tonyu.Project=function (dir, kernelDir) {
     		//  BaseActor  <-  Actor            <- MyActor
     		//   ^ in user     ^ only in kernel   ^ in user
     		//    => Actor does not inherit BaseActor in user but BaseActor in kernel
-    		TPR.compileDir(dir);
-        	return;
+    		TPR.compileDir("kernel",[kernelDir, dir]);
+    	} else {
+            if (!env.kernelClasses) TPR.compileKernel();
+            TPR.compileUser();
     	}
-    	if (!env.kernelClasses) TPR.compileKernel();
-    	TPR.compileUser();
     };
     TPR.compileKernel=function () {
-    	TPR.compileDir(kernelDir);
+    	TPR.compileDir("kernel", [kernelDir]);
     	env.kernelClasses=env.classes;
     };
     TPR.compileUser=function () {
-    	TPR.compileDir(dir,env.kernelClasses);
+    	TPR.compileDir("user", [dir],env.kernelClasses);
     };
-    TPR.compileDir=function (cdir, baseClasses) {
+    TPR.compileDir=function (nsp ,dirs, baseClasses) {
         TPR.getOptions();
         Tonyu.runMode=false;
         env.classes=Tonyu.extend({}, baseClasses || {});/*ENVC*/
+        env.aliases={};
+        for (var n in env.classes) {
+            var cl=env.classes[n];
+            env.aliases[ cl.shortName] = cl.fullName;
+        }
         var skip=Tonyu.extend({}, baseClasses || {});/*ENVC*/
         Tonyu.currentProject=TPR;
         Tonyu.globals.$currentProject=TPR;
-        if (TPR.isKernelEditable()) kernelDir.each(collect);
-        cdir.each(collect);
+        //if (TPR.isKernelEditable()) kernelDir.each(collect);
+        //cdir.each(collect);
+        dirs.forEach(function (d) {d.each(collect);});
         function collect(f) {
             if (f.endsWith(TPR.EXT)) {
                 var nb=f.truncExt(TPR.EXT);
-                env.classes[nb]={/*ENVC*/
+                var fullCn=nsp+"."+nb;
+                env.classes[nb]={/*ENVC*/ //CFN nb->fullCn
                         name:nb,
+                        fullName: fullCn,
+                        shortName: nb,
+                        nameSpace:nsp,
                         src:{
                             tonyu: f
                         }
                 };
-                delete skip[nb];
+                env.aliases[nb]=fullCn;
+                delete skip[nb];//CFN nb->fullCn
             }
         }
         for (var n in env.classes) {/*ENVC*/
@@ -109,8 +120,8 @@ return Tonyu.Project=function (dir, kernelDir) {
         }
         var ord=orderByInheritance(env.classes);/*ENVC*/
         ord.forEach(function (c) {
-        	if (skip[c.name]) return;
-            console.log("genJS :"+c.name);
+        	if (skip[c.name]) return;//CFN c.name->c.fullName
+            console.log("genJS :"+c.fullName);
             Tonyu.Compiler.genJS(c, env);
             try {
                 eval(c.src.js);
@@ -257,7 +268,7 @@ return Tonyu.Project=function (dir, kernelDir) {
     };
     TPR.getDir=function () {return dir;};
     TPR.getName=function () { return dir.name().replace(/\/$/,""); };
-    TPR.renameClassName=function (o,n) {
+    TPR.renameClassName=function (o,n) {// o: key of aliases
         TPR.compile();
         var cls=TPR.env.classes;/*ENVC*/
         for (var cln in cls) {/*ENVC*/

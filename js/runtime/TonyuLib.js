@@ -276,6 +276,7 @@ Tonyu=function () {
         return globals[n];
     }
     function getClass(n) {
+        //CFN: n.split(".")
         return classes[n];
     }
     function bindFunc(t,meth) {

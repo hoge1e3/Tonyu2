@@ -52,15 +52,15 @@ function initClassDecls(klass, env ) {
             t.C.forEach(function (i) {
                 var n=i.text;/*ENVC*/
                 var p=i.pos;
-                var incc=env.classes[n];/*ENVC*/
+                var incc=env.classes[n];/*ENVC*/ //CFN env.classes[env.aliases[n]]
                 if (!incc) throw TError ( "クラス "+n+"は定義されていません", s, p);
                 klass.includes.push(incc);
             });
         }
         if (spcn=="Array") {
-            klass.superClass={name:"Array",builtin:true};
+            klass.superClass={name:"Array",fullName:"Array",builtin:true};
         } else if (spcn) {
-            var spc=env.classes[spcn];/*ENVC*/
+            var spc=env.classes[spcn];/*ENVC*/  //CFN env.classes[env.aliases[spcn]]
             if (!spc) throw TError ( "親クラス "+spcn+"は定義されていません", s, pos);
             klass.superClass=spc;
         }
@@ -169,10 +169,10 @@ function genJS(klass, env,pass) {
     function getSource(node) {
         return srcCont.substring(node.pos,node.pos+node.len);
     }
-    function getClassName(klass){
-        if (typeof klass=="string") return CLASS_HEAD+klass;
-        if (klass.builtin) return klass.name;
-        return CLASS_HEAD+klass.name;
+    function getClassName(klass){// should be object or short name
+        if (typeof klass=="string") return CLASS_HEAD+klass;//CFN  CLASS_HEAD+env.aliases[klass](null check)
+        if (klass.builtin) return klass.name;// CFN klass.fullName
+        return CLASS_HEAD+klass.name;// CFN  klass.fullName
     }
     function getDependingClasses(klass) {
         var visited={};
@@ -211,7 +211,7 @@ function genJS(klass, env,pass) {
         for (var i in decls.natives) {
             s[i]=genSt(ST.NATIVE,{name:"native::"+i});
         }
-        for (var i in env.classes) {/*ENVC*/
+        for (var i in env.classes) {/*ENVC*/ //CFN  env.classes->env.aliases
             s[i]=genSt(ST.CLASS,{name:i});
         }
     }
