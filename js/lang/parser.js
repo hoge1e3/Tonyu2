@@ -542,8 +542,13 @@ Parser=function () {
     		return parser.parse(st);
     	},
     	eof: Parser.create(function (s) {
-    		s.success=(s.pos>=s.src.tokens.length);
-    		return s;
+            var suc=(s.pos>=s.src.tokens.length);
+    		if (suc) {
+    		    s=s.clone();
+    		    s.success=suc;
+    		    s.result=[{type:"EOF"}];
+    		}
+    	    return s;
     	}).setName("EOT")
     };
     $.TokensParser=TokensParser;

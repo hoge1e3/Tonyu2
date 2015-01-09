@@ -808,75 +808,70 @@ function genJS(klass, env,pass) {
     };
     v.cnt=0;
     var scopeChecker=Visitor({
-    	varDecl: function (node) {
-    		ctx.locals.varDecls[node.name.text]=node;
-    	},
-    	funcDecl: function (node) {/*FDITSELFIGNORE*/
-    		ctx.locals.subFuncDecls[node.head.name.text]=node;
-    	},
+        varDecl: function (node) {
+            ctx.locals.varDecls[node.name.text]=node;
+        },
+        funcDecl: function (node) {/*FDITSELFIGNORE*/
+            ctx.locals.subFuncDecls[node.head.name.text]=node;
+        },
         funcExpr: function (node) {/*FEIGNORE*/
         },
         exprstmt: function (node) {
         },
-	"forin": function (node) {
+        "forin": function (node) {
             var isVar=node.isVar;
-	    node.vars.forEach(function (v) {
-		/* if (isVar) */ctx.locals.varDecls[v.text]=node;
-	    });
-	}
+            node.vars.forEach(function (v) {
+                /* if (isVar) */ctx.locals.varDecls[v.text]=node;
+            });
+        }
     });
     scopeChecker.def=function (node) {
-    	var t=this;
-    	if (!node) return;
-    	var es;
-    	if (node instanceof Array) es=node;
-    	else es=node[Grammar.SUBELEMENTS];
-    	if (!es) {
-        	return;
-    	}
-    	es.forEach(function (e) {
-    		t.visit(e);
-    	});
+        var t=this;
+        if (!node) return;
+        var es;
+        if (node instanceof Array) es=node;
+        else es=node[Grammar.SUBELEMENTS];
+        if (!es) {
+            return;
+        }
+        es.forEach(function (e) {
+            t.visit(e);
+        });
     };
     function checkLocals(node, scope) {
-    	var locals={varDecls:{}, subFuncDecls:{}};
-    	ctx.enter({locals:locals},function () {
-        	scopeChecker.visit(node);
-    	});
-    	//buf.print("/*");
-    	for (var i in locals.varDecls) {
-    		scope[i]=genSt(ST.LOCAL);
-    		//buf.printf("%s,",i);
-    	}
-    	for (var i in locals.subFuncDecls) {
-    		scope[i]=genSt(ST.LOCAL);
-    		//buf.printf("%s,",i);
-    	}
-    	//buf.print("*/");
-    	return locals;
+        var locals={varDecls:{}, subFuncDecls:{}};
+        ctx.enter({locals:locals},function () {
+            scopeChecker.visit(node);
+        });
+        //buf.print("/*");
+        for (var i in locals.varDecls) {
+            scope[i]=genSt(ST.LOCAL);
+            //buf.printf("%s,",i);
+        }
+        for (var i in locals.subFuncDecls) {
+            scope[i]=genSt(ST.LOCAL);
+            //buf.printf("%s,",i);
+        }
+        //buf.print("*/");
+        return locals;
     }
     function genLocalsF(locals,scope) {
-    	return f;
-    	function f() {
-    		ctx.enter({scope:scope}, function (){
-    			for (var i in locals.varDecls) {
-    				buf.printf("var %s;%n",i);
-    			}
-    			for (var i in locals.subFuncDecls) {
-    				genSubFunc(locals.subFuncDecls[i]);
-    			}
-    		});
-    	};
+        return f;
+        function f() {
+            ctx.enter({scope:scope}, function (){
+                for (var i in locals.varDecls) {
+                    buf.printf("var %s;%n",i);
+                }
+                for (var i in locals.subFuncDecls) {
+                    genSubFunc(locals.subFuncDecls[i]);
+                }
+            });
+        };
     }
-    /*function checkLocalsF(node) {
-    	return function () {
-    		return checkLocals(node);
-    	};
-    }*/
     function getClassNames(cs){
-	var res=[];
-	cs.forEach(function (c) { res.push(getClassName(c)); });
-	return res;
+        var res=[];
+        cs.forEach(function (c) { res.push(getClassName(c)); });
+        return res;
     }
     function genSource() {
         ctx.enter({scope:topLevelScope}, function () {
@@ -884,13 +879,13 @@ function genJS(klass, env,pass) {
             printf(nspObj+"="+nspObj+"||{};%n");
             if (klass.superClass) {
                 printf("%s=Tonyu.klass(%s,[%s],{%{",
-		       getClassName(klass),
-		       getClassName(klass.superClass),
-		       getClassNames(klass.includes).join(","));
+                        getClassName(klass),
+                        getClassName(klass.superClass),
+                        getClassNames(klass.includes).join(","));
             } else {
                 printf("%s=Tonyu.klass([%s],{%{",
-		       getClassName(klass),
-		       getClassNames(klass.includes).join(","));
+                        getClassName(klass),
+                        getClassNames(klass.includes).join(","));
             }
             for (var name in methods) {
                 if (debug) console.log("method1", name);
