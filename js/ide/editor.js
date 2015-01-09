@@ -12,6 +12,7 @@ function (romk, romd, roms,  Util, Tonyu, FS, FileList, FileMenu,
           ) {
 
 $(function () {
+    $LASTPOS=0;
     copySample();
     //if (!Tonyu.ide) Tonyu.ide={};
     var kernelDir=FS.get("/Tonyu/Kernel/");
@@ -293,6 +294,11 @@ $(function () {
             }
         },0);
     }
+    var alertOnce;
+    alertOnce=function (e) {
+        alert(e);
+        alertOnce=function(){};
+    };
     Tonyu.onRuntimeError=function (e) {
         Tonyu.globals.$lastError=e;
         var t=curPrj.env.traceTbl;
@@ -312,7 +318,10 @@ $(function () {
             stop();
             //var userAgent = window.navigator.userAgent.toLowerCase();
             //if(userAgent.indexOf('msie')<0) throw e;
-        } else throw e;
+        } else {
+            alertOnce(e);
+            throw e;
+        }
     };
     $("#mapEditor").click(function () {
         console.log("run map");

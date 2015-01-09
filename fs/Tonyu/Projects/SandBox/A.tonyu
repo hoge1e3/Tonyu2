@@ -1,6 +1,0 @@
-
-r="bca".replace(/\w/g) \(e,gi) {
-    print(e);
-    return "X";
-};
-print(r);

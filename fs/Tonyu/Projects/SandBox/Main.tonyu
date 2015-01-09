@@ -1,6 +1,11 @@
-a=[13,430,210, 21, 120 ,23];
+a=[123,430,210, 21, 120 ,23];
 for (i=0 ; i<a.length; i++) {
     print(a[i]/2);
 }
 new Panel;
-new A;
+new B;
+new TQuery;
+updateEx(30);
+new TQuery;
+updateEx(30);
+all(TQuery).die();

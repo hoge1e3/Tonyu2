@@ -289,7 +289,7 @@ Tonyu=function () {
                 var nr=classes[nn][n];
                 if (nr) {
                     if (!res) { res=nr; found=nn+"."+n; }
-                    else throw "曖昧なクラス名： "+nn+"."+n+", "+found;
+                    else throw new Error("曖昧なクラス名： "+nn+"."+n+", "+found);
                 }
             }
         }
