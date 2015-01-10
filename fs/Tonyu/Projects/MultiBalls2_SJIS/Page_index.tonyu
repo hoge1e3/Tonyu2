@@ -1,3 +1,5 @@
+extends PlainChar;
+
 $chars=$Sprites.sprites;
 $Boot.setFrameRate(60);
 $clBlack=color(0,0,0);

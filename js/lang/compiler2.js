@@ -89,17 +89,6 @@ function initClassDecls(klass, env ) {
 function genSym(prefix) {
     return prefix+((symSeq++)+"").replace(/\./g,"");
 }
-/*function describe(node, desc) {
-    node.DESC=desc; //typeof desc=="object"?JSON.stringify(desc)+desc;
-}*/
-/*function addTypeHint(expr, type) {
-    if (!window.typeHints) window.typeHints=[];
-    window.typeHints.push({expr:expr, type:type});
-}*/
-/*function getDesc(node) {
-    if (node.DESC) return node.DESC;
-    return node;
-}*/
 function annotation3(aobjs, node, aobj) {
     if (!node._id) {
         if (!aobjs._idseq) aobjs._idseq=0;
@@ -206,7 +195,6 @@ function genJS(klass, env,pass) {
         }
     	return res;
     }
-    //console.log(JSON.stringify( retFiberCallTmpl));
     function initTopLevelScope2(klass) {
     	if (klass.builtin) return;
         var s=topLevelScope;
@@ -240,11 +228,7 @@ function genJS(klass, env,pass) {
     		if (res) return;
             res=k.decls.methods[name];
     	});
-    	return res; /*
-    	for (var k=klass; k ; k=k.superClass) {
-            if (k.decls.methods[name]) return k.decls.methods[name];
-        }
-        return null;*/
+    	return res;
     }
 
     function nc(o, mesg) {
@@ -252,7 +236,6 @@ function genJS(klass, env,pass) {
         return o;
     }
     function getParams(method) {
-        //console.log("genparam : name="+method.name);
         if (!method.head) return [];
         var res=method.head.params.params;
         if (!res.forEach) throw method+" is not array ";
@@ -323,7 +306,6 @@ function genJS(klass, env,pass) {
         },
         literal: function (node) {
             buf.printf("%s",node.text);
-            //describe(node,"string");
         },
         paramDecl: function (node) {
             buf.printf("%v",node.name);
@@ -335,7 +317,6 @@ function genJS(klass, env,pass) {
             buf.printf("function %v %v",node.name, node.params);
         },
         funcDecl: function (node) {
-        	//genSubFunc(node);
         },
         "return": function (node) {
             if (!ctx.noWait) {
@@ -354,16 +335,13 @@ function genJS(klass, env,pass) {
         },
         program: function (node) {
             genClass(node.stmts);
-            //buf.printf("%j",["%n",node.stmts]);
         },
         number: function (node) {
             buf.printf("%s", node.value );
-            //describe(node,"number");
         },
         reservedConst: function (node) {
             if (node.text=="this") {
                 buf.printf("%s",THIZ);
-                //describe(node,klass.name);
             } else if (node.text=="arguments" && !ctx.noWait) {
                 buf.printf("%s",ARGS);
             } else {
@@ -432,8 +410,6 @@ function genJS(klass, env,pass) {
             } else if (!ctx.noWait && (t=OM.match(node,retFiberCallTmpl)) &&
                     stype(ctx.scope[t.T])==ST.METHOD &&
                     !getMethod(t.T).nowait) {
-                //console.log("match: ");
-                //console.log(t);
                 buf.printf(
                         "%s.enter( %s.%s%s%v );%n" +
                         "%s=%s;return;%n" +/*B*/
@@ -472,7 +448,6 @@ function genJS(klass, env,pass) {
                 }
             } else {
                 buf.printf("%v;", node.expr );
-                //buf.printf("%s=%s;%v;",  LASTPOS, traceTbl.add(klass.src.tonyu,node.pos ), node.expr );
             }
         },
         infix: function (node) {
@@ -565,7 +540,6 @@ function genJS(klass, env,pass) {
                             FRMPC, pc,
                             function () { buf.print(brkpos.put(ctx.pc++)); }
                 );
-                //brkpos.put(ctx.pc++);
             } else {
                 buf.printf("while (%v) {%f}", node.cond, enterV({noSurroundBrace:true}, node.loop));
             }
@@ -631,7 +605,6 @@ function genJS(klass, env,pass) {
                                 FRMPC, pc,
                                 function (buf) { buf.print(brkpos.put(ctx.pc++)); }
                     );
-                    //brkpos.put(ctx.pc++);
                 } else {
                     buf.printf(
                             "%v%n"+
@@ -644,7 +617,6 @@ function genJS(klass, env,pass) {
                                 node.loop,
                                 node.inFor.next
                     );
-                    //buf.printf("for (%s%v) { %v }",(node.isVar?"var ":""), node.inFor, node.loop);
                 }
             }
             function getElemF(itn, isVar, vars) {
@@ -727,7 +699,6 @@ function genJS(klass, env,pass) {
         },
         call: function (node) {
         	buf.printf("(%j)", [",",node.args]);
-        	//buf.printf("(%v)",node.args);
         },
         objlitArg: function (node) {
             buf.printf("%v",node.obj);
@@ -745,7 +716,6 @@ function genJS(klass, env,pass) {
         },
         scall: function (node) {
         	buf.printf("[%j]", [",",node.args]);
-        	//buf.printf("[%v]",node.args);
         },
         superExpr: function (node) {
             var name;
@@ -766,7 +736,6 @@ function genJS(klass, env,pass) {
         },
         symbol: function (node) {
             buf.print(node.text);
-            //describe(node,node.text);
         },
         "normalFor": function (node) {
             buf.printf("%v; %v; %v", node.init, node.cond, node.next);
@@ -796,16 +765,6 @@ function genJS(klass, env,pass) {
 	regex: function (node) {
 	    buf.printf("%s",node.text);
 	}
-	/*,
-        token: function (node) {
-            if (node.text=="typeof") {
-                buf.printf("%s ",node.text);
-            } else if (node.text=="instanceof") {
-                buf.printf(" %s ",node.text);
-            } else {
-                buf.printf("%s",node.text);
-            }
-        }*/
     });
     var opTokens=["++", "--", "!==", "===", "+=", "-=", "*=", "/=",
 		  "%=", ">=", "<=",
@@ -821,8 +780,6 @@ function genJS(klass, env,pass) {
     v.def=function (node) {
         console.log("Err node=");
         console.log(node);
-        //if (!node) buf.printf("/*null*/");
-        //else buf.printf("DEF ! type=%s",node.type);
         throw node.type+" is not defined in visitor:compiler2";
     };
     v.cnt=0;
@@ -1013,7 +970,6 @@ function genJS(klass, env,pass) {
                  "var %s=%s;%n"+
                  "var %s=0;%n"+
                  "%f%n"+
-//                 "%z%n"+
                  "return function %s(%s) {%{"+
                    "for(var %s=%d ; %s--;) {%{"+
                      "switch (%s) {%{"+
@@ -1030,7 +986,6 @@ function genJS(klass, env,pass) {
                    ARGS, "arguments",
                    FRMPC,
                    genLocalsF(fiber.locals, ns),
-//                   locals,
                    genFn(fiber.pos),TH,
                    CNTV, CNTC, CNTV,
                         FRMPC,
@@ -1109,7 +1064,7 @@ function genJS(klass, env,pass) {
         }
     }
     function genFn(pos) {
-        return ("_trc_func_"+traceTbl.add(klass/*.src.tonyu*/,pos )+"_"+(fnSeq++));//  Math.random()).replace(/\./g,"");
+        return ("_trc_func_"+traceTbl.add(klass,pos )+"_"+(fnSeq++));//  Math.random()).replace(/\./g,"");
     }
     function genSubFunc(node) {
     	var m,ps;
