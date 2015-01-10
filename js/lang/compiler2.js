@@ -167,6 +167,19 @@ function genJS(klass, env,pass) {
     function annotation(node, aobj) {
         return annotation3(klass.annotation,node,aobj);
     }
+    function assertAnnotated(node, si) {
+        var a=annotation(node);
+        if (!a.scopeInfo) {
+            console.log(srcCont.substring(node.pos-5,node.pos+20));
+            console.log(node, si);
+            throw "Scope info not set";
+        }
+        if (si.type!=a.scopeInfo.type){
+            console.log(srcCont.substring(node.pos-5,node.pos+20));
+            console.log(node, si , a.scopeInfo);
+            throw "Scope info not match";
+        }
+    }
     function getSource(node) {
         return srcCont.substring(node.pos,node.pos+node.len);
     }
@@ -245,11 +258,6 @@ function genJS(klass, env,pass) {
         if (!res.forEach) throw method+" is not array ";
         return res;
     }
-    /*function genParamTbl(method) {
-        var r=getParams(method);
-        method.scope={};
-        r.forEach(function (n) { method.scope[n.text]=genSt(ST.PARAM); });
-    }*/
     function checkLVal(node) {
         if (node.type=="varAccess" ||
                 node.type=="postfix" && (node.op.type=="member" || node.op.type=="arrayElem") ) {
@@ -363,7 +371,10 @@ function genJS(klass, env,pass) {
             }
         },
         varDecl: function (node) {
-            ctx.scope[node.name.text]=genSt(ST.LOCAL);
+            /*if ( stype( ctx.scope[node.name.text])!=ST.LOCAL  ) {
+                console.log(node);throw "Not localled";// in funcexpr/subfunc
+            }
+            ctx.scope[node.name.text]=genSt(ST.LOCAL);*/
             if (node.value) {
                 buf.printf("%v = %v", node.name, node.value );
             } else {
@@ -372,18 +383,16 @@ function genJS(klass, env,pass) {
         },
         varsDecl: function (node) {
             lastPosF(node)();
-            //if (!ctx.noWait) {
-                buf.printf("%j;", [";",node.decls]);
-            /*}else {
-                buf.printf("var %j;", [",", node.decls]);
-            }*/
+            buf.printf("%j;", [";",node.decls]);
         },
         jsonElem: function (node) {
             if (node.value) {
                 buf.printf("%v: %v", node.key, node.value);
             } else {
                 buf.printf("%v: %f", node.key, function () {
-                    annotation(node,{scopeInfo:varAccess( node.key.text,false)});
+                    var si=varAccess( node.key.text,false);
+                    //assertAnnotated(node,si);
+                    //annotation(node,{scopeInfo:si});
                 });
             }
         },
@@ -402,7 +411,8 @@ function genJS(klass, env,pass) {
         varAccess: function (node) {
             var n=node.name.text;
             var si=varAccess(n,false);
-            annotation(node,{scopeInfo:si});//node.scopeInfo=si;
+            //assertAnnotated(node,si);
+            //annotation(node,{scopeInfo:si});//node.scopeInfo=si;
             //describe(node,si.name);
         },
         exprstmt: function (node) {//exprStmt
@@ -516,7 +526,9 @@ function genJS(klass, env,pass) {
                 return;
             }
             if (OM.match(node, {left:{type:"varAccess"}, op:{type:"call"} })) {
-                annotation(node.left,{scopeInfo:varAccess(node.left.name.text,true)});
+                var si=varAccess(node.left.name.text,true);
+                //assertAnnotated(node.left,si);
+                //annotation(node.left,{scopeInfo:si});
                 //node.left.scopeInfo=varAccess(node.left.name.text,true);
                 buf.printf("%v", node.op);
             } else {
@@ -561,8 +573,11 @@ function genJS(klass, env,pass) {
         "for": function (node) {
             lastPosF(node)();
             if (node.inFor.type=="forin") {
-                var itn=genSym("_it_");
-                ctx.scope[itn]=genSt(ST.LOCAL);
+                var itn=annotation(node.inFor).iterName;//  genSym("_it_");
+                /*if ( stype(ctx.scope[itn])!=ST.LOCAL) {
+                    console.log(node);throw "Not localled";// in funcexpr/subfunc
+                }*/
+                //ctx.scope[itn]=genSt(ST.LOCAL);
                 if (!ctx.noWait) {
                     var brkpos=buf.lazy();
                     var pc=ctx.pc++;
@@ -636,7 +651,10 @@ function genJS(klass, env,pass) {
                 return function () {
                     //var va=(isVar?"var ":"");
                     vars.forEach(function (v,i) {
-                        /*if (isVar) */ctx.scope[v.text]=genSt(ST.LOCAL);
+                        /*if ( stype(ctx.scope[v.text])!=ST.LOCAL) {
+                            console.log(itn,v,i);throw "Not localled";// in funcexpr/subfunc
+                        }*/
+                        /*if (isVar) *///ctx.scope[v.text]=genSt(ST.LOCAL);
                         buf.printf("%s=%s[%s];%n", v.text, itn, i);
                     });
                 };
@@ -808,14 +826,16 @@ function genJS(klass, env,pass) {
         throw node.type+" is not defined in visitor:compiler2";
     };
     v.cnt=0;
-    var scopeChecker=Visitor({
+    var localsCollector=Visitor({
         varDecl: function (node) {
             ctx.locals.varDecls[node.name.text]=node;
         },
         funcDecl: function (node) {/*FDITSELFIGNORE*/
             ctx.locals.subFuncDecls[node.head.name.text]=node;
+            //initParamsLocals(node);??
         },
         funcExpr: function (node) {/*FEIGNORE*/
+            //initParamsLocals(node);??
         },
         exprstmt: function (node) {
         },
@@ -824,9 +844,12 @@ function genJS(klass, env,pass) {
             node.vars.forEach(function (v) {
                 /* if (isVar) */ctx.locals.varDecls[v.text]=node;
             });
+            var n=genSym("_it_");
+            annotation(node, {iterName:n});
+            ctx.locals.varDecls[n]=node;// ??
         }
     });
-    scopeChecker.def=visitSub;
+    localsCollector.def=visitSub;
     function visitSub(node) {
         var t=this;
         if (!node || typeof node!="object") return;
@@ -843,10 +866,10 @@ function genJS(klass, env,pass) {
             t.visit(e);
         });
     }
-    function checkLocals(node/*, scope*/) {
+    function collectLocals(node/*, scope*/) {
         var locals={varDecls:{}, subFuncDecls:{}};
         ctx.enter({locals:locals},function () {
-            scopeChecker.visit(node);
+            localsCollector.visit(node);
         });
         /*for (var i in locals.varDecls) {
             scope[i]=genSt(ST.LOCAL);
@@ -855,6 +878,48 @@ function genJS(klass, env,pass) {
             scope[i]=genSt(ST.LOCAL);
         }*/
         return locals;
+    }
+    var varAccessesAnnotator=Visitor({
+        varAccess: function (node) {
+            var si=getScopeInfo(node.name.text);
+            annotation(node,{scopeInfo:si});
+        },
+        funcDecl: function (node) {/*FDITSELFIGNORE*/
+        },
+        funcExpr: function (node) {/*FEIGNORE*/
+        },
+        jsonElem: function (node) {
+            if (node.value) {
+                this.visit(node.value);
+            } else {
+                var si=getScopeInfo(node.key.text);
+                annotation(node,{scopeInfo:si});
+            }
+        },
+        "forin": function (node) {
+            node.vars.forEach(function (v) {
+                var si=getScopeInfo(v.text);
+                annotation(v,{scopeInfo:si});
+            });
+            this.visit(node.set);
+        },
+        ifWait: function (node) {
+            var t=this;
+            var ns=newScope(ctx.scope);
+            ns[TH]=genSt(ST.THVAR);
+            ctx.enter({scope:ns}, function () {
+                t.visit(node.then);
+            });
+            if (node._else) {
+                t.visit(node._else);
+            }
+        }
+    });
+    varAccessesAnnotator.def=visitSub;
+    function annotateVarAccesses(node,scope) {
+        ctx.enter({scope:scope}, function () {
+            varAccessesAnnotator.visit(node);
+        });
     }
     function copyLocals(locals, scope) {
         for (var i in locals.varDecls) {
@@ -882,6 +947,20 @@ function genJS(klass, env,pass) {
         cs.forEach(function (c) { res.push(getClassName(c)); });
         return res;
     }
+    function initParamsLocals(f) {
+        f.locals=collectLocals(f.stmts);
+        f.params=getParams(f);
+    }
+    function newFScope(f) {
+        var ns=newScope(ctx.scope);
+        f.params.forEach(function (p,cnt) {
+            ns[p.name.text]=genSt(ST.PARAM,{
+                klass:klass.name, name:f.name, no:cnt
+            });
+        });
+        copyLocals(f.locals, ns);
+        return ns;
+    }
     function genSource() {
         ctx.enter({scope:topLevelScope}, function () {
             var nspObj=CLASS_HEAD+klass.nameSpace;
@@ -899,8 +978,7 @@ function genJS(klass, env,pass) {
             for (var name in methods) {
                 if (debug) console.log("method1", name);
                 var method=methods[name];
-                method.locals=checkLocals(method.stmts);
-                method.params=getParams(method);
+                initParamsLocals(method);
                 ctx.enter({noWait:true}, function () {
                     genFunc(method);
                 });
@@ -918,14 +996,17 @@ function genJS(klass, env,pass) {
     	//var locals={};
         //console.log("Gen fiber");
         //var ps=getParams(fiber);
-        var ns=newScope(ctx.scope);
+        /*var ns=newScope(ctx.scope);
         fiber.params.forEach(function (p,cnt) {
             ns[p.name.text]=genSt(ST.PARAM,{
                 klass:klass.name, name:fiber.name, no:cnt
             });
         });
-        var locals=fiber.locals; //checkLocals(fiber.stmts);
+        var locals=fiber.locals; //collectLocals(fiber.stmts);
         copyLocals(locals, ns);
+        */
+        var ns=newFScope(fiber);
+        annotateVarAccesses(fiber.stmts, ns);
         printf(
                "%s%s :function (%j) {%{"+
                  "var %s=%s;%n"+
@@ -948,7 +1029,7 @@ function genJS(klass, env,pass) {
                    THIZ, GET_THIS,
                    ARGS, "arguments",
                    FRMPC,
-                   genLocalsF(locals, ns),
+                   genLocalsF(fiber.locals, ns),
 //                   locals,
                    genFn(fiber.pos),TH,
                    CNTV, CNTC, CNTV,
@@ -968,12 +1049,14 @@ function genJS(klass, env,pass) {
     function genFunc(func) {
         var fname= isConstructor(func) ? "initialize" : func.name;
         //var ps=getParams(func);
-        var ns=newScope(ctx.scope);
+        /*var ns=newScope(ctx.scope);
         func.params.forEach(function (p,cnt) {
             ns[p.name.text]=genSt(ST.PARAM,{klass:klass.name,name:func.name,no:cnt});
         });
-        var locals=func.locals; //checkLocals(func.stmts);
-        copyLocals(locals, ns);
+        var locals=func.locals; //collectLocals(func.stmts);
+        copyLocals(locals, ns);*/
+        var ns=newFScope(func);
+        annotateVarAccesses(func.stmts, ns);
 
         printf("%s :function %s(%j) {%{"+
                   "var %s=%s;%n"+
@@ -982,7 +1065,7 @@ function genJS(klass, env,pass) {
                "%}},%n",
                fname, genFn(func.pos), [",",func.params],
                THIZ, GET_THIS,
-               	      genLocalsF(locals, ns),
+               	      genLocalsF(func.locals, ns),
                       fbody
         );
         function fbody() {
@@ -1005,7 +1088,9 @@ function genJS(klass, env,pass) {
         ps.forEach(function (p) {
             ns[p.name.text]=genSt(ST.PARAM);
         });
-        var locals=checkLocals(body, ns);
+        var locals=collectLocals(body, ns);
+        copyLocals(locals,ns);
+        annotateVarAccesses(body.stmts,ns);
         buf.printf("function (%j) {%{"+
                        "%f%n"+
                        "%f"+
@@ -1039,7 +1124,9 @@ function genJS(klass, env,pass) {
         ps.forEach(function (p) {
             ns[p.name.text]=genSt(ST.PARAM);
         });
-        var locals=checkLocals(body, ns);
+        var locals=collectLocals(body, ns);
+        copyLocals(locals,ns);
+        annotateVarAccesses(body,ns);
         buf.printf("function %s(%j) {%{"+
                       "%f%n"+
                       "%f"+
