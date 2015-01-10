@@ -10,6 +10,7 @@ var GET_THIS="this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this)";
 var ITER="Tonyu.iterator";
 var ScopeTypes={FIELD:"field", METHOD:"method", NATIVE:"native",
         LOCAL:"local", THVAR:"threadvar", PARAM:"param", GLOBAL:"global", CLASS:"class"};
+var symSeq=1;
 function genSt(st, options) {
     var res={type:st};
     if (options) {
@@ -86,7 +87,7 @@ function initClassDecls(klass, env ) {
     initMethods(node);        // node=program
 }
 function genSym(prefix) {
-    return prefix+(Math.random()+"").replace(/\./g,"");
+    return prefix+((symSeq++)+"").replace(/\./g,"");
 }
 /*function describe(node, desc) {
     node.DESC=desc; //typeof desc=="object"?JSON.stringify(desc)+desc;
@@ -825,35 +826,43 @@ function genJS(klass, env,pass) {
             });
         }
     });
-    scopeChecker.def=function (node) {
+    scopeChecker.def=visitSub;
+    function visitSub(node) {
         var t=this;
-        if (!node) return;
+        if (!node || typeof node!="object") return;
         var es;
         if (node instanceof Array) es=node;
         else es=node[Grammar.SUBELEMENTS];
         if (!es) {
-            return;
+            es=[];
+            for (var i in node) {
+                es.push(node[i]);
+            }
         }
         es.forEach(function (e) {
             t.visit(e);
         });
-    };
-    function checkLocals(node, scope) {
+    }
+    function checkLocals(node/*, scope*/) {
         var locals={varDecls:{}, subFuncDecls:{}};
         ctx.enter({locals:locals},function () {
             scopeChecker.visit(node);
         });
-        //buf.print("/*");
-        for (var i in locals.varDecls) {
+        /*for (var i in locals.varDecls) {
             scope[i]=genSt(ST.LOCAL);
-            //buf.printf("%s,",i);
         }
         for (var i in locals.subFuncDecls) {
             scope[i]=genSt(ST.LOCAL);
-            //buf.printf("%s,",i);
-        }
-        //buf.print("*/");
+        }*/
         return locals;
+    }
+    function copyLocals(locals, scope) {
+        for (var i in locals.varDecls) {
+            scope[i]=genSt(ST.LOCAL);
+        }
+        for (var i in locals.subFuncDecls) {
+            scope[i]=genSt(ST.LOCAL);
+        }
     }
     function genLocalsF(locals,scope) {
         return f;
@@ -890,6 +899,8 @@ function genJS(klass, env,pass) {
             for (var name in methods) {
                 if (debug) console.log("method1", name);
                 var method=methods[name];
+                method.locals=checkLocals(method.stmts);
+                method.params=getParams(method);
                 ctx.enter({noWait:true}, function () {
                     genFunc(method);
                 });
@@ -906,12 +917,15 @@ function genJS(klass, env,pass) {
     function genFiber(fiber) {
     	//var locals={};
         //console.log("Gen fiber");
-        var ps=getParams(fiber);
+        //var ps=getParams(fiber);
         var ns=newScope(ctx.scope);
-        ps.forEach(function (p,cnt) {
-            ns[p.name.text]=genSt(ST.PARAM,{klass:klass.name, name:fiber.name, no:cnt});
+        fiber.params.forEach(function (p,cnt) {
+            ns[p.name.text]=genSt(ST.PARAM,{
+                klass:klass.name, name:fiber.name, no:cnt
+            });
         });
-        var locals=checkLocals(fiber.stmts , ns);
+        var locals=fiber.locals; //checkLocals(fiber.stmts);
+        copyLocals(locals, ns);
         printf(
                "%s%s :function (%j) {%{"+
                  "var %s=%s;%n"+
@@ -930,7 +944,7 @@ function genJS(klass, env,pass) {
                  "%}};%n"+
                "%}},%n",
 
-               FIBPRE, fiber.name, [",",getParams(fiber)],
+               FIBPRE, fiber.name, [",",fiber.params],
                    THIZ, GET_THIS,
                    ARGS, "arguments",
                    FRMPC,
@@ -953,18 +967,20 @@ function genJS(klass, env,pass) {
     }
     function genFunc(func) {
         var fname= isConstructor(func) ? "initialize" : func.name;
-        var ps=getParams(func);
+        //var ps=getParams(func);
         var ns=newScope(ctx.scope);
-        ps.forEach(function (p,cnt) {
+        func.params.forEach(function (p,cnt) {
             ns[p.name.text]=genSt(ST.PARAM,{klass:klass.name,name:func.name,no:cnt});
         });
-        var locals=checkLocals(func.stmts,ns);
+        var locals=func.locals; //checkLocals(func.stmts);
+        copyLocals(locals, ns);
+
         printf("%s :function %s(%j) {%{"+
                   "var %s=%s;%n"+
                   "%f%n" +
                   "%f" +
                "%}},%n",
-               fname, genFn(func.pos), [",",getParams(func)],
+               fname, genFn(func.pos), [",",func.params],
                THIZ, GET_THIS,
                	      genLocalsF(locals, ns),
                       fbody
