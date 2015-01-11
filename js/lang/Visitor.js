@@ -1,10 +1,15 @@
 Visitor = function (funcs) {
-	var $={funcs:funcs};
+	var $={funcs:funcs, path:[]};
 	$.visit=function (node) {
-		if ($.debug) console.log("visit ",node.type, node.pos);
-		var v=(node ? funcs[node.type] :null);
-		if (v) return v.call($, node);
-		else if ($.def) return $.def.call($,node);
+	    try {
+	        $.path.push(node);
+	        if ($.debug) console.log("visit ",node.type, node.pos);
+	        var v=(node ? funcs[node.type] :null);
+	        if (v) return v.call($, node);
+	        else if ($.def) return $.def.call($,node);
+	    } finally {
+	        $.path.pop();
+	    }
 	};
 	$.replace=function (node) {
 		if (!$.def) {

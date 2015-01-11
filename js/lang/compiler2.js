@@ -395,11 +395,17 @@ function genJS(klass, env,pass) {
             //describe(node,si.name);
         },
         exprstmt: function (node) {//exprStmt
-            var t;
+            var t={};
             lastPosF(node)();
+            if (!ctx.noWait) {
+                t=annotation(node).fiberCall || {};
+            }
+            /*
             if (!ctx.noWait && (t=OM.match(node,noRetFiberCallTmpl)) &&
                     stype(ctx.scope[t.T])==ST.METHOD &&
                     !getMethod(t.T).nowait) {
+                    */
+            if (t.type=="noRet") {
                 buf.printf(
                         "%s.enter( %s.%s%s%v );%n" +
                         "%s=%s;return;%n" +/*B*/
@@ -408,9 +414,10 @@ function genJS(klass, env,pass) {
                             FRMPC, ctx.pc,
                             ctx.pc++
                 );
-            } else if (!ctx.noWait && (t=OM.match(node,retFiberCallTmpl)) &&
+            /*} else if (!ctx.noWait && (t=OM.match(node,retFiberCallTmpl)) &&
                     stype(ctx.scope[t.T])==ST.METHOD &&
-                    !getMethod(t.T).nowait) {
+                    !getMethod(t.T).nowait) {*/
+            } else if (t.type=="ret") {
                 buf.printf(
                         "%s.enter( %s.%s%s%v );%n" +
                         "%s=%s;return;%n" +/*B*/
@@ -421,9 +428,10 @@ function genJS(klass, env,pass) {
                             ctx.pc++,
                             t.L, t.O, TH
                 );
-            } else if (!ctx.noWait && (t=OM.match(node,noRetSuperFiberCallTmpl)) ) {
+            /*} else if (!ctx.noWait && (t=OM.match(node,noRetSuperFiberCallTmpl)) ) {*/
+            } else if (t.type=="noRetSuper") {
                 var p=getClassName(klass.superClass);
-                if (t.S.name) {
+                //if (t.S.name) {
                     buf.printf(
                             "%s.enter( %s.prototype.%s%s.apply( %s, %v) );%n" +
                             "%s=%s;return;%n" +/*B*/
@@ -432,10 +440,11 @@ function genJS(klass, env,pass) {
                                 FRMPC, ctx.pc,
                                 ctx.pc++
                     );
-                }
-            } else if (!ctx.noWait && (t=OM.match(node,retSuperFiberCallTmpl)) ) {
-                var p=getClassName(klass.superClass);
-                if (t.S.name) {
+                //}
+            /*} else if (!ctx.noWait && (t=OM.match(node,retSuperFiberCallTmpl)) ) {
+                var p=getClassName(klass.superClass);*/
+            } else if (t.type=="retSuper") {
+                //if (t.S.name) {
                     buf.printf(
                             "%s.enter( %s.prototype.%s%s.apply( %s, %v) );%n" +
                             "%s=%s;return;%n" +/*B*/
@@ -446,7 +455,7 @@ function genJS(klass, env,pass) {
                                 ctx.pc++,
                                 t.L, t.O, TH
                     );
-                }
+                //}
             } else {
                 buf.printf("%v;", node.expr );
             }
@@ -875,6 +884,35 @@ function genJS(klass, env,pass) {
             if (node._else) {
                 t.visit(node._else);
             }
+        },
+        exprstmt: function (node) {
+            var t;
+            if (!ctx.noWait &&
+                    (t=OM.match(node,noRetFiberCallTmpl)) &&
+                    stype(ctx.scope[t.T])==ST.METHOD &&
+                    !getMethod(t.T).nowait) {
+                t.type="noRet";
+                annotation(node, {fiberCall:t});
+            } else if (!ctx.noWait &&
+                    (t=OM.match(node,retFiberCallTmpl)) &&
+                    stype(ctx.scope[t.T])==ST.METHOD &&
+                    !getMethod(t.T).nowait) {
+                t.type="ret";
+                annotation(node, {fiberCall:t});
+            } else if (!ctx.noWait &&
+                    (t=OM.match(node,noRetSuperFiberCallTmpl)) &&
+                    t.S.name) {
+                t.type="noRetSuper";
+                t.superClass=klass.superClass;
+                annotation(node, {fiberCall:t});
+            } else if (!ctx.noWait &&
+                    (t=OM.match(node,retSuperFiberCallTmpl)) &&
+                    t.S.name) {
+                t.type="retSuper";
+                t.superClass=klass.superClass;
+                annotation(node, {fiberCall:t});
+            }
+            this.visit(node.expr);
         }
     });
     varAccessesAnnotator.def=visitSub;
