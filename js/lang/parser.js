@@ -543,9 +543,9 @@ Parser=function () {
     	},
     	eof: Parser.create(function (s) {
             var suc=(s.pos>=s.src.tokens.length);
+            s.success=suc;
     		if (suc) {
     		    s=s.clone();
-    		    s.success=suc;
     		    s.result=[{type:"EOF"}];
     		}
     	    return s;

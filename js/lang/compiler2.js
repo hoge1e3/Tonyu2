@@ -848,6 +848,7 @@ function genJS(klass, env,pass) {
         funcDecl: function (node) {/*FDITSELFIGNORE*/
         },
         funcExpr: function (node) {/*FEIGNORE*/
+            annotateSubFuncExpr(node);
         },
         jsonElem: function (node) {
             if (node.value) {
@@ -910,6 +911,7 @@ function genJS(klass, env,pass) {
         copyLocals(f.locals, ns);
         annotateVarAccesses(f.stmts, ns);
         f.scope=ns;
+        annotateSubFuncExprs(f.locals, ns);
         return ns;
     }
     function annotateSource() {
@@ -923,6 +925,7 @@ function genJS(klass, env,pass) {
         });
     }
     function genSource() {
+        annotateSource();
         ctx.enter({scope:topLevelScope}, function () {
             var nspObj=CLASS_HEAD+klass.nameSpace;
             printf(nspObj+"="+nspObj+"||{};%n");
@@ -939,8 +942,8 @@ function genJS(klass, env,pass) {
             for (var name in methods) {
                 if (debug) console.log("method1", name);
                 var method=methods[name];
-                initParamsLocals(method);
-                annotateMethodFiber(method);
+                //initParamsLocals(method);
+                //annotateMethodFiber(method);
                 ctx.enter({noWait:true}, function () {
                     genFunc(method);
                 });
@@ -1051,7 +1054,7 @@ function genJS(klass, env,pass) {
         var locals=collectLocals(body, ns);
         copyLocals(locals,ns);
         annotateVarAccesses(body,ns);*/
-        var finfo=annotateSubFuncExpr(node);
+        var finfo=annotation(node);// annotateSubFuncExpr(node);
 
         buf.printf("function (%j) {%{"+
                        "%f%n"+
@@ -1090,7 +1093,7 @@ function genJS(klass, env,pass) {
         copyLocals(locals,ns);
         annotateVarAccesses(body,ns);
         */
-        var finfo=annotateSubFuncExpr(node);
+        var finfo=annotation(node);// annotateSubFuncExpr(node);
         buf.printf("function %s(%j) {%{"+
                       "%f%n"+
                       "%f"+
@@ -1126,7 +1129,15 @@ function genJS(klass, env,pass) {
         annotateVarAccesses(body,ns);
         var res={scope:ns, locals:locals, name:name, params:ps};
         annotation(node,res);
+        annotateSubFuncExprs(locals, ns);
         return res;
+    }
+    function annotateSubFuncExprs(locals, scope) {
+        ctx.enter({scope:scope}, function () {
+            for (var n in locals.subFuncDecls) {
+                annotateSubFuncExpr(locals.subFuncDecls[n]);
+            }
+        });
     }
     function genLocalsF(finfo) {
         return f;
