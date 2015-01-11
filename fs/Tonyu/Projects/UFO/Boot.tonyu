@@ -117,6 +117,7 @@ nowait \initFPSParams() {
 // Tonyu1の$System.setFrameRate() //
 nowait \setFrameRate(fps, frameSkipMax) {
     _fps = fps;
+    if (!frameSkipMax) frameSkipMax=5;
     _frameSkip = frameSkipMax - 1; // Tonyu1では最小が1なので-1
 }
 

@@ -1,5 +1,7 @@
 
 r="bca".replace(/\w/g) \(e,gi) {
+    var r=5;
+    r=3;
     print(e);
     return "X";
 };

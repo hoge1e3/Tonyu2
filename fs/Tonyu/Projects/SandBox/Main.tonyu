@@ -8,4 +8,6 @@ new TQuery;
 updateEx(30);
 new TQuery;
 updateEx(30);
-all(TQuery).die();
+for (var t in all(TQuery)) {
+    t.die();
+}
