@@ -295,20 +295,19 @@ function genJS(klass, env,pass) {
         return si;
         //buf.printf("/*%s*/",si.name);
     }
-    function compoundF(node,noSurroundBrace) {
+    function noSurroundCompoundF(node) {
         return function () {
-            compound.apply(this, arguments);
+            noSurroundCompound.apply(this, [node]);
         };
     }
-    function compound(node, noSurroundBrace) {
-        if (noSurroundBrace) {
+    function noSurroundCompound(node) {
+        if (node.type=="compound") {
             ctx.enter({noWait:true},function () {
-                buf.printf("%{%j%n%}", ["%n",node.stmts]);
+                buf.printf("%j%n", ["%n",node.stmts]);
+               // buf.printf("%{%j%n%}", ["%n",node.stmts]);
             });
         } else {
-            ctx.enter({noWait:true},function () {
-                buf.printf("{%{%j%n%}}", ["%n",node.stmts]);
-            });
+            v.visit(node);
         }
     }
     function lastPosF(node) {
@@ -570,7 +569,7 @@ function genJS(klass, env,pass) {
                             function () { buf.print(brkpos.put(ctx.pc++)); }
                 );
             } else {
-                buf.printf("while (%v) {%f}", node.cond, enterV({noSurroundBrace:true}, node.loop));
+                buf.printf("while (%v) {%{%f%n%}}", node.cond, noSurroundCompoundF(node.loop));
             }
         },
         "for": function (node) {
@@ -608,12 +607,12 @@ function genJS(klass, env,pass) {
                             "%s=%s(%v,%s);%n"+
                             "while(%s.next()) {%{" +
                             "%f%n"+
-                            "%v%n" +
+                            "%f%n" +
                             "%}}",
                             itn, ITER, node.inFor.set, node.inFor.vars.length,
                             itn,
                             getElemF(itn, node.inFor.isVar, node.inFor.vars),
-                            node.loop
+                            noSurroundCompoundF(node.loop)
                         );
                     });
                 }
@@ -707,12 +706,12 @@ function genJS(klass, env,pass) {
             } else {
                 ctx.enter({noWait:true}, function () {
                     if (node._else) {
-                        buf.printf("if (%v) {%f} else {%f}", node.cond,
-                                enterV({noSurroundBrace:true},node.then),
-                                enterV({noSurroundBrace:true},node._else));
+                        buf.printf("if (%v) {%{%f%n%}} else {%{%f%n%}}", node.cond,
+                                noSurroundCompoundF(node.then),
+                                noSurroundCompoundF(node._else));
                     } else {
-                        buf.printf("if (%v) {%f}", node.cond,
-                                enterV({noSurroundBrace:true},node.then));
+                        buf.printf("if (%v) {%{%f%n%}}", node.cond,
+                                noSurroundCompoundF(node.then));
                     }
                 });
             }
@@ -786,15 +785,15 @@ function genJS(klass, env,pass) {
                     (an.fiberCallRequired || an.hasJump || an.hasReturn) ) {
                 buf.printf("%j", ["%n",node.stmts]);
             } else {
-                if (ctx.noSurroundBrace) {
+                /*if (ctx.noSurroundBrace) {
                     ctx.enter({noSurroundBrace:false,noWait:true},function () {
                         buf.printf("%{%j%n%}", ["%n",node.stmts]);
                     });
-                } else {
+                } else {*/
                     ctx.enter({noWait:true},function () {
                         buf.printf("{%{%j%n%}}", ["%n",node.stmts]);
                     });
-                }
+                //}
             }
         },
 	"typeof": function (node) {
