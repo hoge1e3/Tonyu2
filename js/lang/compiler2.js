@@ -295,6 +295,22 @@ function genJS(klass, env,pass) {
         return si;
         //buf.printf("/*%s*/",si.name);
     }
+    function compoundF(node,noSurroundBrace) {
+        return function () {
+            compound.apply(this, arguments);
+        };
+    }
+    function compound(node, noSurroundBrace) {
+        if (noSurroundBrace) {
+            ctx.enter({noWait:true},function () {
+                buf.printf("%{%j%n%}", ["%n",node.stmts]);
+            });
+        } else {
+            ctx.enter({noWait:true},function () {
+                buf.printf("{%{%j%n%}}", ["%n",node.stmts]);
+            });
+        }
+    }
     function lastPosF(node) {
         return function () {
             buf.printf("%s%s=%s;%n", (env.options.compiler.commentLastPos?"//":""),
@@ -559,13 +575,15 @@ function genJS(klass, env,pass) {
         },
         "for": function (node) {
             lastPosF(node)();
+            var an=annotation(node);
             if (node.inFor.type=="forin") {
                 var itn=annotation(node.inFor).iterName;//  genSym("_it_");
                 /*if ( stype(ctx.scope[itn])!=ST.LOCAL) {
                     console.log(node);throw "Not localled";// in funcexpr/subfunc
                 }*/
                 //ctx.scope[itn]=genSt(ST.LOCAL);
-                if (!ctx.noWait) {
+                if (!ctx.noWait &&
+                        (an.fiberCallRequired || an.hasReturn)) {
                     var brkpos=buf.lazy();
                     var pc=ctx.pc++;
                     buf.printf(
@@ -585,21 +603,23 @@ function genJS(klass, env,pass) {
                                 function (buf) { buf.print(brkpos.put(ctx.pc++)); }
                     );
                 } else {
-                    buf.printf(
+                    ctx.enter({noWait:true},function() {
+                        buf.printf(
                             "%s=%s(%v,%s);%n"+
                             "while(%s.next()) {%{" +
-                               "%f%n"+
-                               "%v%n" +
+                            "%f%n"+
+                            "%v%n" +
                             "%}}",
                             itn, ITER, node.inFor.set, node.inFor.vars.length,
                             itn,
                             getElemF(itn, node.inFor.isVar, node.inFor.vars),
                             node.loop
-                    );
+                        );
+                    });
                 }
-
             } else {
-                if (!ctx.noWait) {
+                if (!ctx.noWait&&
+                        (an.fiberCallRequired || an.hasReturn)) {
                     var brkpos=buf.lazy();
                     var pc=ctx.pc++;
                     buf.printf(
@@ -619,7 +639,8 @@ function genJS(klass, env,pass) {
                                 function (buf) { buf.print(brkpos.put(ctx.pc++)); }
                     );
                 } else {
-                    buf.printf(
+                    ctx.enter({noWait:true},function() {
+                        buf.printf(
                             "%v%n"+
                             "while(%v) {%{" +
                                "%v%n" +
@@ -629,7 +650,8 @@ function genJS(klass, env,pass) {
                             node.inFor.cond,
                                 node.loop,
                                 node.inFor.next
-                    );
+                        );
+                    });
                 }
             }
             function getElemF(itn, isVar, vars) {
@@ -647,7 +669,10 @@ function genJS(klass, env,pass) {
         },
         "if": function (node) {
             lastPosF(node)();
-            if (!ctx.noWait) {
+            //buf.printf("/*FBR=%s*/",!!annotation(node).fiberCallRequired);
+            var an=annotation(node);
+            if (!ctx.noWait &&
+                    (an.fiberCallRequired || an.hasJump || an.hasReturn)) {
                 var fipos={}, elpos={};
                 if (node._else) {
                     buf.printf(
@@ -680,14 +705,16 @@ function genJS(klass, env,pass) {
                     );
                 }
             } else {
-                if (node._else) {
-                    buf.printf("if (%v) {%f} else {%f}", node.cond,
-                            enterV({noSurroundBrace:true},node.then),
-                            enterV({noSurroundBrace:true},node._else));
-                } else {
-                    buf.printf("if (%v) {%f}", node.cond,
-                            enterV({noSurroundBrace:true},node.then));
-                }
+                ctx.enter({noWait:true}, function () {
+                    if (node._else) {
+                        buf.printf("if (%v) {%f} else {%f}", node.cond,
+                                enterV({noSurroundBrace:true},node.then),
+                                enterV({noSurroundBrace:true},node._else));
+                    } else {
+                        buf.printf("if (%v) {%f}", node.cond,
+                                enterV({noSurroundBrace:true},node.then));
+                    }
+                });
             }
         },
         /*useThread: function (node) {
@@ -754,15 +781,19 @@ function genJS(klass, env,pass) {
             buf.printf("%v; %v; %v", node.init, node.cond, node.next);
         },
         compound: function (node) {
-            if (!ctx.noWait) {
+            var an=annotation(node);
+            if (!ctx.noWait &&
+                    (an.fiberCallRequired || an.hasJump || an.hasReturn) ) {
                 buf.printf("%j", ["%n",node.stmts]);
             } else {
                 if (ctx.noSurroundBrace) {
-                    ctx.enter({noSurroundBrace:false},function () {
+                    ctx.enter({noSurroundBrace:false,noWait:true},function () {
                         buf.printf("%{%j%n%}", ["%n",node.stmts]);
                     });
                 } else {
-                    buf.printf("{%{%j%n%}}", ["%n",node.stmts]);
+                    ctx.enter({noWait:true},function () {
+                        buf.printf("{%{%j%n%}}", ["%n",node.stmts]);
+                    });
                 }
             }
         },
@@ -849,6 +880,15 @@ function genJS(klass, env,pass) {
         }*/
         return locals;
     }
+    function annotateParents(path, data) {
+        path.forEach(function (n) {
+            annotation(n,data);
+        });
+    }
+    function fiberCallRequired(path) {
+        if (ctx.method) ctx.method.fiberCallRequired=true;
+        annotateParents(path, {fiberCallRequired:true} );
+    }
     var varAccessesAnnotator=Visitor({
         varAccess: function (node) {
             var si=getScopeInfo(node.name.text);
@@ -884,6 +924,17 @@ function genJS(klass, env,pass) {
             if (node._else) {
                 t.visit(node._else);
             }
+            fiberCallRequired(this.path);
+        },
+        "return": function (node) {
+            if (!ctx.noWait) annotateParents(this.path,{hasReturn:true});
+            this.visit(node.value);
+        },
+        "break": function (node) {
+            if (!ctx.noWait) annotateParents(this.path,{hasJump:true});
+        },
+        "continue": function (node) {
+            if (!ctx.noWait) annotateParents(this.path,{hasJump:true});
         },
         exprstmt: function (node) {
             var t;
@@ -893,24 +944,28 @@ function genJS(klass, env,pass) {
                     !getMethod(t.T).nowait) {
                 t.type="noRet";
                 annotation(node, {fiberCall:t});
+                fiberCallRequired(this.path);
             } else if (!ctx.noWait &&
                     (t=OM.match(node,retFiberCallTmpl)) &&
                     stype(ctx.scope[t.T])==ST.METHOD &&
                     !getMethod(t.T).nowait) {
                 t.type="ret";
                 annotation(node, {fiberCall:t});
+                fiberCallRequired(this.path);
             } else if (!ctx.noWait &&
                     (t=OM.match(node,noRetSuperFiberCallTmpl)) &&
                     t.S.name) {
                 t.type="noRetSuper";
                 t.superClass=klass.superClass;
                 annotation(node, {fiberCall:t});
+                fiberCallRequired(this.path);
             } else if (!ctx.noWait &&
                     (t=OM.match(node,retSuperFiberCallTmpl)) &&
                     t.S.name) {
                 t.type="retSuper";
                 t.superClass=klass.superClass;
                 annotation(node, {fiberCall:t});
+                fiberCallRequired(this.path);
             }
             this.visit(node.expr);
         }
@@ -947,7 +1002,9 @@ function genJS(klass, env,pass) {
             });
         });
         copyLocals(f.locals, ns);
-        annotateVarAccesses(f.stmts, ns);
+        ctx.enter({method:f,noWait:false}, function () {
+            annotateVarAccesses(f.stmts, ns);
+        });
         f.scope=ns;
         annotateSubFuncExprs(f.locals, ns);
         return ns;
