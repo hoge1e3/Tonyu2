@@ -1070,7 +1070,6 @@ function genJS(klass, env,pass) {
         */
         //annotateMethodFiber(fiber);
         //annotateVarAccesses(fiber.stmts, ns);
-        var cm="";//(fiber.fiberCallRequired?"":"//");
         printf(
                "%s%s :function (%j) {%{"+
                  "var %s=%s;%n"+
@@ -1078,13 +1077,13 @@ function genJS(klass, env,pass) {
                  "var %s=0;%n"+
                  "%f%n"+
                  "return function %s(%s) {%{"+
-                    cm+"for(var %s=%d ; %s--;) {%{"+
-                      cm+"switch (%s) {%{"+
-                         "%}"+cm+"case 0:%{"+
+                    "for(var %s=%d ; %s--;) {%{"+
+                      "switch (%s) {%{"+
+                         "%}case 0:%{"+
                         "%f" +
                         "%s.exit(%s);return;%n"+
-                      "%}"+cm+"}%n"+
-                    "%}"+cm+"}%n"+
+                      "%}}%n"+
+                    "%}}%n"+
                  "%}};%n"+
                "%}},%n",
 
