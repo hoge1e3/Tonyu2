@@ -551,7 +551,9 @@ function genJS(klass, env,pass) {
         },
         "while": function (node) {
             lastPosF(node)();
-            if (!ctx.noWait) {
+            var an=annotation(node);
+            if (!ctx.noWait &&
+                    (an.fiberCallRequired || an.hasReturn)) {
                 var brkpos=buf.lazy();
                 var pc=ctx.pc++;
                 var isTrue= node.cond.type=="reservedConst" && node.cond.text=="true";
@@ -569,7 +571,9 @@ function genJS(klass, env,pass) {
                             function () { buf.print(brkpos.put(ctx.pc++)); }
                 );
             } else {
-                buf.printf("while (%v) {%{%f%n%}}", node.cond, noSurroundCompoundF(node.loop));
+                ctx.enter({noWait:true},function () {
+                    buf.printf("while (%v) {%{%f%n%}}", node.cond, noSurroundCompoundF(node.loop));
+                });
             }
         },
         "for": function (node) {
@@ -1066,6 +1070,7 @@ function genJS(klass, env,pass) {
         */
         //annotateMethodFiber(fiber);
         //annotateVarAccesses(fiber.stmts, ns);
+        var cm="";//(fiber.fiberCallRequired?"":"//");
         printf(
                "%s%s :function (%j) {%{"+
                  "var %s=%s;%n"+
@@ -1073,13 +1078,13 @@ function genJS(klass, env,pass) {
                  "var %s=0;%n"+
                  "%f%n"+
                  "return function %s(%s) {%{"+
-                   "for(var %s=%d ; %s--;) {%{"+
-                     "switch (%s) {%{"+
-                        "%}case 0:%{"+
+                    cm+"for(var %s=%d ; %s--;) {%{"+
+                      cm+"switch (%s) {%{"+
+                         "%}"+cm+"case 0:%{"+
                         "%f" +
                         "%s.exit(%s);return;%n"+
-                     "%}}%n"+
-                   "%}}%n"+
+                      "%}"+cm+"}%n"+
+                    "%}"+cm+"}%n"+
                  "%}};%n"+
                "%}},%n",
 
