@@ -1,4 +1,4 @@
-// Created at Sun Jan 11 2015 21:11:51 GMT+0900 (東京 (標準時))
+// Created at Tue Jan 13 2015 13:17:55 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -684,7 +684,7 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1418199307653},"Actor.tonyu":{"lastUpdate":1414051292629},"BaseActor.tonyu":{"lastUpdate":1418199307655},"Boot.tonyu":{"lastUpdate":1416889517769},"InputDevice.tonyu":{"lastUpdate":1416889517771},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1412840047455},"MapEditor.tonyu":{"lastUpdate":1413954028924},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"Panel.tonyu":{"lastUpdate":1418198857560},"ScaledCanvas.tonyu":{"lastUpdate":1414051292632},"Sprites.tonyu":{"lastUpdate":1416889517770},"TObject.tonyu":{"lastUpdate":1400120164000},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Pad.tonyu":{"lastUpdate":1414554218357}}',
+      '': '{".desktop":{"lastUpdate":1418199307653},"Actor.tonyu":{"lastUpdate":1414051292629},"BaseActor.tonyu":{"lastUpdate":1418199307655},"Boot.tonyu":{"lastUpdate":1421122635939},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1421122635939},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1421122635940},"Sprites.tonyu":{"lastUpdate":1421122635941},"TObject.tonyu":{"lastUpdate":1421122635941},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1421122635942},"MapEditor.tonyu":{"lastUpdate":1421122635944},"InputDevice.tonyu":{"lastUpdate":1416889517771},"Pad.tonyu":{"lastUpdate":1421122635944}}',
       '.desktop': '{"runMenuOrd":["TouchedTestMain","Main1023","Main2","MapLoad","Main","AcTestM","NObjTest","NObjTest2","AcTest","AltBoot","Ball","Bar","Bounce","MapTest","MapTest2nd","SetBGCTest","Label","PanelTest","Boot","InputDevice","Sprites","BaseActor"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -1038,6 +1038,7 @@ requireSimulator.setName('fs/ROMk');
         '}'
       ,
       'Boot.tonyu': 
+        'extends Actor;\n'+
         'native $;\n'+
         'native TError;\n'+
         'native $LASTPOS;\n'+
@@ -1107,6 +1108,8 @@ requireSimulator.setName('fs/ROMk');
         '$consolePrintY=465-15;\n'+
         '$panel=new Panel{align:"center",x:$screenWidth/2,y:$screenHeight/2,width:$screenWidth,height:$screenHeight,zOrder:-1,layer:$FrontSprites};\n'+
         'if (typeof SplashScreen!="undefined") SplashScreen.hide();\n'+
+        'initFPSParams();\n'+
+        '\n'+
         'while (true) {\n'+
         '    ti=new Date().getTime();\n'+
         '    thg.steps();\n'+
@@ -1114,15 +1117,128 @@ requireSimulator.setName('fs/ROMk');
         '    $InputDevice.update();\n'+
         '    $screenWidth=$Screen.width;\n'+
         '    $screenHeight=$Screen.height;\n'+
-        '    $Screen.fillCanvas($Screen.buf[0]);\n'+
-        '    $Sprites.draw($Screen.buf[0]);\n'+
-        '    $FrontSprites.draw($Screen.buf[0]);\n'+
-        '    $Screen.draw();\n'+
+        '    if (doDraw == 1) { // フレームスキップの時は描画しない\n'+
+        '        $Screen.fillCanvas($Screen.buf[0]);\n'+
+        '        $Sprites.draw($Screen.buf[0]);\n'+
+        '        $FrontSprites.draw($Screen.buf[0]);\n'+
+        '        $Screen.draw();\n'+
+        '        measureFps(); // FPS計測\n'+
+        '    }\n'+
         '    $Sprites.checkHit();\n'+
-        '    wt=33-(new Date().getTime()-ti);\n'+
-        '    if (wt<0) wt=0;\n'+
-        '    waitFor(Tonyu.timeout(wt));\n'+
-        '}'
+        '    \n'+
+        '    fps_rpsCnt ++;\n'+
+        '    waitFrame(_fps, _frameSkip); // FPS制御\n'+
+        '}\n'+
+        '\n'+
+        'nowait \\initFPSParams() {\n'+
+        '    // フレームレートの設定\n'+
+        '    _fps = 30;\n'+
+        '    _frameSkip = 4;\n'+
+        '    \n'+
+        '    // フレームレート制御でつかう変数 //\n'+
+        '    frameCnt = 0;\n'+
+        '    wtFrac = 0;\n'+
+        '    frameDelay = 0;\n'+
+        '    frameSkipCount = 0;\n'+
+        '    frameSkipSW = 0;\n'+
+        '    doDraw = 1;\n'+
+        '    // フレームレート計測でつかう変数 //\n'+
+        '    fps_fpsStartTime = 0;\n'+
+        '    fps_fpsTimeCnt = 1;\n'+
+        '    fps_fpsCnt = -1;\n'+
+        '    fps_fps = 0;\n'+
+        '    fps_rpsCnt = 0;\n'+
+        '    fps_rps = 0;\n'+
+        '    fps_oldTime = 0;\n'+
+        '    \n'+
+        '    $Boot = this; // アクセスできるようにした\n'+
+        '}\n'+
+        '\n'+
+        '// Tonyu1の$System.setFrameRate() //\n'+
+        'nowait \\setFrameRate(fps, frameSkipMax) {\n'+
+        '    _fps = fps;\n'+
+        '    if (!frameSkipMax) frameSkipMax=5;\n'+
+        '    _frameSkip = frameSkipMax - 1; // Tonyu1では最小が1なので-1\n'+
+        '}\n'+
+        '\n'+
+        '// FPS（計測したフレームレート）を返す //\n'+
+        'nowait \\getMeasureFps() {\n'+
+        '    return fps_fps;\n'+
+        '}\n'+
+        '\n'+
+        '// RPS（計測した実行レート）を返す //\n'+
+        'nowait \\getMeasureRps() {\n'+
+        '    return fps_rps;\n'+
+        '}\n'+
+        '\n'+
+        '\n'+
+        '// フレームレートの制御 //\n'+
+        '\\waitFrame(fps, frameSkipMax) {\n'+
+        '    var wt, nowWt, waitDo;\n'+
+        '    frameCnt++;\n'+
+        '    \n'+
+        '    \n'+
+        '    wt = 1000/fps; // 待機時間設定\n'+
+        '    wtFrac += wt - floor(wt);\n'+
+        '    if (wtFrac >= 1) {\n'+
+        '        wt += floor(wtFrac); // 端数を待機時間に追加\n'+
+        '        wtFrac -= floor(wtFrac);\n'+
+        '    }\n'+
+        '    wt = floor(wt);\n'+
+        '    //print(wt+" "+floor(wtFrac));\n'+
+        '    \n'+
+        '    /*\n'+
+        '    if (frameCnt % 3 == 0) wt = 16; // 待機時間設定\n'+
+        '    else                   wt = 17; // 待機時間設定\n'+
+        '    */\n'+
+        '    \n'+
+        '    wt -= frameDelay;\n'+
+        '    waitFor(Tonyu.timeout(1));\n'+
+        '    nowWt = (new Date().getTime()-ti);\n'+
+        '    if (frameSkipSW == 0) waitDo = 0;\n'+
+        '    while (wt > nowWt) {\n'+
+        '        waitFor(Tonyu.timeout(1));\n'+
+        '        nowWt = (new Date().getTime()-ti);\n'+
+        '        waitDo = 1;\n'+
+        '    }\n'+
+        '    frameDelay = nowWt - wt; // 処理落ち計算\n'+
+        '    // 待機したか？\n'+
+        '    if (waitDo == 0) {\n'+
+        '        frameSkipCount ++; // スキップ回数にカウント\n'+
+        '        doDraw = 0;\n'+
+        '    } else {\n'+
+        '        doDraw = 1;\n'+
+        '    }\n'+
+        '    // フレームスキップ最大か //\n'+
+        '    frameSkipSW = 0;\n'+
+        '    if (frameSkipCount >= frameSkipMax) {\n'+
+        '        frameDelay = 0;\n'+
+        '        frameSkipCount = 0;\n'+
+        '        frameSkipSW = 1;\n'+
+        '    }\n'+
+        '    \n'+
+        '}\n'+
+        '\n'+
+        '\n'+
+        '// FPS計測 //\n'+
+        'nowait \\measureFps() {\n'+
+        '    var fps_nowTime;\n'+
+        '    fps_nowTime = new Date().getTime();\n'+
+        '    if (fps_oldTime == 0) fps_oldTime = new Date().getTime();\n'+
+        '    fps_fpsCnt ++;\n'+
+        '    fps_fpsTimeCnt += fps_nowTime - fps_oldTime;\n'+
+        '    if (fps_nowTime - fps_fpsStartTime >= 1000) {\n'+
+        '        fps_fps = ((1000 / fps_fpsTimeCnt) * fps_fpsCnt);\n'+
+        '        //fps_fpsStr = trunc(fps_fps)+"."+(floor(fps_fps*10)%10);\n'+
+        '        fps_fpsCnt = 0;\n'+
+        '        fps_fpsTimeCnt = 0;\n'+
+        '        fps_fpsStartTime = fps_nowTime;\n'+
+        '        fps_rps = fps_rpsCnt;\n'+
+        '        fps_rpsCnt = 0;\n'+
+        '    }\n'+
+        '    fps_oldTime = fps_nowTime;\n'+
+        '}\n'+
+        '\n'
       ,
       'InputDevice.tonyu': 
         'extends null;\n'+
@@ -1346,6 +1462,7 @@ requireSimulator.setName('fs/ROMk');
         '}\n'
       ,
       'Map.tonyu': 
+        'extends Actor;\n'+
         'native Math;\n'+
         'native $;\n'+
         '\\new (param){\n'+
@@ -1467,6 +1584,7 @@ requireSimulator.setName('fs/ROMk');
         '}\n'
       ,
       'MapEditor.tonyu': 
+        'extends Actor;\n'+
         'native prompt;\n'+
         'loadMode=false;\n'+
         'print("Load Data?: Y or N");\n'+
@@ -1752,6 +1870,7 @@ requireSimulator.setName('fs/ROMk');
         '}'
       ,
       'Pad.tonyu': 
+        'extends Actor;\n'+
         '\\new(opt) {\n'+
         '    super(opt);\n'+
         '    padImageP = $pat_inputPad;\n'+
@@ -1856,6 +1975,7 @@ requireSimulator.setName('fs/ROMk');
         '}'
       ,
       'Panel.tonyu': 
+        'extends Actor;\n'+
         'native $;\n'+
         'native Math;\n'+
         'native isNaN;\n'+
@@ -1942,6 +2062,7 @@ requireSimulator.setName('fs/ROMk');
         '}'
       ,
       'ScaledCanvas.tonyu': 
+        'extends Actor;\n'+
         'native $;\n'+
         'native Math;\n'+
         '\n'+
@@ -2035,6 +2156,7 @@ requireSimulator.setName('fs/ROMk');
         '}'
       ,
       'Sprites.tonyu': 
+        'extends Actor;\n'+
         'native Tonyu;\n'+
         '\\new() {\n'+
         '    sprites=[];\n'+
@@ -2163,6 +2285,7 @@ requireSimulator.setName('fs/ROMk');
         '}'
       ,
       'TObject.tonyu': 
+        'extends null;\n'+
         'native Tonyu;\n'+
         '\\new (options) {\n'+
         '    if (typeof options=="object") extend(options);\n'+
@@ -5043,6 +5166,21 @@ function genJS(klass, env,pass) {
         return si;
         //buf.printf("/*%s*/",si.name);
     }
+    function noSurroundCompoundF(node) {
+        return function () {
+            noSurroundCompound.apply(this, [node]);
+        };
+    }
+    function noSurroundCompound(node) {
+        if (node.type=="compound") {
+            ctx.enter({noWait:true},function () {
+                buf.printf("%j%n", ["%n",node.stmts]);
+               // buf.printf("%{%j%n%}", ["%n",node.stmts]);
+            });
+        } else {
+            v.visit(node);
+        }
+    }
     function lastPosF(node) {
         return function () {
             buf.printf("%s%s=%s;%n", (env.options.compiler.commentLastPos?"//":""),
@@ -5284,7 +5422,9 @@ function genJS(klass, env,pass) {
         },
         "while": function (node) {
             lastPosF(node)();
-            if (!ctx.noWait) {
+            var an=annotation(node);
+            if (!ctx.noWait &&
+                    (an.fiberCallRequired || an.hasReturn)) {
                 var brkpos=buf.lazy();
                 var pc=ctx.pc++;
                 var isTrue= node.cond.type=="reservedConst" && node.cond.text=="true";
@@ -5302,18 +5442,22 @@ function genJS(klass, env,pass) {
                             function () { buf.print(brkpos.put(ctx.pc++)); }
                 );
             } else {
-                buf.printf("while (%v) {%f}", node.cond, enterV({noSurroundBrace:true}, node.loop));
+                ctx.enter({noWait:true},function () {
+                    buf.printf("while (%v) {%{%f%n%}}", node.cond, noSurroundCompoundF(node.loop));
+                });
             }
         },
         "for": function (node) {
             lastPosF(node)();
+            var an=annotation(node);
             if (node.inFor.type=="forin") {
                 var itn=annotation(node.inFor).iterName;//  genSym("_it_");
                 /*if ( stype(ctx.scope[itn])!=ST.LOCAL) {
                     console.log(node);throw "Not localled";// in funcexpr/subfunc
                 }*/
                 //ctx.scope[itn]=genSt(ST.LOCAL);
-                if (!ctx.noWait) {
+                if (!ctx.noWait &&
+                        (an.fiberCallRequired || an.hasReturn)) {
                     var brkpos=buf.lazy();
                     var pc=ctx.pc++;
                     buf.printf(
@@ -5333,21 +5477,23 @@ function genJS(klass, env,pass) {
                                 function (buf) { buf.print(brkpos.put(ctx.pc++)); }
                     );
                 } else {
-                    buf.printf(
+                    ctx.enter({noWait:true},function() {
+                        buf.printf(
                             "%s=%s(%v,%s);%n"+
                             "while(%s.next()) {%{" +
-                               "%f%n"+
-                               "%v%n" +
+                            "%f%n"+
+                            "%f%n" +
                             "%}}",
                             itn, ITER, node.inFor.set, node.inFor.vars.length,
                             itn,
                             getElemF(itn, node.inFor.isVar, node.inFor.vars),
-                            node.loop
-                    );
+                            noSurroundCompoundF(node.loop)
+                        );
+                    });
                 }
-
             } else {
-                if (!ctx.noWait) {
+                if (!ctx.noWait&&
+                        (an.fiberCallRequired || an.hasReturn)) {
                     var brkpos=buf.lazy();
                     var pc=ctx.pc++;
                     buf.printf(
@@ -5367,7 +5513,8 @@ function genJS(klass, env,pass) {
                                 function (buf) { buf.print(brkpos.put(ctx.pc++)); }
                     );
                 } else {
-                    buf.printf(
+                    ctx.enter({noWait:true},function() {
+                        buf.printf(
                             "%v%n"+
                             "while(%v) {%{" +
                                "%v%n" +
@@ -5377,7 +5524,8 @@ function genJS(klass, env,pass) {
                             node.inFor.cond,
                                 node.loop,
                                 node.inFor.next
-                    );
+                        );
+                    });
                 }
             }
             function getElemF(itn, isVar, vars) {
@@ -5395,7 +5543,10 @@ function genJS(klass, env,pass) {
         },
         "if": function (node) {
             lastPosF(node)();
-            if (!ctx.noWait) {
+            //buf.printf("/*FBR=%s*/",!!annotation(node).fiberCallRequired);
+            var an=annotation(node);
+            if (!ctx.noWait &&
+                    (an.fiberCallRequired || an.hasJump || an.hasReturn)) {
                 var fipos={}, elpos={};
                 if (node._else) {
                     buf.printf(
@@ -5428,14 +5579,16 @@ function genJS(klass, env,pass) {
                     );
                 }
             } else {
-                if (node._else) {
-                    buf.printf("if (%v) {%f} else {%f}", node.cond,
-                            enterV({noSurroundBrace:true},node.then),
-                            enterV({noSurroundBrace:true},node._else));
-                } else {
-                    buf.printf("if (%v) {%f}", node.cond,
-                            enterV({noSurroundBrace:true},node.then));
-                }
+                ctx.enter({noWait:true}, function () {
+                    if (node._else) {
+                        buf.printf("if (%v) {%{%f%n%}} else {%{%f%n%}}", node.cond,
+                                noSurroundCompoundF(node.then),
+                                noSurroundCompoundF(node._else));
+                    } else {
+                        buf.printf("if (%v) {%{%f%n%}}", node.cond,
+                                noSurroundCompoundF(node.then));
+                    }
+                });
             }
         },
         /*useThread: function (node) {
@@ -5502,16 +5655,20 @@ function genJS(klass, env,pass) {
             buf.printf("%v; %v; %v", node.init, node.cond, node.next);
         },
         compound: function (node) {
-            if (!ctx.noWait) {
+            var an=annotation(node);
+            if (!ctx.noWait &&
+                    (an.fiberCallRequired || an.hasJump || an.hasReturn) ) {
                 buf.printf("%j", ["%n",node.stmts]);
             } else {
-                if (ctx.noSurroundBrace) {
-                    ctx.enter({noSurroundBrace:false},function () {
+                /*if (ctx.noSurroundBrace) {
+                    ctx.enter({noSurroundBrace:false,noWait:true},function () {
                         buf.printf("%{%j%n%}", ["%n",node.stmts]);
                     });
-                } else {
-                    buf.printf("{%{%j%n%}}", ["%n",node.stmts]);
-                }
+                } else {*/
+                    ctx.enter({noWait:true},function () {
+                        buf.printf("{%{%j%n%}}", ["%n",node.stmts]);
+                    });
+                //}
             }
         },
 	"typeof": function (node) {
@@ -5597,6 +5754,15 @@ function genJS(klass, env,pass) {
         }*/
         return locals;
     }
+    function annotateParents(path, data) {
+        path.forEach(function (n) {
+            annotation(n,data);
+        });
+    }
+    function fiberCallRequired(path) {
+        if (ctx.method) ctx.method.fiberCallRequired=true;
+        annotateParents(path, {fiberCallRequired:true} );
+    }
     var varAccessesAnnotator=Visitor({
         varAccess: function (node) {
             var si=getScopeInfo(node.name.text);
@@ -5632,6 +5798,17 @@ function genJS(klass, env,pass) {
             if (node._else) {
                 t.visit(node._else);
             }
+            fiberCallRequired(this.path);
+        },
+        "return": function (node) {
+            if (!ctx.noWait) annotateParents(this.path,{hasReturn:true});
+            this.visit(node.value);
+        },
+        "break": function (node) {
+            if (!ctx.noWait) annotateParents(this.path,{hasJump:true});
+        },
+        "continue": function (node) {
+            if (!ctx.noWait) annotateParents(this.path,{hasJump:true});
         },
         exprstmt: function (node) {
             var t;
@@ -5641,24 +5818,28 @@ function genJS(klass, env,pass) {
                     !getMethod(t.T).nowait) {
                 t.type="noRet";
                 annotation(node, {fiberCall:t});
+                fiberCallRequired(this.path);
             } else if (!ctx.noWait &&
                     (t=OM.match(node,retFiberCallTmpl)) &&
                     stype(ctx.scope[t.T])==ST.METHOD &&
                     !getMethod(t.T).nowait) {
                 t.type="ret";
                 annotation(node, {fiberCall:t});
+                fiberCallRequired(this.path);
             } else if (!ctx.noWait &&
                     (t=OM.match(node,noRetSuperFiberCallTmpl)) &&
                     t.S.name) {
                 t.type="noRetSuper";
                 t.superClass=klass.superClass;
                 annotation(node, {fiberCall:t});
+                fiberCallRequired(this.path);
             } else if (!ctx.noWait &&
                     (t=OM.match(node,retSuperFiberCallTmpl)) &&
                     t.S.name) {
                 t.type="retSuper";
                 t.superClass=klass.superClass;
                 annotation(node, {fiberCall:t});
+                fiberCallRequired(this.path);
             }
             this.visit(node.expr);
         }
@@ -5695,7 +5876,9 @@ function genJS(klass, env,pass) {
             });
         });
         copyLocals(f.locals, ns);
-        annotateVarAccesses(f.stmts, ns);
+        ctx.enter({method:f,noWait:false}, function () {
+            annotateVarAccesses(f.stmts, ns);
+        });
         f.scope=ns;
         annotateSubFuncExprs(f.locals, ns);
         return ns;
@@ -5758,6 +5941,7 @@ function genJS(klass, env,pass) {
         */
         //annotateMethodFiber(fiber);
         //annotateVarAccesses(fiber.stmts, ns);
+        var cm="";//(fiber.fiberCallRequired?"":"//");
         printf(
                "%s%s :function (%j) {%{"+
                  "var %s=%s;%n"+
@@ -5765,13 +5949,13 @@ function genJS(klass, env,pass) {
                  "var %s=0;%n"+
                  "%f%n"+
                  "return function %s(%s) {%{"+
-                   "for(var %s=%d ; %s--;) {%{"+
-                     "switch (%s) {%{"+
-                        "%}case 0:%{"+
+                    cm+"for(var %s=%d ; %s--;) {%{"+
+                      cm+"switch (%s) {%{"+
+                         "%}"+cm+"case 0:%{"+
                         "%f" +
                         "%s.exit(%s);return;%n"+
-                     "%}}%n"+
-                   "%}}%n"+
+                      "%}"+cm+"}%n"+
+                    "%}"+cm+"}%n"+
                  "%}};%n"+
                "%}},%n",
 

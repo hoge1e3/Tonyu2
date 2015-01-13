@@ -1,3 +1,4 @@
+extends Actor;
 \new(opt) {
     super(opt);
     padImageP = $pat_inputPad;

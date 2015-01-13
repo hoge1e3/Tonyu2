@@ -1,3 +1,4 @@
+extends Actor;
 native $;
 native Math;
 native isNaN;
