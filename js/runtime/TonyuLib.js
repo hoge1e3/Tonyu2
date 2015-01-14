@@ -123,7 +123,7 @@ Tonyu=function () {
         function addObj(obj, methodName) {
             var th=thread();
             if (!methodName) methodName="main";
-            th.enter(obj["fiber$"+methodName]());
+            obj["fiber$"+methodName](th);
             add(th);
             return th;
         }

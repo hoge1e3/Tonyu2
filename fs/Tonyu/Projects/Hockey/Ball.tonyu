@@ -1,5 +1,8 @@
 extends SpriteChar;
 
+nowait \tes() {
+    a.b.c();
+}
 function tokuten(s) {
     var i;
     // 左右のあいているところにはいれば得点とみなし、1を返す。それ以外は0をかえす
@@ -16,6 +19,7 @@ function tokuten(s) {
         else {$tokuten_1.setValue($tokuten_1.value+1);}
         x-=s*150;
         wait(60);
+        //tes();
         if ($tokuten_1.value>=$pat_tokuten+7 ||
         $tokuten.value>=$pat_tokuten+7) {
             $Replay_1.show(1);wait();

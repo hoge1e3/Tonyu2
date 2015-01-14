@@ -127,7 +127,7 @@ function genJS(klass, env,pass) {
     var debug=false;
     var fiberCallTmpl={
             type:"postfix",
-            op:{$var:"A",type:"call" },
+            op:{/*$var:"A",*/type:"call", args:OM.A },
             left:{type:"varAccess", name: {text:OM.T}}
          };
     var noRetFiberCallTmpl={
@@ -142,14 +142,14 @@ function genJS(klass, env,pass) {
         }
     };
     var noRetSuperFiberCallTmpl={
-        expr: {type:"superExpr", $var:"S"}
+        expr: {type:"superExpr", params:{args:OM.A}, $var:"S"}
     };
     var retSuperFiberCallTmpl={
             expr: {
                 type: "infix",
                 op: OM.O,
                 left: OM.L,
-                right: {type:"superExpr", $var:"S"}
+                right: {type:"superExpr", params:{args:OM.A}, $var:"S"}
             }
         };
     klass.annotation={};
@@ -316,7 +316,11 @@ function genJS(klass, env,pass) {
                     LASTPOS, traceTbl.add(klass/*.src.tonyu*/,node.pos ));
         };
     }
+    var THNode={type:"THNode"};
     v=buf.visitor=Visitor({
+        THNode: function (node) {
+            buf.printf(TH);
+        },
         dummy: function (node) {
             buf.printf("",node);
         },
@@ -422,10 +426,10 @@ function genJS(klass, env,pass) {
                     */
             if (t.type=="noRet") {
                 buf.printf(
-                        "%s.enter( %s.%s%s%v );%n" +
+                        "%s.%s%s(%j);%n" +
                         "%s=%s;return;%n" +/*B*/
                         "%}case %d:%{",
-                            TH, THIZ, FIBPRE, t.T, t.A,
+                            THIZ, FIBPRE, t.T,  [", ",[THNode].concat(t.A)],
                             FRMPC, ctx.pc,
                             ctx.pc++
                 );
@@ -434,11 +438,11 @@ function genJS(klass, env,pass) {
                     !getMethod(t.T).nowait) {*/
             } else if (t.type=="ret") {
                 buf.printf(
-                        "%s.enter( %s.%s%s%v );%n" +
+                        "%s.%s%s(%j);%n" +
                         "%s=%s;return;%n" +/*B*/
                         "%}case %d:%{"+
                         "%v%v%s.retVal();%n",
-                            TH, THIZ, FIBPRE, t.T, t.A,
+                            THIZ, FIBPRE, t.T, [", ",[THNode].concat(t.A)],
                             FRMPC, ctx.pc,
                             ctx.pc++,
                             t.L, t.O, TH
@@ -448,10 +452,10 @@ function genJS(klass, env,pass) {
                 var p=getClassName(klass.superClass);
                 //if (t.S.name) {
                     buf.printf(
-                            "%s.enter( %s.prototype.%s%s.apply( %s, %v) );%n" +
+                            "%s.prototype.%s%s.apply( %s, [%j]);%n" +
                             "%s=%s;return;%n" +/*B*/
                             "%}case %d:%{",
-                                TH,   p,  FIBPRE, t.S.name.text,  THIZ,  t.S.params,
+                             p,  FIBPRE, t.S.name.text,  THIZ,  [", ",[THNode].concat(t.A)],
                                 FRMPC, ctx.pc,
                                 ctx.pc++
                     );
@@ -461,11 +465,11 @@ function genJS(klass, env,pass) {
             } else if (t.type=="retSuper") {
                 //if (t.S.name) {
                     buf.printf(
-                            "%s.enter( %s.prototype.%s%s.apply( %s, %v) );%n" +
+                            "%s.prototype.%s%s.apply( %s, [%j]);%n" +
                             "%s=%s;return;%n" +/*B*/
                             "%}case %d:%{"+
                             "%v%v%s.retVal();%n",
-                                TH,   p,  FIBPRE, t.S.name.text,  THIZ,  t.S.params,
+                                p,  FIBPRE, t.S.name.text,  THIZ, [", ",[THNode].concat(t.A)],
                                 FRMPC, ctx.pc,
                                 ctx.pc++,
                                 t.L, t.O, TH
@@ -1047,9 +1051,11 @@ function genJS(klass, env,pass) {
                 });
                 if (debug) console.log("method2", name);
                 //v.debug=debug;
-                ctx.enter({noWait:false}, function () {
-                    genFiber(method);
-                });
+                if (!method.nowait ) {
+                    ctx.enter({noWait:false}, function () {
+                        genFiber(method);
+                    });
+                }
                 if (debug) console.log("method3", name);
             }
             printf("%}});");
@@ -1076,7 +1082,7 @@ function genJS(klass, env,pass) {
                  "var %s=%s;%n"+
                  "var %s=0;%n"+
                  "%f%n"+
-                 "return function %s(%s) {%{"+
+                 "%s.enter(function %s(%s) {%{"+
                     "for(var %s=%d ; %s--;) {%{"+
                       "switch (%s) {%{"+
                          "%}case 0:%{"+
@@ -1084,20 +1090,20 @@ function genJS(klass, env,pass) {
                         "%s.exit(%s);return;%n"+
                       "%}}%n"+
                     "%}}%n"+
-                 "%}};%n"+
+                 "%}});%n"+
                "%}},%n",
 
-               FIBPRE, fiber.name, [",",fiber.params],
+               FIBPRE, fiber.name, [",",[THNode].concat(fiber.params)],
                    THIZ, GET_THIS,
                    ARGS, "arguments",
                    FRMPC,
                    genLocalsF(fiber),
-                   genFn(fiber.pos),TH,
-                   CNTV, CNTC, CNTV,
+                   TH,genFn(fiber.pos),TH,
+                      CNTV, CNTC, CNTV,
                         FRMPC,
                         // case 0:
-                      fbody,
-                      TH,THIZ
+                        fbody,
+                        TH,THIZ
         );
         function fbody() {
             ctx.enter({method:fiber, scope: fiber.scope, pc:1}, function () {
