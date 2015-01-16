@@ -50,6 +50,7 @@ requirejs(["JSZip","UI","FS","NewProjectDialog","Encoding","T1Map"],
     var convFiles;
     var dstDir;
     var rsrc;
+    var kerDev=false;
     function extract(dir) {
         mem={};
         rsrc={
@@ -100,16 +101,36 @@ requirejs(["JSZip","UI","FS","NewProjectDialog","Encoding","T1Map"],
         cpTmp("T1Map");
         cpTmp("T1Page");
         cpTmp("MediaPlayer");
-        cpTmp("Boot");
+        setOptions();
+        //cpTmp("Boot");
         console.log(mem);
         //console.log(JSON.stringify(mem));
         for (var fn in mem) {
             FS.get(fn).text(mem[fn]);
         }
     }
+    function setOptions(){
+        convFiles[dstDir.rel("options.json")]=JSON.stringify({
+            "compiler":{
+                "defaultSuperClass":"kernel.Actor",
+                //"commentLastPos":true,
+                "diagnose":false
+            },
+            "run":{
+                "mainClass":"user.Page_index",
+                "bootClass":"kernel.Boot"
+            },
+            "kernelEditable":kerDev
+        });
+    }
     function cpTmp(fn) {
-        mem[dstDir.rel(fn+".tonyu")]=FS.get("/Tonyu/Projects/Tonyu1/").
-        rel(fn+".tonyu").text();
+        //var ker=FS.get("/Tonyu/Kernel/");
+        var t1=FS.get("/Tonyu/Projects/Tonyu1/");
+        fn+=".tonyu";
+        if (t1.rel(fn).exists()) {
+            mem[dstDir.rel(fn)]=t1.rel(fn).text();
+            kerDev=true;
+        }
     }
     function copyClasses(classes) {
         classes.each(function () {
