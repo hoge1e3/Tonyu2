@@ -1,0 +1,28 @@
+extends PlainChar;
+native TextRect;
+
+\new (xx,yy,t,c,s){
+    super(xx,yy);
+    text="";
+    col=$clWhite;
+    size=20;
+    if (!this.x) this.x=0;
+    if (!this.y) this.y=0;
+    if (t) text=t;
+    if (c) fillStyle=c;
+    if (s) size=s;
+}
+\draw(ctx) {
+    if (!size) size=15;
+    if (!align) align="left";
+    if (!fillStyle) fillStyle="white";
+    ctx.fillStyle=fillStyle;
+    ctx.globalAlpha=this.alpha/255;
+    ctx.font=size+"px 'ＭＳ Ｐゴシック'";
+    var rect=TextRect.draw(ctx, text, x, y, size, align , "fill");
+    width=rect.w;
+    height=rect.h;
+    
+    //    fillStyle=col;
+    //super.draw(ctx);
+}

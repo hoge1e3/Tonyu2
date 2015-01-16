@@ -1,4 +1,4 @@
-// Created at Tue Jan 13 2015 13:17:55 GMT+0900 (東京 (標準時))
+// Created at Fri Jan 16 2015 13:40:50 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -684,7 +684,7 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1418199307653},"Actor.tonyu":{"lastUpdate":1414051292629},"BaseActor.tonyu":{"lastUpdate":1418199307655},"Boot.tonyu":{"lastUpdate":1421122635939},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1421122635939},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1421122635940},"Sprites.tonyu":{"lastUpdate":1421122635941},"TObject.tonyu":{"lastUpdate":1421122635941},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1421122635942},"MapEditor.tonyu":{"lastUpdate":1421122635944},"InputDevice.tonyu":{"lastUpdate":1416889517771},"Pad.tonyu":{"lastUpdate":1421122635944}}',
+      '': '{".desktop":{"lastUpdate":1418199307653},"Actor.tonyu":{"lastUpdate":1414051292629},"BaseActor.tonyu":{"lastUpdate":1418199307655},"Boot.tonyu":{"lastUpdate":1421122635939},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1421122635939},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1421122635940},"Sprites.tonyu":{"lastUpdate":1421122635941},"TObject.tonyu":{"lastUpdate":1421122635941},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1421122635942},"MapEditor.tonyu":{"lastUpdate":1421122635944},"InputDevice.tonyu":{"lastUpdate":1416889517771},"Pad.tonyu":{"lastUpdate":1421122635944},"DxChar.tonyu":{"lastUpdate":1421383049524},"MediaPlayer.tonyu":{"lastUpdate":1421383070767},"PlainChar.tonyu":{"lastUpdate":1421383084999},"SecretChar.tonyu":{"lastUpdate":1421383101403},"SpriteChar.tonyu":{"lastUpdate":1421383110209},"T1Line.tonyu":{"lastUpdate":1421383126796},"T1Map.tonyu":{"lastUpdate":1421383136414},"T1Page.tonyu":{"lastUpdate":1421383148587},"T1Text.tonyu":{"lastUpdate":1421383157722},"TextChar.tonyu":{"lastUpdate":1421383188873}}',
       '.desktop': '{"runMenuOrd":["TouchedTestMain","Main1023","Main2","MapLoad","Main","AcTestM","NObjTest","NObjTest2","AcTest","AltBoot","Ball","Bar","Bounce","MapTest","MapTest2nd","SetBGCTest","Label","PanelTest","Boot","InputDevice","Sprites","BaseActor"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -1239,6 +1239,23 @@ requireSimulator.setName('fs/ROMk');
         '    fps_oldTime = fps_nowTime;\n'+
         '}\n'+
         '\n'
+      ,
+      'DxChar.tonyu': 
+        'extends SpriteChar;\n'+
+        '\n'+
+        '\\new (xx,yy,pp,ff,sz,rt,al){\n'+
+        '    super(xx,yy,pp,ff);\n'+
+        '    scaleX=1;\n'+
+        '    if (sz) scaleX=sz;\n'+
+        '    angle=0;\n'+
+        '    if (rt) angle=rt;\n'+
+        '    alpha=255;\n'+
+        '    if (al) alpha=al;\n'+
+        '}\n'+
+        '\\draw(c) {\n'+
+        '    rotation=angle;\n'+
+        '    super.draw(c);\n'+
+        '}\n'
       ,
       'InputDevice.tonyu': 
         'extends null;\n'+
@@ -1826,6 +1843,24 @@ requireSimulator.setName('fs/ROMk');
         '    return sqrt(dx*dx+dy*dy);\n'+
         '}'
       ,
+      'MediaPlayer.tonyu': 
+        '\n'+
+        '\\play() {\n'+
+        '    \n'+
+        '}\n'+
+        '\\stop() {\n'+
+        '    \n'+
+        '}\n'+
+        '\\playSE() {\n'+
+        '    \n'+
+        '}\n'+
+        '\\setDelay(){\n'+
+        '    \n'+
+        '}\n'+
+        '\\setVolume(){\n'+
+        '    \n'+
+        '}'
+      ,
       'NoviceActor.tonyu': 
         'extends BaseActor;\n'+
         'native Tonyu;\n'+
@@ -2061,6 +2096,87 @@ requireSimulator.setName('fs/ROMk');
         '    ctx.restore();\n'+
         '}'
       ,
+      'PlainChar.tonyu': 
+        'native Tonyu;\n'+
+        'native Math;\n'+
+        '\\new(x,y,p) {\n'+
+        '    if (Tonyu.runMode) {\n'+
+        '        var thg=currentThreadGroup();\n'+
+        '        if (thg) _th=thg.addObj(this,"tMain");\n'+
+        '        initSprite();\n'+
+        '    }\n'+
+        '    if (typeof x=="object") Tonyu.extend(this,x); \n'+
+        '    else if (typeof x=="number") {\n'+
+        '        this.x=x;\n'+
+        '        this.y=y;\n'+
+        '        this.p=p;\n'+
+        '    }\n'+
+        '}\n'+
+        '\\draw(c) {\n'+
+        '    onDraw();\n'+
+        '    if (_isInvisible) return;\n'+
+        '    super.draw(c);\n'+
+        '}\n'+
+        '\\setVisible(v) {\n'+
+        '    _isInvisible=!v;\n'+
+        '}\n'+
+        '\\onDraw() {\n'+
+        '    \n'+
+        '}\n'+
+        '\\update() {\n'+
+        '    onUpdate();\n'+
+        '    super.update();\n'+
+        '}\n'+
+        '\\onUpdate() {\n'+
+        '    \n'+
+        '}\n'+
+        '\\initSprite() {\n'+
+        '    if(layer && typeof layer.add=="function"){\n'+
+        '        layer.add(this);\n'+
+        '    }else{\n'+
+        '        $Sprites.add(this);\n'+
+        '    }\n'+
+        '    onAppear();\n'+
+        '}\n'+
+        '\\tMain() {\n'+
+        '    main();\n'+
+        '    die();\n'+
+        '}\n'+
+        '\\color(r,g,b) {\n'+
+        '    return "rgb("+[r,g,b].join(",")+")";\n'+
+        '}\n'+
+        '\\drawText(x,y,text,col,size) {\n'+
+        '    if ($debug) return;\n'+
+        '    if (!size) size=15;\n'+
+        '    if (!col) col="cyan";\n'+
+        '    var tp=all(T1Text).find \\(t) {return t.hidden;};\n'+
+        '    if (tp.length>0) {\n'+
+        '        tp[0].extend{x,y,text,fillStyle:col, size,hidden:false};\n'+
+        '    }else {\n'+
+        '        new T1Text{x,y,text,fillStyle:col, size};  \n'+
+        '    }\n'+
+        '}\n'+
+        '\\drawLine(x,y,tx,ty,col) {\n'+
+        '    if (!col) col="white";\n'+
+        '    var tp=all(T1Line).find \\(t) {return t.hidden;};\n'+
+        '    if (tp.length>0) {\n'+
+        '        tp[0].extend{x,y,tx,ty,col};\n'+
+        '    }else {\n'+
+        '        new T1Line{x,y,tx,ty,col};  \n'+
+        '    }\n'+
+        '}\n'+
+        '\\appear(t) {\n'+
+        '    return t;\n'+
+        '}\n'+
+        '\\trunc(f) {\n'+
+        '    return Math.trunc(f);\n'+
+        '}\n'+
+        '\\loadPage(page,arg){\n'+
+        '    all().die();\n'+
+        '    new page(arg);\n'+
+        '    die();\n'+
+        '}'
+      ,
       'ScaledCanvas.tonyu': 
         'extends Actor;\n'+
         'native $;\n'+
@@ -2153,6 +2269,32 @@ requireSimulator.setName('fs/ROMk');
         '    //sx=scrollX;\n'+
         '    //sy=scrollY;\n'+
         '    $Sprites.scrollTo(scrollX,scrollY);\n'+
+        '}'
+      ,
+      'SecretChar.tonyu': 
+        'extends PlainChar;\n'+
+        '\n'+
+        '\\draw(c) {\n'+
+        '    \n'+
+        '}'
+      ,
+      'SpriteChar.tonyu': 
+        'extends PlainChar;\n'+
+        '\n'+
+        '\\new(x,y,p,f) {\n'+
+        '    super(x,y,p);\n'+
+        '    this.f=f;\n'+
+        '    if (!this.x) this.x=0;\n'+
+        '    if (!this.y) this.y=0;\n'+
+        '    if (!this.p) this.p=0;\n'+
+        '}\n'+
+        '\\draw(c) {\n'+
+        '    if (f) {\n'+
+        '        if (!scaleY) scaleY=scaleX;\n'+
+        '        scaleX*=-1;\n'+
+        '    }\n'+
+        '    super.draw(c);\n'+
+        '    if (f) scaleX*=-1;\n'+
         '}'
       ,
       'Sprites.tonyu': 
@@ -2282,6 +2424,98 @@ requireSimulator.setName('fs/ROMk');
         'function scrollTo(scrollX,scrollY){\n'+
         '    sx=scrollX;\n'+
         '    sy=scrollY;\n'+
+        '}'
+      ,
+      'T1Line.tonyu': 
+        '\\draw(ctx) {\n'+
+        '    if (hidden) return;\n'+
+        '    \n'+
+        '    ctx.strokeStyle=col;\n'+
+        '    ctx.beginPath();\n'+
+        '    ctx.moveTo(x,y);\n'+
+        '    ctx.lineTo(tx,ty);\n'+
+        '    ctx.stroke();\n'+
+        '    hidden=true;\n'+
+        '}\n'
+      ,
+      'T1Map.tonyu': 
+        'extends Map;\n'+
+        'native Tonyu;\n'+
+        'native $;\n'+
+        '\n'+
+        '\\setBGColor(c) {\n'+
+        '    $Screen.setBGColor(c);\n'+
+        '}\n'+
+        '\\load(fileName) {\n'+
+        '    /*\n'+
+        '    o={\n'+
+        '        "chipWidth":"32","chipHeight":"32",\n'+
+        '        "pTable":[{name:"$pat_aaa", p:10}, {name:"$pat_bbb","p":25} ],\n'+
+        '        "baseData":[\n'+
+        '        [//map\n'+
+        '        [0,6],[0,5],[1,3],\n'+
+        '        [1,3],[1,2],[0,5]\n'+
+        '        ],\n'+
+        '        [//mapOn\n'+
+        '        [-1,-1],[1,4],[0,2],\n'+
+        '        [-1,-1],[-1,-1],[1,8]\n'+
+        '        ]\n'+
+        '        ]\n'+
+        '    }\n'+
+        '    */\n'+
+        '    var f=file("../maps/").rel(fileName);\n'+
+        '    var o=f.obj();\n'+
+        '    chipWidth=o.chipWidth;\n'+
+        '    chipHeight=o.chipHeight;\n'+
+        '    baseData=o.baseData;\n'+
+        '    mapTable=conv(baseData[0],o.pTable);\n'+
+        '    mapData=mapTable;\n'+
+        '    row=mapTable.length;\n'+
+        '    col=mapTable[0].length;\n'+
+        '    mapOnTable=conv(baseData[1],o.pTable);\n'+
+        '    mapOnData=mapOnTable;\n'+
+        '    \n'+
+        '    buf=$("<canvas>").attr{width:col*chipWidth,height:row*chipHeight};\n'+
+        '    initMap();   \n'+
+        '}\n'+
+        '\\conv(mat, tbl) {\n'+
+        '    var res=[];\n'+
+        '    mat.forEach \\(row) {\n'+
+        '        var rrow=[];\n'+
+        '        res.push(rrow);\n'+
+        '        row.forEach \\(dat) {// dat:[0,20]\n'+
+        '            var t=tbl[dat[0]];\n'+
+        '            if (t) rrow.push(Tonyu.globals[t.name]+dat[1]);\n'+
+        '            else rrow.push(dat[1]);\n'+
+        '        };\n'+
+        '    };\n'+
+        '    return res;\n'+
+        '}'
+      ,
+      'T1Page.tonyu': 
+        'extends PlainChar;\n'+
+        '\n'+
+        '\\initGlobals() {\n'+
+        '    $chars=$Sprites.sprites;\n'+
+        '    $Boot.setFrameRate(60);\n'+
+        '    $clBlack=color(0,0,0);\n'+
+        '    $clRed=color(255,0,0);\n'+
+        '    $clGreen=color(0,255,0);\n'+
+        '    $clYellow=color(255,255,0);\n'+
+        '    $clBlue=color(0,0,255);\n'+
+        '    $clPink=color(255,0,255);\n'+
+        '    $clAqua=color(0,255,255);\n'+
+        '    $clWhite=color(255,255,255);\n'+
+        '    $mplayer=new MediaPlayer;\n'+
+        '}'
+      ,
+      'T1Text.tonyu': 
+        '\\draw(c) {\n'+
+        '    if (hidden) return;\n'+
+        '    c.font=size+"px \'ＭＳ Ｐゴシック\'";\n'+
+        '    \n'+
+        '    super.draw(c);\n'+
+        '    hidden=true;\n'+
         '}'
       ,
       'TObject.tonyu': 
@@ -2463,6 +2697,36 @@ requireSimulator.setName('fs/ROMk');
         '    return find \\(o) { return o instanceof k; };\n'+
         '}'
       ,
+      'TextChar.tonyu': 
+        'extends PlainChar;\n'+
+        'native TextRect;\n'+
+        '\n'+
+        '\\new (xx,yy,t,c,s){\n'+
+        '    super(xx,yy);\n'+
+        '    text="";\n'+
+        '    col=$clWhite;\n'+
+        '    size=20;\n'+
+        '    if (!this.x) this.x=0;\n'+
+        '    if (!this.y) this.y=0;\n'+
+        '    if (t) text=t;\n'+
+        '    if (c) fillStyle=c;\n'+
+        '    if (s) size=s;\n'+
+        '}\n'+
+        '\\draw(ctx) {\n'+
+        '    if (!size) size=15;\n'+
+        '    if (!align) align="left";\n'+
+        '    if (!fillStyle) fillStyle="white";\n'+
+        '    ctx.fillStyle=fillStyle;\n'+
+        '    ctx.globalAlpha=this.alpha/255;\n'+
+        '    ctx.font=size+"px \'ＭＳ Ｐゴシック\'";\n'+
+        '    var rect=TextRect.draw(ctx, text, x, y, size, align , "fill");\n'+
+        '    width=rect.w;\n'+
+        '    height=rect.h;\n'+
+        '    \n'+
+        '    //    fillStyle=col;\n'+
+        '    //super.draw(ctx);\n'+
+        '}'
+      ,
       'WaveTable.tonyu': 
         'extends TObject;\n'+
         'native T;\n'+
@@ -2628,7 +2892,7 @@ Tonyu=function () {
         function addObj(obj, methodName) {
             var th=thread();
             if (!methodName) methodName="main";
-            th.enter(obj["fiber$"+methodName]());
+            obj["fiber$"+methodName](th);
             add(th);
             return th;
         }
@@ -4998,7 +5262,7 @@ function genJS(klass, env,pass) {
     var debug=false;
     var fiberCallTmpl={
             type:"postfix",
-            op:{$var:"A",type:"call" },
+            op:{/*$var:"A",*/type:"call", args:OM.A },
             left:{type:"varAccess", name: {text:OM.T}}
          };
     var noRetFiberCallTmpl={
@@ -5013,14 +5277,14 @@ function genJS(klass, env,pass) {
         }
     };
     var noRetSuperFiberCallTmpl={
-        expr: {type:"superExpr", $var:"S"}
+        expr: {type:"superExpr", params:{args:OM.A}, $var:"S"}
     };
     var retSuperFiberCallTmpl={
             expr: {
                 type: "infix",
                 op: OM.O,
                 left: OM.L,
-                right: {type:"superExpr", $var:"S"}
+                right: {type:"superExpr", params:{args:OM.A}, $var:"S"}
             }
         };
     klass.annotation={};
@@ -5187,7 +5451,11 @@ function genJS(klass, env,pass) {
                     LASTPOS, traceTbl.add(klass/*.src.tonyu*/,node.pos ));
         };
     }
+    var THNode={type:"THNode"};
     v=buf.visitor=Visitor({
+        THNode: function (node) {
+            buf.printf(TH);
+        },
         dummy: function (node) {
             buf.printf("",node);
         },
@@ -5293,10 +5561,10 @@ function genJS(klass, env,pass) {
                     */
             if (t.type=="noRet") {
                 buf.printf(
-                        "%s.enter( %s.%s%s%v );%n" +
+                        "%s.%s%s(%j);%n" +
                         "%s=%s;return;%n" +/*B*/
                         "%}case %d:%{",
-                            TH, THIZ, FIBPRE, t.T, t.A,
+                            THIZ, FIBPRE, t.T,  [", ",[THNode].concat(t.A)],
                             FRMPC, ctx.pc,
                             ctx.pc++
                 );
@@ -5305,11 +5573,11 @@ function genJS(klass, env,pass) {
                     !getMethod(t.T).nowait) {*/
             } else if (t.type=="ret") {
                 buf.printf(
-                        "%s.enter( %s.%s%s%v );%n" +
+                        "%s.%s%s(%j);%n" +
                         "%s=%s;return;%n" +/*B*/
                         "%}case %d:%{"+
                         "%v%v%s.retVal();%n",
-                            TH, THIZ, FIBPRE, t.T, t.A,
+                            THIZ, FIBPRE, t.T, [", ",[THNode].concat(t.A)],
                             FRMPC, ctx.pc,
                             ctx.pc++,
                             t.L, t.O, TH
@@ -5319,10 +5587,10 @@ function genJS(klass, env,pass) {
                 var p=getClassName(klass.superClass);
                 //if (t.S.name) {
                     buf.printf(
-                            "%s.enter( %s.prototype.%s%s.apply( %s, %v) );%n" +
+                            "%s.prototype.%s%s.apply( %s, [%j]);%n" +
                             "%s=%s;return;%n" +/*B*/
                             "%}case %d:%{",
-                                TH,   p,  FIBPRE, t.S.name.text,  THIZ,  t.S.params,
+                             p,  FIBPRE, t.S.name.text,  THIZ,  [", ",[THNode].concat(t.A)],
                                 FRMPC, ctx.pc,
                                 ctx.pc++
                     );
@@ -5332,11 +5600,11 @@ function genJS(klass, env,pass) {
             } else if (t.type=="retSuper") {
                 //if (t.S.name) {
                     buf.printf(
-                            "%s.enter( %s.prototype.%s%s.apply( %s, %v) );%n" +
+                            "%s.prototype.%s%s.apply( %s, [%j]);%n" +
                             "%s=%s;return;%n" +/*B*/
                             "%}case %d:%{"+
                             "%v%v%s.retVal();%n",
-                                TH,   p,  FIBPRE, t.S.name.text,  THIZ,  t.S.params,
+                                p,  FIBPRE, t.S.name.text,  THIZ, [", ",[THNode].concat(t.A)],
                                 FRMPC, ctx.pc,
                                 ctx.pc++,
                                 t.L, t.O, TH
@@ -5918,9 +6186,11 @@ function genJS(klass, env,pass) {
                 });
                 if (debug) console.log("method2", name);
                 //v.debug=debug;
-                ctx.enter({noWait:false}, function () {
-                    genFiber(method);
-                });
+                if (!method.nowait ) {
+                    ctx.enter({noWait:false}, function () {
+                        genFiber(method);
+                    });
+                }
                 if (debug) console.log("method3", name);
             }
             printf("%}});");
@@ -5941,35 +6211,34 @@ function genJS(klass, env,pass) {
         */
         //annotateMethodFiber(fiber);
         //annotateVarAccesses(fiber.stmts, ns);
-        var cm="";//(fiber.fiberCallRequired?"":"//");
         printf(
                "%s%s :function (%j) {%{"+
                  "var %s=%s;%n"+
                  "var %s=%s;%n"+
                  "var %s=0;%n"+
                  "%f%n"+
-                 "return function %s(%s) {%{"+
-                    cm+"for(var %s=%d ; %s--;) {%{"+
-                      cm+"switch (%s) {%{"+
-                         "%}"+cm+"case 0:%{"+
+                 "%s.enter(function %s(%s) {%{"+
+                    "for(var %s=%d ; %s--;) {%{"+
+                      "switch (%s) {%{"+
+                         "%}case 0:%{"+
                         "%f" +
                         "%s.exit(%s);return;%n"+
-                      "%}"+cm+"}%n"+
-                    "%}"+cm+"}%n"+
-                 "%}};%n"+
+                      "%}}%n"+
+                    "%}}%n"+
+                 "%}});%n"+
                "%}},%n",
 
-               FIBPRE, fiber.name, [",",fiber.params],
+               FIBPRE, fiber.name, [",",[THNode].concat(fiber.params)],
                    THIZ, GET_THIS,
                    ARGS, "arguments",
                    FRMPC,
                    genLocalsF(fiber),
-                   genFn(fiber.pos),TH,
-                   CNTV, CNTC, CNTV,
+                   TH,genFn(fiber.pos),TH,
+                      CNTV, CNTC, CNTV,
                         FRMPC,
                         // case 0:
-                      fbody,
-                      TH,THIZ
+                        fbody,
+                        TH,THIZ
         );
         function fbody() {
             ctx.enter({method:fiber, scope: fiber.scope, pc:1}, function () {
@@ -6993,7 +7262,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         //Tonyu.runMode=true;
         var main=new mainClass();
         var th=Tonyu.thread();
-        th.enter(main.fiber$main());
+        main.fiber$main(th);
 
         TPR.runningThread=th; //thg.addObj(main);
         TPR.runningObj=main;
