@@ -346,10 +346,19 @@ function genJS(klass, env,pass) {
                     buf.printf("%s.exit(%s);return;",TH,THIZ);
                 }
             } else {
-                if (node.value) {
-                    buf.printf("return %v;",node.value);
+                if (ctx.useRetVal) {
+                    if (node.value) {
+                        buf.printf("%s.retVal=%v;return;%n",TH, node.value);
+                    } else {
+                        buf.printf("%s.retVal=%s;return;%n",TH, THIZ);
+                    }
                 } else {
-                    buf.printf("return %s;",THIZ);
+                    if (node.value) {
+                        buf.printf("return %v;",node.value);
+                    } else {
+                        buf.printf("return %s;",THIZ);
+                    }
+
                 }
             }
         },
@@ -441,7 +450,7 @@ function genJS(klass, env,pass) {
                         "%s.%s%s(%j);%n" +
                         "%s=%s;return;%n" +/*B*/
                         "%}case %d:%{"+
-                        "%v%v%s.retVal();%n",
+                        "%v%v%s.retVal;%n",
                             THIZ, FIBPRE, t.T, [", ",[THNode].concat(t.A)],
                             FRMPC, ctx.pc,
                             ctx.pc++,
@@ -468,7 +477,7 @@ function genJS(klass, env,pass) {
                             "%s.prototype.%s%s.apply( %s, [%j]);%n" +
                             "%s=%s;return;%n" +/*B*/
                             "%}case %d:%{"+
-                            "%v%v%s.retVal();%n",
+                            "%v%v%s.retVal;%n",
                                 p,  FIBPRE, t.S.name.text,  THIZ, [", ",[THNode].concat(t.A)],
                                 FRMPC, ctx.pc,
                                 ctx.pc++,
@@ -1076,11 +1085,21 @@ function genJS(klass, env,pass) {
         */
         //annotateMethodFiber(fiber);
         //annotateVarAccesses(fiber.stmts, ns);
+        var stmts=fiber.stmts;
+        var noWaitStmts=[], waitStmts=[], curStmts=noWaitStmts;
+        /*stmts.forEach(function (s) {
+            if (annotation(s).fiberCallRequired) {
+                curStmts=waitStmts;
+            }
+            curStmts.push(s);
+        });*/
+        waitStmts=stmts;
         printf(
                "%s%s :function (%j) {%{"+
                  "var %s=%s;%n"+
                  "var %s=%s;%n"+
                  "var %s=0;%n"+
+                 "%f%n"+
                  "%f%n"+
                  "%s.enter(function %s(%s) {%{"+
                     "for(var %s=%d ; %s--;) {%{"+
@@ -1098,6 +1117,7 @@ function genJS(klass, env,pass) {
                    ARGS, "arguments",
                    FRMPC,
                    genLocalsF(fiber),
+                   nfbody,
                    TH,genFn(fiber.pos),TH,
                       CNTV, CNTC, CNTV,
                         FRMPC,
@@ -1105,9 +1125,16 @@ function genJS(klass, env,pass) {
                         fbody,
                         TH,THIZ
         );
+        function nfbody() {
+            ctx.enter({method:fiber, scope: fiber.scope, noWait:true, useRetVal:true }, function () {
+                noWaitStmts.forEach(function (stmt) {
+                    printf("%v%n", stmt);
+                });
+            });
+        }
         function fbody() {
             ctx.enter({method:fiber, scope: fiber.scope, pc:1}, function () {
-                fiber.stmts.forEach(function (stmt) {
+                waitStmts.forEach(function (stmt) {
                     printf("%v%n", stmt);
                 });
             });

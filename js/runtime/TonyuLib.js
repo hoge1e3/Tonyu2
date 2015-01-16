@@ -3,11 +3,11 @@ Tonyu=function () {
     function thread() {
 	//var stpd=0;
         var fb={enter:enter, exit:exit, steps:steps, step:step, isAlive:isAlive, isWaiting:isWaiting,
-                suspend:suspend,retVal:retVal, kill:kill, waitFor: waitFor,setGroup:setGroup};
+                suspend:suspend,retVal:0/*retVal*/, kill:kill, waitFor: waitFor,setGroup:setGroup};
         var frame=null;
         var _isAlive=true;
         var cnt=0;
-        var retVal;
+        //var retVal;
         var _isWaiting=false;
         function isAlive() {
             return frame!=null && _isAlive;
@@ -27,7 +27,7 @@ Tonyu=function () {
         function exit(res) {
             frame=frame.prev;
             //if (frame) frame.res=res;
-            retVal=res;
+            fb.retVal=res;
         }
         function waitFor(j) {
             _isWaiting=true;
@@ -48,9 +48,9 @@ Tonyu=function () {
 	    fb.group=g;
 	    if (g) g.add(fb);
 	}
-        function retVal() {
+        /*function retVal() {
             return retVal;
-        }
+        }*/
         function steps() {
             //stpd++;
 	    //if (stpd>5) throw new Error("Depth too much");
