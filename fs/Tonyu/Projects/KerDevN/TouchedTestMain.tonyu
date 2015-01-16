@@ -10,6 +10,7 @@ for(var i=0;i<10;i++){
     new Actor{x:10+i*10,y:30+i*10,p:i};
 }
 while(true){
+    drawText(x-50,y,"drawText","white",20);
     if(y%20==0){
         new Actor{x:x+30,y,p:0};
     }

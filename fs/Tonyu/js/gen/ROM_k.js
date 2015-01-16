@@ -2,7 +2,7 @@
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1418199307653},"Actor.tonyu":{"lastUpdate":1414051292629},"BaseActor.tonyu":{"lastUpdate":1418199307655},"Boot.tonyu":{"lastUpdate":1421122635939},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1421122635939},"MathMod.tonyu":{"lastUpdate":1400120164000},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1421122635940},"Sprites.tonyu":{"lastUpdate":1421122635941},"TObject.tonyu":{"lastUpdate":1421122635941},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1421122635942},"MapEditor.tonyu":{"lastUpdate":1421122635944},"InputDevice.tonyu":{"lastUpdate":1416889517771},"Pad.tonyu":{"lastUpdate":1421122635944},"DxChar.tonyu":{"lastUpdate":1421383049524},"MediaPlayer.tonyu":{"lastUpdate":1421383070767},"PlainChar.tonyu":{"lastUpdate":1421383084999},"SecretChar.tonyu":{"lastUpdate":1421383101403},"SpriteChar.tonyu":{"lastUpdate":1421383110209},"T1Line.tonyu":{"lastUpdate":1421383126796},"T1Map.tonyu":{"lastUpdate":1421383136414},"T1Page.tonyu":{"lastUpdate":1421383148587},"T1Text.tonyu":{"lastUpdate":1421383157722},"TextChar.tonyu":{"lastUpdate":1421383188873}}',
+      '': '{".desktop":{"lastUpdate":1421384746169},"Actor.tonyu":{"lastUpdate":1414051292629},"BaseActor.tonyu":{"lastUpdate":1421384746170},"Boot.tonyu":{"lastUpdate":1421384746171},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1421122635939},"MathMod.tonyu":{"lastUpdate":1421384746173},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1421122635940},"Sprites.tonyu":{"lastUpdate":1421122635941},"TObject.tonyu":{"lastUpdate":1421122635941},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1421122635942},"MapEditor.tonyu":{"lastUpdate":1421122635944},"InputDevice.tonyu":{"lastUpdate":1416889517771},"Pad.tonyu":{"lastUpdate":1421122635944},"DxChar.tonyu":{"lastUpdate":1421383049524},"MediaPlayer.tonyu":{"lastUpdate":1421383070767},"PlainChar.tonyu":{"lastUpdate":1421383084999},"SecretChar.tonyu":{"lastUpdate":1421383101403},"SpriteChar.tonyu":{"lastUpdate":1421383110209},"T1Line.tonyu":{"lastUpdate":1421383126796},"T1Map.tonyu":{"lastUpdate":1421383136414},"T1Page.tonyu":{"lastUpdate":1421383148587},"T1Text.tonyu":{"lastUpdate":1421383157722},"TextChar.tonyu":{"lastUpdate":1421383188873}}',
       '.desktop': '{"runMenuOrd":["TouchedTestMain","Main1023","Main2","MapLoad","Main","AcTestM","NObjTest","NObjTest2","AcTest","AltBoot","Ball","Bar","Bounce","MapTest","MapTest2nd","SetBGCTest","Label","PanelTest","Boot","InputDevice","Sprites","BaseActor"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -86,9 +86,13 @@
         '    this.animMode=false;\n'+
         '}\n'+
         '\\update() {\n'+
+        '    onUpdate();\n'+
         '    ifwait {\n'+
         '        _thread.suspend();\n'+
         '    }\n'+
+        '}\n'+
+        '\\onUpdate() {\n'+
+        '    \n'+
         '}\n'+
         '\\updateEx(updateT){\n'+
         '    for(var updateCount=0;updateCount<updateT;updateCount++){\n'+
@@ -245,7 +249,7 @@
         '    }\n'+
         '}\n'+
         'nowait \\draw(ctx) {\n'+
-        '    if (x==null || y==null) return;\n'+
+        '    if (x==null || y==null || _isInvisible) return;\n'+
         '    detectShape();\n'+
         '    if (pImg) {\n'+
         '        ctx.save();\n'+
@@ -353,6 +357,39 @@
         '    }\n'+
         '    mml.play(mmls);\n'+
         '    return mml;\n'+
+        '}\n'+
+        '// from PlainChar\n'+
+        '\\color(r,g,b) {\n'+
+        '    return "rgb("+[r,g,b].join(",")+")";\n'+
+        '}\n'+
+        '\\drawText(x,y,text,col,size) {\n'+
+        '    if ($debug) return;\n'+
+        '    if (!size) size=15;\n'+
+        '    if (!col) col="cyan";\n'+
+        '    var tp=all(T1Text).find \\(t) {return t.hidden;};\n'+
+        '    if (tp.length>0) {\n'+
+        '        tp[0].extend{x,y,text,fillStyle:col, size,hidden:false};\n'+
+        '    }else {\n'+
+        '        new T1Text{x,y,text,fillStyle:col, size};  \n'+
+        '    }\n'+
+        '}\n'+
+        '\\drawLine(x,y,tx,ty,col) {\n'+
+        '    if (!col) col="white";\n'+
+        '    var tp=all(T1Line).find \\(t) {return t.hidden;};\n'+
+        '    if (tp.length>0) {\n'+
+        '        tp[0].extend{x,y,tx,ty,col};\n'+
+        '    }else {\n'+
+        '        new T1Line{x,y,tx,ty,col};  \n'+
+        '    }\n'+
+        '}\n'+
+        '\\loadPage(page,arg){\n'+
+        '    all().die();\n'+
+        '    new page(arg);\n'+
+        '    die();\n'+
+        '}\n'+
+        '\n'+
+        '\\setVisible(v) {\n'+
+        '    _isInvisible=!v;\n'+
         '}'
       ,
       'Boot.tonyu': 
@@ -1115,29 +1152,29 @@
         'extends null;\n'+
         'native Math;\n'+
         '\n'+
-        '\\sin(d) {\n'+
+        'nowait \\sin(d) {\n'+
         '    return Math.sin(rad(d));\n'+
         '}\n'+
-        '\\cos(d) {\n'+
+        'nowait \\cos(d) {\n'+
         '    return Math.cos(rad(d));\n'+
         '}\n'+
-        '\\rad(d) {\n'+
+        'nowait \\rad(d) {\n'+
         '    return d/180*Math.PI;\n'+
         '}\n'+
-        '\\deg(d) {\n'+
+        'nowait \\deg(d) {\n'+
         '    return d/Math.PI*180;\n'+
         '}\n'+
         '\n'+
-        '\\abs(v) {\n'+
+        'nowait \\abs(v) {\n'+
         '    return Math.abs(v);\n'+
         '}\n'+
-        '\\atan2(x,y) {\n'+
+        'nowait \\atan2(x,y) {\n'+
         '    return deg(Math.atan2(x,y));\n'+
         '}\n'+
-        '\\floor(x) {\n'+
+        'nowait \\floor(x) {\n'+
         '    return Math.floor(x);\n'+
         '}\n'+
-        '\\angleDiff(a,b) {\n'+
+        'nowait \\angleDiff(a,b) {\n'+
         '    var c;\n'+
         '    a=floor(a);\n'+
         '    b=floor(b);\n'+
@@ -1150,15 +1187,18 @@
         '    }\n'+
         '    return c;\n'+
         '}\n'+
-        '\\sqrt(t) {\n'+
+        'nowait \\sqrt(t) {\n'+
         '    return Math.sqrt(t);\n'+
         '}\n'+
-        '\\dist(dx,dy) {\n'+
+        'nowait \\dist(dx,dy) {\n'+
         '    if (typeof dx=="object") {\n'+
         '        var t=dx;\n'+
         '        dx=t.x-x;dy=t.y-y;\n'+
         '    }\n'+
         '    return sqrt(dx*dx+dy*dy);\n'+
+        '}\n'+
+        'nowait \\trunc(f) {\n'+
+        '    return Math.trunc(f);\n'+
         '}'
       ,
       'MediaPlayer.tonyu': 

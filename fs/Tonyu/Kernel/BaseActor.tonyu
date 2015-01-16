@@ -59,9 +59,13 @@ nowait \stopAnim(){
     this.animMode=false;
 }
 \update() {
+    onUpdate();
     ifwait {
         _thread.suspend();
     }
+}
+\onUpdate() {
+    
 }
 \updateEx(updateT){
     for(var updateCount=0;updateCount<updateT;updateCount++){
@@ -218,7 +222,7 @@ nowait \animation(){
     }
 }
 nowait \draw(ctx) {
-    if (x==null || y==null) return;
+    if (x==null || y==null || _isInvisible) return;
     detectShape();
     if (pImg) {
         ctx.save();
@@ -326,4 +330,37 @@ nowait \playSE() {
     }
     mml.play(mmls);
     return mml;
+}
+// from PlainChar
+\color(r,g,b) {
+    return "rgb("+[r,g,b].join(",")+")";
+}
+\drawText(x,y,text,col,size) {
+    if ($debug) return;
+    if (!size) size=15;
+    if (!col) col="cyan";
+    var tp=all(T1Text).find \(t) {return t.hidden;};
+    if (tp.length>0) {
+        tp[0].extend{x,y,text,fillStyle:col, size,hidden:false};
+    }else {
+        new T1Text{x,y,text,fillStyle:col, size};  
+    }
+}
+\drawLine(x,y,tx,ty,col) {
+    if (!col) col="white";
+    var tp=all(T1Line).find \(t) {return t.hidden;};
+    if (tp.length>0) {
+        tp[0].extend{x,y,tx,ty,col};
+    }else {
+        new T1Line{x,y,tx,ty,col};  
+    }
+}
+\loadPage(page,arg){
+    all().die();
+    new page(arg);
+    die();
+}
+
+\setVisible(v) {
+    _isInvisible=!v;
 }
