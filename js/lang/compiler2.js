@@ -1085,6 +1085,7 @@ function genJS(klass, env,pass) {
         */
         //annotateMethodFiber(fiber);
         //annotateVarAccesses(fiber.stmts, ns);
+        if (isConstructor(fiber)) return;
         var stmts=fiber.stmts;
         var noWaitStmts=[], waitStmts=[], curStmts=noWaitStmts;
         var opt=true;
@@ -1104,31 +1105,36 @@ function genJS(klass, env,pass) {
                  "var %s=%s;%n"+
                  "var %s=0;%n"+
                  "%f%n"+
-                 "%f%n"+
+                 "%f%n",
+               FIBPRE, fiber.name, [",",[THNode].concat(fiber.params)],
+                 THIZ, GET_THIS,
+                 ARGS, "arguments",
+                 FRMPC,
+                 genLocalsF(fiber),
+                 nfbody
+        );
+        if (waitStmts.length>0) {
+            printf(
                  "%s.enter(function %s(%s) {%{"+
                     "for(var %s=%d ; %s--;) {%{"+
                       "switch (%s) {%{"+
-                         "%}case 0:%{"+
+                        "%}case 0:%{"+
                         "%f" +
                         "%s.exit(%s);return;%n"+
                       "%}}%n"+
                     "%}}%n"+
-                 "%}});%n"+
-               "%}},%n",
-
-               FIBPRE, fiber.name, [",",[THNode].concat(fiber.params)],
-                   THIZ, GET_THIS,
-                   ARGS, "arguments",
-                   FRMPC,
-                   genLocalsF(fiber),
-                   nfbody,
-                   TH,genFn(fiber.pos),TH,
-                      CNTV, CNTC, CNTV,
-                        FRMPC,
+                 "%}});%n",
+                 TH,genFn(fiber.pos),TH,
+                    CNTV, CNTC, CNTV,
+                      FRMPC,
                         // case 0:
                         fbody,
                         TH,THIZ
         );
+        } else {
+            printf("%s.retVal=%s;return;%n",TH,THIZ);
+        }
+        printf("%}},%n");
         function nfbody() {
             ctx.enter({method:fiber, scope: fiber.scope, noWait:true, useRetVal:true }, function () {
                 noWaitStmts.forEach(function (stmt) {
