@@ -2,8 +2,10 @@ Tonyu=function () {
     var preemptionTime=60;
     function thread() {
 	//var stpd=0;
-        var fb={enter:enter, exit:exit, steps:steps, step:step, isAlive:isAlive, isWaiting:isWaiting,
-                suspend:suspend,retVal:0/*retVal*/, kill:kill, waitFor: waitFor,setGroup:setGroup};
+        var fb={enter:enter, apply:apply,
+                exit:exit, steps:steps, step:step, isAlive:isAlive, isWaiting:isWaiting,
+                suspend:suspend,retVal:0/*retVal*/,
+                kill:kill, waitFor: waitFor,setGroup:setGroup};
         var frame=null;
         var _isAlive=true;
         var cnt=0;
@@ -20,6 +22,21 @@ Tonyu=function () {
         }
         function enter(frameFunc) {
             frame={prev:frame, func:frameFunc};
+        }
+        function apply(obj, methodName, args) {
+            if (!args) args=[];
+            args=[fb].concat(args);
+            var pc=0;
+            enter(function () {
+                switch (pc){
+                case 0:
+                    obj["fiber$"+methodName].apply(obj,args);
+                    pc=1;break;
+                case 1:
+                    exit();
+                    pc=2;break;
+                }
+            });
         }
         function step() {
             if (frame) frame.func(fb);
@@ -120,10 +137,11 @@ Tonyu=function () {
                 threads.push(thread);
             }
         }
-        function addObj(obj, methodName) {
-            var th=thread();
+        function addObj(obj, methodName,args) {
             if (!methodName) methodName="main";
-            obj["fiber$"+methodName](th);
+            var th=thread();
+            th.apply(obj,methodName,args);
+            //obj["fiber$"+methodName](th);
             add(th);
             return th;
         }
@@ -188,7 +206,7 @@ Tonyu=function () {
                 //run();
             }
         }
-        return thg={add:add, addObj:addObj,  steps:steps, kill:kill, notifyResume: notifyResume};
+        return thg={add:add, addObj:addObj,  steps:steps, kill:kill, notifyResume: notifyResume, threads:threads};
     }
     function handleEx(e) {
         if (Tonyu.onRuntimeError) {

@@ -1,0 +1,45 @@
+extends SpriteChar;
+
+an=0; // アニメーション用カウンタ
+
+while(1) {
+    dying=0;
+    // 死ぬまでこのループをくりかえす
+    while (!dying){
+        // 自機の移動
+        if (getkey(37) && x>10) x=x-1;  // カーソルキーの左で左移動
+        if (getkey(39) && x<500) x=x+1; // カーソルキーの右で右移動
+        if (getkey(40)) y=y+2;  // カーソルキーの下で下へ高速落下
+        y=y+1;  // なにもおさなくても落下
+        
+        // アニメーションの処理
+        an+=0.05;if (an>=4) an=0;// 0から0.05ずつふやし、4になったら0にもどる 
+        // anの値(小数を切り捨てた整数値)により、キャラクタパターンをかえる
+        if (trunc(an)==0) {
+            p=$pat_ufo+1;
+            f=0;
+        } 
+        if (trunc(an)==1) {
+            p=$pat_ufo+2;
+            f=0;
+        }
+        if (trunc(an)==2) {
+            p=$pat_ufo+1;
+            f=1;
+        }
+        if (trunc(an)==3) {
+            p=$pat_ufo+2;
+            f=0;
+        }
+        
+        update();
+    }
+    // 死んだら落下する 
+    // 下端までくるとdyingは$rocketによって0にリセットされる(TRocket.tonyu参照)  
+    $mplayer.play($se_die);
+    while (dying) {
+        y=y+4;
+        update();
+    }
+    
+}

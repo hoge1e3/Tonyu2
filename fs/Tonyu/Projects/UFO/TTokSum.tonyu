@@ -1,8 +1,8 @@
 extends SpriteChar;
 
-function draw() {
-    //super.draw();
-    drawText(x,y,$score,color(0,255,0),20);
+function draw(c) {
+    super.draw(c);
+    drawText (x,y,$score,255*256,20);
 }
 
 while (1) {

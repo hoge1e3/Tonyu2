@@ -261,7 +261,8 @@ return Tonyu.Project=function (dir, kernelDir) {
         //Tonyu.runMode=true;
         var main=new mainClass();
         var th=Tonyu.thread();
-        main.fiber$main(th);
+        th.apply(main,"main");
+        //main.fiber$main(th);
 
         TPR.runningThread=th; //thg.addObj(main);
         TPR.runningObj=main;

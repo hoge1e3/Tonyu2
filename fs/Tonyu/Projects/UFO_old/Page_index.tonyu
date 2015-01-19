@@ -1,0 +1,18 @@
+extends T1Page;
+initGlobals();
+$screenWidth=560;
+$screenHeight=376;
+$Screen.resize($screenWidth,$screenHeight);
+$rocket= new TRocket{p: $pat_ufo+0, x: 134, y: 53};
+$Jiki= new TJiki{p: $pat_ufo+1, x: 278, y: 357};
+$Teki2= new Teki{p: $pat_ufo+3, x: 501, y: 202};
+$_teki3= new Teki{p: $pat_ufo+3, x: 278, y: 228};
+$Left1= new TLeft{p: $pat_ufo+1, aleft: 3, x: 507, y: 27};
+$Left2= new TLeft{p: $pat_ufo+1, aleft: 2, x: 479, y: 27};
+$Left3= new TLeft{p: $pat_ufo+1, aleft: 1, x: 451, y: 26};
+$Tok= new TTok{p: 0, sc: 0, x: 48, y: 20};
+$TokSum= new TTokSum{p: 0, x: 382, y: 31};
+$Teki10= new Teki{p: 35, x: 123, y: 161};
+$bomb= new TBomb{p: $pat_ufo+5, t: 0, x: 160.515609741211, y: 360};
+$map=new T1Map{zOrder:100};
+$map.load("index.map");

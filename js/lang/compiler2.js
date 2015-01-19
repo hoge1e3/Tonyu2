@@ -1055,7 +1055,7 @@ function genJS(klass, env,pass) {
                 var method=methods[name];
                 //initParamsLocals(method);
                 //annotateMethodFiber(method);
-                ctx.enter({noWait:true}, function () {
+                ctx.enter({noWait:true, useRetVal:false}, function () {
                     genFunc(method);
                 });
                 if (debug) console.log("method2", name);
@@ -1087,13 +1087,17 @@ function genJS(klass, env,pass) {
         //annotateVarAccesses(fiber.stmts, ns);
         var stmts=fiber.stmts;
         var noWaitStmts=[], waitStmts=[], curStmts=noWaitStmts;
-        /*stmts.forEach(function (s) {
-            if (annotation(s).fiberCallRequired) {
-                curStmts=waitStmts;
-            }
-            curStmts.push(s);
-        });*/
-        waitStmts=stmts;
+        var opt=true;
+        if (opt) {
+            stmts.forEach(function (s) {
+                if (annotation(s).fiberCallRequired) {
+                    curStmts=waitStmts;
+                }
+                curStmts.push(s);
+            });
+        } else {
+            waitStmts=stmts;
+        }
         printf(
                "%s%s :function (%j) {%{"+
                  "var %s=%s;%n"+
@@ -1197,7 +1201,7 @@ function genJS(klass, env,pass) {
                        fbody
         );
         function fbody() {
-            ctx.enter({noWait: true, scope: finfo.scope }, function () {
+            ctx.enter({noWait: true, useRetVal:false, scope: finfo.scope }, function () {
                 node.body.stmts.forEach(function (stmt) {
                     printf("%v%n", stmt);
                 });
@@ -1235,7 +1239,7 @@ function genJS(klass, env,pass) {
                        fbody
         );
         function fbody() {
-            ctx.enter({noWait: true, scope: finfo.scope }, function () {
+            ctx.enter({noWait: true, useRetVal:false, scope: finfo.scope }, function () {
                 node.body.stmts.forEach(function (stmt) {
                     printf("%v%n", stmt);
                 });

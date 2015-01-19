@@ -110,7 +110,7 @@ requirejs(["JSZip","UI","FS","NewProjectDialog","Encoding","T1Map"],
         }
     }
     function setOptions(){
-        convFiles[dstDir.rel("options.json")]=JSON.stringify({
+        mem[dstDir.rel("options.json")]=JSON.stringify({
             "compiler":{
                 "defaultSuperClass":"kernel.Actor",
                 //"commentLastPos":true,

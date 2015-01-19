@@ -21,14 +21,15 @@ function onUpdate() {
     }
 }
 
-tx=x;ty=y;vx=vy=0;
+vx=vy=0;
+tx=x;ty=y;
 while(1) {
     c=0;
     // (tx,ty)の方に向かってくるように、方向を設定する
-    if (tx>x) vx=2+$score/1000;
-    if (ty>y) vy=2+$score/1000;
-    if (tx<x) vx=-2-$score/1000;
-    if (ty<y) vy=-2-$score/1000;
+    if (tx>x) vx=2;
+    if (ty>y) vy=2;
+    if (tx<x) vx=-2;
+    if (ty<y) vy=-2;
     // 移動ループ
     w=rnd()*10;
     while(c<w){

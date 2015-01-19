@@ -1,1 +1,8 @@
-undefined
+$Boot.setFrameRate(60);
+y=200;
+t=0;
+p=5;
+while(true) {
+    x=sin(t+=4)*100+200;
+    update();
+}

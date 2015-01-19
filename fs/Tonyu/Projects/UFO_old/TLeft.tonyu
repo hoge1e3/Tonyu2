@@ -1,0 +1,8 @@
+extends SpriteChar;
+
+//残機表示。画面上に３つならんでいるものは、それぞれaleftが1,2,3となっている
+//$Leftがaleftを下回ると表示を消す
+while(1){
+    update();
+    if ($Left<aleft) setVisible(0);
+}

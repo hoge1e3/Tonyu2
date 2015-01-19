@@ -11,7 +11,7 @@ while ($Left>=0) {
     $mplayer.play($se_rocket);
     // ↓スペースキーをおすまで、ロケットが往復する
     while (getkey(32)==0) {
-        drawText(153,173,"Push Space key",color(30,150,220),20);
+        drawText(153,173,"Push Space key"+$currentThreadGroup.threads.length,color(30,150,220),20);
         $Jiki.y=-50; // 自機を隠す
         // 真中より右にいる場合は左に加速、左にいる場合は右
         if (x>$screenWidth/2) vx=vx-1;
@@ -47,8 +47,8 @@ while ($Left>=0) {
 // ゲームオーバー
 while(1) {
     y=y+10;  // ロケットが落下していく
-    drawText(221,166,"Game Over",color(rnd(255),rnd(255),0),20);
-    drawText(221,190,"Replay F9 ",color(rnd(255),rnd(255),0),20);
+    drawText(221,166,"Game Over",rnd()*65536,20);
+    drawText(221,190,"Replay F9 ",rnd()*65536,20);
     update();
 }
 

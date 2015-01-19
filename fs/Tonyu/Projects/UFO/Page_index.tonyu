@@ -14,5 +14,5 @@ $Tok= new TTok{p: 0, sc: 0, x: 48, y: 20};
 $TokSum= new TTokSum{p: 0, x: 382, y: 31};
 $Teki10= new Teki{p: 35, x: 123, y: 161};
 $bomb= new TBomb{p: $pat_ufo+5, t: 0, x: 160.515609741211, y: 360};
-$map=new T1Map{zOrder:100};
+$map=new T1Map{zOrder:1000};
 $map.load("index.map");
