@@ -119,6 +119,7 @@ TT=function () {
             "constructor": true,
             ifwait:true,
             nowait:true,
+            _thread:true,
             arguments:true,
             "delete": true,
             "extends":true,

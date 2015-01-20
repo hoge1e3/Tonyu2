@@ -102,6 +102,7 @@ TonyuLang=function () {
     var reservedConst = tk("true").or(tk("false")).
     or(tk("null")).
     or(tk("undefined")).
+    or(tk("_thread")).
     or(tk("this")).
     or(tk("arguments")).ret(function (t) {
         t.type="reservedConst";

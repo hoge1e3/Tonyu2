@@ -373,6 +373,8 @@ function genJS(klass, env,pass) {
                 buf.printf("%s",THIZ);
             } else if (node.text=="arguments" && !ctx.noWait) {
                 buf.printf("%s",ARGS);
+            } else if (node.text==TH) {
+                buf.printf("%s", (ctx.threadAvail)?TH:"null");
             } else {
                 buf.printf("%s", node.text);
             }
@@ -1061,7 +1063,7 @@ function genJS(klass, env,pass) {
                 if (debug) console.log("method2", name);
                 //v.debug=debug;
                 if (!method.nowait ) {
-                    ctx.enter({noWait:false}, function () {
+                    ctx.enter({noWait:false,threadAvail:true}, function () {
                         genFiber(method);
                     });
                 }
