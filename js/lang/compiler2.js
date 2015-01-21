@@ -371,7 +371,7 @@ function genJS(klass, env,pass) {
         reservedConst: function (node) {
             if (node.text=="this") {
                 buf.printf("%s",THIZ);
-            } else if (node.text=="arguments" && !ctx.noWait) {
+            } else if (node.text=="arguments" && ctx.threadAvail) {
                 buf.printf("%s",ARGS);
             } else if (node.text==TH) {
                 buf.printf("%s", (ctx.threadAvail)?TH:"null");
@@ -1110,7 +1110,7 @@ function genJS(klass, env,pass) {
                  "%f%n",
                FIBPRE, fiber.name, [",",[THNode].concat(fiber.params)],
                  THIZ, GET_THIS,
-                 ARGS, "arguments",
+                 ARGS, "Tonyu.A(arguments)",
                  FRMPC,
                  genLocalsF(fiber),
                  nfbody

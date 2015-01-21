@@ -334,8 +334,8 @@ Tonyu=function () {
     }
     function A(args) {
         var res=[];
-        for (var i=0 ; i<args.length; i++) {
-            res[i]=args[i];
+        for (var i=1 ; i<args.length; i++) {
+            res[i-1]=args[i];
         }
         return res;
     }
