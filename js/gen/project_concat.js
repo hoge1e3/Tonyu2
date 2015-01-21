@@ -1,4 +1,4 @@
-// Created at Wed Jan 21 2015 17:40:49 GMT+0900 (東京 (標準時))
+// Created at Wed Jan 21 2015 23:08:33 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -12838,7 +12838,7 @@ function genJS(klass, env,pass) {
                     buf.printf("%s.exit(%s);return;",TH,THIZ);
                 }
             } else {
-                if (ctx.useRetVal) {
+                if (ctx.threadAvail) {
                     if (node.value) {
                         buf.printf("%s.retVal=%v;return;%n",TH, node.value);
                     } else {
@@ -13446,6 +13446,11 @@ function genJS(klass, env,pass) {
         "continue": function (node) {
             if (!ctx.noWait) annotateParents(this.path,{hasJump:true});
         },
+        "reservedConst": function (node) {
+            if (node.text=="arguments") {
+                ctx.finfo.useArgs=true;
+            }
+        },
         exprstmt: function (node) {
             var t;
             if (!ctx.noWait &&
@@ -13512,7 +13517,7 @@ function genJS(klass, env,pass) {
             });
         });
         copyLocals(f.locals, ns);
-        ctx.enter({method:f,noWait:false}, function () {
+        ctx.enter({method:f,finfo:f, noWait:false}, function () {
             annotateVarAccesses(f.stmts, ns);
         });
         f.scope=ns;
@@ -13549,7 +13554,7 @@ function genJS(klass, env,pass) {
                 var method=methods[name];
                 //initParamsLocals(method);
                 //annotateMethodFiber(method);
-                ctx.enter({noWait:true, useRetVal:false}, function () {
+                ctx.enter({noWait:true, threadAvail:false}, function () {
                     genFunc(method);
                 });
                 if (debug) console.log("method2", name);
@@ -13594,15 +13599,15 @@ function genJS(klass, env,pass) {
             waitStmts=stmts;
         }
         printf(
-               "%s%s :function (%j) {%{"+
+               "%s%s :function %s(%j) {%{"+
                  "var %s=%s;%n"+
-                 "var %s=%s;%n"+
+                 "%svar %s=%s;%n"+
                  "var %s=0;%n"+
                  "%f%n"+
                  "%f%n",
-               FIBPRE, fiber.name, [",",[THNode].concat(fiber.params)],
+               FIBPRE, fiber.name, genFn(fiber.pos), [",",[THNode].concat(fiber.params)],
                  THIZ, GET_THIS,
-                 ARGS, "Tonyu.A(arguments)",
+                 (fiber.useArgs?"":"//"), ARGS, "Tonyu.A(arguments)",
                  FRMPC,
                  genLocalsF(fiber),
                  nfbody
@@ -13630,14 +13635,15 @@ function genJS(klass, env,pass) {
         }
         printf("%}},%n");
         function nfbody() {
-            ctx.enter({method:fiber, scope: fiber.scope, noWait:true, useRetVal:true }, function () {
+            ctx.enter({method:fiber, scope: fiber.scope, noWait:true, threadAvail:true }, function () {
                 noWaitStmts.forEach(function (stmt) {
                     printf("%v%n", stmt);
                 });
             });
         }
         function fbody() {
-            ctx.enter({method:fiber, scope: fiber.scope, pc:1}, function () {
+            ctx.enter({method:fiber, scope: fiber.scope,
+                finfo:fiber, pc:1}, function () {
                 waitStmts.forEach(function (stmt) {
                     printf("%v%n", stmt);
                 });
@@ -13667,7 +13673,8 @@ function genJS(klass, env,pass) {
                       fbody
         );
         function fbody() {
-            ctx.enter({method:func, scope: func.scope }, function () {
+            ctx.enter({method:func, finfo:func,
+                scope: func.scope }, function () {
                 func.stmts.forEach(function (stmt) {
                     printf("%v%n", stmt);
                 });
@@ -13701,7 +13708,8 @@ function genJS(klass, env,pass) {
                        fbody
         );
         function fbody() {
-            ctx.enter({noWait: true, useRetVal:false, scope: finfo.scope }, function () {
+            ctx.enter({noWait: true, threadAvail:false,
+                finfo:finfo, scope: finfo.scope }, function () {
                 node.body.stmts.forEach(function (stmt) {
                     printf("%v%n", stmt);
                 });
@@ -13739,7 +13747,8 @@ function genJS(klass, env,pass) {
                        fbody
         );
         function fbody() {
-            ctx.enter({noWait: true, useRetVal:false, scope: finfo.scope }, function () {
+            ctx.enter({noWait: true, threadAvail:false,
+                finfo:finfo, scope: finfo.scope }, function () {
                 node.body.stmts.forEach(function (stmt) {
                     printf("%v%n", stmt);
                 });
@@ -13761,9 +13770,13 @@ function genJS(klass, env,pass) {
         });
         var locals=collectLocals(body, ns);
         copyLocals(locals,ns);
-        annotateVarAccesses(body,ns);
+        var finfo=annotation(node);
+        ctx.enter({finfo: finfo}, function () {
+            annotateVarAccesses(body,ns);
+        });
         var res={scope:ns, locals:locals, name:name, params:ps};
         annotation(node,res);
+        annotation(node,finfo);
         annotateSubFuncExprs(locals, ns);
         return res;
     }

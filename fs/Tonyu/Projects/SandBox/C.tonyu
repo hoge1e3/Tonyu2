@@ -1,14 +1,15 @@
 \test(){
     \f() {
-        print(arguments.length);
+        print(arguments[0]);
         print(_thread);
     }
+    print(arguments[1]);
     f(arguments.length);
 }
-test();
-this.test();
+test(2,3);
+this.test(2,3);
 
-/*while(true) {
+while(true) {
     play("cde");
     print("^^");
-}*/
+}
