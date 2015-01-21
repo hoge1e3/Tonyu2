@@ -9,5 +9,6 @@ while(true){
     t2.text="floor:"+floor(val);
     if(getkey("up")==1) val+=0.5;
     if(getkey("down")==1) val-=0.5;
+    print(rnd(100));
     update();
 }

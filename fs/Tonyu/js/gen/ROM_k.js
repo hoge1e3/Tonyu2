@@ -2,7 +2,7 @@
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1421820402827},"Actor.tonyu":{"lastUpdate":1414051292629},"BaseActor.tonyu":{"lastUpdate":1421820402827},"Boot.tonyu":{"lastUpdate":1421384746171},"InputDevice.tonyu":{"lastUpdate":1416889517771},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1421122635939},"MapEditor.tonyu":{"lastUpdate":1421122635944},"MathMod.tonyu":{"lastUpdate":1421820402827},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"Panel.tonyu":{"lastUpdate":1421820402831},"ScaledCanvas.tonyu":{"lastUpdate":1421122635940},"Sprites.tonyu":{"lastUpdate":1421122635941},"TObject.tonyu":{"lastUpdate":1421122635941},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Pad.tonyu":{"lastUpdate":1421122635944},"DxChar.tonyu":{"lastUpdate":1421383049524},"MediaPlayer.tonyu":{"lastUpdate":1421383070767},"PlainChar.tonyu":{"lastUpdate":1421383084999},"SecretChar.tonyu":{"lastUpdate":1421383101403},"SpriteChar.tonyu":{"lastUpdate":1421383110209},"T1Line.tonyu":{"lastUpdate":1421383126796},"T1Map.tonyu":{"lastUpdate":1421383136414},"T1Page.tonyu":{"lastUpdate":1421383148587},"T1Text.tonyu":{"lastUpdate":1421383157722},"TextChar.tonyu":{"lastUpdate":1421383188873}}',
+      '': '{".desktop":{"lastUpdate":1421820402827},"Actor.tonyu":{"lastUpdate":1414051292629},"BaseActor.tonyu":{"lastUpdate":1421824721488},"Boot.tonyu":{"lastUpdate":1421384746171},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1421122635939},"MathMod.tonyu":{"lastUpdate":1421824721489},"MML.tonyu":{"lastUpdate":1421824721491},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1421122635940},"Sprites.tonyu":{"lastUpdate":1421122635941},"TObject.tonyu":{"lastUpdate":1421122635941},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1421820402831},"MapEditor.tonyu":{"lastUpdate":1421122635944},"InputDevice.tonyu":{"lastUpdate":1416889517771},"Pad.tonyu":{"lastUpdate":1421122635944},"DxChar.tonyu":{"lastUpdate":1421383049524},"MediaPlayer.tonyu":{"lastUpdate":1421383070767},"PlainChar.tonyu":{"lastUpdate":1421383084999},"SecretChar.tonyu":{"lastUpdate":1421383101403},"SpriteChar.tonyu":{"lastUpdate":1421383110209},"T1Line.tonyu":{"lastUpdate":1421383126796},"T1Map.tonyu":{"lastUpdate":1421383136414},"T1Page.tonyu":{"lastUpdate":1421383148587},"T1Text.tonyu":{"lastUpdate":1421383157722},"TextChar.tonyu":{"lastUpdate":1421383188873}}',
       '.desktop': '{"runMenuOrd":["Main0121","Main1023","TouchedTestMain","Main2","MapLoad","Main","AcTestM","NObjTest","NObjTest2","AcTest","AltBoot","Ball","Bar","Bounce","MapTest","MapTest2nd","SetBGCTest","Label","PanelTest","BaseActor","Panel","MathMod"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -214,12 +214,6 @@
         '    if (p!=null) this.p=p;\n'+
         '}\n'+
         '\n'+
-        'nowait \\rnd(r) {\n'+
-        '    if (typeof r=="number") {\n'+
-        '        return Math.floor(Math.random()*r);\n'+
-        '    }\n'+
-        '    return Math.random();\n'+
-        '}\n'+
         'nowait \\detectShape() {\n'+
         '    if (typeof p!="number") {\n'+
         '        if (text!=null) return;\n'+
@@ -776,6 +770,7 @@
       ,
       'MML.tonyu': 
         'extends TObject;\n'+
+        'includes MathMod;\n'+
         'native T;\n'+
         '\n'+
         'mmlBuf=[];\n'+
@@ -1203,6 +1198,13 @@
         '}\n'+
         'nowait \\ceil(f){\n'+
         '    return Math.ceil(f);\n'+
+        '}\n'+
+        '\n'+
+        'nowait \\rnd(r) {\n'+
+        '    if (typeof r=="number") {\n'+
+        '        return Math.floor(Math.random()*r);\n'+
+        '    }\n'+
+        '    return Math.random();\n'+
         '}'
       ,
       'MediaPlayer.tonyu': 

@@ -187,12 +187,6 @@ nowait \show(x,y,p) {
     if (p!=null) this.p=p;
 }
 
-nowait \rnd(r) {
-    if (typeof r=="number") {
-        return Math.floor(Math.random()*r);
-    }
-    return Math.random();
-}
 nowait \detectShape() {
     if (typeof p!="number") {
         if (text!=null) return;
