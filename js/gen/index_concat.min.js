@@ -1,4 +1,4 @@
-// Created at Fri Jan 16 2015 14:08:26 GMT+0900 (東京 (標準時))
+// Created at Wed Jan 21 2015 15:06:58 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -684,8 +684,8 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1421384746169},"Actor.tonyu":{"lastUpdate":1414051292629},"BaseActor.tonyu":{"lastUpdate":1421384746170},"Boot.tonyu":{"lastUpdate":1421384746171},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1421122635939},"MathMod.tonyu":{"lastUpdate":1421384746173},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1421122635940},"Sprites.tonyu":{"lastUpdate":1421122635941},"TObject.tonyu":{"lastUpdate":1421122635941},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1421122635942},"MapEditor.tonyu":{"lastUpdate":1421122635944},"InputDevice.tonyu":{"lastUpdate":1416889517771},"Pad.tonyu":{"lastUpdate":1421122635944},"DxChar.tonyu":{"lastUpdate":1421383049524},"MediaPlayer.tonyu":{"lastUpdate":1421383070767},"PlainChar.tonyu":{"lastUpdate":1421383084999},"SecretChar.tonyu":{"lastUpdate":1421383101403},"SpriteChar.tonyu":{"lastUpdate":1421383110209},"T1Line.tonyu":{"lastUpdate":1421383126796},"T1Map.tonyu":{"lastUpdate":1421383136414},"T1Page.tonyu":{"lastUpdate":1421383148587},"T1Text.tonyu":{"lastUpdate":1421383157722},"TextChar.tonyu":{"lastUpdate":1421383188873}}',
-      '.desktop': '{"runMenuOrd":["TouchedTestMain","Main1023","Main2","MapLoad","Main","AcTestM","NObjTest","NObjTest2","AcTest","AltBoot","Ball","Bar","Bounce","MapTest","MapTest2nd","SetBGCTest","Label","PanelTest","Boot","InputDevice","Sprites","BaseActor"]}',
+      '': '{".desktop":{"lastUpdate":1421820402827},"Actor.tonyu":{"lastUpdate":1414051292629},"BaseActor.tonyu":{"lastUpdate":1421820402827},"Boot.tonyu":{"lastUpdate":1421384746171},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1421122635939},"MathMod.tonyu":{"lastUpdate":1421820402827},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1421122635940},"Sprites.tonyu":{"lastUpdate":1421122635941},"TObject.tonyu":{"lastUpdate":1421122635941},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1421820402831},"MapEditor.tonyu":{"lastUpdate":1421122635944},"InputDevice.tonyu":{"lastUpdate":1416889517771},"Pad.tonyu":{"lastUpdate":1421122635944},"DxChar.tonyu":{"lastUpdate":1421383049524},"MediaPlayer.tonyu":{"lastUpdate":1421383070767},"PlainChar.tonyu":{"lastUpdate":1421383084999},"SecretChar.tonyu":{"lastUpdate":1421383101403},"SpriteChar.tonyu":{"lastUpdate":1421383110209},"T1Line.tonyu":{"lastUpdate":1421383126796},"T1Map.tonyu":{"lastUpdate":1421383136414},"T1Page.tonyu":{"lastUpdate":1421383148587},"T1Text.tonyu":{"lastUpdate":1421383157722},"TextChar.tonyu":{"lastUpdate":1421383188873}}',
+      '.desktop': '{"runMenuOrd":["Main0121","Main1023","TouchedTestMain","Main2","MapLoad","Main","AcTestM","NObjTest","NObjTest2","AcTest","AltBoot","Ball","Bar","Bounce","MapTest","MapTest2nd","SetBGCTest","Label","PanelTest","BaseActor","Panel","MathMod"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
         'native Sprites;\n'+
@@ -769,11 +769,11 @@ requireSimulator.setName('fs/ROMk');
         '}\n'+
         '\\update() {\n'+
         '    onUpdate();\n'+
-        '    ifwait {\n'+
+        '    if(_thread) {\n'+
         '        _thread.suspend();\n'+
         '    }\n'+
         '}\n'+
-        '\\onUpdate() {\n'+
+        'nowait \\onUpdate() {\n'+
         '    \n'+
         '}\n'+
         '\\updateEx(updateT){\n'+
@@ -1880,7 +1880,11 @@ requireSimulator.setName('fs/ROMk');
         '    return sqrt(dx*dx+dy*dy);\n'+
         '}\n'+
         'nowait \\trunc(f) {\n'+
-        '    return Math.trunc(f);\n'+
+        '    if(f>=0) return Math.floor(f);\n'+
+        '    else return Math.ceil(f);\n'+
+        '}\n'+
+        'nowait \\ceil(f){\n'+
+        '    return Math.ceil(f);\n'+
         '}'
       ,
       'MediaPlayer.tonyu': 
@@ -2068,13 +2072,13 @@ requireSimulator.setName('fs/ROMk');
         '    buf=$("<canvas>").attr{width,height};\n'+
         '}\n'+
         '\\setFillStyle(color){\n'+
-        '    this.color=color;\n'+
+        '    this.fillStyle=color;\n'+
         '}\n'+
         '\\fillRect(x,y,rectWidth,rectHeight){\n'+
         '    ctx=buf[0].getContext("2d");\n'+
         '    ctx.save();\n'+
         '    //ctx.clearRect(0,0,this.width,this.height);\n'+
-        '    ctx.fillStyle=color;\n'+
+        '    ctx.fillStyle=fillStyle;\n'+
         '    ctx.fillRect(x,y,rectWidth,rectHeight);\n'+
         '    ctx.restore();\n'+
         '}\n'+
@@ -2083,7 +2087,7 @@ requireSimulator.setName('fs/ROMk');
         '    ctx.save();\n'+
         '    //ctx.clearRect(0,0,this.width,this.height);\n'+
         '    ctx.textAlign = align;\n'+
-        '    ctx.fillStyle=color;\n'+
+        '    ctx.fillStyle=fillStyle;\n'+
         '    ctx.font=size+"px \'Courier New\'";\n'+
         '    ctx.fillText(text,x,y);\n'+
         '    ctx.restore();\n'+

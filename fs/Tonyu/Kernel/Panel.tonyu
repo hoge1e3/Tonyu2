@@ -16,13 +16,13 @@ native isNaN;
     buf=$("<canvas>").attr{width,height};
 }
 \setFillStyle(color){
-    this.color=color;
+    this.fillStyle=color;
 }
 \fillRect(x,y,rectWidth,rectHeight){
     ctx=buf[0].getContext("2d");
     ctx.save();
     //ctx.clearRect(0,0,this.width,this.height);
-    ctx.fillStyle=color;
+    ctx.fillStyle=fillStyle;
     ctx.fillRect(x,y,rectWidth,rectHeight);
     ctx.restore();
 }
@@ -31,7 +31,7 @@ native isNaN;
     ctx.save();
     //ctx.clearRect(0,0,this.width,this.height);
     ctx.textAlign = align;
-    ctx.fillStyle=color;
+    ctx.fillStyle=fillStyle;
     ctx.font=size+"px 'Courier New'";
     ctx.fillText(text,x,y);
     ctx.restore();

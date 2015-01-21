@@ -60,11 +60,11 @@ nowait \stopAnim(){
 }
 \update() {
     onUpdate();
-    ifwait {
+    if(_thread) {
         _thread.suspend();
     }
 }
-\onUpdate() {
+nowait \onUpdate() {
     
 }
 \updateEx(updateT){

@@ -1,4 +1,4 @@
-// Created at Fri Jan 16 2015 14:08:26 GMT+0900 (東京 (標準時))
+// Created at Wed Jan 21 2015 15:06:58 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -684,8 +684,8 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1421384746169},"Actor.tonyu":{"lastUpdate":1414051292629},"BaseActor.tonyu":{"lastUpdate":1421384746170},"Boot.tonyu":{"lastUpdate":1421384746171},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1421122635939},"MathMod.tonyu":{"lastUpdate":1421384746173},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1421122635940},"Sprites.tonyu":{"lastUpdate":1421122635941},"TObject.tonyu":{"lastUpdate":1421122635941},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1421122635942},"MapEditor.tonyu":{"lastUpdate":1421122635944},"InputDevice.tonyu":{"lastUpdate":1416889517771},"Pad.tonyu":{"lastUpdate":1421122635944},"DxChar.tonyu":{"lastUpdate":1421383049524},"MediaPlayer.tonyu":{"lastUpdate":1421383070767},"PlainChar.tonyu":{"lastUpdate":1421383084999},"SecretChar.tonyu":{"lastUpdate":1421383101403},"SpriteChar.tonyu":{"lastUpdate":1421383110209},"T1Line.tonyu":{"lastUpdate":1421383126796},"T1Map.tonyu":{"lastUpdate":1421383136414},"T1Page.tonyu":{"lastUpdate":1421383148587},"T1Text.tonyu":{"lastUpdate":1421383157722},"TextChar.tonyu":{"lastUpdate":1421383188873}}',
-      '.desktop': '{"runMenuOrd":["TouchedTestMain","Main1023","Main2","MapLoad","Main","AcTestM","NObjTest","NObjTest2","AcTest","AltBoot","Ball","Bar","Bounce","MapTest","MapTest2nd","SetBGCTest","Label","PanelTest","Boot","InputDevice","Sprites","BaseActor"]}',
+      '': '{".desktop":{"lastUpdate":1421820402827},"Actor.tonyu":{"lastUpdate":1414051292629},"BaseActor.tonyu":{"lastUpdate":1421820402827},"Boot.tonyu":{"lastUpdate":1421384746171},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1421122635939},"MathMod.tonyu":{"lastUpdate":1421820402827},"MML.tonyu":{"lastUpdate":1407216015130},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"ScaledCanvas.tonyu":{"lastUpdate":1421122635940},"Sprites.tonyu":{"lastUpdate":1421122635941},"TObject.tonyu":{"lastUpdate":1421122635941},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Panel.tonyu":{"lastUpdate":1421820402831},"MapEditor.tonyu":{"lastUpdate":1421122635944},"InputDevice.tonyu":{"lastUpdate":1416889517771},"Pad.tonyu":{"lastUpdate":1421122635944},"DxChar.tonyu":{"lastUpdate":1421383049524},"MediaPlayer.tonyu":{"lastUpdate":1421383070767},"PlainChar.tonyu":{"lastUpdate":1421383084999},"SecretChar.tonyu":{"lastUpdate":1421383101403},"SpriteChar.tonyu":{"lastUpdate":1421383110209},"T1Line.tonyu":{"lastUpdate":1421383126796},"T1Map.tonyu":{"lastUpdate":1421383136414},"T1Page.tonyu":{"lastUpdate":1421383148587},"T1Text.tonyu":{"lastUpdate":1421383157722},"TextChar.tonyu":{"lastUpdate":1421383188873}}',
+      '.desktop': '{"runMenuOrd":["Main0121","Main1023","TouchedTestMain","Main2","MapLoad","Main","AcTestM","NObjTest","NObjTest2","AcTest","AltBoot","Ball","Bar","Bounce","MapTest","MapTest2nd","SetBGCTest","Label","PanelTest","BaseActor","Panel","MathMod"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
         'native Sprites;\n'+
@@ -769,11 +769,11 @@ requireSimulator.setName('fs/ROMk');
         '}\n'+
         '\\update() {\n'+
         '    onUpdate();\n'+
-        '    ifwait {\n'+
+        '    if(_thread) {\n'+
         '        _thread.suspend();\n'+
         '    }\n'+
         '}\n'+
-        '\\onUpdate() {\n'+
+        'nowait \\onUpdate() {\n'+
         '    \n'+
         '}\n'+
         '\\updateEx(updateT){\n'+
@@ -1880,7 +1880,11 @@ requireSimulator.setName('fs/ROMk');
         '    return sqrt(dx*dx+dy*dy);\n'+
         '}\n'+
         'nowait \\trunc(f) {\n'+
-        '    return Math.trunc(f);\n'+
+        '    if(f>=0) return Math.floor(f);\n'+
+        '    else return Math.ceil(f);\n'+
+        '}\n'+
+        'nowait \\ceil(f){\n'+
+        '    return Math.ceil(f);\n'+
         '}'
       ,
       'MediaPlayer.tonyu': 
@@ -2068,13 +2072,13 @@ requireSimulator.setName('fs/ROMk');
         '    buf=$("<canvas>").attr{width,height};\n'+
         '}\n'+
         '\\setFillStyle(color){\n'+
-        '    this.color=color;\n'+
+        '    this.fillStyle=color;\n'+
         '}\n'+
         '\\fillRect(x,y,rectWidth,rectHeight){\n'+
         '    ctx=buf[0].getContext("2d");\n'+
         '    ctx.save();\n'+
         '    //ctx.clearRect(0,0,this.width,this.height);\n'+
-        '    ctx.fillStyle=color;\n'+
+        '    ctx.fillStyle=fillStyle;\n'+
         '    ctx.fillRect(x,y,rectWidth,rectHeight);\n'+
         '    ctx.restore();\n'+
         '}\n'+
@@ -2083,7 +2087,7 @@ requireSimulator.setName('fs/ROMk');
         '    ctx.save();\n'+
         '    //ctx.clearRect(0,0,this.width,this.height);\n'+
         '    ctx.textAlign = align;\n'+
-        '    ctx.fillStyle=color;\n'+
+        '    ctx.fillStyle=fillStyle;\n'+
         '    ctx.font=size+"px \'Courier New\'";\n'+
         '    ctx.fillText(text,x,y);\n'+
         '    ctx.restore();\n'+
@@ -8920,8 +8924,10 @@ Tonyu=function () {
     var preemptionTime=60;
     function thread() {
 	//var stpd=0;
-        var fb={enter:enter, exit:exit, steps:steps, step:step, isAlive:isAlive, isWaiting:isWaiting,
-                suspend:suspend,retVal:0/*retVal*/, kill:kill, waitFor: waitFor,setGroup:setGroup};
+        var fb={enter:enter, apply:apply,
+                exit:exit, steps:steps, step:step, isAlive:isAlive, isWaiting:isWaiting,
+                suspend:suspend,retVal:0/*retVal*/,
+                kill:kill, waitFor: waitFor,setGroup:setGroup};
         var frame=null;
         var _isAlive=true;
         var cnt=0;
@@ -8938,6 +8944,21 @@ Tonyu=function () {
         }
         function enter(frameFunc) {
             frame={prev:frame, func:frameFunc};
+        }
+        function apply(obj, methodName, args) {
+            if (!args) args=[];
+            args=[fb].concat(args);
+            var pc=0;
+            enter(function () {
+                switch (pc){
+                case 0:
+                    obj["fiber$"+methodName].apply(obj,args);
+                    pc=1;break;
+                case 1:
+                    exit();
+                    pc=2;break;
+                }
+            });
         }
         function step() {
             if (frame) frame.func(fb);
@@ -9038,10 +9059,11 @@ Tonyu=function () {
                 threads.push(thread);
             }
         }
-        function addObj(obj, methodName) {
-            var th=thread();
+        function addObj(obj, methodName,args) {
             if (!methodName) methodName="main";
-            obj["fiber$"+methodName](th);
+            var th=thread();
+            th.apply(obj,methodName,args);
+            //obj["fiber$"+methodName](th);
             add(th);
             return th;
         }
@@ -9106,7 +9128,7 @@ Tonyu=function () {
                 //run();
             }
         }
-        return thg={add:add, addObj:addObj,  steps:steps, kill:kill, notifyResume: notifyResume};
+        return thg={add:add, addObj:addObj,  steps:steps, kill:kill, notifyResume: notifyResume, threads:threads};
     }
     function handleEx(e) {
         if (Tonyu.onRuntimeError) {
@@ -10910,6 +10932,7 @@ TT=function () {
             "constructor": true,
             ifwait:true,
             nowait:true,
+            _thread:true,
             arguments:true,
             "delete": true,
             "extends":true,
@@ -11448,6 +11471,7 @@ TonyuLang=function () {
     var reservedConst = tk("true").or(tk("false")).
     or(tk("null")).
     or(tk("undefined")).
+    or(tk("_thread")).
     or(tk("this")).
     or(tk("arguments")).ret(function (t) {
         t.type="reservedConst";
@@ -12839,6 +12863,8 @@ function genJS(klass, env,pass) {
                 buf.printf("%s",THIZ);
             } else if (node.text=="arguments" && !ctx.noWait) {
                 buf.printf("%s",ARGS);
+            } else if (node.text==TH) {
+                buf.printf("%s", (ctx.threadAvail)?TH:"null");
             } else {
                 buf.printf("%s", node.text);
             }
@@ -13521,13 +13547,13 @@ function genJS(klass, env,pass) {
                 var method=methods[name];
                 //initParamsLocals(method);
                 //annotateMethodFiber(method);
-                ctx.enter({noWait:true}, function () {
+                ctx.enter({noWait:true, useRetVal:false}, function () {
                     genFunc(method);
                 });
                 if (debug) console.log("method2", name);
                 //v.debug=debug;
                 if (!method.nowait ) {
-                    ctx.enter({noWait:false}, function () {
+                    ctx.enter({noWait:false,threadAvail:true}, function () {
                         genFiber(method);
                     });
                 }
@@ -13551,46 +13577,56 @@ function genJS(klass, env,pass) {
         */
         //annotateMethodFiber(fiber);
         //annotateVarAccesses(fiber.stmts, ns);
+        if (isConstructor(fiber)) return;
         var stmts=fiber.stmts;
         var noWaitStmts=[], waitStmts=[], curStmts=noWaitStmts;
-        /*stmts.forEach(function (s) {
-            if (annotation(s).fiberCallRequired) {
-                curStmts=waitStmts;
-            }
-            curStmts.push(s);
-        });*/
-        waitStmts=stmts;
+        var opt=true;
+        if (opt) {
+            stmts.forEach(function (s) {
+                if (annotation(s).fiberCallRequired) {
+                    curStmts=waitStmts;
+                }
+                curStmts.push(s);
+            });
+        } else {
+            waitStmts=stmts;
+        }
         printf(
                "%s%s :function (%j) {%{"+
                  "var %s=%s;%n"+
                  "var %s=%s;%n"+
                  "var %s=0;%n"+
                  "%f%n"+
-                 "%f%n"+
+                 "%f%n",
+               FIBPRE, fiber.name, [",",[THNode].concat(fiber.params)],
+                 THIZ, GET_THIS,
+                 ARGS, "arguments",
+                 FRMPC,
+                 genLocalsF(fiber),
+                 nfbody
+        );
+        if (waitStmts.length>0) {
+            printf(
                  "%s.enter(function %s(%s) {%{"+
                     "for(var %s=%d ; %s--;) {%{"+
                       "switch (%s) {%{"+
-                         "%}case 0:%{"+
+                        "%}case 0:%{"+
                         "%f" +
                         "%s.exit(%s);return;%n"+
                       "%}}%n"+
                     "%}}%n"+
-                 "%}});%n"+
-               "%}},%n",
-
-               FIBPRE, fiber.name, [",",[THNode].concat(fiber.params)],
-                   THIZ, GET_THIS,
-                   ARGS, "arguments",
-                   FRMPC,
-                   genLocalsF(fiber),
-                   nfbody,
-                   TH,genFn(fiber.pos),TH,
-                      CNTV, CNTC, CNTV,
-                        FRMPC,
+                 "%}});%n",
+                 TH,genFn(fiber.pos),TH,
+                    CNTV, CNTC, CNTV,
+                      FRMPC,
                         // case 0:
                         fbody,
                         TH,THIZ
         );
+        } else {
+            printf("%s.retVal=%s;return;%n",TH,THIZ);
+        }
+        printf("%}},%n");
         function nfbody() {
             ctx.enter({method:fiber, scope: fiber.scope, noWait:true, useRetVal:true }, function () {
                 noWaitStmts.forEach(function (stmt) {
@@ -13663,7 +13699,7 @@ function genJS(klass, env,pass) {
                        fbody
         );
         function fbody() {
-            ctx.enter({noWait: true, scope: finfo.scope }, function () {
+            ctx.enter({noWait: true, useRetVal:false, scope: finfo.scope }, function () {
                 node.body.stmts.forEach(function (stmt) {
                     printf("%v%n", stmt);
                 });
@@ -13701,7 +13737,7 @@ function genJS(klass, env,pass) {
                        fbody
         );
         function fbody() {
-            ctx.enter({noWait: true, scope: finfo.scope }, function () {
+            ctx.enter({noWait: true, useRetVal:false, scope: finfo.scope }, function () {
                 node.body.stmts.forEach(function (stmt) {
                     printf("%v%n", stmt);
                 });
@@ -14593,7 +14629,8 @@ return Tonyu.Project=function (dir, kernelDir) {
         //Tonyu.runMode=true;
         var main=new mainClass();
         var th=Tonyu.thread();
-        main.fiber$main(th);
+        th.apply(main,"main");
+        //main.fiber$main(th);
 
         TPR.runningThread=th; //thg.addObj(main);
         TPR.runningObj=main;

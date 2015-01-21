@@ -47,5 +47,9 @@ nowait \dist(dx,dy) {
     return sqrt(dx*dx+dy*dy);
 }
 nowait \trunc(f) {
-    return Math.trunc(f);
+    if(f>=0) return Math.floor(f);
+    else return Math.ceil(f);
+}
+nowait \ceil(f){
+    return Math.ceil(f);
 }
