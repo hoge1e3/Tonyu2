@@ -1,5 +1,7 @@
 \test(){
+    print(arguments.length);
     print(_thread);
 }
 test();
 this.test();
+play("cde");
