@@ -1,14 +1,6 @@
-
-if (a==3) { 
-    if (a==3) {
-        update();
-    } else {
-        b=5;
-    }
-    if (a==3) {
-        b=0;
-    } else {
-        b=5;
-    }
-    
+\new(x) {
+    this.x=x;
 }
+a() {}
+//\b() {x:3}
+

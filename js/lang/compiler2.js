@@ -68,9 +68,14 @@ function initClassDecls(klass, env ) {
         program.stmts.forEach(function (stmt) {
             if (stmt.type=="funcDecl") {
                 var head=stmt.head;
+                var ftype="function";
+                if (head.ftype) {
+                    ftype=head.ftype.text;
+                    //console.log("head.ftype:",stmt);
+                }
                 methods[head.name.text]={
                         nowait: !!head.nowait,
-                        ftype:  head.ftype.text,
+                        ftype:  ftype,
                         name:  head.name.text,
                         head:  head,
                         pos: head.pos,

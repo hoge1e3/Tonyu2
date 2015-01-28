@@ -1,0 +1,12 @@
+
+while(!screenOut()) {
+    x+=vx;
+    y+=vy;
+    rotation++;
+    if (t=crashTo(Tama)) {
+        vx+=(x-t.x)/40;
+        vy+=(y-t.y)/40;
+    }
+    update();
+}
+die();
