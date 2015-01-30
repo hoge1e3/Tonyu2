@@ -520,36 +520,30 @@ function genJS(klass, env,pass) {
             buf.printf("%v %v", node.op, node.right);
         },
         postfix: function (node) {
-            var mr;
+            var a=annotation(node);
             if (diagnose) {
-                if (mr=OM.match(node, {left:{type:"varAccess",name:{text:OM.N}}, op:{type:"call"} })) {
-                    // N()
-                    var si=annotation(node.left).scopeInfo;
+                if (a.myMethodCall) {
+                    var mc=a.myMethodCall;
+                    var si=mc.scopeInfo;
                     var st=stype(si);
                     if (st==ST.FIELD || st==ST.METHOD) {
-                        buf.printf("%s(%s, %l, [%j], %l )", INVOKE_FUNC,THIZ, mr.N, [",",node.op.args],"this");
+                        buf.printf("%s(%s, %l, [%j], %l )", INVOKE_FUNC,THIZ, mc.name, [",",mc.args],"this");
                     } else {
-                        buf.printf("%s(%v, [%j], %l)", CALL_FUNC, node.left, [",",node.op.args], getSource(node.left));
+                        buf.printf("%s(%v, [%j], %l)", CALL_FUNC, node.left, [",",mc.args], getSource(node.left));
                     }
-                } else if (mr=OM.match(node, {
-                    left:{
-                        type:"postfix",left:OM.T,op:{type:"member",name:{text:OM.N}}
-                    }, op:{type:"call"}
-                })) {
-                    buf.printf("%s(%v, %l, [%j], %l )", INVOKE_FUNC, mr.T, mr.N, [",",node.op.args],getSource(mr.T));
-                } else if (mr=OM.match(node, {left: OM.L, op:{type:"member",name:{text:OM.N}} } )) {
-                    buf.printf("%s(%v,%l).%s", CHK_NN, mr.L, getSource(mr.L), mr.N );
+                } else if (a.othersMethodCall) {
+                    var oc=a.othersMethodCall;
+                    buf.printf("%s(%v, %l, [%j], %l )", INVOKE_FUNC, oc.target, oc.name, [",",oc.args],getSource(oc.target));
+                } else if (a.memberAccess) {
+                    var ma=a.memberAccess;
+                    buf.printf("%s(%v,%l).%s", CHK_NN, ma.target, getSource(ma.target), ma.name );
                 } else {
                     buf.printf("%v%v", node.left, node.op);
                 }
                 return;
             }
             if (OM.match(node, {left:{type:"varAccess"}, op:{type:"call"} })) {
-                // varAccess( , , true)
                 var si=varAccess(node.left.name.text, annotation(node.left).scopeInfo, true);
-                //assertAnnotated(node.left,si);
-                //annotation(node.left,{scopeInfo:si});
-                //node.left.scopeInfo=varAccess(node.left.name.text,true);
                 buf.printf("%v", node.op);
             } else {
                 buf.printf("%v%v", node.left, node.op);
@@ -967,10 +961,7 @@ function genJS(klass, env,pass) {
             this.visit(node.op);
             if (t=OM.match(node, myMethodCallTmpl)) {
                 var si=annotation(node.left).scopeInfo;
-                var st=stype(si);
-                if (st==ST.FIELD || st==ST.METHOD) {
-                    annotation(node, {myMethodCall:{name:t.N,args:t.A,scopeType:st}});
-                }
+                annotation(node, {myMethodCall:{name:t.N,args:t.A,scopeInfo:si}});
             } else if (t=OM.match(node, othersMethodCallTmpl)) {
                 annotation(node, {othersMethodCall:{target:t.T,name:t.N,args:t.A} });
             } else if (t=OM.match(node, memberAccessTmpl)) {
