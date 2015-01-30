@@ -484,9 +484,9 @@ function genJS(klass, env,pass) {
         },
         infix: function (node) {
             var opn=node.op.text;
-            if (opn=="=" || opn=="+=" || opn=="-=" || opn=="*=" ||  opn=="/=" || opn=="%=" ) {
+            /*if (opn=="=" || opn=="+=" || opn=="-=" || opn=="*=" ||  opn=="/=" || opn=="%=" ) {
                 checkLVal(node.left);
-            }
+            }*/
             if (diagnose) {
                 if (opn=="+" || opn=="-" || opn=="*" ||  opn=="/" || opn=="%" ) {
                     buf.printf("%s(%v,%l)%v%s(%v,%l)", CHK_NN, node.left, getSource(node.left), node.op,
@@ -912,6 +912,30 @@ function genJS(klass, env,pass) {
                 annotation(node,{scopeInfo:si});
             }
         },
+        "do": function (node) {
+            var t=this;
+            ctx.enter({jumpable:true}, function () {
+                t.def(node);
+            });
+        },
+        "switch": function (node) {
+            var t=this;
+            ctx.enter({jumpable:true}, function () {
+                t.def(node);
+            });
+        },
+        "while": function (node) {
+            var t=this;
+            ctx.enter({jumpable:true}, function () {
+                t.def(node);
+            });
+        },
+        "for": function (node) {
+            var t=this;
+            ctx.enter({jumpable:true}, function () {
+                t.def(node);
+            });
+        },
         "forin": function (node) {
             node.vars.forEach(function (v) {
                 var si=getScopeInfo(v.text);
@@ -936,9 +960,11 @@ function genJS(klass, env,pass) {
             this.visit(node.value);
         },
         "break": function (node) {
+            if (!ctx.jumpable) throw TError( "break； は繰り返しの中で使います." , srcFile, node.pos);
             if (!ctx.noWait) annotateParents(this.path,{hasJump:true});
         },
         "continue": function (node) {
+            if (!ctx.jumpable) throw TError( "continue； は繰り返しの中で使います." , srcFile, node.pos);
             if (!ctx.noWait) annotateParents(this.path,{hasJump:true});
         },
         "reservedConst": function (node) {
@@ -958,6 +984,13 @@ function genJS(klass, env,pass) {
             } else if (t=OM.match(node, memberAccessTmpl)) {
                 annotation(node, {memberAccess:{target:t.T,name:t.N} });
             }
+        },
+        infix: function (node) {
+            var opn=node.op.text;
+            if (opn=="=" || opn=="+=" || opn=="-=" || opn=="*=" ||  opn=="/=" || opn=="%=" ) {
+                checkLVal(node.left);
+            }
+            this.def(node);
         },
         exprstmt: function (node) {
             var t;
@@ -1078,20 +1111,6 @@ function genJS(klass, env,pass) {
         });
     }
     function genFiber(fiber) {
-    	//var locals={};
-        //console.log("Gen fiber");
-        //var ps=getParams(fiber);
-        /*var ns=newScope(ctx.scope);
-        fiber.params.forEach(function (p,cnt) {
-            ns[p.name.text]=genSt(ST.PARAM,{
-                klass:klass.name, name:fiber.name, no:cnt
-            });
-        });
-        var locals=fiber.locals; //collectLocals(fiber.stmts);
-        copyLocals(locals, ns);
-        */
-        //annotateMethodFiber(fiber);
-        //annotateVarAccesses(fiber.stmts, ns);
         if (isConstructor(fiber)) return;
         var stmts=fiber.stmts;
         var noWaitStmts=[], waitStmts=[], curStmts=noWaitStmts;
