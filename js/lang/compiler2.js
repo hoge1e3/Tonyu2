@@ -43,8 +43,8 @@ function initClassDecls(klass, env ) {
         var spcn=env.options.compiler.defaultSuperClass;
         var pos=0;
         var t;
-        if (t=OM.match( program , {ext:{superClassName:{text:OM.T, pos:OM.P}}})) {
-            spcn=t.T;
+        if (t=OM.match( program , {ext:{superClassName:{text:OM.N, pos:OM.P}}})) {
+            spcn=t.N;
             pos=t.P;
             if (spcn=="null") spcn=null;
         }
@@ -130,11 +130,20 @@ function genJS(klass, env,pass) {
     var diagnose=env.options.compiler.diagnose;
     var ctx=context();
     var debug=false;
-    var fiberCallTmpl={
+    var othersMethodCallTmpl={
             type:"postfix",
-            op:{/*$var:"A",*/type:"call", args:OM.A },
-            left:{type:"varAccess", name: {text:OM.T}}
-         };
+            left:{
+                type:"postfix",
+                left:OM.T,
+                op:{type:"member",name:{text:OM.N}}
+            },
+            op:{type:"call", args:OM.A }
+    };
+    var myMethodCallTmpl=fiberCallTmpl={
+            type:"postfix",
+            left:{type:"varAccess", name: {text:OM.N}},
+            op:{type:"call", args:OM.A }
+    };
     var noRetFiberCallTmpl={
         expr: fiberCallTmpl
     };
@@ -435,38 +444,28 @@ function genJS(klass, env,pass) {
             if (!ctx.noWait) {
                 t=annotation(node).fiberCall || {};
             }
-            /*
-            if (!ctx.noWait && (t=OM.match(node,noRetFiberCallTmpl)) &&
-                    stype(ctx.scope[t.T])==ST.METHOD &&
-                    !getMethod(t.T).nowait) {
-                    */
             if (t.type=="noRet") {
                 buf.printf(
                         "%s.%s%s(%j);%n" +
                         "%s=%s;return;%n" +/*B*/
                         "%}case %d:%{",
-                            THIZ, FIBPRE, t.T,  [", ",[THNode].concat(t.A)],
+                            THIZ, FIBPRE, t.N,  [", ",[THNode].concat(t.A)],
                             FRMPC, ctx.pc,
                             ctx.pc++
                 );
-            /*} else if (!ctx.noWait && (t=OM.match(node,retFiberCallTmpl)) &&
-                    stype(ctx.scope[t.T])==ST.METHOD &&
-                    !getMethod(t.T).nowait) {*/
             } else if (t.type=="ret") {
                 buf.printf(
                         "%s.%s%s(%j);%n" +
                         "%s=%s;return;%n" +/*B*/
                         "%}case %d:%{"+
                         "%v%v%s.retVal;%n",
-                            THIZ, FIBPRE, t.T, [", ",[THNode].concat(t.A)],
+                            THIZ, FIBPRE, t.N, [", ",[THNode].concat(t.A)],
                             FRMPC, ctx.pc,
                             ctx.pc++,
                             t.L, t.O, TH
                 );
-            /*} else if (!ctx.noWait && (t=OM.match(node,noRetSuperFiberCallTmpl)) ) {*/
             } else if (t.type=="noRetSuper") {
                 var p=getClassName(klass.superClass);
-                //if (t.S.name) {
                     buf.printf(
                             "%s.prototype.%s%s.apply( %s, [%j]);%n" +
                             "%s=%s;return;%n" +/*B*/
@@ -475,11 +474,7 @@ function genJS(klass, env,pass) {
                                 FRMPC, ctx.pc,
                                 ctx.pc++
                     );
-                //}
-            /*} else if (!ctx.noWait && (t=OM.match(node,retSuperFiberCallTmpl)) ) {
-                var p=getClassName(klass.superClass);*/
             } else if (t.type=="retSuper") {
-                //if (t.S.name) {
                     buf.printf(
                             "%s.prototype.%s%s.apply( %s, [%j]);%n" +
                             "%s=%s;return;%n" +/*B*/
@@ -490,7 +485,6 @@ function genJS(klass, env,pass) {
                                 ctx.pc++,
                                 t.L, t.O, TH
                     );
-                //}
             } else {
                 buf.printf("%v;", node.expr );
             }
@@ -523,14 +517,12 @@ function genJS(klass, env,pass) {
         postfix: function (node) {
             var mr;
             if (diagnose) {
-                if (mr=OM.match(node, {left:{type:"varAccess",name:{text:OM.T}}, op:{type:"call"} })) {
-                    // T()
+                if (mr=OM.match(node, {left:{type:"varAccess",name:{text:OM.N}}, op:{type:"call"} })) {
+                    // N()
                     var si=annotation(node.left).scopeInfo;
-                    //var si2=getScopeInfo(mr.T);
-                    //if (stype(si2) != stype(si) ) throw "Not match2: "+n+" "+stype(si2)+"!="+stype(si);
                     var st=stype(si);
                     if (st==ST.FIELD || st==ST.METHOD) {
-                        buf.printf("%s(%s, %l, [%j], %l )", INVOKE_FUNC,THIZ, mr.T, [",",node.op.args],"this");
+                        buf.printf("%s(%s, %l, [%j], %l )", INVOKE_FUNC,THIZ, mr.N, [",",node.op.args],"this");
                     } else {
                         buf.printf("%s(%v, [%j], %l)", CALL_FUNC, node.left, [",",node.op.args], getSource(node.left));
                     }
@@ -964,19 +956,31 @@ function genJS(klass, env,pass) {
                 ctx.finfo.useArgs=true;
             }
         },
+        postfix: function (node) {
+            var t;
+            this.visit(node.left);
+            this.visit(node.op);
+            if (t=OM.match(node, myMethodCallTmpl)) {
+                var si=annotation(node.left).scopeInfo;
+                var st=stype(si);
+                if (st==ST.FIELD || st==ST.METHOD) {
+                    annotation(node, {myMethodCall:{name:t.N,args:t.A,scopeType:st}});
+                }
+            }
+        },
         exprstmt: function (node) {
             var t;
             if (!ctx.noWait &&
                     (t=OM.match(node,noRetFiberCallTmpl)) &&
-                    stype(ctx.scope[t.T])==ST.METHOD &&
-                    !getMethod(t.T).nowait) {
+                    stype(ctx.scope[t.N])==ST.METHOD &&
+                    !getMethod(t.N).nowait) {
                 t.type="noRet";
                 annotation(node, {fiberCall:t});
                 fiberCallRequired(this.path);
             } else if (!ctx.noWait &&
                     (t=OM.match(node,retFiberCallTmpl)) &&
-                    stype(ctx.scope[t.T])==ST.METHOD &&
-                    !getMethod(t.T).nowait) {
+                    stype(ctx.scope[t.N])==ST.METHOD &&
+                    !getMethod(t.N).nowait) {
                 t.type="ret";
                 annotation(node, {fiberCall:t});
                 fiberCallRequired(this.path);
@@ -1165,16 +1169,6 @@ function genJS(klass, env,pass) {
     }
     function genFunc(func) {
         var fname= isConstructor(func) ? "initialize" : func.name;
-        //var ps=getParams(func);
-        /*var ns=newScope(ctx.scope);
-        func.params.forEach(function (p,cnt) {
-            ns[p.name.text]=genSt(ST.PARAM,{klass:klass.name,name:func.name,no:cnt});
-        });
-        var locals=func.locals; //collectLocals(func.stmts);
-        copyLocals(locals, ns);*/
-        //annotateMethodFiber(func);
-        //annotateVarAccesses(func.stmts, ns);
-
         printf("%s :function %s(%j) {%{"+
                   "var %s=%s;%n"+
                   "%f%n" +
@@ -1195,20 +1189,6 @@ function genJS(klass, env,pass) {
         }
     }
     function genFuncExpr(node) {
-        /*var m,ps;
-        var body=node.body;
-        if (m=OM.match( node, {head:{params:{params:OM.P}}})) {
-            ps=m.P;
-        } else {
-            ps=[];
-        }
-        var ns=newScope(ctx.scope);
-        ps.forEach(function (p) {
-            ns[p.name.text]=genSt(ST.PARAM);
-        });
-        var locals=collectLocals(body, ns);
-        copyLocals(locals,ns);
-        annotateVarAccesses(body,ns);*/
         var finfo=annotation(node);// annotateSubFuncExpr(node);
 
         buf.printf("function (%j) {%{"+
@@ -1233,22 +1213,6 @@ function genJS(klass, env,pass) {
         return ("_trc_func_"+traceTbl.add(klass,pos )+"_"+(fnSeq++));//  Math.random()).replace(/\./g,"");
     }
     function genSubFunc(node) {
-    	/*var m,ps;
-        var body=node.body;
-        var name=node.head.name.text;
-        if (m=OM.match( node, {head:{params:{params:OM.P}}})) {
-            ps=m.P;
-        } else {
-            ps=[];
-        }
-        var ns=newScope(ctx.scope);
-        ps.forEach(function (p) {
-            ns[p.name.text]=genSt(ST.PARAM);
-        });
-        var locals=collectLocals(body, ns);
-        copyLocals(locals,ns);
-        annotateVarAccesses(body,ns);
-        */
         var finfo=annotation(node);// annotateSubFuncExpr(node);
         buf.printf("function %s(%j) {%{"+
                       "%f%n"+

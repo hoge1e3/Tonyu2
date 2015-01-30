@@ -1,4 +1,4 @@
-\new(x) {
+constructor A(x) {
     this.x=x;
 }
 a() {}
