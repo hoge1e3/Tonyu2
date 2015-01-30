@@ -287,20 +287,14 @@ function genJS(klass, env,pass) {
         }
         return si;
     }
-    function varAccess(n, si, postfixIsCall) {
-        //var si=getScopeInfo(n);
-        //if (stype(si2) != stype(si) ) throw "Not match: "+n+" "+stype(si2)+"!="+stype(si);
+    function varAccess(n, si) {
         var t=stype(si);
         if (t==ST.THVAR) {
             buf.printf("%s",TH);
         } else if (t==ST.FIELD) {
             buf.printf("%s.%s",THIZ, n);
         } else if (t==ST.METHOD) {
-        	if (postfixIsCall) {
-                buf.printf("%s.%s",THIZ, n);
-        	} else {
-                buf.printf("%s(%s,%s.%s)",BINDF, THIZ, THIZ, n);
-        	}
+            buf.printf("%s(%s,%s.%s)",BINDF, THIZ, THIZ, n);
         } else if (t==ST.CLASS) {
             buf.printf("%s",getClassName(n));
         } else if (t==ST.GLOBAL) {
@@ -312,7 +306,6 @@ function genJS(klass, env,pass) {
             throw "Unknown scope type: "+t;
         }
         return si;
-        //buf.printf("/*%s*/",si.name);
     }
     function noSurroundCompoundF(node) {
         return function () {
@@ -418,9 +411,7 @@ function genJS(klass, env,pass) {
                 buf.printf("%v: %v", node.key, node.value);
             } else {
                 buf.printf("%v: %f", node.key, function () {
-                    var si=varAccess( node.key.text, annotation(node).scopeInfo , false);
-                    //assertAnnotated(node,si);
-                    //annotation(node,{scopeInfo:si});
+                    var si=varAccess( node.key.text, annotation(node).scopeInfo);
                 });
             }
         },
@@ -438,10 +429,7 @@ function genJS(klass, env,pass) {
         },
         varAccess: function (node) {
             var n=node.name.text;
-            var si=varAccess(n,annotation(node).scopeInfo, false);
-            //assertAnnotated(node,si);
-            //annotation(node,{scopeInfo:si});//node.scopeInfo=si;
-            //describe(node,si.name);
+            var si=varAccess(n,annotation(node).scopeInfo);
         },
         exprstmt: function (node) {//exprStmt
             var t={};
@@ -531,23 +519,26 @@ function genJS(klass, env,pass) {
                     } else {
                         buf.printf("%s(%v, [%j], %l)", CALL_FUNC, node.left, [",",mc.args], getSource(node.left));
                     }
+                    return;
                 } else if (a.othersMethodCall) {
                     var oc=a.othersMethodCall;
                     buf.printf("%s(%v, %l, [%j], %l )", INVOKE_FUNC, oc.target, oc.name, [",",oc.args],getSource(oc.target));
+                    return;
                 } else if (a.memberAccess) {
                     var ma=a.memberAccess;
                     buf.printf("%s(%v,%l).%s", CHK_NN, ma.target, getSource(ma.target), ma.name );
-                } else {
-                    buf.printf("%v%v", node.left, node.op);
+                    return;
                 }
-                return;
+            } else if (a.myMethodCall) {
+                var mc=a.myMethodCall;
+                var si=mc.scopeInfo;
+                var st=stype(si);
+                if (st==ST.METHOD) {
+                    buf.printf("%s.%s(%j)",THIZ, mc.name, [",",mc.args]);
+                    return;
+                }
             }
-            if (OM.match(node, {left:{type:"varAccess"}, op:{type:"call"} })) {
-                var si=varAccess(node.left.name.text, annotation(node.left).scopeInfo, true);
-                buf.printf("%v", node.op);
-            } else {
-                buf.printf("%v%v", node.left, node.op);
-            }
+            buf.printf("%v%v", node.left, node.op);
         },
         "break": function (node) {
             if (!ctx.noWait) {
