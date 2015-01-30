@@ -139,6 +139,11 @@ function genJS(klass, env,pass) {
             },
             op:{type:"call", args:OM.A }
     };
+    var memberAccessTmpl={
+            type:"postfix",
+            left: OM.T,
+            op:{type:"member",name:{text:OM.N}}
+    };
     var myMethodCallTmpl=fiberCallTmpl={
             type:"postfix",
             left:{type:"varAccess", name: {text:OM.N}},
@@ -966,6 +971,10 @@ function genJS(klass, env,pass) {
                 if (st==ST.FIELD || st==ST.METHOD) {
                     annotation(node, {myMethodCall:{name:t.N,args:t.A,scopeType:st}});
                 }
+            } else if (t=OM.match(node, othersMethodCallTmpl)) {
+                annotation(node, {othersMethodCall:{target:t.T,name:t.N,args:t.A} });
+            } else if (t=OM.match(node, memberAccessTmpl)) {
+                annotation(node, {memberAccess:{target:t.T,name:t.N} });
             }
         },
         exprstmt: function (node) {
