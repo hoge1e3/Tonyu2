@@ -1,6 +1,5 @@
 constructor A(x) {
     this.x=x;
 }
-a() {}
-//\b() {x:3}
-
+x=3;
+break;

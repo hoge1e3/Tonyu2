@@ -1,4 +1,3 @@
-
 define(["genROM","dumpScript","Util","FS","Sync","Shell"], function (genROM,dumpScript,Util,FS,Sync,sh) {
     var build=Util.getQueryString("build",0);
     if (build) {

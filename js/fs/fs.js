@@ -1,13 +1,17 @@
-FS=function () {
-	var ramDisk=null;
+define([],function () {
+	var ramDisk={},ramDiskUsage=null;
 	if (typeof localStorage=="undefined" || localStorage==null) {
 		console.log("FS: Using RAMDisk");
-		ramDisk={};
+		ramDiskUsage="ALL";
 	}
     var FS={};
+    if (typeof window=="object") window.FS=FS;
     var roms={};
     var SEP="/";
     FS.roms=roms;
+    function extend(dst,src) {
+        for (var i in src) dst[i]=src[i];
+    }
     function endsWith(str,postfix) {
         return str.substring(str.length-postfix.length)===postfix;
     }
@@ -40,27 +44,34 @@ FS=function () {
     function isReadonly(path) {
     	return resolveROM(path);
     }
+    function getLocalStorage(path) {
+        if (ramDiskUsage=="ALL") return ramDisk;
+        if (isUsingRAMDisk(path)) {
+            return ramDisk;
+        }
+        return localStorage;
+    }
     function lcs(path, text) {
-    	if (ramDisk) return lcsRAM(path, text);
+    	var ls=getLocalStorage(path);
         var r=resolveROM(path);
         if (arguments.length==2) {
             if (r) throw path+" is Read only.";
-            if (text==null) delete localStorage[path];
-            else return localStorage[path]=text;
+            if (text==null) delete ls[path];
+            else return ls[path]=text;
         } else {
             if (r) {
                 return r.rom[r.rel];
             }
-            return localStorage[path];
+            return ls[path];
         }
     }
     function lcsExists(path) {
-    	if (ramDisk) return lcsExistsRAM(path);
+        var ls=getLocalStorage(path);
         var r=resolveROM(path);
         if (r) return r.rel in r.rom;
-        return path in localStorage;
+        return path in ls;
     }
-    function lcsRAM(path, text) {
+    /*function lcsRAM(path, text) {
         var r=resolveROM(path);
         if (arguments.length==2) {
             if (r) throw path+" is Read only.";
@@ -77,11 +88,11 @@ FS=function () {
         var r=resolveROM(path);
         if (r) return r.rel in r.rom;
         return path in ramDisk;
-    }
+    }*/
 
     function putDirInfo(path, dinfo, trashed) {
         // trashed: putDirInfo is caused by trashing the file/dir.
-	if (path==null) throw "putDir: Null path";
+        if (path==null) throw "putDir: Null path";
         if (!isDir(path)) throw "Not a directory : "+path;
         lcs(path, JSON.stringify(dinfo));
         var ppath=up(path);
@@ -89,12 +100,18 @@ FS=function () {
         var pdinfo=getDirInfo(ppath);
         touch(pdinfo, ppath, getName(path), trashed);
     }
+    function isUsingRAMDisk(path) {
+        return path in ramDisk;
+    }
     function getDirInfo(path) {
         if (path==null) throw "getDir: Null path";
         if (!endsWith(path,SEP)) path+=SEP;
         var dinfo=lcs(path);
         try {
             dinfo=JSON.parse(dinfo);
+            if (ramDisk[path]) {
+                extend(dinfo, JSON.parse(ramDisk[path]));
+            }
         } catch (e) {
             if (!isReadonly(path)) {
                 lcs(path,"{}");
@@ -103,28 +120,23 @@ FS=function () {
             }
             dinfo={};
         }
-	for (var i in dinfo) {
-	    if (typeof dinfo[i]=="number") {
-		dinfo[i]={lastUpdate:dinfo[i]};
-	    }
-	}
+        for (var i in dinfo) {
+            if (typeof dinfo[i]=="number") {
+                dinfo[i]={lastUpdate:dinfo[i]};
+            }
+        }
         return dinfo;
     }
     function touch(dinfo, path, name, trashed) {
-	// path:path of dinfo
-	// trashed: this touch is caused by trashing the file/dir.
-	if (!dinfo[name]) {
-	    dinfo[name]={};
-	    if (trashed) dinfo[name].trashed=true;
-	}
-	if (!trashed) delete dinfo[name].trashed;
-	dinfo[name].lastUpdate=now();
-	/*if (trashed && (!dinfo[name] || dinfo[name].trashed)) {
-	    dinfo[name]={lastUpdate:now(),trashed:true};
-        } else {
-            dinfo[name]={lastUpdate:now()};
-	}*/
-	putDirInfo(path ,dinfo, trashed);
+        // path:path of dinfo
+        // trashed: this touch is caused by trashing the file/dir.
+        if (!dinfo[name]) {
+            dinfo[name]={};
+            if (trashed) dinfo[name].trashed=true;
+        }
+        if (!trashed) delete dinfo[name].trashed;
+        dinfo[name].lastUpdate=now();
+        putDirInfo(path ,dinfo, trashed);
     }
     function removeEntry(dinfo, path, name) {// path:path of dinfo
         if (dinfo[name]) {
@@ -345,12 +357,11 @@ FS=function () {
             dir.obj =function () {
                 return JSON.parse(dir.text());
             };
-	    dir.exists=function () {
-		if (path=="/") return true;
-		var pinfo=getDirInfo(parent);
-		return pinfo && pinfo[name] && !pinfo[name].trashed;
+            dir.exists=function () {
+                if (path=="/") return true;
+                var pinfo=getDirInfo(parent);
+                return pinfo && pinfo[name] && !pinfo[name].trashed;
             };
-
         } else {
             var file=res={};
 
@@ -393,13 +404,16 @@ FS=function () {
             };
             file.copyFrom=function (src, options) {
                 file.text(src.text());
-		if (options.a) file.metaInfo(src.metaInfo());
+                if (options.a) file.metaInfo(src.metaInfo());
             };
-	    file.exists=function () {
-		return lcsExists(path);
+            file.exists=function () {
+                return lcsExists(path);
             };
 
         }
+        res.useRAMDisk=function (text) {
+            ramDisk[path]=text;
+        };
         res.relPath=function (base) {
             //  path= /a/b/c   base=/a/b/  res=c
             //  path= /a/b/c/   base=/a/b/  res=c/
@@ -525,4 +539,4 @@ FS=function () {
         return FS.get(path).ls();
     };
     return FS;
-}();
+});

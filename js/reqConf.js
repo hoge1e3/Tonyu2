@@ -99,9 +99,6 @@ var reqConf={
                 "deps": ["TextRect"],
                 "exports": "fukidashi"
             },
-            "FS": {
-                "exports": "FS"
-            },
             /*"showErrorPos": {
             	deps:[ "WebSite"],
                 "exports": "showErrorPos"
