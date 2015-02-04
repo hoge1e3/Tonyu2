@@ -30,7 +30,7 @@ requirejs(["fs/ROMk","FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS
         var fo=ScriptTagFS.toObj();
         for (var fn in fo) {
             var f=curProjectDir.rel(fn);
-            f.text(fo[fn]);
+            f.useRAMDisk().text(fo[fn]);
         }
         sh.cd(curProjectDir);
         var main="Main";

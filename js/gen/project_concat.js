@@ -1,4 +1,4 @@
-// Created at Wed Jan 21 2015 23:08:33 GMT+0900 (東京 (標準時))
+// Created at Wed Feb 04 2015 11:25:24 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -87,16 +87,23 @@
 })();
 
 requireSimulator.setName('FS');
-FS=function () {
-	var ramDisk=null;
+define([],function () {
+	var ramDisk={},ramDiskUsage=null;
 	if (typeof localStorage=="undefined" || localStorage==null) {
 		console.log("FS: Using RAMDisk");
-		ramDisk={};
+		ramDiskUsage="ALL";
 	}
     var FS={};
+    if (typeof window=="object") window.FS=FS;
+    FS.ramDisk=ramDisk;
+    FS.ramDiskUsage=ramDiskUsage;
+
     var roms={};
     var SEP="/";
     FS.roms=roms;
+    function extend(dst,src) {
+        for (var i in src) dst[i]=src[i];
+    }
     function endsWith(str,postfix) {
         return str.substring(str.length-postfix.length)===postfix;
     }
@@ -129,103 +136,106 @@ FS=function () {
     function isReadonly(path) {
     	return resolveROM(path);
     }
+    function getLocalStorage(path) {
+        if (isUsingRAMDisk(path)) {
+            return ramDisk;
+        }
+        return localStorage;
+    }
     function lcs(path, text) {
-    	if (ramDisk) return lcsRAM(path, text);
+    	var ls=getLocalStorage(path);
         var r=resolveROM(path);
         if (arguments.length==2) {
             if (r) throw path+" is Read only.";
-            if (text==null) delete localStorage[path];
-            else return localStorage[path]=text;
+            if (text==null) delete ls[path];
+            else return ls[path]=text;
         } else {
             if (r) {
                 return r.rom[r.rel];
             }
-            return localStorage[path];
+            return ls[path];
         }
     }
     function lcsExists(path) {
-    	if (ramDisk) return lcsExistsRAM(path);
+        var ls=getLocalStorage(path);
         var r=resolveROM(path);
         if (r) return r.rel in r.rom;
-        return path in localStorage;
-    }
-    function lcsRAM(path, text) {
-        var r=resolveROM(path);
-        if (arguments.length==2) {
-            if (r) throw path+" is Read only.";
-            if (text==null) delete ramDisk[path];
-            else return ramDisk[path]=text;
-        } else {
-            if (r) {
-                return r.rom[r.rel];
-            }
-            return ramDisk[path];
-        }
-    }
-    function lcsExistsRAM(path) {
-        var r=resolveROM(path);
-        if (r) return r.rel in r.rom;
-        return path in ramDisk;
+        return path in ls;
     }
 
-    function putDirInfo(path, dinfo, trashed) {
+    function putDirInfo(path, dinfo, trashed, useRAM) {
         // trashed: putDirInfo is caused by trashing the file/dir.
-	if (path==null) throw "putDir: Null path";
+        // if useRAM, dinfo should be only in ram
+        if (path==null) throw "putDir: Null path";
         if (!isDir(path)) throw "Not a directory : "+path;
-        lcs(path, JSON.stringify(dinfo));
+        if (useRAM) {
+            ramDisk[path]=dinfo;
+        } else {
+            lcs(path, JSON.stringify(dinfo));
+        }
         var ppath=up(path);
         if (ppath==null) return;
-        var pdinfo=getDirInfo(ppath);
-        touch(pdinfo, ppath, getName(path), trashed);
+        var pdinfo=getDirInfo(ppath, useRAM);
+        touch(pdinfo, ppath, getName(path), trashed, useRAM);
     }
-    function getDirInfo(path) {
+    function isUsingRAMDisk(path) {
+        if (ramDiskUsage=="ALL") return true;
+        if (typeof ramDiskUsage=="object") {
+            if (ramDiskUsage) {
+                return path in ramDiskUsage;
+            }
+        }
+        return false;
+    }
+    function getDirInfo(path ,ramOnly) {
+        // ramOnly:true -> get only info from ram
+        //        false -> get localStorage and override ram
         if (path==null) throw "getDir: Null path";
         if (!endsWith(path,SEP)) path+=SEP;
-        var dinfo=lcs(path);
-        try {
-            dinfo=JSON.parse(dinfo);
-        } catch (e) {
-            if (!isReadonly(path)) {
-                lcs(path,"{}");
-            } else {
-            	console.log("dinfo err : "+path+" - "+dinfo);
+        var dinfo={};
+        var r=ramDisk[path] || {};
+        if (ramOnly) {
+            dinfo=r;
+        } else {
+            try {
+                var dinfos=lcs(path);
+                if (dinfos) {
+                    dinfo=JSON.parse(dinfos);
+                }
+            } catch (e) {
+                console.log("dinfo err : "+path+" - "+dinfo);
             }
-            dinfo={};
+            extend(dinfo, r);
         }
-	for (var i in dinfo) {
-	    if (typeof dinfo[i]=="number") {
-		dinfo[i]={lastUpdate:dinfo[i]};
-	    }
-	}
+        for (var i in dinfo) {
+            if (typeof dinfo[i]=="number") {
+                dinfo[i]={lastUpdate:dinfo[i]};
+            }
+        }
         return dinfo;
     }
-    function touch(dinfo, path, name, trashed) {
-	// path:path of dinfo
-	// trashed: this touch is caused by trashing the file/dir.
-	if (!dinfo[name]) {
-	    dinfo[name]={};
-	    if (trashed) dinfo[name].trashed=true;
-	}
-	if (!trashed) delete dinfo[name].trashed;
-	dinfo[name].lastUpdate=now();
-	/*if (trashed && (!dinfo[name] || dinfo[name].trashed)) {
-	    dinfo[name]={lastUpdate:now(),trashed:true};
-        } else {
-            dinfo[name]={lastUpdate:now()};
-	}*/
-	putDirInfo(path ,dinfo, trashed);
+    function touch(dinfo, path, name, trashed, useRAM) {
+        // path:path of dinfo
+        // trashed: this touch is caused by trashing the file/dir.
+        if (!dinfo[name]) {
+            dinfo[name]={};
+            if (trashed) dinfo[name].trashed=true;
+        }
+        if (!trashed) delete dinfo[name].trashed;
+        dinfo[name].lastUpdate=now();
+        putDirInfo(path ,dinfo, trashed, useRAM);
     }
-    function removeEntry(dinfo, path, name) {// path:path of dinfo
+    function removeEntry(dinfo, path, name,useRAM) {// path:path of dinfo
         if (dinfo[name]) {
-	    dinfo[name]={lastUpdate:now(),trashed:true};
+            dinfo[name]={lastUpdate:now(),trashed:true};
             //delete dinfo[name];
-            putDirInfo(path ,dinfo, true);
+            putDirInfo(path ,dinfo, true, useRAM);
         }
     }
-    function removeEntryWithoutTrash(dinfo, path, name) {// path:path of dinfo
+    function removeEntryWithoutTrash(dinfo, path, name, useRAM) {// path:path of dinfo
         if (dinfo[name]) {
             delete dinfo[name];
-            putDirInfo(path ,dinfo, true);
+            putDirInfo(path ,dinfo, true, useRAM);
         }
     }
     FS.orderByNewest=function (af,bf) {
@@ -409,9 +419,10 @@ FS=function () {
                 var lis=dir.ls();
                 if (lis.length>0) throw path+": Directory not empty";
                 //lcs(path, null);
+                var r=isUsingRAMDisk(path);
                 if (parent!=null) {
-                    var pinfo=getDirInfo(parent);
-                    removeEntry(pinfo, parent, name);
+                    var pinfo=getDirInfo(parent,r);
+                    removeEntry(pinfo, parent, name,r);
                 }
             };
             dir.removeWithoutTrash=function() {
@@ -420,8 +431,9 @@ FS=function () {
                 },{includeTrashed:true});
                 lcs(path,null);
                 if (parent!=null) {
-                    var pinfo=getDirInfo(parent);
-                    removeEntryWithoutTrash(pinfo, parent, name);
+                    var r=isUsingRAMDisk(path);
+                    var pinfo=getDirInfo(parent,r);
+                    removeEntryWithoutTrash(pinfo, parent, name,r);
                 }
             };
             dir.mkdir=function () {
@@ -434,12 +446,11 @@ FS=function () {
             dir.obj =function () {
                 return JSON.parse(dir.text());
             };
-	    dir.exists=function () {
-		if (path=="/") return true;
-		var pinfo=getDirInfo(parent);
-		return pinfo && pinfo[name] && !pinfo[name].trashed;
+            dir.exists=function () {
+                if (path=="/") return true;
+                var pinfo=getDirInfo(parent);
+                return pinfo && pinfo[name] && !pinfo[name].trashed;
             };
-
         } else {
             var file=res={};
 
@@ -482,12 +493,18 @@ FS=function () {
             };
             file.copyFrom=function (src, options) {
                 file.text(src.text());
-		if (options.a) file.metaInfo(src.metaInfo());
+                if (options.a) file.metaInfo(src.metaInfo());
             };
-	    file.exists=function () {
-		return lcsExists(path);
+            file.exists=function () {
+                return lcsExists(path);
             };
-
+            file.useRAMDisk=function () {
+                // currently file only
+                if (ramDiskUsage=="ALL") return
+                ramDiskUsage=ramDiskUsage||{};
+                ramDiskUsage[path]=true;
+                return file;
+            };
         }
         res.relPath=function (base) {
             //  path= /a/b/c   base=/a/b/  res=c
@@ -510,13 +527,16 @@ FS=function () {
             return m.trashed;
         };
         res.metaInfo=function () {
+            var ram=isUsingRAMDisk(path);
             if (parent!=null) {
-                var pinfo=getDirInfo(parent);
+                var pinfo;
                 if (arguments.length==0) {
+                    pinfo=getDirInfo(parent);
                     return pinfo[name];
                 } else {
+                    pinfo=getDirInfo(parent,ram);
                     pinfo[name]=arguments[0];
-                    putDirInfo(parent, pinfo, pinfo[name].trashed);
+                    putDirInfo(parent, pinfo, pinfo[name].trashed, ram);
                 }
             }
             return {};
@@ -535,8 +555,9 @@ FS=function () {
         };
         res.touch=function () {
             if (parent==null) return ; //  path=/
-            var pinfo=getDirInfo(parent);
-            touch(pinfo, parent, name, false);
+            var r=isUsingRAMDisk(path);
+            var pinfo=getDirInfo(parent,r);
+            touch(pinfo, parent, name, false, r);
         };
         res.isReadOnly=function () {
             var r=resolveROM(path);
@@ -614,7 +635,7 @@ FS=function () {
         return FS.get(path).ls();
     };
     return FS;
-}();
+});
 
 requireSimulator.setName('WebSite');
 define([], function () {
@@ -12535,8 +12556,8 @@ function initClassDecls(klass, env ) {
         var spcn=env.options.compiler.defaultSuperClass;
         var pos=0;
         var t;
-        if (t=OM.match( program , {ext:{superClassName:{text:OM.T, pos:OM.P}}})) {
-            spcn=t.T;
+        if (t=OM.match( program , {ext:{superClassName:{text:OM.N, pos:OM.P}}})) {
+            spcn=t.N;
             pos=t.P;
             if (spcn=="null") spcn=null;
         }
@@ -12560,9 +12581,14 @@ function initClassDecls(klass, env ) {
         program.stmts.forEach(function (stmt) {
             if (stmt.type=="funcDecl") {
                 var head=stmt.head;
+                var ftype="function";
+                if (head.ftype) {
+                    ftype=head.ftype.text;
+                    //console.log("head.ftype:",stmt);
+                }
                 methods[head.name.text]={
                         nowait: !!head.nowait,
-                        ftype:  head.ftype.text,
+                        ftype:  ftype,
                         name:  head.name.text,
                         head:  head,
                         pos: head.pos,
@@ -12617,11 +12643,25 @@ function genJS(klass, env,pass) {
     var diagnose=env.options.compiler.diagnose;
     var ctx=context();
     var debug=false;
-    var fiberCallTmpl={
+    var othersMethodCallTmpl={
             type:"postfix",
-            op:{/*$var:"A",*/type:"call", args:OM.A },
-            left:{type:"varAccess", name: {text:OM.T}}
-         };
+            left:{
+                type:"postfix",
+                left:OM.T,
+                op:{type:"member",name:{text:OM.N}}
+            },
+            op:{type:"call", args:OM.A }
+    };
+    var memberAccessTmpl={
+            type:"postfix",
+            left: OM.T,
+            op:{type:"member",name:{text:OM.N}}
+    };
+    var myMethodCallTmpl=fiberCallTmpl={
+            type:"postfix",
+            left:{type:"varAccess", name: {text:OM.N}},
+            op:{type:"call", args:OM.A }
+    };
     var noRetFiberCallTmpl={
         expr: fiberCallTmpl
     };
@@ -12760,20 +12800,14 @@ function genJS(klass, env,pass) {
         }
         return si;
     }
-    function varAccess(n, si, postfixIsCall) {
-        //var si=getScopeInfo(n);
-        //if (stype(si2) != stype(si) ) throw "Not match: "+n+" "+stype(si2)+"!="+stype(si);
+    function varAccess(n, si) {
         var t=stype(si);
         if (t==ST.THVAR) {
             buf.printf("%s",TH);
         } else if (t==ST.FIELD) {
             buf.printf("%s.%s",THIZ, n);
         } else if (t==ST.METHOD) {
-        	if (postfixIsCall) {
-                buf.printf("%s.%s",THIZ, n);
-        	} else {
-                buf.printf("%s(%s,%s.%s)",BINDF, THIZ, THIZ, n);
-        	}
+            buf.printf("%s(%s,%s.%s)",BINDF, THIZ, THIZ, n);
         } else if (t==ST.CLASS) {
             buf.printf("%s",getClassName(n));
         } else if (t==ST.GLOBAL) {
@@ -12785,7 +12819,6 @@ function genJS(klass, env,pass) {
             throw "Unknown scope type: "+t;
         }
         return si;
-        //buf.printf("/*%s*/",si.name);
     }
     function noSurroundCompoundF(node) {
         return function () {
@@ -12891,9 +12924,7 @@ function genJS(klass, env,pass) {
                 buf.printf("%v: %v", node.key, node.value);
             } else {
                 buf.printf("%v: %f", node.key, function () {
-                    var si=varAccess( node.key.text, annotation(node).scopeInfo , false);
-                    //assertAnnotated(node,si);
-                    //annotation(node,{scopeInfo:si});
+                    var si=varAccess( node.key.text, annotation(node).scopeInfo);
                 });
             }
         },
@@ -12911,10 +12942,7 @@ function genJS(klass, env,pass) {
         },
         varAccess: function (node) {
             var n=node.name.text;
-            var si=varAccess(n,annotation(node).scopeInfo, false);
-            //assertAnnotated(node,si);
-            //annotation(node,{scopeInfo:si});//node.scopeInfo=si;
-            //describe(node,si.name);
+            var si=varAccess(n,annotation(node).scopeInfo);
         },
         exprstmt: function (node) {//exprStmt
             var t={};
@@ -12922,38 +12950,28 @@ function genJS(klass, env,pass) {
             if (!ctx.noWait) {
                 t=annotation(node).fiberCall || {};
             }
-            /*
-            if (!ctx.noWait && (t=OM.match(node,noRetFiberCallTmpl)) &&
-                    stype(ctx.scope[t.T])==ST.METHOD &&
-                    !getMethod(t.T).nowait) {
-                    */
             if (t.type=="noRet") {
                 buf.printf(
                         "%s.%s%s(%j);%n" +
                         "%s=%s;return;%n" +/*B*/
                         "%}case %d:%{",
-                            THIZ, FIBPRE, t.T,  [", ",[THNode].concat(t.A)],
+                            THIZ, FIBPRE, t.N,  [", ",[THNode].concat(t.A)],
                             FRMPC, ctx.pc,
                             ctx.pc++
                 );
-            /*} else if (!ctx.noWait && (t=OM.match(node,retFiberCallTmpl)) &&
-                    stype(ctx.scope[t.T])==ST.METHOD &&
-                    !getMethod(t.T).nowait) {*/
             } else if (t.type=="ret") {
                 buf.printf(
                         "%s.%s%s(%j);%n" +
                         "%s=%s;return;%n" +/*B*/
                         "%}case %d:%{"+
                         "%v%v%s.retVal;%n",
-                            THIZ, FIBPRE, t.T, [", ",[THNode].concat(t.A)],
+                            THIZ, FIBPRE, t.N, [", ",[THNode].concat(t.A)],
                             FRMPC, ctx.pc,
                             ctx.pc++,
                             t.L, t.O, TH
                 );
-            /*} else if (!ctx.noWait && (t=OM.match(node,noRetSuperFiberCallTmpl)) ) {*/
             } else if (t.type=="noRetSuper") {
                 var p=getClassName(klass.superClass);
-                //if (t.S.name) {
                     buf.printf(
                             "%s.prototype.%s%s.apply( %s, [%j]);%n" +
                             "%s=%s;return;%n" +/*B*/
@@ -12962,11 +12980,7 @@ function genJS(klass, env,pass) {
                                 FRMPC, ctx.pc,
                                 ctx.pc++
                     );
-                //}
-            /*} else if (!ctx.noWait && (t=OM.match(node,retSuperFiberCallTmpl)) ) {
-                var p=getClassName(klass.superClass);*/
             } else if (t.type=="retSuper") {
-                //if (t.S.name) {
                     buf.printf(
                             "%s.prototype.%s%s.apply( %s, [%j]);%n" +
                             "%s=%s;return;%n" +/*B*/
@@ -12977,16 +12991,15 @@ function genJS(klass, env,pass) {
                                 ctx.pc++,
                                 t.L, t.O, TH
                     );
-                //}
             } else {
                 buf.printf("%v;", node.expr );
             }
         },
         infix: function (node) {
             var opn=node.op.text;
-            if (opn=="=" || opn=="+=" || opn=="-=" || opn=="*=" ||  opn=="/=" || opn=="%=" ) {
+            /*if (opn=="=" || opn=="+=" || opn=="-=" || opn=="*=" ||  opn=="/=" || opn=="%=" ) {
                 checkLVal(node.left);
-            }
+            }*/
             if (diagnose) {
                 if (opn=="+" || opn=="-" || opn=="*" ||  opn=="/" || opn=="%" ) {
                     buf.printf("%s(%v,%l)%v%s(%v,%l)", CHK_NN, node.left, getSource(node.left), node.op,
@@ -13008,42 +13021,37 @@ function genJS(klass, env,pass) {
             buf.printf("%v %v", node.op, node.right);
         },
         postfix: function (node) {
-            var mr;
+            var a=annotation(node);
             if (diagnose) {
-                if (mr=OM.match(node, {left:{type:"varAccess",name:{text:OM.T}}, op:{type:"call"} })) {
-                    // T()
-                    var si=annotation(node.left).scopeInfo;
-                    //var si2=getScopeInfo(mr.T);
-                    //if (stype(si2) != stype(si) ) throw "Not match2: "+n+" "+stype(si2)+"!="+stype(si);
+                if (a.myMethodCall) {
+                    var mc=a.myMethodCall;
+                    var si=mc.scopeInfo;
                     var st=stype(si);
                     if (st==ST.FIELD || st==ST.METHOD) {
-                        buf.printf("%s(%s, %l, [%j], %l )", INVOKE_FUNC,THIZ, mr.T, [",",node.op.args],"this");
+                        buf.printf("%s(%s, %l, [%j], %l )", INVOKE_FUNC,THIZ, mc.name, [",",mc.args],"this");
                     } else {
-                        buf.printf("%s(%v, [%j], %l)", CALL_FUNC, node.left, [",",node.op.args], getSource(node.left));
+                        buf.printf("%s(%v, [%j], %l)", CALL_FUNC, node.left, [",",mc.args], getSource(node.left));
                     }
-                } else if (mr=OM.match(node, {
-                    left:{
-                        type:"postfix",left:OM.T,op:{type:"member",name:{text:OM.N}}
-                    }, op:{type:"call"}
-                })) {
-                    buf.printf("%s(%v, %l, [%j], %l )", INVOKE_FUNC, mr.T, mr.N, [",",node.op.args],getSource(mr.T));
-                } else if (mr=OM.match(node, {left: OM.L, op:{type:"member",name:{text:OM.N}} } )) {
-                    buf.printf("%s(%v,%l).%s", CHK_NN, mr.L, getSource(mr.L), mr.N );
-                } else {
-                    buf.printf("%v%v", node.left, node.op);
+                    return;
+                } else if (a.othersMethodCall) {
+                    var oc=a.othersMethodCall;
+                    buf.printf("%s(%v, %l, [%j], %l )", INVOKE_FUNC, oc.target, oc.name, [",",oc.args],getSource(oc.target));
+                    return;
+                } else if (a.memberAccess) {
+                    var ma=a.memberAccess;
+                    buf.printf("%s(%v,%l).%s", CHK_NN, ma.target, getSource(ma.target), ma.name );
+                    return;
                 }
-                return;
+            } else if (a.myMethodCall) {
+                var mc=a.myMethodCall;
+                var si=mc.scopeInfo;
+                var st=stype(si);
+                if (st==ST.METHOD) {
+                    buf.printf("%s.%s(%j)",THIZ, mc.name, [",",mc.args]);
+                    return;
+                }
             }
-            if (OM.match(node, {left:{type:"varAccess"}, op:{type:"call"} })) {
-                // varAccess( , , true)
-                var si=varAccess(node.left.name.text, annotation(node.left).scopeInfo, true);
-                //assertAnnotated(node.left,si);
-                //annotation(node.left,{scopeInfo:si});
-                //node.left.scopeInfo=varAccess(node.left.name.text,true);
-                buf.printf("%v", node.op);
-            } else {
-                buf.printf("%v%v", node.left, node.op);
-            }
+            buf.printf("%v%v", node.left, node.op);
         },
         "break": function (node) {
             if (!ctx.noWait) {
@@ -13417,6 +13425,30 @@ function genJS(klass, env,pass) {
                 annotation(node,{scopeInfo:si});
             }
         },
+        "do": function (node) {
+            var t=this;
+            ctx.enter({jumpable:true}, function () {
+                t.def(node);
+            });
+        },
+        "switch": function (node) {
+            var t=this;
+            ctx.enter({jumpable:true}, function () {
+                t.def(node);
+            });
+        },
+        "while": function (node) {
+            var t=this;
+            ctx.enter({jumpable:true}, function () {
+                t.def(node);
+            });
+        },
+        "for": function (node) {
+            var t=this;
+            ctx.enter({jumpable:true}, function () {
+                t.def(node);
+            });
+        },
         "forin": function (node) {
             node.vars.forEach(function (v) {
                 var si=getScopeInfo(v.text);
@@ -13441,9 +13473,11 @@ function genJS(klass, env,pass) {
             this.visit(node.value);
         },
         "break": function (node) {
+            if (!ctx.jumpable) throw TError( "break； は繰り返しの中で使います." , srcFile, node.pos);
             if (!ctx.noWait) annotateParents(this.path,{hasJump:true});
         },
         "continue": function (node) {
+            if (!ctx.jumpable) throw TError( "continue； は繰り返しの中で使います." , srcFile, node.pos);
             if (!ctx.noWait) annotateParents(this.path,{hasJump:true});
         },
         "reservedConst": function (node) {
@@ -13451,19 +13485,39 @@ function genJS(klass, env,pass) {
                 ctx.finfo.useArgs=true;
             }
         },
+        postfix: function (node) {
+            var t;
+            this.visit(node.left);
+            this.visit(node.op);
+            if (t=OM.match(node, myMethodCallTmpl)) {
+                var si=annotation(node.left).scopeInfo;
+                annotation(node, {myMethodCall:{name:t.N,args:t.A,scopeInfo:si}});
+            } else if (t=OM.match(node, othersMethodCallTmpl)) {
+                annotation(node, {othersMethodCall:{target:t.T,name:t.N,args:t.A} });
+            } else if (t=OM.match(node, memberAccessTmpl)) {
+                annotation(node, {memberAccess:{target:t.T,name:t.N} });
+            }
+        },
+        infix: function (node) {
+            var opn=node.op.text;
+            if (opn=="=" || opn=="+=" || opn=="-=" || opn=="*=" ||  opn=="/=" || opn=="%=" ) {
+                checkLVal(node.left);
+            }
+            this.def(node);
+        },
         exprstmt: function (node) {
             var t;
             if (!ctx.noWait &&
                     (t=OM.match(node,noRetFiberCallTmpl)) &&
-                    stype(ctx.scope[t.T])==ST.METHOD &&
-                    !getMethod(t.T).nowait) {
+                    stype(ctx.scope[t.N])==ST.METHOD &&
+                    !getMethod(t.N).nowait) {
                 t.type="noRet";
                 annotation(node, {fiberCall:t});
                 fiberCallRequired(this.path);
             } else if (!ctx.noWait &&
                     (t=OM.match(node,retFiberCallTmpl)) &&
-                    stype(ctx.scope[t.T])==ST.METHOD &&
-                    !getMethod(t.T).nowait) {
+                    stype(ctx.scope[t.N])==ST.METHOD &&
+                    !getMethod(t.N).nowait) {
                 t.type="ret";
                 annotation(node, {fiberCall:t});
                 fiberCallRequired(this.path);
@@ -13570,20 +13624,6 @@ function genJS(klass, env,pass) {
         });
     }
     function genFiber(fiber) {
-    	//var locals={};
-        //console.log("Gen fiber");
-        //var ps=getParams(fiber);
-        /*var ns=newScope(ctx.scope);
-        fiber.params.forEach(function (p,cnt) {
-            ns[p.name.text]=genSt(ST.PARAM,{
-                klass:klass.name, name:fiber.name, no:cnt
-            });
-        });
-        var locals=fiber.locals; //collectLocals(fiber.stmts);
-        copyLocals(locals, ns);
-        */
-        //annotateMethodFiber(fiber);
-        //annotateVarAccesses(fiber.stmts, ns);
         if (isConstructor(fiber)) return;
         var stmts=fiber.stmts;
         var noWaitStmts=[], waitStmts=[], curStmts=noWaitStmts;
@@ -13652,16 +13692,6 @@ function genJS(klass, env,pass) {
     }
     function genFunc(func) {
         var fname= isConstructor(func) ? "initialize" : func.name;
-        //var ps=getParams(func);
-        /*var ns=newScope(ctx.scope);
-        func.params.forEach(function (p,cnt) {
-            ns[p.name.text]=genSt(ST.PARAM,{klass:klass.name,name:func.name,no:cnt});
-        });
-        var locals=func.locals; //collectLocals(func.stmts);
-        copyLocals(locals, ns);*/
-        //annotateMethodFiber(func);
-        //annotateVarAccesses(func.stmts, ns);
-
         printf("%s :function %s(%j) {%{"+
                   "var %s=%s;%n"+
                   "%f%n" +
@@ -13682,20 +13712,6 @@ function genJS(klass, env,pass) {
         }
     }
     function genFuncExpr(node) {
-        /*var m,ps;
-        var body=node.body;
-        if (m=OM.match( node, {head:{params:{params:OM.P}}})) {
-            ps=m.P;
-        } else {
-            ps=[];
-        }
-        var ns=newScope(ctx.scope);
-        ps.forEach(function (p) {
-            ns[p.name.text]=genSt(ST.PARAM);
-        });
-        var locals=collectLocals(body, ns);
-        copyLocals(locals,ns);
-        annotateVarAccesses(body,ns);*/
         var finfo=annotation(node);// annotateSubFuncExpr(node);
 
         buf.printf("function (%j) {%{"+
@@ -13720,22 +13736,6 @@ function genJS(klass, env,pass) {
         return ("_trc_func_"+traceTbl.add(klass,pos )+"_"+(fnSeq++));//  Math.random()).replace(/\./g,"");
     }
     function genSubFunc(node) {
-    	/*var m,ps;
-        var body=node.body;
-        var name=node.head.name.text;
-        if (m=OM.match( node, {head:{params:{params:OM.P}}})) {
-            ps=m.P;
-        } else {
-            ps=[];
-        }
-        var ns=newScope(ctx.scope);
-        ps.forEach(function (p) {
-            ns[p.name.text]=genSt(ST.PARAM);
-        });
-        var locals=collectLocals(body, ns);
-        copyLocals(locals,ns);
-        annotateVarAccesses(body,ns);
-        */
         var finfo=annotation(node);// annotateSubFuncExpr(node);
         buf.printf("function %s(%j) {%{"+
                       "%f%n"+
