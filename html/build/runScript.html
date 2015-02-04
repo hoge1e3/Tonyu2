@@ -55,7 +55,7 @@ dieEffect();
     var pp=p-$pat_balls;
     var c=pp%5;
     var r=(pp-c)/5;
-    return {c,r};    
+    return {c,r};
 }
 \check(){
     if (!$prev) return true;
@@ -96,7 +96,7 @@ cx*bx+cy*by = k*(bx*bx+by*by)
 
 */
     var k= (cx*bx+cy*by)/(bx*bx+by*by);
-// H= k*B 
+// H= k*B
     var hx = k * bx;
     var hy = k * by;
     var d= (cx-hx)*(cx-hx)+(cy-hy)*(cy-hy);
@@ -105,10 +105,11 @@ cx*bx+cy*by = k*(bx*bx+by*by)
 </script>
 
 <script type='text/tonyu' data-filename='Main.tonyu'>
+file("hoge.txt").text("fuga");
 $sound=false;
 while (true) {
     size=30;
-    x=$screenWidth/2; 
+    x=$screenWidth/2;
     y=$screenHeight/4;
     text="いろ色文字もじ Tiny";
     sb=new Button{y:200, text:"",size:30};
@@ -289,11 +290,11 @@ while (true) {
     touched=!ptouch && $touches[0].touched ;
     ptouch=$touches[0].touched;
     if ((mouseClicked || touched) &&
-    $mouseX>r.x-r.width/2 && $mouseX<r.x+r.width/2 && 
+    $mouseX>r.x-r.width/2 && $mouseX<r.x+r.width/2 &&
     $mouseY>r.y-r.height/2 && $mouseY<r.y+r.height/2) {
         clickedBy=mouseClicked ?"mouse":"touch";
         clicked=1;
-    }    
+    }
     update();
 }
 \draw(c) {
