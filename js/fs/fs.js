@@ -1,4 +1,6 @@
 define([],function () {
+    // Media Mask
+    var MM_RAM=1, MM_LS=2, MM_MIX=3;
 	var ramDisk={},ramDiskUsage=null;
 	if (typeof localStorage=="undefined" || localStorage==null) {
 		console.log("FS: Using RAMDisk");
@@ -74,20 +76,20 @@ define([],function () {
         return path in ls;
     }
 
-    function putDirInfo(path, dinfo, trashed, useRAM) {
+    function putDirInfo(path, dinfo, trashed, media) {
         // trashed: putDirInfo is caused by trashing the file/dir.
-        // if useRAM, dinfo should be only in ram
+        // if media==MM_RAM, dinfo should be only in ram, otherwise it shoule be only in localStorage
         if (path==null) throw "putDir: Null path";
         if (!isDir(path)) throw "Not a directory : "+path;
-        if (useRAM) {
+        if (media==MM_RAM) {
             ramDisk[path]=dinfo;
         } else {
             lcs(path, JSON.stringify(dinfo));
         }
         var ppath=up(path);
         if (ppath==null) return;
-        var pdinfo=getDirInfo(ppath, useRAM);
-        touch(pdinfo, ppath, getName(path), trashed, useRAM);
+        var pdinfo=getDirInfo(ppath, media);
+        touch(pdinfo, ppath, getName(path), trashed, media);
     }
     function isUsingRAMDisk(path) {
         if (ramDiskUsage=="ALL") return true;
@@ -98,16 +100,15 @@ define([],function () {
         }
         return false;
     }
-    function getDirInfo(path ,ramOnly) {
-        // ramOnly:true -> get only info from ram
-        //        false -> get localStorage and override ram
+    function getDirInfo(path ,getMask) {
+        //    var MM_RAM=1, MM_LS=2;
         if (path==null) throw "getDir: Null path";
         if (!endsWith(path,SEP)) path+=SEP;
-        var dinfo={};
-        var r=ramDisk[path] || {};
-        if (ramOnly) {
-            dinfo=r;
-        } else {
+        var dinfo={},r={};
+        if (getMask & MM_RAM) {
+            r=ramDisk[path] || {};
+        }
+        if (getMask & MM_LS) {
             try {
                 var dinfos=lcs(path);
                 if (dinfos) {
@@ -116,8 +117,8 @@ define([],function () {
             } catch (e) {
                 console.log("dinfo err : "+path+" - "+dinfo);
             }
-            extend(dinfo, r);
         }
+        extend(dinfo, r);
         for (var i in dinfo) {
             if (typeof dinfo[i]=="number") {
                 dinfo[i]={lastUpdate:dinfo[i]};
@@ -125,7 +126,8 @@ define([],function () {
         }
         return dinfo;
     }
-    function touch(dinfo, path, name, trashed, useRAM) {
+    function touch(dinfo, path, name, trashed, media) {
+        // media : MM_RAM or MM_LS
         // path:path of dinfo
         // trashed: this touch is caused by trashing the file/dir.
         if (!dinfo[name]) {
@@ -134,19 +136,19 @@ define([],function () {
         }
         if (!trashed) delete dinfo[name].trashed;
         dinfo[name].lastUpdate=now();
-        putDirInfo(path ,dinfo, trashed, useRAM);
+        putDirInfo(path ,dinfo, trashed,media);
     }
-    function removeEntry(dinfo, path, name,useRAM) {// path:path of dinfo
+    function removeEntry(dinfo, path, name,media) {// path:path of dinfo
         if (dinfo[name]) {
             dinfo[name]={lastUpdate:now(),trashed:true};
             //delete dinfo[name];
-            putDirInfo(path ,dinfo, true, useRAM);
+            putDirInfo(path ,dinfo, true, media);
         }
     }
-    function removeEntryWithoutTrash(dinfo, path, name, useRAM) {// path:path of dinfo
+    function removeEntryWithoutTrash(dinfo, path, name, media) {// path:path of dinfo
         if (dinfo[name]) {
             delete dinfo[name];
-            putDirInfo(path ,dinfo, true, useRAM);
+            putDirInfo(path ,dinfo, true, media);
         }
     }
     FS.orderByNewest=function (af,bf) {
@@ -205,12 +207,12 @@ define([],function () {
             if (f.isReadOnly()) continue;
             if (!exported.confirm) {
                 if (f.isDir()) {
-                    var dinfo= getDirInfo(p);
+                    var dinfo= getDirInfo(p, MM_LS);
                     var ovr=JSON.parse(data[i]);
                     for (var k in ovr) {
                         dinfo[k]=ovr[k];
                     }
-                    putDirInfo(p, dinfo,false);
+                    putDirInfo(p, dinfo,false, MM_LS);
                 } else {
                     lcs(p, data[i]);
                 }
@@ -277,7 +279,7 @@ define([],function () {
                 if (typeof options=="function") ord=options;
                 options=dir.convertOptions(options);
                 if (!ord) ord=options.order;
-                var dinfo=getDirInfo(path);
+                var dinfo=getDirInfo(path,MM_MIX);
                 var res=[];
                 for (var i in dinfo) {
                     if (!options.includeTrashed && dinfo[i].trashed) continue;
@@ -330,26 +332,26 @@ define([],function () {
                 var lis=dir.ls();
                 if (lis.length>0) throw path+": Directory not empty";
                 //lcs(path, null);
-                var r=isUsingRAMDisk(path);
                 if (parent!=null) {
+                    var r=dir.mediaType();
                     var pinfo=getDirInfo(parent,r);
                     removeEntry(pinfo, parent, name,r);
                 }
             };
             dir.removeWithoutTrash=function() {
+                var r=dir.mediaType();
                 dir.each(function (f) {
                     f.removeWithoutTrash();
                 },{includeTrashed:true});
                 lcs(path,null);
                 if (parent!=null) {
-                    var r=isUsingRAMDisk(path);
                     var pinfo=getDirInfo(parent,r);
                     removeEntryWithoutTrash(pinfo, parent, name,r);
                 }
             };
             dir.mkdir=function () {
                 dir.touch();
-                getDirInfo(path);
+                //getDirInfo(path,r);
             };
             dir.text=function () {
                 return lcs(path);
@@ -359,8 +361,11 @@ define([],function () {
             };
             dir.exists=function () {
                 if (path=="/") return true;
-                var pinfo=getDirInfo(parent);
+                var pinfo=getDirInfo(parent,MM_MIX);
                 return pinfo && pinfo[name] && !pinfo[name].trashed;
+            };
+            dir.mediaType=function () {
+                return (ramDisk[path] && !localStorage[path]) ? MM_RAM :MM_LS;
             };
         } else {
             var file=res={};
@@ -370,16 +375,18 @@ define([],function () {
                 if (!file.exists()) throw path+": No such file.";
                 lcs(path, null);
                 if (parent!=null) {
-                    var pinfo=getDirInfo(parent);
-                    removeEntry(pinfo, parent, name);
+                    var r=file.mediaType();
+                    var pinfo=getDirInfo(parent,r);
+                    removeEntry(pinfo, parent, name,r);
                 }
             };
             file.removeWithoutTrash=function () {
                 if (!file.exists() && !file.isTrashed()) throw path+": No such file.";
                 lcs(path, null);
                 if (parent!=null) {
-                    var pinfo=getDirInfo(parent);
-                    removeEntryWithoutTrash(pinfo, parent, name);
+                    var r=file.mediaType();
+                    var pinfo=getDirInfo(parent,r);
+                    removeEntryWithoutTrash(pinfo, parent, name,r);
                 }
             }
             file.text=function () {
@@ -416,6 +423,9 @@ define([],function () {
                 ramDiskUsage[path]=true;
                 return file;
             };
+            file.mediaType=function () {
+                return isUsingRAMDisk(path)?MM_RAM:MM_LS;
+            };
         }
         res.relPath=function (base) {
             //  path= /a/b/c   base=/a/b/  res=c
@@ -438,16 +448,16 @@ define([],function () {
             return m.trashed;
         };
         res.metaInfo=function () {
-            var ram=isUsingRAMDisk(path);
             if (parent!=null) {
                 var pinfo;
                 if (arguments.length==0) {
-                    pinfo=getDirInfo(parent);
+                    pinfo=getDirInfo(parent,MM_MIX);
                     return pinfo[name];
                 } else {
-                    pinfo=getDirInfo(parent,ram);
+                    var media=res.mediaType();
+                    pinfo=getDirInfo(parent,media);
                     pinfo[name]=arguments[0];
-                    putDirInfo(parent, pinfo, pinfo[name].trashed, ram);
+                    putDirInfo(parent, pinfo, pinfo[name].trashed, media);
                 }
             }
             return {};
@@ -466,7 +476,7 @@ define([],function () {
         };
         res.touch=function () {
             if (parent==null) return ; //  path=/
-            var r=isUsingRAMDisk(path);
+            var r=res.mediaType();
             var pinfo=getDirInfo(parent,r);
             touch(pinfo, parent, name, false, r);
         };
@@ -532,9 +542,9 @@ define([],function () {
             if (!isPath(path)) continue;
             var p=up(path);
             if (p==null) continue;
-            var dinfo=getDirInfo(p);
+            var dinfo=getDirInfo(p, MM_LS);
             var name=getName(path);
-            touch(dinfo, p , name, dinfo[name] && dinfo[name].trashed);
+            touch(dinfo, p , name, dinfo[name] && dinfo[name].trashed, MM_LS);
         }
     };
     FS.dump=function () {
