@@ -1,4 +1,4 @@
-// Created at Wed Feb 04 2015 15:15:58 GMT+0900 (東京 (標準時))
+// Created at Wed Feb 04 2015 15:46:10 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -14450,7 +14450,7 @@ return Tonyu.Project=function (dir, kernelDir) {
     };
     TPR.rawRun=function (mainClassName) {
         TPR.compile();
-        thumbnail.set(TPR, 2000);
+        if (!TPR.runScriptMode) thumbnail.set(TPR, 2000);
         TPR.rawBoot(mainClassName);
     };
     /*TPR.run=function (mainClassName) {
