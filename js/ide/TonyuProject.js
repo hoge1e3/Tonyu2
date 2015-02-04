@@ -57,7 +57,7 @@ return Tonyu.Project=function (dir, kernelDir) {
     };
     TPR.rawRun=function (mainClassName) {
         TPR.compile();
-        thumbnail.set(TPR, 2000);
+        if (!TPR.runScriptMode) thumbnail.set(TPR, 2000);
         TPR.rawBoot(mainClassName);
     };
     /*TPR.run=function (mainClassName) {
