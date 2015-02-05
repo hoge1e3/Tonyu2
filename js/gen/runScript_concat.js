@@ -1,4 +1,4 @@
-// Created at Wed Feb 04 2015 15:46:16 GMT+0900 (東京 (標準時))
+// Created at Thu Feb 05 2015 11:45:47 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -7776,7 +7776,9 @@ requirejs(["fs/ROMk","FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS
         var fo=ScriptTagFS.toObj();
         for (var fn in fo) {
             var f=curProjectDir.rel(fn);
-            f.useRAMDisk().text(fo[fn]);
+            if (!f.isDir()) {
+                f.useRAMDisk().text(fo[fn]);
+            }
         }
         sh.cd(curProjectDir);
         var main="Main";

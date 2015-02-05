@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+<script src="../../js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="../../js/lib/timbre.js" type="text/javascript"></script>
+<script src="../../js/gen/runScript_concat.js"></script>
+</head>
+<div id='splash' style='position:relative'>
+<!--ここに，ロード中に表示する内容を記述できます-->
+</div>
+<!--
+このプログラムをTonyuの開発環境で編集するには，
+http://tonyuedit.appspot.com/edit/html/build/importFromJsdoit.html
+を開きます．
+-->
+<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu'>while(true) {
+    $Screen.setBGColor("rgb(0,0,80)");
+    size=30;
+    x=$screenWidth/2;
+    y=$screenHeight/4;
+    text="Tilde Defence";
+    //sb=new Button{y:200, text:"",size:30};
+    st=new Button{y:300, text:"Start",size:30};
+    loadData();
+    if ($save) {
+        $save.time++;
+        if ($save.time==10) $save=null;
+    }
+    if ($save) cn=new Button{y:360,
+    text:"Continue Lv."+$save.level,size:30};
+    update();
+    //text="x=" + x+" y="+y;
+    while (true) {
+        if (st.clicked==1) {
+            $save=null;
+            break;
+        }
+        if (cn && cn.clicked==1) {
+            break;
+        }
+        /*if (sb.clicked==1) {
+            $sound=!$sound;
+            if ($sound) playSE("l8o5cg");
+        }
+        sb.text="Sound "+($sound?"on":"off");
+        */
+        update();
+    }
+    text="";
+    $useTouch=st.clickedBy=="touch";
+    all().die();
+    //$rcnt=new RCount;
+    print ("Save ",$save);
+    $p1=new Pipe{x:$screenWidth/3,y:$screenHeight-12,cnt:-1,maxLen:0};
+    $p2=new Pipe{x:$screenWidth/3*2,y:$screenHeight-12,out:$p1,cnt:5,
+    maxLen:$save?$save.maxLen:6};
+    $p1.out=$p2;
+    $target=new Target;
+    $score=new Score{x:300,y:50,val:($save?$save.time:0)};
+    $gov=false;
+    $level=$save?$save.level:1;$exp=0;
+    lv=new Actor{x:100,y:50,size:20};
+    $head=null;
+    while (!$gov) {
+        new Rock{x:rnd($screenWidth),y:0};
+        for (i=0; i<120-($level%10-$level*0.1)*10;i++) {
+            lv.text="Level "+$level;
+            if (rnd()<0.001) i+=120;
+            if (all(Rock).find \(r) {
+                return !r.capture;
+            }.length<=$level/10) i+=20;
+            update();
+            //print ($head);
+            if ($head && $head.isDead()) {
+                //print("GOB");
+                $gov=true;
+                break;
+            }
+        }
+        $exp++;
+        if ($exp>=5) {
+            $level++;
+            $exp=0;
+            if ($level % 10==5) {
+                $save={level:$level,
+                    maxLen: all(Pipe).max("maxLen"),
+                time: $score.val % 10};
+                saveData();
+            }
+        }
+    }
+    text="Game Over";
+    //new Actor{x:$screenWidth/2,y:200,text:"Game Over",size:30};
+    for (i=0; i<80 ; i++) update();
+    all(Rock).die();
+
+    //for (i=0; i<60 ; i++) update();
+}
+\saveData() {
+    var f=file("save.json");
+    f.obj($save);
+}
+\loadData() {
+    var f=file("save.json");
+    $save=f.obj();
+}
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Target.tonyu'>text="+";
+size=30;
+fillStyle="red";
+active=true;
+x=300;y=300;
+while (true) {
+    if (active && $mouseX>0 && $mouseY>0) {
+        x=$mouseX;
+        y=$mouseY;
+    }
+    text=active?"+":"";
+    if (!active && ($mouseX!=x || $mouseY!=y)) {
+        active=true;
+    }
+    update();
+}</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Body.tonyu'>p=$pat_r2b+4;
+
+//print(ofs, head.trace.length);
+while(!head.isDead()) {
+    x=head.trace[ofs].x;
+    y=head.trace[ofs].y;
+    e=head.trace[ofs].entering;
+    rotate=head.trace[ofs].d;
+    if (p==$pat_r2b+4) {
+        for (r in all(Rock)) {
+            d=dist(r);
+            if (!r.capture) {
+                if (d<70) {
+                    p=$pat_r2b+2;
+                    r.capture=this;
+
+                    break;
+                }
+            }
+        }
+    }
+    if (p!=1 && e){
+        head.outFrom.bo();
+        die();
+    }
+    update();
+}
+vx=rnd()*8-4;
+vy=-2;
+while (y<$screenHeight) {
+    y+=vy;
+    x+=vx;
+    vy+=1;
+    update();
+}
+die();
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Head.tonyu'>includes Fire;
+p=$pat_r2b+5;
+d=-90;
+spd=5;
+rot=5;
+len=0;
+pitch=floor(32/spd);
+trace=[];
+combo=0;
+while(true) {
+    if (t.active) {
+        td=atan2(t.y-y,t.x-x);
+        if (angleDiff(td,d)<0) {
+            d-=rot;
+        }
+        if (angleDiff(td,d)>0) {
+            d+=rot;
+        }
+        if (dist(t)<16) t.active=false;
+    }
+    rotate=d;
+    x+=cos(d)*spd;
+    y+=sin(d)*spd;
+    trace.unshift{x,y,entering,d};
+    if (trace.length>maxLen*pitch) {
+        las=trace.pop();
+        if (las.entering) {
+            die();
+        }
+    }
+    if (trace.length>(len+1)*pitch) {
+        len++;
+        new Body{head:this, ofs:len*pitch};
+        outFrom.bo();
+    }
+    if (!entering) {
+        if (p!=$pat_r2b+7) {
+            p = $pat_r2b+
+            (all(Point).find\(p) {return p.mul>1;}.length>0 ? 6 : 5);
+        }
+        for (b in all(Body)) {
+            if (dist(b)<16 && b.ofs>=5*pitch) {
+                p=$pat_r2b+7;
+                fire();
+                dieEffect();
+            }
+        }
+        if (allCrash(Rock).find \(r)
+        {return !r.capture;}.length>0) damage();
+        if (screenOut()>100) $target.active=true;
+        pp=crashTo(Pipe);
+        //if (pp) print("Enter",pp,y,pp.y,spd,d, abs(angleDiff(d,90)));
+        if (pp && y<pp.y-(5-spd) && abs(angleDiff(d,90))<60) {
+            p=-1;
+            entering=pp;
+            $head=null;
+            pp.accept(this);
+            t.active=false;
+        }
+    }
+    if ($gov) dieEffect();
+    update();
+}
+\getCrashRect() {
+    return {x,y,width:16,height:16};
+}
+\damage() {
+    for (var b in all(Body)) {
+        b.p=$pat_r2b+3;
+        new Bomb{x:b.x, y:b.y};
+    }
+    p=$pat_r2b+7;
+}
+\dieEffect() {
+    $Screen.setBGColor("red");
+    new RockEffect{x,y};
+    p=-1;
+    update();
+    update();
+    update();
+    for (var e in all(Body)) {
+        new RockEffect{x:e.x,y:e.y};
+        e.die();
+        update();
+        update();
+        update();
+    }
+    die();
+    update();
+}
+
+/*\die(col) {
+    print ("die",col);
+    if (col) $Screen.setBGColor(col);
+    super.die();
+}*/
+function screenOut(a) {
+//オブジェクトが画面外に出たかどうかを判定します。
+    if (!a) a=0;
+    var r=0;
+    $viewX=0;$viewY=0;
+    if (x<$viewX+a)               r+=$viewX+a-x;
+    if (y<$viewY+a)               r+=$viewY+a-y;
+    if (x>$screenWidth +$viewX-a) r+=x-($screenWidth +$viewX-a);
+    if (y>$screenHeight+$viewY-a) r+=y-($screenHeight+$viewY-a);
+    return r;
+}
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Rock.tonyu'>includes Fire;
+p=$pat_r2b+1;
+scaleX=0.8;
+setDir(1);
+while (true) {
+    y+=vy;
+    x+=vx;
+    //vy+=0.01;
+    //vx*=0.99;
+    //vy*=0.99;
+    if (x<0) vx=abs(vx);
+    if (x>$screenWidth) vx=-abs(vx);
+    if (y<-100) vy=1;
+    if (capture) {
+        dx=capture.x-x;
+        dy=capture.y-y;
+        dd=dist(dx,dy)+1;
+        x+=dx/dd*7;
+        y+=dy/dd*7;
+        if (capture.isDead()) {
+            if (!$gov) {
+                new Point{x,y,val:(++capture.head.combo)*10,
+                mul: capture.head.combo==capture.head.maxLen-1?2:1};
+                new RockEffect{x,y};
+            }
+            die();
+        }
+        if (capture.p==$pat_r2b+3) {
+            capture=null;
+            slowed=false;
+            //setDir(2);
+        }
+    } else {
+        if (y>$screenHeight+16) break;
+        if (!slowed && y>$screenHeight-100) {
+            vy*=0.5;
+            slowed=true;
+        }
+    }
+    scaleX=0.8+sin(y*80)*0.1;
+    if ($rcnt) { $rcnt.report(this); }
+    update();
+}
+fire();
+die();
+
+
+/*
+\die() {
+    new Bomb{x,y};
+    super.die();
+}*/
+\setDir(s) {
+    tx=rnd($screenWidth);
+    ty=$screenHeight-20;
+    d=dist(tx-x,ty-y);
+    spd=0.5+($level%10)*(0.03+rnd()*0.04)+($level>=10 && rnd()<0.2 ? 1:0);
+    spd*=s;
+    vx=(tx-x)/d*spd;
+    vy=(ty-y)/d*spd;
+}
+/*\toString() {
+    return "Rock<"+uniqueID()+">";
+}*/</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Pipe.tonyu'>p=$pat_r2b;
+
+while (true) {
+    if (cnt>0) {
+        //print("OUt",cnt);
+        cnt--;
+        if (cnt==0) {
+            $head=new Head{x,y:y-16,t:$target,maxLen,outFrom:this};
+            //print ("head", $head.isDead());
+            bo();
+        }
+    }
+    scaleX-=(scaleX-1)*0.3;
+    update();
+}
+\accept(t) {
+    out.cnt=20;
+    out.maxLen=t.maxLen+1;
+    bo();
+}
+\bo() {
+    scaleX=2;
+}</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Bomb.tonyu'>p=$pat_sample+4;
+for(i=0 ;i<3;i++)update();
+p=$pat_sample+5;
+for(i=0 ;i<3;i++)update();
+p=$pat_sample+6;
+for(i=0 ;i<3;i++)update();
+die();</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='RCount.tonyu'>x=100;y=100;
+c=[];
+tick=0;
+while (true) {
+    text="count="+c.length+"  "+tick;
+    tick++;
+    prec=c;
+    c=[];
+    update();
+}
+\report(t) {
+    if (c) {
+        c.push(t);
+    }
+}
+\draw(ctx) {
+    ctx.fillStyle="cyan";
+    var i=y+30;
+    prec.forEach \(e) {
+        ctx.fillRect(e.x,e.y,20,20);
+        ctx.fillText(e+" ? "+e.isDead(),x,i);
+        i+=20;
+    };
+    ctx.fillStyle="lime";
+    for (var e in all()) {
+        if (e instanceof Rock) {
+            ctx.fillRect(e.x+15,e.y-10,10,10);
+            ctx.fillText(e+" ? "+e.isDead(),x,i);
+            i+=20;
+        }
+    }
+    super.draw(ctx);
+}</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='BaseActor.tonyu'>extends null;
+includes MathMod;
+native Tonyu;
+native Key;
+native console;
+native Math;
+native fukidashi;
+native TextRect;
+
+\new(x,y,p) {
+    if (Tonyu.runMode) {
+        var thg=currentThreadGroup();
+        if (thg) _th=thg.addObj(this);
+    }
+    if (typeof x=="object") Tonyu.extend(this,x);
+    else if (typeof x=="number") {
+        this.x=x;
+        this.y=y;
+        this.p=p;
+    }
+    if (scaleX==null) scaleX=1;
+    if (rotate==null) rotate=0;
+    if (alpha==null) alpha=255;
+}
+nowait \extend(obj) {
+    return Tonyu.extend(this,obj);
+}
+
+nowait \print() {
+    console.log.apply(console,arguments);
+}
+\update() {
+    ifwait {
+        _thread.suspend();
+    }
+}
+nowait \getkey(k) {
+    return $Keys.getkey(k);
+}
+nowait \hitTo(t) {
+    return crashTo(t);
+}
+nowait \all(c) {
+    var res=new TQuery;
+    $Sprites.sprites.forEach \(s) {
+        if (s===this) return;
+        if (!c || s instanceof c) {
+            res.push(s);
+        }
+    };
+    return res;// new TQuery{objects:res};
+}
+nowait \allCrash(t) {
+    var res=new TQuery;
+    var sp=this; //_sprite || this;
+    var t1=getCrashRect();
+    if (!t1) return res;
+    $Sprites.sprites.forEach(\(s) {
+        var t2;
+        if (s!==this &&
+        s instanceof t &&
+        (t2=s.getCrashRect()) &&
+        Math.abs(t1.x-t2.x)*2<t1.width+t2.width &&
+        Math.abs(t1.y-t2.y)*2<t1.height+t2.height) {
+            res.push(s);
+        }
+    });
+    return res;
+}
+nowait \crashTo(t) {
+    if (!t) return false;
+    if (typeof t=="function") {
+        return allCrash(t)[0];
+    }
+    return crashTo1(t);
+}
+nowait \crashTo1(t) {
+    if (!t || t._isDead) return false;
+/*if (_sprite && t._sprite) {
+        return _sprite.crashTo(t._sprite);
+}*/
+    var t1=getCrashRect();
+    var t2=t.getCrashRect();
+    return
+    //    t1.x!=null && t1.y!=null && t1.width && t1.height &&
+    //    t2.x!=null && t2.y!=null && t2.width && t2.height &&
+    t1 && t2 &&
+    Math.abs(t1.x-t2.x)*2<t1.width+t2.width &&
+    Math.abs(t1.y-t2.y)*2<t1.height+t2.height;
+}
+nowait \getCrashRect() {
+    var actWidth=width*scaleX, actHeight;
+    if(typeof scaleY==="undefined"){
+        actHeight=height*scaleX;
+    }else{
+        actHeight=height*scaleY;
+    }
+    return typeof x=="number" &&
+    typeof y=="number" &&
+    typeof width=="number" &&
+    typeof height=="number" &&
+    {x,y,width:actWidth,height:actHeight};
+}
+nowait \watchHit(typeA,typeB,onHit) {
+    $Sprites.watchHit(typeA , typeB, \(a,b) {
+        onHit.apply(this,[a,b]);
+    });
+}
+nowait \currentThreadGroup() {
+    return $currentThreadGroup;
+}
+nowait \die() {
+    if (_th) {
+        _th.kill();
+    }
+    hide();
+    play().stop();
+    _isDead=true;
+}
+nowait \hide() {
+/*if (_sprite) {
+        $Sprites.remove(_sprite);
+        _sprite=null;
+} else {*/
+    $Sprites.remove(this);
+//}
+}
+nowait \show(x,y,p) {
+    $Sprites.add(this);
+    if (x!=null) this.x=x;
+    if (y!=null) this.y=y;
+    if (p!=null) this.p=p;
+}
+
+nowait \rnd(r) {
+    if (typeof r=="number") {
+        return Math.floor(Math.random()*r);
+    }
+    return Math.random();
+}
+nowait \detectShape() {
+    if (typeof p!="number") {
+        if (text!=null) return;
+        p=0;
+    }
+    p=Math.floor(p);
+    pImg=$Sprites.getImageList()[p];
+    if (!pImg) return;
+    width=pImg.width;
+    height=pImg.height;
+}
+\waitFor(f) {
+    ifwait {
+        _thread.waitFor(f);
+    }
+    update();
+}
+nowait \isDead() {
+    return _isDead;
+}
+nowait \draw(ctx) {
+    if (x==null || y==null) return;
+    detectShape();
+    if (pImg) {
+        ctx.save();
+        ctx.translate(x,y);
+        ctx.rotate(this.rotate/180*Math.PI);
+        if(typeof this.scaleY==="undefined") {
+            ctx.scale(this.scaleX,this.scaleX);
+        }else{
+            ctx.scale(this.scaleX,this.scaleY);
+        }
+        ctx.globalAlpha=this.alpha/255;
+        ctx.drawImage(
+        pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,
+        -width/2, -height/2, width, height);
+        ctx.restore();
+    } else if (text) {
+        if (!size) size=15;
+        if (!align) align="center";
+        if (!fillStyle) fillStyle="white";
+        ctx.fillStyle=fillStyle;
+        var rect=TextRect.draw(ctx, text, x, y, size, align , "fill");
+        width=rect.w;
+        height=rect.h;
+    }
+    if (_fukidashi) {
+        if (_fukidashi.c>0) {
+            _fukidashi.c--;
+            ctx.fillStyle="white";
+            ctx.strokeStyle="black";
+            fukidashi ( ctx , _fukidashi.text,
+            x, y-height/2-10, _fukidashi.size);
+        }
+    }
+}
+nowait \asyncResult() {
+    return Tonyu.asyncResult();
+}
+
+\screenOut(a) {
+//オブジェクトが画面外に出たかどうかを判定します。
+    if (!a) a=0;
+    var r=0;
+    var viewX=0,viewY=0;
+    if (x<viewX+a)               r+=viewX+a-x;
+    if (y<viewY+a)               r+=viewY+a-y;
+    if (x>$screenWidth +viewX-a) r+=x-($screenWidth +viewX-a);
+    if (y>$screenHeight+viewY-a) r+=y-($screenHeight+viewY-a);
+    return r;
+}
+\uniqueID() {
+    if (__uniqueID) return __uniqueID;
+    return __uniqueID=rnd()+"";
+}
+\play() {
+    if (!_mml) _mml=new MML;
+    if (isDead() || arguments.length==0) return _mml;
+    var mmls=[];
+    for (var i=0; i<arguments.length; i++) {
+        mmls.push(arguments[i]);
+    }
+    _mml.play(mmls);
+    while (_mml.bufferCount()>2) {
+        update();
+    }
+    return _mml;
+}
+nowait \playSE() {
+    var mml=new MML;
+    var mmls=[];
+    for (var i=0; i<arguments.length; i++) {
+        mmls.push(arguments[i]);
+    }
+    mml.play(mmls);
+    return mml;
+}</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='RockEffect.tonyu'>p=$pat_r2b+1;
+scaleX=0.8;
+
+while(alpha>0) {
+    update();
+    scaleX+=0.3;
+    y-=20;
+    alpha-=30;
+}
+alpha=0;
+die();   </script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Score.tonyu'>//val=0;
+size=20;
+while (true) {
+    text="Score "+val;
+    update();
+
+}</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Point.tonyu'>if (!mul) mul=1;
+$score.val+=val*mul;
+for(vy=20;vy>0 ;vy--) {
+    y-=vy;
+    size=10+val/2;
+    text=(mul>1?val+"x"+mul:val);
+    update();
+}
+if (mul>1) {
+    for (i=0; i<30 ;i++) {
+        c=(i%2==0?255:80);
+        fillStyle="rgb("+c+","+c+",0)";
+        update();
+    }
+}
+die();</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Fire.tonyu'>
+\fire() {
+    $gov=true;
+    for (i=0 ; i<40 ; i++) {
+        new RockEffect{x,y};
+        update();
+    }
+}</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Button.tonyu'>
+padding=10;
+bwidth=$screenWidth*0.8;
+x=$screenWidth/2;
+clicked=0;
+while (true) {
+    if (clicked>0) {
+        clicked++;
+        if (clicked>25) clicked=0;
+    }
+    r=getCrashRect();
+    mouseClicked=getkey(1)==1;
+    touched=!ptouch && $touches[0].touched ;
+    ptouch=$touches[0].touched;
+    if ((mouseClicked || touched) &&
+    $mouseX>r.x-r.width/2 && $mouseX<r.x+r.width/2 &&
+    $mouseY>r.y-r.height/2 && $mouseY<r.y+r.height/2) {
+        clickedBy=mouseClicked ?"mouse":"touch";
+        clicked=1;
+    }
+    update();
+}
+\draw(c) {
+    c.fillStyle="rgb("+(clicked ? 255-clicked*10: 0)+",200,0)";
+    c.fillRect(x-bwidth/2,y-padding,
+    bwidth,height+padding*2);
+    super.draw(c);
+}
+\getCrashRect() {
+    return {x,y:y-padding+height/2,
+    width:bwidth+padding*2,height:height+padding*2};
+}</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='.desktop' data-wrap='80'>{"runMenuOrd":["Main","Target","Body","Head","Rock","Pipe","Bomb","RCount","Rock\
+Effect","Score","Point","Fire","Button"]}
+
+
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='options.json' data-wrap='80'>{"compiler":{"defaultSuperClass":"Actor"},"run":{"mainClass":"Main","bootClass":\
+"Boot"},"kernelEditable":false}
+
+
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='res.json' data-wrap='80'>{"images":[{"name":"$pat_base","url":"images/base.png","pwidth":32,"pheight":32}\
+,{"name":"$pat_sample","url":"images/Sample.png"},{"name":"$pat_r2b","url":"http\
+://jsrun.it/assets/7/y/V/J/7yVJJ.png","pwidth":32,"pheight":32}],"sounds":[]}
+
+
+
+
+
+
+
+
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='files/' data-wrap='80'>{"save.json":{"lastUpdate":1402988337646}}
+</script>
+
+
+<script language='text/tonyu' type='text/tonyu' data-filename='forkedFrom.json'>{"project":"R2B","title":null,"lastUpdate":1412069130575,"description":null,"license":"mit","user":"hoge1e4","allowFork":true}</script>
+
