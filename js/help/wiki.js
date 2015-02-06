@@ -203,7 +203,7 @@ return Wiki=function (placeHolder, home, options, plugins) {
                         caption=cn[0];
                     } else caption=name;
                     if (ctx.toc) ctx.toc.push(name);
-                    if (name.match(/\.(png|jpg|gif)$/)) {
+                    if (name.match(/\.(png|jpg|gif)$/) && !name.match(/^http/)) {
                         var fi=figInfo(name, true);
                         a=$("<div>").addClass("figure").append(
                                   imageHolder(name)
