@@ -1,4 +1,4 @@
-requirejs(["Sync", "UI","Util", "Auth"],function (Sync,UI,Util,Auth) {
+requirejs(["Sync", "UI","Util", "Auth","WebSite"],function (Sync,UI,Util,Auth,WebSite) {
     $(function () {
         //var user=Util.getQueryString("user");
         Auth.currentUser(function (user) {

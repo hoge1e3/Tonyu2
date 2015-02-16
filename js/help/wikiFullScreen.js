@@ -1,4 +1,4 @@
-define(["Wiki","FS","Util"], function (Wiki,FS,Util) {
+define(["Wiki","FS","Util","WebSite"], function (Wiki,FS,Util,WebSite) {
     var w=Wiki($("body"),FS.get("/Tonyu/doc/"),{useAnchor:true});
     var f=Util.getQueryString("file");
     if (!f) f="/Tonyu/doc/index.txt";

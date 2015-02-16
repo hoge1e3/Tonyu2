@@ -1,4 +1,4 @@
-requirejs(["Shell","FS"], function (sh,FS) {
+requirejs(["Shell","FS","WebSite"], function (sh,FS,WebSite) {
     sh.syncWithKernel=function (name) {
         var ker=FS.get("/Tonyu/Kernel/");
         if (name) {

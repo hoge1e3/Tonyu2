@@ -1,5 +1,5 @@
-requirejs(["Util","Wiki","TextEditor","FileList","FileMenu","FS","TextUtil"],
-        function (Util,Wiki,TextEditor,FileList,FileMenu,FS,TextUtil) {
+requirejs(["Util","Wiki","TextEditor","FileList","FileMenu","FS","TextUtil","WebSite"],
+        function (Util,Wiki,TextEditor,FileList,FileMenu,FS,TextUtil,WebSite) {
 $(function () {
     var home=FS.get(Util.getQueryString("home","/Tonyu/doc/"));
     var w=Wiki($("#wikiViewArea"),home,{editMode:true});

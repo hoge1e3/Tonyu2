@@ -1,4 +1,4 @@
-define(["Shell","FS"],function (sh,fs) {
+define(["Shell","FS","WebSite"],function (sh,fs,WebSite) {
     var samples=FS.get("/Tonyu/SampleROM/");
     var projects=FS.get("/Tonyu/Projects/");
     function all() {

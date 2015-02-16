@@ -1,5 +1,5 @@
-requirejs(["FS","Util","NewProjectDialog","ScriptTagFS","UI","forkBlobs"],
-        function (FS,Util,NPD,STF,UI,fb) {
+requirejs(["FS","Util","NewProjectDialog","ScriptTagFS","UI","forkBlobs","WebSite"],
+        function (FS,Util,NPD,STF,UI,fb,WebSite) {
 	$("button.selDir").click(selDir);
 	$("#diag").append($("<h1>").text("インポート先のフォルダを入力してください"));
 	$("#diag").append( NPD.embed(FS.get("/Tonyu/Projects/"), confirm) );

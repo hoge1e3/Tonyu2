@@ -1,4 +1,4 @@
-requirejs(["Shell","Wiki","FS","requestFragment"], function (sh,Wiki,FS,rf) {
+requirejs(["Shell","Wiki","FS","requestFragment","WebSite"], function (sh,Wiki,FS,rf,WebSite) {
     sh.wiki2servSingle=function (path) {
         var h=$("<div>");
         var base=FS.get("/Tonyu/doc/");

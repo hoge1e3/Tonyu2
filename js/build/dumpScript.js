@@ -1,4 +1,4 @@
-define([], function () {
+define(["WebSite"], function (WebSite) {
 function dumpScript(options) {
 	if (!options) options={};
     var scrs=$("script");

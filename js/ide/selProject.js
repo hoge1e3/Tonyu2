@@ -1,7 +1,7 @@
 requirejs(["fs/ROMk","fs/ROMd","fs/ROMs", "FS","Wiki","Shell","Shell2",
-           "copySample","NewProjectDialog","UI","Sync","Auth","zip","requestFragment"],
+           "copySample","NewProjectDialog","UI","Sync","Auth","zip","requestFragment","WebSite"],
   function (romk, romd, roms,               FS, Wiki,   sh,sh2,
-            copySample,  NPD,           UI, Sync, Auth,zip,requestFragment) {
+            copySample,  NPD,           UI, Sync, Auth,zip,requestFragment,WebSite) {
 $(function () {
     copySample();
     var home=FS.get("/Tonyu/");

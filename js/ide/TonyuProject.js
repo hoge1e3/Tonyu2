@@ -1,7 +1,7 @@
 define(["Tonyu", "Tonyu.Compiler", "TError", "FS", "Tonyu.TraceTbl","ImageList","StackTrace",
-        "typeCheck","Blob","thumbnail"],
+        "typeCheck","Blob","thumbnail","WebSite"],
         function (Tonyu, Tonyu_Compiler, TError, FS, Tonyu_TraceTbl, ImageList,StackTrace,
-                tc,Blob,thumbnail) {
+                tc,Blob,thumbnail,WebSite) {
 return Tonyu.Project=function (dir, kernelDir) {
     var TPR={};
     if (!kernelDir) kernelDir=FS.get("/Tonyu/Kernel/");

@@ -1,5 +1,5 @@
-requirejs(["JSZip","UI","FS","NewProjectDialog","Encoding","T1Map"],
-        function (JSZip,UI,FS,NPD,Encoding,T1Map) {
+requirejs(["JSZip","UI","FS","NewProjectDialog","Encoding","T1Map","WebSite"],
+        function (JSZip,UI,FS,NPD,Encoding,T1Map,WebSite) {
     var dragMsg="ここにTonyu1プロジェクトフォルダのzipファイルをドラッグ＆ドロップ";
     var dragPoint=UI("div", {style:"margin:10px; padding:10px; border:solid blue 2px;",
         on:{dragover: s, dragenter: s, drop:dropAdd}},dragMsg

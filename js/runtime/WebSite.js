@@ -58,5 +58,6 @@ define([], function () {
     window.WebSite.sampleImg=window.WebSite.top+"/images";
     window.WebSite.blobPath=window.WebSite.serverTop+"/serveBlob";
     window.WebSite.isNW=(typeof process=="object" && process.__node_webkit);
+    window.WebSite.tonyuHome="/Tonyu/";
     return window.WebSite;
 });

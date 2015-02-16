@@ -1,5 +1,5 @@
-requirejs(["Auth","Util","exportAsScriptTags","requestFragment","Blob","Tonyu.Project","FS"],
-        function (Auth,Util,east,rf,Blob,TPR,FS){
+requirejs(["Auth","Util","exportAsScriptTags","requestFragment","Blob","Tonyu.Project","FS","WebSite"],
+        function (Auth,Util,east,rf,Blob,TPR,FS,WebSite){
 $(function () {
    var dir=Util.getQueryString("dir", "/Tonyu/Projects/1_Animation/");
    dir=FS.get(dir);

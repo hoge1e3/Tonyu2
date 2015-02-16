@@ -1,5 +1,5 @@
-define(["HttpHelper", "Arrow", "Util","WebSite","Log","UI","FS"],
-function (HttpHelper, Arrow, Util, WebSite,Log,UI,FS) {
+define(["HttpHelper", "Arrow", "Util","WebSite","Log","UI","FS","WebSite"],
+function (HttpHelper, Arrow, Util, WebSite,Log,UI,FS,WebSite) {
 return Wiki=function (placeHolder, home, options, plugins) {
     var W={};
     var refers={figures:"図", plists: "リスト"};
