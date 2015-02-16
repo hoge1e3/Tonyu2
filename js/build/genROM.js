@@ -4,10 +4,11 @@ define(["JSONCol","IndentBuffer"], function (jc,ib) {
         var tmpl=
         	"(function () {%{"+
 	    		"var rom=%f;%n"+
-		        "if (WebSite.devMode || WebSite.disableROM['%s']) {%{"+
+		        "if (WebSite.devMode || WebSite.disableROM['%s'] || WebSite.isNW) {%{"+
 		        	"rom.base='/ROM'+rom.base;%n"+
+		        "%}} else {%{"+
+		            "FS.mountROM(rom);%n"+
 		        "%}}%n"+
-		        "FS.mountROM(rom);%n"+
 		    "%}})();";
         buf.printf(tmpl, function () {
             jc(FS.exportDir(dir),buf);

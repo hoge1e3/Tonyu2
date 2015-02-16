@@ -4,7 +4,7 @@
     data: {
       '': '{".desktop":{"lastUpdate":1421820402827},"Actor.tonyu":{"lastUpdate":1414051292629},"BaseActor.tonyu":{"lastUpdate":1421824721488},"Boot.tonyu":{"lastUpdate":1421384746171},"InputDevice.tonyu":{"lastUpdate":1416889517771},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1421122635939},"MapEditor.tonyu":{"lastUpdate":1421122635944},"MathMod.tonyu":{"lastUpdate":1421824721489},"MML.tonyu":{"lastUpdate":1421824721491},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"Panel.tonyu":{"lastUpdate":1421820402831},"ScaledCanvas.tonyu":{"lastUpdate":1421122635940},"Sprites.tonyu":{"lastUpdate":1421122635941},"TObject.tonyu":{"lastUpdate":1421122635941},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Pad.tonyu":{"lastUpdate":1421122635944},"DxChar.tonyu":{"lastUpdate":1421383049524},"MediaPlayer.tonyu":{"lastUpdate":1421383070767},"PlainChar.tonyu":{"lastUpdate":1421383084999},"SecretChar.tonyu":{"lastUpdate":1421383101403},"SpriteChar.tonyu":{"lastUpdate":1421383110209},"T1Line.tonyu":{"lastUpdate":1421383126796},"T1Map.tonyu":{"lastUpdate":1421383136414},"T1Page.tonyu":{"lastUpdate":1421383148587},"T1Text.tonyu":{"lastUpdate":1421383157722},"TextChar.tonyu":{"lastUpdate":1421383188873}}',
       '.desktop': '{"runMenuOrd":["Main0121","Main1023","TouchedTestMain","Main2","MapLoad","Main","AcTestM","NObjTest","NObjTest2","AcTest","AltBoot","Ball","Bar","Bounce","MapTest","MapTest2nd","SetBGCTest","Label","PanelTest","BaseActor","Panel","MathMod"]}',
-      'Actor.tonyu': 
+      'Actor.tonyu':
         'extends BaseActor;\n'+
         'native Sprites;\n'+
         'native Tonyu;\n'+
@@ -24,7 +24,7 @@
         '\\onAppear() {\n'+
         '}\n'
       ,
-      'BaseActor.tonyu': 
+      'BaseActor.tonyu':
         'extends null;\n'+
         'includes MathMod;\n'+
         'native Tonyu;\n'+
@@ -386,7 +386,7 @@
         '    _isInvisible=!v;\n'+
         '}'
       ,
-      'Boot.tonyu': 
+      'Boot.tonyu':
         'extends Actor;\n'+
         'native $;\n'+
         'native TError;\n'+
@@ -589,7 +589,7 @@
         '}\n'+
         '\n'
       ,
-      'DxChar.tonyu': 
+      'DxChar.tonyu':
         'extends SpriteChar;\n'+
         '\n'+
         '\\new (xx,yy,pp,ff,sz,rt,al){\n'+
@@ -606,7 +606,7 @@
         '    super.draw(c);\n'+
         '}\n'
       ,
-      'InputDevice.tonyu': 
+      'InputDevice.tonyu':
         'extends null;\n'+
         'native $;\n'+
         'native window;\n'+
@@ -707,7 +707,7 @@
         '    }\n'+
         '}'
       ,
-      'Keys.tonyu': 
+      'Keys.tonyu':
         'extends TObject;\n'+
         'native String;\n'+
         'native $;\n'+
@@ -768,7 +768,7 @@
         '    $InputDevice.handleListeners();\n'+
         '}'
       ,
-      'MML.tonyu': 
+      'MML.tonyu':
         'extends TObject;\n'+
         'includes MathMod;\n'+
         'native T;\n'+
@@ -828,7 +828,7 @@
         '    }\n'+
         '}\n'
       ,
-      'Map.tonyu': 
+      'Map.tonyu':
         'extends Actor;\n'+
         'native Math;\n'+
         'native $;\n'+
@@ -950,7 +950,7 @@
         '    ctx.restore();\n'+
         '}\n'
       ,
-      'MapEditor.tonyu': 
+      'MapEditor.tonyu':
         'extends Actor;\n'+
         'native prompt;\n'+
         'loadMode=false;\n'+
@@ -1143,7 +1143,7 @@
         '    update();\n'+
         '}'
       ,
-      'MathMod.tonyu': 
+      'MathMod.tonyu':
         'extends null;\n'+
         'native Math;\n'+
         '\n'+
@@ -1207,7 +1207,7 @@
         '    return Math.random();\n'+
         '}'
       ,
-      'MediaPlayer.tonyu': 
+      'MediaPlayer.tonyu':
         '\n'+
         '\\play() {\n'+
         '    \n'+
@@ -1225,7 +1225,7 @@
         '    \n'+
         '}'
       ,
-      'NoviceActor.tonyu': 
+      'NoviceActor.tonyu':
         'extends BaseActor;\n'+
         'native Tonyu;\n'+
         '\n'+
@@ -1268,7 +1268,7 @@
         '    _sprite.p=p;\n'+
         '}'
       ,
-      'Pad.tonyu': 
+      'Pad.tonyu':
         'extends Actor;\n'+
         '\\new(opt) {\n'+
         '    super(opt);\n'+
@@ -1373,7 +1373,7 @@
         '    update();\n'+
         '}'
       ,
-      'Panel.tonyu': 
+      'Panel.tonyu':
         'extends Actor;\n'+
         'native $;\n'+
         'native Math;\n'+
@@ -1460,7 +1460,7 @@
         '    ctx.restore();\n'+
         '}'
       ,
-      'PlainChar.tonyu': 
+      'PlainChar.tonyu':
         'native Tonyu;\n'+
         'native Math;\n'+
         '\\new(x,y,p) {\n'+
@@ -1541,7 +1541,7 @@
         '    die();\n'+
         '}'
       ,
-      'ScaledCanvas.tonyu': 
+      'ScaledCanvas.tonyu':
         'extends Actor;\n'+
         'native $;\n'+
         'native Math;\n'+
@@ -1635,14 +1635,14 @@
         '    $Sprites.scrollTo(scrollX,scrollY);\n'+
         '}'
       ,
-      'SecretChar.tonyu': 
+      'SecretChar.tonyu':
         'extends PlainChar;\n'+
         '\n'+
         '\\draw(c) {\n'+
         '    \n'+
         '}'
       ,
-      'SpriteChar.tonyu': 
+      'SpriteChar.tonyu':
         'extends PlainChar;\n'+
         '\n'+
         '\\new(x,y,p,f) {\n'+
@@ -1661,7 +1661,7 @@
         '    if (f) scaleX*=-1;\n'+
         '}'
       ,
-      'Sprites.tonyu': 
+      'Sprites.tonyu':
         'extends Actor;\n'+
         'native Tonyu;\n'+
         '\\new() {\n'+
@@ -1790,7 +1790,7 @@
         '    sy=scrollY;\n'+
         '}'
       ,
-      'T1Line.tonyu': 
+      'T1Line.tonyu':
         '\\draw(ctx) {\n'+
         '    if (hidden) return;\n'+
         '    \n'+
@@ -1802,7 +1802,7 @@
         '    hidden=true;\n'+
         '}\n'
       ,
-      'T1Map.tonyu': 
+      'T1Map.tonyu':
         'extends Map;\n'+
         'native Tonyu;\n'+
         'native $;\n'+
@@ -1856,7 +1856,7 @@
         '    return res;\n'+
         '}'
       ,
-      'T1Page.tonyu': 
+      'T1Page.tonyu':
         'extends PlainChar;\n'+
         '\n'+
         '\\initGlobals() {\n'+
@@ -1873,7 +1873,7 @@
         '    $mplayer=new MediaPlayer;\n'+
         '}'
       ,
-      'T1Text.tonyu': 
+      'T1Text.tonyu':
         '\\draw(c) {\n'+
         '    if (hidden) return;\n'+
         '    c.font=size+"px \'ＭＳ Ｐゴシック\'";\n'+
@@ -1882,7 +1882,7 @@
         '    hidden=true;\n'+
         '}'
       ,
-      'TObject.tonyu': 
+      'TObject.tonyu':
         'extends null;\n'+
         'native Tonyu;\n'+
         '\\new (options) {\n'+
@@ -1893,7 +1893,7 @@
         '    return Tonyu.extend(this,obj);\n'+
         '}'
       ,
-      'TQuery.tonyu': 
+      'TQuery.tonyu':
         'extends TObject;\n'+
         'includes MathMod;\n'+
         '\\new () {\n'+
@@ -2061,7 +2061,7 @@
         '    return find \\(o) { return o instanceof k; };\n'+
         '}'
       ,
-      'TextChar.tonyu': 
+      'TextChar.tonyu':
         'extends PlainChar;\n'+
         'native TextRect;\n'+
         '\n'+
@@ -2091,7 +2091,7 @@
         '    //super.draw(ctx);\n'+
         '}'
       ,
-      'WaveTable.tonyu': 
+      'WaveTable.tonyu':
         'extends TObject;\n'+
         'native T;\n'+
         '\n'+
@@ -2122,11 +2122,11 @@
         '    //    synth=T("OscGen") {wave:"pulse", env, mul:0.25};\n'+
         '    //set(0,synth);    \n'+
         '}\n'
-      
+
     }
   };
-  if (WebSite.devMode || WebSite.disableROM['ROM_k.js']) {
+  if (WebSite.devMode || WebSite.disableROM['ROM_k.js']|| WebSite.isNW) {
     rom.base='/ROM'+rom.base;
-  }
+  } else
   FS.mountROM(rom);
 })();

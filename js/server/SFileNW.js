@@ -1,6 +1,7 @@
-(function () {
+define(["WebSite"],function (WebSite) {
 var exports={};
-//--------
+if (!WebSite.isNW) return null;
+//--------begin of SFile.js
 var fs=require("fs");
 var SEP="/";
 function SFile(path) {
@@ -15,11 +16,18 @@ function endsWith(str,postfix) {
 function startsWith(str,prefix) {
     return str.substring(0, prefix.length)===prefix;
 }
+var driveLetter=/^([a-zA-Z]):/;
 function isAbsolute(path) {
-    return startsWith(path,SEP) || path.match(/^[a-zA-Z]:/);
+    return startsWith(path,SEP) || path.match(driveLetter);
 }
 function toCanonicalPath(path) {
-    if (!isAbsolute(path)) path=process.cwd().replace(/\\/g,SEP)+SEP+path.replace(/\\/g,SEP);
+    if (startsWith(path,SEP)) {
+        var c=process.cwd();
+        var d=driveLetter.exec(c);
+        if (d) {
+            path=d[0]+path;
+        }
+    } else if (!isAbsolute(path)) path=process.cwd().replace(/\\/g,SEP)+SEP+path.replace(/\\/g,SEP);
     var paths=path.split(SEP);
     var built=[];
     paths.forEach(function (p) {
@@ -50,6 +58,9 @@ extend(SFile.prototype,{
 			this.text(JSON.stringify(arguments[0]));
 		}
 	},
+	isReadOnly: function () {
+	    return false; // TODO
+	},
     rm: function () {
 	return fs.unlinkSync(this._path);
     },
@@ -60,6 +71,10 @@ extend(SFile.prototype,{
 			p=p.substring(0,p.length-1);
 		}*/
 		return p.split(SEP).pop();
+	},
+	truncExt: function (ext) {
+        var name=this.name();
+        return name.substring(0,name.length-ext.length);
 	},
 	endsWith: function (postfix) {
 	    return endsWith(this.name(), postfix);
@@ -72,9 +87,17 @@ extend(SFile.prototype,{
 		var r=fs.readdirSync(this._path);
 		var t=this;
 		r.forEach(function (e) {
+		    if (e==".dirinfo") return;
 			var f=t.rel(e);
 			it(f);
 		});
+	},
+	ls: function () {
+	    var res=[];
+	    this.each(function (f) {
+            res.push(f.name());
+        });
+        return res;
 	},
 	parent: function () {
 		return this.up();
@@ -89,7 +112,7 @@ extend(SFile.prototype,{
 		return this._path;
 	},
 	rel: function (n) {
-		if (!this.isDir()) throw new Error(this+" cannot rel. not a dir.");
+		//if (!this.isDir()) throw new Error(this+" cannot rel. not a dir.");
 		return new SFile(this._path+SEP+n);
 	},
 	mkdir: function () {
@@ -148,6 +171,6 @@ extend(SFile.prototype,{
 exports.get=function (path) {
 	return new SFile(path);
 };
-//-------
-FS=exports;
-})();
+//-------end of SFile.js
+return exports;
+});

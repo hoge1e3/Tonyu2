@@ -12,6 +12,7 @@ $(function () {
         $("#prjItemList").empty();
         curDir.ls(FS.orderByNewest).forEach(function (name) {
             var f=curDir.rel(name);
+            if (!f.isDir()) return;
             var u=UI("div", {"class":"project"},
                     ["a", {href:"project.html?dir="+f.path()},
                      ["img",{$var:"t",src:"../../images/nowprint.png"}],

@@ -208,6 +208,7 @@ var reqConf={
             "TextRect": "graphics/TextRect",
             "fukidashi": "graphics/fukidashi",
             "FS": "fs/fs",
+            "SFileNW": "server/SFileNW",
             "Tonyu.Project": "ide/TonyuProject",
             "thumbnail": "ide/thumbnail",
             "showErrorPos": "ide/ErrorPos",

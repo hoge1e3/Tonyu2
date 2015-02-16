@@ -1,4 +1,8 @@
-define([],function () {
+define(["SFileNW"],function (s) {
+    if (s) {
+        if (typeof window=="object") window.FS=s;
+        return FS=s;
+    }
     // Media Mask
     var MM_RAM=1, MM_LS=2, MM_MIX=3;
 	var ramDisk={},ramDiskUsage=null;
