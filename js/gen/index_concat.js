@@ -1,4 +1,4 @@
-// Created at Fri Feb 06 2015 12:26:48 GMT+0900 (東京 (標準時))
+// Created at Mon Feb 16 2015 11:08:01 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -680,12 +680,13 @@ define([], function () {
                 "images/Sample.png":"../../images/Sample.png",
                 "images/neko.png":"../../images/neko.png",
                 "images/inputPad.png":"../../images/inputPad.png",
+                "images/mapchip.png":"../../images/mapchip.png",
                     "images/ecl.png":"../../images/ecl.png"
-            },top:"../../",devMode:devMode
+            },top:"../..",devMode:devMode
         };
     } else {
         window.WebSite={
-           urlAliases: {}, top: "../../",devMode:devMode
+           urlAliases: {}, top: "../..",devMode:devMode
         };
     }
     window.WebSite.disableROM={};
@@ -700,12 +701,12 @@ define([], function () {
     }
     if (loc.match(/tonyuexe\.appspot\.com/) ||
         loc.match(/localhost:8887/)) {
-        window.WebSite.serverTop=window.WebSite.top+"exe/"; // Fix NetModule.tonyu!!
+        window.WebSite.serverTop=window.WebSite.top+"/exe"; // Fix NetModule.tonyu!!
     } else {
-        window.WebSite.serverTop=window.WebSite.top+"edit/";// Fix NetModule.tonyu!!
+        window.WebSite.serverTop=window.WebSite.top+"/edit";// Fix NetModule.tonyu!!
     }
-    window.WebSite.sampleImg=window.WebSite.top+"images";
-    window.WebSite.blobPath=window.WebSite.serverTop+"serveBlob";
+    window.WebSite.sampleImg=window.WebSite.top+"/images";
+    window.WebSite.blobPath=window.WebSite.serverTop+"/serveBlob";
 
     return window.WebSite;
 });
@@ -9472,7 +9473,7 @@ return Wiki=function (placeHolder, home, options, plugins) {
                     a=$("<strong>").text(fi.name);
                     fi.refs.push(a);
                 } else if (name.match(/^@editadd/)) {
-                    $h.p($("<img>").attr("src",WebSite.top+"images/editAdd.png"));
+                    $h.p($("<img>").attr("src",WebSite.top+"/images/editAdd.png"));
                 } else if (name.match(/^@figref (.*)/)) {
                     var fi=figInfo(RegExp.$1);
                     a=$("<strong>").text(fi.name);
@@ -9536,7 +9537,7 @@ return Wiki=function (placeHolder, home, options, plugins) {
     function imageHolder(name) {
         var res,imfile;
         if (W.builtinImages[name]) {
-            return $("<div>").append( $("<img>").attr("src", WebSite.top+"doc/images/"+name) );
+            return $("<div>").append( $("<img>").attr("src", WebSite.top+"/doc/images/"+name) );
         } else {
             res=UI("div", {style:"margin:10px; padding:10px; border:solid black 1px;",
                 on:{dragover: s, dragenter: s, drop:dropAdd}},
@@ -10135,7 +10136,7 @@ define(["WebSite"],function (WebSite) {
             return p;
         }
         frags.forEach(function (frag,i) {
-            $.ajax({type:"post",url:WebSite.top+"edit/sendFragment",data:addRedir({
+            $.ajax({type:"post",url:WebSite.top+"/edit/sendFragment",data:addRedir({
                 id:id, seq:i, len:len, content:frag
             }),success: function (res) {
                 console.log("sendFrag",res,i);//,frag);
@@ -10145,7 +10146,7 @@ define(["WebSite"],function (WebSite) {
             });
         });
         function runFrag() {
-            $.ajax({type:"post",url:WebSite.top+"edit/runFragments",data:addRedir({id:id}),
+            $.ajax({type:"post",url:WebSite.top+"/edit/runFragments",data:addRedir({id:id}),
                 success: function (res) {
                     //console.log("runFrag res1=",res,arguments.length);
                     if (typeof res=="string") {
@@ -10242,7 +10243,7 @@ define(["FS","Shell","requestFragment","WebSite"],function (FS,sh,rf,WebSite) {
             status("getDirInfo", req);
             $.ajax({
                 type:"get",
-                url:WebSite.top+"edit/getDirInfo",
+                url:WebSite.top+"/edit/getDirInfo",
                 data:req,
                 success:n1,
                 error:onError
@@ -10274,7 +10275,7 @@ define(["FS","Shell","requestFragment","WebSite"],function (FS,sh,rf,WebSite) {
             status("File2LSSync", req);
             $.ajax({
                 type:"post",
-                url:WebSite.top+"edit/File2LSSync",
+                url:WebSite.top+"/edit/File2LSSync",
                 data:req,
                 success:n2,
                 error:onError
@@ -10303,7 +10304,7 @@ define(["FS","Shell","requestFragment","WebSite"],function (FS,sh,rf,WebSite) {
             status("LS2FileSync", req);
             rf.ajax({
                 type:"post",
-                url:WebSite.top+"edit/LS2FileSync",
+                url:WebSite.top+"/edit/LS2FileSync",
                 data:req,
                 success:n3,
                 error:onError
@@ -10343,7 +10344,7 @@ define(["FS","Shell","requestFragment","WebSite"],function (FS,sh,rf,WebSite) {
         var a=[];
         for (var i=0; i<arguments.length; i++) a[i]=arguments[i];
         $.ajax({
-            url:WebSite.top+"edit/rsh",
+            url:WebSite.top+"/edit/rsh",
             data:{args:JSON.stringify(a)},
             success:function (r) {
                 sh.echo(r);
@@ -10362,7 +10363,7 @@ requireSimulator.setName('Auth');
 define(["WebSite"],function (WebSite) {
     var auth={};
     auth.currentUser=function (onend) {
-        $.ajax({type:"get",url:WebSite.serverTop+"currentUser",data:{withCsrfToken:true},
+        $.ajax({type:"get",url:WebSite.serverTop+"/currentUser",data:{withCsrfToken:true},
             success:function (res) {
                 console.log("auth.currentUser",res);
                 res=JSON.parse(res);
@@ -10387,7 +10388,7 @@ define(["WebSite"],function (WebSite) {
                 return options.success(user,csrfToken);
             }
             window.onLoggedIn=options.success;
-            options.showLoginLink(WebSite.serverTop+"login");
+            options.showLoginLink(WebSite.serverTop+"/login");
         });
     };
     window.Auth=auth;

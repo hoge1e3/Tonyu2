@@ -30,12 +30,13 @@ define([], function () {
                 "images/Sample.png":"../../images/Sample.png",
                 "images/neko.png":"../../images/neko.png",
                 "images/inputPad.png":"../../images/inputPad.png",
+                "images/mapchip.png":"../../images/mapchip.png",
                     "images/ecl.png":"../../images/ecl.png"
-            },top:"../../",devMode:devMode
+            },top:"../..",devMode:devMode
         };
     } else {
         window.WebSite={
-           urlAliases: {}, top: "../../",devMode:devMode
+           urlAliases: {}, top: "../..",devMode:devMode
         };
     }
     window.WebSite.disableROM={};
@@ -50,12 +51,12 @@ define([], function () {
     }
     if (loc.match(/tonyuexe\.appspot\.com/) ||
         loc.match(/localhost:8887/)) {
-        window.WebSite.serverTop=window.WebSite.top+"exe/"; // Fix NetModule.tonyu!!
+        window.WebSite.serverTop=window.WebSite.top+"/exe"; // Fix NetModule.tonyu!!
     } else {
-        window.WebSite.serverTop=window.WebSite.top+"edit/";// Fix NetModule.tonyu!!
+        window.WebSite.serverTop=window.WebSite.top+"/edit";// Fix NetModule.tonyu!!
     }
-    window.WebSite.sampleImg=window.WebSite.top+"images";
-    window.WebSite.blobPath=window.WebSite.serverTop+"serveBlob";
+    window.WebSite.sampleImg=window.WebSite.top+"/images";
+    window.WebSite.blobPath=window.WebSite.serverTop+"/serveBlob";
 
     return window.WebSite;
 });

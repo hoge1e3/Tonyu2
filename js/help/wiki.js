@@ -179,7 +179,7 @@ return Wiki=function (placeHolder, home, options, plugins) {
                     a=$("<strong>").text(fi.name);
                     fi.refs.push(a);
                 } else if (name.match(/^@editadd/)) {
-                    $h.p($("<img>").attr("src",WebSite.top+"images/editAdd.png"));
+                    $h.p($("<img>").attr("src",WebSite.top+"/images/editAdd.png"));
                 } else if (name.match(/^@figref (.*)/)) {
                     var fi=figInfo(RegExp.$1);
                     a=$("<strong>").text(fi.name);
@@ -243,7 +243,7 @@ return Wiki=function (placeHolder, home, options, plugins) {
     function imageHolder(name) {
         var res,imfile;
         if (W.builtinImages[name]) {
-            return $("<div>").append( $("<img>").attr("src", WebSite.top+"doc/images/"+name) );
+            return $("<div>").append( $("<img>").attr("src", WebSite.top+"/doc/images/"+name) );
         } else {
             res=UI("div", {style:"margin:10px; padding:10px; border:solid black 1px;",
                 on:{dragover: s, dragenter: s, drop:dropAdd}},

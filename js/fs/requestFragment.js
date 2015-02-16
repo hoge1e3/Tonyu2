@@ -22,7 +22,7 @@ define(["WebSite"],function (WebSite) {
             return p;
         }
         frags.forEach(function (frag,i) {
-            $.ajax({type:"post",url:WebSite.top+"edit/sendFragment",data:addRedir({
+            $.ajax({type:"post",url:WebSite.top+"/edit/sendFragment",data:addRedir({
                 id:id, seq:i, len:len, content:frag
             }),success: function (res) {
                 console.log("sendFrag",res,i);//,frag);
@@ -32,7 +32,7 @@ define(["WebSite"],function (WebSite) {
             });
         });
         function runFrag() {
-            $.ajax({type:"post",url:WebSite.top+"edit/runFragments",data:addRedir({id:id}),
+            $.ajax({type:"post",url:WebSite.top+"/edit/runFragments",data:addRedir({id:id}),
                 success: function (res) {
                     //console.log("runFrag res1=",res,arguments.length);
                     if (typeof res=="string") {

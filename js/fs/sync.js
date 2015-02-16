@@ -72,7 +72,7 @@ define(["FS","Shell","requestFragment","WebSite"],function (FS,sh,rf,WebSite) {
             status("getDirInfo", req);
             $.ajax({
                 type:"get",
-                url:WebSite.top+"edit/getDirInfo",
+                url:WebSite.top+"/edit/getDirInfo",
                 data:req,
                 success:n1,
                 error:onError
@@ -104,7 +104,7 @@ define(["FS","Shell","requestFragment","WebSite"],function (FS,sh,rf,WebSite) {
             status("File2LSSync", req);
             $.ajax({
                 type:"post",
-                url:WebSite.top+"edit/File2LSSync",
+                url:WebSite.top+"/edit/File2LSSync",
                 data:req,
                 success:n2,
                 error:onError
@@ -133,7 +133,7 @@ define(["FS","Shell","requestFragment","WebSite"],function (FS,sh,rf,WebSite) {
             status("LS2FileSync", req);
             rf.ajax({
                 type:"post",
-                url:WebSite.top+"edit/LS2FileSync",
+                url:WebSite.top+"/edit/LS2FileSync",
                 data:req,
                 success:n3,
                 error:onError
@@ -173,7 +173,7 @@ define(["FS","Shell","requestFragment","WebSite"],function (FS,sh,rf,WebSite) {
         var a=[];
         for (var i=0; i<arguments.length; i++) a[i]=arguments[i];
         $.ajax({
-            url:WebSite.top+"edit/rsh",
+            url:WebSite.top+"/edit/rsh",
             data:{args:JSON.stringify(a)},
             success:function (r) {
                 sh.echo(r);

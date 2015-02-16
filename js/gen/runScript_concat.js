@@ -1,4 +1,4 @@
-// Created at Fri Feb 06 2015 12:26:55 GMT+0900 (東京 (標準時))
+// Created at Mon Feb 16 2015 11:08:14 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -680,12 +680,13 @@ define([], function () {
                 "images/Sample.png":"../../images/Sample.png",
                 "images/neko.png":"../../images/neko.png",
                 "images/inputPad.png":"../../images/inputPad.png",
+                "images/mapchip.png":"../../images/mapchip.png",
                     "images/ecl.png":"../../images/ecl.png"
-            },top:"../../",devMode:devMode
+            },top:"../..",devMode:devMode
         };
     } else {
         window.WebSite={
-           urlAliases: {}, top: "../../",devMode:devMode
+           urlAliases: {}, top: "../..",devMode:devMode
         };
     }
     window.WebSite.disableROM={};
@@ -700,12 +701,12 @@ define([], function () {
     }
     if (loc.match(/tonyuexe\.appspot\.com/) ||
         loc.match(/localhost:8887/)) {
-        window.WebSite.serverTop=window.WebSite.top+"exe/"; // Fix NetModule.tonyu!!
+        window.WebSite.serverTop=window.WebSite.top+"/exe"; // Fix NetModule.tonyu!!
     } else {
-        window.WebSite.serverTop=window.WebSite.top+"edit/";// Fix NetModule.tonyu!!
+        window.WebSite.serverTop=window.WebSite.top+"/edit";// Fix NetModule.tonyu!!
     }
-    window.WebSite.sampleImg=window.WebSite.top+"images";
-    window.WebSite.blobPath=window.WebSite.serverTop+"serveBlob";
+    window.WebSite.sampleImg=window.WebSite.top+"/images";
+    window.WebSite.blobPath=window.WebSite.serverTop+"/serveBlob";
 
     return window.WebSite;
 });
@@ -6935,7 +6936,7 @@ requireSimulator.setName('Auth');
 define(["WebSite"],function (WebSite) {
     var auth={};
     auth.currentUser=function (onend) {
-        $.ajax({type:"get",url:WebSite.serverTop+"currentUser",data:{withCsrfToken:true},
+        $.ajax({type:"get",url:WebSite.serverTop+"/currentUser",data:{withCsrfToken:true},
             success:function (res) {
                 console.log("auth.currentUser",res);
                 res=JSON.parse(res);
@@ -6960,7 +6961,7 @@ define(["WebSite"],function (WebSite) {
                 return options.success(user,csrfToken);
             }
             window.onLoggedIn=options.success;
-            options.showLoginLink(WebSite.serverTop+"login");
+            options.showLoginLink(WebSite.serverTop+"/login");
         });
     };
     window.Auth=auth;
@@ -6982,7 +6983,7 @@ define(["Auth","WebSite","Util"],function (a,WebSite,Util) {
         fd.append("fileName",file.name);
         $.ajax({
             type : "get",
-            url : WebSite.serverTop+"blobURL",
+            url : WebSite.serverTop+"/blobURL",
             success : function(url) {
                 $.ajax({
                     url : url,
@@ -7022,7 +7023,7 @@ define(["Auth","WebSite","Util"],function (a,WebSite,Util) {
             for (var i in bi) data[i]=bi[i];
             $.ajax({
                 type:"get",
-                url: WebSite.serverTop+"uploadBlobToExe",
+                url: WebSite.serverTop+"/uploadBlobToExe",
                 data:data,
                 success: function () {
                      cnt--;

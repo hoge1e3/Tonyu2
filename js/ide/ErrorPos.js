@@ -37,7 +37,7 @@ return function showErrorPos(elem, err) {
     }
     var srcd=$("<pre>");
     srcd.append($("<span>").text(str.substring(0,pos)));
-    srcd.append($("<img>").attr("src",WebSite.top+"images/ecl.png"));
+    srcd.append($("<img>").attr("src",WebSite.top+"/images/ecl.png"));
     srcd.append($("<span>").text(str.substring(pos)));
     elem.append(srcd);
     //elem.attr("title",mesg+" 場所："+src.name());

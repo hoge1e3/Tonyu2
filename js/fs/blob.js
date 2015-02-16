@@ -13,7 +13,7 @@ define(["Auth","WebSite","Util"],function (a,WebSite,Util) {
         fd.append("fileName",file.name);
         $.ajax({
             type : "get",
-            url : WebSite.serverTop+"blobURL",
+            url : WebSite.serverTop+"/blobURL",
             success : function(url) {
                 $.ajax({
                     url : url,
@@ -53,7 +53,7 @@ define(["Auth","WebSite","Util"],function (a,WebSite,Util) {
             for (var i in bi) data[i]=bi[i];
             $.ajax({
                 type:"get",
-                url: WebSite.serverTop+"uploadBlobToExe",
+                url: WebSite.serverTop+"/uploadBlobToExe",
                 data:data,
                 success: function () {
                      cnt--;
