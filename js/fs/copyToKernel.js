@@ -1,6 +1,7 @@
 requirejs(["Shell","FS","WebSite"], function (sh,FS,WebSite) {
     sh.copyToKernel=function (name) {
-        var ker=FS.get("/Tonyu/Kernel/");
+        var home=FS.get(WebSite.tonyuHome);
+        var ker=home.rel("Kernel/");
         if (name) {
             return sh.cp( name, ker.rel(name));
         } else {

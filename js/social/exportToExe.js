@@ -1,9 +1,10 @@
 requirejs(["Auth","Util","exportAsScriptTags","requestFragment","Blob","Tonyu.Project","FS","WebSite"],
         function (Auth,Util,east,rf,Blob,TPR,FS,WebSite){
 $(function () {
+    var home=FS.get(WebSite.tonyuHome);
    var dir=Util.getQueryString("dir", "/Tonyu/Projects/1_Animation/");
    dir=FS.get(dir);
-   var prj=TPR(dir,FS.get("/Tonyu/Kernel/"));
+   var prj=TPR(dir,home.rel("Kernel/"));
    //var dirs=dir.split("/");
    //dirs.pop();
    var name=prj.getName(); //dirs.pop();

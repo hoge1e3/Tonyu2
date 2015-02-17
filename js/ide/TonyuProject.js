@@ -4,7 +4,8 @@ define(["Tonyu", "Tonyu.Compiler", "TError", "FS", "Tonyu.TraceTbl","ImageList",
                 tc,Blob,thumbnail,WebSite) {
 return Tonyu.Project=function (dir, kernelDir) {
     var TPR={};
-    if (!kernelDir) kernelDir=FS.get("/Tonyu/Kernel/");
+    var home=FS.get(WebSite.tonyuHome);
+    if (!kernelDir) kernelDir=home.rel("Kernel/");
     var traceTbl=Tonyu.TraceTbl();
     var env={classes:{}, traceTbl:traceTbl, options:{compiler:{}} };
     TPR.EXT=".tonyu";
@@ -50,7 +51,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         }
     };
     TPR.stop=function () {
-        var cur=TPR.runningThread; //Tonyu.getGlobal("$currentThreadGroup");
+        var cur=TPR.runningThread; // Tonyu.getGlobal("$currentThreadGroup");
         if (cur) cur.kill();
         var main=TPR.runningObj;
         if (main && main.stop) main.stop();
@@ -258,7 +259,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         //var thg=Tonyu.threadGroup();
         var mainClass=Tonyu.getClass(mainClassName);
         if (!mainClass) throw TError( mainClassName+" というクラスはありません", "不明" ,0);
-        //Tonyu.runMode=true;
+        // Tonyu.runMode=true;
         var main=new mainClass();
         var th=Tonyu.thread();
         th.apply(main,"main");

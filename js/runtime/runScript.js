@@ -1,6 +1,7 @@
 requirejs(["fs/ROMk","FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS","runtime","WebSite"],
         function (romk,   FS,  Tonyu_Project, sh,      KeyEventChecker, ScriptTagFS,   rt,WebSite) {
     $(function () {
+        var home=FS.get(WebSite.tonyuHome);
         Tonyu.defaultResource={
                 images:[
                         {name:"$pat_base", url: "images/base.png", pwidth:32, pheight:32},
@@ -25,7 +26,7 @@ requirejs(["fs/ROMk","FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS
         var locs=location.href.replace(/\?.*/,"").split(/\//);
         var loc=locs.pop();
         if (loc.length<0) locs="runscript";
-        var curProjectDir=FS.get("/Tonyu/"+loc+"/");
+        var curProjectDir=home.rel(loc+"/");
         //if (curProjectDir.exists()) sh.rm(curProjectDir,{r:1});
         var fo=ScriptTagFS.toObj();
         for (var fn in fo) {
@@ -54,7 +55,7 @@ requirejs(["fs/ROMk","FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS
                 run: {mainClass: main, bootClass: "Boot"},
                 kernelEditable: false
         };
-        var kernelDir=FS.get("/Tonyu/Kernel/");
+        var kernelDir=home.rel("Kernel/");
         var curPrj=Tonyu_Project(curProjectDir, kernelDir);
         var o=curPrj.getOptions();
         if (o.compiler && o.compiler.diagnose) {

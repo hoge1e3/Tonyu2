@@ -1,6 +1,7 @@
 requirejs(["Shell","FS","WebSite"], function (sh,FS,WebSite) {
     sh.syncWithKernel=function (name) {
-        var ker=FS.get("/Tonyu/Kernel/");
+        var home=FS.get(WebSite.tonyuHome);
+        var ker=home.rel("Kernel/");
         if (name) {
             var prj=sh.resolve(name);
             var inKer=ker.rel(name);

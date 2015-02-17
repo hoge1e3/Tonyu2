@@ -4,7 +4,7 @@ requirejs(["fs/ROMk","fs/ROMd","fs/ROMs", "FS","Wiki","Shell","Shell2",
             copySample,  NPD,           UI, Sync, Auth,zip,requestFragment,WebSite) {
 $(function () {
     copySample();
-    var home=FS.get("/Tonyu/");
+    var home=FS.get(WebSite.tonyuHome);
     var projects=home.rel("Projects/");
     sh.cd(projects);
     var curDir=projects;
@@ -37,15 +37,15 @@ $(function () {
             $(".while-logged-in").hide();
         }
     });
-    var w=Wiki($("#wikiViewArea"), FS.get("/Tonyu/doc/"));
+    var w=Wiki($("#wikiViewArea"), home.rel("doc/"));
     var syncDoc=false;
     if (WebSite.devMode) {
-        Sync.sync(FS.get("/Tonyu/"),{v:1});
+        Sync.sync(home,{v:1});
     } else if (WebSite.disableROM["ROM_d.js"]) {
         syncDoc=true;
-        Sync.sync(FS.get("/Tonyu/doc/"),{v:1, excludes:["/Tonyu/doc/html/"],
+        Sync.sync(home.rel("doc/"),{v:1, excludes:[home.rel("doc/html/").path()],
             onend:function () {
-            if (FS.get("/Tonyu/doc/index.txt").exists()) {
+            if (home.rel("doc/index.txt").exists()) {
                 w.show("index");
             }
         }});

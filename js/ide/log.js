@@ -1,4 +1,4 @@
-define(["FS"], function () {
+define(["FS","WebSite"], function (fs,WebSite) {
     var Log={};
     Log.curFile=function () {
         var d=new Date();
@@ -8,6 +8,7 @@ define(["FS"], function () {
         return FS.get("/var/log/").rel(y+"/").rel(m+"/").rel(y+"-"+m+"-"+da+".log");
     };
     Log.append=function (line) {
+        if (WebSite.isNW) return;
         var f=Log.curFile();
         //console.log(Log, "append "+f);
         var t=(f.exists()?f.text():"");

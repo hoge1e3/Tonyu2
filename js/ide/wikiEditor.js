@@ -1,7 +1,8 @@
 requirejs(["Util","Wiki","TextEditor","FileList","FileMenu","FS","TextUtil","WebSite"],
         function (Util,Wiki,TextEditor,FileList,FileMenu,FS,TextUtil,WebSite) {
 $(function () {
-    var home=FS.get(Util.getQueryString("home","/Tonyu/doc/"));
+    var thome=FS.get(WebSite.tonyuHome);
+    var home=FS.get(Util.getQueryString("home",thome.rel("doc/").path());
     var w=Wiki($("#wikiViewArea"),home,{editMode:true});
     var f=FileList($("#fileList"));
     var t=TextEditor($("#editorArea"));

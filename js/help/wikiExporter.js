@@ -1,7 +1,8 @@
 requirejs(["Shell","Wiki","FS","requestFragment","WebSite"], function (sh,Wiki,FS,rf,WebSite) {
     sh.wiki2servSingle=function (path) {
         var h=$("<div>");
-        var base=FS.get("/Tonyu/doc/");
+        var home=FS.get(WebSite.tonyuHome);
+        var base=home.rel("doc/");
         var w=Wiki(h,base,{useAnchor:true});
         // path=/Tonyu/doc/index.txt
         var dst=base.rel("html/").rel(FS.get(path).relPath(base)).path().replace(

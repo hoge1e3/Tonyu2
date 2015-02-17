@@ -7,10 +7,11 @@ define(["genROM","dumpScript","Util","FS","Sync","Shell","WebSite"],
     sh.build=doBuild;
     sh.build.description="Build files before commit.";
     function doBuild() {
-        genROM(FS.get("/Tonyu/Kernel/"), FS.get("/Tonyu/js/gen/ROM_k.js"));
-        genROM(FS.get("/Tonyu/doc/"), FS.get("/Tonyu/js/gen/ROM_d.js"));
-        genROM(FS.get("/Tonyu/SampleROM/"), FS.get("/Tonyu/js/gen/ROM_s.js"));
-        sync("/Tonyu/", function () {
+        var home=FS.get(WebSite.tonyuHome);
+        genROM(home.rel("Kernel/"),     home.rel("js/gen/ROM_k.js"));
+        genROM(home.rel("doc/"),        home.rel("js/gen/ROM_d.js"));
+        genROM(home.rel("SampleROM/"),  home.rel("js/gen/ROM_s.js"));
+        sync(home, function () {
             //next(".");
             concat({name: "ide/selProject", outfile:"index"},function (res) {
                 sh.echo(res.mesg);
@@ -40,8 +41,8 @@ define(["genROM","dumpScript","Util","FS","Sync","Shell","WebSite"],
         });
     }
     function sync(dir, onend) {
-    	console.log("Syncing "+dir);
-        Sync.sync(FS.get(dir),onend);
+    	console.log("Syncing "+dir.path());
+        Sync.sync(dir,onend);
     }
     function upload(dir, onend) {
     	console.log("Uploading "+dir);

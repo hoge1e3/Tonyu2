@@ -1,6 +1,7 @@
 define(["Shell","FS","WebSite"],function (sh,fs,WebSite) {
-    var samples=FS.get("/Tonyu/SampleROM/");
-    var projects=FS.get("/Tonyu/Projects/");
+    var home=FS.get(WebSite.tonyuHome);
+    var samples=home.rel("SampleROM/");
+    var projects=home.rel("Projects/");
     function all() {
         samples.ls().forEach(cs);
     }

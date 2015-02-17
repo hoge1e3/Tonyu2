@@ -1,8 +1,10 @@
 requirejs(["FS","Util","NewProjectDialog","ScriptTagFS","UI","forkBlobs","WebSite"],
         function (FS,Util,NPD,STF,UI,fb,WebSite) {
+    var home=FS.get(WebSite.tonyuHome);
+
 	$("button.selDir").click(selDir);
 	$("#diag").append($("<h1>").text("インポート先のフォルダを入力してください"));
-	$("#diag").append( NPD.embed(FS.get("/Tonyu/Projects/"), confirm) );
+	$("#diag").append( NPD.embed(home.rel("Projects/"), confirm) );
 	var user=Util.getQueryString("user");
     var project=Util.getQueryString("project");
     var forkFromExe=(user && project);

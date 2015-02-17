@@ -1,11 +1,13 @@
 requirejs(["Sync", "UI","Util", "Auth","WebSite"],function (Sync,UI,Util,Auth,WebSite) {
     $(function () {
+        var home=FS.get(WebSite.tonyuHome);
+
         //var user=Util.getQueryString("user");
         Auth.currentUser(function (user) {
             if (!user) document.location.href="../../edit/login";
             else {
                 $("#head").text(user+"のファイルを同期中");
-                Sync.sync(FS.get("/Tonyu/Projects/"), FS.get("/home/"+user+"/"), {
+                Sync.sync(home.rel("Projects/"), FS.get("/home/"+user+"/"), {
                     excludes:["1_Animation/",
                               "2_MultipleObj/",
                               "3_NewParam/",

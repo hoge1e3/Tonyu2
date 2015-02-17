@@ -21,19 +21,6 @@ function dumpScript(options) {
         	next();
         	return;
         }
-        /*
-        // http: / /lcl:300/
-        sc=sc.replace(/^\w+:\/\/[^\/]+\//,"");
-        if (sc.match(/^fs\//)) {
-            // http://localhost:3002/fs/Tonyu/js/gen/ROMk.js
-            // ../fs/Tonyu/js/gen/ROMk
-            sc="../"+sc;
-        } else {
-            sc=sc.replace(/^js\//,"");
-        }
-        sc=sc.replace(/\.js$/,"");
-        console.log(path2Name[sc]==$(scrs[i]).data("requiremodule") , scrs[i].src, path2Name[sc], $(scrs[i]).data("requiremodule"));
-        */
         $.get(scrs[i].src,function (s) {
             if (sc.length>0) {
                 //if (!path2Name[sc]) throw "no path2name "+sc;
@@ -52,10 +39,11 @@ function dumpScript(options) {
             	options.onend(buf);
             	return;
             }
-            genROM(FS.get("/Tonyu/Kernel/"), FS.get("/Tonyu/js/gen/ROM_k.js"));
-            genROM(FS.get("/Tonyu/doc/"), FS.get("/Tonyu/js/gen/ROM_d.js"));
-            genROM(FS.get("/Tonyu/SampleROM/"), FS.get("/Tonyu/js/gen/ROM_s.js"));
-            rsc=FS.get("/Tonyu/js/gen/runScript_concat.js");
+            var home=FS.get(WebSite.tonyuHome);
+            genROM(home.rel("Kernel/"),     home.rel("js/gen/ROM_k.js"));
+            genROM(home.rel("doc/"),        home.rel("js/gen/ROM_d.js"));
+            genROM(home.rel("SampleROM/"),  home.rel("js/gen/ROM_s.js"));
+            rsc=home.rel("js/gen/runScript_concat.js");
             rsc.text(buf);
             var json= JSON.stringify( FS.exportDir("/") );
             $.ajax({

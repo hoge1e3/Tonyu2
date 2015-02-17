@@ -1,5 +1,7 @@
 requirejs(["JSZip","UI","FS","NewProjectDialog","Encoding","T1Map","WebSite"],
         function (JSZip,UI,FS,NPD,Encoding,T1Map,WebSite) {
+    var home=FS.get(WebSite.tonyuHome);
+
     var dragMsg="ここにTonyu1プロジェクトフォルダのzipファイルをドラッグ＆ドロップ";
     var dragPoint=UI("div", {style:"margin:10px; padding:10px; border:solid blue 2px;",
         on:{dragover: s, dragenter: s, drop:dropAdd}},dragMsg
@@ -45,7 +47,7 @@ requirejs(["JSZip","UI","FS","NewProjectDialog","Encoding","T1Map","WebSite"],
         var diag=$("<div>").appendTo("body");
         diag.
         append($("<h1>").text("インポート先のフォルダを入力してください")).
-        append( NPD.embed(FS.get("/Tonyu/Projects/"), extract ,{defName:name} ) );
+        append( NPD.embed(home.rel("Projects/"), extract ,{defName:name} ) );
     }
     var convFiles;
     var dstDir;
@@ -124,8 +126,7 @@ requirejs(["JSZip","UI","FS","NewProjectDialog","Encoding","T1Map","WebSite"],
         });
     }
     function cpTmp(fn) {
-        //var ker=FS.get("/Tonyu/Kernel/");
-        var t1=FS.get("/Tonyu/Projects/Tonyu1/");
+        var t1=home.rel("Projects/Tonyu1/");
         fn+=".tonyu";
         if (t1.rel(fn).exists()) {
             mem[dstDir.rel(fn)]=t1.rel(fn).text();
