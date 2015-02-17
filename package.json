@@ -1,4 +1,10 @@
 {
   "name": "Tonyu2",
-  "main": "html/dev/index.html"
+  "main": "html/dev/index.html",
+  "window": {
+    "width": 1024,
+    "height": 768,
+    "icon": "images/tonyu.png",
+	"toolbar"	: false
+  }
 }

@@ -169,7 +169,9 @@ extend(SFile.prototype,{
 	},
 });
 exports.get=function (path) {
-	return new SFile(path);
+    if (path==null) throw new Error("FS.get: null path");
+	if (path instanceof SFile) return path;
+    return new SFile(path);
 };
 //-------end of SFile.js
 return exports;

@@ -10,8 +10,22 @@ $(function () {
     var curDir=projects;
     function ls() {
         $("#prjItemList").empty();
-        curDir.ls(FS.orderByNewest).forEach(function (name) {
-            var f=curDir.rel(name);
+        var d=[];
+        curDir.each(function (f) {
+            var l=f.lastUpdate();
+            var r=f.rel("options.json");
+            if (r.exists()) {
+                l=r.lastUpdate();
+            }
+            d.push([f,l]);
+        });
+        d=d.sort(function (a,b) {
+            return b[1]-a[1];
+        });
+        d.forEach(function (e) {
+            var f=e[0];
+            var name=f.name();
+
             if (!f.isDir()) return;
             var u=UI("div", {"class":"project"},
                     ["a", {href:"project.html?dir="+f.path()},

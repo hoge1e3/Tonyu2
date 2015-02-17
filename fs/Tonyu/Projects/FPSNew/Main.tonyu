@@ -1,0 +1,13 @@
+$Boot.setFrameRate(60);
+new FPS;
+for (i=0; i<30; i++)
+new Tama{x:rnd(400),y:rnd(400),vx:rnd()*2-1,vy:rnd()*2-1};
+while(true) {
+    updateEx(30);
+    if ($Boot.getMeasuredFps()<55) {
+        t=all(Tama)[0];
+        if (t) t.die();
+    } else {
+        new Tama{x:rnd(400),y:rnd(400),vx:rnd()*2-1,vy:rnd()*2-1};
+    }
+}

@@ -99,7 +99,10 @@ define(["UI","ImageList","ImageRect","PatternParser"],function (UI,ImageList,Ima
         var ctx=v.cv[0].getContext("2d");
         var o=v.cv.offset();
         var p={x:e.pageX-o.left, y:e.pageY-o.top};
-
+        if (!chipRects) {
+            console.log("cvMouse");
+            return;
+        }
         chipRects.forEach(function (r,i) {
             var cr=calcRect(r);
             //console.log(p.x, p.y, cr);

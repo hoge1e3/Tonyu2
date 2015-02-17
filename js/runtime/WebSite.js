@@ -63,7 +63,7 @@ define([], function () {
         if (process.env.TONYU_HOME) {
             window.WebSite.tonyuHome=process.env.TONYU_HOME.replace(/\\/g,"/");
         } else {
-            window.WebSite.tonyuHome=process.cwd().replace(/\\/g,"/");
+            window.WebSite.tonyuHome=process.cwd().replace(/\\/g,"/").replace(/\/$/,"")+"/fs/Tonyu/";
         }
     }
     return window.WebSite;

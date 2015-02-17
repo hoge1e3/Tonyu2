@@ -7,7 +7,7 @@ while(true) {
     x++;
     y++;
     $Screen.scrollTo(x-$screenWidth/2,y-$screenHeight/2);
-    print(x);
+    //    print(x);
     update();
 }
 a=6601;

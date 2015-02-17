@@ -1,0 +1,7 @@
+x=200;
+y=100;
+while (true) {
+    text=all().length+"actors / "+$Boot.getMeasuredFps()+"fps / "+
+    $Boot.getMeasuredRps()+"rps"+" maxFRS="+$Boot.maxFrameSkip;
+    update();
+}
