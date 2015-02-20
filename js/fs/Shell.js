@@ -1,4 +1,4 @@
-define(["FS","Util"],function (FS,Util) {
+define(["FS","Util","WebSite"],function (FS,Util,WebSite) {
     var Shell={cwd:FS.get("/")};
     Shell.cd=function (dir) {
         Shell.cwd=resolve(dir,true);
@@ -146,5 +146,8 @@ define(["FS","Util"],function (FS,Util) {
         }
     };
     sh=Shell;
+    if (WebSite.isNW) {
+        sh.devtool=function () { require('nw.gui').Window.get().showDevTools();}
+    }
     return Shell;
 });

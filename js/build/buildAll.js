@@ -4,8 +4,19 @@ define(["genROM","dumpScript","Util","FS","Sync","Shell","WebSite"],
     if (build) {
         $(doBuild);
     }
-    sh.build=doBuild;
+    sh.build=WebSite.isNW?doBuildNW:doBuild;
     sh.build.description="Build files before commit.";
+    function doBuildNW() {
+        var home=FS.get(WebSite.tonyuHome);
+        genROM(home.rel("Kernel/"),     home.rel("js/gen/ROM_k.js"));
+        genROM(home.rel("doc/"),        home.rel("js/gen/ROM_d.js"));
+        genROM(home.rel("SampleROM/"),  home.rel("js/gen/ROM_s.js"));
+        var ds=require("dumpScript");
+        var reqConf=ds.genShim();
+        ds.concat({names:["fs/ROMk","fs/ROMd","fs/ROMs","ide/selProject"], outFile:"index",reqConf:reqConf});
+        ds.concat({names: ["fs/ROMk","fs/ROMd","fs/ROMs","ide/editor"], outFile:"project",reqConf:reqConf});
+        ds.concat({names: ["fs/ROMk","runScript"], outFile:"runScript",reqConf:reqConf});
+    }
     function doBuild() {
         var home=FS.get(WebSite.tonyuHome);
         genROM(home.rel("Kernel/"),     home.rel("js/gen/ROM_k.js"));
