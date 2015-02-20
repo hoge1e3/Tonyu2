@@ -13,11 +13,11 @@ define(["genROM","dumpScript","Util","FS","Sync","Shell","WebSite"],
         genROM(home.rel("SampleROM/"),  home.rel("js/gen/ROM_s.js"));
         sync(home, function () {
             //next(".");
-            concat({name: "ide/selProject", outfile:"index"},function (res) {
+            concat({names:["fs/ROMk","fs/ROMd","fs/ROMs","ide/selProject"], outfile:"index"},function (res) {
                 sh.echo(res.mesg);
-                concat({name: "ide/editor", outfile:"project"},function (res) {
+                concat({names: ["fs/ROMk","fs/ROMd","fs/ROMs","ide/editor"], outfile:"project"},function (res) {
                     sh.echo(res.mesg);
-                    concat({name: "runScript", outfile:"runScript"},function (res) {
+                    concat({names: ["fs/ROMk","runScript"], outfile:"runScript"},function (res) {
                         sh.echo(res.mesg);
                         sh.prompt();
                     });

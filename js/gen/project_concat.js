@@ -1,4 +1,4 @@
-// Created at Mon Feb 16 2015 20:03:06 GMT+0900 (東京 (標準時))
+// Created at Fri Feb 20 2015 10:31:54 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -147,6 +147,14 @@ define([], function () {
     window.WebSite.sampleImg=window.WebSite.top+"/images";
     window.WebSite.blobPath=window.WebSite.serverTop+"/serveBlob";
     window.WebSite.isNW=(typeof process=="object" && process.__node_webkit);
+    window.WebSite.tonyuHome="/Tonyu/";
+    if (window.WebSite.isNW) {
+        if (process.env.TONYU_HOME) {
+            window.WebSite.tonyuHome=process.env.TONYU_HOME.replace(/\\/g,"/");
+        } else {
+            window.WebSite.tonyuHome=process.cwd().replace(/\\/g,"/").replace(/\/$/,"")+"/fs/Tonyu/";
+        }
+    }
     return window.WebSite;
 });
 
@@ -322,7 +330,9 @@ extend(SFile.prototype,{
 	},
 });
 exports.get=function (path) {
-	return new SFile(path);
+    if (path==null) throw new Error("FS.get: null path");
+	if (path instanceof SFile) return path;
+    return new SFile(path);
 };
 //-------end of SFile.js
 return exports;
@@ -9952,7 +9962,7 @@ return FileMenu;
 });
 
 requireSimulator.setName('Log');
-define(["FS"], function () {
+define(["FS","WebSite"], function (fs,WebSite) {
     var Log={};
     Log.curFile=function () {
         var d=new Date();
@@ -9962,6 +9972,7 @@ define(["FS"], function () {
         return FS.get("/var/log/").rel(y+"/").rel(m+"/").rel(y+"-"+m+"-"+da+".log");
     };
     Log.append=function (line) {
+        if (WebSite.isNW) return;
         var f=Log.curFile();
         //console.log(Log, "append "+f);
         var t=(f.exists()?f.text():"");
@@ -12361,7 +12372,8 @@ return Wiki=function (placeHolder, home, options, plugins) {
                 on:{dragover: s, dragenter: s, drop:dropAdd}},
                     "ここに画像ファイル(png/gif/jpg)をドラッグ＆ドロップして追加"
             );
-            imfile=FS.get("/Tonyu/doc/images/").rel(name);
+            var thome=FS.get(WebSite.tonyuHome);
+            imfile=thome.rel("doc/images/").rel(name);
             if (imfile.exists()) {
                 res.empty().append(UI("img",{src:imfile.text() }));
             }
@@ -14578,12 +14590,13 @@ define(["ImageRect"],function (IR) {
 });
 requireSimulator.setName('Tonyu.Project');
 define(["Tonyu", "Tonyu.Compiler", "TError", "FS", "Tonyu.TraceTbl","ImageList","StackTrace",
-        "typeCheck","Blob","thumbnail"],
+        "typeCheck","Blob","thumbnail","WebSite"],
         function (Tonyu, Tonyu_Compiler, TError, FS, Tonyu_TraceTbl, ImageList,StackTrace,
-                tc,Blob,thumbnail) {
+                tc,Blob,thumbnail,WebSite) {
 return Tonyu.Project=function (dir, kernelDir) {
     var TPR={};
-    if (!kernelDir) kernelDir=FS.get("/Tonyu/Kernel/");
+    var home=FS.get(WebSite.tonyuHome);
+    if (!kernelDir) kernelDir=home.rel("Kernel/");
     var traceTbl=Tonyu.TraceTbl();
     var env={classes:{}, traceTbl:traceTbl, options:{compiler:{}} };
     TPR.EXT=".tonyu";
@@ -14629,7 +14642,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         }
     };
     TPR.stop=function () {
-        var cur=TPR.runningThread; //Tonyu.getGlobal("$currentThreadGroup");
+        var cur=TPR.runningThread; // Tonyu.getGlobal("$currentThreadGroup");
         if (cur) cur.kill();
         var main=TPR.runningObj;
         if (main && main.stop) main.stop();
@@ -14837,7 +14850,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         //var thg=Tonyu.threadGroup();
         var mainClass=Tonyu.getClass(mainClassName);
         if (!mainClass) throw TError( mainClassName+" というクラスはありません", "不明" ,0);
-        //Tonyu.runMode=true;
+        // Tonyu.runMode=true;
         var main=new mainClass();
         var th=Tonyu.thread();
         th.apply(main,"main");
@@ -15060,9 +15073,10 @@ define(["FS","Util"],function (FS,Util) {
 });
 
 requireSimulator.setName('copySample');
-define(["Shell","FS"],function (sh,fs) {
-    var samples=FS.get("/Tonyu/SampleROM/");
-    var projects=FS.get("/Tonyu/Projects/");
+define(["Shell","FS","WebSite"],function (sh,fs,WebSite) {
+    var home=FS.get(WebSite.tonyuHome);
+    var samples=home.rel("SampleROM/");
+    var projects=home.rel("Projects/");
     function all() {
         samples.ls().forEach(cs);
     }
@@ -15327,7 +15341,10 @@ define(["UI","ImageList","ImageRect","PatternParser"],function (UI,ImageList,Ima
         var ctx=v.cv[0].getContext("2d");
         var o=v.cv.offset();
         var p={x:e.pageX-o.left, y:e.pageY-o.top};
-
+        if (!chipRects) {
+            console.log("cvMouse");
+            return;
+        }
         chipRects.forEach(function (r,i) {
             var cr=calcRect(r);
             //console.log(p.x, p.y, cr);
@@ -15736,9 +15753,10 @@ define(["UI"], function (UI) {
     };
 });
 requireSimulator.setName('copyToKernel');
-requirejs(["Shell","FS"], function (sh,FS) {
+requirejs(["Shell","FS","WebSite"], function (sh,FS,WebSite) {
     sh.copyToKernel=function (name) {
-        var ker=FS.get("/Tonyu/Kernel/");
+        var home=FS.get(WebSite.tonyuHome);
+        var ker=home.rel("Kernel/");
         if (name) {
             return sh.cp( name, ker.rel(name));
         } else {
@@ -16907,9 +16925,10 @@ define(["UI","Shell"], function (UI,sh) {
 });
 
 requireSimulator.setName('syncWithKernel');
-requirejs(["Shell","FS"], function (sh,FS) {
+requirejs(["Shell","FS","WebSite"], function (sh,FS,WebSite) {
     sh.syncWithKernel=function (name) {
-        var ker=FS.get("/Tonyu/Kernel/");
+        var home=FS.get(WebSite.tonyuHome);
+        var ker=home.rel("Kernel/");
         if (name) {
             var prj=sh.resolve(name);
             var inKer=ker.rel(name);
@@ -17195,24 +17214,25 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
 });
 
 requireSimulator.setName('ide/editor');
-requirejs(["fs/ROMk","fs/ROMd","fs/ROMs", "Util", "Tonyu", "FS", "FileList", "FileMenu",
+requirejs(["Util", "Tonyu", "FS", "FileList", "FileMenu",
            "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project",
            "copySample","Shell","Shell2","ImageResEditor","ProjectOptionsEditor","copyToKernel","KeyEventChecker",
            "WikiDialog","runtime", "KernelDiffDialog","Sync","searchDialog","StackTrace","syncWithKernel",
-           "UI","ResEditor"
+           "UI","ResEditor","WebSite"
           ],
-function (romk, romd, roms,  Util, Tonyu, FS, FileList, FileMenu,
+function (Util, Tonyu, FS, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,
           copySample,sh,sh2, ImgResEdit,ProjectOptionsEditor, ctk, KeyEventChecker,
           WikiDialog, rt , KDD,Sync,searchDialog,StackTrace,swk,
-          UI,ResEditor
+          UI,ResEditor,WebSite
           ) {
 
 $(function () {
     $LASTPOS=0;
     copySample();
+    var home=FS.get(WebSite.tonyuHome);
     //if (!Tonyu.ide) Tonyu.ide={};
-    var kernelDir=FS.get("/Tonyu/Kernel/");
+    var kernelDir=home.rel("Kernel/");
     var dir=Util.getQueryString("dir", "/Tonyu/Projects/SandBox/");
     var curProjectDir=FS.get(dir);
     var curPrj=Tonyu_Project(curProjectDir, kernelDir);
@@ -17610,8 +17630,6 @@ $(function () {
     d=function () {
         Tonyu.currentProject.dumpJS.apply(this,arguments);
     };
-    //var w=Wiki($("#wikiViewArea"), FS.get("/Tonyu/doc/"));
-    //w.show("projectIndex");
 
     function loadDesktopEnv() {
         var d=curProjectDir.rel(".desktop");
@@ -17649,7 +17667,7 @@ $(function () {
     });
     var helpd=null;
     $("#refHelp").click(function () {
-    	if (!helpd) helpd=WikiDialog.create(FS.get("/Tonyu/doc/tonyu2/"));
+    	if (!helpd) helpd=WikiDialog.create(home.rel("doc/tonyu2/"));
     	helpd.show();
     });
     if (typeof progBar=="object") {progBar.clear();}

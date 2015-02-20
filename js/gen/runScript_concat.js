@@ -1,4 +1,4 @@
-// Created at Mon Feb 16 2015 20:03:14 GMT+0900 (東京 (標準時))
+// Created at Fri Feb 20 2015 10:32:03 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -147,6 +147,14 @@ define([], function () {
     window.WebSite.sampleImg=window.WebSite.top+"/images";
     window.WebSite.blobPath=window.WebSite.serverTop+"/serveBlob";
     window.WebSite.isNW=(typeof process=="object" && process.__node_webkit);
+    window.WebSite.tonyuHome="/Tonyu/";
+    if (window.WebSite.isNW) {
+        if (process.env.TONYU_HOME) {
+            window.WebSite.tonyuHome=process.env.TONYU_HOME.replace(/\\/g,"/");
+        } else {
+            window.WebSite.tonyuHome=process.cwd().replace(/\\/g,"/").replace(/\/$/,"")+"/fs/Tonyu/";
+        }
+    }
     return window.WebSite;
 });
 
@@ -322,7 +330,9 @@ extend(SFile.prototype,{
 	},
 });
 exports.get=function (path) {
-	return new SFile(path);
+    if (path==null) throw new Error("FS.get: null path");
+	if (path instanceof SFile) return path;
+    return new SFile(path);
 };
 //-------end of SFile.js
 return exports;
@@ -7311,12 +7321,13 @@ define(["ImageRect"],function (IR) {
 });
 requireSimulator.setName('Tonyu.Project');
 define(["Tonyu", "Tonyu.Compiler", "TError", "FS", "Tonyu.TraceTbl","ImageList","StackTrace",
-        "typeCheck","Blob","thumbnail"],
+        "typeCheck","Blob","thumbnail","WebSite"],
         function (Tonyu, Tonyu_Compiler, TError, FS, Tonyu_TraceTbl, ImageList,StackTrace,
-                tc,Blob,thumbnail) {
+                tc,Blob,thumbnail,WebSite) {
 return Tonyu.Project=function (dir, kernelDir) {
     var TPR={};
-    if (!kernelDir) kernelDir=FS.get("/Tonyu/Kernel/");
+    var home=FS.get(WebSite.tonyuHome);
+    if (!kernelDir) kernelDir=home.rel("Kernel/");
     var traceTbl=Tonyu.TraceTbl();
     var env={classes:{}, traceTbl:traceTbl, options:{compiler:{}} };
     TPR.EXT=".tonyu";
@@ -7362,7 +7373,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         }
     };
     TPR.stop=function () {
-        var cur=TPR.runningThread; //Tonyu.getGlobal("$currentThreadGroup");
+        var cur=TPR.runningThread; // Tonyu.getGlobal("$currentThreadGroup");
         if (cur) cur.kill();
         var main=TPR.runningObj;
         if (main && main.stop) main.stop();
@@ -7570,7 +7581,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         //var thg=Tonyu.threadGroup();
         var mainClass=Tonyu.getClass(mainClassName);
         if (!mainClass) throw TError( mainClassName+" というクラスはありません", "不明" ,0);
-        //Tonyu.runMode=true;
+        // Tonyu.runMode=true;
         var main=new mainClass();
         var th=Tonyu.thread();
         th.apply(main,"main");
@@ -7927,9 +7938,10 @@ requirejs(["ImageList","TextRect","fukidashi"], function () {
 
 });
 requireSimulator.setName('runScript');
-requirejs(["fs/ROMk","FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS","runtime"],
-        function (romk,   FS,  Tonyu_Project, sh,      KeyEventChecker, ScriptTagFS,   rt) {
+requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS","runtime","WebSite"],
+        function (FS,  Tonyu_Project, sh,      KeyEventChecker, ScriptTagFS,   rt,WebSite) {
     $(function () {
+        var home=FS.get(WebSite.tonyuHome);
         Tonyu.defaultResource={
                 images:[
                         {name:"$pat_base", url: "images/base.png", pwidth:32, pheight:32},
@@ -7954,7 +7966,7 @@ requirejs(["fs/ROMk","FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS
         var locs=location.href.replace(/\?.*/,"").split(/\//);
         var loc=locs.pop();
         if (loc.length<0) locs="runscript";
-        var curProjectDir=FS.get("/Tonyu/"+loc+"/");
+        var curProjectDir=home.rel(loc+"/");
         //if (curProjectDir.exists()) sh.rm(curProjectDir,{r:1});
         var fo=ScriptTagFS.toObj();
         for (var fn in fo) {
@@ -7983,7 +7995,7 @@ requirejs(["fs/ROMk","FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS
                 run: {mainClass: main, bootClass: "Boot"},
                 kernelEditable: false
         };
-        var kernelDir=FS.get("/Tonyu/Kernel/");
+        var kernelDir=home.rel("Kernel/");
         var curPrj=Tonyu_Project(curProjectDir, kernelDir);
         var o=curPrj.getOptions();
         if (o.compiler && o.compiler.diagnose) {

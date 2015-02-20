@@ -1,8 +1,9 @@
-requirejs(["fs/ROMk","fs/ROMd","fs/ROMs", "FS","Wiki","Shell","Shell2",
+requirejs(["FS","Wiki","Shell","Shell2",
            "copySample","NewProjectDialog","UI","Sync","Auth","zip","requestFragment","WebSite"],
-  function (romk, romd, roms,               FS, Wiki,   sh,sh2,
+  function (FS, Wiki,   sh,sh2,
             copySample,  NPD,           UI, Sync, Auth,zip,requestFragment,WebSite) {
 $(function () {
+
     copySample();
     var home=FS.get(WebSite.tonyuHome);
     var projects=home.rel("Projects/");
@@ -12,6 +13,7 @@ $(function () {
         $("#prjItemList").empty();
         var d=[];
         curDir.each(function (f) {
+            if (!f.isDir()) return;
             var l=f.lastUpdate();
             var r=f.rel("options.json");
             if (r.exists()) {

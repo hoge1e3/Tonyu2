@@ -8,7 +8,8 @@ exports.genShim=function (req,res) {
         }
     });*/
     var revPath={};
-    var shim=reqConf.shim;
+    var shim={};
+    for (var i in reqConf.shim) shim[i]=reqConf.shim[i];
     var com=/^((\/\*([^\/]|[^*]\/|\r|\n)*\*\/)*(\/\/.*\r?\n)*)*/g;
     for (var name in reqConf.paths) {
         //console.log(name);
@@ -21,19 +22,29 @@ exports.genShim=function (req,res) {
             continue;
         }
         var src=f.text();
+        /*var appendConcat=null;
+        if (src.match(/\/\/CONCAT:(\[[^\]]*\])/)) {
+            appendConcat=eval(RegExp.$1);
+        }*/
         src=src.replace(com,"");
         var isModule=src.match(/(\brequirejs\b)|(\brequire\b)|(\bdefine\b)/);
         if (name in shim) {
             if (isModule) {
-                console.log(f+" has both shim and require/define");
+                console.log(f+"("+name+") has both shim and require/define");
             }
             continue;
         }
         if (isModule) {
             if (src.match(/\[([^\]]*)\]/)) {
                 var reqs=RegExp.lastMatch;
+
                 try {
-                    shim[name]={deps:eval(reqs), exports:name ,srcHead: src.substring(0,50) };
+                    var reqa=eval(reqs);
+                    /*if (appendConcat) {
+                        reqa=reqa.concat(appendConcat);
+                        console.log("AppendConcat", name, reqa);
+                    }*/
+                    shim[name]={deps:reqa, exports:name ,srcHead: src.substring(0,50) };
                 } catch(e) {
                     console.log("dumpScript:Error eval "+name+" src:\n"+reqs);
                     throw e;
@@ -51,18 +62,21 @@ exports.genShim=function (req,res) {
             if (!revPath[r] ) console.log(r+" is not scanned");
         }
     });
-    if (res) res.send(reqConf);
-    return reqConf;
+    var nrq={shim:shim,paths:reqConf.paths};
+    if (res) res.send(nrq);
+    return nrq;
 };
 var excludes={timbre:1, ace:1};
 exports.concat=function (req,res) {
     var name=req.query.name;
+    var names=req.query.names;
+    if (name) names=[name];
     var outfile=req.query.outfile;
     var reqConf=exports.genShim();
     var progs=[];
     var visited={};
     for (var i in excludes) visited[i]=true;
-    loop(name);
+    names.forEach(loop);
     function loop(name) {
         if (visited[name]) return;
         var s=reqConf.shim[name];
@@ -83,7 +97,7 @@ exports.concat=function (req,res) {
         buf+=js.rel(fn+".js").text().replace(/\r/g,"")+"\n";
     });
     buf+="requireSimulator.setName();\n";
-    console.log("Done generate "+name);
+    console.log("Done generate ",names);
     if (outfile) {
         var ouf=FS.get("js/gen/"+outfile+"_concat.js");
         ouf.text(buf);

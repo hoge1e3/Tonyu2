@@ -1,4 +1,4 @@
-// Created at Mon Feb 16 2015 20:03:01 GMT+0900 (東京 (標準時))
+// Created at Fri Feb 20 2015 10:31:50 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -147,6 +147,14 @@ define([], function () {
     window.WebSite.sampleImg=window.WebSite.top+"/images";
     window.WebSite.blobPath=window.WebSite.serverTop+"/serveBlob";
     window.WebSite.isNW=(typeof process=="object" && process.__node_webkit);
+    window.WebSite.tonyuHome="/Tonyu/";
+    if (window.WebSite.isNW) {
+        if (process.env.TONYU_HOME) {
+            window.WebSite.tonyuHome=process.env.TONYU_HOME.replace(/\\/g,"/");
+        } else {
+            window.WebSite.tonyuHome=process.cwd().replace(/\\/g,"/").replace(/\/$/,"")+"/fs/Tonyu/";
+        }
+    }
     return window.WebSite;
 });
 
@@ -322,7 +330,9 @@ extend(SFile.prototype,{
 	},
 });
 exports.get=function (path) {
-	return new SFile(path);
+    if (path==null) throw new Error("FS.get: null path");
+	if (path instanceof SFile) return path;
+    return new SFile(path);
 };
 //-------end of SFile.js
 return exports;
@@ -9240,7 +9250,7 @@ return {getQueryString:getQueryString, endsWith: endsWith, startsWith: startsWit
 })();
 
 requireSimulator.setName('Log');
-define(["FS"], function () {
+define(["FS","WebSite"], function (fs,WebSite) {
     var Log={};
     Log.curFile=function () {
         var d=new Date();
@@ -9250,6 +9260,7 @@ define(["FS"], function () {
         return FS.get("/var/log/").rel(y+"/").rel(m+"/").rel(y+"-"+m+"-"+da+".log");
     };
     Log.append=function (line) {
+        if (WebSite.isNW) return;
         var f=Log.curFile();
         //console.log(Log, "append "+f);
         var t=(f.exists()?f.text():"");
@@ -9727,7 +9738,8 @@ return Wiki=function (placeHolder, home, options, plugins) {
                 on:{dragover: s, dragenter: s, drop:dropAdd}},
                     "ここに画像ファイル(png/gif/jpg)をドラッグ＆ドロップして追加"
             );
-            imfile=FS.get("/Tonyu/doc/images/").rel(name);
+            var thome=FS.get(WebSite.tonyuHome);
+            imfile=thome.rel("doc/images/").rel(name);
             if (imfile.exists()) {
                 res.empty().append(UI("img",{src:imfile.text() }));
             }
@@ -10214,9 +10226,10 @@ define(["Shell","UI","FS","Util"], function (sh,UI,FS,Util) {
     return res;
 });
 requireSimulator.setName('copySample');
-define(["Shell","FS"],function (sh,fs) {
-    var samples=FS.get("/Tonyu/SampleROM/");
-    var projects=FS.get("/Tonyu/Projects/");
+define(["Shell","FS","WebSite"],function (sh,fs,WebSite) {
+    var home=FS.get(WebSite.tonyuHome);
+    var samples=home.rel("SampleROM/");
+    var projects=home.rel("Projects/");
     function all() {
         samples.ls().forEach(cs);
     }
@@ -10611,20 +10624,36 @@ define(["FS","Shell"],function (FS,sh) {
     return zip;
 });
 requireSimulator.setName('ide/selProject');
-requirejs(["fs/ROMk","fs/ROMd","fs/ROMs", "FS","Wiki","Shell","Shell2",
-           "copySample","NewProjectDialog","UI","Sync","Auth","zip","requestFragment"],
-  function (romk, romd, roms,               FS, Wiki,   sh,sh2,
-            copySample,  NPD,           UI, Sync, Auth,zip,requestFragment) {
+requirejs(["FS","Wiki","Shell","Shell2",
+           "copySample","NewProjectDialog","UI","Sync","Auth","zip","requestFragment","WebSite"],
+  function (FS, Wiki,   sh,sh2,
+            copySample,  NPD,           UI, Sync, Auth,zip,requestFragment,WebSite) {
 $(function () {
+
     copySample();
-    var home=FS.get("/Tonyu/");
+    var home=FS.get(WebSite.tonyuHome);
     var projects=home.rel("Projects/");
     sh.cd(projects);
     var curDir=projects;
     function ls() {
         $("#prjItemList").empty();
-        curDir.ls(FS.orderByNewest).forEach(function (name) {
-            var f=curDir.rel(name);
+        var d=[];
+        curDir.each(function (f) {
+            if (!f.isDir()) return;
+            var l=f.lastUpdate();
+            var r=f.rel("options.json");
+            if (r.exists()) {
+                l=r.lastUpdate();
+            }
+            d.push([f,l]);
+        });
+        d=d.sort(function (a,b) {
+            return b[1]-a[1];
+        });
+        d.forEach(function (e) {
+            var f=e[0];
+            var name=f.name();
+
             if (!f.isDir()) return;
             var u=UI("div", {"class":"project"},
                     ["a", {href:"project.html?dir="+f.path()},
@@ -10650,15 +10679,15 @@ $(function () {
             $(".while-logged-in").hide();
         }
     });
-    var w=Wiki($("#wikiViewArea"), FS.get("/Tonyu/doc/"));
+    var w=Wiki($("#wikiViewArea"), home.rel("doc/"));
     var syncDoc=false;
     if (WebSite.devMode) {
-        Sync.sync(FS.get("/Tonyu/"),{v:1});
+        Sync.sync(home,{v:1});
     } else if (WebSite.disableROM["ROM_d.js"]) {
         syncDoc=true;
-        Sync.sync(FS.get("/Tonyu/doc/"),{v:1, excludes:["/Tonyu/doc/html/"],
+        Sync.sync(home.rel("doc/"),{v:1, excludes:[home.rel("doc/html/").path()],
             onend:function () {
-            if (FS.get("/Tonyu/doc/index.txt").exists()) {
+            if (home.rel("doc/index.txt").exists()) {
                 w.show("index");
             }
         }});

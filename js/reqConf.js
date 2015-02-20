@@ -226,7 +226,6 @@ var reqConf={
             "wikiExporter": "help/wikiExporter",
             "ace": "lib/ace-noconflict/ace",
             "ide/selProject": "ide/selProject",
-            "ide/editor": "ide/editor",
             "ide/noviceSelProject": "ide/noviceSelProject",
             "ide/noviceEditor": "ide/noviceEditor",
             PatternParser:"graphics/PatternParser",
