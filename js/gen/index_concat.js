@@ -1,4 +1,4 @@
-// Created at Sat Feb 21 2015 12:48:40 GMT+0900 (東京 (標準時))
+// Created at Sat Feb 21 2015 13:48:18 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -10056,6 +10056,7 @@ define(["Shell","FS","WebSite"],function (sh,fs,WebSite) {
     var samples=home.rel("SampleROM/");
     var projects=home.rel("Projects/");
     function all() {
+        if (!samples.exists()) return;
         samples.ls().forEach(cs);
     }
     function available(dir) {
@@ -10068,7 +10069,7 @@ define(["Shell","FS","WebSite"],function (sh,fs,WebSite) {
         var src=samples.rel(n);
         var dst=projects.rel(n);
         //console.log(n,src,dst,dst.exists());
-        if (!dst.exists()) {
+        if (src.exists() && !dst.exists()) {
             sh.cp(src,dst);//,{v:1});
         }
     }
