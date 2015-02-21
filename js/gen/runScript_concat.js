@@ -1,4 +1,4 @@
-// Created at Fri Feb 20 2015 10:32:03 GMT+0900 (東京 (標準時))
+// Created at Sat Feb 21 2015 12:48:53 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -158,190 +158,12 @@ define([], function () {
     return window.WebSite;
 });
 
-requireSimulator.setName('SFileNW');
-define(["WebSite"],function (WebSite) {
-var exports={};
-if (!WebSite.isNW) return null;
-//--------begin of SFile.js
-var fs=require("fs");
-var SEP="/";
-function SFile(path) {
-    this._path=toCanonicalPath(path);
-}
-function extend(dst,src) {
-	for (var i in src) dst[i]=src[i];
-}
-function endsWith(str,postfix) {
-    return str.substring(str.length-postfix.length)===postfix;
-}
-function startsWith(str,prefix) {
-    return str.substring(0, prefix.length)===prefix;
-}
-var driveLetter=/^([a-zA-Z]):/;
-function isAbsolute(path) {
-    return startsWith(path,SEP) || path.match(driveLetter);
-}
-function toCanonicalPath(path) {
-    if (startsWith(path,SEP)) {
-        var c=process.cwd();
-        var d=driveLetter.exec(c);
-        if (d) {
-            path=d[0]+path;
-        }
-    } else if (!isAbsolute(path)) path=process.cwd().replace(/\\/g,SEP)+SEP+path.replace(/\\/g,SEP);
-    var paths=path.split(SEP);
-    var built=[];
-    paths.forEach(function (p) {
-        if (p=="") return;
-        if (p==".") return;
-        if (p=="..") {
-            built.pop();
-            return;
-        }
-        built.push(p);
-    });
-    return built.join(SEP);
-}
-extend(SFile.prototype,{
-	text:function () {
-		if (arguments.length==0) {
-			return fs.readFileSync(this._path, {encoding:"utf8"});
-		} else {
-			var p=this.up();
-			if (p) p.mkdir();
-			fs.writeFileSync(this._path, arguments[0]);
-		}
-	},
-	obj:function () {
-		if (arguments.length==0) {
-			return JSON.parse(this.text());
-		} else {
-			this.text(JSON.stringify(arguments[0]));
-		}
-	},
-	isReadOnly: function () {
-	    return false; // TODO
-	},
-    rm: function () {
-	return fs.unlinkSync(this._path);
-    },
-	path: function () { return this._path; },
-	name: function () {
-		var p=this._path;
-		/*if (endsWith(p,SEP)) {
-			p=p.substring(0,p.length-1);
-		}*/
-		return p.split(SEP).pop();
-	},
-	truncExt: function (ext) {
-        var name=this.name();
-        return name.substring(0,name.length-ext.length);
-	},
-	endsWith: function (postfix) {
-	    return endsWith(this.name(), postfix);
-	},
-    exists: function () {
-        return fs.existsSync(this._path);
-    },
-	each:function (it) {
-		if (!this.isDir()) throw this+" cannot each. not a dir.";
-		var r=fs.readdirSync(this._path);
-		var t=this;
-		r.forEach(function (e) {
-		    if (e==".dirinfo") return;
-			var f=t.rel(e);
-			it(f);
-		});
-	},
-	ls: function () {
-	    var res=[];
-	    this.each(function (f) {
-            res.push(f.name());
-        });
-        return res;
-	},
-	parent: function () {
-		return this.up();
-	},
-	recursive:function (fun) {
-        this.each(function (f) {
-            if (f.isDir()) f.recursive(fun);
-            else fun(f);
-        });
-    },
-	toString: function () {
-		return this._path;
-	},
-	rel: function (n) {
-		//if (!this.isDir()) throw new Error(this+" cannot rel. not a dir.");
-		return new SFile(this._path+SEP+n);
-	},
-	mkdir: function () {
-		if (this.exists()){
-			if (this.isDir()) {
-				return;
-			} else {
-				throw this+" is a file. not a dir.";
-			}
-		}
-		var p=this.up();
-		if (p) p.mkdir();
-		fs.mkdirSync(this.path());
-	},
-	relPath: function (base) {
-		//console.log("relpath "+this+" - "+base);
-		if ( this.equals(base)) {
-			return ".";
-		}
-		if (this.parent() == null)
-			throw this + " is not in " + base;
-		var pp=this.parent().relPath(base);
-		if (pp==".") return this.name();
-		return pp + SEP + this.name();
-	},
-	equals: function (f) {
-		return (f instanceof SFile) && f.path()==this.path();
-	},
-	lastModified: function () {
-		return this.stat().mtime.getTime();
-	},
-	lastUpdate: function () {
-		return this.lastModified();
-	},
-	up: function () {
-	    var p=this._path;
-		/*while (p.length>0) {
-			p=p.substring(0,p.length-1);
-			if (endsWith(p,SEP)) break;
-		}*/
-	    var pp=p.split(SEP);
-	    pp.pop();
-	    p=pp.join(SEP);
-        if (p=="") return null;
-		return new SFile(p);
-		//return this.rel(".."); //new SFile(p+SEP+"..");
-	},
-	isDir: function () {
-		if (!this.exists()) return false;
-		return this.stat().isDirectory();
-	},
-	stat: function () {
-		return 	fs.statSync(this._path);
-	},
-});
-exports.get=function (path) {
-    if (path==null) throw new Error("FS.get: null path");
-	if (path instanceof SFile) return path;
-    return new SFile(path);
-};
-//-------end of SFile.js
-return exports;
-});
 requireSimulator.setName('FS');
-define(["SFileNW"],function (s) {
-    if (s) {
-        if (typeof window=="object") window.FS=s;
-        return FS=s;
+define(["WebSite"],function (WebSite) {
+    if (WebSite.isNW) {
+        var wfs=require("SFileNW");
+        if (typeof window=="object") window.FS=wfs;
+        return wfs;
     }
     // Media Mask
     var MM_RAM=1, MM_LS=2, MM_MIX=3;
@@ -403,7 +225,7 @@ define(["SFileNW"],function (s) {
     	var ls=getLocalStorage(path);
         var r=resolveROM(path);
         if (arguments.length==2) {
-            if (r) throw path+" is Read only.";
+            if (r) throw new Error(path+" is Read only.");
             if (text==null) delete ls[path];
             else return ls[path]=text;
         } else {
@@ -423,8 +245,8 @@ define(["SFileNW"],function (s) {
     function putDirInfo(path, dinfo, trashed, media) {
         // trashed: putDirInfo is caused by trashing the file/dir.
         // if media==MM_RAM, dinfo should be only in ram, otherwise it shoule be only in localStorage
-        if (path==null) throw "putDir: Null path";
-        if (!isDir(path)) throw "Not a directory : "+path;
+        if (path==null) throw new Error( "putDir: Null path");
+        if (!isDir(path)) throw  new Error("Not a directory : "+path);
         if (media==MM_RAM) {
             ramDisk[path]=dinfo;
         } else {
@@ -446,7 +268,7 @@ define(["SFileNW"],function (s) {
     }
     function getDirInfo(path ,getMask) {
         //    var MM_RAM=1, MM_LS=2;
-        if (path==null) throw "getDir: Null path";
+        if (path==null) throw  new Error("getDir: Null path");
         if (!endsWith(path,SEP)) path+=SEP;
         var dinfo={},r={};
         if (getMask & MM_RAM) {
@@ -588,12 +410,12 @@ define(["SFileNW"],function (s) {
     };
     FS.get=function (path, securityDomain) {
     	if (!securityDomain) securityDomain={};
-        if (path==null) throw "FS.get: Null path";
+        if (path==null) throw  new Error("FS.get: Null path");
         if (path.isDir) return path;
         if (securityDomain.topDir && !startsWith(path,securityDomain.topDir)) {
-        	throw path+" is out of securtyDomain";
+        	throw  new Error(path+" is out of securtyDomain");
         }
-        if (!isPath(path)) throw path+": Path must starts with '/'";
+        if (!isPath(path)) throw  new Error(path+": Path must starts with '/'");
         var parent=up(path);
         var name=getName(path);
         var res;
@@ -672,9 +494,9 @@ define(["SFileNW"],function (s) {
                 return FS.get(resPath, securityDomain);
             };
             dir.rm=function () {
-                if (!dir.exists()) throw path+": No such dir.";
+                if (!dir.exists()) throw  new Error(path+": No such dir.");
                 var lis=dir.ls();
-                if (lis.length>0) throw path+": Directory not empty";
+                if (lis.length>0) throw  new Error(path+": Directory not empty");
                 //lcs(path, null);
                 if (parent!=null) {
                     var r=dir.mediaType();
@@ -716,7 +538,7 @@ define(["SFileNW"],function (s) {
 
             file.isDir=function () {return false;};
             file.rm=function () {
-                if (!file.exists()) throw path+": No such file.";
+                if (!file.exists()) throw new Error( path+": No such file.");
                 lcs(path, null);
                 if (parent!=null) {
                     var r=file.mediaType();
@@ -725,7 +547,7 @@ define(["SFileNW"],function (s) {
                 }
             };
             file.removeWithoutTrash=function () {
-                if (!file.exists() && !file.isTrashed()) throw path+": No such file.";
+                if (!file.exists() && !file.isTrashed()) throw new Error( path+": No such file.");
                 lcs(path, null);
                 if (parent!=null) {
                     var r=file.mediaType();
@@ -778,7 +600,7 @@ define(["SFileNW"],function (s) {
             //  path= /a/b/c/   base=/a/b/e/f  res= ../../c/
             var bp=(base.path ? base.path() : base);
             if (bp.substring(bp.length-1)!=SEP) {
-                throw bp+" is not a directory.";
+                throw  new Error(bp+" is not a directory.");
             }
             if (path.substring(0,bp.length)!=bp) {
                 return "../"+res.relPath(base.up());
@@ -905,9 +727,9 @@ define(["SFileNW"],function (s) {
 requireSimulator.setName('fs/ROMk');
 (function () {
   var rom={
-    base: '/Tonyu/Kernel/',
+    base: 'C:/bin/Dropbox/workspace120324/Tonyu2/fs/Tonyu/Kernel',
     data: {
-      '': '{".desktop":{"lastUpdate":1421820402827},"Actor.tonyu":{"lastUpdate":1414051292629},"BaseActor.tonyu":{"lastUpdate":1421824721488},"Boot.tonyu":{"lastUpdate":1421384746171},"InputDevice.tonyu":{"lastUpdate":1416889517771},"Keys.tonyu":{"lastUpdate":1411529063832},"Map.tonyu":{"lastUpdate":1421122635939},"MapEditor.tonyu":{"lastUpdate":1421122635944},"MathMod.tonyu":{"lastUpdate":1421824721489},"MML.tonyu":{"lastUpdate":1421824721491},"NoviceActor.tonyu":{"lastUpdate":1411021950732},"Panel.tonyu":{"lastUpdate":1421820402831},"ScaledCanvas.tonyu":{"lastUpdate":1421122635940},"Sprites.tonyu":{"lastUpdate":1421122635941},"TObject.tonyu":{"lastUpdate":1421122635941},"TQuery.tonyu":{"lastUpdate":1403517241136},"WaveTable.tonyu":{"lastUpdate":1400120164000},"Pad.tonyu":{"lastUpdate":1421122635944},"DxChar.tonyu":{"lastUpdate":1421383049524},"MediaPlayer.tonyu":{"lastUpdate":1421383070767},"PlainChar.tonyu":{"lastUpdate":1421383084999},"SecretChar.tonyu":{"lastUpdate":1421383101403},"SpriteChar.tonyu":{"lastUpdate":1421383110209},"T1Line.tonyu":{"lastUpdate":1421383126796},"T1Map.tonyu":{"lastUpdate":1421383136414},"T1Page.tonyu":{"lastUpdate":1421383148587},"T1Text.tonyu":{"lastUpdate":1421383157722},"TextChar.tonyu":{"lastUpdate":1421383188873}}',
+      '.': '{".desktop":{"lastUpdate":1421820642248},"Actor.tonyu":{"lastUpdate":1414288839000},"BaseActor.tonyu":{"lastUpdate":1421824925337},"Boot.tonyu":{"lastUpdate":1421122943487},"DxChar.tonyu":{"lastUpdate":1421384204610},"InputDevice.tonyu":{"lastUpdate":1416890086000},"Keys.tonyu":{"lastUpdate":1412697666000},"Map.tonyu":{"lastUpdate":1421122943495},"MapEditor.tonyu":{"lastUpdate":1421122943503},"MathMod.tonyu":{"lastUpdate":1421824925347},"MediaPlayer.tonyu":{"lastUpdate":1421384204625},"MML.tonyu":{"lastUpdate":1421824925342},"NoviceActor.tonyu":{"lastUpdate":1412697666000},"Pad.tonyu":{"lastUpdate":1421122943510},"Panel.tonyu":{"lastUpdate":1421820642285},"PlainChar.tonyu":{"lastUpdate":1421384204651},"ScaledCanvas.tonyu":{"lastUpdate":1421122943524},"SecretChar.tonyu":{"lastUpdate":1421384204695},"SpriteChar.tonyu":{"lastUpdate":1421384204710},"Sprites.tonyu":{"lastUpdate":1421122943538},"T1Line.tonyu":{"lastUpdate":1421384204718},"T1Map.tonyu":{"lastUpdate":1421384204728},"T1Page.tonyu":{"lastUpdate":1421384204737},"T1Text.tonyu":{"lastUpdate":1421384204745},"TextChar.tonyu":{"lastUpdate":1421384204762},"TObject.tonyu":{"lastUpdate":1421122943543},"TQuery.tonyu":{"lastUpdate":1412697666000},"WaveTable.tonyu":{"lastUpdate":1412697666000}}',
       '.desktop': '{"runMenuOrd":["Main0121","Main1023","TouchedTestMain","Main2","MapLoad","Main","AcTestM","NObjTest","NObjTest2","AcTest","AltBoot","Ball","Bar","Bounce","MapTest","MapTest2nd","SetBGCTest","Label","PanelTest","BaseActor","Panel","MathMod"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -7652,7 +7474,7 @@ if (typeof getReq=="function") getReq.exports("Tonyu.Project");
 });
 
 requireSimulator.setName('Shell');
-define(["FS","Util"],function (FS,Util) {
+define(["FS","Util","WebSite"],function (FS,Util,WebSite) {
     var Shell={cwd:FS.get("/")};
     Shell.cd=function (dir) {
         Shell.cwd=resolve(dir,true);
@@ -7800,6 +7622,9 @@ define(["FS","Util"],function (FS,Util) {
         }
     };
     sh=Shell;
+    if (WebSite.isNW) {
+        sh.devtool=function () { require('nw.gui').Window.get().showDevTools();}
+    }
     return Shell;
 });
 

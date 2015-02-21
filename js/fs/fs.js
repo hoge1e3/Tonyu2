@@ -64,7 +64,7 @@ define(["WebSite"],function (WebSite) {
     	var ls=getLocalStorage(path);
         var r=resolveROM(path);
         if (arguments.length==2) {
-            if (r) throw path+" is Read only.";
+            if (r) throw new Error(path+" is Read only.");
             if (text==null) delete ls[path];
             else return ls[path]=text;
         } else {
@@ -84,8 +84,8 @@ define(["WebSite"],function (WebSite) {
     function putDirInfo(path, dinfo, trashed, media) {
         // trashed: putDirInfo is caused by trashing the file/dir.
         // if media==MM_RAM, dinfo should be only in ram, otherwise it shoule be only in localStorage
-        if (path==null) throw "putDir: Null path";
-        if (!isDir(path)) throw "Not a directory : "+path;
+        if (path==null) throw new Error( "putDir: Null path");
+        if (!isDir(path)) throw  new Error("Not a directory : "+path);
         if (media==MM_RAM) {
             ramDisk[path]=dinfo;
         } else {
@@ -107,7 +107,7 @@ define(["WebSite"],function (WebSite) {
     }
     function getDirInfo(path ,getMask) {
         //    var MM_RAM=1, MM_LS=2;
-        if (path==null) throw "getDir: Null path";
+        if (path==null) throw  new Error("getDir: Null path");
         if (!endsWith(path,SEP)) path+=SEP;
         var dinfo={},r={};
         if (getMask & MM_RAM) {
@@ -249,12 +249,12 @@ define(["WebSite"],function (WebSite) {
     };
     FS.get=function (path, securityDomain) {
     	if (!securityDomain) securityDomain={};
-        if (path==null) throw "FS.get: Null path";
+        if (path==null) throw  new Error("FS.get: Null path");
         if (path.isDir) return path;
         if (securityDomain.topDir && !startsWith(path,securityDomain.topDir)) {
-        	throw path+" is out of securtyDomain";
+        	throw  new Error(path+" is out of securtyDomain");
         }
-        if (!isPath(path)) throw path+": Path must starts with '/'";
+        if (!isPath(path)) throw  new Error(path+": Path must starts with '/'");
         var parent=up(path);
         var name=getName(path);
         var res;
@@ -333,9 +333,9 @@ define(["WebSite"],function (WebSite) {
                 return FS.get(resPath, securityDomain);
             };
             dir.rm=function () {
-                if (!dir.exists()) throw path+": No such dir.";
+                if (!dir.exists()) throw  new Error(path+": No such dir.");
                 var lis=dir.ls();
-                if (lis.length>0) throw path+": Directory not empty";
+                if (lis.length>0) throw  new Error(path+": Directory not empty");
                 //lcs(path, null);
                 if (parent!=null) {
                     var r=dir.mediaType();
@@ -377,7 +377,7 @@ define(["WebSite"],function (WebSite) {
 
             file.isDir=function () {return false;};
             file.rm=function () {
-                if (!file.exists()) throw path+": No such file.";
+                if (!file.exists()) throw new Error( path+": No such file.");
                 lcs(path, null);
                 if (parent!=null) {
                     var r=file.mediaType();
@@ -386,7 +386,7 @@ define(["WebSite"],function (WebSite) {
                 }
             };
             file.removeWithoutTrash=function () {
-                if (!file.exists() && !file.isTrashed()) throw path+": No such file.";
+                if (!file.exists() && !file.isTrashed()) throw new Error( path+": No such file.");
                 lcs(path, null);
                 if (parent!=null) {
                     var r=file.mediaType();
@@ -439,7 +439,7 @@ define(["WebSite"],function (WebSite) {
             //  path= /a/b/c/   base=/a/b/e/f  res= ../../c/
             var bp=(base.path ? base.path() : base);
             if (bp.substring(bp.length-1)!=SEP) {
-                throw bp+" is not a directory.";
+                throw  new Error(bp+" is not a directory.");
             }
             if (path.substring(0,bp.length)!=bp) {
                 return "../"+res.relPath(base.up());

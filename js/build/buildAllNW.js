@@ -3,6 +3,7 @@ define(["genROM","dumpScript","Util","FS","Sync","Shell","WebSite"],
     sh.build=doBuild;
     sh.build.description="Build files before commit.";
     function doBuild() {
+        sh.devtool();
         var home=FS.get(WebSite.tonyuHome);
         genROM(home.rel("Kernel/"),     home.rel("js/gen/ROM_k.js"));
         genROM(home.rel("doc/"),        home.rel("js/gen/ROM_d.js"));
