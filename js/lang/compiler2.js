@@ -74,7 +74,7 @@ function initClassDecls(klass, env ) {
                     //console.log("head.ftype:",stmt);
                 }
                 methods[head.name.text]={
-                        nowait: !!head.nowait,
+                        nowait: (!!head.nowait),
                         ftype:  ftype,
                         name:  head.name.text,
                         head:  head,
@@ -106,7 +106,32 @@ function annotation3(aobjs, node, aobj) {
     }
     return res;
 }
-
+function getMethod2(klass,name) {
+    var res=null;
+    getDependingClasses(klass).forEach(function (k) {
+        if (res) return;
+        res=k.decls.methods[name];
+    });
+    return res;
+}
+function getDependingClasses(klass) {
+    var visited={};
+    var incls=[];
+    var res=[];
+    for (var k=klass ; k ; k=k.superClass) {
+        incls=incls.concat(k.includes);
+        visited[k.fullName]=true;
+        res.push(k);
+    }
+    while (incls.length>0) {
+        var k=incls.shift();
+        if (visited[k.fullName]) continue;
+        visited[k.fullName]=true;
+        res.push(k);
+        incls=incls.concat(k.includes);
+    }
+    return res;
+}
 function genJS(klass, env,pass) {
     var srcFile=klass.src.tonyu; //file object
     var srcCont=srcFile.text();
@@ -196,24 +221,6 @@ function genJS(klass, env,pass) {
         if (klass.builtin) return klass.fullName;// CFN klass.fullName
         return CLASS_HEAD+klass.fullName;// CFN  klass.fullName
     }
-    function getDependingClasses(klass) {
-        var visited={};
-        var incls=[];
-        var res=[];
-        for (var k=klass ; k ; k=k.superClass) {
-        	incls=incls.concat(k.includes);
-        	visited[getClassName(k)]=true;
-        	res.push(k);
-        }
-        while (incls.length>0) {
-        	var k=incls.shift();
-        	if (visited[getClassName(k)]) continue;
-        	visited[getClassName(k)]=true;
-        	res.push(k);
-            incls=incls.concat(k.includes);
-        }
-    	return res;
-    }
     function initTopLevelScope2(klass) {
     	if (klass.builtin) return;
         var s=topLevelScope;
@@ -236,18 +243,32 @@ function genJS(klass, env,pass) {
             s[i]=genSt(ST.CLASS,{name:i});
         }
     }
+    function inheritSuperMethod() {
+        var d=getDependingClasses(klass);
+        for (var n in klass.decls.methods) {
+            var m2=klass.decls.methods[n];
+            d.forEach(function (k) {
+                var m=k.decls.methods[n];
+                if (m && m.nowait) {
+                    m2.nowait=true;
+                }
+            });
+        }
+    }
+
     function newScope(s) {
         var f=function (){};
         f.prototype=s;
         return new f();
     }
     function getMethod(name) {
-    	var res=null;
+    	/*var res=null;
     	getDependingClasses(klass).forEach(function (k) {
     		if (res) return;
             res=k.decls.methods[name];
     	});
-    	return res;
+    	return res;*/
+        return getMethod2(klass,name);
     }
 
     function nc(o, mesg) {
@@ -993,7 +1014,7 @@ function genJS(klass, env,pass) {
             this.def(node);
         },
         exprstmt: function (node) {
-            var t;
+            var t,m;
             if (!ctx.noWait &&
                     (t=OM.match(node,noRetFiberCallTmpl)) &&
                     stype(ctx.scope[t.N])==ST.METHOD &&
@@ -1011,17 +1032,25 @@ function genJS(klass, env,pass) {
             } else if (!ctx.noWait &&
                     (t=OM.match(node,noRetSuperFiberCallTmpl)) &&
                     t.S.name) {
-                t.type="noRetSuper";
-                t.superClass=klass.superClass;
-                annotation(node, {fiberCall:t});
-                fiberCallRequired(this.path);
+                m=getMethod(t.S.name.text);
+                if (!m) throw new Error("メソッド"+t.S.name.text+" はありません。");
+                if (!m.nowait) {
+                    t.type="noRetSuper";
+                    t.superClass=klass.superClass;
+                    annotation(node, {fiberCall:t});
+                    fiberCallRequired(this.path);
+                }
             } else if (!ctx.noWait &&
                     (t=OM.match(node,retSuperFiberCallTmpl)) &&
                     t.S.name) {
-                t.type="retSuper";
-                t.superClass=klass.superClass;
-                annotation(node, {fiberCall:t});
-                fiberCallRequired(this.path);
+                m=getMethod(t.S.name.text);
+                if (!m) throw new Error("メソッド"+t.S.name.text+" はありません。");
+                if (!m.nowait) {
+                    t.type="retSuper";
+                    t.superClass=klass.superClass;
+                    annotation(node, {fiberCall:t});
+                    fiberCallRequired(this.path);
+                }
             }
             this.visit(node.expr);
         }
@@ -1107,6 +1136,7 @@ function genJS(klass, env,pass) {
                 }
                 if (debug) console.log("method3", name);
             }
+            printf("__dummy: false%n");
             printf("%}});");
         });
     }
@@ -1291,6 +1321,7 @@ function genJS(klass, env,pass) {
         return OM.match(f, {ftype:"constructor"}) || OM.match(f, {name:"new"});
     }
     initTopLevelScope();
+    inheritSuperMethod();
     genSource();
     klass.src.js=buf.buf;
     if (debug) {

@@ -23,7 +23,7 @@ define([],function (){
         return false;
     };
     trc.get=function (e,ttb) {
-        s=e.stack;
+        var s=e.stack;
         if (typeof s!="string") return false;
         var lines=s.split(/\n/);
         var res=[];
@@ -38,18 +38,18 @@ define([],function (){
                 var str=tri.klass.src.js;
                 var slines=str.split(/\n/);
                 var sid=null;
-                for (var i=0 ; i<slines.length && i+1<row ; i++) {
-                    var lp=/\$LASTPOS=([0-9]+)/.exec(slines[i]);
+                for (var j=0 ; j<slines.length && j+1<row ; j++) {
+                    var lp=/\$LASTPOS=([0-9]+)/.exec(slines[j]);
                     if (lp) sid=parseInt(lp[1]);
                 }
-                console.log("slines,row,sid",slines,row,sid);
+                //console.log("slines,row,sid",slines,row,sid);
                 if (sid) {
                     var stri=ttb.decode(sid);
                     if (stri) res.push(stri);
                 }
             }
         }
-        console.log("ttc.get",lines,res);
+       // console.log("StackTrace.get",lines,res);
         return res;
     };
     return trc;
