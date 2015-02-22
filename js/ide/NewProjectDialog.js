@@ -47,7 +47,9 @@ define(["UI"], function (UI) {
     		d.$vars.dstDir.text(model.dstDir+"");
     	};
     	d.done=function () {
-    		onOK(model.dstDir);
+    	    if (d.$edits.validator.isValid()) {
+                onOK(model.dstDir);
+    	    }
     	};
     	return d;
     };

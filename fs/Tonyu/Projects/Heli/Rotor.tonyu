@@ -1,0 +1,33 @@
+p=$pat_heli+1;
+
+d=0;
+pow=0;
+while(true) {
+    scaleX=1-(floor(d)%2)*2;
+    d+=pow/100;
+    scaleY=0.5;
+    if (findTouch()) {
+        if (px!=null)  {
+            pow+=dist(px-found.x,py-found.y);
+        }
+        px=found.x;
+        py=found.y;
+    } else {
+        px=null;
+    }
+    pow*=0.9;
+    update();
+}
+
+\findTouch() {
+    found=null;
+    $touches.forEach \(to) {
+        if (t==0 && to.touched && to.x<$screenWidth/2) {
+            found=to;
+        }
+        if (t==1 && to.touched && to.x>$screenWidth/2) {
+            found=to;
+        }
+    };
+    return found;
+}

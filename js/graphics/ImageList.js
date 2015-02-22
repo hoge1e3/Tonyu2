@@ -93,6 +93,7 @@ define(["PatternParser","Util","WebSite"], function (PP,Util,WebSite) {
         return res;
     };
 	IL.convURL=function (url, baseDir) {
+	    if (url==null) url="";
 	    url=url.replace(/\$\{([a-zA-Z0-9_]+)\}/g, function (t,name) {
 	        return WebSite[name];
 	    });

@@ -65,6 +65,11 @@ define(["Util"],function (Util) {
        				delete this.errors[i];
        			}
        			this.show();
+       		},
+       		isValid: function () {
+       		    var res=true;
+       		    for (var i in this.errors) res=false;
+       		    return res;
        		}
         };
         $edits.writeToModel=function ($edit, val ,jq) {
