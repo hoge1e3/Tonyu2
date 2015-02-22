@@ -1,4 +1,4 @@
-// Created at Sat Feb 21 2015 13:48:18 GMT+0900 (東京 (標準時))
+// Created at Sun Feb 22 2015 22:27:33 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -9167,6 +9167,11 @@ define(["Util"],function (Util) {
        				delete this.errors[i];
        			}
        			this.show();
+       		},
+       		isValid: function () {
+       		    var res=true;
+       		    for (var i in this.errors) res=false;
+       		    return res;
        		}
         };
         $edits.writeToModel=function ($edit, val ,jq) {
@@ -10127,7 +10132,9 @@ define(["UI"], function (UI) {
     		d.$vars.dstDir.text(model.dstDir+"");
     	};
     	d.done=function () {
-    		onOK(model.dstDir);
+    	    if (d.$edits.validator.isValid()) {
+                onOK(model.dstDir);
+    	    }
     	};
     	return d;
     };

@@ -1,0 +1,11 @@
+extends DxChar;
+
+y=20;
+scaleX=2;
+while(x<200) {
+    x++;
+    angle++;
+    //print([x,y,p,f,scaleX,scaleY,alpha,angle]);
+    f=(x%2==1);
+    wait();
+}

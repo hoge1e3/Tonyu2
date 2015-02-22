@@ -1,0 +1,32 @@
+y=40;
+x=$screenWidth/4*3;
+exp=0;
+val=0;
+size=20;
+
+while (true) {
+    text="Level "+val;
+    update();
+}
+\genP(){
+    var c1,c2;
+    while (true) {
+        if (val<40) {
+            c1=rnd(4); c2=rnd(4);
+        } else {
+            c1=rnd(5); c2=rnd(5);
+        }
+        if (val>80 || val % 40>=20 || c1!=c2) break;
+    }
+    return $pat_balls+c1*5+c2;
+}
+\get() {
+    exp++;
+    if (exp>=10) {
+        exp=0;
+        val++;
+    }
+}
+\speed(){
+    return ((val%10)+val*0.1)*0.1+0.1;
+}

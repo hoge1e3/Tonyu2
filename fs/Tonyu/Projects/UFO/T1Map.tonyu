@@ -1,0 +1,52 @@
+extends Map;
+native Tonyu;
+native $;
+
+\setBGColor(c) {
+    $Screen.setBGColor(c);
+}
+\load(fileName) {
+    /*
+    o={
+        "chipWidth":"32","chipHeight":"32",
+        "pTable":[{name:"$pat_aaa", p:10}, {name:"$pat_bbb","p":25} ],
+        "baseData":[
+        [//map
+        [0,6],[0,5],[1,3],
+        [1,3],[1,2],[0,5]
+        ],
+        [//mapOn
+        [-1,-1],[1,4],[0,2],
+        [-1,-1],[-1,-1],[1,8]
+        ]
+        ]
+    }
+    */
+    var f=file("../maps/").rel(fileName);
+    var o=f.obj();
+    chipWidth=o.chipWidth;
+    chipHeight=o.chipHeight;
+    baseData=o.baseData;
+    mapTable=conv(baseData[0],o.pTable);
+    mapData=mapTable;
+    row=mapTable.length;
+    col=mapTable[0].length;
+    mapOnTable=conv(baseData[1],o.pTable);
+    mapOnData=mapOnTable;
+    
+    buf=$("<canvas>").attr{width:col*chipWidth,height:row*chipHeight};
+    initMap();   
+}
+\conv(mat, tbl) {
+    var res=[];
+    mat.forEach \(row) {
+        var rrow=[];
+        res.push(rrow);
+        row.forEach \(dat) {// dat:[0,20]
+            var t=tbl[dat[0]];
+            if (t) rrow.push(Tonyu.globals[t.name]+dat[1]);
+            else rrow.push(dat[1]);
+        };
+    };
+    return res;
+}

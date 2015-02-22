@@ -1,0 +1,25 @@
+
+text=" ";
+col=["青","赤","黄","緑","紫"];
+while (true) {
+    if (t==-1) {
+        if ($prev) text="取っていいボール：";
+        else text="どれか1つボールを取る";
+    }
+    if ($prev) {
+        pp=$prev-$pat_balls;
+        pc=pp%5;
+        pr=(pp-pc)/5;
+        if (t==0) {
+            text="文字の色が"+col[pc]+"色のボール";
+        } else if (t==1) {
+            text="文字の色が"+col[pr]+"色のボール";
+        } else if (t==2) {
+            text="「"+col[pr]+"」という文字が書かれたボール";
+        } else if (t==3) {
+            text="「"+col[pc]+"」という文字が書かれたボール";
+        }
+        if ($combo.count>3 || $gov) text=" ";
+    }
+    update();
+}

@@ -100,7 +100,7 @@ define(["PatternParser","Util","WebSite"], function (PP,Util,WebSite) {
         if (WebSite.urlAliases[url]) url=WebSite.urlAliases[url];
 	    if (Util.startsWith(url,"ls:")) {
 	        var rel=url.substring("ls:".length);
-	        if (!baseDir) throw "Baesdir not specified";
+	        if (!baseDir) throw new Error("Basedir not specified");
 	        var f=baseDir.rel(rel);
 	        if (!f.exists()) throw "ImageList file not found: "+f;
 	        url=f.text();
