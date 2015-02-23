@@ -1,4 +1,4 @@
-define(["JSONCol","IndentBuffer"], function (jc,ib) {
+define(["JSONCol","IndentBuffer","WebSite"], function (jc,ib,WebSite) {
     function genROM(dir, file) {
     	var buf=ib();
         var tmpl=
@@ -11,7 +11,10 @@ define(["JSONCol","IndentBuffer"], function (jc,ib) {
 		        "%}}%n"+
 		    "%}})();";
         buf.printf(tmpl, function () {
-            jc(FS.exportDir(dir),buf);
+            var ex=FS.exportDir(dir);
+            var p=FS.get(dir).relPath(FS.get(WebSite.tonyuHome));
+            ex.base="/Tonyu/"+p;
+            jc(ex,buf);
         }, file.name());
         file.text(buf.buf);
         console.log("GenROM  "+ dir + " -> " +file);
