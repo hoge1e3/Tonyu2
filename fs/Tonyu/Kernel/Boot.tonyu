@@ -12,9 +12,13 @@ native Math;
 \initSprites() {
     $Sprites=new Sprites();
     $FrontSprites=new Sprites();
+    print ("Loading plugins..");
+    var a=asyncResult();
+    $currentProject.loadPlugins(a.receiver);
+    waitFor(a);
     print ("Loading pats..");
     var rs=$currentProject.getResource();
-    var a=asyncResult();
+    a=asyncResult();
     ImageList.load( rs.images, a.receiver)
     {baseDir:$currentProject.getDir()};
     waitFor(a);
@@ -48,11 +52,12 @@ native Math;
     new mainClass();
 }
 \stop() {
-    
-    for (var k,v in $MMLS) {
-        v.stop();
-    }
-    $WaveTable.stop();
+    if ($MMLS) {
+      for (var k,v in $MMLS) {
+         v.stop();
+      }
+    } 
+    if ($WaveTable) $WaveTable.stop();
 }
 initSprites();
 $InputDevice=new InputDevice;

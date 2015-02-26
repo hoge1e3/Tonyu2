@@ -247,6 +247,7 @@ var reqConf={
             importFromTonyu1:"tonyu1/importFromTonyu1",
             forkBlobs: "social/forkBlobs",
             JSZip:"lib/jszip.min",
+            plugins:"plugins/plugins",
             "foo":"bar"
         },
         "baseUrl": "../../js"

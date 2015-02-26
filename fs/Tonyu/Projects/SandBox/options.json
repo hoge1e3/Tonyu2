@@ -1,1 +1,1 @@
-{"compiler":{"defaultSuperClass":"Actor","commentLastPos":true,"diagnose":false},"run":{"mainClass":"Main","bootClass":"kernel.Boot"},"kernelEditable":true}
+{"compiler":{"defaultSuperClass":"Actor","commentLastPos":true,"diagnose":false},"run":{"mainClass":"Main","bootClass":"kernel.Boot"},"kernelEditable":true,"plugins":{"timbre":1}}

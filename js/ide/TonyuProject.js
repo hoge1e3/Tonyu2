@@ -1,7 +1,7 @@
 define(["Tonyu", "Tonyu.Compiler", "TError", "FS", "Tonyu.TraceTbl","ImageList","StackTrace",
-        "typeCheck","Blob","thumbnail","WebSite"],
+        "typeCheck","Blob","thumbnail","WebSite","plugins"],
         function (Tonyu, Tonyu_Compiler, TError, FS, Tonyu_TraceTbl, ImageList,StackTrace,
-                tc,Blob,thumbnail,WebSite) {
+                tc,Blob,thumbnail,WebSite,plugins) {
 return Tonyu.Project=function (dir, kernelDir) {
     var TPR={};
     var home=FS.get(WebSite.tonyuHome);
@@ -219,6 +219,26 @@ return Tonyu.Project=function (dir, kernelDir) {
         opt.compiler.commentLastPos=TPR.runScriptMode || StackTrace.isAvailable();
         opt.run.mainClass=TPR.fixClassName(opt.run.mainClass);
         opt.run.bootClass=TPR.fixClassName(opt.run.bootClass);
+        if (!opt.plugins) {
+            opt.plugins={};
+            dir.each(function (f) {
+                if (f.endsWith(TPR.EXT)) {
+                    plugins.detectNeeded(  f.text(), opt.plugins);
+                }
+            });
+        }
+    };
+    TPR.requestPlugin=function (name) {
+        if (plugins.loaded(name)) return;
+        var opt=TPR.getOptions();
+        opt.plugins[name]=1;
+        TPR.setOptions(opt);
+        var req=new Error("必要なプラグイン"+name+"を追加しました。もう一度実行してください");
+        req.pluginName=name;
+    };
+    TPR.loadPlugins=function (onload) {
+        var opt=TPR.getOptions();
+        plugins.loadAll(opt.plugins,onload);
     };
     TPR.fixClassName=function (cn) {
         if (TPR.classExists(cn)) return cn;
