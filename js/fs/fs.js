@@ -16,10 +16,12 @@ define(["WebSite"],function (WebSite) {
     FS.ramDisk=ramDisk;
     FS.ramDiskUsage=ramDiskUsage;
 
-    var roms={};
+    var roms={},romParents={};
     var SEP="/";
     FS.roms=roms;
+    FS.romParents=romParents;
     function extend(dst,src) {
+        if (!src) return;
         for (var i in src) dst[i]=src[i];
     }
     function endsWith(str,postfix) {
@@ -124,6 +126,7 @@ define(["WebSite"],function (WebSite) {
             }
         }
         extend(dinfo, r);
+        extend(dinfo, romParents[path]);
         for (var i in dinfo) {
             if (typeof dinfo[i]=="number") {
                 dinfo[i]={lastUpdate:dinfo[i]};
@@ -228,6 +231,12 @@ define(["WebSite"],function (WebSite) {
     FS.mountROM=function (exported) {
     	console.log("ROM mouted on ",exported.base);
         roms[exported.base]=exported.data;
+
+        var ps=splitPath(exported.base);
+        var n=ps.pop();
+        var p=ps.join(SEP)+SEP;
+        if (!romParents[p]) romParents[p]={};
+        romParents[p][n]={lastUpdate:new Date().getTime()};
     };
     var DONOTEXPORT="DONOTEXPORT";
     FS.exportDir=function (dir,options) {
@@ -509,21 +518,6 @@ define(["WebSite"],function (WebSite) {
         var s=splitPath(path);  //  s=["","a","b","c/"]     ["","a","b","c"]
         s[s.length-1]=""; //        s=["","a","b",""]       ["","a","b",""]
         return  s.join(SEP) ;  //     /a/b/                 /a/b/
-
-        /*var name=s[s.length-1];
-        var isDir=endsWith(name, SEP);
-        if (!isDir) {
-        	// path=/a/b/c
-        	// s=["a", "b", "c"]
-            s[s.length-1]=""; // s=["a","b",""]
-            return  s.join(SEP) ;  // /a/b/
-        } else {
-        	// path=/a/b/c/
-        	// s=["a", "b", "c/"]
-        	//s.pop();
-            s[s.length-1]="";     // s=["a", "b", ""]
-            return  s.join(SEP) ;  // /a/b/
-        }*/
     }
     function isPath(path) {
         return startsWith(path,SEP);
