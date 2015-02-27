@@ -1,0 +1,41 @@
+native Box2D;
+
+\new(params) {
+    super(params);
+    initWorld();
+}
+loop();
+
+
+\initWorld() {
+    gravity=gravity || 9.8;
+    gravityX=gravityX || 0;
+    var b2World = Box2D.Dynamics.b2World;
+    var b2Vec2 = Box2D.Common.Math.b2Vec2;
+    world = new b2World(
+    new b2Vec2(gravityX, gravity)    //gravity
+    ,  true                 //allow sleep
+    );
+    scale=scale || 20;
+    $t2World=this;
+}
+
+\loop() {
+    while(true) {
+        world.Step(
+        1 / 60   //frame-rate
+        ,  10       //velocity iterations
+        ,  10       //position iterations
+        );
+        world.DrawDebugData();
+        world.ClearForces();
+        updatePos();
+        update();
+    }
+}
+\updatePos() {
+    for (var b=world.GetBodyList();b;b=b.GetNext()) {
+        var d=b.GetUserData();
+        if(d) d.updatePos();
+    }
+}

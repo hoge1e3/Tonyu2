@@ -1,0 +1,12 @@
+extends T2Body;
+
+while(y<400) {
+    if (c=contactTo()) {
+        c.moveBy(0,10);
+    }
+    if (getkey("up")) applyTorque(1);
+    if (getkey("left")) applyForce(-1,0);
+    if (getkey("right")) applyForce(1,0);
+    update();
+}
+die();

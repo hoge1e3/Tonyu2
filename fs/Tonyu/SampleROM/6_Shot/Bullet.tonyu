@@ -21,8 +21,8 @@ die();
 次の書き方もあります.
 
 for (var c in allCrash(Chaser)) {
-  c.die();
-  die();
+    c.die();
+    die();
 }
 */
 
@@ -30,9 +30,9 @@ for (var c in allCrash(Chaser)) {
 /*
 [!=Tonyu1] 従来の衝突判定の書き方は，準備中です．
 for (t in $chars) {
-  if (t is Chaser && crashTo(t)) {
-     
-  }
+    if (t is Chaser && crashTo(t)) {
+        
+    }
 }
 
 */
