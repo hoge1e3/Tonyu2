@@ -308,14 +308,18 @@ $(function () {
         console.log("onRunTimeError:stackTrace",e.stack);
         if (te) {
             te.mesg=e;
-            var diag=showErrorPos($("#errorPos"),te);
-            displayMode("runtime_error");
-            $("#errorPos").find(".quickFix").append(
-                    UI("button",{on:{click: function () {
-                        setDiagMode(true);
-                        diag.dialog("close");
-                        run();
-                    }}},"診断モードで実行しなおす"));
+            if (e.pluginName) {
+                alert(e.message);
+            } else {
+                var diag=showErrorPos($("#errorPos"),te);
+                displayMode("runtime_error");
+                $("#errorPos").find(".quickFix").append(
+                        UI("button",{on:{click: function () {
+                            setDiagMode(true);
+                            diag.dialog("close");
+                            run();
+                        }}},"診断モードで実行しなおす"));
+            }
             stop();
             //var userAgent = window.navigator.userAgent.toLowerCase();
             //if(userAgent.indexOf('msie')<0) throw e;

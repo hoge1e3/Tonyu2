@@ -235,6 +235,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         TPR.setOptions(opt);
         var req=new Error("必要なプラグイン"+name+"を追加しました。もう一度実行してください");
         req.pluginName=name;
+        throw req;
     };
     TPR.loadPlugins=function (onload) {
         var opt=TPR.getOptions();

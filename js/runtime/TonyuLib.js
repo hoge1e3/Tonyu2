@@ -257,8 +257,13 @@ Tonyu=function () {
     	delete prot.initialize;
     	//A includes B  B includes C  B extends D
     	//A extends E   E includes F
-    	//A has methods in B,C,E,F. A does not have methods in D
-    	//(B shoule be treated as modules. Modules should not extend)
+    	//A has methods in B,C,E,F. [Mod] A should extend D.(Thus, E should extend D(or E==D))
+    	//( B shoule be treated as modules.
+    	//  Module's extension indicates that includer class should also exetend the module's parent )
+    	// 2015-02-27 this check is not implemented.
+    	// Known examples:
+    	// Actor extends BaseActor, includes PlayMod.
+    	// PlayMod extends BaseActor(because use update() in play())
     	includes.forEach(function (m) {
     		if (!m.methods) throw m+" Does not have methods";
     		for (var n in m.methods) {

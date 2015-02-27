@@ -1,6 +1,6 @@
 m=new MMLTest;
 
-text="Press Space or 'S'";
+text="Space:SE  S:Stop";
 x=200; y=200;
 while (true) {
     if (getkey(32)==1) {

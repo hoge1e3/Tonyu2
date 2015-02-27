@@ -62,7 +62,9 @@ function initClassDecls(klass, env ) {
             klass.superClass={name:"Array",fullName:"Array",builtin:true};
         } else if (spcn) {
             var spc=env.classes[env.aliases[spcn] || spcn];/*ENVC*/  //CFN env.classes[env.aliases[spcn]]
-            if (!spc) throw TError ( "親クラス "+spcn+"は定義されていません", s, pos);
+            if (!spc) {
+                throw TError ( "親クラス "+spcn+"は定義されていません", s, pos);
+            }
             klass.superClass=spc;
         }
         program.stmts.forEach(function (stmt) {

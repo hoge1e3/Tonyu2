@@ -1,0 +1,30 @@
+extends BaseActor;
+nowait \initMML() {
+    $currentProject.requestPlugin("timbre");
+    if (!$MMLS) $MMLS={};
+    if (!$WaveTable) $WaveTable=new WaveTable;
+}
+\play() {
+    initMML();
+    if (!_mml) _mml=new MML;
+    if (isDead() || arguments.length==0) return _mml;
+    var mmls=[];
+    for (var i=0; i<arguments.length; i++) {
+        mmls.push(arguments[i]);
+    }
+    _mml.play(mmls);
+    while (_mml.bufferCount()>2) {
+        update();
+    }
+    return _mml;
+}
+nowait \playSE() {
+    initMML();
+    var mml=new MML;
+    var mmls=[];
+    for (var i=0; i<arguments.length; i++) {
+        mmls.push(arguments[i]);
+    }
+    mml.play(mmls);
+    return mml;
+}
