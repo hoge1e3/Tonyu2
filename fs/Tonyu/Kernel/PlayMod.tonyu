@@ -1,8 +1,26 @@
 extends BaseActor;
 nowait \initMML() {
+    if (mmlInited) return;
+    mmlInited=true;
     $currentProject.requestPlugin("timbre");
-    if (!$MMLS) $MMLS={};
-    if (!$WaveTable) $WaveTable=new WaveTable;
+    if (!$MMLS) {
+       $MMLS={};
+       $WaveTable=new WaveTable;
+       $Boot.on("stop", releaseMML);
+    }
+    on("die") \() { play().stop(); };
+}
+nowait \releaseMML() {
+    if ($MMLS) {
+       for (var k,v in $MMLS) {
+          v.stop();
+       }
+       $MMLS=null;
+    } 
+    if ($WaveTable) {
+       $WaveTable.stop();
+       $WaveTable=null;
+    }
 }
 \play() {
     initMML();

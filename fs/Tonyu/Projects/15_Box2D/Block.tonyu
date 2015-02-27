@@ -1,0 +1,5 @@
+extends T2Body;
+while(!screenOut()) {
+    update();   
+}
+die();

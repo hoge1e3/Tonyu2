@@ -52,16 +52,7 @@ native Math;
     new mainClass();
 }
 \stop() {
-    if ($MMLS) {
-      for (var k,v in $MMLS) {
-         v.stop();
-      }
-      $MMLS=null;
-    } 
-    if ($WaveTable) {
-      $WaveTable.stop();
-      $WaveTable=null;
-    }
+    fireEvent("stop");
 }
 initSprites();
 $InputDevice=new InputDevice;
@@ -139,6 +130,9 @@ nowait \resetDeadLine() {
     deadLine+=1000/_fps;
 }
 
+nowait \getFrameRate() {
+    return _fps;
+}
 
 // Tonyu1の$System.setFrameRate() //
 nowait \setFrameRate(fps, maxFrameSkip) {

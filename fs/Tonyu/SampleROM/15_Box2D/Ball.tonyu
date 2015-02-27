@@ -1,0 +1,14 @@
+extends T2Body;
+
+while(y<450) {
+    // 物理オブジェクトにぶつかっていれば
+    if (c=contactTo()) {
+        // スペースキーを押したときに上に瞬間的な力を加える
+        if (getkey("space")==1) applyImpulse(0,-3);
+    }
+    // 左右キーを押したときにゆっくりと力を加える
+    if (getkey("left")) applyForce(-2,0);
+    if (getkey("right")) applyForce(2,0);
+    update();
+}
+die();

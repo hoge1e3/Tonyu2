@@ -1,5 +1,5 @@
 extends null;
-includes MathMod;
+includes MathMod,EventMod;
 native Tonyu;
 native Key;
 native console;
@@ -160,7 +160,7 @@ nowait \die() {
         _th.kill();
     }
     hide();
-    play().stop();
+    fireEvent("die");
     _isDead=true;
 }
 nowait \hide() {

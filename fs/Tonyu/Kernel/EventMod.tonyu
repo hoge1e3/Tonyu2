@@ -1,0 +1,17 @@
+extends null;
+
+\getEventHandlers(type) {
+    if (!_handlers) _handlers={};
+    if (!_handlers[type]) _handlers[type]=[];
+    return _handlers[type];
+}
+\on(type, handler) {
+    getEventHandlers(type).push(handler);
+}
+
+\fireEvent(type,args) {
+    if (!args) args=[];
+    for (var h in getEventHandlers(type)) {
+        h.apply(this,args);
+    }
+}

@@ -1,0 +1,6 @@
+native Box2D;
+
+\bvec(tx,ty) {
+    var b2Vec2 = Box2D.Common.Math.b2Vec2;
+    return new b2Vec2(tx/scale,ty/scale);  
+}

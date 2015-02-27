@@ -1,3 +1,4 @@
+includes T2Mod;
 native Box2D;
 
 \getWorld() {
@@ -5,8 +6,7 @@ native Box2D;
     $t2World=new T2World;
     return $t2World;
 }
-\new(param) {
-    super(param);
+\onAppear() {
     world=getWorld().world;
     scale=getWorld().scale;
     var b2Vec2 = Box2D.Common.Math.b2Vec2;
@@ -74,8 +74,16 @@ native Box2D;
 \applyForce(fx,fy,px,py) {
     var b2Vec2 = Box2D.Common.Math.b2Vec2;
     var scale=getWorld().scale;
-    body.ApplyForce(new b2Vec2(fx*scale,fy*scale),body.GetPosition());
+    var fps=60;
+    body.ApplyForce(bvec(fx*fps ,fy*fps),body.GetPosition());
 }
+\applyImpulse(fx,fy,px,py) {
+    var b2Vec2 = Box2D.Common.Math.b2Vec2;
+    var scale=getWorld().scale;
+    var fps=60;
+    body.ApplyImpulse(bvec(fx*fps,fy*fps),body.GetPosition());
+}
+
 \applyTorque(a) {
     body.ApplyTorque(a);
 }
