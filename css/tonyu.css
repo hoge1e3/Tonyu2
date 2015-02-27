@@ -1,5 +1,6 @@
 body {
-  padding-top: 50px;
+    font-family: "MS UI Gothic",sans-serif;
+	padding-top: 50px;
 }
 .starter-template {
   padding: 40px 15px;
@@ -67,7 +68,11 @@ textarea{
 #prog.tutorial-highlight {
 	border: solid red 2px;
 }
+p {
+    font-family: "MS UI Gothic",sans-serif;
+}
 h1 {
+    font-family: "MS UI Gothic",sans-serif;
 	font-size: 20px;
 }
 h2 {
