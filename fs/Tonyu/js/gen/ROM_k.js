@@ -2,10 +2,11 @@
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1421820642248},"Actor.tonyu":{"lastUpdate":1414288839000},"BaseActor.tonyu":{"lastUpdate":1421824925337},"Boot.tonyu":{"lastUpdate":1421122943487},"DxChar.tonyu":{"lastUpdate":1421384204610},"InputDevice.tonyu":{"lastUpdate":1416890086000},"Keys.tonyu":{"lastUpdate":1412697666000},"Map.tonyu":{"lastUpdate":1421122943495},"MapEditor.tonyu":{"lastUpdate":1421122943503},"MathMod.tonyu":{"lastUpdate":1421824925347},"MediaPlayer.tonyu":{"lastUpdate":1421384204625},"MML.tonyu":{"lastUpdate":1421824925342},"NoviceActor.tonyu":{"lastUpdate":1412697666000},"Pad.tonyu":{"lastUpdate":1421122943510},"Panel.tonyu":{"lastUpdate":1421820642285},"PlainChar.tonyu":{"lastUpdate":1421384204651},"ScaledCanvas.tonyu":{"lastUpdate":1421122943524},"SecretChar.tonyu":{"lastUpdate":1421384204695},"SpriteChar.tonyu":{"lastUpdate":1421384204710},"Sprites.tonyu":{"lastUpdate":1421122943538},"T1Line.tonyu":{"lastUpdate":1421384204718},"T1Map.tonyu":{"lastUpdate":1421384204728},"T1Page.tonyu":{"lastUpdate":1421384204737},"T1Text.tonyu":{"lastUpdate":1421384204745},"TextChar.tonyu":{"lastUpdate":1421384204762},"TObject.tonyu":{"lastUpdate":1421122943543},"TQuery.tonyu":{"lastUpdate":1412697666000},"WaveTable.tonyu":{"lastUpdate":1412697666000}}',
+      '': '{".desktop":{"lastUpdate":1424849946377},"Actor.tonyu":{"lastUpdate":1425004177938},"BaseActor.tonyu":{"lastUpdate":1425004100313},"Boot.tonyu":{"lastUpdate":1425006579963},"DxChar.tonyu":{"lastUpdate":1421384204610},"InputDevice.tonyu":{"lastUpdate":1416890086000},"Keys.tonyu":{"lastUpdate":1412697666000},"Map.tonyu":{"lastUpdate":1421122943495},"MapEditor.tonyu":{"lastUpdate":1421122943503},"MathMod.tonyu":{"lastUpdate":1424849946395},"MediaPlayer.tonyu":{"lastUpdate":1421384204625},"MML.tonyu":{"lastUpdate":1424849946399},"NoviceActor.tonyu":{"lastUpdate":1412697666000},"Pad.tonyu":{"lastUpdate":1421122943510},"Panel.tonyu":{"lastUpdate":1424849946404},"PlainChar.tonyu":{"lastUpdate":1421384204651},"PlayMod.tonyu":{"lastUpdate":1425004122348},"ScaledCanvas.tonyu":{"lastUpdate":1421122943524},"SecretChar.tonyu":{"lastUpdate":1421384204695},"SpriteChar.tonyu":{"lastUpdate":1421384204710},"Sprites.tonyu":{"lastUpdate":1421122943538},"T1Line.tonyu":{"lastUpdate":1421384204718},"T1Map.tonyu":{"lastUpdate":1421384204728},"T1Page.tonyu":{"lastUpdate":1421384204737},"T1Text.tonyu":{"lastUpdate":1421384204745},"TextChar.tonyu":{"lastUpdate":1421384204762},"TObject.tonyu":{"lastUpdate":1421122943543},"TQuery.tonyu":{"lastUpdate":1412697666000},"WaveTable.tonyu":{"lastUpdate":1412697666000}}',
       '.desktop': '{"runMenuOrd":["Main0121","Main1023","TouchedTestMain","Main2","MapLoad","Main","AcTestM","NObjTest","NObjTest2","AcTest","AltBoot","Ball","Bar","Bounce","MapTest","MapTest2nd","SetBGCTest","Label","PanelTest","BaseActor","Panel","MathMod"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
+        'includes PlayMod;\n'+
         'native Sprites;\n'+
         'native Tonyu;\n'+
         '\n'+
@@ -330,28 +331,7 @@
         '    $Sprites.draw($Screen.buf[0]);\n'+
         '    $Screen.draw();\n'+
         '}\n'+
-        '\\play() {\n'+
-        '    if (!_mml) _mml=new MML;\n'+
-        '    if (isDead() || arguments.length==0) return _mml;\n'+
-        '    var mmls=[];\n'+
-        '    for (var i=0; i<arguments.length; i++) {\n'+
-        '        mmls.push(arguments[i]);\n'+
-        '    }\n'+
-        '    _mml.play(mmls);\n'+
-        '    while (_mml.bufferCount()>2) {\n'+
-        '        update();\n'+
-        '    }\n'+
-        '    return _mml;\n'+
-        '}\n'+
-        'nowait \\playSE() {\n'+
-        '    var mml=new MML;\n'+
-        '    var mmls=[];\n'+
-        '    for (var i=0; i<arguments.length; i++) {\n'+
-        '        mmls.push(arguments[i]);\n'+
-        '    }\n'+
-        '    mml.play(mmls);\n'+
-        '    return mml;\n'+
-        '}\n'+
+        '\n'+
         '// from PlainChar\n'+
         '\\color(r,g,b) {\n'+
         '    return "rgb("+[r,g,b].join(",")+")";\n'+
@@ -401,9 +381,13 @@
         '\\initSprites() {\n'+
         '    $Sprites=new Sprites();\n'+
         '    $FrontSprites=new Sprites();\n'+
+        '    print ("Loading plugins..");\n'+
+        '    var a=asyncResult();\n'+
+        '    $currentProject.loadPlugins(a.receiver);\n'+
+        '    waitFor(a);\n'+
         '    print ("Loading pats..");\n'+
         '    var rs=$currentProject.getResource();\n'+
-        '    var a=asyncResult();\n'+
+        '    a=asyncResult();\n'+
         '    ImageList.load( rs.images, a.receiver)\n'+
         '    {baseDir:$currentProject.getDir()};\n'+
         '    waitFor(a);\n'+
@@ -437,11 +421,16 @@
         '    new mainClass();\n'+
         '}\n'+
         '\\stop() {\n'+
-        '    \n'+
-        '    for (var k,v in $MMLS) {\n'+
-        '        v.stop();\n'+
+        '    if ($MMLS) {\n'+
+        '      for (var k,v in $MMLS) {\n'+
+        '         v.stop();\n'+
+        '      }\n'+
+        '      $MMLS=null;\n'+
+        '    } \n'+
+        '    if ($WaveTable) {\n'+
+        '      $WaveTable.stop();\n'+
+        '      $WaveTable=null;\n'+
         '    }\n'+
-        '    $WaveTable.stop();\n'+
         '}\n'+
         'initSprites();\n'+
         '$InputDevice=new InputDevice;\n'+
@@ -450,9 +439,7 @@
         '\n'+
         '$pat_fruits=30;\n'+
         '$Keys=new Keys;\n'+
-        '$MMLS={};\n'+
         '$Math=Math;\n'+
-        '$WaveTable=new WaveTable;\n'+
         '$consolePanel=new Panel{align:"center",x:465/2,y:465/2,width:465,height:465,zOrder:-10,layer:$FrontSprites};\n'+
         '$consolePrintY=465-15;\n'+
         '$panel=new Panel{align:"center",x:$screenWidth/2,y:$screenHeight/2,width:$screenWidth,height:$screenHeight,zOrder:-1,layer:$FrontSprites};\n'+
@@ -460,132 +447,94 @@
         'initFPSParams();\n'+
         '\n'+
         'while (true) {\n'+
-        '    ti=new Date().getTime();\n'+
         '    thg.steps();\n'+
         '    $Keys.update();\n'+
         '    $InputDevice.update();\n'+
         '    $screenWidth=$Screen.width;\n'+
         '    $screenHeight=$Screen.height;\n'+
-        '    if (doDraw == 1) { // フレームスキップの時は描画しない\n'+
+        '    \n'+
+        '    doDraw=now()<deadLine;\n'+
+        '    if (!doDraw && frameSkipped>=maxFrameSkip) {\n'+
+        '        doDraw=true;\n'+
+        '        resetDeadLine();\n'+
+        '    }\n'+
+        '    if (doDraw) { // フレームスキップの時は描画しない\n'+
         '        $Screen.fillCanvas($Screen.buf[0]);\n'+
         '        $Sprites.draw($Screen.buf[0]);\n'+
         '        $FrontSprites.draw($Screen.buf[0]);\n'+
         '        $Screen.draw();\n'+
-        '        measureFps(); // FPS計測\n'+
+        '        fps_fpsCnt ++;\n'+
+        '        frameSkipped=0;\n'+
+        '    } else {\n'+
+        '        frameSkipped++;\n'+
         '    }\n'+
         '    $Sprites.checkHit();\n'+
-        '    \n'+
         '    fps_rpsCnt ++;\n'+
-        '    waitFrame(_fps, _frameSkip); // FPS制御\n'+
+        '    measureFps();\n'+
+        '    waitFrame(); // FPS制御\n'+
+        '    while(paused) {\n'+
+        '        waitFor(Tonyu.timeout(1)); \n'+
+        '        if (!paused) resetDeadLine();\n'+
+        '    }\n'+
         '}\n'+
         '\n'+
         'nowait \\initFPSParams() {\n'+
         '    // フレームレートの設定\n'+
         '    _fps = 30;\n'+
-        '    _frameSkip = 4;\n'+
-        '    \n'+
+        '    maxframeSkip = 5;\n'+
         '    // フレームレート制御でつかう変数 //\n'+
         '    frameCnt = 0;\n'+
-        '    wtFrac = 0;\n'+
-        '    frameDelay = 0;\n'+
-        '    frameSkipCount = 0;\n'+
-        '    frameSkipSW = 0;\n'+
-        '    doDraw = 1;\n'+
-        '    // フレームレート計測でつかう変数 //\n'+
-        '    fps_fpsStartTime = 0;\n'+
-        '    fps_fpsTimeCnt = 1;\n'+
-        '    fps_fpsCnt = -1;\n'+
-        '    fps_fps = 0;\n'+
-        '    fps_rpsCnt = 0;\n'+
-        '    fps_rps = 0;\n'+
-        '    fps_oldTime = 0;\n'+
-        '    \n'+
-        '    $Boot = this; // アクセスできるようにした\n'+
+        '    resetDeadLine();\n'+
+        '    $Boot = this;\n'+
+        '    lastMeasured=now();\n'+
+        '    fps_fps=fps_rps=fps_fpsCnt=fps_rpsCnt=0;\n'+
+        '}\n'+
+        'nowait \\now() {\n'+
+        '    return new Date().getTime();\n'+
+        '}\n'+
+        'nowait \\resetDeadLine() {\n'+
+        '    deadLine=now()+1000/_fps;\n'+
+        '    frameSkipped = 0;\n'+
         '}\n'+
         '\n'+
+        '\\waitFrame() {\n'+
+        '    var wt=deadLine-now();\n'+
+        '    if (wt<1) {\n'+
+        '        if (wt<-1000) resetDeadLine();\n'+
+        '        wt=1;\n'+
+        '    }\n'+
+        '    wt=floor(wt);\n'+
+        '    waitFor(Tonyu.timeout(wt));\n'+
+        '    deadLine+=1000/_fps;\n'+
+        '}\n'+
+        '\n'+
+        '\n'+
         '// Tonyu1の$System.setFrameRate() //\n'+
-        'nowait \\setFrameRate(fps, frameSkipMax) {\n'+
+        'nowait \\setFrameRate(fps, maxFrameSkip) {\n'+
         '    _fps = fps;\n'+
-        '    if (!frameSkipMax) frameSkipMax=5;\n'+
-        '    _frameSkip = frameSkipMax - 1; // Tonyu1では最小が1なので-1\n'+
+        '    if (typeof maxFrameSkip!="number") maxFrameSkip=5;\n'+
+        '    this.maxFrameSkip = maxFrameSkip;\n'+
+        '    resetDeadLine();\n'+
         '}\n'+
         '\n'+
         '// FPS（計測したフレームレート）を返す //\n'+
-        'nowait \\getMeasureFps() {\n'+
+        'nowait \\getMeasuredFps() {\n'+
         '    return fps_fps;\n'+
         '}\n'+
         '\n'+
         '// RPS（計測した実行レート）を返す //\n'+
-        'nowait \\getMeasureRps() {\n'+
+        'nowait \\getMeasuredRps() {\n'+
         '    return fps_rps;\n'+
         '}\n'+
         '\n'+
-        '\n'+
-        '// フレームレートの制御 //\n'+
-        '\\waitFrame(fps, frameSkipMax) {\n'+
-        '    var wt, nowWt, waitDo;\n'+
-        '    frameCnt++;\n'+
-        '    \n'+
-        '    \n'+
-        '    wt = 1000/fps; // 待機時間設定\n'+
-        '    wtFrac += wt - floor(wt);\n'+
-        '    if (wtFrac >= 1) {\n'+
-        '        wt += floor(wtFrac); // 端数を待機時間に追加\n'+
-        '        wtFrac -= floor(wtFrac);\n'+
-        '    }\n'+
-        '    wt = floor(wt);\n'+
-        '    //print(wt+" "+floor(wtFrac));\n'+
-        '    \n'+
-        '    /*\n'+
-        '    if (frameCnt % 3 == 0) wt = 16; // 待機時間設定\n'+
-        '    else                   wt = 17; // 待機時間設定\n'+
-        '    */\n'+
-        '    \n'+
-        '    wt -= frameDelay;\n'+
-        '    waitFor(Tonyu.timeout(1));\n'+
-        '    nowWt = (new Date().getTime()-ti);\n'+
-        '    if (frameSkipSW == 0) waitDo = 0;\n'+
-        '    while (wt > nowWt) {\n'+
-        '        waitFor(Tonyu.timeout(1));\n'+
-        '        nowWt = (new Date().getTime()-ti);\n'+
-        '        waitDo = 1;\n'+
-        '    }\n'+
-        '    frameDelay = nowWt - wt; // 処理落ち計算\n'+
-        '    // 待機したか？\n'+
-        '    if (waitDo == 0) {\n'+
-        '        frameSkipCount ++; // スキップ回数にカウント\n'+
-        '        doDraw = 0;\n'+
-        '    } else {\n'+
-        '        doDraw = 1;\n'+
-        '    }\n'+
-        '    // フレームスキップ最大か //\n'+
-        '    frameSkipSW = 0;\n'+
-        '    if (frameSkipCount >= frameSkipMax) {\n'+
-        '        frameDelay = 0;\n'+
-        '        frameSkipCount = 0;\n'+
-        '        frameSkipSW = 1;\n'+
-        '    }\n'+
-        '    \n'+
-        '}\n'+
-        '\n'+
-        '\n'+
-        '// FPS計測 //\n'+
         'nowait \\measureFps() {\n'+
-        '    var fps_nowTime;\n'+
-        '    fps_nowTime = new Date().getTime();\n'+
-        '    if (fps_oldTime == 0) fps_oldTime = new Date().getTime();\n'+
-        '    fps_fpsCnt ++;\n'+
-        '    fps_fpsTimeCnt += fps_nowTime - fps_oldTime;\n'+
-        '    if (fps_nowTime - fps_fpsStartTime >= 1000) {\n'+
-        '        fps_fps = ((1000 / fps_fpsTimeCnt) * fps_fpsCnt);\n'+
-        '        //fps_fpsStr = trunc(fps_fps)+"."+(floor(fps_fps*10)%10);\n'+
-        '        fps_fpsCnt = 0;\n'+
-        '        fps_fpsTimeCnt = 0;\n'+
-        '        fps_fpsStartTime = fps_nowTime;\n'+
-        '        fps_rps = fps_rpsCnt;\n'+
-        '        fps_rpsCnt = 0;\n'+
+        '    if (now()>lastMeasured+1000) {\n'+
+        '        fps_fps=fps_fpsCnt;\n'+
+        '        fps_rps=fps_rpsCnt;\n'+
+        '        fps_fpsCnt=0;\n'+
+        '        fps_rpsCnt=0;\n'+
+        '        lastMeasured=now();\n'+
         '    }\n'+
-        '    fps_oldTime = fps_nowTime;\n'+
         '}\n'+
         '\n'
       ,
@@ -1540,6 +1489,38 @@
         '    new page(arg);\n'+
         '    die();\n'+
         '}'
+      ,
+      'PlayMod.tonyu': 
+        'extends BaseActor;\n'+
+        'nowait \\initMML() {\n'+
+        '    $currentProject.requestPlugin("timbre");\n'+
+        '    if (!$MMLS) $MMLS={};\n'+
+        '    if (!$WaveTable) $WaveTable=new WaveTable;\n'+
+        '}\n'+
+        '\\play() {\n'+
+        '    initMML();\n'+
+        '    if (!_mml) _mml=new MML;\n'+
+        '    if (isDead() || arguments.length==0) return _mml;\n'+
+        '    var mmls=[];\n'+
+        '    for (var i=0; i<arguments.length; i++) {\n'+
+        '        mmls.push(arguments[i]);\n'+
+        '    }\n'+
+        '    _mml.play(mmls);\n'+
+        '    while (_mml.bufferCount()>2) {\n'+
+        '        update();\n'+
+        '    }\n'+
+        '    return _mml;\n'+
+        '}\n'+
+        'nowait \\playSE() {\n'+
+        '    initMML();\n'+
+        '    var mml=new MML;\n'+
+        '    var mmls=[];\n'+
+        '    for (var i=0; i<arguments.length; i++) {\n'+
+        '        mmls.push(arguments[i]);\n'+
+        '    }\n'+
+        '    mml.play(mmls);\n'+
+        '    return mml;\n'+
+        '}\n'
       ,
       'ScaledCanvas.tonyu': 
         'extends Actor;\n'+
