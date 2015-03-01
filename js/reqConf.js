@@ -248,6 +248,7 @@ var reqConf={
             forkBlobs: "social/forkBlobs",
             JSZip:"lib/jszip.min",
             plugins:"plugins/plugins",
+            exceptionCatcher:"lib/exceptionCatcher",
             "foo":"bar"
         },
         "baseUrl": "../../js"

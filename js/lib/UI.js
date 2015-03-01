@@ -1,5 +1,6 @@
-define(["Util"],function (Util) {
+define(["Util","exceptionCatcher"],function (Util, EC) {
     var UI={};
+    var F=EC.f;
     UI=function () {
         var expr=[];
         for (var i=0 ; i<arguments.length ; i++) {
@@ -109,13 +110,13 @@ define(["Util"],function (Util) {
         $edits.on.writeToModel= function (name, val) {};
 
         if (listeners.length>0) {
-            setTimeout(l,10);
+            setTimeout(F(l),10);
         }
         function l() {
             listeners.forEach(function (li) {
                 li();
             });
-            setTimeout(l,10);
+            setTimeout(F(l),10);
         }
         return res;
         function parse(expr) {
@@ -146,9 +147,9 @@ define(["Util"],function (Util) {
                     o.$edit={name: o.$edit, type: UI.types.String};
                 }
                 if (!o.on) o.on={};
-                o.on.realtimechange=function (val) {
+                o.on.realtimechange=F(function (val) {
                     $edits.writeToModel(o.$edit, val, jq);
-                };
+                });
                 if (!$vars[o.$edit.name]) $vars[o.$edit.name]=jq;
                 $edits.push({jq:jq,params:o});
             }
@@ -163,9 +164,9 @@ define(["Util"],function (Util) {
             }
             function on(eType, li) {
                 if (eType=="enterkey") {
-                    jq.on("keypress",function (ev) {
+                    jq.on("keypress",F(function (ev) {
                         if (ev.which==13) li.apply(jq,arguments);
-                    });
+                    }));
                 } else if (eType=="realtimechange") {
                     var first=true, prev;
                     listeners.push(function () {
@@ -182,7 +183,7 @@ define(["Util"],function (Util) {
                         first=false;
                     });
                 } else {
-                    jq.on(eType, li);
+                    jq.on(eType, F(li));
                 }
             }
         }

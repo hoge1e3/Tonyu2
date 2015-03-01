@@ -2,16 +2,16 @@ requirejs(["Util", "Tonyu", "FS", "FileList", "FileMenu",
            "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project",
            "copySample","Shell","Shell2","ImageResEditor","ProjectOptionsEditor","copyToKernel","KeyEventChecker",
            "WikiDialog","runtime", "KernelDiffDialog","Sync","searchDialog","StackTrace","syncWithKernel",
-           "UI","ResEditor","WebSite"
+           "UI","ResEditor","WebSite","exceptionCatcher"
           ],
 function (Util, Tonyu, FS, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,
           copySample,sh,sh2, ImgResEdit,ProjectOptionsEditor, ctk, KeyEventChecker,
           WikiDialog, rt , KDD,Sync,searchDialog,StackTrace,swk,
-          UI,ResEditor,WebSite
+          UI,ResEditor,WebSite,EC
           ) {
-
 $(function () {
+    var F=EC.f;
     $LASTPOS=0;
     copySample();
     var home=FS.get(WebSite.tonyuHome);
@@ -65,30 +65,30 @@ $(function () {
     onResize();
     var editors={};
 
-    KeyEventChecker.down(document,"F9",run);
-    KeyEventChecker.down(document,"F2",stop);
-    KeyEventChecker.down(document,"ctrl+s",function (e) {
+    KeyEventChecker.down(document,"F9",F(run));
+    KeyEventChecker.down(document,"F2",F(stop));
+    KeyEventChecker.down(document,"ctrl+s",F(function (e) {
     	save();
     	e.stopPropagation();
     	e.preventDefault();
     	return false;
-    });
-    $(window).resize(onResize);
+    }));
+    $(window).resize(F(onResize));
     $("body")[0].spellcheck=false;
     sh.cd(curProjectDir);
 
     var fl=FileList($("#fileItemList"),{
         topDir: curProjectDir,
         on:{
-            select: open,
+            select: F(open),
             displayName: dispName
         }
     });
     var FM=FileMenu();
     FM.fileList=fl;
-    $("#newFile").click(FM.create);
-    $("#mvFile").click(FM.mv);
-    $("#rmFile").click(FM.rm);
+    $("#newFile").click(F(FM.create));
+    $("#mvFile").click(F(FM.mv));
+    $("#rmFile").click(F(FM.rm));
     FM.on.close=close;
     FM.on.ls=ls;
     FM.on.validateName=fixName;
@@ -131,7 +131,7 @@ $(function () {
         reloadFromFiles();
         refactorUI=null;
     };
-
+    F(FM.on);
     fl.ls(curProjectDir);
     refreshRunMenu();
     KeyEventChecker.down(document,"Alt+Ctrl+D",function () {
@@ -170,23 +170,23 @@ $(function () {
             if (typeof n!="string") {console.log(n); alert("not a string: "+n);}
             $("#runMenu").append(
                     $("<li>").append(
-                            $("<a>").attr("href","#").text(n+"を実行"+(i==0?"(F9)":"")).click(function () {
+                            $("<a>").attr("href","#").text(n+"を実行"+(i==0?"(F9)":"")).click(F(function () {
                                 if (typeof n!="string") {console.log(n); alert("not a string2: "+n);}
                                 run(n);
                                 if (ii>0) {
-				    runMenuOrd.splice(ii, 1);
+                                    runMenuOrd.splice(ii, 1);
                                     runMenuOrd.unshift(n);
                                     refreshRunMenu();
-				    saveDesktopEnv();
-				}
-                            })));
+                                    saveDesktopEnv();
+                                }
+                            }))));
             i++;
         });
         $("#runMenu").append(
                 $("<li>").append(
-                        $("<a>").attr("href","#").text("停止(F2)").click(function () {
+                        $("<a>").attr("href","#").text("停止(F2)").click(F(function () {
                             stop();
-                        })));
+                        }))));
         //saveDesktopEnv();
         $("#exportToJsdoit").attr("href", "exportToJsdoit.html?dir="+curProjectDir.path());//+"&main="+runMenuOrd[0]);
         $("#exportToExe").attr("href", "exportToExe.html?dir="+curProjectDir.path());//+"&main="+runMenuOrd[0]);
@@ -199,6 +199,7 @@ $(function () {
     }
     function fixName(name, options) {
         var upcased=false;
+        //if (name=="aaaa") throw new Error("iikagen name error "+EC.enter);
         if (name.match(/^[a-z]/)) {
             name= name.substring(0,1).toUpperCase()+name.substring(1);
             upcased=true;
@@ -300,7 +301,7 @@ $(function () {
         alert(e);
         alertOnce=function(){};
     };
-    Tonyu.onRuntimeError=function (e) {
+    EC.handleException=Tonyu.onRuntimeError=function (e) {
         Tonyu.globals.$lastError=e;
         var t=curPrj.env.traceTbl;
         var trc=StackTrace.get(e,t);
@@ -324,15 +325,16 @@ $(function () {
             //var userAgent = window.navigator.userAgent.toLowerCase();
             //if(userAgent.indexOf('msie')<0) throw e;
         } else {
-            alertOnce(e);
-            throw e;
+            UI("div",{title:"Error"},e,["pre",e.stack]).dialog({width:800});
+            //alertOnce(e);
+            //throw e;
         }
     };
-    $("#mapEditor").click(function () {
+    $("#mapEditor").click(F(function () {
         console.log("run map");
         run("MapEditor");
-    });
-    $("#search").click(function () {
+    }));
+    $("#search").click(F(function () {
         console.log("src diag");
         searchDialog.show(curProjectDir,function (info){
             fl.select(info.file);
@@ -341,7 +343,7 @@ $(function () {
                 if (prog) prog.gotoLine(info.lineNo);
             },50);
         });
-    });
+    }));
     function close(rm) { // rm or mv
         var i=editors[rm.path()]; //getCurrentEditorInfo();
         if (i) {
@@ -402,9 +404,9 @@ $(function () {
             prog.setTheme("ace/theme/eclipse");
             prog.getSession().setMode("ace/mode/tonyu");
             editors[f.path()]={file:f , editor: prog, dom:progDOM};
-            progDOM.click(function () {
+            progDOM.click(F(function () {
                 displayMode("edit");
-            });
+            }));
             prog.setReadOnly(false);
             prog.clearSelection();
             prog.focus();
@@ -434,7 +436,7 @@ $(function () {
         var d=curProjectDir.rel(".desktop");
         d.obj(desktopEnv);
     }
-    $("#restore").click(restore);
+    $("#restore").click(F(restore));
     function restore() {
         var n=curProjectDir.name();
         if (!copySample.available(curProjectDir)) {
@@ -446,46 +448,46 @@ $(function () {
             ls();
         }
     }
-    $("#imgResEditor").click(function () {
+    $("#imgResEditor").click(F(function () {
         //ImgResEdit(curPrj);
         ResEditor(curPrj,"image");
-    });
-    $("#prjOptEditor").click(function () {
+    }));
+    $("#prjOptEditor").click(F(function () {
         ProjectOptionsEditor(curPrj);
-    });
+    }));
     var helpd=null;
-    $("#refHelp").click(function () {
+    $("#refHelp").click(F(function () {
     	if (!helpd) helpd=WikiDialog.create(home.rel("doc/tonyu2/"));
     	helpd.show();
-    });
+    }));
     if (typeof progBar=="object") {progBar.clear();}
-    $("#rmPRJ").click(function () {
+    $("#rmPRJ").click(F(function () {
         if (prompt(curProjectDir+"内のファイルをすべて削除しますか？削除する場合はDELETE と入力してください．","")!="DELETE") {
             return;
         }
         sh.rm(curProjectDir,{r:1});
         document.location.href="index.html";
-    });
-    $("#mvPRJ").click(function () {
-	var np=prompt("新しいプロジェクトの名前を入れてください", curProjectDir.name().replace(/\//g,""));
-	if (!np || np=="") return;
-	if (!np.match(/\/$/)) np+="/";
-	var npd=curProjectDir.up().rel(np);
-	if (npd.exists()) {
-	    alert(npd+" はすでに存在します");
-	    return;
-	}
-	sh.cp(curProjectDir,npd);
-	sh.rm(curProjectDir,{r:1});
+    }));
+    $("#mvPRJ").click(F(function () {
+        var np=prompt("新しいプロジェクトの名前を入れてください", curProjectDir.name().replace(/\//g,""));
+        if (!np || np=="") return;
+        if (!np.match(/\/$/)) np+="/";
+        var npd=curProjectDir.up().rel(np);
+        if (npd.exists()) {
+            alert(npd+" はすでに存在します");
+            return;
+        }
+        sh.cp(curProjectDir,npd);
+        sh.rm(curProjectDir,{r:1});
         document.location.href="project.html?dir="+npd;
-    });
-    $("#editorEditor").click(function () {
+    }));
+    $("#editorEditor").click(F(function () {
         var prog=getCurrentEditor();
         var s=prompt("エディタの文字の大きさ", desktopEnv.editorFontSize||12);
         desktopEnv.editorFontSize=parseInt(s);
         prog.setFontSize(desktopEnv.editorFontSize||12);
         saveDesktopEnv();
-    });
+    }));
     sh.curFile=function () {
         return fl.curFile();
     };

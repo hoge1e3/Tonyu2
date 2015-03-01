@@ -1868,7 +1868,10 @@ var requirejs, require, define;
                 node.addEventListener('load', context.onScriptLoad, false);
                 node.addEventListener('error', context.onScriptError, false);
             }
-            node.src = url+"?"+Math.random();
+            node.src = url;
+            if (typeof window=="object" && window.location.href.match(/^http/)) {
+                node.src += "?"+Math.random();
+            }
 
             //For some cache cases in IE 6-8, the script executes before the end
             //of the appendChild execution, so to tie an anonymous define
