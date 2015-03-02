@@ -1,0 +1,7 @@
+
+new Actor{x:230,y:100,text:"BoxClimb",size:50};
+
+while(true) {
+    if(getkey(32) || $touches[0].touched) loadPage(Main);
+    update();
+}

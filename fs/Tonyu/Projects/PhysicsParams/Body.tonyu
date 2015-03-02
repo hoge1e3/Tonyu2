@@ -1,0 +1,7 @@
+extends BodyActor;
+
+updateEx(6);
+while(true) {
+    applyForce(0,-9.8);
+    update();
+}

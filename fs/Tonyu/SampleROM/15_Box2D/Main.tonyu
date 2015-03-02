@@ -1,5 +1,5 @@
 // 物理エンジンの利用
-// T2Body クラスまたはT2Bodyクラスを継承したオブジェクトを置く
+// BodyActorクラスまたはBodyActorクラスを継承したオブジェクトを置く
 
 print("Use ← → and Space");
 // プレイヤー（ボール)  shape: 丸い形状の物体

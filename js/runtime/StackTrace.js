@@ -49,8 +49,11 @@ define([],function (){
                 }
             }
         }
-        $LastStackTrace=res;
-        // console.log("StackTrace.get",lines,res);
+        /*$lastStackTrace=res;
+        $showLastStackTrace=function () {
+            console.log("StackTrace.get",res);
+            //console.log("StackTrace.get",lines,res);
+        };*/
         return res;
     };
     return trc;

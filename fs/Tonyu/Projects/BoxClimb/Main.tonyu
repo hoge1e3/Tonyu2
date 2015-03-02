@@ -1,0 +1,16 @@
+// 物理エンジンの利用
+// T2Body クラスまたはT2Bodyクラスを継承したオブジェクトを置く
+
+//print("Use ← → and Space");
+// プレイヤー（ボール)  shape: 丸い形状の物体
+$b=new Ball{density:2,x:230,y:50,shape:"circle",p:12};
+// 床  isStatic:true  動かない物体
+new T2Body{x:230,y:400,p:$pat_floor+0,
+scaleX:10,scaleY:1,isStatic:true};
+new Target;
+$level=0;
+while (true) {
+    new Block{x:$b.x,y:0,p:$pat_floor,
+    scaleX:1.2+$level*0.1,rotation:rnd(360)};
+    updateEx(60);
+}

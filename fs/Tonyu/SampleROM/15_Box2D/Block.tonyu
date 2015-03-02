@@ -1,4 +1,4 @@
-extends T2Body;
+extends BodyActor;
 while(!screenOut()) {
     update();   
 }

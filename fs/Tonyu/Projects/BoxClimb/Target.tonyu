@@ -1,0 +1,20 @@
+p=$pat_neko+30;
+
+put();
+while(true) {
+    if (crashTo(Ball)) {
+        nextLevel();
+    } 
+    update();
+}
+
+\nextLevel() {
+    y=-1000;
+    $level++;
+    updateEx(30);
+    put();
+}
+\put() {
+    x=rnd(250)+100;
+    y=30;
+}

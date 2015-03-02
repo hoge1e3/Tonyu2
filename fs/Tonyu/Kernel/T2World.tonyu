@@ -14,15 +14,17 @@ loop();
     gravityX=gravityX || 0;
     var b2World = Box2D.Dynamics.b2World;
     var b2Vec2 = Box2D.Common.Math.b2Vec2;
-    scale=scale || 30;
+    scale=scale || 32;
     world = new b2World(
     new b2Vec2(gravityX, gravity)    //gravity
     ,  true                 //allow sleep
     );
     $t2World=this;
-    $Boot.on("stop") \() {
-        $t2World=null;
-    };
+    $Boot.on("stop",releaseWorld);
+    on("die",releaseWorld);
+}
+\releaseWorld() {
+    if ($t2World===this) $t2World=null;
 }
 
 \loop() {
