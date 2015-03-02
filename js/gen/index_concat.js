@@ -1,4 +1,4 @@
-// Created at Fri Feb 27 2015 16:35:29 GMT+0900 (東京 (標準時))
+// Created at Mon Mar 02 2015 16:57:33 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -723,7 +723,7 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1424849946377},"Actor.tonyu":{"lastUpdate":1425004177938},"BaseActor.tonyu":{"lastUpdate":1425018531557},"Boot.tonyu":{"lastUpdate":1425019818961},"DxChar.tonyu":{"lastUpdate":1421384204610},"EventMod.tonyu":{"lastUpdate":1425010352383},"InputDevice.tonyu":{"lastUpdate":1416890086000},"Keys.tonyu":{"lastUpdate":1412697666000},"Map.tonyu":{"lastUpdate":1421122943495},"MapEditor.tonyu":{"lastUpdate":1421122943503},"MathMod.tonyu":{"lastUpdate":1424849946395},"MediaPlayer.tonyu":{"lastUpdate":1421384204625},"MML.tonyu":{"lastUpdate":1424849946399},"NoviceActor.tonyu":{"lastUpdate":1412697666000},"Pad.tonyu":{"lastUpdate":1421122943510},"Panel.tonyu":{"lastUpdate":1424849946404},"PlainChar.tonyu":{"lastUpdate":1421384204651},"PlayMod.tonyu":{"lastUpdate":1425018365373},"ScaledCanvas.tonyu":{"lastUpdate":1421122943524},"SecretChar.tonyu":{"lastUpdate":1421384204695},"SpriteChar.tonyu":{"lastUpdate":1421384204710},"Sprites.tonyu":{"lastUpdate":1421122943538},"T1Line.tonyu":{"lastUpdate":1421384204718},"T1Map.tonyu":{"lastUpdate":1421384204728},"T1Page.tonyu":{"lastUpdate":1421384204737},"T1Text.tonyu":{"lastUpdate":1421384204745},"T2Body.tonyu":{"lastUpdate":1425020138253},"T2Mod.tonyu":{"lastUpdate":1425020004839},"T2World.tonyu":{"lastUpdate":1425020265686},"TextChar.tonyu":{"lastUpdate":1421384204762},"TObject.tonyu":{"lastUpdate":1421122943543},"TQuery.tonyu":{"lastUpdate":1412697666000},"WaveTable.tonyu":{"lastUpdate":1412697666000}}',
+      '': '{".desktop":{"lastUpdate":1424849946377},"Actor.tonyu":{"lastUpdate":1425004177938},"BaseActor.tonyu":{"lastUpdate":1425018531557},"BodyActor.tonyu":{"lastUpdate":1425265847796},"Boot.tonyu":{"lastUpdate":1425019818961},"DxChar.tonyu":{"lastUpdate":1421384204610},"EventMod.tonyu":{"lastUpdate":1425010352383},"InputDevice.tonyu":{"lastUpdate":1416890086000},"Keys.tonyu":{"lastUpdate":1412697666000},"Map.tonyu":{"lastUpdate":1421122943495},"MapEditor.tonyu":{"lastUpdate":1421122943503},"MathMod.tonyu":{"lastUpdate":1424849946395},"MediaPlayer.tonyu":{"lastUpdate":1421384204625},"MML.tonyu":{"lastUpdate":1424849946399},"NoviceActor.tonyu":{"lastUpdate":1412697666000},"Pad.tonyu":{"lastUpdate":1421122943510},"Panel.tonyu":{"lastUpdate":1424849946404},"PlainChar.tonyu":{"lastUpdate":1421384204651},"PlayMod.tonyu":{"lastUpdate":1425018365373},"ScaledCanvas.tonyu":{"lastUpdate":1421122943524},"SecretChar.tonyu":{"lastUpdate":1421384204695},"SpriteChar.tonyu":{"lastUpdate":1421384204710},"Sprites.tonyu":{"lastUpdate":1421122943538},"T1Line.tonyu":{"lastUpdate":1421384204718},"T1Map.tonyu":{"lastUpdate":1421384204728},"T1Page.tonyu":{"lastUpdate":1421384204737},"T1Text.tonyu":{"lastUpdate":1421384204745},"T2Body.tonyu":{"lastUpdate":1425264703379},"T2Mod.tonyu":{"lastUpdate":1425020004839},"T2World.tonyu":{"lastUpdate":1425266002500},"TextChar.tonyu":{"lastUpdate":1421384204762},"TObject.tonyu":{"lastUpdate":1421122943543},"TQuery.tonyu":{"lastUpdate":1412697666000},"WaveTable.tonyu":{"lastUpdate":1412697666000}}',
       '.desktop': '{"runMenuOrd":["Main0121","Main1023","TouchedTestMain","Main2","MapLoad","Main","AcTestM","NObjTest","NObjTest2","AcTest","AltBoot","Ball","Bar","Bounce","MapTest","MapTest2nd","SetBGCTest","Label","PanelTest","BaseActor","Panel","MathMod"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -1086,6 +1086,119 @@ requireSimulator.setName('fs/ROMk');
         '\\setVisible(v) {\n'+
         '    _isInvisible=!v;\n'+
         '}'
+      ,
+      'BodyActor.tonyu': 
+        'includes T2Mod;\n'+
+        'native Box2D;\n'+
+        '\n'+
+        '\\getWorld() {\n'+
+        '    if ($t2World) return $t2World;\n'+
+        '    $t2World=new T2World;\n'+
+        '    return $t2World;\n'+
+        '}\n'+
+        '\\onAppear() {\n'+
+        '    world=getWorld().world;\n'+
+        '    scale=getWorld().scale;\n'+
+        '    var b2Vec2 = Box2D.Common.Math.b2Vec2;\n'+
+        '    var b2BodyDef = Box2D.Dynamics.b2BodyDef;\n'+
+        '    var b2Body = Box2D.Dynamics.b2Body;\n'+
+        '    var b2FixtureDef = Box2D.Dynamics.b2FixtureDef;\n'+
+        '    var b2Fixture = Box2D.Dynamics.b2Fixture;\n'+
+        '    var b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;\n'+
+        '    var b2CircleShape = Box2D.Collision.Shapes.b2CircleShape;\n'+
+        '    \n'+
+        '    var fixDef = new b2FixtureDef;\n'+
+        '    fixDef.density = density || 1.0;\n'+
+        '    fixDef.friction = friction || 0.5;\n'+
+        '    fixDef.restitution = restitution || 0.2;\n'+
+        '    \n'+
+        '    var bodyDef = new b2BodyDef;\n'+
+        '    bodyDef.type = isStatic ? b2Body.b2_staticBody :\n'+
+        '    b2Body.b2_dynamicBody;\n'+
+        '    \n'+
+        '    bodyDef.position.x = x /scale;\n'+
+        '    bodyDef.position.y = y /scale;\n'+
+        '    shape=shape || (radius ? "circle" : "box");\n'+
+        '    var w=width,h=height;\n'+
+        '    if (!w) {\n'+
+        '        detectShape();\n'+
+        '        w=width*(scaleX||1);\n'+
+        '        h=height*(scaleY||scaleX||1);\n'+
+        '    }\n'+
+        '    if (shape=="box") {\n'+
+        '        if (!h) h=w;\n'+
+        '        fixDef.shape = new b2PolygonShape;\n'+
+        '        fixDef.shape.SetAsOrientedBox(w/2/scale, h/2/scale,\n'+
+        '        new b2Vec2(0,0),0);\n'+
+        '    } else {\n'+
+        '        radius=radius || w/2 || 16;\n'+
+        '        fixDef.shape = new b2CircleShape(\n'+
+        '        radius/scale\n'+
+        '        );\n'+
+        '        width=height=radius*2;\n'+
+        '    } \n'+
+        '    body=world.CreateBody(bodyDef);\n'+
+        '    body.CreateFixture(fixDef);\n'+
+        '    body.SetUserData(this);\n'+
+        '    body.SetAngle(rad(rotation));\n'+
+        '}\n'+
+        '\\allContact(klass) {\n'+
+        '    var res=[];\n'+
+        '    for (var c=world.GetContactList();c;c=c.GetNext()) {\n'+
+        '        if (c.IsTouching()) {\n'+
+        '            var a=c.GetFixtureA().GetBody().GetUserData();\n'+
+        '            var b=c.GetFixtureB().GetBody().GetUserData();\n'+
+        '            if (a===this) {\n'+
+        '                if (!klass || b===klass || b instanceof klass) {\n'+
+        '                    res.push(b);\n'+
+        '                }\n'+
+        '            } else if (b===this) {\n'+
+        '                if (!klass || a===klass || a instanceof klass) {\n'+
+        '                    res.push(a);\n'+
+        '                }\n'+
+        '            }\n'+
+        '        }\n'+
+        '    }\n'+
+        '    return res;\n'+
+        '}\n'+
+        '\\applyForce(fx,fy,px,py) {\n'+
+        '    var b2Vec2 = Box2D.Common.Math.b2Vec2;\n'+
+        '    var scale=getWorld().scale;\n'+
+        '    var fps=60;\n'+
+        '    body.ApplyForce(new b2Vec2(fx ,fy),body.GetPosition());\n'+
+        '}\n'+
+        '\\applyImpulse(fx,fy,px,py) {\n'+
+        '    var b2Vec2 = Box2D.Common.Math.b2Vec2;\n'+
+        '    var scale=getWorld().scale;\n'+
+        '    var fps=60;\n'+
+        '    body.ApplyImpulse(new b2Vec2(fx ,fy),body.GetPosition());\n'+
+        '}\n'+
+        '\n'+
+        '\\applyTorque(a) {\n'+
+        '    body.ApplyTorque(a);\n'+
+        '}\n'+
+        '\\moveBy(dx,dy) {\n'+
+        '    var pos=body.GetPosition();\n'+
+        '    pos.x+=dx/scale;\n'+
+        '    pos.y+=dy/scale;\n'+
+        '    body.SetPosition(pos);\n'+
+        '}\n'+
+        '\\contactTo(t) {\n'+
+        '    return allContact(t)[0];\n'+
+        '}\n'+
+        '\\die() {\n'+
+        '    super.die();\n'+
+        '    world.DestroyBody(body);\n'+
+        '}\n'+
+        '\\updatePos() {\n'+
+        '    if (!body) return;\n'+
+        '    var scale=getWorld().scale;\n'+
+        '    var pos=body.GetPosition();\n'+
+        '    x=pos.x*scale;\n'+
+        '    y=pos.y*scale;\n'+
+        '    rotation=deg(body.GetAngle());\n'+
+        '}\n'+
+        '\n'
       ,
       'Boot.tonyu': 
         'extends Actor;\n'+
@@ -2616,116 +2729,7 @@ requireSimulator.setName('fs/ROMk');
         '}'
       ,
       'T2Body.tonyu': 
-        'includes T2Mod;\n'+
-        'native Box2D;\n'+
-        '\n'+
-        '\\getWorld() {\n'+
-        '    if ($t2World) return $t2World;\n'+
-        '    $t2World=new T2World;\n'+
-        '    return $t2World;\n'+
-        '}\n'+
-        '\\onAppear() {\n'+
-        '    world=getWorld().world;\n'+
-        '    scale=getWorld().scale;\n'+
-        '    var b2Vec2 = Box2D.Common.Math.b2Vec2;\n'+
-        '    var b2BodyDef = Box2D.Dynamics.b2BodyDef;\n'+
-        '    var b2Body = Box2D.Dynamics.b2Body;\n'+
-        '    var b2FixtureDef = Box2D.Dynamics.b2FixtureDef;\n'+
-        '    var b2Fixture = Box2D.Dynamics.b2Fixture;\n'+
-        '    var b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;\n'+
-        '    var b2CircleShape = Box2D.Collision.Shapes.b2CircleShape;\n'+
-        '    \n'+
-        '    var fixDef = new b2FixtureDef;\n'+
-        '    fixDef.density = density || 1.0;\n'+
-        '    fixDef.friction = friction || 0.5;\n'+
-        '    fixDef.restitution = restitution || 0.2;\n'+
-        '    \n'+
-        '    var bodyDef = new b2BodyDef;\n'+
-        '    bodyDef.type = isStatic ? b2Body.b2_staticBody :\n'+
-        '    b2Body.b2_dynamicBody;\n'+
-        '    \n'+
-        '    bodyDef.position.x = x /scale;\n'+
-        '    bodyDef.position.y = y /scale;\n'+
-        '    shape=shape || (radius ? "circle" : "box");\n'+
-        '    var w=width,h=height;\n'+
-        '    if (!w) {\n'+
-        '        detectShape();\n'+
-        '        w=width*(scaleX||1);\n'+
-        '        h=height*(scaleY||scaleX||1);\n'+
-        '    }\n'+
-        '    if (shape=="box") {\n'+
-        '        if (!h) h=w;\n'+
-        '        fixDef.shape = new b2PolygonShape;\n'+
-        '        fixDef.shape.SetAsOrientedBox(w/2/scale, h/2/scale,\n'+
-        '        new b2Vec2(0,0),0);\n'+
-        '    } else {\n'+
-        '        radius=radius || w/2 || 16;\n'+
-        '        fixDef.shape = new b2CircleShape(\n'+
-        '        radius/scale\n'+
-        '        );\n'+
-        '        width=height=radius*2;\n'+
-        '    } \n'+
-        '    body=world.CreateBody(bodyDef);\n'+
-        '    body.CreateFixture(fixDef);\n'+
-        '    body.SetUserData(this);\n'+
-        '    body.SetAngle(rad(rotation));\n'+
-        '}\n'+
-        '\\allContact(klass) {\n'+
-        '    var res=[];\n'+
-        '    for (var c=world.GetContactList();c;c=c.GetNext()) {\n'+
-        '        if (c.IsTouching()) {\n'+
-        '            var a=c.GetFixtureA().GetBody().GetUserData();\n'+
-        '            var b=c.GetFixtureB().GetBody().GetUserData();\n'+
-        '            if (a===this) {\n'+
-        '                if (!klass || b===klass || b instanceof klass) {\n'+
-        '                    res.push(b);\n'+
-        '                }\n'+
-        '            } else if (b===this) {\n'+
-        '                if (!klass || a===klass || a instanceof klass) {\n'+
-        '                    res.push(a);\n'+
-        '                }\n'+
-        '            }\n'+
-        '        }\n'+
-        '    }\n'+
-        '    return res;\n'+
-        '}\n'+
-        '\\applyForce(fx,fy,px,py) {\n'+
-        '    var b2Vec2 = Box2D.Common.Math.b2Vec2;\n'+
-        '    var scale=getWorld().scale;\n'+
-        '    var fps=60;\n'+
-        '    body.ApplyForce(bvec(fx*fps ,fy*fps),body.GetPosition());\n'+
-        '}\n'+
-        '\\applyImpulse(fx,fy,px,py) {\n'+
-        '    var b2Vec2 = Box2D.Common.Math.b2Vec2;\n'+
-        '    var scale=getWorld().scale;\n'+
-        '    var fps=60;\n'+
-        '    body.ApplyImpulse(bvec(fx*fps,fy*fps),body.GetPosition());\n'+
-        '}\n'+
-        '\n'+
-        '\\applyTorque(a) {\n'+
-        '    body.ApplyTorque(a);\n'+
-        '}\n'+
-        '\\moveBy(dx,dy) {\n'+
-        '    var pos=body.GetPosition();\n'+
-        '    pos.x+=dx/scale;\n'+
-        '    pos.y+=dy/scale;\n'+
-        '    body.SetPosition(pos);\n'+
-        '}\n'+
-        '\\contactTo(t) {\n'+
-        '    return allContact(t)[0];\n'+
-        '}\n'+
-        '\\die() {\n'+
-        '    super.die();\n'+
-        '    world.DestroyBody(body);\n'+
-        '}\n'+
-        '\\updatePos() {\n'+
-        '    if (!body) return;\n'+
-        '    var scale=getWorld().scale;\n'+
-        '    var pos=body.GetPosition();\n'+
-        '    x=pos.x*scale;\n'+
-        '    y=pos.y*scale;\n'+
-        '    rotation=deg(body.GetAngle());\n'+
-        '}'
+        'extends BodyActor;\n'
       ,
       'T2Mod.tonyu': 
         'native Box2D;\n'+
@@ -2752,15 +2756,17 @@ requireSimulator.setName('fs/ROMk');
         '    gravityX=gravityX || 0;\n'+
         '    var b2World = Box2D.Dynamics.b2World;\n'+
         '    var b2Vec2 = Box2D.Common.Math.b2Vec2;\n'+
-        '    scale=scale || 30;\n'+
+        '    scale=scale || 32;\n'+
         '    world = new b2World(\n'+
         '    new b2Vec2(gravityX, gravity)    //gravity\n'+
         '    ,  true                 //allow sleep\n'+
         '    );\n'+
         '    $t2World=this;\n'+
-        '    $Boot.on("stop") \\() {\n'+
-        '        $t2World=null;\n'+
-        '    };\n'+
+        '    $Boot.on("stop",releaseWorld);\n'+
+        '    on("die",releaseWorld);\n'+
+        '}\n'+
+        '\\releaseWorld() {\n'+
+        '    if ($t2World===this) $t2World=null;\n'+
         '}\n'+
         '\n'+
         '\\loop() {\n'+
@@ -8534,7 +8540,7 @@ requireSimulator.setName('fs/ROMs');
   var rom={
     base: '/Tonyu/SampleROM/',
     data: {
-      '': '{"10_MultiTouch/":{".desktop":{"lastUpdate":1412697666000},"images/":{"icon_thumbnail.png":{"lastUpdate":1424499962000}},"Main.tonyu":{"lastUpdate":1412697666000},"options.json":{"lastUpdate":1424499960342},"res.json":{"lastUpdate":1424499962378},"Touch.tonyu":{"lastUpdate":1412697666000}},"11_Resize/":{".desktop":{"lastUpdate":1412697666000},"Bounce.tonyu":{"lastUpdate":1412697666000},"images/":{"icon_thumbnail.png":{"lastUpdate":1424499952000}},"Main.tonyu":{"lastUpdate":1412697666000},"options.json":{"lastUpdate":1424499950223},"res.json":{"lastUpdate":1424499952266}},"12_Sound/":{".desktop":{"lastUpdate":1425004349219},"images/":{"icon_thumbnail.png":{"lastUpdate":1425006025000}},"Main.tonyu":{"lastUpdate":1425004349203},"MMLTest.tonyu":{"lastUpdate":1425004300853},"options.json":{"lastUpdate":1425006022983},"res.json":{"lastUpdate":1425006025013}},"13_DX/":{".desktop":{"lastUpdate":1412697666000},"DX.tonyu":{"lastUpdate":1412697666000},"images/":{"icon_thumbnail.png":{"lastUpdate":1424496830000}},"Main.tonyu":{"lastUpdate":1412697666000},"options.json":{"lastUpdate":1424496828360},"res.json":{"lastUpdate":1424496830416}},"14_File/":{".desktop":{"lastUpdate":1412697666000},"files/":{"save.json":{"lastUpdate":1412697666000}},"images/":{"icon_thumbnail.png":{"lastUpdate":1418560247000}},"Main.tonyu":{"lastUpdate":1412697666000},"options.json":{"lastUpdate":1421821648235},"res.json":{"lastUpdate":1418560247000}},"15_Box2D/":{".desktop":{"lastUpdate":1424914245000},"Ball.tonyu":{"lastUpdate":1425020534000},"Block.tonyu":{"lastUpdate":1425020536000},"images/":{"aoi.png":{"lastUpdate":1425019308000},"icon_thumbnail.png":{"lastUpdate":1425020516000}},"Main.tonyu":{"lastUpdate":1425020461000},"options.json":{"lastUpdate":1425020514000},"res.json":{"lastUpdate":1425020516000}},"1_Animation/":{".desktop":{"lastUpdate":1412697666000},"GoRight.tonyu":{"lastUpdate":1412697666000},"images/":{"icon_thumbnail.png":{"lastUpdate":1424500074000}},"options.json":{"lastUpdate":1424500071401},"res.json":{"lastUpdate":1424500074096}},"2_MultipleObj/":{".desktop":{"lastUpdate":1412697666000},"Bounce.tonyu":{"lastUpdate":1412697666000},"GoRight.tonyu":{"lastUpdate":1412697666000},"images/":{"icon_thumbnail.png":{"lastUpdate":1424500055000}},"Main.tonyu":{"lastUpdate":1412697666000},"options.json":{"lastUpdate":1424500053785},"res.json":{"lastUpdate":1424500055823}},"3_NewParam/":{".desktop":{"lastUpdate":1412697666000},"Bounce.tonyu":{"lastUpdate":1412697666000},"GoRight.tonyu":{"lastUpdate":1412697666000},"images/":{"icon_thumbnail.png":{"lastUpdate":1424500047000}},"Main.tonyu":{"lastUpdate":1412697666000},"options.json":{"lastUpdate":1424500045123},"res.json":{"lastUpdate":1424500047165}},"4_getkey/":{".desktop":{"lastUpdate":1412697666000},"images/":{"icon_thumbnail.png":{"lastUpdate":1424500037000}},"options.json":{"lastUpdate":1424500035583},"Player.tonyu":{"lastUpdate":1412697666000},"res.json":{"lastUpdate":1424500037615}},"5_Chase/":{".desktop":{"lastUpdate":1412697666000},"Chaser.tonyu":{"lastUpdate":1412697666000},"images/":{"icon_thumbnail.png":{"lastUpdate":1424500026000}},"Main.tonyu":{"lastUpdate":1412697666000},"options.json":{"lastUpdate":1424500024423},"Player.tonyu":{"lastUpdate":1412697666000},"res.json":{"lastUpdate":1424500026489}},"6_Shot/":{".desktop":{"lastUpdate":1412697666000},"Bullet.tonyu":{"lastUpdate":1424137052043},"Chaser.tonyu":{"lastUpdate":1412697666000},"images/":{"icon_thumbnail.png":{"lastUpdate":1424500012000}},"Main.tonyu":{"lastUpdate":1412697666000},"options.json":{"lastUpdate":1424500010312},"Player.tonyu":{"lastUpdate":1412697666000},"res.json":{"lastUpdate":1424500012360}},"7_Text/":{".desktop":{"lastUpdate":1412697666000},"Bullet.tonyu":{"lastUpdate":1421821648455},"Chaser.tonyu":{"lastUpdate":1412697666000},"images/":{"icon_thumbnail.png":{"lastUpdate":1424499998000}},"Main.tonyu":{"lastUpdate":1412697666000},"options.json":{"lastUpdate":1424499996424},"Player.tonyu":{"lastUpdate":1418128263000},"res.json":{"lastUpdate":1424499998482},"Status.tonyu":{"lastUpdate":1412697666000}},"8_Patterns/":{".desktop":{"lastUpdate":1412697666000},"Ball.tonyu":{"lastUpdate":1412697666000},"images/":{"icon_thumbnail.png":{"lastUpdate":1424499984000}},"Main.tonyu":{"lastUpdate":1412697666000},"options.json":{"lastUpdate":1424499982309},"res.json":{"lastUpdate":1424499984350}},"9_Mouse/":{".desktop":{"lastUpdate":1412697666000},"images/":{"icon_thumbnail.png":{"lastUpdate":1424499971000}},"MouseChaser.tonyu":{"lastUpdate":1412697666000},"options.json":{"lastUpdate":1424499969681},"res.json":{"lastUpdate":1424499971712}}}',
+      '': '{"10_MultiTouch/":{".desktop":{"lastUpdate":1412697666000},"images/":{"icon_thumbnail.png":{"lastUpdate":1424499962000}},"Main.tonyu":{"lastUpdate":1412697666000},"options.json":{"lastUpdate":1424499960342},"res.json":{"lastUpdate":1424499962378},"Touch.tonyu":{"lastUpdate":1412697666000}},"11_Resize/":{".desktop":{"lastUpdate":1412697666000},"Bounce.tonyu":{"lastUpdate":1412697666000},"images/":{"icon_thumbnail.png":{"lastUpdate":1424499952000}},"Main.tonyu":{"lastUpdate":1412697666000},"options.json":{"lastUpdate":1424499950223},"res.json":{"lastUpdate":1424499952266}},"12_Sound/":{".desktop":{"lastUpdate":1425004349219},"images/":{"icon_thumbnail.png":{"lastUpdate":1425006025000}},"Main.tonyu":{"lastUpdate":1425004349203},"MMLTest.tonyu":{"lastUpdate":1425004300853},"options.json":{"lastUpdate":1425006022983},"res.json":{"lastUpdate":1425006025013}},"13_DX/":{".desktop":{"lastUpdate":1412697666000},"DX.tonyu":{"lastUpdate":1412697666000},"images/":{"icon_thumbnail.png":{"lastUpdate":1424496830000}},"Main.tonyu":{"lastUpdate":1412697666000},"options.json":{"lastUpdate":1424496828360},"res.json":{"lastUpdate":1424496830416}},"14_File/":{".desktop":{"lastUpdate":1412697666000},"files/":{"save.json":{"lastUpdate":1412697666000}},"images/":{"icon_thumbnail.png":{"lastUpdate":1418560247000}},"Main.tonyu":{"lastUpdate":1412697666000},"options.json":{"lastUpdate":1421821648235},"res.json":{"lastUpdate":1418560247000}},"15_Box2D/":{".desktop":{"lastUpdate":1424914245000},"Ball.tonyu":{"lastUpdate":1425265923944},"Block.tonyu":{"lastUpdate":1425264800572},"images/":{"aoi.png":{"lastUpdate":1425019308000},"icon_thumbnail.png":{"lastUpdate":1425020516000}},"Main.tonyu":{"lastUpdate":1425264825713},"options.json":{"lastUpdate":1425020514000},"res.json":{"lastUpdate":1425020516000}},"1_Animation/":{".desktop":{"lastUpdate":1412697666000},"GoRight.tonyu":{"lastUpdate":1412697666000},"images/":{"icon_thumbnail.png":{"lastUpdate":1424500074000}},"options.json":{"lastUpdate":1424500071401},"res.json":{"lastUpdate":1424500074096}},"2_MultipleObj/":{".desktop":{"lastUpdate":1412697666000},"Bounce.tonyu":{"lastUpdate":1412697666000},"GoRight.tonyu":{"lastUpdate":1412697666000},"images/":{"icon_thumbnail.png":{"lastUpdate":1424500055000}},"Main.tonyu":{"lastUpdate":1412697666000},"options.json":{"lastUpdate":1424500053785},"res.json":{"lastUpdate":1424500055823}},"3_NewParam/":{".desktop":{"lastUpdate":1412697666000},"Bounce.tonyu":{"lastUpdate":1412697666000},"GoRight.tonyu":{"lastUpdate":1412697666000},"images/":{"icon_thumbnail.png":{"lastUpdate":1424500047000}},"Main.tonyu":{"lastUpdate":1412697666000},"options.json":{"lastUpdate":1424500045123},"res.json":{"lastUpdate":1424500047165}},"4_getkey/":{".desktop":{"lastUpdate":1412697666000},"images/":{"icon_thumbnail.png":{"lastUpdate":1424500037000}},"options.json":{"lastUpdate":1424500035583},"Player.tonyu":{"lastUpdate":1412697666000},"res.json":{"lastUpdate":1424500037615}},"5_Chase/":{".desktop":{"lastUpdate":1412697666000},"Chaser.tonyu":{"lastUpdate":1412697666000},"images/":{"icon_thumbnail.png":{"lastUpdate":1424500026000}},"Main.tonyu":{"lastUpdate":1412697666000},"options.json":{"lastUpdate":1424500024423},"Player.tonyu":{"lastUpdate":1412697666000},"res.json":{"lastUpdate":1424500026489}},"6_Shot/":{".desktop":{"lastUpdate":1412697666000},"Bullet.tonyu":{"lastUpdate":1424137052043},"Chaser.tonyu":{"lastUpdate":1412697666000},"images/":{"icon_thumbnail.png":{"lastUpdate":1424500012000}},"Main.tonyu":{"lastUpdate":1412697666000},"options.json":{"lastUpdate":1424500010312},"Player.tonyu":{"lastUpdate":1412697666000},"res.json":{"lastUpdate":1424500012360}},"7_Text/":{".desktop":{"lastUpdate":1412697666000},"Bullet.tonyu":{"lastUpdate":1421821648455},"Chaser.tonyu":{"lastUpdate":1412697666000},"images/":{"icon_thumbnail.png":{"lastUpdate":1424499998000}},"Main.tonyu":{"lastUpdate":1412697666000},"options.json":{"lastUpdate":1424499996424},"Player.tonyu":{"lastUpdate":1418128263000},"res.json":{"lastUpdate":1424499998482},"Status.tonyu":{"lastUpdate":1412697666000}},"8_Patterns/":{".desktop":{"lastUpdate":1412697666000},"Ball.tonyu":{"lastUpdate":1412697666000},"images/":{"icon_thumbnail.png":{"lastUpdate":1424499984000}},"Main.tonyu":{"lastUpdate":1412697666000},"options.json":{"lastUpdate":1424499982309},"res.json":{"lastUpdate":1424499984350}},"9_Mouse/":{".desktop":{"lastUpdate":1412697666000},"images/":{"icon_thumbnail.png":{"lastUpdate":1424499971000}},"MouseChaser.tonyu":{"lastUpdate":1412697666000},"options.json":{"lastUpdate":1424499969681},"res.json":{"lastUpdate":1424499971712}}}',
       '10_MultiTouch/': '{".desktop":{"lastUpdate":1412697666000},"images/":{"icon_thumbnail.png":{"lastUpdate":1424499962000}},"Main.tonyu":{"lastUpdate":1412697666000},"options.json":{"lastUpdate":1424499960342},"res.json":{"lastUpdate":1424499962378},"Touch.tonyu":{"lastUpdate":1412697666000}}',
       '10_MultiTouch/.desktop': '{"runMenuOrd":["Main","Touch"]}',
       '10_MultiTouch/Main.tonyu': 
@@ -8700,26 +8706,26 @@ requireSimulator.setName('fs/ROMs');
       '14_File/images/icon_thumbnail.png': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAADdElEQVR4Xu2VXWjNcRyHvyfHy9Tm7bC8nJoLio5WI0mIJnJBy9VwIbuxK3eLC7uaQkrKDRcmF2alJJTIIkoSRZ3IS1nNS1hqUwiF/6lzOnah6bNPnbbnf7NO+32ec/7P8z9bKtN05VdwVYyBFEEqpkXhgxCksnoQpMJ6EGTMBjmzb2nsPPSwdP+95zZG3bZrhdcXO1ZEU/u90u9ydTWR7x38b1c1k9Mx+OVnide6eX6cuPxq2JxNy2vj6v33wz7vODgi/0M6di2K9tNPIzNlQvQPfI/tjdno6ukriHn0ciCOnn8Rx/fU/xWk/OZvH1sTB7uelWSUB6n+I3lv88LY3/kkjuzORdvJfKTHpeJUW0OBl4ROrmLsDctmxfUHH0qukvdJrkR0dmZV9H38Wni9ZeXsuHT3XczNTIo3/d+iYcHUqJ02cXQESYQd7n4e06vHx6fPP2Lr6jlx4c7byHc2Rq6lJ5In919Bhn5Dhj55B1oWF4IUfxb55eeKgZMzyZWcX1ufiVuP+0vHyoPsWJ+Nszf6onndvOi++TpWLZkR1VXp0RHE8dUdq8wR+ZM1VuU57psgDqsCkyCCPMeUIA6rApMggjzHlCAOqwKTIII8x5QgDqsCkyCCPMeUIA6rApMggjzHlCAOqwKTIII8x5QgDqsCkyCCPMeUIA6rApMggjzHlCAOqwKTIII8x5QgDqsCkyCCPMeUIA6rApMggjzHlCAOqwKTIII8x5QgDqsCkyCCPMeUIA6rApMggjzHlCAOqwKTIII8x5QgDqsCkyCCPMeUIA6rApMggjzHlCAOqwKTIII8x5QgDqsCkyCCPMeUIA6rApMggjzHlCAOqwKTIII8x5QgDqsCkyCCPMeUIA6rApMggjzHlCAOqwKTIII8x5QgDqsCkyCCPMeUIA6rApMggjzHlCAOqwKTIII8x5QgDqsCkyCCPMeUIA6rApMggjzHlCAOqwKTIII8x5QgDqsCkyCCPMeUIA6rApMggjzHlCAOqwKTIII8x5QgDqsCkyCCPMeUIA6rApMggjzHlCAOqwKTIII8x5QgDqsCkyCCPMeUIA6rApMggjzHlCAOqwKTIII8x5QgDqsCkyCCPMeUIA6rApMggjzHlCAOqwKTIII8x5QgDqsCkyCCPMeUIA6rApMggjzHlCAOqwKTIII8x/Q3F3pYcAf1P3QAAAAASUVORK5CYII=',
       '14_File/options.json': '{"compiler":{"defaultSuperClass":"Actor"},"run":{"mainClass":"Main","bootClass":"Boot"},"kernelEditable":false}',
       '14_File/res.json': '{"images":[{"name":"$pat_base","url":"images/base.png","pwidth":32,"pheight":32},{"name":"$pat_sample","url":"images/Sample.png"},{"name":"$pat_neko","url":"images/neko.png","pwidth":32,"pheight":32},{"name":"$icon_thumbnail","pwidth":100,"pheight":100,"url":"ls:images/icon_thumbnail.png"}],"sounds":[]}',
-      '15_Box2D/': '{".desktop":{"lastUpdate":1424914245000},"Ball.tonyu":{"lastUpdate":1425020534000},"Block.tonyu":{"lastUpdate":1425020536000},"images/":{"aoi.png":{"lastUpdate":1425019308000},"icon_thumbnail.png":{"lastUpdate":1425020516000}},"Main.tonyu":{"lastUpdate":1425020461000},"options.json":{"lastUpdate":1425020514000},"res.json":{"lastUpdate":1425020516000}}',
+      '15_Box2D/': '{".desktop":{"lastUpdate":1424914245000},"Ball.tonyu":{"lastUpdate":1425265923944},"Block.tonyu":{"lastUpdate":1425264800572},"images/":{"aoi.png":{"lastUpdate":1425019308000},"icon_thumbnail.png":{"lastUpdate":1425020516000}},"Main.tonyu":{"lastUpdate":1425264825713},"options.json":{"lastUpdate":1425020514000},"res.json":{"lastUpdate":1425020516000}}',
       '15_Box2D/.desktop': '{"runMenuOrd":["Main","B2Body"]}',
       '15_Box2D/Ball.tonyu': 
-        'extends T2Body;\n'+
+        'extends BodyActor;\n'+
         '\n'+
         'while(y<450) {\n'+
         '    // 物理オブジェクトにぶつかっていれば\n'+
         '    if (c=contactTo()) {\n'+
         '        // スペースキーを押したときに上に瞬間的な力を加える\n'+
-        '        if (getkey("space")==1) applyImpulse(0,-3);\n'+
+        '        if (getkey("space")==1) applyImpulse(0,-5);\n'+
         '    }\n'+
         '    // 左右キーを押したときにゆっくりと力を加える\n'+
-        '    if (getkey("left")) applyForce(-2,0);\n'+
-        '    if (getkey("right")) applyForce(2,0);\n'+
+        '    if (getkey("left")) applyForce(-5,0);\n'+
+        '    if (getkey("right")) applyForce(5,0);\n'+
         '    update();\n'+
         '}\n'+
         'die();'
       ,
       '15_Box2D/Block.tonyu': 
-        'extends T2Body;\n'+
+        'extends BodyActor;\n'+
         'while(!screenOut()) {\n'+
         '    update();   \n'+
         '}\n'+
@@ -8727,7 +8733,7 @@ requireSimulator.setName('fs/ROMs');
       ,
       '15_Box2D/Main.tonyu': 
         '// 物理エンジンの利用\n'+
-        '// T2Body クラスまたはT2Bodyクラスを継承したオブジェクトを置く\n'+
+        '// BodyActorクラスまたはBodyActorクラスを継承したオブジェクトを置く\n'+
         '\n'+
         'print("Use ← → and Space");\n'+
         '// プレイヤー（ボール)  shape: 丸い形状の物体\n'+
@@ -9371,9 +9377,42 @@ define(["FS","WebSite"], function (fs,WebSite) {
     };
     return Log;
 });
+requireSimulator.setName('exceptionCatcher');
+define([], function () {
+    var res={};
+    res.f=function (f) {
+        if (typeof f=="function") {
+            if (f.isTrcf) return f;
+            var r=function () {
+                if (res.handleException && !res.enter) {
+                    try {
+                        res.enter=true;
+                        return f.apply(this,arguments);
+                    } catch (e) {
+                        res.handleException(e);
+                    } finally {
+                        res.enter=false;
+                    }
+                } else {
+                    return f.apply(this,arguments);
+                }
+            };
+            r.isTrcf=true;
+            return r;
+        } else if(typeof f=="object") {
+            for (var k in f) {
+                f[k]=res.f(f[k]);
+            }
+            return f;
+        }
+    };
+    //res.handleException=function (){};
+    return res;
+});
 requireSimulator.setName('UI');
-define(["Util"],function (Util) {
+define(["Util","exceptionCatcher"],function (Util, EC) {
     var UI={};
+    var F=EC.f;
     UI=function () {
         var expr=[];
         for (var i=0 ; i<arguments.length ; i++) {
@@ -9483,13 +9522,13 @@ define(["Util"],function (Util) {
         $edits.on.writeToModel= function (name, val) {};
 
         if (listeners.length>0) {
-            setTimeout(l,10);
+            setTimeout(F(l),10);
         }
         function l() {
             listeners.forEach(function (li) {
                 li();
             });
-            setTimeout(l,10);
+            setTimeout(F(l),10);
         }
         return res;
         function parse(expr) {
@@ -9520,9 +9559,9 @@ define(["Util"],function (Util) {
                     o.$edit={name: o.$edit, type: UI.types.String};
                 }
                 if (!o.on) o.on={};
-                o.on.realtimechange=function (val) {
+                o.on.realtimechange=F(function (val) {
                     $edits.writeToModel(o.$edit, val, jq);
-                };
+                });
                 if (!$vars[o.$edit.name]) $vars[o.$edit.name]=jq;
                 $edits.push({jq:jq,params:o});
             }
@@ -9537,9 +9576,9 @@ define(["Util"],function (Util) {
             }
             function on(eType, li) {
                 if (eType=="enterkey") {
-                    jq.on("keypress",function (ev) {
+                    jq.on("keypress",F(function (ev) {
                         if (ev.which==13) li.apply(jq,arguments);
-                    });
+                    }));
                 } else if (eType=="realtimechange") {
                     var first=true, prev;
                     listeners.push(function () {
@@ -9556,7 +9595,7 @@ define(["Util"],function (Util) {
                         first=false;
                     });
                 } else {
-                    jq.on(eType, li);
+                    jq.on(eType, F(li));
                 }
             }
         }

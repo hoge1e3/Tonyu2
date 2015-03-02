@@ -2,7 +2,7 @@
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1424849946377},"Actor.tonyu":{"lastUpdate":1425004177938},"BaseActor.tonyu":{"lastUpdate":1425018531557},"Boot.tonyu":{"lastUpdate":1425019818961},"DxChar.tonyu":{"lastUpdate":1421384204610},"EventMod.tonyu":{"lastUpdate":1425010352383},"InputDevice.tonyu":{"lastUpdate":1416890086000},"Keys.tonyu":{"lastUpdate":1412697666000},"Map.tonyu":{"lastUpdate":1421122943495},"MapEditor.tonyu":{"lastUpdate":1421122943503},"MathMod.tonyu":{"lastUpdate":1424849946395},"MediaPlayer.tonyu":{"lastUpdate":1421384204625},"MML.tonyu":{"lastUpdate":1424849946399},"NoviceActor.tonyu":{"lastUpdate":1412697666000},"Pad.tonyu":{"lastUpdate":1421122943510},"Panel.tonyu":{"lastUpdate":1424849946404},"PlainChar.tonyu":{"lastUpdate":1421384204651},"PlayMod.tonyu":{"lastUpdate":1425018365373},"ScaledCanvas.tonyu":{"lastUpdate":1421122943524},"SecretChar.tonyu":{"lastUpdate":1421384204695},"SpriteChar.tonyu":{"lastUpdate":1421384204710},"Sprites.tonyu":{"lastUpdate":1421122943538},"T1Line.tonyu":{"lastUpdate":1421384204718},"T1Map.tonyu":{"lastUpdate":1421384204728},"T1Page.tonyu":{"lastUpdate":1421384204737},"T1Text.tonyu":{"lastUpdate":1421384204745},"T2Body.tonyu":{"lastUpdate":1425020138253},"T2Mod.tonyu":{"lastUpdate":1425020004839},"T2World.tonyu":{"lastUpdate":1425020265686},"TextChar.tonyu":{"lastUpdate":1421384204762},"TObject.tonyu":{"lastUpdate":1421122943543},"TQuery.tonyu":{"lastUpdate":1412697666000},"WaveTable.tonyu":{"lastUpdate":1412697666000}}',
+      '': '{".desktop":{"lastUpdate":1424849946377},"Actor.tonyu":{"lastUpdate":1425004177938},"BaseActor.tonyu":{"lastUpdate":1425018531557},"BodyActor.tonyu":{"lastUpdate":1425265847796},"Boot.tonyu":{"lastUpdate":1425019818961},"DxChar.tonyu":{"lastUpdate":1421384204610},"EventMod.tonyu":{"lastUpdate":1425010352383},"InputDevice.tonyu":{"lastUpdate":1416890086000},"Keys.tonyu":{"lastUpdate":1412697666000},"Map.tonyu":{"lastUpdate":1421122943495},"MapEditor.tonyu":{"lastUpdate":1421122943503},"MathMod.tonyu":{"lastUpdate":1424849946395},"MediaPlayer.tonyu":{"lastUpdate":1421384204625},"MML.tonyu":{"lastUpdate":1424849946399},"NoviceActor.tonyu":{"lastUpdate":1412697666000},"Pad.tonyu":{"lastUpdate":1421122943510},"Panel.tonyu":{"lastUpdate":1424849946404},"PlainChar.tonyu":{"lastUpdate":1421384204651},"PlayMod.tonyu":{"lastUpdate":1425018365373},"ScaledCanvas.tonyu":{"lastUpdate":1421122943524},"SecretChar.tonyu":{"lastUpdate":1421384204695},"SpriteChar.tonyu":{"lastUpdate":1421384204710},"Sprites.tonyu":{"lastUpdate":1421122943538},"T1Line.tonyu":{"lastUpdate":1421384204718},"T1Map.tonyu":{"lastUpdate":1421384204728},"T1Page.tonyu":{"lastUpdate":1421384204737},"T1Text.tonyu":{"lastUpdate":1421384204745},"T2Body.tonyu":{"lastUpdate":1425264703379},"T2Mod.tonyu":{"lastUpdate":1425020004839},"T2World.tonyu":{"lastUpdate":1425266002500},"TextChar.tonyu":{"lastUpdate":1421384204762},"TObject.tonyu":{"lastUpdate":1421122943543},"TQuery.tonyu":{"lastUpdate":1412697666000},"WaveTable.tonyu":{"lastUpdate":1412697666000}}',
       '.desktop': '{"runMenuOrd":["Main0121","Main1023","TouchedTestMain","Main2","MapLoad","Main","AcTestM","NObjTest","NObjTest2","AcTest","AltBoot","Ball","Bar","Bounce","MapTest","MapTest2nd","SetBGCTest","Label","PanelTest","BaseActor","Panel","MathMod"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -365,6 +365,119 @@
         '\\setVisible(v) {\n'+
         '    _isInvisible=!v;\n'+
         '}'
+      ,
+      'BodyActor.tonyu': 
+        'includes T2Mod;\n'+
+        'native Box2D;\n'+
+        '\n'+
+        '\\getWorld() {\n'+
+        '    if ($t2World) return $t2World;\n'+
+        '    $t2World=new T2World;\n'+
+        '    return $t2World;\n'+
+        '}\n'+
+        '\\onAppear() {\n'+
+        '    world=getWorld().world;\n'+
+        '    scale=getWorld().scale;\n'+
+        '    var b2Vec2 = Box2D.Common.Math.b2Vec2;\n'+
+        '    var b2BodyDef = Box2D.Dynamics.b2BodyDef;\n'+
+        '    var b2Body = Box2D.Dynamics.b2Body;\n'+
+        '    var b2FixtureDef = Box2D.Dynamics.b2FixtureDef;\n'+
+        '    var b2Fixture = Box2D.Dynamics.b2Fixture;\n'+
+        '    var b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;\n'+
+        '    var b2CircleShape = Box2D.Collision.Shapes.b2CircleShape;\n'+
+        '    \n'+
+        '    var fixDef = new b2FixtureDef;\n'+
+        '    fixDef.density = density || 1.0;\n'+
+        '    fixDef.friction = friction || 0.5;\n'+
+        '    fixDef.restitution = restitution || 0.2;\n'+
+        '    \n'+
+        '    var bodyDef = new b2BodyDef;\n'+
+        '    bodyDef.type = isStatic ? b2Body.b2_staticBody :\n'+
+        '    b2Body.b2_dynamicBody;\n'+
+        '    \n'+
+        '    bodyDef.position.x = x /scale;\n'+
+        '    bodyDef.position.y = y /scale;\n'+
+        '    shape=shape || (radius ? "circle" : "box");\n'+
+        '    var w=width,h=height;\n'+
+        '    if (!w) {\n'+
+        '        detectShape();\n'+
+        '        w=width*(scaleX||1);\n'+
+        '        h=height*(scaleY||scaleX||1);\n'+
+        '    }\n'+
+        '    if (shape=="box") {\n'+
+        '        if (!h) h=w;\n'+
+        '        fixDef.shape = new b2PolygonShape;\n'+
+        '        fixDef.shape.SetAsOrientedBox(w/2/scale, h/2/scale,\n'+
+        '        new b2Vec2(0,0),0);\n'+
+        '    } else {\n'+
+        '        radius=radius || w/2 || 16;\n'+
+        '        fixDef.shape = new b2CircleShape(\n'+
+        '        radius/scale\n'+
+        '        );\n'+
+        '        width=height=radius*2;\n'+
+        '    } \n'+
+        '    body=world.CreateBody(bodyDef);\n'+
+        '    body.CreateFixture(fixDef);\n'+
+        '    body.SetUserData(this);\n'+
+        '    body.SetAngle(rad(rotation));\n'+
+        '}\n'+
+        '\\allContact(klass) {\n'+
+        '    var res=[];\n'+
+        '    for (var c=world.GetContactList();c;c=c.GetNext()) {\n'+
+        '        if (c.IsTouching()) {\n'+
+        '            var a=c.GetFixtureA().GetBody().GetUserData();\n'+
+        '            var b=c.GetFixtureB().GetBody().GetUserData();\n'+
+        '            if (a===this) {\n'+
+        '                if (!klass || b===klass || b instanceof klass) {\n'+
+        '                    res.push(b);\n'+
+        '                }\n'+
+        '            } else if (b===this) {\n'+
+        '                if (!klass || a===klass || a instanceof klass) {\n'+
+        '                    res.push(a);\n'+
+        '                }\n'+
+        '            }\n'+
+        '        }\n'+
+        '    }\n'+
+        '    return res;\n'+
+        '}\n'+
+        '\\applyForce(fx,fy,px,py) {\n'+
+        '    var b2Vec2 = Box2D.Common.Math.b2Vec2;\n'+
+        '    var scale=getWorld().scale;\n'+
+        '    var fps=60;\n'+
+        '    body.ApplyForce(new b2Vec2(fx ,fy),body.GetPosition());\n'+
+        '}\n'+
+        '\\applyImpulse(fx,fy,px,py) {\n'+
+        '    var b2Vec2 = Box2D.Common.Math.b2Vec2;\n'+
+        '    var scale=getWorld().scale;\n'+
+        '    var fps=60;\n'+
+        '    body.ApplyImpulse(new b2Vec2(fx ,fy),body.GetPosition());\n'+
+        '}\n'+
+        '\n'+
+        '\\applyTorque(a) {\n'+
+        '    body.ApplyTorque(a);\n'+
+        '}\n'+
+        '\\moveBy(dx,dy) {\n'+
+        '    var pos=body.GetPosition();\n'+
+        '    pos.x+=dx/scale;\n'+
+        '    pos.y+=dy/scale;\n'+
+        '    body.SetPosition(pos);\n'+
+        '}\n'+
+        '\\contactTo(t) {\n'+
+        '    return allContact(t)[0];\n'+
+        '}\n'+
+        '\\die() {\n'+
+        '    super.die();\n'+
+        '    world.DestroyBody(body);\n'+
+        '}\n'+
+        '\\updatePos() {\n'+
+        '    if (!body) return;\n'+
+        '    var scale=getWorld().scale;\n'+
+        '    var pos=body.GetPosition();\n'+
+        '    x=pos.x*scale;\n'+
+        '    y=pos.y*scale;\n'+
+        '    rotation=deg(body.GetAngle());\n'+
+        '}\n'+
+        '\n'
       ,
       'Boot.tonyu': 
         'extends Actor;\n'+
@@ -1895,116 +2008,7 @@
         '}'
       ,
       'T2Body.tonyu': 
-        'includes T2Mod;\n'+
-        'native Box2D;\n'+
-        '\n'+
-        '\\getWorld() {\n'+
-        '    if ($t2World) return $t2World;\n'+
-        '    $t2World=new T2World;\n'+
-        '    return $t2World;\n'+
-        '}\n'+
-        '\\onAppear() {\n'+
-        '    world=getWorld().world;\n'+
-        '    scale=getWorld().scale;\n'+
-        '    var b2Vec2 = Box2D.Common.Math.b2Vec2;\n'+
-        '    var b2BodyDef = Box2D.Dynamics.b2BodyDef;\n'+
-        '    var b2Body = Box2D.Dynamics.b2Body;\n'+
-        '    var b2FixtureDef = Box2D.Dynamics.b2FixtureDef;\n'+
-        '    var b2Fixture = Box2D.Dynamics.b2Fixture;\n'+
-        '    var b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;\n'+
-        '    var b2CircleShape = Box2D.Collision.Shapes.b2CircleShape;\n'+
-        '    \n'+
-        '    var fixDef = new b2FixtureDef;\n'+
-        '    fixDef.density = density || 1.0;\n'+
-        '    fixDef.friction = friction || 0.5;\n'+
-        '    fixDef.restitution = restitution || 0.2;\n'+
-        '    \n'+
-        '    var bodyDef = new b2BodyDef;\n'+
-        '    bodyDef.type = isStatic ? b2Body.b2_staticBody :\n'+
-        '    b2Body.b2_dynamicBody;\n'+
-        '    \n'+
-        '    bodyDef.position.x = x /scale;\n'+
-        '    bodyDef.position.y = y /scale;\n'+
-        '    shape=shape || (radius ? "circle" : "box");\n'+
-        '    var w=width,h=height;\n'+
-        '    if (!w) {\n'+
-        '        detectShape();\n'+
-        '        w=width*(scaleX||1);\n'+
-        '        h=height*(scaleY||scaleX||1);\n'+
-        '    }\n'+
-        '    if (shape=="box") {\n'+
-        '        if (!h) h=w;\n'+
-        '        fixDef.shape = new b2PolygonShape;\n'+
-        '        fixDef.shape.SetAsOrientedBox(w/2/scale, h/2/scale,\n'+
-        '        new b2Vec2(0,0),0);\n'+
-        '    } else {\n'+
-        '        radius=radius || w/2 || 16;\n'+
-        '        fixDef.shape = new b2CircleShape(\n'+
-        '        radius/scale\n'+
-        '        );\n'+
-        '        width=height=radius*2;\n'+
-        '    } \n'+
-        '    body=world.CreateBody(bodyDef);\n'+
-        '    body.CreateFixture(fixDef);\n'+
-        '    body.SetUserData(this);\n'+
-        '    body.SetAngle(rad(rotation));\n'+
-        '}\n'+
-        '\\allContact(klass) {\n'+
-        '    var res=[];\n'+
-        '    for (var c=world.GetContactList();c;c=c.GetNext()) {\n'+
-        '        if (c.IsTouching()) {\n'+
-        '            var a=c.GetFixtureA().GetBody().GetUserData();\n'+
-        '            var b=c.GetFixtureB().GetBody().GetUserData();\n'+
-        '            if (a===this) {\n'+
-        '                if (!klass || b===klass || b instanceof klass) {\n'+
-        '                    res.push(b);\n'+
-        '                }\n'+
-        '            } else if (b===this) {\n'+
-        '                if (!klass || a===klass || a instanceof klass) {\n'+
-        '                    res.push(a);\n'+
-        '                }\n'+
-        '            }\n'+
-        '        }\n'+
-        '    }\n'+
-        '    return res;\n'+
-        '}\n'+
-        '\\applyForce(fx,fy,px,py) {\n'+
-        '    var b2Vec2 = Box2D.Common.Math.b2Vec2;\n'+
-        '    var scale=getWorld().scale;\n'+
-        '    var fps=60;\n'+
-        '    body.ApplyForce(bvec(fx*fps ,fy*fps),body.GetPosition());\n'+
-        '}\n'+
-        '\\applyImpulse(fx,fy,px,py) {\n'+
-        '    var b2Vec2 = Box2D.Common.Math.b2Vec2;\n'+
-        '    var scale=getWorld().scale;\n'+
-        '    var fps=60;\n'+
-        '    body.ApplyImpulse(bvec(fx*fps,fy*fps),body.GetPosition());\n'+
-        '}\n'+
-        '\n'+
-        '\\applyTorque(a) {\n'+
-        '    body.ApplyTorque(a);\n'+
-        '}\n'+
-        '\\moveBy(dx,dy) {\n'+
-        '    var pos=body.GetPosition();\n'+
-        '    pos.x+=dx/scale;\n'+
-        '    pos.y+=dy/scale;\n'+
-        '    body.SetPosition(pos);\n'+
-        '}\n'+
-        '\\contactTo(t) {\n'+
-        '    return allContact(t)[0];\n'+
-        '}\n'+
-        '\\die() {\n'+
-        '    super.die();\n'+
-        '    world.DestroyBody(body);\n'+
-        '}\n'+
-        '\\updatePos() {\n'+
-        '    if (!body) return;\n'+
-        '    var scale=getWorld().scale;\n'+
-        '    var pos=body.GetPosition();\n'+
-        '    x=pos.x*scale;\n'+
-        '    y=pos.y*scale;\n'+
-        '    rotation=deg(body.GetAngle());\n'+
-        '}'
+        'extends BodyActor;\n'
       ,
       'T2Mod.tonyu': 
         'native Box2D;\n'+
@@ -2031,15 +2035,17 @@
         '    gravityX=gravityX || 0;\n'+
         '    var b2World = Box2D.Dynamics.b2World;\n'+
         '    var b2Vec2 = Box2D.Common.Math.b2Vec2;\n'+
-        '    scale=scale || 30;\n'+
+        '    scale=scale || 32;\n'+
         '    world = new b2World(\n'+
         '    new b2Vec2(gravityX, gravity)    //gravity\n'+
         '    ,  true                 //allow sleep\n'+
         '    );\n'+
         '    $t2World=this;\n'+
-        '    $Boot.on("stop") \\() {\n'+
-        '        $t2World=null;\n'+
-        '    };\n'+
+        '    $Boot.on("stop",releaseWorld);\n'+
+        '    on("die",releaseWorld);\n'+
+        '}\n'+
+        '\\releaseWorld() {\n'+
+        '    if ($t2World===this) $t2World=null;\n'+
         '}\n'+
         '\n'+
         '\\loop() {\n'+
