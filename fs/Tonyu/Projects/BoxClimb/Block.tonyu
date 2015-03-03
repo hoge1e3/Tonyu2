@@ -1,6 +1,6 @@
 extends BodyActor;
 
-while(!screenOut()) {
+while(y<$screenHeight) {
     update();   
 }
 die();

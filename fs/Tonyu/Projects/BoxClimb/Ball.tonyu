@@ -4,11 +4,11 @@ while(y<450) {
     // 物理オブジェクトにぶつかっていれば
     if (c=contactTo()) {
         // スペースキーを押したときに上に瞬間的な力を加える
-        if (getkey("space")==1) applyImpulse(0,-16);
+        if (getkey("space")==1 || $pad.getButton(0)==1) applyImpulse(0,-16);
     }
     // 左右キーを押したときにゆっくりと力を加える
-    if (getkey("left")) applyForce(-10,0);
-    if (getkey("right")) applyForce(10,0);
+    if (getkey("left") || $pad.getLeft()) applyForce(-10,0);
+    if (getkey("right")|| $pad.getRight()) applyForce(10,0);
     update();
 }
 new Actor{x:230,y:200,text:"GameOver",size:20};
