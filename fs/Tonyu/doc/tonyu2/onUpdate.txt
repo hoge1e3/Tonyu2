@@ -1,0 +1,22 @@
+[[BaseActor]]
+
+*onUpdateメソッド
+
+[[update]]、[[updateEx]]が呼び出されたときにしたい処理をユーザが定義するメソッドです．
+
+詳しい処理内容については[[フレーム>frame]]を参照してください．
+
+*書式
+
+<<code
+onUpdate();
+>>
+※onUpdateは[[update]]メソッドから自動的に呼び出されます．ユーザが直接呼び出す必要はありません．
+
+*例1
+<<code
+function onUpdate(){
+    print("onUpdate");
+}
+>>
+このように書くと、[[update]]の度に"onUpdate"という文字列がコンソールに表示されます．

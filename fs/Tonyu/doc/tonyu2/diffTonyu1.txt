@@ -1,0 +1,88 @@
+[[index]]
+
+* Tonyu1 と Tonyu2 の違い
+
+ここでは，従来のTonyu System（Tonyu1）とTonyu System 2（Tonyu2）の違いを説明します．
+
+** 親クラス
+
+-[[@cfrag extends]] は省略可能です。省略すると[[Actor]]クラスを継承します。
+-Tonyu1 の SpriteChar, DxChar, TextChar, SecretChar はActorクラスで代用可能です
+-- Actorクラスのオブジェクトのフィールド[[@cfrag x]], [[@cfrag y]] に値を設定するとSpriteCharと同等
+-- [[@cfrag alpha]], [[@cfrag rotation]], [[@cfrag scaleX]], [[@cfrag scaleY]]に値を設定すると DxCharと同等
+-- [[@cfrag text]]に値を設定すると TextCharと同等
+-- いずれも設定しないか，[[@cfrag p]]に-1を設定すると SecretCharと同等
+
+-PanelCharクラスは，Actorクラスのオブジェクトに[[Panel]]クラスのオブジェクトを作成させることで代用します．
+-FrameManagerは未実装です．最初に実行させるクラス（たいてい「Main」などの名前をもつクラス）に，フレームが実行されるごとの処理を記述してください．
+
+** mainメソッド処理終了時の動作
+
+mainメソッドが終了してもオブジェクトは消えません．明示的に[[die]]メソッドを呼び出して下さい．
+
+この仕様により，「表示だけを行なう，何も動作しないオブジェクト」をActorクラスを継承せずとも作成可能です．（Tonyu1では，明示的にクラスを作成し，waitメソッドを呼び出す必要があります）
+
+例：
+<<code
+new Actor{p:$pat_BG, x:$screenWidth/2, y:$screenHeight/2}; // 背景
+new Actor{text:"タイトル", x:200, y:200}; // タイトルのテキスト
+>>
+
+**オブジェクトの生成と出現
+
+Tonyu1ではオブジェクトの生成は[[@plistref t1new]]のように，オブジェクトの種類によって指定されたフィールド（SpriteCharならx,y,p）の値を渡して生成していました．
+
+<<code Main t1new
+new Player(100,220,12);
+>>
+
+指定されたフィールド以外の値を渡す場合，[[@plistref t1new2]]のように，生成したオブジェクトを一旦変数に入れ，別の文を追加する必要がありました．
+<<code Main t1new2
+$player=new Player(100,220,12);
+$player.life=5;
+>>
+
+Tonyu2では，[[@plistref t2new]]のようにすべてのフィールドをオブジェクト生成時に一文で渡せるようになりました．
+
+<<code Main t2new
+new Player{x:100, y:220,p:12, life:5};
+>>
+
+※Tonyu2でも，[[@plistref t1new]]のようにx,y,pを渡すことは可能です．
+
+また，Tonyu1ではオブジェクトを実際に出現させるには[[@plistref t1appear]]のようにappearメソッドを呼び出す必要がありましたが，Tonyu2では不要になっています．
+
+<<code Main t1appear
+appear(new Player(100,220,12));
+>>
+
+**当たり判定の機能拡張
+
+- [[crashTo]]メソッドにクラスを渡すことが可能になりました
+--画面中の特定のクラスのオブジェクトのうちどれか１つ以上に衝突しているかどうかが判定できます
+--戻り値は衝突したオブジェクトのうちどれか１つになります．
+
+** オブジェクトの一括操作機能の追加
+
+- 複数のオブジェクトに同じ操作を適用させる命令が追加されました
+--[[all]]メソッド ： 画面上のすべてのオブジェクトや，特定のクラスのすべてのオブジェクトに対して操作を行う
+--[[allCrash]]メソッド： 衝突しているすべてのオブジェクトに対して操作を行う
+
+**タッチパネル・マルチタッチ対応
+
+-[[$touches]] 
+
+**メソッド・フィールドの変更点
+
+- [[getkey]]メソッド
+--（上位互換）引数に数値以外にキー名をあらわす文字列が渡せます
+- angle → [[@cfrag rotation]]
+-- （名称変更） 
+- 画面の大きさ変更
+-- （仕様変更）Tonyu1では，$screenWidth,$screenHeightに代入することで画面の大きさを変更していましたが，Tonyu2 では[[$Screen.resize>resize]]を用います
+- ファイルアクセス
+-- （仕様変更）Tonyu1では，FileReader, FileWriterクラスを用いてファイルにアクセスしましたが，Tonyu2では[[file]]メソッドを用います．
+
+
+
+.

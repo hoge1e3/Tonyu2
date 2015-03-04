@@ -1,0 +1,15 @@
+[[api]]
+
+* Tonyu1互換クラス
+
+Tonyu1で開発したアプリケーションを動作させるために必要なクラス群です。
+
+-[[PlainChar]]
+-[[SpriteChar]]
+-[[DxChar]]
+-[[TextChar]]
+-[[SecretChar]]
+-[[T1Map]]
+-[[T1Page]]
+-[[MediaPlayer]]
+

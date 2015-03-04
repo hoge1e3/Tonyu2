@@ -19,10 +19,10 @@ drawメソッドをオーバーライドすると，オブジェクトの表示�
 例
 <<code
 \draw(ctx) {
-   // 赤い四角形を表示
+   // この中では、ctxを用いて画面への描画が可能。描画方法はHTML5のCanvasに準拠。
+   // 例：赤い四角形を表示
    ctx.fillStyle="red";
    ctx.fillRect(x,y,20,20);
 }
 >>
-
 

@@ -77,5 +77,6 @@ $(function () {
     });
     ls();
     SplashScreen.hide();
+    sh.wikiEditor=function () {document.location.href="wikiEditor.html";};
 });
 });

@@ -1,0 +1,19 @@
+[[Boot]]
+*setFrameRateメソッド
+
+FPSを変更します．初期状態ではFPS=30です．
+
+**書式
+
+<<code
+setFrameRate(fps,frameSkipMax)
+>>
+
+fpsにゲームのFPS、frameSkipMaxに処理落ちした場合にスキップするフレーム数の最大値を渡します（何も渡さない場合は5になります）．
+
+*例
+
+<<code
+$Boot.setFrameRate(60);
+// FPSを60に設定します
+>>
