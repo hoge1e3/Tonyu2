@@ -42,7 +42,7 @@ define(["WebSite"],function (WebSite){
         var i=installed[name];
         if (!i) throw new Error("plugin not found: "+name);
         options=convOpt(options);
-        var src=WebSite.top+"/js/plugins/"+i.src;
+        var src=WebSite.pluginTop+"/"+i.src;
         $.getScript(src, options.onload);
     };
     plugins.request=function (name) {

@@ -9,7 +9,7 @@ define([], function () {
                 "images/Sample.png":"http://jsrun.it/assets/s/V/S/l/sVSlZ.png",
                 "images/neko.png":"http://jsrun.it/assets/j/D/9/q/jD9qQ.png",
                 "images/inputPad.png":"http://jsrun.it/assets/r/K/T/Y/rKTY9.png"
-            },top:"",devMode:devMode
+            },top:"",devMode:devMode, pluginTop: "http://tonyuedit.appspot.com/js/plugins"
         };
     } else if (
       loc.match(/tonyuexe\.appspot\.com/) ||
@@ -38,6 +38,9 @@ define([], function () {
         window.WebSite={
            urlAliases: {}, top: "../..",devMode:devMode
         };
+    }
+    if (!window.WebSite.pluginTop) {
+        window.WebSite.pluginTop=window.WebSite.top+"/js/plugins";
     }
     window.WebSite.disableROM={};
 	if (loc.match(/tonyuedit\.appspot\.com/) || loc.match(/localhost:8888/) ) {
