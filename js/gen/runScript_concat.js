@@ -1,4 +1,4 @@
-// Created at Wed Mar 04 2015 17:39:48 GMT+0900 (東京 (標準時))
+// Created at Wed Mar 04 2015 17:43:06 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -130,7 +130,7 @@ define([], function () {
     }
     window.WebSite.disableROM={};
 	if (loc.match(/tonyuedit\.appspot\.com/) || loc.match(/localhost:8888/) ) {
-	    window.WebSite.disableROM={"ROM_d.js":true};
+	    //window.WebSite.disableROM={"ROM_d.js":true};
 	}
     if (loc.match(/\.appspot\.com/) ||  loc.match(/localhost:888[87]/)) {
         window.WebSite.serverType="GAE";
