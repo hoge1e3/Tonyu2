@@ -1,3 +1,4 @@
+extends Actor;
 includes T2Mod;
 native Box2D;
 

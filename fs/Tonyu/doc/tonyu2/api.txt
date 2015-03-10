@@ -9,11 +9,11 @@ Tonyu2で最初から使えるクラス群です．[[ファイルシステム>fs
 -[[Boot]]
 -[[Sprites]]
 -[[ScaledCanvas]]
--[[NoviceActor]]
 -[[MathMod]]
 -[[Map]]
 -[[Panel]]
 -[[Pad]]
+-[[BodyActor]]
 -[[Tonyu1互換クラス>t1compats]]
 
 *グローバル変数
