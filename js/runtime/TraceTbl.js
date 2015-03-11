@@ -1,4 +1,6 @@
-Tonyu.TraceTbl=function () {
+define(["Tonyu", "FS", "TError"],
+function(Tonyu, FS, TError) {
+return Tonyu.TraceTbl=function () {
     var TTB={};
     var POSMAX=1000000;
     var pathIdSeq=1;
@@ -35,4 +37,5 @@ Tonyu.TraceTbl=function () {
     };
     return TTB;
 };
-if (typeof getReq=="function") getReq.exports("Tonyu.TraceTbl");
+//if (typeof getReq=="function") getReq.exports("Tonyu.TraceTbl");
+});

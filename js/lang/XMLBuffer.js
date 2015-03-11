@@ -1,7 +1,9 @@
 // var b=XMLBuffer(src);
 // b(node);
 // console.log(b.buf);
-function XMLBuffer(src) {
+define(["Parser"],
+function(Parser) {
+XMLBuffer=function (src) {
 	var $;
 	$=function (node, attrName){
 		//console.log("genX: "+node+ " typeof = "+typeof node+"  pos="+node.pos+" attrName="+attrName+" ary?="+(node instanceof Array));
@@ -87,3 +89,5 @@ XMLBuffer.orderByPos=function (node) {
 	return res;
 };
 XMLBuffer.SUBELEMENTS="[SUBELEMENTS]";
+return XMLBuffer;
+});

@@ -1,4 +1,5 @@
-IndentBuffer=function () {
+define([],function () {
+return IndentBuffer=function () {
 	var $=function () {
 		var args=arguments;
 		var fmt=args[0];
@@ -149,3 +150,4 @@ IndentBuffer=function () {
 	$.indentStr="  ";
 	return $;
 };
+});

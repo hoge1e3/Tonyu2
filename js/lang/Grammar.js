@@ -1,3 +1,4 @@
+define(["Parser"], function (Parser) {
 Grammar=function () {
 	var p=Parser;
 
@@ -94,3 +95,5 @@ Grammar=function () {
 	return $;
 };
 Grammar.SUBELEMENTS="[SUBELEMENTS]";
+return Grammar;
+});

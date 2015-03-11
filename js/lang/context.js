@@ -14,7 +14,8 @@
 
    });
  */
-function context() {
+define([],function () {
+return context=function () {
     var c={};
     c.ovrFunc=function (from , to) {
         to.parent=from;
@@ -39,4 +40,5 @@ function context() {
             c[k]=sv[k];
         }
     }
-}
+};
+});

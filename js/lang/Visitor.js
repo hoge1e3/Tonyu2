@@ -1,4 +1,5 @@
-Visitor = function (funcs) {
+define([],function (){
+return Visitor = function (funcs) {
 	var $={funcs:funcs, path:[]};
 	$.visit=function (node) {
 	    try {
@@ -28,3 +29,4 @@ Visitor = function (funcs) {
 	};
 	return $;
 };
+});

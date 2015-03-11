@@ -1,4 +1,5 @@
-ObjectMatcher=function () {
+define([],function () {
+return ObjectMatcher=function () {
     var OM={};
     var VAR="$var",THIZ="$this";
     OM.v=v;
@@ -48,3 +49,4 @@ ObjectMatcher=function () {
     }
     return OM;
 }();
+});
