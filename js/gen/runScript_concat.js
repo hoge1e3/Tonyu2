@@ -1,4 +1,4 @@
-// Created at Wed Mar 04 2015 17:54:43 GMT+0900 (東京 (標準時))
+// Created at Thu Mar 12 2015 17:30:19 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -726,7 +726,7 @@ requireSimulator.setName('fs/ROMk');
   var rom={
     base: '/Tonyu/Kernel/',
     data: {
-      '': '{".desktop":{"lastUpdate":1424849946377},"Actor.tonyu":{"lastUpdate":1425004177938},"BaseActor.tonyu":{"lastUpdate":1425018531557},"BodyActor.tonyu":{"lastUpdate":1425265847796},"Boot.tonyu":{"lastUpdate":1425019818961},"DxChar.tonyu":{"lastUpdate":1421384204610},"EventMod.tonyu":{"lastUpdate":1425010352383},"InputDevice.tonyu":{"lastUpdate":1416890086000},"Keys.tonyu":{"lastUpdate":1412697666000},"Map.tonyu":{"lastUpdate":1421122943495},"MapEditor.tonyu":{"lastUpdate":1421122943503},"MathMod.tonyu":{"lastUpdate":1424849946395},"MediaPlayer.tonyu":{"lastUpdate":1421384204625},"MML.tonyu":{"lastUpdate":1424849946399},"NoviceActor.tonyu":{"lastUpdate":1412697666000},"Pad.tonyu":{"lastUpdate":1421122943510},"Panel.tonyu":{"lastUpdate":1424849946404},"PlainChar.tonyu":{"lastUpdate":1421384204651},"PlayMod.tonyu":{"lastUpdate":1425018365373},"ScaledCanvas.tonyu":{"lastUpdate":1421122943524},"SecretChar.tonyu":{"lastUpdate":1421384204695},"SpriteChar.tonyu":{"lastUpdate":1421384204710},"Sprites.tonyu":{"lastUpdate":1421122943538},"T1Line.tonyu":{"lastUpdate":1421384204718},"T1Map.tonyu":{"lastUpdate":1421384204728},"T1Page.tonyu":{"lastUpdate":1421384204737},"T1Text.tonyu":{"lastUpdate":1421384204745},"T2Body.tonyu":{"lastUpdate":1425264703379},"T2Mod.tonyu":{"lastUpdate":1425020004839},"T2World.tonyu":{"lastUpdate":1425266002500},"TextChar.tonyu":{"lastUpdate":1421384204762},"TObject.tonyu":{"lastUpdate":1421122943543},"TQuery.tonyu":{"lastUpdate":1412697666000},"WaveTable.tonyu":{"lastUpdate":1412697666000}}',
+      '': '{".desktop":{"lastUpdate":1424849946377},"Actor.tonyu":{"lastUpdate":1425004177938},"BaseActor.tonyu":{"lastUpdate":1425018531557},"BodyActor.tonyu":{"lastUpdate":1425555929415},"Boot.tonyu":{"lastUpdate":1425019818961},"DxChar.tonyu":{"lastUpdate":1421384204610},"EventMod.tonyu":{"lastUpdate":1425010352383},"InputDevice.tonyu":{"lastUpdate":1416890086000},"Keys.tonyu":{"lastUpdate":1412697666000},"Map.tonyu":{"lastUpdate":1421122943495},"MapEditor.tonyu":{"lastUpdate":1421122943503},"MathMod.tonyu":{"lastUpdate":1424849946395},"MediaPlayer.tonyu":{"lastUpdate":1421384204625},"MML.tonyu":{"lastUpdate":1424849946399},"NoviceActor.tonyu":{"lastUpdate":1412697666000},"Pad.tonyu":{"lastUpdate":1421122943510},"Panel.tonyu":{"lastUpdate":1424849946404},"PlainChar.tonyu":{"lastUpdate":1421384204651},"PlayMod.tonyu":{"lastUpdate":1425018365373},"ScaledCanvas.tonyu":{"lastUpdate":1421122943524},"SecretChar.tonyu":{"lastUpdate":1421384204695},"SpriteChar.tonyu":{"lastUpdate":1421384204710},"Sprites.tonyu":{"lastUpdate":1421122943538},"T1Line.tonyu":{"lastUpdate":1421384204718},"T1Map.tonyu":{"lastUpdate":1421384204728},"T1Page.tonyu":{"lastUpdate":1421384204737},"T1Text.tonyu":{"lastUpdate":1421384204745},"T2Body.tonyu":{"lastUpdate":1425264703379},"T2Mod.tonyu":{"lastUpdate":1425020004839},"T2World.tonyu":{"lastUpdate":1425266002500},"TextChar.tonyu":{"lastUpdate":1421384204762},"TObject.tonyu":{"lastUpdate":1421122943543},"TQuery.tonyu":{"lastUpdate":1412697666000},"WaveTable.tonyu":{"lastUpdate":1412697666000}}',
       '.desktop': '{"runMenuOrd":["Main0121","Main1023","TouchedTestMain","Main2","MapLoad","Main","AcTestM","NObjTest","NObjTest2","AcTest","AltBoot","Ball","Bar","Bounce","MapTest","MapTest2nd","SetBGCTest","Label","PanelTest","BaseActor","Panel","MathMod"]}',
       'Actor.tonyu': 
         'extends BaseActor;\n'+
@@ -1091,6 +1091,7 @@ requireSimulator.setName('fs/ROMk');
         '}'
       ,
       'BodyActor.tonyu': 
+        'extends Actor;\n'+
         'includes T2Mod;\n'+
         'native Box2D;\n'+
         '\n'+
@@ -3042,7 +3043,11 @@ requireSimulator.setName('fs/ROMk');
   }
 })();
 requireSimulator.setName('Tonyu');
-Tonyu=function () {
+if (typeof define!=="function") {
+   define=require("requirejs").define;
+}
+define([],function () {
+return Tonyu=function () {
     var preemptionTime=60;
     function thread() {
 	//var stpd=0;
@@ -3402,6 +3407,7 @@ Tonyu=function () {
             A:A};
 }();
 
+});
 requireSimulator.setName('Tonyu.Iterator');
 define(["Tonyu"], function (T) {
    function IT(set, arity) {
@@ -3461,7 +3467,11 @@ define(["Tonyu"], function (T) {
     return IT;
 });
 requireSimulator.setName('IndentBuffer');
-IndentBuffer=function () {
+if (typeof define!=="function") {
+   define=require("requirejs").define;
+}
+define([],function () {
+return IndentBuffer=function () {
 	var $=function () {
 		var args=arguments;
 		var fmt=args[0];
@@ -3612,7 +3622,7 @@ IndentBuffer=function () {
 	$.indentStr="  ";
 	return $;
 };
-
+});
 requireSimulator.setName('disp');
 // オブジェクトの内容を表示する． デバッグ用
 function disp(a) {
@@ -3639,7 +3649,11 @@ function disp(a) {
 }
 
 requireSimulator.setName('Parser');
-Parser=function () {
+if (typeof define!=="function") {
+   define=require("requirejs").define;
+}
+define(["disp"],function(disp) {
+return Parser=function () {
     function extend(dst, src) {
         var i;
         for(i in src){
@@ -4236,7 +4250,13 @@ Parser=function () {
     return $;
 }();
 
+});
 requireSimulator.setName('Grammar');
+if (typeof define!=="function") {
+   define=require("requirejs").define;
+}
+
+define(["Parser"], function (Parser) {
 Grammar=function () {
 	var p=Parser;
 
@@ -4333,11 +4353,18 @@ Grammar=function () {
 	return $;
 };
 Grammar.SUBELEMENTS="[SUBELEMENTS]";
+return Grammar;
+});
 requireSimulator.setName('XMLBuffer');
 // var b=XMLBuffer(src);
 // b(node);
 // console.log(b.buf);
-function XMLBuffer(src) {
+if (typeof define!=="function") {
+   define=require("requirejs").define;
+}
+define(["Parser"],
+function(Parser) {
+XMLBuffer=function (src) {
 	var $;
 	$=function (node, attrName){
 		//console.log("genX: "+node+ " typeof = "+typeof node+"  pos="+node.pos+" attrName="+attrName+" ary?="+(node instanceof Array));
@@ -4423,8 +4450,14 @@ XMLBuffer.orderByPos=function (node) {
 	return res;
 };
 XMLBuffer.SUBELEMENTS="[SUBELEMENTS]";
+return XMLBuffer;
+});
 requireSimulator.setName('TError');
-function TError(mesg, src, pos) {
+if (typeof define!=="function") {
+   define=require("requirejs").define;
+}
+define([],function () {
+return TError=function (mesg, src, pos) {
     if (typeof src=="string") {
         return {
             isTError:true,
@@ -4460,7 +4493,8 @@ function TError(mesg, src, pos) {
             throw this;
         }
     };
-}
+};
+});
 requireSimulator.setName('TT');
 /*sys.load("js/parser.js");
 sys.load("js/ExpressionParser2Tonyu.js");
@@ -4470,8 +4504,12 @@ sys.load("js/IndentBuffer.js");
 sys.load("js/disp.js");
 sys.load("js/profiler.js");
 */
-
-TT=function () {
+if (typeof define!=="function") {
+   define=require("requirejs").define;
+}
+define(["Grammar", "XMLBuffer", "IndentBuffer","disp", "Parser","TError"],
+function (Grammar, XMLBuffer, IndentBuffer, disp, Parser,TError) {
+return TT=function () {
 	function profileTbl(parser, name) {
 		var tbl=parser._first.tbl;
 		for (var c in tbl) {
@@ -4748,9 +4786,15 @@ TT=function () {
     return {parse:parse, extension:"js"};
 }();
 
+});
 requireSimulator.setName('ExpressionParser');
+if (typeof define!=="function") {
+   define=require("requirejs").define;
+}
+
+define(["Parser"], function (Parser) {
 // parser.js の補助ライブラリ．式の解析を担当する
-function ExpressionParser() {
+return ExpressionParser=function () {
 	var $={};
 	var EXPSTAT="EXPSTAT";
 	//  first 10     *  +  <>  &&  ||  =     0  later
@@ -5016,27 +5060,24 @@ function ExpressionParser() {
 		});
 	};
 	return $;
-}
+};
+
+});
 requireSimulator.setName('TonyuLang');
+if (typeof define!=="function") {
+   define=require("requirejs").define;
+}
+
 /*
  * Tonyu2 の構文解析を行う．
  * TonyuLang.parse(src);
  *   - srcを解析して構文木を返す．構文エラーがあれば例外を投げる．
  */
-/*sys.load("js/parser.js");
-sys.load("js/ExpressionParser2Tonyu.js");
-sys.load("js/GrammarTonyu.js");
-sys.load("js/TError.js");
-sys.load("js/XMLBuffer.js");
-sys.load("js/IndentBuffer.js");
-sys.load("js/disp.js");
-sys.load("js/profiler.js");
-Parser.options.traceTap=false;
-sys.load("js/parser/tonyu2_token.js");
-//Parser.options.traceTap=true;
-*/
-
-TonyuLang=function () {
+define(["Grammar", "XMLBuffer", "IndentBuffer", "TT",
+        "disp", "Parser", "ExpressionParser", "TError"],
+function (Grammar, XMLBuffer, IndentBuffer, TT,
+        disp, Parser, ExpressionParser, TError) {
+return TonyuLang=function () {
 	var p=Parser;
 	var $={};
 	var g=Grammar();
@@ -5307,8 +5348,13 @@ TonyuLang=function () {
 	return $;
 }();
 
+});
 requireSimulator.setName('ObjectMatcher');
-ObjectMatcher=function () {
+if (typeof define!=="function") {
+   define=require("requirejs").define;
+}
+define([],function () {
+return ObjectMatcher=function () {
     var OM={};
     var VAR="$var",THIZ="$this";
     OM.v=v;
@@ -5358,6 +5404,7 @@ ObjectMatcher=function () {
     }
     return OM;
 }();
+});
 requireSimulator.setName('context');
 /*
  コード生成中に使う補助ライブラリ．自分の処理しているクラス，メソッド，変数などの情報を保持する
@@ -5375,7 +5422,11 @@ requireSimulator.setName('context');
 
    });
  */
-function context() {
+if (typeof define!=="function") {
+   define=require("requirejs").define;
+}
+define([],function () {
+return context=function () {
     var c={};
     c.ovrFunc=function (from , to) {
         to.parent=from;
@@ -5400,9 +5451,14 @@ function context() {
             c[k]=sv[k];
         }
     }
-}
+};
+});
 requireSimulator.setName('Visitor');
-Visitor = function (funcs) {
+if (typeof define!=="function") {
+   define=require("requirejs").define;
+}
+define([],function (){
+return Visitor = function (funcs) {
 	var $={funcs:funcs, path:[]};
 	$.visit=function (node) {
 	    try {
@@ -5432,8 +5488,14 @@ Visitor = function (funcs) {
 	};
 	return $;
 };
+});
 requireSimulator.setName('Tonyu.Compiler');
-Tonyu.Compiler=(function () {
+if (typeof define!=="function") {
+   define=require("requirejs").define;
+}
+define(["Tonyu", "Tonyu.Iterator", "TonyuLang", "ObjectMatcher", "TError", "IndentBuffer", "context", "Visitor"],
+function(Tonyu, Tonyu_iterator, TonyuLang, ObjectMatcher, TError, IndentBuffer, context, Visitor) {
+return Tonyu.Compiler=(function () {
 // TonyuソースファイルをJavascriptに変換する
 var TH="_thread",THIZ="_this", ARGS="_arguments",FIBPRE="fiber$", FRMPC="__pc", LASTPOS="$LASTPOS",CNTV="__cnt",CNTC=100;
 var BINDF="Tonyu.bindFunc";
@@ -6770,10 +6832,12 @@ function genJS(klass, env,pass) {
 }
 return {initClassDecls:initClassDecls, genJS:genJS};
 })();
-if (typeof getReq=="function") getReq.exports("Tonyu.Compiler");
-
+//if (typeof getReq=="function") getReq.exports("Tonyu.Compiler");
+});
 requireSimulator.setName('Tonyu.TraceTbl');
-Tonyu.TraceTbl=function () {
+define(["Tonyu", "FS", "TError"],
+function(Tonyu, FS, TError) {
+return Tonyu.TraceTbl=function () {
     var TTB={};
     var POSMAX=1000000;
     var pathIdSeq=1;
@@ -6810,7 +6874,8 @@ Tonyu.TraceTbl=function () {
     };
     return TTB;
 };
-if (typeof getReq=="function") getReq.exports("Tonyu.TraceTbl");
+//if (typeof getReq=="function") getReq.exports("Tonyu.TraceTbl");
+});
 requireSimulator.setName('PatternParser');
 define(["Tonyu"], function (Tonyu) {return Tonyu.klass({
 	initialize: function (img, options) {
@@ -7142,6 +7207,9 @@ define([],function (){
     return trc;
 });
 requireSimulator.setName('typeCheck');
+if (typeof define!=="function") {
+   define=require("requirejs").define;
+}
 define(["Visitor"],function (Visitor) {
 TypeCheck=function () {
     var ex={"[SUBELEMENTS]":1,pos:1,len:1};
