@@ -1,3 +1,6 @@
+if (typeof define!=="function") {
+   define=require("requirejs").define;
+}
 define(["Visitor"],function (Visitor) {
 TypeCheck=function () {
     var ex={"[SUBELEMENTS]":1,pos:1,len:1};

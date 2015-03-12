@@ -1,3 +1,6 @@
+if (typeof define!=="function") {
+   define=require("requirejs").define;
+}
 define([],function () {
 return Tonyu=function () {
     var preemptionTime=60;

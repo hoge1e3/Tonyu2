@@ -6,6 +6,9 @@ sys.load("js/IndentBuffer.js");
 sys.load("js/disp.js");
 sys.load("js/profiler.js");
 */
+if (typeof define!=="function") {
+   define=require("requirejs").define;
+}
 define(["Grammar", "XMLBuffer", "IndentBuffer","disp", "Parser","TError"],
 function (Grammar, XMLBuffer, IndentBuffer, disp, Parser,TError) {
 return TT=function () {

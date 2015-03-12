@@ -212,7 +212,7 @@ var reqConf={
             "Tonyu.Project": "ide/TonyuProject",
             "thumbnail": "ide/thumbnail",
             "showErrorPos": "ide/ErrorPos",
-            "TError": "ide/TError",
+            "TError": "runtime/TError",
             "ide/editor": "ide/editor",
             "fs/ROMk": "../fs/Tonyu/js/gen/ROM_k",
             "fs/ROMd": "../fs/Tonyu/js/gen/ROM_d",

@@ -1,3 +1,7 @@
+if (typeof define!=="function") {
+   define=require("requirejs").define;
+}
+
 /*
  * Tonyu2 の構文解析を行う．
  * TonyuLang.parse(src);

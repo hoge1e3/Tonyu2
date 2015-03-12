@@ -1,3 +1,7 @@
+if (typeof define!=="function") {
+   define=require("requirejs").define;
+}
+
 define(["Parser"], function (Parser) {
 Grammar=function () {
 	var p=Parser;

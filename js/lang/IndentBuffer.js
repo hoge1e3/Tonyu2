@@ -1,3 +1,6 @@
+if (typeof define!=="function") {
+   define=require("requirejs").define;
+}
 define([],function () {
 return IndentBuffer=function () {
 	var $=function () {

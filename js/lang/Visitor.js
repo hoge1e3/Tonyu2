@@ -1,3 +1,6 @@
+if (typeof define!=="function") {
+   define=require("requirejs").define;
+}
 define([],function (){
 return Visitor = function (funcs) {
 	var $={funcs:funcs, path:[]};

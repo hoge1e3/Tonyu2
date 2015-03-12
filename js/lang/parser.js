@@ -1,3 +1,6 @@
+if (typeof define!=="function") {
+   define=require("requirejs").define;
+}
 define(["disp"],function(disp) {
 return Parser=function () {
     function extend(dst, src) {

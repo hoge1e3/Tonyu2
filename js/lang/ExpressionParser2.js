@@ -1,3 +1,7 @@
+if (typeof define!=="function") {
+   define=require("requirejs").define;
+}
+
 define(["Parser"], function (Parser) {
 // parser.js の補助ライブラリ．式の解析を担当する
 return ExpressionParser=function () {

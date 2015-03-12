@@ -14,6 +14,9 @@
 
    });
  */
+if (typeof define!=="function") {
+   define=require("requirejs").define;
+}
 define([],function () {
 return context=function () {
     var c={};

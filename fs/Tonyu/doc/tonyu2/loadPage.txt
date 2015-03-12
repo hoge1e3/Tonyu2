@@ -1,0 +1,39 @@
+[[BaseActor]]
+
+* loadPageメソッド
+
+それまで動いていたオブジェクトをすべて消して、新しいページを読み込みます。
+
+**書式
+
+<<code
+loadPage(Class, args);
+>>
+
+- Class には、ページオブジェクト（後述）のクラスを指定します。
+- args （省略可）には ページオブジェクトを生成するときに渡す引数を指定します。
+
+**ページオブジェクトの作り方
+
+ページオブジェクトとは、通常のオブジェクトと同じものですが、主に他のオブジェクトを生成する働きをもったオブジェクトのことを指します。
+
+ページオブジェクトの例：
+
+<<code Stage1.tonyu
+//プレイヤーを生成
+new Player{x:200,y:400};
+//敵を10体生成
+for (i=0 ;i<10; i++) {
+   new Enemy{x:rnd(300),y:rnd(300)};
+}
+>>
+
+例えば、上で作成したStage1 をloadPageを用いて呼び出すには次のようにします：
+
+<<code Title.tonyu
+new Actor{x:230,y:50, text:"Press Space Key"};
+while(true) {
+  if(getkey("space")==1) loadPage(Stage1);
+  update();
+}
+>>
