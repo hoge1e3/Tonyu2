@@ -28,42 +28,41 @@ requirejs(["Shell","Wiki","FS","requestFragment","WebSite"], function (sh,Wiki,F
         }
         //alert(h.html());
     };*/
-    sh.wiki2serv=function (dirPath) {
+    sh.wiki2serv=function (wikiDirPath,htmlDirPath) {
         var h=$("<div>");
-        var base=sh.resolve(dirPath);
-        var w=Wiki(h,base,{useAnchor:true});
+        var wikiDir=sh.resolve(wikiDirPath);
+        var htmlDir=sh.resolve(htmlDirPath);
+        var w=Wiki(h,wikiDir,{useAnchor:true});
         //var data={};
-        base.recursive(function (txtFile) {
-            if (!txtFile.endsWith(".txt")) return;
-            // base= file:/Tonyu/doc/
-            // txtFile=file:/Tonyu/doc/index.txt
-            var dst=base.rel("html/").   // file:/Tonyu/doc/html/
-            rel(txtFile.relPath(base)).   //rel("index.txt") -> file:/Tonyu/doc/html/index.txt
+        wikiDir.recursive(function (wikiFile) {
+            if (!wikiFile.endsWith(".txt")) return;
+            // wikiDir=/fs/Tonyu/doc/
+            // wikiFile=/fs/Tonyu/doc/index.txt
+            var htmlFilePath=htmlDir.   // /doc/
+            rel(wikiFile.relPath(wikiDir)).   //rel("index.txt") -> /doc/index.txt
             path().replace(
                     /\.txt$/,".html"
-            );  // /Tonyu/doc/html/index.html
-            if (dst!=txtFile.path()) {
-                w.show(txtFile);
-                var src="<link rel='stylesheet' href='/css/bootstrap.css'/>\n";
-                src+="<style>"+
-                "body{padding-top:20px; margin-left: 20px; margin-right:20px;}"+
-                "</style>\n";
-                src+="<title>"+txtFile.truncExt(".txt")+"</title>\n";
-                src+=h.html();
-                //data[FS.get(dst).relPath(base)]=src;
-                FS.get(dst).text(src);
-                sh.echo("generated ",txtFile.relPath(base),"->",dst);
-            } else {
-                sh.echo(dst,":same path");
-            }
+            );  // /doc/index.html
+            var htmlFile=FS.get(htmlFilePath);
+            w.show(wikiFile);
+            var src="<link rel='stylesheet' href='/css/bootstrap.css'/>\n";
+            src+="<style>"+
+            "body{padding-top:20px; margin-left: 20px; margin-right:20px;}"+
+            "</style>\n";
+            src+="<title>"+wikiFile.truncExt(".txt")+"</title>\n";
+            src+=h.html();
+            //data[FS.get(htmlDir).relPath(wikiDir)]=src;
+            htmlFile.text(src);
+            sh.echo("generated ",wikiFile.path(),"->",htmlFile.path());
+
         });
 
-        /*console.log(base.path(), data);
+        /*console.log(wikiDir.path(), data);
         $.post("/edit/LS2FileSync",{
-            base:base.path() ,
+            base:wikiDir.path() ,
             data:JSON.stringify(data)
         });*/
 
     };
-    sh.wiki2serv.description="wiki2serv ../doc/";
+    sh.wiki2serv.description="wiki2serv ../doc/ ../../../doc/";
 });
