@@ -10,6 +10,7 @@ define(["genROM","dumpScript","Util","FS","Sync","Shell","WebSite"],
         genROM(home.rel("SampleROM/"),  home.rel("js/gen/ROM_s.js"));
         var ds=require("dumpScript");
         var reqConf=ds.genShim();
+        window.generatedShim=reqConf;
         ds.concat({names:["fs/ROMk","fs/ROMd","fs/ROMs","ide/selProject"], outFile:"index",reqConf:reqConf});
         ds.concat({names: ["fs/ROMk","fs/ROMd","fs/ROMs","ide/editor"], outFile:"project",reqConf:reqConf});
         ds.concat({names: ["fs/ROMk","runScript"], outFile:"runScript",reqConf:reqConf});

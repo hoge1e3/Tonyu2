@@ -1,32 +1,32 @@
 <link rel='stylesheet' href='/css/bootstrap.css'/>
 <style>body{padding-top:20px; margin-left: 20px; margin-right:20px;}</style>
 <title>sprite</title>
-<div><a id="marker_27505-0" name="marker_27505-0"></a><a href="firstRun.html">前へ</a><span> - </span><a href="spriteMove.html">次へ</a><span> - </span><a href="projectIndex.html">目次</a><span>
-</span><h1><a id="marker_27505-1" name="marker_27505-1"></a><span> 値を変えてみましょう</span></h1><a id="marker_27505-2" name="marker_27505-2"></a><p></p><a id="marker_27505-3" name="marker_27505-3"></a><span>プログラムは，命令を実行します．</span><span>
-</span><a id="marker_27505-4" name="marker_27505-4"></a><span>ここでは，go という命令を使って，画面に絵を表示させています．</span><span>
-</span><a id="marker_27505-5" name="marker_27505-5"></a><p></p><a id="marker_27505-8" name="marker_27505-8"></a><pre><a id="marker_27505-7" name="marker_27505-7"></a><span>go(50,100);</span><span>
-</span></pre><a id="marker_27505-9" name="marker_27505-9"></a><p></p><a id="marker_27505-10" name="marker_27505-10"></a><span>ここで， 50 や 100 などの数値を別の数値に変えてみましょう</span><span>
-</span><a id="marker_27505-11" name="marker_27505-11"></a><p></p><a id="marker_27505-14" name="marker_27505-14"></a><pre><a id="marker_27505-13" name="marker_27505-13"></a><span>go(150,100);</span><span>
-</span></pre><a id="marker_27505-15" name="marker_27505-15"></a><p></p><a id="marker_27505-16" name="marker_27505-16"></a><span>もう一度， </span><span class="clickable">実行</span><span> メニューをクリックするか，F9 キーを押して実行します．</span><span>
-</span><a id="marker_27505-17" name="marker_27505-17"></a><p></p><a id="marker_27505-18" name="marker_27505-18"></a><span>画面上の位置を決めるには，2つの数値が必要になります．</span><span>
-</span><a id="marker_27505-19" name="marker_27505-19"></a><span>それは，「横の位置」と「縦の位置」です．</span><span>
-</span><a id="marker_27505-22" name="marker_27505-22"></a><ul><li><a id="marker_27505-20" name="marker_27505-20"></a><span>横の位置は「画面左端から何ピクセル離れているか」をあらわした数値です</span><span>
-</span></li><li><a id="marker_27505-21" name="marker_27505-21"></a><span>縦の位置は「画面上端から何ピクセル離れているか」をあらわした数値です</span><span>
-</span></li></ul><p></p><a id="marker_27505-23" name="marker_27505-23"></a><span>横の位置と縦の位置をまとめてあらわしたものを「座標」といい，</span><span>
-</span><a id="marker_27505-24" name="marker_27505-24"></a><p></p><a id="marker_27505-25" name="marker_27505-25"></a><span>(横の位置,縦の位置)</span><span>
-</span><a id="marker_27505-26" name="marker_27505-26"></a><p></p><a id="marker_27505-27" name="marker_27505-27"></a><span>という形式であらわします．</span><span>
-</span><a id="marker_27505-28" name="marker_27505-28"></a><p></p><a id="marker_27505-29" name="marker_27505-29"></a><span>例えば(50,100) という座標は，次のような位置をあらわします．</span><span>
-</span><a id="marker_27505-32" name="marker_27505-32"></a><ul><li><a id="marker_27505-30" name="marker_27505-30"></a><span>画面左端から50ピクセル離れた位置</span><span>
-</span></li><li><a id="marker_27505-31" name="marker_27505-31"></a><span>画面上端から100ピクセル離れた位置</span><span>
-</span></li></ul><p></p><a id="marker_27505-33" name="marker_27505-33"></a><div class="figure"><div><img src="../../doc/images/50_100.png"></div><div><span>図1.</span><span>座標</span></div></div><span>
-</span><a id="marker_27505-34" name="marker_27505-34"></a><p></p><a id="marker_27505-35" name="marker_27505-35"></a><span>いろいろな位置の座標を</span><strong>図2</strong><span>にまとめました．それぞれの数値の違いに注目しましょう．</span><span>
-</span><a id="marker_27505-36" name="marker_27505-36"></a><p></p><a id="marker_27505-37" name="marker_27505-37"></a><div class="figure"><div><img src="../../doc/images/coords.png"></div><div><span>図2.</span><span>位置と座標</span></div></div><span>
-</span><a id="marker_27505-38" name="marker_27505-38"></a><p></p><a id="marker_27505-39" name="marker_27505-39"></a><span>ここで出てきたgo という命令は，go の後ろに書いた座標の位置に，絵を表示します．</span><span>
-</span><a id="marker_27505-40" name="marker_27505-40"></a><p></p><a id="marker_27505-41" name="marker_27505-41"></a><span>命令は，次のような形式で書きます．</span><span>
-</span><a id="marker_27505-42" name="marker_27505-42"></a><p></p><a id="marker_27505-45" name="marker_27505-45"></a><pre><a id="marker_27505-44" name="marker_27505-44"></a><span>命令の名前 ( 引数 , 引数 ...);</span><span>
-</span></pre><a id="marker_27505-46" name="marker_27505-46"></a><span>引数（ひきすう）とは，命令を行うときに必要な情報をあらわします．</span><span>
-</span><a id="marker_27505-47" name="marker_27505-47"></a><p></p><a id="marker_27505-48" name="marker_27505-48"></a><span>例えば，</span><code><span>go(100,50);</span></code><span> は </span><code><span>go</span></code><span>という名前の命令を，</span><span>
-</span><a id="marker_27505-49" name="marker_27505-49"></a><span>100 と 50 という2つの引数（どこに移動するか，という情報）を</span><span>
-</span><a id="marker_27505-50" name="marker_27505-50"></a><span>使って行います．</span><span>
-</span><a id="marker_27505-51" name="marker_27505-51"></a><a href="firstRun.html">前へ</a><span> - </span><a href="spriteMove.html">次へ</a><span> - </span><a href="projectIndex.html">目次</a><span>
+<div><a id="marker_98932-0" name="marker_98932-0"></a><a href="firstRun.html">前へ</a><span> - </span><a href="spriteMove.html">次へ</a><span> - </span><a href="projectIndex.html">目次</a><span>
+</span><h1><a id="marker_98932-1" name="marker_98932-1"></a><span> 値を変えてみましょう</span></h1><a id="marker_98932-2" name="marker_98932-2"></a><p></p><a id="marker_98932-3" name="marker_98932-3"></a><span>プログラムは，命令を実行します．</span><span>
+</span><a id="marker_98932-4" name="marker_98932-4"></a><span>ここでは，go という命令を使って，画面に絵を表示させています．</span><span>
+</span><a id="marker_98932-5" name="marker_98932-5"></a><p></p><a id="marker_98932-8" name="marker_98932-8"></a><pre><a id="marker_98932-7" name="marker_98932-7"></a><span>go(50,100);</span><span>
+</span></pre><a id="marker_98932-9" name="marker_98932-9"></a><p></p><a id="marker_98932-10" name="marker_98932-10"></a><span>ここで， 50 や 100 などの数値を別の数値に変えてみましょう</span><span>
+</span><a id="marker_98932-11" name="marker_98932-11"></a><p></p><a id="marker_98932-14" name="marker_98932-14"></a><pre><a id="marker_98932-13" name="marker_98932-13"></a><span>go(150,100);</span><span>
+</span></pre><a id="marker_98932-15" name="marker_98932-15"></a><p></p><a id="marker_98932-16" name="marker_98932-16"></a><span>もう一度， </span><span class="clickable">実行</span><span> メニューをクリックするか，F9 キーを押して実行します．</span><span>
+</span><a id="marker_98932-17" name="marker_98932-17"></a><p></p><a id="marker_98932-18" name="marker_98932-18"></a><span>画面上の位置を決めるには，2つの数値が必要になります．</span><span>
+</span><a id="marker_98932-19" name="marker_98932-19"></a><span>それは，「横の位置」と「縦の位置」です．</span><span>
+</span><a id="marker_98932-22" name="marker_98932-22"></a><ul><li><a id="marker_98932-20" name="marker_98932-20"></a><span>横の位置は「画面左端から何ピクセル離れているか」をあらわした数値です</span><span>
+</span></li><li><a id="marker_98932-21" name="marker_98932-21"></a><span>縦の位置は「画面上端から何ピクセル離れているか」をあらわした数値です</span><span>
+</span></li></ul><p></p><a id="marker_98932-23" name="marker_98932-23"></a><span>横の位置と縦の位置をまとめてあらわしたものを「座標」といい，</span><span>
+</span><a id="marker_98932-24" name="marker_98932-24"></a><p></p><a id="marker_98932-25" name="marker_98932-25"></a><span>(横の位置,縦の位置)</span><span>
+</span><a id="marker_98932-26" name="marker_98932-26"></a><p></p><a id="marker_98932-27" name="marker_98932-27"></a><span>という形式であらわします．</span><span>
+</span><a id="marker_98932-28" name="marker_98932-28"></a><p></p><a id="marker_98932-29" name="marker_98932-29"></a><span>例えば(50,100) という座標は，次のような位置をあらわします．</span><span>
+</span><a id="marker_98932-32" name="marker_98932-32"></a><ul><li><a id="marker_98932-30" name="marker_98932-30"></a><span>画面左端から50ピクセル離れた位置</span><span>
+</span></li><li><a id="marker_98932-31" name="marker_98932-31"></a><span>画面上端から100ピクセル離れた位置</span><span>
+</span></li></ul><p></p><a id="marker_98932-33" name="marker_98932-33"></a><div class="figure"><div><img src="../../doc/images/50_100.png"></div><div><span>図1.</span><span>座標</span></div></div><span>
+</span><a id="marker_98932-34" name="marker_98932-34"></a><p></p><a id="marker_98932-35" name="marker_98932-35"></a><span>いろいろな位置の座標を</span><strong>図2</strong><span>にまとめました．それぞれの数値の違いに注目しましょう．</span><span>
+</span><a id="marker_98932-36" name="marker_98932-36"></a><p></p><a id="marker_98932-37" name="marker_98932-37"></a><div class="figure"><div><img src="../../doc/images/coords.png"></div><div><span>図2.</span><span>位置と座標</span></div></div><span>
+</span><a id="marker_98932-38" name="marker_98932-38"></a><p></p><a id="marker_98932-39" name="marker_98932-39"></a><span>ここで出てきたgo という命令は，go の後ろに書いた座標の位置に，絵を表示します．</span><span>
+</span><a id="marker_98932-40" name="marker_98932-40"></a><p></p><a id="marker_98932-41" name="marker_98932-41"></a><span>命令は，次のような形式で書きます．</span><span>
+</span><a id="marker_98932-42" name="marker_98932-42"></a><p></p><a id="marker_98932-45" name="marker_98932-45"></a><pre><a id="marker_98932-44" name="marker_98932-44"></a><span>命令の名前 ( 引数 , 引数 ...);</span><span>
+</span></pre><a id="marker_98932-46" name="marker_98932-46"></a><span>引数（ひきすう）とは，命令を行うときに必要な情報をあらわします．</span><span>
+</span><a id="marker_98932-47" name="marker_98932-47"></a><p></p><a id="marker_98932-48" name="marker_98932-48"></a><span>例えば，</span><code><span>go(100,50);</span></code><span> は </span><code><span>go</span></code><span>という名前の命令を，</span><span>
+</span><a id="marker_98932-49" name="marker_98932-49"></a><span>100 と 50 という2つの引数（どこに移動するか，という情報）を</span><span>
+</span><a id="marker_98932-50" name="marker_98932-50"></a><span>使って行います．</span><span>
+</span><a id="marker_98932-51" name="marker_98932-51"></a><a href="firstRun.html">前へ</a><span> - </span><a href="spriteMove.html">次へ</a><span> - </span><a href="projectIndex.html">目次</a><span>
 </span></div><div style="height: 100px;"></div>

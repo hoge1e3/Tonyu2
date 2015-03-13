@@ -1,53 +1,53 @@
 <link rel='stylesheet' href='/css/bootstrap.css'/>
 <style>body{padding-top:20px; margin-left: 20px; margin-right:20px;}</style>
 <title>while</title>
-<div><a id="marker_27505-0" name="marker_27505-0"></a><a href="inc.html">前へ</a><span> - </span><a href="true.html">次へ</a><span> - </span><a href="projectIndex.html">目次</a><span>
-</span><h1><a id="marker_27505-1" name="marker_27505-1"></a><span> 繰り返しを使ってプログラムを短くしましょう</span></h1><a id="marker_27505-2" name="marker_27505-2"></a><p></p><a id="marker_27505-3" name="marker_27505-3"></a><span>さきほどのプログラムをよく見てみましょう．</span><span>
-</span><a id="marker_27505-4" name="marker_27505-4"></a><p></p><a id="marker_27505-5" name="marker_27505-5"></a><div class="plist">リスト1 Cat</div><a id="marker_27505-18" name="marker_27505-18"></a><pre><a id="marker_27505-6" name="marker_27505-6"></a><span>x=50;</span><span>
-</span><a id="marker_27505-7" name="marker_27505-7"></a><span>go(x,100);sleep();</span><span>
-</span><a id="marker_27505-8" name="marker_27505-8"></a><span>x+=10;</span><span>
-</span><a id="marker_27505-9" name="marker_27505-9"></a><span>go(x,100);sleep();</span><span>
-</span><a id="marker_27505-10" name="marker_27505-10"></a><span>x+=10;</span><span>
-</span><a id="marker_27505-11" name="marker_27505-11"></a><span>go(x,100);sleep();</span><span>
-</span><a id="marker_27505-12" name="marker_27505-12"></a><span>x+=10;</span><span>
-</span><a id="marker_27505-13" name="marker_27505-13"></a><span>go(x,100);sleep();</span><span>
-</span><a id="marker_27505-14" name="marker_27505-14"></a><span>x+=10;</span><span>
-</span><a id="marker_27505-15" name="marker_27505-15"></a><span>go(x,100);sleep();</span><span>
-</span><a id="marker_27505-16" name="marker_27505-16"></a><span>x+=10;</span><span>
-</span><a id="marker_27505-17" name="marker_27505-17"></a><span>go(x,100);sleep();</span><span>
-</span></pre><a id="marker_27505-19" name="marker_27505-19"></a><p></p><a id="marker_27505-20" name="marker_27505-20"></a><span>最初の</span><code><span>x=50;</span></code><span>を除いて，あとはずっと</span><span>
-</span><a id="marker_27505-21" name="marker_27505-21"></a><p></p><a id="marker_27505-25" name="marker_27505-25"></a><pre><a id="marker_27505-23" name="marker_27505-23"></a><span>go(x,100);sleep();</span><span>
-</span><a id="marker_27505-24" name="marker_27505-24"></a><span>x+=10;</span><span>
-</span></pre><a id="marker_27505-26" name="marker_27505-26"></a><span>が繰り返されていることがわかります．</span><span>
-</span><a id="marker_27505-27" name="marker_27505-27"></a><p></p><a id="marker_27505-28" name="marker_27505-28"></a><span>このように，同じことを何度も繰り返すときは，コンピュータに「この部分は繰り返してください」</span><span>
-</span><a id="marker_27505-29" name="marker_27505-29"></a><span>と指示することによって，プログラムをもっと短くすることができます．</span><span>
-</span><a id="marker_27505-30" name="marker_27505-30"></a><p></p><a id="marker_27505-31" name="marker_27505-31"></a><strong>リスト1</strong><span> を，</span><strong>リスト2</strong><span>のように書き換えてみましょう．</span><span>
-</span><a id="marker_27505-32" name="marker_27505-32"></a><p></p><a id="marker_27505-33" name="marker_27505-33"></a><div class="plist">リスト2 Cat</div><a id="marker_27505-39" name="marker_27505-39"></a><pre><a id="marker_27505-34" name="marker_27505-34"></a><span>x=50;</span><span>
-</span><a id="marker_27505-35" name="marker_27505-35"></a><span>while (x&lt;=100) {</span><span>
-</span><a id="marker_27505-36" name="marker_27505-36"></a><span>  go(x,100);sleep();</span><span>
-</span><a id="marker_27505-37" name="marker_27505-37"></a><span>  x+=10;</span><span>
-</span><a id="marker_27505-38" name="marker_27505-38"></a><span>}</span><span>
-</span></pre><a id="marker_27505-40" name="marker_27505-40"></a><p></p><a id="marker_27505-41" name="marker_27505-41"></a><span>実行してみると，先ほど同じように動きます．</span><span>
-</span><a id="marker_27505-42" name="marker_27505-42"></a><p></p><a id="marker_27505-43" name="marker_27505-43"></a><span>ここでは，「while文」という書き方を用いています．これは，次のような形式で使います</span><span>
-</span><a id="marker_27505-44" name="marker_27505-44"></a><p></p><a id="marker_27505-45" name="marker_27505-45"></a><div class="plist">while文の書式</div><a id="marker_27505-49" name="marker_27505-49"></a><pre><a id="marker_27505-46" name="marker_27505-46"></a><span>while(</span><i><span>条件</span></i><span>) {</span><span>
-</span><a id="marker_27505-47" name="marker_27505-47"></a><span>   </span><i><span>動作</span></i><span>
-</span><a id="marker_27505-48" name="marker_27505-48"></a><span>}</span><span>
-</span></pre><a id="marker_27505-50" name="marker_27505-50"></a><p></p><a id="marker_27505-53" name="marker_27505-53"></a><ul><li><a id="marker_27505-51" name="marker_27505-51"></a><span> while文は， {  と } で囲まれた</span><i><span>動作</span></i><span>を繰り返し実行します．</span><span>
-</span></li><li><a id="marker_27505-52" name="marker_27505-52"></a><span> どのくらいまで繰り返せばよいかを，</span><i><span>条件</span></i><span> に指定します．</span><span>
-</span></li></ul><p></p><a id="marker_27505-54" name="marker_27505-54"></a><strong>リスト2</strong><span>の動作は，次のようになります．</span><span>
-</span><a id="marker_27505-55" name="marker_27505-55"></a><p></p><ul><li><a id="marker_27505-56" name="marker_27505-56"></a><span> </span><code><span>x=50;</span></code><span> 変数xに50を覚えさせる</span><span>
-</span></li><li><a id="marker_27505-57" name="marker_27505-57"></a><span> </span><code><span>x&lt;=100</span></code><span>， つまり変数xの値が100以下の間は，次のことを繰り返す</span><span>
-</span></li><a id="marker_27505-60" name="marker_27505-60"></a><ul><li><a id="marker_27505-58" name="marker_27505-58"></a><span> </span><code><span>go(x,100);</span></code><span> (x,100)の場所に絵を表示し，</span><span>
-</span></li><li><a id="marker_27505-59" name="marker_27505-59"></a><span> </span><code><span>x+=10;</span></code><span> xを10増やす</span><span>
-</span></li></ul></ul><p></p><a id="marker_27505-61" name="marker_27505-61"></a><span>さて，この仕組みを使って，猫の絵を横位置300まで動かしてみましょう．</span><span>
-</span><a id="marker_27505-62" name="marker_27505-62"></a><p></p><a id="marker_27505-63" name="marker_27505-63"></a><div class="plist">リスト3 Cat</div><a id="marker_27505-69" name="marker_27505-69"></a><pre><a id="marker_27505-64" name="marker_27505-64"></a><span>x=50;</span><span>
-</span><a id="marker_27505-65" name="marker_27505-65"></a><span>while (x&lt;=300) {</span><span>
-</span><a id="marker_27505-66" name="marker_27505-66"></a><span>  go(x,100);sleep();</span><span>
-</span><a id="marker_27505-67" name="marker_27505-67"></a><span>  x+=10;</span><span>
-</span><a id="marker_27505-68" name="marker_27505-68"></a><span>}</span><span>
-</span></pre><a id="marker_27505-70" name="marker_27505-70"></a><p></p><a id="marker_27505-71" name="marker_27505-71"></a><strong>リスト2</strong><span>と変わった部分は，while の後ろの </span><code><span>x&lt;=300</span></code><span>だけです．</span><span>
-</span><a id="marker_27505-72" name="marker_27505-72"></a><span>つまり，数値を1個変えるだけで，もっと遠くまで動かせるのです．</span><span>
-</span><a id="marker_27505-73" name="marker_27505-73"></a><p></p><a id="marker_27505-74" name="marker_27505-74"></a><span>以前は，300まで動かすにはたくさんのプログラムを書かなければならなかったのに比べると</span><span>
-</span><a id="marker_27505-75" name="marker_27505-75"></a><span>かなり楽になりました．</span><span>
-</span><a id="marker_27505-76" name="marker_27505-76"></a><a href="inc.html">前へ</a><span> - </span><a href="true.html">次へ</a><span> - </span><a href="projectIndex.html">目次</a><span>
+<div><a id="marker_98932-0" name="marker_98932-0"></a><a href="inc.html">前へ</a><span> - </span><a href="true.html">次へ</a><span> - </span><a href="projectIndex.html">目次</a><span>
+</span><h1><a id="marker_98932-1" name="marker_98932-1"></a><span> 繰り返しを使ってプログラムを短くしましょう</span></h1><a id="marker_98932-2" name="marker_98932-2"></a><p></p><a id="marker_98932-3" name="marker_98932-3"></a><span>さきほどのプログラムをよく見てみましょう．</span><span>
+</span><a id="marker_98932-4" name="marker_98932-4"></a><p></p><a id="marker_98932-5" name="marker_98932-5"></a><div class="plist">リスト1 Cat</div><a id="marker_98932-18" name="marker_98932-18"></a><pre><a id="marker_98932-6" name="marker_98932-6"></a><span>x=50;</span><span>
+</span><a id="marker_98932-7" name="marker_98932-7"></a><span>go(x,100);sleep();</span><span>
+</span><a id="marker_98932-8" name="marker_98932-8"></a><span>x+=10;</span><span>
+</span><a id="marker_98932-9" name="marker_98932-9"></a><span>go(x,100);sleep();</span><span>
+</span><a id="marker_98932-10" name="marker_98932-10"></a><span>x+=10;</span><span>
+</span><a id="marker_98932-11" name="marker_98932-11"></a><span>go(x,100);sleep();</span><span>
+</span><a id="marker_98932-12" name="marker_98932-12"></a><span>x+=10;</span><span>
+</span><a id="marker_98932-13" name="marker_98932-13"></a><span>go(x,100);sleep();</span><span>
+</span><a id="marker_98932-14" name="marker_98932-14"></a><span>x+=10;</span><span>
+</span><a id="marker_98932-15" name="marker_98932-15"></a><span>go(x,100);sleep();</span><span>
+</span><a id="marker_98932-16" name="marker_98932-16"></a><span>x+=10;</span><span>
+</span><a id="marker_98932-17" name="marker_98932-17"></a><span>go(x,100);sleep();</span><span>
+</span></pre><a id="marker_98932-19" name="marker_98932-19"></a><p></p><a id="marker_98932-20" name="marker_98932-20"></a><span>最初の</span><code><span>x=50;</span></code><span>を除いて，あとはずっと</span><span>
+</span><a id="marker_98932-21" name="marker_98932-21"></a><p></p><a id="marker_98932-25" name="marker_98932-25"></a><pre><a id="marker_98932-23" name="marker_98932-23"></a><span>go(x,100);sleep();</span><span>
+</span><a id="marker_98932-24" name="marker_98932-24"></a><span>x+=10;</span><span>
+</span></pre><a id="marker_98932-26" name="marker_98932-26"></a><span>が繰り返されていることがわかります．</span><span>
+</span><a id="marker_98932-27" name="marker_98932-27"></a><p></p><a id="marker_98932-28" name="marker_98932-28"></a><span>このように，同じことを何度も繰り返すときは，コンピュータに「この部分は繰り返してください」</span><span>
+</span><a id="marker_98932-29" name="marker_98932-29"></a><span>と指示することによって，プログラムをもっと短くすることができます．</span><span>
+</span><a id="marker_98932-30" name="marker_98932-30"></a><p></p><a id="marker_98932-31" name="marker_98932-31"></a><strong>リスト1</strong><span> を，</span><strong>リスト2</strong><span>のように書き換えてみましょう．</span><span>
+</span><a id="marker_98932-32" name="marker_98932-32"></a><p></p><a id="marker_98932-33" name="marker_98932-33"></a><div class="plist">リスト2 Cat</div><a id="marker_98932-39" name="marker_98932-39"></a><pre><a id="marker_98932-34" name="marker_98932-34"></a><span>x=50;</span><span>
+</span><a id="marker_98932-35" name="marker_98932-35"></a><span>while (x&lt;=100) {</span><span>
+</span><a id="marker_98932-36" name="marker_98932-36"></a><span>  go(x,100);sleep();</span><span>
+</span><a id="marker_98932-37" name="marker_98932-37"></a><span>  x+=10;</span><span>
+</span><a id="marker_98932-38" name="marker_98932-38"></a><span>}</span><span>
+</span></pre><a id="marker_98932-40" name="marker_98932-40"></a><p></p><a id="marker_98932-41" name="marker_98932-41"></a><span>実行してみると，先ほど同じように動きます．</span><span>
+</span><a id="marker_98932-42" name="marker_98932-42"></a><p></p><a id="marker_98932-43" name="marker_98932-43"></a><span>ここでは，「while文」という書き方を用いています．これは，次のような形式で使います</span><span>
+</span><a id="marker_98932-44" name="marker_98932-44"></a><p></p><a id="marker_98932-45" name="marker_98932-45"></a><div class="plist">while文の書式</div><a id="marker_98932-49" name="marker_98932-49"></a><pre><a id="marker_98932-46" name="marker_98932-46"></a><span>while(</span><i><span>条件</span></i><span>) {</span><span>
+</span><a id="marker_98932-47" name="marker_98932-47"></a><span>   </span><i><span>動作</span></i><span>
+</span><a id="marker_98932-48" name="marker_98932-48"></a><span>}</span><span>
+</span></pre><a id="marker_98932-50" name="marker_98932-50"></a><p></p><a id="marker_98932-53" name="marker_98932-53"></a><ul><li><a id="marker_98932-51" name="marker_98932-51"></a><span> while文は， {  と } で囲まれた</span><i><span>動作</span></i><span>を繰り返し実行します．</span><span>
+</span></li><li><a id="marker_98932-52" name="marker_98932-52"></a><span> どのくらいまで繰り返せばよいかを，</span><i><span>条件</span></i><span> に指定します．</span><span>
+</span></li></ul><p></p><a id="marker_98932-54" name="marker_98932-54"></a><strong>リスト2</strong><span>の動作は，次のようになります．</span><span>
+</span><a id="marker_98932-55" name="marker_98932-55"></a><p></p><ul><li><a id="marker_98932-56" name="marker_98932-56"></a><span> </span><code><span>x=50;</span></code><span> 変数xに50を覚えさせる</span><span>
+</span></li><li><a id="marker_98932-57" name="marker_98932-57"></a><span> </span><code><span>x&lt;=100</span></code><span>， つまり変数xの値が100以下の間は，次のことを繰り返す</span><span>
+</span></li><a id="marker_98932-60" name="marker_98932-60"></a><ul><li><a id="marker_98932-58" name="marker_98932-58"></a><span> </span><code><span>go(x,100);</span></code><span> (x,100)の場所に絵を表示し，</span><span>
+</span></li><li><a id="marker_98932-59" name="marker_98932-59"></a><span> </span><code><span>x+=10;</span></code><span> xを10増やす</span><span>
+</span></li></ul></ul><p></p><a id="marker_98932-61" name="marker_98932-61"></a><span>さて，この仕組みを使って，猫の絵を横位置300まで動かしてみましょう．</span><span>
+</span><a id="marker_98932-62" name="marker_98932-62"></a><p></p><a id="marker_98932-63" name="marker_98932-63"></a><div class="plist">リスト3 Cat</div><a id="marker_98932-69" name="marker_98932-69"></a><pre><a id="marker_98932-64" name="marker_98932-64"></a><span>x=50;</span><span>
+</span><a id="marker_98932-65" name="marker_98932-65"></a><span>while (x&lt;=300) {</span><span>
+</span><a id="marker_98932-66" name="marker_98932-66"></a><span>  go(x,100);sleep();</span><span>
+</span><a id="marker_98932-67" name="marker_98932-67"></a><span>  x+=10;</span><span>
+</span><a id="marker_98932-68" name="marker_98932-68"></a><span>}</span><span>
+</span></pre><a id="marker_98932-70" name="marker_98932-70"></a><p></p><a id="marker_98932-71" name="marker_98932-71"></a><strong>リスト2</strong><span>と変わった部分は，while の後ろの </span><code><span>x&lt;=300</span></code><span>だけです．</span><span>
+</span><a id="marker_98932-72" name="marker_98932-72"></a><span>つまり，数値を1個変えるだけで，もっと遠くまで動かせるのです．</span><span>
+</span><a id="marker_98932-73" name="marker_98932-73"></a><p></p><a id="marker_98932-74" name="marker_98932-74"></a><span>以前は，300まで動かすにはたくさんのプログラムを書かなければならなかったのに比べると</span><span>
+</span><a id="marker_98932-75" name="marker_98932-75"></a><span>かなり楽になりました．</span><span>
+</span><a id="marker_98932-76" name="marker_98932-76"></a><a href="inc.html">前へ</a><span> - </span><a href="true.html">次へ</a><span> - </span><a href="projectIndex.html">目次</a><span>
 </span></div><div style="height: 100px;"></div>

@@ -224,7 +224,9 @@ return Wiki=function (placeHolder, home, options, plugins) {
                     		} else {
                     		    if (options.useAnchor) {
                     		       // a=$("<a>").attr({href:"wiki.html?file="+f.path()}).text(caption);
-                                    a=$("<a>").attr({href:f.relPath(file.up()).replace(/\.txt$/,".html")}).text(caption);
+                    		        var ahref=f.relPath(file.up()).replace(/\.txt$/,".html");
+                                    ahref=encodeURI(ahref).replace(/%/g,"_");
+                                    a=$("<a>").attr({href:ahref}).text(caption);
                                     //a=$("<a>").attr({href:"?file="+f.path()}).text(caption);
                     		    } else {
                                     a=$("<span>").addClass("clickable").text(caption).click(function () {
