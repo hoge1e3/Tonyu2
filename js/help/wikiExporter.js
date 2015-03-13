@@ -1,5 +1,5 @@
 requirejs(["Shell","Wiki","FS","requestFragment","WebSite"], function (sh,Wiki,FS,rf,WebSite) {
-    sh.wiki2servSingle=function (path) {
+    /*sh.wiki2servSingle=function (path) {
         var h=$("<div>");
         var home=FS.get(WebSite.tonyuHome);
         var base=home.rel("doc/");
@@ -22,21 +22,17 @@ requirejs(["Shell","Wiki","FS","requestFragment","WebSite"], function (sh,Wiki,F
                 base:base.path() ,
                 data:JSON.stringify(data)
              });
-            /*
-            $.post("/edit/rsh",{
-                args:JSON.stringify(["upload",src,dst])
-            });*/
             sh.echo("generated ",path,"->",dst);
         } else {
             sh.echo(dst,":same path");
         }
         //alert(h.html());
-    };
+    };*/
     sh.wiki2serv=function (dirPath) {
         var h=$("<div>");
         var base=FS.get(dirPath);
         var w=Wiki(h,base,{useAnchor:true});
-        var data={};
+        //var data={};
         base.recursive(function (txtFile) {
             if (!txtFile.endsWith(".txt")) return;
             // base= file:/Tonyu/doc/
@@ -54,18 +50,20 @@ requirejs(["Shell","Wiki","FS","requestFragment","WebSite"], function (sh,Wiki,F
                 "</style>\n";
                 src+="<title>"+txtFile.truncExt(".txt")+"</title>\n";
                 src+=h.html();
-                data[FS.get(dst).relPath(base)]=src;
+                //data[FS.get(dst).relPath(base)]=src;
+                FS.get(dst).relPath(base).text(src);
                 sh.echo("generated ",txtFile.relPath(base),"->",dst);
             } else {
                 sh.echo(dst,":same path");
             }
         });
 
-        console.log(base.path(), data);
+        /*console.log(base.path(), data);
         $.post("/edit/LS2FileSync",{
             base:base.path() ,
             data:JSON.stringify(data)
-        });
+        });*/
 
     };
+    sh.wiki2serv.description="wiki2serv /Tonyu/doc/";
 });
