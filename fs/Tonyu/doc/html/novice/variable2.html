@@ -1,0 +1,35 @@
+<link rel='stylesheet' href='/css/bootstrap.css'/>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px;}</style>
+<title>variable2</title>
+<div><a id="marker_38827-0" name="marker_38827-0"></a><a href="variable.html">前へ</a><span> - </span><a href="variable3.html">次へ</a><span> - </span><a href="projectIndex.html">目次</a><span>
+</span><h1><a id="marker_38827-1" name="marker_38827-1"></a><span> 画像をもっと楽に動かしましょう</span></h1><a id="marker_38827-2" name="marker_38827-2"></a><p></p><a id="marker_38827-3" name="marker_38827-3"></a><span>しかし，前のプログラムは書くのが大変です．</span><span>
+</span><a id="marker_38827-4" name="marker_38827-4"></a><span>そこで，もう少し簡単に書くための工夫を行います．</span><span>
+</span><a id="marker_38827-5" name="marker_38827-5"></a><p></p><a id="marker_38827-6" name="marker_38827-6"></a><span>さきほどのプログラムは，次のように，go の直後の数値が50,60,70,80.... と増えていることがわかります．</span><span>
+</span><a id="marker_38827-7" name="marker_38827-7"></a><p></p><a id="marker_38827-14" name="marker_38827-14"></a><pre><a id="marker_38827-9" name="marker_38827-9"></a><span>go(50,100);sleep();</span><span>
+</span><a id="marker_38827-10" name="marker_38827-10"></a><span>go(60,100);sleep();</span><span>
+</span><a id="marker_38827-11" name="marker_38827-11"></a><span>go(70,100);sleep();</span><span>
+</span><a id="marker_38827-12" name="marker_38827-12"></a><span>go(80,100);sleep();</span><span>
+</span><a id="marker_38827-13" name="marker_38827-13"></a><span>// 以下略</span><span>
+</span></pre><a id="marker_38827-15" name="marker_38827-15"></a><p></p><a id="marker_38827-16" name="marker_38827-16"></a><p></p><a id="marker_38827-17" name="marker_38827-17"></a><span>ここで，「変数」という仕組みを紹介します．</span><span>
+</span><a id="marker_38827-18" name="marker_38827-18"></a><span>変数とは，文字通り「変わる数」のことです．</span><span>
+</span><a id="marker_38827-19" name="marker_38827-19"></a><p></p><a id="marker_38827-20" name="marker_38827-20"></a><span>今のプログラムで数値が変わっている部分は，</span><code><span>go(★,100);</span></code><span>の★で示した部分ですね．</span><span>
+</span><a id="marker_38827-21" name="marker_38827-21"></a><span>そこで，「★の部分の数は変わるんですよ」ということをコンピュータに教えてあげます．</span><span>
+</span><a id="marker_38827-22" name="marker_38827-22"></a><p></p><a id="marker_38827-23" name="marker_38827-23"></a><span>もったいないのですが一旦プログラムを全部消して，次のように書いてみましょう．まだ実行はしないでください</span><span>
+</span><a id="marker_38827-24" name="marker_38827-24"></a><p></p><a id="marker_38827-27" name="marker_38827-27"></a><pre><a id="marker_38827-26" name="marker_38827-26"></a><span>go(x,100);</span><span>
+</span></pre><a id="marker_38827-28" name="marker_38827-28"></a><p></p><a id="marker_38827-29" name="marker_38827-29"></a><span>ここで出てきた x が変数です．</span><span>
+</span><a id="marker_38827-30" name="marker_38827-30"></a><p></p><a id="marker_38827-31" name="marker_38827-31"></a><span>「xと書いた部分は，何か数値が入るけど，それは変化することがあるよ」ということを表しています．</span><span>
+</span><a id="marker_38827-32" name="marker_38827-32"></a><p></p><a id="marker_38827-33" name="marker_38827-33"></a><span>ところで，「何か数値が入る」と書きましたが，何が入っているのでしょうか？</span><span>
+</span><a id="marker_38827-34" name="marker_38827-34"></a><span>何が入っているのかは，最初に変数を使う前に決めないといけません．</span><span>
+</span><a id="marker_38827-35" name="marker_38827-35"></a><p></p><a id="marker_38827-36" name="marker_38827-36"></a><span>次のように</span><code><span>x=50;</span></code><span>を追加してみましょう．</span><span>
+</span><a id="marker_38827-37" name="marker_38827-37"></a><p></p><a id="marker_38827-38" name="marker_38827-38"></a><div class="plist">リスト1</div><a id="marker_38827-41" name="marker_38827-41"></a><pre><a id="marker_38827-39" name="marker_38827-39"></a><span>x=50;</span><span>
+</span><a id="marker_38827-40" name="marker_38827-40"></a><span>go(x,100);</span><span>
+</span></pre><a id="marker_38827-42" name="marker_38827-42"></a><p></p><a id="marker_38827-43" name="marker_38827-43"></a><span>ここで</span><span class="clickable">実行</span><span>してみましょう．</span><span>
+</span><a id="marker_38827-44" name="marker_38827-44"></a><strong>図1</strong><span>のように猫の絵が(50,100)の位置に表示されます．</span><span>
+</span><a id="marker_38827-45" name="marker_38827-45"></a><p></p><a id="marker_38827-46" name="marker_38827-46"></a><div class="figure"><div><img src="../../doc/images/firstRunRes.png"></div><div><span>図1.</span><strong>リスト1</strong><span>の実行結果</span></div></div><span>
+</span><a id="marker_38827-47" name="marker_38827-47"></a><p></p><a id="marker_38827-48" name="marker_38827-48"></a><code><span>x=50;</span></code><span> という命令は，「変数 xに50という値を覚えさせる」という意味です．この状態で</span><span>
+</span><a id="marker_38827-49" name="marker_38827-49"></a><p></p><a id="marker_38827-52" name="marker_38827-52"></a><pre><a id="marker_38827-51" name="marker_38827-51"></a><span>go(x,100);</span><span>
+</span></pre><a id="marker_38827-53" name="marker_38827-53"></a><span>を実行すると</span><span>
+</span><a id="marker_38827-56" name="marker_38827-56"></a><pre><a id="marker_38827-55" name="marker_38827-55"></a><span>go(50,100);</span><span>
+</span></pre><a id="marker_38827-57" name="marker_38827-57"></a><span>を実行したのと同じ結果が得られます．</span><span>
+</span><a id="marker_38827-58" name="marker_38827-58"></a><a href="variable.html">前へ</a><span> - </span><a href="variable3.html">次へ</a><span> - </span><a href="projectIndex.html">目次</a><span>
+</span></div><div style="height: 100px;"></div>

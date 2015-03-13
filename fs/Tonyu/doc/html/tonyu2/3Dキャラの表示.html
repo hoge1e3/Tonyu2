@@ -1,0 +1,37 @@
+<link rel='stylesheet' href='/css/bootstrap.css'/>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px;}</style>
+<title>3Dキャラの表示</title>
+<div><a id="marker_38827-0" name="marker_38827-0"></a><a href="用途別リファレンス.html">用途別リファレンス</a><span>
+</span><a id="marker_38827-1" name="marker_38827-1"></a><p></p><a id="marker_38827-2" name="marker_38827-2"></a><p></p><h1><a id="marker_38827-3" name="marker_38827-3"></a><span>・3Dキャラの表示</span></h1><a id="marker_38827-4" name="marker_38827-4"></a><p></p><a id="marker_38827-5" name="marker_38827-5"></a><span>3Dの計算を関数化する</span><span>
+</span><a id="marker_38827-6" name="marker_38827-6"></a><p></p><a id="marker_38827-7" name="marker_38827-7"></a><span>メニューからファイルを選び、新規をクリック</span><span>
+</span><a id="marker_38827-8" name="marker_38827-8"></a><p></p><a id="marker_38827-9" name="marker_38827-9"></a><span>ファイル名「Main」で製作する</span><span>
+</span><a id="marker_38827-10" name="marker_38827-10"></a><p></p><a id="marker_38827-11" name="marker_38827-11"></a><span>同じように「ThreeD」ファイルを作る</span><span>
+</span><a id="marker_38827-12" name="marker_38827-12"></a><p></p><a id="marker_38827-13" name="marker_38827-13"></a><div class="plist">ThreeD</div><a id="marker_38827-23" name="marker_38827-23"></a><pre><a id="marker_38827-14" name="marker_38827-14"></a><span>function threeD(){</span><span>
+</span><a id="marker_38827-15" name="marker_38827-15"></a><span>    hs=50*10/(50+z);      //大きさの計算</span><span>
+</span><a id="marker_38827-16" name="marker_38827-16"></a><span>    scaleX = hs*0.2;            //大きさの代入</span><span>
+</span><a id="marker_38827-17" name="marker_38827-17"></a><span>    </span><span>
+</span><a id="marker_38827-18" name="marker_38827-18"></a><span>    y=oy*50/(50+z)+$screenHeight/2;</span><span>
+</span><a id="marker_38827-19" name="marker_38827-19"></a><span>    x=ox*50/(50+z)+$screenWidth/2;</span><span>
+</span><a id="marker_38827-20" name="marker_38827-20"></a><span>    zOrder=z;</span><span>
+</span><a id="marker_38827-21" name="marker_38827-21"></a><span>    //ox,oy,zを使いx,yの位置を計算して代入する</span><span>
+</span><a id="marker_38827-22" name="marker_38827-22"></a><span>}</span><span>
+</span></pre><a id="marker_38827-24" name="marker_38827-24"></a><p></p><a id="marker_38827-25" name="marker_38827-25"></a><span>ox,oy,zを</span><a href="とある計算.html">３Dの計算</a><span>にあてはめ値を変化させるとあたかも3Dの世界にいるかのようにキャラが飛び出してくる。</span><span>
+</span><a id="marker_38827-26" name="marker_38827-26"></a><p></p><a id="marker_38827-27" name="marker_38827-27"></a><span>「Chara2」ファイルを作成する。</span><span>
+</span><a id="marker_38827-28" name="marker_38827-28"></a><p></p><a id="marker_38827-29" name="marker_38827-29"></a><div class="plist">Chara2</div><a id="marker_38827-41" name="marker_38827-41"></a><pre><a id="marker_38827-30" name="marker_38827-30"></a><span>extends ThreeD;</span><span>
+</span><a id="marker_38827-31" name="marker_38827-31"></a><span>while(true){   </span><span>
+</span><a id="marker_38827-32" name="marker_38827-32"></a><span>    threeD();  </span><span>
+</span><a id="marker_38827-33" name="marker_38827-33"></a><span>    </span><span>
+</span><a id="marker_38827-34" name="marker_38827-34"></a><span>    z-=10;  </span><span>
+</span><a id="marker_38827-35" name="marker_38827-35"></a><span>    </span><span>
+</span><a id="marker_38827-36" name="marker_38827-36"></a><span>    if(z&lt;0){</span><span>
+</span><a id="marker_38827-37" name="marker_38827-37"></a><span>        die();</span><span>
+</span><a id="marker_38827-38" name="marker_38827-38"></a><span>    }   </span><span>
+</span><a id="marker_38827-39" name="marker_38827-39"></a><span>    update(); </span><span>
+</span><a id="marker_38827-40" name="marker_38827-40"></a><span>}</span><span>
+</span></pre><a id="marker_38827-42" name="marker_38827-42"></a><p></p><a id="marker_38827-43" name="marker_38827-43"></a><span>キャラがプレイヤーに向かってくる処理を行う。</span><span>
+</span><a id="marker_38827-44" name="marker_38827-44"></a><p></p><a id="marker_38827-45" name="marker_38827-45"></a><span>zを-10ずつ行う事で向こうから手前に向かってくる。</span><span>
+</span><a id="marker_38827-46" name="marker_38827-46"></a><p></p><a id="marker_38827-47" name="marker_38827-47"></a><span>そして画面と重なったら消す処理を行っている。</span><span>
+</span><a id="marker_38827-48" name="marker_38827-48"></a><p></p><a id="marker_38827-49" name="marker_38827-49"></a><span>移動させたいキャラのクラスに上記のように書き込む。</span><span>
+</span><a id="marker_38827-50" name="marker_38827-50"></a><p></p><a id="marker_38827-51" name="marker_38827-51"></a><span>これだけではエラーが起きるため</span><a href="3Dキャラの出現.html">3Dキャラの出現</a><span>でMainクラスに書き込んでいく。</span><span>
+</span><a id="marker_38827-52" name="marker_38827-52"></a><p></p><a id="marker_38827-53" name="marker_38827-53"></a><span>次　</span><a href="3Dキャラの出現.html">3Dキャラの出現</a><span>
+</span><a id="marker_38827-54" name="marker_38827-54"></a><p></p><a id="marker_38827-55" name="marker_38827-55"></a><p></p><a id="marker_38827-56" name="marker_38827-56"></a><p></p><a id="marker_38827-57" name="marker_38827-57"></a><p></p><a id="marker_38827-58" name="marker_38827-58"></a><p></p></div><div style="height: 100px;"></div>

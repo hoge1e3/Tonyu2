@@ -1,0 +1,25 @@
+<link rel='stylesheet' href='/css/bootstrap.css'/>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px;}</style>
+<title>mapEditor</title>
+<div><a id="marker_38827-0" name="marker_38827-0"></a><a href="ide.html">ide</a><span>
+</span><a id="marker_38827-1" name="marker_38827-1"></a><p></p><a id="marker_38827-2" name="marker_38827-2"></a><a href="用途別リファレンス.html">用途別リファレンス</a><span>
+</span><a id="marker_38827-3" name="marker_38827-3"></a><p></p><h1><a id="marker_38827-4" name="marker_38827-4"></a><span>マップエディタ</span></h1><a id="marker_38827-5" name="marker_38827-5"></a><p></p><a id="marker_38827-6" name="marker_38827-6"></a><span>マップエディタは，ゲーム中に使用するマップを描くためのツールです．</span><span>
+</span><a id="marker_38827-7" name="marker_38827-7"></a><span>主な使用の流れは次の通り</span><span>
+</span><a id="marker_38827-8" name="marker_38827-8"></a><p></p><a id="marker_38827-10" name="marker_38827-10"></a><ul><li><a id="marker_38827-9" name="marker_38827-9"></a><span>画像リストに $pat_mapchip を追加</span><span>
+</span></li></ul><p></p><a id="marker_38827-12" name="marker_38827-12"></a><ul><li><a id="marker_38827-11" name="marker_38827-11"></a><span>ツールからマップエディタを選択</span><span>
+</span></li></ul><p></p><a id="marker_38827-14" name="marker_38827-14"></a><ul><li><a id="marker_38827-13" name="marker_38827-13"></a><span>Load Data?: Y or Nと表示されるので、すでに作ったマップをもとに改造する場合はキーボードのyを、新しくつくる場合はnを押す</span><span>
+</span></li></ul><p></p><ul><ul><li><a id="marker_38827-15" name="marker_38827-15"></a><span>nを押した場合、プロンプトが出るので、それぞれ入力する</span><span>
+</span></li><a id="marker_38827-18" name="marker_38827-18"></a><ul><li><a id="marker_38827-16" name="marker_38827-16"></a><span>"input row"→縦に設置するチップの個数</span><span>
+</span></li><li><a id="marker_38827-17" name="marker_38827-17"></a><span>"input col"→横に設置するチップの個数</span><span>
+</span></li></ul></ul></ul><p></p><ul><ul><li><a id="marker_38827-19" name="marker_38827-19"></a><span>yを押した場合、プロンプトが出るので、ロードするファイルの名前を入力する。</span><span>
+</span></li><a id="marker_38827-21" name="marker_38827-21"></a><ul><li><a id="marker_38827-20" name="marker_38827-20"></a><span>入力されたファイルが存在しないと、Load Failedと表示され、nを押した場合の動作に移動する</span><span>
+</span></li></ul></ul></ul><p></p><a id="marker_38827-23" name="marker_38827-23"></a><ul><li><a id="marker_38827-22" name="marker_38827-22"></a><span>画面にマップチップがでるので、設置したいチップをクリックする</span><span>
+</span></li></ul><p></p><ul><li><a id="marker_38827-24" name="marker_38827-24"></a><span>マップチップが消え、コンソールにset modeと表示される</span><span>
+</span></li><a id="marker_38827-27" name="marker_38827-27"></a><ul><li><a id="marker_38827-25" name="marker_38827-25"></a><span>水色の範囲がマップの範囲なので、その中の任意の箇所をクリックすると選択中のチップが設置される</span><span>
+</span></li><li><a id="marker_38827-26" name="marker_38827-26"></a><span>マップはカーソルキーを使って上下左右に動かすことができるので、マップが画面より大きい場合などは適宜動かしてください</span><span>
+</span></li></ul></ul><p></p><a id="marker_38827-29" name="marker_38827-29"></a><ul><li><a id="marker_38827-28" name="marker_38827-28"></a><span>他のチップを選択したい場合はキーボードのgを押す。すると、get modeと表示され、マップチップが再び出てくるので設置したいチップを選びなおす</span><span>
+</span></li></ul><p></p><a id="marker_38827-31" name="marker_38827-31"></a><ul><li><a id="marker_38827-30" name="marker_38827-30"></a><span>誤って設置したチップを消したい場合は、キーボードのeを押すと、erase modeと表示され、クリックした位置に設置されているチップを消すことができる</span><span>
+</span></li></ul><p></p><a id="marker_38827-33" name="marker_38827-33"></a><ul><li><a id="marker_38827-32" name="marker_38827-32"></a><span>完成したマップをファイルに保存するときは、キーボードのpを押す。プロンプトが表示されるので、セーブするファイル名(例：stage1.json)を入力してOKを押す</span><span>
+</span></li></ul><p></p><a id="marker_38827-34" name="marker_38827-34"></a><p></p><h1><a id="marker_38827-35" name="marker_38827-35"></a><span>描いたマップをプログラム内で使用する</span></h1><a id="marker_38827-36" name="marker_38827-36"></a><p></p><a id="marker_38827-37" name="marker_38827-37"></a><div class="plist">Main</div><a id="marker_38827-40" name="marker_38827-40"></a><pre><a id="marker_38827-38" name="marker_38827-38"></a><span>$map=new Map{chipWidth:32,chipHeight:32};</span><span>
+</span><a id="marker_38827-39" name="marker_38827-39"></a><span>$map.load("stage1.json");</span><span>
+</span></pre><a id="marker_38827-41" name="marker_38827-41"></a><p></p></div><div style="height: 100px;"></div>

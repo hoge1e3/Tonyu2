@@ -30,7 +30,7 @@ requirejs(["Shell","Wiki","FS","requestFragment","WebSite"], function (sh,Wiki,F
     };*/
     sh.wiki2serv=function (dirPath) {
         var h=$("<div>");
-        var base=FS.get(dirPath);
+        var base=sh.resolve(dirPath);
         var w=Wiki(h,base,{useAnchor:true});
         //var data={};
         base.recursive(function (txtFile) {
@@ -51,7 +51,7 @@ requirejs(["Shell","Wiki","FS","requestFragment","WebSite"], function (sh,Wiki,F
                 src+="<title>"+txtFile.truncExt(".txt")+"</title>\n";
                 src+=h.html();
                 //data[FS.get(dst).relPath(base)]=src;
-                FS.get(dst).relPath(base).text(src);
+                FS.get(dst).text(src);
                 sh.echo("generated ",txtFile.relPath(base),"->",dst);
             } else {
                 sh.echo(dst,":same path");
@@ -65,5 +65,5 @@ requirejs(["Shell","Wiki","FS","requestFragment","WebSite"], function (sh,Wiki,F
         });*/
 
     };
-    sh.wiki2serv.description="wiki2serv /Tonyu/doc/";
+    sh.wiki2serv.description="wiki2serv ../doc/";
 });

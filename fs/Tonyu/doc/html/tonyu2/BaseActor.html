@@ -1,0 +1,54 @@
+<link rel='stylesheet' href='/css/bootstrap.css'/>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px;}</style>
+<title>BaseActor</title>
+<div><a id="marker_38827-0" name="marker_38827-0"></a><a href="api.html">api</a><span>
+</span><a id="marker_38827-1" name="marker_38827-1"></a><p></p><h1><a id="marker_38827-2" name="marker_38827-2"></a><span>BaseActor</span></h1><a id="marker_38827-3" name="marker_38827-3"></a><p></p><a id="marker_38827-4" name="marker_38827-4"></a><span>画面に表示されるオブジェクトの基本クラスです．実際には</span><a href="Actor.html">Actor</a><span>を継承してクラスを作成してください．</span><span>
+</span><a id="marker_38827-5" name="marker_38827-5"></a><p></p><h1><a id="marker_38827-6" name="marker_38827-6"></a><span> コンストラクタ(1)</span></h1><a id="marker_38827-7" name="marker_38827-7"></a><p></p><a id="marker_38827-10" name="marker_38827-10"></a><pre><a id="marker_38827-9" name="marker_38827-9"></a><span>\new(params)</span><span>
+</span></pre><a id="marker_38827-11" name="marker_38827-11"></a><p></p><a id="marker_38827-12" name="marker_38827-12"></a><span>paramsにはオブジェクトを指定します．paramsの値をフィールドに書き込みます</span><span>
+</span><a id="marker_38827-13" name="marker_38827-13"></a><p></p><a id="marker_38827-14" name="marker_38827-14"></a><span>例： </span><span>
+</span><a id="marker_38827-19" name="marker_38827-19"></a><pre><a id="marker_38827-16" name="marker_38827-16"></a><span>// MyActorはBaseActorの子クラスとする</span><span>
+</span><a id="marker_38827-17" name="marker_38827-17"></a><span>a=new MyActor{x:50,y:30, power:20, hp:50};</span><span>
+</span><a id="marker_38827-18" name="marker_38827-18"></a><span>// a.x=50  a.y=30 a.power=20  a.hp=50 となる</span><span>
+</span></pre><a id="marker_38827-20" name="marker_38827-20"></a><p></p><h1><a id="marker_38827-21" name="marker_38827-21"></a><span> コンストラクタ(2)</span></h1><a id="marker_38827-22" name="marker_38827-22"></a><p></p><a id="marker_38827-25" name="marker_38827-25"></a><pre><a id="marker_38827-24" name="marker_38827-24"></a><span>\new(x,y,p)</span><span>
+</span></pre><a id="marker_38827-26" name="marker_38827-26"></a><p></p><a id="marker_38827-27" name="marker_38827-27"></a><span>x,y,pの値をフィールドに書き込みます</span><span>
+</span><a id="marker_38827-28" name="marker_38827-28"></a><p></p><h1><a id="marker_38827-29" name="marker_38827-29"></a><span> フィールド</span></h1><a id="marker_38827-30" name="marker_38827-30"></a><p></p><a id="marker_38827-43" name="marker_38827-43"></a><ul><li><a id="marker_38827-31" name="marker_38827-31"></a><span>x : オブジェクトのx座標をあらわします</span><a href="座標を指定してオブジェクトを表示する.html">使用例</a><span>
+</span></li><li><a id="marker_38827-32" name="marker_38827-32"></a><span>y : オブジェクトのy座標をあらわします</span><a href="座標を指定してオブジェクトを表示する.html">使用例</a><span>
+</span></li><li><a id="marker_38827-33" name="marker_38827-33"></a><span>p : 表示する</span><a href="cpats.html">画像の番号</a><span>をあらわします。 </span><a href="オブジェクトのグラフィックを変える.html">使用例</a><span>
+</span></li><li><a id="marker_38827-34" name="marker_38827-34"></a><span>text : textに値がセットされると，文字を表示します（キャラクタパターンは表示されなくなります）</span><span>
+</span></li><a id="marker_38827-38" name="marker_38827-38"></a><ul><li><a id="marker_38827-35" name="marker_38827-35"></a><span>size : 文字の大きさをあらわします</span><span>
+</span></li><li><a id="marker_38827-36" name="marker_38827-36"></a><span>fillStyle : 文字の色などをあらわします(JavascriptのCanvasにおけるfillStyleと同じ書式です）</span><span>
+</span></li><li><a id="marker_38827-37" name="marker_38827-37"></a><span>align:  "center" "left" "right"のいずれかを指定します．xの値であらわされる横位置がそれぞれ文字の中央，左端，右端になるように表示します．</span><span>
+</span></li></ul><li><span>zOrder : オブジェクト同士が重なった場合、この値が小さい方が手前に表示されます。</span><a href="オブジェクトの奥行きの設定.html">使用例</a><span>
+</span></li><li><a id="marker_38827-39" name="marker_38827-39"></a><span>alpha : 表示する画像の透明度を指定します(255-0)。</span><a href="オブジェクトの大きさや傾き、透明度を設定する.html">使用例</a><span>
+</span></li><li><a id="marker_38827-40" name="marker_38827-40"></a><span>scaleX : オブジェクトの横方向の拡大率を指定します．scaleYが未定義の場合は縦方向にもscaleXの拡大率が適用されます。</span><a href="オブジェクトの大きさや傾き、透明度を設定する.html">使用例</a><span>
+</span></li><li><a id="marker_38827-41" name="marker_38827-41"></a><span>scaleY : オブジェクトの縦方向の拡大率を指定します</span><span>
+</span></li><li><a id="marker_38827-42" name="marker_38827-42"></a><span>rotation : オブジェクトの回転を指定します．右回りで指定した値の角度回転します。</span><a href="オブジェクトの大きさや傾き、透明度を設定する.html">使用例</a><span>
+</span></li></ul><p></p><a id="marker_38827-44" name="marker_38827-44"></a><p></p><h1><a id="marker_38827-45" name="marker_38827-45"></a><span> メソッド</span></h1><a id="marker_38827-46" name="marker_38827-46"></a><p></p><a id="marker_38827-75" name="marker_38827-75"></a><ul><li><a id="marker_38827-47" name="marker_38827-47"></a><a href="update.html">update</a><span>
+</span></li><li><a id="marker_38827-48" name="marker_38827-48"></a><a href="updateEx.html">updateEx</a><span>
+</span></li><li><a id="marker_38827-49" name="marker_38827-49"></a><a href="onUpdate.html">onUpdate</a><span>
+</span></li><li><a id="marker_38827-50" name="marker_38827-50"></a><a href="getkey.html">getkey</a><span>
+</span></li><li><a id="marker_38827-51" name="marker_38827-51"></a><a href="crashTo.html">crashTo</a><span>
+</span></li><li><a id="marker_38827-52" name="marker_38827-52"></a><a href="crashTo1.html">crashTo1</a><span>
+</span></li><li><a id="marker_38827-53" name="marker_38827-53"></a><a href="allCrash.html">allCrash</a><span>
+</span></li><li><a id="marker_38827-54" name="marker_38827-54"></a><a href="all.html">all</a><span>
+</span></li><li><a id="marker_38827-55" name="marker_38827-55"></a><a href="getCrashRect.html">getCrashRect</a><span>
+</span></li><li><a id="marker_38827-56" name="marker_38827-56"></a><a href="die.html">die</a><span>
+</span></li><li><a id="marker_38827-57" name="marker_38827-57"></a><a href="isDead.html">isDead</a><span> </span><span>
+</span></li><li><a id="marker_38827-58" name="marker_38827-58"></a><a href="loadPage.html">loadPage</a><span>
+</span></li><li><a id="marker_38827-59" name="marker_38827-59"></a><a href="hide.html">hide</a><span>
+</span></li><li><a id="marker_38827-60" name="marker_38827-60"></a><a href="show.html">show</a><span>
+</span></li><li><a id="marker_38827-61" name="marker_38827-61"></a><a href="rnd.html">rnd</a><span>
+</span></li><li><a id="marker_38827-62" name="marker_38827-62"></a><a href="draw.html">draw</a><span>
+</span></li><li><a id="marker_38827-63" name="marker_38827-63"></a><a href="extend.html">extend</a><span>
+</span></li><li><a id="marker_38827-64" name="marker_38827-64"></a><a href="print.html">print</a><span>
+</span></li><li><a id="marker_38827-65" name="marker_38827-65"></a><a href="file.html">file</a><span>
+</span></li><li><a id="marker_38827-66" name="marker_38827-66"></a><a href="asyncResult.html">asyncResult</a><span>
+</span></li><li><a id="marker_38827-67" name="marker_38827-67"></a><a href="waitFor.html">waitFor</a><span>
+</span></li><li><a id="marker_38827-68" name="marker_38827-68"></a><a href="play.html">play</a><span>
+</span></li><li><a id="marker_38827-69" name="marker_38827-69"></a><a href="playSE.html">playSE</a><span>
+</span></li><li><a id="marker_38827-70" name="marker_38827-70"></a><span>currentThreadGroup</span><span>
+</span></li><li><a id="marker_38827-71" name="marker_38827-71"></a><span>detectShape</span><span>
+</span></li><li><a id="marker_38827-72" name="marker_38827-72"></a><span>hitTo</span><span>
+</span></li><li><a id="marker_38827-73" name="marker_38827-73"></a><span>watchHit</span><span>
+</span></li><li><a id="marker_38827-74" name="marker_38827-74"></a><a href="MathMod.html">MathMod</a><span>モジュールクラスがもつメソッド</span><span>
+</span></li></ul><p></p></div><div style="height: 100px;"></div>

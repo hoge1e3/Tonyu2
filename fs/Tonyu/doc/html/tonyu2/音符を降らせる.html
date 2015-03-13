@@ -1,0 +1,47 @@
+<link rel='stylesheet' href='/css/bootstrap.css'/>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px;}</style>
+<title>音符を降らせる</title>
+<div><a id="marker_38827-0" name="marker_38827-0"></a><a href="用途別リファレンス.html">用途別リファレンス</a><span>
+</span><a id="marker_38827-1" name="marker_38827-1"></a><p></p><h3><a id="marker_38827-2" name="marker_38827-2"></a><span>音符を降らせる</span></h3><a id="marker_38827-4" name="marker_38827-4"></a><ul><li><a id="marker_38827-3" name="marker_38827-3"></a><span>ここでは演奏時間を画面に表示し、音符の個数とそれぞれの次の音符が降ってくるまでの待ち時間を設定し、音符を画面中心の上から降らせるようにする。</span><span>
+</span></li></ul><p></p><a id="marker_38827-5" name="marker_38827-5"></a><span>例)キラキラ星の音符の個数と待ち時間</span><span>
+</span><a id="marker_38827-6" name="marker_38827-6"></a><div class="plist">currentTime(例)</div><a id="marker_38827-10" name="marker_38827-10"></a><pre><a id="marker_38827-7" name="marker_38827-7"></a><span>a=[1/4,1/4,1/4,1/4,1/4,1/4,1/2,1/4,1/4,1/4,1/4,1/4,1/4,1/2,</span><span>
+</span><a id="marker_38827-8" name="marker_38827-8"></a><span>1/4,1/4,1/4,1/4,1/4,1/4,1/2,1/4,1/4,1/4,1/4,1/4,1/4,1/2,</span><span>
+</span><a id="marker_38827-9" name="marker_38827-9"></a><span>1/4,1/4,1/4,1/4,1/4,1/4,1/2,1/4,1/4,1/4,1/4,1/4,1/4];</span><span>
+</span></pre><a id="marker_38827-15" name="marker_38827-15"></a><ul><li><a id="marker_38827-11" name="marker_38827-11"></a><span>音符1つ1つの長さを設定する。</span><span>
+</span></li><li><a id="marker_38827-12" name="marker_38827-12"></a><span>それぞれ2000=1/1(全音符),1000=1/2(2分音符),500=1/4(4分音符),250=1/8(8分音符)と設定できる。</span><span>
+</span></li><li><a id="marker_38827-13" name="marker_38827-13"></a><span>キラキラ星は12小節、42音なのでそれに合わせて音符を設定すれば曲の終わりまで音符を降らせることができる。</span><span>
+</span></li><li><a id="marker_38827-14" name="marker_38827-14"></a><span>最後の音は次の音がないので設定する必要がない。</span><span>
+</span></li></ul><div class="plist">currentTime(例)</div><a id="marker_38827-31" name="marker_38827-31"></a><pre><a id="marker_38827-16" name="marker_38827-16"></a><span>h=0;</span><span>
+</span><a id="marker_38827-17" name="marker_38827-17"></a><span>next=0;</span><span>
+</span><a id="marker_38827-18" name="marker_38827-18"></a><span>while (true) {</span><span>
+</span><a id="marker_38827-19" name="marker_38827-19"></a><span>t=$c.play().currentTime();</span><span>
+</span><a id="marker_38827-20" name="marker_38827-20"></a><span>ct=$c.play().currentTime();</span><span>
+</span><a id="marker_38827-21" name="marker_38827-21"></a><span>if(ct&gt;-1){</span><span>
+</span><a id="marker_38827-22" name="marker_38827-22"></a><span>　　　text=(floor(ct/100));</span><span>
+</span><a id="marker_38827-23" name="marker_38827-23"></a><span>}</span><span>
+</span><a id="marker_38827-24" name="marker_38827-24"></a><span>    if (t&gt;next) {</span><span>
+</span><a id="marker_38827-25" name="marker_38827-25"></a><span>        new Onpu;</span><span>
+</span><a id="marker_38827-26" name="marker_38827-26"></a><span>        next+=a[h]*2000;</span><span>
+</span><a id="marker_38827-27" name="marker_38827-27"></a><span>        h=h+1;</span><span>
+</span><a id="marker_38827-28" name="marker_38827-28"></a><span>    }</span><span>
+</span><a id="marker_38827-29" name="marker_38827-29"></a><span>    update();</span><span>
+</span><a id="marker_38827-30" name="marker_38827-30"></a><span>}</span><span>
+</span></pre><a id="marker_38827-36" name="marker_38827-36"></a><ul><li><a id="marker_38827-32" name="marker_38827-32"></a><span>曲データに対応する音符の長さを設定した、数値の配列aを作成する。</span><span>
+</span></li><li><a id="marker_38827-33" name="marker_38827-33"></a><span>nextには次の音符が画面に降ってくる時間が入っている。</span><span>
+</span></li><li><a id="marker_38827-34" name="marker_38827-34"></a><span>hはaの配列の何番目を指している。</span><span>
+</span></li><li><a id="marker_38827-35" name="marker_38827-35"></a><span>例えば、1番目はa[0]なので、1/4*2000=500msが次の音符の待ち時間となる。</span><span>
+</span></li></ul><div class="plist">Onpu(例)</div><a id="marker_38827-46" name="marker_38827-46"></a><pre><a id="marker_38827-37" name="marker_38827-37"></a><span>zOrder=0;</span><span>
+</span><a id="marker_38827-38" name="marker_38827-38"></a><span>scaleX=0.3;</span><span>
+</span><a id="marker_38827-39" name="marker_38827-39"></a><p></p><a id="marker_38827-40" name="marker_38827-40"></a><span>start=$c.play().currentTime();</span><span>
+</span><a id="marker_38827-41" name="marker_38827-41"></a><span>while(y&lt;$screenHeight){</span><span>
+</span><a id="marker_38827-42" name="marker_38827-42"></a><span>    t=$c.play().currentTime();</span><span>
+</span><a id="marker_38827-43" name="marker_38827-43"></a><span>    y=(t-start)*($screenHeight*3/4)/2000;</span><span>
+</span><a id="marker_38827-44" name="marker_38827-44"></a><span>}</span><span>
+</span><a id="marker_38827-45" name="marker_38827-45"></a><span>die();</span><span>
+</span></pre><a id="marker_38827-47" name="marker_38827-47"></a><p></p><a id="marker_38827-53" name="marker_38827-53"></a><ul><li><a id="marker_38827-48" name="marker_38827-48"></a><span>scaleXは画像の大きさを設定している。</span><span>
+</span></li><li><a id="marker_38827-49" name="marker_38827-49"></a><span>Onpuクラスの画像のx,yの初期位置は設定したので、ここでは音符を画面中心の上から下まで降らすという処理を行っている。</span><span>
+</span></li><li><a id="marker_38827-50" name="marker_38827-50"></a><span>tに演奏時間を取得させる。</span><span>
+</span></li><li><a id="marker_38827-51" name="marker_38827-51"></a><span>startは音符が降り始めた時間を表す。</span><span>
+</span></li><li><a id="marker_38827-52" name="marker_38827-52"></a><span>t-startとは(現在の演奏時間)-(音符が降り始めた時間)。その式に(画面の縦幅*3/4)/2000ms(2秒)を掛け算し、2秒で画面の縦幅の3/4の位置にくるように音符のy軸を設定する。</span><span>
+</span></li></ul><p></p><a id="marker_38827-54" name="marker_38827-54"></a><p></p><a id="marker_38827-55" name="marker_38827-55"></a><span>前へ </span><a href="曲の演奏時間の取得.html">曲の演奏時間の取得</a><span>　次へ </span><a href="ラインパネルの作成.html">ラインパネルの作成</a><span>
+</span></div><div style="height: 100px;"></div>

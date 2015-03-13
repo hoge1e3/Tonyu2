@@ -1,0 +1,37 @@
+<link rel='stylesheet' href='/css/bootstrap.css'/>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px;}</style>
+<title>sleep</title>
+<div><a id="marker_38827-0" name="marker_38827-0"></a><a href="say.html">前へ</a><span>
+</span><a id="marker_38827-1" name="marker_38827-1"></a><p></p><h1><a id="marker_38827-2" name="marker_38827-2"></a><span>メッセージを順番に表示させてみましょう</span></h1><a id="marker_38827-3" name="marker_38827-3"></a><p></p><a id="marker_38827-4" name="marker_38827-4"></a><span>プログラムは上から順番に実行されます．</span><span>
+</span><a id="marker_38827-5" name="marker_38827-5"></a><p></p><a id="marker_38827-6" name="marker_38827-6"></a><span>今度は「こんにちは」に続けて，「さようなら」と表示させてみたいと思います．</span><span>
+</span><a id="marker_38827-7" name="marker_38827-7"></a><strong>リスト1</strong><span>を入力します．</span><span>
+</span><a id="marker_38827-8" name="marker_38827-8"></a><p></p><a id="marker_38827-9" name="marker_38827-9"></a><div class="plist">リスト1</div><a id="marker_38827-13" name="marker_38827-13"></a><pre><a id="marker_38827-10" name="marker_38827-10"></a><span>go(50,100);</span><span>
+</span><a id="marker_38827-11" name="marker_38827-11"></a><span>say("こんにちは");</span><span>
+</span><a id="marker_38827-12" name="marker_38827-12"></a><span>say("さようなら");</span><span>
+</span></pre><a id="marker_38827-14" name="marker_38827-14"></a><p></p><a id="marker_38827-15" name="marker_38827-15"></a><span>実行してみましょう.</span><span>
+</span><a id="marker_38827-16" name="marker_38827-16"></a><p></p><a id="marker_38827-17" name="marker_38827-17"></a><div class="figure"><div><img src="../../doc/images/sayonara.png"></div><div><span>図1.</span><strong>リスト1</strong><span>の実行結果</span></div></div><span>
+</span><a id="marker_38827-18" name="marker_38827-18"></a><p></p><a id="marker_38827-19" name="marker_38827-19"></a><span>あれ！いきなり「さようなら」が表示されました．「こんにちは」は表示されなかったのでしょうか？</span><span>
+</span><a id="marker_38827-20" name="marker_38827-20"></a><p></p><a id="marker_38827-21" name="marker_38827-21"></a><span>実は，コンピュータは確かに</span><strong>リスト1</strong><span>のプログラムを上から順番に</span><span>
+</span><a id="marker_38827-22" name="marker_38827-22"></a><p></p><a id="marker_38827-26" name="marker_38827-26"></a><ul><li><a id="marker_38827-23" name="marker_38827-23"></a><span> 猫の絵を表示する</span><span>
+</span></li><li><a id="marker_38827-24" name="marker_38827-24"></a><span> 「こんにちは」と表示する</span><span>
+</span></li><li><a id="marker_38827-25" name="marker_38827-25"></a><span> 「さようなら」と表示する</span><span>
+</span></li></ul><p></p><a id="marker_38827-27" name="marker_38827-27"></a><span>と実行したのです．しかし，コンピュータはとても高速に動作しているので</span><span>
+</span><a id="marker_38827-28" name="marker_38827-28"></a><span>「こんにちは」と表示してから，人間の目に見えないうちに，すぐに「さようなら」</span><span>
+</span><a id="marker_38827-29" name="marker_38827-29"></a><span>と表示してしまっています．</span><span>
+</span><a id="marker_38827-30" name="marker_38827-30"></a><p></p><a id="marker_38827-31" name="marker_38827-31"></a><span>これでは，「こんにちは」が見えないので，コンピュータに少し待ってもらうように命令を追加しましょう．</span><span>
+</span><a id="marker_38827-32" name="marker_38827-32"></a><p></p><a id="marker_38827-33" name="marker_38827-33"></a><div class="plist">リスト2</div><a id="marker_38827-38" name="marker_38827-38"></a><pre><a id="marker_38827-34" name="marker_38827-34"></a><span>go(50,100);</span><span>
+</span><a id="marker_38827-35" name="marker_38827-35"></a><span>say("こんにちは");</span><span>
+</span><a id="marker_38827-36" name="marker_38827-36"></a><span>sleep(30); // 追加</span><span>
+</span><a id="marker_38827-37" name="marker_38827-37"></a><span>say("さようなら");</span><span>
+</span></pre><a id="marker_38827-39" name="marker_38827-39"></a><p></p><a id="marker_38827-40" name="marker_38827-40"></a><span>実行すると，今度は「こんにちは」が表示されてから「さようなら」が表示されました．</span><span>
+</span><a id="marker_38827-41" name="marker_38827-41"></a><p></p><a id="marker_38827-42" name="marker_38827-42"></a><strong>リスト2</strong><span>で追加した sleep という命令は，その名の通りコンピュータにしばらく寝てもらいます．</span><span>
+</span><a id="marker_38827-43" name="marker_38827-43"></a><span>つまり，プログラムの実行を少し待ってもらいます．</span><span>
+</span><a id="marker_38827-44" name="marker_38827-44"></a><span>後ろに書いた30 は，どれくらい待つかを表す数値で，単位は「フレーム」です．</span><span>
+</span><a id="marker_38827-45" name="marker_38827-45"></a><span>フレームについては後ほど詳しく説明しますが，1フレームは30分の1秒(約0.03秒)に相当します．</span><span>
+</span><a id="marker_38827-46" name="marker_38827-46"></a><p></p><a id="marker_38827-47" name="marker_38827-47"></a><span>sleep(30)は30フレーム，つまり1秒ほど実行を待ちます．つまり，このプログラムは，次の順番で実行されます．</span><span>
+</span><a id="marker_38827-48" name="marker_38827-48"></a><p></p><a id="marker_38827-53" name="marker_38827-53"></a><ul><li><a id="marker_38827-49" name="marker_38827-49"></a><span> 猫の絵を表示する</span><span>
+</span></li><li><a id="marker_38827-50" name="marker_38827-50"></a><span> 「こんにちは」と表示する</span><span>
+</span></li><li><a id="marker_38827-51" name="marker_38827-51"></a><span> 30フレーム（1秒ほど）待つ</span><span>
+</span></li><li><a id="marker_38827-52" name="marker_38827-52"></a><span> 「さようなら」と表示する</span><span>
+</span></li></ul><p></p><a id="marker_38827-54" name="marker_38827-54"></a><p></p><a id="marker_38827-55" name="marker_38827-55"></a><a href="spriteMove.html">次へ</a><span>
+</span></div><div style="height: 100px;"></div>

@@ -1,0 +1,22 @@
+<link rel='stylesheet' href='/css/bootstrap.css'/>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px;}</style>
+<title>自分自身を消す</title>
+<div><a id="marker_38827-0" name="marker_38827-0"></a><a href="用途別リファレンス.html">用途別リファレンス</a><span>
+</span><a id="marker_38827-1" name="marker_38827-1"></a><p></p><a id="marker_38827-2" name="marker_38827-2"></a><a href="オブジェクトを消す.html">オブジェクトを消す</a><span>
+</span><h1><a id="marker_38827-3" name="marker_38827-3"></a><span>自分自身を消す</span></h1><a id="marker_38827-4" name="marker_38827-4"></a><div class="plist">Main</div><a id="marker_38827-11" name="marker_38827-11"></a><pre><a id="marker_38827-5" name="marker_38827-5"></a><span>x=100;</span><span>
+</span><a id="marker_38827-6" name="marker_38827-6"></a><span>y=100;</span><span>
+</span><a id="marker_38827-7" name="marker_38827-7"></a><span>while(true){</span><span>
+</span><a id="marker_38827-8" name="marker_38827-8"></a><span>  if(getkey("z")==1) die();</span><span>
+</span><a id="marker_38827-9" name="marker_38827-9"></a><span>  update();</span><span>
+</span><a id="marker_38827-10" name="marker_38827-10"></a><span>}</span><span>
+</span></pre><a id="marker_38827-12" name="marker_38827-12"></a><span>zキーを押すと消える。消えた後は実行を停止するので消えた後の処理は別のファイルに書く。</span><span>
+</span><a id="marker_38827-13" name="marker_38827-13"></a><p></p><a id="marker_38827-14" name="marker_38827-14"></a><span>※die()...自身を消す。</span><span>
+</span><a id="marker_38827-15" name="marker_38827-15"></a><p></p><a id="marker_38827-16" name="marker_38827-16"></a><div class="plist">Main</div><a id="marker_38827-24" name="marker_38827-24"></a><pre><a id="marker_38827-17" name="marker_38827-17"></a><span>x=100;</span><span>
+</span><a id="marker_38827-18" name="marker_38827-18"></a><span>y-100;</span><span>
+</span><a id="marker_38827-19" name="marker_38827-19"></a><span>while(true){</span><span>
+</span><a id="marker_38827-20" name="marker_38827-20"></a><span>  x++;</span><span>
+</span><a id="marker_38827-21" name="marker_38827-21"></a><span>  if(x&gt;$screenWidth) die();</span><span>
+</span><a id="marker_38827-22" name="marker_38827-22"></a><span>  update();</span><span>
+</span><a id="marker_38827-23" name="marker_38827-23"></a><span>}</span><span>
+</span></pre><a id="marker_38827-25" name="marker_38827-25"></a><span>右方向に動くオブジェクトが画面右端に到達すると消える。オブジェクトは画面外に出ても実行はされているため、あまり多くのオブジェクトを表示したままにしておくと処理が遅くなってしまうので必要のなくなったオブジェクトは消すとよい。</span><span>
+</span><a id="marker_38827-26" name="marker_38827-26"></a><p></p></div><div style="height: 100px;"></div>

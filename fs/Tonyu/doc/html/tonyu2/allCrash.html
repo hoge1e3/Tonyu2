@@ -1,0 +1,17 @@
+<link rel='stylesheet' href='/css/bootstrap.css'/>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px;}</style>
+<title>allCrash</title>
+<div><a id="marker_38827-0" name="marker_38827-0"></a><a href="BaseActor.html">BaseActor</a><span>
+</span><a id="marker_38827-1" name="marker_38827-1"></a><p></p><h1><a id="marker_38827-2" name="marker_38827-2"></a><span> allCrashメソッド</span></h1><a id="marker_38827-3" name="marker_38827-3"></a><p></p><a id="marker_38827-4" name="marker_38827-4"></a><span>指定されたクラスのオブジェクトのうち，自分と衝突しているすべてのオブジェクトをあらわす</span><a href="TQuery.html">TQuery</a><span>オブジェクトを返します．</span><span>
+</span><a id="marker_38827-5" name="marker_38827-5"></a><p></p><h2><a id="marker_38827-6" name="marker_38827-6"></a><span>書式</span></h2><a id="marker_38827-9" name="marker_38827-9"></a><pre><a id="marker_38827-8" name="marker_38827-8"></a><span>allCrash(Class)</span><span>
+</span></pre><a id="marker_38827-10" name="marker_38827-10"></a><p></p><a id="marker_38827-11" name="marker_38827-11"></a><i><span>Class</span></i><span>で指定されたクラスのオブジェクトのうち，自分と衝突しているすべてのオブジェクトをあらわす</span><a href="TQuery.html">TQuery</a><span>オブジェクトを返します．</span><span>
+</span><a id="marker_38827-12" name="marker_38827-12"></a><p></p><a id="marker_38827-13" name="marker_38827-13"></a><p></p><h1><a id="marker_38827-14" name="marker_38827-14"></a><span>例</span></h1><a id="marker_38827-15" name="marker_38827-15"></a><p></p><a id="marker_38827-22" name="marker_38827-22"></a><pre><a id="marker_38827-17" name="marker_38827-17"></a><span>    // このオブジェクトがTargetクラスのオブジェクトとぶつかっていたら，</span><span>
+</span><a id="marker_38827-18" name="marker_38827-18"></a><span>    // そのオブジェクトを消す</span><span>
+</span><a id="marker_38827-19" name="marker_38827-19"></a><span>    for (t in allCrash(Target)) {</span><span>
+</span><a id="marker_38827-20" name="marker_38827-20"></a><span>        t.die();</span><span>
+</span><a id="marker_38827-21" name="marker_38827-21"></a><span>    }</span><span>
+</span></pre><a id="marker_38827-23" name="marker_38827-23"></a><p></p><a id="marker_38827-24" name="marker_38827-24"></a><span>上の例は，次のように書くこともできます．</span><span>
+</span><a id="marker_38827-25" name="marker_38827-25"></a><p></p><a id="marker_38827-30" name="marker_38827-30"></a><pre><a id="marker_38827-27" name="marker_38827-27"></a><span>    // このオブジェクトがTargetクラスのオブジェクトとぶつかっていたら，</span><span>
+</span><a id="marker_38827-28" name="marker_38827-28"></a><span>    // そのオブジェクトを消す</span><span>
+</span><a id="marker_38827-29" name="marker_38827-29"></a><span>    allCrash(Target).die();</span><span>
+</span></pre><a id="marker_38827-31" name="marker_38827-31"></a><p></p><a id="marker_38827-32" name="marker_38827-32"></a><p></p></div><div style="height: 100px;"></div>

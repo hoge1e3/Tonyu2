@@ -1,0 +1,19 @@
+<link rel='stylesheet' href='/css/bootstrap.css'/>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px;}</style>
+<title>ラインパネルの作成</title>
+<div><a id="marker_38827-0" name="marker_38827-0"></a><a href="用途別リファレンス.html">用途別リファレンス</a><span>
+</span><a id="marker_38827-1" name="marker_38827-1"></a><p></p><h3><a id="marker_38827-2" name="marker_38827-2"></a><span>ラインパネルの作成</span></h3><a id="marker_38827-3" name="marker_38827-3"></a><p></p><a id="marker_38827-4" name="marker_38827-4"></a><span>ラインパネル(タッチして得点を得る部分)を作成する。</span><span>
+</span><a id="marker_38827-5" name="marker_38827-5"></a><p></p><h2><a id="marker_38827-6" name="marker_38827-6"></a><span>ラインパネルの作成の仕方</span></h2><a id="marker_38827-7" name="marker_38827-7"></a><span>(例)</span><span>
+</span><a id="marker_38827-8" name="marker_38827-8"></a><div class="plist">Line</div><a id="marker_38827-15" name="marker_38827-15"></a><pre><a id="marker_38827-9" name="marker_38827-9"></a><span>$linePanel=new Panel{x:$screenWidth/2, </span><span>
+</span><a id="marker_38827-10" name="marker_38827-10"></a><span>y:$screenHeight*3/4};</span><span>
+</span><a id="marker_38827-11" name="marker_38827-11"></a><span>$linePanel.setPanel($screenWidth,30);</span><span>
+</span><a id="marker_38827-12" name="marker_38827-12"></a><p></p><a id="marker_38827-13" name="marker_38827-13"></a><span>$linePanel.setFillStyle("yellow");</span><span>
+</span><a id="marker_38827-14" name="marker_38827-14"></a><span>$linePanel.fillRect(0,0,$screenWidth,30);</span><span>
+</span></pre><a id="marker_38827-16" name="marker_38827-16"></a><p></p><a id="marker_38827-17" name="marker_38827-17"></a><div class="plist">Main</div><a id="marker_38827-19" name="marker_38827-19"></a><pre><a id="marker_38827-18" name="marker_38827-18"></a><span>new Line;</span><span>
+</span></pre><a id="marker_38827-21" name="marker_38827-21"></a><ul><li><a id="marker_38827-20" name="marker_38827-20"></a><span>MainでLineクラスを呼び出す。</span><span>
+</span></li></ul><h1><span>解説</span></h1><a id="marker_38827-23" name="marker_38827-23"></a><ul><li><a id="marker_38827-22" name="marker_38827-22"></a><span>まずPanelを作り、その中心の点の座標を設定する。例ではxを画面の横幅の中心、yを画面の縦幅の上から3/4の位置に設定している。</span><span>
+</span></li></ul><p></p><a id="marker_38827-25" name="marker_38827-25"></a><ul><li><a id="marker_38827-24" name="marker_38827-24"></a><span>次にsetPanelでそのPanelの大きさを設定する。例ではwidthを画面の横幅全て、heightを30の長さで設定している。</span><span>
+</span></li></ul><p></p><a id="marker_38827-27" name="marker_38827-27"></a><ul><li><a id="marker_38827-26" name="marker_38827-26"></a><span>そしてsetFillStyleで色を設定する。例ではyellow(黄)としている。</span><span>
+</span></li></ul><p></p><a id="marker_38827-29" name="marker_38827-29"></a><ul><li><a id="marker_38827-28" name="marker_38827-28"></a><span>最後にfillRectでPanelの書き始めのx,yを指定し、指定した場所からの横幅と縦幅を設定し、四角形を描写する。例では書き始めのx,yをPanelの左上に設定し、横幅を端から端まで、縦幅を上から30という長さで設定している。</span><span>
+</span></li></ul><p></p><a id="marker_38827-30" name="marker_38827-30"></a><span>前へ </span><a href="音符を降らせる.html">音符を降らせる</a><span>　次へ </span><a href="ラインパネルと曲(音符)の同期.html">ラインパネルと曲(音符)の同期</a><span>
+</span></div><div style="height: 100px;"></div>

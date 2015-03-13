@@ -1,0 +1,18 @@
+<link rel='stylesheet' href='/css/bootstrap.css'/>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px;}</style>
+<title>上下左右に移動させる</title>
+<div><a id="marker_38827-0" name="marker_38827-0"></a><a href="用途別リファレンス.html">用途別リファレンス</a><span>
+</span><a id="marker_38827-1" name="marker_38827-1"></a><p></p><a id="marker_38827-2" name="marker_38827-2"></a><a href="オブジェクトを動かす.html">オブジェクトを動かす</a><span>
+</span><a id="marker_38827-3" name="marker_38827-3"></a><p></p><h1><a id="marker_38827-4" name="marker_38827-4"></a><span>上下左右に移動させる</span></h1><a id="marker_38827-5" name="marker_38827-5"></a><div class="plist">Main</div><a id="marker_38827-15" name="marker_38827-15"></a><pre><a id="marker_38827-6" name="marker_38827-6"></a><span>x=$screenWidth/2;</span><span>
+</span><a id="marker_38827-7" name="marker_38827-7"></a><span>y=$screenHeight/2;</span><span>
+</span><a id="marker_38827-8" name="marker_38827-8"></a><span>while(true){</span><span>
+</span><a id="marker_38827-9" name="marker_38827-9"></a><span>  if(getkey("right")&gt;0)	x+=3;</span><span>
+</span><a id="marker_38827-10" name="marker_38827-10"></a><span>  if(getkey("left")&gt;0)	x-=3;</span><span>
+</span><a id="marker_38827-11" name="marker_38827-11"></a><span>  if(getkey("down")&gt;0)	y+=3;</span><span>
+</span><a id="marker_38827-12" name="marker_38827-12"></a><span>  if(getkey("up")&gt;0)	y-=3;</span><span>
+</span><a id="marker_38827-13" name="marker_38827-13"></a><span>  update();</span><span>
+</span><a id="marker_38827-14" name="marker_38827-14"></a><span>}</span><span>
+</span></pre><a id="marker_38827-16" name="marker_38827-16"></a><span>画面中央に表示されているオブジェクトを矢印キーの上下左右で動かすことができる。</span><span>
+</span><a id="marker_38827-17" name="marker_38827-17"></a><p></p><a id="marker_38827-18" name="marker_38827-18"></a><span>※このままでは画面端より外側にはみ出すことができてしまう。画面外に出ないようにするためには</span><a href="画面端から出ないようにする.html">画面端から出ないようにする</a><span>設定が必要。</span><span>
+</span><a id="marker_38827-19" name="marker_38827-19"></a><p></p><a id="marker_38827-20" name="marker_38827-20"></a><span>※壁などの障害物にぶつかったら止まるようにするには</span><a href="当たり判定で壁にぶつかる.html">当たり判定で壁にぶつかる</a><span>ようにする。</span><span>
+</span></div><div style="height: 100px;"></div>

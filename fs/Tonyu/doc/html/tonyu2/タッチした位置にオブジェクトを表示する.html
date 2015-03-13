@@ -1,0 +1,17 @@
+<link rel='stylesheet' href='/css/bootstrap.css'/>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px;}</style>
+<title>タッチした位置にオブジェクトを表示する</title>
+<div><a id="marker_38827-0" name="marker_38827-0"></a><a href="用途別リファレンス.html">用途別リファレンス</a><span>
+</span><a id="marker_38827-1" name="marker_38827-1"></a><p></p><a id="marker_38827-2" name="marker_38827-2"></a><a href="オブジェクトを動かす.html">オブジェクトを動かす</a><span>
+</span><h1><a id="marker_38827-3" name="marker_38827-3"></a><span>タッチした位置にオブジェクトを表示する</span></h1><a id="marker_38827-12" name="marker_38827-12"></a><pre><a id="marker_38827-5" name="marker_38827-5"></a><span>while(true){</span><span>
+</span><a id="marker_38827-6" name="marker_38827-6"></a><span>    if($touches[0].touched){</span><span>
+</span><a id="marker_38827-7" name="marker_38827-7"></a><span>        x=$touches[0].x;</span><span>
+</span><a id="marker_38827-8" name="marker_38827-8"></a><span>        y=$touches[0].y;</span><span>
+</span><a id="marker_38827-9" name="marker_38827-9"></a><span>    }</span><span>
+</span><a id="marker_38827-10" name="marker_38827-10"></a><span>    update();</span><span>
+</span><a id="marker_38827-11" name="marker_38827-11"></a><span>}</span><span>
+</span></pre><a id="marker_38827-13" name="marker_38827-13"></a><span>$touches[0].touchedでタッチされているかどうかの判定を行う。</span><span>
+</span><a id="marker_38827-16" name="marker_38827-16"></a><ul><li><a id="marker_38827-14" name="marker_38827-14"></a><span>touched=true...タッチされていない</span><span>
+</span></li><li><a id="marker_38827-15" name="marker_38827-15"></a><span>touched=false...タッチされている</span><span>
+</span></li></ul><span>また、タッチした座標はそれぞれ$touches[0].xと$touches[0].yに入っている。</span><span>
+</span></div><div style="height: 100px;"></div>

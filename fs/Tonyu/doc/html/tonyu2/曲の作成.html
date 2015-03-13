@@ -1,0 +1,48 @@
+<link rel='stylesheet' href='/css/bootstrap.css'/>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px;}</style>
+<title>曲の作成</title>
+<div><a id="marker_38827-0" name="marker_38827-0"></a><a href="用途別リファレンス.html">用途別リファレンス</a><span>
+</span><a id="marker_38827-1" name="marker_38827-1"></a><p></p><a id="marker_38827-2" name="marker_38827-2"></a><span>別途リンク 　</span><a href="play.html">play</a><span> </span><a href="playSE.html">playSE</a><span>
+</span><a id="marker_38827-3" name="marker_38827-3"></a><p></p><h3><a id="marker_38827-4" name="marker_38827-4"></a><span>曲の作成</span></h3><a id="marker_38827-5" name="marker_38827-5"></a><p></p><a id="marker_38827-6" name="marker_38827-6"></a><span>ここでは音の出し方から曲を完成するまでの流れを説明する。</span><span>
+</span><a id="marker_38827-7" name="marker_38827-7"></a><span>Tonyu system2でのテンポは120なので1分間に4分音符が120回分打てるということになる。</span><span>
+</span><a id="marker_38827-8" name="marker_38827-8"></a><p></p><a id="marker_38827-9" name="marker_38827-9"></a><span>なので</span><span>
+</span><a id="marker_38827-10" name="marker_38827-10"></a><span>60(秒)÷120＝500ms(0.5秒)となる。</span><span>
+</span><a id="marker_38827-11" name="marker_38827-11"></a><p></p><a id="marker_38827-12" name="marker_38827-12"></a><p></p><a id="marker_38827-13" name="marker_38827-13"></a><span>なのでここでは 2秒 = 1小節と考える。</span><span>
+</span><a id="marker_38827-14" name="marker_38827-14"></a><p></p><h2><a id="marker_38827-15" name="marker_38827-15"></a><span>音符の設定</span></h2><a id="marker_38827-17" name="marker_38827-17"></a><ul><li><a id="marker_38827-16" name="marker_38827-16"></a><span>ド=c レ=d ミ=e ファ=f ソ=g ラ=a シ=b</span><span>
+</span></li></ul><p></p><a id="marker_38827-18" name="marker_38827-18"></a><div class="plist">(例)</div><a id="marker_38827-20" name="marker_38827-20"></a><pre><a id="marker_38827-19" name="marker_38827-19"></a><span> play("c"); //ドの音を鳴らす</span><span>
+</span></pre><a id="marker_38827-21" name="marker_38827-21"></a><p></p><a id="marker_38827-23" name="marker_38827-23"></a><ul><li><a id="marker_38827-22" name="marker_38827-22"></a><span>連続で音を鳴らす</span><span>
+</span></li></ul><div class="plist">(例)</div><a id="marker_38827-25" name="marker_38827-25"></a><pre><a id="marker_38827-24" name="marker_38827-24"></a><span>play("cd"); //ド→レと連続鳴らす</span><span>
+</span></pre><a id="marker_38827-26" name="marker_38827-26"></a><p></p><a id="marker_38827-28" name="marker_38827-28"></a><ul><li><a id="marker_38827-27" name="marker_38827-27"></a><span>c○=ドの音を○分音符で鳴らす</span><span>
+</span></li></ul><div class="plist">(例)</div><a id="marker_38827-30" name="marker_38827-30"></a><pre><a id="marker_38827-29" name="marker_38827-29"></a><span>play("c4"); //ドの音を4分音符で鳴らす</span><span>
+</span></pre><a id="marker_38827-31" name="marker_38827-31"></a><p></p><a id="marker_38827-33" name="marker_38827-33"></a><ul><li><a id="marker_38827-32" name="marker_38827-32"></a><span>休符を置く</span><span>
+</span></li></ul><div class="plist">(例)</div><a id="marker_38827-35" name="marker_38827-35"></a><pre><a id="marker_38827-34" name="marker_38827-34"></a><span>play("r1"); //全休符を置く</span><span>
+</span></pre><a id="marker_38827-37" name="marker_38827-37"></a><ul><li><a id="marker_38827-36" name="marker_38827-36"></a><span>l(英字のエル)○=指定がない場合○分音符</span><span>
+</span></li></ul><p></p><a id="marker_38827-38" name="marker_38827-38"></a><div class="plist">(例)</div><a id="marker_38827-40" name="marker_38827-40"></a><pre><a id="marker_38827-39" name="marker_38827-39"></a><span>play("l4 c"); //特に指定がなければ4分音符分の長さのドを鳴らす</span><span>
+</span></pre><a id="marker_38827-41" name="marker_38827-41"></a><span> </span><span>
+</span><a id="marker_38827-44" name="marker_38827-44"></a><ul><li><a id="marker_38827-42" name="marker_38827-42"></a><span> &lt;...1オクターブ上がる</span><span>
+</span></li><li><a id="marker_38827-43" name="marker_38827-43"></a><span> &gt;...1オクターブ下がる</span><span>
+</span></li></ul><div class="plist">(例)</div><a id="marker_38827-46" name="marker_38827-46"></a><pre><a id="marker_38827-45" name="marker_38827-45"></a><span>play("cd&lt;cd"); //&lt;の後が1オクターブ上がる</span><span>
+</span></pre><a id="marker_38827-47" name="marker_38827-47"></a><p></p><a id="marker_38827-49" name="marker_38827-49"></a><ul><li><a id="marker_38827-48" name="marker_38827-48"></a><span>同時に音を鳴らす</span><span>
+</span></li></ul><div class="plist">(例)</div><a id="marker_38827-51" name="marker_38827-51"></a><pre><a id="marker_38827-50" name="marker_38827-50"></a><span> play("a","c") = ラとドを同時に鳴らす</span><span>
+</span></pre><a id="marker_38827-52" name="marker_38827-52"></a><p></p><a id="marker_38827-54" name="marker_38827-54"></a><ul><li><a id="marker_38827-53" name="marker_38827-53"></a><span>半音上げるためには+、半音下げるためには-を音の後に書く</span><span>
+</span></li></ul><div class="plist">(例)</div><a id="marker_38827-56" name="marker_38827-56"></a><pre><a id="marker_38827-55" name="marker_38827-55"></a><span>play("a-","a+"); //ドのフラット、ドのシャープを鳴らす</span><span>
+</span></pre><a id="marker_38827-57" name="marker_38827-57"></a><p></p><a id="marker_38827-61" name="marker_38827-61"></a><ul><li><a id="marker_38827-58" name="marker_38827-58"></a><span>デフォルトのオクターブ（音階）はo4</span><span>
+</span></li><li><a id="marker_38827-59" name="marker_38827-59"></a><span>オクターブとはある音階を基準とした、音の高さの異なる同名の音階までの音程のこと</span><span>
+</span></li><li><a id="marker_38827-60" name="marker_38827-60"></a><span>つまり音階を変えたい場合は次のように設定する</span><span>
+</span></li></ul><p></p><a id="marker_38827-62" name="marker_38827-62"></a><div class="plist">(例)</div><a id="marker_38827-64" name="marker_38827-64"></a><pre><a id="marker_38827-63" name="marker_38827-63"></a><span>play("o3cdef"); //1オクターブ(音階)下げてドレミファと鳴らす</span><span>
+</span></pre><a id="marker_38827-65" name="marker_38827-65"></a><p></p><a id="marker_38827-66" name="marker_38827-66"></a><p></p><a id="marker_38827-68" name="marker_38827-68"></a><ul><li><a id="marker_38827-67" name="marker_38827-67"></a><span>効果音を作る。</span><span>
+</span></li></ul><div class="plist">(例)</div><a id="marker_38827-71" name="marker_38827-71"></a><pre><a id="marker_38827-69" name="marker_38827-69"></a><span>playSE("l40o5&lt;ccccccccccccccr2cccccccccccccc");   //着信音</span><span>
+</span><a id="marker_38827-70" name="marker_38827-70"></a><span>playSE("o5l28e&lt;c");// 決定音</span><span>
+</span></pre><a id="marker_38827-74" name="marker_38827-74"></a><ul><li><a id="marker_38827-72" name="marker_38827-72"></a><span>作った効果音をplayの後にSEとつける。</span><span>
+</span></li><li><a id="marker_38827-73" name="marker_38827-73"></a><span>任意の場所に効果音をつけることができる。</span><span>
+</span></li></ul><span>前へ 曲の作成 次へ 画像の挿入</span><span>
+</span><a id="marker_38827-75" name="marker_38827-75"></a><p></p><h2><a id="marker_38827-76" name="marker_38827-76"></a><span>プログラム文</span></h2><a id="marker_38827-77" name="marker_38827-77"></a><span>(例：キラキラ星)                                    </span><span>
+</span><a id="marker_38827-78" name="marker_38827-78"></a><p></p><a id="marker_38827-79" name="marker_38827-79"></a><span>別にStarクラス(自作した曲のクラス)を作成し、Mainクラスから呼び出せるようにする。</span><span>
+</span><a id="marker_38827-80" name="marker_38827-80"></a><div class="plist">Star</div><a id="marker_38827-85" name="marker_38827-85"></a><pre><a id="marker_38827-81" name="marker_38827-81"></a><span>play("r1");</span><span>
+</span><a id="marker_38827-82" name="marker_38827-82"></a><span>play("l4 ccggaag2ffeeddc2","l4 eeeeffe2ddcc&gt;ab&lt;g2","r1r1r1r2/1e2");</span><span>
+</span><a id="marker_38827-83" name="marker_38827-83"></a><span>play("l4 ggffeed2ggffeed2","l4 eeddcc&gt;b2 &lt;l4eeddcc&gt;b2");</span><span>
+</span><a id="marker_38827-84" name="marker_38827-84"></a><span>play("l4 ccggaag2ffeeddc2","l4 r1a8b8&lt;c8&gt;a8g2r8/1f8g8f8r8/1e8g8e8r8/1d8g8d8c2");</span><span>
+</span></pre><a id="marker_38827-86" name="marker_38827-86"></a><p></p><a id="marker_38827-87" name="marker_38827-87"></a><div class="plist">Main</div><a id="marker_38827-89" name="marker_38827-89"></a><pre><a id="marker_38827-88" name="marker_38827-88"></a><span>$c=new Star;</span><span>
+</span></pre><a id="marker_38827-91" name="marker_38827-91"></a><ul><li><a id="marker_38827-90" name="marker_38827-90"></a><span>MainでStarクラスを呼び出す。</span><span>
+</span></li></ul><p></p><a id="marker_38827-92" name="marker_38827-92"></a><span>次へ　</span><a href="画像の挿入.html">画像の挿入</a><span>
+</span></div><div style="height: 100px;"></div>
