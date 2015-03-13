@@ -1,0 +1,14 @@
+<link rel='stylesheet' href='/css/bootstrap.css'/>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px;}</style>
+<title>オブジェクトの大きさや傾き、透明度を設定する</title>
+<div><a id="marker_27505-0" name="marker_27505-0"></a><a href="チュートリアル.html">チュートリアル</a><span>
+</span><a id="marker_27505-1" name="marker_27505-1"></a><p></p><a id="marker_27505-2" name="marker_27505-2"></a><a href="オブジェクトを宣言する際に値を設定する.html">前へ</a><span>←　→</span><a href="オブジェクトのグラフィックを変える.html">次へ</a><span>
+</span><h2><a id="marker_27505-3" name="marker_27505-3"></a><span>オブジェクトの大きさ、傾き、透明度を設定する</span></h2><a id="marker_27505-4" name="marker_27505-4"></a><p></p><a id="marker_27505-5" name="marker_27505-5"></a><span>オブジェクトの大きさ、傾き、透明度はそれぞれ</span><a href="BaseActor.html">scaleX、rotate、alpha</a><span>で管理されています。これらの値も加減算することで回転や拡大などをさせたり、半透明のオブジェクトを表示させたりすることができます。</span><span>
+</span><a id="marker_27505-6" name="marker_27505-6"></a><p></p><a id="marker_27505-7" name="marker_27505-7"></a><div class="plist">Main</div><a id="marker_27505-11" name="marker_27505-11"></a><pre><a id="marker_27505-8" name="marker_27505-8"></a><span>new Chara1{x:100, y:100, scaleX:2};</span><span>
+</span><a id="marker_27505-9" name="marker_27505-9"></a><span>new Chara1{x:200, y:200, rotation:45};</span><span>
+</span><a id="marker_27505-10" name="marker_27505-10"></a><span>new Chara1{x:300, y:300, alpha:128};</span><span>
+</span></pre><a id="marker_27505-12" name="marker_27505-12"></a><div class="plist">Chara1</div><a id="marker_27505-17" name="marker_27505-17"></a><pre><a id="marker_27505-13" name="marker_27505-13"></a><span>while(true){</span><span>
+</span><a id="marker_27505-14" name="marker_27505-14"></a><span>  rotation++;</span><span>
+</span><a id="marker_27505-15" name="marker_27505-15"></a><span>  update();</span><span>
+</span><a id="marker_27505-16" name="marker_27505-16"></a><span>}</span><span>
+</span></pre></div><div style="height: 100px;"></div>

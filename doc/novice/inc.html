@@ -1,0 +1,42 @@
+<link rel='stylesheet' href='/css/bootstrap.css'/>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px;}</style>
+<title>inc</title>
+<div><a id="marker_27505-0" name="marker_27505-0"></a><a href="variable3.html">前へ</a><span> - </span><a href="while.html">次へ</a><span> - </span><a href="projectIndex.html">目次</a><span>
+</span><h1><a id="marker_27505-1" name="marker_27505-1"></a><span> 変数の値を増やしてみましょう</span></h1><a id="marker_27505-2" name="marker_27505-2"></a><p></p><a id="marker_27505-3" name="marker_27505-3"></a><span>さて，さきほどのプログラムをもう一度みてみましょう，</span><span>
+</span><a id="marker_27505-4" name="marker_27505-4"></a><p></p><a id="marker_27505-5" name="marker_27505-5"></a><div class="plist">リスト1 Cat</div><a id="marker_27505-10" name="marker_27505-10"></a><pre><a id="marker_27505-6" name="marker_27505-6"></a><span>x=50;</span><span>
+</span><a id="marker_27505-7" name="marker_27505-7"></a><span>go(x,100);sleep();</span><span>
+</span><a id="marker_27505-8" name="marker_27505-8"></a><span>x=60;</span><span>
+</span><a id="marker_27505-9" name="marker_27505-9"></a><span>go(x,100);sleep();</span><span>
+</span></pre><a id="marker_27505-11" name="marker_27505-11"></a><p></p><a id="marker_27505-12" name="marker_27505-12"></a><strong>リスト1</strong><span>では，</span><code><span>x=50;</span></code><span>で，xに50覚えさせてから，</span><span>
+</span><a id="marker_27505-13" name="marker_27505-13"></a><code><span>x=60;</span></code><span>で，xに60覚えさせています．</span><span>
+</span><a id="marker_27505-14" name="marker_27505-14"></a><p></p><a id="marker_27505-15" name="marker_27505-15"></a><span>ここでは，</span><span>
+</span><a id="marker_27505-16" name="marker_27505-16"></a><span>「xに60を覚えさせる」代わりに，「（すでに覚えている）50 を10だけ増やす」</span><span>
+</span><a id="marker_27505-17" name="marker_27505-17"></a><span>という書き方を紹介します．</span><span>
+</span><a id="marker_27505-18" name="marker_27505-18"></a><p></p><a id="marker_27505-19" name="marker_27505-19"></a><div class="plist">リスト2 Cat</div><a id="marker_27505-24" name="marker_27505-24"></a><pre><a id="marker_27505-20" name="marker_27505-20"></a><span>x=50;</span><span>
+</span><a id="marker_27505-21" name="marker_27505-21"></a><span>go(x,100);sleep();</span><span>
+</span><a id="marker_27505-22" name="marker_27505-22"></a><span>x+=10;</span><span>
+</span><a id="marker_27505-23" name="marker_27505-23"></a><span>go(x,100);sleep();</span><span>
+</span></pre><a id="marker_27505-25" name="marker_27505-25"></a><p></p><a id="marker_27505-26" name="marker_27505-26"></a><code><span>x+=10;</span></code><span>という書き方が出てきました．これは</span><span>
+</span><a id="marker_27505-27" name="marker_27505-27"></a><span>「今覚えているxの値に，10を足す」という意味です．</span><span>
+</span><a id="marker_27505-28" name="marker_27505-28"></a><p></p><a id="marker_27505-29" name="marker_27505-29"></a><strong>リスト2</strong><span>では，</span><span>
+</span><a id="marker_27505-30" name="marker_27505-30"></a><code><span>x+=10;</span></code><span>が実行される時点では，</span><span>
+</span><a id="marker_27505-31" name="marker_27505-31"></a><span>xは50を覚えていますので，</span><span>
+</span><a id="marker_27505-32" name="marker_27505-32"></a><code><span>x+=10;</span></code><span>が実行されると，50に10を足した値である</span><span>
+</span><a id="marker_27505-33" name="marker_27505-33"></a><span>60を新しくxに覚えさせます．結果として，</span><span>
+</span><a id="marker_27505-34" name="marker_27505-34"></a><strong>リスト2</strong><span>は，</span><span>
+</span><a id="marker_27505-35" name="marker_27505-35"></a><strong>リスト1</strong><span>と同じ結果になります．</span><span>
+</span><a id="marker_27505-36" name="marker_27505-36"></a><p></p><a id="marker_27505-37" name="marker_27505-37"></a><span>これを利用して，xを100まで増やしながら，絵を動かしてみましょう．</span><span>
+</span><a id="marker_27505-38" name="marker_27505-38"></a><p></p><a id="marker_27505-39" name="marker_27505-39"></a><div class="plist">リスト3 Cat</div><a id="marker_27505-52" name="marker_27505-52"></a><pre><a id="marker_27505-40" name="marker_27505-40"></a><span>x=50;</span><span>
+</span><a id="marker_27505-41" name="marker_27505-41"></a><span>go(x,100);sleep();</span><span>
+</span><a id="marker_27505-42" name="marker_27505-42"></a><span>x+=10;</span><span>
+</span><a id="marker_27505-43" name="marker_27505-43"></a><span>go(x,100);sleep();</span><span>
+</span><a id="marker_27505-44" name="marker_27505-44"></a><span>x+=10;</span><span>
+</span><a id="marker_27505-45" name="marker_27505-45"></a><span>go(x,100);sleep();</span><span>
+</span><a id="marker_27505-46" name="marker_27505-46"></a><span>x+=10;</span><span>
+</span><a id="marker_27505-47" name="marker_27505-47"></a><span>go(x,100);sleep();</span><span>
+</span><a id="marker_27505-48" name="marker_27505-48"></a><span>x+=10;</span><span>
+</span><a id="marker_27505-49" name="marker_27505-49"></a><span>go(x,100);sleep();</span><span>
+</span><a id="marker_27505-50" name="marker_27505-50"></a><span>x+=10;</span><span>
+</span><a id="marker_27505-51" name="marker_27505-51"></a><span>go(x,100);sleep();</span><span>
+</span></pre><a id="marker_27505-53" name="marker_27505-53"></a><a href="variable3.html">前へ</a><span> - </span><a href="while.html">次へ</a><span> - </span><a href="projectIndex.html">目次</a><span>
+</span></div><div style="height: 100px;"></div>

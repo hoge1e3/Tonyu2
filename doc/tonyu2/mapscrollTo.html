@@ -1,0 +1,16 @@
+<link rel='stylesheet' href='/css/bootstrap.css'/>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px;}</style>
+<title>mapscrollTo</title>
+<div><a id="marker_27505-0" name="marker_27505-0"></a><a href="用途別リファレンス.html">用途別リファレンス</a><span>
+</span><a id="marker_27505-1" name="marker_27505-1"></a><p></p><h1><a id="marker_27505-2" name="marker_27505-2"></a><span>マップをスクロールさせる</span></h1><a id="marker_27505-3" name="marker_27505-3"></a><p></p><a id="marker_27505-13" name="marker_27505-13"></a><pre><a id="marker_27505-5" name="marker_27505-5"></a><span>・Main.Tonyu</span><span>
+</span><a id="marker_27505-6" name="marker_27505-6"></a><span>//事前にマップを作っておく</span><span>
+</span><a id="marker_27505-7" name="marker_27505-7"></a><span>i=0;</span><span>
+</span><a id="marker_27505-8" name="marker_27505-8"></a><span>while(true){</span><span>
+</span><a id="marker_27505-9" name="marker_27505-9"></a><span>    $map.scrollTo(i,0);</span><span>
+</span><a id="marker_27505-10" name="marker_27505-10"></a><span>    i++;</span><span>
+</span><a id="marker_27505-11" name="marker_27505-11"></a><span>    update();</span><span>
+</span><a id="marker_27505-12" name="marker_27505-12"></a><span>}</span><span>
+</span></pre><a id="marker_27505-14" name="marker_27505-14"></a><p></p><a id="marker_27505-15" name="marker_27505-15"></a><p></p><a id="marker_27505-16" name="marker_27505-16"></a><p></p><a id="marker_27505-18" name="marker_27505-18"></a><ul><li><a id="marker_27505-17" name="marker_27505-17"></a><span>scrollTo(xの元の位置からの移動距離,yの元の位置からの移動距離);</span><span>
+</span></li></ul><p></p><a id="marker_27505-19" name="marker_27505-19"></a><span>元の位置からの移動距離を指定するため、今まで移動した距離を覚えておく必要がある．</span><span>
+</span><a id="marker_27505-20" name="marker_27505-20"></a><p></p><a id="marker_27505-21" name="marker_27505-21"></a><span>スクリーン全体をスクロールさせる場合は、$Screen.scrollTo(sx,sy);を使用する．</span><span>
+</span></div><div style="height: 100px;"></div>

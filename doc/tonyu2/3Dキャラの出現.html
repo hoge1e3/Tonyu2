@@ -1,0 +1,21 @@
+<link rel='stylesheet' href='/css/bootstrap.css'/>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px;}</style>
+<title>3Dキャラの出現</title>
+<div><a id="marker_27505-0" name="marker_27505-0"></a><a href="用途別リファレンス.html">用途別リファレンス</a><span>
+</span><a id="marker_27505-1" name="marker_27505-1"></a><p></p><h2><a id="marker_27505-2" name="marker_27505-2"></a><span>・3Dキャラクターの出現</span></h2><a id="marker_27505-3" name="marker_27505-3"></a><p></p><a id="marker_27505-4" name="marker_27505-4"></a><span>Mainクラスに以下を書き込む</span><span>
+</span><a id="marker_27505-5" name="marker_27505-5"></a><p></p><a id="marker_27505-6" name="marker_27505-6"></a><div class="plist">Main</div><a id="marker_27505-14" name="marker_27505-14"></a><pre><a id="marker_27505-7" name="marker_27505-7"></a><span>while(true){</span><span>
+</span><a id="marker_27505-8" name="marker_27505-8"></a><span>    //キャラ出現率10％</span><span>
+</span><a id="marker_27505-9" name="marker_27505-9"></a><span>    if (rnd(100)&lt;10) {</span><span>
+</span><a id="marker_27505-10" name="marker_27505-10"></a><span>        new Chara2{ ox:rnd(500)-250,oy:rnd(500)-250,z:1000 ,p:0,zOrder:0};</span><span>
+</span><a id="marker_27505-11" name="marker_27505-11"></a><span>    }</span><span>
+</span><a id="marker_27505-12" name="marker_27505-12"></a><span>    update();</span><span>
+</span><a id="marker_27505-13" name="marker_27505-13"></a><span>}</span><span>
+</span></pre><a id="marker_27505-15" name="marker_27505-15"></a><p></p><a id="marker_27505-16" name="marker_27505-16"></a><span>3D表示を行うためプレイヤーから物体までの距離を設定していく。</span><span>
+</span><a id="marker_27505-17" name="marker_27505-17"></a><p></p><a id="marker_27505-18" name="marker_27505-18"></a><span>ｚはキャラまでの距離を表しており、今回では1000としている。</span><span>
+</span><a id="marker_27505-19" name="marker_27505-19"></a><p></p><a id="marker_27505-20" name="marker_27505-20"></a><span>ox,oyは出現位置です。</span><span>
+</span><a id="marker_27505-22" name="marker_27505-22"></a><ul><li><a id="marker_27505-21" name="marker_27505-21"></a><span>なぜ500や250などの大きい値を設定しているかというと、初期位置の変化をわかりやすくするためです。</span><span>
+</span></li></ul><p></p><ul><a id="marker_27505-24" name="marker_27505-24"></a><ul><li><a id="marker_27505-23" name="marker_27505-23"></a><span>近くの物体が１ｍ動くと動いたことはすぐにわかるが遠くの物体が１ｍ動いた場合はどうだろう？動いた気がする程度の物だろう。しかし遠くの物でも１００ｍ動いた場合はある程度はっきりわかることでしょう.</span><span>
+</span></li></ul></ul><p></p><a id="marker_27505-26" name="marker_27505-26"></a><ul><li><a id="marker_27505-25" name="marker_27505-25"></a><span>今回のキャラは1000先に出現したため、大きく場所の変動を行っている。</span><span>
+</span></li></ul><p></p><a id="marker_27505-27" name="marker_27505-27"></a><span>前　</span><a href="3Dキャラの表示.html">3Dキャラの表示</a><span>　次　</span><a href="3D弾を打つ.html">3D弾を打つ</a><span>
+</span><a id="marker_27505-28" name="marker_27505-28"></a><p></p><a id="marker_27505-29" name="marker_27505-29"></a><span>追加要素　</span><a href="自機の出現.html">自機の出現と移動</a><span>
+</span></div><div style="height: 100px;"></div>

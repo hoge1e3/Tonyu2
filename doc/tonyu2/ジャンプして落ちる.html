@@ -1,0 +1,21 @@
+<link rel='stylesheet' href='/css/bootstrap.css'/>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px;}</style>
+<title>ジャンプして落ちる</title>
+<div><a id="marker_27505-0" name="marker_27505-0"></a><a href="用途別リファレンス.html">用途別リファレンス</a><span>
+</span><a id="marker_27505-1" name="marker_27505-1"></a><p></p><a id="marker_27505-2" name="marker_27505-2"></a><a href="オブジェクトを動かす.html">オブジェクトを動かす</a><span>
+</span><h1><a id="marker_27505-3" name="marker_27505-3"></a><span>ジャンプして落ちる</span></h1><a id="marker_27505-4" name="marker_27505-4"></a><p></p><a id="marker_27505-19" name="marker_27505-19"></a><pre><a id="marker_27505-6" name="marker_27505-6"></a><span>x=$screenWidth/2;</span><span>
+</span><a id="marker_27505-7" name="marker_27505-7"></a><span>y=$screenHeight/2;</span><span>
+</span><a id="marker_27505-8" name="marker_27505-8"></a><span>while(true){</span><span>
+</span><a id="marker_27505-9" name="marker_27505-9"></a><span>  if(getkey("z")==1){</span><span>
+</span><a id="marker_27505-10" name="marker_27505-10"></a><span>    vy=-15;</span><span>
+</span><a id="marker_27505-11" name="marker_27505-11"></a><span>    y+=vy;</span><span>
+</span><a id="marker_27505-12" name="marker_27505-12"></a><span>    while(true){</span><span>
+</span><a id="marker_27505-13" name="marker_27505-13"></a><span>      vy++;</span><span>
+</span><a id="marker_27505-14" name="marker_27505-14"></a><span>      y+=vy;</span><span>
+</span><a id="marker_27505-15" name="marker_27505-15"></a><span>      update();</span><span>
+</span><a id="marker_27505-16" name="marker_27505-16"></a><span>    }</span><span>
+</span><a id="marker_27505-17" name="marker_27505-17"></a><span>  }</span><span>
+</span><a id="marker_27505-18" name="marker_27505-18"></a><span>}</span><span>
+</span></pre><a id="marker_27505-20" name="marker_27505-20"></a><span>zキーを押すと跳ねて落下していく。</span><span>
+</span><a id="marker_27505-21" name="marker_27505-21"></a><p></p><a id="marker_27505-22" name="marker_27505-22"></a><span>地面に着地する動作については</span><a href="ジャンプして着地する.html">ジャンプして着地する</a><span>を参照。</span><span>
+</span></div><div style="height: 100px;"></div>

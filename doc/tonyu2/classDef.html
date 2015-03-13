@@ -1,0 +1,69 @@
+<link rel='stylesheet' href='/css/bootstrap.css'/>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px;}</style>
+<title>classDef</title>
+<div><a id="marker_27505-0" name="marker_27505-0"></a><a href="lang.html">lang</a><span>
+</span><a id="marker_27505-1" name="marker_27505-1"></a><p></p><h1><a id="marker_27505-2" name="marker_27505-2"></a><span>クラス定義</span></h1><a id="marker_27505-3" name="marker_27505-3"></a><p></p><a id="marker_27505-4" name="marker_27505-4"></a><span>Tonyu2では，1つの</span><a href="fs.html">ファイル</a><span>に1つのクラスを定義します．</span><span>
+</span><a id="marker_27505-5" name="marker_27505-5"></a><p></p><a id="marker_27505-16" name="marker_27505-16"></a><ul><li><a id="marker_27505-6" name="marker_27505-6"></a><span>ファイル名は &lt;&lt;クラス名&gt;&gt;.tonyu という形式になります．</span><span>
+</span></li><a id="marker_27505-8" name="marker_27505-8"></a><ul><li><a id="marker_27505-7" name="marker_27505-7"></a><span> 例えば，Hello.tonyu という名前のファイルは，Hello という名前のクラスを定義します．</span><span>
+</span></li></ul><li><span>クラスを定義するための構文（例えば，Javaの</span><code><span>class クラス名 {...  }</span></code><span>など）はありません．</span><span>
+</span></li><li><a id="marker_27505-9" name="marker_27505-9"></a><span> ファイルには，次のいずれかを複数記述できます．</span><span>
+</span></li><a id="marker_27505-15" name="marker_27505-15"></a><ul><li><a id="marker_27505-10" name="marker_27505-10"></a><span>継承宣言</span><span>
+</span></li><li><a id="marker_27505-11" name="marker_27505-11"></a><span>組み込み宣言</span><span>
+</span></li><li><a id="marker_27505-12" name="marker_27505-12"></a><span>native宣言</span><span>
+</span></li><li><a id="marker_27505-13" name="marker_27505-13"></a><span>mainメソッドの処理内容</span><span>
+</span></li><li><a id="marker_27505-14" name="marker_27505-14"></a><span>非mainメソッドの定義</span><span>
+</span></li></ul><li><span> 定義された(Tonyu2の)クラスは，Javascriptのいわゆる「クラス」(function+prototypeによるメソッド定義）として機能します．</span><span>
+</span></li></ul><p></p><h2><a id="marker_27505-17" name="marker_27505-17"></a><span>継承宣言</span></h2><a id="marker_27505-18" name="marker_27505-18"></a><p></p><a id="marker_27505-19" name="marker_27505-19"></a><span>このクラスの親クラスを設定します．ファイルの先頭に次のように宣言します</span><span>
+</span><a id="marker_27505-20" name="marker_27505-20"></a><p></p><a id="marker_27505-21" name="marker_27505-21"></a><div class="plist">継承宣言の書式</div><a id="marker_27505-23" name="marker_27505-23"></a><pre><a id="marker_27505-22" name="marker_27505-22"></a><span>extends 親クラス名;</span><span>
+</span></pre><a id="marker_27505-24" name="marker_27505-24"></a><p></p><a id="marker_27505-28" name="marker_27505-28"></a><ul><li><a id="marker_27505-25" name="marker_27505-25"></a><span>継承宣言を省略すると，</span><a href="options.html">プロジェクト設定</a><span>によって設定されている親クラスを自動的に継承します．</span><span>
+</span></li><li><a id="marker_27505-26" name="marker_27505-26"></a><span>親クラス名 に </span><code><span>null</span></code><span>を設定すると，親クラスがないクラスになります．</span><span>
+</span></li><li><a id="marker_27505-27" name="marker_27505-27"></a><span>継承は，JavaScriptの一般的な継承の方法（このクラスを表す関数オブジェクトのprototypeが，親クラスのオブジェクトになる）で行われます．</span><span>
+</span></li></ul><p></p><h2><a id="marker_27505-29" name="marker_27505-29"></a><span>組み込み宣言</span></h2><a id="marker_27505-30" name="marker_27505-30"></a><p></p><a id="marker_27505-31" name="marker_27505-31"></a><span>このクラスに組み込むクラス（モジュールクラス）を設定します．ファイルの先頭，または継承宣言続いて次のように宣言します</span><span>
+</span><a id="marker_27505-32" name="marker_27505-32"></a><p></p><a id="marker_27505-33" name="marker_27505-33"></a><div class="plist">継承宣言の書式</div><a id="marker_27505-35" name="marker_27505-35"></a><pre><a id="marker_27505-34" name="marker_27505-34"></a><span>includes モジュールクラス名[, モジュールクラス名...];</span><span>
+</span></pre><a id="marker_27505-36" name="marker_27505-36"></a><p></p><a id="marker_27505-43" name="marker_27505-43"></a><ul><li><a id="marker_27505-37" name="marker_27505-37"></a><span>このクラスでは，組み込んだモジュールクラスがもつメソッドを利用できます．</span><span>
+</span></li><li><a id="marker_27505-38" name="marker_27505-38"></a><span>組み込みは継承とは異なり，複数のクラスを組み込むことができます</span><span>
+</span></li><li><a id="marker_27505-39" name="marker_27505-39"></a><span>モジュールクラスの実体は通常のクラスと同じ方法で作成します．</span><span>
+</span></li><li><a id="marker_27505-40" name="marker_27505-40"></a><span>モジュールクラスが他のモジュールクラスを組み込んでいる場合，組み込んだ先のクラスでもそれらのモジュールクラスのメソッドが組み込まれます．</span><span>
+</span></li><li><a id="marker_27505-41" name="marker_27505-41"></a><span>モジュールクラスが他のクラスを継承している場合，組み込んだ先のクラスもそのモジュールの親クラスを継承している必要があります．</span><span>
+</span></li><li><a id="marker_27505-42" name="marker_27505-42"></a><span>組み込みは，モジュールクラスがもつメソッドの一覧を，このクラスの関数オブジェクトのprototypeオブジェクトに追記する方式で行われます．継承とは異なり，</span><code><span>instanceof</span></code><span>演算子によって検査されるオブジェクトのクラスが，特定のモジュールクラスを組み込んでいるかどうかは判定できません．</span><span>
+</span></li></ul><p></p><h2><a id="marker_27505-44" name="marker_27505-44"></a><span>native宣言</span></h2><a id="marker_27505-45" name="marker_27505-45"></a><p></p><a id="marker_27505-46" name="marker_27505-46"></a><span>native宣言は，Tonyu2のプログラムからJavascriptのネイティブオブジェクトにアクセスするために用います．ファイル中で次のように宣言します．</span><span>
+</span><a id="marker_27505-47" name="marker_27505-47"></a><p></p><a id="marker_27505-48" name="marker_27505-48"></a><div class="plist">native宣言の書式</div><a id="marker_27505-50" name="marker_27505-50"></a><pre><a id="marker_27505-49" name="marker_27505-49"></a><span>native 変数名;</span><span>
+</span></pre><a id="marker_27505-51" name="marker_27505-51"></a><p></p><a id="marker_27505-54" name="marker_27505-54"></a><ul><li><a id="marker_27505-52" name="marker_27505-52"></a><span> 指定された変数名を，このファイル中ではJavascriptのトップレベルスコープ（一般的にはwindowオブジェクト）に定義されている変数の値として扱います．</span><span>
+</span></li><li><a id="marker_27505-53" name="marker_27505-53"></a><span> 親クラスに書いてあるnative宣言は子クラスには適用されません．必要に応じて子クラスにも同じnative宣言を書く必要があります．</span><span>
+</span></li></ul><p></p><h2><a id="marker_27505-55" name="marker_27505-55"></a><span>mainメソッドの処理内容</span></h2><a id="marker_27505-56" name="marker_27505-56"></a><p></p><a id="marker_27505-57" name="marker_27505-57"></a><span>mainメソッドは，mainという名前をもつメソッドです．</span><a href="Actor.html">Actor</a><span>クラスなどでは，オブジェクトが出現してから停止するまでの動作を記述するのに用いられます．</span><span>
+</span><a id="marker_27505-58" name="marker_27505-58"></a><p></p><a id="marker_27505-59" name="marker_27505-59"></a><span>ファイルのトップレベル（メソッド定義に囲まれていない部分）に書かれた文はmainメソッドの内容として定義されます．</span><span>
+</span><a id="marker_27505-60" name="marker_27505-60"></a><p></p><a id="marker_27505-61" name="marker_27505-61"></a><span>mainメソッドは引数を受け取ることはできません．</span><span>
+</span><a id="marker_27505-62" name="marker_27505-62"></a><p></p><h2><a id="marker_27505-63" name="marker_27505-63"></a><span>非mainメソッドの定義</span></h2><a id="marker_27505-64" name="marker_27505-64"></a><p></p><a id="marker_27505-65" name="marker_27505-65"></a><span>名前がmainでないメソッドは非mainメソッドです．</span><span>
+</span><a id="marker_27505-66" name="marker_27505-66"></a><p></p><a id="marker_27505-67" name="marker_27505-67"></a><span>ファイルのトップレベルにおいて次の形式で定義します．</span><span>
+</span><a id="marker_27505-68" name="marker_27505-68"></a><p></p><a id="marker_27505-69" name="marker_27505-69"></a><div class="plist">リスト1 メソッド定義</div><a id="marker_27505-73" name="marker_27505-73"></a><pre><a id="marker_27505-70" name="marker_27505-70"></a><span>function メソッド名(引数リスト) {</span><span>
+</span><a id="marker_27505-71" name="marker_27505-71"></a><span>   処理内容</span><span>
+</span><a id="marker_27505-72" name="marker_27505-72"></a><span>}</span><span>
+</span></pre><a id="marker_27505-74" name="marker_27505-74"></a><span>※function の代わりに \ が使用可能です（</span><a href="sugar.html">拡張構文</a><span>参照)</span><span>
+</span><a id="marker_27505-75" name="marker_27505-75"></a><p></p><h1><a id="marker_27505-76" name="marker_27505-76"></a><span>変数の種類</span></h1><a id="marker_27505-77" name="marker_27505-77"></a><p></p><ul><li><a id="marker_27505-78" name="marker_27505-78"></a><span>引数</span><span>
+</span></li><a id="marker_27505-80" name="marker_27505-80"></a><ul><li><a id="marker_27505-79" name="marker_27505-79"></a><span>１つのメソッドに渡される値です．メソッド宣言の引数リストに記述されます．１回のメソッド呼び出しが終わると破棄されます．</span><span>
+</span></li></ul><li><span>ローカル変数</span><span>
+</span></li><a id="marker_27505-82" name="marker_27505-82"></a><ul><li><a id="marker_27505-81" name="marker_27505-81"></a><span>メソッド宣言の処理中でvar で宣言されます．１回のメソッド呼び出しが終わると破棄されます．</span><span>
+</span></li></ul><li><span>グローバル変数</span><span>
+</span></li><a id="marker_27505-85" name="marker_27505-85"></a><ul><li><a id="marker_27505-83" name="marker_27505-83"></a><span>名前が$で始まる変数はグローバル変数です．すべてのTonyu2オブジェクトから直接参照できます．</span><span>
+</span></li><li><a id="marker_27505-84" name="marker_27505-84"></a><span>Javascriptからは</span><code><span>Tonyu.globals.グローバル変数名</span></code><span>で参照できます．</span><span>
+</span></li></ul><li><span>クラス変数</span><span>
+</span></li><a id="marker_27505-88" name="marker_27505-88"></a><ul><li><a id="marker_27505-86" name="marker_27505-86"></a><span>現在のプロジェクトおよび</span><a href="api.html">標準ライブラリ</a><span>で定義されているクラス名と同じ名前の変数はクラス変数です．そのクラスをあらわす関数オブジェクトを参照します．</span><span>
+</span></li><li><a id="marker_27505-87" name="marker_27505-87"></a><span>Javascriptからは</span><code><span>Tonyu.classes.クラス変数名</span></code><span>で参照できます．</span><span>
+</span></li></ul><li><span>native変数</span><span>
+</span></li><a id="marker_27505-90" name="marker_27505-90"></a><ul><li><a id="marker_27505-89" name="marker_27505-89"></a><span>native宣言によって宣言された名前の変数です．Javascriptのトップレベルスコープにおける同名の変数を参照します．</span><span>
+</span></li></ul><li><span>フィールド</span><span>
+</span></li><a id="marker_27505-93" name="marker_27505-93"></a><ul><li><a id="marker_27505-91" name="marker_27505-91"></a><span>そのクラスのオブジェクトがもつ値です．上のどれにもあてはまらない変数はフィールドとして解釈されます．</span><span>
+</span></li><li><a id="marker_27505-92" name="marker_27505-92"></a><span>Javascriptではいわゆる</span><code><span>this.x</span></code><span>という形式で参照されるものです．Tonyu2でもこの方式でも参照できます．</span><span>
+</span></li></ul></ul><p></p><h1><a id="marker_27505-94" name="marker_27505-94"></a><span>例</span></h1><a id="marker_27505-95" name="marker_27505-95"></a><p></p><a id="marker_27505-96" name="marker_27505-96"></a><div class="plist">リスト2 MyClass.tonyu</div><a id="marker_27505-109" name="marker_27505-109"></a><pre><a id="marker_27505-97" name="marker_27505-97"></a><span>extends Actor;</span><span>
+</span><a id="marker_27505-98" name="marker_27505-98"></a><span>native alert;</span><span>
+</span><a id="marker_27505-99" name="marker_27505-99"></a><span>// main関数</span><span>
+</span><a id="marker_27505-100" name="marker_27505-100"></a><span>x=3;</span><span>
+</span><a id="marker_27505-101" name="marker_27505-101"></a><span>rate=5;</span><span>
+</span><a id="marker_27505-102" name="marker_27505-102"></a><span>y=mult(x);</span><span>
+</span><a id="marker_27505-103" name="marker_27505-103"></a><span>alert(y); // 15</span><span>
+</span><a id="marker_27505-104" name="marker_27505-104"></a><span>// main関数終わり</span><span>
+</span><a id="marker_27505-105" name="marker_27505-105"></a><span>\mult(a) {</span><span>
+</span><a id="marker_27505-106" name="marker_27505-106"></a><span>  var res=a*rate;</span><span>
+</span><a id="marker_27505-107" name="marker_27505-107"></a><span>  return res;</span><span>
+</span><a id="marker_27505-108" name="marker_27505-108"></a><span>}</span><span>
+</span></pre><a id="marker_27505-110" name="marker_27505-110"></a><p></p></div><div style="height: 100px;"></div>

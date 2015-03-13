@@ -13,7 +13,7 @@
 -[[チュートリアル>tonyu2/チュートリアル]]
 -[[用途別リファレンス>tonyu2/用途別リファレンス]]
 -[[APIリファレンス>tonyu2/index]]
-[[別ウィンドウで見る>http://tonyuedit.appspot.com/fs/Tonyu/doc/html/index.html]] 
+[[別ウィンドウで見る>http://tonyuedit.appspot.com/doc/index.html]] 
 
 * プロジェクトの保存について
 

@@ -1,0 +1,14 @@
+<link rel='stylesheet' href='/css/bootstrap.css'/>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px;}</style>
+<title>ラインパネルと曲(音符)の同期</title>
+<div><a id="marker_27505-0" name="marker_27505-0"></a><a href="用途別リファレンス.html">用途別リファレンス</a><span>
+</span><h3><a id="marker_27505-1" name="marker_27505-1"></a><span>ラインパネルと曲(音符)の同期</span></h3><a id="marker_27505-3" name="marker_27505-3"></a><ul><li><a id="marker_27505-2" name="marker_27505-2"></a><span>既にOnpuクラスとLineクラスに書かれているが、以下の文で作成したラインのyの位置が$screenHeight*3/4の位置しているため、その位置÷2000ms(2秒）で音符の1拍目が自作したラインの中心に常に当たるようになる。</span><span>
+</span></li></ul><p></p><a id="marker_27505-4" name="marker_27505-4"></a><p></p><a id="marker_27505-5" name="marker_27505-5"></a><p></p><a id="marker_27505-6" name="marker_27505-6"></a><div class="plist">Onpu</div><a id="marker_27505-12" name="marker_27505-12"></a><pre><a id="marker_27505-7" name="marker_27505-7"></a><span>while(true){</span><span>
+</span><a id="marker_27505-8" name="marker_27505-8"></a><span>    t=$c.play().currentTime();</span><span>
+</span><a id="marker_27505-9" name="marker_27505-9"></a><span>    y=(t-start)*($screenHeight*3/4)/2000;</span><span>
+</span><a id="marker_27505-10" name="marker_27505-10"></a><span>    update();</span><span>
+</span><a id="marker_27505-11" name="marker_27505-11"></a><span>}</span><span>
+</span></pre><a id="marker_27505-13" name="marker_27505-13"></a><div class="plist">Line</div><a id="marker_27505-16" name="marker_27505-16"></a><pre><a id="marker_27505-14" name="marker_27505-14"></a><span>$linePanel=new Panel{x:$screenWidth/2, </span><span>
+</span><a id="marker_27505-15" name="marker_27505-15"></a><span>y:$screenHeight*3/4};</span><span>
+</span></pre><a id="marker_27505-17" name="marker_27505-17"></a><p></p><a id="marker_27505-18" name="marker_27505-18"></a><span>前へ  </span><a href="ラインパネルの作成.html">ラインパネルの作成</a><span> 次へ　</span><a href="評価方法(1).html">評価方法(1)</a><span>
+</span></div><div style="height: 100px;"></div>

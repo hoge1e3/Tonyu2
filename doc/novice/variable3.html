@@ -1,0 +1,20 @@
+<link rel='stylesheet' href='/css/bootstrap.css'/>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px;}</style>
+<title>variable3</title>
+<div><a id="marker_27505-0" name="marker_27505-0"></a><a href="variable2.html">前へ</a><span> - </span><a href="inc.html">次へ</a><span> - </span><a href="projectIndex.html">目次</a><span>
+</span><h1><a id="marker_27505-1" name="marker_27505-1"></a><span>変数の値を変えてみましょう．</span></h1><a id="marker_27505-2" name="marker_27505-2"></a><p></p><a id="marker_27505-3" name="marker_27505-3"></a><span>さて，変数を使って，猫を右方向に動かしてみたいと思います．</span><span>
+</span><a id="marker_27505-4" name="marker_27505-4"></a><strong>リスト1</strong><span>のように変更しましょう</span><span>
+</span><a id="marker_27505-5" name="marker_27505-5"></a><span>（動いている様子が見えるように，</span><code><span>sleep();</span></code><span>も忘れずにつけてください．）</span><span>
+</span><a id="marker_27505-6" name="marker_27505-6"></a><p></p><a id="marker_27505-7" name="marker_27505-7"></a><div class="plist">リスト1 Cat</div><a id="marker_27505-12" name="marker_27505-12"></a><pre><a id="marker_27505-8" name="marker_27505-8"></a><span>x=50;</span><span>
+</span><a id="marker_27505-9" name="marker_27505-9"></a><span>go(x,100);sleep();</span><span>
+</span><a id="marker_27505-10" name="marker_27505-10"></a><span>x=60;</span><span>
+</span><a id="marker_27505-11" name="marker_27505-11"></a><span>go(x,100);sleep();</span><span>
+</span></pre><a id="marker_27505-13" name="marker_27505-13"></a><p></p><a id="marker_27505-14" name="marker_27505-14"></a><span>このプログラムは，まず，変数xに50を覚えさせてから，</span><code><span>go(x,100);</span></code><span>を実行しています．</span><span>
+</span><a id="marker_27505-15" name="marker_27505-15"></a><span>つまり</span><code><span>go(50,100);</span></code><span>を実行したのと同じ結果になります．</span><span>
+</span><a id="marker_27505-16" name="marker_27505-16"></a><p></p><a id="marker_27505-17" name="marker_27505-17"></a><span>そして，xに60を覚えさせています．</span><span>
+</span><a id="marker_27505-18" name="marker_27505-18"></a><p></p><a id="marker_27505-19" name="marker_27505-19"></a><span>このとき，その前にxが覚えていた50はどうなってしまうのでしょうか．</span><span>
+</span><a id="marker_27505-20" name="marker_27505-20"></a><span>実は，変数に値を覚えさせると，それまで覚えていた値のことは上書きされてなくなってしまいます．</span><span>
+</span><a id="marker_27505-21" name="marker_27505-21"></a><p></p><a id="marker_27505-22" name="marker_27505-22"></a><span>つまり，最後の行で</span><code><span>go(x,100);</span></code><span>を実行すると，</span><span>
+</span><a id="marker_27505-23" name="marker_27505-23"></a><code><span>go(60,100);</span></code><span>を実行したのと同じ結果になります．</span><span>
+</span><a id="marker_27505-24" name="marker_27505-24"></a><p></p><a id="marker_27505-25" name="marker_27505-25"></a><a href="variable2.html">前へ</a><span> - </span><a href="inc.html">次へ</a><span> - </span><a href="projectIndex.html">目次</a><span>
+</span></div><div style="height: 100px;"></div>

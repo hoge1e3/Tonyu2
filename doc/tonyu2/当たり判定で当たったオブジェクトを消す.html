@@ -1,0 +1,29 @@
+<link rel='stylesheet' href='/css/bootstrap.css'/>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px;}</style>
+<title>当たり判定で当たったオブジェクトを消す</title>
+<div><a id="marker_27505-0" name="marker_27505-0"></a><a href="用途別リファレンス.html">用途別リファレンス</a><span>
+</span><a id="marker_27505-1" name="marker_27505-1"></a><p></p><a id="marker_27505-2" name="marker_27505-2"></a><a href="オブジェクトを消す.html">オブジェクトを消す</a><span>
+</span><h1><a id="marker_27505-3" name="marker_27505-3"></a><span>当たり判定で当たったオブジェクトを消す</span></h1><a id="marker_27505-4" name="marker_27505-4"></a><div class="plist">Main</div><a id="marker_27505-21" name="marker_27505-21"></a><pre><a id="marker_27505-5" name="marker_27505-5"></a><span>x=$screenWidth/2;</span><span>
+</span><a id="marker_27505-6" name="marker_27505-6"></a><span>y=$screenHeight/2;</span><span>
+</span><a id="marker_27505-7" name="marker_27505-7"></a><span>new Enemy{x:100, y:100, p:4};</span><span>
+</span><a id="marker_27505-8" name="marker_27505-8"></a><span>new Enemy{x:100, y:200, p:4};</span><span>
+</span><a id="marker_27505-9" name="marker_27505-9"></a><span>new Enemy{x:100, y:300, p:4};</span><span>
+</span><a id="marker_27505-10" name="marker_27505-10"></a><span>while(true){</span><span>
+</span><a id="marker_27505-11" name="marker_27505-11"></a><span>    if(getkey("right")&gt;0)	x+=3;</span><span>
+</span><a id="marker_27505-12" name="marker_27505-12"></a><span>    if(getkey("left")&gt;0)	x-=3;</span><span>
+</span><a id="marker_27505-13" name="marker_27505-13"></a><span>    if(getkey("down")&gt;0)	y+=3;</span><span>
+</span><a id="marker_27505-14" name="marker_27505-14"></a><span>    if(getkey("up")&gt;0)	y-=3;</span><span>
+</span><a id="marker_27505-15" name="marker_27505-15"></a><span>    e=crashTo(Enemy);</span><span>
+</span><a id="marker_27505-16" name="marker_27505-16"></a><span>    if(e){</span><span>
+</span><a id="marker_27505-17" name="marker_27505-17"></a><span>        e.die();</span><span>
+</span><a id="marker_27505-18" name="marker_27505-18"></a><span>    }</span><span>
+</span><a id="marker_27505-19" name="marker_27505-19"></a><span>    update();</span><span>
+</span><a id="marker_27505-20" name="marker_27505-20"></a><span>}</span><span>
+</span></pre><a id="marker_27505-22" name="marker_27505-22"></a><div class="plist">Enemy</div><a id="marker_27505-24" name="marker_27505-24"></a><pre><a id="marker_27505-23" name="marker_27505-23"></a><span>何も書かなくてよい</span><span>
+</span></pre><a id="marker_27505-25" name="marker_27505-25"></a><span>上下左右に動かせる中央のオブジェクトにぶつかったEnemyが消える。</span><span>
+</span><a id="marker_27505-26" name="marker_27505-26"></a><p></p><a id="marker_27505-27" name="marker_27505-27"></a><span>※crashTo()...()内のオブジェクトと当たり判定を行い値を返す。</span><span>
+</span><a id="marker_27505-30" name="marker_27505-30"></a><ul><li><a id="marker_27505-28" name="marker_27505-28"></a><span>当たってる=true</span><span>
+</span></li><li><a id="marker_27505-29" name="marker_27505-29"></a><span>当たってない=false</span><span>
+</span></li></ul><p></p><a id="marker_27505-31" name="marker_27505-31"></a><span>当たり判定を変更するにはgetCrashRect()という命令を使う。</span><span>
+</span><a id="marker_27505-32" name="marker_27505-32"></a><p></p><a id="marker_27505-33" name="marker_27505-33"></a><span>→</span><a href="当たり判定を変更する.html">当たり判定を変更する</a><span>
+</span></div><div style="height: 100px;"></div>

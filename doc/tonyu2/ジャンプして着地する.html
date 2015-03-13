@@ -1,0 +1,78 @@
+<link rel='stylesheet' href='/css/bootstrap.css'/>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px;}</style>
+<title>ジャンプして着地する</title>
+<div><a id="marker_27505-0" name="marker_27505-0"></a><a href="用途別リファレンス.html">用途別リファレンス</a><span>
+</span><a id="marker_27505-1" name="marker_27505-1"></a><p></p><a id="marker_27505-2" name="marker_27505-2"></a><a href="オブジェクトを動かす.html">オブジェクトを動かす</a><span>
+</span><a id="marker_27505-3" name="marker_27505-3"></a><p></p><a id="marker_27505-4" name="marker_27505-4"></a><a href="ジャンプして落ちる.html">ジャンプして落ちる</a><span>
+</span><h1><a id="marker_27505-5" name="marker_27505-5"></a><span>☆ジャンプしてオブジェクトに着地する</span></h1><a id="marker_27505-6" name="marker_27505-6"></a><p></p><a id="marker_27505-7" name="marker_27505-7"></a><div class="plist">Main</div><a id="marker_27505-45" name="marker_27505-45"></a><pre><a id="marker_27505-8" name="marker_27505-8"></a><span>x=150;</span><span>
+</span><a id="marker_27505-9" name="marker_27505-9"></a><span>y=$screenHeight-48;</span><span>
+</span><a id="marker_27505-10" name="marker_27505-10"></a><span>vy=0;</span><span>
+</span><a id="marker_27505-11" name="marker_27505-11"></a><span>p=5;</span><span>
+</span><a id="marker_27505-12" name="marker_27505-12"></a><span>roop=0;</span><span>
+</span><a id="marker_27505-13" name="marker_27505-13"></a><span>new Block{x:x, y:$screenHeight-16};</span><span>
+</span><a id="marker_27505-14" name="marker_27505-14"></a><span>while(roop&lt;5){</span><span>
+</span><a id="marker_27505-15" name="marker_27505-15"></a><span>  new Block{x:rnd($screenWidth), y:$screenHeight-16};</span><span>
+</span><a id="marker_27505-16" name="marker_27505-16"></a><span>  roop++;</span><span>
+</span><a id="marker_27505-17" name="marker_27505-17"></a><span>}</span><span>
+</span><a id="marker_27505-18" name="marker_27505-18"></a><span>while(true){</span><span>
+</span><a id="marker_27505-19" name="marker_27505-19"></a><span>  hantei=crashTo(Block);</span><span>
+</span><a id="marker_27505-20" name="marker_27505-20"></a><span>  if(!hantei){</span><span>
+</span><a id="marker_27505-21" name="marker_27505-21"></a><span>    vy++;</span><span>
+</span><a id="marker_27505-22" name="marker_27505-22"></a><span>    y+=vy;</span><span>
+</span><a id="marker_27505-23" name="marker_27505-23"></a><span>  }else{</span><span>
+</span><a id="marker_27505-24" name="marker_27505-24"></a><span>    vy=0;</span><span>
+</span><a id="marker_27505-25" name="marker_27505-25"></a><span>  }</span><span>
+</span><a id="marker_27505-26" name="marker_27505-26"></a><span>  if(getkey("right")&gt;0)	x+=3;</span><span>
+</span><a id="marker_27505-27" name="marker_27505-27"></a><span>  if(getkey("left")&gt;0)	x-=3;</span><span>
+</span><a id="marker_27505-28" name="marker_27505-28"></a><span>  if(getkey("z")==1 &amp;&amp; vy&gt;=0){</span><span>
+</span><a id="marker_27505-29" name="marker_27505-29"></a><span>    vy=-15;</span><span>
+</span><a id="marker_27505-30" name="marker_27505-30"></a><span>    y+=vy;</span><span>
+</span><a id="marker_27505-31" name="marker_27505-31"></a><span>    while(true){</span><span>
+</span><a id="marker_27505-32" name="marker_27505-32"></a><span>      if(getkey("right")&gt;0) x+=3;</span><span>
+</span><a id="marker_27505-33" name="marker_27505-33"></a><span>      if(getkey("left")&gt;0)  x-=3;</span><span>
+</span><a id="marker_27505-34" name="marker_27505-34"></a><span>      vy++;</span><span>
+</span><a id="marker_27505-35" name="marker_27505-35"></a><span>      y+=vy;</span><span>
+</span><a id="marker_27505-36" name="marker_27505-36"></a><span>      hantei=crashTo(Block)</span><span>
+</span><a id="marker_27505-37" name="marker_27505-37"></a><span>      if(hantei){</span><span>
+</span><a id="marker_27505-38" name="marker_27505-38"></a><span>        break;</span><span>
+</span><a id="marker_27505-39" name="marker_27505-39"></a><span>      }</span><span>
+</span><a id="marker_27505-40" name="marker_27505-40"></a><span>      update();</span><span>
+</span><a id="marker_27505-41" name="marker_27505-41"></a><span>    }</span><span>
+</span><a id="marker_27505-42" name="marker_27505-42"></a><span>  }</span><span>
+</span><a id="marker_27505-43" name="marker_27505-43"></a><span>  update();</span><span>
+</span><a id="marker_27505-44" name="marker_27505-44"></a><span>}</span><span>
+</span></pre><a id="marker_27505-46" name="marker_27505-46"></a><div class="plist">Block</div><a id="marker_27505-48" name="marker_27505-48"></a><pre><a id="marker_27505-47" name="marker_27505-47"></a><span>何も書かなくてよい</span><span>
+</span></pre><a id="marker_27505-49" name="marker_27505-49"></a><p></p><a id="marker_27505-50" name="marker_27505-50"></a><span>最初にプレイヤーの下とランダムに5つの足場を表示し、左右に動きzキーでジャンプするプレイヤーを出現させる。当たり判定の値をhanteiに代入し、足場に触れてない間は落下させ、足場に触れている間は落下しないようにする。</span><span>
+</span><a id="marker_27505-51" name="marker_27505-51"></a><p></p><h1><a id="marker_27505-52" name="marker_27505-52"></a><span>☆ジャンプしてマップに着地する</span></h1><a id="marker_27505-53" name="marker_27505-53"></a><p></p><a id="marker_27505-54" name="marker_27505-54"></a><div class="plist">Main</div><a id="marker_27505-86" name="marker_27505-86"></a><pre><a id="marker_27505-55" name="marker_27505-55"></a><span>//事前にマップを作っておく</span><span>
+</span><a id="marker_27505-56" name="marker_27505-56"></a><span>x=16;</span><span>
+</span><a id="marker_27505-57" name="marker_27505-57"></a><span>y=$screenHeight-48;</span><span>
+</span><a id="marker_27505-58" name="marker_27505-58"></a><span>vy=0;</span><span>
+</span><a id="marker_27505-59" name="marker_27505-59"></a><span>p=5;</span><span>
+</span><a id="marker_27505-60" name="marker_27505-60"></a><span>while(true){</span><span>
+</span><a id="marker_27505-61" name="marker_27505-61"></a><span>    if(map.getAt(x,y+16)==-1){</span><span>
+</span><a id="marker_27505-62" name="marker_27505-62"></a><span>        vy++;</span><span>
+</span><a id="marker_27505-63" name="marker_27505-63"></a><span>        y+=vy;</span><span>
+</span><a id="marker_27505-64" name="marker_27505-64"></a><span>    }else{</span><span>
+</span><a id="marker_27505-65" name="marker_27505-65"></a><span>        vy=0;</span><span>
+</span><a id="marker_27505-66" name="marker_27505-66"></a><span>    }</span><span>
+</span><a id="marker_27505-67" name="marker_27505-67"></a><span>    if(getkey("right")&gt;0)	x+=3;</span><span>
+</span><a id="marker_27505-68" name="marker_27505-68"></a><span>    if(getkey("left")&gt;0)	x-=3;</span><span>
+</span><a id="marker_27505-69" name="marker_27505-69"></a><span>    if(getkey("z")==1 &amp;&amp; vy&gt;=0){</span><span>
+</span><a id="marker_27505-70" name="marker_27505-70"></a><span>        vy=-15;</span><span>
+</span><a id="marker_27505-71" name="marker_27505-71"></a><span>        y+=vy;</span><span>
+</span><a id="marker_27505-72" name="marker_27505-72"></a><span>        while(true){</span><span>
+</span><a id="marker_27505-73" name="marker_27505-73"></a><span>            if(getkey("right")&gt;0) x+=3;</span><span>
+</span><a id="marker_27505-74" name="marker_27505-74"></a><span>            if(getkey("left")&gt;0)  x-=3;</span><span>
+</span><a id="marker_27505-75" name="marker_27505-75"></a><span>            vy++;</span><span>
+</span><a id="marker_27505-76" name="marker_27505-76"></a><span>            y+=vy;</span><span>
+</span><a id="marker_27505-77" name="marker_27505-77"></a><span>            //マップに着地した場合。ここは1としているが、マップの床のチップ番号を入れる</span><span>
+</span><a id="marker_27505-78" name="marker_27505-78"></a><span>            if(map.getAt(x,y+16)==1){</span><span>
+</span><a id="marker_27505-79" name="marker_27505-79"></a><span>                break;</span><span>
+</span><a id="marker_27505-80" name="marker_27505-80"></a><span>            }</span><span>
+</span><a id="marker_27505-81" name="marker_27505-81"></a><span>            update();</span><span>
+</span><a id="marker_27505-82" name="marker_27505-82"></a><span>        }</span><span>
+</span><a id="marker_27505-83" name="marker_27505-83"></a><span>    }</span><span>
+</span><a id="marker_27505-84" name="marker_27505-84"></a><span>    update();</span><span>
+</span><a id="marker_27505-85" name="marker_27505-85"></a><span>}</span><span>
+</span></pre><a id="marker_27505-87" name="marker_27505-87"></a><span>マップを描画し、左右に動きzキーでジャンプするプレイヤーを出現させる。当たり判定は、プレイヤーの真下がブロックであるかどうか（ここでは、画像番号1を足場に設定しているため、画像番号1であるかどうか）を調べ、ブロックに触れてない間は落下させ、ブロックに触れている間は落下しないようにする。</span><span>
+</span></div><div style="height: 100px;"></div>
