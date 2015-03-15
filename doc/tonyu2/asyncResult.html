@@ -1,21 +1,21 @@
-<link rel='stylesheet' href='/css/bootstrap.css'/>
+<html><head><meta charset="utf-8"/><meta http-equiv="Content-type" content="text/html; charset=utf8"/></head><body><link rel='stylesheet' href='/css/bootstrap.css'/>
 <style>body{padding-top:20px; margin-left: 20px; margin-right:20px;}</style>
 <title>asyncResult</title>
-<div><a id="marker_98932-0" name="marker_98932-0"></a><a href="BaseActor.html">BaseActor</a><span>
-</span><a id="marker_98932-1" name="marker_98932-1"></a><p></p><h1><a id="marker_98932-2" name="marker_98932-2"></a><span>asyncResultメソッド</span></h1><a id="marker_98932-3" name="marker_98932-3"></a><p></p><a id="marker_98932-4" name="marker_98932-4"></a><span>AsyncResultオブジェクトを作成します</span><span>
-</span><a id="marker_98932-5" name="marker_98932-5"></a><p></p><a id="marker_98932-6" name="marker_98932-6"></a><span>AsyncResultオブジェクトは，ajaxなどの「非同期で実行を行い，結果をコールバック関数で受け取る」形式のメソッド（非同期メソッド）を</span><a href="waitmode.html">待機可能モード</a><span>で扱うためのオブジェクトです．</span><span>
-</span><a id="marker_98932-7" name="marker_98932-7"></a><p></p><h2><a id="marker_98932-8" name="marker_98932-8"></a><span>使い方</span></h2><a id="marker_98932-9" name="marker_98932-9"></a><p></p><a id="marker_98932-10" name="marker_98932-10"></a><span>※必ず待機可能モードで実行してください．</span><span>
-</span><a id="marker_98932-11" name="marker_98932-11"></a><p></p><a id="marker_98932-16" name="marker_98932-16"></a><ul><li><a id="marker_98932-12" name="marker_98932-12"></a><span>asyncResult()メソッドで，AsyncResultオブジェクトを作成します．これを</span><code><span>a</span></code><span>とします．</span><span>
-</span></li><li><a id="marker_98932-13" name="marker_98932-13"></a><span>非同期メソッドを呼び出します． このとき，</span><code><span>a.receiver</span></code><span> をコールバック関数として渡します．</span><span>
-</span></li><li><a id="marker_98932-14" name="marker_98932-14"></a><a href="waitFor.html">waitFor</a><span>メソッドを呼び出します．非同期メソッドが結果を返すまで処理を待機します．</span><span>
-</span></li><li><a id="marker_98932-15" name="marker_98932-15"></a><span>非同期メソッドの結果が</span><code><span>a[n</span></code><span>]に返されます．</span><code><span>a[n</span></code><span>]はコールバック関数に渡された第n引数（0が最初の引数）です．</span><span>
-</span></li></ul><p></p><h2><a id="marker_98932-17" name="marker_98932-17"></a><span>使用例</span></h2><a id="marker_98932-18" name="marker_98932-18"></a><p></p><a id="marker_98932-29" name="marker_98932-29"></a><pre><a id="marker_98932-20" name="marker_98932-20"></a><span>native $;</span><span>
-</span><a id="marker_98932-21" name="marker_98932-21"></a><span>//asyncResultオブジェクトを作成</span><span>
-</span><a id="marker_98932-22" name="marker_98932-22"></a><span>a=asyncResult();</span><span>
-</span><a id="marker_98932-23" name="marker_98932-23"></a><span>//jqueryのgetメソッドを呼び出す．コールバック関数に a.receiverを指定</span><span>
-</span><a id="marker_98932-24" name="marker_98932-24"></a><span>$.get("http://tonyuedit.appspot.com/edit/", a.receiver);</span><span>
-</span><a id="marker_98932-25" name="marker_98932-25"></a><span>//getメソッドが終わるまで待つ</span><span>
-</span><a id="marker_98932-26" name="marker_98932-26"></a><span>waitFor(a);</span><span>
-</span><a id="marker_98932-27" name="marker_98932-27"></a><span>//結果がa[0]に返される</span><span>
-</span><a id="marker_98932-28" name="marker_98932-28"></a><span>print(a[0]);</span><span>
-</span></pre><a id="marker_98932-30" name="marker_98932-30"></a><p></p></div><div style="height: 100px;"></div>
+<div><a id="marker_59941-0" name="marker_59941-0"></a><a href="BaseActor.html">BaseActor</a><span>
+</span><a id="marker_59941-1" name="marker_59941-1"></a><p></p><h1><a id="marker_59941-2" name="marker_59941-2"></a><span>asyncResultメソッド</span></h1><a id="marker_59941-3" name="marker_59941-3"></a><p></p><a id="marker_59941-4" name="marker_59941-4"></a><span>AsyncResultオブジェクトを作成します</span><span>
+</span><a id="marker_59941-5" name="marker_59941-5"></a><p></p><a id="marker_59941-6" name="marker_59941-6"></a><span>AsyncResultオブジェクトは，ajaxなどの「非同期で実行を行い，結果をコールバック関数で受け取る」形式のメソッド（非同期メソッド）を</span><a href="waitmode.html">待機可能モード</a><span>で扱うためのオブジェクトです．</span><span>
+</span><a id="marker_59941-7" name="marker_59941-7"></a><p></p><h2><a id="marker_59941-8" name="marker_59941-8"></a><span>使い方</span></h2><a id="marker_59941-9" name="marker_59941-9"></a><p></p><a id="marker_59941-10" name="marker_59941-10"></a><span>※必ず待機可能モードで実行してください．</span><span>
+</span><a id="marker_59941-11" name="marker_59941-11"></a><p></p><a id="marker_59941-16" name="marker_59941-16"></a><ul><li><a id="marker_59941-12" name="marker_59941-12"></a><span>asyncResult()メソッドで，AsyncResultオブジェクトを作成します．これを</span><code><span>a</span></code><span>とします．</span><span>
+</span></li><li><a id="marker_59941-13" name="marker_59941-13"></a><span>非同期メソッドを呼び出します． このとき，</span><code><span>a.receiver</span></code><span> をコールバック関数として渡します．</span><span>
+</span></li><li><a id="marker_59941-14" name="marker_59941-14"></a><a href="waitFor.html">waitFor</a><span>メソッドを呼び出します．非同期メソッドが結果を返すまで処理を待機します．</span><span>
+</span></li><li><a id="marker_59941-15" name="marker_59941-15"></a><span>非同期メソッドの結果が</span><code><span>a[n</span></code><span>]に返されます．</span><code><span>a[n</span></code><span>]はコールバック関数に渡された第n引数（0が最初の引数）です．</span><span>
+</span></li></ul><p></p><h2><a id="marker_59941-17" name="marker_59941-17"></a><span>使用例</span></h2><a id="marker_59941-18" name="marker_59941-18"></a><p></p><a id="marker_59941-29" name="marker_59941-29"></a><pre><a id="marker_59941-20" name="marker_59941-20"></a><span>native $;</span><span>
+</span><a id="marker_59941-21" name="marker_59941-21"></a><span>//asyncResultオブジェクトを作成</span><span>
+</span><a id="marker_59941-22" name="marker_59941-22"></a><span>a=asyncResult();</span><span>
+</span><a id="marker_59941-23" name="marker_59941-23"></a><span>//jqueryのgetメソッドを呼び出す．コールバック関数に a.receiverを指定</span><span>
+</span><a id="marker_59941-24" name="marker_59941-24"></a><span>$.get("http://tonyuedit.appspot.com/edit/", a.receiver);</span><span>
+</span><a id="marker_59941-25" name="marker_59941-25"></a><span>//getメソッドが終わるまで待つ</span><span>
+</span><a id="marker_59941-26" name="marker_59941-26"></a><span>waitFor(a);</span><span>
+</span><a id="marker_59941-27" name="marker_59941-27"></a><span>//結果がa[0]に返される</span><span>
+</span><a id="marker_59941-28" name="marker_59941-28"></a><span>print(a[0]);</span><span>
+</span></pre><a id="marker_59941-30" name="marker_59941-30"></a><p></p></div><div style="height: 100px;"></div></body></html>

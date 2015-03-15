@@ -1,25 +1,25 @@
-<link rel='stylesheet' href='/css/bootstrap.css'/>
+<html><head><meta charset="utf-8"/><meta http-equiv="Content-type" content="text/html; charset=utf8"/></head><body><link rel='stylesheet' href='/css/bootstrap.css'/>
 <style>body{padding-top:20px; margin-left: 20px; margin-right:20px;}</style>
 <title>mapEditor</title>
-<div><a id="marker_98932-0" name="marker_98932-0"></a><a href="ide.html">ide</a><span>
-</span><a id="marker_98932-1" name="marker_98932-1"></a><p></p><a id="marker_98932-2" name="marker_98932-2"></a><a href="_E7_94_A8_E9_80_94_E5_88_A5_E3_83_AA_E3_83_95_E3_82_A1_E3_83_AC_E3_83_B3_E3_82_B9.html">用途別リファレンス</a><span>
-</span><a id="marker_98932-3" name="marker_98932-3"></a><p></p><h1><a id="marker_98932-4" name="marker_98932-4"></a><span>マップエディタ</span></h1><a id="marker_98932-5" name="marker_98932-5"></a><p></p><a id="marker_98932-6" name="marker_98932-6"></a><span>マップエディタは，ゲーム中に使用するマップを描くためのツールです．</span><span>
-</span><a id="marker_98932-7" name="marker_98932-7"></a><span>主な使用の流れは次の通り</span><span>
-</span><a id="marker_98932-8" name="marker_98932-8"></a><p></p><a id="marker_98932-10" name="marker_98932-10"></a><ul><li><a id="marker_98932-9" name="marker_98932-9"></a><span>画像リストに $pat_mapchip を追加</span><span>
-</span></li></ul><p></p><a id="marker_98932-12" name="marker_98932-12"></a><ul><li><a id="marker_98932-11" name="marker_98932-11"></a><span>ツールからマップエディタを選択</span><span>
-</span></li></ul><p></p><a id="marker_98932-14" name="marker_98932-14"></a><ul><li><a id="marker_98932-13" name="marker_98932-13"></a><span>Load Data?: Y or Nと表示されるので、すでに作ったマップをもとに改造する場合はキーボードのyを、新しくつくる場合はnを押す</span><span>
-</span></li></ul><p></p><ul><ul><li><a id="marker_98932-15" name="marker_98932-15"></a><span>nを押した場合、プロンプトが出るので、それぞれ入力する</span><span>
-</span></li><a id="marker_98932-18" name="marker_98932-18"></a><ul><li><a id="marker_98932-16" name="marker_98932-16"></a><span>"input row"→縦に設置するチップの個数</span><span>
-</span></li><li><a id="marker_98932-17" name="marker_98932-17"></a><span>"input col"→横に設置するチップの個数</span><span>
-</span></li></ul></ul></ul><p></p><ul><ul><li><a id="marker_98932-19" name="marker_98932-19"></a><span>yを押した場合、プロンプトが出るので、ロードするファイルの名前を入力する。</span><span>
-</span></li><a id="marker_98932-21" name="marker_98932-21"></a><ul><li><a id="marker_98932-20" name="marker_98932-20"></a><span>入力されたファイルが存在しないと、Load Failedと表示され、nを押した場合の動作に移動する</span><span>
-</span></li></ul></ul></ul><p></p><a id="marker_98932-23" name="marker_98932-23"></a><ul><li><a id="marker_98932-22" name="marker_98932-22"></a><span>画面にマップチップがでるので、設置したいチップをクリックする</span><span>
-</span></li></ul><p></p><ul><li><a id="marker_98932-24" name="marker_98932-24"></a><span>マップチップが消え、コンソールにset modeと表示される</span><span>
-</span></li><a id="marker_98932-27" name="marker_98932-27"></a><ul><li><a id="marker_98932-25" name="marker_98932-25"></a><span>水色の範囲がマップの範囲なので、その中の任意の箇所をクリックすると選択中のチップが設置される</span><span>
-</span></li><li><a id="marker_98932-26" name="marker_98932-26"></a><span>マップはカーソルキーを使って上下左右に動かすことができるので、マップが画面より大きい場合などは適宜動かしてください</span><span>
-</span></li></ul></ul><p></p><a id="marker_98932-29" name="marker_98932-29"></a><ul><li><a id="marker_98932-28" name="marker_98932-28"></a><span>他のチップを選択したい場合はキーボードのgを押す。すると、get modeと表示され、マップチップが再び出てくるので設置したいチップを選びなおす</span><span>
-</span></li></ul><p></p><a id="marker_98932-31" name="marker_98932-31"></a><ul><li><a id="marker_98932-30" name="marker_98932-30"></a><span>誤って設置したチップを消したい場合は、キーボードのeを押すと、erase modeと表示され、クリックした位置に設置されているチップを消すことができる</span><span>
-</span></li></ul><p></p><a id="marker_98932-33" name="marker_98932-33"></a><ul><li><a id="marker_98932-32" name="marker_98932-32"></a><span>完成したマップをファイルに保存するときは、キーボードのpを押す。プロンプトが表示されるので、セーブするファイル名(例：stage1.json)を入力してOKを押す</span><span>
-</span></li></ul><p></p><a id="marker_98932-34" name="marker_98932-34"></a><p></p><h1><a id="marker_98932-35" name="marker_98932-35"></a><span>描いたマップをプログラム内で使用する</span></h1><a id="marker_98932-36" name="marker_98932-36"></a><p></p><a id="marker_98932-37" name="marker_98932-37"></a><div class="plist">Main</div><a id="marker_98932-40" name="marker_98932-40"></a><pre><a id="marker_98932-38" name="marker_98932-38"></a><span>$map=new Map{chipWidth:32,chipHeight:32};</span><span>
-</span><a id="marker_98932-39" name="marker_98932-39"></a><span>$map.load("stage1.json");</span><span>
-</span></pre><a id="marker_98932-41" name="marker_98932-41"></a><p></p></div><div style="height: 100px;"></div>
+<div><a id="marker_59941-0" name="marker_59941-0"></a><a href="ide.html">ide</a><span>
+</span><a id="marker_59941-1" name="marker_59941-1"></a><p></p><a id="marker_59941-2" name="marker_59941-2"></a><a href="_E7_94_A8_E9_80_94_E5_88_A5_E3_83_AA_E3_83_95_E3_82_A1_E3_83_AC_E3_83_B3_E3_82_B9.html">用途別リファレンス</a><span>
+</span><a id="marker_59941-3" name="marker_59941-3"></a><p></p><h1><a id="marker_59941-4" name="marker_59941-4"></a><span>マップエディタ</span></h1><a id="marker_59941-5" name="marker_59941-5"></a><p></p><a id="marker_59941-6" name="marker_59941-6"></a><span>マップエディタは，ゲーム中に使用するマップを描くためのツールです．</span><span>
+</span><a id="marker_59941-7" name="marker_59941-7"></a><span>主な使用の流れは次の通り</span><span>
+</span><a id="marker_59941-8" name="marker_59941-8"></a><p></p><a id="marker_59941-10" name="marker_59941-10"></a><ul><li><a id="marker_59941-9" name="marker_59941-9"></a><span>画像リストに $pat_mapchip を追加</span><span>
+</span></li></ul><p></p><a id="marker_59941-12" name="marker_59941-12"></a><ul><li><a id="marker_59941-11" name="marker_59941-11"></a><span>ツールからマップエディタを選択</span><span>
+</span></li></ul><p></p><a id="marker_59941-14" name="marker_59941-14"></a><ul><li><a id="marker_59941-13" name="marker_59941-13"></a><span>Load Data?: Y or Nと表示されるので、すでに作ったマップをもとに改造する場合はキーボードのyを、新しくつくる場合はnを押す</span><span>
+</span></li></ul><p></p><ul><ul><li><a id="marker_59941-15" name="marker_59941-15"></a><span>nを押した場合、プロンプトが出るので、それぞれ入力する</span><span>
+</span></li><a id="marker_59941-18" name="marker_59941-18"></a><ul><li><a id="marker_59941-16" name="marker_59941-16"></a><span>"input row"→縦に設置するチップの個数</span><span>
+</span></li><li><a id="marker_59941-17" name="marker_59941-17"></a><span>"input col"→横に設置するチップの個数</span><span>
+</span></li></ul></ul></ul><p></p><ul><ul><li><a id="marker_59941-19" name="marker_59941-19"></a><span>yを押した場合、プロンプトが出るので、ロードするファイルの名前を入力する。</span><span>
+</span></li><a id="marker_59941-21" name="marker_59941-21"></a><ul><li><a id="marker_59941-20" name="marker_59941-20"></a><span>入力されたファイルが存在しないと、Load Failedと表示され、nを押した場合の動作に移動する</span><span>
+</span></li></ul></ul></ul><p></p><a id="marker_59941-23" name="marker_59941-23"></a><ul><li><a id="marker_59941-22" name="marker_59941-22"></a><span>画面にマップチップがでるので、設置したいチップをクリックする</span><span>
+</span></li></ul><p></p><ul><li><a id="marker_59941-24" name="marker_59941-24"></a><span>マップチップが消え、コンソールにset modeと表示される</span><span>
+</span></li><a id="marker_59941-27" name="marker_59941-27"></a><ul><li><a id="marker_59941-25" name="marker_59941-25"></a><span>水色の範囲がマップの範囲なので、その中の任意の箇所をクリックすると選択中のチップが設置される</span><span>
+</span></li><li><a id="marker_59941-26" name="marker_59941-26"></a><span>マップはカーソルキーを使って上下左右に動かすことができるので、マップが画面より大きい場合などは適宜動かしてください</span><span>
+</span></li></ul></ul><p></p><a id="marker_59941-29" name="marker_59941-29"></a><ul><li><a id="marker_59941-28" name="marker_59941-28"></a><span>他のチップを選択したい場合はキーボードのgを押す。すると、get modeと表示され、マップチップが再び出てくるので設置したいチップを選びなおす</span><span>
+</span></li></ul><p></p><a id="marker_59941-31" name="marker_59941-31"></a><ul><li><a id="marker_59941-30" name="marker_59941-30"></a><span>誤って設置したチップを消したい場合は、キーボードのeを押すと、erase modeと表示され、クリックした位置に設置されているチップを消すことができる</span><span>
+</span></li></ul><p></p><a id="marker_59941-33" name="marker_59941-33"></a><ul><li><a id="marker_59941-32" name="marker_59941-32"></a><span>完成したマップをファイルに保存するときは、キーボードのpを押す。プロンプトが表示されるので、セーブするファイル名(例：stage1.json)を入力してOKを押す</span><span>
+</span></li></ul><p></p><a id="marker_59941-34" name="marker_59941-34"></a><p></p><h1><a id="marker_59941-35" name="marker_59941-35"></a><span>描いたマップをプログラム内で使用する</span></h1><a id="marker_59941-36" name="marker_59941-36"></a><p></p><a id="marker_59941-37" name="marker_59941-37"></a><div class="plist">Main</div><a id="marker_59941-40" name="marker_59941-40"></a><pre><a id="marker_59941-38" name="marker_59941-38"></a><span>$map=new Map{chipWidth:32,chipHeight:32};</span><span>
+</span><a id="marker_59941-39" name="marker_59941-39"></a><span>$map.load("stage1.json");</span><span>
+</span></pre><a id="marker_59941-41" name="marker_59941-41"></a><p></p></div><div style="height: 100px;"></div></body></html>

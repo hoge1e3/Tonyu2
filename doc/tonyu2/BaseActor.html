@@ -1,54 +1,54 @@
-<link rel='stylesheet' href='/css/bootstrap.css'/>
+<html><head><meta charset="utf-8"/><meta http-equiv="Content-type" content="text/html; charset=utf8"/></head><body><link rel='stylesheet' href='/css/bootstrap.css'/>
 <style>body{padding-top:20px; margin-left: 20px; margin-right:20px;}</style>
 <title>BaseActor</title>
-<div><a id="marker_98932-0" name="marker_98932-0"></a><a href="api.html">api</a><span>
-</span><a id="marker_98932-1" name="marker_98932-1"></a><p></p><h1><a id="marker_98932-2" name="marker_98932-2"></a><span>BaseActor</span></h1><a id="marker_98932-3" name="marker_98932-3"></a><p></p><a id="marker_98932-4" name="marker_98932-4"></a><span>画面に表示されるオブジェクトの基本クラスです．実際には</span><a href="Actor.html">Actor</a><span>を継承してクラスを作成してください．</span><span>
-</span><a id="marker_98932-5" name="marker_98932-5"></a><p></p><h1><a id="marker_98932-6" name="marker_98932-6"></a><span> コンストラクタ(1)</span></h1><a id="marker_98932-7" name="marker_98932-7"></a><p></p><a id="marker_98932-10" name="marker_98932-10"></a><pre><a id="marker_98932-9" name="marker_98932-9"></a><span>\new(params)</span><span>
-</span></pre><a id="marker_98932-11" name="marker_98932-11"></a><p></p><a id="marker_98932-12" name="marker_98932-12"></a><span>paramsにはオブジェクトを指定します．paramsの値をフィールドに書き込みます</span><span>
-</span><a id="marker_98932-13" name="marker_98932-13"></a><p></p><a id="marker_98932-14" name="marker_98932-14"></a><span>例： </span><span>
-</span><a id="marker_98932-19" name="marker_98932-19"></a><pre><a id="marker_98932-16" name="marker_98932-16"></a><span>// MyActorはBaseActorの子クラスとする</span><span>
-</span><a id="marker_98932-17" name="marker_98932-17"></a><span>a=new MyActor{x:50,y:30, power:20, hp:50};</span><span>
-</span><a id="marker_98932-18" name="marker_98932-18"></a><span>// a.x=50  a.y=30 a.power=20  a.hp=50 となる</span><span>
-</span></pre><a id="marker_98932-20" name="marker_98932-20"></a><p></p><h1><a id="marker_98932-21" name="marker_98932-21"></a><span> コンストラクタ(2)</span></h1><a id="marker_98932-22" name="marker_98932-22"></a><p></p><a id="marker_98932-25" name="marker_98932-25"></a><pre><a id="marker_98932-24" name="marker_98932-24"></a><span>\new(x,y,p)</span><span>
-</span></pre><a id="marker_98932-26" name="marker_98932-26"></a><p></p><a id="marker_98932-27" name="marker_98932-27"></a><span>x,y,pの値をフィールドに書き込みます</span><span>
-</span><a id="marker_98932-28" name="marker_98932-28"></a><p></p><h1><a id="marker_98932-29" name="marker_98932-29"></a><span> フィールド</span></h1><a id="marker_98932-30" name="marker_98932-30"></a><p></p><a id="marker_98932-43" name="marker_98932-43"></a><ul><li><a id="marker_98932-31" name="marker_98932-31"></a><span>x : オブジェクトのx座標をあらわします</span><a href="_E5_BA_A7_E6_A8_99_E3_82_92_E6_8C_87_E5_AE_9A_E3_81_97_E3_81_A6_E3_82_AA_E3_83_96_E3_82_B8_E3_82_A7_E3_82_AF_E3_83_88_E3_82_92_E8_A1_A8_E7_A4_BA_E3_81_99_E3_82_8B.html">使用例</a><span>
-</span></li><li><a id="marker_98932-32" name="marker_98932-32"></a><span>y : オブジェクトのy座標をあらわします</span><a href="_E5_BA_A7_E6_A8_99_E3_82_92_E6_8C_87_E5_AE_9A_E3_81_97_E3_81_A6_E3_82_AA_E3_83_96_E3_82_B8_E3_82_A7_E3_82_AF_E3_83_88_E3_82_92_E8_A1_A8_E7_A4_BA_E3_81_99_E3_82_8B.html">使用例</a><span>
-</span></li><li><a id="marker_98932-33" name="marker_98932-33"></a><span>p : 表示する</span><a href="cpats.html">画像の番号</a><span>をあらわします。 </span><a href="_E3_82_AA_E3_83_96_E3_82_B8_E3_82_A7_E3_82_AF_E3_83_88_E3_81_AE_E3_82_B0_E3_83_A9_E3_83_95_E3_82_A3_E3_83_83_E3_82_AF_E3_82_92_E5_A4_89_E3_81_88_E3_82_8B.html">使用例</a><span>
-</span></li><li><a id="marker_98932-34" name="marker_98932-34"></a><span>text : textに値がセットされると，文字を表示します（キャラクタパターンは表示されなくなります）</span><span>
-</span></li><a id="marker_98932-38" name="marker_98932-38"></a><ul><li><a id="marker_98932-35" name="marker_98932-35"></a><span>size : 文字の大きさをあらわします</span><span>
-</span></li><li><a id="marker_98932-36" name="marker_98932-36"></a><span>fillStyle : 文字の色などをあらわします(JavascriptのCanvasにおけるfillStyleと同じ書式です）</span><span>
-</span></li><li><a id="marker_98932-37" name="marker_98932-37"></a><span>align:  "center" "left" "right"のいずれかを指定します．xの値であらわされる横位置がそれぞれ文字の中央，左端，右端になるように表示します．</span><span>
+<div><a id="marker_59941-0" name="marker_59941-0"></a><a href="api.html">api</a><span>
+</span><a id="marker_59941-1" name="marker_59941-1"></a><p></p><h1><a id="marker_59941-2" name="marker_59941-2"></a><span>BaseActor</span></h1><a id="marker_59941-3" name="marker_59941-3"></a><p></p><a id="marker_59941-4" name="marker_59941-4"></a><span>画面に表示されるオブジェクトの基本クラスです．実際には</span><a href="Actor.html">Actor</a><span>を継承してクラスを作成してください．</span><span>
+</span><a id="marker_59941-5" name="marker_59941-5"></a><p></p><h1><a id="marker_59941-6" name="marker_59941-6"></a><span> コンストラクタ(1)</span></h1><a id="marker_59941-7" name="marker_59941-7"></a><p></p><a id="marker_59941-10" name="marker_59941-10"></a><pre><a id="marker_59941-9" name="marker_59941-9"></a><span>\new(params)</span><span>
+</span></pre><a id="marker_59941-11" name="marker_59941-11"></a><p></p><a id="marker_59941-12" name="marker_59941-12"></a><span>paramsにはオブジェクトを指定します．paramsの値をフィールドに書き込みます</span><span>
+</span><a id="marker_59941-13" name="marker_59941-13"></a><p></p><a id="marker_59941-14" name="marker_59941-14"></a><span>例： </span><span>
+</span><a id="marker_59941-19" name="marker_59941-19"></a><pre><a id="marker_59941-16" name="marker_59941-16"></a><span>// MyActorはBaseActorの子クラスとする</span><span>
+</span><a id="marker_59941-17" name="marker_59941-17"></a><span>a=new MyActor{x:50,y:30, power:20, hp:50};</span><span>
+</span><a id="marker_59941-18" name="marker_59941-18"></a><span>// a.x=50  a.y=30 a.power=20  a.hp=50 となる</span><span>
+</span></pre><a id="marker_59941-20" name="marker_59941-20"></a><p></p><h1><a id="marker_59941-21" name="marker_59941-21"></a><span> コンストラクタ(2)</span></h1><a id="marker_59941-22" name="marker_59941-22"></a><p></p><a id="marker_59941-25" name="marker_59941-25"></a><pre><a id="marker_59941-24" name="marker_59941-24"></a><span>\new(x,y,p)</span><span>
+</span></pre><a id="marker_59941-26" name="marker_59941-26"></a><p></p><a id="marker_59941-27" name="marker_59941-27"></a><span>x,y,pの値をフィールドに書き込みます</span><span>
+</span><a id="marker_59941-28" name="marker_59941-28"></a><p></p><h1><a id="marker_59941-29" name="marker_59941-29"></a><span> フィールド</span></h1><a id="marker_59941-30" name="marker_59941-30"></a><p></p><a id="marker_59941-43" name="marker_59941-43"></a><ul><li><a id="marker_59941-31" name="marker_59941-31"></a><span>x : オブジェクトのx座標をあらわします</span><a href="_E5_BA_A7_E6_A8_99_E3_82_92_E6_8C_87_E5_AE_9A_E3_81_97_E3_81_A6_E3_82_AA_E3_83_96_E3_82_B8_E3_82_A7_E3_82_AF_E3_83_88_E3_82_92_E8_A1_A8_E7_A4_BA_E3_81_99_E3_82_8B.html">使用例</a><span>
+</span></li><li><a id="marker_59941-32" name="marker_59941-32"></a><span>y : オブジェクトのy座標をあらわします</span><a href="_E5_BA_A7_E6_A8_99_E3_82_92_E6_8C_87_E5_AE_9A_E3_81_97_E3_81_A6_E3_82_AA_E3_83_96_E3_82_B8_E3_82_A7_E3_82_AF_E3_83_88_E3_82_92_E8_A1_A8_E7_A4_BA_E3_81_99_E3_82_8B.html">使用例</a><span>
+</span></li><li><a id="marker_59941-33" name="marker_59941-33"></a><span>p : 表示する</span><a href="cpats.html">画像の番号</a><span>をあらわします。 </span><a href="_E3_82_AA_E3_83_96_E3_82_B8_E3_82_A7_E3_82_AF_E3_83_88_E3_81_AE_E3_82_B0_E3_83_A9_E3_83_95_E3_82_A3_E3_83_83_E3_82_AF_E3_82_92_E5_A4_89_E3_81_88_E3_82_8B.html">使用例</a><span>
+</span></li><li><a id="marker_59941-34" name="marker_59941-34"></a><span>text : textに値がセットされると，文字を表示します（キャラクタパターンは表示されなくなります）</span><span>
+</span></li><a id="marker_59941-38" name="marker_59941-38"></a><ul><li><a id="marker_59941-35" name="marker_59941-35"></a><span>size : 文字の大きさをあらわします</span><span>
+</span></li><li><a id="marker_59941-36" name="marker_59941-36"></a><span>fillStyle : 文字の色などをあらわします(JavascriptのCanvasにおけるfillStyleと同じ書式です）</span><span>
+</span></li><li><a id="marker_59941-37" name="marker_59941-37"></a><span>align:  "center" "left" "right"のいずれかを指定します．xの値であらわされる横位置がそれぞれ文字の中央，左端，右端になるように表示します．</span><span>
 </span></li></ul><li><span>zOrder : オブジェクト同士が重なった場合、この値が小さい方が手前に表示されます。</span><a href="_E3_82_AA_E3_83_96_E3_82_B8_E3_82_A7_E3_82_AF_E3_83_88_E3_81_AE_E5_A5_A5_E8_A1_8C_E3_81_8D_E3_81_AE_E8_A8_AD_E5_AE_9A.html">使用例</a><span>
-</span></li><li><a id="marker_98932-39" name="marker_98932-39"></a><span>alpha : 表示する画像の透明度を指定します(255-0)。</span><a href="_E3_82_AA_E3_83_96_E3_82_B8_E3_82_A7_E3_82_AF_E3_83_88_E3_81_AE_E5_A4_A7_E3_81_8D_E3_81_95_E3_82_84_E5_82_BE_E3_81_8D_E3_80_81_E9_80_8F_E6_98_8E_E5_BA_A6_E3_82_92_E8_A8_AD_E5_AE_9A_E3_81_99_E3_82_8B.html">使用例</a><span>
-</span></li><li><a id="marker_98932-40" name="marker_98932-40"></a><span>scaleX : オブジェクトの横方向の拡大率を指定します．scaleYが未定義の場合は縦方向にもscaleXの拡大率が適用されます。</span><a href="_E3_82_AA_E3_83_96_E3_82_B8_E3_82_A7_E3_82_AF_E3_83_88_E3_81_AE_E5_A4_A7_E3_81_8D_E3_81_95_E3_82_84_E5_82_BE_E3_81_8D_E3_80_81_E9_80_8F_E6_98_8E_E5_BA_A6_E3_82_92_E8_A8_AD_E5_AE_9A_E3_81_99_E3_82_8B.html">使用例</a><span>
-</span></li><li><a id="marker_98932-41" name="marker_98932-41"></a><span>scaleY : オブジェクトの縦方向の拡大率を指定します</span><span>
-</span></li><li><a id="marker_98932-42" name="marker_98932-42"></a><span>rotation : オブジェクトの回転を指定します．右回りで指定した値の角度回転します。</span><a href="_E3_82_AA_E3_83_96_E3_82_B8_E3_82_A7_E3_82_AF_E3_83_88_E3_81_AE_E5_A4_A7_E3_81_8D_E3_81_95_E3_82_84_E5_82_BE_E3_81_8D_E3_80_81_E9_80_8F_E6_98_8E_E5_BA_A6_E3_82_92_E8_A8_AD_E5_AE_9A_E3_81_99_E3_82_8B.html">使用例</a><span>
-</span></li></ul><p></p><a id="marker_98932-44" name="marker_98932-44"></a><p></p><h1><a id="marker_98932-45" name="marker_98932-45"></a><span> メソッド</span></h1><a id="marker_98932-46" name="marker_98932-46"></a><p></p><a id="marker_98932-75" name="marker_98932-75"></a><ul><li><a id="marker_98932-47" name="marker_98932-47"></a><a href="update.html">update</a><span>
-</span></li><li><a id="marker_98932-48" name="marker_98932-48"></a><a href="updateEx.html">updateEx</a><span>
-</span></li><li><a id="marker_98932-49" name="marker_98932-49"></a><a href="onUpdate.html">onUpdate</a><span>
-</span></li><li><a id="marker_98932-50" name="marker_98932-50"></a><a href="getkey.html">getkey</a><span>
-</span></li><li><a id="marker_98932-51" name="marker_98932-51"></a><a href="crashTo.html">crashTo</a><span>
-</span></li><li><a id="marker_98932-52" name="marker_98932-52"></a><a href="crashTo1.html">crashTo1</a><span>
-</span></li><li><a id="marker_98932-53" name="marker_98932-53"></a><a href="allCrash.html">allCrash</a><span>
-</span></li><li><a id="marker_98932-54" name="marker_98932-54"></a><a href="all.html">all</a><span>
-</span></li><li><a id="marker_98932-55" name="marker_98932-55"></a><a href="getCrashRect.html">getCrashRect</a><span>
-</span></li><li><a id="marker_98932-56" name="marker_98932-56"></a><a href="die.html">die</a><span>
-</span></li><li><a id="marker_98932-57" name="marker_98932-57"></a><a href="isDead.html">isDead</a><span> </span><span>
-</span></li><li><a id="marker_98932-58" name="marker_98932-58"></a><a href="loadPage.html">loadPage</a><span>
-</span></li><li><a id="marker_98932-59" name="marker_98932-59"></a><a href="hide.html">hide</a><span>
-</span></li><li><a id="marker_98932-60" name="marker_98932-60"></a><a href="show.html">show</a><span>
-</span></li><li><a id="marker_98932-61" name="marker_98932-61"></a><a href="rnd.html">rnd</a><span>
-</span></li><li><a id="marker_98932-62" name="marker_98932-62"></a><a href="draw.html">draw</a><span>
-</span></li><li><a id="marker_98932-63" name="marker_98932-63"></a><a href="extend.html">extend</a><span>
-</span></li><li><a id="marker_98932-64" name="marker_98932-64"></a><a href="print.html">print</a><span>
-</span></li><li><a id="marker_98932-65" name="marker_98932-65"></a><a href="file.html">file</a><span>
-</span></li><li><a id="marker_98932-66" name="marker_98932-66"></a><a href="asyncResult.html">asyncResult</a><span>
-</span></li><li><a id="marker_98932-67" name="marker_98932-67"></a><a href="waitFor.html">waitFor</a><span>
-</span></li><li><a id="marker_98932-68" name="marker_98932-68"></a><a href="play.html">play</a><span>
-</span></li><li><a id="marker_98932-69" name="marker_98932-69"></a><a href="playSE.html">playSE</a><span>
-</span></li><li><a id="marker_98932-70" name="marker_98932-70"></a><span>currentThreadGroup</span><span>
-</span></li><li><a id="marker_98932-71" name="marker_98932-71"></a><span>detectShape</span><span>
-</span></li><li><a id="marker_98932-72" name="marker_98932-72"></a><span>hitTo</span><span>
-</span></li><li><a id="marker_98932-73" name="marker_98932-73"></a><span>watchHit</span><span>
-</span></li><li><a id="marker_98932-74" name="marker_98932-74"></a><a href="MathMod.html">MathMod</a><span>モジュールクラスがもつメソッド</span><span>
-</span></li></ul><p></p></div><div style="height: 100px;"></div>
+</span></li><li><a id="marker_59941-39" name="marker_59941-39"></a><span>alpha : 表示する画像の透明度を指定します(255-0)。</span><a href="_E3_82_AA_E3_83_96_E3_82_B8_E3_82_A7_E3_82_AF_E3_83_88_E3_81_AE_E5_A4_A7_E3_81_8D_E3_81_95_E3_82_84_E5_82_BE_E3_81_8D_E3_80_81_E9_80_8F_E6_98_8E_E5_BA_A6_E3_82_92_E8_A8_AD_E5_AE_9A_E3_81_99_E3_82_8B.html">使用例</a><span>
+</span></li><li><a id="marker_59941-40" name="marker_59941-40"></a><span>scaleX : オブジェクトの横方向の拡大率を指定します．scaleYが未定義の場合は縦方向にもscaleXの拡大率が適用されます。</span><a href="_E3_82_AA_E3_83_96_E3_82_B8_E3_82_A7_E3_82_AF_E3_83_88_E3_81_AE_E5_A4_A7_E3_81_8D_E3_81_95_E3_82_84_E5_82_BE_E3_81_8D_E3_80_81_E9_80_8F_E6_98_8E_E5_BA_A6_E3_82_92_E8_A8_AD_E5_AE_9A_E3_81_99_E3_82_8B.html">使用例</a><span>
+</span></li><li><a id="marker_59941-41" name="marker_59941-41"></a><span>scaleY : オブジェクトの縦方向の拡大率を指定します</span><span>
+</span></li><li><a id="marker_59941-42" name="marker_59941-42"></a><span>rotation : オブジェクトの回転を指定します．右回りで指定した値の角度回転します。</span><a href="_E3_82_AA_E3_83_96_E3_82_B8_E3_82_A7_E3_82_AF_E3_83_88_E3_81_AE_E5_A4_A7_E3_81_8D_E3_81_95_E3_82_84_E5_82_BE_E3_81_8D_E3_80_81_E9_80_8F_E6_98_8E_E5_BA_A6_E3_82_92_E8_A8_AD_E5_AE_9A_E3_81_99_E3_82_8B.html">使用例</a><span>
+</span></li></ul><p></p><a id="marker_59941-44" name="marker_59941-44"></a><p></p><h1><a id="marker_59941-45" name="marker_59941-45"></a><span> メソッド</span></h1><a id="marker_59941-46" name="marker_59941-46"></a><p></p><a id="marker_59941-75" name="marker_59941-75"></a><ul><li><a id="marker_59941-47" name="marker_59941-47"></a><a href="update.html">update</a><span>
+</span></li><li><a id="marker_59941-48" name="marker_59941-48"></a><a href="updateEx.html">updateEx</a><span>
+</span></li><li><a id="marker_59941-49" name="marker_59941-49"></a><a href="onUpdate.html">onUpdate</a><span>
+</span></li><li><a id="marker_59941-50" name="marker_59941-50"></a><a href="getkey.html">getkey</a><span>
+</span></li><li><a id="marker_59941-51" name="marker_59941-51"></a><a href="crashTo.html">crashTo</a><span>
+</span></li><li><a id="marker_59941-52" name="marker_59941-52"></a><a href="crashTo1.html">crashTo1</a><span>
+</span></li><li><a id="marker_59941-53" name="marker_59941-53"></a><a href="allCrash.html">allCrash</a><span>
+</span></li><li><a id="marker_59941-54" name="marker_59941-54"></a><a href="all.html">all</a><span>
+</span></li><li><a id="marker_59941-55" name="marker_59941-55"></a><a href="getCrashRect.html">getCrashRect</a><span>
+</span></li><li><a id="marker_59941-56" name="marker_59941-56"></a><a href="die.html">die</a><span>
+</span></li><li><a id="marker_59941-57" name="marker_59941-57"></a><a href="isDead.html">isDead</a><span> </span><span>
+</span></li><li><a id="marker_59941-58" name="marker_59941-58"></a><a href="loadPage.html">loadPage</a><span>
+</span></li><li><a id="marker_59941-59" name="marker_59941-59"></a><a href="hide.html">hide</a><span>
+</span></li><li><a id="marker_59941-60" name="marker_59941-60"></a><a href="show.html">show</a><span>
+</span></li><li><a id="marker_59941-61" name="marker_59941-61"></a><a href="rnd.html">rnd</a><span>
+</span></li><li><a id="marker_59941-62" name="marker_59941-62"></a><a href="draw.html">draw</a><span>
+</span></li><li><a id="marker_59941-63" name="marker_59941-63"></a><a href="extend.html">extend</a><span>
+</span></li><li><a id="marker_59941-64" name="marker_59941-64"></a><a href="print.html">print</a><span>
+</span></li><li><a id="marker_59941-65" name="marker_59941-65"></a><a href="file.html">file</a><span>
+</span></li><li><a id="marker_59941-66" name="marker_59941-66"></a><a href="asyncResult.html">asyncResult</a><span>
+</span></li><li><a id="marker_59941-67" name="marker_59941-67"></a><a href="waitFor.html">waitFor</a><span>
+</span></li><li><a id="marker_59941-68" name="marker_59941-68"></a><a href="play.html">play</a><span>
+</span></li><li><a id="marker_59941-69" name="marker_59941-69"></a><a href="playSE.html">playSE</a><span>
+</span></li><li><a id="marker_59941-70" name="marker_59941-70"></a><span>currentThreadGroup</span><span>
+</span></li><li><a id="marker_59941-71" name="marker_59941-71"></a><span>detectShape</span><span>
+</span></li><li><a id="marker_59941-72" name="marker_59941-72"></a><span>hitTo</span><span>
+</span></li><li><a id="marker_59941-73" name="marker_59941-73"></a><span>watchHit</span><span>
+</span></li><li><a id="marker_59941-74" name="marker_59941-74"></a><a href="MathMod.html">MathMod</a><span>モジュールクラスがもつメソッド</span><span>
+</span></li></ul><p></p></div><div style="height: 100px;"></div></body></html>

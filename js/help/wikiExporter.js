@@ -45,12 +45,18 @@ requirejs(["Shell","Wiki","FS","requestFragment","WebSite"], function (sh,Wiki,F
             );  // /doc/index.html
             var htmlFile=FS.get(htmlFilePath);
             w.show(wikiFile);
-            var src="<link rel='stylesheet' href='/css/bootstrap.css'/>\n";
+            var src="";
+            src+='<html><head>';
+            src+='<meta charset="utf-8"/>';
+            src+='<meta http-equiv="Content-type" content="text/html; charset=utf8"/>';
+            src+='</head><body>';
+            src+="<link rel='stylesheet' href='/css/bootstrap.css'/>\n";
             src+="<style>"+
             "body{padding-top:20px; margin-left: 20px; margin-right:20px;}"+
             "</style>\n";
             src+="<title>"+wikiFile.truncExt(".txt")+"</title>\n";
             src+=h.html();
+            src+='</body></html>';
             //data[FS.get(htmlDir).relPath(wikiDir)]=src;
             htmlFile.text(src);
             var encFile=htmlFile.up().rel(encodeURI(htmlFile.name()).replace(/%/g,"_") );
