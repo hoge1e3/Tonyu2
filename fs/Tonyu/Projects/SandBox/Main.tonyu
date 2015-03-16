@@ -8,6 +8,9 @@ new TQuery;
 updateEx(30);
 new TQuery;
 updateEx(30);
+print(color);
+color=3;
+
 for (var t in all(TQuery)) {
     t.die();
 }

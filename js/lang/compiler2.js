@@ -291,6 +291,9 @@ function genJS(klass, env,pass) {
     function checkLVal(node) {
         if (node.type=="varAccess" ||
                 node.type=="postfix" && (node.op.type=="member" || node.op.type=="arrayElem") ) {
+            if (node.type=="varAccess") {
+                annotation(node,{noBind:true});
+            }
             return true;
         }
         console.log("LVal",node);
@@ -315,14 +318,18 @@ function genJS(klass, env,pass) {
         }
         return si;
     }
-    function varAccess(n, si) {
+    function varAccess(n, si, an) {
         var t=stype(si);
         if (t==ST.THVAR) {
             buf.printf("%s",TH);
         } else if (t==ST.FIELD) {
             buf.printf("%s.%s",THIZ, n);
         } else if (t==ST.METHOD) {
-            buf.printf("%s(%s,%s.%s)",BINDF, THIZ, THIZ, n);
+            if (an && an.noBind) {
+                buf.printf("%s.%s",THIZ, n);
+            } else {
+                buf.printf("%s(%s,%s.%s)",BINDF, THIZ, THIZ, n);
+            }
         } else if (t==ST.CLASS) {
             buf.printf("%s",getClassName(n));
         } else if (t==ST.GLOBAL) {
@@ -439,7 +446,7 @@ function genJS(klass, env,pass) {
                 buf.printf("%v: %v", node.key, node.value);
             } else {
                 buf.printf("%v: %f", node.key, function () {
-                    var si=varAccess( node.key.text, annotation(node).scopeInfo);
+                    var si=varAccess( node.key.text, annotation(node).scopeInfo, annotation(node));
                 });
             }
         },
@@ -457,7 +464,7 @@ function genJS(klass, env,pass) {
         },
         varAccess: function (node) {
             var n=node.name.text;
-            var si=varAccess(n,annotation(node).scopeInfo);
+            var si=varAccess(n,annotation(node).scopeInfo, annotation(node));
         },
         exprstmt: function (node) {//exprStmt
             var t={};
