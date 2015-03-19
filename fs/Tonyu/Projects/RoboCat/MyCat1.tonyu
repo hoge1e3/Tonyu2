@@ -1,0 +1,15 @@
+extends Cat;
+
+
+while(x<5) {
+    right();
+}
+
+while(y<8) {
+    down();
+}
+while(x<10) {
+    right();
+}
+
+

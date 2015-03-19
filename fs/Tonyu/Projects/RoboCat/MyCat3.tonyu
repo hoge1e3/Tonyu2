@@ -1,0 +1,19 @@
+extends Cat;
+
+rightToWall();
+downToRightPath();
+rightToWall();
+
+
+function rightToWall() {
+    while(true) {
+        right();
+        if (isWall(x+1,y)) break;
+    }
+}
+function downToRightPath() {
+    while(true) {
+        down();
+        if (!isWall(x+1,y)) break;
+    }
+}

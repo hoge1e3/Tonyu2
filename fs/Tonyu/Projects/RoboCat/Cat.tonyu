@@ -1,0 +1,66 @@
+
+\onAppear() {
+    p=$pat_neko;
+}
+\draw(c) {
+    var sx=x,sy=y;
+    x=x*32+16;
+    y=y*32+16;
+    super.draw(c);
+    x=sx;y=sy;
+}
+
+\right() {
+    for (var i=0;i<4;i++) {
+        x+=0.25;
+        update();
+    }
+    checkWall();
+}
+\left() {
+    for (var i=0;i<4;i++) {
+        x-=0.25;
+        update();
+    }
+    checkWall();
+}
+\up() {
+    for (var i=0;i<4;i++) {
+        y-=0.25;
+        update();
+    }
+    checkWall();
+}
+\down() {
+    for (var i=0;i<4;i++) {
+        y+=0.25;
+        update();
+    }
+    checkWall();
+}
+\isWall(x,y) {
+    var p=$map.get(x,y);
+    if (p==$pat_mapchip+45) return false;
+    else if (p>=0) return true;
+    return false;
+}
+\checkWall() {
+    updateEx(4);
+    var p=$map.get(x,y);
+    if (p==$pat_mapchip+45) goal();
+    else if (p>=0) miss();
+}
+\goal() {
+    for (var i=0;i<4;i++) {
+        y-=0.5;
+        updateEx(5);
+        y+=0.5;
+        updateEx(5);
+    }
+    die();
+}
+\miss() {
+    p=$pat_neko+8;
+    updateEx(60);
+    die();
+}

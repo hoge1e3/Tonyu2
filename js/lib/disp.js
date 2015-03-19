@@ -1,5 +1,9 @@
+if (typeof define!=="function") {
+   define=require("requirejs").define;
+}
+define(["IndentBuffer"], function(IndentBuffer) {
 // オブジェクトの内容を表示する． デバッグ用
-function disp(a) {
+return disp=function (a) {
 	var p=IndentBuffer();
 	function disp2(a) {
 		if (a==null) return p("null%n");
@@ -20,4 +24,5 @@ function disp(a) {
 	}
 	disp2(a);
 	return p.buf;
-}
+};
+});

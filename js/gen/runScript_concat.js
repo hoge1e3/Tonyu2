@@ -1,4 +1,4 @@
-// Created at Mon Mar 16 2015 17:15:21 GMT+0900 (東京 (標準時))
+// Created at Tue Mar 17 2015 16:41:33 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -3624,8 +3624,12 @@ return IndentBuffer=function () {
 };
 });
 requireSimulator.setName('disp');
+if (typeof define!=="function") {
+   define=require("requirejs").define;
+}
+define(["IndentBuffer"], function(IndentBuffer) {
 // オブジェクトの内容を表示する． デバッグ用
-function disp(a) {
+return disp=function (a) {
 	var p=IndentBuffer();
 	function disp2(a) {
 		if (a==null) return p("null%n");
@@ -3646,8 +3650,8 @@ function disp(a) {
 	}
 	disp2(a);
 	return p.buf;
-}
-
+};
+});
 requireSimulator.setName('Parser');
 if (typeof define!=="function") {
    define=require("requirejs").define;
