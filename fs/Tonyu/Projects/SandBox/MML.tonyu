@@ -5,7 +5,7 @@ $("canvas").click \{
     print("test");
 };
 
-\f(e) {
+f(e) {
     x++;
     print(x,e);
 }
