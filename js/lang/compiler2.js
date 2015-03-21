@@ -1120,9 +1120,19 @@ function genJS(klass, env,pass) {
     }
     function genSource() {
         annotateSource();
+        /*if (env.options.compiler.asModule) {
+            klass.moduleName=getClassName(klass);
+            printf("if (typeof requireSimulator=='object') requireSimulator.setName(%l);%n",klass.moduleName);
+            printf("//requirejs(['Tonyu'%f],function (Tonyu) {%{", function (){
+                getDependingClasses(klass).forEach(function (k) {
+                    printf(",%l",k.moduleName);
+                });
+            });
+        }*/
         ctx.enter({scope:topLevelScope}, function () {
-            var nspObj=CLASS_HEAD+klass.nameSpace;
-            printf(nspObj+"="+nspObj+"||{};%n");
+            var nspObj=CLASS_HEAD+klass.namespace;
+            printf("Tonyu.klass.ensureNamespace(%s,%l);%n",CLASS_HEAD.replace(/\.$/,""), klass.namespace);
+            //printf(nspObj+"="+nspObj+"||{};%n");
             if (klass.superClass) {
                 printf("%s=Tonyu.klass(%s,[%s],{%{",
                         getClassName(klass),
@@ -1151,8 +1161,26 @@ function genJS(klass, env,pass) {
                 if (debug) console.log("method3", name);
             }
             printf("__dummy: false%n");
-            printf("%}});");
+            printf("%}});%n");
         });
+        printf("Tonyu.klass.addMeta(%s,%s);%n",
+                getClassName(klass),JSON.stringify(digestMeta(klass)));
+        //if (env.options.compiler.asModule) {
+        //    printf("//%}});");
+        //}
+    }
+    function digestMeta(klass) {
+        var res={
+                fullName: klass.fullName,
+                namespace: klass.namespace,
+                shortName: klass.shortName,
+                decls:{methods:{}}
+        };
+        for (var i in klass.decls.methods) {
+            res.decls.methods[i]=
+            {nowait:!!klass.decls.methods[i].nowait};
+        }
+        return res;
     }
     function genFiber(fiber) {
         if (isConstructor(fiber)) return;

@@ -214,7 +214,8 @@ return TonyuLang=function () {
     g("funcDeclHead").ands(
             tk("nowait").opt(),
             tk("function").or(tk("fiber")).or(tk("tk_constructor")).or(tk("\\")).opt(),
-            symbol.or(tk("new")) ,"paramDecls").ret("nowait","ftype","name","params");
+            symbol.or(tk("new")) , "paramDecls"
+    ).ret("nowait","ftype","name","params");
     var funcDecl=g("funcDecl").ands("funcDeclHead","compound").ret("head","body");
     var nativeDecl=g("nativeDecl").ands(tk("native"),symbol,tk(";")).ret(null, "name");
     var ifwait=g("ifWait").ands(tk("ifwait"),"stmt",elseP.opt()).ret(null, "then","_else");

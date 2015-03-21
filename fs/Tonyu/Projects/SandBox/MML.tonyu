@@ -1,7 +1,9 @@
 native $;
 x=0;
 f{};
-$("canvas").click(f);
+$("canvas").click \{
+    print("test");
+};
 
 \f(e) {
     x++;

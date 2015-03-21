@@ -109,7 +109,7 @@ return Tonyu.Project=function (dir, kernelDir) {
                         name:nb,
                         fullName: fullCn,
                         shortName: nb,
-                        nameSpace:nsp,
+                        namespace:nsp,
                         src:{
                             tonyu: f
                         }

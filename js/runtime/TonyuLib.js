@@ -279,8 +279,27 @@ return Tonyu=function () {
     	res.methods=prot;
     	res.prototype=bless(parent, prot);
     	res.prototype.isTonyuObject=true;
+    	addMeta(res,{
+    	    superClass:parent ? parent.meta : null,
+    	    includes:includes.map(function(c){return c.meta;})
+    	});
     	return res;
     }
+    klass.addMeta=addMeta;
+    function addMeta(k,m) {
+        k.meta=k.meta||{};
+        extend(k.meta, m);
+    }
+    klass.ensureNamespace=function (top,nsp) {
+        var keys=nsp.split(".");
+        var o=top;
+        var i;
+        for (i=0; i<keys.length; i++) {
+            var k=keys[i];
+            if (!o[k]) o[k]={};
+            o=o[k];
+        }
+    };
     function bless( klass, val) {
         if (!klass) return val;
         return extend( new klass() , val);
