@@ -1,11 +1,11 @@
-if (typeof define!=="function") {
+if (typeof define!=="function") {//B
    define=require("requirejs").define;
 }
-define(["Tonyu", "Tonyu.Iterator", "TonyuLang", "ObjectMatcher", "TError", "IndentBuffer", "context", "Visitor"],
-function(Tonyu, Tonyu_iterator, TonyuLang, ObjectMatcher, TError, IndentBuffer, context, Visitor) {
+define(["Tonyu", "Tonyu.Iterator", "TonyuLang", "ObjectMatcher", "TError", "IndentBuffer", "context", "Visitor","compilerUtil"],
+function(Tonyu, Tonyu_iterator, TonyuLang, ObjectMatcher, TError, IndentBuffer, context, Visitor,cu) {
 return Tonyu.Compiler=(function () {
 // TonyuソースファイルをJavascriptに変換する
-var TH="_thread",THIZ="_this", ARGS="_arguments",FIBPRE="fiber$", FRMPC="__pc", LASTPOS="$LASTPOS",CNTV="__cnt",CNTC=100;
+var TH="_thread",THIZ="_this", ARGS="_arguments",FIBPRE="fiber$", FRMPC="__pc", LASTPOS="$LASTPOS",CNTV="__cnt",CNTC=100;//G
 var BINDF="Tonyu.bindFunc";
 var INVOKE_FUNC="Tonyu.invokeMethod";
 var CALL_FUNC="Tonyu.callFunc";
@@ -13,25 +13,93 @@ var CHK_NN="Tonyu.checkNonNull";
 var CLASS_HEAD="Tonyu.classes.", GLOBAL_HEAD="Tonyu.globals.";
 var GET_THIS="this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this)";
 var ITER="Tonyu.iterator";
-var ScopeTypes={FIELD:"field", METHOD:"method", NATIVE:"native",
-        LOCAL:"local", THVAR:"threadvar", PARAM:"param", GLOBAL:"global", CLASS:"class"};
-var symSeq=1;
-function genSt(st, options) {
+/*var ScopeTypes={FIELD:"field", METHOD:"method", NATIVE:"native",//B
+        LOCAL:"local", THVAR:"threadvar", PARAM:"param", GLOBAL:"global", CLASS:"class"};*/
+var ScopeTypes=cu.ScopeTypes;
+/*var symSeq=1;//B
+function genSt(st, options) {//B
     var res={type:st};
     if (options) {
         for (var k in options) res[k]=options[k];
     }
     if (!res.name) res.name=genSym("_"+st+"_");
     return res;
-}
-function stype(st) {
-    return st ? st.type : null;
-}
-/*function compile(klass, env) {
-    initClassDecls(klass, env );
-    return genJS(klass, env);
 }*/
-function initClassDecls(klass, env ) {
+var genSt=cu.newScopeType;
+/*function stype(st) {//B
+    return st ? st.type : null;
+}*/
+var stype=cu.getScopeType;
+/*function newScope(s) {//B
+    var f=function (){};
+    f.prototype=s;
+    return new f();
+}*/
+var newScope=cu.newScope;
+/*function nc(o, mesg) {//B
+    if (!o) throw mesg+" is null";
+    return o;
+}*/
+var nc=cu.nullCheck;
+/*function genSym(prefix) {//B
+    return prefix+((symSeq++)+"").replace(/\./g,"");
+}*/
+var genSym=cu.genSym;
+/*function annotation3(aobjs, node, aobj) {//B
+    if (!node._id) {
+        if (!aobjs._idseq) aobjs._idseq=0;
+        node._id=++aobjs._idseq;
+    }
+    var res=aobjs[node._id];
+    if (!res) res=aobjs[node._id]={node:node};
+    if (aobj) {
+        for (var i in aobj) res[i]=aobj[i];
+    }
+    return res;
+}*/
+var annotation3=cu.annotation;
+/*function getSource(node) {//B
+    return srcCont.substring(node.pos,node.pos+node.len);
+}*/
+var getSource=cu.getSource;
+/*function getMethod2(klass,name) {//B
+    var res=null;
+    getDependingClasses(klass).forEach(function (k) {
+        if (res) return;
+        res=k.decls.methods[name];
+    });
+    return res;
+}*/
+var getMethod2=cu.getMethod;
+/*function getDependingClasses(klass) {//B
+    var visited={};
+    var incls=[];
+    var res=[];
+    for (var k=klass ; k ; k=k.superClass) {
+        incls=incls.concat(k.includes);
+        visited[k.fullName]=true;
+        res.push(k);
+    }
+    while (incls.length>0) {
+        var k=incls.shift();
+        if (visited[k.fullName]) continue;
+        visited[k.fullName]=true;
+        res.push(k);
+        incls=incls.concat(k.includes);
+    }
+    return res;
+}*/
+var getDependingClasses=cu.getDependingClasses;
+/*function getParams(method) {//B
+    if (!method.head) return [];
+    var res=method.head.params.params;
+    if (!res.forEach) throw method+" is not array ";
+    return res;
+}*/
+var getParams=cu.getParams;
+
+//-----------
+function initClassDecls(klass, env ) {//S
     var s=klass.src.tonyu; //file object
     var node=TonyuLang.parse(s);
     var MAIN={name:"main",stmts:[],pos:0};
@@ -98,49 +166,8 @@ function initClassDecls(klass, env ) {
     // if(pass==1)
     initMethods(node);        // node=program
 }
-function genSym(prefix) {
-    return prefix+((symSeq++)+"").replace(/\./g,"");
-}
-function annotation3(aobjs, node, aobj) {
-    if (!node._id) {
-        if (!aobjs._idseq) aobjs._idseq=0;
-        node._id=++aobjs._idseq;
-    }
-    var res=aobjs[node._id];
-    if (!res) res=aobjs[node._id]={node:node};
-    if (aobj) {
-        for (var i in aobj) res[i]=aobj[i];
-    }
-    return res;
-}
-function getMethod2(klass,name) {
-    var res=null;
-    getDependingClasses(klass).forEach(function (k) {
-        if (res) return;
-        res=k.decls.methods[name];
-    });
-    return res;
-}
-function getDependingClasses(klass) {
-    var visited={};
-    var incls=[];
-    var res=[];
-    for (var k=klass ; k ; k=k.superClass) {
-        incls=incls.concat(k.includes);
-        visited[k.fullName]=true;
-        res.push(k);
-    }
-    while (incls.length>0) {
-        var k=incls.shift();
-        if (visited[k.fullName]) continue;
-        visited[k.fullName]=true;
-        res.push(k);
-        incls=incls.concat(k.includes);
-    }
-    return res;
-}
-function genJS(klass, env,pass) {
-    var srcFile=klass.src.tonyu; //file object
+function genJS(klass, env,pass) {//B
+    var srcFile=klass.src.tonyu; //file object  //S
     var srcCont=srcFile.text();
     var OM=ObjectMatcher;
     var className=getClassName(klass);
@@ -204,10 +231,10 @@ function genJS(klass, env,pass) {
             }
         };
     klass.annotation={};
-    function annotation(node, aobj) {
+    function annotation(node, aobj) {//B
         return annotation3(klass.annotation,node,aobj);
     }
-    function assertAnnotated(node, si) {
+    /*function assertAnnotated(node, si) {//B
         var a=annotation(node);
         if (!a.scopeInfo) {
             console.log(srcCont.substring(node.pos-5,node.pos+20));
@@ -219,16 +246,18 @@ function genJS(klass, env,pass) {
             console.log(node, si , a.scopeInfo);
             throw "Scope info not match";
         }
-    }
-    function getSource(node) {
-        return srcCont.substring(node.pos,node.pos+node.len);
-    }
-    function getClassName(klass){// should be object or short name
+    }*/
+    function getClassName(klass){// should be object or short name //G
         if (typeof klass=="string") return CLASS_HEAD+(env.aliases[klass] || klass);//CFN  CLASS_HEAD+env.aliases[klass](null check)
         if (klass.builtin) return klass.fullName;// CFN klass.fullName
         return CLASS_HEAD+klass.fullName;// CFN  klass.fullName
     }
-    function initTopLevelScope2(klass) {
+    function getClassNames(cs){//G
+        var res=[];
+        cs.forEach(function (c) { res.push(getClassName(c)); });
+        return res;
+    }
+    function initTopLevelScope2(klass) {//S
     	if (klass.builtin) return;
         var s=topLevelScope;
         var decls=klass.decls;
@@ -239,7 +268,7 @@ function genJS(klass, env,pass) {
             s[i]=genSt(ST.METHOD,{klass:klass.name, name:i});
         }
     }
-    function initTopLevelScope() {
+    function initTopLevelScope() {//S
         var s=topLevelScope;
         getDependingClasses(klass).forEach(initTopLevelScope2);
         var decls=klass.decls;// Do not inherit parents' natives
@@ -250,7 +279,7 @@ function genJS(klass, env,pass) {
             s[i]=genSt(ST.CLASS,{name:i});
         }
     }
-    function inheritSuperMethod() {
+    function inheritSuperMethod() {//S
         var d=getDependingClasses(klass);
         for (var n in klass.decls.methods) {
             var m2=klass.decls.methods[n];
@@ -262,33 +291,10 @@ function genJS(klass, env,pass) {
             });
         }
     }
-
-    function newScope(s) {
-        var f=function (){};
-        f.prototype=s;
-        return new f();
-    }
-    function getMethod(name) {
-    	/*var res=null;
-    	getDependingClasses(klass).forEach(function (k) {
-    		if (res) return;
-            res=k.decls.methods[name];
-    	});
-    	return res;*/
+    function getMethod(name) {//B
         return getMethod2(klass,name);
     }
-
-    function nc(o, mesg) {
-        if (!o) throw mesg+" is null";
-        return o;
-    }
-    function getParams(method) {
-        if (!method.head) return [];
-        var res=method.head.params.params;
-        if (!res.forEach) throw method+" is not array ";
-        return res;
-    }
-    function checkLVal(node) {
+    function checkLVal(node) {//S
         if (node.type=="varAccess" ||
                 node.type=="postfix" && (node.op.type=="member" || node.op.type=="arrayElem") ) {
             if (node.type=="varAccess") {
@@ -299,14 +305,14 @@ function genJS(klass, env,pass) {
         console.log("LVal",node);
         throw TError( "'"+getSource(node)+"'は左辺には書けません．" , srcFile, node.pos);
     }
-    function enterV(obj, node) {
+    function enterV(obj, node) {//G
         return function (buf) {
             ctx.enter(obj,function () {
                 v.visit(node);
             });
         };
     }
-    function getScopeInfo(n) {
+    function getScopeInfo(n) {//S
         var si=ctx.scope[n];
         var t=stype(si);
         if (!t) {
@@ -318,7 +324,7 @@ function genJS(klass, env,pass) {
         }
         return si;
     }
-    function varAccess(n, si, an) {
+    function varAccess(n, si, an) {//G
         var t=stype(si);
         if (t==ST.THVAR) {
             buf.printf("%s",TH);
@@ -342,12 +348,12 @@ function genJS(klass, env,pass) {
         }
         return si;
     }
-    function noSurroundCompoundF(node) {
+    function noSurroundCompoundF(node) {//G
         return function () {
             noSurroundCompound.apply(this, [node]);
         };
     }
-    function noSurroundCompound(node) {
+    function noSurroundCompound(node) {//G
         if (node.type=="compound") {
             ctx.enter({noWait:true},function () {
                 buf.printf("%j%n", ["%n",node.stmts]);
@@ -357,14 +363,14 @@ function genJS(klass, env,pass) {
             v.visit(node);
         }
     }
-    function lastPosF(node) {
+    function lastPosF(node) {//G
         return function () {
             buf.printf("%s%s=%s;%n", (env.options.compiler.commentLastPos?"//":""),
                     LASTPOS, traceTbl.add(klass/*.src.tonyu*/,node.pos ));
         };
     }
-    var THNode={type:"THNode"};
-    v=buf.visitor=Visitor({
+    var THNode={type:"THNode"};//G
+    v=buf.visitor=Visitor({//G
         THNode: function (node) {
             buf.printf(TH);
         },
@@ -617,7 +623,7 @@ function genJS(klass, env,pass) {
             lastPosF(node)();
             var an=annotation(node);
             if (node.inFor.type=="forin") {
-                var itn=annotation(node.inFor).iterName;//  genSym("_it_");
+                var itn=annotation(node.inFor).iterName;
                 /*if ( stype(ctx.scope[itn])!=ST.LOCAL) {
                     console.log(node);throw "Not localled";// in funcexpr/subfunc
                 }*/
@@ -890,8 +896,8 @@ function genJS(klass, env,pass) {
             ctx.locals.varDecls[n]=node;// ??
         }
     });
-    localsCollector.def=visitSub;
-    function visitSub(node) {
+    localsCollector.def=visitSub;//S
+    function visitSub(node) {//S
         var t=this;
         if (!node || typeof node!="object") return;
         var es;
@@ -907,29 +913,23 @@ function genJS(klass, env,pass) {
             t.visit(e);
         });
     }
-    function collectLocals(node/*, scope*/) {
+    function collectLocals(node) {//S
         var locals={varDecls:{}, subFuncDecls:{}};
         ctx.enter({locals:locals},function () {
             localsCollector.visit(node);
         });
-        /*for (var i in locals.varDecls) {
-            scope[i]=genSt(ST.LOCAL);
-        }
-        for (var i in locals.subFuncDecls) {
-            scope[i]=genSt(ST.LOCAL);
-        }*/
         return locals;
     }
-    function annotateParents(path, data) {
+    function annotateParents(path, data) {//S
         path.forEach(function (n) {
             annotation(n,data);
         });
     }
-    function fiberCallRequired(path) {
+    function fiberCallRequired(path) {//S
         if (ctx.method) ctx.method.fiberCallRequired=true;
         annotateParents(path, {fiberCallRequired:true} );
     }
-    var varAccessesAnnotator=Visitor({
+    var varAccessesAnnotator=Visitor({//S
         varAccess: function (node) {
             var si=getScopeInfo(node.name.text);
             annotation(node,{scopeInfo:si});
@@ -1069,13 +1069,13 @@ function genJS(klass, env,pass) {
             this.visit(node.expr);
         }
     });
-    varAccessesAnnotator.def=visitSub;
-    function annotateVarAccesses(node,scope) {
+    varAccessesAnnotator.def=visitSub;//S
+    function annotateVarAccesses(node,scope) {//S
         ctx.enter({scope:scope}, function () {
             varAccessesAnnotator.visit(node);
         });
     }
-    function copyLocals(locals, scope) {
+    function copyLocals(locals, scope) {//S
         for (var i in locals.varDecls) {
             scope[i]=genSt(ST.LOCAL);
         }
@@ -1083,17 +1083,11 @@ function genJS(klass, env,pass) {
             scope[i]=genSt(ST.LOCAL);
         }
     }
-
-    function getClassNames(cs){
-        var res=[];
-        cs.forEach(function (c) { res.push(getClassName(c)); });
-        return res;
-    }
-    function initParamsLocals(f) {
+    function initParamsLocals(f) {//S
         f.locals=collectLocals(f.stmts);
         f.params=getParams(f);
     }
-    function annotateMethodFiber(f) {
+    function annotateMethodFiber(f) {//S
         var ns=newScope(ctx.scope);
         f.params.forEach(function (p,cnt) {
             ns[p.name.text]=genSt(ST.PARAM,{
@@ -1108,7 +1102,7 @@ function genJS(klass, env,pass) {
         annotateSubFuncExprs(f.locals, ns);
         return ns;
     }
-    function annotateSource() {
+    function annotateSource() {//S
         ctx.enter({scope:topLevelScope}, function () {
             for (var name in methods) {
                 if (debug) console.log("anon method1", name);
@@ -1118,8 +1112,8 @@ function genJS(klass, env,pass) {
             }
         });
     }
-    function genSource() {
-        annotateSource();
+    function genSource() {//G
+        //annotateSource();
         /*if (env.options.compiler.asModule) {
             klass.moduleName=getClassName(klass);
             printf("if (typeof requireSimulator=='object') requireSimulator.setName(%l);%n",klass.moduleName);
@@ -1169,7 +1163,7 @@ function genJS(klass, env,pass) {
         //    printf("//%}});");
         //}
     }
-    function digestMeta(klass) {
+    function digestMeta(klass) {//G
         var res={
                 fullName: klass.fullName,
                 namespace: klass.namespace,
@@ -1182,7 +1176,7 @@ function genJS(klass, env,pass) {
         }
         return res;
     }
-    function genFiber(fiber) {
+    function genFiber(fiber) {//G
         if (isConstructor(fiber)) return;
         var stmts=fiber.stmts;
         var noWaitStmts=[], waitStmts=[], curStmts=noWaitStmts;
@@ -1249,7 +1243,7 @@ function genJS(klass, env,pass) {
             });
         }
     }
-    function genFunc(func) {
+    function genFunc(func) {//G
         var fname= isConstructor(func) ? "initialize" : func.name;
         printf("%s :function %s(%j) {%{"+
                   "var %s=%s;%n"+
@@ -1270,7 +1264,7 @@ function genJS(klass, env,pass) {
             });
         }
     }
-    function genFuncExpr(node) {
+    function genFuncExpr(node) {//G
         var finfo=annotation(node);// annotateSubFuncExpr(node);
 
         buf.printf("function (%j) {%{"+
@@ -1291,10 +1285,10 @@ function genJS(klass, env,pass) {
             });
         }
     }
-    function genFn(pos) {
+    function genFn(pos) {//G
         return ("_trc_func_"+traceTbl.add(klass,pos )+"_"+(fnSeq++));//  Math.random()).replace(/\./g,"");
     }
-    function genSubFunc(node) {
+    function genSubFunc(node) {//G
         var finfo=annotation(node);// annotateSubFuncExpr(node);
         buf.printf("function %s(%j) {%{"+
                       "%f%n"+
@@ -1314,7 +1308,7 @@ function genJS(klass, env,pass) {
             });
         }
     }
-    function annotateSubFuncExpr(node) {
+    function annotateSubFuncExpr(node) {//S
         var m,ps;
         var body=node.body;
         var name=(node.head.name ? node.head.name.text : "anonymous" );
@@ -1339,14 +1333,14 @@ function genJS(klass, env,pass) {
         annotateSubFuncExprs(locals, ns);
         return res;
     }
-    function annotateSubFuncExprs(locals, scope) {
+    function annotateSubFuncExprs(locals, scope) {//S
         ctx.enter({scope:scope}, function () {
             for (var n in locals.subFuncDecls) {
                 annotateSubFuncExpr(locals.subFuncDecls[n]);
             }
         });
     }
-    function genLocalsF(finfo) {
+    function genLocalsF(finfo) {//G
         return f;
         function f() {
             ctx.enter({scope:finfo.scope}, function (){
@@ -1359,20 +1353,21 @@ function genJS(klass, env,pass) {
             });
         };
     }
-    function isConstructor(f) {
+    function isConstructor(f) {//G
         return OM.match(f, {ftype:"constructor"}) || OM.match(f, {name:"new"});
     }
-    initTopLevelScope();
-    inheritSuperMethod();
-    genSource();
-    klass.src.js=buf.buf;
+    initTopLevelScope();//S
+    inheritSuperMethod();//S
+    annotateSource();//S
+    genSource();//G
+    klass.src.js=buf.buf;//G
     if (debug) {
         console.log("method4", buf.buf);
         //throw "ERR";
     }
 
     return buf.buf;
-}
+}//B
 return {initClassDecls:initClassDecls, genJS:genJS};
 })();
 //if (typeof getReq=="function") getReq.exports("Tonyu.Compiler");

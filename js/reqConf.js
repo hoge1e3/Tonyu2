@@ -201,6 +201,7 @@ var reqConf={
             "Tonyu": "runtime/TonyuLib",
             "Tonyu.Iterator": "runtime/Iterator",
             "Tonyu.Compiler": "lang/compiler2",
+            "compilerUtil": "lang/compilerUtil",
             "fixIndent": "lang/indent",
             "Tonyu.TraceTbl": "runtime/TraceTbl",
             //"Sprites": "graphics/Sprites",
