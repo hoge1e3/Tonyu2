@@ -1,7 +1,7 @@
-define(["Tonyu", "Tonyu.Compiler", "TError", "FS", "Tonyu.TraceTbl","ImageList","StackTrace",
-        "typeCheck","Blob","thumbnail","WebSite","plugins"],
-        function (Tonyu, Tonyu_Compiler, TError, FS, Tonyu_TraceTbl, ImageList,StackTrace,
-                tc,Blob,thumbnail,WebSite,plugins) {
+define(["Tonyu", /*"Tonyu.Compiler",*/ "TError", "FS", "Tonyu.TraceTbl","ImageList","StackTrace",
+        "typeCheck","Blob","thumbnail","WebSite","plugins", "Semantics", "JSGenerator"],
+        function (Tonyu, /*Tonyu_Compiler,*/ TError, FS, Tonyu_TraceTbl, ImageList,StackTrace,
+                tc,Blob,thumbnail,WebSite,plugins, Semantics, JSGenerator) {
 return Tonyu.Project=function (dir, kernelDir) {
     var TPR={};
     var home=FS.get(WebSite.tonyuHome);
@@ -121,13 +121,20 @@ return Tonyu.Project=function (dir, kernelDir) {
         for (var n in env.classes) {/*ENVC*/
         	if (skip[n]) continue;/*ENVC*/
             console.log("initClassDecl: "+n);
-            Tonyu.Compiler.initClassDecls(env.classes[n], env);/*ENVC*/
+            //Tonyu.Compiler.initClassDecls(env.classes[n], env);/*ENVC*/
+            Semantics.initClassDecls(env.classes[n], env);/*ENVC*/
         }
         var ord=orderByInheritance(env.classes);/*ENVC*/
         ord.forEach(function (c) {
+            if (skip[c.fullName]) return;//CFN c.name->c.fullName
+            console.log("annotate :"+c.fullName);
+            Semantics.annotate(c, env);
+        });
+        ord.forEach(function (c) {
         	if (skip[c.fullName]) return;//CFN c.name->c.fullName
             console.log("genJS :"+c.fullName);
-            Tonyu.Compiler.genJS(c, env);
+            //Tonyu.Compiler.genJS(c, env);
+            JSGenerator.genJS(c, env);
             try {
                 eval(c.src.js);
             } catch(e){

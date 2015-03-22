@@ -1,6 +1,7 @@
-define(["ObjectMatcher", "TError"],
-        function(ObjectMatcher, TError) {
+define(["Tonyu","ObjectMatcher", "TError"],
+        function(Tonyu,ObjectMatcher, TError) {
     var cu={};
+    Tonyu.Compiler=cu;
     var ScopeTypes={
             FIELD:"field", METHOD:"method", NATIVE:"native",//B
             LOCAL:"local", THVAR:"threadvar",
