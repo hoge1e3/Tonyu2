@@ -1,5 +1,5 @@
 define(["Tonyu", /*"Tonyu.Compiler",*/ "TError", "FS", "Tonyu.TraceTbl","ImageList","StackTrace",
-        "typeCheck","Blob","thumbnail","WebSite","plugins", "Semantics", "JSGenerator"],
+        "typeCheck","Blob","thumbnail","WebSite","plugins", "Tonyu.Compiler.Semantics", "Tonyu.Compiler.JSGenerator"],
         function (Tonyu, /*Tonyu_Compiler,*/ TError, FS, Tonyu_TraceTbl, ImageList,StackTrace,
                 tc,Blob,thumbnail,WebSite,plugins, Semantics, JSGenerator) {
 return Tonyu.Project=function (dir, kernelDir) {
