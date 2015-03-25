@@ -1,0 +1,10 @@
+
+nowait \test() {
+    try {
+        a.b.c=0;
+    } catch(e) {
+        print(e);
+    }
+}
+
+test();

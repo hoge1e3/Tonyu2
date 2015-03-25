@@ -18,11 +18,11 @@ var ITER="Tonyu.iterator";
 /*var ScopeTypes={FIELD:"field", METHOD:"method", NATIVE:"native",//B
         LOCAL:"local", THVAR:"threadvar", PARAM:"param", GLOBAL:"global", CLASS:"class"};*/
 var ScopeTypes=cu.ScopeTypes;
-var genSt=cu.newScopeType;
+//var genSt=cu.newScopeType;
 var stype=cu.getScopeType;
-var newScope=cu.newScope;
-var nc=cu.nullCheck;
-var genSym=cu.genSym;
+//var newScope=cu.newScope;
+//var nc=cu.nullCheck;
+//var genSym=cu.genSym;
 var annotation3=cu.annotation;
 var getSource=cu.getSource;
 var getMethod2=cu.getMethod;
@@ -90,7 +90,7 @@ function genJS(klass, env) {//B
             buf.printf("%s",n);
         } else {
             console.log("Unknown scope type: ",t);
-            throw "Unknown scope type: "+t;
+            throw new Error("Unknown scope type: "+t);
         }
         return si;
     }
@@ -333,6 +333,38 @@ function genJS(klass, env) {//B
             } else {
                 buf.printf("break;%n");
             }
+        },
+        "try": function (node) {
+            if (!ctx.noWait &&
+                    (an.fiberCallRequired || an.hasJump || an.hasReturn)) {
+                //buf.printf("/*try catch in wait mode is not yet supported*/%n");
+                if (node.catches.length!=1 || node.catches[0].type!="catch") {
+                    throw TError("現実装では、catch節1個のみをサポートしています",srcFile,node.pos);
+                }
+                var ct=node.catches[0];
+                var catchPos={},finPos={};
+                buf.printf("%s.enterTry(%z);%n",TH,catchPos);
+                buf.printf("%v", node.stmt);
+                byf.printf("%s=%z;break;%n",FRMPC,finPos);
+                buf.printf("%}case %f:%{",function (){
+                       byf.print(catchPos.put(ctx.pc++));
+                });
+                buf.printf("%s=%s.startCatch();%n",ct.name.text, TH);
+                buf.printf("%v", ct.stmt);
+                buf.printf("%}case %f:%{",function (){
+                    byf.print(finPos.put(ctx.pc++));
+                });
+                buf.printf("%s.exitTry();%n",TH);
+            } else {
+                ctx.enter({noWait:true}, function () {
+                    buf.printf("try {%{%f%n%}} ",
+                            noSurroundCompoundF(node.stmt));
+                    node.catches.forEach(v.visit);
+                });
+            }
+        },
+        "catch": function (node) {
+            buf.printf("catch (%s) {%{%f%n%}}",node.name.text, noSurroundCompoundF(node.stmt));
         },
         "while": function (node) {
             lastPosF(node)();
@@ -691,6 +723,7 @@ function genJS(klass, env) {//B
         if (waitStmts.length>0) {
             printf(
                  "%s.enter(function %s(%s) {%{"+
+                    "if (%s.lastEx) %s=%s.catchPC;"
                     "for(var %s=%d ; %s--;) {%{"+
                       "switch (%s) {%{"+
                         "%}case 0:%{"+
@@ -700,12 +733,13 @@ function genJS(klass, env) {//B
                     "%}}%n"+
                  "%}});%n",
                  TH,genFn(fiber.pos),TH,
+                    TH,FRMPC,TH,
                     CNTV, CNTC, CNTV,
                       FRMPC,
                         // case 0:
                         fbody,
                         TH,THIZ
-        );
+            );
         } else {
             printf("%s.retVal=%s;return;%n",TH,THIZ);
         }

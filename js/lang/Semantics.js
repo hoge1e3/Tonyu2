@@ -12,14 +12,14 @@ var ScopeTypes=cu.ScopeTypes;
 var genSt=cu.newScopeType;
 var stype=cu.getScopeType;
 var newScope=cu.newScope;
-var nc=cu.nullCheck;
+//var nc=cu.nullCheck;
 var genSym=cu.genSym;
 var annotation3=cu.annotation;
 var getSource=cu.getSource;
 var getMethod2=cu.getMethod;
 var getDependingClasses=cu.getDependingClasses;
 var getParams=cu.getParams;
-
+var JSNATIVES={Array:1, String:1, Boolean:1, Number:1, Void:1, Object:1,RegExp:1};
 //-----------
 function initClassDecls(klass, env ) {//S
     var s=klass.src.tonyu; //file object
@@ -29,10 +29,10 @@ function initClassDecls(klass, env ) {//S
     var fields={}, methods={main: MAIN}, natives={};
     klass.decls={fields:fields, methods:methods, natives: natives};
     klass.node=node;
-    function nc(o, mesg) {
+    /*function nc(o, mesg) {
         if (!o) throw mesg+" is null";
         return o;
-    }
+    }*/
     var OM=ObjectMatcher;
     function initMethods(program) {
         var spcn=env.options.compiler.defaultSuperClass;
@@ -181,6 +181,9 @@ function annotateSource2(klass, env) {//B
         for (var i in decls.natives) {
             s[i]=genSt(ST.NATIVE,{name:"native::"+i});
         }
+        for (var i in JSNATIVES) {
+            s[i]=genSt(ST.NATIVE,{name:"native::"+i});
+        }
         for (var i in env.aliases) {/*ENVC*/ //CFN  env.classes->env.aliases
             s[i]=genSt(ST.CLASS,{name:i});
         }
@@ -233,6 +236,9 @@ function annotateSource2(klass, env) {//B
         },
         funcExpr: function (node) {/*FEIGNORE*/
             //initParamsLocals(node);??
+        },
+        "catch": function (node) {
+            ctx.locals.varDecls[node.name.text]=node;
         },
         exprstmt: function (node) {
         },
@@ -340,6 +346,10 @@ function annotateSource2(klass, env) {//B
                 t.visit(node._else);
             }
             fiberCallRequired(this.path);
+        },
+        "try": function (node) {
+            ctx.finfo.useTry=true;
+            this.def(node);
         },
         "return": function (node) {
             if (!ctx.noWait) annotateParents(this.path,{hasReturn:true});

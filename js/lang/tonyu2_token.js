@@ -108,6 +108,7 @@ return TT=function () {
             "try": true,
             "catch": true,
             "finally": true,
+            "throw": true,
             "in": true,
             fiber:true,
             "native": true,
