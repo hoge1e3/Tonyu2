@@ -19,7 +19,7 @@ var getSource=cu.getSource;
 var getMethod2=cu.getMethod;
 var getDependingClasses=cu.getDependingClasses;
 var getParams=cu.getParams;
-var JSNATIVES={Array:1, String:1, Boolean:1, Number:1, Void:1, Object:1,RegExp:1};
+var JSNATIVES={Array:1, String:1, Boolean:1, Number:1, Void:1, Object:1,RegExp:1,Error:1};
 //-----------
 function initClassDecls(klass, env ) {//S
     var s=klass.src.tonyu; //file object

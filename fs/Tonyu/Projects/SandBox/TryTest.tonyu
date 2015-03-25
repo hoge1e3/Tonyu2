@@ -2,7 +2,7 @@
 \toste() {
     print("enter toste");
     updateEx(30);
-    a.b.c=0;   
+    throw new Error("とすて");
 }
 
 \test() {
@@ -26,4 +26,4 @@
     }
 }
 
-test2();
+toste();

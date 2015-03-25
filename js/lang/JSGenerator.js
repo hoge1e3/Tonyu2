@@ -370,6 +370,9 @@ function genJS(klass, env) {//B
         "catch": function (node) {
             buf.printf("catch (%s) {%{%f%n%}}",node.name.text, noSurroundCompoundF(node.stmt));
         },
+        "throw": function (node) {
+            buf.printf("throw %v;%n",node.ex);
+        },
         "while": function (node) {
             lastPosF(node)();
             var an=annotation(node);
