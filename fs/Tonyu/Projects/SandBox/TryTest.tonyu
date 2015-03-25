@@ -1,7 +1,15 @@
 
-nowait \test() {
+\toste() {
+    print("enter toste");
+    updateEx(30);
+    a.b.c=0;   
+}
+
+\test() {
     try {
-        a.b.c=0;
+        print("a");
+        updateEx(30);
+        toste();
     } catch(e) {
         print(e);
     }

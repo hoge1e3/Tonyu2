@@ -13,7 +13,7 @@ return IndentBuffer=function () {
 			var res=args[ai];
 			if (res==null) {
 			    console.log(args);
-			    throw (ai+"th null param: fmt="+fmt);
+			    throw new Error(ai+"th null param: fmt="+fmt);
 			}
 			return res;
 		}
@@ -36,7 +36,7 @@ return IndentBuffer=function () {
 				i++;
 			} else if (fstr=="d") {
                 var n=shiftArg();
-                if (typeof n!="number") throw (n+" is not a number: fmt="+fmt);
+                if (typeof n!="number") throw new Error (n+" is not a number: fmt="+fmt);
                 $.buf+=n;
                 i++;
 			} else if (fstr=="n") {
@@ -59,8 +59,8 @@ return IndentBuffer=function () {
                 i++;
 			} else if (fstr=="v") {
 			    var a=shiftArg();
-			    if (!a) throw "Null %v";
-                if (typeof a!="object") throw "nonobject %v:"+a;
+			    if (!a) throw new Error ("Null %v");
+                if (typeof a!="object") throw new Error("nonobject %v:"+a);
 				$.visitor.visit(a);
 				i++;
             } else if (fstr=="z") {
@@ -89,7 +89,7 @@ return IndentBuffer=function () {
                 var sep=false;
                 if (!node || !node.forEach) {
                     console.log(node);
-                    throw node+" is not array. cannot join fmt:"+fmt;
+                    throw new Error (node+" is not array. cannot join fmt:"+fmt);
                 }
                 node.forEach(function (n) {
                     if (sep) $.printf(sp);
@@ -135,7 +135,7 @@ return IndentBuffer=function () {
 		var len=$.indentStr.length;
 		if (!$.buf.substring($.buf.length-len).match(/^\s*$/)) {
 			console.log($.buf);
-			throw "Non-space truncated ";
+			throw new Error ("Non-space truncated ");
 		}
 		$.buf=$.buf.substring(0,$.buf.length-len);
 		$.indentBuf=$.indentBuf.substring(0 , $.indentBuf.length-len);

@@ -335,6 +335,7 @@ function genJS(klass, env) {//B
             }
         },
         "try": function (node) {
+            var an=annotation(node);
             if (!ctx.noWait &&
                     (an.fiberCallRequired || an.hasJump || an.hasReturn)) {
                 //buf.printf("/*try catch in wait mode is not yet supported*/%n");
@@ -345,14 +346,14 @@ function genJS(klass, env) {//B
                 var catchPos={},finPos={};
                 buf.printf("%s.enterTry(%z);%n",TH,catchPos);
                 buf.printf("%v", node.stmt);
-                byf.printf("%s=%z;break;%n",FRMPC,finPos);
+                buf.printf("%s=%z;break;%n",FRMPC,finPos);
                 buf.printf("%}case %f:%{",function (){
-                       byf.print(catchPos.put(ctx.pc++));
+                       buf.print(catchPos.put(ctx.pc++));
                 });
                 buf.printf("%s=%s.startCatch();%n",ct.name.text, TH);
-                buf.printf("%v", ct.stmt);
+                buf.printf("%v%n", ct.stmt);
                 buf.printf("%}case %f:%{",function (){
-                    byf.print(finPos.put(ctx.pc++));
+                    buf.print(finPos.put(ctx.pc++));
                 });
                 buf.printf("%s.exitTry();%n",TH);
             } else {
@@ -723,7 +724,7 @@ function genJS(klass, env) {//B
         if (waitStmts.length>0) {
             printf(
                  "%s.enter(function %s(%s) {%{"+
-                    "if (%s.lastEx) %s=%s.catchPC;"
+                    "if (%s.lastEx) %s=%s.catchPC;%n"+
                     "for(var %s=%d ; %s--;) {%{"+
                       "switch (%s) {%{"+
                         "%}case 0:%{"+

@@ -9,7 +9,8 @@ return Tonyu=function () {
         var fb={enter:enter, apply:apply,
                 exit:exit, steps:steps, step:step, isAlive:isAlive, isWaiting:isWaiting,
                 suspend:suspend,retVal:0/*retVal*/,tryStack:[],
-                kill:kill, waitFor: waitFor,setGroup:setGroup};
+                kill:kill, waitFor: waitFor,setGroup:setGroup,
+                enterTry:enterTry,exitTry:exitTry,startCatch:startCatch};
         var frame=null;
         var _isAlive=true;
         var cnt=0;
