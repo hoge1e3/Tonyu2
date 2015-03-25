@@ -7,12 +7,23 @@
 
 \test() {
     try {
-        print("a");
+        print("enter test");
         updateEx(30);
+        //return 0;
+    } catch(e) {
+        print(e);
+    }
+}
+
+\test2() {
+    try {
+        print("enter test2");
+        updateEx(3);
+        test();
         toste();
     } catch(e) {
         print(e);
     }
 }
 
-test();
+test2();

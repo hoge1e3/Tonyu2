@@ -31,6 +31,7 @@ var getParams=cu.getParams;
 
 //-----------
 function genJS(klass, env) {//B
+    var srcFile=klass.src.tonyu; //file object  //S
     var buf=IndentBuffer();
     var printf=buf.printf;
     var ctx=context();
@@ -138,6 +139,7 @@ function genJS(klass, env) {//B
         funcDecl: function (node) {
         },
         "return": function (node) {
+            if (ctx.inTry) throw TError("現実装では、tryの中にreturnは書けません",srcFile,node.pos);
             if (!ctx.noWait) {
                 if (node.value) {
                     buf.printf("%s.exit(%v);return;",TH,node.value);
@@ -324,6 +326,7 @@ function genJS(klass, env) {//B
             buf.printf("%v%v", node.left, node.op);
         },
         "break": function (node) {
+            if (ctx.inTry) throw TError("現実装では、tryの中にbreak;は書けません",srcFile,node.pos);
             if (!ctx.noWait) {
                 if (ctx.closestBrk) {
                     buf.printf("%s=%z; break;%n", FRMPC, ctx.closestBrk);
@@ -345,7 +348,7 @@ function genJS(klass, env) {//B
                 var ct=node.catches[0];
                 var catchPos={},finPos={};
                 buf.printf("%s.enterTry(%z);%n",TH,catchPos);
-                buf.printf("%v", node.stmt);
+                buf.printf("%f", enterV({inTry:true},node.stmt) );
                 buf.printf("%s=%z;break;%n",FRMPC,finPos);
                 buf.printf("%}case %f:%{",function (){
                        buf.print(catchPos.put(ctx.pc++));
