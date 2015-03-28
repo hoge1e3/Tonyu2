@@ -16,14 +16,21 @@
 }
 
 \test2() {
-    try {
-        print("enter test2");
-        updateEx(3);
-        test();
-        toste();
-    } catch(e) {
-        print(e);
+    for (j=0;j<2; j++) {
+        try {
+            print("enter test2");
+            updateEx(3);
+            for (i=0;i<2;i++) {
+                update();
+                break;
+            }
+            test();
+            toste();
+        } catch(e) {
+            print(e);
+            //throw e;
+        }
     }
 }
-
-toste();
+//print(this["constructor"]);
+test2();

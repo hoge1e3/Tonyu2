@@ -5,10 +5,13 @@ return function showErrorPos(elem, err) {
         close();
         return;
     }
+    var row,col;
     if (err.isTError) {
         mesg=err.mesg;
         src=err.src;
         pos=err.pos;
+        row=err.row+1;
+        col=err.col+1;
     } else {
         src={name:function (){return "不明";},text:function () {
             return null;
@@ -19,8 +22,9 @@ return function showErrorPos(elem, err) {
     function close(){
         elem.empty();
     }
+    if(typeof pos=="object") {row=pos.row; col=pos.col;}
     close();
-    var mesgd=$("<div>").text(mesg+" 場所："+src.name()+(typeof pos=="object"?":"+pos.row+":"+pos.col:""));
+    var mesgd=$("<div>").text(mesg+" 場所："+src.name()+(typeof row=="number"?":"+row+":"+col:""));
     //mesgd.append($("<button>").text("閉じる").click(close));
     elem.append(mesgd);
     elem.append($("<div>").attr("class","quickFix"));

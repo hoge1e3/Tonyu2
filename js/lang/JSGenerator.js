@@ -326,8 +326,8 @@ function genJS(klass, env) {//B
             buf.printf("%v%v", node.left, node.op);
         },
         "break": function (node) {
-            if (ctx.inTry) throw TError("現実装では、tryの中にbreak;は書けません",srcFile,node.pos);
             if (!ctx.noWait) {
+                if (ctx.inTry && ctx.exitTryOnJump) throw TError("現実装では、tryの中にbreak;は書けません",srcFile,node.pos);
                 if (ctx.closestBrk) {
                     buf.printf("%s=%z; break;%n", FRMPC, ctx.closestBrk);
                 } else {
@@ -348,17 +348,18 @@ function genJS(klass, env) {//B
                 var ct=node.catches[0];
                 var catchPos={},finPos={};
                 buf.printf("%s.enterTry(%z);%n",TH,catchPos);
-                buf.printf("%f", enterV({inTry:true},node.stmt) );
+                buf.printf("%f", enterV({inTry:true, exitTryOnJump:true},node.stmt) );
+                buf.printf("%s.exitTry();%n",TH);
                 buf.printf("%s=%z;break;%n",FRMPC,finPos);
                 buf.printf("%}case %f:%{",function (){
                        buf.print(catchPos.put(ctx.pc++));
                 });
                 buf.printf("%s=%s.startCatch();%n",ct.name.text, TH);
+                buf.printf("%s.exitTry();%n",TH);
                 buf.printf("%v%n", ct.stmt);
                 buf.printf("%}case %f:%{",function (){
                     buf.print(finPos.put(ctx.pc++));
                 });
-                buf.printf("%s.exitTry();%n",TH);
             } else {
                 ctx.enter({noWait:true}, function () {
                     buf.printf("try {%{%f%n%}} ",
@@ -390,7 +391,7 @@ function genJS(klass, env) {//B
                         "%}case %f:%{",
                             pc,
                             node.cond, FRMPC, brkpos,
-                            enterV({closestBrk:brkpos}, node.loop),
+                            enterV({closestBrk:brkpos, exitTryOnJump:false}, node.loop),
                             FRMPC, pc,
                             function () { buf.print(brkpos.put(ctx.pc++)); }
                 );
@@ -421,7 +422,7 @@ function genJS(klass, env) {//B
                                 pc,
                                 itn, FRMPC, brkpos,
                                 getElemF(itn, node.inFor.isVar, node.inFor.vars),
-                                enterV({closestBrk:brkpos}, node.loop),//node.loop,
+                                enterV({closestBrk:brkpos, exitTryOnJump:false}, node.loop),//node.loop,
                                 FRMPC, pc,
                                 function (buf) { buf.print(brkpos.put(ctx.pc++)); }
                     );
@@ -456,7 +457,7 @@ function genJS(klass, env) {//B
                                 node.inFor.init ,
                                 pc,
                                 node.inFor.cond, FRMPC, brkpos,
-                                enterV({closestBrk:brkpos}, node.loop),//node.loop,
+                                enterV({closestBrk:brkpos,exitTryOnJump:false}, node.loop),//node.loop,
                                 node.inFor.next,
                                 FRMPC, pc,
                                 function (buf) { buf.print(brkpos.put(ctx.pc++)); }
