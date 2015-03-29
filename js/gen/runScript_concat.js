@@ -1,4 +1,4 @@
-// Created at Tue Mar 17 2015 16:41:33 GMT+0900 (東京 (標準時))
+// Created at Sun Mar 29 2015 16:55:32 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -3053,8 +3053,9 @@ return Tonyu=function () {
 	//var stpd=0;
         var fb={enter:enter, apply:apply,
                 exit:exit, steps:steps, step:step, isAlive:isAlive, isWaiting:isWaiting,
-                suspend:suspend,retVal:0/*retVal*/,
-                kill:kill, waitFor: waitFor,setGroup:setGroup};
+                suspend:suspend,retVal:0/*retVal*/,tryStack:[],
+                kill:kill, waitFor: waitFor,setGroup:setGroup,
+                enterTry:enterTry,exitTry:exitTry,startCatch:startCatch};
         var frame=null;
         var _isAlive=true;
         var cnt=0;
@@ -3088,12 +3089,42 @@ return Tonyu=function () {
             });
         }
         function step() {
-            if (frame) frame.func(fb);
+            if (frame) {
+                try {
+                    frame.func(fb);
+                } catch(e) {
+                    gotoCatch(e);
+                }
+            }
+        }
+        function gotoCatch(e) {
+            if (fb.tryStack.length==0) throw e;
+            fb.lastEx=e;
+            var s=fb.tryStack.pop();
+            while (frame) {
+                if (s.frame===frame) {
+                    fb.catchPC=s.catchPC;
+                    break;
+                } else {
+                    frame=frame.prev;
+                }
+            }
+        }
+        function startCatch() {
+            var e=fb.lastEx;
+            fb.lastEx=null;
+            return e;
         }
         function exit(res) {
             frame=frame.prev;
             //if (frame) frame.res=res;
             fb.retVal=res;
+        }
+        function enterTry(catchPC) {
+            fb.tryStack.push({frame:frame,catchPC:catchPC});
+        }
+        function exitTry() {
+            fb.tryStack.pop();
         }
         function waitFor(j) {
             _isWaiting=true;
@@ -3229,26 +3260,6 @@ return Tonyu=function () {
             _isAlive=false;
         }
         var _interval=0, _onStepsEnd;
-        /*function run(interval, onStepsEnd) {
-            if (interval!=null) _interval=interval;
-            if (onStepsEnd!=null) _onStepsEnd=onStepsEnd;
-            if (!_isAlive) return;
-            try {
-                steps();
-                if (_onStepsEnd) _onStepsEnd();
-                if (!_isWaiting) {
-                    setTimeout(run,_interval);
-                } else {
-                    //console.log("all wait!");
-                }
-            } catch (e) {
-                if (Tonyu.onRuntimeError) {
-                    Tonyu.onRuntimeError(e);
-                } else {
-                    alert ("エラー! at "+$LASTPOS+" メッセージ  : "+e);
-                }
-            }
-        }*/
         function notifyResume() {
             if (_isWaiting) {
                 //console.log("resume!");
@@ -3324,8 +3335,27 @@ return Tonyu=function () {
     	res.methods=prot;
     	res.prototype=bless(parent, prot);
     	res.prototype.isTonyuObject=true;
+    	addMeta(res,{
+    	    superClass:parent ? parent.meta : null,
+    	    includes:includes.map(function(c){return c.meta;})
+    	});
     	return res;
     }
+    klass.addMeta=addMeta;
+    function addMeta(k,m) {
+        k.meta=k.meta||{};
+        extend(k.meta, m);
+    }
+    klass.ensureNamespace=function (top,nsp) {
+        var keys=nsp.split(".");
+        var o=top;
+        var i;
+        for (i=0; i<keys.length; i++) {
+            var k=keys[i];
+            if (!o[k]) o[k]={};
+            o=o[k];
+        }
+    };
     function bless( klass, val) {
         if (!klass) return val;
         return extend( new klass() , val);
@@ -3408,6 +3438,761 @@ return Tonyu=function () {
 }();
 
 });
+requireSimulator.setName('TError');
+if (typeof define!=="function") {
+   define=require("requirejs").define;
+}
+define([],function () {
+TError=function (mesg, src, pos) {
+    if (typeof src=="string") {
+        return {
+            isTError:true,
+            mesg:mesg,
+            src:{
+                name:function () { return src;},
+                text:function () { return src;}
+            },
+            pos:pos,
+            toString:function (){
+                return this.mesg+" at "+src+":"+this.pos;
+            },
+            raise: function () {
+                throw this;
+            }
+        };
+    }
+    var klass=null;
+    if (src && src.src) {
+        klass=src;
+        src=klass.src.tonyu;
+    }
+    if (typeof src.name!=="function") {
+        throw "src="+src+" should be file object";
+    }
+    var rc;
+    if ( (typeof (src.text))=="function") {
+        var s=src.text();
+        if (typeof s=="string") {
+            rc=TError.calcRowCol(s,pos);
+        }
+    }
+    return {
+        isTError:true,
+        mesg:mesg,src:src,pos:pos,row:rc.row, col:rc.col, klass:klass,
+        toString:function (){
+            return this.mesg+" at "+this.src.name()+":"+this.row+":"+this.col;
+        },
+        raise: function () {
+            throw this;
+        }
+    };
+};
+TError.calcRowCol=function (text,pos) {
+    var lines=text.split("\n");
+    var pp=0,row,col;
+    for (row=0;row<lines.length ; row++) {
+        pp+=lines[row].length+1;
+        if (pp>pos) {
+            col=pos-(pp-lines[row].length);
+            break;
+        }
+    }
+    return {row:row,col:col};
+};
+return TError;
+});
+requireSimulator.setName('Tonyu.TraceTbl');
+define(["Tonyu", "FS", "TError"],
+function(Tonyu, FS, TError) {
+return Tonyu.TraceTbl=function () {
+    var TTB={};
+    var POSMAX=1000000;
+    var pathIdSeq=1;
+    var PATHIDMAX=10000;
+    var path2Id={}, id2Path=[];
+    var path2Class={};
+    TTB.add=function (klass, pos){
+        var file=klass.src.tonyu;
+        var path=file.path();
+        var pathId=path2Id[path];
+        if (pathId==undefined) {
+            pathId=pathIdSeq++;
+            if (pathIdSeq>PATHIDMAX) pathIdSeq=0;
+            path2Id[path]=pathId;
+            id2Path[pathId]=path;
+        }
+        path2Class[path]=klass;
+        if (pos>=POSMAX) pos=POSMAX-1;
+        var id=pathId*POSMAX+pos;
+        return id;
+    };
+    TTB.decode=function (id) {
+        var pos=id%POSMAX;
+        var pathId=(id-pos)/POSMAX;
+        var path=id2Path[pathId];
+        if (path) {
+            var f=FS.get(path);
+            var klass=path2Class[path];
+            return TError("Trace info", klass || f, pos);
+        } else {
+            return null;
+            //return TError("Trace info", "unknown src id="+id, pos);
+        }
+    };
+    return TTB;
+};
+//if (typeof getReq=="function") getReq.exports("Tonyu.TraceTbl");
+});
+requireSimulator.setName('PatternParser');
+define(["Tonyu"], function (Tonyu) {return Tonyu.klass({
+	initialize: function (img, options) {
+	    this.options=options || {};
+		this.img=img;
+		this.height = img.height;
+		this.width = img.width;
+		var cv=this.newImage(img.width, img.height);
+		var ctx=cv.getContext("2d");
+		ctx.drawImage(img, 0,0);
+		this.ctx=ctx;
+		this.pixels=this.ctx.getImageData(0, 0, img.width, img.height).data;
+		this.base=this.getPixel(0,0);
+	},
+	newImage: function (w,h) {
+        var cv=document.createElement("canvas");
+        cv.width=w;
+        cv.height=h;
+        return cv;
+	},
+	getPixel: function (x,y) {
+		var imagePixelData = this.pixels;
+		var ofs=(x+y*this.width)*4;
+		var R = imagePixelData[0+ofs];
+  		var G = imagePixelData[1+ofs];
+  		var B = imagePixelData[2+ofs];
+  		var A = imagePixelData[3+ofs];
+  		return ((((A*256)+B)*256)+G)*256+R;
+	},
+	setPixel: function (x,y,p) {
+	    var ofs=(x+y*this.width)*4;
+	    this.pixels[0+ofs]=p & 255;
+	    p=(p-(p&255))/256;
+        this.pixels[1+ofs]=p & 255;
+        p=(p-(p&255))/256;
+        this.pixels[2+ofs]=p & 255;
+        p=(p-(p&255))/256;
+        this.pixels[3+ofs]=p & 255;
+	},
+	parse: function () {
+  		try {
+			//console.log("parse()");
+  			var res=[];// List of charpattern
+			for (var y=0; y<this.height ;y++) {
+				for (var x=0; x<this.width ;x++) {
+					var c=this.getPixel(x, y);
+					if (c!=this.base) {
+						res.push(this.parse1Pattern(x,y));
+					}
+				}
+			}
+			//console.log("parsed:"+res.lenth);
+			return res;
+  		} catch (p) {
+  		    if (p.isParseError) {
+  	            console.log("parse error! "+p);
+  	            return {image: this.img, x:0, y:0, width:this.width, height:this.height};
+  		    }
+  		    throw p;
+  		}
+	},
+  	parse1Pattern:function (x,y) {
+		function hex(s){return s;}
+		var trans=this.getPixel(x, y);
+		var dx=x,dy=y;
+		var base=this.base;
+		var width=this.width, height=this.height;
+		while (dx<width) {
+			var pixel = this.getPixel(dx,dy);
+			if (pixel!=trans) break;
+			dx++;
+		}
+		if (dx>=width || this.getPixel(dx,dy)!=base) {
+		    throw PatterParseError(dx,dy,hex(this.getPixel(dx,dy))+"!="+hex(base));
+		}
+		dx--;
+		while (dy<height) {
+			if (this.getPixel(dx,dy)!=trans) break;
+			dy++;
+		}
+		if (dy>=height || this.getPixel(dx,dy)!=base) {
+		    throw PatterParseError(dx,dy,hex(this.getPixel(dx,dy))+"!="+hex(base));
+		}
+		dy--;
+		var sx=x+1,sy=y+1,w=dx-sx,h=dy-sy;
+        console.log("PP",sx,sy,w,h,dx,dy);
+		if (w*h==0) throw PatterParseError(dx, dy,"w*h==0");
+        var newim=this.newImage(w,h);
+        var nc=newim.getContext("2d");
+        var newImD=nc.getImageData(0,0,w,h);
+		var newD=newImD.data;
+		var di=0;
+		for (var ey=sy ; ey<dy ; ey++) {
+			for (var ex=sx ; ex<dx ; ex++) {
+			    var p=this.getPixel(ex, ey);
+				if (p==trans) {
+					newD[di++]=0;
+					newD[di++]=(0);
+					newD[di++]=(0);
+					newD[di++]=(0);
+				} else {
+                    newD[di++]=(p&255);
+                    p=(p-(p&255))/256;
+                    newD[di++]=(p&255);
+                    p=(p-(p&255))/256;
+                    newD[di++]=(p&255);
+                    p=(p-(p&255))/256;
+                    newD[di++]=(p&255);
+				}
+			}
+		}
+        nc.putImageData(newImD,0,0);
+		for (var yy=sy-1; yy<=dy; yy++) {
+		    for (var xx=sx-1; xx<=dx; xx++) {
+		        this.setPixel(xx,yy, base);
+		    }
+		}
+        if (this.options.boundsInSrc) {
+            return {x:sx,y:sy,width:w,height:h};
+        }
+		return {image:newim, x:0, y:0, width:w, height:h};
+		function PatterParseError(x,y,msg) {
+		    return {toString: function () {
+		        return "at ("+x+","+y+") :"+msg;
+		    }, isParseError:true};
+		}
+	}
+
+});});
+requireSimulator.setName('Util');
+Util=(function () {
+
+function getQueryString(key, default_)
+{
+   if (default_==null) default_="";
+   key = key.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+   var regex = new RegExp("[\\?&]"+key+"=([^&#]*)");
+   var qs = regex.exec(window.location.href);
+   if(qs == null)
+    return default_;
+   else
+    return decodeURLComponentEx(qs[1]);
+}
+function decodeURLComponentEx(s){
+    return decodeURIComponent(s.replace(/\+/g, '%20'));
+}
+function endsWith(str,postfix) {
+    return str.substring(str.length-postfix.length)===postfix;
+}
+function startsWith(str,prefix) {
+    return str.substring(0, prefix.length)===prefix;
+}
+
+return {getQueryString:getQueryString, endsWith: endsWith, startsWith: startsWith};
+})();
+
+requireSimulator.setName('ImageList');
+define(["PatternParser","Util","WebSite"], function (PP,Util,WebSite) {
+    var cache={};
+    function excludeEmpty(resImgs) {
+        var r=[];
+        resImgs.forEach(function (resImg,i) {
+            if (!resImg || resImg.url=="") return;
+            r.push(resImg);
+        });
+        return r;
+    }
+    var IL;
+    IL=function (resImgs, onLoad,options) {
+        //  resImgs:[{url: , [pwidth: , pheight:]?  }]
+	    if (!options) options={};
+        resImgs=excludeEmpty(resImgs);
+        var resa=[];
+        var cnt=resImgs.length;
+        resImgs.forEach(function (resImg,i) {
+            console.log("loading", resImg,i);
+            var url=resImg.url;
+            var urlKey=url;
+            if (cache[urlKey]) {
+            	proc.apply(cache[urlKey],[]);
+            	return;
+            }
+            url=IL.convURL(url,options.baseDir);
+            //if (!Util.startsWith(url,"data:")) url+="?" + new Date().getTime();
+            var im=$("<img>");
+            im.load(function () {
+            	cache[urlKey]=this;
+            	proc.apply(this,[]);
+            });
+            im.attr("src",url);
+            function proc() {
+                var pw,ph;
+                if ((pw=resImg.pwidth) && (ph=resImg.pheight)) {
+                    var x=0, y=0, w=this.width, h=this.height;
+                    var r=[];
+                    while (true) {
+                        var rw=pw,rh=ph;
+                        if (x+pw>w) rw=w-x;
+                        if (y+ph>h) rh=h-y;
+                        r.push({image:this, x:x,y:y, width:rw, height:rh});
+                        x+=pw;
+                        if (x+pw>w) {
+                            x=0;
+                            y+=ph;
+                            if (y+ph>h) break;
+                        }
+                    }
+                    resa[i]=r;
+                } else {
+                    var p=new PP(this);
+                    resa[i]=p.parse();
+                }
+                resa[i].name=resImg.name;
+                cnt--;
+                if (cnt==0) {
+                    var res=[];
+                    var names={};
+                    resa.forEach(function (a) {
+                        names[a.name]=res.length;
+                        res=res.concat(a);
+                    });
+                    res.names=names;
+                    onLoad(res);
+                }
+            }
+        });
+    };
+    IL.load=IL;
+    IL.parse1=function (resImg, imgDOM, options) {
+        var pw,ph;
+        var res;
+        if ((pw=resImg.pwidth) && (ph=resImg.pheight)) {
+            var x=0, y=0, w=imgDOM.width, h=imgDOM.height;
+            var r=[];
+            while (true) {
+                r.push({image:this, x:x,y:y, width:pw, height:ph});
+                x+=pw;
+                if (x+pw>w) {
+                    x=0;
+                    y+=ph;
+                    if (y+ph>h) break;
+                }
+            }
+            res=r;
+        } else {
+            var p=new PP(imgDOM,options);
+            res=p.parse();
+        }
+        res.name=resImg.name;
+        return res;
+    };
+	IL.convURL=function (url, baseDir) {
+	    if (url==null) url="";
+	    url=url.replace(/\$\{([a-zA-Z0-9_]+)\}/g, function (t,name) {
+	        return WebSite[name];
+	    });
+        if (WebSite.urlAliases[url]) url=WebSite.urlAliases[url];
+	    if (Util.startsWith(url,"ls:")) {
+	        var rel=url.substring("ls:".length);
+	        if (!baseDir) throw new Error("Basedir not specified");
+	        var f=baseDir.rel(rel);
+	        if (!f.exists()) throw "ImageList file not found: "+f;
+	        url=f.text();
+	    }
+	    return url;
+	};
+	window.ImageList=IL;
+    return IL;
+});
+requireSimulator.setName('StackTrace');
+define([],function (){
+    var trc={};
+    var pat=/_trc_func_([0-9]+)_.*[^0-9]([0-9]+):([0-9]+)[\s\)]*\r?$/;
+    trc.isAvailable=function () {
+        var scr=
+            "({\n"+
+            "    main :function _trc_func_17000000_0() {\n"+
+            "      var a=(this.t.x);\n"+
+            "    }\n"+
+            "}).main();\n";
+        var s;
+        try {
+            eval(scr);
+        } catch (e) {
+            s=e.stack;
+            if (typeof s!="string") return false;
+            var lines=s.split(/\n/);
+            for (var i=0 ; i<lines.length; i++) {
+                var p=pat.exec(lines[i]);
+                if (p) return true;
+            }
+        }
+        return false;
+    };
+    trc.get=function (e,ttb) {
+        var s=e.stack;
+        if (typeof s!="string") return false;
+        var lines=s.split(/\n/);
+        var res=[];
+        for (var i=0 ; i<lines.length; i++) {
+            var p=pat.exec(lines[i]);
+            if (!p) continue;
+            var id=p[1];
+            var row=p[2];
+            var col=p[3];
+            var tri=ttb.decode(id);
+            if (tri && tri.klass) {
+                var str=tri.klass.src.js;
+                var slines=str.split(/\n/);
+                var sid=null;
+                for (var j=0 ; j<slines.length && j+1<row ; j++) {
+                    var lp=/\$LASTPOS=([0-9]+)/.exec(slines[j]);
+                    if (lp) sid=parseInt(lp[1]);
+                }
+                //console.log("slines,row,sid",slines,row,sid);
+                if (sid) {
+                    var stri=ttb.decode(sid);
+                    if (stri) res.push(stri);
+                }
+            }
+        }
+        /*$lastStackTrace=res;
+        $showLastStackTrace=function () {
+            console.log("StackTrace.get",res);
+            //console.log("StackTrace.get",lines,res);
+        };*/
+        return res;
+    };
+    return trc;
+});
+requireSimulator.setName('Visitor');
+if (typeof define!=="function") {
+   define=require("requirejs").define;
+}
+define([],function (){
+return Visitor = function (funcs) {
+	var $={funcs:funcs, path:[]};
+	$.visit=function (node) {
+	    try {
+	        $.path.push(node);
+	        if ($.debug) console.log("visit ",node.type, node.pos);
+	        var v=(node ? funcs[node.type] :null);
+	        if (v) return v.call($, node);
+	        else if ($.def) return $.def.call($,node);
+	    } finally {
+	        $.path.pop();
+	    }
+	};
+	$.replace=function (node) {
+		if (!$.def) {
+			$.def=function (node) {
+				if (typeof node=="object"){
+					for (var i in node) {
+						if (node[i] && typeof node[i]=="object") {
+							node[i]=$.visit(node[i]);
+						}
+					}
+				}
+				return node;
+			};
+		}
+		return $.visit(node);
+	};
+	return $;
+};
+});
+requireSimulator.setName('typeCheck');
+if (typeof define!=="function") {
+   define=require("requirejs").define;
+}
+define(["Visitor"],function (Visitor) {
+TypeCheck=function () {
+    var ex={"[SUBELEMENTS]":1,pos:1,len:1};
+
+
+    function lit(s) {
+        return "'"+s+"'";
+    }
+    function str(o) {
+        if (!o || typeof o=="number" || typeof o=="boolean") return o;
+        if (typeof o=="string") return lit(o);
+        if (o.DESC) return str(o.DESC);
+        var keys=[];
+        for (var i in o) {
+            if (ex[i]) continue;
+            keys.push(i);
+        }
+        keys=keys.sort();
+        var buf="{";
+        var com="";
+        keys.forEach(function (key) {
+            buf+=com+key+":"+str(o[key]);
+            com=",";
+        });
+        buf+="}";
+        return buf;
+    }
+};
+return TypeCheck;
+});
+requireSimulator.setName('Auth');
+define(["WebSite"],function (WebSite) {
+    var auth={};
+    auth.currentUser=function (onend) {
+        $.ajax({type:"get",url:WebSite.serverTop+"/currentUser",data:{withCsrfToken:true},
+            success:function (res) {
+                console.log("auth.currentUser",res);
+                res=JSON.parse(res);
+                var u=res.user;
+                if (u=="null") u=null;
+                console.log("user", u, "csrfToken",res.csrfToken);
+                onend(u,res.csrfToken);
+            }
+        });
+    };
+    auth.assertLogin=function (options) {
+        /*if (typeof options=="function") options={complete:options};
+        if (!options.confirm) options.confirm="この操作を行なうためにはログインが必要です．ログインしますか？";
+        if (typeof options.confirm=="string") {
+            var mesg=options.confirm;
+            options.confirm=function () {
+                return confirm(mesg);
+            };
+        }*/
+        auth.currentUser(function (user,csrfToken) {
+            if (user) {
+                return options.success(user,csrfToken);
+            }
+            window.onLoggedIn=options.success;
+            options.showLoginLink(WebSite.serverTop+"/login");
+        });
+    };
+    window.Auth=auth;
+    return auth;
+});
+requireSimulator.setName('Blob');
+define(["Auth","WebSite","Util"],function (a,WebSite,Util) {
+    var Blob={};
+    var BLOB_PATH_EXPR="${blobPath}";
+    Blob.BLOB_PATH_EXPR=BLOB_PATH_EXPR;
+    Blob.upload=function(user, project, file, options) {
+        var fd = new FormData(document.getElementById("fileinfo"));
+        if (options.error) {
+            options.error=function (r) {alert(r);};
+        }
+        fd.append("theFile", file);
+        fd.append("user",user);
+        fd.append("project",project);
+        fd.append("fileName",file.name);
+        $.ajax({
+            type : "get",
+            url : WebSite.serverTop+"/blobURL",
+            success : function(url) {
+                $.ajax({
+                    url : url,
+                    type : "POST",
+                    data : fd,
+                    processData : false, // jQuery がデータを処理しないよう指定
+                    contentType : false, // jQuery が contentType を設定しないよう指定
+                    success : function(res) {
+                        console.log("Res = " + res);
+                        options.success.apply({},arguments);// $("#drag").append(res);
+                    },
+                    error: options.error
+                });
+            }
+        });
+    };
+    Blob.isBlobURL=function (url) {
+        if (Util.startsWith(url,BLOB_PATH_EXPR)) {
+            var a=url.split("/");
+            return {user:a[1], project:a[2], fileName:a[3]};
+        }
+    };
+    // actualURL;
+    Blob.url=function(user,project,fileName) {
+        return WebSite.blobPath+user+"/"+project+"/"+fileName;
+    };
+    Blob.uploadToExe=function (prj, options) {
+        var bis=prj.getBlobInfos();
+        var cnt=bis.length;
+        console.log("uploadBlobToExe cnt=",cnt);
+        if (cnt==0) return options.success();
+        if (!options.progress) options.progress=function (cnt) {
+            console.log("uploadBlobToExe cnt=",cnt);
+        };
+        bis.forEach(function (bi) {
+            var data={csrfToken:options.csrfToken};
+            for (var i in bi) data[i]=bi[i];
+            $.ajax({
+                type:"get",
+                url: WebSite.serverTop+"/uploadBlobToExe",
+                data:data,
+                success: function () {
+                     cnt--;
+                     if (cnt==0) return options.success();
+                     else options.progress(cnt);
+                },
+                error:options.error
+             });
+        });
+    };
+    return Blob;
+});
+requireSimulator.setName('ImageRect');
+define([],function () {
+    function draw(img, canvas) {
+        if (typeof img=="string") {
+            var i=new Image();
+            var res=null;
+            var callback=null;
+            var onld=function (clb) {
+                if (clb) callback=clb;
+                if (callback && res) {
+                    callback(res);
+                }
+            };
+            i.onload=function () {
+                res=draw(i,canvas);
+                onld();
+            };
+            i.src=img;
+            return onld;
+        }
+        var cw=canvas.width;
+        var ch=canvas.height;
+        var cctx=canvas.getContext("2d");
+        var width=img.width;
+        var height=img.height;
+        var calcw=ch/height*width; // calch=ch
+        var calch=cw/width*height; // calcw=cw
+        if (calch>ch) calch=ch;
+        if (calcw>cw) calcw=cw;
+        cctx.clearRect(0,0,cw,ch);
+        var marginw=Math.floor((cw-calcw)/2);
+        var marginh=Math.floor((ch-calch)/2);
+        cctx.drawImage(img,
+                0,0,width, height,
+                marginw,marginh,calcw, calch );
+        return {left: marginw, top:marginh, width:calcw, height:calch,src:img};
+    }
+    return draw;
+});
+requireSimulator.setName('thumbnail');
+define(["ImageRect"],function (IR) {
+    var TN={};
+    var createThumbnail;
+    var NAME="$icon_thumbnail";
+    TN.set=function (prj,delay) {
+        setTimeout(function () { crt(prj);} ,delay);
+    };
+    TN.get=function (prj) {
+        var f=TN.file(prj);
+        if (!f.exists()) return null;
+        return f.text();
+    };
+    TN.file=function (prj) {
+        var prjdir=prj.getDir();
+        var imfile= prjdir.rel("images/").rel("icon_thumbnail.png");
+        //console.log("Thumb file=",imfile.path(),imfile.exists());
+        return imfile;
+    };
+    function crt(prj) {
+        try {
+            var img=Tonyu.globals.$Screen.buf[0];
+            var cv=$("<canvas>").attr({width:100,height:100});
+            IR(img, cv[0]);
+            var url=cv[0].toDataURL();
+            //window.open(url);
+            var rsrc=prj.getResource();
+            var prjdir=prj.getDir();
+            var imfile=TN.file(prj);
+            imfile.text(url);
+            var item={
+                name:NAME,
+                pwidth:100,pheight:100,url:"ls:"+imfile.relPath(prjdir)
+            };
+            var imgs=rsrc.images;
+            var add=false;
+            for (var i=0 ; i<imgs.length ; i++) {
+                if (imgs[i].name==NAME) {
+                    imgs[i]=item;
+                    add=true;
+                }
+            }
+            if (!add) imgs.push(item);
+
+            prj.setResource(rsrc);
+            console.log("setRSRC",rsrc);
+        } catch (e) {
+            console.log("Create thumbnail failed",e);
+        }
+    };
+    return TN;
+});
+requireSimulator.setName('plugins');
+define(["WebSite"],function (WebSite){
+    var plugins={};
+    var installed= {
+        box2d:{src: "Box2dWeb-2.1.a.3.min.js",detection:/T2Body/,symbol:"Box2D" },
+        timbre: {src:"timbre.js",detection:/\bplay(SE)?\b/,symbol:"T" }
+    };
+    plugins.detectNeeded=function (src,res) {
+        for (var name in installed) {
+            var r=installed[name].detection.exec(src);
+            if (r) res[name]=1;
+        }
+        return res;
+    };
+    plugins.loaded=function (name) {
+        var i=installed[name];
+        if (!i) throw new Error("plugin not found: "+name);
+        return window[i.symbol];
+    };
+    plugins.loadAll=function (names,options) {
+        options=convOpt(options);
+        var namea=[];
+        for (var name in names) {
+            if (installed[name] && !plugins.loaded(name)) {
+                namea.push(name);
+            }
+        }
+        var i=0;
+        console.log("loading plugins",namea);
+        loadNext();
+        function loadNext() {
+            if (i>=namea.length) options.onload();
+            else plugins.load(namea[i++],loadNext);
+        }
+    };
+    function convOpt(options) {
+        if (typeof options=="function") options={onload:options};
+        if (!options) options={};
+        if (!options.onload) options.onload=function (){};
+        return options;
+    }
+    plugins.load=function (name,options) {
+        var i=installed[name];
+        if (!i) throw new Error("plugin not found: "+name);
+        options=convOpt(options);
+        var src=WebSite.pluginTop+"/"+i.src;
+        $.getScript(src, options.onload);
+    };
+    plugins.request=function (name) {
+        if (plugins.loaded(name)) return;
+        var req=new Error("Plugin "+name+" required");
+        req.pluginName=name;
+    };
+    return plugins;
+});
 requireSimulator.setName('Tonyu.Iterator');
 define(["Tonyu"], function (T) {
    function IT(set, arity) {
@@ -3482,7 +4267,7 @@ return IndentBuffer=function () {
 			var res=args[ai];
 			if (res==null) {
 			    console.log(args);
-			    throw (ai+"th null param: fmt="+fmt);
+			    throw new Error(ai+"th null param: fmt="+fmt);
 			}
 			return res;
 		}
@@ -3505,7 +4290,7 @@ return IndentBuffer=function () {
 				i++;
 			} else if (fstr=="d") {
                 var n=shiftArg();
-                if (typeof n!="number") throw (n+" is not a number: fmt="+fmt);
+                if (typeof n!="number") throw new Error (n+" is not a number: fmt="+fmt);
                 $.buf+=n;
                 i++;
 			} else if (fstr=="n") {
@@ -3528,8 +4313,8 @@ return IndentBuffer=function () {
                 i++;
 			} else if (fstr=="v") {
 			    var a=shiftArg();
-			    if (!a) throw "Null %v";
-                if (typeof a!="object") throw "nonobject %v:"+a;
+			    if (!a) throw new Error ("Null %v");
+                if (typeof a!="object") throw new Error("nonobject %v:"+a);
 				$.visitor.visit(a);
 				i++;
             } else if (fstr=="z") {
@@ -3558,7 +4343,7 @@ return IndentBuffer=function () {
                 var sep=false;
                 if (!node || !node.forEach) {
                     console.log(node);
-                    throw node+" is not array. cannot join fmt:"+fmt;
+                    throw new Error (node+" is not array. cannot join fmt:"+fmt);
                 }
                 node.forEach(function (n) {
                     if (sep) $.printf(sp);
@@ -3604,7 +4389,7 @@ return IndentBuffer=function () {
 		var len=$.indentStr.length;
 		if (!$.buf.substring($.buf.length-len).match(/^\s*$/)) {
 			console.log($.buf);
-			throw "Non-space truncated ";
+			throw new Error ("Non-space truncated ");
 		}
 		$.buf=$.buf.substring(0,$.buf.length-len);
 		$.indentBuf=$.indentBuf.substring(0 , $.indentBuf.length-len);
@@ -4456,49 +5241,6 @@ XMLBuffer.orderByPos=function (node) {
 XMLBuffer.SUBELEMENTS="[SUBELEMENTS]";
 return XMLBuffer;
 });
-requireSimulator.setName('TError');
-if (typeof define!=="function") {
-   define=require("requirejs").define;
-}
-define([],function () {
-return TError=function (mesg, src, pos) {
-    if (typeof src=="string") {
-        return {
-            isTError:true,
-            mesg:mesg,
-            src:{
-                name:function () { return src;},
-                text:function () { return src;}
-            },
-            pos:pos,
-            toString:function (){
-                return this.mesg+" at "+src+":"+this.pos;
-            },
-            raise: function () {
-                throw this;
-            }
-        };
-    }
-    var klass=null;
-    if (src && src.src) {
-        klass=src;
-        src=klass.src.tonyu;
-    }
-    if (typeof src.name!=="function") {
-        throw "src="+src+" should be file object";
-    }
-    return {
-        isTError:true,
-        mesg:mesg,src:src,pos:pos,klass:klass,
-        toString:function (){
-            return this.mesg+" at "+this.src.name()+":"+this.pos;
-        },
-        raise: function () {
-            throw this;
-        }
-    };
-};
-});
 requireSimulator.setName('TT');
 /*sys.load("js/parser.js");
 sys.load("js/ExpressionParser2Tonyu.js");
@@ -4610,6 +5352,7 @@ return TT=function () {
             "try": true,
             "catch": true,
             "finally": true,
+            "throw": true,
             "in": true,
             fiber:true,
             "native": true,
@@ -5279,17 +6022,19 @@ return TonyuLang=function () {
     var catchs=g("catch").ands(tk("catch"), tk("("), symbol, tk(")"), "stmt" ).ret(null,null,"name",null, "stmt");
     var catches=g("catches").ors("catch","finally");
     var trys=g("try").ands(tk("try"),"stmt",catches.rep1() ).ret(null, "stmt","catches");
+    var throwSt=g("throw").ands(tk("throw"),expr,tk(";")).ret(null,"ex");
     var varDecl=g("varDecl").ands(symbol, tk("=").and(expr).ret(retF(1)).opt() ).ret("name","value");
     var varsDecl= g("varsDecl").ands(tk("var"), varDecl.sep1(tk(","),true), tk(";") ).ret(null ,"decls");
     g("funcDeclHead").ands(
             tk("nowait").opt(),
             tk("function").or(tk("fiber")).or(tk("tk_constructor")).or(tk("\\")).opt(),
-            symbol.or(tk("new")) ,"paramDecls").ret("nowait","ftype","name","params");
+            symbol.or(tk("new")) , "paramDecls"
+    ).ret("nowait","ftype","name","params");
     var funcDecl=g("funcDecl").ands("funcDeclHead","compound").ret("head","body");
     var nativeDecl=g("nativeDecl").ands(tk("native"),symbol,tk(";")).ret(null, "name");
     var ifwait=g("ifWait").ands(tk("ifwait"),"stmt",elseP.opt()).ret(null, "then","_else");
     //var useThread=g("useThread").ands(tk("usethread"),symbol,"stmt").ret(null, "threadVarName","stmt");
-    stmt=g("stmt").ors("return", "if", "for", "while", "break", "ifWait","try", "nativeDecl", "funcDecl", "compound", "exprstmt", "varsDecl");
+    stmt=g("stmt").ors("return", "if", "for", "while", "break", "ifWait","try", "throw","nativeDecl", "funcDecl", "compound", "exprstmt", "varsDecl");
     // ------- end of stmts
     var paramDecl= g("paramDecl").ands(symbol ).ret("name");
     var paramDecls=g("paramDecls").ands(tk("("), paramDecl.sep0(tk(","),true), tk(")")  ).ret(null, "params");
@@ -5457,77 +6202,127 @@ return context=function () {
     }
 };
 });
-requireSimulator.setName('Visitor');
-if (typeof define!=="function") {
-   define=require("requirejs").define;
-}
-define([],function (){
-return Visitor = function (funcs) {
-	var $={funcs:funcs, path:[]};
-	$.visit=function (node) {
-	    try {
-	        $.path.push(node);
-	        if ($.debug) console.log("visit ",node.type, node.pos);
-	        var v=(node ? funcs[node.type] :null);
-	        if (v) return v.call($, node);
-	        else if ($.def) return $.def.call($,node);
-	    } finally {
-	        $.path.pop();
-	    }
-	};
-	$.replace=function (node) {
-		if (!$.def) {
-			$.def=function (node) {
-				if (typeof node=="object"){
-					for (var i in node) {
-						if (node[i] && typeof node[i]=="object") {
-							node[i]=$.visit(node[i]);
-						}
-					}
-				}
-				return node;
-			};
-		}
-		return $.visit(node);
-	};
-	return $;
-};
-});
 requireSimulator.setName('Tonyu.Compiler');
-if (typeof define!=="function") {
+define(["Tonyu","ObjectMatcher", "TError"],
+        function(Tonyu,ObjectMatcher, TError) {
+    var cu={};
+    Tonyu.Compiler=cu;
+    var ScopeTypes={
+            FIELD:"field", METHOD:"method", NATIVE:"native",//B
+            LOCAL:"local", THVAR:"threadvar",
+            PARAM:"param", GLOBAL:"global",
+            CLASS:"class"
+    };
+    cu.ScopeTypes=ScopeTypes;
+    var symSeq=1;//B
+    function genSt(st, options) {//B
+        var res={type:st};
+        if (options) {
+            for (var k in options) res[k]=options[k];
+        }
+        if (!res.name) res.name=genSym("_"+st+"_");
+        return res;
+    }
+    cu.newScopeType=genSt;
+    function stype(st) {//B
+        return st ? st.type : null;
+    }
+    cu.getScopeType=stype;
+    function newScope(s) {//B
+        var f=function (){};
+        f.prototype=s;
+        return new f();
+    }
+    cu.newScope=newScope;
+    function nc(o, mesg) {//B
+        if (!o) throw mesg+" is null";
+        return o;
+    }
+    cu.nullCheck=nc;
+    function genSym(prefix) {//B
+        return prefix+((symSeq++)+"").replace(/\./g,"");
+    }
+    cu.genSym=genSym;
+    function annotation3(aobjs, node, aobj) {//B
+        if (!node._id) {
+            if (!aobjs._idseq) aobjs._idseq=0;
+            node._id=++aobjs._idseq;
+        }
+        var res=aobjs[node._id];
+        if (!res) res=aobjs[node._id]={node:node};
+        if (aobj) {
+            for (var i in aobj) res[i]=aobj[i];
+        }
+        return res;
+    }
+    cu.annotation=annotation3;
+    function getSource(node) {//B
+        return srcCont.substring(node.pos,node.pos+node.len);
+    }
+    cu.getSource=getSource;
+    function getMethod2(klass,name) {//B
+        var res=null;
+        getDependingClasses(klass).forEach(function (k) {
+            if (res) return;
+            res=k.decls.methods[name];
+        });
+        return res;
+    }
+    cu.getMethod=getMethod2;
+    function getDependingClasses(klass) {//B
+        var visited={};
+        var incls=[];
+        var res=[];
+        for (var k=klass ; k ; k=k.superClass) {
+            incls=incls.concat(k.includes);
+            visited[k.fullName]=true;
+            res.push(k);
+        }
+        while (incls.length>0) {
+            var k=incls.shift();
+            if (visited[k.fullName]) continue;
+            visited[k.fullName]=true;
+            res.push(k);
+            incls=incls.concat(k.includes);
+        }
+        return res;
+    }
+    cu.getDependingClasses=getDependingClasses;
+    function getParams(method) {//B
+        if (!method.head) return [];
+        var res=method.head.params.params;
+        if (!res.forEach) throw method+" is not array ";
+        return res;
+    }
+    cu.getParams=getParams;
+    return cu;
+
+});
+requireSimulator.setName('Tonyu.Compiler.Semantics');
+if (typeof define!=="function") {//B
    define=require("requirejs").define;
 }
-define(["Tonyu", "Tonyu.Iterator", "TonyuLang", "ObjectMatcher", "TError", "IndentBuffer", "context", "Visitor"],
-function(Tonyu, Tonyu_iterator, TonyuLang, ObjectMatcher, TError, IndentBuffer, context, Visitor) {
-return Tonyu.Compiler=(function () {
-// TonyuソースファイルをJavascriptに変換する
-var TH="_thread",THIZ="_this", ARGS="_arguments",FIBPRE="fiber$", FRMPC="__pc", LASTPOS="$LASTPOS",CNTV="__cnt",CNTC=100;
-var BINDF="Tonyu.bindFunc";
-var INVOKE_FUNC="Tonyu.invokeMethod";
-var CALL_FUNC="Tonyu.callFunc";
-var CHK_NN="Tonyu.checkNonNull";
-var CLASS_HEAD="Tonyu.classes.", GLOBAL_HEAD="Tonyu.globals.";
-var GET_THIS="this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this)";
-var ITER="Tonyu.iterator";
-var ScopeTypes={FIELD:"field", METHOD:"method", NATIVE:"native",
-        LOCAL:"local", THVAR:"threadvar", PARAM:"param", GLOBAL:"global", CLASS:"class"};
-var symSeq=1;
-function genSt(st, options) {
-    var res={type:st};
-    if (options) {
-        for (var k in options) res[k]=options[k];
-    }
-    if (!res.name) res.name=genSym("_"+st+"_");
-    return res;
-}
-function stype(st) {
-    return st ? st.type : null;
-}
-/*function compile(klass, env) {
-    initClassDecls(klass, env );
-    return genJS(klass, env);
-}*/
-function initClassDecls(klass, env ) {
+define(["Tonyu", "Tonyu.Iterator", "TonyuLang", "ObjectMatcher", "TError", "IndentBuffer",
+        "context", "Visitor","Tonyu.Compiler"],
+function(Tonyu, Tonyu_iterator, TonyuLang, ObjectMatcher, TError, IndentBuffer,
+        context, Visitor,cu) {
+return cu.Semantics=(function () {
+/*var ScopeTypes={FIELD:"field", METHOD:"method", NATIVE:"native",//B
+        LOCAL:"local", THVAR:"threadvar", PARAM:"param", GLOBAL:"global", CLASS:"class"};*/
+var ScopeTypes=cu.ScopeTypes;
+var genSt=cu.newScopeType;
+var stype=cu.getScopeType;
+var newScope=cu.newScope;
+//var nc=cu.nullCheck;
+var genSym=cu.genSym;
+var annotation3=cu.annotation;
+var getSource=cu.getSource;
+var getMethod2=cu.getMethod;
+var getDependingClasses=cu.getDependingClasses;
+var getParams=cu.getParams;
+var JSNATIVES={Array:1, String:1, Boolean:1, Number:1, Void:1, Object:1,RegExp:1,Error:1};
+//-----------
+function initClassDecls(klass, env ) {//S
     var s=klass.src.tonyu; //file object
     var node=TonyuLang.parse(s);
     var MAIN={name:"main",stmts:[],pos:0};
@@ -5535,10 +6330,10 @@ function initClassDecls(klass, env ) {
     var fields={}, methods={main: MAIN}, natives={};
     klass.decls={fields:fields, methods:methods, natives: natives};
     klass.node=node;
-    function nc(o, mesg) {
+    /*function nc(o, mesg) {
         if (!o) throw mesg+" is null";
         return o;
-    }
+    }*/
     var OM=ObjectMatcher;
     function initMethods(program) {
         var spcn=env.options.compiler.defaultSuperClass;
@@ -5591,55 +6386,12 @@ function initClassDecls(klass, env ) {
             }
         });
     }
-    // if(pass==1)
     initMethods(node);        // node=program
 }
-function genSym(prefix) {
-    return prefix+((symSeq++)+"").replace(/\./g,"");
-}
-function annotation3(aobjs, node, aobj) {
-    if (!node._id) {
-        if (!aobjs._idseq) aobjs._idseq=0;
-        node._id=++aobjs._idseq;
-    }
-    var res=aobjs[node._id];
-    if (!res) res=aobjs[node._id]={node:node};
-    if (aobj) {
-        for (var i in aobj) res[i]=aobj[i];
-    }
-    return res;
-}
-function getMethod2(klass,name) {
-    var res=null;
-    getDependingClasses(klass).forEach(function (k) {
-        if (res) return;
-        res=k.decls.methods[name];
-    });
-    return res;
-}
-function getDependingClasses(klass) {
-    var visited={};
-    var incls=[];
-    var res=[];
-    for (var k=klass ; k ; k=k.superClass) {
-        incls=incls.concat(k.includes);
-        visited[k.fullName]=true;
-        res.push(k);
-    }
-    while (incls.length>0) {
-        var k=incls.shift();
-        if (visited[k.fullName]) continue;
-        visited[k.fullName]=true;
-        res.push(k);
-        incls=incls.concat(k.includes);
-    }
-    return res;
-}
-function genJS(klass, env,pass) {
-    var srcFile=klass.src.tonyu; //file object
+function annotateSource2(klass, env) {//B
+    var srcFile=klass.src.tonyu; //file object  //S
     var srcCont=srcFile.text();
     var OM=ObjectMatcher;
-    var className=getClassName(klass);
     var traceTbl=env.traceTbl;
     // method := fiber | function
     var decls=klass.decls;
@@ -5651,11 +6403,7 @@ function genJS(klass, env,pass) {
     var topLevelScope={};
     // ↑ このソースコードのトップレベル変数の種類 ，親クラスの宣言を含む
     //  キー： 変数名   値： ScopeTypesのいずれか
-    var buf=IndentBuffer();
-    var fnSeq=0;
-    var printf=buf.printf;
     var v=null;
-    var diagnose=env.options.compiler.diagnose;
     var ctx=context();
     var debug=false;
     var othersMethodCallTmpl={
@@ -5700,10 +6448,10 @@ function genJS(klass, env,pass) {
             }
         };
     klass.annotation={};
-    function annotation(node, aobj) {
+    function annotation(node, aobj) {//B
         return annotation3(klass.annotation,node,aobj);
     }
-    function assertAnnotated(node, si) {
+    /*function assertAnnotated(node, si) {//B
         var a=annotation(node);
         if (!a.scopeInfo) {
             console.log(srcCont.substring(node.pos-5,node.pos+20));
@@ -5715,16 +6463,8 @@ function genJS(klass, env,pass) {
             console.log(node, si , a.scopeInfo);
             throw "Scope info not match";
         }
-    }
-    function getSource(node) {
-        return srcCont.substring(node.pos,node.pos+node.len);
-    }
-    function getClassName(klass){// should be object or short name
-        if (typeof klass=="string") return CLASS_HEAD+(env.aliases[klass] || klass);//CFN  CLASS_HEAD+env.aliases[klass](null check)
-        if (klass.builtin) return klass.fullName;// CFN klass.fullName
-        return CLASS_HEAD+klass.fullName;// CFN  klass.fullName
-    }
-    function initTopLevelScope2(klass) {
+    }*/
+    function initTopLevelScope2(klass) {//S
     	if (klass.builtin) return;
         var s=topLevelScope;
         var decls=klass.decls;
@@ -5735,18 +6475,21 @@ function genJS(klass, env,pass) {
             s[i]=genSt(ST.METHOD,{klass:klass.name, name:i});
         }
     }
-    function initTopLevelScope() {
+    function initTopLevelScope() {//S
         var s=topLevelScope;
         getDependingClasses(klass).forEach(initTopLevelScope2);
         var decls=klass.decls;// Do not inherit parents' natives
         for (var i in decls.natives) {
             s[i]=genSt(ST.NATIVE,{name:"native::"+i});
         }
+        for (var i in JSNATIVES) {
+            s[i]=genSt(ST.NATIVE,{name:"native::"+i});
+        }
         for (var i in env.aliases) {/*ENVC*/ //CFN  env.classes->env.aliases
             s[i]=genSt(ST.CLASS,{name:i});
         }
     }
-    function inheritSuperMethod() {
+    function inheritSuperMethod() {//S
         var d=getDependingClasses(klass);
         for (var n in klass.decls.methods) {
             var m2=klass.decls.methods[n];
@@ -5758,33 +6501,10 @@ function genJS(klass, env,pass) {
             });
         }
     }
-
-    function newScope(s) {
-        var f=function (){};
-        f.prototype=s;
-        return new f();
-    }
-    function getMethod(name) {
-    	/*var res=null;
-    	getDependingClasses(klass).forEach(function (k) {
-    		if (res) return;
-            res=k.decls.methods[name];
-    	});
-    	return res;*/
+    function getMethod(name) {//B
         return getMethod2(klass,name);
     }
-
-    function nc(o, mesg) {
-        if (!o) throw mesg+" is null";
-        return o;
-    }
-    function getParams(method) {
-        if (!method.head) return [];
-        var res=method.head.params.params;
-        if (!res.forEach) throw method+" is not array ";
-        return res;
-    }
-    function checkLVal(node) {
+    function checkLVal(node) {//S
         if (node.type=="varAccess" ||
                 node.type=="postfix" && (node.op.type=="member" || node.op.type=="arrayElem") ) {
             if (node.type=="varAccess") {
@@ -5795,14 +6515,7 @@ function genJS(klass, env,pass) {
         console.log("LVal",node);
         throw TError( "'"+getSource(node)+"'は左辺には書けません．" , srcFile, node.pos);
     }
-    function enterV(obj, node) {
-        return function (buf) {
-            ctx.enter(obj,function () {
-                v.visit(node);
-            });
-        };
-    }
-    function getScopeInfo(n) {
+    function getScopeInfo(n) {//S
         var si=ctx.scope[n];
         var t=stype(si);
         if (!t) {
@@ -5814,7 +6527,368 @@ function genJS(klass, env,pass) {
         }
         return si;
     }
-    function varAccess(n, si, an) {
+    var localsCollector=Visitor({
+        varDecl: function (node) {
+            ctx.locals.varDecls[node.name.text]=node;
+        },
+        funcDecl: function (node) {/*FDITSELFIGNORE*/
+            ctx.locals.subFuncDecls[node.head.name.text]=node;
+            //initParamsLocals(node);??
+        },
+        funcExpr: function (node) {/*FEIGNORE*/
+            //initParamsLocals(node);??
+        },
+        "catch": function (node) {
+            ctx.locals.varDecls[node.name.text]=node;
+        },
+        exprstmt: function (node) {
+        },
+        "forin": function (node) {
+            var isVar=node.isVar;
+            node.vars.forEach(function (v) {
+                /* if (isVar) */ctx.locals.varDecls[v.text]=node;
+            });
+            var n=genSym("_it_");
+            annotation(node, {iterName:n});
+            ctx.locals.varDecls[n]=node;// ??
+        }
+    });
+    localsCollector.def=visitSub;//S
+    function visitSub(node) {//S
+        var t=this;
+        if (!node || typeof node!="object") return;
+        var es;
+        if (node instanceof Array) es=node;
+        else es=node[Grammar.SUBELEMENTS];
+        if (!es) {
+            es=[];
+            for (var i in node) {
+                es.push(node[i]);
+            }
+        }
+        es.forEach(function (e) {
+            t.visit(e);
+        });
+    }
+    function collectLocals(node) {//S
+        var locals={varDecls:{}, subFuncDecls:{}};
+        ctx.enter({locals:locals},function () {
+            localsCollector.visit(node);
+        });
+        return locals;
+    }
+    function annotateParents(path, data) {//S
+        path.forEach(function (n) {
+            annotation(n,data);
+        });
+    }
+    function fiberCallRequired(path) {//S
+        if (ctx.method) ctx.method.fiberCallRequired=true;
+        annotateParents(path, {fiberCallRequired:true} );
+    }
+    var varAccessesAnnotator=Visitor({//S
+        varAccess: function (node) {
+            var si=getScopeInfo(node.name.text);
+            annotation(node,{scopeInfo:si});
+        },
+        funcDecl: function (node) {/*FDITSELFIGNORE*/
+        },
+        funcExpr: function (node) {/*FEIGNORE*/
+            annotateSubFuncExpr(node);
+        },
+        jsonElem: function (node) {
+            if (node.value) {
+                this.visit(node.value);
+            } else {
+                var si=getScopeInfo(node.key.text);
+                annotation(node,{scopeInfo:si});
+            }
+        },
+        "do": function (node) {
+            var t=this;
+            ctx.enter({jumpable:true}, function () {
+                t.def(node);
+            });
+        },
+        "switch": function (node) {
+            var t=this;
+            ctx.enter({jumpable:true}, function () {
+                t.def(node);
+            });
+        },
+        "while": function (node) {
+            var t=this;
+            ctx.enter({jumpable:true}, function () {
+                t.def(node);
+            });
+        },
+        "for": function (node) {
+            var t=this;
+            ctx.enter({jumpable:true}, function () {
+                t.def(node);
+            });
+        },
+        "forin": function (node) {
+            node.vars.forEach(function (v) {
+                var si=getScopeInfo(v.text);
+                annotation(v,{scopeInfo:si});
+            });
+            this.visit(node.set);
+        },
+        ifWait: function (node) {
+            var TH="_thread";
+            var t=this;
+            var ns=newScope(ctx.scope);
+            ns[TH]=genSt(ST.THVAR);
+            ctx.enter({scope:ns}, function () {
+                t.visit(node.then);
+            });
+            if (node._else) {
+                t.visit(node._else);
+            }
+            fiberCallRequired(this.path);
+        },
+        "try": function (node) {
+            ctx.finfo.useTry=true;
+            this.def(node);
+        },
+        "return": function (node) {
+            if (!ctx.noWait) annotateParents(this.path,{hasReturn:true});
+            this.visit(node.value);
+        },
+        "break": function (node) {
+            if (!ctx.jumpable) throw TError( "break； は繰り返しの中で使います." , srcFile, node.pos);
+            if (!ctx.noWait) annotateParents(this.path,{hasJump:true});
+        },
+        "continue": function (node) {
+            if (!ctx.jumpable) throw TError( "continue； は繰り返しの中で使います." , srcFile, node.pos);
+            if (!ctx.noWait) annotateParents(this.path,{hasJump:true});
+        },
+        "reservedConst": function (node) {
+            if (node.text=="arguments") {
+                ctx.finfo.useArgs=true;
+            }
+        },
+        postfix: function (node) {
+            var t;
+            this.visit(node.left);
+            this.visit(node.op);
+            if (t=OM.match(node, myMethodCallTmpl)) {
+                var si=annotation(node.left).scopeInfo;
+                annotation(node, {myMethodCall:{name:t.N,args:t.A,scopeInfo:si}});
+            } else if (t=OM.match(node, othersMethodCallTmpl)) {
+                annotation(node, {othersMethodCall:{target:t.T,name:t.N,args:t.A} });
+            } else if (t=OM.match(node, memberAccessTmpl)) {
+                annotation(node, {memberAccess:{target:t.T,name:t.N} });
+            }
+        },
+        infix: function (node) {
+            var opn=node.op.text;
+            if (opn=="=" || opn=="+=" || opn=="-=" || opn=="*=" ||  opn=="/=" || opn=="%=" ) {
+                checkLVal(node.left);
+            }
+            this.def(node);
+        },
+        exprstmt: function (node) {
+            var t,m;
+            if (!ctx.noWait &&
+                    (t=OM.match(node,noRetFiberCallTmpl)) &&
+                    stype(ctx.scope[t.N])==ST.METHOD &&
+                    !getMethod(t.N).nowait) {
+                t.type="noRet";
+                annotation(node, {fiberCall:t});
+                fiberCallRequired(this.path);
+            } else if (!ctx.noWait &&
+                    (t=OM.match(node,retFiberCallTmpl)) &&
+                    stype(ctx.scope[t.N])==ST.METHOD &&
+                    !getMethod(t.N).nowait) {
+                t.type="ret";
+                annotation(node, {fiberCall:t});
+                fiberCallRequired(this.path);
+            } else if (!ctx.noWait &&
+                    (t=OM.match(node,noRetSuperFiberCallTmpl)) &&
+                    t.S.name) {
+                m=getMethod(t.S.name.text);
+                if (!m) throw new Error("メソッド"+t.S.name.text+" はありません。");
+                if (!m.nowait) {
+                    t.type="noRetSuper";
+                    t.superClass=klass.superClass;
+                    annotation(node, {fiberCall:t});
+                    fiberCallRequired(this.path);
+                }
+            } else if (!ctx.noWait &&
+                    (t=OM.match(node,retSuperFiberCallTmpl)) &&
+                    t.S.name) {
+                m=getMethod(t.S.name.text);
+                if (!m) throw new Error("メソッド"+t.S.name.text+" はありません。");
+                if (!m.nowait) {
+                    t.type="retSuper";
+                    t.superClass=klass.superClass;
+                    annotation(node, {fiberCall:t});
+                    fiberCallRequired(this.path);
+                }
+            }
+            this.visit(node.expr);
+        }
+    });
+    varAccessesAnnotator.def=visitSub;//S
+    function annotateVarAccesses(node,scope) {//S
+        ctx.enter({scope:scope}, function () {
+            varAccessesAnnotator.visit(node);
+        });
+    }
+    function copyLocals(locals, scope) {//S
+        for (var i in locals.varDecls) {
+            scope[i]=genSt(ST.LOCAL);
+        }
+        for (var i in locals.subFuncDecls) {
+            scope[i]=genSt(ST.LOCAL);
+        }
+    }
+    function initParamsLocals(f) {//S
+        f.locals=collectLocals(f.stmts);
+        f.params=getParams(f);
+    }
+    function annotateMethodFiber(f) {//S
+        var ns=newScope(ctx.scope);
+        f.params.forEach(function (p,cnt) {
+            ns[p.name.text]=genSt(ST.PARAM,{
+                klass:klass.name, name:f.name, no:cnt
+            });
+        });
+        copyLocals(f.locals, ns);
+        ctx.enter({method:f,finfo:f, noWait:false}, function () {
+            annotateVarAccesses(f.stmts, ns);
+        });
+        f.scope=ns;
+        annotateSubFuncExprs(f.locals, ns);
+        return ns;
+    }
+    function annotateSource() {//S
+        ctx.enter({scope:topLevelScope}, function () {
+            for (var name in methods) {
+                if (debug) console.log("anon method1", name);
+                var method=methods[name];
+                initParamsLocals(method);
+                annotateMethodFiber(method);
+            }
+        });
+    }
+    function annotateSubFuncExpr(node) {//S
+        var m,ps;
+        var body=node.body;
+        var name=(node.head.name ? node.head.name.text : "anonymous" );
+        if (m=OM.match( node, {head:{params:{params:OM.P}}})) {
+            ps=m.P;
+        } else {
+            ps=[];
+        }
+        var ns=newScope(ctx.scope);
+        ps.forEach(function (p) {
+            ns[p.name.text]=genSt(ST.PARAM);
+        });
+        var locals=collectLocals(body, ns);
+        copyLocals(locals,ns);
+        var finfo=annotation(node);
+        ctx.enter({finfo: finfo}, function () {
+            annotateVarAccesses(body,ns);
+        });
+        var res={scope:ns, locals:locals, name:name, params:ps};
+        annotation(node,res);
+        annotation(node,finfo);
+        annotateSubFuncExprs(locals, ns);
+        return res;
+    }
+    function annotateSubFuncExprs(locals, scope) {//S
+        ctx.enter({scope:scope}, function () {
+            for (var n in locals.subFuncDecls) {
+                annotateSubFuncExpr(locals.subFuncDecls[n]);
+            }
+        });
+    }
+    initTopLevelScope();//S
+    inheritSuperMethod();//S
+    annotateSource();
+}//B
+return {initClassDecls:initClassDecls, annotate:annotateSource2};
+})();
+//if (typeof getReq=="function") getReq.exports("Tonyu.Compiler");
+});
+requireSimulator.setName('Tonyu.Compiler.JSGenerator');
+if (typeof define!=="function") {//B
+   define=require("requirejs").define;
+}
+define(["Tonyu", "Tonyu.Iterator", "TonyuLang", "ObjectMatcher", "TError", "IndentBuffer",
+        "context", "Visitor","Tonyu.Compiler"],
+function(Tonyu, Tonyu_iterator, TonyuLang, ObjectMatcher, TError, IndentBuffer,
+        context, Visitor,cu) {
+return cu.JSGenerator=(function () {
+// TonyuソースファイルをJavascriptに変換する
+var TH="_thread",THIZ="_this", ARGS="_arguments",FIBPRE="fiber$", FRMPC="__pc", LASTPOS="$LASTPOS",CNTV="__cnt",CNTC=100;//G
+var BINDF="Tonyu.bindFunc";
+var INVOKE_FUNC="Tonyu.invokeMethod";
+var CALL_FUNC="Tonyu.callFunc";
+var CHK_NN="Tonyu.checkNonNull";
+var CLASS_HEAD="Tonyu.classes.", GLOBAL_HEAD="Tonyu.globals.";
+var GET_THIS="this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this)";
+var ITER="Tonyu.iterator";
+/*var ScopeTypes={FIELD:"field", METHOD:"method", NATIVE:"native",//B
+        LOCAL:"local", THVAR:"threadvar", PARAM:"param", GLOBAL:"global", CLASS:"class"};*/
+var ScopeTypes=cu.ScopeTypes;
+//var genSt=cu.newScopeType;
+var stype=cu.getScopeType;
+//var newScope=cu.newScope;
+//var nc=cu.nullCheck;
+//var genSym=cu.genSym;
+var annotation3=cu.annotation;
+var getSource=cu.getSource;
+var getMethod2=cu.getMethod;
+var getDependingClasses=cu.getDependingClasses;
+var getParams=cu.getParams;
+
+//-----------
+function genJS(klass, env) {//B
+    var srcFile=klass.src.tonyu; //file object  //S
+    var buf=IndentBuffer();
+    var printf=buf.printf;
+    var ctx=context();
+    var debug=false;
+    var OM=ObjectMatcher;
+    var traceTbl=env.traceTbl;
+    // method := fiber | function
+    var decls=klass.decls;
+    var fields=decls.fields,
+        methods=decls.methods,
+        natives=decls.natives;
+    // ↑ このクラスが持つフィールド，ファイバ，関数，ネイティブ変数の集まり．親クラスの宣言は含まない
+    var ST=ScopeTypes;
+    var fnSeq=0;
+    var diagnose=env.options.compiler.diagnose;
+
+    function annotation(node, aobj) {//B
+        return annotation3(klass.annotation,node,aobj);
+    }
+    function getMethod(name) {//B
+        return getMethod2(klass,name);
+    }
+    function getClassName(klass){// should be object or short name //G
+        if (typeof klass=="string") return CLASS_HEAD+(env.aliases[klass] || klass);//CFN  CLASS_HEAD+env.aliases[klass](null check)
+        if (klass.builtin) return klass.fullName;// CFN klass.fullName
+        return CLASS_HEAD+klass.fullName;// CFN  klass.fullName
+    }
+    function getClassNames(cs){//G
+        var res=[];
+        cs.forEach(function (c) { res.push(getClassName(c)); });
+        return res;
+    }
+    function enterV(obj, node) {//G
+        return function (buf) {
+            ctx.enter(obj,function () {
+                v.visit(node);
+            });
+        };
+    }
+    function varAccess(n, si, an) {//G
         var t=stype(si);
         if (t==ST.THVAR) {
             buf.printf("%s",TH);
@@ -5834,16 +6908,16 @@ function genJS(klass, env,pass) {
             buf.printf("%s",n);
         } else {
             console.log("Unknown scope type: ",t);
-            throw "Unknown scope type: "+t;
+            throw new Error("Unknown scope type: "+t);
         }
         return si;
     }
-    function noSurroundCompoundF(node) {
+    function noSurroundCompoundF(node) {//G
         return function () {
             noSurroundCompound.apply(this, [node]);
         };
     }
-    function noSurroundCompound(node) {
+    function noSurroundCompound(node) {//G
         if (node.type=="compound") {
             ctx.enter({noWait:true},function () {
                 buf.printf("%j%n", ["%n",node.stmts]);
@@ -5853,14 +6927,14 @@ function genJS(klass, env,pass) {
             v.visit(node);
         }
     }
-    function lastPosF(node) {
+    function lastPosF(node) {//G
         return function () {
             buf.printf("%s%s=%s;%n", (env.options.compiler.commentLastPos?"//":""),
                     LASTPOS, traceTbl.add(klass/*.src.tonyu*/,node.pos ));
         };
     }
-    var THNode={type:"THNode"};
-    v=buf.visitor=Visitor({
+    var THNode={type:"THNode"};//G
+    v=buf.visitor=Visitor({//G
         THNode: function (node) {
             buf.printf(TH);
         },
@@ -5882,6 +6956,7 @@ function genJS(klass, env,pass) {
         funcDecl: function (node) {
         },
         "return": function (node) {
+            if (ctx.inTry) throw TError("現実装では、tryの中にreturnは書けません",srcFile,node.pos);
             if (!ctx.noWait) {
                 if (node.value) {
                     buf.printf("%s.exit(%v);return;",TH,node.value);
@@ -5923,10 +6998,6 @@ function genJS(klass, env,pass) {
             }
         },
         varDecl: function (node) {
-            /*if ( stype( ctx.scope[node.name.text])!=ST.LOCAL  ) {
-                console.log(node);throw "Not localled";// in funcexpr/subfunc
-            }
-            ctx.scope[node.name.text]=genSt(ST.LOCAL);*/
             if (node.value) {
                 buf.printf("%v = %v", node.name, node.value );
             } else {
@@ -6073,6 +7144,7 @@ function genJS(klass, env,pass) {
         },
         "break": function (node) {
             if (!ctx.noWait) {
+                if (ctx.inTry && ctx.exitTryOnJump) throw TError("現実装では、tryの中にbreak;は書けません",srcFile,node.pos);
                 if (ctx.closestBrk) {
                     buf.printf("%s=%z; break;%n", FRMPC, ctx.closestBrk);
                 } else {
@@ -6081,6 +7153,43 @@ function genJS(klass, env,pass) {
             } else {
                 buf.printf("break;%n");
             }
+        },
+        "try": function (node) {
+            var an=annotation(node);
+            if (!ctx.noWait &&
+                    (an.fiberCallRequired || an.hasJump || an.hasReturn)) {
+                //buf.printf("/*try catch in wait mode is not yet supported*/%n");
+                if (node.catches.length!=1 || node.catches[0].type!="catch") {
+                    throw TError("現実装では、catch節1個のみをサポートしています",srcFile,node.pos);
+                }
+                var ct=node.catches[0];
+                var catchPos={},finPos={};
+                buf.printf("%s.enterTry(%z);%n",TH,catchPos);
+                buf.printf("%f", enterV({inTry:true, exitTryOnJump:true},node.stmt) );
+                buf.printf("%s.exitTry();%n",TH);
+                buf.printf("%s=%z;break;%n",FRMPC,finPos);
+                buf.printf("%}case %f:%{",function (){
+                       buf.print(catchPos.put(ctx.pc++));
+                });
+                buf.printf("%s=%s.startCatch();%n",ct.name.text, TH);
+                buf.printf("%s.exitTry();%n",TH);
+                buf.printf("%v%n", ct.stmt);
+                buf.printf("%}case %f:%{",function (){
+                    buf.print(finPos.put(ctx.pc++));
+                });
+            } else {
+                ctx.enter({noWait:true}, function () {
+                    buf.printf("try {%{%f%n%}} ",
+                            noSurroundCompoundF(node.stmt));
+                    node.catches.forEach(v.visit);
+                });
+            }
+        },
+        "catch": function (node) {
+            buf.printf("catch (%s) {%{%f%n%}}",node.name.text, noSurroundCompoundF(node.stmt));
+        },
+        "throw": function (node) {
+            buf.printf("throw %v;%n",node.ex);
         },
         "while": function (node) {
             lastPosF(node)();
@@ -6099,7 +7208,7 @@ function genJS(klass, env,pass) {
                         "%}case %f:%{",
                             pc,
                             node.cond, FRMPC, brkpos,
-                            enterV({closestBrk:brkpos}, node.loop),
+                            enterV({closestBrk:brkpos, exitTryOnJump:false}, node.loop),
                             FRMPC, pc,
                             function () { buf.print(brkpos.put(ctx.pc++)); }
                 );
@@ -6113,11 +7222,7 @@ function genJS(klass, env,pass) {
             lastPosF(node)();
             var an=annotation(node);
             if (node.inFor.type=="forin") {
-                var itn=annotation(node.inFor).iterName;//  genSym("_it_");
-                /*if ( stype(ctx.scope[itn])!=ST.LOCAL) {
-                    console.log(node);throw "Not localled";// in funcexpr/subfunc
-                }*/
-                //ctx.scope[itn]=genSt(ST.LOCAL);
+                var itn=annotation(node.inFor).iterName;
                 if (!ctx.noWait &&
                         (an.fiberCallRequired || an.hasReturn)) {
                     var brkpos=buf.lazy();
@@ -6134,7 +7239,7 @@ function genJS(klass, env,pass) {
                                 pc,
                                 itn, FRMPC, brkpos,
                                 getElemF(itn, node.inFor.isVar, node.inFor.vars),
-                                enterV({closestBrk:brkpos}, node.loop),//node.loop,
+                                enterV({closestBrk:brkpos, exitTryOnJump:false}, node.loop),//node.loop,
                                 FRMPC, pc,
                                 function (buf) { buf.print(brkpos.put(ctx.pc++)); }
                     );
@@ -6169,7 +7274,7 @@ function genJS(klass, env,pass) {
                                 node.inFor.init ,
                                 pc,
                                 node.inFor.cond, FRMPC, brkpos,
-                                enterV({closestBrk:brkpos}, node.loop),//node.loop,
+                                enterV({closestBrk:brkpos,exitTryOnJump:false}, node.loop),//node.loop,
                                 node.inFor.next,
                                 FRMPC, pc,
                                 function (buf) { buf.print(brkpos.put(ctx.pc++)); }
@@ -6192,12 +7297,7 @@ function genJS(klass, env,pass) {
             }
             function getElemF(itn, isVar, vars) {
                 return function () {
-                    //var va=(isVar?"var ":"");
                     vars.forEach(function (v,i) {
-                        /*if ( stype(ctx.scope[v.text])!=ST.LOCAL) {
-                            console.log(itn,v,i);throw "Not localled";// in funcexpr/subfunc
-                        }*/
-                        /*if (isVar) *///ctx.scope[v.text]=genSt(ST.LOCAL);
                         buf.printf("%s=%s[%s];%n", v.text, itn, i);
                     });
                 };
@@ -6253,20 +7353,9 @@ function genJS(klass, env,pass) {
                 });
             }
         },
-        /*useThread: function (node) {
-            var ns=newScope(ctx.scope);
-            ns[node.threadVarName.text]=genSt(ST.THVAR);
-            ctx.enter({scope:ns}, function () {
-                buf.printf("%v",node.stmt);
-            });
-        },*/
         ifWait: function (node) {
             if (!ctx.noWait) {
-                var ns=newScope(ctx.scope);
-                ns[TH]=genSt(ST.THVAR);
-                ctx.enter({scope:ns}, function () {
-                    buf.printf("%v",node.then);
-                });
+                buf.printf("%v",node.then);
             } else {
                 if (node._else) {
                     buf.printf("%v",node._else);
@@ -6363,262 +7452,21 @@ function genJS(klass, env,pass) {
         throw node.type+" is not defined in visitor:compiler2";
     };
     v.cnt=0;
-    var localsCollector=Visitor({
-        varDecl: function (node) {
-            ctx.locals.varDecls[node.name.text]=node;
-        },
-        funcDecl: function (node) {/*FDITSELFIGNORE*/
-            ctx.locals.subFuncDecls[node.head.name.text]=node;
-            //initParamsLocals(node);??
-        },
-        funcExpr: function (node) {/*FEIGNORE*/
-            //initParamsLocals(node);??
-        },
-        exprstmt: function (node) {
-        },
-        "forin": function (node) {
-            var isVar=node.isVar;
-            node.vars.forEach(function (v) {
-                /* if (isVar) */ctx.locals.varDecls[v.text]=node;
+    function genSource() {//G
+        //annotateSource();
+        /*if (env.options.compiler.asModule) {
+            klass.moduleName=getClassName(klass);
+            printf("if (typeof requireSimulator=='object') requireSimulator.setName(%l);%n",klass.moduleName);
+            printf("//requirejs(['Tonyu'%f],function (Tonyu) {%{", function (){
+                getDependingClasses(klass).forEach(function (k) {
+                    printf(",%l",k.moduleName);
+                });
             });
-            var n=genSym("_it_");
-            annotation(node, {iterName:n});
-            ctx.locals.varDecls[n]=node;// ??
-        }
-    });
-    localsCollector.def=visitSub;
-    function visitSub(node) {
-        var t=this;
-        if (!node || typeof node!="object") return;
-        var es;
-        if (node instanceof Array) es=node;
-        else es=node[Grammar.SUBELEMENTS];
-        if (!es) {
-            es=[];
-            for (var i in node) {
-                es.push(node[i]);
-            }
-        }
-        es.forEach(function (e) {
-            t.visit(e);
-        });
-    }
-    function collectLocals(node/*, scope*/) {
-        var locals={varDecls:{}, subFuncDecls:{}};
-        ctx.enter({locals:locals},function () {
-            localsCollector.visit(node);
-        });
-        /*for (var i in locals.varDecls) {
-            scope[i]=genSt(ST.LOCAL);
-        }
-        for (var i in locals.subFuncDecls) {
-            scope[i]=genSt(ST.LOCAL);
         }*/
-        return locals;
-    }
-    function annotateParents(path, data) {
-        path.forEach(function (n) {
-            annotation(n,data);
-        });
-    }
-    function fiberCallRequired(path) {
-        if (ctx.method) ctx.method.fiberCallRequired=true;
-        annotateParents(path, {fiberCallRequired:true} );
-    }
-    var varAccessesAnnotator=Visitor({
-        varAccess: function (node) {
-            var si=getScopeInfo(node.name.text);
-            annotation(node,{scopeInfo:si});
-        },
-        funcDecl: function (node) {/*FDITSELFIGNORE*/
-        },
-        funcExpr: function (node) {/*FEIGNORE*/
-            annotateSubFuncExpr(node);
-        },
-        jsonElem: function (node) {
-            if (node.value) {
-                this.visit(node.value);
-            } else {
-                var si=getScopeInfo(node.key.text);
-                annotation(node,{scopeInfo:si});
-            }
-        },
-        "do": function (node) {
-            var t=this;
-            ctx.enter({jumpable:true}, function () {
-                t.def(node);
-            });
-        },
-        "switch": function (node) {
-            var t=this;
-            ctx.enter({jumpable:true}, function () {
-                t.def(node);
-            });
-        },
-        "while": function (node) {
-            var t=this;
-            ctx.enter({jumpable:true}, function () {
-                t.def(node);
-            });
-        },
-        "for": function (node) {
-            var t=this;
-            ctx.enter({jumpable:true}, function () {
-                t.def(node);
-            });
-        },
-        "forin": function (node) {
-            node.vars.forEach(function (v) {
-                var si=getScopeInfo(v.text);
-                annotation(v,{scopeInfo:si});
-            });
-            this.visit(node.set);
-        },
-        ifWait: function (node) {
-            var t=this;
-            var ns=newScope(ctx.scope);
-            ns[TH]=genSt(ST.THVAR);
-            ctx.enter({scope:ns}, function () {
-                t.visit(node.then);
-            });
-            if (node._else) {
-                t.visit(node._else);
-            }
-            fiberCallRequired(this.path);
-        },
-        "return": function (node) {
-            if (!ctx.noWait) annotateParents(this.path,{hasReturn:true});
-            this.visit(node.value);
-        },
-        "break": function (node) {
-            if (!ctx.jumpable) throw TError( "break； は繰り返しの中で使います." , srcFile, node.pos);
-            if (!ctx.noWait) annotateParents(this.path,{hasJump:true});
-        },
-        "continue": function (node) {
-            if (!ctx.jumpable) throw TError( "continue； は繰り返しの中で使います." , srcFile, node.pos);
-            if (!ctx.noWait) annotateParents(this.path,{hasJump:true});
-        },
-        "reservedConst": function (node) {
-            if (node.text=="arguments") {
-                ctx.finfo.useArgs=true;
-            }
-        },
-        postfix: function (node) {
-            var t;
-            this.visit(node.left);
-            this.visit(node.op);
-            if (t=OM.match(node, myMethodCallTmpl)) {
-                var si=annotation(node.left).scopeInfo;
-                annotation(node, {myMethodCall:{name:t.N,args:t.A,scopeInfo:si}});
-            } else if (t=OM.match(node, othersMethodCallTmpl)) {
-                annotation(node, {othersMethodCall:{target:t.T,name:t.N,args:t.A} });
-            } else if (t=OM.match(node, memberAccessTmpl)) {
-                annotation(node, {memberAccess:{target:t.T,name:t.N} });
-            }
-        },
-        infix: function (node) {
-            var opn=node.op.text;
-            if (opn=="=" || opn=="+=" || opn=="-=" || opn=="*=" ||  opn=="/=" || opn=="%=" ) {
-                checkLVal(node.left);
-            }
-            this.def(node);
-        },
-        exprstmt: function (node) {
-            var t,m;
-            if (!ctx.noWait &&
-                    (t=OM.match(node,noRetFiberCallTmpl)) &&
-                    stype(ctx.scope[t.N])==ST.METHOD &&
-                    !getMethod(t.N).nowait) {
-                t.type="noRet";
-                annotation(node, {fiberCall:t});
-                fiberCallRequired(this.path);
-            } else if (!ctx.noWait &&
-                    (t=OM.match(node,retFiberCallTmpl)) &&
-                    stype(ctx.scope[t.N])==ST.METHOD &&
-                    !getMethod(t.N).nowait) {
-                t.type="ret";
-                annotation(node, {fiberCall:t});
-                fiberCallRequired(this.path);
-            } else if (!ctx.noWait &&
-                    (t=OM.match(node,noRetSuperFiberCallTmpl)) &&
-                    t.S.name) {
-                m=getMethod(t.S.name.text);
-                if (!m) throw new Error("メソッド"+t.S.name.text+" はありません。");
-                if (!m.nowait) {
-                    t.type="noRetSuper";
-                    t.superClass=klass.superClass;
-                    annotation(node, {fiberCall:t});
-                    fiberCallRequired(this.path);
-                }
-            } else if (!ctx.noWait &&
-                    (t=OM.match(node,retSuperFiberCallTmpl)) &&
-                    t.S.name) {
-                m=getMethod(t.S.name.text);
-                if (!m) throw new Error("メソッド"+t.S.name.text+" はありません。");
-                if (!m.nowait) {
-                    t.type="retSuper";
-                    t.superClass=klass.superClass;
-                    annotation(node, {fiberCall:t});
-                    fiberCallRequired(this.path);
-                }
-            }
-            this.visit(node.expr);
-        }
-    });
-    varAccessesAnnotator.def=visitSub;
-    function annotateVarAccesses(node,scope) {
-        ctx.enter({scope:scope}, function () {
-            varAccessesAnnotator.visit(node);
-        });
-    }
-    function copyLocals(locals, scope) {
-        for (var i in locals.varDecls) {
-            scope[i]=genSt(ST.LOCAL);
-        }
-        for (var i in locals.subFuncDecls) {
-            scope[i]=genSt(ST.LOCAL);
-        }
-    }
-
-    function getClassNames(cs){
-        var res=[];
-        cs.forEach(function (c) { res.push(getClassName(c)); });
-        return res;
-    }
-    function initParamsLocals(f) {
-        f.locals=collectLocals(f.stmts);
-        f.params=getParams(f);
-    }
-    function annotateMethodFiber(f) {
-        var ns=newScope(ctx.scope);
-        f.params.forEach(function (p,cnt) {
-            ns[p.name.text]=genSt(ST.PARAM,{
-                klass:klass.name, name:f.name, no:cnt
-            });
-        });
-        copyLocals(f.locals, ns);
-        ctx.enter({method:f,finfo:f, noWait:false}, function () {
-            annotateVarAccesses(f.stmts, ns);
-        });
-        f.scope=ns;
-        annotateSubFuncExprs(f.locals, ns);
-        return ns;
-    }
-    function annotateSource() {
-        ctx.enter({scope:topLevelScope}, function () {
-            for (var name in methods) {
-                if (debug) console.log("anon method1", name);
-                var method=methods[name];
-                initParamsLocals(method);
-                annotateMethodFiber(method);
-            }
-        });
-    }
-    function genSource() {
-        annotateSource();
-        ctx.enter({scope:topLevelScope}, function () {
-            var nspObj=CLASS_HEAD+klass.nameSpace;
-            printf(nspObj+"="+nspObj+"||{};%n");
+        ctx.enter({/*scope:topLevelScope*/}, function () {
+            var nspObj=CLASS_HEAD+klass.namespace;
+            printf("Tonyu.klass.ensureNamespace(%s,%l);%n",CLASS_HEAD.replace(/\.$/,""), klass.namespace);
+            //printf(nspObj+"="+nspObj+"||{};%n");
             if (klass.superClass) {
                 printf("%s=Tonyu.klass(%s,[%s],{%{",
                         getClassName(klass),
@@ -6647,10 +7495,28 @@ function genJS(klass, env,pass) {
                 if (debug) console.log("method3", name);
             }
             printf("__dummy: false%n");
-            printf("%}});");
+            printf("%}});%n");
         });
+        printf("Tonyu.klass.addMeta(%s,%s);%n",
+                getClassName(klass),JSON.stringify(digestMeta(klass)));
+        //if (env.options.compiler.asModule) {
+        //    printf("//%}});");
+        //}
     }
-    function genFiber(fiber) {
+    function digestMeta(klass) {//G
+        var res={
+                fullName: klass.fullName,
+                namespace: klass.namespace,
+                shortName: klass.shortName,
+                decls:{methods:{}}
+        };
+        for (var i in klass.decls.methods) {
+            res.decls.methods[i]=
+            {nowait:!!klass.decls.methods[i].nowait};
+        }
+        return res;
+    }
+    function genFiber(fiber) {//G
         if (isConstructor(fiber)) return;
         var stmts=fiber.stmts;
         var noWaitStmts=[], waitStmts=[], curStmts=noWaitStmts;
@@ -6682,6 +7548,7 @@ function genJS(klass, env,pass) {
         if (waitStmts.length>0) {
             printf(
                  "%s.enter(function %s(%s) {%{"+
+                    "if (%s.lastEx) %s=%s.catchPC;%n"+
                     "for(var %s=%d ; %s--;) {%{"+
                       "switch (%s) {%{"+
                         "%}case 0:%{"+
@@ -6691,25 +7558,26 @@ function genJS(klass, env,pass) {
                     "%}}%n"+
                  "%}});%n",
                  TH,genFn(fiber.pos),TH,
+                    TH,FRMPC,TH,
                     CNTV, CNTC, CNTV,
                       FRMPC,
                         // case 0:
                         fbody,
                         TH,THIZ
-        );
+            );
         } else {
             printf("%s.retVal=%s;return;%n",TH,THIZ);
         }
         printf("%}},%n");
         function nfbody() {
-            ctx.enter({method:fiber, scope: fiber.scope, noWait:true, threadAvail:true }, function () {
+            ctx.enter({method:fiber, /*scope: fiber.scope,*/ noWait:true, threadAvail:true }, function () {
                 noWaitStmts.forEach(function (stmt) {
                     printf("%v%n", stmt);
                 });
             });
         }
         function fbody() {
-            ctx.enter({method:fiber, scope: fiber.scope,
+            ctx.enter({method:fiber, /*scope: fiber.scope,*/
                 finfo:fiber, pc:1}, function () {
                 waitStmts.forEach(function (stmt) {
                     printf("%v%n", stmt);
@@ -6717,7 +7585,7 @@ function genJS(klass, env,pass) {
             });
         }
     }
-    function genFunc(func) {
+    function genFunc(func) {//G
         var fname= isConstructor(func) ? "initialize" : func.name;
         printf("%s :function %s(%j) {%{"+
                   "var %s=%s;%n"+
@@ -6731,14 +7599,14 @@ function genJS(klass, env,pass) {
         );
         function fbody() {
             ctx.enter({method:func, finfo:func,
-                scope: func.scope }, function () {
+                /*scope: func.scope*/ }, function () {
                 func.stmts.forEach(function (stmt) {
                     printf("%v%n", stmt);
                 });
             });
         }
     }
-    function genFuncExpr(node) {
+    function genFuncExpr(node) {//G
         var finfo=annotation(node);// annotateSubFuncExpr(node);
 
         buf.printf("function (%j) {%{"+
@@ -6752,17 +7620,17 @@ function genJS(klass, env,pass) {
         );
         function fbody() {
             ctx.enter({noWait: true, threadAvail:false,
-                finfo:finfo, scope: finfo.scope }, function () {
+                finfo:finfo, /*scope: finfo.scope*/ }, function () {
                 node.body.stmts.forEach(function (stmt) {
                     printf("%v%n", stmt);
                 });
             });
         }
     }
-    function genFn(pos) {
+    function genFn(pos) {//G
         return ("_trc_func_"+traceTbl.add(klass,pos )+"_"+(fnSeq++));//  Math.random()).replace(/\./g,"");
     }
-    function genSubFunc(node) {
+    function genSubFunc(node) {//G
         var finfo=annotation(node);// annotateSubFuncExpr(node);
         buf.printf("function %s(%j) {%{"+
                       "%f%n"+
@@ -6775,49 +7643,17 @@ function genJS(klass, env,pass) {
         );
         function fbody() {
             ctx.enter({noWait: true, threadAvail:false,
-                finfo:finfo, scope: finfo.scope }, function () {
+                finfo:finfo, /*scope: finfo.scope*/ }, function () {
                 node.body.stmts.forEach(function (stmt) {
                     printf("%v%n", stmt);
                 });
             });
         }
     }
-    function annotateSubFuncExpr(node) {
-        var m,ps;
-        var body=node.body;
-        var name=(node.head.name ? node.head.name.text : "anonymous" );
-        if (m=OM.match( node, {head:{params:{params:OM.P}}})) {
-            ps=m.P;
-        } else {
-            ps=[];
-        }
-        var ns=newScope(ctx.scope);
-        ps.forEach(function (p) {
-            ns[p.name.text]=genSt(ST.PARAM);
-        });
-        var locals=collectLocals(body, ns);
-        copyLocals(locals,ns);
-        var finfo=annotation(node);
-        ctx.enter({finfo: finfo}, function () {
-            annotateVarAccesses(body,ns);
-        });
-        var res={scope:ns, locals:locals, name:name, params:ps};
-        annotation(node,res);
-        annotation(node,finfo);
-        annotateSubFuncExprs(locals, ns);
-        return res;
-    }
-    function annotateSubFuncExprs(locals, scope) {
-        ctx.enter({scope:scope}, function () {
-            for (var n in locals.subFuncDecls) {
-                annotateSubFuncExpr(locals.subFuncDecls[n]);
-            }
-        });
-    }
-    function genLocalsF(finfo) {
+    function genLocalsF(finfo) {//G
         return f;
         function f() {
-            ctx.enter({scope:finfo.scope}, function (){
+            ctx.enter({/*scope:finfo.scope*/}, function (){
                 for (var i in finfo.locals.varDecls) {
                     buf.printf("var %s;%n",i);
                 }
@@ -6827,685 +7663,26 @@ function genJS(klass, env,pass) {
             });
         };
     }
-    function isConstructor(f) {
+    function isConstructor(f) {//G
         return OM.match(f, {ftype:"constructor"}) || OM.match(f, {name:"new"});
     }
-    initTopLevelScope();
-    inheritSuperMethod();
-    genSource();
-    klass.src.js=buf.buf;
+    genSource();//G
+    klass.src.js=buf.buf;//G
     if (debug) {
         console.log("method4", buf.buf);
         //throw "ERR";
     }
-
     return buf.buf;
-}
-return {initClassDecls:initClassDecls, genJS:genJS};
+}//B
+return {genJS:genJS};
 })();
 //if (typeof getReq=="function") getReq.exports("Tonyu.Compiler");
 });
-requireSimulator.setName('Tonyu.TraceTbl');
-define(["Tonyu", "FS", "TError"],
-function(Tonyu, FS, TError) {
-return Tonyu.TraceTbl=function () {
-    var TTB={};
-    var POSMAX=1000000;
-    var pathIdSeq=1;
-    var PATHIDMAX=10000;
-    var path2Id={}, id2Path=[];
-    var path2Class={};
-    TTB.add=function (klass, pos){
-        var file=klass.src.tonyu;
-        var path=file.path();
-        var pathId=path2Id[path];
-        if (pathId==undefined) {
-            pathId=pathIdSeq++;
-            if (pathIdSeq>PATHIDMAX) pathIdSeq=0;
-            path2Id[path]=pathId;
-            id2Path[pathId]=path;
-        }
-        path2Class[path]=klass;
-        if (pos>=POSMAX) pos=POSMAX-1;
-        var id=pathId*POSMAX+pos;
-        return id;
-    };
-    TTB.decode=function (id) {
-        var pos=id%POSMAX;
-        var pathId=(id-pos)/POSMAX;
-        var path=id2Path[pathId];
-        if (path) {
-            var f=FS.get(path);
-            var klass=path2Class[path];
-            return TError("Trace info", klass || f, pos);
-        } else {
-            return null;
-            //return TError("Trace info", "unknown src id="+id, pos);
-        }
-    };
-    return TTB;
-};
-//if (typeof getReq=="function") getReq.exports("Tonyu.TraceTbl");
-});
-requireSimulator.setName('PatternParser');
-define(["Tonyu"], function (Tonyu) {return Tonyu.klass({
-	initialize: function (img, options) {
-	    this.options=options || {};
-		this.img=img;
-		this.height = img.height;
-		this.width = img.width;
-		var cv=this.newImage(img.width, img.height);
-		var ctx=cv.getContext("2d");
-		ctx.drawImage(img, 0,0);
-		this.ctx=ctx;
-		this.pixels=this.ctx.getImageData(0, 0, img.width, img.height).data;
-		this.base=this.getPixel(0,0);
-	},
-	newImage: function (w,h) {
-        var cv=document.createElement("canvas");
-        cv.width=w;
-        cv.height=h;
-        return cv;
-	},
-	getPixel: function (x,y) {
-		var imagePixelData = this.pixels;
-		var ofs=(x+y*this.width)*4;
-		var R = imagePixelData[0+ofs];
-  		var G = imagePixelData[1+ofs];
-  		var B = imagePixelData[2+ofs];
-  		var A = imagePixelData[3+ofs];
-  		return ((((A*256)+B)*256)+G)*256+R;
-	},
-	setPixel: function (x,y,p) {
-	    var ofs=(x+y*this.width)*4;
-	    this.pixels[0+ofs]=p & 255;
-	    p=(p-(p&255))/256;
-        this.pixels[1+ofs]=p & 255;
-        p=(p-(p&255))/256;
-        this.pixels[2+ofs]=p & 255;
-        p=(p-(p&255))/256;
-        this.pixels[3+ofs]=p & 255;
-	},
-	parse: function () {
-  		try {
-			//console.log("parse()");
-  			var res=[];// List of charpattern
-			for (var y=0; y<this.height ;y++) {
-				for (var x=0; x<this.width ;x++) {
-					var c=this.getPixel(x, y);
-					if (c!=this.base) {
-						res.push(this.parse1Pattern(x,y));
-					}
-				}
-			}
-			//console.log("parsed:"+res.lenth);
-			return res;
-  		} catch (p) {
-  		    if (p.isParseError) {
-  	            console.log("parse error! "+p);
-  	            return {image: this.img, x:0, y:0, width:this.width, height:this.height};
-  		    }
-  		    throw p;
-  		}
-	},
-  	parse1Pattern:function (x,y) {
-		function hex(s){return s;}
-		var trans=this.getPixel(x, y);
-		var dx=x,dy=y;
-		var base=this.base;
-		var width=this.width, height=this.height;
-		while (dx<width) {
-			var pixel = this.getPixel(dx,dy);
-			if (pixel!=trans) break;
-			dx++;
-		}
-		if (dx>=width || this.getPixel(dx,dy)!=base) {
-		    throw PatterParseError(dx,dy,hex(this.getPixel(dx,dy))+"!="+hex(base));
-		}
-		dx--;
-		while (dy<height) {
-			if (this.getPixel(dx,dy)!=trans) break;
-			dy++;
-		}
-		if (dy>=height || this.getPixel(dx,dy)!=base) {
-		    throw PatterParseError(dx,dy,hex(this.getPixel(dx,dy))+"!="+hex(base));
-		}
-		dy--;
-		var sx=x+1,sy=y+1,w=dx-sx,h=dy-sy;
-        console.log("PP",sx,sy,w,h,dx,dy);
-		if (w*h==0) throw PatterParseError(dx, dy,"w*h==0");
-        var newim=this.newImage(w,h);
-        var nc=newim.getContext("2d");
-        var newImD=nc.getImageData(0,0,w,h);
-		var newD=newImD.data;
-		var di=0;
-		for (var ey=sy ; ey<dy ; ey++) {
-			for (var ex=sx ; ex<dx ; ex++) {
-			    var p=this.getPixel(ex, ey);
-				if (p==trans) {
-					newD[di++]=0;
-					newD[di++]=(0);
-					newD[di++]=(0);
-					newD[di++]=(0);
-				} else {
-                    newD[di++]=(p&255);
-                    p=(p-(p&255))/256;
-                    newD[di++]=(p&255);
-                    p=(p-(p&255))/256;
-                    newD[di++]=(p&255);
-                    p=(p-(p&255))/256;
-                    newD[di++]=(p&255);
-				}
-			}
-		}
-        nc.putImageData(newImD,0,0);
-		for (var yy=sy-1; yy<=dy; yy++) {
-		    for (var xx=sx-1; xx<=dx; xx++) {
-		        this.setPixel(xx,yy, base);
-		    }
-		}
-        if (this.options.boundsInSrc) {
-            return {x:sx,y:sy,width:w,height:h};
-        }
-		return {image:newim, x:0, y:0, width:w, height:h};
-		function PatterParseError(x,y,msg) {
-		    return {toString: function () {
-		        return "at ("+x+","+y+") :"+msg;
-		    }, isParseError:true};
-		}
-	}
-
-});});
-requireSimulator.setName('Util');
-Util=(function () {
-
-function getQueryString(key, default_)
-{
-   if (default_==null) default_="";
-   key = key.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-   var regex = new RegExp("[\\?&]"+key+"=([^&#]*)");
-   var qs = regex.exec(window.location.href);
-   if(qs == null)
-    return default_;
-   else
-    return decodeURLComponentEx(qs[1]);
-}
-function decodeURLComponentEx(s){
-    return decodeURIComponent(s.replace(/\+/g, '%20'));
-}
-function endsWith(str,postfix) {
-    return str.substring(str.length-postfix.length)===postfix;
-}
-function startsWith(str,prefix) {
-    return str.substring(0, prefix.length)===prefix;
-}
-
-return {getQueryString:getQueryString, endsWith: endsWith, startsWith: startsWith};
-})();
-
-requireSimulator.setName('ImageList');
-define(["PatternParser","Util","WebSite"], function (PP,Util,WebSite) {
-    var cache={};
-    function excludeEmpty(resImgs) {
-        var r=[];
-        resImgs.forEach(function (resImg,i) {
-            if (!resImg || resImg.url=="") return;
-            r.push(resImg);
-        });
-        return r;
-    }
-    var IL;
-    IL=function (resImgs, onLoad,options) {
-        //  resImgs:[{url: , [pwidth: , pheight:]?  }]
-	    if (!options) options={};
-        resImgs=excludeEmpty(resImgs);
-        var resa=[];
-        var cnt=resImgs.length;
-        resImgs.forEach(function (resImg,i) {
-            console.log("loading", resImg,i);
-            var url=resImg.url;
-            var urlKey=url;
-            if (cache[urlKey]) {
-            	proc.apply(cache[urlKey],[]);
-            	return;
-            }
-            url=IL.convURL(url,options.baseDir);
-            //if (!Util.startsWith(url,"data:")) url+="?" + new Date().getTime();
-            var im=$("<img>");
-            im.load(function () {
-            	cache[urlKey]=this;
-            	proc.apply(this,[]);
-            });
-            im.attr("src",url);
-            function proc() {
-                var pw,ph;
-                if ((pw=resImg.pwidth) && (ph=resImg.pheight)) {
-                    var x=0, y=0, w=this.width, h=this.height;
-                    var r=[];
-                    while (true) {
-                        var rw=pw,rh=ph;
-                        if (x+pw>w) rw=w-x;
-                        if (y+ph>h) rh=h-y;
-                        r.push({image:this, x:x,y:y, width:rw, height:rh});
-                        x+=pw;
-                        if (x+pw>w) {
-                            x=0;
-                            y+=ph;
-                            if (y+ph>h) break;
-                        }
-                    }
-                    resa[i]=r;
-                } else {
-                    var p=new PP(this);
-                    resa[i]=p.parse();
-                }
-                resa[i].name=resImg.name;
-                cnt--;
-                if (cnt==0) {
-                    var res=[];
-                    var names={};
-                    resa.forEach(function (a) {
-                        names[a.name]=res.length;
-                        res=res.concat(a);
-                    });
-                    res.names=names;
-                    onLoad(res);
-                }
-            }
-        });
-    };
-    IL.load=IL;
-    IL.parse1=function (resImg, imgDOM, options) {
-        var pw,ph;
-        var res;
-        if ((pw=resImg.pwidth) && (ph=resImg.pheight)) {
-            var x=0, y=0, w=imgDOM.width, h=imgDOM.height;
-            var r=[];
-            while (true) {
-                r.push({image:this, x:x,y:y, width:pw, height:ph});
-                x+=pw;
-                if (x+pw>w) {
-                    x=0;
-                    y+=ph;
-                    if (y+ph>h) break;
-                }
-            }
-            res=r;
-        } else {
-            var p=new PP(imgDOM,options);
-            res=p.parse();
-        }
-        res.name=resImg.name;
-        return res;
-    };
-	IL.convURL=function (url, baseDir) {
-	    if (url==null) url="";
-	    url=url.replace(/\$\{([a-zA-Z0-9_]+)\}/g, function (t,name) {
-	        return WebSite[name];
-	    });
-        if (WebSite.urlAliases[url]) url=WebSite.urlAliases[url];
-	    if (Util.startsWith(url,"ls:")) {
-	        var rel=url.substring("ls:".length);
-	        if (!baseDir) throw new Error("Basedir not specified");
-	        var f=baseDir.rel(rel);
-	        if (!f.exists()) throw "ImageList file not found: "+f;
-	        url=f.text();
-	    }
-	    return url;
-	};
-	window.ImageList=IL;
-    return IL;
-});
-requireSimulator.setName('StackTrace');
-define([],function (){
-    var trc={};
-    var pat=/_trc_func_([0-9]+)_.*[^0-9]([0-9]+):([0-9]+)[\s\)]*\r?$/;
-    trc.isAvailable=function () {
-        var scr=
-            "({\n"+
-            "    main :function _trc_func_17000000_0() {\n"+
-            "      var a=(this.t.x);\n"+
-            "    }\n"+
-            "}).main();\n";
-        var s;
-        try {
-            eval(scr);
-        } catch (e) {
-            s=e.stack;
-            if (typeof s!="string") return false;
-            var lines=s.split(/\n/);
-            for (var i=0 ; i<lines.length; i++) {
-                var p=pat.exec(lines[i]);
-                if (p) return true;
-            }
-        }
-        return false;
-    };
-    trc.get=function (e,ttb) {
-        var s=e.stack;
-        if (typeof s!="string") return false;
-        var lines=s.split(/\n/);
-        var res=[];
-        for (var i=0 ; i<lines.length; i++) {
-            var p=pat.exec(lines[i]);
-            if (!p) continue;
-            var id=p[1];
-            var row=p[2];
-            var col=p[3];
-            var tri=ttb.decode(id);
-            if (tri && tri.klass) {
-                var str=tri.klass.src.js;
-                var slines=str.split(/\n/);
-                var sid=null;
-                for (var j=0 ; j<slines.length && j+1<row ; j++) {
-                    var lp=/\$LASTPOS=([0-9]+)/.exec(slines[j]);
-                    if (lp) sid=parseInt(lp[1]);
-                }
-                //console.log("slines,row,sid",slines,row,sid);
-                if (sid) {
-                    var stri=ttb.decode(sid);
-                    if (stri) res.push(stri);
-                }
-            }
-        }
-        /*$lastStackTrace=res;
-        $showLastStackTrace=function () {
-            console.log("StackTrace.get",res);
-            //console.log("StackTrace.get",lines,res);
-        };*/
-        return res;
-    };
-    return trc;
-});
-requireSimulator.setName('typeCheck');
-if (typeof define!=="function") {
-   define=require("requirejs").define;
-}
-define(["Visitor"],function (Visitor) {
-TypeCheck=function () {
-    var ex={"[SUBELEMENTS]":1,pos:1,len:1};
-
-
-    function lit(s) {
-        return "'"+s+"'";
-    }
-    function str(o) {
-        if (!o || typeof o=="number" || typeof o=="boolean") return o;
-        if (typeof o=="string") return lit(o);
-        if (o.DESC) return str(o.DESC);
-        var keys=[];
-        for (var i in o) {
-            if (ex[i]) continue;
-            keys.push(i);
-        }
-        keys=keys.sort();
-        var buf="{";
-        var com="";
-        keys.forEach(function (key) {
-            buf+=com+key+":"+str(o[key]);
-            com=",";
-        });
-        buf+="}";
-        return buf;
-    }
-};
-return TypeCheck;
-});
-requireSimulator.setName('Auth');
-define(["WebSite"],function (WebSite) {
-    var auth={};
-    auth.currentUser=function (onend) {
-        $.ajax({type:"get",url:WebSite.serverTop+"/currentUser",data:{withCsrfToken:true},
-            success:function (res) {
-                console.log("auth.currentUser",res);
-                res=JSON.parse(res);
-                var u=res.user;
-                if (u=="null") u=null;
-                console.log("user", u, "csrfToken",res.csrfToken);
-                onend(u,res.csrfToken);
-            }
-        });
-    };
-    auth.assertLogin=function (options) {
-        /*if (typeof options=="function") options={complete:options};
-        if (!options.confirm) options.confirm="この操作を行なうためにはログインが必要です．ログインしますか？";
-        if (typeof options.confirm=="string") {
-            var mesg=options.confirm;
-            options.confirm=function () {
-                return confirm(mesg);
-            };
-        }*/
-        auth.currentUser(function (user,csrfToken) {
-            if (user) {
-                return options.success(user,csrfToken);
-            }
-            window.onLoggedIn=options.success;
-            options.showLoginLink(WebSite.serverTop+"/login");
-        });
-    };
-    window.Auth=auth;
-    return auth;
-});
-requireSimulator.setName('Blob');
-define(["Auth","WebSite","Util"],function (a,WebSite,Util) {
-    var Blob={};
-    var BLOB_PATH_EXPR="${blobPath}";
-    Blob.BLOB_PATH_EXPR=BLOB_PATH_EXPR;
-    Blob.upload=function(user, project, file, options) {
-        var fd = new FormData(document.getElementById("fileinfo"));
-        if (options.error) {
-            options.error=function (r) {alert(r);};
-        }
-        fd.append("theFile", file);
-        fd.append("user",user);
-        fd.append("project",project);
-        fd.append("fileName",file.name);
-        $.ajax({
-            type : "get",
-            url : WebSite.serverTop+"/blobURL",
-            success : function(url) {
-                $.ajax({
-                    url : url,
-                    type : "POST",
-                    data : fd,
-                    processData : false, // jQuery がデータを処理しないよう指定
-                    contentType : false, // jQuery が contentType を設定しないよう指定
-                    success : function(res) {
-                        console.log("Res = " + res);
-                        options.success.apply({},arguments);// $("#drag").append(res);
-                    },
-                    error: options.error
-                });
-            }
-        });
-    };
-    Blob.isBlobURL=function (url) {
-        if (Util.startsWith(url,BLOB_PATH_EXPR)) {
-            var a=url.split("/");
-            return {user:a[1], project:a[2], fileName:a[3]};
-        }
-    };
-    // actualURL;
-    Blob.url=function(user,project,fileName) {
-        return WebSite.blobPath+user+"/"+project+"/"+fileName;
-    };
-    Blob.uploadToExe=function (prj, options) {
-        var bis=prj.getBlobInfos();
-        var cnt=bis.length;
-        console.log("uploadBlobToExe cnt=",cnt);
-        if (cnt==0) return options.success();
-        if (!options.progress) options.progress=function (cnt) {
-            console.log("uploadBlobToExe cnt=",cnt);
-        };
-        bis.forEach(function (bi) {
-            var data={csrfToken:options.csrfToken};
-            for (var i in bi) data[i]=bi[i];
-            $.ajax({
-                type:"get",
-                url: WebSite.serverTop+"/uploadBlobToExe",
-                data:data,
-                success: function () {
-                     cnt--;
-                     if (cnt==0) return options.success();
-                     else options.progress(cnt);
-                },
-                error:options.error
-             });
-        });
-    };
-    return Blob;
-});
-requireSimulator.setName('ImageRect');
-define([],function () {
-    function draw(img, canvas) {
-        if (typeof img=="string") {
-            var i=new Image();
-            var res=null;
-            var callback=null;
-            var onld=function (clb) {
-                if (clb) callback=clb;
-                if (callback && res) {
-                    callback(res);
-                }
-            };
-            i.onload=function () {
-                res=draw(i,canvas);
-                onld();
-            };
-            i.src=img;
-            return onld;
-        }
-        var cw=canvas.width;
-        var ch=canvas.height;
-        var cctx=canvas.getContext("2d");
-        var width=img.width;
-        var height=img.height;
-        var calcw=ch/height*width; // calch=ch
-        var calch=cw/width*height; // calcw=cw
-        if (calch>ch) calch=ch;
-        if (calcw>cw) calcw=cw;
-        cctx.clearRect(0,0,cw,ch);
-        var marginw=Math.floor((cw-calcw)/2);
-        var marginh=Math.floor((ch-calch)/2);
-        cctx.drawImage(img,
-                0,0,width, height,
-                marginw,marginh,calcw, calch );
-        return {left: marginw, top:marginh, width:calcw, height:calch,src:img};
-    }
-    return draw;
-});
-requireSimulator.setName('thumbnail');
-define(["ImageRect"],function (IR) {
-    var TN={};
-    var createThumbnail;
-    var NAME="$icon_thumbnail";
-    TN.set=function (prj,delay) {
-        setTimeout(function () { crt(prj);} ,delay);
-    };
-    TN.get=function (prj) {
-        var f=TN.file(prj);
-        if (!f.exists()) return null;
-        return f.text();
-    };
-    TN.file=function (prj) {
-        var prjdir=prj.getDir();
-        var imfile= prjdir.rel("images/").rel("icon_thumbnail.png");
-        //console.log("Thumb file=",imfile.path(),imfile.exists());
-        return imfile;
-    };
-    function crt(prj) {
-        try {
-            var img=Tonyu.globals.$Screen.buf[0];
-            var cv=$("<canvas>").attr({width:100,height:100});
-            IR(img, cv[0]);
-            var url=cv[0].toDataURL();
-            //window.open(url);
-            var rsrc=prj.getResource();
-            var prjdir=prj.getDir();
-            var imfile=TN.file(prj);
-            imfile.text(url);
-            var item={
-                name:NAME,
-                pwidth:100,pheight:100,url:"ls:"+imfile.relPath(prjdir)
-            };
-            var imgs=rsrc.images;
-            var add=false;
-            for (var i=0 ; i<imgs.length ; i++) {
-                if (imgs[i].name==NAME) {
-                    imgs[i]=item;
-                    add=true;
-                }
-            }
-            if (!add) imgs.push(item);
-
-            prj.setResource(rsrc);
-            console.log("setRSRC",rsrc);
-        } catch (e) {
-            console.log("Create thumbnail failed",e);
-        }
-    };
-    return TN;
-});
-requireSimulator.setName('plugins');
-define(["WebSite"],function (WebSite){
-    var plugins={};
-    var installed= {
-        box2d:{src: "Box2dWeb-2.1.a.3.min.js",detection:/T2Body/,symbol:"Box2D" },
-        timbre: {src:"timbre.js",detection:/\bplay(SE)?\b/,symbol:"T" }
-    };
-    plugins.detectNeeded=function (src,res) {
-        for (var name in installed) {
-            var r=installed[name].detection.exec(src);
-            if (r) res[name]=1;
-        }
-        return res;
-    };
-    plugins.loaded=function (name) {
-        var i=installed[name];
-        if (!i) throw new Error("plugin not found: "+name);
-        return window[i.symbol];
-    };
-    plugins.loadAll=function (names,options) {
-        options=convOpt(options);
-        var namea=[];
-        for (var name in names) {
-            if (installed[name] && !plugins.loaded(name)) {
-                namea.push(name);
-            }
-        }
-        var i=0;
-        console.log("loading plugins",namea);
-        loadNext();
-        function loadNext() {
-            if (i>=namea.length) options.onload();
-            else plugins.load(namea[i++],loadNext);
-        }
-    };
-    function convOpt(options) {
-        if (typeof options=="function") options={onload:options};
-        if (!options) options={};
-        if (!options.onload) options.onload=function (){};
-        return options;
-    }
-    plugins.load=function (name,options) {
-        var i=installed[name];
-        if (!i) throw new Error("plugin not found: "+name);
-        options=convOpt(options);
-        var src=WebSite.pluginTop+"/"+i.src;
-        $.getScript(src, options.onload);
-    };
-    plugins.request=function (name) {
-        if (plugins.loaded(name)) return;
-        var req=new Error("Plugin "+name+" required");
-        req.pluginName=name;
-    };
-    return plugins;
-});
 requireSimulator.setName('Tonyu.Project');
-define(["Tonyu", "Tonyu.Compiler", "TError", "FS", "Tonyu.TraceTbl","ImageList","StackTrace",
-        "typeCheck","Blob","thumbnail","WebSite","plugins"],
-        function (Tonyu, Tonyu_Compiler, TError, FS, Tonyu_TraceTbl, ImageList,StackTrace,
-                tc,Blob,thumbnail,WebSite,plugins) {
+define(["Tonyu", /*"Tonyu.Compiler",*/ "TError", "FS", "Tonyu.TraceTbl","ImageList","StackTrace",
+        "typeCheck","Blob","thumbnail","WebSite","plugins", "Tonyu.Compiler.Semantics", "Tonyu.Compiler.JSGenerator"],
+        function (Tonyu, /*Tonyu_Compiler,*/ TError, FS, Tonyu_TraceTbl, ImageList,StackTrace,
+                tc,Blob,thumbnail,WebSite,plugins, Semantics, JSGenerator) {
 return Tonyu.Project=function (dir, kernelDir) {
     var TPR={};
     var home=FS.get(WebSite.tonyuHome);
@@ -7613,7 +7790,7 @@ return Tonyu.Project=function (dir, kernelDir) {
                         name:nb,
                         fullName: fullCn,
                         shortName: nb,
-                        nameSpace:nsp,
+                        namespace:nsp,
                         src:{
                             tonyu: f
                         }
@@ -7625,13 +7802,20 @@ return Tonyu.Project=function (dir, kernelDir) {
         for (var n in env.classes) {/*ENVC*/
         	if (skip[n]) continue;/*ENVC*/
             console.log("initClassDecl: "+n);
-            Tonyu.Compiler.initClassDecls(env.classes[n], env);/*ENVC*/
+            //Tonyu.Compiler.initClassDecls(env.classes[n], env);/*ENVC*/
+            Semantics.initClassDecls(env.classes[n], env);/*ENVC*/
         }
         var ord=orderByInheritance(env.classes);/*ENVC*/
         ord.forEach(function (c) {
+            if (skip[c.fullName]) return;//CFN c.name->c.fullName
+            console.log("annotate :"+c.fullName);
+            Semantics.annotate(c, env);
+        });
+        ord.forEach(function (c) {
         	if (skip[c.fullName]) return;//CFN c.name->c.fullName
             console.log("genJS :"+c.fullName);
-            Tonyu.Compiler.genJS(c, env);
+            //Tonyu.Compiler.genJS(c, env);
+            JSGenerator.genJS(c, env);
             try {
                 eval(c.src.js);
             } catch(e){

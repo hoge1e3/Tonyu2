@@ -1,51 +1,51 @@
 <html><head><meta charset="utf-8"/><meta http-equiv="Content-type" content="text/html; charset=utf8"/></head><body><link rel='stylesheet' href='/css/bootstrap.css'/>
 <style>body{padding-top:20px; margin-left: 20px; margin-right:20px;}</style>
 <title>crash</title>
-<div><a id="marker_59941-0" name="marker_59941-0"></a><a href="say2.html">前へ</a><span> - </span><a href="left.html">次へ</a><span> - </span><a href="projectIndex.html">目次</a><span>
-</span><h1><a id="marker_59941-1" name="marker_59941-1"></a><span>キャラクタの衝突判定をしましょう</span></h1><a id="marker_59941-2" name="marker_59941-2"></a><p></p><a id="marker_59941-3" name="marker_59941-3"></a><span>次に，猫(Cat)がリンゴ(Apple)にぶつかると，リンゴを取る（リンゴが消える）ようにしてみましょう．</span><span>
-</span><a id="marker_59941-4" name="marker_59941-4"></a><p></p><a id="marker_59941-5" name="marker_59941-5"></a><code><span>watchHit</span></code><span> という命令を使うと，２つのキャラクタがぶつかったときに，</span><span>
-</span><a id="marker_59941-6" name="marker_59941-6"></a><span>特定の命令を実行することができます．</span><span>
-</span><a id="marker_59941-7" name="marker_59941-7"></a><p></p><a id="marker_59941-8" name="marker_59941-8"></a><strong>リスト1</strong><span>の</span><img src="../../images/editAdd.png"><span>で示した部分を追加してみましょう．</span><span>
-</span><a id="marker_59941-9" name="marker_59941-9"></a><span>（まだプログラムは実行しないでください）</span><span>
-</span><a id="marker_59941-10" name="marker_59941-10"></a><p></p><a id="marker_59941-11" name="marker_59941-11"></a><div class="plist">リスト1 Game</div><a id="marker_59941-21" name="marker_59941-21"></a><pre><a id="marker_59941-12" name="marker_59941-12"></a><span>siro=new Cat;</span><span>
-</span><a id="marker_59941-13" name="marker_59941-13"></a><span>siro.say("いただきまーす");</span><span>
-</span><a id="marker_59941-14" name="marker_59941-14"></a><span>apple1=new Apple;</span><span>
-</span><a id="marker_59941-15" name="marker_59941-15"></a><span>apple1.x=200;</span><span>
-</span><a id="marker_59941-16" name="marker_59941-16"></a><span>apple1.y=150;</span><span>
-</span><a id="marker_59941-17" name="marker_59941-17"></a><span>apple2=new Apple;</span><span>
-</span><a id="marker_59941-18" name="marker_59941-18"></a><span>apple2.x=300;</span><span>
-</span><a id="marker_59941-19" name="marker_59941-19"></a><span>apple2.y=100;</span><span>
-</span><a id="marker_59941-20" name="marker_59941-20"></a><span>watchHit(Cat, Apple, hitCatApple);</span><img src="../../images/editAdd.png"><span>
-</span></pre><a id="marker_59941-22" name="marker_59941-22"></a><p></p><a id="marker_59941-23" name="marker_59941-23"></a><code><span>watchHit(Cat, Apple, hitCatApple)</span></code><span>と書くと，</span><span>
-</span><a id="marker_59941-24" name="marker_59941-24"></a><span>猫（</span><code><span>Cat</span></code><span>）とリンゴ（</span><code><span>Apple</span></code><span>）がぶつかったときに，</span><span>
-</span><a id="marker_59941-25" name="marker_59941-25"></a><code><span>hitCatApple</span></code><span> という命令が実行されるようになります．</span><span>
-</span><a id="marker_59941-26" name="marker_59941-26"></a><p></p><a id="marker_59941-27" name="marker_59941-27"></a><span>ところで，</span><code><span>hitCatApple</span></code><span> ってどんな命令でしょうか？</span><span>
-</span><a id="marker_59941-28" name="marker_59941-28"></a><span>実はこの時点ではそんな命令はありません．この命令は自分で作ってあげる必要があります．</span><span>
-</span><a id="marker_59941-29" name="marker_59941-29"></a><span>さらに</span><strong>リスト2</strong><span>のように追加してみましょう．</span><span>
-</span><a id="marker_59941-30" name="marker_59941-30"></a><p></p><a id="marker_59941-31" name="marker_59941-31"></a><div class="plist">リスト2 Game</div><a id="marker_59941-44" name="marker_59941-44"></a><pre><a id="marker_59941-32" name="marker_59941-32"></a><span>siro=new Cat;</span><span>
-</span><a id="marker_59941-33" name="marker_59941-33"></a><span>siro.say("いただきまーす");</span><span>
-</span><a id="marker_59941-34" name="marker_59941-34"></a><span>apple1=new Apple;</span><span>
-</span><a id="marker_59941-35" name="marker_59941-35"></a><span>apple1.x=200;</span><span>
-</span><a id="marker_59941-36" name="marker_59941-36"></a><span>apple1.y=150;</span><span>
-</span><a id="marker_59941-37" name="marker_59941-37"></a><span>apple2=new Apple;</span><span>
-</span><a id="marker_59941-38" name="marker_59941-38"></a><span>apple2.x=300;</span><span>
-</span><a id="marker_59941-39" name="marker_59941-39"></a><span>apple2.y=100;</span><span>
-</span><a id="marker_59941-40" name="marker_59941-40"></a><span>watchHit(Cat, Apple, hitCatApple);</span><span>
-</span><a id="marker_59941-41" name="marker_59941-41"></a><span>function hitCatApple(cat,apple) {</span><img src="../../images/editAdd.png"><span>
-</span><a id="marker_59941-42" name="marker_59941-42"></a><span>    apple.hide();</span><img src="../../images/editAdd.png"><span>
-</span><a id="marker_59941-43" name="marker_59941-43"></a><span>}</span><img src="../../images/editAdd.png"><span>
-</span></pre><a id="marker_59941-45" name="marker_59941-45"></a><p></p><a id="marker_59941-46" name="marker_59941-46"></a><span>実行すると，猫とリンゴが触れたときにリンゴが消えるようになります．</span><span>
-</span><a id="marker_59941-47" name="marker_59941-47"></a><p></p><a id="marker_59941-48" name="marker_59941-48"></a><span>最後に書いた</span><code><span>function</span></code><span> で始まる部分は，</span><span>
-</span><a id="marker_59941-49" name="marker_59941-49"></a><span>自分で新しい命令を作るための書き方です．</span><span>
-</span><a id="marker_59941-50" name="marker_59941-50"></a><span>ここでは，</span><code><span>hitCatApple</span></code><span>という名前の命令を作っています．</span><span>
-</span><a id="marker_59941-51" name="marker_59941-51"></a><span>その後ろにある</span><code><span>(cat, apple)</span></code><span> という部分は，この命令を実行するに</span><span>
-</span><a id="marker_59941-52" name="marker_59941-52"></a><span>あたって，必要な情報を受け取るためのものです．</span><span>
-</span><a id="marker_59941-53" name="marker_59941-53"></a><span>ここでは，「どのキャラクタと，どのキャラクタがぶつかったか」という情報を受け取り，</span><span>
-</span><a id="marker_59941-54" name="marker_59941-54"></a><span>それぞれに，</span><code><span>cat</span></code><span> と </span><code><span>apple</span></code><span> という名前をつけています．</span><span>
-</span><a id="marker_59941-55" name="marker_59941-55"></a><p></p><a id="marker_59941-56" name="marker_59941-56"></a><code><span>cat</span></code><span> は，もちろん最初に作った猫ですが，</span><span>
-</span><a id="marker_59941-57" name="marker_59941-57"></a><span>もうひとつの</span><code><span>apple</span></code><span> は，そのとき猫に触れていたリンゴです．</span><span>
-</span><a id="marker_59941-58" name="marker_59941-58"></a><span>それは</span><code><span>apple1</span></code><span> かもしれないし，</span><span>
-</span><a id="marker_59941-59" name="marker_59941-59"></a><code><span>apple2</span></code><span> かもしれませんが，とにかく猫が触れていたほうのリンゴに，</span><code><span>apple</span></code><span>という名前がつけられます．</span><span>
-</span><a id="marker_59941-60" name="marker_59941-60"></a><p></p><a id="marker_59941-61" name="marker_59941-61"></a><span>そして，その</span><code><span>apple</span></code><span> に， </span><code><span>apple.hide()</span></code><span> という命令を行っています．これは，そのキャラクタ（ここでは</span><code><span>apple</span></code><span>）を隠す（画面から見えなくする）命令です．</span><span>
-</span><a id="marker_59941-62" name="marker_59941-62"></a><p></p><a id="marker_59941-63" name="marker_59941-63"></a><p></p><a id="marker_59941-64" name="marker_59941-64"></a><p></p><a id="marker_59941-65" name="marker_59941-65"></a><p></p><a id="marker_59941-66" name="marker_59941-66"></a><p></p><a id="marker_59941-67" name="marker_59941-67"></a><a href="say2.html">前へ</a><span> - </span><a href="left.html">次へ</a><span> - </span><a href="projectIndex.html">目次</a><span>
+<div><a id="marker_78285-0" name="marker_78285-0"></a><a href="say2.html">前へ</a><span> - </span><a href="left.html">次へ</a><span> - </span><a href="projectIndex.html">目次</a><span>
+</span><h1><a id="marker_78285-1" name="marker_78285-1"></a><span>キャラクタの衝突判定をしましょう</span></h1><a id="marker_78285-2" name="marker_78285-2"></a><p></p><a id="marker_78285-3" name="marker_78285-3"></a><span>次に，猫(Cat)がリンゴ(Apple)にぶつかると，リンゴを取る（リンゴが消える）ようにしてみましょう．</span><span>
+</span><a id="marker_78285-4" name="marker_78285-4"></a><p></p><a id="marker_78285-5" name="marker_78285-5"></a><code><span>watchHit</span></code><span> という命令を使うと，２つのキャラクタがぶつかったときに，</span><span>
+</span><a id="marker_78285-6" name="marker_78285-6"></a><span>特定の命令を実行することができます．</span><span>
+</span><a id="marker_78285-7" name="marker_78285-7"></a><p></p><a id="marker_78285-8" name="marker_78285-8"></a><strong>リスト1</strong><span>の</span><img src="../../images/editAdd.png"><span>で示した部分を追加してみましょう．</span><span>
+</span><a id="marker_78285-9" name="marker_78285-9"></a><span>（まだプログラムは実行しないでください）</span><span>
+</span><a id="marker_78285-10" name="marker_78285-10"></a><p></p><a id="marker_78285-11" name="marker_78285-11"></a><div class="plist">リスト1 Game</div><a id="marker_78285-21" name="marker_78285-21"></a><pre><a id="marker_78285-12" name="marker_78285-12"></a><span>siro=new Cat;</span><span>
+</span><a id="marker_78285-13" name="marker_78285-13"></a><span>siro.say("いただきまーす");</span><span>
+</span><a id="marker_78285-14" name="marker_78285-14"></a><span>apple1=new Apple;</span><span>
+</span><a id="marker_78285-15" name="marker_78285-15"></a><span>apple1.x=200;</span><span>
+</span><a id="marker_78285-16" name="marker_78285-16"></a><span>apple1.y=150;</span><span>
+</span><a id="marker_78285-17" name="marker_78285-17"></a><span>apple2=new Apple;</span><span>
+</span><a id="marker_78285-18" name="marker_78285-18"></a><span>apple2.x=300;</span><span>
+</span><a id="marker_78285-19" name="marker_78285-19"></a><span>apple2.y=100;</span><span>
+</span><a id="marker_78285-20" name="marker_78285-20"></a><span>watchHit(Cat, Apple, hitCatApple);</span><img src="../../images/editAdd.png"><span>
+</span></pre><a id="marker_78285-22" name="marker_78285-22"></a><p></p><a id="marker_78285-23" name="marker_78285-23"></a><code><span>watchHit(Cat, Apple, hitCatApple)</span></code><span>と書くと，</span><span>
+</span><a id="marker_78285-24" name="marker_78285-24"></a><span>猫（</span><code><span>Cat</span></code><span>）とリンゴ（</span><code><span>Apple</span></code><span>）がぶつかったときに，</span><span>
+</span><a id="marker_78285-25" name="marker_78285-25"></a><code><span>hitCatApple</span></code><span> という命令が実行されるようになります．</span><span>
+</span><a id="marker_78285-26" name="marker_78285-26"></a><p></p><a id="marker_78285-27" name="marker_78285-27"></a><span>ところで，</span><code><span>hitCatApple</span></code><span> ってどんな命令でしょうか？</span><span>
+</span><a id="marker_78285-28" name="marker_78285-28"></a><span>実はこの時点ではそんな命令はありません．この命令は自分で作ってあげる必要があります．</span><span>
+</span><a id="marker_78285-29" name="marker_78285-29"></a><span>さらに</span><strong>リスト2</strong><span>のように追加してみましょう．</span><span>
+</span><a id="marker_78285-30" name="marker_78285-30"></a><p></p><a id="marker_78285-31" name="marker_78285-31"></a><div class="plist">リスト2 Game</div><a id="marker_78285-44" name="marker_78285-44"></a><pre><a id="marker_78285-32" name="marker_78285-32"></a><span>siro=new Cat;</span><span>
+</span><a id="marker_78285-33" name="marker_78285-33"></a><span>siro.say("いただきまーす");</span><span>
+</span><a id="marker_78285-34" name="marker_78285-34"></a><span>apple1=new Apple;</span><span>
+</span><a id="marker_78285-35" name="marker_78285-35"></a><span>apple1.x=200;</span><span>
+</span><a id="marker_78285-36" name="marker_78285-36"></a><span>apple1.y=150;</span><span>
+</span><a id="marker_78285-37" name="marker_78285-37"></a><span>apple2=new Apple;</span><span>
+</span><a id="marker_78285-38" name="marker_78285-38"></a><span>apple2.x=300;</span><span>
+</span><a id="marker_78285-39" name="marker_78285-39"></a><span>apple2.y=100;</span><span>
+</span><a id="marker_78285-40" name="marker_78285-40"></a><span>watchHit(Cat, Apple, hitCatApple);</span><span>
+</span><a id="marker_78285-41" name="marker_78285-41"></a><span>function hitCatApple(cat,apple) {</span><img src="../../images/editAdd.png"><span>
+</span><a id="marker_78285-42" name="marker_78285-42"></a><span>    apple.hide();</span><img src="../../images/editAdd.png"><span>
+</span><a id="marker_78285-43" name="marker_78285-43"></a><span>}</span><img src="../../images/editAdd.png"><span>
+</span></pre><a id="marker_78285-45" name="marker_78285-45"></a><p></p><a id="marker_78285-46" name="marker_78285-46"></a><span>実行すると，猫とリンゴが触れたときにリンゴが消えるようになります．</span><span>
+</span><a id="marker_78285-47" name="marker_78285-47"></a><p></p><a id="marker_78285-48" name="marker_78285-48"></a><span>最後に書いた</span><code><span>function</span></code><span> で始まる部分は，</span><span>
+</span><a id="marker_78285-49" name="marker_78285-49"></a><span>自分で新しい命令を作るための書き方です．</span><span>
+</span><a id="marker_78285-50" name="marker_78285-50"></a><span>ここでは，</span><code><span>hitCatApple</span></code><span>という名前の命令を作っています．</span><span>
+</span><a id="marker_78285-51" name="marker_78285-51"></a><span>その後ろにある</span><code><span>(cat, apple)</span></code><span> という部分は，この命令を実行するに</span><span>
+</span><a id="marker_78285-52" name="marker_78285-52"></a><span>あたって，必要な情報を受け取るためのものです．</span><span>
+</span><a id="marker_78285-53" name="marker_78285-53"></a><span>ここでは，「どのキャラクタと，どのキャラクタがぶつかったか」という情報を受け取り，</span><span>
+</span><a id="marker_78285-54" name="marker_78285-54"></a><span>それぞれに，</span><code><span>cat</span></code><span> と </span><code><span>apple</span></code><span> という名前をつけています．</span><span>
+</span><a id="marker_78285-55" name="marker_78285-55"></a><p></p><a id="marker_78285-56" name="marker_78285-56"></a><code><span>cat</span></code><span> は，もちろん最初に作った猫ですが，</span><span>
+</span><a id="marker_78285-57" name="marker_78285-57"></a><span>もうひとつの</span><code><span>apple</span></code><span> は，そのとき猫に触れていたリンゴです．</span><span>
+</span><a id="marker_78285-58" name="marker_78285-58"></a><span>それは</span><code><span>apple1</span></code><span> かもしれないし，</span><span>
+</span><a id="marker_78285-59" name="marker_78285-59"></a><code><span>apple2</span></code><span> かもしれませんが，とにかく猫が触れていたほうのリンゴに，</span><code><span>apple</span></code><span>という名前がつけられます．</span><span>
+</span><a id="marker_78285-60" name="marker_78285-60"></a><p></p><a id="marker_78285-61" name="marker_78285-61"></a><span>そして，その</span><code><span>apple</span></code><span> に， </span><code><span>apple.hide()</span></code><span> という命令を行っています．これは，そのキャラクタ（ここでは</span><code><span>apple</span></code><span>）を隠す（画面から見えなくする）命令です．</span><span>
+</span><a id="marker_78285-62" name="marker_78285-62"></a><p></p><a id="marker_78285-63" name="marker_78285-63"></a><p></p><a id="marker_78285-64" name="marker_78285-64"></a><p></p><a id="marker_78285-65" name="marker_78285-65"></a><p></p><a id="marker_78285-66" name="marker_78285-66"></a><p></p><a id="marker_78285-67" name="marker_78285-67"></a><a href="say2.html">前へ</a><span> - </span><a href="left.html">次へ</a><span> - </span><a href="projectIndex.html">目次</a><span>
 </span></div><div style="height: 100px;"></div></body></html>

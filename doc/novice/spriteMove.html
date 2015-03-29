@@ -1,32 +1,32 @@
 <html><head><meta charset="utf-8"/><meta http-equiv="Content-type" content="text/html; charset=utf8"/></head><body><link rel='stylesheet' href='/css/bootstrap.css'/>
 <style>body{padding-top:20px; margin-left: 20px; margin-right:20px;}</style>
 <title>spriteMove</title>
-<div><a id="marker_59941-0" name="marker_59941-0"></a><a href="sprite.html">前へ</a><span> - </span><a href="variable.html">次へ</a><span> - </span><a href="projectIndex.html">目次</a><span>
-</span><h1><a id="marker_59941-1" name="marker_59941-1"></a><span> 画像を動かしてみましょう</span></h1><a id="marker_59941-2" name="marker_59941-2"></a><p></p><a id="marker_59941-3" name="marker_59941-3"></a><span>go 命令を使うと，指定した座標で示した位置に画像を動かすことができます．</span><span>
-</span><a id="marker_59941-4" name="marker_59941-4"></a><span>これを利用して，画像を少しずつ違う位置に動かしていき，</span><span>
-</span><a id="marker_59941-5" name="marker_59941-5"></a><span>猫が動くアニメーションを作ってみましょう．</span><span>
-</span><a id="marker_59941-6" name="marker_59941-6"></a><p></p><a id="marker_59941-7" name="marker_59941-7"></a><div class="plist">リスト1 Cat</div><a id="marker_59941-14" name="marker_59941-14"></a><pre><a id="marker_59941-8" name="marker_59941-8"></a><span>go(50,100);</span><span>
-</span><a id="marker_59941-9" name="marker_59941-9"></a><span>go(60,100);</span><span>
-</span><a id="marker_59941-10" name="marker_59941-10"></a><span>go(70,100);</span><span>
-</span><a id="marker_59941-11" name="marker_59941-11"></a><span>go(80,100);</span><span>
-</span><a id="marker_59941-12" name="marker_59941-12"></a><span>go(90,100);</span><span>
-</span><a id="marker_59941-13" name="marker_59941-13"></a><span>go(100,100);</span><span>
-</span></pre><a id="marker_59941-15" name="marker_59941-15"></a><p></p><a id="marker_59941-16" name="marker_59941-16"></a><span>実行すると... 猫が動いていないようですね．いきなり(100,100)の</span><span>
-</span><a id="marker_59941-17" name="marker_59941-17"></a><span>位置に表示されたようです．</span><span>
-</span><a id="marker_59941-18" name="marker_59941-18"></a><p></p><a id="marker_59941-19" name="marker_59941-19"></a><div class="figure"><div><img src="../../doc/images/noWaitCat.png"></div><div><span>図1.</span><strong>リスト1</strong><span>の実行結果</span></div></div><span>
-</span><a id="marker_59941-20" name="marker_59941-20"></a><p></p><a id="marker_59941-21" name="marker_59941-21"></a><span>実は，猫はちゃんと(50,100)の位置から始まって，(60,100)  (70,100) </span><span>
-</span><a id="marker_59941-22" name="marker_59941-22"></a><span>(80,100)  (90,100) と少しずつ動きながら</span><span>
-</span><a id="marker_59941-23" name="marker_59941-23"></a><span>(100,100)の位置まで移動したのですが，</span><span>
-</span><a id="marker_59941-24" name="marker_59941-24"></a><span>コンピュータは，とても素早く命令を実行するため，</span><span>
-</span><a id="marker_59941-25" name="marker_59941-25"></a><span>途中の動作が見えなかったのです．</span><span>
-</span><a id="marker_59941-26" name="marker_59941-26"></a><p></p><a id="marker_59941-27" name="marker_59941-27"></a><span>そこで，命令の実行を少しゆっくりに実行してもらいます．</span><span>
-</span><a id="marker_59941-28" name="marker_59941-28"></a><code><span>sleep</span></code><span> という命令を使うと，途中で実行を待つことができます．</span><span>
-</span><a id="marker_59941-29" name="marker_59941-29"></a><p></p><a id="marker_59941-30" name="marker_59941-30"></a><div class="plist">リスト2 Cat</div><a id="marker_59941-37" name="marker_59941-37"></a><pre><a id="marker_59941-31" name="marker_59941-31"></a><span>go(50,100);sleep();</span><span>
-</span><a id="marker_59941-32" name="marker_59941-32"></a><span>go(60,100);sleep();</span><span>
-</span><a id="marker_59941-33" name="marker_59941-33"></a><span>go(70,100);sleep();</span><span>
-</span><a id="marker_59941-34" name="marker_59941-34"></a><span>go(80,100);sleep();</span><span>
-</span><a id="marker_59941-35" name="marker_59941-35"></a><span>go(90,100);sleep();</span><span>
-</span><a id="marker_59941-36" name="marker_59941-36"></a><span>go(100,100);sleep();</span><span>
-</span></pre><a id="marker_59941-38" name="marker_59941-38"></a><p></p><a id="marker_59941-39" name="marker_59941-39"></a><span>今度は，猫が少しずつ動く様子が見えると思います．</span><span>
-</span><a id="marker_59941-40" name="marker_59941-40"></a><p></p><a id="marker_59941-41" name="marker_59941-41"></a><p></p><a id="marker_59941-42" name="marker_59941-42"></a><p></p><a id="marker_59941-43" name="marker_59941-43"></a><p></p><a id="marker_59941-44" name="marker_59941-44"></a><p></p><a id="marker_59941-45" name="marker_59941-45"></a><p></p><a id="marker_59941-46" name="marker_59941-46"></a><a href="sprite.html">前へ</a><span> - </span><a href="variable.html">次へ</a><span> - </span><a href="projectIndex.html">目次</a><span>
+<div><a id="marker_78285-0" name="marker_78285-0"></a><a href="sprite.html">前へ</a><span> - </span><a href="variable.html">次へ</a><span> - </span><a href="projectIndex.html">目次</a><span>
+</span><h1><a id="marker_78285-1" name="marker_78285-1"></a><span> 画像を動かしてみましょう</span></h1><a id="marker_78285-2" name="marker_78285-2"></a><p></p><a id="marker_78285-3" name="marker_78285-3"></a><span>go 命令を使うと，指定した座標で示した位置に画像を動かすことができます．</span><span>
+</span><a id="marker_78285-4" name="marker_78285-4"></a><span>これを利用して，画像を少しずつ違う位置に動かしていき，</span><span>
+</span><a id="marker_78285-5" name="marker_78285-5"></a><span>猫が動くアニメーションを作ってみましょう．</span><span>
+</span><a id="marker_78285-6" name="marker_78285-6"></a><p></p><a id="marker_78285-7" name="marker_78285-7"></a><div class="plist">リスト1 Cat</div><a id="marker_78285-14" name="marker_78285-14"></a><pre><a id="marker_78285-8" name="marker_78285-8"></a><span>go(50,100);</span><span>
+</span><a id="marker_78285-9" name="marker_78285-9"></a><span>go(60,100);</span><span>
+</span><a id="marker_78285-10" name="marker_78285-10"></a><span>go(70,100);</span><span>
+</span><a id="marker_78285-11" name="marker_78285-11"></a><span>go(80,100);</span><span>
+</span><a id="marker_78285-12" name="marker_78285-12"></a><span>go(90,100);</span><span>
+</span><a id="marker_78285-13" name="marker_78285-13"></a><span>go(100,100);</span><span>
+</span></pre><a id="marker_78285-15" name="marker_78285-15"></a><p></p><a id="marker_78285-16" name="marker_78285-16"></a><span>実行すると... 猫が動いていないようですね．いきなり(100,100)の</span><span>
+</span><a id="marker_78285-17" name="marker_78285-17"></a><span>位置に表示されたようです．</span><span>
+</span><a id="marker_78285-18" name="marker_78285-18"></a><p></p><a id="marker_78285-19" name="marker_78285-19"></a><div class="figure"><div><img src="../../doc/images/noWaitCat.png"></div><div><span>図1.</span><strong>リスト1</strong><span>の実行結果</span></div></div><span>
+</span><a id="marker_78285-20" name="marker_78285-20"></a><p></p><a id="marker_78285-21" name="marker_78285-21"></a><span>実は，猫はちゃんと(50,100)の位置から始まって，(60,100)  (70,100) </span><span>
+</span><a id="marker_78285-22" name="marker_78285-22"></a><span>(80,100)  (90,100) と少しずつ動きながら</span><span>
+</span><a id="marker_78285-23" name="marker_78285-23"></a><span>(100,100)の位置まで移動したのですが，</span><span>
+</span><a id="marker_78285-24" name="marker_78285-24"></a><span>コンピュータは，とても素早く命令を実行するため，</span><span>
+</span><a id="marker_78285-25" name="marker_78285-25"></a><span>途中の動作が見えなかったのです．</span><span>
+</span><a id="marker_78285-26" name="marker_78285-26"></a><p></p><a id="marker_78285-27" name="marker_78285-27"></a><span>そこで，命令の実行を少しゆっくりに実行してもらいます．</span><span>
+</span><a id="marker_78285-28" name="marker_78285-28"></a><code><span>sleep</span></code><span> という命令を使うと，途中で実行を待つことができます．</span><span>
+</span><a id="marker_78285-29" name="marker_78285-29"></a><p></p><a id="marker_78285-30" name="marker_78285-30"></a><div class="plist">リスト2 Cat</div><a id="marker_78285-37" name="marker_78285-37"></a><pre><a id="marker_78285-31" name="marker_78285-31"></a><span>go(50,100);sleep();</span><span>
+</span><a id="marker_78285-32" name="marker_78285-32"></a><span>go(60,100);sleep();</span><span>
+</span><a id="marker_78285-33" name="marker_78285-33"></a><span>go(70,100);sleep();</span><span>
+</span><a id="marker_78285-34" name="marker_78285-34"></a><span>go(80,100);sleep();</span><span>
+</span><a id="marker_78285-35" name="marker_78285-35"></a><span>go(90,100);sleep();</span><span>
+</span><a id="marker_78285-36" name="marker_78285-36"></a><span>go(100,100);sleep();</span><span>
+</span></pre><a id="marker_78285-38" name="marker_78285-38"></a><p></p><a id="marker_78285-39" name="marker_78285-39"></a><span>今度は，猫が少しずつ動く様子が見えると思います．</span><span>
+</span><a id="marker_78285-40" name="marker_78285-40"></a><p></p><a id="marker_78285-41" name="marker_78285-41"></a><p></p><a id="marker_78285-42" name="marker_78285-42"></a><p></p><a id="marker_78285-43" name="marker_78285-43"></a><p></p><a id="marker_78285-44" name="marker_78285-44"></a><p></p><a id="marker_78285-45" name="marker_78285-45"></a><p></p><a id="marker_78285-46" name="marker_78285-46"></a><a href="sprite.html">前へ</a><span> - </span><a href="variable.html">次へ</a><span> - </span><a href="projectIndex.html">目次</a><span>
 </span></div><div style="height: 100px;"></div></body></html>

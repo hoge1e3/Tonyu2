@@ -1,37 +1,37 @@
 <html><head><meta charset="utf-8"/><meta http-equiv="Content-type" content="text/html; charset=utf8"/></head><body><link rel='stylesheet' href='/css/bootstrap.css'/>
 <style>body{padding-top:20px; margin-left: 20px; margin-right:20px;}</style>
 <title>waitmode</title>
-<div><a id="marker_59941-0" name="marker_59941-0"></a><a href="lang.html">lang</a><span>
-</span><a id="marker_59941-1" name="marker_59941-1"></a><p></p><h1><a id="marker_59941-2" name="marker_59941-2"></a><span>動作モード</span></h1><a id="marker_59941-3" name="marker_59941-3"></a><p></p><a id="marker_59941-4" name="marker_59941-4"></a><span>Tonyu2には「待機可能モード」と「待機不能モード」という2つの動作モードがあります．</span><span>
-</span><a id="marker_59941-5" name="marker_59941-5"></a><p></p><h2><a id="marker_59941-6" name="marker_59941-6"></a><span> 待機可能モード</span></h2><a id="marker_59941-7" name="marker_59941-7"></a><p></p><a id="marker_59941-8" name="marker_59941-8"></a><span>待機可能モードで動作している間は，</span><a href="update.html">update</a><span>などの，途中で動作を中断する（つまり，プログラムの動作を待機状態にする）メソッド（これを「待機系メソッド」と呼びます）が呼ばれたときに，一旦処理を中断し，描画や入力状態の更新などの処理を行います．</span><span>
-</span><a id="marker_59941-9" name="marker_59941-9"></a><p></p><a id="marker_59941-10" name="marker_59941-10"></a><span>待機可能モードで動作する条件として，次のものがあります</span><span>
-</span><a id="marker_59941-11" name="marker_59941-11"></a><p></p><ul><li><a id="marker_59941-12" name="marker_59941-12"></a><a href="Actor.html">Actor</a><span>クラスを継承したオブジェクトでは，mainメソッドは待機可能モードで動作します．</span><span>
-</span></li><a id="marker_59941-14" name="marker_59941-14"></a><ul><li><a id="marker_59941-13" name="marker_59941-13"></a><span>ただし，mainメソッドから呼び出される他のメソッドが待機可能モードで動作しない場合もあります．次の条件を参照してください．</span><span>
+<div><a id="marker_78285-0" name="marker_78285-0"></a><a href="lang.html">lang</a><span>
+</span><a id="marker_78285-1" name="marker_78285-1"></a><p></p><h1><a id="marker_78285-2" name="marker_78285-2"></a><span>動作モード</span></h1><a id="marker_78285-3" name="marker_78285-3"></a><p></p><a id="marker_78285-4" name="marker_78285-4"></a><span>Tonyu2には「待機可能モード」と「待機不能モード」という2つの動作モードがあります．</span><span>
+</span><a id="marker_78285-5" name="marker_78285-5"></a><p></p><h2><a id="marker_78285-6" name="marker_78285-6"></a><span> 待機可能モード</span></h2><a id="marker_78285-7" name="marker_78285-7"></a><p></p><a id="marker_78285-8" name="marker_78285-8"></a><span>待機可能モードで動作している間は，</span><a href="update.html">update</a><span>などの，途中で動作を中断する（つまり，プログラムの動作を待機状態にする）メソッド（これを「待機系メソッド」と呼びます）が呼ばれたときに，一旦処理を中断し，描画や入力状態の更新などの処理を行います．</span><span>
+</span><a id="marker_78285-9" name="marker_78285-9"></a><p></p><a id="marker_78285-10" name="marker_78285-10"></a><span>待機可能モードで動作する条件として，次のものがあります</span><span>
+</span><a id="marker_78285-11" name="marker_78285-11"></a><p></p><ul><li><a id="marker_78285-12" name="marker_78285-12"></a><a href="Actor.html">Actor</a><span>クラスを継承したオブジェクトでは，mainメソッドは待機可能モードで動作します．</span><span>
+</span></li><a id="marker_78285-14" name="marker_78285-14"></a><ul><li><a id="marker_78285-13" name="marker_78285-13"></a><span>ただし，mainメソッドから呼び出される他のメソッドが待機可能モードで動作しない場合もあります．次の条件を参照してください．</span><span>
 </span></li></ul><li><span>待機可能モードで動作している間に，次のいずれかの形式をもつ文から呼び出されるメソッドは，待機可能モードで動作します．ただし，メソッド名はそのオブジェクト自身がもつメソッドを指しており，それが待機不能メソッド（後述）でない場合に限ります．</span><span>
-</span></li><a id="marker_59941-17" name="marker_59941-17"></a><ul><li><a id="marker_59941-15" name="marker_59941-15"></a><span> </span><code><span>メソッド名(引数...); </span></code><span>
-</span></li><li><a id="marker_59941-16" name="marker_59941-16"></a><span> </span><code><span>戻り値=メソッド名(引数...); </span></code><span>
-</span></li></ul></ul><p></p><h2><a id="marker_59941-18" name="marker_59941-18"></a><span>待機不能モード</span></h2><a id="marker_59941-19" name="marker_59941-19"></a><p></p><a id="marker_59941-20" name="marker_59941-20"></a><span>上で述べた条件にあてはまらない場合，「待機不能モード」で動作します．</span><span>
-</span><a id="marker_59941-21" name="marker_59941-21"></a><span>待機不能モードでは，待機系メソッドが呼ばれても，途中で動作を中断しません．例えば，待機不能モード中にupdateメソッドが呼ばれても，何も動作を行いません．</span><span>
-</span><a id="marker_59941-22" name="marker_59941-22"></a><p></p><h2><a id="marker_59941-23" name="marker_59941-23"></a><span>待機不能メソッド</span></h2><a id="marker_59941-24" name="marker_59941-24"></a><p></p><a id="marker_59941-25" name="marker_59941-25"></a><span>待機可能モードでは，待機不能モードより動作が遅くなることがあります．そこで，待機系メソッドが呼び出されないことが明らかな場合，必ず待機不能モードで動作したほうが効率がよくなります．このようなメソッドを「待機不能メソッド」と呼びます．</span><span>
-</span><a id="marker_59941-26" name="marker_59941-26"></a><p></p><a id="marker_59941-27" name="marker_59941-27"></a><span>待機不能メソッドは，メソッドの定義の先頭に</span><code><span>nowait</span></code><span>キーワードを追加して定義します．</span><span>
-</span><a id="marker_59941-28" name="marker_59941-28"></a><p></p><a id="marker_59941-33" name="marker_59941-33"></a><pre><a id="marker_59941-30" name="marker_59941-30"></a><span>nowait \myNoWaitMethod(arg1,arg2) {</span><span>
-</span><a id="marker_59941-31" name="marker_59941-31"></a><p></p><a id="marker_59941-32" name="marker_59941-32"></a><span>}</span><span>
-</span></pre><a id="marker_59941-34" name="marker_59941-34"></a><p></p><h2><a id="marker_59941-35" name="marker_59941-35"></a><span>例</span></h2><a id="marker_59941-36" name="marker_59941-36"></a><p></p><a id="marker_59941-58" name="marker_59941-58"></a><pre><a id="marker_59941-38" name="marker_59941-38"></a><p></p><a id="marker_59941-39" name="marker_59941-39"></a><span>method1();        //待機可能モードで動作</span><span>
-</span><a id="marker_59941-40" name="marker_59941-40"></a><span>a=method1();      //待機可能モードで動作</span><span>
-</span><a id="marker_59941-41" name="marker_59941-41"></a><span>a=10+method1();   //待機不能モードで動作</span><span>
-</span><a id="marker_59941-42" name="marker_59941-42"></a><span>other.method1();  //待機不能モードで動作</span><span>
-</span><a id="marker_59941-43" name="marker_59941-43"></a><span>method2();        //待機不能モードで動作</span><span>
-</span><a id="marker_59941-44" name="marker_59941-44"></a><p></p><a id="marker_59941-45" name="marker_59941-45"></a><span>\method1() {</span><span>
-</span><a id="marker_59941-46" name="marker_59941-46"></a><span>   for (i=0 ; i&lt;20 ; i++) {</span><span>
-</span><a id="marker_59941-47" name="marker_59941-47"></a><span>      x++;</span><span>
-</span><a id="marker_59941-48" name="marker_59941-48"></a><span>      update(); // 待機可能モードなら，ここで待機する</span><span>
-</span><a id="marker_59941-49" name="marker_59941-49"></a><span>   }</span><span>
-</span><a id="marker_59941-50" name="marker_59941-50"></a><span>   return x;</span><span>
-</span><a id="marker_59941-51" name="marker_59941-51"></a><span>}</span><span>
-</span><a id="marker_59941-52" name="marker_59941-52"></a><span>nowait \method2() {</span><span>
-</span><a id="marker_59941-53" name="marker_59941-53"></a><span>   for (i=0 ; i&lt;20 ; i++) {</span><span>
-</span><a id="marker_59941-54" name="marker_59941-54"></a><span>      x--;</span><span>
-</span><a id="marker_59941-55" name="marker_59941-55"></a><span>      update(); // ここでは待機しない</span><span>
-</span><a id="marker_59941-56" name="marker_59941-56"></a><span>   }</span><span>
-</span><a id="marker_59941-57" name="marker_59941-57"></a><span>}</span><span>
-</span></pre><a id="marker_59941-59" name="marker_59941-59"></a><p></p><a id="marker_59941-60" name="marker_59941-60"></a><p></p><a id="marker_59941-61" name="marker_59941-61"></a><p></p><a id="marker_59941-62" name="marker_59941-62"></a><p></p><a id="marker_59941-63" name="marker_59941-63"></a><p></p><a id="marker_59941-64" name="marker_59941-64"></a><p></p><a id="marker_59941-65" name="marker_59941-65"></a><p></p></div><div style="height: 100px;"></div></body></html>
+</span></li><a id="marker_78285-17" name="marker_78285-17"></a><ul><li><a id="marker_78285-15" name="marker_78285-15"></a><span> </span><code><span>メソッド名(引数...); </span></code><span>
+</span></li><li><a id="marker_78285-16" name="marker_78285-16"></a><span> </span><code><span>戻り値=メソッド名(引数...); </span></code><span>
+</span></li></ul></ul><p></p><h2><a id="marker_78285-18" name="marker_78285-18"></a><span>待機不能モード</span></h2><a id="marker_78285-19" name="marker_78285-19"></a><p></p><a id="marker_78285-20" name="marker_78285-20"></a><span>上で述べた条件にあてはまらない場合，「待機不能モード」で動作します．</span><span>
+</span><a id="marker_78285-21" name="marker_78285-21"></a><span>待機不能モードでは，待機系メソッドが呼ばれても，途中で動作を中断しません．例えば，待機不能モード中にupdateメソッドが呼ばれても，何も動作を行いません．</span><span>
+</span><a id="marker_78285-22" name="marker_78285-22"></a><p></p><h2><a id="marker_78285-23" name="marker_78285-23"></a><span>待機不能メソッド</span></h2><a id="marker_78285-24" name="marker_78285-24"></a><p></p><a id="marker_78285-25" name="marker_78285-25"></a><span>待機可能モードでは，待機不能モードより動作が遅くなることがあります．そこで，待機系メソッドが呼び出されないことが明らかな場合，必ず待機不能モードで動作したほうが効率がよくなります．このようなメソッドを「待機不能メソッド」と呼びます．</span><span>
+</span><a id="marker_78285-26" name="marker_78285-26"></a><p></p><a id="marker_78285-27" name="marker_78285-27"></a><span>待機不能メソッドは，メソッドの定義の先頭に</span><code><span>nowait</span></code><span>キーワードを追加して定義します．</span><span>
+</span><a id="marker_78285-28" name="marker_78285-28"></a><p></p><a id="marker_78285-33" name="marker_78285-33"></a><pre><a id="marker_78285-30" name="marker_78285-30"></a><span>nowait \myNoWaitMethod(arg1,arg2) {</span><span>
+</span><a id="marker_78285-31" name="marker_78285-31"></a><p></p><a id="marker_78285-32" name="marker_78285-32"></a><span>}</span><span>
+</span></pre><a id="marker_78285-34" name="marker_78285-34"></a><p></p><h2><a id="marker_78285-35" name="marker_78285-35"></a><span>例</span></h2><a id="marker_78285-36" name="marker_78285-36"></a><p></p><a id="marker_78285-58" name="marker_78285-58"></a><pre><a id="marker_78285-38" name="marker_78285-38"></a><p></p><a id="marker_78285-39" name="marker_78285-39"></a><span>method1();        //待機可能モードで動作</span><span>
+</span><a id="marker_78285-40" name="marker_78285-40"></a><span>a=method1();      //待機可能モードで動作</span><span>
+</span><a id="marker_78285-41" name="marker_78285-41"></a><span>a=10+method1();   //待機不能モードで動作</span><span>
+</span><a id="marker_78285-42" name="marker_78285-42"></a><span>other.method1();  //待機不能モードで動作</span><span>
+</span><a id="marker_78285-43" name="marker_78285-43"></a><span>method2();        //待機不能モードで動作</span><span>
+</span><a id="marker_78285-44" name="marker_78285-44"></a><p></p><a id="marker_78285-45" name="marker_78285-45"></a><span>\method1() {</span><span>
+</span><a id="marker_78285-46" name="marker_78285-46"></a><span>   for (i=0 ; i&lt;20 ; i++) {</span><span>
+</span><a id="marker_78285-47" name="marker_78285-47"></a><span>      x++;</span><span>
+</span><a id="marker_78285-48" name="marker_78285-48"></a><span>      update(); // 待機可能モードなら，ここで待機する</span><span>
+</span><a id="marker_78285-49" name="marker_78285-49"></a><span>   }</span><span>
+</span><a id="marker_78285-50" name="marker_78285-50"></a><span>   return x;</span><span>
+</span><a id="marker_78285-51" name="marker_78285-51"></a><span>}</span><span>
+</span><a id="marker_78285-52" name="marker_78285-52"></a><span>nowait \method2() {</span><span>
+</span><a id="marker_78285-53" name="marker_78285-53"></a><span>   for (i=0 ; i&lt;20 ; i++) {</span><span>
+</span><a id="marker_78285-54" name="marker_78285-54"></a><span>      x--;</span><span>
+</span><a id="marker_78285-55" name="marker_78285-55"></a><span>      update(); // ここでは待機しない</span><span>
+</span><a id="marker_78285-56" name="marker_78285-56"></a><span>   }</span><span>
+</span><a id="marker_78285-57" name="marker_78285-57"></a><span>}</span><span>
+</span></pre><a id="marker_78285-59" name="marker_78285-59"></a><p></p><a id="marker_78285-60" name="marker_78285-60"></a><p></p><a id="marker_78285-61" name="marker_78285-61"></a><p></p><a id="marker_78285-62" name="marker_78285-62"></a><p></p><a id="marker_78285-63" name="marker_78285-63"></a><p></p><a id="marker_78285-64" name="marker_78285-64"></a><p></p><a id="marker_78285-65" name="marker_78285-65"></a><p></p></div><div style="height: 100px;"></div></body></html>
