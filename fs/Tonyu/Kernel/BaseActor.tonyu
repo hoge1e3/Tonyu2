@@ -1,11 +1,9 @@
 extends null;
-includes MathMod,EventMod;
+includes MathMod,EventMod,TextRectMod;
 native Tonyu;
 native Key;
 native console;
 native Math;
-native fukidashi;
-native TextRect;
 native FS;
 native Array;
 
@@ -245,7 +243,7 @@ nowait \draw(ctx) {
         if (!fillStyle) fillStyle="white";
         ctx.fillStyle=fillStyle;
         ctx.globalAlpha=this.alpha/255;
-        var rect=TextRect.draw(ctx, text, x, y, size, align , "fill");
+        var rect=drawTextRect(ctx, text, x, y, size, align , "fill");
         width=rect.w;
         height=rect.h;
     }
