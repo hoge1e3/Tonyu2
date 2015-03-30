@@ -1,6 +1,5 @@
 extends null;
-// テキストを描いて(type=="test"なら描いたふりをするだけ)， 
-// 描かれた部分の矩形領域を返す
+
 nowait function drawTextRect(ctx, text, x, topY, h, align , type) {
     if (!align) align="center";
     ctx.textBaseline="top";
@@ -20,8 +19,6 @@ nowait function setFontSize(ctx,sz) {
     ctx.font=sz+post;
 }
 
-// From http://jsdo.it/hoge1e4/4wCX
-//  (x,y) の位置に  V（←これ何て言うんだっけ） の先端が来るようにふきだし表示
 nowait function fukidashi(ctx, text, x, y, sz) {
     var align="c";
     var theight=20;
