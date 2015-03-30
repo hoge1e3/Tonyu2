@@ -301,6 +301,9 @@ return Tonyu=function () {
         k.meta=k.meta||{};
         extend(k.meta, m);
     }
+    klass.getMeta=function (k) {
+        return k.meta;
+    };
     klass.ensureNamespace=function (top,nsp) {
         var keys=nsp.split(".");
         var o=top;
