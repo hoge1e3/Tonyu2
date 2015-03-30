@@ -47,7 +47,3 @@ OK HTML HELP
 OK project info with jsonp
 OK fork
 
-
-// conflict test
-
-// test hoge1e3
