@@ -1,8 +1,0 @@
-x=30;
-y=30;
-while(true) {
-    x++;update();
-}
-\push(r) {
-    print("oush"+r);
-}

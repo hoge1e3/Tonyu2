@@ -1,4 +1,4 @@
-a=[123,430,210, 21, 120 ,23];
+/*a=[123,430,210, 21, 120 ,23];
 for (i=0 ; i<a.length; i++) {
     print(a[i]/2);
 }
@@ -10,7 +10,20 @@ new TQuery;
 updateEx(30);
 print(color);
 color=3;
-
-for (var t in all(TQuery)) {
-    t.die();
+*/
+/*print(T1Line);
+updateEx(50);
+a=all(T1Line);
+a.find \(t) {return t.hidden;};
+*/
+x=0;
+while(true) {
+    drawLine(x,0,100,100);
+    x++;
+    update();
 }
+
+
+/*for (var t in all(TQuery)) {
+    t.die();
+}*/

@@ -321,7 +321,7 @@ nowait \asyncResult() {
     if (!col) col="white";
     var tp=all(T1Line).find \(t) {return t.hidden;};
     if (tp.length>0) {
-        tp[0].extend{x,y,tx,ty,col};
+        tp[0].extend{x,y,tx,ty,col, hidden:false};
     }else {
         new T1Line{x,y,tx,ty,col};  
     }
