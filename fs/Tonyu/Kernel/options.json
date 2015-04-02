@@ -1,0 +1,6 @@
+{
+    "compiler":{
+        "namespace": "kernel",
+        "outputFile": "js/concat.js"
+    }
+}

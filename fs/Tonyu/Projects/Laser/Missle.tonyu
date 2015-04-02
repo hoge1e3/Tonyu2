@@ -1,0 +1,25 @@
+trace=[];
+rotation=0;
+vd=5;
+while(true) {
+    d=atan2($Player.y-y, $Player.x-x);
+    a=angleDiff(rotation,d);
+    vd=1000/max(dist($Player),10);
+    if (abs(a)>5) {
+        if (a<0) rotation+=vd; else rotation-=vd;
+    }
+    x+=cos(rotation)*5;
+    y+=sin(rotation)*5;
+    trace.push{x,y};
+    if (trace.length>50) trace.shift();
+    px=null;py=null;
+    for (t in trace) {
+        if (px) drawLine(px,py,t.x,t.y,"white");
+        //print(px+","+py+","+t.x+","+t.y);
+        px=t.x;py=t.y;
+    }
+    update();
+}
+\max(a,b) {
+    return a>b?a:b;
+}

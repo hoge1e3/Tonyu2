@@ -278,6 +278,12 @@ return Tonyu.Project=function (dir, kernelDir) {
         }
         return false;
     };
+    TPR.getNamespace=function () {
+        var opt=TPR.getOptions();
+        if (opt.compiler && opt.compiler.namespace) return opt.compiler.namespace;
+        if (TPR.isKernelEditable()) return TPR.NSP_KER;
+        return TPR.NSP_USR;
+    };
     TPR.setOptions=function (r) {
         if (r) env.options=r;
         var resFile=dir.rel("options.json");
