@@ -17,8 +17,10 @@ a=all(T1Line);
 a.find \(t) {return t.hidden;};
 */
 x=0;
+y=300;
 while(true) {
     drawLine(x,0,100,100);
+    _fukidashi={c:10,text:"あいう",size:30};
     x++;
     update();
 }

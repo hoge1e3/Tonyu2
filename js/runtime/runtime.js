@@ -1,3 +1,3 @@
-requirejs(["ImageList","TextRect","fukidashi"], function () {
+requirejs(["ImageList"/*,"TextRect","fukidashi"*/], function () {
 
 });

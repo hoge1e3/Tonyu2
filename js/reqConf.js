@@ -4,14 +4,11 @@ var reqConf={
             TextEditor: {
                 exports: "TextEditor"
             },
-/*            FileMenu: {
-                exports: "FileMenu"
-            },*/
             difflib: {
-            	exports: "difflib"
+                exports: "difflib"
             },
             diffview: {
-            	exports: "diffview"
+                exports: "diffview"
             },
             timbre: {
                 exports: "T"
@@ -29,79 +26,22 @@ var reqConf={
             "TextUtil": {
                 "exports": "TextUtil"
             },
-            /*"ObjectMatcher": {
-                "exports": "ObjectMatcher"
-            },*/
             "Arrow": {
                 "exports": "Arrow"
             },
-            /*"context": {
-                "exports": "context"
-            },*/
-            /*"IndentBuffer": {
-                "exports": "IndentBuffer"
-            },*/
-            /*"ExpressionParser": {
-                "deps": ["Parser"],
-                "exports": "ExpressionParser"
-            },*/
-            /*"Grammar": {
-                "deps": ["Parser"],
-                "exports": "Grammar"
-            },*/
-            /*"Parser": {
-                "deps": ["disp"],
-                "exports": "Parser"
-            },*/
-            /*"TonyuLang": {
-                "deps": ["Grammar", "XMLBuffer", "IndentBuffer", "TT",
-			 "disp", "Parser", "ExpressionParser", "TError"],
-                "exports": "TonyuLang"
-            },*/
-	    /*"TT": {
-                "deps": ["Grammar", "XMLBuffer", "IndentBuffer",
-			 "disp", "Parser","TError"],
-		"exports": "TT"
-	    },*/
-            /*"Visitor": {
-                "exports": "Visitor"
-            },*/
-            /*"XMLBuffer": {
-                "deps": ["Parser"],
-                "exports": "XMLBuffer"
-            },*/
-            /*"Tonyu": {
-                "exports": "Tonyu"
-            },*/
-            /*"Tonyu.Compiler": {
-                "deps": ["Tonyu", "Tonyu.Iterator", "TonyuLang", "ObjectMatcher", "TError", "IndentBuffer", "context", "Visitor"],
-                "exports": "Tonyu.Compiler"
-            },*/
             "fixIndent": {
                 "deps": ["TonyuLang", "Visitor", "Grammar"],
                 "exports": "fixIndent"
             },
-            /*"Tonyu.TraceTbl": {
-                "deps": ["Tonyu", "FS", "TError"],
-                "exports": "Tonyu.TraceTbl"
-            },*/
-            /*"Sprites": {
-                "deps": ["fukidashi", "Tonyu"],
-                "exports": "Sprites"
-            },*/
             "Key": {
                 "exports": "Key"
             },
-            "TextRect": {
+            /*"TextRect": {
                 "exports": "TextRect"
             },
             "fukidashi": {
                 "deps": ["TextRect"],
                 "exports": "fukidashi"
-            },
-            /*"showErrorPos": {
-            	deps:[ "WebSite"],
-                "exports": "showErrorPos"
             },*/
             "TError": {
                 "exports": "TError"
@@ -122,10 +62,6 @@ var reqConf={
             "HttpHelper": {
                 "exports": "HttpHelper"
             },
-            /*"Wiki": {
-                "deps": ["HttpHelper", "Arrow", "Util","WebSite"],
-                "exports": "Wiki"
-            },*/
             "ace": {
                 "exports": "ace"
             },
@@ -144,30 +80,24 @@ var reqConf={
             Base64: {
                 exports:"Base64"
             }
-            /*"ide/selProject": {
-                deps: ["fs/ROMk","fs/ROMd","fs/ROMs", "FS","Wiki"]
-            }*/
-            /*"ide/noviceSelProject": {
-                deps: ["fs/ROMk","fs/ROMd","fs/ROMs", "FS","Wiki"]
-            }*/
         },
         "paths": {
-	    Sync: "fs/sync",
-	    TT: "lang/tonyu2_token",
-	    Auth: "fs/auth",
-	    Encoding:"lib/encoding.min",
-	    Base64:"lib/base64.min",
-	    T1Map:"tonyu1/t1map",
+            Sync: "fs/sync",
+            TT: "lang/tonyu2_token",
+            Auth: "fs/auth",
+            Encoding:"lib/encoding.min",
+            Base64:"lib/base64.min",
+            T1Map:"tonyu1/t1map",
             runtime: "runtime/runtime",
             difflib: "lib/difflib",
             diffview: "lib/diffview",
             timbre: "lib/timbre",
             KernelDiffDialog: "ide/KernelDiffDialog",
             searchDialog: "ide/searchDialog",
-        	DiffDialog: "ide/DiffDialog",
-        	ScriptTagFS:"fs/ScriptTagFS",
-        	KeyEventChecker: "lib/KeyEventChecker",
-        	NewProjectDialog: "ide/NewProjectDialog",
+            DiffDialog: "ide/DiffDialog",
+            ScriptTagFS:"fs/ScriptTagFS",
+            KeyEventChecker: "lib/KeyEventChecker",
+            NewProjectDialog: "ide/NewProjectDialog",
             WebSite: "runtime/WebSite",
             UI:"lib/UI",
             ImageResEditor: "ide/ImageResEditor",
@@ -195,18 +125,17 @@ var reqConf={
             "ExpressionParser": "lang/ExpressionParser2",
             "Grammar": "lang/Grammar",
             "Parser": "lang/parser",
+            "ProjectCompiler": "lang/projectCompiler",
             "TonyuLang": "lang/parse_tonyu2",
             "Visitor": "lang/Visitor",
             "XMLBuffer": "lang/XMLBuffer",
             "Tonyu": "runtime/TonyuLib",
             "Tonyu.Iterator": "runtime/Iterator",
-            //"Tonyu.Compiler": "lang/compiler2",
             "Tonyu.Compiler": "lang/compiler",
             "Tonyu.Compiler.JSGenerator": "lang/JSGenerator",
             "Tonyu.Compiler.Semantics": "lang/Semantics",
             "fixIndent": "lang/indent",
             "Tonyu.TraceTbl": "runtime/TraceTbl",
-            //"Sprites": "graphics/Sprites",
             "Key": "runtime/Key",
             "TextRect": "graphics/TextRect",
             "fukidashi": "graphics/fukidashi",
