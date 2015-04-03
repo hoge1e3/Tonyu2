@@ -1,5 +1,6 @@
 define(["IndentBuffer"],function (ib) {
-    var f=function (obj,buf) {
+    var f=function (obj,buf,options) {
+        if (!options) options={};
         if (!buf) buf=ib();
         conv(obj);
         return buf.buf;
@@ -33,28 +34,32 @@ define(["IndentBuffer"],function (ib) {
             } else if (typeof obj=="boolean") {
             	buf.print(obj);
             } else if (typeof obj=="string") {
-            	var lines=obj.split("\n");
-            	if (lines.length==1) {
-            		buf.print(toLiteral(obj));
-            		return;
-            	}
-               	buf.printf("%{");
-            	var lastLineEmpty=lines[lines.length-1]=="";
-            	lines.forEach(function (line, i) {
-            		var last= lines.length-i;
-            		if (last==1) {
-            			if (!lastLineEmpty) {
-            				buf.print(toLiteral(line));
-            			}
-            		} else {
-                    	buf.print(toLiteral(line+"\n"));
-                    	if (last==2 && lastLineEmpty) {
-                    	} else {
-                           	buf.printf("+%n");
-                    	}
-            		}
-            	});
-               	buf.printf("%n%}");
+                if (options.singleLine) {
+                    buf.print(toLiteral(obj));
+                } else {
+                    var lines=obj.split("\n");
+                    if (lines.length==1) {
+                        buf.print(toLiteral(obj));
+                        return;
+                    }
+                    buf.printf("%{");
+                    var lastLineEmpty=lines[lines.length-1]=="";
+                    lines.forEach(function (line, i) {
+                        var last= lines.length-i;
+                        if (last==1) {
+                            if (!lastLineEmpty) {
+                                buf.print(toLiteral(line));
+                            }
+                        } else {
+                            buf.print(toLiteral(line+"\n"));
+                            if (last==2 && lastLineEmpty) {
+                            } else {
+                                buf.printf("+%n");
+                            }
+                        }
+                    });
+                    buf.printf("%n%}");
+                }
             }
         }
     };

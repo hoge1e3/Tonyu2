@@ -14,7 +14,7 @@ define(["JSONCol","IndentBuffer","WebSite"], function (jc,ib,WebSite) {
             var ex=FS.exportDir(dir);
             var p=FS.get(dir).relPath(FS.get(WebSite.tonyuHome));
             ex.base="/Tonyu/"+p;
-            jc(ex,buf);
+            jc(ex,buf,{singleLine:true});
         }, file.name());
         file.text(buf.buf);
         console.log("GenROM  "+ dir + " -> " +file);
