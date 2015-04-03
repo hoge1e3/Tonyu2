@@ -256,6 +256,10 @@ define(["WebSite"],function (WebSite) {
             }
         }
     };
+    FS.resolve=function (path, base) {
+        if (base) return FS.get(FS.get(base).rel(path));
+        return FS.get(path);
+    };
     FS.get=function (path, securityDomain) {
     	if (!securityDomain) securityDomain={};
         if (path==null) throw  new Error("FS.get: Null path");

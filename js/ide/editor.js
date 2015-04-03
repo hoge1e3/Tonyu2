@@ -20,6 +20,8 @@ $(function () {
     var dir=Util.getQueryString("dir", "/Tonyu/Projects/SandBox/");
     var curProjectDir=FS.get(dir);
     var curPrj=Tonyu_Project(curProjectDir, kernelDir);
+    Tonyu.globals.$currentProject=curPrj;
+    Tonyu.currentProject=curPrj;
     var EXT=curPrj.EXT;
     var desktopEnv=loadDesktopEnv();
     var runMenuOrd=desktopEnv.runMenuOrd;
@@ -376,7 +378,11 @@ $(function () {
         var prog=inf.editor; //getCurrentEditor();
         if (curFile && prog && !curFile.isReadOnly()) {
             fixEditorIndent(prog);
-            curFile.text(prog.getValue());
+            var old=curFile.text();
+            var nw=prog.getValue();
+            if (old!=nw) {
+                curFile.text(nw);
+            }
         }
         fl.setModified(false);
     }
@@ -492,7 +498,7 @@ $(function () {
         return fl.curFile();
     };
     FM.onMenuStart=save;
-    curPrj.compileKernel();
+    //curPrj.compileKernel();
     SplashScreen.hide();
     if (curPrj.getBlobInfos().length>0) {
         var ld=UI("div",{title:"ログイン"},["div","このプロジェクトを正常に動作させるにはログインが必要です"]);

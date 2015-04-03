@@ -1,9 +1,11 @@
-define(["Tonyu", /*"Tonyu.Compiler",*/ "TError", "FS", "Tonyu.TraceTbl","ImageList","StackTrace",
+define(["Tonyu", "ProjectCompiler", "TError", "FS", "Tonyu.TraceTbl","ImageList","StackTrace",
         "typeCheck","Blob","thumbnail","WebSite","plugins", "Tonyu.Compiler.Semantics", "Tonyu.Compiler.JSGenerator"],
-        function (Tonyu, /*Tonyu_Compiler,*/ TError, FS, Tonyu_TraceTbl, ImageList,StackTrace,
+        function (Tonyu, ProjectCompiler, TError, FS, Tonyu_TraceTbl, ImageList,StackTrace,
                 tc,Blob,thumbnail,WebSite,plugins, Semantics, JSGenerator) {
 return Tonyu.Project=function (dir, kernelDir) {
-    var TPR={};
+    var TPR=ProjectCompiler(dir);
+    var kernelProject=ProjectCompiler(kernelDir);
+    var _super=Tonyu.extend({},TPR);
     var home=FS.get(WebSite.tonyuHome);
     if (!kernelDir) kernelDir=home.rel("Kernel/");
     var traceTbl=Tonyu.TraceTbl();
@@ -57,15 +59,12 @@ return Tonyu.Project=function (dir, kernelDir) {
         if (main && main.stop) main.stop();
     };
     TPR.rawRun=function (mainClassName) {
-        TPR.compile();
+        TPR.loadClasses();
+        //TPR.compile();
         if (!TPR.runScriptMode) thumbnail.set(TPR, 2000);
         TPR.rawBoot(mainClassName);
     };
-    /*TPR.run=function (mainClassName) {
-        TPR.compile();
-        TPR.boot(mainClassName);
-    };*/
-    TPR.compile=function () {
+    /*TPR.compile=function () {
         console.log("Kernel editable",TPR.isKernelEditable());
     	if (TPR.isKernelEditable()) {
     		//  BaseActor  <-  Actor            <- MyActor
@@ -87,13 +86,13 @@ return Tonyu.Project=function (dir, kernelDir) {
     TPR.compileDir=function (nsp ,dirs, baseClasses) {
         TPR.getOptions();
         Tonyu.runMode=false;
-        env.classes=Tonyu.extend({}, baseClasses || {});/*ENVC*/
+        env.classes=Tonyu.extend({}, baseClasses || {});
         env.aliases={};
         for (var n in env.classes) {
             var cl=env.classes[n];
             env.aliases[ cl.shortName] = cl.fullName;
         }
-        var skip=Tonyu.extend({}, baseClasses || {});/*ENVC*/
+        var skip=Tonyu.extend({}, baseClasses || {});
         Tonyu.currentProject=TPR;
         Tonyu.globals.$currentProject=TPR;
         //if (TPR.isKernelEditable()) kernelDir.each(collect);
@@ -105,7 +104,7 @@ return Tonyu.Project=function (dir, kernelDir) {
             if (f.endsWith(TPR.EXT)) {
                 var nb=f.truncExt(TPR.EXT);
                 var fullCn=nsp+"."+nb;
-                env.classes[fullCn]={/*ENVC*/ //CFN nb->fullCn
+                env.classes[fullCn]={ //CFN nb->fullCn
                         name:nb,
                         fullName: fullCn,
                         shortName: nb,
@@ -118,13 +117,13 @@ return Tonyu.Project=function (dir, kernelDir) {
                 delete skip[fullCn];//CFN nb->fullCn
             }
         }
-        for (var n in env.classes) {/*ENVC*/
-        	if (skip[n]) continue;/*ENVC*/
+        for (var n in env.classes) {
+        	if (skip[n]) continue;
             console.log("initClassDecl: "+n);
-            //Tonyu.Compiler.initClassDecls(env.classes[n], env);/*ENVC*/
-            Semantics.initClassDecls(env.classes[n], env);/*ENVC*/
+            //Tonyu.Compiler.initClassDecls(env.classes[n], env);
+            Semantics.initClassDecls(env.classes[n], env);
         }
-        var ord=orderByInheritance(env.classes);/*ENVC*/
+        var ord=orderByInheritance(env.classes);
         ord.forEach(function (c) {
             if (skip[c.fullName]) return;//CFN c.name->c.fullName
             console.log("annotate :"+c.fullName);
@@ -142,7 +141,7 @@ return Tonyu.Project=function (dir, kernelDir) {
                 throw e;
             }
         });
-    };
+    };*/
     TPR.getResource=function () {
         var resFile=dir.rel("res.json");
         if (resFile.exists()) return resFile.obj();
@@ -278,16 +277,29 @@ return Tonyu.Project=function (dir, kernelDir) {
         }
         return false;
     };
-    TPR.getNamespace=function () {
+    TPR.getNamespace=function () {//override
         var opt=TPR.getOptions();
         if (opt.compiler && opt.compiler.namespace) return opt.compiler.namespace;
         if (TPR.isKernelEditable()) return TPR.NSP_KER;
         return TPR.NSP_USR;
     };
+    TPR.getDependingProjects=function () {//override
+        return [kernelProject];
+    };
+    TPR.getOutputFile=function () {//override
+        var opt=TPR.getOptions();
+        if (opt.compiler.outputFile) return FS.resolve(opt.compiler.outputFile);
+        return dir.rel("js/concat.js");
+    };
     TPR.setOptions=function (r) {
         if (r) env.options=r;
         var resFile=dir.rel("options.json");
-        resFile.obj(env.options);
+        var old=resFile.text();
+        var nw=JSON.stringify(env.options);
+        if (old!=nw) {
+            console.log("update option",old,nw);
+            resFile.text(nw);
+        }
     };
     TPR.rawBoot=function (mainClassName) {
         //var thg=Tonyu.threadGroup();

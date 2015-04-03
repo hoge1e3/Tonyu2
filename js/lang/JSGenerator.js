@@ -567,6 +567,7 @@ function genJS(klass, env) {//B
         },
         superExpr: function (node) {
             var name;
+            if (!klass.superClass) throw new Error(klass.fullName+"には親クラスがありません");
             if (node.name) {
                 name=node.name.text;
                 buf.printf("%s.prototype.%s.apply( %s, %v)",

@@ -1,3 +1,5 @@
+extends Actor;
+
 native Tonyu;
 native Math;
 \new(x,y,p) {

@@ -4,21 +4,17 @@ var TPRC=function (dir) {
     if (!dir.rel) throw new Error("projectCompiler: "+dir+" is not dir obj");
      var TPR={env:{}};
      var traceTbl=Tonyu.TraceTbl();
-     var env=TPR.env;
-     env.traceTbl=traceTbl;
+     TPR.env.traceTbl=traceTbl;
      TPR.EXT=".tonyu";
      TPR.getOptionsFile=function () {
          var resFile=dir.rel("options.json");
          return resFile;
      };
      TPR.getOptions=function () {
-         env.options=null;
+         var env=TPR.env;
+         env.options={};
          var resFile=TPR.getOptionsFile();
          if (resFile.exists()) env.options=resFile.obj();
-         if (env.options && !env.options.run && Tonyu.defaultOptions) env.options=null;
-         if (!env.options) {
-             env.options=Tonyu.defaultOptions;
-         }
          TPR.fixOptions(env.options);
          return env.options;
      };
@@ -55,13 +51,14 @@ var TPRC=function (dir) {
          for (var i in sf) {
              var f=sf[i];
              var l=f.lastUpdate();
-             //console.log(f.name()+" last="+new Date(l));
              if (l>outLast) {
+                 console.log("Should compile: ", f.name()+" last="+new Date(l));
                  return true;
              }
          }
          var resFile=TPR.getOptionsFile();
          if (resFile.exists() && resFile.lastUpdate()>outLast) {
+             console.log("Should compile: ", resFile.name()+" last="+new Date(resFile.lastUpdate()));
              return true;
          }
          return false;
@@ -72,6 +69,7 @@ var TPRC=function (dir) {
      };
      TPR.getOutputFile=function (lang) {
          var opt=TPR.getOptions();
+         console.log("Loaded option: ",dir,opt);
          var outF=TPR.resolve(opt.compiler.outputFile);
          if (outF.isDir()) {
              throw new Error("out: directory style not supported");
@@ -80,6 +78,7 @@ var TPRC=function (dir) {
      };
      // Difference of ctx and env:  env is of THIS project. ctx is of cross-project
      TPR.loadClasses=function (ctx/*or options(For external call)*/) {
+         Tonyu.runMode=false;
          console.log("LoadClasses: "+dir.path());
          ctx=initCtx(ctx);
          var visited=ctx.visited||{};
@@ -110,6 +109,7 @@ var TPRC=function (dir) {
          }
      };
      function initCtx(ctx) {
+         var env=TPR.env;
          if (!ctx) ctx={};
          if (!ctx.visited) {
              ctx={visited:{}, classes:(env.classes=env.classes||{}),options:ctx};
@@ -117,6 +117,7 @@ var TPRC=function (dir) {
          return ctx;
      }
      TPR.compile=function (ctx/*or options(For external call)*/) {
+         Tonyu.runMode=false;
          console.log("Compile: "+dir.path());
          ctx=initCtx(ctx);
          var dp=TPR.getDependingProjects();
@@ -134,8 +135,9 @@ var TPRC=function (dir) {
          var baseClasses=ctx.classes;
          var ctxOpt=ctx.options;
          dirs=TPR.resolve(dirs);
-         Tonyu.runMode=false;
+         var env=TPR.env;
          env.aliases={};
+         env.classes=baseClasses;
          for (var n in baseClasses) {
              var cl=baseClasses[n];
              env.aliases[ cl.shortName] = cl.fullName;
@@ -170,6 +172,7 @@ var TPRC=function (dir) {
          TPR.concatJS(ord);
      };
      TPR.concatJS=function (ord) {
+         var env=TPR.env;
          var cbuf="";
          ord.forEach(function (c) {
              console.log("concatJS :"+c.fullName);
@@ -251,8 +254,8 @@ var TPRC=function (dir) {
     }
     function evalFile(f) {
         console.log("loading: "+f.path());
-        if (typeof require=="function") return require(f.path());
-        else return new Function(f.text())();
+        /*if (typeof require=="function") return require(f.path());
+        else */return new Function(f.text())();
     }
     return TPR;
 }
