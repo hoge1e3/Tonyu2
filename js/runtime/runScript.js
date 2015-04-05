@@ -32,7 +32,11 @@ requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS","runtime
         for (var fn in fo) {
             var f=curProjectDir.rel(fn);
             if (!f.isDir()) {
-                f.useRAMDisk().text(fo[fn]);
+                f.useRAMDisk();
+                var m=fo[fn];
+                f.text(m.text);
+                delete m.text;
+                if (m.lastUpdate) f.metaInfo(m);
             }
         }
         sh.cd(curProjectDir);
@@ -57,6 +61,7 @@ requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS","runtime
         };
         var kernelDir=home.rel("Kernel/");
         var curPrj=Tonyu_Project(curProjectDir, kernelDir);
+        Tonyu.currentProject=Tonyu.globals.$currentProject=curPrj;
         var o=curPrj.getOptions();
         if (o.compiler && o.compiler.diagnose) {
             o.compiler.diagnose=false;

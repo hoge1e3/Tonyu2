@@ -50,7 +50,7 @@ requirejs(["FS","Util","NewProjectDialog","ScriptTagFS","UI","forkBlobs","WebSit
 		var o=STF.toObj();
 		for (var fn in o) {
 			var f=dir.rel(fn);
-			f.text(o[fn]);
+			f.text(o[fn].text);
 		}
 		var warn=false;
 		if (forkFromExe) {

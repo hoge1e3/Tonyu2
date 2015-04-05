@@ -8,12 +8,13 @@ define([],function () {
 	        if (s.type=="text/tonyu") {
 	            var fn=$(s).data("filename");
 	            if (fn) {
+	                var l=parseInt($(s).data("lastupdate"));
 	                var w=$(s).data("wrap");
 	                if (w) {
 	                    w=parseInt(w);
-	                    res[fn]=unwrap(s.innerHTML, w);
+	                    res[fn]={lastUpdate:l, text:unwrap(s.innerHTML, w)};
 	                } else {
-	                    res[fn]=s.innerHTML;
+	                    res[fn]={lastUpdate:l, text:s.innerHTML};
 	                }
 	            }
 	        }

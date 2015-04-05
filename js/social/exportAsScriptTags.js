@@ -19,13 +19,15 @@ define(["FS","Util"], function (FS,Util) {
             var rel=f.relPath(dir);
             //var name=f.truncExt(".tonyu");
             var m="";//(name==main?" data-main='true'":"");
-            buf+="<script language='text/tonyu' type='text/tonyu' data-filename='"+rel+"'"+m+">";
+            var lu=" data-lastupdate='"+f.lastUpdate()+"' ";
+            buf+="<script language='text/tonyu' type='text/tonyu' data-filename='"+rel+"'"+lu+">";
             buf+=f.text();
             buf+="</script>\n\n";
         },{excludes:["files/"]});
         nonTonyu.forEach(function (f) {
             var rel=f.relPath(dir);
-            buf+="<script language='text/tonyu' type='text/tonyu' data-filename='"+rel+"' data-wrap='80'>";
+            var lu=" data-lastupdate='"+f.lastUpdate()+"' ";
+            buf+="<script language='text/tonyu' type='text/tonyu' data-filename='"+rel+"' data-wrap='80'"+lu+">";
             buf+=wrap(f.text(),80);
             buf+="</script>\n\n";
         });

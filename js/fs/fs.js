@@ -436,7 +436,7 @@ define(["WebSite"],function (WebSite) {
             };
             file.useRAMDisk=function () {
                 // currently file only
-                if (ramDiskUsage=="ALL") return
+                if (ramDiskUsage=="ALL") return file;
                 ramDiskUsage=ramDiskUsage||{};
                 ramDiskUsage[path]=true;
                 return file;
