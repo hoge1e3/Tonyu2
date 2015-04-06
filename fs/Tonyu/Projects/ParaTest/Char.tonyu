@@ -1,26 +1,34 @@
 
-x=100;y=30;
-t=parallel("roll",5);
+x=100;y=100;
+g=parallel("go",3);
+s=parallel("scale",0.1);
 
-while(x<200) {
-    x++;
-    update();
-}
-while(x>100) {
-    x--;
-    update();
-}
 
-\roll(speed) {
+\go(speed) {
     while(true) {
-        print("a");
-        while(rotation<180) {
-            rotation+=speed;
+        print("Go Left");
+        while(x<300) {
+            x+=speed;
             update();
         }
-        print("b");
-        while(rotation>0) {
-            rotation-=speed;
+        print("Go Right");
+        while(x>100) {
+            x-=speed;
+            update();
+        }
+    }
+}
+
+\scale(speed) {
+    while(true) {
+        print("Bigger");
+        for (i=0;i<17;i++) {
+            scaleX+=speed;
+            update();
+        }
+        print("Smaller");
+        for (i=0;i<17;i++) {
+            scaleX-=speed;
             update();
         }
     }

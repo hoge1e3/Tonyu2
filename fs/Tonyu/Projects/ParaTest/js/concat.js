@@ -6,25 +6,11 @@ Tonyu.classes.user.Char=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     //$LASTPOS=1000001;
     _this.x=100;
     //$LASTPOS=1000007;
-    _this.y=30;
-    //$LASTPOS=1000013;
-    _this.t=_this.parallel("roll",5);
-    //$LASTPOS=1000036;
-    while (_this.x<200) {
-      //$LASTPOS=1000055;
-      _this.x++;
-      //$LASTPOS=1000064;
-      _this.update();
-      
-    }
-    //$LASTPOS=1000076;
-    while (_this.x>100) {
-      //$LASTPOS=1000095;
-      _this.x--;
-      //$LASTPOS=1000104;
-      _this.update();
-      
-    }
+    _this.y=100;
+    //$LASTPOS=1000014;
+    _this.g=_this.parallel("go",3);
+    //$LASTPOS=1000034;
+    _this.s=_this.parallel("scale",0.1);
   },
   fiber$main :function _trc_func_1000000_1(_thread) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
@@ -34,95 +20,63 @@ Tonyu.classes.user.Char=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     //$LASTPOS=1000001;
     _this.x=100;
     //$LASTPOS=1000007;
-    _this.y=30;
-    //$LASTPOS=1000013;
-    _this.t=_this.parallel("roll",5);
+    _this.y=100;
+    //$LASTPOS=1000014;
+    _this.g=_this.parallel("go",3);
+    //$LASTPOS=1000034;
+    _this.s=_this.parallel("scale",0.1);
     
-    _thread.enter(function _trc_func_1000000_2(_thread) {
-      if (_thread.lastEx) __pc=_thread.catchPC;
-      for(var __cnt=100 ; __cnt--;) {
-        switch (__pc) {
-        case 0:
-          //$LASTPOS=1000036;
-        case 1:
-          if (!(_this.x<200)) { __pc=3; break; }
-          //$LASTPOS=1000055;
-          _this.x++;
-          //$LASTPOS=1000064;
-          _this.fiber$update(_thread);
-          __pc=2;return;
-        case 2:
-          
-          __pc=1;break;
-        case 3:
-          
-          //$LASTPOS=1000076;
-        case 4:
-          if (!(_this.x>100)) { __pc=6; break; }
-          //$LASTPOS=1000095;
-          _this.x--;
-          //$LASTPOS=1000104;
-          _this.fiber$update(_thread);
-          __pc=5;return;
-        case 5:
-          
-          __pc=4;break;
-        case 6:
-          
-          _thread.exit(_this);return;
-        }
-      }
-    });
+    _thread.retVal=_this;return;
   },
-  roll :function _trc_func_1000117_3(speed) {
+  go :function _trc_func_1000061_2(speed) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
-    //$LASTPOS=1000136;
+    //$LASTPOS=1000078;
     while (true) {
-      //$LASTPOS=1000158;
-      _this.print("a");
-      //$LASTPOS=1000178;
-      while (_this.rotation<180) {
-        //$LASTPOS=1000212;
-        _this.rotation+=speed;
-        //$LASTPOS=1000241;
+      //$LASTPOS=1000100;
+      _this.print("Go Left");
+      //$LASTPOS=1000126;
+      while (_this.x<300) {
+        //$LASTPOS=1000153;
+        _this.x+=speed;
+        //$LASTPOS=1000175;
         _this.update();
         
       }
-      //$LASTPOS=1000269;
-      _this.print("b");
-      //$LASTPOS=1000289;
-      while (_this.rotation>0) {
-        //$LASTPOS=1000321;
-        _this.rotation-=speed;
-        //$LASTPOS=1000350;
+      //$LASTPOS=1000203;
+      _this.print("Go Right");
+      //$LASTPOS=1000230;
+      while (_this.x>100) {
+        //$LASTPOS=1000257;
+        _this.x-=speed;
+        //$LASTPOS=1000279;
         _this.update();
         
       }
       
     }
   },
-  fiber$roll :function _trc_func_1000117_4(_thread,speed) {
+  fiber$go :function _trc_func_1000061_3(_thread,speed) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
     
     
-    _thread.enter(function _trc_func_1000117_5(_thread) {
+    _thread.enter(function _trc_func_1000061_4(_thread) {
       if (_thread.lastEx) __pc=_thread.catchPC;
       for(var __cnt=100 ; __cnt--;) {
         switch (__pc) {
         case 0:
-          //$LASTPOS=1000136;
+          //$LASTPOS=1000078;
         case 1:
-          //$LASTPOS=1000158;
-          _this.print("a");
-          //$LASTPOS=1000178;
+          //$LASTPOS=1000100;
+          _this.print("Go Left");
+          //$LASTPOS=1000126;
         case 2:
-          if (!(_this.rotation<180)) { __pc=4; break; }
-          //$LASTPOS=1000212;
-          _this.rotation+=speed;
-          //$LASTPOS=1000241;
+          if (!(_this.x<300)) { __pc=4; break; }
+          //$LASTPOS=1000153;
+          _this.x+=speed;
+          //$LASTPOS=1000175;
           _this.fiber$update(_thread);
           __pc=3;return;
         case 3:
@@ -130,14 +84,14 @@ Tonyu.classes.user.Char=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
           __pc=2;break;
         case 4:
           
-          //$LASTPOS=1000269;
-          _this.print("b");
-          //$LASTPOS=1000289;
+          //$LASTPOS=1000203;
+          _this.print("Go Right");
+          //$LASTPOS=1000230;
         case 5:
-          if (!(_this.rotation>0)) { __pc=7; break; }
-          //$LASTPOS=1000321;
-          _this.rotation-=speed;
-          //$LASTPOS=1000350;
+          if (!(_this.x>100)) { __pc=7; break; }
+          //$LASTPOS=1000257;
+          _this.x-=speed;
+          //$LASTPOS=1000279;
           _this.fiber$update(_thread);
           __pc=6;return;
         case 6:
@@ -153,7 +107,100 @@ Tonyu.classes.user.Char=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
       }
     });
   },
+  scale :function _trc_func_1000308_5(speed) {
+    var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+    
+    //$LASTPOS=1000328;
+    while (true) {
+      //$LASTPOS=1000350;
+      _this.print("Bigger");
+      //$LASTPOS=1000375;
+      //$LASTPOS=1000380;
+      _this.i=0;
+      while(_this.i<17) {
+        {
+          //$LASTPOS=1000408;
+          _this.scaleX+=speed;
+          //$LASTPOS=1000435;
+          _this.update();
+        }
+        _this.i++;
+      }
+      //$LASTPOS=1000463;
+      _this.print("Smaller");
+      //$LASTPOS=1000489;
+      //$LASTPOS=1000494;
+      _this.i=0;
+      while(_this.i<17) {
+        {
+          //$LASTPOS=1000522;
+          _this.scaleX-=speed;
+          //$LASTPOS=1000549;
+          _this.update();
+        }
+        _this.i++;
+      }
+      
+    }
+  },
+  fiber$scale :function _trc_func_1000308_6(_thread,speed) {
+    var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+    //var _arguments=Tonyu.A(arguments);
+    var __pc=0;
+    
+    
+    _thread.enter(function _trc_func_1000308_7(_thread) {
+      if (_thread.lastEx) __pc=_thread.catchPC;
+      for(var __cnt=100 ; __cnt--;) {
+        switch (__pc) {
+        case 0:
+          //$LASTPOS=1000328;
+        case 1:
+          //$LASTPOS=1000350;
+          _this.print("Bigger");
+          //$LASTPOS=1000375;
+          //$LASTPOS=1000380;
+          _this.i=0;;
+        case 2:
+          if (!(_this.i<17)) { __pc=4; break; }
+          //$LASTPOS=1000408;
+          _this.scaleX+=speed;
+          //$LASTPOS=1000435;
+          _this.fiber$update(_thread);
+          __pc=3;return;
+        case 3:
+          
+          _this.i++;
+          __pc=2;break;
+        case 4:
+          
+          //$LASTPOS=1000463;
+          _this.print("Smaller");
+          //$LASTPOS=1000489;
+          //$LASTPOS=1000494;
+          _this.i=0;;
+        case 5:
+          if (!(_this.i<17)) { __pc=7; break; }
+          //$LASTPOS=1000522;
+          _this.scaleX-=speed;
+          //$LASTPOS=1000549;
+          _this.fiber$update(_thread);
+          __pc=6;return;
+        case 6:
+          
+          _this.i++;
+          __pc=5;break;
+        case 7:
+          
+          __pc=1;break;
+        case 8:
+          
+          _thread.exit(_this);return;
+        }
+      }
+    });
+  },
   __dummy: false
 });
-Tonyu.klass.addMeta(Tonyu.classes.user.Char,{"fullName":"user.Char","namespace":"user","shortName":"Char","decls":{"methods":{"main":{"nowait":false},"roll":{"nowait":false}}}});
+Tonyu.klass.addMeta(Tonyu.classes.user.Char,{"fullName":"user.Char","namespace":"user","shortName":"Char","decls":{"methods":{"main":{"nowait":false},"go":{"nowait":false},"scale":{"nowait":false}}}});
 
