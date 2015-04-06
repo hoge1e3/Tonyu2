@@ -1,0 +1,14 @@
+native Tonyu;
+nowait \parallel() {
+     var args=[];
+     for (var i=1; i<arguments.length; i++) {
+         args.push(arguments[i]);
+     }
+     var name=arguments[0];          
+     var thg=$currentThreadGroup;
+     var th;
+     if (thg) th=thg.addObj(this, name, args);
+     on("die") \{th.kill();};
+     return th;
+}
+

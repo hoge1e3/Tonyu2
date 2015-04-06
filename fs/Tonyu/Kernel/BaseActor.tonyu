@@ -1,5 +1,5 @@
 extends null;
-includes MathMod,EventMod,TextRectMod;
+includes MathMod,EventMod,TextRectMod,ParallelMod;
 native Tonyu;
 native Key;
 native console;

@@ -294,7 +294,7 @@ return Tonyu.Project=function (dir, kernelDir) {
     TPR.setOptions=function (r) {
         if (r) env.options=r;
         var resFile=dir.rel("options.json");
-        var old=resFile.text();
+        var old=resFile.exists() ? resFile.text() : "";
         var nw=JSON.stringify(env.options);
         if (old!=nw) {
             console.log("update option",old,nw);

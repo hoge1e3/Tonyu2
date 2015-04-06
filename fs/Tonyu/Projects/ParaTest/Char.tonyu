@@ -1,0 +1,27 @@
+
+x=100;y=30;
+t=parallel("roll",5);
+
+while(x<200) {
+    x++;
+    update();
+}
+while(x>100) {
+    x--;
+    update();
+}
+
+\roll(speed) {
+    while(true) {
+        print("a");
+        while(rotation<180) {
+            rotation+=speed;
+            update();
+        }
+        print("b");
+        while(rotation>0) {
+            rotation-=speed;
+            update();
+        }
+    }
+}
