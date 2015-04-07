@@ -1,0 +1,22 @@
+extends TObject;
+
+listeners=[];
+
+\addListener(f) {
+    listeners.push(f);
+    return {
+        remove: \{
+           removeListener(f);
+        }
+    };
+}
+\removeListener(f) {
+    var i=listeners.indexOf(f);
+    listeners.splice(i,1);
+}
+\fire(args) {
+    for (var h in listeners) {
+        h.apply(this,args);
+    }
+}
+

@@ -45,34 +45,44 @@ x,y,pの値をフィールドに書き込みます
 
 * メソッド
 
+入力
+-[[getkey]]
+動作制御
 -[[update]]
 -[[updateEx]]
 -[[onUpdate]]
--[[getkey]]
+-[[die]]
+-[[isDead]] 
+-[[parallel]]
+-[[asyncResult]]
+-[[waitFor]]
+衝突判定
 -[[crashTo]]
 -[[crashTo1]]
 -[[allCrash]]
 -[[all]]
 -[[getCrashRect]]
--[[die]]
--[[isDead]] 
--[[loadPage]]
+表示
 -[[hide]]
 -[[show]]
--[[rnd]]
 -[[draw]]
--[[extend]]
 -[[print]]
--[[file]]
--[[asyncResult]]
--[[waitFor]]
+-[[color]]
+-[[drawLine]]
+-[[drawText]]
+音声
 -[[play]]
 -[[playSE]]
+数学関数
+-[[rnd]]
+-[[MathMod]]モジュールクラスがもつメソッド
+その他
+-[[loadPage]]
+-[[file]]
+-[[extend]]
 -[[currentThreadGroup]]
 -[[detectShape]]
 -[[hitTo]]
 -[[watchHit]]
--[[MathMod]]モジュールクラスがもつメソッド
 
--[[color]]
--[[]]
+.

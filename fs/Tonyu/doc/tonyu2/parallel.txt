@@ -1,0 +1,23 @@
+[[BaseActor]]
+
+*parallelメソッド
+
+新しく[[スレッド]]を起動し、並行処理を行います
+
+**書式
+
+<<code
+parallel(methodName, args...)
+>>
+-methodName に、新しいスレッドが実行するメソッド名を指定します
+-args （省略可）に、メソッドに渡す引数を指定します
+
+[[実行例>http://tonyuexe.appspot.com/exe/hoge1e4/ParaTest]] / 
+[[ソース>http://tonyuexe.appspot.com/exe/hoge1e4/ParaTest/view-source]]
+
+** 戻り値
+
+生成された[[スレッド]]
+
+
+.

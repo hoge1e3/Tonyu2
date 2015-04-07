@@ -1,17 +1,31 @@
 extends null;
+native console;
 
-\getEventHandlers(type) {
-    if (!_handlers) _handlers={};
-    if (!_handlers[type]) _handlers[type]=[];
-    return _handlers[type];
+\parseArgs(a) {
+   var res={type:a[0], args:[]};
+   for (var i=1 ; i<a.length ; i++) {
+       res.args.push(a[i]);
+   }
+   return res;   
 }
-\on(type, handler) {
-    getEventHandlers(type).push(handler);
+\registerEventHandler(type, obj) {
+   // obj:{ attach, fire }
+   _eventHandlers=_eventHandlers||{};
+   obj=obj || ( (typeof type=="function") ? new type : new EventHandler);
+   return _eventHandlers[type]=obj;
+}
+\getEventHandler(type) {
+   _eventHandlers=_eventHandlers||{};
+   var res=_eventHandlers[type] || registerEventHandler(type);
+   return res;
 }
 
-\fireEvent(type,args) {
-    if (!args) args=[];
-    for (var h in getEventHandlers(type)) {
-        h.apply(this,args);
-    }
+\on() {
+    var a=parseArgs(arguments);
+    var h=getEventHandler(a.type);
+    h.addListener.apply(h,a.args);
+}
+
+\fireEvent(type, args) {
+    getEventHandler(type).fire(args);
 }
