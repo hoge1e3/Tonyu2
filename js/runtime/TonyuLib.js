@@ -272,23 +272,20 @@ return Tonyu=function () {
     	delete prot.initialize;
     	//A includes B  B includes C  B extends D
     	//A extends E   E includes F
-    	//A has methods in B,C,E,F. [Mod] A should extend D.(Thus, E should extend D(or E==D))
-    	//( B shoule be treated as modules.
-    	//  Module's extension indicates that includer class should also exetend the module's parent )
-    	// 2015-02-27 this check is not implemented.
+    	//A has methods in B,C,E,F. [Mod] A extends D.
     	// Known examples:
     	// Actor extends BaseActor, includes PlayMod.
     	// PlayMod extends BaseActor(because use update() in play())
+        res.methods=prot;
+    	prot=bless(parent, prot);
     	includes.forEach(function (m) {
-    		if (!m.methods) throw m+" Does not have methods";
-    		for (var n in m.methods) {
-    			if (!(n in prot)) {
-    				prot[n]=m.methods[n];
-    			}
-    		}
+    		for (var n in m.prototype) {
+                if (!(n in prot)) {
+                    prot[n]=m.prototype[n];
+                }
+            }
     	});
-    	res.methods=prot;
-    	res.prototype=bless(parent, prot);
+    	res.prototype=prot; //bless(parent, prot);
     	res.prototype.isTonyuObject=true;
     	addMeta(res,{
     	    superClass:parent ? parent.meta : null,
@@ -313,6 +310,9 @@ return Tonyu=function () {
             if (!o[k]) o[k]={};
             o=o[k];
         }
+    };
+    klass.define=function (params) {
+        // name, superClass, includes, methods, methodMeta
     };
     function bless( klass, val) {
         if (!klass) return val;

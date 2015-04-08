@@ -66,8 +66,18 @@ define(["Tonyu","ObjectMatcher", "TError"],
     cu.getMethod=getMethod2;
     function getDependingClasses(klass) {//B
         var visited={};
-        var incls=[];
         var res=[];
+        function loop(k) {
+            if (visited[k.fullName]) return;
+            visited[k.fullName]=true;
+            res.push(k);
+            if (k.superClass) loop(k.superClass);
+            if (k.includes) k.includes.forEach(loop);
+        }
+        loop(klass);
+        return res;
+        /*
+        var incls=[];
         for (var k=klass ; k ; k=k.superClass) {
             incls=incls.concat(k.includes);
             visited[k.fullName]=true;
@@ -80,7 +90,7 @@ define(["Tonyu","ObjectMatcher", "TError"],
             res.push(k);
             incls=incls.concat(k.includes);
         }
-        return res;
+        return res;*/
     }
     cu.getDependingClasses=getDependingClasses;
     function getParams(method) {//B

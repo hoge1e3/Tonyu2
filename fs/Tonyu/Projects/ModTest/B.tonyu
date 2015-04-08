@@ -1,0 +1,5 @@
+extends A;
+
+\b() {
+    print("B");updateEx(30);print("B");
+}

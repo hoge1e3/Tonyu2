@@ -1,0 +1,4 @@
+
+\a() {
+    print("A");updateEx(30);print("A");
+}
