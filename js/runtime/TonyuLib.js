@@ -291,6 +291,10 @@ return Tonyu=function () {
     	    superClass:parent ? parent.meta : null,
     	    includes:includes.map(function(c){return c.meta;})
     	});
+    	var m=klass.getMeta(res);
+    	res.prototype.getClassInfo=function () {
+    	    return m;
+    	};
     	return res;
     }
     klass.addMeta=addMeta;

@@ -113,6 +113,8 @@ Tonyu.classes.user.C=Tonyu.klass(Tonyu.classes.kernel.Actor,[Tonyu.classes.user.
     _this.a();
     //$LASTPOS=3000018;
     _this.b();
+    //$LASTPOS=3000031;
+    _this.print(_this.getClassInfo().fullName);
   },
   fiber$main :function _trc_func_3000000_1(_thread) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
@@ -135,6 +137,8 @@ Tonyu.classes.user.C=Tonyu.klass(Tonyu.classes.kernel.Actor,[Tonyu.classes.user.
           __pc=2;return;
         case 2:
           
+          //$LASTPOS=3000031;
+          _this.print(_this.getClassInfo().fullName);
           _thread.exit(_this);return;
         }
       }
