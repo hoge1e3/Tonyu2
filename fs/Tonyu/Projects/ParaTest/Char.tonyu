@@ -2,9 +2,8 @@
 x=100;y=100;
 g=parallel("go",3);
 s=parallel("scale",0.1);
+on("fuga") \{print("fugaed");};
 on("die") \{print("dead");};
-print(_eventHandlers);
-print(getEventHandler("die").listeners);
 while(true) {
     if(getkey(32)==1) die();
     update();

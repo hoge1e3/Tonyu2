@@ -1,6 +1,16 @@
 extends null;
 native console;
 
+\initEventMod() {
+   if (_eventHandlers) return;
+   _eventHandlers={};
+   on ("die",releaseEventMod);
+}
+\releaseEventMod() {
+   for (var k,v in _eventHandlers) {
+       v.release();
+   }
+}
 \parseArgs(a) {
    var res={type:a[0], args:[]};
    for (var i=1 ; i<a.length ; i++) {
@@ -10,12 +20,17 @@ native console;
 }
 \registerEventHandler(type, obj) {
    // obj:{ attach, fire }
-   _eventHandlers=_eventHandlers||{};
-   obj=obj || ( (typeof type=="function") ? new type : new EventHandler);
+   initEventMod();
+   if (typeof type=="function") {
+       obj=obj||new type;
+       type=obj.getClassInfo().fullName;
+   }  else {
+       obj=obj || new EventHandler;
+   }
    return _eventHandlers[type]=obj;
 }
 \getEventHandler(type) {
-   _eventHandlers=_eventHandlers||{};
+   initEventMod();
    var res=_eventHandlers[type] || registerEventHandler(type);
    return res;
 }

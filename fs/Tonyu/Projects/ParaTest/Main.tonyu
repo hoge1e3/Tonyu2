@@ -1,0 +1,5 @@
+c=new Char;
+while (true) {
+    if (getkey("f")==1) c.fireEvent("fuga");
+    update();
+}
