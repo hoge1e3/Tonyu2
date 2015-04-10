@@ -1,0 +1,1 @@
+{"project":"Hockey2_fps60","title":"Hockey2 (FPS60版)","lastUpdate":1427731472249,"description":"Tonyu1 の付属サンプル「Hockey2」をTonyu2で再現しました。\nマウスor指で青ボールを操り、黄ボールを３周させよう。\n\n※ Chrome, FireFoxだと音が鳴ります\n\n[2015/03/31] ゲームが始まらないバグ修正。\n             サウンドの煩さを軽減。\n[2014/11/10] 壁に黄ボールを当て続けると処理落ちするバグを修正","license":"mit","user":"makkii_bcr","allowFork":true}

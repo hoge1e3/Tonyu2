@@ -1,0 +1,67 @@
+// MusicPlayerOneBase //
+
+soundName = "";
+soundPriority = 0;
+pushSound = 0;
+
+stopTime = 0;
+playingSound = 0;
+cnt=0;
+
+\soundRun() {
+    while (true) {
+        
+        // 鳴らす //
+        if (pushSound == 1) {
+            pushSound = 0;
+            onPlay(soundName);
+            soundName = "";
+            
+            while (true) {
+                update();
+                stopTime --;
+                if (stopTime <= 0/* || pushSound == 1*/) {
+                    play().stop();
+                    break;
+                }
+            }
+            stopTime = 0;
+        } else {
+            playingSound = 0;
+            update();
+        }
+    }
+}
+
+
+// オーバーライドしてもらう //
+nowait \onPlay(soundName) {
+}
+
+
+// サウンド停止 //
+nowait \stop() {
+    stopTime = 0;
+}
+
+
+// 現在サウンド再生中か //
+nowait \isSoundPlaying() {
+    return playingSound;
+}
+
+
+// サウンドの優先度 //
+nowait \getPriority() {
+    return soundPriority;
+}
+
+
+// 再生命令 //
+nowait \playSound(soundName, soundPriority) {
+    //print("c:"+cnt+" t.s:"+this.soundName+" t.p:"+this.soundPriority+" s:"+soundName+" p:"+soundPriority);
+    this.soundName = soundName;
+    this.soundPriority = soundPriority;
+    pushSound = 1;
+    playingSound = 1;
+}

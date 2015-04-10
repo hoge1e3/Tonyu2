@@ -1,0 +1,89 @@
+// MusicPlayerOneMusic //
+
+
+
+nowait \playBGM(soundName) {
+    this.soundName = soundName;
+}
+
+
+while (true) {
+    if (soundName == "se_bgm") {
+        play(//1
+        "o5 l32"+
+        "v15 crcr<cr>cr arb-rrrrr crcr<cr>cr arb-rrrrr"+
+        "v10 [crcr<cr>cr arb-rrrrr]2"+
+        "v8  [crcr<cr>cr arb-rrrrr]1"
+        ,//2
+        "o3 l32"+
+        "[r]32"+
+        "[>[cr]4<<cr>>[cr]3<]2"+
+        "[>[cr]4<<cr>>[cr]3<]1"
+        ,//3
+        "o2 l32"+
+        "[r]32"+
+        "l16 v4cv4cv5cv6c v7cv8cv9cv10c v11cv12cv13cv14c v14[c]4"+
+        "[>b-<cfab-agc]1"
+        ,//5
+        "o4 l32"+
+        "[r]32"+
+        "v14 r4r4r4  l16ge8f2r16"
+        ,//4
+        "o5 l32"+
+        "[r]32"+
+        "v14 r4r4r4  l16c>a8b-2r16"
+        );
+        while (true) {
+            play(//1
+            "o5 l32"+
+            "v8  [crcr<cr>cr arb-rrrrr]1"+
+            "[crcr<cr>cr arb-rrrrr]14"+
+            "[grfrerdr]6 < [cr>b-rargr<]2 > [b-rargrfr]8"+
+            "> [grfrerdr]8  [frerdrcr]8"+
+            "v10   [crcr<cr>cr arb-rrrrr]2  [crcr<cr>cr <c>rarrrrr  b-rrr rrrr rrrr rrrr ]1"+
+            "v10<  [crcr<cr>cr arb-rrrrr]2  [crcr<cr>cr <c>rarrrb-r rrrr  rrrr rrrr rrrr]1"+
+            
+            "v8  [crcr<cr>cr arb-rrrrr]1"
+            ,//2
+            "o3 l32"+
+            "[>[cr]4<<cr>>[cr]3<]29"+
+            "[>[cr]4<<cr>>[cr]3<]2"+
+            "[>[cr]4<<cr>>[cr]3<]8"+
+            
+            "[>[cr]4<<cr>>[cr]3<]1"
+            ,//3
+            "o2 l16"+
+            "[>b-<cfab-agc]15"+
+            "l8 c2c4c4f2 c4c4>b-1< l16 [gcde gfed]2"+
+            "l16 [gcde gfed]4 [cdefgfed]4"+
+            "v13 l16 [c8.crrrr]2 [gab-cgfed]2"+
+            "l16 [c8.crrrr]2 v4cv4cv5cv6c v7cv8cv9cv10c v11cv12cv13cv14c v14[c]4"+
+            
+            "[>b-<cfab-agc]1"
+            ,//5
+            "o4 l16"+
+            "r4r4r4 r4r4 l16ge8f2"+
+            "> r4r4r4 r4r4r16 l16ge8f2"+
+            "v12  r4r4r4 r4r4r16 l16ge8f2"+
+            "r4r4r4 r4r4r16 >g<cef"+
+            "l8 v10l64[g]8 v8l64[g]8 v6l64[g]8 v4l64[g]8 v3l64[g]8 l8v12 gab<  v10l64[c]8 v8l64[c]8 v6l64[c]8 v4l64[c]8  v10l64[g]8 v8l64[g]8   v10l64[e]8 v8l64[e]8   v10l64[f]8 v8l64[f]8 v6l64[f]8 v4l64[f]8 v3l64[f]8 v2l64[f]8 v2l64[f]8 v1l64[f]8 l8rrrr l8 rr >> v12 l16g<cefl8"+
+            "l8 v10l64[g]8 v8l64[g]8 v6l64[g]8 v4l64[g]8 v3l64[g]8 l8v12 gab<  v10l64[c]8 v8l64[c]8 v6l64[c]8 v4l64[c]8  v10l64[d]8 v8l64[d]8 > v10l64[b]8 v8l64[b]8 < v10l64[c]8 v8l64[c]8 v6l64[c]8 v4l64[c]8 v3l64[c]8 v2l64[c]8 v2l64[c]8 v1l64[c]8 l8rrrr l8 rr> v12 l16dc>bal8 "+
+            "<< l16 [d8.d rrrr]2 drdrd>b8.<crrr rrrr"+
+            "< l16 [d8.d rrrr]2 drdrd>b8<crrrr gerf2"
+            ,//4
+            "o4 l16"+
+            "<r4r4r4 r4r4 l16c>a8b-2"+
+            "r4r4r4 r4r4r16 l16c>a8b-2"+
+            "v12 < r4r4r4 r4r4r16 l16c>a8b-2"+
+            "r4r4r4 r4r4r16 cfab-"+
+            "<l8 v10l64[c]8 v8l64[c]8 v6l64[c]8 v4l64[c]8 v3l64[c]8 l8v12 cde  v10l64[f]8 v8l64[f]8 v6l64[f]8 v4l64[f]8  <  v10l64[c]8 v8l64[c]8 > v10l64[a]8 v8l64[a]8  v10l64[b-]8 v8l64[b-]8 v6l64[b-]8 v4l64[b-]8 v3l64[b-]8 v2l64[b-]8 v2l64[b-]8 v1l64[b-]8 l8rrrr l8 rr> v12 l16cfab-l8"+
+            "<l8 v10l64[c]8 v8l64[c]8 v6l64[c]8 v4l64[c]8 v3l64[c]8 l8v12 cde  v10l64[f]8 v8l64[f]8 v6l64[f]8 v4l64[f]8     v10l64[g]8 v8l64[g]8   v10l64[e]8 v8l64[e]8  v10l64[f]8  v8l64[f]8  v6l64[f]8  v4l64[f]8  v3l64[f]8  v2l64[f]8  v2l64[f]8  v1l64[f]8  l8rrrr l8 rr> v12 l16gfedl8 "+
+            "< l16 [g8.g rrrr]2 grgrge8.frrr rrrr"+
+            "< l16 [g8.g rrrr]2 grgrge8frrrr <c>arb-2r16"
+            
+            );
+        }
+    }
+    
+    update();
+}

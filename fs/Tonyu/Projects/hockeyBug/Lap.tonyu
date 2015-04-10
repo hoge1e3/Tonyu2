@@ -1,0 +1,10 @@
+
+align = "left";/*
+\draw(ctx) {
+var sx = x, sy = y;
+x -= $viewX;
+y -= $viewY;
+super.draw(ctx);
+x = sx; y = sy;
+}
+*/

@@ -1,0 +1,26 @@
+
+
+dir=1;
+rs=0.4;
+hide();
+frameCnt = 0;
+while(1){
+    // マウスの位置にあわせてラケットの位置($racket.tx,$racket.ty)を設定する
+    
+    $racket.tx=($mouseX+$viewX)*rs+$racket.x*(1-rs);
+    $racket.ty=($mouseY+$viewY)*rs+$racket.y*(1-rs);
+    //x=($mouseX+$viewX)*rs+$racket.x*(1-rs);
+    //y=($mouseY+$viewY)*rs+$racket.y*(1-rs);
+    
+    //if (frameCnt % 2 == 1) 
+    update();
+    frameCnt ++;
+}
+/*
+\draw(ctx) {
+    var sx = x, sy = y;
+    x -= $viewX;
+    y -= $viewY;
+    super.draw(ctx);
+    x = sx; y = sy;
+}*/

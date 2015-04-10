@@ -224,6 +224,7 @@ var TPRC=function (dir) {
     function orderByInheritance(classes) {/*ENVC*/
         var added={};
         var res=[];
+        var crumbs={};
         var ccnt=0;
         for (var n in classes) {/*ENVC*/
             added[n]=false;
@@ -234,21 +235,62 @@ var TPRC=function (dir) {
             for (var n in classes) {/*ENVC*/
                 if (added[n]) continue;
                 var c=classes[n];/*ENVC*/
-                var spc=c.superClass;
-                var deps=[spc];
-                var ready=true;
-                if (c.includes) deps=deps.concat(c.includes);
-                deps.forEach(function (cl) {
+                var deps=dep1(c);
+                //var ready=true;
+                /*deps.forEach(function (cl) {
                     ready=ready && (
                        !cl || !classes[cl.fullName] || cl.builtin || added[cl.fullName]
                     );
-                });
-                if (ready) {
+                });*/
+                if (deps.length==0) {
                     res.push(c);
                     added[n]=true;
                 }
             }
-            if (res.length==p) throw TError( "クラスの循環参照があります", "不明" ,0);
+            if (res.length==p) {
+                var loop=[];
+                for (var n in classes) {
+                    if (!added[n]) {
+                        loop=detectLoop(classes[n]) || [];
+                        break;
+                    }
+                }
+                throw TError( "次のクラス間に循環参照があります: "+loop.join("->"), "不明" ,0);
+            }
+        }
+        function dep1(c) {
+            var spc=c.superClass;
+            var deps=spc ? [spc]:[] ;
+            if (c.includes) deps=deps.concat(c.includes);
+            deps=deps.filter(function (cl) {
+                return cl && classes[cl.fullName] && !cl.builtin && !added[cl.fullName];
+            });
+            return deps;
+        }
+        function detectLoop(c, prev){
+            //  A->B->C->A
+            // c[B]=A  c[C]=B   c[A]=C
+            console.log("detectloop",c.fullName);
+            if (crumbs[c.fullName]) {   // c[A]
+                console.log("Detected: ",c.fullName, crumbs, crumbs[c.fullName]);
+                var n=c.fullName;
+                var loop=[];
+                do {
+                    loop.unshift(n);    // A      C       B
+                    n=crumbs[n];        // C      B       A
+                } while(n!=c.fullName);
+                loop.unshift(c.fullName);
+                return loop;
+            }
+            if (prev) crumbs[c.fullName]=prev.fullName;
+            var deps=dep1(c),res;
+            deps.forEach(function (d) {
+                if (res) return;
+                var r=detectLoop(d,c);
+                if (r) res=r;
+            });
+            delete crumbs[c.fullName];
+            return res;
         }
         return res;
     }

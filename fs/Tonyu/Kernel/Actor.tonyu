@@ -1,5 +1,5 @@
 extends BaseActor;
-includes PlayMod;
+includes PlayMod, ParallelMod;
 native Sprites;
 native Tonyu;
 

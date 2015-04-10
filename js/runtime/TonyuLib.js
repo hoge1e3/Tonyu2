@@ -277,15 +277,22 @@ return Tonyu=function () {
     	// Actor extends BaseActor, includes PlayMod.
     	// PlayMod extends BaseActor(because use update() in play())
         res.methods=prot;
-    	prot=bless(parent, prot);
+    	//prot=bless(parent, prot);
     	includes.forEach(function (m) {
-    		for (var n in m.prototype) {
+    	    if (!m.methods) throw m+" Does not have methods";
+            for (var n in m.methods) {
                 if (!(n in prot)) {
-                    prot[n]=m.prototype[n];
+                    prot[n]=m.methods[n];
                 }
             }
+    	    /*for (var n in m.prototype) {
+                if (!(n in prot)) {  //-> cannot override color in ColorMod(MetaClicker/FlickEdit)
+                //if ((typeof m.prototype[n])=="function") { //-> BodyActor::onAppear is overriden by Actor::onAppear(nop)
+                    prot[n]=m.prototype[n];
+                }
+            }*/
     	});
-    	res.prototype=prot; //bless(parent, prot);
+    	res.prototype=bless(parent, prot);
     	res.prototype.isTonyuObject=true;
     	addMeta(res,{
     	    superClass:parent ? parent.meta : null,

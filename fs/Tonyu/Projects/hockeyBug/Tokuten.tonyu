@@ -1,0 +1,32 @@
+
+// 0-9までのカウンタ
+
+// カウンタの値を設定する
+function setValue(v) {
+    value=v;
+    p=$pat_tokuten+value;
+}
+
+// カウンタの値を１ふやす。値がnextInc以上になったら０にして、
+// nextの値を1増やす。
+function incValue() {
+    value+=1;
+    if (value>=nextInc) {
+        if (next) next.incValue(); 
+        value=0;
+    }
+    setValue(value);
+}
+value=0;
+updateEx();
+
+
+
+/*
+\draw(ctx) {
+    var sx = x, sy = y;
+    x -= $viewX;
+    y -= $viewY;
+    super.draw(ctx);
+    x = sx; y = sy;
+}*/
