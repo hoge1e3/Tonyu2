@@ -1,3 +1,3 @@
-requirejs(["ImageList"/*,"TextRect","fukidashi"*/], function () {
+requirejs(["ImageList","T2MediaLib"], function () {
 
 });

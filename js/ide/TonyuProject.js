@@ -222,7 +222,7 @@ return Tonyu.Project=function (dir, kernelDir) {
     };
     TPR.fixOptions=function (opt) {
         if (!opt.compiler) opt.compiler={};
-        opt.compiler.commentLastPos=TPR.runScriptMode || StackTrace.isAvailable();
+        opt.compiler.commentLastPos=false; //  TPR.runScriptMode || StackTrace.isAvailable();
         opt.run.mainClass=TPR.fixClassName(opt.run.mainClass);
         opt.run.bootClass=TPR.fixClassName(opt.run.bootClass);
         if (!opt.plugins) {
@@ -333,7 +333,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         var cls=TPR.env.classes;/*ENVC*/
         for (var cln in cls) {/*ENVC*/
             var klass=cls[cln];/*ENVC*/
-            var f=klass.src.tonyu;
+            var f=klass.src ? klass.src.tonyu : null;
             var a=klass.annotation;
             var changes=[];
             if (a && f) {

@@ -71,6 +71,9 @@ var reqConf={
             "fs/export": {
                 deps: ["Shell","FS"]
             },
+            T2MediaLib: {
+                exports: "T2MediaLib"
+            },
             JSZip: {
                 exports:"JSZip"
             },
@@ -92,6 +95,7 @@ var reqConf={
             difflib: "lib/difflib",
             diffview: "lib/diffview",
             timbre: "lib/timbre",
+            T2MediaLib: "lib/T2MediaLib",
             KernelDiffDialog: "ide/KernelDiffDialog",
             searchDialog: "ide/searchDialog",
             DiffDialog: "ide/DiffDialog",
@@ -140,7 +144,7 @@ var reqConf={
             "TextRect": "graphics/TextRect",
             "fukidashi": "graphics/fukidashi",
             "FS": "fs/fs",
-            "SFileNW": "server/SFileNW",
+            "SFileNW": "fs/SFileNW",
             "Tonyu.Project": "ide/TonyuProject",
             "thumbnail": "ide/thumbnail",
             "showErrorPos": "ide/ErrorPos",

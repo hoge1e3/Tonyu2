@@ -1,9 +1,10 @@
-//define(["WebSite"],function (WebSite) {
-//var exports={};
-//if (!WebSite.isNW) return null;
+define(["WebSite"],function (WebSite) {
+var exports={};
+if (!WebSite.isNW) return null;
 //--------begin of SFile.js
 var fs=require("fs");
 var SEP="/";
+var json=JSON; // JSON changes when page changes, if this is node module, JSON is original JSON
 function SFile(path) {
     this._path=toCanonicalPath(path);
 }
@@ -27,7 +28,7 @@ function truncSep(path) {
     return path;
 }
 var binMap={".png": "image/png", ".jpg":"image/jpg", ".gif": "image/gif", ".jpeg":"image/jpg",
-        ".mp3":"audio/mps", ".ogg":"audio/ogg"};
+        ".mp3":"audio/mp3", ".ogg":"audio/ogg"};
 exports.resolve=function (path, base) {
     return exports.get(toCanonicalPath(path, base));
 };
@@ -66,7 +67,7 @@ extend(SFile.prototype,{
 	text:function () {
 		if (arguments.length==0) {
 		    if (this.isDir()) {
-		        return JSON.stringify(this.metaInfo());
+		        return json.stringify(this.metaInfo());
 		    }
             if (this.isBinary()) {
                 return this.readDataURLFromBin();
@@ -120,9 +121,9 @@ extend(SFile.prototype,{
 	},
 	obj:function () {
 		if (arguments.length==0) {
-			return JSON.parse(this.text());
+			return json.parse(this.text());
 		} else {
-			this.text(JSON.stringify(arguments[0]));
+			this.text(json.stringify(arguments[0]));
 		}
 	},
 	isReadOnly: function () {
@@ -164,6 +165,7 @@ extend(SFile.prototype,{
 	each:function (it, options) {
 	    if (!options) options={};
 		if (!this.isDir()) throw new Error(this+" cannot each. not a dir.");
+		if (!this.exists()) return;
 		var ts=this.pathTS();
 		var r=fs.readdirSync(this.path());
 		var t=this;
@@ -300,5 +302,5 @@ exports.exportDir=function (dir,options) {
     }
 };
 //-------end of SFile.js
-//return exports;
-//});
+return exports;
+});

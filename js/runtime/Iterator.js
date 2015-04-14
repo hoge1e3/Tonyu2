@@ -48,7 +48,7 @@ define(["Tonyu"], function (T) {
            }
        } else {
            console.log(set);
-           throw "Cannot iterable";
+           throw new Error(set+" is not iterable");
        }
        return res;
    }

@@ -1,6 +1,6 @@
-define(["WebSite"],function (WebSite) {
-    if (WebSite.isNW) {
-        var wfs=require("SFileNW");
+define(["WebSite","SFileNW"],function (WebSite,wfs) {
+    if (wfs) {
+        //var wfs=require("SFileNW");
         if (typeof window=="object") window.FS=wfs;
         return wfs;
     }

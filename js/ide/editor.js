@@ -1,12 +1,12 @@
 requirejs(["Util", "Tonyu", "FS", "FileList", "FileMenu",
            "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project",
-           "copySample","Shell","Shell2","ImageResEditor","ProjectOptionsEditor","copyToKernel","KeyEventChecker",
+           "copySample","Shell","Shell2","ProjectOptionsEditor","copyToKernel","KeyEventChecker",
            "WikiDialog","runtime", "KernelDiffDialog","Sync","searchDialog","StackTrace","syncWithKernel",
            "UI","ResEditor","WebSite","exceptionCatcher"
           ],
 function (Util, Tonyu, FS, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,
-          copySample,sh,sh2, ImgResEdit,ProjectOptionsEditor, ctk, KeyEventChecker,
+          copySample,sh,sh2, ProjectOptionsEditor, ctk, KeyEventChecker,
           WikiDialog, rt , KDD,Sync,searchDialog,StackTrace,swk,
           UI,ResEditor,WebSite,EC
           ) {
@@ -457,6 +457,9 @@ $(function () {
     $("#imgResEditor").click(F(function () {
         //ImgResEdit(curPrj);
         ResEditor(curPrj,"image");
+    }));
+    $("#soundResEditor").click(F(function () {
+        ResEditor(curPrj,"sound");
     }));
     $("#prjOptEditor").click(F(function () {
         ProjectOptionsEditor(curPrj);

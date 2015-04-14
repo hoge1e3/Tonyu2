@@ -297,7 +297,10 @@ var TPRC=function (dir) {
     function evalFile(f) {
         console.log("loading: "+f.path());
         /*if (typeof require=="function") return require(f.path());
-        else */return new Function(f.text())();
+        else */
+        lastEvaled=new Function(f.text());
+        //f.rel("../"+f.name()+".dump").text(lastEvaled+"");
+        return lastEvaled();
     }
     return TPR;
 }

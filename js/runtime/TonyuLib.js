@@ -23,6 +23,7 @@ return Tonyu=function () {
             return _isWaiting;
         }
         function suspend() {
+            //throw new Error("Suspend call");
             cnt=0;
         }
         function enter(frameFunc) {
@@ -83,6 +84,7 @@ return Tonyu=function () {
         }
         function waitFor(j) {
             _isWaiting=true;
+            suspend();
             if (j && j.addTerminatedListener) j.addTerminatedListener(function () {
                 _isWaiting=false;
                 if (fb.group) fb.group.notifyResume();
