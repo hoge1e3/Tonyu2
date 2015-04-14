@@ -1,6 +1,6 @@
 define(["Tonyu", "FS", "TError"],
 function(Tonyu, FS, TError) {
-return Tonyu.TraceTbl=function () {
+return Tonyu.TraceTbl=(function () {
     var TTB={};
     var POSMAX=1000000;
     var pathIdSeq=1;
@@ -22,7 +22,8 @@ return Tonyu.TraceTbl=function () {
         var id=pathId*POSMAX+pos;
         return id;
     };
-    TTB.decode=function (id) {
+    var srcMap={};
+    TTB.decodeOLD=function (id) {
         var pos=id%POSMAX;
         var pathId=(id-pos)/POSMAX;
         var path=id2Path[pathId];
@@ -35,7 +36,26 @@ return Tonyu.TraceTbl=function () {
             //return TError("Trace info", "unknown src id="+id, pos);
         }
     };
+    TTB.srcMap=srcMap;
+    TTB.decode=function (id) {
+        var pat=new RegExp("LASTPOS="+id+";//(.*)\r?\n");
+        console.log("pat=",pat);
+        for (var k in srcMap) {
+            var r=pat.exec( srcMap[k] );
+            if (r) {
+                // user.Main:335
+                //alert(r[1]);
+                return r[1];
+            } else {
+                console.log("pat=",pat,"Not found in ",k);
+
+            }
+        }
+    };
+    TTB.addSource=function (key,src) {
+        srcMap[key]=src;
+    };
     return TTB;
-};
+})();
 //if (typeof getReq=="function") getReq.exports("Tonyu.TraceTbl");
 });

@@ -9380,7 +9380,7 @@ Tonyu.classes.kernel.T2MediaPlayer=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
       }
     });
   },
-  loadFromProject :function _trc_func_33000840_15(prj) {
+  loadFromProject :function _trc_func_33000852_15(prj) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     var r;
     var s;
@@ -9390,45 +9390,45 @@ Tonyu.classes.kernel.T2MediaPlayer=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     var ls;
     var f;
     
-    //$LASTPOS=33000869;
+    //$LASTPOS=33000881;
     r = prj.getResource();
-    //$LASTPOS=33000899;
+    //$LASTPOS=33000911;
     if (! r||! r.sounds) {
       return _this;
     }
-    //$LASTPOS=33000933;
+    //$LASTPOS=33000945;
     _it_229=Tonyu.iterator(r.sounds,1);
     while(_it_229.next()) {
       s=_it_229[0];
       
-      //$LASTPOS=33000969;
+      //$LASTPOS=33000981;
       name = s.name;url = s.url;
-      //$LASTPOS=33001007;
+      //$LASTPOS=33001019;
       ls = /^ls:(.*)/.exec(url);
-      //$LASTPOS=33001046;
+      //$LASTPOS=33001058;
       if (ls) {
-        //$LASTPOS=33001069;
+        //$LASTPOS=33001081;
         f = prj.getDir().rel(ls[1]);
-        //$LASTPOS=33001113;
+        //$LASTPOS=33001125;
         if (f.exists()) {
-          //$LASTPOS=33001148;
+          //$LASTPOS=33001160;
           url=f.text();
-          //$LASTPOS=33001179;
+          //$LASTPOS=33001191;
           Tonyu.globals.$lastURL=url;
           
         }
         
       }
-      //$LASTPOS=33001230;
+      //$LASTPOS=33001242;
       Tonyu.setGlobal(name,name);
-      //$LASTPOS=33001269;
+      //$LASTPOS=33001281;
       _this.print("Loading Sound: "+name);
-      //$LASTPOS=33001310;
+      //$LASTPOS=33001322;
       _this.loadSE(name,url);
       
     }
   },
-  fiber$loadFromProject :function _trc_func_33000840_16(_thread,prj) {
+  fiber$loadFromProject :function _trc_func_33000852_16(_thread,prj) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
@@ -9440,48 +9440,48 @@ Tonyu.classes.kernel.T2MediaPlayer=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     var ls;
     var f;
     
-    //$LASTPOS=33000869;
+    //$LASTPOS=33000881;
     r = prj.getResource();
-    //$LASTPOS=33000899;
+    //$LASTPOS=33000911;
     if (! r||! r.sounds) {
       _thread.retVal=_this;return;
       
     }
     
-    _thread.enter(function _trc_func_33000840_17(_thread) {
+    _thread.enter(function _trc_func_33000852_17(_thread) {
       if (_thread.lastEx) __pc=_thread.catchPC;
       for(var __cnt=100 ; __cnt--;) {
         switch (__pc) {
         case 0:
-          //$LASTPOS=33000933;
+          //$LASTPOS=33000945;
           _it_229=Tonyu.iterator(r.sounds,1);
         case 1:
           if (!(_it_229.next())) { __pc=3; break; }
           s=_it_229[0];
           
-          //$LASTPOS=33000969;
+          //$LASTPOS=33000981;
           name = s.name;url = s.url;
-          //$LASTPOS=33001007;
+          //$LASTPOS=33001019;
           ls = /^ls:(.*)/.exec(url);
-          //$LASTPOS=33001046;
+          //$LASTPOS=33001058;
           if (ls) {
-            //$LASTPOS=33001069;
+            //$LASTPOS=33001081;
             f = prj.getDir().rel(ls[1]);
-            //$LASTPOS=33001113;
+            //$LASTPOS=33001125;
             if (f.exists()) {
-              //$LASTPOS=33001148;
+              //$LASTPOS=33001160;
               url=f.text();
-              //$LASTPOS=33001179;
+              //$LASTPOS=33001191;
               Tonyu.globals.$lastURL=url;
               
             }
             
           }
-          //$LASTPOS=33001230;
+          //$LASTPOS=33001242;
           Tonyu.setGlobal(name,name);
-          //$LASTPOS=33001269;
+          //$LASTPOS=33001281;
           _this.print("Loading Sound: "+name);
-          //$LASTPOS=33001310;
+          //$LASTPOS=33001322;
           _this.fiber$loadSE(_thread, name, url);
           __pc=2;return;
         case 2:
@@ -9494,33 +9494,33 @@ Tonyu.classes.kernel.T2MediaPlayer=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
       }
     });
   },
-  playSE :function _trc_func_33001390_18(idx,vol,rate,offset,loop,loopStart,loopEnd) {
+  playSE :function _trc_func_33001402_18(idx,vol,rate,offset,loop,loopStart,loopEnd) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
-    //$LASTPOS=33001491;
+    //$LASTPOS=33001503;
     if (vol==null) {
-      //$LASTPOS=33001508;
+      //$LASTPOS=33001520;
       vol=128;
     }
-    //$LASTPOS=33001597;
+    //$LASTPOS=33001609;
     if (vol<0) {
-      //$LASTPOS=33001617;
+      //$LASTPOS=33001629;
       vol=0;
     } else {
-      //$LASTPOS=33001638;
+      //$LASTPOS=33001650;
       if (vol>128) {
-        //$LASTPOS=33001653;
+        //$LASTPOS=33001665;
         vol=128;
       }
     }
     return T2MediaLib.playSE(idx,vol/128,rate,offset,loop,loopStart,loopEnd);
   },
-  stopSE :function _trc_func_33001757_19(sourceObj) {
+  stopSE :function _trc_func_33001769_19(sourceObj) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
     return T2MediaLib.stopSE(sourceObj);
   },
-  fiber$stopSE :function _trc_func_33001757_20(_thread,sourceObj) {
+  fiber$stopSE :function _trc_func_33001769_20(_thread,sourceObj) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
@@ -9530,12 +9530,12 @@ Tonyu.classes.kernel.T2MediaPlayer=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     
     _thread.retVal=_this;return;
   },
-  getSEData :function _trc_func_33001826_21(idx) {
+  getSEData :function _trc_func_33001838_21(idx) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
     return T2MediaLib.getSEData(idx);
   },
-  fiber$getSEData :function _trc_func_33001826_22(_thread,idx) {
+  fiber$getSEData :function _trc_func_33001838_22(_thread,idx) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
@@ -9545,49 +9545,49 @@ Tonyu.classes.kernel.T2MediaPlayer=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     
     _thread.retVal=_this;return;
   },
-  loadBGM :function _trc_func_33001902_23(idx,src) {
+  loadBGM :function _trc_func_33001914_23(idx,src) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     var data;
     
-    //$LASTPOS=33001944;
+    //$LASTPOS=33001956;
     T2MediaLib.loadBGM(idx,src);
-    //$LASTPOS=33002004;
+    //$LASTPOS=33002016;
     data = T2MediaLib.getBGMData(idx);
-    //$LASTPOS=33002048;
+    //$LASTPOS=33002060;
     while (data==null) {
-      //$LASTPOS=33002080;
+      //$LASTPOS=33002092;
       _this.update();
-      //$LASTPOS=33002099;
+      //$LASTPOS=33002111;
       data=T2MediaLib.getBGMData(idx);
       
     }
     return data;
   },
-  fiber$loadBGM :function _trc_func_33001902_24(_thread,idx,src) {
+  fiber$loadBGM :function _trc_func_33001914_24(_thread,idx,src) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
     var data;
     
-    //$LASTPOS=33001944;
+    //$LASTPOS=33001956;
     T2MediaLib.loadBGM(idx,src);
-    //$LASTPOS=33002004;
+    //$LASTPOS=33002016;
     data = T2MediaLib.getBGMData(idx);
     
-    _thread.enter(function _trc_func_33001902_25(_thread) {
+    _thread.enter(function _trc_func_33001914_25(_thread) {
       if (_thread.lastEx) __pc=_thread.catchPC;
       for(var __cnt=100 ; __cnt--;) {
         switch (__pc) {
         case 0:
-          //$LASTPOS=33002048;
+          //$LASTPOS=33002060;
         case 1:
           if (!(data==null)) { __pc=3; break; }
-          //$LASTPOS=33002080;
+          //$LASTPOS=33002092;
           _this.fiber$update(_thread);
           __pc=2;return;
         case 2:
           
-          //$LASTPOS=33002099;
+          //$LASTPOS=33002111;
           data=T2MediaLib.getBGMData(idx);
           __pc=1;break;
         case 3:
@@ -9598,34 +9598,34 @@ Tonyu.classes.kernel.T2MediaPlayer=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
       }
     });
   },
-  playBGM :function _trc_func_33002165_26(idx,loop,offset,loopStart,loopEnd) {
+  playBGM :function _trc_func_33002177_26(idx,loop,offset,loopStart,loopEnd) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
-    //$LASTPOS=33002220;
+    //$LASTPOS=33002232;
     if (loop===null) {
-      //$LASTPOS=33002239;
+      //$LASTPOS=33002251;
       loop=false;
     }
-    //$LASTPOS=33002258;
+    //$LASTPOS=33002270;
     if (offset===null) {
-      //$LASTPOS=33002279;
+      //$LASTPOS=33002291;
       offset=0;
     }
     return T2MediaLib.playBGM(0,idx,loop,offset,loopStart,loopEnd);
   },
-  fiber$playBGM :function _trc_func_33002165_27(_thread,idx,loop,offset,loopStart,loopEnd) {
+  fiber$playBGM :function _trc_func_33002177_27(_thread,idx,loop,offset,loopStart,loopEnd) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
     
-    //$LASTPOS=33002220;
+    //$LASTPOS=33002232;
     if (loop===null) {
-      //$LASTPOS=33002239;
+      //$LASTPOS=33002251;
       loop=false;
     }
-    //$LASTPOS=33002258;
+    //$LASTPOS=33002270;
     if (offset===null) {
-      //$LASTPOS=33002279;
+      //$LASTPOS=33002291;
       offset=0;
     }
     _thread.retVal=T2MediaLib.playBGM(0,idx,loop,offset,loopStart,loopEnd);return;
@@ -9633,12 +9633,12 @@ Tonyu.classes.kernel.T2MediaPlayer=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     
     _thread.retVal=_this;return;
   },
-  stopBGM :function _trc_func_33002371_28() {
+  stopBGM :function _trc_func_33002383_28() {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
     return T2MediaLib.stopBGM(0);
   },
-  fiber$stopBGM :function _trc_func_33002371_29(_thread) {
+  fiber$stopBGM :function _trc_func_33002383_29(_thread) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
@@ -9648,12 +9648,12 @@ Tonyu.classes.kernel.T2MediaPlayer=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     
     _thread.retVal=_this;return;
   },
-  pauseBGM :function _trc_func_33002425_30() {
+  pauseBGM :function _trc_func_33002437_30() {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
     return T2MediaLib.pauseBGM(0);
   },
-  fiber$pauseBGM :function _trc_func_33002425_31(_thread) {
+  fiber$pauseBGM :function _trc_func_33002437_31(_thread) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
@@ -9663,12 +9663,12 @@ Tonyu.classes.kernel.T2MediaPlayer=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     
     _thread.retVal=_this;return;
   },
-  resumeBGM :function _trc_func_33002481_32() {
+  resumeBGM :function _trc_func_33002493_32() {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
     return T2MediaLib.resumeBGM(0);
   },
-  fiber$resumeBGM :function _trc_func_33002481_33(_thread) {
+  fiber$resumeBGM :function _trc_func_33002493_33(_thread) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
@@ -9678,39 +9678,39 @@ Tonyu.classes.kernel.T2MediaPlayer=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     
     _thread.retVal=_this;return;
   },
-  setBGMVolume :function _trc_func_33002539_34(vol) {
+  setBGMVolume :function _trc_func_33002551_34(vol) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
-    //$LASTPOS=33002565;
+    //$LASTPOS=33002577;
     vol=vol/128;
-    //$LASTPOS=33002660;
+    //$LASTPOS=33002672;
     if (vol>1) {
-      //$LASTPOS=33002680;
+      //$LASTPOS=33002692;
       vol=1;
     } else {
-      //$LASTPOS=33002701;
+      //$LASTPOS=33002713;
       if (vol<0) {
-        //$LASTPOS=33002716;
+        //$LASTPOS=33002728;
         vol=0;
       }
     }
     return T2MediaLib.setBGMVolume(0,vol);
   },
-  fiber$setBGMVolume :function _trc_func_33002539_35(_thread,vol) {
+  fiber$setBGMVolume :function _trc_func_33002551_35(_thread,vol) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
     
-    //$LASTPOS=33002565;
+    //$LASTPOS=33002577;
     vol=vol/128;
-    //$LASTPOS=33002660;
+    //$LASTPOS=33002672;
     if (vol>1) {
-      //$LASTPOS=33002680;
+      //$LASTPOS=33002692;
       vol=1;
     } else {
-      //$LASTPOS=33002701;
+      //$LASTPOS=33002713;
       if (vol<0) {
-        //$LASTPOS=33002716;
+        //$LASTPOS=33002728;
         vol=0;
       }
     }
@@ -9719,12 +9719,12 @@ Tonyu.classes.kernel.T2MediaPlayer=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     
     _thread.retVal=_this;return;
   },
-  setBGMTempo :function _trc_func_33002778_36(tempo) {
+  setBGMTempo :function _trc_func_33002790_36(tempo) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
     return T2MediaLib.setBGMTempo(0,tempo);
   },
-  fiber$setBGMTempo :function _trc_func_33002778_37(_thread,tempo) {
+  fiber$setBGMTempo :function _trc_func_33002790_37(_thread,tempo) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
@@ -9734,12 +9734,12 @@ Tonyu.classes.kernel.T2MediaPlayer=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     
     _thread.retVal=_this;return;
   },
-  getBGMCurrentTime :function _trc_func_33002936_38() {
+  getBGMCurrentTime :function _trc_func_33002948_38() {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
     return T2MediaLib.getBGMCurrentTime(0);
   },
-  fiber$getBGMCurrentTime :function _trc_func_33002936_39(_thread) {
+  fiber$getBGMCurrentTime :function _trc_func_33002948_39(_thread) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
@@ -9749,12 +9749,12 @@ Tonyu.classes.kernel.T2MediaPlayer=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     
     _thread.retVal=_this;return;
   },
-  getBGMLength :function _trc_func_33003010_40() {
+  getBGMLength :function _trc_func_33003022_40() {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
     return T2MediaLib.getBGMLength(0);
   },
-  fiber$getBGMLength :function _trc_func_33003010_41(_thread) {
+  fiber$getBGMLength :function _trc_func_33003022_41(_thread) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
@@ -9764,12 +9764,12 @@ Tonyu.classes.kernel.T2MediaPlayer=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     
     _thread.retVal=_this;return;
   },
-  getBGMData :function _trc_func_33003074_42(idx) {
+  getBGMData :function _trc_func_33003086_42(idx) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
     return T2MediaLib.getBGMData(idx);
   },
-  fiber$getBGMData :function _trc_func_33003074_43(_thread,idx) {
+  fiber$getBGMData :function _trc_func_33003086_43(_thread,idx) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
@@ -9779,34 +9779,34 @@ Tonyu.classes.kernel.T2MediaPlayer=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     
     _thread.retVal=_this;return;
   },
-  playBGMID :function _trc_func_33003159_44(id,idx,loop,offset,loopStart,loopEnd) {
+  playBGMID :function _trc_func_33003171_44(id,idx,loop,offset,loopStart,loopEnd) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
-    //$LASTPOS=33003220;
+    //$LASTPOS=33003232;
     if (loop===null) {
-      //$LASTPOS=33003239;
+      //$LASTPOS=33003251;
       loop=false;
     }
-    //$LASTPOS=33003258;
+    //$LASTPOS=33003270;
     if (offset===null) {
-      //$LASTPOS=33003279;
+      //$LASTPOS=33003291;
       offset=0;
     }
     return T2MediaLib.playBGM(id,idx,loop,offset,loopStart,loopEnd);
   },
-  fiber$playBGMID :function _trc_func_33003159_45(_thread,id,idx,loop,offset,loopStart,loopEnd) {
+  fiber$playBGMID :function _trc_func_33003171_45(_thread,id,idx,loop,offset,loopStart,loopEnd) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
     
-    //$LASTPOS=33003220;
+    //$LASTPOS=33003232;
     if (loop===null) {
-      //$LASTPOS=33003239;
+      //$LASTPOS=33003251;
       loop=false;
     }
-    //$LASTPOS=33003258;
+    //$LASTPOS=33003270;
     if (offset===null) {
-      //$LASTPOS=33003279;
+      //$LASTPOS=33003291;
       offset=0;
     }
     _thread.retVal=T2MediaLib.playBGM(id,idx,loop,offset,loopStart,loopEnd);return;
@@ -9814,12 +9814,12 @@ Tonyu.classes.kernel.T2MediaPlayer=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     
     _thread.retVal=_this;return;
   },
-  stopBGMID :function _trc_func_33003372_46(id) {
+  stopBGMID :function _trc_func_33003384_46(id) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
     return T2MediaLib.stopBGM(id);
   },
-  fiber$stopBGMID :function _trc_func_33003372_47(_thread,id) {
+  fiber$stopBGMID :function _trc_func_33003384_47(_thread,id) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
@@ -9829,12 +9829,12 @@ Tonyu.classes.kernel.T2MediaPlayer=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     
     _thread.retVal=_this;return;
   },
-  pauseBGMID :function _trc_func_33003431_48(id) {
+  pauseBGMID :function _trc_func_33003443_48(id) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
     return T2MediaLib.pauseBGM(id);
   },
-  fiber$pauseBGMID :function _trc_func_33003431_49(_thread,id) {
+  fiber$pauseBGMID :function _trc_func_33003443_49(_thread,id) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
@@ -9844,12 +9844,12 @@ Tonyu.classes.kernel.T2MediaPlayer=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     
     _thread.retVal=_this;return;
   },
-  resumeBGMID :function _trc_func_33003492_50(id) {
+  resumeBGMID :function _trc_func_33003504_50(id) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
     return T2MediaLib.resumeBGM(id);
   },
-  fiber$resumeBGMID :function _trc_func_33003492_51(_thread,id) {
+  fiber$resumeBGMID :function _trc_func_33003504_51(_thread,id) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
@@ -9859,39 +9859,39 @@ Tonyu.classes.kernel.T2MediaPlayer=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     
     _thread.retVal=_this;return;
   },
-  setBGMVolumeID :function _trc_func_33003555_52(id,vol) {
+  setBGMVolumeID :function _trc_func_33003567_52(id,vol) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
-    //$LASTPOS=33003587;
+    //$LASTPOS=33003599;
     vol=vol/128;
-    //$LASTPOS=33003682;
+    //$LASTPOS=33003694;
     if (vol>1) {
-      //$LASTPOS=33003702;
+      //$LASTPOS=33003714;
       vol=1;
     } else {
-      //$LASTPOS=33003723;
+      //$LASTPOS=33003735;
       if (vol<0) {
-        //$LASTPOS=33003738;
+        //$LASTPOS=33003750;
         vol=0;
       }
     }
     return T2MediaLib.setBGMVolume(id,vol);
   },
-  fiber$setBGMVolumeID :function _trc_func_33003555_53(_thread,id,vol) {
+  fiber$setBGMVolumeID :function _trc_func_33003567_53(_thread,id,vol) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
     
-    //$LASTPOS=33003587;
+    //$LASTPOS=33003599;
     vol=vol/128;
-    //$LASTPOS=33003682;
+    //$LASTPOS=33003694;
     if (vol>1) {
-      //$LASTPOS=33003702;
+      //$LASTPOS=33003714;
       vol=1;
     } else {
-      //$LASTPOS=33003723;
+      //$LASTPOS=33003735;
       if (vol<0) {
-        //$LASTPOS=33003738;
+        //$LASTPOS=33003750;
         vol=0;
       }
     }
@@ -9900,12 +9900,12 @@ Tonyu.classes.kernel.T2MediaPlayer=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     
     _thread.retVal=_this;return;
   },
-  setBGMTempoID :function _trc_func_33003801_54(id,tempo) {
+  setBGMTempoID :function _trc_func_33003813_54(id,tempo) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
     return T2MediaLib.setBGMTempo(id,tempo);
   },
-  fiber$setBGMTempoID :function _trc_func_33003801_55(_thread,id,tempo) {
+  fiber$setBGMTempoID :function _trc_func_33003813_55(_thread,id,tempo) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
@@ -9915,12 +9915,12 @@ Tonyu.classes.kernel.T2MediaPlayer=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     
     _thread.retVal=_this;return;
   },
-  getBGMCurrentTimeID :function _trc_func_33003966_56(id) {
+  getBGMCurrentTimeID :function _trc_func_33003978_56(id) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
     return T2MediaLib.getBGMCurrentTime(id);
   },
-  fiber$getBGMCurrentTimeID :function _trc_func_33003966_57(_thread,id) {
+  fiber$getBGMCurrentTimeID :function _trc_func_33003978_57(_thread,id) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
@@ -9930,12 +9930,12 @@ Tonyu.classes.kernel.T2MediaPlayer=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     
     _thread.retVal=_this;return;
   },
-  getBGMLengthID :function _trc_func_33004045_58(id) {
+  getBGMLengthID :function _trc_func_33004057_58(id) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
     return T2MediaLib.getBGMLength(id);
   },
-  fiber$getBGMLengthID :function _trc_func_33004045_59(_thread,id) {
+  fiber$getBGMLengthID :function _trc_func_33004057_59(_thread,id) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
@@ -9945,12 +9945,12 @@ Tonyu.classes.kernel.T2MediaPlayer=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     
     _thread.retVal=_this;return;
   },
-  sizeBGMID :function _trc_func_33004114_60() {
+  sizeBGMID :function _trc_func_33004126_60() {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
     return T2MediaLib.getBGMPlayerMax();
   },
-  fiber$sizeBGMID :function _trc_func_33004114_61(_thread) {
+  fiber$sizeBGMID :function _trc_func_33004126_61(_thread) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
@@ -9960,50 +9960,50 @@ Tonyu.classes.kernel.T2MediaPlayer=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     
     _thread.retVal=_this;return;
   },
-  allStopBGM :function _trc_func_33004177_62() {
+  allStopBGM :function _trc_func_33004189_62() {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
-    //$LASTPOS=33004198;
+    //$LASTPOS=33004210;
     T2MediaLib.allStopBGM();
   },
-  fiber$allStopBGM :function _trc_func_33004177_63(_thread) {
+  fiber$allStopBGM :function _trc_func_33004189_63(_thread) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
     
-    //$LASTPOS=33004198;
+    //$LASTPOS=33004210;
     T2MediaLib.allStopBGM();
     
     _thread.retVal=_this;return;
   },
-  loadAudio :function _trc_func_33004233_64(idx,src) {
+  loadAudio :function _trc_func_33004245_64(idx,src) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
-    //$LASTPOS=33004277;
+    //$LASTPOS=33004289;
     T2MediaLib.loadAudio(idx,src);
-    //$LASTPOS=33004339;
+    //$LASTPOS=33004351;
     while (T2MediaLib.getAudioData(idx)==null) {
-      //$LASTPOS=33004384;
+      //$LASTPOS=33004396;
       _this.update();
     }
   },
-  fiber$loadAudio :function _trc_func_33004233_65(_thread,idx,src) {
+  fiber$loadAudio :function _trc_func_33004245_65(_thread,idx,src) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
     
-    //$LASTPOS=33004277;
+    //$LASTPOS=33004289;
     T2MediaLib.loadAudio(idx,src);
     
-    _thread.enter(function _trc_func_33004233_66(_thread) {
+    _thread.enter(function _trc_func_33004245_66(_thread) {
       if (_thread.lastEx) __pc=_thread.catchPC;
       for(var __cnt=100 ; __cnt--;) {
         switch (__pc) {
         case 0:
-          //$LASTPOS=33004339;
+          //$LASTPOS=33004351;
         case 1:
           if (!(T2MediaLib.getAudioData(idx)==null)) { __pc=3; break; }
-          //$LASTPOS=33004384;
+          //$LASTPOS=33004396;
           _this.fiber$update(_thread);
           __pc=2;return;
         case 2:
@@ -10016,34 +10016,34 @@ Tonyu.classes.kernel.T2MediaPlayer=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
       }
     });
   },
-  playAudio :function _trc_func_33004400_67(idx,loop,startTime) {
+  playAudio :function _trc_func_33004412_67(idx,loop,startTime) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
-    //$LASTPOS=33004440;
+    //$LASTPOS=33004452;
     if (loop===null) {
-      //$LASTPOS=33004459;
+      //$LASTPOS=33004471;
       loop=false;
     }
-    //$LASTPOS=33004478;
+    //$LASTPOS=33004490;
     if (startTime===null) {
-      //$LASTPOS=33004502;
+      //$LASTPOS=33004514;
       startTime=0;
     }
     return T2MediaLib.playAudio(idx,loop,startTime);
   },
-  fiber$playAudio :function _trc_func_33004400_68(_thread,idx,loop,startTime) {
+  fiber$playAudio :function _trc_func_33004412_68(_thread,idx,loop,startTime) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
     
-    //$LASTPOS=33004440;
+    //$LASTPOS=33004452;
     if (loop===null) {
-      //$LASTPOS=33004459;
+      //$LASTPOS=33004471;
       loop=false;
     }
-    //$LASTPOS=33004478;
+    //$LASTPOS=33004490;
     if (startTime===null) {
-      //$LASTPOS=33004502;
+      //$LASTPOS=33004514;
       startTime=0;
     }
     _thread.retVal=T2MediaLib.playAudio(idx,loop,startTime);return;
@@ -10051,12 +10051,12 @@ Tonyu.classes.kernel.T2MediaPlayer=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     
     _thread.retVal=_this;return;
   },
-  stopAudio :function _trc_func_33004579_69() {
+  stopAudio :function _trc_func_33004591_69() {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
     return T2MediaLib.stopAudio();
   },
-  fiber$stopAudio :function _trc_func_33004579_70(_thread) {
+  fiber$stopAudio :function _trc_func_33004591_70(_thread) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
@@ -10066,12 +10066,12 @@ Tonyu.classes.kernel.T2MediaPlayer=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     
     _thread.retVal=_this;return;
   },
-  pauseAudio :function _trc_func_33004636_71() {
+  pauseAudio :function _trc_func_33004648_71() {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
     return T2MediaLib.pauseAudio();
   },
-  fiber$pauseAudio :function _trc_func_33004636_72(_thread) {
+  fiber$pauseAudio :function _trc_func_33004648_72(_thread) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
@@ -10081,12 +10081,12 @@ Tonyu.classes.kernel.T2MediaPlayer=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     
     _thread.retVal=_this;return;
   },
-  resumeAudio :function _trc_func_33004695_73() {
+  resumeAudio :function _trc_func_33004707_73() {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
     return T2MediaLib.resumeAudio();
   },
-  fiber$resumeAudio :function _trc_func_33004695_74(_thread) {
+  fiber$resumeAudio :function _trc_func_33004707_74(_thread) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
@@ -10096,39 +10096,39 @@ Tonyu.classes.kernel.T2MediaPlayer=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     
     _thread.retVal=_this;return;
   },
-  setAudioVolume :function _trc_func_33004756_75(vol) {
+  setAudioVolume :function _trc_func_33004768_75(vol) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
-    //$LASTPOS=33004784;
+    //$LASTPOS=33004796;
     vol=vol/128;
-    //$LASTPOS=33004806;
+    //$LASTPOS=33004818;
     if (vol>1) {
-      //$LASTPOS=33004826;
+      //$LASTPOS=33004838;
       vol=1;
     } else {
-      //$LASTPOS=33004847;
+      //$LASTPOS=33004859;
       if (vol<0) {
-        //$LASTPOS=33004862;
+        //$LASTPOS=33004874;
         vol=0;
       }
     }
     return T2MediaLib.setAudioVolume(vol);
   },
-  fiber$setAudioVolume :function _trc_func_33004756_76(_thread,vol) {
+  fiber$setAudioVolume :function _trc_func_33004768_76(_thread,vol) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
     
-    //$LASTPOS=33004784;
+    //$LASTPOS=33004796;
     vol=vol/128;
-    //$LASTPOS=33004806;
+    //$LASTPOS=33004818;
     if (vol>1) {
-      //$LASTPOS=33004826;
+      //$LASTPOS=33004838;
       vol=1;
     } else {
-      //$LASTPOS=33004847;
+      //$LASTPOS=33004859;
       if (vol<0) {
-        //$LASTPOS=33004862;
+        //$LASTPOS=33004874;
         vol=0;
       }
     }
@@ -10137,35 +10137,35 @@ Tonyu.classes.kernel.T2MediaPlayer=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     
     _thread.retVal=_this;return;
   },
-  setAudioTempo :function _trc_func_33004923_77(tempo) {
+  setAudioTempo :function _trc_func_33004935_77(tempo) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
-    //$LASTPOS=33004952;
+    //$LASTPOS=33004964;
     if (tempo>4) {
-      //$LASTPOS=33004974;
+      //$LASTPOS=33004986;
       tempo=4;
     } else {
-      //$LASTPOS=33004997;
+      //$LASTPOS=33005009;
       if (tempo<0.5) {
-        //$LASTPOS=33005014;
+        //$LASTPOS=33005026;
         tempo=0.5;
       }
     }
     return T2MediaLib.setAudioTempo(tempo);
   },
-  fiber$setAudioTempo :function _trc_func_33004923_78(_thread,tempo) {
+  fiber$setAudioTempo :function _trc_func_33004935_78(_thread,tempo) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
     
-    //$LASTPOS=33004952;
+    //$LASTPOS=33004964;
     if (tempo>4) {
-      //$LASTPOS=33004974;
+      //$LASTPOS=33004986;
       tempo=4;
     } else {
-      //$LASTPOS=33004997;
+      //$LASTPOS=33005009;
       if (tempo<0.5) {
-        //$LASTPOS=33005014;
+        //$LASTPOS=33005026;
         tempo=0.5;
       }
     }
@@ -10174,12 +10174,12 @@ Tonyu.classes.kernel.T2MediaPlayer=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     
     _thread.retVal=_this;return;
   },
-  setAudioPosition :function _trc_func_33005078_79(time) {
+  setAudioPosition :function _trc_func_33005090_79(time) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
     return T2MediaLib.setAudioPosition(time);
   },
-  fiber$setAudioPosition :function _trc_func_33005078_80(_thread,time) {
+  fiber$setAudioPosition :function _trc_func_33005090_80(_thread,time) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
@@ -10189,12 +10189,12 @@ Tonyu.classes.kernel.T2MediaPlayer=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     
     _thread.retVal=_this;return;
   },
-  getAudioCurrentTime :function _trc_func_33005157_81() {
+  getAudioCurrentTime :function _trc_func_33005169_81() {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
     return T2MediaLib.getAudioCurrentTime();
   },
-  fiber$getAudioCurrentTime :function _trc_func_33005157_82(_thread) {
+  fiber$getAudioCurrentTime :function _trc_func_33005169_82(_thread) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
@@ -10204,12 +10204,12 @@ Tonyu.classes.kernel.T2MediaPlayer=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     
     _thread.retVal=_this;return;
   },
-  getAudioLength :function _trc_func_33005234_83() {
+  getAudioLength :function _trc_func_33005246_83() {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
     return T2MediaLib.getAudioLength();
   },
-  fiber$getAudioLength :function _trc_func_33005234_84(_thread) {
+  fiber$getAudioLength :function _trc_func_33005246_84(_thread) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
@@ -10219,12 +10219,12 @@ Tonyu.classes.kernel.T2MediaPlayer=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     
     _thread.retVal=_this;return;
   },
-  getAudioData :function _trc_func_33005301_85(idx) {
+  getAudioData :function _trc_func_33005313_85(idx) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
     return T2MediaLib.getAudioData(idx);
   },
-  fiber$getAudioData :function _trc_func_33005301_86(_thread,idx) {
+  fiber$getAudioData :function _trc_func_33005313_86(_thread,idx) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;

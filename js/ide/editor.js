@@ -306,9 +306,13 @@ $(function () {
     EC.handleException=Tonyu.onRuntimeError=function (e) {
         Tonyu.globals.$lastError=e;
         var t=curPrj.env.traceTbl;
-        var trc=StackTrace.get(e,t);
+        var trc;//=StackTrace.get(e,t);
         var te=((trc && trc[0]) ? trc[0] : t.decode($LASTPOS));
-        console.log("onRunTimeError:stackTrace",e.stack);
+        console.log("onRunTimeError:stackTrace1",e.stack,te,$LASTPOS);
+        if (te) {
+            te=curPrj.decodeTrace(te);
+        }
+        console.log("onRunTimeError:stackTrace2",te,$LASTPOS);
         if (te) {
             te.mesg=e;
             if (e.pluginName) {
@@ -328,6 +332,7 @@ $(function () {
             //if(userAgent.indexOf('msie')<0) throw e;
         } else {
             UI("div",{title:"Error"},e,["pre",e.stack]).dialog({width:800});
+            stop();
             //alertOnce(e);
             //throw e;
         }

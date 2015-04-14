@@ -5,7 +5,7 @@ for (i=0 ; i<a.length; i++) {
 new Panel;
 new B;
 new TQuery;
-updateEx(30);
+updateEx(30); //aaa
 new TQuery;
 updateEx(30);
 print(color);
@@ -20,6 +20,7 @@ x=0;
 y=300;
 while(true) {
     drawLine(x,0,100,100);
+    if (x==100) a.b.c=3;
     _fukidashi={c:10,text:"あいう",size:30};
     x++;
     update();

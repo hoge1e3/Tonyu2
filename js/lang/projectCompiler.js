@@ -3,7 +3,7 @@ define(["Tonyu","Tonyu.Compiler.JSGenerator","Tonyu.Compiler.Semantics","Tonyu.T
 var TPRC=function (dir) {
     if (!dir.rel) throw new Error("projectCompiler: "+dir+" is not dir obj");
      var TPR={env:{}};
-     var traceTbl=Tonyu.TraceTbl();
+     var traceTbl=Tonyu.TraceTbl;//();
      TPR.env.traceTbl=traceTbl;
      TPR.EXT=".tonyu";
      TPR.getOptionsFile=function () {
@@ -298,10 +298,26 @@ var TPRC=function (dir) {
         console.log("loading: "+f.path());
         /*if (typeof require=="function") return require(f.path());
         else */
-        lastEvaled=new Function(f.text());
+        var lastEvaled=new Function(f.text());
+        traceTbl.addSource(f.path(),lastEvaled+"");
         //f.rel("../"+f.name()+".dump").text(lastEvaled+"");
         return lastEvaled();
     }
+    TPR.decodeTrace=function (desc) { // user.Test:123
+        var a=desc.split(":");
+        var cl=a[0],pos=parseInt(a[1]);
+        var cls=cl.split(".");
+        var sn=cls.pop();
+        var nsp=cls.join(".");
+        if (nsp==TPR.getNamespace()) {
+            var sf=TPR.sourceFiles();
+            for (var i in sf) {
+                if (sn==i) {
+                    return TError("Trace info", sf[i], pos);
+                }
+            }
+        }
+    };
     return TPR;
 }
 return TPRC;

@@ -112,8 +112,8 @@ function genJS(klass, env) {//B
     }
     function lastPosF(node) {//G
         return function () {
-            buf.printf("%s%s=%s;%n", (env.options.compiler.commentLastPos?"//":""),
-                    LASTPOS, traceTbl.add(klass/*.src.tonyu*/,node.pos ));
+            buf.printf("%s%s=%s;//%s%n", (env.options.compiler.commentLastPos?"//":""),
+                    LASTPOS, traceTbl.add(klass/*.src.tonyu*/,node.pos ), klass.fullName+":"+node.pos);
         };
     }
     var THNode={type:"THNode"};//G
