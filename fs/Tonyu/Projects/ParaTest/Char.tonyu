@@ -8,7 +8,7 @@ while(true) {
     if(getkey(32)==1) die();
     update();
 }
-
+//
 \go(speed) {
     while(true) {
         print("Go Left");

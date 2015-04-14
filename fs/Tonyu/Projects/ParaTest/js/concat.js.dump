@@ -1,3 +1,4 @@
+function anonymous() {
 Tonyu.klass.ensureNamespace(Tonyu.classes,'user');
 Tonyu.classes.user.Char=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
   main :function _trc_func_1000000_0() {
@@ -324,3 +325,5 @@ Tonyu.classes.user.Main=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
 });
 Tonyu.klass.addMeta(Tonyu.classes.user.Main,{"fullName":"user.Main","namespace":"user","shortName":"Main","decls":{"methods":{"main":{"nowait":false}}}});
 
+
+}

@@ -1,4 +1,6 @@
 extends Actor;
+includes T2MediaPlayer;
+
 native $;
 native TError;
 native $LASTPOS;
@@ -9,6 +11,9 @@ native Tonyu;
 native SplashScreen;
 native Math;
 
+\update() {
+    waitFor(Tonyu.timeout(50)); // waitFor calls update...
+}
 \initSprites() {
     $Sprites=new Sprites();
     $FrontSprites=new Sprites();
@@ -35,6 +40,12 @@ native Math;
         $Screen=new ScaledCanvas{canvas:cvj, width:465, height:465};
     }
 }
+\initSounds() {
+    print ("Loading sounds...");
+    initT2MediaPlayer();
+    loadFromProject($currentProject);
+    print ("Loading sounds done.");
+}
 
 
 \initThread() {
@@ -44,7 +55,7 @@ native Math;
     print("MainClass= "+mainClassName);
     mainClass=Tonyu.getClass(mainClassName);
     if (!mainClass) {
-        TError( mainClassName+" というクラスはありません", 
+        TError( mainClassName+" というクラスはありません",
         "不明" ,0).raise();
     }
     Tonyu.runMode=true;
@@ -54,6 +65,7 @@ native Math;
 \stop() {
     fireEvent("stop");
 }
+initSounds();
 initSprites();
 $InputDevice=new InputDevice;
 $InputDevice.initCanvasEvents(cvj);
@@ -74,7 +86,7 @@ while (true) {
     $InputDevice.update();
     $screenWidth=$Screen.width;
     $screenHeight=$Screen.height;
-    
+
     doDraw=now()<deadLine;
     if (!doDraw && frameSkipped>=maxFrameSkip) {
         doDraw=true;
@@ -95,7 +107,7 @@ while (true) {
     measureFps();
     waitFrame(); // FPS制御
     while(paused) {
-        waitFor(Tonyu.timeout(1)); 
+        waitFor(Tonyu.timeout(1));
         if (!paused) resetDeadLine();
     }
 }
