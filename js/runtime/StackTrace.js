@@ -1,6 +1,6 @@
 define([],function (){
     var trc={};
-    var pat=/_trc_func_([0-9]+)_.*[^0-9]([0-9]+):([0-9]+)[\s\)]*\r?$/;
+    var pat=/(_trc_[A-Za-z0-9_]*).*[^0-9]([0-9]+):([0-9]+)[\s\)]*\r?$/;
     trc.isAvailable=function () {
         var scr=
             "({\n"+
@@ -22,7 +22,7 @@ define([],function (){
         }
         return false;
     };
-    trc.get=function (e,ttb) {
+    trc.get=function (e) {
         var s=e.stack;
         if (typeof s!="string") return false;
         var lines=s.split(/\n/);
@@ -30,11 +30,13 @@ define([],function (){
         for (var i=0 ; i<lines.length; i++) {
             var p=pat.exec(lines[i]);
             if (!p) continue;
-            var id=p[1];
+            //var id=p[1];
+            var fname=p[1];
             var row=p[2];
             var col=p[3];
-            var tri=ttb.decode(id);
-            if (tri && tri.klass) {
+            res.push({fname:fname, row:row,col:col});
+            //var tri=ttb.decode(id);
+            /*if (tri && tri.klass) {
                 var str=tri.klass.src.js;
                 var slines=str.split(/\n/);
                 var sid=null;
@@ -47,13 +49,14 @@ define([],function (){
                     var stri=ttb.decode(sid);
                     if (stri) res.push(stri);
                 }
-            }
+            }*/
         }
         /*$lastStackTrace=res;
         $showLastStackTrace=function () {
             console.log("StackTrace.get",res);
             //console.log("StackTrace.get",lines,res);
         };*/
+        console.log("StackTrace.get",res);
         return res;
     };
 

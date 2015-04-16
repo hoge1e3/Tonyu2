@@ -1,5 +1,5 @@
 define(["WebSite","SFileNW"],function (WebSite,wfs) {
-    if (wfs) {
+    if (wfs && wfs.get) {
         //var wfs=require("SFileNW");
         if (typeof window=="object") window.FS=wfs;
         return wfs;

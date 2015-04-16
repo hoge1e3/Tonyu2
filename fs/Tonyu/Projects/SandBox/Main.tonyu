@@ -5,7 +5,7 @@ for (i=0 ; i<a.length; i++) {
 new Panel;
 new B;
 new TQuery;
-updateEx(30); //aaa
+updateEx(30); //aaab
 new TQuery;
 updateEx(30);
 print(color);

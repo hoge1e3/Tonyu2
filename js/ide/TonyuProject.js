@@ -222,7 +222,7 @@ return Tonyu.Project=function (dir, kernelDir) {
     };
     TPR.fixOptions=function (opt) {
         if (!opt.compiler) opt.compiler={};
-        opt.compiler.commentLastPos=false; //  TPR.runScriptMode || StackTrace.isAvailable();
+        opt.compiler.commentLastPos=TPR.runScriptMode || StackTrace.isAvailable();
         opt.run.mainClass=TPR.fixClassName(opt.run.mainClass);
         opt.run.bootClass=TPR.fixClassName(opt.run.bootClass);
         if (!opt.plugins) {

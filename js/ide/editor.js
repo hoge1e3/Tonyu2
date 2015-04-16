@@ -2,13 +2,13 @@ requirejs(["Util", "Tonyu", "FS", "FileList", "FileMenu",
            "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project",
            "copySample","Shell","Shell2","ProjectOptionsEditor","copyToKernel","KeyEventChecker",
            "WikiDialog","runtime", "KernelDiffDialog","Sync","searchDialog","StackTrace","syncWithKernel",
-           "UI","ResEditor","WebSite","exceptionCatcher"
+           "UI","ResEditor","WebSite","exceptionCatcher","Tonyu.TraceTbl"
           ],
 function (Util, Tonyu, FS, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,
           copySample,sh,sh2, ProjectOptionsEditor, ctk, KeyEventChecker,
           WikiDialog, rt , KDD,Sync,searchDialog,StackTrace,swk,
-          UI,ResEditor,WebSite,EC
+          UI,ResEditor,WebSite,EC,TTB
           ) {
 $(function () {
     var F=EC.f;
@@ -306,13 +306,18 @@ $(function () {
     EC.handleException=Tonyu.onRuntimeError=function (e) {
         Tonyu.globals.$lastError=e;
         var t=curPrj.env.traceTbl;
-        var trc;//=StackTrace.get(e,t);
+        var te;
+        var tid = t.find(e) || t.decode($LASTPOS); // user.Main:234
+        if (tid) {
+            te=curPrj.decodeTrace(tid);
+        }
+        /*var trc;//=StackTrace.get(e,t);
         var te=((trc && trc[0]) ? trc[0] : t.decode($LASTPOS));
         console.log("onRunTimeError:stackTrace1",e.stack,te,$LASTPOS);
         if (te) {
             te=curPrj.decodeTrace(te);
         }
-        console.log("onRunTimeError:stackTrace2",te,$LASTPOS);
+        console.log("onRunTimeError:stackTrace2",te,$LASTPOS);*/
         if (te) {
             te.mesg=e;
             if (e.pluginName) {
