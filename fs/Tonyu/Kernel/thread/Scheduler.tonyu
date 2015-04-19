@@ -1,1 +1,17 @@
+extends TObject;
 
+cur=[];
+next=[];
+\addToCur(th) {
+    cur.push(th);
+}
+\addToNext(th) {
+    next.push(th);
+}
+\stepAll() {
+    for (var t in cur) {
+        cur.steps();
+    }
+    cur=next;
+    next=[];
+}
