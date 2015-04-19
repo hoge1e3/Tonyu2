@@ -8,9 +8,10 @@ define(["genROM","dumpScript","Util","FS","Sync","Shell","WebSite"],
     sh.build.description="Build files before commit.";
     function doBuildNW() {
         var home=FS.get(WebSite.tonyuHome);
-        genROM(home.rel("Kernel/"),     home.rel("js/gen/ROM_k.js"));
-        genROM(home.rel("doc/"),        home.rel("js/gen/ROM_d.js"));
-        genROM(home.rel("SampleROM/"),  home.rel("js/gen/ROM_s.js"));
+        var genHome=FS.get(".");
+        genROM(home.rel("Kernel/"),     genHome.rel("js/gen/ROM_k.js"));
+        genROM(home.rel("doc/"),        genHome.rel("js/gen/ROM_d.js"));
+        genROM(home.rel("SampleROM/"),  genHome.rel("js/gen/ROM_s.js"));
         var ds=require("dumpScript");
         var reqConf=ds.genShim();
         window.generatedShim=reqConf;
