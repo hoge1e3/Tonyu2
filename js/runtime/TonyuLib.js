@@ -10,7 +10,7 @@ return Tonyu=function () {
                 exit:exit, steps:steps, step:step, isAlive:isAlive, isWaiting:isWaiting,
                 suspend:suspend,retVal:0/*retVal*/,tryStack:[],
                 kill:kill, waitFor: waitFor,setGroup:setGroup,
-                enterTry:enterTry,exitTry:exitTry,startCatch:startCatch};
+                enterTry:enterTry,exitTry:exitTry,startCatch:startCatch,waitEvent:waitEvent};
         var frame=null;
         var _isAlive=true;
         var cnt=0;
@@ -54,7 +54,12 @@ return Tonyu=function () {
             }
         }
         function gotoCatch(e) {
-            if (fb.tryStack.length==0) throw e;
+            if (fb.tryStack.length==0) {
+                kill();
+                frame=null;
+                handleEx(e);
+                return;
+            }
             fb.lastEx=e;
             var s=fb.tryStack.pop();
             while (frame) {
@@ -81,6 +86,16 @@ return Tonyu=function () {
         }
         function exitTry() {
             fb.tryStack.pop();
+        }
+        function waitEvent(obj,eventSpec) { // eventSpec=[EventType, arg1, arg2....]
+            suspend();
+            if (!obj.on) return;
+            var h;
+            eventSpec=eventSpec.concat(function () {
+                h.remove();
+                steps();
+            });
+            h=obj.on.apply(obj, eventSpec);
         }
         function waitFor(j) {
             _isWaiting=true;

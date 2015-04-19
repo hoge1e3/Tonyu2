@@ -351,26 +351,34 @@ Tonyu.klass.ensureNamespace(Tonyu.classes,'user');
 Tonyu.classes.user.Main=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
   main :function _trc_func_6000000_0() {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+    var e;
     
-    //$LASTPOS=6000267;//user.Main:267
-    _this.x=0;
-    //$LASTPOS=6000272;//user.Main:272
-    _this.y=300;
-    //$LASTPOS=6000279;//user.Main:279
-    while (true) {
+    try {
+      //$LASTPOS=6000277;//user.Main:277
+      _this.x=0;
+      //$LASTPOS=6000286;//user.Main:286
+      _this.y=300;
       //$LASTPOS=6000297;//user.Main:297
-      _this.drawLine(_this.x,0,100,100);
-      //$LASTPOS=6000324;//user.Main:324
-      if (_this.x==100) {
-        //$LASTPOS=6000336;//user.Main:336
-        _this.a.b.c=3;
+      while (true) {
+        //$LASTPOS=6000319;//user.Main:319
+        _this.drawLine(_this.x,0,100,100);
+        //$LASTPOS=6000350;//user.Main:350
+        if (_this.x==100) {
+          //$LASTPOS=6000362;//user.Main:362
+          _this.a.b.c=3;
+        }
+        //$LASTPOS=6000379;//user.Main:379
+        _this._fukidashi={c: 10,text: "あいう",size: 30};
+        //$LASTPOS=6000425;//user.Main:425
+        _this.x++;
+        //$LASTPOS=6000438;//user.Main:438
+        _this.update();
+        
       }
-      //$LASTPOS=6000349;//user.Main:349
-      _this._fukidashi={c: 10,text: "あいう",size: 30};
-      //$LASTPOS=6000391;//user.Main:391
-      _this.x++;
-      //$LASTPOS=6000400;//user.Main:400
-      _this.update();
+      
+    } catch (e) {
+      //$LASTPOS=6000470;//user.Main:470
+      _this.print(e);
       
     }
   },
@@ -378,40 +386,52 @@ Tonyu.classes.user.Main=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
+    var e;
     
-    //$LASTPOS=6000267;//user.Main:267
-    _this.x=0;
-    //$LASTPOS=6000272;//user.Main:272
-    _this.y=300;
     
     _thread.enter(function _trc_func_6000000_2(_thread) {
       if (_thread.lastEx) __pc=_thread.catchPC;
       for(var __cnt=100 ; __cnt--;) {
         switch (__pc) {
         case 0:
-          //$LASTPOS=6000279;//user.Main:279
-        case 1:
+          _thread.enterTry(5);
+          //$LASTPOS=6000277;//user.Main:277
+          _this.x=0;
+          //$LASTPOS=6000286;//user.Main:286
+          _this.y=300;
           //$LASTPOS=6000297;//user.Main:297
+        case 1:
+          //$LASTPOS=6000319;//user.Main:319
           _this.fiber$drawLine(_thread, _this.x, 0, 100, 100);
           __pc=2;return;
         case 2:
           
-          //$LASTPOS=6000324;//user.Main:324
+          //$LASTPOS=6000350;//user.Main:350
           if (_this.x==100) {
-            //$LASTPOS=6000336;//user.Main:336
+            //$LASTPOS=6000362;//user.Main:362
             _this.a.b.c=3;
           }
-          //$LASTPOS=6000349;//user.Main:349
+          //$LASTPOS=6000379;//user.Main:379
           _this._fukidashi={c: 10,text: "あいう",size: 30};
-          //$LASTPOS=6000391;//user.Main:391
+          //$LASTPOS=6000425;//user.Main:425
           _this.x++;
-          //$LASTPOS=6000400;//user.Main:400
+          //$LASTPOS=6000438;//user.Main:438
           _this.fiber$update(_thread);
           __pc=3;return;
         case 3:
           
           __pc=1;break;
         case 4:
+          _thread.exitTry();
+          __pc=6;break;
+        case 5:
+          e=_thread.startCatch();
+          _thread.exitTry();
+          {
+            //$LASTPOS=6000470;//user.Main:470
+            _this.print(e);
+          }
+        case 6:
           
           _thread.exit(_this);return;
         }
@@ -449,7 +469,7 @@ Tonyu.classes.user.MkFileTest=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
   main :function _trc_func_8000000_0() {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     var pp;
-    var _it_8;
+    var _it_9;
     
     //$LASTPOS=8000048;//user.MkFileTest:48
     _this.x=200;
@@ -460,9 +480,9 @@ Tonyu.classes.user.MkFileTest=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     //$LASTPOS=8000157;//user.MkFileTest:157
     while (true) {
       //$LASTPOS=8000197;//user.MkFileTest:197
-      _it_8=Tonyu.iterator(_this.ps,1);
-      while(_it_8.next()) {
-        pp=_it_8[0];
+      _it_9=Tonyu.iterator(_this.ps,1);
+      while(_it_9.next()) {
+        pp=_it_9[0];
         
         //$LASTPOS=8000226;//user.MkFileTest:226
         _this.p=pp;
@@ -478,7 +498,7 @@ Tonyu.classes.user.MkFileTest=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
     var pp;
-    var _it_8;
+    var _it_9;
     
     //$LASTPOS=8000048;//user.MkFileTest:48
     _this.x=200;
@@ -495,10 +515,10 @@ Tonyu.classes.user.MkFileTest=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
           //$LASTPOS=8000157;//user.MkFileTest:157
         case 1:
           //$LASTPOS=8000197;//user.MkFileTest:197
-          _it_8=Tonyu.iterator(_this.ps,1);
+          _it_9=Tonyu.iterator(_this.ps,1);
         case 2:
-          if (!(_it_8.next())) { __pc=4; break; }
-          pp=_it_8[0];
+          if (!(_it_9.next())) { __pc=4; break; }
+          pp=_it_9[0];
           
           //$LASTPOS=8000226;//user.MkFileTest:226
           _this.p=pp;
@@ -910,7 +930,7 @@ Tonyu.classes.user.SlideShow=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
   main :function _trc_func_11000000_0() {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     var pp;
-    var _it_11;
+    var _it_12;
     
     //$LASTPOS=11000048;//user.SlideShow:48
     _this.x=200;
@@ -921,9 +941,9 @@ Tonyu.classes.user.SlideShow=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     //$LASTPOS=11000157;//user.SlideShow:157
     while (true) {
       //$LASTPOS=11000197;//user.SlideShow:197
-      _it_11=Tonyu.iterator(_this.ps,1);
-      while(_it_11.next()) {
-        pp=_it_11[0];
+      _it_12=Tonyu.iterator(_this.ps,1);
+      while(_it_12.next()) {
+        pp=_it_12[0];
         
         //$LASTPOS=11000226;//user.SlideShow:226
         _this.p=pp;
@@ -939,7 +959,7 @@ Tonyu.classes.user.SlideShow=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
     var pp;
-    var _it_11;
+    var _it_12;
     
     //$LASTPOS=11000048;//user.SlideShow:48
     _this.x=200;
@@ -956,10 +976,10 @@ Tonyu.classes.user.SlideShow=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
           //$LASTPOS=11000157;//user.SlideShow:157
         case 1:
           //$LASTPOS=11000197;//user.SlideShow:197
-          _it_11=Tonyu.iterator(_this.ps,1);
+          _it_12=Tonyu.iterator(_this.ps,1);
         case 2:
-          if (!(_it_11.next())) { __pc=4; break; }
-          pp=_it_11[0];
+          if (!(_it_12.next())) { __pc=4; break; }
+          pp=_it_12[0];
           
           //$LASTPOS=11000226;//user.SlideShow:226
           _this.p=pp;
@@ -989,15 +1009,15 @@ Tonyu.classes.user.Test=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     var i;
     var v;
-    var _it_14;
+    var _it_15;
     
     //$LASTPOS=12000000;//user.Test:0
     _this.a=[2,3,5,50,23];
     //$LASTPOS=12000017;//user.Test:17
-    _it_14=Tonyu.iterator(_this.a,2);
-    while(_it_14.next()) {
-      i=_it_14[0];
-      v=_it_14[1];
+    _it_15=Tonyu.iterator(_this.a,2);
+    while(_it_15.next()) {
+      i=_it_15[0];
+      v=_it_15[1];
       
       //$LASTPOS=12000042;//user.Test:42
       _this.print(i+"="+v);
@@ -1034,15 +1054,15 @@ Tonyu.classes.user.Test=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     var __pc=0;
     var i;
     var v;
-    var _it_14;
+    var _it_15;
     
     //$LASTPOS=12000000;//user.Test:0
     _this.a=[2,3,5,50,23];
     //$LASTPOS=12000017;//user.Test:17
-    _it_14=Tonyu.iterator(_this.a,2);
-    while(_it_14.next()) {
-      i=_it_14[0];
-      v=_it_14[1];
+    _it_15=Tonyu.iterator(_this.a,2);
+    while(_it_15.next()) {
+      i=_it_15[0];
+      v=_it_15[1];
       
       //$LASTPOS=12000042;//user.Test:42
       _this.print(i+"="+v);
