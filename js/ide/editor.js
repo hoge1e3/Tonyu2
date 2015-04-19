@@ -15,7 +15,7 @@ $(function () {
     $LASTPOS=0;
     copySample();
     var home=FS.get(WebSite.tonyuHome);
-    //if (!Tonyu.ide) Tonyu.ide={};
+    //if (!Tonyu.ide)  Tonyu.ide={};
     var kernelDir=home.rel("Kernel/");
     var dir=Util.getQueryString("dir", "/Tonyu/Projects/SandBox/");
     var curProjectDir=FS.get(dir);

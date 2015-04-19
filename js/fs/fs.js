@@ -6,11 +6,11 @@ define(["WebSite","SFileNW"],function (WebSite,wfs) {
     }
     // Media Mask
     var MM_RAM=1, MM_LS=2, MM_MIX=3;
-	var ramDisk={},ramDiskUsage=null;
-	if (typeof localStorage=="undefined" || localStorage==null) {
-		console.log("FS: Using RAMDisk");
-		ramDiskUsage="ALL";
-	}
+    var ramDisk={},ramDiskUsage=null;
+    if (typeof localStorage=="undefined" || localStorage==null) {
+        console.log("FS: Using RAMDisk");
+        ramDiskUsage="ALL";
+    }
     var FS={};
     if (typeof window=="object") window.FS=FS;
     FS.ramDisk=ramDisk;
@@ -36,11 +36,11 @@ define(["WebSite","SFileNW"],function (WebSite,wfs) {
     }
     FS.splitPath=splitPath;
     function splitPath(path) {
-    	var res=path.split(SEP);
-    	if (res[res.length-1]=="") {
-    		res[res.length-2]+=SEP;
-    		res.pop();
-   		}
+        var res=path.split(SEP);
+        if (res[res.length-1]=="") {
+            res[res.length-2]+=SEP;
+            res.pop();
+        }
         return res;
     }
     function resolveROM(path) {
@@ -54,7 +54,7 @@ define(["WebSite","SFileNW"],function (WebSite,wfs) {
         return null;
     }
     function isReadonly(path) {
-    	return resolveROM(path);
+        return resolveROM(path);
     }
     function getLocalStorage(path) {
         if (isUsingRAMDisk(path)) {
@@ -63,7 +63,7 @@ define(["WebSite","SFileNW"],function (WebSite,wfs) {
         return localStorage;
     }
     function lcs(path, text) {
-    	var ls=getLocalStorage(path);
+        var ls=getLocalStorage(path);
         var r=resolveROM(path);
         if (arguments.length==2) {
             if (r) throw new Error(path+" is Read only.");
@@ -229,7 +229,7 @@ define(["WebSite","SFileNW"],function (WebSite,wfs) {
         return res;
     };
     FS.mountROM=function (exported) {
-    	console.log("ROM mouted on ",exported.base);
+        console.log("ROM mouted on ",exported.base);
         roms[exported.base]=exported.data;
 
         var ps=splitPath(exported.base);
@@ -240,7 +240,7 @@ define(["WebSite","SFileNW"],function (WebSite,wfs) {
     };
     var DONOTEXPORT="DONOTEXPORT";
     FS.exportDir=function (dir,options) {
-    	if (!options) options={};
+        if (!options) options={};
         if (typeof dir=="string") dir=FS.get(dir);
         var res={base: dir.path()};
         var data=res.data={};
@@ -251,7 +251,7 @@ define(["WebSite","SFileNW"],function (WebSite,wfs) {
             data[rp]=cfd.text();
             if (!options.keepCR) data[rp]=data[rp].replace(/\r/g,"");
             if (cfd.isDir()) {
-            	if (cfd.rel(DONOTEXPORT).exists()) return;
+                if (cfd.rel(DONOTEXPORT).exists()) return;
                 cfd.each(e);
             }
         }
@@ -261,11 +261,11 @@ define(["WebSite","SFileNW"],function (WebSite,wfs) {
         return FS.get(path);
     };
     FS.get=function (path, securityDomain) {
-    	if (!securityDomain) securityDomain={};
+        if (!securityDomain) securityDomain={};
         if (path==null) throw  new Error("FS.get: Null path");
         if (path.isDir) return path;
         if (securityDomain.topDir && !startsWith(path,securityDomain.topDir)) {
-        	throw  new Error(path+" is out of securtyDomain");
+            throw  new Error(path+" is out of securtyDomain");
         }
         if (!isPath(path)) throw  new Error(path+": Path must starts with '/'");
         var parent=up(path);
@@ -333,16 +333,16 @@ define(["WebSite","SFileNW"],function (WebSite,wfs) {
             };
             dir.isDir=function () {return true;};
             dir.rel=function (relPath){
-            	var paths=splitPath(relPath);
-            	var resPath=dir.path();
-            	resPath=resPath.replace(/\/$/,"");
-            	paths.forEach(function (n) {
-            		if (n==".." || n=="../") resPath=up(resPath);
-            		else {
-                    	resPath=resPath.replace(/\/$/,"");
-            			resPath+=SEP+(n=="."||n=="./" ? "": n);
-            		}
-            	});
+                var paths=splitPath(relPath);
+                var resPath=dir.path();
+                resPath=resPath.replace(/\/$/,"");
+                paths.forEach(function (n) {
+                    if (n==".." || n=="../") resPath=up(resPath);
+                    else {
+                        resPath=resPath.replace(/\/$/,"");
+                        resPath+=SEP+(n=="."||n=="./" ? "": n);
+                    }
+                });
                 return FS.get(resPath, securityDomain);
             };
             dir.rm=function () {
@@ -416,12 +416,12 @@ define(["WebSite","SFileNW"],function (WebSite,wfs) {
                 }
             };
             file.lines=function () {
-            	return file.text().split("\n");
+                return file.text().split("\n");
             };
             file.obj=function () {
                 if (arguments.length==0) {
-                	var t=file.text();
-                	if (!t) return null;
+                    var t=file.text();
+                    if (!t) return null;
                     return JSON.parse(t);
                 } else {
                     file.text(JSON.stringify(arguments[0]));
