@@ -1,0 +1,6 @@
+extends SpriteChar;
+
+while(x<200) {
+    x++;
+    update();
+}

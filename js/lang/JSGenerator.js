@@ -24,7 +24,6 @@ var stype=cu.getScopeType;
 //var nc=cu.nullCheck;
 //var genSym=cu.genSym;
 var annotation3=cu.annotation;
-var getSource=cu.getSource;
 var getMethod2=cu.getMethod;
 var getDependingClasses=cu.getDependingClasses;
 var getParams=cu.getParams;
@@ -32,6 +31,10 @@ var getParams=cu.getParams;
 //-----------
 function genJS(klass, env) {//B
     var srcFile=klass.src.tonyu; //file object  //S
+    var srcCont=srcFile.text();
+    function getSource(node) {
+        return cu.getSource(srcCont,node);
+    }
     var buf=IndentBuffer();
     var printf=buf.printf;
     var ctx=context();
@@ -722,7 +725,7 @@ function genJS(klass, env) {//B
                  "var %s=0;%n"+
                  "%f%n"+
                  "%f%n",
-               FIBPRE, fiber.name, genFn(fiber.pos), [",",[THNode].concat(fiber.params)],
+               FIBPRE, fiber.name, genFn(fiber.pos,"f_"+fiber.name), [",",[THNode].concat(fiber.params)],
                  THIZ, GET_THIS,
                  (fiber.useArgs?"":"//"), ARGS, "Tonyu.A(arguments)",
                  FRMPC,
@@ -741,7 +744,7 @@ function genJS(klass, env) {//B
                       "%}}%n"+
                     "%}}%n"+
                  "%}});%n",
-                 TH,genFn(fiber.pos),TH,
+                 TH,genFn(fiber.pos,"ent_"+fiber.name),TH,
                     TH,FRMPC,TH,
                     CNTV, CNTC, CNTV,
                       FRMPC,
@@ -776,7 +779,7 @@ function genJS(klass, env) {//B
                   "%f%n" +
                   "%f" +
                "%}},%n",
-               fname, genFn(func.pos), [",",func.params],
+               fname, genFn(func.pos,fname), [",",func.params],
                THIZ, GET_THIS,
                	      genLocalsF(func),
                       fbody
@@ -811,8 +814,10 @@ function genJS(klass, env) {//B
             });
         }
     }
-    function genFn(pos) {//G
-        return ("_trc_func_"+traceTbl.add(klass,pos )+"_"+(fnSeq++));//  Math.random()).replace(/\./g,"");
+    function genFn(pos,name) {//G
+        if (!name) name=(fnSeq++)+"";
+        return ("_trc_"+klass.shortName+"_"+name)
+//        return ("_trc_func_"+traceTbl.add(klass,pos )+"_"+(fnSeq++));//  Math.random()).replace(/\./g,"");
     }
     function genSubFunc(node) {//G
         var finfo=annotation(node);// annotateSubFuncExpr(node);

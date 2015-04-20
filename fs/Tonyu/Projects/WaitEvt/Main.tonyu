@@ -1,0 +1,11 @@
+x=0;
+y=100;
+new Emitter{m:this};
+while(true) {
+    x++;
+    update();
+    if (getkey(32)==1) {
+        waitEvent("hogera");
+        print("Recv "+lastEvent[0]);
+    }
+}

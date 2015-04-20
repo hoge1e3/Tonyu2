@@ -9,8 +9,12 @@ native Array;
 
 \new(x,y,p) {
     if (Tonyu.runMode) {
-        var thg=currentThreadGroup();
-        if (thg) _th=thg.addObj(this);
+        if ($Scheduler) {
+            _th=$Scheduler.newThread(this, "main", []);
+        } else {
+            var thg=currentThreadGroup();
+            if (thg) _th=thg.addObj(this);
+        }
     }
     if (typeof x=="object") Tonyu.extend(this,x);
     else if (typeof x=="number") {
@@ -60,6 +64,7 @@ nowait \stopAnim(){
     onUpdate();
     if(_thread) {
         _thread.suspend();
+        if ($Scheduler) $Scheduler.addToNext(_thread);
     }
 }
 nowait \onUpdate() {
@@ -150,8 +155,8 @@ nowait \watchHit(typeA,typeB,onHit) {
         onHit.apply(this,[a,b]);
     });
 }
-nowait \currentThreadGroup() {
-    return $currentThreadGroup;
+nowait \currentThreadGroup() {//deprecated
+    return $Scheduler; //$currentThreadGroup;
 }
 nowait \die() {
     if (_th) {

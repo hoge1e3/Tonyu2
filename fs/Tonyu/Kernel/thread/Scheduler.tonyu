@@ -1,16 +1,27 @@
 extends TObject;
-
+native Tonyu;
 cur=[];
 next=[];
+\addObj(obj,name,args) {
+    return newThread(obj, name, args);
+}
+\newThread(obj, name, args, options) { //options:{pOrder, threadGroup}
+    name=name||"main";
+    args=args||[];
+    var th=Tonyu.thread();
+    th.apply(obj,name,args);
+    addToCur(th);
+    return th;
+}
 \addToCur(th) {
     cur.push(th);
 }
 \addToNext(th) {
     next.push(th);
 }
-\stepAll() {
+\stepsAll() {
     for (var t in cur) {
-        cur.steps();
+        t.steps();
     }
     cur=next;
     next=[];

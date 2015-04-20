@@ -1,0 +1,78 @@
+Tonyu.klass.ensureNamespace(Tonyu.classes,'user');
+Tonyu.classes.user.Test=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
+  main :function _trc_Test_main() {
+    var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+    
+    //$LASTPOS=1000000;//user.Test:0
+    Tonyu.globals.$map=new Tonyu.classes.kernel.Map({chipWidth: 32,chipHeight: 32});
+    //$LASTPOS=1000043;//user.Test:43
+    Tonyu.globals.$map.load("map.json");
+    //$LASTPOS=1000066;//user.Test:66
+    Tonyu.globals.$map.zOrder=1000;
+    //$LASTPOS=1000084;//user.Test:84
+    _this.x=20;
+    //$LASTPOS=1000089;//user.Test:89
+    _this.y=20;
+    //$LASTPOS=1000096;//user.Test:96
+    while (true) {
+      //$LASTPOS=1000114;//user.Test:114
+      _this.x++;
+      //$LASTPOS=1000123;//user.Test:123
+      _this.y++;
+      //$LASTPOS=1000132;//user.Test:132
+      Tonyu.globals.$Screen.scrollTo(_this.x-Tonyu.globals.$screenWidth/2,_this.y-Tonyu.globals.$screenHeight/2);
+      //$LASTPOS=1000210;//user.Test:210
+      _this.update();
+      
+    }
+    //$LASTPOS=1000222;//user.Test:222
+    _this.a=6601;
+  },
+  fiber$main :function _trc_Test_f_main(_thread) {
+    var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+    //var _arguments=Tonyu.A(arguments);
+    var __pc=0;
+    
+    //$LASTPOS=1000000;//user.Test:0
+    Tonyu.globals.$map=new Tonyu.classes.kernel.Map({chipWidth: 32,chipHeight: 32});
+    //$LASTPOS=1000043;//user.Test:43
+    Tonyu.globals.$map.load("map.json");
+    //$LASTPOS=1000066;//user.Test:66
+    Tonyu.globals.$map.zOrder=1000;
+    //$LASTPOS=1000084;//user.Test:84
+    _this.x=20;
+    //$LASTPOS=1000089;//user.Test:89
+    _this.y=20;
+    
+    _thread.enter(function _trc_Test_ent_main(_thread) {
+      if (_thread.lastEx) __pc=_thread.catchPC;
+      for(var __cnt=100 ; __cnt--;) {
+        switch (__pc) {
+        case 0:
+          //$LASTPOS=1000096;//user.Test:96
+        case 1:
+          //$LASTPOS=1000114;//user.Test:114
+          _this.x++;
+          //$LASTPOS=1000123;//user.Test:123
+          _this.y++;
+          //$LASTPOS=1000132;//user.Test:132
+          Tonyu.globals.$Screen.scrollTo(_this.x-Tonyu.globals.$screenWidth/2,_this.y-Tonyu.globals.$screenHeight/2);
+          //$LASTPOS=1000210;//user.Test:210
+          _this.fiber$update(_thread);
+          __pc=2;return;
+        case 2:
+          
+          __pc=1;break;
+        case 3:
+          
+          //$LASTPOS=1000222;//user.Test:222
+          _this.a=6601;
+          _thread.exit(_this);return;
+        }
+      }
+    });
+  },
+  __dummy: false
+});
+Tonyu.klass.addMeta(Tonyu.classes.user.Test,{"fullName":"user.Test","namespace":"user","shortName":"Test","decls":{"methods":{"main":{"nowait":false}}}});
+

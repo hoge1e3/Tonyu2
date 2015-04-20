@@ -15,7 +15,6 @@ var newScope=cu.newScope;
 //var nc=cu.nullCheck;
 var genSym=cu.genSym;
 var annotation3=cu.annotation;
-var getSource=cu.getSource;
 var getMethod2=cu.getMethod;
 var getDependingClasses=cu.getDependingClasses;
 var getParams=cu.getParams;
@@ -90,6 +89,9 @@ function initClassDecls(klass, env ) {//S
 function annotateSource2(klass, env) {//B
     var srcFile=klass.src.tonyu; //file object  //S
     var srcCont=srcFile.text();
+    function getSource(node) {
+        return cu.getSource(srcCont,node);
+    }
     var OM=ObjectMatcher;
     var traceTbl=env.traceTbl;
     // method := fiber | function

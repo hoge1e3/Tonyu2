@@ -56,7 +56,6 @@ return Tonyu=function () {
         function gotoCatch(e) {
             if (fb.tryStack.length==0) {
                 kill();
-                frame=null;
                 handleEx(e);
                 return;
             }
@@ -77,7 +76,7 @@ return Tonyu=function () {
             return e;
         }
         function exit(res) {
-            frame=frame.prev;
+            frame=(frame ? frame.prev:null);
             //if (frame) frame.res=res;
             fb.retVal=res;
         }
@@ -92,6 +91,7 @@ return Tonyu=function () {
             if (!obj.on) return;
             var h;
             eventSpec=eventSpec.concat(function () {
+                obj.lastEvent=arguments;
                 h.remove();
                 steps();
             });
@@ -136,6 +136,7 @@ return Tonyu=function () {
         }
         function kill() {
             _isAlive=false;
+            frame=null;
         }
         return fb;
     }
@@ -273,7 +274,10 @@ return Tonyu=function () {
             prot=arguments[1];
         } else if (arguments.length==3) {
             parent=arguments[0];
-            if (!parent) throw "No parent class";
+            if (!parent) {
+                console.log(arguments[2]);
+                throw new Error("No parent class ");
+            }
             includes=arguments[1];
             prot=arguments[2];
         } else {

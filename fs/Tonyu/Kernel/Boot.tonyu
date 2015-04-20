@@ -49,7 +49,7 @@ native Math;
 
 
 \initThread() {
-    $mainThreadGroup=thg=Tonyu.threadGroup();
+    //$mainThreadGroup=thg=Tonyu.threadGroup();
     var o=Tonyu.currentProject.getOptions();
     var mainClassName=o.run.mainClass;
     print("MainClass= "+mainClassName);
@@ -59,7 +59,8 @@ native Math;
         "不明" ,0).raise();
     }
     Tonyu.runMode=true;
-    $currentThreadGroup=thg;
+    //$currentThreadGroup=thg;
+    $Scheduler=new Scheduler;
     new mainClass();
 }
 \stop() {
@@ -81,7 +82,8 @@ if (typeof SplashScreen!="undefined") SplashScreen.hide();
 initFPSParams();
 
 while (true) {
-    thg.steps();
+    //thg.steps();
+    $Scheduler.stepsAll();
     $Keys.update();
     $InputDevice.update();
     $screenWidth=$Screen.width;

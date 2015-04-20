@@ -11,7 +11,7 @@ while ($Left>=0) {
     $mplayer.play($se_rocket);
     // ↓スペースキーをおすまで、ロケットが往復する
     while (getkey(32)==0) {
-        drawText(153,173,"Push Space key"+all(T1Text).length+" - "+$currentThreadGroup.threads.length,color(30,150,220),20);
+        drawText(153,173,"Push Space key",color(30,150,220),20);
         $Jiki.y=-50; // 自機を隠す
         // 真中より右にいる場合は左に加速、左にいる場合は右
         if (x>$screenWidth/2) vx=vx-1;

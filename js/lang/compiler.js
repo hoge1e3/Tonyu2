@@ -51,7 +51,7 @@ define(["Tonyu","ObjectMatcher", "TError"],
         return res;
     }
     cu.annotation=annotation3;
-    function getSource(node) {//B
+    function getSource(srcCont,node) {//B
         return srcCont.substring(node.pos,node.pos+node.len);
     }
     cu.getSource=getSource;

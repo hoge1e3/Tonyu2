@@ -311,6 +311,7 @@ $(function () {
         if (tid) {
             te=curPrj.decodeTrace(tid);
         }
+        console.log("onRunTimeError:stackTrace1",e.stack,te,$LASTPOS);
         /*var trc;//=StackTrace.get(e,t);
         var te=((trc && trc[0]) ? trc[0] : t.decode($LASTPOS));
         console.log("onRunTimeError:stackTrace1",e.stack,te,$LASTPOS);

@@ -16,7 +16,7 @@ native console;
    for (var i=1 ; i<a.length ; i++) {
        res.args.push(a[i]);
    }
-   return res;   
+   return res;
 }
 \registerEventHandler(type, obj) {
    // obj:{ attach, fire }
@@ -38,9 +38,19 @@ native console;
 \on() {
     var a=parseArgs(arguments);
     var h=getEventHandler(a.type);
-    h.addListener.apply(h,a.args);
+    return h.addListener.apply(h,a.args);
 }
 
 \fireEvent(type, args) {
     getEventHandler(type).fire(args);
+}
+\sendEvent(type, args) {
+    getEventHandler(type).fire(args);
+}
+
+\waitEvent() {
+    if (_thread) {
+        _thread.suspend();
+        _thread.waitEvent(this, arguments);
+    }
 }

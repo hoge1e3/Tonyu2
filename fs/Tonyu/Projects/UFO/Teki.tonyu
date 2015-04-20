@@ -1,5 +1,6 @@
 extends SpriteChar;
 
+
 function onUpdate() {
     var nto;
     // 自機とぶつかったとき、自機が死ぬ

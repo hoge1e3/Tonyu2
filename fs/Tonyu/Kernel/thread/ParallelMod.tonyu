@@ -6,10 +6,14 @@ nowait \parallel() {
      for (var i=1; i<arguments.length; i++) {
          args.push(arguments[i]);
      }
-     var name=arguments[0];          
-     var thg=$currentThreadGroup;
+     var name=arguments[0];
      var th;
-     if (thg) th=thg.addObj(this, name, args);
+     if ($Scheduler) {
+         th=$Scheduler.newThread(this,name,args);
+     } else {
+         var thg=$currentThreadGroup;
+         if (thg) th=thg.addObj(this, name, args);
+     }
      on("die") \{th.kill();};
      return th;
 }
