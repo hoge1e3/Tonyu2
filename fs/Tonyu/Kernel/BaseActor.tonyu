@@ -1,5 +1,5 @@
 extends null;
-includes MathMod,EventMod,TextRectMod;
+includes MathMod,EventMod,TextRectMod,OneframeSpriteMod;
 native Tonyu;
 native Key;
 native console;
@@ -262,9 +262,15 @@ nowait \draw(ctx) {
         }
     }
 }
-nowait \asyncResult() {
+nowait \asyncResult() {//@deperecated
     return Tonyu.asyncResult();
 }
+
+\runAsync(f) {
+    if (!_thread) throw new Error("runAsync should run in wait mode");
+    _thread.runAsync(f);
+}
+
 
 \screenOut(a) {
     //オブジェクトが画面外に出たかどうかを判定します。
@@ -311,6 +317,7 @@ nowait \asyncResult() {
 \color(r,g,b) {
     return "rgb("+[r,g,b].join(",")+")";
 }
+/*
 \drawText(x,y,text,col,size) {
     if ($debug) return;
     if (!size) size=15;
@@ -331,6 +338,7 @@ nowait \asyncResult() {
         new T1Line{x,y,tx,ty,col};
     }
 }
+*/
 \loadPage(page,arg){
     all().die();
     new page(arg);

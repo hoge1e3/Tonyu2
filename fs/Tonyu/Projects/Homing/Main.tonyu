@@ -1,0 +1,7 @@
+$Player=new Player{x:200,y:200};
+while(true) {
+    new Missle{x:rnd(400),y:0};
+    updateEx(30);
+    print(all(T1Line).length);//$Boot.getFrameRate());
+    
+}

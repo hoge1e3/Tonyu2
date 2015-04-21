@@ -10,7 +10,7 @@ return Tonyu=function () {
                 exit:exit, steps:steps, step:step, isAlive:isAlive, isWaiting:isWaiting,
                 suspend:suspend,retVal:0/*retVal*/,tryStack:[],
                 kill:kill, waitFor: waitFor,setGroup:setGroup,
-                enterTry:enterTry,exitTry:exitTry,startCatch:startCatch,waitEvent:waitEvent};
+                enterTry:enterTry,exitTry:exitTry,startCatch:startCatch,waitEvent:waitEvent,runAsync:runAsync};
         var frame=null;
         var _isAlive=true;
         var cnt=0;
@@ -91,11 +91,26 @@ return Tonyu=function () {
             if (!obj.on) return;
             var h;
             eventSpec=eventSpec.concat(function () {
-                obj.lastEvent=arguments;
+                fb.lastEvent=arguments;
+                fb.retVal=arguments[0];
                 h.remove();
                 steps();
             });
             h=obj.on.apply(obj, eventSpec);
+        }
+        function runAsync(f) {
+            var succ=function () {
+                fb.retVal=arguments;
+                steps();
+            };
+            var err=function () {
+                var e=new Error("Async fail");
+                e.args=arguments;
+                gotoCatch(e);
+                steps();
+            };
+            f(succ,err);
+            suspend();
         }
         function waitFor(j) {
             _isWaiting=true;
@@ -175,7 +190,7 @@ return Tonyu=function () {
         };
         return res;
     }
-    function threadGroup() {
+    function threadGroup() {//@deprecated
         var threads=[];
         var waits=[];
         var _isAlive=true;

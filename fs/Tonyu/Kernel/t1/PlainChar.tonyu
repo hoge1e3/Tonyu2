@@ -49,9 +49,10 @@ native Math;
     main();
     die();
 }
-\color(r,g,b) {
+/*\color(r,g,b) {
     return "rgb("+[r,g,b].join(",")+")";
 }
+
 \drawText(x,y,text,col,size) {
     if ($debug) return;
     if (!size) size=15;
@@ -71,7 +72,7 @@ native Math;
     }else {
         new T1Line{x,y,tx,ty,col};
     }
-}
+}*/
 \appear(t) {
     return t;
 }

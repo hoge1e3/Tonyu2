@@ -5,7 +5,7 @@ while(true) {
     x++;
     update();
     if (getkey(32)==1) {
-        waitEvent("hogera");
-        print("Recv "+lastEvent[0]);
+        r=waitEvent("hogera");
+        print("Recv: "+r);
     }
 }

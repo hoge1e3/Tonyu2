@@ -66,6 +66,7 @@ native Math;
 \stop() {
     fireEvent("stop");
 }
+
 initSounds();
 initSprites();
 $InputDevice=new InputDevice;
@@ -105,6 +106,7 @@ while (true) {
         frameSkipped++;
     }
     $Sprites.checkHit();
+    $Sprites.removeOneframes();
     fps_rpsCnt ++;
     measureFps();
     waitFrame(); // FPS制御

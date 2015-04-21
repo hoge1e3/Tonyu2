@@ -5,6 +5,6 @@ while(true) {
     setTimeout(a.receiver,1000);
     waitFor(a);
     c++;
-    m.sendEvent("hogera",[c]);
+    m.sendEvent("hogera",c);
     print("HOGERA!"+c);
 }

@@ -25,6 +25,13 @@ function remove(s) {
     sprites.splice(idx,1);
     delete s.__addedToSprites;
 }
+\removeOneframes() {
+    for (var i=sprites.length-1 ; i>=0 ; i--) {
+        if (sprites[i].oneframeSprite) {
+            sprites.splice(i,1);
+        }
+    }
+}
 function clear() {sprites.splice(0,sprites.length);}
 function compOrder(obj1, obj2){
     var val1=obj1.zOrder;
