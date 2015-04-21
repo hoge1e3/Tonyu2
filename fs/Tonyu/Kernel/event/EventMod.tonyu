@@ -1,24 +1,25 @@
 extends null;
 native console;
 
-\initEventMod() {
+nowait \initEventMod() {
    if (_eventHandlers) return;
    _eventHandlers={};
    on ("die",releaseEventMod);
 }
-\releaseEventMod() {
+nowait \releaseEventMod() {
    for (var k,v in _eventHandlers) {
        v.release();
    }
 }
-\parseArgs(a) {
+nowait \parseArgs(a) {
    var res={type:a[0], args:[]};
    for (var i=1 ; i<a.length ; i++) {
        res.args.push(a[i]);
    }
    return res;
 }
-\registerEventHandler(type, obj) {
+
+nowait \registerEventHandler(type, obj) {
    // obj:{ attach, fire }
    initEventMod();
    if (typeof type=="function") {
@@ -29,28 +30,57 @@ native console;
    }
    return _eventHandlers[type]=obj;
 }
-\getEventHandler(type) {
+
+nowait \getEventHandler(type) {
    initEventMod();
-   var res=_eventHandlers[type] || registerEventHandler(type);
+   if (typeof type=="function") {
+       type=type.meta.fullName;
+   }
+   var res=_eventHandlers[type];
+   return res;
+}
+nowait \getOrRegisterEventHandler(type) {
+   var res=getEventHandler(type) || registerEventHandler(type);
    return res;
 }
 
-\on() {
+nowait \on() {
     var a=parseArgs(arguments);
-    var h=getEventHandler(a.type);
+    var h=getOrRegisterEventHandler(a.type);
     return h.addListener.apply(h,a.args);
 }
 
-\fireEvent(type, args) {
-    getEventHandler(type).fire(args);
+nowait \fireEvent(type, arg) {
+    var h=getEventHandler(type);
+    if (h) h.fire([arg]);
 }
-\sendEvent(type, args) {
-    getEventHandler(type).fire(args);
+nowait \sendEvent(type, arg) {
+    fireEvent(type,arg);
 }
 
 \waitEvent() {
     if (_thread) {
-        _thread.suspend();
-        _thread.waitEvent(this, arguments);
+        var args=[];
+        for (var i=0;i<arguments.length;i++) {
+            if (arguments[i]===undefined) break;
+            args.push(arguments[i]);
+        }
+        _thread.waitEvent(this, args);
     }
 }
+/*
+\waitEvent(type, a1,a2,a3,a4,a5) {
+    if (_thread) {
+        waitEventRaw(type,a1,a2,a3,a4,a5); // TODO: cannot apply with thread.enter
+        return _thread.lastEvent[0];
+    }
+}*/
+/*
+\waitEvent2() {
+    if (_thread) {
+        t=obj.pararell.apply(obj, ["waitEventRaw"].concat(arguments) );
+        t.on("terminate") \{ _thread.steps(); }
+
+    }
+}
+*/
