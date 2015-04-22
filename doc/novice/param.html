@@ -1,48 +1,48 @@
 <html><head><meta charset="utf-8"/><meta http-equiv="Content-type" content="text/html; charset=utf8"/></head><body><link rel='stylesheet' href='/css/bootstrap.css'/>
 <style>body{padding-top:20px; margin-left: 20px; margin-right:20px;}</style>
 <title>param</title>
-<div><a id="marker_78285-0" name="marker_78285-0"></a><a href="new.html">前へ</a><span> - </span><a href="say2.html">次へ</a><span> - </span><a href="projectIndex.html">目次</a><span>
-</span><h1><a id="marker_78285-1" name="marker_78285-1"></a><span>複数のキャラクタを配置しましょう(2)</span></h1><a id="marker_78285-2" name="marker_78285-2"></a><p></p><a id="marker_78285-3" name="marker_78285-3"></a><span>猫とリンゴが表示できたので，</span><span>
-</span><a id="marker_78285-4" name="marker_78285-4"></a><span>今度はリンゴを2つ置いてみましょう．それには，Gameを次のようにすればよさそうですね．</span><span>
-</span><a id="marker_78285-5" name="marker_78285-5"></a><p></p><a id="marker_78285-6" name="marker_78285-6"></a><div class="plist">リスト1 Game</div><a id="marker_78285-10" name="marker_78285-10"></a><pre><a id="marker_78285-7" name="marker_78285-7"></a><span>new Cat;</span><span>
-</span><a id="marker_78285-8" name="marker_78285-8"></a><span>new Apple;</span><span>
-</span><a id="marker_78285-9" name="marker_78285-9"></a><span>new Apple;</span><span>
-</span></pre><a id="marker_78285-11" name="marker_78285-11"></a><p></p><a id="marker_78285-12" name="marker_78285-12"></a><span>実行すると... あれ？リンゴは1つしか表示されません．</span><span>
-</span><a id="marker_78285-13" name="marker_78285-13"></a><p></p><a id="marker_78285-14" name="marker_78285-14"></a><span>ここで，Appleのプログラムを確認してみましょう．</span><span>
-</span><a id="marker_78285-15" name="marker_78285-15"></a><p></p><a id="marker_78285-16" name="marker_78285-16"></a><div class="plist">Apple</div><a id="marker_78285-19" name="marker_78285-19"></a><pre><a id="marker_78285-17" name="marker_78285-17"></a><span>change($pat_fruits);</span><span>
-</span><a id="marker_78285-18" name="marker_78285-18"></a><span>go(200,150);</span><span>
-</span></pre><a id="marker_78285-20" name="marker_78285-20"></a><p></p><a id="marker_78285-21" name="marker_78285-21"></a><span>Appleでは，リンゴを(200,150)の位置に移動させる，と書いてあります．</span><span>
-</span><a id="marker_78285-22" name="marker_78285-22"></a><p></p><a id="marker_78285-23" name="marker_78285-23"></a><span>実は，リンゴは2つできているのですが，どちらも(200,150)という</span><span>
-</span><a id="marker_78285-24" name="marker_78285-24"></a><span>ピッタリ同じ位置に重なっているので</span><span>
-</span><a id="marker_78285-25" name="marker_78285-25"></a><span>１つにしか見えないのです．</span><span>
-</span><a id="marker_78285-26" name="marker_78285-26"></a><p></p><a id="marker_78285-27" name="marker_78285-27"></a><span>それでは，2つのリンゴを違う位置に表示させましょう．</span><span>
-</span><a id="marker_78285-28" name="marker_78285-28"></a><span>それには，リンゴの位置が(200,150)ではなく，リンゴごとに変わるようにすればよいでしょう．つまり，200や150という「数」が「変わる」ようにする... そうです「変数」を使えばよいのです．</span><span>
-</span><a id="marker_78285-29" name="marker_78285-29"></a><p></p><a id="marker_78285-30" name="marker_78285-30"></a><span>そこで，Appleの</span><code><span>200</span></code><span>と</span><code><span>150</span></code><span> を，それぞれ変数</span><code><span>x</span></code><span>と</span><code><span>y</span></code><span>に置き換えてみましょう．</span><span>
-</span><a id="marker_78285-31" name="marker_78285-31"></a><p></p><a id="marker_78285-32" name="marker_78285-32"></a><div class="plist">リスト2 Apple</div><a id="marker_78285-35" name="marker_78285-35"></a><pre><a id="marker_78285-33" name="marker_78285-33"></a><span>change($pat_fruits);</span><span>
-</span><a id="marker_78285-34" name="marker_78285-34"></a><span>go(x,y);</span><span>
-</span></pre><a id="marker_78285-36" name="marker_78285-36"></a><p></p><a id="marker_78285-37" name="marker_78285-37"></a><span>実行すると... あれ！今度はリンゴが1つも出てきません．</span><span>
-</span><a id="marker_78285-38" name="marker_78285-38"></a><p></p><a id="marker_78285-39" name="marker_78285-39"></a><span>なぜかというと，</span><strong>リスト2</strong><span>の状態では，変数 x や y は何も値を覚えていないため，</span><code><span>go(x,y)</span></code><span>と命令されても，どこに表示していいかわからないからです．</span><span>
-</span><a id="marker_78285-40" name="marker_78285-40"></a><p></p><a id="marker_78285-41" name="marker_78285-41"></a><span>かといって，</span><strong>リスト2</strong><span>に</span><code><span>x=200</span></code><span>や</span><code><span>y=150</span></code><span>などの，変数に値を覚えさせる命令を書くわけにもいきません．なぜなら，xやy の値はリンゴごとに違っていなければならないからです．</span><span>
-</span><a id="marker_78285-42" name="marker_78285-42"></a><p></p><a id="marker_78285-43" name="marker_78285-43"></a><span>そこで，ここでは，Appleではなく，Gameのほうでリンゴに具体的なx や y の値を設定させます． </span><span>
-</span><a id="marker_78285-44" name="marker_78285-44"></a><p></p><a id="marker_78285-45" name="marker_78285-45"></a><span>まず，Gameを次のように書き換えます．まだ実行はしないでください．</span><span>
-</span><a id="marker_78285-46" name="marker_78285-46"></a><p></p><a id="marker_78285-47" name="marker_78285-47"></a><div class="plist">Game</div><a id="marker_78285-51" name="marker_78285-51"></a><pre><a id="marker_78285-48" name="marker_78285-48"></a><span>new Cat;</span><span>
-</span><a id="marker_78285-49" name="marker_78285-49"></a><span>apple1=new Apple;</span><span>
-</span><a id="marker_78285-50" name="marker_78285-50"></a><span>apple2=new Apple;</span><span>
-</span></pre><a id="marker_78285-52" name="marker_78285-52"></a><p></p><a id="marker_78285-53" name="marker_78285-53"></a><strong>リスト1</strong><span>と変わったのは，</span><code><span>new Apple</span></code><span>の前に，</span><span>
-</span><a id="marker_78285-54" name="marker_78285-54"></a><code><span>apple1=</span></code><span>と</span><code><span>apple2=</span></code><span>がついたところです．</span><span>
-</span><a id="marker_78285-55" name="marker_78285-55"></a><p></p><a id="marker_78285-56" name="marker_78285-56"></a><code><span>apple1=new Apple;</span></code><span>は，新しくできたリンゴのキャラクタに「apple1」という名前をつけています．同様に，2つ目のリンゴのキャラクタに「apple2」という名前をつけています．</span><span>
-</span><a id="marker_78285-57" name="marker_78285-57"></a><p></p><a id="marker_78285-58" name="marker_78285-58"></a><span>名前をつけることによって，それらのキャラクタに命令をしたり，キャラクタがもっている変数の値を変更させることができます．</span><span>
-</span><a id="marker_78285-59" name="marker_78285-59"></a><p></p><a id="marker_78285-60" name="marker_78285-60"></a><div class="plist">リスト3 Game</div><a id="marker_78285-68" name="marker_78285-68"></a><pre><a id="marker_78285-61" name="marker_78285-61"></a><span>new Cat;</span><span>
-</span><a id="marker_78285-62" name="marker_78285-62"></a><span>apple1=new Apple;</span><span>
-</span><a id="marker_78285-63" name="marker_78285-63"></a><span>apple1.x=200;</span><span>
-</span><a id="marker_78285-64" name="marker_78285-64"></a><span>apple1.y=150;</span><span>
-</span><a id="marker_78285-65" name="marker_78285-65"></a><span>apple2=new Apple;</span><span>
-</span><a id="marker_78285-66" name="marker_78285-66"></a><span>apple2.x=300;</span><span>
-</span><a id="marker_78285-67" name="marker_78285-67"></a><span>apple2.y=100;</span><span>
-</span></pre><a id="marker_78285-69" name="marker_78285-69"></a><p></p><a id="marker_78285-70" name="marker_78285-70"></a><span>実行すると，今度はちゃんとリンゴが2つ表示されますね．</span><span>
-</span><a id="marker_78285-71" name="marker_78285-71"></a><p></p><a id="marker_78285-72" name="marker_78285-72"></a><code><span>apple1.x=200;</span></code><span> という命令は，その1行上で新しく作ったリンゴのキャラクタ，つまりapple1 がもっている x という変数に 200 を覚えさせています．</span><span>
-</span><a id="marker_78285-73" name="marker_78285-73"></a><p></p><a id="marker_78285-74" name="marker_78285-74"></a><span>今，「キャラクタがもっている変数」という表現をしましたが，変数は名前が同じでも，キャラクタごとに違う値をもたせる（覚えさせる）ことができます．</span><span>
-</span><a id="marker_78285-75" name="marker_78285-75"></a><span>例えば，</span><strong>リスト3</strong><span>では，apple1 の もっている変数xの値は200ですが，apple2 がもっている変数x は300になっています．</span><span>
-</span><a id="marker_78285-76" name="marker_78285-76"></a><p></p><a id="marker_78285-77" name="marker_78285-77"></a><div class="figure"><div><img src="../../doc/images/apple1apple2.png"></div><div><span>図1.</span><span>キャラクタごとに変数の値は異なる</span></div></div><span>
-</span><a id="marker_78285-78" name="marker_78285-78"></a><p></p><a id="marker_78285-79" name="marker_78285-79"></a><p></p><a id="marker_78285-80" name="marker_78285-80"></a><p></p><a id="marker_78285-81" name="marker_78285-81"></a><p></p><a id="marker_78285-82" name="marker_78285-82"></a><a href="new.html">前へ</a><span> - </span><a href="say2.html">次へ</a><span> - </span><a href="projectIndex.html">目次</a><span>
+<div><a id="line_marker_-0" name="line_marker_-0"></a><a href="new.html">前へ</a><span> - </span><a href="say2.html">次へ</a><span> - </span><a href="projectIndex.html">目次</a><span>
+</span><h1><a id="line_marker_-1" name="line_marker_-1"></a><span>複数のキャラクタを配置しましょう(2)</span></h1><a id="line_marker_-2" name="line_marker_-2"></a><p></p><a id="line_marker_-3" name="line_marker_-3"></a><span>猫とリンゴが表示できたので，</span><span>
+</span><a id="line_marker_-4" name="line_marker_-4"></a><span>今度はリンゴを2つ置いてみましょう．それには，Gameを次のようにすればよさそうですね．</span><span>
+</span><a id="line_marker_-5" name="line_marker_-5"></a><p></p><a id="line_marker_-6" name="line_marker_-6"></a><div class="plist">リスト1 Game</div><a id="line_marker_-10" name="line_marker_-10"></a><pre><a id="line_marker_-7" name="line_marker_-7"></a><span>new Cat;</span><span>
+</span><a id="line_marker_-8" name="line_marker_-8"></a><span>new Apple;</span><span>
+</span><a id="line_marker_-9" name="line_marker_-9"></a><span>new Apple;</span><span>
+</span></pre><a id="line_marker_-11" name="line_marker_-11"></a><p></p><a id="line_marker_-12" name="line_marker_-12"></a><span>実行すると... あれ？リンゴは1つしか表示されません．</span><span>
+</span><a id="line_marker_-13" name="line_marker_-13"></a><p></p><a id="line_marker_-14" name="line_marker_-14"></a><span>ここで，Appleのプログラムを確認してみましょう．</span><span>
+</span><a id="line_marker_-15" name="line_marker_-15"></a><p></p><a id="line_marker_-16" name="line_marker_-16"></a><div class="plist">Apple</div><a id="line_marker_-19" name="line_marker_-19"></a><pre><a id="line_marker_-17" name="line_marker_-17"></a><span>change($pat_fruits);</span><span>
+</span><a id="line_marker_-18" name="line_marker_-18"></a><span>go(200,150);</span><span>
+</span></pre><a id="line_marker_-20" name="line_marker_-20"></a><p></p><a id="line_marker_-21" name="line_marker_-21"></a><span>Appleでは，リンゴを(200,150)の位置に移動させる，と書いてあります．</span><span>
+</span><a id="line_marker_-22" name="line_marker_-22"></a><p></p><a id="line_marker_-23" name="line_marker_-23"></a><span>実は，リンゴは2つできているのですが，どちらも(200,150)という</span><span>
+</span><a id="line_marker_-24" name="line_marker_-24"></a><span>ピッタリ同じ位置に重なっているので</span><span>
+</span><a id="line_marker_-25" name="line_marker_-25"></a><span>１つにしか見えないのです．</span><span>
+</span><a id="line_marker_-26" name="line_marker_-26"></a><p></p><a id="line_marker_-27" name="line_marker_-27"></a><span>それでは，2つのリンゴを違う位置に表示させましょう．</span><span>
+</span><a id="line_marker_-28" name="line_marker_-28"></a><span>それには，リンゴの位置が(200,150)ではなく，リンゴごとに変わるようにすればよいでしょう．つまり，200や150という「数」が「変わる」ようにする... そうです「変数」を使えばよいのです．</span><span>
+</span><a id="line_marker_-29" name="line_marker_-29"></a><p></p><a id="line_marker_-30" name="line_marker_-30"></a><span>そこで，Appleの</span><code><span>200</span></code><span>と</span><code><span>150</span></code><span> を，それぞれ変数</span><code><span>x</span></code><span>と</span><code><span>y</span></code><span>に置き換えてみましょう．</span><span>
+</span><a id="line_marker_-31" name="line_marker_-31"></a><p></p><a id="line_marker_-32" name="line_marker_-32"></a><div class="plist">リスト2 Apple</div><a id="line_marker_-35" name="line_marker_-35"></a><pre><a id="line_marker_-33" name="line_marker_-33"></a><span>change($pat_fruits);</span><span>
+</span><a id="line_marker_-34" name="line_marker_-34"></a><span>go(x,y);</span><span>
+</span></pre><a id="line_marker_-36" name="line_marker_-36"></a><p></p><a id="line_marker_-37" name="line_marker_-37"></a><span>実行すると... あれ！今度はリンゴが1つも出てきません．</span><span>
+</span><a id="line_marker_-38" name="line_marker_-38"></a><p></p><a id="line_marker_-39" name="line_marker_-39"></a><span>なぜかというと，</span><strong>リスト2</strong><span>の状態では，変数 x や y は何も値を覚えていないため，</span><code><span>go(x,y)</span></code><span>と命令されても，どこに表示していいかわからないからです．</span><span>
+</span><a id="line_marker_-40" name="line_marker_-40"></a><p></p><a id="line_marker_-41" name="line_marker_-41"></a><span>かといって，</span><strong>リスト2</strong><span>に</span><code><span>x=200</span></code><span>や</span><code><span>y=150</span></code><span>などの，変数に値を覚えさせる命令を書くわけにもいきません．なぜなら，xやy の値はリンゴごとに違っていなければならないからです．</span><span>
+</span><a id="line_marker_-42" name="line_marker_-42"></a><p></p><a id="line_marker_-43" name="line_marker_-43"></a><span>そこで，ここでは，Appleではなく，Gameのほうでリンゴに具体的なx や y の値を設定させます． </span><span>
+</span><a id="line_marker_-44" name="line_marker_-44"></a><p></p><a id="line_marker_-45" name="line_marker_-45"></a><span>まず，Gameを次のように書き換えます．まだ実行はしないでください．</span><span>
+</span><a id="line_marker_-46" name="line_marker_-46"></a><p></p><a id="line_marker_-47" name="line_marker_-47"></a><div class="plist">Game</div><a id="line_marker_-51" name="line_marker_-51"></a><pre><a id="line_marker_-48" name="line_marker_-48"></a><span>new Cat;</span><span>
+</span><a id="line_marker_-49" name="line_marker_-49"></a><span>apple1=new Apple;</span><span>
+</span><a id="line_marker_-50" name="line_marker_-50"></a><span>apple2=new Apple;</span><span>
+</span></pre><a id="line_marker_-52" name="line_marker_-52"></a><p></p><a id="line_marker_-53" name="line_marker_-53"></a><strong>リスト1</strong><span>と変わったのは，</span><code><span>new Apple</span></code><span>の前に，</span><span>
+</span><a id="line_marker_-54" name="line_marker_-54"></a><code><span>apple1=</span></code><span>と</span><code><span>apple2=</span></code><span>がついたところです．</span><span>
+</span><a id="line_marker_-55" name="line_marker_-55"></a><p></p><a id="line_marker_-56" name="line_marker_-56"></a><code><span>apple1=new Apple;</span></code><span>は，新しくできたリンゴのキャラクタに「apple1」という名前をつけています．同様に，2つ目のリンゴのキャラクタに「apple2」という名前をつけています．</span><span>
+</span><a id="line_marker_-57" name="line_marker_-57"></a><p></p><a id="line_marker_-58" name="line_marker_-58"></a><span>名前をつけることによって，それらのキャラクタに命令をしたり，キャラクタがもっている変数の値を変更させることができます．</span><span>
+</span><a id="line_marker_-59" name="line_marker_-59"></a><p></p><a id="line_marker_-60" name="line_marker_-60"></a><div class="plist">リスト3 Game</div><a id="line_marker_-68" name="line_marker_-68"></a><pre><a id="line_marker_-61" name="line_marker_-61"></a><span>new Cat;</span><span>
+</span><a id="line_marker_-62" name="line_marker_-62"></a><span>apple1=new Apple;</span><span>
+</span><a id="line_marker_-63" name="line_marker_-63"></a><span>apple1.x=200;</span><span>
+</span><a id="line_marker_-64" name="line_marker_-64"></a><span>apple1.y=150;</span><span>
+</span><a id="line_marker_-65" name="line_marker_-65"></a><span>apple2=new Apple;</span><span>
+</span><a id="line_marker_-66" name="line_marker_-66"></a><span>apple2.x=300;</span><span>
+</span><a id="line_marker_-67" name="line_marker_-67"></a><span>apple2.y=100;</span><span>
+</span></pre><a id="line_marker_-69" name="line_marker_-69"></a><p></p><a id="line_marker_-70" name="line_marker_-70"></a><span>実行すると，今度はちゃんとリンゴが2つ表示されますね．</span><span>
+</span><a id="line_marker_-71" name="line_marker_-71"></a><p></p><a id="line_marker_-72" name="line_marker_-72"></a><code><span>apple1.x=200;</span></code><span> という命令は，その1行上で新しく作ったリンゴのキャラクタ，つまりapple1 がもっている x という変数に 200 を覚えさせています．</span><span>
+</span><a id="line_marker_-73" name="line_marker_-73"></a><p></p><a id="line_marker_-74" name="line_marker_-74"></a><span>今，「キャラクタがもっている変数」という表現をしましたが，変数は名前が同じでも，キャラクタごとに違う値をもたせる（覚えさせる）ことができます．</span><span>
+</span><a id="line_marker_-75" name="line_marker_-75"></a><span>例えば，</span><strong>リスト3</strong><span>では，apple1 の もっている変数xの値は200ですが，apple2 がもっている変数x は300になっています．</span><span>
+</span><a id="line_marker_-76" name="line_marker_-76"></a><p></p><a id="line_marker_-77" name="line_marker_-77"></a><div class="figure"><div><img src="../../doc/images/apple1apple2.png"></div><div><span>図1.</span><span>キャラクタごとに変数の値は異なる</span></div></div><span>
+</span><a id="line_marker_-78" name="line_marker_-78"></a><p></p><a id="line_marker_-79" name="line_marker_-79"></a><p></p><a id="line_marker_-80" name="line_marker_-80"></a><p></p><a id="line_marker_-81" name="line_marker_-81"></a><p></p><a id="line_marker_-82" name="line_marker_-82"></a><a href="new.html">前へ</a><span> - </span><a href="say2.html">次へ</a><span> - </span><a href="projectIndex.html">目次</a><span>
 </span></div><div style="height: 100px;"></div></body></html>

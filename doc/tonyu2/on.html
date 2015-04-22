@@ -1,0 +1,18 @@
+<html><head><meta charset="utf-8"/><meta http-equiv="Content-type" content="text/html; charset=utf8"/></head><body><link rel='stylesheet' href='/css/bootstrap.css'/>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px;}</style>
+<title>on</title>
+<div><a id="line_marker_-0" name="line_marker_-0"></a><a href="BaseActor.html">BaseActor</a><span> / </span><a href="EventMod.html">EventMod</a><span>
+</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><h1><a id="line_marker_-2" name="line_marker_-2"></a><span>onメソッド</span></h1><a id="line_marker_-3" name="line_marker_-3"></a><p></p><a id="line_marker_-4" name="line_marker_-4"></a><span>このオブジェクトに送られてきたイベントに反応して処理を行います。</span><span>
+</span><a id="line_marker_-5" name="line_marker_-5"></a><p></p><h2><a id="line_marker_-6" name="line_marker_-6"></a><span>書式</span></h2><a id="line_marker_-7" name="line_marker_-7"></a><p></p><a id="line_marker_-10" name="line_marker_-10"></a><pre><a id="line_marker_-9" name="line_marker_-9"></a><span>on(イベント名,[イベント引数...],イベントハンドラ)</span><span>
+</span></pre><a id="line_marker_-11" name="line_marker_-11"></a><p></p><ul><li><a id="line_marker_-12" name="line_marker_-12"></a><span>イベント名には、イベントの種類をあらわす文字列か、</span><span>EventHandler</span><span>クラスを継承したクラスの名前を指定します。</span><span>
+</span></li><li><a id="line_marker_-13" name="line_marker_-13"></a><span>イベントの種類によっては、イベント引数を指定します。</span><span>
+</span></li><li><a id="line_marker_-14" name="line_marker_-14"></a><span>イベントハンドラには、このオブジェクトに対してイベントが発生したときに処理する内容を関数オブジェクトで指定します。</span><span>
+</span></li><a id="line_marker_-16" name="line_marker_-16"></a><ul><li><a id="line_marker_-15" name="line_marker_-15"></a><span> ※関数内は</span><a href="waitmode.html">待機不能モード</a><span>で実行されます。</span><span>
+</span></li></ul></ul><p></p><a id="line_marker_-17" name="line_marker_-17"></a><a href="eventTypes.html">イベントの種類一覧</a><span>
+</span><a id="line_marker_-18" name="line_marker_-18"></a><p></p><h2><a id="line_marker_-19" name="line_marker_-19"></a><span>例</span></h2><a id="line_marker_-20" name="line_marker_-20"></a><p></p><a id="line_marker_-29" name="line_marker_-29"></a><pre><a id="line_marker_-22" name="line_marker_-22"></a><p></p><a id="line_marker_-23" name="line_marker_-23"></a><span>//dieメソッドが呼ばれたときに、「負けちゃったー」を表示し、$Scoreを10増やす</span><span>
+</span><a id="line_marker_-24" name="line_marker_-24"></a><span>on("die") \{</span><span>
+</span><a id="line_marker_-25" name="line_marker_-25"></a><span>   print("負けちゃったー");</span><span>
+</span><a id="line_marker_-26" name="line_marker_-26"></a><span>   $Score+=10;</span><span>
+</span><a id="line_marker_-27" name="line_marker_-27"></a><span>};</span><span>
+</span><a id="line_marker_-28" name="line_marker_-28"></a><p></p></pre><a id="line_marker_-30" name="line_marker_-30"></a><p></p><a id="line_marker_-31" name="line_marker_-31"></a><p></p><a id="line_marker_-32" name="line_marker_-32"></a><p></p><a id="line_marker_-33" name="line_marker_-33"></a><span>.</span><span>
+</span></div><div style="height: 100px;"></div></body></html>
