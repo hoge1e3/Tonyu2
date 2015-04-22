@@ -76,6 +76,10 @@ x,y,pの値をフィールドに書き込みます
 数学関数
 -[[rnd]]
 -[[MathMod]]モジュールクラスがもつメソッド
+[[イベント>EventMod]]
+-[[on]]
+-[[waitEvent]]
+-[[sendEvent]]
 その他
 -[[loadPage]]
 -[[file]]

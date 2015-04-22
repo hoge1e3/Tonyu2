@@ -1,0 +1,32 @@
+[[BaseActor]] / [[EventMod]]
+
+* sendEventメソッド
+
+このオブジェクトにイベントを送ります
+
+**書式
+
+<<code
+sendEvent(イベント名,イベントオブジェクト)
+>>
+
+-イベント名には、イベントの種類をあらわす文字列か、[[EventHandler]]クラスを継承したクラスの名前を指定します。
+-イベントオブジェクトには、イベントの送付先（[[on]]メソッドまたは[[waitEvent]]メソッド）で受けとる値を指定します。
+
+[[イベントの種類一覧>eventTypes]]
+
+**例
+
+※[[waitEvent]]の例と組み合わせて使ってください。
+
+<<code Sender.tonyu
+receiver=new Receiver;
+updateEx(60);
+print ("fooイベントを送信します...");
+receiver.sendEvent("foo","hello");
+>>
+
+
+
+
+.

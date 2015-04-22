@@ -60,13 +60,22 @@ native Math;
     }
     Tonyu.runMode=true;
     //$currentThreadGroup=thg;
-    $Scheduler=new Scheduler;
+    scheduler=$Scheduler=new Scheduler;
     new mainClass();
 }
 \stop() {
     fireEvent("stop");
+    die();
 }
-
+\schedule(obj,method,args) {
+    method=method||"main";
+    args=args||[];
+    var th=scheduler.newThread(obj, method, args);
+    addThreadGroup(obj);
+    obj.addThread(th);
+    return th;
+}
+$Boot=this;
 initSounds();
 initSprites();
 $InputDevice=new InputDevice;
@@ -84,7 +93,7 @@ initFPSParams();
 
 while (true) {
     //thg.steps();
-    $Scheduler.stepsAll();
+    scheduler.stepsAll();
     $Keys.update();
     $InputDevice.update();
     $screenWidth=$Screen.width;
@@ -123,7 +132,6 @@ nowait \initFPSParams() {
     // フレームレート制御でつかう変数 //
     frameCnt = 0;
     resetDeadLine();
-    $Boot = this;
     lastMeasured=now();
     fps_fps=fps_rps=fps_fpsCnt=fps_rpsCnt=0;
 }

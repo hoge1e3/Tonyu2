@@ -1,5 +1,5 @@
 extends null;
-includes MathMod,EventMod,TextRectMod,OneframeSpriteMod;
+includes MathMod,EventMod,TextRectMod,OneframeSpriteMod,ThreadGroupMod;
 native Tonyu;
 native Key;
 native console;
@@ -9,12 +9,13 @@ native Array;
 
 \new(x,y,p) {
     if (Tonyu.runMode) {
-        if ($Scheduler) {
+        /*if ($Scheduler) {
             _th=$Scheduler.newThread(this, "main", []);
         } else {
             var thg=currentThreadGroup();
             if (thg) _th=thg.addObj(this);
-        }
+        }*/
+        _th=$Boot.schedule(this,"main",[]);
     }
     if (typeof x=="object") Tonyu.extend(this,x);
     else if (typeof x=="number") {
@@ -155,13 +156,14 @@ nowait \watchHit(typeA,typeB,onHit) {
         onHit.apply(this,[a,b]);
     });
 }
-nowait \currentThreadGroup() {//deprecated
+nowait \currentThreadGroup() {//@deprecated
     return $Scheduler; //$currentThreadGroup;
 }
 nowait \die() {
-    if (_th) {
+    killThreadGroup();
+    /*if (_th) {
         _th.kill();
-    }
+    }*/
     hide();
     fireEvent("die");
     _isDead=true;

@@ -1,0 +1,8 @@
+[[BaseActor]]
+
+*EventModクラス
+イベント処理に関連するメソッドを集めたモジュールクラスです
+
+-[[on]]
+-[[waitEvent]]
+-[[sendEvent]]

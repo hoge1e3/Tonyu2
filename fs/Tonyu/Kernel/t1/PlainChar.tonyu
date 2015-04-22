@@ -4,12 +4,13 @@ native Tonyu;
 native Math;
 \new(x,y,p) {
     if (Tonyu.runMode) {
-        if ($Scheduler) {
+        /*if ($Scheduler) {
             _th=$Scheduler.newThread(this, "tMain", []);
         } else {
             var thg=currentThreadGroup();
             if (thg) _th=thg.addObj(this,"tMain");
-        }
+        }*/
+        _th=$Boot.schedule(this,"tMain",[]);
         initSprite();
     }
     if (typeof x=="object") Tonyu.extend(this,x);
