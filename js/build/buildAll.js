@@ -9,6 +9,7 @@ define(["genROM","dumpScript","Util","FS","Sync","Shell","WebSite"],
     function doBuildNW() {
         var home=FS.get(WebSite.tonyuHome);
         var genHome=FS.get(".");
+        embedVersion(genHome.rel("js/runtime/TonyuLib.js"));
         genROM(home.rel("Kernel/"),     genHome.rel("js/gen/ROM_k.js"));
         genROM(home.rel("doc/"),        genHome.rel("js/gen/ROM_d.js"));
         genROM(home.rel("SampleROM/"),  genHome.rel("js/gen/ROM_s.js"));
@@ -18,6 +19,12 @@ define(["genROM","dumpScript","Util","FS","Sync","Shell","WebSite"],
         ds.concat({names:["fs/ROMk","fs/ROMd","fs/ROMs","ide/selProject"], outFile:"index",reqConf:reqConf});
         ds.concat({names: ["fs/ROMk","fs/ROMd","fs/ROMs","ide/editor"], outFile:"project",reqConf:reqConf});
         ds.concat({names: ["fs/ROMk","runScript"], outFile:"runScript",reqConf:reqConf});
+    }
+    function embedVersion(f) {
+        var r=f.text().replace(/(VERSION:)([0-9]+)(,\/\/EMBED_VERSION)/, function (t,a,b,c) {
+            return a+new Date().getTime()+c;
+        });
+        f.text(r);
     }
     function doBuild() {
         var home=FS.get(WebSite.tonyuHome);
