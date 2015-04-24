@@ -56,6 +56,7 @@ x,y,pの値をフィールドに書き込みます
 -[[parallel]]
 -[[asyncResult]]
 -[[waitFor]]
+-[[parallel]]
 衝突判定
 -[[crashTo]]
 -[[crashTo1]]
