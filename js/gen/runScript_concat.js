@@ -1,4 +1,4 @@
-// Created at Sat Apr 25 2015 15:28:00 GMT+0900 (東京 (標準時))
+// Created at Sat Apr 25 2015 15:33:38 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -1539,7 +1539,7 @@ return Tonyu=function () {
             globals:globals, classes:classes, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
             timeout:timeout,asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
-            VERSION:1429943269563,//EMBED_VERSION
+            VERSION:1429943609429,//EMBED_VERSION
             A:A};
 }();
 });
@@ -7349,10 +7349,14 @@ requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS","runtime
         for (var fn in fo) {
             var f=curProjectDir.rel(fn);
             if (!f.isDir()) {
-                if (fn!="js/concat.js") {
+                var m=fo[fn];
+                if (fn=="js/concat.js") {
+                    if (f.exists() && f.lastUpdate()>m.lastUpdate) {
+                        continue;
+                    }
+                } else {
                     f.useRAMDisk();
                 }
-                var m=fo[fn];
                 f.text(m.text);
                 delete m.text;
                 if (m.lastUpdate) f.metaInfo(m);

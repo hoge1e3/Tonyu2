@@ -32,10 +32,14 @@ requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS","runtime
         for (var fn in fo) {
             var f=curProjectDir.rel(fn);
             if (!f.isDir()) {
-                if (fn!="js/concat.js") {
+                var m=fo[fn];
+                if (fn=="js/concat.js") {
+                    if (f.exists() && f.lastUpdate()>m.lastUpdate) {
+                        continue;
+                    }
+                } else {
                     f.useRAMDisk();
                 }
-                var m=fo[fn];
                 f.text(m.text);
                 delete m.text;
                 if (m.lastUpdate) f.metaInfo(m);
