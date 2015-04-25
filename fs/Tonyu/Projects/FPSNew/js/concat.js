@@ -3,15 +3,15 @@ Tonyu.classes.user.FPS=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
   main :function _trc_FPS_main() {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
-    //$LASTPOS=2000000;//user.FPS:0
+    //$LASTPOS=38000000;//user.FPS:0
     _this.x=200;
-    //$LASTPOS=2000007;//user.FPS:7
+    //$LASTPOS=38000007;//user.FPS:7
     _this.y=100;
-    //$LASTPOS=2000014;//user.FPS:14
+    //$LASTPOS=38000014;//user.FPS:14
     while (true) {
-      //$LASTPOS=2000033;//user.FPS:33
+      //$LASTPOS=38000033;//user.FPS:33
       _this.text=_this.all().length+"actors / "+Tonyu.globals.$Boot.getMeasuredFps()+"fps / "+Tonyu.globals.$Boot.getMeasuredRps()+"rps"+" maxFRS="+Tonyu.globals.$Boot.maxFrameSkip;
-      //$LASTPOS=2000164;//user.FPS:164
+      //$LASTPOS=38000164;//user.FPS:164
       _this.update();
       
     }
@@ -21,9 +21,9 @@ Tonyu.classes.user.FPS=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
     
-    //$LASTPOS=2000000;//user.FPS:0
+    //$LASTPOS=38000000;//user.FPS:0
     _this.x=200;
-    //$LASTPOS=2000007;//user.FPS:7
+    //$LASTPOS=38000007;//user.FPS:7
     _this.y=100;
     
     _thread.enter(function _trc_FPS_ent_main(_thread) {
@@ -31,11 +31,11 @@ Tonyu.classes.user.FPS=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
       for(var __cnt=100 ; __cnt--;) {
         switch (__pc) {
         case 0:
-          //$LASTPOS=2000014;//user.FPS:14
+          //$LASTPOS=38000014;//user.FPS:14
         case 1:
-          //$LASTPOS=2000033;//user.FPS:33
+          //$LASTPOS=38000033;//user.FPS:33
           _this.text=_this.all().length+"actors / "+Tonyu.globals.$Boot.getMeasuredFps()+"fps / "+Tonyu.globals.$Boot.getMeasuredRps()+"rps"+" maxFRS="+Tonyu.globals.$Boot.maxFrameSkip;
-          //$LASTPOS=2000164;//user.FPS:164
+          //$LASTPOS=38000164;//user.FPS:164
           _this.fiber$update(_thread);
           __pc=2;return;
         case 2:
@@ -57,34 +57,34 @@ Tonyu.classes.user.Main=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
   main :function _trc_Main_main() {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
-    //$LASTPOS=3000000;//user.Main:0
+    //$LASTPOS=39000000;//user.Main:0
     Tonyu.globals.$Boot.setFrameRate(60);
-    //$LASTPOS=3000024;//user.Main:24
+    //$LASTPOS=39000024;//user.Main:24
     new Tonyu.classes.user.FPS;
-    //$LASTPOS=3000033;//user.Main:33
-    //$LASTPOS=3000038;//user.Main:38
+    //$LASTPOS=39000033;//user.Main:33
+    //$LASTPOS=39000038;//user.Main:38
     _this.i=0;
     while(_this.i<30) {
-      //$LASTPOS=3000054;//user.Main:54
+      //$LASTPOS=39000054;//user.Main:54
       new Tonyu.classes.user.Tama({x: _this.rnd(400),y: _this.rnd(400),vx: _this.rnd()*2-1,vy: _this.rnd()*2-1});
       _this.i++;
     }
-    //$LASTPOS=3000113;//user.Main:113
+    //$LASTPOS=39000113;//user.Main:113
     while (true) {
-      //$LASTPOS=3000131;//user.Main:131
+      //$LASTPOS=39000131;//user.Main:131
       _this.updateEx(30);
-      //$LASTPOS=3000149;//user.Main:149
+      //$LASTPOS=39000149;//user.Main:149
       if (Tonyu.globals.$Boot.getMeasuredFps()<55) {
-        //$LASTPOS=3000190;//user.Main:190
+        //$LASTPOS=39000190;//user.Main:190
         _this.t=_this.all(Tonyu.classes.user.Tama)[0];
-        //$LASTPOS=3000214;//user.Main:214
+        //$LASTPOS=39000214;//user.Main:214
         if (_this.t) {
-          //$LASTPOS=3000221;//user.Main:221
+          //$LASTPOS=39000221;//user.Main:221
           _this.t.die();
         }
         
       } else {
-        //$LASTPOS=3000251;//user.Main:251
+        //$LASTPOS=39000251;//user.Main:251
         new Tonyu.classes.user.Tama({x: _this.rnd(400),y: _this.rnd(400),vx: _this.rnd()*2-1,vy: _this.rnd()*2-1});
         
       }
@@ -96,15 +96,15 @@ Tonyu.classes.user.Main=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
     
-    //$LASTPOS=3000000;//user.Main:0
+    //$LASTPOS=39000000;//user.Main:0
     Tonyu.globals.$Boot.setFrameRate(60);
-    //$LASTPOS=3000024;//user.Main:24
+    //$LASTPOS=39000024;//user.Main:24
     new Tonyu.classes.user.FPS;
-    //$LASTPOS=3000033;//user.Main:33
-    //$LASTPOS=3000038;//user.Main:38
+    //$LASTPOS=39000033;//user.Main:33
+    //$LASTPOS=39000038;//user.Main:38
     _this.i=0;
     while(_this.i<30) {
-      //$LASTPOS=3000054;//user.Main:54
+      //$LASTPOS=39000054;//user.Main:54
       new Tonyu.classes.user.Tama({x: _this.rnd(400),y: _this.rnd(400),vx: _this.rnd()*2-1,vy: _this.rnd()*2-1});
       _this.i++;
     }
@@ -114,25 +114,25 @@ Tonyu.classes.user.Main=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
       for(var __cnt=100 ; __cnt--;) {
         switch (__pc) {
         case 0:
-          //$LASTPOS=3000113;//user.Main:113
+          //$LASTPOS=39000113;//user.Main:113
         case 1:
-          //$LASTPOS=3000131;//user.Main:131
+          //$LASTPOS=39000131;//user.Main:131
           _this.fiber$updateEx(_thread, 30);
           __pc=2;return;
         case 2:
           
-          //$LASTPOS=3000149;//user.Main:149
+          //$LASTPOS=39000149;//user.Main:149
           if (Tonyu.globals.$Boot.getMeasuredFps()<55) {
-            //$LASTPOS=3000190;//user.Main:190
+            //$LASTPOS=39000190;//user.Main:190
             _this.t=_this.all(Tonyu.classes.user.Tama)[0];
-            //$LASTPOS=3000214;//user.Main:214
+            //$LASTPOS=39000214;//user.Main:214
             if (_this.t) {
-              //$LASTPOS=3000221;//user.Main:221
+              //$LASTPOS=39000221;//user.Main:221
               _this.t.die();
             }
             
           } else {
-            //$LASTPOS=3000251;//user.Main:251
+            //$LASTPOS=39000251;//user.Main:251
             new Tonyu.classes.user.Tama({x: _this.rnd(400),y: _this.rnd(400),vx: _this.rnd()*2-1,vy: _this.rnd()*2-1});
             
           }
@@ -153,39 +153,39 @@ Tonyu.classes.user.Tama=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
   main :function _trc_Tama_main() {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
-    //$LASTPOS=4000001;//user.Tama:1
+    //$LASTPOS=40000001;//user.Tama:1
     while (true) {
-      //$LASTPOS=4000019;//user.Tama:19
+      //$LASTPOS=40000019;//user.Tama:19
       _this.x+=_this.vx;
-      //$LASTPOS=4000030;//user.Tama:30
+      //$LASTPOS=40000030;//user.Tama:30
       _this.y+=_this.vy;
-      //$LASTPOS=4000041;//user.Tama:41
+      //$LASTPOS=40000041;//user.Tama:41
       _this.rotation++;
-      //$LASTPOS=4000057;//user.Tama:57
+      //$LASTPOS=40000057;//user.Tama:57
       if (_this.t=_this.crashTo(Tonyu.classes.user.Tama)) {
-        //$LASTPOS=4000088;//user.Tama:88
+        //$LASTPOS=40000088;//user.Tama:88
         _this.vx+=(_this.x-_this.t.x)/40;
-        //$LASTPOS=4000112;//user.Tama:112
+        //$LASTPOS=40000112;//user.Tama:112
         _this.vy+=(_this.y-_this.t.y)/40;
         
       }
-      //$LASTPOS=4000138;//user.Tama:138
+      //$LASTPOS=40000138;//user.Tama:138
       _this.vy+=0.1;
-      //$LASTPOS=4000151;//user.Tama:151
+      //$LASTPOS=40000151;//user.Tama:151
       _this.c=_this.clamped(_this.x,0,Tonyu.globals.$screenWidth);
-      //$LASTPOS=4000180;//user.Tama:180
+      //$LASTPOS=40000180;//user.Tama:180
       if (_this.c) {
-        //$LASTPOS=4000187;//user.Tama:187
+        //$LASTPOS=40000187;//user.Tama:187
         _this.vx=_this.abs(_this.vx)*_this.sgn(_this.c)*0.8;
       }
-      //$LASTPOS=4000214;//user.Tama:214
+      //$LASTPOS=40000214;//user.Tama:214
       _this.c=_this.clamped(_this.y,0,Tonyu.globals.$screenHeight);
-      //$LASTPOS=4000244;//user.Tama:244
+      //$LASTPOS=40000244;//user.Tama:244
       if (_this.c) {
-        //$LASTPOS=4000251;//user.Tama:251
+        //$LASTPOS=40000251;//user.Tama:251
         _this.vy=_this.abs(_this.vy)*_this.sgn(_this.c)*0.8;
       }
-      //$LASTPOS=4000278;//user.Tama:278
+      //$LASTPOS=40000278;//user.Tama:278
       _this.update();
       
     }
@@ -201,47 +201,47 @@ Tonyu.classes.user.Tama=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
       for(var __cnt=100 ; __cnt--;) {
         switch (__pc) {
         case 0:
-          //$LASTPOS=4000001;//user.Tama:1
+          //$LASTPOS=40000001;//user.Tama:1
         case 1:
-          //$LASTPOS=4000019;//user.Tama:19
+          //$LASTPOS=40000019;//user.Tama:19
           _this.x+=_this.vx;
-          //$LASTPOS=4000030;//user.Tama:30
+          //$LASTPOS=40000030;//user.Tama:30
           _this.y+=_this.vy;
-          //$LASTPOS=4000041;//user.Tama:41
+          //$LASTPOS=40000041;//user.Tama:41
           _this.rotation++;
-          //$LASTPOS=4000057;//user.Tama:57
+          //$LASTPOS=40000057;//user.Tama:57
           if (_this.t=_this.crashTo(Tonyu.classes.user.Tama)) {
-            //$LASTPOS=4000088;//user.Tama:88
+            //$LASTPOS=40000088;//user.Tama:88
             _this.vx+=(_this.x-_this.t.x)/40;
-            //$LASTPOS=4000112;//user.Tama:112
+            //$LASTPOS=40000112;//user.Tama:112
             _this.vy+=(_this.y-_this.t.y)/40;
             
           }
-          //$LASTPOS=4000138;//user.Tama:138
+          //$LASTPOS=40000138;//user.Tama:138
           _this.vy+=0.1;
-          //$LASTPOS=4000151;//user.Tama:151
+          //$LASTPOS=40000151;//user.Tama:151
           _this.fiber$clamped(_thread, _this.x, 0, Tonyu.globals.$screenWidth);
           __pc=2;return;
         case 2:
           _this.c=_thread.retVal;
           
-          //$LASTPOS=4000180;//user.Tama:180
+          //$LASTPOS=40000180;//user.Tama:180
           if (_this.c) {
-            //$LASTPOS=4000187;//user.Tama:187
+            //$LASTPOS=40000187;//user.Tama:187
             _this.vx=_this.abs(_this.vx)*_this.sgn(_this.c)*0.8;
           }
-          //$LASTPOS=4000214;//user.Tama:214
+          //$LASTPOS=40000214;//user.Tama:214
           _this.fiber$clamped(_thread, _this.y, 0, Tonyu.globals.$screenHeight);
           __pc=3;return;
         case 3:
           _this.c=_thread.retVal;
           
-          //$LASTPOS=4000244;//user.Tama:244
+          //$LASTPOS=40000244;//user.Tama:244
           if (_this.c) {
-            //$LASTPOS=4000251;//user.Tama:251
+            //$LASTPOS=40000251;//user.Tama:251
             _this.vy=_this.abs(_this.vy)*_this.sgn(_this.c)*0.8;
           }
-          //$LASTPOS=4000278;//user.Tama:278
+          //$LASTPOS=40000278;//user.Tama:278
           _this.fiber$update(_thread);
           __pc=4;return;
         case 4:

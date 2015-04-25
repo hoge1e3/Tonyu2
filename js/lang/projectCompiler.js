@@ -46,6 +46,10 @@ var TPRC=function (dir) {
          }
          if (outF.isReadOnly()) return false;
          var outLast=outF.lastUpdate();
+         if (outLast<Tonyu.VERSION) {
+             console.log("Should compile: ", outF.name()+" last="+new Date(outLast)+" < Tonyu.ver="+new Date(Tonyu.VERSION));
+             return true;
+         }
          //console.log("Outf last="+new Date(outLast));
          var sf=TPR.sourceFiles();
          for (var i in sf) {

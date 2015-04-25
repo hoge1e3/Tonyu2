@@ -32,7 +32,9 @@ requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS","runtime
         for (var fn in fo) {
             var f=curProjectDir.rel(fn);
             if (!f.isDir()) {
-                f.useRAMDisk();
+                if (fn!="js/concat.js") {
+                    f.useRAMDisk();
+                }
                 var m=fo[fn];
                 f.text(m.text);
                 delete m.text;
