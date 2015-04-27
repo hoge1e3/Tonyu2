@@ -331,7 +331,7 @@ return Tonyu=function () {
         res.prototype=bless(parent, prot);
         res.prototype.isTonyuObject=true;
         addMeta(res,{
-            superClass:parent ? parent.meta : null,
+            superclass:parent ? parent.meta : null,
                     includes:includes.map(function(c){return c.meta;})
         });
         var m=klass.getMeta(res);
@@ -389,7 +389,7 @@ return Tonyu=function () {
         res.prototype.isTonyuObject=true;
         addMeta(res,{
             fullName:fullName,shortName:shortName,namepsace:namespace,decls:decls,
-            superClass:parent ? parent.meta : null,
+            superclass:parent ? parent.meta : null,
             includes:includes.map(function(c){return c.meta;})
         });
         var m=klass.getMeta(res);
@@ -476,7 +476,7 @@ return Tonyu=function () {
             globals:globals, classes:classes, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
             timeout:timeout,asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
-            VERSION:1429943609429,//EMBED_VERSION
+            VERSION:1430106569813,//EMBED_VERSION
             A:A};
 }();
 });

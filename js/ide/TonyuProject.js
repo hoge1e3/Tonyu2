@@ -26,7 +26,7 @@ return Tonyu.Project=function (dir, kernelDir) {
             for (var n in classes) {/*ENVC*/
                 if (added[n]) continue;
                 var c=classes[n];/*ENVC*/
-                var spc=c.superClass;
+                var spc=c.superclass;
                 var deps=[spc];
                 var ready=true;
                 if (c.includes) deps=deps.concat(c.includes);

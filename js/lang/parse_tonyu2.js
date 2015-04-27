@@ -234,7 +234,7 @@ return TonyuLang=function () {
     var objlit=g("objlit").ands(tk("{"), jsonElem.sep0(tk(","),true),  tk("}")).ret(null, "elems");
     var arylit=g("arylit").ands(tk("["), expr.sep0(tk(","),true),  tk("]")).ret(null, "elems");
     var ext=g("extends").ands(tk("extends"),symbol.or(tk("null")), tk(";")).
-	ret(null, "superClassName");
+	ret(null, "superclassName");
     var incl=g("includes").ands(tk("includes"), symbol.sep1(tk(","),true),tk(";")).
 	ret(null, "includeClassNames");
     var program=g("program").

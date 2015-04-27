@@ -263,7 +263,7 @@ var TPRC=function (dir) {
             }
         }
         function dep1(c) {
-            var spc=c.superClass;
+            var spc=c.superclass;
             var deps=spc ? [spc]:[] ;
             if (c.includes) deps=deps.concat(c.includes);
             deps=deps.filter(function (cl) {

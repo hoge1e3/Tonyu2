@@ -71,26 +71,11 @@ define(["Tonyu","ObjectMatcher", "TError"],
             if (visited[k.fullName]) return;
             visited[k.fullName]=true;
             res.push(k);
-            if (k.superClass) loop(k.superClass);
+            if (k.superclass) loop(k.superclass);
             if (k.includes) k.includes.forEach(loop);
         }
         loop(klass);
         return res;
-        /*
-        var incls=[];
-        for (var k=klass ; k ; k=k.superClass) {
-            incls=incls.concat(k.includes);
-            visited[k.fullName]=true;
-            res.push(k);
-        }
-        while (incls.length>0) {
-            var k=incls.shift();
-            if (visited[k.fullName]) continue;
-            visited[k.fullName]=true;
-            res.push(k);
-            incls=incls.concat(k.includes);
-        }
-        return res;*/
     }
     cu.getDependingClasses=getDependingClasses;
     function getParams(method) {//B

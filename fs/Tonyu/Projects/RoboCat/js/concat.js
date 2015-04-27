@@ -1,10 +1,10 @@
 Tonyu.klass.ensureNamespace(Tonyu.classes,'user');
 Tonyu.classes.user.Cat=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
-  main :function _trc_func_1000000_0() {
+  main :function _trc_Cat_main() {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
   },
-  fiber$main :function _trc_func_1000000_1(_thread) {
+  fiber$main :function _trc_Cat_f_main(_thread) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
@@ -12,13 +12,13 @@ Tonyu.classes.user.Cat=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     
     _thread.retVal=_this;return;
   },
-  onAppear :function _trc_func_1000001_2() {
+  onAppear :function _trc_Cat_onAppear() {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
     //$LASTPOS=1000019;//user.Cat:19
     _this.p=Tonyu.globals.$pat_neko;
   },
-  fiber$onAppear :function _trc_func_1000001_3(_thread) {
+  fiber$onAppear :function _trc_Cat_f_onAppear(_thread) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
@@ -28,7 +28,7 @@ Tonyu.classes.user.Cat=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     
     _thread.retVal=_this;return;
   },
-  draw :function _trc_func_1000034_4(c) {
+  draw :function _trc_Cat_draw(c) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     var sx;
     var sy;
@@ -46,7 +46,7 @@ Tonyu.classes.user.Cat=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     //$LASTPOS=1000122;//user.Cat:122
     _this.y=sy;
   },
-  right :function _trc_func_1000131_5() {
+  right :function _trc_Cat_right() {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     var i;
     
@@ -65,14 +65,14 @@ Tonyu.classes.user.Cat=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     //$LASTPOS=1000215;//user.Cat:215
     _this.checkWall();
   },
-  fiber$right :function _trc_func_1000131_6(_thread) {
+  fiber$right :function _trc_Cat_f_right(_thread) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
     var i;
     
     
-    _thread.enter(function _trc_func_1000131_7(_thread) {
+    _thread.enter(function _trc_Cat_ent_right(_thread) {
       if (_thread.lastEx) __pc=_thread.catchPC;
       for(var __cnt=100 ; __cnt--;) {
         switch (__pc) {
@@ -103,7 +103,7 @@ Tonyu.classes.user.Cat=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
       }
     });
   },
-  left :function _trc_func_1000230_8() {
+  left :function _trc_Cat_left() {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     var i;
     
@@ -122,14 +122,14 @@ Tonyu.classes.user.Cat=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     //$LASTPOS=1000313;//user.Cat:313
     _this.checkWall();
   },
-  fiber$left :function _trc_func_1000230_9(_thread) {
+  fiber$left :function _trc_Cat_f_left(_thread) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
     var i;
     
     
-    _thread.enter(function _trc_func_1000230_10(_thread) {
+    _thread.enter(function _trc_Cat_ent_left(_thread) {
       if (_thread.lastEx) __pc=_thread.catchPC;
       for(var __cnt=100 ; __cnt--;) {
         switch (__pc) {
@@ -160,7 +160,7 @@ Tonyu.classes.user.Cat=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
       }
     });
   },
-  up :function _trc_func_1000328_11() {
+  up :function _trc_Cat_up() {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     var i;
     
@@ -179,14 +179,14 @@ Tonyu.classes.user.Cat=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     //$LASTPOS=1000409;//user.Cat:409
     _this.checkWall();
   },
-  fiber$up :function _trc_func_1000328_12(_thread) {
+  fiber$up :function _trc_Cat_f_up(_thread) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
     var i;
     
     
-    _thread.enter(function _trc_func_1000328_13(_thread) {
+    _thread.enter(function _trc_Cat_ent_up(_thread) {
       if (_thread.lastEx) __pc=_thread.catchPC;
       for(var __cnt=100 ; __cnt--;) {
         switch (__pc) {
@@ -217,7 +217,7 @@ Tonyu.classes.user.Cat=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
       }
     });
   },
-  down :function _trc_func_1000424_14() {
+  down :function _trc_Cat_down() {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     var i;
     
@@ -236,14 +236,14 @@ Tonyu.classes.user.Cat=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     //$LASTPOS=1000507;//user.Cat:507
     _this.checkWall();
   },
-  fiber$down :function _trc_func_1000424_15(_thread) {
+  fiber$down :function _trc_Cat_f_down(_thread) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
     var i;
     
     
-    _thread.enter(function _trc_func_1000424_16(_thread) {
+    _thread.enter(function _trc_Cat_ent_down(_thread) {
       if (_thread.lastEx) __pc=_thread.catchPC;
       for(var __cnt=100 ; __cnt--;) {
         switch (__pc) {
@@ -274,7 +274,7 @@ Tonyu.classes.user.Cat=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
       }
     });
   },
-  isWall :function _trc_func_1000522_17(x,y) {
+  isWall :function _trc_Cat_isWall(x,y) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     var p;
     
@@ -291,7 +291,7 @@ Tonyu.classes.user.Cat=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     }
     return false;
   },
-  fiber$isWall :function _trc_func_1000522_18(_thread,x,y) {
+  fiber$isWall :function _trc_Cat_f_isWall(_thread,x,y) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
@@ -315,7 +315,7 @@ Tonyu.classes.user.Cat=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     
     _thread.retVal=_this;return;
   },
-  checkWall :function _trc_func_1000656_19() {
+  checkWall :function _trc_Cat_checkWall() {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     var p;
     
@@ -335,14 +335,14 @@ Tonyu.classes.user.Cat=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
       }
     }
   },
-  fiber$checkWall :function _trc_func_1000656_20(_thread) {
+  fiber$checkWall :function _trc_Cat_f_checkWall(_thread) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
     var p;
     
     
-    _thread.enter(function _trc_func_1000656_21(_thread) {
+    _thread.enter(function _trc_Cat_ent_checkWall(_thread) {
       if (_thread.lastEx) __pc=_thread.catchPC;
       for(var __cnt=100 ; __cnt--;) {
         switch (__pc) {
@@ -379,7 +379,7 @@ Tonyu.classes.user.Cat=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
       }
     });
   },
-  goal :function _trc_func_1000778_22() {
+  goal :function _trc_Cat_goal() {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     var i;
     
@@ -402,14 +402,14 @@ Tonyu.classes.user.Cat=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     //$LASTPOS=1000900;//user.Cat:900
     _this.die();
   },
-  fiber$goal :function _trc_func_1000778_23(_thread) {
+  fiber$goal :function _trc_Cat_f_goal(_thread) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
     var i;
     
     
-    _thread.enter(function _trc_func_1000778_24(_thread) {
+    _thread.enter(function _trc_Cat_ent_goal(_thread) {
       if (_thread.lastEx) __pc=_thread.catchPC;
       for(var __cnt=100 ; __cnt--;) {
         switch (__pc) {
@@ -444,7 +444,7 @@ Tonyu.classes.user.Cat=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
       }
     });
   },
-  miss :function _trc_func_1000909_25() {
+  miss :function _trc_Cat_miss() {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
     //$LASTPOS=1000923;//user.Cat:923
@@ -454,7 +454,7 @@ Tonyu.classes.user.Cat=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     //$LASTPOS=1000960;//user.Cat:960
     _this.die();
   },
-  fiber$miss :function _trc_func_1000909_26(_thread) {
+  fiber$miss :function _trc_Cat_f_miss(_thread) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
@@ -462,7 +462,7 @@ Tonyu.classes.user.Cat=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     //$LASTPOS=1000923;//user.Cat:923
     _this.p=Tonyu.globals.$pat_neko+8;
     
-    _thread.enter(function _trc_func_1000909_27(_thread) {
+    _thread.enter(function _trc_Cat_ent_miss(_thread) {
       if (_thread.lastEx) __pc=_thread.catchPC;
       for(var __cnt=100 ; __cnt--;) {
         switch (__pc) {
@@ -485,7 +485,7 @@ Tonyu.klass.addMeta(Tonyu.classes.user.Cat,{"fullName":"user.Cat","namespace":"u
 
 Tonyu.klass.ensureNamespace(Tonyu.classes,'user');
 Tonyu.classes.user.Grid=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
-  main :function _trc_func_2000000_0() {
+  main :function _trc_Grid_main() {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
     //$LASTPOS=2000000;//user.Grid:0
@@ -505,7 +505,7 @@ Tonyu.classes.user.Grid=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
       _this.i++;
     }
   },
-  fiber$main :function _trc_func_2000000_1(_thread) {
+  fiber$main :function _trc_Grid_f_main(_thread) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
@@ -535,7 +535,7 @@ Tonyu.klass.addMeta(Tonyu.classes.user.Grid,{"fullName":"user.Grid","namespace":
 
 Tonyu.klass.ensureNamespace(Tonyu.classes,'user');
 Tonyu.classes.user.Main=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
-  main :function _trc_func_3000000_0() {
+  main :function _trc_Main_main() {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
     //$LASTPOS=3000000;//user.Main:0
@@ -543,7 +543,7 @@ Tonyu.classes.user.Main=Tonyu.klass(Tonyu.classes.kernel.Actor,[],{
     //$LASTPOS=3000010;//user.Main:10
     new Tonyu.classes.user.MyCat3({x: 1,y: 1,zOrder: - 20});
   },
-  fiber$main :function _trc_func_3000000_1(_thread) {
+  fiber$main :function _trc_Main_f_main(_thread) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
@@ -561,7 +561,7 @@ Tonyu.klass.addMeta(Tonyu.classes.user.Main,{"fullName":"user.Main","namespace":
 
 Tonyu.klass.ensureNamespace(Tonyu.classes,'user');
 Tonyu.classes.user.MyCat1=Tonyu.klass(Tonyu.classes.user.Cat,[],{
-  main :function _trc_func_4000000_0() {
+  main :function _trc_MyCat1_main() {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
     //$LASTPOS=4000015;//user.MyCat1:15
@@ -583,13 +583,13 @@ Tonyu.classes.user.MyCat1=Tonyu.klass(Tonyu.classes.user.Cat,[],{
       
     }
   },
-  fiber$main :function _trc_func_4000000_1(_thread) {
+  fiber$main :function _trc_MyCat1_f_main(_thread) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
     
     
-    _thread.enter(function _trc_func_4000000_2(_thread) {
+    _thread.enter(function _trc_MyCat1_ent_main(_thread) {
       if (_thread.lastEx) __pc=_thread.catchPC;
       for(var __cnt=100 ; __cnt--;) {
         switch (__pc) {
@@ -638,7 +638,7 @@ Tonyu.klass.addMeta(Tonyu.classes.user.MyCat1,{"fullName":"user.MyCat1","namespa
 
 Tonyu.klass.ensureNamespace(Tonyu.classes,'user');
 Tonyu.classes.user.MyCat2=Tonyu.klass(Tonyu.classes.user.Cat,[],{
-  main :function _trc_func_5000000_0() {
+  main :function _trc_MyCat2_main() {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
     //$LASTPOS=5000018;//user.MyCat2:18
@@ -670,13 +670,13 @@ Tonyu.classes.user.MyCat2=Tonyu.klass(Tonyu.classes.user.Cat,[],{
       
     }
   },
-  fiber$main :function _trc_func_5000000_1(_thread) {
+  fiber$main :function _trc_MyCat2_f_main(_thread) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
     
     
-    _thread.enter(function _trc_func_5000000_2(_thread) {
+    _thread.enter(function _trc_MyCat2_ent_main(_thread) {
       if (_thread.lastEx) __pc=_thread.catchPC;
       for(var __cnt=100 ; __cnt--;) {
         switch (__pc) {
@@ -728,7 +728,7 @@ Tonyu.classes.user.MyCat2=Tonyu.klass(Tonyu.classes.user.Cat,[],{
       }
     });
   },
-  rightToWall :function _trc_func_5000182_3() {
+  rightToWall :function _trc_MyCat2_rightToWall() {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
     //$LASTPOS=5000212;//user.MyCat2:212
@@ -743,13 +743,13 @@ Tonyu.classes.user.MyCat2=Tonyu.klass(Tonyu.classes.user.Cat,[],{
       
     }
   },
-  fiber$rightToWall :function _trc_func_5000182_4(_thread) {
+  fiber$rightToWall :function _trc_MyCat2_f_rightToWall(_thread) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
     
     
-    _thread.enter(function _trc_func_5000182_5(_thread) {
+    _thread.enter(function _trc_MyCat2_ent_rightToWall(_thread) {
       if (_thread.lastEx) __pc=_thread.catchPC;
       for(var __cnt=100 ; __cnt--;) {
         switch (__pc) {
@@ -781,7 +781,7 @@ Tonyu.klass.addMeta(Tonyu.classes.user.MyCat2,{"fullName":"user.MyCat2","namespa
 
 Tonyu.klass.ensureNamespace(Tonyu.classes,'user');
 Tonyu.classes.user.MyCat3=Tonyu.klass(Tonyu.classes.user.Cat,[],{
-  main :function _trc_func_6000000_0() {
+  main :function _trc_MyCat3_main() {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
     //$LASTPOS=6000016;//user.MyCat3:16
@@ -791,13 +791,13 @@ Tonyu.classes.user.MyCat3=Tonyu.klass(Tonyu.classes.user.Cat,[],{
     //$LASTPOS=6000052;//user.MyCat3:52
     _this.rightToWall();
   },
-  fiber$main :function _trc_func_6000000_1(_thread) {
+  fiber$main :function _trc_MyCat3_f_main(_thread) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
     
     
-    _thread.enter(function _trc_func_6000000_2(_thread) {
+    _thread.enter(function _trc_MyCat3_ent_main(_thread) {
       if (_thread.lastEx) __pc=_thread.catchPC;
       for(var __cnt=100 ; __cnt--;) {
         switch (__pc) {
@@ -822,7 +822,7 @@ Tonyu.classes.user.MyCat3=Tonyu.klass(Tonyu.classes.user.Cat,[],{
       }
     });
   },
-  rightToWall :function _trc_func_6000072_3() {
+  rightToWall :function _trc_MyCat3_rightToWall() {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
     //$LASTPOS=6000102;//user.MyCat3:102
@@ -837,13 +837,13 @@ Tonyu.classes.user.MyCat3=Tonyu.klass(Tonyu.classes.user.Cat,[],{
       
     }
   },
-  fiber$rightToWall :function _trc_func_6000072_4(_thread) {
+  fiber$rightToWall :function _trc_MyCat3_f_rightToWall(_thread) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
     
     
-    _thread.enter(function _trc_func_6000072_5(_thread) {
+    _thread.enter(function _trc_MyCat3_ent_rightToWall(_thread) {
       if (_thread.lastEx) __pc=_thread.catchPC;
       for(var __cnt=100 ; __cnt--;) {
         switch (__pc) {
@@ -869,7 +869,7 @@ Tonyu.classes.user.MyCat3=Tonyu.klass(Tonyu.classes.user.Cat,[],{
       }
     });
   },
-  downToRightPath :function _trc_func_6000180_6() {
+  downToRightPath :function _trc_MyCat3_downToRightPath() {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     
     //$LASTPOS=6000214;//user.MyCat3:214
@@ -884,13 +884,13 @@ Tonyu.classes.user.MyCat3=Tonyu.klass(Tonyu.classes.user.Cat,[],{
       
     }
   },
-  fiber$downToRightPath :function _trc_func_6000180_7(_thread) {
+  fiber$downToRightPath :function _trc_MyCat3_f_downToRightPath(_thread) {
     var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
     //var _arguments=Tonyu.A(arguments);
     var __pc=0;
     
     
-    _thread.enter(function _trc_func_6000180_8(_thread) {
+    _thread.enter(function _trc_MyCat3_ent_downToRightPath(_thread) {
       if (_thread.lastEx) __pc=_thread.catchPC;
       for(var __cnt=100 ; __cnt--;) {
         switch (__pc) {

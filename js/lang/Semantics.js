@@ -37,7 +37,7 @@ function initClassDecls(klass, env ) {//S
         var spcn=env.options.compiler.defaultSuperClass;
         var pos=0;
         var t;
-        if (t=OM.match( program , {ext:{superClassName:{text:OM.N, pos:OM.P}}})) {
+        if (t=OM.match( program , {ext:{superclassName:{text:OM.N, pos:OM.P}}})) {
             spcn=t.N;
             pos=t.P;
             if (spcn=="null") spcn=null;
@@ -53,13 +53,13 @@ function initClassDecls(klass, env ) {//S
             });
         }
         if (spcn=="Array") {
-            klass.superClass={name:"Array",fullName:"Array",builtin:true};
+            klass.superclass={name:"Array",fullName:"Array",builtin:true};
         } else if (spcn) {
             var spc=env.classes[env.aliases[spcn] || spcn];/*ENVC*/  //CFN env.classes[env.aliases[spcn]]
             if (!spc) {
                 throw TError ( "親クラス "+spcn+"は定義されていません", s, pos);
             }
-            klass.superClass=spc;
+            klass.superclass=spc;
         }
         program.stmts.forEach(function (stmt) {
             if (stmt.type=="funcDecl") {
@@ -413,7 +413,7 @@ function annotateSource2(klass, env) {//B
                 if (!m) throw new Error("メソッド"+t.S.name.text+" はありません。");
                 if (!m.nowait) {
                     t.type="noRetSuper";
-                    t.superClass=klass.superClass;
+                    t.superclass=klass.superclass;
                     annotation(node, {fiberCall:t});
                     fiberCallRequired(this.path);
                 }
@@ -424,7 +424,7 @@ function annotateSource2(klass, env) {//B
                 if (!m) throw new Error("メソッド"+t.S.name.text+" はありません。");
                 if (!m.nowait) {
                     t.type="retSuper";
-                    t.superClass=klass.superClass;
+                    t.superclass=klass.superclass;
                     annotation(node, {fiberCall:t});
                     fiberCallRequired(this.path);
                 }

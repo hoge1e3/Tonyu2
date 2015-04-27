@@ -1,3 +1,4 @@
+extends null;
 
 \addThread(t) {
     threads=threads||[];

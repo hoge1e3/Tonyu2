@@ -1,3 +1,4 @@
+extends null;
 
 \drawText(x,y,text,col,size) {
     if (!size) size=15;
