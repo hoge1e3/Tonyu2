@@ -357,9 +357,46 @@ return Tonyu=function () {
             if (!o[k]) o[k]={};
             o=o[k];
         }
+        return o;
     };
     klass.define=function (params) {
-        // name, superClass, includes, methods, methodMeta
+        // fullName, shortName,namspace, superclass, includes, methods:{name/fiber$name: func}, decls
+        var parent=params.superclass;
+        var includes=params.includes;
+        var fullName=params.fullName;
+        var shortName=params.shortName;
+        var namespace=params.namespace;
+        var decls=params.decls;
+        var nso=klass.ensureNamespace(Tonyu.classes, namespace);
+        var prot=defunct(methods);
+        var res=(prot.initialize? prot.initialize:
+            (parent? function () {
+                parent.apply(this,arguments);
+            }:function (){})
+        );
+        nso[shortName]=res;
+        delete prot.initialize;
+        res.methods=prot;
+        includes.forEach(function (m) {
+            if (!m.methods) throw m+" Does not have methods";
+            for (var n in m.methods) {
+                if (!(n in prot)) {
+                    prot[n]=m.methods[n];
+                }
+            }
+        });
+        res.prototype=bless(parent, prot);
+        res.prototype.isTonyuObject=true;
+        addMeta(res,{
+            fullName:fullName,shortName:shortName,namepsace:namespace,decls:decls,
+            superClass:parent ? parent.meta : null,
+            includes:includes.map(function(c){return c.meta;})
+        });
+        var m=klass.getMeta(res);
+        res.prototype.getClassInfo=function () {
+            return m;
+        };
+        return res;
     };
     function bless( klass, val) {
         if (!klass) return val;
