@@ -246,7 +246,7 @@ function genJS(klass, env) {//B
                             t.L, t.O, TH
                 );
             } else if (t.type=="noRetSuper") {
-                var p=getClassName(klass.superClass);
+                var p=getClassName(klass.superclass);
                     buf.printf(
                             "%s.prototype.%s%s.apply( %s, [%j]);%n" +
                             "%s=%s;return;%n" +/*B*/
@@ -570,14 +570,14 @@ function genJS(klass, env) {//B
         },
         superExpr: function (node) {
             var name;
-            if (!klass.superClass) throw new Error(klass.fullName+"には親クラスがありません");
+            if (!klass.superclass) throw new Error(klass.fullName+"には親クラスがありません");
             if (node.name) {
                 name=node.name.text;
                 buf.printf("%s.prototype.%s.apply( %s, %v)",
-                        getClassName(klass.superClass),  name, THIZ, node.params);
+                        getClassName(klass.superclass),  name, THIZ, node.params);
             } else {
                 buf.printf("%s.apply( %s, %v)",
-                        getClassName(klass.superClass), THIZ, node.params);
+                        getClassName(klass.superclass), THIZ, node.params);
             }
         },
         arrayElem: function (node) {
@@ -640,7 +640,6 @@ function genJS(klass, env) {//B
     };
     v.cnt=0;
     function genSource() {//G
-        //annotateSource();
         /*if (env.options.compiler.asModule) {
             klass.moduleName=getClassName(klass);
             printf("if (typeof requireSimulator=='object') requireSimulator.setName(%l);%n",klass.moduleName);
@@ -650,30 +649,28 @@ function genJS(klass, env) {//B
                 });
             });
         }*/
-        ctx.enter({/*scope:topLevelScope*/}, function () {
+        ctx.enter({}, function () {
             var nspObj=CLASS_HEAD+klass.namespace;
             printf("Tonyu.klass.ensureNamespace(%s,%l);%n",CLASS_HEAD.replace(/\.$/,""), klass.namespace);
-            //printf(nspObj+"="+nspObj+"||{};%n");
-            if (klass.superClass) {
+            if (klass.superclass) {
                 printf("%s=Tonyu.klass(%s,[%s],{%{",
                         getClassName(klass),
-                        getClassName(klass.superClass),
+                        getClassName(klass.superclass),
                         getClassNames(klass.includes).join(","));
             } else {
                 printf("%s=Tonyu.klass([%s],{%{",
                         getClassName(klass),
                         getClassNames(klass.includes).join(","));
             }
+            //printf("Tonyu.klass.define({%{");
+            //printf("fullName:")
             for (var name in methods) {
                 if (debug) console.log("method1", name);
                 var method=methods[name];
-                //initParamsLocals(method);
-                //annotateMethodFiber(method);
                 ctx.enter({noWait:true, threadAvail:false}, function () {
                     genFunc(method);
                 });
                 if (debug) console.log("method2", name);
-                //v.debug=debug;
                 if (!method.nowait ) {
                     ctx.enter({noWait:false,threadAvail:true}, function () {
                         genFiber(method);
