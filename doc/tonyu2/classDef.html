@@ -51,19 +51,22 @@
 </span></li><li><a id="line_marker_-87" name="line_marker_-87"></a><span>Javascriptからは</span><code><span>Tonyu.classes.クラス変数名</span></code><span>で参照できます．</span><span>
 </span></li></ul><li><span>native変数</span><span>
 </span></li><a id="line_marker_-90" name="line_marker_-90"></a><ul><li><a id="line_marker_-89" name="line_marker_-89"></a><span>native宣言によって宣言された名前の変数です．Javascriptのトップレベルスコープにおける同名の変数を参照します．</span><span>
+</span></li></ul><li><span>束縛されたメソッド</span><span>
+</span></li><a id="line_marker_-93" name="line_marker_-93"></a><ul><li><a id="line_marker_-91" name="line_marker_-91"></a><span>このオブジェクトがもつメソッドと同じ名前の変数で、後ろに引数リスト</span><code><span>()</span></code><span>を伴わない場合、この変数はこのオブジェクトに束縛されたメソッドになります。この値は関数オブジェクトであり、呼び出し方にかかわらずこのオブジェクトを</span><code><span>this</span></code><span>として呼び出します。</span><span>
+</span></li><li><a id="line_marker_-92" name="line_marker_-92"></a><span>後ろに引数リストを伴う場合、束縛を行わず即時にこのオブジェクトの同名のメソッドを呼び出します。</span><span>
 </span></li></ul><li><span>フィールド</span><span>
-</span></li><a id="line_marker_-93" name="line_marker_-93"></a><ul><li><a id="line_marker_-91" name="line_marker_-91"></a><span>そのクラスのオブジェクトがもつ値です．上のどれにもあてはまらない変数はフィールドとして解釈されます．</span><span>
-</span></li><li><a id="line_marker_-92" name="line_marker_-92"></a><span>Javascriptではいわゆる</span><code><span>this.x</span></code><span>という形式で参照されるものです．Tonyu2でもこの方式でも参照できます．</span><span>
-</span></li></ul></ul><p></p><h1><a id="line_marker_-94" name="line_marker_-94"></a><span>例</span></h1><a id="line_marker_-95" name="line_marker_-95"></a><p></p><a id="line_marker_-96" name="line_marker_-96"></a><div class="plist">リスト2 MyClass.tonyu</div><a id="line_marker_-109" name="line_marker_-109"></a><pre><a id="line_marker_-97" name="line_marker_-97"></a><span>extends Actor;</span><span>
-</span><a id="line_marker_-98" name="line_marker_-98"></a><span>native alert;</span><span>
-</span><a id="line_marker_-99" name="line_marker_-99"></a><span>// main関数</span><span>
-</span><a id="line_marker_-100" name="line_marker_-100"></a><span>x=3;</span><span>
-</span><a id="line_marker_-101" name="line_marker_-101"></a><span>rate=5;</span><span>
-</span><a id="line_marker_-102" name="line_marker_-102"></a><span>y=mult(x);</span><span>
-</span><a id="line_marker_-103" name="line_marker_-103"></a><span>alert(y); // 15</span><span>
-</span><a id="line_marker_-104" name="line_marker_-104"></a><span>// main関数終わり</span><span>
-</span><a id="line_marker_-105" name="line_marker_-105"></a><span>\mult(a) {</span><span>
-</span><a id="line_marker_-106" name="line_marker_-106"></a><span>  var res=a*rate;</span><span>
-</span><a id="line_marker_-107" name="line_marker_-107"></a><span>  return res;</span><span>
-</span><a id="line_marker_-108" name="line_marker_-108"></a><span>}</span><span>
-</span></pre><a id="line_marker_-110" name="line_marker_-110"></a><p></p></div><div style="height: 100px;"></div></body></html>
+</span></li><a id="line_marker_-96" name="line_marker_-96"></a><ul><li><a id="line_marker_-94" name="line_marker_-94"></a><span>そのクラスのオブジェクトがもつ値です．上のどれにもあてはまらない変数はフィールドとして解釈されます．</span><span>
+</span></li><li><a id="line_marker_-95" name="line_marker_-95"></a><span>Javascriptではいわゆる</span><code><span>this.x</span></code><span>という形式で参照されるものです．Tonyu2でもこの方式でも参照できます．</span><span>
+</span></li></ul></ul><p></p><h1><a id="line_marker_-97" name="line_marker_-97"></a><span>例</span></h1><a id="line_marker_-98" name="line_marker_-98"></a><p></p><a id="line_marker_-99" name="line_marker_-99"></a><div class="plist">リスト2 MyClass.tonyu</div><a id="line_marker_-112" name="line_marker_-112"></a><pre><a id="line_marker_-100" name="line_marker_-100"></a><span>extends Actor;</span><span>
+</span><a id="line_marker_-101" name="line_marker_-101"></a><span>native alert;</span><span>
+</span><a id="line_marker_-102" name="line_marker_-102"></a><span>// main関数</span><span>
+</span><a id="line_marker_-103" name="line_marker_-103"></a><span>x=3;</span><span>
+</span><a id="line_marker_-104" name="line_marker_-104"></a><span>rate=5;</span><span>
+</span><a id="line_marker_-105" name="line_marker_-105"></a><span>y=mult(x);</span><span>
+</span><a id="line_marker_-106" name="line_marker_-106"></a><span>alert(y); // 15</span><span>
+</span><a id="line_marker_-107" name="line_marker_-107"></a><span>// main関数終わり</span><span>
+</span><a id="line_marker_-108" name="line_marker_-108"></a><span>\mult(a) {</span><span>
+</span><a id="line_marker_-109" name="line_marker_-109"></a><span>  var res=a*rate;</span><span>
+</span><a id="line_marker_-110" name="line_marker_-110"></a><span>  return res;</span><span>
+</span><a id="line_marker_-111" name="line_marker_-111"></a><span>}</span><span>
+</span></pre><a id="line_marker_-113" name="line_marker_-113"></a><p></p></div><div style="height: 100px;"></div></body></html>
