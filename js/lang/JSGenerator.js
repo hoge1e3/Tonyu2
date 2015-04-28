@@ -650,7 +650,7 @@ function genJS(klass, env) {//B
             });
         }*/
         ctx.enter({}, function () {
-            var nspObj=CLASS_HEAD+klass.namespace;
+            /*var nspObj=CLASS_HEAD+klass.namespace;
             printf("Tonyu.klass.ensureNamespace(%s,%l);%n",CLASS_HEAD.replace(/\.$/,""), klass.namespace);
             if (klass.superclass) {
                 printf("%s=Tonyu.klass(%s,[%s],{%{",
@@ -661,9 +661,14 @@ function genJS(klass, env) {//B
                 printf("%s=Tonyu.klass([%s],{%{",
                         getClassName(klass),
                         getClassNames(klass.includes).join(","));
-            }
-            //printf("Tonyu.klass.define({%{");
-            //printf("fullName:")
+            }*/
+            printf("Tonyu.klass.define({%{");
+            printf("fullName: %l,%n", klass.fullName);
+            printf("shortName: %l,%n", klass.shortName);
+            printf("namespace: %l,%n", klass.namespace);
+            if (klass.superclass) printf("superclass: %s,%n", getClassName(klass.superclass));
+            printf("includes: [%s],%n", getClassNames(klass.includes).join(","));
+            printf("methods: {%{");
             for (var name in methods) {
                 if (debug) console.log("method1", name);
                 var method=methods[name];
@@ -679,13 +684,24 @@ function genJS(klass, env) {//B
                 if (debug) console.log("method3", name);
             }
             printf("__dummy: false%n");
-            printf("%}});%n");
+            printf("%}},%n");
+            printf("decls: %s%n", JSON.stringify(digestDecls(klass)));
+            printf("%}});");
+            //printf("%}});%n");
         });
-        printf("Tonyu.klass.addMeta(%s,%s);%n",
-                getClassName(klass),JSON.stringify(digestMeta(klass)));
+        //printf("Tonyu.klass.addMeta(%s,%s);%n",
+        //        getClassName(klass),JSON.stringify(digestMeta(klass)));
         //if (env.options.compiler.asModule) {
         //    printf("//%}});");
         //}
+    }
+    function digestDecls(klass) {
+        var res={methods:{}};
+        for (var i in klass.decls.methods) {
+            res.methods[i]=
+            {nowait:!!klass.decls.methods[i].nowait};
+        }
+        return res;
     }
     function digestMeta(klass) {//G
         var res={

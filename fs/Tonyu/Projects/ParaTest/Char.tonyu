@@ -1,7 +1,7 @@
 
 x=100;y=100;
-g=parallel("go",3);
-s=parallel("scale",0.1);
+g=parallel(go,3);
+s=parallel(scale,0.1);
 on("fuga") \{print("fugaed");};
 on("die") \{print("dead");};
 while(true) {

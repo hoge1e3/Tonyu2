@@ -23,10 +23,10 @@ nowait \registerEventHandler(type, obj) {
    // obj:{ attach, fire }
    initEventMod();
    if (typeof type=="function") {
-       obj=obj||new type;
+       obj=obj||new type{target:this};
        type=obj.getClassInfo().fullName;
    }  else {
-       obj=obj || new EventHandler;
+       obj=obj || new EventHandler{target:this};
    }
    return _eventHandlers[type]=obj;
 }

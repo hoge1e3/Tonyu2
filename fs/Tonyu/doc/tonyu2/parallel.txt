@@ -9,7 +9,7 @@
 <<code
 parallel(methodName, args...)
 >>
--methodName に、新しいスレッドが実行するメソッド名を指定します
+-methodName に、新しいスレッドが実行するメソッド名を指定します。指定されるメソッドは[[待機可能メソッド>waitmode]]である必要があります。
 -args （省略可）に、メソッドに渡す引数を指定します
 
 [[実行例>http://tonyuexe.appspot.com/exe/hoge1e4/ParaTest]] / 

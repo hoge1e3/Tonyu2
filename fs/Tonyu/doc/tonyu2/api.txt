@@ -4,16 +4,18 @@
 
 Tonyu2で最初から使えるクラス群です．[[ファイルシステム>fs]]上の/Tonyu/Kernel/ で定義されています．
 
+※ほとんどのオブジェクトは、[[BaseActor]]に定義されている命令を利用できます。
+
 -[[Actor]]
 -[[BaseActor]]
--[[Boot]]
--[[Sprites]]
--[[ScaledCanvas]]
--[[MathMod]]
--[[Map]]
--[[Panel]]
--[[Pad]]
 -[[BodyActor]]
+-[[Boot]]
+-[[ScaledCanvas]]
+-[[Sprites]]
+-[[Map]]
+-[[MathMod]]
+-[[Pad]]
+-[[Panel]]
 -[[Tonyu1互換クラス>t1compats]]
 
 *グローバル変数
@@ -23,9 +25,7 @@ Tonyu2で最初から使えるクラス群です．[[ファイルシステム>fs
 -[[$touches]]
 -[[$screenWidth,$screenHeight]]
 
-
-*[[用途別リファレンス]]
--[[チュートリアル]]
+標準クラスの具体的な使い方は、[[用途別リファレンス]]を参照してください。
 
 
 

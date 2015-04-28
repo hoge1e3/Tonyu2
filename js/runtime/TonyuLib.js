@@ -31,12 +31,19 @@ return Tonyu=function () {
         }
         function apply(obj, methodName, args) {
             if (!args) args=[];
+            var method;
+            if (typeof methodName=="string") {
+                method=obj["fiber$"+methodName];
+            }
+            if (typeof methodName=="function") {
+                method=methodName.fiber;
+            }
             args=[fb].concat(args);
             var pc=0;
             enter(function () {
                 switch (pc){
                 case 0:
-                    obj["fiber$"+methodName].apply(obj,args);
+                    method.apply(obj,args);
                     pc=1;break;
                 case 1:
                     exit();
@@ -366,6 +373,7 @@ return Tonyu=function () {
         var fullName=params.fullName;
         var shortName=params.shortName;
         var namespace=params.namespace;
+        var methods=params.methods;
         var decls=params.decls;
         var nso=klass.ensureNamespace(Tonyu.classes, namespace);
         var prot=defunct(methods);
@@ -385,6 +393,14 @@ return Tonyu=function () {
                 }
             }
         });
+        for (var k in prot) {
+            if (k.match(/^fiber\$/)) continue;
+            if (prot["fiber$"+k]) {
+                prot[k].fiber=prot["fiber$"+k];
+                prot[k].fiber.methodInfo={name:k,klass:res,fiber:true};
+            }
+            prot[k].methodInfo={name:k,klass:res};
+        }
         res.prototype=bless(parent, prot);
         res.prototype.isTonyuObject=true;
         addMeta(res,{
@@ -440,9 +456,17 @@ return Tonyu=function () {
         return res;//classes[n];
     }
     function bindFunc(t,meth) {
-        return function () {
+        var res=function () {
             return meth.apply(t,arguments);
         };
+        res.methodInfo=Tonyu.extend({thiz:t},meth.methodInfo||{});
+        if (meth.fiber) {
+            res.fiber=function fiber_func() {
+                return meth.fiber.apply(t,arguments);
+            };
+            res.fiber.methodInfo=Tonyu.extend({thiz:t},meth.fiber.methodInfo||{});
+        }
+        return res;
     }
     function invokeMethod(t, name, args, objName) {
         if (!t) throw new Error(objName+"(="+t+")のメソッド "+name+"を呼び出せません");
@@ -476,7 +500,7 @@ return Tonyu=function () {
             globals:globals, classes:classes, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
             timeout:timeout,asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
-            VERSION:1430106569813,//EMBED_VERSION
+            VERSION:1430107917750,//EMBED_VERSION
             A:A};
 }();
 });

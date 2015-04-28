@@ -1,0 +1,17 @@
+
+c=new Char;
+c.on("fuga","jump");
+
+while(true) {
+    if (getkey(32)==1) {
+        c.sendEvent("fuga",-rnd(15)-5);
+    }
+    update();
+}
+
+\jump() {
+    print("Uso jump!");
+    updateEx(30);
+    print("Uso jumped!");
+    
+}
