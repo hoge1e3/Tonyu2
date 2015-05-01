@@ -1,42 +1,43 @@
-// test
-Contoller (Game machine)
- layer
+言語仕様
+ do..while
+ switch
+ \myProp {}
+ \myProp=val {}
+ nowait {  }
+ \()=>
+ OK annotation?? (スコープチェックとコード出力の分離)
+ OK Exception
+ OK \{  }
+ OK bug  a[i]/10  / = reg??
+Kernel
+ Contoller (Game machine)
+ OK? layer
+
+
 jsdo.it -> load from tonyuexe
 ファイルが増えるとメニューがあふれる
  Main Selector
 Library 公開
  Merge project
- namespace? package?
 Timestamp on Appauth
-View source
 View count
 クラス名変更時にコンパイルエラーがあると...
 
 Doc同期を省力化
  ls -json
 
-RAM disk
 Disk usage
-Kernel
- ThreadGroup
- colorメソッド
 
-
-言語仕様
- OK bug  a[i]/10  / = reg??
- \()=>
- \{  }
- \myProp {}
- \myProp=val {}
- Exception
- nowait {  }
- do..while
- switch
- annotation?? (スコープチェックとコード出力の分離)
 
 Graphic editor
-Rapid Kernel read
+
+OK ThreadGroup
+OK colorメソッド
+OK View source
+OK Rapid Kernel read
  (pre-compiled kernel)
+OK RAM disk
+OK namespace? package?
 
 OK tonyuexe公開後トップに移動・別Window
 OK Fork お待ちください

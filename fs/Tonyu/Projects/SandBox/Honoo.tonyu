@@ -1,9 +1,0 @@
-p=$pat_prominenceburn;
-x=rnd(300);y=rnd(300);
-alpha=255;
-for(i=0;i<15; i++) {
-    p++;
-    alpha-=10;
-    update();
-}
-die();

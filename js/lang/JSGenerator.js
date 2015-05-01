@@ -809,12 +809,12 @@ function genJS(klass, env) {//B
     function genFuncExpr(node) {//G
         var finfo=annotation(node);// annotateSubFuncExpr(node);
 
-        buf.printf("function (%j) {%{"+
+        buf.printf("(function %s(%j) {%{"+
                        "%f%n"+
                        "%f"+
-                   "%}}"
+                   "%}})"
                  ,
-                    [",", finfo.params],
+                    finfo.name, [",", finfo.params],
                  	genLocalsF(finfo),
                        fbody
         );

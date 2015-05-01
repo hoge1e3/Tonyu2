@@ -475,10 +475,10 @@ function annotateSource2(klass, env) {//B
             }
         });
     }
-    function annotateSubFuncExpr(node) {//S
+    function annotateSubFuncExpr(node) {// annotateSubFunc or FuncExpr
         var m,ps;
         var body=node.body;
-        var name=(node.head.name ? node.head.name.text : "anonymous" );
+        var name=(node.head.name ? node.head.name.text : "anonymous_"+node.pos );
         if (m=OM.match( node, {head:{params:{params:OM.P}}})) {
             ps=m.P;
         } else {

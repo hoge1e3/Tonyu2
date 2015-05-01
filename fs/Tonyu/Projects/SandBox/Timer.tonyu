@@ -1,7 +1,0 @@
-t=0;x=20;y=20;
-while(true) {
-    text=floor(t/30); t++;
-    //print(text);
-    x++;
-    update();
-}
