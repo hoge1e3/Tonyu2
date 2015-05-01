@@ -393,6 +393,8 @@ return Tonyu=function () {
                 }
             }
         });
+        var props={};
+        var propReg=/^__([gs]et)ter__(.*)$/;
         for (var k in prot) {
             if (k.match(/^fiber\$/)) continue;
             if (prot["fiber$"+k]) {
@@ -400,12 +402,20 @@ return Tonyu=function () {
                 prot[k].fiber.methodInfo={name:k,klass:res,fiber:true};
             }
             prot[k].methodInfo={name:k,klass:res};
+            var r=propReg.exec(k);
+            if (r) {
+                props[r[2]]=props[r[2]]||{};
+                props[r[2]][r[1]]=prot[k];
+            }
         }
         res.prototype=bless(parent, prot);
         res.prototype.isTonyuObject=true;
+        for (var k in props) {
+            Object.defineProperty(res.prototype, k , props[k]);
+        }
         addMeta(res,{
             fullName:fullName,shortName:shortName,namepsace:namespace,decls:decls,
-            superclass:parent ? parent.meta : null,
+            superclass:parent ? parent.meta : null,func:res,
             includes:includes.map(function(c){return c.meta;})
         });
         var m=klass.getMeta(res);
@@ -500,7 +510,7 @@ return Tonyu=function () {
             globals:globals, classes:classes, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
             timeout:timeout,asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
-            VERSION:1430188772935,//EMBED_VERSION
+            VERSION:1430449442605,//EMBED_VERSION
             A:A};
 }();
 });

@@ -69,10 +69,14 @@ function initClassDecls(klass, env ) {//S
                     ftype=head.ftype.text;
                     //console.log("head.ftype:",stmt);
                 }
-                methods[head.name.text]={
-                        nowait: (!!head.nowait),
+                var name=head.name.text;
+                var propHead=(head.params ? "" : head.setter ? "__setter__" : "__getter__");
+                name=propHead+name;
+
+                methods[name]={
+                        nowait: (!!head.nowait || propHead!=""),
                         ftype:  ftype,
-                        name:  head.name.text,
+                        name:  name,
                         head:  head,
                         pos: head.pos,
                         stmts: stmt.body.stmts

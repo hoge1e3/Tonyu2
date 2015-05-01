@@ -1,0 +1,14 @@
+
+m=new Protted;
+m.a=10;
+//m.__setter__myProp(50);
+m.myProp=50;
+
+m2=new Protted;
+m2.a=20;
+m2.myProp=20;
+
+//m.__setter__myProp(100);
+//m.__getter__myProp();
+
+print(m.myProp+m2.myProp);

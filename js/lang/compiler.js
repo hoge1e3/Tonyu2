@@ -79,9 +79,12 @@ define(["Tonyu","ObjectMatcher", "TError"],
     }
     cu.getDependingClasses=getDependingClasses;
     function getParams(method) {//B
-        if (!method.head) return [];
-        var res=method.head.params.params;
-        if (!res.forEach) throw method+" is not array ";
+        var res=[];
+        if (!method.head) return res;
+        if (method.head.setter) res.push(method.head.setter.value);
+        var ps=method.head.params ? method.head.params.params : null;
+        if (ps && !ps.forEach) throw method+" is not array ";
+        if (ps) res=res.concat(ps);
         return res;
     }
     cu.getParams=getParams;

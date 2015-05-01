@@ -1,0 +1,24 @@
+native Object;
+\getA() {
+    print("a="+_a);
+    return _a;
+}
+\setA(v) {
+    print("a="+_a+"->"+v);
+    _a=v;
+}
+
+\myProp=p { 
+    print("set "+p);
+    _p=p;
+}
+\myProp {
+    print("get " +_p);
+    return _p;    
+}
+
+/*
+a=5;
+print(a);
+*/
+
