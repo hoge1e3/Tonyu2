@@ -74,6 +74,37 @@ function メソッド名(引数リスト) {
 >>
 ※function の代わりに \ が使用可能です（[[拡張構文>sugar]]参照)
 
+**プロパティの定義
+
+プロパティ（getter/setter）は次の書式で定義します
+
+<<code
+//getter
+\プロパティ名 {
+  処理内容
+}
+//setter
+\プロパティ名=値 {
+  処理内容
+}
+>>
+
+例
+<<code
+\myProp {
+   print("Get myProp="+_myp);
+   return _myp;
+}
+\myProp=value {
+   print("Set myProp to "+value);
+   _myp=value;
+}
+myProp=10; //  Set myProp to 10
+x=myProp;  //  Get myProp 1
+
+>>
+
+
 *変数の種類
 
 -引数
