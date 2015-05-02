@@ -91,6 +91,8 @@ $panel=new Panel{align:"center",x:$screenWidth/2,y:$screenHeight/2,width:$screen
 if (typeof SplashScreen!="undefined") SplashScreen.hide();
 initFPSParams();
 
+$mouseX=$mouseX||0;
+$mouseY=$mouseY||0;
 while (true) {
     //thg.steps();
     scheduler.stepsAll();
@@ -98,7 +100,6 @@ while (true) {
     $InputDevice.update();
     $screenWidth=$Screen.width;
     $screenHeight=$Screen.height;
-
     doDraw=now()<deadLine;
     if (!doDraw && frameSkipped>=maxFrameSkip) {
         doDraw=true;

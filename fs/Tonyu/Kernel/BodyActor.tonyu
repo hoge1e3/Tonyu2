@@ -113,6 +113,7 @@ native Box2D;
     return deg(body.GetAngle());
 }
 \rotation=r {
+    r=r||0;
     if (!body || manualRotation) return _rotation=r;
     body.SetAngle(rad(r));
 } 
