@@ -1,10 +1,10 @@
 言語仕様
  do..while
  switch
- \myProp {}
- \myProp=val {}
  nowait {  }
- \()=>
+ (x,y)=>x+y
+ OK \myProp {}
+ OK \myProp=val {}
  OK annotation?? (スコープチェックとコード出力の分離)
  OK Exception
  OK \{  }

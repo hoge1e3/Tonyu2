@@ -107,6 +107,13 @@ native Box2D;
     var pos=body.GetPosition();
     x=pos.x*scale;
     y=pos.y*scale;
-    rotation=deg(body.GetAngle());
 }
+\rotation {
+    if (!body || manualRotation) return _rotation;
+    return deg(body.GetAngle());
+}
+\rotation=r {
+    if (!body || manualRotation) return _rotation=r;
+    body.SetAngle(rad(r));
+} 
 
