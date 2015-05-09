@@ -350,3 +350,6 @@ nowait \asyncResult() {//@deperecated
 \setVisible(v) {
     _isInvisible=!v;
 }
+\appear(o) {
+    return o;
+}

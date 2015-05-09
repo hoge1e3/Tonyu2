@@ -1,5 +1,6 @@
 extends TObject;
 native Tonyu;
+native console;
 cur=[];
 next=[];
 \addObj(obj,name,args) {
@@ -22,6 +23,10 @@ next=[];
 \stepsAll() {
     for (var t in cur) {
         t.steps();
+        if (t.preempted) {
+            //console.log("Preempted: ",t);
+            next.push(t);
+        }
     }
     cur=next;
     next=[];

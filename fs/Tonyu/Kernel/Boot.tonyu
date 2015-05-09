@@ -45,6 +45,9 @@ native Math;
     initT2MediaPlayer();
     loadFromProject($currentProject);
     print ("Loading sounds done.");
+    on("stop")\{
+        clearSEData();
+    };
 }
 
 

@@ -1,0 +1,32 @@
+
+
+\new(options) {
+    super(options);
+    fillStyle=fillStyle||"rgb(179,255,142)";
+    strokeStyle=strokeStyle||"black";
+    clickedStyle=clickedStyle||"white";
+    padding= padding || 5;
+    width = width || $screenWidth-100;
+    height = height || 50;
+    left=left || 50;
+    
+}
+for(i=0;i<60;i++) {
+    y++;
+    update();
+}
+
+/*\draw(c) {
+    c.fillStyle=fillStyle || "gray";
+    c.strokeStyle=strokeStyle || "black";
+    c.fillRect(left, top, width, height);
+    c.strokeRect(left, top, width, height);
+    var size=height-padding*2;
+    var f=c.font.replace(/^[0-9]+px /,"");
+    c.font=size+"px "+f;//monospace";
+    c.textBaseline="top";
+    c.fillStyle=clicked?clickedStyle:strokeStyle;
+    var r=c.measureText(text);
+    c.fillText(text, left+width/2-r.width/2, top+padding);
+}
+*/

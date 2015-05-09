@@ -16,6 +16,7 @@ return Tonyu=function () {
         var cnt=0;
         //var retVal;
         var _isWaiting=false;
+        var fSuspended=false;
         function isAlive() {
             return frame!=null && _isAlive;
         }
@@ -24,6 +25,7 @@ return Tonyu=function () {
         }
         function suspend() {
             //throw new Error("Suspend call");
+            fSuspended=true;
             cnt=0;
         }
         function enter(frameFunc) {
@@ -149,10 +151,13 @@ return Tonyu=function () {
             Tonyu.currentThread=fb;
             //var lim=new Date().getTime()+preemptionTime;
             cnt=preemptionTime;
+            fb.preempted=false;
+            fSuspended=false;
             //while (new Date().getTime()<lim) {
-            while (cnt-->0) {
+            while (cnt-->0 && frame) {
                 step();
             }
+            fb.preempted= (!fSuspended) && isAlive();
             //stpd--;
             Tonyu.currentThread=sv;
         }

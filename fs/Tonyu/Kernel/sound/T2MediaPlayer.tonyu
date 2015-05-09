@@ -28,19 +28,18 @@ native Tonyu;
 }
 
 // SE //
-\loadSE(idx, src) {
+\loadSE(idx, src) {//@hoge1e3
     // 非同期呼び出し
-    T2MediaLib.loadSE(idx, src);
-    // 読み込み完了するまでブロッキング
+    runAsync \(succ,err) {
+       // 読み込み完了するまでブロッキング
+       T2MediaLib.loadSE(idx, src) {succ,err};
+    };
     var data = T2MediaLib.getSEData(idx);
-    var cnt=0;
+    /*
     while (data == null) {
         update();
         data = T2MediaLib.getSEData(idx);
-        cnt++;
-        //print(cnt);
-        //if (cnt>100) {throw new Error("machisugi th="+_thread); }
-    }
+    }*/
     return data;
 }
 

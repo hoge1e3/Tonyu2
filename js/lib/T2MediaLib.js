@@ -191,7 +191,7 @@ var T2MediaLib = {
 
     // SEメソッド郡 //
 
-    loadSE : function(idx, url) {
+    loadSE : function(idx, url, callbacks) { //@hoge1e3
         if (!T2MediaLib.context) {
             T2MediaLib.seDataAry.data[idx] = -1;
             return null;
@@ -210,7 +210,7 @@ var T2MediaLib = {
                                      'numberOfChannels:' + audioBuffer.numberOfChannels + '\n');
                         */
                         T2MediaLib.seDataAry.data[idx] = audioBuffer;
-
+                        if (callbacks && callbacks.succ) callbacks.succ(idx);//@hoge1e3
                     };
                     var errorCallback = function(error) {
                         if (error instanceof Error) {
@@ -219,14 +219,17 @@ var T2MediaLib = {
                             console.log('T2MediaLib: Error decodeAudioData()');
                         }
                         T2MediaLib.seDataAry.data[idx] = -4;
+                        if (callbacks && callbacks.err) callbacks.err(idx,T2MediaLib.seDataAry.data[idx]);//@hoge1e3
                     };
                     T2MediaLib.context.decodeAudioData(arrayBuffer, successCallback, errorCallback);
                 } else {
                     T2MediaLib.seDataAry.data[idx] = -3;
+                    if (callbacks && callbacks.err) callbacks.err(idx,T2MediaLib.seDataAry.data[idx]);//@hoge1e3
                 }
             } else {
                 //alert("Status =" +xhr.status+" "+xhr.response);
                 T2MediaLib.seDataAry.data[idx] = -2;
+                if (callbacks && callbacks.err) callbacks.err(idx,T2MediaLib.seDataAry.data[idx]);//@hoge1e3
             }
         };
 

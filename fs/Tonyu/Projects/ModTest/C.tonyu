@@ -1,6 +1,13 @@
 includes B;
 
-a();
+\b() {
+    print("C::B");
+    \test() {
+        print("test");
+    }
+}
+
+//a();
 b();
 //a   
 

@@ -1,5 +1,5 @@
 includes T2MediaPlayer;
 
 
-playSE($se_uno11);
+playBGM($se_uno11);
 
