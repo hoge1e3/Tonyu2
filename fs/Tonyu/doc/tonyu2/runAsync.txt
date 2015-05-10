@@ -1,0 +1,44 @@
+[[BaseActor]]
+
+*runAsyncメソッド
+
+ajaxなどの非同期処理を行なうためのメソッドです。
+[[asyncResult]]より書きやすくなっています。
+
+**書式
+
+<<code
+runAsync \(success,error) {
+    処理
+};
+>>
+※必ず[[待機可能モード>waitMode]]で呼び出してください
+
+-処理の中では、ajaxなどのコールバック関数を伴う処理（非同期処理）を行います。
+-非同期処理が完了したときのコールバック関数を指定する部分に[[@cfrag success]]を指定してください。
+--非同期処理が完了すると、runAsyncは終了します。
+--戻り値は、コールバック関数に渡された引数の配列になります。
+-非同期処理が失敗する可能性がある場合、失敗したときのコールバック関数を指定する部分に[[@cfrag error]]を指定してください。
+--非同期処理が失敗すると、例外が投げられます
+--投げられる例外はErrorオブジェクトで、フィールドargsにコールバック関数に渡された引数の配列が格納されます。
+
+
+**例
+
+<<code
+native $;
+
+try {
+    res=runAsync \(success,error) {
+        $.ajax{
+            url:"http://tonyuedit.appspot.com/",
+            success,error
+        };
+    };
+    print("Success");
+    print(res[0]);
+} catch (e) {
+    print("Error");
+    print(e.args[0].statusText);
+}
+>>
