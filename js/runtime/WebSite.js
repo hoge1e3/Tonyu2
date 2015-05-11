@@ -9,7 +9,8 @@ define([], function () {
                 "images/Sample.png":"http://jsrun.it/assets/s/V/S/l/sVSlZ.png",
                 "images/neko.png":"http://jsrun.it/assets/j/D/9/q/jD9qQ.png",
                 "images/inputPad.png":"http://jsrun.it/assets/r/K/T/Y/rKTY9.png"
-            },top:"",devMode:devMode, pluginTop: "http://tonyuedit.appspot.com/js/plugins"
+            },top:"",devMode:devMode, pluginTop: "http://tonyuedit.appspot.com/js/plugins",
+            removeJSOutput:true
         };
     } else if (
       loc.match(/tonyuexe\.appspot\.com/) ||

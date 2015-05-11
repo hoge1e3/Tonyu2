@@ -1,4 +1,4 @@
-// Created at Sat May 09 2015 17:31:33 GMT+0900 (東京 (標準時))
+// Created at Mon May 11 2015 13:08:21 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -98,7 +98,8 @@ define([], function () {
                 "images/Sample.png":"http://jsrun.it/assets/s/V/S/l/sVSlZ.png",
                 "images/neko.png":"http://jsrun.it/assets/j/D/9/q/jD9qQ.png",
                 "images/inputPad.png":"http://jsrun.it/assets/r/K/T/Y/rKTY9.png"
-            },top:"",devMode:devMode, pluginTop: "http://tonyuedit.appspot.com/js/plugins"
+            },top:"",devMode:devMode, pluginTop: "http://tonyuedit.appspot.com/js/plugins",
+            removeJSOutput:true
         };
     } else if (
       loc.match(/tonyuexe\.appspot\.com/) ||
@@ -1618,7 +1619,7 @@ return Tonyu=function () {
             globals:globals, classes:classes, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
             timeout:timeout,asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
-            VERSION:1431160277898,//EMBED_VERSION
+            VERSION:1431317288879,//EMBED_VERSION
             A:A};
 }();
 });
@@ -6331,6 +6332,9 @@ return Tonyu.Project=function (dir, kernelDir) {
         if (main && main.stop) main.stop();
     };
     TPR.rawRun=function (mainClassName) {
+        if (WebSite.removeJSOutput) {
+            TPR.getOutputFile().rm();
+        }
         TPR.loadClasses();
         //TPR.compile();
         if (!TPR.runScriptMode) thumbnail.set(TPR, 2000);
