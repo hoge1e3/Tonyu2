@@ -1,6 +1,13 @@
 define(["FS","Util"], function (FS,Util) {
-    var east=function (dir) {
+    var east=function (dir,options) {
+        options=options||{};
+        var excludes=options.excludes||{};
+        var includeJSScript=options.includeJSScript;
         var buf="";
+        if (includeJSScript) {
+            buf+='<script src="http://tonyuedit.appspot.com/js/lib/jquery-1.10.1.js" language="text/javascript"></script>\n';
+            buf+='<script src="http://tonyuedit.appspot.com/js/gen/runScript_concat.min.js" language="text/javascript"></script>\n';
+        }
         buf+="<div id='splash' style='position:relative'>\n";
         buf+="<!--ここに，ロード中に表示する内容を記述できます-->\n";
         buf+="</div>\n";
@@ -12,11 +19,12 @@ define(["FS","Util"], function (FS,Util) {
         var nonTonyu=[];
         //dir=FS.get(dir);
         dir.recursive(function (f) {
+            var rel=f.relPath(dir);
+            if (excludes[rel]) return;
             if (!f.endsWith(".tonyu")) {
                 nonTonyu.push(f);
                 return;
             }
-            var rel=f.relPath(dir);
             //var name=f.truncExt(".tonyu");
             var m="";//(name==main?" data-main='true'":"");
             var lu=" data-lastupdate='"+f.lastUpdate()+"' ";
