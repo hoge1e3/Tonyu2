@@ -33,7 +33,13 @@ requirejs(["FS","Util","NewProjectDialog","ScriptTagFS","UI","forkBlobs","WebSit
 	function confirm(dir) {
 		dst=dir;
 		var s=$("#prog").val();
-		$("#files").html(s);
+		var buf="";
+		s.split("\n").forEach(function (l) {
+		    if (!l.match(/<script[^>]*src[^>]*javascript/)) {
+		        buf+=l+"\n";
+		    }
+		});
+		$("#files").html(buf);
 		mode("confirm");
 		$("#confirm").empty();
 		$("#confirm").append(UI("div",["button",{on:{click:run}},"インポート開始"]));

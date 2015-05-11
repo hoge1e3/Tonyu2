@@ -1,0 +1,8 @@
+extends BodyActor;
+
+/*今後の課題
+while(true) {
+rotation=$mouseX;
+update();   
+}
+*/

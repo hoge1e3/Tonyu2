@@ -1,0 +1,38 @@
+extends BodyActor;
+
+while(true) {
+    if (getkey("left")) {
+        applyForce(-5,0);
+    }
+    if (getkey("right")) {
+        applyForce(5,0);
+    }
+    if (contactTo(Floor)) {
+        if (getkey("space")==1) {
+            applyImpulse(0,-6);
+        }
+    }
+    //あたった時にスッと消えるには？
+    b=crashTo(Ball);
+    if (b) {
+        if (b.x>x) {
+            applyImpulse(-2);
+        } else {
+            applyImpulse(2);
+        }
+    }
+    if (crashTo(Goal)) {
+        print("Goal!");
+    }
+    if (x<0 || x>$screenWidth) {
+        print("Game over");
+        die();
+    }
+    update();
+}
+/*Mainに追加
+new Player{
+    x:200, y:100,
+    shape:"circle"
+}; 
+*/

@@ -48,10 +48,12 @@ native Box2D;
         );
         width=height=radius*2;
     } 
+    var r=rotation;
     body=world.CreateBody(bodyDef);
     body.CreateFixture(fixDef);
     body.SetUserData(this);
-    body.SetAngle(rad(rotation));
+    //body.SetAngle(rad(rotation));
+    rotation=r;
 }
 \allContact(klass) {
     var res=[];
