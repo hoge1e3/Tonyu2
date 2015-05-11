@@ -1,4 +1,4 @@
-// Created at Mon May 11 2015 13:40:49 GMT+0900 (東京 (標準時))
+// Created at Mon May 11 2015 14:09:57 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -2029,7 +2029,7 @@ return Tonyu=function () {
             globals:globals, classes:classes, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
             timeout:timeout,asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
-            VERSION:1431319244427,//EMBED_VERSION
+            VERSION:1431320993584,//EMBED_VERSION
             A:A};
 }();
 });
@@ -7944,7 +7944,8 @@ return Tonyu.Project=function (dir, kernelDir) {
     };
     TPR.rawRun=function (mainClassName) {
         if (WebSite.removeJSOutput) {
-            TPR.getOutputFile().rm();
+            var o=TPR.getOutputFile();
+            if (o.exists()) o.rm();
         }
         TPR.loadClasses();
         //TPR.compile();
