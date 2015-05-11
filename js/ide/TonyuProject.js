@@ -60,6 +60,7 @@ return Tonyu.Project=function (dir, kernelDir) {
     };
     TPR.rawRun=function (mainClassName) {
         if (WebSite.removeJSOutput) {
+            TPR.getOutputFile().rm();
         }
         TPR.loadClasses();
         //TPR.compile();
