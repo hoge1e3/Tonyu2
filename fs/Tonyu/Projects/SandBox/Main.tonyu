@@ -1,4 +1,4 @@
 
 while(true) {
-    print($a);update();
+    print($Screen._ret);update();
 }
