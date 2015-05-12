@@ -4,7 +4,7 @@ y=20;
 p=3;
 while(true) {
     x=$mouseX;y=$mouseY;
-    if (rnd(30)==0) {
+    if (rnd(10)==0) {
         print("Front!");
         new Front{layer:$FrontSprites};
     }

@@ -1,0 +1,13 @@
+[[BodyActor]]
+
+*applyImpulseメソッド
+
+オブジェクトに瞬間的な力を加えます
+
+<<code
+applyImpulse(fx, fy)
+>>
+-fx: 力のx方向
+-fy: 力のy方向
+
+.

@@ -257,7 +257,7 @@ Tonyu.klass.define({
       var r;
       var name;
       var val;
-      var _it_830;
+      var _it_294;
       
       //$LASTPOS=40000285;//user.Boot2:285
       Tonyu.globals.$GameConsole=new Tonyu.classes.kernel.GameConsole({canvas: $("canvas")});
@@ -284,10 +284,10 @@ Tonyu.klass.define({
       //$LASTPOS=40000678;//user.Boot2:678
       Tonyu.globals.$Sprites.setImageList(r);
       //$LASTPOS=40000709;//user.Boot2:709
-      _it_830=Tonyu.iterator(r.names,2);
-      while(_it_830.next()) {
-        name=_it_830[0];
-        val=_it_830[1];
+      _it_294=Tonyu.iterator(r.names,2);
+      while(_it_294.next()) {
+        name=_it_294[0];
+        val=_it_294[1];
         
         //$LASTPOS=40000750;//user.Boot2:750
         Tonyu.setGlobal(name,val);
@@ -307,7 +307,7 @@ Tonyu.klass.define({
       var r;
       var name;
       var val;
-      var _it_830;
+      var _it_294;
       
       //$LASTPOS=40000285;//user.Boot2:285
       Tonyu.globals.$GameConsole=new Tonyu.classes.kernel.GameConsole({canvas: $("canvas")});
@@ -346,10 +346,10 @@ Tonyu.klass.define({
             //$LASTPOS=40000678;//user.Boot2:678
             Tonyu.globals.$Sprites.setImageList(r);
             //$LASTPOS=40000709;//user.Boot2:709
-            _it_830=Tonyu.iterator(r.names,2);
-            while(_it_830.next()) {
-              name=_it_830[0];
-              val=_it_830[1];
+            _it_294=Tonyu.iterator(r.names,2);
+            while(_it_294.next()) {
+              name=_it_294[0];
+              val=_it_294[1];
               
               //$LASTPOS=40000750;//user.Boot2:750
               Tonyu.setGlobal(name,val);
@@ -683,31 +683,33 @@ Tonyu.klass.define({
     main :function _trc_Front_main() {
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       
-      //$LASTPOS=42000001;//user.Front:1
+      //$LASTPOS=41000001;//user.Front:1
       _this.p=5;
-      //$LASTPOS=42000006;//user.Front:6
+      //$LASTPOS=41000006;//user.Front:6
       _this.x=_this.rnd(300);
-      //$LASTPOS=42000017;//user.Front:17
+      //$LASTPOS=41000017;//user.Front:17
       _this.y=20;
-      //$LASTPOS=42000023;//user.Front:23
+      //$LASTPOS=41000023;//user.Front:23
       while (_this.y<500) {
-        //$LASTPOS=42000042;//user.Front:42
+        //$LASTPOS=41000042;//user.Front:42
         _this.y+=10;
-        //$LASTPOS=42000053;//user.Front:53
+        //$LASTPOS=41000053;//user.Front:53
         _this.update();
         
       }
+      //$LASTPOS=41000065;//user.Front:65
+      _this.die();
     },
     fiber$main :function _trc_Front_f_main(_thread) {
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=42000001;//user.Front:1
+      //$LASTPOS=41000001;//user.Front:1
       _this.p=5;
-      //$LASTPOS=42000006;//user.Front:6
+      //$LASTPOS=41000006;//user.Front:6
       _this.x=_this.rnd(300);
-      //$LASTPOS=42000017;//user.Front:17
+      //$LASTPOS=41000017;//user.Front:17
       _this.y=20;
       
       _thread.enter(function _trc_Front_ent_main(_thread) {
@@ -715,12 +717,12 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=42000023;//user.Front:23
+            //$LASTPOS=41000023;//user.Front:23
           case 1:
             if (!(_this.y<500)) { __pc=3; break; }
-            //$LASTPOS=42000042;//user.Front:42
+            //$LASTPOS=41000042;//user.Front:42
             _this.y+=10;
-            //$LASTPOS=42000053;//user.Front:53
+            //$LASTPOS=41000053;//user.Front:53
             _this.fiber$update(_thread);
             __pc=2;return;
           case 2:
@@ -728,6 +730,8 @@ Tonyu.klass.define({
             __pc=1;break;
           case 3:
             
+            //$LASTPOS=41000065;//user.Front:65
+            _this.die();
             _thread.exit(_this);return;
           }
         }
@@ -747,27 +751,27 @@ Tonyu.klass.define({
     main :function _trc_Main_main() {
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       
-      //$LASTPOS=41000001;//user.Main:1
+      //$LASTPOS=42000001;//user.Main:1
       _this.x=10;
-      //$LASTPOS=41000007;//user.Main:7
+      //$LASTPOS=42000007;//user.Main:7
       _this.y=20;
-      //$LASTPOS=41000013;//user.Main:13
+      //$LASTPOS=42000013;//user.Main:13
       _this.p=3;
-      //$LASTPOS=41000018;//user.Main:18
+      //$LASTPOS=42000018;//user.Main:18
       while (true) {
-        //$LASTPOS=41000036;//user.Main:36
+        //$LASTPOS=42000036;//user.Main:36
         _this.x=Tonyu.globals.$mouseX;
-        //$LASTPOS=41000046;//user.Main:46
+        //$LASTPOS=42000046;//user.Main:46
         _this.y=Tonyu.globals.$mouseY;
-        //$LASTPOS=41000061;//user.Main:61
-        if (_this.rnd(30)==0) {
-          //$LASTPOS=41000087;//user.Main:87
+        //$LASTPOS=42000061;//user.Main:61
+        if (_this.rnd(10)==0) {
+          //$LASTPOS=42000087;//user.Main:87
           _this.print("Front!");
-          //$LASTPOS=41000112;//user.Main:112
+          //$LASTPOS=42000112;//user.Main:112
           new Tonyu.classes.user.Front({layer: Tonyu.globals.$FrontSprites});
           
         }
-        //$LASTPOS=41000154;//user.Main:154
+        //$LASTPOS=42000154;//user.Main:154
         _this.update();
         
       }
@@ -777,11 +781,11 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=41000001;//user.Main:1
+      //$LASTPOS=42000001;//user.Main:1
       _this.x=10;
-      //$LASTPOS=41000007;//user.Main:7
+      //$LASTPOS=42000007;//user.Main:7
       _this.y=20;
-      //$LASTPOS=41000013;//user.Main:13
+      //$LASTPOS=42000013;//user.Main:13
       _this.p=3;
       
       _thread.enter(function _trc_Main_ent_main(_thread) {
@@ -789,21 +793,21 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=41000018;//user.Main:18
+            //$LASTPOS=42000018;//user.Main:18
           case 1:
-            //$LASTPOS=41000036;//user.Main:36
+            //$LASTPOS=42000036;//user.Main:36
             _this.x=Tonyu.globals.$mouseX;
-            //$LASTPOS=41000046;//user.Main:46
+            //$LASTPOS=42000046;//user.Main:46
             _this.y=Tonyu.globals.$mouseY;
-            //$LASTPOS=41000061;//user.Main:61
-            if (_this.rnd(30)==0) {
-              //$LASTPOS=41000087;//user.Main:87
+            //$LASTPOS=42000061;//user.Main:61
+            if (_this.rnd(10)==0) {
+              //$LASTPOS=42000087;//user.Main:87
               _this.print("Front!");
-              //$LASTPOS=41000112;//user.Main:112
+              //$LASTPOS=42000112;//user.Main:112
               new Tonyu.classes.user.Front({layer: Tonyu.globals.$FrontSprites});
               
             }
-            //$LASTPOS=41000154;//user.Main:154
+            //$LASTPOS=42000154;//user.Main:154
             _this.fiber$update(_thread);
             __pc=2;return;
           case 2:

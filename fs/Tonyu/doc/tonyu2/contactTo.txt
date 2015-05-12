@@ -1,0 +1,21 @@
+[[BodyActor]]
+
+*contactToメソッド
+
+他の物理オブジェクトと衝突しているかを判定します。
+
+<<code
+contactTo(obj)
+>>
+
+特定のオブジェクト[[@cfrag obj]]に衝突しているかを判定し、衝突していればそのオブジェクトを、衝突していなければ[[@cfrag undefined]]を返します
+
+
+<<code
+contactTo(Class)
+>>
+
+特定のクラスの[[@cfrag Class]]のオブジェクトのうちどれかに衝突しているかを判定し、衝突していればそれらのオブジェクトのどれか１つを、衝突していなければ[[@cfrag undefined]]を返します。
+
+
+

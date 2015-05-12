@@ -1,0 +1,13 @@
+[[BodyActor]]
+
+*applyForceメソッド
+
+オブジェクトに継続的な力を加えます
+
+<<code
+applyForce(fx, fy)
+>>
+-fx: 力のx方向
+-fy: 力のy方向
+
+.

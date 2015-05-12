@@ -5,3 +5,4 @@ while(y<500) {
     y+=10;
     update();
 }
+die();
