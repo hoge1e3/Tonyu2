@@ -337,9 +337,16 @@ return Tonyu.Project=function (dir, kernelDir) {
     };
 
     TPR.isKernel=function (className) {
-        var r=kernelDir.rel(className+TPR.EXT);
+        var r=null;
+        kernelDir.recursive(function (e) {
+            if (e.truncExt(TPR.EXT)===className) {
+                r=e;
+            }
+        });
+        return r;
+        /*var r=kernelDir.rel(className+TPR.EXT);
         if (r.exists()) return r;
-        return null;
+        return null;*/
     };
     TPR.isKernelEditable=function () {
     	return env.options.kernelEditable;

@@ -1,0 +1,4 @@
+
+while(true) {
+    print($a);update();
+}

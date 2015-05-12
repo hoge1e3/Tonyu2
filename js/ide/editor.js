@@ -505,7 +505,7 @@ $(function () {
         var prog=getCurrentEditor();
         var s=prompt("エディタの文字の大きさ", desktopEnv.editorFontSize||12);
         desktopEnv.editorFontSize=parseInt(s);
-        prog.setFontSize(desktopEnv.editorFontSize||12);
+        if (prog) prog.setFontSize(desktopEnv.editorFontSize||12);
         saveDesktopEnv();
     }));
     sh.curFile=function () {
