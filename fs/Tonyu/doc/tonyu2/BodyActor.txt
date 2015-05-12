@@ -43,7 +43,7 @@ paramsにはオブジェクトを指定します．paramsの値をフィール�
 -[[applyImpulse]]
 -[[contactTo]]
 -[[allContact]]
-
+-[[addRevoluteJoint]]
 
 .
 

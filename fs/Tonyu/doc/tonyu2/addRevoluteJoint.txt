@@ -1,0 +1,32 @@
+[[BodyActor]]
+
+*addRevoluteJointメソッド
+
+回転するジョイントを作成します。シーソーやピンボールのフリッパーを作るのに適しています。
+
+<<code
+addRevoluteJoint(param);
+>>
+
+[[@cfrag param]]に指定できるものは次のものです
+
+-x: 回転の中心のx座標です。省略するとこのオブジェクトのx座標を用います
+-y: 回転の中心のy座標です。省略するとこのオブジェクトのy座標を用います
+-lowerAngle, upperAngle: 回転角に制限を加える場合、それぞれ最小角度と最大角度を指定します。
+
+*例
+
+<<code Flipper
+extends BodyActor;
+addRevoluteJoint{x:300,y:200,lowerAngle:-30,upperAngle:30};
+
+while(true) {
+    if(getkey(32)) applyImpulse(0,-30);
+    update();
+}
+>>
+
+<<code Main
+new Flipper{x:200,y:200,scaleX:10,scaleY:1};
+>>
+.

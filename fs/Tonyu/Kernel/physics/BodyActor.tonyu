@@ -103,6 +103,32 @@ native Box2D;
     super.die();
     world.DestroyBody(body);
 }
+\addRevoluteJoint(params) {
+    // params:{x?,y?,other?}
+    params=params||{};
+    var px=params.x||x;
+    var py=params.y||y;
+    var wworld=getWorld();//wraped_world
+    var scale=wworld.scale;
+    var world=wworld.world;
+    var b2BodyDef = Box2D.Dynamics.b2BodyDef;
+    var b2Body = Box2D.Dynamics.b2Body;
+    var JDC=Box2D.Dynamics.Joints.b2RevoluteJointDef;
+    var jd=new JDC;
+    var bodyDef = new b2BodyDef;
+    bodyDef.type = b2Body.b2_staticBody;
+    bodyDef.position.x = px /scale;
+    bodyDef.position.y = py /scale;
+    var bodyB=world.CreateBody(bodyDef);
+    var b2Vec2 = Box2D.Common.Math.b2Vec2;
+    jd.Initialize(body,bodyB,new b2Vec2(px/scale, py/scale));
+    if (params.lowerAngle && params.upperAngle) {
+       jd.lowerAngle = rad(params.lowerAngle);
+       jd.upperAngle = rad(params.upperAngle);
+       jd.enableLimit = true;
+    }
+    world.CreateJoint(jd);    
+}
 \updatePos() {
     if (!body) return;
     var scale=getWorld().scale;

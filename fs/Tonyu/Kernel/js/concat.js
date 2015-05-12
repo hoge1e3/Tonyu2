@@ -32,13 +32,13 @@ Tonyu.klass.define({
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       var k;
       var v;
-      var _it_1;
+      var _it_2544;
       
       //$LASTPOS=1000182;//kernel.EventMod:182
-      _it_1=Tonyu.iterator(_this._eventHandlers,2);
-      while(_it_1.next()) {
-        k=_it_1[0];
-        v=_it_1[1];
+      _it_2544=Tonyu.iterator(_this._eventHandlers,2);
+      while(_it_2544.next()) {
+        k=_it_2544[0];
+        v=_it_2544[1];
         
         //$LASTPOS=1000224;//kernel.EventMod:224
         v.release();
@@ -700,16 +700,16 @@ Tonyu.klass.define({
     killThreadGroup :function _trc_ThreadGroupMod_killThreadGroup() {
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       var thread;
-      var _it_26;
+      var _it_2569;
       var threadGroup;
-      var _it_27;
+      var _it_2570;
       
       //$LASTPOS=6000201;//kernel.ThreadGroupMod:201
       if (_this.threads) {
         //$LASTPOS=6000225;//kernel.ThreadGroupMod:225
-        _it_26=Tonyu.iterator(_this.threads,1);
-        while(_it_26.next()) {
-          thread=_it_26[0];
+        _it_2569=Tonyu.iterator(_this.threads,1);
+        while(_it_2569.next()) {
+          thread=_it_2569[0];
           
           //$LASTPOS=6000268;//kernel.ThreadGroupMod:268
           thread.kill();
@@ -720,9 +720,9 @@ Tonyu.klass.define({
       //$LASTPOS=6000306;//kernel.ThreadGroupMod:306
       if (_this.threadGroups) {
         //$LASTPOS=6000335;//kernel.ThreadGroupMod:335
-        _it_27=Tonyu.iterator(_this.threadGroups,1);
-        while(_it_27.next()) {
-          threadGroup=_it_27[0];
+        _it_2570=Tonyu.iterator(_this.threadGroups,1);
+        while(_it_2570.next()) {
+          threadGroup=_it_2570[0];
           
           //$LASTPOS=6000388;//kernel.ThreadGroupMod:388
           threadGroup.killThreadGroup();
@@ -736,16 +736,16 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       var thread;
-      var _it_26;
+      var _it_2569;
       var threadGroup;
-      var _it_27;
+      var _it_2570;
       
       //$LASTPOS=6000201;//kernel.ThreadGroupMod:201
       if (_this.threads) {
         //$LASTPOS=6000225;//kernel.ThreadGroupMod:225
-        _it_26=Tonyu.iterator(_this.threads,1);
-        while(_it_26.next()) {
-          thread=_it_26[0];
+        _it_2569=Tonyu.iterator(_this.threads,1);
+        while(_it_2569.next()) {
+          thread=_it_2569[0];
           
           //$LASTPOS=6000268;//kernel.ThreadGroupMod:268
           thread.kill();
@@ -756,9 +756,9 @@ Tonyu.klass.define({
       //$LASTPOS=6000306;//kernel.ThreadGroupMod:306
       if (_this.threadGroups) {
         //$LASTPOS=6000335;//kernel.ThreadGroupMod:335
-        _it_27=Tonyu.iterator(_this.threadGroups,1);
-        while(_it_27.next()) {
-          threadGroup=_it_27[0];
+        _it_2570=Tonyu.iterator(_this.threadGroups,1);
+        while(_it_2570.next()) {
+          threadGroup=_it_2570[0];
           
           //$LASTPOS=6000388;//kernel.ThreadGroupMod:388
           threadGroup.killThreadGroup();
@@ -934,7 +934,7 @@ Tonyu.klass.define({
       var values;
       var i;
       var e;
-      var _it_33;
+      var _it_2576;
       
       //$LASTPOS=8000551;//kernel.TQuery:551
       values;
@@ -970,9 +970,9 @@ Tonyu.klass.define({
       //$LASTPOS=8000912;//kernel.TQuery:912
       if (values) {
         //$LASTPOS=8000934;//kernel.TQuery:934
-        _it_33=Tonyu.iterator(_this,1);
-        while(_it_33.next()) {
-          e=_it_33[0];
+        _it_2576=Tonyu.iterator(_this,1);
+        while(_it_2576.next()) {
+          e=_it_2576[0];
           
           //$LASTPOS=8000968;//kernel.TQuery:968
           e.extend(values);
@@ -988,7 +988,7 @@ Tonyu.klass.define({
       var values;
       var i;
       var e;
-      var _it_33;
+      var _it_2576;
       
       //$LASTPOS=8000551;//kernel.TQuery:551
       values;
@@ -1026,9 +1026,9 @@ Tonyu.klass.define({
       //$LASTPOS=8000912;//kernel.TQuery:912
       if (values) {
         //$LASTPOS=8000934;//kernel.TQuery:934
-        _it_33=Tonyu.iterator(_this,1);
-        while(_it_33.next()) {
-          e=_it_33[0];
+        _it_2576=Tonyu.iterator(_this,1);
+        while(_it_2576.next()) {
+          e=_it_2576[0];
           
           //$LASTPOS=8000968;//kernel.TQuery:968
           e.extend(values);
@@ -1081,7 +1081,7 @@ Tonyu.klass.define({
       var res;
       var reso;
       var o;
-      var _it_39;
+      var _it_2582;
       var v;
       
       //$LASTPOS=8001154;//kernel.TQuery:1154
@@ -1089,9 +1089,9 @@ Tonyu.klass.define({
       //$LASTPOS=8001181;//kernel.TQuery:1181
       res;reso = new Tonyu.classes.kernel.TQuery;
       //$LASTPOS=8001210;//kernel.TQuery:1210
-      _it_39=Tonyu.iterator(_this,1);
-      while(_it_39.next()) {
-        o=_it_39[0];
+      _it_2582=Tonyu.iterator(_this,1);
+      while(_it_2582.next()) {
+        o=_it_2582[0];
         
         //$LASTPOS=8001240;//kernel.TQuery:1240
         v = f(o);
@@ -1120,7 +1120,7 @@ Tonyu.klass.define({
       var res;
       var reso;
       var o;
-      var _it_39;
+      var _it_2582;
       var v;
       
       //$LASTPOS=8001154;//kernel.TQuery:1154
@@ -1128,9 +1128,9 @@ Tonyu.klass.define({
       //$LASTPOS=8001181;//kernel.TQuery:1181
       res;reso = new Tonyu.classes.kernel.TQuery;
       //$LASTPOS=8001210;//kernel.TQuery:1210
-      _it_39=Tonyu.iterator(_this,1);
-      while(_it_39.next()) {
-        o=_it_39[0];
+      _it_2582=Tonyu.iterator(_this,1);
+      while(_it_2582.next()) {
+        o=_it_2582[0];
         
         //$LASTPOS=8001240;//kernel.TQuery:1240
         v = f(o);
@@ -1160,7 +1160,7 @@ Tonyu.klass.define({
       var res;
       var reso;
       var o;
-      var _it_46;
+      var _it_2589;
       var v;
       
       //$LASTPOS=8001424;//kernel.TQuery:1424
@@ -1168,9 +1168,9 @@ Tonyu.klass.define({
       //$LASTPOS=8001451;//kernel.TQuery:1451
       res;reso = new Tonyu.classes.kernel.TQuery;
       //$LASTPOS=8001480;//kernel.TQuery:1480
-      _it_46=Tonyu.iterator(_this,1);
-      while(_it_46.next()) {
-        o=_it_46[0];
+      _it_2589=Tonyu.iterator(_this,1);
+      while(_it_2589.next()) {
+        o=_it_2589[0];
         
         //$LASTPOS=8001510;//kernel.TQuery:1510
         v = f(o);
@@ -1199,7 +1199,7 @@ Tonyu.klass.define({
       var res;
       var reso;
       var o;
-      var _it_46;
+      var _it_2589;
       var v;
       
       //$LASTPOS=8001424;//kernel.TQuery:1424
@@ -1207,9 +1207,9 @@ Tonyu.klass.define({
       //$LASTPOS=8001451;//kernel.TQuery:1451
       res;reso = new Tonyu.classes.kernel.TQuery;
       //$LASTPOS=8001480;//kernel.TQuery:1480
-      _it_46=Tonyu.iterator(_this,1);
-      while(_it_46.next()) {
-        o=_it_46[0];
+      _it_2589=Tonyu.iterator(_this,1);
+      while(_it_2589.next()) {
+        o=_it_2589[0];
         
         //$LASTPOS=8001510;//kernel.TQuery:1510
         v = f(o);
@@ -1396,7 +1396,7 @@ Tonyu.klass.define({
       var f;
       var res;
       var o;
-      var _it_57;
+      var _it_2600;
       var v;
       
       //$LASTPOS=8002210;//kernel.TQuery:2210
@@ -1404,9 +1404,9 @@ Tonyu.klass.define({
       //$LASTPOS=8002237;//kernel.TQuery:2237
       res;
       //$LASTPOS=8002250;//kernel.TQuery:2250
-      _it_57=Tonyu.iterator(_this,1);
-      while(_it_57.next()) {
-        o=_it_57[0];
+      _it_2600=Tonyu.iterator(_this,1);
+      while(_it_2600.next()) {
+        o=_it_2600[0];
         
         //$LASTPOS=8002280;//kernel.TQuery:2280
         v = f(o);
@@ -1426,7 +1426,7 @@ Tonyu.klass.define({
       var f;
       var res;
       var o;
-      var _it_57;
+      var _it_2600;
       var v;
       
       //$LASTPOS=8002210;//kernel.TQuery:2210
@@ -1434,9 +1434,9 @@ Tonyu.klass.define({
       //$LASTPOS=8002237;//kernel.TQuery:2237
       res;
       //$LASTPOS=8002250;//kernel.TQuery:2250
-      _it_57=Tonyu.iterator(_this,1);
-      while(_it_57.next()) {
-        o=_it_57[0];
+      _it_2600=Tonyu.iterator(_this,1);
+      while(_it_2600.next()) {
+        o=_it_2600[0];
         
         //$LASTPOS=8002280;//kernel.TQuery:2280
         v = f(o);
@@ -1457,7 +1457,7 @@ Tonyu.klass.define({
       var f;
       var res;
       var o;
-      var _it_63;
+      var _it_2606;
       var v;
       
       //$LASTPOS=8002371;//kernel.TQuery:2371
@@ -1465,9 +1465,9 @@ Tonyu.klass.define({
       //$LASTPOS=8002398;//kernel.TQuery:2398
       res;
       //$LASTPOS=8002411;//kernel.TQuery:2411
-      _it_63=Tonyu.iterator(_this,1);
-      while(_it_63.next()) {
-        o=_it_63[0];
+      _it_2606=Tonyu.iterator(_this,1);
+      while(_it_2606.next()) {
+        o=_it_2606[0];
         
         //$LASTPOS=8002441;//kernel.TQuery:2441
         v = f(o);
@@ -1487,7 +1487,7 @@ Tonyu.klass.define({
       var f;
       var res;
       var o;
-      var _it_63;
+      var _it_2606;
       var v;
       
       //$LASTPOS=8002371;//kernel.TQuery:2371
@@ -1495,9 +1495,9 @@ Tonyu.klass.define({
       //$LASTPOS=8002398;//kernel.TQuery:2398
       res;
       //$LASTPOS=8002411;//kernel.TQuery:2411
-      _it_63=Tonyu.iterator(_this,1);
-      while(_it_63.next()) {
-        o=_it_63[0];
+      _it_2606=Tonyu.iterator(_this,1);
+      while(_it_2606.next()) {
+        o=_it_2606[0];
         
         //$LASTPOS=8002441;//kernel.TQuery:2441
         v = f(o);
@@ -1552,14 +1552,14 @@ Tonyu.klass.define({
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       var no;
       var o;
-      var _it_69;
+      var _it_2612;
       
       //$LASTPOS=8002603;//kernel.TQuery:2603
       no = new Tonyu.classes.kernel.TQuery;
       //$LASTPOS=8002626;//kernel.TQuery:2626
-      _it_69=Tonyu.iterator(_this,1);
-      while(_it_69.next()) {
-        o=_it_69[0];
+      _it_2612=Tonyu.iterator(_this,1);
+      while(_it_2612.next()) {
+        o=_it_2612[0];
         
         //$LASTPOS=8002656;//kernel.TQuery:2656
         if (f(o)) {
@@ -1576,14 +1576,14 @@ Tonyu.klass.define({
       var __pc=0;
       var no;
       var o;
-      var _it_69;
+      var _it_2612;
       
       //$LASTPOS=8002603;//kernel.TQuery:2603
       no = new Tonyu.classes.kernel.TQuery;
       //$LASTPOS=8002626;//kernel.TQuery:2626
-      _it_69=Tonyu.iterator(_this,1);
-      while(_it_69.next()) {
-        o=_it_69[0];
+      _it_2612=Tonyu.iterator(_this,1);
+      while(_it_2612.next()) {
+        o=_it_2612[0];
         
         //$LASTPOS=8002656;//kernel.TQuery:2656
         if (f(o)) {
@@ -1601,7 +1601,7 @@ Tonyu.klass.define({
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       var res;
       var o;
-      var _it_73;
+      var _it_2616;
       var f;
       
       //$LASTPOS=8002727;//kernel.TQuery:2727
@@ -1612,9 +1612,9 @@ Tonyu.klass.define({
         args=[];
       }
       //$LASTPOS=8002764;//kernel.TQuery:2764
-      _it_73=Tonyu.iterator(_this,1);
-      while(_it_73.next()) {
-        o=_it_73[0];
+      _it_2616=Tonyu.iterator(_this,1);
+      while(_it_2616.next()) {
+        o=_it_2616[0];
         
         //$LASTPOS=8002794;//kernel.TQuery:2794
         f = o[name];
@@ -1634,7 +1634,7 @@ Tonyu.klass.define({
       var __pc=0;
       var res;
       var o;
-      var _it_73;
+      var _it_2616;
       var f;
       
       //$LASTPOS=8002727;//kernel.TQuery:2727
@@ -1645,9 +1645,9 @@ Tonyu.klass.define({
         args=[];
       }
       //$LASTPOS=8002764;//kernel.TQuery:2764
-      _it_73=Tonyu.iterator(_this,1);
-      while(_it_73.next()) {
-        o=_it_73[0];
+      _it_2616=Tonyu.iterator(_this,1);
+      while(_it_2616.next()) {
+        o=_it_2616[0];
         
         //$LASTPOS=8002794;//kernel.TQuery:2794
         f = o[name];
@@ -2235,12 +2235,12 @@ Tonyu.klass.define({
     update :function _trc_InputDevice_update() {
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       var i;
-      var _it_107;
+      var _it_2650;
       
       //$LASTPOS=9002664;//kernel.InputDevice:2664
-      _it_107=Tonyu.iterator(Tonyu.globals.$touches,1);
-      while(_it_107.next()) {
-        i=_it_107[0];
+      _it_2650=Tonyu.iterator(Tonyu.globals.$touches,1);
+      while(_it_2650.next()) {
+        i=_it_2650[0];
         
         //$LASTPOS=9002699;//kernel.InputDevice:2699
         if (i.touched>0) {
@@ -2261,12 +2261,12 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       var i;
-      var _it_107;
+      var _it_2650;
       
       //$LASTPOS=9002664;//kernel.InputDevice:2664
-      _it_107=Tonyu.iterator(Tonyu.globals.$touches,1);
-      while(_it_107.next()) {
-        i=_it_107[0];
+      _it_2650=Tonyu.iterator(Tonyu.globals.$touches,1);
+      while(_it_2650.next()) {
+        i=_it_2650[0];
         
         //$LASTPOS=9002699;//kernel.InputDevice:2699
         if (i.touched>0) {
@@ -2499,12 +2499,12 @@ Tonyu.klass.define({
     update :function _trc_Keys_update() {
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       var i;
-      var _it_115;
+      var _it_2658;
       
       //$LASTPOS=10001097;//kernel.Keys:1097
-      _it_115=Tonyu.iterator(_this.stats,1);
-      while(_it_115.next()) {
-        i=_it_115[0];
+      _it_2658=Tonyu.iterator(_this.stats,1);
+      while(_it_2658.next()) {
+        i=_it_2658[0];
         
         //$LASTPOS=10001128;//kernel.Keys:1128
         if (_this.stats[i]>0) {
@@ -2525,12 +2525,12 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       var i;
-      var _it_115;
+      var _it_2658;
       
       //$LASTPOS=10001097;//kernel.Keys:1097
-      _it_115=Tonyu.iterator(_this.stats,1);
-      while(_it_115.next()) {
-        i=_it_115[0];
+      _it_2658=Tonyu.iterator(_this.stats,1);
+      while(_it_2658.next()) {
+        i=_it_2658[0];
         
         //$LASTPOS=10001128;//kernel.Keys:1128
         if (_this.stats[i]>0) {
@@ -3598,7 +3598,7 @@ Tonyu.klass.define({
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       var t;
       var h;
-      var _it_142;
+      var _it_2685;
       
       //$LASTPOS=12000448;//kernel.EventHandler:448
       if (_this.released) {
@@ -3607,9 +3607,9 @@ Tonyu.klass.define({
       //$LASTPOS=12000475;//kernel.EventHandler:475
       t;
       //$LASTPOS=12000487;//kernel.EventHandler:487
-      _it_142=Tonyu.iterator(_this.listeners,1);
-      while(_it_142.next()) {
-        h=_it_142[0];
+      _it_2685=Tonyu.iterator(_this.listeners,1);
+      while(_it_2685.next()) {
+        h=_it_2685[0];
         
         //$LASTPOS=12000523;//kernel.EventHandler:523
         if (h["fiber"]) {
@@ -3634,7 +3634,7 @@ Tonyu.klass.define({
       var __pc=0;
       var t;
       var h;
-      var _it_142;
+      var _it_2685;
       
       //$LASTPOS=12000448;//kernel.EventHandler:448
       if (_this.released) {
@@ -3644,9 +3644,9 @@ Tonyu.klass.define({
       //$LASTPOS=12000475;//kernel.EventHandler:475
       t;
       //$LASTPOS=12000487;//kernel.EventHandler:487
-      _it_142=Tonyu.iterator(_this.listeners,1);
-      while(_it_142.next()) {
-        h=_it_142[0];
+      _it_2685=Tonyu.iterator(_this.listeners,1);
+      while(_it_2685.next()) {
+        h=_it_2685[0];
         
         //$LASTPOS=12000523;//kernel.EventHandler:523
         if (h["fiber"]) {
@@ -4282,15 +4282,15 @@ Tonyu.klass.define({
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       var k;
       var v;
-      var _it_147;
+      var _it_2690;
       
       //$LASTPOS=15000322;//kernel.PlayMod:322
       if (Tonyu.globals.$MMLS) {
         //$LASTPOS=15000343;//kernel.PlayMod:343
-        _it_147=Tonyu.iterator(Tonyu.globals.$MMLS,2);
-        while(_it_147.next()) {
-          k=_it_147[0];
-          v=_it_147[1];
+        _it_2690=Tonyu.iterator(Tonyu.globals.$MMLS,2);
+        while(_it_2690.next()) {
+          k=_it_2690[0];
+          v=_it_2690[1];
           
           //$LASTPOS=15000379;//kernel.PlayMod:379
           v.stop();
@@ -4737,12 +4737,12 @@ Tonyu.klass.define({
     stepsAll :function _trc_Scheduler_stepsAll() {
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       var t;
-      var _it_162;
+      var _it_2705;
       
       //$LASTPOS=18000449;//kernel.Scheduler:449
-      _it_162=Tonyu.iterator(_this.cur,1);
-      while(_it_162.next()) {
-        t=_it_162[0];
+      _it_2705=Tonyu.iterator(_this.cur,1);
+      while(_it_2705.next()) {
+        t=_it_2705[0];
         
         //$LASTPOS=18000479;//kernel.Scheduler:479
         t.steps();
@@ -4764,12 +4764,12 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       var t;
-      var _it_162;
+      var _it_2705;
       
       //$LASTPOS=18000449;//kernel.Scheduler:449
-      _it_162=Tonyu.iterator(_this.cur,1);
-      while(_it_162.next()) {
-        t=_it_162[0];
+      _it_2705=Tonyu.iterator(_this.cur,1);
+      while(_it_2705.next()) {
+        t=_it_2705[0];
         
         //$LASTPOS=18000479;//kernel.Scheduler:479
         t.steps();
@@ -7486,22 +7486,150 @@ Tonyu.klass.define({
       //$LASTPOS=25002804;//kernel.BodyActor:2804
       _this.world.DestroyBody(_this.body);
     },
+    addRevoluteJoint :function _trc_BodyActor_addRevoluteJoint(params) {
+      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      var px;
+      var py;
+      var wworld;
+      var scale;
+      var world;
+      var b2BodyDef;
+      var b2Body;
+      var JDC;
+      var jd;
+      var bodyDef;
+      var bodyB;
+      var b2Vec2;
+      
+      //$LASTPOS=25002892;//kernel.BodyActor:2892
+      params=params||{};
+      //$LASTPOS=25002915;//kernel.BodyActor:2915
+      px = params.x||_this.x;
+      //$LASTPOS=25002939;//kernel.BodyActor:2939
+      py = params.y||_this.y;
+      //$LASTPOS=25002963;//kernel.BodyActor:2963
+      wworld = _this.getWorld();
+      //$LASTPOS=25003004;//kernel.BodyActor:3004
+      scale = wworld.scale;
+      //$LASTPOS=25003032;//kernel.BodyActor:3032
+      world = wworld.world;
+      //$LASTPOS=25003060;//kernel.BodyActor:3060
+      b2BodyDef = Box2D.Dynamics.b2BodyDef;
+      //$LASTPOS=25003106;//kernel.BodyActor:3106
+      b2Body = Box2D.Dynamics.b2Body;
+      //$LASTPOS=25003146;//kernel.BodyActor:3146
+      JDC = Box2D.Dynamics.Joints.b2RevoluteJointDef;
+      //$LASTPOS=25003200;//kernel.BodyActor:3200
+      jd = new JDC;
+      //$LASTPOS=25003220;//kernel.BodyActor:3220
+      bodyDef = new b2BodyDef;
+      //$LASTPOS=25003253;//kernel.BodyActor:3253
+      bodyDef.type=b2Body.b2_staticBody;
+      //$LASTPOS=25003294;//kernel.BodyActor:3294
+      bodyDef.position.x=px/scale;
+      //$LASTPOS=25003330;//kernel.BodyActor:3330
+      bodyDef.position.y=py/scale;
+      //$LASTPOS=25003366;//kernel.BodyActor:3366
+      bodyB = world.CreateBody(bodyDef);
+      //$LASTPOS=25003407;//kernel.BodyActor:3407
+      b2Vec2 = Box2D.Common.Math.b2Vec2;
+      //$LASTPOS=25003450;//kernel.BodyActor:3450
+      jd.Initialize(_this.body,bodyB,new b2Vec2(px/scale,py/scale));
+      //$LASTPOS=25003512;//kernel.BodyActor:3512
+      if (params.lowerAngle&&params.upperAngle) {
+        //$LASTPOS=25003565;//kernel.BodyActor:3565
+        jd.lowerAngle=_this.rad(params.lowerAngle);
+        //$LASTPOS=25003612;//kernel.BodyActor:3612
+        jd.upperAngle=_this.rad(params.upperAngle);
+        //$LASTPOS=25003659;//kernel.BodyActor:3659
+        jd.enableLimit=true;
+        
+      }
+      //$LASTPOS=25003692;//kernel.BodyActor:3692
+      world.CreateJoint(jd);
+    },
+    fiber$addRevoluteJoint :function _trc_BodyActor_f_addRevoluteJoint(_thread,params) {
+      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      //var _arguments=Tonyu.A(arguments);
+      var __pc=0;
+      var px;
+      var py;
+      var wworld;
+      var scale;
+      var world;
+      var b2BodyDef;
+      var b2Body;
+      var JDC;
+      var jd;
+      var bodyDef;
+      var bodyB;
+      var b2Vec2;
+      
+      //$LASTPOS=25002892;//kernel.BodyActor:2892
+      params=params||{};
+      //$LASTPOS=25002915;//kernel.BodyActor:2915
+      px = params.x||_this.x;
+      //$LASTPOS=25002939;//kernel.BodyActor:2939
+      py = params.y||_this.y;
+      //$LASTPOS=25002963;//kernel.BodyActor:2963
+      wworld = _this.getWorld();
+      //$LASTPOS=25003004;//kernel.BodyActor:3004
+      scale = wworld.scale;
+      //$LASTPOS=25003032;//kernel.BodyActor:3032
+      world = wworld.world;
+      //$LASTPOS=25003060;//kernel.BodyActor:3060
+      b2BodyDef = Box2D.Dynamics.b2BodyDef;
+      //$LASTPOS=25003106;//kernel.BodyActor:3106
+      b2Body = Box2D.Dynamics.b2Body;
+      //$LASTPOS=25003146;//kernel.BodyActor:3146
+      JDC = Box2D.Dynamics.Joints.b2RevoluteJointDef;
+      //$LASTPOS=25003200;//kernel.BodyActor:3200
+      jd = new JDC;
+      //$LASTPOS=25003220;//kernel.BodyActor:3220
+      bodyDef = new b2BodyDef;
+      //$LASTPOS=25003253;//kernel.BodyActor:3253
+      bodyDef.type=b2Body.b2_staticBody;
+      //$LASTPOS=25003294;//kernel.BodyActor:3294
+      bodyDef.position.x=px/scale;
+      //$LASTPOS=25003330;//kernel.BodyActor:3330
+      bodyDef.position.y=py/scale;
+      //$LASTPOS=25003366;//kernel.BodyActor:3366
+      bodyB = world.CreateBody(bodyDef);
+      //$LASTPOS=25003407;//kernel.BodyActor:3407
+      b2Vec2 = Box2D.Common.Math.b2Vec2;
+      //$LASTPOS=25003450;//kernel.BodyActor:3450
+      jd.Initialize(_this.body,bodyB,new b2Vec2(px/scale,py/scale));
+      //$LASTPOS=25003512;//kernel.BodyActor:3512
+      if (params.lowerAngle&&params.upperAngle) {
+        //$LASTPOS=25003565;//kernel.BodyActor:3565
+        jd.lowerAngle=_this.rad(params.lowerAngle);
+        //$LASTPOS=25003612;//kernel.BodyActor:3612
+        jd.upperAngle=_this.rad(params.upperAngle);
+        //$LASTPOS=25003659;//kernel.BodyActor:3659
+        jd.enableLimit=true;
+        
+      }
+      //$LASTPOS=25003692;//kernel.BodyActor:3692
+      world.CreateJoint(jd);
+      
+      _thread.retVal=_this;return;
+    },
     updatePos :function _trc_BodyActor_updatePos() {
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       var scale;
       var pos;
       
-      //$LASTPOS=25002850;//kernel.BodyActor:2850
+      //$LASTPOS=25003740;//kernel.BodyActor:3740
       if (! _this.body) {
         return _this;
       }
-      //$LASTPOS=25002873;//kernel.BodyActor:2873
+      //$LASTPOS=25003763;//kernel.BodyActor:3763
       scale = _this.getWorld().scale;
-      //$LASTPOS=25002905;//kernel.BodyActor:2905
+      //$LASTPOS=25003795;//kernel.BodyActor:3795
       pos = _this.body.GetPosition();
-      //$LASTPOS=25002937;//kernel.BodyActor:2937
+      //$LASTPOS=25003827;//kernel.BodyActor:3827
       _this.x=pos.x*scale;
-      //$LASTPOS=25002956;//kernel.BodyActor:2956
+      //$LASTPOS=25003846;//kernel.BodyActor:3846
       _this.y=pos.y*scale;
     },
     fiber$updatePos :function _trc_BodyActor_f_updatePos(_thread) {
@@ -7511,18 +7639,18 @@ Tonyu.klass.define({
       var scale;
       var pos;
       
-      //$LASTPOS=25002850;//kernel.BodyActor:2850
+      //$LASTPOS=25003740;//kernel.BodyActor:3740
       if (! _this.body) {
         _thread.retVal=_this;return;
         
       }
-      //$LASTPOS=25002873;//kernel.BodyActor:2873
+      //$LASTPOS=25003763;//kernel.BodyActor:3763
       scale = _this.getWorld().scale;
-      //$LASTPOS=25002905;//kernel.BodyActor:2905
+      //$LASTPOS=25003795;//kernel.BodyActor:3795
       pos = _this.body.GetPosition();
-      //$LASTPOS=25002937;//kernel.BodyActor:2937
+      //$LASTPOS=25003827;//kernel.BodyActor:3827
       _this.x=pos.x*scale;
-      //$LASTPOS=25002956;//kernel.BodyActor:2956
+      //$LASTPOS=25003846;//kernel.BodyActor:3846
       _this.y=pos.y*scale;
       
       _thread.retVal=_this;return;
@@ -7530,7 +7658,7 @@ Tonyu.klass.define({
     __getter__rotation :function _trc_BodyActor___getter__rotation() {
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       
-      //$LASTPOS=25002989;//kernel.BodyActor:2989
+      //$LASTPOS=25003879;//kernel.BodyActor:3879
       if (! _this.body||_this.manualRotation) {
         return _this._rotation;
       }
@@ -7539,18 +7667,18 @@ Tonyu.klass.define({
     __setter__rotation :function _trc_BodyActor___setter__rotation(r) {
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       
-      //$LASTPOS=25003089;//kernel.BodyActor:3089
+      //$LASTPOS=25003979;//kernel.BodyActor:3979
       r=r||0;
-      //$LASTPOS=25003101;//kernel.BodyActor:3101
+      //$LASTPOS=25003991;//kernel.BodyActor:3991
       if (! _this.body||_this.manualRotation) {
         return _this._rotation=r;
       }
-      //$LASTPOS=25003154;//kernel.BodyActor:3154
+      //$LASTPOS=25004044;//kernel.BodyActor:4044
       _this.body.SetAngle(_this.rad(r));
     },
     __dummy: false
   },
-  decls: {"methods":{"main":{"nowait":false},"getWorld":{"nowait":false},"onAppear":{"nowait":false},"allContact":{"nowait":false},"applyForce":{"nowait":false},"applyImpulse":{"nowait":false},"applyTorque":{"nowait":false},"moveBy":{"nowait":false},"contactTo":{"nowait":false},"die":{"nowait":true},"updatePos":{"nowait":false},"__getter__rotation":{"nowait":true},"__setter__rotation":{"nowait":true}}}
+  decls: {"methods":{"main":{"nowait":false},"getWorld":{"nowait":false},"onAppear":{"nowait":false},"allContact":{"nowait":false},"applyForce":{"nowait":false},"applyImpulse":{"nowait":false},"applyTorque":{"nowait":false},"moveBy":{"nowait":false},"contactTo":{"nowait":false},"die":{"nowait":true},"addRevoluteJoint":{"nowait":false},"updatePos":{"nowait":false},"__getter__rotation":{"nowait":true},"__setter__rotation":{"nowait":true}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.T2Body',
@@ -7987,7 +8115,7 @@ Tonyu.klass.define({
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       var r;
       var s;
-      var _it_230;
+      var _it_2785;
       var name;
       var url;
       var ls;
@@ -8000,9 +8128,9 @@ Tonyu.klass.define({
         return _this;
       }
       //$LASTPOS=27000894;//kernel.T2MediaPlayer:894
-      _it_230=Tonyu.iterator(r.sounds,1);
-      while(_it_230.next()) {
-        s=_it_230[0];
+      _it_2785=Tonyu.iterator(r.sounds,1);
+      while(_it_2785.next()) {
+        s=_it_2785[0];
         
         //$LASTPOS=27000930;//kernel.T2MediaPlayer:930
         name = s.name;url = s.url;
@@ -8037,7 +8165,7 @@ Tonyu.klass.define({
       var __pc=0;
       var r;
       var s;
-      var _it_230;
+      var _it_2785;
       var name;
       var url;
       var ls;
@@ -8057,10 +8185,10 @@ Tonyu.klass.define({
           switch (__pc) {
           case 0:
             //$LASTPOS=27000894;//kernel.T2MediaPlayer:894
-            _it_230=Tonyu.iterator(r.sounds,1);
+            _it_2785=Tonyu.iterator(r.sounds,1);
           case 1:
-            if (!(_it_230.next())) { __pc=3; break; }
-            s=_it_230[0];
+            if (!(_it_2785.next())) { __pc=3; break; }
+            s=_it_2785[0];
             
             //$LASTPOS=27000930;//kernel.T2MediaPlayer:930
             name = s.name;url = s.url;
@@ -11522,7 +11650,7 @@ Tonyu.klass.define({
       var r;
       var name;
       var val;
-      var _it_261;
+      var _it_2816;
       
       //$LASTPOS=38000285;//kernel.Boot:285
       Tonyu.globals.$Sprites=new Tonyu.classes.kernel.Sprites();
@@ -11551,10 +11679,10 @@ Tonyu.klass.define({
       //$LASTPOS=38000686;//kernel.Boot:686
       Tonyu.globals.$Sprites.setImageList(r);
       //$LASTPOS=38000717;//kernel.Boot:717
-      _it_261=Tonyu.iterator(r.names,2);
-      while(_it_261.next()) {
-        name=_it_261[0];
-        val=_it_261[1];
+      _it_2816=Tonyu.iterator(r.names,2);
+      while(_it_2816.next()) {
+        name=_it_2816[0];
+        val=_it_2816[1];
         
         //$LASTPOS=38000758;//kernel.Boot:758
         Tonyu.setGlobal(name,val);
@@ -11584,7 +11712,7 @@ Tonyu.klass.define({
       var r;
       var name;
       var val;
-      var _it_261;
+      var _it_2816;
       
       //$LASTPOS=38000285;//kernel.Boot:285
       Tonyu.globals.$Sprites=new Tonyu.classes.kernel.Sprites();
@@ -11625,10 +11753,10 @@ Tonyu.klass.define({
             //$LASTPOS=38000686;//kernel.Boot:686
             Tonyu.globals.$Sprites.setImageList(r);
             //$LASTPOS=38000717;//kernel.Boot:717
-            _it_261=Tonyu.iterator(r.names,2);
-            while(_it_261.next()) {
-              name=_it_261[0];
-              val=_it_261[1];
+            _it_2816=Tonyu.iterator(r.names,2);
+            while(_it_2816.next()) {
+              name=_it_2816[0];
+              val=_it_2816[1];
               
               //$LASTPOS=38000758;//kernel.Boot:758
               Tonyu.setGlobal(name,val);

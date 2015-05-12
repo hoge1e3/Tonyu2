@@ -1,0 +1,19 @@
+<html><head><meta charset="utf-8"/><meta http-equiv="Content-type" content="text/html; charset=utf8"/></head><body><link rel='stylesheet' href='/css/bootstrap.css'/>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px;}</style>
+<title>addRevoluteJoint</title>
+<div><a id="line_marker_-0" name="line_marker_-0"></a><a href="BodyActor.html">BodyActor</a><span>
+</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><h1><a id="line_marker_-2" name="line_marker_-2"></a><span>addRevoluteJointメソッド</span></h1><a id="line_marker_-3" name="line_marker_-3"></a><p></p><a id="line_marker_-4" name="line_marker_-4"></a><span>回転するジョイントを作成します。シーソーやピンボールのフリッパーを作るのに適しています。</span><span>
+</span><a id="line_marker_-5" name="line_marker_-5"></a><p></p><a id="line_marker_-8" name="line_marker_-8"></a><pre><a id="line_marker_-7" name="line_marker_-7"></a><span>addRevoluteJoint(param);</span><span>
+</span></pre><a id="line_marker_-9" name="line_marker_-9"></a><p></p><a id="line_marker_-10" name="line_marker_-10"></a><code><span>param</span></code><span>に指定できるものは次のものです</span><span>
+</span><a id="line_marker_-11" name="line_marker_-11"></a><p></p><a id="line_marker_-15" name="line_marker_-15"></a><ul><li><a id="line_marker_-12" name="line_marker_-12"></a><span>x: 回転の中心のx座標です。省略するとこのオブジェクトのx座標を用います</span><span>
+</span></li><li><a id="line_marker_-13" name="line_marker_-13"></a><span>y: 回転の中心のy座標です。省略するとこのオブジェクトのy座標を用います</span><span>
+</span></li><li><a id="line_marker_-14" name="line_marker_-14"></a><span>lowerAngle, upperAngle: 回転角に制限を加える場合、それぞれ最小角度と最大角度を指定します。</span><span>
+</span></li></ul><p></p><h1><a id="line_marker_-16" name="line_marker_-16"></a><span>例</span></h1><a id="line_marker_-17" name="line_marker_-17"></a><p></p><a id="line_marker_-18" name="line_marker_-18"></a><div class="plist">Flipper</div><a id="line_marker_-26" name="line_marker_-26"></a><pre><a id="line_marker_-19" name="line_marker_-19"></a><span>extends BodyActor;</span><span>
+</span><a id="line_marker_-20" name="line_marker_-20"></a><span>addRevoluteJoint{x:300,y:200,lowerAngle:-30,upperAngle:30};</span><span>
+</span><a id="line_marker_-21" name="line_marker_-21"></a><p></p><a id="line_marker_-22" name="line_marker_-22"></a><span>while(true) {</span><span>
+</span><a id="line_marker_-23" name="line_marker_-23"></a><span>    if(getkey(32)) applyImpulse(0,-30);</span><span>
+</span><a id="line_marker_-24" name="line_marker_-24"></a><span>    update();</span><span>
+</span><a id="line_marker_-25" name="line_marker_-25"></a><span>}</span><span>
+</span></pre><a id="line_marker_-27" name="line_marker_-27"></a><p></p><a id="line_marker_-28" name="line_marker_-28"></a><div class="plist">Main</div><a id="line_marker_-30" name="line_marker_-30"></a><pre><a id="line_marker_-29" name="line_marker_-29"></a><span>new Flipper{x:200,y:200,scaleX:10,scaleY:1};</span><span>
+</span></pre><a id="line_marker_-31" name="line_marker_-31"></a><span>.</span><span>
+</span><a id="line_marker_-32" name="line_marker_-32"></a><p></p></div><div style="height: 100px;"></div></body></html>
