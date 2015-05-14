@@ -6,6 +6,6 @@ native Box2D;
 }
 
 \defv(t,d) {
-    return ((typeof t)==="number") ? t : d;
+    return ( t===t && (typeof t)==="number") ? t : d;
 }
 

@@ -8,8 +8,8 @@ Tonyu.klass.define({
     main :function _trc_Test2_main() {
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       
-      //$LASTPOS=1000026;//user.Test2:26
-      _this.playBGM(Tonyu.globals.$se_uno11);
+      //$LASTPOS=40000026;//user.Test2:26
+      _this.playBGM(Tonyu.globals.$se_uno11,true);
     },
     fiber$main :function _trc_Test2_f_main(_thread) {
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
@@ -22,8 +22,8 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=1000026;//user.Test2:26
-            _this.fiber$playBGM(_thread, Tonyu.globals.$se_uno11);
+            //$LASTPOS=40000026;//user.Test2:26
+            _this.fiber$playBGM(_thread, Tonyu.globals.$se_uno11, true);
             __pc=1;return;
           case 1:
             

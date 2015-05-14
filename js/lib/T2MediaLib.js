@@ -1,4 +1,4 @@
-// from  http://jsdo.it/makkii_bcr/3ioQ
+// forked from makkii_bcr's "T2MediaLib" http://jsdo.it/makkii_bcr/3ioQ
 // T2MediaLib_BGMPlayer //
 
 var T2MediaLib_BGMPlayer = function(arg_id) {
@@ -227,15 +227,14 @@ var T2MediaLib = {
                     if (callbacks && callbacks.err) callbacks.err(idx,T2MediaLib.seDataAry.data[idx]);//@hoge1e3
                 }
             } else {
-                //alert("Status =" +xhr.status+" "+xhr.response);
                 T2MediaLib.seDataAry.data[idx] = -2;
                 if (callbacks && callbacks.err) callbacks.err(idx,T2MediaLib.seDataAry.data[idx]);//@hoge1e3
             }
         };
 
         T2MediaLib.seDataAry.data[idx] = null;
-        xhr.responseType = 'arraybuffer';  // XMLHttpRequest Level 2
         xhr.open('GET', url, true);
+        xhr.responseType = 'arraybuffer';  // XMLHttpRequest Level 2
         xhr.send(null);
     },
     playSE : function(idx, vol, rate, offset, loop, loopStart, loopEnd) {
@@ -305,12 +304,24 @@ var T2MediaLib = {
         source.stop  = source.stop  || source.noteOff;
 
         gainNode.gain.value = vol * vol;
-        source.start(0, offset);
+
+        if (offset) {
+            if (loop) source.start(0, offset, 86400);
+            else      source.start(0, offset);
+        } else {
+            source.start(0);
+        }
 
         source.onended = function(event) {
-            source.onended = null;
+            //console.log('"on' + event.type + '" event handler !!');
             source.stop(0);
-            console.log('"on' + event.type + '" event handler !!');
+
+            delete source.gainNode;
+            //delete source.playStartTime;
+            //delete source.playOffset;
+            //delete source.plusTime;
+
+            source.onended = null;
         };
         //console.log(source);
         return source;
@@ -486,16 +497,23 @@ var T2MediaLib = {
 };
 
 // 旧名。そのうち消す
-T2SoundLib = T2MediaLib;
+//T2SoundLib = T2MediaLib;
 
 
 
 // テスト
 //'http://jsrun.it/assets/c/X/4/S/cX4S7.ogg'
+//'http://jsrun.it/assets/5/Z/s/x/5ZsxE.ogg'
 
 //alert((!window.hasOwnProperty('webkitAudioContext'))+" "+(window.webkitAudioContext.prototype.createGain===undefined));
 
 //T2MediaLib.init();
+
+
+//playSE : function(idx, vol, rate, offset, loop, loopStart, loopEnd) {
+//T2MediaLib.loadSE('test','http://jsrun.it/assets/5/Z/s/x/5ZsxE.ogg');
+//setTimeout(function(){ bgm1 = T2MediaLib.playSE('test', 1.0, 1.0, 0, true, 0, 0); }, 500);
+//setTimeout(function(){ T2MediaLib.stopSE(bgm1); }, 5000);
 
 /*
 //playSE : function(idx, vol, rate, offset, loop, loopStart, loopEnd) {

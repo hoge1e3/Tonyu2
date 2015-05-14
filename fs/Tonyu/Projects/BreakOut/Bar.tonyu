@@ -2,17 +2,26 @@ extends BodyActor;
 
 while (true) {
     if (getkey("left")) {
-        applyForce(-40,0);        
-    }
-    if (getkey("right")) {
-        applyForce(40,0);
+        vx=-5;//moveBy(-5,0);        
+    } else if (getkey("right")) {
+        vx=5;//moveBy(5,0);        
+    } else {
+        vx=0;
     }
     if (getkey("up")) {
-        applyImpulse(0,-2);
+        vy=-2;//moveBy(0,-5);        
+    } else if (getkey("down")) {
+        vy=2;//moveBy(0,5);        
+    } else {
+        vy=0;
     }
-    if (getkey("down")) {
-        applyImpulse(0,2);
+    if (rotation<0) {
+        applyTorque(1);
     }
+    if (rotation>0) {
+        applyTorque(-1);
+    }
+    rotation=rotation*0.7;
     update();
 }
 /*Main.tonyu

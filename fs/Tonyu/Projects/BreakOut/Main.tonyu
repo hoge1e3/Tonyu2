@@ -6,7 +6,8 @@ friction:0.5};
 new Ball{x:200,y:300,
     shape:"circle",p:12,
     restitution:1,density:0.1,
-friction:0};
+friction:0,vx:2,vy:4};
+
 
 for (i=0; i<3;i++) {
     for (j=0; j<6; j++) {
@@ -15,12 +16,12 @@ for (i=0; i<3;i++) {
 }
 
 
-
+/*
 new Yuka{
     x:200,y:420,scaleX:20,
     scaleY:1,isStatic:true,
     friction:0,restitution:0
-};
+};*/
 new Kabe{
     x:200,y:0,scaleX:20,
     scaleY:1

@@ -8,5 +8,6 @@ while (true) {
 }
 \onAppear() {
     isStatic=true;
+    restitution=0;
     super.onAppear();
 }

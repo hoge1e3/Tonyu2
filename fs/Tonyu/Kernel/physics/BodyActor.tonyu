@@ -8,8 +8,9 @@ native Box2D;
     return $t2World;
 }
 \onAppear() {
-    world=getWorld().world;
-    scale=getWorld().scale;
+    var wworld=getWorld();
+    world=wworld.world;
+    scale=wworld.scale;
     var b2Vec2 = Box2D.Common.Math.b2Vec2;
     var b2BodyDef = Box2D.Dynamics.b2BodyDef;
     var b2Body = Box2D.Dynamics.b2Body;
@@ -48,11 +49,12 @@ native Box2D;
         );
         width=height=radius*2;
     } 
-    var r=rotation;
+    var fps=wworld.fps;
+    var r=rotation,ve=bvec(defv(vx*fps ,0),defv(vy*fps,0));
     body=world.CreateBody(bodyDef);
     body.CreateFixture(fixDef);
     body.SetUserData(this);
-    //body.SetAngle(rad(rotation));
+    body.SetLinearVelocity(ve);
     rotation=r;
 }
 \allContact(klass) {
@@ -129,13 +131,6 @@ native Box2D;
     }
     world.CreateJoint(jd);    
 }
-\updatePos() {
-    if (!body) return;
-    var scale=getWorld().scale;
-    var pos=body.GetPosition();
-    x=pos.x*scale;
-    y=pos.y*scale;
-}
 \rotation {
     if (!body || manualRotation) return _rotation;
     return deg(body.GetAngle());
@@ -145,4 +140,63 @@ native Box2D;
     if (!body || manualRotation) return _rotation=r;
     body.SetAngle(rad(r));
 } 
+
+\updatePos() {
+/*    if (!body) return;
+    var scale=getWorld().scale;
+    var pos=body.GetPosition();
+    x=pos.x*scale;
+    y=pos.y*scale;*/
+}
+
+\x {
+    if (!body) return _x;
+    var pos=body.GetPosition();
+    return pos.x*scale;
+}
+\x=v {
+    if (!body) return _x=v;
+    v=v||0;
+    var pos=body.GetPosition();
+    pos.x=v/scale;
+    body.SetPosition(pos);
+}
+\y {
+    if (!body) return _y;
+    var pos=body.GetPosition();
+    return pos.y*scale;
+}
+\y=v {
+    if (!body) return _y=v;
+    v=v||0;
+    var pos=body.GetPosition();
+    pos.y=v/scale;
+    body.SetPosition(pos);
+}
+
+\vx {
+    if (!body) return _vx;
+    var v=body.GetLinearVelocity();
+    return v.x*scale/getWorld().fps;
+}
+\vx=v {
+    if (!body) return _vx=v;
+    var ve=body.GetLinearVelocity();
+    ve.x=v/scale*getWorld().fps;
+    body.SetLinearVelocity(ve);
+}
+
+\vy {
+    if (!body) return _vy;
+    var v=body.GetLinearVelocity();
+    return v.y*scale/getWorld().fps;
+}
+\vy=v {
+    if (!body) return _vy=v;
+    var ve=body.GetLinearVelocity();
+    ve.y=v/scale*getWorld().fps;
+    body.SetLinearVelocity(ve);
+}
+
+
 

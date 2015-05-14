@@ -1,8 +1,10 @@
 extends BodyActor;
 
-applyImpulse(0.2,0.2);
+//applyImpulse(0.2,0.5);
+//vx=2;vy=2;
 miss=0;
 while(true) {
+    //print(vx);
     //applyForce(0,-0.8);
     /*if (contactTo(Bar)) {
         applyImpulse(0,-0.2);
