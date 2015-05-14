@@ -12,8 +12,8 @@ loop();
 
 
 \initWorld() {
-    gravity=gravity || 9.8;
-    gravityX=gravityX || 0;
+    gravity=defv(gravity, 9.8);
+    gravityX=defv(gravityX, 0);
     var b2World = Box2D.Dynamics.b2World;
     var b2Vec2 = Box2D.Common.Math.b2Vec2;
     scale=scale || 32;
@@ -36,7 +36,7 @@ loop();
         ,  10       //velocity iterations
         ,  10       //position iterations
         );
-        world.DrawDebugData();
+        //world.DrawDebugData();
         world.ClearForces();
         updatePos();
         update();

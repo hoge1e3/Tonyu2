@@ -1,0 +1,24 @@
+extends BodyActor;
+
+while (true) {
+    if (getkey("left")) {
+        applyForce(-40,0);        
+    }
+    if (getkey("right")) {
+        applyForce(40,0);
+    }
+    if (getkey("up")) {
+        applyImpulse(0,-2);
+    }
+    if (getkey("down")) {
+        applyImpulse(0,2);
+    }
+    update();
+}
+/*Main.tonyu
+new Bar{x:200,y:200,scaleX:2,
+scaleY:0.5};
+
+
+
+*/

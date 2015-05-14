@@ -4,3 +4,8 @@ native Box2D;
     var b2Vec2 = Box2D.Common.Math.b2Vec2;
     return new b2Vec2(tx/scale,ty/scale);  
 }
+
+\defv(t,d) {
+    return ((typeof t)==="number") ? t : d;
+}
+

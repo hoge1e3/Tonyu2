@@ -1,0 +1,12 @@
+extends BodyActor;
+
+while (true) {
+    if (contactTo(Ball)) {
+        die();
+    }   
+    update();
+}
+\onAppear() {
+    isStatic=true;
+    super.onAppear();
+}

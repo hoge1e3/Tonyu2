@@ -1,0 +1,7 @@
+extends BodyActor;
+\onAppear() {
+    isStatic=true;
+    friction=0;
+    restitution=1;
+    super.onAppear(); //必ず呼び出す
+}

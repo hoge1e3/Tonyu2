@@ -1,0 +1,49 @@
+[[Actor]]
+
+*onAppearメソッド
+
+オブジェクトが画面に現れるときに呼び出されます。このメソッドをオーバーライドして初期化の処理をすることができます。
+
+**例
+
+<<code BigBall.tonyu
+\onAppear() {
+   p=12;
+   scaleX=2;
+}
+>>
+<<code Main.tonyu
+// これらのオブジェクトは、パラメタ指定をしなくても p=12 scaleX=2で初期化されます
+new BigBall{x:200,y:300};
+new BigBall{x:250,y:150};
+>>
+
+**onAppearとmainメソッドの実行順序について
+
+-onAppearは、new によるオブジェクトの初期化（コンストラクタ）中で呼び出されます。
+-mainメソッドは、初期化の時点ではまだ呼び出されていない可能性があります
+
+例えば、あるActorクラスのオブジェクトAが別のActorクラスのオブジェクトBを作成した場合、Aが[[update]]メソッドが呼び出すまではBのmainメソッドは呼び出されません。
+
+<<code A.tonyu
+b=new B;//ここで★が実行される
+print (b.foo);//5
+print (b.bar);//undefined
+update();// ここで☆が実行される
+print (b.bar);//3
+>>
+
+<<code B.tonyu
+\onAppear() {
+   foo=5;//★
+}
+bar=3;//☆
+>>
+
+
+
+.
+
+
+
+

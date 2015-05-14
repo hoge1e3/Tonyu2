@@ -1,0 +1,30 @@
+[[BodyActor]]
+
+*onAppearメソッド
+
+BodyActorは[[onAppear]]メソッドをオーバーライドしています。この中で物理オブジェクトの初期化などを行っています。
+
+子クラスでonAppearメソッドを用いる場合、親クラスのメソッド呼び出し[[@cfrag super.onAppear();]] を必ず行ってください。
+
+例えば、下のようにオーバーライドを行い、必要なパラメタに代入を予め行なうことで、オブジェクトを作る際にパラメタを渡す手間が軽減されます。
+
+**例
+
+
+<<code Wall.tonyu
+extends BodyActor;
+\onAppear() {
+    isStatic=true;
+    friction=0;
+    restitution=1;
+    super.onAppear(); //必ず呼び出す
+}
+>>
+
+<<code Main.tonyu
+//以下の物体は、パラメタを指定しなくてもisStatic=true friction=0 restitution=1で初期化されます
+new Wall{x:20,y:20,scaleX:10,scaleY:1};
+new Wall{x:20,y:200,scaleX:1,scaleY:10};
+>>
+
+

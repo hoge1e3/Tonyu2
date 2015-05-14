@@ -1,0 +1,15 @@
+extends BodyActor;
+
+applyImpulse(0.2,0.2);
+miss=0;
+while(true) {
+    //applyForce(0,-0.8);
+    /*if (contactTo(Bar)) {
+        applyImpulse(0,-0.2);
+    }*/
+    if (contactTo(Yuka)) {
+        miss++;
+        print(miss);
+    }
+    update();
+}
