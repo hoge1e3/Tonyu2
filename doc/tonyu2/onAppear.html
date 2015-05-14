@@ -1,0 +1,26 @@
+<html><head><meta charset="utf-8"/><meta http-equiv="Content-type" content="text/html; charset=utf8"/></head><body><link rel='stylesheet' href='/css/bootstrap.css'/>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px;}</style>
+<title>onAppear</title>
+<div><a id="line_marker_-0" name="line_marker_-0"></a><a href="Actor.html">Actor</a><span>
+</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><h1><a id="line_marker_-2" name="line_marker_-2"></a><span>onAppearメソッド</span></h1><a id="line_marker_-3" name="line_marker_-3"></a><p></p><a id="line_marker_-4" name="line_marker_-4"></a><span>オブジェクトが画面に現れるときに呼び出されます。このメソッドをオーバーライドして初期化の処理をすることができます。</span><span>
+</span><a id="line_marker_-5" name="line_marker_-5"></a><p></p><h2><a id="line_marker_-6" name="line_marker_-6"></a><span>例</span></h2><a id="line_marker_-7" name="line_marker_-7"></a><p></p><a id="line_marker_-8" name="line_marker_-8"></a><div class="plist">BigBall.tonyu</div><a id="line_marker_-13" name="line_marker_-13"></a><pre><a id="line_marker_-9" name="line_marker_-9"></a><span>\onAppear() {</span><span>
+</span><a id="line_marker_-10" name="line_marker_-10"></a><span>   p=12;</span><span>
+</span><a id="line_marker_-11" name="line_marker_-11"></a><span>   scaleX=2;</span><span>
+</span><a id="line_marker_-12" name="line_marker_-12"></a><span>}</span><span>
+</span></pre><a id="line_marker_-14" name="line_marker_-14"></a><div class="plist">Main.tonyu</div><a id="line_marker_-18" name="line_marker_-18"></a><pre><a id="line_marker_-15" name="line_marker_-15"></a><span>// これらのオブジェクトは、パラメタ指定をしなくても p=12 scaleX=2で初期化されます</span><span>
+</span><a id="line_marker_-16" name="line_marker_-16"></a><span>new BigBall{x:200,y:300};</span><span>
+</span><a id="line_marker_-17" name="line_marker_-17"></a><span>new BigBall{x:250,y:150};</span><span>
+</span></pre><a id="line_marker_-19" name="line_marker_-19"></a><p></p><h2><a id="line_marker_-20" name="line_marker_-20"></a><span>onAppearとmainメソッドの実行順序について</span></h2><a id="line_marker_-21" name="line_marker_-21"></a><p></p><a id="line_marker_-24" name="line_marker_-24"></a><ul><li><a id="line_marker_-22" name="line_marker_-22"></a><span>onAppearは、new によるオブジェクトの初期化（コンストラクタ）中で呼び出されます。</span><span>
+</span></li><li><a id="line_marker_-23" name="line_marker_-23"></a><span>mainメソッドは、初期化の時点ではまだ呼び出されていない可能性があります</span><span>
+</span></li></ul><p></p><a id="line_marker_-25" name="line_marker_-25"></a><span>例えば、あるActorクラスのオブジェクトAが別のActorクラスのオブジェクトBを作成した場合、Aが</span><a href="update.html">update</a><span>メソッドが呼び出すまではBのmainメソッドは呼び出されません。</span><span>
+</span><a id="line_marker_-26" name="line_marker_-26"></a><p></p><a id="line_marker_-27" name="line_marker_-27"></a><div class="plist">A.tonyu</div><a id="line_marker_-33" name="line_marker_-33"></a><pre><a id="line_marker_-28" name="line_marker_-28"></a><span>b=new B;//ここで★が実行される</span><span>
+</span><a id="line_marker_-29" name="line_marker_-29"></a><span>print (b.foo);//5</span><span>
+</span><a id="line_marker_-30" name="line_marker_-30"></a><span>print (b.bar);//undefined</span><span>
+</span><a id="line_marker_-31" name="line_marker_-31"></a><span>update();// ここで☆が実行される</span><span>
+</span><a id="line_marker_-32" name="line_marker_-32"></a><span>print (b.bar);//3</span><span>
+</span></pre><a id="line_marker_-34" name="line_marker_-34"></a><p></p><a id="line_marker_-35" name="line_marker_-35"></a><div class="plist">B.tonyu</div><a id="line_marker_-40" name="line_marker_-40"></a><pre><a id="line_marker_-36" name="line_marker_-36"></a><span>\onAppear() {</span><span>
+</span><a id="line_marker_-37" name="line_marker_-37"></a><span>   foo=5;//★</span><span>
+</span><a id="line_marker_-38" name="line_marker_-38"></a><span>}</span><span>
+</span><a id="line_marker_-39" name="line_marker_-39"></a><span>bar=3;//☆</span><span>
+</span></pre><a id="line_marker_-41" name="line_marker_-41"></a><p></p><a id="line_marker_-42" name="line_marker_-42"></a><p></p><a id="line_marker_-43" name="line_marker_-43"></a><p></p><a id="line_marker_-44" name="line_marker_-44"></a><span>.</span><span>
+</span><a id="line_marker_-45" name="line_marker_-45"></a><p></p><a id="line_marker_-46" name="line_marker_-46"></a><p></p><a id="line_marker_-47" name="line_marker_-47"></a><p></p><a id="line_marker_-48" name="line_marker_-48"></a><p></p><a id="line_marker_-49" name="line_marker_-49"></a><p></p></div><div style="height: 100px;"></div></body></html>
