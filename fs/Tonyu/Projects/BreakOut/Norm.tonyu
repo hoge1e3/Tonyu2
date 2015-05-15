@@ -1,0 +1,5 @@
+
+while(true) {
+    x+=2;
+    update();
+}

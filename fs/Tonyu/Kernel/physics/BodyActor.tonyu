@@ -50,12 +50,13 @@ native Box2D;
         width=height=radius*2;
     } 
     var fps=wworld.fps;
-    var r=rotation,ve=bvec(defv(vx*fps ,0),defv(vy*fps,0));
+    var r=rotation,ve=bvec(defv(vx*fps ,0),defv(vy*fps,0)),vr=defv(vrotation,0);
     body=world.CreateBody(bodyDef);
     body.CreateFixture(fixDef);
     body.SetUserData(this);
     body.SetLinearVelocity(ve);
     rotation=r;
+    vrotation=vr;
 }
 \allContact(klass) {
     var res=[];
@@ -181,6 +182,7 @@ native Box2D;
 }
 \vx=v {
     if (!body) return _vx=v;
+    v=v||0;
     var ve=body.GetLinearVelocity();
     ve.x=v/scale*getWorld().fps;
     body.SetLinearVelocity(ve);
@@ -197,6 +199,13 @@ native Box2D;
     ve.y=v/scale*getWorld().fps;
     body.SetLinearVelocity(ve);
 }
-
-
+\vrotation {
+    if (!body) return _vr;
+    return deg(body.GetAngularVelocity()/getWorld().fps);
+}
+\vrotation=v {
+    if (!body) return _vr=v;
+    v=v||0;
+    body.SetAngularVelocity(rad(v*getWorld().fps));
+}
 

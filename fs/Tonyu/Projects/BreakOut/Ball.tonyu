@@ -13,5 +13,8 @@ while(true) {
         miss++;
         print(miss);
     }
+    if (y>400) {
+        vy-=0.5;
+    }
     update();
 }

@@ -1,0 +1,11 @@
+[[BodyActor]]
+
+*applyTorqueメソッド
+
+物体に回転力を加えます。
+
+書式
+<<code
+applyTorque(t)
+>>
+-tに回転力を指定します
