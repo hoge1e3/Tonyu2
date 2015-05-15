@@ -19,6 +19,8 @@ define(["genROM","dumpScript","Util","FS","Sync","Shell","WebSite"],
         ds.concat({names:["fs/ROMk","fs/ROMd","fs/ROMs","ide/selProject"], outFile:"index",reqConf:reqConf});
         ds.concat({names: ["fs/ROMk","fs/ROMd","fs/ROMs","ide/editor"], outFile:"project",reqConf:reqConf});
         ds.concat({names: ["fs/ROMk","runScript"], outFile:"runScript",reqConf:reqConf});
+        sh.echo("To compile documents, type:");
+        sh.echo("wiki2serv ../doc/ ../../../doc/");
     }
     function embedVersion(f) {
         var r=f.text().replace(/(VERSION:)([0-9]+)(,\/\/EMBED_VERSION)/, function (t,a,b,c) {
