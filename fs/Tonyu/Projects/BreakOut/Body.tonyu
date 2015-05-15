@@ -1,0 +1,8 @@
+extends BodyActor;
+
+\onAppear() {
+    x=20;
+    y=30;
+    vx=2;vy=0;
+    super.onAppear();
+}

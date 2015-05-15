@@ -2,26 +2,31 @@ extends BodyActor;
 
 while (true) {
     if (getkey("left")) {
-        vx-=1;//moveBy(-5,0);        
+        vx=-5;//moveBy(-5,0);        
     } else if (getkey("right")) {
-        vx+=1;//moveBy(5,0);        
+        vx=5;//moveBy(5,0);        
+    } else {
+        vx=0;
     }
-    vx*=0.95;
+    //vx*=0.95;
     if (getkey("up")) {
         vy=-5;//moveBy(0,-5);        
     } else if (getkey("down")) {
         vy=5;
+    } else {
+        vy=0;
     }
-    if (y<390) vy+=1;
-    if (y>410) {vy-=1;}
-    vy*=0.95;
-    if (rotation<-10) {
+    //if (y<390) vy+=1;
+    //if (y>410) {vy-=1;}
+    //vy*=0.95;
+    /*if (rotation<-10) {
         vrotation=1;
     }
     if (rotation>10) {
         vrotation=-1;
     }
-    rotation=rotation*0.7;
+    rotation=rotation*0.7;*/
+    rotation=vrotation=0;
     update();
 }
 /*Main.tonyu

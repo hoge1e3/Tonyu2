@@ -185,6 +185,7 @@ native Box2D;
     v=v||0;
     var ve=body.GetLinearVelocity();
     ve.x=v/scale*getWorld().fps;
+    if (v) body.SetAwake(true);
     body.SetLinearVelocity(ve);
 }
 
@@ -197,6 +198,7 @@ native Box2D;
     if (!body) return _vy=v;
     var ve=body.GetLinearVelocity();
     ve.y=v/scale*getWorld().fps;
+    if (v) body.SetAwake(true);
     body.SetLinearVelocity(ve);
 }
 \vrotation {
@@ -206,6 +208,7 @@ native Box2D;
 \vrotation=v {
     if (!body) return _vr=v;
     v=v||0;
+    if (v) body.SetAwake(true);
     body.SetAngularVelocity(rad(v*getWorld().fps));
 }
 

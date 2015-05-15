@@ -7,7 +7,7 @@ new Ball{x:200,y:300,
     shape:"circle",p:12,
     restitution:1,density:0.1,
 friction:0,vx:2,vy:4};
-
+new Body;
 
 for (i=0; i<3;i++) {
     for (j=0; j<6; j++) {
