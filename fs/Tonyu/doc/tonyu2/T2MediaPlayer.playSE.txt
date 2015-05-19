@@ -1,0 +1,13 @@
+[[T2MediaPlayer]]
+
+*playSEメソッド
+
+効果音を演奏します
+
+<<code
+playSE(name)
+>>
+
+-name に演奏するBGMの名前([[音声リスト>sndres]]で指定した名前）を指定します
+
+.

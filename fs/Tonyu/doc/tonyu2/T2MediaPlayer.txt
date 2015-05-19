@@ -1,0 +1,26 @@
+[[api]]
+
+*T2MediaPlayerクラス
+
+サウンド(mp3/ogg)を演奏するためのクラスです。
+グローバル変数$soundに自動的に設定されます。
+
+**サウンドの追加
+
+メニューのウィンドウ→[[音声リスト>sndres]]から追加します。
+
+**メソッド
+
+-[[playBGM]]
+-[[stopBGM]]
+-[[playSE>T2MediaPlayer.playSE]]
+-[[setBGMVolume]]
+-- 0...128の範囲で音量を設定します
+-[[setBGMTempo]]
+-- 演奏中のBGMのテンポを設定します。1がもとの速さです
+-[[getBGMCurrentTime]]
+-- BGMの演奏開始からの経過時間を取得します（単位：秒）
+-[[getBGMLength]]
+-- 演奏中のBGMの長さを取得します（単位：秒）
+
+.

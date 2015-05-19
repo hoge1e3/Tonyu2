@@ -113,7 +113,12 @@ return Tonyu=function () {
                 steps();
             };
             var err=function () {
-                var e=new Error("Async fail");
+                var msg="";
+                for (var i=0; i<arguments.length; i++) {
+                    msg+=arguments[i]+",";
+                }
+                if (msg.length==0) msg="Async fail";
+                var e=new Error(msg);
                 e.args=arguments;
                 gotoCatch(e);
                 steps();
@@ -515,7 +520,7 @@ return Tonyu=function () {
             globals:globals, classes:classes, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
             timeout:timeout,asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
-            VERSION:1431661108529,//EMBED_VERSION
+            VERSION:1432003817024,//EMBED_VERSION
             A:A};
 }();
 });

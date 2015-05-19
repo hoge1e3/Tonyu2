@@ -188,6 +188,7 @@ var reqConf={
             JSZip:"lib/jszip.min",
             plugins:"plugins/plugins",
             exceptionCatcher:"lib/exceptionCatcher",
+            Assets:"fs/Assets",
             "foo":"bar"
         },
         "baseUrl": "../../js"

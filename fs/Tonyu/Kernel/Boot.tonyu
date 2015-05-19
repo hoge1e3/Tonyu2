@@ -48,8 +48,10 @@ native Math;
     on("stop")\{
         clearSEData();
     };
+    $sound=this;
 }
-
+\hide() {
+}
 
 \initThread() {
     //$mainThreadGroup=thg=Tonyu.threadGroup();

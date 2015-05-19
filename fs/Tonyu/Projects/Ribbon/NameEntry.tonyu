@@ -1,0 +1,54 @@
+
+W=50;H=50;
+x=20;y=100;
+me=new Actor{text:"Input your name:",align:"left",x,y:y-20,size:15};
+align="left";
+if (!text) text="";
+cand="ABCDEFGHIJKLMNOPQRSTUVWXYZ.0123456789 @";
+map={"@":"BS"," ":"SP",";":"OK"};
+bts=[];
+for (i=0;i<cand.length;i++) {
+    ch=cand.substring(i,i+1);
+    m=map[ch];
+    putKey( (m?m:ch),floor(i/8),i%8) ;
+    //if (i%4==0) update();
+}
+size=30;
+bts.push(okb=new Button{
+    disabled:text.length==0,
+    left:x, width:200, top:y+300,height:30,
+    text:"OK",onClick:\(){
+        entered=true;
+        die();
+    }
+});
+bts.push(new Button{left:x+230, width:200, top:y+300,height:30,text:"Cancel",onClick:\(){
+        cancelled=true;
+        die();
+}});
+/*while(true) {
+    print(all(Uploader).length);
+    update();
+}*/
+
+\die() {
+    for (var b in bts) b.die();
+    me.die();
+    super.die();
+}
+
+
+nowait \putKey(letter,r,c) {
+    bts.push(new Button{
+        left: x+c*W ,
+        top: y+50+r*W, width:W-5 , height:H-5, padding:5, 
+        text:letter, onClick:\(){keyin(letter);},
+        fillStyle:"#fe8"
+    });
+}
+\keyin(l) {
+    if (l=="SP") l=" ";
+    if (l=="BS") text=text.substring(0,text.length-1);
+    else text+=l;
+    okb.disabled=(text.length==0);
+}

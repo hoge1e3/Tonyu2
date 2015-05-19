@@ -1,4 +1,4 @@
-define(["PatternParser","Util","WebSite"], function (PP,Util,WebSite) {
+define(["PatternParser","Util","Assets"], function (PP,Util,Assets) {
     var cache={};
     function excludeEmpty(resImgs) {
         var r=[];
@@ -93,7 +93,7 @@ define(["PatternParser","Util","WebSite"], function (PP,Util,WebSite) {
         return res;
     };
 	IL.convURL=function (url, baseDir) {
-	    if (url==null) url="";
+	    /*if (url==null) url="";
 	    url=url.replace(/\$\{([a-zA-Z0-9_]+)\}/g, function (t,name) {
 	        return WebSite[name];
 	    });
@@ -105,7 +105,8 @@ define(["PatternParser","Util","WebSite"], function (PP,Util,WebSite) {
 	        if (!f.exists()) throw "ImageList file not found: "+f;
 	        url=f.text();
 	    }
-	    return url;
+	    return url;*/
+	    return Assets.resolve(url, baseDir);
 	};
 	window.ImageList=IL;
     return IL;

@@ -1,7 +1,7 @@
 define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
-        ,"ImageDetailEditor"],
+        ,"ImageDetailEditor","Util"],
         function (FS, Tonyu, UI,IL,Blob,Auth,WebSite,
-                ImageDetailEditor) {
+                ImageDetailEditor,Util) {
     var ResEditor=function (prj, mediaType) {
         var mediaInfos={
                 image:{name:"画像",exts:["png","gif","jpg"],path:"images/",key:"images",
@@ -30,6 +30,9 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
         if (!rsrc) prj.setResource();
         function convURL(u) {
             try {
+                if (Util.endsWith(u,".ogg") || Util.endsWith(u,".mp3") ) {
+                    u=WebSite.urlAliases["images/sound.png"];
+                }
                 return IL.convURL(u,prj.getDir());
             }catch(e) {
                 return WebSite.urlAliases["images/ecl.png"];
@@ -108,6 +111,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
             }
             function genItemUI(item) {
                 function detail() {
+                    if (mediaType=="sound") return;
                     ImageDetailEditor.show(item,prj.getDir(), item.name, {
                         onclose: function () {
                             prj.setResource(rsrc);

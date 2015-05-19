@@ -1,0 +1,8 @@
+text="Plase wait...";
+x=235;y=235;size=30;vy=0.1;
+while(true) {
+    y+=vy;
+    vy+=0.1;
+    if (y>235) vy=-1;
+    update();
+}

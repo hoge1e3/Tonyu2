@@ -1,0 +1,22 @@
+includes NetModule;
+//n=new NameEntry;
+
+defName=file("name.json").obj() || {name:""};
+ne=new NameEntry{mesg:"Input your name",text:defName.name};
+while(!ne.isDead()) update();
+//print(ne.text);
+if (ne.cancelled) {
+    vtr.notifyCancelled();
+    die();update();
+}
+defName.name=ne.text;
+//print(defName);
+file("name.json").obj(defName);
+data.name=ne.text;
+
+n=new NetIndicator;
+dbInsert("Replay",data);
+data.uploaded=true;
+n.die();
+vtr.notifyUploaded();
+die();

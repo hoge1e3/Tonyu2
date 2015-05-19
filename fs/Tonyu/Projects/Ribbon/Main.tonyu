@@ -1,0 +1,91 @@
+//includes Tonyu1;
+
+$VTR=new VTR{playBack};
+//print("Main upl="+(playBack && playBack.uploaded));
+$ths=[];
+for (i=0 ; i<13 ;i++) {
+    t=new Pend{t};
+    $ths.push(t);
+}
+$kasc=0;
+
+//new Button{padding:5,left:50, top:100, width:200,height:30, size:20, text:"test"};
+//new Button{top:50,text:"test"};
+
+p=-1;
+ppc=0;
+$mu=0.95;
+//ft.t=null;
+$score=0;
+$sound.playBGM($se_Main,true);
+$srank=2000;
+$time=60;
+$level=1;
+$exp=0;
+x=100;y=30;
+new Star;
+$rank=new TRank1;
+$Flsh=new Flash;
+if ($debug) charC=new Actor{x:20,y:20,text:0};
+
+while(1) {
+    update();
+    if (charC) charC.text=all().length;
+    // スコア表示
+    if ($tincr) i=$tincr.i; else i=120;
+    status();
+    // レベル表示
+    // 残り時間表示
+    if ($time>0) {
+        drawText(300,y,"Time :"+trunc($time),color(255,255,255));
+        $time=$time-(1/30);
+    } else {
+        // ゲームオーバーならばReplay表示
+        gov();
+        // ハイスコア登録用オブジェクトを画面に表示
+        //       $regist.setVisible(1);  
+    }
+    // 経験値がレベル*5に達するとレベルアップ
+    if ($exp>$level*5 && $time>0 ) {
+        $tincr=appear(new TimeIncr(400,y+20,trunc($time)*10*$level ) );
+        $level+=1;
+        $exp=0;
+        // 新しいボールが出現する
+        appear(new Star(100,-100,$pat_star+3,0));
+    }
+}
+\status() {
+    drawText(x,y,"Score: "+$score,color(255,255,255));
+    if (i<60 || (i % 2)<1 )  drawText(400,y,"level:"+trunc($level),color(155,255,255));
+}
+
+\gov() {
+    $VTR.stop();
+    while (all(Uploader).length>0) update();
+    $VTR.hideMenu();
+    if (!playBack || !playBack.uploaded) {
+        playBack=playBack||$VTR.data();
+        new Button{top:150,text:"PlayBack",height:50,
+            page:Main,
+            arg:{playBack}
+        };
+    }
+    new Button{top:250,text:"Retry",height:30,page:Main};
+    new Button{top:300,text:"Title",height:30,page:Title};
+    Button.last=null;
+    while(!Button.last) {status();update();}
+    for (var i=0 ; i<5 ;i++) {
+        Button.last.fillStyle="white";
+        update();
+        Button.last.fillStyle="gray";
+        update();
+    }
+    loadPage(Button.last.page, Button.last.arg);
+    /*    while(getkey(1)!=1 && $touches[0].touched!=1) {
+        drawText(235,200,"Touch to Replay",color(255,150,155),30);
+        update();
+    }*/
+}
+\appear(o) {
+    return o;
+}

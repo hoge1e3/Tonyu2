@@ -1,5 +1,0 @@
-includes T2MediaPlayer;
-
-
-playBGM($se_uno11, true);
-

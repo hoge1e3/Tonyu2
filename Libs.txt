@@ -16,5 +16,5 @@ images/mapchip.png(Public domain)
  http://rmake.jp/published_items/7526
 
 Special thanks to:
- @makkii_bcr  Inproves Boot.tonyu and Contributes Pad.tonyu, js/lib/T2MediaLib.js
+ @makkii_bcr  Inproves Boot.tonyu and Contributes Pad.tonyu, js/lib/T2MediaLib.js, fs/Tonyu/Kernel/sound/T2MediaPlayer.tonyu
 

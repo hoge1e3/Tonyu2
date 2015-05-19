@@ -16,11 +16,11 @@ define([], function () {
       loc.match(/tonyuexe\.appspot\.com/) ||
       loc.match(/localhost:8887/) ||
  	  (
- 	    (
+ 	    /*(
  	       loc.match(/^file:/) ||
  	       loc.match(/localhost/) ||
 	       loc.match(/tonyuedit\.appspot\.com/)
-	    ) &&
+	    ) &&*/
 	    loc.match(/\/html\/((dev)|(build))\//)
 	  )
     ) {
@@ -32,6 +32,7 @@ define([], function () {
                 "images/neko.png":"../../images/neko.png",
                 "images/inputPad.png":"../../images/inputPad.png",
                 "images/mapchip.png":"../../images/mapchip.png",
+                "images/sound.png":"../../images/sound.png",
                     "images/ecl.png":"../../images/ecl.png"
             },top:"../..",devMode:devMode
         };

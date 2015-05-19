@@ -1,0 +1,16 @@
+//includes Tonyu1;
+// Greatをだしたときに画面をフラッシュさせる
+function doFlash() {
+    v=255;
+}
+
+p=-1;
+
+v=0;
+while (1) {
+    update();
+    $Screen.setBGColor(color(v,v,100+trunc(v/2) ));
+    v=v-20;
+    if (v<10) v=0;
+}
+die();

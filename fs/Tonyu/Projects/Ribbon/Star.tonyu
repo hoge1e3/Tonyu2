@@ -1,0 +1,151 @@
+//includes Tonyu1;
+\appear(o) {
+    return o;
+}
+function crash() {
+    var i;
+    // ボールを破壊する
+    i=0;
+    $exp+=1; // 経験値 +1
+    // ランク（マウスの静止時間）によりbad,good,greatを判定する
+    if ($rank.rank<10) {
+        // Bad
+        $sound.playSE($se_bad);
+        $preg=0;
+        $gcont=1; 
+        // 破片を6個出現させる
+        while (i<360) {
+            appear(new TBomb(x,y,cos(i)*5,sin(i)*5));
+            i=i+60;
+        }
+    } else if ($rank.rank<15) {
+        // Good
+        $sound.playSE($se_good);
+        $preg=0;
+        $gcont=1; 
+        // 破片を12個出現させる
+        while (i<360) {
+            appear(new TBomb(x,y,cos(i)*5,sin(i)*5));
+            i=i+30;
+        }
+    }
+    else {
+        // Great。  画面がフラッシュする
+        $Flsh.doFlash();
+        $sound.playSE($se_great);
+        // $pregが1なら前回もGreatなので、Greatコンボ数($gcont)を増やす
+        if ($preg) $gcont=$gcont+1; else $gcont=1;
+        $preg=1;
+        $VTR.addGreat($gcont);
+        // 破片を18個出現させる
+        while (i<360) {
+            appear(new TBomb(x,y,cos(i)*5,sin(i)*5));
+            i=i+60;
+        }
+        i=15; 
+        while (i<360) {
+            appear(new TBomb(x,y,cos(i)*10,sin(i)*10));
+            i=i+30;
+        }
+    } 
+    // Bad Good Great(+コンボ数) を表示する
+    appear (new TRank2(x,y,$rank.rank,$gcont));
+    
+}
+
+function crashTo2(t) {
+    return  (dist(t.x-x,t.y-y)<35);
+}
+
+function ath () {
+    var i,t,pt,dl,dm;
+    // リボンとボールの当たり判定
+    i=$ths.length-1;
+    dl=0;
+    while(i>=0) {
+        // $ths(リボンのパーツを格納した配列)の各要素をtに代入しながら繰り返す
+        t=$ths[i];
+        if (crashTo2(t)) {
+            // tとぶつかっていたら、力を受ける
+            vx=vx+(x-t.x)*0.4;
+            vy=vy+(y-t.y)*0.4;
+            dl=1;
+            if (pt) {
+                dm=dist(pt.x-t.x,pt.y-y)*0.8+20;
+                //print (dm);
+                if (dm>dl) dl=dm;
+            }
+        }
+        pt=t;
+        i=i-1;
+    }
+    if (dl) { 
+        // ぶつかっていたら、lifeを減らす
+        if ($kasc==0) $sound.playSE($se_kasuri); 
+        else $sound.playSE($se_kasuri2);
+        $kasc=1-$kasc;
+        appear(new TBomb(x,y,-vx,-vy));
+        life=life-dl*0.15;
+        $score=$score+1;
+    }
+}
+
+cy=$level;
+bp=$pat_star+3;
+an=0;
+$mu=0.99;
+maxs=6;
+maxlife=100;
+life=maxlife*0.5;
+vx=0;vy=-1;
+x=230;
+y=-150;
+cnt=0;
+
+while ($time>0.8) {
+    // アニメーション
+    an=an+1;
+    if (an>2) an=0;
+    p=bp+an;
+    // 画面端にぶつかったら跳ね返る
+    if (x<0) vx=abs(vx);
+    if (x>$screenWidth) vx=-abs(vx);
+    if (y>$screenHeight) vy=-abs(vy);
+    if (y<-110) vy=1;
+    // 空気抵抗を受ける。$muは抵抗係数
+    x+=vx;vx=vx*$mu;
+    y+=vy;vy=vy*$mu;
+    // 当たり判定
+    ath();
+    // 落下
+    vy=vy+0.03;
+    if (vy>maxs) vy=maxs;
+    if (vy<-maxs) vy=-maxs;
+    if (vx>maxs) vx=maxs;
+    if (vx<-maxs) vx=-maxs;
+    // ライフが少しずつ回復する
+    if (life<maxlife) life+=0.2;
+    // ライフゲージ表示
+    drawLine(0,$screenHeight-10-cy,life,$screenHeight-10-cy,color(0,255-cy*20,0));
+    if (life<0) {
+        // ライフが0になったら破壊される。画面上方に移動
+        crash();
+        life=maxlife;
+        appear(new PTS(x,y+30,$rank.rank*4,$gcont));
+        y=-30;vy=0;
+        $score=$score+50+$rank.rank*4*$gcont;
+        $time=$time+$rank.rank*0.05*$gcont;
+    }
+    if (y>$screenHeight) {
+        // 下に落ちたらゲームオーバー
+        //y=-30;vy=0;
+        $time=$time*0;//$time-1-$score/1500;
+        $sound.stopBGM();
+    } 
+    cnt++;
+    if (cnt%2==0) update();
+}
+
+$rank.rank=0;
+crash();
+die();
