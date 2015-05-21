@@ -1,6 +1,8 @@
-define(["Tonyu.Project","Auth","FS","UI"],function (TPR,Auth,FS,UI) {
+define(["Tonyu.Project","Auth","FS","UI","WebSite"],function (TPR,Auth,FS,UI,WebSite) {
     return function(srcUser, srcProject, dstProjectDir, options/*:{success:Function, placeHolder:JQ}*/) {
-        var prj=TPR(dstProjectDir);
+        var home=FS.get(WebSite.tonyuHome);
+        var kernelDir=home.rel("Kernel/");
+        var prj=TPR(dstProjectDir,kernelDir);
         var bl=prj.getBlobInfos();
         if (bl.length==0) return options.success();
         Auth.assertLogin({
