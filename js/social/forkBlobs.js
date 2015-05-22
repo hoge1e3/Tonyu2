@@ -14,9 +14,10 @@ define(["Tonyu.Project","Auth","FS","UI","WebSite"],function (TPR,Auth,FS,UI,Web
             },
             success: function(user) {
                 prj.convertBlobInfos(user);
+                //TODO: urlchange!
                 $.ajax({
                     type:"GET",
-                    url:"/edit/forkBlobs",
+                    url:WebSite.serverTop+"/forkBlobs",
                     data:{
                         srcUser:srcUser, srcProject: srcProject,
                         dstUser:user, dstProject:prj.getName()},

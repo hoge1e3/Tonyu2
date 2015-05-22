@@ -1,6 +1,7 @@
 define(["WebSite"],function (WebSite) {
     var auth={};
     auth.currentUser=function (onend) {
+        //TODO: urlchange!
         $.ajax({type:"get",url:WebSite.serverTop+"/currentUser",data:{withCsrfToken:true},
             success:function (res) {
                 console.log("auth.currentUser",res);
@@ -26,6 +27,7 @@ define(["WebSite"],function (WebSite) {
                 return options.success(user,csrfToken);
             }
             window.onLoggedIn=options.success;
+            //TODO: urlchange!
             options.showLoginLink(WebSite.serverTop+"/login");
         });
     };

@@ -4,7 +4,8 @@ requirejs(["Sync", "UI","Util", "Auth","WebSite"],function (Sync,UI,Util,Auth,We
 
         //var user=Util.getQueryString("user");
         Auth.currentUser(function (user) {
-            if (!user) document.location.href="../../edit/login";
+            //TODO: urlchange!
+            if (!user) document.location.href=WebSite.serverTop+"/login";
             else {
                 $("#head").text(user+"のファイルを同期中");
                 Sync.sync(home.rel("Projects/"), FS.get("/home/"+user+"/"), {
@@ -21,7 +22,9 @@ requirejs(["Sync", "UI","Util", "Auth","WebSite"],function (Sync,UI,Util,Auth,We
                               "11_Resize/",
                               "12_Sound/",
                               "13_DX/",
-                              "14_File/"],
+                              "14_File/",
+                              "15_Box2D/",
+                              "16_Sound2/"],
                               v:true,onend:onend, onstatus: onstatus,onerror:onerror});
             }
         });

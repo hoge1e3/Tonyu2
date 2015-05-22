@@ -17,6 +17,7 @@ requirejs(["FS","Util","NewProjectDialog","ScriptTagFS","UI","forkBlobs","WebSit
 	    window.projectInfoIs=function (s){
 	        $("#prog").val(s);
 	    };
+	  //TODO: urlchange!
 	    $("<script>").attr("src",url+"/exe/fork?user="+user+"&"+"project="+project).appendTo("head");
 	}
     function mode(n) {

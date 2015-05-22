@@ -61,7 +61,7 @@ define([], function () {
         window.WebSite.serverTop=window.WebSite.top+"/edit";// Fix NetModule.tonyu!!
     }
     window.WebSite.sampleImg=window.WebSite.top+"/images";
-    window.WebSite.blobPath=window.WebSite.serverTop+"/serveBlob";
+    window.WebSite.blobPath=window.WebSite.serverTop+"/serveBlob";        //TODO: urlchange!
     window.WebSite.isNW=(typeof process=="object" && process.__node_webkit);
     window.WebSite.tonyuHome="/Tonyu/";
     if (window.WebSite.isNW) {

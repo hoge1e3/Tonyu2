@@ -70,9 +70,10 @@ define(["FS","Shell","requestFragment","WebSite"],function (FS,sh,rf,WebSite) {
         function n0() {
             var req={base:remote.path(),excludes:JSON.stringify(options.excludes)};
             status("getDirInfo", req);
+          //TODO: urlchange!
             $.ajax({
                 type:"get",
-                url:WebSite.top+"/edit/getDirInfo",
+                url:WebSite.serverTop+"/getDirInfo",
                 data:req,
                 success:n1,
                 error:onError
@@ -102,9 +103,10 @@ define(["FS","Shell","requestFragment","WebSite"],function (FS,sh,rf,WebSite) {
 
             var req={base:remote.path(),paths:JSON.stringify(downloads)};
             status("File2LSSync", req);
+          //TODO: urlchange!
             $.ajax({
                 type:"post",
-                url:WebSite.top+"/edit/File2LSSync",
+                url:WebSite.serverTop+"/File2LSSync",
                 data:req,
                 success:n2,
                 error:onError
@@ -129,11 +131,12 @@ define(["FS","Shell","requestFragment","WebSite"],function (FS,sh,rf,WebSite) {
                 dlf.metaInfo(d);
             }
             var req={base:remote.path(),data:JSON.stringify(uploads)};
-            req.pathInfo="/LS2FileSync";
+            req.pathInfo="/LS2FileSync";//TODO: urlchange!
             status("LS2FileSync", req);
+          //TODO: urlchange!
             rf.ajax({
                 type:"post",
-                url:WebSite.top+"/edit/LS2FileSync",
+                url:WebSite.serverTop+"/LS2FileSync",
                 data:req,
                 success:n3,
                 error:onError
@@ -172,8 +175,9 @@ define(["FS","Shell","requestFragment","WebSite"],function (FS,sh,rf,WebSite) {
     sh.rsh=function () {
         var a=[];
         for (var i=0; i<arguments.length; i++) a[i]=arguments[i];
+      //TODO: urlchange!
         $.ajax({
-            url:WebSite.top+"/edit/rsh",
+            url:WebSite.serverTop+"/rsh",
             data:{args:JSON.stringify(a)},
             success:function (r) {
                 sh.echo(r);

@@ -212,6 +212,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                         rtf.push(a.fileName);
                     }
                 });
+                //TODO: urlchange!
                 $.ajax({url:WebSite.serverTop+"/retainBlobs",type:"get",
                     data:{
                         user:u,

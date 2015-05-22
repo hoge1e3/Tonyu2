@@ -11,6 +11,7 @@ define(["Auth","WebSite","Util"],function (a,WebSite,Util) {
         fd.append("user",user);
         fd.append("project",project);
         fd.append("fileName",file.name);
+      //TODO: urlchange!
         $.ajax({
             type : "get",
             url : WebSite.serverTop+"/blobURL",
@@ -53,7 +54,7 @@ define(["Auth","WebSite","Util"],function (a,WebSite,Util) {
             for (var i in bi) data[i]=bi[i];
             $.ajax({
                 type:"get",
-                url: WebSite.serverTop+"/uploadBlobToExe",
+                url: WebSite.serverTop+"/uploadBlobToExe",   //TODO: urlchange!
                 data:data,
                 success: function () {
                      cnt--;

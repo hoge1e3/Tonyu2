@@ -31,7 +31,8 @@ $(function () {
        $(".on-logged-in").show();
        $("#prog").val(east(dir));
        $.ajax({ type:"get", //redirectTo:"tonyuexe",
-           url:"../../edit/get-project-info",
+           //TODO: urlchange!
+           url: WebSite.serverTop+"/get-project-info",
            data:{pathInfo:"/get-project-info", project:name},
            success:function (res) {
                console.log("get-prj",res);
@@ -95,8 +96,9 @@ $(function () {
                    $("#theForm select").each(setData);
                    $("#theForm textarea").each(setData);
                    console.log("upload-project data",data);
+                   //TODO: urlchange!
                    $.ajax({type:"post", redirectTo:"tonyuexe",
-                       url:"../../edit/upload-project",
+                       url:WebSite.serverTop+"/upload-project",
                        data:data,
                        success:function (res) {
                            console.log("upload-prj",res);

@@ -198,6 +198,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                         retainFileNames:JSON.stringify(rtf)
                 };
                 console.log("retainBlobs",data);
+                //TODO: urlchange!
                 $.ajax({url:WebSite.serverTop+"/retainBlobs",type:"get",
                     data:data
                 });
