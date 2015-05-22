@@ -1,4 +1,4 @@
-// Created at Thu May 21 2015 10:35:39 GMT+0900 (東京 (標準時))
+// Created at Fri May 22 2015 18:17:36 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -150,7 +150,7 @@ define([], function () {
         window.WebSite.serverTop=window.WebSite.top+"/edit";// Fix NetModule.tonyu!!
     }
     window.WebSite.sampleImg=window.WebSite.top+"/images";
-    window.WebSite.blobPath=window.WebSite.serverTop+"/serveBlob";
+    window.WebSite.blobPath=window.WebSite.serverTop+"/serveBlob";        //TODO: urlchange!
     window.WebSite.isNW=(typeof process=="object" && process.__node_webkit);
     window.WebSite.tonyuHome="/Tonyu/";
     if (window.WebSite.isNW) {
@@ -2062,7 +2062,7 @@ return Tonyu=function () {
             globals:globals, classes:classes, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
             timeout:timeout,asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
-            VERSION:1432172133207,//EMBED_VERSION
+            VERSION:1432286251082,//EMBED_VERSION
             A:A};
 }();
 });
@@ -7690,6 +7690,7 @@ requireSimulator.setName('Auth');
 define(["WebSite"],function (WebSite) {
     var auth={};
     auth.currentUser=function (onend) {
+        //TODO: urlchange!
         $.ajax({type:"get",url:WebSite.serverTop+"/currentUser",data:{withCsrfToken:true},
             success:function (res) {
                 console.log("auth.currentUser",res);
@@ -7715,6 +7716,7 @@ define(["WebSite"],function (WebSite) {
                 return options.success(user,csrfToken);
             }
             window.onLoggedIn=options.success;
+            //TODO: urlchange!
             options.showLoginLink(WebSite.serverTop+"/login");
         });
     };
@@ -7735,6 +7737,7 @@ define(["Auth","WebSite","Util"],function (a,WebSite,Util) {
         fd.append("user",user);
         fd.append("project",project);
         fd.append("fileName",file.name);
+      //TODO: urlchange!
         $.ajax({
             type : "get",
             url : WebSite.serverTop+"/blobURL",
@@ -7777,7 +7780,7 @@ define(["Auth","WebSite","Util"],function (a,WebSite,Util) {
             for (var i in bi) data[i]=bi[i];
             $.ajax({
                 type:"get",
-                url: WebSite.serverTop+"/uploadBlobToExe",
+                url: WebSite.serverTop+"/uploadBlobToExe",   //TODO: urlchange!
                 data:data,
                 success: function () {
                      cnt--;
@@ -10099,7 +10102,8 @@ define(["WebSite"],function (WebSite) {
             return p;
         }
         frags.forEach(function (frag,i) {
-            $.ajax({type:"post",url:WebSite.top+"/edit/sendFragment",data:addRedir({
+          //TODO: urlchange!
+            $.ajax({type:"post",url:WebSite.serverTop+"/sendFragment",data:addRedir({
                 id:id, seq:i, len:len, content:frag
             }),success: function (res) {
                 console.log("sendFrag",res,i);//,frag);
@@ -10109,7 +10113,8 @@ define(["WebSite"],function (WebSite) {
             });
         });
         function runFrag() {
-            $.ajax({type:"post",url:WebSite.top+"/edit/runFragments",data:addRedir({id:id}),
+          //TODO: urlchange!
+            $.ajax({type:"post",url:WebSite.serverTop+"/runFragments",data:addRedir({id:id}),
                 success: function (res) {
                     //console.log("runFrag res1=",res,arguments.length);
                     if (typeof res=="string") {
@@ -10204,9 +10209,10 @@ define(["FS","Shell","requestFragment","WebSite"],function (FS,sh,rf,WebSite) {
         function n0() {
             var req={base:remote.path(),excludes:JSON.stringify(options.excludes)};
             status("getDirInfo", req);
+          //TODO: urlchange!
             $.ajax({
                 type:"get",
-                url:WebSite.top+"/edit/getDirInfo",
+                url:WebSite.serverTop+"/getDirInfo",
                 data:req,
                 success:n1,
                 error:onError
@@ -10236,9 +10242,10 @@ define(["FS","Shell","requestFragment","WebSite"],function (FS,sh,rf,WebSite) {
 
             var req={base:remote.path(),paths:JSON.stringify(downloads)};
             status("File2LSSync", req);
+          //TODO: urlchange!
             $.ajax({
                 type:"post",
-                url:WebSite.top+"/edit/File2LSSync",
+                url:WebSite.serverTop+"/File2LSSync",
                 data:req,
                 success:n2,
                 error:onError
@@ -10263,11 +10270,12 @@ define(["FS","Shell","requestFragment","WebSite"],function (FS,sh,rf,WebSite) {
                 dlf.metaInfo(d);
             }
             var req={base:remote.path(),data:JSON.stringify(uploads)};
-            req.pathInfo="/LS2FileSync";
+            req.pathInfo="/LS2FileSync";//TODO: urlchange!
             status("LS2FileSync", req);
+          //TODO: urlchange!
             rf.ajax({
                 type:"post",
-                url:WebSite.top+"/edit/LS2FileSync",
+                url:WebSite.serverTop+"/LS2FileSync",
                 data:req,
                 success:n3,
                 error:onError
@@ -10306,8 +10314,9 @@ define(["FS","Shell","requestFragment","WebSite"],function (FS,sh,rf,WebSite) {
     sh.rsh=function () {
         var a=[];
         for (var i=0; i<arguments.length; i++) a[i]=arguments[i];
+      //TODO: urlchange!
         $.ajax({
-            url:WebSite.top+"/edit/rsh",
+            url:WebSite.serverTop+"/rsh",
             data:{args:JSON.stringify(a)},
             success:function (r) {
                 sh.echo(r);
@@ -10797,6 +10806,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                         retainFileNames:JSON.stringify(rtf)
                 };
                 console.log("retainBlobs",data);
+                //TODO: urlchange!
                 $.ajax({url:WebSite.serverTop+"/retainBlobs",type:"get",
                     data:data
                 });
