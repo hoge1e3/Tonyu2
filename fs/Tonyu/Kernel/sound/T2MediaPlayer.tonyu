@@ -68,6 +68,7 @@ native Tonyu;
 
 // vol:0-128
 \playSE(idx, vol, rate, offset, loop, loopStart, loopEnd) {
+    if (mute) return;
     // vol : Tonyu1のように0～128の範囲にする
     if (vol == null) vol = 128;
     // vol はgainで実装しているため絶対値の大きい値を入れると危険
@@ -100,6 +101,7 @@ native Tonyu;
 }
 
 \playBGM(idx, loop, offset, loopStart, loopEnd) {
+    if (mute) return;
     if (loop === null) loop = false;
     if (offset === null) offset = 0;
     return T2MediaLib.playBGM(0, idx, loop, offset, loopStart, loopEnd);

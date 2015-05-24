@@ -820,12 +820,12 @@ Tonyu.klass.define({
     die :function _trc_NameEntry_die() {
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       var b;
-      var _it_298;
+      var _it_296;
       
       //$LASTPOS=43000757;//user.NameEntry:757
-      _it_298=Tonyu.iterator(_this.bts,1);
-      while(_it_298.next()) {
-        b=_it_298[0];
+      _it_296=Tonyu.iterator(_this.bts,1);
+      while(_it_296.next()) {
+        b=_it_296[0];
         
         //$LASTPOS=43000776;//user.NameEntry:776
         b.die();
@@ -1062,14 +1062,14 @@ Tonyu.klass.define({
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       var res;
       var e;
-      var _it_302;
+      var _it_300;
       
       //$LASTPOS=45000429;//user.NetModule:429
       res = [];
       //$LASTPOS=45000445;//user.NetModule:445
-      _it_302=Tonyu.iterator(a,1);
-      while(_it_302.next()) {
-        e=_it_302[0];
+      _it_300=Tonyu.iterator(a,1);
+      while(_it_300.next()) {
+        e=_it_300[0];
         
         //$LASTPOS=45000472;//user.NetModule:472
         res.push(f(e));
@@ -1083,14 +1083,14 @@ Tonyu.klass.define({
       var __pc=0;
       var res;
       var e;
-      var _it_302;
+      var _it_300;
       
       //$LASTPOS=45000429;//user.NetModule:429
       res = [];
       //$LASTPOS=45000445;//user.NetModule:445
-      _it_302=Tonyu.iterator(a,1);
-      while(_it_302.next()) {
-        e=_it_302[0];
+      _it_300=Tonyu.iterator(a,1);
+      while(_it_300.next()) {
+        e=_it_300[0];
         
         //$LASTPOS=45000472;//user.NetModule:472
         res.push(f(e));
@@ -1107,7 +1107,7 @@ Tonyu.klass.define({
       var res;
       var i;
       var id;
-      var _it_306;
+      var _it_304;
       
       //$LASTPOS=45000545;//user.NetModule:545
       _this.getProjectName();
@@ -1125,10 +1125,10 @@ Tonyu.klass.define({
       //$LASTPOS=45000916;//user.NetModule:916
       res=_this.waitFor(a);
       //$LASTPOS=45000936;//user.NetModule:936
-      _it_306=Tonyu.iterator(a[0],2);
-      while(_it_306.next()) {
-        i=_it_306[0];
-        id=_it_306[1];
+      _it_304=Tonyu.iterator(a[0],2);
+      while(_it_304.next()) {
+        i=_it_304[0];
+        id=_it_304[1];
         
         //$LASTPOS=45000969;//user.NetModule:969
         records[i]._kind=kind;
@@ -1150,7 +1150,7 @@ Tonyu.klass.define({
       var res;
       var i;
       var id;
-      var _it_306;
+      var _it_304;
       
       
       _thread.enter(function _trc_NetModule_ent_dbInsert(_thread) {
@@ -1181,10 +1181,10 @@ Tonyu.klass.define({
             res=_thread.retVal;
             
             //$LASTPOS=45000936;//user.NetModule:936
-            _it_306=Tonyu.iterator(a[0],2);
-            while(_it_306.next()) {
-              i=_it_306[0];
-              id=_it_306[1];
+            _it_304=Tonyu.iterator(a[0],2);
+            while(_it_304.next()) {
+              i=_it_304[0];
+              id=_it_304[1];
               
               //$LASTPOS=45000969;//user.NetModule:969
               records[i]._kind=kind;
@@ -1334,15 +1334,15 @@ Tonyu.klass.define({
       var res;
       var k;
       var v;
-      var _it_316;
+      var _it_314;
       
       //$LASTPOS=45001947;//user.NetModule:1947
       res = {};
       //$LASTPOS=45001963;//user.NetModule:1963
-      _it_316=Tonyu.iterator(json,2);
-      while(_it_316.next()) {
-        k=_it_316[0];
-        v=_it_316[1];
+      _it_314=Tonyu.iterator(json,2);
+      while(_it_314.next()) {
+        k=_it_314[0];
+        v=_it_314[1];
         
         //$LASTPOS=45001995;//user.NetModule:1995
         if (k!="__typeMap") {
@@ -1369,15 +1369,15 @@ Tonyu.klass.define({
       var res;
       var k;
       var v;
-      var _it_316;
+      var _it_314;
       
       //$LASTPOS=45001947;//user.NetModule:1947
       res = {};
       //$LASTPOS=45001963;//user.NetModule:1963
-      _it_316=Tonyu.iterator(json,2);
-      while(_it_316.next()) {
-        k=_it_316[0];
-        v=_it_316[1];
+      _it_314=Tonyu.iterator(json,2);
+      while(_it_314.next()) {
+        k=_it_314[0];
+        v=_it_314[1];
         
         //$LASTPOS=45001995;//user.NetModule:1995
         if (k!="__typeMap") {
@@ -1405,15 +1405,15 @@ Tonyu.klass.define({
       var res;
       var k;
       var v;
-      var _it_321;
+      var _it_319;
       
       //$LASTPOS=45002217;//user.NetModule:2217
       res = {};
       //$LASTPOS=45002233;//user.NetModule:2233
-      _it_321=Tonyu.iterator(obj,2);
-      while(_it_321.next()) {
-        k=_it_321[0];
-        v=_it_321[1];
+      _it_319=Tonyu.iterator(obj,2);
+      while(_it_319.next()) {
+        k=_it_319[0];
+        v=_it_319[1];
         
         //$LASTPOS=45002264;//user.NetModule:2264
         if (v instanceof Date) {
@@ -1438,7 +1438,7 @@ Tonyu.klass.define({
       var res;
       var k;
       var v;
-      var _it_321;
+      var _it_319;
       
       //$LASTPOS=45002217;//user.NetModule:2217
       res = {};
@@ -1449,11 +1449,11 @@ Tonyu.klass.define({
           switch (__pc) {
           case 0:
             //$LASTPOS=45002233;//user.NetModule:2233
-            _it_321=Tonyu.iterator(obj,2);
+            _it_319=Tonyu.iterator(obj,2);
           case 1:
-            if (!(_it_321.next())) { __pc=5; break; }
-            k=_it_321[0];
-            v=_it_321[1];
+            if (!(_it_319.next())) { __pc=5; break; }
+            k=_it_319[0];
+            v=_it_319[1];
             
             //$LASTPOS=45002264;//user.NetModule:2264
             if (!(v instanceof Date)) { __pc=3; break; }
@@ -1791,7 +1791,7 @@ Tonyu.klass.define({
     main :function _trc_PlayBackList_main() {
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       var e;
-      var _it_327;
+      var _it_325;
       
       //$LASTPOS=47000032;//user.PlayBackList:32
       _this.n=new Tonyu.classes.user.NetIndicator;
@@ -1816,9 +1816,9 @@ Tonyu.klass.define({
       //$LASTPOS=47000288;//user.PlayBackList:288
       _this.y+=30;
       //$LASTPOS=47000295;//user.PlayBackList:295
-      _it_327=Tonyu.iterator(_this.s,1);
-      while(_it_327.next()) {
-        e=_it_327[0];
+      _it_325=Tonyu.iterator(_this.s,1);
+      while(_it_325.next()) {
+        e=_it_325[0];
         
         //$LASTPOS=47000314;//user.PlayBackList:314
         new Tonyu.classes.user.Button({left: _this.x,top: _this.y,width: 50,height: 20,text: "Play",padding: 3,e: e});
@@ -1867,7 +1867,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       var e;
-      var _it_327;
+      var _it_325;
       
       //$LASTPOS=47000032;//user.PlayBackList:32
       _this.n=new Tonyu.classes.user.NetIndicator;
@@ -1902,9 +1902,9 @@ Tonyu.klass.define({
             //$LASTPOS=47000288;//user.PlayBackList:288
             _this.y+=30;
             //$LASTPOS=47000295;//user.PlayBackList:295
-            _it_327=Tonyu.iterator(_this.s,1);
-            while(_it_327.next()) {
-              e=_it_327[0];
+            _it_325=Tonyu.iterator(_this.s,1);
+            while(_it_325.next()) {
+              e=_it_325[0];
               
               //$LASTPOS=47000314;//user.PlayBackList:314
               new Tonyu.classes.user.Button({left: _this.x,top: _this.y,width: 50,height: 20,text: "Play",padding: 3,e: e});
@@ -2991,51 +2991,70 @@ Tonyu.klass.define({
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       var i;
       
-      //$LASTPOS=52000020;//user.Title:20
+      //$LASTPOS=52000022;//user.Title:22
       Tonyu.globals.$textPool=[];
-      //$LASTPOS=52000034;//user.Title:34
+      //$LASTPOS=52000037;//user.Title:37
       new Tonyu.classes.kernel.Actor({text: "RibbonMania",x: 235,y: 100,size: 50});
-      //$LASTPOS=52000085;//user.Title:85
+      //$LASTPOS=52000089;//user.Title:89
       new Tonyu.classes.kernel.Actor({text: "Great",x: 335,y: 150,size: 30,fillStyle: _this.color(255,155,0)});
-      //$LASTPOS=52000157;//user.Title:157
+      //$LASTPOS=52000162;//user.Title:162
       new Tonyu.classes.user.Flash;
-      //$LASTPOS=52000168;//user.Title:168
+      //$LASTPOS=52000174;//user.Title:174
+      _this.s=new Tonyu.classes.user.Button({text: "Sound "+(Tonyu.globals.$snd?"on":"off"),page: Tonyu.classes.user.Main,top: 220,fillStyle: _this.color(0,200,55)});
+      //$LASTPOS=52000269;//user.Title:269
       new Tonyu.classes.user.Button({text: "Game Start",page: Tonyu.classes.user.Main,top: 300,fillStyle: _this.color(0,150,255)});
-      //$LASTPOS=52000245;//user.Title:245
+      //$LASTPOS=52000347;//user.Title:347
       new Tonyu.classes.user.Button({text: "PlayBack",page: Tonyu.classes.user.PlayBackList,top: 380,fillStyle: _this.color(255,0,150)});
-      //$LASTPOS=52000328;//user.Title:328
-      Tonyu.classes.user.Button.last=null;
-      //$LASTPOS=52000346;//user.Title:346
-      while (! Tonyu.classes.user.Button.last) {
-        //$LASTPOS=52000372;//user.Title:372
-        if (Tonyu.globals.$touches[0].touched>60) {
-          //$LASTPOS=52000410;//user.Title:410
-          Tonyu.globals.$debug=true;
-          //$LASTPOS=52000431;//user.Title:431
-          _this.print("Enter debug mode");
+      //$LASTPOS=52000431;//user.Title:431
+      while (true) {
+        //$LASTPOS=52000450;//user.Title:450
+        Tonyu.classes.user.Button.last=null;
+        //$LASTPOS=52000473;//user.Title:473
+        while (! Tonyu.classes.user.Button.last) {
+          //$LASTPOS=52000504;//user.Title:504
+          if (Tonyu.globals.$touches[0].touched>60) {
+            //$LASTPOS=52000547;//user.Title:547
+            Tonyu.globals.$debug=true;
+            //$LASTPOS=52000573;//user.Title:573
+            _this.print("Enter debug mode");
+            
+          }
+          //$LASTPOS=52000620;//user.Title:620
+          _this.update();
           
         }
-        //$LASTPOS=52000468;//user.Title:468
-        _this.update();
+        //$LASTPOS=52000642;//user.Title:642
+        if (Tonyu.classes.user.Button.last!=_this.s) {
+          break;
+          
+        }
+        //$LASTPOS=52000674;//user.Title:674
+        Tonyu.globals.$snd=! Tonyu.globals.$snd;
+        //$LASTPOS=52000691;//user.Title:691
+        _this.s.text="Sound "+(Tonyu.globals.$snd?"on":"off");
+        //$LASTPOS=52000734;//user.Title:734
+        Tonyu.globals.$sound.mute=! Tonyu.globals.$snd;
+        //$LASTPOS=52000758;//user.Title:758
+        Tonyu.globals.$sound.playSE(Tonyu.globals.$se_great);
         
       }
-      //$LASTPOS=52000480;//user.Title:480
-      //$LASTPOS=52000485;//user.Title:485
+      //$LASTPOS=52000789;//user.Title:789
+      //$LASTPOS=52000794;//user.Title:794
       i = 0;
       while(i<5) {
         {
-          //$LASTPOS=52000511;//user.Title:511
+          //$LASTPOS=52000821;//user.Title:821
           Tonyu.classes.user.Button.last.fillStyle="white";
-          //$LASTPOS=52000546;//user.Title:546
+          //$LASTPOS=52000857;//user.Title:857
           _this.update();
-          //$LASTPOS=52000560;//user.Title:560
+          //$LASTPOS=52000872;//user.Title:872
           Tonyu.classes.user.Button.last.fillStyle="gray";
-          //$LASTPOS=52000594;//user.Title:594
+          //$LASTPOS=52000907;//user.Title:907
           _this.update();
         }
         i++;
       }
-      //$LASTPOS=52000606;//user.Title:606
+      //$LASTPOS=52000921;//user.Title:921
       _this.loadPage(Tonyu.classes.user.Button.last.page);
     },
     fiber$main :function _trc_Title_f_main(_thread) {
@@ -3044,72 +3063,93 @@ Tonyu.klass.define({
       var __pc=0;
       var i;
       
-      //$LASTPOS=52000020;//user.Title:20
+      //$LASTPOS=52000022;//user.Title:22
       Tonyu.globals.$textPool=[];
-      //$LASTPOS=52000034;//user.Title:34
+      //$LASTPOS=52000037;//user.Title:37
       new Tonyu.classes.kernel.Actor({text: "RibbonMania",x: 235,y: 100,size: 50});
-      //$LASTPOS=52000085;//user.Title:85
+      //$LASTPOS=52000089;//user.Title:89
       new Tonyu.classes.kernel.Actor({text: "Great",x: 335,y: 150,size: 30,fillStyle: _this.color(255,155,0)});
-      //$LASTPOS=52000157;//user.Title:157
+      //$LASTPOS=52000162;//user.Title:162
       new Tonyu.classes.user.Flash;
-      //$LASTPOS=52000168;//user.Title:168
+      //$LASTPOS=52000174;//user.Title:174
+      _this.s=new Tonyu.classes.user.Button({text: "Sound "+(Tonyu.globals.$snd?"on":"off"),page: Tonyu.classes.user.Main,top: 220,fillStyle: _this.color(0,200,55)});
+      //$LASTPOS=52000269;//user.Title:269
       new Tonyu.classes.user.Button({text: "Game Start",page: Tonyu.classes.user.Main,top: 300,fillStyle: _this.color(0,150,255)});
-      //$LASTPOS=52000245;//user.Title:245
+      //$LASTPOS=52000347;//user.Title:347
       new Tonyu.classes.user.Button({text: "PlayBack",page: Tonyu.classes.user.PlayBackList,top: 380,fillStyle: _this.color(255,0,150)});
-      //$LASTPOS=52000328;//user.Title:328
-      Tonyu.classes.user.Button.last=null;
       
       _thread.enter(function _trc_Title_ent_main(_thread) {
         if (_thread.lastEx) __pc=_thread.catchPC;
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=52000346;//user.Title:346
+            //$LASTPOS=52000431;//user.Title:431
           case 1:
-            if (!(! Tonyu.classes.user.Button.last)) { __pc=3; break; }
-            //$LASTPOS=52000372;//user.Title:372
+            //$LASTPOS=52000450;//user.Title:450
+            Tonyu.classes.user.Button.last=null;
+            //$LASTPOS=52000473;//user.Title:473
+          case 2:
+            if (!(! Tonyu.classes.user.Button.last)) { __pc=4; break; }
+            //$LASTPOS=52000504;//user.Title:504
             if (Tonyu.globals.$touches[0].touched>60) {
-              //$LASTPOS=52000410;//user.Title:410
+              //$LASTPOS=52000547;//user.Title:547
               Tonyu.globals.$debug=true;
-              //$LASTPOS=52000431;//user.Title:431
+              //$LASTPOS=52000573;//user.Title:573
               _this.print("Enter debug mode");
               
             }
-            //$LASTPOS=52000468;//user.Title:468
+            //$LASTPOS=52000620;//user.Title:620
             _this.fiber$update(_thread);
-            __pc=2;return;
-          case 2:
-            
-            __pc=1;break;
+            __pc=3;return;
           case 3:
             
-            //$LASTPOS=52000480;//user.Title:480
-            //$LASTPOS=52000485;//user.Title:485
-            i = 0;;
+            __pc=2;break;
           case 4:
-            if (!(i<5)) { __pc=7; break; }
-            //$LASTPOS=52000511;//user.Title:511
-            Tonyu.classes.user.Button.last.fillStyle="white";
-            //$LASTPOS=52000546;//user.Title:546
-            _this.fiber$update(_thread);
-            __pc=5;return;
+            
+            //$LASTPOS=52000642;//user.Title:642
+            if (!(Tonyu.classes.user.Button.last!=_this.s)) { __pc=5; break; }
+            __pc=6; break;
+            
           case 5:
             
-            //$LASTPOS=52000560;//user.Title:560
-            Tonyu.classes.user.Button.last.fillStyle="gray";
-            //$LASTPOS=52000594;//user.Title:594
-            _this.fiber$update(_thread);
-            __pc=6;return;
+            //$LASTPOS=52000674;//user.Title:674
+            Tonyu.globals.$snd=! Tonyu.globals.$snd;
+            //$LASTPOS=52000691;//user.Title:691
+            _this.s.text="Sound "+(Tonyu.globals.$snd?"on":"off");
+            //$LASTPOS=52000734;//user.Title:734
+            Tonyu.globals.$sound.mute=! Tonyu.globals.$snd;
+            //$LASTPOS=52000758;//user.Title:758
+            Tonyu.globals.$sound.playSE(Tonyu.globals.$se_great);
+            __pc=1;break;
           case 6:
             
-            i++;
-            __pc=4;break;
+            //$LASTPOS=52000789;//user.Title:789
+            //$LASTPOS=52000794;//user.Title:794
+            i = 0;;
           case 7:
-            
-            //$LASTPOS=52000606;//user.Title:606
-            _this.fiber$loadPage(_thread, Tonyu.classes.user.Button.last.page);
+            if (!(i<5)) { __pc=10; break; }
+            //$LASTPOS=52000821;//user.Title:821
+            Tonyu.classes.user.Button.last.fillStyle="white";
+            //$LASTPOS=52000857;//user.Title:857
+            _this.fiber$update(_thread);
             __pc=8;return;
           case 8:
+            
+            //$LASTPOS=52000872;//user.Title:872
+            Tonyu.classes.user.Button.last.fillStyle="gray";
+            //$LASTPOS=52000907;//user.Title:907
+            _this.fiber$update(_thread);
+            __pc=9;return;
+          case 9:
+            
+            i++;
+            __pc=7;break;
+          case 10:
+            
+            //$LASTPOS=52000921;//user.Title:921
+            _this.fiber$loadPage(_thread, Tonyu.classes.user.Button.last.page);
+            __pc=11;return;
+          case 11:
             
             _thread.exit(_this);return;
           }
