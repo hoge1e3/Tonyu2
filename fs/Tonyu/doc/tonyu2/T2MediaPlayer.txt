@@ -9,6 +9,11 @@
 
 メニューのウィンドウ→[[音声リスト>sndres]]から追加します。
 
+**フィールド
+
+-mute
+--[[@cfrag true]]に設定すると、playBGMとplaySEを無効にします
+
 **メソッド
 
 -[[playBGM]]
