@@ -11,6 +11,8 @@
 
 **フィールド
 
+-available
+--サウンドが鳴らせる環境であれば[[@cfrag true]]を返します
 -mute
 --[[@cfrag true]]に設定すると、playBGMとplaySEを無効にします
 
