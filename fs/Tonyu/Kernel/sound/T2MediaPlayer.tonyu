@@ -43,8 +43,12 @@ native Tonyu;
     return data;
 }
 
+\available {
+    return !!T2MediaLib.context;
+}
 //@hoge1e3
 \loadFromProject(prj) {
+    if (!available) return;
     var r=prj.getResource();
     if (!r || !r.sounds) return;
     for (var s in r.sounds) {
