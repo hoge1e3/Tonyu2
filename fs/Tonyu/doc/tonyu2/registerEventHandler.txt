@@ -1,0 +1,19 @@
+[[EventMod]]
+
+*registerEventHandlerメソッド
+
+このオブジェクトにイベントハンドラを登録します
+
+**書式
+
+<<code
+registerEventHandler(eventType, handler)
+>>
+
+-eventType 
+--イベントの種類を表す文字列（[[on]]や[[sendEvent]]の第一引数に指定される値）を指定します
+-handler 
+--このイベントを処理するための[[EventHandler]]クラスを継承したオブジェクトを指定します
+--handler.target がこのオブジェクト自身を指します
+
+

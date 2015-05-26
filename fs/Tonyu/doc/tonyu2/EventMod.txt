@@ -6,3 +6,6 @@
 -[[on]]
 -[[waitEvent]]
 -[[sendEvent]]
+-[[registerEventHandler]]
+
+.

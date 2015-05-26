@@ -1,0 +1,52 @@
+[[registerEventHandler]] / [[EventMod]]
+
+*EventHandlerクラス
+
+特定のイベントタイプに対応するイベントハンドラを自作する場合に、このクラスを継承してください。
+
+**フィールド
+
+-target
+--このイベントハンドラが処理するイベントの送付先となるオブジェクトです。
+--[[registerEventHandler]]メソッドが呼び出されたオブジェクトを指します。
+
+**メソッド
+
+以下のメソッドをオーバーライドしてください。
+
+ここで登場する、[[@cfrag eventType]]は[[registerEventHandler]]でこのイベントハンドラを登録したときの第一引数を指します
+
+-addListenerメソッド
+-- [[@cfrag target]]で示さるオブジェクトに [[on]]([[@cfrag eventType]],...) または [[waitEvent]]([[@cfrag eventType]],...)が呼び出された時に呼び出されます。
+-- onが呼び出された場合、onに渡された引数の第２引数以降が引数に渡されます
+-- waitEventが呼び出された場合、waitEventに渡された引数の第２引数以降に、関数オブジェクトを１つ加えたものが引数に渡されます。この関数オブジェクトは、waitEventを呼び出した側に処理を再開させる際に呼び出してください。
+-- 戻り値には、removeという名前の関数オブジェクトを含むオブジェクトを返してください。この関数オブジェクトには、この[[on]]の呼出によって設定されたイベント処理を無効にする処理を記述します。
+-fireメソッド
+-- [[@cfrag target]]で示さるオブジェクトに [[sendEvent]]([[@cfrag eventType]],...)が呼び出された時に呼び出されます。[[sendEvent]]の第２引数以降が渡されます。
+-- sentEvent([[@cfrag eventType]],...)が呼ばれないようなイベントの場合、オーバーライドの必要はありません。
+
+*例
+
+<<code IntervalEventHandler.tonyu
+extends EventHandler;
+native setInterval;
+native clearInterval;
+
+\addListener(d, f) {
+    var t=setInterval(f, d);
+    return {
+        remove: \{
+            clearInterval(t);
+        }
+    };
+}
+>>
+
+<<code MyActor.tonyu
+registerEventHandler("interval", new IntervalEventHandler);
+on("interval",500) \{
+    x+=10;
+};
+>>
+
+.

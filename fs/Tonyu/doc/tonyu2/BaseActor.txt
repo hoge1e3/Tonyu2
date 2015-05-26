@@ -81,6 +81,7 @@ x,y,pの値をフィールドに書き込みます
 -[[on]]
 -[[waitEvent]]
 -[[sendEvent]]
+-[[registerEventHandler]]
 その他
 -[[loadPage]]
 -[[file]]

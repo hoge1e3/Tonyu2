@@ -53,19 +53,14 @@ native Tonyu;
     if (!r || !r.sounds) return;
     for (var s in r.sounds) {
          var name=s.name, url=Tonyu.Assets.resolve(s.url, prj.getDir());
-         /*
-         var ls=/^ls:(.*)/.exec(url);
-         if (ls) {
-            var f=prj.getDir().rel(ls[1]);
-            if (f.exists()) {
-                url=f.text();
-                $lastURL=url;
-            }
-         }*/
          Tonyu.setGlobal(name, name);
-         print("Loading Sound: "+name);
-         loadSE(name, url);
-         //loadBGM(name, url);
+         try {
+            print("Loading Sound: "+name);
+            loadSE(name, url);
+         } catch(e) {
+            print("Fail");
+            Tonyu.setGlobal(name, "ERROR");
+         }
     }
 }
 
