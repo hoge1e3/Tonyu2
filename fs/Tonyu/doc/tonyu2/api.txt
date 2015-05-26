@@ -6,25 +6,36 @@ Tonyu2で最初から使えるクラス群です．[[ファイルシステム>fs
 
 ※ほとんどのオブジェクトは、[[BaseActor]]に定義されている命令を利用できます。
 
+**基本クラス
 -[[Actor]]
 -[[BaseActor]]
--[[BodyActor]]
 -[[Boot]]
--[[ScaledCanvas]]
--[[Sprites]]
+-[[TQuery]]
+**物理運動
+-[[BodyActor]]
+**グラフィックス
 -[[Map]]
 -[[MathMod]]
--[[Pad]]
+-[[ScaledCanvas]]
+-[[Sprites]]
 -[[Panel]]
+**ユーザインタフェース
+-[[Pad]]
+**サウンド
 -[[T2MediaPlayer]]
--[[Tonyu1互換クラス>t1compats]]
+**イベント
+-[[EventHandler]]
+-[[EventMod]]
+**[[Tonyu1互換クラス>t1compats]]
 
 *グローバル変数
 
+-[[$Boot>Boot]]
 -[[$Screen>ScaledCanvas]]
 -[[$mouseX, $mouseY]]
 -[[$touches]]
 -[[$screenWidth,$screenHeight]]
+-[[$sound>T2MediaPlayer]]
 
 標準クラスの具体的な使い方は、[[用途別リファレンス]]を参照してください。
 

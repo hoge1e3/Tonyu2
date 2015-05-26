@@ -11,11 +11,11 @@
 </span><a id="line_marker_-17" name="line_marker_-17"></a><p></p><ul><li><a id="line_marker_-18" name="line_marker_-18"></a><span>addListenerメソッド</span><span>
 </span></li><a id="line_marker_-23" name="line_marker_-23"></a><ul><li><a id="line_marker_-19" name="line_marker_-19"></a><span> </span><code><span>target</span></code><span>で示さるオブジェクトに </span><a href="on.html">on</a><span>(</span><code><span>eventType</span></code><span>,...) または </span><a href="waitEvent.html">waitEvent</a><span>(</span><code><span>eventType</span></code><span>,...)が呼び出された時に呼び出されます。</span><span>
 </span></li><li><a id="line_marker_-20" name="line_marker_-20"></a><span> onが呼び出された場合、onに渡された引数の第２引数以降が引数に渡されます</span><span>
-</span></li><li><a id="line_marker_-21" name="line_marker_-21"></a><span> waitEventが呼び出された場合、waitEventに渡された引数の第２引数以降に、関数オブジェクトを１つ加えたものが引数に渡されます。この関数オブジェクトは、waitEventを呼び出した側に処理を再開させる際に呼び出してください。</span><span>
+</span></li><li><a id="line_marker_-21" name="line_marker_-21"></a><span> waitEventが呼び出された場合、waitEventに渡された引数の第２引数以降に、関数オブジェクトを１つ加えたものが引数に渡されます。この関数オブジェクトは、waitEventを呼び出した側に処理を再開させる際に呼び出してください。この呼出の第1引数がwaitEventの戻り値になります。</span><span>
 </span></li><li><a id="line_marker_-22" name="line_marker_-22"></a><span> 戻り値には、removeという名前の関数オブジェクトを含むオブジェクトを返してください。この関数オブジェクトには、この</span><a href="on.html">on</a><span>の呼出によって設定されたイベント処理を無効にする処理を記述します。</span><span>
 </span></li></ul><li><span>fireメソッド</span><span>
 </span></li><a id="line_marker_-26" name="line_marker_-26"></a><ul><li><a id="line_marker_-24" name="line_marker_-24"></a><span> </span><code><span>target</span></code><span>で示さるオブジェクトに </span><a href="sendEvent.html">sendEvent</a><span>(</span><code><span>eventType</span></code><span>,...)が呼び出された時に呼び出されます。</span><a href="sendEvent.html">sendEvent</a><span>の第２引数以降が渡されます。</span><span>
-</span></li><li><a id="line_marker_-25" name="line_marker_-25"></a><span> sentEvent(</span><code><span>eventType</span></code><span>,...)が呼ばれないようなイベントの場合、オーバーライドの必要はありません。</span><span>
+</span></li><li><a id="line_marker_-25" name="line_marker_-25"></a><span> sendEvent(</span><code><span>eventType</span></code><span>,...)が呼ばれないようなイベントの場合、オーバーライドの必要はありません。（下の例参照）</span><span>
 </span></li></ul></ul><p></p><h1><a id="line_marker_-27" name="line_marker_-27"></a><span>例</span></h1><a id="line_marker_-28" name="line_marker_-28"></a><p></p><a id="line_marker_-29" name="line_marker_-29"></a><div class="plist">IntervalEventHandler.tonyu</div><a id="line_marker_-42" name="line_marker_-42"></a><pre><a id="line_marker_-30" name="line_marker_-30"></a><span>extends EventHandler;</span><span>
 </span><a id="line_marker_-31" name="line_marker_-31"></a><span>native setInterval;</span><span>
 </span><a id="line_marker_-32" name="line_marker_-32"></a><span>native clearInterval;</span><span>
@@ -27,8 +27,8 @@
 </span><a id="line_marker_-39" name="line_marker_-39"></a><span>        }</span><span>
 </span><a id="line_marker_-40" name="line_marker_-40"></a><span>    };</span><span>
 </span><a id="line_marker_-41" name="line_marker_-41"></a><span>}</span><span>
-</span></pre><a id="line_marker_-43" name="line_marker_-43"></a><p></p><a id="line_marker_-44" name="line_marker_-44"></a><div class="plist">MyActor.tonyu</div><a id="line_marker_-49" name="line_marker_-49"></a><pre><a id="line_marker_-45" name="line_marker_-45"></a><span>registerEventHandler("interval", new IntervalEventHandler);</span><span>
-</span><a id="line_marker_-46" name="line_marker_-46"></a><span>on("interval",500) \{</span><span>
+</span></pre><a id="line_marker_-43" name="line_marker_-43"></a><p></p><a id="line_marker_-44" name="line_marker_-44"></a><div class="plist">MyActor.tonyu</div><a id="line_marker_-49" name="line_marker_-49"></a><pre><a id="line_marker_-45" name="line_marker_-45"></a><span>registerEventHandler("intervalMsec", new IntervalEventHandler);</span><span>
+</span><a id="line_marker_-46" name="line_marker_-46"></a><span>on("intervalMsec",500) \{</span><span>
 </span><a id="line_marker_-47" name="line_marker_-47"></a><span>    x+=10;</span><span>
 </span><a id="line_marker_-48" name="line_marker_-48"></a><span>};</span><span>
 </span></pre><a id="line_marker_-50" name="line_marker_-50"></a><p></p><a id="line_marker_-51" name="line_marker_-51"></a><span>.</span><span>
