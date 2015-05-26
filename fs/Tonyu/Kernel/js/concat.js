@@ -32,13 +32,13 @@ Tonyu.klass.define({
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       var k;
       var v;
-      var _it_1;
+      var _it_293;
       
       //$LASTPOS=1000182;//kernel.EventMod:182
-      _it_1=Tonyu.iterator(_this._eventHandlers,2);
-      while(_it_1.next()) {
-        k=_it_1[0];
-        v=_it_1[1];
+      _it_293=Tonyu.iterator(_this._eventHandlers,2);
+      while(_it_293.next()) {
+        k=_it_293[0];
+        v=_it_293[1];
         
         //$LASTPOS=1000224;//kernel.EventMod:224
         v.release();
@@ -715,16 +715,16 @@ Tonyu.klass.define({
     killThreadGroup :function _trc_ThreadGroupMod_killThreadGroup() {
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       var thread;
-      var _it_26;
+      var _it_318;
       var threadGroup;
-      var _it_27;
+      var _it_319;
       
       //$LASTPOS=6000201;//kernel.ThreadGroupMod:201
       if (_this.threads) {
         //$LASTPOS=6000225;//kernel.ThreadGroupMod:225
-        _it_26=Tonyu.iterator(_this.threads,1);
-        while(_it_26.next()) {
-          thread=_it_26[0];
+        _it_318=Tonyu.iterator(_this.threads,1);
+        while(_it_318.next()) {
+          thread=_it_318[0];
           
           //$LASTPOS=6000268;//kernel.ThreadGroupMod:268
           thread.kill();
@@ -735,9 +735,9 @@ Tonyu.klass.define({
       //$LASTPOS=6000306;//kernel.ThreadGroupMod:306
       if (_this.threadGroups) {
         //$LASTPOS=6000335;//kernel.ThreadGroupMod:335
-        _it_27=Tonyu.iterator(_this.threadGroups,1);
-        while(_it_27.next()) {
-          threadGroup=_it_27[0];
+        _it_319=Tonyu.iterator(_this.threadGroups,1);
+        while(_it_319.next()) {
+          threadGroup=_it_319[0];
           
           //$LASTPOS=6000388;//kernel.ThreadGroupMod:388
           threadGroup.killThreadGroup();
@@ -751,16 +751,16 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       var thread;
-      var _it_26;
+      var _it_318;
       var threadGroup;
-      var _it_27;
+      var _it_319;
       
       //$LASTPOS=6000201;//kernel.ThreadGroupMod:201
       if (_this.threads) {
         //$LASTPOS=6000225;//kernel.ThreadGroupMod:225
-        _it_26=Tonyu.iterator(_this.threads,1);
-        while(_it_26.next()) {
-          thread=_it_26[0];
+        _it_318=Tonyu.iterator(_this.threads,1);
+        while(_it_318.next()) {
+          thread=_it_318[0];
           
           //$LASTPOS=6000268;//kernel.ThreadGroupMod:268
           thread.kill();
@@ -771,9 +771,9 @@ Tonyu.klass.define({
       //$LASTPOS=6000306;//kernel.ThreadGroupMod:306
       if (_this.threadGroups) {
         //$LASTPOS=6000335;//kernel.ThreadGroupMod:335
-        _it_27=Tonyu.iterator(_this.threadGroups,1);
-        while(_it_27.next()) {
-          threadGroup=_it_27[0];
+        _it_319=Tonyu.iterator(_this.threadGroups,1);
+        while(_it_319.next()) {
+          threadGroup=_it_319[0];
           
           //$LASTPOS=6000388;//kernel.ThreadGroupMod:388
           threadGroup.killThreadGroup();
@@ -949,7 +949,7 @@ Tonyu.klass.define({
       var values;
       var i;
       var e;
-      var _it_33;
+      var _it_325;
       
       //$LASTPOS=8000551;//kernel.TQuery:551
       values;
@@ -985,9 +985,9 @@ Tonyu.klass.define({
       //$LASTPOS=8000912;//kernel.TQuery:912
       if (values) {
         //$LASTPOS=8000934;//kernel.TQuery:934
-        _it_33=Tonyu.iterator(_this,1);
-        while(_it_33.next()) {
-          e=_it_33[0];
+        _it_325=Tonyu.iterator(_this,1);
+        while(_it_325.next()) {
+          e=_it_325[0];
           
           //$LASTPOS=8000968;//kernel.TQuery:968
           e.extend(values);
@@ -1003,7 +1003,7 @@ Tonyu.klass.define({
       var values;
       var i;
       var e;
-      var _it_33;
+      var _it_325;
       
       //$LASTPOS=8000551;//kernel.TQuery:551
       values;
@@ -1041,9 +1041,9 @@ Tonyu.klass.define({
       //$LASTPOS=8000912;//kernel.TQuery:912
       if (values) {
         //$LASTPOS=8000934;//kernel.TQuery:934
-        _it_33=Tonyu.iterator(_this,1);
-        while(_it_33.next()) {
-          e=_it_33[0];
+        _it_325=Tonyu.iterator(_this,1);
+        while(_it_325.next()) {
+          e=_it_325[0];
           
           //$LASTPOS=8000968;//kernel.TQuery:968
           e.extend(values);
@@ -1096,7 +1096,7 @@ Tonyu.klass.define({
       var res;
       var reso;
       var o;
-      var _it_39;
+      var _it_331;
       var v;
       
       //$LASTPOS=8001154;//kernel.TQuery:1154
@@ -1104,9 +1104,9 @@ Tonyu.klass.define({
       //$LASTPOS=8001181;//kernel.TQuery:1181
       res;reso = new Tonyu.classes.kernel.TQuery;
       //$LASTPOS=8001210;//kernel.TQuery:1210
-      _it_39=Tonyu.iterator(_this,1);
-      while(_it_39.next()) {
-        o=_it_39[0];
+      _it_331=Tonyu.iterator(_this,1);
+      while(_it_331.next()) {
+        o=_it_331[0];
         
         //$LASTPOS=8001240;//kernel.TQuery:1240
         v = f(o);
@@ -1135,7 +1135,7 @@ Tonyu.klass.define({
       var res;
       var reso;
       var o;
-      var _it_39;
+      var _it_331;
       var v;
       
       //$LASTPOS=8001154;//kernel.TQuery:1154
@@ -1143,9 +1143,9 @@ Tonyu.klass.define({
       //$LASTPOS=8001181;//kernel.TQuery:1181
       res;reso = new Tonyu.classes.kernel.TQuery;
       //$LASTPOS=8001210;//kernel.TQuery:1210
-      _it_39=Tonyu.iterator(_this,1);
-      while(_it_39.next()) {
-        o=_it_39[0];
+      _it_331=Tonyu.iterator(_this,1);
+      while(_it_331.next()) {
+        o=_it_331[0];
         
         //$LASTPOS=8001240;//kernel.TQuery:1240
         v = f(o);
@@ -1175,7 +1175,7 @@ Tonyu.klass.define({
       var res;
       var reso;
       var o;
-      var _it_46;
+      var _it_338;
       var v;
       
       //$LASTPOS=8001424;//kernel.TQuery:1424
@@ -1183,9 +1183,9 @@ Tonyu.klass.define({
       //$LASTPOS=8001451;//kernel.TQuery:1451
       res;reso = new Tonyu.classes.kernel.TQuery;
       //$LASTPOS=8001480;//kernel.TQuery:1480
-      _it_46=Tonyu.iterator(_this,1);
-      while(_it_46.next()) {
-        o=_it_46[0];
+      _it_338=Tonyu.iterator(_this,1);
+      while(_it_338.next()) {
+        o=_it_338[0];
         
         //$LASTPOS=8001510;//kernel.TQuery:1510
         v = f(o);
@@ -1214,7 +1214,7 @@ Tonyu.klass.define({
       var res;
       var reso;
       var o;
-      var _it_46;
+      var _it_338;
       var v;
       
       //$LASTPOS=8001424;//kernel.TQuery:1424
@@ -1222,9 +1222,9 @@ Tonyu.klass.define({
       //$LASTPOS=8001451;//kernel.TQuery:1451
       res;reso = new Tonyu.classes.kernel.TQuery;
       //$LASTPOS=8001480;//kernel.TQuery:1480
-      _it_46=Tonyu.iterator(_this,1);
-      while(_it_46.next()) {
-        o=_it_46[0];
+      _it_338=Tonyu.iterator(_this,1);
+      while(_it_338.next()) {
+        o=_it_338[0];
         
         //$LASTPOS=8001510;//kernel.TQuery:1510
         v = f(o);
@@ -1411,7 +1411,7 @@ Tonyu.klass.define({
       var f;
       var res;
       var o;
-      var _it_57;
+      var _it_349;
       var v;
       
       //$LASTPOS=8002210;//kernel.TQuery:2210
@@ -1419,9 +1419,9 @@ Tonyu.klass.define({
       //$LASTPOS=8002237;//kernel.TQuery:2237
       res;
       //$LASTPOS=8002250;//kernel.TQuery:2250
-      _it_57=Tonyu.iterator(_this,1);
-      while(_it_57.next()) {
-        o=_it_57[0];
+      _it_349=Tonyu.iterator(_this,1);
+      while(_it_349.next()) {
+        o=_it_349[0];
         
         //$LASTPOS=8002280;//kernel.TQuery:2280
         v = f(o);
@@ -1441,7 +1441,7 @@ Tonyu.klass.define({
       var f;
       var res;
       var o;
-      var _it_57;
+      var _it_349;
       var v;
       
       //$LASTPOS=8002210;//kernel.TQuery:2210
@@ -1449,9 +1449,9 @@ Tonyu.klass.define({
       //$LASTPOS=8002237;//kernel.TQuery:2237
       res;
       //$LASTPOS=8002250;//kernel.TQuery:2250
-      _it_57=Tonyu.iterator(_this,1);
-      while(_it_57.next()) {
-        o=_it_57[0];
+      _it_349=Tonyu.iterator(_this,1);
+      while(_it_349.next()) {
+        o=_it_349[0];
         
         //$LASTPOS=8002280;//kernel.TQuery:2280
         v = f(o);
@@ -1472,7 +1472,7 @@ Tonyu.klass.define({
       var f;
       var res;
       var o;
-      var _it_63;
+      var _it_355;
       var v;
       
       //$LASTPOS=8002371;//kernel.TQuery:2371
@@ -1480,9 +1480,9 @@ Tonyu.klass.define({
       //$LASTPOS=8002398;//kernel.TQuery:2398
       res;
       //$LASTPOS=8002411;//kernel.TQuery:2411
-      _it_63=Tonyu.iterator(_this,1);
-      while(_it_63.next()) {
-        o=_it_63[0];
+      _it_355=Tonyu.iterator(_this,1);
+      while(_it_355.next()) {
+        o=_it_355[0];
         
         //$LASTPOS=8002441;//kernel.TQuery:2441
         v = f(o);
@@ -1502,7 +1502,7 @@ Tonyu.klass.define({
       var f;
       var res;
       var o;
-      var _it_63;
+      var _it_355;
       var v;
       
       //$LASTPOS=8002371;//kernel.TQuery:2371
@@ -1510,9 +1510,9 @@ Tonyu.klass.define({
       //$LASTPOS=8002398;//kernel.TQuery:2398
       res;
       //$LASTPOS=8002411;//kernel.TQuery:2411
-      _it_63=Tonyu.iterator(_this,1);
-      while(_it_63.next()) {
-        o=_it_63[0];
+      _it_355=Tonyu.iterator(_this,1);
+      while(_it_355.next()) {
+        o=_it_355[0];
         
         //$LASTPOS=8002441;//kernel.TQuery:2441
         v = f(o);
@@ -1567,14 +1567,14 @@ Tonyu.klass.define({
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       var no;
       var o;
-      var _it_69;
+      var _it_361;
       
       //$LASTPOS=8002603;//kernel.TQuery:2603
       no = new Tonyu.classes.kernel.TQuery;
       //$LASTPOS=8002626;//kernel.TQuery:2626
-      _it_69=Tonyu.iterator(_this,1);
-      while(_it_69.next()) {
-        o=_it_69[0];
+      _it_361=Tonyu.iterator(_this,1);
+      while(_it_361.next()) {
+        o=_it_361[0];
         
         //$LASTPOS=8002656;//kernel.TQuery:2656
         if (f(o)) {
@@ -1591,14 +1591,14 @@ Tonyu.klass.define({
       var __pc=0;
       var no;
       var o;
-      var _it_69;
+      var _it_361;
       
       //$LASTPOS=8002603;//kernel.TQuery:2603
       no = new Tonyu.classes.kernel.TQuery;
       //$LASTPOS=8002626;//kernel.TQuery:2626
-      _it_69=Tonyu.iterator(_this,1);
-      while(_it_69.next()) {
-        o=_it_69[0];
+      _it_361=Tonyu.iterator(_this,1);
+      while(_it_361.next()) {
+        o=_it_361[0];
         
         //$LASTPOS=8002656;//kernel.TQuery:2656
         if (f(o)) {
@@ -1616,7 +1616,7 @@ Tonyu.klass.define({
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       var res;
       var o;
-      var _it_73;
+      var _it_365;
       var f;
       
       //$LASTPOS=8002727;//kernel.TQuery:2727
@@ -1627,9 +1627,9 @@ Tonyu.klass.define({
         args=[];
       }
       //$LASTPOS=8002764;//kernel.TQuery:2764
-      _it_73=Tonyu.iterator(_this,1);
-      while(_it_73.next()) {
-        o=_it_73[0];
+      _it_365=Tonyu.iterator(_this,1);
+      while(_it_365.next()) {
+        o=_it_365[0];
         
         //$LASTPOS=8002794;//kernel.TQuery:2794
         f = o[name];
@@ -1649,7 +1649,7 @@ Tonyu.klass.define({
       var __pc=0;
       var res;
       var o;
-      var _it_73;
+      var _it_365;
       var f;
       
       //$LASTPOS=8002727;//kernel.TQuery:2727
@@ -1660,9 +1660,9 @@ Tonyu.klass.define({
         args=[];
       }
       //$LASTPOS=8002764;//kernel.TQuery:2764
-      _it_73=Tonyu.iterator(_this,1);
-      while(_it_73.next()) {
-        o=_it_73[0];
+      _it_365=Tonyu.iterator(_this,1);
+      while(_it_365.next()) {
+        o=_it_365[0];
         
         //$LASTPOS=8002794;//kernel.TQuery:2794
         f = o[name];
@@ -2250,12 +2250,12 @@ Tonyu.klass.define({
     update :function _trc_InputDevice_update() {
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       var i;
-      var _it_107;
+      var _it_399;
       
       //$LASTPOS=9002664;//kernel.InputDevice:2664
-      _it_107=Tonyu.iterator(Tonyu.globals.$touches,1);
-      while(_it_107.next()) {
-        i=_it_107[0];
+      _it_399=Tonyu.iterator(Tonyu.globals.$touches,1);
+      while(_it_399.next()) {
+        i=_it_399[0];
         
         //$LASTPOS=9002699;//kernel.InputDevice:2699
         if (i.touched>0) {
@@ -2276,12 +2276,12 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       var i;
-      var _it_107;
+      var _it_399;
       
       //$LASTPOS=9002664;//kernel.InputDevice:2664
-      _it_107=Tonyu.iterator(Tonyu.globals.$touches,1);
-      while(_it_107.next()) {
-        i=_it_107[0];
+      _it_399=Tonyu.iterator(Tonyu.globals.$touches,1);
+      while(_it_399.next()) {
+        i=_it_399[0];
         
         //$LASTPOS=9002699;//kernel.InputDevice:2699
         if (i.touched>0) {
@@ -2514,12 +2514,12 @@ Tonyu.klass.define({
     update :function _trc_Keys_update() {
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       var i;
-      var _it_115;
+      var _it_407;
       
       //$LASTPOS=10001097;//kernel.Keys:1097
-      _it_115=Tonyu.iterator(_this.stats,1);
-      while(_it_115.next()) {
-        i=_it_115[0];
+      _it_407=Tonyu.iterator(_this.stats,1);
+      while(_it_407.next()) {
+        i=_it_407[0];
         
         //$LASTPOS=10001128;//kernel.Keys:1128
         if (_this.stats[i]>0) {
@@ -2540,12 +2540,12 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       var i;
-      var _it_115;
+      var _it_407;
       
       //$LASTPOS=10001097;//kernel.Keys:1097
-      _it_115=Tonyu.iterator(_this.stats,1);
-      while(_it_115.next()) {
-        i=_it_115[0];
+      _it_407=Tonyu.iterator(_this.stats,1);
+      while(_it_407.next()) {
+        i=_it_407[0];
         
         //$LASTPOS=10001128;//kernel.Keys:1128
         if (_this.stats[i]>0) {
@@ -3613,7 +3613,7 @@ Tonyu.klass.define({
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       var t;
       var h;
-      var _it_142;
+      var _it_434;
       
       //$LASTPOS=12000448;//kernel.EventHandler:448
       if (_this.released) {
@@ -3622,9 +3622,9 @@ Tonyu.klass.define({
       //$LASTPOS=12000475;//kernel.EventHandler:475
       t;
       //$LASTPOS=12000487;//kernel.EventHandler:487
-      _it_142=Tonyu.iterator(_this.listeners,1);
-      while(_it_142.next()) {
-        h=_it_142[0];
+      _it_434=Tonyu.iterator(_this.listeners,1);
+      while(_it_434.next()) {
+        h=_it_434[0];
         
         //$LASTPOS=12000523;//kernel.EventHandler:523
         if (h["fiber"]) {
@@ -3649,7 +3649,7 @@ Tonyu.klass.define({
       var __pc=0;
       var t;
       var h;
-      var _it_142;
+      var _it_434;
       
       //$LASTPOS=12000448;//kernel.EventHandler:448
       if (_this.released) {
@@ -3659,9 +3659,9 @@ Tonyu.klass.define({
       //$LASTPOS=12000475;//kernel.EventHandler:475
       t;
       //$LASTPOS=12000487;//kernel.EventHandler:487
-      _it_142=Tonyu.iterator(_this.listeners,1);
-      while(_it_142.next()) {
-        h=_it_142[0];
+      _it_434=Tonyu.iterator(_this.listeners,1);
+      while(_it_434.next()) {
+        h=_it_434[0];
         
         //$LASTPOS=12000523;//kernel.EventHandler:523
         if (h["fiber"]) {
@@ -4297,15 +4297,15 @@ Tonyu.klass.define({
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       var k;
       var v;
-      var _it_147;
+      var _it_439;
       
       //$LASTPOS=15000322;//kernel.PlayMod:322
       if (Tonyu.globals.$MMLS) {
         //$LASTPOS=15000343;//kernel.PlayMod:343
-        _it_147=Tonyu.iterator(Tonyu.globals.$MMLS,2);
-        while(_it_147.next()) {
-          k=_it_147[0];
-          v=_it_147[1];
+        _it_439=Tonyu.iterator(Tonyu.globals.$MMLS,2);
+        while(_it_439.next()) {
+          k=_it_439[0];
+          v=_it_439[1];
           
           //$LASTPOS=15000379;//kernel.PlayMod:379
           v.stop();
@@ -4752,12 +4752,12 @@ Tonyu.klass.define({
     stepsAll :function _trc_Scheduler_stepsAll() {
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       var t;
-      var _it_162;
+      var _it_454;
       
       //$LASTPOS=18000449;//kernel.Scheduler:449
-      _it_162=Tonyu.iterator(_this.cur,1);
-      while(_it_162.next()) {
-        t=_it_162[0];
+      _it_454=Tonyu.iterator(_this.cur,1);
+      while(_it_454.next()) {
+        t=_it_454[0];
         
         //$LASTPOS=18000479;//kernel.Scheduler:479
         t.steps();
@@ -4779,12 +4779,12 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       var t;
-      var _it_162;
+      var _it_454;
       
       //$LASTPOS=18000449;//kernel.Scheduler:449
-      _it_162=Tonyu.iterator(_this.cur,1);
-      while(_it_162.next()) {
-        t=_it_162[0];
+      _it_454=Tonyu.iterator(_this.cur,1);
+      while(_it_454.next()) {
+        t=_it_454[0];
         
         //$LASTPOS=18000479;//kernel.Scheduler:479
         t.steps();
@@ -8313,7 +8313,7 @@ Tonyu.klass.define({
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       var r;
       var s;
-      var _it_252;
+      var _it_544;
       var name;
       var url;
       var e;
@@ -8329,9 +8329,9 @@ Tonyu.klass.define({
         return _this;
       }
       //$LASTPOS=27000974;//kernel.T2MediaPlayer:974
-      _it_252=Tonyu.iterator(r.sounds,1);
-      while(_it_252.next()) {
-        s=_it_252[0];
+      _it_544=Tonyu.iterator(r.sounds,1);
+      while(_it_544.next()) {
+        s=_it_544[0];
         
         //$LASTPOS=27001010;//kernel.T2MediaPlayer:1010
         name = s.name;url = Tonyu.Assets.resolve(s.url,prj.getDir());
@@ -8339,14 +8339,14 @@ Tonyu.klass.define({
         Tonyu.setGlobal(name,name);
         try {
           //$LASTPOS=27001142;//kernel.T2MediaPlayer:1142
-          _this.print("Loading Sound: "+name);
-          //$LASTPOS=27001186;//kernel.T2MediaPlayer:1186
+          _this.print("Loading Sound2: "+name);
+          //$LASTPOS=27001187;//kernel.T2MediaPlayer:1187
           _this.loadSE(name,url);
           
         } catch (e) {
-          //$LASTPOS=27001241;//kernel.T2MediaPlayer:1241
+          //$LASTPOS=27001242;//kernel.T2MediaPlayer:1242
           _this.print("Fail");
-          //$LASTPOS=27001269;//kernel.T2MediaPlayer:1269
+          //$LASTPOS=27001270;//kernel.T2MediaPlayer:1270
           Tonyu.setGlobal(name,"ERROR");
           
         }
@@ -8359,7 +8359,7 @@ Tonyu.klass.define({
       var __pc=0;
       var r;
       var s;
-      var _it_252;
+      var _it_544;
       var name;
       var url;
       var e;
@@ -8383,10 +8383,10 @@ Tonyu.klass.define({
           switch (__pc) {
           case 0:
             //$LASTPOS=27000974;//kernel.T2MediaPlayer:974
-            _it_252=Tonyu.iterator(r.sounds,1);
+            _it_544=Tonyu.iterator(r.sounds,1);
           case 1:
-            if (!(_it_252.next())) { __pc=5; break; }
-            s=_it_252[0];
+            if (!(_it_544.next())) { __pc=5; break; }
+            s=_it_544[0];
             
             //$LASTPOS=27001010;//kernel.T2MediaPlayer:1010
             name = s.name;url = Tonyu.Assets.resolve(s.url,prj.getDir());
@@ -8394,8 +8394,8 @@ Tonyu.klass.define({
             Tonyu.setGlobal(name,name);
             _thread.enterTry(3);
             //$LASTPOS=27001142;//kernel.T2MediaPlayer:1142
-            _this.print("Loading Sound: "+name);
-            //$LASTPOS=27001186;//kernel.T2MediaPlayer:1186
+            _this.print("Loading Sound2: "+name);
+            //$LASTPOS=27001187;//kernel.T2MediaPlayer:1187
             _this.fiber$loadSE(_thread, name, url);
             __pc=2;return;
           case 2:
@@ -8405,9 +8405,9 @@ Tonyu.klass.define({
             e=_thread.startCatch();
             _thread.exitTry();
             {
-              //$LASTPOS=27001241;//kernel.T2MediaPlayer:1241
+              //$LASTPOS=27001242;//kernel.T2MediaPlayer:1242
               _this.print("Fail");
-              //$LASTPOS=27001269;//kernel.T2MediaPlayer:1269
+              //$LASTPOS=27001270;//kernel.T2MediaPlayer:1270
               Tonyu.setGlobal(name,"ERROR");
             }
           case 4:
@@ -8423,23 +8423,23 @@ Tonyu.klass.define({
     playSE :function _trc_T2MediaPlayer_playSE(idx,vol,rate,offset,loop,loopStart,loopEnd) {
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       
-      //$LASTPOS=27001407;//kernel.T2MediaPlayer:1407
+      //$LASTPOS=27001408;//kernel.T2MediaPlayer:1408
       if (_this.mute) {
         return _this;
       }
-      //$LASTPOS=27001466;//kernel.T2MediaPlayer:1466
+      //$LASTPOS=27001467;//kernel.T2MediaPlayer:1467
       if (vol==null) {
-        //$LASTPOS=27001483;//kernel.T2MediaPlayer:1483
+        //$LASTPOS=27001484;//kernel.T2MediaPlayer:1484
         vol=128;
       }
-      //$LASTPOS=27001572;//kernel.T2MediaPlayer:1572
+      //$LASTPOS=27001573;//kernel.T2MediaPlayer:1573
       if (vol<0) {
-        //$LASTPOS=27001592;//kernel.T2MediaPlayer:1592
+        //$LASTPOS=27001593;//kernel.T2MediaPlayer:1593
         vol=0;
       } else {
-        //$LASTPOS=27001613;//kernel.T2MediaPlayer:1613
+        //$LASTPOS=27001614;//kernel.T2MediaPlayer:1614
         if (vol>128) {
-          //$LASTPOS=27001628;//kernel.T2MediaPlayer:1628
+          //$LASTPOS=27001629;//kernel.T2MediaPlayer:1629
           vol=128;
         }
       }
@@ -8479,15 +8479,15 @@ Tonyu.klass.define({
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       var data;
       
-      //$LASTPOS=27001919;//kernel.T2MediaPlayer:1919
+      //$LASTPOS=27001920;//kernel.T2MediaPlayer:1920
       T2MediaLib.loadBGM(idx,src);
-      //$LASTPOS=27001979;//kernel.T2MediaPlayer:1979
+      //$LASTPOS=27001980;//kernel.T2MediaPlayer:1980
       data = T2MediaLib.getBGMData(idx);
-      //$LASTPOS=27002023;//kernel.T2MediaPlayer:2023
+      //$LASTPOS=27002024;//kernel.T2MediaPlayer:2024
       while (data==null) {
-        //$LASTPOS=27002055;//kernel.T2MediaPlayer:2055
+        //$LASTPOS=27002056;//kernel.T2MediaPlayer:2056
         _this.update();
-        //$LASTPOS=27002074;//kernel.T2MediaPlayer:2074
+        //$LASTPOS=27002075;//kernel.T2MediaPlayer:2075
         data=T2MediaLib.getBGMData(idx);
         
       }
@@ -8499,9 +8499,9 @@ Tonyu.klass.define({
       var __pc=0;
       var data;
       
-      //$LASTPOS=27001919;//kernel.T2MediaPlayer:1919
+      //$LASTPOS=27001920;//kernel.T2MediaPlayer:1920
       T2MediaLib.loadBGM(idx,src);
-      //$LASTPOS=27001979;//kernel.T2MediaPlayer:1979
+      //$LASTPOS=27001980;//kernel.T2MediaPlayer:1980
       data = T2MediaLib.getBGMData(idx);
       
       _thread.enter(function _trc_T2MediaPlayer_ent_loadBGM(_thread) {
@@ -8509,15 +8509,15 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=27002023;//kernel.T2MediaPlayer:2023
+            //$LASTPOS=27002024;//kernel.T2MediaPlayer:2024
           case 1:
             if (!(data==null)) { __pc=3; break; }
-            //$LASTPOS=27002055;//kernel.T2MediaPlayer:2055
+            //$LASTPOS=27002056;//kernel.T2MediaPlayer:2056
             _this.fiber$update(_thread);
             __pc=2;return;
           case 2:
             
-            //$LASTPOS=27002074;//kernel.T2MediaPlayer:2074
+            //$LASTPOS=27002075;//kernel.T2MediaPlayer:2075
             data=T2MediaLib.getBGMData(idx);
             __pc=1;break;
           case 3:
@@ -8531,18 +8531,18 @@ Tonyu.klass.define({
     playBGM :function _trc_T2MediaPlayer_playBGM(idx,loop,offset,loopStart,loopEnd) {
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       
-      //$LASTPOS=27002195;//kernel.T2MediaPlayer:2195
+      //$LASTPOS=27002196;//kernel.T2MediaPlayer:2196
       if (_this.mute) {
         return _this;
       }
-      //$LASTPOS=27002218;//kernel.T2MediaPlayer:2218
+      //$LASTPOS=27002219;//kernel.T2MediaPlayer:2219
       if (loop===null) {
-        //$LASTPOS=27002237;//kernel.T2MediaPlayer:2237
+        //$LASTPOS=27002238;//kernel.T2MediaPlayer:2238
         loop=false;
       }
-      //$LASTPOS=27002256;//kernel.T2MediaPlayer:2256
+      //$LASTPOS=27002257;//kernel.T2MediaPlayer:2257
       if (offset===null) {
-        //$LASTPOS=27002277;//kernel.T2MediaPlayer:2277
+        //$LASTPOS=27002278;//kernel.T2MediaPlayer:2278
         offset=0;
       }
       return T2MediaLib.playBGM(0,idx,loop,offset,loopStart,loopEnd);
@@ -8552,19 +8552,19 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=27002195;//kernel.T2MediaPlayer:2195
+      //$LASTPOS=27002196;//kernel.T2MediaPlayer:2196
       if (_this.mute) {
         _thread.retVal=_this;return;
         
       }
-      //$LASTPOS=27002218;//kernel.T2MediaPlayer:2218
+      //$LASTPOS=27002219;//kernel.T2MediaPlayer:2219
       if (loop===null) {
-        //$LASTPOS=27002237;//kernel.T2MediaPlayer:2237
+        //$LASTPOS=27002238;//kernel.T2MediaPlayer:2238
         loop=false;
       }
-      //$LASTPOS=27002256;//kernel.T2MediaPlayer:2256
+      //$LASTPOS=27002257;//kernel.T2MediaPlayer:2257
       if (offset===null) {
-        //$LASTPOS=27002277;//kernel.T2MediaPlayer:2277
+        //$LASTPOS=27002278;//kernel.T2MediaPlayer:2278
         offset=0;
       }
       _thread.retVal=T2MediaLib.playBGM(0,idx,loop,offset,loopStart,loopEnd);return;
@@ -8620,16 +8620,16 @@ Tonyu.klass.define({
     setBGMVolume :function _trc_T2MediaPlayer_setBGMVolume(vol) {
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       
-      //$LASTPOS=27002563;//kernel.T2MediaPlayer:2563
+      //$LASTPOS=27002564;//kernel.T2MediaPlayer:2564
       vol=vol/128;
-      //$LASTPOS=27002658;//kernel.T2MediaPlayer:2658
+      //$LASTPOS=27002659;//kernel.T2MediaPlayer:2659
       if (vol>1) {
-        //$LASTPOS=27002678;//kernel.T2MediaPlayer:2678
+        //$LASTPOS=27002679;//kernel.T2MediaPlayer:2679
         vol=1;
       } else {
-        //$LASTPOS=27002699;//kernel.T2MediaPlayer:2699
+        //$LASTPOS=27002700;//kernel.T2MediaPlayer:2700
         if (vol<0) {
-          //$LASTPOS=27002714;//kernel.T2MediaPlayer:2714
+          //$LASTPOS=27002715;//kernel.T2MediaPlayer:2715
           vol=0;
         }
       }
@@ -8640,16 +8640,16 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=27002563;//kernel.T2MediaPlayer:2563
+      //$LASTPOS=27002564;//kernel.T2MediaPlayer:2564
       vol=vol/128;
-      //$LASTPOS=27002658;//kernel.T2MediaPlayer:2658
+      //$LASTPOS=27002659;//kernel.T2MediaPlayer:2659
       if (vol>1) {
-        //$LASTPOS=27002678;//kernel.T2MediaPlayer:2678
+        //$LASTPOS=27002679;//kernel.T2MediaPlayer:2679
         vol=1;
       } else {
-        //$LASTPOS=27002699;//kernel.T2MediaPlayer:2699
+        //$LASTPOS=27002700;//kernel.T2MediaPlayer:2700
         if (vol<0) {
-          //$LASTPOS=27002714;//kernel.T2MediaPlayer:2714
+          //$LASTPOS=27002715;//kernel.T2MediaPlayer:2715
           vol=0;
         }
       }
@@ -8721,14 +8721,14 @@ Tonyu.klass.define({
     playBGMID :function _trc_T2MediaPlayer_playBGMID(id,idx,loop,offset,loopStart,loopEnd) {
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       
-      //$LASTPOS=27003218;//kernel.T2MediaPlayer:3218
+      //$LASTPOS=27003219;//kernel.T2MediaPlayer:3219
       if (loop===null) {
-        //$LASTPOS=27003237;//kernel.T2MediaPlayer:3237
+        //$LASTPOS=27003238;//kernel.T2MediaPlayer:3238
         loop=false;
       }
-      //$LASTPOS=27003256;//kernel.T2MediaPlayer:3256
+      //$LASTPOS=27003257;//kernel.T2MediaPlayer:3257
       if (offset===null) {
-        //$LASTPOS=27003277;//kernel.T2MediaPlayer:3277
+        //$LASTPOS=27003278;//kernel.T2MediaPlayer:3278
         offset=0;
       }
       return T2MediaLib.playBGM(id,idx,loop,offset,loopStart,loopEnd);
@@ -8738,14 +8738,14 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=27003218;//kernel.T2MediaPlayer:3218
+      //$LASTPOS=27003219;//kernel.T2MediaPlayer:3219
       if (loop===null) {
-        //$LASTPOS=27003237;//kernel.T2MediaPlayer:3237
+        //$LASTPOS=27003238;//kernel.T2MediaPlayer:3238
         loop=false;
       }
-      //$LASTPOS=27003256;//kernel.T2MediaPlayer:3256
+      //$LASTPOS=27003257;//kernel.T2MediaPlayer:3257
       if (offset===null) {
-        //$LASTPOS=27003277;//kernel.T2MediaPlayer:3277
+        //$LASTPOS=27003278;//kernel.T2MediaPlayer:3278
         offset=0;
       }
       _thread.retVal=T2MediaLib.playBGM(id,idx,loop,offset,loopStart,loopEnd);return;
@@ -8801,16 +8801,16 @@ Tonyu.klass.define({
     setBGMVolumeID :function _trc_T2MediaPlayer_setBGMVolumeID(id,vol) {
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       
-      //$LASTPOS=27003585;//kernel.T2MediaPlayer:3585
+      //$LASTPOS=27003586;//kernel.T2MediaPlayer:3586
       vol=vol/128;
-      //$LASTPOS=27003680;//kernel.T2MediaPlayer:3680
+      //$LASTPOS=27003681;//kernel.T2MediaPlayer:3681
       if (vol>1) {
-        //$LASTPOS=27003700;//kernel.T2MediaPlayer:3700
+        //$LASTPOS=27003701;//kernel.T2MediaPlayer:3701
         vol=1;
       } else {
-        //$LASTPOS=27003721;//kernel.T2MediaPlayer:3721
+        //$LASTPOS=27003722;//kernel.T2MediaPlayer:3722
         if (vol<0) {
-          //$LASTPOS=27003736;//kernel.T2MediaPlayer:3736
+          //$LASTPOS=27003737;//kernel.T2MediaPlayer:3737
           vol=0;
         }
       }
@@ -8821,16 +8821,16 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=27003585;//kernel.T2MediaPlayer:3585
+      //$LASTPOS=27003586;//kernel.T2MediaPlayer:3586
       vol=vol/128;
-      //$LASTPOS=27003680;//kernel.T2MediaPlayer:3680
+      //$LASTPOS=27003681;//kernel.T2MediaPlayer:3681
       if (vol>1) {
-        //$LASTPOS=27003700;//kernel.T2MediaPlayer:3700
+        //$LASTPOS=27003701;//kernel.T2MediaPlayer:3701
         vol=1;
       } else {
-        //$LASTPOS=27003721;//kernel.T2MediaPlayer:3721
+        //$LASTPOS=27003722;//kernel.T2MediaPlayer:3722
         if (vol<0) {
-          //$LASTPOS=27003736;//kernel.T2MediaPlayer:3736
+          //$LASTPOS=27003737;//kernel.T2MediaPlayer:3737
           vol=0;
         }
       }
@@ -8902,7 +8902,7 @@ Tonyu.klass.define({
     allStopBGM :function _trc_T2MediaPlayer_allStopBGM() {
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       
-      //$LASTPOS=27004196;//kernel.T2MediaPlayer:4196
+      //$LASTPOS=27004197;//kernel.T2MediaPlayer:4197
       T2MediaLib.allStopBGM();
     },
     fiber$allStopBGM :function _trc_T2MediaPlayer_f_allStopBGM(_thread) {
@@ -8910,7 +8910,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=27004196;//kernel.T2MediaPlayer:4196
+      //$LASTPOS=27004197;//kernel.T2MediaPlayer:4197
       T2MediaLib.allStopBGM();
       
       _thread.retVal=_this;return;
@@ -8918,11 +8918,11 @@ Tonyu.klass.define({
     loadAudio :function _trc_T2MediaPlayer_loadAudio(idx,src) {
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       
-      //$LASTPOS=27004275;//kernel.T2MediaPlayer:4275
+      //$LASTPOS=27004276;//kernel.T2MediaPlayer:4276
       T2MediaLib.loadAudio(idx,src);
-      //$LASTPOS=27004337;//kernel.T2MediaPlayer:4337
+      //$LASTPOS=27004338;//kernel.T2MediaPlayer:4338
       while (T2MediaLib.getAudioData(idx)==null) {
-        //$LASTPOS=27004382;//kernel.T2MediaPlayer:4382
+        //$LASTPOS=27004383;//kernel.T2MediaPlayer:4383
         _this.update();
       }
     },
@@ -8931,7 +8931,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=27004275;//kernel.T2MediaPlayer:4275
+      //$LASTPOS=27004276;//kernel.T2MediaPlayer:4276
       T2MediaLib.loadAudio(idx,src);
       
       _thread.enter(function _trc_T2MediaPlayer_ent_loadAudio(_thread) {
@@ -8939,10 +8939,10 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=27004337;//kernel.T2MediaPlayer:4337
+            //$LASTPOS=27004338;//kernel.T2MediaPlayer:4338
           case 1:
             if (!(T2MediaLib.getAudioData(idx)==null)) { __pc=3; break; }
-            //$LASTPOS=27004382;//kernel.T2MediaPlayer:4382
+            //$LASTPOS=27004383;//kernel.T2MediaPlayer:4383
             _this.fiber$update(_thread);
             __pc=2;return;
           case 2:
@@ -8958,14 +8958,14 @@ Tonyu.klass.define({
     playAudio :function _trc_T2MediaPlayer_playAudio(idx,loop,startTime) {
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       
-      //$LASTPOS=27004438;//kernel.T2MediaPlayer:4438
+      //$LASTPOS=27004439;//kernel.T2MediaPlayer:4439
       if (loop===null) {
-        //$LASTPOS=27004457;//kernel.T2MediaPlayer:4457
+        //$LASTPOS=27004458;//kernel.T2MediaPlayer:4458
         loop=false;
       }
-      //$LASTPOS=27004476;//kernel.T2MediaPlayer:4476
+      //$LASTPOS=27004477;//kernel.T2MediaPlayer:4477
       if (startTime===null) {
-        //$LASTPOS=27004500;//kernel.T2MediaPlayer:4500
+        //$LASTPOS=27004501;//kernel.T2MediaPlayer:4501
         startTime=0;
       }
       return T2MediaLib.playAudio(idx,loop,startTime);
@@ -8975,14 +8975,14 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=27004438;//kernel.T2MediaPlayer:4438
+      //$LASTPOS=27004439;//kernel.T2MediaPlayer:4439
       if (loop===null) {
-        //$LASTPOS=27004457;//kernel.T2MediaPlayer:4457
+        //$LASTPOS=27004458;//kernel.T2MediaPlayer:4458
         loop=false;
       }
-      //$LASTPOS=27004476;//kernel.T2MediaPlayer:4476
+      //$LASTPOS=27004477;//kernel.T2MediaPlayer:4477
       if (startTime===null) {
-        //$LASTPOS=27004500;//kernel.T2MediaPlayer:4500
+        //$LASTPOS=27004501;//kernel.T2MediaPlayer:4501
         startTime=0;
       }
       _thread.retVal=T2MediaLib.playAudio(idx,loop,startTime);return;
@@ -9038,16 +9038,16 @@ Tonyu.klass.define({
     setAudioVolume :function _trc_T2MediaPlayer_setAudioVolume(vol) {
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       
-      //$LASTPOS=27004782;//kernel.T2MediaPlayer:4782
+      //$LASTPOS=27004783;//kernel.T2MediaPlayer:4783
       vol=vol/128;
-      //$LASTPOS=27004804;//kernel.T2MediaPlayer:4804
+      //$LASTPOS=27004805;//kernel.T2MediaPlayer:4805
       if (vol>1) {
-        //$LASTPOS=27004824;//kernel.T2MediaPlayer:4824
+        //$LASTPOS=27004825;//kernel.T2MediaPlayer:4825
         vol=1;
       } else {
-        //$LASTPOS=27004845;//kernel.T2MediaPlayer:4845
+        //$LASTPOS=27004846;//kernel.T2MediaPlayer:4846
         if (vol<0) {
-          //$LASTPOS=27004860;//kernel.T2MediaPlayer:4860
+          //$LASTPOS=27004861;//kernel.T2MediaPlayer:4861
           vol=0;
         }
       }
@@ -9058,16 +9058,16 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=27004782;//kernel.T2MediaPlayer:4782
+      //$LASTPOS=27004783;//kernel.T2MediaPlayer:4783
       vol=vol/128;
-      //$LASTPOS=27004804;//kernel.T2MediaPlayer:4804
+      //$LASTPOS=27004805;//kernel.T2MediaPlayer:4805
       if (vol>1) {
-        //$LASTPOS=27004824;//kernel.T2MediaPlayer:4824
+        //$LASTPOS=27004825;//kernel.T2MediaPlayer:4825
         vol=1;
       } else {
-        //$LASTPOS=27004845;//kernel.T2MediaPlayer:4845
+        //$LASTPOS=27004846;//kernel.T2MediaPlayer:4846
         if (vol<0) {
-          //$LASTPOS=27004860;//kernel.T2MediaPlayer:4860
+          //$LASTPOS=27004861;//kernel.T2MediaPlayer:4861
           vol=0;
         }
       }
@@ -9079,14 +9079,14 @@ Tonyu.klass.define({
     setAudioTempo :function _trc_T2MediaPlayer_setAudioTempo(tempo) {
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       
-      //$LASTPOS=27004950;//kernel.T2MediaPlayer:4950
+      //$LASTPOS=27004951;//kernel.T2MediaPlayer:4951
       if (tempo>4) {
-        //$LASTPOS=27004972;//kernel.T2MediaPlayer:4972
+        //$LASTPOS=27004973;//kernel.T2MediaPlayer:4973
         tempo=4;
       } else {
-        //$LASTPOS=27004995;//kernel.T2MediaPlayer:4995
+        //$LASTPOS=27004996;//kernel.T2MediaPlayer:4996
         if (tempo<0.5) {
-          //$LASTPOS=27005012;//kernel.T2MediaPlayer:5012
+          //$LASTPOS=27005013;//kernel.T2MediaPlayer:5013
           tempo=0.5;
         }
       }
@@ -9097,14 +9097,14 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=27004950;//kernel.T2MediaPlayer:4950
+      //$LASTPOS=27004951;//kernel.T2MediaPlayer:4951
       if (tempo>4) {
-        //$LASTPOS=27004972;//kernel.T2MediaPlayer:4972
+        //$LASTPOS=27004973;//kernel.T2MediaPlayer:4973
         tempo=4;
       } else {
-        //$LASTPOS=27004995;//kernel.T2MediaPlayer:4995
+        //$LASTPOS=27004996;//kernel.T2MediaPlayer:4996
         if (tempo<0.5) {
-          //$LASTPOS=27005012;//kernel.T2MediaPlayer:5012
+          //$LASTPOS=27005013;//kernel.T2MediaPlayer:5013
           tempo=0.5;
         }
       }
@@ -11858,7 +11858,7 @@ Tonyu.klass.define({
       var r;
       var name;
       var val;
-      var _it_282;
+      var _it_574;
       
       //$LASTPOS=38000285;//kernel.Boot:285
       Tonyu.globals.$Sprites=new Tonyu.classes.kernel.Sprites();
@@ -11887,10 +11887,10 @@ Tonyu.klass.define({
       //$LASTPOS=38000686;//kernel.Boot:686
       Tonyu.globals.$Sprites.setImageList(r);
       //$LASTPOS=38000717;//kernel.Boot:717
-      _it_282=Tonyu.iterator(r.names,2);
-      while(_it_282.next()) {
-        name=_it_282[0];
-        val=_it_282[1];
+      _it_574=Tonyu.iterator(r.names,2);
+      while(_it_574.next()) {
+        name=_it_574[0];
+        val=_it_574[1];
         
         //$LASTPOS=38000758;//kernel.Boot:758
         Tonyu.setGlobal(name,val);
@@ -11920,7 +11920,7 @@ Tonyu.klass.define({
       var r;
       var name;
       var val;
-      var _it_282;
+      var _it_574;
       
       //$LASTPOS=38000285;//kernel.Boot:285
       Tonyu.globals.$Sprites=new Tonyu.classes.kernel.Sprites();
@@ -11961,10 +11961,10 @@ Tonyu.klass.define({
             //$LASTPOS=38000686;//kernel.Boot:686
             Tonyu.globals.$Sprites.setImageList(r);
             //$LASTPOS=38000717;//kernel.Boot:717
-            _it_282=Tonyu.iterator(r.names,2);
-            while(_it_282.next()) {
-              name=_it_282[0];
-              val=_it_282[1];
+            _it_574=Tonyu.iterator(r.names,2);
+            while(_it_574.next()) {
+              name=_it_574[0];
+              val=_it_574[1];
               
               //$LASTPOS=38000758;//kernel.Boot:758
               Tonyu.setGlobal(name,val);

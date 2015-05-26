@@ -231,7 +231,9 @@ var T2MediaLib = {
                 if (callbacks && callbacks.err) callbacks.err(idx,T2MediaLib.seDataAry.data[idx]);//@hoge1e3
             }
         };
-
+        xhr.onerror=function (e) {//@hoge1e3
+            if (callbacks && callbacks.err) callbacks.err(idx,e+"");
+        };
         T2MediaLib.seDataAry.data[idx] = null;
         xhr.open('GET', url, true);
         xhr.responseType = 'arraybuffer';  // XMLHttpRequest Level 2
