@@ -210,16 +210,18 @@ return TonyuLang=function () {
     var catches=g("catches").ors("catch","finally");
     var trys=g("try").ands(tk("try"),"stmt",catches.rep1() ).ret(null, "stmt","catches");
     var throwSt=g("throw").ands(tk("throw"),expr,tk(";")).ret(null,"ex");
-    var varDecl=g("varDecl").ands(symbol, tk("=").and(expr).ret(retF(1)).opt() ).ret("name","value");
+    var typeExpr=symbol;
+    var typeDecl=g("typeDecl").ands(tk(":"),typeExpr).ret(null,"vtype");
+    var varDecl=g("varDecl").ands(symbol, typeDecl.opt(), tk("=").and(expr).ret(retF(1)).opt() ).ret("name","vtype","value");
     var varsDecl= g("varsDecl").ands(tk("var"), varDecl.sep1(tk(","),true), tk(";") ).ret(null ,"decls");
-    var paramDecl= g("paramDecl").ands(symbol ).ret("name");
+    var paramDecl= g("paramDecl").ands(symbol,typeDecl.opt() ).ret("name","vtype");
     var paramDecls=g("paramDecls").ands(tk("("), paramDecl.sep0(tk(","),true), tk(")")  ).ret(null, "params");
     var setterDecl= g("setterDecl").ands(tk("="), paramDecl).ret(null,"value");
     g("funcDeclHead").ands(
             tk("nowait").opt(),
             tk("function").or(tk("fiber")).or(tk("tk_constructor")).or(tk("\\")).opt(),
-            symbol.or(tk("new")) , setterDecl.opt(), paramDecls.opt()   // if opt this it is getter
-    ).ret("nowait","ftype","name","setter", "params");
+            symbol.or(tk("new")) , setterDecl.opt(), paramDecls.opt(),typeDecl.opt()   // if opt this it is getter
+    ).ret("nowait","ftype","name","setter", "params","rtype");
     var funcDecl=g("funcDecl").ands("funcDeclHead","compound").ret("head","body");
     var nativeDecl=g("nativeDecl").ands(tk("native"),symbol,tk(";")).ret(null, "name");
     var ifwait=g("ifWait").ands(tk("ifwait"),"stmt",elseP.opt()).ret(null, "then","_else");
