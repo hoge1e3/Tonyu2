@@ -11,7 +11,7 @@ Tonyu System 2 includes these third party libraries:
  js/lib/jszip.min.js    http://stuk.github.io/jszip/
  js/lib/FileSaver.min.js    https://github.com/eligrey/FileSaver.js/#filesaverjs
  js/lib/encoding.min.js https://github.com/polygonplanet/encoding.js
-
+ js/lib/util.js Util.Base64_To_ArrayBuffer http://hakuhin.jp/js/base64.html#BASE64_DECODE_ARRAY_BUFFER
 images/mapchip.png(Public domain)
  http://rmake.jp/published_items/7526
 
