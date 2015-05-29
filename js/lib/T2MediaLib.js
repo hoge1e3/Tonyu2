@@ -235,9 +235,16 @@ var T2MediaLib = {
             if (callbacks && callbacks.err) callbacks.err(idx,e+"");
         };
         T2MediaLib.seDataAry.data[idx] = null;
-        xhr.open('GET', url, true);
-        xhr.responseType = 'arraybuffer';  // XMLHttpRequest Level 2
-        xhr.send(null);
+        if (url.match(/^data:/) && Util && Util.Base64_To_ArrayBuffer) {//@hoge1e3
+            xhr={onload:xhr.onload};
+            xhr.response=Util.Base64_To_ArrayBuffer( url.replace(/^data:audio\/[a-zA-Z0-9]+;base64,/i,""));
+            xhr.status=200;
+            xhr.onload();
+        } else {
+            xhr.open('GET', url, true);
+            xhr.responseType = 'arraybuffer';  // XMLHttpRequest Level 2
+            xhr.send(null);
+        }
     },
     playSE : function(idx, vol, rate, offset, loop, loopStart, loopEnd) {
         if (!T2MediaLib.context) return null;
