@@ -22,6 +22,7 @@ function startsWith(str,prefix) {
 }
 // From http://hakuhin.jp/js/base64.html#BASE64_DECODE_ARRAY_BUFFER
 function Base64_To_ArrayBuffer(base64){
+    base64=base64.replace(/[\n=]/g,"");
     var dic = new Object();
     dic[0x41]= 0; dic[0x42]= 1; dic[0x43]= 2; dic[0x44]= 3; dic[0x45]= 4; dic[0x46]= 5; dic[0x47]= 6; dic[0x48]= 7; dic[0x49]= 8; dic[0x4a]= 9; dic[0x4b]=10; dic[0x4c]=11; dic[0x4d]=12; dic[0x4e]=13; dic[0x4f]=14; dic[0x50]=15;
     dic[0x51]=16; dic[0x52]=17; dic[0x53]=18; dic[0x54]=19; dic[0x55]=20; dic[0x56]=21; dic[0x57]=22; dic[0x58]=23; dic[0x59]=24; dic[0x5a]=25; dic[0x61]=26; dic[0x62]=27; dic[0x63]=28; dic[0x64]=29; dic[0x65]=30; dic[0x66]=31;
@@ -33,10 +34,16 @@ function Base64_To_ArrayBuffer(base64){
     var e;
 
     if(!num) return (new ArrayBuffer(0));
-    if(num < 4) return null;
-    if(num % 4) return null;
+    //if(num < 4) return null;
+    //if(num % 4) return null;
 
-    e = num / 4 * 3;
+    // AA     12    1
+    // AAA    18    2
+    // AAAA   24    3
+    // AAAAA  30    3
+    // AAAAAA 36    4
+    // num*6/8
+    e = Math.floor(num / 4 * 3);
     if(base64.charAt(num - 1) == '=') e -= 1;
     if(base64.charAt(num - 2) == '=') e -= 1;
 
@@ -46,12 +53,12 @@ function Base64_To_ArrayBuffer(base64){
     var p = 0;
     while(p < e){
         b = dic[base64.charCodeAt(i)];
-        if(b === undefined) return null;
+        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i));//return null;
         n = (b << 2);
         i ++;
 
         b = dic[base64.charCodeAt(i)];
-        if(b === undefined) return null;
+        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i))
         ary_u8[p] = n | ((b >> 4) & 0x3);
         n = (b & 0x0f) << 4;
         i ++;
@@ -59,7 +66,7 @@ function Base64_To_ArrayBuffer(base64){
         if(p >= e) break;
 
         b = dic[base64.charCodeAt(i)];
-        if(b === undefined) return null;
+        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i))
         ary_u8[p] = n | ((b >> 2) & 0xf);
         n = (b & 0x03) << 6;
         i ++;
@@ -67,10 +74,15 @@ function Base64_To_ArrayBuffer(base64){
         if(p >= e) break;
 
         b = dic[base64.charCodeAt(i)];
-        if(b === undefined) return null;
+        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i))
         ary_u8[p] = n | b;
         i ++;
         p ++;
+    }
+    function fail(m) {
+        console.log(m);
+        console.log(base64,i);
+        throw new Error(m);
     }
     return ary_buffer;
 }
