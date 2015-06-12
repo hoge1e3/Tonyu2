@@ -11,6 +11,9 @@ native Tonyu;
 native SplashScreen;
 native Math;
 
+\new(param) {
+    extend(param);
+}
 \update() {
     waitFor(Tonyu.timeout(50)); // waitFor calls update...
 }
@@ -63,7 +66,7 @@ native Math;
         TError( mainClassName+" というクラスはありません",
         "不明" ,0).raise();
     }
-    Tonyu.runMode=true;
+    //Tonyu.runMode=true;
     //$currentThreadGroup=thg;
     scheduler=$Scheduler=new Scheduler;
     new mainClass();

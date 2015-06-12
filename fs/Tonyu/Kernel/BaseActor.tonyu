@@ -16,6 +16,7 @@ native Array;
             if (thg) _th=thg.addObj(this);
         }*/
         _th=$Boot.schedule(this,"main",[]);
+        registerEventHandler("screenOut",new ScreenOutHandler);
     }
     if (typeof x=="object") Tonyu.extend(this,x);
     else if (typeof x=="number") {
@@ -43,10 +44,17 @@ nowait \extend(obj) {
 
 nowait \print(pt) {
     console.log.apply(console,arguments);
+    var mergedArg="";
     if($consolePanel){
-        $consolePanel.scroll(0,20);
-        $consolePanel.setFillStyle("white");
-        $consolePanel.fillText(pt,0,$consolePrintY,20,"left");
+        for(var argCount=0;argCount<arguments.length;argCount++){
+            mergedArg+=arguments[argCount];
+        }
+        splits=mergedArg.split("\n");
+        for(var printCount=0;printCount<splits.length;printCount++){
+            $consolePanel.scroll(0,20);
+            $consolePanel.setFillStyle("white");
+            $consolePanel.fillText(splits[printCount],0,$consolePrintY,20,"left");
+        }
     }
 }
 
@@ -144,7 +152,30 @@ nowait \getCrashRect() {
     typeof height=="number" &&
     {x,y,width:actWidth,height:actHeight};
 }
+nowait \allWithin(t,distance) {
+    var res=new TQuery;
+    var sp=this; //_sprite || this;
+    var t1=getCrashRect();
+    if (!t1) return res;
+    $Sprites.sprites.forEach(\(s) {
+        var t2;
+        if (s!==this && 
+        !s.excludeFromAll &&
+        s instanceof t && 
+        Math.sqrt(Math.abs(x-s.x)*Math.abs(x-s.x)+ Math.abs(y-s.y)*Math.abs(y-s.y))<distance) {
+            res.push(s);    
+        }
+    });
+    return res;
+}
 nowait \within(t,distance){
+    if(!t) return false;
+    if(typeof t=="function"){
+        return allWithin(t,distance)[0];
+    }
+    return within1(t,distance);
+}
+nowait \within1(t,distance){
     if(!t || t._isDead) return false;
     if(Math.sqrt(Math.abs(x-t.x)*Math.abs(x-t.x)+ Math.abs(y-t.y)*Math.abs(y-t.y))<distance){
         return true;
@@ -245,14 +276,19 @@ nowait \draw(ctx) {
         -width/2, -height/2, width, height);
         ctx.restore();
     } else if (text!==null && text!==undefined) {
+        var splitsText=text.split("\n");
+        drawY=y;
         if (!size) size=15;
         if (!align) align="center";
         if (!fillStyle) fillStyle="white";
         ctx.fillStyle=fillStyle;
         ctx.globalAlpha=this.alpha/255;
-        var rect=drawTextRect(ctx, text, x, y, size, align , "fill");
-        width=rect.w;
-        height=rect.h;
+        for(var textCount=0;textCount<splitsText.length;textCount++){
+            var rect=drawTextRect(ctx, splitsText[textCount], x, drawY, size, align , "fill");
+            if(width<rect.w) width=rect.w;
+            height+=rect.h;
+            drawY+=size;
+        }
     }
     if (_fukidashi) {
         if (_fukidashi.c>0) {
@@ -278,12 +314,31 @@ nowait \asyncResult() {//@deperecated
     //オブジェクトが画面外に出たかどうかを判定します。
     if (!a) a=0;
     var r=0;
-    var viewX=0,viewY=0;
+    var viewX=$Sprites.sx,viewY=$Sprites.sy;
     if (x<viewX+a)               r+=viewX+a-x;
     if (y<viewY+a)               r+=viewY+a-y;
     if (x>$screenWidth +viewX-a) r+=x-($screenWidth +viewX-a);
     if (y>$screenHeight+viewY-a) r+=y-($screenHeight+viewY-a);
     return r;
+}
+\screenOutChecker(d,f){
+    //print("yobareta!", getClassInfo().fullName);
+    while(true){
+        while(true){
+            if(screenOut()>d){
+                f();
+                break;
+            }
+            update();
+        }
+        while(true){
+            if(screenOut()<=d){
+                break;
+            }
+            update();
+        }
+        update();
+    }
 }
 \file(path) {
     var d=Tonyu.currentProject.getDir();

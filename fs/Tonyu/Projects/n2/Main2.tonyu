@@ -1,0 +1,24 @@
+x=100;
+y=100;
+id=3;
+$main=this;
+print("start");
+on("screenOut",1,reportScreenOut);
+\reportScreenOut(){
+    print("Screen Out !!");
+}
+
+while(true){
+    while(x<$screenWidth+20){
+        x+=10;
+        update();
+    }
+    while(x>-20){
+        x-=10;
+        update();
+    }
+    update();
+}
+/*\screenOutChecker(d,f){
+    print("yobareta!");
+}*/

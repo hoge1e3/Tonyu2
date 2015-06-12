@@ -3,6 +3,7 @@ native console;
 
 nowait \initEventMod() {
    if (_eventHandlers) return;
+   //console.log("initEventMod" , getClassInfo().fullName);
    _eventHandlers={};
    on ("die",releaseEventMod);
 }
@@ -27,6 +28,8 @@ nowait \registerEventHandler(type, obj) {
        type=obj.getClassInfo().fullName;
    }  else {
        obj=obj || new EventHandler{target:this};
+       obj.target=this;
+       //print("regEvt", type, getClassInfo().fullName, obj.id);
    }
    return _eventHandlers[type]=obj;
 }
@@ -47,6 +50,7 @@ nowait \getOrRegisterEventHandler(type) {
 nowait \on() {
     var a=parseArgs(arguments);
     var h=getOrRegisterEventHandler(a.type);
+    //print("on", a.type, getClassInfo().fullName, h.id);
     return h.addListener.apply(h,a.args);
 }
 

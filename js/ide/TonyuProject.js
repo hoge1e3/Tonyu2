@@ -58,7 +58,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         var main=TPR.runningObj;
         if (main && main.stop) main.stop();
     };
-    TPR.rawRun=function (mainClassName) {
+    TPR.rawRun=function (bootClassName) {
         if (WebSite.removeJSOutput) {
             var o=TPR.getOutputFile();
             if (o.exists()) o.rm();
@@ -66,7 +66,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         TPR.loadClasses();
         //TPR.compile();
         if (!TPR.runScriptMode) thumbnail.set(TPR, 2000);
-        TPR.rawBoot(mainClassName);
+        TPR.rawBoot(bootClassName);
     };
     /*TPR.compile=function () {
         console.log("Kernel editable",TPR.isKernelEditable());
@@ -319,20 +319,19 @@ return Tonyu.Project=function (dir, kernelDir) {
             resFile.text(nw);
         }
     };
-    TPR.rawBoot=function (mainClassName) {
+    TPR.rawBoot=function (bootClassName) {
         //var thg=Tonyu.threadGroup();
-        var mainClass=Tonyu.getClass(mainClassName);
-        if (!mainClass) throw TError( mainClassName+" というクラスはありません", "不明" ,0);
-        // Tonyu.runMode=true;
-        var main=new mainClass();
+        var bootClass=Tonyu.getClass(bootClassName);
+        if (!bootClass) throw TError( bootClassName+" というクラスはありません", "不明" ,0);
+        Tonyu.runMode=true;
+        var boot=new bootClass();
         var th=Tonyu.thread();
-        th.apply(main,"main");
-        //main.fiber$main(th);
+        th.apply(boot,"main");
 
         TPR.runningThread=th; //thg.addObj(main);
-        TPR.runningObj=main;
+        TPR.runningObj=boot;
         $LASTPOS=0;
-	th.steps();
+        th.steps();
         //thg.run(0);
     };
 

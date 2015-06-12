@@ -1,7 +1,7 @@
 extends TObject;
 native Tonyu;
 
-listeners=[];
+if (Tonyu.runMode) listeners=[];
 
 \addListener(f) {
     if (target && (typeof f)=="string") {
