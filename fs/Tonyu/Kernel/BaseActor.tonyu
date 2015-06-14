@@ -270,7 +270,7 @@ nowait \draw(ctx) {
         -width/2, -height/2, width, height);
         ctx.restore();
     } else if (text!==null && text!==undefined) {
-        var splitsText=text.split("\n");
+        var splitsText=(text+"").split("\n");
         drawY=y;
         if (!size) size=15;
         if (!align) align="center";

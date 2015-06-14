@@ -7,6 +7,7 @@ print("start");
 on("screenOut",1,reportScreenOut);
 \reportScreenOut(){
     print("Screen Out !!",id);
+    die();
 }
 //on("crashTo", Enemy, die);
 //on("within", Enemy, 20, die);

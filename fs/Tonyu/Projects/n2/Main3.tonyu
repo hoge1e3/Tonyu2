@@ -1,2 +1,5 @@
-new Main2{x:120,y:100,id:3};
-new Main2{x:300,y:200,id:4};
+while(true) {
+    new Main2{x:120,y:rnd(200),id:3};
+    updateEx(30);
+}
+//new Main2{x:300,y:200,id:4};
