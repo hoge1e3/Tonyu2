@@ -1,1 +1,2 @@
-new Main2{id:3};
+new Main2{x:120,y:100,id:3};
+new Main2{x:300,y:200,id:4};

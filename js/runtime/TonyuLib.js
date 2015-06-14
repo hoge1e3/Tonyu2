@@ -387,13 +387,21 @@ return Tonyu=function () {
         var decls=params.decls;
         var nso=klass.ensureNamespace(Tonyu.classes, namespace);
         var prot=defunct(methods);
-        var res=(prot.initialize? prot.initialize:
+        var init=prot.initialize;
+        delete prot.initialize;
+        var res=(init?
+            (parent? function () {
+                if (Tonyu.runMode) init.apply(this,arguments);
+                else parent.apply(this,arguments);
+            }:function () {
+                if (Tonyu.runMode) init.apply(this,arguments);
+            }):
             (parent? function () {
                 parent.apply(this,arguments);
-            }:function (){})
+            }:function (){
+            })
         );
         nso[shortName]=res;
-        delete prot.initialize;
         res.methods=prot;
         includes.forEach(function (m) {
             if (!m.methods) throw m+" Does not have methods";

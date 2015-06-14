@@ -8,16 +8,10 @@ native FS;
 native Array;
 
 \new(x,y,p) {
-    if (Tonyu.runMode) {
-        /*if ($Scheduler) {
-            _th=$Scheduler.newThread(this, "main", []);
-        } else {
-            var thg=currentThreadGroup();
-            if (thg) _th=thg.addObj(this);
-        }*/
+    //if (Tonyu.runMode) {
         _th=$Boot.schedule(this,"main",[]);
         registerEventHandler("screenOut",new ScreenOutHandler);
-    }
+    //}
     if (typeof x=="object") Tonyu.extend(this,x);
     else if (typeof x=="number") {
         this.x=x;
@@ -47,7 +41,7 @@ nowait \print(pt) {
     var mergedArg="";
     if($consolePanel){
         for(var argCount=0;argCount<arguments.length;argCount++){
-            mergedArg+=arguments[argCount];
+            mergedArg=mergedArg+arguments[argCount]+" ";
         }
         splits=mergedArg.split("\n");
         for(var printCount=0;printCount<splits.length;printCount++){

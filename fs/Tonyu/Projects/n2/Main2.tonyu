@@ -1,12 +1,15 @@
-x=100;
-y=100;
-id=3;
+if (!x) {
+    x=100;
+    y=100;
+}
 $main=this;
 print("start");
 on("screenOut",1,reportScreenOut);
 \reportScreenOut(){
-    print("Screen Out !!");
+    print("Screen Out !!",id);
 }
+//on("crashTo", Enemy, die);
+//on("within", Enemy, 20, die);
 
 while(true){
     while(x<$screenWidth+20){
