@@ -1,0 +1,36 @@
+height=30;
+while(true) {
+    if ($touches[0].touched) {
+        if ($mouseY>y && $mouseY<y+height) {
+            var idx=floor( ($mouseX-x)/pitch);  
+            if (idx>=0 && idx<values.length) {
+                value=values[idx];
+            }
+        }
+    }
+    update();
+}
+
+\draw(c) {
+    c.strokeStyle="white";
+    c.fillStyle="white";
+    c.beginPath();
+    c.moveTo(x,y+10);
+    c.lineTo(x+width,y+10);
+    c.stroke();
+    for (var i,v in values) {
+        c.fillText(v,x+i*pitch,y+25);
+        if (v==value) {
+            c.fillRect(x+i*pitch,y,10,20);
+        }
+    }
+}
+\value {
+    return obj[name];
+}
+\value=v {
+    obj[name]=v;
+}
+\pitch {
+    return width/(values.length-1);
+}

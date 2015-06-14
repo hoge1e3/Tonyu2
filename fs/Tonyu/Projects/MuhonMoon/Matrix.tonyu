@@ -1,0 +1,18 @@
+extends TObject;
+includes EventMod;
+
+\new(_extend) {
+    extend(_extend);
+    ary=[];
+    
+}
+\get(x,y) {
+    return ary[y*col+x];
+}
+\set(x,y,c) {
+    var was=ary[y*col+x];
+    if (was===c) return;
+    ary[y*col+x]=c;
+    sendEvent("set",{x,y,c,was});
+}
+

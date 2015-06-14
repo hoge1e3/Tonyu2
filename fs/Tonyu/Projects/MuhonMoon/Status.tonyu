@@ -1,0 +1,30 @@
+y=$screenHeight-32+8;
+x=id*32+8;
+p=$pat_mgoku+5+id;
+score=new Actor{x:x+8,y:y+8,text:0};
+$m.on("scoreChanged") \(e) {
+    if (e.id!=id) return;
+    score.text=e.score+"";
+    sscore=e.score;
+};
+on("die") \{score.die();};
+waitEvent("result");
+for (i=0; i<10 ;i++) {
+    y=(y+230)/2;
+    x+=($screenWidth/2-$gameBalance.players*16)/10;
+    update();
+}
+while(true) {
+    for (a in all(Status)) {
+        if ( (a.sscore-sscore)*(a.x-x)>0 ) {
+            t=x;
+            x=a.x;
+            a.x=t;
+        }
+        update();
+    }
+    update();
+}
+\onUpdate () {
+    score.x=x;score.y=y+8;
+}

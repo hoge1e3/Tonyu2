@@ -1,0 +1,25 @@
+
+p=owner.p;
+alpha=128;
+update();
+sur=$sur;
+for (i=0 ; i<8 ;i++) {
+    tx=x+sur[i].x;
+    ty=y+sur[i].y;
+    if (owner && !owner.isSep(tx,ty)) {
+        mat.set(tx,ty,c);
+    }
+}
+
+\draw(c) {
+    var sx=x;sy=y;
+    x=x*16+8;y=y*16+8;
+    super.draw(c);
+    x=sx;y=sy;
+}
+
+\die() {
+    //print("die");
+    owner=null;
+    super.die();
+}

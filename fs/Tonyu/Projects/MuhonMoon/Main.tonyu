@@ -1,0 +1,102 @@
+/*$gameBalance={
+    time:60, seeds:50, speedUpTime:40,players:4
+};*/
+$Screen.setBGColor("black");
+$sur=[{x:0,y:-1},{x:1,y:-1},{x:1,y:0},
+{x:1,y:1},{x:0,y:1},{x:-1,y:1},{x:-1,y:0},{x:-1,y:-1}];
+$filling=null;
+$m=m=new Matrix{row:32,col:24, cols:[
+    "black","cyan","#900","#088","#050","#880","#059",
+"#392","#808","#850","#006"] };
+m.scores=[0,0,0,0,0,0,0,0,0];
+$Screen.resize($m.col*16, $m.row*16+32);
+
+m.on("set") \(e){
+    var id;
+    if (typeof(e.was)=="number") {
+        id=e.was-2;
+        m.scores[id]--;
+        m.sendEvent("scoreChanged") {id,score:m.scores[id]};
+    }
+    if (typeof(e.c)=="number") {
+        id=e.c-2;
+        m.scores[id]++;
+        m.sendEvent("scoreChanged") {id,score:m.scores[id]};
+    }
+    panel.setFillStyle(m.cols[e.c]);
+    panel.fillRect(e.x*16,e.y*16,16,16);
+};
+$seed=new Matrix{row:$m.row,col:$m.col};
+panel=new Panel{x:$screenWidth/2,y:$screenHeight/2};
+panel.setPanel($screenWidth,$screenHeight);
+panel.zOrder=10;
+
+for (i=0;i<m.row;i++) {
+    for (j=0;j<m.col;j++) {
+        m.set(j,i,(i*j==0|| (m.row-1-i)*(m.col-1-j)==0) ? 1:0 );
+    }
+    update();
+}
+for (i=0 ;i<$gameBalance.seeds ;i++) {
+    sx=rnd($m.col-2)+1;sy=rnd($m.row-2)+1;
+    if (!$seed.get(sx,sy)) {
+        $seed.set(sx,sy,new Seed{x:sx,y:sy});
+    } else {
+        i--;
+    }
+}
+
+for (i=0 ; i<$gameBalance.players;i++) {
+    setPlayer(i);
+}
+
+timer=new Actor{x:320, y:$screenHeight-16,text:"Time :"+60};
+for (time=$gameBalance.time*30 ; time>0 ; time--) {
+    if (all(Player).length<2) break;
+    timer.text="Time: "+floor(time/30);//+" obj "+all().length;
+    if ($filling) time++;
+    update();
+}
+all(Player).die();
+for (var st in all(Status)) st.sendEvent("result");
+
+
+
+updateEx(30);
+new Actor{text:"Touch/Space to replay",x:$screenWidth/2,y:300};
+
+while(!$touches[0].touched &&getkey(32)==0) update();
+loadPage(Title);
+
+
+\maxScore {
+    var ma=0;
+    for (var e in m.scores) {
+        if (e>ma) ma=e;
+    }
+    return ma;
+}
+\setPlayer (id) {
+    var xs=[3, floor($m.col/2), $m.col-3];
+    var ys=[3, floor($m.row/2), $m.row-3];
+    if (id==0) { 
+        you=new Player{x:xs[0],y:ys[0],id,zOrder:-10,you:true};
+        new Target{ai:you.ai};
+    } else if (id==1) {
+        new Player{x:xs[2],y:ys[2],id,zOrder:-10};
+    } else if (id==2) {
+        new Player{x:xs[0],y:ys[2],id,zOrder:-10};
+    } else if (id==3) {
+        new Player{x:xs[2],y:ys[0],id,zOrder:-10};
+    } else if (id==4) {
+        new Player{x:xs[1],y:ys[0],id,zOrder:-10};
+    } else if (id==5) {
+        new Player{x:xs[1],y:ys[2],id,zOrder:-10};
+    } else if (id==6) {
+        new Player{x:xs[0],y:ys[1],id,zOrder:-10};
+    } else if (id==7) {
+        new Player{x:xs[2],y:ys[1],id,zOrder:-10};
+    } else if (id==8) {
+        new Player{x:xs[1],y:ys[1],id,zOrder:-10};
+    }
+}

@@ -1,0 +1,181 @@
+\onAppear() {
+    ai=new AI{player:this};
+}
+new Status{id};
+p=$pat_mgoku+5+id;
+c=2+id;
+vx=(x<10?1:-1);vy=0;
+speedC=0;
+speed=8;
+while(true) {
+    if (!$filling) {
+        move();
+    } else {
+        pp=$m.get(x,y);
+        while($filling) {//busywait
+            update();
+        }
+    }
+    if (speedC>0) speedC--;
+    else speed=8;
+    updateEx(speed);
+}
+\move() {
+    seed=$seed.get(x,y);
+    if (seed is Seed && seed.active) {
+        seed.die();
+        $seed.set(x,y,0);
+        speedC=$gameBalance.speedUpTime;
+        if (speed>2) speed/=2;
+    }
+    if (!usekey) {
+        var yt;
+        if (x==tx) yt=1;
+        else if (y==ty) yt=0;
+        else if (vx==0) yt=1;
+        else yt=0;
+        if (yt==0) {
+            vy=0;
+            vx=(tx>x?1:-1);
+        } else {
+            vx=0;
+            vy=(ty>y?1:-1);
+        }
+    }
+    if (you) {
+        if (getkey("up")) {usekey=true;vx=0;vy=-1;}
+        if (getkey("down")) {usekey=true;vx=0;vy=1;}
+        if (getkey("left")) {usekey=true;vx=-1;vy=0;}
+        if (getkey("right")) {usekey=true;vx=1;vy=0;}
+    }
+    if ($m.get(x+vx,y+vy)!=1) {
+        x+=vx;y+=vy;
+        if (x==tx && y==ty) sendEvent("arriveTarget");
+    }
+    if ($m.get(x,y)!=c) {
+        $m.set(x,y,c);
+        check();
+    }
+    
+}
+\tx {
+    if (ai.queue.length==0) return x;
+    return ai.queue[0].x;
+}
+\ty {
+    if (ai.queue.length==0) return x;
+    return ai.queue[0].y;
+}
+
+\check() {
+    var sur=$sur;
+    var putmap=[];
+    var i,orig;
+    for (i=0;i<8;i++) {
+        if (isSep(x+sur[i].x, y+sur[i].y)) {
+            break;
+        }
+    }
+    if (i==8) return;
+    // i: sep
+    orig=i;
+    i=(i+1)%8;
+    var prevPut=false,cnt=0;
+    while(i!=orig) {
+        if (!isSep(x+sur[i].x, y+sur[i].y)) {
+            if (!prevPut) {
+                cnt++;
+            }
+            putmap[i]=cnt;
+            prevPut=true;
+        } else {
+            prevPut=false;
+        }
+        i=(i+1)%8;
+    }  
+    if (cnt<2) return;
+    var mat=new Matrix{row:$m.row, col:$m.col};
+    var failc=cnt;
+    var fuefla=[];
+    mat.on("set") \(e) {
+        if (e.was && e.was!=e.c) {
+            killSensor(e.was);
+            killSensor(e.c);
+            failc-=2;
+            return;
+        }
+        if (isSep(e.x,e.y)) return;
+        fuefla[e.c]=true;
+        e.owner=this;
+        e.mat=mat;
+        new Sensor(e);
+    };
+    var buf="";
+    for (i=0 ; i<8 ;i++) {
+        if (putmap[i]) {
+            mat.set(x+sur[i].x, y+sur[i].y,putmap[i]);
+        }
+        //if (!putmap[i]) putmap[i]=0;
+        //buf+=putmap[i];
+    }
+    //print(buf);
+    update();
+    var succ=false;
+    while(failc>0 && !succ) {
+        for (i=1 ; i<=cnt; i++) {
+            fuefla[i]=false;
+        }
+        update();
+        if (failc==0) break;
+        for (i=1 ; i<=cnt; i++) {
+            if (!fuefla[i]) {
+                fill(i);                
+                succ=true;
+                break;
+            }
+        }
+    }
+    killAllSensors();
+}
+\killSensor(idx) {  
+    var s=all(Sensor).find\(e) {return e.owner===this && e.c==idx; };
+    s.die();
+}
+\killAllSensors(except) {  
+    var s=all(Sensor).find\(e) {return e.owner===this && e.c!=except;};
+    s.die();
+}
+
+\fill(i) {
+    while($filling) update();
+    $filling=this;
+    killAllSensors(i);
+    var cnt=0;
+    for (var e in all(Sensor).find\(e) {
+        return e.owner===this && e.c==i;
+    }) {
+        $m.set(e.x,e.y,c);
+        killEnemiesAt(e.x,e.y);
+        var seed=$seed.get(e.x,e.y);
+        if (seed) seed.active=true;
+        if (cnt<20 || cnt%2==0) update();
+        cnt++;
+    }
+    $filling=false;
+}
+\killEnemiesAt(x,y) {
+    all(Player).find \(e) {
+        return x==e.x && y==e.y;
+    }.die();
+}
+\isSep(x,y) {
+    var gc=$m.get(x,y);
+    return gc==c;// || gc==1;
+}
+\draw(c) {
+    var sx=x;sy=y;
+    x=x*16+8;y=y*16+8;
+    super.draw(c);
+    x=sx;y=sy;
+    
+}

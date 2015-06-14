@@ -1,0 +1,14 @@
+i=0;
+while(true) {
+    i+=10;
+    update();
+}
+\draw(c) {
+    var sx=x;sy=y;
+    x=x*16+8;y=y*16+8;
+    p=$pat_mgoku+1;
+    //p=(active || i%4<2)? $pat_mgoku+1 : -1;
+    alpha=active?255:floor(sin(i)*80)+80;
+    super.draw(c);
+    x=sx;y=sy;
+}
