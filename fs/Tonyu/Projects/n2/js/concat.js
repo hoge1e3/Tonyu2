@@ -23,6 +23,8 @@ Tonyu.klass.define({
         //$LASTPOS=41000244;//user.Main:244
         _this.x+=1;
         //$LASTPOS=41000255;//user.Main:255
+        _this.print(_this.width,_this.height);
+        //$LASTPOS=41000281;//user.Main:281
         _this.update();
         
       }
@@ -53,6 +55,8 @@ Tonyu.klass.define({
             //$LASTPOS=41000244;//user.Main:244
             _this.x+=1;
             //$LASTPOS=41000255;//user.Main:255
+            _this.print(_this.width,_this.height);
+            //$LASTPOS=41000281;//user.Main:281
             _this.fiber$update(_thread);
             __pc=2;return;
           case 2:

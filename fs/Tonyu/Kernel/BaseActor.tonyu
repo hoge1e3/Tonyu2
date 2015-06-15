@@ -277,6 +277,7 @@ nowait \draw(ctx) {
         if (!fillStyle) fillStyle="white";
         ctx.fillStyle=fillStyle;
         ctx.globalAlpha=this.alpha/255;
+        height=0;width=0;
         for(var textCount=0;textCount<splitsText.length;textCount++){
             var rect=drawTextRect(ctx, splitsText[textCount], x, drawY, size, align , "fill");
             if(width<rect.w) width=rect.w;

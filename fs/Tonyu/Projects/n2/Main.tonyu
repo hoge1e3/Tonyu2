@@ -6,5 +6,6 @@ $panel.fillText("$panel.fillText()も\n\\nで改行できます\nはい",150,200
 print("print()文も\n\\nで改行\nできます","それから,で区切っても","改行できません","yの初期値は下の値",y);
 while(true){
     x+=1;
+    print(width,height);
     update();
 }

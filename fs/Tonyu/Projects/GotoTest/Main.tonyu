@@ -1,0 +1,34 @@
+x=y=200;
+parallel("ctrl");
+updateEx(300);
+//up();
+
+\up() {
+    for (i=0;i<20; i++) {
+        y--;
+        update();
+    }   
+    // goto("down");
+}
+\down() {
+    for (i=0;i<20; i++) {
+        y++;
+        update();
+    }   
+    //goto("up");
+}
+
+
+\goto(n) {
+    _th.clearFrame();
+    _th.apply(this,n,[]);
+}
+
+\ctrl () {
+    while(true) {
+        if (getkey("down")) goto("down");
+        if (getkey("up")) goto("up");
+        update();
+    }
+    
+}

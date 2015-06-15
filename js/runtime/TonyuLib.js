@@ -10,7 +10,8 @@ return Tonyu=function () {
                 exit:exit, steps:steps, step:step, isAlive:isAlive, isWaiting:isWaiting,
                 suspend:suspend,retVal:0/*retVal*/,tryStack:[],
                 kill:kill, waitFor: waitFor,setGroup:setGroup,
-                enterTry:enterTry,exitTry:exitTry,startCatch:startCatch,waitEvent:waitEvent,runAsync:runAsync};
+                enterTry:enterTry,exitTry:exitTry,startCatch:startCatch,
+                waitEvent:waitEvent,runAsync:runAsync,clearFrame:clearFrame};
         var frame=null;
         var _isAlive=true;
         var cnt=0;
@@ -169,6 +170,10 @@ return Tonyu=function () {
         function kill() {
             _isAlive=false;
             frame=null;
+        }
+        function clearFrame() {
+            frame=null;
+            tryStack=[];
         }
         return fb;
     }
@@ -528,7 +533,7 @@ return Tonyu=function () {
             globals:globals, classes:classes, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
             timeout:timeout,asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
-            VERSION:1434270232195,//EMBED_VERSION
+            VERSION:1434334471766,//EMBED_VERSION
             A:A};
 }();
 });
