@@ -1,4 +1,4 @@
-Tonyu System 2 includes these third party libraries:
+Tonyu System 2 includes these third party libraries and assets:
  css/bootstrap.css (Twitter, Inc)
  js/lib/bootstrap.min.js (Twitter, Inc)
  js/lib/jquery-1.10.1.js
@@ -12,8 +12,8 @@ Tonyu System 2 includes these third party libraries:
  js/lib/FileSaver.min.js    https://github.com/eligrey/FileSaver.js/#filesaverjs
  js/lib/encoding.min.js https://github.com/polygonplanet/encoding.js
  js/lib/util.js Util.Base64_To_ArrayBuffer http://hakuhin.jp/js/base64.html#BASE64_DECODE_ARRAY_BUFFER
-images/mapchip.png(Public domain)
- http://rmake.jp/published_items/7526
+ images/mapchip.png  http://rmake.jp/published_items/7526  (Public domain)
+ fs/Tonyu/Projects/StateMachine/images/Denzi_050817_a.png  http://www3.wind.ne.jp/DENZI/diary/  (CC BY-SA 2.1 JP)
 
 Special thanks to:
  @makkii_bcr  Inproves Boot.tonyu and Contributes Pad.tonyu, js/lib/T2MediaLib.js, fs/Tonyu/Kernel/sound/T2MediaPlayer.tonyu
