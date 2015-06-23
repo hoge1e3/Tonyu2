@@ -16,16 +16,19 @@ next=[];
 }
 \addToCur(th) {
     cur.push(th);
+    th.scheduled=this;
 }
 \addToNext(th) {
     next.push(th);
+    th.scheduled=this;
 }
 \stepsAll() {
     for (var t in cur) {
+    	delete t.scheduled;
         t.steps();
         if (t.preempted) {
             //console.log("Preempted: ",t);
-            next.push(t);
+            addToNext(t);
         }
     }
     cur=next;

@@ -1,0 +1,16 @@
+p=$pat_neko+40;
+x=$screenWidth;
+y=rnd($screenHeight);
+scaleX=-1;
+scaleY=1;
+on("screenOut",10,goRight);
+while(true){
+    x-=5;
+    print(getCrashRect().width);
+    update();
+}
+
+\goRight(){
+    x=$screenWidth;
+    y=rnd($screenHeight);
+}

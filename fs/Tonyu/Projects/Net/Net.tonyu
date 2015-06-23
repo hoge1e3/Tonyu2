@@ -1,0 +1,11 @@
+native $;
+native JSON;
+
+r=runAsync \(succ) {
+    $.get(
+    "http://cho.is.meisei-u.ac.jp/sotu/tonyu/server/cho_net.php", 
+    {}, 
+    succ
+    );
+};
+print(r[0]);

@@ -1,0 +1,13 @@
+extends EventHandler;
+\addListener(d, f) {
+    var retThread=target.parallel("crashToChecker",d,f);
+    return {
+        remove: \{
+            retThread.kill();
+        }
+    };
+}
+\new(param) {
+    super(param);
+    id=($idseq=($idseq||0)+1);
+}

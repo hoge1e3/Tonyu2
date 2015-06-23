@@ -11,6 +11,8 @@ native Array;
     //if (Tonyu.runMode) {
         _th=$Boot.schedule(this,"main",[]);
         registerEventHandler("screenOut",new ScreenOutHandler);
+        registerEventHandler("crashTo",new CrashToHandler);
+        registerEventHandler("within",new WithinHandler);
     //}
     if (typeof x=="object") Tonyu.extend(this,x);
     else if (typeof x=="number") {
@@ -133,6 +135,18 @@ nowait \crashTo1(t) {
     Math.abs(t1.x-t2.x)*2<t1.width+t2.width &&
     Math.abs(t1.y-t2.y)*2<t1.height+t2.height;
 }
+\crashToChecker(d,f){
+    while(true){
+        if(typeof d=="function"){
+            for(obj in allCrash(d)){
+                f(obj);
+            }
+        }else if(crashTo(d)){
+            f(d);
+        }
+        update();
+    }
+}
 nowait \getCrashRect() {
     var actWidth=width*scaleX, actHeight;
     if(typeof scaleY==="undefined"){
@@ -144,7 +158,7 @@ nowait \getCrashRect() {
     typeof y=="number" &&
     typeof width=="number" &&
     typeof height=="number" &&
-    {x,y,width:actWidth,height:actHeight};
+    {x,y,width:Math.abs(actWidth),height:Math.abs(actHeight)};
 }
 nowait \allWithin(t,distance) {
     var res=new TQuery;
@@ -175,6 +189,19 @@ nowait \within1(t,distance){
         return true;
     }
     return false;
+}
+\withinChecker(d,r,f){
+    while(true){
+        if(typeof d=="function"){
+            for(obj in allWithin(d,r)){
+                print(r);
+                f(obj);
+            }
+        }else if(within(d,r)){
+            f(d);
+        }
+        update();
+    }
 }
 nowait \watchHit(typeA,typeB,onHit) {
     $Sprites.watchHit(typeA , typeB, \(a,b) {
