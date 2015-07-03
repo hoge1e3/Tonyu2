@@ -1,4 +1,5 @@
 extends BodyActor;
+_th.paused=false;
 pat_standing=[$pat_chara+13,$pat_chara+14,$pat_chara+15,$pat_chara+14];
 pat_walking=[$pat_chara+9,$pat_chara+10,$pat_chara+11,$pat_chara+10];
 pat_jumping=[$pat_chara+26,$pat_chara+27,$pat_chara+28,$pat_chara+29,$pat_chara+30,$pat_chara+31];
@@ -6,7 +7,7 @@ pat_jumping=[$pat_chara+26,$pat_chara+27,$pat_chara+28,$pat_chara+29,$pat_chara+
 ind=0;
 state="stand";
 parallel(anim);
-//on("crashTo",Actor,\{state="stand";});
+on("crashTo",Enemy,\(e){parallel(damage,e);});
 scaleX=1;
 scaleY=1;
 while(true){
@@ -30,18 +31,25 @@ while(true){
         applyImpulse(0,-9);
         parallel(jump);
     }
-    if(e=crashTo(Enemy)){
+    /*if(e=crashTo(Enemy)){
         damage(e);
-    }
+    }*/
     print(state);
     update();
+    while(_th.paused){
+        update();
+    }
 }
 \damage(e){
     state="damage";
+    pause(main);
     if(e.x-x>0) dx=-2;
     else dx=2;
-    applyImpulse(dx,-2);
+    //applyImpulse(dx,-2);
+    vx=dx;
+    vy=-3;
     updateEx(30);
+    resume(main);
 }
 \jump(){
     updateEx(3);
@@ -70,4 +78,12 @@ while(true){
         ind++;
         updateEx(10);
     }
+}
+\pause(th){
+    _th.paused=true;
+    print("pause!");
+}
+\resume(th){
+    _th.paused=false;
+    print("resume");
 }

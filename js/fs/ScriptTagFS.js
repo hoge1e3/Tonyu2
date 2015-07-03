@@ -33,5 +33,12 @@ define([],function () {
 	        return buf;
 	    }
 	};
+	STF.copyTo=function (dir) {
+	    var o=STF.toObj();
+	    for (var fn in o) {
+            var f=dir.rel(fn);
+            f.text(o[fn].text);
+        }
+	};
 	return STF;
 });

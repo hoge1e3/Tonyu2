@@ -326,6 +326,7 @@ function annotateSource2(klass, env) {//B
             ctx.enter({jumpable:true}, function () {
                 t.def(node);
             });
+            fiberCallRequired(this.path);//option
         },
         "for": function (node) {
             var t=this;

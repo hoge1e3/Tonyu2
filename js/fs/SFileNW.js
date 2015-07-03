@@ -27,6 +27,7 @@ function truncSep(path) {
     if (endsWith(path,SEP)) return path.substring(0,path.length-1);
     return path;
 }
+// same as zip.js
 var binMap={".png": "image/png", ".jpg":"image/jpg", ".gif": "image/gif", ".jpeg":"image/jpg",
         ".mp3":"audio/mp3", ".ogg":"audio/ogg"};
 exports.resolve=function (path, base) {

@@ -1,0 +1,7 @@
+n=new Neko{x:100,y:100};
+x=20;y=100;
+while(true) {
+    if(getkey(32)==1) x+=10;//n.sendEvent("atari");
+    update();
+}
+

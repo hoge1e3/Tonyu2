@@ -1,5 +1,6 @@
 extends null;
-includes MathMod,EventMod,TextRectMod,OneframeSpriteMod,ThreadGroupMod;
+includes MathMod,EventMod,TextRectMod,OneframeSpriteMod,
+ThreadGroupMod,EventHandlerCaller;
 native Tonyu;
 native Key;
 native console;
@@ -139,10 +140,10 @@ nowait \crashTo1(t) {
     while(true){
         if(typeof d=="function"){
             for(obj in allCrash(d)){
-                f(obj);
+                callEventHandler(f,[obj]);
             }
         }else if(crashTo(d)){
-            f(d);
+            callEventHandler(f,[d]);
         }
         update();
     }

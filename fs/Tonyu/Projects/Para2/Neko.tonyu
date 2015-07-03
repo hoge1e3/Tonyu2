@@ -1,0 +1,10 @@
+p=$pat_neko;
+
+on("crashTo",Main,bikkuri);
+
+\bikkuri() {
+    for (var i=0;i<30;i++) {
+        x++;
+        update();
+    }
+}

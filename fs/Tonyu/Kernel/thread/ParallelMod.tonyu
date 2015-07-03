@@ -8,14 +8,7 @@ nowait \parallel() {
      }
      var name=arguments[0];
      var th;
-     /*if ($Scheduler) {
-         th=$Scheduler.newThread(this,name,args);
-     } else {
-         var thg=$currentThreadGroup;
-         if (thg) th=thg.addObj(this, name, args);
-     }*/
      th=$Boot.schedule(this,name,args);
-     //on("die") \{th.kill();};
      return th;
 }
 
