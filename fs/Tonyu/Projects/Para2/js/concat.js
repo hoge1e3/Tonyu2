@@ -80,6 +80,8 @@ Tonyu.klass.define({
       //$LASTPOS=45000000;//user.Neko:0
       _this.p=Tonyu.globals.$pat_neko;
       //$LASTPOS=45000014;//user.Neko:14
+      _this.by=_this.y;
+      //$LASTPOS=45000020;//user.Neko:20
       _this.on("crashTo",Tonyu.classes.user.Main,Tonyu.bindFunc(_this,_this.bikkuri));
     },
     fiber$main :function _trc_Neko_f_main(_thread) {
@@ -90,6 +92,8 @@ Tonyu.klass.define({
       //$LASTPOS=45000000;//user.Neko:0
       _this.p=Tonyu.globals.$pat_neko;
       //$LASTPOS=45000014;//user.Neko:14
+      _this.by=_this.y;
+      //$LASTPOS=45000020;//user.Neko:20
       _this.on("crashTo",Tonyu.classes.user.Main,Tonyu.bindFunc(_this,_this.bikkuri));
       
       _thread.retVal=_this;return;
@@ -98,14 +102,16 @@ Tonyu.klass.define({
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       var i;
       
-      //$LASTPOS=45000060;//user.Neko:60
-      //$LASTPOS=45000065;//user.Neko:65
+      //$LASTPOS=45000066;//user.Neko:66
+      //$LASTPOS=45000071;//user.Neko:71
       i = 0;
-      while(i<30) {
+      while(i<=10) {
         {
-          //$LASTPOS=45000093;//user.Neko:93
+          //$LASTPOS=45000100;//user.Neko:100
           _this.x++;
-          //$LASTPOS=45000106;//user.Neko:106
+          //$LASTPOS=45000113;//user.Neko:113
+          _this.y=_this.by+(i-5)*(i-5)-25;
+          //$LASTPOS=45000142;//user.Neko:142
           _this.update();
         }
         i++;
@@ -123,14 +129,16 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=45000060;//user.Neko:60
-            //$LASTPOS=45000065;//user.Neko:65
+            //$LASTPOS=45000066;//user.Neko:66
+            //$LASTPOS=45000071;//user.Neko:71
             i = 0;;
           case 1:
-            if (!(i<30)) { __pc=3; break; }
-            //$LASTPOS=45000093;//user.Neko:93
+            if (!(i<=10)) { __pc=3; break; }
+            //$LASTPOS=45000100;//user.Neko:100
             _this.x++;
-            //$LASTPOS=45000106;//user.Neko:106
+            //$LASTPOS=45000113;//user.Neko:113
+            _this.y=_this.by+(i-5)*(i-5)-25;
+            //$LASTPOS=45000142;//user.Neko:142
             _this.fiber$update(_thread);
             __pc=2;return;
           case 2:
