@@ -2,16 +2,22 @@ function FileList(elem, options) {
     var _curDir=null;
     var _curFile=null;
     var _mod=false;
+    var selbox=elem[0].tagName.toLowerCase()=="select";
+    //console.log(elem);
     if (!options) options={};
     var FL={select:select, ls:ls, on:(options.on?options.on:{}), curFile:curFile, curDir: curDir,
     		setModified:setModified, isModified:isModified};
     var path=$("<div>");
     var items=$("<div>");
+    if (!selbox) elem.append(path).append(items);
+    else elem.change(function () {
+        if(this.value) select(FS.get(this.value));
+    });
     function item(f) {
     	var res=$();
     	if (!f) return res;
     	var fn=f.path();
-    	items.find("span").each(function () {
+    	items.find(selbox?"option":"span").each(function () {
     		var t=$(this);
     		if ( t.data("filename")==fn) {
     			res=t;
@@ -19,7 +25,6 @@ function FileList(elem, options) {
     	});
     	return res;
     }
-    elem.append(path).append(items);
     function select(f) {
         if (FL.on.select && FL.on.select(f)) return;
         if (!f) return;
@@ -56,13 +61,24 @@ function FileList(elem, options) {
         if (!_curDir) return;
         if (!_curDir.isDir()) return;
         items.empty();
+        if (selbox) {
+            elem.empty();
+            elem.append($("<option>").text("Select..."));
+        }
         var p=_curDir.up();
         if (p && !_curDir.equals(options.topDir)) {
-            $("<li>").append(
-                    $("<span>").addClass("fileItem").text("[Up]")
-            ).appendTo(items).click(function () {
-                select(p);
-            });
+            if (selbox) {
+                elem.append($("<option>").
+                        attr("value",p.path()).
+                        text("[Up]")
+                );
+            } else {
+                $(selbox?"<option>":"<li>").append(
+                        $("<span>").addClass("fileItem").text("[Up]")
+                ).appendTo(items).click(function () {
+                    select(p);
+                });
+            }
         }
         if (_curFile && !_curFile.exists()) {
             _curFile=null;
@@ -71,11 +87,19 @@ function FileList(elem, options) {
             var n=displayName(f);
             if (!n) return;
             var isCur=_curFile && _curFile.path()==f.path();
-            var s=$("<span>").addClass("fileItem").text(itemText(f)).data("filename",f.path());
-            if (isCur) { s.addClass("selected");}
-            $("<li>").append(s).appendTo(items).click(function () {
-                select(f);
-            });
+            if (selbox) {
+                elem.append($("<option>").
+                        attr("value",f.path()).
+                        text(itemText(f))
+                );
+            } else {
+                var s=$("<span>").addClass("fileItem").text(itemText(f)).data("filename",f.path());
+                if (isCur) { s.addClass("selected");}
+                console.log("Add file item ",f,selbox);
+                $("<li>").append(s).appendTo(items).click(function () {
+                    select(f);
+                });
+            }
         });
     }
     function itemText(f, mod) {

@@ -4,9 +4,11 @@ by=y;
 on("crashTo",Main,bikkuri);
 
 \bikkuri() {
+    p=$pat_neko+8;
     for (var i=0;i<=10;i++) {
         x++;
         y=by+(i-5)*(i-5)-25;
         update();
     }
+    p=$pat_neko+0;
 }

@@ -77,6 +77,23 @@ $(function () {
     });
     ls();
     SplashScreen.hide();
+    $("body").on("keydown",function (e) {
+        if (e.keyCode==77 && WebSite.devMode) {
+            WebSite.mobile=!WebSite.mobile;
+            console.log("Mobile mode", WebSite.mobile);
+            if (WebSite.mobile) {
+                home.rel("mobile.txt").text("true");
+            } else {
+                home.rel("mobile.txt").rm();
+            }
+            /*$("a").each(function () {
+                var t=$(this);
+                var hr=t.attr("href");
+                if (hr) t.attr("href", hr.replace("project.html","m.html"));
+            });*/
+
+        }
+    });
     sh.wikiEditor=function () {document.location.href="wikiEditor.html";};
 });
 });

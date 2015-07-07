@@ -14,6 +14,13 @@ $(function () {
     var F=EC.f;
     $LASTPOS=0;
     copySample();
+    var mobile=WebSite.mobile || FS.get(WebSite.tonyuHome).rel("mobile.txt").exists();
+    if (mobile) {
+        $("#fileViewer").hide();
+        $("#runAreaParent").hide();
+        $("#mainArea").attr("class","col-xs-12");
+        $("#fileSel").show();
+    }
     var home=FS.get(WebSite.tonyuHome);
     //if (!Tonyu.ide)  Tonyu.ide={};
     var kernelDir=home.rel("Kernel/");
@@ -60,6 +67,7 @@ $(function () {
         screenH=h;
         var rw=$("#runArea").width();
         $("#progs pre").css("height",h+"px");
+        console.log("canvas size",rw,h);
         $("#cv").attr("height", h).attr("width", rw);
         cv=$("#cv")[0].getContext("2d");
         $("#fileItemList").height(h);
@@ -79,7 +87,7 @@ $(function () {
     $("body")[0].spellcheck=false;
     sh.cd(curProjectDir);
 
-    var fl=FileList($("#fileItemList"),{
+    var fl=FileList($(mobile?"#fileSel":"#fileItemList"),{
         topDir: curProjectDir,
         on:{
             select: F(open),
@@ -243,11 +251,17 @@ $(function () {
             showErrorPos($("#errorPos"));
             //$("#errorPos").hide();// (1000,next);
             //$("#runArea").slideDown(1000, next);
+            if (mobile) {
+                //$("#fileViewer").hide();
+                $("#runAreaParent").show().attr("class","col-xs-12");
+                $("#mainArea").hide();//attr("class","col-xs-12");
+                onResize();
+            }
             break;
         case "compile_error":
             //$("#errorPos").show();// slideDown(1000, next);
             if (typeof SplashScreen!="undefined") SplashScreen.hide();
-	    break;
+            break;
         case "runtime_error":
             //$("#errorPos").slideDown(1000, next);
             if (typeof SplashScreen!="undefined") SplashScreen.hide();
@@ -255,11 +269,17 @@ $(function () {
         case "edit":
             //$("#runArea").slideUp(1000);
             //$("#errorPos").slideUp(1000, next);
+            if (mobile) {
+                //$("#fileViewer").hide();
+                $("#runAreaParent").hide();//.attr("class","col-xs-12");
+                $("#mainArea").show();//attr("class","col-xs-12");
+            }
             break;
         }
     }
     function stop() {
         curPrj.stop();
+        displayMode("edit");
     }
     function run(name) {
         curPrj.stop();
@@ -303,7 +323,7 @@ $(function () {
         alert(e);
         alertOnce=function(){};
     };
-    EC.handleException=Tonyu.onRuntimeError=function (e) {
+    window.onerror=EC.handleException=Tonyu.onRuntimeError=function (e) {
         Tonyu.globals.$lastError=e;
         var t=curPrj.env.traceTbl;
         var te;
