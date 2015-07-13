@@ -1,4 +1,4 @@
-// Created at Tue Jul 07 2015 12:04:06 GMT+0900 (東京 (標準時))
+// Created at Mon Jul 13 2015 18:10:20 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -2217,7 +2217,7 @@ return Tonyu=function () {
             globals:globals, classes:classes, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
             timeout:timeout,asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
-            VERSION:1436238239166,//EMBED_VERSION
+            VERSION:1436778614245,//EMBED_VERSION
             A:A};
 }();
 });
@@ -2751,6 +2751,7 @@ define(["FS","WebSite"], function (fs,WebSite) {
         return FS.get("/var/log/").rel(y+"/").rel(m+"/").rel(y+"-"+m+"-"+da+".log");
     };
     Log.append=function (line) {
+        if (!WebSite.logging) return;
         if (WebSite.isNW) return;
         var f=Log.curFile();
         //console.log(Log, "append "+f);

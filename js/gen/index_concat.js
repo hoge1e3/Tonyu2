@@ -1,4 +1,4 @@
-// Created at Tue Jul 07 2015 12:04:01 GMT+0900 (東京 (標準時))
+// Created at Mon Jul 13 2015 18:10:17 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -1793,6 +1793,7 @@ define(["FS","WebSite"], function (fs,WebSite) {
         return FS.get("/var/log/").rel(y+"/").rel(m+"/").rel(y+"-"+m+"-"+da+".log");
     };
     Log.append=function (line) {
+        if (!WebSite.logging) return;
         if (WebSite.isNW) return;
         var f=Log.curFile();
         //console.log(Log, "append "+f);
