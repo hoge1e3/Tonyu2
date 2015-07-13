@@ -8,6 +8,7 @@ define(["FS","WebSite"], function (fs,WebSite) {
         return FS.get("/var/log/").rel(y+"/").rel(m+"/").rel(y+"-"+m+"-"+da+".log");
     };
     Log.append=function (line) {
+        if (!WebSite.logging) return;
         if (WebSite.isNW) return;
         var f=Log.curFile();
         //console.log(Log, "append "+f);
