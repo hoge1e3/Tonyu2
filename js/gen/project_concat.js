@@ -1,4 +1,4 @@
-// Created at Mon Jul 13 2015 18:10:20 GMT+0900 (東京 (標準時))
+// Created at Tue Jul 14 2015 14:21:41 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -2217,7 +2217,7 @@ return Tonyu=function () {
             globals:globals, classes:classes, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
             timeout:timeout,asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
-            VERSION:1436778614245,//EMBED_VERSION
+            VERSION:1436851295510,//EMBED_VERSION
             A:A};
 }();
 });
@@ -2741,7 +2741,7 @@ return FileMenu;
 });
 
 requireSimulator.setName('Log');
-define(["FS","WebSite"], function (fs,WebSite) {
+define(["FS","WebSite"], function (FS,WebSite) {
     var Log={};
     Log.curFile=function () {
         var d=new Date();
@@ -2750,6 +2750,10 @@ define(["FS","WebSite"], function (fs,WebSite) {
         var da=d.getDate();
         return FS.get("/var/log/").rel(y+"/").rel(m+"/").rel(y+"-"+m+"-"+da+".log");
     };
+    if (!WebSite.logging && !WebSite.isNW) {
+        var varlog=FS.get("/var/log/");
+        if (varlog.exists()) varlog.removeWithoutTrash();
+    }
     Log.append=function (line) {
         if (!WebSite.logging) return;
         if (WebSite.isNW) return;

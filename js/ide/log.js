@@ -1,4 +1,4 @@
-define(["FS","WebSite"], function (fs,WebSite) {
+define(["FS","WebSite"], function (FS,WebSite) {
     var Log={};
     Log.curFile=function () {
         var d=new Date();
@@ -7,6 +7,10 @@ define(["FS","WebSite"], function (fs,WebSite) {
         var da=d.getDate();
         return FS.get("/var/log/").rel(y+"/").rel(m+"/").rel(y+"-"+m+"-"+da+".log");
     };
+    if (!WebSite.logging && !WebSite.isNW) {
+        var varlog=FS.get("/var/log/");
+        if (varlog.exists()) varlog.removeWithoutTrash();
+    }
     Log.append=function (line) {
         if (!WebSite.logging) return;
         if (WebSite.isNW) return;
