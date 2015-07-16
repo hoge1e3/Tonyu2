@@ -20,19 +20,19 @@ Tonyu.klass.define({
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       var t;
       
-      //$LASTPOS=1000049;//kernel.EventHandlerCaller:49
+      //$LASTPOS=1000064;//kernel.EventHandlerCaller:64
       t;
-      //$LASTPOS=1000061;//kernel.EventHandlerCaller:61
+      //$LASTPOS=1000076;//kernel.EventHandlerCaller:76
       if (h["fiber"]) {
-        //$LASTPOS=1000088;//kernel.EventHandlerCaller:88
+        //$LASTPOS=1000103;//kernel.EventHandlerCaller:103
         t=Tonyu.thread();
-        //$LASTPOS=1000115;//kernel.EventHandlerCaller:115
+        //$LASTPOS=1000130;//kernel.EventHandlerCaller:130
         h["fiber"].apply(_this.target,[t].concat(args));
-        //$LASTPOS=1000169;//kernel.EventHandlerCaller:169
+        //$LASTPOS=1000184;//kernel.EventHandlerCaller:184
         t.steps();
         
       } else {
-        //$LASTPOS=1000203;//kernel.EventHandlerCaller:203
+        //$LASTPOS=1000218;//kernel.EventHandlerCaller:218
         h.apply(_this.target,args);
         
       }
@@ -43,19 +43,19 @@ Tonyu.klass.define({
       var __pc=0;
       var t;
       
-      //$LASTPOS=1000049;//kernel.EventHandlerCaller:49
+      //$LASTPOS=1000064;//kernel.EventHandlerCaller:64
       t;
-      //$LASTPOS=1000061;//kernel.EventHandlerCaller:61
+      //$LASTPOS=1000076;//kernel.EventHandlerCaller:76
       if (h["fiber"]) {
-        //$LASTPOS=1000088;//kernel.EventHandlerCaller:88
+        //$LASTPOS=1000103;//kernel.EventHandlerCaller:103
         t=Tonyu.thread();
-        //$LASTPOS=1000115;//kernel.EventHandlerCaller:115
+        //$LASTPOS=1000130;//kernel.EventHandlerCaller:130
         h["fiber"].apply(_this.target,[t].concat(args));
-        //$LASTPOS=1000169;//kernel.EventHandlerCaller:169
+        //$LASTPOS=1000184;//kernel.EventHandlerCaller:184
         t.steps();
         
       } else {
-        //$LASTPOS=1000203;//kernel.EventHandlerCaller:203
+        //$LASTPOS=1000218;//kernel.EventHandlerCaller:218
         h.apply(_this.target,args);
         
       }

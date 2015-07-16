@@ -1,3 +1,4 @@
+extends null;
 native Tonyu;
 \callEventHandler(h, args) {
     var t;
