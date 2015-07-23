@@ -51,7 +51,9 @@ paramsにはオブジェクトを指定します．paramsの値をフィール�
 -[[applyImpulse]]
 -[[applyTorque]]
 -[[contactTo]]
--[[allContact]]
+-[[allContacts]]
+-[[contactPoint]]
+-[[allContactPoints]]
 -[[addRevoluteJoint]]
 -[[onAppear>physicsParams]]
 .

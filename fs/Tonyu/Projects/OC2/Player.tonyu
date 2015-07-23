@@ -1,0 +1,12 @@
+extends BodyActor;
+p=$pat_neko+45;
+manualRotation=true;
+while(true){
+    if(getkey("right")>0) vx+=0.6;
+    if(getkey("left")>0)  vx-=0.6;
+    if(getkey("space")==1 && contactTo(Block)){
+        vy=-10;
+    }
+    
+    update();
+}

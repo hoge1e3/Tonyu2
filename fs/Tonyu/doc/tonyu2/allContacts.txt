@@ -1,11 +1,11 @@
 [[BodyActor]]
 
-*allContactメソッド
+*allContactsメソッド
 
 このオブジェクトに衝突しているすべての物理オブジェクトを返します。
 
 <<code
-allContact(Class)
+allContacts(Class)
 >>
 
 [[@cfrag Class]]で指定されるクラスのうち、このオブジェクトに衝突しているオブジェクトを配列で返します。

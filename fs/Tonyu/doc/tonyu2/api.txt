@@ -11,11 +11,11 @@ Tonyu2で最初から使えるクラス群です．[[ファイルシステム>fs
 -[[BaseActor]]
 -[[Boot]]
 -[[TQuery]]
+-[[MathMod]]
 **物理運動
 -[[BodyActor]]
 **グラフィックス
 -[[Map]]
--[[MathMod]]
 -[[ScaledCanvas]]
 -[[Sprites]]
 -[[Panel]]

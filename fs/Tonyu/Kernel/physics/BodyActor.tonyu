@@ -58,7 +58,43 @@ native Box2D;
     rotation=r;
     vrotation=vr;
 }
+\allContactPoints(klass) {
+    var res=[],m,point;
+    var w=getWorld();
+    for (var c=world.GetContactList();c;c=c.GetNext()) {
+        if (c.IsTouching()) {
+	        c.GetWorldManifold(m=new Box2D.Collision.b2WorldManifold);
+            if (m.m_points[0]) {
+                if (m.m_points[1] && m.m_points[1].x && m.m_points[1].y) {
+	            	point={
+	            	x:(m.m_points[0].x+m.m_points[1].x)/2*w.scale, 
+	            	y:(m.m_points[0].y+m.m_points[1].y)/2*w.scale};
+                } else {
+    	        	point={x:m.m_points[0].x*w.scale, y:m.m_points[0].y*w.scale};
+                } 
+            } else point={x,y};
+            var a=c.GetFixtureA().GetBody().GetUserData();
+            var b=c.GetFixtureB().GetBody().GetUserData();
+            if (a===this) {
+                if (!klass || b===klass || b instanceof klass) {
+                    res.push{target:b, manifold:m, x:point.x,y:point.y };
+                }
+            } else if (b===this) {
+                if (!klass || a===klass || a instanceof klass) {
+                    res.push{target:a, manifold:m, x:point.x,y:point.y };
+                }
+            }
+        }
+    }
+    return res;
+}
+\contactPoint(klass) {
+   return allContactPoints(klass)[0];
+}
 \allContact(klass) {
+   return allContacts(klass);
+}
+\allContacts(klass) {
     var res=[];
     for (var c=world.GetContactList();c;c=c.GetNext()) {
         if (c.IsTouching()) {

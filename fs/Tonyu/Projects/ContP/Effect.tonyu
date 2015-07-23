@@ -1,0 +1,5 @@
+
+p=5;
+scaleX=0.3;
+updateEx(10);
+die();

@@ -1,0 +1,12 @@
+[[BodyActor]]
+
+*allContactPointsメソッド
+
+このオブジェクトに発生しているすべての衝突について、衝突点を返します。
+
+<<code
+allContactPoints(Class)
+>>
+
+[[@cfrag Class]]で指定されるクラスのうち、このオブジェクトに衝突しているものについて、衝突点オブジェクト（[[contactPoint]]参照）を配列で返します。
+

@@ -1,0 +1,3 @@
+new Player{ x:30 , y:100 , radius:10};
+new Block{x:20,y:300, 
+scaleX:5,scaleY:1,p:2,isStatic:true, rotation:10};

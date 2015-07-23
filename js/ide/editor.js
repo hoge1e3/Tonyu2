@@ -44,6 +44,7 @@ $(function () {
           {name:"$pat_base", url: "images/base.png", pwidth:32, pheight:32},
           {name:"$pat_sample", url: "images/Sample.png"},
           {name:"$pat_neko", url: "images/neko.png", pwidth:32, pheight:32},
+          {name:"$pat_mapchip", url: "images/mapchip.png", pwidth:32, pheight:32},
           {name:"$pat_inputPad", url: "images/inputPad.png"}
        ],
        sounds:[]

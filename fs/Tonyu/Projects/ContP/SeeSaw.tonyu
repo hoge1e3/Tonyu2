@@ -1,0 +1,12 @@
+extends BodyActor;
+\onAppear(){
+    isStatic=true;
+    restitution=0;
+    super.onAppear();
+}
+t=0;
+while(true) {
+    rotation=sin(t)*20;
+    t+=1;
+    update();
+}
