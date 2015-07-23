@@ -355,8 +355,8 @@ var T2MediaLib = {
 
     // BGMメソッド郡 //
 
-    loadBGM : function(idx, url) {
-        return T2MediaLib.loadSE(idx, url);
+    loadBGM : function(idx, url, callbacks) {
+        return T2MediaLib.loadSE(idx, url, callbacks);
     },
     playBGM : function(id, idx, loop, offset, loopStart, loopEnd) {
         if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
