@@ -6,7 +6,7 @@ extends BodyActor;
 }
 t=0;
 while(true) {
-    rotation=sin(t)*20;
+    rotation=sin(t)*30;
     t+=1;
     update();
 }

@@ -21,7 +21,7 @@ var T2MediaLib_BGMPlayer = function(arg_id) {
 T2MediaLib_BGMPlayer.prototype.playBGM = function(idx, loop, offset, loopStart, loopEnd) {
     if (!T2MediaLib.context) return null;
     var bgm = this.playingBGM;
-    if (bgm instanceof AudioBufferSourceNode) bgm.stop();
+    if (bgm instanceof AudioBufferSourceNode) bgm.stop(0);
     this.playingBGM = T2MediaLib.playSE(idx, this.bgmVolume, this.bgmTempo, offset, loop, loopStart, loopEnd);
     this.playingBGMName = idx;
     this.bgmPause = 0;
@@ -190,7 +190,19 @@ var T2MediaLib = {
 
 
     // SEメソッド郡 //
-
+    loadSEFromArray: function (idx, array) {
+        var ctx=T2MediaLib.context;
+        var myArrayBuffer = ctx.createBuffer(
+            1, array.length, ctx.sampleRate);
+        var nowBuffering = myArrayBuffer.getChannelData(0);
+        for (var i = 0; i < array.length ; i++) {
+             nowBuffering[i] = array[i];
+        }
+        //var source = ctx.createBufferSource();
+        // set the buffer in the AudioBufferSourceNode
+        //source.buffer = myArrayBuffer;
+        T2MediaLib.seDataAry.data[idx]=myArrayBuffer;//source;
+    },
     loadSE : function(idx, url, callbacks) { //@hoge1e3
         if (!T2MediaLib.context) {
             T2MediaLib.seDataAry.data[idx] = -1;
@@ -245,6 +257,20 @@ var T2MediaLib = {
             xhr.responseType = 'arraybuffer';  // XMLHttpRequest Level 2
             xhr.send(null);
         }
+        setTimeout(T2MediaLib.activate.bind(T2MediaLib),0);
+    },
+    activate: function () {
+      // create empty buffer
+        if (this.isActivated) return;
+        this.isActivated=true;
+        var myContext=T2MediaLib.context;
+    	var buffer = myContext.createBuffer(1, 1, 22050);
+	    var source = myContext.createBufferSource();
+	    source.buffer = buffer;
+    	// connect to output (your speakers)
+    	source.connect(myContext.destination);
+        // play the file
+	    if (source.noteOn) source.noteOn(0);
     },
     playSE : function(idx, vol, rate, offset, loop, loopStart, loopEnd) {
         if (!T2MediaLib.context) return null;
@@ -323,7 +349,7 @@ var T2MediaLib = {
 
         source.onended = function(event) {
             //console.log('"on' + event.type + '" event handler !!');
-            source.stop(0);
+            //source.stop(0);
 
             delete source.gainNode;
             //delete source.playStartTime;
