@@ -158,6 +158,7 @@ var T2MediaLib = {
     // 初期化 //
 
     init : function() {
+        if (this.disabled) return;
         if (window.AudioContext) {
             T2MediaLib.context = new AudioContext();
         } else if (window.webkitAudioContext) {
@@ -204,7 +205,7 @@ var T2MediaLib = {
         T2MediaLib.seDataAry.data[idx]=myArrayBuffer;//source;
     },
     loadSE : function(idx, url, callbacks) { //@hoge1e3
-        if (!T2MediaLib.context) {
+        if (!T2MediaLib.context || T2MediaLib.disabled) {
             T2MediaLib.seDataAry.data[idx] = -1;
             return null;
         }
@@ -264,13 +265,20 @@ var T2MediaLib = {
         if (this.isActivated) return;
         this.isActivated=true;
         var myContext=T2MediaLib.context;
-    	var buffer = myContext.createBuffer(1, 1, 22050);
+    	var buffer = myContext.createBuffer(1, Math.floor(myContext.sampleRate/32), myContext.sampleRate);
+    	var ary = buffer.getChannelData(0);
+    	var lam = Math.floor(myContext.sampleRate/860);
+        for (var i = 0; i < ary.length; i++) {
+    	     ary[i] = (i % lam<lam/2?0.1:-0.1)*(i<lam?2:1) ;
+    	}
+        //console.log(ary);
 	    var source = myContext.createBufferSource();
 	    source.buffer = buffer;
     	// connect to output (your speakers)
     	source.connect(myContext.destination);
         // play the file
 	    if (source.noteOn) source.noteOn(0);
+	    else if (source.start) source.start(0);
     },
     playSE : function(idx, vol, rate, offset, loop, loopStart, loopEnd) {
         if (!T2MediaLib.context) return null;

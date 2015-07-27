@@ -165,6 +165,10 @@ return Tonyu.Project=function (dir, kernelDir) {
         }
         return Tonyu.defaultResource;
     };
+    TPR.hasSoundResource=function () {
+        var res=TPR.getResource();
+        return res && res.sounds && res.sounds.length>0;
+    };
     TPR.setResource=function (rsrc) {
         var resFile=dir.rel("res.json");
         resFile.obj(rsrc);

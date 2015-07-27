@@ -2,7 +2,8 @@ requirejs(["Util", "Tonyu", "FS", "FileList", "FileMenu",
            "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project",
            "copySample","Shell","Shell2","ProjectOptionsEditor","copyToKernel","KeyEventChecker",
            "WikiDialog","runtime", "KernelDiffDialog","Sync","searchDialog","StackTrace","syncWithKernel",
-           "UI","ResEditor","WebSite","exceptionCatcher","Tonyu.TraceTbl"
+           "UI","ResEditor","WebSite","exceptionCatcher","Tonyu.TraceTbl",
+           "SoundDiag"
           ],
 function (Util, Tonyu, FS, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,

@@ -1,4 +1,4 @@
-requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS","runtime","WebSite"],
+requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS","runtime","WebSite","SoundDiag"],
         function (FS,  Tonyu_Project, sh,      KeyEventChecker, ScriptTagFS,   rt,WebSite) {
     $(function () {
         var home=FS.get(WebSite.tonyuHome);
@@ -67,13 +67,20 @@ requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS","runtime
         };
         var kernelDir=home.rel("Kernel/");
         var curPrj=Tonyu_Project(curProjectDir, kernelDir);
-        Tonyu.currentProject=Tonyu.globals.$currentProject=curPrj;
-        var o=curPrj.getOptions();
-        if (o.compiler && o.compiler.diagnose) {
-            o.compiler.diagnose=false;
-            curPrj.setOptions(o);
+        if (curPrj.hasSoundResource()) {
+            SoundDiag.show(cv, start);
+        } else {
+            start();
         }
-        curPrj.runScriptMode=true;
-        curPrj.rawRun(o.run.bootClass);
+        function start() {
+            Tonyu.currentProject=Tonyu.globals.$currentProject=curPrj;
+            var o=curPrj.getOptions();
+            if (o.compiler && o.compiler.diagnose) {
+                o.compiler.diagnose=false;
+                curPrj.setOptions(o);
+            }
+            curPrj.runScriptMode=true;
+            curPrj.rawRun(o.run.bootClass);
+        }
     });
 });

@@ -95,6 +95,7 @@ var reqConf={
             difflib: "lib/difflib",
             diffview: "lib/diffview",
             timbre: "lib/timbre",
+            SoundDiag: "runtime/soundDiag",
             T2MediaLib: "lib/T2MediaLib",
             KernelDiffDialog: "ide/KernelDiffDialog",
             searchDialog: "ide/searchDialog",
