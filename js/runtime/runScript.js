@@ -67,11 +67,19 @@ requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS","runtime
         };
         var kernelDir=home.rel("Kernel/");
         var curPrj=Tonyu_Project(curProjectDir, kernelDir);
-        if (curPrj.hasSoundResource()) {
-            SoundDiag.show(cv, start);
-        } else {
-            start();
+        cv[0].addEventListener('touchstart', mediaIni);
+        window.addEventListener('touchstart', mediaIni);
+        function mediaIni() {
+            T2MediaLib.init();
+            T2MediaLib.activate();
+            cv[0].removeEventListener('touchstart', mediaIni);
+            window.removeEventListener('touchstart',mediaIni);
         }
+        /*if (curPrj.hasSoundResource()) {
+            SoundDiag.show(start);
+        } else {*/
+            start();
+        //}
         function start() {
             Tonyu.currentProject=Tonyu.globals.$currentProject=curPrj;
             var o=curPrj.getOptions();

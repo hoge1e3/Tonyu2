@@ -2,6 +2,7 @@ extends null;
 native $;
 native window;
 native Tonyu;
+native T2MediaLib;
 \new() {
     listeners=[];
     touchEmu=true;
@@ -37,6 +38,7 @@ native Tonyu;
         }
     };
     $handleTouch=\(e) {
+        T2MediaLib.activate();
         touchEmu=false;
         var p=cvj.offset();
         e.preventDefault();

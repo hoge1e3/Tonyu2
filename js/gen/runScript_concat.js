@@ -1,4 +1,4 @@
-// Created at Mon Jul 27 2015 13:45:42 GMT+0900 (東京 (標準時))
+// Created at Mon Jul 27 2015 21:17:55 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -1661,7 +1661,7 @@ return Tonyu=function () {
             globals:globals, classes:classes, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
             timeout:timeout,asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
-            VERSION:1437972328127,//EMBED_VERSION
+            VERSION:1437999463866,//EMBED_VERSION
             A:A};
 }();
 });
@@ -7260,6 +7260,8 @@ var T2MediaLib = {
     // 初期化 //
 
     init : function() {
+        if (this.inited) return;
+        this.inited=true;
         if (this.disabled) return;
         if (window.AudioContext) {
             T2MediaLib.context = new AudioContext();
@@ -7360,7 +7362,7 @@ var T2MediaLib = {
             xhr.responseType = 'arraybuffer';  // XMLHttpRequest Level 2
             xhr.send(null);
         }
-        setTimeout(T2MediaLib.activate.bind(T2MediaLib),0);
+        //setTimeout(T2MediaLib.activate.bind(T2MediaLib),0);
     },
     activate: function () {
       // create empty buffer
@@ -7690,36 +7692,47 @@ requirejs(["ImageList","T2MediaLib"], function () {
 requireSimulator.setName('SoundDiag');
 define(["T2MediaLib"],function (T2MediaLib) {
     SoundDiag={};
-    SoundDiag.show=function (cv, onSelect) {
+    SoundDiag.show=function (/*cv,*/ onSelect) {
+        var bsty={fontSize:"2em"};
         onSelect=onSelect||function (){};
-        var ctx=cv[0].getContext("2d");
+        var d=$("<div>").css({position:"absolute", left:100,top:100}).append(
+                $("<button>").css(bsty).text("Sound on").click(soundOn)
+        ).append(
+                $("<button>").css(bsty).text("Sound off").click(soundOff)
+        ).appendTo("body");
+        function soundOn() {
+            T2MediaLib.init();
+            T2MediaLib.disabled=false;
+            T2MediaLib.activate();
+            console.log("Sound ON");
+            d.remove();
+            onSelect();
+        }
+        function soundOff() {
+            T2MediaLib.disabled=true;
+            console.log("Sound OFF");
+            d.remove();
+            onSelect();
+        }
+        /*var ctx=cv[0].getContext("2d");
         var w=cv.width(),h=cv.height();
         var size=30;
         ctx.fillStyle="black";
         ctx.font=size+"px monospace";
         drawCenter("Sound on",h/3);
         drawCenter("Sound off",h/3*2);
-        cv.on("click", function (e) {
+        cv.on("click", func);
+        function func(e) {
             if (e.originalEvent.y<h/2) {
-                T2MediaLib.init();
-                ctx.fillStyle="red";
-                T2MediaLib.disabled=false;
-                T2MediaLib.activate();
-                drawCenter("Sound on",h/3);
-                console.log("Sound ON");
-                onSelect();
+
             } else {
-                T2MediaLib.disabled=true;
-                ctx.fillStyle="red";
-                console.log("Sound OFF");
-                drawCenter("Sound off",h/3*2);
-                onSelect();
+
             }
-        });
+        }
         function drawCenter(text,y) {
             var t=ctx.measureText(text);
             ctx.fillText(text, w/2-t.width/2, y+size/2);
-        }
+        }*/
     };
     return SoundDiag;
 });
@@ -7793,11 +7806,19 @@ requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS","runtime
         };
         var kernelDir=home.rel("Kernel/");
         var curPrj=Tonyu_Project(curProjectDir, kernelDir);
-        if (curPrj.hasSoundResource()) {
-            SoundDiag.show(cv, start);
-        } else {
-            start();
+        cv[0].addEventListener('touchstart', mediaIni);
+        window.addEventListener('touchstart', mediaIni);
+        function mediaIni() {
+            T2MediaLib.init();
+            T2MediaLib.activate();
+            cv[0].removeEventListener('touchstart', mediaIni);
+            window.removeEventListener('touchstart',mediaIni);
         }
+        /*if (curPrj.hasSoundResource()) {
+            SoundDiag.show(start);
+        } else {*/
+            start();
+        //}
         function start() {
             Tonyu.currentProject=Tonyu.globals.$currentProject=curPrj;
             var o=curPrj.getOptions();

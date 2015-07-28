@@ -158,6 +158,8 @@ var T2MediaLib = {
     // 初期化 //
 
     init : function() {
+        if (this.inited) return;
+        this.inited=true;
         if (this.disabled) return;
         if (window.AudioContext) {
             T2MediaLib.context = new AudioContext();
@@ -258,10 +260,11 @@ var T2MediaLib = {
             xhr.responseType = 'arraybuffer';  // XMLHttpRequest Level 2
             xhr.send(null);
         }
-        setTimeout(T2MediaLib.activate.bind(T2MediaLib),0);
+        //setTimeout(T2MediaLib.activate.bind(T2MediaLib),0);
     },
     activate: function () {
       // create empty buffer
+        this.init();
         if (this.isActivated) return;
         this.isActivated=true;
         var myContext=T2MediaLib.context;
