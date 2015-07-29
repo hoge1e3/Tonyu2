@@ -1,4 +1,5 @@
-define(["UI","ImageList","ImageRect","PatternParser"],function (UI,ImageList,ImageRect,PP) {
+define(["UI","ImageList","ImageRect","PatternParser","WebSite"],
+        function (UI,ImageList,ImageRect,PP,WebSite) {
     var d=UI("div",{title:"画像詳細"},
             ["div",
              ["div","URL:",["input",{$var:"url",size:40,on:{change:setURL}}],
@@ -120,7 +121,9 @@ define(["UI","ImageList","ImageRect","PatternParser"],function (UI,ImageList,Ima
     function cvClick() {
         var pc=chipRects[curChipIndex];
         if (pc) {
-            v.patName.val(curItemName+"+"+curChipIndex);
+            var pv=curItemName+"+"+curChipIndex;
+            v.patName.val(pv);
+            copyToClipboard(pv);
         }
     }
     function rect(ctx,rect,col) {
@@ -191,5 +194,12 @@ define(["UI","ImageList","ImageRect","PatternParser"],function (UI,ImageList,Ima
         if (onclose) onclose();
         return false;
     }
+    function copyToClipboard(value) {
+        if (!WebSite.isNW) return;
+        var gui = require('nw.gui');
+        var clipboard = gui.Clipboard.get();
+        clipboard.set(value, 'text');
+    }
+
     return IMD;
 });
