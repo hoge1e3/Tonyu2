@@ -67,14 +67,14 @@ requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS","runtime
         };
         var kernelDir=home.rel("Kernel/");
         var curPrj=Tonyu_Project(curProjectDir, kernelDir);
-        cv[0].addEventListener('touchstart', mediaIni);
+        /*cv[0].addEventListener('touchstart', mediaIni);
         window.addEventListener('touchstart', mediaIni);
         function mediaIni() {
             T2MediaLib.init();
             T2MediaLib.activate();
             cv[0].removeEventListener('touchstart', mediaIni);
             window.removeEventListener('touchstart',mediaIni);
-        }
+        }*/
         /*if (curPrj.hasSoundResource()) {
             SoundDiag.show(start);
         } else {*/
