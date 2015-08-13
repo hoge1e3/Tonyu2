@@ -89,6 +89,9 @@ nowait \hitTo(t) {
 }
 nowait \all(c) {
     var res=new TQuery;
+    if (arguments.length>0 && typeof c!="function") {
+        return res;
+    }
     $Sprites.sprites.forEach \(s) {
         if (s===this) return;
         if (!c || s instanceof c) {

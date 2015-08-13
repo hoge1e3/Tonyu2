@@ -1,0 +1,191 @@
+extends Actor;
+native prompt;
+loadMode=false;
+print("Load Data?: Y or N");
+while(true){
+    if(getkey("y")>0){
+        loadMode=true;
+        break;
+    }
+    if(getkey("n")>0){
+        loadMode=false;
+        break;
+    }
+    update();
+}
+if(loadMode){
+    fileName=prompt("Input json file (*.json)","map.json");
+    if(fileName){
+        mapDataFile=file("../maps/").rel(fileName);
+    }
+    if(mapDataFile.obj()){
+        baseData=mapDataFile.obj();
+    }else{
+        mapDataFile=file(fileName);
+        if(mapDataFile.obj()){
+            baseData=mapDataFile.obj();
+        }
+    }
+    if(baseData==undefined){
+        print("Load failed");
+        loadMode=false;
+    }else if(baseData[0] && baseData[1]){
+        mapData=baseData[0];
+        mapOnData=baseData[1];
+    }
+}
+update();
+//if(mapData){
+    /*
+    print("Load Data?: Y or N");
+    while(true){
+        if(getkey("y")==1){
+            loadMode=true;
+            break;
+        }
+        if(getkey("n")==1){
+            loadMode=false;
+            break;
+        }
+    }*/
+//}
+if(!loadMode){
+    row=prompt("input row");
+    update();
+    col=prompt("input col");
+    panel=new Panel{width:col*32,height:row*32};
+    panel.x=panel.width/2+10;
+    panel.y=panel.height/2;
+    panel.setFillStyle("cyan");
+    panel.fillRect(0,0,panel.width,panel.height);
+    $map=new Map{row,col,chipWidth:32,chipHeight:32};
+}else{
+    if(!mapOnData){
+        $map=new Map{row:mapData.length,col:mapData[0].length,chipWidth:32,chipHeight:32,mapData};
+    }else{
+        $map=new Map{row:mapData.length,col:mapData[0].length,chipWidth:32,chipHeight:32,mapData,mapOnData};
+    }
+    panel=new Panel{width:$map.col*32,height:$map.row*32,zOrder:100};
+    panel.x=panel.width/2;
+    panel.y=panel.height/2;
+    panel.setFillStyle("cyan");
+    panel.fillRect(0,0,panel.width,panel.height);
+}
+$mp=new Map{row:16,col:8,chipWidth:32,chipHeight:32};
+counter=0;
+for(var i=0;i<16;i++){
+    for(var j=0;j<8;j++){
+        $mp.set(j,i,$pat_mapchip+counter);
+        counter++;
+    }
+}
+mode="get";
+prevMode="set";
+mapp=0;
+mx=0;
+my=0;
+chipX=0;
+chipY=0;
+x=$screenWidth-16;
+y=$screenHeight-16;
+while(true){
+    p=mapp;
+    if(getkey("e")==1){
+        $mp.scrollTo(1000,1000);
+        mode="erase";
+        print(mode+" mode");
+    }
+    if(getkey("s")==1){
+        $mp.scrollTo(1000,1000);
+        if(mode=="set"){
+            mode="setOn";
+        }else{
+            mode="set";
+        }
+        print(mode+" mode");
+    }
+    if(getkey("o")==1){
+        $mp.scrollTo(1000,1000);
+        mode="setOn";
+    }
+    if(getkey("g")==1){
+        if(mode!="get"){
+            prevMode=mode;
+            $mp.scrollTo(0,0);
+            mode="get";
+            chipX=0;
+            chipY=0;
+        }else{
+            $mp.scrollTo(1000,1000);
+            mode=prevMode;
+        }
+        print(mode+" mode");
+    }
+    if(getkey("p")==1){
+        //add
+        saveFileName=prompt("input json file(*.json)","map.json");
+        /*print("mapTable=[");
+        data="[";
+        for(var i=0;i<$map.row-1;i++){
+            var tmp=[];
+            tmp=$map.mapTable[i].concat(tmp);
+            print("["+tmp+"],");
+            data+="["+tmp+"],";
+        }
+        var tmp=[];
+        tmp=$map.mapTable[i].concat(tmp);
+        print("["+tmp+"]");
+        data+="["+tmp+"]";
+        print("];");
+        data+="]";*/
+        //add
+        saveDataFile=file("../maps/").rel(saveFileName);
+        data=[$map.mapTable,$map.mapOnTable];
+        //comment
+        //mapDataFile.obj(data);
+        //add
+        saveDataFile.obj(data);
+        print(saveFileName+" Saved");
+        //mapDataFile.obj.push($map.mapOnTable);
+    }
+    if(getkey("c")==1){
+        $mp.scrollTo(1000,1000);
+        mode="spuit";
+        print(mode+" mode");
+    }
+    if(mode!="get"){
+        if(getkey("left")>0) mx=mx+8;
+        if(getkey("right")>0) mx=mx-8;
+        if(getkey("up")>0) my=my+8;
+        if(getkey("down")>0) my=my-8;
+        $map.scrollTo(mx,my);
+    }else{
+        if(getkey("left")>0) chipX=chipX+8;
+        if(getkey("right")>0) chipX=chipX-8;
+        if(getkey("up")>0) chipY=chipY+8;
+        if(getkey("down")>0) chipY=chipY-8;
+        $mp.scrollTo(chipX,chipY);
+    }
+    panel.x=panel.width/2-mx;
+    panel.y=panel.height/2-my;
+    if(mode=="set" && getkey(1)>0){
+        $map.setAt($mouseX+mx,$mouseY+my,mapp);
+        $map.setOnAt($mouseX+mx,$mouseY+my,-1);
+    }else if(mode=="erase" && getkey(1)>0){
+        $map.setAt($mouseX+mx,$mouseY+my,-1);
+    }else if(mode=="get" && getkey(1)>0){
+        mapp=$mp.getAt($mouseX+chipX,$mouseY+chipY);
+        mode=prevMode;
+        $mp.scrollTo(1000,1000);
+        print(mode+" mode");
+        updateEx(10);
+    }else if(mode=="setOn" && getkey(1)>0){
+        $map.setOnAt($mouseX+mx,$mouseY+my,mapp);
+    }else if(mode=="spuit" && getkey(1)>0){
+        mapp=$map.getAt($mouseX+mx,$mouseY+my);
+        mode="set";
+        print(mode+" mode");
+        updateEx(10);
+    }
+    update();
+}

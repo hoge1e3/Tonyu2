@@ -136,6 +136,9 @@ includes MathMod;
         if (f(o)) no.push(o);
     }
     return no;
+}
+\find1(f) {
+    return find(f)[0];
 } 
 \apply(name, args) {
     var res;

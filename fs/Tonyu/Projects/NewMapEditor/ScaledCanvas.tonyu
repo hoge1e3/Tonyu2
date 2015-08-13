@@ -68,7 +68,8 @@ native Math;
     }
     var marginw=Math.floor((cw-calcw)/2);
     var marginh=Math.floor((ch-calch)/2);
-    
+    //For mysterious bug of Chrome on Android 5....
+    _ret="("+point.x+"-"+marginw+")/"+calcw+"*"+width+",";
     return {x: (point.x-marginw)/calcw*width, 
     y: (point.y-marginh)/calch*height};
 }

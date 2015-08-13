@@ -24,6 +24,14 @@ native Math;
     $screenHeight=height;
     if($panel){
         $panel.setPanel($screenWidth,$screenHeight);
+        $panel.x=$screenWidth/2;
+        $panel.y=$screenHeight/2;
+    }
+    if($consolePanel){
+        $consolePanel.setPanel($screenWidth,$screenHeight);
+        $consolePanel.x=$screenWidth/2;
+        $consolePanel.y=$screenHeight/2;
+        $consolePrintY=$screenHeight-15;
     }
 }
 \shouldDraw1x1(srcw,srch,dstw,dsth) {
