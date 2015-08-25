@@ -43,7 +43,12 @@ define(["WebSite"],function (WebSite){
         if (!i) throw new Error("plugin not found: "+name);
         options=convOpt(options);
         var src=WebSite.pluginTop+"/"+i.src;
-        $.getScript(src, options.onload);
+        if (location.href.match(/^file:/)) {
+            $("<script>").attr("src",src).appendTo("body");
+            setTimeout(options.onload,500);
+        } else {
+            $.getScript(src, options.onload);
+        }
     };
     plugins.request=function (name) {
         if (plugins.loaded(name)) return;
