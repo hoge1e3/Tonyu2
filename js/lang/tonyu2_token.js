@@ -273,7 +273,7 @@ return TT=function () {
 		} else {
 			console.log("Stopped at "+str.substring( res.src.maxPos-5, res.src.maxPos+5));
 		}
-		if (typeof WebSite=="object" && WebSite.devMode) {
+		/*if (typeof WebSite=="object" && WebSite.devMode) {//DELJSL
 		    window.tokenStat=window.tokenStat||{};
 		    res.result[0].forEach(function (r) {
 		        window.tokenStat[ r.text ]= window.tokenStat[ r.text ] || 0;
@@ -281,7 +281,7 @@ return TT=function () {
 		    });
 		    //buf=""; for (var k in tokenStat) {  buf+=k+"\t"+tokenStat[k]+"\n"; }; buf;
 		    //console.log(res);
-		}
+		}*/
 		return res;
 		//console.log(Profiler.report());
 		//console.log( disp(res.result[0]) );
