@@ -156,13 +156,14 @@ define(["Util","exceptionCatcher"],function (Util, EC) {
             for (var k in o) {
                 if (k=="on") {
                     for (var e in o.on) on(e, o.on[e]);
-                } else if (k=="css") {
+                } else if (k=="css" && o[k]!=null) {//ADDJSL
                     jq.css(o[k]);
-                } else if (!Util.startsWith(k,"$")){
+                } else if (!Util.startsWith(k,"$") && o[k]!=null) {//ADDJSL
                     jq.attr(k,o[k]);
                 }
             }
             function on(eType, li) {
+                if (!li) return; //ADDJSL
                 if (eType=="enterkey") {
                     jq.on("keypress",F(function (ev) {
                         if (ev.which==13) li.apply(jq,arguments);

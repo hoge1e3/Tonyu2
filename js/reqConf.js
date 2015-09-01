@@ -190,6 +190,18 @@ var reqConf={
             plugins:"plugins/plugins",
             exceptionCatcher:"lib/exceptionCatcher",
             Assets:"fs/Assets",
+            "assert":"fs2/assert",
+            "Contents":"fs2/Contents",
+            "DataURL":"fs2/DataURL",
+            "extend":"fs2/extend",
+            "FS2":"fs2/FS2",
+            "LSFS":"fs2/LSFS",
+            "MIMETypes":"fs2/MIMETypes",
+            "NativeFS":"fs2/NativeFS",
+            "PathUtil":"fs2/PathUtil",
+            "SandBoxFile":"fs2/SandBoxFile",
+            "SFile":"fs2/SFile",
+
             "foo":"bar"
         },
         "baseUrl": "../../js"
