@@ -1,9 +1,10 @@
-define(["WebSite","SFileNW"],function (WebSite,wfs) {
+define(["WebSite","SFileNW","Env","PathUtil","assert"],function (WebSite,wfs,Env,P,A) {
     if (wfs && wfs.get) {
         //var wfs=require("SFileNW");
         if (typeof window=="object") window.FS=wfs;
         return wfs;
     }
+    var env=new Env(WebSite);
     // Media Mask
     var MM_RAM=1, MM_LS=2, MM_MIX=3;
     var ramDisk={},ramDiskUsage=null;
@@ -256,10 +257,23 @@ define(["WebSite","SFileNW"],function (WebSite,wfs) {
             }
         }
     };
-    FS.resolve=function (path, base) {
+    /*FS.resolve=function (path, base) {
         if (base) return FS.get(FS.get(base).rel(path));
         return FS.get(path);
+    };*/
+    FS.expandPath=function () {
+        return env.expandPath.apply(env,arguments);
     };
+    FS.resolve=function (path, base) {
+        if (SFile.is(path)) return path;
+        path=env.expandPath(path);
+        if (base && !P.isAbsolutePath(path)) {
+            base=env.expandPath(base);
+            return FS.get(base).rel(path);
+        }
+        return FS.get(path);
+    };
+
     FS.get=function (path, securityDomain) {
         if (!securityDomain) securityDomain={};
         if (path==null) throw  new Error("FS.get: Null path");
@@ -514,6 +528,7 @@ define(["WebSite","SFileNW"],function (WebSite,wfs) {
         res.toString=function (){
             return path;
         };
+        res.isSFile=function (){return true;};
         return res;
     };
     function up(path) {

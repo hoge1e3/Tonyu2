@@ -201,6 +201,7 @@ var reqConf={
             "PathUtil":"fs2/PathUtil",
             "SandBoxFile":"fs2/SandBoxFile",
             "SFile":"fs2/SFile",
+            "Env":"fs2/Env",
 
             "foo":"bar"
         },
