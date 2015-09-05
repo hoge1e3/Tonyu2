@@ -21,16 +21,16 @@ Tonyu.klass.define({
       //$LASTPOS=1000096;//user.Test:96
       while (true) {
         //$LASTPOS=1000114;//user.Test:114
-        _this.x++;
-        //$LASTPOS=1000123;//user.Test:123
+        _this.x+=2;
+        //$LASTPOS=1000124;//user.Test:124
         _this.y++;
-        //$LASTPOS=1000132;//user.Test:132
+        //$LASTPOS=1000133;//user.Test:133
         Tonyu.globals.$Screen.scrollTo(_this.x-Tonyu.globals.$screenWidth/2,_this.y-Tonyu.globals.$screenHeight/2);
-        //$LASTPOS=1000210;//user.Test:210
+        //$LASTPOS=1000211;//user.Test:211
         _this.update();
         
       }
-      //$LASTPOS=1000222;//user.Test:222
+      //$LASTPOS=1000223;//user.Test:223
       _this.a=6601;
     },
     fiber$main :function _trc_Test_f_main(_thread) {
@@ -57,12 +57,12 @@ Tonyu.klass.define({
             //$LASTPOS=1000096;//user.Test:96
           case 1:
             //$LASTPOS=1000114;//user.Test:114
-            _this.x++;
-            //$LASTPOS=1000123;//user.Test:123
+            _this.x+=2;
+            //$LASTPOS=1000124;//user.Test:124
             _this.y++;
-            //$LASTPOS=1000132;//user.Test:132
+            //$LASTPOS=1000133;//user.Test:133
             Tonyu.globals.$Screen.scrollTo(_this.x-Tonyu.globals.$screenWidth/2,_this.y-Tonyu.globals.$screenHeight/2);
-            //$LASTPOS=1000210;//user.Test:210
+            //$LASTPOS=1000211;//user.Test:211
             _this.fiber$update(_thread);
             __pc=2;return;
           case 2:
@@ -70,7 +70,7 @@ Tonyu.klass.define({
             __pc=1;break;
           case 3:
             
-            //$LASTPOS=1000222;//user.Test:222
+            //$LASTPOS=1000223;//user.Test:223
             _this.a=6601;
             _thread.exit(_this);return;
           }

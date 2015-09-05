@@ -1,7 +1,9 @@
-define(["Tonyu","Tonyu.Compiler.JSGenerator","Tonyu.Compiler.Semantics","Tonyu.TraceTbl","FS"],
-        function (Tonyu,JSGenerator,Semantics, ttb,FS) {
+define(["Tonyu","Tonyu.Compiler.JSGenerator","Tonyu.Compiler.Semantics",
+        "Tonyu.TraceTbl","FS","assert","SFile"],
+        function (Tonyu,JSGenerator,Semantics,
+                ttb,FS,A,SFile) {
 var TPRC=function (dir) {
-    if (!dir.rel) throw new Error("projectCompiler: "+dir+" is not dir obj");
+     A(SFile.is(dir) && dir.isDir(), "projectCompiler: "+dir+" is not dir obj");
      var TPR={env:{}};
      var traceTbl=Tonyu.TraceTbl;//();
      TPR.env.traceTbl=traceTbl;
@@ -18,12 +20,11 @@ var TPRC=function (dir) {
          TPR.fixOptions(env.options);
          return env.options;
      };
+     TPR.setOptions=function (opt) {
+         TPR.getOptionsFile().obj(opt);
+     }; // ADDJSL
      TPR.fixOptions=function (opt) {
          if (!opt.compiler) opt.compiler={};
-         //if (!opt.srcPath) opt.srcPath={"user": "."};
-         //opt.compiler.commentLastPos=TPR.runScriptMode || StackTrace.isAvailable();
-         //opt.run.mainClass=TPR.fixClassName(opt.run.mainClass);
-         //opt.run.bootClass=TPR.fixClassName(opt.run.bootClass);
      };
      TPR.resolve=function (rdir){
          if (rdir instanceof Array) {
@@ -51,7 +52,7 @@ var TPRC=function (dir) {
              return true;
          }
          //console.log("Outf last="+new Date(outLast));
-         var sf=TPR.sourceFiles();
+         var sf=TPR.sourceFiles(TPR.getNamespace());
          for (var i in sf) {
              var f=sf[i];
              var l=f.lastUpdate();
@@ -67,14 +68,24 @@ var TPRC=function (dir) {
          }
          return false;
      };
+     TPR.getClassName=function (file) {//ADDJSL
+         A(SFile.is(file));
+         if (dir.contains(file)) {
+             return TPR.getNamespace()+"."+file.truncExt(TPR.EXT);
+         }
+         var res;
+         TPR.getDependingProjects().forEach(function (dp) {
+             if (!res) res=dp.getClassName(file);
+         });
+         return res;
+     };
      TPR.getNamespace=function () {
          var opt=TPR.getOptions();
-         return opt.compiler.namespace;
+         return A(opt.compiler.namespace,"namespace not specified opt="+JSON.stringify(opt));
      };
      TPR.getOutputFile=function (lang) {
          var opt=TPR.getOptions();
-         console.log("Loaded option: ",dir,opt);
-         var outF=TPR.resolve(opt.compiler.outputFile);
+         var outF=TPR.resolve(A(opt.compiler.outputFile,"output file should be specified in options"));
          if (outF.isDir()) {
              throw new Error("out: directory style not supported");
          }
@@ -132,13 +143,11 @@ var TPRC=function (dir) {
                  dprj.loadClasses(ctx);
              }
          });
-         var dirs=TPR.sourceDirs();
-         TPR.compileDir(myNsp ,dirs, ctx);
-     };
-     TPR.compileDir=function (nsp ,dirs, ctx) {
+         //var dirs=TPR.sourceDirs(myNsp);
+         //--------------
          var baseClasses=ctx.classes;
          var ctxOpt=ctx.options;
-         dirs=TPR.resolve(dirs);
+         //dirs=TPR.resolve(dirs);
          var env=TPR.env;
          env.aliases={};
          env.classes=baseClasses;
@@ -147,17 +156,14 @@ var TPRC=function (dir) {
              env.aliases[ cl.shortName] = cl.fullName;
          }
          var newClasses={};
-         //Tonyu.currentProject=TPR;
-         //Tonyu.globals.$currentProject=TPR;
-         //console.log(dirs);
-         var sf=TPR.sourceFiles(nsp,dirs);
+         var sf=TPR.sourceFiles(myNsp);
          for (var shortCn in sf) {
              var f=sf[shortCn];
-             var fullCn=nsp+"."+shortCn;
+             var fullCn=myNsp+"."+shortCn;
              newClasses[fullCn]=baseClasses[fullCn]={
-                     fullName: fullCn,
+                     fullName:  fullCn,
                      shortName: shortCn,
-                     namespace:nsp,
+                     namespace: myNsp,
                      src:{
                          tonyu: f
                      }
@@ -197,10 +203,9 @@ var TPRC=function (dir) {
      };
      TPR.dir=dir;
      TPR.path=function () {return dir.path();};
-
-     TPR.sourceFiles=function (nsp,dirs) {
-         nsp=nsp || TPR.getNamespace();
-         dirs=dirs || TPR.sourceDirs();
+     TPR.sourceFiles=function (nsp) {// nsp==null => all
+         //nsp=nsp || TPR.getNamespace();//DELJSL
+         var dirs=TPR.sourceDirs(nsp);// ADDJSL
          var res={};
          for (var i=dirs.length-1; i>=0 ; i--) {
              dirs[i].recursive(collect);
@@ -213,13 +218,13 @@ var TPRC=function (dir) {
          }
          return res;
      };
-     TPR.sourceDirs=function () {
+     TPR.sourceDirs=function (myNsp) {//ADDJSL  myNsp==null => All
          var dp=TPR.getDependingProjects();
-         var myNsp=TPR.getNamespace();
+         //var myNsp||TPR.getNamespace();//DELJSL
          var dirs=[dir];
          dp.forEach(function (dprj) {
              var nsp=dprj.getNamespace();
-             if (nsp==myNsp) {
+             if (!myNsp || nsp==myNsp) {
                  dirs.push(dprj.dir);
              }
          });
@@ -314,7 +319,7 @@ var TPRC=function (dir) {
         var sn=cls.pop();
         var nsp=cls.join(".");
         if (nsp==TPR.getNamespace()) {
-            var sf=TPR.sourceFiles();
+            var sf=TPR.sourceFiles(nsp);
             for (var i in sf) {
                 if (sn==i) {
                     return TError("Trace info", sf[i], pos);

@@ -4,7 +4,7 @@ $map.zOrder=1000;
 x=20;y=20;
 
 while(true) {
-    x++;
+    x+=2;
     y++;
     $Screen.scrollTo(x-$screenWidth/2,y-$screenHeight/2);
     //    print(x);

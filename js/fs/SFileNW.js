@@ -65,6 +65,7 @@ function toCanonicalPath(path, base) {
     return res;
 }
 extend(SFile.prototype,{
+    isSFile: function (){return true;},
 	text:function () {
 		if (arguments.length==0) {
 		    if (this.isDir()) {
