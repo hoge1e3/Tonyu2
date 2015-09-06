@@ -1,8 +1,9 @@
-define(["WebSite"],function (WebSite) {
+define(["WebSite","Env"],function (WebSite,Env) {
 var exports={};
 if (!WebSite.isNW) return {};
 //--------begin of SFile.js
 var fs=require("fs");
+var env=new Env(WebSite);
 var SEP="/";
 var json=JSON; // JSON changes when page changes, if this is node module, JSON is original JSON
 function SFile(path) {
@@ -31,8 +32,13 @@ function truncSep(path) {
 var binMap={".png": "image/png", ".jpg":"image/jpg", ".gif": "image/gif", ".jpeg":"image/jpg",
         ".mp3":"audio/mp3", ".ogg":"audio/ogg"};
 exports.resolve=function (path, base) {
+    path=env.expandPath(path);
     return exports.get(toCanonicalPath(path, base));
 };
+exports.expandPath=function () {
+    return env.expandPath.apply(env,arguments);
+};
+
 function toCanonicalPath(path, base) {
     base=base || process.cwd();
     base=base.replace(/\\/g,SEP);

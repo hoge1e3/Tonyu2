@@ -1,4 +1,4 @@
-define(["WebSite","Log"],function (WebSite,Log) {
+define(["Log","FS"],function (Log,FS) {//MODJSL
 return function showErrorPos(elem, err) {
     var mesg, src, pos;
     if (!err) {
@@ -41,7 +41,7 @@ return function showErrorPos(elem, err) {
     }
     var srcd=$("<pre>");
     srcd.append($("<span>").text(str.substring(0,pos)));
-    srcd.append($("<img>").attr("src",WebSite.top+"/images/ecl.png"));
+    srcd.append($("<img>").attr("src",FS.expandPath("${sampleImg}/ecl.png")));//MODJSL
     srcd.append($("<span>").text(str.substring(pos)));
     elem.append(srcd);
     //elem.attr("title",mesg+" 場所："+src.name());

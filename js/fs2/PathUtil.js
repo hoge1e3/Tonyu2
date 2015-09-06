@@ -78,8 +78,10 @@ PathUtil={
         return null;
     },
     truncExt: function(path, ext) {
-		assert.is(arguments,[String,String]);
+		assert.is(path,String);
         var name = PathUtil.name(path);
+        ext=ext || PathUtil.ext(path);
+        assert.is(ext,String);
         return name.substring(0, name.length - ext.length);
     },
     truncSEP: function (path) {
