@@ -1,4 +1,4 @@
-define(["WebSite","SFileNW","Env","PathUtil","assert"],function (WebSite,wfs,Env,P,A) {
+define(["WebSite","SFileNW","Env","PathUtil","assert","SFile"],function (WebSite,wfs,Env,P,A,SFile) {
     if (wfs && wfs.get) {
         //var wfs=require("SFileNW");
         if (typeof window=="object") window.FS=wfs;
