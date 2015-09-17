@@ -113,13 +113,16 @@ var TPRC=function (dir) {
              var ns=TPR.getNamespace();
              var cls=Tonyu.classes;
              ns.split(".").forEach(function (c) {
-                 cls=cls[c];
-                 if (!cls) throw new Error("namespace Not found :"+ns);
+                 if (cls) cls=cls[c];
+                 // comment out : when empty concat.js
+                 //if (!cls) throw new Error("namespace Not found :"+ns);
              });
-             for (var cln in cls) {
-                 var cl=cls[cln];
-                 var m=Tonyu.klass.getMeta(cl);
-                 classes[m.fullName]=m;
+             if (cls) {
+                 for (var cln in cls) {
+                     var cl=cls[cln];
+                     var m=Tonyu.klass.getMeta(cl);
+                     classes[m.fullName]=m;
+                 }
              }
          }
      };
