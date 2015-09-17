@@ -88,6 +88,7 @@ define([], function () {
         } else {
             window.WebSite.tonyuHome=process.cwd().replace(/\\/g,"/").replace(/\/$/,"")+"/fs/Tonyu/";
         }
+        window.WebSite.logdir="/var/log/Tonyu/";
     }
     return window.WebSite;
 });

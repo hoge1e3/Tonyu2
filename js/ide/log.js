@@ -1,19 +1,45 @@
-define(["FS","WebSite"], function (FS,WebSite) {
+define(["FS","WebSite","Shell"], function (FS,WebSite,sh) {
     var Log={};
+    var logHome=FS.resolve("${logdir}");
+    var doLog=logHome.exists();
+    Log.todayDir=function () {
+        var d=new Date();
+        var y=d.getFullYear();
+        var m=d.getMonth()+1;
+        var da=d.getDate();
+        return logHome.rel(y+"/").rel(m+"/").rel(da+"/");
+    };
     Log.curFile=function () {
         var d=new Date();
         var y=d.getFullYear();
         var m=d.getMonth()+1;
         var da=d.getDate();
-        return FS.get("/var/log/").rel(y+"/").rel(m+"/").rel(y+"-"+m+"-"+da+".log");
+        return Log.todayDir().rel(y+"-"+m+"-"+da+".log");
+    };
+    Log.curProject=function () {
+        var d=new Date();
+        var h=d.getHours();
+        var m=d.getMinutes();
+        var s=d.getSeconds();
+        return Log.todayDir().rel("Project/").rel(digit(h,2)+"_"+digit(m,2)+"_"+digit(s,2)+"/");
+    };
+    function digit(n,zs) {
+        n="00000000000000"+n;
+        return n.substring(n.length-zs);
+    }
+    Log.dumpProject=function (dir) {
+        if (!doLog) return;
+        var out=Log.curProject();
+        sh.cp(dir, out);
+        Log.append("Dumped project to "+out.path());
     };
     if (!WebSite.logging && !WebSite.isNW) {
         var varlog=FS.get("/var/log/");
         if (varlog.exists()) varlog.removeWithoutTrash();
     }
     Log.append=function (line) {
-        if (!WebSite.logging) return;
-        if (WebSite.isNW) return;
+        if (!doLog) return;
+        //if (WebSite.isNW) return;
         var f=Log.curFile();
         //console.log(Log, "append "+f);
         var t=(f.exists()?f.text():"");

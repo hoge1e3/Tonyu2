@@ -1,0 +1,6 @@
+while (true) {
+    rotation+=10;
+    x++;
+    //scaleX+=0.1;
+    update();
+}
