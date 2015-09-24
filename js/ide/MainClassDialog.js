@@ -3,6 +3,7 @@ define(["UI"],function (UI) {
     res.show=function (prj, options) {
         var d=res.embed(prj, options);
         d.dialog({width:600});
+        return d;
     };
     res.embed=function (prj, options) {
         if (!options) options={};
@@ -13,28 +14,29 @@ define(["UI"],function (UI) {
                           ["select",{$var:"mainClass"}],
                           ["div", {$var:"validationMessage", css:{color:"red"}}],
                           ["button", {$var:"OKButton", on:{click: function () {
-                              res.d.done();
-                          }}}, "OK"]
+                              res.d.done(false);
+                          }}}, "OK"],
                           ["button", {$var:"RunButton", on:{click: function () {
-                              res.d.run();
+                              res.d.done(true);
                           }}}, "実行"]
                     ]
             );
         }
         var d=res.d;
-        var e=res.d.$edits;
+        var v=res.d.$vars;
         prj.getDir();
 
         var opt=prj.getOptions();
 
-        d.done=function () {
-            opt.run.mainClass=e.mainClass.val();
+        d.done=function (run) {
+            opt.run.mainClass=v.mainClass.val();
             prj.setOptions(opt);
+            if (options.on && options.on.done) {
+                options.on.done(v.mainClass.val(),run);
+            }
+            d.dialog("close");
         };
-        d.run=function () {
-            d.done();
-            prj.rawRun();
-        };
+
         return d;
     };
     return res;

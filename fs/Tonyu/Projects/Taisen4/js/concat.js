@@ -143,7 +143,7 @@ Tonyu.klass.define({
     main :function _trc_Main_main() {
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       var a;
-      var _it_1;
+      var _it_4;
       
       //$LASTPOS=2000000;//user.Main:0
       Tonyu.globals.$w=Tonyu.globals.$screenWidth;
@@ -176,9 +176,9 @@ Tonyu.klass.define({
       //$LASTPOS=2000233;//user.Main:233
       _this.text="Go!";
       //$LASTPOS=2000245;//user.Main:245
-      _it_1=Tonyu.iterator(_this.all(Tonyu.classes.user.Player),1);
-      while(_it_1.next()) {
-        a=_it_1[0];
+      _it_4=Tonyu.iterator(_this.all(Tonyu.classes.user.Player),1);
+      while(_it_4.next()) {
+        a=_it_4[0];
         
         //$LASTPOS=2000274;//user.Main:274
         a.sendEvent("start");
@@ -194,7 +194,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       var a;
-      var _it_1;
+      var _it_4;
       
       //$LASTPOS=2000000;//user.Main:0
       Tonyu.globals.$w=Tonyu.globals.$screenWidth;
@@ -236,9 +236,9 @@ Tonyu.klass.define({
             //$LASTPOS=2000233;//user.Main:233
             _this.text="Go!";
             //$LASTPOS=2000245;//user.Main:245
-            _it_1=Tonyu.iterator(_this.all(Tonyu.classes.user.Player),1);
-            while(_it_1.next()) {
-              a=_it_1[0];
+            _it_4=Tonyu.iterator(_this.all(Tonyu.classes.user.Player),1);
+            while(_it_4.next()) {
+              a=_it_4[0];
               
               //$LASTPOS=2000274;//user.Main:274
               a.sendEvent("start");

@@ -190,6 +190,7 @@ var reqConf={
             plugins:"plugins/plugins",
             exceptionCatcher:"lib/exceptionCatcher",
             Assets:"fs/Assets",
+            MainClassDialog:"ide/MainClassDialog",
             "assert":"fs2/assert",
             "Contents":"fs2/Contents",
             "DataURL":"fs2/DataURL",
