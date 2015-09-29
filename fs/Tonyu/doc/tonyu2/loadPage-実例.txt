@@ -1,0 +1,34 @@
+[[用途別リファレンス]]
+
+<<code Page1
+x=100;
+y=100;
+
+while(true){
+    if(getkey("mouseleft")==1 && $mouseX>=68 && $mouseX<=132
+    && $mouseY>=68 && $mouseY<=132){
+        loadPage(Page2);
+    }
+    update();
+}
+>>
+
+<<code Page2
+x=200;
+y=200;
+
+while(true){
+    if(getkey("mouseleft")==1 && $mouseX>=168 && $mouseX<=232
+    && $mouseY>=168 && $mouseY<=232){
+        loadPage(Page1);
+    }
+    update();
+}
+>>
+
+
+[[loadPage]]()はそれまで動いていたオブジェクトをすべて消して、新しいページを読み込む命令です。
+
+-上の二つの命令は、オブジェクトを左クリックすることでPage1からPage2に、又はPage2からPage1行くものです。
+
+

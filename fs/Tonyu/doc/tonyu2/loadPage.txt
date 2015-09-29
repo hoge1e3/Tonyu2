@@ -37,3 +37,5 @@ while(true) {
   update();
 }
 >>
+
+[[実例>loadPage-実例]]

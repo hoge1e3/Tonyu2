@@ -20,3 +20,5 @@ function onUpdate(){
 }
 >>
 このように書くと、[[update]]の度に"onUpdate"という文字列がコンソールに表示されます．
+
+[[実例>onUpdate-実例]]

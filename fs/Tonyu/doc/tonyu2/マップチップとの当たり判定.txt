@@ -1,0 +1,46 @@
+[[用途別リファレンス]]
+
+*マップチップとの当たり判定
+
+<<code Main
+$map=new Map{chipWidth:32,chipHeight:32};
+$map.load("stage1.json");
+
+x=$screenWidth/2;
+y=$screenHeight/2;
+while(true){
+    if(getkey("right")>0){
+        x+=3;
+        if($map.getAt(x,y)>-1){
+            x-=3;
+        }
+    }
+    if(getkey("left")>0){
+        x-=3;
+        if($map.getAt(x,y)>-1){
+            x+=3;
+        }
+    }
+    if(getkey("down")>0){
+        y+=3;
+        if($map.getAt(x,y)>-1){
+            y-=3;
+        }
+    }
+    if(getkey("up")>0){
+        y-=3;
+        if($map.getAt(x,y)>-1){
+            y+=3;
+        }
+    }
+    update();
+}
+
+
+>>
+
+上の命令は、上下左右に動かせる中央のオブジェクトがマップチップとぶつかると押し戻されるようにし、重なることができないようにしたものです。
+
+
+
+[[当たり判定で壁にぶつかる]]
