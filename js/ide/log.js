@@ -1,7 +1,7 @@
 define(["FS","WebSite","Shell"], function (FS,WebSite,sh) {
     var Log={};
-    var logHome=FS.resolve("${logdir}");
-    var doLog=logHome.exists();
+    var logHome=WebSite.logdir ? FS.resolve("${logdir}") : null;
+    var doLog=logHome && logHome.exists();
     Log.todayDir=function () {
         var d=new Date();
         var y=d.getFullYear();

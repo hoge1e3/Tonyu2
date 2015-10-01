@@ -4,6 +4,10 @@
 
 [[文字をテキストオブジェクトとして表示する]]
 
+*スコアを表示する
+
+やり方１
+
 <<code Main
 $score=0;
 new Score;
@@ -20,4 +24,21 @@ while(true) {
   update();
 }
 >>
+
+やり方２
+
+<<code Main
+$score=0;
+$scoreLabel=new Label{x:200,y:300};
+while(true){
+  if(getkey("z")==1) $score+=10;
+  $scoreLabel.text="Score : "+$score;
+  update();
+}
+>>
+
+<<code Label
+//何も書かない
+>>
+
 zキーを押すとscoreが10増える。

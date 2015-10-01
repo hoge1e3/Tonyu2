@@ -1,0 +1,38 @@
+[[用途別リファレンス]]
+
+*特定のオブジェクトだけスクロールの影響を受けないようにする
+
+<<code Main
+//事前にマップを作っておく
+
+$score=0;
+new Score{x:200, y:200, text:$score, layer:$FrontSprites};
+i=0;
+while(true){
+    if(getkey("z")==1) $score+=10;
+    $Screen.scrollTo(i,0);
+    i++;
+    update();
+}
+>>
+
+
+<<code Score
+while(true) {
+    text="Score:"+$score;
+    update();
+}
+>>
+
+上の命令は「new Score」に「layer:$FrontSprites」を設定することで、表示されるテキストオブジェクトだけスクロールの影響を受けないにしている。
+
+スクリーン全体をスクロールさせる場合は、$Screen.scrollTo(sx,sy);を使用する．
+
+-[[スクリーン全体をスクロール>ScreenscrollTo-実例]]
+
+
+マップだけをスクロールさせる場合は、$map.scrollTo(sx,sy);を使用する．
+
+-[[マップだけをスクロールさせる>mapscrollTo]]
+
+

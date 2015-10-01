@@ -3,11 +3,11 @@
 [[文字を表示する]]
 *文字をテキストオブジェクトとして表示する
 <<code Main
-new Txt{x:100, y:100, text:"文字A"};
-new Txt{x:100, y:200, text:"文字B", fillStyle:"black"};
-new Txt{x:100, y:300, text:"文字C", size:50};
+new Label{x:100, y:100, text:"文字A"};
+new Label{x:100, y:200, text:"文字B", fillStyle:"black"};
+new Label{x:100, y:300, text:"文字C", size:50};
 >>
-<<code Txt
+<<code Label
 何も書かなくてよい
 >>
 textという変数を設定するとそのオブジェクトはテキストオブジェクトとして扱われる。fillStyleで文字の色、sizeで文字の大きさを設定できる。
