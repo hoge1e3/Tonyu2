@@ -13,6 +13,14 @@ var SFile=function (fs, path) {
 SFile.is=function (path) {
     return path && typeof (path.isSFile)=="function" && path.isSFile();
 };
+function getPath(f) {
+    if (SFile.is(f)) {
+        return f.path();
+    } else {
+        A.is(f,P.Absolute);
+        return f;
+    }
+}
 SFile.prototype={
     isSFile: function (){return true;},
     _clone: function (){
@@ -99,7 +107,7 @@ SFile.prototype={
     },
     metaInfo: function () {
         if (arguments.length==0) {
-            return this.getMetaInfo(this,arguments);
+            return this.getMetaInfo.apply(this,arguments);
         } else {
             return this.setMetaInfo.apply(this,arguments);
         }
@@ -126,13 +134,16 @@ SFile.prototype={
             return this.resolveLink().exists({noFollowLink:true});
         }
     },
+    /*copyTo: function (dst, options) {
+        this.fs.cp(this.path(),getPath(dst),options);
+    },*/
     rm: function (options) {
         options=options||{};
         if (!this.exists({noFollowLink:true})) {
             var l=this.resolveLink();
             if (!this.equals(l)) return l.rm(options);
         }
-        if (this.isDir() && options.recursive) {
+        if (this.isDir() && (options.recursive||options.r)) {
             this.each(function (f) {
                 f.rm(options);
             });
@@ -175,13 +186,43 @@ SFile.prototype={
             if (!t) return null;
             return JSON.parse(t);
         } else {
-            file.text(JSON.stringify(arguments[0]));
+            file.text(JSON.stringify(A.is(arguments[0],Object) ));
         }
     },
     copyFrom: function (src, options) {
-        var file=this;
-        file.text(src.text());
-        if (options.a) file.metaInfo(src.metaInfo());
+        var dst=this;
+        var options=options||{};
+        var srcIsDir=src.isDir();
+        var dstIsDir=dst.isDir();
+        if (!srcIsDir && dstIsDir) {
+            dst=dst.rel(src.name());
+            assert(!dst.isDir(), dst+" exists as an directory.");
+            dstIsDir=false;
+        }
+        if (srcIsDir && !dstIsDir) {
+           this.err("Cannot move dir to file");
+        } else if (!srcIsDir && !dstIsDir) {
+            //this.fs.cp(A.is(src.path(), P.Absolute), this.path(),options);
+            var srcc=src.getText(); // TODO
+            var res=dst.setText(srcc);
+            if (options.a) {
+                dst.setMetaInfo(src.getMetaInfo());
+            }
+            return res;
+        } else {
+            A(srcIsDir && dstIsDir);
+            var t=this;
+            src.each(function (s) {
+                dst.rel(s.name()).copyFrom(s, options);
+            });
+        }
+        //file.text(src.text());
+        //if (options.a) file.metaInfo(src.metaInfo());
+    },
+    moveFrom: function (src, options) {
+        var res=this.copyFrom(src,options);
+        src.rm({recursive:true});
+        return res;//this.fs.mv(getPath(src),this.path(),options);
     },
     // Dir
     assertDir:function () {

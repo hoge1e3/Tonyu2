@@ -4,7 +4,8 @@ define(["FS2","WebSite","NativeFS","LSFS", "PathUtil","Env","assert","SFile"],
     var rootFS;
     var env=new Env(WebSite);
     if (WebSite.isNW) {
-        var nfsp=P.rel(process.cwd().replace(/\\/g,"/"), "fs/");
+        var nfsp=process.env.TONYU_FS_HOME || P.rel(process.cwd().replace(/\\/g,"/"), "www/fs/");
+        console.log("nfsp",nfsp);
         rootFS=new NativeFS(nfsp);
     } else {
         rootFS=new LSFS(localStorage);
@@ -12,20 +13,17 @@ define(["FS2","WebSite","NativeFS","LSFS", "PathUtil","Env","assert","SFile"],
     FS.get=function () {
         return rootFS.get.apply(rootFS,arguments);
     };
+    FS.expandPath=function () {
+        return env.expandPath.apply(env,arguments);
+    };
     FS.resolve=function (path, base) {
         if (SFile.is(path)) return path;
-        path=FS.expandPath(path);
+        path=env.expandPath(path);
         if (base && !P.isAbsolutePath(path)) {
-            base=env.expand(base);
+            base=env.expandPath(base);
             return FS.get(base).rel(path);
         }
         return FS.get(path);
-    };
-    FS.expandPath=function (path) {
-        A.is(path,String);
-        path=env.expand(path);
-        path=path.replace(/\/+/g,"/");
-        return A.is(path,P.Path);
     };
     return FS;
 });

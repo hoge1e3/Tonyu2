@@ -1,11 +1,12 @@
 define(["Tonyu","Tonyu.Compiler.JSGenerator","Tonyu.Compiler.Semantics",
-        "Tonyu.TraceTbl","FS","assert","SFile"],
+        "Tonyu.TraceTbl","FS","assert","SFile","DeferredUtil","compiledProject"],
         function (Tonyu,JSGenerator,Semantics,
-                ttb,FS,A,SFile) {
+                ttb,FS,A,SFile,DU,CPR) {
 var TPRC=function (dir) {
      A(SFile.is(dir) && dir.isDir(), "projectCompiler: "+dir+" is not dir obj");
      var TPR={env:{}};
      var traceTbl=Tonyu.TraceTbl;//();
+     var F=DU.throwF;
      TPR.env.traceTbl=traceTbl;
      TPR.EXT=".tonyu";
      TPR.getOptionsFile=function () {
@@ -91,26 +92,45 @@ var TPRC=function (dir) {
          }
          return outF;
      };
+     TPR.loadDependingClasses=function (ctx) {
+         var task=DU.directPromise();
+         var myNsp=TPR.getNamespace();
+         TPR.getDependingProjects().forEach(function (p) {
+             if (p.getNamespace()==myNsp) return;
+             task=task.then(function () {
+                 return p.loadClasses(ctx);
+             });
+         });
+         return task;
+     };
      // Difference of ctx and env:  env is of THIS project. ctx is of cross-project
      TPR.loadClasses=function (ctx/*or options(For external call)*/) {
          Tonyu.runMode=false;
          console.log("LoadClasses: "+dir.path());
          ctx=initCtx(ctx);
          var visited=ctx.visited||{};
-         var classes=ctx.classes||{};
-         if (visited[TPR.path()]) return;
+         //var classes=ctx.classes||{};
+         if (visited[TPR.path()]) return DU.directPromise();
          visited[TPR.path()]=true;
-         var myNsp=TPR.getNamespace();
-         TPR.getDependingProjects().forEach(function (p) {
+         /*TPR.getDependingProjects().forEach(function (p) {
              if (p.getNamespace()==myNsp) return;
-             p.loadClasses(ctx);
+             task=task.then(function () {
+                 return p.loadClasses(ctx);
+             });
+         });*/
+         return TPR.loadDependingClasses(ctx).then(function () {
+             return TPR.shouldCompile();
+         }).then(function (sc) {
+             if (sc) {
+                 return TPR.compile(ctx);
+             } else {
+                 var outF=TPR.getOutputFile("js");
+                 return evalFile(outF).then(F(copyToClasses));
+             }
          });
-         if (TPR.shouldCompile()) {
-             TPR.compile(ctx);
-         } else {
-             var outF=TPR.getOutputFile("js");
-             evalFile(outF);
+         function copyToClasses() {
              var ns=TPR.getNamespace();
+            //same as compiledProject (XXXX)
              var cls=Tonyu.classes;
              ns.split(".").forEach(function (c) {
                  if (cls) cls=cls[c];
@@ -121,9 +141,10 @@ var TPRC=function (dir) {
                  for (var cln in cls) {
                      var cl=cls[cln];
                      var m=Tonyu.klass.getMeta(cl);
-                     classes[m.fullName]=m;
+                     ctx.classes[m.fullName]=m;
                  }
              }
+             //------------------XXXX
          }
      };
      function initCtx(ctx) {
@@ -138,51 +159,54 @@ var TPRC=function (dir) {
          Tonyu.runMode=false;
          console.log("Compile: "+dir.path());
          ctx=initCtx(ctx);
-         var dp=TPR.getDependingProjects();
+         //var dp=TPR.getDependingProjects();
          var myNsp=TPR.getNamespace();
+         /*var task=DU.directPromise();
          dp.forEach(function (dprj) {
              var nsp=dprj.getNamespace();
              if (nsp!=myNsp) {
-                 dprj.loadClasses(ctx);
+                 task=task.then(F(function () {
+                     dprj.loadClasses(ctx);
+                 }));
              }
-         });
-         //var dirs=TPR.sourceDirs(myNsp);
-         //--------------
-         var baseClasses=ctx.classes;
-         var ctxOpt=ctx.options;
-         //dirs=TPR.resolve(dirs);
-         var env=TPR.env;
-         env.aliases={};
-         env.classes=baseClasses;
-         for (var n in baseClasses) {
-             var cl=baseClasses[n];
-             env.aliases[ cl.shortName] = cl.fullName;
-         }
-         var newClasses={};
-         var sf=TPR.sourceFiles(myNsp);
-         for (var shortCn in sf) {
-             var f=sf[shortCn];
-             var fullCn=myNsp+"."+shortCn;
-             newClasses[fullCn]=baseClasses[fullCn]={
-                     fullName:  fullCn,
-                     shortName: shortCn,
-                     namespace: myNsp,
-                     src:{
-                         tonyu: f
-                     }
-             };
-             env.aliases[shortCn]=fullCn;
-         }
-         for (var n in newClasses) {
-             console.log("initClassDecl: "+n);
-             Semantics.initClassDecls(newClasses[n], env);/*ENVC*/
-         }
-         var ord=orderByInheritance(newClasses);/*ENVC*/
-         ord.forEach(function (c) {
-             console.log("annotate :"+c.fullName);
-             Semantics.annotate(c, env);
-         });
-         TPR.concatJS(ord);
+         });*/
+         return TPR.loadDependingClasses(ctx).then(F(function () {
+             var baseClasses=ctx.classes;
+             console.log("baseClasses", baseClasses);
+             var ctxOpt=ctx.options;
+             var env=TPR.env;
+             env.aliases={};
+             env.classes=baseClasses;
+             for (var n in baseClasses) {
+                 var cl=baseClasses[n];
+                 env.aliases[ cl.shortName] = cl.fullName;
+             }
+             var newClasses={};
+             var sf=TPR.sourceFiles(myNsp);
+             for (var shortCn in sf) {
+                 var f=sf[shortCn];
+                 var fullCn=myNsp+"."+shortCn;
+                 newClasses[fullCn]=baseClasses[fullCn]={
+                         fullName:  fullCn,
+                         shortName: shortCn,
+                         namespace: myNsp,
+                         src:{
+                             tonyu: f
+                         }
+                 };
+                 env.aliases[shortCn]=fullCn;
+             }
+             for (var n in newClasses) {
+                 console.log("initClassDecl: "+n);
+                 Semantics.initClassDecls(newClasses[n], env);/*ENVC*/
+             }
+             var ord=orderByInheritance(newClasses);/*ENVC*/
+             ord.forEach(function (c) {
+                 console.log("annotate :"+c.fullName);
+                 Semantics.annotate(c, env);
+             });
+             TPR.concatJS(ord);
+         }));
      };
      TPR.concatJS=function (ord) {
          var env=TPR.env;
@@ -200,8 +224,12 @@ var TPRC=function (dir) {
          var opt=TPR.getOptions();
          var dp=opt.compiler.dependingProjects || [];
          return dp.map(function (dprj) {
-             var prjDir=TPR.resolve(dprj);
-             return TPRC(prjDir);
+             if (typeof dprj=="string") {
+                 var prjDir=TPR.resolve(dprj);
+                 return TPRC(prjDir);
+             } else if (typeof dprj=="object") {
+                 return CPR(dprj.namespace, FS.expandPath(dprj.compiledURL) );
+             }
          });
      };
      TPR.dir=dir;
@@ -221,6 +249,9 @@ var TPRC=function (dir) {
          }
          return res;
      };
+     TPR.sourceDir=function () {
+         return dir;
+     };
      TPR.sourceDirs=function (myNsp) {//ADDJSL  myNsp==null => All
          var dp=TPR.getDependingProjects();
          //var myNsp||TPR.getNamespace();//DELJSL
@@ -228,7 +259,8 @@ var TPRC=function (dir) {
          dp.forEach(function (dprj) {
              var nsp=dprj.getNamespace();
              if (!myNsp || nsp==myNsp) {
-                 dirs.push(dprj.dir);
+                 var d=dprj.sourceDir();
+                 if (d) dirs.push(d);
              }
          });
          return dirs;
@@ -308,12 +340,9 @@ var TPRC=function (dir) {
     }
     function evalFile(f) {
         console.log("loading: "+f.path());
-        /*if (typeof require=="function") return require(f.path());
-        else */
         var lastEvaled=new Function(f.text());
         traceTbl.addSource(f.path(),lastEvaled+"");
-        //f.rel("../"+f.name()+".dump").text(lastEvaled+"");
-        return lastEvaled();
+        return DU.directPromise( lastEvaled() );
     }
     TPR.decodeTrace=function (desc) { // user.Test:123
         var a=desc.split(":");
