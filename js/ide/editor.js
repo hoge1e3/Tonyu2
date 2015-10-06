@@ -3,14 +3,14 @@ requirejs(["Util", "Tonyu", "FS", "FileList", "FileMenu",
            "copySample","Shell","Shell2","ProjectOptionsEditor","copyToKernel","KeyEventChecker",
            "WikiDialog","runtime", "KernelDiffDialog","Sync","searchDialog","StackTrace","syncWithKernel",
            "UI","ResEditor","WebSite","exceptionCatcher","Tonyu.TraceTbl",
-           "SoundDiag","Log","MainClassDialog"
+           "SoundDiag","Log","MainClassDialog","DeferredUtil"
           ],
 function (Util, Tonyu, FS, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,
           copySample,sh,sh2, ProjectOptionsEditor, ctk, KeyEventChecker,
           WikiDialog, rt , KDD,Sync,searchDialog,StackTrace,swk,
           UI,ResEditor,WebSite,EC,TTB,
-          sd,Log,MainClassDialog
+          sd,Log,MainClassDialog,DU
           ) {
 $(function () {
     var F=EC.f;
@@ -318,29 +318,23 @@ $(function () {
         displayMode("run");
         Log.dumpProject(curProjectDir);
         if (typeof SplashScreen!="undefined") SplashScreen.show();
-        setTimeout(function () {
-            try {
-                var o=curPrj.getOptions();
-                if (o.run.mainClass!=name) {
-                    o.run.mainClass=name;
-                    curPrj.setOptions();
-                }
-                curPrj.rawRun(o.run.bootClass);
-            } catch(e){
-                if (e.isTError) {
-                    console.log("showErr: run");
+        var o=curPrj.getOptions();
+        if (o.run.mainClass!=name) {
+            o.run.mainClass=name;
+            curPrj.setOptions();
+        }
+        curPrj.rawRun(o.run.bootClass).fail(function (e) {
+            if (e.isTError) {
+                console.log("showErr: run");
 
-                    showErrorPos($("#errorPos"),e);
-                    displayMode("compile_error");
-                }else{
-                    Tonyu.onRuntimeError(e);
-                    /*if (e.stack) {
-                        console.log("stack trace:",e.stack);
-                    }
-                    throw e;*/
-                }
+                showErrorPos($("#errorPos"),e);
+                displayMode("compile_error");
+            }else{
+                Tonyu.onRuntimeError(e);
             }
-        },0);
+        }).done(function () {
+            if (typeof SplashScreen!="undefined") SplashScreen.hide();
+        });
     }
     var alertOnce;
     alertOnce=function (e) {
