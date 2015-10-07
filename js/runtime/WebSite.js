@@ -82,6 +82,11 @@ define([], function () {
     window.WebSite.blobPath=window.WebSite.serverTop+"/serveBlob";        //TODO: urlchange!
     window.WebSite.isNW=(typeof process=="object" && process.__node_webkit);
     window.WebSite.tonyuHome="/Tonyu/";
+    window.WebSite.url={
+        getDirInfo:WebSite.serverTop+"/getDirInfo",
+        getFiles:WebSite.serverTop+"/File2LSSync",
+        putFiles:WebSite.serverTop+"/LS2FileSync"
+    };
     if (window.WebSite.isNW) {
         if (process.env.TONYU_HOME) {
             window.WebSite.tonyuHome=process.env.TONYU_HOME.replace(/\\/g,"/");
