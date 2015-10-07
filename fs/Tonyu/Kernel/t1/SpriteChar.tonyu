@@ -6,6 +6,7 @@ extends PlainChar;
     if (!this.x) this.x=0;
     if (!this.y) this.y=0;
     if (!this.p) this.p=0;
+    if (typeof scaleX!="number") scaleX=1;
 }
 \draw(c) {
     if (f) {

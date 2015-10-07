@@ -815,75 +815,75 @@ Tonyu.klass.define({
       _this.vx=0;
       //$LASTPOS=6000087;//user.TRocket:87
       Tonyu.globals.$map.setBGColor(Tonyu.globals.$clBlack);
-      //$LASTPOS=6000117;//user.TRocket:117
+      //$LASTPOS=6000128;//user.TRocket:128
       Tonyu.globals.$mplayer.play(Tonyu.globals.$se_bgm);
-      //$LASTPOS=6000171;//user.TRocket:171
+      //$LASTPOS=6000182;//user.TRocket:182
       while (Tonyu.globals.$Left>=0) {
-        //$LASTPOS=6000195;//user.TRocket:195
+        //$LASTPOS=6000206;//user.TRocket:206
         Tonyu.globals.$mplayer.play(Tonyu.globals.$se_rocket);
-        //$LASTPOS=6000258;//user.TRocket:258
+        //$LASTPOS=6000269;//user.TRocket:269
         while (_this.getkey(32)==0) {
-          //$LASTPOS=6000291;//user.TRocket:291
+          //$LASTPOS=6000302;//user.TRocket:302
           _this.drawText(153,173,"Push Space key",_this.color(30,150,220),20);
-          //$LASTPOS=6000357;//user.TRocket:357
+          //$LASTPOS=6000368;//user.TRocket:368
           Tonyu.globals.$Jiki.y=- 50;
-          //$LASTPOS=6000425;//user.TRocket:425
+          //$LASTPOS=6000436;//user.TRocket:436
           if (_this.x>Tonyu.globals.$screenWidth/2) {
-            //$LASTPOS=6000447;//user.TRocket:447
+            //$LASTPOS=6000458;//user.TRocket:458
             _this.vx=_this.vx-1;
           } else {
-            //$LASTPOS=6000470;//user.TRocket:470
+            //$LASTPOS=6000481;//user.TRocket:481
             _this.vx=_this.vx+1;
           }
-          //$LASTPOS=6000488;//user.TRocket:488
+          //$LASTPOS=6000499;//user.TRocket:499
           _this.x=_this.x+_this.vx;
-          //$LASTPOS=6000505;//user.TRocket:505
+          //$LASTPOS=6000516;//user.TRocket:516
           _this.update();
-          //$LASTPOS=6000524;//user.TRocket:524
+          //$LASTPOS=6000535;//user.TRocket:535
           _this.f=(_this.vx<0);
           
         }
-        //$LASTPOS=6000572;//user.TRocket:572
+        //$LASTPOS=6000583;//user.TRocket:583
         Tonyu.globals.$Jiki.x=_this.x;
-        //$LASTPOS=6000588;//user.TRocket:588
+        //$LASTPOS=6000599;//user.TRocket:599
         Tonyu.globals.$Jiki.y=_this.y;
-        //$LASTPOS=6000605;//user.TRocket:605
+        //$LASTPOS=6000616;//user.TRocket:616
         Tonyu.globals.$mplayer.play(Tonyu.globals.$se_go);
-        //$LASTPOS=6000657;//user.TRocket:657
+        //$LASTPOS=6000668;//user.TRocket:668
         while (Tonyu.globals.$Jiki.y<Tonyu.globals.$screenHeight) {
-          //$LASTPOS=6000688;//user.TRocket:688
+          //$LASTPOS=6000699;//user.TRocket:699
           _this.update();
           
         }
-        //$LASTPOS=6000704;//user.TRocket:704
+        //$LASTPOS=6000715;//user.TRocket:715
         if (Tonyu.globals.$Jiki.dying) {
-          //$LASTPOS=6000761;//user.TRocket:761
+          //$LASTPOS=6000772;//user.TRocket:772
           Tonyu.globals.$Left=Tonyu.globals.$Left-1;
-          //$LASTPOS=6000813;//user.TRocket:813
+          //$LASTPOS=6000824;//user.TRocket:824
           Tonyu.globals.$Jiki.dying=0;
           
         } else {
-          //$LASTPOS=6000901;//user.TRocket:901
+          //$LASTPOS=6000912;//user.TRocket:912
           _this.appear(new Tonyu.classes.user.Teki(Tonyu.globals.$Jiki.x,_this.rnd(Tonyu.globals.$screenHeight-100)+100,Tonyu.globals.$pat_ufo+3,0));
-          //$LASTPOS=6001007;//user.TRocket:1007
+          //$LASTPOS=6001018;//user.TRocket:1018
           _this.nto=new Tonyu.classes.user.TTok(Tonyu.globals.$Jiki.x,Tonyu.globals.$Jiki.y,0,0);
-          //$LASTPOS=6001078;//user.TRocket:1078
+          //$LASTPOS=6001089;//user.TRocket:1089
           _this.nto.sc=Tonyu.globals.$screenWidth/2-_this.abs(Tonyu.globals.$Jiki.x-Tonyu.globals.$screenWidth/2)+50;
-          //$LASTPOS=6001170;//user.TRocket:1170
+          //$LASTPOS=6001181;//user.TRocket:1181
           _this.appear(_this.nto);
           
         }
         
       }
-      //$LASTPOS=6001208;//user.TRocket:1208
+      //$LASTPOS=6001219;//user.TRocket:1219
       while (1) {
-        //$LASTPOS=6001224;//user.TRocket:1224
+        //$LASTPOS=6001235;//user.TRocket:1235
         _this.y=_this.y+10;
-        //$LASTPOS=6001253;//user.TRocket:1253
+        //$LASTPOS=6001264;//user.TRocket:1264
         _this.drawText(221,166,"Game Over",_this.rnd()*65536,20);
-        //$LASTPOS=6001304;//user.TRocket:1304
+        //$LASTPOS=6001315;//user.TRocket:1315
         _this.drawText(221,190,"Replay F9 ",_this.rnd()*65536,20);
-        //$LASTPOS=6001356;//user.TRocket:1356
+        //$LASTPOS=6001367;//user.TRocket:1367
         _this.update();
         
       }
@@ -901,7 +901,7 @@ Tonyu.klass.define({
       _this.vx=0;
       //$LASTPOS=6000087;//user.TRocket:87
       Tonyu.globals.$map.setBGColor(Tonyu.globals.$clBlack);
-      //$LASTPOS=6000117;//user.TRocket:117
+      //$LASTPOS=6000128;//user.TRocket:128
       Tonyu.globals.$mplayer.play(Tonyu.globals.$se_bgm);
       
       _thread.enter(function _trc_TRocket_ent_main(_thread) {
@@ -909,48 +909,48 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=6000171;//user.TRocket:171
+            //$LASTPOS=6000182;//user.TRocket:182
           case 1:
             if (!(Tonyu.globals.$Left>=0)) { __pc=12; break; }
-            //$LASTPOS=6000195;//user.TRocket:195
+            //$LASTPOS=6000206;//user.TRocket:206
             Tonyu.globals.$mplayer.play(Tonyu.globals.$se_rocket);
-            //$LASTPOS=6000258;//user.TRocket:258
+            //$LASTPOS=6000269;//user.TRocket:269
           case 2:
             if (!(_this.getkey(32)==0)) { __pc=4; break; }
-            //$LASTPOS=6000291;//user.TRocket:291
+            //$LASTPOS=6000302;//user.TRocket:302
             _this.drawText(153,173,"Push Space key",_this.color(30,150,220),20);
-            //$LASTPOS=6000357;//user.TRocket:357
+            //$LASTPOS=6000368;//user.TRocket:368
             Tonyu.globals.$Jiki.y=- 50;
-            //$LASTPOS=6000425;//user.TRocket:425
+            //$LASTPOS=6000436;//user.TRocket:436
             if (_this.x>Tonyu.globals.$screenWidth/2) {
-              //$LASTPOS=6000447;//user.TRocket:447
+              //$LASTPOS=6000458;//user.TRocket:458
               _this.vx=_this.vx-1;
             } else {
-              //$LASTPOS=6000470;//user.TRocket:470
+              //$LASTPOS=6000481;//user.TRocket:481
               _this.vx=_this.vx+1;
             }
-            //$LASTPOS=6000488;//user.TRocket:488
+            //$LASTPOS=6000499;//user.TRocket:499
             _this.x=_this.x+_this.vx;
-            //$LASTPOS=6000505;//user.TRocket:505
+            //$LASTPOS=6000516;//user.TRocket:516
             _this.fiber$update(_thread);
             __pc=3;return;
           case 3:
             
-            //$LASTPOS=6000524;//user.TRocket:524
+            //$LASTPOS=6000535;//user.TRocket:535
             _this.f=(_this.vx<0);
             __pc=2;break;
           case 4:
             
-            //$LASTPOS=6000572;//user.TRocket:572
+            //$LASTPOS=6000583;//user.TRocket:583
             Tonyu.globals.$Jiki.x=_this.x;
-            //$LASTPOS=6000588;//user.TRocket:588
+            //$LASTPOS=6000599;//user.TRocket:599
             Tonyu.globals.$Jiki.y=_this.y;
-            //$LASTPOS=6000605;//user.TRocket:605
+            //$LASTPOS=6000616;//user.TRocket:616
             Tonyu.globals.$mplayer.play(Tonyu.globals.$se_go);
-            //$LASTPOS=6000657;//user.TRocket:657
+            //$LASTPOS=6000668;//user.TRocket:668
           case 5:
             if (!(Tonyu.globals.$Jiki.y<Tonyu.globals.$screenHeight)) { __pc=7; break; }
-            //$LASTPOS=6000688;//user.TRocket:688
+            //$LASTPOS=6000699;//user.TRocket:699
             _this.fiber$update(_thread);
             __pc=6;return;
           case 6:
@@ -958,26 +958,26 @@ Tonyu.klass.define({
             __pc=5;break;
           case 7:
             
-            //$LASTPOS=6000704;//user.TRocket:704
+            //$LASTPOS=6000715;//user.TRocket:715
             if (!(Tonyu.globals.$Jiki.dying)) { __pc=8; break; }
             {
-              //$LASTPOS=6000761;//user.TRocket:761
+              //$LASTPOS=6000772;//user.TRocket:772
               Tonyu.globals.$Left=Tonyu.globals.$Left-1;
-              //$LASTPOS=6000813;//user.TRocket:813
+              //$LASTPOS=6000824;//user.TRocket:824
               Tonyu.globals.$Jiki.dying=0;
             }
             __pc=11;break;
           case 8:
-            //$LASTPOS=6000901;//user.TRocket:901
+            //$LASTPOS=6000912;//user.TRocket:912
             _this.fiber$appear(_thread, new Tonyu.classes.user.Teki(Tonyu.globals.$Jiki.x,_this.rnd(Tonyu.globals.$screenHeight-100)+100,Tonyu.globals.$pat_ufo+3,0));
             __pc=9;return;
           case 9:
             
-            //$LASTPOS=6001007;//user.TRocket:1007
+            //$LASTPOS=6001018;//user.TRocket:1018
             _this.nto=new Tonyu.classes.user.TTok(Tonyu.globals.$Jiki.x,Tonyu.globals.$Jiki.y,0,0);
-            //$LASTPOS=6001078;//user.TRocket:1078
+            //$LASTPOS=6001089;//user.TRocket:1089
             _this.nto.sc=Tonyu.globals.$screenWidth/2-_this.abs(Tonyu.globals.$Jiki.x-Tonyu.globals.$screenWidth/2)+50;
-            //$LASTPOS=6001170;//user.TRocket:1170
+            //$LASTPOS=6001181;//user.TRocket:1181
             _this.fiber$appear(_thread, _this.nto);
             __pc=10;return;
           case 10:
@@ -987,16 +987,16 @@ Tonyu.klass.define({
             __pc=1;break;
           case 12:
             
-            //$LASTPOS=6001208;//user.TRocket:1208
+            //$LASTPOS=6001219;//user.TRocket:1219
           case 13:
             if (!(1)) { __pc=15; break; }
-            //$LASTPOS=6001224;//user.TRocket:1224
+            //$LASTPOS=6001235;//user.TRocket:1235
             _this.y=_this.y+10;
-            //$LASTPOS=6001253;//user.TRocket:1253
+            //$LASTPOS=6001264;//user.TRocket:1264
             _this.drawText(221,166,"Game Over",_this.rnd()*65536,20);
-            //$LASTPOS=6001304;//user.TRocket:1304
+            //$LASTPOS=6001315;//user.TRocket:1315
             _this.drawText(221,190,"Replay F9 ",_this.rnd()*65536,20);
-            //$LASTPOS=6001356;//user.TRocket:1356
+            //$LASTPOS=6001367;//user.TRocket:1367
             _this.fiber$update(_thread);
             __pc=14;return;
           case 14:
