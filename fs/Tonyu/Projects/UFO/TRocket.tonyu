@@ -4,7 +4,7 @@ $score=0;  //得点の初期化
 $Left=3;   // 残り機数
 vx=0;      // 横方向の移動量
 $map.setBGColor($clBlack);
-
+//zOrder=0;
 $mplayer.play($se_bgm);
 // ↓ゲームオーバーになるまでこのループをくりかえす
 while ($Left>=0) {
