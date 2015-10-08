@@ -18,3 +18,5 @@ all()
 all(Class)
 >>
 
+[[allの実例>all-実例]]
+

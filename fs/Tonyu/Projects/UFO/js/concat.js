@@ -108,14 +108,14 @@ Tonyu.klass.define({
       //$LASTPOS=45000489;//user.Page_index:489
       Tonyu.globals.$Tok=new Tonyu.classes.user.TTok({p: 0,sc: 0,x: 48,y: 20});
       //$LASTPOS=45000532;//user.Page_index:532
-      Tonyu.globals.$TokSum=new Tonyu.classes.user.TTokSum({p: 0,x: 382,y: 31});
-      //$LASTPOS=45000575;//user.Page_index:575
+      Tonyu.globals.$TokSum=new Tonyu.classes.user.TTokSum({x: 382,y: 31});
+      //$LASTPOS=45000569;//user.Page_index:569
       Tonyu.globals.$Teki10=new Tonyu.classes.user.Teki({p: 35,x: 123,y: 161});
-      //$LASTPOS=45000617;//user.Page_index:617
+      //$LASTPOS=45000611;//user.Page_index:611
       Tonyu.globals.$bomb=new Tonyu.classes.user.TBomb({p: Tonyu.globals.$pat_ufo+5,t: 0,x: 160.515609741211,y: 360});
-      //$LASTPOS=45000685;//user.Page_index:685
+      //$LASTPOS=45000679;//user.Page_index:679
       Tonyu.globals.$map=new Tonyu.classes.kernel.T1Map({zOrder: 1000});
-      //$LASTPOS=45000714;//user.Page_index:714
+      //$LASTPOS=45000708;//user.Page_index:708
       Tonyu.globals.$map.load("index.map");
     },
     fiber$main :function _trc_Page_index_f_main(_thread) {
@@ -157,14 +157,14 @@ Tonyu.klass.define({
             //$LASTPOS=45000489;//user.Page_index:489
             Tonyu.globals.$Tok=new Tonyu.classes.user.TTok({p: 0,sc: 0,x: 48,y: 20});
             //$LASTPOS=45000532;//user.Page_index:532
-            Tonyu.globals.$TokSum=new Tonyu.classes.user.TTokSum({p: 0,x: 382,y: 31});
-            //$LASTPOS=45000575;//user.Page_index:575
+            Tonyu.globals.$TokSum=new Tonyu.classes.user.TTokSum({x: 382,y: 31});
+            //$LASTPOS=45000569;//user.Page_index:569
             Tonyu.globals.$Teki10=new Tonyu.classes.user.Teki({p: 35,x: 123,y: 161});
-            //$LASTPOS=45000617;//user.Page_index:617
+            //$LASTPOS=45000611;//user.Page_index:611
             Tonyu.globals.$bomb=new Tonyu.classes.user.TBomb({p: Tonyu.globals.$pat_ufo+5,t: 0,x: 160.515609741211,y: 360});
-            //$LASTPOS=45000685;//user.Page_index:685
+            //$LASTPOS=45000679;//user.Page_index:679
             Tonyu.globals.$map=new Tonyu.classes.kernel.T1Map({zOrder: 1000});
-            //$LASTPOS=45000714;//user.Page_index:714
+            //$LASTPOS=45000708;//user.Page_index:708
             Tonyu.globals.$map.load("index.map");
             _thread.exit(_this);return;
           }
@@ -1120,10 +1120,12 @@ Tonyu.klass.define({
     main :function _trc_TTokSum_main() {
       var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
       
-      //$LASTPOS=52000107;//user.TTokSum:107
+      //$LASTPOS=52000068;//user.TTokSum:68
       while (1) {
-        //$LASTPOS=52000124;//user.TTokSum:124
+        //$LASTPOS=52000085;//user.TTokSum:85
         _this.update();
+        //$LASTPOS=52000100;//user.TTokSum:100
+        _this.drawText(_this.x,_this.y,Tonyu.globals.$score,_this.color(255,255,255),20);
         
       }
     },
@@ -1138,14 +1140,16 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=52000107;//user.TTokSum:107
+            //$LASTPOS=52000068;//user.TTokSum:68
           case 1:
             if (!(1)) { __pc=3; break; }
-            //$LASTPOS=52000124;//user.TTokSum:124
+            //$LASTPOS=52000085;//user.TTokSum:85
             _this.fiber$update(_thread);
             __pc=2;return;
           case 2:
             
+            //$LASTPOS=52000100;//user.TTokSum:100
+            _this.drawText(_this.x,_this.y,Tonyu.globals.$score,_this.color(255,255,255),20);
             __pc=1;break;
           case 3:
             
@@ -1159,8 +1163,6 @@ Tonyu.klass.define({
       
       //$LASTPOS=52000047;//user.TTokSum:47
       Tonyu.classes.kernel.SpriteChar.prototype.draw.apply( _this, [c]);
-      //$LASTPOS=52000067;//user.TTokSum:67
-      _this.drawText(_this.x,_this.y,Tonyu.globals.$score,255*256,20);
     },
     __dummy: false
   },

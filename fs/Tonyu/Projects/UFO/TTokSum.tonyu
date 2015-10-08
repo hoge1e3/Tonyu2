@@ -2,10 +2,10 @@ extends SpriteChar;
 
 function draw(c) {
     super.draw(c);
-    drawText (x,y,$score,255*256,20);
 }
 
 while (1) {
     update();
+    drawText (x,y,$score,color(255,255,255),20);
     
 }
