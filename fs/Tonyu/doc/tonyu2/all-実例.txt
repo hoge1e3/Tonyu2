@@ -1,0 +1,35 @@
+[[用途別リファレンス]]
+
+*敵が全滅したかどうか調べる
+
+<<code Main
+for(i=0; i<5; i++){
+    new Enemy{x:100+i*50,y:rnd(200)+50,p:2};
+}
+
+while(true){
+                          //↓これのこと
+    print("Enemy.length="+all(Enemy).length);
+       //↓これのこと
+    if(all(Enemy).length==0) break;
+    update();
+    
+}
+print("clear");
+>>
+
+
+<<code Enemy
+while(y<$screenHeight){
+    y+=5;
+    update();
+}
+die();
+
+>>
+
+『all(Enemy).length』を使って敵の数を数え、print()で表示させている。
+敵が全滅すると『clear』と表示される。
+
+
+[[allについて>all]]
