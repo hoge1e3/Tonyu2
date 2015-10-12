@@ -1,0 +1,19 @@
+extends PlainChar;
+
+\new (xx,yy,t,c,s){
+    super(xx,yy,null);
+    if (!text) text="";
+    col=$clWhite;
+    if (!size) size=20;
+    p=null;
+    align="left";
+    if (!this.x) this.x=0;
+    if (!this.y) this.y=0;
+    if (t) text=t;
+    if (c) fillStyle=c;
+    if (s) size=s;
+}
+\draw(ctx) {
+    fillStyle=col;
+    super.draw(ctx);
+}

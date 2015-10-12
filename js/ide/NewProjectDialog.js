@@ -52,7 +52,7 @@ define(["UI"], function (UI) {
     	d.done=function () {
     	    if (d.$edits.validator.isValid()) {
                 onOK(model.dstDir);
-                d.dialog("close");
+                if (d.dialog) d.dialog("close");// not exists when embed
     	    }
     	};
     	return d;

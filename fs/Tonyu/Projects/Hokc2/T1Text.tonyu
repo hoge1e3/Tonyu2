@@ -1,0 +1,5 @@
+\draw(c) {
+    if (hidden) return;
+    super.draw(c);
+    hidden=true;
+}
