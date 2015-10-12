@@ -1,7 +1,0 @@
-
-x=200;
-y=30;
-while(true) {
-    rotation++;
-    update();
-}
