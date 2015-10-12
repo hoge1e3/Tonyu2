@@ -11,12 +11,12 @@ Tonyu.klass.define({
       //$LASTPOS=1000000;//user.Chara1:0
       while (true) {
         //$LASTPOS=1000020;//user.Chara1:20
-        _this.rotation+=10;
-        //$LASTPOS=1000039;//user.Chara1:39
+        _this.rotation+=3;
+        //$LASTPOS=1000038;//user.Chara1:38
         _this.x+=10;
-        //$LASTPOS=1000051;//user.Chara1:51
+        //$LASTPOS=1000050;//user.Chara1:50
         Tonyu.globals.$Screen.scrollTo(_this.x-200,_this.y-200);
-        //$LASTPOS=1000107;//user.Chara1:107
+        //$LASTPOS=1000106;//user.Chara1:106
         _this.update();
         
       }
@@ -35,12 +35,12 @@ Tonyu.klass.define({
             //$LASTPOS=1000000;//user.Chara1:0
           case 1:
             //$LASTPOS=1000020;//user.Chara1:20
-            _this.rotation+=10;
-            //$LASTPOS=1000039;//user.Chara1:39
+            _this.rotation+=3;
+            //$LASTPOS=1000038;//user.Chara1:38
             _this.x+=10;
-            //$LASTPOS=1000051;//user.Chara1:51
+            //$LASTPOS=1000050;//user.Chara1:50
             Tonyu.globals.$Screen.scrollTo(_this.x-200,_this.y-200);
-            //$LASTPOS=1000107;//user.Chara1:107
+            //$LASTPOS=1000106;//user.Chara1:106
             _this.fiber$update(_thread);
             __pc=2;return;
           case 2:

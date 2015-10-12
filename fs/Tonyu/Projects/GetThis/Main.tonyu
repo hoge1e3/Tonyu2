@@ -1,0 +1,10 @@
+\getit() {
+    return window;  
+}
+
+\doit() {
+    var s=this["getit"];
+    s();
+}
+doit();
+//
