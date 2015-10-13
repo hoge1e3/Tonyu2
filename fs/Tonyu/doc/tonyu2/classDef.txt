@@ -100,7 +100,7 @@ function メソッド名(引数リスト) {
    _myp=value;
 }
 myProp=10; //  Set myProp to 10
-x=myProp;  //  Get myProp 1
+x=myProp;  //  Get myProp=10
 
 >>
 

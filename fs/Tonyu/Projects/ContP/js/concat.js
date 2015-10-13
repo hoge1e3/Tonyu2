@@ -6,7 +6,8 @@ Tonyu.klass.define({
   includes: [],
   methods: {
     main :function _trc_Effect_main() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=1000001;//user.Effect:1
       _this.p=5;
@@ -18,7 +19,8 @@ Tonyu.klass.define({
       _this.die();
     },
     fiber$main :function _trc_Effect_f_main(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -56,7 +58,8 @@ Tonyu.klass.define({
   includes: [],
   methods: {
     main :function _trc_Main_main() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=2000001;//user.Main:1
       new Tonyu.classes.user.Player({x: 210,y: 100});
@@ -64,7 +67,8 @@ Tonyu.klass.define({
       new Tonyu.classes.user.SeeSaw({x: 200,y: 300,scaleX: 10,scaleY: 1,rotation: 10});
     },
     fiber$main :function _trc_Main_f_main(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -87,7 +91,8 @@ Tonyu.klass.define({
   includes: [],
   methods: {
     main :function _trc_Player_main() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=3000097;//user.Player:97
       while (true) {
@@ -143,7 +148,8 @@ Tonyu.klass.define({
       }
     },
     fiber$main :function _trc_Player_f_main(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -219,7 +225,8 @@ Tonyu.klass.define({
       });
     },
     onAppear :function _trc_Player_onAppear() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=3000038;//user.Player:38
       _this.restitution=0;
@@ -229,7 +236,8 @@ Tonyu.klass.define({
       Tonyu.classes.kernel.BodyActor.prototype.onAppear.apply( _this, []);
     },
     fiber$onAppear :function _trc_Player_f_onAppear(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -265,7 +273,8 @@ Tonyu.klass.define({
   includes: [],
   methods: {
     main :function _trc_SeeSaw_main() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=4000094;//user.SeeSaw:94
       _this.t=0;
@@ -281,7 +290,8 @@ Tonyu.klass.define({
       }
     },
     fiber$main :function _trc_SeeSaw_f_main(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -313,7 +323,8 @@ Tonyu.klass.define({
       });
     },
     onAppear :function _trc_SeeSaw_onAppear() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=4000036;//user.SeeSaw:36
       _this.isStatic=true;
@@ -323,7 +334,8 @@ Tonyu.klass.define({
       Tonyu.classes.kernel.BodyActor.prototype.onAppear.apply( _this, []);
     },
     fiber$onAppear :function _trc_SeeSaw_f_onAppear(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       

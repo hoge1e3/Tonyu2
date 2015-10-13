@@ -1,10 +1,30 @@
-\getit() {
+native Function;
+getit=\() {
     return window;  
-}
+};
 
-\doit() {
+doit=\() {
     var s=this["getit"];
-    s();
+    return s();
+};
+
+\myProp {
+    print("Get myProp="+_myp);
+    return _myp;
 }
-doit();
-//
+\myProp=value {
+    print("Set myProp to "+value);
+    _myp=value;
+}
+window=3;
+print( doit() );
+f=new Function("window");
+print (f());
+//myProp=10; //  Set myProp to 10
+//x=myProp;  //  Get myProp 1//
+//print(ge);
+//ge=5;
+
+\ge {
+    return 3;
+}

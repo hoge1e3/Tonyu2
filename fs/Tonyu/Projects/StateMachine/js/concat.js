@@ -6,11 +6,13 @@ Tonyu.klass.define({
   includes: [],
   methods: {
     main :function _trc_Enemy_main() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
     },
     fiber$main :function _trc_Enemy_f_main(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -29,7 +31,8 @@ Tonyu.klass.define({
   includes: [],
   methods: {
     main :function _trc_Main_main() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       var i;
       
       //$LASTPOS=1000000;//user.Main:0
@@ -58,7 +61,8 @@ Tonyu.klass.define({
       new Tonyu.classes.user.Enemy({x: 150,y: Tonyu.globals.$screenHeight-48,p: Tonyu.globals.$pat_neko+46});
     },
     fiber$main :function _trc_Main_f_main(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       var i;
@@ -102,7 +106,8 @@ Tonyu.klass.define({
   includes: [],
   methods: {
     main :function _trc_Player_main() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=2000019;//user.Player:19
       _this._th.paused=false;
@@ -192,7 +197,8 @@ Tonyu.klass.define({
       }
     },
     fiber$main :function _trc_Player_f_main(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -306,7 +312,8 @@ Tonyu.klass.define({
       });
     },
     damage :function _trc_Player_damage(e) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=2000998;//user.Player:998
       _this.state="damage";
@@ -330,7 +337,8 @@ Tonyu.klass.define({
       _this.resume(Tonyu.bindFunc(_this,_this.main));
     },
     fiber$damage :function _trc_Player_f_damage(_thread,e) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -375,7 +383,8 @@ Tonyu.klass.define({
       });
     },
     jump :function _trc_Player_jump() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=2001169;//user.Player:1169
       _this.updateEx(3);
@@ -395,7 +404,8 @@ Tonyu.klass.define({
       }
     },
     fiber$jump :function _trc_Player_f_jump(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -434,7 +444,8 @@ Tonyu.klass.define({
       });
     },
     anim :function _trc_Player_anim() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=2001328;//user.Player:1328
       while (true) {
@@ -470,7 +481,8 @@ Tonyu.klass.define({
       }
     },
     fiber$anim :function _trc_Player_f_anim(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -522,7 +534,8 @@ Tonyu.klass.define({
       });
     },
     pause :function _trc_Player_pause(th) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=2001685;//user.Player:1685
       _this._th.paused=true;
@@ -530,7 +543,8 @@ Tonyu.klass.define({
       _this.print("pause!");
     },
     fiber$pause :function _trc_Player_f_pause(_thread,th) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -542,7 +556,8 @@ Tonyu.klass.define({
       _thread.retVal=_this;return;
     },
     resume :function _trc_Player_resume(th) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=2001742;//user.Player:1742
       _this._th.paused=false;
@@ -550,7 +565,8 @@ Tonyu.klass.define({
       _this.print("resume");
     },
     fiber$resume :function _trc_Player_f_resume(_thread,th) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -573,7 +589,8 @@ Tonyu.klass.define({
   includes: [],
   methods: {
     main :function _trc_Player2_main() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=3000020;//user.Player2:20
       _this._th.paused=false;
@@ -601,7 +618,8 @@ Tonyu.klass.define({
       _this.scaleY=1;
     },
     fiber$main :function _trc_Player2_f_main(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -633,7 +651,8 @@ Tonyu.klass.define({
       _thread.retVal=_this;return;
     },
     stand :function _trc_Player2_stand() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=3000449;//user.Player2:449
       _this.vx=0;
@@ -669,7 +688,8 @@ Tonyu.klass.define({
       }
     },
     fiber$stand :function _trc_Player2_f_stand(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -721,7 +741,8 @@ Tonyu.klass.define({
       });
     },
     walk :function _trc_Player2_walk() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=3000862;//user.Player2:862
       while (true) {
@@ -772,7 +793,8 @@ Tonyu.klass.define({
       }
     },
     fiber$walk :function _trc_Player2_f_walk(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -839,7 +861,8 @@ Tonyu.klass.define({
       });
     },
     damage :function _trc_Player2_damage(e) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=3001407;//user.Player2:1407
       _this.state="damage";
@@ -875,7 +898,8 @@ Tonyu.klass.define({
       _this.at=_this.parallel(Tonyu.bindFunc(_this,_this.anim),_this.pat_standing);
     },
     fiber$damage :function _trc_Player2_f_damage(_thread,e) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -932,7 +956,8 @@ Tonyu.klass.define({
       });
     },
     jump :function _trc_Player2_jump() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=3001721;//user.Player2:1721
       _this.vy=- 5;
@@ -958,7 +983,8 @@ Tonyu.klass.define({
       }
     },
     fiber$jump :function _trc_Player2_f_jump(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -1003,7 +1029,8 @@ Tonyu.klass.define({
       });
     },
     anim :function _trc_Player2_anim(pl) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=3001982;//user.Player2:1982
       while (true) {
@@ -1017,7 +1044,8 @@ Tonyu.klass.define({
       }
     },
     fiber$anim :function _trc_Player2_f_anim(_thread,pl) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -1047,7 +1075,8 @@ Tonyu.klass.define({
       });
     },
     pause :function _trc_Player2_pause(th) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=3002092;//user.Player2:2092
       _this._th.paused=true;
@@ -1055,7 +1084,8 @@ Tonyu.klass.define({
       _this.print("pause!");
     },
     fiber$pause :function _trc_Player2_f_pause(_thread,th) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -1067,7 +1097,8 @@ Tonyu.klass.define({
       _thread.retVal=_this;return;
     },
     resume :function _trc_Player2_resume(th) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=3002153;//user.Player2:2153
       _this._th.paused=false;
@@ -1075,7 +1106,8 @@ Tonyu.klass.define({
       _this.print("resume");
     },
     fiber$resume :function _trc_Player2_f_resume(_thread,th) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -1098,7 +1130,8 @@ Tonyu.klass.define({
   includes: [],
   methods: {
     main :function _trc_Player3_main() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=4000020;//user.Player3:20
       _this._th.paused=false;
@@ -1126,7 +1159,8 @@ Tonyu.klass.define({
       _this.scaleY=1;
     },
     fiber$main :function _trc_Player3_f_main(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -1158,7 +1192,8 @@ Tonyu.klass.define({
       _thread.retVal=_this;return;
     },
     stand :function _trc_Player3_stand() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=4000449;//user.Player3:449
       _this.vx=0;
@@ -1186,7 +1221,8 @@ Tonyu.klass.define({
       }
     },
     fiber$stand :function _trc_Player3_f_stand(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -1230,7 +1266,8 @@ Tonyu.klass.define({
       });
     },
     walk :function _trc_Player3_walk() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=4000796;//user.Player3:796
       while (true) {
@@ -1281,7 +1318,8 @@ Tonyu.klass.define({
       }
     },
     fiber$walk :function _trc_Player3_f_walk(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -1348,7 +1386,8 @@ Tonyu.klass.define({
       });
     },
     damage :function _trc_Player3_damage(e) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=4001341;//user.Player3:1341
       _this.state="damage";
@@ -1384,7 +1423,8 @@ Tonyu.klass.define({
       _this.at=_this.parallel(Tonyu.bindFunc(_this,_this.anim),_this.pat_standing);
     },
     fiber$damage :function _trc_Player3_f_damage(_thread,e) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -1441,7 +1481,8 @@ Tonyu.klass.define({
       });
     },
     jump :function _trc_Player3_jump() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=4001655;//user.Player3:1655
       _this.vy=- 5;
@@ -1467,7 +1508,8 @@ Tonyu.klass.define({
       }
     },
     fiber$jump :function _trc_Player3_f_jump(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -1512,7 +1554,8 @@ Tonyu.klass.define({
       });
     },
     anim :function _trc_Player3_anim(pl) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=4001916;//user.Player3:1916
       while (true) {
@@ -1526,7 +1569,8 @@ Tonyu.klass.define({
       }
     },
     fiber$anim :function _trc_Player3_f_anim(_thread,pl) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -1556,7 +1600,8 @@ Tonyu.klass.define({
       });
     },
     pause :function _trc_Player3_pause(th) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=4002026;//user.Player3:2026
       _this._th.paused=true;
@@ -1564,7 +1609,8 @@ Tonyu.klass.define({
       _this.print("pause!");
     },
     fiber$pause :function _trc_Player3_f_pause(_thread,th) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -1576,7 +1622,8 @@ Tonyu.klass.define({
       _thread.retVal=_this;return;
     },
     resume :function _trc_Player3_resume(th) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=4002087;//user.Player3:2087
       _this._th.paused=false;
@@ -1584,7 +1631,8 @@ Tonyu.klass.define({
       _this.print("resume");
     },
     fiber$resume :function _trc_Player3_f_resume(_thread,th) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
