@@ -1,0 +1,39 @@
+<html>
+<body>
+<script src="../../js/lib/jquery-1.10.1.js"></script>
+<script>
+function restore(){
+    try {
+        var v=$("#im").val().replace(/[\r\n]/g,"");
+        var data=JSON.parse(v);
+        if (confirm("現在のlocalStorageのデータは消去されます。よろしいですか？ Are you sure?(Current localStorage data will be cleared.)")) {
+            for (var k in localStorage) {
+                delete localStorage[k];
+            }
+            for (var k in data) {
+                localStorage[k]=data[k];
+            }
+            alert("Completed");
+        }
+    } catch (e) {
+        alert("Data is not correct,");
+    }
+
+    function wrap(s) {
+        var len=80;
+        var res="";
+        for (var i=0;i<s.length;i+=80) {
+            res+=s.substring(i,i+80)+"\n";
+        }
+        return res;
+    }
+}
+</script>
+</body>
+<h1>Backup localStorage Data</h1>
+<div>ここに<a href="backup.html">バックアップ</a>したテキストデータを貼り付けて、Restoreを押してください。<br/>
+ Paste <a href="backup.html">backuped</a> data and press Restore.</div>
+<textarea id=im rows=20 cols=80></textarea><br/>
+<button onclick="restore()">Restore</button><br/>
+<a href="index.html">Back</a>
+</html>
