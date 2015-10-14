@@ -6,7 +6,8 @@ Tonyu.klass.define({
   includes: [],
   methods: {
     main :function _trc_Test2_main() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=1000000;//user.Test2:0
       Tonyu.globals.$map=new Tonyu.classes.kernel.Map({chipWidth: 32,chipHeight: 32});
@@ -34,7 +35,8 @@ Tonyu.klass.define({
       _this.a=6601;
     },
     fiber$main :function _trc_Test2_f_main(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       

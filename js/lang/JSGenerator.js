@@ -13,7 +13,8 @@ var INVOKE_FUNC="Tonyu.invokeMethod";
 var CALL_FUNC="Tonyu.callFunc";
 var CHK_NN="Tonyu.checkNonNull";
 var CLASS_HEAD="Tonyu.classes.", GLOBAL_HEAD="Tonyu.globals.";
-var GET_THIS="this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this)";
+var GET_THIS="this";//"this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this)";
+var USE_STRICT='"use strict";%n';
 var ITER="Tonyu.iterator";
 /*var ScopeTypes={FIELD:"field", METHOD:"method", NATIVE:"native",//B
         LOCAL:"local", THVAR:"threadvar", PARAM:"param", GLOBAL:"global", CLASS:"class"};*/
@@ -733,6 +734,7 @@ function genJS(klass, env) {//B
         }
         printf(
                "%s%s :function %s(%j) {%{"+
+                 USE_STRICT+
                  "var %s=%s;%n"+
                  "%svar %s=%s;%n"+
                  "var %s=0;%n"+
@@ -788,6 +790,7 @@ function genJS(klass, env) {//B
     function genFunc(func) {//G
         var fname= isConstructor(func) ? "initialize" : func.name;
         printf("%s :function %s(%j) {%{"+
+                  USE_STRICT+
                   "var %s=%s;%n"+
                   "%f%n" +
                   "%f" +

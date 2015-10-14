@@ -6,7 +6,8 @@ Tonyu.klass.define({
   includes: [],
   methods: {
     main :function _trc_Bullet_main() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=1000000;//user.Bullet:0
       _this.spd=20;
@@ -60,7 +61,8 @@ Tonyu.klass.define({
       _this.die();
     },
     fiber$main :function _trc_Bullet_f_main(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -141,9 +143,10 @@ Tonyu.klass.define({
   includes: [],
   methods: {
     main :function _trc_Main_main() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       var a;
-      var _it_4;
+      var _it_1;
       
       //$LASTPOS=2000000;//user.Main:0
       Tonyu.globals.$w=Tonyu.globals.$screenWidth;
@@ -176,9 +179,9 @@ Tonyu.klass.define({
       //$LASTPOS=2000233;//user.Main:233
       _this.text="Go!";
       //$LASTPOS=2000245;//user.Main:245
-      _it_4=Tonyu.iterator(_this.all(Tonyu.classes.user.Player),1);
-      while(_it_4.next()) {
-        a=_it_4[0];
+      _it_1=Tonyu.iterator(_this.all(Tonyu.classes.user.Player),1);
+      while(_it_1.next()) {
+        a=_it_1[0];
         
         //$LASTPOS=2000274;//user.Main:274
         a.sendEvent("start");
@@ -190,11 +193,12 @@ Tonyu.klass.define({
       _this.text="";
     },
     fiber$main :function _trc_Main_f_main(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       var a;
-      var _it_4;
+      var _it_1;
       
       //$LASTPOS=2000000;//user.Main:0
       Tonyu.globals.$w=Tonyu.globals.$screenWidth;
@@ -236,9 +240,9 @@ Tonyu.klass.define({
             //$LASTPOS=2000233;//user.Main:233
             _this.text="Go!";
             //$LASTPOS=2000245;//user.Main:245
-            _it_4=Tonyu.iterator(_this.all(Tonyu.classes.user.Player),1);
-            while(_it_4.next()) {
-              a=_it_4[0];
+            _it_1=Tonyu.iterator(_this.all(Tonyu.classes.user.Player),1);
+            while(_it_1.next()) {
+              a=_it_1[0];
               
               //$LASTPOS=2000274;//user.Main:274
               a.sendEvent("start");
@@ -268,7 +272,8 @@ Tonyu.klass.define({
   includes: [],
   methods: {
     main :function _trc_Player_main() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=3000000;//user.Player:0
       _this.spd=5;
@@ -330,7 +335,8 @@ Tonyu.klass.define({
       }
     },
     fiber$main :function _trc_Player_f_main(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -411,7 +417,8 @@ Tonyu.klass.define({
       });
     },
     shot :function _trc_Player_shot() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=3000412;//user.Player:412
       while (true) {
@@ -423,7 +430,8 @@ Tonyu.klass.define({
       }
     },
     fiber$shot :function _trc_Player_f_shot(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -451,7 +459,8 @@ Tonyu.klass.define({
       });
     },
     damage :function _trc_Player_damage() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=3000517;//user.Player:517
       _this.life--;
@@ -467,7 +476,8 @@ Tonyu.klass.define({
       }
     },
     fiber$damage :function _trc_Player_f_damage(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
