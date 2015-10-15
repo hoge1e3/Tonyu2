@@ -204,6 +204,7 @@ var reqConf={
             "SFile":"fs2/SFile",
             "Env":"fs2/Env",
             "compiledProject":"lang/compiledProject",
+            "NWMenu":"ide/NWMenu",
 
             "foo":"bar"
         },

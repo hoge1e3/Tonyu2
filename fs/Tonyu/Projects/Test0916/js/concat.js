@@ -6,7 +6,8 @@ Tonyu.klass.define({
   includes: [],
   methods: {
     main :function _trc_Chara1_main() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=1000000;//user.Chara1:0
       while (true) {
@@ -22,7 +23,8 @@ Tonyu.klass.define({
       }
     },
     fiber$main :function _trc_Chara1_f_main(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -65,13 +67,15 @@ Tonyu.klass.define({
   includes: [],
   methods: {
     main :function _trc_Chara2_main() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=2000020;//user.Chara2:20
       _this.vy=0;
     },
     fiber$main :function _trc_Chara2_f_main(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -92,7 +96,8 @@ Tonyu.klass.define({
   includes: [],
   methods: {
     main :function _trc_Main_main() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=3000000;//user.Main:0
       _this.a=new Tonyu.classes.user.Chara1({x: 50,y: 100,scaleX: 10,scaleY: 10,p: Tonyu.globals.$pat_mapchip+88,zOrder: 0});
@@ -106,7 +111,8 @@ Tonyu.klass.define({
       new Tonyu.classes.user.Chara2({x: 200,y: 100});
     },
     fiber$main :function _trc_Main_f_main(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
