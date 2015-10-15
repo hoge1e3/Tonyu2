@@ -205,6 +205,7 @@ var reqConf={
             "Env":"fs2/Env",
             "compiledProject":"lang/compiledProject",
             "DeferredUtil":"lib/DeferredUtil",
+            "NWMenu":"ide/NWMenu",
 
             "foo":"bar"
         },
