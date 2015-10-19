@@ -13,7 +13,7 @@ define(["UI"], function (UI) {
                     },
                     toVal: function (v){ return v ? v.path() : "";}
             };
-        	res.d=UI("div",{title:"新規プロジェクト"},
+        	res.d=UI("div",{title:(options.ren?"プロジェクト名の変更":"新規プロジェクト")},
         			["div",
         			 ["span","プロジェクト名"],
         			 ["input",{$edit:"name",value:options.defName||"",
@@ -40,15 +40,19 @@ define(["UI"], function (UI) {
     		if (model.name=="") {
     			this.addError("name","名前を入力してください");
     			return;
-    		} else {
-    			this.allOK();
     		}
     		model.dstDir=model.parentDir.rel(model.name+"/");
+            if (model.dstDir.exists()) {
+                this.addError("name","このフォルダはすでに存在します");
+                return;
+            }
+    		this.allOK();
     		d.$vars.dstDir.text(model.dstDir+"");
     	};
     	d.done=function () {
     	    if (d.$edits.validator.isValid()) {
                 onOK(model.dstDir);
+                if (d.dialog) d.dialog("close");// not exists when embed
     	    }
     	};
     	return d;

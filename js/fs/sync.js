@@ -80,7 +80,7 @@ define(["FS","Shell","requestFragment","WebSite"],function (FS,sh,rf,WebSite) {
             });
         }
         function n1(info) {
-            info=JSON.parse(info);
+            //info=JSON.parse(info);
             if (options.v) sh.echo("getDirInfo",info);
             var base=local;//FS.get(info.base);
             var data=info.data;
@@ -114,7 +114,7 @@ define(["FS","Shell","requestFragment","WebSite"],function (FS,sh,rf,WebSite) {
         }
         function n2(dlData) {
             sh.echo("dlData=",dlData);
-            dlData=JSON.parse(dlData);
+            //dlData=JSON.parse(dlData);
             if (options.v) sh.echo("dlData:",dlData);
             var base=local;//FS.get(dlData.base);
             if (options.test) return;

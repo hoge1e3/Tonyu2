@@ -42,7 +42,7 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
                     return fs.readFileSync(np, {encoding:"utf8"});
                 } else {
                     //TODOvar bin=fs.readFileSync(np);
-                    throw new Error("TODO");
+                    throw new Error("TODO: handling bin file "+path);
                 }
             } else {
                 if (t===String) {
@@ -76,12 +76,15 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
             }
         },
         getMetaInfo: function(path, options) {
-            this.assertExist(path);
+            this.assertExist(path, options);
             var s=this.stat(path);
             s.lastUpdate=s.mtime.getTime();
             return s;
         },
         setMetaInfo: function(path, info, options) {
+
+            //options.lastUpdate
+
             //TODO:
         },
         isReadOnly: function (path) {
@@ -121,7 +124,7 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
             return assert.is(res.concat(r),Array);
         },
         rm: function(path, options) {
-            assert.is(arguments,[Absolute]);
+            assert.is(arguments,[P.Absolute]);
             options=options||{};
             this.assertExist(path);
             var np=this.toNativePath(path);

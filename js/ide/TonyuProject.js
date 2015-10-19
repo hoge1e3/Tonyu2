@@ -1,7 +1,8 @@
 define(["Tonyu", "ProjectCompiler", "TError", "FS", "Tonyu.TraceTbl","ImageList","StackTrace",
-        "typeCheck","Blob","thumbnail","WebSite","plugins", "Tonyu.Compiler.Semantics", "Tonyu.Compiler.JSGenerator"],
+        "typeCheck","Blob","thumbnail","WebSite","plugins", "Tonyu.Compiler.Semantics", "Tonyu.Compiler.JSGenerator",
+        "DeferredUtil"],
         function (Tonyu, ProjectCompiler, TError, FS, Tonyu_TraceTbl, ImageList,StackTrace,
-                tc,Blob,thumbnail,WebSite,plugins, Semantics, JSGenerator) {
+                tc,Blob,thumbnail,WebSite,plugins, Semantics, JSGenerator,DU) {
 return Tonyu.Project=function (dir, kernelDir) {
     var TPR=ProjectCompiler(dir);
     var kernelProject=ProjectCompiler(kernelDir);
@@ -63,10 +64,11 @@ return Tonyu.Project=function (dir, kernelDir) {
             var o=TPR.getOutputFile();
             if (o.exists()) o.rm();
         }
-        TPR.loadClasses();
-        //TPR.compile();
-        if (!TPR.runScriptMode) thumbnail.set(TPR, 2000);
-        TPR.rawBoot(bootClassName);
+        return TPR.loadClasses().then(DU.throwF(function () {
+            //TPR.compile();
+            if (!TPR.runScriptMode) thumbnail.set(TPR, 2000);
+            TPR.rawBoot(bootClassName);
+        }));
     };
     TPR.getResource=function () {
         var resFile=dir.rel("res.json");

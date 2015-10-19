@@ -1,0 +1,10 @@
+\draw(ctx) {
+    if (hidden) return;
+    
+    ctx.strokeStyle=col;
+    ctx.beginPath();
+    ctx.moveTo(x,y);
+    ctx.lineTo(tx,ty);
+    ctx.stroke();
+    hidden=true;
+}
