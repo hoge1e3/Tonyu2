@@ -1,0 +1,36 @@
+[[用途別リファレンス]]
+
+*背景をスクロールさせる
+
+<<code Main
+//画像の縦と横の値を入れる
+$Screen.resize(1000,1000);
+
+new Bg{x:$screenWidth/2,y:$screenHeight/2,p:/*画像のパターン番号*/,zOrder:1};
+
+new Bg{x:$screenWidth/2,y:0-$screenHeight/2,p:/*画像のパターン番号*/,zOrder:1};
+
+
+>>
+
+<<code Bg
+
+while(true){
+    //画像を下に移動
+    y+=10;
+
+    //画像が画面から出たら
+    if(y-$screenHeight/2>=$screenHeight){
+        //画像を上に戻す
+        y=0-$screenHeight/2;
+    }    
+    update();
+}
+
+>>
+
+これは、背景の画像を縦に二枚表示させ、下方向に移動。画面から画像が出たら、画面から出た画像を上に戻すというループで描写している。
+
+
+
+[[背景の表示]]

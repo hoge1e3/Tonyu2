@@ -14,19 +14,23 @@ requirejs(["Shell","Wiki","FS","requestFragment","WebSite"], function (sh,Wiki,F
             path().replace(
                     /\.txt$/,".html"
             );  // /doc/index.html
+            var webtop=wikiDir.up().relPath(wikiFile.up());
             var htmlFile=FS.get(htmlFilePath);
             w.show(wikiFile);
             var src="";
             src+='<html><head>';
-            src+='<meta charset="utf-8"/>';
-            src+='<meta http-equiv="Content-type" content="text/html; charset=utf8"/>';
-            src+='</head><body>';
-            src+="<link rel='stylesheet' href='/css/bootstrap.css'/>\n";
-            src+="<style>"+
-            "body{padding-top:20px; margin-left: 20px; margin-right:20px;}"+
-            "</style>\n";
+            src+='<meta charset="utf-8"/>\n';
+            src+='<meta http-equiv="Content-type" content="text/html; charset=utf8"/>\n';
             src+="<title>"+wikiFile.truncExt(".txt")+"</title>\n";
+            src+='</head><body>';
+            src+="<link rel='stylesheet' href='"+webtop+"css/bootstrap.css'/>\n";
+            src+="<link rel='stylesheet' href='"+webtop+"css/tonyu.css'/>\n";
+            src+="<style>"+
+            "body{padding-top:20px; margin-left: 20px; margin-right:20px; font-family:\"MS UI Gothic\",sans-serif;}"+
+            "</style>\n";
+            src+="<button onclick='javascript:history.back();'>←Back</button><br/>\n";
             src+=h.html();
+            src+="<br/><button onclick='javascript:history.back();'>←Back</button>\n";
             src+='</body></html>';
             //data[FS.get(htmlDir).relPath(wikiDir)]=src;
             htmlFile.text(src);
