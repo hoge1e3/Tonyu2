@@ -10863,21 +10863,15 @@ Tonyu.klass.define({
       
       _thread.retVal=_this;return;
     },
-    trunc :function _trc_PlainChar_trunc(f) {
-      "use strict";
-      var _this=this;
-      
-      return Math.trunc(f);
-    },
     loadPage :function _trc_PlainChar_loadPage(page,arg) {
       "use strict";
       var _this=this;
       
-      //$LASTPOS=32001673;//kernel.PlainChar:1673
+      //$LASTPOS=32001677;//kernel.PlainChar:1677
       _this.all().die();
-      //$LASTPOS=32001691;//kernel.PlainChar:1691
+      //$LASTPOS=32001695;//kernel.PlainChar:1695
       new page(arg);
-      //$LASTPOS=32001711;//kernel.PlainChar:1711
+      //$LASTPOS=32001715;//kernel.PlainChar:1715
       _this.die();
     },
     fiber$loadPage :function _trc_PlainChar_f_loadPage(_thread,page,arg) {
@@ -10886,18 +10880,18 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=32001673;//kernel.PlainChar:1673
+      //$LASTPOS=32001677;//kernel.PlainChar:1677
       _this.all().die();
-      //$LASTPOS=32001691;//kernel.PlainChar:1691
+      //$LASTPOS=32001695;//kernel.PlainChar:1695
       new page(arg);
-      //$LASTPOS=32001711;//kernel.PlainChar:1711
+      //$LASTPOS=32001715;//kernel.PlainChar:1715
       _this.die();
       
       _thread.retVal=_this;return;
     },
     __dummy: false
   },
-  decls: {"methods":{"main":{"nowait":false},"new":{"nowait":false},"draw":{"nowait":true},"setVisible":{"nowait":false},"onDraw":{"nowait":false},"update":{"nowait":false},"onUpdate":{"nowait":true},"initSprite":{"nowait":false},"tMain":{"nowait":false},"appear":{"nowait":false},"trunc":{"nowait":true},"loadPage":{"nowait":false}}}
+  decls: {"methods":{"main":{"nowait":false},"new":{"nowait":false},"draw":{"nowait":true},"setVisible":{"nowait":false},"onDraw":{"nowait":false},"update":{"nowait":false},"onUpdate":{"nowait":true},"initSprite":{"nowait":false},"tMain":{"nowait":false},"appear":{"nowait":false},"loadPage":{"nowait":false}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.SecretChar',

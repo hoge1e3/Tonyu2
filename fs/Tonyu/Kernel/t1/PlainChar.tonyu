@@ -77,9 +77,9 @@ native Math;
 \appear(t) {
     return t;
 }
-\trunc(f) {
+/*\trunc(f) {
     return Math.trunc(f);
-}
+}*/
 \loadPage(page,arg){
     all().die();
     new page(arg);
