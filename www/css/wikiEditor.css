@@ -1,0 +1,18 @@
+
+#text {
+    width: 100%;
+    height: 100%;
+}
+
+#fileListArea {
+	height: 100%;
+	overflow-y: scroll;
+}
+#wikiViewArea {
+	height: 100%;
+	overflow-y: scroll;
+	overflow-x: auto;
+}
+.wiki-cur-line {
+	background-color: #88ddff;
+}

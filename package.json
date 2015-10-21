@@ -1,11 +1,11 @@
 {
   "name": "Tonyu2",
-  "main": "html/dev/index.html",
+  "main": "www/html/dev/index.html",
   "single-instance": false,
   "window": {
     "width": 1024,
     "height": 768,
-    "icon": "images/tonyu.png",
+    "icon": "www/images/tonyu.png",
 	"toolbar"	: false
   }
 }
