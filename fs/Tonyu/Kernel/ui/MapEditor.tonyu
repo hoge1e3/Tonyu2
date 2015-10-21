@@ -90,10 +90,14 @@ if(!loadMode){
     panel.setFillStyle("cyan");
     panel.fillRect(0,0,panel.width,panel.height);
 }
-$mp=new Map{row:16,col:8,chipWidth:32,chipHeight:32};
+mIW=$Sprites.getImageList()[$pat_mapchip].image.width;
+mIH=$Sprites.getImageList()[$pat_mapchip].image.height;
+mCW=$Sprites.getImageList()[$pat_mapchip+0].width;
+mCH=$Sprites.getImageList()[$pat_mapchip+0].height;
+$mp=new Map{row:floor(mIH/mCH),col:floor(mIW/mCW),chipWidth:mCW,chipHeight:mCH};
 counter=0;
-for(var i=0;i<16;i++){
-    for(var j=0;j<8;j++){
+for(var i=0;i<$mp.row;i++){
+    for(var j=0;j<$mp.col;j++){
         $mp.set(j,i,$pat_mapchip+counter);
         counter++;
     }
@@ -250,9 +254,9 @@ function drawPanel(){
     $panel.setFillStyle("black");
     //dir
     $panel.fillText("▲",$screenWidth/2,30,40,"center");
-    $panel.fillText("◀",20,($screenHeight-200)/2,40,"center");
+    $panel.fillText("?",20,($screenHeight-200)/2,40,"center");
     $panel.fillText("▼",$screenWidth/2,$screenHeight-160-10,40,"center");
-    $panel.fillText("▶",$screenWidth-20,($screenHeight-200)/2,40,"center");
+    $panel.fillText("?",$screenWidth-20,($screenHeight-200)/2,40,"center");
     //set setOn letter etc
     $panel.fillText("set",$screenWidth/4-60,$screenHeight-110,40,"center");
     $panel.fillText("setOn",$screenWidth/4+60,$screenHeight-110,35,"center");
