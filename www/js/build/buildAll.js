@@ -8,7 +8,7 @@ define(["genROM","dumpScript","Util","FS","Sync","Shell","WebSite"],
     sh.build.description="Build files before commit.";
     function doBuildNW() {
         var home=FS.get(WebSite.tonyuHome);
-        var genHome=FS.get(".");
+        var genHome=FS.get("www/");
         embedVersion(genHome.rel("js/runtime/TonyuLib.js"));
         genROM(home.rel("Kernel/"),     genHome.rel("js/gen/ROM_k.js"));
         genROM(home.rel("doc/"),        genHome.rel("js/gen/ROM_d.js"));
@@ -20,7 +20,7 @@ define(["genROM","dumpScript","Util","FS","Sync","Shell","WebSite"],
         ds.concat({names: ["fs/ROMk","fs/ROMd","fs/ROMs","ide/editor"], outFile:"project",reqConf:reqConf});
         ds.concat({names: ["fs/ROMk","runScript"], outFile:"runScript",reqConf:reqConf});
         sh.echo("To compile documents, type:");
-        sh.echo("wiki2serv ../doc/ ../../../doc/");
+        sh.echo("wiki2serv ../doc/ ../../../www/doc/");
     }
     function embedVersion(f) {
         var r=f.text().replace(/(VERSION:)([0-9]+)(,\/\/EMBED_VERSION)/, function (t,a,b,c) {
