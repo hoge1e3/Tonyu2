@@ -1,0 +1,26 @@
+[[用途別リファレンス]]
+
+*パネル内の指定された座標の色を取得
+
+<<code Main
+$panel.setFillStyle("red");
+$panel.fillRect(100,100,100,100);
+$panel.setFillStyle("black");
+$panel.fillRect(150,150,100,100);
+
+while(true){
+    //マウスでクリックしたら
+    if(getkey("mouseleft")==1){
+        //aにクリックした場所の色の値を代入
+        a=$panel.getPixel($mouseX,$mouseY);
+        //色の値を(r,g,b,a)で表示
+        print(a);
+        //色の値の(r)だけ表示
+        print(a[0]);
+    }
+    update();
+}
+
+>>
+
+これは、マウスでクリックした場所の色の値を表示させている。
