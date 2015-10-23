@@ -4,9 +4,9 @@ define(["FS2","WebSite","NativeFS","LSFS", "PathUtil","Env","assert","SFile"],
     var rootFS;
     var env=new Env(WebSite);
     if (WebSite.isNW) {
-        var nfsp=process.env.TONYU_FS_HOME || P.rel(process.cwd().replace(/\\/g,"/"), "www/fs/");
-        console.log("nfsp",nfsp);
-        rootFS=new NativeFS(nfsp);
+        //var nfsp=process.env.TONYU_FS_HOME || P.rel(process.cwd().replace(/\\/g,"/"), "www/fs/");
+        //console.log("nfsp",nfsp);
+        rootFS=new NativeFS();//(nfsp);
     } else {
         rootFS=new LSFS(localStorage);
     }

@@ -144,7 +144,7 @@ var reqConf={
             "Key": "runtime/Key",
             "TextRect": "graphics/TextRect",
             "fukidashi": "graphics/fukidashi",
-            "FS": "fs/fs",
+            "FS": "fs/fs2stub",
             "SFileNW": "fs/SFileNW",
             "Tonyu.Project": "ide/TonyuProject",
             "thumbnail": "ide/thumbnail",
