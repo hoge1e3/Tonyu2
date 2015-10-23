@@ -9,14 +9,17 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
     var assert=A;
     var fs=require("fs");
     var NativeFS=function (rootPoint) {
-        A.is(rootPoint, P.AbsDir);
-        this.rootPoint=rootPoint;
+        if (rootPoint) {
+            A.is(rootPoint, P.AbsDir);
+            this.rootPoint=rootPoint;
+        }
     };
     NativeFS.available=true;
     var SEP=P.SEP;
     var json=JSON; // JSON changes when page changes, if this is node module, JSON is original JSON
     var Pro=NativeFS.prototype=new FS;
     Pro.toNativePath = function (path) {
+        if (!this.rootPoint) return path;
         A.is(path, P.Absolute);
         return P.rel( this.rootPoint, this.relFromMountPoint(path));
     };
