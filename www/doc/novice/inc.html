@@ -1,0 +1,47 @@
+<html><head><meta charset="utf-8"/>
+<meta http-equiv="Content-type" content="text/html; charset=utf8"/>
+<title>inc</title>
+</head><body><link rel='stylesheet' href='../../css/bootstrap.css'/>
+<link rel='stylesheet' href='../../css/tonyu.css'/>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px; font-family:"MS UI Gothic",sans-serif;}</style>
+<button onclick='javascript:history.back();'>←Back</button><br/>
+<div><a id="line_marker_-0" name="line_marker_-0"></a><a href="variable3.html">前へ</a><span> - </span><a href="while.html">次へ</a><span> - </span><a href="projectIndex.html">目次</a><span>
+</span><h1><a id="line_marker_-1" name="line_marker_-1"></a><span> 変数の値を増やしてみましょう</span></h1><a id="line_marker_-2" name="line_marker_-2"></a><p></p><a id="line_marker_-3" name="line_marker_-3"></a><span>さて，さきほどのプログラムをもう一度みてみましょう，</span><span>
+</span><a id="line_marker_-4" name="line_marker_-4"></a><p></p><a id="line_marker_-5" name="line_marker_-5"></a><div class="plist">リスト1 Cat</div><a id="line_marker_-10" name="line_marker_-10"></a><pre><a id="line_marker_-6" name="line_marker_-6"></a><span>x=50;</span><span>
+</span><a id="line_marker_-7" name="line_marker_-7"></a><span>go(x,100);sleep();</span><span>
+</span><a id="line_marker_-8" name="line_marker_-8"></a><span>x=60;</span><span>
+</span><a id="line_marker_-9" name="line_marker_-9"></a><span>go(x,100);sleep();</span><span>
+</span></pre><a id="line_marker_-11" name="line_marker_-11"></a><p></p><a id="line_marker_-12" name="line_marker_-12"></a><strong>リスト1</strong><span>では，</span><code><span>x=50;</span></code><span>で，xに50覚えさせてから，</span><span>
+</span><a id="line_marker_-13" name="line_marker_-13"></a><code><span>x=60;</span></code><span>で，xに60覚えさせています．</span><span>
+</span><a id="line_marker_-14" name="line_marker_-14"></a><p></p><a id="line_marker_-15" name="line_marker_-15"></a><span>ここでは，</span><span>
+</span><a id="line_marker_-16" name="line_marker_-16"></a><span>「xに60を覚えさせる」代わりに，「（すでに覚えている）50 を10だけ増やす」</span><span>
+</span><a id="line_marker_-17" name="line_marker_-17"></a><span>という書き方を紹介します．</span><span>
+</span><a id="line_marker_-18" name="line_marker_-18"></a><p></p><a id="line_marker_-19" name="line_marker_-19"></a><div class="plist">リスト2 Cat</div><a id="line_marker_-24" name="line_marker_-24"></a><pre><a id="line_marker_-20" name="line_marker_-20"></a><span>x=50;</span><span>
+</span><a id="line_marker_-21" name="line_marker_-21"></a><span>go(x,100);sleep();</span><span>
+</span><a id="line_marker_-22" name="line_marker_-22"></a><span>x+=10;</span><span>
+</span><a id="line_marker_-23" name="line_marker_-23"></a><span>go(x,100);sleep();</span><span>
+</span></pre><a id="line_marker_-25" name="line_marker_-25"></a><p></p><a id="line_marker_-26" name="line_marker_-26"></a><code><span>x+=10;</span></code><span>という書き方が出てきました．これは</span><span>
+</span><a id="line_marker_-27" name="line_marker_-27"></a><span>「今覚えているxの値に，10を足す」という意味です．</span><span>
+</span><a id="line_marker_-28" name="line_marker_-28"></a><p></p><a id="line_marker_-29" name="line_marker_-29"></a><strong>リスト2</strong><span>では，</span><span>
+</span><a id="line_marker_-30" name="line_marker_-30"></a><code><span>x+=10;</span></code><span>が実行される時点では，</span><span>
+</span><a id="line_marker_-31" name="line_marker_-31"></a><span>xは50を覚えていますので，</span><span>
+</span><a id="line_marker_-32" name="line_marker_-32"></a><code><span>x+=10;</span></code><span>が実行されると，50に10を足した値である</span><span>
+</span><a id="line_marker_-33" name="line_marker_-33"></a><span>60を新しくxに覚えさせます．結果として，</span><span>
+</span><a id="line_marker_-34" name="line_marker_-34"></a><strong>リスト2</strong><span>は，</span><span>
+</span><a id="line_marker_-35" name="line_marker_-35"></a><strong>リスト1</strong><span>と同じ結果になります．</span><span>
+</span><a id="line_marker_-36" name="line_marker_-36"></a><p></p><a id="line_marker_-37" name="line_marker_-37"></a><span>これを利用して，xを100まで増やしながら，絵を動かしてみましょう．</span><span>
+</span><a id="line_marker_-38" name="line_marker_-38"></a><p></p><a id="line_marker_-39" name="line_marker_-39"></a><div class="plist">リスト3 Cat</div><a id="line_marker_-52" name="line_marker_-52"></a><pre><a id="line_marker_-40" name="line_marker_-40"></a><span>x=50;</span><span>
+</span><a id="line_marker_-41" name="line_marker_-41"></a><span>go(x,100);sleep();</span><span>
+</span><a id="line_marker_-42" name="line_marker_-42"></a><span>x+=10;</span><span>
+</span><a id="line_marker_-43" name="line_marker_-43"></a><span>go(x,100);sleep();</span><span>
+</span><a id="line_marker_-44" name="line_marker_-44"></a><span>x+=10;</span><span>
+</span><a id="line_marker_-45" name="line_marker_-45"></a><span>go(x,100);sleep();</span><span>
+</span><a id="line_marker_-46" name="line_marker_-46"></a><span>x+=10;</span><span>
+</span><a id="line_marker_-47" name="line_marker_-47"></a><span>go(x,100);sleep();</span><span>
+</span><a id="line_marker_-48" name="line_marker_-48"></a><span>x+=10;</span><span>
+</span><a id="line_marker_-49" name="line_marker_-49"></a><span>go(x,100);sleep();</span><span>
+</span><a id="line_marker_-50" name="line_marker_-50"></a><span>x+=10;</span><span>
+</span><a id="line_marker_-51" name="line_marker_-51"></a><span>go(x,100);sleep();</span><span>
+</span></pre><a id="line_marker_-53" name="line_marker_-53"></a><a href="variable3.html">前へ</a><span> - </span><a href="while.html">次へ</a><span> - </span><a href="projectIndex.html">目次</a><span>
+</span></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
+</body></html>

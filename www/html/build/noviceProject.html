@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Tonyu System 2">
+<meta name="author" content="hoge1e3">
+<link rel="shortcut icon" type="image/x-icon" href="images/tnu.ico">
+
+<title>プログラミング体験講座</title>
+
+<!-- Bootstrap core CSS -->
+<link href="../../css/bootstrap.css" rel="stylesheet">
+
+<!-- Custom styles for this template -->
+<link href="../../css/tonyu.css" rel="stylesheet">
+<link href="../../css/jquery-ui.css" rel="stylesheet">
+
+
+<script src="../../js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="../../js/lib/jquery.tmpl.js" type="text/javascript"></script>
+<script src="../../js/lib/jquery.hotkeys.js" type="text/javascript"></script>
+<script src="../../js/lib/jquery-ui.js" type="text/javascript"></script>
+
+<script src="../../js/lib/ProgressBar.js"></script>
+<script src="../../js/reqConf.js"></script>
+<script src="../../js/lib/require.js"></script>
+<script src="../../js/lib/ace-noconflict/ace.js" type="text/javascript"></script>
+<script>
+ProgressBar(41);
+requirejs.config(reqConf);
+requirejs(["ide/noviceEditor"],function (){});
+</script>
+
+</head>
+<body>
+	<div id=navBar class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".navbar-collapse">
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">プログラミング体験講座</a>
+			</div>
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="novice.html">Home</a></li>
+					<li><a id="fileMenu" href="#" class="dropdown-toggle" data-toggle="dropdown">ファイル</a>
+						<ul class="dropdown-menu">
+							<li><a href="#" id="newFile">新規</a></li>
+							<li><a href="#" id="mvFile">名前変更</a></li>
+							<li><a href="#" id="rmFile">削除</a></li>
+						</ul>
+					</li>
+					<li><a href="#" id="run" class="dropdown-toggle" data-toggle="dropdown">実行</a>
+						<ul class="dropdown-menu" id="runMenu">
+						</ul>
+					</li>
+				</ul>
+			</div>
+			<!--/.nav-collapse -->
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="row">
+			<div id=fileViewer class="col-xs-2">
+
+				<!-- div id="dirName"></div>
+				<div>
+				</div>-->
+				<div id="fileItemList"></div>
+			</div>
+			<div id=mainArea class="col-xs-6">
+				<div id=errorPos >
+				</div>
+				<pre id=prog></pre>
+				<div id="runArea" style="text-align : center ;" class="runArea">
+					<canvas id="cv" width=400 height=400 style=" margin-left : auto ; margin-right : auto ;"></canvas>
+				</div>
+			</div>
+			<div id=wikiViewArea class="col-xs-4">
+			</div>
+		</div>
+	</div>
+
+	<!-- /.container -->
+    <script src="../../js/lib/bootstrap.min.js"></script>
+    <div style="overflow :scroll; width:0px; height:0px;">
+	<img id="baseImg" src="images/neko.png"  />
+	</div>
+</body>
+</html>

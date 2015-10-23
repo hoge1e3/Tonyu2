@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Sync Project Files</title>
+<meta charset="utf-8">
+<script src="../../js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="../../js/reqConf.js"></script>
+<script src="../../js/lib/require.js"></script>
+<script>
+requirejs.config(reqConf);
+requirejs(["fs/syncProjects"],function (){});
+</script>
+</head>
+<body>
+<h1 id="head">同期を開始しています...</h1>
+<div id=status></div>
+<div id=skip>
+<!-- button id=skipButton>同期をスキップ...</button-->
+</div>
+<div id=res></div>
+</body>
+
+</html>

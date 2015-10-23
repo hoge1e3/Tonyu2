@@ -1,0 +1,40 @@
+body {
+  padding-top: 0px;
+}
+.starter-template {
+  padding: 40px 15px;
+  text-align: center;
+}
+
+textarea{
+	font-family: monospace;
+	line-height: 1em;
+}
+
+div.figure {
+	text-align: center;
+}
+div.figure img {
+	border: solid black 1px;
+}
+
+h1 {
+	font-size: 20px;
+}
+h2 {
+	font-size: 18px;
+}
+.clickable {
+	cursor:pointer;
+  color: #428bca;
+}
+.clickable:hover {
+   color: #2a6496;
+}
+.plist {
+
+}
+.code {
+	border: solid black 1px;
+
+}

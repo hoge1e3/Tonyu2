@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Export to tonyuexe</title>
+<meta charset="utf-8">
+<script src="../../js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="../../js/reqConf.js"></script>
+<script src="../../js/lib/require.js"></script>
+<style>
+.on-logged-out { display:none; }
+.on-logged-in { display:none; }
+#complete {display:none;}
+</style>
+<script>
+requirejs.config(reqConf);
+requirejs(["exportToExe"],function (){});
+</script>
+</head>
+<body>
+	<div class="wait-loggin">ユーザ情報を取得しています</div>
+	<div class="on-logged-out">
+	<!-- //TODO: urlchange! -->
+		<a href="../../edit/login" target="login">ログイン</a>をしてください
+	</div>
+	<div class="on-logged-in">
+		<h1>
+			<span id="prjNameSpan"></span>をtonyuexe.appspot.comで公開する
+		</h1>
+		<div>
+			※<a target="terms" href="../../doc/terms.html">利用規約</a>を確認してください
+		</div>
+		<form id="theForm">
+			<!--   action="../../edit/upload-project" method="POST"-->
+			<input type="hidden" id="prjName" name="project" />
+			<textarea id="prog" name="prog" cols=100 rows=24
+				style="display: none;"></textarea>
+            <textarea id="thumbnail" name="thumbnail" cols=100 rows=24
+                style="display: none;"></textarea>
+
+			<p>
+				タイトル <input id="prjTitle" name="title"></input>
+			</p>
+
+			<p>
+				説明<br />
+				<textarea id="desc" name="description" cols=100 rows=24></textarea>
+			</p>
+			<p>
+			アイコン<div id="thumbSize"></div><br/>
+			    <img src="../../images/nowprint.png" id="thumbImg"/>
+			</p>
+			<div>
+				<input type="checkbox" id="publishToList" name="publishToList"
+					value="true">このプロジェクトをプロジェクト一覧に表示する
+			</div>
+			<ul>
+				<li>プロジェクト一覧は，tonyuedit（プロジェクト開発環境），tonyuexe（プロジェクト実行専用サイト）いずれの利用者からも見ることができます．
+					</li>
+			</ul>
+
+			<div>
+				<input type="checkbox" id="allowFork" name="allowFork" value="true">このプロジェクトのForkを許可する
+			</div>
+			<ul>
+				<li>Forkとは，他の投稿者がこのプロジェクトのコピーに変更を加えることです．このプロジェクト自身が他の投稿者に変更されることはありません．
+				</li>
+			</ul>
+			<div>
+				ライセンス <select name="license" id="license">
+					<option value="mit">MIT License</option>
+					<option value="gpl3">GPLv3</option>
+				</select>
+			</div>
+			<div class="submit-wait">お待ちください....</div>
+			<hr />
+			<div id="complete">
+				<h3>アップロード完了</h3>
+				<ul>
+                <li>
+                <a id="url" target="play">アップロードしたプロジェクトを開く</a>
+                </li>
+                <li>
+                <a href="http://tonyuexe.appspot.com/" target="exe">公開プロジェクト一覧</a>
+                </li>
+                <li>
+                <a href="javascript:history.back()">戻る</a>
+                </li>
+                </ul>
+			</div>
+		</form>
+	</div>
+
+
+</body>
+
+</html>

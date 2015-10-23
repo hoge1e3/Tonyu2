@@ -1,0 +1,25 @@
+<html><head>
+<script>
+function getQueryString(key, default_)
+{
+   if (default_==null) default_="";
+   key = key.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+   var regex = new RegExp("[\\?&]"+key+"=([^&#]*)");
+   var qs = regex.exec(window.location.href);
+   if(qs == null)
+    return default_;
+   else
+    return decodeURLComponentEx(qs[1]);
+}
+function decodeURLComponentEx(s){
+    return decodeURIComponent(s.replace(/\+/g, '%20'));
+}
+try {
+    window.opener.onLoggedIn(getQueryString("user"), getQueryString("csrfToken"));
+    window.close();
+} catch (e) {
+    location.href="index.html";
+}
+</script>
+
+</head></html>

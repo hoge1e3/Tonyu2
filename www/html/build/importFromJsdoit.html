@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Import from jsdo.it</title>
+<meta charset="utf-8">
+<script src="../../js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="../../js/reqConf.js"></script>
+<script src="../../js/lib/require.js"></script>
+<script>
+requirejs.config(reqConf);
+requirejs(["importFromJsdoit"],function (){});
+</script>
+</head>
+<body>
+<h1>インポート手順 </h1>
+<ul>
+<li><a href="http://jsdo.it" target=jsdo>jsdo.it</a>にアクセスし，インポートしたいプログラムを開きます</li>
+<ul><li>※インポートできるのは，Tonyuで書かれたプログラムのみです</li></ul>
+<li>「HTML」タブを選び，コードをコピーして，↓の欄に貼り付けます</li>
+<li>「次へ」を押します</li>
+</ul>
+<div id=files></div>
+<div id="src">
+<button class="selDir">次へ</button><br/>
+<textarea id=prog rows=20 cols=90></textarea><br/>
+<button class="selDir">次へ</button><br/>
+</div>
+<div id="diag" style="display:none;">
+</div>
+<div id="confirm">
+</div>
+<div id="complete">
+</div>
+</body>
+
+</html>
