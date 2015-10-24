@@ -200,7 +200,6 @@ var reqConf={
             "MIMETypes":"fs2/MIMETypes",
             "NativeFS":"fs2/NativeFS",
             "PathUtil":"fs2/PathUtil",
-            "SandBoxFile":"fs2/SandBoxFile",
             "SFile":"fs2/SFile",
             "Env":"fs2/Env",
             "compiledProject":"lang/compiledProject",

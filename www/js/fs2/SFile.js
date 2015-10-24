@@ -1,5 +1,5 @@
-define(["Contents","extend","assert","PathUtil"],
-function (C,extend,A,P) {
+define(["Contents","extend","assert","PathUtil","Util"],
+function (C,extend,A,P,Util) {
 
 var SFile=function (fs, path) {
     A.is(path, P.Absolute);
@@ -23,8 +23,13 @@ function getPath(f) {
 }
 SFile.prototype={
     isSFile: function (){return true;},
+    setPolicy: function (p) {
+        if (this.policy) throw new Error("policy already set");
+        this.policy=p;
+        return this._clone();
+    },
     _clone: function (){
-        return this.fs.getRootFS().get(this.path());
+        return this._resolve(this.path());
     },
     _resolve: function (path) {
         var res;
@@ -32,10 +37,14 @@ SFile.prototype={
             res=path;
         } else {
             A.is(path,P.Absolute);
+            if (this.policy && this.policy.topDir && !P.startsWith(path, this.policy.topDir)) {
+                throw new Error(path+": cannot access.");
+            }
             res=this.fs.getRootFS().get(path);
+            res.policy=this.policy;
         }
-        if (this.wrapper) {
-            return this.wrapper.wrap(res);
+        if (res.policy) {
+            return Util.privatize(res);
         } else {
             return res;
         }

@@ -132,12 +132,28 @@ function Base64_From_ArrayBuffer(ary_buffer){
     return base64;
 }
 
-
+function privatize(o){
+    if (o.__privatized) return o;
+    var res={__privatized:true};
+    for (var n in o) {
+        (function (n) {
+            var m=o[n];
+            if (n.match(/^_/)) return;
+            if (typeof m!="function") return;
+            res[n]=function () {
+                var r=m.apply(o,arguments);
+                return r;
+            };
+        })(n);
+    }
+    return res;
+}
 
 return {
     getQueryString:getQueryString,
     endsWith: endsWith, startsWith: startsWith,
     Base64_To_ArrayBuffer:Base64_To_ArrayBuffer,
-    Base64_From_ArrayBuffer:Base64_From_ArrayBuffer
+    Base64_From_ArrayBuffer:Base64_From_ArrayBuffer,
+    privatize: privatize
 };
 })();
