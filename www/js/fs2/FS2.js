@@ -160,7 +160,7 @@ define(["extend","PathUtil","MIMETypes","assert","SFile"],function (extend, P, M
         },
         getContentType: function (path, options) {
             var e=P.ext(path);
-            return M[e] || (options||{}).def || "application/octet-stream";
+            return M[e] || (options||{}).def || "text/plain";
         },
         isText:function (path) {
             var m=this.getContentType(path);

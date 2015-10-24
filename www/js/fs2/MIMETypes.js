@@ -7,7 +7,6 @@ define([], function () {
       ".ico":"image/icon",
       ".mp3":"audio/mp3",
       ".ogg":"audio/ogg",
-      ".log":"text/plain",
       ".txt":"text/plain",
       ".html":"text/html",
       ".htm":"text/html",

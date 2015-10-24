@@ -1,6 +1,7 @@
 define(["FS2","WebSite","NativeFS","LSFS", "PathUtil","Env","assert","SFile"],
         function (FS,WebSite,NativeFS,LSFS, P,Env,A,SFile) {
     var FS={};
+    if (typeof window=="object") window.FS=FS;
     var rootFS;
     var env=new Env(WebSite);
     if (WebSite.isNW) {
