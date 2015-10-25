@@ -4,6 +4,7 @@ function endsWith(str,postfix) {
     return str.substring(str.length-postfix.length)===postfix;
 }
 function startsWith(str,prefix) {
+    assert.is(arguments,[String,String]);
     return str.substring(0, prefix.length)===prefix;
 }
 var driveLetter=/^([a-zA-Z]):/;

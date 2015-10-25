@@ -37,8 +37,12 @@ SFile.prototype={
             res=path;
         } else {
             A.is(path,P.Absolute);
-            if (this.policy && this.policy.topDir && !P.startsWith(path, this.policy.topDir)) {
-                throw new Error(path+": cannot access.");
+            var topdir;
+            if (this.policy && (topdir=this.policy.topDir)) {
+                if (topdir.path) topdir=topdir.path();
+                if (!P.startsWith(path, topdir)) {
+                    throw new Error(path+": cannot access. Restricted to "+topdir);
+                }
             }
             res=this.fs.getRootFS().get(path);
             res.policy=this.policy;

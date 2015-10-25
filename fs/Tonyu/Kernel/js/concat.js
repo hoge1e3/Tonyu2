@@ -3980,7 +3980,7 @@ Tonyu.klass.define({
       d = Tonyu.currentProject.getDir();
       //$LASTPOS=12009612;//kernel.BaseActor:9612
       files = d.rel("files/");
-      return FS.get(files.rel(path),{topDir: d});
+      return files.rel(path).setPolicy({topDir: d});
     },
     fiber$file :function _trc_BaseActor_f_file(_thread,path) {
       "use strict";
@@ -3994,7 +3994,7 @@ Tonyu.klass.define({
       d = Tonyu.currentProject.getDir();
       //$LASTPOS=12009612;//kernel.BaseActor:9612
       files = d.rel("files/");
-      _thread.retVal=FS.get(files.rel(path),{topDir: d});return;
+      _thread.retVal=files.rel(path).setPolicy({topDir: d});return;
       
       
       _thread.retVal=_this;return;
@@ -4003,22 +4003,22 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=12009719;//kernel.BaseActor:9719
+      //$LASTPOS=12009769;//kernel.BaseActor:9769
       if (fl!==false) {
-        //$LASTPOS=12009746;//kernel.BaseActor:9746
+        //$LASTPOS=12009796;//kernel.BaseActor:9796
         if (! _this.origTG) {
           
           
         }
-        //$LASTPOS=12009898;//kernel.BaseActor:9898
+        //$LASTPOS=12009948;//kernel.BaseActor:9948
         _this.a=_this.asyncResult();
-        //$LASTPOS=12009924;//kernel.BaseActor:9924
+        //$LASTPOS=12009974;//kernel.BaseActor:9974
         Tonyu.globals.$InputDevice.addOnetimeListener(_this.a.receiver);
-        //$LASTPOS=12009978;//kernel.BaseActor:9978
+        //$LASTPOS=12010028;//kernel.BaseActor:10028
         _this.waitFor(_this.a);
         
       } else {
-        //$LASTPOS=12010013;//kernel.BaseActor:10013
+        //$LASTPOS=12010063;//kernel.BaseActor:10063
         if (_this.origTG) {
           
           
@@ -4038,35 +4038,35 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=12009719;//kernel.BaseActor:9719
+            //$LASTPOS=12009769;//kernel.BaseActor:9769
             if (!(fl!==false)) { __pc=3; break; }
-            //$LASTPOS=12009746;//kernel.BaseActor:9746
+            //$LASTPOS=12009796;//kernel.BaseActor:9796
             if (!(! _this.origTG)) { __pc=1; break; }
             {
-              //$LASTPOS=12009800;//kernel.BaseActor:9800
+              //$LASTPOS=12009850;//kernel.BaseActor:9850
               _this.origTG=_thread.group;
-              //$LASTPOS=12009839;//kernel.BaseActor:9839
+              //$LASTPOS=12009889;//kernel.BaseActor:9889
               _thread.setGroup(null);
             }
           case 1:
             
-            //$LASTPOS=12009898;//kernel.BaseActor:9898
+            //$LASTPOS=12009948;//kernel.BaseActor:9948
             _this.a=_this.asyncResult();
-            //$LASTPOS=12009924;//kernel.BaseActor:9924
+            //$LASTPOS=12009974;//kernel.BaseActor:9974
             Tonyu.globals.$InputDevice.addOnetimeListener(_this.a.receiver);
-            //$LASTPOS=12009978;//kernel.BaseActor:9978
+            //$LASTPOS=12010028;//kernel.BaseActor:10028
             _this.fiber$waitFor(_thread, _this.a);
             __pc=2;return;
           case 2:
             
             __pc=5;break;
           case 3:
-            //$LASTPOS=12010013;//kernel.BaseActor:10013
+            //$LASTPOS=12010063;//kernel.BaseActor:10063
             if (!(_this.origTG)) { __pc=4; break; }
             {
-              //$LASTPOS=12010066;//kernel.BaseActor:10066
+              //$LASTPOS=12010116;//kernel.BaseActor:10116
               _thread.setGroup(_this.origTG);
-              //$LASTPOS=12010109;//kernel.BaseActor:10109
+              //$LASTPOS=12010159;//kernel.BaseActor:10159
               _this.origTG=null;
             }
           case 4:
@@ -4082,9 +4082,9 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=12010182;//kernel.BaseActor:10182
+      //$LASTPOS=12010232;//kernel.BaseActor:10232
       Tonyu.globals.$Sprites.draw(Tonyu.globals.$Screen.buf[0]);
-      //$LASTPOS=12010218;//kernel.BaseActor:10218
+      //$LASTPOS=12010268;//kernel.BaseActor:10268
       Tonyu.globals.$Screen.draw();
     },
     fiber$redrawScreen :function _trc_BaseActor_f_redrawScreen(_thread) {
@@ -4093,9 +4093,9 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=12010182;//kernel.BaseActor:10182
+      //$LASTPOS=12010232;//kernel.BaseActor:10232
       Tonyu.globals.$Sprites.draw(Tonyu.globals.$Screen.buf[0]);
-      //$LASTPOS=12010218;//kernel.BaseActor:10218
+      //$LASTPOS=12010268;//kernel.BaseActor:10268
       Tonyu.globals.$Screen.draw();
       
       _thread.retVal=_this;return;
@@ -4121,11 +4121,11 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=12010927;//kernel.BaseActor:10927
+      //$LASTPOS=12010977;//kernel.BaseActor:10977
       _this.all().die();
-      //$LASTPOS=12010945;//kernel.BaseActor:10945
+      //$LASTPOS=12010995;//kernel.BaseActor:10995
       new page(arg);
-      //$LASTPOS=12010965;//kernel.BaseActor:10965
+      //$LASTPOS=12011015;//kernel.BaseActor:11015
       _this.die();
     },
     fiber$loadPage :function _trc_BaseActor_f_loadPage(_thread,page,arg) {
@@ -4134,11 +4134,11 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=12010927;//kernel.BaseActor:10927
+      //$LASTPOS=12010977;//kernel.BaseActor:10977
       _this.all().die();
-      //$LASTPOS=12010945;//kernel.BaseActor:10945
+      //$LASTPOS=12010995;//kernel.BaseActor:10995
       new page(arg);
-      //$LASTPOS=12010965;//kernel.BaseActor:10965
+      //$LASTPOS=12011015;//kernel.BaseActor:11015
       _this.die();
       
       _thread.retVal=_this;return;
@@ -4147,7 +4147,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=12011000;//kernel.BaseActor:11000
+      //$LASTPOS=12011050;//kernel.BaseActor:11050
       _this._isInvisible=! v;
     },
     fiber$setVisible :function _trc_BaseActor_f_setVisible(_thread,v) {
@@ -4156,7 +4156,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=12011000;//kernel.BaseActor:11000
+      //$LASTPOS=12011050;//kernel.BaseActor:11050
       _this._isInvisible=! v;
       
       _thread.retVal=_this;return;
