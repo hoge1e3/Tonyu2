@@ -3,14 +3,16 @@ requirejs(["Util", "Tonyu", "FS", "FileList", "FileMenu",
            "copySample","Shell","Shell2","ProjectOptionsEditor","copyToKernel","KeyEventChecker",
            "WikiDialog","runtime", "KernelDiffDialog","Sync","searchDialog","StackTrace","syncWithKernel",
            "UI","ResEditor","WebSite","exceptionCatcher","Tonyu.TraceTbl",
-           "SoundDiag","Log","MainClassDialog","DeferredUtil","NWMenu"
+           "SoundDiag","Log","MainClassDialog","DeferredUtil","NWMenu",
+           "ProjectCompiler","compiledProject"
           ],
 function (Util, Tonyu, FS, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,
           copySample,sh,sh2, ProjectOptionsEditor, ctk, KeyEventChecker,
           WikiDialog, rt , KDD,Sync,searchDialog,StackTrace,swk,
           UI,ResEditor,WebSite,EC,TTB,
-          sd,Log,MainClassDialog,DU,NWMenu
+          sd,Log,MainClassDialog,DU,NWMenu,
+          TPRC,CPPRJ
           ) {
 $(function () {
     var F=EC.f;
@@ -25,7 +27,10 @@ $(function () {
     }
     var home=FS.get(WebSite.tonyuHome);
     //if (!Tonyu.ide)  Tonyu.ide={};
-    var kernelDir=home.rel("Kernel/");
+    var kernelDir=FS.get(WebSite.kernelDir);//home.rel("Kernel/");
+    if (kernelDir.exists()) {
+        TPRC(kernelDir).loadClasses();
+    }
     var dir=Util.getQueryString("dir", "/Tonyu/Projects/SandBox/");
     var curProjectDir=FS.get(dir);
     var curPrj=Tonyu_Project(curProjectDir, kernelDir);

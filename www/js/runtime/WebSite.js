@@ -89,11 +89,13 @@ define([], function () {
     };
     if (window.WebSite.isNW) {
         if (process.env.TONYU_HOME) {
-            window.WebSite.tonyuHome=process.env.TONYU_HOME.replace(/\\/g,"/");
+            window.WebSite.tonyuHome=process.env.TONYU_HOME.replace(/\\/g,"/").replace(/\/?$/,"/");
         } else {
             window.WebSite.tonyuHome=process.cwd().replace(/\\/g,"/").replace(/\/$/,"")+"/fs/Tonyu/";
         }
         window.WebSite.logdir="/var/log/Tonyu/";
     }
+    window.WebSite.kernelDir=window.WebSite.tonyuHome+"Kernel/";
+    window.WebSite.compiledKernel=window.WebSite.top+"/../fs/Tonyu/Kernel/js/concat.js"
     return window.WebSite;
 });
