@@ -88,10 +88,11 @@ define([], function () {
         putFiles:WebSite.serverTop+"/LS2FileSync"
     };
     if (window.WebSite.isNW) {
+        window.WebSite.cwd=process.cwd().replace(/\\/g,"/").replace(/\/$/,"");
         if (process.env.TONYU_HOME) {
             window.WebSite.tonyuHome=process.env.TONYU_HOME.replace(/\\/g,"/");
         } else {
-            window.WebSite.tonyuHome=process.cwd().replace(/\\/g,"/").replace(/\/$/,"")+"/fs/Tonyu/";
+            window.WebSite.tonyuHome=window.WebSite.cwd+"/fs/Tonyu/";
         }
         window.WebSite.logdir="/var/log/Tonyu/";
     }

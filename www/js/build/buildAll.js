@@ -8,7 +8,7 @@ define(["genROM","dumpScript","Util","FS","Sync","Shell","WebSite"],
     sh.build.description="Build files before commit.";
     function doBuildNW() {
         var home=FS.get(WebSite.tonyuHome);
-        var genHome=FS.get("www/");
+        var genHome=FS.get(FS.expandPath("${cwd}/www/"));
         embedVersion(genHome.rel("js/runtime/TonyuLib.js"));
         genROM(home.rel("Kernel/"),     genHome.rel("js/gen/ROM_k.js"));
         genROM(home.rel("doc/"),        genHome.rel("js/gen/ROM_d.js"));
