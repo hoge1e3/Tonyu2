@@ -7,7 +7,7 @@ for (i=0; i<=3; i++) {
     new Player{x:$w/2, y:$h/2, rotation:45+i*90, k:k[i], p:i*2};
 }
 font='MS UI Gothic';
-text="準備はよいか?";
+text="準備OKですか？";
 x=$w/2;
 y=$h/2-100;
 size=30;

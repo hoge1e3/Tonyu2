@@ -6,7 +6,8 @@ Tonyu.klass.define({
   includes: [],
   methods: {
     main :function _trc_Ball_main() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=1000020;//user.Ball:20
       while (_this.y<450) {
@@ -43,7 +44,8 @@ Tonyu.klass.define({
       _this.die();
     },
     fiber$main :function _trc_Ball_f_main(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -126,7 +128,8 @@ Tonyu.klass.define({
   includes: [],
   methods: {
     main :function _trc_Block_main() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=2000020;//user.Block:20
       while (_this.y<Tonyu.globals.$screenHeight) {
@@ -138,7 +141,8 @@ Tonyu.klass.define({
       _this.die();
     },
     fiber$main :function _trc_Block_f_main(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -178,7 +182,8 @@ Tonyu.klass.define({
   includes: [],
   methods: {
     main :function _trc_Main_main() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=3000114;//user.Main:114
       Tonyu.globals.$b=new Tonyu.classes.user.Ball({density: 2,x: 230,y: 300,shape: "circle",p: 12});
@@ -200,7 +205,8 @@ Tonyu.klass.define({
       }
     },
     fiber$main :function _trc_Main_f_main(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -249,7 +255,8 @@ Tonyu.klass.define({
   includes: [],
   methods: {
     main :function _trc_Target_main() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=4000000;//user.Target:0
       _this.p=Tonyu.globals.$pat_neko+30;
@@ -269,7 +276,8 @@ Tonyu.klass.define({
       }
     },
     fiber$main :function _trc_Target_f_main(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -311,7 +319,8 @@ Tonyu.klass.define({
       });
     },
     nextLevel :function _trc_Target_nextLevel() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=4000127;//user.Target:127
       _this.y=- 1000;
@@ -330,7 +339,8 @@ Tonyu.klass.define({
       _this.put();
     },
     fiber$nextLevel :function _trc_Target_f_nextLevel(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -367,7 +377,8 @@ Tonyu.klass.define({
       });
     },
     put :function _trc_Target_put() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=4000243;//user.Target:243
       _this.x=_this.rnd(250)+100;
@@ -375,7 +386,8 @@ Tonyu.klass.define({
       _this.y=30;
     },
     fiber$put :function _trc_Target_f_put(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -398,7 +410,8 @@ Tonyu.klass.define({
   includes: [],
   methods: {
     main :function _trc_Title_main() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=5000001;//user.Title:1
       Tonyu.globals.$Screen.resize(465,530);
@@ -419,7 +432,8 @@ Tonyu.klass.define({
       }
     },
     fiber$main :function _trc_Title_f_main(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       

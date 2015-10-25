@@ -6,11 +6,13 @@ Tonyu.klass.define({
   includes: [],
   methods: {
     main :function _trc_Ball_main() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
     },
     fiber$main :function _trc_Ball_f_main(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -29,11 +31,13 @@ Tonyu.klass.define({
   includes: [],
   methods: {
     main :function _trc_Floor_main() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
     },
     fiber$main :function _trc_Floor_f_main(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -52,11 +56,13 @@ Tonyu.klass.define({
   includes: [],
   methods: {
     main :function _trc_Goal_main() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
     },
     fiber$main :function _trc_Goal_f_main(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -75,7 +81,8 @@ Tonyu.klass.define({
   includes: [],
   methods: {
     main :function _trc_Main_main() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=1000016;//user.Main:16
       new Tonyu.classes.user.Goal({x: 50,y: 50,p: Tonyu.globals.$pat_neko+30});
@@ -97,7 +104,8 @@ Tonyu.klass.define({
       }
     },
     fiber$main :function _trc_Main_f_main(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
@@ -146,7 +154,8 @@ Tonyu.klass.define({
   includes: [],
   methods: {
     main :function _trc_Player_main() {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       
       //$LASTPOS=2000020;//user.Player:20
       while (true) {
@@ -208,7 +217,8 @@ Tonyu.klass.define({
       }
     },
     fiber$main :function _trc_Player_f_main(_thread) {
-      var _this=this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this);
+      "use strict";
+      var _this=this;
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
