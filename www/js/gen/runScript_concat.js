@@ -1,4 +1,4 @@
-// Created at Mon Oct 26 2015 14:26:36 GMT+0900 (東京 (標準時))
+// Created at Mon Oct 26 2015 14:34:15 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -2505,7 +2505,7 @@ return Tonyu=function () {
             globals:globals, classes:classes, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
             timeout:timeout,asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
-            VERSION:1445837186483,//EMBED_VERSION
+            VERSION:1445837644426,//EMBED_VERSION
             A:A};
 }();
 });
@@ -8723,7 +8723,7 @@ requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS","runtime
                 kernelEditable: false
         };
         var kernelDir=home.rel("Kernel/");
-        var curPrj=Tonyu_Project(curProjectDir, kernelDir);
+        var curPrj=Tonyu_Project(curProjectDir);//, kernelDir);
         /*cv[0].addEventListener('touchstart', mediaIni);
         window.addEventListener('touchstart', mediaIni);
         function mediaIni() {
