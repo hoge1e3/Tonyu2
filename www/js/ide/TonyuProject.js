@@ -1,19 +1,25 @@
 define(["Tonyu", "ProjectCompiler", "TError", "FS", "Tonyu.TraceTbl","ImageList","StackTrace",
         "typeCheck","Blob","thumbnail","WebSite","plugins", "Tonyu.Compiler.Semantics", "Tonyu.Compiler.JSGenerator",
-        "DeferredUtil"],
+        "DeferredUtil","compiledProject"],
         function (Tonyu, ProjectCompiler, TError, FS, Tonyu_TraceTbl, ImageList,StackTrace,
-                tc,Blob,thumbnail,WebSite,plugins, Semantics, JSGenerator,DU) {
+                tc,Blob,thumbnail,WebSite,plugins, Semantics, JSGenerator,
+                DU,CPRJ) {
 return Tonyu.Project=function (dir, kernelDir) {
     var TPR=ProjectCompiler(dir);
-    var kernelProject=ProjectCompiler(kernelDir);
     var _super=Tonyu.extend({},TPR);
     var home=FS.get(WebSite.tonyuHome);
-    if (!kernelDir) kernelDir=home.rel("Kernel/");
-    var traceTbl=Tonyu.TraceTbl;//();
-    var env={classes:{}, traceTbl:traceTbl, options:{compiler:{}} };
     TPR.EXT=".tonyu";
     TPR.NSP_KER="kernel";
     TPR.NSP_USR="user";
+    var kernelProject;
+    if (!kernelDir) {
+        kernelProject=CPRJ(TPR.NSP_KER, WebSite.compiledKernel);
+        //kernelDir=home.rel("Kernel/");
+    } else {
+        kernelProject=ProjectCompiler(kernelDir);
+    }
+    var traceTbl=Tonyu.TraceTbl;//();
+    var env={classes:{}, traceTbl:traceTbl, options:{compiler:{}} };
     function orderByInheritance(classes) {/*ENVC*/
         var added={};
         var res=[];
