@@ -87,16 +87,16 @@ define([], function () {
         getFiles:WebSite.serverTop+"/File2LSSync",
         putFiles:WebSite.serverTop+"/LS2FileSync"
     };
-    window.WebSite.cwd=process.cwd().replace(/\\/g,"/").replace(/\/?$/,"/");
     if (window.WebSite.isNW) {
+        window.WebSite.cwd=process.cwd().replace(/\\/g,"/").replace(/\/?$/,"/");
         if (process.env.TONYU_HOME) {
             window.WebSite.tonyuHome=process.env.TONYU_HOME.replace(/\\/g,"/").replace(/\/?$/,"/");
         } else {
             window.WebSite.tonyuHome=window.WebSite.cwd+"fs/Tonyu/";
         }
         window.WebSite.logdir="/var/log/Tonyu/";
+        window.WebSite.kernelDir=window.WebSite.cwd+"www/Kernel/";
     }
-    window.WebSite.kernelDir=window.WebSite.cwd+"www/Kernel/";
     window.WebSite.compiledKernel=window.WebSite.top+"/Kernel/js/concat.js"
     return window.WebSite;
 });

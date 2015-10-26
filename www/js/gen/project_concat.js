@@ -1,4 +1,4 @@
-// Created at Mon Oct 26 2015 14:22:58 GMT+0900 (東京 (標準時))
+// Created at Mon Oct 26 2015 14:26:31 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -176,16 +176,16 @@ define([], function () {
         getFiles:WebSite.serverTop+"/File2LSSync",
         putFiles:WebSite.serverTop+"/LS2FileSync"
     };
-    window.WebSite.cwd=process.cwd().replace(/\\/g,"/").replace(/\/?$/,"/");
     if (window.WebSite.isNW) {
+        window.WebSite.cwd=process.cwd().replace(/\\/g,"/").replace(/\/?$/,"/");
         if (process.env.TONYU_HOME) {
             window.WebSite.tonyuHome=process.env.TONYU_HOME.replace(/\\/g,"/").replace(/\/?$/,"/");
         } else {
             window.WebSite.tonyuHome=window.WebSite.cwd+"fs/Tonyu/";
         }
         window.WebSite.logdir="/var/log/Tonyu/";
+        window.WebSite.kernelDir=window.WebSite.cwd+"www/Kernel/";
     }
-    window.WebSite.kernelDir=window.WebSite.cwd+"www/Kernel/";
     window.WebSite.compiledKernel=window.WebSite.top+"/Kernel/js/concat.js"
     return window.WebSite;
 });
@@ -3075,7 +3075,7 @@ return Tonyu=function () {
             globals:globals, classes:classes, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
             timeout:timeout,asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
-            VERSION:1445836973465,//EMBED_VERSION
+            VERSION:1445837186483,//EMBED_VERSION
             A:A};
 }();
 });
@@ -12251,9 +12251,12 @@ $(function () {
     }
     var home=FS.get(WebSite.tonyuHome);
     //if (!Tonyu.ide)  Tonyu.ide={};
-    var kernelDir=FS.get(WebSite.kernelDir);//home.rel("Kernel/");
-    if (kernelDir.exists()) {
-        TPRC(kernelDir).loadClasses();
+    var kernelDir;
+    if (WebSite.kernelDir){
+        kernelDir=FS.get(WebSite.kernelDir);//home.rel("Kernel/");
+        if (kernelDir.exists()) {
+            TPRC(kernelDir).loadClasses();
+        }
     }
     var dir=Util.getQueryString("dir", "/Tonyu/Projects/SandBox/");
     var curProjectDir=FS.get(dir);

@@ -27,9 +27,12 @@ $(function () {
     }
     var home=FS.get(WebSite.tonyuHome);
     //if (!Tonyu.ide)  Tonyu.ide={};
-    var kernelDir=FS.get(WebSite.kernelDir);//home.rel("Kernel/");
-    if (kernelDir.exists()) {
-        TPRC(kernelDir).loadClasses();
+    var kernelDir;
+    if (WebSite.kernelDir){
+        kernelDir=FS.get(WebSite.kernelDir);//home.rel("Kernel/");
+        if (kernelDir.exists()) {
+            TPRC(kernelDir).loadClasses();
+        }
     }
     var dir=Util.getQueryString("dir", "/Tonyu/Projects/SandBox/");
     var curProjectDir=FS.get(dir);

@@ -1,4 +1,4 @@
-// Created at Mon Oct 26 2015 14:22:55 GMT+0900 (東京 (標準時))
+// Created at Mon Oct 26 2015 14:26:28 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -176,16 +176,16 @@ define([], function () {
         getFiles:WebSite.serverTop+"/File2LSSync",
         putFiles:WebSite.serverTop+"/LS2FileSync"
     };
-    window.WebSite.cwd=process.cwd().replace(/\\/g,"/").replace(/\/?$/,"/");
     if (window.WebSite.isNW) {
+        window.WebSite.cwd=process.cwd().replace(/\\/g,"/").replace(/\/?$/,"/");
         if (process.env.TONYU_HOME) {
             window.WebSite.tonyuHome=process.env.TONYU_HOME.replace(/\\/g,"/").replace(/\/?$/,"/");
         } else {
             window.WebSite.tonyuHome=window.WebSite.cwd+"fs/Tonyu/";
         }
         window.WebSite.logdir="/var/log/Tonyu/";
+        window.WebSite.kernelDir=window.WebSite.cwd+"www/Kernel/";
     }
-    window.WebSite.kernelDir=window.WebSite.cwd+"www/Kernel/";
     window.WebSite.compiledKernel=window.WebSite.top+"/Kernel/js/concat.js"
     return window.WebSite;
 });
