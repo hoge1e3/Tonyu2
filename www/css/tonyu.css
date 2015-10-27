@@ -79,8 +79,24 @@ h2 {
 	font-size: 18px;
 }
 #wikiViewArea {
-	overflow-y: scroll;
-	overflow-x: auto;
+    overflow-y: none;
+    overflow-x: none;
+	/*overflow-y: scroll;*/
+	/*overflow-x: auto;*/
+}
+div.wikiDialog {
+	margin: 0px;
+	padding: 0px;
+	overflow-y: none;
+    overflow-x: none;
+}
+iframe.wikiDialog {
+    margin: 0px;
+    padding: 0px;
+	height: 95% !important;
+    width: 100% !important;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
 }
 .col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4,
 .col-xs-5,.col-xs-6,.col-xs-7,.col-xs-8,

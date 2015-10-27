@@ -206,6 +206,7 @@ var reqConf={
             "compiledProject":"lang/compiledProject",
             "DeferredUtil":"lib/DeferredUtil",
             "NWMenu":"ide/NWMenu",
+            "IFrameDialog":"help/IFrameDialog",
 
             "foo":"bar"
         },

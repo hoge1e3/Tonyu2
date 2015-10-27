@@ -1,15 +1,15 @@
 requirejs(["Util", "Tonyu", "FS", "FileList", "FileMenu",
            "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project",
-           "copySample","Shell","Shell2","ProjectOptionsEditor","copyToKernel","KeyEventChecker",
-           "WikiDialog","runtime", "KernelDiffDialog","Sync","searchDialog","StackTrace","syncWithKernel",
+           /*"copySample",*/"Shell","Shell2","ProjectOptionsEditor","copyToKernel","KeyEventChecker",
+           "IFrameDialog",/*"WikiDialog",*/"runtime", "KernelDiffDialog","Sync","searchDialog","StackTrace","syncWithKernel",
            "UI","ResEditor","WebSite","exceptionCatcher","Tonyu.TraceTbl",
            "SoundDiag","Log","MainClassDialog","DeferredUtil","NWMenu",
            "ProjectCompiler","compiledProject"
           ],
 function (Util, Tonyu, FS, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,
-          copySample,sh,sh2, ProjectOptionsEditor, ctk, KeyEventChecker,
-          WikiDialog, rt , KDD,Sync,searchDialog,StackTrace,swk,
+          /*copySample,*/sh,sh2, ProjectOptionsEditor, ctk, KeyEventChecker,
+          IFrameDialog,/*WikiDialog,*/ rt , KDD,Sync,searchDialog,StackTrace,swk,
           UI,ResEditor,WebSite,EC,TTB,
           sd,Log,MainClassDialog,DU,NWMenu,
           TPRC,CPPRJ
@@ -17,7 +17,7 @@ function (Util, Tonyu, FS, FileList, FileMenu,
 $(function () {
     var F=EC.f;
     $LASTPOS=0;
-    copySample();
+    //copySample();
     var mobile=WebSite.mobile || FS.get(WebSite.tonyuHome).rel("mobile.txt").exists();
     if (mobile) {
         $("#fileViewer").hide();
@@ -499,7 +499,7 @@ $(function () {
         var d=curProjectDir.rel(".desktop");
         d.obj(desktopEnv);
     }
-    $("#restore").click(F(restore));
+    /*$("#restore").click(F(restore));
     function restore() {
         var n=curProjectDir.name();
         if (!copySample.available(curProjectDir)) {
@@ -510,7 +510,7 @@ $(function () {
             copySample(n);
             ls();
         }
-    }
+    }*/
     $("#imgResEditor").click(F(function () {
         //ImgResEdit(curPrj);
         ResEditor(curPrj,"image");
@@ -523,7 +523,8 @@ $(function () {
     }));
     var helpd=null;
     $("#refHelp").click(F(function () {
-    	if (!helpd) helpd=WikiDialog.create(home.rel("doc/tonyu2/"));
+    	//if (!helpd) helpd=WikiDialog.create(home.rel("doc/tonyu2/"));
+        if (!helpd) helpd=IFrameDialog.create(WebSite.top+"/doc/index.html");
     	helpd.show();
     }));
     if (typeof progBar=="object") {progBar.clear();}

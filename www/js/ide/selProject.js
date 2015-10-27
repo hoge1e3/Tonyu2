@@ -1,10 +1,10 @@
 requirejs(["FS","Wiki","Shell","Shell2",
-           "copySample","NewProjectDialog","UI","Sync","Auth","zip","requestFragment","WebSite"],
+           /*"copySample",*/"NewProjectDialog","UI","Sync","Auth","zip","requestFragment","WebSite"],
   function (FS, Wiki,   sh,sh2,
-            copySample,  NPD,           UI, Sync, Auth,zip,requestFragment,WebSite) {
+            /*copySample,  */NPD,           UI, Sync, Auth,zip,requestFragment,WebSite) {
 $(function () {
 
-    copySample();
+    //copySample();
     var home=FS.get(WebSite.tonyuHome);
     var projects=home.rel("Projects/");
     sh.cd(projects);
@@ -53,7 +53,7 @@ $(function () {
             $(".while-logged-in").hide();
         }
     });
-    var w=Wiki($("#wikiViewArea"), home.rel("doc/"));
+    /*var w=Wiki($("#wikiViewArea"), home.rel("doc/"));
     var syncDoc=false;
     if (WebSite.devMode) {
         Sync.sync(home,{v:1});
@@ -66,7 +66,11 @@ $(function () {
             }
         }});
     }
-    if (!syncDoc) w.show("index");
+    if (!syncDoc) w.show("index");*/
+    var help=$("<iframe>").attr("src",WebSite.top+"/doc/index.html");
+    help.height($(window).height()-$("#navBar").height());
+    $("#wikiViewArea").append(help);
+
 
 
     $("#newPrj").click(function (){

@@ -25,6 +25,8 @@ requirejs(["Shell","Wiki","FS","requestFragment","WebSite"], function (sh,Wiki,F
             src+='</head><body>';
             src+="<link rel='stylesheet' href='"+webtop+"css/bootstrap.css'/>\n";
             src+="<link rel='stylesheet' href='"+webtop+"css/tonyu.css'/>\n";
+            src+="<script src='"+webtop+"js/lib/jquery-1.10.1.js'/></script>\n";
+            src+="<script src='"+webtop+"js/ide/NWMenu.js'/></script>\n";
             src+="<style>"+
             "body{padding-top:20px; margin-left: 20px; margin-right:20px; font-family:\"MS UI Gothic\",sans-serif;}"+
             "</style>\n";
