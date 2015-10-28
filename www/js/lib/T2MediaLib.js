@@ -211,6 +211,9 @@ var T2MediaLib = {
             T2MediaLib.seDataAry.data[idx] = -1;
             return null;
         }
+        if (typeof WebSite=="object" && WebSite.mp3Disabled) {
+            url=url.replace(/\.mp3$/,".ogg");
+        }
         var xhr = new XMLHttpRequest();
         xhr.onload = function() {
             if (xhr.status === 200 || xhr.status=== 0 /*@hoge1e3 for node-webkit base64url */) {
@@ -229,9 +232,9 @@ var T2MediaLib = {
                     };
                     var errorCallback = function(error) {
                         if (error instanceof Error) {
-                            console.log('T2MediaLib: '+error.message);
+                            console.log('T2MediaLib: '+error.message,url);
                         } else {
-                            console.log('T2MediaLib: Error decodeAudioData()');
+                            console.log('T2MediaLib: Error decodeAudioData()',url);
                         }
                         T2MediaLib.seDataAry.data[idx] = -4;
                         if (callbacks && callbacks.err) callbacks.err(idx,T2MediaLib.seDataAry.data[idx]);//@hoge1e3

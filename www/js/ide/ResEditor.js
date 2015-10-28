@@ -185,9 +185,11 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                 if (!u) return;
                 var rtf=[];
                 items.forEach(function (item) {
-                    var a;
+                    var a,ogg;
                     if (a=Blob.isBlobURL(item.url)) {
                         rtf.push(a.fileName);
+                        ogg=a.fileName.replace(/\.mp3$/,".ogg");
+                        if (ogg!=a.fileName) rtf.push(ogg);
                     }
                 });
                 var data={
@@ -210,7 +212,8 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
             rsrc=prj.getResource();
             items.forEach(function (item){
                 delete cleanFile[item.url];
-            })
+                delete cleanFile[item.url.replace(/\.mp3$/,".ogg")];
+            });
             console.log(cleanFile);
             for (var ci in cleanFile) {
                 var cf=cleanFile[ci];
