@@ -1,24 +1,24 @@
-define(["genROM","dumpScript","Util","FS","Sync","Shell","WebSite"],
-        function (genROM,dumpScript,Util,FS,Sync,sh,WebSite) {
+define(["genROM","Util","FS","Sync","Shell","WebSite"],
+        function (genROM,Util,FS,Sync,sh,WebSite) {
     var build=Util.getQueryString("build",0);
     if (build) {
         $(doBuild);
     }
-    sh.build=WebSite.isNW?doBuildNW:doBuild;
+    sh.build=WebSite.isNW?doBuildNW:function(){throw"NOT support";};
     sh.build.description="Build files before commit.";
     function doBuildNW() {
         var home=FS.get(WebSite.tonyuHome);
         var genHome=FS.get("www/");
         embedVersion(genHome.rel("js/runtime/TonyuLib.js"));
-        genROM(home.rel("Kernel/"),     genHome.rel("js/gen/ROM_k.js"));
-        genROM(home.rel("doc/"),        genHome.rel("js/gen/ROM_d.js"));
-        genROM(home.rel("SampleROM/"),  genHome.rel("js/gen/ROM_s.js"));
+        //genROM(home.rel("Kernel/"),     genHome.rel("js/gen/ROM_k.js"));
+        //genROM(home.rel("doc/"),        genHome.rel("js/gen/ROM_d.js"));
+        //genROM(home.rel("SampleROM/"),  genHome.rel("js/gen/ROM_s.js"));
         var ds=require("dumpScript");
         var reqConf=ds.genShim();
         window.generatedShim=reqConf;
-        ds.concat({names:["fs/ROMk","fs/ROMd","fs/ROMs","ide/selProject"], outFile:"index",reqConf:reqConf});
-        ds.concat({names: ["fs/ROMk","fs/ROMd","fs/ROMs","ide/editor"], outFile:"project",reqConf:reqConf});
-        ds.concat({names: ["fs/ROMk","runScript"], outFile:"runScript",reqConf:reqConf});
+        ds.concat({names:[/*"fs/ROMk","fs/ROMd","fs/ROMs",*/"ide/selProject"], outFile:"index",reqConf:reqConf});
+        ds.concat({names: [/*"fs/ROMk","fs/ROMd","fs/ROMs",*/"ide/editor"], outFile:"project",reqConf:reqConf});
+        ds.concat({names: [/*"fs/ROMk",*/"runScript"], outFile:"runScript",reqConf:reqConf});
         sh.echo("To compile documents, type:");
         sh.echo("wiki2serv ../doc/ ../../../www/doc/");
     }
@@ -28,7 +28,7 @@ define(["genROM","dumpScript","Util","FS","Sync","Shell","WebSite"],
         });
         f.text(r);
     }
-    function doBuild() {
+    /*function doBuild() {
         var home=FS.get(WebSite.tonyuHome);
         genROM(home.rel("Kernel/"),     home.rel("js/gen/ROM_k.js"));
         genROM(home.rel("doc/"),        home.rel("js/gen/ROM_d.js"));
@@ -47,8 +47,8 @@ define(["genROM","dumpScript","Util","FS","Sync","Shell","WebSite"],
             });
         });
         return sh.ASYNC;
-    }
-    function concat(params ,onend) {
+    }*/
+    /*function concat(params ,onend) {
         console.log("uploading",params);
         $.ajax({
             type:"GET",
@@ -78,5 +78,5 @@ define(["genROM","dumpScript","Util","FS","Sync","Shell","WebSite"],
     }
 	function urlMatch(reg) {
 		return document.location.href.match(reg);
-	}
+	}*/
 });

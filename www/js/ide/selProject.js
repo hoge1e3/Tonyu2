@@ -7,6 +7,7 @@ $(function () {
     //copySample();
     var home=FS.get(WebSite.tonyuHome);
     var projects=home.rel("Projects/");
+    if (!projects.exists()) projects.mkdir();
     sh.cd(projects);
     var curDir=projects;
     function ls() {

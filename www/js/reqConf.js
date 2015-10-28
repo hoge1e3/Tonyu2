@@ -108,7 +108,7 @@ var reqConf={
             ImageResEditor: "ide/ImageResEditor",
             ResEditor: "ide/ResEditor",
             reqConf: "reqConf",
-            dumpScript: "build/dumpScript",
+            //dumpScript: "build/dumpScript",
             buildAll: "build/buildAll",
             runScript: "runtime/runScript",
             copySample: "ide/copySample",
