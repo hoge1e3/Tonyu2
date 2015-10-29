@@ -1,6 +1,7 @@
 define(["FS","WebSite"], function (FS,WebSite) {
     var C={};
-    var spawn=require("child_process").spawn;
+    var spawn;//=require("child_process").spawn;
+    if (WebSite.isNW) {spawn=require("child_process").spawn;}
     C.convert=function (dir) {
         if (!WebSite.isNW) return;
         var ffmpeg=FS.get(WebSite.ffmpeg);
