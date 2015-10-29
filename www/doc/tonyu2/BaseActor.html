@@ -3,6 +3,8 @@
 <title>BaseActor</title>
 </head><body><link rel='stylesheet' href='../../css/bootstrap.css'/>
 <link rel='stylesheet' href='../../css/tonyu.css'/>
+<script src='../../js/lib/jquery-1.10.1.js'/></script>
+<script src='../../js/ide/NWMenu.js'/></script>
 <style>body{padding-top:20px; margin-left: 20px; margin-right:20px; font-family:"MS UI Gothic",sans-serif;}</style>
 <button onclick='javascript:history.back();'>←Back</button><br/>
 <div><a id="line_marker_-0" name="line_marker_-0"></a><a href="api.html">api</a><span>
@@ -15,18 +17,18 @@
 </span><a id="line_marker_-18" name="line_marker_-18"></a><span>// a.x=50  a.y=30 a.power=20  a.hp=50 となる</span><span>
 </span></pre><a id="line_marker_-20" name="line_marker_-20"></a><p></p><h1><a id="line_marker_-21" name="line_marker_-21"></a><span> コンストラクタ(2)</span></h1><a id="line_marker_-22" name="line_marker_-22"></a><p></p><a id="line_marker_-25" name="line_marker_-25"></a><pre><a id="line_marker_-24" name="line_marker_-24"></a><span>\new(x,y,p)</span><span>
 </span></pre><a id="line_marker_-26" name="line_marker_-26"></a><p></p><a id="line_marker_-27" name="line_marker_-27"></a><span>x,y,pの値をフィールドに書き込みます</span><span>
-</span><a id="line_marker_-28" name="line_marker_-28"></a><p></p><h1><a id="line_marker_-29" name="line_marker_-29"></a><span> フィールド</span></h1><a id="line_marker_-30" name="line_marker_-30"></a><p></p><a id="line_marker_-43" name="line_marker_-43"></a><ul><li><a id="line_marker_-31" name="line_marker_-31"></a><span>x : オブジェクトのx座標をあらわします</span><a href="_E5_BA_A7_E6_A8_99_E3_82_92_E6_8C_87_E5_AE_9A_E3_81_97_E3_81_A6_E3_82_AA_E3_83_96_E3_82_B8_E3_82_A7_E3_82_AF_E3_83_88_E3_82_92_E8_A1_A8_E7_A4_BA_E3_81_99_E3_82_8B.html">使用例</a><span>
-</span></li><li><a id="line_marker_-32" name="line_marker_-32"></a><span>y : オブジェクトのy座標をあらわします</span><a href="_E5_BA_A7_E6_A8_99_E3_82_92_E6_8C_87_E5_AE_9A_E3_81_97_E3_81_A6_E3_82_AA_E3_83_96_E3_82_B8_E3_82_A7_E3_82_AF_E3_83_88_E3_82_92_E8_A1_A8_E7_A4_BA_E3_81_99_E3_82_8B.html">使用例</a><span>
-</span></li><li><a id="line_marker_-33" name="line_marker_-33"></a><span>p : 表示する</span><a href="cpats.html">画像の番号</a><span>をあらわします。 </span><a href="_E3_82_AA_E3_83_96_E3_82_B8_E3_82_A7_E3_82_AF_E3_83_88_E3_81_AE_E3_82_B0_E3_83_A9_E3_83_95_E3_82_A3_E3_83_83_E3_82_AF_E3_82_92_E5_A4_89_E3_81_88_E3_82_8B.html">使用例</a><span>
+</span><a id="line_marker_-28" name="line_marker_-28"></a><p></p><h1><a id="line_marker_-29" name="line_marker_-29"></a><span> フィールド</span></h1><a id="line_marker_-30" name="line_marker_-30"></a><p></p><a id="line_marker_-43" name="line_marker_-43"></a><ul><li><a id="line_marker_-31" name="line_marker_-31"></a><span>x : オブジェクトのx座標をあらわします</span><a href="E5BAA7E6A899E38292E68C87E5AE9AE38197E381A6E382AAE38396E382B8E382A7E382AFE38388E38292E8A1A8E7A4BAE38199E3828B.html">使用例</a><span>
+</span></li><li><a id="line_marker_-32" name="line_marker_-32"></a><span>y : オブジェクトのy座標をあらわします</span><a href="E5BAA7E6A899E38292E68C87E5AE9AE38197E381A6E382AAE38396E382B8E382A7E382AFE38388E38292E8A1A8E7A4BAE38199E3828B.html">使用例</a><span>
+</span></li><li><a id="line_marker_-33" name="line_marker_-33"></a><span>p : 表示する</span><a href="cpats.html">画像の番号</a><span>をあらわします。 </span><a href="E382AAE38396E382B8E382A7E382AFE38388E381AEE382B0E383A9E38395E382A3E38383E382AFE38292E5A489E38188E3828B.html">使用例</a><span>
 </span></li><li><a id="line_marker_-34" name="line_marker_-34"></a><span>text : textに値がセットされると，文字を表示します（キャラクタパターンは表示されなくなります）</span><span>
 </span></li><a id="line_marker_-38" name="line_marker_-38"></a><ul><li><a id="line_marker_-35" name="line_marker_-35"></a><span>size : 文字の大きさをあらわします</span><span>
 </span></li><li><a id="line_marker_-36" name="line_marker_-36"></a><span>fillStyle : 文字の色などをあらわします(JavascriptのCanvasにおけるfillStyleと同じ書式です）</span><span>
 </span></li><li><a id="line_marker_-37" name="line_marker_-37"></a><span>align:  "center" "left" "right"のいずれかを指定します．xの値であらわされる横位置がそれぞれ文字の中央，左端，右端になるように表示します．</span><span>
-</span></li></ul><li><span>zOrder : オブジェクト同士が重なった場合、この値が小さい方が手前に表示されます。</span><a href="_E3_82_AA_E3_83_96_E3_82_B8_E3_82_A7_E3_82_AF_E3_83_88_E3_81_AE_E5_A5_A5_E8_A1_8C_E3_81_8D_E3_81_AE_E8_A8_AD_E5_AE_9A.html">使用例</a><span>
-</span></li><li><a id="line_marker_-39" name="line_marker_-39"></a><span>alpha : 表示する画像の透明度を指定します(255-0)。</span><a href="_E3_82_AA_E3_83_96_E3_82_B8_E3_82_A7_E3_82_AF_E3_83_88_E3_81_AE_E5_A4_A7_E3_81_8D_E3_81_95_E3_82_84_E5_82_BE_E3_81_8D_E3_80_81_E9_80_8F_E6_98_8E_E5_BA_A6_E3_82_92_E8_A8_AD_E5_AE_9A_E3_81_99_E3_82_8B.html">使用例</a><span>
-</span></li><li><a id="line_marker_-40" name="line_marker_-40"></a><span>scaleX : オブジェクトの横方向の拡大率を指定します．scaleYが未定義の場合は縦方向にもscaleXの拡大率が適用されます。</span><a href="_E3_82_AA_E3_83_96_E3_82_B8_E3_82_A7_E3_82_AF_E3_83_88_E3_81_AE_E5_A4_A7_E3_81_8D_E3_81_95_E3_82_84_E5_82_BE_E3_81_8D_E3_80_81_E9_80_8F_E6_98_8E_E5_BA_A6_E3_82_92_E8_A8_AD_E5_AE_9A_E3_81_99_E3_82_8B.html">使用例</a><span>
+</span></li></ul><li><span>zOrder : オブジェクト同士が重なった場合、この値が小さい方が手前に表示されます。</span><a href="E382AAE38396E382B8E382A7E382AFE38388E381AEE5A5A5E8A18CE3818DE381AEE8A8ADE5AE9A.html">使用例</a><span>
+</span></li><li><a id="line_marker_-39" name="line_marker_-39"></a><span>alpha : 表示する画像の透明度を指定します(255-0)。</span><a href="E382AAE38396E382B8E382A7E382AFE38388E381AEE5A4A7E3818DE38195E38284E582BEE3818DE38081E9808FE6988EE5BAA6E38292E8A8ADE5AE9AE38199E3828B.html">使用例</a><span>
+</span></li><li><a id="line_marker_-40" name="line_marker_-40"></a><span>scaleX : オブジェクトの横方向の拡大率を指定します．scaleYが未定義の場合は縦方向にもscaleXの拡大率が適用されます。</span><a href="E382AAE38396E382B8E382A7E382AFE38388E381AEE5A4A7E3818DE38195E38284E582BEE3818DE38081E9808FE6988EE5BAA6E38292E8A8ADE5AE9AE38199E3828B.html">使用例</a><span>
 </span></li><li><a id="line_marker_-41" name="line_marker_-41"></a><span>scaleY : オブジェクトの縦方向の拡大率を指定します</span><span>
-</span></li><li><a id="line_marker_-42" name="line_marker_-42"></a><span>rotation : オブジェクトの回転を指定します．右回りで指定した値の角度回転します。</span><a href="_E3_82_AA_E3_83_96_E3_82_B8_E3_82_A7_E3_82_AF_E3_83_88_E3_81_AE_E5_A4_A7_E3_81_8D_E3_81_95_E3_82_84_E5_82_BE_E3_81_8D_E3_80_81_E9_80_8F_E6_98_8E_E5_BA_A6_E3_82_92_E8_A8_AD_E5_AE_9A_E3_81_99_E3_82_8B.html">使用例</a><span>
+</span></li><li><a id="line_marker_-42" name="line_marker_-42"></a><span>rotation : オブジェクトの回転を指定します．右回りで指定した値の角度回転します。</span><a href="E382AAE38396E382B8E382A7E382AFE38388E381AEE5A4A7E3818DE38195E38284E582BEE3818DE38081E9808FE6988EE5BAA6E38292E8A8ADE5AE9AE38199E3828B.html">使用例</a><span>
 </span></li></ul><p></p><a id="line_marker_-44" name="line_marker_-44"></a><p></p><h1><a id="line_marker_-45" name="line_marker_-45"></a><span> メソッド</span></h1><a id="line_marker_-46" name="line_marker_-46"></a><p></p><a id="line_marker_-47" name="line_marker_-47"></a><span>入力</span><span>
 </span><a id="line_marker_-49" name="line_marker_-49"></a><ul><li><a id="line_marker_-48" name="line_marker_-48"></a><a href="getkey.html">getkey</a><span>
 </span></li></ul><span>動作制御</span><span>

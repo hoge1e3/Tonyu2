@@ -361,6 +361,12 @@ var TPRC=function (dir) {
     };
     return TPR;
 }
+if (typeof sh=="object") {
+    sh.tonyuc=function (dir) {
+        var pr=TPRC(sh.resolve(dir));
+        return pr.compile();
+    };
+}
 return TPRC;
 });
 

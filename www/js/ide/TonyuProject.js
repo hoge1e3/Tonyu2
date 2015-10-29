@@ -1,19 +1,25 @@
 define(["Tonyu", "ProjectCompiler", "TError", "FS", "Tonyu.TraceTbl","ImageList","StackTrace",
         "typeCheck","Blob","thumbnail","WebSite","plugins", "Tonyu.Compiler.Semantics", "Tonyu.Compiler.JSGenerator",
-        "DeferredUtil"],
+        "DeferredUtil","compiledProject"],
         function (Tonyu, ProjectCompiler, TError, FS, Tonyu_TraceTbl, ImageList,StackTrace,
-                tc,Blob,thumbnail,WebSite,plugins, Semantics, JSGenerator,DU) {
+                tc,Blob,thumbnail,WebSite,plugins, Semantics, JSGenerator,
+                DU,CPRJ) {
 return Tonyu.Project=function (dir, kernelDir) {
     var TPR=ProjectCompiler(dir);
-    var kernelProject=ProjectCompiler(kernelDir);
     var _super=Tonyu.extend({},TPR);
     var home=FS.get(WebSite.tonyuHome);
-    if (!kernelDir) kernelDir=home.rel("Kernel/");
-    var traceTbl=Tonyu.TraceTbl;//();
-    var env={classes:{}, traceTbl:traceTbl, options:{compiler:{}} };
     TPR.EXT=".tonyu";
     TPR.NSP_KER="kernel";
     TPR.NSP_USR="user";
+    var kernelProject;
+    if (!kernelDir) {
+        kernelProject=CPRJ(TPR.NSP_KER, WebSite.compiledKernel);
+        //kernelDir=home.rel("Kernel/");
+    } else {
+        kernelProject=ProjectCompiler(kernelDir);
+    }
+    var traceTbl=Tonyu.TraceTbl;//();
+    var env={classes:{}, traceTbl:traceTbl, options:{compiler:{}} };
     function orderByInheritance(classes) {/*ENVC*/
         var added={};
         var res=[];
@@ -66,6 +72,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         }
         return TPR.loadClasses().then(DU.throwF(function () {
             //TPR.compile();
+            TPR.fixBootRunClasses();
             if (!TPR.runScriptMode) thumbnail.set(TPR, 2000);
             TPR.rawBoot(bootClassName);
         }));
@@ -169,8 +176,6 @@ return Tonyu.Project=function (dir, kernelDir) {
     TPR.fixOptions=function (opt) {
         if (!opt.compiler) opt.compiler={};
         opt.compiler.commentLastPos=TPR.runScriptMode || StackTrace.isAvailable();
-        opt.run.mainClass=TPR.fixClassName(opt.run.mainClass);
-        opt.run.bootClass=TPR.fixClassName(opt.run.bootClass);
         if (!opt.plugins) {
             opt.plugins={};
             dir.each(function (f) {
@@ -193,18 +198,33 @@ return Tonyu.Project=function (dir, kernelDir) {
         var opt=TPR.getOptions();
         plugins.loadAll(opt.plugins,onload);
     };
+    TPR.fixBootRunClasses=function () {
+        var opt=TPR.getOptions();
+        if (opt.run) {
+            var mc=TPR.fixClassName(opt.run.mainClass);
+            var bc=TPR.fixClassName(opt.run.bootClass);
+            if (mc!=opt.run.mainClass  ||  bc!=opt.run.bootClass) {
+                opt.run.mainClass=mc;
+                opt.run.bootClass=bc;
+                TPR.setOptions(opt);
+            }
+        }
+    };
     TPR.fixClassName=function (cn) {
-        if (TPR.classExists(cn)) return cn;
+        //if (TPR.classExists(cn)) return cn;
+        if (Tonyu.getClass(cn)) return cn;
         var cna=cn.split(".");
         var sn=cna.pop();
         var res;
         res=TPR.NSP_USR+"."+sn;
-        if (TPR.classExists(res)) return res;
+        if (Tonyu.getClass(res)) return res;
+        //if (TPR.classExists(res)) return res;
         res=TPR.NSP_KER+"."+sn;
-        if (TPR.classExists(res)) return res;
+        if (Tonyu.getClass(res)) return res;
+        //if (TPR.classExists(res)) return res;
         return cn;
     };
-    TPR.classExists=function (fullCn) {
+    /*TPR.classExists=function (fullCn) {
         var cna=fullCn.split(".");
         if (cna.length==1) return false;
         var nsp=cna[0], sn=cna[1] ;
@@ -222,7 +242,7 @@ return Tonyu.Project=function (dir, kernelDir) {
             }
         }
         return false;
-    };
+    };*/
     TPR.getNamespace=function () {//override
         var opt=TPR.getOptions();
         if (opt.compiler && opt.compiler.namespace) return opt.compiler.namespace;
@@ -263,17 +283,19 @@ return Tonyu.Project=function (dir, kernelDir) {
         //thg.run(0);
     };
 
-    TPR.isKernel=function (className) {
+    TPR.srcExists=function (className, dir) {
         var r=null;
-        kernelDir.recursive(function (e) {
+        dir.recursive(function (e) {
             if (e.truncExt(TPR.EXT)===className) {
                 r=e;
             }
         });
         return r;
-        /*var r=kernelDir.rel(className+TPR.EXT);
-        if (r.exists()) return r;
-        return null;*/
+    };
+    TPR.isKernel=function (className) {
+        if (kernelDir) return TPR.srcExists(className, kernelDir);
+        return env.classes[TPR.NSP_KER+"."+className] ||
+            Tonyu.getClass(TPR.NSP_KER+"."+className);
     };
     TPR.isKernelEditable=function () {
     	return env.options.kernelEditable;

@@ -66,7 +66,7 @@ requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS","runtime
                 kernelEditable: false
         };
         var kernelDir=home.rel("Kernel/");
-        var curPrj=Tonyu_Project(curProjectDir, kernelDir);
+        var curPrj=Tonyu_Project(curProjectDir);//, kernelDir);
         /*cv[0].addEventListener('touchstart', mediaIni);
         window.addEventListener('touchstart', mediaIni);
         function mediaIni() {

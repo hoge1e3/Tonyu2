@@ -10,7 +10,13 @@ define(["WebSite","Util","Tonyu"],function (WebSite,Util,Tonyu) {
             var rel=url.substring("ls:".length);
             if (!baseDir) throw new Error("Basedir not specified");
             var f=baseDir.rel(rel);
-            if (!f.exists()) throw "ImageList file not found: "+f;
+            if (!f.exists()) throw new Error("Resource file not found: "+f);
+            if (WebSite.mp3Disabled && rel.match(/\.mp3$/)) {
+                var oggf=baseDir.rel(rel.replace(/\.mp3$/,".ogg"));
+                if (oggf.exists()) {
+                    f=oggf;
+                }
+            }
             url=f.text();
         }
         return url;
