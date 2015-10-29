@@ -542,7 +542,11 @@ return Tonyu=function () {
             timeout:timeout,asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 <<<<<<< HEAD
+<<<<<<< HEAD
             VERSION:1445771483932,//EMBED_VERSION
+=======
+            VERSION:1446089907090,//EMBED_VERSION
+>>>>>>> master
 =======
             VERSION:1446089907090,//EMBED_VERSION
 >>>>>>> master

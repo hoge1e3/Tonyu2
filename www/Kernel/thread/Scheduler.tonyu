@@ -1,0 +1,36 @@
+extends TObject;
+native Tonyu;
+native console;
+cur=[];
+next=[];
+\addObj(obj,name,args) {
+    return newThread(obj, name, args);
+}
+\newThread(obj, name, args, options) { //options:{pOrder, threadGroup}
+    name=name||"main";
+    args=args||[];
+    var th=Tonyu.thread();
+    th.apply(obj,name,args);
+    addToCur(th);
+    return th;
+}
+\addToCur(th) {
+    cur.push(th);
+    th.scheduled=this;
+}
+\addToNext(th) {
+    next.push(th);
+    th.scheduled=this;
+}
+\stepsAll() {
+    for (var t in cur) {
+    	delete t.scheduled;
+        t.steps();
+        if (t.preempted) {
+            //console.log("Preempted: ",t);
+            addToNext(t);
+        }
+    }
+    cur=next;
+    next=[];
+}

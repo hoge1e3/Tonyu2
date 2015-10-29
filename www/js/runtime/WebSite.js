@@ -89,6 +89,7 @@ define([], function () {
         putFiles:WebSite.serverTop+"/LS2FileSync"
     };
 <<<<<<< HEAD
+<<<<<<< HEAD
     if (window.WebSite.isNW) {
         window.WebSite.cwd=process.cwd().replace(/\\/g,"/").replace(/\/$/,"");
 =======
@@ -101,6 +102,14 @@ define([], function () {
 <<<<<<< HEAD
             window.WebSite.tonyuHome=window.WebSite.cwd+"/fs/Tonyu/";
 =======
+            WebSite.tonyuHome=WebSite.cwd+"fs/Tonyu/";
+>>>>>>> master
+=======
+    if (WebSite.isNW) {
+        WebSite.cwd=process.cwd().replace(/\\/g,"/").replace(/\/?$/,"/");
+        if (process.env.TONYU_HOME) {
+            WebSite.tonyuHome=process.env.TONYU_HOME.replace(/\\/g,"/").replace(/\/?$/,"/");
+        } else {
             WebSite.tonyuHome=WebSite.cwd+"fs/Tonyu/";
 >>>>>>> master
         }
