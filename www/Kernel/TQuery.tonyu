@@ -1,0 +1,169 @@
+extends TObject;
+includes MathMod;
+\new () {
+    length=0;
+}
+\tonyuIterator(arity) {
+    var res={};
+    res.i=0;
+    if (arity==1) {
+        res.next=function () {
+            if (res.i>=this.length) return false;
+            res[0]=this[res.i];
+            res.i++;
+            return true;
+        };
+    } else {
+        res.next=function () {
+            if (res.i>=this.length) return false;
+            res[0]=res.i;
+            res[1]=this[res.i];
+            res.i++;
+            return true;
+        };
+    }
+    return res;
+}
+\attr() {
+    var values;
+    if (length==0) return;
+    if (arguments.length==1 && typeof arguments[0]=="string") {
+        return this[0][arguments[0]];
+    }
+    if (arguments.length>=2) {
+        values={};
+        for (var i=0 ; i<arguments.length-1 ;i+=2) {
+            values[arguments[i]]=arguments[i+1];
+        }
+    } else {
+        values=arguments[0];
+    }
+    if (values) {
+        for (var e in this) {
+            e.extend( values);
+        }
+    }
+}
+\genKeyfunc(key) {
+    if (typeof key!="function") {
+        return \(o) {return o[key];};
+    } else {
+        return key;
+    }
+}
+\maxs(key) {
+    var f=genKeyfunc(key);
+    var res,reso=new TQuery;
+    for (var o in this) {
+        var v=f(o);
+        if (res==null || v>=res) {
+            if (v>res) reso=new TQuery;
+            reso.push(o);
+            res=v;
+        }
+    }
+    return reso;
+}
+\mins(key) {
+    var f=genKeyfunc(key);
+    var res,reso=new TQuery;
+    for (var o in this) {
+        var v=f(o);
+        if (res==null || v<=res) {
+            if (v<res) reso=new TQuery;
+            reso.push(o);
+            res=v;
+        }
+    }
+    return reso;
+}
+\minObj(key) {
+    return mins(key)[0];
+}
+\maxObj(key) {
+    return maxs(key)[0];
+}
+\nearests(x,y) {
+    if (typeof x=="object") {y=x.y;x=x.x;}
+    return mins \(o) {
+        return dist(o.x-x,o.y-y);
+    };
+}
+\nearest(x,y) {
+    return nearests(x,y)[0];
+}
+\withins(xo,yd,d) {
+    var x,y;
+    if (typeof xo=="object") {
+        x=xo.x;y=xo.y;d=yd;
+    } else {
+        x=xo;y=yd;
+    }
+    return find \(o) {
+        return dist(o.x-x,o.y-y)<=d;
+    };
+}
+\within(xo,yd,d) {
+    return withins(xo,yd,d).nearest();
+}
+
+\max(key) {
+    var f=genKeyfunc(key);
+    var res;
+    for (var o in this) {
+        var v=f(o);
+        if (res==null || v>res) res=v;
+    }
+    return res;
+}
+\min(key) {
+    var f=genKeyfunc(key);
+    var res;
+    for (var o in this) {
+        var v=f(o);
+        if (res==null || v<res) res=v;
+    }
+    return res;
+}
+\push(e) {
+    this[length]=e;
+    length++;
+}
+\size() {return length;}
+\find(f) {
+    var no=new TQuery;
+    for (var o in this) {
+        if (f(o)) no.push(o);
+    }
+    return no;
+}
+\find1(f) {
+    return find(f)[0];
+} 
+\apply(name, args) {
+    var res;
+    if (!args) args=[];
+    for (var o in this) {
+        var f=o[name];
+        if (typeof f=="function") {
+            res=f.apply(o, args);
+        }
+    }
+    return res;
+}
+// \alive => find \(o) => !o.isDead()  //  (in future)
+\alive() {
+    return find \(o) {
+        return !o.isDead();
+    };
+}
+\die() {
+    var a=alive();
+    if (a.length==0) return false;
+    a.apply("die");
+    return true;
+}
+
+\klass(k) {
+    return find \(o) { return o instanceof k; };
+}

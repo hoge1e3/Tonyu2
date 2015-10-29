@@ -1,0 +1,8 @@
+extends Actor;
+\draw(c) {
+    if (hidden) return;
+    c.font=size+"px 'ＭＳ Ｐゴシック'";
+    
+    super.draw(c);
+    hidden=true;
+}

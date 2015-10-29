@@ -1,0 +1,55 @@
+<html><head><meta charset="utf-8"/>
+<meta http-equiv="Content-type" content="text/html; charset=utf8"/>
+<title>曲の作成</title>
+</head><body><link rel='stylesheet' href='../../css/bootstrap.css'/>
+<link rel='stylesheet' href='../../css/tonyu.css'/>
+<script src='../../js/lib/jquery-1.10.1.js'/></script>
+<script src='../../js/ide/NWMenu.js'/></script>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px; font-family:"MS UI Gothic",sans-serif;}</style>
+<button onclick='javascript:history.back();'>←Back</button><br/>
+<div><a id="line_marker_-0" name="line_marker_-0"></a><a href="E794A8E98094E588A5E383AAE38395E382A1E383ACE383B3E382B9.html">用途別リファレンス</a><span>
+</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><a id="line_marker_-2" name="line_marker_-2"></a><span>別途リンク 　</span><a href="play.html">play</a><span> </span><a href="playSE.html">playSE</a><span>
+</span><a id="line_marker_-3" name="line_marker_-3"></a><p></p><h3><a id="line_marker_-4" name="line_marker_-4"></a><span>曲の作成</span></h3><a id="line_marker_-5" name="line_marker_-5"></a><p></p><a id="line_marker_-6" name="line_marker_-6"></a><span>ここでは音の出し方から曲を完成するまでの流れを説明する。</span><span>
+</span><a id="line_marker_-7" name="line_marker_-7"></a><span>Tonyu system2でのテンポは120なので1分間に4分音符が120回分打てるということになる。</span><span>
+</span><a id="line_marker_-8" name="line_marker_-8"></a><p></p><a id="line_marker_-9" name="line_marker_-9"></a><span>なので</span><span>
+</span><a id="line_marker_-10" name="line_marker_-10"></a><span>60(秒)÷120＝500ms(0.5秒)となる。</span><span>
+</span><a id="line_marker_-11" name="line_marker_-11"></a><p></p><a id="line_marker_-12" name="line_marker_-12"></a><p></p><a id="line_marker_-13" name="line_marker_-13"></a><span>なのでここでは 2秒 = 1小節と考える。</span><span>
+</span><a id="line_marker_-14" name="line_marker_-14"></a><p></p><h2><a id="line_marker_-15" name="line_marker_-15"></a><span>音符の設定</span></h2><a id="line_marker_-17" name="line_marker_-17"></a><ul><li><a id="line_marker_-16" name="line_marker_-16"></a><span>ド=c レ=d ミ=e ファ=f ソ=g ラ=a シ=b</span><span>
+</span></li></ul><p></p><a id="line_marker_-18" name="line_marker_-18"></a><div class="plist">(例)</div><a id="line_marker_-20" name="line_marker_-20"></a><pre><a id="line_marker_-19" name="line_marker_-19"></a><span> play("c"); //ドの音を鳴らす</span><span>
+</span></pre><a id="line_marker_-21" name="line_marker_-21"></a><p></p><a id="line_marker_-23" name="line_marker_-23"></a><ul><li><a id="line_marker_-22" name="line_marker_-22"></a><span>連続で音を鳴らす</span><span>
+</span></li></ul><div class="plist">(例)</div><a id="line_marker_-25" name="line_marker_-25"></a><pre><a id="line_marker_-24" name="line_marker_-24"></a><span>play("cd"); //ド→レと連続鳴らす</span><span>
+</span></pre><a id="line_marker_-26" name="line_marker_-26"></a><p></p><a id="line_marker_-28" name="line_marker_-28"></a><ul><li><a id="line_marker_-27" name="line_marker_-27"></a><span>c○=ドの音を○分音符で鳴らす</span><span>
+</span></li></ul><div class="plist">(例)</div><a id="line_marker_-30" name="line_marker_-30"></a><pre><a id="line_marker_-29" name="line_marker_-29"></a><span>play("c4"); //ドの音を4分音符で鳴らす</span><span>
+</span></pre><a id="line_marker_-31" name="line_marker_-31"></a><p></p><a id="line_marker_-33" name="line_marker_-33"></a><ul><li><a id="line_marker_-32" name="line_marker_-32"></a><span>休符を置く</span><span>
+</span></li></ul><div class="plist">(例)</div><a id="line_marker_-35" name="line_marker_-35"></a><pre><a id="line_marker_-34" name="line_marker_-34"></a><span>play("r1"); //全休符を置く</span><span>
+</span></pre><a id="line_marker_-37" name="line_marker_-37"></a><ul><li><a id="line_marker_-36" name="line_marker_-36"></a><span>l(英字のエル)○=指定がない場合○分音符</span><span>
+</span></li></ul><p></p><a id="line_marker_-38" name="line_marker_-38"></a><div class="plist">(例)</div><a id="line_marker_-40" name="line_marker_-40"></a><pre><a id="line_marker_-39" name="line_marker_-39"></a><span>play("l4 c"); //特に指定がなければ4分音符分の長さのドを鳴らす</span><span>
+</span></pre><a id="line_marker_-41" name="line_marker_-41"></a><span> </span><span>
+</span><a id="line_marker_-44" name="line_marker_-44"></a><ul><li><a id="line_marker_-42" name="line_marker_-42"></a><span> &lt;...1オクターブ上がる</span><span>
+</span></li><li><a id="line_marker_-43" name="line_marker_-43"></a><span> &gt;...1オクターブ下がる</span><span>
+</span></li></ul><div class="plist">(例)</div><a id="line_marker_-46" name="line_marker_-46"></a><pre><a id="line_marker_-45" name="line_marker_-45"></a><span>play("cd&lt;cd"); //&lt;の後が1オクターブ上がる</span><span>
+</span></pre><a id="line_marker_-47" name="line_marker_-47"></a><p></p><a id="line_marker_-49" name="line_marker_-49"></a><ul><li><a id="line_marker_-48" name="line_marker_-48"></a><span>同時に音を鳴らす</span><span>
+</span></li></ul><div class="plist">(例)</div><a id="line_marker_-51" name="line_marker_-51"></a><pre><a id="line_marker_-50" name="line_marker_-50"></a><span> play("a","c") = ラとドを同時に鳴らす</span><span>
+</span></pre><a id="line_marker_-52" name="line_marker_-52"></a><p></p><a id="line_marker_-54" name="line_marker_-54"></a><ul><li><a id="line_marker_-53" name="line_marker_-53"></a><span>半音上げるためには+、半音下げるためには-を音の後に書く</span><span>
+</span></li></ul><div class="plist">(例)</div><a id="line_marker_-56" name="line_marker_-56"></a><pre><a id="line_marker_-55" name="line_marker_-55"></a><span>play("a-","a+"); //ドのフラット、ドのシャープを鳴らす</span><span>
+</span></pre><a id="line_marker_-57" name="line_marker_-57"></a><p></p><a id="line_marker_-61" name="line_marker_-61"></a><ul><li><a id="line_marker_-58" name="line_marker_-58"></a><span>デフォルトのオクターブ（音階）はo4</span><span>
+</span></li><li><a id="line_marker_-59" name="line_marker_-59"></a><span>オクターブとはある音階を基準とした、音の高さの異なる同名の音階までの音程のこと</span><span>
+</span></li><li><a id="line_marker_-60" name="line_marker_-60"></a><span>つまり音階を変えたい場合は次のように設定する</span><span>
+</span></li></ul><p></p><a id="line_marker_-62" name="line_marker_-62"></a><div class="plist">(例)</div><a id="line_marker_-64" name="line_marker_-64"></a><pre><a id="line_marker_-63" name="line_marker_-63"></a><span>play("o3cdef"); //1オクターブ(音階)下げてドレミファと鳴らす</span><span>
+</span></pre><a id="line_marker_-65" name="line_marker_-65"></a><p></p><a id="line_marker_-66" name="line_marker_-66"></a><p></p><a id="line_marker_-68" name="line_marker_-68"></a><ul><li><a id="line_marker_-67" name="line_marker_-67"></a><span>効果音を作る。</span><span>
+</span></li></ul><div class="plist">(例)</div><a id="line_marker_-71" name="line_marker_-71"></a><pre><a id="line_marker_-69" name="line_marker_-69"></a><span>playSE("l40o5&lt;ccccccccccccccr2cccccccccccccc");   //着信音</span><span>
+</span><a id="line_marker_-70" name="line_marker_-70"></a><span>playSE("o5l28e&lt;c");// 決定音</span><span>
+</span></pre><a id="line_marker_-74" name="line_marker_-74"></a><ul><li><a id="line_marker_-72" name="line_marker_-72"></a><span>作った効果音をplayの後にSEとつける。</span><span>
+</span></li><li><a id="line_marker_-73" name="line_marker_-73"></a><span>任意の場所に効果音をつけることができる。</span><span>
+</span></li></ul><span>前へ 曲の作成 次へ 画像の挿入</span><span>
+</span><a id="line_marker_-75" name="line_marker_-75"></a><p></p><h2><a id="line_marker_-76" name="line_marker_-76"></a><span>プログラム文</span></h2><a id="line_marker_-77" name="line_marker_-77"></a><span>(例：キラキラ星)                                    </span><span>
+</span><a id="line_marker_-78" name="line_marker_-78"></a><p></p><a id="line_marker_-79" name="line_marker_-79"></a><span>別にStarクラス(自作した曲のクラス)を作成し、Mainクラスから呼び出せるようにする。</span><span>
+</span><a id="line_marker_-80" name="line_marker_-80"></a><div class="plist">Star</div><a id="line_marker_-85" name="line_marker_-85"></a><pre><a id="line_marker_-81" name="line_marker_-81"></a><span>play("r1");</span><span>
+</span><a id="line_marker_-82" name="line_marker_-82"></a><span>play("l4 ccggaag2ffeeddc2","l4 eeeeffe2ddcc&gt;ab&lt;g2","r1r1r1r2/1e2");</span><span>
+</span><a id="line_marker_-83" name="line_marker_-83"></a><span>play("l4 ggffeed2ggffeed2","l4 eeddcc&gt;b2 &lt;l4eeddcc&gt;b2");</span><span>
+</span><a id="line_marker_-84" name="line_marker_-84"></a><span>play("l4 ccggaag2ffeeddc2","l4 r1a8b8&lt;c8&gt;a8g2r8/1f8g8f8r8/1e8g8e8r8/1d8g8d8c2");</span><span>
+</span></pre><a id="line_marker_-86" name="line_marker_-86"></a><p></p><a id="line_marker_-87" name="line_marker_-87"></a><div class="plist">Main</div><a id="line_marker_-89" name="line_marker_-89"></a><pre><a id="line_marker_-88" name="line_marker_-88"></a><span>$c=new Star;</span><span>
+</span></pre><a id="line_marker_-91" name="line_marker_-91"></a><ul><li><a id="line_marker_-90" name="line_marker_-90"></a><span>MainでStarクラスを呼び出す。</span><span>
+</span></li></ul><p></p><a id="line_marker_-92" name="line_marker_-92"></a><span>次へ　</span><a href="E794BBE5838FE381AEE68CBFE585A5.html">画像の挿入</a><span>
+</span></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
+</body></html>

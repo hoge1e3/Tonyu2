@@ -1,0 +1,41 @@
+extends Actor;
+native Math;
+
+\new (opt) {
+    //opt{ canvas:$("canvas")  }
+    extend(opt);
+    cw=canvas.width();
+    ch=canvas.height();
+    $Sprites=new Sprites;
+    $Screen=gameScreen=new GameScreen{width:465, height:465, sprites:$Sprites};
+    $FrontSprites=sprites=new Sprites;
+    sprites.add(gameScreen);
+    cctx=canvas[0].getContext("2d");    
+}
+\shouldDraw1x1(srcw,srch,dstw,dsth) {
+    // srcw=465 -> dstw=460...665
+    var larger=200;
+    var smaller=5;
+    return srcw-smaller<=dstw && dstw<=srcw+larger &&
+    srch-smaller<=dsth && dsth<=srch+larger;
+}
+\layout() {
+    cw=canvas.width();
+    ch=canvas.height();
+    var width=gameScreen.width;
+    var height=gameScreen.height;
+    var calcw=ch/height*width; // calch=ch
+    var calch=cw/width*height; // calcw=cw
+    if (calch>ch) calch=ch;
+    if (calcw>cw) calcw=cw;
+    if (shouldDraw1x1(width,height,calcw,calch)) {
+        calcw=width;calch=height;
+    }
+    var marginw=Math.floor((cw-calcw)/2);
+    var marginh=Math.floor((ch-calch)/2);
+    gameScreen.setBounds{left:marginw,top:marginh, width: calcw, height:calch};
+}
+\draw() {
+    layout();
+    sprites.draw(canvas[0]);
+}

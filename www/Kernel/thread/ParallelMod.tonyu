@@ -1,0 +1,14 @@
+extends BaseActor;
+native Tonyu;
+
+nowait \parallel() {
+     var args=[];
+     for (var i=1; i<arguments.length; i++) {
+         args.push(arguments[i]);
+     }
+     var name=arguments[0];
+     var th;
+     th=$Boot.schedule(this,name,args);
+     return th;
+}
+

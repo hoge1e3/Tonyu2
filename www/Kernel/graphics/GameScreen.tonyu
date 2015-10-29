@@ -1,0 +1,56 @@
+extends Actor;
+native $;
+native Math;
+
+// buf: logical
+\new (opt) {
+    // opt:{width,height,sprites}
+    extend(opt);
+    resize(width, height);
+    this.bgColor="rgb(20,80,180)";
+    isDrawGrid=$Sprites.isDrawGrid;
+}
+\resize(width,height) {
+    this.width=width;
+    this.height=height;
+    buf=$("<canvas>").attr{width,height};
+    ctx=buf[0].getContext("2d");  
+    fireEvent("resize", width, height);
+    /*$screenWidth=width;
+    $screenHeight=height;
+    if($panel){
+        $panel.setPanel($screenWidth,$screenHeight);
+    }*/
+}
+\setBounds(b) { //left,top,width,height in game console
+    bounds=b;
+}
+\draw(cctx) {
+    var b=bounds;
+    fillCanvas();
+    sprites.draw(buf[0]);
+    cctx.drawImage(buf[0],
+    0,0,width, height, 
+    b.left, b.top, b.width, b.height);
+}
+\canvas2buf(point) {// canvas=gameConsole
+    var b=bounds;
+    if (!b) return point;
+    return {x: (point.x-b.left)/b.width*width, 
+    y: (point.y-b.top)/b.height*height};
+}
+\setBGColor(c){
+    this.bgColor=c;
+}
+\fillCanvas(){
+    var ctx=buf[0].getContext("2d");
+    ctx.save();
+    ctx.fillStyle=bgColor;
+    ctx.fillRect(0,0,width,height);
+    //if (isDrawGrid) drawGrid(cv);
+    ctx.restore();
+}
+\scrollTo(scrollX,scrollY){
+    sprites.scrollTo(scrollX,scrollY);
+}
+

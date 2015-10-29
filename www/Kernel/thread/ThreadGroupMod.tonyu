@@ -1,0 +1,22 @@
+extends null;
+
+\addThread(t) {
+    threads=threads||[];
+    threads.push(t);
+}
+\addThreadGroup(tg) {
+    threadGroups=threadGroups||[];
+    threadGroups.push(tg);
+}
+\killThreadGroup() {
+    if (threads) {
+        for (var thread in threads) {
+            thread.kill();
+        }
+    }
+    if (threadGroups) {
+        for (var threadGroup in threadGroups) {
+            threadGroup.killThreadGroup();
+        }
+    }
+}

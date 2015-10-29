@@ -1,0 +1,103 @@
+extends Actor;
+\new(opt) {
+    super(opt);
+    padImageP = $pat_inputPad;
+    jujiKey = new Actor{x:96+1, y:$screenHeight-96-1, p:padImageP+0,zOrder:-9,layer:$FrontSprites};
+    no1Key = new Actor{x:$screenWidth-96, y:$screenHeight-96, p:padImageP+1,zOrder:-9,layer:$FrontSprites};
+    jujiKey.show();
+    no1Key.show();
+    
+    jujiKeyPushU = new Actor{x:jujiKey.x, y:jujiKey.y-60, p:padImageP+2, zOrder:-10,layer:$FrontSprites};
+    jujiKeyPushL = new Actor{x:jujiKey.x-60, y:jujiKey.y, p:padImageP+2, zOrder:-10,layer:$FrontSprites};
+    jujiKeyPushR = new Actor{x:jujiKey.x+60, y:jujiKey.y, p:padImageP+2, zOrder:-10,layer:$FrontSprites};
+    jujiKeyPushD = new Actor{x:jujiKey.x, y:jujiKey.y+60, p:padImageP+2, zOrder:-10,layer:$FrontSprites};
+    jujiKeyPush1 = new Actor{x:no1Key.x, y:no1Key.y, p:padImageP+2, scaleX:2, zOrder:-10,layer:$FrontSprites};
+    jujiKeyPushU.hide();
+    jujiKeyPushL.hide();
+    jujiKeyPushR.hide();
+    jujiKeyPushD.hide();
+    jujiKeyPush1.hide();
+}
+\die(){
+    jujiKey.die();
+    no1Key.die();
+    jujiKeyPushU.die();
+    jujiKeyPushL.die();
+    jujiKeyPushR.die();
+    jujiKeyPushD.die();
+    jujiKeyPush1.die();
+    super.die();
+}
+APAD_DIAG_SIZE = 96;
+\padUpdate() {
+    // 操作 //
+    keyPushL = 0;
+    keyPushR = 0;
+    keyPushU = 0;
+    keyPushD = 0;
+    keyPush1 = 0;
+    
+    padKeyNotapCnt ++;
+    for (var i=0; i<5; i++) { // タップ判定・マウス判定 //
+        var t = $touches[i];
+        if (t.touched) {
+            if (isOnRectWH(t.x, t.y, jujiKey.x-32-APAD_DIAG_SIZE/2, jujiKey.y-32-64, 64+APAD_DIAG_SIZE, 64)) keyPushU = 1;
+            if (isOnRectWH(t.x, t.y, jujiKey.x-32-APAD_DIAG_SIZE/2, jujiKey.y-32+64, 64+APAD_DIAG_SIZE, 64)) keyPushD = 1;
+            if (isOnRectWH(t.x, t.y, jujiKey.x-32-64, jujiKey.y-32-APAD_DIAG_SIZE/2, 64, 64+APAD_DIAG_SIZE)) keyPushL = 1;
+            if (isOnRectWH(t.x, t.y, jujiKey.x-32+64, jujiKey.y-32-APAD_DIAG_SIZE/2, 64, 64+APAD_DIAG_SIZE)) keyPushR = 1;
+            if (isOnRectWH(t.x, t.y, no1Key.x-64, no1Key.y-64, 128, 128)) keyPush1 = 1;
+            padKeySW = 1;
+            padKeyNotapCnt = 0;
+        }
+    }
+    
+    // カウントアップ
+    if (keyPushL) keyCntL ++; else keyCntL = 0;
+    if (keyPushR) keyCntR ++; else keyCntR = 0;
+    if (keyPushU) keyCntU ++; else keyCntU = 0;
+    if (keyPushD) keyCntD ++; else keyCntD = 0;
+    if (keyPush1) keyCnt1 ++; else keyCnt1 = 0;
+    
+    // 表示
+    if (keyPushL) jujiKeyPushL.show(); else jujiKeyPushL.hide();
+    if (keyPushR) jujiKeyPushR.show(); else jujiKeyPushR.hide();
+    if (keyPushU) jujiKeyPushU.show(); else jujiKeyPushU.hide();
+    if (keyPushD) jujiKeyPushD.show(); else jujiKeyPushD.hide();
+    if (keyPush1) jujiKeyPush1.show(); else jujiKeyPush1.hide();
+    
+}
+
+\getPadUp()    { return keyCntU; }
+\getPadDown()  { return keyCntD; }
+\getPadLeft()  { return keyCntL; }
+\getPadRight() { return keyCntR; }
+\getPadButton(i) {
+    var value;
+    if (i == 0) value = keyCnt1;
+    return value;
+}
+
+\getUp()    { return keyCntU; }
+\getDown()  { return keyCntD; }
+\getLeft()  { return keyCntL; }
+\getRight() { return keyCntR; }
+\getButton(i) {
+    var value;
+    if (i == 0) value = keyCnt1;
+    return value;
+}
+
+// 範囲 //
+\isOnRect(mx, my, rx, ry, rx2, ry2) {
+    return (rx <= mx && mx < rx2 && ry <= my && my < ry2);
+}
+
+// 範囲 //
+\isOnRectWH(mx, my, rx, ry, rw, rh) {
+    return (rx <= mx && mx < rx+rw && ry <= my && my < ry+rh);
+}
+
+while(true) {
+    padUpdate();
+    update();
+}

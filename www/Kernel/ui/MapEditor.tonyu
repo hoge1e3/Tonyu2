@@ -1,0 +1,267 @@
+extends Actor;
+native prompt;
+$Screen.resize(480,640);
+loadMode=false;
+fileExist=false;
+print("map file(s)");
+fileList=file("../maps/");
+fileList.recursive(function a(f){
+    f=f+"";
+    fNames=f.split("/");
+    print(fNames[fNames.length-1]);
+    fileExist=true;
+});
+if(fileExist){
+    print("Load Data?: Y or N");
+    while(true){
+        if(getkey("y")>0){
+            loadMode=true;
+            break;
+        }
+        if(getkey("n")>0){
+            loadMode=false;
+            break;
+        }
+        update();
+    }
+    if(loadMode){
+        fileName=prompt("Input json file (*.json)","map.json");
+        if(fileName){
+            mapDataFile=file("../maps/").rel(fileName);
+        }
+        if(mapDataFile.obj()){
+            baseData=mapDataFile.obj();
+        }else{
+            mapDataFile=file(fileName);
+            if(mapDataFile.obj()){
+                baseData=mapDataFile.obj();
+            }
+        }
+        if(baseData==undefined){
+            print("Load failed");
+            loadMode=false;
+        }else if(baseData[0] && baseData[1]){
+            mapData=baseData[0];
+            mapOnData=baseData[1];
+            if(baseData.length>2){
+                chipWidth=baseData[baseData.length-2];
+                chipHeight=baseData[baseData.length-1];
+            }
+        }
+    }
+}
+update();
+//if(mapData){
+    /*
+    print("Load Data?: Y or N");
+    while(true){
+        if(getkey("y")==1){
+            loadMode=true;
+            break;
+        }
+        if(getkey("n")==1){
+            loadMode=false;
+            break;
+        }
+    }*/
+//}
+if(!loadMode){
+    row=prompt("input row");
+    col=prompt("input col");
+    chipWidth=prompt("input chipWidth");
+    chipHeight=prompt("input chipHeight");
+    panel=new Panel{width:col*chipWidth,height:row*chipHeight};
+    panel.x=panel.width/2+40;
+    panel.y=panel.height/2+40;
+    panel.setFillStyle("cyan");
+    panel.fillRect(0,0,panel.width,panel.height);
+    $map=new Map{row,col,chipWidth,chipHeight};
+}else{
+    /*if(!mapOnData){
+        $map=new Map{row:mapData.length,col:mapData[0].length,chipWidth:32,chipHeight:32,mapData};
+    }else{
+        $map=new Map{row:mapData.length,col:mapData[0].length,chipWidth:32,chipHeight:32,mapData,mapOnData};
+    }*/
+    $map=new Map{chipWidth:32,chipHeight:32};
+    $map.load(fileName);
+    panel=new Panel{width:$map.col*$map.chipWidth,height:$map.row*$map.chipHeight,zOrder:100};
+    panel.x=panel.width/2+40;
+    panel.y=panel.height/2+40;
+    panel.setFillStyle("cyan");
+    panel.fillRect(0,0,panel.width,panel.height);
+}
+mIW=$Sprites.getImageList()[$pat_mapchip].image.width;
+mIH=$Sprites.getImageList()[$pat_mapchip].image.height;
+mCW=$Sprites.getImageList()[$pat_mapchip+0].width;
+mCH=$Sprites.getImageList()[$pat_mapchip+0].height;
+$mp=new Map{row:floor(mIH/mCH),col:floor(mIW/mCW),chipWidth:mCW,chipHeight:mCH};
+counter=0;
+for(var i=0;i<$mp.row;i++){
+    for(var j=0;j<$mp.col;j++){
+        $mp.set(j,i,$pat_mapchip+counter);
+        counter++;
+    }
+}
+drawPanel();
+mode="get";
+prevMode="set";
+mapp=0;
+mx=-40;
+my=-40;
+chipX=-40;
+chipY=-40;
+x=$screenWidth-chipWidth/2;
+y=$screenHeight-chipHeight/2;
+$map.scrollTo(mx,my);
+while(true){
+    p=mapp;
+    if(getkey("e")==1 || ($touches[0].touched==1 && $touches[0].x>0 && $touches[0].x<120 && $touches[0].y>560 && $touches[0].y<640)){
+        $mp.scrollTo(1000,1000);
+        mode="erase";
+        print(mode+" mode");
+    }
+    if(getkey("s")==1){
+        $mp.scrollTo(1000,1000);
+        if(mode=="set"){
+            mode="setOn";
+        }else{
+            mode="set";
+        }
+        print(mode+" mode");
+    }
+    if($touches[0].touched==1 && $touches[0].x>0 && $touches[0].x<120 && $touches[0].y>480 && $touches[0].y<560){
+        $mp.scrollTo(1000,1000);
+        mode="set";
+        print(mode+" mode");
+    }
+    if($touches[0].touched==1 && $touches[0].x>120 && $touches[0].x<240 && $touches[0].y>480 && $touches[0].y<560){
+        $mp.scrollTo(1000,1000);
+        mode="setOn";
+        print(mode+" mode");
+    }
+    if(getkey("o")==1){
+        $mp.scrollTo(1000,1000);
+        mode="setOn";
+    }
+    if(getkey("g")==1 || ($touches[0].touched==1 && $touches[0].x>240 && $touches[0].x<360 && $touches[0].y>480 && $touches[0].y<560)){
+        if(mode!="get"){
+            prevMode=mode;
+            $mp.scrollTo(-40,-40);
+            mode="get";
+            chipX=-40;
+            chipY=-40;
+        }else{
+            $mp.scrollTo(1000,1000);
+            mode=prevMode;
+        }
+        print(mode+" mode");
+    }
+    if(getkey("p")==1 || ($touches[0].touched==1 && $touches[0].x>360 && $touches[0].x<480 && $touches[0].y>480 && $touches[0].y<560)){
+        //add
+        saveFileName=prompt("input json file(*.json)","map.json");
+        /*print("mapTable=[");
+        data="[";
+        for(var i=0;i<$map.row-1;i++){
+            var tmp=[];
+            tmp=$map.mapTable[i].concat(tmp);
+            print("["+tmp+"],");
+            data+="["+tmp+"],";
+        }
+        var tmp=[];
+        tmp=$map.mapTable[i].concat(tmp);
+        print("["+tmp+"]");
+        data+="["+tmp+"]";
+        print("];");
+        data+="]";*/
+        //add
+        saveDataFile=file("../maps/").rel(saveFileName);
+        data=[$map.mapTable,$map.mapOnTable,$map.chipWidth,$map.chipHeight];
+        //comment
+        //mapDataFile.obj(data);
+        //add
+        saveDataFile.obj(data);
+        print(saveFileName+" Saved");
+        //mapDataFile.obj.push($map.mapOnTable);
+    }
+    if(getkey("c")==1 || ($touches[0].touched==1 && $touches[0].x>120 && $touches[0].x<240 && $touches[0].y>560 && $touches[0].y<640)){
+        $mp.scrollTo(1000,1000);
+        mode="copy";
+        print(mode+" mode");
+    }
+    if(mode!="get"){
+        if(getkey("left")>0 || ($touches[0].touched && $touches[0].x>0 && $touches[0].x<40 && $touches[0].y<480)) mx=mx+8;
+        if(getkey("right")>0 || ($touches[0].touched && $touches[0].x>$screenWidth-40 && $touches[0].x<$screenWidth && $touches[0].y<480)) mx=mx-8;
+        if(getkey("up")>0 || ($touches[0].touched && $touches[0].x>0 && $touches[0].x<$screenWidth && $touches[0].y<40)) my=my+8;
+        if(getkey("down")>0 || ($touches[0].touched && $touches[0].x>0 && $touches[0].x<$screenWidth && $touches[0].y<480&&$touches[0].y>440)) my=my-8;
+        $map.scrollTo(mx,my);
+    }else{
+        if(getkey("left")>0 || ($touches[0].touched && $touches[0].x>0 && $touches[0].x<40 && $touches[0].y<480)) chipX=chipX+8;
+        if(getkey("right")>0 || ($touches[0].touched && $touches[0].x>$screenWidth-40 && $touches[0].x<$screenWidth && $touches[0].y<480)) chipX=chipX-8;
+        if(getkey("up")>0 || ($touches[0].touched && $touches[0].x>0 && $touches[0].x<$screenWidth && $touches[0].y<40)) chipY=chipY+8;
+        if(getkey("down")>0 || ($touches[0].touched && $touches[0].x>0 && $touches[0].x<$screenWidth && $touches[0].y<480&&$touches[0].y>440)) chipY=chipY-8;
+        $mp.scrollTo(chipX,chipY);
+    }
+    panel.x=panel.width/2-mx;
+    panel.y=panel.height/2-my;
+    if(mode=="set" && getkey(1)>0 && inRect()){
+        $map.setAt($mouseX+mx,$mouseY+my,mapp);
+        $map.setOnAt($mouseX+mx,$mouseY+my,-1);
+    }else if(mode=="erase" && getkey(1)>0 && inRect()){
+        $map.setAt($mouseX+mx,$mouseY+my,-1);
+    }else if(mode=="get" && getkey(1)>0 && inRect()){
+        mapp=$mp.getAt($mouseX+chipX,$mouseY+chipY);
+        mode=prevMode;
+        $mp.scrollTo(1000,1000);
+        print(mode+" mode");
+        updateEx(10);
+    }else if(mode=="setOn" && getkey(1)>0 && inRect()){
+        $map.setOnAt($mouseX+mx,$mouseY+my,mapp);
+    }else if(mode=="copy" && getkey(1)>0 && inRect()){
+        mapp=$map.getAt($mouseX+mx,$mouseY+my);
+        mode="set";
+        print(mode+" mode");
+        updateEx(10);
+    }
+    update();
+}
+function inRect(){
+    return $mouseX > 40 && $mouseX < $screenWidth-40 && 
+    $mouseY > 40 && $mouseY < $screenHeight-200;
+}
+function drawPanel(){
+    $panel.setFillStyle("gray");
+    $panel.alpha=128;
+    $panel.fillRect(0,0,$screenWidth,40);
+    $panel.fillRect(0,0,40,$screenHeight-160);
+    $panel.fillRect($screenWidth-40,0,40,$screenHeight-160);
+    $panel.fillRect(0,$screenHeight-200,$screenWidth,40);
+    $panel.alpha=255;
+    $panel.setFillStyle("black");
+    //lower panel
+    $panel.fillRect(0,$screenHeight-160,120,80);
+    $panel.fillRect(120,$screenHeight-160,120,80);
+    $panel.fillRect(240,$screenHeight-160,120,80);
+    $panel.fillRect(360,$screenHeight-160,120,80);
+    $panel.fillRect(0,$screenHeight-80,120,80);
+    $panel.fillRect(120,$screenHeight-80,120,80);
+    $panel.setFillStyle("white");
+    $panel.fillRect(10,$screenHeight-150,100,60);
+    $panel.fillRect(130,$screenHeight-150,100,60);
+    $panel.fillRect(250,$screenHeight-150,100,60);
+    $panel.fillRect(370,$screenHeight-150,100,60);
+    $panel.fillRect(10,$screenHeight-70,100,60);
+    $panel.fillRect(130,$screenHeight-70,100,60);
+    $panel.setFillStyle("black");
+    //dir
+    $panel.fillText("▲",$screenWidth/2,30,40,"center");
+    $panel.fillText("?",20,($screenHeight-200)/2,40,"center");
+    $panel.fillText("▼",$screenWidth/2,$screenHeight-160-10,40,"center");
+    $panel.fillText("?",$screenWidth-20,($screenHeight-200)/2,40,"center");
+    //set setOn letter etc
+    $panel.fillText("set",$screenWidth/4-60,$screenHeight-110,40,"center");
+    $panel.fillText("setOn",$screenWidth/4+60,$screenHeight-110,35,"center");
+    $panel.fillText("get",$screenWidth/2+60,$screenHeight-110,40,"center");
+    $panel.fillText("save",$screenWidth-60,$screenHeight-110,40,"center");
+    $panel.fillText("erase",$screenWidth/4-60,$screenHeight-30,35,"center");
+    $panel.fillText("copy",$screenWidth/4+60,$screenHeight-30,35,"center");
+}

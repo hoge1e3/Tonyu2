@@ -1,0 +1,40 @@
+extends TObject;
+includes EventHandlerCaller;
+native Tonyu;
+
+
+if (Tonyu.runMode) listeners=[];
+
+\addListener(f) {
+    if (target && (typeof f)=="string") {
+        f=target[f];
+    }
+    if (typeof f!="function") throw new Error("Not a event listener: "+target+" / "+f);
+    listeners.push(f);
+    return {
+        remove: \{
+           removeListener(f);
+        }
+    };
+}
+\removeListener(f) {
+    var i=listeners.indexOf(f);
+    listeners.splice(i,1);
+}
+\fire(args) {
+    if (released) return;
+    var t;
+    for (var h in listeners) {
+        /*if (h["fiber"]) {
+            t=Tonyu.thread();
+            h["fiber"].apply(target, [t].concat(args) );
+            t.steps();
+        } else {
+            h.apply(target,args);
+        }*/
+        callEventHandler(h, args);
+    }
+}
+\release() {
+    released=true;
+}

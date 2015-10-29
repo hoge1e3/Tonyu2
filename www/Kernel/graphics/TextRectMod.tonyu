@@ -1,0 +1,44 @@
+extends null;
+
+nowait function drawTextRect(ctx, text, x, topY, h, align , type) {
+    if (!align) align="center";
+    ctx.textBaseline="top";
+    setFontSize(ctx, h);
+    var met=ctx.measureText(text);
+    var res={y:topY, w: met.width, h:h};
+    var t=align.substring(0,1).toLowerCase();
+    if (t=="l") res.x=x;
+    else if (t=="r") res.x=x-met.width;
+    else if (t=="c") res.x=x-met.width/2;
+    if (type=="fill") ctx.fillText(text, res.x,topY);
+    if (type=="stroke") ctx.strokeText(text, res.x,topY);
+    return res;
+}
+nowait function setFontSize(ctx,sz) {
+    var post=ctx.font.replace(/^[0-9\.]+/,"");
+    ctx.font=sz+post;
+}
+
+nowait function fukidashi(ctx, text, x, y, sz) {
+    var align="c";
+    var theight=20;
+    var margin=5;
+    var r=drawTextRect(ctx, text, x,y-theight-margin-sz, sz, align);
+    ctx.beginPath();
+    ctx.moveTo(x , y);
+    ctx.lineTo(x+margin , y-theight);
+    ctx.lineTo(x+r.w/2+margin , y-theight);
+    ctx.lineTo(x+r.w/2+margin , y-theight-r.h-margin*2);
+    ctx.lineTo(x-r.w/2-margin , y-theight-r.h-margin*2);
+    ctx.lineTo(x-r.w/2-margin , y-theight);
+    ctx.lineTo(x-margin , y-theight);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+    
+    var fs=ctx.fillStyle;
+    ctx.fillStyle=ctx.strokeStyle;
+    drawTextRect(ctx, text, x, y-theight-margin-sz, sz, align, "fill");
+    ctx.fillStyle=fs;
+}
+

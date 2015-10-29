@@ -1,0 +1,50 @@
+<html><head><meta charset="utf-8"/>
+<meta http-equiv="Content-type" content="text/html; charset=utf8"/>
+<title>評価方法(2)</title>
+</head><body><link rel='stylesheet' href='../../css/bootstrap.css'/>
+<link rel='stylesheet' href='../../css/tonyu.css'/>
+<script src='../../js/lib/jquery-1.10.1.js'/></script>
+<script src='../../js/ide/NWMenu.js'/></script>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px; font-family:"MS UI Gothic",sans-serif;}</style>
+<button onclick='javascript:history.back();'>←Back</button><br/>
+<div><a id="line_marker_-0" name="line_marker_-0"></a><a href="E794A8E98094E588A5E383AAE38395E382A1E383ACE383B3E382B9.html">用途別リファレンス</a><span>
+</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><h3><a id="line_marker_-2" name="line_marker_-2"></a><span>評価方法(2)</span></h3><a id="line_marker_-3" name="line_marker_-3"></a><p></p><a id="line_marker_-5" name="line_marker_-5"></a><ul><li><a id="line_marker_-4" name="line_marker_-4"></a><span>ここでは既に前のページで作成したOnpuクラスに、更に追加することによって、coolやbadなどの評価を分けることができることを書き記している。</span><span>
+</span></li></ul><p></p><a id="line_marker_-7" name="line_marker_-7"></a><ul><li><a id="line_marker_-6" name="line_marker_-6"></a><span>「追加」と書かれている行を追加する。</span><span>
+</span></li></ul><p></p><a id="line_marker_-8" name="line_marker_-8"></a><div class="plist">Onpu(追加)</div><a id="line_marker_-46" name="line_marker_-46"></a><pre><a id="line_marker_-9" name="line_marker_-9"></a><span>beforeTouched=false; //追加</span><span>
+</span><a id="line_marker_-10" name="line_marker_-10"></a><span>start=$c.play().currentTime();</span><span>
+</span><a id="line_marker_-11" name="line_marker_-11"></a><span>while(y&lt;$screenHeight){</span><span>
+</span><a id="line_marker_-12" name="line_marker_-12"></a><span>    t=$c.play().currentTime();</span><span>
+</span><a id="line_marker_-13" name="line_marker_-13"></a><span>    y=(t-start)*($screenHeight*3/4)/2000;</span><span>
+</span><a id="line_marker_-14" name="line_marker_-14"></a><p></p><a id="line_marker_-15" name="line_marker_-15"></a><span>//ここから</span><span>
+</span><a id="line_marker_-16" name="line_marker_-16"></a><span>if($touches[0].touched &amp;&amp; !beforeTouched &amp;&amp; abs($linePanel.y-y)&lt;43) {</span><span>
+</span><a id="line_marker_-17" name="line_marker_-17"></a><span>        </span><span>
+</span><a id="line_marker_-18" name="line_marker_-18"></a><span>        print("            "+$linePanel.y-y);</span><span>
+</span><a id="line_marker_-19" name="line_marker_-19"></a><span>        die();</span><span>
+</span><a id="line_marker_-20" name="line_marker_-20"></a><span>        if(abs($linePanel.y-y)&lt;10){</span><span>
+</span><a id="line_marker_-21" name="line_marker_-21"></a><span>            $score=$score+300;</span><span>
+</span><a id="line_marker_-22" name="line_marker_-22"></a><span>            print("cool");</span><span>
+</span><a id="line_marker_-23" name="line_marker_-23"></a><span>        }</span><span>
+</span><a id="line_marker_-24" name="line_marker_-24"></a><span>        else if(abs($linePanel.y-y)&lt;30){</span><span>
+</span><a id="line_marker_-25" name="line_marker_-25"></a><span>            $score=$score+200;</span><span>
+</span><a id="line_marker_-26" name="line_marker_-26"></a><span>            print("good");</span><span>
+</span><a id="line_marker_-27" name="line_marker_-27"></a><span>        }</span><span>
+</span><a id="line_marker_-28" name="line_marker_-28"></a><span>        </span><span>
+</span><a id="line_marker_-29" name="line_marker_-29"></a><span>        else{</span><span>
+</span><a id="line_marker_-30" name="line_marker_-30"></a><span>            $score=$score+0;</span><span>
+</span><a id="line_marker_-31" name="line_marker_-31"></a><span>            print("bad");</span><span>
+</span><a id="line_marker_-32" name="line_marker_-32"></a><span>        }</span><span>
+</span><a id="line_marker_-33" name="line_marker_-33"></a><span>        </span><span>
+</span><a id="line_marker_-34" name="line_marker_-34"></a><span>        </span><span>
+</span><a id="line_marker_-35" name="line_marker_-35"></a><span>    }</span><span>
+</span><a id="line_marker_-36" name="line_marker_-36"></a><span>    </span><span>
+</span><a id="line_marker_-37" name="line_marker_-37"></a><span>    beforeTouched=$touches[0].touched;</span><span>
+</span><a id="line_marker_-38" name="line_marker_-38"></a><span>//ここまで追加</span><span>
+</span><a id="line_marker_-39" name="line_marker_-39"></a><span>    update();</span><span>
+</span><a id="line_marker_-40" name="line_marker_-40"></a><span>}</span><span>
+</span><a id="line_marker_-41" name="line_marker_-41"></a><p></p><a id="line_marker_-42" name="line_marker_-42"></a><span>die();</span><span>
+</span><a id="line_marker_-43" name="line_marker_-43"></a><span>print("miss");</span><span>
+</span><a id="line_marker_-44" name="line_marker_-44"></a><p></p><a id="line_marker_-45" name="line_marker_-45"></a><p></p></pre><a id="line_marker_-47" name="line_marker_-47"></a><p></p><h2><a id="line_marker_-48" name="line_marker_-48"></a><span>解説</span></h2><a id="line_marker_-51" name="line_marker_-51"></a><ul><li><a id="line_marker_-49" name="line_marker_-49"></a><span>$touches[0].touchedだけだとタッチされたままでも反応してしまうのでbeforeTouchedで前のフレームでタッチされたかどうかの判定を入れておき、if文の条件式に加えることによってタッチされたかどうかという判定を作ることができる。</span><span>
+</span></li><li><a id="line_marker_-50" name="line_marker_-50"></a><span>タッチされたとき、音符のyとラインのyの差の絶対値を取って得点を決める。上記では、yの範囲が10未満の場合はcool、30未満の場合はgood、43未満の場合はbad、タッチしないで画面下まで音符が落ちた時はmissを表示させるようにした。</span><span>
+</span></li></ul><span>前へ </span><a href="E8A995E4BEA1E696B9E6B395(1).html">評価方法(1)</a><span> 　次へ </span><a href="E68BA1E5BCB5E6A99FE883BD.html">拡張機能</a><span>
+</span></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
+</body></html>

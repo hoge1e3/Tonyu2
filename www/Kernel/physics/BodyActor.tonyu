@@ -1,0 +1,250 @@
+extends Actor;
+includes T2Mod;
+native Box2D;
+
+\getWorld() {
+    if ($t2World) return $t2World;
+    $t2World=new T2World;
+    return $t2World;
+}
+\onAppear() {
+    var wworld=getWorld();
+    world=wworld.world;
+    scale=wworld.scale;
+    var b2Vec2 = Box2D.Common.Math.b2Vec2;
+    var b2BodyDef = Box2D.Dynamics.b2BodyDef;
+    var b2Body = Box2D.Dynamics.b2Body;
+    var b2FixtureDef = Box2D.Dynamics.b2FixtureDef;
+    var b2Fixture = Box2D.Dynamics.b2Fixture;
+    var b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;
+    var b2CircleShape = Box2D.Collision.Shapes.b2CircleShape;
+    
+    var fixDef = new b2FixtureDef;
+    fixDef.density = defv(density, 1.0);
+    fixDef.friction = defv(friction, 0.5);
+    fixDef.restitution = defv(restitution, 0.2);
+    
+    var bodyDef = new b2BodyDef;
+    bodyDef.type = isStatic ? b2Body.b2_staticBody :
+    b2Body.b2_dynamicBody;
+    
+    bodyDef.position.x = x /scale;
+    bodyDef.position.y = y /scale;
+    shape=shape || (radius ? "circle" : "box");
+    var w=width,h=height;
+    if (!w) {
+        detectShape();
+        w=width*(scaleX||1);
+        h=height*(scaleY||scaleX||1);
+    }
+    if (shape=="box") {
+        if (!h) h=w;
+        fixDef.shape = new b2PolygonShape;
+        fixDef.shape.SetAsOrientedBox(w/2/scale, h/2/scale,
+        new b2Vec2(0,0),0);
+    } else {
+        radius=radius || w/2 || 16;
+        fixDef.shape = new b2CircleShape(
+        radius/scale
+        );
+        width=height=radius*2;
+    } 
+    var fps=wworld.fps;
+    var r=rotation,ve=bvec(defv(vx*fps ,0),defv(vy*fps,0)),vr=defv(vrotation,0);
+    body=world.CreateBody(bodyDef);
+    body.CreateFixture(fixDef);
+    body.SetUserData(this);
+    body.SetLinearVelocity(ve);
+    rotation=r;
+    vrotation=vr;
+}
+\allContactPoints(klass) {
+    var res=[],m,point;
+    var w=getWorld();
+    for (var c=world.GetContactList();c;c=c.GetNext()) {
+        if (c.IsTouching()) {
+	        c.GetWorldManifold(m=new Box2D.Collision.b2WorldManifold);
+            if (m.m_points[0]) {
+                if (m.m_points[1] && m.m_points[1].x && m.m_points[1].y) {
+	            	point={
+	            	x:(m.m_points[0].x+m.m_points[1].x)/2*w.scale, 
+	            	y:(m.m_points[0].y+m.m_points[1].y)/2*w.scale};
+                } else {
+    	        	point={x:m.m_points[0].x*w.scale, y:m.m_points[0].y*w.scale};
+                } 
+            } else point={x,y};
+            var a=c.GetFixtureA().GetBody().GetUserData();
+            var b=c.GetFixtureB().GetBody().GetUserData();
+            if (a===this) {
+                if (!klass || b===klass || b instanceof klass) {
+                    res.push{target:b, manifold:m, x:point.x,y:point.y };
+                }
+            } else if (b===this) {
+                if (!klass || a===klass || a instanceof klass) {
+                    res.push{target:a, manifold:m, x:point.x,y:point.y };
+                }
+            }
+        }
+    }
+    return res;
+}
+\contactPoint(klass) {
+   return allContactPoints(klass)[0];
+}
+\allContact(klass) {
+   return allContacts(klass);
+}
+\allContacts(klass) {
+    var res=[];
+    for (var c=world.GetContactList();c;c=c.GetNext()) {
+        if (c.IsTouching()) {
+            var a=c.GetFixtureA().GetBody().GetUserData();
+            var b=c.GetFixtureB().GetBody().GetUserData();
+            if (a===this) {
+                if (!klass || b===klass || b instanceof klass) {
+                    res.push(b);
+                }
+            } else if (b===this) {
+                if (!klass || a===klass || a instanceof klass) {
+                    res.push(a);
+                }
+            }
+        }
+    }
+    return res;
+}
+\applyForce(fx,fy,px,py) {
+    var b2Vec2 = Box2D.Common.Math.b2Vec2;
+    var scale=getWorld().scale;
+    var fps=60;
+    body.ApplyForce(new b2Vec2(fx ,fy),body.GetPosition());
+}
+\applyImpulse(fx,fy,px,py) {
+    var b2Vec2 = Box2D.Common.Math.b2Vec2;
+    var scale=getWorld().scale;
+    var fps=60;
+    body.ApplyImpulse(new b2Vec2(fx ,fy),body.GetPosition());
+}
+
+\applyTorque(a) {
+    body.ApplyTorque(a);
+}
+\moveBy(dx,dy) {
+    var pos=body.GetPosition();
+    pos.x+=dx/scale;
+    pos.y+=dy/scale;
+    body.SetPosition(pos);
+}
+\contactTo(t) {
+    return allContact(t)[0];
+}
+\die() {
+    super.die();
+    world.DestroyBody(body);
+}
+\addRevoluteJoint(params) {
+    // params:{x?,y?,other?}
+    params=params||{};
+    var px=params.x||x;
+    var py=params.y||y;
+    var wworld=getWorld();//wraped_world
+    var scale=wworld.scale;
+    var world=wworld.world;
+    var b2BodyDef = Box2D.Dynamics.b2BodyDef;
+    var b2Body = Box2D.Dynamics.b2Body;
+    var JDC=Box2D.Dynamics.Joints.b2RevoluteJointDef;
+    var jd=new JDC;
+    var bodyDef = new b2BodyDef;
+    bodyDef.type = b2Body.b2_staticBody;
+    bodyDef.position.x = px /scale;
+    bodyDef.position.y = py /scale;
+    var bodyB=world.CreateBody(bodyDef);
+    var b2Vec2 = Box2D.Common.Math.b2Vec2;
+    jd.Initialize(body,bodyB,new b2Vec2(px/scale, py/scale));
+    if (params.lowerAngle && params.upperAngle) {
+       jd.lowerAngle = rad(params.lowerAngle);
+       jd.upperAngle = rad(params.upperAngle);
+       jd.enableLimit = true;
+    }
+    world.CreateJoint(jd);    
+}
+\rotation {
+    if (!body || manualRotation) return _rotation;
+    return deg(body.GetAngle());
+}
+\rotation=r {
+    r=r||0;
+    if (!body || manualRotation) return _rotation=r;
+    body.SetAngle(rad(r));
+} 
+
+\updatePos() {
+/*    if (!body) return;
+    var scale=getWorld().scale;
+    var pos=body.GetPosition();
+    x=pos.x*scale;
+    y=pos.y*scale;*/
+}
+
+\x {
+    if (!body) return _x;
+    var pos=body.GetPosition();
+    return pos.x*scale;
+}
+\x=v {
+    if (!body) return _x=v;
+    v=v||0;
+    var pos=body.GetPosition();
+    pos.x=v/scale;
+    body.SetPosition(pos);
+}
+\y {
+    if (!body) return _y;
+    var pos=body.GetPosition();
+    return pos.y*scale;
+}
+\y=v {
+    if (!body) return _y=v;
+    v=v||0;
+    var pos=body.GetPosition();
+    pos.y=v/scale;
+    body.SetPosition(pos);
+}
+
+\vx {
+    if (!body) return _vx;
+    var v=body.GetLinearVelocity();
+    return v.x*scale/getWorld().fps;
+}
+\vx=v {
+    if (!body) return _vx=v;
+    v=v||0;
+    var ve=body.GetLinearVelocity();
+    ve.x=v/scale*getWorld().fps;
+    if (v) body.SetAwake(true);
+    body.SetLinearVelocity(ve);
+}
+
+\vy {
+    if (!body) return _vy;
+    var v=body.GetLinearVelocity();
+    return v.y*scale/getWorld().fps;
+}
+\vy=v {
+    if (!body) return _vy=v;
+    var ve=body.GetLinearVelocity();
+    ve.y=v/scale*getWorld().fps;
+    if (v) body.SetAwake(true);
+    body.SetLinearVelocity(ve);
+}
+\vrotation {
+    if (!body) return _vr;
+    return deg(body.GetAngularVelocity()/getWorld().fps);
+}
+\vrotation=v {
+    if (!body) return _vr=v;
+    v=v||0;
+    if (v) body.SetAwake(true);
+    body.SetAngularVelocity(rad(v*getWorld().fps));
+}
+

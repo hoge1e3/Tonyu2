@@ -1,0 +1,437 @@
+extends null;
+includes MathMod,EventMod,TextRectMod,OneframeSpriteMod,
+ThreadGroupMod,EventHandlerCaller;
+native Tonyu;
+native Key;
+native console;
+native Math;
+native FS;
+native Array;
+
+\new(x,y,p) {
+    //if (Tonyu.runMode) {
+        _th=$Boot.schedule(this,"main",[]);
+        registerEventHandler("screenOut",new ScreenOutHandler);
+        registerEventHandler("crashTo",new CrashToHandler);
+        registerEventHandler("within",new WithinHandler);
+    //}
+    if (typeof x=="object") Tonyu.extend(this,x);
+    else if (typeof x=="number") {
+        this.x=x;
+        this.y=y;
+        this.p=p;
+    }
+    if (scaleX==null) scaleX=1;
+    if (rotation==null) rotation=0;
+    if (rotate==null) rotate=0;
+    if (alpha==null) alpha=255;
+    if (zOrder==null) zOrder=0;
+    if (age==null) age=0;
+    if (anim!=null && typeof anim=="object"){
+        animMode=true;
+        animFrame=0;
+    }else{
+        animMode=false;
+    }
+    if (animFps==null) animFps=1;
+}
+nowait \extend(obj) {
+    return Tonyu.extend(this,obj);
+}
+
+nowait \print(pt) {
+    console.log.apply(console,arguments);
+    var mergedArg="";
+    if($consolePanel){
+        for(var argCount=0;argCount<arguments.length;argCount++){
+            mergedArg=mergedArg+arguments[argCount]+" ";
+        }
+        splits=mergedArg.split("\n");
+        for(var printCount=0;printCount<splits.length;printCount++){
+            $consolePanel.scroll(0,20);
+            $consolePanel.setFillStyle("white");
+            $consolePanel.fillText(splits[printCount],0,$consolePrintY,20,"left");
+        }
+    }
+}
+
+nowait \setAnimFps(f){
+    this.animFps=f;
+    this.animFrame=0;
+    this.animMode=true;
+}
+nowait \startAnim(){
+    this.animMode=true;
+}
+nowait \stopAnim(){
+    this.animMode=false;
+}
+\update() {
+    onUpdate();
+    if(_thread) {
+        _thread.suspend();
+        if ($Scheduler) $Scheduler.addToNext(_thread);
+    }
+}
+nowait \onUpdate() {
+
+}
+\updateEx(updateT){
+    for(var updateCount=0;updateCount<updateT;updateCount++){
+        update();
+    }
+}
+nowait \getkey(k) {
+    return $Keys.getkey(k);
+}
+nowait \hitTo(t) {
+    return crashTo(t);
+}
+nowait \all(c) {
+    var res=new TQuery;
+    if (arguments.length>0 && typeof c!="function") {
+        return res;
+    }
+    $Sprites.sprites.forEach \(s) {
+        if (s===this) return;
+        if (!c || s instanceof c) {
+            res.push(s);
+        }
+    };
+    return res;// new TQuery{objects:res};
+}
+nowait \allCrash(t) {
+    var res=new TQuery;
+    var sp=this; //_sprite || this;
+    var t1=getCrashRect();
+    if (!t1) return res;
+    $Sprites.sprites.forEach(\(s) {
+        var t2;
+        if (s!==this &&
+        !s.excludeFromAll &&
+        s instanceof t &&
+        (t2=s.getCrashRect()) &&
+        Math.abs(t1.x-t2.x)*2<t1.width+t2.width &&
+        Math.abs(t1.y-t2.y)*2<t1.height+t2.height) {
+            res.push(s);
+        }
+    });
+    return res;
+}
+nowait \crashTo(t) {
+    if (!t) return false;
+    if (typeof t=="function") {
+        return allCrash(t)[0];
+    }
+    return crashTo1(t);
+}
+nowait \crashTo1(t) {
+    if (!t || t._isDead) return false;
+    /*if (_sprite && t._sprite) {
+        return _sprite.crashTo(t._sprite);
+    }*/
+    var t1=getCrashRect();
+    var t2=t.getCrashRect();
+    return
+    //    t1.x!=null && t1.y!=null && t1.width && t1.height &&
+    //    t2.x!=null && t2.y!=null && t2.width && t2.height &&
+    t1 && t2 &&
+    Math.abs(t1.x-t2.x)*2<t1.width+t2.width &&
+    Math.abs(t1.y-t2.y)*2<t1.height+t2.height;
+}
+\crashToChecker(d,f){
+    while(true){
+        if(typeof d=="function"){
+            for(obj in allCrash(d)){
+                callEventHandler(f,[obj]);
+            }
+        }else if(crashTo(d)){
+            callEventHandler(f,[d]);
+        }
+        update();
+    }
+}
+nowait \getCrashRect() {
+    var actWidth=width*scaleX, actHeight;
+    if(typeof scaleY==="undefined"){
+        actHeight=height*scaleX;
+    }else{
+        actHeight=height*scaleY;
+    }
+    return typeof x=="number" &&
+    typeof y=="number" &&
+    typeof width=="number" &&
+    typeof height=="number" &&
+    {x,y,width:Math.abs(actWidth),height:Math.abs(actHeight)};
+}
+nowait \allWithin(t,distance) {
+    var res=new TQuery;
+    var sp=this; //_sprite || this;
+    var t1=getCrashRect();
+    if (!t1) return res;
+    $Sprites.sprites.forEach(\(s) {
+        var t2;
+        if (s!==this && 
+        !s.excludeFromAll &&
+        s instanceof t && 
+        Math.sqrt(Math.abs(x-s.x)*Math.abs(x-s.x)+ Math.abs(y-s.y)*Math.abs(y-s.y))<distance) {
+            res.push(s);    
+        }
+    });
+    return res;
+}
+nowait \within(t,distance){
+    if(!t) return false;
+    if(typeof t=="function"){
+        return allWithin(t,distance)[0];
+    }
+    return within1(t,distance);
+}
+nowait \within1(t,distance){
+    if(!t || t._isDead) return false;
+    if(Math.sqrt(Math.abs(x-t.x)*Math.abs(x-t.x)+ Math.abs(y-t.y)*Math.abs(y-t.y))<distance){
+        return true;
+    }
+    return false;
+}
+\withinChecker(d,r,f){
+    while(true){
+        if(typeof d=="function"){
+            for(obj in allWithin(d,r)){
+                print(r);
+                f(obj);
+            }
+        }else if(within(d,r)){
+            f(d);
+        }
+        update();
+    }
+}
+nowait \watchHit(typeA,typeB,onHit) {
+    $Sprites.watchHit(typeA , typeB, \(a,b) {
+        onHit.apply(this,[a,b]);
+    });
+}
+nowait \currentThreadGroup() {//@deprecated
+    return $Scheduler; //$currentThreadGroup;
+}
+nowait \die() {
+    killThreadGroup();
+    /*if (_th) {
+        _th.kill();
+    }*/
+    hide();
+    fireEvent("die");
+    _isDead=true;
+}
+nowait \hide() {
+    /*if (_sprite) {
+        $Sprites.remove(_sprite);
+        _sprite=null;
+    } else {*/
+        //$Sprites.remove(this);
+    //}
+    if(layer && typeof layer.remove=="function"){
+        layer.remove(this);
+    }else{
+        $Sprites.remove(this);
+    }
+}
+nowait \show(x,y,p) {
+    if(layer && typeof layer.add=="function"){
+        layer.add(this);
+    }else{
+        $Sprites.add(this);
+    }
+    if (x!=null) this.x=x;
+    if (y!=null) this.y=y;
+    if (p!=null) this.p=p;
+}
+
+nowait \detectShape() {
+    if (typeof p!="number") {
+        if (text!=null) return;
+        p=0;
+    }
+    p=Math.floor(p);
+    pImg=$Sprites.getImageList()[p];
+    if (!pImg) return;
+    width=pImg.width;
+    height=pImg.height;
+}
+\waitFor(f) {
+    if (_thread) {
+        _thread.waitFor(f);
+    }
+    //update();
+}
+nowait \isDead() {
+    return _isDead;
+}
+
+nowait \animation(){
+    age++;
+    if(animMode && age%animFps==0){
+        p=anim[animFrame%anim.length];
+        animFrame++;
+    }
+}
+nowait \draw(ctx) {
+    if (x==null || y==null || _isInvisible) return;
+    detectShape();
+    if (pImg) {
+        ctx.save();
+        ctx.translate(x,y);
+        //if (typeof rotate=="number" ) rotation=rotate;// 削除予定
+        //ctx.rotate(this.rotation/180*Math.PI);
+        animation();
+        if(this.rotation!=0){
+            ctx.rotate(this.rotation/180*Math.PI);
+        }else{
+            ctx.rotate(this.rotate/180*Math.PI);
+        }
+        if(typeof this.scaleY==="undefined") {
+            ctx.scale(this.scaleX,this.scaleX);
+        }else{
+            ctx.scale(this.scaleX,this.scaleY);
+        }
+        ctx.globalAlpha=this.alpha/255;
+        ctx.drawImage(
+        pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,
+        -width/2, -height/2, width, height);
+        ctx.restore();
+    } else if (text!==null && text!==undefined) {
+        var splitsText=(text+"").split("\n");
+        drawY=y;
+        if (!size) size=15;
+        if (!align) align="center";
+        if (!fillStyle) fillStyle="white";
+        if (font) ctx.font=size+"px "+font;
+        ctx.fillStyle=fillStyle;
+        ctx.globalAlpha=this.alpha/255;
+        height=0;width=0;
+        for(var textCount=0;textCount<splitsText.length;textCount++){
+            var rect=drawTextRect(ctx, splitsText[textCount], x, drawY, size, align , "fill");
+            if(width<rect.w) width=rect.w;
+            height+=rect.h;
+            drawY+=size;
+        }
+    }
+    if (_fukidashi) {
+        if (_fukidashi.c>0) {
+            _fukidashi.c--;
+            ctx.fillStyle="white";
+            ctx.strokeStyle="black";
+            fukidashi ( ctx , _fukidashi.text,
+            x, y-height/2-10, _fukidashi.size);
+        }
+    }
+}
+nowait \asyncResult() {//@deperecated
+    return Tonyu.asyncResult();
+}
+
+\runAsync(f) {
+    if (!_thread) throw new Error("runAsync should run in wait mode");
+    _thread.runAsync(f);
+}
+
+
+\screenOut(a) {
+    //オブジェクトが画面外に出たかどうかを判定します。
+    if (!a) a=0;
+    var r=0;
+    var viewX=$Sprites.sx,viewY=$Sprites.sy;
+    if (x<viewX+a)               r+=viewX+a-x;
+    if (y<viewY+a)               r+=viewY+a-y;
+    if (x>$screenWidth +viewX-a) r+=x-($screenWidth +viewX-a);
+    if (y>$screenHeight+viewY-a) r+=y-($screenHeight+viewY-a);
+    return r;
+}
+\screenOutChecker(d,f){
+    //print("yobareta!", getClassInfo().fullName);
+    while(true){
+        while(true){
+            if(screenOut()>d){
+                f();
+                break;
+            }
+            update();
+        }
+        while(true){
+            if(screenOut()<=d){
+                break;
+            }
+            update();
+        }
+        update();
+    }
+}
+\file(path) {
+    var d=Tonyu.currentProject.getDir();
+    var files=d.rel("files/");
+    return FS.get(files.rel(path)) {topDir:d};
+}
+\waitInputDevice(fl) {
+    if (fl!==false) {
+        if (!origTG) {
+            ifwait {
+                origTG=_thread.group;
+                _thread.setGroup(null);
+            }
+        }
+        a=asyncResult();
+        $InputDevice.addOnetimeListener(a.receiver);
+        waitFor(a);
+    } else {
+        if (origTG) {
+            ifwait {
+                _thread.setGroup(origTG);
+                origTG=null;
+            }
+        }
+    }
+}
+\redrawScreen() {
+    $Sprites.draw($Screen.buf[0]);
+    $Screen.draw();
+}
+
+// from PlainChar
+\color(r,g,b) {
+    return "rgb("+[r,g,b].join(",")+")";
+}
+/*
+\drawText(x,y,text,col,size) {
+    if ($debug) return;
+    if (!size) size=15;
+    if (!col) col="cyan";
+    var tp=all(T1Text).find \(t) {return t.hidden;};
+    if (tp.length>0) {
+        tp[0].extend{x,y,text,fillStyle:col, size,hidden:false};
+    }else {
+        new T1Text{x,y,text,fillStyle:col, size};
+    }
+}
+\drawLine(x,y,tx,ty,col) {
+    if (!col) col="white";
+    var tp=all(T1Line).find \(t) {return t.hidden;};
+    if (tp.length>0) {
+        tp[0].extend{x,y,tx,ty,col, hidden:false};
+    }else {
+        new T1Line{x,y,tx,ty,col};
+    }
+}
+*/
+\loadPage(page,arg){
+    all().die();
+    new page(arg);
+    die();
+}
+
+\setVisible(v) {
+    _isInvisible=!v;
+}
+\appear(o) {
+    return o;
+}

@@ -1,0 +1,254 @@
+extends Actor;
+
+native T2MediaLib;
+native Tonyu;
+
+\new() {
+    initT2MediaPlayer();
+}
+
+\initT2MediaPlayer() {
+    if (T2MediaLib.inited) return;
+    T2MediaLib.init();
+    T2MediaLib.inited=true;
+    bgmPlayerMax = T2MediaLib.bgmPlayerMax;
+}
+
+\clearSEData() {
+    T2MediaLib.allStopBGM();
+    T2MediaLib.allClearData();
+}
+
+\clearBGMData() {
+    clearSEData();
+}
+
+\deleteSEData(idx) {
+    T2MediaLib.clearData(idx);
+}
+
+// SE //
+\loadSE(idx, src) {//@hoge1e3
+    // 非同期呼び出し
+    runAsync \(succ,err) {
+       // 読み込み完了するまでブロッキング
+       T2MediaLib.loadSE(idx, src) {succ,err};
+    };
+    var data = T2MediaLib.getSEData(idx);
+    /*
+    while (data == null) {
+        update();
+        data = T2MediaLib.getSEData(idx);
+    }*/
+    return data;
+}
+
+\available {
+    return !!T2MediaLib.context;
+}
+//@hoge1e3
+\loadFromProject(prj) {
+    if (!available) return;
+    var r=prj.getResource();
+    if (!r || !r.sounds) return;
+    for (var s in r.sounds) {
+         var name=s.name, url=Tonyu.Assets.resolve(s.url, prj.getDir());
+         Tonyu.setGlobal(name, name);
+         try {
+            print("Loading Sound2: "+name);
+            loadSE(name, url);
+         } catch(e) {
+            print("Fail");
+            Tonyu.setGlobal(name, "ERROR");
+         }
+    }
+}
+
+
+// vol:0-128
+\playSE(idx, vol, rate, offset, loop, loopStart, loopEnd) {
+    if (mute) return;
+    // vol : Tonyu1のように0～128の範囲にする
+    if (vol == null) vol = 128;
+    // vol はgainで実装しているため絶対値の大きい値を入れると危険
+    // そのため0.0～1.0の範囲になるようにする
+    if      (vol <   0) vol =   0;
+    else if (vol > 128) vol = 128;
+    return T2MediaLib.playSE(idx, vol / 128, rate, offset, loop, loopStart, loopEnd);
+}
+
+\stopSE(sourceObj) {
+    return T2MediaLib.stopSE(sourceObj);
+}
+
+\getSEData(idx) {
+    return T2MediaLib.getSEData(idx);
+}
+
+
+// BGM //
+\loadBGM(idx, src) {
+    // 非同期呼び出し
+    T2MediaLib.loadBGM(idx, src);
+    // 読み込み完了するまでブロッキング
+    var data = T2MediaLib.getBGMData(idx);
+    while (data == null) {
+        update();
+        data = T2MediaLib.getBGMData(idx);
+    }
+    return data;
+}
+
+\playBGM(idx, loop, offset, loopStart, loopEnd) {
+    if (mute) return;
+    if (loop === null) loop = false;
+    if (offset === null) offset = 0;
+    return T2MediaLib.playBGM(0, idx, loop, offset, loopStart, loopEnd);
+}
+
+\stopBGM() {
+    return T2MediaLib.stopBGM(0);
+}
+
+\pauseBGM() {
+    return T2MediaLib.pauseBGM(0);
+}
+
+\resumeBGM() {
+    return T2MediaLib.resumeBGM(0);
+}
+
+\setBGMVolume(vol) {
+    vol = vol / 128;
+    // vol はgainで実装しているため絶対値の大きい値を入れると危険
+    // そのため0.0～1.0の範囲になるようにする
+    if      (vol > 1.0) vol = 1.0;
+    else if (vol < 0.0) vol = 0.0;
+    return T2MediaLib.setBGMVolume(0, vol);
+}
+
+\setBGMTempo(tempo) {
+    //if      (tempo > 4.0) tempo = 4.0;
+    //else if (tempo < 0.5) tempo = 0.5;
+    return T2MediaLib.setBGMTempo(0, tempo);
+}
+
+\getBGMCurrentTime() {
+    return T2MediaLib.getBGMCurrentTime(0);
+}
+
+\getBGMLength() {
+    return T2MediaLib.getBGMLength(0);
+}
+
+\getBGMData(idx) {
+    return T2MediaLib.getBGMData(idx);
+}
+
+
+
+// BGM ID指定 //
+\playBGMID(id, idx, loop, offset, loopStart, loopEnd) {
+    if (loop === null) loop = false;
+    if (offset === null) offset = 0;
+    return T2MediaLib.playBGM(id, idx, loop, offset, loopStart, loopEnd);
+}
+
+\stopBGMID(id) {
+    return T2MediaLib.stopBGM(id);
+}
+
+\pauseBGMID(id) {
+    return T2MediaLib.pauseBGM(id);
+}
+
+\resumeBGMID(id) {
+    return T2MediaLib.resumeBGM(id);
+}
+
+\setBGMVolumeID(id, vol) {
+    vol = vol / 128;
+    // vol はgainで実装しているため絶対値の大きい値を入れると危険
+    // そのため0.0～1.0の範囲になるようにする
+    if      (vol > 1.0) vol = 1.0;
+    else if (vol < 0.0) vol = 0.0;
+    return T2MediaLib.setBGMVolume(id, vol);
+}
+
+\setBGMTempoID(id, tempo) {
+    //if      (tempo > 4.0) tempo = 4.0;
+    //else if (tempo < 0.5) tempo = 0.5;
+    return T2MediaLib.setBGMTempo(id, tempo);
+}
+
+\getBGMCurrentTimeID(id) {
+    return T2MediaLib.getBGMCurrentTime(id);
+}
+
+\getBGMLengthID(id) {
+    return T2MediaLib.getBGMLength(id);
+}
+
+\sizeBGMID() {
+    return T2MediaLib.getBGMPlayerMax();
+}
+
+\allStopBGM() {
+    T2MediaLib.allStopBGM();
+}
+
+
+
+\loadAudio(idx, src) {
+    // 非同期呼び出し
+    T2MediaLib.loadAudio(idx, src);
+    // 読み込み完了するまでブロッキング
+    while (T2MediaLib.getAudioData(idx) == null) update();
+}
+
+\playAudio(idx, loop, startTime) {
+    if (loop === null) loop = false;
+    if (startTime === null) startTime = 0;
+    return T2MediaLib.playAudio(idx, loop, startTime);
+}
+
+\stopAudio() {
+    return T2MediaLib.stopAudio();
+}
+
+\pauseAudio() {
+    return T2MediaLib.pauseAudio();
+}
+
+\resumeAudio() {
+    return T2MediaLib.resumeAudio();
+}
+
+\setAudioVolume(vol) {
+    vol = vol / 128;
+    if      (vol > 1.0) vol = 1.0;
+    else if (vol < 0.0) vol = 0.0;
+    return T2MediaLib.setAudioVolume(vol);
+}
+
+\setAudioTempo(tempo) {
+    if      (tempo > 4.0) tempo = 4.0;
+    else if (tempo < 0.5) tempo = 0.5;
+    return T2MediaLib.setAudioTempo(tempo);
+}
+
+\setAudioPosition(time) {
+    return T2MediaLib.setAudioPosition(time);
+}
+
+\getAudioCurrentTime() {
+    return T2MediaLib.getAudioCurrentTime();
+}
+
+\getAudioLength() {
+    return T2MediaLib.getAudioLength();
+}
+
+\getAudioData(idx) {
+    return T2MediaLib.getAudioData(idx);
+}

@@ -1,0 +1,42 @@
+<html><head><meta charset="utf-8"/>
+<meta http-equiv="Content-type" content="text/html; charset=utf8"/>
+<title>リトライする</title>
+</head><body><link rel='stylesheet' href='../../css/bootstrap.css'/>
+<link rel='stylesheet' href='../../css/tonyu.css'/>
+<script src='../../js/lib/jquery-1.10.1.js'/></script>
+<script src='../../js/ide/NWMenu.js'/></script>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px; font-family:"MS UI Gothic",sans-serif;}</style>
+<button onclick='javascript:history.back();'>←Back</button><br/>
+<div><a id="line_marker_-0" name="line_marker_-0"></a><a href="E794A8E98094E588A5E383AAE38395E382A1E383ACE383B3E382B9.html">用途別リファレンス</a><span>
+</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><a id="line_marker_-2" name="line_marker_-2"></a><span>キャラクターを消す</span><span>
+</span><a id="line_marker_-3" name="line_marker_-3"></a><p></p><a id="line_marker_-4" name="line_marker_-4"></a><a href="E38199E381B9E381A6E381AEE382AAE38396E382B8E382A7E382AFE38388E38292E6B688E38199.html">すべてのオブジェクトを消す</a><span>
+</span><h1><a id="line_marker_-5" name="line_marker_-5"></a><span>Main全体をwhileで囲う</span></h1><a id="line_marker_-6" name="line_marker_-6"></a><div class="plist">Main</div><a id="line_marker_-24" name="line_marker_-24"></a><pre><a id="line_marker_-7" name="line_marker_-7"></a><span>while(true){</span><span>
+</span><a id="line_marker_-8" name="line_marker_-8"></a><span>//プレイヤーの配置などの初期設定</span><span>
+</span><a id="line_marker_-9" name="line_marker_-9"></a><span>  p=new Player{x:300,y:300,HP:1};</span><span>
+</span><a id="line_marker_-10" name="line_marker_-10"></a><span>  e=new Enemy{x:100,y:100,p:5};</span><span>
+</span><a id="line_marker_-11" name="line_marker_-11"></a><span>  l=new Label{x:230,y:400,text:"GAMESTART"};</span><span>
+</span><a id="line_marker_-12" name="line_marker_-12"></a><span>//初期設定ここまで</span><span>
+</span><a id="line_marker_-13" name="line_marker_-13"></a><p></p><a id="line_marker_-14" name="line_marker_-14"></a><span>  while(true){</span><span>
+</span><a id="line_marker_-15" name="line_marker_-15"></a><span>    if(p.HP==0)l.text="GAMEOVER rを押すとリトライ";</span><span>
+</span><a id="line_marker_-16" name="line_marker_-16"></a><span>    if(p.HP==0 &amp;&amp; getkey("r")==1) {</span><span>
+</span><a id="line_marker_-17" name="line_marker_-17"></a><span>      all().die();</span><span>
+</span><a id="line_marker_-18" name="line_marker_-18"></a><span>      break;</span><span>
+</span><a id="line_marker_-19" name="line_marker_-19"></a><span>    }</span><span>
+</span><a id="line_marker_-20" name="line_marker_-20"></a><span>    update();</span><span>
+</span><a id="line_marker_-21" name="line_marker_-21"></a><span>  }</span><span>
+</span><a id="line_marker_-22" name="line_marker_-22"></a><span>  update();</span><span>
+</span><a id="line_marker_-23" name="line_marker_-23"></a><span>}</span><span>
+</span></pre><a id="line_marker_-25" name="line_marker_-25"></a><div class="plist">Player</div><a id="line_marker_-35" name="line_marker_-35"></a><pre><a id="line_marker_-26" name="line_marker_-26"></a><span>while(true){</span><span>
+</span><a id="line_marker_-27" name="line_marker_-27"></a><span>  if(getkey("right")&gt;0)	x+=3;</span><span>
+</span><a id="line_marker_-28" name="line_marker_-28"></a><span>  if(getkey("left")&gt;0)	x-=3;</span><span>
+</span><a id="line_marker_-29" name="line_marker_-29"></a><span>  if(getkey("down")&gt;0)	y+=3;</span><span>
+</span><a id="line_marker_-30" name="line_marker_-30"></a><span>  if(getkey("up")&gt;0)	y-=3;</span><span>
+</span><a id="line_marker_-31" name="line_marker_-31"></a><span>  if(crashTo(Enemy))    HP-=1;</span><span>
+</span><a id="line_marker_-32" name="line_marker_-32"></a><span>  if(HP==0)             die();</span><span>
+</span><a id="line_marker_-33" name="line_marker_-33"></a><span>  update();</span><span>
+</span><a id="line_marker_-34" name="line_marker_-34"></a><span>}</span><span>
+</span></pre><a id="line_marker_-36" name="line_marker_-36"></a><div class="plist">Enemy</div><a id="line_marker_-38" name="line_marker_-38"></a><pre><a id="line_marker_-37" name="line_marker_-37"></a><span>何も書かなくてよい</span><span>
+</span></pre><a id="line_marker_-39" name="line_marker_-39"></a><div class="plist">Label</div><a id="line_marker_-41" name="line_marker_-41"></a><pre><a id="line_marker_-40" name="line_marker_-40"></a><span>何も書かなくてよい</span><span>
+</span></pre><a id="line_marker_-42" name="line_marker_-42"></a><p></p><a id="line_marker_-43" name="line_marker_-43"></a><span>ゲームの初期設定などを再度行うためにプログラム全体をループさせる事で、ゲームオーバーになった後に再度ゲームを実行してゲームを繰り返しプレイする事が出来る。</span><span>
+</span><a id="line_marker_-44" name="line_marker_-44"></a><p></p></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
+</body></html>

@@ -1,0 +1,197 @@
+extends Actor;
+includes T2MediaPlayer;
+
+native $;
+native TError;
+native $LASTPOS;
+native Key;
+native Date;
+native ImageList;
+native Tonyu;
+native SplashScreen;
+native Math;
+
+\new(param) {
+    extend(param);
+}
+\update() {
+    waitFor(Tonyu.timeout(50)); // waitFor calls update...
+}
+\initSprites() {
+    $Sprites=new Sprites();
+    $FrontSprites=new Sprites();
+    print ("Loading plugins..");
+    var a=asyncResult();
+    $currentProject.loadPlugins(a.receiver);
+    waitFor(a);
+    print ("Loading pats..");
+    var rs=$currentProject.getResource();
+    a=asyncResult();
+    ImageList.load( rs.images, a.receiver)
+    {baseDir:$currentProject.getDir()};
+    waitFor(a);
+    var r=a[0];
+    $Sprites.setImageList(r);
+    for (var name,val in r.names) {
+        Tonyu.setGlobal(name, val);
+    }
+    print ("Loading pats done.");
+    cvj=$("canvas");
+    if (Tonyu.noviceMode) {
+        $Screen=new ScaledCanvas{canvas:cvj, width:600, height:300};
+    } else {
+        $Screen=new ScaledCanvas{canvas:cvj, width:465, height:465};
+    }
+}
+\initSounds() {
+    print ("Loading sounds...");
+    initT2MediaPlayer();
+    loadFromProject($currentProject);
+    print ("Loading sounds done.");
+    on("stop")\{
+        clearSEData();
+    };
+    $sound=this;
+}
+\hide() {
+}
+
+\initThread() {
+    //$mainThreadGroup=thg=Tonyu.threadGroup();
+    var o=Tonyu.currentProject.getOptions();
+    var mainClassName=o.run.mainClass;
+    print("MainClass= "+mainClassName);
+    mainClass=Tonyu.getClass(mainClassName);
+    if (!mainClass) {
+        TError( mainClassName+" というクラスはありません",
+        "不明" ,0).raise();
+    }
+    //Tonyu.runMode=true;
+    //$currentThreadGroup=thg;
+    scheduler=$Scheduler=new Scheduler;
+    new mainClass();
+}
+\stop() {
+    fireEvent("stop");
+    die();
+}
+\schedule(obj,method,args) {
+    method=method||"main";
+    args=args||[];
+    var th=scheduler.newThread(obj, method, args);
+    addThreadGroup(obj);
+    obj.addThread(th);
+    return th;
+}
+$Boot=this;
+initSounds();
+initSprites();
+$InputDevice=new InputDevice;
+$InputDevice.initCanvasEvents(cvj);
+initThread();
+
+$pat_fruits=30;
+$Keys=new Keys;
+$Math=Math;
+$consolePanel=new Panel{align:"center",x:465/2,y:465/2,width:465,height:465,zOrder:-10,layer:$FrontSprites};
+$consolePrintY=465-15;
+$panel=new Panel{align:"center",x:$screenWidth/2,y:$screenHeight/2,width:$screenWidth,height:$screenHeight,zOrder:-1,layer:$FrontSprites};
+if (typeof SplashScreen!="undefined") SplashScreen.hide();
+initFPSParams();
+
+$mouseX=$mouseX||0;
+$mouseY=$mouseY||0;
+while (true) {
+    //thg.steps();
+    scheduler.stepsAll();
+    $Keys.update();
+    $InputDevice.update();
+    $screenWidth=$Screen.width;
+    $screenHeight=$Screen.height;
+    doDraw=now()<deadLine;
+    if (!doDraw && frameSkipped>=maxFrameSkip) {
+        doDraw=true;
+        resetDeadLine();
+    }
+    if (doDraw) { // フレームスキップの時は描画しない
+        $Screen.fillCanvas($Screen.buf[0]);
+        $Sprites.draw($Screen.buf[0]);
+        $FrontSprites.draw($Screen.buf[0]);
+        $Screen.draw();
+        fps_fpsCnt ++;
+        frameSkipped=0;
+    } else {
+        frameSkipped++;
+    }
+    $Sprites.checkHit();
+    $Sprites.removeOneframes();
+    fps_rpsCnt ++;
+    measureFps();
+    waitFrame(); // FPS制御
+    while(paused) {
+        waitFor(Tonyu.timeout(1));
+        if (!paused) resetDeadLine();
+    }
+}
+
+nowait \initFPSParams() {
+    // フレームレートの設定
+    _fps = 30;
+    maxframeSkip = 5;
+    // フレームレート制御でつかう変数 //
+    frameCnt = 0;
+    resetDeadLine();
+    lastMeasured=now();
+    fps_fps=fps_rps=fps_fpsCnt=fps_rpsCnt=0;
+}
+nowait \now() {
+    return new Date().getTime();
+}
+nowait \resetDeadLine() {
+    deadLine=now()+1000/_fps;
+    frameSkipped = 0;
+}
+
+\waitFrame() {
+    var wt=deadLine-now();
+    if (wt<1) {
+        if (wt<-1000) resetDeadLine();
+        wt=1;
+    }
+    wt=floor(wt);
+    waitFor(Tonyu.timeout(wt));
+    deadLine+=1000/_fps;
+}
+
+nowait \getFrameRate() {
+    return _fps;
+}
+
+// Tonyu1の$System.setFrameRate() //
+nowait \setFrameRate(fps, maxFrameSkip) {
+    _fps = fps;
+    if (typeof maxFrameSkip!="number") maxFrameSkip=5;
+    this.maxFrameSkip = maxFrameSkip;
+    resetDeadLine();
+}
+
+// FPS（計測したフレームレート）を返す //
+nowait \getMeasuredFps() {
+    return fps_fps;
+}
+
+// RPS（計測した実行レート）を返す //
+nowait \getMeasuredRps() {
+    return fps_rps;
+}
+
+nowait \measureFps() {
+    if (now()>lastMeasured+1000) {
+        fps_fps=fps_fpsCnt;
+        fps_rps=fps_rpsCnt;
+        fps_fpsCnt=0;
+        fps_rpsCnt=0;
+        lastMeasured=now();
+    }
+}
+

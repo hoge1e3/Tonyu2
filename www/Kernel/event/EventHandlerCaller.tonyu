@@ -1,0 +1,12 @@
+extends null;
+native Tonyu;
+\callEventHandler(h, args) {
+    var t;
+    if (h["fiber"]) {
+        t=Tonyu.thread();
+        h["fiber"].apply(target, [t].concat(args) );
+        t.steps();
+    } else {
+        h.apply(target,args);
+    }
+}

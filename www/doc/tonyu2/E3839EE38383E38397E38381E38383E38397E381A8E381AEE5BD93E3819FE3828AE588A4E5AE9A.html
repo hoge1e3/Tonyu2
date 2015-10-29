@@ -1,0 +1,45 @@
+<html><head><meta charset="utf-8"/>
+<meta http-equiv="Content-type" content="text/html; charset=utf8"/>
+<title>マップチップとの当たり判定</title>
+</head><body><link rel='stylesheet' href='../../css/bootstrap.css'/>
+<link rel='stylesheet' href='../../css/tonyu.css'/>
+<script src='../../js/lib/jquery-1.10.1.js'/></script>
+<script src='../../js/ide/NWMenu.js'/></script>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px; font-family:"MS UI Gothic",sans-serif;}</style>
+<button onclick='javascript:history.back();'>←Back</button><br/>
+<div><a id="line_marker_-0" name="line_marker_-0"></a><a href="E794A8E98094E588A5E383AAE38395E382A1E383ACE383B3E382B9.html">用途別リファレンス</a><span>
+</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><h1><a id="line_marker_-2" name="line_marker_-2"></a><span>マップチップとの当たり判定</span></h1><a id="line_marker_-3" name="line_marker_-3"></a><p></p><a id="line_marker_-4" name="line_marker_-4"></a><div class="plist">Main</div><a id="line_marker_-39" name="line_marker_-39"></a><pre><a id="line_marker_-5" name="line_marker_-5"></a><span>$map=new Map{chipWidth:32,chipHeight:32};</span><span>
+</span><a id="line_marker_-6" name="line_marker_-6"></a><span>$map.load("stage1.json");</span><span>
+</span><a id="line_marker_-7" name="line_marker_-7"></a><p></p><a id="line_marker_-8" name="line_marker_-8"></a><span>x=$screenWidth/2;</span><span>
+</span><a id="line_marker_-9" name="line_marker_-9"></a><span>y=$screenHeight/2;</span><span>
+</span><a id="line_marker_-10" name="line_marker_-10"></a><span>while(true){</span><span>
+</span><a id="line_marker_-11" name="line_marker_-11"></a><span>    if(getkey("right")&gt;0){</span><span>
+</span><a id="line_marker_-12" name="line_marker_-12"></a><span>        x+=3;</span><span>
+</span><a id="line_marker_-13" name="line_marker_-13"></a><span>        if($map.getAt(x,y)&gt;-1){</span><span>
+</span><a id="line_marker_-14" name="line_marker_-14"></a><span>            x-=3;</span><span>
+</span><a id="line_marker_-15" name="line_marker_-15"></a><span>        }</span><span>
+</span><a id="line_marker_-16" name="line_marker_-16"></a><span>    }</span><span>
+</span><a id="line_marker_-17" name="line_marker_-17"></a><span>    if(getkey("left")&gt;0){</span><span>
+</span><a id="line_marker_-18" name="line_marker_-18"></a><span>        x-=3;</span><span>
+</span><a id="line_marker_-19" name="line_marker_-19"></a><span>        if($map.getAt(x,y)&gt;-1){</span><span>
+</span><a id="line_marker_-20" name="line_marker_-20"></a><span>            x+=3;</span><span>
+</span><a id="line_marker_-21" name="line_marker_-21"></a><span>        }</span><span>
+</span><a id="line_marker_-22" name="line_marker_-22"></a><span>    }</span><span>
+</span><a id="line_marker_-23" name="line_marker_-23"></a><span>    if(getkey("down")&gt;0){</span><span>
+</span><a id="line_marker_-24" name="line_marker_-24"></a><span>        y+=3;</span><span>
+</span><a id="line_marker_-25" name="line_marker_-25"></a><span>        if($map.getAt(x,y)&gt;-1){</span><span>
+</span><a id="line_marker_-26" name="line_marker_-26"></a><span>            y-=3;</span><span>
+</span><a id="line_marker_-27" name="line_marker_-27"></a><span>        }</span><span>
+</span><a id="line_marker_-28" name="line_marker_-28"></a><span>    }</span><span>
+</span><a id="line_marker_-29" name="line_marker_-29"></a><span>    if(getkey("up")&gt;0){</span><span>
+</span><a id="line_marker_-30" name="line_marker_-30"></a><span>        y-=3;</span><span>
+</span><a id="line_marker_-31" name="line_marker_-31"></a><span>        if($map.getAt(x,y)&gt;-1){</span><span>
+</span><a id="line_marker_-32" name="line_marker_-32"></a><span>            y+=3;</span><span>
+</span><a id="line_marker_-33" name="line_marker_-33"></a><span>        }</span><span>
+</span><a id="line_marker_-34" name="line_marker_-34"></a><span>    }</span><span>
+</span><a id="line_marker_-35" name="line_marker_-35"></a><span>    update();</span><span>
+</span><a id="line_marker_-36" name="line_marker_-36"></a><span>}</span><span>
+</span><a id="line_marker_-37" name="line_marker_-37"></a><p></p><a id="line_marker_-38" name="line_marker_-38"></a><p></p></pre><a id="line_marker_-40" name="line_marker_-40"></a><p></p><a id="line_marker_-41" name="line_marker_-41"></a><span>上の命令は、上下左右に動かせる中央のオブジェクトがマップチップとぶつかると押し戻されるようにし、重なることができないようにしたものです。</span><span>
+</span><a id="line_marker_-42" name="line_marker_-42"></a><p></p><a id="line_marker_-43" name="line_marker_-43"></a><p></p><a id="line_marker_-44" name="line_marker_-44"></a><p></p><a id="line_marker_-45" name="line_marker_-45"></a><a href="E5BD93E3819FE3828AE588A4E5AE9AE381A7E5A381E381ABE381B6E381A4E3818BE3828B.html">当たり判定で壁にぶつかる</a><span>
+</span><a id="line_marker_-46" name="line_marker_-46"></a><p></p></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
+</body></html>
