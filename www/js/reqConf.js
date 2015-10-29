@@ -207,6 +207,7 @@ var reqConf={
             "DeferredUtil":"lib/DeferredUtil",
             "NWMenu":"ide/NWMenu",
             "IFrameDialog":"help/IFrameDialog",
+            "OggConverter":"ide/OggConverter",
 
             "foo":"bar"
         },

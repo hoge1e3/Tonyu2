@@ -97,6 +97,7 @@ define([], function () {
         }
         WebSite.logdir="/var/log/Tonyu/";
         WebSite.kernelDir=WebSite.cwd+"www/Kernel/";
+        WebSite.ffmpeg=WebSite.cwd+("ffmpeg/bin/ffmpeg.exe");
     }
     WebSite.compiledKernel=WebSite.top+"/Kernel/js/concat.js"
     return window.WebSite=WebSite;

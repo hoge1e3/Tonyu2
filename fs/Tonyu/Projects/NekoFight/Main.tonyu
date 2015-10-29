@@ -1,0 +1,54 @@
+$Screen.resize(256+16,212);
+$Screen.setBGColor("black");
+$map0=new Map{chipWidth:16,chipHeight:16,row:14, col:16};
+pw=20;
+$map1=new Map{chipWidth:16,chipHeight:16,row:14, col:16};
+setPage(0);
+for (i=0;i<=8;i++) {
+    if (i<8) {
+        put($map0, i*2,8,$pat_nekoFight);
+        put($map0, i*2,10,$pat_nekoFight+pw*2);
+        put($map0, i*2,12,$pat_nekoFight+pw*4);
+    }
+    put($map1, i*2-1,8,$pat_nekoFight);
+    put($map1, i*2-1,10,$pat_nekoFight+pw*2);
+    put($map1, i*2-1,12,$pat_nekoFight+pw*4);
+    
+    //    new Actor{x:i*32+16+16,y:128,p:$pat_nekoFight};
+    //    new Actor{x:i*32+16,y:128,p:$pat_nekoFight};
+    //    new Actor{x:i*32+16+16,y:128+32,p:$pat_nekoFight+10};
+    //    new Actor{x:i*32+16,y:128+32,p:$pat_nekoFight+10};
+    //    new Actor{x:i*32+16,y:128+32*2,p:$pat_nekoFight+20};
+}
+while(true) {
+    for (i=-7; i<=8 ;i++ ){
+        setAdjust(i,0);
+        update();
+    }
+    setPage(1);
+    for (i=-7; i<=8 ;i++ ){
+        setAdjust(i,0);
+        update();
+    }
+    setPage(0);
+    
+}
+
+\put(m,x,y,p) {
+    m.set(x,y,p);
+    m.set(x+1,y,p+1);
+    m.set(x,y+1,p+pw);
+    m.set(x+1,y+1,p+1+pw);
+}
+\setPage(pg) {
+    if (pg==0) {
+        $map0.scrollTo(-16,0);
+        $map1.scrollTo(0,-256);
+    } else {
+        $map1.scrollTo(-16,0);
+        $map0.scrollTo(0,-256);
+    }
+}
+\setAdjust(x,y) {
+    $Screen.scrollTo(x+8,y+8);
+}

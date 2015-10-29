@@ -1,7 +1,7 @@
 define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
-        ,"ImageDetailEditor","Util"],
+        ,"ImageDetailEditor","Util","OggConverter"],
         function (FS, Tonyu, UI,IL,Blob,Auth,WebSite,
-                ImageDetailEditor,Util) {
+                ImageDetailEditor,Util,OggConverter) {
     var ResEditor=function (prj, mediaType) {
         var mediaInfos={
                 image:{name:"画像",exts:["png","gif","jpg"],path:"images/",key:"images",
@@ -233,6 +233,9 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
             close: function () {
                 update();
                 cleanFiles();
+                if (mediaType=="sound") {
+                    OggConverter.convert(rsrcDir);
+                }
             }
         });
     };
