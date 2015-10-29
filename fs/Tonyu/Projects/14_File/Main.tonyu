@@ -1,5 +1,7 @@
 saveDataFile=file("save.json");
-saveData=saveDataFile.obj();
+if (saveDataFile.exists())  {
+    saveData=saveDataFile.obj();
+}
 if (!saveData) saveData={count:0};
 saveData.count++;
 saveDataFile.obj(saveData);
