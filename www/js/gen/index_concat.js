@@ -1,4 +1,4 @@
-// Created at Wed Oct 28 2015 10:17:24 GMT+0900 (東京 (標準時))
+// Created at Thu Oct 29 2015 12:21:30 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -90,9 +90,9 @@ requireSimulator.setName('WebSite');
 define([], function () {
     var loc=document.location.href;
     var devMode=!!loc.match(/html\/dev\//) && !!loc.match(/localhost:3/);
-
+    var WebSite;
     if (loc.match(/jsrun\.it/)) {
-        window.WebSite={
+        WebSite={
             urlAliases: {
                 "images/Ball.png":"http://jsrun.it/assets/9/X/T/b/9XTbt.png",
                 "images/base.png":"http://jsrun.it/assets/6/F/y/3/6Fy3B.png",
@@ -115,7 +115,7 @@ define([], function () {
 	    loc.match(/\/html\/((dev)|(build))\//)
 	  )
     ) {
-        window.WebSite={
+        WebSite={
             urlAliases: {
                 "images/Ball.png":"../../images/Ball.png",
                 "images/base.png":"../../images/base.png",
@@ -128,66 +128,74 @@ define([], function () {
             },top:"../..",devMode:devMode
         };
     } else {
-        window.WebSite={
+        WebSite={
            urlAliases: {}, top: "../..",devMode:devMode
         };
     }
     // from https://w3g.jp/blog/js_browser_sniffing2015
     var u=window.navigator.userAgent.toLowerCase();
-    window.WebSite.tablet=(u.indexOf("windows") != -1 && u.indexOf("touch") != -1)
+    WebSite.tablet=(u.indexOf("windows") != -1 && u.indexOf("touch") != -1)
     || u.indexOf("ipad") != -1
     || (u.indexOf("android") != -1 && u.indexOf("mobile") == -1)
     || (u.indexOf("firefox") != -1 && u.indexOf("tablet") != -1)
     || u.indexOf("kindle") != -1
     || u.indexOf("silk") != -1
     || u.indexOf("playbook") != -1;
-    window.WebSite.mobile=(u.indexOf("windows") != -1 && u.indexOf("phone") != -1)
+    WebSite.mobile=(u.indexOf("windows") != -1 && u.indexOf("phone") != -1)
     || u.indexOf("iphone") != -1
     || u.indexOf("ipod") != -1
     || (u.indexOf("android") != -1 && u.indexOf("mobile") != -1)
     || (u.indexOf("firefox") != -1 && u.indexOf("mobile") != -1)
     || u.indexOf("blackberry") != -1;
 
-    if (!window.WebSite.pluginTop) {
-        window.WebSite.pluginTop=window.WebSite.top+"/js/plugins";
+    if (!WebSite.pluginTop) {
+        WebSite.pluginTop=WebSite.top+"/js/plugins";
     }
-    window.WebSite.disableROM={};
+    WebSite.disableROM={};
 	if (loc.match(/tonyuedit\.appspot\.com/) || loc.match(/localhost:8888/) ) {
-	    //window.WebSite.disableROM={"ROM_d.js":true};
+	    //WebSite.disableROM={"ROM_d.js":true};
 	}
     if (loc.match(/\.appspot\.com/) ||  loc.match(/localhost:888[87]/)) {
-        window.WebSite.serverType="GAE";
+        WebSite.serverType="GAE";
     }
     if (loc.match(/localhost:3000/) ) {
-        window.WebSite.serverType="Node";
+        WebSite.serverType="Node";
     }
     if (loc.match(/tonyuexe\.appspot\.com/) ||
         loc.match(/localhost:8887/)) {
-        window.WebSite.serverTop=window.WebSite.top+"/exe"; // Fix NetModule.tonyu!!
+        WebSite.serverTop=WebSite.top+"/exe"; // Fix NetModule.tonyu!!
     } else {
-        window.WebSite.serverTop=window.WebSite.top+"/edit";// Fix NetModule.tonyu!!
+        WebSite.serverTop=WebSite.top+"/edit";// Fix NetModule.tonyu!!
     }
-    window.WebSite.sampleImg=window.WebSite.top+"/images";
-    window.WebSite.blobPath=window.WebSite.serverTop+"/serveBlob";        //TODO: urlchange!
-    window.WebSite.isNW=(typeof process=="object" && process.__node_webkit);
-    window.WebSite.tonyuHome="/Tonyu/";
-    window.WebSite.url={
+    WebSite.sampleImg=WebSite.top+"/images";
+    WebSite.blobPath=WebSite.serverTop+"/serveBlob";        //TODO: urlchange!
+    WebSite.isNW=(typeof process=="object" && process.__node_webkit);
+    WebSite.mp3Disabled=WebSite.isNW;
+    WebSite.tonyuHome="/Tonyu/";
+    WebSite.url={
         getDirInfo:WebSite.serverTop+"/getDirInfo",
         getFiles:WebSite.serverTop+"/File2LSSync",
         putFiles:WebSite.serverTop+"/LS2FileSync"
     };
-    if (window.WebSite.isNW) {
-        window.WebSite.cwd=process.cwd().replace(/\\/g,"/").replace(/\/?$/,"/");
+    if (WebSite.isNW) {
+        WebSite.cwd=process.cwd().replace(/\\/g,"/").replace(/\/?$/,"/");
         if (process.env.TONYU_HOME) {
-            window.WebSite.tonyuHome=process.env.TONYU_HOME.replace(/\\/g,"/").replace(/\/?$/,"/");
+            WebSite.tonyuHome=process.env.TONYU_HOME.replace(/\\/g,"/").replace(/\/?$/,"/");
         } else {
-            window.WebSite.tonyuHome=window.WebSite.cwd+"fs/Tonyu/";
+            WebSite.tonyuHome=WebSite.cwd+"fs/Tonyu/";
         }
-        window.WebSite.logdir="/var/log/Tonyu/";
-        window.WebSite.kernelDir=window.WebSite.cwd+"www/Kernel/";
+        WebSite.logdir="/var/log/Tonyu/";
+        WebSite.kernelDir=WebSite.cwd+"www/Kernel/";
+        WebSite.ffmpeg=WebSite.cwd+("ffmpeg/bin/ffmpeg.exe");
     }
-    window.WebSite.compiledKernel=window.WebSite.top+"/Kernel/js/concat.js"
-    return window.WebSite;
+    if (loc.match(/tonyuedit\.appspot\.com/) ||
+        loc.match(/localhost:888/) ||
+        WebSite.isNW) {
+        WebSite.compiledKernel=WebSite.top+"/Kernel/js/concat.js";
+    } else {
+        WebSite.compiledKernel="http://tonyuexe.appspot.com/Kernel/js/concat.js";
+    }
+    return window.WebSite=WebSite;
 });
 
 requireSimulator.setName('assert');
@@ -2675,6 +2683,9 @@ return Wiki=function (placeHolder, home, options, plugins) {
     	tocFile=cwd.rel("toc.json");
     };
     if (home) W.cd(home);
+    W.encodeURL=function (name) {
+        return encodeURI(name).replace(/%/g,"");
+    };
     W.parse=function (body,name,file) {
         var ctx={};
         var $h=HttpHelper({lineMark:LINEMARK});
@@ -2883,7 +2894,7 @@ return Wiki=function (placeHolder, home, options, plugins) {
                     		    if (options.useAnchor) {
                     		       // a=$("<a>").attr({href:"wiki.html?file="+f.path()}).text(caption);
                     		        var ahref=f.relPath(file.up()).replace(/\.txt$/,".html");
-                                    ahref=encodeURI(ahref).replace(/%/g,"_");
+                                    ahref=W.encodeURL(ahref);// encodeURI(ahref).replace(/%/g,"_");
                                     a=$("<a>").attr({href:ahref}).text(caption);
                                     //a=$("<a>").attr({href:"?file="+f.path()}).text(caption);
                     		    } else {

@@ -1,0 +1,25 @@
+<html><head><meta charset="utf-8"/>
+<meta http-equiv="Content-type" content="text/html; charset=utf8"/>
+<title>上下左右に移動させる</title>
+</head><body><link rel='stylesheet' href='../../css/bootstrap.css'/>
+<link rel='stylesheet' href='../../css/tonyu.css'/>
+<script src='../../js/lib/jquery-1.10.1.js'/></script>
+<script src='../../js/ide/NWMenu.js'/></script>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px; font-family:"MS UI Gothic",sans-serif;}</style>
+<button onclick='javascript:history.back();'>←Back</button><br/>
+<div><a id="line_marker_-0" name="line_marker_-0"></a><a href="E794A8E98094E588A5E383AAE38395E382A1E383ACE383B3E382B9.html">用途別リファレンス</a><span>
+</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><a id="line_marker_-2" name="line_marker_-2"></a><a href="E382AAE38396E382B8E382A7E382AFE38388E38292E58B95E3818BE38199.html">オブジェクトを動かす</a><span>
+</span><a id="line_marker_-3" name="line_marker_-3"></a><p></p><h1><a id="line_marker_-4" name="line_marker_-4"></a><span>上下左右に移動させる</span></h1><a id="line_marker_-5" name="line_marker_-5"></a><div class="plist">Main</div><a id="line_marker_-15" name="line_marker_-15"></a><pre><a id="line_marker_-6" name="line_marker_-6"></a><span>x=$screenWidth/2;</span><span>
+</span><a id="line_marker_-7" name="line_marker_-7"></a><span>y=$screenHeight/2;</span><span>
+</span><a id="line_marker_-8" name="line_marker_-8"></a><span>while(true){</span><span>
+</span><a id="line_marker_-9" name="line_marker_-9"></a><span>  if(getkey("right")&gt;0)	x+=3;</span><span>
+</span><a id="line_marker_-10" name="line_marker_-10"></a><span>  if(getkey("left")&gt;0)	x-=3;</span><span>
+</span><a id="line_marker_-11" name="line_marker_-11"></a><span>  if(getkey("down")&gt;0)	y+=3;</span><span>
+</span><a id="line_marker_-12" name="line_marker_-12"></a><span>  if(getkey("up")&gt;0)	y-=3;</span><span>
+</span><a id="line_marker_-13" name="line_marker_-13"></a><span>  update();</span><span>
+</span><a id="line_marker_-14" name="line_marker_-14"></a><span>}</span><span>
+</span></pre><a id="line_marker_-16" name="line_marker_-16"></a><span>画面中央に表示されているオブジェクトを矢印キーの上下左右で動かすことができる。</span><span>
+</span><a id="line_marker_-17" name="line_marker_-17"></a><p></p><a id="line_marker_-18" name="line_marker_-18"></a><span>※このままでは画面端より外側にはみ出すことができてしまう。画面外に出ないようにするためには</span><a href="E794BBE99DA2E7ABAFE3818BE38289E587BAE381AAE38184E38288E38186E381ABE38199E3828B.html">画面端から出ないようにする</a><span>設定が必要。</span><span>
+</span><a id="line_marker_-19" name="line_marker_-19"></a><p></p><a id="line_marker_-20" name="line_marker_-20"></a><span>※壁などの障害物にぶつかったら止まるようにするには</span><a href="E5BD93E3819FE3828AE588A4E5AE9AE381A7E5A381E381ABE381B6E381A4E3818BE3828B.html">当たり判定で壁にぶつかる</a><span>ようにする。</span><span>
+</span></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
+</body></html>

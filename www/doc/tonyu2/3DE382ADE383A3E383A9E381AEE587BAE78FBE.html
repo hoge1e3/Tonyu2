@@ -1,0 +1,28 @@
+<html><head><meta charset="utf-8"/>
+<meta http-equiv="Content-type" content="text/html; charset=utf8"/>
+<title>3Dキャラの出現</title>
+</head><body><link rel='stylesheet' href='../../css/bootstrap.css'/>
+<link rel='stylesheet' href='../../css/tonyu.css'/>
+<script src='../../js/lib/jquery-1.10.1.js'/></script>
+<script src='../../js/ide/NWMenu.js'/></script>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px; font-family:"MS UI Gothic",sans-serif;}</style>
+<button onclick='javascript:history.back();'>←Back</button><br/>
+<div><a id="line_marker_-0" name="line_marker_-0"></a><a href="E794A8E98094E588A5E383AAE38395E382A1E383ACE383B3E382B9.html">用途別リファレンス</a><span>
+</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><h2><a id="line_marker_-2" name="line_marker_-2"></a><span>・3Dキャラクターの出現</span></h2><a id="line_marker_-3" name="line_marker_-3"></a><p></p><a id="line_marker_-4" name="line_marker_-4"></a><span>Mainクラスに以下を書き込む</span><span>
+</span><a id="line_marker_-5" name="line_marker_-5"></a><p></p><a id="line_marker_-6" name="line_marker_-6"></a><div class="plist">Main</div><a id="line_marker_-14" name="line_marker_-14"></a><pre><a id="line_marker_-7" name="line_marker_-7"></a><span>while(true){</span><span>
+</span><a id="line_marker_-8" name="line_marker_-8"></a><span>    //キャラ出現率10％</span><span>
+</span><a id="line_marker_-9" name="line_marker_-9"></a><span>    if (rnd(100)&lt;10) {</span><span>
+</span><a id="line_marker_-10" name="line_marker_-10"></a><span>        new Chara2{ ox:rnd(500)-250,oy:rnd(500)-250,z:1000 ,p:0,zOrder:0};</span><span>
+</span><a id="line_marker_-11" name="line_marker_-11"></a><span>    }</span><span>
+</span><a id="line_marker_-12" name="line_marker_-12"></a><span>    update();</span><span>
+</span><a id="line_marker_-13" name="line_marker_-13"></a><span>}</span><span>
+</span></pre><a id="line_marker_-15" name="line_marker_-15"></a><p></p><a id="line_marker_-16" name="line_marker_-16"></a><span>3D表示を行うためプレイヤーから物体までの距離を設定していく。</span><span>
+</span><a id="line_marker_-17" name="line_marker_-17"></a><p></p><a id="line_marker_-18" name="line_marker_-18"></a><span>ｚはキャラまでの距離を表しており、今回では1000としている。</span><span>
+</span><a id="line_marker_-19" name="line_marker_-19"></a><p></p><a id="line_marker_-20" name="line_marker_-20"></a><span>ox,oyは出現位置です。</span><span>
+</span><a id="line_marker_-22" name="line_marker_-22"></a><ul><li><a id="line_marker_-21" name="line_marker_-21"></a><span>なぜ500や250などの大きい値を設定しているかというと、初期位置の変化をわかりやすくするためです。</span><span>
+</span></li></ul><p></p><ul><a id="line_marker_-24" name="line_marker_-24"></a><ul><li><a id="line_marker_-23" name="line_marker_-23"></a><span>近くの物体が１ｍ動くと動いたことはすぐにわかるが遠くの物体が１ｍ動いた場合はどうだろう？動いた気がする程度の物だろう。しかし遠くの物でも１００ｍ動いた場合はある程度はっきりわかることでしょう.</span><span>
+</span></li></ul></ul><p></p><a id="line_marker_-26" name="line_marker_-26"></a><ul><li><a id="line_marker_-25" name="line_marker_-25"></a><span>今回のキャラは1000先に出現したため、大きく場所の変動を行っている。</span><span>
+</span></li></ul><p></p><a id="line_marker_-27" name="line_marker_-27"></a><span>前　</span><a href="3DE382ADE383A3E383A9E381AEE8A1A8E7A4BA.html">3Dキャラの表示</a><span>　次　</span><a href="3DE5BCBEE38292E68993E381A4.html">3D弾を打つ</a><span>
+</span><a id="line_marker_-28" name="line_marker_-28"></a><p></p><a id="line_marker_-29" name="line_marker_-29"></a><span>追加要素　</span><a href="E887AAE6A99FE381AEE587BAE78FBE.html">自機の出現と移動</a><span>
+</span></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
+</body></html>

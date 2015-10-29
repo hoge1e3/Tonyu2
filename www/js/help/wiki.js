@@ -17,6 +17,9 @@ return Wiki=function (placeHolder, home, options, plugins) {
     	tocFile=cwd.rel("toc.json");
     };
     if (home) W.cd(home);
+    W.encodeURL=function (name) {
+        return encodeURI(name).replace(/%/g,"");
+    };
     W.parse=function (body,name,file) {
         var ctx={};
         var $h=HttpHelper({lineMark:LINEMARK});
@@ -225,7 +228,7 @@ return Wiki=function (placeHolder, home, options, plugins) {
                     		    if (options.useAnchor) {
                     		       // a=$("<a>").attr({href:"wiki.html?file="+f.path()}).text(caption);
                     		        var ahref=f.relPath(file.up()).replace(/\.txt$/,".html");
-                                    ahref=encodeURI(ahref).replace(/%/g,"_");
+                                    ahref=W.encodeURL(ahref);// encodeURI(ahref).replace(/%/g,"_");
                                     a=$("<a>").attr({href:ahref}).text(caption);
                                     //a=$("<a>").attr({href:"?file="+f.path()}).text(caption);
                     		    } else {

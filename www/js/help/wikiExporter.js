@@ -35,10 +35,10 @@ requirejs(["Shell","Wiki","FS","requestFragment","WebSite"], function (sh,Wiki,F
             src+="<br/><button onclick='javascript:history.back();'>←Back</button>\n";
             src+='</body></html>';
             //data[FS.get(htmlDir).relPath(wikiDir)]=src;
-            htmlFile.text(src);
-            var encFile=htmlFile.up().rel(encodeURI(htmlFile.name()).replace(/%/g,"_") );
-            if (encFile.path()!=htmlFile.path()) encFile.text(src);
-            sh.echo("generated ",wikiFile.path(),"->",htmlFile.path());
+            //htmlFile.text(src);
+            var encFile=htmlFile.up().rel(w.encodeURL(htmlFile.name()) );
+            /*if (encFile.path()!=htmlFile.path()) */encFile.text(src);
+            sh.echo("generated ",wikiFile.path(),"->",encFile.path());
 
         });
     };

@@ -99,6 +99,12 @@ define([], function () {
         WebSite.kernelDir=WebSite.cwd+"www/Kernel/";
         WebSite.ffmpeg=WebSite.cwd+("ffmpeg/bin/ffmpeg.exe");
     }
-    WebSite.compiledKernel=WebSite.top+"/Kernel/js/concat.js"
+    if (loc.match(/tonyuedit\.appspot\.com/) ||
+        loc.match(/localhost:888/) ||
+        WebSite.isNW) {
+        WebSite.compiledKernel=WebSite.top+"/Kernel/js/concat.js";
+    } else {
+        WebSite.compiledKernel="http://tonyuexe.appspot.com/Kernel/js/concat.js";
+    }
     return window.WebSite=WebSite;
 });
