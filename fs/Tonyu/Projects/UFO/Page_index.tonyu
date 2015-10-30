@@ -1,4 +1,5 @@
 extends T1Page;
+
 initGlobals();
 $screenWidth=560;
 $screenHeight=376;

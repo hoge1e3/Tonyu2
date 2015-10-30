@@ -171,11 +171,11 @@ nowait \allWithin(t,distance) {
     if (!t1) return res;
     $Sprites.sprites.forEach(\(s) {
         var t2;
-        if (s!==this && 
+        if (s!==this &&
         !s.excludeFromAll &&
-        s instanceof t && 
+        s instanceof t &&
         Math.sqrt(Math.abs(x-s.x)*Math.abs(x-s.x)+ Math.abs(y-s.y)*Math.abs(y-s.y))<distance) {
-            res.push(s);    
+            res.push(s);
         }
     });
     return res;
@@ -370,7 +370,7 @@ nowait \asyncResult() {//@deperecated
 \file(path) {
     var d=Tonyu.currentProject.getDir();
     var files=d.rel("files/");
-    return FS.get(files.rel(path)) {topDir:d};
+    return files.rel(path).setPolicy {topDir:d};
 }
 \waitInputDevice(fl) {
     if (fl!==false) {

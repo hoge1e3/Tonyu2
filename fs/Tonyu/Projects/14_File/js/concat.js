@@ -11,40 +11,40 @@ Tonyu.klass.define({
       
       //$LASTPOS=1000000;//user.Main:0
       _this.saveDataFile=_this.file("save.json");
-      //$LASTPOS=1000032;//user.Main:32
+      //$LASTPOS=1000033;//user.Main:33
       if (_this.saveDataFile.exists()) {
-        //$LASTPOS=1000066;//user.Main:66
+        //$LASTPOS=1000068;//user.Main:68
         _this.saveData=_this.saveDataFile.obj();
         
       }
-      //$LASTPOS=1000097;//user.Main:97
+      //$LASTPOS=1000101;//user.Main:101
       if (! _this.saveData) {
-        //$LASTPOS=1000112;//user.Main:112
+        //$LASTPOS=1000116;//user.Main:116
         _this.saveData={count: 0};
       }
-      //$LASTPOS=1000132;//user.Main:132
+      //$LASTPOS=1000137;//user.Main:137
       _this.saveData.count++;
-      //$LASTPOS=1000150;//user.Main:150
+      //$LASTPOS=1000156;//user.Main:156
       _this.saveDataFile.obj(_this.saveData);
-      //$LASTPOS=1000178;//user.Main:178
+      //$LASTPOS=1000185;//user.Main:185
       _this.x=200;
-      //$LASTPOS=1000184;//user.Main:184
+      //$LASTPOS=1000191;//user.Main:191
       _this.y=20;
-      //$LASTPOS=1000189;//user.Main:189
+      //$LASTPOS=1000196;//user.Main:196
       _this.size=20;
-      //$LASTPOS=1000198;//user.Main:198
+      //$LASTPOS=1000206;//user.Main:206
       _this.text="count="+_this.saveData.count+" F9:inc SPACE:reset";
-      //$LASTPOS=1000250;//user.Main:250
+      //$LASTPOS=1000259;//user.Main:259
       while (true) {
-        //$LASTPOS=1000269;//user.Main:269
+        //$LASTPOS=1000279;//user.Main:279
         if (_this.getkey("space")==1) {
-          //$LASTPOS=1000303;//user.Main:303
+          //$LASTPOS=1000314;//user.Main:314
           _this.saveDataFile.rm();
-          //$LASTPOS=1000330;//user.Main:330
+          //$LASTPOS=1000342;//user.Main:342
           _this.text="Reset ! press F9";
           
         }
-        //$LASTPOS=1000365;//user.Main:365
+        //$LASTPOS=1000379;//user.Main:379
         _this.update();
         
       }
@@ -67,40 +67,40 @@ Tonyu.klass.define({
           case 1:
             _this.saveDataFile=_thread.retVal;
             
-            //$LASTPOS=1000032;//user.Main:32
+            //$LASTPOS=1000033;//user.Main:33
             if (_this.saveDataFile.exists()) {
-              //$LASTPOS=1000066;//user.Main:66
+              //$LASTPOS=1000068;//user.Main:68
               _this.saveData=_this.saveDataFile.obj();
               
             }
-            //$LASTPOS=1000097;//user.Main:97
+            //$LASTPOS=1000101;//user.Main:101
             if (! _this.saveData) {
-              //$LASTPOS=1000112;//user.Main:112
+              //$LASTPOS=1000116;//user.Main:116
               _this.saveData={count: 0};
             }
-            //$LASTPOS=1000132;//user.Main:132
+            //$LASTPOS=1000137;//user.Main:137
             _this.saveData.count++;
-            //$LASTPOS=1000150;//user.Main:150
+            //$LASTPOS=1000156;//user.Main:156
             _this.saveDataFile.obj(_this.saveData);
-            //$LASTPOS=1000178;//user.Main:178
+            //$LASTPOS=1000185;//user.Main:185
             _this.x=200;
-            //$LASTPOS=1000184;//user.Main:184
+            //$LASTPOS=1000191;//user.Main:191
             _this.y=20;
-            //$LASTPOS=1000189;//user.Main:189
+            //$LASTPOS=1000196;//user.Main:196
             _this.size=20;
-            //$LASTPOS=1000198;//user.Main:198
+            //$LASTPOS=1000206;//user.Main:206
             _this.text="count="+_this.saveData.count+" F9:inc SPACE:reset";
-            //$LASTPOS=1000250;//user.Main:250
+            //$LASTPOS=1000259;//user.Main:259
           case 2:
-            //$LASTPOS=1000269;//user.Main:269
+            //$LASTPOS=1000279;//user.Main:279
             if (_this.getkey("space")==1) {
-              //$LASTPOS=1000303;//user.Main:303
+              //$LASTPOS=1000314;//user.Main:314
               _this.saveDataFile.rm();
-              //$LASTPOS=1000330;//user.Main:330
+              //$LASTPOS=1000342;//user.Main:342
               _this.text="Reset ! press F9";
               
             }
-            //$LASTPOS=1000365;//user.Main:365
+            //$LASTPOS=1000379;//user.Main:379
             _this.fiber$update(_thread);
             __pc=3;return;
           case 3:
