@@ -1,9 +1,0 @@
-// scaleX: 拡大率
-// scaleY: 縦の拡大率（省略するとscaleXと同じ値)
-// alpha: 透過度
-// rotate: 回転角度
-new DX{x:150, y:200, p:2, scaleX:2};
-new DX{x:50, y:200, p:5, scaleX:2, scaleY:1};
-new DX{x:200, y:150, p:3, alpha:128,rotate:90};
-
-

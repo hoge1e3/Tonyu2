@@ -1,3 +1,0 @@
-map=new Map;
-map.load("map.json");
-print(map.chipWidth);

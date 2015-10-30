@@ -1,3 +1,0 @@
-
-new Player{x:210,y:100};
-new SeeSaw{x:200,y:300,scaleX:10, scaleY:1 , rotation:10};

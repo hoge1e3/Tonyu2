@@ -1,9 +1,0 @@
-
-s=new SeeSaw{x:200,y:200,scaleX:10,scaleY:1};
-//s.addRevoluteJoint{x:300,y:200,lowerAngle:-30,upperAngle:30};
-
-new BodyActor{x:200,y:3};
-/*while(true) {
-    if(getkey(32)) s.applyImpulse(0,-30);
-    update();
-}*/

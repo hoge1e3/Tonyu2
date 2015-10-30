@@ -1,7 +1,0 @@
-extends BodyActor;
-
-while(!screenOut()) {
-    updateEx(10);
-    applyImpulse(rnd()*10-5,-rnd()*5);
-}
-die();

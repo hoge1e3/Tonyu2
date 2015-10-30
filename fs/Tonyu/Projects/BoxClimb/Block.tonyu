@@ -1,6 +1,0 @@
-extends BodyActor;
-
-while(y<$screenHeight) {
-    update();   
-}
-die();

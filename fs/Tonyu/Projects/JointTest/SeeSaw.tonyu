@@ -1,9 +1,0 @@
-extends BodyActor;
-
-
-addRevoluteJoint{x:300,y:200,lowerAngle:-30,upperAngle:30};
-
-while(true) {
-    if(getkey(32)) applyImpulse(0,-30);
-    update();
-}

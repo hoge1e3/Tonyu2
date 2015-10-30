@@ -1,7 +1,0 @@
-while (true) {
-    rotation+=3;
-    x+=10;
-    $Screen.scrollTo(x-200,y-200);
-    //scaleX+=0.1;
-    update();
-}

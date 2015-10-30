@@ -1,9 +1,0 @@
-
-$Screen.resize(465,530);
-new Actor{x:230,y:100,text:"Box Climber",size:50};
-new Actor{x:230,y:200,text:"Hit Space or touch",size:20};
-
-while(true) {
-    if(getkey(32) || $touches[0].touched) loadPage(Main);
-    update();
-}

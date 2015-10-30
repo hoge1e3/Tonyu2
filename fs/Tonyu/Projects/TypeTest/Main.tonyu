@@ -1,6 +1,0 @@
-
-\test(x:Number,y:Number):Number {
-    var res:Number=x+y;
-    return res;
-}
-print(test(3,4));

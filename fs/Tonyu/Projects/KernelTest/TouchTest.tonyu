@@ -1,6 +1,0 @@
-while(true) {
-    x=$touches[0].x;
-    y=$touches[0].y;
-    text="t="+$touches[0].touched;
-    update();
-}

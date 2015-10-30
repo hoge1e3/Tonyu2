@@ -1,6 +1,0 @@
-$map=new Map{chipWidth:32,chipHeight:32,zOrder:10};
-$map.load("map.json");
-for (i=1 ; i<=12 ; i++) {
-    new Actor{x:i*32+16,y:16,text:i};
-    new Actor{y:i*32+8,x:16,text:i};
-}
