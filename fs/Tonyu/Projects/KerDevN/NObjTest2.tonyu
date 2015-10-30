@@ -1,4 +1,0 @@
-extends NoviceActor;
-
-change(10);
-go(x,y);

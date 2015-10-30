@@ -1,9 +1,0 @@
-
-x=200;y=20;p=2;
-while(true) {
-    if ($pl) {
-        //text=$pl.currentTime();
-        x=$pl.currentTime()/10;
-    }
-    update();
-}

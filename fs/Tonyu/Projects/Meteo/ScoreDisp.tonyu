@@ -1,6 +1,0 @@
-extends TextChar;
-
-while(1) {
-  text="Score : "+$score;       
-  update();        
-}        

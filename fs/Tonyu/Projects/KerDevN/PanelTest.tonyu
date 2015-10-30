@@ -1,9 +1,0 @@
-
-setPanel(200,100);
-panel.fillRect(0,0,200,200);
-
-while(true) {
-    x++;
-    rotataion++;
-    update();
-}

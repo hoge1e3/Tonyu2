@@ -1,5 +1,0 @@
-extends BodyActor;
-while(!screenOut()) {
-    update();   
-}
-die();

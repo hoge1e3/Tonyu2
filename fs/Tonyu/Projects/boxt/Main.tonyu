@@ -1,5 +1,0 @@
-
-while(true) {
-    new Ball{x:rnd(400),y:0,p:12};
-    updateEx(3);
-}

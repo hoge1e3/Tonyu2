@@ -1,8 +1,0 @@
-for(var i=0;i<10;i++){
-    new BodyActor{x:i*32,y:$screenHeight-16,p:$pat_chara+1,isStatic:true,shape:"box"};
-}
-for(var i=0;i<5;i++){
-    new BodyActor{x:i*32+250,y:$screenHeight-100,p:$pat_chara+1,isStatic:true,shape:"box"};
-}
-new Player2{x:50,y:300,vx:0,vy:1,p:1,manualRotation:true,shape:"circle"};
-new Enemy{x:150,y:$screenHeight-48,p:$pat_neko+46};

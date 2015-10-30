@@ -1,2 +1,0 @@
-$Player=new Player{x:200,y:200};
-new Missle{x:100,y:100};

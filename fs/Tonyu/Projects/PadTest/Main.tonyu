@@ -1,7 +1,0 @@
-pad=new Pad;
-
-x=20;y=20;
-while (true) {
-    if (pad.getPadRight()) x++;
-    update();
-}

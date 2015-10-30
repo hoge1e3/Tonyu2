@@ -1,5 +1,0 @@
-
-new T2World{scale:32};
-new Body{x:230,y:0};
-
-new BodyActor{isStatic:true, x:230,y:300, scaleX:10,scaleY:1};

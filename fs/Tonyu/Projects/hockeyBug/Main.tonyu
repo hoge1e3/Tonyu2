@@ -1,6 +1,0 @@
-
-
-$mplayer = null;
-$Boot.setFrameRate(60, 5);
-new PageLoader;
-

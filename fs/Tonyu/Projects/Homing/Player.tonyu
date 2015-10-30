@@ -1,7 +1,0 @@
-
-while(true) {
-    x=$mouseX;y=$mouseY;
-    //drawLine(0,50,200,50);
-    if (crashTo(Missle)) all(Missle).die();
-    update();
-}

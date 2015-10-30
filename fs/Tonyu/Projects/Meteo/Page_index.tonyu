@@ -1,9 +1,0 @@
-extends T1Page;
-initGlobals();
-$screenWidth=563;
-$screenHeight=386;
-$Drops= new Drops{angle: 45, alpha: 200, p: $pat_Inseki+0, scalex: 1, x: 75, y: 282};
-$DropApp= new DropApp{pat: 17, x: 391, y: 70};
-$Fighter= new Fighter{p: $pat_sentouki+0, alpha: 255, angle: 0, zorder: -1000, scalex: 1, scaley: 0, x: 283, y: 309};
-$ShStar= new ShStar{pat: 17, x: 174, y: 163};
-$ScoreDisp= new ScoreDisp{text: "テキスト", col: $clWhite, size: 20, x: 25, y: 16};
