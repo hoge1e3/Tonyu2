@@ -102,38 +102,66 @@ initFPSParams();
 $mouseX=$mouseX||0;
 $mouseY=$mouseY||0;
 while (true) {
-    //thg.steps();
-    scheduler.stepsAll();
-    $Keys.update();
-    $InputDevice.update();
-    $screenWidth=$Screen.width;
-    $screenHeight=$Screen.height;
+	if (_useRAF) loopRAF();
+	else loopTimer();
+    measureFps();
+	handlePause();
+}
+\loopRAF() {
+	var start=now(),rafInterval, rafStart, elapsed;
+	rafStart=now();
+	moveFrame();
+	drawFrame();
+	afterDraw();
+	while(true) {
+        waitFor(Tonyu.animationFrame());
+        rafInterval=now()-rafStart;
+        elapsed    =now()-start;
+        if ( elapsed + rafInterval > 1000/_fps * rafAccept ) break;
+		rafStart=now();
+    }
+}
+\loopTimer() {
+    moveFrame();
     doDraw=now()<deadLine;
     if (!doDraw && frameSkipped>=maxFrameSkip) {
         doDraw=true;
         resetDeadLine();
     }
     if (doDraw) { // フレームスキップの時は描画しない
-        $Screen.fillCanvas($Screen.buf[0]);
-        $Sprites.draw($Screen.buf[0]);
-        $FrontSprites.draw($Screen.buf[0]);
-        $Screen.draw();
-        fps_fpsCnt ++;
+		drawFrame();
         frameSkipped=0;
     } else {
         frameSkipped++;
     }
-    $Sprites.checkHit();
-    $Sprites.removeOneframes();
-    fps_rpsCnt ++;
-    measureFps();
+    afterDraw();
     waitFrame(); // FPS制御
+}
+\handlePause() {
     while(paused) {
         waitFor(Tonyu.timeout(1));
         if (!paused) resetDeadLine();
     }
 }
-
+nowait \drawFrame() {
+    $Screen.fillCanvas($Screen.buf[0]);
+    $Sprites.draw($Screen.buf[0]);
+    $FrontSprites.draw($Screen.buf[0]);
+    $Screen.draw();
+    fps_fpsCnt ++;
+}
+nowait \moveFrame() {
+	scheduler.stepsAll();
+    $Keys.update();
+    $InputDevice.update();
+    $screenWidth=$Screen.width;
+    $screenHeight=$Screen.height;
+    fps_rpsCnt ++;
+}
+nowait \afterDraw() {// should call (after draw) or (move and frame skip)
+    $Sprites.checkHit();
+    $Sprites.removeOneframes();
+}
 nowait \initFPSParams() {
     // フレームレートの設定
     _fps = 30;
@@ -143,6 +171,8 @@ nowait \initFPSParams() {
     resetDeadLine();
     lastMeasured=now();
     fps_fps=fps_rps=fps_fpsCnt=fps_rpsCnt=0;
+	rafAccept=1.1;
+	_useRAF=true;
 }
 nowait \now() {
     return new Date().getTime();
@@ -173,6 +203,12 @@ nowait \setFrameRate(fps, maxFrameSkip) {
     if (typeof maxFrameSkip!="number") maxFrameSkip=5;
     this.maxFrameSkip = maxFrameSkip;
     resetDeadLine();
+}
+\useRAF {
+	return _useRAF;
+}
+\useRAF=v {
+	return _useRAF=v;
 }
 
 // FPS（計測したフレームレート）を返す //
