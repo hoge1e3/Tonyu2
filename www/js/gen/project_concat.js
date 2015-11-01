@@ -1,4 +1,4 @@
-// Created at Thu Oct 29 2015 12:38:30 GMT+0900 (東京 (標準時))
+// Created at Sun Nov 01 2015 11:56:43 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -424,6 +424,20 @@ return Tonyu=function () {
         },t);
         return res;
     }
+    function animationFrame() {
+        var res={};
+        var ls=[];
+        res.addTerminatedListener=function (l) {
+            ls.push(l);
+        };
+        requestAnimationFrame(function () {
+            ls.forEach(function (l) {
+                l();
+            });
+        });
+        return res;
+    }
+
     function asyncResult() {
         var res=[];
         var ls=[];
@@ -773,9 +787,9 @@ return Tonyu=function () {
     }
     return Tonyu={thread:thread, threadGroup:threadGroup, klass:klass, bless:bless, extend:extend,
             globals:globals, classes:classes, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
-            timeout:timeout,asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
+            timeout:timeout,animationFrame:animationFrame, asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
-            VERSION:1446089907090,//EMBED_VERSION
+            VERSION:1446346597075,//EMBED_VERSION
             A:A};
 }();
 });

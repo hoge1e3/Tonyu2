@@ -1,0 +1,14 @@
+[[Boot]]
+
+*useRAFプロパティ
+
+-この値を[[@cfrag true]]にすると、フレームの制御にrequestAnimationFrameを用います。
+-この値を[[@cfrag false]]にすると、フレームの制御にsetTimeoutを用います。
+-デフォルト値は[[@cfrag true]]です
+
+**書式
+
+<<code
+$Boot.useRAF=true;
+>>
+.
