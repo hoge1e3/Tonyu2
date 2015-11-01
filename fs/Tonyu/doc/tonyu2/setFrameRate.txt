@@ -11,6 +11,10 @@ setFrameRate(fps,frameSkipMax)
 
 fpsにゲームのFPS、frameSkipMaxに処理落ちした場合にスキップするフレーム数の最大値を渡します（何も渡さない場合は5になります）．
 
+※[[useRAF]]が[[@cfrag true]]の場合、次の点に注意してください
+-fpsの値通りのFPSが得られるとは限りません（なるべくfpsに近い値を得るようにします）
+-frameSkipMaxの値は無効になります。
+
 *例
 
 <<code

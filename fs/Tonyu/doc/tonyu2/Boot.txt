@@ -17,3 +17,6 @@
 --描画
 
 -[[setFrameRate]]
+-[[useRAF]]
+
+.
