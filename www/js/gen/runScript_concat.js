@@ -1,4 +1,4 @@
-// Created at Mon Nov 02 2015 15:31:36 GMT+0900 (東京 (標準時))
+// Created at Tue Nov 03 2015 10:29:31 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -2513,7 +2513,7 @@ return Tonyu=function () {
             globals:globals, classes:classes, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
             timeout:timeout,animationFrame:animationFrame, asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
-            VERSION:1446445886181,//EMBED_VERSION
+            VERSION:1446514162440,//EMBED_VERSION
             A:A};
 }();
 });
@@ -8690,12 +8690,12 @@ requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS","runtime
         var w=$(window).width();
         var h=$(window).height();
         $("body").css({overflow:"hidden", margin:"0px"});
-        var cv=$("<canvas>").attr({width: w, height:h}).appendTo("body");
+        var cv=$("<canvas>").attr({width: w-10, height:h-10}).appendTo("body");
         $(window).resize(onResize);
         function onResize() {
             w=$(window).width();
             h=$(window).height();
-            cv.attr({width: w, height: h});
+            cv.attr({width: w-10, height: h-10});
         }
         var locs=location.href.replace(/\?.*/,"").split(/\//);
         var loc=locs.pop();
