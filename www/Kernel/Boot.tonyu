@@ -10,6 +10,7 @@ native ImageList;
 native Tonyu;
 native SplashScreen;
 native Math;
+native requestAnimationFrame;
 
 \new(param) {
     extend(param);
@@ -17,13 +18,22 @@ native Math;
 \update() {
     waitFor(Tonyu.timeout(50)); // waitFor calls update...
 }
-\initSprites() {
-    $Sprites=new Sprites();
-    $FrontSprites=new Sprites();
+\loadPlugins() {
     print ("Loading plugins..");
     var a=asyncResult();
     $currentProject.loadPlugins(a.receiver);
     waitFor(a);
+}
+\initSprites() {
+    $Sprites=new Sprites();
+    $FrontSprites=new Sprites();
+    cvj=$("canvas");
+    if (Tonyu.noviceMode) {
+        $Screen=new ScaledCanvas{canvas:cvj, width:600, height:300};
+    } else {
+        $Screen=new ScaledCanvas{canvas:cvj, width:465, height:465};
+    }
+    drawFrame();
     print ("Loading pats..");
     var rs=$currentProject.getResource();
     a=asyncResult();
@@ -36,12 +46,6 @@ native Math;
         Tonyu.setGlobal(name, val);
     }
     print ("Loading pats done.");
-    cvj=$("canvas");
-    if (Tonyu.noviceMode) {
-        $Screen=new ScaledCanvas{canvas:cvj, width:600, height:300};
-    } else {
-        $Screen=new ScaledCanvas{canvas:cvj, width:465, height:465};
-    }
 }
 \initSounds() {
     print ("Loading sounds...");
@@ -57,17 +61,14 @@ native Math;
 }
 
 \initThread() {
-    //$mainThreadGroup=thg=Tonyu.threadGroup();
     var o=Tonyu.currentProject.getOptions();
     var mainClassName=o.run.mainClass;
     print("MainClass= "+mainClassName);
     mainClass=Tonyu.getClass(mainClassName);
     if (!mainClass) {
         TError( mainClassName+" というクラスはありません",
-        "不明" ,0).raise();
+        "" ,0).raise();
     }
-    //Tonyu.runMode=true;
-    //$currentThreadGroup=thg;
     scheduler=$Scheduler=new Scheduler;
     new mainClass();
 }
@@ -84,8 +85,9 @@ native Math;
     return th;
 }
 $Boot=this;
-initSounds();
+loadPlugins();
 initSprites();
+initSounds();
 $InputDevice=new InputDevice;
 $InputDevice.initCanvasEvents(cvj);
 initThread();
@@ -96,11 +98,11 @@ $Math=Math;
 $consolePanel=new Panel{align:"center",x:465/2,y:465/2,width:465,height:465,zOrder:-10,layer:$FrontSprites};
 $consolePrintY=465-15;
 $panel=new Panel{align:"center",x:$screenWidth/2,y:$screenHeight/2,width:$screenWidth,height:$screenHeight,zOrder:-1,layer:$FrontSprites};
-if (typeof SplashScreen!="undefined") SplashScreen.hide();
 initFPSParams();
 
 $mouseX=$mouseX||0;
 $mouseY=$mouseY||0;
+if (typeof SplashScreen!="undefined") SplashScreen.hide();
 while (true) {
 	if (_useRAF) loopRAF();
 	else loopTimer();
@@ -108,18 +110,65 @@ while (true) {
 	handlePause();
 }
 \loopRAF() {
-	var start=now(),rafInterval, rafStart, elapsed;
-	rafStart=now();
-	moveFrame();
+	var start=now(),elapsed;
+	var time=1000/_fps; // 1フレームにかけられる時間
+	var moves=0;
+	while(moves<frameSkip) {
+		moveFrame();
+		moves++;
+		if (moves<frameSkip) afterDraw();
+	}
 	drawFrame();
 	afterDraw();
-	while(true) {
-        waitFor(Tonyu.animationFrame());
-        rafInterval=now()-rafStart;
-        elapsed    =now()-start;
-        if ( elapsed + rafInterval > 1000/_fps * rafAccept ) break;
-		rafStart=now();
+	waitRAF();//★
+    elapsed = now()-start;
+    var cnt=rafCount-1;
+    if (rafResolution) {//★で何回分のRAFが実行されたか？（描画移動に手間取ると2回分以上経過しているかも)
+    	var rafResMS=time/rafResolution;  //RAFの分解能をmsで  time=30  res=2   resMS=15
+		var elapsedRAF=floor(elapsed/rafResMS+0.5);  // rafの経過回数
+		if (elapsedRAF>1) cnt-=(elapsedRAF-1); // 2回以上の時間かかっていたらその分は減らす
     }
+    rafCntDebug=cnt;
+	while(cnt>0) {
+		waitRAF();
+		cnt--;
+    }
+}
+\waitRAF() {
+    waitFor(Tonyu.animationFrame());
+    var rafStart=now();
+    if (pRafStart) detectRAFResolution(rafStart-pRafStart);
+    pRafStart=rafStart;
+}
+nowait \detectRAFResolution(t) {
+	if (rafResolution) return;
+// RAFの分解能（1フレーム時間をRAFの回数に換算したもの）を求める。tはRAFとRAFの間隔ms
+	var time=1000/_fps;
+	var reso=time/t;  // t=15 time=30  reso=2  
+	// reso は、nを整数として n あるいは 1/n  と表現できると期待
+	if (reso>1) reso=floor(reso+0.5); // 1.8 -> 2
+	else reso=1/floor(1/reso+0.5);  // 0.6 -> 1/2
+	// resoの値を投票して最初に10票集めたものをresoとする
+	rafRess=rafRess||{};
+	if (  (rafRess[reso+""]=(rafRess[reso+""]||0)+1 ) > 10 ) {
+		rafResolution=reso;
+		if (reso<1) {
+			frameSkip=floor(1/reso+0.5);
+			rafCount=1;
+		} else {
+			rafCount=reso;
+			frameSkip=1;
+		}
+	}
+}
+
+\measureRAFInterval() {
+	if ($RAFInterval) return;
+	var s=now();
+	for (var i=0;i<20;i++) {
+	    waitFor(Tonyu.animationFrame());
+	}
+	$RAFInterval=(now()-s)/20;
 }
 \loopTimer() {
     moveFrame();
@@ -144,18 +193,22 @@ while (true) {
     }
 }
 nowait \drawFrame() {
+	var s=now();
     $Screen.fillCanvas($Screen.buf[0]);
     $Sprites.draw($Screen.buf[0]);
     $FrontSprites.draw($Screen.buf[0]);
     $Screen.draw();
+    drawTime=now()-s;
     fps_fpsCnt ++;
 }
 nowait \moveFrame() {
-	scheduler.stepsAll();
+	var s=now();
+    scheduler.stepsAll();
     $Keys.update();
     $InputDevice.update();
     $screenWidth=$Screen.width;
     $screenHeight=$Screen.height;
+    moveTime=now()-s;
     fps_rpsCnt ++;
 }
 nowait \afterDraw() {// should call (after draw) or (move and frame skip)
@@ -165,14 +218,19 @@ nowait \afterDraw() {// should call (after draw) or (move and frame skip)
 nowait \initFPSParams() {
     // フレームレートの設定
     _fps = 30;
-    maxframeSkip = 5;
+    maxFrameSkip = 5;
+    minFrameSkip = 1;
     // フレームレート制御でつかう変数 //
     frameCnt = 0;
     resetDeadLine();
     lastMeasured=now();
     fps_fps=fps_rps=fps_fpsCnt=fps_rpsCnt=0;
+    drawTime=5;moveTime=5;
 	rafAccept=1.1;
+	rafInterval=1000/60;
 	_useRAF=true;
+	rafCount=2;
+	frameSkip=1;
 }
 nowait \now() {
     return new Date().getTime();
@@ -199,6 +257,12 @@ nowait \getFrameRate() {
 
 // Tonyu1の$System.setFrameRate() //
 nowait \setFrameRate(fps, maxFrameSkip) {
+	if (_fps!=fps) { 
+		rafRess={}; 
+		rafResolution=null;
+		frameSkip=1;
+		rafCnt=floor(60/fps+0.5);
+	}
     _fps = fps;
     if (typeof maxFrameSkip!="number") maxFrameSkip=5;
     this.maxFrameSkip = maxFrameSkip;

@@ -16,12 +16,12 @@ requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS","runtime
         var w=$(window).width();
         var h=$(window).height();
         $("body").css({overflow:"hidden", margin:"0px"});
-        var cv=$("<canvas>").attr({width: w, height:h}).appendTo("body");
+        var cv=$("<canvas>").attr({width: w-10, height:h-10}).appendTo("body");
         $(window).resize(onResize);
         function onResize() {
             w=$(window).width();
             h=$(window).height();
-            cv.attr({width: w, height: h});
+            cv.attr({width: w-10, height: h-10});
         }
         var locs=location.href.replace(/\?.*/,"").split(/\//);
         var loc=locs.pop();
