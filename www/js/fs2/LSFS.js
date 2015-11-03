@@ -278,6 +278,9 @@ define(["FS2","PathUtil","extend","assert"], function(FS,P,extend,assert) {
                     this.getRootFS().touch(parent);
                 }
             }
+        },
+        getURL: function (path) {
+            return this.getContent(path,{type:String});
         }
     });
     return LSFS;

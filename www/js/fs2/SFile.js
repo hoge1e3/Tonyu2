@@ -189,6 +189,16 @@ SFile.prototype={
     getText:function (t) {
         return this.fs.getContent(this.path(), {type:String});
     },
+    setBytes:function (b) {
+        A.is(t,ArrayBuffer);
+        return this.fs.setContent(b);
+    },
+    getBytes:function (t) {
+        return this.fs.getContent(this.path(), {type:ArrayBuffer});
+    },
+    getURL: function () {
+        return this.fs.getURL(this.path());
+    },
     lines:function () {
         return this.text().split("\n");
     },

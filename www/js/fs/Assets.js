@@ -17,7 +17,7 @@ define(["WebSite","Util","Tonyu"],function (WebSite,Util,Tonyu) {
                     f=oggf;
                 }
             }
-            url=f.text();
+            url=f.getURL();
         }
         return url;
     };
