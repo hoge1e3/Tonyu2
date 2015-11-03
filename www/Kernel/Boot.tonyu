@@ -229,7 +229,8 @@ nowait \initFPSParams() {
 	rafAccept=1.1;
 	rafInterval=1000/60;
 	_useRAF=true;
-	rafCount=frameSkip=1;
+	rafCount=2;
+	frameSkip=1;
 }
 nowait \now() {
     return new Date().getTime();
@@ -256,7 +257,12 @@ nowait \getFrameRate() {
 
 // Tonyu1の$System.setFrameRate() //
 nowait \setFrameRate(fps, maxFrameSkip) {
-	if (_fps!=fps) { rafRess={}; rafResolution=null; }
+	if (_fps!=fps) { 
+		rafRess={}; 
+		rafResolution=null;
+		frameSkip=1;
+		rafCnt=floor(60/fps+0.5);
+	}
     _fps = fps;
     if (typeof maxFrameSkip!="number") maxFrameSkip=5;
     this.maxFrameSkip = maxFrameSkip;
