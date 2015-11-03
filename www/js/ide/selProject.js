@@ -10,6 +10,9 @@ $(function () {
     if (!projects.exists()) projects.mkdir();
     sh.cd(projects);
     var curDir=projects;
+    if (WebSite.isNW) {
+        $("#loginGrp").hide();
+    }
     function ls() {
         $("#prjItemList").empty();
         var d=[];
