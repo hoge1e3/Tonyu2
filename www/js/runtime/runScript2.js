@@ -1,22 +1,11 @@
-requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS",
-           "runtime","WebSite","LSFS"],
-        function (FS,  Tonyu_Project, sh,      KeyEventChecker, ScriptTagFS,
-                rt,WebSite,LSFS) {
+requirejs(["FS","compiledTonyuProject","Shell","ScriptTagFS","runtime","WebSite"],
+        function (FS,  CPTR, sh, ScriptTagFS,   rt,WebSite) {
     $(function () {
-        var home=FS.get(WebSite.tonyuHome);
-        var ramHome=FS.get("/ram/");
-        FS.mount(ramHome.path(), LSFS.ramDisk() );
-        Tonyu.defaultResource={
-                images:[
-                        {name:"$pat_base", url: "images/base.png", pwidth:32, pheight:32},
-                        {name:"$pat_sample", url: "images/Sample.png"},
-                        {name:"$pat_neko", url: "images/neko.png", pwidth:32, pheight:32},
-                        ],
-                        sounds:[]
-        };
+
         SplashScreen={hide: function () {
             $("#splash").hide();
         },show:function(){}};
+
         var w=$(window).width();
         var h=$(window).height();
         $("body").css({overflow:"hidden", margin:"0px"});
@@ -27,14 +16,16 @@ requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS",
             h=$(window).height();
             cv.attr({width: w-10, height: h-10});
         }
+
         var locs=location.href.replace(/\?.*/,"").split(/\//);
         var prj=locs.pop() || "runscript";
         var user=locs.pop() || "nobody";
-        //if (prjloc.length<0) locs="runscript";
+        var home=FS.get(WebSite.tonyuHome);
+        var ramHome=FS.get("/ram/");
+        FS.mount(ramHome.path(), LSFS.ramDisk() );
         var curProjectDir=ramHome;
         var actualFilesDir=home.rel(user+"/"+prj+"/");
         ramHome.rel("files/").link(actualFilesDir);
-        //if (curProjectDir.exists()) sh.rm(curProjectDir,{r:1});
         var fo=ScriptTagFS.toObj();
         for (var fn in fo) {
             var f=curProjectDir.rel(fn);
@@ -46,22 +37,13 @@ requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS",
             }
         }
         sh.cd(curProjectDir);
-        Tonyu.defaultOptions={
-                compiler: { defaultSuperClass: "Actor"},
-                run: {mainClass: "Main", bootClass: "Boot"},
-                kernelEditable: false
-        };
-        var curPrj=Tonyu_Project(curProjectDir);//, kernelDir);
+        var curPrj=CPTR("user", "js/concat.js",curProjectDir);
         start();
         function start() {
             Tonyu.currentProject=Tonyu.globals.$currentProject=curPrj;
             var o=curPrj.getOptions();
-            if (o.compiler && o.compiler.diagnose) {
-                o.compiler.diagnose=false;
-                curPrj.setOptions(o);
-            }
             curPrj.runScriptMode=true;
-            curPrj.rawRun(o.run.bootClass);
+            curPrj.run(o.run.bootClass);
         }
     });
 });

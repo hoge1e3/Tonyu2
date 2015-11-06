@@ -1,4 +1,4 @@
-// Created at Tue Nov 03 2015 11:26:44 GMT+0900 (東京 (標準時))
+// Created at Thu Nov 05 2015 10:14:42 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -1000,6 +1000,16 @@ SFile.prototype={
     getText:function (t) {
         return this.fs.getContent(this.path(), {type:String});
     },
+    setBytes:function (b) {
+        A.is(t,ArrayBuffer);
+        return this.fs.setContent(b);
+    },
+    getBytes:function (t) {
+        return this.fs.getContent(this.path(), {type:ArrayBuffer});
+    },
+    getURL: function () {
+        return this.fs.getURL(this.path());
+    },
     lines:function () {
         return this.text().split("\n");
     },
@@ -1530,8 +1540,9 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
                 if (t===String) {
                     return fs.readFileSync(np, {encoding:"utf8"});
                 } else {
+                    return fs.readFileSync(np);
                     //TODOvar bin=fs.readFileSync(np);
-                    throw new Error("TODO: handling bin file "+path);
+                    //throw new Error("TODO: handling bin file "+path);
                 }
             } else {
                 if (t===String) {
@@ -1550,10 +1561,12 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
             var np=this.toNativePath(path);
             var cs=typeof content=="string";
             if (this.isText(path)) {
-                if (cs) return fs.writeFileSync(np, content);
+                fs.writeFileSync(np, content)
+                /*if (cs) return fs.writeFileSync(np, content);
                 else {
-                    throw new Error("TODO");
-                }
+                    return fs.writeFileSync(np, content);
+                    //throw new Error("TODO");
+                }*/
             } else {
 //                console.log("NatFS", cs, content);
                 if (!cs) return fs.writeFileSync(np, content);
@@ -1643,6 +1656,9 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
             } else if (this.exists(path) && !this.isDir(path) ) {
                 // TODO(setlastupdate)
             }
+        },
+        getURL:function (path) {
+            return "file:///"+path.replace(/\\/g,"/");
         }
     });
     return NativeFS;
@@ -1928,6 +1944,9 @@ define(["FS2","PathUtil","extend","assert"], function(FS,P,extend,assert) {
                     this.getRootFS().touch(parent);
                 }
             }
+        },
+        getURL: function (path) {
+            return this.getContent(path,{type:String});
         }
     });
     return LSFS;
@@ -1989,6 +2008,9 @@ define(["FS2","WebSite","NativeFS","LSFS", "PathUtil","Env","assert","SFile"],
             return FS.get(base).rel(path);
         }
         return FS.get(path);
+    };
+    FS.mount=function () {
+        return rootFS.mount.apply(rootFS,arguments);
     };
     return FS;
 });
@@ -2550,7 +2572,7 @@ return Tonyu=function () {
             globals:globals, classes:classes, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
             timeout:timeout,animationFrame:animationFrame, asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
-            VERSION:1446517596591,//EMBED_VERSION
+            VERSION:1446686073214,//EMBED_VERSION
             A:A};
 }();
 });
@@ -6922,7 +6944,7 @@ define(["WebSite","Util","Tonyu"],function (WebSite,Util,Tonyu) {
                     f=oggf;
                 }
             }
-            url=f.text();
+            url=f.getURL();
         }
         return url;
     };
@@ -8516,58 +8538,15 @@ requireSimulator.setName('runtime');
 requirejs(["ImageList","T2MediaLib"], function () {
 
 });
-requireSimulator.setName('SoundDiag');
-define(["T2MediaLib"],function (T2MediaLib) {
-    SoundDiag={};
-    SoundDiag.show=function (/*cv,*/ onSelect) {
-        var bsty={fontSize:"2em"};
-        onSelect=onSelect||function (){};
-        var d=$("<div>").css({position:"absolute", left:100,top:100}).append(
-                $("<button>").css(bsty).text("Sound on").click(soundOn)
-        ).append(
-                $("<button>").css(bsty).text("Sound off").click(soundOff)
-        ).appendTo("body");
-        function soundOn() {
-            T2MediaLib.init();
-            T2MediaLib.disabled=false;
-            T2MediaLib.activate();
-            console.log("Sound ON");
-            d.remove();
-            onSelect();
-        }
-        function soundOff() {
-            T2MediaLib.disabled=true;
-            console.log("Sound OFF");
-            d.remove();
-            onSelect();
-        }
-        /*var ctx=cv[0].getContext("2d");
-        var w=cv.width(),h=cv.height();
-        var size=30;
-        ctx.fillStyle="black";
-        ctx.font=size+"px monospace";
-        drawCenter("Sound on",h/3);
-        drawCenter("Sound off",h/3*2);
-        cv.on("click", func);
-        function func(e) {
-            if (e.originalEvent.y<h/2) {
-
-            } else {
-
-            }
-        }
-        function drawCenter(text,y) {
-            var t=ctx.measureText(text);
-            ctx.fillText(text, w/2-t.width/2, y+size/2);
-        }*/
-    };
-    return SoundDiag;
-});
 requireSimulator.setName('runScript');
-requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS","runtime","WebSite","SoundDiag"],
-        function (FS,  Tonyu_Project, sh,      KeyEventChecker, ScriptTagFS,   rt,WebSite) {
+requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS",
+           "runtime","WebSite","LSFS"],
+        function (FS,  Tonyu_Project, sh,      KeyEventChecker, ScriptTagFS,
+                rt,WebSite,LSFS) {
     $(function () {
         var home=FS.get(WebSite.tonyuHome);
+        var ramHome=FS.get("/ram/");
+        FS.mount(ramHome.path(), LSFS.ramDisk() );
         Tonyu.defaultResource={
                 images:[
                         {name:"$pat_base", url: "images/base.png", pwidth:32, pheight:32},
@@ -8590,62 +8569,31 @@ requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS","runtime
             cv.attr({width: w-10, height: h-10});
         }
         var locs=location.href.replace(/\?.*/,"").split(/\//);
-        var loc=locs.pop();
-        if (loc.length<0) locs="runscript";
-        var curProjectDir=home.rel(loc+"/");
+        var prj=locs.pop() || "runscript";
+        var user=locs.pop() || "nobody";
+        //if (prjloc.length<0) locs="runscript";
+        var curProjectDir=ramHome;
+        var actualFilesDir=home.rel(user+"/"+prj+"/");
+        ramHome.rel("files/").link(actualFilesDir);
         //if (curProjectDir.exists()) sh.rm(curProjectDir,{r:1});
         var fo=ScriptTagFS.toObj();
         for (var fn in fo) {
             var f=curProjectDir.rel(fn);
             if (!f.isDir()) {
                 var m=fo[fn];
-                if (fn=="js/concat.js") {
-                    if (f.exists() && f.lastUpdate()>m.lastUpdate) {
-                        continue;
-                    }
-                } else {
-                    f.useRAMDisk();
-                }
                 f.text(m.text);
                 delete m.text;
                 if (m.lastUpdate) f.metaInfo(m);
             }
         }
         sh.cd(curProjectDir);
-        var main="Main";
-        var scrs=$("script");
-        scrs.each(function (){
-            var s=this;
-            if (s.type=="text/tonyu") {
-                var fn=$(s).data("filename");
-                if (fn) {
-                    var f=curProjectDir.rel(fn);
-                    if ($(s).data("main")) {
-                        main=f.truncExt(".tonyu");
-                    }
-                }
-            }
-        });
         Tonyu.defaultOptions={
                 compiler: { defaultSuperClass: "Actor"},
-                run: {mainClass: main, bootClass: "Boot"},
+                run: {mainClass: "Main", bootClass: "Boot"},
                 kernelEditable: false
         };
-        var kernelDir=home.rel("Kernel/");
         var curPrj=Tonyu_Project(curProjectDir);//, kernelDir);
-        /*cv[0].addEventListener('touchstart', mediaIni);
-        window.addEventListener('touchstart', mediaIni);
-        function mediaIni() {
-            T2MediaLib.init();
-            T2MediaLib.activate();
-            cv[0].removeEventListener('touchstart', mediaIni);
-            window.removeEventListener('touchstart',mediaIni);
-        }*/
-        /*if (curPrj.hasSoundResource()) {
-            SoundDiag.show(start);
-        } else {*/
-            start();
-        //}
+        start();
         function start() {
             Tonyu.currentProject=Tonyu.globals.$currentProject=curPrj;
             var o=curPrj.getOptions();

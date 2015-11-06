@@ -1,4 +1,4 @@
-// Created at Tue Nov 03 2015 11:26:37 GMT+0900 (東京 (標準時))
+// Created at Thu Nov 05 2015 10:14:34 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -1000,6 +1000,16 @@ SFile.prototype={
     getText:function (t) {
         return this.fs.getContent(this.path(), {type:String});
     },
+    setBytes:function (b) {
+        A.is(t,ArrayBuffer);
+        return this.fs.setContent(b);
+    },
+    getBytes:function (t) {
+        return this.fs.getContent(this.path(), {type:ArrayBuffer});
+    },
+    getURL: function () {
+        return this.fs.getURL(this.path());
+    },
     lines:function () {
         return this.text().split("\n");
     },
@@ -1530,8 +1540,9 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
                 if (t===String) {
                     return fs.readFileSync(np, {encoding:"utf8"});
                 } else {
+                    return fs.readFileSync(np);
                     //TODOvar bin=fs.readFileSync(np);
-                    throw new Error("TODO: handling bin file "+path);
+                    //throw new Error("TODO: handling bin file "+path);
                 }
             } else {
                 if (t===String) {
@@ -1550,10 +1561,12 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
             var np=this.toNativePath(path);
             var cs=typeof content=="string";
             if (this.isText(path)) {
-                if (cs) return fs.writeFileSync(np, content);
+                fs.writeFileSync(np, content)
+                /*if (cs) return fs.writeFileSync(np, content);
                 else {
-                    throw new Error("TODO");
-                }
+                    return fs.writeFileSync(np, content);
+                    //throw new Error("TODO");
+                }*/
             } else {
 //                console.log("NatFS", cs, content);
                 if (!cs) return fs.writeFileSync(np, content);
@@ -1643,6 +1656,9 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
             } else if (this.exists(path) && !this.isDir(path) ) {
                 // TODO(setlastupdate)
             }
+        },
+        getURL:function (path) {
+            return "file:///"+path.replace(/\\/g,"/");
         }
     });
     return NativeFS;
@@ -1928,6 +1944,9 @@ define(["FS2","PathUtil","extend","assert"], function(FS,P,extend,assert) {
                     this.getRootFS().touch(parent);
                 }
             }
+        },
+        getURL: function (path) {
+            return this.getContent(path,{type:String});
         }
     });
     return LSFS;
@@ -1989,6 +2008,9 @@ define(["FS2","WebSite","NativeFS","LSFS", "PathUtil","Env","assert","SFile"],
             return FS.get(base).rel(path);
         }
         return FS.get(path);
+    };
+    FS.mount=function () {
+        return rootFS.mount.apply(rootFS,arguments);
     };
     return FS;
 });
@@ -3567,6 +3589,9 @@ $(function () {
     if (!projects.exists()) projects.mkdir();
     sh.cd(projects);
     var curDir=projects;
+    if (WebSite.isNW) {
+        $("#loginGrp").hide();
+    }
     function ls() {
         $("#prjItemList").empty();
         var d=[];
@@ -3597,7 +3622,7 @@ $(function () {
                 var tn=f.rel("images/").rel("icon_thumbnail.png");
                 //console.log(tn.path());
                 if (tn.exists()) {
-                    u.$vars.t.attr("src",tn.text());
+                    u.$vars.t.attr("src",tn.getURL());
                 }
             },10);
             //$("#fileItem").tmpl({name: name, href:"project.html?dir="+f.path()}).appendTo("#prjItemList");
