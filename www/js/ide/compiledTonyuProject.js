@@ -1,8 +1,13 @@
 define(["plugins","compiledProject"], function (plugins,CPR) {
     var CPTR=function (ns, url, dir) {
         var cpr=CPR(ns,url);
+        var kernelProject=CPR("kernel", WebSite.compiledKernel);
+
         var m={
                 getDir: function () {return dir;},
+                getDependingProjects:function () {//override
+                    return [kernelProject];
+                },
                 getOptions: function () {
                     var resFile=this.getDir().rel("options.json");
                     return resFile.obj();
@@ -16,7 +21,8 @@ define(["plugins","compiledProject"], function (plugins,CPR) {
                     return plugins.loadAll(opt.plugins,onload);
                 },
                 run: function (bootClassName) {
-                    this.loadClasses().then(function () {
+                    var ctx={classes:{}};
+                    this.loadClasses(ctx).then(function () {
                         Tonyu.run(bootClassName);
                     });
                 }
@@ -24,5 +30,5 @@ define(["plugins","compiledProject"], function (plugins,CPR) {
         for (var k in m) cpr[k]=m[k];
         return cpr;
     };
-    return CPR;
+    return CPTR;
 });

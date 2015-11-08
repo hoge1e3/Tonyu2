@@ -553,7 +553,7 @@ return Tonyu=function () {
     }
     function run(bootClassName) {
         var bootClass=getClass(bootClassName);
-        if (!bootClass) throw TError( bootClassName+" というクラスはありません", "不明" ,0);
+        if (!bootClass) throw new Error( bootClassName+" というクラスはありません");
         Tonyu.runMode=true;
         var boot=new bootClass();
         var th=thread();

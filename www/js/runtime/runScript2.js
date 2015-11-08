@@ -1,5 +1,5 @@
-requirejs(["FS","compiledTonyuProject","Shell","ScriptTagFS","runtime","WebSite"],
-        function (FS,  CPTR, sh, ScriptTagFS,   rt,WebSite) {
+requirejs(["FS","compiledTonyuProject","Shell","ScriptTagFS","runtime","WebSite","LSFS","Tonyu"],
+        function (FS,  CPTR, sh, ScriptTagFS,   rt,WebSite,LSFS,Tonyu) {
     $(function () {
 
         SplashScreen={hide: function () {

@@ -1,9 +1,21 @@
-define([], function () {
+define(["DeferredUtil"], function (DU) {
     var CPR=function (ns, url) {
         return {
             getNamespace:function () {return ns;},
             sourceDir: function () {return null;},
-            getDependingProjects: function () {return [];},
+            getDependingProjects: function () {return [];},// virtual
+            loadDependingClasses: function (ctx) {
+                //Same as projectCompiler /TPR/this/ (XXXX)
+                var task=DU.directPromise();
+                var myNsp=this.getNamespace();
+                this.getDependingProjects().forEach(function (p) {
+                    if (p.getNamespace()==myNsp) return;
+                    task=task.then(function () {
+                        return p.loadClasses(ctx);
+                    });
+                });
+                return task;
+            },
             loadClasses: function (ctx) {
                 console.log("Load compiled classes ns=",ns,"url=",url);
                 var d=new $.Deferred;
@@ -38,7 +50,9 @@ define([], function () {
                         d.resolve();
                     }
                 };
-                head.insertBefore( script, head.firstChild );
+                this.loadDependingClasses(ctx).then(function () {
+                    head.insertBefore( script, head.firstChild );
+                });
                 return d.promise();
             }
         }
