@@ -1,9 +1,10 @@
 define(["WebSite"],function (WebSite){
     var plugins={};
     var installed= {
-        box2d:{src: "Box2dWeb-2.1.a.3.min.js",detection:/T2Body/,symbol:"Box2D" },
+        box2d:{src: "Box2dWeb-2.1.a.3.min.js",detection:/BodyActor/,symbol:"Box2D" },
         timbre: {src:"timbre.js",detection:/\bplay(SE)?\b/,symbol:"T" }
     };
+    plugins.installed=installed;
     plugins.detectNeeded=function (src,res) {
         for (var name in installed) {
             var r=installed[name].detection.exec(src);

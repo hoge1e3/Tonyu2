@@ -1,4 +1,4 @@
-// Created at Mon Nov 09 2015 16:26:24 GMT+0900 (東京 (標準時))
+// Created at Mon Nov 09 2015 16:26:35 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -2018,107 +2018,193 @@ define(["FS2","WebSite","NativeFS","LSFS", "PathUtil","Env","assert","SFile"],
     };
     return FS;
 });
-requireSimulator.setName('HttpHelper');
-function HttpHelper(options) {
-    var $h={};
-    var lineMark=options.lineMark;
-    $h.buf=$("<div>");
-    $h.bufs=[$h.buf];
-    $h.maxLineNo=-1;
-    $h.cur=function () {
-        return $h.bufs[$h.bufs.length-1];
+requireSimulator.setName('plugins');
+define(["WebSite"],function (WebSite){
+    var plugins={};
+    var installed= {
+        box2d:{src: "Box2dWeb-2.1.a.3.min.js",detection:/BodyActor/,symbol:"Box2D" },
+        timbre: {src:"timbre.js",detection:/\bplay(SE)?\b/,symbol:"T" }
     };
-    function mon(s) {
-        if (typeof s=="string") return s;
-        if (!s[0]) throw s+ " is not jquery obj";
-        return "<"+s[0].tagName+">"+s.html()+"</"+s[0].tagName+">";
+    plugins.installed=installed;
+    plugins.detectNeeded=function (src,res) {
+        for (var name in installed) {
+            var r=installed[name].detection.exec(src);
+            if (r) res[name]=1;
+        }
+        return res;
+    };
+    plugins.loaded=function (name) {
+        var i=installed[name];
+        if (!i) throw new Error("plugin not found: "+name);
+        return window[i.symbol];
+    };
+    plugins.loadAll=function (names,options) {
+        options=convOpt(options);
+        var namea=[];
+        for (var name in names) {
+            if (installed[name] && !plugins.loaded(name)) {
+                namea.push(name);
+            }
+        }
+        var i=0;
+        console.log("loading plugins",namea);
+        loadNext();
+        function loadNext() {
+            if (i>=namea.length) options.onload();
+            else plugins.load(namea[i++],loadNext);
+        }
+    };
+    function convOpt(options) {
+        if (typeof options=="function") options={onload:options};
+        if (!options) options={};
+        if (!options.onload) options.onload=function (){};
+        return options;
     }
-    $h.p=function (s) {
-        if (typeof s=="string") {
-            if (s.length>0) {
-                s=$("<span>").text(s);
-            } else {
-                s=null;
-            }
-        }
-        //console.log("Append - "+mon(s)+" to "+mon($h.cur()));
-        if ($h.cur()) {
-            if ($h.lineNo>$h.maxLineNo) {
-                $h.maxLineNo=$h.lineNo;
-                $h.cur().append($("<a>").attr({id:lineMark+"-"+$h.lineNo, name:lineMark+"-"+$h.lineNo}));
-            }
-            if (s) $h.cur().append(s);
+    plugins.load=function (name,options) {
+        var i=installed[name];
+        if (!i) throw new Error("plugin not found: "+name);
+        options=convOpt(options);
+        var src=WebSite.pluginTop+"/"+i.src;
+        if (location.href.match(/^file:/)) {
+            $("<script>").attr("src",src).appendTo("body");
+            setTimeout(options.onload,500);
         } else {
-            console.log("Warning - Stack underflow");
+            $.getScript(src, options.onload);
         }
     };
-    $h.enter=function (s) {
-        //console.log("Enter - "+s+"  size="+$h.bufs.length);
-        if (typeof s=="string") s=$(s);
-        $h.bufs.push(s);
+    plugins.request=function (name) {
+        if (plugins.loaded(name)) return;
+        var req=new Error("Plugin "+name+" required");
+        req.pluginName=name;
     };
-    $h.exit=function () {
-        var s=$h.bufs.pop();
-        $h.p(s);
-        //console.log("Exit - "+s.html()+"  size="+$h.bufs.length);
+    return plugins;
+});
+requireSimulator.setName('DeferredUtil');
+define([], function () {
+    var DU;
+    DU={
+            directPromise:function (v) {
+                var d=new $.Deferred;
+                setTimeout(function () {d.resolve(v);},0);
+                return d.promise();
+            },
+            throwPromise:function (e) {
+                d=new $.Deferred;
+                setTimeout(function () {
+                    d.reject(e);
+                }, 0);
+                return d.promise();
+            },
+            throwF: function (f) {
+                return function () {
+                    try {
+                        return f.apply(this,arguments);
+                    } catch(e) {
+                        return DU.throwPromise(e);
+                    }
+                };
+            }
     };
-    $h.h=function (s) {
-        return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
-    };
-    return $h;
-}
-requireSimulator.setName('Arrow');
-Arrow=function () {
-    var A={};
-    A.show=function (t) {
-        if (typeof t=="string") t=$(t);
-        if (t.length==0) return false;
-        var b=$.data(t[0],"blinking");
-        if (b=="t") return;
-        $.data(t[0],"blinking","t");
-        var cnt=3;
-        function on() {
-            t.addClass("tutorial-highlight");
-            setTimeout(off,200);
+    return DU;
+});
+requireSimulator.setName('compiledProject');
+define(["DeferredUtil"], function (DU) {
+    var CPR=function (ns, url) {
+        return {
+            getNamespace:function () {return ns;},
+            sourceDir: function () {return null;},
+            getDependingProjects: function () {return [];},// virtual
+            loadDependingClasses: function (ctx) {
+                //Same as projectCompiler /TPR/this/ (XXXX)
+                var task=DU.directPromise();
+                var myNsp=this.getNamespace();
+                this.getDependingProjects().forEach(function (p) {
+                    if (p.getNamespace()==myNsp) return;
+                    task=task.then(function () {
+                        return p.loadClasses(ctx);
+                    });
+                });
+                return task;
+            },
+            loadClasses: function (ctx) {
+                console.log("Load compiled classes ns=",ns,"url=",url);
+                var d=new $.Deferred;
+                var head = document.getElementsByTagName("head")[0] || document.documentElement;
+                var script = document.createElement("script");
+                script.src = url;
+                var done = false;
+                script.onload = script.onreadystatechange = function() {
+                    if ( !done && (!this.readyState ||
+                            this.readyState === "loaded" || this.readyState === "complete") ) {
+                        done = true;
+                        script.onload = script.onreadystatechange = null;
+                        if ( head && script.parentNode ) {
+                            head.removeChild( script );
+                        }
+                        console.log("Done Load compiled classes ns=",ns,"url=",url,Tonyu.classes);
+                        //same as projectCompiler (XXXX)
+                        var cls=Tonyu.classes;
+                        ns.split(".").forEach(function (c) {
+                            if (cls) cls=cls[c];
+                            // comment out : when empty concat.js
+                            //if (!cls) throw new Error("namespace Not found :"+ns);
+                        });
+                        if (cls) {
+                            for (var cln in cls) {
+                                var cl=cls[cln];
+                                var m=Tonyu.klass.getMeta(cl);
+                                ctx.classes[m.fullName]=m;
+                            }
+                        }
+                        //------------------XXXX
+                        d.resolve();
+                    }
+                };
+                this.loadDependingClasses(ctx).then(function () {
+                    head.insertBefore( script, head.firstChild );
+                });
+                return d.promise();
+            }
         }
-        function off() {
-            t.removeClass("tutorial-highlight");
-            if (cnt-->0) setTimeout(on,200);
-            else clear();
-        }
-        on();
-        function clear() {
-            cnt=0;
-            $.data(t[0],"blinking","f");
-        }
-        t.click(function () {
-            clear();
-        });
     };
-    A.showOld=function (t) {
-        if (typeof t=="string") t=$(t);
-        if (t.length==0) return false;
-        var p=t.offset();
-        var arrow=$("<img>").attr({src:"images/arrow0.png"}).css(
-                {font: "40px", position: "absolute", left:p.left, top:p.top+t.height(), color:"red", zIndex:1000,
-                    "z-index":1000}).
-                appendTo("body");
-        var cnt=0;
-        function up() {
-            if (!arrow) return;
-            arrow.attr({ src:"images/arrow"+cnt+".png" });
-            cnt=(cnt+1)%4;
-        }
-        setInterval(up,250);
-        t.click(function () {
-           if (!arrow) return;
-           arrow.remove();
-           arrow=null;
-        });
-        return true;
+    return CPR;
+});
+requireSimulator.setName('compiledTonyuProject');
+define(["plugins","compiledProject"], function (plugins,CPR) {
+    var CPTR=function (ns, url, dir) {
+        var cpr=CPR(ns,url);
+        var kernelProject=CPR("kernel", WebSite.compiledKernel);
+
+        var m={
+                getDir: function () {return dir;},
+                getDependingProjects:function () {//override
+                    return [kernelProject];
+                },
+                getOptions: function () {
+                    var resFile=this.getDir().rel("options.json");
+                    return resFile.obj();
+                },
+                getResource: function () {
+                    var resFile=this.getDir().rel("res.json");
+                    return resFile.obj();
+                },
+                loadPlugins: function (onload) {
+                    var opt=this.getOptions();
+                    return plugins.loadAll(opt.plugins,onload);
+                },
+                requestPlugin:function(){},
+                run: function (bootClassName) {
+                    var ctx={classes:{}};
+                    this.loadClasses(ctx).then(function () {
+                        Tonyu.run(bootClassName);
+                    });
+                }
+        };
+        for (var k in m) cpr[k]=m[k];
+        return cpr;
     };
-    return A;
-}();
+    return CPTR;
+});
 requireSimulator.setName('Shell');
 define(["FS","Util","WebSite"],function (FS,Util,WebSite) {
     var Shell={cwd:FS.get("/")};
@@ -2277,1419 +2363,1557 @@ define(["FS","Util","WebSite"],function (FS,Util,WebSite) {
     return Shell;
 });
 
-requireSimulator.setName('Log');
-define(["FS","WebSite","Shell"], function (FS,WebSite,sh) {
-    var Log={};
-    var logHome=WebSite.logdir ? FS.resolve("${logdir}") : null;
-    var doLog=logHome && logHome.exists();
-    Log.todayDir=function () {
-        var d=new Date();
-        var y=d.getFullYear();
-        var m=d.getMonth()+1;
-        var da=d.getDate();
-        return logHome.rel(y+"/").rel(m+"/").rel(da+"/");
-    };
-    Log.curFile=function () {
-        var d=new Date();
-        var y=d.getFullYear();
-        var m=d.getMonth()+1;
-        var da=d.getDate();
-        return Log.todayDir().rel(y+"-"+m+"-"+da+".log");
-    };
-    Log.curProject=function () {
-        var d=new Date();
-        var h=d.getHours();
-        var m=d.getMinutes();
-        var s=d.getSeconds();
-        return Log.todayDir().rel("Project/").rel(digit(h,2)+"_"+digit(m,2)+"_"+digit(s,2)+"/");
-    };
-    function digit(n,zs) {
-        n="00000000000000"+n;
-        return n.substring(n.length-zs);
-    }
-    Log.dumpProject=function (dir) {
-        if (!doLog) return;
-        var out=Log.curProject();
-        sh.cp(dir, out);
-        Log.append("Dumped project to "+out.path());
-    };
-    if (!WebSite.logging && !WebSite.isNW) {
-        var varlog=FS.get("/var/log/");
-        if (varlog.exists()) varlog.removeWithoutTrash();
-    }
-    Log.append=function (line) {
-        if (!doLog) return;
-        //if (WebSite.isNW) return;
-        var f=Log.curFile();
-        //console.log(Log, "append "+f);
-        var t=(f.exists()?f.text():"");
-        f.text(t+line+"\n");
-    };
-    function mul(con) {
-        return con.replace(/\n/g,"\n|");
-    }
-    Log.d=function (tag,con) {
-        Log.append(new Date()+": ["+tag+"]"+mul(con));
-    };
-    Log.e=function (tag,con) {
-        Log.append(new Date()+": ERROR["+tag+"]"+mul(con));
-    };
-    return Log;
-});
-requireSimulator.setName('exceptionCatcher');
-define([], function () {
-    var res={};
-    res.f=function (f) {
-        if (typeof f=="function") {
-            if (f.isTrcf) return f;
-            var r=function () {
-                if (res.handleException && !res.enter) {
-                    try {
-                        res.enter=true;
-                        return f.apply(this,arguments);
-                    } catch (e) {
-                        res.handleException(e);
-                    } finally {
-                        res.enter=false;
-                    }
-                } else {
-                    return f.apply(this,arguments);
+requireSimulator.setName('Tonyu');
+if (typeof define!=="function") {
+    define=require("requirejs").define;
+}
+define([],function () {
+return Tonyu=function () {
+    var preemptionTime=60;
+    function thread() {
+        //var stpd=0;
+        var fb={enter:enter, apply:apply,
+                exit:exit, steps:steps, step:step, isAlive:isAlive, isWaiting:isWaiting,
+                suspend:suspend,retVal:0/*retVal*/,tryStack:[],
+                kill:kill, waitFor: waitFor,setGroup:setGroup,
+                enterTry:enterTry,exitTry:exitTry,startCatch:startCatch,
+                waitEvent:waitEvent,runAsync:runAsync,clearFrame:clearFrame};
+        var frame=null;
+        var _isAlive=true;
+        var cnt=0;
+        //var retVal;
+        var _isWaiting=false;
+        var fSuspended=false;
+        function isAlive() {
+            return frame!=null && _isAlive;
+        }
+        function isWaiting() {
+            return _isWaiting;
+        }
+        function suspend() {
+            //throw new Error("Suspend call");
+            fSuspended=true;
+            cnt=0;
+        }
+        function enter(frameFunc) {
+            frame={prev:frame, func:frameFunc};
+        }
+        function apply(obj, methodName, args) {
+            if (!args) args=[];
+            var method;
+            if (typeof methodName=="string") {
+                method=obj["fiber$"+methodName];
+            }
+            if (typeof methodName=="function") {
+                method=methodName.fiber;
+            }
+            args=[fb].concat(args);
+            var pc=0;
+            enter(function () {
+                switch (pc){
+                case 0:
+                    method.apply(obj,args);
+                    pc=1;break;
+                case 1:
+                    exit();
+                    pc=2;break;
                 }
-            };
-            r.isTrcf=true;
-            return r;
-        } else if(typeof f=="object") {
-            for (var k in f) {
-                f[k]=res.f(f[k]);
-            }
-            return f;
-        }
-    };
-    //res.handleException=function (){};
-    return res;
-});
-requireSimulator.setName('UI');
-define(["Util","exceptionCatcher"],function (Util, EC) {
-    var UI={};
-    var F=EC.f;
-    UI=function () {
-        var expr=[];
-        for (var i=0 ; i<arguments.length ; i++) {
-            expr[i]=arguments[i];
-        }
-        var listeners=[];
-        var $vars={};
-        var $edits=[];
-        var res=parse(expr);
-        res.$edits=$edits;
-        res.$vars=$vars;
-        $edits.load=function (model) {
-            $edits.model=model;
-            $edits.forEach(function (edit) {
-                $edits.writeToJq(edit.params.$edit, edit.jq);
             });
-        };
-        $edits.writeToJq=function ($edit, jq) {
-        	var m=$edits.model;
-            if (!m) return;
-            var name = $edit.name;
-            var a=name.split(".");
-            for (var i=0 ; i<a.length ;i++) {
-                m=m[a[i]];
+        }
+        function step() {
+            if (frame) {
+                try {
+                    frame.func(fb);
+                } catch(e) {
+                    gotoCatch(e);
+                }
             }
-            m=$edit.type.toVal(m);
-            if (jq.attr("type")=="checkbox") {
-                jq.prop("checked",!!m);
-            } else {
-                jq.val(m);
-            }
-        };
-        $edits.validator={
-       		errors:{},
-       		show: function () {
-       			if ($vars.validationMessage) {
-       				$vars.validationMessage.empty();
-       				for (var name in this.errors) {
-       					$vars.validationMessage.append(UI("div", this.errors[name].mesg));
-       				}
-       			}
-       			if ($vars.OKButton) {
-       				var ok=true;
-       				for (var name in this.errors) {
-       					ok=false;
-       				}
-       				$vars.OKButton.attr("disabled", !ok);
-       			}
-       		},
-       		on: {
-       			validate: function () {}
-       		},
-       		addError: function (name, mesg, jq) {
-       			this.errors[name]={mesg:mesg, jq:jq};
-       			this.show();
-       		},
-       		removeError: function (name) {
-       			delete this.errors[name];
-       			this.show();
-       		},
-       		allOK: function () {
-       			for (var i in this.errors) {
-       				delete this.errors[i];
-       			}
-       			this.show();
-       		},
-       		isValid: function () {
-       		    var res=true;
-       		    for (var i in this.errors) res=false;
-       		    return res;
-       		}
-        };
-        $edits.writeToModel=function ($edit, val ,jq) {
-            var m=$edits.model;
-        	//console.log($edit, m);
-            if (!m) return;
-            var name = $edit.name;
-            try {
-                val=$edit.type.fromVal(val);
-            } catch (e) {
-            	$edits.validator.addError(name, e, jq);
-            	//$edits.validator.errors[name]={mesg:e, jq:jq};
-                //$edits.validator.change(name, e, jq);
+        }
+        function gotoCatch(e) {
+            if (fb.tryStack.length==0) {
+                kill();
+                handleEx(e);
                 return;
             }
-            $edits.validator.removeError(name);
-            /*
-            if ($edits.validator.errors[name]) {
-                delete $edits.validator.errors[name];
-                $edits.validator.change(name, null, jq);
-            }*/
-            var a=name.split(".");
-            for (var i=0 ; i<a.length ;i++) {
-                if (i==a.length-1) {
-                    if ($edits.on.writeToModel(name,val)) {
-
-                    } else {
-                        m[a[i]]=val;
-                    }
+            fb.lastEx=e;
+            var s=fb.tryStack.pop();
+            while (frame) {
+                if (s.frame===frame) {
+                    fb.catchPC=s.catchPC;
+                    break;
                 } else {
-                    m=m[a[i]];
+                    frame=frame.prev;
                 }
             }
-            $edits.validator.on.validate.call($edits.validator, $edits.model);
-        };
-        $edits.on={};
-        $edits.on.writeToModel= function (name, val) {};
-
-        if (listeners.length>0) {
-            setTimeout(F(l),10);
         }
-        function l() {
-            listeners.forEach(function (li) {
-                li();
+        function startCatch() {
+            var e=fb.lastEx;
+            fb.lastEx=null;
+            return e;
+        }
+        function exit(res) {
+            frame=(frame ? frame.prev:null);
+            //if (frame) frame.res=res;
+            fb.retVal=res;
+        }
+        function enterTry(catchPC) {
+            fb.tryStack.push({frame:frame,catchPC:catchPC});
+        }
+        function exitTry() {
+            fb.tryStack.pop();
+        }
+        function waitEvent(obj,eventSpec) { // eventSpec=[EventType, arg1, arg2....]
+            suspend();
+            if (!obj.on) return;
+            var h;
+            eventSpec=eventSpec.concat(function () {
+                fb.lastEvent=arguments;
+                fb.retVal=arguments[0];
+                h.remove();
+                steps();
             });
-            setTimeout(F(l),10);
+            h=obj.on.apply(obj, eventSpec);
+        }
+        function runAsync(f) {
+            var succ=function () {
+                fb.retVal=arguments;
+                steps();
+            };
+            var err=function () {
+                var msg="";
+                for (var i=0; i<arguments.length; i++) {
+                    msg+=arguments[i]+",";
+                }
+                if (msg.length==0) msg="Async fail";
+                var e=new Error(msg);
+                e.args=arguments;
+                gotoCatch(e);
+                steps();
+            };
+            f(succ,err);
+            suspend();
+        }
+        function waitFor(j) {
+            _isWaiting=true;
+            suspend();
+            if (j && j.addTerminatedListener) j.addTerminatedListener(function () {
+                _isWaiting=false;
+                if (fb.group) fb.group.notifyResume();
+                else if (isAlive()) {
+                    try {
+                        fb.steps();
+                    }catch(e) {
+                        handleEx(e);
+                    }
+                }
+                //fb.group.add(fb);
+            });
+        }
+        function setGroup(g) {
+            fb.group=g;
+            if (g) g.add(fb);
+        }
+        /*function retVal() {
+            return retVal;
+        }*/
+        function steps() {
+            //stpd++;
+            //if (stpd>5) throw new Error("Depth too much");
+            var sv=Tonyu.currentThread;
+            Tonyu.currentThread=fb;
+            //var lim=new Date().getTime()+preemptionTime;
+            cnt=preemptionTime;
+            fb.preempted=false;
+            fSuspended=false;
+            //while (new Date().getTime()<lim) {
+            while (cnt-->0 && frame) {
+                step();
+            }
+            fb.preempted= (!fSuspended) && isAlive();
+            //stpd--;
+            Tonyu.currentThread=sv;
+        }
+        function kill() {
+            _isAlive=false;
+            frame=null;
+        }
+        function clearFrame() {
+            frame=null;
+            tryStack=[];
+        }
+        return fb;
+    }
+    function timeout(t) {
+        var res={};
+        var ls=[];
+        res.addTerminatedListener=function (l) {
+            ls.push(l);
+        };
+        setTimeout(function () {
+            ls.forEach(function (l) {
+                l();
+            });
+        },t);
+        return res;
+    }
+    function animationFrame() {
+        var res={};
+        var ls=[];
+        res.addTerminatedListener=function (l) {
+            ls.push(l);
+        };
+        requestAnimationFrame(function () {
+            ls.forEach(function (l) {
+                l();
+            });
+        });
+        return res;
+    }
+
+    function asyncResult() {
+        var res=[];
+        var ls=[];
+        var hasRes=false;
+        res.addTerminatedListener=function (l) {
+            if (hasRes) setTimeout(l,0);
+            else ls.push(l);
+        };
+        res.receiver=function () {
+            hasRes=true;
+            for (var i=0; i<arguments.length; i++) {
+                res[i]=arguments[i];
+            }
+            res.notify();
+        };
+        res.notify=function () {
+            ls.forEach(function (l) {
+                l();
+            });
+        };
+        return res;
+    }
+    function threadGroup() {//@deprecated
+        var threads=[];
+        var waits=[];
+        var _isAlive=true;
+        var thg;
+        var _isWaiting=false;
+        var willAdd=null;
+        function add(thread) {
+            thread.group=thg;
+            if (willAdd) {
+                willAdd.push(thread);
+            } else {
+                threads.push(thread);
+            }
+        }
+        function addObj(obj, methodName,args) {
+            if (!methodName) methodName="main";
+            var th=thread();
+            th.apply(obj,methodName,args);
+            //obj["fiber$"+methodName](th);
+            add(th);
+            return th;
+        }
+        function steps() {
+            try {
+                stepsNoEx();
+            } catch(e) {
+                handleEx(e);
+            }
+        }
+        function stepsNoEx() {
+            for (var i=threads.length-1; i>=0 ;i--) {
+                var thr=threads[i];
+                if (thr.isAlive() && thr.group===thg) continue;
+                threads.splice(i,1);
+            }
+            _isWaiting=true;
+            willAdd=[];
+            threads.forEach(iter);
+            while (willAdd.length>0) {
+                w=willAdd;
+                willAdd=[];
+                w.forEach(function (th) {
+                    threads.push(th);
+                    iter(th);
+                });
+            }
+            willAdd=null;
+            function iter(th){
+                if (th.isWaiting()) return;
+                _isWaiting=false;
+                th.steps();
+            }
+        }
+        function kill() {
+            _isAlive=false;
+        }
+        var _interval=0, _onStepsEnd;
+        function notifyResume() {
+            if (_isWaiting) {
+                //console.log("resume!");
+                //run();
+            }
+        }
+        return thg={add:add, addObj:addObj,  steps:steps, kill:kill, notifyResume: notifyResume, threads:threads};
+    }
+    function handleEx(e) {
+        if (Tonyu.onRuntimeError) {
+            Tonyu.onRuntimeError(e);
+        } else {
+            alert ("エラー! at "+$LASTPOS+" メッセージ  : "+e);
+            throw e;
+        }
+    }
+    function defunct(f) {
+        if (f===Function) {
+            return null;
+        }
+        if (typeof f=="function") {
+            f.constructor=null;
+        } else if (typeof f=="object"){
+            for (var i in f) {
+                f[i]=defunct(f[i]);
+            }
+        }
+        return f;
+    }
+    function klass() {
+        var parent, prot, includes=[];
+        if (arguments.length==1) {
+            prot=arguments[0];
+        } else if (arguments.length==2 && typeof arguments[0]=="function") {
+            parent=arguments[0];
+            prot=arguments[1];
+        } else if (arguments.length==2 && arguments[0] instanceof Array) {
+            includes=arguments[0];
+            prot=arguments[1];
+        } else if (arguments.length==3) {
+            parent=arguments[0];
+            if (!parent) {
+                console.log(arguments[2]);
+                throw new Error("No parent class ");
+            }
+            includes=arguments[1];
+            prot=arguments[2];
+        } else {
+            console.log(arguments);
+            throw "Invalid argument spec";
+        }
+        prot=defunct(prot);
+        var res=(prot.initialize? prot.initialize:
+            (parent? function () {
+                parent.apply(this,arguments);
+            }:function (){})
+        );
+        delete prot.initialize;
+        //A includes B  B includes C  B extends D
+        //A extends E   E includes F
+        //A has methods in B,C,E,F. [Mod] A extends D.
+        // Known examples:
+        // Actor extends BaseActor, includes PlayMod.
+        // PlayMod extends BaseActor(because use update() in play())
+        res.methods=prot;
+        //prot=bless(parent, prot);
+        includes.forEach(function (m) {
+            if (!m.methods) throw m+" Does not have methods";
+            for (var n in m.methods) {
+                if (!(n in prot)) {
+                    prot[n]=m.methods[n];
+                }
+            }
+            /*for (var n in m.prototype) {
+                if (!(n in prot)) {  //-> cannot override color in ColorMod(MetaClicker/FlickEdit)
+                //if ((typeof m.prototype[n])=="function") { //-> BodyActor::onAppear is overriden by Actor::onAppear(nop)
+                    prot[n]=m.prototype[n];
+                }
+            }*/
+        });
+        res.prototype=bless(parent, prot);
+        res.prototype.isTonyuObject=true;
+        addMeta(res,{
+            superclass:parent ? parent.meta : null,
+                    includes:includes.map(function(c){return c.meta;})
+        });
+        var m=klass.getMeta(res);
+        res.prototype.getClassInfo=function () {
+            return m;
+        };
+        return res;
+    }
+    klass.addMeta=addMeta;
+    function addMeta(k,m) {
+        k.meta=k.meta||{};
+        extend(k.meta, m);
+    }
+    klass.getMeta=function (k) {
+        return k.meta;
+    };
+    klass.ensureNamespace=function (top,nsp) {
+        var keys=nsp.split(".");
+        var o=top;
+        var i;
+        for (i=0; i<keys.length; i++) {
+            var k=keys[i];
+            if (!o[k]) o[k]={};
+            o=o[k];
+        }
+        return o;
+    };
+    klass.define=function (params) {
+        // fullName, shortName,namspace, superclass, includes, methods:{name/fiber$name: func}, decls
+        var parent=params.superclass;
+        var includes=params.includes;
+        var fullName=params.fullName;
+        var shortName=params.shortName;
+        var namespace=params.namespace;
+        var methods=params.methods;
+        var decls=params.decls;
+        var nso=klass.ensureNamespace(Tonyu.classes, namespace);
+        var prot=defunct(methods);
+        var init=prot.initialize;
+        delete prot.initialize;
+        var res;
+        res=(init?
+            (parent? function () {
+                if (!(this instanceof res)) useNew();
+                if (Tonyu.runMode) init.apply(this,arguments);
+                else parent.apply(this,arguments);
+            }:function () {
+                if (!(this instanceof res)) useNew();
+                if (Tonyu.runMode) init.apply(this,arguments);
+            }):
+            (parent? function () {
+                if (!(this instanceof res)) useNew();
+                parent.apply(this,arguments);
+            }:function (){
+                if (!(this instanceof res)) useNew();
+            })
+        );
+        nso[shortName]=res;
+        res.methods=prot;
+        includes.forEach(function (m) {
+            if (!m.methods) throw m+" Does not have methods";
+            for (var n in m.methods) {
+                if (!(n in prot)) {
+                    prot[n]=m.methods[n];
+                }
+            }
+        });
+        var props={};
+        var propReg=/^__([gs]et)ter__(.*)$/;
+        for (var k in prot) {
+            if (k.match(/^fiber\$/)) continue;
+            if (prot["fiber$"+k]) {
+                prot[k].fiber=prot["fiber$"+k];
+                prot[k].fiber.methodInfo={name:k,klass:res,fiber:true};
+            }
+            prot[k].methodInfo={name:k,klass:res};
+            var r=propReg.exec(k);
+            if (r) {
+                props[r[2]]=props[r[2]]||{};
+                props[r[2]][r[1]]=prot[k];
+            }
+        }
+        res.prototype=bless(parent, prot);
+        res.prototype.isTonyuObject=true;
+        for (var k in props) {
+            Object.defineProperty(res.prototype, k , props[k]);
+        }
+        addMeta(res,{
+            fullName:fullName,shortName:shortName,namepsace:namespace,decls:decls,
+            superclass:parent ? parent.meta : null,func:res,
+            includes:includes.map(function(c){return c.meta;})
+        });
+        var m=klass.getMeta(res);
+        res.prototype.getClassInfo=function () {
+            return m;
+        };
+        return res;
+    };
+    function bless( klass, val) {
+        if (!klass) return val;
+        return extend( new klass() , val);
+    }
+    function extend (dst, src) {
+        if (src && typeof src=="object") {
+            for (var i in src) {
+                dst[i]=src[i];
+            }
+        }
+        return dst;
+    }
+    //alert("init");
+    var globals={};
+    var classes={};
+    function setGlobal(n,v) {
+        globals[n]=v;
+    }
+    function getGlobal(n) {
+        return globals[n];
+    }
+    function getClass(n) {
+        //CFN: n.split(".")
+        var ns=n.split(".");
+        var res=classes;
+        ns.forEach(function (na) {
+            if (!res) return;
+            res=res[na];
+        });
+        if (!res && ns.length==1) {
+            var found;
+            for (var nn in classes) {
+                var nr=classes[nn][n];
+                if (nr) {
+                    if (!res) { res=nr; found=nn+"."+n; }
+                    else throw new Error("曖昧なクラス名： "+nn+"."+n+", "+found);
+                }
+            }
+        }
+        return res;//classes[n];
+    }
+    function bindFunc(t,meth) {
+        var res=function () {
+            return meth.apply(t,arguments);
+        };
+        res.methodInfo=Tonyu.extend({thiz:t},meth.methodInfo||{});
+        if (meth.fiber) {
+            res.fiber=function fiber_func() {
+                return meth.fiber.apply(t,arguments);
+            };
+            res.fiber.methodInfo=Tonyu.extend({thiz:t},meth.fiber.methodInfo||{});
         }
         return res;
-        function parse(expr) {
-            if (expr instanceof Array) return parseArray(expr);
-            else if (typeof expr=="string") return parseString(expr);
-            else return expr;
-        }
-        function parseArray(a) {
-            var tag=a[0];
-            var i=1;
-            var res=$("<"+tag+">");
-            if (typeof a[i]=="object" && !(a[i] instanceof Array) && !(a[i] instanceof $) ) {
-                parseAttr(res, a[i],tag);
-                i++;
-            }
-            while (i<a.length) {
-                res.append(parse(a[i]));
-                i++;
-            }
-            return res;
-        }
-        function parseAttr(jq, o, tag) {
-            if (o.$var) {
-                $vars[o.$var]=jq;
-            }
-            if (o.$edit) {
-                if (typeof o.$edit=="string") {
-                    o.$edit={name: o.$edit, type: UI.types.String};
-                }
-                if (!o.on) o.on={};
-                o.on.realtimechange=F(function (val) {
-                    $edits.writeToModel(o.$edit, val, jq);
-                });
-                if (!$vars[o.$edit.name]) $vars[o.$edit.name]=jq;
-                $edits.push({jq:jq,params:o});
-            }
-            for (var k in o) {
-                if (k=="on") {
-                    for (var e in o.on) on(e, o.on[e]);
-                } else if (k=="css" && o[k]!=null) {//ADDJSL
-                    jq.css(o[k]);
-                } else if (!Util.startsWith(k,"$") && o[k]!=null) {//ADDJSL
-                    jq.attr(k,o[k]);
-                }
-            }
-            function on(eType, li) {
-                if (!li) return; //ADDJSL
-                if (eType=="enterkey") {
-                    jq.on("keypress",F(function (ev) {
-                        if (ev.which==13) li.apply(jq,arguments);
-                    }));
-                } else if (eType=="realtimechange") {
-                    var first=true, prev;
-                    listeners.push(function () {
-                        var cur;
-                        if (o.type=="checkbox") {
-                            cur=!!jq.prop("checked");
-                        } else {
-                            cur=jq.val();
-                        }
-                        if (first || prev!=cur) {
-                            li.apply(jq,[cur,prev]);
-                            prev=cur;
-                        }
-                        first=false;
-                    });
-                } else {
-                    jq.on(eType, F(li));
-                }
-            }
-        }
-        function parseString(str) {
-            return $("<span>").text(str);
-        }
-    };
-    UI.types={
-       String: {
-           toVal: function (val) {
-               return val;
-           },
-           fromVal: function (val) {
-               return val;
-           }
-       },
-       Number: {
-           toVal: function (val) {
-               return val+"";
-           },
-           fromVal: function (val) {
-               return parseFloat(val);
-           }
-       }
-   };
-    return UI;
-});
-
-requireSimulator.setName('Wiki');
-define(["HttpHelper", "Arrow", "Util","WebSite","Log","UI","FS"],
-function (HttpHelper, Arrow, Util, WebSite,Log,UI,FS) {
-return Wiki=function (placeHolder, home, options, plugins) {
-    var W={};
-    var refers={figures:"図", plists: "リスト"};
-    var SEQ="__seq__";
-    var LINEMARK="line_marker_";//+Math.floor(Math.random()*100000);
-    var on={};
-    var history=[];
-    var EXT=".txt";
-    if (!options) options={};
-    if (home && !home.isDir()) throw home+": not a dir";
-    var cwd,tocFile;
-    W.on=on;
-    W.cd=function (dir) {
-    	cwd=dir;
-    	tocFile=cwd.rel("toc.json");
-    };
-    if (home) W.cd(home);
-    W.encodeURL=function (name) {
-        return encodeURI(name).replace(/%/g,"");
-    };
-    W.parse=function (body,name,file) {
-        var ctx={};
-        var $h=HttpHelper({lineMark:LINEMARK});
-        ctx.out=$h;
-        ctx.name=name;
-        ctx.lines=body.split(/\r?\n/);
-        ctx.lineNo=0;
-        ctx.ul=0;
-        ctx.beginMark="[[";
-        ctx.endMark="]]";
-        ctx.blocks=[];
-        var figInfo=refInfo("figures");
-        var plistInfo=refInfo("plists");
-        //ctx.figures={};
-        //ctx.figseq=1;
-        var toc=[];
-        if (tocFile && tocFile.exists()) toc=tocFile.obj();
-        var idx=toc.indexOf(name);
-        if (idx>=0) {
-            var navBar="";
-            var prev=toc[idx-1];
-            if (prev) navBar+="[[前へ>"+prev+"]]";
-            var next=toc[idx+1];
-            if (next) navBar+=" - [[次へ>"+next+"]]";
-            var top=toc[0];
-            if (idx!=0) navBar+=" - [[目次>"+top+"]]";
-            ctx.lines.unshift(navBar);
-            ctx.lines.push(navBar);
-        }
-        ctx.lines.forEach(parseLine);
-        function refInfo(type) {// figures / plists
-            ctx[type]={};
-            var seq=1;
-            var res=function (name, register) {
-                var fi=ctx[type][name];
-                if (!fi) {
-                    fi={
-                        refs:[]
-                    };
-                    //console.log("reg "+type+" "+name);
-                    ctx[type][name]=fi;
-                }
-                if (register) {
-                    fi.no=seq++;
-                    fi.name=refers[type]+fi.no;// 図 / リスト
-                    fi.refs.forEach(function (e) {
-                        e.text(fi.name);
-                    });
-                }
-                return fi;
-            };
-            return res;
-        }
-
-        return $h.buf;
-        function parseLine(line) {
-            $h.lineNo=ctx.lineNo;
-            function unul(to) {
-                if (to==null) to=0;
-                while (ctx.ul>to) {
-                    ctx.ul--;
-                    $h.exit();//$.p("</ul>");
-                }
-            }
-            var uld=0;
-            if (line.match(/^-+/)) {
-                uld=RegExp.lastMatch.length;
-            }
-            if (uld>ctx.ul) {
-                while(uld>ctx.ul) {
-                    ctx.ul++;
-                    $h.enter("<ul>");
-                }
-            } else unul(uld);
-            line=line.substring(uld);
-            if (uld>0) $h.enter("<li>");
-            if (line.match(/^\*+/)) {
-                var r=RegExp.rightContext;
-                //unul();
-                var h="h"+RegExp.lastMatch.length;
-                $h.enter("<"+h+">");//$.p("<"+h+">");
-                parseLink(r);
-                $h.exit();// $.p("</"+h+">\n");
-            } else if (line.match(/^$/)) {
-                unul();
-                $h.p($("<p>")); //$.p("<p>\n");
-            } else if (line.match(/^<<toc(.*)/)) {
-                ctx.toc=[ctx.name];
-                ctx.blocks.push({name: "toc", exit: function () {
-                    if (tocFile && !tocFile.isReadOnly()) tocFile.obj(ctx.toc);
-                    ctx.toc=null;
-                }});
-            } else if (line.match(/^<<code(.*)/)) {
-                var s=RegExp.$1;
-                s=s.replace(/^ */,"");
-                if (s.length>0) {
-                    var ss=s.split(/ /,2);
-                    var label, fn;
-                    if (ss.length==2) {
-                        fn=ss[0];
-                        label=ss[1];
-                        var pi=plistInfo(label, true);
-                        $h.p($("<div>").addClass("plist").text(pi.name+" "+fn));
-                    } else {
-                        $h.p($("<div>").addClass("plist").text(ss));
-                    }
-                }
-                $h.enter("<pre>");
-                ctx.blocks.push({name: "code", exit: function () {$h.exit();}});
-            } else if (line.match(/^>>/)) {
-                var b=ctx.blocks.pop();
-                if (b && b.exit) b.exit(ctx);
-            } else if (line.match(/^@@@@(.*)/)) {
-                //unul();
-                if (ctx.pclose) $h.exit();//$.p("</pre>");
-                else {
-                    if (RegExp.$1.length>0) {
-                        var pi=plistInfo(RegExp.$1, true);
-                        $h.p($("<div>").addClass("plist").text(pi.name));
-                    }
-                    $h.enter("<pre>");
-                }
-                ctx.pclose=!ctx.pclose;
-            } else {
-                //unul();
-                parseLink(line);
-                $h.p("\n");
-            }
-            if (uld>0) $h.exit();
-            ctx.lineNo++;
-        }
-        function parseLink(line) {
-            var w=(typeof line=="string"?
-                    WikiBraces(line, ctx.beginMark,ctx.endMark)
-                    : line);
-            w.forEach(function (e) {
-                if (typeof e=="string") {
-                    $h.p(e);
-                } else {
-                    procLink(e);
-                }
-            });
-            function procLink(e) {
-                var name=e.text();
-                var a;
-                if (name.match(/^@blink ([^>]+)>([^\s]+)/)) {
-                    caption=RegExp.$1;
-                    var target=RegExp.$2;
-                    a=$("<span>").addClass("clickable").text(caption).hover(function () {
-                        var a;
-                        if (parent && parent.Arrow) a=parent.Arrow;
-                        if (Arrow) a=Arrow;
-                        if (a) a.show( target );
-                    });
-                } else if (name.match(/^@plistref (.*)/)) {
-                    var label=RegExp.$1;
-                    //console.log("fi.l ="+label);
-                    var fi=plistInfo(label);
-                    //console.log("fi = "+fi.name);
-                    a=$("<strong>").text(fi.name);
-                    fi.refs.push(a);
-                } else if (name.match(/^@editadd/)) {
-                    $h.p($("<img>").attr("src",WebSite.top+"/images/editAdd.png"));
-                } else if (name.match(/^@figref (.*)/)) {
-                    var fi=figInfo(RegExp.$1);
-                    a=$("<strong>").text(fi.name);
-                    fi.refs.push(a);
-                } else if (name.match(/^@cfrag (.*)/)) {
-                    var code=RegExp.$1
-                    a=$("<code>");
-                    $h.enter(a);
-                    parseLink(code);
-                    $h.exit();
-                } else if (name.match(/^@arg (.*)/)) {
-                    var varn=RegExp.$1
-                    a=$("<i>");
-                    $h.enter(a);
-                    parseLink(varn);
-                    $h.exit();
-                } else {
-                    var cn=e.split(">",2);
-                    if (cn.length==2) {
-                        name=cn[1]+"";
-                        caption=cn[0];
-                    } else caption=name;
-                    if (ctx.toc) ctx.toc.push(name);
-                    if (name.match(/\.(png|jpg|gif)$/) && !name.match(/^http/)) {
-                        var fi=figInfo(name, true);
-                        a=$("<div>").addClass("figure").append(
-                                  imageHolder(name)
-                           );
-                        $h.enter(a);
-                        $h.enter($("<div>"));
-                        $h.p(refers.figures+fi.no+".");
-                        parseLink(caption); //$h.p(caption);
-                        $h.exit();
-                        $h.exit();
-                    } else {
-                    	if (name.match(/^https?:\/\//)) {
-                    		a=$("<a>").attr({href:name,target:"ext"}).text(caption);
-                    	} else {
-                    		var f=W.resolveFile(name);
-                    		if (!f.exists() && (f.isReadOnly() || !options.editMode)) {
-                    			a=$("<span>").text(caption);
-                    		} else {
-                    		    if (options.useAnchor) {
-                    		       // a=$("<a>").attr({href:"wiki.html?file="+f.path()}).text(caption);
-                    		        var ahref=f.relPath(file.up()).replace(/\.txt$/,".html");
-                                    ahref=W.encodeURL(ahref);// encodeURI(ahref).replace(/%/g,"_");
-                                    a=$("<a>").attr({href:ahref}).text(caption);
-                                    //a=$("<a>").attr({href:"?file="+f.path()}).text(caption);
-                    		    } else {
-                                    a=$("<span>").addClass("clickable").text(caption).click(function () {
-                                        W.show(f);
-                                    });
-                    		    }
-                    			if (!f.exists()) a.addClass("notexist");
-                    		}
-                    	}
-                    }
-                }
-                $h.p(a);
-            }
-        }
-    };
-    function imageHolder(name) {
-        var res,imfile;
-        if (W.builtinImages[name]) {
-            return $("<div>").append( $("<img>").attr("src", WebSite.top+"/doc/images/"+name) );
-        } else {
-            res=UI("div", {style:"margin:10px; padding:10px; border:solid black 1px;",
-                on:{dragover: s, dragenter: s, drop:dropAdd}},
-                    "ここに画像ファイル(png/gif/jpg)をドラッグ＆ドロップして追加"
-            );
-            var thome=FS.get(WebSite.tonyuHome);
-            imfile=thome.rel("doc/images/").rel(name);
-            if (imfile.exists()) {
-                res.empty().append(UI("img",{src:imfile.text() }));
-            }
-            return res;
-        }
-        function s(e) {
-            e.stopPropagation();
-            e.preventDefault();
-        }
-        function dropAdd(e) {
-            if (!options.editMode) return;
-            var eo=e.originalEvent;
-            var file = eo.dataTransfer.files[0];
-            if(!file.type.match(/image\/(png|gif|jpg)/)[1]) {
-                e.stopPropagation();
-                e.preventDefault();
-                return false;
-            }
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                var fileContent = reader.result;
-                imfile.text(fileContent);
-                res.empty().append(UI("img",{src:fileContent}));
-            };
-            reader.readAsDataURL(file);
-            e.stopPropagation();
-            e.preventDefault();
-            return false;
-        }
     }
-    W.resolveFile=function (name) {
-        var f;
-        if (name.isDir) f=name;
-        else if (cwd && name.substring(0,1)!="/") f=cwd.rel(name+EXT);
-        else f=FS.get(name);
-        return f;
-    };
-    W.show=function (nameOrFile) {
-        var f=W.resolveFile(nameOrFile);
-        if (!options.editMode) Log.d("wiki","show "+f);
-    	W.cd(f.up());
-		var fn=f.truncExt(EXT);
-    	if (!f.exists() && !f.isReadOnly() && options.editMode) {
-    		var p=history[history.length-1];
-    		if (p) f.text("[["+p.truncExt(EXT)+"]]\n");
-    		else f.text("");
-    	}
-    	if ( f.exists()) {
-    		var ht=W.parse(f.text(), fn, f);
-    		placeHolder.empty();
-    		placeHolder.scrollTop(0);
-    		placeHolder.append(ht);
-    		placeHolder.append($("<div>").css({height:"100px"}).text(""));
-    		//console.log("wikijs.on.show",f+"");
-    		if (on.show) on.show.apply(W, [f,fn]);
-    		history.push(f);
-    	} else {
-    		alert(nameOrFile+" というページはありません");
-    		//placeHolder.text(name+" not found.");
-    	}
-    	return;
-    };
-    W.back=function () {
-        var f=history.pop();
-        if (f) show(f);
-    };
-    var curLined;
-    W.highlightLine=function (row) { // row:0 origin
-        var e=$("#"+LINEMARK+"-"+row);
-        if (e.length==0) return;
-        if (curLined) {
-            curLined.removeClass("wiki-cur-line");
+    function invokeMethod(t, name, args, objName) {
+        if (!t) throw new Error(objName+"(="+t+")のメソッド "+name+"を呼び出せません");
+        var f=t[name];
+        if (typeof f!="function") throw new Error((objName=="this"? "": objName+".")+name+"(="+f+")はメソッドではありません");
+        return f.apply(t,args);
+    }
+    function callFunc(f,args, fName) {
+        if (typeof f!="function") throw new Error(fName+"は関数ではありません");
+        return f.apply({},args);
+    }
+    function checkNonNull(v, name) {
+        if (v!=v || v==null) throw new Error(name+"(="+v+")は初期化されていません");
+        return v;
+    }
+    function A(args) {
+        var res=[];
+        for (var i=1 ; i<args.length; i++) {
+            res[i-1]=args[i];
         }
-        curLined=e.next();
-        curLined.addClass("wiki-cur-line");
-        var t=e.position().top;
-        var area=placeHolder;
-        if (t<0) {
-            area.scrollTop(area.scrollTop()+(t-10)/2);
+        return res;
+    }
+    function useNew() {
+        throw new Error("クラス名はnewをつけて呼び出して下さい。");
+    }
+    function not_a_tonyu_object(o) {
+        console.log("Not a tonyu object: ",o);
+        throw new Error(o+" is not a tonyu object");
+    }
+    function hasKey(k, obj) {
+        return k in obj;
+    }
+    function run(bootClassName) {
+        var bootClass=getClass(bootClassName);
+        if (!bootClass) throw new Error( bootClassName+" というクラスはありません");
+        Tonyu.runMode=true;
+        var boot=new bootClass();
+        var th=thread();
+        th.apply(boot,"main");
+        var TPR;
+        if (TPR=Tonyu.currentProject) {
+            TPR.runningThread=th;
+            TPR.runningObj=boot;
         }
-        var h=area.height()-100;
-        if (t>h) {
-            area.scrollTop(area.scrollTop()+(t-h+10)/2);
+        $LASTPOS=0;
+        th.steps();
+    }
+    return Tonyu={thread:thread, threadGroup:threadGroup, klass:klass, bless:bless, extend:extend,
+            globals:globals, classes:classes, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
+            timeout:timeout,animationFrame:animationFrame, asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
+            hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
+            run:run,
+            VERSION:1447053983958,//EMBED_VERSION
+            A:A};
+}();
+});
+requireSimulator.setName('PatternParser');
+define(["Tonyu"], function (Tonyu) {return Tonyu.klass({
+	initialize: function (img, options) {
+	    this.options=options || {};
+		this.img=img;
+		this.height = img.height;
+		this.width = img.width;
+		var cv=this.newImage(img.width, img.height);
+		var ctx=cv.getContext("2d");
+		ctx.drawImage(img, 0,0);
+		this.ctx=ctx;
+		this.pixels=this.ctx.getImageData(0, 0, img.width, img.height).data;
+		this.base=this.getPixel(0,0);
+	},
+	newImage: function (w,h) {
+        var cv=document.createElement("canvas");
+        cv.width=w;
+        cv.height=h;
+        return cv;
+	},
+	getPixel: function (x,y) {
+		var imagePixelData = this.pixels;
+		var ofs=(x+y*this.width)*4;
+		var R = imagePixelData[0+ofs];
+  		var G = imagePixelData[1+ofs];
+  		var B = imagePixelData[2+ofs];
+  		var A = imagePixelData[3+ofs];
+  		return ((((A*256)+B)*256)+G)*256+R;
+	},
+	setPixel: function (x,y,p) {
+	    var ofs=(x+y*this.width)*4;
+	    this.pixels[0+ofs]=p & 255;
+	    p=(p-(p&255))/256;
+        this.pixels[1+ofs]=p & 255;
+        p=(p-(p&255))/256;
+        this.pixels[2+ofs]=p & 255;
+        p=(p-(p&255))/256;
+        this.pixels[3+ofs]=p & 255;
+	},
+	parse: function () {
+  		try {
+			//console.log("parse()");
+  			var res=[];// List of charpattern
+			for (var y=0; y<this.height ;y++) {
+				for (var x=0; x<this.width ;x++) {
+					var c=this.getPixel(x, y);
+					if (c!=this.base) {
+						res.push(this.parse1Pattern(x,y));
+					}
+				}
+			}
+			//console.log("parsed:"+res.lenth);
+			return res;
+  		} catch (p) {
+  		    if (p.isParseError) {
+  	            console.log("parse error! "+p);
+  	            return {image: this.img, x:0, y:0, width:this.width, height:this.height};
+  		    }
+  		    throw p;
+  		}
+	},
+  	parse1Pattern:function (x,y) {
+		function hex(s){return s;}
+		var trans=this.getPixel(x, y);
+		var dx=x,dy=y;
+		var base=this.base;
+		var width=this.width, height=this.height;
+		while (dx<width) {
+			var pixel = this.getPixel(dx,dy);
+			if (pixel!=trans) break;
+			dx++;
+		}
+		if (dx>=width || this.getPixel(dx,dy)!=base) {
+		    throw PatterParseError(dx,dy,hex(this.getPixel(dx,dy))+"!="+hex(base));
+		}
+		dx--;
+		while (dy<height) {
+			if (this.getPixel(dx,dy)!=trans) break;
+			dy++;
+		}
+		if (dy>=height || this.getPixel(dx,dy)!=base) {
+		    throw PatterParseError(dx,dy,hex(this.getPixel(dx,dy))+"!="+hex(base));
+		}
+		dy--;
+		var sx=x+1,sy=y+1,w=dx-sx,h=dy-sy;
+        console.log("PP",sx,sy,w,h,dx,dy);
+		if (w*h==0) throw PatterParseError(dx, dy,"w*h==0");
+        var newim=this.newImage(w,h);
+        var nc=newim.getContext("2d");
+        var newImD=nc.getImageData(0,0,w,h);
+		var newD=newImD.data;
+		var di=0;
+		for (var ey=sy ; ey<dy ; ey++) {
+			for (var ex=sx ; ex<dx ; ex++) {
+			    var p=this.getPixel(ex, ey);
+				if (p==trans) {
+					newD[di++]=0;
+					newD[di++]=(0);
+					newD[di++]=(0);
+					newD[di++]=(0);
+				} else {
+                    newD[di++]=(p&255);
+                    p=(p-(p&255))/256;
+                    newD[di++]=(p&255);
+                    p=(p-(p&255))/256;
+                    newD[di++]=(p&255);
+                    p=(p-(p&255))/256;
+                    newD[di++]=(p&255);
+				}
+			}
+		}
+        nc.putImageData(newImD,0,0);
+		for (var yy=sy-1; yy<=dy; yy++) {
+		    for (var xx=sx-1; xx<=dx; xx++) {
+		        this.setPixel(xx,yy, base);
+		    }
+		}
+        if (this.options.boundsInSrc) {
+            return {x:sx,y:sy,width:w,height:h};
         }
-        function mark(startElem) {
-            var e=startElem.next();
-            while (e.length>0) {
-                if (Util.startsWith( e.attr("id"), LINEMARK)) break;
+		return {image:newim, x:0, y:0, width:w, height:h};
+		function PatterParseError(x,y,msg) {
+		    return {toString: function () {
+		        return "at ("+x+","+y+") :"+msg;
+		    }, isParseError:true};
+		}
+	}
 
+});});
+requireSimulator.setName('Assets');
+define(["WebSite","Util","Tonyu"],function (WebSite,Util,Tonyu) {
+    var Assets={};
+    Assets.resolve=function (url, baseDir) {
+        if (url==null) url="";
+        url=url.replace(/\$\{([a-zA-Z0-9_]+)\}/g, function (t,name) {
+            return WebSite[name];
+        });
+        if (WebSite.urlAliases[url]) url=WebSite.urlAliases[url];
+        if (Util.startsWith(url,"ls:")) {
+            var rel=url.substring("ls:".length);
+            if (!baseDir) throw new Error("Basedir not specified");
+            var f=baseDir.rel(rel);
+            if (!f.exists()) throw new Error("Resource file not found: "+f);
+            if (WebSite.mp3Disabled && rel.match(/\.mp3$/)) {
+                var oggf=baseDir.rel(rel.replace(/\.mp3$/,".ogg"));
+                if (oggf.exists()) {
+                    f=oggf;
+                }
             }
+            url=f.getURL();
         }
+        return url;
     };
-    W.builtinImages={
-            "50_100.png":1,
-            "50_160.png":1,
-            "50_300.png":1,
-            "apple1apple2.png":1,
-            "coords.png":1,
-            "copy60_100.png":1,
-            "firstRunRes.png":1,
-            "firstVarRes.png":1,
-            "itadaki.png":1,
-            "noWaitCat.png":1,
-            "runtimeError.png":1,
-            "sample.png":1,
-            "sayonara.png":1,
-            "syntaxError.png":1
-    };
-    return W;
-    function WikiBraces(str, begin ,end) {
-        var c=0;
-        function init() {
-            var w=[];
-            while(true) {
-                var i=str.indexOf(begin,c);
-                var j=str.indexOf(end,c);
-                if (j>=0 && (i<0 || i>j)) {  // ]]
-                    w.push(str.substring(c,j));
-                    c=j;  // ]] は含めずおわり
-                    break;
-                }
-                if (i<0) {  // [[ ]] なし
-                    w.push(str.substring(c));
-                    c=str.length;
-                    break;
-                }
-                // [[
-                w.push(str.substring(c,i));
-                c=i+begin.length;
-                var we=init();
-                we.hasBrace=true;
-                if (c<str.length) {  // ]] あり
-                    c+=end.length;
-                }
-                w.push(we);
-            }
-            bless(w);
-            return w;
-        }
-        function bless(w) {
-            w.split=function (sp, lim) {
-                if (lim==1) return this;
-                var res=[], cur=bless([]);
-                this.forEach(function (e) {
-                    if (typeof e=="string") {
-                        var i =e.indexOf(sp);
-                        if (res.length>=lim) i=-1;
-                        if (i>=0) {  //  ,bbb   aaa,bbb
-                            if (i>0) {  //   aaa,bbb
-                                var s=e.substring(0,i); // aaa
-                                cur.push(s);
-                            }
-                            i+=sp.length;   //  bbb  bbb
-                            if (cur.length!=1) res.push(cur);
-                            else res.push(cur[0]);
-                            cur=bless([]);
-                            if (i<e.length) {  // ,bbb
-                                var s=e.substring(i) ;
-                                cur.push(s);
-                            }
-                        } else {  //aaabbb
-                            cur.push(e);
-                        }
-                    } else {
-                        cur.push(e);
-                    }
-                });
-                if (cur.length!=1) res.push(cur);
-                else res.push(cur[0]);
-                return res;
-            };
-            w.text=function (includeBrace) {
-               var res=(this.hasBrace && includeBrace ? begin :"");
-               this.forEach(function (e) {
-                   if (typeof e=="string") {
-                       res+=e;
-                   } else {
-                       res+=e.text(true);
-                   }
-               });
-               res+=(this.hasBrace && includeBrace ? end :"");
-               return res;
-            };
-            w.toString=function () {
-                return this.text(true);
-            };
-            return w;
-        }
-        return init(0);
-    };
-};
+    Tonyu.Assets=Assets;
+    return Assets;
 });
-requireSimulator.setName('Shell2');
-define(["Shell","UI","FS","Util"], function (sh,UI,FS,Util) {
-    var res={};
-    res.show=function (dir) {
-        var d=res.embed(dir);
-        d.dialog({width:600,height:500});
-    };
-    res.embed=function (dir) {
-        if (!res.d) {
-            res.d=UI("div",{title:"Shell"},["div",{$var:"inner"},"Type 'help' to show commands.",["br"]]);
-            res.inner=res.d.$vars.inner;
-            sh.prompt();
-        }
-        var d=res.d;
-        return d;
-    };
-    sh.cls=function () {
-        res.d.$vars.inner.empty();
-    };
-    sh.prompt=function () {
-        var line=UI("div",
-            ["input",{$var:"cmd",size:40,on:{keydown: kd}}],
-            ["pre",{$var:"out","class":"shell out"},["div",{$var:"cand","class":"shell cand"}]]
-        );
-        var cmd=line.$vars.cmd;
-        var out=line.$vars.out;
-        var cand=line.$vars.cand;
-        sh.setout({log:function () {
-            var a=[];
-            for (var i=0; i<arguments.length; i++) {
-                a.push(arguments[i]);
-            }
-            out.append(a.join(" ")+"\n");
-        },err:function (e) {
-            out.append(UI("div",{"class": "shell error"},e,["br"],["pre",e.stack]));
-        }});
-        line.appendTo(res.inner);
-        cmd.focus();
-        res.inner.closest(".ui-dialog-content").scrollTop(res.inner.height());
-        return sh.ASYNC;
-        function kd(e) {
-            //var eo=e.originalEvent();
-            //console.log(e.which);
-            if (e.which==9) {
-                e.stopPropagation();
-                e.preventDefault();
-                comp();
-                return false;
-            }
-            if (e.which==13) {
-                cand.empty();
-                exec(cmd.val());
-            }
-        }
-        function exec() {
-            var c=cmd.val().replace(/^ */,"").replace(/ *$/,"");
-            if (c.length==0) return;
-            var cs=c.split(/ +/);
-            var cn=cs.shift();
-            var f=sh[cn];
-            if (typeof f!="function") return out.append(cn+": command not found.");
-            try {
-                var args=[],options=null;
-                cs.forEach(function (ce) {
-                    var opt=/^-([A-Za-z_0-9]+)(=(.*))?/.exec(ce);
-                    if (opt) {
-                        if (!options) options={};
-                        options[opt[1]]=opt[3]!=null ? opt[3] : 1;
-                    } else args.push(ce);
-                });
-                if (options) args.push(options);
-                var sres=f.apply(sh, args);
-                if (sres===sh.ASYNC) return;
-                if (typeof sres=="object") {
-                    if (sres instanceof Array) {
-                        var table=UI("table");
-                        var tr=null;
-                        var cnt=0;
-                        sres.forEach(function (r) {
-                            if (!tr) tr=UI("tr").appendTo(table);
-                            tr.append(UI("td",r));
-                            cnt++;if(cnt%3==0) tr=null;
-                        });
-                        table.appendTo(out);
-                    } else {
-                        out.append(JSON.stringify(sres));
-                    }
-                } else {
-                    out.append(sres);
-                }
-                sh.prompt();
-            } catch(e) {
-                sh.err(e);
-                //out.append(UI("div",{"class": "shell error"},e,["br"],["pre",e.stack]));
-                sh.prompt();
-            }
-        }
-        function comp(){
-            var c=cmd.val();
-            var cs=c.split(" ");
-            var fn=cs.pop();
-            var canda=[];
-            if (cs.length==0) {
-                for (var k in sh) {
-                    if (typeof sh[k]=="function" && Util.startsWith(k, fn)) {
-                        canda.push(k);
-                    }
-                }
-            } else {
-                var f=sh.resolve(fn,false);
-                //console.log(fn,f);
-                if (!f) return;
-                var d=(f.isDir() ? f : f.up());
-                d.each(function (e) {
-                    if ( Util.startsWith(e.path(), f.path()) ) {
-                        canda.push(e.name());
-                    }
-                });
-            }
-            if (canda.length==1) {
-                var fns=fn.split("/");
-                fns.pop();
-                fns.push(canda[0]);
-                cs.push(fns.join("/"));
-                cmd.val(cs.join(" "));
-                cand.empty();
-            } else {
-                cand.text(canda.join(", "));
-            }
-            //console.log(canda);
-            //cmd.val(cmd.val()+"hokan");
-        }
-    };
-    sh.window=function () {
-        res.show(sh.cwd);
-    };
-    sh.atest=function (a,b,options) {
-        console.log(a,b,options);
-    };
-    return res;
-});
-requireSimulator.setName('NewProjectDialog');
-define(["UI"], function (UI) {
-    var res={};
-	res.show=function (prjDir, onOK,options) {
-    	var d=res.embed(prjDir,onOK,options);
-    	d.dialog({width:600});
-	};
-	res.embed=function (prjDir, onOK, options) {
+requireSimulator.setName('ImageList');
+define(["PatternParser","Util","Assets"], function (PP,Util,Assets) {
+    var cache={};
+    function excludeEmpty(resImgs) {
+        var r=[];
+        resImgs.forEach(function (resImg,i) {
+            if (!resImg || resImg.url=="") return;
+            r.push(resImg);
+        });
+        return r;
+    }
+    var IL;
+    IL=function (resImgs, onLoad,options) {
+        //  resImgs:[{url: , [pwidth: , pheight:]?  }]
 	    if (!options) options={};
-        if (!res.d) {
-            var FType={
-                    fromVal: function (val){
-                        return val=="" ? null : FS.get(val);
-                    },
-                    toVal: function (v){ return v ? v.path() : "";}
-            };
-        	res.d=UI("div",{title:(options.ren?"プロジェクト名の変更":"新規プロジェクト")},
-        			["div",
-        			 ["span","プロジェクト名"],
-        			 ["input",{$edit:"name",value:options.defName||"",
-        			     on:{enterkey:function () {
-                		     res.d.done();
-				 }}}]],
-         			["div",
-        			 ["span","親フォルダ"],
-        			 ["input",{$edit:{name:"parentDir",type:FType}}]],
-        			 ["div",
-        			   ["span","作成先フォルダ："],
-        			   ["span",{$var:"dstDir"}]
-        			  ],
-                 ["div", {$var:"validationMessage", css:{color:"red"}}],
-                 ["button", {$var:"OKButton", on:{click: function () {
-                	 res.d.done();
-                 }}}, "OK"]
-            );
-        }
-        var d=res.d;
-        var model={name:options.defName||"", parentDir:prjDir};
-        d.$edits.load(model);
-    	d.$edits.validator.on.validate=function (model) {
-    		if (model.name=="") {
-    			this.addError("name","名前を入力してください");
-    			return;
-    		}
-    		model.dstDir=model.parentDir.rel(model.name+"/");
-            if (model.dstDir.exists()) {
-                this.addError("name","このフォルダはすでに存在します");
-                return;
+        resImgs=excludeEmpty(resImgs);
+        var resa=[];
+        var cnt=resImgs.length;
+        resImgs.forEach(function (resImg,i) {
+            console.log("loading", resImg,i);
+            var url=resImg.url;
+            var urlKey=url;
+            if (cache[urlKey]) {
+            	proc.apply(cache[urlKey],[]);
+            	return;
             }
-    		this.allOK();
-    		d.$vars.dstDir.text(model.dstDir+"");
-    	};
-    	d.done=function () {
-    	    if (d.$edits.validator.isValid()) {
-                onOK(model.dstDir);
-                if (d.dialog) d.dialog("close");// not exists when embed
-    	    }
-    	};
-    	return d;
-    };
-    return res;
-});
-
-requireSimulator.setName('requestFragment');
-define(["WebSite"],function (WebSite) {
-    var FR={};
-    FR.ajax=function (options) {
-        var THRESH=options.THRESH || 1000*800;
-        var d=options.data;
-        if (typeof d!="object") throw "Data should be object: "+d;
-        d=JSON.stringify(d);
-        if (!options.redirectTo && (WebSite.serverType!="GAE" || d.length<THRESH)) return $.ajax(options);
-        var frags=[];
-        var cnt=0;
-        var id=Math.random();
-        while (d.length>0) {
-            frags.push(d.substring(0,THRESH));
-            d=d.substring(THRESH);
-
-        }
-        var len=frags.length;
-        var sent=0;
-        var waitTime=1000;
-        function addRedir(p) {
-            if (options.redirectTo) p.redirectTo=options.redirectTo;
-            return p;
-        }
-        frags.forEach(function (frag,i) {
-          //TODO: urlchange!
-            $.ajax({type:"post",url:WebSite.serverTop+"/sendFragment",data:addRedir({
-                id:id, seq:i, len:len, content:frag
-            }),success: function (res) {
-                console.log("sendFrag",res,i);//,frag);
-                sent++;
-                if (sent>=len) setTimeout(runFrag,waitTime);
-            }, error: options.error
+            url=IL.convURL(url,options.baseDir);
+            //if (!Util.startsWith(url,"data:")) url+="?" + new Date().getTime();
+            var im=$("<img>");
+            im.load(function () {
+            	cache[urlKey]=this;
+            	proc.apply(this,[]);
             });
-        });
-        function runFrag() {
-          //TODO: urlchange!
-            $.ajax({type:"post",url:WebSite.serverTop+"/runFragments",data:addRedir({id:id}),
-                success: function (res) {
-                    //console.log("runFrag res1=",res,arguments.length);
-                    if (typeof res=="string") {
-                        if (res.match(/^notCompleted:([\-\d]+)\/([\-\d]+)$/)) {
-                            console.log("notcomp",res);
-                            waitTime*=2;
-                            setTimeout(runFrag,waitTime);
-                            return;
+            im.attr("src",url);
+            function proc() {
+                var pw,ph;
+                if ((pw=resImg.pwidth) && (ph=resImg.pheight)) {
+                    var x=0, y=0, w=this.width, h=this.height;
+                    var r=[];
+                    while (true) {
+                        var rw=pw,rh=ph;
+                        if (x+pw>w) rw=w-x;
+                        if (y+ph>h) rh=h-y;
+                        r.push({image:this, x:x,y:y, width:rw, height:rh});
+                        x+=pw;
+                        if (x+pw>w) {
+                            x=0;
+                            y+=ph;
+                            if (y+ph>h) break;
                         }
                     }
-                    options.success(res);
-                },
-                error: options.error,
-                complete: options.complete
-            });
-        }
-
-    };
-
-    return FR;
-});
-requireSimulator.setName('Sync');
-define(["FS","Shell","requestFragment","WebSite"],function (FS,sh,rf,WebSite) {
-    var Sync={};
-    sh.sync=function () {
-        // sync options:o onend:f     local=remote=cwd
-        // sync dir:s|file options:o onend:f  local=remote=dir
-        // sync local:s|file remote:s|file options:o onend:f
-        var local,remote,options,onend=function(){};
-        var i=0;
-        if (typeof arguments[i]=="string" || isFile(arguments[i])) {
-            local=sh.resolve(arguments[i], true);
-            i++;
-            if (typeof arguments[i]=="string" || isFile(arguments[i])) {
-                remote=sh.resolve(arguments[i], false);
-                i++;
-            }
-        }
-        if (typeof arguments[i]=="object") { options=arguments[i]; i++;}
-        if (typeof arguments[i]=="function") { onend=arguments[i]; i++;}
-        if (!local) remote=local=sh.cwd;
-        if (options && options.onend) options.onend=promptAfter(options.onend);
-        if (!remote) remote=local;
-        sh.echo("sync args=",local,remote,options,onend);
-        Sync.sync(local,remote,options,promptAfter(onend));
-        return sh.ASYNC;
-        function promptAfter(f) {
-            return function () {
-                //alert("pro");
-                if (f) f.apply({},arguments);
-                sh.prompt();
-            };
-        }
-    };
-    function isFile(v) {
-        return v && v.isDir;
-    }
-    Sync.sync=function () {
-        // sync dir:file options:o onend:f  local=remote=dir
-        // sync local:file remote:file options:o onend:f
-        var local,remote,options,onend;
-        var i=0;
-        if (isFile(arguments[i])) {
-            local=arguments[i];
-            i++;
-            if (isFile(arguments[i])) {
-                remote=arguments[i];
-                i++;
-            }
-        }
-        if (typeof arguments[i]=="object") { options=arguments[i]; i++;}
-        if (typeof arguments[i]=="function") { onend=arguments[i]; i++;}
-
-        if (!local) throw "Sync.sync: Local dir must be specified as file object";
-        if (!remote) remote=local;
-        if (!options) options={};
-        if (!onend && options.onend) onend=options.onend;
-        if (options.test) options.v=1;
-        n0();
-        var uploads={},downloads=[],visited={};
-        function status(name, param) {
-            sh.echo("Status: "+name+" param:",param);
-            if (options.onstatus) {
-                options.onstatus(name, param);
-            }
-        }
-        function onError() {
-            if (options.onerror) {
-                options.onerror.apply(this, arguments);
-            }
-        }
-        function n0() {
-            var req={base:remote.path(),excludes:JSON.stringify(options.excludes)};
-            status("getDirInfo", req);
-          //TODO: urlchange!
-            $.ajax({
-                type:"get",
-                url:WebSite.serverTop+"/getDirInfo",
-                data:req,
-                success:n1,
-                error:onError
-            });
-        }
-        function n1(info) {
-            //info=JSON.parse(info);
-            if (options.v) sh.echo("getDirInfo",info);
-            var base=local;//FS.get(info.base);
-            var data=info.data;
-            for (var rel in data) {
-                var file=base.rel(rel);
-                var lcm=file.metaInfo();
-                var rmm=data[rel];
-                cmp(file,rel,lcm,rmm);
-            }
-            local.recursive(function (file) {
-                var lcm=file.metaInfo();
-                var rel=file.relPath(local);
-                var rmm=data[rel];
-                cmp(file,rel,lcm,rmm);
-            },{includeTrashed:true, excludes:options.excludes});
-            if (options.v) {
-                sh.echo("uploads:",uploads);
-                sh.echo("downloads:",downloads);
-            }
-
-            var req={base:remote.path(),paths:JSON.stringify(downloads)};
-            status("File2LSSync", req);
-          //TODO: urlchange!
-            $.ajax({
-                type:"post",
-                url:WebSite.serverTop+"/File2LSSync",
-                data:req,
-                success:n2,
-                error:onError
-            });
-        }
-        function n2(dlData) {
-            sh.echo("dlData=",dlData);
-            //dlData=JSON.parse(dlData);
-            if (options.v) sh.echo("dlData:",dlData);
-            var base=local;//FS.get(dlData.base);
-            if (options.test) return;
-            for (var rel in dlData.data) {
-                var dlf=base.rel(rel);
-                var d=dlData.data[rel];
-                //if (options.v) sh.echo(dlf.path(), d);
-                if (d.trashed) {
-                    if (dlf.exists()) dlf.rm();
+                    resa[i]=r;
                 } else {
-                    dlf.text(d.text);
+                    var p=new PP(this);
+                    resa[i]=p.parse();
                 }
-                delete d.text;
-                dlf.metaInfo(d);
-            }
-            var req={base:remote.path(),data:JSON.stringify(uploads)};
-            req.pathInfo="/LS2FileSync";//TODO: urlchange!
-            status("LS2FileSync", req);
-          //TODO: urlchange!
-            rf.ajax({
-                type:"post",
-                url:WebSite.serverTop+"/LS2FileSync",
-                data:req,
-                success:n3,
-                error:onError
-            });
-        }
-        function n3(res){
-            if (options.v) sh.echo("LS2FileSync res=",res);
-            var upds=[];
-            for (var i in uploads) upds.push(i);
-            res={msg:res,uploads:upds,downloads: downloads};
-            //if (options.v) sh.echo("onend",onend);
-            if (typeof onend=="function") onend(res);
-        }
-        function cmp(f,rel,lcm,rmm) {
-            if (visited[rel]) return ;
-            visited[rel]=1;
-            if (rmm && (!lcm || lcm.lastUpdate<rmm.lastUpdate)) {
-                downloads.push(rel);
-                if (options.v)
-                    sh.echo((!lcm?"New":"")+
-                            "Download "+f+
-                            " trash="+!!rmm.trashed);
-            } else if (lcm && (!rmm || lcm.lastUpdate>rmm.lastUpdate)) {
-                var o={text:f.text()};
-                var m=f.metaInfo();
-                for (var i in m) o[i]=m[i];
-                uploads[rel]=o;
-                if (options.v)
-                    sh.echo((!rmm?"New":"")+
-                            "Upload "+f+
-                            " trash="+!!lcm.trashed);
-            }
-
-        }
-    };
-    sh.rsh=function () {
-        var a=[];
-        for (var i=0; i<arguments.length; i++) a[i]=arguments[i];
-      //TODO: urlchange!
-        $.ajax({
-            url:WebSite.serverTop+"/rsh",
-            data:{args:JSON.stringify(a)},
-            success:function (r) {
-                sh.echo(r);
-            },error:function (req,e,mesg) {
-                sh.err(mesg);
-            },complete:function (){
-                sh.prompt();
-            }
-        });
-        return sh.ASYNC;
-    };
-    return Sync;
-});
-
-requireSimulator.setName('Auth');
-define(["WebSite"],function (WebSite) {
-    var auth={};
-    auth.currentUser=function (onend) {
-        //TODO: urlchange!
-        $.ajax({type:"get",url:WebSite.serverTop+"/currentUser",data:{withCsrfToken:true},
-            success:function (res) {
-                console.log("auth.currentUser",res);
-                res=JSON.parse(res);
-                var u=res.user;
-                if (u=="null") u=null;
-                console.log("user", u, "csrfToken",res.csrfToken);
-                onend(u,res.csrfToken);
-            }
-        });
-    };
-    auth.assertLogin=function (options) {
-        /*if (typeof options=="function") options={complete:options};
-        if (!options.confirm) options.confirm="この操作を行なうためにはログインが必要です．ログインしますか？";
-        if (typeof options.confirm=="string") {
-            var mesg=options.confirm;
-            options.confirm=function () {
-                return confirm(mesg);
-            };
-        }*/
-        auth.currentUser(function (user,csrfToken) {
-            if (user) {
-                return options.success(user,csrfToken);
-            }
-            window.onLoggedIn=options.success;
-            //TODO: urlchange!
-            options.showLoginLink(WebSite.serverTop+"/login");
-        });
-    };
-    window.Auth=auth;
-    return auth;
-});
-requireSimulator.setName('zip');
-define(["FS","Shell","Util"],function (FS,sh,Util) {
-    if (typeof JSZip=="undefined") return {};
-    var zip={};
-    zip.zip=function (dir,options) {
-        var zip = new JSZip();
-        function loop(dst, dir) {
-            dir.each(function (f) {
-                if (f.isDir()) {
-                    var sf=dst.folder(f.name());
-                    loop(sf, f);
-                } else {
-                    dst.file(f.name(),f.text());
+                resa[i].name=resImg.name;
+                cnt--;
+                if (cnt==0) {
+                    var res=[];
+                    var names={};
+                    resa.forEach(function (a) {
+                        names[a.name]=res.length;
+                        res=res.concat(a);
+                    });
+                    res.names=names;
+                    onLoad(res);
                 }
-            });
-        }
-        loop(zip, dir);
-        //zip.file("Hello.txt", "Hello World\n");
-        //var img = zip.folder("images");
-        //img.file("smile.gif", imgData, {base64: true});
-        var content = zip.generate({type:"blob"});
-        return content;
-    };
-    if (typeof saveAs!="undefined") {
-        sh.dlzip=function (dir) {
-            dir=sh.resolve(dir);
-            var content=zip.zip(dir);
-            saveAs(content, dir.name().replace(/\//g,"")+".zip");
-        }
-    }
-    // same as SFileNW.js
-    var binMap={".png": "image/png", ".jpg":"image/jpg", ".gif": "image/gif", ".jpeg":"image/jpg",
-            ".mp3":"audio/mp3", ".ogg":"audio/ogg"};
-    zip.unzip=function (arrayBuf,destDir) {
-        var zip=new JSZip(arrayBuf);
-        for (var i in zip.files) {
-            var zipEntry=zip.files[i];
-            var dest=destDir.rel(zipEntry.name);
-            for (var ext in binMap) {
-                var text;
-                if (dest.endsWith(ext)) {
-                    var ct=binMap[ext];
-                    text="data:"+ct+";base64,"+Util.Base64_From_ArrayBuffer(zipEntry.asArrayBuffer());
-                } else {
-                    text=zipEntry.asText();
-                }
-                dest.text(text);
             }
-            console.log(zipEntry.name);
-        }
+        });
     };
-    return zip;
-});
-requireSimulator.setName('ide/selProject');
-requirejs(["FS","Wiki","Shell","Shell2",
-           /*"copySample",*/"NewProjectDialog","UI","Sync","Auth","zip","requestFragment","WebSite"],
-  function (FS, Wiki,   sh,sh2,
-            /*copySample,  */NPD,           UI, Sync, Auth,zip,requestFragment,WebSite) {
-$(function () {
-
-    //copySample();
-    var home=FS.get(WebSite.tonyuHome);
-    var projects=home.rel("Projects/");
-    if (!projects.exists()) projects.mkdir();
-    sh.cd(projects);
-    var curDir=projects;
-    if (WebSite.isNW) {
-        $("#loginGrp").hide();
-    }
-    function ls() {
-        $("#prjItemList").empty();
-        var d=[];
-        curDir.each(function (f) {
-            if (!f.isDir()) return;
-            var l=f.lastUpdate();
-            var r=f.rel("options.json");
-            if (r.exists()) {
-                l=r.lastUpdate();
-            }
-            d.push([f,l]);
-        });
-        d=d.sort(function (a,b) {
-            return b[1]-a[1];
-        });
-        d.forEach(function (e) {
-            var f=e[0];
-            var name=f.name();
-
-            if (!f.isDir()) return;
-            var u=UI("div", {"class":"project"},
-                    ["a", {href:"project.html?dir="+f.path()},
-                     ["img",{$var:"t",src:"../../images/nowprint.png"}],
-                     ["div", name]
-                     ]);
-            u.appendTo("#prjItemList");
-            setTimeout(function () {
-                var tn=f.rel("images/").rel("icon_thumbnail.png");
-                //console.log(tn.path());
-                if (tn.exists()) {
-                    u.$vars.t.attr("src",tn.getURL());
+    IL.load=IL;
+    IL.parse1=function (resImg, imgDOM, options) {
+        var pw,ph;
+        var res;
+        if ((pw=resImg.pwidth) && (ph=resImg.pheight)) {
+            var x=0, y=0, w=imgDOM.width, h=imgDOM.height;
+            var r=[];
+            while (true) {
+                r.push({image:this, x:x,y:y, width:pw, height:ph});
+                x+=pw;
+                if (x+pw>w) {
+                    x=0;
+                    y+=ph;
+                    if (y+ph>h) break;
                 }
-            },10);
-            //$("#fileItem").tmpl({name: name, href:"project.html?dir="+f.path()}).appendTo("#prjItemList");
-        });
-    }
-    Auth.currentUser(function (r){
-        if (r) {
-            $(".while-logged-out").hide();
-            $("#login").text(r);
+            }
+            res=r;
         } else {
-            $(".while-logged-in").hide();
+            var p=new PP(imgDOM,options);
+            res=p.parse();
         }
-    });
-    /*var w=Wiki($("#wikiViewArea"), home.rel("doc/"));
-    var syncDoc=false;
-    if (WebSite.devMode) {
-        Sync.sync(home,{v:1});
-    } else if (WebSite.disableROM["ROM_d.js"]) {
-        syncDoc=true;
-        Sync.sync(home.rel("doc/"),{v:1, excludes:[home.rel("doc/html/").path()],
-            onend:function () {
-            if (home.rel("doc/index.txt").exists()) {
-                w.show("index");
-            }
-        }});
-    }
-    if (!syncDoc) w.show("index");*/
-    var help=$("<iframe>").attr("src",WebSite.top+"/doc/index.html");
-    help.height($(window).height()-$("#navBar").height());
-    $("#wikiViewArea").append(help);
-
-
-
-    $("#newPrj").click(function (){
-    	NPD.show(projects, function (prjDir) {
-            prjDir.mkdir();
-            document.location.href="project.html?dir="+prjDir.path();
-    	});
-    });
-    ls();
-    SplashScreen.hide();
-    $("body").on("keydown",function (e) {
-        if (e.keyCode==77 && WebSite.devMode) {
-            WebSite.mobile=!WebSite.mobile;
-            console.log("Mobile mode", WebSite.mobile);
-            if (WebSite.mobile) {
-                home.rel("mobile.txt").text("true");
-            } else {
-                home.rel("mobile.txt").rm();
-            }
-            /*$("a").each(function () {
-                var t=$(this);
-                var hr=t.attr("href");
-                if (hr) t.attr("href", hr.replace("project.html","m.html"));
-            });*/
-
-        }
-    });
-    sh.wikiEditor=function () {document.location.href="wikiEditor.html";};
+        res.name=resImg.name;
+        return res;
+    };
+	IL.convURL=function (url, baseDir) {
+	    /*if (url==null) url="";
+	    url=url.replace(/\$\{([a-zA-Z0-9_]+)\}/g, function (t,name) {
+	        return WebSite[name];
+	    });
+        if (WebSite.urlAliases[url]) url=WebSite.urlAliases[url];
+	    if (Util.startsWith(url,"ls:")) {
+	        var rel=url.substring("ls:".length);
+	        if (!baseDir) throw new Error("Basedir not specified");
+	        var f=baseDir.rel(rel);
+	        if (!f.exists()) throw "ImageList file not found: "+f;
+	        url=f.text();
+	    }
+	    return url;*/
+	    return Assets.resolve(url, baseDir);
+	};
+	window.ImageList=IL;
+    return IL;
 });
+requireSimulator.setName('T2MediaLib');
+// forked from makkii_bcr's "T2MediaLib" http://jsdo.it/makkii_bcr/3ioQ
+// T2MediaLib_BGMPlayer //
+
+var T2MediaLib_BGMPlayer = function(arg_id) {
+    this.id = arg_id;
+    this.playingBGM = null;
+    this.playingBGMName = null;
+    this.bgmPause = 0;
+    this.bgmPauseTime = 0;
+    this.bgmPauseCurrentTime = 0;
+    this.bgmPauseTempo = 0;
+    this.bgmPauseLoop = false;
+    this.bgmPauseLoopStart = 0;
+    this.bgmPauseLoopEnd = 0;
+    this.bgmVolume = 1.0;
+    this.bgmTempo = 1.0;
+};
+
+// BGM関数郡 //
+
+T2MediaLib_BGMPlayer.prototype.playBGM = function(idx, loop, offset, loopStart, loopEnd) {
+    if (!T2MediaLib.context) return null;
+    var bgm = this.playingBGM;
+    if (bgm instanceof AudioBufferSourceNode) bgm.stop(0);
+    this.playingBGM = T2MediaLib.playSE(idx, this.bgmVolume, this.bgmTempo, offset, loop, loopStart, loopEnd);
+    this.playingBGMName = idx;
+    this.bgmPause = 0;
+    return this.playingBGM;
+};
+T2MediaLib_BGMPlayer.prototype.stopBGM = function() {
+    var bgm = this.playingBGM;
+    if (!(bgm instanceof AudioBufferSourceNode)) return null;
+    bgm.stop(0);
+    this.playingBGM = null;
+    return bgm;
+};
+T2MediaLib_BGMPlayer.prototype.pauseBGM = function() {
+    var bgm = this.playingBGM;
+    if (!(bgm instanceof AudioBufferSourceNode)) return null;
+    if (this.bgmPause === 0) {
+        this.bgmPauseTime = this.getBGMCurrentTime();
+        this.bgmPauseLoopStart = bgm.loopStart;
+        this.bgmPauseLoopEnd = bgm.loopEnd;
+        this.bgmPauseLoop = bgm.loop;
+        this.bgmPauseCurrentTime = bgm.context.currentTime;
+        this.bgmPauseTempo = T2MediaLib.bgmTempo;
+        bgm.stop(0);
+        this.bgmPause = 1;
+    }
+    return bgm;
+};
+T2MediaLib_BGMPlayer.prototype.resumeBGM = function() {
+    var bgm = this.playingBGM;
+    if (!(bgm instanceof AudioBufferSourceNode)) return null;
+    if (this.bgmPause === 1) {
+        bgm = this.playBGM(this.playingBGMName, this.bgmPauseLoop, this.bgmPauseTime, this.bgmPauseLoopStart, this.bgmPauseLoopEnd);
+        this.bgmPause = 0;
+    }
+    return bgm;
+};
+T2MediaLib_BGMPlayer.prototype.setBGMVolume = function(vol) {
+    var bgm = this.playingBGM;
+    if (!(bgm instanceof AudioBufferSourceNode)) return null;
+    this.bgmVolume = vol;
+    T2MediaLib.setSEVolume(bgm, vol);
+};
+T2MediaLib_BGMPlayer.prototype.setBGMTempo = function(tempo) {
+    var bgm = this.playingBGM;
+    if (!(bgm instanceof AudioBufferSourceNode)) return null;
+
+    if (this.bgmPause === 0) {
+        bgm.plusTime -= (T2MediaLib.context.currentTime - bgm.playStartTime) * (tempo - this.bgmTempo);
+    }
+    this.bgmTempo = tempo;
+    T2MediaLib.setSERate(bgm, tempo);
+};
+T2MediaLib_BGMPlayer.prototype.getBGMCurrentTime = function() {
+    var bgm = this.playingBGM;
+    if (!(bgm instanceof AudioBufferSourceNode)) return null;
+    var time, time2, currenTime, tempo, plusTime, minusTime, mod;
+
+    if (this.bgmPause === 0) {
+        currenTime = T2MediaLib.context.currentTime;
+        tempo = this.bgmTempo;
+    } else {
+        currenTime = this.bgmPauseCurrentTime;
+        tempo = this.bgmPauseTempo;
+    }
+
+    time2 = (currenTime - bgm.playStartTime) * tempo + bgm.plusTime;
+    if (bgm.loop) {
+        if (bgm.loopEnd - bgm.loopStart > 0) { // ループ範囲正常
+
+            if (time2 < bgm.loopStart) { // ループ範囲前
+                plusTime  = 0;
+                minusTime = 0;
+                mod = bgm.buffer.duration;
+            } else { // ループ範囲内
+                plusTime  = bgm.loopStart;
+                minusTime = bgm.loopStart;
+                mod = bgm.loopEnd - bgm.loopStart;
+            }
+        } else { // ループ範囲マイナス（ループ無効）
+            mod = bgm.buffer.duration;
+            plusTime = 0;
+            minusTime = 0;
+        }
+    }
+
+    if (bgm.loop) {
+        time = ((time2 - minusTime) % mod) + plusTime;
+    } else {
+        time = time2;
+        if (time > bgm.buffer.duration) time = bgm.buffer.duration;
+    }
+    return time;
+};
+T2MediaLib_BGMPlayer.prototype.getBGMLength = function() {
+    var bgm = this.playingBGM;
+    if (!(bgm instanceof AudioBufferSourceNode)) return null;
+    return bgm.buffer.duration;
+};
+
+
+
+// ライブラリ本体 //
+
+// T2MediaLib //
+
+var T2MediaLib = {
+    context : null,
+
+    seDataAry : {
+        data : []
+    },
+
+    bgmPlayerMax : 16,
+    bgmPlayerAry : [],
+    playingBGM : null,
+    playingBGMName : null,
+    bgmPause : 0,
+    bgmPauseTime : 0,
+    bgmPauseCurrentTime : 0,
+    bgmPauseTempo : 0,
+    bgmPauseLoop : false,
+    bgmPauseLoopStart : 0,
+    bgmPauseLoopEnd : 0,
+    bgmVolume : 1.0,
+    bgmTempo : 1.0,
+
+    playingAudio : null,
+    audioVolume : 1.0,
+    audioTempo : 1.0,
+    audioDataAry : {
+        data : []
+    },
+
+    // 初期化 //
+
+    init : function() {
+        if (this.inited) return;
+        this.inited=true;
+        if (this.disabled) return;
+        if (window.AudioContext) {
+            T2MediaLib.context = new AudioContext();
+        } else if (window.webkitAudioContext) {
+            T2MediaLib.context = new webkitAudioContext();
+        } else {
+            T2MediaLib.context = null;
+            console.log('Your browser does not support yet Web Audio API');
+        }
+
+        // Web Audio API 起動成功
+        if (T2MediaLib.context) {
+            // BGMPlayer初期化 (16個生成)
+            for (var i=0; i<T2MediaLib.bgmPlayerMax; i++) {
+                T2MediaLib.bgmPlayerAry[i] = new T2MediaLib_BGMPlayer(i);
+            }
+        }
+    },
+
+    // CLEAR系関数 //
+    allClearData : function() {
+        var dataAry = T2MediaLib.seDataAry.data;
+        for (var data in dataAry) {
+            delete dataAry[data];
+        }
+    },
+    clearData : function(idx) {
+        var dataAry = T2MediaLib.seDataAry.data;
+        delete dataAry[idx];
+    },
+
+
+    // SEメソッド郡 //
+    loadSEFromArray: function (idx, array) {
+        var ctx=T2MediaLib.context;
+        var myArrayBuffer = ctx.createBuffer(
+            1, array.length, ctx.sampleRate);
+        var nowBuffering = myArrayBuffer.getChannelData(0);
+        for (var i = 0; i < array.length ; i++) {
+             nowBuffering[i] = array[i];
+        }
+        //var source = ctx.createBufferSource();
+        // set the buffer in the AudioBufferSourceNode
+        //source.buffer = myArrayBuffer;
+        T2MediaLib.seDataAry.data[idx]=myArrayBuffer;//source;
+    },
+    loadSE : function(idx, url, callbacks) { //@hoge1e3
+        if (!T2MediaLib.context || T2MediaLib.disabled) {
+            T2MediaLib.seDataAry.data[idx] = -1;
+            return null;
+        }
+        if (typeof WebSite=="object" && WebSite.mp3Disabled) {
+            url=url.replace(/\.mp3$/,".ogg");
+        }
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function() {
+            if (xhr.status === 200 || xhr.status=== 0 /*@hoge1e3 for node-webkit base64url */) {
+                var arrayBuffer = xhr.response;
+                if (arrayBuffer instanceof ArrayBuffer) {
+                    var successCallback = function(audioBuffer) {
+                        /*
+                        window.alert('Success : ' +
+                                     'sampleRate:' + audioBuffer.sampleRate + '\n' +
+                                     'length:' + audioBuffer.length + '\n' +
+                                     'duration:' + audioBuffer.duration + '\n' +
+                                     'numberOfChannels:' + audioBuffer.numberOfChannels + '\n');
+                        */
+                        T2MediaLib.seDataAry.data[idx] = audioBuffer;
+                        if (callbacks && callbacks.succ) callbacks.succ(idx);//@hoge1e3
+                    };
+                    var errorCallback = function(error) {
+                        if (error instanceof Error) {
+                            console.log('T2MediaLib: '+error.message,url);
+                        } else {
+                            console.log('T2MediaLib: Error decodeAudioData()',url);
+                        }
+                        T2MediaLib.seDataAry.data[idx] = -4;
+                        if (callbacks && callbacks.err) callbacks.err(idx,T2MediaLib.seDataAry.data[idx]);//@hoge1e3
+                    };
+                    T2MediaLib.context.decodeAudioData(arrayBuffer, successCallback, errorCallback);
+                } else {
+                    T2MediaLib.seDataAry.data[idx] = -3;
+                    if (callbacks && callbacks.err) callbacks.err(idx,T2MediaLib.seDataAry.data[idx]);//@hoge1e3
+                }
+            } else {
+                T2MediaLib.seDataAry.data[idx] = -2;
+                if (callbacks && callbacks.err) callbacks.err(idx,T2MediaLib.seDataAry.data[idx]);//@hoge1e3
+            }
+        };
+        xhr.onerror=function (e) {//@hoge1e3
+            if (callbacks && callbacks.err) callbacks.err(idx,e+"");
+        };
+        T2MediaLib.seDataAry.data[idx] = null;
+        if (url.match(/^data:/) && Util && Util.Base64_To_ArrayBuffer) {//@hoge1e3
+            xhr={onload:xhr.onload};
+            xhr.response=Util.Base64_To_ArrayBuffer( url.replace(/^data:audio\/[a-zA-Z0-9]+;base64,/i,""));
+            xhr.status=200;
+            xhr.onload();
+        } else {
+            xhr.open('GET', url, true);
+            xhr.responseType = 'arraybuffer';  // XMLHttpRequest Level 2
+            xhr.send(null);
+        }
+        //setTimeout(T2MediaLib.activate.bind(T2MediaLib),0);
+    },
+    activate: function () {
+      // create empty buffer
+        this.init();
+        if (this.isActivated) return;
+        this.isActivated=true;
+        var myContext=T2MediaLib.context;
+    	var buffer = myContext.createBuffer(1, Math.floor(myContext.sampleRate/32), myContext.sampleRate);
+    	var ary = buffer.getChannelData(0);
+    	var lam = Math.floor(myContext.sampleRate/860);
+        for (var i = 0; i < ary.length; i++) {
+    	     ary[i] = (i % lam<lam/2?0.1:-0.1)*(i<lam?2:1) ;
+    	}
+        //console.log(ary);
+	    var source = myContext.createBufferSource();
+	    source.buffer = buffer;
+    	// connect to output (your speakers)
+    	source.connect(myContext.destination);
+        // play the file
+	    if (source.noteOn) source.noteOn(0);
+	    else if (source.start) source.start(0);
+    },
+    playSE : function(idx, vol, rate, offset, loop, loopStart, loopEnd) {
+        if (!T2MediaLib.context) return null;
+        var audioBuffer = T2MediaLib.seDataAry.data[idx];
+        if (!(audioBuffer instanceof AudioBuffer)) return null;
+
+        // 引数チェック
+        if (vol === null) {
+            vol = 1;
+        }
+        if (!rate) rate = 1.0;
+        if (!offset) {
+            offset = 0;
+        } else {
+            if      (offset > audioBuffer.duration) offset = audioBuffer.duration;
+            else if (offset < 0.0) offset = 0.0;
+        }
+        if (!loop) loop = false;
+        if (!loopStart) {
+            loopStart = 0.0;
+        } else {
+            if      (loopStart < 0.0) loopStart = 0.0;
+            else if (loopStart > audioBuffer.duration) loopStart = audioBuffer.duration;
+        }
+        if (!loopEnd) {
+            loopEnd = audioBuffer.duration;
+        } else {
+            if      (loopEnd < 0.0) loopEnd = 0.0;
+            else if (loopEnd > audioBuffer.duration) loopEnd = audioBuffer.duration;
+        }
+
+        var source = T2MediaLib.context.createBufferSource();
+        T2MediaLib.context.createGain = T2MediaLib.context.createGain || T2MediaLib.context.createGainNode;
+        var gainNode = T2MediaLib.context.createGain();
+
+        source.buffer = audioBuffer;
+
+        source.loop               = loop;
+        source.loopStart          = loopStart;
+        source.loopEnd            = loopEnd;//audioBuffer.duration;
+        source.playbackRate.value = rate;
+
+        // 通常ノード接続
+        //source.connect(T2MediaLib.context.destination);
+
+        // 音量変更できるようノード接続
+        source.connect(gainNode);
+        gainNode.connect(T2MediaLib.context.destination);
+
+        // ループ開始位置修正
+        var offset_adj;
+        if (loop && loopEnd - loopStart > 0 && offset > loopEnd) {
+            offset_adj = loopEnd;
+        } else {
+            offset_adj = offset;
+        }
+
+        // 変数追加
+        source.gainNode = gainNode;
+        source.playStartTime = T2MediaLib.context.currentTime;
+        source.playOffset = offset_adj;
+        source.plusTime = offset_adj;
+
+        // 再生
+        source.start = source.start || source.noteOn;
+        source.stop  = source.stop  || source.noteOff;
+
+        gainNode.gain.value = vol * vol;
+
+        if (offset) {
+            if (loop) source.start(0, offset, 86400);
+            else      source.start(0, offset);
+        } else {
+            source.start(0);
+        }
+
+        source.onended = function(event) {
+            //console.log('"on' + event.type + '" event handler !!');
+            //source.stop(0);
+
+            delete source.gainNode;
+            //delete source.playStartTime;
+            //delete source.playOffset;
+            //delete source.plusTime;
+
+            source.onended = null;
+        };
+        //console.log(source);
+        return source;
+    },
+    stopSE : function(sourceObj) {
+        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        sourceObj.stop(0);
+        return sourceObj;
+    },
+    setSEVolume : function(sourceObj, vol) {
+        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        sourceObj.gainNode.gain.value = vol * vol;
+    },
+    setSERate : function(sourceObj, rate) {
+        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        sourceObj.playbackRate.value = rate;
+    },
+    getSEData : function(idx) {
+        return T2MediaLib.seDataAry.data[idx];
+    },
+
+
+    // BGMメソッド郡 //
+
+    loadBGM : function(idx, url, callbacks) {
+        return T2MediaLib.loadSE(idx, url, callbacks);
+    },
+    playBGM : function(id, idx, loop, offset, loopStart, loopEnd) {
+        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
+        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
+        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        return bgmPlayer.playBGM(idx, loop, offset, loopStart, loopEnd);
+    },
+    stopBGM : function(id) {
+        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
+        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
+        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        return bgmPlayer.stopBGM();
+    },
+    pauseBGM : function(id) {
+        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
+        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
+        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        return bgmPlayer.pauseBGM();
+    },
+    resumeBGM : function(id) {
+        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
+        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
+        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        return bgmPlayer.resumeBGM();
+    },
+    setBGMVolume : function(id, vol) {
+        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
+        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
+        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        return bgmPlayer.setBGMVolume(vol);
+    },
+    setBGMTempo : function(id, tempo) {
+        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
+        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
+        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        return bgmPlayer.setBGMTempo(tempo);
+    },
+    getBGMCurrentTime : function(id) {
+        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
+        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
+        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        return bgmPlayer.getBGMCurrentTime();
+    },
+    getBGMLength : function(id) {
+        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
+        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
+        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        return bgmPlayer.getBGMLength();
+    },
+    getBGMData : function(idx) {
+        return T2MediaLib.getSEData(idx);
+    },
+    getBGMPlayerMax : function() {
+        return T2MediaLib.bgmPlayerMax;
+    },
+    allStopBGM : function() {
+        for (var i=0; i<T2MediaLib.bgmPlayerMax; i++) {
+            T2MediaLib.stopBGM(i);
+        }
+    },
+
+    // Audioメソッド郡 //
+
+    loadAudio : function(idx, url) {
+        var audio = new Audio(url);
+        audio.play();
+
+        T2MediaLib.audioDataAry.data[idx] = null;
+
+        audio.addEventListener('loadstart', function() {
+            if (!T2MediaLib.context) return null;
+            var source = T2MediaLib.context.createMediaElementSource(audio);
+            source.connect(T2MediaLib.context.destination);
+        }, false);
+
+        audio.addEventListener('canplay', function() {
+            T2MediaLib.audioDataAry.data[idx] = audio;
+        }, false);
+
+        audio.load();
+
+    },
+    playAudio : function(idx, loop, startTime) {
+        var audio = T2MediaLib.audioDataAry.data[idx];
+        if (!audio) return null;
+        if (!startTime) startTime = 0;
+
+        if (T2MediaLib.playingAudio instanceof Audio) {
+            T2MediaLib.playingAudio.pause();
+            T2MediaLib.playingAudio.currentTime = 0;
+        }
+        T2MediaLib.playingAudio = audio;
+        audio.loop = loop;
+        audio.volume = T2MediaLib.audioVolume;
+        audio.currentTime = startTime;
+        audio.play();
+        return audio;
+    },
+    stopAudio : function() {
+        var audio = T2MediaLib.playingAudio;
+        if (!(audio instanceof Audio)) return null;
+        audio.pause();
+        audio.currentTime = 0;
+        T2MediaLib.playingAudio = null;
+        return audio;
+    },
+    pauseAudio : function() {
+        var audio = T2MediaLib.playingAudio;
+        if (!audio) return null;
+        audio.pause();
+        return audio;
+    },
+    resumeAudio : function() {
+        var audio = T2MediaLib.playingAudio;
+        if (!audio) return null;
+        audio.play();
+        return audio;
+    },
+    setAudioVolume : function(vol) {
+        T2MediaLib.audioVolume = vol;
+        if (T2MediaLib.playingAudio instanceof Audio) {
+            T2MediaLib.playingAudio.volume = vol;
+        }
+    },
+    setAudioTempo : function(tempo) {
+        T2MediaLib.audioTempo = tempo;
+        if (T2MediaLib.playingAudio instanceof Audio) {
+            T2MediaLib.playingAudio.playbackRate = tempo;
+        }
+    },
+    setAudioPosition : function(time) {
+        if (T2MediaLib.playingAudio instanceof Audio) {
+            T2MediaLib.playingAudio.currentTime = time;
+        }
+    },
+    getAudioData : function(idx) {
+        return T2MediaLib.audioDataAry.data[idx];
+    },
+    getAudioCurrentTime : function() {
+        if (!(T2MediaLib.playingAudio instanceof Audio)) return null;
+        return T2MediaLib.playingAudio.currentTime;
+    },
+    getAudioLength : function() {
+        if (!(T2MediaLib.playingAudio instanceof Audio)) return null;
+        return T2MediaLib.playingAudio.duration;
+    }
+};
+
+// 旧名。そのうち消す
+//T2SoundLib = T2MediaLib;
+
+
+
+// テスト
+//'http://jsrun.it/assets/c/X/4/S/cX4S7.ogg'
+//'http://jsrun.it/assets/5/Z/s/x/5ZsxE.ogg'
+
+//alert((!window.hasOwnProperty('webkitAudioContext'))+" "+(window.webkitAudioContext.prototype.createGain===undefined));
+
+//T2MediaLib.init();
+
+
+//playSE : function(idx, vol, rate, offset, loop, loopStart, loopEnd) {
+//T2MediaLib.loadSE('test','http://jsrun.it/assets/5/Z/s/x/5ZsxE.ogg');
+//setTimeout(function(){ bgm1 = T2MediaLib.playSE('test', 1.0, 1.0, 0, true, 0, 0); }, 500);
+//setTimeout(function(){ T2MediaLib.stopSE(bgm1); }, 5000);
+
+/*
+//playSE : function(idx, vol, rate, offset, loop, loopStart, loopEnd) {
+T2MediaLib.loadSE('test','http://jsrun.it/assets/c/X/4/S/cX4S7.ogg');
+setTimeout(function(){ bgm1 = T2MediaLib.playSE('test', 1.0, 1.1, 8, true, 12, 19); }, 500);
+setTimeout(function(){ bgm1.playbackRate.value = 1.2; }, 5000);
+setTimeout(function(){ bgm1.stop(); }, 6000);
+setTimeout(function(){ T2MediaLib.playSE('test'); }, 7000);
+//setTimeout(function(){ T2MediaLib.stopSE(bgm1); }, 5000);
+*/
+/*
+T2MediaLib.loadAudio('test','http://jsrun.it/assets/c/X/4/S/cX4S7.ogg');
+T2MediaLib.loadAudio('test2','http://jsrun.it/assets/q/S/1/C/qS1Ch.ogg');
+setTimeout(function(){ T2MediaLib.playAudio('test'); }, 5000);
+setTimeout(function(){ T2MediaLib.playAudio('test2'); }, 1000);
+setTimeout(function(){ T2MediaLib.playAudio('test', true, 11.5); console.log(T2MediaLib.getAudioCurrentTime()); console.log(T2MediaLib.getAudioLength());}, 1050);
+setTimeout(function(){ T2MediaLib.setAudioTempo(1.5); }, 3000);
+setTimeout(function(){ T2MediaLib.setAudioVolume(0.5); }, 6000);
+setTimeout(function(){ T2MediaLib.setAudioPosition(20); }, 7000);
+setTimeout(function(){ T2MediaLib.stopAudio(); }, 10000);
+*/
+
+
+
+requireSimulator.setName('Tonyu.Iterator');
+define(["Tonyu"], function (T) {
+   function IT(set, arity) {
+       var res={};
+       if (set.tonyuIterator) {
+    	   return set.tonyuIterator(arity);
+       } else if (set instanceof Array) {
+           res.i=0;
+           if (arity==1) {
+               res.next=function () {
+                   if (res.i>=set.length) return false;
+                   this[0]=set[res.i];
+                   res.i++;
+                   return true;
+               };
+           } else {
+               res.next=function () {
+                   if (res.i>=set.length) return false;
+                   this[0]=res.i;
+                   this[1]=set[res.i];
+                   res.i++;
+                   return true;
+               };
+           }
+       } else if (set instanceof Object){
+           res.i=0;
+           var elems=[];
+           if (arity==1) {
+               for (var k in set) {
+                   elems.push(k);
+               }
+               res.next=function () {
+                   if (res.i>=elems.length) return false;
+                   this[0]=elems[res.i];
+                   res.i++;
+                   return true;
+               };
+           } else {
+               for (var k in set) {
+                   elems.push([k, set[k]]);
+               }
+               res.next=function () {
+                   if (res.i>=elems.length) return false;
+                   this[0]=elems[res.i][0];
+                   this[1]=elems[res.i][1];
+                   res.i++;
+                   return true;
+               };
+           }
+       } else {
+           console.log(set);
+           throw new Error(set+" is not iterable");
+       }
+       return res;
+   }
+   Tonyu.iterator=IT;
+    return IT;
+});
+requireSimulator.setName('runtime');
+requirejs(["ImageList","T2MediaLib","Tonyu","Tonyu.Iterator"], function () {
+
+});
+requireSimulator.setName('runScript2');
+requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu"],
+        function (FS,  CPTR, sh,  rt,WebSite,LSFS,Tonyu) {
+    $(function () {
+
+        SplashScreen={hide: function () {
+            $("#splash").hide();
+        },show:function(){}};
+
+        var w=$(window).width();
+        var h=$(window).height();
+        $("body").css({overflow:"hidden", margin:"0px"});
+        var cv=$("<canvas>").attr({width: w-10, height:h-10}).appendTo("body");
+        $(window).resize(onResize);
+        function onResize() {
+            w=$(window).width();
+            h=$(window).height();
+            cv.attr({width: w-10, height: h-10});
+        }
+
+        var locs=location.href.replace(/\?.*/,"").split(/\//);
+        var prj=locs.pop() || "runscript";
+        var user=locs.pop() || "nobody";
+        var home=FS.get(WebSite.tonyuHome);
+        var ramHome=FS.get("/ram/");
+        FS.mount(ramHome.path(), LSFS.ramDisk() );
+        var curProjectDir=ramHome;
+        var actualFilesDir=home.rel(user+"/"+prj+"/");
+        ramHome.rel("files/").link(actualFilesDir);
+        /*var fo=ScriptTagFS.toObj();
+        for (var fn in fo) {
+            var f=curProjectDir.rel(fn);
+            if (!f.isDir()) {
+                var m=fo[fn];
+                f.text(m.text);
+                delete m.text;
+                if (m.lastUpdate) f.metaInfo(m);
+            }
+        }*/
+        loadFiles(curProjectDir);
+        sh.cd(curProjectDir);
+        WebSite.compiledKernel="js/kernel.js";
+        var curPrj=CPTR("user", "js/concat.js",curProjectDir);
+        start();
+        function start() {
+            Tonyu.currentProject=Tonyu.globals.$currentProject=curPrj;
+            var o=curPrj.getOptions();
+            curPrj.runScriptMode=true;
+            curPrj.run(o.run.bootClass);
+        }
+    });
 });
 
 requireSimulator.setName();

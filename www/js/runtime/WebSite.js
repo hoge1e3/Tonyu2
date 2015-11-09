@@ -40,7 +40,7 @@ define([], function () {
         };
     } else {
         WebSite={
-           urlAliases: {}, top: "../..",devMode:devMode
+           urlAliases: {}, top: ".",devMode:devMode
         };
     }
     // from https://w3g.jp/blog/js_browser_sniffing2015
@@ -96,7 +96,8 @@ define([], function () {
             WebSite.tonyuHome=WebSite.cwd+"fs/Tonyu/";
         }
         WebSite.logdir="/var/log/Tonyu/";
-        WebSite.kernelDir=WebSite.cwd+"www/Kernel/";
+        WebSite.wwwDir=WebSite.cwd+"www/";
+        WebSite.kernelDir=WebSite.wwwDir+"Kernel/";
         WebSite.ffmpeg=WebSite.cwd+("ffmpeg/bin/ffmpeg.exe");
     }
     if (loc.match(/tonyuedit\.appspot\.com/) ||

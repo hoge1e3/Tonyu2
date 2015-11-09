@@ -32,10 +32,13 @@ define(["FS","Util","WebSite"],function (FS,Util,WebSite) {
         if (!options) options={};
         if (options.v) {
             Shell.echo("cp", from ,to);
+            options.echo=Shell.echo.bind(Shell);
         }
         var f=resolve(from, true);
         var t=resolve(to);
-        if (f.isDir() && t.isDir()) {
+        return f.copyTo(t,options);
+
+        /*if (f.isDir() && t.isDir()) {
             var sum=0;
             f.recursive(function (src) {
                 var rel=src.relPath(f);
@@ -57,7 +60,7 @@ define(["FS","Util","WebSite"],function (FS,Util,WebSite) {
             return 1;
         } else {
             throw "Cannot copy directory "+f+" to file "+t;
-        }
+        }*/
     };
     Shell.rm=function (file, options) {
         if (!options) options={};

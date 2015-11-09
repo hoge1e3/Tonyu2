@@ -1,5 +1,5 @@
-requirejs(["FS","compiledTonyuProject","Shell","ScriptTagFS","runtime","WebSite","LSFS","Tonyu"],
-        function (FS,  CPTR, sh, ScriptTagFS,   rt,WebSite,LSFS,Tonyu) {
+requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu"],
+        function (FS,  CPTR, sh,  rt,WebSite,LSFS,Tonyu) {
     $(function () {
 
         SplashScreen={hide: function () {
@@ -26,7 +26,7 @@ requirejs(["FS","compiledTonyuProject","Shell","ScriptTagFS","runtime","WebSite"
         var curProjectDir=ramHome;
         var actualFilesDir=home.rel(user+"/"+prj+"/");
         ramHome.rel("files/").link(actualFilesDir);
-        var fo=ScriptTagFS.toObj();
+        /*var fo=ScriptTagFS.toObj();
         for (var fn in fo) {
             var f=curProjectDir.rel(fn);
             if (!f.isDir()) {
@@ -35,8 +35,10 @@ requirejs(["FS","compiledTonyuProject","Shell","ScriptTagFS","runtime","WebSite"
                 delete m.text;
                 if (m.lastUpdate) f.metaInfo(m);
             }
-        }
+        }*/
+        loadFiles(curProjectDir);
         sh.cd(curProjectDir);
+        WebSite.compiledKernel="js/kernel.js";
         var curPrj=CPTR("user", "js/concat.js",curProjectDir);
         start();
         function start() {

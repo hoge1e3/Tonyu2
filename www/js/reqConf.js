@@ -209,6 +209,7 @@ var reqConf={
             "NWMenu":"ide/NWMenu",
             "IFrameDialog":"help/IFrameDialog",
             "OggConverter":"ide/OggConverter",
+            "mkrun":"mkrun/mkrun",
 
             "foo":"bar"
         },

@@ -212,6 +212,9 @@ SFile.prototype={
             file.text(JSON.stringify(A.is(arguments[0],Object) ));
         }
     },
+    copyTo: function (dst, options) {
+        return dst.copyFrom(this,options);
+    },
     copyFrom: function (src, options) {
         var dst=this;
         var options=options||{};
@@ -219,22 +222,22 @@ SFile.prototype={
         var dstIsDir=dst.isDir();
         if (!srcIsDir && dstIsDir) {
             dst=dst.rel(src.name());
-            assert(!dst.isDir(), dst+" exists as an directory.");
+            A(!dst.isDir(), dst+" is a directory.");
             dstIsDir=false;
         }
         if (srcIsDir && !dstIsDir) {
            this.err("Cannot move dir to file");
         } else if (!srcIsDir && !dstIsDir) {
-            //this.fs.cp(A.is(src.path(), P.Absolute), this.path(),options);
-            var srcc=src.getText(); // TODO
+            if (options.echo) options.echo(src+" -> "+dst);
+            return this.fs.cp(A.is(src.path(), P.Absolute), dst.path(),options);
+            /*var srcc=src.getText(); // TODO
             var res=dst.setText(srcc);
             if (options.a) {
                 dst.setMetaInfo(src.getMetaInfo());
             }
-            return res;
+            return res;*/
         } else {
             A(srcIsDir && dstIsDir);
-            var t=this;
             src.each(function (s) {
                 dst.rel(s.name()).copyFrom(s, options);
             });

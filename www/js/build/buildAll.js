@@ -19,6 +19,7 @@ define(["genROM","Util","FS","Sync","Shell","WebSite"],
         ds.concat({names:[/*"fs/ROMk","fs/ROMd","fs/ROMs",*/"ide/selProject"], outFile:"index",reqConf:reqConf});
         ds.concat({names: [/*"fs/ROMk","fs/ROMd","fs/ROMs",*/"ide/editor"], outFile:"project",reqConf:reqConf});
         ds.concat({names: [/*"fs/ROMk",*/"runScript"], outFile:"runScript",reqConf:reqConf});
+        ds.concat({names: [/*"fs/ROMk",*/"runScript2"], outFile:"runScript2",reqConf:reqConf});
         sh.echo("To compile documents, type:");
         sh.echo("wiki2serv ../doc/ ../../../www/doc/");
     }

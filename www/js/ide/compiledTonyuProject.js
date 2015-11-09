@@ -20,6 +20,7 @@ define(["plugins","compiledProject"], function (plugins,CPR) {
                     var opt=this.getOptions();
                     return plugins.loadAll(opt.plugins,onload);
                 },
+                requestPlugin:function(){},
                 run: function (bootClassName) {
                     var ctx={classes:{}};
                     this.loadClasses(ctx).then(function () {

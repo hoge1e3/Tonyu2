@@ -97,8 +97,8 @@ define(["extend","PathUtil","MIMETypes","assert","SFile"],function (extend, P, M
             var srcIsDir=this.isDir(path);
             var dstIsDir=this.resolveFS(dst).isDir(dst);
             if (!srcIsDir && !dstIsDir) {
-                var src=this.getContent(path,{type:String}); // TODO
-                var res=this.resolveFS(dst).setContent(dst,src);
+                var cont=this.getContent(path);
+                var res=this.resolveFS(dst).setContent(dst,cont);
                 if (options.a) {
                     //console.log("-a", this.getMetaInfo(path));
                     this.setMetaInfo(dst, this.getMetaInfo(path));
