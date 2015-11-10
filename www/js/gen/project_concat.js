@@ -1,4 +1,4 @@
-// Created at Mon Nov 09 2015 16:26:26 GMT+0900 (東京 (標準時))
+// Created at Tue Nov 10 2015 15:29:55 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -14,7 +14,7 @@
 	define=function (reqs,func) {
 		R.def(reqs,func,"define");
 	};
-	require=requirejs=function (reqs,func) {
+	/*require=*/requirejs=function (reqs,func) {
 		R.def(reqs,func,"require");
 	};
 	R.setReqs=function (m, reqs) {
@@ -821,7 +821,7 @@ return Tonyu=function () {
             timeout:timeout,animationFrame:animationFrame, asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,
-            VERSION:1447053983958,//EMBED_VERSION
+            VERSION:1447136993162,//EMBED_VERSION
             A:A};
 }();
 });
@@ -1420,21 +1420,23 @@ SFile.prototype={
     _clone: function (){
         return this._resolve(this.path());
     },
-    _resolve: function (path) {
+    _resolve: function (path, options) {
         var res;
+        options=options||{};
         if (SFile.is(path)) {
             res=path;
         } else {
             A.is(path,P.Absolute);
             var topdir;
-            if (this.policy && (topdir=this.policy.topDir)) {
+            var policy=options.policy || this.policy;
+            if (policy && (topdir=policy.topDir)) {
                 if (topdir.path) topdir=topdir.path();
                 if (!P.startsWith(path, topdir)) {
                     throw new Error(path+": cannot access. Restricted to "+topdir);
                 }
             }
             res=this.fs.getRootFS().get(path);
-            res.policy=this.policy;
+            res.policy=policy;
         }
         if (res.policy) {
             return Util.privatize(res);
@@ -1533,7 +1535,7 @@ SFile.prototype={
         if (p || options.noFollowLink) {
             return p;
         } else {
-            return this.resolveLink().exists({noFollowLink:true});
+            return this.resolveLink({policy:{}}).exists({noFollowLink:true});
         }
     },
     /*copyTo: function (dst, options) {
@@ -1542,7 +1544,7 @@ SFile.prototype={
     rm: function (options) {
         options=options||{};
         if (!this.exists({noFollowLink:true})) {
-            var l=this.resolveLink();
+            var l=this.resolveLink({policy:{}});
             if (!this.equals(l)) return l.rm(options);
         }
         if (this.isDir() && (options.recursive||options.r)) {
@@ -1563,7 +1565,7 @@ SFile.prototype={
     },
     // File
     text:function () {
-        var l=this.resolveLink();
+        var l=this.resolveLink({policy:{}});
         if (!this.equals(l)) return l.text.apply(l,arguments);
         if (arguments.length>0) {
             this.setText(arguments[0]);
@@ -1666,8 +1668,12 @@ SFile.prototype={
     listFiles:function (options) {
         A(options==null || typeof options=="object");
         var dir=this.assertDir();
-        var l=this.resolveLink();
-        if (!this.equals(l)) return l.listFiles.apply(l,arguments);
+        var l=this.resolveLink({policy:{}});
+        if (!this.equals(l)) {
+            return l.listFiles.apply(l,arguments).map(function (f) {
+                return dir.rel(f.name());
+            });
+        }
         var path=this.path();
         var ord;
         if (typeof options=="function") ord=options;
@@ -1717,10 +1723,10 @@ SFile.prototype={
         to=this._resolve(A(to));
         this.fs.link(this.path(),to.path(),options);
     },
-    resolveLink: function () {
+    resolveLink: function (options) {
         var l=this.fs.resolveLink(this.path());
         A.is(l,P.Absolute);
-        return this._resolve(l);
+        return this._resolve(l, options);
     },
     isLink: function () {
         return this.fs.isLink(this.path());
@@ -1935,15 +1941,16 @@ define(["extend","PathUtil","MIMETypes","assert","SFile"],function (extend, P, M
             // isLink      /c/d/e/f -> null
             // ln /testdir/ /ram/files/
             // resolveLink /ram/files/sub/test2.txt -> /testdir/sub/test2.txt
-            if (this.exists(path)) return path;
             // path=/ram/files/test.txt
             for (var p=path ; p ; p=P.up(p)) {
                 assert(!this.mountPoint || P.startsWith(p, this.mountPoint), p+" is out of mountPoint. path="+path);
                 var l=this.isLink(p);  // p=/ram/files/ l=/testdir/
                 if (l) {
+                    assert(l!=p,"l==p=="+l);
                     //        /testdir/    test.txt
                     var np=P.rel(l,P.relPath(path, p));  //   /testdir/test.txt
-                    return assert.is(this.resolveFS(np).resolveLink(np),P.Absolute)  ;
+                    assert(np!=path,"np==path=="+np);
+                    return assert.is(this.getRootFS().resolveFS(np).resolveLink(np),P.Absolute)  ;
                 }
                 if (this.exists(p)) return path;
             }
@@ -11813,7 +11820,14 @@ define(["FS","Util","WebSite","plugins","Shell","Tonyu"],
         copyResources("images/");
         copyResources("sounds/");
         copyIndexHtml();
+        genReadme();
 
+        function genReadme() {
+            dest.rel("Readme.txt").text(
+                    "このフォルダは、Webサーバにアップロードしないと正常に動作しない可能性があります。\n"+
+                    "詳しくは\nhttp://hoge1e3.sakura.ne.jp/tonyu/tonyu2/runtime.html\nを御覧ください。\n"
+            );
+        }
         function copyResources(dir) {
             var src=prjDir.rel(dir);
             if (src.exists()) src.copyTo(dest.rel(dir));
@@ -11821,7 +11835,7 @@ define(["FS","Util","WebSite","plugins","Shell","Tonyu"],
         function genFilesJS(){
             addFileToLoadFiles("res.json",resc);
             addFileToLoadFiles("options.json",opt);
-            var mapd=prjDir.rel("map/");
+            var mapd=prjDir.rel("maps/");
             if (mapd.exists()) {
                 mapd.recursive(function (mf) {
                     addFileToLoadFiles( mf.relPath(prjDir), mf.obj());
@@ -11892,6 +11906,34 @@ define(["FS","Util","WebSite","plugins","Shell","Tonyu"],
     };
     return MkRun;
 });
+requireSimulator.setName('mkrunDiag');
+define(["UI","mkrun","Tonyu"], function (UI,mkrun,Tonyu) {
+    var res={};
+    res.show=function (prj,dest) {
+        var d=res.embed(prj,dest);
+        d.dialog({width:800,height:300});
+    };
+    res.embed=function (prj,dest) {
+        if (!res.d) {
+            res.d=UI("div",{title:"ランタイム作成"},
+                    ["div","出力フォルダ"],
+                    ["div",["input", {$edit:"dest",size:60}]],
+                     ["button", {$var:"OKButton", on:{click: function () {
+                         res.run();
+                     }}}, "作成"]
+            );
+        }
+        var model={dest:dest};
+        res.d.$edits.load(model);
+        res.run=function () {
+            mkrun.run(prj, FS.get(model.dest));
+            alert(model.dest+"にランタイムを作成しました。");
+            if (res.d.dialog) res.d.dialog("close");
+        };
+        return res.d;
+    };
+    return res;
+});
 requireSimulator.setName('ide/editor');
 requirejs(["Util", "Tonyu", "FS", "FileList", "FileMenu",
            "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project",
@@ -11899,7 +11941,7 @@ requirejs(["Util", "Tonyu", "FS", "FileList", "FileMenu",
            "IFrameDialog",/*"WikiDialog",*/"runtime", "KernelDiffDialog","Sync","searchDialog","StackTrace","syncWithKernel",
            "UI","ResEditor","WebSite","exceptionCatcher","Tonyu.TraceTbl",
            "SoundDiag","Log","MainClassDialog","DeferredUtil","NWMenu",
-           "ProjectCompiler","compiledProject","mkrun"
+           "ProjectCompiler","compiledProject","mkrunDiag"
           ],
 function (Util, Tonyu, FS, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,
@@ -11907,7 +11949,7 @@ function (Util, Tonyu, FS, FileList, FileMenu,
           IFrameDialog,/*WikiDialog,*/ rt , KDD,Sync,searchDialog,StackTrace,swk,
           UI,ResEditor,WebSite,EC,TTB,
           sd,Log,MainClassDialog,DU,NWMenu,
-          TPRC,CPPRJ,mkrun
+          TPRC,CPPRJ,mkrunDiag
           ) {
 $(function () {
     var F=EC.f;
@@ -12406,6 +12448,10 @@ $(function () {
             ls();
         }
     }*/
+    $("#mkrun").click(F(function () {
+        mkrunDiag.show(curPrj,
+                FS.get(WebSite.cwd).rel("Runtimes/").rel( curProjectDir.name()) );
+    }));
     $("#imgResEditor").click(F(function () {
         //ImgResEdit(curPrj);
         ResEditor(curPrj,"image");

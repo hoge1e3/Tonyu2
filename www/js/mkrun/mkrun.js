@@ -22,7 +22,14 @@ define(["FS","Util","WebSite","plugins","Shell","Tonyu"],
         copyResources("images/");
         copyResources("sounds/");
         copyIndexHtml();
+        genReadme();
 
+        function genReadme() {
+            dest.rel("Readme.txt").text(
+                    "このフォルダは、Webサーバにアップロードしないと正常に動作しない可能性があります。\n"+
+                    "詳しくは\nhttp://hoge1e3.sakura.ne.jp/tonyu/tonyu2/runtime.html\nを御覧ください。\n"
+            );
+        }
         function copyResources(dir) {
             var src=prjDir.rel(dir);
             if (src.exists()) src.copyTo(dest.rel(dir));
@@ -30,7 +37,7 @@ define(["FS","Util","WebSite","plugins","Shell","Tonyu"],
         function genFilesJS(){
             addFileToLoadFiles("res.json",resc);
             addFileToLoadFiles("options.json",opt);
-            var mapd=prjDir.rel("map/");
+            var mapd=prjDir.rel("maps/");
             if (mapd.exists()) {
                 mapd.recursive(function (mf) {
                     addFileToLoadFiles( mf.relPath(prjDir), mf.obj());

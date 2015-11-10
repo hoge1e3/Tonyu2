@@ -1,4 +1,4 @@
-// Created at Mon Nov 09 2015 16:26:24 GMT+0900 (東京 (標準時))
+// Created at Tue Nov 10 2015 15:29:53 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -14,7 +14,7 @@
 	define=function (reqs,func) {
 		R.def(reqs,func,"define");
 	};
-	require=requirejs=function (reqs,func) {
+	/*require=*/requirejs=function (reqs,func) {
 		R.def(reqs,func,"require");
 	};
 	R.setReqs=function (m, reqs) {
@@ -842,21 +842,23 @@ SFile.prototype={
     _clone: function (){
         return this._resolve(this.path());
     },
-    _resolve: function (path) {
+    _resolve: function (path, options) {
         var res;
+        options=options||{};
         if (SFile.is(path)) {
             res=path;
         } else {
             A.is(path,P.Absolute);
             var topdir;
-            if (this.policy && (topdir=this.policy.topDir)) {
+            var policy=options.policy || this.policy;
+            if (policy && (topdir=policy.topDir)) {
                 if (topdir.path) topdir=topdir.path();
                 if (!P.startsWith(path, topdir)) {
                     throw new Error(path+": cannot access. Restricted to "+topdir);
                 }
             }
             res=this.fs.getRootFS().get(path);
-            res.policy=this.policy;
+            res.policy=policy;
         }
         if (res.policy) {
             return Util.privatize(res);
@@ -955,7 +957,7 @@ SFile.prototype={
         if (p || options.noFollowLink) {
             return p;
         } else {
-            return this.resolveLink().exists({noFollowLink:true});
+            return this.resolveLink({policy:{}}).exists({noFollowLink:true});
         }
     },
     /*copyTo: function (dst, options) {
@@ -964,7 +966,7 @@ SFile.prototype={
     rm: function (options) {
         options=options||{};
         if (!this.exists({noFollowLink:true})) {
-            var l=this.resolveLink();
+            var l=this.resolveLink({policy:{}});
             if (!this.equals(l)) return l.rm(options);
         }
         if (this.isDir() && (options.recursive||options.r)) {
@@ -985,7 +987,7 @@ SFile.prototype={
     },
     // File
     text:function () {
-        var l=this.resolveLink();
+        var l=this.resolveLink({policy:{}});
         if (!this.equals(l)) return l.text.apply(l,arguments);
         if (arguments.length>0) {
             this.setText(arguments[0]);
@@ -1088,8 +1090,12 @@ SFile.prototype={
     listFiles:function (options) {
         A(options==null || typeof options=="object");
         var dir=this.assertDir();
-        var l=this.resolveLink();
-        if (!this.equals(l)) return l.listFiles.apply(l,arguments);
+        var l=this.resolveLink({policy:{}});
+        if (!this.equals(l)) {
+            return l.listFiles.apply(l,arguments).map(function (f) {
+                return dir.rel(f.name());
+            });
+        }
         var path=this.path();
         var ord;
         if (typeof options=="function") ord=options;
@@ -1139,10 +1145,10 @@ SFile.prototype={
         to=this._resolve(A(to));
         this.fs.link(this.path(),to.path(),options);
     },
-    resolveLink: function () {
+    resolveLink: function (options) {
         var l=this.fs.resolveLink(this.path());
         A.is(l,P.Absolute);
-        return this._resolve(l);
+        return this._resolve(l, options);
     },
     isLink: function () {
         return this.fs.isLink(this.path());
@@ -1357,15 +1363,16 @@ define(["extend","PathUtil","MIMETypes","assert","SFile"],function (extend, P, M
             // isLink      /c/d/e/f -> null
             // ln /testdir/ /ram/files/
             // resolveLink /ram/files/sub/test2.txt -> /testdir/sub/test2.txt
-            if (this.exists(path)) return path;
             // path=/ram/files/test.txt
             for (var p=path ; p ; p=P.up(p)) {
                 assert(!this.mountPoint || P.startsWith(p, this.mountPoint), p+" is out of mountPoint. path="+path);
                 var l=this.isLink(p);  // p=/ram/files/ l=/testdir/
                 if (l) {
+                    assert(l!=p,"l==p=="+l);
                     //        /testdir/    test.txt
                     var np=P.rel(l,P.relPath(path, p));  //   /testdir/test.txt
-                    return assert.is(this.resolveFS(np).resolveLink(np),P.Absolute)  ;
+                    assert(np!=path,"np==path=="+np);
+                    return assert.is(this.getRootFS().resolveFS(np).resolveLink(np),P.Absolute)  ;
                 }
                 if (this.exists(p)) return path;
             }

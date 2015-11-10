@@ -1,4 +1,4 @@
-requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu"],
+requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu","NativeFS"],
         function (FS,  CPTR, sh,  rt,WebSite,LSFS,Tonyu) {
     $(function () {
 
@@ -17,15 +17,27 @@ requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu
             cv.attr({width: w-10, height: h-10});
         }
 
-        var locs=location.href.replace(/\?.*/,"").split(/\//);
-        var prj=locs.pop() || "runscript";
-        var user=locs.pop() || "nobody";
-        var home=FS.get(WebSite.tonyuHome);
-        var ramHome=FS.get("/ram/");
-        FS.mount(ramHome.path(), LSFS.ramDisk() );
-        var curProjectDir=ramHome;
-        var actualFilesDir=home.rel(user+"/"+prj+"/");
-        ramHome.rel("files/").link(actualFilesDir);
+        var curProjectDir;
+        if (WebSite.isNW) {
+            var home=location.href.replace(/^file:\/\//,"");
+            if (home.match(/^\/[a-z]:/i)) {
+                home=home.replace(/^\//,"");
+            }
+            home=FS.get(home);
+            if (!home.isDir()) home=home.up();
+            curProjectDir=home.rel("data/");
+        } else {
+            var locs=location.href.replace(/\?.*/,"").split(/\//);
+            var prj=locs.pop() || "runscript";
+            var user=locs.pop() || "nobody";
+            var home=FS.get(WebSite.tonyuHome);
+            var ramHome=FS.get("/ram/");
+            FS.mount(ramHome.path(), LSFS.ramDisk() );
+            curProjectDir=ramHome;
+            var actualFilesDir=home.rel(user+"/"+prj+"/");
+            ramHome.rel("files/").link(actualFilesDir);
+        }
+
         /*var fo=ScriptTagFS.toObj();
         for (var fn in fo) {
             var f=curProjectDir.rel(fn);

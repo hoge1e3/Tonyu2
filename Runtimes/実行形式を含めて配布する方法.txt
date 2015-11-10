@@ -1,0 +1,11 @@
+1. このフォルダのpackage.jsonをテキストエディタで開き
+
+"main": "Demo/index.html",
+の部分と
+"icon": "Demo/images/icon_thumbnail.png",
+の部分を配布したいゲームのフォルダに変更してください。
+
+2. Player2.exeで実行できることを確認してください。
+
+3. このフォルダの全ファイルと、配布したいゲームのフォルダをzipで圧縮してください。
+

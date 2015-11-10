@@ -210,6 +210,7 @@ var reqConf={
             "IFrameDialog":"help/IFrameDialog",
             "OggConverter":"ide/OggConverter",
             "mkrun":"mkrun/mkrun",
+            "mkrunDiag":"mkrun/mkrunDiag",
 
             "foo":"bar"
         },
