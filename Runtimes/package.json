@@ -1,11 +1,11 @@
 {
   "name": "Tonyu2",
-  "main": "SeeSaw/index.html",
+  "main": "Demo/index.html",
   "single-instance": false,
   "window": {
     "width": 1024,
     "height": 768,
-    "icon": "SeeSaw/images/icon_thumbnail.png",
-	"toolbar"	: true
+    "icon": "Demo/images/icon_thumbnail.png",
+	"toolbar"	: false
   }
 }

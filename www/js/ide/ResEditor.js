@@ -206,9 +206,11 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                 });
             })
             var cleanFile={};
-            rsrcDir.each(function (f) {
-                cleanFile["ls:"+f.relPath(prj.getDir())]=f;
-            });
+            if (rsrcDir.exists()) {
+                rsrcDir.each(function (f) {
+                    cleanFile["ls:"+f.relPath(prj.getDir())]=f;
+                });
+            }
             rsrc=prj.getResource();
             items.forEach(function (item){
                 delete cleanFile[item.url];
