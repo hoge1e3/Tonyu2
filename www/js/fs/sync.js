@@ -86,12 +86,12 @@ define(["FS","Shell","requestFragment","WebSite"],function (FS,sh,rf,WebSite) {
             var data=info.data;
             for (var rel in data) {
                 var file=base.rel(rel);
-                var lcm=file.metaInfo();
+                var lcm=file.exists({includeTrashed:true}) && file.metaInfo();
                 var rmm=data[rel];
                 cmp(file,rel,lcm,rmm);
             }
             local.recursive(function (file) {
-                var lcm=file.metaInfo();
+                var lcm=file.exists({includeTrashed:true}) && file.metaInfo();
                 var rel=file.relPath(local);
                 var rmm=data[rel];
                 cmp(file,rel,lcm,rmm);
@@ -150,7 +150,7 @@ define(["FS","Shell","requestFragment","WebSite"],function (FS,sh,rf,WebSite) {
             //if (options.v) sh.echo("onend",onend);
             if (typeof onend=="function") onend(res);
         }
-        function cmp(f,rel,lcm,rmm) {
+        function cmp(f,rel,lcm,rmm) {// f:localFile
             if (visited[rel]) return ;
             visited[rel]=1;
             if (rmm && (!lcm || lcm.lastUpdate<rmm.lastUpdate)) {
@@ -160,7 +160,7 @@ define(["FS","Shell","requestFragment","WebSite"],function (FS,sh,rf,WebSite) {
                             "Download "+f+
                             " trash="+!!rmm.trashed);
             } else if (lcm && (!rmm || lcm.lastUpdate>rmm.lastUpdate)) {
-                var o={text:f.text()};
+                var o=lcm.trashed ? {} : {text:f.text()};
                 var m=f.metaInfo();
                 for (var i in m) o[i]=m[i];
                 uploads[rel]=o;
