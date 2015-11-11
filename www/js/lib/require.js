@@ -1869,7 +1869,8 @@ var requirejs, require, define;
                 node.addEventListener('error', context.onScriptError, false);
             }
             node.src = url;
-            if (typeof window=="object" && window.location.href.match(/^http/)) {
+            if (typeof window=="object" && window.location.href.match(/^http/) &&
+                    window.WebSite && window.WebSite.requireNoCache) {
                 node.src += "?"+Math.random();
             }
 
