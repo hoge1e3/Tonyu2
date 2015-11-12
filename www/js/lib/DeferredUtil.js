@@ -18,6 +18,7 @@ define([], function () {
                     try {
                         return f.apply(this,arguments);
                     } catch(e) {
+                        console.log(e.stack);
                         return DU.throwPromise(e);
                     }
                 };

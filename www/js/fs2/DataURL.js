@@ -32,11 +32,11 @@ define(["extend","assert"],function (extend,assert) {
 	  },
 	  dataURL2bin: function (dataURL) {
           assert.is(arguments,[String]);
-	      var reg=/data:([^;]+);base64,(.*)$/i;
+	      var reg=/^data:([^;]+);base64,/i;
 	      var r=reg.exec(dataURL);
 	      assert(r, ["malformed dataURL:", dataURL] );
 	      this.contentType=r[1];
-	      this.buffer=Base64_To_ArrayBuffer(r[2]);
+	      this.buffer=Base64_To_ArrayBuffer(dataURL.substring(r[0].length));
           return assert.is(this.buffer , A);
   	  },
   	  dataHeader: function (ctype) {
