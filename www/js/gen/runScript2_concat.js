@@ -1,4 +1,4 @@
-// Created at Thu Nov 12 2015 09:55:48 GMT+0900 (東京 (標準時))
+// Created at Fri Nov 13 2015 19:04:17 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -502,11 +502,11 @@ define(["extend","assert"],function (extend,assert) {
 	  },
 	  dataURL2bin: function (dataURL) {
           assert.is(arguments,[String]);
-	      var reg=/data:([^;]+);base64,(.*)$/i;
+	      var reg=/^data:([^;]+);base64,/i;
 	      var r=reg.exec(dataURL);
 	      assert(r, ["malformed dataURL:", dataURL] );
 	      this.contentType=r[1];
-	      this.buffer=Base64_To_ArrayBuffer(r[2]);
+	      this.buffer=Base64_To_ArrayBuffer(dataURL.substring(r[0].length));
           return assert.is(this.buffer , A);
   	  },
   	  dataHeader: function (ctype) {
@@ -958,7 +958,7 @@ SFile.prototype={
         if (p || options.noFollowLink) {
             return p;
         } else {
-            return this.resolveLink({policy:{}}).exists({noFollowLink:true});
+            return this._resolveLinkNoPolicy().exists({noFollowLink:true});
         }
     },
     /*copyTo: function (dst, options) {
@@ -967,7 +967,7 @@ SFile.prototype={
     rm: function (options) {
         options=options||{};
         if (!this.exists({noFollowLink:true})) {
-            var l=this.resolveLink({policy:{}});
+            var l=this._resolveLinkNoPolicy();
             if (!this.equals(l)) return l.rm(options);
         }
         if (this.isDir() && (options.recursive||options.r)) {
@@ -988,7 +988,7 @@ SFile.prototype={
     },
     // File
     text:function () {
-        var l=this.resolveLink({policy:{}});
+        var l=this._resolveLinkNoPolicy();
         if (!this.equals(l)) return l.text.apply(l,arguments);
         if (arguments.length>0) {
             this.setText(arguments[0]);
@@ -1002,6 +1002,9 @@ SFile.prototype={
     },
     getText:function (t) {
         return this.fs.getContent(this.path(), {type:String});
+    },
+    isText: function () {
+        return this.fs.isText(this.path());
     },
     setBytes:function (b) {
         A.is(t,ArrayBuffer);
@@ -1091,7 +1094,7 @@ SFile.prototype={
     listFiles:function (options) {
         A(options==null || typeof options=="object");
         var dir=this.assertDir();
-        var l=this.resolveLink({policy:{}});
+        var l=this._resolveLinkNoPolicy();
         if (!this.equals(l)) {
             return l.listFiles.apply(l,arguments).map(function (f) {
                 return dir.rel(f.name());
@@ -1146,10 +1149,16 @@ SFile.prototype={
         to=this._resolve(A(to));
         this.fs.link(this.path(),to.path(),options);
     },
-    resolveLink: function (options) {
+    _resolveLinkOpt: function (options) {
         var l=this.fs.resolveLink(this.path());
         A.is(l,P.Absolute);
         return this._resolve(l, options);
+    },
+    _resolveLinkNoPolicy: function () {
+        return this._resolveLinkOpt({policy:{}});
+    },
+    resolveLink:function () {
+        return this._resolveLinkOpt();
     },
     isLink: function () {
         return this.fs.isLink(this.path());
@@ -1676,7 +1685,7 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
     return NativeFS;
 });
 requireSimulator.setName('LSFS');
-define(["FS2","PathUtil","extend","assert"], function(FS,P,extend,assert) {
+define(["FS2","PathUtil","extend","assert","DataURL"], function(FS,P,extend,assert,DataURL) {
     var LSFS = function(storage,options) {
     	this.storage=storage;
     	this.options=options||{};
@@ -1804,6 +1813,10 @@ define(["FS2","PathUtil","extend","assert"], function(FS,P,extend,assert) {
         getContent: function(path, options) {
             assert.is(arguments,[Absolute]);
             this.assertExist(path);
+            if (options && options.type==ArrayBuffer) {
+                var d=new DataURL(this.getItem(path));
+                return d.buffer;
+            }
             return this.getItem(path);
         },
         setContent: function(path, content, options) {
@@ -2108,6 +2121,7 @@ define([], function () {
                     try {
                         return f.apply(this,arguments);
                     } catch(e) {
+                        console.log(e.stack);
                         return DU.throwPromise(e);
                     }
                 };
@@ -2945,7 +2959,7 @@ return Tonyu=function () {
             timeout:timeout,animationFrame:animationFrame, asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,
-            VERSION:1447289735811,//EMBED_VERSION
+            VERSION:1447409045514,//EMBED_VERSION
             A:A};
 }();
 });

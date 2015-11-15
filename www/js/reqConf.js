@@ -82,6 +82,9 @@ var reqConf={
             },
             Base64: {
                 exports:"Base64"
+            },
+            FileSaver: {
+                exports:"saveAs"
             }
         },
         "paths": {
@@ -188,6 +191,7 @@ var reqConf={
             importFromTonyu1:"tonyu1/importFromTonyu1",
             forkBlobs: "social/forkBlobs",
             JSZip:"lib/jszip.min",
+            FileSaver:"lib/FileSaver.min",
             plugins:"plugins/plugins",
             exceptionCatcher:"lib/exceptionCatcher",
             Assets:"fs/Assets",

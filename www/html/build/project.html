@@ -25,6 +25,9 @@
 <script src="../../js/lib/jquery.tmpl.js" type="text/javascript"></script>
 <script src="../../js/lib/jquery.hotkeys.js" type="text/javascript"></script>
 <script src="../../js/lib/jquery-ui.js" type="text/javascript"></script>
+<script src="../../js/lib/FileSaver.min.js" type="text/javascript"></script>
+<script src="../../js/lib/jszip.min.js" type="text/javascript"></script>
+
 <script src="../../js/lib/SplashScreen.js"></script>
 <script>
 $(function () { SplashScreen.show(); });
@@ -54,6 +57,7 @@ $(function () { SplashScreen.show(); });
 							<li><a href="#" id="mvFile">名前変更</a></li>
 							<li><a href="#" id="rmFile">削除</a></li>
 							<!--li><a href="#" id="restore">初期状態に戻す</a></li-->
+                            <li><a href="javascript:sh.dlzip();" id="dlzip">プロジェクトをZIPでダウンロード</a></li>
 							<li><a href="#" id="mvPRJ">プロジェクト名を変更</a></li>
 							<li><a href="#" id="rmPRJ">このプロジェクト自身を削除</a></li>
 						</ul>

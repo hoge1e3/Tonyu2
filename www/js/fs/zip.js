@@ -1,7 +1,7 @@
-define(["FS","Shell","Util"],function (FS,sh,Util) {
+define(["FS","Shell","Util"/*"JSZip","FileSaver"*/],function (FS,sh,Util/*,JSZip,fileSaver*/) {
     if (typeof JSZip=="undefined") return {};
     var zip={};
-    zip.zip=function (dir,options) {
+    zip.zip=function (base,options) {
         var zip = new JSZip();
         function loop(dst, dir) {
             dir.each(function (f) {
@@ -9,11 +9,15 @@ define(["FS","Shell","Util"],function (FS,sh,Util) {
                     var sf=dst.folder(f.name());
                     loop(sf, f);
                 } else {
-                    dst.file(f.name(),f.text());
+                    if (f.isText()) {
+                        dst.file(f.name(),f.text());
+                    } else {
+                        dst.file(f.name(),f.getBytes());
+                    }
                 }
             });
         }
-        loop(zip, dir);
+        loop(zip, base);
         //zip.file("Hello.txt", "Hello World\n");
         //var img = zip.folder("images");
         //img.file("smile.gif", imgData, {base64: true});
@@ -21,11 +25,16 @@ define(["FS","Shell","Util"],function (FS,sh,Util) {
         return content;
     };
     if (typeof saveAs!="undefined") {
-        sh.dlzip=function (dir) {
-            dir=sh.resolve(dir);
+        zip.dlzip=function (dir) {
             var content=zip.zip(dir);
-            saveAs(content, dir.name().replace(/\//g,"")+".zip");
-        }
+            saveAs(content, dir.name().replace(/\/$/,"")+".zip");
+        };
+        sh.dlzip=function (dir) {
+            dir=sh.resolve(dir||".");
+            zip.dlzip(dir);
+            //var content=zip.zip(dir);
+            //saveAs(content, dir.name().replace(/\//g,"")+".zip");
+        };
     }
     // same as SFileNW.js
     var binMap={".png": "image/png", ".jpg":"image/jpg", ".gif": "image/gif", ".jpeg":"image/jpg",

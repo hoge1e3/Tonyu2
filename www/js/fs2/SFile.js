@@ -146,7 +146,7 @@ SFile.prototype={
         if (p || options.noFollowLink) {
             return p;
         } else {
-            return this.resolveLink({policy:{}}).exists({noFollowLink:true});
+            return this._resolveLinkNoPolicy().exists({noFollowLink:true});
         }
     },
     /*copyTo: function (dst, options) {
@@ -155,7 +155,7 @@ SFile.prototype={
     rm: function (options) {
         options=options||{};
         if (!this.exists({noFollowLink:true})) {
-            var l=this.resolveLink({policy:{}});
+            var l=this._resolveLinkNoPolicy();
             if (!this.equals(l)) return l.rm(options);
         }
         if (this.isDir() && (options.recursive||options.r)) {
@@ -176,7 +176,7 @@ SFile.prototype={
     },
     // File
     text:function () {
-        var l=this.resolveLink({policy:{}});
+        var l=this._resolveLinkNoPolicy();
         if (!this.equals(l)) return l.text.apply(l,arguments);
         if (arguments.length>0) {
             this.setText(arguments[0]);
@@ -190,6 +190,9 @@ SFile.prototype={
     },
     getText:function (t) {
         return this.fs.getContent(this.path(), {type:String});
+    },
+    isText: function () {
+        return this.fs.isText(this.path());
     },
     setBytes:function (b) {
         A.is(t,ArrayBuffer);
@@ -279,7 +282,7 @@ SFile.prototype={
     listFiles:function (options) {
         A(options==null || typeof options=="object");
         var dir=this.assertDir();
-        var l=this.resolveLink({policy:{}});
+        var l=this._resolveLinkNoPolicy();
         if (!this.equals(l)) {
             return l.listFiles.apply(l,arguments).map(function (f) {
                 return dir.rel(f.name());
@@ -334,10 +337,16 @@ SFile.prototype={
         to=this._resolve(A(to));
         this.fs.link(this.path(),to.path(),options);
     },
-    resolveLink: function (options) {
+    _resolveLinkOpt: function (options) {
         var l=this.fs.resolveLink(this.path());
         A.is(l,P.Absolute);
         return this._resolve(l, options);
+    },
+    _resolveLinkNoPolicy: function () {
+        return this._resolveLinkOpt({policy:{}});
+    },
+    resolveLink:function () {
+        return this._resolveLinkOpt();
     },
     isLink: function () {
         return this.fs.isLink(this.path());

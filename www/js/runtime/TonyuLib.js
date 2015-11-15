@@ -571,7 +571,7 @@ return Tonyu=function () {
             timeout:timeout,animationFrame:animationFrame, asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,
-            VERSION:1447289735811,//EMBED_VERSION
+            VERSION:1447409045514,//EMBED_VERSION
             A:A};
 }();
 });

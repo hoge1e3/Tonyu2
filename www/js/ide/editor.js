@@ -4,7 +4,7 @@ requirejs(["Util", "Tonyu", "FS", "FileList", "FileMenu",
            "IFrameDialog",/*"WikiDialog",*/"runtime", "KernelDiffDialog","Sync","searchDialog","StackTrace","syncWithKernel",
            "UI","ResEditor","WebSite","exceptionCatcher","Tonyu.TraceTbl",
            "SoundDiag","Log","MainClassDialog","DeferredUtil","NWMenu",
-           "ProjectCompiler","compiledProject","mkrunDiag"
+           "ProjectCompiler","compiledProject","mkrunDiag","zip"
           ],
 function (Util, Tonyu, FS, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,
@@ -12,7 +12,7 @@ function (Util, Tonyu, FS, FileList, FileMenu,
           IFrameDialog,/*WikiDialog,*/ rt , KDD,Sync,searchDialog,StackTrace,swk,
           UI,ResEditor,WebSite,EC,TTB,
           sd,Log,MainClassDialog,DU,NWMenu,
-          TPRC,CPPRJ,mkrunDiag
+          TPRC,CPPRJ,mkrunDiag,zip
           ) {
 $(function () {
     var F=EC.f;
