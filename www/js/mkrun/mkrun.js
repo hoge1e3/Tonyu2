@@ -4,7 +4,8 @@ define(["FS","Util","WebSite","plugins","Shell","Tonyu"],
     sh.mkrun=function (dest) {
         MkRun.run( Tonyu.currentProject, FS.get(dest));
     };
-    MkRun.run=function (prj,dest) {
+    MkRun.run=function (prj,dest,options) {
+        options=options||{};
         var prjDir=prj.getDir();
         var resc=prj.getResource();
         var opt=prj.getOptions();
@@ -23,6 +24,7 @@ define(["FS","Util","WebSite","plugins","Shell","Tonyu"],
         copyResources("sounds/");
         copyIndexHtml();
         genReadme();
+        if (options.copySrc) copySrc();
 
         function genReadme() {
             dest.rel("Readme.txt").text(
@@ -104,6 +106,9 @@ define(["FS","Util","WebSite","plugins","Shell","Tonyu"],
                     }
                 }
             }
+        }
+        function copySrc() {
+            prjDir.copyTo(dest.rel("src/"));
         }
     };
     return MkRun;
