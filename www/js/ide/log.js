@@ -35,7 +35,9 @@ define(["FS","WebSite","Shell"], function (FS,WebSite,sh) {
     };
     if (!WebSite.logging && !WebSite.isNW) {
         var varlog=FS.get("/var/log/");
-        if (varlog.exists()) varlog.removeWithoutTrash();
+        if (varlog.exists() && varlog.fs.storage===localStorage) {
+            varlog.removeWithoutTrash({r:true});
+        }
     }
     Log.append=function (line) {
         if (!doLog) return;

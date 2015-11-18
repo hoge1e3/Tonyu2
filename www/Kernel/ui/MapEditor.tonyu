@@ -253,10 +253,10 @@ function drawPanel(){
     $panel.fillRect(130,$screenHeight-70,100,60);
     $panel.setFillStyle("black");
     //dir
-    $panel.fillText("▲",$screenWidth/2,30,40,"center");
-    $panel.fillText("?",20,($screenHeight-200)/2,40,"center");
-    $panel.fillText("▼",$screenWidth/2,$screenHeight-160-10,40,"center");
-    $panel.fillText("?",$screenWidth-20,($screenHeight-200)/2,40,"center");
+    $panel.fillText("↑",$screenWidth/2,30,40,"center");
+    $panel.fillText("←",20,($screenHeight-200)/2,40,"center");
+    $panel.fillText("↓",$screenWidth/2,$screenHeight-160-10,40,"center");
+    $panel.fillText("→",$screenWidth-20,($screenHeight-200)/2,40,"center");
     //set setOn letter etc
     $panel.fillText("set",$screenWidth/4-60,$screenHeight-110,40,"center");
     $panel.fillText("setOn",$screenWidth/4+60,$screenHeight-110,35,"center");

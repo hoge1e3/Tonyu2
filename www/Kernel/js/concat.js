@@ -12663,13 +12663,13 @@ Tonyu.klass.define({
       //$LASTPOS=40009113;//kernel.MapEditor:9113
       Tonyu.globals.$panel.setFillStyle("black");
       //$LASTPOS=40009159;//kernel.MapEditor:9159
-      Tonyu.globals.$panel.fillText("▲",Tonyu.globals.$screenWidth/2,30,40,"center");
+      Tonyu.globals.$panel.fillText("↑",Tonyu.globals.$screenWidth/2,30,40,"center");
       //$LASTPOS=40009216;//kernel.MapEditor:9216
-      Tonyu.globals.$panel.fillText("?",20,(Tonyu.globals.$screenHeight-200)/2,40,"center");
+      Tonyu.globals.$panel.fillText("←",20,(Tonyu.globals.$screenHeight-200)/2,40,"center");
       //$LASTPOS=40009280;//kernel.MapEditor:9280
-      Tonyu.globals.$panel.fillText("▼",Tonyu.globals.$screenWidth/2,Tonyu.globals.$screenHeight-160-10,40,"center");
+      Tonyu.globals.$panel.fillText("↓",Tonyu.globals.$screenWidth/2,Tonyu.globals.$screenHeight-160-10,40,"center");
       //$LASTPOS=40009355;//kernel.MapEditor:9355
-      Tonyu.globals.$panel.fillText("?",Tonyu.globals.$screenWidth-20,(Tonyu.globals.$screenHeight-200)/2,40,"center");
+      Tonyu.globals.$panel.fillText("→",Tonyu.globals.$screenWidth-20,(Tonyu.globals.$screenHeight-200)/2,40,"center");
       //$LASTPOS=40009460;//kernel.MapEditor:9460
       Tonyu.globals.$panel.fillText("set",Tonyu.globals.$screenWidth/4-60,Tonyu.globals.$screenHeight-110,40,"center");
       //$LASTPOS=40009537;//kernel.MapEditor:9537
@@ -12734,13 +12734,13 @@ Tonyu.klass.define({
       //$LASTPOS=40009113;//kernel.MapEditor:9113
       Tonyu.globals.$panel.setFillStyle("black");
       //$LASTPOS=40009159;//kernel.MapEditor:9159
-      Tonyu.globals.$panel.fillText("▲",Tonyu.globals.$screenWidth/2,30,40,"center");
+      Tonyu.globals.$panel.fillText("↑",Tonyu.globals.$screenWidth/2,30,40,"center");
       //$LASTPOS=40009216;//kernel.MapEditor:9216
-      Tonyu.globals.$panel.fillText("?",20,(Tonyu.globals.$screenHeight-200)/2,40,"center");
+      Tonyu.globals.$panel.fillText("←",20,(Tonyu.globals.$screenHeight-200)/2,40,"center");
       //$LASTPOS=40009280;//kernel.MapEditor:9280
-      Tonyu.globals.$panel.fillText("▼",Tonyu.globals.$screenWidth/2,Tonyu.globals.$screenHeight-160-10,40,"center");
+      Tonyu.globals.$panel.fillText("↓",Tonyu.globals.$screenWidth/2,Tonyu.globals.$screenHeight-160-10,40,"center");
       //$LASTPOS=40009355;//kernel.MapEditor:9355
-      Tonyu.globals.$panel.fillText("?",Tonyu.globals.$screenWidth-20,(Tonyu.globals.$screenHeight-200)/2,40,"center");
+      Tonyu.globals.$panel.fillText("→",Tonyu.globals.$screenWidth-20,(Tonyu.globals.$screenHeight-200)/2,40,"center");
       //$LASTPOS=40009460;//kernel.MapEditor:9460
       Tonyu.globals.$panel.fillText("set",Tonyu.globals.$screenWidth/4-60,Tonyu.globals.$screenHeight-110,40,"center");
       //$LASTPOS=40009537;//kernel.MapEditor:9537
