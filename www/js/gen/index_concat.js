@@ -1,4 +1,4 @@
-// Created at Fri Nov 13 2015 19:04:06 GMT+0900 (東京 (標準時))
+// Created at Wed Nov 18 2015 19:27:57 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -2336,7 +2336,9 @@ define(["FS","WebSite","Shell"], function (FS,WebSite,sh) {
     };
     if (!WebSite.logging && !WebSite.isNW) {
         var varlog=FS.get("/var/log/");
-        if (varlog.exists()) varlog.removeWithoutTrash();
+        if (varlog.exists() && varlog.fs.storage===localStorage) {
+            varlog.removeWithoutTrash({r:true});
+        }
     }
     Log.append=function (line) {
         if (!doLog) return;

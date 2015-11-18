@@ -1,4 +1,4 @@
-// Created at Fri Nov 13 2015 19:04:08 GMT+0900 (東京 (標準時))
+// Created at Wed Nov 18 2015 19:27:59 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -821,7 +821,7 @@ return Tonyu=function () {
             timeout:timeout,animationFrame:animationFrame, asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,
-            VERSION:1447409045514,//EMBED_VERSION
+            VERSION:1447842476456,//EMBED_VERSION
             A:A};
 }();
 });
@@ -3333,7 +3333,9 @@ define(["FS","WebSite","Shell"], function (FS,WebSite,sh) {
     };
     if (!WebSite.logging && !WebSite.isNW) {
         var varlog=FS.get("/var/log/");
-        if (varlog.exists()) varlog.removeWithoutTrash();
+        if (varlog.exists() && varlog.fs.storage===localStorage) {
+            varlog.removeWithoutTrash({r:true});
+        }
     }
     Log.append=function (line) {
         if (!doLog) return;
@@ -11819,7 +11821,8 @@ define(["FS","Util","WebSite","plugins","Shell","Tonyu"],
     sh.mkrun=function (dest) {
         MkRun.run( Tonyu.currentProject, FS.get(dest));
     };
-    MkRun.run=function (prj,dest) {
+    MkRun.run=function (prj,dest,options) {
+        options=options||{};
         var prjDir=prj.getDir();
         var resc=prj.getResource();
         var opt=prj.getOptions();
@@ -11838,6 +11841,7 @@ define(["FS","Util","WebSite","plugins","Shell","Tonyu"],
         copyResources("sounds/");
         copyIndexHtml();
         genReadme();
+        if (options.copySrc) copySrc();
 
         function genReadme() {
             dest.rel("Readme.txt").text(
@@ -11920,6 +11924,9 @@ define(["FS","Util","WebSite","plugins","Shell","Tonyu"],
                 }
             }
         }
+        function copySrc() {
+            prjDir.copyTo(dest.rel("src/"));
+        }
     };
     return MkRun;
 });
@@ -11933,17 +11940,23 @@ define(["UI","mkrun","Tonyu"], function (UI,mkrun,Tonyu) {
     res.embed=function (prj,dest) {
         if (!res.d) {
             res.d=UI("div",{title:"ランタイム作成"},
-                    ["div","出力フォルダ"],
-                    ["div",["input", {$edit:"dest",size:60}]],
-                     ["button", {$var:"OKButton", on:{click: function () {
+                    ["div",
+                         ["label",{"for":"dest"},"出力フォルダ"],["br"],
+                         ["input", {id:"dest",$edit:"dest",size:60}]
+                    ],
+                    ["div",
+                         ["label",{"for":"src"},"ソースを添付する"],
+                         ["input", {id:"src",$edit:"src",type:"checkbox"}]
+                    ],
+                    ["button", {$var:"OKButton", on:{click: function () {
                          res.run();
-                     }}}, "作成"]
+                    }}}, "作成"]
             );
         }
-        var model={dest:dest};
+        var model={dest:dest.path(), src:true};
         res.d.$edits.load(model);
         res.run=function () {
-            mkrun.run(prj, FS.get(model.dest));
+            mkrun.run(prj, FS.get(model.dest), {copySrc:model.src});
             alert(model.dest+"にランタイムを作成しました。");
             if (res.d.dialog) res.d.dialog("close");
         };
