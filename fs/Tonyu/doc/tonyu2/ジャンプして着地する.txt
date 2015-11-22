@@ -34,7 +34,7 @@ while(true){
       if(getkey("left")>0)  x-=3;
       vy++;
       y+=vy;
-      hantei=crashTo(Block)
+      hantei=crashTo(Block);
       if(hantei){
         break;
       }
@@ -45,7 +45,7 @@ while(true){
 }
 >>
 <<code Block
-何も書かなくてよい
+中身は何も書かなくてよい
 >>
 
 最初にプレイヤーの下とランダムに5つの足場を表示し、左右に動きzキーでジャンプするプレイヤーを出現させる。当たり判定の値をhanteiに代入し、足場に触れてない間は落下させ、足場に触れている間は落下しないようにする。

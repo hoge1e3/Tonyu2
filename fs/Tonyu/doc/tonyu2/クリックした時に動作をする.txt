@@ -2,7 +2,11 @@
 
 [[オブジェクトを動かす]]
 *クリックした時に動作をする
-<<code
+<<code Main
+
+$score=0;
+new Score;
+
 while(true){
   if(getkey("mouseleft")==1){
     $Score+=10;
@@ -10,4 +14,17 @@ while(true){
 update();
 }
 >>
-左クリックした時に$Scoreを10増やす。
+
+<<code Score
+x=200;
+y=200;
+while(true) {
+    text="Score:"+$score;
+    update();
+}
+
+
+>>
+
+
+これは[[スコアを表示する]]の『zキーを押すとscoreが10増える』という動作を左クリックした時にscoreを10増やすに変えたもの。

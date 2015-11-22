@@ -8,7 +8,7 @@ new Label{x:100, y:200, text:"文字B", fillStyle:"black"};
 new Label{x:100, y:300, text:"文字C", size:50};
 >>
 <<code Label
-何も書かなくてよい
+中身は何も書かなくてもよいが、メニューのファイル新規作成でLabelを作ること
 >>
 textという変数を設定するとそのオブジェクトはテキストオブジェクトとして扱われる。fillStyleで文字の色、sizeで文字の大きさを設定できる。
 

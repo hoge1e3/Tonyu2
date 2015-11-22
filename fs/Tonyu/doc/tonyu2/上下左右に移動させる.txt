@@ -2,7 +2,7 @@
 
 [[オブジェクトを動かす]]
 
-*上下左右に移動させる
+*キーボードで上下左右に移動させる
 <<code Main
 x=$screenWidth/2;
 y=$screenHeight/2;
@@ -19,3 +19,20 @@ while(true){
 ※このままでは画面端より外側にはみ出すことができてしまう。画面外に出ないようにするためには[[画面端から出ないようにする]]設定が必要。
 
 ※壁などの障害物にぶつかったら止まるようにするには[[当たり判定で壁にぶつかる]]ようにする。
+
+
+
+*パッドで上下左右に移動させる
+パッドで動かす場合はgetkeyではなくpad.getRightなどを使用する。
+<<code Main
+x=$screenWidth/2;
+y=$screenHeight/2;
+pad=new Pad();
+while(true){
+  if(pad.getRight()>0)	x+=3;
+  if(pad.getLeft()>0)	x-=3;
+  if(pad.getDown()>0)	y+=3;
+  if(pad.getUp()>0)	y-=3;
+  update();
+}
+>>

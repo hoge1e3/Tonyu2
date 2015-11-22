@@ -13,6 +13,7 @@ while(true){
   if(getkey("left")>0)	x-=3;
   if(getkey("down")>0)	y+=3;
   if(getkey("up")>0)	y-=3;
+  //ここから画面端の判定
   if(x<0)            x=0;
   if(x>$screenWidth) x=$screenWidth;
   if(y<0)            y=0;

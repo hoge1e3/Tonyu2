@@ -11,6 +11,7 @@ chip=$map.get(2,3);
 
 
 *☆画面の座標を指定して取得する
+
 <<code
 ・Main.Tonyu
 //事前にマップを作っておく
@@ -18,3 +19,15 @@ chip=$map.get(2,3);
 chip=$map.getAt($mouseX,$mouseY);
 >>
 
+-set modeで置いたマップチップを取得します
+
+<<code
+・Main.Tonyu
+//事前にマップを作っておく
+//getOnAt(スクリーンのx座標,スクリーンのy座標);
+chip=$map.getAt($mouseX,$mouseY);
+>>
+
+-setOn modeで置いたマップチップを取得します
+
+[[マップチップとの当たり判定]]
