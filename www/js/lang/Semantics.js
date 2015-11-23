@@ -22,7 +22,18 @@ var JSNATIVES={Array:1, String:1, Boolean:1, Number:1, Void:1, Object:1,RegExp:1
 //-----------
 function initClassDecls(klass, env ) {//S
     var s=klass.src.tonyu; //file object
-    var node=TonyuLang.parse(s);
+    var node;
+    if (klass.node && klass.nodeTimestamp==s.lastUpdate()) {
+        node=klass.node;
+    }
+    if (!node) {
+        console.log("Parse "+s);
+        node=TonyuLang.parse(s);
+        klass.nodeTimestamp=s.lastUpdate();
+    }
+    //console.log(s+"",  !!klass.node, klass.nodeTimestamp, s.lastUpdate());
+    //if (!klass.testid) klass.testid=Math.random();
+    //console.log(klass.testid);
     var MAIN={name:"main",stmts:[],pos:0};
     // method := fiber | function
     var fields={}, methods={main: MAIN}, natives={};

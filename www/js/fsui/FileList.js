@@ -95,7 +95,7 @@ function FileList(elem, options) {
             } else {
                 var s=$("<span>").addClass("fileItem").text(itemText(f)).data("filename",f.path());
                 if (isCur) { s.addClass("selected");}
-                console.log("Add file item ",f,selbox);
+                //console.log("Add file item ",f,selbox);
                 $("<li>").append(s).appendTo(items).click(function () {
                     select(f);
                 });

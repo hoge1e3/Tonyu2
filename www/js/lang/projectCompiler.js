@@ -176,6 +176,7 @@ var TPRC=function (dir) {
              var ctxOpt=ctx.options;
              var env=TPR.env;
              env.aliases={};
+             env.parsedNode=env.parsedNode||{};
              env.classes=baseClasses;
              for (var n in baseClasses) {
                  var cl=baseClasses[n];
@@ -186,14 +187,16 @@ var TPRC=function (dir) {
              for (var shortCn in sf) {
                  var f=sf[shortCn];
                  var fullCn=myNsp+"."+shortCn;
-                 newClasses[fullCn]=baseClasses[fullCn]={
-                         fullName:  fullCn,
-                         shortName: shortCn,
-                         namespace: myNsp,
-                         src:{
-                             tonyu: f
-                         }
-                 };
+                 newClasses[fullCn]=baseClasses[fullCn]=
+                     Tonyu.extend(
+                             baseClasses[fullCn]||{},{
+                                 fullName:  fullCn,
+                                 shortName: shortCn,
+                                 namespace: myNsp,
+                                 src:{
+                                     tonyu: f
+                                 }
+                             });
                  env.aliases[shortCn]=fullCn;
              }
              for (var n in newClasses) {
