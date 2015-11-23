@@ -19,7 +19,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         kernelProject=ProjectCompiler(kernelDir);
     }
     var traceTbl=Tonyu.TraceTbl;//();
-    var env={classes:{}, traceTbl:traceTbl, options:{compiler:{}} };
+    var env={classes:Tonyu.classMetas, traceTbl:traceTbl, options:{compiler:{}} };
     function orderByInheritance(classes) {/*ENVC*/
         var added={};
         var res=[];

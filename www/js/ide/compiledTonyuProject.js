@@ -22,7 +22,7 @@ define(["plugins","compiledProject"], function (plugins,CPR) {
                 },
                 requestPlugin:function(){},
                 run: function (bootClassName) {
-                    var ctx={classes:{}};
+                    var ctx={classes:Tonyu.classMetas};
                     this.loadClasses(ctx).then(function () {
                         Tonyu.run(bootClassName);
                     });

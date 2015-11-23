@@ -144,7 +144,7 @@ var TPRC=function (dir) {
          var env=TPR.env;
          if (!ctx) ctx={};
          if (!ctx.visited) {
-             ctx={visited:{}, classes:(env.classes=env.classes||{}),options:ctx};
+             ctx={visited:{}, classes:(env.classes=env.classes||Tonyu.classMetas),options:ctx};
          }
          return ctx;
      }

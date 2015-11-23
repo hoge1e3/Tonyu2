@@ -313,7 +313,7 @@ return Tonyu=function () {
         }
         return f;
     }
-    function klass() {
+    /*function klass() {
         var parent, prot, includes=[];
         if (arguments.length==1) {
             prot=arguments[0];
@@ -357,12 +357,6 @@ return Tonyu=function () {
                     prot[n]=m.methods[n];
                 }
             }
-            /*for (var n in m.prototype) {
-                if (!(n in prot)) {  //-> cannot override color in ColorMod(MetaClicker/FlickEdit)
-                //if ((typeof m.prototype[n])=="function") { //-> BodyActor::onAppear is overriden by Actor::onAppear(nop)
-                    prot[n]=m.prototype[n];
-                }
-            }*/
         });
         res.prototype=bless(parent, prot);
         res.prototype.isTonyuObject=true;
@@ -375,7 +369,11 @@ return Tonyu=function () {
             return m;
         };
         return res;
-    }
+    }*/
+    klass=function () {
+        alert("この関数は古くなりました。コンパイルをやり直してください。 Deprecated compile agin.");
+        throw new Error("Depre");
+    };
     klass.addMeta=addMeta;
     function addMeta(k,m) {
         k.meta=k.meta||{};
@@ -480,7 +478,8 @@ return Tonyu=function () {
     }
     //alert("init");
     var globals={};
-    var classes={};
+    var classes={};// classes.namespace.classname= function
+    var classMetas={}; // classes.namespace.classname.meta ( or env.classes / ctx.classes)
     function setGlobal(n,v) {
         globals[n]=v;
     }
@@ -567,7 +566,7 @@ return Tonyu=function () {
         th.steps();
     }
     return Tonyu={thread:thread, threadGroup:threadGroup, klass:klass, bless:bless, extend:extend,
-            globals:globals, classes:classes, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
+            globals:globals, classes:classes, classMetas:classMetas, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
             timeout:timeout,animationFrame:animationFrame, asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,
