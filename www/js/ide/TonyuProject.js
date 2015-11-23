@@ -224,25 +224,6 @@ return Tonyu.Project=function (dir, kernelDir) {
         //if (TPR.classExists(res)) return res;
         return cn;
     };
-    /*TPR.classExists=function (fullCn) {
-        var cna=fullCn.split(".");
-        if (cna.length==1) return false;
-        var nsp=cna[0], sn=cna[1] ;
-        if (TPR.isKernelEditable()) {
-            if (nsp==TPR.NSP_KER) {
-                if (dir.rel(sn+TPR.EXT).exists()) return true;
-                if (kernelDir.rel(sn+TPR.EXT).exists()) return true;
-            }
-        } else {
-            if (nsp==TPR.NSP_KER) {
-                if (kernelDir.rel(sn+TPR.EXT).exists()) return true;
-            }
-            if (nsp==TPR.NSP_USR) {
-                if (dir.rel(sn+TPR.EXT).exists()) return true;
-            }
-        }
-        return false;
-    };*/
     TPR.getNamespace=function () {//override
         var opt=TPR.getOptions();
         if (opt.compiler && opt.compiler.namespace) return opt.compiler.namespace;
@@ -269,17 +250,6 @@ return Tonyu.Project=function (dir, kernelDir) {
     };
     TPR.rawBoot=function (bootClassName) {
         Tonyu.run(bootClassName);
-        /*var bootClass=Tonyu.getClass(bootClassName);
-        if (!bootClass) throw TError( bootClassName+" というクラスはありません", "不明" ,0);
-        Tonyu.runMode=true;
-        var boot=new bootClass();
-        var th=Tonyu.thread();
-        th.apply(boot,"main");
-
-        TPR.runningThread=th;
-        TPR.runningObj=boot;
-        $LASTPOS=0;
-        th.steps();*/
     };
 
     TPR.srcExists=function (className, dir) {
