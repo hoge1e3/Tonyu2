@@ -118,10 +118,10 @@ var TPRC=function (dir) {
                  return TPR.compile(ctx);
              } else {
                  var outF=TPR.getOutputFile("js");
-                 return evalFile(outF).then(F(copyToClasses));
+                 return evalFile(outF);//.then(F(copyToClasses));
              }
          });
-         function copyToClasses() {
+         /*function copyToClasses() {
              var ns=TPR.getNamespace();
             //same as compiledProject (XXXX)
              var cls=Tonyu.classes;
@@ -138,7 +138,7 @@ var TPRC=function (dir) {
                  }
              }
              //------------------XXXX
-         }
+         }*/
      };
      function initCtx(ctx) {
          var env=TPR.env;
@@ -170,16 +170,15 @@ var TPRC=function (dir) {
              for (var shortCn in sf) {
                  var f=sf[shortCn];
                  var fullCn=myNsp+"."+shortCn;
-                 newClasses[fullCn]=baseClasses[fullCn]=
-                     Tonyu.extend(
-                             baseClasses[fullCn]||{},{
-                                 fullName:  fullCn,
-                                 shortName: shortCn,
-                                 namespace: myNsp,
-                                 src:{
-                                     tonyu: f
-                                 }
-                             });
+                 var m=Tonyu.klass.getMeta(fullCn);
+                 newClasses[fullCn]=baseClasses[fullCn]=m;
+                 Tonyu.extend(m,{
+                     fullName:  fullCn,
+                     shortName: shortCn,
+                     namespace: myNsp
+                 });
+                 m.src=m.src||{};
+                 m.src.tonyu=f;
                  env.aliases[shortCn]=fullCn;
              }
              for (var n in newClasses) {

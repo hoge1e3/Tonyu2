@@ -1,7 +1,7 @@
 if (typeof define!=="function") {
     define=require("requirejs").define;
 }
-define([],function () {
+define(["assert"],function (assert) {
 return Tonyu=function () {
     var preemptionTime=60;
     function thread() {
@@ -371,16 +371,22 @@ return Tonyu=function () {
         return res;
     }*/
     klass=function () {
-        alert("この関数は古くなりました。コンパイルをやり直してください。 Deprecated compile agin.");
-        throw new Error("Depre");
+        alert("この関数は古くなりました。コンパイルをやり直してください。 Deprecated. compile again.");
+        throw new Error("この関数は古くなりました。コンパイルをやり直してください。 Deprecated. compile again.");
     };
     klass.addMeta=addMeta;
-    function addMeta(k,m) {
-        k.meta=k.meta||{};
-        extend(k.meta, m);
+    function addMeta(fn,m) {
+        assert.is(arguments,[String,Object]);
+        return extend(klass.getMeta(fn), m);
     }
-    klass.getMeta=function (k) {
-        return k.meta;
+    klass.getMeta=function (k) {// Class or fullName
+        if (typeof k=="function") {
+            return k.meta;
+        } else if (typeof k=="string"){
+            var mm = classMetas[k];
+            if (!mm) classMetas[k]=mm={};
+            return mm;
+        }
     };
     klass.ensureNamespace=function (top,nsp) {
         var keys=nsp.split(".");
@@ -453,7 +459,7 @@ return Tonyu=function () {
         for (var k in props) {
             Object.defineProperty(res.prototype, k , props[k]);
         }
-        addMeta(res,{
+        res.meta=addMeta(fullName,{
             fullName:fullName,shortName:shortName,namepsace:namespace,decls:decls,
             superclass:parent ? parent.meta : null,func:res,
             includes:includes.map(function(c){return c.meta;})
@@ -476,6 +482,7 @@ return Tonyu=function () {
         }
         return dst;
     }
+
     //alert("init");
     var globals={};
     var classes={};// classes.namespace.classname= function

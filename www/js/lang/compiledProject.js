@@ -33,7 +33,7 @@ define(["DeferredUtil"], function (DU) {
                         }
                         console.log("Done Load compiled classes ns=",ns,"url=",url,Tonyu.classes);
                         //same as projectCompiler (XXXX)
-                        var cls=Tonyu.classes;
+                        /*var cls=Tonyu.classes;
                         ns.split(".").forEach(function (c) {
                             if (cls) cls=cls[c];
                             // comment out : when empty concat.js
@@ -45,7 +45,7 @@ define(["DeferredUtil"], function (DU) {
                                 var m=Tonyu.klass.getMeta(cl);
                                 ctx.classes[m.fullName]=m;
                             }
-                        }
+                        }*/
                         //------------------XXXX
                         d.resolve();
                     }
