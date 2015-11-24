@@ -1,0 +1,116 @@
+[[チュートリアル]]
+
+[[前へ>オブジェクトの奥行きの設定]]←　→ [[用途別リファレンス]]へ
+
+*キャラクターを歩いているように見せる
+
+配列を使うことでキャラクターが歩いているように見せることができる。
+ここでは、二つの方法を示す。
+
+
+<<code Main
+new Chara1{x:100,y:100};
+
+
+>>
+
+
+<<code Chara1
+pListDown=[0,0,0,0,1,1,1,1,0,0,0,0,2,2,2,2];
+pListUp=[5,5,5,5,6,6,6,6,5,5,5,5,7,7,7,7];
+pListLR=[3,3,3,3,4,4,4,4];
+counter=0;
+dir="stop";
+p=$pat_neko+0;
+while(true){
+    dir="stop";
+    if(getkey("down")){
+        y+=2;
+        dir="down";
+    }
+    if(getkey("up")){
+        y-=2;
+        dir="up";
+    }
+    if(getkey("left")){
+        x-=2;
+        scaleX=-1;
+        scaleY=1;
+        dir="lr";
+    }
+    if(getkey("right")){
+        scaleX=1;
+        x+=2;
+        dir="lr";
+    }
+    if(dir=="down"){
+        p=$pat_neko+pListDown[counter%16];
+    }else if(dir=="up"){
+        p=$pat_neko+pListUp[counter%16];
+    }else if(dir=="lr"){
+        p=$pat_neko+pListLR[counter%8];
+    }else{
+        //p=$pat_neko+0;
+    }
+    counter++;
+    update();
+}
+
+
+>>
+
+<<code Chara1
+pListDown=[0,1,0,2];
+pListUp=[5,6,5,7];
+pListLR=[3,4];
+dir="stop";
+p=$pat_neko+0;
+parallel("animate");
+while(true){
+    dir="stop";
+    if(getkey("down")){
+        y+=2;
+        dir="down";
+    }
+    if(getkey("up")){
+        y-=2;
+        dir="up";
+    }
+    if(getkey("left")){
+        x-=2;
+        scaleX=-1;
+        scaleY=1;
+        dir="lr";
+    }
+    if(getkey("right")){
+        scaleX=1;
+        x+=2;
+        dir="lr";
+    }
+    update();
+}
+\animate(){
+    counter=0;
+    // アニメーションの処理
+    while(true){
+        if(dir=="down"){
+            p=$pat_neko+pListDown[counter%4];
+        }else if(dir=="up"){
+            p=$pat_neko+pListUp[counter%4];
+        }else if(dir=="lr"){
+            p=$pat_neko+pListLR[counter%2];
+        }else{
+            //p=$pat_neko+0;
+        }
+        counter++;
+        updateEx(4);
+    }
+}
+
+>>
+
+下のChara1は、配列と[[parallel]]という並列処理を行うメソッドを使用している。
+
+
+
+以上でチュートリアルは終了です。さらなる情報は[[用途別リファレンス]]にまとめています。
