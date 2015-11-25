@@ -5,7 +5,6 @@
 *キャラクターを歩いているように見せる
 
 配列を使うことでキャラクターが歩いているように見せることができる。
-ここでは、二つの方法を示す。
 
 
 <<code Main
@@ -14,43 +13,66 @@ new Chara1{x:100,y:100};
 
 >>
 
+Mainは共通です。Chara1をアニメーションをさせる方法は次の二通りがあります。
+一つ目は、キャラクターが動く処理と描画処理を一つのwhileの中で行います。
+
 
 <<code Chara1
+
+//毎フレーム画像を変更すると動きが速すぎるので、ここの配列の値が4つずつ続いている
+//下方向を向いているときのpの値の配列
 pListDown=[0,0,0,0,1,1,1,1,0,0,0,0,2,2,2,2];
+//上方向を向いているときのpの値の配列
 pListUp=[5,5,5,5,6,6,6,6,5,5,5,5,7,7,7,7];
+//左か右方向を向いているときのpの値の配列
 pListLR=[3,3,3,3,4,4,4,4];
+
 counter=0;
-dir="stop";
 p=$pat_neko+0;
+
+//状態の初期値
+dir="stop";
+
 while(true){
     dir="stop";
     if(getkey("down")){
         y+=2;
+　　　　　//状態の設定
         dir="down";
     }
     if(getkey("up")){
         y-=2;
+        //状態の設定
         dir="up";
     }
     if(getkey("left")){
         x-=2;
+
+        //左に向いているpの値がないので、右に向いているのをscaleXを-1にし反転させる
         scaleX=-1;
+        //scaleXを変更した場合、scaleYもそれに合わせて-1に変化するので、scaleYは1に設定しておく
+
         scaleY=1;
+
+        //状態の設定
         dir="lr";
     }
     if(getkey("right")){
         scaleX=1;
         x+=2;
+        //状態の設定
         dir="lr";
     }
+
     if(dir=="down"){
+        //下方向を向いてるアニメーションの表示
         p=$pat_neko+pListDown[counter%16];
     }else if(dir=="up"){
+        //上方向を向いてるアニメーションの表示
         p=$pat_neko+pListUp[counter%16];
     }else if(dir=="lr"){
+        //左か右方向を向いてるアニメーションの表示
         p=$pat_neko+pListLR[counter%8];
-    }else{
-        //p=$pat_neko+0;
     }
     counter++;
     update();
@@ -59,12 +81,18 @@ while(true){
 
 >>
 
+二つ目は、キャラクターが動く処理と描画処理を別々にしたい場合は
+
 <<code Chara1
+//ここでは毎フレーム画像の変更をしていないので、配列の値を4つずつ設定する必要はない
+//pの値の配列
 pListDown=[0,1,0,2];
 pListUp=[5,6,5,7];
 pListLR=[3,4];
+
 dir="stop";
 p=$pat_neko+0;
+
 parallel("animate");
 while(true){
     dir="stop";
@@ -103,13 +131,14 @@ while(true){
             //p=$pat_neko+0;
         }
         counter++;
+        //4フレームごとにupdateを行う
         updateEx(4);
     }
 }
 
 >>
 
-下のChara1は、配列と[[parallel]]という並列処理を行うメソッドを使用している。
+下のChara1は、配列と[[parallel]]という並列処理を行うメソッドを使用しています。
 
 
 

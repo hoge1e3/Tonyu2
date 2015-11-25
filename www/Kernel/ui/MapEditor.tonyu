@@ -5,12 +5,14 @@ loadMode=false;
 fileExist=false;
 print("map file(s)");
 fileList=file("../maps/");
+if(fileList.exists()){
 fileList.recursive(function a(f){
     f=f+"";
     fNames=f.split("/");
     print(fNames[fNames.length-1]);
     fileExist=true;
 });
+}
 if(fileExist){
     print("Load Data?: Y or N");
     while(true){
@@ -174,14 +176,16 @@ while(true){
         print("];");
         data+="]";*/
         //add
-        saveDataFile=file("../maps/").rel(saveFileName);
-        data=[$map.mapTable,$map.mapOnTable,$map.chipWidth,$map.chipHeight];
-        //comment
-        //mapDataFile.obj(data);
-        //add
-        saveDataFile.obj(data);
-        print(saveFileName+" Saved");
-        //mapDataFile.obj.push($map.mapOnTable);
+        if(saveFileName){
+            saveDataFile=file("../maps/").rel(saveFileName);
+            data=[$map.mapTable,$map.mapOnTable,$map.chipWidth,$map.chipHeight];
+            //comment
+            //mapDataFile.obj(data);
+            //add
+            saveDataFile.obj(data);
+            print(saveFileName+" Saved");
+            //mapDataFile.obj.push($map.mapOnTable);
+        }
     }
     if(getkey("c")==1 || ($touches[0].touched==1 && $touches[0].x>120 && $touches[0].x<240 && $touches[0].y>560 && $touches[0].y<640)){
         $mp.scrollTo(1000,1000);
