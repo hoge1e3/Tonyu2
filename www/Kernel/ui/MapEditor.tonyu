@@ -33,10 +33,12 @@ if(fileExist){
         }
         if(mapDataFile.obj()){
             baseData=mapDataFile.obj();
+            loadedFile=fileName;
         }else{
             mapDataFile=file(fileName);
             if(mapDataFile.obj()){
                 baseData=mapDataFile.obj();
+                loadedFile=fileName;
             }
         }
         if(baseData==undefined){
@@ -141,10 +143,10 @@ while(true){
         mode="setOn";
         print(mode+" mode");
     }
-    if(getkey("o")==1){
+    /*if(getkey("o")==1){
         $mp.scrollTo(1000,1000);
         mode="setOn";
-    }
+    }*/
     if(getkey("g")==1 || ($touches[0].touched==1 && $touches[0].x>240 && $touches[0].x<360 && $touches[0].y>480 && $touches[0].y<560)){
         if(mode!="get"){
             prevMode=mode;
@@ -160,7 +162,11 @@ while(true){
     }
     if(getkey("p")==1 || ($touches[0].touched==1 && $touches[0].x>360 && $touches[0].x<480 && $touches[0].y>480 && $touches[0].y<560)){
         //add
-        saveFileName=prompt("input json file(*.json)","map.json");
+        if(loadedFile){
+            saveFileName=prompt("input json file(*.json)",loadedFile);
+        }else{
+            saveFileName=prompt("input json file(*.json)","map.json");
+        }
         /*print("mapTable=[");
         data="[";
         for(var i=0;i<$map.row-1;i++){
@@ -205,6 +211,33 @@ while(true){
         if(getkey("down")>0 || ($touches[0].touched && $touches[0].x>0 && $touches[0].x<$screenWidth && $touches[0].y<480&&$touches[0].y>440)) chipY=chipY-8;
         $mp.scrollTo(chipX,chipY);
     }
+    
+    // add 11/25 zoom test
+    if(getkey("i")==1){
+        $map.chipWidth+=4;
+        $map.chipHeight+=4;
+        $map.redrawMap();
+        panel.die();
+        panel=new Panel{width:$map.col*$map.chipWidth,height:$map.row*$map.chipHeight,zOrder:100};
+        panel.x=panel.width/2+40;
+        panel.y=panel.height/2+40;
+        panel.setFillStyle("cyan");
+        panel.fillRect(0,0,panel.width,panel.height);
+    }
+    if(getkey("o")==1){
+        $map.chipWidth-=4;
+        $map.chipHeight-=4;
+        $map.redrawMap();
+        panel.die();
+        panel=new Panel{width:$map.col*$map.chipWidth,height:$map.row*$map.chipHeight,zOrder:100};
+        panel.x=panel.width/2+40;
+        panel.y=panel.height/2+40;
+        panel.setFillStyle("cyan");
+        panel.fillRect(0,0,panel.width,panel.height);
+    }
+    
+    // zoom test end
+    
     panel.x=panel.width/2-mx;
     panel.y=panel.height/2-my;
     if(mode=="set" && getkey(1)>0 && inRect()){
