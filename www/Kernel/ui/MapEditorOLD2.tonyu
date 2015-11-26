@@ -1,21 +1,18 @@
 extends Actor;
 native prompt;
-// initialize
 $Screen.resize(480,640);
 loadMode=false;
 fileExist=false;
 print("map file(s)");
-// search exist file(s)
 fileList=file("../maps/");
 if(fileList.exists()){
-    fileList.recursive(function a(f){
-        f=f+"";
-        fNames=f.split("/");
-        print(fNames[fNames.length-1]);
-        fileExist=true;
-    });
+fileList.recursive(function a(f){
+    f=f+"";
+    fNames=f.split("/");
+    print(fNames[fNames.length-1]);
+    fileExist=true;
+});
 }
-// load file
 if(fileExist){
     print("Load Data?: Y or N");
     while(true){
@@ -72,8 +69,6 @@ update();
         }
     }*/
 //}
-
-// initialize (or load) map data
 if(!loadMode){
     row=prompt("input row");
     col=prompt("input col");
@@ -99,7 +94,6 @@ if(!loadMode){
     panel.setFillStyle("cyan");
     panel.fillRect(0,0,panel.width,panel.height);
 }
-// mapchip data
 mIW=$Sprites.getImageList()[$pat_mapchip].image.width;
 mIH=$Sprites.getImageList()[$pat_mapchip].image.height;
 mCW=$Sprites.getImageList()[$pat_mapchip+0].width;
@@ -112,11 +106,10 @@ for(var i=0;i<$mp.row;i++){
         counter++;
     }
 }
-// editor initialize
+drawPanel();
 mode="get";
 prevMode="set";
 mapp=0;
-maponp=-1;
 mx=-40;
 my=-40;
 chipX=-40;
@@ -124,36 +117,37 @@ chipY=-40;
 x=$screenWidth-chipWidth/2;
 y=$screenHeight-chipHeight/2;
 $map.scrollTo(mx,my);
-
-initialWidth=$map.chipWidth;
-initialHeight=$map.chipHeight;
-layers=["base","on","all"];
-lc=0;
-selectedLayer=layers[lc];
-drawPanel();
-
 while(true){
     p=mapp;
-    if($touches[0].touched==1 && $touches[0].x>0 && $touches[0].x<120 && $touches[0].y>560 && $touches[0].y<640){
+    if(getkey("e")==1 || ($touches[0].touched==1 && $touches[0].x>0 && $touches[0].x<120 && $touches[0].y>560 && $touches[0].y<640)){
         $mp.scrollTo(1000,1000);
         mode="erase";
+        print(mode+" mode");
+    }
+    if(getkey("s")==1){
+        $mp.scrollTo(1000,1000);
+        if(mode=="set"){
+            mode="setOn";
+        }else{
+            mode="set";
+        }
         print(mode+" mode");
     }
     if($touches[0].touched==1 && $touches[0].x>0 && $touches[0].x<120 && $touches[0].y>480 && $touches[0].y<560){
         $mp.scrollTo(1000,1000);
         mode="set";
+        print(mode+" mode");
     }
     if($touches[0].touched==1 && $touches[0].x>120 && $touches[0].x<240 && $touches[0].y>480 && $touches[0].y<560){
-        lc++;
-        selectedLayer=layers[lc%3];
-        drawPanel();
+        $mp.scrollTo(1000,1000);
+        mode="setOn";
         print(mode+" mode");
     }
     /*if(getkey("o")==1){
         $mp.scrollTo(1000,1000);
         mode="setOn";
     }*/
-    if($touches[0].touched==1 && $touches[0].x>240 && $touches[0].x<360 && $touches[0].y>480 && $touches[0].y<560){
+    if(getkey("g")==1 || ($touches[0].touched==1 && $touches[0].x>240 && $touches[0].x<360 && $touches[0].y>480 && $touches[0].y<560)){
         if(mode!="get"){
             prevMode=mode;
             $mp.scrollTo(-40,-40);
@@ -166,13 +160,27 @@ while(true){
         }
         print(mode+" mode");
     }
-    if($touches[0].touched==1 && $touches[0].x>360 && $touches[0].x<480 && $touches[0].y>480 && $touches[0].y<560){
+    if(getkey("p")==1 || ($touches[0].touched==1 && $touches[0].x>360 && $touches[0].x<480 && $touches[0].y>480 && $touches[0].y<560)){
         //add
         if(loadedFile){
             saveFileName=prompt("input json file(*.json)",loadedFile);
         }else{
             saveFileName=prompt("input json file(*.json)","map.json");
         }
+        /*print("mapTable=[");
+        data="[";
+        for(var i=0;i<$map.row-1;i++){
+            var tmp=[];
+            tmp=$map.mapTable[i].concat(tmp);
+            print("["+tmp+"],");
+            data+="["+tmp+"],";
+        }
+        var tmp=[];
+        tmp=$map.mapTable[i].concat(tmp);
+        print("["+tmp+"]");
+        data+="["+tmp+"]";
+        print("];");
+        data+="]";*/
         //add
         if(saveFileName){
             saveDataFile=file("../maps/").rel(saveFileName);
@@ -182,31 +190,32 @@ while(true){
             //add
             saveDataFile.obj(data);
             print(saveFileName+" Saved");
+            //mapDataFile.obj.push($map.mapOnTable);
         }
     }
-    if($touches[0].touched==1 && $touches[0].x>120 && $touches[0].x<240 && $touches[0].y>560 && $touches[0].y<640){
+    if(getkey("c")==1 || ($touches[0].touched==1 && $touches[0].x>120 && $touches[0].x<240 && $touches[0].y>560 && $touches[0].y<640)){
         $mp.scrollTo(1000,1000);
         mode="copy";
         print(mode+" mode");
     }
     if(mode!="get"){
-        if(getkey("left")>0 || ($touches[0].touched && $touches[0].x>0 && $touches[0].x<40 && $touches[0].y<480)) mx=mx-8;
-        if(getkey("right")>0 || ($touches[0].touched && $touches[0].x>$screenWidth-40 && $touches[0].x<$screenWidth && $touches[0].y<480)) mx=mx+8;
-        if(getkey("up")>0 || ($touches[0].touched && $touches[0].x>0 && $touches[0].x<$screenWidth && $touches[0].y<40)) my=my-8;
-        if(getkey("down")>0 || ($touches[0].touched && $touches[0].x>0 && $touches[0].x<$screenWidth && $touches[0].y<480&&$touches[0].y>440)) my=my+8;
+        if(getkey("left")>0 || ($touches[0].touched && $touches[0].x>0 && $touches[0].x<40 && $touches[0].y<480)) mx=mx+8;
+        if(getkey("right")>0 || ($touches[0].touched && $touches[0].x>$screenWidth-40 && $touches[0].x<$screenWidth && $touches[0].y<480)) mx=mx-8;
+        if(getkey("up")>0 || ($touches[0].touched && $touches[0].x>0 && $touches[0].x<$screenWidth && $touches[0].y<40)) my=my+8;
+        if(getkey("down")>0 || ($touches[0].touched && $touches[0].x>0 && $touches[0].x<$screenWidth && $touches[0].y<480&&$touches[0].y>440)) my=my-8;
         $map.scrollTo(mx,my);
     }else{
-        if(getkey("left")>0 || ($touches[0].touched && $touches[0].x>0 && $touches[0].x<40 && $touches[0].y<480)) chipX=chipX-8;
-        if(getkey("right")>0 || ($touches[0].touched && $touches[0].x>$screenWidth-40 && $touches[0].x<$screenWidth && $touches[0].y<480)) chipX=chipX+8;
-        if(getkey("up")>0 || ($touches[0].touched && $touches[0].x>0 && $touches[0].x<$screenWidth && $touches[0].y<40)) chipY=chipY-8;
-        if(getkey("down")>0 || ($touches[0].touched && $touches[0].x>0 && $touches[0].x<$screenWidth && $touches[0].y<480&&$touches[0].y>440)) chipY=chipY+8;
+        if(getkey("left")>0 || ($touches[0].touched && $touches[0].x>0 && $touches[0].x<40 && $touches[0].y<480)) chipX=chipX+8;
+        if(getkey("right")>0 || ($touches[0].touched && $touches[0].x>$screenWidth-40 && $touches[0].x<$screenWidth && $touches[0].y<480)) chipX=chipX-8;
+        if(getkey("up")>0 || ($touches[0].touched && $touches[0].x>0 && $touches[0].x<$screenWidth && $touches[0].y<40)) chipY=chipY+8;
+        if(getkey("down")>0 || ($touches[0].touched && $touches[0].x>0 && $touches[0].x<$screenWidth && $touches[0].y<480&&$touches[0].y>440)) chipY=chipY-8;
         $mp.scrollTo(chipX,chipY);
     }
     
     // add 11/25 zoom test
     if(getkey("i")==1){
-        if($map.chipWidth<initialWidth) $map.chipWidth+=4;
-        if($map.chipHeight<initialHeight) $map.chipHeight+=4;
+        $map.chipWidth+=4;
+        $map.chipHeight+=4;
         $map.redrawMap();
         panel.die();
         panel=new Panel{width:$map.col*$map.chipWidth,height:$map.row*$map.chipHeight,zOrder:100};
@@ -216,8 +225,8 @@ while(true){
         panel.fillRect(0,0,panel.width,panel.height);
     }
     if(getkey("o")==1){
-        if($map.chipWidth>4) $map.chipWidth-=4;
-        if($map.chipHeight>4) $map.chipHeight-=4;
+        $map.chipWidth-=4;
+        $map.chipHeight-=4;
         $map.redrawMap();
         panel.die();
         panel=new Panel{width:$map.col*$map.chipWidth,height:$map.row*$map.chipHeight,zOrder:100};
@@ -232,48 +241,20 @@ while(true){
     panel.x=panel.width/2-mx;
     panel.y=panel.height/2-my;
     if(mode=="set" && getkey(1)>0 && inRect()){
-        if(selectedLayer=="base"){
-            tmpon=$map.getOnAt($mouseX+mx,$mouseY+my);
-            $map.setAt($mouseX+mx,$mouseY+my,mapp);
-            $map.setOnAt($mouseX+mx,$mouseY+my,tmpon);
-        }else if(selectedLayer=="on"){
-            $map.setOnAt($mouseX+mx,$mouseY+my,mapp);
-        }else{
-            $map.setAt($mouseX+mx,$mouseY+my,mapp);
-            $map.setOnAt($mouseX+mx,$mouseY+my,maponp);
-        }
+        $map.setAt($mouseX+mx,$mouseY+my,mapp);
+        $map.setOnAt($mouseX+mx,$mouseY+my,-1);
     }else if(mode=="erase" && getkey(1)>0 && inRect()){
-        if(selectedLayer=="base"){
-            tmpon=$map.getOnAt($mouseX+mx,$mouseY+my);
-            $map.setAt($mouseX+mx,$mouseY+my,-1);
-            $map.setOnAt($mouseX+mx,$mouseY+my,tmpon);
-        }else if(selectedLayer=="on"){
-            $map.setOnAt($mouseX+mx,$mouseY+my,-1);
-        }else{
-            $map.setAt($mouseX+mx,$mouseY+my,-1);
-            $map.setOnAt($mouseX+mx,$mouseY+my,-1);
-        }
+        $map.setAt($mouseX+mx,$mouseY+my,-1);
     }else if(mode=="get" && getkey(1)>0 && inRect()){
         mapp=$mp.getAt($mouseX+chipX,$mouseY+chipY);
-        //mode=prevMode;
-        mode="set";
+        mode=prevMode;
         $mp.scrollTo(1000,1000);
         print(mode+" mode");
         updateEx(10);
     }else if(mode=="setOn" && getkey(1)>0 && inRect()){
         $map.setOnAt($mouseX+mx,$mouseY+my,mapp);
     }else if(mode=="copy" && getkey(1)>0 && inRect()){
-        if(selectedLayer=="base"){
-            mapp=$map.getAt($mouseX+mx,$mouseY+my);
-            maponp=-1;
-        }else if(selectedLayer=="on"){
-            mapp=$map.getOnAt($mouseX+mx,$mouseY+my);
-        }else{
-            mapp=$map.getAt($mouseX+mx,$mouseY+my);
-            maponp=$map.getOnAt($mouseX+mx,$mouseY+my);
-        }
-        
-        //mapp=$map.getAt($mouseX+mx,$mouseY+my);
+        mapp=$map.getAt($mouseX+mx,$mouseY+my);
         mode="set";
         print(mode+" mode");
         updateEx(10);
@@ -315,7 +296,7 @@ function drawPanel(){
     $panel.fillText("→",$screenWidth-20,($screenHeight-200)/2,40,"center");
     //set setOn letter etc
     $panel.fillText("set",$screenWidth/4-60,$screenHeight-110,40,"center");
-    $panel.fillText(selectedLayer,$screenWidth/4+60,$screenHeight-110,35,"center");
+    $panel.fillText("setOn",$screenWidth/4+60,$screenHeight-110,35,"center");
     $panel.fillText("get",$screenWidth/2+60,$screenHeight-110,40,"center");
     $panel.fillText("save",$screenWidth-60,$screenHeight-110,40,"center");
     $panel.fillText("erase",$screenWidth/4-60,$screenHeight-30,35,"center");
