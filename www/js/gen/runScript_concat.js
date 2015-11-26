@@ -1,4 +1,4 @@
-// Created at Wed Nov 18 2015 19:28:06 GMT+0900 (東京 (標準時))
+// Created at Thu Nov 26 2015 10:15:22 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -2043,7 +2043,7 @@ requireSimulator.setName('Tonyu');
 if (typeof define!=="function") {
     define=require("requirejs").define;
 }
-define([],function () {
+define(["assert"],function (assert) {
 return Tonyu=function () {
     var preemptionTime=60;
     function thread() {
@@ -2355,7 +2355,7 @@ return Tonyu=function () {
         }
         return f;
     }
-    function klass() {
+    /*function klass() {
         var parent, prot, includes=[];
         if (arguments.length==1) {
             prot=arguments[0];
@@ -2399,12 +2399,6 @@ return Tonyu=function () {
                     prot[n]=m.methods[n];
                 }
             }
-            /*for (var n in m.prototype) {
-                if (!(n in prot)) {  //-> cannot override color in ColorMod(MetaClicker/FlickEdit)
-                //if ((typeof m.prototype[n])=="function") { //-> BodyActor::onAppear is overriden by Actor::onAppear(nop)
-                    prot[n]=m.prototype[n];
-                }
-            }*/
         });
         res.prototype=bless(parent, prot);
         res.prototype.isTonyuObject=true;
@@ -2417,14 +2411,24 @@ return Tonyu=function () {
             return m;
         };
         return res;
-    }
+    }*/
+    klass=function () {
+        alert("この関数は古くなりました。コンパイルをやり直してください。 Deprecated. compile again.");
+        throw new Error("この関数は古くなりました。コンパイルをやり直してください。 Deprecated. compile again.");
+    };
     klass.addMeta=addMeta;
-    function addMeta(k,m) {
-        k.meta=k.meta||{};
-        extend(k.meta, m);
+    function addMeta(fn,m) {
+        assert.is(arguments,[String,Object]);
+        return extend(klass.getMeta(fn), m);
     }
-    klass.getMeta=function (k) {
-        return k.meta;
+    klass.getMeta=function (k) {// Class or fullName
+        if (typeof k=="function") {
+            return k.meta;
+        } else if (typeof k=="string"){
+            var mm = classMetas[k];
+            if (!mm) classMetas[k]=mm={};
+            return mm;
+        }
     };
     klass.ensureNamespace=function (top,nsp) {
         var keys=nsp.split(".");
@@ -2497,7 +2501,7 @@ return Tonyu=function () {
         for (var k in props) {
             Object.defineProperty(res.prototype, k , props[k]);
         }
-        addMeta(res,{
+        res.meta=addMeta(fullName,{
             fullName:fullName,shortName:shortName,namepsace:namespace,decls:decls,
             superclass:parent ? parent.meta : null,func:res,
             includes:includes.map(function(c){return c.meta;})
@@ -2520,9 +2524,11 @@ return Tonyu=function () {
         }
         return dst;
     }
+
     //alert("init");
     var globals={};
-    var classes={};
+    var classes={};// classes.namespace.classname= function
+    var classMetas={}; // classes.namespace.classname.meta ( or env.classes / ctx.classes)
     function setGlobal(n,v) {
         globals[n]=v;
     }
@@ -2609,11 +2615,11 @@ return Tonyu=function () {
         th.steps();
     }
     return Tonyu={thread:thread, threadGroup:threadGroup, klass:klass, bless:bless, extend:extend,
-            globals:globals, classes:classes, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
+            globals:globals, classes:classes, classMetas:classMetas, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
             timeout:timeout,animationFrame:animationFrame, asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,
-            VERSION:1447842476456,//EMBED_VERSION
+            VERSION:1448500513331,//EMBED_VERSION
             A:A};
 }();
 });
@@ -5733,7 +5739,18 @@ var JSNATIVES={Array:1, String:1, Boolean:1, Number:1, Void:1, Object:1,RegExp:1
 //-----------
 function initClassDecls(klass, env ) {//S
     var s=klass.src.tonyu; //file object
-    var node=TonyuLang.parse(s);
+    var node;
+    if (klass.node && klass.nodeTimestamp==s.lastUpdate()) {
+        node=klass.node;
+    }
+    if (!node) {
+        console.log("Parse "+s);
+        node=TonyuLang.parse(s);
+        klass.nodeTimestamp=s.lastUpdate();
+    }
+    //console.log(s+"",  !!klass.node, klass.nodeTimestamp, s.lastUpdate());
+    //if (!klass.testid) klass.testid=Math.random();
+    //console.log(klass.testid);
     var MAIN={name:"main",stmts:[],pos:0};
     // method := fiber | function
     var fields={}, methods={main: MAIN}, natives={};
@@ -6411,6 +6428,36 @@ define([], function () {
                         return DU.throwPromise(e);
                     }
                 };
+            },
+            each: function (set,f) {
+                if (set instanceof Array) {
+                    return DU.loop(function (i) {
+                        if (i>=set.length) return DU.brk();
+                        return $.when(f(set[i])).then(function () {
+                            return i+1;
+                        });
+                    },0);
+                } else {
+                    var objs=[];
+                    for (var i in set) {
+                        objs.push({k:i,v:set[i]});
+                    }
+                    return DU.each(objs,function (e) {
+                        f(e.k, e.v);
+                    });
+                }
+            },
+            loop: function (f,r) {
+                DU.directPromise(r).then(DU.throwF(function () {
+                    var r=f.apply(this,arguments);
+                    if (r.DU_BRK) return r.res;
+                    return $.when(r).then(function (r) {
+                        return DU.loop(f,r);
+                    });
+                }));
+            },
+            brk: function (res) {
+                return {DU_BRK:true,res:res};
             }
     };
     return DU;
@@ -6451,7 +6498,7 @@ define(["DeferredUtil"], function (DU) {
                         }
                         console.log("Done Load compiled classes ns=",ns,"url=",url,Tonyu.classes);
                         //same as projectCompiler (XXXX)
-                        var cls=Tonyu.classes;
+                        /*var cls=Tonyu.classes;
                         ns.split(".").forEach(function (c) {
                             if (cls) cls=cls[c];
                             // comment out : when empty concat.js
@@ -6463,7 +6510,7 @@ define(["DeferredUtil"], function (DU) {
                                 var m=Tonyu.klass.getMeta(cl);
                                 ctx.classes[m.fullName]=m;
                             }
-                        }
+                        }*/
                         //------------------XXXX
                         d.resolve();
                     }
@@ -6589,15 +6636,8 @@ var TPRC=function (dir) {
          console.log("LoadClasses: "+dir.path());
          ctx=initCtx(ctx);
          var visited=ctx.visited||{};
-         //var classes=ctx.classes||{};
          if (visited[TPR.path()]) return DU.directPromise();
          visited[TPR.path()]=true;
-         /*TPR.getDependingProjects().forEach(function (p) {
-             if (p.getNamespace()==myNsp) return;
-             task=task.then(function () {
-                 return p.loadClasses(ctx);
-             });
-         });*/
          return TPR.loadDependingClasses(ctx).then(function () {
              return TPR.shouldCompile();
          }).then(function (sc) {
@@ -6605,10 +6645,10 @@ var TPRC=function (dir) {
                  return TPR.compile(ctx);
              } else {
                  var outF=TPR.getOutputFile("js");
-                 return evalFile(outF).then(F(copyToClasses));
+                 return evalFile(outF);//.then(F(copyToClasses));
              }
          });
-         function copyToClasses() {
+         /*function copyToClasses() {
              var ns=TPR.getNamespace();
             //same as compiledProject (XXXX)
              var cls=Tonyu.classes;
@@ -6625,13 +6665,13 @@ var TPRC=function (dir) {
                  }
              }
              //------------------XXXX
-         }
+         }*/
      };
      function initCtx(ctx) {
          var env=TPR.env;
          if (!ctx) ctx={};
          if (!ctx.visited) {
-             ctx={visited:{}, classes:(env.classes=env.classes||{}),options:ctx};
+             ctx={visited:{}, classes:(env.classes=env.classes||Tonyu.classMetas),options:ctx};
          }
          return ctx;
      }
@@ -6639,23 +6679,14 @@ var TPRC=function (dir) {
          Tonyu.runMode=false;
          console.log("Compile: "+dir.path());
          ctx=initCtx(ctx);
-         //var dp=TPR.getDependingProjects();
          var myNsp=TPR.getNamespace();
-         /*var task=DU.directPromise();
-         dp.forEach(function (dprj) {
-             var nsp=dprj.getNamespace();
-             if (nsp!=myNsp) {
-                 task=task.then(F(function () {
-                     dprj.loadClasses(ctx);
-                 }));
-             }
-         });*/
          return TPR.loadDependingClasses(ctx).then(F(function () {
              var baseClasses=ctx.classes;
              //console.log("baseClasses", baseClasses);
              var ctxOpt=ctx.options;
              var env=TPR.env;
              env.aliases={};
+             env.parsedNode=env.parsedNode||{};
              env.classes=baseClasses;
              for (var n in baseClasses) {
                  var cl=baseClasses[n];
@@ -6666,14 +6697,15 @@ var TPRC=function (dir) {
              for (var shortCn in sf) {
                  var f=sf[shortCn];
                  var fullCn=myNsp+"."+shortCn;
-                 newClasses[fullCn]=baseClasses[fullCn]={
-                         fullName:  fullCn,
-                         shortName: shortCn,
-                         namespace: myNsp,
-                         src:{
-                             tonyu: f
-                         }
-                 };
+                 var m=Tonyu.klass.getMeta(fullCn);
+                 newClasses[fullCn]=baseClasses[fullCn]=m;
+                 Tonyu.extend(m,{
+                     fullName:  fullCn,
+                     shortName: shortCn,
+                     namespace: myNsp
+                 });
+                 m.src=m.src||{};
+                 m.src.tonyu=f;
                  env.aliases[shortCn]=fullCn;
              }
              for (var n in newClasses) {
@@ -6760,12 +6792,6 @@ var TPRC=function (dir) {
                 if (added[n]) continue;
                 var c=classes[n];/*ENVC*/
                 var deps=dep1(c);
-                //var ready=true;
-                /*deps.forEach(function (cl) {
-                    ready=ready && (
-                       !cl || !classes[cl.fullName] || cl.builtin || added[cl.fullName]
-                    );
-                });*/
                 if (deps.length==0) {
                     res.push(c);
                     added[n]=true;
@@ -6852,134 +6878,137 @@ return TPRC;
 
 
 requireSimulator.setName('PatternParser');
-define(["Tonyu"], function (Tonyu) {return Tonyu.klass({
-	initialize: function (img, options) {
-	    this.options=options || {};
-		this.img=img;
-		this.height = img.height;
-		this.width = img.width;
-		var cv=this.newImage(img.width, img.height);
-		var ctx=cv.getContext("2d");
-		ctx.drawImage(img, 0,0);
-		this.ctx=ctx;
-		this.pixels=this.ctx.getImageData(0, 0, img.width, img.height).data;
-		this.base=this.getPixel(0,0);
-	},
-	newImage: function (w,h) {
-        var cv=document.createElement("canvas");
-        cv.width=w;
-        cv.height=h;
-        return cv;
-	},
-	getPixel: function (x,y) {
-		var imagePixelData = this.pixels;
-		var ofs=(x+y*this.width)*4;
-		var R = imagePixelData[0+ofs];
-  		var G = imagePixelData[1+ofs];
-  		var B = imagePixelData[2+ofs];
-  		var A = imagePixelData[3+ofs];
-  		return ((((A*256)+B)*256)+G)*256+R;
-	},
-	setPixel: function (x,y,p) {
-	    var ofs=(x+y*this.width)*4;
-	    this.pixels[0+ofs]=p & 255;
-	    p=(p-(p&255))/256;
-        this.pixels[1+ofs]=p & 255;
-        p=(p-(p&255))/256;
-        this.pixels[2+ofs]=p & 255;
-        p=(p-(p&255))/256;
-        this.pixels[3+ofs]=p & 255;
-	},
-	parse: function () {
-  		try {
-			//console.log("parse()");
-  			var res=[];// List of charpattern
-			for (var y=0; y<this.height ;y++) {
-				for (var x=0; x<this.width ;x++) {
-					var c=this.getPixel(x, y);
-					if (c!=this.base) {
-						res.push(this.parse1Pattern(x,y));
-					}
-				}
-			}
-			//console.log("parsed:"+res.lenth);
-			return res;
-  		} catch (p) {
-  		    if (p.isParseError) {
-  	            console.log("parse error! "+p);
-  	            return {image: this.img, x:0, y:0, width:this.width, height:this.height};
-  		    }
-  		    throw p;
-  		}
-	},
-  	parse1Pattern:function (x,y) {
-		function hex(s){return s;}
-		var trans=this.getPixel(x, y);
-		var dx=x,dy=y;
-		var base=this.base;
-		var width=this.width, height=this.height;
-		while (dx<width) {
-			var pixel = this.getPixel(dx,dy);
-			if (pixel!=trans) break;
-			dx++;
-		}
-		if (dx>=width || this.getPixel(dx,dy)!=base) {
-		    throw PatterParseError(dx,dy,hex(this.getPixel(dx,dy))+"!="+hex(base));
-		}
-		dx--;
-		while (dy<height) {
-			if (this.getPixel(dx,dy)!=trans) break;
-			dy++;
-		}
-		if (dy>=height || this.getPixel(dx,dy)!=base) {
-		    throw PatterParseError(dx,dy,hex(this.getPixel(dx,dy))+"!="+hex(base));
-		}
-		dy--;
-		var sx=x+1,sy=y+1,w=dx-sx,h=dy-sy;
-        console.log("PP",sx,sy,w,h,dx,dy);
-		if (w*h==0) throw PatterParseError(dx, dy,"w*h==0");
-        var newim=this.newImage(w,h);
-        var nc=newim.getContext("2d");
-        var newImD=nc.getImageData(0,0,w,h);
-		var newD=newImD.data;
-		var di=0;
-		for (var ey=sy ; ey<dy ; ey++) {
-			for (var ex=sx ; ex<dx ; ex++) {
-			    var p=this.getPixel(ex, ey);
-				if (p==trans) {
-					newD[di++]=0;
-					newD[di++]=(0);
-					newD[di++]=(0);
-					newD[di++]=(0);
-				} else {
-                    newD[di++]=(p&255);
-                    p=(p-(p&255))/256;
-                    newD[di++]=(p&255);
-                    p=(p-(p&255))/256;
-                    newD[di++]=(p&255);
-                    p=(p-(p&255))/256;
-                    newD[di++]=(p&255);
-				}
-			}
-		}
-        nc.putImageData(newImD,0,0);
-		for (var yy=sy-1; yy<=dy; yy++) {
-		    for (var xx=sx-1; xx<=dx; xx++) {
-		        this.setPixel(xx,yy, base);
-		    }
-		}
-        if (this.options.boundsInSrc) {
-            return {x:sx,y:sy,width:w,height:h};
+define(["Tonyu"], function (Tonyu) {
+    var PP=function (img, options) {
+        this.options=options || {};
+        this.img=img;
+        this.height = img.height;
+        this.width = img.width;
+        var cv=this.newImage(img.width, img.height);
+        var ctx=cv.getContext("2d");
+        ctx.drawImage(img, 0,0);
+        this.ctx=ctx;
+        this.pixels=this.ctx.getImageData(0, 0, img.width, img.height).data;
+        this.base=this.getPixel(0,0);
+    };
+    Tonyu.extend(PP.prototype,{
+        newImage: function (w,h) {
+            var cv=document.createElement("canvas");
+            cv.width=w;
+            cv.height=h;
+            return cv;
+        },
+        getPixel: function (x,y) {
+            var imagePixelData = this.pixels;
+            var ofs=(x+y*this.width)*4;
+            var R = imagePixelData[0+ofs];
+            var G = imagePixelData[1+ofs];
+            var B = imagePixelData[2+ofs];
+            var A = imagePixelData[3+ofs];
+            return ((((A*256)+B)*256)+G)*256+R;
+        },
+        setPixel: function (x,y,p) {
+            var ofs=(x+y*this.width)*4;
+            this.pixels[0+ofs]=p & 255;
+            p=(p-(p&255))/256;
+            this.pixels[1+ofs]=p & 255;
+            p=(p-(p&255))/256;
+            this.pixels[2+ofs]=p & 255;
+            p=(p-(p&255))/256;
+            this.pixels[3+ofs]=p & 255;
+        },
+        parse: function () {
+            try {
+                //console.log("parse()");
+                var res=[];// List of charpattern
+                for (var y=0; y<this.height ;y++) {
+                    for (var x=0; x<this.width ;x++) {
+                        var c=this.getPixel(x, y);
+                        if (c!=this.base) {
+                            res.push(this.parse1Pattern(x,y));
+                        }
+                    }
+                }
+                //console.log("parsed:"+res.lenth);
+                return res;
+            } catch (p) {
+                if (p.isParseError) {
+                    console.log("parse error! "+p);
+                    return {image: this.img, x:0, y:0, width:this.width, height:this.height};
+                }
+                throw p;
+            }
+        },
+        parse1Pattern:function (x,y) {
+            function hex(s){return s;}
+            var trans=this.getPixel(x, y);
+            var dx=x,dy=y;
+            var base=this.base;
+            var width=this.width, height=this.height;
+            while (dx<width) {
+                var pixel = this.getPixel(dx,dy);
+                if (pixel!=trans) break;
+                dx++;
+            }
+            if (dx>=width || this.getPixel(dx,dy)!=base) {
+                throw PatterParseError(dx,dy,hex(this.getPixel(dx,dy))+"!="+hex(base));
+            }
+            dx--;
+            while (dy<height) {
+                if (this.getPixel(dx,dy)!=trans) break;
+                dy++;
+            }
+            if (dy>=height || this.getPixel(dx,dy)!=base) {
+                throw PatterParseError(dx,dy,hex(this.getPixel(dx,dy))+"!="+hex(base));
+            }
+            dy--;
+            var sx=x+1,sy=y+1,w=dx-sx,h=dy-sy;
+            console.log("PP",sx,sy,w,h,dx,dy);
+            if (w*h==0) throw PatterParseError(dx, dy,"w*h==0");
+            var newim=this.newImage(w,h);
+            var nc=newim.getContext("2d");
+            var newImD=nc.getImageData(0,0,w,h);
+            var newD=newImD.data;
+            var di=0;
+            for (var ey=sy ; ey<dy ; ey++) {
+                for (var ex=sx ; ex<dx ; ex++) {
+                    var p=this.getPixel(ex, ey);
+                    if (p==trans) {
+                        newD[di++]=0;
+                        newD[di++]=(0);
+                        newD[di++]=(0);
+                        newD[di++]=(0);
+                    } else {
+                        newD[di++]=(p&255);
+                        p=(p-(p&255))/256;
+                        newD[di++]=(p&255);
+                        p=(p-(p&255))/256;
+                        newD[di++]=(p&255);
+                        p=(p-(p&255))/256;
+                        newD[di++]=(p&255);
+                    }
+                }
+            }
+            nc.putImageData(newImD,0,0);
+            for (var yy=sy-1; yy<=dy; yy++) {
+                for (var xx=sx-1; xx<=dx; xx++) {
+                    this.setPixel(xx,yy, base);
+                }
+            }
+            if (this.options.boundsInSrc) {
+                return {x:sx,y:sy,width:w,height:h};
+            }
+            return {image:newim, x:0, y:0, width:w, height:h};
+            function PatterParseError(x,y,msg) {
+                return {toString: function () {
+                    return "at ("+x+","+y+") :"+msg;
+                }, isParseError:true};
+            }
         }
-		return {image:newim, x:0, y:0, width:w, height:h};
-		function PatterParseError(x,y,msg) {
-		    return {toString: function () {
-		        return "at ("+x+","+y+") :"+msg;
-		    }, isParseError:true};
-		}
-	}
 
-});});
+    });
+    return PP;
+});
 requireSimulator.setName('Assets');
 define(["WebSite","Util","Tonyu"],function (WebSite,Util,Tonyu) {
     var Assets={};
@@ -7436,7 +7465,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         kernelProject=ProjectCompiler(kernelDir);
     }
     var traceTbl=Tonyu.TraceTbl;//();
-    var env={classes:{}, traceTbl:traceTbl, options:{compiler:{}} };
+    var env={classes:Tonyu.classMetas, traceTbl:traceTbl, options:{compiler:{}} };
     function orderByInheritance(classes) {/*ENVC*/
         var added={};
         var res=[];
@@ -7641,25 +7670,6 @@ return Tonyu.Project=function (dir, kernelDir) {
         //if (TPR.classExists(res)) return res;
         return cn;
     };
-    /*TPR.classExists=function (fullCn) {
-        var cna=fullCn.split(".");
-        if (cna.length==1) return false;
-        var nsp=cna[0], sn=cna[1] ;
-        if (TPR.isKernelEditable()) {
-            if (nsp==TPR.NSP_KER) {
-                if (dir.rel(sn+TPR.EXT).exists()) return true;
-                if (kernelDir.rel(sn+TPR.EXT).exists()) return true;
-            }
-        } else {
-            if (nsp==TPR.NSP_KER) {
-                if (kernelDir.rel(sn+TPR.EXT).exists()) return true;
-            }
-            if (nsp==TPR.NSP_USR) {
-                if (dir.rel(sn+TPR.EXT).exists()) return true;
-            }
-        }
-        return false;
-    };*/
     TPR.getNamespace=function () {//override
         var opt=TPR.getOptions();
         if (opt.compiler && opt.compiler.namespace) return opt.compiler.namespace;
@@ -7686,17 +7696,6 @@ return Tonyu.Project=function (dir, kernelDir) {
     };
     TPR.rawBoot=function (bootClassName) {
         Tonyu.run(bootClassName);
-        /*var bootClass=Tonyu.getClass(bootClassName);
-        if (!bootClass) throw TError( bootClassName+" というクラスはありません", "不明" ,0);
-        Tonyu.runMode=true;
-        var boot=new bootClass();
-        var th=Tonyu.thread();
-        th.apply(boot,"main");
-
-        TPR.runningThread=th;
-        TPR.runningObj=boot;
-        $LASTPOS=0;
-        th.steps();*/
     };
 
     TPR.srcExists=function (className, dir) {
