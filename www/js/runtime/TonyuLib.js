@@ -130,7 +130,8 @@ return Tonyu=function () {
         function waitFor(j) {
             _isWaiting=true;
             suspend();
-            if (j && j.addTerminatedListener) j.addTerminatedListener(function () {
+            if (!j) return;
+            if (j.addTerminatedListener) j.addTerminatedListener(function () {
                 _isWaiting=false;
                 if (fb.group) fb.group.notifyResume();
                 else if (isAlive()) {
@@ -142,6 +143,22 @@ return Tonyu=function () {
                 }
                 //fb.group.add(fb);
             });
+            else if (j.then && j.fail) {
+                j.then(function (r) {
+                    fb.retVal=r;
+                    steps();
+                });
+                j.fail(function (e) {
+                    if (e instanceof Error) {
+                        gotoCatch(e);
+                    } else {
+                        var re=new Error(e);
+                        re.original=e;
+                        gotoCatch(re);
+                    }
+                    steps();
+                });
+            }
         }
         function setGroup(g) {
             fb.group=g;

@@ -1,3 +1,3 @@
-requirejs(["ImageList","T2MediaLib","Tonyu","Tonyu.Iterator"], function () {
+requirejs(["ImageList","T2MediaLib","Tonyu","Tonyu.Iterator","UIDiag"], function () {
 
 });

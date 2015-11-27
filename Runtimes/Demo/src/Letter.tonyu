@@ -1,0 +1,17 @@
+x=230;
+y=460;
+vx=-3+i*0.5;
+vy=-25;
+fillStyle="black";
+size=40;
+while(vy<12) {
+    x+=vx;y+=vy;
+    vy+=1;
+    update();
+}
+while(true) {
+    if ((l=crashTo(Letter)) && l.i<i) {
+        x+=5;
+    }
+    update();
+}

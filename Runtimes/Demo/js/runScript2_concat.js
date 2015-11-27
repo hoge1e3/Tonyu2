@@ -1,4 +1,4 @@
-// Created at Tue Nov 10 2015 15:30:04 GMT+0900 (東京 (標準時))
+// Created at Thu Nov 26 2015 10:15:26 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -393,6 +393,7 @@ PathUtil={
         return PathUtil.up(path);
     },
     rel: function(path,relPath) {
+        if (relPath=="") return path;
 		assert.is(arguments,[AbsDir, Relative]);
     	var paths=PathUtil.splitPath(relPath);
         var resPath=path;
@@ -501,11 +502,11 @@ define(["extend","assert"],function (extend,assert) {
 	  },
 	  dataURL2bin: function (dataURL) {
           assert.is(arguments,[String]);
-	      var reg=/data:([^;]+);base64,(.*)$/i;
+	      var reg=/^data:([^;]+);base64,/i;
 	      var r=reg.exec(dataURL);
 	      assert(r, ["malformed dataURL:", dataURL] );
 	      this.contentType=r[1];
-	      this.buffer=Base64_To_ArrayBuffer(r[2]);
+	      this.buffer=Base64_To_ArrayBuffer(dataURL.substring(r[0].length));
           return assert.is(this.buffer , A);
   	  },
   	  dataHeader: function (ctype) {
@@ -957,7 +958,7 @@ SFile.prototype={
         if (p || options.noFollowLink) {
             return p;
         } else {
-            return this.resolveLink({policy:{}}).exists({noFollowLink:true});
+            return this._resolveLinkNoPolicy().exists({noFollowLink:true});
         }
     },
     /*copyTo: function (dst, options) {
@@ -966,7 +967,7 @@ SFile.prototype={
     rm: function (options) {
         options=options||{};
         if (!this.exists({noFollowLink:true})) {
-            var l=this.resolveLink({policy:{}});
+            var l=this._resolveLinkNoPolicy();
             if (!this.equals(l)) return l.rm(options);
         }
         if (this.isDir() && (options.recursive||options.r)) {
@@ -987,7 +988,7 @@ SFile.prototype={
     },
     // File
     text:function () {
-        var l=this.resolveLink({policy:{}});
+        var l=this._resolveLinkNoPolicy();
         if (!this.equals(l)) return l.text.apply(l,arguments);
         if (arguments.length>0) {
             this.setText(arguments[0]);
@@ -1001,6 +1002,9 @@ SFile.prototype={
     },
     getText:function (t) {
         return this.fs.getContent(this.path(), {type:String});
+    },
+    isText: function () {
+        return this.fs.isText(this.path());
     },
     setBytes:function (b) {
         A.is(t,ArrayBuffer);
@@ -1090,7 +1094,7 @@ SFile.prototype={
     listFiles:function (options) {
         A(options==null || typeof options=="object");
         var dir=this.assertDir();
-        var l=this.resolveLink({policy:{}});
+        var l=this._resolveLinkNoPolicy();
         if (!this.equals(l)) {
             return l.listFiles.apply(l,arguments).map(function (f) {
                 return dir.rel(f.name());
@@ -1145,10 +1149,16 @@ SFile.prototype={
         to=this._resolve(A(to));
         this.fs.link(this.path(),to.path(),options);
     },
-    resolveLink: function (options) {
+    _resolveLinkOpt: function (options) {
         var l=this.fs.resolveLink(this.path());
         A.is(l,P.Absolute);
         return this._resolve(l, options);
+    },
+    _resolveLinkNoPolicy: function () {
+        return this._resolveLinkOpt({policy:{}});
+    },
+    resolveLink:function () {
+        return this._resolveLinkOpt();
     },
     isLink: function () {
         return this.fs.isLink(this.path());
@@ -1675,7 +1685,7 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
     return NativeFS;
 });
 requireSimulator.setName('LSFS');
-define(["FS2","PathUtil","extend","assert"], function(FS,P,extend,assert) {
+define(["FS2","PathUtil","extend","assert","DataURL"], function(FS,P,extend,assert,DataURL) {
     var LSFS = function(storage,options) {
     	this.storage=storage;
     	this.options=options||{};
@@ -1803,6 +1813,10 @@ define(["FS2","PathUtil","extend","assert"], function(FS,P,extend,assert) {
         getContent: function(path, options) {
             assert.is(arguments,[Absolute]);
             this.assertExist(path);
+            if (options && options.type==ArrayBuffer) {
+                var d=new DataURL(this.getItem(path));
+                return d.buffer;
+            }
             return this.getItem(path);
         },
         setContent: function(path, content, options) {
@@ -2107,9 +2121,40 @@ define([], function () {
                     try {
                         return f.apply(this,arguments);
                     } catch(e) {
+                        console.log(e.stack);
                         return DU.throwPromise(e);
                     }
                 };
+            },
+            each: function (set,f) {
+                if (set instanceof Array) {
+                    return DU.loop(function (i) {
+                        if (i>=set.length) return DU.brk();
+                        return $.when(f(set[i])).then(function () {
+                            return i+1;
+                        });
+                    },0);
+                } else {
+                    var objs=[];
+                    for (var i in set) {
+                        objs.push({k:i,v:set[i]});
+                    }
+                    return DU.each(objs,function (e) {
+                        f(e.k, e.v);
+                    });
+                }
+            },
+            loop: function (f,r) {
+                DU.directPromise(r).then(DU.throwF(function () {
+                    var r=f.apply(this,arguments);
+                    if (r.DU_BRK) return r.res;
+                    return $.when(r).then(function (r) {
+                        return DU.loop(f,r);
+                    });
+                }));
+            },
+            brk: function (res) {
+                return {DU_BRK:true,res:res};
             }
     };
     return DU;
@@ -2150,7 +2195,7 @@ define(["DeferredUtil"], function (DU) {
                         }
                         console.log("Done Load compiled classes ns=",ns,"url=",url,Tonyu.classes);
                         //same as projectCompiler (XXXX)
-                        var cls=Tonyu.classes;
+                        /*var cls=Tonyu.classes;
                         ns.split(".").forEach(function (c) {
                             if (cls) cls=cls[c];
                             // comment out : when empty concat.js
@@ -2162,7 +2207,7 @@ define(["DeferredUtil"], function (DU) {
                                 var m=Tonyu.klass.getMeta(cl);
                                 ctx.classes[m.fullName]=m;
                             }
-                        }
+                        }*/
                         //------------------XXXX
                         d.resolve();
                     }
@@ -2201,7 +2246,7 @@ define(["plugins","compiledProject"], function (plugins,CPR) {
                 },
                 requestPlugin:function(){},
                 run: function (bootClassName) {
-                    var ctx={classes:{}};
+                    var ctx={classes:Tonyu.classMetas};
                     this.loadClasses(ctx).then(function () {
                         Tonyu.run(bootClassName);
                     });
@@ -2374,7 +2419,7 @@ requireSimulator.setName('Tonyu');
 if (typeof define!=="function") {
     define=require("requirejs").define;
 }
-define([],function () {
+define(["assert"],function (assert) {
 return Tonyu=function () {
     var preemptionTime=60;
     function thread() {
@@ -2686,7 +2731,7 @@ return Tonyu=function () {
         }
         return f;
     }
-    function klass() {
+    /*function klass() {
         var parent, prot, includes=[];
         if (arguments.length==1) {
             prot=arguments[0];
@@ -2730,12 +2775,6 @@ return Tonyu=function () {
                     prot[n]=m.methods[n];
                 }
             }
-            /*for (var n in m.prototype) {
-                if (!(n in prot)) {  //-> cannot override color in ColorMod(MetaClicker/FlickEdit)
-                //if ((typeof m.prototype[n])=="function") { //-> BodyActor::onAppear is overriden by Actor::onAppear(nop)
-                    prot[n]=m.prototype[n];
-                }
-            }*/
         });
         res.prototype=bless(parent, prot);
         res.prototype.isTonyuObject=true;
@@ -2748,14 +2787,24 @@ return Tonyu=function () {
             return m;
         };
         return res;
-    }
+    }*/
+    klass=function () {
+        alert("この関数は古くなりました。コンパイルをやり直してください。 Deprecated. compile again.");
+        throw new Error("この関数は古くなりました。コンパイルをやり直してください。 Deprecated. compile again.");
+    };
     klass.addMeta=addMeta;
-    function addMeta(k,m) {
-        k.meta=k.meta||{};
-        extend(k.meta, m);
+    function addMeta(fn,m) {
+        assert.is(arguments,[String,Object]);
+        return extend(klass.getMeta(fn), m);
     }
-    klass.getMeta=function (k) {
-        return k.meta;
+    klass.getMeta=function (k) {// Class or fullName
+        if (typeof k=="function") {
+            return k.meta;
+        } else if (typeof k=="string"){
+            var mm = classMetas[k];
+            if (!mm) classMetas[k]=mm={};
+            return mm;
+        }
     };
     klass.ensureNamespace=function (top,nsp) {
         var keys=nsp.split(".");
@@ -2828,7 +2877,7 @@ return Tonyu=function () {
         for (var k in props) {
             Object.defineProperty(res.prototype, k , props[k]);
         }
-        addMeta(res,{
+        res.meta=addMeta(fullName,{
             fullName:fullName,shortName:shortName,namepsace:namespace,decls:decls,
             superclass:parent ? parent.meta : null,func:res,
             includes:includes.map(function(c){return c.meta;})
@@ -2851,9 +2900,11 @@ return Tonyu=function () {
         }
         return dst;
     }
+
     //alert("init");
     var globals={};
-    var classes={};
+    var classes={};// classes.namespace.classname= function
+    var classMetas={}; // classes.namespace.classname.meta ( or env.classes / ctx.classes)
     function setGlobal(n,v) {
         globals[n]=v;
     }
@@ -2940,143 +2991,146 @@ return Tonyu=function () {
         th.steps();
     }
     return Tonyu={thread:thread, threadGroup:threadGroup, klass:klass, bless:bless, extend:extend,
-            globals:globals, classes:classes, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
+            globals:globals, classes:classes, classMetas:classMetas, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
             timeout:timeout,animationFrame:animationFrame, asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,
-            VERSION:1447136993162,//EMBED_VERSION
+            VERSION:1448500513331,//EMBED_VERSION
             A:A};
 }();
 });
 requireSimulator.setName('PatternParser');
-define(["Tonyu"], function (Tonyu) {return Tonyu.klass({
-	initialize: function (img, options) {
-	    this.options=options || {};
-		this.img=img;
-		this.height = img.height;
-		this.width = img.width;
-		var cv=this.newImage(img.width, img.height);
-		var ctx=cv.getContext("2d");
-		ctx.drawImage(img, 0,0);
-		this.ctx=ctx;
-		this.pixels=this.ctx.getImageData(0, 0, img.width, img.height).data;
-		this.base=this.getPixel(0,0);
-	},
-	newImage: function (w,h) {
-        var cv=document.createElement("canvas");
-        cv.width=w;
-        cv.height=h;
-        return cv;
-	},
-	getPixel: function (x,y) {
-		var imagePixelData = this.pixels;
-		var ofs=(x+y*this.width)*4;
-		var R = imagePixelData[0+ofs];
-  		var G = imagePixelData[1+ofs];
-  		var B = imagePixelData[2+ofs];
-  		var A = imagePixelData[3+ofs];
-  		return ((((A*256)+B)*256)+G)*256+R;
-	},
-	setPixel: function (x,y,p) {
-	    var ofs=(x+y*this.width)*4;
-	    this.pixels[0+ofs]=p & 255;
-	    p=(p-(p&255))/256;
-        this.pixels[1+ofs]=p & 255;
-        p=(p-(p&255))/256;
-        this.pixels[2+ofs]=p & 255;
-        p=(p-(p&255))/256;
-        this.pixels[3+ofs]=p & 255;
-	},
-	parse: function () {
-  		try {
-			//console.log("parse()");
-  			var res=[];// List of charpattern
-			for (var y=0; y<this.height ;y++) {
-				for (var x=0; x<this.width ;x++) {
-					var c=this.getPixel(x, y);
-					if (c!=this.base) {
-						res.push(this.parse1Pattern(x,y));
-					}
-				}
-			}
-			//console.log("parsed:"+res.lenth);
-			return res;
-  		} catch (p) {
-  		    if (p.isParseError) {
-  	            console.log("parse error! "+p);
-  	            return {image: this.img, x:0, y:0, width:this.width, height:this.height};
-  		    }
-  		    throw p;
-  		}
-	},
-  	parse1Pattern:function (x,y) {
-		function hex(s){return s;}
-		var trans=this.getPixel(x, y);
-		var dx=x,dy=y;
-		var base=this.base;
-		var width=this.width, height=this.height;
-		while (dx<width) {
-			var pixel = this.getPixel(dx,dy);
-			if (pixel!=trans) break;
-			dx++;
-		}
-		if (dx>=width || this.getPixel(dx,dy)!=base) {
-		    throw PatterParseError(dx,dy,hex(this.getPixel(dx,dy))+"!="+hex(base));
-		}
-		dx--;
-		while (dy<height) {
-			if (this.getPixel(dx,dy)!=trans) break;
-			dy++;
-		}
-		if (dy>=height || this.getPixel(dx,dy)!=base) {
-		    throw PatterParseError(dx,dy,hex(this.getPixel(dx,dy))+"!="+hex(base));
-		}
-		dy--;
-		var sx=x+1,sy=y+1,w=dx-sx,h=dy-sy;
-        console.log("PP",sx,sy,w,h,dx,dy);
-		if (w*h==0) throw PatterParseError(dx, dy,"w*h==0");
-        var newim=this.newImage(w,h);
-        var nc=newim.getContext("2d");
-        var newImD=nc.getImageData(0,0,w,h);
-		var newD=newImD.data;
-		var di=0;
-		for (var ey=sy ; ey<dy ; ey++) {
-			for (var ex=sx ; ex<dx ; ex++) {
-			    var p=this.getPixel(ex, ey);
-				if (p==trans) {
-					newD[di++]=0;
-					newD[di++]=(0);
-					newD[di++]=(0);
-					newD[di++]=(0);
-				} else {
-                    newD[di++]=(p&255);
-                    p=(p-(p&255))/256;
-                    newD[di++]=(p&255);
-                    p=(p-(p&255))/256;
-                    newD[di++]=(p&255);
-                    p=(p-(p&255))/256;
-                    newD[di++]=(p&255);
-				}
-			}
-		}
-        nc.putImageData(newImD,0,0);
-		for (var yy=sy-1; yy<=dy; yy++) {
-		    for (var xx=sx-1; xx<=dx; xx++) {
-		        this.setPixel(xx,yy, base);
-		    }
-		}
-        if (this.options.boundsInSrc) {
-            return {x:sx,y:sy,width:w,height:h};
+define(["Tonyu"], function (Tonyu) {
+    var PP=function (img, options) {
+        this.options=options || {};
+        this.img=img;
+        this.height = img.height;
+        this.width = img.width;
+        var cv=this.newImage(img.width, img.height);
+        var ctx=cv.getContext("2d");
+        ctx.drawImage(img, 0,0);
+        this.ctx=ctx;
+        this.pixels=this.ctx.getImageData(0, 0, img.width, img.height).data;
+        this.base=this.getPixel(0,0);
+    };
+    Tonyu.extend(PP.prototype,{
+        newImage: function (w,h) {
+            var cv=document.createElement("canvas");
+            cv.width=w;
+            cv.height=h;
+            return cv;
+        },
+        getPixel: function (x,y) {
+            var imagePixelData = this.pixels;
+            var ofs=(x+y*this.width)*4;
+            var R = imagePixelData[0+ofs];
+            var G = imagePixelData[1+ofs];
+            var B = imagePixelData[2+ofs];
+            var A = imagePixelData[3+ofs];
+            return ((((A*256)+B)*256)+G)*256+R;
+        },
+        setPixel: function (x,y,p) {
+            var ofs=(x+y*this.width)*4;
+            this.pixels[0+ofs]=p & 255;
+            p=(p-(p&255))/256;
+            this.pixels[1+ofs]=p & 255;
+            p=(p-(p&255))/256;
+            this.pixels[2+ofs]=p & 255;
+            p=(p-(p&255))/256;
+            this.pixels[3+ofs]=p & 255;
+        },
+        parse: function () {
+            try {
+                //console.log("parse()");
+                var res=[];// List of charpattern
+                for (var y=0; y<this.height ;y++) {
+                    for (var x=0; x<this.width ;x++) {
+                        var c=this.getPixel(x, y);
+                        if (c!=this.base) {
+                            res.push(this.parse1Pattern(x,y));
+                        }
+                    }
+                }
+                //console.log("parsed:"+res.lenth);
+                return res;
+            } catch (p) {
+                if (p.isParseError) {
+                    console.log("parse error! "+p);
+                    return {image: this.img, x:0, y:0, width:this.width, height:this.height};
+                }
+                throw p;
+            }
+        },
+        parse1Pattern:function (x,y) {
+            function hex(s){return s;}
+            var trans=this.getPixel(x, y);
+            var dx=x,dy=y;
+            var base=this.base;
+            var width=this.width, height=this.height;
+            while (dx<width) {
+                var pixel = this.getPixel(dx,dy);
+                if (pixel!=trans) break;
+                dx++;
+            }
+            if (dx>=width || this.getPixel(dx,dy)!=base) {
+                throw PatterParseError(dx,dy,hex(this.getPixel(dx,dy))+"!="+hex(base));
+            }
+            dx--;
+            while (dy<height) {
+                if (this.getPixel(dx,dy)!=trans) break;
+                dy++;
+            }
+            if (dy>=height || this.getPixel(dx,dy)!=base) {
+                throw PatterParseError(dx,dy,hex(this.getPixel(dx,dy))+"!="+hex(base));
+            }
+            dy--;
+            var sx=x+1,sy=y+1,w=dx-sx,h=dy-sy;
+            console.log("PP",sx,sy,w,h,dx,dy);
+            if (w*h==0) throw PatterParseError(dx, dy,"w*h==0");
+            var newim=this.newImage(w,h);
+            var nc=newim.getContext("2d");
+            var newImD=nc.getImageData(0,0,w,h);
+            var newD=newImD.data;
+            var di=0;
+            for (var ey=sy ; ey<dy ; ey++) {
+                for (var ex=sx ; ex<dx ; ex++) {
+                    var p=this.getPixel(ex, ey);
+                    if (p==trans) {
+                        newD[di++]=0;
+                        newD[di++]=(0);
+                        newD[di++]=(0);
+                        newD[di++]=(0);
+                    } else {
+                        newD[di++]=(p&255);
+                        p=(p-(p&255))/256;
+                        newD[di++]=(p&255);
+                        p=(p-(p&255))/256;
+                        newD[di++]=(p&255);
+                        p=(p-(p&255))/256;
+                        newD[di++]=(p&255);
+                    }
+                }
+            }
+            nc.putImageData(newImD,0,0);
+            for (var yy=sy-1; yy<=dy; yy++) {
+                for (var xx=sx-1; xx<=dx; xx++) {
+                    this.setPixel(xx,yy, base);
+                }
+            }
+            if (this.options.boundsInSrc) {
+                return {x:sx,y:sy,width:w,height:h};
+            }
+            return {image:newim, x:0, y:0, width:w, height:h};
+            function PatterParseError(x,y,msg) {
+                return {toString: function () {
+                    return "at ("+x+","+y+") :"+msg;
+                }, isParseError:true};
+            }
         }
-		return {image:newim, x:0, y:0, width:w, height:h};
-		function PatterParseError(x,y,msg) {
-		    return {toString: function () {
-		        return "at ("+x+","+y+") :"+msg;
-		    }, isParseError:true};
-		}
-	}
 
-});});
+    });
+    return PP;
+});
 requireSimulator.setName('Assets');
 define(["WebSite","Util","Tonyu"],function (WebSite,Util,Tonyu) {
     var Assets={};

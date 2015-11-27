@@ -1,0 +1,15 @@
+$Screen.setBGColor("white");
+$Boot.setFrameRate(60);
+s="Tonyu System 2";
+for (i=0;i<s.length;i++) {
+    new Letter{text:s[i],i};
+    updateEx(10);
+}
+x=50;
+y=0;vy=0;
+scaleX=2;
+while (true) {
+    y+=vy;vy+=1;
+    if (y>220) vy=-abs(vy)/2;
+    update();
+}

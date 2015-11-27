@@ -1,6 +1,6 @@
 extends null;
 includes MathMod,EventMod,TextRectMod,OneframeSpriteMod,
-ThreadGroupMod,EventHandlerCaller;
+ThreadGroupMod,EventHandlerCaller,DialogMod;
 native Tonyu;
 native Key;
 native console;
@@ -259,12 +259,13 @@ nowait \detectShape() {
     width=pImg.width;
     height=pImg.height;
 }
+/*
 \waitFor(f) {
     if (_thread) {
         _thread.waitFor(f);
     }
     //update();
-}
+}*/
 nowait \isDead() {
     return _isDead;
 }

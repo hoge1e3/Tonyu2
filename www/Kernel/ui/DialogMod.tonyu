@@ -1,0 +1,18 @@
+includes EventMod,MathMod;
+native UIDiag;
+\prompt(mesg,val) {
+    var r;
+	r=waitFor(UIDiag.prompt(mesg,val));
+	return r;
+}
+\promptNumber(mesg,val) {
+    var r;
+    r=prompt(mesg,val);
+    return parseFloat(r);
+}
+\confirm(mesg) {
+    var r;
+	r=waitFor(UIDiag.confirm(mesg));
+	return r;
+}
+

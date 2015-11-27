@@ -1,5 +1,6 @@
 extends null;
 native Math;
+native parseFloat;
 
 nowait \sin(d) {
     return Math.sin(rad(d));
@@ -60,3 +61,7 @@ nowait \rnd(r) {
     }
     return Math.random();
 }
+nowait \parseFloat(s) {
+    return parseFloat(s);
+}
+

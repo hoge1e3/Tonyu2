@@ -72,19 +72,9 @@ nowait \sendEvent(type, arg) {
         _thread.waitEvent(this, args);
     }
 }
-/*
-\waitEvent(type, a1,a2,a3,a4,a5) {
-    if (_thread) {
-        waitEventRaw(type,a1,a2,a3,a4,a5); // TODO: cannot apply with thread.enter
-        return _thread.lastEvent[0];
-    }
-}*/
-/*
-\waitEvent2() {
-    if (_thread) {
-        t=obj.pararell.apply(obj, ["waitEventRaw"].concat(arguments) );
-        t.on("terminate") \{ _thread.steps(); }
 
+\waitFor(f) {
+    if (_thread) {
+        _thread.waitFor(f);
     }
 }
-*/

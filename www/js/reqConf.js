@@ -108,6 +108,7 @@ var reqConf={
             NewProjectDialog: "ide/NewProjectDialog",
             WebSite: "runtime/WebSite",
             UI:"lib/UI",
+            UIDiag:"lib/UIDiag",
             ImageResEditor: "ide/ImageResEditor",
             ResEditor: "ide/ResEditor",
             reqConf: "reqConf",
