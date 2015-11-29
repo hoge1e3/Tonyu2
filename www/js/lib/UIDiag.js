@@ -16,6 +16,7 @@ define(["UI"],function (UI) {
                 ["button",{on:{click:ok}},"OK"],
                 ["button",{on:{click:cancel}},"キャンセル"]).dialog({close:function (){
                     di.dialog("close");
+                    d.resolve();
                 }});
         var d=$.Deferred();
         function ok() {
