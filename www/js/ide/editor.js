@@ -4,7 +4,7 @@ requirejs(["Util", "Tonyu", "FS", "FileList", "FileMenu",
            "IFrameDialog",/*"WikiDialog",*/"runtime", "KernelDiffDialog","Sync","searchDialog","StackTrace","syncWithKernel",
            "UI","ResEditor","WebSite","exceptionCatcher","Tonyu.TraceTbl",
            "SoundDiag","Log","MainClassDialog","DeferredUtil","NWMenu",
-           "ProjectCompiler","compiledProject","mkrunDiag","zip"
+           "ProjectCompiler","compiledProject","mkrunDiag","zip","LSFS"
           ],
 function (Util, Tonyu, FS, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,
@@ -12,7 +12,7 @@ function (Util, Tonyu, FS, FileList, FileMenu,
           IFrameDialog,/*WikiDialog,*/ rt , KDD,Sync,searchDialog,StackTrace,swk,
           UI,ResEditor,WebSite,EC,TTB,
           sd,Log,MainClassDialog,DU,NWMenu,
-          TPRC,CPPRJ,mkrunDiag,zip
+          TPRC,CPPRJ,mkrunDiag,zip,LSFS
           ) {
 $(function () {
     var F=EC.f;
@@ -512,8 +512,14 @@ $(function () {
         }
     }*/
     $("#mkrun").click(F(function () {
-        mkrunDiag.show(curPrj,
-                FS.get(WebSite.cwd).rel("Runtimes/").rel( curProjectDir.name()) );
+        if (false) {
+            var mkram=FS.get("C:/mkram/");
+            FS.mount(mkram.path(), LSFS.ramDisk() );
+            mkrunDiag.show(curPrj, mkram, {hiddenFolder:true});
+        } else {
+            mkrunDiag.show(curPrj,
+                    FS.get(WebSite.cwd).rel("Runtimes/").rel( curProjectDir.name()) );
+        }
     }));
     $("#imgResEditor").click(F(function () {
         //ImgResEdit(curPrj);

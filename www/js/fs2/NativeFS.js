@@ -42,9 +42,9 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
             var t=options.type;
             if (this.isText(path)) {
                 if (t===String) {
-                    return fs.readFileSync(np, {encoding:"utf8"});
+                    return A.isset(fs.readFileSync(np, {encoding:"utf8"}),path);
                 } else {
-                    return fs.readFileSync(np);
+                    return A.isset(fs.readFileSync(np),path);
                     //TODOvar bin=fs.readFileSync(np);
                     //throw new Error("TODO: handling bin file "+path);
                 }
@@ -52,9 +52,9 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
                 if (t===String) {
                     var bin=fs.readFileSync(np);
                     var d=new DataURL(bin, this.getContentType(path) );
-                    return d.url;
+                    return A.isset(d.url,path);
                 } else {
-                    return fs.readFileSync(np);
+                    return A.isset(fs.readFileSync(np),path);
                 }
             }
         },

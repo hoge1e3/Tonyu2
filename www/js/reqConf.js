@@ -107,8 +107,8 @@ var reqConf={
             KeyEventChecker: "lib/KeyEventChecker",
             NewProjectDialog: "ide/NewProjectDialog",
             WebSite: "runtime/WebSite",
-            UI:"lib/UI",
-            UIDiag:"lib/UIDiag",
+            UI:"ui/UI",
+            UIDiag:"ui/UIDiag",
             ImageResEditor: "ide/ImageResEditor",
             ResEditor: "ide/ResEditor",
             reqConf: "reqConf",
@@ -216,6 +216,7 @@ var reqConf={
             "OggConverter":"ide/OggConverter",
             "mkrun":"mkrun/mkrun",
             "mkrunDiag":"mkrun/mkrunDiag",
+            "extLink":"ui/extLink",
 
             "foo":"bar"
         },

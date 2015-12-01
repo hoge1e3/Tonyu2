@@ -19,7 +19,10 @@ define(["extend","assert"],function (extend,assert) {
           assert.is(contentType,String);
           this.contentType=contentType;
           this.bin2dataURL(this.buffer, this.contentType);
-      } else assert.fail("Invalid args: ",arguments);
+      } else {
+          console.log(arguments);
+          assert.fail("Invalid args: ",arguments);
+      }
    };
    extend(DataURL.prototype,{
       bin2dataURL: function (b, contentType) {

@@ -3,30 +3,42 @@ define(["UI"],function (UI) {
     UIDiag.confirm=function (mesg) {
         var di=UI("div",{title:"確認"},["div",mesg],
                 ["button",{on:{click:sendF(true)}},"OK"],
-                ["button",{on:{click:sendF(false)}},"キャンセル"]).dialog({close:sendF(false)});
+                ["button",{on:{click:sendF(false)}},"キャンセル"]).dialog({width:"auto",close:sendF(false)});
         var d=$.Deferred();
         function sendF(r) {
-            return function () { d.resolve(r); di.dialog("close"); };
+            return function () { d.resolve(r); di.dialog("close"); di.remove(); };
         }
         return d.promise();
     };
+    UIDiag.alert=function (mesg) {
+        var di=UI("div",{title:"確認"},["div",mesg],
+                ["button",{on:{click:sendF(true)}},"OK"]).dialog({width:"auto",close:sendF(false)});
+        var d=$.Deferred();
+        function sendF(r) {
+            return function () { d.resolve(r); di.dialog("close"); di.remove(); };
+        }
+        return d.promise();
+    };
+
     UIDiag.prompt=function (mesg,value) {
         var di=UI("div",{title:"入力"},["div",mesg],
                 ["input",{on:{enterkey:ok},$var:"val", value:value}],["br"],
                 ["button",{on:{click:ok}},"OK"],
-                ["button",{on:{click:cancel}},"キャンセル"]).dialog({close:function (){
+                ["button",{on:{click:cancel}},"キャンセル"]).dialog({width:"auto",close:function (){
                     di.dialog("close");
                     d.resolve();
                 }});
         var d=$.Deferred();
         function ok() {
             var r=di.$vars.val.val();
+            d.resolve(r);
             di.dialog("close");
-            return d.resolve(r);
+            di.remove();
         }
         function cancel() {
             di.dialog("close");
-            return d.resolve();
+            di.remove();
+            d.resolve();
         }
         return d.promise();
 

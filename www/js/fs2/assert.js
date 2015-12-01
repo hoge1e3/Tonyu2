@@ -23,6 +23,10 @@ define([],function () {
             if (a!==b) this.fail(a,"!==",b);
             return a;
         },
+        isset: function (a, n) {
+            if (a==null) this.fail((n||"")+" is null/undef");
+            return a;
+        },
         is: function (value,type) {
             var t=type,v=value;
             if (t==null) return t;
@@ -103,6 +107,13 @@ define([],function () {
     assert.is=function () {
         try {
             return top.is.apply(top,arguments);
+        } catch(e) {
+            throw new Error(e.message);
+        }
+    };
+    assert.isset=function () {
+        try {
+            return top.isset.apply(top,arguments);
         } catch(e) {
             throw new Error(e.message);
         }

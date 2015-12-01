@@ -15,4 +15,10 @@ native UIDiag;
 	r=waitFor(UIDiag.confirm(mesg));
 	return r;
 }
+\alert(mesg) {
+    var r;
+	r=waitFor(UIDiag.alert(mesg));
+	return r;
+}
+
 

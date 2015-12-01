@@ -93,6 +93,7 @@ define(["extend","PathUtil","MIMETypes","assert","SFile"],function (extend, P, M
         },
         cp: function(path, dst, options) {
             assert.is(arguments,[P.Absolute,P.Absolute]);
+            this.assertExist(path);
             options=options||{};
             var srcIsDir=this.isDir(path);
             var dstIsDir=this.resolveFS(dst).isDir(dst);
@@ -105,7 +106,7 @@ define(["extend","PathUtil","MIMETypes","assert","SFile"],function (extend, P, M
                 }
                 return res;
             } else {
-                throw "only file to file supports";
+                throw new Error("only file to file supports");
             }
         },
         mv: function (path,to,options) {

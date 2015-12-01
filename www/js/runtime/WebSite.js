@@ -98,7 +98,9 @@ define([], function () {
         WebSite.logdir="/var/log/Tonyu/";
         WebSite.wwwDir=WebSite.cwd+"www/";
         WebSite.kernelDir=WebSite.wwwDir+"Kernel/";
-        WebSite.ffmpeg=WebSite.cwd+("ffmpeg/bin/ffmpeg.exe");
+        WebSite.platform=process.platform;
+        WebSite.ffmpeg=WebSite.cwd+(WebSite.platform=="win32"?
+                "ffmpeg/bin/ffmpeg.exe":"ffmpeg/bin/ffmpeg");
     }
     if (loc.match(/tonyuedit\.appspot\.com/) ||
         loc.match(/localhost:888/) ||

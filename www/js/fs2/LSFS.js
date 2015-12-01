@@ -130,12 +130,17 @@ define(["FS2","PathUtil","extend","assert","DataURL"], function(FS,P,extend,asse
                 var d=new DataURL(this.getItem(path));
                 return d.buffer;
             }
-            return this.getItem(path);
+            return assert.isset(this.getItem(path),path);
         },
         setContent: function(path, content, options) {
-            assert.is(arguments,[Absolute,String]);
+            assert.is(path,Absolute);
             this.assertWriteable(path);
-            this.setItem(path, content);
+            if (typeof content=="string" ) {
+                this.setItem(path, content);
+            } else {
+                var d=new DataURL(content, this.getContentType(path));
+                this.setItem(path, d.url);
+            }
             this.touch(path);
         },
         getMetaInfo: function(path, options) {
