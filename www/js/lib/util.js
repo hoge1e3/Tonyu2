@@ -148,12 +148,36 @@ function privatize(o){
     }
     return res;
 }
+function utf8bytes2str(bytes) {
+    var e=[];
+    for (var i=0 ; i<bytes.length ; i++) {
+         e.push("%"+bytes[i].toString(16));
+    }
+    return decodeURIComponent(e.join(""));
+}
+function str2utf8bytes(str) {
+    var e=encodeURIComponent(str);
+    console.log(e);
+    var r=/^%(..)/;
+    var a=[];
+    var ad=0;
+    for (var i=0 ; i<e.length; i++) {
+        var m=r.exec( e.substring(i));
+        if (m) {
+            a.push(parseInt("0x"+m[1]));
+            i+=m[0].length-1;
+        } else a.push(e.charCodeAt(i));
+    }
+    return new Uint8Array(a);
+}
 
 return {
     getQueryString:getQueryString,
     endsWith: endsWith, startsWith: startsWith,
     Base64_To_ArrayBuffer:Base64_To_ArrayBuffer,
     Base64_From_ArrayBuffer:Base64_From_ArrayBuffer,
+    utf8bytes2str: utf8bytes2str,
+    str2utf8bytes: str2utf8bytes,
     privatize: privatize
 };
 })();

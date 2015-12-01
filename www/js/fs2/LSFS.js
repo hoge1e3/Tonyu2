@@ -1,4 +1,5 @@
-define(["FS2","PathUtil","extend","assert","DataURL"], function(FS,P,extend,assert,DataURL) {
+define(["FS2","PathUtil","extend","assert","DataURL","Util"],
+        function(FS,P,extend,assert,DataURL,Util) {
     var LSFS = function(storage,options) {
     	this.storage=storage;
     	this.options=options||{};
@@ -127,8 +128,12 @@ define(["FS2","PathUtil","extend","assert","DataURL"], function(FS,P,extend,asse
             assert.is(arguments,[Absolute]);
             this.assertExist(path);
             if (options && options.type==ArrayBuffer) {
-                var d=new DataURL(this.getItem(path));
-                return d.buffer;
+                if (this.isText(path)) {
+                    return Util.str2utf8bytes(this.getItem(path)).buffer;
+                } else {
+                    var d=new DataURL(this.getItem(path));
+                    return d.buffer;
+                }
             }
             return assert.isset(this.getItem(path),path);
         },
@@ -138,8 +143,12 @@ define(["FS2","PathUtil","extend","assert","DataURL"], function(FS,P,extend,asse
             if (typeof content=="string" ) {
                 this.setItem(path, content);
             } else {
-                var d=new DataURL(content, this.getContentType(path));
-                this.setItem(path, d.url);
+                if (this.isText(path)) {
+                    this.setItem(path, Util.utf8bytes2str(content));
+                } else {
+                    var d=new DataURL(content, this.getContentType(path));
+                    this.setItem(path, d.url);
+                }
             }
             this.touch(path);
         },

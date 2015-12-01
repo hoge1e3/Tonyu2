@@ -515,7 +515,8 @@ $(function () {
         if (false) {
             var mkram=FS.get("C:/mkram/");
             FS.mount(mkram.path(), LSFS.ramDisk() );
-            mkrunDiag.show(curPrj, mkram, {hiddenFolder:true});
+            mkrunDiag.show(curPrj, mkram.rel(curProjectDir.name()), {hiddenFolder:true});
+            FS.unmount(mkram.path());
         } else {
             mkrunDiag.show(curPrj,
                     FS.get(WebSite.cwd).rel("Runtimes/").rel( curProjectDir.name()) );

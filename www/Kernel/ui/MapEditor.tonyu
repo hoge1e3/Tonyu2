@@ -1,5 +1,5 @@
 extends Actor;
-native prompt;
+//native prompt;
 // initialize
 $Screen.resize(480,640);
 loadMode=false;

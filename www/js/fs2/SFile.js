@@ -217,11 +217,11 @@ SFile.prototype={
             file.text(JSON.stringify(A.is(arguments[0],Object) ));
         }
     },
-    copyTo: function (dst, options) {
-        return dst.copyFrom(this,options);
-    },
     copyFrom: function (src, options) {
-        var dst=this;
+        return src.copyTo(this,options);
+    },
+    copyTo: function (dst, options) {
+        var src=this;
         var options=options||{};
         var srcIsDir=src.isDir();
         var dstIsDir=dst.isDir();

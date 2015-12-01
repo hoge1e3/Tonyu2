@@ -29,5 +29,8 @@ define(["FS2","WebSite","NativeFS","LSFS", "PathUtil","Env","assert","SFile"],
     FS.mount=function () {
         return rootFS.mount.apply(rootFS,arguments);
     };
+    FS.unmount=function () {
+        return rootFS.unmount.apply(rootFS,arguments);
+    };
     return FS;
 });

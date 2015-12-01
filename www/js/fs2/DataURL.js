@@ -24,6 +24,7 @@ define(["extend","assert"],function (extend,assert) {
           assert.fail("Invalid args: ",arguments);
       }
    };
+   DataURL.isBuffer=isBuffer;
    extend(DataURL.prototype,{
       bin2dataURL: function (b, contentType) {
           assert(isBuffer(b));

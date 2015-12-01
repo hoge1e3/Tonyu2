@@ -159,6 +159,17 @@ define(["extend","PathUtil","MIMETypes","assert","SFile"],function (extend, P, M
             fs.mounted(this, path);
             this.fstab().unshift({path:path, fs:fs});
         },
+        unmount: function (path, options) {
+            assert.is(arguments,[P.AbsDir] );
+            var t=this.fstab();
+            for (var i=0; i<t.length; i++) {
+                if (t[i].path==path) {
+                    t.splice(i,1);
+                    return true;
+                }
+            }
+            return false;
+        },
         getContentType: function (path, options) {
             var e=P.ext(path);
             return M[e] || (options||{}).def || "text/plain";
