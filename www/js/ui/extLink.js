@@ -1,5 +1,5 @@
 define(["WebSite","UI"],function (WebSite,UI) {
-    var exec = require('child_process').exec;
+    var exec = (WebSite.isNW? require('child_process').exec : function (){});
     function extLink(href,caption,options) {
         var p=WebSite.platform;
         if (p=="win32") {
