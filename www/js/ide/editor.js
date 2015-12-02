@@ -512,14 +512,14 @@ $(function () {
         }
     }*/
     $("#mkrun").click(F(function () {
-        if (false) {
-            var mkram=FS.get("C:/mkram/");
+        if (WebSite.isNW) {
+            mkrunDiag.show(curPrj,
+                    FS.get(WebSite.cwd).rel("Runtimes/").rel( curProjectDir.name()) );
+        } else {
+            var mkram=FS.get("/mkram/");
             FS.mount(mkram.path(), LSFS.ramDisk() );
             mkrunDiag.show(curPrj, mkram.rel(curProjectDir.name()), {hiddenFolder:true});
             FS.unmount(mkram.path());
-        } else {
-            mkrunDiag.show(curPrj,
-                    FS.get(WebSite.cwd).rel("Runtimes/").rel( curProjectDir.name()) );
         }
     }));
     $("#imgResEditor").click(F(function () {

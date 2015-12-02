@@ -198,7 +198,7 @@ var reqConf={
             Assets:"fs/Assets",
             MainClassDialog:"ide/MainClassDialog",
             "assert":"fs2/assert",
-            "Contents":"fs2/Contents",
+            //"Contents":"fs2/Contents",
             "DataURL":"fs2/DataURL",
             "extend":"fs2/extend",
             "FS2":"fs2/FS2",
@@ -217,6 +217,7 @@ var reqConf={
             "mkrun":"mkrun/mkrun",
             "mkrunDiag":"mkrun/mkrunDiag",
             "extLink":"ui/extLink",
+            "Content":"fs2/Content",
 
             "foo":"bar"
         },

@@ -151,13 +151,17 @@ function privatize(o){
 function utf8bytes2str(bytes) {
     var e=[];
     for (var i=0 ; i<bytes.length ; i++) {
-         e.push("%"+bytes[i].toString(16));
+         e.push("%"+("0"+bytes[i].toString(16)).slice(-2));
     }
-    return decodeURIComponent(e.join(""));
+    try {
+        return decodeURIComponent(e.join(""));
+    } catch (er) {
+        console.log(e.join(""));
+        throw er;
+    }
 }
 function str2utf8bytes(str) {
     var e=encodeURIComponent(str);
-    console.log(e);
     var r=/^%(..)/;
     var a=[];
     var ad=0;

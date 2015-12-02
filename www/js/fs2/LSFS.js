@@ -1,5 +1,5 @@
-define(["FS2","PathUtil","extend","assert","DataURL","Util"],
-        function(FS,P,extend,assert,DataURL,Util) {
+define(["FS2","PathUtil","extend","assert","Util","Content"],
+        function(FS,P,extend,assert,Util,Content) {
     var LSFS = function(storage,options) {
     	this.storage=storage;
     	this.options=options||{};
@@ -127,28 +127,31 @@ define(["FS2","PathUtil","extend","assert","DataURL","Util"],
         getContent: function(path, options) {
             assert.is(arguments,[Absolute]);
             this.assertExist(path);
-            if (options && options.type==ArrayBuffer) {
-                if (this.isText(path)) {
-                    return Util.str2utf8bytes(this.getItem(path)).buffer;
-                } else {
-                    var d=new DataURL(this.getItem(path));
-                    return d.buffer;
-                }
+            var c;
+            if (this.isText(path)) {
+                c=Content.plainText(this.getItem(path));
+            } else {
+                c=Content.url(this.getItem(path));
             }
-            return assert.isset(this.getItem(path),path);
+            if (options && options.type==ArrayBuffer) {
+                return assert.isset(c.toArrayBuffer(),path);
+            } else {
+                return assert.isset(c.toPlainText(),path);
+            }
         },
         setContent: function(path, content, options) {
             assert.is(path,Absolute);
             this.assertWriteable(path);
+            var c;
             if (typeof content=="string" ) {
-                this.setItem(path, content);
+                c=Content.plainText(content);
             } else {
-                if (this.isText(path)) {
-                    this.setItem(path, Util.utf8bytes2str(content));
-                } else {
-                    var d=new DataURL(content, this.getContentType(path));
-                    this.setItem(path, d.url);
-                }
+                c=Content.bin(content,this.getContentType(path));
+            }
+            if (this.isText(path)) {
+                this.setItem(path, c.toPlainText());
+            } else {
+                this.setItem(path, c.toURL());
             }
             this.touch(path);
         },

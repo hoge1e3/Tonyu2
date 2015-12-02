@@ -1,5 +1,5 @@
-define(["Contents","extend","assert","PathUtil","Util"],
-function (C,extend,A,P,Util) {
+define(["extend","assert","PathUtil","Util"],
+function (extend,A,P,Util) {
 
 var SFile=function (fs, path) {
     A.is(path, P.Absolute);
