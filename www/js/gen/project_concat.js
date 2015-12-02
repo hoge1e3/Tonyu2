@@ -1,4 +1,4 @@
-// Created at Thu Nov 26 2015 10:15:16 GMT+0900 (東京 (標準時))
+// Created at Wed Dec 02 2015 12:50:34 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -237,12 +237,40 @@ function privatize(o){
     }
     return res;
 }
+function utf8bytes2str(bytes) {
+    var e=[];
+    for (var i=0 ; i<bytes.length ; i++) {
+         e.push("%"+("0"+bytes[i].toString(16)).slice(-2));
+    }
+    try {
+        return decodeURIComponent(e.join(""));
+    } catch (er) {
+        console.log(e.join(""));
+        throw er;
+    }
+}
+function str2utf8bytes(str) {
+    var e=encodeURIComponent(str);
+    var r=/^%(..)/;
+    var a=[];
+    var ad=0;
+    for (var i=0 ; i<e.length; i++) {
+        var m=r.exec( e.substring(i));
+        if (m) {
+            a.push(parseInt("0x"+m[1]));
+            i+=m[0].length-1;
+        } else a.push(e.charCodeAt(i));
+    }
+    return new Uint8Array(a);
+}
 
 return {
     getQueryString:getQueryString,
     endsWith: endsWith, startsWith: startsWith,
     Base64_To_ArrayBuffer:Base64_To_ArrayBuffer,
     Base64_From_ArrayBuffer:Base64_From_ArrayBuffer,
+    utf8bytes2str: utf8bytes2str,
+    str2utf8bytes: str2utf8bytes,
     privatize: privatize
 };
 })();
@@ -271,6 +299,10 @@ define([],function () {
         },
         eq: function (a,b) {
             if (a!==b) this.fail(a,"!==",b);
+            return a;
+        },
+        isset: function (a, n) {
+            if (a==null) this.fail((n||"")+" is null/undef");
             return a;
         },
         is: function (value,type) {
@@ -353,6 +385,13 @@ define([],function () {
     assert.is=function () {
         try {
             return top.is.apply(top,arguments);
+        } catch(e) {
+            throw new Error(e.message);
+        }
+    };
+    assert.isset=function () {
+        try {
+            return top.isset.apply(top,arguments);
         } catch(e) {
             throw new Error(e.message);
         }
@@ -578,7 +617,8 @@ return Tonyu=function () {
         function waitFor(j) {
             _isWaiting=true;
             suspend();
-            if (j && j.addTerminatedListener) j.addTerminatedListener(function () {
+            if (!j) return;
+            if (j.addTerminatedListener) j.addTerminatedListener(function () {
                 _isWaiting=false;
                 if (fb.group) fb.group.notifyResume();
                 else if (isAlive()) {
@@ -590,6 +630,22 @@ return Tonyu=function () {
                 }
                 //fb.group.add(fb);
             });
+            else if (j.then && j.fail) {
+                j.then(function (r) {
+                    fb.retVal=r;
+                    steps();
+                });
+                j.fail(function (e) {
+                    if (e instanceof Error) {
+                        gotoCatch(e);
+                    } else {
+                        var re=new Error(e);
+                        re.original=e;
+                        gotoCatch(re);
+                    }
+                    steps();
+                });
+            }
         }
         function setGroup(g) {
             fb.group=g;
@@ -863,18 +919,18 @@ return Tonyu=function () {
         var res;
         res=(init?
             (parent? function () {
-                if (!(this instanceof res)) useNew();
+                if (!(this instanceof res)) useNew(fullName);
                 if (Tonyu.runMode) init.apply(this,arguments);
                 else parent.apply(this,arguments);
             }:function () {
-                if (!(this instanceof res)) useNew();
+                if (!(this instanceof res)) useNew(fullName);
                 if (Tonyu.runMode) init.apply(this,arguments);
             }):
             (parent? function () {
-                if (!(this instanceof res)) useNew();
+                if (!(this instanceof res)) useNew(fullName);
                 parent.apply(this,arguments);
             }:function (){
-                if (!(this instanceof res)) useNew();
+                if (!(this instanceof res)) useNew(fullName);
             })
         );
         nso[shortName]=res;
@@ -995,8 +1051,8 @@ return Tonyu=function () {
         }
         return res;
     }
-    function useNew() {
-        throw new Error("クラス名はnewをつけて呼び出して下さい。");
+    function useNew(c) {
+        throw new Error("クラス名"+c+"はnewをつけて呼び出して下さい。");
     }
     function not_a_tonyu_object(o) {
         console.log("Not a tonyu object: ",o);
@@ -1025,7 +1081,7 @@ return Tonyu=function () {
             timeout:timeout,animationFrame:animationFrame, asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,
-            VERSION:1448500513331,//EMBED_VERSION
+            VERSION:1449028230932,//EMBED_VERSION
             A:A};
 }();
 });
@@ -1212,190 +1268,9 @@ define([], function () {
       ".tonyu":"text/tonyu"
    };
 });
-requireSimulator.setName('DataURL');
-define(["extend","assert"],function (extend,assert) {
-    var A=(typeof Buffer!="undefined") ? Buffer :ArrayBuffer;
-    function isBuffer(data) {
-        return data instanceof ArrayBuffer ||
-        (typeof Buffer!="undefined" && data instanceof Buffer);
-    }
-    var DataURL=function (data, contentType){
-      // data: String/Array/ArrayBuffer
-      if (typeof data=="string") {
-          this.url=data;
-          this.dataURL2bin(data);
-      } else if (data && isBuffer(data.buffer)) {
-          this.buffer=data.buffer;
-          assert.is(contentType,String);
-          this.contentType=contentType;
-          this.bin2dataURL(this.buffer, this.contentType);
-      } else if (isBuffer(data)) {
-          this.buffer=data;
-          assert.is(contentType,String);
-          this.contentType=contentType;
-          this.bin2dataURL(this.buffer, this.contentType);
-      } else assert.fail("Invalid args: ",arguments);
-   };
-   extend(DataURL.prototype,{
-      bin2dataURL: function (b, contentType) {
-          assert(isBuffer(b));
-          assert.is(contentType,String);
-  	     var head=this.dataHeader(contentType);
-	     var base64=Base64_From_ArrayBuffer(b);
-	     assert.is(base64,String);
-	     return this.url=head+base64;
-	  },
-	  dataURL2bin: function (dataURL) {
-          assert.is(arguments,[String]);
-	      var reg=/^data:([^;]+);base64,/i;
-	      var r=reg.exec(dataURL);
-	      assert(r, ["malformed dataURL:", dataURL] );
-	      this.contentType=r[1];
-	      this.buffer=Base64_To_ArrayBuffer(dataURL.substring(r[0].length));
-          return assert.is(this.buffer , A);
-  	  },
-  	  dataHeader: function (ctype) {
-	      assert.is(arguments,[String]);
-	      return "data:"+ctype+";base64,";
-   	  },
-   	  toString: function () {return assert.is(this.url,String);}
-   });
-
-	function Base64_To_ArrayBuffer(base64){
-	    base64=base64.replace(/[\n=]/g,"");
-	    var dic = new Object();
-	    dic[0x41]= 0; dic[0x42]= 1; dic[0x43]= 2; dic[0x44]= 3; dic[0x45]= 4; dic[0x46]= 5; dic[0x47]= 6; dic[0x48]= 7; dic[0x49]= 8; dic[0x4a]= 9; dic[0x4b]=10; dic[0x4c]=11; dic[0x4d]=12; dic[0x4e]=13; dic[0x4f]=14; dic[0x50]=15;
-	    dic[0x51]=16; dic[0x52]=17; dic[0x53]=18; dic[0x54]=19; dic[0x55]=20; dic[0x56]=21; dic[0x57]=22; dic[0x58]=23; dic[0x59]=24; dic[0x5a]=25; dic[0x61]=26; dic[0x62]=27; dic[0x63]=28; dic[0x64]=29; dic[0x65]=30; dic[0x66]=31;
-	    dic[0x67]=32; dic[0x68]=33; dic[0x69]=34; dic[0x6a]=35; dic[0x6b]=36; dic[0x6c]=37; dic[0x6d]=38; dic[0x6e]=39; dic[0x6f]=40; dic[0x70]=41; dic[0x71]=42; dic[0x72]=43; dic[0x73]=44; dic[0x74]=45; dic[0x75]=46; dic[0x76]=47;
-	    dic[0x77]=48; dic[0x78]=49; dic[0x79]=50; dic[0x7a]=51; dic[0x30]=52; dic[0x31]=53; dic[0x32]=54; dic[0x33]=55; dic[0x34]=56; dic[0x35]=57; dic[0x36]=58; dic[0x37]=59; dic[0x38]=60; dic[0x39]=61; dic[0x2b]=62; dic[0x2f]=63;
-	    var num = base64.length;
-	    var n = 0;
-	    var b = 0;
-	    var e;
-
-	    if(!num) return (new A(0));
-	    //if(num < 4) return null;
-	    //if(num % 4) return null;
-
-	    // AA     12    1
-	    // AAA    18    2
-	    // AAAA   24    3
-	    // AAAAA  30    3
-	    // AAAAAA 36    4
-	    // num*6/8
-	    e = Math.floor(num / 4 * 3);
-	    if(base64.charAt(num - 1) == '=') e -= 1;
-	    if(base64.charAt(num - 2) == '=') e -= 1;
-
-	    var ary_buffer = new A( e );
-	    var ary_u8 = (typeof Buffer!="undefined" ? ary_buffer : new Uint8Array( ary_buffer ));
-	    var i = 0;
-	    var p = 0;
-	    while(p < e){
-	        b = dic[base64.charCodeAt(i)];
-	        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i));//return null;
-	        n = (b << 2);
-	        i ++;
-
-	        b = dic[base64.charCodeAt(i)];
-	        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i))
-            ary_u8[p] = n | ((b >> 4) & 0x3);
-	        /*if (p==0) {
-	            console.log("WOW!", n | ((b >> 4) & 0x3), ary_u8[p]);
-	        }*/
-	        n = (b & 0x0f) << 4;
-	        i ++;
-	        p ++;
-	        if(p >= e) break;
-
-	        b = dic[base64.charCodeAt(i)];
-	        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i))
-	        ary_u8[p] = n | ((b >> 2) & 0xf);
-	        n = (b & 0x03) << 6;
-	        i ++;
-	        p ++;
-	        if(p >= e) break;
-
-	        b = dic[base64.charCodeAt(i)];
-	        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i))
-	        ary_u8[p] = n | b;
-	        i ++;
-	        p ++;
-	    }
-	    function fail(m) {
-	        console.log(m);
-	        console.log(base64,i);
-	        throw new Error(m);
-	    }
-        //console.log("WOW!", ary_buffer[0],ary_u8[0]);
-	    return ary_buffer;
-	}
-	function Base64_From_ArrayBuffer(ary_buffer){
-		var dic = [
-			'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P',
-			'Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f',
-			'g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v',
-			'w','x','y','z','0','1','2','3','4','5','6','7','8','9','+','/'
-		];
-		var base64 = "";
-		var ary_u8 = new Uint8Array( ary_buffer );
-		var num = ary_u8.length;
-		var n = 0;
-		var b = 0;
-
-		var i = 0;
-		while(i < num){
-			b = ary_u8[i];
-			base64 += dic[(b >> 2)];
-			n = (b & 0x03) << 4;
-			i ++;
-			if(i >= num) break;
-
-			b = ary_u8[i];
-			base64 += dic[n | (b >> 4)];
-			n = (b & 0x0f) << 2;
-			i ++;
-			if(i >= num) break;
-
-			b = ary_u8[i];
-			base64 += dic[n | (b >> 6)];
-			base64 += dic[(b & 0x3f)];
-			i ++;
-		}
-
-		var m = num % 3;
-		if(m){
-			base64 += dic[n];
-		}
-		if(m == 1){
-			base64 += "==";
-		}else if(m == 2){
-			base64 += "=";
-		}
-		return base64;
-	}
-    return DataURL;
-});
-requireSimulator.setName('Contents');
-define(["DataURL"],function (DataURL){
-   var Contents={
-      convert: function (src, destType, options) {
-         // options:{encoding: , contentType: }
-         // src: String|DataURL|ArrayBuffer|OutputStream|Writer
-         // destType: String|DataURL|ArrayBuffer|InputStream|Reader
-         var srcType;
-         if (typeof src=="string") srcType=String;
-         if (src instanceof DataURL) srcType=DataURL;
-         if (src instanceof ArrayBuffer) srcType=ArrayBuffer;
-         if (srcType==destType) return src;
-         throw new Error("Cannot convert from "+srcType+" to "+destType);
-      }
-   };
-   return Contents;
-});
 requireSimulator.setName('SFile');
-define(["Contents","extend","assert","PathUtil","Util"],
-function (C,extend,A,P,Util) {
+define(["extend","assert","PathUtil","Util"],
+function (extend,A,P,Util) {
 
 var SFile=function (fs, path) {
     A.is(path, P.Absolute);
@@ -1613,11 +1488,11 @@ SFile.prototype={
             file.text(JSON.stringify(A.is(arguments[0],Object) ));
         }
     },
-    copyTo: function (dst, options) {
-        return dst.copyFrom(this,options);
-    },
     copyFrom: function (src, options) {
-        var dst=this;
+        return src.copyTo(this,options);
+    },
+    copyTo: function (dst, options) {
+        var src=this;
         var options=options||{};
         var srcIsDir=src.isDir();
         var dstIsDir=dst.isDir();
@@ -1847,6 +1722,7 @@ define(["extend","PathUtil","MIMETypes","assert","SFile"],function (extend, P, M
         },
         cp: function(path, dst, options) {
             assert.is(arguments,[P.Absolute,P.Absolute]);
+            this.assertExist(path);
             options=options||{};
             var srcIsDir=this.isDir(path);
             var dstIsDir=this.resolveFS(dst).isDir(dst);
@@ -1859,7 +1735,7 @@ define(["extend","PathUtil","MIMETypes","assert","SFile"],function (extend, P, M
                 }
                 return res;
             } else {
-                throw "only file to file supports";
+                throw new Error("only file to file supports");
             }
         },
         mv: function (path,to,options) {
@@ -1911,6 +1787,17 @@ define(["extend","PathUtil","MIMETypes","assert","SFile"],function (extend, P, M
             }
             fs.mounted(this, path);
             this.fstab().unshift({path:path, fs:fs});
+        },
+        unmount: function (path, options) {
+            assert.is(arguments,[P.AbsDir] );
+            var t=this.fstab();
+            for (var i=0; i<t.length; i++) {
+                if (t[i].path==path) {
+                    t.splice(i,1);
+                    return true;
+                }
+            }
+            return false;
         },
         getContentType: function (path, options) {
             var e=P.ext(path);
@@ -2086,7 +1973,9 @@ define([], function () {
         WebSite.logdir="/var/log/Tonyu/";
         WebSite.wwwDir=WebSite.cwd+"www/";
         WebSite.kernelDir=WebSite.wwwDir+"Kernel/";
-        WebSite.ffmpeg=WebSite.cwd+("ffmpeg/bin/ffmpeg.exe");
+        WebSite.platform=process.platform;
+        WebSite.ffmpeg=WebSite.cwd+(WebSite.platform=="win32"?
+                "ffmpeg/bin/ffmpeg.exe":"ffmpeg/bin/ffmpeg");
     }
     if (loc.match(/tonyuedit\.appspot\.com/) ||
         loc.match(/localhost:888/) ||
@@ -2098,6 +1987,174 @@ define([], function () {
     return window.WebSite=WebSite;
 });
 
+requireSimulator.setName('DataURL');
+define(["extend","assert"],function (extend,assert) {
+    var A=(typeof Buffer!="undefined") ? Buffer :ArrayBuffer;
+    function isBuffer(data) {
+        return data instanceof ArrayBuffer ||
+        (typeof Buffer!="undefined" && data instanceof Buffer);
+    }
+    var DataURL=function (data, contentType){
+      // data: String/Array/ArrayBuffer
+      if (typeof data=="string") {
+          this.url=data;
+          this.dataURL2bin(data);
+      } else if (data && isBuffer(data.buffer)) {
+          this.buffer=data.buffer;
+          assert.is(contentType,String);
+          this.contentType=contentType;
+          this.bin2dataURL(this.buffer, this.contentType);
+      } else if (isBuffer(data)) {
+          this.buffer=data;
+          assert.is(contentType,String);
+          this.contentType=contentType;
+          this.bin2dataURL(this.buffer, this.contentType);
+      } else {
+          console.log(arguments);
+          assert.fail("Invalid args: ",arguments);
+      }
+   };
+   DataURL.isBuffer=isBuffer;
+   extend(DataURL.prototype,{
+      bin2dataURL: function (b, contentType) {
+          assert(isBuffer(b));
+          assert.is(contentType,String);
+  	     var head=this.dataHeader(contentType);
+	     var base64=Base64_From_ArrayBuffer(b);
+	     assert.is(base64,String);
+	     return this.url=head+base64;
+	  },
+	  dataURL2bin: function (dataURL) {
+          assert.is(arguments,[String]);
+	      var reg=/^data:([^;]+);base64,/i;
+	      var r=reg.exec(dataURL);
+	      assert(r, ["malformed dataURL:", dataURL] );
+	      this.contentType=r[1];
+	      this.buffer=Base64_To_ArrayBuffer(dataURL.substring(r[0].length));
+          return assert.is(this.buffer , A);
+  	  },
+  	  dataHeader: function (ctype) {
+	      assert.is(arguments,[String]);
+	      return "data:"+ctype+";base64,";
+   	  },
+   	  toString: function () {return assert.is(this.url,String);}
+   });
+
+	function Base64_To_ArrayBuffer(base64){
+	    base64=base64.replace(/[\n=]/g,"");
+	    var dic = new Object();
+	    dic[0x41]= 0; dic[0x42]= 1; dic[0x43]= 2; dic[0x44]= 3; dic[0x45]= 4; dic[0x46]= 5; dic[0x47]= 6; dic[0x48]= 7; dic[0x49]= 8; dic[0x4a]= 9; dic[0x4b]=10; dic[0x4c]=11; dic[0x4d]=12; dic[0x4e]=13; dic[0x4f]=14; dic[0x50]=15;
+	    dic[0x51]=16; dic[0x52]=17; dic[0x53]=18; dic[0x54]=19; dic[0x55]=20; dic[0x56]=21; dic[0x57]=22; dic[0x58]=23; dic[0x59]=24; dic[0x5a]=25; dic[0x61]=26; dic[0x62]=27; dic[0x63]=28; dic[0x64]=29; dic[0x65]=30; dic[0x66]=31;
+	    dic[0x67]=32; dic[0x68]=33; dic[0x69]=34; dic[0x6a]=35; dic[0x6b]=36; dic[0x6c]=37; dic[0x6d]=38; dic[0x6e]=39; dic[0x6f]=40; dic[0x70]=41; dic[0x71]=42; dic[0x72]=43; dic[0x73]=44; dic[0x74]=45; dic[0x75]=46; dic[0x76]=47;
+	    dic[0x77]=48; dic[0x78]=49; dic[0x79]=50; dic[0x7a]=51; dic[0x30]=52; dic[0x31]=53; dic[0x32]=54; dic[0x33]=55; dic[0x34]=56; dic[0x35]=57; dic[0x36]=58; dic[0x37]=59; dic[0x38]=60; dic[0x39]=61; dic[0x2b]=62; dic[0x2f]=63;
+	    var num = base64.length;
+	    var n = 0;
+	    var b = 0;
+	    var e;
+
+	    if(!num) return (new A(0));
+	    //if(num < 4) return null;
+	    //if(num % 4) return null;
+
+	    // AA     12    1
+	    // AAA    18    2
+	    // AAAA   24    3
+	    // AAAAA  30    3
+	    // AAAAAA 36    4
+	    // num*6/8
+	    e = Math.floor(num / 4 * 3);
+	    if(base64.charAt(num - 1) == '=') e -= 1;
+	    if(base64.charAt(num - 2) == '=') e -= 1;
+
+	    var ary_buffer = new A( e );
+	    var ary_u8 = (typeof Buffer!="undefined" ? ary_buffer : new Uint8Array( ary_buffer ));
+	    var i = 0;
+	    var p = 0;
+	    while(p < e){
+	        b = dic[base64.charCodeAt(i)];
+	        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i));//return null;
+	        n = (b << 2);
+	        i ++;
+
+	        b = dic[base64.charCodeAt(i)];
+	        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i))
+            ary_u8[p] = n | ((b >> 4) & 0x3);
+	        /*if (p==0) {
+	            console.log("WOW!", n | ((b >> 4) & 0x3), ary_u8[p]);
+	        }*/
+	        n = (b & 0x0f) << 4;
+	        i ++;
+	        p ++;
+	        if(p >= e) break;
+
+	        b = dic[base64.charCodeAt(i)];
+	        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i))
+	        ary_u8[p] = n | ((b >> 2) & 0xf);
+	        n = (b & 0x03) << 6;
+	        i ++;
+	        p ++;
+	        if(p >= e) break;
+
+	        b = dic[base64.charCodeAt(i)];
+	        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i))
+	        ary_u8[p] = n | b;
+	        i ++;
+	        p ++;
+	    }
+	    function fail(m) {
+	        console.log(m);
+	        console.log(base64,i);
+	        throw new Error(m);
+	    }
+        //console.log("WOW!", ary_buffer[0],ary_u8[0]);
+	    return ary_buffer;
+	}
+	function Base64_From_ArrayBuffer(ary_buffer){
+		var dic = [
+			'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P',
+			'Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f',
+			'g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v',
+			'w','x','y','z','0','1','2','3','4','5','6','7','8','9','+','/'
+		];
+		var base64 = "";
+		var ary_u8 = new Uint8Array( ary_buffer );
+		var num = ary_u8.length;
+		var n = 0;
+		var b = 0;
+
+		var i = 0;
+		while(i < num){
+			b = ary_u8[i];
+			base64 += dic[(b >> 2)];
+			n = (b & 0x03) << 4;
+			i ++;
+			if(i >= num) break;
+
+			b = ary_u8[i];
+			base64 += dic[n | (b >> 4)];
+			n = (b & 0x0f) << 2;
+			i ++;
+			if(i >= num) break;
+
+			b = ary_u8[i];
+			base64 += dic[n | (b >> 6)];
+			base64 += dic[(b & 0x3f)];
+			i ++;
+		}
+
+		var m = num % 3;
+		if(m){
+			base64 += dic[n];
+		}
+		if(m == 1){
+			base64 += "==";
+		}else if(m == 2){
+			base64 += "=";
+		}
+		return base64;
+	}
+    return DataURL;
+});
 requireSimulator.setName('NativeFS');
 define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
         function (FS,A,P,extend,MIME,DataURL) {
@@ -2143,9 +2200,9 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
             var t=options.type;
             if (this.isText(path)) {
                 if (t===String) {
-                    return fs.readFileSync(np, {encoding:"utf8"});
+                    return A.isset(fs.readFileSync(np, {encoding:"utf8"}),path);
                 } else {
-                    return fs.readFileSync(np);
+                    return A.isset(fs.readFileSync(np),path);
                     //TODOvar bin=fs.readFileSync(np);
                     //throw new Error("TODO: handling bin file "+path);
                 }
@@ -2153,9 +2210,9 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
                 if (t===String) {
                     var bin=fs.readFileSync(np);
                     var d=new DataURL(bin, this.getContentType(path) );
-                    return d.url;
+                    return A.isset(d.url,path);
                 } else {
-                    return fs.readFileSync(np);
+                    return A.isset(fs.readFileSync(np),path);
                 }
             }
         },
@@ -2268,8 +2325,116 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
     });
     return NativeFS;
 });
+requireSimulator.setName('Content');
+define(["DataURL","Util","assert"],function (DataURL,Util,assert) {
+    var Content=function () {};
+    function isBuffer(data) {
+        return data instanceof ArrayBuffer ||
+        (typeof Buffer!="undefined" && data instanceof Buffer);
+    }
+    Content.plainText=function (s,contentType){
+        var b=new Content;
+        b.contentType=contentType||"text/plain";
+        b.plain=s;
+        return b;
+    };
+    Content.url=function (s) {
+        var b=new Content;
+        b.url=s;
+        return b;
+    };
+    Content.bin=function (bin, contentType) {
+        assert(contentType, "contentType should be set");
+        var b=new Content;
+        if (bin && isBuffer(bin.buffer)) {
+            b.bin=bin.buffer;
+        } else if (isBuffer(bin)) {
+            b.bin=bin;
+        } else if (bin instanceof Array) {
+            b.bin=new Uint8Array(bin).buffer;
+        } else {
+            throw new Error(bin+" is not a buffer");
+        }
+        b.contentType=contentType;
+        return b;
+    };
+
+    var p=Content.prototype;
+    p.toUint8Array=function () {
+        return new Uint8Array(this.toArrayBuffer());
+    };
+    p.toArrayBuffer=function () {
+        if (this.bin) {
+            return this.bin;
+        } else if (this.url) {
+            var d=new DataURL(this.url);
+            return this.bin=d.buffer;
+        } else if (this.plain!=null) {
+            return this.bin=Util.str2utf8bytes(this.plain).buffer;
+        }
+        throw new Error("No data");
+    };
+    p.toURL=function () {
+        if (this.url) {
+            return this.url;
+        } else {
+            if (!this.bin && this.plain!=null) {
+                this.bin=Util.str2utf8bytes(this.plain);
+            }
+            if (this.bin) {
+                var d=new DataURL(this.bin,this.contentType);
+                return this.url=d.url;
+            }
+        }
+        throw new Error("No data");
+    };
+    p.toPlainText=function () {
+        if (this.plain) {
+            return this.plain;
+        } else {
+            if (this.url && !this.bin) {
+                var d=new DataURL(this.url);
+                this.bin=d.buffer;
+            }
+            if (this.bin) {
+                return this.plain=Util.utf8bytes2str(new Uint8Array(this.bin));
+            }
+        }
+        throw new Error("No data");
+    };
+
+    return Content;
+});
+/*
+requirejs(["Content"], function (C) {
+   var s="てすとabc";
+   var c1=C.plainText(s);
+   test(c1,[s]);
+
+   function test(c,path) {
+       var p=c.toPlainText();
+       var u=c.toURL();
+       var b=c.toArrayBuffer();
+       var a=c.toUint8Array();
+       console.log(path,"->",p,u,a);
+       var c1=C.plainText(p);
+       var c2=C.url(u);
+       var c3=C.bin(b,"text/plain");
+       var c4=C.bin(a,"text/plain");
+       if (path.length<2) {
+           test(c1, path.concat([p]));
+           test(c2, path.concat([u]));
+           test(c3, path.concat([b]));
+           test(c4, path.concat([a]));
+       }
+
+   }
+
+});
+*/
 requireSimulator.setName('LSFS');
-define(["FS2","PathUtil","extend","assert","DataURL"], function(FS,P,extend,assert,DataURL) {
+define(["FS2","PathUtil","extend","assert","Util","Content"],
+        function(FS,P,extend,assert,Util,Content) {
     var LSFS = function(storage,options) {
     	this.storage=storage;
     	this.options=options||{};
@@ -2397,16 +2562,32 @@ define(["FS2","PathUtil","extend","assert","DataURL"], function(FS,P,extend,asse
         getContent: function(path, options) {
             assert.is(arguments,[Absolute]);
             this.assertExist(path);
-            if (options && options.type==ArrayBuffer) {
-                var d=new DataURL(this.getItem(path));
-                return d.buffer;
+            var c;
+            if (this.isText(path)) {
+                c=Content.plainText(this.getItem(path));
+            } else {
+                c=Content.url(this.getItem(path));
             }
-            return this.getItem(path);
+            if (options && options.type==ArrayBuffer) {
+                return assert.isset(c.toArrayBuffer(),path);
+            } else {
+                return assert.isset(c.toPlainText(),path);
+            }
         },
         setContent: function(path, content, options) {
-            assert.is(arguments,[Absolute,String]);
+            assert.is(path,Absolute);
             this.assertWriteable(path);
-            this.setItem(path, content);
+            var c;
+            if (typeof content=="string" ) {
+                c=Content.plainText(content);
+            } else {
+                c=Content.bin(content,this.getContentType(path));
+            }
+            if (this.isText(path)) {
+                this.setItem(path, c.toPlainText());
+            } else {
+                this.setItem(path, c.toURL());
+            }
             this.touch(path);
         },
         getMetaInfo: function(path, options) {
@@ -2620,6 +2801,9 @@ define(["FS2","WebSite","NativeFS","LSFS", "PathUtil","Env","assert","SFile"],
     };
     FS.mount=function () {
         return rootFS.mount.apply(rootFS,arguments);
+    };
+    FS.unmount=function () {
+        return rootFS.unmount.apply(rootFS,arguments);
     };
     return FS;
 });
@@ -10074,8 +10258,57 @@ setTimeout(function(){ T2MediaLib.stopAudio(); }, 10000);
 
 
 
+requireSimulator.setName('UIDiag');
+define(["UI"],function (UI) {
+    var UIDiag={};
+    UIDiag.confirm=function (mesg) {
+        var di=UI("div",{title:"確認"},["div",mesg],
+                ["button",{on:{click:sendF(true)}},"OK"],
+                ["button",{on:{click:sendF(false)}},"キャンセル"]).dialog({width:"auto",close:sendF(false)});
+        var d=$.Deferred();
+        function sendF(r) {
+            return function () { d.resolve(r); di.dialog("close"); di.remove(); };
+        }
+        return d.promise();
+    };
+    UIDiag.alert=function (mesg) {
+        var di=UI("div",{title:"確認"},["div",mesg],
+                ["button",{on:{click:sendF(true)}},"OK"]).dialog({width:"auto",close:sendF(false)});
+        var d=$.Deferred();
+        function sendF(r) {
+            return function () { d.resolve(r); di.dialog("close"); di.remove(); };
+        }
+        return d.promise();
+    };
+
+    UIDiag.prompt=function (mesg,value) {
+        var di=UI("div",{title:"入力"},["div",mesg],
+                ["input",{on:{enterkey:ok},$var:"val", value:value}],["br"],
+                ["button",{on:{click:ok}},"OK"],
+                ["button",{on:{click:cancel}},"キャンセル"]).dialog({width:"auto",close:function (){
+                    di.dialog("close");
+                    d.resolve();
+                }});
+        var d=$.Deferred();
+        function ok() {
+            var r=di.$vars.val.val();
+            d.resolve(r);
+            di.dialog("close");
+            di.remove();
+        }
+        function cancel() {
+            di.dialog("close");
+            di.remove();
+            d.resolve();
+        }
+        return d.promise();
+
+    };
+    if (typeof window!="undefined") window.UIDiag=UIDiag;
+    return UIDiag;
+});
 requireSimulator.setName('runtime');
-requirejs(["ImageList","T2MediaLib","Tonyu","Tonyu.Iterator"], function () {
+requirejs(["ImageList","T2MediaLib","Tonyu","Tonyu.Iterator","UIDiag"], function () {
 
 });
 requireSimulator.setName('difflib');
@@ -11813,6 +12046,30 @@ requireSimulator.setName('NWMenu');
     }
     return {};
 })();
+requireSimulator.setName('extLink');
+define(["WebSite","UI"],function (WebSite,UI) {
+    var exec = require('child_process').exec;
+    function extLink(href,caption,options) {
+        var p=WebSite.platform;
+        if (p=="win32") {
+            var opt={href:"javascript:;", on:{click: ext("start")}};
+            if (options) for (var k in options) opt[k]=options[k];
+            return UI("a",opt,caption);
+        } else if (p=="darwin") {
+            var opt={href:"javascript:;", on:{click: ext("open")}};
+            if (options) for (var k in options) opt[k]=options[k];
+            return UI("a",opt,caption);
+        } else {
+            return UI("a",{href:href, target:"_new"},caption);
+        }
+        function ext(cmd) {
+            return function () {
+                exec(cmd+" "+href);
+            };
+        }
+    };
+    return extLink;
+});
 requireSimulator.setName('mkrun');
 define(["FS","Util","WebSite","plugins","Shell","Tonyu"],
         function (FS,Util,WebSite,plugins,sh,Tonyu) {
@@ -11929,40 +12186,6 @@ define(["FS","Util","WebSite","plugins","Shell","Tonyu"],
     };
     return MkRun;
 });
-requireSimulator.setName('mkrunDiag');
-define(["UI","mkrun","Tonyu"], function (UI,mkrun,Tonyu) {
-    var res={};
-    res.show=function (prj,dest) {
-        var d=res.embed(prj,dest);
-        d.dialog({width:800,height:300});
-    };
-    res.embed=function (prj,dest) {
-        if (!res.d) {
-            res.d=UI("div",{title:"ランタイム作成"},
-                    ["div",
-                         ["label",{"for":"dest"},"出力フォルダ"],["br"],
-                         ["input", {id:"dest",$edit:"dest",size:60}]
-                    ],
-                    ["div",
-                         ["label",{"for":"src"},"ソースを添付する"],
-                         ["input", {id:"src",$edit:"src",type:"checkbox"}]
-                    ],
-                    ["button", {$var:"OKButton", on:{click: function () {
-                         res.run();
-                    }}}, "作成"]
-            );
-        }
-        var model={dest:dest.path(), src:true};
-        res.d.$edits.load(model);
-        res.run=function () {
-            mkrun.run(prj, FS.get(model.dest), {copySrc:model.src});
-            alert(model.dest+"にランタイムを作成しました。");
-            if (res.d.dialog) res.d.dialog("close");
-        };
-        return res.d;
-    };
-    return res;
-});
 requireSimulator.setName('zip');
 define(["FS","Shell","Util"/*"JSZip","FileSaver"*/],function (FS,sh,Util/*,JSZip,fileSaver*/) {
     if (typeof JSZip=="undefined") return {};
@@ -12025,6 +12248,59 @@ define(["FS","Shell","Util"/*"JSZip","FileSaver"*/],function (FS,sh,Util/*,JSZip
     };
     return zip;
 });
+requireSimulator.setName('mkrunDiag');
+define(["UI","extLink","mkrun","Tonyu","zip"], function (UI,extLink,mkrun,Tonyu,zip) {
+    var res={};
+    res.show=function (prj,dest,options) {
+        var d=res.embed(prj,dest,options);
+        d.dialog({width:800,height:300});
+    };
+    res.embed=function (prj,dest,options) {
+        options=options||{};
+        if (!res.d) {
+            res.d=UI("div",{title:"ランタイム作成"},
+                   ["span", {$var:"hiddenFolder"},
+                    ["div",
+                         ["label",{"for":"dest"},"出力フォルダ"],["br"],
+                         ["input", {id:"dest",$edit:"dest",size:60}]
+                    ],
+                    ["div",
+                         ["input", {id:"src",$edit:"zip",type:"checkbox"}],
+                         ["label",{"for":"zip"},"ZIP圧縮したものを保存する"]
+                    ]],
+                    ["div",
+                       ["input", {id:"src",$edit:"src",type:"checkbox"}],
+                       ["label",{"for":"src"},"ソースを添付する"]
+                    ],
+                    ["button", {$var:"OKButton", on:{click: function () {
+                         res.run();
+                    }}}, "作成"]
+            );
+        }
+        if (options.hiddenFolder) {
+            res.d.$vars.hiddenFolder.hide();
+        } else {
+            res.d.$vars.hiddenFolder.show();
+        }
+        var model={dest:dest.path(), src:true, zip:true};
+        res.d.$edits.load(model);
+        res.run=function () {
+            mkrun.run(prj, FS.get(model.dest), {copySrc:model.src});
+            if (model.zip) {
+                zip.dlzip(FS.get(model.dest));
+            }
+            UIDiag.alert(UI("div",
+                             ["p",(options.hiddenFolder?"":model.dest+"に")+"ランタイムを作成しました。"],
+                             ["p",(model.zip?"保存したZIPファイルを":"上のフォルダをZIPで圧縮したものを"),
+                              extLink("http://hoge1e3.sakura.ne.jp/tonyu/project/","プロジェクトボード",{style:"color: blue;"}),
+                              "にてWebアプリとして公開することができます。"]
+                            ),{width:"auto"});
+            if (res.d.dialog) res.d.dialog("close");
+        };
+        return res.d;
+    };
+    return res;
+});
 requireSimulator.setName('ide/editor');
 requirejs(["Util", "Tonyu", "FS", "FileList", "FileMenu",
            "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project",
@@ -12032,7 +12308,7 @@ requirejs(["Util", "Tonyu", "FS", "FileList", "FileMenu",
            "IFrameDialog",/*"WikiDialog",*/"runtime", "KernelDiffDialog","Sync","searchDialog","StackTrace","syncWithKernel",
            "UI","ResEditor","WebSite","exceptionCatcher","Tonyu.TraceTbl",
            "SoundDiag","Log","MainClassDialog","DeferredUtil","NWMenu",
-           "ProjectCompiler","compiledProject","mkrunDiag","zip"
+           "ProjectCompiler","compiledProject","mkrunDiag","zip","LSFS"
           ],
 function (Util, Tonyu, FS, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,
@@ -12040,7 +12316,7 @@ function (Util, Tonyu, FS, FileList, FileMenu,
           IFrameDialog,/*WikiDialog,*/ rt , KDD,Sync,searchDialog,StackTrace,swk,
           UI,ResEditor,WebSite,EC,TTB,
           sd,Log,MainClassDialog,DU,NWMenu,
-          TPRC,CPPRJ,mkrunDiag,zip
+          TPRC,CPPRJ,mkrunDiag,zip,LSFS
           ) {
 $(function () {
     var F=EC.f;
@@ -12540,8 +12816,15 @@ $(function () {
         }
     }*/
     $("#mkrun").click(F(function () {
-        mkrunDiag.show(curPrj,
-                FS.get(WebSite.cwd).rel("Runtimes/").rel( curProjectDir.name()) );
+        if (WebSite.isNW) {
+            mkrunDiag.show(curPrj,
+                    FS.get(WebSite.cwd).rel("Runtimes/").rel( curProjectDir.name()) );
+        } else {
+            var mkram=FS.get("/mkram/");
+            FS.mount(mkram.path(), LSFS.ramDisk() );
+            mkrunDiag.show(curPrj, mkram.rel(curProjectDir.name()), {hiddenFolder:true});
+            FS.unmount(mkram.path());
+        }
     }));
     $("#imgResEditor").click(F(function () {
         //ImgResEdit(curPrj);
