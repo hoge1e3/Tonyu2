@@ -8,6 +8,7 @@ function startsWith(str,prefix) {
     return str.substring(0, prefix.length)===prefix;
 }
 var driveLetter=/^([a-zA-Z]):/;
+var url=/^([a-z]+):\/\/([^\/]+)\//;
 var PathUtil;
 var Path=assert.f(function (s) {
     this.is(s,String);
@@ -41,9 +42,14 @@ PathUtil={
     hasDriveLetter: function (path) {
         return driveLetter.exec(path);
     },
+    isURL: function (path) {
+        var r=url.exec(path);
+        if (!r) return;
+        return {protocol:r[1], hostPort:r[2], path:SEP+path.substring(r[0].length)  };
+    },
     isPath: function (path) {
     	assert.is(arguments,[String]);
-		return !path.match(/\/\//);
+		return true;//!path.match(/\/\//);
     },
     isRelativePath: function (path) {
 		assert.is(arguments,[String]);
@@ -52,7 +58,7 @@ PathUtil={
     isAbsolutePath: function (path) {
 		assert.is(arguments,[String]);
 		return PathUtil.isPath(path) &&
-		(PathUtil.startsWith(path,SEP) || PathUtil.hasDriveLetter(path));
+		(PathUtil.startsWith(path,SEP) || PathUtil.hasDriveLetter(path) ||  PathUtil.isURL(path));
     },
     isDir: function (path) {
 		assert.is(arguments,[Path]);
@@ -60,6 +66,13 @@ PathUtil={
     },
 	splitPath: function (path) {
 		assert.is(arguments,[Path]);
+		var u;
+		if (u=this.isURL(path)) {
+		    var p=this.splitPath(u.path);
+		    p[0]=u.protocol+"://"+u.hostPort;
+		    return p;
+		}
+		path=path.replace(/\/+/g,SEP);
 	    var res=path.split(SEP);
         if (res[res.length-1]=="") {
             res[res.length-2]+=SEP;
