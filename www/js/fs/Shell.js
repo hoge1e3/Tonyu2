@@ -1,4 +1,5 @@
-define(["FS","Util","WebSite"],function (FS,Util,WebSite) {
+define(["FS","Util","WebSite","PathUtil","assert"],
+        function (FS,Util,WebSite,PathUtil,assert) {
     var Shell={cwd:FS.get("/")};
     Shell.cd=function (dir) {
         Shell.cwd=resolve(dir,true);
@@ -9,10 +10,31 @@ define(["FS","Util","WebSite"],function (FS,Util,WebSite) {
         if (mustExist && !r.exists()) throw r+": no such file or directory";
         return r;
     }
+
+    Shell.mount=function (path, options) {
+        //var r=resolve(path);
+        if (!options || !options.t) {
+            sh.err("-t=[fstype] should be specified.");
+            return;
+        }
+        FS.mount(path,options.t, options);
+    };
+    Shell.unmount=function (path) {
+        FS.unmount(path);
+    };
+    Shell.fstab=function () {
+        var rfs=FS.getRootFS();
+        var t=rfs.fstab();
+        var sh=this;
+        sh.echo(rfs.fstype()+"\t"+"<Root>");
+        t.forEach(function (te) {
+            sh.echo(te.fs.fstype()+"\t"+te.path);
+        });
+    }
     Shell.resolve=resolve;
     function resolve2(v) {
         if (typeof v!="string") return v;
-        if (Util.startsWith(v,"/")) return FS.get(v);
+        if (PathUtil.isAbsolutePath(v)) return FS.get(v);
         var c=Shell.cwd;
         /*while (Util.startsWith(v,"../")) {
             c=c.up();

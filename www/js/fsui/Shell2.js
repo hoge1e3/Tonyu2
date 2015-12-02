@@ -29,7 +29,7 @@ define(["Shell","UI","FS","Util"], function (sh,UI,FS,Util) {
             for (var i=0; i<arguments.length; i++) {
                 a.push(arguments[i]);
             }
-            out.append(a.join(" ")+"\n");
+            out.append(UI("span",a.join(" ")+"\n"));
         },err:function (e) {
             out.append(UI("div",{"class": "shell error"},e,["br"],["pre",e.stack]));
         }});

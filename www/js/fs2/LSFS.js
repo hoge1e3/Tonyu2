@@ -19,6 +19,13 @@ define(["FS2","PathUtil","extend","assert","Util","Content"],
         s[P.SEP]="{}";
         return new LSFS(s);
     };
+    FS.addFSType("localStorage",function (path, options) {
+        return new LSFS(localStorage);
+    });
+    FS.addFSType("ramDisk",function (path, options) {
+        return LSFS.ramDisk();
+    });
+
     LSFS.now=now;
     LSFS.prototype=new FS;
     //private methods
@@ -115,6 +122,13 @@ define(["FS2","PathUtil","extend","assert","Util","Content"],
             this.putDirInfo(path, dinfo, true);
         }
     };
+    LSFS.prototype.isRAM=function (){
+        return this.storage!==localStorage;
+    };
+    LSFS.prototype.fstype=function () {
+        return (this.isRAM() ? "ramDisk" : "localStorage" );
+    };
+
     // public methods (with resolve fs)
     FS.delegateMethods(LSFS.prototype, {
         isReadOnly: function () {return this.options.readOnly;},

@@ -1,6 +1,10 @@
 define(["extend","PathUtil","MIMETypes","assert","SFile"],function (extend, P, M,assert,SFile){
     var FS=function () {
     };
+    var fstypes={};
+    FS.addFSType=function (name,fsgen) {
+        fstypes[name]=fsgen;
+    };
     function stub(n) {
         throw new Error (n+" is STUB!");
     }
@@ -8,9 +12,25 @@ define(["extend","PathUtil","MIMETypes","assert","SFile"],function (extend, P, M
         err: function (path, mesg) {
             throw new Error(path+": "+mesg);
         },
+        fstype:function () {
+            return "Unknown";
+        },
         // mounting
         fstab: function () {
             return this._fstab=this._fstab||[];//[{fs:this, path:P.SEP}];
+        },
+        unmount: function (path, options) {
+            assert.is(arguments,[P.AbsDir] );
+            var t=this.fstab();
+            console.log(t);
+            for (var i=0; i<t.length; i++) {
+                console.log(t[i].path, path)
+                if (t[i].path==path) {
+                    t.splice(i,1);
+                    return true;
+                }
+            }
+            return false;
         },
         resolveFS:function (path, options) {
             assert.is(path,P.Absolute);
@@ -147,7 +167,12 @@ define(["extend","PathUtil","MIMETypes","assert","SFile"],function (extend, P, M
             if (this.isReadOnly(path)) this.err(path, "read only.");
         },
         mount: function (path, fs, options) {
-            assert.is(arguments,[P.AbsDir, FS] );
+            assert.is(arguments,[P.AbsDir] );
+            if (typeof fs=="string") {
+                var fact=assert( fstypes[fs] ,"fstype "+fs+" is undefined.");
+                fs=fact(path, options||{});
+            }
+            assert.is(fs,FS);
             if (this.exists(path)) {
                 throw new Error(path+": Directory exists");
             }
@@ -158,17 +183,6 @@ define(["extend","PathUtil","MIMETypes","assert","SFile"],function (extend, P, M
             }
             fs.mounted(this, path);
             this.fstab().unshift({path:path, fs:fs});
-        },
-        unmount: function (path, options) {
-            assert.is(arguments,[P.AbsDir] );
-            var t=this.fstab();
-            for (var i=0; i<t.length; i++) {
-                if (t[i].path==path) {
-                    t.splice(i,1);
-                    return true;
-                }
-            }
-            return false;
         },
         getContentType: function (path, options) {
             var e=P.ext(path);
