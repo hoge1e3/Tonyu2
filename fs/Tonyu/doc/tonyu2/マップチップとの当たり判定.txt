@@ -11,24 +11,28 @@ y=$screenHeight/2;
 while(true){
     if(getkey("right")>0){
         x+=3;
+        //マップチップとの当たり判定
         if($map.getAt(x,y)>-1){
             x-=3;
         }
     }
     if(getkey("left")>0){
         x-=3;
+        //マップチップとの当たり判定
         if($map.getAt(x,y)>-1){
             x+=3;
         }
     }
     if(getkey("down")>0){
         y+=3;
+        //マップチップとの当たり判定
         if($map.getAt(x,y)>-1){
             y-=3;
         }
     }
     if(getkey("up")>0){
         y-=3;
+        //マップチップとの当たり判定
         if($map.getAt(x,y)>-1){
             y+=3;
         }
@@ -39,7 +43,10 @@ while(true){
 
 >>
 
-これは上下左右に動かせる中央のオブジェクトがset modeで置いたマップチップを[[$map.getAt>getAt]]でマップチップの値を取得してとぶつかると押し戻されるようにし、重なることができないようにしたもの
+これは上下左右に動かせる中央のオブジェクトがset modeで置いたマップチップを[[$map.getAt>getAt]]でマップチップの値を取得してとぶつかると押し戻されるようにし、重なることができないようにしたもの。
+
+-setOn modeで置いたマップチップとの当たり判定を得たい場合は、$map.getAtを$map.getOnAtに変える。
+
 
 
 
@@ -48,3 +55,4 @@ while(true){
 [[当たり判定で壁にぶつかる]]
 
 [[マップチップを取得する>mapGet]]
+

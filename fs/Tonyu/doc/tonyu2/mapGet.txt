@@ -25,7 +25,7 @@ chip=$map.getAt($mouseX,$mouseY);
 ・Main.Tonyu
 //事前にマップを作っておく
 //getOnAt(スクリーンのx座標,スクリーンのy座標);
-chip=$map.getAt($mouseX,$mouseY);
+chip=$map.getOnAt($mouseX,$mouseY);
 >>
 
 -setOn modeで置いたマップチップを取得します
