@@ -112,6 +112,8 @@ for(var i=0;i<$mp.row;i++){
         counter++;
     }
 }
+
+$consolePanel.clearRect(0,0,$screenWidth,$screenHeight);
 // editor initialize
 mode="get";
 prevMode="set";
@@ -131,23 +133,27 @@ layers=["base","on","all"];
 lc=0;
 selectedLayer=layers[lc];
 drawPanel();
+drawLetter(mode);
 
 while(true){
     p=mapp;
     if($touches[0].touched==1 && $touches[0].x>0 && $touches[0].x<120 && $touches[0].y>560 && $touches[0].y<640){
         $mp.scrollTo(1000,1000);
         mode="erase";
-        print(mode+" mode");
+        //print(mode+" mode");
+        drawLetter(mode);
     }
     if($touches[0].touched==1 && $touches[0].x>0 && $touches[0].x<120 && $touches[0].y>480 && $touches[0].y<560){
         $mp.scrollTo(1000,1000);
         mode="set";
+        drawLetter(mode);
     }
     if($touches[0].touched==1 && $touches[0].x>120 && $touches[0].x<240 && $touches[0].y>480 && $touches[0].y<560){
         lc++;
         selectedLayer=layers[lc%3];
         drawPanel();
-        print(mode+" mode");
+        //print(mode+" mode");
+        drawLetter(mode);
     }
     /*if(getkey("o")==1){
         $mp.scrollTo(1000,1000);
@@ -164,7 +170,8 @@ while(true){
             $mp.scrollTo(1000,1000);
             mode=prevMode;
         }
-        print(mode+" mode");
+        //print(mode+" mode");
+        drawLetter(mode);
     }
     if($touches[0].touched==1 && $touches[0].x>360 && $touches[0].x<480 && $touches[0].y>480 && $touches[0].y<560){
         //add
@@ -187,7 +194,8 @@ while(true){
     if($touches[0].touched==1 && $touches[0].x>120 && $touches[0].x<240 && $touches[0].y>560 && $touches[0].y<640){
         $mp.scrollTo(1000,1000);
         mode="copy";
-        print(mode+" mode");
+        //print(mode+" mode");
+        drawLetter(mode);
     }
     if(mode!="get"){
         if(getkey("left")>0 || ($touches[0].touched && $touches[0].x>0 && $touches[0].x<40 && $touches[0].y<480)) mx=mx-8;
@@ -258,7 +266,8 @@ while(true){
         //mode=prevMode;
         mode="set";
         $mp.scrollTo(1000,1000);
-        print(mode+" mode");
+        //print(mode+" mode");
+        drawLetter(mode);
         updateEx(10);
     }else if(mode=="setOn" && getkey(1)>0 && inRect()){
         $map.setOnAt($mouseX+mx,$mouseY+my,mapp);
@@ -275,7 +284,8 @@ while(true){
         
         //mapp=$map.getAt($mouseX+mx,$mouseY+my);
         mode="set";
-        print(mode+" mode");
+        //print(mode+" mode");
+        drawLetter(mode);
         updateEx(10);
     }
     update();
@@ -320,4 +330,21 @@ function drawPanel(){
     $panel.fillText("save",$screenWidth-60,$screenHeight-110,40,"center");
     $panel.fillText("erase",$screenWidth/4-60,$screenHeight-30,35,"center");
     $panel.fillText("copy",$screenWidth/4+60,$screenHeight-30,35,"center");
+}
+function drawLetter(mode){
+    if(mode=="set") $panel.setFillStyle("red");
+    else $panel.setFillStyle("black");
+    $panel.fillText("set",$screenWidth/4-60,$screenHeight-110,40,"center");
+    if(mode=="get") $panel.setFillStyle("red");
+    else $panel.setFillStyle("black");
+    $panel.fillText("get",$screenWidth/2+60,$screenHeight-110,40,"center");
+    if(mode=="erase") $panel.setFillStyle("red");
+    else $panel.setFillStyle("black");
+    $panel.fillText("erase",$screenWidth/4-60,$screenHeight-30,35,"center");
+    if(mode=="copy") $panel.setFillStyle("red");
+    else $panel.setFillStyle("black");
+    $panel.fillText("copy",$screenWidth/4+60,$screenHeight-30,35,"center");
+    $panel.setFillStyle("black");
+    $panel.fillText(selectedLayer,$screenWidth/4+60,$screenHeight-110,35,"center");
+    $panel.fillText("save",$screenWidth-60,$screenHeight-110,40,"center");
 }
