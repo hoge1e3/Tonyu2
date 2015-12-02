@@ -1,4 +1,4 @@
-// Created at Wed Dec 02 2015 12:54:08 GMT+0900 (東京 (標準時))
+// Created at Wed Dec 02 2015 13:02:21 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -1788,7 +1788,7 @@ define(["DataURL","Util","assert"],function (DataURL,Util,assert) {
         throw new Error("No data");
     };
     p.toPlainText=function () {
-        if (this.plain) {
+        if (this.plain!=null) {
             return this.plain;
         } else {
             if (this.url && !this.bin) {

@@ -61,7 +61,7 @@ define(["DataURL","Util","assert"],function (DataURL,Util,assert) {
         throw new Error("No data");
     };
     p.toPlainText=function () {
-        if (this.plain) {
+        if (this.plain!=null) {
             return this.plain;
         } else {
             if (this.url && !this.bin) {
