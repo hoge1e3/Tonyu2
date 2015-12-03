@@ -74,6 +74,9 @@ define(["DataURL","Util","assert"],function (DataURL,Util,assert) {
         }
         throw new Error("No data");
     };
+    p.hasURL=function (){return this.url;};
+    p.hasPlainText=function (){return this.plain!=null;};
+    p.hasBin=function (){return this.bin;};
 
     return Content;
 });

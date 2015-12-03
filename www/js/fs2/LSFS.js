@@ -147,6 +147,7 @@ define(["FS2","PathUtil","extend","assert","Util","Content"],
             } else {
                 c=Content.url(this.getItem(path));
             }
+            // GCT:return c;
             if (options && options.type==ArrayBuffer) {
                 return assert.isset(c.toArrayBuffer(),path);
             } else {
@@ -156,12 +157,14 @@ define(["FS2","PathUtil","extend","assert","Util","Content"],
         setContent: function(path, content, options) {
             assert.is(path,Absolute);
             this.assertWriteable(path);
+            // GCT del
             var c;
             if (typeof content=="string" ) {
                 c=Content.plainText(content);
             } else {
                 c=Content.bin(content,this.getContentType(path));
             }
+            // GCT del end
             if (this.isText(path)) {
                 this.setItem(path, c.toPlainText());
             } else {
@@ -315,6 +318,7 @@ define(["FS2","PathUtil","extend","assert","Util","Content"],
             }
         },
         getURL: function (path) {
+          //GCT   return this.getContent(path).toURL();
             return this.getContent(path,{type:String});
         }
     });

@@ -94,11 +94,11 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                     reader.onload = function(e) {
                         var fileContent = reader.result;
                         var itemFile=rsrcDir.rel(itemName+itemExt);
-                        itemFile.text(fileContent);
+                        itemFile.setBytes(fileContent);
                         v.url="ls:"+itemFile.relPath(prj.getDir());// fileContent;
                         add(v);
                     };
-                    reader.readAsDataURL(file);
+                    reader.readAsArrayBuffer(file);
                 }
                 e.stopPropagation();
                 e.preventDefault();

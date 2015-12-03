@@ -5,7 +5,9 @@ define(["FS2"], function (FS) {
     FS.delegateMethods(p, {
         getContent: function (){
 
+        },
+        getURL: function (path) {
+            return path;
         }
-
     });
 });

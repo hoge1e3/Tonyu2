@@ -23,6 +23,13 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
         A.is(path, P.Absolute);
         return P.rel( this.rootPoint, this.relFromMountPoint(path));
     };
+    Pro.arrayBuffer2Buffer= function (a) {
+        if (a instanceof ArrayBuffer) {
+            return new Buffer(new Uint8Array(a));
+        }
+        return a;
+    };
+
     /*Pro.isText=function (path) {
         var e=P.ext(path);
         var m=MIME[e];
@@ -46,7 +53,11 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
             A.is(path,P.Absolute);
             var np=this.toNativePath(path);
             var t=options.type;
+            this.assertExist(path);
             if (this.isText(path)) {
+                /* GCT
+                 * return Content.plainText( fs.readFileSync(np, {encoding:"utf8"}) );
+                 */
                 if (t===String) {
                     return A.isset(fs.readFileSync(np, {encoding:"utf8"}),path);
                 } else {
@@ -55,6 +66,9 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
                     //throw new Error("TODO: handling bin file "+path);
                 }
             } else {
+                /* GCT
+                 * return Content.bin( fs.readFileSync(np) );
+                 */
                 if (t===String) {
                     var bin=fs.readFileSync(np);
                     var d=new DataURL(bin, this.getContentType(path) );
@@ -65,11 +79,14 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
             }
         },
         setContent: function (path,content) {
+            // GCT
+            content=this.arrayBuffer2Buffer(content);
             A.is(path,P.Absolute);
             var pa=P.up(path);
             if (pa) this.getRootFS().mkdir(pa);
             var np=this.toNativePath(path);
             var cs=typeof content=="string";
+
             if (this.isText(path)) {
                 fs.writeFileSync(np, content)
                 /*if (cs) return fs.writeFileSync(np, content);
