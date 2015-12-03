@@ -1,4 +1,4 @@
-// Created at Thu Dec 03 2015 14:03:31 GMT+0900 (東京 (標準時))
+// Created at Thu Dec 03 2015 14:57:35 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -2210,7 +2210,8 @@ define(["FS2","PathUtil","extend","assert","Util","Content"],
         },
         getURL: function (path) {
           //GCT   return this.getContent(path).toURL();
-            return this.getContent(path,{type:String});
+            return Content.bin( this.getContent(path,{type:ArrayBuffer}),
+                    this.getContentType(path) ).toURL();
         }
     });
     return LSFS;
@@ -3277,7 +3278,7 @@ return Tonyu=function () {
             timeout:timeout,animationFrame:animationFrame, asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,
-            VERSION:1449118988041,//EMBED_VERSION
+            VERSION:1449122222857,//EMBED_VERSION
             A:A};
 }();
 });

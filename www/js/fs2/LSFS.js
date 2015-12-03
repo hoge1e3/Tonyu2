@@ -319,7 +319,8 @@ define(["FS2","PathUtil","extend","assert","Util","Content"],
         },
         getURL: function (path) {
           //GCT   return this.getContent(path).toURL();
-            return this.getContent(path,{type:String});
+            return Content.bin( this.getContent(path,{type:ArrayBuffer}),
+                    this.getContentType(path) ).toURL();
         }
     });
     return LSFS;

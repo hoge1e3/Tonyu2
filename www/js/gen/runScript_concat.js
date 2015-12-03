@@ -1,4 +1,4 @@
-// Created at Thu Dec 03 2015 14:03:23 GMT+0900 (東京 (標準時))
+// Created at Thu Dec 03 2015 14:57:25 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -2210,7 +2210,8 @@ define(["FS2","PathUtil","extend","assert","Util","Content"],
         },
         getURL: function (path) {
           //GCT   return this.getContent(path).toURL();
-            return this.getContent(path,{type:String});
+            return Content.bin( this.getContent(path,{type:ArrayBuffer}),
+                    this.getContentType(path) ).toURL();
         }
     });
     return LSFS;
@@ -2879,7 +2880,7 @@ return Tonyu=function () {
             timeout:timeout,animationFrame:animationFrame, asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,
-            VERSION:1449118988041,//EMBED_VERSION
+            VERSION:1449122222857,//EMBED_VERSION
             A:A};
 }();
 });
@@ -7591,7 +7592,7 @@ define([],function () {
     return draw;
 });
 requireSimulator.setName('thumbnail');
-define(["ImageRect"],function (IR) {
+define(["ImageRect","Content"],function (IR,Content) {
     var TN={};
     var createThumbnail;
     var NAME="$icon_thumbnail";
@@ -7619,7 +7620,7 @@ define(["ImageRect"],function (IR) {
             var rsrc=prj.getResource();
             var prjdir=prj.getDir();
             var imfile=TN.file(prj);
-            imfile.text(url);
+            imfile.setBytes( Content.url(url).toArrayBuffer() );
             var item={
                 name:NAME,
                 pwidth:100,pheight:100,url:"ls:"+imfile.relPath(prjdir)

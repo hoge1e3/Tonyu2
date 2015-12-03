@@ -1,4 +1,4 @@
-define(["ImageRect"],function (IR) {
+define(["ImageRect","Content"],function (IR,Content) {
     var TN={};
     var createThumbnail;
     var NAME="$icon_thumbnail";
@@ -26,7 +26,8 @@ define(["ImageRect"],function (IR) {
             var rsrc=prj.getResource();
             var prjdir=prj.getDir();
             var imfile=TN.file(prj);
-            imfile.text(url);
+            //GCT
+            imfile.setBytes( Content.url(url).toArrayBuffer() );
             var item={
                 name:NAME,
                 pwidth:100,pheight:100,url:"ls:"+imfile.relPath(prjdir)
