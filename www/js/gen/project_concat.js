@@ -1,4 +1,4 @@
-// Created at Wed Dec 02 2015 13:31:41 GMT+0900 (東京 (標準時))
+// Created at Thu Dec 03 2015 14:03:12 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -1081,7 +1081,7 @@ return Tonyu=function () {
             timeout:timeout,animationFrame:animationFrame, asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,
-            VERSION:1449030698694,//EMBED_VERSION
+            VERSION:1449118988041,//EMBED_VERSION
             A:A};
 }();
 });
@@ -1103,6 +1103,7 @@ function startsWith(str,prefix) {
     return str.substring(0, prefix.length)===prefix;
 }
 var driveLetter=/^([a-zA-Z]):/;
+var url=/^([a-z]+):\/\/([^\/]+)\//;
 var PathUtil;
 var Path=assert.f(function (s) {
     this.is(s,String);
@@ -1136,9 +1137,14 @@ PathUtil={
     hasDriveLetter: function (path) {
         return driveLetter.exec(path);
     },
+    isURL: function (path) {
+        var r=url.exec(path);
+        if (!r) return;
+        return {protocol:r[1], hostPort:r[2], path:SEP+path.substring(r[0].length)  };
+    },
     isPath: function (path) {
     	assert.is(arguments,[String]);
-		return !path.match(/\/\//);
+		return true;//!path.match(/\/\//);
     },
     isRelativePath: function (path) {
 		assert.is(arguments,[String]);
@@ -1147,7 +1153,7 @@ PathUtil={
     isAbsolutePath: function (path) {
 		assert.is(arguments,[String]);
 		return PathUtil.isPath(path) &&
-		(PathUtil.startsWith(path,SEP) || PathUtil.hasDriveLetter(path));
+		(PathUtil.startsWith(path,SEP) || PathUtil.hasDriveLetter(path) ||  PathUtil.isURL(path));
     },
     isDir: function (path) {
 		assert.is(arguments,[Path]);
@@ -1155,6 +1161,13 @@ PathUtil={
     },
 	splitPath: function (path) {
 		assert.is(arguments,[Path]);
+		var u;
+		if (u=this.isURL(path)) {
+		    var p=this.splitPath(u.path);
+		    p[0]=u.protocol+"://"+u.hostPort;
+		    return p;
+		}
+		path=path.replace(/\/+/g,SEP);
 	    var res=path.split(SEP);
         if (res[res.length-1]=="") {
             res[res.length-2]+=SEP;
@@ -1457,19 +1470,23 @@ SFile.prototype={
     },
     setText:function (t) {
         A.is(t,String);
+        // GCT  t=Content.plainText(t);
         this.fs.setContent(this.path(), t);
     },
     getText:function (t) {
+        // GCT
         return this.fs.getContent(this.path(), {type:String});
     },
     isText: function () {
         return this.fs.isText(this.path());
     },
     setBytes:function (b) {
-        A.is(t,ArrayBuffer);
-        return this.fs.setContent(b);
+        A.is(b,ArrayBuffer);
+        // GCT
+        return this.fs.setContent(this.path(), b);
     },
     getBytes:function (t) {
+        //GCT
         return this.fs.getContent(this.path(), {type:ArrayBuffer});
     },
     getURL: function () {
@@ -1630,6 +1647,10 @@ requireSimulator.setName('FS2');
 define(["extend","PathUtil","MIMETypes","assert","SFile"],function (extend, P, M,assert,SFile){
     var FS=function () {
     };
+    var fstypes={};
+    FS.addFSType=function (name,fsgen) {
+        fstypes[name]=fsgen;
+    };
     function stub(n) {
         throw new Error (n+" is STUB!");
     }
@@ -1637,9 +1658,25 @@ define(["extend","PathUtil","MIMETypes","assert","SFile"],function (extend, P, M
         err: function (path, mesg) {
             throw new Error(path+": "+mesg);
         },
+        fstype:function () {
+            return "Unknown";
+        },
         // mounting
         fstab: function () {
             return this._fstab=this._fstab||[];//[{fs:this, path:P.SEP}];
+        },
+        unmount: function (path, options) {
+            assert.is(arguments,[P.AbsDir] );
+            var t=this.fstab();
+            console.log(t);
+            for (var i=0; i<t.length; i++) {
+                console.log(t[i].path, path)
+                if (t[i].path==path) {
+                    t.splice(i,1);
+                    return true;
+                }
+            }
+            return false;
         },
         resolveFS:function (path, options) {
             assert.is(path,P.Absolute);
@@ -1776,7 +1813,12 @@ define(["extend","PathUtil","MIMETypes","assert","SFile"],function (extend, P, M
             if (this.isReadOnly(path)) this.err(path, "read only.");
         },
         mount: function (path, fs, options) {
-            assert.is(arguments,[P.AbsDir, FS] );
+            assert.is(arguments,[P.AbsDir] );
+            if (typeof fs=="string") {
+                var fact=assert( fstypes[fs] ,"fstype "+fs+" is undefined.");
+                fs=fact(path, options||{});
+            }
+            assert.is(fs,FS);
             if (this.exists(path)) {
                 throw new Error(path+": Directory exists");
             }
@@ -1787,17 +1829,6 @@ define(["extend","PathUtil","MIMETypes","assert","SFile"],function (extend, P, M
             }
             fs.mounted(this, path);
             this.fstab().unshift({path:path, fs:fs});
-        },
-        unmount: function (path, options) {
-            assert.is(arguments,[P.AbsDir] );
-            var t=this.fstab();
-            for (var i=0; i<t.length; i++) {
-                if (t[i].path==path) {
-                    t.splice(i,1);
-                    return true;
-                }
-            }
-            return false;
         },
         getContentType: function (path, options) {
             var e=P.ext(path);
@@ -2181,11 +2212,24 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
         A.is(path, P.Absolute);
         return P.rel( this.rootPoint, this.relFromMountPoint(path));
     };
+    Pro.arrayBuffer2Buffer= function (a) {
+        if (a instanceof ArrayBuffer) {
+            return new Buffer(new Uint8Array(a));
+        }
+        return a;
+    };
+
     /*Pro.isText=function (path) {
         var e=P.ext(path);
         var m=MIME[e];
         return P.startsWith( m, "text");
     };*/
+    FS.addFSType("NativeFS",function (path, options) {
+            return new NativeFS(options.r);
+    });
+    NativeFS.prototype.fstype=function () {
+        return "Native"+(this.rootPoint?"("+this.rootPoint+")":"");
+    };
     FS.delegateMethods(NativeFS.prototype, {
         getReturnTypes: function(path, options) {
             assert.is(arguments,[String]);
@@ -2198,7 +2242,11 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
             A.is(path,P.Absolute);
             var np=this.toNativePath(path);
             var t=options.type;
+            this.assertExist(path);
             if (this.isText(path)) {
+                /* GCT
+                 * return Content.plainText( fs.readFileSync(np, {encoding:"utf8"}) );
+                 */
                 if (t===String) {
                     return A.isset(fs.readFileSync(np, {encoding:"utf8"}),path);
                 } else {
@@ -2207,6 +2255,9 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
                     //throw new Error("TODO: handling bin file "+path);
                 }
             } else {
+                /* GCT
+                 * return Content.bin( fs.readFileSync(np) );
+                 */
                 if (t===String) {
                     var bin=fs.readFileSync(np);
                     var d=new DataURL(bin, this.getContentType(path) );
@@ -2217,11 +2268,14 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
             }
         },
         setContent: function (path,content) {
+            // GCT
+            content=this.arrayBuffer2Buffer(content);
             A.is(path,P.Absolute);
             var pa=P.up(path);
             if (pa) this.getRootFS().mkdir(pa);
             var np=this.toNativePath(path);
             var cs=typeof content=="string";
+
             if (this.isText(path)) {
                 fs.writeFileSync(np, content)
                 /*if (cs) return fs.writeFileSync(np, content);
@@ -2402,6 +2456,9 @@ define(["DataURL","Util","assert"],function (DataURL,Util,assert) {
         }
         throw new Error("No data");
     };
+    p.hasURL=function (){return this.url;};
+    p.hasPlainText=function (){return this.plain!=null;};
+    p.hasBin=function (){return this.bin;};
 
     return Content;
 });
@@ -2454,6 +2511,13 @@ define(["FS2","PathUtil","extend","assert","Util","Content"],
         s[P.SEP]="{}";
         return new LSFS(s);
     };
+    FS.addFSType("localStorage",function (path, options) {
+        return new LSFS(localStorage);
+    });
+    FS.addFSType("ramDisk",function (path, options) {
+        return LSFS.ramDisk();
+    });
+
     LSFS.now=now;
     LSFS.prototype=new FS;
     //private methods
@@ -2550,6 +2614,13 @@ define(["FS2","PathUtil","extend","assert","Util","Content"],
             this.putDirInfo(path, dinfo, true);
         }
     };
+    LSFS.prototype.isRAM=function (){
+        return this.storage!==localStorage;
+    };
+    LSFS.prototype.fstype=function () {
+        return (this.isRAM() ? "ramDisk" : "localStorage" );
+    };
+
     // public methods (with resolve fs)
     FS.delegateMethods(LSFS.prototype, {
         isReadOnly: function () {return this.options.readOnly;},
@@ -2568,6 +2639,7 @@ define(["FS2","PathUtil","extend","assert","Util","Content"],
             } else {
                 c=Content.url(this.getItem(path));
             }
+            // GCT:return c;
             if (options && options.type==ArrayBuffer) {
                 return assert.isset(c.toArrayBuffer(),path);
             } else {
@@ -2577,12 +2649,14 @@ define(["FS2","PathUtil","extend","assert","Util","Content"],
         setContent: function(path, content, options) {
             assert.is(path,Absolute);
             this.assertWriteable(path);
+            // GCT del
             var c;
             if (typeof content=="string" ) {
                 c=Content.plainText(content);
             } else {
                 c=Content.bin(content,this.getContentType(path));
             }
+            // GCT del end
             if (this.isText(path)) {
                 this.setItem(path, c.toPlainText());
             } else {
@@ -2736,6 +2810,7 @@ define(["FS2","PathUtil","extend","assert","Util","Content"],
             }
         },
         getURL: function (path) {
+          //GCT   return this.getContent(path).toURL();
             return this.getContent(path,{type:String});
         }
     });
@@ -2784,6 +2859,7 @@ define(["FS2","WebSite","NativeFS","LSFS", "PathUtil","Env","assert","SFile"],
     } else {
         rootFS=new LSFS(localStorage);
     }
+    FS.getRootFS=function () {return rootFS;};
     FS.get=function () {
         return rootFS.get.apply(rootFS,arguments);
     };
@@ -3328,7 +3404,8 @@ return FileMenu;
 });
 
 requireSimulator.setName('Shell');
-define(["FS","Util","WebSite"],function (FS,Util,WebSite) {
+define(["FS","Util","WebSite","PathUtil","assert"],
+        function (FS,Util,WebSite,PathUtil,assert) {
     var Shell={cwd:FS.get("/")};
     Shell.cd=function (dir) {
         Shell.cwd=resolve(dir,true);
@@ -3339,10 +3416,31 @@ define(["FS","Util","WebSite"],function (FS,Util,WebSite) {
         if (mustExist && !r.exists()) throw r+": no such file or directory";
         return r;
     }
+
+    Shell.mount=function (path, options) {
+        //var r=resolve(path);
+        if (!options || !options.t) {
+            sh.err("-t=[fstype] should be specified.");
+            return;
+        }
+        FS.mount(path,options.t, options);
+    };
+    Shell.unmount=function (path) {
+        FS.unmount(path);
+    };
+    Shell.fstab=function () {
+        var rfs=FS.getRootFS();
+        var t=rfs.fstab();
+        var sh=this;
+        sh.echo(rfs.fstype()+"\t"+"<Root>");
+        t.forEach(function (te) {
+            sh.echo(te.fs.fstype()+"\t"+te.path);
+        });
+    }
     Shell.resolve=resolve;
     function resolve2(v) {
         if (typeof v!="string") return v;
-        if (Util.startsWith(v,"/")) return FS.get(v);
+        if (PathUtil.isAbsolutePath(v)) return FS.get(v);
         var c=Shell.cwd;
         /*while (Util.startsWith(v,"../")) {
             c=c.up();
@@ -3596,7 +3694,7 @@ return function showErrorPos(elem, err) {
     //elem.attr("title",mesg+" 場所："+src.name());
     elem.attr("title","エラー");
     var diag=elem.dialog({width:600,height:400});
-    Log.d("error", mesg+"\nat "+src+":"+err.pos+"\n"+str.substring(0,err.pos)+"!!HERE!!"+str.substring(err.pos));
+    Log.d("error", mesg+"\nat "+src+":"+err.pos+"\n"+str.substring(0,err.pos)+"##HERE##"+str.substring(err.pos));
     return diag;
 };
 });
@@ -9427,7 +9525,7 @@ define(["Shell","UI","FS","Util"], function (sh,UI,FS,Util) {
             for (var i=0; i<arguments.length; i++) {
                 a.push(arguments[i]);
             }
-            out.append(a.join(" ")+"\n");
+            out.append(UI("span",a.join(" ")+"\n"));
         },err:function (e) {
             out.append(UI("div",{"class": "shell error"},e,["br"],["pre",e.stack]));
         }});
@@ -11710,11 +11808,11 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                     reader.onload = function(e) {
                         var fileContent = reader.result;
                         var itemFile=rsrcDir.rel(itemName+itemExt);
-                        itemFile.text(fileContent);
+                        itemFile.setBytes(fileContent);
                         v.url="ls:"+itemFile.relPath(prj.getDir());// fileContent;
                         add(v);
                     };
-                    reader.readAsDataURL(file);
+                    reader.readAsArrayBuffer(file);
                 }
                 e.stopPropagation();
                 e.preventDefault();
