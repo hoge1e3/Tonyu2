@@ -186,11 +186,12 @@ SFile.prototype={
     },
     setText:function (t) {
         A.is(t,String);
-        // GCT  t=Content.plainText(t);
+        // GCT  A.is(t,Content); t=Content.plainText(t);
         this.fs.setContent(this.path(), t);
     },
     getText:function (t) {
         // GCT
+        // return this.fs.getContent(this.path()).toPlainText();
         return this.fs.getContent(this.path(), {type:String});
     },
     isText: function () {
@@ -198,11 +199,11 @@ SFile.prototype={
     },
     setBytes:function (b) {
         A.is(b,ArrayBuffer);
-        // GCT
+        // GCT  this.fs.setContent(this.path(), b.toArrayBuffer());
         return this.fs.setContent(this.path(), b);
     },
     getBytes:function (t) {
-        //GCT
+        //GCT   this.fs.getContent(this.path()).toArrayBuffer();
         return this.fs.getContent(this.path(), {type:ArrayBuffer});
     },
     getURL: function () {

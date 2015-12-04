@@ -86,20 +86,20 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
             if (pa) this.getRootFS().mkdir(pa);
             var np=this.toNativePath(path);
             var cs=typeof content=="string";
-
+            /*
+              GCT
+               if (content.hasBin() || !content.hasPlainText() ) {
+                   fs.writeFileSync(np, this.arrayBuffer2Buffer( content.toArrayBuffer() ));
+               } else {
+                   fs.writeFileSync(np, content.toPlainText());
+               }
+            */
             if (this.isText(path)) {
                 fs.writeFileSync(np, content)
-                /*if (cs) return fs.writeFileSync(np, content);
-                else {
-                    return fs.writeFileSync(np, content);
-                    //throw new Error("TODO");
-                }*/
             } else {
-//                console.log("NatFS", cs, content);
                 if (!cs) return fs.writeFileSync(np, content);
                 else {
                     var d=new DataURL(content);
-                    //console.log(d.buffer);
                     return fs.writeFileSync(np, d.buffer);
                 }
             }
