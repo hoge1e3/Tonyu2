@@ -1,8 +1,10 @@
 define(["extend","assert"],function (extend,assert) {
     var A=(typeof Buffer!="undefined") ? Buffer :ArrayBuffer;
+    function isNodeBuffer(data) {
+        return (typeof Buffer!="undefined" && data instanceof Buffer);
+    }
     function isBuffer(data) {
-        return data instanceof ArrayBuffer ||
-        (typeof Buffer!="undefined" && data instanceof Buffer);
+        return data instanceof ArrayBuffer || isNodeBuffer(data);
     }
     var DataURL=function (data, contentType){
       // data: String/Array/ArrayBuffer
@@ -116,7 +118,7 @@ define(["extend","assert"],function (extend,assert) {
 	        console.log(base64,i);
 	        throw new Error(m);
 	    }
-        //console.log("WOW!", ary_buffer[0],ary_u8[0]);
+        //console.log("WOW!", ary_buffer[0],ary_u8[0], ary_buffer===ary_u8.buffer);
 	    return ary_buffer;
 	}
 	function Base64_From_ArrayBuffer(ary_buffer){
@@ -127,7 +129,7 @@ define(["extend","assert"],function (extend,assert) {
 			'w','x','y','z','0','1','2','3','4','5','6','7','8','9','+','/'
 		];
 		var base64 = "";
-		var ary_u8 = new Uint8Array( ary_buffer );
+		var ary_u8 = isNodeBuffer(ary_buffer) ? ary_buffer : new Uint8Array( ary_buffer );
 		var num = ary_u8.length;
 		var n = 0;
 		var b = 0;

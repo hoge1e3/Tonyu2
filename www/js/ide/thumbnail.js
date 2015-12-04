@@ -22,12 +22,10 @@ define(["ImageRect","Content"],function (IR,Content) {
             var cv=$("<canvas>").attr({width:100,height:100});
             IR(img, cv[0]);
             var url=cv[0].toDataURL();
-            //window.open(url);
             var rsrc=prj.getResource();
             var prjdir=prj.getDir();
             var imfile=TN.file(prj);
-            //GCT
-            imfile.setBytes( Content.url(url).toArrayBuffer() );
+            imfile.text( url );
             var item={
                 name:NAME,
                 pwidth:100,pheight:100,url:"ls:"+imfile.relPath(prjdir)
@@ -46,6 +44,7 @@ define(["ImageRect","Content"],function (IR,Content) {
             console.log("setRSRC",rsrc);
         } catch (e) {
             console.log("Create thumbnail failed",e);
+            console.log(e.stack);
         }
     };
     return TN;

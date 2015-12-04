@@ -4,6 +4,7 @@ define(["DataURL","Util","assert"],function (DataURL,Util,assert) {
         return data instanceof ArrayBuffer ||
         (typeof Buffer!="undefined" && data instanceof Buffer);
     }
+    Content.isBuffer=isBuffer;
     Content.plainText=function (s,contentType){
         var b=new Content;
         b.contentType=contentType||"text/plain";
@@ -15,18 +16,25 @@ define(["DataURL","Util","assert"],function (DataURL,Util,assert) {
         b.url=s;
         return b;
     };
+    Content.buffer2ArrayBuffer = function (a) {
+        if (typeof Buffer!="undefined" && a instanceof Buffer) {
+            return new Uint8Array(a).buffer;
+        }
+        return a;
+    };
     Content.bin=function (bin, contentType) {
         assert(contentType, "contentType should be set");
         var b=new Content;
         if (bin && isBuffer(bin.buffer)) {
-            b.bin=bin.buffer;
+            b.bin=Content.buffer2ArrayBuffer(bin.buffer);
         } else if (isBuffer(bin)) {
-            b.bin=bin;
+            b.bin=Content.buffer2ArrayBuffer(bin);
         } else if (bin instanceof Array) {
             b.bin=new Uint8Array(bin).buffer;
         } else {
             throw new Error(bin+" is not a buffer");
         }
+        assert(b.bin, ArrayBuffer);
         b.contentType=contentType;
         return b;
     };
@@ -35,16 +43,21 @@ define(["DataURL","Util","assert"],function (DataURL,Util,assert) {
     p.toUint8Array=function () {
         return new Uint8Array(this.toArrayBuffer());
     };
-    p.toArrayBuffer=function () {
+    p.toBin = function () {
         if (this.bin) {
             return this.bin;
         } else if (this.url) {
             var d=new DataURL(this.url);
+            //console.log("WOW2!", d.buffer[0]);
             return this.bin=d.buffer;
         } else if (this.plain!=null) {
             return this.bin=Util.str2utf8bytes(this.plain).buffer;
         }
         throw new Error("No data");
+    };
+    p.toArrayBuffer=function () {
+        var b=p.toBin();
+        return Content.buffer2ArrayBuffer(b);
     };
     p.toURL=function () {
         if (this.url) {

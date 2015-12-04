@@ -1,5 +1,5 @@
-define(["extend","assert","PathUtil","Util"],
-function (extend,A,P,Util) {
+define(["extend","assert","PathUtil","Util","Content"],
+function (extend,A,P,Util,Content) {
 
 var SFile=function (fs, path) {
     A.is(path, P.Absolute);
@@ -186,25 +186,30 @@ SFile.prototype={
     },
     setText:function (t) {
         A.is(t,String);
-        // GCT  A.is(t,Content); t=Content.plainText(t);
-        this.fs.setContent(this.path(), t);
+        if (this.isText()) {
+            this.fs.setContent(this.path(), Content.plainText(t));
+        } else {
+            this.fs.setContent(this.path(), Content.url(t));
+        }
     },
     getText:function (t) {
-        // GCT
-        // return this.fs.getContent(this.path()).toPlainText();
-        return this.fs.getContent(this.path(), {type:String});
+        if (this.isText()) {
+            return this.fs.getContent(this.path()).toPlainText();
+        } else {
+            return this.fs.getContent(this.path()).toURL();
+        }
     },
     isText: function () {
         return this.fs.isText(this.path());
     },
+    contentType: function () {
+        return this.fs.getContentType(this.path());
+    },
     setBytes:function (b) {
-        A.is(b,ArrayBuffer);
-        // GCT  this.fs.setContent(this.path(), b.toArrayBuffer());
-        return this.fs.setContent(this.path(), b);
+        return this.fs.setContent(this.path(), Content.bin(b));
     },
     getBytes:function (t) {
-        //GCT   this.fs.getContent(this.path()).toArrayBuffer();
-        return this.fs.getContent(this.path(), {type:ArrayBuffer});
+        return this.fs.getContent(this.path()).toArrayBuffer();
     },
     getURL: function () {
         return this.fs.getURL(this.path());
