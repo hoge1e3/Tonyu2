@@ -1,5 +1,5 @@
-define(["extend","assert","PathUtil","Util"],
-function (extend,A,P,Util) {
+define(["extend","assert","PathUtil","Util","DataURL"],
+function (extend,A,P,Util,DataURL) {
 
 var SFile=function (fs, path) {
     A.is(path, P.Absolute);
@@ -186,13 +186,23 @@ SFile.prototype={
     },
     setText:function (t) {
         A.is(t,String);
+        if (this.isText()) {
+            this.fs.setContent(this.path(), t);
+        } else {
+            this.fs.setContent(this.path(), new DataURL(t).buffer );
+        }
+
         // GCT  A.is(t,Content); t=Content.plainText(t);
-        this.fs.setContent(this.path(), t);
     },
     getText:function (t) {
         // GCT
         // return this.fs.getContent(this.path()).toPlainText();
-        return this.fs.getContent(this.path(), {type:String});
+        if (this.isText()) {
+            return this.fs.getContent(this.path(), {type:String});
+        } else {
+            return new DataURL( this.fs.getContent(this.path(), {type:ArrayBuffer}),
+                    this.fs.getContentType(this.path()) ).url;
+        }
     },
     isText: function () {
         return this.fs.isText(this.path());

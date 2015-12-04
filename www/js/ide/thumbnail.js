@@ -27,7 +27,7 @@ define(["ImageRect","Content"],function (IR,Content) {
             var prjdir=prj.getDir();
             var imfile=TN.file(prj);
             //GCT
-            imfile.setBytes( Content.url(url).toArrayBuffer() );
+            imfile.text( url );
             var item={
                 name:NAME,
                 pwidth:100,pheight:100,url:"ls:"+imfile.relPath(prjdir)
