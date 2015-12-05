@@ -6,6 +6,15 @@ define([], function () {
                 setTimeout(function () {d.resolve(v);},0);
                 return d.promise();
             },
+            funcPromise:function (f) {
+                var d=new $.Deferred;
+                f(function (v) {
+                    d.resolve(v);
+                },function (e) {
+                    d.reject(e);
+                });
+                return d.promise();
+            },
             throwPromise:function (e) {
                 d=new $.Deferred;
                 setTimeout(function () {

@@ -218,6 +218,7 @@ var reqConf={
             "mkrunDiag":"mkrun/mkrunDiag",
             "extLink":"ui/extLink",
             "Content":"fs2/Content",
+            "WebFS":"fs2/WebFS",
 
             "foo":"bar"
         },

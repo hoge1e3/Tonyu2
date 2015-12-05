@@ -47,6 +47,9 @@ define(["extend","PathUtil","MIMETypes","assert","SFile"],function (extend, P, M
         isReadOnly: function (path, options) {// mainly for check ENTIRELY read only
             stub("isReadOnly");
         },
+        supportsSync: function () {
+            return true;
+        },
         mounted: function (parentFS, mountPoint ) {
             assert.is(arguments,[FS,P.AbsDir]);
             this.parentFS=parentFS;
@@ -85,11 +88,19 @@ define(["extend","PathUtil","MIMETypes","assert","SFile"],function (extend, P, M
         getContent: function (path, options) {
             // options:{type:String|DataURL|ArrayBuffer|OutputStream|Writer}
             // succ : [type],
-            stub("");
+            stub("getContent");
+        },
+        getContentAsync: function (path, options) {
+            if (!this.supoortsSync()) stub("getContentAsync");
+            return $.when(this.getContent.apply(this,arguments));
         },
         setContent: function (path, content, options) {
             // content: String|ArrayBuffer|InputStream|Reader
             stub("");
+        },
+        setContentAsync: function (path, content, options) {
+            if (!this.supoortsSync()) stub("setContentAsync");
+            return $.when(this.setContent.apply(this,arguments));
         },
         getMetaInfo: function (path, options) {
             stub("");

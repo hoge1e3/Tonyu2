@@ -192,7 +192,17 @@ SFile.prototype={
             this.fs.setContent(this.path(), Content.url(t));
         }
     },
-    getText:function (t) {
+    getContent: function (f) {
+        if (typeof f=="function") {
+            return this.fs.getContentAsync(this.path()).then(f);
+        }
+        return this.fs.getContent();
+    },
+    setContent: function (c) {
+        return this.fs.setContentAsync(this.path(),c);
+    },
+
+    getText:function () {
         if (this.isText()) {
             return this.fs.getContent(this.path()).toPlainText();
         } else {
