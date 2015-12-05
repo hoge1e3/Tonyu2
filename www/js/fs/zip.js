@@ -12,7 +12,7 @@ define(["FS","Shell","Util"/*"JSZip","FileSaver"*/],function (FS,sh,Util/*,JSZip
                     if (f.isText()) {
                         dst.file(f.name(),f.text());
                     } else {
-                        dst.file(f.name(),f.getBytes());
+                        dst.file(f.name(),f.getBytes({binType:ArrayBuffer}));
                     }
                 }
             });

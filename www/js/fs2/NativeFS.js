@@ -68,7 +68,7 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL","Content"],
             if (pa) this.getRootFS().mkdir(pa);
             var np=this.toNativePath(path);
             if (content.hasBin() || !content.hasPlainText() ) {
-                fs.writeFileSync(np, this.arrayBuffer2Buffer( content.toArrayBuffer() ));
+                fs.writeFileSync(np, content.toNodeBuffer() );
             } else {
                 // !hasBin && hasText
                 fs.writeFileSync(np, content.toPlainText());

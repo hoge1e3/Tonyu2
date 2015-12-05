@@ -1,10 +1,8 @@
 define(["DataURL","Util","assert"],function (DataURL,Util,assert) {
     var Content=function () {};
-    function isBuffer(data) {
-        return data instanceof ArrayBuffer ||
-        (typeof Buffer!="undefined" && data instanceof Buffer);
-    }
-    Content.isBuffer=isBuffer;
+    var isNodeBuffer=Util.isNodeBuffer;
+    var isBuffer=Util.isBuffer;
+
     Content.plainText=function (s,contentType){
         var b=new Content;
         b.contentType=contentType||"text/plain";
@@ -17,57 +15,81 @@ define(["DataURL","Util","assert"],function (DataURL,Util,assert) {
         return b;
     };
     Content.buffer2ArrayBuffer = function (a) {
-        if (typeof Buffer!="undefined" && a instanceof Buffer) {
-            return new Uint8Array(a).buffer;
+        if (Util.isBuffer(a)) {
+            return assert(new Uint8Array(a).buffer,"n2a: buf is not set");
         }
-        return a;
+        return assert(a,"n2a: a is not set");
     };
+    Content.arrayBuffer2Buffer= function (a) {
+        if (a instanceof ArrayBuffer) {
+            var b=new Buffer(new Uint8Array(a));
+            return b;
+        }
+        return assert(a,"a2n: a is not set");
+    };
+
     Content.bin=function (bin, contentType) {
         assert(contentType, "contentType should be set");
         var b=new Content;
         if (bin && isBuffer(bin.buffer)) {
-            b.bin=Content.buffer2ArrayBuffer(bin.buffer);
-        } else if (isBuffer(bin)) {
-            b.bin=Content.buffer2ArrayBuffer(bin);
-        } else if (bin instanceof Array) {
-            b.bin=new Uint8Array(bin).buffer;
+            b.arrayBuffer=bin.buffer;
+        } else if (Util.isNodeBuffer(bin)) {
+            b.nodeBuffer=bin;
+        } else if (bin instanceof ArrayBuffer) {
+            b.arrayBuffer=bin;
         } else {
-            throw new Error(bin+" is not a buffer");
+            throw new Error(bin+" is not a bin");
         }
-        assert(b.bin, ArrayBuffer);
         b.contentType=contentType;
         return b;
     };
 
     var p=Content.prototype;
-    p.toUint8Array=function () {
-        return new Uint8Array(this.toArrayBuffer());
-    };
-    p.toBin = function () {
-        if (this.bin) {
-            return this.bin;
+    p.toBin = function (binType) {
+        binType=binType || (Util.hasNodeBuffer() ? Buffer: ArrayBuffer);
+        if (this.nodeBuffer) {
+            if (binType===Buffer) {
+                return this.nodeBuffer;
+            } else {
+                return this.arrayBuffer=( Content.buffer2ArrayBuffer(this.nodeBuffer) );
+            }
+        } else if (this.arrayBuffer) {
+            if (binType===ArrayBuffer) {
+                return this.arrayBuffer;
+            } else {
+                return this.nodeBuffer=( Content.arrayBuffer2Buffer(this.arrayBuffer) );
+            }
         } else if (this.url) {
-            var d=new DataURL(this.url);
-            //console.log("WOW2!", d.buffer[0]);
-            return this.bin=d.buffer;
+            var d=new DataURL(this.url, binType);
+            return this.setBuffer(d.buffer);
         } else if (this.plain!=null) {
-            return this.bin=Util.str2utf8bytes(this.plain).buffer;
+            return this.setBuffer( Util.str2utf8bytes(this.plain, binType) );
         }
         throw new Error("No data");
     };
+    p.setBuffer=function (b) {
+        assert(b,"b is not set");
+        if (Util.isNodeBuffer(b)) {
+            return this.nodeBuffer=b;
+        } else {
+            return this.arrayBuffer=b;
+        }
+    };
     p.toArrayBuffer=function () {
-        var b=p.toBin();
-        return Content.buffer2ArrayBuffer(b);
+        return this.toBin(ArrayBuffer);
+    };
+    p.toNodeBuffer=function () {
+        return this.toBin(Buffer);
     };
     p.toURL=function () {
         if (this.url) {
             return this.url;
         } else {
-            if (!this.bin && this.plain!=null) {
-                this.bin=Util.str2utf8bytes(this.plain);
+            if (!this.arrayBuffer && this.plain!=null) {
+                this.arrayBuffer=Util.str2utf8bytes(this.plain,ArrayBuffer);
             }
-            if (this.bin) {
-                var d=new DataURL(this.bin,this.contentType);
+            if (this.arrayBuffer || this.nodeBuffer) {
+                var d=new DataURL(this.arrayBuffer || this.nodeBuffer,this.contentType);
                 return this.url=d.url;
             }
         }
@@ -77,20 +99,23 @@ define(["DataURL","Util","assert"],function (DataURL,Util,assert) {
         if (this.plain!=null) {
             return this.plain;
         } else {
-            if (this.url && !this.bin) {
-                var d=new DataURL(this.url);
-                this.bin=d.buffer;
+            if (this.url && !this.hasBin() ) {
+                var d=new DataURL(this.url,ArrayBuffer);
+                this.arrayBuffer=d.buffer;
             }
-            if (this.bin) {
-                return this.plain=Util.utf8bytes2str(new Uint8Array(this.bin));
+            if (this.hasBin()) {
+                return this.plain=Util.utf8bytes2str(
+                        this.nodeBuffer || new Uint8Array(this.arrayBuffer)
+                );
             }
         }
         throw new Error("No data");
     };
     p.hasURL=function (){return this.url;};
     p.hasPlainText=function (){return this.plain!=null;};
-    p.hasBin=function (){return this.bin;};
-
+    p.hasBin=function (){return this.nodeBuffer || this.arrayBuffer;};
+    p.hasNodeBuffer= function () {return this.nodeBuffer;}
+    p.hasArrayBuffer= function () {return this.arrayBuffer;}
     return Content;
 });
 /*
@@ -102,18 +127,18 @@ requirejs(["Content"], function (C) {
    function test(c,path) {
        var p=c.toPlainText();
        var u=c.toURL();
-       var b=c.toArrayBuffer();
-       var a=c.toUint8Array();
-       console.log(path,"->",p,u,a);
+       var a=c.toArrayBuffer();
+       var n=c.toNodeBuffer();
+       console.log(path,"->",p,u,a,n);
        var c1=C.plainText(p);
        var c2=C.url(u);
-       var c3=C.bin(b,"text/plain");
-       var c4=C.bin(a,"text/plain");
+       var c3=C.bin(a,"text/plain");
+       var c4=C.bin(n,"text/plain");
        if (path.length<2) {
            test(c1, path.concat([p]));
            test(c2, path.concat([u]));
-           test(c3, path.concat([b]));
-           test(c4, path.concat([a]));
+           test(c3, path.concat([a]));
+           test(c4, path.concat([n]));
        }
 
    }

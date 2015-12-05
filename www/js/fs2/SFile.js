@@ -206,10 +206,11 @@ SFile.prototype={
         return this.fs.getContentType(this.path());
     },
     setBytes:function (b) {
-        return this.fs.setContent(this.path(), Content.bin(b));
+        return this.fs.setContent(this.path(), Content.bin(b,this.contentType()));
     },
-    getBytes:function (t) {
-        return this.fs.getContent(this.path()).toArrayBuffer();
+    getBytes:function (options) {
+        options=options||{};
+        return this.fs.getContent(this.path()).toBin(options.binType);
     },
     getURL: function () {
         return this.fs.getURL(this.path());
