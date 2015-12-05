@@ -153,9 +153,9 @@ define(["FS2","PathUtil","extend","assert","Util","Content"],
             assert.is(arguments,[Absolute,Content]);
             this.assertWriteable(path);
             if (this.isText(path)) {
-                this.setItem(path, c.toPlainText());
+                this.setItem(path, content.toPlainText());
             } else {
-                this.setItem(path, c.toURL());
+                this.setItem(path, content.toURL());
             }
             this.touch(path);
         },

@@ -1,4 +1,4 @@
-// Created at Sat Dec 05 2015 12:52:29 GMT+0900 (東京 (標準時))
+// Created at Sat Dec 05 2015 13:04:34 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -2074,9 +2074,9 @@ define(["FS2","PathUtil","extend","assert","Util","Content"],
             assert.is(arguments,[Absolute,Content]);
             this.assertWriteable(path);
             if (this.isText(path)) {
-                this.setItem(path, c.toPlainText());
+                this.setItem(path, content.toPlainText());
             } else {
-                this.setItem(path, c.toURL());
+                this.setItem(path, content.toURL());
             }
             this.touch(path);
         },

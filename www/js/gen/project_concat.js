@@ -1,4 +1,4 @@
-// Created at Sat Dec 05 2015 12:52:32 GMT+0900 (東京 (標準時))
+// Created at Sat Dec 05 2015 13:04:36 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -1093,14 +1093,14 @@ return Tonyu=function () {
             timeout:timeout,animationFrame:animationFrame, asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,
-            VERSION:1449287549235,//EMBED_VERSION
+            VERSION:1449288274188,//EMBED_VERSION
             A:A};
 }();
 });
 requireSimulator.setName('extend');
 define([],function (){
    return function extend(d,s) {
-      for (var i in s) {d[i]=s[i];}
+      for (var i in s) {d[i]=s[i];} 
    };
 });
 
@@ -10438,22 +10438,22 @@ difflib = {
 	defaultJunkFunction: function (c) {
 		return __whitespace.hasOwnProperty(c);
 	},
-
+	
 	stripLinebreaks: function (str) { return str.replace(/^[\n\r]*|[\n\r]*$/g, ""); },
-
+	
 	stringAsLines: function (str) {
 		var lfpos = str.indexOf("\n");
 		var crpos = str.indexOf("\r");
 		var linebreak = ((lfpos > -1 && crpos > -1) || crpos < 0) ? "\n" : "\r";
-
+		
 		var lines = str.split(linebreak);
 		for (var i = 0; i < lines.length; i++) {
 			lines[i] = difflib.stripLinebreaks(lines[i]);
 		}
-
+		
 		return lines;
 	},
-
+	
 	// iteration-based reduce implementation
 	__reduce: function (func, list, initial) {
 		if (initial != null) {
@@ -10465,14 +10465,14 @@ difflib = {
 		} else {
 			return null;
 		}
-
+		
 		for (; idx < list.length; idx++) {
 			value = func(value, list[idx]);
 		}
-
+		
 		return value;
 	},
-
+	
 	// comparison function for sorting lists of numeric tuples
 	__ntuplecomp: function (a, b) {
 		var mlen = Math.max(a.length, b.length);
@@ -10480,45 +10480,45 @@ difflib = {
 			if (a[i] < b[i]) return -1;
 			if (a[i] > b[i]) return 1;
 		}
-
+		
 		return a.length == b.length ? 0 : (a.length < b.length ? -1 : 1);
 	},
-
+	
 	__calculate_ratio: function (matches, length) {
 		return length ? 2.0 * matches / length : 1.0;
 	},
-
+	
 	// returns a function that returns true if a key passed to the returned function
 	// is in the dict (js object) provided to this function; replaces being able to
 	// carry around dict.has_key in python...
 	__isindict: function (dict) {
 		return function (key) { return dict.hasOwnProperty(key); };
 	},
-
+	
 	// replacement for python's dict.get function -- need easy default values
 	__dictget: function (dict, key, defaultValue) {
 		return dict.hasOwnProperty(key) ? dict[key] : defaultValue;
-	},
-
+	},	
+	
 	SequenceMatcher: function (a, b, isjunk) {
 		this.set_seqs = function (a, b) {
 			this.set_seq1(a);
 			this.set_seq2(b);
 		}
-
+		
 		this.set_seq1 = function (a) {
 			if (a == this.a) return;
 			this.a = a;
 			this.matching_blocks = this.opcodes = null;
 		}
-
+		
 		this.set_seq2 = function (b) {
 			if (b == this.b) return;
 			this.b = b;
 			this.matching_blocks = this.opcodes = this.fullbcount = null;
 			this.__chain_b();
 		}
-
+		
 		this.__chain_b = function () {
 			var b = this.b;
 			var n = b.length;
@@ -10538,13 +10538,13 @@ difflib = {
 					b2j[elt] = [i];
 				}
 			}
-
+	
 			for (var elt in populardict) {
 				if (populardict.hasOwnProperty(elt)) {
 					delete b2j[elt];
 				}
 			}
-
+			
 			var isjunk = this.isjunk;
 			var junkdict = {};
 			if (isjunk) {
@@ -10561,11 +10561,11 @@ difflib = {
 					}
 				}
 			}
-
+	
 			this.isbjunk = difflib.__isindict(junkdict);
 			this.isbpopular = difflib.__isindict(populardict);
 		}
-
+		
 		this.find_longest_match = function (alo, ahi, blo, bhi) {
 			var a = this.a;
 			var b = this.b;
@@ -10575,7 +10575,7 @@ difflib = {
 			var bestj = blo;
 			var bestsize = 0;
 			var j = null;
-
+	
 			var j2len = {};
 			var nothing = [];
 			for (var i = alo; i < ahi; i++) {
@@ -10596,38 +10596,38 @@ difflib = {
 				}
 				j2len = newj2len;
 			}
-
+	
 			while (besti > alo && bestj > blo && !isbjunk(b[bestj - 1]) && a[besti - 1] == b[bestj - 1]) {
 				besti--;
 				bestj--;
 				bestsize++;
 			}
-
+				
 			while (besti + bestsize < ahi && bestj + bestsize < bhi &&
 					!isbjunk(b[bestj + bestsize]) &&
 					a[besti + bestsize] == b[bestj + bestsize]) {
 				bestsize++;
 			}
-
+	
 			while (besti > alo && bestj > blo && isbjunk(b[bestj - 1]) && a[besti - 1] == b[bestj - 1]) {
 				besti--;
 				bestj--;
 				bestsize++;
 			}
-
+			
 			while (besti + bestsize < ahi && bestj + bestsize < bhi && isbjunk(b[bestj + bestsize]) &&
 					a[besti + bestsize] == b[bestj + bestsize]) {
 				bestsize++;
 			}
-
+	
 			return [besti, bestj, bestsize];
 		}
-
+		
 		this.get_matching_blocks = function () {
 			if (this.matching_blocks != null) return this.matching_blocks;
 			var la = this.a.length;
 			var lb = this.b.length;
-
+	
 			var queue = [[0, la, 0, lb]];
 			var matching_blocks = [];
 			var alo, ahi, blo, bhi, qi, i, j, k, x;
@@ -10641,7 +10641,7 @@ difflib = {
 				i = x[0];
 				j = x[1];
 				k = x[2];
-
+	
 				if (k) {
 					matching_blocks.push(x);
 					if (alo < i && blo < j)
@@ -10650,9 +10650,9 @@ difflib = {
 						queue.push([i + k, ahi, j + k, bhi]);
 				}
 			}
-
+			
 			matching_blocks.sort(difflib.__ntuplecomp);
-
+	
 			var i1 = j1 = k1 = block = 0;
 			var non_adjacent = [];
 			for (var idx in matching_blocks) {
@@ -10671,14 +10671,14 @@ difflib = {
 					}
 				}
 			}
-
+			
 			if (k1) non_adjacent.push([i1, j1, k1]);
-
+	
 			non_adjacent.push([la, lb, 0]);
 			this.matching_blocks = non_adjacent;
 			return this.matching_blocks;
 		}
-
+		
 		this.get_opcodes = function () {
 			if (this.opcodes != null) return this.opcodes;
 			var i = 0;
@@ -10704,14 +10704,14 @@ difflib = {
 					if (tag) answer.push([tag, i, ai, j, bj]);
 					i = ai + size;
 					j = bj + size;
-
+					
 					if (size) answer.push(['equal', ai, i, bj, j]);
 				}
 			}
-
+			
 			return answer;
 		}
-
+		
 		// this is a generator function in the python lib, which of course is not supported in javascript
 		// the reimplementation builds up the grouped opcodes into a list in their entirety and returns that.
 		this.get_grouped_opcodes = function (n) {
@@ -10737,7 +10737,7 @@ difflib = {
 				j2 = code[4];
 				codes[codes.length - 1] = [tag, i1, Math.min(i2, i1 + n), j1, Math.min(j2, j1 + n)];
 			}
-
+	
 			var nn = n + n;
 			var group = [];
 			var groups = [];
@@ -10756,23 +10756,23 @@ difflib = {
 						i1 = Math.max(i1, i2-n);
 						j1 = Math.max(j1, j2-n);
 					}
-
+					
 					group.push([tag, i1, i2, j1, j2]);
 				}
 			}
-
+			
 			if (group && !(group.length == 1 && group[0][0] == 'equal')) groups.push(group)
-
+			
 			return groups;
 		}
-
+		
 		this.ratio = function () {
 			matches = difflib.__reduce(
 							function (sum, triple) { return sum + triple[triple.length - 1]; },
 							this.get_matching_blocks(), 0);
 			return difflib.__calculate_ratio(matches, this.a.length + this.b.length);
 		}
-
+		
 		this.quick_ratio = function () {
 			var fullbcount, elt;
 			if (this.fullbcount == null) {
@@ -10783,7 +10783,7 @@ difflib = {
 				}
 			}
 			fullbcount = this.fullbcount;
-
+	
 			var avail = {};
 			var availhas = difflib.__isindict(avail);
 			var matches = numb = 0;
@@ -10797,16 +10797,16 @@ difflib = {
 				avail[elt] = numb - 1;
 				if (numb > 0) matches++;
 			}
-
+			
 			return difflib.__calculate_ratio(matches, this.a.length + this.b.length);
 		}
-
+		
 		this.real_quick_ratio = function () {
 			var la = this.a.length;
 			var lb = this.b.length;
 			return _calculate_ratio(Math.min(la, lb), la + lb);
 		}
-
+		
 		this.isjunk = isjunk ? isjunk : difflib.defaultJunkFunction;
 		this.a = this.b = null;
 		this.set_seqs(a, b);
@@ -10876,26 +10876,26 @@ diffview = {
 			throw "Cannot build diff view; newTextLines is not defined.";
 		if (!opcodes)
 			throw "Canno build diff view; opcodes is not defined.";
-
+		
 		function celt (name, clazz) {
 			var e = document.createElement(name);
 			e.className = clazz;
 			return e;
 		}
-
+		
 		function telt (name, text) {
 			var e = document.createElement(name);
 			e.appendChild(document.createTextNode(text));
 			return e;
 		}
-
+		
 		function ctelt (name, clazz, text) {
 			var e = document.createElement(name);
 			e.className = clazz;
 			e.appendChild(document.createTextNode(text));
 			return e;
 		}
-
+	
 		var tdata = document.createElement("thead");
 		var node = document.createElement("tr");
 		tdata.appendChild(node);
@@ -10910,13 +10910,13 @@ diffview = {
 			node.appendChild(ctelt("th", "texttitle", newTextName));
 		}
 		tdata = [tdata];
-
+		
 		var rows = [];
 		var node2;
-
+		
 		/**
 		 * Adds two cells to the given row; if the given row corresponds to a real
-		 * line number (based on the line index tidx and the endpoint of the
+		 * line number (based on the line index tidx and the endpoint of the 
 		 * range in question tend), then the cells will contain the line number
 		 * and the line of text from textLines at position tidx (with the class of
 		 * the second cell set to the name of the change represented), and tidx + 1 will
@@ -10934,13 +10934,13 @@ diffview = {
 				return tidx;
 			}
 		}
-
+		
 		function addCellsInline (row, tidx, tidx2, textLines, change) {
 			row.appendChild(telt("th", tidx == null ? "" : (tidx + 1).toString()));
 			row.appendChild(telt("th", tidx2 == null ? "" : (tidx2 + 1).toString()));
 			row.appendChild(ctelt("td", change, textLines[tidx != null ? tidx : tidx2].replace(/\t/g, "\u00a0\u00a0\u00a0\u00a0")));
 		}
-
+		
 		for (var idx = 0; idx < opcodes.length; idx++) {
 			code = opcodes[idx];
 			change = code[0];
@@ -10957,7 +10957,7 @@ diffview = {
 					var jump = rowcnt - ((idx == 0 ? 1 : 2) * contextSize);
 					if (jump > 1) {
 						toprows.push(node = document.createElement("tr"));
-
+						
 						b += jump;
 						n += jump;
 						i += jump - 1;
@@ -10965,7 +10965,7 @@ diffview = {
 						if (!inline) node.appendChild(ctelt("td", "skip", ""));
 						node.appendChild(telt("th", "..."));
 						node.appendChild(ctelt("td", "skip", ""));
-
+						
 						// skip last lines if they're all equal
 						if (idx + 1 == opcodes.length) {
 							break;
@@ -10974,7 +10974,7 @@ diffview = {
 						}
 					}
 				}
-
+				
 				toprows.push(node = document.createElement("tr"));
 				if (inline) {
 					if (change == "insert") {
@@ -10998,15 +10998,15 @@ diffview = {
 			for (var i = 0; i < toprows.length; i++) rows.push(toprows[i]);
 			for (var i = 0; i < botrows.length; i++) rows.push(botrows[i]);
 		}
-
+		
 		rows.push(node = ctelt("th", "author", "diff view generated by "));
 		node.setAttribute("colspan", inline ? 3 : 4);
 		node.appendChild(node2 = telt("a", "jsdifflib"));
 		node2.setAttribute("href", "http://github.com/cemerick/jsdifflib");
-
+		
 		tdata.push(node = document.createElement("tbody"));
 		for (var idx in rows) rows.hasOwnProperty(idx) && node.appendChild(rows[idx]);
-
+		
 		node = celt("table", "diff" + (inline ? " inlinediff" : ""));
 		for (var idx in tdata) tdata.hasOwnProperty(idx) && node.appendChild(tdata[idx]);
 		return node;
