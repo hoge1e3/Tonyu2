@@ -1,4 +1,4 @@
-// Created at Thu Dec 03 2015 14:57:04 GMT+0900 (東京 (標準時))
+// Created at Sat Dec 05 2015 12:52:29 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -642,6 +642,15 @@ function privatize(o){
     }
     return res;
 }
+function hasNodeBuffer() {
+    return typeof Buffer!="undefined";
+}
+function isNodeBuffer(data) {
+    return (hasNodeBuffer() && data instanceof Buffer);
+}
+function isBuffer(data) {
+    return data instanceof ArrayBuffer || isNodeBuffer(data);
+}
 function utf8bytes2str(bytes) {
     var e=[];
     for (var i=0 ; i<bytes.length ; i++) {
@@ -654,7 +663,7 @@ function utf8bytes2str(bytes) {
         throw er;
     }
 }
-function str2utf8bytes(str) {
+function str2utf8bytes(str, binType) {
     var e=encodeURIComponent(str);
     var r=/^%(..)/;
     var a=[];
@@ -666,7 +675,7 @@ function str2utf8bytes(str) {
             i+=m[0].length-1;
         } else a.push(e.charCodeAt(i));
     }
-    return new Uint8Array(a);
+    return (typeof Buffer!="undefined" && binType===Buffer ? new Buffer(a) : new Uint8Array(a).buffer);
 }
 
 return {
@@ -676,13 +685,335 @@ return {
     Base64_From_ArrayBuffer:Base64_From_ArrayBuffer,
     utf8bytes2str: utf8bytes2str,
     str2utf8bytes: str2utf8bytes,
-    privatize: privatize
+    privatize: privatize,
+    hasNodeBuffer:hasNodeBuffer,
+    isNodeBuffer: isNodeBuffer,
+    isBuffer: isBuffer
 };
 })();
 
+requireSimulator.setName('DataURL');
+define(["extend","assert","Util"],function (extend,assert,Util) {
+    var A=Util.hasNodeBuffer() ? Buffer :ArrayBuffer;
+    var isNodeBuffer=Util.isNodeBuffer;
+    var isBuffer=Util.isBuffer;
+    var DataURL=function (data, contentType){
+      // data: String/Array/ArrayBuffer
+      if (typeof data=="string") {
+          this.url=data;
+          this.binType=contentType || A;
+          this.dataURL2bin(data);
+      } else if (data && isBuffer(data.buffer)) {
+          this.buffer=data.buffer;
+          assert.is(contentType,String);
+          this.contentType=contentType;
+          this.bin2dataURL(this.buffer, this.contentType);
+      } else if (isBuffer(data)) {
+          this.buffer=data;
+          assert.is(contentType,String);
+          this.contentType=contentType;
+          this.bin2dataURL(this.buffer, this.contentType);
+      } else {
+          console.log(arguments);
+          assert.fail("Invalid args: ",arguments);
+      }
+   };
+   DataURL.isBuffer=isBuffer;
+   extend(DataURL.prototype,{
+      bin2dataURL: function (b, contentType) {
+          assert(isBuffer(b));
+          assert.is(contentType,String);
+  	     var head=this.dataHeader(contentType);
+	     var base64=Base64_From_ArrayBuffer(b);
+	     assert.is(base64,String);
+	     return this.url=head+base64;
+	  },
+	  dataURL2bin: function (dataURL) {
+          assert.is(arguments,[String]);
+	      var reg=/^data:([^;]+);base64,/i;
+	      var r=reg.exec(dataURL);
+	      assert(r, ["malformed dataURL:", dataURL] );
+	      this.contentType=r[1];
+	      this.buffer=Base64_To_ArrayBuffer(dataURL.substring(r[0].length) , this.binType);
+          return assert.is(this.buffer , this.binType);
+  	  },
+  	  dataHeader: function (ctype) {
+	      assert.is(arguments,[String]);
+	      return "data:"+ctype+";base64,";
+   	  },
+   	  toString: function () {return assert.is(this.url,String);}
+   });
+
+	function Base64_To_ArrayBuffer(base64, binType){
+	    var A=binType;
+	    base64=base64.replace(/[\n=]/g,"");
+	    var dic = new Object();
+	    dic[0x41]= 0; dic[0x42]= 1; dic[0x43]= 2; dic[0x44]= 3; dic[0x45]= 4; dic[0x46]= 5; dic[0x47]= 6; dic[0x48]= 7; dic[0x49]= 8; dic[0x4a]= 9; dic[0x4b]=10; dic[0x4c]=11; dic[0x4d]=12; dic[0x4e]=13; dic[0x4f]=14; dic[0x50]=15;
+	    dic[0x51]=16; dic[0x52]=17; dic[0x53]=18; dic[0x54]=19; dic[0x55]=20; dic[0x56]=21; dic[0x57]=22; dic[0x58]=23; dic[0x59]=24; dic[0x5a]=25; dic[0x61]=26; dic[0x62]=27; dic[0x63]=28; dic[0x64]=29; dic[0x65]=30; dic[0x66]=31;
+	    dic[0x67]=32; dic[0x68]=33; dic[0x69]=34; dic[0x6a]=35; dic[0x6b]=36; dic[0x6c]=37; dic[0x6d]=38; dic[0x6e]=39; dic[0x6f]=40; dic[0x70]=41; dic[0x71]=42; dic[0x72]=43; dic[0x73]=44; dic[0x74]=45; dic[0x75]=46; dic[0x76]=47;
+	    dic[0x77]=48; dic[0x78]=49; dic[0x79]=50; dic[0x7a]=51; dic[0x30]=52; dic[0x31]=53; dic[0x32]=54; dic[0x33]=55; dic[0x34]=56; dic[0x35]=57; dic[0x36]=58; dic[0x37]=59; dic[0x38]=60; dic[0x39]=61; dic[0x2b]=62; dic[0x2f]=63;
+	    var num = base64.length;
+	    var n = 0;
+	    var b = 0;
+	    var e;
+
+	    if(!num) return (new A(0));
+	    //if(num < 4) return null;
+	    //if(num % 4) return null;
+
+	    // AA     12    1
+	    // AAA    18    2
+	    // AAAA   24    3
+	    // AAAAA  30    3
+	    // AAAAAA 36    4
+	    // num*6/8
+	    e = Math.floor(num / 4 * 3);
+	    if(base64.charAt(num - 1) == '=') e -= 1;
+	    if(base64.charAt(num - 2) == '=') e -= 1;
+
+	    var ary_buffer = new A( e );
+	    var ary_u8 = (Util.isNodeBuffer(ary_buffer) ? ary_buffer : new Uint8Array( ary_buffer ));
+	    var i = 0;
+	    var p = 0;
+	    while(p < e){
+	        b = dic[base64.charCodeAt(i)];
+	        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i));//return null;
+	        n = (b << 2);
+	        i ++;
+
+	        b = dic[base64.charCodeAt(i)];
+	        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i))
+            ary_u8[p] = n | ((b >> 4) & 0x3);
+	        /*if (p==0) {
+	            console.log("WOW!", n | ((b >> 4) & 0x3), ary_u8[p]);
+	        }*/
+	        n = (b & 0x0f) << 4;
+	        i ++;
+	        p ++;
+	        if(p >= e) break;
+
+	        b = dic[base64.charCodeAt(i)];
+	        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i))
+	        ary_u8[p] = n | ((b >> 2) & 0xf);
+	        n = (b & 0x03) << 6;
+	        i ++;
+	        p ++;
+	        if(p >= e) break;
+
+	        b = dic[base64.charCodeAt(i)];
+	        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i))
+	        ary_u8[p] = n | b;
+	        i ++;
+	        p ++;
+	    }
+	    function fail(m) {
+	        console.log(m);
+	        console.log(base64,i);
+	        throw new Error(m);
+	    }
+        //console.log("WOW!", ary_buffer[0],ary_u8[0], ary_buffer===ary_u8.buffer);
+	    if (binType===Uint8Array) {
+	        return ary_u8;
+	    }
+	    return ary_buffer;
+	}
+	function Base64_From_ArrayBuffer(ary_buffer){
+		var dic = [
+			'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P',
+			'Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f',
+			'g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v',
+			'w','x','y','z','0','1','2','3','4','5','6','7','8','9','+','/'
+		];
+		var base64 = "";
+		var ary_u8 = Util.isNodeBuffer(ary_buffer) ? ary_buffer : new Uint8Array( ary_buffer );
+		var num = ary_u8.length;
+		var n = 0;
+		var b = 0;
+
+		var i = 0;
+		while(i < num){
+			b = ary_u8[i];
+			base64 += dic[(b >> 2)];
+			n = (b & 0x03) << 4;
+			i ++;
+			if(i >= num) break;
+
+			b = ary_u8[i];
+			base64 += dic[n | (b >> 4)];
+			n = (b & 0x0f) << 2;
+			i ++;
+			if(i >= num) break;
+
+			b = ary_u8[i];
+			base64 += dic[n | (b >> 6)];
+			base64 += dic[(b & 0x3f)];
+			i ++;
+		}
+
+		var m = num % 3;
+		if(m){
+			base64 += dic[n];
+		}
+		if(m == 1){
+			base64 += "==";
+		}else if(m == 2){
+			base64 += "=";
+		}
+		return base64;
+	}
+    return DataURL;
+});
+requireSimulator.setName('Content');
+define(["DataURL","Util","assert"],function (DataURL,Util,assert) {
+    var Content=function () {};
+    var isNodeBuffer=Util.isNodeBuffer;
+    var isBuffer=Util.isBuffer;
+
+    Content.plainText=function (s,contentType){
+        var b=new Content;
+        b.contentType=contentType||"text/plain";
+        b.plain=s;
+        return b;
+    };
+    Content.url=function (s) {
+        var b=new Content;
+        b.url=s;
+        return b;
+    };
+    Content.buffer2ArrayBuffer = function (a) {
+        if (Util.isBuffer(a)) {
+            return assert(new Uint8Array(a).buffer,"n2a: buf is not set");
+        }
+        return assert(a,"n2a: a is not set");
+    };
+    Content.arrayBuffer2Buffer= function (a) {
+        if (a instanceof ArrayBuffer) {
+            var b=new Buffer(new Uint8Array(a));
+            return b;
+        }
+        return assert(a,"a2n: a is not set");
+    };
+
+    Content.bin=function (bin, contentType) {
+        assert(contentType, "contentType should be set");
+        var b=new Content;
+        if (bin && isBuffer(bin.buffer)) {
+            b.arrayBuffer=bin.buffer;
+        } else if (Util.isNodeBuffer(bin)) {
+            b.nodeBuffer=bin;
+        } else if (bin instanceof ArrayBuffer) {
+            b.arrayBuffer=bin;
+        } else {
+            throw new Error(bin+" is not a bin");
+        }
+        b.contentType=contentType;
+        return b;
+    };
+
+    var p=Content.prototype;
+    p.toBin = function (binType) {
+        binType=binType || (Util.hasNodeBuffer() ? Buffer: ArrayBuffer);
+        if (this.nodeBuffer) {
+            if (binType===Buffer) {
+                return this.nodeBuffer;
+            } else {
+                return this.arrayBuffer=( Content.buffer2ArrayBuffer(this.nodeBuffer) );
+            }
+        } else if (this.arrayBuffer) {
+            if (binType===ArrayBuffer) {
+                return this.arrayBuffer;
+            } else {
+                return this.nodeBuffer=( Content.arrayBuffer2Buffer(this.arrayBuffer) );
+            }
+        } else if (this.url) {
+            var d=new DataURL(this.url, binType);
+            return this.setBuffer(d.buffer);
+        } else if (this.plain!=null) {
+            return this.setBuffer( Util.str2utf8bytes(this.plain, binType) );
+        }
+        throw new Error("No data");
+    };
+    p.setBuffer=function (b) {
+        assert(b,"b is not set");
+        if (Util.isNodeBuffer(b)) {
+            return this.nodeBuffer=b;
+        } else {
+            return this.arrayBuffer=b;
+        }
+    };
+    p.toArrayBuffer=function () {
+        return this.toBin(ArrayBuffer);
+    };
+    p.toNodeBuffer=function () {
+        return this.toBin(Buffer);
+    };
+    p.toURL=function () {
+        if (this.url) {
+            return this.url;
+        } else {
+            if (!this.arrayBuffer && this.plain!=null) {
+                this.arrayBuffer=Util.str2utf8bytes(this.plain,ArrayBuffer);
+            }
+            if (this.arrayBuffer || this.nodeBuffer) {
+                var d=new DataURL(this.arrayBuffer || this.nodeBuffer,this.contentType);
+                return this.url=d.url;
+            }
+        }
+        throw new Error("No data");
+    };
+    p.toPlainText=function () {
+        if (this.plain!=null) {
+            return this.plain;
+        } else {
+            if (this.url && !this.hasBin() ) {
+                var d=new DataURL(this.url,ArrayBuffer);
+                this.arrayBuffer=d.buffer;
+            }
+            if (this.hasBin()) {
+                return this.plain=Util.utf8bytes2str(
+                        this.nodeBuffer || new Uint8Array(this.arrayBuffer)
+                );
+            }
+        }
+        throw new Error("No data");
+    };
+    p.hasURL=function (){return this.url;};
+    p.hasPlainText=function (){return this.plain!=null;};
+    p.hasBin=function (){return this.nodeBuffer || this.arrayBuffer;};
+    p.hasNodeBuffer= function () {return this.nodeBuffer;}
+    p.hasArrayBuffer= function () {return this.arrayBuffer;}
+    return Content;
+});
+/*
+requirejs(["Content"], function (C) {
+   var s="てすとabc";
+   var c1=C.plainText(s);
+   test(c1,[s]);
+
+   function test(c,path) {
+       var p=c.toPlainText();
+       var u=c.toURL();
+       var a=c.toArrayBuffer();
+       var n=c.toNodeBuffer();
+       console.log(path,"->",p,u,a,n);
+       var c1=C.plainText(p);
+       var c2=C.url(u);
+       var c3=C.bin(a,"text/plain");
+       var c4=C.bin(n,"text/plain");
+       if (path.length<2) {
+           test(c1, path.concat([p]));
+           test(c2, path.concat([u]));
+           test(c3, path.concat([a]));
+           test(c4, path.concat([n]));
+       }
+
+   }
+
+});
+*/
 requireSimulator.setName('SFile');
-define(["extend","assert","PathUtil","Util"],
-function (extend,A,P,Util) {
+define(["extend","assert","PathUtil","Util","Content"],
+function (extend,A,P,Util,Content) {
 
 var SFile=function (fs, path) {
     A.is(path, P.Absolute);
@@ -869,24 +1200,31 @@ SFile.prototype={
     },
     setText:function (t) {
         A.is(t,String);
-        // GCT  t=Content.plainText(t);
-        this.fs.setContent(this.path(), t);
+        if (this.isText()) {
+            this.fs.setContent(this.path(), Content.plainText(t));
+        } else {
+            this.fs.setContent(this.path(), Content.url(t));
+        }
     },
     getText:function (t) {
-        // GCT
-        return this.fs.getContent(this.path(), {type:String});
+        if (this.isText()) {
+            return this.fs.getContent(this.path()).toPlainText();
+        } else {
+            return this.fs.getContent(this.path()).toURL();
+        }
     },
     isText: function () {
         return this.fs.isText(this.path());
     },
-    setBytes:function (b) {
-        A.is(b,ArrayBuffer);
-        // GCT
-        return this.fs.setContent(this.path(), b);
+    contentType: function () {
+        return this.fs.getContentType(this.path());
     },
-    getBytes:function (t) {
-        //GCT
-        return this.fs.getContent(this.path(), {type:ArrayBuffer});
+    setBytes:function (b) {
+        return this.fs.setContent(this.path(), Content.bin(b,this.contentType()));
+    },
+    getBytes:function (options) {
+        options=options||{};
+        return this.fs.getContent(this.path()).toBin(options.binType);
     },
     getURL: function () {
         return this.fs.getURL(this.path());
@@ -1417,177 +1755,9 @@ define([], function () {
     return window.WebSite=WebSite;
 });
 
-requireSimulator.setName('DataURL');
-define(["extend","assert"],function (extend,assert) {
-    var A=(typeof Buffer!="undefined") ? Buffer :ArrayBuffer;
-    function isBuffer(data) {
-        return data instanceof ArrayBuffer ||
-        (typeof Buffer!="undefined" && data instanceof Buffer);
-    }
-    var DataURL=function (data, contentType){
-      // data: String/Array/ArrayBuffer
-      if (typeof data=="string") {
-          this.url=data;
-          this.dataURL2bin(data);
-      } else if (data && isBuffer(data.buffer)) {
-          this.buffer=data.buffer;
-          assert.is(contentType,String);
-          this.contentType=contentType;
-          this.bin2dataURL(this.buffer, this.contentType);
-      } else if (isBuffer(data)) {
-          this.buffer=data;
-          assert.is(contentType,String);
-          this.contentType=contentType;
-          this.bin2dataURL(this.buffer, this.contentType);
-      } else {
-          console.log(arguments);
-          assert.fail("Invalid args: ",arguments);
-      }
-   };
-   DataURL.isBuffer=isBuffer;
-   extend(DataURL.prototype,{
-      bin2dataURL: function (b, contentType) {
-          assert(isBuffer(b));
-          assert.is(contentType,String);
-  	     var head=this.dataHeader(contentType);
-	     var base64=Base64_From_ArrayBuffer(b);
-	     assert.is(base64,String);
-	     return this.url=head+base64;
-	  },
-	  dataURL2bin: function (dataURL) {
-          assert.is(arguments,[String]);
-	      var reg=/^data:([^;]+);base64,/i;
-	      var r=reg.exec(dataURL);
-	      assert(r, ["malformed dataURL:", dataURL] );
-	      this.contentType=r[1];
-	      this.buffer=Base64_To_ArrayBuffer(dataURL.substring(r[0].length));
-          return assert.is(this.buffer , A);
-  	  },
-  	  dataHeader: function (ctype) {
-	      assert.is(arguments,[String]);
-	      return "data:"+ctype+";base64,";
-   	  },
-   	  toString: function () {return assert.is(this.url,String);}
-   });
-
-	function Base64_To_ArrayBuffer(base64){
-	    base64=base64.replace(/[\n=]/g,"");
-	    var dic = new Object();
-	    dic[0x41]= 0; dic[0x42]= 1; dic[0x43]= 2; dic[0x44]= 3; dic[0x45]= 4; dic[0x46]= 5; dic[0x47]= 6; dic[0x48]= 7; dic[0x49]= 8; dic[0x4a]= 9; dic[0x4b]=10; dic[0x4c]=11; dic[0x4d]=12; dic[0x4e]=13; dic[0x4f]=14; dic[0x50]=15;
-	    dic[0x51]=16; dic[0x52]=17; dic[0x53]=18; dic[0x54]=19; dic[0x55]=20; dic[0x56]=21; dic[0x57]=22; dic[0x58]=23; dic[0x59]=24; dic[0x5a]=25; dic[0x61]=26; dic[0x62]=27; dic[0x63]=28; dic[0x64]=29; dic[0x65]=30; dic[0x66]=31;
-	    dic[0x67]=32; dic[0x68]=33; dic[0x69]=34; dic[0x6a]=35; dic[0x6b]=36; dic[0x6c]=37; dic[0x6d]=38; dic[0x6e]=39; dic[0x6f]=40; dic[0x70]=41; dic[0x71]=42; dic[0x72]=43; dic[0x73]=44; dic[0x74]=45; dic[0x75]=46; dic[0x76]=47;
-	    dic[0x77]=48; dic[0x78]=49; dic[0x79]=50; dic[0x7a]=51; dic[0x30]=52; dic[0x31]=53; dic[0x32]=54; dic[0x33]=55; dic[0x34]=56; dic[0x35]=57; dic[0x36]=58; dic[0x37]=59; dic[0x38]=60; dic[0x39]=61; dic[0x2b]=62; dic[0x2f]=63;
-	    var num = base64.length;
-	    var n = 0;
-	    var b = 0;
-	    var e;
-
-	    if(!num) return (new A(0));
-	    //if(num < 4) return null;
-	    //if(num % 4) return null;
-
-	    // AA     12    1
-	    // AAA    18    2
-	    // AAAA   24    3
-	    // AAAAA  30    3
-	    // AAAAAA 36    4
-	    // num*6/8
-	    e = Math.floor(num / 4 * 3);
-	    if(base64.charAt(num - 1) == '=') e -= 1;
-	    if(base64.charAt(num - 2) == '=') e -= 1;
-
-	    var ary_buffer = new A( e );
-	    var ary_u8 = (typeof Buffer!="undefined" ? ary_buffer : new Uint8Array( ary_buffer ));
-	    var i = 0;
-	    var p = 0;
-	    while(p < e){
-	        b = dic[base64.charCodeAt(i)];
-	        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i));//return null;
-	        n = (b << 2);
-	        i ++;
-
-	        b = dic[base64.charCodeAt(i)];
-	        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i))
-            ary_u8[p] = n | ((b >> 4) & 0x3);
-	        /*if (p==0) {
-	            console.log("WOW!", n | ((b >> 4) & 0x3), ary_u8[p]);
-	        }*/
-	        n = (b & 0x0f) << 4;
-	        i ++;
-	        p ++;
-	        if(p >= e) break;
-
-	        b = dic[base64.charCodeAt(i)];
-	        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i))
-	        ary_u8[p] = n | ((b >> 2) & 0xf);
-	        n = (b & 0x03) << 6;
-	        i ++;
-	        p ++;
-	        if(p >= e) break;
-
-	        b = dic[base64.charCodeAt(i)];
-	        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i))
-	        ary_u8[p] = n | b;
-	        i ++;
-	        p ++;
-	    }
-	    function fail(m) {
-	        console.log(m);
-	        console.log(base64,i);
-	        throw new Error(m);
-	    }
-        //console.log("WOW!", ary_buffer[0],ary_u8[0]);
-	    return ary_buffer;
-	}
-	function Base64_From_ArrayBuffer(ary_buffer){
-		var dic = [
-			'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P',
-			'Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f',
-			'g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v',
-			'w','x','y','z','0','1','2','3','4','5','6','7','8','9','+','/'
-		];
-		var base64 = "";
-		var ary_u8 = new Uint8Array( ary_buffer );
-		var num = ary_u8.length;
-		var n = 0;
-		var b = 0;
-
-		var i = 0;
-		while(i < num){
-			b = ary_u8[i];
-			base64 += dic[(b >> 2)];
-			n = (b & 0x03) << 4;
-			i ++;
-			if(i >= num) break;
-
-			b = ary_u8[i];
-			base64 += dic[n | (b >> 4)];
-			n = (b & 0x0f) << 2;
-			i ++;
-			if(i >= num) break;
-
-			b = ary_u8[i];
-			base64 += dic[n | (b >> 6)];
-			base64 += dic[(b & 0x3f)];
-			i ++;
-		}
-
-		var m = num % 3;
-		if(m){
-			base64 += dic[n];
-		}
-		if(m == 1){
-			base64 += "==";
-		}else if(m == 2){
-			base64 += "=";
-		}
-		return base64;
-	}
-    return DataURL;
-});
 requireSimulator.setName('NativeFS');
-define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
-        function (FS,A,P,extend,MIME,DataURL) {
+define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL","Content"],
+        function (FS,A,P,extend,MIME,DataURL,Content) {
     var available=(typeof process=="object" && process.__node_webkit);
     if (!available) {
         return function () {
@@ -1613,7 +1783,10 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
     };
     Pro.arrayBuffer2Buffer= function (a) {
         if (a instanceof ArrayBuffer) {
-            return new Buffer(new Uint8Array(a));
+            console.log("WOW3!", a[0]);
+            var b=new Buffer(new Uint8Array(a));
+            console.log("WOW4!", b[0]);
+            return b;
         }
         return a;
     };
@@ -1640,56 +1813,23 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
             options=options||{};
             A.is(path,P.Absolute);
             var np=this.toNativePath(path);
-            var t=options.type;
             this.assertExist(path);
             if (this.isText(path)) {
-                /* GCT
-                 * return Content.plainText( fs.readFileSync(np, {encoding:"utf8"}) );
-                 */
-                if (t===String) {
-                    return A.isset(fs.readFileSync(np, {encoding:"utf8"}),path);
-                } else {
-                    return A.isset(fs.readFileSync(np),path);
-                    //TODOvar bin=fs.readFileSync(np);
-                    //throw new Error("TODO: handling bin file "+path);
-                }
+                return Content.plainText( fs.readFileSync(np, {encoding:"utf8"}) );
             } else {
-                /* GCT
-                 * return Content.bin( fs.readFileSync(np) );
-                 */
-                if (t===String) {
-                    var bin=fs.readFileSync(np);
-                    var d=new DataURL(bin, this.getContentType(path) );
-                    return A.isset(d.url,path);
-                } else {
-                    return A.isset(fs.readFileSync(np),path);
-                }
+                return Content.bin( fs.readFileSync(np) , this.getContentType(path));
             }
         },
         setContent: function (path,content) {
-            // GCT
-            content=this.arrayBuffer2Buffer(content);
-            A.is(path,P.Absolute);
+            A.is(arguments,[P.Absolute,Content]);
             var pa=P.up(path);
             if (pa) this.getRootFS().mkdir(pa);
             var np=this.toNativePath(path);
-            var cs=typeof content=="string";
-
-            if (this.isText(path)) {
-                fs.writeFileSync(np, content)
-                /*if (cs) return fs.writeFileSync(np, content);
-                else {
-                    return fs.writeFileSync(np, content);
-                    //throw new Error("TODO");
-                }*/
+            if (content.hasBin() || !content.hasPlainText() ) {
+                fs.writeFileSync(np, content.toNodeBuffer() );
             } else {
-//                console.log("NatFS", cs, content);
-                if (!cs) return fs.writeFileSync(np, content);
-                else {
-                    var d=new DataURL(content);
-                    //console.log(d.buffer);
-                    return fs.writeFileSync(np, d.buffer);
-                }
+                // !hasBin && hasText
+                fs.writeFileSync(np, content.toPlainText());
             }
         },
         getMetaInfo: function(path, options) {
@@ -1778,116 +1918,6 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
     });
     return NativeFS;
 });
-requireSimulator.setName('Content');
-define(["DataURL","Util","assert"],function (DataURL,Util,assert) {
-    var Content=function () {};
-    function isBuffer(data) {
-        return data instanceof ArrayBuffer ||
-        (typeof Buffer!="undefined" && data instanceof Buffer);
-    }
-    Content.plainText=function (s,contentType){
-        var b=new Content;
-        b.contentType=contentType||"text/plain";
-        b.plain=s;
-        return b;
-    };
-    Content.url=function (s) {
-        var b=new Content;
-        b.url=s;
-        return b;
-    };
-    Content.bin=function (bin, contentType) {
-        assert(contentType, "contentType should be set");
-        var b=new Content;
-        if (bin && isBuffer(bin.buffer)) {
-            b.bin=bin.buffer;
-        } else if (isBuffer(bin)) {
-            b.bin=bin;
-        } else if (bin instanceof Array) {
-            b.bin=new Uint8Array(bin).buffer;
-        } else {
-            throw new Error(bin+" is not a buffer");
-        }
-        b.contentType=contentType;
-        return b;
-    };
-
-    var p=Content.prototype;
-    p.toUint8Array=function () {
-        return new Uint8Array(this.toArrayBuffer());
-    };
-    p.toArrayBuffer=function () {
-        if (this.bin) {
-            return this.bin;
-        } else if (this.url) {
-            var d=new DataURL(this.url);
-            return this.bin=d.buffer;
-        } else if (this.plain!=null) {
-            return this.bin=Util.str2utf8bytes(this.plain).buffer;
-        }
-        throw new Error("No data");
-    };
-    p.toURL=function () {
-        if (this.url) {
-            return this.url;
-        } else {
-            if (!this.bin && this.plain!=null) {
-                this.bin=Util.str2utf8bytes(this.plain);
-            }
-            if (this.bin) {
-                var d=new DataURL(this.bin,this.contentType);
-                return this.url=d.url;
-            }
-        }
-        throw new Error("No data");
-    };
-    p.toPlainText=function () {
-        if (this.plain!=null) {
-            return this.plain;
-        } else {
-            if (this.url && !this.bin) {
-                var d=new DataURL(this.url);
-                this.bin=d.buffer;
-            }
-            if (this.bin) {
-                return this.plain=Util.utf8bytes2str(new Uint8Array(this.bin));
-            }
-        }
-        throw new Error("No data");
-    };
-    p.hasURL=function (){return this.url;};
-    p.hasPlainText=function (){return this.plain!=null;};
-    p.hasBin=function (){return this.bin;};
-
-    return Content;
-});
-/*
-requirejs(["Content"], function (C) {
-   var s="てすとabc";
-   var c1=C.plainText(s);
-   test(c1,[s]);
-
-   function test(c,path) {
-       var p=c.toPlainText();
-       var u=c.toURL();
-       var b=c.toArrayBuffer();
-       var a=c.toUint8Array();
-       console.log(path,"->",p,u,a);
-       var c1=C.plainText(p);
-       var c2=C.url(u);
-       var c3=C.bin(b,"text/plain");
-       var c4=C.bin(a,"text/plain");
-       if (path.length<2) {
-           test(c1, path.concat([p]));
-           test(c2, path.concat([u]));
-           test(c3, path.concat([b]));
-           test(c4, path.concat([a]));
-       }
-
-   }
-
-});
-*/
 requireSimulator.setName('LSFS');
 define(["FS2","PathUtil","extend","assert","Util","Content"],
         function(FS,P,extend,assert,Util,Content) {
@@ -2038,24 +2068,11 @@ define(["FS2","PathUtil","extend","assert","Util","Content"],
             } else {
                 c=Content.url(this.getItem(path));
             }
-            // GCT:return c;
-            if (options && options.type==ArrayBuffer) {
-                return assert.isset(c.toArrayBuffer(),path);
-            } else {
-                return assert.isset(c.toPlainText(),path);
-            }
+            return c;
         },
         setContent: function(path, content, options) {
-            assert.is(path,Absolute);
+            assert.is(arguments,[Absolute,Content]);
             this.assertWriteable(path);
-            // GCT del
-            var c;
-            if (typeof content=="string" ) {
-                c=Content.plainText(content);
-            } else {
-                c=Content.bin(content,this.getContentType(path));
-            }
-            // GCT del end
             if (this.isText(path)) {
                 this.setItem(path, c.toPlainText());
             } else {
@@ -2209,9 +2226,7 @@ define(["FS2","PathUtil","extend","assert","Util","Content"],
             }
         },
         getURL: function (path) {
-          //GCT   return this.getContent(path).toURL();
-            return Content.bin( this.getContent(path,{type:ArrayBuffer}),
-                    this.getContentType(path) ).toURL();
+            return this.getContent(path).toURL();
         }
     });
     return LSFS;
@@ -2447,29 +2462,6 @@ define(["FS","Util","WebSite","PathUtil","assert"],
         var t=resolve(to);
         return f.copyTo(t,options);
 
-        /*if (f.isDir() && t.isDir()) {
-            var sum=0;
-            f.recursive(function (src) {
-                var rel=src.relPath(f);
-                var dst=t.rel(rel);
-                if (options.test || options.v) {
-                    Shell.echo((dst.exists()?"[ovr]":"[new]")+dst+"<-"+src);
-                }
-                if (!options.test) {
-                    dst.copyFrom(src,options);
-                }
-                sum++;
-            });
-            return sum;
-        } else if (!f.isDir() && !t.isDir()) {
-            t.text(f.text());
-            return 1;
-        } else if (!f.isDir() && t.isDir()) {
-            t.rel(f.name()).text(f.text());
-            return 1;
-        } else {
-            throw "Cannot copy directory "+f+" to file "+t;
-        }*/
     };
     Shell.rm=function (file, options) {
         if (!options) options={};
@@ -2497,7 +2489,6 @@ define(["FS","Util","WebSite","PathUtil","assert"],
     Shell.cat=function (file,options) {
         file=resolve(file, true);
         Shell.echo(file.text());
-        //else return file.text();
     };
     Shell.resolve=function (file) {
 	if (!file) file=".";
@@ -3834,7 +3825,7 @@ define(["FS","Shell","Util"/*"JSZip","FileSaver"*/],function (FS,sh,Util/*,JSZip
                     if (f.isText()) {
                         dst.file(f.name(),f.text());
                     } else {
-                        dst.file(f.name(),f.getBytes());
+                        dst.file(f.name(),f.getBytes({binType:ArrayBuffer}));
                     }
                 }
             });
