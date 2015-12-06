@@ -25,10 +25,6 @@ define(["ImageRect","Content"],function (IR,Content) {
             var rsrc=prj.getResource();
             var prjdir=prj.getDir();
             var imfile=TN.file(prj);
-<<<<<<< HEAD
-            //GCT
-=======
->>>>>>> GCT
             imfile.text( url );
             var item={
                 name:NAME,
