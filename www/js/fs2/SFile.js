@@ -196,7 +196,7 @@ SFile.prototype={
         if (typeof f=="function") {
             return this.fs.getContentAsync(this.path()).then(f);
         }
-        return this.fs.getContent();
+        return this.fs.getContent(this.path());
     },
     setContent: function (c) {
         return this.fs.setContentAsync(this.path(),c);

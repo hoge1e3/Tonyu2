@@ -1,4 +1,4 @@
-// Created at Sun Dec 06 2015 11:15:38 GMT+0900 (東京 (標準時))
+// Created at Sun Dec 06 2015 11:24:50 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -1093,7 +1093,7 @@ return Tonyu=function () {
             timeout:timeout,animationFrame:animationFrame, asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,
-            VERSION:1449368135943,//EMBED_VERSION
+            VERSION:1449368686631,//EMBED_VERSION
             A:A};
 }();
 });
@@ -1811,7 +1811,7 @@ SFile.prototype={
         if (typeof f=="function") {
             return this.fs.getContentAsync(this.path()).then(f);
         }
-        return this.fs.getContent();
+        return this.fs.getContent(this.path());
     },
     setContent: function (c) {
         return this.fs.setContentAsync(this.path(),c);

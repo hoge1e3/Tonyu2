@@ -1,4 +1,4 @@
-// Created at Sun Dec 06 2015 11:15:36 GMT+0900 (東京 (標準時))
+// Created at Sun Dec 06 2015 11:24:47 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -1210,7 +1210,7 @@ SFile.prototype={
         if (typeof f=="function") {
             return this.fs.getContentAsync(this.path()).then(f);
         }
-        return this.fs.getContent();
+        return this.fs.getContent(this.path());
     },
     setContent: function (c) {
         return this.fs.setContentAsync(this.path(),c);
