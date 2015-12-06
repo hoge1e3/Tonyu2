@@ -2,17 +2,16 @@ define(["WebSite","UI"],function (WebSite,UI) {
     var exec = (WebSite.isNW? require('child_process').exec : function (){});
     function extLink(href,caption,options) {
         var p=WebSite.platform;
+        var opt;
         if (p=="win32") {
-            var opt={href:"javascript:;", on:{click: ext("start")}};
-            if (options) for (var k in options) opt[k]=options[k];
-            return UI("a",opt,caption);
+            opt={href:"javascript:;", on:{click: ext("start")}};
         } else if (p=="darwin") {
-            var opt={href:"javascript:;", on:{click: ext("open")}};
-            if (options) for (var k in options) opt[k]=options[k];
-            return UI("a",opt,caption);
+            opt={href:"javascript:;", on:{click: ext("open")}};
         } else {
-            return UI("a",{href:href, target:"_new"},caption);
+            opt={href:href, target:"_new"};
         }
+        if (options) for (var k in options) opt[k]=options[k];
+        return UI("a",opt,caption);
         function ext(cmd) {
             return function () {
                 exec(cmd+" "+href);

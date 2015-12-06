@@ -219,6 +219,7 @@ var reqConf={
             "extLink":"ui/extLink",
             "Content":"fs2/Content",
             "WebFS":"fs2/WebFS",
+            "jquery.binarytransport":"lib/jquery.binarytransport",
 
             "foo":"bar"
         },

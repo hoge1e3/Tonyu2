@@ -1,4 +1,4 @@
-define(["FS2","lib/jquery.binarytransport","DeferredUtil","Content"],
+define(["FS2","jquery.binarytransport","DeferredUtil","Content"],
         function (FS,j,DU,Content) {
     // FS.mount(location.protocol+"//"+location.host+"/", "web");
     var WebFS=function (){};
@@ -9,6 +9,7 @@ define(["FS2","lib/jquery.binarytransport","DeferredUtil","Content"],
     p.fstype=function () {return "Web";};
     p.supportsSync=function () {return false;};
     FS.delegateMethods(p, {
+        exists: function () {return true;},
         getContentAsync: function (path){
             var t=this;
             return DU.funcPromise(function (succ,err) {
@@ -18,7 +19,7 @@ define(["FS2","lib/jquery.binarytransport","DeferredUtil","Content"],
                         succ(Content.bin(reader.result, t.getContentType(path)));
                     });
                     reader.readAsArrayBuffer(blob);
-                },"binary");
+                },"binary").fail(err);
             });
         },
         /*setContentAsync: function (path){

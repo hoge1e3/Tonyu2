@@ -34,17 +34,21 @@ define(["UI","extLink","mkrun","Tonyu","zip"], function (UI,extLink,mkrun,Tonyu,
         var model={dest:dest.path(), src:true, zip:true};
         res.d.$edits.load(model);
         res.run=function () {
-            mkrun.run(prj, FS.get(model.dest), {copySrc:model.src});
-            if (model.zip) {
-                zip.dlzip(FS.get(model.dest));
-            }
-            UIDiag.alert(UI("div",
-                             ["p",(options.hiddenFolder?"":model.dest+"に")+"ランタイムを作成しました。"],
-                             ["p",(model.zip?"保存したZIPファイルを":"上のフォルダをZIPで圧縮したものを"),
-                              extLink("http://hoge1e3.sakura.ne.jp/tonyu/project/","プロジェクトボード",{style:"color: blue;"}),
-                              "にてWebアプリとして公開することができます。"]
-                            ),{width:"auto"});
-            if (res.d.dialog) res.d.dialog("close");
+            return mkrun.run(prj, FS.get(model.dest), {copySrc:model.src}).then(function () {
+                if (model.zip) {
+                    zip.dlzip(FS.get(model.dest));
+                }
+                UIDiag.alert(UI("div",
+                         ["p",(options.hiddenFolder?"":model.dest+"に")+"ランタイムを作成しました。"],
+                         ["p",(model.zip?"保存したZIPファイルを":"上のフォルダをZIPで圧縮したものを"),
+                          extLink("http://hoge1e3.sakura.ne.jp/tonyu/project/",
+                                  "プロジェクトボード",{style:"color: blue;"}),
+                          "にてWebアプリとして公開することができます。"]
+                        ),{width:"auto"}
+                );
+                if (res.d.dialog) res.d.dialog("close");
+                if (options.onEnd) options.onEnd();
+            });
         };
         return res.d;
     };
