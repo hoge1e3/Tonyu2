@@ -75,13 +75,13 @@ $(function () { SplashScreen.show(); });
 	<div class="container">
 		<div class="row">
 			<div id=prjViewer class="col-xs-8">
-			<h1>プロジェクト一覧</h1>
-			<button id="newPrj" class="btn btn-primary">新規作成</button>
-			<a href="http://tonyuexe.appspot.com/" target="exe">公開プロジェクト一覧...</a>
+				<h1>プロジェクト一覧</h1>
+				<button id="newPrj" class="btn btn-primary">新規作成</button>
+				<a href="http://tonyuexe.appspot.com/" target="exe">公開プロジェクト一覧...</a>
+				<span id="ls"></span>
 				<div id="prjItemList"></div>
 			</div>
-			<div id=wikiViewArea class="col-xs-4">
-			</div>
+			<div id=wikiViewArea class="col-xs-4"></div>
 		</div>
 	</div>
 
@@ -89,4 +89,13 @@ $(function () { SplashScreen.show(); });
     <script src="../../js/lib/bootstrap.min.js"></script>
 
 </body>
+<script>
+var using=0;
+for (var i in localStorage) {
+    if (typeof localStorage[i]=="string"){
+        using+=localStorage[i].length;
+    }
+}
+$("#ls").text(Math.floor(using/1024)+"KB使用中。");
+</script>
 </html>

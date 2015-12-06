@@ -86,7 +86,7 @@ define(["FS2","PathUtil","extend","assert","Util","Content"],
         if (ppath == null) return;
         if (!this.inMyFS(ppath)) {
             assert(this.getRootFS()!==this);
-            this.getRootFS().touch(ppath);
+            this.getRootFS().resolveFS(ppath).touch(ppath);
             return;
         }
         var pdinfo = this.getDirInfo(ppath);
@@ -300,7 +300,7 @@ define(["FS2","PathUtil","extend","assert","Util","Content"],
                     this._touch(pinfo, parent , P.name(path), false);
                 } else {
                     assert(this.getRootFS()!==this);
-                    this.getRootFS().touch(parent);
+                    this.getRootFS().resolveFS(parent).touch(parent);
                 }
             }
         },

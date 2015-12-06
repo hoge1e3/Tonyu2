@@ -65,7 +65,7 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL","Content"],
         setContent: function (path,content) {
             A.is(arguments,[P.Absolute,Content]);
             var pa=P.up(path);
-            if (pa) this.getRootFS().mkdir(pa);
+            if (pa) this.getRootFS().resolveFS(pa).mkdir(pa);
             var np=this.toNativePath(path);
             if (content.hasBin() || !content.hasPlainText() ) {
                 fs.writeFileSync(np, content.toNodeBuffer() );
@@ -106,7 +106,7 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL","Content"],
             }
             this.assertWriteable(path);
             var pa=P.up(path);
-            if (pa) this.getRootFS().mkdir(pa);
+            if (pa) this.getRootFS().resolveFS(pa).mkdir(pa);
             var np=this.toNativePath(path);
             return fs.mkdirSync(np);
         },
