@@ -1,20 +1,23 @@
-requirejs(["Util", "Tonyu", "FS", "FileList", "FileMenu",
+requirejs(["Util", "Tonyu", "FS", "PathUtil","FileList", "FileMenu",
            "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project",
            /*"copySample",*/"Shell","Shell2","ProjectOptionsEditor","copyToKernel","KeyEventChecker",
            "IFrameDialog",/*"WikiDialog",*/"runtime", "KernelDiffDialog","Sync","searchDialog","StackTrace","syncWithKernel",
            "UI","ResEditor","WebSite","exceptionCatcher","Tonyu.TraceTbl",
            "SoundDiag","Log","MainClassDialog","DeferredUtil","NWMenu",
-           "ProjectCompiler","compiledProject","mkrunDiag","zip","LSFS"
+           "ProjectCompiler","compiledProject","mkrunDiag","zip","LSFS","WebFS"
           ],
-function (Util, Tonyu, FS, FileList, FileMenu,
+function (Util, Tonyu, FS, PathUtil, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,
           /*copySample,*/sh,sh2, ProjectOptionsEditor, ctk, KeyEventChecker,
           IFrameDialog,/*WikiDialog,*/ rt , KDD,Sync,searchDialog,StackTrace,swk,
           UI,ResEditor,WebSite,EC,TTB,
           sd,Log,MainClassDialog,DU,NWMenu,
-          TPRC,CPPRJ,mkrunDiag,zip,LSFS
+          TPRC,CPPRJ,mkrunDiag,zip,LSFS,WebFS
           ) {
 $(function () {
+    if (!WebSite.isNW) {
+        FS.mount(location.protocol+"//"+location.host+"/", new WebFS);
+    }
     var F=EC.f;
     $LASTPOS=0;
     //copySample();
@@ -28,7 +31,7 @@ $(function () {
     var home=FS.get(WebSite.tonyuHome);
     //if (!Tonyu.ide)  Tonyu.ide={};
     var kernelDir;
-    if (WebSite.kernelDir){
+    if (WebSite.kernelDir && !PathUtil.isURL(WebSite.kernelDir)){
         kernelDir=FS.get(WebSite.kernelDir);//home.rel("Kernel/");
         if (kernelDir.exists()) {
             TPRC(kernelDir).loadClasses();
@@ -155,7 +158,7 @@ $(function () {
     F(FM.on);
     fl.ls(curProjectDir);
     refreshRunMenu();
-    KeyEventChecker.down(document,"Alt+Ctrl+D",function () {
+    /*KeyEventChecker.down(document,"Alt+Ctrl+D",function () {
         //var curFile=fl.curFile();
         //if (!curFile) return;
         KDD.show(curProjectDir, kernelDir);// DiffDialog.show(curFile,kernelDir.rel(curFile.name()));
@@ -163,7 +166,7 @@ $(function () {
     sh.kernelDiff=function () {
         KDD.show(curProjectDir, kernelDir);
     };
-    sh.kernelDiff.description="Compare Kernel file and this project.";
+    sh.kernelDiff.description="Compare Kernel file and this project.";*/
     function ls(){
         fl.ls(curProjectDir);
         refreshRunMenu();
@@ -517,9 +520,14 @@ $(function () {
                     FS.get(WebSite.cwd).rel("Runtimes/").rel( curProjectDir.name()) );
         } else {
             var mkram=FS.get("/mkram/");
+            if (mkram.exists()) mkram.rm({r:1});
             FS.mount(mkram.path(), LSFS.ramDisk() );
-            mkrunDiag.show(curPrj, mkram.rel(curProjectDir.name()), {hiddenFolder:true});
-            FS.unmount(mkram.path());
+            mkrunDiag.show(curPrj, mkram.rel(curProjectDir.name()), {
+                hiddenFolder:true,
+                onEnd:function () {
+                    FS.unmount(mkram.path());
+                }
+            });
         }
     }));
     $("#imgResEditor").click(F(function () {

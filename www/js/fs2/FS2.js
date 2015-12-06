@@ -47,6 +47,9 @@ define(["extend","PathUtil","MIMETypes","assert","SFile"],function (extend, P, M
         isReadOnly: function (path, options) {// mainly for check ENTIRELY read only
             stub("isReadOnly");
         },
+        supportsSync: function () {
+            return true;
+        },
         mounted: function (parentFS, mountPoint ) {
             assert.is(arguments,[FS,P.AbsDir]);
             this.parentFS=parentFS;
@@ -85,11 +88,22 @@ define(["extend","PathUtil","MIMETypes","assert","SFile"],function (extend, P, M
         getContent: function (path, options) {
             // options:{type:String|DataURL|ArrayBuffer|OutputStream|Writer}
             // succ : [type],
-            stub("");
+            stub("getContent");
+        },
+        getContentAsync: function (path, options) {
+            if (!this.supportsSync()) stub("getContentAsync");
+            return $.when(this.getContent.apply(this,arguments));
         },
         setContent: function (path, content, options) {
             // content: String|ArrayBuffer|InputStream|Reader
             stub("");
+        },
+        setContentAsync: function (path, content, options) {
+            var t=this;
+            if (!t.supportsSync()) stub("setContentAsync");
+            return $.when(content).then(function (content) {
+                return $.when(t.setContent(path,content,options));
+            });
         },
         getMetaInfo: function (path, options) {
             stub("");
@@ -116,15 +130,27 @@ define(["extend","PathUtil","MIMETypes","assert","SFile"],function (extend, P, M
             this.assertExist(path);
             options=options||{};
             var srcIsDir=this.isDir(path);
-            var dstIsDir=this.resolveFS(dst).isDir(dst);
+            var dstfs=this.getRootFS().resolveFS(dst);
+            var dstIsDir=dstfs.isDir(dst);
             if (!srcIsDir && !dstIsDir) {
-                var cont=this.getContent(path);
-                var res=this.resolveFS(dst).setContent(dst,cont);
-                if (options.a) {
-                    //console.log("-a", this.getMetaInfo(path));
-                    this.setMetaInfo(dst, this.getMetaInfo(path));
+                if (this.supportsSync() && dstfs.supportsSync()) {
+                    var cont=this.getContent(path);
+                    var res=dstfs.setContent(dst,cont);
+                    if (options.a) {
+                        dstfs.setMetaInfo(dst, this.getMetaInfo(path));
+                    }
+                    return res;
+                } else {
+                    return dstfs.setContentAsync(
+                            dst,
+                            this.getContentAsync(path)
+                    ).then(function (res) {
+                        if (options.a) {
+                            return dstfs.setMetaInfo(dst, this.getMetaInfo(path));
+                        }
+                        return res;
+                    });
                 }
-                return res;
             } else {
                 throw new Error("only file to file supports");
             }
@@ -173,7 +199,7 @@ define(["extend","PathUtil","MIMETypes","assert","SFile"],function (extend, P, M
                 fs=fact(path, options||{});
             }
             assert.is(fs,FS);
-            if (this.exists(path)) {
+            if (!P.isURL(path) && this.exists(path)) {
                 throw new Error(path+": Directory exists");
             }
             var parent=P.up(path);

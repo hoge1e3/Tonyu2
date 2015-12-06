@@ -148,6 +148,15 @@ function privatize(o){
     }
     return res;
 }
+function hasNodeBuffer() {
+    return typeof Buffer!="undefined";
+}
+function isNodeBuffer(data) {
+    return (hasNodeBuffer() && data instanceof Buffer);
+}
+function isBuffer(data) {
+    return data instanceof ArrayBuffer || isNodeBuffer(data);
+}
 function utf8bytes2str(bytes) {
     var e=[];
     for (var i=0 ; i<bytes.length ; i++) {
@@ -160,7 +169,7 @@ function utf8bytes2str(bytes) {
         throw er;
     }
 }
-function str2utf8bytes(str) {
+function str2utf8bytes(str, binType) {
     var e=encodeURIComponent(str);
     var r=/^%(..)/;
     var a=[];
@@ -172,7 +181,7 @@ function str2utf8bytes(str) {
             i+=m[0].length-1;
         } else a.push(e.charCodeAt(i));
     }
-    return new Uint8Array(a);
+    return (typeof Buffer!="undefined" && binType===Buffer ? new Buffer(a) : new Uint8Array(a).buffer);
 }
 
 return {
@@ -182,6 +191,9 @@ return {
     Base64_From_ArrayBuffer:Base64_From_ArrayBuffer,
     utf8bytes2str: utf8bytes2str,
     str2utf8bytes: str2utf8bytes,
-    privatize: privatize
+    privatize: privatize,
+    hasNodeBuffer:hasNodeBuffer,
+    isNodeBuffer: isNodeBuffer,
+    isBuffer: isBuffer
 };
 })();

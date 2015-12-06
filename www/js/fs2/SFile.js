@@ -1,5 +1,5 @@
-define(["extend","assert","PathUtil","Util","DataURL"],
-function (extend,A,P,Util,DataURL) {
+define(["extend","assert","PathUtil","Util","Content"],
+function (extend,A,P,Util,Content) {
 
 var SFile=function (fs, path) {
     A.is(path, P.Absolute);
@@ -187,34 +187,40 @@ SFile.prototype={
     setText:function (t) {
         A.is(t,String);
         if (this.isText()) {
-            this.fs.setContent(this.path(), t);
+            this.fs.setContent(this.path(), Content.plainText(t));
         } else {
-            this.fs.setContent(this.path(), new DataURL(t).buffer );
+            this.fs.setContent(this.path(), Content.url(t));
         }
-
-        // GCT  A.is(t,Content); t=Content.plainText(t);
     },
-    getText:function (t) {
-        // GCT
-        // return this.fs.getContent(this.path()).toPlainText();
+    getContent: function (f) {
+        if (typeof f=="function") {
+            return this.fs.getContentAsync(this.path()).then(f);
+        }
+        return this.fs.getContent(this.path());
+    },
+    setContent: function (c) {
+        return this.fs.setContentAsync(this.path(),c);
+    },
+
+    getText:function () {
         if (this.isText()) {
-            return this.fs.getContent(this.path(), {type:String});
+            return this.fs.getContent(this.path()).toPlainText();
         } else {
-            return new DataURL( this.fs.getContent(this.path(), {type:ArrayBuffer}),
-                    this.fs.getContentType(this.path()) ).url;
+            return this.fs.getContent(this.path()).toURL();
         }
     },
     isText: function () {
         return this.fs.isText(this.path());
     },
-    setBytes:function (b) {
-        A.is(b,ArrayBuffer);
-        // GCT  this.fs.setContent(this.path(), b.toArrayBuffer());
-        return this.fs.setContent(this.path(), b);
+    contentType: function () {
+        return this.fs.getContentType(this.path());
     },
-    getBytes:function (t) {
-        //GCT   this.fs.getContent(this.path()).toArrayBuffer();
-        return this.fs.getContent(this.path(), {type:ArrayBuffer});
+    setBytes:function (b) {
+        return this.fs.setContent(this.path(), Content.bin(b,this.contentType()));
+    },
+    getBytes:function (options) {
+        options=options||{};
+        return this.fs.getContent(this.path()).toBin(options.binType);
     },
     getURL: function () {
         return this.fs.getURL(this.path());

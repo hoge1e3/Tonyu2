@@ -1,4 +1,4 @@
-define([],function () {
+define(["Content"],function (Content) {
 	var STF={};
 	STF.toObj=function () {
 	    var scrs=$("script");
@@ -37,7 +37,11 @@ define([],function () {
 	    var o=STF.toObj();
 	    for (var fn in o) {
             var f=dir.rel(fn);
-            f.text(o[fn].text);
+            if (f.isText()) {
+                f.text(o[fn].text);
+            } else {
+                f.setBytes(Content.url(o[fn].text).toByteArray() );
+            }
         }
 	};
 	return STF;

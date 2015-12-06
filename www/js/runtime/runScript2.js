@@ -38,16 +38,6 @@ requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu
             ramHome.rel("files/").link(actualFilesDir);
         }
 
-        /*var fo=ScriptTagFS.toObj();
-        for (var fn in fo) {
-            var f=curProjectDir.rel(fn);
-            if (!f.isDir()) {
-                var m=fo[fn];
-                f.text(m.text);
-                delete m.text;
-                if (m.lastUpdate) f.metaInfo(m);
-            }
-        }*/
         loadFiles(curProjectDir);
         sh.cd(curProjectDir);
         WebSite.compiledKernel="js/kernel.js";

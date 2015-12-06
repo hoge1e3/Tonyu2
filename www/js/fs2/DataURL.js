@@ -1,13 +1,12 @@
-define(["extend","assert"],function (extend,assert) {
-    var A=(typeof Buffer!="undefined") ? Buffer :ArrayBuffer;
-    function isBuffer(data) {
-        return data instanceof ArrayBuffer ||
-        (typeof Buffer!="undefined" && data instanceof Buffer);
-    }
+define(["extend","assert","Util"],function (extend,assert,Util) {
+    var A=Util.hasNodeBuffer() ? Buffer :ArrayBuffer;
+    var isNodeBuffer=Util.isNodeBuffer;
+    var isBuffer=Util.isBuffer;
     var DataURL=function (data, contentType){
       // data: String/Array/ArrayBuffer
       if (typeof data=="string") {
           this.url=data;
+          this.binType=contentType || A;
           this.dataURL2bin(data);
       } else if (data && isBuffer(data.buffer)) {
           this.buffer=data.buffer;
@@ -40,8 +39,8 @@ define(["extend","assert"],function (extend,assert) {
 	      var r=reg.exec(dataURL);
 	      assert(r, ["malformed dataURL:", dataURL] );
 	      this.contentType=r[1];
-	      this.buffer=Base64_To_ArrayBuffer(dataURL.substring(r[0].length));
-          return assert.is(this.buffer , A);
+	      this.buffer=Base64_To_ArrayBuffer(dataURL.substring(r[0].length) , this.binType);
+          return assert.is(this.buffer , this.binType);
   	  },
   	  dataHeader: function (ctype) {
 	      assert.is(arguments,[String]);
@@ -50,7 +49,8 @@ define(["extend","assert"],function (extend,assert) {
    	  toString: function () {return assert.is(this.url,String);}
    });
 
-	function Base64_To_ArrayBuffer(base64){
+	function Base64_To_ArrayBuffer(base64, binType){
+	    var A=binType;
 	    base64=base64.replace(/[\n=]/g,"");
 	    var dic = new Object();
 	    dic[0x41]= 0; dic[0x42]= 1; dic[0x43]= 2; dic[0x44]= 3; dic[0x45]= 4; dic[0x46]= 5; dic[0x47]= 6; dic[0x48]= 7; dic[0x49]= 8; dic[0x4a]= 9; dic[0x4b]=10; dic[0x4c]=11; dic[0x4d]=12; dic[0x4e]=13; dic[0x4f]=14; dic[0x50]=15;
@@ -77,7 +77,7 @@ define(["extend","assert"],function (extend,assert) {
 	    if(base64.charAt(num - 2) == '=') e -= 1;
 
 	    var ary_buffer = new A( e );
-	    var ary_u8 = (typeof Buffer!="undefined" ? ary_buffer : new Uint8Array( ary_buffer ));
+	    var ary_u8 = (Util.isNodeBuffer(ary_buffer) ? ary_buffer : new Uint8Array( ary_buffer ));
 	    var i = 0;
 	    var p = 0;
 	    while(p < e){
@@ -116,7 +116,10 @@ define(["extend","assert"],function (extend,assert) {
 	        console.log(base64,i);
 	        throw new Error(m);
 	    }
-        //console.log("WOW!", ary_buffer[0],ary_u8[0]);
+        //console.log("WOW!", ary_buffer[0],ary_u8[0], ary_buffer===ary_u8.buffer);
+	    if (binType===Uint8Array) {
+	        return ary_u8;
+	    }
 	    return ary_buffer;
 	}
 	function Base64_From_ArrayBuffer(ary_buffer){
@@ -127,7 +130,7 @@ define(["extend","assert"],function (extend,assert) {
 			'w','x','y','z','0','1','2','3','4','5','6','7','8','9','+','/'
 		];
 		var base64 = "";
-		var ary_u8 = new Uint8Array( ary_buffer );
+		var ary_u8 = Util.isNodeBuffer(ary_buffer) ? ary_buffer : new Uint8Array( ary_buffer );
 		var num = ary_u8.length;
 		var n = 0;
 		var b = 0;

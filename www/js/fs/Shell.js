@@ -60,29 +60,6 @@ define(["FS","Util","WebSite","PathUtil","assert"],
         var t=resolve(to);
         return f.copyTo(t,options);
 
-        /*if (f.isDir() && t.isDir()) {
-            var sum=0;
-            f.recursive(function (src) {
-                var rel=src.relPath(f);
-                var dst=t.rel(rel);
-                if (options.test || options.v) {
-                    Shell.echo((dst.exists()?"[ovr]":"[new]")+dst+"<-"+src);
-                }
-                if (!options.test) {
-                    dst.copyFrom(src,options);
-                }
-                sum++;
-            });
-            return sum;
-        } else if (!f.isDir() && !t.isDir()) {
-            t.text(f.text());
-            return 1;
-        } else if (!f.isDir() && t.isDir()) {
-            t.rel(f.name()).text(f.text());
-            return 1;
-        } else {
-            throw "Cannot copy directory "+f+" to file "+t;
-        }*/
     };
     Shell.rm=function (file, options) {
         if (!options) options={};
@@ -110,7 +87,6 @@ define(["FS","Util","WebSite","PathUtil","assert"],
     Shell.cat=function (file,options) {
         file=resolve(file, true);
         Shell.echo(file.text());
-        //else return file.text();
     };
     Shell.resolve=function (file) {
 	if (!file) file=".";

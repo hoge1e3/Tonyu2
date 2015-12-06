@@ -75,7 +75,7 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite"],
     }
     function drawFrame() {
         var rects=ImageList.parse1(item, srcImg, {boundsInSrc:true});
-        console.log("drawFrame", rects);
+//        console.log("drawFrame", rects);
         var ctx=v.cv[0].getContext("2d");
         rects.forEach(function (r) {
             rect(ctx,calcRect(r));
