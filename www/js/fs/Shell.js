@@ -63,7 +63,17 @@ define(["FS","Util","WebSite","PathUtil","assert"],
         var f=resolve(from, true);
         var t=resolve(to);
         return f.copyTo(t,options);
-
+    };
+    Shell.ln=function (to , from ,options) {
+        var f=resolve(from);
+        var t=resolve(to, true);
+        if (f.isDir() && f.exists()) {
+            f=f.rel(t.name());
+        }
+        if (f.exists()) {
+            throw new Error(f+" exists");
+        }
+        return f.link(t,options);
     };
     Shell.rm=function (file, options) {
         if (!options) options={};
@@ -95,9 +105,9 @@ define(["FS","Util","WebSite","PathUtil","assert"],
         }));
     };
     Shell.resolve=function (file) {
-	if (!file) file=".";
-	file=resolve(file);
-	return file;
+        if (!file) file=".";
+        file=resolve(file);
+        return file;
     };
     Shell.grep=function (pattern, file, options) {
         file=resolve(file, true);
@@ -141,6 +151,7 @@ define(["FS","Util","WebSite","PathUtil","assert"],
         console.log.apply(console,arguments);
         if (Shell.outUI && Shell.outUI.err) Shell.outUI.err.apply(Shell.outUI,arguments);
     };
+
 
     Shell.prompt=function () {};
     Shell.ASYNC={r:"SH_ASYNC"};

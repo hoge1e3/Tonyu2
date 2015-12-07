@@ -22,7 +22,7 @@ define(["FS2","PathUtil","extend","assert","Util","Content"],
     FS.addFSType("localStorage",function (path, options) {
         return new LSFS(localStorage);
     });
-    FS.addFSType("ramDisk",function (path, options) {
+    FS.addFSType("ram",function (path, options) {
         return LSFS.ramDisk();
     });
 
@@ -144,7 +144,7 @@ define(["FS2","PathUtil","extend","assert","Util","Content"],
         },
         getContent: function(path, options) {
             assert.is(arguments,[Absolute]);
-            this.assertExist(path);
+            this.assertExist(path); // Do not use this??( because it does not follow symlinks)
             var c;
             if (this.isText(path)) {
                 c=Content.plainText(this.getItem(path));
@@ -262,7 +262,7 @@ define(["FS2","PathUtil","extend","assert","Util","Content"],
             return !!res;
         },
         link: function(path, to, options) {
-            assert.is(arguments,[P.AbsDir,P.AbsDir]);
+            assert.is(arguments,[P.Absolute,P.Absolute]);
             this.assertWriteable(path);
             if (this.exists(path)) this.err(path,"file exists");
             if (P.isDir(path) && !P.isDir(to)) {

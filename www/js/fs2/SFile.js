@@ -110,9 +110,13 @@ SFile.prototype={
     },
     //Common
     touch: function () {
+        var l=this._resolveLinkNoPolicy();
+        if (!this.equals(l)) return l.touch.apply(l,arguments);
         this.fs.touch(this.path());
     },
     isReadOnly: function () {
+        var l=this._resolveLinkNoPolicy();
+        if (!this.equals(l)) return l.isReadOnly.apply(l,arguments);
         this.fs.isReadOnly(this.path());
     },
     isTrashed:function () {
@@ -128,9 +132,13 @@ SFile.prototype={
         }
     },
     getMetaInfo: function (options) {
+        var l=this._resolveLinkNoPolicy();
+        if (!this.equals(l)) return l.getMetaInfo.apply(l,arguments);
         return this.fs.getMetaInfo(this.path(),options);
     },
     setMetaInfo: function (info, options) {
+        var l=this._resolveLinkNoPolicy();
+        if (!this.equals(l)) return l.setMetaInfo.apply(l,arguments);
         return this.fs.setMetaInfo(this.path(),info, options);
     },
     lastUpdate:function () {
@@ -172,12 +180,15 @@ SFile.prototype={
         this.rm(options);
     },
     isDir: function () {
+        //var l=this._resolveLinkNoPolicy();
+        //if (!this.equals(l)) return l.isDir.apply(l,arguments);  stackoverflow
         return this.fs.isDir(this.path());
     },
     // File
     text:function () {
-        var l=this._resolveLinkNoPolicy();
-        if (!this.equals(l)) return l.text.apply(l,arguments);
+        //var l=this._resolveLinkNoPolicy();
+        //if (!this.equals(l)) return l.text.apply(l,arguments);
+        // Does in each methods
         if (arguments.length>0) {
             this.setText(arguments[0]);
         } else {
@@ -186,6 +197,8 @@ SFile.prototype={
     },
     setText:function (t) {
         A.is(t,String);
+        var l=this._resolveLinkNoPolicy();
+        if (!this.equals(l)) return l.setText.apply(l,arguments);
         if (this.isText()) {
             this.fs.setContent(this.path(), Content.plainText(t));
         } else {
@@ -193,16 +206,22 @@ SFile.prototype={
         }
     },
     getContent: function (f) {
+        var l=this._resolveLinkNoPolicy();
+        if (!this.equals(l)) return l.getContent.apply(l,arguments);
         if (typeof f=="function") {
             return this.fs.getContentAsync(this.path()).then(f);
         }
         return this.fs.getContent(this.path());
     },
     setContent: function (c) {
+        var l=this._resolveLinkNoPolicy();
+        if (!this.equals(l)) return l.setContent.apply(l,arguments);
         return this.fs.setContentAsync(this.path(),c);
     },
 
     getText:function () {
+        var l=this._resolveLinkNoPolicy();
+        if (!this.equals(l)) return l.getText.apply(l,arguments);
         if (this.isText()) {
             return this.fs.getContent(this.path()).toPlainText();
         } else {
@@ -210,19 +229,31 @@ SFile.prototype={
         }
     },
     isText: function () {
+        var l=this._resolveLinkNoPolicy();
+        if (!this.equals(l)) return l.isText.apply(l,arguments);
+
         return this.fs.isText(this.path());
     },
     contentType: function () {
+        var l=this._resolveLinkNoPolicy();
+        if (!this.equals(l)) return l.getContentType.apply(l,arguments);
+
         return this.fs.getContentType(this.path());
     },
     setBytes:function (b) {
+        var l=this._resolveLinkNoPolicy();
+        if (!this.equals(l)) return l.setBytes.apply(l,arguments);
         return this.fs.setContent(this.path(), Content.bin(b,this.contentType()));
     },
     getBytes:function (options) {
+        var l=this._resolveLinkNoPolicy();
+        if (!this.equals(l)) return l.getBytes.apply(l,arguments);
         options=options||{};
         return this.fs.getContent(this.path()).toBin(options.binType);
     },
     getURL: function () {
+        var l=this._resolveLinkNoPolicy();
+        if (!this.equals(l)) return l.getURL.apply(l,arguments);
         return this.fs.getURL(this.path());
     },
     lines:function () {
@@ -355,6 +386,9 @@ SFile.prototype={
         this.touch();
     },
     link: function (to,options) {// % ln to path
+        var l=this._resolveLinkNoPolicy();
+        if (!this.equals(l)) return l.link.apply(l,arguments);
+
         to=this._resolve(A(to));
         this.fs.link(this.path(),to.path(),options);
     },
@@ -370,6 +404,9 @@ SFile.prototype={
         return this._resolveLinkOpt();
     },
     isLink: function () {
+        var l=this._resolveLinkNoPolicy();
+        if (!this.equals(l)) return l.isLink.apply(l,arguments);
+
         return this.fs.isLink(this.path());
     }
 };
