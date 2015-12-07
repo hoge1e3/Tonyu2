@@ -28,9 +28,7 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL","Content"],
     };
     Pro.arrayBuffer2Buffer= function (a) {
         if (a instanceof ArrayBuffer) {
-            console.log("WOW3!", a[0]);
             var b=new Buffer(new Uint8Array(a));
-            console.log("WOW4!", b[0]);
             return b;
         }
         return a;

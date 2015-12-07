@@ -1,4 +1,4 @@
-define(["assert"], function (assert) {
+define(["assert","FS","PathUtil","SFile"], function (assert,FS,P,SFile) {
     var RootFS=function (defaultFS){
         assert.is(defaultFS,FS);
         this.mount(null, defaultFS);
@@ -24,9 +24,12 @@ define(["assert"], function (assert) {
                 }
                 return false;
             },
+            availFSTypes:function (){
+                return FS.fstypes;
+            },
             mount: function (path, fs, options) {
                 if (typeof fs=="string") {
-                    var fact=assert( fstypes[fs] ,"fstype "+fs+" is undefined.");
+                    var fact=assert( FS.fstypes[fs] ,"fstype "+fs+" is undefined.");
                     fs=fact(path, options||{});
                 }
                 assert.is(fs,FS);
@@ -53,5 +56,5 @@ define(["assert"], function (assert) {
     for (var i in p) {
         dst[i]=p[i];
     }
-
+    return RootFS;
 });

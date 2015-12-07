@@ -1,6 +1,6 @@
 define(["FS","Util","WebSite","PathUtil","assert"],
         function (FS,Util,WebSite,PathUtil,assert) {
-    var Shell={cwd:FS.get("/")};
+    var Shell={};
     Shell.cd=function (dir) {
         Shell.cwd=resolve(dir,true);
         return Shell.pwd();
@@ -14,7 +14,10 @@ define(["FS","Util","WebSite","PathUtil","assert"],
     Shell.mount=function (path, options) {
         //var r=resolve(path);
         if (!options || !options.t) {
-            sh.err("-t=[fstype] should be specified.");
+            for (var k in FS.getRootFS().availFstypes()) {
+                fst.push(k);
+            }
+            sh.err("-t=("+fstype.join("|")+") should be specified.");
             return;
         }
         FS.mount(path,options.t, options);

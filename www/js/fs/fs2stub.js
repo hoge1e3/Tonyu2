@@ -1,15 +1,13 @@
-define(["FS2","WebSite","NativeFS","LSFS", "PathUtil","Env","assert","SFile"],
-        function (FS,WebSite,NativeFS,LSFS, P,Env,A,SFile) {
+define(["FS2","WebSite","NativeFS","LSFS", "PathUtil","Env","assert","SFile","RootFS"],
+        function (FS,WebSite,NativeFS,LSFS, P,Env,A,SFile,RootFS) {
     var FS={};
     if (typeof window=="object") window.FS=FS;
     var rootFS;
     var env=new Env(WebSite);
     if (WebSite.isNW) {
-        //var nfsp=process.env.TONYU_FS_HOME || P.rel(process.cwd().replace(/\\/g,"/"), "www/fs/");
-        //console.log("nfsp",nfsp);
-        rootFS=new NativeFS();//(nfsp);
+        rootFS=new RootFS(new NativeFS());
     } else {
-        rootFS=new LSFS(localStorage);
+        rootFS=new RootFS(new LSFS(localStorage));
     }
     FS.getRootFS=function () {return rootFS;};
     FS.get=function () {

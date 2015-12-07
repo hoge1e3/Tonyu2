@@ -202,6 +202,7 @@ var reqConf={
             "DataURL":"fs2/DataURL",
             "extend":"fs2/extend",
             "FS2":"fs2/FS2",
+            "RootFS":"fs2/RootFS",
             "LSFS":"fs2/LSFS",
             "MIMETypes":"fs2/MIMETypes",
             "NativeFS":"fs2/NativeFS",

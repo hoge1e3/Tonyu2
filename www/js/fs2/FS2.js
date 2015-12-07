@@ -22,12 +22,12 @@ define(["extend","PathUtil","MIMETypes","assert","SFile"],function (extend, P, M
             return true;
         },
         resolveFS:function (path, options) {
-            assert(this.getRootFS()!===this);
+            assert(this.getRootFS()!==this);
             return this.getRootFS().resolveFS(path);
         },
-        mounted: function (parentFS, mountPoint ) {
+        mounted: function (rootFS, mountPoint ) {
             //assert.is(arguments,[FS,P.AbsDir]);
-            this.parentFS=parentFS;
+            this.rootFS=rootFS;
             this.mountPoint=mountPoint;
         },
         inMyFS:function (path) {
@@ -42,9 +42,7 @@ define(["extend","PathUtil","MIMETypes","assert","SFile"],function (extend, P, M
             return res;
         },
         getRootFS: function () {
-            var res;
-            for (var r=this;r;r=r.parentFS){res=r;}
-            return assert.is(res,FS);
+            return assert( this.rootFS, "rootFS is not set" );
         },
         //-------- end of mouting
         //-------- spec
