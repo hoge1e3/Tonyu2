@@ -89,7 +89,7 @@
 requireSimulator.setName('extend');
 define([],function (){
    return function extend(d,s) {
-      for (var i in s) {d[i]=s[i];} 
+      for (var i in s) {d[i]=s[i];}
    };
 });
 
@@ -315,12 +315,11 @@ var Relative=assert.f(function (s) {
     this.is(s,String);
     this.assert( !PathUtil.isAbsolutePath(s) , [s, " is not a relative path"]);
 });
-var AbsDir=assert.and(Dir,Absolute);
-
 var Dir=assert.f(function (s) {
     this.is(s,Path);
     this.assert( PathUtil.isDir(s) , [s, " is not a directory path"]);
 });
+var AbsDir=assert.and(Dir,Absolute);
 var File=assert.f(function (s) {
     this.is(s,Path);
     this.assert( !PathUtil.isDir(s) , [s, " is not a file path"]);

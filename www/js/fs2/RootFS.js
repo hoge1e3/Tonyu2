@@ -1,4 +1,4 @@
-define(["assert","FS","PathUtil","SFile"], function (assert,FS,P,SFile) {
+define(["assert","FS2","PathUtil","SFile"], function (assert,FS,P,SFile) {
     var RootFS=function (defaultFS){
         assert.is(defaultFS,FS);
         this.mount(null, defaultFS);
@@ -25,11 +25,11 @@ define(["assert","FS","PathUtil","SFile"], function (assert,FS,P,SFile) {
                 return false;
             },
             availFSTypes:function (){
-                return FS.fstypes;
+                return FS.availFSTypes();
             },
             mount: function (path, fs, options) {
                 if (typeof fs=="string") {
-                    var fact=assert( FS.fstypes[fs] ,"fstype "+fs+" is undefined.");
+                    var fact=assert( FS.availFSTypes()[fs] ,"fstype "+fs+" is undefined.");
                     fs=fact(path, options||{});
                 }
                 assert.is(fs,FS);
@@ -45,7 +45,7 @@ define(["assert","FS","PathUtil","SFile"], function (assert,FS,P,SFile) {
                         res=fs;
                     }
                 });
-                this.err(path,"Cannot resolve");
+                if (!res) this.err(path,"Cannot resolve");
                 return assert.is(res,FS);
             },
             get: function (path) {

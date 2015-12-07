@@ -23,13 +23,20 @@ define([],function () {
             if (a!==b) this.fail(a,"!==",b);
             return a;
         },
+        ne: function (a,b) {
+            if (a===b) this.fail(a,"===",b);
+            return a;
+        },
         isset: function (a, n) {
             if (a==null) this.fail((n||"")+" is null/undef");
             return a;
         },
         is: function (value,type) {
             var t=type,v=value;
-            if (t==null) return t;
+            if (t==null) {
+                this.fail("assert.is: type must be set");
+                // return t; Why!!!!???? because is(args,[String,Number])
+            }
             if (t._assert_func) {
                 t._assert_func.apply(this,[v]);
                 return value;
@@ -42,6 +49,9 @@ define([],function () {
                 var self=this;
                 for (var i=0 ;i<t.length; i++) {
                     var na=self.subAssertion("failed at ",value,"[",i,"]: ");
+                    if (t[i]==null) {
+                        console.log("WOW!7", v[i],t[i])
+                    }
                     na.is(v[i],t[i]);
                 }
                 return value;
@@ -108,12 +118,20 @@ define([],function () {
         try {
             return top.is.apply(top,arguments);
         } catch(e) {
+            console.log(e.stack);
             throw new Error(e.message);
         }
     };
     assert.isset=function () {
         try {
             return top.isset.apply(top,arguments);
+        } catch(e) {
+            throw new Error(e.message);
+        }
+    };
+    assert.ne=function () {
+        try {
+            return top.ne.apply(top,arguments);
         } catch(e) {
             throw new Error(e.message);
         }

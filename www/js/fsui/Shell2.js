@@ -25,11 +25,13 @@ define(["Shell","UI","FS","Util"], function (sh,UI,FS,Util) {
         var out=line.$vars.out;
         var cand=line.$vars.cand;
         sh.setout({log:function () {
-            var a=[];
-            for (var i=0; i<arguments.length; i++) {
-                a.push(arguments[i]);
-            }
-            out.append(UI("span",a.join(" ")+"\n"));
+            return $.when.apply($,arguments).then(function () {
+                var a=[];
+                for (var i=0; i<arguments.length; i++) {
+                    a.push(arguments[i]);
+                }
+                out.append(UI("span",a.join(" ")+"\n"));
+            });
         },err:function (e) {
             out.append(UI("div",{"class": "shell error"},e,["br"],["pre",e.stack]));
         }});
@@ -65,7 +67,11 @@ define(["Shell","UI","FS","Util"], function (sh,UI,FS,Util) {
                     if (opt) {
                         if (!options) options={};
                         options[opt[1]]=opt[3]!=null ? opt[3] : 1;
-                    } else args.push(ce);
+                    } else {
+                        if (options) args.push(options);
+                        options=null;
+                        args.push(ce);
+                    }
                 });
                 if (options) args.push(options);
                 var sres=f.apply(sh, args);

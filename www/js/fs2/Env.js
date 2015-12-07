@@ -14,6 +14,7 @@ define(["assert","PathUtil"],function (A,P) {
                 A.is(path,String);
                 path=this.expand(path);
                 path=path.replace(/\/+/g,"/");
+                path=path.replace(/^[a-z][a-z]+:\//, function (r) { return r+"/"; } );
                 return A.is(path,P.Path);
             },
             get: function (key) {

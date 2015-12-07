@@ -89,8 +89,8 @@ define(["FS2","PathUtil","extend","assert","Util","Content"],
         var ppath = up(path);
         if (ppath == null) return;
         if (!this.inMyFS(ppath)) {
-            assert(this.getRootFS()!==this);
-            this.getRootFS().resolveFS(ppath).touch(ppath);
+            //assert(this.getRootFS()!==this);
+            //this.getRootFS().resolveFS(ppath).touch(ppath);
             return;
         }
         var pdinfo = this.getDirInfo(ppath);
@@ -201,7 +201,7 @@ define(["FS2","PathUtil","extend","assert","Util","Content"],
             // options: {includeTrashed:Boolean}
             options=options||{};
             var inf=this.getDirInfo(path);
-            var res=this.dirFromFstab(path);
+            var res=[]; //this.dirFromFstab(path);
             for (var i in inf) {
                 assert(inf[i]);
                 if (!inf[i].trashed || options.includeTrashed) res.push(i);
@@ -282,7 +282,7 @@ define(["FS2","PathUtil","extend","assert","Util","Content"],
             assert(this.isLink(path));
         },
         isLink: function (path) {
-            assert.is(arguments,[P.AbsDir]);
+            assert.is(arguments,[P.Absolute]);
             if (!this.exists(path)) return null;
             var m=assert(this.getMetaInfo(path));
             return m.link;

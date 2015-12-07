@@ -3,7 +3,7 @@ function (extend,A,P,Util,Content) {
 
 var SFile=function (fs, path) {
     A.is(path, P.Absolute);
-    A(fs && fs.getReturnTypes);
+    A(fs && fs.getReturnTypes, fs);
     this._path=path;
     this.fs=fs;
     if (this.isDir() && !P.isDir(path)) {

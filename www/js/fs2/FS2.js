@@ -5,6 +5,9 @@ define(["extend","PathUtil","MIMETypes","assert","SFile"],function (extend, P, M
     FS.addFSType=function (name,fsgen) {
         fstypes[name]=fsgen;
     };
+    FS.availFSTypes=function () {
+        return fstypes;
+    };
     function stub(n) {
         throw new Error (n+" is STUB!");
     }
@@ -33,14 +36,14 @@ define(["extend","PathUtil","MIMETypes","assert","SFile"],function (extend, P, M
         inMyFS:function (path) {
             return !this.mountPoint || P.startsWith(path, this.mountPoint);
         },
-        dirFromFstab: function (path, options) {
+        /*dirFromFstab: function (path, options) {
             assert.is(path, P.AbsDir);
             var res=(options||{}).res || [];
             this.fstab().forEach(function (tb) {
                 if (P.up( tb.path )==path) res.push(P.name(tb.path));
             });
             return res;
-        },
+        },*/
         getRootFS: function () {
             return assert( this.rootFS, "rootFS is not set" );
         },
@@ -140,6 +143,7 @@ define(["extend","PathUtil","MIMETypes","assert","SFile"],function (extend, P, M
     FS.delegateMethods=function (prototype,  methods) {
         for (var n in methods) {
             (function (n){
+                assert.ne(n,"inMyFS");
                 prototype[n]=function () {
                     var path=arguments[0];
                     assert.is(path,P.Absolute);

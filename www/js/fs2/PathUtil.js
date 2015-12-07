@@ -22,12 +22,12 @@ var Relative=assert.f(function (s) {
     this.is(s,String);
     this.assert( !PathUtil.isAbsolutePath(s) , [s, " is not a relative path"]);
 });
-var AbsDir=assert.and(Dir,Absolute);
 
 var Dir=assert.f(function (s) {
     this.is(s,Path);
     this.assert( PathUtil.isDir(s) , [s, " is not a directory path"]);
 });
+var AbsDir=assert.and(Dir,Absolute);
 var File=assert.f(function (s) {
     this.is(s,Path);
     this.assert( !PathUtil.isDir(s) , [s, " is not a file path"]);
@@ -128,7 +128,7 @@ PathUtil={
         return resPath;
     },
     relPath: function(path,base) {
-		assert.is(arguments,[AbsDir,AbsDir]);
+		assert.is(arguments,[Absolute,AbsDir]);
         if (path.substring(0,base.length)!=base) {
             return "../"+PathUtil.relPath(path, this.up(base));
         }

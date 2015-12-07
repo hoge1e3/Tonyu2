@@ -1,5 +1,5 @@
-define(["FS2","jquery.binarytransport","DeferredUtil","Content"],
-        function (FS,j,DU,Content) {
+define(["FS2","jquery.binarytransport","DeferredUtil","Content","PathUtil"],
+        function (FS,j,DU,Content,P) {
     // FS.mount(location.protocol+"//"+location.host+"/", "web");
     var WebFS=function (){};
     var p=WebFS.prototype=new FS;
@@ -8,6 +8,9 @@ define(["FS2","jquery.binarytransport","DeferredUtil","Content"],
     });
     p.fstype=function () {return "Web";};
     p.supportsSync=function () {return false;};
+    p.inMyFS=function (path) {
+        return P.isURL(path);
+    };
     FS.delegateMethods(p, {
         exists: function () {return true;},
         getContentAsync: function (path){

@@ -11,13 +11,14 @@ define(["FS","Util","WebSite","PathUtil","assert"],
         return r;
     }
 
-    Shell.mount=function (path, options) {
+    Shell.mount=function (options, path) {
         //var r=resolve(path);
         if (!options || !options.t) {
-            for (var k in FS.getRootFS().availFstypes()) {
+            var fst=[];
+            for (var k in FS.getRootFS().availFSTypes()) {
                 fst.push(k);
             }
-            sh.err("-t=("+fstype.join("|")+") should be specified.");
+            sh.err("-t=("+fst.join("|")+") should be specified.");
             return;
         }
         FS.mount(path,options.t, options);
@@ -29,7 +30,7 @@ define(["FS","Util","WebSite","PathUtil","assert"],
         var rfs=FS.getRootFS();
         var t=rfs.fstab();
         var sh=this;
-        sh.echo(rfs.fstype()+"\t"+"<Root>");
+        //sh.echo(rfs.fstype()+"\t"+"<Root>");
         t.forEach(function (fs) {
             sh.echo(fs.fstype()+"\t"+(fs.mountPoint||""));
         });
@@ -89,7 +90,9 @@ define(["FS","Util","WebSite","PathUtil","assert"],
     };
     Shell.cat=function (file,options) {
         file=resolve(file, true);
-        Shell.echo(file.text());
+        Shell.echo(file.getContent(function (c) {
+            return c.toPlainText();
+        }));
     };
     Shell.resolve=function (file) {
 	if (!file) file=".";

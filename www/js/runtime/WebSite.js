@@ -95,7 +95,7 @@ define([], function () {
         } else {
             WebSite.tonyuHome=WebSite.cwd+"fs/Tonyu/";
         }
-        WebSite.logdir="/var/log/Tonyu/";
+        WebSite.logdir="C:/var/log/Tonyu/";
         WebSite.wwwDir=WebSite.cwd+"www/";
         WebSite.platform=process.platform;
         WebSite.ffmpeg=WebSite.cwd+(WebSite.platform=="win32"?
