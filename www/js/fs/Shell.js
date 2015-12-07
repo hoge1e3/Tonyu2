@@ -27,8 +27,8 @@ define(["FS","Util","WebSite","PathUtil","assert"],
         var t=rfs.fstab();
         var sh=this;
         sh.echo(rfs.fstype()+"\t"+"<Root>");
-        t.forEach(function (te) {
-            sh.echo(te.fs.fstype()+"\t"+te.path);
+        t.forEach(function (fs) {
+            sh.echo(fs.fstype()+"\t"+(fs.mountPoint||""));
         });
     }
     Shell.resolve=resolve;

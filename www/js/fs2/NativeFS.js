@@ -19,9 +19,12 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL","Content"],
     var json=JSON; // JSON changes when page changes, if this is node module, JSON is original JSON
     var Pro=NativeFS.prototype=new FS;
     Pro.toNativePath = function (path) {
+        // rootPoint: on NativePath   C:/jail/
+        // mountPoint: on VirtualFS   /mnt/natfs/
         if (!this.rootPoint) return path;
         A.is(path, P.Absolute);
-        return P.rel( this.rootPoint, this.relFromMountPoint(path));
+        A(this.inMyFS(path),path+" is not fs of "+this);
+        return P.rel( this.rootPoint, P.relPath(path, this.mountPoint || P.SEP));
     };
     Pro.arrayBuffer2Buffer= function (a) {
         if (a instanceof ArrayBuffer) {

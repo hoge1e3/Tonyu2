@@ -31,7 +31,11 @@ define(["FS2","PathUtil","extend","assert","Util","Content"],
     //private methods
     LSFS.prototype.resolveKey=function (path) {
         assert.is(path,P.Absolute);
-        return P.SEP+this.relFromMountPoint(path);
+        if (this.mountPoint) {
+            return P.SEP+P.relPath(path,this.mountPoint);//FromMountPoint(path);
+        } else {
+            return path;
+        }
     };
     LSFS.prototype.getItem=function (path) {
         assert.is(path,P.Absolute);
@@ -58,9 +62,9 @@ define(["FS2","PathUtil","extend","assert","Util","Content"],
         var key=this.resolveKey(path);
         return key in this.storage;
     };
-    LSFS.prototype.inMyFS=function (path){
+    /*LSFS.prototype.inMyFS=function (path){
         return !this.mountPoint || P.startsWith(path, this.mountPoint);
-    };
+    };*/
     LSFS.prototype.getDirInfo=function getDirInfo(path) {
         assert.is(arguments,[P.AbsDir]);
         if (path == null) throw new Error("getDir: Null path");
