@@ -1,11 +1,16 @@
-define(["extend","assert","PathUtil","Util","Content"],
-function (extend,A,P,Util,Content) {
+define(["extend","assert","PathUtil","Util","Content","FS2"],
+function (extend,A,P,Util,Content,FS2) {
 
-var SFile=function (fs, path) {
+var SFile=function (rootFS, path) {
     A.is(path, P.Absolute);
-    A(fs && fs.getReturnTypes, fs);
+    //A(fs && fs.getReturnTypes, fs);
     this._path=path;
-    this.fs=fs;
+    this.rootFS=rootFS;
+    this.fs=rootFS.resolveFS(path);
+    this.act={};// path/fs after follwed symlink
+    this.act.path=this.fs.resolveLink(path);
+    this.act.fs=rootFS.resolveFS(this.act.path);
+    A.is(this.act, {fs:FS2, path:P.Absolute});
     if (this.isDir() && !P.isDir(path)) {
         this._path+=P.SEP;
     }
@@ -28,6 +33,9 @@ SFile.prototype={
         this.policy=p;
         return this._clone();
     },
+    getPolicy: function (p) {
+        return this.policy;
+    },
     _clone: function (){
         return this._resolve(this.path());
     },
@@ -46,7 +54,7 @@ SFile.prototype={
                     throw new Error(path+": cannot access. Restricted to "+topdir);
                 }
             }
-            res=this.fs.getRootFS().get(path);
+            res=new SFile(this.rootFS, path);
             res.policy=policy;
         }
         if (res.policy) {
@@ -55,24 +63,14 @@ SFile.prototype={
             return res;
         }
     },
-    _getResolved: function () {
-        var l=this.fs.resolveLink(this.path());
-        A.is(l,P.Absolute);
-        return this._resolved={fs:this.fs.resolveFS(l), path:l};
-    },
     contains: function (file) {
         A(SFile.is(file),file+" shoud be a SFile object.");
         if (!this.isDir()) return false;
         return P.startsWith( file.path(), this.path());
     },
-    // Path from Root
     path: function () {
-        return this._path;//this.fs.getPathFromRootFS(this.pathT);
+        return this._path;
     },
-    // Path from This fs
-    /*pathInThisFS: function () {
-        return this.pathT;
-    },*/
     name: function () {
         return P.name(this.path());
     },
@@ -115,14 +113,10 @@ SFile.prototype={
     },
     //Common
     touch: function () {
-        var l=this._resolveLinkNoPolicy();
-        if (!this.equals(l)) return l.touch.apply(l,arguments);
-        this.fs.touch(this.path());
+        this.act.fs.touch(this.act.path);
     },
     isReadOnly: function () {
-        var l=this._resolveLinkNoPolicy();
-        if (!this.equals(l)) return l.isReadOnly.apply(l,arguments);
-        this.fs.isReadOnly(this.path());
+        return this.act.fs.isReadOnly(this.act.path);
     },
     isTrashed:function () {
         var m=this.metaInfo();
@@ -137,47 +131,43 @@ SFile.prototype={
         }
     },
     getMetaInfo: function (options) {
-        var l=this._resolveLinkNoPolicy();
-        if (!this.equals(l)) return l.getMetaInfo.apply(l,arguments);
-        return this.fs.getMetaInfo(this.path(),options);
+        return this.act.fs.getMetaInfo(this.act.path,options);
     },
     setMetaInfo: function (info, options) {
-        var l=this._resolveLinkNoPolicy();
-        if (!this.equals(l)) return l.setMetaInfo.apply(l,arguments);
-        return this.fs.setMetaInfo(this.path(),info, options);
+        return this.act.fs.setMetaInfo(this.act.path,info, options);
     },
     lastUpdate:function () {
         A(this.exists());
         return this.metaInfo().lastUpdate;
     },
-    /*rootFS: function () {
-        return this.fs.getRootFS();
-    },*/
     exists: function (options) {
         options=options||{};
         var p=this.fs.exists(this.path(),options);
         if (p || options.noFollowLink) {
             return p;
         } else {
-            return this._resolveLinkNoPolicy().exists({noFollowLink:true});
+            return this.act.fs.exists(this.act.path,{noFollowLink:true});
         }
     },
-    /*copyTo: function (dst, options) {
-        this.fs.cp(this.path(),getPath(dst),options);
-    },*/
     rm: function (options) {
+        //   ln /test/c /a/b/
+        //   rm a/b/c/
+        //   rm a/b/c/d
         options=options||{};
-        if (!this.exists({noFollowLink:true})) {
-            var l=this._resolveLinkNoPolicy();
-            if (!this.equals(l)) return l.rm(options);
+        if (this.isLink()) {
+            return this.fs.rm(this.path(),options);
         }
+        /*if (!this.exists({noFollowLink:true})) {
+            return this.act.fs.rm(this.act.path, options);
+        }*/
         if (this.isDir() && (options.recursive||options.r)) {
             this.each(function (f) {
                 f.rm(options);
             });
         }
-        var pathT=this.path();
-        this.fs.rm(pathT, options);
+        return this.act.fs.rm(this.act.path, options);
+        //var pathT=this.path();
+        //this.fs.rm(pathT, options);
     },
     removeWithoutTrash: function (options) {
         options=options||{};
@@ -185,15 +175,10 @@ SFile.prototype={
         this.rm(options);
     },
     isDir: function () {
-        //var l=this._resolveLinkNoPolicy();
-        //if (!this.equals(l)) return l.isDir.apply(l,arguments);  stackoverflow
-        return this.fs.isDir(this.path());
+        return this.act.fs.isDir(this.act.path);
     },
     // File
     text:function () {
-        //var l=this._resolveLinkNoPolicy();
-        //if (!this.equals(l)) return l.text.apply(l,arguments);
-        // Does in each methods
         if (arguments.length>0) {
             this.setText(arguments[0]);
         } else {
@@ -202,64 +187,44 @@ SFile.prototype={
     },
     setText:function (t) {
         A.is(t,String);
-        var l=this._resolveLinkNoPolicy();
-        if (!this.equals(l)) return l.setText.apply(l,arguments);
         if (this.isText()) {
-            this.fs.setContent(this.path(), Content.plainText(t));
+            this.act.fs.setContent(this.act.path, Content.plainText(t));
         } else {
-            this.fs.setContent(this.path(), Content.url(t));
+            this.act.fs.setContent(this.act.path, Content.url(t));
         }
     },
     getContent: function (f) {
-        var l=this._resolveLinkNoPolicy();
-        if (!this.equals(l)) return l.getContent.apply(l,arguments);
         if (typeof f=="function") {
-            return this.fs.getContentAsync(this.path()).then(f);
+            return this.act.fs.getContentAsync(this.act.path).then(f);
         }
-        return this.fs.getContent(this.path());
+        return this.act.fs.getContent(this.act.path);
     },
     setContent: function (c) {
-        var l=this._resolveLinkNoPolicy();
-        if (!this.equals(l)) return l.setContent.apply(l,arguments);
-        return this.fs.setContentAsync(this.path(),c);
+        return this.act.fs.setContentAsync(this.act.path,c);
     },
 
     getText:function () {
-        var l=this._resolveLinkNoPolicy();
-        if (!this.equals(l)) return l.getText.apply(l,arguments);
         if (this.isText()) {
-            return this.fs.getContent(this.path()).toPlainText();
+            return this.act.fs.getContent(this.act.path).toPlainText();
         } else {
-            return this.fs.getContent(this.path()).toURL();
+            return this.act.fs.getContent(this.act.path).toURL();
         }
     },
     isText: function () {
-        var l=this._resolveLinkNoPolicy();
-        if (!this.equals(l)) return l.isText.apply(l,arguments);
-
-        return this.fs.isText(this.path());
+        return this.act.fs.isText(this.act.path);
     },
     contentType: function () {
-        var l=this._resolveLinkNoPolicy();
-        if (!this.equals(l)) return l.getContentType.apply(l,arguments);
-
-        return this.fs.getContentType(this.path());
+        return this.act.fs.getContentType(this.act.path);
     },
     setBytes:function (b) {
-        var l=this._resolveLinkNoPolicy();
-        if (!this.equals(l)) return l.setBytes.apply(l,arguments);
-        return this.fs.setContent(this.path(), Content.bin(b,this.contentType()));
+        return this.act.fs.setContent(this.act.path, Content.bin(b,this.contentType()));
     },
     getBytes:function (options) {
-        var l=this._resolveLinkNoPolicy();
-        if (!this.equals(l)) return l.getBytes.apply(l,arguments);
         options=options||{};
-        return this.fs.getContent(this.path()).toBin(options.binType);
+        return this.act.fs.getContent(this.act.path).toBin(options.binType);
     },
     getURL: function () {
-        var l=this._resolveLinkNoPolicy();
-        if (!this.equals(l)) return l.getURL.apply(l,arguments);
-        return this.fs.getURL(this.path());
+        return this.act.fs.getURL(this.act.path);
     },
     lines:function () {
         return this.text().split("\n");
@@ -278,6 +243,7 @@ SFile.prototype={
         return src.copyTo(this,options);
     },
     copyTo: function (dst, options) {
+        A(dst && dst.isSFile(),dst+" is not a file");
         var src=this;
         var options=options||{};
         var srcIsDir=src.isDir();
@@ -291,13 +257,11 @@ SFile.prototype={
            this.err("Cannot move dir to file");
         } else if (!srcIsDir && !dstIsDir) {
             if (options.echo) options.echo(src+" -> "+dst);
-            return this.fs.cp(A.is(src.path(), P.Absolute), dst.path(),options);
-            /*var srcc=src.getText(); // TODO
-            var res=dst.setText(srcc);
+            var res=this.act.fs.cp(this.act.path, dst.getResolvedLinkPath(),options);
             if (options.a) {
                 dst.setMetaInfo(src.getMetaInfo());
             }
-            return res;*/
+            return res;
         } else {
             A(srcIsDir && dstIsDir);
             src.each(function (s) {
@@ -310,7 +274,7 @@ SFile.prototype={
     moveFrom: function (src, options) {
         var res=this.copyFrom(src,options);
         src.rm({recursive:true});
-        return res;//this.fs.mv(getPath(src),this.path(),options);
+        return res;
     },
     // Dir
     assertDir:function () {
@@ -339,18 +303,12 @@ SFile.prototype={
     listFiles:function (options) {
         A(options==null || typeof options=="object");
         var dir=this.assertDir();
-        var l=this._resolveLinkNoPolicy();
-        if (!this.equals(l)) {
-            return l.listFiles.apply(l,arguments).map(function (f) {
-                return dir.rel(f.name());
-            });
-        }
         var path=this.path();
         var ord;
         if (typeof options=="function") ord=options;
         options=dir.convertOptions(options);
         if (!ord) ord=options.order;
-        var di=this.fs.opendir(path, options);
+        var di=this.act.fs.opendir(this.act.path, options);
         var res=[];
         for (var i=0;i<di.length; i++) {
             var name=di[i];
@@ -391,28 +349,17 @@ SFile.prototype={
         this.touch();
     },
     link: function (to,options) {// % ln to path
-        var l=this._resolveLinkNoPolicy();
-        if (!this.equals(l)) return l.link.apply(l,arguments);
-
-        to=this._resolve(A(to));
-        this.fs.link(this.path(),to.path(),options);
-    },
-    _resolveLinkOpt: function (options) {
-        var l=this.fs.resolveLink(this.path());
-        A.is(l,P.Absolute);
-        return this._resolve(l, options);
-    },
-    _resolveLinkNoPolicy: function () {
-        return this._resolveLinkOpt({policy:{}});
+        if (this.exists()) throw new Error(this.path()+": exists.");
+        return this.act.fs.link(this.act.path,to.path(),options);
     },
     resolveLink:function () {
-        return this._resolveLinkOpt();
+        return this._resolve(this.act.path);
     },
     isLink: function () {
-        var l=this._resolveLinkNoPolicy();
-        if (!this.equals(l)) return l.isLink.apply(l,arguments);
-
         return this.fs.isLink(this.path());
+    },
+    getResolvedLinkPath: function () {
+        return this.act.path;
     }
 };
 return SFile;

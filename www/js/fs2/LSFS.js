@@ -276,7 +276,7 @@ define(["FS2","PathUtil","extend","assert","Util","Content"],
             m.lastUpdate=now();
             this.setMetaInfo(path, m);
             //console.log(this.getMetaInfo(path));
-            console.log(this.storage);
+            //console.log(this.storage);
             //console.log(this.getMetaInfo(P.up(path)));
             assert(this.exists(path));
             assert(this.isLink(path));

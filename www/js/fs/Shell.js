@@ -100,8 +100,12 @@ define(["FS","Util","WebSite","PathUtil","assert"],
     };
     Shell.cat=function (file,options) {
         file=resolve(file, true);
-        Shell.echo(file.getContent(function (c) {
-            return c.toPlainText();
+        return Shell.echo(file.getContent(function (c) {
+            if (file.isText()) {
+                return c.toPlainText();
+            } else {
+                return c.toURL();
+            }
         }));
     };
     Shell.resolve=function (file) {

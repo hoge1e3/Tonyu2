@@ -1,4 +1,4 @@
-define(["extend","PathUtil","MIMETypes","assert","SFile"],function (extend, P, M,assert,SFile){
+define(["extend","PathUtil","MIMETypes","assert"],function (extend, P, M,assert){
     var FS=function () {
     };
     var fstypes={};
@@ -133,7 +133,7 @@ define(["extend","PathUtil","MIMETypes","assert","SFile"],function (extend, P, M
             stub("");
         },
         link: function (path, to, options) {
-            throw new Error("This FS not support link.");
+            throw new Error("ln "+to+" "+path+" : This FS not support link.");
         },
         getURL: function (path) {
             stub("");
@@ -225,13 +225,13 @@ define(["extend","PathUtil","MIMETypes","assert","SFile"],function (extend, P, M
         },
         isLink: function (path) {
             return null;
-        },
-        get: function (path) {
+        }//,
+        /*get: function (path) {
             assert.eq(this.resolveFS(path), this);
             return new SFile(this, path);
             //var r=this.resolveFS(path);
             //return new SFile(r.fs, r.path);
-        }
+        }*/
     });
     return FS;
 });

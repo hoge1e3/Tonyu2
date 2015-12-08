@@ -30,7 +30,11 @@ define(["Shell","UI","FS","Util"], function (sh,UI,FS,Util) {
                 for (var i=0; i<arguments.length; i++) {
                     a.push(arguments[i]);
                 }
-                out.append(UI("span",a.join(" ")+"\n"));
+                if (a[0] instanceof $) {
+                    out.append(a[0]);
+                } else {
+                    out.append(UI("span",a.join(" ")+"\n"));
+                }
             });
         },err:function (e) {
             out.append(UI("div",{"class": "shell error"},e,["br"],["pre",e.stack]));
@@ -141,6 +145,17 @@ define(["Shell","UI","FS","Util"], function (sh,UI,FS,Util) {
     };
     sh.atest=function (a,b,options) {
         console.log(a,b,options);
+    };
+    var oldcat=sh.cat;
+    sh.cat=function (file,options) {
+        file=sh.resolve(file, true);
+        if (file.contentType().match(/^image\//)) {
+            return file.getContent(function (c) {
+                sh.echo(UI("img",{src:c.toURL()}));
+            });
+        } else {
+            return oldcat.apply(sh,arguments);
+        }
     };
     return res;
 });
