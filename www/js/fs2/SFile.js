@@ -55,6 +55,11 @@ SFile.prototype={
             return res;
         }
     },
+    _getResolved: function () {
+        var l=this.fs.resolveLink(this.path());
+        A.is(l,P.Absolute);
+        return this._resolved={fs:this.fs.resolveFS(l), path:l};
+    },
     contains: function (file) {
         A(SFile.is(file),file+" shoud be a SFile object.");
         if (!this.isDir()) return false;
