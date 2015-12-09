@@ -26,6 +26,7 @@ define(["UI","extLink","mkrun","Tonyu","zip"], function (UI,extLink,mkrun,Tonyu,
                     }}}, "作成"]
             );
         }
+        res.d.$vars.OKButton.prop("disabled", false);
         if (options.hiddenFolder) {
             res.d.$vars.hiddenFolder.hide();
         } else {
@@ -34,6 +35,7 @@ define(["UI","extLink","mkrun","Tonyu","zip"], function (UI,extLink,mkrun,Tonyu,
         var model={dest:dest.path(), src:true, zip:true};
         res.d.$edits.load(model);
         res.run=function () {
+            res.d.$vars.OKButton.prop("disabled", true);
             return mkrun.run(prj, FS.get(model.dest), {copySrc:model.src}).then(function () {
                 if (model.zip) {
                     zip.dlzip(FS.get(model.dest));
@@ -46,6 +48,7 @@ define(["UI","extLink","mkrun","Tonyu","zip"], function (UI,extLink,mkrun,Tonyu,
                           "にてWebアプリとして公開することができます。"]
                         ),{width:"auto"}
                 );
+                res.d.$vars.OKButton.prop("disabled", false);
                 if (res.d.dialog) res.d.dialog("close");
                 if (options.onEnd) options.onEnd();
             });

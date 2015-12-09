@@ -1,4 +1,4 @@
-// Created at Wed Dec 09 2015 10:16:57 GMT+0900 (東京 (標準時))
+// Created at Wed Dec 09 2015 11:04:16 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -1111,7 +1111,7 @@ return Tonyu=function () {
             timeout:timeout,animationFrame:animationFrame, asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,
-            VERSION:1449623814622,//EMBED_VERSION
+            VERSION:1449626654106,//EMBED_VERSION
             A:A};
 }();
 });
@@ -12501,6 +12501,7 @@ define(["UI","extLink","mkrun","Tonyu","zip"], function (UI,extLink,mkrun,Tonyu,
                     }}}, "作成"]
             );
         }
+        res.d.$vars.OKButton.prop("disabled", false);
         if (options.hiddenFolder) {
             res.d.$vars.hiddenFolder.hide();
         } else {
@@ -12509,6 +12510,7 @@ define(["UI","extLink","mkrun","Tonyu","zip"], function (UI,extLink,mkrun,Tonyu,
         var model={dest:dest.path(), src:true, zip:true};
         res.d.$edits.load(model);
         res.run=function () {
+            res.d.$vars.OKButton.prop("disabled", true);
             return mkrun.run(prj, FS.get(model.dest), {copySrc:model.src}).then(function () {
                 if (model.zip) {
                     zip.dlzip(FS.get(model.dest));
@@ -12521,6 +12523,7 @@ define(["UI","extLink","mkrun","Tonyu","zip"], function (UI,extLink,mkrun,Tonyu,
                           "にてWebアプリとして公開することができます。"]
                         ),{width:"auto"}
                 );
+                res.d.$vars.OKButton.prop("disabled", false);
                 if (res.d.dialog) res.d.dialog("close");
                 if (options.onEnd) options.onEnd();
             });
