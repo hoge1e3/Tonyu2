@@ -1,4 +1,4 @@
-define(["PatternParser","Util","Assets"], function (PP,Util,Assets) {
+define(["PatternParser","Util","Assets","assert"], function (PP,Util,Assets,assert) {
     var cache={};
     function excludeEmpty(resImgs) {
         var r=[];
@@ -54,6 +54,7 @@ define(["PatternParser","Util","Assets"], function (PP,Util,Assets) {
                     resa[i]=p.parse();
                 }
                 resa[i].name=resImg.name;
+                assert.is(resa[i],Array);
                 cnt--;
                 if (cnt==0) {
                     var res=[];
@@ -90,7 +91,7 @@ define(["PatternParser","Util","Assets"], function (PP,Util,Assets) {
             res=p.parse();
         }
         res.name=resImg.name;
-        return res;
+        return assert.is(res,Array);
     };
 	IL.convURL=function (url, baseDir) {
 	    /*if (url==null) url="";

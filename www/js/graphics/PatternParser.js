@@ -54,7 +54,7 @@ define(["Tonyu"], function (Tonyu) {
             } catch (p) {
                 if (p.isParseError) {
                     console.log("parse error! "+p);
-                    return {image: this.img, x:0, y:0, width:this.width, height:this.height};
+                    return [{image: this.img, x:0, y:0, width:this.width, height:this.height}];
                 }
                 throw p;
             }
