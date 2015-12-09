@@ -1,4 +1,4 @@
-// Created at Wed Dec 09 2015 11:04:15 GMT+0900 (東京 (標準時))
+// Created at Wed Dec 09 2015 14:30:06 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -1809,14 +1809,14 @@ define(["FS2","PathUtil","extend","assert","Util","Content"],
                 if (this.isDir(path)) {
 
                 } else {
-                    assert.fail("Inconsistent "+path+": trashed, but remains in storage");
+                    //assert.fail("Inconsistent "+path+": trashed, but remains in storage");
                 }
             }
             if (!res && this.itemExists(path)) {
-                assert.fail("Inconsistent "+path+": not exists in metadata, but remains in storage");
+                //assert.fail("Inconsistent "+path+": not exists in metadata, but remains in storage");
             }
             if (res && !res.trashed && !res.link && !this.itemExists(path)) {
-                assert.fail("Inconsistent "+path+": exists in metadata, but not in storage");
+                //assert.fail("Inconsistent "+path+": exists in metadata, but not in storage");
             }
             if (res && !options.includeTrashed) {
                 res=!res.trashed;

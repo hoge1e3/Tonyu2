@@ -247,14 +247,14 @@ define(["FS2","PathUtil","extend","assert","Util","Content"],
                 if (this.isDir(path)) {
 
                 } else {
-                    assert.fail("Inconsistent "+path+": trashed, but remains in storage");
+                    //assert.fail("Inconsistent "+path+": trashed, but remains in storage");
                 }
             }
             if (!res && this.itemExists(path)) {
-                assert.fail("Inconsistent "+path+": not exists in metadata, but remains in storage");
+                //assert.fail("Inconsistent "+path+": not exists in metadata, but remains in storage");
             }
             if (res && !res.trashed && !res.link && !this.itemExists(path)) {
-                assert.fail("Inconsistent "+path+": exists in metadata, but not in storage");
+                //assert.fail("Inconsistent "+path+": exists in metadata, but not in storage");
             }
             if (res && !options.includeTrashed) {
                 res=!res.trashed;
