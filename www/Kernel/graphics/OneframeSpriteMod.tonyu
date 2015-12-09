@@ -3,10 +3,10 @@ extends null;
 nowait \drawText(x,y,text,col,size) {
     if (!size) size=15;
     if (!col) col="cyan";
-    new T1Text{x,y,text,fillStyle:col, size,oneframeSprite:true};
+    new T1Text{x,y,text,fillStyle:col, size};
 }
 nowait \drawLine(x,y,tx,ty,col) {
     if (!col) col="white";
-    new T1Line{x,y,tx,ty,col,oneframeSprite:true};
+    new T1Line{x,y,tx,ty,col};
 }
 

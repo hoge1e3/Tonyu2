@@ -350,19 +350,19 @@ Tonyu.klass.define({
         col="cyan";
       }
       //$LASTPOS=3000112;//kernel.OneframeSpriteMod:112
-      new Tonyu.classes.kernel.T1Text({x: x,y: y,text: text,fillStyle: col,size: size,oneframeSprite: true});
+      new Tonyu.classes.kernel.T1Text({x: x,y: y,text: text,fillStyle: col,size: size});
     },
     drawLine :function _trc_OneframeSpriteMod_drawLine(x,y,tx,ty,col) {
       "use strict";
       var _this=this;
       
-      //$LASTPOS=3000217;//kernel.OneframeSpriteMod:217
+      //$LASTPOS=3000197;//kernel.OneframeSpriteMod:197
       if (! col) {
-        //$LASTPOS=3000227;//kernel.OneframeSpriteMod:227
+        //$LASTPOS=3000207;//kernel.OneframeSpriteMod:207
         col="white";
       }
-      //$LASTPOS=3000245;//kernel.OneframeSpriteMod:245
-      new Tonyu.classes.kernel.T1Line({x: x,y: y,tx: tx,ty: ty,col: col,oneframeSprite: true});
+      //$LASTPOS=3000225;//kernel.OneframeSpriteMod:225
+      new Tonyu.classes.kernel.T1Line({x: x,y: y,tx: tx,ty: ty,col: col});
     },
     __dummy: false
   },
@@ -11339,22 +11339,18 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=36000034;//kernel.T1Line:34
-      if (_this.hidden) {
-        return _this;
-      }
-      //$LASTPOS=36000065;//kernel.T1Line:65
+      //$LASTPOS=36000067;//kernel.T1Line:67
       ctx.strokeStyle=_this.col;
-      //$LASTPOS=36000091;//kernel.T1Line:91
+      //$LASTPOS=36000093;//kernel.T1Line:93
       ctx.beginPath();
-      //$LASTPOS=36000113;//kernel.T1Line:113
+      //$LASTPOS=36000115;//kernel.T1Line:115
       ctx.moveTo(_this.x,_this.y);
-      //$LASTPOS=36000135;//kernel.T1Line:135
+      //$LASTPOS=36000137;//kernel.T1Line:137
       ctx.lineTo(_this.tx,_this.ty);
-      //$LASTPOS=36000159;//kernel.T1Line:159
+      //$LASTPOS=36000161;//kernel.T1Line:161
       ctx.stroke();
-      //$LASTPOS=36000178;//kernel.T1Line:178
-      _this.hidden=true;
+      //$LASTPOS=36000180;//kernel.T1Line:180
+      _this.oneframeSprite=true;
     },
     __dummy: false
   },
@@ -11712,15 +11708,11 @@ Tonyu.klass.define({
       var _this=this;
       
       //$LASTPOS=39000032;//kernel.T1Text:32
-      if (_this.hidden) {
-        return _this;
-      }
-      //$LASTPOS=39000057;//kernel.T1Text:57
       c.font=_this.size+"px 'ＭＳ Ｐゴシック'";
-      //$LASTPOS=39000097;//kernel.T1Text:97
+      //$LASTPOS=39000072;//kernel.T1Text:72
       Tonyu.classes.kernel.Actor.prototype.draw.apply( _this, [c]);
-      //$LASTPOS=39000117;//kernel.T1Text:117
-      _this.hidden=true;
+      //$LASTPOS=39000089;//kernel.T1Text:89
+      _this.oneframeSprite=true;
     },
     __dummy: false
   },

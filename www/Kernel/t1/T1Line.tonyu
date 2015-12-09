@@ -1,11 +1,12 @@
 extends Actor;
 \draw(ctx) {
-    if (hidden) return;
+    //if (hidden) return;
     
     ctx.strokeStyle=col;
     ctx.beginPath();
     ctx.moveTo(x,y);
     ctx.lineTo(tx,ty);
     ctx.stroke();
-    hidden=true;
+    oneframeSprite=true;
+    //hidden=true;
 }

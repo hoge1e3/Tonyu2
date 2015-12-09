@@ -466,6 +466,7 @@ $(function () {
         if (!inf) {
             var progDOM=$("<pre>").css("height", screenH+"px").text(f.text()).appendTo("#progs");
             var prog=ace.edit(progDOM[0]);
+            window.lastEditor=prog;
             if (typeof desktopEnv.editorFontSize=="number") prog.setFontSize(desktopEnv.editorFontSize);
             prog.setTheme("ace/theme/eclipse");
             prog.getSession().setMode("ace/mode/tonyu");
@@ -476,6 +477,11 @@ $(function () {
             prog.setReadOnly(false);
             prog.clearSelection();
             prog.focus();
+            try {
+                prog.commands.removeCommand("toggleFoldWidget");
+                prog.setOptions({fixedWidthGutter:true});
+            }catch(e){}// F2
+
             curDOM=progDOM;
         } else {
             inf.dom.show();
