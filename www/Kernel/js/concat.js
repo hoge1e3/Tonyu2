@@ -11230,6 +11230,8 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
+      //$LASTPOS=34000038;//kernel.SecretChar:38
+      _this.onDraw();
     },
     __dummy: false
   },
@@ -11260,28 +11262,28 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=34000043;//kernel.SpriteChar:43
+      //$LASTPOS=35000043;//kernel.SpriteChar:43
       Tonyu.classes.kernel.PlainChar.apply( _this, [x,y,p]);
-      //$LASTPOS=34000062;//kernel.SpriteChar:62
+      //$LASTPOS=35000062;//kernel.SpriteChar:62
       _this.f=f;
-      //$LASTPOS=34000077;//kernel.SpriteChar:77
+      //$LASTPOS=35000077;//kernel.SpriteChar:77
       if (! _this.x) {
-        //$LASTPOS=34000090;//kernel.SpriteChar:90
+        //$LASTPOS=35000090;//kernel.SpriteChar:90
         _this.x=0;
       }
-      //$LASTPOS=34000105;//kernel.SpriteChar:105
+      //$LASTPOS=35000105;//kernel.SpriteChar:105
       if (! _this.y) {
-        //$LASTPOS=34000118;//kernel.SpriteChar:118
+        //$LASTPOS=35000118;//kernel.SpriteChar:118
         _this.y=0;
       }
-      //$LASTPOS=34000133;//kernel.SpriteChar:133
+      //$LASTPOS=35000133;//kernel.SpriteChar:133
       if (! _this.p) {
-        //$LASTPOS=34000146;//kernel.SpriteChar:146
+        //$LASTPOS=35000146;//kernel.SpriteChar:146
         _this.p=0;
       }
-      //$LASTPOS=34000161;//kernel.SpriteChar:161
+      //$LASTPOS=35000161;//kernel.SpriteChar:161
       if (typeof  _this.scaleX!="number") {
-        //$LASTPOS=34000190;//kernel.SpriteChar:190
+        //$LASTPOS=35000190;//kernel.SpriteChar:190
         _this.scaleX=1;
       }
     },
@@ -11289,22 +11291,22 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=34000220;//kernel.SpriteChar:220
+      //$LASTPOS=35000220;//kernel.SpriteChar:220
       if (_this.f) {
-        //$LASTPOS=34000238;//kernel.SpriteChar:238
+        //$LASTPOS=35000238;//kernel.SpriteChar:238
         if (! _this.scaleY) {
-          //$LASTPOS=34000251;//kernel.SpriteChar:251
+          //$LASTPOS=35000251;//kernel.SpriteChar:251
           _this.scaleY=_this.scaleX;
         }
-        //$LASTPOS=34000275;//kernel.SpriteChar:275
+        //$LASTPOS=35000275;//kernel.SpriteChar:275
         _this.scaleX*=- 1;
         
       }
-      //$LASTPOS=34000299;//kernel.SpriteChar:299
+      //$LASTPOS=35000299;//kernel.SpriteChar:299
       Tonyu.classes.kernel.PlainChar.prototype.draw.apply( _this, [c]);
-      //$LASTPOS=34000319;//kernel.SpriteChar:319
+      //$LASTPOS=35000319;//kernel.SpriteChar:319
       if (_this.f) {
-        //$LASTPOS=34000326;//kernel.SpriteChar:326
+        //$LASTPOS=35000326;//kernel.SpriteChar:326
         _this.scaleX*=- 1;
       }
     },
@@ -11337,21 +11339,21 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=35000034;//kernel.T1Line:34
+      //$LASTPOS=36000034;//kernel.T1Line:34
       if (_this.hidden) {
         return _this;
       }
-      //$LASTPOS=35000065;//kernel.T1Line:65
+      //$LASTPOS=36000065;//kernel.T1Line:65
       ctx.strokeStyle=_this.col;
-      //$LASTPOS=35000091;//kernel.T1Line:91
+      //$LASTPOS=36000091;//kernel.T1Line:91
       ctx.beginPath();
-      //$LASTPOS=35000113;//kernel.T1Line:113
+      //$LASTPOS=36000113;//kernel.T1Line:113
       ctx.moveTo(_this.x,_this.y);
-      //$LASTPOS=35000135;//kernel.T1Line:135
+      //$LASTPOS=36000135;//kernel.T1Line:135
       ctx.lineTo(_this.tx,_this.ty);
-      //$LASTPOS=35000159;//kernel.T1Line:159
+      //$LASTPOS=36000159;//kernel.T1Line:159
       ctx.stroke();
-      //$LASTPOS=35000178;//kernel.T1Line:178
+      //$LASTPOS=36000178;//kernel.T1Line:178
       _this.hidden=true;
     },
     __dummy: false
@@ -11383,7 +11385,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=36000064;//kernel.T1Map:64
+      //$LASTPOS=37000064;//kernel.T1Map:64
       Tonyu.globals.$Screen.setBGColor(c);
     },
     fiber$setBGColor :function _trc_T1Map_f_setBGColor(_thread,c) {
@@ -11392,7 +11394,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=36000064;//kernel.T1Map:64
+      //$LASTPOS=37000064;//kernel.T1Map:64
       Tonyu.globals.$Screen.setBGColor(c);
       
       _thread.retVal=_this;return;
@@ -11403,31 +11405,31 @@ Tonyu.klass.define({
       var f;
       var o;
       
-      //$LASTPOS=36000469;//kernel.T1Map:469
+      //$LASTPOS=37000469;//kernel.T1Map:469
       f = _this.file("../maps/").rel(fileName);
-      //$LASTPOS=36000512;//kernel.T1Map:512
+      //$LASTPOS=37000512;//kernel.T1Map:512
       o = f.obj();
-      //$LASTPOS=36000532;//kernel.T1Map:532
+      //$LASTPOS=37000532;//kernel.T1Map:532
       _this.chipWidth=o.chipWidth;
-      //$LASTPOS=36000560;//kernel.T1Map:560
+      //$LASTPOS=37000560;//kernel.T1Map:560
       _this.chipHeight=o.chipHeight;
-      //$LASTPOS=36000590;//kernel.T1Map:590
+      //$LASTPOS=37000590;//kernel.T1Map:590
       _this.baseData=o.baseData;
-      //$LASTPOS=36000616;//kernel.T1Map:616
+      //$LASTPOS=37000616;//kernel.T1Map:616
       _this.mapTable=_this.conv(_this.baseData[0],o.pTable);
-      //$LASTPOS=36000658;//kernel.T1Map:658
+      //$LASTPOS=37000658;//kernel.T1Map:658
       _this.mapData=_this.mapTable;
-      //$LASTPOS=36000681;//kernel.T1Map:681
+      //$LASTPOS=37000681;//kernel.T1Map:681
       _this.row=_this.mapTable.length;
-      //$LASTPOS=36000707;//kernel.T1Map:707
+      //$LASTPOS=37000707;//kernel.T1Map:707
       _this.col=_this.mapTable[0].length;
-      //$LASTPOS=36000736;//kernel.T1Map:736
+      //$LASTPOS=37000736;//kernel.T1Map:736
       _this.mapOnTable=_this.conv(_this.baseData[1],o.pTable);
-      //$LASTPOS=36000780;//kernel.T1Map:780
+      //$LASTPOS=37000780;//kernel.T1Map:780
       _this.mapOnData=_this.mapOnTable;
-      //$LASTPOS=36000813;//kernel.T1Map:813
+      //$LASTPOS=37000813;//kernel.T1Map:813
       _this.buf=$("<canvas>").attr({width: _this.col*_this.chipWidth,height: _this.row*_this.chipHeight});
-      //$LASTPOS=36000885;//kernel.T1Map:885
+      //$LASTPOS=37000885;//kernel.T1Map:885
       _this.initMap();
     },
     fiber$load :function _trc_T1Map_f_load(_thread,fileName) {
@@ -11438,15 +11440,15 @@ Tonyu.klass.define({
       var f;
       var o;
       
-      //$LASTPOS=36000469;//kernel.T1Map:469
+      //$LASTPOS=37000469;//kernel.T1Map:469
       f = _this.file("../maps/").rel(fileName);
-      //$LASTPOS=36000512;//kernel.T1Map:512
+      //$LASTPOS=37000512;//kernel.T1Map:512
       o = f.obj();
-      //$LASTPOS=36000532;//kernel.T1Map:532
+      //$LASTPOS=37000532;//kernel.T1Map:532
       _this.chipWidth=o.chipWidth;
-      //$LASTPOS=36000560;//kernel.T1Map:560
+      //$LASTPOS=37000560;//kernel.T1Map:560
       _this.chipHeight=o.chipHeight;
-      //$LASTPOS=36000590;//kernel.T1Map:590
+      //$LASTPOS=37000590;//kernel.T1Map:590
       _this.baseData=o.baseData;
       
       _thread.enter(function _trc_T1Map_ent_load(_thread) {
@@ -11454,29 +11456,29 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=36000616;//kernel.T1Map:616
+            //$LASTPOS=37000616;//kernel.T1Map:616
             _this.fiber$conv(_thread, _this.baseData[0], o.pTable);
             __pc=1;return;
           case 1:
             _this.mapTable=_thread.retVal;
             
-            //$LASTPOS=36000658;//kernel.T1Map:658
+            //$LASTPOS=37000658;//kernel.T1Map:658
             _this.mapData=_this.mapTable;
-            //$LASTPOS=36000681;//kernel.T1Map:681
+            //$LASTPOS=37000681;//kernel.T1Map:681
             _this.row=_this.mapTable.length;
-            //$LASTPOS=36000707;//kernel.T1Map:707
+            //$LASTPOS=37000707;//kernel.T1Map:707
             _this.col=_this.mapTable[0].length;
-            //$LASTPOS=36000736;//kernel.T1Map:736
+            //$LASTPOS=37000736;//kernel.T1Map:736
             _this.fiber$conv(_thread, _this.baseData[1], o.pTable);
             __pc=2;return;
           case 2:
             _this.mapOnTable=_thread.retVal;
             
-            //$LASTPOS=36000780;//kernel.T1Map:780
+            //$LASTPOS=37000780;//kernel.T1Map:780
             _this.mapOnData=_this.mapOnTable;
-            //$LASTPOS=36000813;//kernel.T1Map:813
+            //$LASTPOS=37000813;//kernel.T1Map:813
             _this.buf=$("<canvas>").attr({width: _this.col*_this.chipWidth,height: _this.row*_this.chipHeight});
-            //$LASTPOS=36000885;//kernel.T1Map:885
+            //$LASTPOS=37000885;//kernel.T1Map:885
             _this.fiber$initMap(_thread);
             __pc=3;return;
           case 3:
@@ -11491,28 +11493,28 @@ Tonyu.klass.define({
       var _this=this;
       var res;
       
-      //$LASTPOS=36000926;//kernel.T1Map:926
+      //$LASTPOS=37000926;//kernel.T1Map:926
       res = [];
-      //$LASTPOS=36000943;//kernel.T1Map:943
+      //$LASTPOS=37000943;//kernel.T1Map:943
       mat.forEach((function anonymous_955(row) {
         var rrow;
         
-        //$LASTPOS=36000973;//kernel.T1Map:973
+        //$LASTPOS=37000973;//kernel.T1Map:973
         rrow = [];
-        //$LASTPOS=36000995;//kernel.T1Map:995
+        //$LASTPOS=37000995;//kernel.T1Map:995
         res.push(rrow);
-        //$LASTPOS=36001020;//kernel.T1Map:1020
+        //$LASTPOS=37001020;//kernel.T1Map:1020
         row.forEach((function anonymous_1032(dat) {
           var t;
           
-          //$LASTPOS=36001067;//kernel.T1Map:1067
+          //$LASTPOS=37001067;//kernel.T1Map:1067
           t = tbl[dat[0]];
-          //$LASTPOS=36001099;//kernel.T1Map:1099
+          //$LASTPOS=37001099;//kernel.T1Map:1099
           if (t) {
-            //$LASTPOS=36001106;//kernel.T1Map:1106
+            //$LASTPOS=37001106;//kernel.T1Map:1106
             rrow.push(Tonyu.globals[t.name]+dat[1]);
           } else {
-            //$LASTPOS=36001165;//kernel.T1Map:1165
+            //$LASTPOS=37001165;//kernel.T1Map:1165
             rrow.push(dat[1]);
           }
         }));
@@ -11526,28 +11528,28 @@ Tonyu.klass.define({
       var __pc=0;
       var res;
       
-      //$LASTPOS=36000926;//kernel.T1Map:926
+      //$LASTPOS=37000926;//kernel.T1Map:926
       res = [];
-      //$LASTPOS=36000943;//kernel.T1Map:943
+      //$LASTPOS=37000943;//kernel.T1Map:943
       mat.forEach((function anonymous_955(row) {
         var rrow;
         
-        //$LASTPOS=36000973;//kernel.T1Map:973
+        //$LASTPOS=37000973;//kernel.T1Map:973
         rrow = [];
-        //$LASTPOS=36000995;//kernel.T1Map:995
+        //$LASTPOS=37000995;//kernel.T1Map:995
         res.push(rrow);
-        //$LASTPOS=36001020;//kernel.T1Map:1020
+        //$LASTPOS=37001020;//kernel.T1Map:1020
         row.forEach((function anonymous_1032(dat) {
           var t;
           
-          //$LASTPOS=36001067;//kernel.T1Map:1067
+          //$LASTPOS=37001067;//kernel.T1Map:1067
           t = tbl[dat[0]];
-          //$LASTPOS=36001099;//kernel.T1Map:1099
+          //$LASTPOS=37001099;//kernel.T1Map:1099
           if (t) {
-            //$LASTPOS=36001106;//kernel.T1Map:1106
+            //$LASTPOS=37001106;//kernel.T1Map:1106
             rrow.push(Tonyu.globals[t.name]+dat[1]);
           } else {
-            //$LASTPOS=36001165;//kernel.T1Map:1165
+            //$LASTPOS=37001165;//kernel.T1Map:1165
             rrow.push(dat[1]);
           }
         }));
@@ -11586,27 +11588,27 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=37000044;//kernel.T1Page:44
+      //$LASTPOS=38000044;//kernel.T1Page:44
       Tonyu.globals.$chars=Tonyu.globals.$Sprites.sprites;
-      //$LASTPOS=37000074;//kernel.T1Page:74
+      //$LASTPOS=38000074;//kernel.T1Page:74
       Tonyu.globals.$Boot.setFrameRate(60);
-      //$LASTPOS=37000103;//kernel.T1Page:103
+      //$LASTPOS=38000103;//kernel.T1Page:103
       Tonyu.globals.$clBlack=_this.color(0,0,0);
-      //$LASTPOS=37000131;//kernel.T1Page:131
+      //$LASTPOS=38000131;//kernel.T1Page:131
       Tonyu.globals.$clRed=_this.color(255,0,0);
-      //$LASTPOS=37000159;//kernel.T1Page:159
+      //$LASTPOS=38000159;//kernel.T1Page:159
       Tonyu.globals.$clGreen=_this.color(0,255,0);
-      //$LASTPOS=37000189;//kernel.T1Page:189
+      //$LASTPOS=38000189;//kernel.T1Page:189
       Tonyu.globals.$clYellow=_this.color(255,255,0);
-      //$LASTPOS=37000222;//kernel.T1Page:222
+      //$LASTPOS=38000222;//kernel.T1Page:222
       Tonyu.globals.$clBlue=_this.color(0,0,255);
-      //$LASTPOS=37000251;//kernel.T1Page:251
+      //$LASTPOS=38000251;//kernel.T1Page:251
       Tonyu.globals.$clPink=_this.color(255,0,255);
-      //$LASTPOS=37000282;//kernel.T1Page:282
+      //$LASTPOS=38000282;//kernel.T1Page:282
       Tonyu.globals.$clAqua=_this.color(0,255,255);
-      //$LASTPOS=37000313;//kernel.T1Page:313
+      //$LASTPOS=38000313;//kernel.T1Page:313
       Tonyu.globals.$clWhite=_this.color(255,255,255);
-      //$LASTPOS=37000347;//kernel.T1Page:347
+      //$LASTPOS=38000347;//kernel.T1Page:347
       Tonyu.globals.$mplayer=new Tonyu.classes.kernel.MediaPlayer;
     },
     fiber$initGlobals :function _trc_T1Page_f_initGlobals(_thread) {
@@ -11615,9 +11617,9 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=37000044;//kernel.T1Page:44
+      //$LASTPOS=38000044;//kernel.T1Page:44
       Tonyu.globals.$chars=Tonyu.globals.$Sprites.sprites;
-      //$LASTPOS=37000074;//kernel.T1Page:74
+      //$LASTPOS=38000074;//kernel.T1Page:74
       Tonyu.globals.$Boot.setFrameRate(60);
       
       _thread.enter(function _trc_T1Page_ent_initGlobals(_thread) {
@@ -11625,55 +11627,55 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=37000103;//kernel.T1Page:103
+            //$LASTPOS=38000103;//kernel.T1Page:103
             _this.fiber$color(_thread, 0, 0, 0);
             __pc=1;return;
           case 1:
             Tonyu.globals.$clBlack=_thread.retVal;
             
-            //$LASTPOS=37000131;//kernel.T1Page:131
+            //$LASTPOS=38000131;//kernel.T1Page:131
             _this.fiber$color(_thread, 255, 0, 0);
             __pc=2;return;
           case 2:
             Tonyu.globals.$clRed=_thread.retVal;
             
-            //$LASTPOS=37000159;//kernel.T1Page:159
+            //$LASTPOS=38000159;//kernel.T1Page:159
             _this.fiber$color(_thread, 0, 255, 0);
             __pc=3;return;
           case 3:
             Tonyu.globals.$clGreen=_thread.retVal;
             
-            //$LASTPOS=37000189;//kernel.T1Page:189
+            //$LASTPOS=38000189;//kernel.T1Page:189
             _this.fiber$color(_thread, 255, 255, 0);
             __pc=4;return;
           case 4:
             Tonyu.globals.$clYellow=_thread.retVal;
             
-            //$LASTPOS=37000222;//kernel.T1Page:222
+            //$LASTPOS=38000222;//kernel.T1Page:222
             _this.fiber$color(_thread, 0, 0, 255);
             __pc=5;return;
           case 5:
             Tonyu.globals.$clBlue=_thread.retVal;
             
-            //$LASTPOS=37000251;//kernel.T1Page:251
+            //$LASTPOS=38000251;//kernel.T1Page:251
             _this.fiber$color(_thread, 255, 0, 255);
             __pc=6;return;
           case 6:
             Tonyu.globals.$clPink=_thread.retVal;
             
-            //$LASTPOS=37000282;//kernel.T1Page:282
+            //$LASTPOS=38000282;//kernel.T1Page:282
             _this.fiber$color(_thread, 0, 255, 255);
             __pc=7;return;
           case 7:
             Tonyu.globals.$clAqua=_thread.retVal;
             
-            //$LASTPOS=37000313;//kernel.T1Page:313
+            //$LASTPOS=38000313;//kernel.T1Page:313
             _this.fiber$color(_thread, 255, 255, 255);
             __pc=8;return;
           case 8:
             Tonyu.globals.$clWhite=_thread.retVal;
             
-            //$LASTPOS=37000347;//kernel.T1Page:347
+            //$LASTPOS=38000347;//kernel.T1Page:347
             Tonyu.globals.$mplayer=new Tonyu.classes.kernel.MediaPlayer;
             _thread.exit(_this);return;
           }
@@ -11709,15 +11711,15 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=38000032;//kernel.T1Text:32
+      //$LASTPOS=39000032;//kernel.T1Text:32
       if (_this.hidden) {
         return _this;
       }
-      //$LASTPOS=38000057;//kernel.T1Text:57
+      //$LASTPOS=39000057;//kernel.T1Text:57
       c.font=_this.size+"px 'ＭＳ Ｐゴシック'";
-      //$LASTPOS=38000097;//kernel.T1Text:97
+      //$LASTPOS=39000097;//kernel.T1Text:97
       Tonyu.classes.kernel.Actor.prototype.draw.apply( _this, [c]);
-      //$LASTPOS=38000117;//kernel.T1Text:117
+      //$LASTPOS=39000117;//kernel.T1Text:117
       _this.hidden=true;
     },
     __dummy: false
@@ -11749,37 +11751,37 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=39000070;//kernel.TextChar:70
+      //$LASTPOS=40000070;//kernel.TextChar:70
       Tonyu.classes.kernel.PlainChar.apply( _this, [xx,yy]);
-      //$LASTPOS=39000089;//kernel.TextChar:89
+      //$LASTPOS=40000089;//kernel.TextChar:89
       _this.text="";
-      //$LASTPOS=39000103;//kernel.TextChar:103
+      //$LASTPOS=40000103;//kernel.TextChar:103
       _this.col=Tonyu.globals.$clWhite;
-      //$LASTPOS=39000122;//kernel.TextChar:122
+      //$LASTPOS=40000122;//kernel.TextChar:122
       _this.size=20;
-      //$LASTPOS=39000136;//kernel.TextChar:136
+      //$LASTPOS=40000136;//kernel.TextChar:136
       if (! _this.x) {
-        //$LASTPOS=39000149;//kernel.TextChar:149
+        //$LASTPOS=40000149;//kernel.TextChar:149
         _this.x=0;
       }
-      //$LASTPOS=39000164;//kernel.TextChar:164
+      //$LASTPOS=40000164;//kernel.TextChar:164
       if (! _this.y) {
-        //$LASTPOS=39000177;//kernel.TextChar:177
+        //$LASTPOS=40000177;//kernel.TextChar:177
         _this.y=0;
       }
-      //$LASTPOS=39000192;//kernel.TextChar:192
+      //$LASTPOS=40000192;//kernel.TextChar:192
       if (t) {
-        //$LASTPOS=39000199;//kernel.TextChar:199
+        //$LASTPOS=40000199;//kernel.TextChar:199
         _this.text=t;
       }
-      //$LASTPOS=39000212;//kernel.TextChar:212
+      //$LASTPOS=40000212;//kernel.TextChar:212
       if (c) {
-        //$LASTPOS=39000219;//kernel.TextChar:219
+        //$LASTPOS=40000219;//kernel.TextChar:219
         _this.fillStyle=c;
       }
-      //$LASTPOS=39000237;//kernel.TextChar:237
+      //$LASTPOS=40000237;//kernel.TextChar:237
       if (s) {
-        //$LASTPOS=39000244;//kernel.TextChar:244
+        //$LASTPOS=40000244;//kernel.TextChar:244
         _this.size=s;
       }
     },
@@ -11788,32 +11790,32 @@ Tonyu.klass.define({
       var _this=this;
       var rect;
       
-      //$LASTPOS=39000274;//kernel.TextChar:274
+      //$LASTPOS=40000274;//kernel.TextChar:274
       if (! _this.size) {
-        //$LASTPOS=39000285;//kernel.TextChar:285
+        //$LASTPOS=40000285;//kernel.TextChar:285
         _this.size=15;
       }
-      //$LASTPOS=39000299;//kernel.TextChar:299
+      //$LASTPOS=40000299;//kernel.TextChar:299
       if (! _this.align) {
-        //$LASTPOS=39000311;//kernel.TextChar:311
+        //$LASTPOS=40000311;//kernel.TextChar:311
         _this.align="left";
       }
-      //$LASTPOS=39000330;//kernel.TextChar:330
+      //$LASTPOS=40000330;//kernel.TextChar:330
       if (! _this.fillStyle) {
-        //$LASTPOS=39000346;//kernel.TextChar:346
+        //$LASTPOS=40000346;//kernel.TextChar:346
         _this.fillStyle="white";
       }
-      //$LASTPOS=39000370;//kernel.TextChar:370
+      //$LASTPOS=40000370;//kernel.TextChar:370
       ctx.fillStyle=_this.fillStyle;
-      //$LASTPOS=39000400;//kernel.TextChar:400
+      //$LASTPOS=40000400;//kernel.TextChar:400
       ctx.globalAlpha=_this.alpha/255;
-      //$LASTPOS=39000437;//kernel.TextChar:437
+      //$LASTPOS=40000437;//kernel.TextChar:437
       ctx.font=_this.size+"px 'ＭＳ Ｐゴシック'";
-      //$LASTPOS=39000473;//kernel.TextChar:473
+      //$LASTPOS=40000473;//kernel.TextChar:473
       rect = _this.drawTextRect(ctx,_this.text,_this.x,_this.y,_this.size,_this.align,"fill");
-      //$LASTPOS=39000540;//kernel.TextChar:540
+      //$LASTPOS=40000540;//kernel.TextChar:540
       _this.width=rect.w;
-      //$LASTPOS=39000559;//kernel.TextChar:559
+      //$LASTPOS=40000559;//kernel.TextChar:559
       _this.height=rect.h;
     },
     __dummy: false
@@ -11845,21 +11847,21 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=40000084;//kernel.GameConsole:84
+      //$LASTPOS=41000084;//kernel.GameConsole:84
       _this.extend(opt);
-      //$LASTPOS=40000102;//kernel.GameConsole:102
+      //$LASTPOS=41000102;//kernel.GameConsole:102
       _this.cw=_this.canvas.width();
-      //$LASTPOS=40000126;//kernel.GameConsole:126
+      //$LASTPOS=41000126;//kernel.GameConsole:126
       _this.ch=_this.canvas.height();
-      //$LASTPOS=40000151;//kernel.GameConsole:151
+      //$LASTPOS=41000151;//kernel.GameConsole:151
       Tonyu.globals.$Sprites=new Tonyu.classes.kernel.Sprites;
-      //$LASTPOS=40000178;//kernel.GameConsole:178
+      //$LASTPOS=41000178;//kernel.GameConsole:178
       Tonyu.globals.$Screen=_this.gameScreen=new Tonyu.classes.kernel.GameScreen({width: 465,height: 465,sprites: Tonyu.globals.$Sprites});
-      //$LASTPOS=40000259;//kernel.GameConsole:259
+      //$LASTPOS=41000259;//kernel.GameConsole:259
       Tonyu.globals.$FrontSprites=_this.sprites=new Tonyu.classes.kernel.Sprites;
-      //$LASTPOS=40000299;//kernel.GameConsole:299
+      //$LASTPOS=41000299;//kernel.GameConsole:299
       _this.sprites.add(_this.gameScreen);
-      //$LASTPOS=40000329;//kernel.GameConsole:329
+      //$LASTPOS=41000329;//kernel.GameConsole:329
       _this.cctx=_this.canvas[0].getContext("2d");
     },
     shouldDraw1x1 :function _trc_GameConsole_shouldDraw1x1(srcw,srch,dstw,dsth) {
@@ -11868,9 +11870,9 @@ Tonyu.klass.define({
       var larger;
       var smaller;
       
-      //$LASTPOS=40000448;//kernel.GameConsole:448
+      //$LASTPOS=41000448;//kernel.GameConsole:448
       larger = 200;
-      //$LASTPOS=40000469;//kernel.GameConsole:469
+      //$LASTPOS=41000469;//kernel.GameConsole:469
       smaller = 5;
       return srcw-smaller<=dstw&&dstw<=srcw+larger&&srch-smaller<=dsth&&dsth<=srch+larger;
     },
@@ -11882,9 +11884,9 @@ Tonyu.klass.define({
       var larger;
       var smaller;
       
-      //$LASTPOS=40000448;//kernel.GameConsole:448
+      //$LASTPOS=41000448;//kernel.GameConsole:448
       larger = 200;
-      //$LASTPOS=40000469;//kernel.GameConsole:469
+      //$LASTPOS=41000469;//kernel.GameConsole:469
       smaller = 5;
       _thread.retVal=srcw-smaller<=dstw&&dstw<=srcw+larger&&srch-smaller<=dsth&&dsth<=srch+larger;return;
       
@@ -11901,41 +11903,41 @@ Tonyu.klass.define({
       var marginw;
       var marginh;
       
-      //$LASTPOS=40000606;//kernel.GameConsole:606
+      //$LASTPOS=41000606;//kernel.GameConsole:606
       _this.cw=_this.canvas.width();
-      //$LASTPOS=40000630;//kernel.GameConsole:630
+      //$LASTPOS=41000630;//kernel.GameConsole:630
       _this.ch=_this.canvas.height();
-      //$LASTPOS=40000655;//kernel.GameConsole:655
+      //$LASTPOS=41000655;//kernel.GameConsole:655
       width = _this.gameScreen.width;
-      //$LASTPOS=40000688;//kernel.GameConsole:688
+      //$LASTPOS=41000688;//kernel.GameConsole:688
       height = _this.gameScreen.height;
-      //$LASTPOS=40000723;//kernel.GameConsole:723
+      //$LASTPOS=41000723;//kernel.GameConsole:723
       calcw = _this.ch/height*width;
-      //$LASTPOS=40000767;//kernel.GameConsole:767
+      //$LASTPOS=41000767;//kernel.GameConsole:767
       calch = _this.cw/width*height;
-      //$LASTPOS=40000811;//kernel.GameConsole:811
+      //$LASTPOS=41000811;//kernel.GameConsole:811
       if (calch>_this.ch) {
-        //$LASTPOS=40000825;//kernel.GameConsole:825
+        //$LASTPOS=41000825;//kernel.GameConsole:825
         calch=_this.ch;
       }
-      //$LASTPOS=40000840;//kernel.GameConsole:840
+      //$LASTPOS=41000840;//kernel.GameConsole:840
       if (calcw>_this.cw) {
-        //$LASTPOS=40000854;//kernel.GameConsole:854
+        //$LASTPOS=41000854;//kernel.GameConsole:854
         calcw=_this.cw;
       }
-      //$LASTPOS=40000869;//kernel.GameConsole:869
+      //$LASTPOS=41000869;//kernel.GameConsole:869
       if (_this.shouldDraw1x1(width,height,calcw,calch)) {
-        //$LASTPOS=40000925;//kernel.GameConsole:925
+        //$LASTPOS=41000925;//kernel.GameConsole:925
         calcw=width;
-        //$LASTPOS=40000937;//kernel.GameConsole:937
+        //$LASTPOS=41000937;//kernel.GameConsole:937
         calch=height;
         
       }
-      //$LASTPOS=40000963;//kernel.GameConsole:963
+      //$LASTPOS=41000963;//kernel.GameConsole:963
       marginw = Math.floor((_this.cw-calcw)/2);
-      //$LASTPOS=40001006;//kernel.GameConsole:1006
+      //$LASTPOS=41001006;//kernel.GameConsole:1006
       marginh = Math.floor((_this.ch-calch)/2);
-      //$LASTPOS=40001049;//kernel.GameConsole:1049
+      //$LASTPOS=41001049;//kernel.GameConsole:1049
       _this.gameScreen.setBounds({left: marginw,top: marginh,width: calcw,height: calch});
     },
     fiber$layout :function _trc_GameConsole_f_layout(_thread) {
@@ -11950,41 +11952,41 @@ Tonyu.klass.define({
       var marginw;
       var marginh;
       
-      //$LASTPOS=40000606;//kernel.GameConsole:606
+      //$LASTPOS=41000606;//kernel.GameConsole:606
       _this.cw=_this.canvas.width();
-      //$LASTPOS=40000630;//kernel.GameConsole:630
+      //$LASTPOS=41000630;//kernel.GameConsole:630
       _this.ch=_this.canvas.height();
-      //$LASTPOS=40000655;//kernel.GameConsole:655
+      //$LASTPOS=41000655;//kernel.GameConsole:655
       width = _this.gameScreen.width;
-      //$LASTPOS=40000688;//kernel.GameConsole:688
+      //$LASTPOS=41000688;//kernel.GameConsole:688
       height = _this.gameScreen.height;
-      //$LASTPOS=40000723;//kernel.GameConsole:723
+      //$LASTPOS=41000723;//kernel.GameConsole:723
       calcw = _this.ch/height*width;
-      //$LASTPOS=40000767;//kernel.GameConsole:767
+      //$LASTPOS=41000767;//kernel.GameConsole:767
       calch = _this.cw/width*height;
-      //$LASTPOS=40000811;//kernel.GameConsole:811
+      //$LASTPOS=41000811;//kernel.GameConsole:811
       if (calch>_this.ch) {
-        //$LASTPOS=40000825;//kernel.GameConsole:825
+        //$LASTPOS=41000825;//kernel.GameConsole:825
         calch=_this.ch;
       }
-      //$LASTPOS=40000840;//kernel.GameConsole:840
+      //$LASTPOS=41000840;//kernel.GameConsole:840
       if (calcw>_this.cw) {
-        //$LASTPOS=40000854;//kernel.GameConsole:854
+        //$LASTPOS=41000854;//kernel.GameConsole:854
         calcw=_this.cw;
       }
-      //$LASTPOS=40000869;//kernel.GameConsole:869
+      //$LASTPOS=41000869;//kernel.GameConsole:869
       if (_this.shouldDraw1x1(width,height,calcw,calch)) {
-        //$LASTPOS=40000925;//kernel.GameConsole:925
+        //$LASTPOS=41000925;//kernel.GameConsole:925
         calcw=width;
-        //$LASTPOS=40000937;//kernel.GameConsole:937
+        //$LASTPOS=41000937;//kernel.GameConsole:937
         calch=height;
         
       }
-      //$LASTPOS=40000963;//kernel.GameConsole:963
+      //$LASTPOS=41000963;//kernel.GameConsole:963
       marginw = Math.floor((_this.cw-calcw)/2);
-      //$LASTPOS=40001006;//kernel.GameConsole:1006
+      //$LASTPOS=41001006;//kernel.GameConsole:1006
       marginh = Math.floor((_this.ch-calch)/2);
-      //$LASTPOS=40001049;//kernel.GameConsole:1049
+      //$LASTPOS=41001049;//kernel.GameConsole:1049
       _this.gameScreen.setBounds({left: marginw,top: marginh,width: calcw,height: calch});
       
       _thread.retVal=_this;return;
@@ -11993,9 +11995,9 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=40001144;//kernel.GameConsole:1144
+      //$LASTPOS=41001144;//kernel.GameConsole:1144
       _this.layout();
-      //$LASTPOS=40001159;//kernel.GameConsole:1159
+      //$LASTPOS=41001159;//kernel.GameConsole:1159
       _this.sprites.draw(_this.canvas[0]);
     },
     __dummy: false
@@ -12015,107 +12017,107 @@ Tonyu.klass.define({
       var i;
       var j;
       
-      //$LASTPOS=41000049;//kernel.MapEditor:49
+      //$LASTPOS=42000049;//kernel.MapEditor:49
       Tonyu.globals.$Screen.resize(480,640);
-      //$LASTPOS=41000075;//kernel.MapEditor:75
+      //$LASTPOS=42000075;//kernel.MapEditor:75
       _this.loadMode=false;
-      //$LASTPOS=41000092;//kernel.MapEditor:92
+      //$LASTPOS=42000092;//kernel.MapEditor:92
       _this.fileExist=false;
-      //$LASTPOS=41000110;//kernel.MapEditor:110
+      //$LASTPOS=42000110;//kernel.MapEditor:110
       _this.print("map file(s)");
-      //$LASTPOS=41000158;//kernel.MapEditor:158
+      //$LASTPOS=42000158;//kernel.MapEditor:158
       _this.fileList=_this.file("../maps/");
-      //$LASTPOS=41000186;//kernel.MapEditor:186
+      //$LASTPOS=42000186;//kernel.MapEditor:186
       if (_this.fileList.exists()) {
-        //$LASTPOS=41000214;//kernel.MapEditor:214
+        //$LASTPOS=42000214;//kernel.MapEditor:214
         _this.fileList.recursive((function a(f) {
           
-          //$LASTPOS=41000257;//kernel.MapEditor:257
+          //$LASTPOS=42000257;//kernel.MapEditor:257
           f=f+"";
-          //$LASTPOS=41000274;//kernel.MapEditor:274
+          //$LASTPOS=42000274;//kernel.MapEditor:274
           _this.fNames=f.split("/");
-          //$LASTPOS=41000304;//kernel.MapEditor:304
+          //$LASTPOS=42000304;//kernel.MapEditor:304
           _this.print(_this.fNames[_this.fNames.length-1]);
-          //$LASTPOS=41000345;//kernel.MapEditor:345
+          //$LASTPOS=42000345;//kernel.MapEditor:345
           _this.fileExist=true;
         }));
         
       }
-      //$LASTPOS=41000388;//kernel.MapEditor:388
+      //$LASTPOS=42000388;//kernel.MapEditor:388
       if (_this.fileExist) {
-        //$LASTPOS=41000408;//kernel.MapEditor:408
+        //$LASTPOS=42000408;//kernel.MapEditor:408
         _this.print("Load Data?: Y or N");
-        //$LASTPOS=41000442;//kernel.MapEditor:442
+        //$LASTPOS=42000442;//kernel.MapEditor:442
         while (true) {
-          //$LASTPOS=41000464;//kernel.MapEditor:464
+          //$LASTPOS=42000464;//kernel.MapEditor:464
           if (_this.getkey("y")>0) {
-            //$LASTPOS=41000496;//kernel.MapEditor:496
+            //$LASTPOS=42000496;//kernel.MapEditor:496
             _this.loadMode=true;
             break;
             
             
           }
-          //$LASTPOS=41000551;//kernel.MapEditor:551
+          //$LASTPOS=42000551;//kernel.MapEditor:551
           if (_this.getkey("n")>0) {
-            //$LASTPOS=41000583;//kernel.MapEditor:583
+            //$LASTPOS=42000583;//kernel.MapEditor:583
             _this.loadMode=false;
             break;
             
             
           }
-          //$LASTPOS=41000639;//kernel.MapEditor:639
+          //$LASTPOS=42000639;//kernel.MapEditor:639
           _this.update();
           
         }
-        //$LASTPOS=41000661;//kernel.MapEditor:661
+        //$LASTPOS=42000661;//kernel.MapEditor:661
         if (_this.loadMode) {
-          //$LASTPOS=41000684;//kernel.MapEditor:684
+          //$LASTPOS=42000684;//kernel.MapEditor:684
           _this.fileName=_this.prompt("Input json file (*.json)","map.json");
-          //$LASTPOS=41000749;//kernel.MapEditor:749
+          //$LASTPOS=42000749;//kernel.MapEditor:749
           if (_this.fileName) {
-            //$LASTPOS=41000776;//kernel.MapEditor:776
+            //$LASTPOS=42000776;//kernel.MapEditor:776
             _this.mapDataFile=_this.file("../maps/").rel(_this.fileName);
             
           }
-          //$LASTPOS=41000840;//kernel.MapEditor:840
+          //$LASTPOS=42000840;//kernel.MapEditor:840
           if (_this.mapDataFile.obj()) {
-            //$LASTPOS=41000876;//kernel.MapEditor:876
+            //$LASTPOS=42000876;//kernel.MapEditor:876
             _this.baseData=_this.mapDataFile.obj();
-            //$LASTPOS=41000917;//kernel.MapEditor:917
+            //$LASTPOS=42000917;//kernel.MapEditor:917
             _this.loadedFile=_this.fileName;
             
           } else {
-            //$LASTPOS=41000967;//kernel.MapEditor:967
+            //$LASTPOS=42000967;//kernel.MapEditor:967
             _this.mapDataFile=_this.file(_this.fileName);
-            //$LASTPOS=41001008;//kernel.MapEditor:1008
+            //$LASTPOS=42001008;//kernel.MapEditor:1008
             if (_this.mapDataFile.obj()) {
-              //$LASTPOS=41001048;//kernel.MapEditor:1048
+              //$LASTPOS=42001048;//kernel.MapEditor:1048
               _this.baseData=_this.mapDataFile.obj();
-              //$LASTPOS=41001093;//kernel.MapEditor:1093
+              //$LASTPOS=42001093;//kernel.MapEditor:1093
               _this.loadedFile=_this.fileName;
               
             }
             
           }
-          //$LASTPOS=41001149;//kernel.MapEditor:1149
+          //$LASTPOS=42001149;//kernel.MapEditor:1149
           if (_this.baseData==undefined) {
-            //$LASTPOS=41001187;//kernel.MapEditor:1187
+            //$LASTPOS=42001187;//kernel.MapEditor:1187
             _this.print("Load failed");
-            //$LASTPOS=41001222;//kernel.MapEditor:1222
+            //$LASTPOS=42001222;//kernel.MapEditor:1222
             _this.loadMode=false;
             
           } else {
-            //$LASTPOS=41001253;//kernel.MapEditor:1253
+            //$LASTPOS=42001253;//kernel.MapEditor:1253
             if (_this.baseData[0]&&_this.baseData[1]) {
-              //$LASTPOS=41001298;//kernel.MapEditor:1298
+              //$LASTPOS=42001298;//kernel.MapEditor:1298
               _this.mapData=_this.baseData[0];
-              //$LASTPOS=41001332;//kernel.MapEditor:1332
+              //$LASTPOS=42001332;//kernel.MapEditor:1332
               _this.mapOnData=_this.baseData[1];
-              //$LASTPOS=41001368;//kernel.MapEditor:1368
+              //$LASTPOS=42001368;//kernel.MapEditor:1368
               if (_this.baseData.length>2) {
-                //$LASTPOS=41001408;//kernel.MapEditor:1408
+                //$LASTPOS=42001408;//kernel.MapEditor:1408
                 _this.chipWidth=_this.baseData[_this.baseData.length-2];
-                //$LASTPOS=41001464;//kernel.MapEditor:1464
+                //$LASTPOS=42001464;//kernel.MapEditor:1464
                 _this.chipHeight=_this.baseData[_this.baseData.length-1];
                 
               }
@@ -12126,73 +12128,73 @@ Tonyu.klass.define({
         }
         
       }
-      //$LASTPOS=41001541;//kernel.MapEditor:1541
+      //$LASTPOS=42001541;//kernel.MapEditor:1541
       _this.update();
-      //$LASTPOS=41001855;//kernel.MapEditor:1855
+      //$LASTPOS=42001855;//kernel.MapEditor:1855
       if (! _this.loadMode) {
-        //$LASTPOS=41001875;//kernel.MapEditor:1875
+        //$LASTPOS=42001875;//kernel.MapEditor:1875
         _this.row=_this.prompt("input row");
-        //$LASTPOS=41001905;//kernel.MapEditor:1905
+        //$LASTPOS=42001905;//kernel.MapEditor:1905
         _this.col=_this.prompt("input col");
-        //$LASTPOS=41001935;//kernel.MapEditor:1935
+        //$LASTPOS=42001935;//kernel.MapEditor:1935
         _this.chipWidth=_this.prompt("input chipWidth");
-        //$LASTPOS=41001977;//kernel.MapEditor:1977
+        //$LASTPOS=42001977;//kernel.MapEditor:1977
         _this.chipHeight=_this.prompt("input chipHeight");
-        //$LASTPOS=41002021;//kernel.MapEditor:2021
+        //$LASTPOS=42002021;//kernel.MapEditor:2021
         _this.panel=new Tonyu.classes.kernel.Panel({width: _this.col*_this.chipWidth,height: _this.row*_this.chipHeight});
-        //$LASTPOS=41002086;//kernel.MapEditor:2086
+        //$LASTPOS=42002086;//kernel.MapEditor:2086
         _this.panel.x=_this.panel.width/2+40;
-        //$LASTPOS=41002117;//kernel.MapEditor:2117
+        //$LASTPOS=42002117;//kernel.MapEditor:2117
         _this.panel.y=_this.panel.height/2+40;
-        //$LASTPOS=41002149;//kernel.MapEditor:2149
+        //$LASTPOS=42002149;//kernel.MapEditor:2149
         _this.panel.setFillStyle("cyan");
-        //$LASTPOS=41002182;//kernel.MapEditor:2182
+        //$LASTPOS=42002182;//kernel.MapEditor:2182
         _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
-        //$LASTPOS=41002233;//kernel.MapEditor:2233
+        //$LASTPOS=42002233;//kernel.MapEditor:2233
         Tonyu.globals.$map=new Tonyu.classes.kernel.Map({row: _this.row,col: _this.col,chipWidth: _this.chipWidth,chipHeight: _this.chipHeight});
         
       } else {
-        //$LASTPOS=41002544;//kernel.MapEditor:2544
+        //$LASTPOS=42002544;//kernel.MapEditor:2544
         Tonyu.globals.$map=new Tonyu.classes.kernel.Map({chipWidth: 32,chipHeight: 32});
-        //$LASTPOS=41002591;//kernel.MapEditor:2591
+        //$LASTPOS=42002591;//kernel.MapEditor:2591
         Tonyu.globals.$map.load(_this.fileName);
-        //$LASTPOS=41002617;//kernel.MapEditor:2617
+        //$LASTPOS=42002617;//kernel.MapEditor:2617
         _this.panel=new Tonyu.classes.kernel.Panel({width: Tonyu.globals.$map.col*Tonyu.globals.$map.chipWidth,height: Tonyu.globals.$map.row*Tonyu.globals.$map.chipHeight,zOrder: 100});
-        //$LASTPOS=41002713;//kernel.MapEditor:2713
+        //$LASTPOS=42002713;//kernel.MapEditor:2713
         _this.panel.x=_this.panel.width/2+40;
-        //$LASTPOS=41002744;//kernel.MapEditor:2744
+        //$LASTPOS=42002744;//kernel.MapEditor:2744
         _this.panel.y=_this.panel.height/2+40;
-        //$LASTPOS=41002776;//kernel.MapEditor:2776
+        //$LASTPOS=42002776;//kernel.MapEditor:2776
         _this.panel.setFillStyle("cyan");
-        //$LASTPOS=41002809;//kernel.MapEditor:2809
+        //$LASTPOS=42002809;//kernel.MapEditor:2809
         _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
         
       }
-      //$LASTPOS=41002876;//kernel.MapEditor:2876
+      //$LASTPOS=42002876;//kernel.MapEditor:2876
       _this.mIW=Tonyu.globals.$Sprites.getImageList()[Tonyu.globals.$pat_mapchip].image.width;
-      //$LASTPOS=41002932;//kernel.MapEditor:2932
+      //$LASTPOS=42002932;//kernel.MapEditor:2932
       _this.mIH=Tonyu.globals.$Sprites.getImageList()[Tonyu.globals.$pat_mapchip].image.height;
-      //$LASTPOS=41002989;//kernel.MapEditor:2989
+      //$LASTPOS=42002989;//kernel.MapEditor:2989
       _this.mCW=Tonyu.globals.$Sprites.getImageList()[Tonyu.globals.$pat_mapchip+0].width;
-      //$LASTPOS=41003041;//kernel.MapEditor:3041
+      //$LASTPOS=42003041;//kernel.MapEditor:3041
       _this.mCH=Tonyu.globals.$Sprites.getImageList()[Tonyu.globals.$pat_mapchip+0].height;
-      //$LASTPOS=41003094;//kernel.MapEditor:3094
+      //$LASTPOS=42003094;//kernel.MapEditor:3094
       Tonyu.globals.$mp=new Tonyu.classes.kernel.Map({row: _this.floor(_this.mIH/_this.mCH),col: _this.floor(_this.mIW/_this.mCW),chipWidth: _this.mCW,chipHeight: _this.mCH});
-      //$LASTPOS=41003176;//kernel.MapEditor:3176
+      //$LASTPOS=42003176;//kernel.MapEditor:3176
       _this.counter=0;
-      //$LASTPOS=41003188;//kernel.MapEditor:3188
-      //$LASTPOS=41003192;//kernel.MapEditor:3192
+      //$LASTPOS=42003188;//kernel.MapEditor:3188
+      //$LASTPOS=42003192;//kernel.MapEditor:3192
       i = 0;
       while(i<Tonyu.globals.$mp.row) {
         {
-          //$LASTPOS=41003221;//kernel.MapEditor:3221
-          //$LASTPOS=41003225;//kernel.MapEditor:3225
+          //$LASTPOS=42003221;//kernel.MapEditor:3221
+          //$LASTPOS=42003225;//kernel.MapEditor:3225
           j = 0;
           while(j<Tonyu.globals.$mp.col) {
             {
-              //$LASTPOS=41003258;//kernel.MapEditor:3258
+              //$LASTPOS=42003258;//kernel.MapEditor:3258
               Tonyu.globals.$mp.set(j,i,Tonyu.globals.$pat_mapchip+_this.counter);
-              //$LASTPOS=41003302;//kernel.MapEditor:3302
+              //$LASTPOS=42003302;//kernel.MapEditor:3302
               _this.counter++;
             }
             j++;
@@ -12200,354 +12202,354 @@ Tonyu.klass.define({
         }
         i++;
       }
-      //$LASTPOS=41003326;//kernel.MapEditor:3326
+      //$LASTPOS=42003326;//kernel.MapEditor:3326
       Tonyu.globals.$consolePanel.clearRect(0,0,Tonyu.globals.$screenWidth,Tonyu.globals.$screenHeight);
-      //$LASTPOS=41003406;//kernel.MapEditor:3406
+      //$LASTPOS=42003406;//kernel.MapEditor:3406
       _this.mode="get";
-      //$LASTPOS=41003419;//kernel.MapEditor:3419
+      //$LASTPOS=42003419;//kernel.MapEditor:3419
       _this.prevMode="set";
-      //$LASTPOS=41003436;//kernel.MapEditor:3436
+      //$LASTPOS=42003436;//kernel.MapEditor:3436
       _this.mapp=0;
-      //$LASTPOS=41003445;//kernel.MapEditor:3445
+      //$LASTPOS=42003445;//kernel.MapEditor:3445
       _this.maponp=- 1;
-      //$LASTPOS=41003457;//kernel.MapEditor:3457
+      //$LASTPOS=42003457;//kernel.MapEditor:3457
       _this.mx=- 40;
-      //$LASTPOS=41003466;//kernel.MapEditor:3466
+      //$LASTPOS=42003466;//kernel.MapEditor:3466
       _this.my=- 40;
-      //$LASTPOS=41003475;//kernel.MapEditor:3475
+      //$LASTPOS=42003475;//kernel.MapEditor:3475
       _this.chipX=- 40;
-      //$LASTPOS=41003487;//kernel.MapEditor:3487
+      //$LASTPOS=42003487;//kernel.MapEditor:3487
       _this.chipY=- 40;
-      //$LASTPOS=41003499;//kernel.MapEditor:3499
+      //$LASTPOS=42003499;//kernel.MapEditor:3499
       _this.x=Tonyu.globals.$screenWidth-_this.chipWidth/2;
-      //$LASTPOS=41003528;//kernel.MapEditor:3528
+      //$LASTPOS=42003528;//kernel.MapEditor:3528
       _this.y=Tonyu.globals.$screenHeight-_this.chipHeight/2;
-      //$LASTPOS=41003559;//kernel.MapEditor:3559
+      //$LASTPOS=42003559;//kernel.MapEditor:3559
       Tonyu.globals.$map.scrollTo(_this.mx,_this.my);
-      //$LASTPOS=41003584;//kernel.MapEditor:3584
+      //$LASTPOS=42003584;//kernel.MapEditor:3584
       _this.initialWidth=Tonyu.globals.$map.chipWidth;
-      //$LASTPOS=41003614;//kernel.MapEditor:3614
+      //$LASTPOS=42003614;//kernel.MapEditor:3614
       _this.initialHeight=Tonyu.globals.$map.chipHeight;
-      //$LASTPOS=41003646;//kernel.MapEditor:3646
+      //$LASTPOS=42003646;//kernel.MapEditor:3646
       _this.layers=["base","on","all"];
-      //$LASTPOS=41003675;//kernel.MapEditor:3675
+      //$LASTPOS=42003675;//kernel.MapEditor:3675
       _this.lc=0;
-      //$LASTPOS=41003682;//kernel.MapEditor:3682
+      //$LASTPOS=42003682;//kernel.MapEditor:3682
       _this.selectedLayer=_this.layers[_this.lc];
-      //$LASTPOS=41003709;//kernel.MapEditor:3709
+      //$LASTPOS=42003709;//kernel.MapEditor:3709
       _this.drawPanel();
-      //$LASTPOS=41003723;//kernel.MapEditor:3723
+      //$LASTPOS=42003723;//kernel.MapEditor:3723
       _this.drawLetter(_this.mode);
-      //$LASTPOS=41003744;//kernel.MapEditor:3744
+      //$LASTPOS=42003744;//kernel.MapEditor:3744
       while (true) {
-        //$LASTPOS=41003762;//kernel.MapEditor:3762
+        //$LASTPOS=42003762;//kernel.MapEditor:3762
         _this.p=_this.mapp;
-        //$LASTPOS=41003775;//kernel.MapEditor:3775
+        //$LASTPOS=42003775;//kernel.MapEditor:3775
         if (Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<120&&Tonyu.globals.$touches[0].y>560&&Tonyu.globals.$touches[0].y<640) {
-          //$LASTPOS=41003894;//kernel.MapEditor:3894
+          //$LASTPOS=42003894;//kernel.MapEditor:3894
           Tonyu.globals.$mp.scrollTo(1000,1000);
-          //$LASTPOS=41003928;//kernel.MapEditor:3928
+          //$LASTPOS=42003928;//kernel.MapEditor:3928
           _this.mode="erase";
-          //$LASTPOS=41003983;//kernel.MapEditor:3983
+          //$LASTPOS=42003983;//kernel.MapEditor:3983
           _this.drawLetter(_this.mode);
           
         }
-        //$LASTPOS=41004013;//kernel.MapEditor:4013
+        //$LASTPOS=42004013;//kernel.MapEditor:4013
         if (Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<120&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560) {
-          //$LASTPOS=41004132;//kernel.MapEditor:4132
+          //$LASTPOS=42004132;//kernel.MapEditor:4132
           Tonyu.globals.$mp.scrollTo(1000,1000);
-          //$LASTPOS=41004166;//kernel.MapEditor:4166
+          //$LASTPOS=42004166;//kernel.MapEditor:4166
           _this.mode="set";
-          //$LASTPOS=41004187;//kernel.MapEditor:4187
+          //$LASTPOS=42004187;//kernel.MapEditor:4187
           _this.drawLetter(_this.mode);
           
         }
-        //$LASTPOS=41004217;//kernel.MapEditor:4217
+        //$LASTPOS=42004217;//kernel.MapEditor:4217
         if (Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>120&&Tonyu.globals.$touches[0].x<240&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560) {
-          //$LASTPOS=41004338;//kernel.MapEditor:4338
+          //$LASTPOS=42004338;//kernel.MapEditor:4338
           _this.lc++;
-          //$LASTPOS=41004353;//kernel.MapEditor:4353
+          //$LASTPOS=42004353;//kernel.MapEditor:4353
           _this.selectedLayer=_this.layers[_this.lc%3];
-          //$LASTPOS=41004390;//kernel.MapEditor:4390
+          //$LASTPOS=42004390;//kernel.MapEditor:4390
           _this.drawPanel();
-          //$LASTPOS=41004444;//kernel.MapEditor:4444
+          //$LASTPOS=42004444;//kernel.MapEditor:4444
           _this.drawLetter(_this.mode);
           
         }
-        //$LASTPOS=41004567;//kernel.MapEditor:4567
+        //$LASTPOS=42004567;//kernel.MapEditor:4567
         if (Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>240&&Tonyu.globals.$touches[0].x<360&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560) {
-          //$LASTPOS=41004688;//kernel.MapEditor:4688
+          //$LASTPOS=42004688;//kernel.MapEditor:4688
           if (_this.mode!="get") {
-            //$LASTPOS=41004718;//kernel.MapEditor:4718
+            //$LASTPOS=42004718;//kernel.MapEditor:4718
             _this.prevMode=_this.mode;
-            //$LASTPOS=41004746;//kernel.MapEditor:4746
+            //$LASTPOS=42004746;//kernel.MapEditor:4746
             Tonyu.globals.$mp.scrollTo(- 40,- 40);
-            //$LASTPOS=41004782;//kernel.MapEditor:4782
+            //$LASTPOS=42004782;//kernel.MapEditor:4782
             _this.mode="get";
-            //$LASTPOS=41004807;//kernel.MapEditor:4807
+            //$LASTPOS=42004807;//kernel.MapEditor:4807
             _this.chipX=- 40;
-            //$LASTPOS=41004831;//kernel.MapEditor:4831
+            //$LASTPOS=42004831;//kernel.MapEditor:4831
             _this.chipY=- 40;
             
           } else {
-            //$LASTPOS=41004871;//kernel.MapEditor:4871
+            //$LASTPOS=42004871;//kernel.MapEditor:4871
             Tonyu.globals.$mp.scrollTo(1000,1000);
-            //$LASTPOS=41004909;//kernel.MapEditor:4909
+            //$LASTPOS=42004909;//kernel.MapEditor:4909
             _this.mode=_this.prevMode;
             
           }
-          //$LASTPOS=41004976;//kernel.MapEditor:4976
+          //$LASTPOS=42004976;//kernel.MapEditor:4976
           _this.drawLetter(_this.mode);
           
         }
-        //$LASTPOS=41005006;//kernel.MapEditor:5006
+        //$LASTPOS=42005006;//kernel.MapEditor:5006
         if (Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>360&&Tonyu.globals.$touches[0].x<480&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560) {
-          //$LASTPOS=41005142;//kernel.MapEditor:5142
+          //$LASTPOS=42005142;//kernel.MapEditor:5142
           if (_this.loadedFile) {
-            //$LASTPOS=41005171;//kernel.MapEditor:5171
+            //$LASTPOS=42005171;//kernel.MapEditor:5171
             _this.saveFileName=_this.prompt("input json file(*.json)",_this.loadedFile);
             
           } else {
-            //$LASTPOS=41005259;//kernel.MapEditor:5259
+            //$LASTPOS=42005259;//kernel.MapEditor:5259
             _this.saveFileName=_this.prompt("input json file(*.json)","map.json");
             
           }
-          //$LASTPOS=41005353;//kernel.MapEditor:5353
+          //$LASTPOS=42005353;//kernel.MapEditor:5353
           if (_this.saveFileName) {
-            //$LASTPOS=41005384;//kernel.MapEditor:5384
+            //$LASTPOS=42005384;//kernel.MapEditor:5384
             _this.saveDataFile=_this.file("../maps/").rel(_this.saveFileName);
-            //$LASTPOS=41005446;//kernel.MapEditor:5446
+            //$LASTPOS=42005446;//kernel.MapEditor:5446
             _this.data=[Tonyu.globals.$map.mapTable,Tonyu.globals.$map.mapOnTable,Tonyu.globals.$map.chipWidth,Tonyu.globals.$map.chipHeight];
-            //$LASTPOS=41005608;//kernel.MapEditor:5608
+            //$LASTPOS=42005608;//kernel.MapEditor:5608
             _this.saveDataFile.obj(_this.data);
-            //$LASTPOS=41005645;//kernel.MapEditor:5645
+            //$LASTPOS=42005645;//kernel.MapEditor:5645
             _this.print(_this.saveFileName+" Saved");
             
           }
           
         }
-        //$LASTPOS=41005698;//kernel.MapEditor:5698
+        //$LASTPOS=42005698;//kernel.MapEditor:5698
         if (Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>120&&Tonyu.globals.$touches[0].x<240&&Tonyu.globals.$touches[0].y>560&&Tonyu.globals.$touches[0].y<640) {
-          //$LASTPOS=41005819;//kernel.MapEditor:5819
+          //$LASTPOS=42005819;//kernel.MapEditor:5819
           Tonyu.globals.$mp.scrollTo(1000,1000);
-          //$LASTPOS=41005853;//kernel.MapEditor:5853
+          //$LASTPOS=42005853;//kernel.MapEditor:5853
           _this.mode="copy";
-          //$LASTPOS=41005907;//kernel.MapEditor:5907
+          //$LASTPOS=42005907;//kernel.MapEditor:5907
           _this.drawLetter(_this.mode);
           
         }
-        //$LASTPOS=41005937;//kernel.MapEditor:5937
+        //$LASTPOS=42005937;//kernel.MapEditor:5937
         if (_this.mode!="get") {
-          //$LASTPOS=41005963;//kernel.MapEditor:5963
+          //$LASTPOS=42005963;//kernel.MapEditor:5963
           if (_this.getkey("left")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<40&&Tonyu.globals.$touches[0].y<480)) {
-            //$LASTPOS=41006069;//kernel.MapEditor:6069
+            //$LASTPOS=42006069;//kernel.MapEditor:6069
             _this.mx=_this.mx-8;
           }
-          //$LASTPOS=41006087;//kernel.MapEditor:6087
+          //$LASTPOS=42006087;//kernel.MapEditor:6087
           if (_this.getkey("right")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>Tonyu.globals.$screenWidth-40&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<480)) {
-            //$LASTPOS=41006218;//kernel.MapEditor:6218
+            //$LASTPOS=42006218;//kernel.MapEditor:6218
             _this.mx=_this.mx+8;
           }
-          //$LASTPOS=41006236;//kernel.MapEditor:6236
+          //$LASTPOS=42006236;//kernel.MapEditor:6236
           if (_this.getkey("up")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<40)) {
-            //$LASTPOS=41006349;//kernel.MapEditor:6349
+            //$LASTPOS=42006349;//kernel.MapEditor:6349
             _this.my=_this.my-8;
           }
-          //$LASTPOS=41006367;//kernel.MapEditor:6367
+          //$LASTPOS=42006367;//kernel.MapEditor:6367
           if (_this.getkey("down")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<480&&Tonyu.globals.$touches[0].y>440)) {
-            //$LASTPOS=41006502;//kernel.MapEditor:6502
+            //$LASTPOS=42006502;//kernel.MapEditor:6502
             _this.my=_this.my+8;
           }
-          //$LASTPOS=41006520;//kernel.MapEditor:6520
+          //$LASTPOS=42006520;//kernel.MapEditor:6520
           Tonyu.globals.$map.scrollTo(_this.mx,_this.my);
           
         } else {
-          //$LASTPOS=41006563;//kernel.MapEditor:6563
+          //$LASTPOS=42006563;//kernel.MapEditor:6563
           if (_this.getkey("left")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<40&&Tonyu.globals.$touches[0].y<480)) {
-            //$LASTPOS=41006669;//kernel.MapEditor:6669
+            //$LASTPOS=42006669;//kernel.MapEditor:6669
             _this.chipX=_this.chipX-8;
           }
-          //$LASTPOS=41006693;//kernel.MapEditor:6693
+          //$LASTPOS=42006693;//kernel.MapEditor:6693
           if (_this.getkey("right")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>Tonyu.globals.$screenWidth-40&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<480)) {
-            //$LASTPOS=41006824;//kernel.MapEditor:6824
+            //$LASTPOS=42006824;//kernel.MapEditor:6824
             _this.chipX=_this.chipX+8;
           }
-          //$LASTPOS=41006848;//kernel.MapEditor:6848
+          //$LASTPOS=42006848;//kernel.MapEditor:6848
           if (_this.getkey("up")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<40)) {
-            //$LASTPOS=41006961;//kernel.MapEditor:6961
+            //$LASTPOS=42006961;//kernel.MapEditor:6961
             _this.chipY=_this.chipY-8;
           }
-          //$LASTPOS=41006985;//kernel.MapEditor:6985
+          //$LASTPOS=42006985;//kernel.MapEditor:6985
           if (_this.getkey("down")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<480&&Tonyu.globals.$touches[0].y>440)) {
-            //$LASTPOS=41007120;//kernel.MapEditor:7120
+            //$LASTPOS=42007120;//kernel.MapEditor:7120
             _this.chipY=_this.chipY+8;
           }
-          //$LASTPOS=41007144;//kernel.MapEditor:7144
+          //$LASTPOS=42007144;//kernel.MapEditor:7144
           Tonyu.globals.$mp.scrollTo(_this.chipX,_this.chipY);
           
         }
-        //$LASTPOS=41007217;//kernel.MapEditor:7217
+        //$LASTPOS=42007217;//kernel.MapEditor:7217
         if (_this.getkey("i")==1) {
-          //$LASTPOS=41007246;//kernel.MapEditor:7246
+          //$LASTPOS=42007246;//kernel.MapEditor:7246
           if (Tonyu.globals.$map.chipWidth<_this.initialWidth) {
-            //$LASTPOS=41007278;//kernel.MapEditor:7278
+            //$LASTPOS=42007278;//kernel.MapEditor:7278
             Tonyu.globals.$map.chipWidth+=4;
           }
-          //$LASTPOS=41007306;//kernel.MapEditor:7306
+          //$LASTPOS=42007306;//kernel.MapEditor:7306
           if (Tonyu.globals.$map.chipHeight<_this.initialHeight) {
-            //$LASTPOS=41007340;//kernel.MapEditor:7340
+            //$LASTPOS=42007340;//kernel.MapEditor:7340
             Tonyu.globals.$map.chipHeight+=4;
           }
-          //$LASTPOS=41007369;//kernel.MapEditor:7369
+          //$LASTPOS=42007369;//kernel.MapEditor:7369
           Tonyu.globals.$map.redrawMap();
-          //$LASTPOS=41007396;//kernel.MapEditor:7396
+          //$LASTPOS=42007396;//kernel.MapEditor:7396
           _this.panel.die();
-          //$LASTPOS=41007418;//kernel.MapEditor:7418
+          //$LASTPOS=42007418;//kernel.MapEditor:7418
           _this.panel=new Tonyu.classes.kernel.Panel({width: Tonyu.globals.$map.col*Tonyu.globals.$map.chipWidth,height: Tonyu.globals.$map.row*Tonyu.globals.$map.chipHeight,zOrder: 100});
-          //$LASTPOS=41007518;//kernel.MapEditor:7518
+          //$LASTPOS=42007518;//kernel.MapEditor:7518
           _this.panel.x=_this.panel.width/2+40;
-          //$LASTPOS=41007553;//kernel.MapEditor:7553
+          //$LASTPOS=42007553;//kernel.MapEditor:7553
           _this.panel.y=_this.panel.height/2+40;
-          //$LASTPOS=41007589;//kernel.MapEditor:7589
+          //$LASTPOS=42007589;//kernel.MapEditor:7589
           _this.panel.setFillStyle("cyan");
-          //$LASTPOS=41007626;//kernel.MapEditor:7626
+          //$LASTPOS=42007626;//kernel.MapEditor:7626
           _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
           
         }
-        //$LASTPOS=41007684;//kernel.MapEditor:7684
+        //$LASTPOS=42007684;//kernel.MapEditor:7684
         if (_this.getkey("o")==1) {
-          //$LASTPOS=41007713;//kernel.MapEditor:7713
+          //$LASTPOS=42007713;//kernel.MapEditor:7713
           if (Tonyu.globals.$map.chipWidth>4) {
-            //$LASTPOS=41007734;//kernel.MapEditor:7734
+            //$LASTPOS=42007734;//kernel.MapEditor:7734
             Tonyu.globals.$map.chipWidth-=4;
           }
-          //$LASTPOS=41007762;//kernel.MapEditor:7762
+          //$LASTPOS=42007762;//kernel.MapEditor:7762
           if (Tonyu.globals.$map.chipHeight>4) {
-            //$LASTPOS=41007784;//kernel.MapEditor:7784
+            //$LASTPOS=42007784;//kernel.MapEditor:7784
             Tonyu.globals.$map.chipHeight-=4;
           }
-          //$LASTPOS=41007813;//kernel.MapEditor:7813
+          //$LASTPOS=42007813;//kernel.MapEditor:7813
           Tonyu.globals.$map.redrawMap();
-          //$LASTPOS=41007840;//kernel.MapEditor:7840
+          //$LASTPOS=42007840;//kernel.MapEditor:7840
           _this.panel.die();
-          //$LASTPOS=41007862;//kernel.MapEditor:7862
+          //$LASTPOS=42007862;//kernel.MapEditor:7862
           _this.panel=new Tonyu.classes.kernel.Panel({width: Tonyu.globals.$map.col*Tonyu.globals.$map.chipWidth,height: Tonyu.globals.$map.row*Tonyu.globals.$map.chipHeight,zOrder: 100});
-          //$LASTPOS=41007962;//kernel.MapEditor:7962
+          //$LASTPOS=42007962;//kernel.MapEditor:7962
           _this.panel.x=_this.panel.width/2+40;
-          //$LASTPOS=41007997;//kernel.MapEditor:7997
+          //$LASTPOS=42007997;//kernel.MapEditor:7997
           _this.panel.y=_this.panel.height/2+40;
-          //$LASTPOS=41008033;//kernel.MapEditor:8033
+          //$LASTPOS=42008033;//kernel.MapEditor:8033
           _this.panel.setFillStyle("cyan");
-          //$LASTPOS=41008070;//kernel.MapEditor:8070
+          //$LASTPOS=42008070;//kernel.MapEditor:8070
           _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
           
         }
-        //$LASTPOS=41008162;//kernel.MapEditor:8162
+        //$LASTPOS=42008162;//kernel.MapEditor:8162
         _this.panel.x=_this.panel.width/2-_this.mx;
-        //$LASTPOS=41008193;//kernel.MapEditor:8193
+        //$LASTPOS=42008193;//kernel.MapEditor:8193
         _this.panel.y=_this.panel.height/2-_this.my;
-        //$LASTPOS=41008225;//kernel.MapEditor:8225
+        //$LASTPOS=42008225;//kernel.MapEditor:8225
         if (_this.mode=="set"&&_this.getkey(1)>0&&_this.inRect()) {
-          //$LASTPOS=41008278;//kernel.MapEditor:8278
+          //$LASTPOS=42008278;//kernel.MapEditor:8278
           if (_this.selectedLayer=="base") {
-            //$LASTPOS=41008318;//kernel.MapEditor:8318
+            //$LASTPOS=42008318;//kernel.MapEditor:8318
             _this.tmpon=Tonyu.globals.$map.getOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my);
-            //$LASTPOS=41008374;//kernel.MapEditor:8374
+            //$LASTPOS=42008374;//kernel.MapEditor:8374
             Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,_this.mapp);
-            //$LASTPOS=41008427;//kernel.MapEditor:8427
+            //$LASTPOS=42008427;//kernel.MapEditor:8427
             Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,_this.tmpon);
             
           } else {
-            //$LASTPOS=41008485;//kernel.MapEditor:8485
+            //$LASTPOS=42008485;//kernel.MapEditor:8485
             if (_this.selectedLayer=="on") {
-              //$LASTPOS=41008523;//kernel.MapEditor:8523
+              //$LASTPOS=42008523;//kernel.MapEditor:8523
               Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,_this.mapp);
               
             } else {
-              //$LASTPOS=41008594;//kernel.MapEditor:8594
+              //$LASTPOS=42008594;//kernel.MapEditor:8594
               Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,_this.mapp);
-              //$LASTPOS=41008647;//kernel.MapEditor:8647
+              //$LASTPOS=42008647;//kernel.MapEditor:8647
               Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,_this.maponp);
               
             }
           }
           
         } else {
-          //$LASTPOS=41008713;//kernel.MapEditor:8713
+          //$LASTPOS=42008713;//kernel.MapEditor:8713
           if (_this.mode=="erase"&&_this.getkey(1)>0&&_this.inRect()) {
-            //$LASTPOS=41008768;//kernel.MapEditor:8768
+            //$LASTPOS=42008768;//kernel.MapEditor:8768
             if (_this.selectedLayer=="base") {
-              //$LASTPOS=41008808;//kernel.MapEditor:8808
+              //$LASTPOS=42008808;//kernel.MapEditor:8808
               _this.tmpon=Tonyu.globals.$map.getOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my);
-              //$LASTPOS=41008864;//kernel.MapEditor:8864
+              //$LASTPOS=42008864;//kernel.MapEditor:8864
               Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,- 1);
-              //$LASTPOS=41008915;//kernel.MapEditor:8915
+              //$LASTPOS=42008915;//kernel.MapEditor:8915
               Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,_this.tmpon);
               
             } else {
-              //$LASTPOS=41008973;//kernel.MapEditor:8973
+              //$LASTPOS=42008973;//kernel.MapEditor:8973
               if (_this.selectedLayer=="on") {
-                //$LASTPOS=41009011;//kernel.MapEditor:9011
+                //$LASTPOS=42009011;//kernel.MapEditor:9011
                 Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,- 1);
                 
               } else {
-                //$LASTPOS=41009080;//kernel.MapEditor:9080
+                //$LASTPOS=42009080;//kernel.MapEditor:9080
                 Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,- 1);
-                //$LASTPOS=41009131;//kernel.MapEditor:9131
+                //$LASTPOS=42009131;//kernel.MapEditor:9131
                 Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,- 1);
                 
               }
             }
             
           } else {
-            //$LASTPOS=41009193;//kernel.MapEditor:9193
+            //$LASTPOS=42009193;//kernel.MapEditor:9193
             if (_this.mode=="get"&&_this.getkey(1)>0&&_this.inRect()) {
-              //$LASTPOS=41009246;//kernel.MapEditor:9246
+              //$LASTPOS=42009246;//kernel.MapEditor:9246
               _this.mapp=Tonyu.globals.$mp.getAt(Tonyu.globals.$mouseX+_this.chipX,Tonyu.globals.$mouseY+_this.chipY);
-              //$LASTPOS=41009326;//kernel.MapEditor:9326
+              //$LASTPOS=42009326;//kernel.MapEditor:9326
               _this.mode="set";
-              //$LASTPOS=41009347;//kernel.MapEditor:9347
+              //$LASTPOS=42009347;//kernel.MapEditor:9347
               Tonyu.globals.$mp.scrollTo(1000,1000);
-              //$LASTPOS=41009413;//kernel.MapEditor:9413
+              //$LASTPOS=42009413;//kernel.MapEditor:9413
               _this.drawLetter(_this.mode);
-              //$LASTPOS=41009440;//kernel.MapEditor:9440
+              //$LASTPOS=42009440;//kernel.MapEditor:9440
               _this.updateEx(10);
               
             } else {
-              //$LASTPOS=41009465;//kernel.MapEditor:9465
+              //$LASTPOS=42009465;//kernel.MapEditor:9465
               if (_this.mode=="setOn"&&_this.getkey(1)>0&&_this.inRect()) {
-                //$LASTPOS=41009520;//kernel.MapEditor:9520
+                //$LASTPOS=42009520;//kernel.MapEditor:9520
                 Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,_this.mapp);
                 
               } else {
-                //$LASTPOS=41009573;//kernel.MapEditor:9573
+                //$LASTPOS=42009573;//kernel.MapEditor:9573
                 if (_this.mode=="copy"&&_this.getkey(1)>0&&_this.inRect()) {
-                  //$LASTPOS=41009627;//kernel.MapEditor:9627
+                  //$LASTPOS=42009627;//kernel.MapEditor:9627
                   if (_this.selectedLayer=="base") {
-                    //$LASTPOS=41009667;//kernel.MapEditor:9667
+                    //$LASTPOS=42009667;//kernel.MapEditor:9667
                     _this.mapp=Tonyu.globals.$map.getAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my);
-                    //$LASTPOS=41009720;//kernel.MapEditor:9720
+                    //$LASTPOS=42009720;//kernel.MapEditor:9720
                     _this.maponp=- 1;
                     
                   } else {
-                    //$LASTPOS=41009746;//kernel.MapEditor:9746
+                    //$LASTPOS=42009746;//kernel.MapEditor:9746
                     if (_this.selectedLayer=="on") {
-                      //$LASTPOS=41009784;//kernel.MapEditor:9784
+                      //$LASTPOS=42009784;//kernel.MapEditor:9784
                       _this.mapp=Tonyu.globals.$map.getOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my);
                       
                     } else {
-                      //$LASTPOS=41009855;//kernel.MapEditor:9855
+                      //$LASTPOS=42009855;//kernel.MapEditor:9855
                       _this.mapp=Tonyu.globals.$map.getAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my);
-                      //$LASTPOS=41009908;//kernel.MapEditor:9908
+                      //$LASTPOS=42009908;//kernel.MapEditor:9908
                       _this.maponp=Tonyu.globals.$map.getOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my);
                       
                     }
                   }
-                  //$LASTPOS=41010033;//kernel.MapEditor:10033
+                  //$LASTPOS=42010033;//kernel.MapEditor:10033
                   _this.mode="set";
-                  //$LASTPOS=41010086;//kernel.MapEditor:10086
+                  //$LASTPOS=42010086;//kernel.MapEditor:10086
                   _this.drawLetter(_this.mode);
-                  //$LASTPOS=41010113;//kernel.MapEditor:10113
+                  //$LASTPOS=42010113;//kernel.MapEditor:10113
                   _this.updateEx(10);
                   
                 }
@@ -12555,7 +12557,7 @@ Tonyu.klass.define({
             }
           }
         }
-        //$LASTPOS=41010139;//kernel.MapEditor:10139
+        //$LASTPOS=42010139;//kernel.MapEditor:10139
         _this.update();
         
       }
@@ -12568,13 +12570,13 @@ Tonyu.klass.define({
       var i;
       var j;
       
-      //$LASTPOS=41000049;//kernel.MapEditor:49
+      //$LASTPOS=42000049;//kernel.MapEditor:49
       Tonyu.globals.$Screen.resize(480,640);
-      //$LASTPOS=41000075;//kernel.MapEditor:75
+      //$LASTPOS=42000075;//kernel.MapEditor:75
       _this.loadMode=false;
-      //$LASTPOS=41000092;//kernel.MapEditor:92
+      //$LASTPOS=42000092;//kernel.MapEditor:92
       _this.fileExist=false;
-      //$LASTPOS=41000110;//kernel.MapEditor:110
+      //$LASTPOS=42000110;//kernel.MapEditor:110
       _this.print("map file(s)");
       
       _thread.enter(function _trc_MapEditor_ent_main(_thread) {
@@ -12582,51 +12584,51 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=41000158;//kernel.MapEditor:158
+            //$LASTPOS=42000158;//kernel.MapEditor:158
             _this.fiber$file(_thread, "../maps/");
             __pc=1;return;
           case 1:
             _this.fileList=_thread.retVal;
             
-            //$LASTPOS=41000186;//kernel.MapEditor:186
+            //$LASTPOS=42000186;//kernel.MapEditor:186
             if (_this.fileList.exists()) {
-              //$LASTPOS=41000214;//kernel.MapEditor:214
+              //$LASTPOS=42000214;//kernel.MapEditor:214
               _this.fileList.recursive((function a(f) {
                 
-                //$LASTPOS=41000257;//kernel.MapEditor:257
+                //$LASTPOS=42000257;//kernel.MapEditor:257
                 f=f+"";
-                //$LASTPOS=41000274;//kernel.MapEditor:274
+                //$LASTPOS=42000274;//kernel.MapEditor:274
                 _this.fNames=f.split("/");
-                //$LASTPOS=41000304;//kernel.MapEditor:304
+                //$LASTPOS=42000304;//kernel.MapEditor:304
                 _this.print(_this.fNames[_this.fNames.length-1]);
-                //$LASTPOS=41000345;//kernel.MapEditor:345
+                //$LASTPOS=42000345;//kernel.MapEditor:345
                 _this.fileExist=true;
               }));
               
             }
-            //$LASTPOS=41000388;//kernel.MapEditor:388
+            //$LASTPOS=42000388;//kernel.MapEditor:388
             if (!(_this.fileExist)) { __pc=12; break; }
-            //$LASTPOS=41000408;//kernel.MapEditor:408
+            //$LASTPOS=42000408;//kernel.MapEditor:408
             _this.print("Load Data?: Y or N");
-            //$LASTPOS=41000442;//kernel.MapEditor:442
+            //$LASTPOS=42000442;//kernel.MapEditor:442
           case 2:
-            //$LASTPOS=41000464;//kernel.MapEditor:464
+            //$LASTPOS=42000464;//kernel.MapEditor:464
             if (!(_this.getkey("y")>0)) { __pc=3; break; }
-            //$LASTPOS=41000496;//kernel.MapEditor:496
+            //$LASTPOS=42000496;//kernel.MapEditor:496
             _this.loadMode=true;
             __pc=6; break;
             
           case 3:
             
-            //$LASTPOS=41000551;//kernel.MapEditor:551
+            //$LASTPOS=42000551;//kernel.MapEditor:551
             if (!(_this.getkey("n")>0)) { __pc=4; break; }
-            //$LASTPOS=41000583;//kernel.MapEditor:583
+            //$LASTPOS=42000583;//kernel.MapEditor:583
             _this.loadMode=false;
             __pc=6; break;
             
           case 4:
             
-            //$LASTPOS=41000639;//kernel.MapEditor:639
+            //$LASTPOS=42000639;//kernel.MapEditor:639
             _this.fiber$update(_thread);
             __pc=5;return;
           case 5:
@@ -12634,65 +12636,65 @@ Tonyu.klass.define({
             __pc=2;break;
           case 6:
             
-            //$LASTPOS=41000661;//kernel.MapEditor:661
+            //$LASTPOS=42000661;//kernel.MapEditor:661
             if (!(_this.loadMode)) { __pc=11; break; }
-            //$LASTPOS=41000684;//kernel.MapEditor:684
+            //$LASTPOS=42000684;//kernel.MapEditor:684
             _this.fiber$prompt(_thread, "Input json file (*.json)", "map.json");
             __pc=7;return;
           case 7:
             _this.fileName=_thread.retVal;
             
-            //$LASTPOS=41000749;//kernel.MapEditor:749
+            //$LASTPOS=42000749;//kernel.MapEditor:749
             if (_this.fileName) {
-              //$LASTPOS=41000776;//kernel.MapEditor:776
+              //$LASTPOS=42000776;//kernel.MapEditor:776
               _this.mapDataFile=_this.file("../maps/").rel(_this.fileName);
               
             }
-            //$LASTPOS=41000840;//kernel.MapEditor:840
+            //$LASTPOS=42000840;//kernel.MapEditor:840
             if (!(_this.mapDataFile.obj())) { __pc=8; break; }
             {
-              //$LASTPOS=41000876;//kernel.MapEditor:876
+              //$LASTPOS=42000876;//kernel.MapEditor:876
               _this.baseData=_this.mapDataFile.obj();
-              //$LASTPOS=41000917;//kernel.MapEditor:917
+              //$LASTPOS=42000917;//kernel.MapEditor:917
               _this.loadedFile=_this.fileName;
             }
             __pc=10;break;
           case 8:
-            //$LASTPOS=41000967;//kernel.MapEditor:967
+            //$LASTPOS=42000967;//kernel.MapEditor:967
             _this.fiber$file(_thread, _this.fileName);
             __pc=9;return;
           case 9:
             _this.mapDataFile=_thread.retVal;
             
-            //$LASTPOS=41001008;//kernel.MapEditor:1008
+            //$LASTPOS=42001008;//kernel.MapEditor:1008
             if (_this.mapDataFile.obj()) {
-              //$LASTPOS=41001048;//kernel.MapEditor:1048
+              //$LASTPOS=42001048;//kernel.MapEditor:1048
               _this.baseData=_this.mapDataFile.obj();
-              //$LASTPOS=41001093;//kernel.MapEditor:1093
+              //$LASTPOS=42001093;//kernel.MapEditor:1093
               _this.loadedFile=_this.fileName;
               
             }
           case 10:
             
-            //$LASTPOS=41001149;//kernel.MapEditor:1149
+            //$LASTPOS=42001149;//kernel.MapEditor:1149
             if (_this.baseData==undefined) {
-              //$LASTPOS=41001187;//kernel.MapEditor:1187
+              //$LASTPOS=42001187;//kernel.MapEditor:1187
               _this.print("Load failed");
-              //$LASTPOS=41001222;//kernel.MapEditor:1222
+              //$LASTPOS=42001222;//kernel.MapEditor:1222
               _this.loadMode=false;
               
             } else {
-              //$LASTPOS=41001253;//kernel.MapEditor:1253
+              //$LASTPOS=42001253;//kernel.MapEditor:1253
               if (_this.baseData[0]&&_this.baseData[1]) {
-                //$LASTPOS=41001298;//kernel.MapEditor:1298
+                //$LASTPOS=42001298;//kernel.MapEditor:1298
                 _this.mapData=_this.baseData[0];
-                //$LASTPOS=41001332;//kernel.MapEditor:1332
+                //$LASTPOS=42001332;//kernel.MapEditor:1332
                 _this.mapOnData=_this.baseData[1];
-                //$LASTPOS=41001368;//kernel.MapEditor:1368
+                //$LASTPOS=42001368;//kernel.MapEditor:1368
                 if (_this.baseData.length>2) {
-                  //$LASTPOS=41001408;//kernel.MapEditor:1408
+                  //$LASTPOS=42001408;//kernel.MapEditor:1408
                   _this.chipWidth=_this.baseData[_this.baseData.length-2];
-                  //$LASTPOS=41001464;//kernel.MapEditor:1464
+                  //$LASTPOS=42001464;//kernel.MapEditor:1464
                   _this.chipHeight=_this.baseData[_this.baseData.length-1];
                   
                 }
@@ -12703,94 +12705,94 @@ Tonyu.klass.define({
             
           case 12:
             
-            //$LASTPOS=41001541;//kernel.MapEditor:1541
+            //$LASTPOS=42001541;//kernel.MapEditor:1541
             _this.fiber$update(_thread);
             __pc=13;return;
           case 13:
             
-            //$LASTPOS=41001855;//kernel.MapEditor:1855
+            //$LASTPOS=42001855;//kernel.MapEditor:1855
             if (!(! _this.loadMode)) { __pc=18; break; }
-            //$LASTPOS=41001875;//kernel.MapEditor:1875
+            //$LASTPOS=42001875;//kernel.MapEditor:1875
             _this.fiber$prompt(_thread, "input row");
             __pc=14;return;
           case 14:
             _this.row=_thread.retVal;
             
-            //$LASTPOS=41001905;//kernel.MapEditor:1905
+            //$LASTPOS=42001905;//kernel.MapEditor:1905
             _this.fiber$prompt(_thread, "input col");
             __pc=15;return;
           case 15:
             _this.col=_thread.retVal;
             
-            //$LASTPOS=41001935;//kernel.MapEditor:1935
+            //$LASTPOS=42001935;//kernel.MapEditor:1935
             _this.fiber$prompt(_thread, "input chipWidth");
             __pc=16;return;
           case 16:
             _this.chipWidth=_thread.retVal;
             
-            //$LASTPOS=41001977;//kernel.MapEditor:1977
+            //$LASTPOS=42001977;//kernel.MapEditor:1977
             _this.fiber$prompt(_thread, "input chipHeight");
             __pc=17;return;
           case 17:
             _this.chipHeight=_thread.retVal;
             
-            //$LASTPOS=41002021;//kernel.MapEditor:2021
+            //$LASTPOS=42002021;//kernel.MapEditor:2021
             _this.panel=new Tonyu.classes.kernel.Panel({width: _this.col*_this.chipWidth,height: _this.row*_this.chipHeight});
-            //$LASTPOS=41002086;//kernel.MapEditor:2086
+            //$LASTPOS=42002086;//kernel.MapEditor:2086
             _this.panel.x=_this.panel.width/2+40;
-            //$LASTPOS=41002117;//kernel.MapEditor:2117
+            //$LASTPOS=42002117;//kernel.MapEditor:2117
             _this.panel.y=_this.panel.height/2+40;
-            //$LASTPOS=41002149;//kernel.MapEditor:2149
+            //$LASTPOS=42002149;//kernel.MapEditor:2149
             _this.panel.setFillStyle("cyan");
-            //$LASTPOS=41002182;//kernel.MapEditor:2182
+            //$LASTPOS=42002182;//kernel.MapEditor:2182
             _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
-            //$LASTPOS=41002233;//kernel.MapEditor:2233
+            //$LASTPOS=42002233;//kernel.MapEditor:2233
             Tonyu.globals.$map=new Tonyu.classes.kernel.Map({row: _this.row,col: _this.col,chipWidth: _this.chipWidth,chipHeight: _this.chipHeight});
             __pc=19;break;
           case 18:
             {
-              //$LASTPOS=41002544;//kernel.MapEditor:2544
+              //$LASTPOS=42002544;//kernel.MapEditor:2544
               Tonyu.globals.$map=new Tonyu.classes.kernel.Map({chipWidth: 32,chipHeight: 32});
-              //$LASTPOS=41002591;//kernel.MapEditor:2591
+              //$LASTPOS=42002591;//kernel.MapEditor:2591
               Tonyu.globals.$map.load(_this.fileName);
-              //$LASTPOS=41002617;//kernel.MapEditor:2617
+              //$LASTPOS=42002617;//kernel.MapEditor:2617
               _this.panel=new Tonyu.classes.kernel.Panel({width: Tonyu.globals.$map.col*Tonyu.globals.$map.chipWidth,height: Tonyu.globals.$map.row*Tonyu.globals.$map.chipHeight,zOrder: 100});
-              //$LASTPOS=41002713;//kernel.MapEditor:2713
+              //$LASTPOS=42002713;//kernel.MapEditor:2713
               _this.panel.x=_this.panel.width/2+40;
-              //$LASTPOS=41002744;//kernel.MapEditor:2744
+              //$LASTPOS=42002744;//kernel.MapEditor:2744
               _this.panel.y=_this.panel.height/2+40;
-              //$LASTPOS=41002776;//kernel.MapEditor:2776
+              //$LASTPOS=42002776;//kernel.MapEditor:2776
               _this.panel.setFillStyle("cyan");
-              //$LASTPOS=41002809;//kernel.MapEditor:2809
+              //$LASTPOS=42002809;//kernel.MapEditor:2809
               _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
             }
           case 19:
             
-            //$LASTPOS=41002876;//kernel.MapEditor:2876
+            //$LASTPOS=42002876;//kernel.MapEditor:2876
             _this.mIW=Tonyu.globals.$Sprites.getImageList()[Tonyu.globals.$pat_mapchip].image.width;
-            //$LASTPOS=41002932;//kernel.MapEditor:2932
+            //$LASTPOS=42002932;//kernel.MapEditor:2932
             _this.mIH=Tonyu.globals.$Sprites.getImageList()[Tonyu.globals.$pat_mapchip].image.height;
-            //$LASTPOS=41002989;//kernel.MapEditor:2989
+            //$LASTPOS=42002989;//kernel.MapEditor:2989
             _this.mCW=Tonyu.globals.$Sprites.getImageList()[Tonyu.globals.$pat_mapchip+0].width;
-            //$LASTPOS=41003041;//kernel.MapEditor:3041
+            //$LASTPOS=42003041;//kernel.MapEditor:3041
             _this.mCH=Tonyu.globals.$Sprites.getImageList()[Tonyu.globals.$pat_mapchip+0].height;
-            //$LASTPOS=41003094;//kernel.MapEditor:3094
+            //$LASTPOS=42003094;//kernel.MapEditor:3094
             Tonyu.globals.$mp=new Tonyu.classes.kernel.Map({row: _this.floor(_this.mIH/_this.mCH),col: _this.floor(_this.mIW/_this.mCW),chipWidth: _this.mCW,chipHeight: _this.mCH});
-            //$LASTPOS=41003176;//kernel.MapEditor:3176
+            //$LASTPOS=42003176;//kernel.MapEditor:3176
             _this.counter=0;
-            //$LASTPOS=41003188;//kernel.MapEditor:3188
-            //$LASTPOS=41003192;//kernel.MapEditor:3192
+            //$LASTPOS=42003188;//kernel.MapEditor:3188
+            //$LASTPOS=42003192;//kernel.MapEditor:3192
             i = 0;
             while(i<Tonyu.globals.$mp.row) {
               {
-                //$LASTPOS=41003221;//kernel.MapEditor:3221
-                //$LASTPOS=41003225;//kernel.MapEditor:3225
+                //$LASTPOS=42003221;//kernel.MapEditor:3221
+                //$LASTPOS=42003225;//kernel.MapEditor:3225
                 j = 0;
                 while(j<Tonyu.globals.$mp.col) {
                   {
-                    //$LASTPOS=41003258;//kernel.MapEditor:3258
+                    //$LASTPOS=42003258;//kernel.MapEditor:3258
                     Tonyu.globals.$mp.set(j,i,Tonyu.globals.$pat_mapchip+_this.counter);
-                    //$LASTPOS=41003302;//kernel.MapEditor:3302
+                    //$LASTPOS=42003302;//kernel.MapEditor:3302
                     _this.counter++;
                   }
                   j++;
@@ -12798,132 +12800,132 @@ Tonyu.klass.define({
               }
               i++;
             }
-            //$LASTPOS=41003326;//kernel.MapEditor:3326
+            //$LASTPOS=42003326;//kernel.MapEditor:3326
             Tonyu.globals.$consolePanel.clearRect(0,0,Tonyu.globals.$screenWidth,Tonyu.globals.$screenHeight);
-            //$LASTPOS=41003406;//kernel.MapEditor:3406
+            //$LASTPOS=42003406;//kernel.MapEditor:3406
             _this.mode="get";
-            //$LASTPOS=41003419;//kernel.MapEditor:3419
+            //$LASTPOS=42003419;//kernel.MapEditor:3419
             _this.prevMode="set";
-            //$LASTPOS=41003436;//kernel.MapEditor:3436
+            //$LASTPOS=42003436;//kernel.MapEditor:3436
             _this.mapp=0;
-            //$LASTPOS=41003445;//kernel.MapEditor:3445
+            //$LASTPOS=42003445;//kernel.MapEditor:3445
             _this.maponp=- 1;
-            //$LASTPOS=41003457;//kernel.MapEditor:3457
+            //$LASTPOS=42003457;//kernel.MapEditor:3457
             _this.mx=- 40;
-            //$LASTPOS=41003466;//kernel.MapEditor:3466
+            //$LASTPOS=42003466;//kernel.MapEditor:3466
             _this.my=- 40;
-            //$LASTPOS=41003475;//kernel.MapEditor:3475
+            //$LASTPOS=42003475;//kernel.MapEditor:3475
             _this.chipX=- 40;
-            //$LASTPOS=41003487;//kernel.MapEditor:3487
+            //$LASTPOS=42003487;//kernel.MapEditor:3487
             _this.chipY=- 40;
-            //$LASTPOS=41003499;//kernel.MapEditor:3499
+            //$LASTPOS=42003499;//kernel.MapEditor:3499
             _this.x=Tonyu.globals.$screenWidth-_this.chipWidth/2;
-            //$LASTPOS=41003528;//kernel.MapEditor:3528
+            //$LASTPOS=42003528;//kernel.MapEditor:3528
             _this.y=Tonyu.globals.$screenHeight-_this.chipHeight/2;
-            //$LASTPOS=41003559;//kernel.MapEditor:3559
+            //$LASTPOS=42003559;//kernel.MapEditor:3559
             Tonyu.globals.$map.scrollTo(_this.mx,_this.my);
-            //$LASTPOS=41003584;//kernel.MapEditor:3584
+            //$LASTPOS=42003584;//kernel.MapEditor:3584
             _this.initialWidth=Tonyu.globals.$map.chipWidth;
-            //$LASTPOS=41003614;//kernel.MapEditor:3614
+            //$LASTPOS=42003614;//kernel.MapEditor:3614
             _this.initialHeight=Tonyu.globals.$map.chipHeight;
-            //$LASTPOS=41003646;//kernel.MapEditor:3646
+            //$LASTPOS=42003646;//kernel.MapEditor:3646
             _this.layers=["base","on","all"];
-            //$LASTPOS=41003675;//kernel.MapEditor:3675
+            //$LASTPOS=42003675;//kernel.MapEditor:3675
             _this.lc=0;
-            //$LASTPOS=41003682;//kernel.MapEditor:3682
+            //$LASTPOS=42003682;//kernel.MapEditor:3682
             _this.selectedLayer=_this.layers[_this.lc];
-            //$LASTPOS=41003709;//kernel.MapEditor:3709
+            //$LASTPOS=42003709;//kernel.MapEditor:3709
             _this.fiber$drawPanel(_thread);
             __pc=20;return;
           case 20:
             
-            //$LASTPOS=41003723;//kernel.MapEditor:3723
+            //$LASTPOS=42003723;//kernel.MapEditor:3723
             _this.fiber$drawLetter(_thread, _this.mode);
             __pc=21;return;
           case 21:
             
-            //$LASTPOS=41003744;//kernel.MapEditor:3744
+            //$LASTPOS=42003744;//kernel.MapEditor:3744
           case 22:
-            //$LASTPOS=41003762;//kernel.MapEditor:3762
+            //$LASTPOS=42003762;//kernel.MapEditor:3762
             _this.p=_this.mapp;
-            //$LASTPOS=41003775;//kernel.MapEditor:3775
+            //$LASTPOS=42003775;//kernel.MapEditor:3775
             if (!(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<120&&Tonyu.globals.$touches[0].y>560&&Tonyu.globals.$touches[0].y<640)) { __pc=24; break; }
-            //$LASTPOS=41003894;//kernel.MapEditor:3894
+            //$LASTPOS=42003894;//kernel.MapEditor:3894
             Tonyu.globals.$mp.scrollTo(1000,1000);
-            //$LASTPOS=41003928;//kernel.MapEditor:3928
+            //$LASTPOS=42003928;//kernel.MapEditor:3928
             _this.mode="erase";
-            //$LASTPOS=41003983;//kernel.MapEditor:3983
+            //$LASTPOS=42003983;//kernel.MapEditor:3983
             _this.fiber$drawLetter(_thread, _this.mode);
             __pc=23;return;
           case 23:
             
           case 24:
             
-            //$LASTPOS=41004013;//kernel.MapEditor:4013
+            //$LASTPOS=42004013;//kernel.MapEditor:4013
             if (!(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<120&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560)) { __pc=26; break; }
-            //$LASTPOS=41004132;//kernel.MapEditor:4132
+            //$LASTPOS=42004132;//kernel.MapEditor:4132
             Tonyu.globals.$mp.scrollTo(1000,1000);
-            //$LASTPOS=41004166;//kernel.MapEditor:4166
+            //$LASTPOS=42004166;//kernel.MapEditor:4166
             _this.mode="set";
-            //$LASTPOS=41004187;//kernel.MapEditor:4187
+            //$LASTPOS=42004187;//kernel.MapEditor:4187
             _this.fiber$drawLetter(_thread, _this.mode);
             __pc=25;return;
           case 25:
             
           case 26:
             
-            //$LASTPOS=41004217;//kernel.MapEditor:4217
+            //$LASTPOS=42004217;//kernel.MapEditor:4217
             if (!(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>120&&Tonyu.globals.$touches[0].x<240&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560)) { __pc=29; break; }
-            //$LASTPOS=41004338;//kernel.MapEditor:4338
+            //$LASTPOS=42004338;//kernel.MapEditor:4338
             _this.lc++;
-            //$LASTPOS=41004353;//kernel.MapEditor:4353
+            //$LASTPOS=42004353;//kernel.MapEditor:4353
             _this.selectedLayer=_this.layers[_this.lc%3];
-            //$LASTPOS=41004390;//kernel.MapEditor:4390
+            //$LASTPOS=42004390;//kernel.MapEditor:4390
             _this.fiber$drawPanel(_thread);
             __pc=27;return;
           case 27:
             
-            //$LASTPOS=41004444;//kernel.MapEditor:4444
+            //$LASTPOS=42004444;//kernel.MapEditor:4444
             _this.fiber$drawLetter(_thread, _this.mode);
             __pc=28;return;
           case 28:
             
           case 29:
             
-            //$LASTPOS=41004567;//kernel.MapEditor:4567
+            //$LASTPOS=42004567;//kernel.MapEditor:4567
             if (!(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>240&&Tonyu.globals.$touches[0].x<360&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560)) { __pc=31; break; }
-            //$LASTPOS=41004688;//kernel.MapEditor:4688
+            //$LASTPOS=42004688;//kernel.MapEditor:4688
             if (_this.mode!="get") {
-              //$LASTPOS=41004718;//kernel.MapEditor:4718
+              //$LASTPOS=42004718;//kernel.MapEditor:4718
               _this.prevMode=_this.mode;
-              //$LASTPOS=41004746;//kernel.MapEditor:4746
+              //$LASTPOS=42004746;//kernel.MapEditor:4746
               Tonyu.globals.$mp.scrollTo(- 40,- 40);
-              //$LASTPOS=41004782;//kernel.MapEditor:4782
+              //$LASTPOS=42004782;//kernel.MapEditor:4782
               _this.mode="get";
-              //$LASTPOS=41004807;//kernel.MapEditor:4807
+              //$LASTPOS=42004807;//kernel.MapEditor:4807
               _this.chipX=- 40;
-              //$LASTPOS=41004831;//kernel.MapEditor:4831
+              //$LASTPOS=42004831;//kernel.MapEditor:4831
               _this.chipY=- 40;
               
             } else {
-              //$LASTPOS=41004871;//kernel.MapEditor:4871
+              //$LASTPOS=42004871;//kernel.MapEditor:4871
               Tonyu.globals.$mp.scrollTo(1000,1000);
-              //$LASTPOS=41004909;//kernel.MapEditor:4909
+              //$LASTPOS=42004909;//kernel.MapEditor:4909
               _this.mode=_this.prevMode;
               
             }
-            //$LASTPOS=41004976;//kernel.MapEditor:4976
+            //$LASTPOS=42004976;//kernel.MapEditor:4976
             _this.fiber$drawLetter(_thread, _this.mode);
             __pc=30;return;
           case 30:
             
           case 31:
             
-            //$LASTPOS=41005006;//kernel.MapEditor:5006
+            //$LASTPOS=42005006;//kernel.MapEditor:5006
             if (!(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>360&&Tonyu.globals.$touches[0].x<480&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560)) { __pc=36; break; }
-            //$LASTPOS=41005142;//kernel.MapEditor:5142
+            //$LASTPOS=42005142;//kernel.MapEditor:5142
             if (!(_this.loadedFile)) { __pc=33; break; }
-            //$LASTPOS=41005171;//kernel.MapEditor:5171
+            //$LASTPOS=42005171;//kernel.MapEditor:5171
             _this.fiber$prompt(_thread, "input json file(*.json)", _this.loadedFile);
             __pc=32;return;
           case 32:
@@ -12931,7 +12933,7 @@ Tonyu.klass.define({
             
             __pc=35;break;
           case 33:
-            //$LASTPOS=41005259;//kernel.MapEditor:5259
+            //$LASTPOS=42005259;//kernel.MapEditor:5259
             _this.fiber$prompt(_thread, "input json file(*.json)", "map.json");
             __pc=34;return;
           case 34:
@@ -12939,165 +12941,165 @@ Tonyu.klass.define({
             
           case 35:
             
-            //$LASTPOS=41005353;//kernel.MapEditor:5353
+            //$LASTPOS=42005353;//kernel.MapEditor:5353
             if (_this.saveFileName) {
-              //$LASTPOS=41005384;//kernel.MapEditor:5384
+              //$LASTPOS=42005384;//kernel.MapEditor:5384
               _this.saveDataFile=_this.file("../maps/").rel(_this.saveFileName);
-              //$LASTPOS=41005446;//kernel.MapEditor:5446
+              //$LASTPOS=42005446;//kernel.MapEditor:5446
               _this.data=[Tonyu.globals.$map.mapTable,Tonyu.globals.$map.mapOnTable,Tonyu.globals.$map.chipWidth,Tonyu.globals.$map.chipHeight];
-              //$LASTPOS=41005608;//kernel.MapEditor:5608
+              //$LASTPOS=42005608;//kernel.MapEditor:5608
               _this.saveDataFile.obj(_this.data);
-              //$LASTPOS=41005645;//kernel.MapEditor:5645
+              //$LASTPOS=42005645;//kernel.MapEditor:5645
               _this.print(_this.saveFileName+" Saved");
               
             }
           case 36:
             
-            //$LASTPOS=41005698;//kernel.MapEditor:5698
+            //$LASTPOS=42005698;//kernel.MapEditor:5698
             if (!(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>120&&Tonyu.globals.$touches[0].x<240&&Tonyu.globals.$touches[0].y>560&&Tonyu.globals.$touches[0].y<640)) { __pc=38; break; }
-            //$LASTPOS=41005819;//kernel.MapEditor:5819
+            //$LASTPOS=42005819;//kernel.MapEditor:5819
             Tonyu.globals.$mp.scrollTo(1000,1000);
-            //$LASTPOS=41005853;//kernel.MapEditor:5853
+            //$LASTPOS=42005853;//kernel.MapEditor:5853
             _this.mode="copy";
-            //$LASTPOS=41005907;//kernel.MapEditor:5907
+            //$LASTPOS=42005907;//kernel.MapEditor:5907
             _this.fiber$drawLetter(_thread, _this.mode);
             __pc=37;return;
           case 37:
             
           case 38:
             
-            //$LASTPOS=41005937;//kernel.MapEditor:5937
+            //$LASTPOS=42005937;//kernel.MapEditor:5937
             if (_this.mode!="get") {
-              //$LASTPOS=41005963;//kernel.MapEditor:5963
+              //$LASTPOS=42005963;//kernel.MapEditor:5963
               if (_this.getkey("left")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<40&&Tonyu.globals.$touches[0].y<480)) {
-                //$LASTPOS=41006069;//kernel.MapEditor:6069
+                //$LASTPOS=42006069;//kernel.MapEditor:6069
                 _this.mx=_this.mx-8;
               }
-              //$LASTPOS=41006087;//kernel.MapEditor:6087
+              //$LASTPOS=42006087;//kernel.MapEditor:6087
               if (_this.getkey("right")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>Tonyu.globals.$screenWidth-40&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<480)) {
-                //$LASTPOS=41006218;//kernel.MapEditor:6218
+                //$LASTPOS=42006218;//kernel.MapEditor:6218
                 _this.mx=_this.mx+8;
               }
-              //$LASTPOS=41006236;//kernel.MapEditor:6236
+              //$LASTPOS=42006236;//kernel.MapEditor:6236
               if (_this.getkey("up")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<40)) {
-                //$LASTPOS=41006349;//kernel.MapEditor:6349
+                //$LASTPOS=42006349;//kernel.MapEditor:6349
                 _this.my=_this.my-8;
               }
-              //$LASTPOS=41006367;//kernel.MapEditor:6367
+              //$LASTPOS=42006367;//kernel.MapEditor:6367
               if (_this.getkey("down")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<480&&Tonyu.globals.$touches[0].y>440)) {
-                //$LASTPOS=41006502;//kernel.MapEditor:6502
+                //$LASTPOS=42006502;//kernel.MapEditor:6502
                 _this.my=_this.my+8;
               }
-              //$LASTPOS=41006520;//kernel.MapEditor:6520
+              //$LASTPOS=42006520;//kernel.MapEditor:6520
               Tonyu.globals.$map.scrollTo(_this.mx,_this.my);
               
             } else {
-              //$LASTPOS=41006563;//kernel.MapEditor:6563
+              //$LASTPOS=42006563;//kernel.MapEditor:6563
               if (_this.getkey("left")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<40&&Tonyu.globals.$touches[0].y<480)) {
-                //$LASTPOS=41006669;//kernel.MapEditor:6669
+                //$LASTPOS=42006669;//kernel.MapEditor:6669
                 _this.chipX=_this.chipX-8;
               }
-              //$LASTPOS=41006693;//kernel.MapEditor:6693
+              //$LASTPOS=42006693;//kernel.MapEditor:6693
               if (_this.getkey("right")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>Tonyu.globals.$screenWidth-40&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<480)) {
-                //$LASTPOS=41006824;//kernel.MapEditor:6824
+                //$LASTPOS=42006824;//kernel.MapEditor:6824
                 _this.chipX=_this.chipX+8;
               }
-              //$LASTPOS=41006848;//kernel.MapEditor:6848
+              //$LASTPOS=42006848;//kernel.MapEditor:6848
               if (_this.getkey("up")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<40)) {
-                //$LASTPOS=41006961;//kernel.MapEditor:6961
+                //$LASTPOS=42006961;//kernel.MapEditor:6961
                 _this.chipY=_this.chipY-8;
               }
-              //$LASTPOS=41006985;//kernel.MapEditor:6985
+              //$LASTPOS=42006985;//kernel.MapEditor:6985
               if (_this.getkey("down")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<480&&Tonyu.globals.$touches[0].y>440)) {
-                //$LASTPOS=41007120;//kernel.MapEditor:7120
+                //$LASTPOS=42007120;//kernel.MapEditor:7120
                 _this.chipY=_this.chipY+8;
               }
-              //$LASTPOS=41007144;//kernel.MapEditor:7144
+              //$LASTPOS=42007144;//kernel.MapEditor:7144
               Tonyu.globals.$mp.scrollTo(_this.chipX,_this.chipY);
               
             }
-            //$LASTPOS=41007217;//kernel.MapEditor:7217
+            //$LASTPOS=42007217;//kernel.MapEditor:7217
             if (_this.getkey("i")==1) {
-              //$LASTPOS=41007246;//kernel.MapEditor:7246
+              //$LASTPOS=42007246;//kernel.MapEditor:7246
               if (Tonyu.globals.$map.chipWidth<_this.initialWidth) {
-                //$LASTPOS=41007278;//kernel.MapEditor:7278
+                //$LASTPOS=42007278;//kernel.MapEditor:7278
                 Tonyu.globals.$map.chipWidth+=4;
               }
-              //$LASTPOS=41007306;//kernel.MapEditor:7306
+              //$LASTPOS=42007306;//kernel.MapEditor:7306
               if (Tonyu.globals.$map.chipHeight<_this.initialHeight) {
-                //$LASTPOS=41007340;//kernel.MapEditor:7340
+                //$LASTPOS=42007340;//kernel.MapEditor:7340
                 Tonyu.globals.$map.chipHeight+=4;
               }
-              //$LASTPOS=41007369;//kernel.MapEditor:7369
+              //$LASTPOS=42007369;//kernel.MapEditor:7369
               Tonyu.globals.$map.redrawMap();
-              //$LASTPOS=41007396;//kernel.MapEditor:7396
+              //$LASTPOS=42007396;//kernel.MapEditor:7396
               _this.panel.die();
-              //$LASTPOS=41007418;//kernel.MapEditor:7418
+              //$LASTPOS=42007418;//kernel.MapEditor:7418
               _this.panel=new Tonyu.classes.kernel.Panel({width: Tonyu.globals.$map.col*Tonyu.globals.$map.chipWidth,height: Tonyu.globals.$map.row*Tonyu.globals.$map.chipHeight,zOrder: 100});
-              //$LASTPOS=41007518;//kernel.MapEditor:7518
+              //$LASTPOS=42007518;//kernel.MapEditor:7518
               _this.panel.x=_this.panel.width/2+40;
-              //$LASTPOS=41007553;//kernel.MapEditor:7553
+              //$LASTPOS=42007553;//kernel.MapEditor:7553
               _this.panel.y=_this.panel.height/2+40;
-              //$LASTPOS=41007589;//kernel.MapEditor:7589
+              //$LASTPOS=42007589;//kernel.MapEditor:7589
               _this.panel.setFillStyle("cyan");
-              //$LASTPOS=41007626;//kernel.MapEditor:7626
+              //$LASTPOS=42007626;//kernel.MapEditor:7626
               _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
               
             }
-            //$LASTPOS=41007684;//kernel.MapEditor:7684
+            //$LASTPOS=42007684;//kernel.MapEditor:7684
             if (_this.getkey("o")==1) {
-              //$LASTPOS=41007713;//kernel.MapEditor:7713
+              //$LASTPOS=42007713;//kernel.MapEditor:7713
               if (Tonyu.globals.$map.chipWidth>4) {
-                //$LASTPOS=41007734;//kernel.MapEditor:7734
+                //$LASTPOS=42007734;//kernel.MapEditor:7734
                 Tonyu.globals.$map.chipWidth-=4;
               }
-              //$LASTPOS=41007762;//kernel.MapEditor:7762
+              //$LASTPOS=42007762;//kernel.MapEditor:7762
               if (Tonyu.globals.$map.chipHeight>4) {
-                //$LASTPOS=41007784;//kernel.MapEditor:7784
+                //$LASTPOS=42007784;//kernel.MapEditor:7784
                 Tonyu.globals.$map.chipHeight-=4;
               }
-              //$LASTPOS=41007813;//kernel.MapEditor:7813
+              //$LASTPOS=42007813;//kernel.MapEditor:7813
               Tonyu.globals.$map.redrawMap();
-              //$LASTPOS=41007840;//kernel.MapEditor:7840
+              //$LASTPOS=42007840;//kernel.MapEditor:7840
               _this.panel.die();
-              //$LASTPOS=41007862;//kernel.MapEditor:7862
+              //$LASTPOS=42007862;//kernel.MapEditor:7862
               _this.panel=new Tonyu.classes.kernel.Panel({width: Tonyu.globals.$map.col*Tonyu.globals.$map.chipWidth,height: Tonyu.globals.$map.row*Tonyu.globals.$map.chipHeight,zOrder: 100});
-              //$LASTPOS=41007962;//kernel.MapEditor:7962
+              //$LASTPOS=42007962;//kernel.MapEditor:7962
               _this.panel.x=_this.panel.width/2+40;
-              //$LASTPOS=41007997;//kernel.MapEditor:7997
+              //$LASTPOS=42007997;//kernel.MapEditor:7997
               _this.panel.y=_this.panel.height/2+40;
-              //$LASTPOS=41008033;//kernel.MapEditor:8033
+              //$LASTPOS=42008033;//kernel.MapEditor:8033
               _this.panel.setFillStyle("cyan");
-              //$LASTPOS=41008070;//kernel.MapEditor:8070
+              //$LASTPOS=42008070;//kernel.MapEditor:8070
               _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
               
             }
-            //$LASTPOS=41008162;//kernel.MapEditor:8162
+            //$LASTPOS=42008162;//kernel.MapEditor:8162
             _this.panel.x=_this.panel.width/2-_this.mx;
-            //$LASTPOS=41008193;//kernel.MapEditor:8193
+            //$LASTPOS=42008193;//kernel.MapEditor:8193
             _this.panel.y=_this.panel.height/2-_this.my;
-            //$LASTPOS=41008225;//kernel.MapEditor:8225
+            //$LASTPOS=42008225;//kernel.MapEditor:8225
             if (!(_this.mode=="set"&&_this.getkey(1)>0&&_this.inRect())) { __pc=39; break; }
             {
-              //$LASTPOS=41008278;//kernel.MapEditor:8278
+              //$LASTPOS=42008278;//kernel.MapEditor:8278
               if (_this.selectedLayer=="base") {
-                //$LASTPOS=41008318;//kernel.MapEditor:8318
+                //$LASTPOS=42008318;//kernel.MapEditor:8318
                 _this.tmpon=Tonyu.globals.$map.getOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my);
-                //$LASTPOS=41008374;//kernel.MapEditor:8374
+                //$LASTPOS=42008374;//kernel.MapEditor:8374
                 Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,_this.mapp);
-                //$LASTPOS=41008427;//kernel.MapEditor:8427
+                //$LASTPOS=42008427;//kernel.MapEditor:8427
                 Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,_this.tmpon);
                 
               } else {
-                //$LASTPOS=41008485;//kernel.MapEditor:8485
+                //$LASTPOS=42008485;//kernel.MapEditor:8485
                 if (_this.selectedLayer=="on") {
-                  //$LASTPOS=41008523;//kernel.MapEditor:8523
+                  //$LASTPOS=42008523;//kernel.MapEditor:8523
                   Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,_this.mapp);
                   
                 } else {
-                  //$LASTPOS=41008594;//kernel.MapEditor:8594
+                  //$LASTPOS=42008594;//kernel.MapEditor:8594
                   Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,_this.mapp);
-                  //$LASTPOS=41008647;//kernel.MapEditor:8647
+                  //$LASTPOS=42008647;//kernel.MapEditor:8647
                   Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,_this.maponp);
                   
                 }
@@ -13105,28 +13107,28 @@ Tonyu.klass.define({
             }
             __pc=51;break;
           case 39:
-            //$LASTPOS=41008713;//kernel.MapEditor:8713
+            //$LASTPOS=42008713;//kernel.MapEditor:8713
             if (!(_this.mode=="erase"&&_this.getkey(1)>0&&_this.inRect())) { __pc=40; break; }
             {
-              //$LASTPOS=41008768;//kernel.MapEditor:8768
+              //$LASTPOS=42008768;//kernel.MapEditor:8768
               if (_this.selectedLayer=="base") {
-                //$LASTPOS=41008808;//kernel.MapEditor:8808
+                //$LASTPOS=42008808;//kernel.MapEditor:8808
                 _this.tmpon=Tonyu.globals.$map.getOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my);
-                //$LASTPOS=41008864;//kernel.MapEditor:8864
+                //$LASTPOS=42008864;//kernel.MapEditor:8864
                 Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,- 1);
-                //$LASTPOS=41008915;//kernel.MapEditor:8915
+                //$LASTPOS=42008915;//kernel.MapEditor:8915
                 Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,_this.tmpon);
                 
               } else {
-                //$LASTPOS=41008973;//kernel.MapEditor:8973
+                //$LASTPOS=42008973;//kernel.MapEditor:8973
                 if (_this.selectedLayer=="on") {
-                  //$LASTPOS=41009011;//kernel.MapEditor:9011
+                  //$LASTPOS=42009011;//kernel.MapEditor:9011
                   Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,- 1);
                   
                 } else {
-                  //$LASTPOS=41009080;//kernel.MapEditor:9080
+                  //$LASTPOS=42009080;//kernel.MapEditor:9080
                   Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,- 1);
-                  //$LASTPOS=41009131;//kernel.MapEditor:9131
+                  //$LASTPOS=42009131;//kernel.MapEditor:9131
                   Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,- 1);
                   
                 }
@@ -13134,65 +13136,65 @@ Tonyu.klass.define({
             }
             __pc=50;break;
           case 40:
-            //$LASTPOS=41009193;//kernel.MapEditor:9193
+            //$LASTPOS=42009193;//kernel.MapEditor:9193
             if (!(_this.mode=="get"&&_this.getkey(1)>0&&_this.inRect())) { __pc=43; break; }
-            //$LASTPOS=41009246;//kernel.MapEditor:9246
+            //$LASTPOS=42009246;//kernel.MapEditor:9246
             _this.mapp=Tonyu.globals.$mp.getAt(Tonyu.globals.$mouseX+_this.chipX,Tonyu.globals.$mouseY+_this.chipY);
-            //$LASTPOS=41009326;//kernel.MapEditor:9326
+            //$LASTPOS=42009326;//kernel.MapEditor:9326
             _this.mode="set";
-            //$LASTPOS=41009347;//kernel.MapEditor:9347
+            //$LASTPOS=42009347;//kernel.MapEditor:9347
             Tonyu.globals.$mp.scrollTo(1000,1000);
-            //$LASTPOS=41009413;//kernel.MapEditor:9413
+            //$LASTPOS=42009413;//kernel.MapEditor:9413
             _this.fiber$drawLetter(_thread, _this.mode);
             __pc=41;return;
           case 41:
             
-            //$LASTPOS=41009440;//kernel.MapEditor:9440
+            //$LASTPOS=42009440;//kernel.MapEditor:9440
             _this.fiber$updateEx(_thread, 10);
             __pc=42;return;
           case 42:
             
             __pc=49;break;
           case 43:
-            //$LASTPOS=41009465;//kernel.MapEditor:9465
+            //$LASTPOS=42009465;//kernel.MapEditor:9465
             if (!(_this.mode=="setOn"&&_this.getkey(1)>0&&_this.inRect())) { __pc=44; break; }
             {
-              //$LASTPOS=41009520;//kernel.MapEditor:9520
+              //$LASTPOS=42009520;//kernel.MapEditor:9520
               Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,_this.mapp);
             }
             __pc=48;break;
           case 44:
-            //$LASTPOS=41009573;//kernel.MapEditor:9573
+            //$LASTPOS=42009573;//kernel.MapEditor:9573
             if (!(_this.mode=="copy"&&_this.getkey(1)>0&&_this.inRect())) { __pc=47; break; }
-            //$LASTPOS=41009627;//kernel.MapEditor:9627
+            //$LASTPOS=42009627;//kernel.MapEditor:9627
             if (_this.selectedLayer=="base") {
-              //$LASTPOS=41009667;//kernel.MapEditor:9667
+              //$LASTPOS=42009667;//kernel.MapEditor:9667
               _this.mapp=Tonyu.globals.$map.getAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my);
-              //$LASTPOS=41009720;//kernel.MapEditor:9720
+              //$LASTPOS=42009720;//kernel.MapEditor:9720
               _this.maponp=- 1;
               
             } else {
-              //$LASTPOS=41009746;//kernel.MapEditor:9746
+              //$LASTPOS=42009746;//kernel.MapEditor:9746
               if (_this.selectedLayer=="on") {
-                //$LASTPOS=41009784;//kernel.MapEditor:9784
+                //$LASTPOS=42009784;//kernel.MapEditor:9784
                 _this.mapp=Tonyu.globals.$map.getOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my);
                 
               } else {
-                //$LASTPOS=41009855;//kernel.MapEditor:9855
+                //$LASTPOS=42009855;//kernel.MapEditor:9855
                 _this.mapp=Tonyu.globals.$map.getAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my);
-                //$LASTPOS=41009908;//kernel.MapEditor:9908
+                //$LASTPOS=42009908;//kernel.MapEditor:9908
                 _this.maponp=Tonyu.globals.$map.getOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my);
                 
               }
             }
-            //$LASTPOS=41010033;//kernel.MapEditor:10033
+            //$LASTPOS=42010033;//kernel.MapEditor:10033
             _this.mode="set";
-            //$LASTPOS=41010086;//kernel.MapEditor:10086
+            //$LASTPOS=42010086;//kernel.MapEditor:10086
             _this.fiber$drawLetter(_thread, _this.mode);
             __pc=45;return;
           case 45:
             
-            //$LASTPOS=41010113;//kernel.MapEditor:10113
+            //$LASTPOS=42010113;//kernel.MapEditor:10113
             _this.fiber$updateEx(_thread, 10);
             __pc=46;return;
           case 46:
@@ -13207,7 +13209,7 @@ Tonyu.klass.define({
             
           case 51:
             
-            //$LASTPOS=41010139;//kernel.MapEditor:10139
+            //$LASTPOS=42010139;//kernel.MapEditor:10139
             _this.fiber$update(_thread);
             __pc=52;return;
           case 52:
@@ -13241,69 +13243,69 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=41010311;//kernel.MapEditor:10311
+      //$LASTPOS=42010311;//kernel.MapEditor:10311
       Tonyu.globals.$panel.setFillStyle("gray");
-      //$LASTPOS=41010345;//kernel.MapEditor:10345
+      //$LASTPOS=42010345;//kernel.MapEditor:10345
       Tonyu.globals.$panel.alpha=128;
-      //$LASTPOS=41010368;//kernel.MapEditor:10368
+      //$LASTPOS=42010368;//kernel.MapEditor:10368
       Tonyu.globals.$panel.fillRect(0,0,Tonyu.globals.$screenWidth,40);
-      //$LASTPOS=41010411;//kernel.MapEditor:10411
+      //$LASTPOS=42010411;//kernel.MapEditor:10411
       Tonyu.globals.$panel.fillRect(0,0,40,Tonyu.globals.$screenHeight-160);
-      //$LASTPOS=41010459;//kernel.MapEditor:10459
+      //$LASTPOS=42010459;//kernel.MapEditor:10459
       Tonyu.globals.$panel.fillRect(Tonyu.globals.$screenWidth-40,0,40,Tonyu.globals.$screenHeight-160);
-      //$LASTPOS=41010521;//kernel.MapEditor:10521
+      //$LASTPOS=42010521;//kernel.MapEditor:10521
       Tonyu.globals.$panel.fillRect(0,Tonyu.globals.$screenHeight-200,Tonyu.globals.$screenWidth,40);
-      //$LASTPOS=41010580;//kernel.MapEditor:10580
+      //$LASTPOS=42010580;//kernel.MapEditor:10580
       Tonyu.globals.$panel.alpha=255;
-      //$LASTPOS=41010603;//kernel.MapEditor:10603
+      //$LASTPOS=42010603;//kernel.MapEditor:10603
       Tonyu.globals.$panel.setFillStyle("black");
-      //$LASTPOS=41010657;//kernel.MapEditor:10657
+      //$LASTPOS=42010657;//kernel.MapEditor:10657
       Tonyu.globals.$panel.fillRect(0,Tonyu.globals.$screenHeight-160,120,80);
-      //$LASTPOS=41010707;//kernel.MapEditor:10707
+      //$LASTPOS=42010707;//kernel.MapEditor:10707
       Tonyu.globals.$panel.fillRect(120,Tonyu.globals.$screenHeight-160,120,80);
-      //$LASTPOS=41010759;//kernel.MapEditor:10759
+      //$LASTPOS=42010759;//kernel.MapEditor:10759
       Tonyu.globals.$panel.fillRect(240,Tonyu.globals.$screenHeight-160,120,80);
-      //$LASTPOS=41010811;//kernel.MapEditor:10811
+      //$LASTPOS=42010811;//kernel.MapEditor:10811
       Tonyu.globals.$panel.fillRect(360,Tonyu.globals.$screenHeight-160,120,80);
-      //$LASTPOS=41010863;//kernel.MapEditor:10863
+      //$LASTPOS=42010863;//kernel.MapEditor:10863
       Tonyu.globals.$panel.fillRect(0,Tonyu.globals.$screenHeight-80,120,80);
-      //$LASTPOS=41010912;//kernel.MapEditor:10912
+      //$LASTPOS=42010912;//kernel.MapEditor:10912
       Tonyu.globals.$panel.fillRect(120,Tonyu.globals.$screenHeight-80,120,80);
-      //$LASTPOS=41010963;//kernel.MapEditor:10963
+      //$LASTPOS=42010963;//kernel.MapEditor:10963
       Tonyu.globals.$panel.setFillStyle("white");
-      //$LASTPOS=41010998;//kernel.MapEditor:10998
+      //$LASTPOS=42010998;//kernel.MapEditor:10998
       Tonyu.globals.$panel.fillRect(10,Tonyu.globals.$screenHeight-150,100,60);
-      //$LASTPOS=41011049;//kernel.MapEditor:11049
+      //$LASTPOS=42011049;//kernel.MapEditor:11049
       Tonyu.globals.$panel.fillRect(130,Tonyu.globals.$screenHeight-150,100,60);
-      //$LASTPOS=41011101;//kernel.MapEditor:11101
+      //$LASTPOS=42011101;//kernel.MapEditor:11101
       Tonyu.globals.$panel.fillRect(250,Tonyu.globals.$screenHeight-150,100,60);
-      //$LASTPOS=41011153;//kernel.MapEditor:11153
+      //$LASTPOS=42011153;//kernel.MapEditor:11153
       Tonyu.globals.$panel.fillRect(370,Tonyu.globals.$screenHeight-150,100,60);
-      //$LASTPOS=41011205;//kernel.MapEditor:11205
+      //$LASTPOS=42011205;//kernel.MapEditor:11205
       Tonyu.globals.$panel.fillRect(10,Tonyu.globals.$screenHeight-70,100,60);
-      //$LASTPOS=41011255;//kernel.MapEditor:11255
+      //$LASTPOS=42011255;//kernel.MapEditor:11255
       Tonyu.globals.$panel.fillRect(130,Tonyu.globals.$screenHeight-70,100,60);
-      //$LASTPOS=41011306;//kernel.MapEditor:11306
+      //$LASTPOS=42011306;//kernel.MapEditor:11306
       Tonyu.globals.$panel.setFillStyle("black");
-      //$LASTPOS=41011352;//kernel.MapEditor:11352
+      //$LASTPOS=42011352;//kernel.MapEditor:11352
       Tonyu.globals.$panel.fillText("↑",Tonyu.globals.$screenWidth/2,30,40,"center");
-      //$LASTPOS=41011409;//kernel.MapEditor:11409
+      //$LASTPOS=42011409;//kernel.MapEditor:11409
       Tonyu.globals.$panel.fillText("←",20,(Tonyu.globals.$screenHeight-200)/2,40,"center");
-      //$LASTPOS=41011473;//kernel.MapEditor:11473
+      //$LASTPOS=42011473;//kernel.MapEditor:11473
       Tonyu.globals.$panel.fillText("↓",Tonyu.globals.$screenWidth/2,Tonyu.globals.$screenHeight-160-10,40,"center");
-      //$LASTPOS=41011548;//kernel.MapEditor:11548
+      //$LASTPOS=42011548;//kernel.MapEditor:11548
       Tonyu.globals.$panel.fillText("→",Tonyu.globals.$screenWidth-20,(Tonyu.globals.$screenHeight-200)/2,40,"center");
-      //$LASTPOS=41011653;//kernel.MapEditor:11653
+      //$LASTPOS=42011653;//kernel.MapEditor:11653
       Tonyu.globals.$panel.fillText("set",Tonyu.globals.$screenWidth/4-60,Tonyu.globals.$screenHeight-110,40,"center");
-      //$LASTPOS=41011730;//kernel.MapEditor:11730
+      //$LASTPOS=42011730;//kernel.MapEditor:11730
       Tonyu.globals.$panel.fillText(_this.selectedLayer,Tonyu.globals.$screenWidth/4+60,Tonyu.globals.$screenHeight-110,35,"center");
-      //$LASTPOS=41011815;//kernel.MapEditor:11815
+      //$LASTPOS=42011815;//kernel.MapEditor:11815
       Tonyu.globals.$panel.fillText("get",Tonyu.globals.$screenWidth/2+60,Tonyu.globals.$screenHeight-110,40,"center");
-      //$LASTPOS=41011892;//kernel.MapEditor:11892
+      //$LASTPOS=42011892;//kernel.MapEditor:11892
       Tonyu.globals.$panel.fillText("save",Tonyu.globals.$screenWidth-60,Tonyu.globals.$screenHeight-110,40,"center");
-      //$LASTPOS=41011968;//kernel.MapEditor:11968
+      //$LASTPOS=42011968;//kernel.MapEditor:11968
       Tonyu.globals.$panel.fillText("erase",Tonyu.globals.$screenWidth/4-60,Tonyu.globals.$screenHeight-30,35,"center");
-      //$LASTPOS=41012046;//kernel.MapEditor:12046
+      //$LASTPOS=42012046;//kernel.MapEditor:12046
       Tonyu.globals.$panel.fillText("copy",Tonyu.globals.$screenWidth/4+60,Tonyu.globals.$screenHeight-30,35,"center");
     },
     fiber$drawPanel :function _trc_MapEditor_f_drawPanel(_thread) {
@@ -13312,69 +13314,69 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=41010311;//kernel.MapEditor:10311
+      //$LASTPOS=42010311;//kernel.MapEditor:10311
       Tonyu.globals.$panel.setFillStyle("gray");
-      //$LASTPOS=41010345;//kernel.MapEditor:10345
+      //$LASTPOS=42010345;//kernel.MapEditor:10345
       Tonyu.globals.$panel.alpha=128;
-      //$LASTPOS=41010368;//kernel.MapEditor:10368
+      //$LASTPOS=42010368;//kernel.MapEditor:10368
       Tonyu.globals.$panel.fillRect(0,0,Tonyu.globals.$screenWidth,40);
-      //$LASTPOS=41010411;//kernel.MapEditor:10411
+      //$LASTPOS=42010411;//kernel.MapEditor:10411
       Tonyu.globals.$panel.fillRect(0,0,40,Tonyu.globals.$screenHeight-160);
-      //$LASTPOS=41010459;//kernel.MapEditor:10459
+      //$LASTPOS=42010459;//kernel.MapEditor:10459
       Tonyu.globals.$panel.fillRect(Tonyu.globals.$screenWidth-40,0,40,Tonyu.globals.$screenHeight-160);
-      //$LASTPOS=41010521;//kernel.MapEditor:10521
+      //$LASTPOS=42010521;//kernel.MapEditor:10521
       Tonyu.globals.$panel.fillRect(0,Tonyu.globals.$screenHeight-200,Tonyu.globals.$screenWidth,40);
-      //$LASTPOS=41010580;//kernel.MapEditor:10580
+      //$LASTPOS=42010580;//kernel.MapEditor:10580
       Tonyu.globals.$panel.alpha=255;
-      //$LASTPOS=41010603;//kernel.MapEditor:10603
+      //$LASTPOS=42010603;//kernel.MapEditor:10603
       Tonyu.globals.$panel.setFillStyle("black");
-      //$LASTPOS=41010657;//kernel.MapEditor:10657
+      //$LASTPOS=42010657;//kernel.MapEditor:10657
       Tonyu.globals.$panel.fillRect(0,Tonyu.globals.$screenHeight-160,120,80);
-      //$LASTPOS=41010707;//kernel.MapEditor:10707
+      //$LASTPOS=42010707;//kernel.MapEditor:10707
       Tonyu.globals.$panel.fillRect(120,Tonyu.globals.$screenHeight-160,120,80);
-      //$LASTPOS=41010759;//kernel.MapEditor:10759
+      //$LASTPOS=42010759;//kernel.MapEditor:10759
       Tonyu.globals.$panel.fillRect(240,Tonyu.globals.$screenHeight-160,120,80);
-      //$LASTPOS=41010811;//kernel.MapEditor:10811
+      //$LASTPOS=42010811;//kernel.MapEditor:10811
       Tonyu.globals.$panel.fillRect(360,Tonyu.globals.$screenHeight-160,120,80);
-      //$LASTPOS=41010863;//kernel.MapEditor:10863
+      //$LASTPOS=42010863;//kernel.MapEditor:10863
       Tonyu.globals.$panel.fillRect(0,Tonyu.globals.$screenHeight-80,120,80);
-      //$LASTPOS=41010912;//kernel.MapEditor:10912
+      //$LASTPOS=42010912;//kernel.MapEditor:10912
       Tonyu.globals.$panel.fillRect(120,Tonyu.globals.$screenHeight-80,120,80);
-      //$LASTPOS=41010963;//kernel.MapEditor:10963
+      //$LASTPOS=42010963;//kernel.MapEditor:10963
       Tonyu.globals.$panel.setFillStyle("white");
-      //$LASTPOS=41010998;//kernel.MapEditor:10998
+      //$LASTPOS=42010998;//kernel.MapEditor:10998
       Tonyu.globals.$panel.fillRect(10,Tonyu.globals.$screenHeight-150,100,60);
-      //$LASTPOS=41011049;//kernel.MapEditor:11049
+      //$LASTPOS=42011049;//kernel.MapEditor:11049
       Tonyu.globals.$panel.fillRect(130,Tonyu.globals.$screenHeight-150,100,60);
-      //$LASTPOS=41011101;//kernel.MapEditor:11101
+      //$LASTPOS=42011101;//kernel.MapEditor:11101
       Tonyu.globals.$panel.fillRect(250,Tonyu.globals.$screenHeight-150,100,60);
-      //$LASTPOS=41011153;//kernel.MapEditor:11153
+      //$LASTPOS=42011153;//kernel.MapEditor:11153
       Tonyu.globals.$panel.fillRect(370,Tonyu.globals.$screenHeight-150,100,60);
-      //$LASTPOS=41011205;//kernel.MapEditor:11205
+      //$LASTPOS=42011205;//kernel.MapEditor:11205
       Tonyu.globals.$panel.fillRect(10,Tonyu.globals.$screenHeight-70,100,60);
-      //$LASTPOS=41011255;//kernel.MapEditor:11255
+      //$LASTPOS=42011255;//kernel.MapEditor:11255
       Tonyu.globals.$panel.fillRect(130,Tonyu.globals.$screenHeight-70,100,60);
-      //$LASTPOS=41011306;//kernel.MapEditor:11306
+      //$LASTPOS=42011306;//kernel.MapEditor:11306
       Tonyu.globals.$panel.setFillStyle("black");
-      //$LASTPOS=41011352;//kernel.MapEditor:11352
+      //$LASTPOS=42011352;//kernel.MapEditor:11352
       Tonyu.globals.$panel.fillText("↑",Tonyu.globals.$screenWidth/2,30,40,"center");
-      //$LASTPOS=41011409;//kernel.MapEditor:11409
+      //$LASTPOS=42011409;//kernel.MapEditor:11409
       Tonyu.globals.$panel.fillText("←",20,(Tonyu.globals.$screenHeight-200)/2,40,"center");
-      //$LASTPOS=41011473;//kernel.MapEditor:11473
+      //$LASTPOS=42011473;//kernel.MapEditor:11473
       Tonyu.globals.$panel.fillText("↓",Tonyu.globals.$screenWidth/2,Tonyu.globals.$screenHeight-160-10,40,"center");
-      //$LASTPOS=41011548;//kernel.MapEditor:11548
+      //$LASTPOS=42011548;//kernel.MapEditor:11548
       Tonyu.globals.$panel.fillText("→",Tonyu.globals.$screenWidth-20,(Tonyu.globals.$screenHeight-200)/2,40,"center");
-      //$LASTPOS=41011653;//kernel.MapEditor:11653
+      //$LASTPOS=42011653;//kernel.MapEditor:11653
       Tonyu.globals.$panel.fillText("set",Tonyu.globals.$screenWidth/4-60,Tonyu.globals.$screenHeight-110,40,"center");
-      //$LASTPOS=41011730;//kernel.MapEditor:11730
+      //$LASTPOS=42011730;//kernel.MapEditor:11730
       Tonyu.globals.$panel.fillText(_this.selectedLayer,Tonyu.globals.$screenWidth/4+60,Tonyu.globals.$screenHeight-110,35,"center");
-      //$LASTPOS=41011815;//kernel.MapEditor:11815
+      //$LASTPOS=42011815;//kernel.MapEditor:11815
       Tonyu.globals.$panel.fillText("get",Tonyu.globals.$screenWidth/2+60,Tonyu.globals.$screenHeight-110,40,"center");
-      //$LASTPOS=41011892;//kernel.MapEditor:11892
+      //$LASTPOS=42011892;//kernel.MapEditor:11892
       Tonyu.globals.$panel.fillText("save",Tonyu.globals.$screenWidth-60,Tonyu.globals.$screenHeight-110,40,"center");
-      //$LASTPOS=41011968;//kernel.MapEditor:11968
+      //$LASTPOS=42011968;//kernel.MapEditor:11968
       Tonyu.globals.$panel.fillText("erase",Tonyu.globals.$screenWidth/4-60,Tonyu.globals.$screenHeight-30,35,"center");
-      //$LASTPOS=41012046;//kernel.MapEditor:12046
+      //$LASTPOS=42012046;//kernel.MapEditor:12046
       Tonyu.globals.$panel.fillText("copy",Tonyu.globals.$screenWidth/4+60,Tonyu.globals.$screenHeight-30,35,"center");
       
       _thread.retVal=_this;return;
@@ -13383,51 +13385,51 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=41012154;//kernel.MapEditor:12154
+      //$LASTPOS=42012154;//kernel.MapEditor:12154
       if (mode=="set") {
-        //$LASTPOS=41012170;//kernel.MapEditor:12170
+        //$LASTPOS=42012170;//kernel.MapEditor:12170
         Tonyu.globals.$panel.setFillStyle("red");
       } else {
-        //$LASTPOS=41012208;//kernel.MapEditor:12208
+        //$LASTPOS=42012208;//kernel.MapEditor:12208
         Tonyu.globals.$panel.setFillStyle("black");
       }
-      //$LASTPOS=41012243;//kernel.MapEditor:12243
+      //$LASTPOS=42012243;//kernel.MapEditor:12243
       Tonyu.globals.$panel.fillText("set",Tonyu.globals.$screenWidth/4-60,Tonyu.globals.$screenHeight-110,40,"center");
-      //$LASTPOS=41012320;//kernel.MapEditor:12320
+      //$LASTPOS=42012320;//kernel.MapEditor:12320
       if (mode=="get") {
-        //$LASTPOS=41012336;//kernel.MapEditor:12336
+        //$LASTPOS=42012336;//kernel.MapEditor:12336
         Tonyu.globals.$panel.setFillStyle("red");
       } else {
-        //$LASTPOS=41012374;//kernel.MapEditor:12374
+        //$LASTPOS=42012374;//kernel.MapEditor:12374
         Tonyu.globals.$panel.setFillStyle("black");
       }
-      //$LASTPOS=41012409;//kernel.MapEditor:12409
+      //$LASTPOS=42012409;//kernel.MapEditor:12409
       Tonyu.globals.$panel.fillText("get",Tonyu.globals.$screenWidth/2+60,Tonyu.globals.$screenHeight-110,40,"center");
-      //$LASTPOS=41012486;//kernel.MapEditor:12486
+      //$LASTPOS=42012486;//kernel.MapEditor:12486
       if (mode=="erase") {
-        //$LASTPOS=41012504;//kernel.MapEditor:12504
+        //$LASTPOS=42012504;//kernel.MapEditor:12504
         Tonyu.globals.$panel.setFillStyle("red");
       } else {
-        //$LASTPOS=41012542;//kernel.MapEditor:12542
+        //$LASTPOS=42012542;//kernel.MapEditor:12542
         Tonyu.globals.$panel.setFillStyle("black");
       }
-      //$LASTPOS=41012577;//kernel.MapEditor:12577
+      //$LASTPOS=42012577;//kernel.MapEditor:12577
       Tonyu.globals.$panel.fillText("erase",Tonyu.globals.$screenWidth/4-60,Tonyu.globals.$screenHeight-30,35,"center");
-      //$LASTPOS=41012655;//kernel.MapEditor:12655
+      //$LASTPOS=42012655;//kernel.MapEditor:12655
       if (mode=="copy") {
-        //$LASTPOS=41012672;//kernel.MapEditor:12672
+        //$LASTPOS=42012672;//kernel.MapEditor:12672
         Tonyu.globals.$panel.setFillStyle("red");
       } else {
-        //$LASTPOS=41012710;//kernel.MapEditor:12710
+        //$LASTPOS=42012710;//kernel.MapEditor:12710
         Tonyu.globals.$panel.setFillStyle("black");
       }
-      //$LASTPOS=41012745;//kernel.MapEditor:12745
+      //$LASTPOS=42012745;//kernel.MapEditor:12745
       Tonyu.globals.$panel.fillText("copy",Tonyu.globals.$screenWidth/4+60,Tonyu.globals.$screenHeight-30,35,"center");
-      //$LASTPOS=41012822;//kernel.MapEditor:12822
+      //$LASTPOS=42012822;//kernel.MapEditor:12822
       Tonyu.globals.$panel.setFillStyle("black");
-      //$LASTPOS=41012857;//kernel.MapEditor:12857
+      //$LASTPOS=42012857;//kernel.MapEditor:12857
       Tonyu.globals.$panel.fillText(_this.selectedLayer,Tonyu.globals.$screenWidth/4+60,Tonyu.globals.$screenHeight-110,35,"center");
-      //$LASTPOS=41012942;//kernel.MapEditor:12942
+      //$LASTPOS=42012942;//kernel.MapEditor:12942
       Tonyu.globals.$panel.fillText("save",Tonyu.globals.$screenWidth-60,Tonyu.globals.$screenHeight-110,40,"center");
     },
     fiber$drawLetter :function _trc_MapEditor_f_drawLetter(_thread,mode) {
@@ -13436,51 +13438,51 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=41012154;//kernel.MapEditor:12154
+      //$LASTPOS=42012154;//kernel.MapEditor:12154
       if (mode=="set") {
-        //$LASTPOS=41012170;//kernel.MapEditor:12170
+        //$LASTPOS=42012170;//kernel.MapEditor:12170
         Tonyu.globals.$panel.setFillStyle("red");
       } else {
-        //$LASTPOS=41012208;//kernel.MapEditor:12208
+        //$LASTPOS=42012208;//kernel.MapEditor:12208
         Tonyu.globals.$panel.setFillStyle("black");
       }
-      //$LASTPOS=41012243;//kernel.MapEditor:12243
+      //$LASTPOS=42012243;//kernel.MapEditor:12243
       Tonyu.globals.$panel.fillText("set",Tonyu.globals.$screenWidth/4-60,Tonyu.globals.$screenHeight-110,40,"center");
-      //$LASTPOS=41012320;//kernel.MapEditor:12320
+      //$LASTPOS=42012320;//kernel.MapEditor:12320
       if (mode=="get") {
-        //$LASTPOS=41012336;//kernel.MapEditor:12336
+        //$LASTPOS=42012336;//kernel.MapEditor:12336
         Tonyu.globals.$panel.setFillStyle("red");
       } else {
-        //$LASTPOS=41012374;//kernel.MapEditor:12374
+        //$LASTPOS=42012374;//kernel.MapEditor:12374
         Tonyu.globals.$panel.setFillStyle("black");
       }
-      //$LASTPOS=41012409;//kernel.MapEditor:12409
+      //$LASTPOS=42012409;//kernel.MapEditor:12409
       Tonyu.globals.$panel.fillText("get",Tonyu.globals.$screenWidth/2+60,Tonyu.globals.$screenHeight-110,40,"center");
-      //$LASTPOS=41012486;//kernel.MapEditor:12486
+      //$LASTPOS=42012486;//kernel.MapEditor:12486
       if (mode=="erase") {
-        //$LASTPOS=41012504;//kernel.MapEditor:12504
+        //$LASTPOS=42012504;//kernel.MapEditor:12504
         Tonyu.globals.$panel.setFillStyle("red");
       } else {
-        //$LASTPOS=41012542;//kernel.MapEditor:12542
+        //$LASTPOS=42012542;//kernel.MapEditor:12542
         Tonyu.globals.$panel.setFillStyle("black");
       }
-      //$LASTPOS=41012577;//kernel.MapEditor:12577
+      //$LASTPOS=42012577;//kernel.MapEditor:12577
       Tonyu.globals.$panel.fillText("erase",Tonyu.globals.$screenWidth/4-60,Tonyu.globals.$screenHeight-30,35,"center");
-      //$LASTPOS=41012655;//kernel.MapEditor:12655
+      //$LASTPOS=42012655;//kernel.MapEditor:12655
       if (mode=="copy") {
-        //$LASTPOS=41012672;//kernel.MapEditor:12672
+        //$LASTPOS=42012672;//kernel.MapEditor:12672
         Tonyu.globals.$panel.setFillStyle("red");
       } else {
-        //$LASTPOS=41012710;//kernel.MapEditor:12710
+        //$LASTPOS=42012710;//kernel.MapEditor:12710
         Tonyu.globals.$panel.setFillStyle("black");
       }
-      //$LASTPOS=41012745;//kernel.MapEditor:12745
+      //$LASTPOS=42012745;//kernel.MapEditor:12745
       Tonyu.globals.$panel.fillText("copy",Tonyu.globals.$screenWidth/4+60,Tonyu.globals.$screenHeight-30,35,"center");
-      //$LASTPOS=41012822;//kernel.MapEditor:12822
+      //$LASTPOS=42012822;//kernel.MapEditor:12822
       Tonyu.globals.$panel.setFillStyle("black");
-      //$LASTPOS=41012857;//kernel.MapEditor:12857
+      //$LASTPOS=42012857;//kernel.MapEditor:12857
       Tonyu.globals.$panel.fillText(_this.selectedLayer,Tonyu.globals.$screenWidth/4+60,Tonyu.globals.$screenHeight-110,35,"center");
-      //$LASTPOS=41012942;//kernel.MapEditor:12942
+      //$LASTPOS=42012942;//kernel.MapEditor:12942
       Tonyu.globals.$panel.fillText("save",Tonyu.globals.$screenWidth-60,Tonyu.globals.$screenHeight-110,40,"center");
       
       _thread.retVal=_this;return;
@@ -13502,140 +13504,140 @@ Tonyu.klass.define({
       var i;
       var j;
       
-      //$LASTPOS=42000032;//kernel.MapEditorOLD:32
+      //$LASTPOS=43000032;//kernel.MapEditorOLD:32
       _this.loadMode=false;
-      //$LASTPOS=42000049;//kernel.MapEditorOLD:49
+      //$LASTPOS=43000049;//kernel.MapEditorOLD:49
       _this.print("Load Data?: Y or N");
-      //$LASTPOS=42000079;//kernel.MapEditorOLD:79
+      //$LASTPOS=43000079;//kernel.MapEditorOLD:79
       while (true) {
-        //$LASTPOS=42000097;//kernel.MapEditorOLD:97
+        //$LASTPOS=43000097;//kernel.MapEditorOLD:97
         if (_this.getkey("y")>0) {
-          //$LASTPOS=42000125;//kernel.MapEditorOLD:125
+          //$LASTPOS=43000125;//kernel.MapEditorOLD:125
           _this.loadMode=true;
           break;
           
           
         }
-        //$LASTPOS=42000168;//kernel.MapEditorOLD:168
+        //$LASTPOS=43000168;//kernel.MapEditorOLD:168
         if (_this.getkey("n")>0) {
-          //$LASTPOS=42000196;//kernel.MapEditorOLD:196
+          //$LASTPOS=43000196;//kernel.MapEditorOLD:196
           _this.loadMode=false;
           break;
           
           
         }
-        //$LASTPOS=42000240;//kernel.MapEditorOLD:240
+        //$LASTPOS=43000240;//kernel.MapEditorOLD:240
         _this.update();
         
       }
-      //$LASTPOS=42000254;//kernel.MapEditorOLD:254
+      //$LASTPOS=43000254;//kernel.MapEditorOLD:254
       if (_this.loadMode) {
-        //$LASTPOS=42000273;//kernel.MapEditorOLD:273
+        //$LASTPOS=43000273;//kernel.MapEditorOLD:273
         _this.fileName=prompt("Input json file (*.json)","map.json");
-        //$LASTPOS=42000334;//kernel.MapEditorOLD:334
+        //$LASTPOS=43000334;//kernel.MapEditorOLD:334
         if (_this.fileName) {
-          //$LASTPOS=42000357;//kernel.MapEditorOLD:357
+          //$LASTPOS=43000357;//kernel.MapEditorOLD:357
           _this.mapDataFile=_this.file("../maps/").rel(_this.fileName);
           
         }
-        //$LASTPOS=42000413;//kernel.MapEditorOLD:413
+        //$LASTPOS=43000413;//kernel.MapEditorOLD:413
         if (_this.mapDataFile.obj()) {
-          //$LASTPOS=42000445;//kernel.MapEditorOLD:445
+          //$LASTPOS=43000445;//kernel.MapEditorOLD:445
           _this.baseData=_this.mapDataFile.obj();
           
         } else {
-          //$LASTPOS=42000494;//kernel.MapEditorOLD:494
+          //$LASTPOS=43000494;//kernel.MapEditorOLD:494
           _this.mapDataFile=_this.file(_this.fileName);
-          //$LASTPOS=42000531;//kernel.MapEditorOLD:531
+          //$LASTPOS=43000531;//kernel.MapEditorOLD:531
           if (_this.mapDataFile.obj()) {
-            //$LASTPOS=42000567;//kernel.MapEditorOLD:567
+            //$LASTPOS=43000567;//kernel.MapEditorOLD:567
             _this.baseData=_this.mapDataFile.obj();
             
           }
           
         }
-        //$LASTPOS=42000618;//kernel.MapEditorOLD:618
+        //$LASTPOS=43000618;//kernel.MapEditorOLD:618
         if (_this.baseData==undefined) {
-          //$LASTPOS=42000652;//kernel.MapEditorOLD:652
+          //$LASTPOS=43000652;//kernel.MapEditorOLD:652
           _this.print("Load failed");
-          //$LASTPOS=42000683;//kernel.MapEditorOLD:683
+          //$LASTPOS=43000683;//kernel.MapEditorOLD:683
           _this.loadMode=false;
           
         } else {
-          //$LASTPOS=42000710;//kernel.MapEditorOLD:710
+          //$LASTPOS=43000710;//kernel.MapEditorOLD:710
           if (_this.baseData[0]&&_this.baseData[1]) {
-            //$LASTPOS=42000751;//kernel.MapEditorOLD:751
+            //$LASTPOS=43000751;//kernel.MapEditorOLD:751
             _this.mapData=_this.baseData[0];
-            //$LASTPOS=42000781;//kernel.MapEditorOLD:781
+            //$LASTPOS=43000781;//kernel.MapEditorOLD:781
             _this.mapOnData=_this.baseData[1];
             
           }
         }
         
       }
-      //$LASTPOS=42000815;//kernel.MapEditorOLD:815
+      //$LASTPOS=43000815;//kernel.MapEditorOLD:815
       _this.update();
-      //$LASTPOS=42001093;//kernel.MapEditorOLD:1093
+      //$LASTPOS=43001093;//kernel.MapEditorOLD:1093
       if (! _this.loadMode) {
-        //$LASTPOS=42001113;//kernel.MapEditorOLD:1113
+        //$LASTPOS=43001113;//kernel.MapEditorOLD:1113
         _this.row=prompt("input row");
-        //$LASTPOS=42001143;//kernel.MapEditorOLD:1143
+        //$LASTPOS=43001143;//kernel.MapEditorOLD:1143
         _this.update();
-        //$LASTPOS=42001158;//kernel.MapEditorOLD:1158
+        //$LASTPOS=43001158;//kernel.MapEditorOLD:1158
         _this.col=prompt("input col");
-        //$LASTPOS=42001188;//kernel.MapEditorOLD:1188
+        //$LASTPOS=43001188;//kernel.MapEditorOLD:1188
         _this.panel=new Tonyu.classes.kernel.Panel({width: _this.col*32,height: _this.row*32});
-        //$LASTPOS=42001238;//kernel.MapEditorOLD:1238
+        //$LASTPOS=43001238;//kernel.MapEditorOLD:1238
         _this.panel.x=_this.panel.width/2+10;
-        //$LASTPOS=42001269;//kernel.MapEditorOLD:1269
+        //$LASTPOS=43001269;//kernel.MapEditorOLD:1269
         _this.panel.y=_this.panel.height/2;
-        //$LASTPOS=42001298;//kernel.MapEditorOLD:1298
+        //$LASTPOS=43001298;//kernel.MapEditorOLD:1298
         _this.panel.setFillStyle("cyan");
-        //$LASTPOS=42001331;//kernel.MapEditorOLD:1331
+        //$LASTPOS=43001331;//kernel.MapEditorOLD:1331
         _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
-        //$LASTPOS=42001382;//kernel.MapEditorOLD:1382
+        //$LASTPOS=43001382;//kernel.MapEditorOLD:1382
         Tonyu.globals.$map=new Tonyu.classes.kernel.Map({row: _this.row,col: _this.col,chipWidth: 32,chipHeight: 32});
         
       } else {
-        //$LASTPOS=42001445;//kernel.MapEditorOLD:1445
+        //$LASTPOS=43001445;//kernel.MapEditorOLD:1445
         if (! _this.mapOnData) {
-          //$LASTPOS=42001470;//kernel.MapEditorOLD:1470
+          //$LASTPOS=43001470;//kernel.MapEditorOLD:1470
           Tonyu.globals.$map=new Tonyu.classes.kernel.Map({row: _this.mapData.length,col: _this.mapData[0].length,chipWidth: 32,chipHeight: 32,mapData: _this.mapData});
           
         } else {
-          //$LASTPOS=42001582;//kernel.MapEditorOLD:1582
+          //$LASTPOS=43001582;//kernel.MapEditorOLD:1582
           Tonyu.globals.$map=new Tonyu.classes.kernel.Map({row: _this.mapData.length,col: _this.mapData[0].length,chipWidth: 32,chipHeight: 32,mapData: _this.mapData,mapOnData: _this.mapOnData});
           
         }
-        //$LASTPOS=42001695;//kernel.MapEditorOLD:1695
+        //$LASTPOS=43001695;//kernel.MapEditorOLD:1695
         _this.panel=new Tonyu.classes.kernel.Panel({width: Tonyu.globals.$map.col*32,height: Tonyu.globals.$map.row*32,zOrder: 100});
-        //$LASTPOS=42001766;//kernel.MapEditorOLD:1766
+        //$LASTPOS=43001766;//kernel.MapEditorOLD:1766
         _this.panel.x=_this.panel.width/2;
-        //$LASTPOS=42001794;//kernel.MapEditorOLD:1794
+        //$LASTPOS=43001794;//kernel.MapEditorOLD:1794
         _this.panel.y=_this.panel.height/2;
-        //$LASTPOS=42001823;//kernel.MapEditorOLD:1823
+        //$LASTPOS=43001823;//kernel.MapEditorOLD:1823
         _this.panel.setFillStyle("cyan");
-        //$LASTPOS=42001856;//kernel.MapEditorOLD:1856
+        //$LASTPOS=43001856;//kernel.MapEditorOLD:1856
         _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
         
       }
-      //$LASTPOS=42001906;//kernel.MapEditorOLD:1906
+      //$LASTPOS=43001906;//kernel.MapEditorOLD:1906
       Tonyu.globals.$mp=new Tonyu.classes.kernel.Map({row: 16,col: 8,chipWidth: 32,chipHeight: 32});
-      //$LASTPOS=42001961;//kernel.MapEditorOLD:1961
+      //$LASTPOS=43001961;//kernel.MapEditorOLD:1961
       _this.counter=0;
-      //$LASTPOS=42001973;//kernel.MapEditorOLD:1973
-      //$LASTPOS=42001977;//kernel.MapEditorOLD:1977
+      //$LASTPOS=43001973;//kernel.MapEditorOLD:1973
+      //$LASTPOS=43001977;//kernel.MapEditorOLD:1977
       i = 0;
       while(i<16) {
         {
-          //$LASTPOS=42002001;//kernel.MapEditorOLD:2001
-          //$LASTPOS=42002005;//kernel.MapEditorOLD:2005
+          //$LASTPOS=43002001;//kernel.MapEditorOLD:2001
+          //$LASTPOS=43002005;//kernel.MapEditorOLD:2005
           j = 0;
           while(j<8) {
             {
-              //$LASTPOS=42002032;//kernel.MapEditorOLD:2032
+              //$LASTPOS=43002032;//kernel.MapEditorOLD:2032
               Tonyu.globals.$mp.set(j,i,Tonyu.globals.$pat_mapchip+_this.counter);
-              //$LASTPOS=42002076;//kernel.MapEditorOLD:2076
+              //$LASTPOS=43002076;//kernel.MapEditorOLD:2076
               _this.counter++;
             }
             j++;
@@ -13643,211 +13645,211 @@ Tonyu.klass.define({
         }
         i++;
       }
-      //$LASTPOS=42002098;//kernel.MapEditorOLD:2098
+      //$LASTPOS=43002098;//kernel.MapEditorOLD:2098
       _this.mode="get";
-      //$LASTPOS=42002111;//kernel.MapEditorOLD:2111
+      //$LASTPOS=43002111;//kernel.MapEditorOLD:2111
       _this.prevMode="set";
-      //$LASTPOS=42002128;//kernel.MapEditorOLD:2128
+      //$LASTPOS=43002128;//kernel.MapEditorOLD:2128
       _this.mapp=0;
-      //$LASTPOS=42002137;//kernel.MapEditorOLD:2137
+      //$LASTPOS=43002137;//kernel.MapEditorOLD:2137
       _this.mx=0;
-      //$LASTPOS=42002144;//kernel.MapEditorOLD:2144
+      //$LASTPOS=43002144;//kernel.MapEditorOLD:2144
       _this.my=0;
-      //$LASTPOS=42002151;//kernel.MapEditorOLD:2151
+      //$LASTPOS=43002151;//kernel.MapEditorOLD:2151
       _this.chipX=0;
-      //$LASTPOS=42002161;//kernel.MapEditorOLD:2161
+      //$LASTPOS=43002161;//kernel.MapEditorOLD:2161
       _this.chipY=0;
-      //$LASTPOS=42002171;//kernel.MapEditorOLD:2171
+      //$LASTPOS=43002171;//kernel.MapEditorOLD:2171
       _this.x=Tonyu.globals.$screenWidth-16;
-      //$LASTPOS=42002191;//kernel.MapEditorOLD:2191
+      //$LASTPOS=43002191;//kernel.MapEditorOLD:2191
       _this.y=Tonyu.globals.$screenHeight-16;
-      //$LASTPOS=42002212;//kernel.MapEditorOLD:2212
+      //$LASTPOS=43002212;//kernel.MapEditorOLD:2212
       while (true) {
-        //$LASTPOS=42002230;//kernel.MapEditorOLD:2230
+        //$LASTPOS=43002230;//kernel.MapEditorOLD:2230
         _this.p=_this.mapp;
-        //$LASTPOS=42002243;//kernel.MapEditorOLD:2243
+        //$LASTPOS=43002243;//kernel.MapEditorOLD:2243
         if (_this.getkey("e")==1) {
-          //$LASTPOS=42002272;//kernel.MapEditorOLD:2272
+          //$LASTPOS=43002272;//kernel.MapEditorOLD:2272
           Tonyu.globals.$mp.scrollTo(1000,1000);
-          //$LASTPOS=42002306;//kernel.MapEditorOLD:2306
+          //$LASTPOS=43002306;//kernel.MapEditorOLD:2306
           _this.mode="erase";
-          //$LASTPOS=42002329;//kernel.MapEditorOLD:2329
+          //$LASTPOS=43002329;//kernel.MapEditorOLD:2329
           _this.print(_this.mode+" mode");
           
         }
-        //$LASTPOS=42002362;//kernel.MapEditorOLD:2362
+        //$LASTPOS=43002362;//kernel.MapEditorOLD:2362
         if (_this.getkey("s")==1) {
-          //$LASTPOS=42002391;//kernel.MapEditorOLD:2391
+          //$LASTPOS=43002391;//kernel.MapEditorOLD:2391
           Tonyu.globals.$mp.scrollTo(1000,1000);
-          //$LASTPOS=42002425;//kernel.MapEditorOLD:2425
+          //$LASTPOS=43002425;//kernel.MapEditorOLD:2425
           if (_this.mode=="set") {
-            //$LASTPOS=42002455;//kernel.MapEditorOLD:2455
+            //$LASTPOS=43002455;//kernel.MapEditorOLD:2455
             _this.mode="setOn";
             
           } else {
-            //$LASTPOS=42002498;//kernel.MapEditorOLD:2498
+            //$LASTPOS=43002498;//kernel.MapEditorOLD:2498
             _this.mode="set";
             
           }
-          //$LASTPOS=42002530;//kernel.MapEditorOLD:2530
+          //$LASTPOS=43002530;//kernel.MapEditorOLD:2530
           _this.print(_this.mode+" mode");
           
         }
-        //$LASTPOS=42002563;//kernel.MapEditorOLD:2563
+        //$LASTPOS=43002563;//kernel.MapEditorOLD:2563
         if (_this.getkey("o")==1) {
-          //$LASTPOS=42002592;//kernel.MapEditorOLD:2592
+          //$LASTPOS=43002592;//kernel.MapEditorOLD:2592
           Tonyu.globals.$mp.scrollTo(1000,1000);
-          //$LASTPOS=42002626;//kernel.MapEditorOLD:2626
+          //$LASTPOS=43002626;//kernel.MapEditorOLD:2626
           _this.mode="setOn";
           
         }
-        //$LASTPOS=42002652;//kernel.MapEditorOLD:2652
+        //$LASTPOS=43002652;//kernel.MapEditorOLD:2652
         if (_this.getkey("g")==1) {
-          //$LASTPOS=42002681;//kernel.MapEditorOLD:2681
+          //$LASTPOS=43002681;//kernel.MapEditorOLD:2681
           if (_this.mode!="get") {
-            //$LASTPOS=42002711;//kernel.MapEditorOLD:2711
+            //$LASTPOS=43002711;//kernel.MapEditorOLD:2711
             _this.prevMode=_this.mode;
-            //$LASTPOS=42002739;//kernel.MapEditorOLD:2739
+            //$LASTPOS=43002739;//kernel.MapEditorOLD:2739
             Tonyu.globals.$mp.scrollTo(0,0);
-            //$LASTPOS=42002771;//kernel.MapEditorOLD:2771
+            //$LASTPOS=43002771;//kernel.MapEditorOLD:2771
             _this.mode="get";
-            //$LASTPOS=42002796;//kernel.MapEditorOLD:2796
+            //$LASTPOS=43002796;//kernel.MapEditorOLD:2796
             _this.chipX=0;
-            //$LASTPOS=42002818;//kernel.MapEditorOLD:2818
+            //$LASTPOS=43002818;//kernel.MapEditorOLD:2818
             _this.chipY=0;
             
           } else {
-            //$LASTPOS=42002856;//kernel.MapEditorOLD:2856
+            //$LASTPOS=43002856;//kernel.MapEditorOLD:2856
             Tonyu.globals.$mp.scrollTo(1000,1000);
-            //$LASTPOS=42002894;//kernel.MapEditorOLD:2894
+            //$LASTPOS=43002894;//kernel.MapEditorOLD:2894
             _this.mode=_this.prevMode;
             
           }
-          //$LASTPOS=42002929;//kernel.MapEditorOLD:2929
+          //$LASTPOS=43002929;//kernel.MapEditorOLD:2929
           _this.print(_this.mode+" mode");
           
         }
-        //$LASTPOS=42002962;//kernel.MapEditorOLD:2962
+        //$LASTPOS=43002962;//kernel.MapEditorOLD:2962
         if (_this.getkey("p")==1) {
-          //$LASTPOS=42003006;//kernel.MapEditorOLD:3006
+          //$LASTPOS=43003006;//kernel.MapEditorOLD:3006
           _this.saveFileName=prompt("input json file(*.json)","map.json");
-          //$LASTPOS=42003495;//kernel.MapEditorOLD:3495
+          //$LASTPOS=43003495;//kernel.MapEditorOLD:3495
           _this.saveDataFile=_this.file("../maps/").rel(_this.saveFileName);
-          //$LASTPOS=42003553;//kernel.MapEditorOLD:3553
+          //$LASTPOS=43003553;//kernel.MapEditorOLD:3553
           _this.data=[Tonyu.globals.$map.mapTable,Tonyu.globals.$map.mapOnTable];
-          //$LASTPOS=42003668;//kernel.MapEditorOLD:3668
+          //$LASTPOS=43003668;//kernel.MapEditorOLD:3668
           _this.saveDataFile.obj(_this.data);
-          //$LASTPOS=42003701;//kernel.MapEditorOLD:3701
+          //$LASTPOS=43003701;//kernel.MapEditorOLD:3701
           _this.print(_this.saveFileName+" Saved");
           
         }
-        //$LASTPOS=42003793;//kernel.MapEditorOLD:3793
+        //$LASTPOS=43003793;//kernel.MapEditorOLD:3793
         if (_this.getkey("c")==1) {
-          //$LASTPOS=42003822;//kernel.MapEditorOLD:3822
+          //$LASTPOS=43003822;//kernel.MapEditorOLD:3822
           Tonyu.globals.$mp.scrollTo(1000,1000);
-          //$LASTPOS=42003856;//kernel.MapEditorOLD:3856
+          //$LASTPOS=43003856;//kernel.MapEditorOLD:3856
           _this.mode="spuit";
-          //$LASTPOS=42003879;//kernel.MapEditorOLD:3879
+          //$LASTPOS=43003879;//kernel.MapEditorOLD:3879
           _this.print(_this.mode+" mode");
           
         }
-        //$LASTPOS=42003912;//kernel.MapEditorOLD:3912
+        //$LASTPOS=43003912;//kernel.MapEditorOLD:3912
         if (_this.mode!="get") {
-          //$LASTPOS=42003938;//kernel.MapEditorOLD:3938
+          //$LASTPOS=43003938;//kernel.MapEditorOLD:3938
           if (_this.getkey("left")>0) {
-            //$LASTPOS=42003959;//kernel.MapEditorOLD:3959
+            //$LASTPOS=43003959;//kernel.MapEditorOLD:3959
             _this.mx=_this.mx+8;
           }
-          //$LASTPOS=42003977;//kernel.MapEditorOLD:3977
+          //$LASTPOS=43003977;//kernel.MapEditorOLD:3977
           if (_this.getkey("right")>0) {
-            //$LASTPOS=42003999;//kernel.MapEditorOLD:3999
+            //$LASTPOS=43003999;//kernel.MapEditorOLD:3999
             _this.mx=_this.mx-8;
           }
-          //$LASTPOS=42004017;//kernel.MapEditorOLD:4017
+          //$LASTPOS=43004017;//kernel.MapEditorOLD:4017
           if (_this.getkey("up")>0) {
-            //$LASTPOS=42004036;//kernel.MapEditorOLD:4036
+            //$LASTPOS=43004036;//kernel.MapEditorOLD:4036
             _this.my=_this.my+8;
           }
-          //$LASTPOS=42004054;//kernel.MapEditorOLD:4054
+          //$LASTPOS=43004054;//kernel.MapEditorOLD:4054
           if (_this.getkey("down")>0) {
-            //$LASTPOS=42004075;//kernel.MapEditorOLD:4075
+            //$LASTPOS=43004075;//kernel.MapEditorOLD:4075
             _this.my=_this.my-8;
           }
-          //$LASTPOS=42004093;//kernel.MapEditorOLD:4093
+          //$LASTPOS=43004093;//kernel.MapEditorOLD:4093
           Tonyu.globals.$map.scrollTo(_this.mx,_this.my);
           
         } else {
-          //$LASTPOS=42004136;//kernel.MapEditorOLD:4136
+          //$LASTPOS=43004136;//kernel.MapEditorOLD:4136
           if (_this.getkey("left")>0) {
-            //$LASTPOS=42004157;//kernel.MapEditorOLD:4157
+            //$LASTPOS=43004157;//kernel.MapEditorOLD:4157
             _this.chipX=_this.chipX+8;
           }
-          //$LASTPOS=42004181;//kernel.MapEditorOLD:4181
+          //$LASTPOS=43004181;//kernel.MapEditorOLD:4181
           if (_this.getkey("right")>0) {
-            //$LASTPOS=42004203;//kernel.MapEditorOLD:4203
+            //$LASTPOS=43004203;//kernel.MapEditorOLD:4203
             _this.chipX=_this.chipX-8;
           }
-          //$LASTPOS=42004227;//kernel.MapEditorOLD:4227
+          //$LASTPOS=43004227;//kernel.MapEditorOLD:4227
           if (_this.getkey("up")>0) {
-            //$LASTPOS=42004246;//kernel.MapEditorOLD:4246
+            //$LASTPOS=43004246;//kernel.MapEditorOLD:4246
             _this.chipY=_this.chipY+8;
           }
-          //$LASTPOS=42004270;//kernel.MapEditorOLD:4270
+          //$LASTPOS=43004270;//kernel.MapEditorOLD:4270
           if (_this.getkey("down")>0) {
-            //$LASTPOS=42004291;//kernel.MapEditorOLD:4291
+            //$LASTPOS=43004291;//kernel.MapEditorOLD:4291
             _this.chipY=_this.chipY-8;
           }
-          //$LASTPOS=42004315;//kernel.MapEditorOLD:4315
+          //$LASTPOS=43004315;//kernel.MapEditorOLD:4315
           Tonyu.globals.$mp.scrollTo(_this.chipX,_this.chipY);
           
         }
-        //$LASTPOS=42004354;//kernel.MapEditorOLD:4354
+        //$LASTPOS=43004354;//kernel.MapEditorOLD:4354
         _this.panel.x=_this.panel.width/2-_this.mx;
-        //$LASTPOS=42004385;//kernel.MapEditorOLD:4385
+        //$LASTPOS=43004385;//kernel.MapEditorOLD:4385
         _this.panel.y=_this.panel.height/2-_this.my;
-        //$LASTPOS=42004417;//kernel.MapEditorOLD:4417
+        //$LASTPOS=43004417;//kernel.MapEditorOLD:4417
         if (_this.mode=="set"&&_this.getkey(1)>0) {
-          //$LASTPOS=42004458;//kernel.MapEditorOLD:4458
+          //$LASTPOS=43004458;//kernel.MapEditorOLD:4458
           Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,_this.mapp);
-          //$LASTPOS=42004507;//kernel.MapEditorOLD:4507
+          //$LASTPOS=43004507;//kernel.MapEditorOLD:4507
           Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,- 1);
           
         } else {
-          //$LASTPOS=42004558;//kernel.MapEditorOLD:4558
+          //$LASTPOS=43004558;//kernel.MapEditorOLD:4558
           if (_this.mode=="erase"&&_this.getkey(1)>0) {
-            //$LASTPOS=42004601;//kernel.MapEditorOLD:4601
+            //$LASTPOS=43004601;//kernel.MapEditorOLD:4601
             Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,- 1);
             
           } else {
-            //$LASTPOS=42004650;//kernel.MapEditorOLD:4650
+            //$LASTPOS=43004650;//kernel.MapEditorOLD:4650
             if (_this.mode=="get"&&_this.getkey(1)>0) {
-              //$LASTPOS=42004691;//kernel.MapEditorOLD:4691
+              //$LASTPOS=43004691;//kernel.MapEditorOLD:4691
               _this.mapp=Tonyu.globals.$mp.getAt(Tonyu.globals.$mouseX+_this.chipX,Tonyu.globals.$mouseY+_this.chipY);
-              //$LASTPOS=42004745;//kernel.MapEditorOLD:4745
+              //$LASTPOS=43004745;//kernel.MapEditorOLD:4745
               _this.mode=_this.prevMode;
-              //$LASTPOS=42004769;//kernel.MapEditorOLD:4769
+              //$LASTPOS=43004769;//kernel.MapEditorOLD:4769
               Tonyu.globals.$mp.scrollTo(1000,1000);
-              //$LASTPOS=42004803;//kernel.MapEditorOLD:4803
+              //$LASTPOS=43004803;//kernel.MapEditorOLD:4803
               _this.print(_this.mode+" mode");
-              //$LASTPOS=42004833;//kernel.MapEditorOLD:4833
+              //$LASTPOS=43004833;//kernel.MapEditorOLD:4833
               _this.updateEx(10);
               
             } else {
-              //$LASTPOS=42004858;//kernel.MapEditorOLD:4858
+              //$LASTPOS=43004858;//kernel.MapEditorOLD:4858
               if (_this.mode=="setOn"&&_this.getkey(1)>0) {
-                //$LASTPOS=42004901;//kernel.MapEditorOLD:4901
+                //$LASTPOS=43004901;//kernel.MapEditorOLD:4901
                 Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,_this.mapp);
                 
               } else {
-                //$LASTPOS=42004954;//kernel.MapEditorOLD:4954
+                //$LASTPOS=43004954;//kernel.MapEditorOLD:4954
                 if (_this.mode=="spuit"&&_this.getkey(1)>0) {
-                  //$LASTPOS=42004997;//kernel.MapEditorOLD:4997
+                  //$LASTPOS=43004997;//kernel.MapEditorOLD:4997
                   _this.mapp=Tonyu.globals.$map.getAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my);
-                  //$LASTPOS=42005046;//kernel.MapEditorOLD:5046
+                  //$LASTPOS=43005046;//kernel.MapEditorOLD:5046
                   _this.mode="set";
-                  //$LASTPOS=42005067;//kernel.MapEditorOLD:5067
+                  //$LASTPOS=43005067;//kernel.MapEditorOLD:5067
                   _this.print(_this.mode+" mode");
-                  //$LASTPOS=42005097;//kernel.MapEditorOLD:5097
+                  //$LASTPOS=43005097;//kernel.MapEditorOLD:5097
                   _this.updateEx(10);
                   
                 }
@@ -13855,7 +13857,7 @@ Tonyu.klass.define({
             }
           }
         }
-        //$LASTPOS=42005123;//kernel.MapEditorOLD:5123
+        //$LASTPOS=43005123;//kernel.MapEditorOLD:5123
         _this.update();
         
       }
@@ -13868,9 +13870,9 @@ Tonyu.klass.define({
       var i;
       var j;
       
-      //$LASTPOS=42000032;//kernel.MapEditorOLD:32
+      //$LASTPOS=43000032;//kernel.MapEditorOLD:32
       _this.loadMode=false;
-      //$LASTPOS=42000049;//kernel.MapEditorOLD:49
+      //$LASTPOS=43000049;//kernel.MapEditorOLD:49
       _this.print("Load Data?: Y or N");
       
       _thread.enter(function _trc_MapEditorOLD_ent_main(_thread) {
@@ -13878,25 +13880,25 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=42000079;//kernel.MapEditorOLD:79
+            //$LASTPOS=43000079;//kernel.MapEditorOLD:79
           case 1:
-            //$LASTPOS=42000097;//kernel.MapEditorOLD:97
+            //$LASTPOS=43000097;//kernel.MapEditorOLD:97
             if (!(_this.getkey("y")>0)) { __pc=2; break; }
-            //$LASTPOS=42000125;//kernel.MapEditorOLD:125
+            //$LASTPOS=43000125;//kernel.MapEditorOLD:125
             _this.loadMode=true;
             __pc=5; break;
             
           case 2:
             
-            //$LASTPOS=42000168;//kernel.MapEditorOLD:168
+            //$LASTPOS=43000168;//kernel.MapEditorOLD:168
             if (!(_this.getkey("n")>0)) { __pc=3; break; }
-            //$LASTPOS=42000196;//kernel.MapEditorOLD:196
+            //$LASTPOS=43000196;//kernel.MapEditorOLD:196
             _this.loadMode=false;
             __pc=5; break;
             
           case 3:
             
-            //$LASTPOS=42000240;//kernel.MapEditorOLD:240
+            //$LASTPOS=43000240;//kernel.MapEditorOLD:240
             _this.fiber$update(_thread);
             __pc=4;return;
           case 4:
@@ -13904,128 +13906,128 @@ Tonyu.klass.define({
             __pc=1;break;
           case 5:
             
-            //$LASTPOS=42000254;//kernel.MapEditorOLD:254
+            //$LASTPOS=43000254;//kernel.MapEditorOLD:254
             if (!(_this.loadMode)) { __pc=9; break; }
-            //$LASTPOS=42000273;//kernel.MapEditorOLD:273
+            //$LASTPOS=43000273;//kernel.MapEditorOLD:273
             _this.fileName=prompt("Input json file (*.json)","map.json");
-            //$LASTPOS=42000334;//kernel.MapEditorOLD:334
+            //$LASTPOS=43000334;//kernel.MapEditorOLD:334
             if (_this.fileName) {
-              //$LASTPOS=42000357;//kernel.MapEditorOLD:357
+              //$LASTPOS=43000357;//kernel.MapEditorOLD:357
               _this.mapDataFile=_this.file("../maps/").rel(_this.fileName);
               
             }
-            //$LASTPOS=42000413;//kernel.MapEditorOLD:413
+            //$LASTPOS=43000413;//kernel.MapEditorOLD:413
             if (!(_this.mapDataFile.obj())) { __pc=6; break; }
             {
-              //$LASTPOS=42000445;//kernel.MapEditorOLD:445
+              //$LASTPOS=43000445;//kernel.MapEditorOLD:445
               _this.baseData=_this.mapDataFile.obj();
             }
             __pc=8;break;
           case 6:
-            //$LASTPOS=42000494;//kernel.MapEditorOLD:494
+            //$LASTPOS=43000494;//kernel.MapEditorOLD:494
             _this.fiber$file(_thread, _this.fileName);
             __pc=7;return;
           case 7:
             _this.mapDataFile=_thread.retVal;
             
-            //$LASTPOS=42000531;//kernel.MapEditorOLD:531
+            //$LASTPOS=43000531;//kernel.MapEditorOLD:531
             if (_this.mapDataFile.obj()) {
-              //$LASTPOS=42000567;//kernel.MapEditorOLD:567
+              //$LASTPOS=43000567;//kernel.MapEditorOLD:567
               _this.baseData=_this.mapDataFile.obj();
               
             }
           case 8:
             
-            //$LASTPOS=42000618;//kernel.MapEditorOLD:618
+            //$LASTPOS=43000618;//kernel.MapEditorOLD:618
             if (_this.baseData==undefined) {
-              //$LASTPOS=42000652;//kernel.MapEditorOLD:652
+              //$LASTPOS=43000652;//kernel.MapEditorOLD:652
               _this.print("Load failed");
-              //$LASTPOS=42000683;//kernel.MapEditorOLD:683
+              //$LASTPOS=43000683;//kernel.MapEditorOLD:683
               _this.loadMode=false;
               
             } else {
-              //$LASTPOS=42000710;//kernel.MapEditorOLD:710
+              //$LASTPOS=43000710;//kernel.MapEditorOLD:710
               if (_this.baseData[0]&&_this.baseData[1]) {
-                //$LASTPOS=42000751;//kernel.MapEditorOLD:751
+                //$LASTPOS=43000751;//kernel.MapEditorOLD:751
                 _this.mapData=_this.baseData[0];
-                //$LASTPOS=42000781;//kernel.MapEditorOLD:781
+                //$LASTPOS=43000781;//kernel.MapEditorOLD:781
                 _this.mapOnData=_this.baseData[1];
                 
               }
             }
           case 9:
             
-            //$LASTPOS=42000815;//kernel.MapEditorOLD:815
+            //$LASTPOS=43000815;//kernel.MapEditorOLD:815
             _this.fiber$update(_thread);
             __pc=10;return;
           case 10:
             
-            //$LASTPOS=42001093;//kernel.MapEditorOLD:1093
+            //$LASTPOS=43001093;//kernel.MapEditorOLD:1093
             if (!(! _this.loadMode)) { __pc=12; break; }
-            //$LASTPOS=42001113;//kernel.MapEditorOLD:1113
+            //$LASTPOS=43001113;//kernel.MapEditorOLD:1113
             _this.row=prompt("input row");
-            //$LASTPOS=42001143;//kernel.MapEditorOLD:1143
+            //$LASTPOS=43001143;//kernel.MapEditorOLD:1143
             _this.fiber$update(_thread);
             __pc=11;return;
           case 11:
             
-            //$LASTPOS=42001158;//kernel.MapEditorOLD:1158
+            //$LASTPOS=43001158;//kernel.MapEditorOLD:1158
             _this.col=prompt("input col");
-            //$LASTPOS=42001188;//kernel.MapEditorOLD:1188
+            //$LASTPOS=43001188;//kernel.MapEditorOLD:1188
             _this.panel=new Tonyu.classes.kernel.Panel({width: _this.col*32,height: _this.row*32});
-            //$LASTPOS=42001238;//kernel.MapEditorOLD:1238
+            //$LASTPOS=43001238;//kernel.MapEditorOLD:1238
             _this.panel.x=_this.panel.width/2+10;
-            //$LASTPOS=42001269;//kernel.MapEditorOLD:1269
+            //$LASTPOS=43001269;//kernel.MapEditorOLD:1269
             _this.panel.y=_this.panel.height/2;
-            //$LASTPOS=42001298;//kernel.MapEditorOLD:1298
+            //$LASTPOS=43001298;//kernel.MapEditorOLD:1298
             _this.panel.setFillStyle("cyan");
-            //$LASTPOS=42001331;//kernel.MapEditorOLD:1331
+            //$LASTPOS=43001331;//kernel.MapEditorOLD:1331
             _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
-            //$LASTPOS=42001382;//kernel.MapEditorOLD:1382
+            //$LASTPOS=43001382;//kernel.MapEditorOLD:1382
             Tonyu.globals.$map=new Tonyu.classes.kernel.Map({row: _this.row,col: _this.col,chipWidth: 32,chipHeight: 32});
             __pc=13;break;
           case 12:
             {
-              //$LASTPOS=42001445;//kernel.MapEditorOLD:1445
+              //$LASTPOS=43001445;//kernel.MapEditorOLD:1445
               if (! _this.mapOnData) {
-                //$LASTPOS=42001470;//kernel.MapEditorOLD:1470
+                //$LASTPOS=43001470;//kernel.MapEditorOLD:1470
                 Tonyu.globals.$map=new Tonyu.classes.kernel.Map({row: _this.mapData.length,col: _this.mapData[0].length,chipWidth: 32,chipHeight: 32,mapData: _this.mapData});
                 
               } else {
-                //$LASTPOS=42001582;//kernel.MapEditorOLD:1582
+                //$LASTPOS=43001582;//kernel.MapEditorOLD:1582
                 Tonyu.globals.$map=new Tonyu.classes.kernel.Map({row: _this.mapData.length,col: _this.mapData[0].length,chipWidth: 32,chipHeight: 32,mapData: _this.mapData,mapOnData: _this.mapOnData});
                 
               }
-              //$LASTPOS=42001695;//kernel.MapEditorOLD:1695
+              //$LASTPOS=43001695;//kernel.MapEditorOLD:1695
               _this.panel=new Tonyu.classes.kernel.Panel({width: Tonyu.globals.$map.col*32,height: Tonyu.globals.$map.row*32,zOrder: 100});
-              //$LASTPOS=42001766;//kernel.MapEditorOLD:1766
+              //$LASTPOS=43001766;//kernel.MapEditorOLD:1766
               _this.panel.x=_this.panel.width/2;
-              //$LASTPOS=42001794;//kernel.MapEditorOLD:1794
+              //$LASTPOS=43001794;//kernel.MapEditorOLD:1794
               _this.panel.y=_this.panel.height/2;
-              //$LASTPOS=42001823;//kernel.MapEditorOLD:1823
+              //$LASTPOS=43001823;//kernel.MapEditorOLD:1823
               _this.panel.setFillStyle("cyan");
-              //$LASTPOS=42001856;//kernel.MapEditorOLD:1856
+              //$LASTPOS=43001856;//kernel.MapEditorOLD:1856
               _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
             }
           case 13:
             
-            //$LASTPOS=42001906;//kernel.MapEditorOLD:1906
+            //$LASTPOS=43001906;//kernel.MapEditorOLD:1906
             Tonyu.globals.$mp=new Tonyu.classes.kernel.Map({row: 16,col: 8,chipWidth: 32,chipHeight: 32});
-            //$LASTPOS=42001961;//kernel.MapEditorOLD:1961
+            //$LASTPOS=43001961;//kernel.MapEditorOLD:1961
             _this.counter=0;
-            //$LASTPOS=42001973;//kernel.MapEditorOLD:1973
-            //$LASTPOS=42001977;//kernel.MapEditorOLD:1977
+            //$LASTPOS=43001973;//kernel.MapEditorOLD:1973
+            //$LASTPOS=43001977;//kernel.MapEditorOLD:1977
             i = 0;
             while(i<16) {
               {
-                //$LASTPOS=42002001;//kernel.MapEditorOLD:2001
-                //$LASTPOS=42002005;//kernel.MapEditorOLD:2005
+                //$LASTPOS=43002001;//kernel.MapEditorOLD:2001
+                //$LASTPOS=43002005;//kernel.MapEditorOLD:2005
                 j = 0;
                 while(j<8) {
                   {
-                    //$LASTPOS=42002032;//kernel.MapEditorOLD:2032
+                    //$LASTPOS=43002032;//kernel.MapEditorOLD:2032
                     Tonyu.globals.$mp.set(j,i,Tonyu.globals.$pat_mapchip+_this.counter);
-                    //$LASTPOS=42002076;//kernel.MapEditorOLD:2076
+                    //$LASTPOS=43002076;//kernel.MapEditorOLD:2076
                     _this.counter++;
                   }
                   j++;
@@ -14033,220 +14035,220 @@ Tonyu.klass.define({
               }
               i++;
             }
-            //$LASTPOS=42002098;//kernel.MapEditorOLD:2098
+            //$LASTPOS=43002098;//kernel.MapEditorOLD:2098
             _this.mode="get";
-            //$LASTPOS=42002111;//kernel.MapEditorOLD:2111
+            //$LASTPOS=43002111;//kernel.MapEditorOLD:2111
             _this.prevMode="set";
-            //$LASTPOS=42002128;//kernel.MapEditorOLD:2128
+            //$LASTPOS=43002128;//kernel.MapEditorOLD:2128
             _this.mapp=0;
-            //$LASTPOS=42002137;//kernel.MapEditorOLD:2137
+            //$LASTPOS=43002137;//kernel.MapEditorOLD:2137
             _this.mx=0;
-            //$LASTPOS=42002144;//kernel.MapEditorOLD:2144
+            //$LASTPOS=43002144;//kernel.MapEditorOLD:2144
             _this.my=0;
-            //$LASTPOS=42002151;//kernel.MapEditorOLD:2151
+            //$LASTPOS=43002151;//kernel.MapEditorOLD:2151
             _this.chipX=0;
-            //$LASTPOS=42002161;//kernel.MapEditorOLD:2161
+            //$LASTPOS=43002161;//kernel.MapEditorOLD:2161
             _this.chipY=0;
-            //$LASTPOS=42002171;//kernel.MapEditorOLD:2171
+            //$LASTPOS=43002171;//kernel.MapEditorOLD:2171
             _this.x=Tonyu.globals.$screenWidth-16;
-            //$LASTPOS=42002191;//kernel.MapEditorOLD:2191
+            //$LASTPOS=43002191;//kernel.MapEditorOLD:2191
             _this.y=Tonyu.globals.$screenHeight-16;
-            //$LASTPOS=42002212;//kernel.MapEditorOLD:2212
+            //$LASTPOS=43002212;//kernel.MapEditorOLD:2212
           case 14:
-            //$LASTPOS=42002230;//kernel.MapEditorOLD:2230
+            //$LASTPOS=43002230;//kernel.MapEditorOLD:2230
             _this.p=_this.mapp;
-            //$LASTPOS=42002243;//kernel.MapEditorOLD:2243
+            //$LASTPOS=43002243;//kernel.MapEditorOLD:2243
             if (_this.getkey("e")==1) {
-              //$LASTPOS=42002272;//kernel.MapEditorOLD:2272
+              //$LASTPOS=43002272;//kernel.MapEditorOLD:2272
               Tonyu.globals.$mp.scrollTo(1000,1000);
-              //$LASTPOS=42002306;//kernel.MapEditorOLD:2306
+              //$LASTPOS=43002306;//kernel.MapEditorOLD:2306
               _this.mode="erase";
-              //$LASTPOS=42002329;//kernel.MapEditorOLD:2329
+              //$LASTPOS=43002329;//kernel.MapEditorOLD:2329
               _this.print(_this.mode+" mode");
               
             }
-            //$LASTPOS=42002362;//kernel.MapEditorOLD:2362
+            //$LASTPOS=43002362;//kernel.MapEditorOLD:2362
             if (_this.getkey("s")==1) {
-              //$LASTPOS=42002391;//kernel.MapEditorOLD:2391
+              //$LASTPOS=43002391;//kernel.MapEditorOLD:2391
               Tonyu.globals.$mp.scrollTo(1000,1000);
-              //$LASTPOS=42002425;//kernel.MapEditorOLD:2425
+              //$LASTPOS=43002425;//kernel.MapEditorOLD:2425
               if (_this.mode=="set") {
-                //$LASTPOS=42002455;//kernel.MapEditorOLD:2455
+                //$LASTPOS=43002455;//kernel.MapEditorOLD:2455
                 _this.mode="setOn";
                 
               } else {
-                //$LASTPOS=42002498;//kernel.MapEditorOLD:2498
+                //$LASTPOS=43002498;//kernel.MapEditorOLD:2498
                 _this.mode="set";
                 
               }
-              //$LASTPOS=42002530;//kernel.MapEditorOLD:2530
+              //$LASTPOS=43002530;//kernel.MapEditorOLD:2530
               _this.print(_this.mode+" mode");
               
             }
-            //$LASTPOS=42002563;//kernel.MapEditorOLD:2563
+            //$LASTPOS=43002563;//kernel.MapEditorOLD:2563
             if (_this.getkey("o")==1) {
-              //$LASTPOS=42002592;//kernel.MapEditorOLD:2592
+              //$LASTPOS=43002592;//kernel.MapEditorOLD:2592
               Tonyu.globals.$mp.scrollTo(1000,1000);
-              //$LASTPOS=42002626;//kernel.MapEditorOLD:2626
+              //$LASTPOS=43002626;//kernel.MapEditorOLD:2626
               _this.mode="setOn";
               
             }
-            //$LASTPOS=42002652;//kernel.MapEditorOLD:2652
+            //$LASTPOS=43002652;//kernel.MapEditorOLD:2652
             if (_this.getkey("g")==1) {
-              //$LASTPOS=42002681;//kernel.MapEditorOLD:2681
+              //$LASTPOS=43002681;//kernel.MapEditorOLD:2681
               if (_this.mode!="get") {
-                //$LASTPOS=42002711;//kernel.MapEditorOLD:2711
+                //$LASTPOS=43002711;//kernel.MapEditorOLD:2711
                 _this.prevMode=_this.mode;
-                //$LASTPOS=42002739;//kernel.MapEditorOLD:2739
+                //$LASTPOS=43002739;//kernel.MapEditorOLD:2739
                 Tonyu.globals.$mp.scrollTo(0,0);
-                //$LASTPOS=42002771;//kernel.MapEditorOLD:2771
+                //$LASTPOS=43002771;//kernel.MapEditorOLD:2771
                 _this.mode="get";
-                //$LASTPOS=42002796;//kernel.MapEditorOLD:2796
+                //$LASTPOS=43002796;//kernel.MapEditorOLD:2796
                 _this.chipX=0;
-                //$LASTPOS=42002818;//kernel.MapEditorOLD:2818
+                //$LASTPOS=43002818;//kernel.MapEditorOLD:2818
                 _this.chipY=0;
                 
               } else {
-                //$LASTPOS=42002856;//kernel.MapEditorOLD:2856
+                //$LASTPOS=43002856;//kernel.MapEditorOLD:2856
                 Tonyu.globals.$mp.scrollTo(1000,1000);
-                //$LASTPOS=42002894;//kernel.MapEditorOLD:2894
+                //$LASTPOS=43002894;//kernel.MapEditorOLD:2894
                 _this.mode=_this.prevMode;
                 
               }
-              //$LASTPOS=42002929;//kernel.MapEditorOLD:2929
+              //$LASTPOS=43002929;//kernel.MapEditorOLD:2929
               _this.print(_this.mode+" mode");
               
             }
-            //$LASTPOS=42002962;//kernel.MapEditorOLD:2962
+            //$LASTPOS=43002962;//kernel.MapEditorOLD:2962
             if (_this.getkey("p")==1) {
-              //$LASTPOS=42003006;//kernel.MapEditorOLD:3006
+              //$LASTPOS=43003006;//kernel.MapEditorOLD:3006
               _this.saveFileName=prompt("input json file(*.json)","map.json");
-              //$LASTPOS=42003495;//kernel.MapEditorOLD:3495
+              //$LASTPOS=43003495;//kernel.MapEditorOLD:3495
               _this.saveDataFile=_this.file("../maps/").rel(_this.saveFileName);
-              //$LASTPOS=42003553;//kernel.MapEditorOLD:3553
+              //$LASTPOS=43003553;//kernel.MapEditorOLD:3553
               _this.data=[Tonyu.globals.$map.mapTable,Tonyu.globals.$map.mapOnTable];
-              //$LASTPOS=42003668;//kernel.MapEditorOLD:3668
+              //$LASTPOS=43003668;//kernel.MapEditorOLD:3668
               _this.saveDataFile.obj(_this.data);
-              //$LASTPOS=42003701;//kernel.MapEditorOLD:3701
+              //$LASTPOS=43003701;//kernel.MapEditorOLD:3701
               _this.print(_this.saveFileName+" Saved");
               
             }
-            //$LASTPOS=42003793;//kernel.MapEditorOLD:3793
+            //$LASTPOS=43003793;//kernel.MapEditorOLD:3793
             if (_this.getkey("c")==1) {
-              //$LASTPOS=42003822;//kernel.MapEditorOLD:3822
+              //$LASTPOS=43003822;//kernel.MapEditorOLD:3822
               Tonyu.globals.$mp.scrollTo(1000,1000);
-              //$LASTPOS=42003856;//kernel.MapEditorOLD:3856
+              //$LASTPOS=43003856;//kernel.MapEditorOLD:3856
               _this.mode="spuit";
-              //$LASTPOS=42003879;//kernel.MapEditorOLD:3879
+              //$LASTPOS=43003879;//kernel.MapEditorOLD:3879
               _this.print(_this.mode+" mode");
               
             }
-            //$LASTPOS=42003912;//kernel.MapEditorOLD:3912
+            //$LASTPOS=43003912;//kernel.MapEditorOLD:3912
             if (_this.mode!="get") {
-              //$LASTPOS=42003938;//kernel.MapEditorOLD:3938
+              //$LASTPOS=43003938;//kernel.MapEditorOLD:3938
               if (_this.getkey("left")>0) {
-                //$LASTPOS=42003959;//kernel.MapEditorOLD:3959
+                //$LASTPOS=43003959;//kernel.MapEditorOLD:3959
                 _this.mx=_this.mx+8;
               }
-              //$LASTPOS=42003977;//kernel.MapEditorOLD:3977
+              //$LASTPOS=43003977;//kernel.MapEditorOLD:3977
               if (_this.getkey("right")>0) {
-                //$LASTPOS=42003999;//kernel.MapEditorOLD:3999
+                //$LASTPOS=43003999;//kernel.MapEditorOLD:3999
                 _this.mx=_this.mx-8;
               }
-              //$LASTPOS=42004017;//kernel.MapEditorOLD:4017
+              //$LASTPOS=43004017;//kernel.MapEditorOLD:4017
               if (_this.getkey("up")>0) {
-                //$LASTPOS=42004036;//kernel.MapEditorOLD:4036
+                //$LASTPOS=43004036;//kernel.MapEditorOLD:4036
                 _this.my=_this.my+8;
               }
-              //$LASTPOS=42004054;//kernel.MapEditorOLD:4054
+              //$LASTPOS=43004054;//kernel.MapEditorOLD:4054
               if (_this.getkey("down")>0) {
-                //$LASTPOS=42004075;//kernel.MapEditorOLD:4075
+                //$LASTPOS=43004075;//kernel.MapEditorOLD:4075
                 _this.my=_this.my-8;
               }
-              //$LASTPOS=42004093;//kernel.MapEditorOLD:4093
+              //$LASTPOS=43004093;//kernel.MapEditorOLD:4093
               Tonyu.globals.$map.scrollTo(_this.mx,_this.my);
               
             } else {
-              //$LASTPOS=42004136;//kernel.MapEditorOLD:4136
+              //$LASTPOS=43004136;//kernel.MapEditorOLD:4136
               if (_this.getkey("left")>0) {
-                //$LASTPOS=42004157;//kernel.MapEditorOLD:4157
+                //$LASTPOS=43004157;//kernel.MapEditorOLD:4157
                 _this.chipX=_this.chipX+8;
               }
-              //$LASTPOS=42004181;//kernel.MapEditorOLD:4181
+              //$LASTPOS=43004181;//kernel.MapEditorOLD:4181
               if (_this.getkey("right")>0) {
-                //$LASTPOS=42004203;//kernel.MapEditorOLD:4203
+                //$LASTPOS=43004203;//kernel.MapEditorOLD:4203
                 _this.chipX=_this.chipX-8;
               }
-              //$LASTPOS=42004227;//kernel.MapEditorOLD:4227
+              //$LASTPOS=43004227;//kernel.MapEditorOLD:4227
               if (_this.getkey("up")>0) {
-                //$LASTPOS=42004246;//kernel.MapEditorOLD:4246
+                //$LASTPOS=43004246;//kernel.MapEditorOLD:4246
                 _this.chipY=_this.chipY+8;
               }
-              //$LASTPOS=42004270;//kernel.MapEditorOLD:4270
+              //$LASTPOS=43004270;//kernel.MapEditorOLD:4270
               if (_this.getkey("down")>0) {
-                //$LASTPOS=42004291;//kernel.MapEditorOLD:4291
+                //$LASTPOS=43004291;//kernel.MapEditorOLD:4291
                 _this.chipY=_this.chipY-8;
               }
-              //$LASTPOS=42004315;//kernel.MapEditorOLD:4315
+              //$LASTPOS=43004315;//kernel.MapEditorOLD:4315
               Tonyu.globals.$mp.scrollTo(_this.chipX,_this.chipY);
               
             }
-            //$LASTPOS=42004354;//kernel.MapEditorOLD:4354
+            //$LASTPOS=43004354;//kernel.MapEditorOLD:4354
             _this.panel.x=_this.panel.width/2-_this.mx;
-            //$LASTPOS=42004385;//kernel.MapEditorOLD:4385
+            //$LASTPOS=43004385;//kernel.MapEditorOLD:4385
             _this.panel.y=_this.panel.height/2-_this.my;
-            //$LASTPOS=42004417;//kernel.MapEditorOLD:4417
+            //$LASTPOS=43004417;//kernel.MapEditorOLD:4417
             if (!(_this.mode=="set"&&_this.getkey(1)>0)) { __pc=15; break; }
             {
-              //$LASTPOS=42004458;//kernel.MapEditorOLD:4458
+              //$LASTPOS=43004458;//kernel.MapEditorOLD:4458
               Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,_this.mapp);
-              //$LASTPOS=42004507;//kernel.MapEditorOLD:4507
+              //$LASTPOS=43004507;//kernel.MapEditorOLD:4507
               Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,- 1);
             }
             __pc=25;break;
           case 15:
-            //$LASTPOS=42004558;//kernel.MapEditorOLD:4558
+            //$LASTPOS=43004558;//kernel.MapEditorOLD:4558
             if (!(_this.mode=="erase"&&_this.getkey(1)>0)) { __pc=16; break; }
             {
-              //$LASTPOS=42004601;//kernel.MapEditorOLD:4601
+              //$LASTPOS=43004601;//kernel.MapEditorOLD:4601
               Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,- 1);
             }
             __pc=24;break;
           case 16:
-            //$LASTPOS=42004650;//kernel.MapEditorOLD:4650
+            //$LASTPOS=43004650;//kernel.MapEditorOLD:4650
             if (!(_this.mode=="get"&&_this.getkey(1)>0)) { __pc=18; break; }
-            //$LASTPOS=42004691;//kernel.MapEditorOLD:4691
+            //$LASTPOS=43004691;//kernel.MapEditorOLD:4691
             _this.mapp=Tonyu.globals.$mp.getAt(Tonyu.globals.$mouseX+_this.chipX,Tonyu.globals.$mouseY+_this.chipY);
-            //$LASTPOS=42004745;//kernel.MapEditorOLD:4745
+            //$LASTPOS=43004745;//kernel.MapEditorOLD:4745
             _this.mode=_this.prevMode;
-            //$LASTPOS=42004769;//kernel.MapEditorOLD:4769
+            //$LASTPOS=43004769;//kernel.MapEditorOLD:4769
             Tonyu.globals.$mp.scrollTo(1000,1000);
-            //$LASTPOS=42004803;//kernel.MapEditorOLD:4803
+            //$LASTPOS=43004803;//kernel.MapEditorOLD:4803
             _this.print(_this.mode+" mode");
-            //$LASTPOS=42004833;//kernel.MapEditorOLD:4833
+            //$LASTPOS=43004833;//kernel.MapEditorOLD:4833
             _this.fiber$updateEx(_thread, 10);
             __pc=17;return;
           case 17:
             
             __pc=23;break;
           case 18:
-            //$LASTPOS=42004858;//kernel.MapEditorOLD:4858
+            //$LASTPOS=43004858;//kernel.MapEditorOLD:4858
             if (!(_this.mode=="setOn"&&_this.getkey(1)>0)) { __pc=19; break; }
             {
-              //$LASTPOS=42004901;//kernel.MapEditorOLD:4901
+              //$LASTPOS=43004901;//kernel.MapEditorOLD:4901
               Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,_this.mapp);
             }
             __pc=22;break;
           case 19:
-            //$LASTPOS=42004954;//kernel.MapEditorOLD:4954
+            //$LASTPOS=43004954;//kernel.MapEditorOLD:4954
             if (!(_this.mode=="spuit"&&_this.getkey(1)>0)) { __pc=21; break; }
-            //$LASTPOS=42004997;//kernel.MapEditorOLD:4997
+            //$LASTPOS=43004997;//kernel.MapEditorOLD:4997
             _this.mapp=Tonyu.globals.$map.getAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my);
-            //$LASTPOS=42005046;//kernel.MapEditorOLD:5046
+            //$LASTPOS=43005046;//kernel.MapEditorOLD:5046
             _this.mode="set";
-            //$LASTPOS=42005067;//kernel.MapEditorOLD:5067
+            //$LASTPOS=43005067;//kernel.MapEditorOLD:5067
             _this.print(_this.mode+" mode");
-            //$LASTPOS=42005097;//kernel.MapEditorOLD:5097
+            //$LASTPOS=43005097;//kernel.MapEditorOLD:5097
             _this.fiber$updateEx(_thread, 10);
             __pc=20;return;
           case 20:
@@ -14261,7 +14263,7 @@ Tonyu.klass.define({
             
           case 25:
             
-            //$LASTPOS=42005123;//kernel.MapEditorOLD:5123
+            //$LASTPOS=43005123;//kernel.MapEditorOLD:5123
             _this.fiber$update(_thread);
             __pc=26;return;
           case 26:
@@ -14291,107 +14293,107 @@ Tonyu.klass.define({
       var i;
       var j;
       
-      //$LASTPOS=43000032;//kernel.MapEditorOLD2:32
+      //$LASTPOS=44000032;//kernel.MapEditorOLD2:32
       Tonyu.globals.$Screen.resize(480,640);
-      //$LASTPOS=43000058;//kernel.MapEditorOLD2:58
+      //$LASTPOS=44000058;//kernel.MapEditorOLD2:58
       _this.loadMode=false;
-      //$LASTPOS=43000075;//kernel.MapEditorOLD2:75
+      //$LASTPOS=44000075;//kernel.MapEditorOLD2:75
       _this.fileExist=false;
-      //$LASTPOS=43000093;//kernel.MapEditorOLD2:93
+      //$LASTPOS=44000093;//kernel.MapEditorOLD2:93
       _this.print("map file(s)");
-      //$LASTPOS=43000116;//kernel.MapEditorOLD2:116
+      //$LASTPOS=44000116;//kernel.MapEditorOLD2:116
       _this.fileList=_this.file("../maps/");
-      //$LASTPOS=43000144;//kernel.MapEditorOLD2:144
+      //$LASTPOS=44000144;//kernel.MapEditorOLD2:144
       if (_this.fileList.exists()) {
-        //$LASTPOS=43000168;//kernel.MapEditorOLD2:168
+        //$LASTPOS=44000168;//kernel.MapEditorOLD2:168
         _this.fileList.recursive((function a(f) {
           
-          //$LASTPOS=43000207;//kernel.MapEditorOLD2:207
+          //$LASTPOS=44000207;//kernel.MapEditorOLD2:207
           f=f+"";
-          //$LASTPOS=43000220;//kernel.MapEditorOLD2:220
+          //$LASTPOS=44000220;//kernel.MapEditorOLD2:220
           _this.fNames=f.split("/");
-          //$LASTPOS=43000246;//kernel.MapEditorOLD2:246
+          //$LASTPOS=44000246;//kernel.MapEditorOLD2:246
           _this.print(_this.fNames[_this.fNames.length-1]);
-          //$LASTPOS=43000283;//kernel.MapEditorOLD2:283
+          //$LASTPOS=44000283;//kernel.MapEditorOLD2:283
           _this.fileExist=true;
         }));
         
       }
-      //$LASTPOS=43000308;//kernel.MapEditorOLD2:308
+      //$LASTPOS=44000308;//kernel.MapEditorOLD2:308
       if (_this.fileExist) {
-        //$LASTPOS=43000328;//kernel.MapEditorOLD2:328
+        //$LASTPOS=44000328;//kernel.MapEditorOLD2:328
         _this.print("Load Data?: Y or N");
-        //$LASTPOS=43000362;//kernel.MapEditorOLD2:362
+        //$LASTPOS=44000362;//kernel.MapEditorOLD2:362
         while (true) {
-          //$LASTPOS=43000384;//kernel.MapEditorOLD2:384
+          //$LASTPOS=44000384;//kernel.MapEditorOLD2:384
           if (_this.getkey("y")>0) {
-            //$LASTPOS=43000416;//kernel.MapEditorOLD2:416
+            //$LASTPOS=44000416;//kernel.MapEditorOLD2:416
             _this.loadMode=true;
             break;
             
             
           }
-          //$LASTPOS=43000471;//kernel.MapEditorOLD2:471
+          //$LASTPOS=44000471;//kernel.MapEditorOLD2:471
           if (_this.getkey("n")>0) {
-            //$LASTPOS=43000503;//kernel.MapEditorOLD2:503
+            //$LASTPOS=44000503;//kernel.MapEditorOLD2:503
             _this.loadMode=false;
             break;
             
             
           }
-          //$LASTPOS=43000559;//kernel.MapEditorOLD2:559
+          //$LASTPOS=44000559;//kernel.MapEditorOLD2:559
           _this.update();
           
         }
-        //$LASTPOS=43000581;//kernel.MapEditorOLD2:581
+        //$LASTPOS=44000581;//kernel.MapEditorOLD2:581
         if (_this.loadMode) {
-          //$LASTPOS=43000604;//kernel.MapEditorOLD2:604
+          //$LASTPOS=44000604;//kernel.MapEditorOLD2:604
           _this.fileName=prompt("Input json file (*.json)","map.json");
-          //$LASTPOS=43000669;//kernel.MapEditorOLD2:669
+          //$LASTPOS=44000669;//kernel.MapEditorOLD2:669
           if (_this.fileName) {
-            //$LASTPOS=43000696;//kernel.MapEditorOLD2:696
+            //$LASTPOS=44000696;//kernel.MapEditorOLD2:696
             _this.mapDataFile=_this.file("../maps/").rel(_this.fileName);
             
           }
-          //$LASTPOS=43000760;//kernel.MapEditorOLD2:760
+          //$LASTPOS=44000760;//kernel.MapEditorOLD2:760
           if (_this.mapDataFile.obj()) {
-            //$LASTPOS=43000796;//kernel.MapEditorOLD2:796
+            //$LASTPOS=44000796;//kernel.MapEditorOLD2:796
             _this.baseData=_this.mapDataFile.obj();
-            //$LASTPOS=43000837;//kernel.MapEditorOLD2:837
+            //$LASTPOS=44000837;//kernel.MapEditorOLD2:837
             _this.loadedFile=_this.fileName;
             
           } else {
-            //$LASTPOS=43000887;//kernel.MapEditorOLD2:887
+            //$LASTPOS=44000887;//kernel.MapEditorOLD2:887
             _this.mapDataFile=_this.file(_this.fileName);
-            //$LASTPOS=43000928;//kernel.MapEditorOLD2:928
+            //$LASTPOS=44000928;//kernel.MapEditorOLD2:928
             if (_this.mapDataFile.obj()) {
-              //$LASTPOS=43000968;//kernel.MapEditorOLD2:968
+              //$LASTPOS=44000968;//kernel.MapEditorOLD2:968
               _this.baseData=_this.mapDataFile.obj();
-              //$LASTPOS=43001013;//kernel.MapEditorOLD2:1013
+              //$LASTPOS=44001013;//kernel.MapEditorOLD2:1013
               _this.loadedFile=_this.fileName;
               
             }
             
           }
-          //$LASTPOS=43001069;//kernel.MapEditorOLD2:1069
+          //$LASTPOS=44001069;//kernel.MapEditorOLD2:1069
           if (_this.baseData==undefined) {
-            //$LASTPOS=43001107;//kernel.MapEditorOLD2:1107
+            //$LASTPOS=44001107;//kernel.MapEditorOLD2:1107
             _this.print("Load failed");
-            //$LASTPOS=43001142;//kernel.MapEditorOLD2:1142
+            //$LASTPOS=44001142;//kernel.MapEditorOLD2:1142
             _this.loadMode=false;
             
           } else {
-            //$LASTPOS=43001173;//kernel.MapEditorOLD2:1173
+            //$LASTPOS=44001173;//kernel.MapEditorOLD2:1173
             if (_this.baseData[0]&&_this.baseData[1]) {
-              //$LASTPOS=43001218;//kernel.MapEditorOLD2:1218
+              //$LASTPOS=44001218;//kernel.MapEditorOLD2:1218
               _this.mapData=_this.baseData[0];
-              //$LASTPOS=43001252;//kernel.MapEditorOLD2:1252
+              //$LASTPOS=44001252;//kernel.MapEditorOLD2:1252
               _this.mapOnData=_this.baseData[1];
-              //$LASTPOS=43001288;//kernel.MapEditorOLD2:1288
+              //$LASTPOS=44001288;//kernel.MapEditorOLD2:1288
               if (_this.baseData.length>2) {
-                //$LASTPOS=43001328;//kernel.MapEditorOLD2:1328
+                //$LASTPOS=44001328;//kernel.MapEditorOLD2:1328
                 _this.chipWidth=_this.baseData[_this.baseData.length-2];
-                //$LASTPOS=43001384;//kernel.MapEditorOLD2:1384
+                //$LASTPOS=44001384;//kernel.MapEditorOLD2:1384
                 _this.chipHeight=_this.baseData[_this.baseData.length-1];
                 
               }
@@ -14402,73 +14404,73 @@ Tonyu.klass.define({
         }
         
       }
-      //$LASTPOS=43001461;//kernel.MapEditorOLD2:1461
+      //$LASTPOS=44001461;//kernel.MapEditorOLD2:1461
       _this.update();
-      //$LASTPOS=43001739;//kernel.MapEditorOLD2:1739
+      //$LASTPOS=44001739;//kernel.MapEditorOLD2:1739
       if (! _this.loadMode) {
-        //$LASTPOS=43001759;//kernel.MapEditorOLD2:1759
+        //$LASTPOS=44001759;//kernel.MapEditorOLD2:1759
         _this.row=prompt("input row");
-        //$LASTPOS=43001789;//kernel.MapEditorOLD2:1789
+        //$LASTPOS=44001789;//kernel.MapEditorOLD2:1789
         _this.col=prompt("input col");
-        //$LASTPOS=43001819;//kernel.MapEditorOLD2:1819
+        //$LASTPOS=44001819;//kernel.MapEditorOLD2:1819
         _this.chipWidth=prompt("input chipWidth");
-        //$LASTPOS=43001861;//kernel.MapEditorOLD2:1861
+        //$LASTPOS=44001861;//kernel.MapEditorOLD2:1861
         _this.chipHeight=prompt("input chipHeight");
-        //$LASTPOS=43001905;//kernel.MapEditorOLD2:1905
+        //$LASTPOS=44001905;//kernel.MapEditorOLD2:1905
         _this.panel=new Tonyu.classes.kernel.Panel({width: _this.col*_this.chipWidth,height: _this.row*_this.chipHeight});
-        //$LASTPOS=43001970;//kernel.MapEditorOLD2:1970
+        //$LASTPOS=44001970;//kernel.MapEditorOLD2:1970
         _this.panel.x=_this.panel.width/2+40;
-        //$LASTPOS=43002001;//kernel.MapEditorOLD2:2001
+        //$LASTPOS=44002001;//kernel.MapEditorOLD2:2001
         _this.panel.y=_this.panel.height/2+40;
-        //$LASTPOS=43002033;//kernel.MapEditorOLD2:2033
+        //$LASTPOS=44002033;//kernel.MapEditorOLD2:2033
         _this.panel.setFillStyle("cyan");
-        //$LASTPOS=43002066;//kernel.MapEditorOLD2:2066
+        //$LASTPOS=44002066;//kernel.MapEditorOLD2:2066
         _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
-        //$LASTPOS=43002117;//kernel.MapEditorOLD2:2117
+        //$LASTPOS=44002117;//kernel.MapEditorOLD2:2117
         Tonyu.globals.$map=new Tonyu.classes.kernel.Map({row: _this.row,col: _this.col,chipWidth: _this.chipWidth,chipHeight: _this.chipHeight});
         
       } else {
-        //$LASTPOS=43002428;//kernel.MapEditorOLD2:2428
+        //$LASTPOS=44002428;//kernel.MapEditorOLD2:2428
         Tonyu.globals.$map=new Tonyu.classes.kernel.Map({chipWidth: 32,chipHeight: 32});
-        //$LASTPOS=43002475;//kernel.MapEditorOLD2:2475
+        //$LASTPOS=44002475;//kernel.MapEditorOLD2:2475
         Tonyu.globals.$map.load(_this.fileName);
-        //$LASTPOS=43002501;//kernel.MapEditorOLD2:2501
+        //$LASTPOS=44002501;//kernel.MapEditorOLD2:2501
         _this.panel=new Tonyu.classes.kernel.Panel({width: Tonyu.globals.$map.col*Tonyu.globals.$map.chipWidth,height: Tonyu.globals.$map.row*Tonyu.globals.$map.chipHeight,zOrder: 100});
-        //$LASTPOS=43002597;//kernel.MapEditorOLD2:2597
+        //$LASTPOS=44002597;//kernel.MapEditorOLD2:2597
         _this.panel.x=_this.panel.width/2+40;
-        //$LASTPOS=43002628;//kernel.MapEditorOLD2:2628
+        //$LASTPOS=44002628;//kernel.MapEditorOLD2:2628
         _this.panel.y=_this.panel.height/2+40;
-        //$LASTPOS=43002660;//kernel.MapEditorOLD2:2660
+        //$LASTPOS=44002660;//kernel.MapEditorOLD2:2660
         _this.panel.setFillStyle("cyan");
-        //$LASTPOS=43002693;//kernel.MapEditorOLD2:2693
+        //$LASTPOS=44002693;//kernel.MapEditorOLD2:2693
         _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
         
       }
-      //$LASTPOS=43002743;//kernel.MapEditorOLD2:2743
+      //$LASTPOS=44002743;//kernel.MapEditorOLD2:2743
       _this.mIW=Tonyu.globals.$Sprites.getImageList()[Tonyu.globals.$pat_mapchip].image.width;
-      //$LASTPOS=43002799;//kernel.MapEditorOLD2:2799
+      //$LASTPOS=44002799;//kernel.MapEditorOLD2:2799
       _this.mIH=Tonyu.globals.$Sprites.getImageList()[Tonyu.globals.$pat_mapchip].image.height;
-      //$LASTPOS=43002856;//kernel.MapEditorOLD2:2856
+      //$LASTPOS=44002856;//kernel.MapEditorOLD2:2856
       _this.mCW=Tonyu.globals.$Sprites.getImageList()[Tonyu.globals.$pat_mapchip+0].width;
-      //$LASTPOS=43002908;//kernel.MapEditorOLD2:2908
+      //$LASTPOS=44002908;//kernel.MapEditorOLD2:2908
       _this.mCH=Tonyu.globals.$Sprites.getImageList()[Tonyu.globals.$pat_mapchip+0].height;
-      //$LASTPOS=43002961;//kernel.MapEditorOLD2:2961
+      //$LASTPOS=44002961;//kernel.MapEditorOLD2:2961
       Tonyu.globals.$mp=new Tonyu.classes.kernel.Map({row: _this.floor(_this.mIH/_this.mCH),col: _this.floor(_this.mIW/_this.mCW),chipWidth: _this.mCW,chipHeight: _this.mCH});
-      //$LASTPOS=43003043;//kernel.MapEditorOLD2:3043
+      //$LASTPOS=44003043;//kernel.MapEditorOLD2:3043
       _this.counter=0;
-      //$LASTPOS=43003055;//kernel.MapEditorOLD2:3055
-      //$LASTPOS=43003059;//kernel.MapEditorOLD2:3059
+      //$LASTPOS=44003055;//kernel.MapEditorOLD2:3055
+      //$LASTPOS=44003059;//kernel.MapEditorOLD2:3059
       i = 0;
       while(i<Tonyu.globals.$mp.row) {
         {
-          //$LASTPOS=43003088;//kernel.MapEditorOLD2:3088
-          //$LASTPOS=43003092;//kernel.MapEditorOLD2:3092
+          //$LASTPOS=44003088;//kernel.MapEditorOLD2:3088
+          //$LASTPOS=44003092;//kernel.MapEditorOLD2:3092
           j = 0;
           while(j<Tonyu.globals.$mp.col) {
             {
-              //$LASTPOS=43003125;//kernel.MapEditorOLD2:3125
+              //$LASTPOS=44003125;//kernel.MapEditorOLD2:3125
               Tonyu.globals.$mp.set(j,i,Tonyu.globals.$pat_mapchip+_this.counter);
-              //$LASTPOS=43003169;//kernel.MapEditorOLD2:3169
+              //$LASTPOS=44003169;//kernel.MapEditorOLD2:3169
               _this.counter++;
             }
             j++;
@@ -14476,283 +14478,283 @@ Tonyu.klass.define({
         }
         i++;
       }
-      //$LASTPOS=43003191;//kernel.MapEditorOLD2:3191
+      //$LASTPOS=44003191;//kernel.MapEditorOLD2:3191
       _this.drawPanel();
-      //$LASTPOS=43003205;//kernel.MapEditorOLD2:3205
+      //$LASTPOS=44003205;//kernel.MapEditorOLD2:3205
       _this.mode="get";
-      //$LASTPOS=43003218;//kernel.MapEditorOLD2:3218
+      //$LASTPOS=44003218;//kernel.MapEditorOLD2:3218
       _this.prevMode="set";
-      //$LASTPOS=43003235;//kernel.MapEditorOLD2:3235
+      //$LASTPOS=44003235;//kernel.MapEditorOLD2:3235
       _this.mapp=0;
-      //$LASTPOS=43003244;//kernel.MapEditorOLD2:3244
+      //$LASTPOS=44003244;//kernel.MapEditorOLD2:3244
       _this.mx=- 40;
-      //$LASTPOS=43003253;//kernel.MapEditorOLD2:3253
+      //$LASTPOS=44003253;//kernel.MapEditorOLD2:3253
       _this.my=- 40;
-      //$LASTPOS=43003262;//kernel.MapEditorOLD2:3262
+      //$LASTPOS=44003262;//kernel.MapEditorOLD2:3262
       _this.chipX=- 40;
-      //$LASTPOS=43003274;//kernel.MapEditorOLD2:3274
+      //$LASTPOS=44003274;//kernel.MapEditorOLD2:3274
       _this.chipY=- 40;
-      //$LASTPOS=43003286;//kernel.MapEditorOLD2:3286
+      //$LASTPOS=44003286;//kernel.MapEditorOLD2:3286
       _this.x=Tonyu.globals.$screenWidth-_this.chipWidth/2;
-      //$LASTPOS=43003315;//kernel.MapEditorOLD2:3315
+      //$LASTPOS=44003315;//kernel.MapEditorOLD2:3315
       _this.y=Tonyu.globals.$screenHeight-_this.chipHeight/2;
-      //$LASTPOS=43003346;//kernel.MapEditorOLD2:3346
+      //$LASTPOS=44003346;//kernel.MapEditorOLD2:3346
       Tonyu.globals.$map.scrollTo(_this.mx,_this.my);
-      //$LASTPOS=43003369;//kernel.MapEditorOLD2:3369
+      //$LASTPOS=44003369;//kernel.MapEditorOLD2:3369
       while (true) {
-        //$LASTPOS=43003387;//kernel.MapEditorOLD2:3387
+        //$LASTPOS=44003387;//kernel.MapEditorOLD2:3387
         _this.p=_this.mapp;
-        //$LASTPOS=43003400;//kernel.MapEditorOLD2:3400
+        //$LASTPOS=44003400;//kernel.MapEditorOLD2:3400
         if (_this.getkey("e")==1||(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<120&&Tonyu.globals.$touches[0].y>560&&Tonyu.globals.$touches[0].y<640)) {
-          //$LASTPOS=43003539;//kernel.MapEditorOLD2:3539
+          //$LASTPOS=44003539;//kernel.MapEditorOLD2:3539
           Tonyu.globals.$mp.scrollTo(1000,1000);
-          //$LASTPOS=43003573;//kernel.MapEditorOLD2:3573
+          //$LASTPOS=44003573;//kernel.MapEditorOLD2:3573
           _this.mode="erase";
-          //$LASTPOS=43003596;//kernel.MapEditorOLD2:3596
+          //$LASTPOS=44003596;//kernel.MapEditorOLD2:3596
           _this.print(_this.mode+" mode");
           
         }
-        //$LASTPOS=43003629;//kernel.MapEditorOLD2:3629
+        //$LASTPOS=44003629;//kernel.MapEditorOLD2:3629
         if (_this.getkey("s")==1) {
-          //$LASTPOS=43003658;//kernel.MapEditorOLD2:3658
+          //$LASTPOS=44003658;//kernel.MapEditorOLD2:3658
           Tonyu.globals.$mp.scrollTo(1000,1000);
-          //$LASTPOS=43003692;//kernel.MapEditorOLD2:3692
+          //$LASTPOS=44003692;//kernel.MapEditorOLD2:3692
           if (_this.mode=="set") {
-            //$LASTPOS=43003722;//kernel.MapEditorOLD2:3722
+            //$LASTPOS=44003722;//kernel.MapEditorOLD2:3722
             _this.mode="setOn";
             
           } else {
-            //$LASTPOS=43003765;//kernel.MapEditorOLD2:3765
+            //$LASTPOS=44003765;//kernel.MapEditorOLD2:3765
             _this.mode="set";
             
           }
-          //$LASTPOS=43003797;//kernel.MapEditorOLD2:3797
+          //$LASTPOS=44003797;//kernel.MapEditorOLD2:3797
           _this.print(_this.mode+" mode");
           
         }
-        //$LASTPOS=43003830;//kernel.MapEditorOLD2:3830
+        //$LASTPOS=44003830;//kernel.MapEditorOLD2:3830
         if (Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<120&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560) {
-          //$LASTPOS=43003949;//kernel.MapEditorOLD2:3949
+          //$LASTPOS=44003949;//kernel.MapEditorOLD2:3949
           Tonyu.globals.$mp.scrollTo(1000,1000);
-          //$LASTPOS=43003983;//kernel.MapEditorOLD2:3983
+          //$LASTPOS=44003983;//kernel.MapEditorOLD2:3983
           _this.mode="set";
-          //$LASTPOS=43004004;//kernel.MapEditorOLD2:4004
+          //$LASTPOS=44004004;//kernel.MapEditorOLD2:4004
           _this.print(_this.mode+" mode");
           
         }
-        //$LASTPOS=43004037;//kernel.MapEditorOLD2:4037
+        //$LASTPOS=44004037;//kernel.MapEditorOLD2:4037
         if (Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>120&&Tonyu.globals.$touches[0].x<240&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560) {
-          //$LASTPOS=43004158;//kernel.MapEditorOLD2:4158
+          //$LASTPOS=44004158;//kernel.MapEditorOLD2:4158
           Tonyu.globals.$mp.scrollTo(1000,1000);
-          //$LASTPOS=43004192;//kernel.MapEditorOLD2:4192
+          //$LASTPOS=44004192;//kernel.MapEditorOLD2:4192
           _this.mode="setOn";
-          //$LASTPOS=43004215;//kernel.MapEditorOLD2:4215
+          //$LASTPOS=44004215;//kernel.MapEditorOLD2:4215
           _this.print(_this.mode+" mode");
           
         }
-        //$LASTPOS=43004341;//kernel.MapEditorOLD2:4341
+        //$LASTPOS=44004341;//kernel.MapEditorOLD2:4341
         if (_this.getkey("g")==1||(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>240&&Tonyu.globals.$touches[0].x<360&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560)) {
-          //$LASTPOS=43004482;//kernel.MapEditorOLD2:4482
+          //$LASTPOS=44004482;//kernel.MapEditorOLD2:4482
           if (_this.mode!="get") {
-            //$LASTPOS=43004512;//kernel.MapEditorOLD2:4512
+            //$LASTPOS=44004512;//kernel.MapEditorOLD2:4512
             _this.prevMode=_this.mode;
-            //$LASTPOS=43004540;//kernel.MapEditorOLD2:4540
+            //$LASTPOS=44004540;//kernel.MapEditorOLD2:4540
             Tonyu.globals.$mp.scrollTo(- 40,- 40);
-            //$LASTPOS=43004576;//kernel.MapEditorOLD2:4576
+            //$LASTPOS=44004576;//kernel.MapEditorOLD2:4576
             _this.mode="get";
-            //$LASTPOS=43004601;//kernel.MapEditorOLD2:4601
+            //$LASTPOS=44004601;//kernel.MapEditorOLD2:4601
             _this.chipX=- 40;
-            //$LASTPOS=43004625;//kernel.MapEditorOLD2:4625
+            //$LASTPOS=44004625;//kernel.MapEditorOLD2:4625
             _this.chipY=- 40;
             
           } else {
-            //$LASTPOS=43004665;//kernel.MapEditorOLD2:4665
+            //$LASTPOS=44004665;//kernel.MapEditorOLD2:4665
             Tonyu.globals.$mp.scrollTo(1000,1000);
-            //$LASTPOS=43004703;//kernel.MapEditorOLD2:4703
+            //$LASTPOS=44004703;//kernel.MapEditorOLD2:4703
             _this.mode=_this.prevMode;
             
           }
-          //$LASTPOS=43004738;//kernel.MapEditorOLD2:4738
+          //$LASTPOS=44004738;//kernel.MapEditorOLD2:4738
           _this.print(_this.mode+" mode");
           
         }
-        //$LASTPOS=43004771;//kernel.MapEditorOLD2:4771
+        //$LASTPOS=44004771;//kernel.MapEditorOLD2:4771
         if (_this.getkey("p")==1||(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>360&&Tonyu.globals.$touches[0].x<480&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560)) {
-          //$LASTPOS=43004927;//kernel.MapEditorOLD2:4927
+          //$LASTPOS=44004927;//kernel.MapEditorOLD2:4927
           if (_this.loadedFile) {
-            //$LASTPOS=43004956;//kernel.MapEditorOLD2:4956
+            //$LASTPOS=44004956;//kernel.MapEditorOLD2:4956
             _this.saveFileName=prompt("input json file(*.json)",_this.loadedFile);
             
           } else {
-            //$LASTPOS=43005044;//kernel.MapEditorOLD2:5044
+            //$LASTPOS=44005044;//kernel.MapEditorOLD2:5044
             _this.saveFileName=prompt("input json file(*.json)","map.json");
             
           }
-          //$LASTPOS=43005544;//kernel.MapEditorOLD2:5544
+          //$LASTPOS=44005544;//kernel.MapEditorOLD2:5544
           if (_this.saveFileName) {
-            //$LASTPOS=43005575;//kernel.MapEditorOLD2:5575
+            //$LASTPOS=44005575;//kernel.MapEditorOLD2:5575
             _this.saveDataFile=_this.file("../maps/").rel(_this.saveFileName);
-            //$LASTPOS=43005637;//kernel.MapEditorOLD2:5637
+            //$LASTPOS=44005637;//kernel.MapEditorOLD2:5637
             _this.data=[Tonyu.globals.$map.mapTable,Tonyu.globals.$map.mapOnTable,Tonyu.globals.$map.chipWidth,Tonyu.globals.$map.chipHeight];
-            //$LASTPOS=43005799;//kernel.MapEditorOLD2:5799
+            //$LASTPOS=44005799;//kernel.MapEditorOLD2:5799
             _this.saveDataFile.obj(_this.data);
-            //$LASTPOS=43005836;//kernel.MapEditorOLD2:5836
+            //$LASTPOS=44005836;//kernel.MapEditorOLD2:5836
             _this.print(_this.saveFileName+" Saved");
             
           }
           
         }
-        //$LASTPOS=43005943;//kernel.MapEditorOLD2:5943
+        //$LASTPOS=44005943;//kernel.MapEditorOLD2:5943
         if (_this.getkey("c")==1||(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>120&&Tonyu.globals.$touches[0].x<240&&Tonyu.globals.$touches[0].y>560&&Tonyu.globals.$touches[0].y<640)) {
-          //$LASTPOS=43006084;//kernel.MapEditorOLD2:6084
+          //$LASTPOS=44006084;//kernel.MapEditorOLD2:6084
           Tonyu.globals.$mp.scrollTo(1000,1000);
-          //$LASTPOS=43006118;//kernel.MapEditorOLD2:6118
+          //$LASTPOS=44006118;//kernel.MapEditorOLD2:6118
           _this.mode="copy";
-          //$LASTPOS=43006140;//kernel.MapEditorOLD2:6140
+          //$LASTPOS=44006140;//kernel.MapEditorOLD2:6140
           _this.print(_this.mode+" mode");
           
         }
-        //$LASTPOS=43006173;//kernel.MapEditorOLD2:6173
+        //$LASTPOS=44006173;//kernel.MapEditorOLD2:6173
         if (_this.mode!="get") {
-          //$LASTPOS=43006199;//kernel.MapEditorOLD2:6199
+          //$LASTPOS=44006199;//kernel.MapEditorOLD2:6199
           if (_this.getkey("left")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<40&&Tonyu.globals.$touches[0].y<480)) {
-            //$LASTPOS=43006305;//kernel.MapEditorOLD2:6305
+            //$LASTPOS=44006305;//kernel.MapEditorOLD2:6305
             _this.mx=_this.mx+8;
           }
-          //$LASTPOS=43006323;//kernel.MapEditorOLD2:6323
+          //$LASTPOS=44006323;//kernel.MapEditorOLD2:6323
           if (_this.getkey("right")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>Tonyu.globals.$screenWidth-40&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<480)) {
-            //$LASTPOS=43006454;//kernel.MapEditorOLD2:6454
+            //$LASTPOS=44006454;//kernel.MapEditorOLD2:6454
             _this.mx=_this.mx-8;
           }
-          //$LASTPOS=43006472;//kernel.MapEditorOLD2:6472
+          //$LASTPOS=44006472;//kernel.MapEditorOLD2:6472
           if (_this.getkey("up")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<40)) {
-            //$LASTPOS=43006585;//kernel.MapEditorOLD2:6585
+            //$LASTPOS=44006585;//kernel.MapEditorOLD2:6585
             _this.my=_this.my+8;
           }
-          //$LASTPOS=43006603;//kernel.MapEditorOLD2:6603
+          //$LASTPOS=44006603;//kernel.MapEditorOLD2:6603
           if (_this.getkey("down")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<480&&Tonyu.globals.$touches[0].y>440)) {
-            //$LASTPOS=43006738;//kernel.MapEditorOLD2:6738
+            //$LASTPOS=44006738;//kernel.MapEditorOLD2:6738
             _this.my=_this.my-8;
           }
-          //$LASTPOS=43006756;//kernel.MapEditorOLD2:6756
+          //$LASTPOS=44006756;//kernel.MapEditorOLD2:6756
           Tonyu.globals.$map.scrollTo(_this.mx,_this.my);
           
         } else {
-          //$LASTPOS=43006799;//kernel.MapEditorOLD2:6799
+          //$LASTPOS=44006799;//kernel.MapEditorOLD2:6799
           if (_this.getkey("left")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<40&&Tonyu.globals.$touches[0].y<480)) {
-            //$LASTPOS=43006905;//kernel.MapEditorOLD2:6905
+            //$LASTPOS=44006905;//kernel.MapEditorOLD2:6905
             _this.chipX=_this.chipX+8;
           }
-          //$LASTPOS=43006929;//kernel.MapEditorOLD2:6929
+          //$LASTPOS=44006929;//kernel.MapEditorOLD2:6929
           if (_this.getkey("right")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>Tonyu.globals.$screenWidth-40&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<480)) {
-            //$LASTPOS=43007060;//kernel.MapEditorOLD2:7060
+            //$LASTPOS=44007060;//kernel.MapEditorOLD2:7060
             _this.chipX=_this.chipX-8;
           }
-          //$LASTPOS=43007084;//kernel.MapEditorOLD2:7084
+          //$LASTPOS=44007084;//kernel.MapEditorOLD2:7084
           if (_this.getkey("up")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<40)) {
-            //$LASTPOS=43007197;//kernel.MapEditorOLD2:7197
+            //$LASTPOS=44007197;//kernel.MapEditorOLD2:7197
             _this.chipY=_this.chipY+8;
           }
-          //$LASTPOS=43007221;//kernel.MapEditorOLD2:7221
+          //$LASTPOS=44007221;//kernel.MapEditorOLD2:7221
           if (_this.getkey("down")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<480&&Tonyu.globals.$touches[0].y>440)) {
-            //$LASTPOS=43007356;//kernel.MapEditorOLD2:7356
+            //$LASTPOS=44007356;//kernel.MapEditorOLD2:7356
             _this.chipY=_this.chipY-8;
           }
-          //$LASTPOS=43007380;//kernel.MapEditorOLD2:7380
+          //$LASTPOS=44007380;//kernel.MapEditorOLD2:7380
           Tonyu.globals.$mp.scrollTo(_this.chipX,_this.chipY);
           
         }
-        //$LASTPOS=43007453;//kernel.MapEditorOLD2:7453
+        //$LASTPOS=44007453;//kernel.MapEditorOLD2:7453
         if (_this.getkey("i")==1) {
-          //$LASTPOS=43007482;//kernel.MapEditorOLD2:7482
+          //$LASTPOS=44007482;//kernel.MapEditorOLD2:7482
           Tonyu.globals.$map.chipWidth+=4;
-          //$LASTPOS=43007510;//kernel.MapEditorOLD2:7510
+          //$LASTPOS=44007510;//kernel.MapEditorOLD2:7510
           Tonyu.globals.$map.chipHeight+=4;
-          //$LASTPOS=43007539;//kernel.MapEditorOLD2:7539
+          //$LASTPOS=44007539;//kernel.MapEditorOLD2:7539
           Tonyu.globals.$map.redrawMap();
-          //$LASTPOS=43007566;//kernel.MapEditorOLD2:7566
+          //$LASTPOS=44007566;//kernel.MapEditorOLD2:7566
           _this.panel.die();
-          //$LASTPOS=43007588;//kernel.MapEditorOLD2:7588
+          //$LASTPOS=44007588;//kernel.MapEditorOLD2:7588
           _this.panel=new Tonyu.classes.kernel.Panel({width: Tonyu.globals.$map.col*Tonyu.globals.$map.chipWidth,height: Tonyu.globals.$map.row*Tonyu.globals.$map.chipHeight,zOrder: 100});
-          //$LASTPOS=43007688;//kernel.MapEditorOLD2:7688
+          //$LASTPOS=44007688;//kernel.MapEditorOLD2:7688
           _this.panel.x=_this.panel.width/2+40;
-          //$LASTPOS=43007723;//kernel.MapEditorOLD2:7723
+          //$LASTPOS=44007723;//kernel.MapEditorOLD2:7723
           _this.panel.y=_this.panel.height/2+40;
-          //$LASTPOS=43007759;//kernel.MapEditorOLD2:7759
+          //$LASTPOS=44007759;//kernel.MapEditorOLD2:7759
           _this.panel.setFillStyle("cyan");
-          //$LASTPOS=43007796;//kernel.MapEditorOLD2:7796
+          //$LASTPOS=44007796;//kernel.MapEditorOLD2:7796
           _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
           
         }
-        //$LASTPOS=43007854;//kernel.MapEditorOLD2:7854
+        //$LASTPOS=44007854;//kernel.MapEditorOLD2:7854
         if (_this.getkey("o")==1) {
-          //$LASTPOS=43007883;//kernel.MapEditorOLD2:7883
+          //$LASTPOS=44007883;//kernel.MapEditorOLD2:7883
           Tonyu.globals.$map.chipWidth-=4;
-          //$LASTPOS=43007911;//kernel.MapEditorOLD2:7911
+          //$LASTPOS=44007911;//kernel.MapEditorOLD2:7911
           Tonyu.globals.$map.chipHeight-=4;
-          //$LASTPOS=43007940;//kernel.MapEditorOLD2:7940
+          //$LASTPOS=44007940;//kernel.MapEditorOLD2:7940
           Tonyu.globals.$map.redrawMap();
-          //$LASTPOS=43007967;//kernel.MapEditorOLD2:7967
+          //$LASTPOS=44007967;//kernel.MapEditorOLD2:7967
           _this.panel.die();
-          //$LASTPOS=43007989;//kernel.MapEditorOLD2:7989
+          //$LASTPOS=44007989;//kernel.MapEditorOLD2:7989
           _this.panel=new Tonyu.classes.kernel.Panel({width: Tonyu.globals.$map.col*Tonyu.globals.$map.chipWidth,height: Tonyu.globals.$map.row*Tonyu.globals.$map.chipHeight,zOrder: 100});
-          //$LASTPOS=43008089;//kernel.MapEditorOLD2:8089
+          //$LASTPOS=44008089;//kernel.MapEditorOLD2:8089
           _this.panel.x=_this.panel.width/2+40;
-          //$LASTPOS=43008124;//kernel.MapEditorOLD2:8124
+          //$LASTPOS=44008124;//kernel.MapEditorOLD2:8124
           _this.panel.y=_this.panel.height/2+40;
-          //$LASTPOS=43008160;//kernel.MapEditorOLD2:8160
+          //$LASTPOS=44008160;//kernel.MapEditorOLD2:8160
           _this.panel.setFillStyle("cyan");
-          //$LASTPOS=43008197;//kernel.MapEditorOLD2:8197
+          //$LASTPOS=44008197;//kernel.MapEditorOLD2:8197
           _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
           
         }
-        //$LASTPOS=43008289;//kernel.MapEditorOLD2:8289
+        //$LASTPOS=44008289;//kernel.MapEditorOLD2:8289
         _this.panel.x=_this.panel.width/2-_this.mx;
-        //$LASTPOS=43008320;//kernel.MapEditorOLD2:8320
+        //$LASTPOS=44008320;//kernel.MapEditorOLD2:8320
         _this.panel.y=_this.panel.height/2-_this.my;
-        //$LASTPOS=43008352;//kernel.MapEditorOLD2:8352
+        //$LASTPOS=44008352;//kernel.MapEditorOLD2:8352
         if (_this.mode=="set"&&_this.getkey(1)>0&&_this.inRect()) {
-          //$LASTPOS=43008405;//kernel.MapEditorOLD2:8405
+          //$LASTPOS=44008405;//kernel.MapEditorOLD2:8405
           Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,_this.mapp);
-          //$LASTPOS=43008454;//kernel.MapEditorOLD2:8454
+          //$LASTPOS=44008454;//kernel.MapEditorOLD2:8454
           Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,- 1);
           
         } else {
-          //$LASTPOS=43008505;//kernel.MapEditorOLD2:8505
+          //$LASTPOS=44008505;//kernel.MapEditorOLD2:8505
           if (_this.mode=="erase"&&_this.getkey(1)>0&&_this.inRect()) {
-            //$LASTPOS=43008560;//kernel.MapEditorOLD2:8560
+            //$LASTPOS=44008560;//kernel.MapEditorOLD2:8560
             Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,- 1);
             
           } else {
-            //$LASTPOS=43008609;//kernel.MapEditorOLD2:8609
+            //$LASTPOS=44008609;//kernel.MapEditorOLD2:8609
             if (_this.mode=="get"&&_this.getkey(1)>0&&_this.inRect()) {
-              //$LASTPOS=43008662;//kernel.MapEditorOLD2:8662
+              //$LASTPOS=44008662;//kernel.MapEditorOLD2:8662
               _this.mapp=Tonyu.globals.$mp.getAt(Tonyu.globals.$mouseX+_this.chipX,Tonyu.globals.$mouseY+_this.chipY);
-              //$LASTPOS=43008716;//kernel.MapEditorOLD2:8716
+              //$LASTPOS=44008716;//kernel.MapEditorOLD2:8716
               _this.mode=_this.prevMode;
-              //$LASTPOS=43008740;//kernel.MapEditorOLD2:8740
+              //$LASTPOS=44008740;//kernel.MapEditorOLD2:8740
               Tonyu.globals.$mp.scrollTo(1000,1000);
-              //$LASTPOS=43008774;//kernel.MapEditorOLD2:8774
+              //$LASTPOS=44008774;//kernel.MapEditorOLD2:8774
               _this.print(_this.mode+" mode");
-              //$LASTPOS=43008804;//kernel.MapEditorOLD2:8804
+              //$LASTPOS=44008804;//kernel.MapEditorOLD2:8804
               _this.updateEx(10);
               
             } else {
-              //$LASTPOS=43008829;//kernel.MapEditorOLD2:8829
+              //$LASTPOS=44008829;//kernel.MapEditorOLD2:8829
               if (_this.mode=="setOn"&&_this.getkey(1)>0&&_this.inRect()) {
-                //$LASTPOS=43008884;//kernel.MapEditorOLD2:8884
+                //$LASTPOS=44008884;//kernel.MapEditorOLD2:8884
                 Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,_this.mapp);
                 
               } else {
-                //$LASTPOS=43008937;//kernel.MapEditorOLD2:8937
+                //$LASTPOS=44008937;//kernel.MapEditorOLD2:8937
                 if (_this.mode=="copy"&&_this.getkey(1)>0&&_this.inRect()) {
-                  //$LASTPOS=43008991;//kernel.MapEditorOLD2:8991
+                  //$LASTPOS=44008991;//kernel.MapEditorOLD2:8991
                   _this.mapp=Tonyu.globals.$map.getAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my);
-                  //$LASTPOS=43009040;//kernel.MapEditorOLD2:9040
+                  //$LASTPOS=44009040;//kernel.MapEditorOLD2:9040
                   _this.mode="set";
-                  //$LASTPOS=43009061;//kernel.MapEditorOLD2:9061
+                  //$LASTPOS=44009061;//kernel.MapEditorOLD2:9061
                   _this.print(_this.mode+" mode");
-                  //$LASTPOS=43009091;//kernel.MapEditorOLD2:9091
+                  //$LASTPOS=44009091;//kernel.MapEditorOLD2:9091
                   _this.updateEx(10);
                   
                 }
@@ -14760,7 +14762,7 @@ Tonyu.klass.define({
             }
           }
         }
-        //$LASTPOS=43009117;//kernel.MapEditorOLD2:9117
+        //$LASTPOS=44009117;//kernel.MapEditorOLD2:9117
         _this.update();
         
       }
@@ -14773,13 +14775,13 @@ Tonyu.klass.define({
       var i;
       var j;
       
-      //$LASTPOS=43000032;//kernel.MapEditorOLD2:32
+      //$LASTPOS=44000032;//kernel.MapEditorOLD2:32
       Tonyu.globals.$Screen.resize(480,640);
-      //$LASTPOS=43000058;//kernel.MapEditorOLD2:58
+      //$LASTPOS=44000058;//kernel.MapEditorOLD2:58
       _this.loadMode=false;
-      //$LASTPOS=43000075;//kernel.MapEditorOLD2:75
+      //$LASTPOS=44000075;//kernel.MapEditorOLD2:75
       _this.fileExist=false;
-      //$LASTPOS=43000093;//kernel.MapEditorOLD2:93
+      //$LASTPOS=44000093;//kernel.MapEditorOLD2:93
       _this.print("map file(s)");
       
       _thread.enter(function _trc_MapEditorOLD2_ent_main(_thread) {
@@ -14787,51 +14789,51 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=43000116;//kernel.MapEditorOLD2:116
+            //$LASTPOS=44000116;//kernel.MapEditorOLD2:116
             _this.fiber$file(_thread, "../maps/");
             __pc=1;return;
           case 1:
             _this.fileList=_thread.retVal;
             
-            //$LASTPOS=43000144;//kernel.MapEditorOLD2:144
+            //$LASTPOS=44000144;//kernel.MapEditorOLD2:144
             if (_this.fileList.exists()) {
-              //$LASTPOS=43000168;//kernel.MapEditorOLD2:168
+              //$LASTPOS=44000168;//kernel.MapEditorOLD2:168
               _this.fileList.recursive((function a(f) {
                 
-                //$LASTPOS=43000207;//kernel.MapEditorOLD2:207
+                //$LASTPOS=44000207;//kernel.MapEditorOLD2:207
                 f=f+"";
-                //$LASTPOS=43000220;//kernel.MapEditorOLD2:220
+                //$LASTPOS=44000220;//kernel.MapEditorOLD2:220
                 _this.fNames=f.split("/");
-                //$LASTPOS=43000246;//kernel.MapEditorOLD2:246
+                //$LASTPOS=44000246;//kernel.MapEditorOLD2:246
                 _this.print(_this.fNames[_this.fNames.length-1]);
-                //$LASTPOS=43000283;//kernel.MapEditorOLD2:283
+                //$LASTPOS=44000283;//kernel.MapEditorOLD2:283
                 _this.fileExist=true;
               }));
               
             }
-            //$LASTPOS=43000308;//kernel.MapEditorOLD2:308
+            //$LASTPOS=44000308;//kernel.MapEditorOLD2:308
             if (!(_this.fileExist)) { __pc=11; break; }
-            //$LASTPOS=43000328;//kernel.MapEditorOLD2:328
+            //$LASTPOS=44000328;//kernel.MapEditorOLD2:328
             _this.print("Load Data?: Y or N");
-            //$LASTPOS=43000362;//kernel.MapEditorOLD2:362
+            //$LASTPOS=44000362;//kernel.MapEditorOLD2:362
           case 2:
-            //$LASTPOS=43000384;//kernel.MapEditorOLD2:384
+            //$LASTPOS=44000384;//kernel.MapEditorOLD2:384
             if (!(_this.getkey("y")>0)) { __pc=3; break; }
-            //$LASTPOS=43000416;//kernel.MapEditorOLD2:416
+            //$LASTPOS=44000416;//kernel.MapEditorOLD2:416
             _this.loadMode=true;
             __pc=6; break;
             
           case 3:
             
-            //$LASTPOS=43000471;//kernel.MapEditorOLD2:471
+            //$LASTPOS=44000471;//kernel.MapEditorOLD2:471
             if (!(_this.getkey("n")>0)) { __pc=4; break; }
-            //$LASTPOS=43000503;//kernel.MapEditorOLD2:503
+            //$LASTPOS=44000503;//kernel.MapEditorOLD2:503
             _this.loadMode=false;
             __pc=6; break;
             
           case 4:
             
-            //$LASTPOS=43000559;//kernel.MapEditorOLD2:559
+            //$LASTPOS=44000559;//kernel.MapEditorOLD2:559
             _this.fiber$update(_thread);
             __pc=5;return;
           case 5:
@@ -14839,61 +14841,61 @@ Tonyu.klass.define({
             __pc=2;break;
           case 6:
             
-            //$LASTPOS=43000581;//kernel.MapEditorOLD2:581
+            //$LASTPOS=44000581;//kernel.MapEditorOLD2:581
             if (!(_this.loadMode)) { __pc=10; break; }
-            //$LASTPOS=43000604;//kernel.MapEditorOLD2:604
+            //$LASTPOS=44000604;//kernel.MapEditorOLD2:604
             _this.fileName=prompt("Input json file (*.json)","map.json");
-            //$LASTPOS=43000669;//kernel.MapEditorOLD2:669
+            //$LASTPOS=44000669;//kernel.MapEditorOLD2:669
             if (_this.fileName) {
-              //$LASTPOS=43000696;//kernel.MapEditorOLD2:696
+              //$LASTPOS=44000696;//kernel.MapEditorOLD2:696
               _this.mapDataFile=_this.file("../maps/").rel(_this.fileName);
               
             }
-            //$LASTPOS=43000760;//kernel.MapEditorOLD2:760
+            //$LASTPOS=44000760;//kernel.MapEditorOLD2:760
             if (!(_this.mapDataFile.obj())) { __pc=7; break; }
             {
-              //$LASTPOS=43000796;//kernel.MapEditorOLD2:796
+              //$LASTPOS=44000796;//kernel.MapEditorOLD2:796
               _this.baseData=_this.mapDataFile.obj();
-              //$LASTPOS=43000837;//kernel.MapEditorOLD2:837
+              //$LASTPOS=44000837;//kernel.MapEditorOLD2:837
               _this.loadedFile=_this.fileName;
             }
             __pc=9;break;
           case 7:
-            //$LASTPOS=43000887;//kernel.MapEditorOLD2:887
+            //$LASTPOS=44000887;//kernel.MapEditorOLD2:887
             _this.fiber$file(_thread, _this.fileName);
             __pc=8;return;
           case 8:
             _this.mapDataFile=_thread.retVal;
             
-            //$LASTPOS=43000928;//kernel.MapEditorOLD2:928
+            //$LASTPOS=44000928;//kernel.MapEditorOLD2:928
             if (_this.mapDataFile.obj()) {
-              //$LASTPOS=43000968;//kernel.MapEditorOLD2:968
+              //$LASTPOS=44000968;//kernel.MapEditorOLD2:968
               _this.baseData=_this.mapDataFile.obj();
-              //$LASTPOS=43001013;//kernel.MapEditorOLD2:1013
+              //$LASTPOS=44001013;//kernel.MapEditorOLD2:1013
               _this.loadedFile=_this.fileName;
               
             }
           case 9:
             
-            //$LASTPOS=43001069;//kernel.MapEditorOLD2:1069
+            //$LASTPOS=44001069;//kernel.MapEditorOLD2:1069
             if (_this.baseData==undefined) {
-              //$LASTPOS=43001107;//kernel.MapEditorOLD2:1107
+              //$LASTPOS=44001107;//kernel.MapEditorOLD2:1107
               _this.print("Load failed");
-              //$LASTPOS=43001142;//kernel.MapEditorOLD2:1142
+              //$LASTPOS=44001142;//kernel.MapEditorOLD2:1142
               _this.loadMode=false;
               
             } else {
-              //$LASTPOS=43001173;//kernel.MapEditorOLD2:1173
+              //$LASTPOS=44001173;//kernel.MapEditorOLD2:1173
               if (_this.baseData[0]&&_this.baseData[1]) {
-                //$LASTPOS=43001218;//kernel.MapEditorOLD2:1218
+                //$LASTPOS=44001218;//kernel.MapEditorOLD2:1218
                 _this.mapData=_this.baseData[0];
-                //$LASTPOS=43001252;//kernel.MapEditorOLD2:1252
+                //$LASTPOS=44001252;//kernel.MapEditorOLD2:1252
                 _this.mapOnData=_this.baseData[1];
-                //$LASTPOS=43001288;//kernel.MapEditorOLD2:1288
+                //$LASTPOS=44001288;//kernel.MapEditorOLD2:1288
                 if (_this.baseData.length>2) {
-                  //$LASTPOS=43001328;//kernel.MapEditorOLD2:1328
+                  //$LASTPOS=44001328;//kernel.MapEditorOLD2:1328
                   _this.chipWidth=_this.baseData[_this.baseData.length-2];
-                  //$LASTPOS=43001384;//kernel.MapEditorOLD2:1384
+                  //$LASTPOS=44001384;//kernel.MapEditorOLD2:1384
                   _this.chipHeight=_this.baseData[_this.baseData.length-1];
                   
                 }
@@ -14904,76 +14906,76 @@ Tonyu.klass.define({
             
           case 11:
             
-            //$LASTPOS=43001461;//kernel.MapEditorOLD2:1461
+            //$LASTPOS=44001461;//kernel.MapEditorOLD2:1461
             _this.fiber$update(_thread);
             __pc=12;return;
           case 12:
             
-            //$LASTPOS=43001739;//kernel.MapEditorOLD2:1739
+            //$LASTPOS=44001739;//kernel.MapEditorOLD2:1739
             if (! _this.loadMode) {
-              //$LASTPOS=43001759;//kernel.MapEditorOLD2:1759
+              //$LASTPOS=44001759;//kernel.MapEditorOLD2:1759
               _this.row=prompt("input row");
-              //$LASTPOS=43001789;//kernel.MapEditorOLD2:1789
+              //$LASTPOS=44001789;//kernel.MapEditorOLD2:1789
               _this.col=prompt("input col");
-              //$LASTPOS=43001819;//kernel.MapEditorOLD2:1819
+              //$LASTPOS=44001819;//kernel.MapEditorOLD2:1819
               _this.chipWidth=prompt("input chipWidth");
-              //$LASTPOS=43001861;//kernel.MapEditorOLD2:1861
+              //$LASTPOS=44001861;//kernel.MapEditorOLD2:1861
               _this.chipHeight=prompt("input chipHeight");
-              //$LASTPOS=43001905;//kernel.MapEditorOLD2:1905
+              //$LASTPOS=44001905;//kernel.MapEditorOLD2:1905
               _this.panel=new Tonyu.classes.kernel.Panel({width: _this.col*_this.chipWidth,height: _this.row*_this.chipHeight});
-              //$LASTPOS=43001970;//kernel.MapEditorOLD2:1970
+              //$LASTPOS=44001970;//kernel.MapEditorOLD2:1970
               _this.panel.x=_this.panel.width/2+40;
-              //$LASTPOS=43002001;//kernel.MapEditorOLD2:2001
+              //$LASTPOS=44002001;//kernel.MapEditorOLD2:2001
               _this.panel.y=_this.panel.height/2+40;
-              //$LASTPOS=43002033;//kernel.MapEditorOLD2:2033
+              //$LASTPOS=44002033;//kernel.MapEditorOLD2:2033
               _this.panel.setFillStyle("cyan");
-              //$LASTPOS=43002066;//kernel.MapEditorOLD2:2066
+              //$LASTPOS=44002066;//kernel.MapEditorOLD2:2066
               _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
-              //$LASTPOS=43002117;//kernel.MapEditorOLD2:2117
+              //$LASTPOS=44002117;//kernel.MapEditorOLD2:2117
               Tonyu.globals.$map=new Tonyu.classes.kernel.Map({row: _this.row,col: _this.col,chipWidth: _this.chipWidth,chipHeight: _this.chipHeight});
               
             } else {
-              //$LASTPOS=43002428;//kernel.MapEditorOLD2:2428
+              //$LASTPOS=44002428;//kernel.MapEditorOLD2:2428
               Tonyu.globals.$map=new Tonyu.classes.kernel.Map({chipWidth: 32,chipHeight: 32});
-              //$LASTPOS=43002475;//kernel.MapEditorOLD2:2475
+              //$LASTPOS=44002475;//kernel.MapEditorOLD2:2475
               Tonyu.globals.$map.load(_this.fileName);
-              //$LASTPOS=43002501;//kernel.MapEditorOLD2:2501
+              //$LASTPOS=44002501;//kernel.MapEditorOLD2:2501
               _this.panel=new Tonyu.classes.kernel.Panel({width: Tonyu.globals.$map.col*Tonyu.globals.$map.chipWidth,height: Tonyu.globals.$map.row*Tonyu.globals.$map.chipHeight,zOrder: 100});
-              //$LASTPOS=43002597;//kernel.MapEditorOLD2:2597
+              //$LASTPOS=44002597;//kernel.MapEditorOLD2:2597
               _this.panel.x=_this.panel.width/2+40;
-              //$LASTPOS=43002628;//kernel.MapEditorOLD2:2628
+              //$LASTPOS=44002628;//kernel.MapEditorOLD2:2628
               _this.panel.y=_this.panel.height/2+40;
-              //$LASTPOS=43002660;//kernel.MapEditorOLD2:2660
+              //$LASTPOS=44002660;//kernel.MapEditorOLD2:2660
               _this.panel.setFillStyle("cyan");
-              //$LASTPOS=43002693;//kernel.MapEditorOLD2:2693
+              //$LASTPOS=44002693;//kernel.MapEditorOLD2:2693
               _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
               
             }
-            //$LASTPOS=43002743;//kernel.MapEditorOLD2:2743
+            //$LASTPOS=44002743;//kernel.MapEditorOLD2:2743
             _this.mIW=Tonyu.globals.$Sprites.getImageList()[Tonyu.globals.$pat_mapchip].image.width;
-            //$LASTPOS=43002799;//kernel.MapEditorOLD2:2799
+            //$LASTPOS=44002799;//kernel.MapEditorOLD2:2799
             _this.mIH=Tonyu.globals.$Sprites.getImageList()[Tonyu.globals.$pat_mapchip].image.height;
-            //$LASTPOS=43002856;//kernel.MapEditorOLD2:2856
+            //$LASTPOS=44002856;//kernel.MapEditorOLD2:2856
             _this.mCW=Tonyu.globals.$Sprites.getImageList()[Tonyu.globals.$pat_mapchip+0].width;
-            //$LASTPOS=43002908;//kernel.MapEditorOLD2:2908
+            //$LASTPOS=44002908;//kernel.MapEditorOLD2:2908
             _this.mCH=Tonyu.globals.$Sprites.getImageList()[Tonyu.globals.$pat_mapchip+0].height;
-            //$LASTPOS=43002961;//kernel.MapEditorOLD2:2961
+            //$LASTPOS=44002961;//kernel.MapEditorOLD2:2961
             Tonyu.globals.$mp=new Tonyu.classes.kernel.Map({row: _this.floor(_this.mIH/_this.mCH),col: _this.floor(_this.mIW/_this.mCW),chipWidth: _this.mCW,chipHeight: _this.mCH});
-            //$LASTPOS=43003043;//kernel.MapEditorOLD2:3043
+            //$LASTPOS=44003043;//kernel.MapEditorOLD2:3043
             _this.counter=0;
-            //$LASTPOS=43003055;//kernel.MapEditorOLD2:3055
-            //$LASTPOS=43003059;//kernel.MapEditorOLD2:3059
+            //$LASTPOS=44003055;//kernel.MapEditorOLD2:3055
+            //$LASTPOS=44003059;//kernel.MapEditorOLD2:3059
             i = 0;
             while(i<Tonyu.globals.$mp.row) {
               {
-                //$LASTPOS=43003088;//kernel.MapEditorOLD2:3088
-                //$LASTPOS=43003092;//kernel.MapEditorOLD2:3092
+                //$LASTPOS=44003088;//kernel.MapEditorOLD2:3088
+                //$LASTPOS=44003092;//kernel.MapEditorOLD2:3092
                 j = 0;
                 while(j<Tonyu.globals.$mp.col) {
                   {
-                    //$LASTPOS=43003125;//kernel.MapEditorOLD2:3125
+                    //$LASTPOS=44003125;//kernel.MapEditorOLD2:3125
                     Tonyu.globals.$mp.set(j,i,Tonyu.globals.$pat_mapchip+_this.counter);
-                    //$LASTPOS=43003169;//kernel.MapEditorOLD2:3169
+                    //$LASTPOS=44003169;//kernel.MapEditorOLD2:3169
                     _this.counter++;
                   }
                   j++;
@@ -14981,295 +14983,295 @@ Tonyu.klass.define({
               }
               i++;
             }
-            //$LASTPOS=43003191;//kernel.MapEditorOLD2:3191
+            //$LASTPOS=44003191;//kernel.MapEditorOLD2:3191
             _this.fiber$drawPanel(_thread);
             __pc=13;return;
           case 13:
             
-            //$LASTPOS=43003205;//kernel.MapEditorOLD2:3205
+            //$LASTPOS=44003205;//kernel.MapEditorOLD2:3205
             _this.mode="get";
-            //$LASTPOS=43003218;//kernel.MapEditorOLD2:3218
+            //$LASTPOS=44003218;//kernel.MapEditorOLD2:3218
             _this.prevMode="set";
-            //$LASTPOS=43003235;//kernel.MapEditorOLD2:3235
+            //$LASTPOS=44003235;//kernel.MapEditorOLD2:3235
             _this.mapp=0;
-            //$LASTPOS=43003244;//kernel.MapEditorOLD2:3244
+            //$LASTPOS=44003244;//kernel.MapEditorOLD2:3244
             _this.mx=- 40;
-            //$LASTPOS=43003253;//kernel.MapEditorOLD2:3253
+            //$LASTPOS=44003253;//kernel.MapEditorOLD2:3253
             _this.my=- 40;
-            //$LASTPOS=43003262;//kernel.MapEditorOLD2:3262
+            //$LASTPOS=44003262;//kernel.MapEditorOLD2:3262
             _this.chipX=- 40;
-            //$LASTPOS=43003274;//kernel.MapEditorOLD2:3274
+            //$LASTPOS=44003274;//kernel.MapEditorOLD2:3274
             _this.chipY=- 40;
-            //$LASTPOS=43003286;//kernel.MapEditorOLD2:3286
+            //$LASTPOS=44003286;//kernel.MapEditorOLD2:3286
             _this.x=Tonyu.globals.$screenWidth-_this.chipWidth/2;
-            //$LASTPOS=43003315;//kernel.MapEditorOLD2:3315
+            //$LASTPOS=44003315;//kernel.MapEditorOLD2:3315
             _this.y=Tonyu.globals.$screenHeight-_this.chipHeight/2;
-            //$LASTPOS=43003346;//kernel.MapEditorOLD2:3346
+            //$LASTPOS=44003346;//kernel.MapEditorOLD2:3346
             Tonyu.globals.$map.scrollTo(_this.mx,_this.my);
-            //$LASTPOS=43003369;//kernel.MapEditorOLD2:3369
+            //$LASTPOS=44003369;//kernel.MapEditorOLD2:3369
           case 14:
-            //$LASTPOS=43003387;//kernel.MapEditorOLD2:3387
+            //$LASTPOS=44003387;//kernel.MapEditorOLD2:3387
             _this.p=_this.mapp;
-            //$LASTPOS=43003400;//kernel.MapEditorOLD2:3400
+            //$LASTPOS=44003400;//kernel.MapEditorOLD2:3400
             if (_this.getkey("e")==1||(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<120&&Tonyu.globals.$touches[0].y>560&&Tonyu.globals.$touches[0].y<640)) {
-              //$LASTPOS=43003539;//kernel.MapEditorOLD2:3539
+              //$LASTPOS=44003539;//kernel.MapEditorOLD2:3539
               Tonyu.globals.$mp.scrollTo(1000,1000);
-              //$LASTPOS=43003573;//kernel.MapEditorOLD2:3573
+              //$LASTPOS=44003573;//kernel.MapEditorOLD2:3573
               _this.mode="erase";
-              //$LASTPOS=43003596;//kernel.MapEditorOLD2:3596
+              //$LASTPOS=44003596;//kernel.MapEditorOLD2:3596
               _this.print(_this.mode+" mode");
               
             }
-            //$LASTPOS=43003629;//kernel.MapEditorOLD2:3629
+            //$LASTPOS=44003629;//kernel.MapEditorOLD2:3629
             if (_this.getkey("s")==1) {
-              //$LASTPOS=43003658;//kernel.MapEditorOLD2:3658
+              //$LASTPOS=44003658;//kernel.MapEditorOLD2:3658
               Tonyu.globals.$mp.scrollTo(1000,1000);
-              //$LASTPOS=43003692;//kernel.MapEditorOLD2:3692
+              //$LASTPOS=44003692;//kernel.MapEditorOLD2:3692
               if (_this.mode=="set") {
-                //$LASTPOS=43003722;//kernel.MapEditorOLD2:3722
+                //$LASTPOS=44003722;//kernel.MapEditorOLD2:3722
                 _this.mode="setOn";
                 
               } else {
-                //$LASTPOS=43003765;//kernel.MapEditorOLD2:3765
+                //$LASTPOS=44003765;//kernel.MapEditorOLD2:3765
                 _this.mode="set";
                 
               }
-              //$LASTPOS=43003797;//kernel.MapEditorOLD2:3797
+              //$LASTPOS=44003797;//kernel.MapEditorOLD2:3797
               _this.print(_this.mode+" mode");
               
             }
-            //$LASTPOS=43003830;//kernel.MapEditorOLD2:3830
+            //$LASTPOS=44003830;//kernel.MapEditorOLD2:3830
             if (Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<120&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560) {
-              //$LASTPOS=43003949;//kernel.MapEditorOLD2:3949
+              //$LASTPOS=44003949;//kernel.MapEditorOLD2:3949
               Tonyu.globals.$mp.scrollTo(1000,1000);
-              //$LASTPOS=43003983;//kernel.MapEditorOLD2:3983
+              //$LASTPOS=44003983;//kernel.MapEditorOLD2:3983
               _this.mode="set";
-              //$LASTPOS=43004004;//kernel.MapEditorOLD2:4004
+              //$LASTPOS=44004004;//kernel.MapEditorOLD2:4004
               _this.print(_this.mode+" mode");
               
             }
-            //$LASTPOS=43004037;//kernel.MapEditorOLD2:4037
+            //$LASTPOS=44004037;//kernel.MapEditorOLD2:4037
             if (Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>120&&Tonyu.globals.$touches[0].x<240&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560) {
-              //$LASTPOS=43004158;//kernel.MapEditorOLD2:4158
+              //$LASTPOS=44004158;//kernel.MapEditorOLD2:4158
               Tonyu.globals.$mp.scrollTo(1000,1000);
-              //$LASTPOS=43004192;//kernel.MapEditorOLD2:4192
+              //$LASTPOS=44004192;//kernel.MapEditorOLD2:4192
               _this.mode="setOn";
-              //$LASTPOS=43004215;//kernel.MapEditorOLD2:4215
+              //$LASTPOS=44004215;//kernel.MapEditorOLD2:4215
               _this.print(_this.mode+" mode");
               
             }
-            //$LASTPOS=43004341;//kernel.MapEditorOLD2:4341
+            //$LASTPOS=44004341;//kernel.MapEditorOLD2:4341
             if (_this.getkey("g")==1||(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>240&&Tonyu.globals.$touches[0].x<360&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560)) {
-              //$LASTPOS=43004482;//kernel.MapEditorOLD2:4482
+              //$LASTPOS=44004482;//kernel.MapEditorOLD2:4482
               if (_this.mode!="get") {
-                //$LASTPOS=43004512;//kernel.MapEditorOLD2:4512
+                //$LASTPOS=44004512;//kernel.MapEditorOLD2:4512
                 _this.prevMode=_this.mode;
-                //$LASTPOS=43004540;//kernel.MapEditorOLD2:4540
+                //$LASTPOS=44004540;//kernel.MapEditorOLD2:4540
                 Tonyu.globals.$mp.scrollTo(- 40,- 40);
-                //$LASTPOS=43004576;//kernel.MapEditorOLD2:4576
+                //$LASTPOS=44004576;//kernel.MapEditorOLD2:4576
                 _this.mode="get";
-                //$LASTPOS=43004601;//kernel.MapEditorOLD2:4601
+                //$LASTPOS=44004601;//kernel.MapEditorOLD2:4601
                 _this.chipX=- 40;
-                //$LASTPOS=43004625;//kernel.MapEditorOLD2:4625
+                //$LASTPOS=44004625;//kernel.MapEditorOLD2:4625
                 _this.chipY=- 40;
                 
               } else {
-                //$LASTPOS=43004665;//kernel.MapEditorOLD2:4665
+                //$LASTPOS=44004665;//kernel.MapEditorOLD2:4665
                 Tonyu.globals.$mp.scrollTo(1000,1000);
-                //$LASTPOS=43004703;//kernel.MapEditorOLD2:4703
+                //$LASTPOS=44004703;//kernel.MapEditorOLD2:4703
                 _this.mode=_this.prevMode;
                 
               }
-              //$LASTPOS=43004738;//kernel.MapEditorOLD2:4738
+              //$LASTPOS=44004738;//kernel.MapEditorOLD2:4738
               _this.print(_this.mode+" mode");
               
             }
-            //$LASTPOS=43004771;//kernel.MapEditorOLD2:4771
+            //$LASTPOS=44004771;//kernel.MapEditorOLD2:4771
             if (_this.getkey("p")==1||(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>360&&Tonyu.globals.$touches[0].x<480&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560)) {
-              //$LASTPOS=43004927;//kernel.MapEditorOLD2:4927
+              //$LASTPOS=44004927;//kernel.MapEditorOLD2:4927
               if (_this.loadedFile) {
-                //$LASTPOS=43004956;//kernel.MapEditorOLD2:4956
+                //$LASTPOS=44004956;//kernel.MapEditorOLD2:4956
                 _this.saveFileName=prompt("input json file(*.json)",_this.loadedFile);
                 
               } else {
-                //$LASTPOS=43005044;//kernel.MapEditorOLD2:5044
+                //$LASTPOS=44005044;//kernel.MapEditorOLD2:5044
                 _this.saveFileName=prompt("input json file(*.json)","map.json");
                 
               }
-              //$LASTPOS=43005544;//kernel.MapEditorOLD2:5544
+              //$LASTPOS=44005544;//kernel.MapEditorOLD2:5544
               if (_this.saveFileName) {
-                //$LASTPOS=43005575;//kernel.MapEditorOLD2:5575
+                //$LASTPOS=44005575;//kernel.MapEditorOLD2:5575
                 _this.saveDataFile=_this.file("../maps/").rel(_this.saveFileName);
-                //$LASTPOS=43005637;//kernel.MapEditorOLD2:5637
+                //$LASTPOS=44005637;//kernel.MapEditorOLD2:5637
                 _this.data=[Tonyu.globals.$map.mapTable,Tonyu.globals.$map.mapOnTable,Tonyu.globals.$map.chipWidth,Tonyu.globals.$map.chipHeight];
-                //$LASTPOS=43005799;//kernel.MapEditorOLD2:5799
+                //$LASTPOS=44005799;//kernel.MapEditorOLD2:5799
                 _this.saveDataFile.obj(_this.data);
-                //$LASTPOS=43005836;//kernel.MapEditorOLD2:5836
+                //$LASTPOS=44005836;//kernel.MapEditorOLD2:5836
                 _this.print(_this.saveFileName+" Saved");
                 
               }
               
             }
-            //$LASTPOS=43005943;//kernel.MapEditorOLD2:5943
+            //$LASTPOS=44005943;//kernel.MapEditorOLD2:5943
             if (_this.getkey("c")==1||(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>120&&Tonyu.globals.$touches[0].x<240&&Tonyu.globals.$touches[0].y>560&&Tonyu.globals.$touches[0].y<640)) {
-              //$LASTPOS=43006084;//kernel.MapEditorOLD2:6084
+              //$LASTPOS=44006084;//kernel.MapEditorOLD2:6084
               Tonyu.globals.$mp.scrollTo(1000,1000);
-              //$LASTPOS=43006118;//kernel.MapEditorOLD2:6118
+              //$LASTPOS=44006118;//kernel.MapEditorOLD2:6118
               _this.mode="copy";
-              //$LASTPOS=43006140;//kernel.MapEditorOLD2:6140
+              //$LASTPOS=44006140;//kernel.MapEditorOLD2:6140
               _this.print(_this.mode+" mode");
               
             }
-            //$LASTPOS=43006173;//kernel.MapEditorOLD2:6173
+            //$LASTPOS=44006173;//kernel.MapEditorOLD2:6173
             if (_this.mode!="get") {
-              //$LASTPOS=43006199;//kernel.MapEditorOLD2:6199
+              //$LASTPOS=44006199;//kernel.MapEditorOLD2:6199
               if (_this.getkey("left")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<40&&Tonyu.globals.$touches[0].y<480)) {
-                //$LASTPOS=43006305;//kernel.MapEditorOLD2:6305
+                //$LASTPOS=44006305;//kernel.MapEditorOLD2:6305
                 _this.mx=_this.mx+8;
               }
-              //$LASTPOS=43006323;//kernel.MapEditorOLD2:6323
+              //$LASTPOS=44006323;//kernel.MapEditorOLD2:6323
               if (_this.getkey("right")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>Tonyu.globals.$screenWidth-40&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<480)) {
-                //$LASTPOS=43006454;//kernel.MapEditorOLD2:6454
+                //$LASTPOS=44006454;//kernel.MapEditorOLD2:6454
                 _this.mx=_this.mx-8;
               }
-              //$LASTPOS=43006472;//kernel.MapEditorOLD2:6472
+              //$LASTPOS=44006472;//kernel.MapEditorOLD2:6472
               if (_this.getkey("up")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<40)) {
-                //$LASTPOS=43006585;//kernel.MapEditorOLD2:6585
+                //$LASTPOS=44006585;//kernel.MapEditorOLD2:6585
                 _this.my=_this.my+8;
               }
-              //$LASTPOS=43006603;//kernel.MapEditorOLD2:6603
+              //$LASTPOS=44006603;//kernel.MapEditorOLD2:6603
               if (_this.getkey("down")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<480&&Tonyu.globals.$touches[0].y>440)) {
-                //$LASTPOS=43006738;//kernel.MapEditorOLD2:6738
+                //$LASTPOS=44006738;//kernel.MapEditorOLD2:6738
                 _this.my=_this.my-8;
               }
-              //$LASTPOS=43006756;//kernel.MapEditorOLD2:6756
+              //$LASTPOS=44006756;//kernel.MapEditorOLD2:6756
               Tonyu.globals.$map.scrollTo(_this.mx,_this.my);
               
             } else {
-              //$LASTPOS=43006799;//kernel.MapEditorOLD2:6799
+              //$LASTPOS=44006799;//kernel.MapEditorOLD2:6799
               if (_this.getkey("left")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<40&&Tonyu.globals.$touches[0].y<480)) {
-                //$LASTPOS=43006905;//kernel.MapEditorOLD2:6905
+                //$LASTPOS=44006905;//kernel.MapEditorOLD2:6905
                 _this.chipX=_this.chipX+8;
               }
-              //$LASTPOS=43006929;//kernel.MapEditorOLD2:6929
+              //$LASTPOS=44006929;//kernel.MapEditorOLD2:6929
               if (_this.getkey("right")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>Tonyu.globals.$screenWidth-40&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<480)) {
-                //$LASTPOS=43007060;//kernel.MapEditorOLD2:7060
+                //$LASTPOS=44007060;//kernel.MapEditorOLD2:7060
                 _this.chipX=_this.chipX-8;
               }
-              //$LASTPOS=43007084;//kernel.MapEditorOLD2:7084
+              //$LASTPOS=44007084;//kernel.MapEditorOLD2:7084
               if (_this.getkey("up")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<40)) {
-                //$LASTPOS=43007197;//kernel.MapEditorOLD2:7197
+                //$LASTPOS=44007197;//kernel.MapEditorOLD2:7197
                 _this.chipY=_this.chipY+8;
               }
-              //$LASTPOS=43007221;//kernel.MapEditorOLD2:7221
+              //$LASTPOS=44007221;//kernel.MapEditorOLD2:7221
               if (_this.getkey("down")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<480&&Tonyu.globals.$touches[0].y>440)) {
-                //$LASTPOS=43007356;//kernel.MapEditorOLD2:7356
+                //$LASTPOS=44007356;//kernel.MapEditorOLD2:7356
                 _this.chipY=_this.chipY-8;
               }
-              //$LASTPOS=43007380;//kernel.MapEditorOLD2:7380
+              //$LASTPOS=44007380;//kernel.MapEditorOLD2:7380
               Tonyu.globals.$mp.scrollTo(_this.chipX,_this.chipY);
               
             }
-            //$LASTPOS=43007453;//kernel.MapEditorOLD2:7453
+            //$LASTPOS=44007453;//kernel.MapEditorOLD2:7453
             if (_this.getkey("i")==1) {
-              //$LASTPOS=43007482;//kernel.MapEditorOLD2:7482
+              //$LASTPOS=44007482;//kernel.MapEditorOLD2:7482
               Tonyu.globals.$map.chipWidth+=4;
-              //$LASTPOS=43007510;//kernel.MapEditorOLD2:7510
+              //$LASTPOS=44007510;//kernel.MapEditorOLD2:7510
               Tonyu.globals.$map.chipHeight+=4;
-              //$LASTPOS=43007539;//kernel.MapEditorOLD2:7539
+              //$LASTPOS=44007539;//kernel.MapEditorOLD2:7539
               Tonyu.globals.$map.redrawMap();
-              //$LASTPOS=43007566;//kernel.MapEditorOLD2:7566
+              //$LASTPOS=44007566;//kernel.MapEditorOLD2:7566
               _this.panel.die();
-              //$LASTPOS=43007588;//kernel.MapEditorOLD2:7588
+              //$LASTPOS=44007588;//kernel.MapEditorOLD2:7588
               _this.panel=new Tonyu.classes.kernel.Panel({width: Tonyu.globals.$map.col*Tonyu.globals.$map.chipWidth,height: Tonyu.globals.$map.row*Tonyu.globals.$map.chipHeight,zOrder: 100});
-              //$LASTPOS=43007688;//kernel.MapEditorOLD2:7688
+              //$LASTPOS=44007688;//kernel.MapEditorOLD2:7688
               _this.panel.x=_this.panel.width/2+40;
-              //$LASTPOS=43007723;//kernel.MapEditorOLD2:7723
+              //$LASTPOS=44007723;//kernel.MapEditorOLD2:7723
               _this.panel.y=_this.panel.height/2+40;
-              //$LASTPOS=43007759;//kernel.MapEditorOLD2:7759
+              //$LASTPOS=44007759;//kernel.MapEditorOLD2:7759
               _this.panel.setFillStyle("cyan");
-              //$LASTPOS=43007796;//kernel.MapEditorOLD2:7796
+              //$LASTPOS=44007796;//kernel.MapEditorOLD2:7796
               _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
               
             }
-            //$LASTPOS=43007854;//kernel.MapEditorOLD2:7854
+            //$LASTPOS=44007854;//kernel.MapEditorOLD2:7854
             if (_this.getkey("o")==1) {
-              //$LASTPOS=43007883;//kernel.MapEditorOLD2:7883
+              //$LASTPOS=44007883;//kernel.MapEditorOLD2:7883
               Tonyu.globals.$map.chipWidth-=4;
-              //$LASTPOS=43007911;//kernel.MapEditorOLD2:7911
+              //$LASTPOS=44007911;//kernel.MapEditorOLD2:7911
               Tonyu.globals.$map.chipHeight-=4;
-              //$LASTPOS=43007940;//kernel.MapEditorOLD2:7940
+              //$LASTPOS=44007940;//kernel.MapEditorOLD2:7940
               Tonyu.globals.$map.redrawMap();
-              //$LASTPOS=43007967;//kernel.MapEditorOLD2:7967
+              //$LASTPOS=44007967;//kernel.MapEditorOLD2:7967
               _this.panel.die();
-              //$LASTPOS=43007989;//kernel.MapEditorOLD2:7989
+              //$LASTPOS=44007989;//kernel.MapEditorOLD2:7989
               _this.panel=new Tonyu.classes.kernel.Panel({width: Tonyu.globals.$map.col*Tonyu.globals.$map.chipWidth,height: Tonyu.globals.$map.row*Tonyu.globals.$map.chipHeight,zOrder: 100});
-              //$LASTPOS=43008089;//kernel.MapEditorOLD2:8089
+              //$LASTPOS=44008089;//kernel.MapEditorOLD2:8089
               _this.panel.x=_this.panel.width/2+40;
-              //$LASTPOS=43008124;//kernel.MapEditorOLD2:8124
+              //$LASTPOS=44008124;//kernel.MapEditorOLD2:8124
               _this.panel.y=_this.panel.height/2+40;
-              //$LASTPOS=43008160;//kernel.MapEditorOLD2:8160
+              //$LASTPOS=44008160;//kernel.MapEditorOLD2:8160
               _this.panel.setFillStyle("cyan");
-              //$LASTPOS=43008197;//kernel.MapEditorOLD2:8197
+              //$LASTPOS=44008197;//kernel.MapEditorOLD2:8197
               _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
               
             }
-            //$LASTPOS=43008289;//kernel.MapEditorOLD2:8289
+            //$LASTPOS=44008289;//kernel.MapEditorOLD2:8289
             _this.panel.x=_this.panel.width/2-_this.mx;
-            //$LASTPOS=43008320;//kernel.MapEditorOLD2:8320
+            //$LASTPOS=44008320;//kernel.MapEditorOLD2:8320
             _this.panel.y=_this.panel.height/2-_this.my;
-            //$LASTPOS=43008352;//kernel.MapEditorOLD2:8352
+            //$LASTPOS=44008352;//kernel.MapEditorOLD2:8352
             if (!(_this.mode=="set"&&_this.getkey(1)>0&&_this.inRect())) { __pc=15; break; }
             {
-              //$LASTPOS=43008405;//kernel.MapEditorOLD2:8405
+              //$LASTPOS=44008405;//kernel.MapEditorOLD2:8405
               Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,_this.mapp);
-              //$LASTPOS=43008454;//kernel.MapEditorOLD2:8454
+              //$LASTPOS=44008454;//kernel.MapEditorOLD2:8454
               Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,- 1);
             }
             __pc=25;break;
           case 15:
-            //$LASTPOS=43008505;//kernel.MapEditorOLD2:8505
+            //$LASTPOS=44008505;//kernel.MapEditorOLD2:8505
             if (!(_this.mode=="erase"&&_this.getkey(1)>0&&_this.inRect())) { __pc=16; break; }
             {
-              //$LASTPOS=43008560;//kernel.MapEditorOLD2:8560
+              //$LASTPOS=44008560;//kernel.MapEditorOLD2:8560
               Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,- 1);
             }
             __pc=24;break;
           case 16:
-            //$LASTPOS=43008609;//kernel.MapEditorOLD2:8609
+            //$LASTPOS=44008609;//kernel.MapEditorOLD2:8609
             if (!(_this.mode=="get"&&_this.getkey(1)>0&&_this.inRect())) { __pc=18; break; }
-            //$LASTPOS=43008662;//kernel.MapEditorOLD2:8662
+            //$LASTPOS=44008662;//kernel.MapEditorOLD2:8662
             _this.mapp=Tonyu.globals.$mp.getAt(Tonyu.globals.$mouseX+_this.chipX,Tonyu.globals.$mouseY+_this.chipY);
-            //$LASTPOS=43008716;//kernel.MapEditorOLD2:8716
+            //$LASTPOS=44008716;//kernel.MapEditorOLD2:8716
             _this.mode=_this.prevMode;
-            //$LASTPOS=43008740;//kernel.MapEditorOLD2:8740
+            //$LASTPOS=44008740;//kernel.MapEditorOLD2:8740
             Tonyu.globals.$mp.scrollTo(1000,1000);
-            //$LASTPOS=43008774;//kernel.MapEditorOLD2:8774
+            //$LASTPOS=44008774;//kernel.MapEditorOLD2:8774
             _this.print(_this.mode+" mode");
-            //$LASTPOS=43008804;//kernel.MapEditorOLD2:8804
+            //$LASTPOS=44008804;//kernel.MapEditorOLD2:8804
             _this.fiber$updateEx(_thread, 10);
             __pc=17;return;
           case 17:
             
             __pc=23;break;
           case 18:
-            //$LASTPOS=43008829;//kernel.MapEditorOLD2:8829
+            //$LASTPOS=44008829;//kernel.MapEditorOLD2:8829
             if (!(_this.mode=="setOn"&&_this.getkey(1)>0&&_this.inRect())) { __pc=19; break; }
             {
-              //$LASTPOS=43008884;//kernel.MapEditorOLD2:8884
+              //$LASTPOS=44008884;//kernel.MapEditorOLD2:8884
               Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,_this.mapp);
             }
             __pc=22;break;
           case 19:
-            //$LASTPOS=43008937;//kernel.MapEditorOLD2:8937
+            //$LASTPOS=44008937;//kernel.MapEditorOLD2:8937
             if (!(_this.mode=="copy"&&_this.getkey(1)>0&&_this.inRect())) { __pc=21; break; }
-            //$LASTPOS=43008991;//kernel.MapEditorOLD2:8991
+            //$LASTPOS=44008991;//kernel.MapEditorOLD2:8991
             _this.mapp=Tonyu.globals.$map.getAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my);
-            //$LASTPOS=43009040;//kernel.MapEditorOLD2:9040
+            //$LASTPOS=44009040;//kernel.MapEditorOLD2:9040
             _this.mode="set";
-            //$LASTPOS=43009061;//kernel.MapEditorOLD2:9061
+            //$LASTPOS=44009061;//kernel.MapEditorOLD2:9061
             _this.print(_this.mode+" mode");
-            //$LASTPOS=43009091;//kernel.MapEditorOLD2:9091
+            //$LASTPOS=44009091;//kernel.MapEditorOLD2:9091
             _this.fiber$updateEx(_thread, 10);
             __pc=20;return;
           case 20:
@@ -15284,7 +15286,7 @@ Tonyu.klass.define({
             
           case 25:
             
-            //$LASTPOS=43009117;//kernel.MapEditorOLD2:9117
+            //$LASTPOS=44009117;//kernel.MapEditorOLD2:9117
             _this.fiber$update(_thread);
             __pc=26;return;
           case 26:
@@ -15318,69 +15320,69 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=43009289;//kernel.MapEditorOLD2:9289
+      //$LASTPOS=44009289;//kernel.MapEditorOLD2:9289
       Tonyu.globals.$panel.setFillStyle("gray");
-      //$LASTPOS=43009323;//kernel.MapEditorOLD2:9323
+      //$LASTPOS=44009323;//kernel.MapEditorOLD2:9323
       Tonyu.globals.$panel.alpha=128;
-      //$LASTPOS=43009346;//kernel.MapEditorOLD2:9346
+      //$LASTPOS=44009346;//kernel.MapEditorOLD2:9346
       Tonyu.globals.$panel.fillRect(0,0,Tonyu.globals.$screenWidth,40);
-      //$LASTPOS=43009389;//kernel.MapEditorOLD2:9389
+      //$LASTPOS=44009389;//kernel.MapEditorOLD2:9389
       Tonyu.globals.$panel.fillRect(0,0,40,Tonyu.globals.$screenHeight-160);
-      //$LASTPOS=43009437;//kernel.MapEditorOLD2:9437
+      //$LASTPOS=44009437;//kernel.MapEditorOLD2:9437
       Tonyu.globals.$panel.fillRect(Tonyu.globals.$screenWidth-40,0,40,Tonyu.globals.$screenHeight-160);
-      //$LASTPOS=43009499;//kernel.MapEditorOLD2:9499
+      //$LASTPOS=44009499;//kernel.MapEditorOLD2:9499
       Tonyu.globals.$panel.fillRect(0,Tonyu.globals.$screenHeight-200,Tonyu.globals.$screenWidth,40);
-      //$LASTPOS=43009558;//kernel.MapEditorOLD2:9558
+      //$LASTPOS=44009558;//kernel.MapEditorOLD2:9558
       Tonyu.globals.$panel.alpha=255;
-      //$LASTPOS=43009581;//kernel.MapEditorOLD2:9581
+      //$LASTPOS=44009581;//kernel.MapEditorOLD2:9581
       Tonyu.globals.$panel.setFillStyle("black");
-      //$LASTPOS=43009635;//kernel.MapEditorOLD2:9635
+      //$LASTPOS=44009635;//kernel.MapEditorOLD2:9635
       Tonyu.globals.$panel.fillRect(0,Tonyu.globals.$screenHeight-160,120,80);
-      //$LASTPOS=43009685;//kernel.MapEditorOLD2:9685
+      //$LASTPOS=44009685;//kernel.MapEditorOLD2:9685
       Tonyu.globals.$panel.fillRect(120,Tonyu.globals.$screenHeight-160,120,80);
-      //$LASTPOS=43009737;//kernel.MapEditorOLD2:9737
+      //$LASTPOS=44009737;//kernel.MapEditorOLD2:9737
       Tonyu.globals.$panel.fillRect(240,Tonyu.globals.$screenHeight-160,120,80);
-      //$LASTPOS=43009789;//kernel.MapEditorOLD2:9789
+      //$LASTPOS=44009789;//kernel.MapEditorOLD2:9789
       Tonyu.globals.$panel.fillRect(360,Tonyu.globals.$screenHeight-160,120,80);
-      //$LASTPOS=43009841;//kernel.MapEditorOLD2:9841
+      //$LASTPOS=44009841;//kernel.MapEditorOLD2:9841
       Tonyu.globals.$panel.fillRect(0,Tonyu.globals.$screenHeight-80,120,80);
-      //$LASTPOS=43009890;//kernel.MapEditorOLD2:9890
+      //$LASTPOS=44009890;//kernel.MapEditorOLD2:9890
       Tonyu.globals.$panel.fillRect(120,Tonyu.globals.$screenHeight-80,120,80);
-      //$LASTPOS=43009941;//kernel.MapEditorOLD2:9941
+      //$LASTPOS=44009941;//kernel.MapEditorOLD2:9941
       Tonyu.globals.$panel.setFillStyle("white");
-      //$LASTPOS=43009976;//kernel.MapEditorOLD2:9976
+      //$LASTPOS=44009976;//kernel.MapEditorOLD2:9976
       Tonyu.globals.$panel.fillRect(10,Tonyu.globals.$screenHeight-150,100,60);
-      //$LASTPOS=43010027;//kernel.MapEditorOLD2:10027
+      //$LASTPOS=44010027;//kernel.MapEditorOLD2:10027
       Tonyu.globals.$panel.fillRect(130,Tonyu.globals.$screenHeight-150,100,60);
-      //$LASTPOS=43010079;//kernel.MapEditorOLD2:10079
+      //$LASTPOS=44010079;//kernel.MapEditorOLD2:10079
       Tonyu.globals.$panel.fillRect(250,Tonyu.globals.$screenHeight-150,100,60);
-      //$LASTPOS=43010131;//kernel.MapEditorOLD2:10131
+      //$LASTPOS=44010131;//kernel.MapEditorOLD2:10131
       Tonyu.globals.$panel.fillRect(370,Tonyu.globals.$screenHeight-150,100,60);
-      //$LASTPOS=43010183;//kernel.MapEditorOLD2:10183
+      //$LASTPOS=44010183;//kernel.MapEditorOLD2:10183
       Tonyu.globals.$panel.fillRect(10,Tonyu.globals.$screenHeight-70,100,60);
-      //$LASTPOS=43010233;//kernel.MapEditorOLD2:10233
+      //$LASTPOS=44010233;//kernel.MapEditorOLD2:10233
       Tonyu.globals.$panel.fillRect(130,Tonyu.globals.$screenHeight-70,100,60);
-      //$LASTPOS=43010284;//kernel.MapEditorOLD2:10284
+      //$LASTPOS=44010284;//kernel.MapEditorOLD2:10284
       Tonyu.globals.$panel.setFillStyle("black");
-      //$LASTPOS=43010330;//kernel.MapEditorOLD2:10330
+      //$LASTPOS=44010330;//kernel.MapEditorOLD2:10330
       Tonyu.globals.$panel.fillText("↑",Tonyu.globals.$screenWidth/2,30,40,"center");
-      //$LASTPOS=43010387;//kernel.MapEditorOLD2:10387
+      //$LASTPOS=44010387;//kernel.MapEditorOLD2:10387
       Tonyu.globals.$panel.fillText("←",20,(Tonyu.globals.$screenHeight-200)/2,40,"center");
-      //$LASTPOS=43010451;//kernel.MapEditorOLD2:10451
+      //$LASTPOS=44010451;//kernel.MapEditorOLD2:10451
       Tonyu.globals.$panel.fillText("↓",Tonyu.globals.$screenWidth/2,Tonyu.globals.$screenHeight-160-10,40,"center");
-      //$LASTPOS=43010526;//kernel.MapEditorOLD2:10526
+      //$LASTPOS=44010526;//kernel.MapEditorOLD2:10526
       Tonyu.globals.$panel.fillText("→",Tonyu.globals.$screenWidth-20,(Tonyu.globals.$screenHeight-200)/2,40,"center");
-      //$LASTPOS=43010631;//kernel.MapEditorOLD2:10631
+      //$LASTPOS=44010631;//kernel.MapEditorOLD2:10631
       Tonyu.globals.$panel.fillText("set",Tonyu.globals.$screenWidth/4-60,Tonyu.globals.$screenHeight-110,40,"center");
-      //$LASTPOS=43010708;//kernel.MapEditorOLD2:10708
+      //$LASTPOS=44010708;//kernel.MapEditorOLD2:10708
       Tonyu.globals.$panel.fillText("setOn",Tonyu.globals.$screenWidth/4+60,Tonyu.globals.$screenHeight-110,35,"center");
-      //$LASTPOS=43010787;//kernel.MapEditorOLD2:10787
+      //$LASTPOS=44010787;//kernel.MapEditorOLD2:10787
       Tonyu.globals.$panel.fillText("get",Tonyu.globals.$screenWidth/2+60,Tonyu.globals.$screenHeight-110,40,"center");
-      //$LASTPOS=43010864;//kernel.MapEditorOLD2:10864
+      //$LASTPOS=44010864;//kernel.MapEditorOLD2:10864
       Tonyu.globals.$panel.fillText("save",Tonyu.globals.$screenWidth-60,Tonyu.globals.$screenHeight-110,40,"center");
-      //$LASTPOS=43010940;//kernel.MapEditorOLD2:10940
+      //$LASTPOS=44010940;//kernel.MapEditorOLD2:10940
       Tonyu.globals.$panel.fillText("erase",Tonyu.globals.$screenWidth/4-60,Tonyu.globals.$screenHeight-30,35,"center");
-      //$LASTPOS=43011018;//kernel.MapEditorOLD2:11018
+      //$LASTPOS=44011018;//kernel.MapEditorOLD2:11018
       Tonyu.globals.$panel.fillText("copy",Tonyu.globals.$screenWidth/4+60,Tonyu.globals.$screenHeight-30,35,"center");
     },
     fiber$drawPanel :function _trc_MapEditorOLD2_f_drawPanel(_thread) {
@@ -15389,69 +15391,69 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=43009289;//kernel.MapEditorOLD2:9289
+      //$LASTPOS=44009289;//kernel.MapEditorOLD2:9289
       Tonyu.globals.$panel.setFillStyle("gray");
-      //$LASTPOS=43009323;//kernel.MapEditorOLD2:9323
+      //$LASTPOS=44009323;//kernel.MapEditorOLD2:9323
       Tonyu.globals.$panel.alpha=128;
-      //$LASTPOS=43009346;//kernel.MapEditorOLD2:9346
+      //$LASTPOS=44009346;//kernel.MapEditorOLD2:9346
       Tonyu.globals.$panel.fillRect(0,0,Tonyu.globals.$screenWidth,40);
-      //$LASTPOS=43009389;//kernel.MapEditorOLD2:9389
+      //$LASTPOS=44009389;//kernel.MapEditorOLD2:9389
       Tonyu.globals.$panel.fillRect(0,0,40,Tonyu.globals.$screenHeight-160);
-      //$LASTPOS=43009437;//kernel.MapEditorOLD2:9437
+      //$LASTPOS=44009437;//kernel.MapEditorOLD2:9437
       Tonyu.globals.$panel.fillRect(Tonyu.globals.$screenWidth-40,0,40,Tonyu.globals.$screenHeight-160);
-      //$LASTPOS=43009499;//kernel.MapEditorOLD2:9499
+      //$LASTPOS=44009499;//kernel.MapEditorOLD2:9499
       Tonyu.globals.$panel.fillRect(0,Tonyu.globals.$screenHeight-200,Tonyu.globals.$screenWidth,40);
-      //$LASTPOS=43009558;//kernel.MapEditorOLD2:9558
+      //$LASTPOS=44009558;//kernel.MapEditorOLD2:9558
       Tonyu.globals.$panel.alpha=255;
-      //$LASTPOS=43009581;//kernel.MapEditorOLD2:9581
+      //$LASTPOS=44009581;//kernel.MapEditorOLD2:9581
       Tonyu.globals.$panel.setFillStyle("black");
-      //$LASTPOS=43009635;//kernel.MapEditorOLD2:9635
+      //$LASTPOS=44009635;//kernel.MapEditorOLD2:9635
       Tonyu.globals.$panel.fillRect(0,Tonyu.globals.$screenHeight-160,120,80);
-      //$LASTPOS=43009685;//kernel.MapEditorOLD2:9685
+      //$LASTPOS=44009685;//kernel.MapEditorOLD2:9685
       Tonyu.globals.$panel.fillRect(120,Tonyu.globals.$screenHeight-160,120,80);
-      //$LASTPOS=43009737;//kernel.MapEditorOLD2:9737
+      //$LASTPOS=44009737;//kernel.MapEditorOLD2:9737
       Tonyu.globals.$panel.fillRect(240,Tonyu.globals.$screenHeight-160,120,80);
-      //$LASTPOS=43009789;//kernel.MapEditorOLD2:9789
+      //$LASTPOS=44009789;//kernel.MapEditorOLD2:9789
       Tonyu.globals.$panel.fillRect(360,Tonyu.globals.$screenHeight-160,120,80);
-      //$LASTPOS=43009841;//kernel.MapEditorOLD2:9841
+      //$LASTPOS=44009841;//kernel.MapEditorOLD2:9841
       Tonyu.globals.$panel.fillRect(0,Tonyu.globals.$screenHeight-80,120,80);
-      //$LASTPOS=43009890;//kernel.MapEditorOLD2:9890
+      //$LASTPOS=44009890;//kernel.MapEditorOLD2:9890
       Tonyu.globals.$panel.fillRect(120,Tonyu.globals.$screenHeight-80,120,80);
-      //$LASTPOS=43009941;//kernel.MapEditorOLD2:9941
+      //$LASTPOS=44009941;//kernel.MapEditorOLD2:9941
       Tonyu.globals.$panel.setFillStyle("white");
-      //$LASTPOS=43009976;//kernel.MapEditorOLD2:9976
+      //$LASTPOS=44009976;//kernel.MapEditorOLD2:9976
       Tonyu.globals.$panel.fillRect(10,Tonyu.globals.$screenHeight-150,100,60);
-      //$LASTPOS=43010027;//kernel.MapEditorOLD2:10027
+      //$LASTPOS=44010027;//kernel.MapEditorOLD2:10027
       Tonyu.globals.$panel.fillRect(130,Tonyu.globals.$screenHeight-150,100,60);
-      //$LASTPOS=43010079;//kernel.MapEditorOLD2:10079
+      //$LASTPOS=44010079;//kernel.MapEditorOLD2:10079
       Tonyu.globals.$panel.fillRect(250,Tonyu.globals.$screenHeight-150,100,60);
-      //$LASTPOS=43010131;//kernel.MapEditorOLD2:10131
+      //$LASTPOS=44010131;//kernel.MapEditorOLD2:10131
       Tonyu.globals.$panel.fillRect(370,Tonyu.globals.$screenHeight-150,100,60);
-      //$LASTPOS=43010183;//kernel.MapEditorOLD2:10183
+      //$LASTPOS=44010183;//kernel.MapEditorOLD2:10183
       Tonyu.globals.$panel.fillRect(10,Tonyu.globals.$screenHeight-70,100,60);
-      //$LASTPOS=43010233;//kernel.MapEditorOLD2:10233
+      //$LASTPOS=44010233;//kernel.MapEditorOLD2:10233
       Tonyu.globals.$panel.fillRect(130,Tonyu.globals.$screenHeight-70,100,60);
-      //$LASTPOS=43010284;//kernel.MapEditorOLD2:10284
+      //$LASTPOS=44010284;//kernel.MapEditorOLD2:10284
       Tonyu.globals.$panel.setFillStyle("black");
-      //$LASTPOS=43010330;//kernel.MapEditorOLD2:10330
+      //$LASTPOS=44010330;//kernel.MapEditorOLD2:10330
       Tonyu.globals.$panel.fillText("↑",Tonyu.globals.$screenWidth/2,30,40,"center");
-      //$LASTPOS=43010387;//kernel.MapEditorOLD2:10387
+      //$LASTPOS=44010387;//kernel.MapEditorOLD2:10387
       Tonyu.globals.$panel.fillText("←",20,(Tonyu.globals.$screenHeight-200)/2,40,"center");
-      //$LASTPOS=43010451;//kernel.MapEditorOLD2:10451
+      //$LASTPOS=44010451;//kernel.MapEditorOLD2:10451
       Tonyu.globals.$panel.fillText("↓",Tonyu.globals.$screenWidth/2,Tonyu.globals.$screenHeight-160-10,40,"center");
-      //$LASTPOS=43010526;//kernel.MapEditorOLD2:10526
+      //$LASTPOS=44010526;//kernel.MapEditorOLD2:10526
       Tonyu.globals.$panel.fillText("→",Tonyu.globals.$screenWidth-20,(Tonyu.globals.$screenHeight-200)/2,40,"center");
-      //$LASTPOS=43010631;//kernel.MapEditorOLD2:10631
+      //$LASTPOS=44010631;//kernel.MapEditorOLD2:10631
       Tonyu.globals.$panel.fillText("set",Tonyu.globals.$screenWidth/4-60,Tonyu.globals.$screenHeight-110,40,"center");
-      //$LASTPOS=43010708;//kernel.MapEditorOLD2:10708
+      //$LASTPOS=44010708;//kernel.MapEditorOLD2:10708
       Tonyu.globals.$panel.fillText("setOn",Tonyu.globals.$screenWidth/4+60,Tonyu.globals.$screenHeight-110,35,"center");
-      //$LASTPOS=43010787;//kernel.MapEditorOLD2:10787
+      //$LASTPOS=44010787;//kernel.MapEditorOLD2:10787
       Tonyu.globals.$panel.fillText("get",Tonyu.globals.$screenWidth/2+60,Tonyu.globals.$screenHeight-110,40,"center");
-      //$LASTPOS=43010864;//kernel.MapEditorOLD2:10864
+      //$LASTPOS=44010864;//kernel.MapEditorOLD2:10864
       Tonyu.globals.$panel.fillText("save",Tonyu.globals.$screenWidth-60,Tonyu.globals.$screenHeight-110,40,"center");
-      //$LASTPOS=43010940;//kernel.MapEditorOLD2:10940
+      //$LASTPOS=44010940;//kernel.MapEditorOLD2:10940
       Tonyu.globals.$panel.fillText("erase",Tonyu.globals.$screenWidth/4-60,Tonyu.globals.$screenHeight-30,35,"center");
-      //$LASTPOS=43011018;//kernel.MapEditorOLD2:11018
+      //$LASTPOS=44011018;//kernel.MapEditorOLD2:11018
       Tonyu.globals.$panel.fillText("copy",Tonyu.globals.$screenWidth/4+60,Tonyu.globals.$screenHeight-30,35,"center");
       
       _thread.retVal=_this;return;
@@ -15471,13 +15473,13 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=44001202;//kernel.Pad:1202
+      //$LASTPOS=45001202;//kernel.Pad:1202
       _this.APAD_DIAG_SIZE=96;
-      //$LASTPOS=44003465;//kernel.Pad:3465
+      //$LASTPOS=45003465;//kernel.Pad:3465
       while (true) {
-        //$LASTPOS=44003484;//kernel.Pad:3484
+        //$LASTPOS=45003484;//kernel.Pad:3484
         _this.padUpdate();
-        //$LASTPOS=44003502;//kernel.Pad:3502
+        //$LASTPOS=45003502;//kernel.Pad:3502
         _this.update();
         
       }
@@ -15488,7 +15490,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=44001202;//kernel.Pad:1202
+      //$LASTPOS=45001202;//kernel.Pad:1202
       _this.APAD_DIAG_SIZE=96;
       
       _thread.enter(function _trc_Pad_ent_main(_thread) {
@@ -15496,14 +15498,14 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=44003465;//kernel.Pad:3465
+            //$LASTPOS=45003465;//kernel.Pad:3465
           case 1:
-            //$LASTPOS=44003484;//kernel.Pad:3484
+            //$LASTPOS=45003484;//kernel.Pad:3484
             _this.fiber$padUpdate(_thread);
             __pc=2;return;
           case 2:
             
-            //$LASTPOS=44003502;//kernel.Pad:3502
+            //$LASTPOS=45003502;//kernel.Pad:3502
             _this.fiber$update(_thread);
             __pc=3;return;
           case 3:
@@ -15520,58 +15522,58 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=44000033;//kernel.Pad:33
+      //$LASTPOS=45000033;//kernel.Pad:33
       Tonyu.classes.kernel.Actor.apply( _this, [opt]);
-      //$LASTPOS=44000050;//kernel.Pad:50
+      //$LASTPOS=45000050;//kernel.Pad:50
       _this.padImageP=Tonyu.globals.$pat_inputPad;
-      //$LASTPOS=44000082;//kernel.Pad:82
+      //$LASTPOS=45000082;//kernel.Pad:82
       _this.jujiKey=new Tonyu.classes.kernel.Actor({x: 96+1,y: Tonyu.globals.$screenHeight-96-1,p: _this.padImageP+0,zOrder: - 9,layer: Tonyu.globals.$FrontSprites});
-      //$LASTPOS=44000183;//kernel.Pad:183
+      //$LASTPOS=45000183;//kernel.Pad:183
       _this.no1Key=new Tonyu.classes.kernel.Actor({x: Tonyu.globals.$screenWidth-96,y: Tonyu.globals.$screenHeight-96,p: _this.padImageP+1,zOrder: - 9,layer: Tonyu.globals.$FrontSprites});
-      //$LASTPOS=44000292;//kernel.Pad:292
+      //$LASTPOS=45000292;//kernel.Pad:292
       _this.jujiKey.show();
-      //$LASTPOS=44000313;//kernel.Pad:313
+      //$LASTPOS=45000313;//kernel.Pad:313
       _this.no1Key.show();
-      //$LASTPOS=44000339;//kernel.Pad:339
+      //$LASTPOS=45000339;//kernel.Pad:339
       _this.jujiKeyPushU=new Tonyu.classes.kernel.Actor({x: _this.jujiKey.x,y: _this.jujiKey.y-60,p: _this.padImageP+2,zOrder: - 10,layer: Tonyu.globals.$FrontSprites});
-      //$LASTPOS=44000446;//kernel.Pad:446
+      //$LASTPOS=45000446;//kernel.Pad:446
       _this.jujiKeyPushL=new Tonyu.classes.kernel.Actor({x: _this.jujiKey.x-60,y: _this.jujiKey.y,p: _this.padImageP+2,zOrder: - 10,layer: Tonyu.globals.$FrontSprites});
-      //$LASTPOS=44000553;//kernel.Pad:553
+      //$LASTPOS=45000553;//kernel.Pad:553
       _this.jujiKeyPushR=new Tonyu.classes.kernel.Actor({x: _this.jujiKey.x+60,y: _this.jujiKey.y,p: _this.padImageP+2,zOrder: - 10,layer: Tonyu.globals.$FrontSprites});
-      //$LASTPOS=44000660;//kernel.Pad:660
+      //$LASTPOS=45000660;//kernel.Pad:660
       _this.jujiKeyPushD=new Tonyu.classes.kernel.Actor({x: _this.jujiKey.x,y: _this.jujiKey.y+60,p: _this.padImageP+2,zOrder: - 10,layer: Tonyu.globals.$FrontSprites});
-      //$LASTPOS=44000767;//kernel.Pad:767
+      //$LASTPOS=45000767;//kernel.Pad:767
       _this.jujiKeyPush1=new Tonyu.classes.kernel.Actor({x: _this.no1Key.x,y: _this.no1Key.y,p: _this.padImageP+2,scaleX: 2,zOrder: - 10,layer: Tonyu.globals.$FrontSprites});
-      //$LASTPOS=44000879;//kernel.Pad:879
+      //$LASTPOS=45000879;//kernel.Pad:879
       _this.jujiKeyPushU.hide();
-      //$LASTPOS=44000905;//kernel.Pad:905
+      //$LASTPOS=45000905;//kernel.Pad:905
       _this.jujiKeyPushL.hide();
-      //$LASTPOS=44000931;//kernel.Pad:931
+      //$LASTPOS=45000931;//kernel.Pad:931
       _this.jujiKeyPushR.hide();
-      //$LASTPOS=44000957;//kernel.Pad:957
+      //$LASTPOS=45000957;//kernel.Pad:957
       _this.jujiKeyPushD.hide();
-      //$LASTPOS=44000983;//kernel.Pad:983
+      //$LASTPOS=45000983;//kernel.Pad:983
       _this.jujiKeyPush1.hide();
     },
     die :function _trc_Pad_die() {
       "use strict";
       var _this=this;
       
-      //$LASTPOS=44001021;//kernel.Pad:1021
+      //$LASTPOS=45001021;//kernel.Pad:1021
       _this.jujiKey.die();
-      //$LASTPOS=44001041;//kernel.Pad:1041
+      //$LASTPOS=45001041;//kernel.Pad:1041
       _this.no1Key.die();
-      //$LASTPOS=44001060;//kernel.Pad:1060
+      //$LASTPOS=45001060;//kernel.Pad:1060
       _this.jujiKeyPushU.die();
-      //$LASTPOS=44001085;//kernel.Pad:1085
+      //$LASTPOS=45001085;//kernel.Pad:1085
       _this.jujiKeyPushL.die();
-      //$LASTPOS=44001110;//kernel.Pad:1110
+      //$LASTPOS=45001110;//kernel.Pad:1110
       _this.jujiKeyPushR.die();
-      //$LASTPOS=44001135;//kernel.Pad:1135
+      //$LASTPOS=45001135;//kernel.Pad:1135
       _this.jujiKeyPushD.die();
-      //$LASTPOS=44001160;//kernel.Pad:1160
+      //$LASTPOS=45001160;//kernel.Pad:1160
       _this.jujiKeyPush1.die();
-      //$LASTPOS=44001185;//kernel.Pad:1185
+      //$LASTPOS=45001185;//kernel.Pad:1185
       Tonyu.classes.kernel.Actor.prototype.die.apply( _this, []);
     },
     padUpdate :function _trc_Pad_padUpdate() {
@@ -15580,139 +15582,139 @@ Tonyu.klass.define({
       var i;
       var t;
       
-      //$LASTPOS=44001258;//kernel.Pad:1258
+      //$LASTPOS=45001258;//kernel.Pad:1258
       _this.keyPushL=0;
-      //$LASTPOS=44001277;//kernel.Pad:1277
+      //$LASTPOS=45001277;//kernel.Pad:1277
       _this.keyPushR=0;
-      //$LASTPOS=44001296;//kernel.Pad:1296
+      //$LASTPOS=45001296;//kernel.Pad:1296
       _this.keyPushU=0;
-      //$LASTPOS=44001315;//kernel.Pad:1315
+      //$LASTPOS=45001315;//kernel.Pad:1315
       _this.keyPushD=0;
-      //$LASTPOS=44001334;//kernel.Pad:1334
+      //$LASTPOS=45001334;//kernel.Pad:1334
       _this.keyPush1=0;
-      //$LASTPOS=44001359;//kernel.Pad:1359
+      //$LASTPOS=45001359;//kernel.Pad:1359
       _this.padKeyNotapCnt++;
-      //$LASTPOS=44001383;//kernel.Pad:1383
-      //$LASTPOS=44001388;//kernel.Pad:1388
+      //$LASTPOS=45001383;//kernel.Pad:1383
+      //$LASTPOS=45001388;//kernel.Pad:1388
       i = 0;
       while(i<5) {
         {
-          //$LASTPOS=44001436;//kernel.Pad:1436
+          //$LASTPOS=45001436;//kernel.Pad:1436
           t = Tonyu.globals.$touches[i];
-          //$LASTPOS=44001466;//kernel.Pad:1466
+          //$LASTPOS=45001466;//kernel.Pad:1466
           if (t.touched) {
-            //$LASTPOS=44001496;//kernel.Pad:1496
+            //$LASTPOS=45001496;//kernel.Pad:1496
             if (_this.isOnRectWH(t.x,t.y,_this.jujiKey.x-32-_this.APAD_DIAG_SIZE/2,_this.jujiKey.y-32-64,64+_this.APAD_DIAG_SIZE,64)) {
-              //$LASTPOS=44001593;//kernel.Pad:1593
+              //$LASTPOS=45001593;//kernel.Pad:1593
               _this.keyPushU=1;
             }
-            //$LASTPOS=44001620;//kernel.Pad:1620
+            //$LASTPOS=45001620;//kernel.Pad:1620
             if (_this.isOnRectWH(t.x,t.y,_this.jujiKey.x-32-_this.APAD_DIAG_SIZE/2,_this.jujiKey.y-32+64,64+_this.APAD_DIAG_SIZE,64)) {
-              //$LASTPOS=44001717;//kernel.Pad:1717
+              //$LASTPOS=45001717;//kernel.Pad:1717
               _this.keyPushD=1;
             }
-            //$LASTPOS=44001744;//kernel.Pad:1744
+            //$LASTPOS=45001744;//kernel.Pad:1744
             if (_this.isOnRectWH(t.x,t.y,_this.jujiKey.x-32-64,_this.jujiKey.y-32-_this.APAD_DIAG_SIZE/2,64,64+_this.APAD_DIAG_SIZE)) {
-              //$LASTPOS=44001841;//kernel.Pad:1841
+              //$LASTPOS=45001841;//kernel.Pad:1841
               _this.keyPushL=1;
             }
-            //$LASTPOS=44001868;//kernel.Pad:1868
+            //$LASTPOS=45001868;//kernel.Pad:1868
             if (_this.isOnRectWH(t.x,t.y,_this.jujiKey.x-32+64,_this.jujiKey.y-32-_this.APAD_DIAG_SIZE/2,64,64+_this.APAD_DIAG_SIZE)) {
-              //$LASTPOS=44001965;//kernel.Pad:1965
+              //$LASTPOS=45001965;//kernel.Pad:1965
               _this.keyPushR=1;
             }
-            //$LASTPOS=44001992;//kernel.Pad:1992
+            //$LASTPOS=45001992;//kernel.Pad:1992
             if (_this.isOnRectWH(t.x,t.y,_this.no1Key.x-64,_this.no1Key.y-64,128,128)) {
-              //$LASTPOS=44002054;//kernel.Pad:2054
+              //$LASTPOS=45002054;//kernel.Pad:2054
               _this.keyPush1=1;
             }
-            //$LASTPOS=44002081;//kernel.Pad:2081
+            //$LASTPOS=45002081;//kernel.Pad:2081
             _this.padKeySW=1;
-            //$LASTPOS=44002108;//kernel.Pad:2108
+            //$LASTPOS=45002108;//kernel.Pad:2108
             _this.padKeyNotapCnt=0;
             
           }
         }
         i++;
       }
-      //$LASTPOS=44002173;//kernel.Pad:2173
+      //$LASTPOS=45002173;//kernel.Pad:2173
       if (_this.keyPushL) {
-        //$LASTPOS=44002187;//kernel.Pad:2187
+        //$LASTPOS=45002187;//kernel.Pad:2187
         _this.keyCntL++;
       } else {
-        //$LASTPOS=44002204;//kernel.Pad:2204
+        //$LASTPOS=45002204;//kernel.Pad:2204
         _this.keyCntL=0;
       }
-      //$LASTPOS=44002222;//kernel.Pad:2222
+      //$LASTPOS=45002222;//kernel.Pad:2222
       if (_this.keyPushR) {
-        //$LASTPOS=44002236;//kernel.Pad:2236
+        //$LASTPOS=45002236;//kernel.Pad:2236
         _this.keyCntR++;
       } else {
-        //$LASTPOS=44002253;//kernel.Pad:2253
+        //$LASTPOS=45002253;//kernel.Pad:2253
         _this.keyCntR=0;
       }
-      //$LASTPOS=44002271;//kernel.Pad:2271
+      //$LASTPOS=45002271;//kernel.Pad:2271
       if (_this.keyPushU) {
-        //$LASTPOS=44002285;//kernel.Pad:2285
+        //$LASTPOS=45002285;//kernel.Pad:2285
         _this.keyCntU++;
       } else {
-        //$LASTPOS=44002302;//kernel.Pad:2302
+        //$LASTPOS=45002302;//kernel.Pad:2302
         _this.keyCntU=0;
       }
-      //$LASTPOS=44002320;//kernel.Pad:2320
+      //$LASTPOS=45002320;//kernel.Pad:2320
       if (_this.keyPushD) {
-        //$LASTPOS=44002334;//kernel.Pad:2334
+        //$LASTPOS=45002334;//kernel.Pad:2334
         _this.keyCntD++;
       } else {
-        //$LASTPOS=44002351;//kernel.Pad:2351
+        //$LASTPOS=45002351;//kernel.Pad:2351
         _this.keyCntD=0;
       }
-      //$LASTPOS=44002369;//kernel.Pad:2369
+      //$LASTPOS=45002369;//kernel.Pad:2369
       if (_this.keyPush1) {
-        //$LASTPOS=44002383;//kernel.Pad:2383
+        //$LASTPOS=45002383;//kernel.Pad:2383
         _this.keyCnt1++;
       } else {
-        //$LASTPOS=44002400;//kernel.Pad:2400
+        //$LASTPOS=45002400;//kernel.Pad:2400
         _this.keyCnt1=0;
       }
-      //$LASTPOS=44002435;//kernel.Pad:2435
+      //$LASTPOS=45002435;//kernel.Pad:2435
       if (_this.keyPushL) {
-        //$LASTPOS=44002449;//kernel.Pad:2449
+        //$LASTPOS=45002449;//kernel.Pad:2449
         _this.jujiKeyPushL.show();
       } else {
-        //$LASTPOS=44002475;//kernel.Pad:2475
+        //$LASTPOS=45002475;//kernel.Pad:2475
         _this.jujiKeyPushL.hide();
       }
-      //$LASTPOS=44002501;//kernel.Pad:2501
+      //$LASTPOS=45002501;//kernel.Pad:2501
       if (_this.keyPushR) {
-        //$LASTPOS=44002515;//kernel.Pad:2515
+        //$LASTPOS=45002515;//kernel.Pad:2515
         _this.jujiKeyPushR.show();
       } else {
-        //$LASTPOS=44002541;//kernel.Pad:2541
+        //$LASTPOS=45002541;//kernel.Pad:2541
         _this.jujiKeyPushR.hide();
       }
-      //$LASTPOS=44002567;//kernel.Pad:2567
+      //$LASTPOS=45002567;//kernel.Pad:2567
       if (_this.keyPushU) {
-        //$LASTPOS=44002581;//kernel.Pad:2581
+        //$LASTPOS=45002581;//kernel.Pad:2581
         _this.jujiKeyPushU.show();
       } else {
-        //$LASTPOS=44002607;//kernel.Pad:2607
+        //$LASTPOS=45002607;//kernel.Pad:2607
         _this.jujiKeyPushU.hide();
       }
-      //$LASTPOS=44002633;//kernel.Pad:2633
+      //$LASTPOS=45002633;//kernel.Pad:2633
       if (_this.keyPushD) {
-        //$LASTPOS=44002647;//kernel.Pad:2647
+        //$LASTPOS=45002647;//kernel.Pad:2647
         _this.jujiKeyPushD.show();
       } else {
-        //$LASTPOS=44002673;//kernel.Pad:2673
+        //$LASTPOS=45002673;//kernel.Pad:2673
         _this.jujiKeyPushD.hide();
       }
-      //$LASTPOS=44002699;//kernel.Pad:2699
+      //$LASTPOS=45002699;//kernel.Pad:2699
       if (_this.keyPush1) {
-        //$LASTPOS=44002713;//kernel.Pad:2713
+        //$LASTPOS=45002713;//kernel.Pad:2713
         _this.jujiKeyPush1.show();
       } else {
-        //$LASTPOS=44002739;//kernel.Pad:2739
+        //$LASTPOS=45002739;//kernel.Pad:2739
         _this.jujiKeyPush1.hide();
       }
     },
@@ -15724,139 +15726,139 @@ Tonyu.klass.define({
       var i;
       var t;
       
-      //$LASTPOS=44001258;//kernel.Pad:1258
+      //$LASTPOS=45001258;//kernel.Pad:1258
       _this.keyPushL=0;
-      //$LASTPOS=44001277;//kernel.Pad:1277
+      //$LASTPOS=45001277;//kernel.Pad:1277
       _this.keyPushR=0;
-      //$LASTPOS=44001296;//kernel.Pad:1296
+      //$LASTPOS=45001296;//kernel.Pad:1296
       _this.keyPushU=0;
-      //$LASTPOS=44001315;//kernel.Pad:1315
+      //$LASTPOS=45001315;//kernel.Pad:1315
       _this.keyPushD=0;
-      //$LASTPOS=44001334;//kernel.Pad:1334
+      //$LASTPOS=45001334;//kernel.Pad:1334
       _this.keyPush1=0;
-      //$LASTPOS=44001359;//kernel.Pad:1359
+      //$LASTPOS=45001359;//kernel.Pad:1359
       _this.padKeyNotapCnt++;
-      //$LASTPOS=44001383;//kernel.Pad:1383
-      //$LASTPOS=44001388;//kernel.Pad:1388
+      //$LASTPOS=45001383;//kernel.Pad:1383
+      //$LASTPOS=45001388;//kernel.Pad:1388
       i = 0;
       while(i<5) {
         {
-          //$LASTPOS=44001436;//kernel.Pad:1436
+          //$LASTPOS=45001436;//kernel.Pad:1436
           t = Tonyu.globals.$touches[i];
-          //$LASTPOS=44001466;//kernel.Pad:1466
+          //$LASTPOS=45001466;//kernel.Pad:1466
           if (t.touched) {
-            //$LASTPOS=44001496;//kernel.Pad:1496
+            //$LASTPOS=45001496;//kernel.Pad:1496
             if (_this.isOnRectWH(t.x,t.y,_this.jujiKey.x-32-_this.APAD_DIAG_SIZE/2,_this.jujiKey.y-32-64,64+_this.APAD_DIAG_SIZE,64)) {
-              //$LASTPOS=44001593;//kernel.Pad:1593
+              //$LASTPOS=45001593;//kernel.Pad:1593
               _this.keyPushU=1;
             }
-            //$LASTPOS=44001620;//kernel.Pad:1620
+            //$LASTPOS=45001620;//kernel.Pad:1620
             if (_this.isOnRectWH(t.x,t.y,_this.jujiKey.x-32-_this.APAD_DIAG_SIZE/2,_this.jujiKey.y-32+64,64+_this.APAD_DIAG_SIZE,64)) {
-              //$LASTPOS=44001717;//kernel.Pad:1717
+              //$LASTPOS=45001717;//kernel.Pad:1717
               _this.keyPushD=1;
             }
-            //$LASTPOS=44001744;//kernel.Pad:1744
+            //$LASTPOS=45001744;//kernel.Pad:1744
             if (_this.isOnRectWH(t.x,t.y,_this.jujiKey.x-32-64,_this.jujiKey.y-32-_this.APAD_DIAG_SIZE/2,64,64+_this.APAD_DIAG_SIZE)) {
-              //$LASTPOS=44001841;//kernel.Pad:1841
+              //$LASTPOS=45001841;//kernel.Pad:1841
               _this.keyPushL=1;
             }
-            //$LASTPOS=44001868;//kernel.Pad:1868
+            //$LASTPOS=45001868;//kernel.Pad:1868
             if (_this.isOnRectWH(t.x,t.y,_this.jujiKey.x-32+64,_this.jujiKey.y-32-_this.APAD_DIAG_SIZE/2,64,64+_this.APAD_DIAG_SIZE)) {
-              //$LASTPOS=44001965;//kernel.Pad:1965
+              //$LASTPOS=45001965;//kernel.Pad:1965
               _this.keyPushR=1;
             }
-            //$LASTPOS=44001992;//kernel.Pad:1992
+            //$LASTPOS=45001992;//kernel.Pad:1992
             if (_this.isOnRectWH(t.x,t.y,_this.no1Key.x-64,_this.no1Key.y-64,128,128)) {
-              //$LASTPOS=44002054;//kernel.Pad:2054
+              //$LASTPOS=45002054;//kernel.Pad:2054
               _this.keyPush1=1;
             }
-            //$LASTPOS=44002081;//kernel.Pad:2081
+            //$LASTPOS=45002081;//kernel.Pad:2081
             _this.padKeySW=1;
-            //$LASTPOS=44002108;//kernel.Pad:2108
+            //$LASTPOS=45002108;//kernel.Pad:2108
             _this.padKeyNotapCnt=0;
             
           }
         }
         i++;
       }
-      //$LASTPOS=44002173;//kernel.Pad:2173
+      //$LASTPOS=45002173;//kernel.Pad:2173
       if (_this.keyPushL) {
-        //$LASTPOS=44002187;//kernel.Pad:2187
+        //$LASTPOS=45002187;//kernel.Pad:2187
         _this.keyCntL++;
       } else {
-        //$LASTPOS=44002204;//kernel.Pad:2204
+        //$LASTPOS=45002204;//kernel.Pad:2204
         _this.keyCntL=0;
       }
-      //$LASTPOS=44002222;//kernel.Pad:2222
+      //$LASTPOS=45002222;//kernel.Pad:2222
       if (_this.keyPushR) {
-        //$LASTPOS=44002236;//kernel.Pad:2236
+        //$LASTPOS=45002236;//kernel.Pad:2236
         _this.keyCntR++;
       } else {
-        //$LASTPOS=44002253;//kernel.Pad:2253
+        //$LASTPOS=45002253;//kernel.Pad:2253
         _this.keyCntR=0;
       }
-      //$LASTPOS=44002271;//kernel.Pad:2271
+      //$LASTPOS=45002271;//kernel.Pad:2271
       if (_this.keyPushU) {
-        //$LASTPOS=44002285;//kernel.Pad:2285
+        //$LASTPOS=45002285;//kernel.Pad:2285
         _this.keyCntU++;
       } else {
-        //$LASTPOS=44002302;//kernel.Pad:2302
+        //$LASTPOS=45002302;//kernel.Pad:2302
         _this.keyCntU=0;
       }
-      //$LASTPOS=44002320;//kernel.Pad:2320
+      //$LASTPOS=45002320;//kernel.Pad:2320
       if (_this.keyPushD) {
-        //$LASTPOS=44002334;//kernel.Pad:2334
+        //$LASTPOS=45002334;//kernel.Pad:2334
         _this.keyCntD++;
       } else {
-        //$LASTPOS=44002351;//kernel.Pad:2351
+        //$LASTPOS=45002351;//kernel.Pad:2351
         _this.keyCntD=0;
       }
-      //$LASTPOS=44002369;//kernel.Pad:2369
+      //$LASTPOS=45002369;//kernel.Pad:2369
       if (_this.keyPush1) {
-        //$LASTPOS=44002383;//kernel.Pad:2383
+        //$LASTPOS=45002383;//kernel.Pad:2383
         _this.keyCnt1++;
       } else {
-        //$LASTPOS=44002400;//kernel.Pad:2400
+        //$LASTPOS=45002400;//kernel.Pad:2400
         _this.keyCnt1=0;
       }
-      //$LASTPOS=44002435;//kernel.Pad:2435
+      //$LASTPOS=45002435;//kernel.Pad:2435
       if (_this.keyPushL) {
-        //$LASTPOS=44002449;//kernel.Pad:2449
+        //$LASTPOS=45002449;//kernel.Pad:2449
         _this.jujiKeyPushL.show();
       } else {
-        //$LASTPOS=44002475;//kernel.Pad:2475
+        //$LASTPOS=45002475;//kernel.Pad:2475
         _this.jujiKeyPushL.hide();
       }
-      //$LASTPOS=44002501;//kernel.Pad:2501
+      //$LASTPOS=45002501;//kernel.Pad:2501
       if (_this.keyPushR) {
-        //$LASTPOS=44002515;//kernel.Pad:2515
+        //$LASTPOS=45002515;//kernel.Pad:2515
         _this.jujiKeyPushR.show();
       } else {
-        //$LASTPOS=44002541;//kernel.Pad:2541
+        //$LASTPOS=45002541;//kernel.Pad:2541
         _this.jujiKeyPushR.hide();
       }
-      //$LASTPOS=44002567;//kernel.Pad:2567
+      //$LASTPOS=45002567;//kernel.Pad:2567
       if (_this.keyPushU) {
-        //$LASTPOS=44002581;//kernel.Pad:2581
+        //$LASTPOS=45002581;//kernel.Pad:2581
         _this.jujiKeyPushU.show();
       } else {
-        //$LASTPOS=44002607;//kernel.Pad:2607
+        //$LASTPOS=45002607;//kernel.Pad:2607
         _this.jujiKeyPushU.hide();
       }
-      //$LASTPOS=44002633;//kernel.Pad:2633
+      //$LASTPOS=45002633;//kernel.Pad:2633
       if (_this.keyPushD) {
-        //$LASTPOS=44002647;//kernel.Pad:2647
+        //$LASTPOS=45002647;//kernel.Pad:2647
         _this.jujiKeyPushD.show();
       } else {
-        //$LASTPOS=44002673;//kernel.Pad:2673
+        //$LASTPOS=45002673;//kernel.Pad:2673
         _this.jujiKeyPushD.hide();
       }
-      //$LASTPOS=44002699;//kernel.Pad:2699
+      //$LASTPOS=45002699;//kernel.Pad:2699
       if (_this.keyPush1) {
-        //$LASTPOS=44002713;//kernel.Pad:2713
+        //$LASTPOS=45002713;//kernel.Pad:2713
         _this.jujiKeyPush1.show();
       } else {
-        //$LASTPOS=44002739;//kernel.Pad:2739
+        //$LASTPOS=45002739;//kernel.Pad:2739
         _this.jujiKeyPush1.hide();
       }
       
@@ -15935,11 +15937,11 @@ Tonyu.klass.define({
       var _this=this;
       var value;
       
-      //$LASTPOS=44002940;//kernel.Pad:2940
+      //$LASTPOS=45002940;//kernel.Pad:2940
       value;
-      //$LASTPOS=44002956;//kernel.Pad:2956
+      //$LASTPOS=45002956;//kernel.Pad:2956
       if (i==0) {
-        //$LASTPOS=44002968;//kernel.Pad:2968
+        //$LASTPOS=45002968;//kernel.Pad:2968
         value=_this.keyCnt1;
       }
       return value;
@@ -15951,11 +15953,11 @@ Tonyu.klass.define({
       var __pc=0;
       var value;
       
-      //$LASTPOS=44002940;//kernel.Pad:2940
+      //$LASTPOS=45002940;//kernel.Pad:2940
       value;
-      //$LASTPOS=44002956;//kernel.Pad:2956
+      //$LASTPOS=45002956;//kernel.Pad:2956
       if (i==0) {
-        //$LASTPOS=44002968;//kernel.Pad:2968
+        //$LASTPOS=45002968;//kernel.Pad:2968
         value=_this.keyCnt1;
       }
       _thread.retVal=value;return;
@@ -16036,11 +16038,11 @@ Tonyu.klass.define({
       var _this=this;
       var value;
       
-      //$LASTPOS=44003163;//kernel.Pad:3163
+      //$LASTPOS=45003163;//kernel.Pad:3163
       value;
-      //$LASTPOS=44003179;//kernel.Pad:3179
+      //$LASTPOS=45003179;//kernel.Pad:3179
       if (i==0) {
-        //$LASTPOS=44003191;//kernel.Pad:3191
+        //$LASTPOS=45003191;//kernel.Pad:3191
         value=_this.keyCnt1;
       }
       return value;
@@ -16052,11 +16054,11 @@ Tonyu.klass.define({
       var __pc=0;
       var value;
       
-      //$LASTPOS=44003163;//kernel.Pad:3163
+      //$LASTPOS=45003163;//kernel.Pad:3163
       value;
-      //$LASTPOS=44003179;//kernel.Pad:3179
+      //$LASTPOS=45003179;//kernel.Pad:3179
       if (i==0) {
-        //$LASTPOS=44003191;//kernel.Pad:3191
+        //$LASTPOS=45003191;//kernel.Pad:3191
         value=_this.keyCnt1;
       }
       _thread.retVal=value;return;
@@ -16113,56 +16115,56 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45002000;//kernel.Boot:2000
+      //$LASTPOS=46002000;//kernel.Boot:2000
       Tonyu.globals.$Boot=_this;
-      //$LASTPOS=45002013;//kernel.Boot:2013
+      //$LASTPOS=46002013;//kernel.Boot:2013
       _this.loadPlugins();
-      //$LASTPOS=45002029;//kernel.Boot:2029
+      //$LASTPOS=46002029;//kernel.Boot:2029
       _this.initSprites();
-      //$LASTPOS=45002045;//kernel.Boot:2045
+      //$LASTPOS=46002045;//kernel.Boot:2045
       _this.initSounds();
-      //$LASTPOS=45002060;//kernel.Boot:2060
+      //$LASTPOS=46002060;//kernel.Boot:2060
       Tonyu.globals.$InputDevice=new Tonyu.classes.kernel.InputDevice;
-      //$LASTPOS=45002091;//kernel.Boot:2091
+      //$LASTPOS=46002091;//kernel.Boot:2091
       Tonyu.globals.$InputDevice.initCanvasEvents(_this.cvj);
-      //$LASTPOS=45002128;//kernel.Boot:2128
+      //$LASTPOS=46002128;//kernel.Boot:2128
       _this.initThread();
-      //$LASTPOS=45002145;//kernel.Boot:2145
+      //$LASTPOS=46002145;//kernel.Boot:2145
       Tonyu.globals.$pat_fruits=30;
-      //$LASTPOS=45002162;//kernel.Boot:2162
+      //$LASTPOS=46002162;//kernel.Boot:2162
       Tonyu.globals.$Keys=new Tonyu.classes.kernel.Keys;
-      //$LASTPOS=45002179;//kernel.Boot:2179
+      //$LASTPOS=46002179;//kernel.Boot:2179
       Tonyu.globals.$Math=Math;
-      //$LASTPOS=45002192;//kernel.Boot:2192
+      //$LASTPOS=46002192;//kernel.Boot:2192
       Tonyu.globals.$consolePanel=new Tonyu.classes.kernel.Panel({align: "center",x: 465/2,y: 465/2,width: 465,height: 465,zOrder: - 10,layer: Tonyu.globals.$FrontSprites});
-      //$LASTPOS=45002302;//kernel.Boot:2302
+      //$LASTPOS=46002302;//kernel.Boot:2302
       Tonyu.globals.$consolePrintY=465-15;
-      //$LASTPOS=45002326;//kernel.Boot:2326
+      //$LASTPOS=46002326;//kernel.Boot:2326
       Tonyu.globals.$panel=new Tonyu.classes.kernel.Panel({align: "center",x: Tonyu.globals.$screenWidth/2,y: Tonyu.globals.$screenHeight/2,width: Tonyu.globals.$screenWidth,height: Tonyu.globals.$screenHeight,zOrder: - 1,layer: Tonyu.globals.$FrontSprites});
-      //$LASTPOS=45002466;//kernel.Boot:2466
+      //$LASTPOS=46002466;//kernel.Boot:2466
       _this.initFPSParams();
-      //$LASTPOS=45002486;//kernel.Boot:2486
+      //$LASTPOS=46002486;//kernel.Boot:2486
       Tonyu.globals.$mouseX=Tonyu.globals.$mouseX||0;
-      //$LASTPOS=45002507;//kernel.Boot:2507
+      //$LASTPOS=46002507;//kernel.Boot:2507
       Tonyu.globals.$mouseY=Tonyu.globals.$mouseY||0;
-      //$LASTPOS=45002528;//kernel.Boot:2528
+      //$LASTPOS=46002528;//kernel.Boot:2528
       if (typeof  SplashScreen!="undefined") {
-        //$LASTPOS=45002566;//kernel.Boot:2566
+        //$LASTPOS=46002566;//kernel.Boot:2566
         SplashScreen.hide();
       }
-      //$LASTPOS=45002588;//kernel.Boot:2588
+      //$LASTPOS=46002588;//kernel.Boot:2588
       while (true) {
-        //$LASTPOS=45002605;//kernel.Boot:2605
+        //$LASTPOS=46002605;//kernel.Boot:2605
         if (_this._useRAF) {
-          //$LASTPOS=45002618;//kernel.Boot:2618
+          //$LASTPOS=46002618;//kernel.Boot:2618
           _this.loopRAF();
         } else {
-          //$LASTPOS=45002636;//kernel.Boot:2636
+          //$LASTPOS=46002636;//kernel.Boot:2636
           _this.loopTimer();
         }
-        //$LASTPOS=45002654;//kernel.Boot:2654
+        //$LASTPOS=46002654;//kernel.Boot:2654
         _this.measureFps();
-        //$LASTPOS=45002670;//kernel.Boot:2670
+        //$LASTPOS=46002670;//kernel.Boot:2670
         _this.handlePause();
         
       }
@@ -16173,7 +16175,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=45002000;//kernel.Boot:2000
+      //$LASTPOS=46002000;//kernel.Boot:2000
       Tonyu.globals.$Boot=_this;
       
       _thread.enter(function _trc_Boot_ent_main(_thread) {
@@ -16181,74 +16183,74 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=45002013;//kernel.Boot:2013
+            //$LASTPOS=46002013;//kernel.Boot:2013
             _this.fiber$loadPlugins(_thread);
             __pc=1;return;
           case 1:
             
-            //$LASTPOS=45002029;//kernel.Boot:2029
+            //$LASTPOS=46002029;//kernel.Boot:2029
             _this.fiber$initSprites(_thread);
             __pc=2;return;
           case 2:
             
-            //$LASTPOS=45002045;//kernel.Boot:2045
+            //$LASTPOS=46002045;//kernel.Boot:2045
             _this.fiber$initSounds(_thread);
             __pc=3;return;
           case 3:
             
-            //$LASTPOS=45002060;//kernel.Boot:2060
+            //$LASTPOS=46002060;//kernel.Boot:2060
             Tonyu.globals.$InputDevice=new Tonyu.classes.kernel.InputDevice;
-            //$LASTPOS=45002091;//kernel.Boot:2091
+            //$LASTPOS=46002091;//kernel.Boot:2091
             Tonyu.globals.$InputDevice.initCanvasEvents(_this.cvj);
-            //$LASTPOS=45002128;//kernel.Boot:2128
+            //$LASTPOS=46002128;//kernel.Boot:2128
             _this.fiber$initThread(_thread);
             __pc=4;return;
           case 4:
             
-            //$LASTPOS=45002145;//kernel.Boot:2145
+            //$LASTPOS=46002145;//kernel.Boot:2145
             Tonyu.globals.$pat_fruits=30;
-            //$LASTPOS=45002162;//kernel.Boot:2162
+            //$LASTPOS=46002162;//kernel.Boot:2162
             Tonyu.globals.$Keys=new Tonyu.classes.kernel.Keys;
-            //$LASTPOS=45002179;//kernel.Boot:2179
+            //$LASTPOS=46002179;//kernel.Boot:2179
             Tonyu.globals.$Math=Math;
-            //$LASTPOS=45002192;//kernel.Boot:2192
+            //$LASTPOS=46002192;//kernel.Boot:2192
             Tonyu.globals.$consolePanel=new Tonyu.classes.kernel.Panel({align: "center",x: 465/2,y: 465/2,width: 465,height: 465,zOrder: - 10,layer: Tonyu.globals.$FrontSprites});
-            //$LASTPOS=45002302;//kernel.Boot:2302
+            //$LASTPOS=46002302;//kernel.Boot:2302
             Tonyu.globals.$consolePrintY=465-15;
-            //$LASTPOS=45002326;//kernel.Boot:2326
+            //$LASTPOS=46002326;//kernel.Boot:2326
             Tonyu.globals.$panel=new Tonyu.classes.kernel.Panel({align: "center",x: Tonyu.globals.$screenWidth/2,y: Tonyu.globals.$screenHeight/2,width: Tonyu.globals.$screenWidth,height: Tonyu.globals.$screenHeight,zOrder: - 1,layer: Tonyu.globals.$FrontSprites});
-            //$LASTPOS=45002466;//kernel.Boot:2466
+            //$LASTPOS=46002466;//kernel.Boot:2466
             _this.initFPSParams();
-            //$LASTPOS=45002486;//kernel.Boot:2486
+            //$LASTPOS=46002486;//kernel.Boot:2486
             Tonyu.globals.$mouseX=Tonyu.globals.$mouseX||0;
-            //$LASTPOS=45002507;//kernel.Boot:2507
+            //$LASTPOS=46002507;//kernel.Boot:2507
             Tonyu.globals.$mouseY=Tonyu.globals.$mouseY||0;
-            //$LASTPOS=45002528;//kernel.Boot:2528
+            //$LASTPOS=46002528;//kernel.Boot:2528
             if (typeof  SplashScreen!="undefined") {
-              //$LASTPOS=45002566;//kernel.Boot:2566
+              //$LASTPOS=46002566;//kernel.Boot:2566
               SplashScreen.hide();
             }
-            //$LASTPOS=45002588;//kernel.Boot:2588
+            //$LASTPOS=46002588;//kernel.Boot:2588
           case 5:
-            //$LASTPOS=45002605;//kernel.Boot:2605
+            //$LASTPOS=46002605;//kernel.Boot:2605
             if (!(_this._useRAF)) { __pc=7; break; }
-            //$LASTPOS=45002618;//kernel.Boot:2618
+            //$LASTPOS=46002618;//kernel.Boot:2618
             _this.fiber$loopRAF(_thread);
             __pc=6;return;
           case 6:
             
             __pc=9;break;
           case 7:
-            //$LASTPOS=45002636;//kernel.Boot:2636
+            //$LASTPOS=46002636;//kernel.Boot:2636
             _this.fiber$loopTimer(_thread);
             __pc=8;return;
           case 8:
             
           case 9:
             
-            //$LASTPOS=45002654;//kernel.Boot:2654
+            //$LASTPOS=46002654;//kernel.Boot:2654
             _this.measureFps();
-            //$LASTPOS=45002670;//kernel.Boot:2670
+            //$LASTPOS=46002670;//kernel.Boot:2670
             _this.fiber$handlePause(_thread);
             __pc=10;return;
           case 10:
@@ -16265,14 +16267,14 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45000237;//kernel.Boot:237
+      //$LASTPOS=46000237;//kernel.Boot:237
       _this.extend(param);
     },
     update :function _trc_Boot_update() {
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45000273;//kernel.Boot:273
+      //$LASTPOS=46000273;//kernel.Boot:273
       _this.waitFor(Tonyu.timeout(50));
     },
     fiber$update :function _trc_Boot_f_update(_thread) {
@@ -16287,7 +16289,7 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=45000273;//kernel.Boot:273
+            //$LASTPOS=46000273;//kernel.Boot:273
             _this.fiber$waitFor(_thread, Tonyu.timeout(50));
             __pc=1;return;
           case 1:
@@ -16302,13 +16304,13 @@ Tonyu.klass.define({
       var _this=this;
       var a;
       
-      //$LASTPOS=45000354;//kernel.Boot:354
+      //$LASTPOS=46000354;//kernel.Boot:354
       _this.print("Loading plugins..");
-      //$LASTPOS=45000388;//kernel.Boot:388
+      //$LASTPOS=46000388;//kernel.Boot:388
       a = _this.asyncResult();
-      //$LASTPOS=45000414;//kernel.Boot:414
+      //$LASTPOS=46000414;//kernel.Boot:414
       Tonyu.globals.$currentProject.loadPlugins(a.receiver);
-      //$LASTPOS=45000460;//kernel.Boot:460
+      //$LASTPOS=46000460;//kernel.Boot:460
       _this.waitFor(a);
     },
     fiber$loadPlugins :function _trc_Boot_f_loadPlugins(_thread) {
@@ -16318,11 +16320,11 @@ Tonyu.klass.define({
       var __pc=0;
       var a;
       
-      //$LASTPOS=45000354;//kernel.Boot:354
+      //$LASTPOS=46000354;//kernel.Boot:354
       _this.print("Loading plugins..");
-      //$LASTPOS=45000388;//kernel.Boot:388
+      //$LASTPOS=46000388;//kernel.Boot:388
       a = _this.asyncResult();
-      //$LASTPOS=45000414;//kernel.Boot:414
+      //$LASTPOS=46000414;//kernel.Boot:414
       Tonyu.globals.$currentProject.loadPlugins(a.receiver);
       
       _thread.enter(function _trc_Boot_ent_loadPlugins(_thread) {
@@ -16330,7 +16332,7 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=45000460;//kernel.Boot:460
+            //$LASTPOS=46000460;//kernel.Boot:460
             _this.fiber$waitFor(_thread, a);
             __pc=1;return;
           case 1:
@@ -16349,49 +16351,49 @@ Tonyu.klass.define({
       var val;
       var _it_324;
       
-      //$LASTPOS=45000498;//kernel.Boot:498
+      //$LASTPOS=46000498;//kernel.Boot:498
       Tonyu.globals.$Sprites=new Tonyu.classes.kernel.Sprites();
-      //$LASTPOS=45000527;//kernel.Boot:527
+      //$LASTPOS=46000527;//kernel.Boot:527
       Tonyu.globals.$FrontSprites=new Tonyu.classes.kernel.Sprites();
-      //$LASTPOS=45000561;//kernel.Boot:561
+      //$LASTPOS=46000561;//kernel.Boot:561
       _this.cvj=$("canvas");
-      //$LASTPOS=45000583;//kernel.Boot:583
+      //$LASTPOS=46000583;//kernel.Boot:583
       if (Tonyu.noviceMode) {
-        //$LASTPOS=45000616;//kernel.Boot:616
+        //$LASTPOS=46000616;//kernel.Boot:616
         Tonyu.globals.$Screen=new Tonyu.classes.kernel.ScaledCanvas({canvas: _this.cvj,width: 600,height: 300});
         
       } else {
-        //$LASTPOS=45000700;//kernel.Boot:700
+        //$LASTPOS=46000700;//kernel.Boot:700
         Tonyu.globals.$Screen=new Tonyu.classes.kernel.ScaledCanvas({canvas: _this.cvj,width: 465,height: 465});
         
       }
-      //$LASTPOS=45000773;//kernel.Boot:773
+      //$LASTPOS=46000773;//kernel.Boot:773
       _this.drawFrame();
-      //$LASTPOS=45000791;//kernel.Boot:791
+      //$LASTPOS=46000791;//kernel.Boot:791
       _this.print("Loading pats..");
-      //$LASTPOS=45000822;//kernel.Boot:822
+      //$LASTPOS=46000822;//kernel.Boot:822
       rs = Tonyu.globals.$currentProject.getResource();
-      //$LASTPOS=45000865;//kernel.Boot:865
+      //$LASTPOS=46000865;//kernel.Boot:865
       _this.a=_this.asyncResult();
-      //$LASTPOS=45000887;//kernel.Boot:887
+      //$LASTPOS=46000887;//kernel.Boot:887
       ImageList.load(rs.images,_this.a.receiver,{baseDir: Tonyu.globals.$currentProject.getDir()});
-      //$LASTPOS=45000972;//kernel.Boot:972
+      //$LASTPOS=46000972;//kernel.Boot:972
       _this.waitFor(_this.a);
-      //$LASTPOS=45000989;//kernel.Boot:989
+      //$LASTPOS=46000989;//kernel.Boot:989
       r = _this.a[0];
-      //$LASTPOS=45001006;//kernel.Boot:1006
+      //$LASTPOS=46001006;//kernel.Boot:1006
       Tonyu.globals.$Sprites.setImageList(r);
-      //$LASTPOS=45001037;//kernel.Boot:1037
+      //$LASTPOS=46001037;//kernel.Boot:1037
       _it_324=Tonyu.iterator(r.names,2);
       while(_it_324.next()) {
         name=_it_324[0];
         val=_it_324[1];
         
-        //$LASTPOS=45001078;//kernel.Boot:1078
+        //$LASTPOS=46001078;//kernel.Boot:1078
         Tonyu.setGlobal(name,val);
         
       }
-      //$LASTPOS=45001118;//kernel.Boot:1118
+      //$LASTPOS=46001118;//kernel.Boot:1118
       _this.print("Loading pats done.");
     },
     fiber$initSprites :function _trc_Boot_f_initSprites(_thread) {
@@ -16405,31 +16407,31 @@ Tonyu.klass.define({
       var val;
       var _it_324;
       
-      //$LASTPOS=45000498;//kernel.Boot:498
+      //$LASTPOS=46000498;//kernel.Boot:498
       Tonyu.globals.$Sprites=new Tonyu.classes.kernel.Sprites();
-      //$LASTPOS=45000527;//kernel.Boot:527
+      //$LASTPOS=46000527;//kernel.Boot:527
       Tonyu.globals.$FrontSprites=new Tonyu.classes.kernel.Sprites();
-      //$LASTPOS=45000561;//kernel.Boot:561
+      //$LASTPOS=46000561;//kernel.Boot:561
       _this.cvj=$("canvas");
-      //$LASTPOS=45000583;//kernel.Boot:583
+      //$LASTPOS=46000583;//kernel.Boot:583
       if (Tonyu.noviceMode) {
-        //$LASTPOS=45000616;//kernel.Boot:616
+        //$LASTPOS=46000616;//kernel.Boot:616
         Tonyu.globals.$Screen=new Tonyu.classes.kernel.ScaledCanvas({canvas: _this.cvj,width: 600,height: 300});
         
       } else {
-        //$LASTPOS=45000700;//kernel.Boot:700
+        //$LASTPOS=46000700;//kernel.Boot:700
         Tonyu.globals.$Screen=new Tonyu.classes.kernel.ScaledCanvas({canvas: _this.cvj,width: 465,height: 465});
         
       }
-      //$LASTPOS=45000773;//kernel.Boot:773
+      //$LASTPOS=46000773;//kernel.Boot:773
       _this.drawFrame();
-      //$LASTPOS=45000791;//kernel.Boot:791
+      //$LASTPOS=46000791;//kernel.Boot:791
       _this.print("Loading pats..");
-      //$LASTPOS=45000822;//kernel.Boot:822
+      //$LASTPOS=46000822;//kernel.Boot:822
       rs = Tonyu.globals.$currentProject.getResource();
-      //$LASTPOS=45000865;//kernel.Boot:865
+      //$LASTPOS=46000865;//kernel.Boot:865
       _this.a=_this.asyncResult();
-      //$LASTPOS=45000887;//kernel.Boot:887
+      //$LASTPOS=46000887;//kernel.Boot:887
       ImageList.load(rs.images,_this.a.receiver,{baseDir: Tonyu.globals.$currentProject.getDir()});
       
       _thread.enter(function _trc_Boot_ent_initSprites(_thread) {
@@ -16437,26 +16439,26 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=45000972;//kernel.Boot:972
+            //$LASTPOS=46000972;//kernel.Boot:972
             _this.fiber$waitFor(_thread, _this.a);
             __pc=1;return;
           case 1:
             
-            //$LASTPOS=45000989;//kernel.Boot:989
+            //$LASTPOS=46000989;//kernel.Boot:989
             r = _this.a[0];
-            //$LASTPOS=45001006;//kernel.Boot:1006
+            //$LASTPOS=46001006;//kernel.Boot:1006
             Tonyu.globals.$Sprites.setImageList(r);
-            //$LASTPOS=45001037;//kernel.Boot:1037
+            //$LASTPOS=46001037;//kernel.Boot:1037
             _it_324=Tonyu.iterator(r.names,2);
             while(_it_324.next()) {
               name=_it_324[0];
               val=_it_324[1];
               
-              //$LASTPOS=45001078;//kernel.Boot:1078
+              //$LASTPOS=46001078;//kernel.Boot:1078
               Tonyu.setGlobal(name,val);
               
             }
-            //$LASTPOS=45001118;//kernel.Boot:1118
+            //$LASTPOS=46001118;//kernel.Boot:1118
             _this.print("Loading pats done.");
             _thread.exit(_this);return;
           }
@@ -16467,21 +16469,21 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45001173;//kernel.Boot:1173
+      //$LASTPOS=46001173;//kernel.Boot:1173
       _this.print("Loading sounds...");
-      //$LASTPOS=45001207;//kernel.Boot:1207
+      //$LASTPOS=46001207;//kernel.Boot:1207
       _this.initT2MediaPlayer();
-      //$LASTPOS=45001233;//kernel.Boot:1233
+      //$LASTPOS=46001233;//kernel.Boot:1233
       _this.loadFromProject(Tonyu.globals.$currentProject);
-      //$LASTPOS=45001272;//kernel.Boot:1272
+      //$LASTPOS=46001272;//kernel.Boot:1272
       _this.print("Loading sounds done.");
-      //$LASTPOS=45001309;//kernel.Boot:1309
+      //$LASTPOS=46001309;//kernel.Boot:1309
       _this.on("stop",(function anonymous_1319() {
         
-        //$LASTPOS=45001331;//kernel.Boot:1331
+        //$LASTPOS=46001331;//kernel.Boot:1331
         _this.clearSEData();
       }));
-      //$LASTPOS=45001359;//kernel.Boot:1359
+      //$LASTPOS=46001359;//kernel.Boot:1359
       Tonyu.globals.$sound=_this;
     },
     fiber$initSounds :function _trc_Boot_f_initSounds(_thread) {
@@ -16490,7 +16492,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=45001173;//kernel.Boot:1173
+      //$LASTPOS=46001173;//kernel.Boot:1173
       _this.print("Loading sounds...");
       
       _thread.enter(function _trc_Boot_ent_initSounds(_thread) {
@@ -16498,25 +16500,25 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=45001207;//kernel.Boot:1207
+            //$LASTPOS=46001207;//kernel.Boot:1207
             _this.fiber$initT2MediaPlayer(_thread);
             __pc=1;return;
           case 1:
             
-            //$LASTPOS=45001233;//kernel.Boot:1233
+            //$LASTPOS=46001233;//kernel.Boot:1233
             _this.fiber$loadFromProject(_thread, Tonyu.globals.$currentProject);
             __pc=2;return;
           case 2:
             
-            //$LASTPOS=45001272;//kernel.Boot:1272
+            //$LASTPOS=46001272;//kernel.Boot:1272
             _this.print("Loading sounds done.");
-            //$LASTPOS=45001309;//kernel.Boot:1309
+            //$LASTPOS=46001309;//kernel.Boot:1309
             _this.on("stop",(function anonymous_1319() {
               
-              //$LASTPOS=45001331;//kernel.Boot:1331
+              //$LASTPOS=46001331;//kernel.Boot:1331
               _this.clearSEData();
             }));
-            //$LASTPOS=45001359;//kernel.Boot:1359
+            //$LASTPOS=46001359;//kernel.Boot:1359
             Tonyu.globals.$sound=_this;
             _thread.exit(_this);return;
           }
@@ -16534,23 +16536,23 @@ Tonyu.klass.define({
       var o;
       var mainClassName;
       
-      //$LASTPOS=45001413;//kernel.Boot:1413
+      //$LASTPOS=46001413;//kernel.Boot:1413
       o = Tonyu.currentProject.getOptions();
-      //$LASTPOS=45001459;//kernel.Boot:1459
+      //$LASTPOS=46001459;//kernel.Boot:1459
       mainClassName = o.run.mainClass;
-      //$LASTPOS=45001499;//kernel.Boot:1499
+      //$LASTPOS=46001499;//kernel.Boot:1499
       _this.print("MainClass= "+mainClassName);
-      //$LASTPOS=45001540;//kernel.Boot:1540
+      //$LASTPOS=46001540;//kernel.Boot:1540
       _this.mainClass=Tonyu.getClass(mainClassName);
-      //$LASTPOS=45001586;//kernel.Boot:1586
+      //$LASTPOS=46001586;//kernel.Boot:1586
       if (! _this.mainClass) {
-        //$LASTPOS=45001613;//kernel.Boot:1613
+        //$LASTPOS=46001613;//kernel.Boot:1613
         TError(mainClassName+" というクラスはありません","",0).raise();
         
       }
-      //$LASTPOS=45001689;//kernel.Boot:1689
+      //$LASTPOS=46001689;//kernel.Boot:1689
       _this.scheduler=Tonyu.globals.$Scheduler=new Tonyu.classes.kernel.Scheduler;
-      //$LASTPOS=45001730;//kernel.Boot:1730
+      //$LASTPOS=46001730;//kernel.Boot:1730
       new _this.mainClass();
     },
     fiber$initThread :function _trc_Boot_f_initThread(_thread) {
@@ -16561,23 +16563,23 @@ Tonyu.klass.define({
       var o;
       var mainClassName;
       
-      //$LASTPOS=45001413;//kernel.Boot:1413
+      //$LASTPOS=46001413;//kernel.Boot:1413
       o = Tonyu.currentProject.getOptions();
-      //$LASTPOS=45001459;//kernel.Boot:1459
+      //$LASTPOS=46001459;//kernel.Boot:1459
       mainClassName = o.run.mainClass;
-      //$LASTPOS=45001499;//kernel.Boot:1499
+      //$LASTPOS=46001499;//kernel.Boot:1499
       _this.print("MainClass= "+mainClassName);
-      //$LASTPOS=45001540;//kernel.Boot:1540
+      //$LASTPOS=46001540;//kernel.Boot:1540
       _this.mainClass=Tonyu.getClass(mainClassName);
-      //$LASTPOS=45001586;//kernel.Boot:1586
+      //$LASTPOS=46001586;//kernel.Boot:1586
       if (! _this.mainClass) {
-        //$LASTPOS=45001613;//kernel.Boot:1613
+        //$LASTPOS=46001613;//kernel.Boot:1613
         TError(mainClassName+" というクラスはありません","",0).raise();
         
       }
-      //$LASTPOS=45001689;//kernel.Boot:1689
+      //$LASTPOS=46001689;//kernel.Boot:1689
       _this.scheduler=Tonyu.globals.$Scheduler=new Tonyu.classes.kernel.Scheduler;
-      //$LASTPOS=45001730;//kernel.Boot:1730
+      //$LASTPOS=46001730;//kernel.Boot:1730
       new _this.mainClass();
       
       _thread.retVal=_this;return;
@@ -16586,9 +16588,9 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45001766;//kernel.Boot:1766
+      //$LASTPOS=46001766;//kernel.Boot:1766
       _this.fireEvent("stop");
-      //$LASTPOS=45001790;//kernel.Boot:1790
+      //$LASTPOS=46001790;//kernel.Boot:1790
       _this.die();
     },
     fiber$stop :function _trc_Boot_f_stop(_thread) {
@@ -16597,9 +16599,9 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=45001766;//kernel.Boot:1766
+      //$LASTPOS=46001766;//kernel.Boot:1766
       _this.fireEvent("stop");
-      //$LASTPOS=45001790;//kernel.Boot:1790
+      //$LASTPOS=46001790;//kernel.Boot:1790
       _this.die();
       
       _thread.retVal=_this;return;
@@ -16609,15 +16611,15 @@ Tonyu.klass.define({
       var _this=this;
       var th;
       
-      //$LASTPOS=45001835;//kernel.Boot:1835
+      //$LASTPOS=46001835;//kernel.Boot:1835
       method=method||"main";
-      //$LASTPOS=45001863;//kernel.Boot:1863
+      //$LASTPOS=46001863;//kernel.Boot:1863
       args=args||[];
-      //$LASTPOS=45001883;//kernel.Boot:1883
+      //$LASTPOS=46001883;//kernel.Boot:1883
       th = _this.scheduler.newThread(obj,method,args);
-      //$LASTPOS=45001935;//kernel.Boot:1935
+      //$LASTPOS=46001935;//kernel.Boot:1935
       _this.addThreadGroup(obj);
-      //$LASTPOS=45001961;//kernel.Boot:1961
+      //$LASTPOS=46001961;//kernel.Boot:1961
       obj.addThread(th);
       return th;
     },
@@ -16628,11 +16630,11 @@ Tonyu.klass.define({
       var __pc=0;
       var th;
       
-      //$LASTPOS=45001835;//kernel.Boot:1835
+      //$LASTPOS=46001835;//kernel.Boot:1835
       method=method||"main";
-      //$LASTPOS=45001863;//kernel.Boot:1863
+      //$LASTPOS=46001863;//kernel.Boot:1863
       args=args||[];
-      //$LASTPOS=45001883;//kernel.Boot:1883
+      //$LASTPOS=46001883;//kernel.Boot:1883
       th = _this.scheduler.newThread(obj,method,args);
       
       _thread.enter(function _trc_Boot_ent_schedule(_thread) {
@@ -16640,12 +16642,12 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=45001935;//kernel.Boot:1935
+            //$LASTPOS=46001935;//kernel.Boot:1935
             _this.fiber$addThreadGroup(_thread, obj);
             __pc=1;return;
           case 1:
             
-            //$LASTPOS=45001961;//kernel.Boot:1961
+            //$LASTPOS=46001961;//kernel.Boot:1961
             obj.addThread(th);
             _thread.exit(th);return;
             _thread.exit(_this);return;
@@ -16664,55 +16666,55 @@ Tonyu.klass.define({
       var rafResMS;
       var elapsedRAF;
       
-      //$LASTPOS=45002704;//kernel.Boot:2704
+      //$LASTPOS=46002704;//kernel.Boot:2704
       start = _this.now();elapsed;
-      //$LASTPOS=45002731;//kernel.Boot:2731
+      //$LASTPOS=46002731;//kernel.Boot:2731
       time = 1000/_this._fps;
-      //$LASTPOS=45002770;//kernel.Boot:2770
+      //$LASTPOS=46002770;//kernel.Boot:2770
       moves = 0;
-      //$LASTPOS=45002785;//kernel.Boot:2785
+      //$LASTPOS=46002785;//kernel.Boot:2785
       while (moves<_this.frameSkip) {
-        //$LASTPOS=45002813;//kernel.Boot:2813
+        //$LASTPOS=46002813;//kernel.Boot:2813
         _this.moveFrame();
-        //$LASTPOS=45002829;//kernel.Boot:2829
+        //$LASTPOS=46002829;//kernel.Boot:2829
         moves++;
-        //$LASTPOS=45002841;//kernel.Boot:2841
+        //$LASTPOS=46002841;//kernel.Boot:2841
         if (moves<_this.frameSkip) {
-          //$LASTPOS=45002862;//kernel.Boot:2862
+          //$LASTPOS=46002862;//kernel.Boot:2862
           _this.afterDraw();
         }
         
       }
-      //$LASTPOS=45002881;//kernel.Boot:2881
+      //$LASTPOS=46002881;//kernel.Boot:2881
       _this.drawFrame();
-      //$LASTPOS=45002896;//kernel.Boot:2896
+      //$LASTPOS=46002896;//kernel.Boot:2896
       _this.afterDraw();
-      //$LASTPOS=45002911;//kernel.Boot:2911
+      //$LASTPOS=46002911;//kernel.Boot:2911
       _this.waitRAF();
-      //$LASTPOS=45002930;//kernel.Boot:2930
+      //$LASTPOS=46002930;//kernel.Boot:2930
       elapsed=_this.now()-start;
-      //$LASTPOS=45002958;//kernel.Boot:2958
+      //$LASTPOS=46002958;//kernel.Boot:2958
       cnt = _this.rafCount-1;
-      //$LASTPOS=45002983;//kernel.Boot:2983
+      //$LASTPOS=46002983;//kernel.Boot:2983
       if (_this.rafResolution) {
-        //$LASTPOS=45003054;//kernel.Boot:3054
+        //$LASTPOS=46003054;//kernel.Boot:3054
         rafResMS = time/_this.rafResolution;
-        //$LASTPOS=45003132;//kernel.Boot:3132
+        //$LASTPOS=46003132;//kernel.Boot:3132
         elapsedRAF = _this.floor(elapsed/rafResMS+0.5);
-        //$LASTPOS=45003192;//kernel.Boot:3192
+        //$LASTPOS=46003192;//kernel.Boot:3192
         if (elapsedRAF>1) {
-          //$LASTPOS=45003210;//kernel.Boot:3210
+          //$LASTPOS=46003210;//kernel.Boot:3210
           cnt-=(elapsedRAF-1);
         }
         
       }
-      //$LASTPOS=45003268;//kernel.Boot:3268
+      //$LASTPOS=46003268;//kernel.Boot:3268
       _this.rafCntDebug=cnt;
-      //$LASTPOS=45003287;//kernel.Boot:3287
+      //$LASTPOS=46003287;//kernel.Boot:3287
       while (cnt>0) {
-        //$LASTPOS=45003305;//kernel.Boot:3305
+        //$LASTPOS=46003305;//kernel.Boot:3305
         _this.waitRAF();
-        //$LASTPOS=45003319;//kernel.Boot:3319
+        //$LASTPOS=46003319;//kernel.Boot:3319
         cnt--;
         
       }
@@ -16730,11 +16732,11 @@ Tonyu.klass.define({
       var rafResMS;
       var elapsedRAF;
       
-      //$LASTPOS=45002704;//kernel.Boot:2704
+      //$LASTPOS=46002704;//kernel.Boot:2704
       start = _this.now();elapsed;
-      //$LASTPOS=45002731;//kernel.Boot:2731
+      //$LASTPOS=46002731;//kernel.Boot:2731
       time = 1000/_this._fps;
-      //$LASTPOS=45002770;//kernel.Boot:2770
+      //$LASTPOS=46002770;//kernel.Boot:2770
       moves = 0;
       
       _thread.enter(function _trc_Boot_ent_loopRAF(_thread) {
@@ -16742,60 +16744,60 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=45002785;//kernel.Boot:2785
+            //$LASTPOS=46002785;//kernel.Boot:2785
           case 1:
             if (!(moves<_this.frameSkip)) { __pc=2; break; }
             {
-              //$LASTPOS=45002813;//kernel.Boot:2813
+              //$LASTPOS=46002813;//kernel.Boot:2813
               _this.moveFrame();
-              //$LASTPOS=45002829;//kernel.Boot:2829
+              //$LASTPOS=46002829;//kernel.Boot:2829
               moves++;
-              //$LASTPOS=45002841;//kernel.Boot:2841
+              //$LASTPOS=46002841;//kernel.Boot:2841
               if (moves<_this.frameSkip) {
-                //$LASTPOS=45002862;//kernel.Boot:2862
+                //$LASTPOS=46002862;//kernel.Boot:2862
                 _this.afterDraw();
               }
             }
             __pc=1;break;
           case 2:
             
-            //$LASTPOS=45002881;//kernel.Boot:2881
+            //$LASTPOS=46002881;//kernel.Boot:2881
             _this.drawFrame();
-            //$LASTPOS=45002896;//kernel.Boot:2896
+            //$LASTPOS=46002896;//kernel.Boot:2896
             _this.afterDraw();
-            //$LASTPOS=45002911;//kernel.Boot:2911
+            //$LASTPOS=46002911;//kernel.Boot:2911
             _this.fiber$waitRAF(_thread);
             __pc=3;return;
           case 3:
             
-            //$LASTPOS=45002930;//kernel.Boot:2930
+            //$LASTPOS=46002930;//kernel.Boot:2930
             elapsed=_this.now()-start;
-            //$LASTPOS=45002958;//kernel.Boot:2958
+            //$LASTPOS=46002958;//kernel.Boot:2958
             cnt = _this.rafCount-1;
-            //$LASTPOS=45002983;//kernel.Boot:2983
+            //$LASTPOS=46002983;//kernel.Boot:2983
             if (_this.rafResolution) {
-              //$LASTPOS=45003054;//kernel.Boot:3054
+              //$LASTPOS=46003054;//kernel.Boot:3054
               rafResMS = time/_this.rafResolution;
-              //$LASTPOS=45003132;//kernel.Boot:3132
+              //$LASTPOS=46003132;//kernel.Boot:3132
               elapsedRAF = _this.floor(elapsed/rafResMS+0.5);
-              //$LASTPOS=45003192;//kernel.Boot:3192
+              //$LASTPOS=46003192;//kernel.Boot:3192
               if (elapsedRAF>1) {
-                //$LASTPOS=45003210;//kernel.Boot:3210
+                //$LASTPOS=46003210;//kernel.Boot:3210
                 cnt-=(elapsedRAF-1);
               }
               
             }
-            //$LASTPOS=45003268;//kernel.Boot:3268
+            //$LASTPOS=46003268;//kernel.Boot:3268
             _this.rafCntDebug=cnt;
-            //$LASTPOS=45003287;//kernel.Boot:3287
+            //$LASTPOS=46003287;//kernel.Boot:3287
           case 4:
             if (!(cnt>0)) { __pc=6; break; }
-            //$LASTPOS=45003305;//kernel.Boot:3305
+            //$LASTPOS=46003305;//kernel.Boot:3305
             _this.fiber$waitRAF(_thread);
             __pc=5;return;
           case 5:
             
-            //$LASTPOS=45003319;//kernel.Boot:3319
+            //$LASTPOS=46003319;//kernel.Boot:3319
             cnt--;
             __pc=4;break;
           case 6:
@@ -16810,16 +16812,16 @@ Tonyu.klass.define({
       var _this=this;
       var rafStart;
       
-      //$LASTPOS=45003355;//kernel.Boot:3355
+      //$LASTPOS=46003355;//kernel.Boot:3355
       _this.waitFor(Tonyu.animationFrame());
-      //$LASTPOS=45003393;//kernel.Boot:3393
+      //$LASTPOS=46003393;//kernel.Boot:3393
       rafStart = _this.now();
-      //$LASTPOS=45003418;//kernel.Boot:3418
+      //$LASTPOS=46003418;//kernel.Boot:3418
       if (_this.pRafStart) {
-        //$LASTPOS=45003433;//kernel.Boot:3433
+        //$LASTPOS=46003433;//kernel.Boot:3433
         _this.detectRAFResolution(rafStart-_this.pRafStart);
       }
-      //$LASTPOS=45003479;//kernel.Boot:3479
+      //$LASTPOS=46003479;//kernel.Boot:3479
       _this.pRafStart=rafStart;
     },
     fiber$waitRAF :function _trc_Boot_f_waitRAF(_thread) {
@@ -16835,19 +16837,19 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=45003355;//kernel.Boot:3355
+            //$LASTPOS=46003355;//kernel.Boot:3355
             _this.fiber$waitFor(_thread, Tonyu.animationFrame());
             __pc=1;return;
           case 1:
             
-            //$LASTPOS=45003393;//kernel.Boot:3393
+            //$LASTPOS=46003393;//kernel.Boot:3393
             rafStart = _this.now();
-            //$LASTPOS=45003418;//kernel.Boot:3418
+            //$LASTPOS=46003418;//kernel.Boot:3418
             if (_this.pRafStart) {
-              //$LASTPOS=45003433;//kernel.Boot:3433
+              //$LASTPOS=46003433;//kernel.Boot:3433
               _this.detectRAFResolution(rafStart-_this.pRafStart);
             }
-            //$LASTPOS=45003479;//kernel.Boot:3479
+            //$LASTPOS=46003479;//kernel.Boot:3479
             _this.pRafStart=rafStart;
             _thread.exit(_this);return;
           }
@@ -16860,39 +16862,39 @@ Tonyu.klass.define({
       var time;
       var reso;
       
-      //$LASTPOS=45003538;//kernel.Boot:3538
+      //$LASTPOS=46003538;//kernel.Boot:3538
       if (_this.rafResolution) {
         return _this;
       }
-      //$LASTPOS=45003621;//kernel.Boot:3621
+      //$LASTPOS=46003621;//kernel.Boot:3621
       time = 1000/_this._fps;
-      //$LASTPOS=45003643;//kernel.Boot:3643
+      //$LASTPOS=46003643;//kernel.Boot:3643
       reso = time/t;
-      //$LASTPOS=45003731;//kernel.Boot:3731
+      //$LASTPOS=46003731;//kernel.Boot:3731
       if (reso>1) {
-        //$LASTPOS=45003743;//kernel.Boot:3743
+        //$LASTPOS=46003743;//kernel.Boot:3743
         reso=_this.floor(reso+0.5);
       } else {
-        //$LASTPOS=45003784;//kernel.Boot:3784
+        //$LASTPOS=46003784;//kernel.Boot:3784
         reso=1/_this.floor(1/reso+0.5);
       }
-      //$LASTPOS=45003863;//kernel.Boot:3863
+      //$LASTPOS=46003863;//kernel.Boot:3863
       _this.rafRess=_this.rafRess||{};
-      //$LASTPOS=45003886;//kernel.Boot:3886
+      //$LASTPOS=46003886;//kernel.Boot:3886
       if ((_this.rafRess[reso+""]=(_this.rafRess[reso+""]||0)+1)>10) {
-        //$LASTPOS=45003948;//kernel.Boot:3948
+        //$LASTPOS=46003948;//kernel.Boot:3948
         _this.rafResolution=reso;
-        //$LASTPOS=45003971;//kernel.Boot:3971
+        //$LASTPOS=46003971;//kernel.Boot:3971
         if (reso<1) {
-          //$LASTPOS=45003989;//kernel.Boot:3989
+          //$LASTPOS=46003989;//kernel.Boot:3989
           _this.frameSkip=_this.floor(1/reso+0.5);
-          //$LASTPOS=45004022;//kernel.Boot:4022
+          //$LASTPOS=46004022;//kernel.Boot:4022
           _this.rafCount=1;
           
         } else {
-          //$LASTPOS=45004050;//kernel.Boot:4050
+          //$LASTPOS=46004050;//kernel.Boot:4050
           _this.rafCount=reso;
-          //$LASTPOS=45004069;//kernel.Boot:4069
+          //$LASTPOS=46004069;//kernel.Boot:4069
           _this.frameSkip=1;
           
         }
@@ -16905,23 +16907,23 @@ Tonyu.klass.define({
       var s;
       var i;
       
-      //$LASTPOS=45004123;//kernel.Boot:4123
+      //$LASTPOS=46004123;//kernel.Boot:4123
       if (Tonyu.globals.$RAFInterval) {
         return _this;
       }
-      //$LASTPOS=45004151;//kernel.Boot:4151
+      //$LASTPOS=46004151;//kernel.Boot:4151
       s = _this.now();
-      //$LASTPOS=45004166;//kernel.Boot:4166
-      //$LASTPOS=45004171;//kernel.Boot:4171
+      //$LASTPOS=46004166;//kernel.Boot:4166
+      //$LASTPOS=46004171;//kernel.Boot:4171
       i = 0;
       while(i<20) {
         {
-          //$LASTPOS=45004197;//kernel.Boot:4197
+          //$LASTPOS=46004197;//kernel.Boot:4197
           _this.waitFor(Tonyu.animationFrame());
         }
         i++;
       }
-      //$LASTPOS=45004236;//kernel.Boot:4236
+      //$LASTPOS=46004236;//kernel.Boot:4236
       Tonyu.globals.$RAFInterval=(_this.now()-s)/20;
     },
     fiber$measureRAFInterval :function _trc_Boot_f_measureRAFInterval(_thread) {
@@ -16932,12 +16934,12 @@ Tonyu.klass.define({
       var s;
       var i;
       
-      //$LASTPOS=45004123;//kernel.Boot:4123
+      //$LASTPOS=46004123;//kernel.Boot:4123
       if (Tonyu.globals.$RAFInterval) {
         _thread.retVal=_this;return;
         
       }
-      //$LASTPOS=45004151;//kernel.Boot:4151
+      //$LASTPOS=46004151;//kernel.Boot:4151
       s = _this.now();
       
       _thread.enter(function _trc_Boot_ent_measureRAFInterval(_thread) {
@@ -16945,12 +16947,12 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=45004166;//kernel.Boot:4166
-            //$LASTPOS=45004171;//kernel.Boot:4171
+            //$LASTPOS=46004166;//kernel.Boot:4166
+            //$LASTPOS=46004171;//kernel.Boot:4171
             i = 0;;
           case 1:
             if (!(i<20)) { __pc=3; break; }
-            //$LASTPOS=45004197;//kernel.Boot:4197
+            //$LASTPOS=46004197;//kernel.Boot:4197
             _this.fiber$waitFor(_thread, Tonyu.animationFrame());
             __pc=2;return;
           case 2:
@@ -16959,7 +16961,7 @@ Tonyu.klass.define({
             __pc=1;break;
           case 3:
             
-            //$LASTPOS=45004236;//kernel.Boot:4236
+            //$LASTPOS=46004236;//kernel.Boot:4236
             Tonyu.globals.$RAFInterval=(_this.now()-s)/20;
             _thread.exit(_this);return;
           }
@@ -16970,33 +16972,33 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45004287;//kernel.Boot:4287
+      //$LASTPOS=46004287;//kernel.Boot:4287
       _this.moveFrame();
-      //$LASTPOS=45004305;//kernel.Boot:4305
+      //$LASTPOS=46004305;//kernel.Boot:4305
       _this.doDraw=_this.now()<_this.deadLine;
-      //$LASTPOS=45004333;//kernel.Boot:4333
+      //$LASTPOS=46004333;//kernel.Boot:4333
       if (! _this.doDraw&&_this.frameSkipped>=_this.maxFrameSkip) {
-        //$LASTPOS=45004387;//kernel.Boot:4387
+        //$LASTPOS=46004387;//kernel.Boot:4387
         _this.doDraw=true;
-        //$LASTPOS=45004409;//kernel.Boot:4409
+        //$LASTPOS=46004409;//kernel.Boot:4409
         _this.resetDeadLine();
         
       }
-      //$LASTPOS=45004438;//kernel.Boot:4438
+      //$LASTPOS=46004438;//kernel.Boot:4438
       if (_this.doDraw) {
-        //$LASTPOS=45004475;//kernel.Boot:4475
+        //$LASTPOS=46004475;//kernel.Boot:4475
         _this.drawFrame();
-        //$LASTPOS=45004497;//kernel.Boot:4497
+        //$LASTPOS=46004497;//kernel.Boot:4497
         _this.frameSkipped=0;
         
       } else {
-        //$LASTPOS=45004536;//kernel.Boot:4536
+        //$LASTPOS=46004536;//kernel.Boot:4536
         _this.frameSkipped++;
         
       }
-      //$LASTPOS=45004564;//kernel.Boot:4564
+      //$LASTPOS=46004564;//kernel.Boot:4564
       _this.afterDraw();
-      //$LASTPOS=45004582;//kernel.Boot:4582
+      //$LASTPOS=46004582;//kernel.Boot:4582
       _this.waitFrame();
     },
     fiber$loopTimer :function _trc_Boot_f_loopTimer(_thread) {
@@ -17005,31 +17007,31 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=45004287;//kernel.Boot:4287
+      //$LASTPOS=46004287;//kernel.Boot:4287
       _this.moveFrame();
-      //$LASTPOS=45004305;//kernel.Boot:4305
+      //$LASTPOS=46004305;//kernel.Boot:4305
       _this.doDraw=_this.now()<_this.deadLine;
-      //$LASTPOS=45004333;//kernel.Boot:4333
+      //$LASTPOS=46004333;//kernel.Boot:4333
       if (! _this.doDraw&&_this.frameSkipped>=_this.maxFrameSkip) {
-        //$LASTPOS=45004387;//kernel.Boot:4387
+        //$LASTPOS=46004387;//kernel.Boot:4387
         _this.doDraw=true;
-        //$LASTPOS=45004409;//kernel.Boot:4409
+        //$LASTPOS=46004409;//kernel.Boot:4409
         _this.resetDeadLine();
         
       }
-      //$LASTPOS=45004438;//kernel.Boot:4438
+      //$LASTPOS=46004438;//kernel.Boot:4438
       if (_this.doDraw) {
-        //$LASTPOS=45004475;//kernel.Boot:4475
+        //$LASTPOS=46004475;//kernel.Boot:4475
         _this.drawFrame();
-        //$LASTPOS=45004497;//kernel.Boot:4497
+        //$LASTPOS=46004497;//kernel.Boot:4497
         _this.frameSkipped=0;
         
       } else {
-        //$LASTPOS=45004536;//kernel.Boot:4536
+        //$LASTPOS=46004536;//kernel.Boot:4536
         _this.frameSkipped++;
         
       }
-      //$LASTPOS=45004564;//kernel.Boot:4564
+      //$LASTPOS=46004564;//kernel.Boot:4564
       _this.afterDraw();
       
       _thread.enter(function _trc_Boot_ent_loopTimer(_thread) {
@@ -17037,7 +17039,7 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=45004582;//kernel.Boot:4582
+            //$LASTPOS=46004582;//kernel.Boot:4582
             _this.fiber$waitFrame(_thread);
             __pc=1;return;
           case 1:
@@ -17051,13 +17053,13 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45004630;//kernel.Boot:4630
+      //$LASTPOS=46004630;//kernel.Boot:4630
       while (_this.paused) {
-        //$LASTPOS=45004655;//kernel.Boot:4655
+        //$LASTPOS=46004655;//kernel.Boot:4655
         _this.waitFor(Tonyu.timeout(1));
-        //$LASTPOS=45004691;//kernel.Boot:4691
+        //$LASTPOS=46004691;//kernel.Boot:4691
         if (! _this.paused) {
-          //$LASTPOS=45004704;//kernel.Boot:4704
+          //$LASTPOS=46004704;//kernel.Boot:4704
           _this.resetDeadLine();
         }
         
@@ -17075,17 +17077,17 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=45004630;//kernel.Boot:4630
+            //$LASTPOS=46004630;//kernel.Boot:4630
           case 1:
             if (!(_this.paused)) { __pc=3; break; }
-            //$LASTPOS=45004655;//kernel.Boot:4655
+            //$LASTPOS=46004655;//kernel.Boot:4655
             _this.fiber$waitFor(_thread, Tonyu.timeout(1));
             __pc=2;return;
           case 2:
             
-            //$LASTPOS=45004691;//kernel.Boot:4691
+            //$LASTPOS=46004691;//kernel.Boot:4691
             if (! _this.paused) {
-              //$LASTPOS=45004704;//kernel.Boot:4704
+              //$LASTPOS=46004704;//kernel.Boot:4704
               _this.resetDeadLine();
             }
             __pc=1;break;
@@ -17101,19 +17103,19 @@ Tonyu.klass.define({
       var _this=this;
       var s;
       
-      //$LASTPOS=45004756;//kernel.Boot:4756
+      //$LASTPOS=46004756;//kernel.Boot:4756
       s = _this.now();
-      //$LASTPOS=45004774;//kernel.Boot:4774
+      //$LASTPOS=46004774;//kernel.Boot:4774
       Tonyu.globals.$Screen.fillCanvas(Tonyu.globals.$Screen.buf[0]);
-      //$LASTPOS=45004815;//kernel.Boot:4815
+      //$LASTPOS=46004815;//kernel.Boot:4815
       Tonyu.globals.$Sprites.draw(Tonyu.globals.$Screen.buf[0]);
-      //$LASTPOS=45004851;//kernel.Boot:4851
+      //$LASTPOS=46004851;//kernel.Boot:4851
       Tonyu.globals.$FrontSprites.draw(Tonyu.globals.$Screen.buf[0]);
-      //$LASTPOS=45004892;//kernel.Boot:4892
+      //$LASTPOS=46004892;//kernel.Boot:4892
       Tonyu.globals.$Screen.draw();
-      //$LASTPOS=45004913;//kernel.Boot:4913
+      //$LASTPOS=46004913;//kernel.Boot:4913
       _this.drawTime=_this.now()-s;
-      //$LASTPOS=45004936;//kernel.Boot:4936
+      //$LASTPOS=46004936;//kernel.Boot:4936
       _this.fps_fpsCnt++;
     },
     moveFrame :function _trc_Boot_moveFrame() {
@@ -17121,63 +17123,63 @@ Tonyu.klass.define({
       var _this=this;
       var s;
       
-      //$LASTPOS=45004979;//kernel.Boot:4979
+      //$LASTPOS=46004979;//kernel.Boot:4979
       s = _this.now();
-      //$LASTPOS=45004997;//kernel.Boot:4997
+      //$LASTPOS=46004997;//kernel.Boot:4997
       _this.scheduler.stepsAll();
-      //$LASTPOS=45005024;//kernel.Boot:5024
+      //$LASTPOS=46005024;//kernel.Boot:5024
       Tonyu.globals.$Keys.update();
-      //$LASTPOS=45005045;//kernel.Boot:5045
+      //$LASTPOS=46005045;//kernel.Boot:5045
       Tonyu.globals.$InputDevice.update();
-      //$LASTPOS=45005073;//kernel.Boot:5073
+      //$LASTPOS=46005073;//kernel.Boot:5073
       Tonyu.globals.$screenWidth=Tonyu.globals.$Screen.width;
-      //$LASTPOS=45005106;//kernel.Boot:5106
+      //$LASTPOS=46005106;//kernel.Boot:5106
       Tonyu.globals.$screenHeight=Tonyu.globals.$Screen.height;
-      //$LASTPOS=45005141;//kernel.Boot:5141
+      //$LASTPOS=46005141;//kernel.Boot:5141
       _this.moveTime=_this.now()-s;
-      //$LASTPOS=45005164;//kernel.Boot:5164
+      //$LASTPOS=46005164;//kernel.Boot:5164
       _this.fps_rpsCnt++;
     },
     afterDraw :function _trc_Boot_afterDraw() {
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45005262;//kernel.Boot:5262
+      //$LASTPOS=46005262;//kernel.Boot:5262
       Tonyu.globals.$Sprites.checkHit();
-      //$LASTPOS=45005288;//kernel.Boot:5288
+      //$LASTPOS=46005288;//kernel.Boot:5288
       Tonyu.globals.$Sprites.removeOneframes();
     },
     initFPSParams :function _trc_Boot_initFPSParams() {
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45005370;//kernel.Boot:5370
+      //$LASTPOS=46005370;//kernel.Boot:5370
       _this._fps=30;
-      //$LASTPOS=45005386;//kernel.Boot:5386
+      //$LASTPOS=46005386;//kernel.Boot:5386
       _this.maxFrameSkip=5;
-      //$LASTPOS=45005409;//kernel.Boot:5409
+      //$LASTPOS=46005409;//kernel.Boot:5409
       _this.minFrameSkip=1;
-      //$LASTPOS=45005459;//kernel.Boot:5459
+      //$LASTPOS=46005459;//kernel.Boot:5459
       _this.frameCnt=0;
-      //$LASTPOS=45005478;//kernel.Boot:5478
+      //$LASTPOS=46005478;//kernel.Boot:5478
       _this.resetDeadLine();
-      //$LASTPOS=45005500;//kernel.Boot:5500
+      //$LASTPOS=46005500;//kernel.Boot:5500
       _this.lastMeasured=_this.now();
-      //$LASTPOS=45005525;//kernel.Boot:5525
+      //$LASTPOS=46005525;//kernel.Boot:5525
       _this.fps_fps=_this.fps_rps=_this.fps_fpsCnt=_this.fps_rpsCnt=0;
-      //$LASTPOS=45005571;//kernel.Boot:5571
+      //$LASTPOS=46005571;//kernel.Boot:5571
       _this.drawTime=5;
-      //$LASTPOS=45005582;//kernel.Boot:5582
+      //$LASTPOS=46005582;//kernel.Boot:5582
       _this.moveTime=5;
-      //$LASTPOS=45005596;//kernel.Boot:5596
+      //$LASTPOS=46005596;//kernel.Boot:5596
       _this.rafAccept=1.1;
-      //$LASTPOS=45005613;//kernel.Boot:5613
+      //$LASTPOS=46005613;//kernel.Boot:5613
       _this.rafInterval=1000/60;
-      //$LASTPOS=45005636;//kernel.Boot:5636
+      //$LASTPOS=46005636;//kernel.Boot:5636
       _this._useRAF=true;
-      //$LASTPOS=45005652;//kernel.Boot:5652
+      //$LASTPOS=46005652;//kernel.Boot:5652
       _this.rafCount=2;
-      //$LASTPOS=45005666;//kernel.Boot:5666
+      //$LASTPOS=46005666;//kernel.Boot:5666
       _this.frameSkip=1;
     },
     now :function _trc_Boot_now() {
@@ -17190,9 +17192,9 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45005768;//kernel.Boot:5768
+      //$LASTPOS=46005768;//kernel.Boot:5768
       _this.deadLine=_this.now()+1000/_this._fps;
-      //$LASTPOS=45005799;//kernel.Boot:5799
+      //$LASTPOS=46005799;//kernel.Boot:5799
       _this.frameSkipped=0;
     },
     waitFrame :function _trc_Boot_waitFrame() {
@@ -17200,24 +17202,24 @@ Tonyu.klass.define({
       var _this=this;
       var wt;
       
-      //$LASTPOS=45005843;//kernel.Boot:5843
+      //$LASTPOS=46005843;//kernel.Boot:5843
       wt = _this.deadLine-_this.now();
-      //$LASTPOS=45005871;//kernel.Boot:5871
+      //$LASTPOS=46005871;//kernel.Boot:5871
       if (wt<1) {
-        //$LASTPOS=45005892;//kernel.Boot:5892
+        //$LASTPOS=46005892;//kernel.Boot:5892
         if (wt<- 1000) {
-          //$LASTPOS=45005906;//kernel.Boot:5906
+          //$LASTPOS=46005906;//kernel.Boot:5906
           _this.resetDeadLine();
         }
-        //$LASTPOS=45005932;//kernel.Boot:5932
+        //$LASTPOS=46005932;//kernel.Boot:5932
         wt=1;
         
       }
-      //$LASTPOS=45005950;//kernel.Boot:5950
+      //$LASTPOS=46005950;//kernel.Boot:5950
       wt=_this.floor(wt);
-      //$LASTPOS=45005969;//kernel.Boot:5969
+      //$LASTPOS=46005969;//kernel.Boot:5969
       _this.waitFor(Tonyu.timeout(wt));
-      //$LASTPOS=45006002;//kernel.Boot:6002
+      //$LASTPOS=46006002;//kernel.Boot:6002
       _this.deadLine+=1000/_this._fps;
     },
     fiber$waitFrame :function _trc_Boot_f_waitFrame(_thread) {
@@ -17227,20 +17229,20 @@ Tonyu.klass.define({
       var __pc=0;
       var wt;
       
-      //$LASTPOS=45005843;//kernel.Boot:5843
+      //$LASTPOS=46005843;//kernel.Boot:5843
       wt = _this.deadLine-_this.now();
-      //$LASTPOS=45005871;//kernel.Boot:5871
+      //$LASTPOS=46005871;//kernel.Boot:5871
       if (wt<1) {
-        //$LASTPOS=45005892;//kernel.Boot:5892
+        //$LASTPOS=46005892;//kernel.Boot:5892
         if (wt<- 1000) {
-          //$LASTPOS=45005906;//kernel.Boot:5906
+          //$LASTPOS=46005906;//kernel.Boot:5906
           _this.resetDeadLine();
         }
-        //$LASTPOS=45005932;//kernel.Boot:5932
+        //$LASTPOS=46005932;//kernel.Boot:5932
         wt=1;
         
       }
-      //$LASTPOS=45005950;//kernel.Boot:5950
+      //$LASTPOS=46005950;//kernel.Boot:5950
       wt=_this.floor(wt);
       
       _thread.enter(function _trc_Boot_ent_waitFrame(_thread) {
@@ -17248,12 +17250,12 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=45005969;//kernel.Boot:5969
+            //$LASTPOS=46005969;//kernel.Boot:5969
             _this.fiber$waitFor(_thread, Tonyu.timeout(wt));
             __pc=1;return;
           case 1:
             
-            //$LASTPOS=45006002;//kernel.Boot:6002
+            //$LASTPOS=46006002;//kernel.Boot:6002
             _this.deadLine+=1000/_this._fps;
             _thread.exit(_this);return;
           }
@@ -17270,28 +17272,28 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45006159;//kernel.Boot:6159
+      //$LASTPOS=46006159;//kernel.Boot:6159
       if (_this._fps!=fps) {
-        //$LASTPOS=45006180;//kernel.Boot:6180
+        //$LASTPOS=46006180;//kernel.Boot:6180
         _this.rafRess={};
-        //$LASTPOS=45006196;//kernel.Boot:6196
+        //$LASTPOS=46006196;//kernel.Boot:6196
         _this.rafResolution=null;
-        //$LASTPOS=45006219;//kernel.Boot:6219
+        //$LASTPOS=46006219;//kernel.Boot:6219
         _this.frameSkip=1;
-        //$LASTPOS=45006235;//kernel.Boot:6235
+        //$LASTPOS=46006235;//kernel.Boot:6235
         _this.rafCnt=_this.floor(60/fps+0.5);
         
       }
-      //$LASTPOS=45006270;//kernel.Boot:6270
+      //$LASTPOS=46006270;//kernel.Boot:6270
       _this._fps=fps;
-      //$LASTPOS=45006287;//kernel.Boot:6287
+      //$LASTPOS=46006287;//kernel.Boot:6287
       if (typeof  maxFrameSkip!="number") {
-        //$LASTPOS=45006322;//kernel.Boot:6322
+        //$LASTPOS=46006322;//kernel.Boot:6322
         maxFrameSkip=5;
       }
-      //$LASTPOS=45006343;//kernel.Boot:6343
+      //$LASTPOS=46006343;//kernel.Boot:6343
       _this.maxFrameSkip=maxFrameSkip;
-      //$LASTPOS=45006382;//kernel.Boot:6382
+      //$LASTPOS=46006382;//kernel.Boot:6382
       _this.resetDeadLine();
     },
     __getter__useRAF :function _trc_Boot___getter__useRAF() {
@@ -17322,17 +17324,17 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45006661;//kernel.Boot:6661
+      //$LASTPOS=46006661;//kernel.Boot:6661
       if (_this.now()>_this.lastMeasured+1000) {
-        //$LASTPOS=45006701;//kernel.Boot:6701
+        //$LASTPOS=46006701;//kernel.Boot:6701
         _this.fps_fps=_this.fps_fpsCnt;
-        //$LASTPOS=45006730;//kernel.Boot:6730
+        //$LASTPOS=46006730;//kernel.Boot:6730
         _this.fps_rps=_this.fps_rpsCnt;
-        //$LASTPOS=45006759;//kernel.Boot:6759
+        //$LASTPOS=46006759;//kernel.Boot:6759
         _this.fps_fpsCnt=0;
-        //$LASTPOS=45006782;//kernel.Boot:6782
+        //$LASTPOS=46006782;//kernel.Boot:6782
         _this.fps_rpsCnt=0;
-        //$LASTPOS=45006805;//kernel.Boot:6805
+        //$LASTPOS=46006805;//kernel.Boot:6805
         _this.lastMeasured=_this.now();
         
       }
@@ -17366,27 +17368,27 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=46000057;//kernel.DxChar:57
+      //$LASTPOS=47000057;//kernel.DxChar:57
       Tonyu.classes.kernel.SpriteChar.apply( _this, [xx,yy,pp,ff]);
-      //$LASTPOS=46000082;//kernel.DxChar:82
+      //$LASTPOS=47000082;//kernel.DxChar:82
       _this.scaleX=1;
-      //$LASTPOS=46000097;//kernel.DxChar:97
+      //$LASTPOS=47000097;//kernel.DxChar:97
       if (sz) {
-        //$LASTPOS=46000105;//kernel.DxChar:105
+        //$LASTPOS=47000105;//kernel.DxChar:105
         _this.scaleX=sz;
       }
-      //$LASTPOS=46000121;//kernel.DxChar:121
+      //$LASTPOS=47000121;//kernel.DxChar:121
       _this.angle=0;
-      //$LASTPOS=46000135;//kernel.DxChar:135
+      //$LASTPOS=47000135;//kernel.DxChar:135
       if (rt) {
-        //$LASTPOS=46000143;//kernel.DxChar:143
+        //$LASTPOS=47000143;//kernel.DxChar:143
         _this.angle=rt;
       }
-      //$LASTPOS=46000158;//kernel.DxChar:158
+      //$LASTPOS=47000158;//kernel.DxChar:158
       _this.alpha=255;
-      //$LASTPOS=46000174;//kernel.DxChar:174
+      //$LASTPOS=47000174;//kernel.DxChar:174
       if (al) {
-        //$LASTPOS=46000182;//kernel.DxChar:182
+        //$LASTPOS=47000182;//kernel.DxChar:182
         _this.alpha=al;
       }
     },
@@ -17394,9 +17396,9 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=46000212;//kernel.DxChar:212
+      //$LASTPOS=47000212;//kernel.DxChar:212
       _this.rotation=_this.angle;
-      //$LASTPOS=46000233;//kernel.DxChar:233
+      //$LASTPOS=47000233;//kernel.DxChar:233
       Tonyu.classes.kernel.SpriteChar.prototype.draw.apply( _this, [c]);
     },
     __dummy: false
