@@ -100,11 +100,16 @@ define([], function () {
         WebSite.platform=process.platform;
         WebSite.ffmpeg=WebSite.cwd+(WebSite.platform=="win32"?
                 "ffmpeg/bin/ffmpeg.exe":"ffmpeg/bin/ffmpeg");
+        if (process.env.TONYU_PROJECTS) {
+            WebSite.projects=process.env.TONYU_PROJECTS.replace(/\\/g,"/").split(path.delimiter);
+        } else {
+            WebSite.projects=[WebSite.cwd+"Projects/",WebSite.tonyuHome+"Projects/"];
+        }
     } else {
         WebSite.wwwDir=location.protocol+"//"+location.host+"/";
+        WebSite.projects=[WebSite.tonyuHome+"Projects"];
     }
     WebSite.kernelDir=WebSite.wwwDir+"Kernel/";
-
     if (loc.match(/tonyuedit\.appspot\.com/) ||
         loc.match(/localhost:888/) ||
         WebSite.isNW) {

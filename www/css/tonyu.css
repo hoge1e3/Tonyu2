@@ -7,6 +7,9 @@ body {
   text-align: center;
 }
 
+.prjDirHeader {
+	background-color: #af8;
+}
 .project {
 	float: left;
 	width: 132px;
