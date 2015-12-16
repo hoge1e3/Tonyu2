@@ -61,8 +61,23 @@ PathUtil={
 		(PathUtil.startsWith(path,SEP) || PathUtil.hasDriveLetter(path) ||  PathUtil.isURL(path));
     },
     isDir: function (path) {
+        path=PathUtil.fixSep(path);
 		assert.is(arguments,[Path]);
         return endsWith(path,SEP);
+    },
+    fixSep: function (path) {
+        assert.is(arguments,[String]);
+        return assert.is( path.replace(/\\/g,"/"), Path);
+    },
+    directorify: function (path) {
+        path=PathUtil.fixSep(path);
+        if (PathUtil.isDir(path)) return path;
+        return assert.is(path+SEP, Dir);
+    },
+    filify: function (path) {
+        path=PathUtil.fixSep(path);
+        if (!PathUtil.isDir(path)) return path;
+        return assert.is(path.substring(0,path.length-1),File);
     },
 	splitPath: function (path) {
 		assert.is(arguments,[Path]);
@@ -135,12 +150,15 @@ PathUtil={
         return path.substring(base.length);
     },
     up: function(path) {
-		assert.is(arguments,[Path]);
+        path=PathUtil.fixSep(path);
         if (path==SEP) return null;
         var ps=PathUtil.splitPath(path);
         ps.pop();
         return ps.join(SEP)+SEP;
     }
 };
+PathUtil.isAbsolute=PathUtil.isAbsolutePath;
+PathUtil.isRelative=PathUtil.isRelativePath;
+if (typeof window=="object") window.PathUtil=PathUtil;
 return PathUtil;
 });

@@ -1,0 +1,56 @@
+//ここでは毎フレーム画像の変更をしていないので、配列の値を4つずつ設定する必要はない
+//pの値の配列
+pListDown=[0,1,0,2];
+pListUp=[5,6,5,7];
+pListLR=[3,4];
+dir="stop";
+p=$pat_neko+0;
+parallel("animate");
+while(true){
+    dir="stop";
+    sx=x;sy=y;
+    if(getkey("down")){
+        y+=4;
+        dir="down";
+    }
+    if(getkey("up")){
+        y-=4;
+        dir="up";
+    }
+    if(getkey("left")){
+        x-=4;
+        scaleX=-1;
+        scaleY=1;
+        dir="lr";
+    }
+    if(getkey("right")){
+        scaleX=1;
+        x+=4;
+        dir="lr";
+    }
+    if ($map.getOnAt(x,y)>-1) {
+        x=sx;y=sy;
+        dir="stop";
+    }
+    $Screen.scrollTo(x-$screenWidth/2, y-$screenHeight/2);
+    
+    update();
+}
+\animate(){
+    counter=0;
+    // アニメーションの処理
+    while(true){
+        if(dir=="down"){
+            p=$pat_neko+pListDown[counter%4];
+        }else if(dir=="up"){
+            p=$pat_neko+pListUp[counter%4];
+        }else if(dir=="lr"){
+            p=$pat_neko+pListLR[counter%2];
+        }else{
+            //p=$pat_neko+0;
+        }
+        counter++;
+        //4フレームごとにupdateを行う
+        updateEx(4);
+    }
+}

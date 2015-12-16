@@ -1,0 +1,13 @@
+m=new MMLTest;
+
+text="Space:SE  S:Stop";
+x=200; y=200;
+while (true) {
+    if (getkey(32)==1) {
+        playSE("l16<ceg");
+    }
+    if (getkey("s")==1) {
+        m.die();
+    }
+    update();
+}

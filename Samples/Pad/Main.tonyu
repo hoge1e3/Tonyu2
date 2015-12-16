@@ -1,0 +1,14 @@
+pad=new Pad;
+x=20;y=20;
+while(true) {
+    if (pad.getUp()) y-=spd;
+    if (pad.getDown()) y+=spd;
+    if (pad.getLeft()) x-=spd;
+    if (pad.getRight()) x+=spd;
+    if (pad.getButton(0)) {
+        spd=8; p=4; 
+    }else {
+        spd=3; p=0;
+    }
+    update();
+}

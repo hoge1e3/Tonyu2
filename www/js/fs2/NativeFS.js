@@ -118,7 +118,8 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL","Content"],
             var pa=P.up(path);
             if (pa) this.getRootFS().resolveFS(pa).mkdir(pa);
             var np=this.toNativePath(path);
-            return fs.mkdirSync(np);
+            fs.mkdirSync(np);
+            return this.assertExist(np);
         },
         opendir: function (path, options) {
             assert.is(arguments,[String]);
@@ -160,8 +161,9 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL","Content"],
         touch: function (path) {
             if (!this.exists(path) && this.isDir(path)) {
                 this.mkdir(path);
-            } else if (this.exists(path) && !this.isDir(path) ) {
+            } else if (this.exists(path) /*&& !this.isDir(path)*/ ) {
                 // TODO(setlastupdate)
+                fs.utimesSync(path,Date.now()/1000,Date.now()/1000);
             }
         },
         getURL:function (path) {

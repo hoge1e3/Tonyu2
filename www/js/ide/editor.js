@@ -40,7 +40,7 @@ $(function () {
         }
     }
     var dir=Util.getQueryString("dir", "/Tonyu/Projects/SandBox/");
-    var curProjectDir=FS.get(dir);
+    var curPrjDir=curProjectDir=FS.get(dir);
     var curPrj=Tonyu_Project(curProjectDir);//, kernelDir);
     Tonyu.globals.$currentProject=curPrj;
     Tonyu.currentProject=curPrj;
@@ -336,6 +336,7 @@ $(function () {
             o.run.mainClass=name;
             curPrj.setOptions();
         }
+        curPrjDir.touch();
         curPrj.rawRun(o.run.bootClass).fail(function (e) {
             if (e.isTError) {
                 console.log("showErr: run");

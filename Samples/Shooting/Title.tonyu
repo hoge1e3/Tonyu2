@@ -1,0 +1,6 @@
+
+new Actor{x:$screenWidth/2,y:100,size:40,text:"Press Space Key"};
+while(true) {
+    if (getkey("space")==1) loadPage(Main);
+    update();
+}

@@ -1,0 +1,32 @@
+// ファイルに保存するサンプル
+// スペースキーで自分の位置を保存します。
+// 次回起動時にはその位置から始まります
+
+print("Move: cursor key");
+print("Space: save position");
+print("r: reset data");
+
+saveDataFile=file("save.json");
+if (saveDataFile.exists())  {
+    saveData=saveDataFile.obj();
+}
+if (!saveData) saveData={x:200,y:200};
+x=saveData.x;y=saveData.y;
+while (true) {
+    if (getkey("space")==1) {
+        saveDataFile.obj{x,y};
+        print ("Position saved to files/save.json");
+    } 
+    if (getkey("r")==1) {
+        if (saveDataFile.exists()) saveDataFile.rm();
+        print ("files/save.json removed");
+    }
+    if (getkey("up")) y-=5;
+    if (getkey("down")) y+=5;
+    if (getkey("left")) x-=5;
+    if (getkey("right")) x+=5;
+    update();    
+}
+
+
+

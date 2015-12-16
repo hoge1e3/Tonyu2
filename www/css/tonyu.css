@@ -11,7 +11,8 @@ body {
 	background-color: #af8;
 }
 .project {
-	float: left;
+	/*float: left;*/
+	display: inline-block;
 	width: 132px;
 	margin: 16px;
     text-align: center;

@@ -1,0 +1,10 @@
+// 実行 → Mainを実行
+
+// $ で始まる変数はグローバル変数です．他のクラスからも参照できます．
+$score=0;
+$player=new Player;
+new Status;
+while(true) {
+    new Chaser{x:rnd(400),y:20,p:5};
+    updateEx(30);
+}

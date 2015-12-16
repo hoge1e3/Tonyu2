@@ -1,4 +1,4 @@
-define([], function () {
+define(["PathUtil"], function (P) {
     var loc=document.location.href;
     var devMode=!!loc.match(/html\/dev\//) && !!loc.match(/localhost:3/);
     var WebSite;
@@ -89,27 +89,36 @@ define([], function () {
         putFiles:WebSite.serverTop+"/LS2FileSync"
     };
     if (WebSite.isNW) {
-        WebSite.cwd=process.cwd().replace(/\\/g,"/").replace(/\/?$/,"/");
+        WebSite.cwd=P.directorify(process.cwd());
+        //WebSite.exeDir=WebSite.execDir=P.up(P.fixSep(process.execPath)); not suitable when mac
         if (process.env.TONYU_HOME) {
-            WebSite.tonyuHome=process.env.TONYU_HOME.replace(/\\/g,"/").replace(/\/?$/,"/");
+            WebSite.tonyuHome=P.directorify(process.env.TONYU_HOME);
         } else {
-            WebSite.tonyuHome=WebSite.cwd+"fs/Tonyu/";
+            WebSite.tonyuHome=P.rel(WebSite.cwd,"fs/Tonyu/");
         }
         WebSite.logdir="C:/var/log/Tonyu/";
-        WebSite.wwwDir=WebSite.cwd+"www/";
+        WebSite.wwwDir=P.rel(WebSite.cwd,"www/");
         WebSite.platform=process.platform;
-        WebSite.ffmpeg=WebSite.cwd+(WebSite.platform=="win32"?
-                "ffmpeg/bin/ffmpeg.exe":"ffmpeg/bin/ffmpeg");
+        WebSite.ffmpeg=P.rel(WebSite.cwd,(WebSite.platform=="win32"?
+                "ffmpeg/bin/ffmpeg.exe":"ffmpeg/bin/ffmpeg"));
+        WebSite.pkgInfo=require(P.rel(WebSite.cwd, "package.json"));
         if (process.env.TONYU_PROJECTS) {
-            WebSite.projects=process.env.TONYU_PROJECTS.replace(/\\/g,"/").split(path.delimiter);
+            WebSite.projects=process.env.TONYU_PROJECTS.replace(/\\/g,"/").split(require('path').delimiter);
+        } else if ( WebSite.pkgInfo && WebSite.pkgInfo.config && WebSite.pkgInfo.config.prjDirs ){
+            WebSite.projects=WebSite.pkgInfo.config.prjDirs.map(function (d) {
+                d=P.directorify(d);
+                if (P.isAbsolute(d)) return d;
+                return P.rel(WebSite.cwd,d);
+            });
         } else {
-            WebSite.projects=[WebSite.cwd+"Projects/",WebSite.tonyuHome+"Projects/"];
+            WebSite.projects=[P.rel(WebSite.cwd,"Projects/"),
+                              P.rel(WebSite.tonyuHome,"Projects/")];
         }
     } else {
         WebSite.wwwDir=location.protocol+"//"+location.host+"/";
-        WebSite.projects=[WebSite.tonyuHome+"Projects"];
+        WebSite.projects=[P.rel(WebSite.tonyuHome,"Projects/")];
     }
-    WebSite.kernelDir=WebSite.wwwDir+"Kernel/";
+    WebSite.kernelDir=P.rel(WebSite.wwwDir,"Kernel/");
     if (loc.match(/tonyuedit\.appspot\.com/) ||
         loc.match(/localhost:888/) ||
         WebSite.isNW) {

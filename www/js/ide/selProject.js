@@ -10,6 +10,24 @@ $(function () {
     //var home=FS.get(WebSite.tonyuHome);
     //var projects=FS.get(WebSite.projects[0]);//home.rel("Projects/");
     $("#prjItemList").empty();
+    var search, prevKW="",kw="";
+    $("#prjItemList").append(search=UI("div",
+            ["input",{$var:"kw",placeholder:"Search..",value:kw}]));
+    setInterval(function () {
+        kw=search.$vars.kw.val().toLowerCase();
+        if (kw!=prevKW) {
+            $(".project").each(function () {
+                var p=$(this);
+                var nd=p.find(".projectName");
+                if (kw=="" || nd[0] && nd.text().toLowerCase().indexOf(kw)>=0 ) {
+                    p.show();
+                } else{
+                    p.hide();
+                }
+            });
+            prevKW=kw;
+        }
+    },1000);
     var prjDirs=WebSite.projects.map(function (e) {return FS.get(e);});
     prjDirs.forEach(ls);
     /*DU.each(prjDirs, function (dir){
@@ -17,13 +35,18 @@ $(function () {
         return ls(dir);
     });*/
 
-    sh.cd(FS.get(WebSite.projects[0]));
     //var curDir=projects;
     if (WebSite.isNW) {
         $("#loginGrp").hide();
     }
-    function ls(curDir) {
-        var prj1dirList=$("<div>");
+    function ls(curDir,i) {
+        if (!curDir.exists()) {
+            if (i==0) {
+                curDir.mkdir();
+                //console.log(curDir.path(), curDir.exists());
+            } else return;
+        }
+        var prj1dirList=$("<section>");
         $("#prjItemList").append(prj1dirList);
         prj1dirList.append(UI("h2",{"class":"prjDirHeader"},curDir.path()));
         var u=UI("div", {"class":"project"},
@@ -39,8 +62,8 @@ $(function () {
             });
         }
         var showAll;
-        showAll=UI("div",
-                ["div",{style:"height:120px;"}," "],
+        showAll=UI("div",{"style":"display: inline-block;"},
+                //["div",{style:"height:120px;"}," "],
                 ["button",{"class":"showAll",on:{
             click:function () {
                 showAll.remove();
@@ -48,17 +71,17 @@ $(function () {
             }
         }},"すべて見る..."]);
         prj1dirList.append(showAll);
-        if (!curDir.exists()) curDir.mkdir();
+        //$("#prjItemList").append(UI("div",["h2",{"class":"prjDirHeader"},"----"]));
     }
     function dols(curDir,prj1dirList) {
         var d=[];
         curDir.each(function (f) {
             if (!f.isDir()) return;
             var l=f.lastUpdate();
-            var r=f.rel("options.json");
+            /*var r=f.rel("options.json");
             if (r.exists()) {
                 l=r.lastUpdate();
-            }
+            }*/
             d.push([f,l]);
         });
         d=d.sort(function (a,b) {
@@ -72,9 +95,10 @@ $(function () {
             var u=UI("div", {"class":"project"},
                     ["a", {href:"project.html?dir="+f.path()},
                      ["img",{$var:"t",src:"../../images/nowprint.png"}],
-                     ["div", name]
+                     ["div", {"class":"projectName"},name]
                      ]);
             u.appendTo(prj1dirList);
+            if (kw!="" && name.toLowerCase().indexOf(kw)<0) u.hide();
             setTimeout(function () {
                 var tn=f.rel("images/").rel("icon_thumbnail.png");
                 //console.log(tn.path());
@@ -85,7 +109,8 @@ $(function () {
             //$("#fileItem").tmpl({name: name, href:"project.html?dir="+f.path()}).appendTo("#prjItemList");
             return DU.timeout(10);
         }).then(function (){
-              prj1dirList.append(UI("div",{style:"height:150px;"}," "));
+            //prj1dirList.append(UI("h3",{style:"height:150px;"},"end"));
+            //prj1dirList.append(UI("div",{style:"height:150px;"}," "));
         });
     }
     Auth.currentUser(function (r){
@@ -120,6 +145,7 @@ $(function () {
             }
         }
     });*/
+    sh.cd(FS.get(WebSite.projects[0]));
     extLink.all();
     sh.wikiEditor=function () {document.location.href="wikiEditor.html";};
     $($("button.showAll").get(0)).click();

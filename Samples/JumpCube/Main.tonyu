@@ -1,0 +1,47 @@
+// $screenWidth
+new Goal{
+    x:50,
+    y:50,
+    p:$pat_neko+30
+};
+new Floor{
+    x:100, y:140,
+    scaleX: 10,
+    scaleY: 1,
+    rotation: 10,
+    isStatic:true
+};
+new Floor{
+    x:300, y:250,
+    scaleX: 10,
+    scaleY: 1,
+    rotation: -10,
+    isStatic:true
+}; 
+new Floor{
+    x:300, y:400,
+    scaleX: 20,
+    scaleY: 1,
+    rotation: 10,
+    isStatic:true
+};
+
+
+new Player{
+    x:400, y:400,
+    shape:"circle"
+}; 
+
+while(true) {
+    updateEx(rnd(60)+30);
+    new Ball{
+        x:rnd(200),
+        y:50,
+        shape:"circle",
+        density:0.1,
+        p: $pat_base+12
+    }; 
+}
+
+
+
