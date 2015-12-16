@@ -1,4 +1,4 @@
-// Created at Wed Dec 09 2015 17:32:28 GMT+0900 (東京 (標準時))
+// Created at Wed Dec 16 2015 16:37:29 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -384,8 +384,23 @@ PathUtil={
 		(PathUtil.startsWith(path,SEP) || PathUtil.hasDriveLetter(path) ||  PathUtil.isURL(path));
     },
     isDir: function (path) {
+        path=PathUtil.fixSep(path);
 		assert.is(arguments,[Path]);
         return endsWith(path,SEP);
+    },
+    fixSep: function (path) {
+        assert.is(arguments,[String]);
+        return assert.is( path.replace(/\\/g,"/"), Path);
+    },
+    directorify: function (path) {
+        path=PathUtil.fixSep(path);
+        if (PathUtil.isDir(path)) return path;
+        return assert.is(path+SEP, Dir);
+    },
+    filify: function (path) {
+        path=PathUtil.fixSep(path);
+        if (!PathUtil.isDir(path)) return path;
+        return assert.is(path.substring(0,path.length-1),File);
     },
 	splitPath: function (path) {
 		assert.is(arguments,[Path]);
@@ -458,13 +473,16 @@ PathUtil={
         return path.substring(base.length);
     },
     up: function(path) {
-		assert.is(arguments,[Path]);
+        path=PathUtil.fixSep(path);
         if (path==SEP) return null;
         var ps=PathUtil.splitPath(path);
         ps.pop();
         return ps.join(SEP)+SEP;
     }
 };
+PathUtil.isAbsolute=PathUtil.isAbsolutePath;
+PathUtil.isRelative=PathUtil.isRelativePath;
+if (typeof window=="object") window.PathUtil=PathUtil;
 return PathUtil;
 });
 requireSimulator.setName('MIMETypes');
@@ -749,7 +767,7 @@ define(["extend","PathUtil","MIMETypes","assert"],function (extend, P, M,assert)
 });
 
 requireSimulator.setName('WebSite');
-define([], function () {
+define(["PathUtil"], function (P) {
     var loc=document.location.href;
     var devMode=!!loc.match(/html\/dev\//) && !!loc.match(/localhost:3/);
     var WebSite;
@@ -840,22 +858,36 @@ define([], function () {
         putFiles:WebSite.serverTop+"/LS2FileSync"
     };
     if (WebSite.isNW) {
-        WebSite.cwd=process.cwd().replace(/\\/g,"/").replace(/\/?$/,"/");
+        WebSite.cwd=P.directorify(process.cwd());
+        //WebSite.exeDir=WebSite.execDir=P.up(P.fixSep(process.execPath)); not suitable when mac
         if (process.env.TONYU_HOME) {
-            WebSite.tonyuHome=process.env.TONYU_HOME.replace(/\\/g,"/").replace(/\/?$/,"/");
+            WebSite.tonyuHome=P.directorify(process.env.TONYU_HOME);
         } else {
-            WebSite.tonyuHome=WebSite.cwd+"fs/Tonyu/";
+            WebSite.tonyuHome=P.rel(WebSite.cwd,"fs/Tonyu/");
         }
         WebSite.logdir="C:/var/log/Tonyu/";
-        WebSite.wwwDir=WebSite.cwd+"www/";
+        WebSite.wwwDir=P.rel(WebSite.cwd,"www/");
         WebSite.platform=process.platform;
-        WebSite.ffmpeg=WebSite.cwd+(WebSite.platform=="win32"?
-                "ffmpeg/bin/ffmpeg.exe":"ffmpeg/bin/ffmpeg");
+        WebSite.ffmpeg=P.rel(WebSite.cwd,(WebSite.platform=="win32"?
+                "ffmpeg/bin/ffmpeg.exe":"ffmpeg/bin/ffmpeg"));
+        WebSite.pkgInfo=require(P.rel(WebSite.cwd, "package.json"));
+        if (process.env.TONYU_PROJECTS) {
+            WebSite.projects=process.env.TONYU_PROJECTS.replace(/\\/g,"/").split(require('path').delimiter);
+        } else if ( WebSite.pkgInfo && WebSite.pkgInfo.config && WebSite.pkgInfo.config.prjDirs ){
+            WebSite.projects=WebSite.pkgInfo.config.prjDirs.map(function (d) {
+                d=P.directorify(d);
+                if (P.isAbsolute(d)) return d;
+                return P.rel(WebSite.cwd,d);
+            });
+        } else {
+            WebSite.projects=[P.rel(WebSite.cwd,"Projects/"),
+                              P.rel(WebSite.tonyuHome,"Projects/")];
+        }
     } else {
         WebSite.wwwDir=location.protocol+"//"+location.host+"/";
+        WebSite.projects=[P.rel(WebSite.tonyuHome,"Projects/")];
     }
-    WebSite.kernelDir=WebSite.wwwDir+"Kernel/";
-
+    WebSite.kernelDir=P.rel(WebSite.wwwDir,"Kernel/");
     if (loc.match(/tonyuedit\.appspot\.com/) ||
         loc.match(/localhost:888/) ||
         WebSite.isNW) {
@@ -1507,7 +1539,8 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL","Content"],
             var pa=P.up(path);
             if (pa) this.getRootFS().resolveFS(pa).mkdir(pa);
             var np=this.toNativePath(path);
-            return fs.mkdirSync(np);
+            fs.mkdirSync(np);
+            return this.assertExist(np);
         },
         opendir: function (path, options) {
             assert.is(arguments,[String]);
@@ -1549,8 +1582,9 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL","Content"],
         touch: function (path) {
             if (!this.exists(path) && this.isDir(path)) {
                 this.mkdir(path);
-            } else if (this.exists(path) && !this.isDir(path) ) {
+            } else if (this.exists(path) /*&& !this.isDir(path)*/ ) {
                 // TODO(setlastupdate)
+                fs.utimesSync(path,Date.now()/1000,Date.now()/1000);
             }
         },
         getURL:function (path) {
@@ -2968,7 +3002,7 @@ return Tonyu=function () {
             timeout:timeout,animationFrame:animationFrame, asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,
-            VERSION:1449649934403,//EMBED_VERSION
+            VERSION:1450251439339,//EMBED_VERSION
             A:A};
 }();
 });
@@ -6761,6 +6795,11 @@ define([], function () {
                 setTimeout(function () {d.resolve(v);},0);
                 return d.promise();
             },
+            timeout:function (timeout) {
+                var d=new $.Deferred;
+                setTimeout(function () {d.resolve();},timeout);
+                return d.promise();
+            },
             funcPromise:function (f) {
                 var d=new $.Deferred;
                 f(function (v) {
@@ -6791,7 +6830,7 @@ define([], function () {
                 if (set instanceof Array) {
                     return DU.loop(function (i) {
                         if (i>=set.length) return DU.brk();
-                        return $.when(f(set[i])).then(function () {
+                        return $.when(f(set[i],i)).then(function () {
                             return i+1;
                         });
                     },0);
@@ -6801,12 +6840,12 @@ define([], function () {
                         objs.push({k:i,v:set[i]});
                     }
                     return DU.each(objs,function (e) {
-                        f(e.k, e.v);
+                        return f(e.k, e.v);
                     });
                 }
             },
             loop: function (f,r) {
-                DU.directPromise(r).then(DU.throwF(function () {
+                return DU.directPromise(r).then(DU.throwF(function () {
                     var r=f.apply(this,arguments);
                     if (r.DU_BRK) return r.res;
                     return $.when(r).then(function (r) {
