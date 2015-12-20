@@ -110,13 +110,13 @@ define(["Util","exceptionCatcher"],function (Util, EC) {
         $edits.on.writeToModel= function (name, val) {};
 
         if (listeners.length>0) {
-            setTimeout(F(l),10);
+            setTimeout(F(l),50);
         }
         function l() {
             listeners.forEach(function (li) {
                 li();
             });
-            setTimeout(F(l),10);
+            setTimeout(F(l),50);
         }
         return res;
         function parse(expr) {

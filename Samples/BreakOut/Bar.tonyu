@@ -1,0 +1,21 @@
+extends BodyActor;
+
+while (true) {
+    if (getkey("left")) {
+        vx=-5;        
+    } else if (getkey("right")) {
+        vx=5;      
+    } else {
+        vx=0;
+    }
+    //vx*=0.95;
+    if (getkey("up")) {
+        vy=-5;     
+    } else if (getkey("down")) {
+        vy=5;
+    } else {
+        vy=0;
+    }
+    rotation=vrotation=0;
+    update();
+}

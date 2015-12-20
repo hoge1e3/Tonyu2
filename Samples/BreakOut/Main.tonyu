@@ -1,0 +1,35 @@
+new T2World{gravity:0};
+new Bar{x:200,y:400,scaleX:2,
+    scaleY:1,restitution:1,
+friction:0.5};
+new Ball{x:200,y:300,
+    shape:"circle",p:12,
+    restitution:1,density:0.1,
+friction:0,vx:2,vy:4};
+
+for (i=0; i<3;i++) {
+    for (j=0; j<6; j++) {
+        new Block{x:100+j*50,y:100+i*50,p:2+i};
+    }
+}
+
+
+new Kabe{
+    x:200,y:0,scaleX:20,
+    scaleY:1
+};
+
+new Kabe{
+    x:8,y:200,scaleX:0.5,
+    scaleY:20
+};
+new Kabe{
+    x:460,y:200,scaleX:0.5,
+    scaleY:20
+};
+
+while(all(Block).length>0) {
+    update();
+}
+updateEx(30);
+loadPage(Main);

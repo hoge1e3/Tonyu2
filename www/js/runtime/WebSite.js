@@ -96,7 +96,7 @@ define(["PathUtil"], function (P) {
         } else {
             WebSite.tonyuHome=P.rel(WebSite.cwd,"fs/Tonyu/");
         }
-        WebSite.logdir="C:/var/log/Tonyu/";
+        WebSite.logdir=process.env.TONYU_LOGDIR;//"C:/var/log/Tonyu/";
         WebSite.wwwDir=P.rel(WebSite.cwd,"www/");
         WebSite.platform=process.platform;
         WebSite.ffmpeg=P.rel(WebSite.cwd,(WebSite.platform=="win32"?
