@@ -1,4 +1,4 @@
-// Created at Wed Dec 16 2015 16:37:20 GMT+0900 (東京 (標準時))
+// Created at Tue Dec 22 2015 09:26:45 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -865,7 +865,7 @@ define(["PathUtil"], function (P) {
         } else {
             WebSite.tonyuHome=P.rel(WebSite.cwd,"fs/Tonyu/");
         }
-        WebSite.logdir="C:/var/log/Tonyu/";
+        WebSite.logdir=process.env.TONYU_LOGDIR;//"C:/var/log/Tonyu/";
         WebSite.wwwDir=P.rel(WebSite.cwd,"www/");
         WebSite.platform=process.platform;
         WebSite.ffmpeg=P.rel(WebSite.cwd,(WebSite.platform=="win32"?
@@ -2889,13 +2889,13 @@ define(["Util","exceptionCatcher"],function (Util, EC) {
         $edits.on.writeToModel= function (name, val) {};
 
         if (listeners.length>0) {
-            setTimeout(F(l),10);
+            setTimeout(F(l),50);
         }
         function l() {
             listeners.forEach(function (li) {
                 li();
             });
-            setTimeout(F(l),10);
+            setTimeout(F(l),50);
         }
         return res;
         function parse(expr) {

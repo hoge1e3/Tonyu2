@@ -1,14 +1,19 @@
 if (typeof define!=="function") {
     define=require("requirejs").define;
 }
-define(["assert"],function (assert) {
+define(["assert","Tonyu.Thread","Tonyu.Iterator"],function (assert,TT,IT) {
 return Tonyu=function () {
     var preemptionTime=60;
     function thread() {
+        var t=new TT;
+        t.handleEx=handleEx;
+        return t;
+    }
+    function threadOLD() {
         //var stpd=0;
         var fb={enter:enter, apply:apply,
                 exit:exit, steps:steps, step:step, isAlive:isAlive, isWaiting:isWaiting,
-                suspend:suspend,retVal:0/*retVal*/,tryStack:[],
+                suspend:suspend,retVal:0,tryStack:[],
                 kill:kill, waitFor: waitFor,setGroup:setGroup,
                 enterTry:enterTry,exitTry:exitTry,startCatch:startCatch,
                 waitEvent:waitEvent,runAsync:runAsync,clearFrame:clearFrame};
@@ -243,7 +248,7 @@ return Tonyu=function () {
         };
         return res;
     }
-    function threadGroup() {//@deprecated
+    /*function threadGroup() {//@deprecated
         var threads=[];
         var waits=[];
         var _isAlive=true;
@@ -308,7 +313,7 @@ return Tonyu=function () {
             }
         }
         return thg={add:add, addObj:addObj,  steps:steps, kill:kill, notifyResume: notifyResume, threads:threads};
-    }
+    }*/
     function handleEx(e) {
         if (Tonyu.onRuntimeError) {
             Tonyu.onRuntimeError(e);
@@ -589,12 +594,12 @@ return Tonyu=function () {
         $LASTPOS=0;
         th.steps();
     }
-    return Tonyu={thread:thread, threadGroup:threadGroup, klass:klass, bless:bless, extend:extend,
+    return Tonyu={thread:thread, /*threadGroup:threadGroup,*/ klass:klass, bless:bless, extend:extend,
             globals:globals, classes:classes, classMetas:classMetas, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
             timeout:timeout,animationFrame:animationFrame, asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
-            run:run,
-            VERSION:1450251439339,//EMBED_VERSION
+            run:run,iterator:IT,
+            VERSION:1450744004099,//EMBED_VERSION
             A:A};
 }();
 });

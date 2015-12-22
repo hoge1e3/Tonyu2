@@ -140,7 +140,8 @@ var reqConf={
             "Visitor": "lang/Visitor",
             "XMLBuffer": "lang/XMLBuffer",
             "Tonyu": "runtime/TonyuLib",
-            "Tonyu.Iterator": "runtime/Iterator",
+            "Tonyu.Thread":"runtime/TonyuThread",
+            "Tonyu.Iterator": "runtime/TonyuIterator",
             "Tonyu.Compiler": "lang/compiler",
             "Tonyu.Compiler.JSGenerator": "lang/JSGenerator",
             "Tonyu.Compiler.Semantics": "lang/Semantics",
@@ -221,6 +222,7 @@ var reqConf={
             "Content":"fs2/Content",
             "WebFS":"fs2/WebFS",
             "jquery.binarytransport":"lib/jquery.binarytransport",
+            "Class":"lib/Class",
 
             "foo":"bar"
         },
