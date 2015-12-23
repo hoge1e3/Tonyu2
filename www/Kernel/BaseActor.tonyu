@@ -220,6 +220,7 @@ nowait \die() {
     hide();
     fireEvent("die");
     _isDead=true;
+    $ObjectPool.pool(getClassInfo().fullName, this);
 }
 nowait \hide() {
     if(layer && typeof layer.remove=="function"){
@@ -424,6 +425,17 @@ nowait \asyncResult() {//@deperecated
 \setVisible(v) {
     _isInvisible=!v;
 }
-\appear(o) {
-    return o;
+\appear(o,param) {
+    if (typeof o=="function") {
+        var p=$ObjectPool.withdraw(o.meta.fullName);
+        if (p) {
+        	for (var k in Object.keys(p)) delete p[k];
+		    o.call(p,param);
+        	return p;
+        } else {
+        	return new o(param);
+        }
+    } else {
+	    return o;
+	}
 }

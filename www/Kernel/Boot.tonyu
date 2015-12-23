@@ -92,6 +92,7 @@ $InputDevice=new InputDevice;
 $InputDevice.initCanvasEvents(cvj);
 initThread();
 
+$ObjectPool=new ObjectPool;
 $pat_fruits=30;
 $Keys=new Keys;
 $Math=Math;
