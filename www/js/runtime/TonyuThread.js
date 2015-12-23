@@ -1,5 +1,5 @@
 define(["Class"],function (Class) {
-    var cnts={enterC:0,exitC:0};
+    var cnts={enterC:{},exitC:0};
     try {window.cnts=cnts;}catch(e){}
     var TonyuThread=Class({
         initialize: function TonyuThread() {
@@ -22,7 +22,8 @@ define(["Class"],function (Class) {
             this.cnt=0;
         },
         enter:function enter(frameFunc) {
-            cnts.enterC++;
+            //var n=frameFunc.name;
+            //cnts.enterC[n]=(cnts.enterC[n]||0)+1;
             this.frame={prev:this.frame, func:frameFunc};
         },
         apply:function apply(obj, methodName, args) {
@@ -81,7 +82,7 @@ define(["Class"],function (Class) {
             return e;
         },
         exit: function exit(res) {
-            cnts.exitC++;
+            //cnts.exitC++;
             this.frame=(this.frame ? this.frame.prev:null);
             this.retVal=res;
         },

@@ -322,7 +322,7 @@ return Tonyu=function () {
             throw e;
         }
     }
-    function defunct(f) {
+    /*function defunct(f) {
         if (f===Function) {
             return null;
         }
@@ -334,7 +334,7 @@ return Tonyu=function () {
             }
         }
         return f;
-    }
+    }*/
     /*function klass() {
         var parent, prot, includes=[];
         if (arguments.length==1) {
@@ -421,6 +421,9 @@ return Tonyu=function () {
         }
         return o;
     };
+    Function.prototype.constructor=function () {
+        throw new Error("This method should not be called");
+    };
     klass.define=function (params) {
         // fullName, shortName,namspace, superclass, includes, methods:{name/fiber$name: func}, decls
         var parent=params.superclass;
@@ -431,7 +434,7 @@ return Tonyu=function () {
         var methods=params.methods;
         var decls=params.decls;
         var nso=klass.ensureNamespace(Tonyu.classes, namespace);
-        var prot=defunct(methods);
+        var prot=methods;
         var init=prot.initialize;
         delete prot.initialize;
         var res;

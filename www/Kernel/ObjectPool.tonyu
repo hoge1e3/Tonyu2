@@ -1,0 +1,32 @@
+extends null;
+native Object;
+
+\classKey(o) {
+	if (o.getClassInfo) return o.getClassInfo().fullName;
+	if (o.meta && o.meta.fullName) return o.meta.fullName;
+	throw new Error("Key for "+o+" not found");
+}
+\pool(o) {
+	var list=poolList(o);
+	if (list) list.push(o);
+}
+\withdraw(klass,params) {
+	var list=poolList(klass);
+	var o=list && list.shift();
+	if (!o) {
+	    o=new klass(params);
+	} else {
+		for (var k in Object.keys(o)) delete o[k];
+	    klass.call(o,params);
+	}
+    return o;
+}
+\poolList(o) {
+	var k=classKey(o);
+	if (lists) return lists[k];
+}
+\setup(k) {
+	var k=classKey(o);
+	lists=lists||{};
+	lists[k]=[];
+}

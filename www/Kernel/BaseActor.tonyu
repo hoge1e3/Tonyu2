@@ -217,20 +217,11 @@ nowait \currentThreadGroup() {//@deprecated
 }
 nowait \die() {
     killThreadGroup();
-    /*if (_th) {
-        _th.kill();
-    }*/
     hide();
     fireEvent("die");
     _isDead=true;
 }
 nowait \hide() {
-    /*if (_sprite) {
-        $Sprites.remove(_sprite);
-        _sprite=null;
-    } else {*/
-        //$Sprites.remove(this);
-    //}
     if(layer && typeof layer.remove=="function"){
         layer.remove(this);
     }else{
