@@ -11,9 +11,9 @@ native Array;
 \new(x,y,p) {
     //if (Tonyu.runMode) {
         _th=$Boot.schedule(this,"main",[]);
-        registerEventHandler("screenOut",new ScreenOutHandler);
-        registerEventHandler("crashTo",new CrashToHandler);
-        registerEventHandler("within",new WithinHandler);
+        //registerEventHandler("screenOut",new ScreenOutHandler{target:this});
+        //registerEventHandler("crashTo",new CrashToHandler{target:this});
+        //registerEventHandler("within",new WithinHandler{target:this});
     //}
     if (typeof x=="object") Tonyu.extend(this,x);
     else if (typeof x=="number") {
@@ -198,7 +198,7 @@ nowait \within1(t,distance){
     while(true){
         if(typeof d=="function"){
             for(obj in allWithin(d,r)){
-                print(r);
+                //print(r);
                 f(obj);
             }
         }else if(within(d,r)){
@@ -220,7 +220,7 @@ nowait \die() {
     hide();
     fireEvent("die");
     _isDead=true;
-    $ObjectPool.pool(getClassInfo().fullName, this);
+    if (_poolArray) _poolArray.push(this);
 }
 nowait \hide() {
     if(layer && typeof layer.remove=="function"){
@@ -424,6 +424,11 @@ nowait \asyncResult() {//@deperecated
 
 \setVisible(v) {
     _isInvisible=!v;
+}
+\useObjectPool=value {
+    if (value) {
+        _poolArray=$ObjectPool.poolList(getClassInfo().fullName);
+    }
 }
 \appear(o,param) {
     if (typeof o=="function") {

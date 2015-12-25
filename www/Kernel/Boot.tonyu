@@ -84,7 +84,15 @@ native requestAnimationFrame;
     obj.addThread(th);
     return th;
 }
+\initEvents() {
+    eventTypes={
+        "screenOut":ScreenOutHandler,
+        "crashTo":CrashToHandler,
+        "within":WithinHandler
+    };
+}
 $Boot=this;
+initEvents();
 loadPlugins();
 initSprites();
 initSounds();
@@ -145,7 +153,7 @@ nowait \detectRAFResolution(t) {
 	if (rafResolution) return;
 // RAFの分解能（1フレーム時間をRAFの回数に換算したもの）を求める。tはRAFとRAFの間隔ms
 	var time=1000/_fps;
-	var reso=time/t;  // t=15 time=30  reso=2  
+	var reso=time/t;  // t=15 time=30  reso=2
 	// reso は、nを整数として n あるいは 1/n  と表現できると期待
 	if (reso>1) reso=floor(reso+0.5); // 1.8 -> 2
 	else reso=1/floor(1/reso+0.5);  // 0.6 -> 1/2
@@ -258,8 +266,8 @@ nowait \getFrameRate() {
 
 // Tonyu1の$System.setFrameRate() //
 nowait \setFrameRate(fps, maxFrameSkip) {
-	if (_fps!=fps) { 
-		rafRess={}; 
+	if (_fps!=fps) {
+		rafRess={};
 		rafResolution=null;
 		frameSkip=1;
 		rafCnt=floor(60/fps+0.5);

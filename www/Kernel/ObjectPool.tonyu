@@ -3,14 +3,15 @@ native Object;
 
 \pool(key,o) {
 	var list=poolList(key);
-	if (list) list.push(o);
+	list.push(o);
 }
 \withdraw(key) {
 	var list=poolList(key);
-	return list && list.shift();
+	return list.shift();
 }
-\poolList(k) {
-	if (lists) return lists[k];
+\poolList(key) {
+	lists=lists||{};
+	return lists[key]=lists[key]||[];
 }
 \setup(klass) {
 	var k=klass.meta.fullName;

@@ -26,9 +26,12 @@ nowait \registerEventHandler(type, obj) {
    if (typeof type=="function") {
        obj=obj||new type{target:this};
        type=obj.getClassInfo().fullName;
-   }  else {
-       obj=obj || new EventHandler{target:this};
-       obj.target=this;
+   } else {
+       if (!obj) {
+           var cl=$Boot.eventTypes[type] || EventHandler;
+           obj=new cl{target:this};
+       }
+       //obj.target=this;
        //print("regEvt", type, getClassInfo().fullName, obj.id);
    }
    return _eventHandlers[type]=obj;
