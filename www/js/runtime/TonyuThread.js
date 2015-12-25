@@ -111,6 +111,7 @@ define(["Class"],function (Class) {
             var fb=this;
             var succ=function () {
                 fb.retVal=arguments;
+                //console.log("succ",fb.retVal);
                 fb.steps();
             };
             var err=function () {
@@ -124,15 +125,17 @@ define(["Class"],function (Class) {
                 fb.gotoCatch(e);
                 fb.steps();
             };
-            f(succ,err);
             fb.suspend();
+            setTimeout(function () {
+                f(succ,err);
+            },0);
         },
         waitFor: function waitFor(j) {
             var fb=this;
             fb._isWaiting=true;
             fb.suspend();
             if (!j) return;
-            if (j.addTerminatedListener) j.addTerminatedListener(function () {
+            /*if (j.addTerminatedListener) j.addTerminatedListener(function () {
                 fb._isWaiting=false;
                 if (fb.group) fb.group.notifyResume();
                 else if (fb.isAlive()) {
@@ -143,7 +146,7 @@ define(["Class"],function (Class) {
                     }
                 }
             });
-            else if (j.then && j.fail) {
+            else */if (j.then && j.fail) {
                 j.then(function (r) {
                     fb.retVal=r;
                     fb.steps();

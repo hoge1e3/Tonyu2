@@ -27,7 +27,7 @@ define(["WebSite"],function (WebSite){
         }
         var i=0;
         console.log("loading plugins",namea);
-        loadNext();
+        setTimeout(loadNext,0);
         function loadNext() {
             if (i>=namea.length) options.onload();
             else plugins.load(namea[i++],loadNext);

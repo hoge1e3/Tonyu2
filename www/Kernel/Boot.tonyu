@@ -20,9 +20,9 @@ native requestAnimationFrame;
 }
 \loadPlugins() {
     print ("Loading plugins..");
-    var a=asyncResult();
-    $currentProject.loadPlugins(a.receiver);
-    waitFor(a);
+    runAsync \(r) {
+        $currentProject.loadPlugins(r);
+    };
 }
 \initSprites() {
     $Sprites=new Sprites();
@@ -36,13 +36,13 @@ native requestAnimationFrame;
     drawFrame();
     print ("Loading pats..");
     var rs=$currentProject.getResource();
-    a=asyncResult();
-    ImageList.load( rs.images, a.receiver)
-    {baseDir:$currentProject.getDir()};
-    waitFor(a);
-    var r=a[0];
-    $Sprites.setImageList(r);
-    for (var name,val in r.names) {
+    var r;
+    r=runAsync \(succ) {
+        ImageList.load( rs.images, succ) {baseDir:$currentProject.getDir()};
+    };
+    //var r=a[0];
+    $Sprites.setImageList(r[0]);
+    for (var name,val in r[0].names) {
         Tonyu.setGlobal(name, val);
     }
     print ("Loading pats done.");

@@ -1,10 +1,10 @@
 extends null;
 
-\addThread(t) {
+\addThread(t) {// t:TonyuThread
     threads=threads||[];
     threads.push(t);
 }
-\addThreadGroup(tg) {
+\addThreadGroup(tg) { // tg:BaseActor, mainly
     threadGroups=threadGroups||[];
     threadGroups.push(tg);
 }

@@ -1,7 +1,8 @@
 if (typeof define!=="function") {
     define=require("requirejs").define;
 }
-define(["assert","Tonyu.Thread","Tonyu.Iterator"],function (assert,TT,IT) {
+define(["assert","Tonyu.Thread","Tonyu.Iterator","DeferredUtil"],
+        function (assert,TT,IT,DU) {
 return Tonyu=function () {
     var preemptionTime=60;
     function thread() {
@@ -9,7 +10,7 @@ return Tonyu=function () {
         t.handleEx=handleEx;
         return t;
     }
-    function threadOLD() {
+    /*function threadOLD() {
         //var stpd=0;
         var fb={enter:enter, apply:apply,
                 exit:exit, steps:steps, step:step, isAlive:isAlive, isWaiting:isWaiting,
@@ -169,9 +170,9 @@ return Tonyu=function () {
             fb.group=g;
             if (g) g.add(fb);
         }
-        /*function retVal() {
+        //function retVal() {
             return retVal;
-        }*/
+        //}/
         function steps() {
             //stpd++;
             //if (stpd>5) throw new Error("Depth too much");
@@ -198,9 +199,12 @@ return Tonyu=function () {
             tryStack=[];
         }
         return fb;
-    }
+    }*/
     function timeout(t) {
-        var res={};
+        return DU.funcPromise(function (s) {
+            setTimeout(s,t);
+        });
+        /*var res={};
         var ls=[];
         res.addTerminatedListener=function (l) {
             ls.push(l);
@@ -210,10 +214,13 @@ return Tonyu=function () {
                 l();
             });
         },t);
-        return res;
+        return res;*/
     }
     function animationFrame() {
-        var res={};
+        return DU.funcPromise( function (f) {
+            requestAnimationFrame(f);
+        });
+        /*var res={};
         var ls=[];
         res.addTerminatedListener=function (l) {
             ls.push(l);
@@ -223,10 +230,10 @@ return Tonyu=function () {
                 l();
             });
         });
-        return res;
+        return res;*/
     }
 
-    function asyncResult() {
+    /*function asyncResult() {
         var res=[];
         var ls=[];
         var hasRes=false;
@@ -247,7 +254,7 @@ return Tonyu=function () {
             });
         };
         return res;
-    }
+    }*/
     /*function threadGroup() {//@deprecated
         var threads=[];
         var waits=[];
@@ -599,7 +606,8 @@ return Tonyu=function () {
     }
     return Tonyu={thread:thread, /*threadGroup:threadGroup,*/ klass:klass, bless:bless, extend:extend,
             globals:globals, classes:classes, classMetas:classMetas, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
-            timeout:timeout,animationFrame:animationFrame, asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
+            timeout:timeout,animationFrame:animationFrame, /*asyncResult:asyncResult,*/
+            bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,iterator:IT,
             VERSION:1450744004099,//EMBED_VERSION

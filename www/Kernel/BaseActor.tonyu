@@ -366,7 +366,10 @@ nowait \asyncResult() {//@deperecated
     return files.rel(path).setPolicy {topDir:d};
 }
 \waitInputDevice(fl) {
-    if (fl!==false) {
+    runAsync \(f){
+        $InputDevice.addOnetimeListener(f);
+    };
+    /*if (fl!==false) {
         if (!origTG) {
             ifwait {
                 origTG=_thread.group;
@@ -383,7 +386,7 @@ nowait \asyncResult() {//@deperecated
                 origTG=null;
             }
         }
-    }
+    }*/
 }
 \redrawScreen() {
     $Sprites.draw($Screen.buf[0]);
