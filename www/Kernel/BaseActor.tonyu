@@ -320,9 +320,9 @@ nowait \draw(ctx) {
         }
     }
 }
-nowait \asyncResult() {//@deperecated
+/*nowait \asyncResult() {//@deperecated
     return Tonyu.asyncResult();
-}
+}*/
 
 \runAsync(f) {
     if (!_thread) throw new Error("runAsync should run in wait mode");

@@ -4,15 +4,22 @@ define(["Class"],function (Class) {
     var TonyuThread=Class({
         initialize: function TonyuThread() {
             this.frame=null;
-            this._isAlive=true;
+            this._isDead=false;
+            //this._isAlive=true;
             this.cnt=0;
             this._isWaiting=false;
             this.fSuspended=false;
             this.tryStack=[];
             this.preemptionTime=60;
+            this.age=0; // inc if object pooled
         },
         isAlive:function isAlive() {
-            return this.frame!=null && this._isAlive;
+            return !this.isDead();
+            //return this.frame!=null && this._isAlive;
+        },
+        isDead: function () {
+            return this._isDead=this._isDead || (this.frame==null) ||
+            (this.group && (this.age<this.group.age || this.group.isDead()  ) ) ;
         },
         isWaiting:function isWaiting() {
             return this._isWaiting;
@@ -47,15 +54,6 @@ define(["Class"],function (Class) {
                     pc=2;break;
                 }
             });
-        },
-        step: function step() {
-            if (this.frame) {
-                try {
-                    this.frame.func(this);
-                } catch(e) {
-                    this.gotoCatch(e);
-                }
-            }
         },
         gotoCatch: function gotoCatch(e) {
             var fb=this;
@@ -111,7 +109,6 @@ define(["Class"],function (Class) {
             var fb=this;
             var succ=function () {
                 fb.retVal=arguments;
-                //console.log("succ",fb.retVal);
                 fb.steps();
             };
             var err=function () {
@@ -163,28 +160,40 @@ define(["Class"],function (Class) {
                 });
             }
         },
-        setGroup: function setGroup(g) {
-            var fb=this;
-            fb.group=g;
-            if (g) g.add(fb);
+        resume: function (retVal) {
+            this.retVal=retVal;
+            this.steps();
+        },
+        setGroup: function setGroup(g) {// g:TonyuThread
+            this.group=g;
+            this.age=g.age;
+            //if (g) g.add(fb);
         },
         steps: function steps() {
             var fb=this;
+            if (fb.isDead()) return;
             var sv=Tonyu.currentThread;
             Tonyu.currentThread=fb;
             fb.cnt=fb.preemptionTime;
             fb.preempted=false;
             fb.fSuspended=false;
-            //while (new Date().getTime()<lim) {
-            while (fb.cnt-->0 && fb.frame) {
-                fb.step();
+            while (fb.cnt>0 && fb.frame) {
+                try {
+                    //while (new Date().getTime()<lim) {
+                    while (fb.cnt-->0 && fb.frame) {
+                        fb.frame.func(fb);
+                    }
+                    fb.preempted= (!fb.fSuspended) && fb.isAlive();
+                } catch(e) {
+                    fb.gotoCatch(e);
+                }
             }
-            fb.preempted= (!fb.fSuspended) && fb.isAlive();
             Tonyu.currentThread=sv;
         },
         kill: function kill() {
             var fb=this;
-            fb._isAlive=false;
+            //fb._isAlive=false;
+            fb._isDead=true;
             fb.frame=null;
         },
         clearFrame: function clearFrame() {
