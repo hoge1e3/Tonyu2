@@ -19,7 +19,15 @@ define(["Class"],function (Class) {
         },
         isDead: function () {
             return this._isDead=this._isDead || (this.frame==null) ||
-            (this.group && (this.age<this.group.age || this.group.isDead()  ) ) ;
+            (this._threadGroup && (
+                    this._threadGroup.objectPoolAge!=this.tGrpObjectPoolAge ||
+                    this._threadGroup.isDeadThreadGroup()
+            ));
+        },
+        setThreadGroup: function setThreadGroup(g) {// g:TonyuThread
+            this._threadGroup=g;
+            this.tGrpObjectPoolAge=g.objectPoolAge;
+            //if (g) g.add(fb);
         },
         isWaiting:function isWaiting() {
             return this._isWaiting;
@@ -163,11 +171,6 @@ define(["Class"],function (Class) {
         resume: function (retVal) {
             this.retVal=retVal;
             this.steps();
-        },
-        setGroup: function setGroup(g) {// g:TonyuThread
-            this.group=g;
-            this.age=g.age;
-            //if (g) g.add(fb);
         },
         steps: function steps() {
             var fb=this;

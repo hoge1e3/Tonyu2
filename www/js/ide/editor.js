@@ -36,7 +36,10 @@ $(function () {
     if (WebSite.kernelDir && !PathUtil.isURL(WebSite.kernelDir)){
         kernelDir=FS.get(WebSite.kernelDir);//home.rel("Kernel/");
         if (kernelDir.exists()) {
-            TPRC(kernelDir).loadClasses();
+            TPRC(kernelDir).loadClasses().fail(function (e) {
+                console.log(e);
+                alert("Kernel compile error!");
+            });
         }
     }
     var dir=Util.getQueryString("dir", "/Tonyu/Projects/SandBox/");

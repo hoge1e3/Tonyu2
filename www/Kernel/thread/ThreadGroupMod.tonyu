@@ -1,12 +1,29 @@
 extends null;
 
-\addThread(t) {// t:TonyuThread
-    threads=threads||[];
-    threads.push(t);
+\isDeadThreadGroup() {
+    return _isDeadThreadGroup=_isDeadThreadGroup ||
+    (_threadGroup && (
+      _threadGroup.objectPoolAge!=tGrpObjectPoolAge ||
+      _threadGroup.isDeadThreadGroup()
+    ));
 }
+\setThreadGroup(g) {
+    _threadGroup=g;
+    tGrpObjectPoolAge=g.objectPoolAge;
+}
+\killThreadGroup() {
+    _isDeadThreadGroup=true;
+}
+/*
 \addThreadGroup(tg) { // tg:BaseActor, mainly
-    threadGroups=threadGroups||[];
-    threadGroups.push(tg);
+    tg.setThreadGroup(g);
+    //threadGroups=threadGroups||[];
+    //threadGroups.push(tg);
+}
+\addThread(t) {// t:TonyuThread
+    t.setThreadGroup(this);
+    //threads=threads||[];
+    //threads.push(t);
 }
 \killThreadGroup() {
     if (threads) {
@@ -20,3 +37,4 @@ extends null;
         }
     }
 }
+*/

@@ -9,18 +9,14 @@ native FS;
 native Array;
 
 \new(x,y,p) {
-    //if (Tonyu.runMode) {
-        _th=$Boot.schedule(this,"main",[]);
-        //registerEventHandler("screenOut",new ScreenOutHandler{target:this});
-        //registerEventHandler("crashTo",new CrashToHandler{target:this});
-        //registerEventHandler("within",new WithinHandler{target:this});
-    //}
+    _th=$Boot.schedule(this,"main",[]);
     if (typeof x=="object") Tonyu.extend(this,x);
     else if (typeof x=="number") {
         this.x=x;
         this.y=y;
         this.p=p;
     }
+
     if (scaleX==null) scaleX=1;
     if (rotation==null) rotation=0;
     if (rotate==null) rotate=0;
@@ -220,7 +216,10 @@ nowait \die() {
     hide();
     fireEvent("die");
     _isDead=true;
-    if (_poolArray) _poolArray.push(this);
+    if (_poolArray) {
+        _poolArray.push(this);
+        objectPoolAge=(objectPoolAge||0)+1;
+    }
 }
 nowait \hide() {
     if(layer && typeof layer.remove=="function"){
@@ -437,7 +436,9 @@ nowait \draw(ctx) {
     if (typeof o=="function") {
         var p=$ObjectPool.withdraw(o.meta.fullName);
         if (p) {
-        	for (var k in Object.keys(p)) delete p[k];
+        	for (var k in Object.keys(p)) {
+        	   if (k!="objectPoolAge") delete p[k];
+		    }
 		    o.call(p,param);
         	return p;
         } else {

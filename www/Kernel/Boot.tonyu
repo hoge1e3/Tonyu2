@@ -80,8 +80,8 @@ native requestAnimationFrame;
     method=method||"main";
     args=args||[];
     var th=scheduler.newThread(obj, method, args);
-    addThreadGroup(obj);
-    obj.addThread(th);
+    obj.setThreadGroup(this);
+    th.setThreadGroup(obj);
     return th;
 }
 \initEvents() {

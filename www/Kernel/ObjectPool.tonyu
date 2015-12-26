@@ -3,6 +3,7 @@ native Object;
 
 \pool(key,o) {
 	var list=poolList(key);
+	o.objectPoolAge=(o.objectPoolAge||0)+1;
 	list.push(o);
 }
 \withdraw(key) {
