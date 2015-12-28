@@ -1,5 +1,6 @@
 extends Actor;
 \draw(c) {
+    useObjectPool=true;
     c.font=size+"px 'ＭＳ Ｐゴシック'";
     
     super.draw(c);

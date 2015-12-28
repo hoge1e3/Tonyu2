@@ -1,7 +1,7 @@
 extends Actor;
 \draw(ctx) {
     //if (hidden) return;
-    
+    useObjectPool=true;
     ctx.strokeStyle=col;
     ctx.beginPath();
     ctx.moveTo(x,y);

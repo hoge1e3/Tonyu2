@@ -448,3 +448,27 @@ nowait \draw(ctx) {
 	    return o;
 	}
 }
+\wait(t) {
+    if(_thread) {
+        _thread.suspend();
+        if (t) {
+            _thread.waitCount=t;
+            if ($Scheduler) $Scheduler.addToNext(_thread);
+        }
+    } else if (_th) {
+        if (t) {
+            _th.waitCount=t;
+        } else {
+            if (_th.scheduled) _th.scheduled.unschedule(_th);
+        }
+    }
+}
+nowait \notify() {
+    if (_th) {
+        if (_th.scheduled) {
+             _th.waitCount=0;
+        } else {
+            if ($Scheduler) $Scheduler.addToCur(_th);
+        }
+    }
+}

@@ -15,20 +15,40 @@ next=[];
     return th;
 }
 \addToCur(th) {
+    if (th.scheduled) return;
     cur.push(th);
     th.scheduled=this;
 }
 \addToNext(th) {
+    if (th.scheduled) return;
     next.push(th);
     th.scheduled=this;
+}
+\unschedule(th) {
+    var i=cur.indexOf(th);
+    if (i>=0) {
+        cur.splice(i,1);
+        delete th.scheduled;
+    } else {
+	    i=next.indexOf(th);
+    	if (i>=0) {
+    	   next.splice(i,1);
+           delete th.scheduled;
+    	}
+    }
 }
 \stepsAll() {
     for (var t in cur) {
     	delete t.scheduled;
-        t.steps();
-        if (t.preempted) {
-            //console.log("Preempted: ",t);
+    	if (t.waitCount) {
+    	    t.waitCount--;
             addToNext(t);
+    	} else {
+            t.steps();
+            if (t.preempted) {
+                //console.log("Preempted: ",t);
+                addToNext(t);
+            }
         }
     }
     cur=next;

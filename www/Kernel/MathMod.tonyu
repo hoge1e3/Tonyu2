@@ -18,9 +18,13 @@ nowait \deg(d) {
 nowait \abs(v) {
     return Math.abs(v);
 }
-nowait \atan2(x,y) {
-    return deg(Math.atan2(x,y));
+nowait \atan2(y,x) {
+    return deg(Math.atan2(y,x));
 }
+nowait \atanxy(x,y) {
+    return atan2(y,x);
+}
+
 nowait \floor(x) {
     return Math.floor(x);
 }

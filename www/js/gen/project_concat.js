@@ -1,4 +1,4 @@
-// Created at Tue Dec 22 2015 09:26:50 GMT+0900 (東京 (標準時))
+// Created at Sun Dec 27 2015 21:10:23 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -545,18 +545,35 @@ define(["assert"],function (A) {
 });
 requireSimulator.setName('Tonyu.Thread');
 define(["Class"],function (Class) {
+    var cnts={enterC:{},exitC:0};
+    try {window.cnts=cnts;}catch(e){}
     var TonyuThread=Class({
         initialize: function TonyuThread() {
             this.frame=null;
-            this._isAlive=true;
+            this._isDead=false;
+            //this._isAlive=true;
             this.cnt=0;
             this._isWaiting=false;
             this.fSuspended=false;
             this.tryStack=[];
             this.preemptionTime=60;
+            this.age=0; // inc if object pooled
         },
         isAlive:function isAlive() {
-            return this.frame!=null && this._isAlive;
+            return !this.isDead();
+            //return this.frame!=null && this._isAlive;
+        },
+        isDead: function () {
+            return this._isDead=this._isDead || (this.frame==null) ||
+            (this._threadGroup && (
+                    this._threadGroup.objectPoolAge!=this.tGrpObjectPoolAge ||
+                    this._threadGroup.isDeadThreadGroup()
+            ));
+        },
+        setThreadGroup: function setThreadGroup(g) {// g:TonyuThread
+            this._threadGroup=g;
+            this.tGrpObjectPoolAge=g.objectPoolAge;
+            //if (g) g.add(fb);
         },
         isWaiting:function isWaiting() {
             return this._isWaiting;
@@ -566,6 +583,8 @@ define(["Class"],function (Class) {
             this.cnt=0;
         },
         enter:function enter(frameFunc) {
+            //var n=frameFunc.name;
+            //cnts.enterC[n]=(cnts.enterC[n]||0)+1;
             this.frame={prev:this.frame, func:frameFunc};
         },
         apply:function apply(obj, methodName, args) {
@@ -589,15 +608,6 @@ define(["Class"],function (Class) {
                     pc=2;break;
                 }
             });
-        },
-        step: function step() {
-            if (this.frame) {
-                try {
-                    this.frame.func(this);
-                } catch(e) {
-                    this.gotoCatch(e);
-                }
-            }
         },
         gotoCatch: function gotoCatch(e) {
             var fb=this;
@@ -624,6 +634,7 @@ define(["Class"],function (Class) {
             return e;
         },
         exit: function exit(res) {
+            //cnts.exitC++;
             this.frame=(this.frame ? this.frame.prev:null);
             this.retVal=res;
         },
@@ -665,15 +676,17 @@ define(["Class"],function (Class) {
                 fb.gotoCatch(e);
                 fb.steps();
             };
-            f(succ,err);
             fb.suspend();
+            setTimeout(function () {
+                f(succ,err);
+            },0);
         },
         waitFor: function waitFor(j) {
             var fb=this;
             fb._isWaiting=true;
             fb.suspend();
             if (!j) return;
-            if (j.addTerminatedListener) j.addTerminatedListener(function () {
+            /*if (j.addTerminatedListener) j.addTerminatedListener(function () {
                 fb._isWaiting=false;
                 if (fb.group) fb.group.notifyResume();
                 else if (fb.isAlive()) {
@@ -684,7 +697,7 @@ define(["Class"],function (Class) {
                     }
                 }
             });
-            else if (j.then && j.fail) {
+            else */if (j.then && j.fail) {
                 j.then(function (r) {
                     fb.retVal=r;
                     fb.steps();
@@ -701,28 +714,35 @@ define(["Class"],function (Class) {
                 });
             }
         },
-        setGroup: function setGroup(g) {
-            var fb=this;
-            fb.group=g;
-            if (g) g.add(fb);
+        resume: function (retVal) {
+            this.retVal=retVal;
+            this.steps();
         },
         steps: function steps() {
             var fb=this;
+            if (fb.isDead()) return;
             var sv=Tonyu.currentThread;
             Tonyu.currentThread=fb;
             fb.cnt=fb.preemptionTime;
             fb.preempted=false;
             fb.fSuspended=false;
-            //while (new Date().getTime()<lim) {
-            while (fb.cnt-->0 && fb.frame) {
-                fb.step();
+            while (fb.cnt>0 && fb.frame) {
+                try {
+                    //while (new Date().getTime()<lim) {
+                    while (fb.cnt-->0 && fb.frame) {
+                        fb.frame.func(fb);
+                    }
+                    fb.preempted= (!fb.fSuspended) && fb.isAlive();
+                } catch(e) {
+                    fb.gotoCatch(e);
+                }
             }
-            fb.preempted= (!fb.fSuspended) && fb.isAlive();
             Tonyu.currentThread=sv;
         },
         kill: function kill() {
             var fb=this;
-            fb._isAlive=false;
+            //fb._isAlive=false;
+            fb._isDead=true;
             fb.frame=null;
         },
         clearFrame: function clearFrame() {
@@ -853,11 +873,85 @@ define(["Class"], function (Class) {
 //   Tonyu.iterator=IT;
     return IT;
 });
+requireSimulator.setName('DeferredUtil');
+define([], function () {
+    var DU;
+    DU={
+            directPromise:function (v) {
+                var d=new $.Deferred;
+                setTimeout(function () {d.resolve(v);},0);
+                return d.promise();
+            },
+            timeout:function (timeout) {
+                var d=new $.Deferred;
+                setTimeout(function () {d.resolve();},timeout);
+                return d.promise();
+            },
+            funcPromise:function (f) {
+                var d=new $.Deferred;
+                f(function (v) {
+                    d.resolve(v);
+                },function (e) {
+                    d.reject(e);
+                });
+                return d.promise();
+            },
+            throwPromise:function (e) {
+                d=new $.Deferred;
+                setTimeout(function () {
+                    d.reject(e);
+                }, 0);
+                return d.promise();
+            },
+            throwF: function (f) {
+                return function () {
+                    try {
+                        return f.apply(this,arguments);
+                    } catch(e) {
+                        console.log(e.stack);
+                        return DU.throwPromise(e);
+                    }
+                };
+            },
+            each: function (set,f) {
+                if (set instanceof Array) {
+                    return DU.loop(function (i) {
+                        if (i>=set.length) return DU.brk();
+                        return $.when(f(set[i],i)).then(function () {
+                            return i+1;
+                        });
+                    },0);
+                } else {
+                    var objs=[];
+                    for (var i in set) {
+                        objs.push({k:i,v:set[i]});
+                    }
+                    return DU.each(objs,function (e) {
+                        return f(e.k, e.v);
+                    });
+                }
+            },
+            loop: function (f,r) {
+                return DU.directPromise(r).then(DU.throwF(function () {
+                    var r=f.apply(this,arguments);
+                    if (r.DU_BRK) return r.res;
+                    return $.when(r).then(function (r) {
+                        return DU.loop(f,r);
+                    });
+                }));
+            },
+            brk: function (res) {
+                return {DU_BRK:true,res:res};
+            }
+    };
+    return DU;
+});
 requireSimulator.setName('Tonyu');
 if (typeof define!=="function") {
     define=require("requirejs").define;
 }
-define(["assert","Tonyu.Thread","Tonyu.Iterator"],function (assert,TT,IT) {
+define(["assert","Tonyu.Thread","Tonyu.Iterator","DeferredUtil"],
+        function (assert,TT,IT,DU) {
 return Tonyu=function () {
     var preemptionTime=60;
     function thread() {
@@ -865,7 +959,7 @@ return Tonyu=function () {
         t.handleEx=handleEx;
         return t;
     }
-    function threadOLD() {
+    /*function threadOLD() {
         //var stpd=0;
         var fb={enter:enter, apply:apply,
                 exit:exit, steps:steps, step:step, isAlive:isAlive, isWaiting:isWaiting,
@@ -1025,9 +1119,9 @@ return Tonyu=function () {
             fb.group=g;
             if (g) g.add(fb);
         }
-        /*function retVal() {
+        //function retVal() {
             return retVal;
-        }*/
+        //}/
         function steps() {
             //stpd++;
             //if (stpd>5) throw new Error("Depth too much");
@@ -1054,9 +1148,12 @@ return Tonyu=function () {
             tryStack=[];
         }
         return fb;
-    }
+    }*/
     function timeout(t) {
-        var res={};
+        return DU.funcPromise(function (s) {
+            setTimeout(s,t);
+        });
+        /*var res={};
         var ls=[];
         res.addTerminatedListener=function (l) {
             ls.push(l);
@@ -1066,10 +1163,13 @@ return Tonyu=function () {
                 l();
             });
         },t);
-        return res;
+        return res;*/
     }
     function animationFrame() {
-        var res={};
+        return DU.funcPromise( function (f) {
+            requestAnimationFrame(f);
+        });
+        /*var res={};
         var ls=[];
         res.addTerminatedListener=function (l) {
             ls.push(l);
@@ -1079,10 +1179,10 @@ return Tonyu=function () {
                 l();
             });
         });
-        return res;
+        return res;*/
     }
 
-    function asyncResult() {
+    /*function asyncResult() {
         var res=[];
         var ls=[];
         var hasRes=false;
@@ -1103,7 +1203,7 @@ return Tonyu=function () {
             });
         };
         return res;
-    }
+    }*/
     /*function threadGroup() {//@deprecated
         var threads=[];
         var waits=[];
@@ -1178,7 +1278,7 @@ return Tonyu=function () {
             throw e;
         }
     }
-    function defunct(f) {
+    /*function defunct(f) {
         if (f===Function) {
             return null;
         }
@@ -1190,7 +1290,7 @@ return Tonyu=function () {
             }
         }
         return f;
-    }
+    }*/
     /*function klass() {
         var parent, prot, includes=[];
         if (arguments.length==1) {
@@ -1277,6 +1377,9 @@ return Tonyu=function () {
         }
         return o;
     };
+    Function.prototype.constructor=function () {
+        throw new Error("This method should not be called");
+    };
     klass.define=function (params) {
         // fullName, shortName,namspace, superclass, includes, methods:{name/fiber$name: func}, decls
         var parent=params.superclass;
@@ -1287,7 +1390,7 @@ return Tonyu=function () {
         var methods=params.methods;
         var decls=params.decls;
         var nso=klass.ensureNamespace(Tonyu.classes, namespace);
-        var prot=defunct(methods);
+        var prot=methods;
         var init=prot.initialize;
         delete prot.initialize;
         var res;
@@ -1452,10 +1555,11 @@ return Tonyu=function () {
     }
     return Tonyu={thread:thread, /*threadGroup:threadGroup,*/ klass:klass, bless:bless, extend:extend,
             globals:globals, classes:classes, classMetas:classMetas, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
-            timeout:timeout,animationFrame:animationFrame, asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
+            timeout:timeout,animationFrame:animationFrame, /*asyncResult:asyncResult,*/
+            bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,iterator:IT,
-            VERSION:1450744004099,//EMBED_VERSION
+            VERSION:1451218215118,//EMBED_VERSION
             A:A};
 }();
 });
@@ -8538,79 +8642,6 @@ return Tonyu.TraceTbl=(function () {
 })();
 //if (typeof getReq=="function") getReq.exports("Tonyu.TraceTbl");
 });
-requireSimulator.setName('DeferredUtil');
-define([], function () {
-    var DU;
-    DU={
-            directPromise:function (v) {
-                var d=new $.Deferred;
-                setTimeout(function () {d.resolve(v);},0);
-                return d.promise();
-            },
-            timeout:function (timeout) {
-                var d=new $.Deferred;
-                setTimeout(function () {d.resolve();},timeout);
-                return d.promise();
-            },
-            funcPromise:function (f) {
-                var d=new $.Deferred;
-                f(function (v) {
-                    d.resolve(v);
-                },function (e) {
-                    d.reject(e);
-                });
-                return d.promise();
-            },
-            throwPromise:function (e) {
-                d=new $.Deferred;
-                setTimeout(function () {
-                    d.reject(e);
-                }, 0);
-                return d.promise();
-            },
-            throwF: function (f) {
-                return function () {
-                    try {
-                        return f.apply(this,arguments);
-                    } catch(e) {
-                        console.log(e.stack);
-                        return DU.throwPromise(e);
-                    }
-                };
-            },
-            each: function (set,f) {
-                if (set instanceof Array) {
-                    return DU.loop(function (i) {
-                        if (i>=set.length) return DU.brk();
-                        return $.when(f(set[i],i)).then(function () {
-                            return i+1;
-                        });
-                    },0);
-                } else {
-                    var objs=[];
-                    for (var i in set) {
-                        objs.push({k:i,v:set[i]});
-                    }
-                    return DU.each(objs,function (e) {
-                        return f(e.k, e.v);
-                    });
-                }
-            },
-            loop: function (f,r) {
-                return DU.directPromise(r).then(DU.throwF(function () {
-                    var r=f.apply(this,arguments);
-                    if (r.DU_BRK) return r.res;
-                    return $.when(r).then(function (r) {
-                        return DU.loop(f,r);
-                    });
-                }));
-            },
-            brk: function (res) {
-                return {DU_BRK:true,res:res};
-            }
-    };
-    return DU;
-});
 requireSimulator.setName('compiledProject');
 define(["DeferredUtil"], function (DU) {
     var CPR=function (ns, url) {
@@ -9562,7 +9593,7 @@ define(["WebSite"],function (WebSite){
         }
         var i=0;
         console.log("loading plugins",namea);
-        loadNext();
+        setTimeout(loadNext,0);
         function loadNext() {
             if (i>=namea.length) options.onload();
             else plugins.load(namea[i++],loadNext);
@@ -13008,7 +13039,10 @@ $(function () {
     if (WebSite.kernelDir && !PathUtil.isURL(WebSite.kernelDir)){
         kernelDir=FS.get(WebSite.kernelDir);//home.rel("Kernel/");
         if (kernelDir.exists()) {
-            TPRC(kernelDir).loadClasses();
+            TPRC(kernelDir).loadClasses().fail(function (e) {
+                console.log(e);
+                alert("Kernel compile error!");
+            });
         }
     }
     var dir=Util.getQueryString("dir", "/Tonyu/Projects/SandBox/");
