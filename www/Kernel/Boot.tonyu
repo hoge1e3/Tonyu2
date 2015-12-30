@@ -125,10 +125,10 @@ while (true) {
 	while(moves<frameSkip) {
 		moveFrame();
 		moves++;
-		if (moves<frameSkip) afterDraw();
+		if (moves<frameSkip) afterDraw(false);
 	}
 	drawFrame();
-	afterDraw();
+	afterDraw(true);
 	waitRAF();//★
     elapsed = now()-start;
     var cnt=rafCount-1;
@@ -192,7 +192,7 @@ nowait \detectRAFResolution(t) {
     } else {
         frameSkipped++;
     }
-    afterDraw();
+    afterDraw(doDraw);
     waitFrame(); // FPS制御
 }
 \handlePause() {
@@ -220,9 +220,9 @@ nowait \moveFrame() {
     moveTime=now()-s;
     fps_rpsCnt ++;
 }
-nowait \afterDraw() {// should call (after draw) or (move and frame skip)
+nowait \afterDraw(drawn) {// should call (after draw) or (move and frame skip)
     $Sprites.checkHit();
-    $Sprites.removeOneframes();
+    $Sprites.removeOneframes(drawn);
 }
 nowait \initFPSParams() {
     // フレームレートの設定

@@ -2,11 +2,11 @@ extends null;
 
 nowait \drawText(x,y,text,col,size) {
     if (!size) size=15;
-    if (!col) col="cyan";
-    new T1Text{x,y,text,fillStyle:col, size};
+    if (!col) col="white";
+    appear(T1Text){x,y,text,col, size};
 }
 nowait \drawLine(x,y,tx,ty,col) {
     if (!col) col="white";
-    new T1Line{x,y,tx,ty,col};
+    appear(T1Line){x,y,tx,ty,col};
 }
 

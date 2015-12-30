@@ -11,6 +11,10 @@ native Tonyu;
 }
 function add(s) {
     if (s.__addedToSprites) return;
+    if (drawing) {
+        s.draw(drawing);
+        return;
+    }
     sprites.push(s);
     if(s.__genId==null){
         s.__genId=objId;
@@ -25,9 +29,15 @@ function remove(s) {
     sprites.splice(idx,1);
     delete s.__addedToSprites;
 }
-\removeOneframes() {
+\removeOneframes(drawn) {
+// drawn==true when after REAL draw, false when frame skip
+    var s;
     for (var i=sprites.length-1 ; i>=0 ; i--) {
-        if (sprites[i].oneframeSprite) {
+        s=sprites[i];
+        if (s is OneframeSprite && (!drawn || s.drawn) ) {
+            //Q: What kind of s make   the expression  ^false?
+            //A: What appeared while onDraw
+            $ObjectPool.poolList( s.getClassInfo().fullName ).push(s);
             sprites.splice(i,1);
         }
     }
@@ -52,18 +62,15 @@ function compOrder(obj1, obj2){
 function draw(cv) {
     var ctx=cv.getContext("2d");
     ctx.save();
-    /*
-    ctx.fillStyle=$Screen.color;
-    ctx.fillRect(0,0,cv.width,cv.height);
-    if (isDrawGrid) drawGrid(cv);
-    */
     var orderArray=[];
     orderArray=orderArray.concat(sprites);
     orderArray.sort(compOrder);
     ctx.translate(-sx,-sy);
+    drawing=ctx;
     orderArray.forEach(\(s){
         s.draw(ctx);
     });
+    drawing=null;
     ctx.restore();
 }
 function checkHit() {
@@ -103,7 +110,7 @@ function drawGrid(c) {
         ctx.closePath();
         ctx.stroke();
     }
-    
+
     for (var i=0 ; i<c.height ; i+=10) {
         ctx.beginPath();
         ctx.lineWidth=(i % 100 ==0 ? 4 : 1);

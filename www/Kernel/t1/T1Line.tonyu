@@ -1,12 +1,9 @@
-extends Actor;
+extends OneframeSprite;
 \draw(ctx) {
-    //if (hidden) return;
-    useObjectPool=true;
     ctx.strokeStyle=col;
     ctx.beginPath();
     ctx.moveTo(x,y);
     ctx.lineTo(tx,ty);
     ctx.stroke();
-    oneframeSprite=true;
-    //hidden=true;
+    drawn=true;
 }

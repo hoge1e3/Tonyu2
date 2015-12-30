@@ -1,8 +1,20 @@
-extends Actor;
-\draw(c) {
-    useObjectPool=true;
-    c.font=size+"px 'ＭＳ Ｐゴシック'";
-    
-    super.draw(c);
-	oneframeSprite=true;
+extends OneframeSprite;
+includes TextRectMod;
+\draw(ctx) {
+    ctx.font=size+"px 'ＭＳ Ｐゴシック'";
+    var splitsText=(text+"").split("\n");
+    var drawY=y;
+    if (!size) size=15;
+    if (!align) align="left";
+    if (!fillStyle) fillStyle="white";
+    ctx.fillStyle=col;
+    ctx.globalAlpha=this.alpha/255;
+    height=0;width=0;
+    for(var textCount=0;textCount<splitsText.length;textCount++){
+        var rect=drawTextRect(ctx, splitsText[textCount], x, drawY, size, align , "fill");
+        if(width<rect.w) width=rect.w;
+        height+=rect.h;
+        drawY+=size;
+    }
+    drawn=true;
 }
