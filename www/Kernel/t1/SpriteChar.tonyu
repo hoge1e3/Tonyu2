@@ -9,10 +9,14 @@ extends PlainChar;
     if (typeof scaleX!="number") scaleX=1;
 }
 \draw(c) {
-    if (f) {
+    if (_isInvisible) return;
+    onDraw();
+    detectShape();
+    drawSprite(x,y,p,f,zOrder);
+    /*if (f) {
         if (!scaleY) scaleY=scaleX;
         scaleX*=-1;
     }
     super.draw(c);
-    if (f) scaleX*=-1;
+    if (f) scaleX*=-1;*/
 }

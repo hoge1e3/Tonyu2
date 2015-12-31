@@ -1,0 +1,21 @@
+extends OneframeSprite;
+native Math;
+\draw(ctx) {
+    pImg=$Sprites.getImageList()[Math.floor(p||0)];
+    if (!pImg) return;
+    ctx.save();
+    ctx.translate(x,y);
+    ctx.rotate(this.angle/180*Math.PI);
+    var sgn=(f?-1:1);
+    if(typeof this.scaleY==="undefined") {
+        ctx.scale(this.scaleX*sgn,this.scaleX);
+    }else{
+        ctx.scale(this.scaleX*sgn,this.scaleY);
+    }
+    ctx.globalAlpha=this.alpha/255;
+    ctx.drawImage(
+    pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,
+    -pImg.width/2, -pImg.height/2, pImg.width, pImg.height);
+    ctx.restore();
+    drawn=true;
+}

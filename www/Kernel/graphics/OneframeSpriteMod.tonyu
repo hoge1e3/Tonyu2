@@ -3,10 +3,16 @@ extends null;
 nowait \drawText(x,y,text,col,size) {
     if (!size) size=15;
     if (!col) col="white";
-    appear(T1Text){x,y,text,col, size};
+    appear(T1Text){x,y,text,col, size, owner:this};
 }
 nowait \drawLine(x,y,tx,ty,col) {
     if (!col) col="white";
-    appear(T1Line){x,y,tx,ty,col};
+    appear(T1Line){x,y,tx,ty,col, owner:this};
 }
 
+nowait \drawSprite(x,y,p,f,zOrder) {
+    drawDxSprite(x,y,p,f,zOrder,0,255,1,1);
+}
+nowait \drawDxSprite(x,y,p,f,zOrder,angle,alpha,scaleX,scaleY) {
+    appear(T1Sprite) {x,y,p,f,zOrder,angle,alpha,scaleX,scaleY, owner:this};
+}

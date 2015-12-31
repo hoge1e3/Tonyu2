@@ -17,7 +17,7 @@ native Math;
 \draw(c) {
     onDraw();
     if (_isInvisible) return;
-    super.draw(c);
+    //super.draw(c);
 }
 \setVisible(v) {
     _isInvisible=!v;

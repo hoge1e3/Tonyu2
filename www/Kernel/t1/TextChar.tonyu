@@ -1,9 +1,9 @@
 extends PlainChar;
-includes TextRectMod;
+//includes TextRectMod;
 
 \new (xx,yy,t,c,s){
     super(xx,yy);
-    text="";
+    text=text||"";
     col=$clWhite;
     size=20;
     if (!this.x) this.x=0;
@@ -13,7 +13,10 @@ includes TextRectMod;
     if (s) size=s;
 }
 \draw(ctx) {
-    if (!size) size=15;
+    if (_isInvisible) return;
+    onDraw();
+    drawText(x,y,text,col,size);
+    /*if (!size) size=15;
     if (!align) align="left";
     if (!fillStyle) fillStyle="white";
     ctx.fillStyle=fillStyle;
@@ -22,7 +25,7 @@ includes TextRectMod;
     var rect=drawTextRect(ctx, text, x, y, size, align , "fill");
     width=rect.w;
     height=rect.h;
-    
+*/
     //    fillStyle=col;
     //super.draw(ctx);
 }

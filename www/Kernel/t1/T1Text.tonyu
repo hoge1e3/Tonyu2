@@ -16,5 +16,7 @@ includes TextRectMod;
         height+=rect.h;
         drawY+=size;
     }
+    owner.width=width;
+    owner.height=height;
     drawn=true;
 }

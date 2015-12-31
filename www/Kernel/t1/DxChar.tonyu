@@ -10,6 +10,11 @@ extends SpriteChar;
     if (al) alpha=al;
 }
 \draw(c) {
+    if (_isInvisible) return;
+    onDraw();
+    detectShape();
+    drawDxSprite(x,y,p,f,zOrder,angle,alpha,scaleX,scaleY);
+    /*
     rotation=angle;
-    super.draw(c);
+    super.draw(c);*/
 }
