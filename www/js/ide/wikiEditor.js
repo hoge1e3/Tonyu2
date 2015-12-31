@@ -63,7 +63,7 @@ $(function () {
             return;
         }
         prevRow=row;
-        w.highlightLine(row);
+        //w.highlightLine(row);
     };
 });
 });

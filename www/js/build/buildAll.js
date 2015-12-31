@@ -21,7 +21,7 @@ define(["genROM","Util","FS","Sync","Shell","WebSite"],
         ds.concat({names: [/*"fs/ROMk",*/"runScript"], outFile:"runScript",reqConf:reqConf});
         ds.concat({names: [/*"fs/ROMk",*/"runScript2"], outFile:"runScript2",reqConf:reqConf});
         sh.echo("To compile documents, type:");
-        sh.echo("wiki2serv ../doc/ ../../../www/doc/");
+        sh.echo("wiki2serv ../fs/Tonyu/doc/ ../www/doc/");
     }
     function embedVersion(f) {
         var r=f.text().replace(/(VERSION:)([0-9]+)(,\/\/EMBED_VERSION)/, function (t,a,b,c) {

@@ -83,7 +83,12 @@ function FileList(elem, options) {
         if (_curFile && !_curFile.exists()) {
             _curFile=null;
         }
-        _curDir.each(function (f) {
+        var i=0;
+        var dirs=_curDir.listFiles();
+        setTimeout(lp,0);//_curDir.each(
+        function lp() {
+            var f=dirs[i++];
+            if (i<dirs.length) setTimeout(lp,0);
             var n=displayName(f);
             if (!n) return;
             var isCur=_curFile && _curFile.path()==f.path();
@@ -100,7 +105,7 @@ function FileList(elem, options) {
                     select(f);
                 });
             }
-        });
+        }
     }
     function itemText(f, mod) {
     	return (mod?"*":"")+(f.isReadOnly()?"[RO]":"")+displayName(f);

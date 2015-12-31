@@ -340,47 +340,47 @@ Tonyu.klass.define({
       
       _thread.retVal=_this;return;
     },
-    drawText :function _trc_OneframeSpriteMod_drawText(x,y,text,col,size) {
+    drawText :function _trc_OneframeSpriteMod_drawText(x,y,text,col,size,zOrder) {
       "use strict";
       var _this=this;
       
-      //$LASTPOS=3000060;//kernel.OneframeSpriteMod:60
+      //$LASTPOS=3000067;//kernel.OneframeSpriteMod:67
       if (! size) {
-        //$LASTPOS=3000071;//kernel.OneframeSpriteMod:71
+        //$LASTPOS=3000078;//kernel.OneframeSpriteMod:78
         size=15;
       }
-      //$LASTPOS=3000085;//kernel.OneframeSpriteMod:85
+      //$LASTPOS=3000092;//kernel.OneframeSpriteMod:92
       if (! col) {
-        //$LASTPOS=3000095;//kernel.OneframeSpriteMod:95
+        //$LASTPOS=3000102;//kernel.OneframeSpriteMod:102
         col="white";
       }
-      //$LASTPOS=3000113;//kernel.OneframeSpriteMod:113
-      _this.appear(Tonyu.classes.kernel.T1Text,{x: x,y: y,text: text,col: col,size: size,owner: _this});
+      //$LASTPOS=3000120;//kernel.OneframeSpriteMod:120
+      _this.appear(Tonyu.classes.kernel.T1Text,{x: x,y: y,text: text,col: col,size: size,zOrder: zOrder,owner: _this});
     },
-    drawLine :function _trc_OneframeSpriteMod_drawLine(x,y,tx,ty,col) {
+    drawLine :function _trc_OneframeSpriteMod_drawLine(x,y,tx,ty,col,zOrder) {
       "use strict";
       var _this=this;
       
-      //$LASTPOS=3000204;//kernel.OneframeSpriteMod:204
+      //$LASTPOS=3000225;//kernel.OneframeSpriteMod:225
       if (! col) {
-        //$LASTPOS=3000214;//kernel.OneframeSpriteMod:214
+        //$LASTPOS=3000235;//kernel.OneframeSpriteMod:235
         col="white";
       }
-      //$LASTPOS=3000232;//kernel.OneframeSpriteMod:232
-      _this.appear(Tonyu.classes.kernel.T1Line,{x: x,y: y,tx: tx,ty: ty,col: col,owner: _this});
+      //$LASTPOS=3000253;//kernel.OneframeSpriteMod:253
+      _this.appear(Tonyu.classes.kernel.T1Line,{x: x,y: y,tx: tx,ty: ty,col: col,zOrder: zOrder,owner: _this});
     },
     drawSprite :function _trc_OneframeSpriteMod_drawSprite(x,y,p,f,zOrder) {
       "use strict";
       var _this=this;
       
-      //$LASTPOS=3000323;//kernel.OneframeSpriteMod:323
+      //$LASTPOS=3000351;//kernel.OneframeSpriteMod:351
       _this.drawDxSprite(x,y,p,f,zOrder,0,255,1,1);
     },
     drawDxSprite :function _trc_OneframeSpriteMod_drawDxSprite(x,y,p,f,zOrder,angle,alpha,scaleX,scaleY) {
       "use strict";
       var _this=this;
       
-      //$LASTPOS=3000437;//kernel.OneframeSpriteMod:437
+      //$LASTPOS=3000465;//kernel.OneframeSpriteMod:465
       _this.appear(Tonyu.classes.kernel.T1Sprite,{x: x,y: y,p: p,f: f,zOrder: zOrder,angle: angle,alpha: alpha,scaleX: scaleX,scaleY: scaleY,owner: _this});
     },
     __dummy: false

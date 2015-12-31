@@ -1,13 +1,13 @@
 extends null;
 
-nowait \drawText(x,y,text,col,size) {
+nowait \drawText(x,y,text,col,size,zOrder) {
     if (!size) size=15;
     if (!col) col="white";
-    appear(T1Text){x,y,text,col, size, owner:this};
+    appear(T1Text){x,y,text,col, size,zOrder, owner:this};
 }
-nowait \drawLine(x,y,tx,ty,col) {
+nowait \drawLine(x,y,tx,ty,col,zOrder) {
     if (!col) col="white";
-    appear(T1Line){x,y,tx,ty,col, owner:this};
+    appear(T1Line){x,y,tx,ty,col,zOrder, owner:this};
 }
 
 nowait \drawSprite(x,y,p,f,zOrder) {

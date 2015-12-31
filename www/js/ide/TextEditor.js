@@ -2,7 +2,7 @@ TextEditor=function (elem, options) {
     var fn=$("<div>");
     var text=$("<textarea>").css({width:"100%", height:"100px"});
     var height;
-    var orig;
+    var orig, modw;
     var curF;
     var cnt=0;
     var _isModified=false;
@@ -13,7 +13,7 @@ TextEditor=function (elem, options) {
         if (isModified()) save();
         curF=f;
         fn.text(f.path());
-        text.val(orig=f.text());
+        text.val(modw=orig=f.text());
         if (height) setHeight(height);
     }
     function setHeight(h) {
@@ -28,6 +28,10 @@ TextEditor=function (elem, options) {
             }
             if (isModified()) {
                 cnt++;
+                if (modw!=text.val()) {
+                    modw=text.val();
+                    cnt=0;
+                }
                 if (cnt>10) {
                     save();
                     cnt=0;
@@ -58,7 +62,11 @@ TextEditor=function (elem, options) {
     function refreshStatus() {
         if (!curF) return;
         var p=caretPos();
-        fn.text((_isModified?"*":"") + curF.path() + " - "+p.row+":"+p.col);
+        var tx=(_isModified?"*":"") + curF.path() + " - "+p.row+":"+p.col;
+        if (tx!=fn.text()) {
+            fn.text(tx);
+            cnt=0;
+        }
     }
     function caretPos() {
         var index=TextUtil.getCaretPos(text[0]);
