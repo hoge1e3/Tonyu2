@@ -1,0 +1,29 @@
+<html><head><meta charset="utf-8"/>
+<meta http-equiv="Content-type" content="text/html; charset=utf8"/>
+<title>オブジェクトプール</title>
+</head><body><link rel='stylesheet' href='../../css/bootstrap.css'/>
+<link rel='stylesheet' href='../../css/tonyu.css'/>
+<script src='../../js/lib/jquery-1.10.1.js'/></script>
+<script src='../../js/ide/NWMenu.js'/></script>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px; font-family:"MS UI Gothic",sans-serif;}</style>
+<button onclick='javascript:history.back();'>←Back</button><br/>
+<div><a id="line_marker_-0" name="line_marker_-0"></a><a href="appear.html">appear</a><span>|</span><a href="BaseActor.html">BaseActor</a><span>
+</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><h1><a id="line_marker_-2" name="line_marker_-2"></a><span>オブジェクトプール</span></h1><a id="line_marker_-3" name="line_marker_-3"></a><p></p><a id="line_marker_-4" name="line_marker_-4"></a><span>オブジェクトプールは、</span><a href="die.html">die</a><span>メソッドで消したオブジェクトを、</span><span>
+</span><a id="line_marker_-5" name="line_marker_-5"></a><span>別のオブジェクトとして再利用するための仕組みです。</span><span>
+</span><a id="line_marker_-6" name="line_marker_-6"></a><span>オブジェクトを頻繁に出現・消滅させる場合、メモリの使用効率が上がる場合があります。</span><span>
+</span><a id="line_marker_-7" name="line_marker_-7"></a><p></p><h2><a id="line_marker_-8" name="line_marker_-8"></a><span>オブジェクトプールを利用するには</span></h2><a id="line_marker_-9" name="line_marker_-9"></a><p></p><a id="line_marker_-10" name="line_marker_-10"></a><span>オブジェクトプールを利用するかどうかはクラス毎に設定します。</span><span>
+</span><a id="line_marker_-11" name="line_marker_-11"></a><span>ここではChara1にオブジェクトプールを利用する例を示します。</span><span>
+</span><a id="line_marker_-12" name="line_marker_-12"></a><p></p><a id="line_marker_-14" name="line_marker_-14"></a><ul><li><a id="line_marker_-13" name="line_marker_-13"></a><span>オブジェクトが生成されたときに</span><code><span>useObjectPool</span></code><span>を</span><code><span>true</span></code><span>を設定します。</span><span>
+</span></li></ul><p></p><a id="line_marker_-15" name="line_marker_-15"></a><div class="plist">Chara1</div><a id="line_marker_-22" name="line_marker_-22"></a><pre><a id="line_marker_-16" name="line_marker_-16"></a><span>useObjectPool=true;</span><span>
+</span><a id="line_marker_-17" name="line_marker_-17"></a><span>for(i=0;i&lt;10;i++) {</span><span>
+</span><a id="line_marker_-18" name="line_marker_-18"></a><span>   x+=10;</span><span>
+</span><a id="line_marker_-19" name="line_marker_-19"></a><span>   update();</span><span>
+</span><a id="line_marker_-20" name="line_marker_-20"></a><span>}</span><span>
+</span><a id="line_marker_-21" name="line_marker_-21"></a><span>die();</span><span>
+</span></pre><a id="line_marker_-23" name="line_marker_-23"></a><p></p><a id="line_marker_-25" name="line_marker_-25"></a><ul><li><a id="line_marker_-24" name="line_marker_-24"></a><span>Chara1を生成するときには、</span><a href="appear.html">appear</a><span>メソッドを用います。</span><span>
+</span></li></ul><p></p><a id="line_marker_-26" name="line_marker_-26"></a><div class="plist">Main</div><a id="line_marker_-31" name="line_marker_-31"></a><pre><a id="line_marker_-27" name="line_marker_-27"></a><span>while(true){</span><span>
+</span><a id="line_marker_-28" name="line_marker_-28"></a><span>   appear(Chara1) {x:rnd(400),y:rnd(400)};</span><span>
+</span><a id="line_marker_-29" name="line_marker_-29"></a><span>   update();</span><span>
+</span><a id="line_marker_-30" name="line_marker_-30"></a><span>}</span><span>
+</span></pre></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
+</body></html>

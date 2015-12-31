@@ -8,22 +8,22 @@
 <style>body{padding-top:20px; margin-left: 20px; margin-right:20px; font-family:"MS UI Gothic",sans-serif;}</style>
 <button onclick='javascript:history.back();'>←Back</button><br/>
 <div><a id="line_marker_-0" name="line_marker_-0"></a><a href="BaseActor.html">BaseActor</a><span>
-</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><h1><a id="line_marker_-2" name="line_marker_-2"></a><span>asyncResultメソッド</span></h1><a id="line_marker_-3" name="line_marker_-3"></a><p></p><a id="line_marker_-4" name="line_marker_-4"></a><span>AsyncResultオブジェクトを作成します</span><span>
-</span><a id="line_marker_-5" name="line_marker_-5"></a><p></p><a id="line_marker_-6" name="line_marker_-6"></a><span>AsyncResultオブジェクトは，ajaxなどの「非同期で実行を行い，結果をコールバック関数で受け取る」形式のメソッド（非同期メソッド）を</span><a href="waitmode.html">待機可能モード</a><span>で扱うためのオブジェクトです．</span><span>
-</span><a id="line_marker_-7" name="line_marker_-7"></a><p></p><a id="line_marker_-8" name="line_marker_-8"></a><span>※今後は</span><a href="runAsync.html">runAsync</a><span>を利用してください。</span><span>
-</span><a id="line_marker_-9" name="line_marker_-9"></a><p></p><h2><a id="line_marker_-10" name="line_marker_-10"></a><span>使い方</span></h2><a id="line_marker_-11" name="line_marker_-11"></a><p></p><a id="line_marker_-12" name="line_marker_-12"></a><span>※必ず待機可能モードで実行してください．</span><span>
-</span><a id="line_marker_-13" name="line_marker_-13"></a><p></p><a id="line_marker_-18" name="line_marker_-18"></a><ul><li><a id="line_marker_-14" name="line_marker_-14"></a><span>asyncResult()メソッドで，AsyncResultオブジェクトを作成します．これを</span><code><span>a</span></code><span>とします．</span><span>
-</span></li><li><a id="line_marker_-15" name="line_marker_-15"></a><span>非同期メソッドを呼び出します． このとき，</span><code><span>a.receiver</span></code><span> をコールバック関数として渡します．</span><span>
-</span></li><li><a id="line_marker_-16" name="line_marker_-16"></a><a href="waitFor.html">waitFor</a><span>メソッドを呼び出します．非同期メソッドが結果を返すまで処理を待機します．</span><span>
-</span></li><li><a id="line_marker_-17" name="line_marker_-17"></a><span>非同期メソッドの結果が</span><code><span>a[n</span></code><span>]に返されます．</span><code><span>a[n</span></code><span>]はコールバック関数に渡された第n引数（0が最初の引数）です．</span><span>
-</span></li></ul><p></p><h2><a id="line_marker_-19" name="line_marker_-19"></a><span>使用例</span></h2><a id="line_marker_-20" name="line_marker_-20"></a><p></p><a id="line_marker_-31" name="line_marker_-31"></a><pre><a id="line_marker_-22" name="line_marker_-22"></a><span>native $;</span><span>
-</span><a id="line_marker_-23" name="line_marker_-23"></a><span>//asyncResultオブジェクトを作成</span><span>
-</span><a id="line_marker_-24" name="line_marker_-24"></a><span>a=asyncResult();</span><span>
-</span><a id="line_marker_-25" name="line_marker_-25"></a><span>//jqueryのgetメソッドを呼び出す．コールバック関数に a.receiverを指定</span><span>
-</span><a id="line_marker_-26" name="line_marker_-26"></a><span>$.get("http://tonyuedit.appspot.com/edit/", a.receiver);</span><span>
-</span><a id="line_marker_-27" name="line_marker_-27"></a><span>//getメソッドが終わるまで待つ</span><span>
-</span><a id="line_marker_-28" name="line_marker_-28"></a><span>waitFor(a);</span><span>
-</span><a id="line_marker_-29" name="line_marker_-29"></a><span>//結果がa[0]に返される</span><span>
-</span><a id="line_marker_-30" name="line_marker_-30"></a><span>print(a[0]);</span><span>
-</span></pre><a id="line_marker_-32" name="line_marker_-32"></a><p></p></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
+</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><h1><a id="line_marker_-2" name="line_marker_-2"></a><span>asyncResultメソッド</span></h1><a id="line_marker_-3" name="line_marker_-3"></a><p></p><a id="line_marker_-4" name="line_marker_-4"></a><span>※このメソッドは廃止されました。今後は</span><a href="runAsync.html">runAsync</a><span>を利用してください。</span><span>
+</span><a id="line_marker_-5" name="line_marker_-5"></a><p></p><a id="line_marker_-6" name="line_marker_-6"></a><p></p><a id="line_marker_-7" name="line_marker_-7"></a><span>AsyncResultオブジェクトを作成します</span><span>
+</span><a id="line_marker_-8" name="line_marker_-8"></a><p></p><a id="line_marker_-9" name="line_marker_-9"></a><span>AsyncResultオブジェクトは，ajaxなどの「非同期で実行を行い，結果をコールバック関数で受け取る」形式のメソッド（非同期メソッド）を</span><a href="waitmode.html">待機可能モード</a><span>で扱うためのオブジェクトです．</span><span>
+</span><a id="line_marker_-10" name="line_marker_-10"></a><p></p><a id="line_marker_-11" name="line_marker_-11"></a><p></p><h2><a id="line_marker_-12" name="line_marker_-12"></a><span>使い方</span></h2><a id="line_marker_-13" name="line_marker_-13"></a><p></p><a id="line_marker_-14" name="line_marker_-14"></a><span>※必ず待機可能モードで実行してください．</span><span>
+</span><a id="line_marker_-15" name="line_marker_-15"></a><p></p><a id="line_marker_-20" name="line_marker_-20"></a><ul><li><a id="line_marker_-16" name="line_marker_-16"></a><span>asyncResult()メソッドで，AsyncResultオブジェクトを作成します．これを</span><code><span>a</span></code><span>とします．</span><span>
+</span></li><li><a id="line_marker_-17" name="line_marker_-17"></a><span>非同期メソッドを呼び出します． このとき，</span><code><span>a.receiver</span></code><span> をコールバック関数として渡します．</span><span>
+</span></li><li><a id="line_marker_-18" name="line_marker_-18"></a><a href="waitFor.html">waitFor</a><span>メソッドを呼び出します．非同期メソッドが結果を返すまで処理を待機します．</span><span>
+</span></li><li><a id="line_marker_-19" name="line_marker_-19"></a><span>非同期メソッドの結果が</span><code><span>a[n</span></code><span>]に返されます．</span><code><span>a[n</span></code><span>]はコールバック関数に渡された第n引数（0が最初の引数）です．</span><span>
+</span></li></ul><p></p><h2><a id="line_marker_-21" name="line_marker_-21"></a><span>使用例</span></h2><a id="line_marker_-22" name="line_marker_-22"></a><p></p><a id="line_marker_-33" name="line_marker_-33"></a><pre><a id="line_marker_-24" name="line_marker_-24"></a><span>native $;</span><span>
+</span><a id="line_marker_-25" name="line_marker_-25"></a><span>//asyncResultオブジェクトを作成</span><span>
+</span><a id="line_marker_-26" name="line_marker_-26"></a><span>a=asyncResult();</span><span>
+</span><a id="line_marker_-27" name="line_marker_-27"></a><span>//jqueryのgetメソッドを呼び出す．コールバック関数に a.receiverを指定</span><span>
+</span><a id="line_marker_-28" name="line_marker_-28"></a><span>$.get("http://tonyuedit.appspot.com/edit/", a.receiver);</span><span>
+</span><a id="line_marker_-29" name="line_marker_-29"></a><span>//getメソッドが終わるまで待つ</span><span>
+</span><a id="line_marker_-30" name="line_marker_-30"></a><span>waitFor(a);</span><span>
+</span><a id="line_marker_-31" name="line_marker_-31"></a><span>//結果がa[0]に返される</span><span>
+</span><a id="line_marker_-32" name="line_marker_-32"></a><span>print(a[0]);</span><span>
+</span></pre><a id="line_marker_-34" name="line_marker_-34"></a><p></p></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
 </body></html>
