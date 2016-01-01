@@ -322,26 +322,26 @@ function annotateSource2(klass, env) {//B
         },
         "do": function (node) {
             var t=this;
-            ctx.enter({jumpable:true}, function () {
+            ctx.enter({brkable:true,contable:true}, function () {
                 t.def(node);
             });
         },
         "switch": function (node) {
             var t=this;
-            ctx.enter({jumpable:true}, function () {
+            ctx.enter({brkable:true}, function () {
                 t.def(node);
             });
         },
         "while": function (node) {
             var t=this;
-            ctx.enter({jumpable:true}, function () {
+            ctx.enter({brkable:true,contable:true}, function () {
                 t.def(node);
             });
             fiberCallRequired(this.path);//option
         },
         "for": function (node) {
             var t=this;
-            ctx.enter({jumpable:true}, function () {
+            ctx.enter({brkable:true,contable:true}, function () {
                 t.def(node);
             });
         },
@@ -374,11 +374,11 @@ function annotateSource2(klass, env) {//B
             this.visit(node.value);
         },
         "break": function (node) {
-            if (!ctx.jumpable) throw TError( "break； は繰り返しの中で使います." , srcFile, node.pos);
+            if (!ctx.brkable) throw TError( "break； は繰り返しの中で使います." , srcFile, node.pos);
             if (!ctx.noWait) annotateParents(this.path,{hasJump:true});
         },
         "continue": function (node) {
-            if (!ctx.jumpable) throw TError( "continue； は繰り返しの中で使います." , srcFile, node.pos);
+            if (!ctx.contable) throw TError( "continue； は繰り返しの中で使います." , srcFile, node.pos);
             if (!ctx.noWait) annotateParents(this.path,{hasJump:true});
         },
         "reservedConst": function (node) {

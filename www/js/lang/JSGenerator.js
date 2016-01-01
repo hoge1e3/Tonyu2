@@ -341,6 +341,20 @@ function genJS(klass, env) {//B
                 buf.printf("break;%n");
             }
         },
+        "continue": function (node) {
+            if (!ctx.noWait) {
+                if (ctx.inTry && ctx.exitTryOnJump) throw TError("現実装では、tryの中にcontinue;は書けません",srcFile,node.pos);
+                if ( typeof (ctx.closestCnt)=="number" ) {
+                    buf.printf("%s=%s; break;%n", FRMPC, ctx.closestCnt);
+                } else if (ctx.closestCnt) {
+                    buf.printf("%s=%z; break;%n", FRMPC, ctx.closestCnt);
+                } else {
+                    throw TError( "continue； は繰り返しの中で使います" , srcFile, node.pos);
+                }
+            } else {
+                buf.printf("continue;%n");
+            }
+        },
         "try": function (node) {
             var an=annotation(node);
             if (!ctx.noWait &&
@@ -378,6 +392,26 @@ function genJS(klass, env) {//B
         "throw": function (node) {
             buf.printf("throw %v;%n",node.ex);
         },
+        "switch": function (node) {
+            ctx.enter({noWait:true},function () {
+                buf.printf(
+                        "switch (%v) {%{"+
+                        "%j"+
+                        (node.defs?"%v":"%D")+
+                        "%n%}}"
+                        ,
+                        node.value,
+                        ["%n",node.cases],
+                        node.defs
+                        );
+            });
+        },
+        "case": function (node) {
+            buf.printf("case %v:%n%j",node.value, ["%n",node.stmts]);
+        },
+        "default": function (node) {
+            buf.printf("default:%n%j", ["%n",node.stmts]);
+        },
         "while": function (node) {
             lastPosF(node)();
             var an=annotation(node);
@@ -395,13 +429,40 @@ function genJS(klass, env) {//B
                         "%}case %f:%{",
                             pc,
                             node.cond, FRMPC, brkpos,
-                            enterV({closestBrk:brkpos, exitTryOnJump:false}, node.loop),
+                            enterV({closestBrk:brkpos, closestCnt:pc, exitTryOnJump:false}, node.loop),
                             FRMPC, pc,
                             function () { buf.print(brkpos.put(ctx.pc++)); }
                 );
             } else {
                 ctx.enter({noWait:true},function () {
                     buf.printf("while (%v) {%{%f%n%}}", node.cond, noSurroundCompoundF(node.loop));
+                });
+            }
+        },
+        "do": function (node) {
+            lastPosF(node)();
+            var an=annotation(node);
+            if (!ctx.noWait &&
+                    (an.fiberCallRequired || an.hasReturn)) {
+                var brkpos=buf.lazy();
+                var cntpos=buf.lazy();
+                var pc=ctx.pc++;
+                buf.printf(
+                        "%}case %d:%{" +
+                        "%f%n" +
+                        "%}case %f:%{" +
+                        "if (%v) { %s=%s; break; }%n"+
+                        "%}case %f:%{",
+                            pc,
+                            enterV({closestBrk:brkpos, closestCnt:cntpos, exitTryOnJump:false}, node.loop),
+                            function () { buf.print(cntpos.put(ctx.pc++)); },
+                            node.cond, FRMPC, pc,
+                            function () { buf.print(brkpos.put(ctx.pc++)); }
+                );
+            } else {
+                ctx.enter({noWait:true},function () {
+                    buf.printf("do {%{%f%n%}} while (%v);%n",
+                            noSurroundCompoundF(node.loop), node.cond );
                 });
             }
         },
@@ -426,7 +487,7 @@ function genJS(klass, env) {//B
                                 pc,
                                 itn, FRMPC, brkpos,
                                 getElemF(itn, node.inFor.isVar, node.inFor.vars),
-                                enterV({closestBrk:brkpos, exitTryOnJump:false}, node.loop),//node.loop,
+                                enterV({closestBrk:brkpos, closestCnt: pc, exitTryOnJump:false}, node.loop),//node.loop,
                                 FRMPC, pc,
                                 function (buf) { buf.print(brkpos.put(ctx.pc++)); }
                     );
@@ -449,19 +510,22 @@ function genJS(klass, env) {//B
                 if (!ctx.noWait&&
                         (an.fiberCallRequired || an.hasReturn)) {
                     var brkpos=buf.lazy();
+                    var cntpos=buf.lazy();
                     var pc=ctx.pc++;
                     buf.printf(
                             "%v;%n"+
                             "%}case %d:%{" +
                             "if (!(%v)) { %s=%z; break; }%n" +
                             "%f%n" +
+                            "%}case %f:%{"+
                             "%v;%n" +
                             "%s=%s;break;%n" +
                             "%}case %f:%{",
                                 node.inFor.init ,
                                 pc,
                                 node.inFor.cond, FRMPC, brkpos,
-                                enterV({closestBrk:brkpos,exitTryOnJump:false}, node.loop),//node.loop,
+                                enterV({closestBrk:brkpos,closestCnt:cntpos,exitTryOnJump:false}, node.loop),//node.loop,
+                                function (buf) { buf.print(cntpos.put(ctx.pc++)); },
                                 node.inFor.next,
                                 FRMPC, pc,
                                 function (buf) { buf.print(brkpos.put(ctx.pc++)); }
@@ -637,7 +701,7 @@ function genJS(klass, env) {//B
     v.def=function (node) {
         console.log("Err node=");
         console.log(node);
-        throw node.type+" is not defined in visitor:compiler2";
+        throw new Error(node.type+" is not defined in visitor:compiler2");
     };
     v.cnt=0;
     function genSource() {//G

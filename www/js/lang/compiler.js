@@ -83,7 +83,7 @@ define(["Tonyu","ObjectMatcher", "TError"],
         if (!method.head) return res;
         if (method.head.setter) res.push(method.head.setter.value);
         var ps=method.head.params ? method.head.params.params : null;
-        if (ps && !ps.forEach) throw method+" is not array ";
+        if (ps && !ps.forEach) throw new Error(method+" is not array ");
         if (ps) res=res.concat(ps);
         return res;
     }
