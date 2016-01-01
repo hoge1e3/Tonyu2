@@ -1,4 +1,4 @@
-// Created at Sun Dec 27 2015 21:10:35 GMT+0900 (東京 (標準時))
+// Created at Fri Jan 01 2016 20:28:44 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -3450,7 +3450,7 @@ return Tonyu=function () {
             bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,iterator:IT,
-            VERSION:1451218215118,//EMBED_VERSION
+            VERSION:1451647709022,//EMBED_VERSION
             A:A};
 }();
 });
@@ -3465,10 +3465,10 @@ return IndentBuffer=function () {
 		var fmt=args[0];
 		//console.log(fmt+ " -- "+arguments[0]+" --- "+arguments.length);
 		var ai=0;
-		function shiftArg() {
+		function shiftArg(nullable) {
 			ai++;
 			var res=args[ai];
-			if (res==null) {
+			if (res==null && !nullable) {
 			    console.log(args);
 			    throw new Error(ai+"th null param: fmt="+fmt);
 			}
@@ -3555,7 +3555,7 @@ return IndentBuffer=function () {
                 });
                 i++;
 			} else if (fstr=="D"){
-			    shiftArg();
+			    shiftArg(true);
 			    i++;
 			} else {
 				i+=2;
@@ -4612,9 +4612,12 @@ return TT=function () {
             "else": true,
             "super": true,
             "while":true,
+            "continue":true,
             "break":true,
             "do":true,
             "switch":true,
+            "case":true,
+            "default":true,
             "try": true,
             "catch": true,
             "finally": true,
@@ -5283,7 +5286,12 @@ return TonyuLang=function () {
                                null,null,    "inFor", null   ,"loop");
     //var fors=g("for").ands(tk("for"),tk("("), tk("var").opt() , infor , tk(")"),"stmt" ).ret(null,null,"isVar", "inFor",null, "loop");
     var whiles=g("while").ands(tk("while"), tk("("), expr, tk(")"), "stmt").ret(null,null,"cond",null,"loop");
+    var dos=g("do").ands(tk("do"), "stmt" , tk("while"), tk("("), expr, tk(")"), tk(";")).ret(null,"loop",null,null,"cond",null,null);
+    var cases=g("case").ands(tk("case"),expr,tk(":"), stmt.rep0() ).ret(null, "value", null,"stmts");
+    var defaults=g("default").ands(tk("default"),tk(":"), stmt.rep0() ).ret(null, null,"stmts");
+    var switchs=g("switch").ands(tk("switch"), tk("("), expr, tk(")"),tk("{"), cases.rep1(), defaults.opt(), tk("}")).ret(null,null,"value",null,null,"cases","defs");
     var breaks=g("break").ands(tk("break"), tk(";")).ret("brk");
+    var continues=g("continue").ands(tk("continue"), tk(";")).ret("cont");
     var fins=g("finally").ands(tk("finally"), "stmt" ).ret(null, "stmt");
     var catchs=g("catch").ands(tk("catch"), tk("("), symbol, tk(")"), "stmt" ).ret(null,null,"name",null, "stmt");
     var catches=g("catches").ors("catch","finally");
@@ -5305,7 +5313,7 @@ return TonyuLang=function () {
     var nativeDecl=g("nativeDecl").ands(tk("native"),symbol,tk(";")).ret(null, "name");
     var ifwait=g("ifWait").ands(tk("ifwait"),"stmt",elseP.opt()).ret(null, "then","_else");
     //var useThread=g("useThread").ands(tk("usethread"),symbol,"stmt").ret(null, "threadVarName","stmt");
-    stmt=g("stmt").ors("return", "if", "for", "while", "break", "ifWait","try", "throw","nativeDecl", "funcDecl", "compound", "exprstmt", "varsDecl");
+    stmt=g("stmt").ors("return", "if", "for", "while", "do","break", "continue", "switch","ifWait","try", "throw","nativeDecl", "funcDecl", "compound", "exprstmt", "varsDecl");
     // ------- end of stmts
     g("funcExprHead").ands(tk("function").or(tk("\\")), symbol.opt() ,paramDecls.opt() ).ret(null,"name","params");
     var funcExpr=g("funcExpr").ands("funcExprHead","compound").ret("head","body");
@@ -5593,7 +5601,7 @@ define(["Tonyu","ObjectMatcher", "TError"],
         if (!method.head) return res;
         if (method.head.setter) res.push(method.head.setter.value);
         var ps=method.head.params ? method.head.params.params : null;
-        if (ps && !ps.forEach) throw method+" is not array ";
+        if (ps && !ps.forEach) throw new Error(method+" is not array ");
         if (ps) res=res.concat(ps);
         return res;
     }
@@ -5945,6 +5953,20 @@ function genJS(klass, env) {//B
                 buf.printf("break;%n");
             }
         },
+        "continue": function (node) {
+            if (!ctx.noWait) {
+                if (ctx.inTry && ctx.exitTryOnJump) throw TError("現実装では、tryの中にcontinue;は書けません",srcFile,node.pos);
+                if ( typeof (ctx.closestCnt)=="number" ) {
+                    buf.printf("%s=%s; break;%n", FRMPC, ctx.closestCnt);
+                } else if (ctx.closestCnt) {
+                    buf.printf("%s=%z; break;%n", FRMPC, ctx.closestCnt);
+                } else {
+                    throw TError( "continue； は繰り返しの中で使います" , srcFile, node.pos);
+                }
+            } else {
+                buf.printf("continue;%n");
+            }
+        },
         "try": function (node) {
             var an=annotation(node);
             if (!ctx.noWait &&
@@ -5982,6 +6004,71 @@ function genJS(klass, env) {//B
         "throw": function (node) {
             buf.printf("throw %v;%n",node.ex);
         },
+        "switch": function (node) {
+            if (!ctx.noWait) {
+                var labels=node.cases.map(function (c) {
+                    return buf.lazy();
+                });
+                if (node.defs) labels.push(buf.lazy());
+                buf.printf(
+                        "switch (%v) {%{"+
+                        "%f"+
+                        "%n%}}%n"+
+                        "break;%n"
+                        ,
+                        node.value,
+                        function setpc() {
+                            var i=0;
+                            node.cases.forEach(function (c) {
+                                buf.printf("%}case %v:%{%s=%z;break;%n", c.value, FRMPC,labels[i]);
+                                i++;
+                            });
+                            if (node.defs) {
+                                buf.printf("%}default:%{%s=%z;break;%n", FRMPC, labels[i]);
+                            }
+                        });
+                var brkpos=buf.lazy();
+                ctx.enter({closestBrk:brkpos}, function () {
+                    var i=0;
+                    node.cases.forEach(function (c) {
+                        buf.printf(
+                                "%}case %f:%{"+
+                                "%j%n"
+                                ,
+                                function () { buf.print(labels[i].put(ctx.pc++)); },
+                                ["%n",c.stmts]);
+                        i++;
+                    });
+                    if (node.defs) {
+                        buf.printf(
+                                "%}case %f:%{"+
+                                "%j%n"
+                                ,
+                                function () { buf.print(labels[i].put(ctx.pc++)); },
+                                ["%n",node.defs.stmts]);
+                    }
+                    buf.printf("case %f:%n",
+                    function () { buf.print(brkpos.put(ctx.pc++)); });
+                });
+            } else {
+                buf.printf(
+                        "switch (%v) {%{"+
+                        "%j"+
+                        (node.defs?"%v":"%D")+
+                        "%n%}}"
+                        ,
+                        node.value,
+                        ["%n",node.cases],
+                        node.defs
+                        );
+            }
+        },
+        "case": function (node) {
+            buf.printf("%}case %v:%{%j",node.value, ["%n",node.stmts]);
+        },
+        "default": function (node) {
+            buf.printf("%}default:%{%j", ["%n",node.stmts]);
+        },
         "while": function (node) {
             lastPosF(node)();
             var an=annotation(node);
@@ -5999,13 +6086,40 @@ function genJS(klass, env) {//B
                         "%}case %f:%{",
                             pc,
                             node.cond, FRMPC, brkpos,
-                            enterV({closestBrk:brkpos, exitTryOnJump:false}, node.loop),
+                            enterV({closestBrk:brkpos, closestCnt:pc, exitTryOnJump:false}, node.loop),
                             FRMPC, pc,
                             function () { buf.print(brkpos.put(ctx.pc++)); }
                 );
             } else {
                 ctx.enter({noWait:true},function () {
                     buf.printf("while (%v) {%{%f%n%}}", node.cond, noSurroundCompoundF(node.loop));
+                });
+            }
+        },
+        "do": function (node) {
+            lastPosF(node)();
+            var an=annotation(node);
+            if (!ctx.noWait &&
+                    (an.fiberCallRequired || an.hasReturn)) {
+                var brkpos=buf.lazy();
+                var cntpos=buf.lazy();
+                var pc=ctx.pc++;
+                buf.printf(
+                        "%}case %d:%{" +
+                        "%f%n" +
+                        "%}case %f:%{" +
+                        "if (%v) { %s=%s; break; }%n"+
+                        "%}case %f:%{",
+                            pc,
+                            enterV({closestBrk:brkpos, closestCnt:cntpos, exitTryOnJump:false}, node.loop),
+                            function () { buf.print(cntpos.put(ctx.pc++)); },
+                            node.cond, FRMPC, pc,
+                            function () { buf.print(brkpos.put(ctx.pc++)); }
+                );
+            } else {
+                ctx.enter({noWait:true},function () {
+                    buf.printf("do {%{%f%n%}} while (%v);%n",
+                            noSurroundCompoundF(node.loop), node.cond );
                 });
             }
         },
@@ -6030,7 +6144,7 @@ function genJS(klass, env) {//B
                                 pc,
                                 itn, FRMPC, brkpos,
                                 getElemF(itn, node.inFor.isVar, node.inFor.vars),
-                                enterV({closestBrk:brkpos, exitTryOnJump:false}, node.loop),//node.loop,
+                                enterV({closestBrk:brkpos, closestCnt: pc, exitTryOnJump:false}, node.loop),//node.loop,
                                 FRMPC, pc,
                                 function (buf) { buf.print(brkpos.put(ctx.pc++)); }
                     );
@@ -6053,19 +6167,22 @@ function genJS(klass, env) {//B
                 if (!ctx.noWait&&
                         (an.fiberCallRequired || an.hasReturn)) {
                     var brkpos=buf.lazy();
+                    var cntpos=buf.lazy();
                     var pc=ctx.pc++;
                     buf.printf(
                             "%v;%n"+
                             "%}case %d:%{" +
                             "if (!(%v)) { %s=%z; break; }%n" +
                             "%f%n" +
+                            "%}case %f:%{"+
                             "%v;%n" +
                             "%s=%s;break;%n" +
                             "%}case %f:%{",
                                 node.inFor.init ,
                                 pc,
                                 node.inFor.cond, FRMPC, brkpos,
-                                enterV({closestBrk:brkpos,exitTryOnJump:false}, node.loop),//node.loop,
+                                enterV({closestBrk:brkpos,closestCnt:cntpos,exitTryOnJump:false}, node.loop),//node.loop,
+                                function (buf) { buf.print(cntpos.put(ctx.pc++)); },
                                 node.inFor.next,
                                 FRMPC, pc,
                                 function (buf) { buf.print(brkpos.put(ctx.pc++)); }
@@ -6241,7 +6358,7 @@ function genJS(klass, env) {//B
     v.def=function (node) {
         console.log("Err node=");
         console.log(node);
-        throw node.type+" is not defined in visitor:compiler2";
+        throw new Error(node.type+" is not defined in visitor:compiler2");
     };
     v.cnt=0;
     function genSource() {//G
@@ -6812,26 +6929,26 @@ function annotateSource2(klass, env) {//B
         },
         "do": function (node) {
             var t=this;
-            ctx.enter({jumpable:true}, function () {
+            ctx.enter({brkable:true,contable:true}, function () {
                 t.def(node);
             });
         },
         "switch": function (node) {
             var t=this;
-            ctx.enter({jumpable:true}, function () {
+            ctx.enter({brkable:true}, function () {
                 t.def(node);
             });
         },
         "while": function (node) {
             var t=this;
-            ctx.enter({jumpable:true}, function () {
+            ctx.enter({brkable:true,contable:true}, function () {
                 t.def(node);
             });
             fiberCallRequired(this.path);//option
         },
         "for": function (node) {
             var t=this;
-            ctx.enter({jumpable:true}, function () {
+            ctx.enter({brkable:true,contable:true}, function () {
                 t.def(node);
             });
         },
@@ -6864,11 +6981,11 @@ function annotateSource2(klass, env) {//B
             this.visit(node.value);
         },
         "break": function (node) {
-            if (!ctx.jumpable) throw TError( "break； は繰り返しの中で使います." , srcFile, node.pos);
+            if (!ctx.brkable) throw TError( "break； は繰り返しの中で使います." , srcFile, node.pos);
             if (!ctx.noWait) annotateParents(this.path,{hasJump:true});
         },
         "continue": function (node) {
-            if (!ctx.jumpable) throw TError( "continue； は繰り返しの中で使います." , srcFile, node.pos);
+            if (!ctx.contable) throw TError( "continue； は繰り返しの中で使います." , srcFile, node.pos);
             if (!ctx.noWait) annotateParents(this.path,{hasJump:true});
         },
         "reservedConst": function (node) {
