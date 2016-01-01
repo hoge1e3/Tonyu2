@@ -3371,15 +3371,16 @@ Tonyu.klass.define({
             //$LASTPOS=14001800;//kernel.BaseActor:1800
             updateCount = 0;;
           case 1:
-            if (!(updateCount<updateT)) { __pc=3; break; }
+            if (!(updateCount<updateT)) { __pc=4; break; }
             //$LASTPOS=14001863;//kernel.BaseActor:1863
             _this.fiber$update(_thread);
             __pc=2;return;
           case 2:
             
+          case 3:
             updateCount++;
             __pc=1;break;
-          case 3:
+          case 4:
             
             _thread.exit(_this);return;
           }
@@ -4990,15 +4991,16 @@ Tonyu.klass.define({
             //$LASTPOS=19000075;//kernel.NoviceActor:75
             n;;
           case 1:
-            if (!(n>0)) { __pc=3; break; }
+            if (!(n>0)) { __pc=4; break; }
             //$LASTPOS=19000086;//kernel.NoviceActor:86
             _this.fiber$update(_thread);
             __pc=2;return;
           case 2:
             
+          case 3:
             n--;
             __pc=1;break;
-          case 3:
+          case 4:
             
             _thread.exit(_this);return;
           }
@@ -7082,52 +7084,56 @@ Tonyu.klass.define({
             //$LASTPOS=31000678;//kernel.Map:678
             i = 0;;
           case 1:
-            if (!(i<_this.row)) { __pc=5; break; }
+            if (!(i<_this.row)) { __pc=7; break; }
             //$LASTPOS=31000707;//kernel.Map:707
             //$LASTPOS=31000711;//kernel.Map:711
             j = 0;;
           case 2:
-            if (!(j<_this.col)) { __pc=4; break; }
+            if (!(j<_this.col)) { __pc=5; break; }
             //$LASTPOS=31000744;//kernel.Map:744
             _this.fiber$set(_thread, j, i, _this.mapData[i][j]);
             __pc=3;return;
           case 3:
             
+          case 4:
             j++;
             __pc=2;break;
-          case 4:
-            
-            i++;
-            __pc=1;break;
           case 5:
             
-            //$LASTPOS=31000791;//kernel.Map:791
-            if (!(! _this.mapOnData)) { __pc=6; break; }
-            _thread.exit(_this);return;
           case 6:
+            i++;
+            __pc=1;break;
+          case 7:
+            
+            //$LASTPOS=31000791;//kernel.Map:791
+            if (!(! _this.mapOnData)) { __pc=8; break; }
+            _thread.exit(_this);return;
+          case 8:
             
             //$LASTPOS=31000819;//kernel.Map:819
             //$LASTPOS=31000823;//kernel.Map:823
             i = 0;;
-          case 7:
-            if (!(i<_this.row)) { __pc=11; break; }
+          case 9:
+            if (!(i<_this.row)) { __pc=15; break; }
             //$LASTPOS=31000852;//kernel.Map:852
             //$LASTPOS=31000856;//kernel.Map:856
             j = 0;;
-          case 8:
-            if (!(j<_this.col)) { __pc=10; break; }
+          case 10:
+            if (!(j<_this.col)) { __pc=13; break; }
             //$LASTPOS=31000889;//kernel.Map:889
             _this.fiber$setOn(_thread, j, i, _this.mapOnData[i][j]);
-            __pc=9;return;
-          case 9:
-            
-            j++;
-            __pc=8;break;
-          case 10:
-            
-            i++;
-            __pc=7;break;
+            __pc=11;return;
           case 11:
+            
+          case 12:
+            j++;
+            __pc=10;break;
+          case 13:
+            
+          case 14:
+            i++;
+            __pc=9;break;
+          case 15:
             
             _thread.exit(_this);return;
           }
@@ -7212,52 +7218,56 @@ Tonyu.klass.define({
             //$LASTPOS=31001061;//kernel.Map:1061
             i = 0;;
           case 1:
-            if (!(i<_this.row)) { __pc=5; break; }
+            if (!(i<_this.row)) { __pc=7; break; }
             //$LASTPOS=31001090;//kernel.Map:1090
             //$LASTPOS=31001094;//kernel.Map:1094
             j = 0;;
           case 2:
-            if (!(j<_this.col)) { __pc=4; break; }
+            if (!(j<_this.col)) { __pc=5; break; }
             //$LASTPOS=31001127;//kernel.Map:1127
             _this.fiber$set(_thread, j, i, _this.mapTable[i][j]);
             __pc=3;return;
           case 3:
             
+          case 4:
             j++;
             __pc=2;break;
-          case 4:
-            
-            i++;
-            __pc=1;break;
           case 5:
             
-            //$LASTPOS=31001175;//kernel.Map:1175
-            if (!(! _this.mapOnTable)) { __pc=6; break; }
-            _thread.exit(_this);return;
           case 6:
+            i++;
+            __pc=1;break;
+          case 7:
+            
+            //$LASTPOS=31001175;//kernel.Map:1175
+            if (!(! _this.mapOnTable)) { __pc=8; break; }
+            _thread.exit(_this);return;
+          case 8:
             
             //$LASTPOS=31001204;//kernel.Map:1204
             //$LASTPOS=31001208;//kernel.Map:1208
             i = 0;;
-          case 7:
-            if (!(i<_this.row)) { __pc=11; break; }
+          case 9:
+            if (!(i<_this.row)) { __pc=15; break; }
             //$LASTPOS=31001237;//kernel.Map:1237
             //$LASTPOS=31001241;//kernel.Map:1241
             j = 0;;
-          case 8:
-            if (!(j<_this.col)) { __pc=10; break; }
+          case 10:
+            if (!(j<_this.col)) { __pc=13; break; }
             //$LASTPOS=31001274;//kernel.Map:1274
             _this.fiber$setOn(_thread, j, i, _this.mapOnTable[i][j]);
-            __pc=9;return;
-          case 9:
-            
-            j++;
-            __pc=8;break;
-          case 10:
-            
-            i++;
-            __pc=7;break;
+            __pc=11;return;
           case 11:
+            
+          case 12:
+            j++;
+            __pc=10;break;
+          case 13:
+            
+          case 14:
+            i++;
+            __pc=9;break;
+          case 15:
             
             _thread.exit(_this);return;
           }
@@ -17536,15 +17546,16 @@ Tonyu.klass.define({
             //$LASTPOS=49004373;//kernel.Boot:4373
             i = 0;;
           case 1:
-            if (!(i<20)) { __pc=3; break; }
+            if (!(i<20)) { __pc=4; break; }
             //$LASTPOS=49004399;//kernel.Boot:4399
             _this.fiber$waitFor(_thread, Tonyu.animationFrame());
             __pc=2;return;
           case 2:
             
+          case 3:
             i++;
             __pc=1;break;
-          case 3:
+          case 4:
             
             //$LASTPOS=49004438;//kernel.Boot:4438
             Tonyu.globals.$RAFInterval=(_this.now()-s)/20;
