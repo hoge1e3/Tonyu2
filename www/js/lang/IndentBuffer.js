@@ -8,10 +8,10 @@ return IndentBuffer=function () {
 		var fmt=args[0];
 		//console.log(fmt+ " -- "+arguments[0]+" --- "+arguments.length);
 		var ai=0;
-		function shiftArg() {
+		function shiftArg(nullable) {
 			ai++;
 			var res=args[ai];
-			if (res==null) {
+			if (res==null && !nullable) {
 			    console.log(args);
 			    throw new Error(ai+"th null param: fmt="+fmt);
 			}
@@ -98,7 +98,7 @@ return IndentBuffer=function () {
                 });
                 i++;
 			} else if (fstr=="D"){
-			    shiftArg();
+			    shiftArg(true);
 			    i++;
 			} else {
 				i+=2;

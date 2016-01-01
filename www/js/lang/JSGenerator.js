@@ -393,7 +393,52 @@ function genJS(klass, env) {//B
             buf.printf("throw %v;%n",node.ex);
         },
         "switch": function (node) {
-            ctx.enter({noWait:true},function () {
+            if (!ctx.noWait) {
+                var labels=node.cases.map(function (c) {
+                    return buf.lazy();
+                });
+                if (node.defs) labels.push(buf.lazy());
+                buf.printf(
+                        "switch (%v) {%{"+
+                        "%f"+
+                        "%n%}}%n"+
+                        "break;%n"
+                        ,
+                        node.value,
+                        function setpc() {
+                            var i=0;
+                            node.cases.forEach(function (c) {
+                                buf.printf("%}case %v:%{%s=%z;break;%n", c.value, FRMPC,labels[i]);
+                                i++;
+                            });
+                            if (node.defs) {
+                                buf.printf("%}default:%{%s=%z;break;%n", FRMPC, labels[i]);
+                            }
+                        });
+                var brkpos=buf.lazy();
+                ctx.enter({closestBrk:brkpos}, function () {
+                    var i=0;
+                    node.cases.forEach(function (c) {
+                        buf.printf(
+                                "%}case %f:%{"+
+                                "%j%n"
+                                ,
+                                function () { buf.print(labels[i].put(ctx.pc++)); },
+                                ["%n",c.stmts]);
+                        i++;
+                    });
+                    if (node.defs) {
+                        buf.printf(
+                                "%}case %f:%{"+
+                                "%j%n"
+                                ,
+                                function () { buf.print(labels[i].put(ctx.pc++)); },
+                                ["%n",node.defs.stmts]);
+                    }
+                    buf.printf("case %f:%n",
+                    function () { buf.print(brkpos.put(ctx.pc++)); });
+                });
+            } else {
                 buf.printf(
                         "switch (%v) {%{"+
                         "%j"+
@@ -404,13 +449,13 @@ function genJS(klass, env) {//B
                         ["%n",node.cases],
                         node.defs
                         );
-            });
+            }
         },
         "case": function (node) {
-            buf.printf("case %v:%n%j",node.value, ["%n",node.stmts]);
+            buf.printf("%}case %v:%{%j",node.value, ["%n",node.stmts]);
         },
         "default": function (node) {
-            buf.printf("default:%n%j", ["%n",node.stmts]);
+            buf.printf("%}default:%{%j", ["%n",node.stmts]);
         },
         "while": function (node) {
             lastPosF(node)();
