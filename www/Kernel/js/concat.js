@@ -4962,12 +4962,10 @@ Tonyu.klass.define({
         n=1;
       }
       //$LASTPOS=19000071;//kernel.NoviceActor:71
-      //$LASTPOS=19000075;//kernel.NoviceActor:75
-      n;
-      while(n>0) {
+      for (//$LASTPOS=19000075;//kernel.NoviceActor:75
+      n;  n>0 ; n--) {
         //$LASTPOS=19000086;//kernel.NoviceActor:86
         _this.update();
-        n--;
       }
     },
     fiber$sleep :function _trc_NoviceActor_f_sleep(_thread,n) {

@@ -61,6 +61,7 @@ function FileList(elem, options) {
         if (!_curDir) return;
         if (!_curDir.isDir()) return;
         items.empty();
+        items.append("Wait..");
         if (selbox) {
             elem.empty();
             elem.append($("<option>").text("Select..."));
@@ -87,6 +88,7 @@ function FileList(elem, options) {
         var dirs=_curDir.listFiles();
         setTimeout(lp,0);//_curDir.each(
         function lp() {
+            if (i==0) items.empty();
             var f=dirs[i++];
             if (i<dirs.length) setTimeout(lp,0);
             var n=displayName(f);
