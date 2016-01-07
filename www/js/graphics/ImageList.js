@@ -15,6 +15,7 @@ define(["PatternParser","Util","Assets","assert"], function (PP,Util,Assets,asse
         resImgs=excludeEmpty(resImgs);
         var resa=[];
         var cnt=resImgs.length;
+        if (cnt==0) setTimeout(onLoad,0);
         resImgs.forEach(function (resImg,i) {
             console.log("loading", resImg,i);
             var url=resImg.url;

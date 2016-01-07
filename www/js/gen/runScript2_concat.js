@@ -1,4 +1,4 @@
-// Created at Fri Jan 01 2016 23:25:12 GMT+0900 (東京 (標準時))
+// Created at Sat Jan 02 2016 12:49:52 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -3786,7 +3786,7 @@ return Tonyu=function () {
             bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,iterator:IT,
-            VERSION:1451658298279,//EMBED_VERSION
+            VERSION:1451706580424,//EMBED_VERSION
             A:A};
 }();
 });

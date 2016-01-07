@@ -1,4 +1,4 @@
-// Created at Fri Jan 01 2016 23:25:08 GMT+0900 (東京 (標準時))
+// Created at Sat Jan 02 2016 12:49:48 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -3450,7 +3450,7 @@ return Tonyu=function () {
             bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,iterator:IT,
-            VERSION:1451658298279,//EMBED_VERSION
+            VERSION:1451706580424,//EMBED_VERSION
             A:A};
 }();
 });
@@ -5800,12 +5800,15 @@ function genJS(klass, env) {//B
             if (node.value) {
                 buf.printf("%v = %v", node.name, node.value );
             } else {
-                buf.printf("%v", node.name);
+                //buf.printf("%v", node.name);
             }
         },
         varsDecl: function (node) {
-            lastPosF(node)();
-            buf.printf("%j;", [";",node.decls]);
+            var decls=node.decls.filter(function (n) { return n.value; });
+            if (decls.length>0) {
+                lastPosF(node)();
+                buf.printf("%j;", [",",decls]);
+            }
         },
         jsonElem: function (node) {
             if (node.value) {
@@ -6189,7 +6192,7 @@ function genJS(klass, env) {//B
                     );
                 } else {
                     ctx.enter({noWait:true},function() {
-                        if (node.inFor.init.type=="varDecl" || node.inFor.init.type=="exprstmt") {
+                        if (node.inFor.init.type=="varsDecl" || node.inFor.init.type=="exprstmt") {
                             buf.printf(
                                     "for (%v  %v ; %v) {%{"+
                                        "%v%n" +

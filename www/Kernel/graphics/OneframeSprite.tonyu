@@ -8,3 +8,6 @@ native Tonyu;
         $Sprites.add(this);
     }
 }
+
+\die(){}
+\isDead(){}
