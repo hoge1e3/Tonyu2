@@ -116,6 +116,7 @@ function genJS(klass, env) {//B
     }
     function lastPosF(node) {//G
         return function () {
+            if (ctx.noLastPos) return;
             buf.printf("%s%s=%s;//%s%n", (env.options.compiler.commentLastPos?"//":""),
                     LASTPOS, traceTbl.add(klass/*.src.tonyu*/,node.pos ), klass.fullName+":"+node.pos);
         };
@@ -582,11 +583,11 @@ function genJS(klass, env) {//B
                     ctx.enter({noWait:true},function() {
                         if (node.inFor.init.type=="varsDecl" || node.inFor.init.type=="exprstmt") {
                             buf.printf(
-                                    "for (%v  %v ; %v) {%{"+
+                                    "for (%f  %v ; %v) {%{"+
                                        "%v%n" +
                                     "%}}"
                                        ,
-                                    node.inFor.init,
+                                    enterV({noLastPos:true}, node.inFor.init),
                                     node.inFor.cond,
                                     node.inFor.next,
                                     node.loop
