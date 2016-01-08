@@ -1,4 +1,4 @@
-// Created at Sat Jan 02 2016 12:49:52 GMT+0900 (東京 (標準時))
+// Created at Sat Jan 09 2016 08:08:48 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -3786,7 +3786,7 @@ return Tonyu=function () {
             bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,iterator:IT,
-            VERSION:1451706580424,//EMBED_VERSION
+            VERSION:1452294512773,//EMBED_VERSION
             A:A};
 }();
 });
@@ -3967,6 +3967,7 @@ define(["PatternParser","Util","Assets","assert"], function (PP,Util,Assets,asse
         resImgs=excludeEmpty(resImgs);
         var resa=[];
         var cnt=resImgs.length;
+        if (cnt==0) setTimeout(onLoad,0);
         resImgs.forEach(function (resImg,i) {
             console.log("loading", resImg,i);
             var url=resImg.url;

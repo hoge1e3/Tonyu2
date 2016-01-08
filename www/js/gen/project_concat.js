@@ -1,4 +1,4 @@
-// Created at Sat Jan 02 2016 12:49:43 GMT+0900 (東京 (標準時))
+// Created at Sat Jan 09 2016 08:08:36 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -1559,7 +1559,7 @@ return Tonyu=function () {
             bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,iterator:IT,
-            VERSION:1451706580424,//EMBED_VERSION
+            VERSION:1452294512773,//EMBED_VERSION
             A:A};
 }();
 });
@@ -3518,7 +3518,8 @@ function FileList(elem, options) {
         if (!_curDir) return;
         if (!_curDir.isDir()) return;
         items.empty();
-        items.append("Wait..");
+        var wait=$("<div>").text("Wait..");
+        items.append(wait);
         if (selbox) {
             elem.empty();
             elem.append($("<option>").text("Select..."));
@@ -3545,7 +3546,7 @@ function FileList(elem, options) {
         var dirs=_curDir.listFiles();
         setTimeout(lp,0);//_curDir.each(
         function lp() {
-            if (i==0) items.empty();
+            if (i==0) wait.remove();
             var f=dirs[i++];
             if (i<dirs.length) setTimeout(lp,0);
             var n=displayName(f);
@@ -7201,6 +7202,7 @@ function genJS(klass, env) {//B
     }
     function lastPosF(node) {//G
         return function () {
+            if (ctx.noLastPos) return;
             buf.printf("%s%s=%s;//%s%n", (env.options.compiler.commentLastPos?"//":""),
                     LASTPOS, traceTbl.add(klass/*.src.tonyu*/,node.pos ), klass.fullName+":"+node.pos);
         };
@@ -7667,11 +7669,11 @@ function genJS(klass, env) {//B
                     ctx.enter({noWait:true},function() {
                         if (node.inFor.init.type=="varsDecl" || node.inFor.init.type=="exprstmt") {
                             buf.printf(
-                                    "for (%v  %v ; %v) {%{"+
+                                    "for (%f  %v ; %v) {%{"+
                                        "%v%n" +
                                     "%}}"
                                        ,
-                                    node.inFor.init,
+                                    enterV({noLastPos:true}, node.inFor.init),
                                     node.inFor.cond,
                                     node.inFor.next,
                                     node.loop
@@ -9374,6 +9376,7 @@ define(["PatternParser","Util","Assets","assert"], function (PP,Util,Assets,asse
         resImgs=excludeEmpty(resImgs);
         var resa=[];
         var cnt=resImgs.length;
+        if (cnt==0) setTimeout(onLoad,0);
         resImgs.forEach(function (resImg,i) {
             console.log("loading", resImg,i);
             var url=resImg.url;
