@@ -392,7 +392,7 @@ $(function () {
             //var userAgent = window.navigator.userAgent.toLowerCase();
             //if(userAgent.indexOf('msie')<0) throw e;
         } else {
-            UI("div",{title:"Error"},e,["pre",e.stack]).dialog({width:800});
+            UI("div",{title:"Error"},e+"",["pre",e.stack]).dialog({width:800});
             stop();
             //alertOnce(e);
             //throw e;

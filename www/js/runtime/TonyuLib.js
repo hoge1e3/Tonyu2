@@ -10,317 +10,17 @@ return Tonyu=function () {
         t.handleEx=handleEx;
         return t;
     }
-    /*function threadOLD() {
-        //var stpd=0;
-        var fb={enter:enter, apply:apply,
-                exit:exit, steps:steps, step:step, isAlive:isAlive, isWaiting:isWaiting,
-                suspend:suspend,retVal:0,tryStack:[],
-                kill:kill, waitFor: waitFor,setGroup:setGroup,
-                enterTry:enterTry,exitTry:exitTry,startCatch:startCatch,
-                waitEvent:waitEvent,runAsync:runAsync,clearFrame:clearFrame};
-        var frame=null;
-        var _isAlive=true;
-        var cnt=0;
-        //var retVal;
-        var _isWaiting=false;
-        var fSuspended=false;
-        function isAlive() {
-            return frame!=null && _isAlive;
-        }
-        function isWaiting() {
-            return _isWaiting;
-        }
-        function suspend() {
-            //throw new Error("Suspend call");
-            fSuspended=true;
-            cnt=0;
-        }
-        function enter(frameFunc) {
-            frame={prev:frame, func:frameFunc};
-        }
-        function apply(obj, methodName, args) {
-            if (!args) args=[];
-            var method;
-            if (typeof methodName=="string") {
-                method=obj["fiber$"+methodName];
-            }
-            if (typeof methodName=="function") {
-                method=methodName.fiber;
-            }
-            args=[fb].concat(args);
-            var pc=0;
-            enter(function () {
-                switch (pc){
-                case 0:
-                    method.apply(obj,args);
-                    pc=1;break;
-                case 1:
-                    exit();
-                    pc=2;break;
-                }
-            });
-        }
-        function step() {
-            if (frame) {
-                try {
-                    frame.func(fb);
-                } catch(e) {
-                    gotoCatch(e);
-                }
-            }
-        }
-        function gotoCatch(e) {
-            if (fb.tryStack.length==0) {
-                kill();
-                handleEx(e);
-                return;
-            }
-            fb.lastEx=e;
-            var s=fb.tryStack.pop();
-            while (frame) {
-                if (s.frame===frame) {
-                    fb.catchPC=s.catchPC;
-                    break;
-                } else {
-                    frame=frame.prev;
-                }
-            }
-        }
-        function startCatch() {
-            var e=fb.lastEx;
-            fb.lastEx=null;
-            return e;
-        }
-        function exit(res) {
-            frame=(frame ? frame.prev:null);
-            //if (frame) frame.res=res;
-            fb.retVal=res;
-        }
-        function enterTry(catchPC) {
-            fb.tryStack.push({frame:frame,catchPC:catchPC});
-        }
-        function exitTry() {
-            fb.tryStack.pop();
-        }
-        function waitEvent(obj,eventSpec) { // eventSpec=[EventType, arg1, arg2....]
-            suspend();
-            if (!obj.on) return;
-            var h;
-            eventSpec=eventSpec.concat(function () {
-                fb.lastEvent=arguments;
-                fb.retVal=arguments[0];
-                h.remove();
-                steps();
-            });
-            h=obj.on.apply(obj, eventSpec);
-        }
-        function runAsync(f) {
-            var succ=function () {
-                fb.retVal=arguments;
-                steps();
-            };
-            var err=function () {
-                var msg="";
-                for (var i=0; i<arguments.length; i++) {
-                    msg+=arguments[i]+",";
-                }
-                if (msg.length==0) msg="Async fail";
-                var e=new Error(msg);
-                e.args=arguments;
-                gotoCatch(e);
-                steps();
-            };
-            f(succ,err);
-            suspend();
-        }
-        function waitFor(j) {
-            _isWaiting=true;
-            suspend();
-            if (!j) return;
-            if (j.addTerminatedListener) j.addTerminatedListener(function () {
-                _isWaiting=false;
-                if (fb.group) fb.group.notifyResume();
-                else if (isAlive()) {
-                    try {
-                        fb.steps();
-                    }catch(e) {
-                        handleEx(e);
-                    }
-                }
-                //fb.group.add(fb);
-            });
-            else if (j.then && j.fail) {
-                j.then(function (r) {
-                    fb.retVal=r;
-                    steps();
-                });
-                j.fail(function (e) {
-                    if (e instanceof Error) {
-                        gotoCatch(e);
-                    } else {
-                        var re=new Error(e);
-                        re.original=e;
-                        gotoCatch(re);
-                    }
-                    steps();
-                });
-            }
-        }
-        function setGroup(g) {
-            fb.group=g;
-            if (g) g.add(fb);
-        }
-        //function retVal() {
-            return retVal;
-        //}/
-        function steps() {
-            //stpd++;
-            //if (stpd>5) throw new Error("Depth too much");
-            var sv=Tonyu.currentThread;
-            Tonyu.currentThread=fb;
-            //var lim=new Date().getTime()+preemptionTime;
-            cnt=preemptionTime;
-            fb.preempted=false;
-            fSuspended=false;
-            //while (new Date().getTime()<lim) {
-            while (cnt-->0 && frame) {
-                step();
-            }
-            fb.preempted= (!fSuspended) && isAlive();
-            //stpd--;
-            Tonyu.currentThread=sv;
-        }
-        function kill() {
-            _isAlive=false;
-            frame=null;
-        }
-        function clearFrame() {
-            frame=null;
-            tryStack=[];
-        }
-        return fb;
-    }*/
     function timeout(t) {
         return DU.funcPromise(function (s) {
             setTimeout(s,t);
         });
-        /*var res={};
-        var ls=[];
-        res.addTerminatedListener=function (l) {
-            ls.push(l);
-        };
-        setTimeout(function () {
-            ls.forEach(function (l) {
-                l();
-            });
-        },t);
-        return res;*/
     }
     function animationFrame() {
         return DU.funcPromise( function (f) {
             requestAnimationFrame(f);
         });
-        /*var res={};
-        var ls=[];
-        res.addTerminatedListener=function (l) {
-            ls.push(l);
-        };
-        requestAnimationFrame(function () {
-            ls.forEach(function (l) {
-                l();
-            });
-        });
-        return res;*/
     }
 
-    /*function asyncResult() {
-        var res=[];
-        var ls=[];
-        var hasRes=false;
-        res.addTerminatedListener=function (l) {
-            if (hasRes) setTimeout(l,0);
-            else ls.push(l);
-        };
-        res.receiver=function () {
-            hasRes=true;
-            for (var i=0; i<arguments.length; i++) {
-                res[i]=arguments[i];
-            }
-            res.notify();
-        };
-        res.notify=function () {
-            ls.forEach(function (l) {
-                l();
-            });
-        };
-        return res;
-    }*/
-    /*function threadGroup() {//@deprecated
-        var threads=[];
-        var waits=[];
-        var _isAlive=true;
-        var thg;
-        var _isWaiting=false;
-        var willAdd=null;
-        function add(thread) {
-            thread.group=thg;
-            if (willAdd) {
-                willAdd.push(thread);
-            } else {
-                threads.push(thread);
-            }
-        }
-        function addObj(obj, methodName,args) {
-            if (!methodName) methodName="main";
-            var th=thread();
-            th.apply(obj,methodName,args);
-            //obj["fiber$"+methodName](th);
-            add(th);
-            return th;
-        }
-        function steps() {
-            try {
-                stepsNoEx();
-            } catch(e) {
-                handleEx(e);
-            }
-        }
-        function stepsNoEx() {
-            for (var i=threads.length-1; i>=0 ;i--) {
-                var thr=threads[i];
-                if (thr.isAlive() && thr.group===thg) continue;
-                threads.splice(i,1);
-            }
-            _isWaiting=true;
-            willAdd=[];
-            threads.forEach(iter);
-            while (willAdd.length>0) {
-                w=willAdd;
-                willAdd=[];
-                w.forEach(function (th) {
-                    threads.push(th);
-                    iter(th);
-                });
-            }
-            willAdd=null;
-            function iter(th){
-                if (th.isWaiting()) return;
-                _isWaiting=false;
-                th.steps();
-            }
-        }
-        function kill() {
-            _isAlive=false;
-        }
-        var _interval=0, _onStepsEnd;
-        function notifyResume() {
-            if (_isWaiting) {
-                //console.log("resume!");
-                //run();
-            }
-        }
-        return thg={add:add, addObj:addObj,  steps:steps, kill:kill, notifyResume: notifyResume, threads:threads};
-    }*/
     function handleEx(e) {
         if (Tonyu.onRuntimeError) {
             Tonyu.onRuntimeError(e);
@@ -329,76 +29,6 @@ return Tonyu=function () {
             throw e;
         }
     }
-    /*function defunct(f) {
-        if (f===Function) {
-            return null;
-        }
-        if (typeof f=="function") {
-            f.constructor=null;
-        } else if (typeof f=="object"){
-            for (var i in f) {
-                f[i]=defunct(f[i]);
-            }
-        }
-        return f;
-    }*/
-    /*function klass() {
-        var parent, prot, includes=[];
-        if (arguments.length==1) {
-            prot=arguments[0];
-        } else if (arguments.length==2 && typeof arguments[0]=="function") {
-            parent=arguments[0];
-            prot=arguments[1];
-        } else if (arguments.length==2 && arguments[0] instanceof Array) {
-            includes=arguments[0];
-            prot=arguments[1];
-        } else if (arguments.length==3) {
-            parent=arguments[0];
-            if (!parent) {
-                console.log(arguments[2]);
-                throw new Error("No parent class ");
-            }
-            includes=arguments[1];
-            prot=arguments[2];
-        } else {
-            console.log(arguments);
-            throw "Invalid argument spec";
-        }
-        prot=defunct(prot);
-        var res=(prot.initialize? prot.initialize:
-            (parent? function () {
-                parent.apply(this,arguments);
-            }:function (){})
-        );
-        delete prot.initialize;
-        //A includes B  B includes C  B extends D
-        //A extends E   E includes F
-        //A has methods in B,C,E,F. [Mod] A extends D.
-        // Known examples:
-        // Actor extends BaseActor, includes PlayMod.
-        // PlayMod extends BaseActor(because use update() in play())
-        res.methods=prot;
-        //prot=bless(parent, prot);
-        includes.forEach(function (m) {
-            if (!m.methods) throw m+" Does not have methods";
-            for (var n in m.methods) {
-                if (!(n in prot)) {
-                    prot[n]=m.methods[n];
-                }
-            }
-        });
-        res.prototype=bless(parent, prot);
-        res.prototype.isTonyuObject=true;
-        addMeta(res,{
-            superclass:parent ? parent.meta : null,
-                    includes:includes.map(function(c){return c.meta;})
-        });
-        var m=klass.getMeta(res);
-        res.prototype.getClassInfo=function () {
-            return m;
-        };
-        return res;
-    }*/
     klass=function () {
         alert("この関数は古くなりました。コンパイルをやり直してください。 Deprecated. compile again.");
         throw new Error("この関数は古くなりました。コンパイルをやり直してください。 Deprecated. compile again.");
@@ -408,6 +38,9 @@ return Tonyu=function () {
         assert.is(arguments,[String,Object]);
         return extend(klass.getMeta(fn), m);
     }
+    klass.removeMeta=function (n) {
+        delete classMetas[n];
+    };
     klass.getMeta=function (k) {// Class or fullName
         if (typeof k=="function") {
             return k.meta;
@@ -500,6 +133,29 @@ return Tonyu=function () {
         res.prototype.getClassInfo=function () {
             return m;
         };
+        return res;
+    };
+    klass.isSourceChanged=function (k) {
+        k=k.meta||k;
+        if (k.src && k.src.tonyu) {
+            if (!k.nodeTimestamp) return true;
+            return k.src.tonyu.lastUpdate()> k.nodeTimestamp;
+        }
+        return false;
+    };
+    klass.shouldCompile=function (k) {
+        k=k.meta||k;
+        if (klass.isSourceChanged(k)) return true;
+        var dks=klass.getDependingClasses(k);
+        for (var i=0 ; i<dks.length ;i++) {
+            if (klass.shouldCompile(dks[i])) return true;
+        }
+    };
+    klass.getDependingClasses=function (k) {
+        k=k.meta||k;
+        var res=[];
+        if (k.superclass) res=[k.superclass];
+        if (k.includes) res=res.concat(k.includes);
         return res;
     };
     function bless( klass, val) {

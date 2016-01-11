@@ -121,24 +121,6 @@ var TPRC=function (dir) {
                  return evalFile(outF);//.then(F(copyToClasses));
              }
          });
-         /*function copyToClasses() {
-             var ns=TPR.getNamespace();
-            //same as compiledProject (XXXX)
-             var cls=Tonyu.classes;
-             ns.split(".").forEach(function (c) {
-                 if (cls) cls=cls[c];
-                 // comment out : when empty concat.js
-                 //if (!cls) throw new Error("namespace Not found :"+ns);
-             });
-             if (cls) {
-                 for (var cln in cls) {
-                     var cl=cls[cln];
-                     var m=Tonyu.klass.getMeta(cl);
-                     ctx.classes[m.fullName]=m;
-                 }
-             }
-             //------------------XXXX
-         }*/
      };
      function initCtx(ctx) {
          var env=TPR.env;
@@ -165,13 +147,26 @@ var TPRC=function (dir) {
                  var cl=baseClasses[n];
                  env.aliases[ cl.shortName] = cl.fullName;
              }
-             var newClasses={};
+             var myClasses={};
+             var fileAddedOrRemoved=false;
              var sf=TPR.sourceFiles(myNsp);
+             /*console.log(Object.keys(baseClasses).filter(function (s) {
+                 return s.indexOf(myNsp)>=0;
+             }));*/
              for (var shortCn in sf) {
                  var f=sf[shortCn];
                  var fullCn=myNsp+"."+shortCn;
+                 if (!baseClasses[fullCn]) {
+                     console.log("Class",fullCn,"is added.");
+                     fileAddedOrRemoved=true;
+                 } else {
+                     //console.log("FAOR not set true1 ",fullCn, baseClasses[fullCn]);
+                 }
                  var m=Tonyu.klass.getMeta(fullCn);
-                 newClasses[fullCn]=baseClasses[fullCn]=m;
+                 /*console.log(shortCn, Object.keys(baseClasses).filter(function (s) {
+                     return s.indexOf(myNsp)>=0;
+                 }));*/
+                 myClasses[fullCn]=baseClasses[fullCn]=m;
                  Tonyu.extend(m,{
                      fullName:  fullCn,
                      shortName: shortCn,
@@ -181,27 +176,55 @@ var TPRC=function (dir) {
                  m.src.tonyu=f;
                  env.aliases[shortCn]=fullCn;
              }
-             for (var n in newClasses) {
-                 console.log("initClassDecl: "+n);
-                 Semantics.initClassDecls(newClasses[n], env);/*ENVC*/
+             for (var n in baseClasses) {
+                 if (!myClasses[n] && baseClasses[n].namespace==myNsp) {
+                     console.log("Class",n,"is removed");
+                     Tonyu.klass.removeMeta(n);
+                     fileAddedOrRemoved=true;
+                 }
              }
-             var ord=orderByInheritance(newClasses);/*ENVC*/
+             var compilingClasses;
+             if (!fileAddedOrRemoved) {
+                 compilingClasses={};
+                 for (var n in myClasses) {
+                     if (Tonyu.klass.shouldCompile(myClasses[n])) {
+                         compilingClasses[n]=myClasses[n];
+                     }
+                 }
+             } else {
+                 compilingClasses=myClasses;
+             }
+             for (var n in compilingClasses) {
+                 console.log("initClassDecl: "+n);
+                 Semantics.initClassDecls(compilingClasses[n], env);/*ENVC*/
+             }
+             var ord=orderByInheritance(myClasses);/*ENVC*/
              ord.forEach(function (c) {
-                 console.log("annotate :"+c.fullName);
-                 Semantics.annotate(c, env);
+                 if (compilingClasses[c.fullName]) {
+                     console.log("annotate :"+c.fullName);
+                     Semantics.annotate(c, env);
+                 }
              });
+             TPR.genJS(ord.filter(function (c) {
+                 return compilingClasses[c.fullName];
+             }));
              TPR.concatJS(ord);
          }));
      };
-     TPR.concatJS=function (ord) {
+     TPR.genJS=function (ord) {
          var env=TPR.env;
-         var cbuf="";
          ord.forEach(function (c) {
-             console.log("concatJS :"+c.fullName);
+             console.log("genJS :"+c.fullName);
              JSGenerator.genJS(c, env);
-             cbuf+=c.src.js+"\n";
          });
+     };
+     TPR.concatJS=function (ord) {
+         var cbuf="";
          var outf=TPR.getOutputFile();
+         console.log("generate :"+outf);
+         ord.forEach(function (c) {
+             cbuf+=A(c.src.js, "Src for "+c.fullName+" not generated ")+"\n";
+         });
          outf.text(cbuf);
          evalFile(outf);
      };
