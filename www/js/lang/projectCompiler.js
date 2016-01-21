@@ -123,6 +123,8 @@ var TPRC=function (dir) {
          });
      };
      function initCtx(ctx) {
+         //どうしてclassMetasとclassesをわけるのか？
+         // metaはFunctionより先に作られるから
          var env=TPR.env;
          if (!ctx) ctx={};
          if (!ctx.visited) {
@@ -177,6 +179,11 @@ var TPRC=function (dir) {
                  env.aliases[shortCn]=fullCn;
              }
              for (var n in baseClasses) {
+                 if (myClasses[n] && myClasses[n].src && !myClasses[n].src.js) {
+                     //前回コンパイルエラーだとここにくるかも
+                     console.log("Class",n,"has no js src");
+                     fileAddedOrRemoved=true;
+                 }
                  if (!myClasses[n] && baseClasses[n].namespace==myNsp) {
                      console.log("Class",n,"is removed");
                      Tonyu.klass.removeMeta(n);
@@ -212,6 +219,7 @@ var TPRC=function (dir) {
          }));
      };
      TPR.genJS=function (ord) {
+         // 途中でコンパイルエラーを起こすと。。。
          var env=TPR.env;
          ord.forEach(function (c) {
              console.log("genJS :"+c.fullName);
