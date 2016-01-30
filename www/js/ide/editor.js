@@ -143,22 +143,23 @@ $(function () {
     };
     FM.on.mv=function (old,_new) {
         if (!refactorUI) return;
-        var oldCN=old.truncExt(EXT);
-        var newCN=_new.truncExt(EXT);
-        if (refactorUI.$vars.chk.prop("checked")) {
-            //alert(oldCN+"=>"+newCN);
-            save();
-            try {
-                curPrj.renameClassName(oldCN,newCN);
-            } catch (e) {
-                alert("プログラム内にエラーがあります．エラーを修正するか，「プログラム中のクラス名も変更する」のチェックを外してもう一度やり直してください．");
-                console.log(e);
-                return false;
+
+        //alert(oldCN+"=>"+newCN);
+        return $.when(save()).then(function () {
+            if (refactorUI.$vars.chk.prop("checked")) {
+                var oldCN=old.truncExt(EXT);
+                var newCN=_new.truncExt(EXT);
+                return curPrj.renameClassName(oldCN,newCN);
             }
-        }
+        }).then(function () {
+            refactorUI=null;
+            return reloadFromFiles();
+        }).fail(function () {
+            alert("プログラム内にエラーがあります．エラーを修正するか，「プログラム中のクラス名も変更する」のチェックを外してもう一度やり直してください．");
+            console.log(e);
+            return false;
+        });
         //close(old);  does in FileMenu
-        reloadFromFiles();
-        refactorUI=null;
     };
     F(FM.on);
     fl.ls(curProjectDir);

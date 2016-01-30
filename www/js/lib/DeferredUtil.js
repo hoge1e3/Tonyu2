@@ -6,6 +6,9 @@ define([], function () {
                 setTimeout(function () {d.resolve(v);},0);
                 return d.promise();
             },
+            then: function (f) {
+                return DU.directPromise().then(f);
+            },
             timeout:function (timeout) {
                 var d=new $.Deferred;
                 setTimeout(function () {d.resolve();},timeout);

@@ -150,7 +150,7 @@ var TPRC=function (dir) {
                  env.aliases[ cl.shortName] = cl.fullName;
              }
              var myClasses={};
-             var fileAddedOrRemoved=false;
+             var fileAddedOrRemoved=!!ctx.options.noIncremental;
              var sf=TPR.sourceFiles(myNsp);
              /*console.log(Object.keys(baseClasses).filter(function (s) {
                  return s.indexOf(myNsp)>=0;

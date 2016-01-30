@@ -1,4 +1,4 @@
-define(["UI","FS"], function (UI,FS) {
+define(["UI","FS","DeferredUtil"], function (UI,FS,DU) {
 var FileMenu=function () {
     var FM={on:{}};
     FM.on.validateName=function (name,action) {
@@ -117,16 +117,23 @@ var FileMenu=function () {
         else { oldName=oldNameD.name; mode=oldNameD.mode;}*/
         FM.dialogOpt({title:"名前変更", name:oldName, action:"mv", extraUI:FM.on.mvExtraUI, onend:function (nf) {
             if (!nf) return;
-            if (FM.on.mv && FM.on.mv(curFile,nf)===false) {
-                return;
-            }
-            var t=curFile.text();
-            curFile.rm();
-            FM.on.close(curFile);
-            curFile=nf;
-            nf.text(t);
-            FM.on.ls();
-            FM.on.open(curFile);
+            return DU.then(function () {
+                /*if (FM.on.mv && FM.on.mv(curFile,nf)===false) {
+                    return;
+                }*/
+                if (FM.on.mv) {
+                    return FM.on.mv(curFile,nf);
+                }
+            }).then(function (r) {
+                if (r===false) return;
+                var t=curFile.text();
+                curFile.rm();
+                FM.on.close(curFile);
+                curFile=nf;
+                nf.text(t);
+                FM.on.ls();
+                FM.on.open(curFile);
+            });
         }});
     };
     FM.rm=function (){
