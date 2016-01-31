@@ -232,7 +232,7 @@ var TPRC=function (dir) {
      TPR.concatJS=function (ord) {
          var cbuf="";
          var outf=TPR.getOutputFile();
-         TPR.showProgress("generate :"+outf);
+         TPR.showProgress("generate :"+outf.name());
          console.log("generate :"+outf);
          ord.forEach(function (c) {
              cbuf+=A(c.src.js, "Src for "+c.fullName+" not generated ")+"\n";

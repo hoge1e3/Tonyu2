@@ -423,9 +423,13 @@ $(function () {
     }
     function fixEditorIndent(prog) {
         var cur=prog.getCursorPosition();
-        prog.setValue(fixIndent( prog.getValue() ));
-        prog.clearSelection();
-        prog.moveCursorTo(cur.row, cur.column);
+        var orig=prog.getValue();
+        var fixed=fixIndent( orig );
+        if (orig!=fixed) {
+            prog.setValue(fixed);
+            prog.clearSelection();
+            prog.moveCursorTo(cur.row, cur.column);
+        }
     }
     function reloadFromFiles() {
         for (var path in editors) {
