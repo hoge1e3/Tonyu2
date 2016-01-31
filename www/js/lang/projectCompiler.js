@@ -140,11 +140,12 @@ var TPRC=function (dir) {
          console.log("Compile: "+dir.path());
          ctx=initCtx(ctx);
          var myNsp=TPR.getNamespace();
+         var baseClasses,ctxOpt,env,myClasses,fileAddedOrRemoved,sf;
+         var compilingClasses;
          return TPR.loadDependingClasses(ctx).then(F(function () {
-             var baseClasses=ctx.classes;
-             //console.log("baseClasses", baseClasses);
-             var ctxOpt=ctx.options;
-             var env=TPR.env;
+             baseClasses=ctx.classes;
+             ctxOpt=ctx.options;
+             env=TPR.env;
              env.aliases={};
              env.parsedNode=env.parsedNode||{};
              env.classes=baseClasses;
@@ -152,25 +153,17 @@ var TPRC=function (dir) {
                  var cl=baseClasses[n];
                  env.aliases[ cl.shortName] = cl.fullName;
              }
-             var myClasses={};
-             var fileAddedOrRemoved=!!ctx.options.noIncremental;
-             var sf=TPR.sourceFiles(myNsp);
-             /*console.log(Object.keys(baseClasses).filter(function (s) {
-                 return s.indexOf(myNsp)>=0;
-             }));*/
+             myClasses={};
+             fileAddedOrRemoved=!!ctx.options.noIncremental;
+             sf=TPR.sourceFiles(myNsp);
              for (var shortCn in sf) {
                  var f=sf[shortCn];
                  var fullCn=myNsp+"."+shortCn;
                  if (!baseClasses[fullCn]) {
                      console.log("Class",fullCn,"is added.");
                      fileAddedOrRemoved=true;
-                 } else {
-                     //console.log("FAOR not set true1 ",fullCn, baseClasses[fullCn]);
                  }
                  var m=Tonyu.klass.getMeta(fullCn);
-                 /*console.log(shortCn, Object.keys(baseClasses).filter(function (s) {
-                     return s.indexOf(myNsp)>=0;
-                 }));*/
                  myClasses[fullCn]=baseClasses[fullCn]=m;
                  Tonyu.extend(m,{
                      fullName:  fullCn,
@@ -193,7 +186,6 @@ var TPRC=function (dir) {
                      fileAddedOrRemoved=true;
                  }
              }
-             var compilingClasses;
              if (!fileAddedOrRemoved) {
                  compilingClasses={};
                  for (var n in myClasses) {
