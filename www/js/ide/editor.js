@@ -154,7 +154,7 @@ $(function () {
         }).then(function () {
             refactorUI=null;
             return reloadFromFiles();
-        }).fail(function () {
+        }).fail(function (e) {
             alert("プログラム内にエラーがあります．エラーを修正するか，「プログラム中のクラス名も変更する」のチェックを外してもう一度やり直してください．");
             console.log(e);
             return false;

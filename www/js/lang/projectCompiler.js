@@ -106,6 +106,7 @@ var TPRC=function (dir) {
      // Difference of ctx and env:  env is of THIS project. ctx is of cross-project
      TPR.loadClasses=function (ctx/*or options(For external call)*/) {
          Tonyu.runMode=false;
+         TPR.showProgress("LoadClasses: "+dir.name());
          console.log("LoadClasses: "+dir.path());
          ctx=initCtx(ctx);
          var visited=ctx.visited||{};
@@ -118,6 +119,7 @@ var TPRC=function (dir) {
                  return TPR.compile(ctx);
              } else {
                  var outF=TPR.getOutputFile("js");
+                 TPR.showProgress("Eval "+outF.name());
                  return evalFile(outF);//.then(F(copyToClasses));
              }
          });
@@ -134,6 +136,7 @@ var TPRC=function (dir) {
      }
      TPR.compile=function (ctx/*or options(For external call)*/) {
          Tonyu.runMode=false;
+         TPR.showProgress("Compile: "+dir.name());
          console.log("Compile: "+dir.path());
          ctx=initCtx(ctx);
          var myNsp=TPR.getNamespace();
@@ -215,7 +218,7 @@ var TPRC=function (dir) {
              TPR.genJS(ord.filter(function (c) {
                  return compilingClasses[c.fullName];
              }));
-             TPR.concatJS(ord);
+             return TPR.concatJS(ord);
          }));
      };
      TPR.genJS=function (ord) {
@@ -229,12 +232,13 @@ var TPRC=function (dir) {
      TPR.concatJS=function (ord) {
          var cbuf="";
          var outf=TPR.getOutputFile();
+         TPR.showProgress("generate :"+outf);
          console.log("generate :"+outf);
          ord.forEach(function (c) {
              cbuf+=A(c.src.js, "Src for "+c.fullName+" not generated ")+"\n";
          });
          outf.text(cbuf);
-         evalFile(outf);
+         return evalFile(outf);
      };
      TPR.getDependingProjects=function () {
          var opt=TPR.getOptions();
@@ -368,6 +372,8 @@ var TPRC=function (dir) {
                 }
             }
         }
+    };
+    TPR.showProgress=function (m) {
     };
     return TPR;
 }

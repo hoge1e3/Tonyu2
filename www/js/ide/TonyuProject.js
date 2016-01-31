@@ -249,6 +249,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         }
     };
     TPR.rawBoot=function (bootClassName) {
+        TPR.showProgress("Running "+bootClassName)
         Tonyu.run(bootClassName);
     };
 
@@ -317,6 +318,11 @@ return Tonyu.Project=function (dir, kernelDir) {
                 }
             }
         });
+    };
+    TPR.showProgress=function (m) {
+        if (typeof SplashScreen!="undefined") {
+            SplashScreen.progress(m);
+        }
     };
     return TPR;
 };

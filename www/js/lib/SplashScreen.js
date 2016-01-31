@@ -17,9 +17,12 @@ SplashScreen=function () {
     };
     var cnt=0;
     setInterval(function () {
-        s.text("Please wait"+(cnt%2==0?"...":""));
+        //s.text("Please wait"+(cnt%2==0?"...":""));
         cnt++;
     },100);
+    SS.progress=function (me) {
+        s.text(me);
+    };
     SS.hide=function () {
     	if (!SS.showing) return;
     	console.log("Hide");
