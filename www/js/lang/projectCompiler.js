@@ -86,7 +86,7 @@ var TPRC=function (dir) {
      };
      TPR.getOutputFile=function (lang) {
          var opt=TPR.getOptions();
-         var outF=TPR.resolve(A(opt.compiler.outputFile,"output file should be specified in options"));
+         var outF=TPR.resolve(A(opt.compiler.outputFile,"outputFile should be specified in options"));
          if (outF.isDir()) {
              throw new Error("out: directory style not supported");
          }
