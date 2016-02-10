@@ -186,9 +186,10 @@ function genJS(klass, env) {//B
                 buf.printf("%s", node.text);
             }
         },
-        varDecl: function (node) {
+        varDecl: function (node) {//VDC
             if (node.value) {
-                buf.printf("%v = %v", node.name, node.value );
+                var fbr=!!annotation(node).fiberCall;//Required;
+                buf.printf("%v = %v/*%s*/", node.name, node.value,fbr );
             } else {
                 //buf.printf("%v", node.name);
             }
@@ -241,7 +242,7 @@ function genJS(klass, env) {//B
                             ctx.pc++
                 );
             } else if (t.type=="ret") {
-                buf.printf(
+                buf.printf(//VDC
                         "%s.%s%s(%j);%n" +
                         "%s=%s;return;%n" +/*B*/
                         "%}case %d:%{"+

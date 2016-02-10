@@ -137,6 +137,9 @@ function annotateSource2(klass, env) {//B
             left: OM.T,
             op:{type:"member",name:{text:OM.N}}
     };
+    // These has same value but different purposes: 
+    //  myMethodCallTmpl: avoid using bounded field for normal method(); call
+    //  fiberCallTmpl: detect fiber call
     var myMethodCallTmpl=fiberCallTmpl={
             type:"postfix",
             left:{type:"varAccess", name: {text:OM.N}},
@@ -460,6 +463,18 @@ function annotateSource2(klass, env) {//B
                 }
             }
             this.visit(node.expr);
+        },
+        varDecl: function (node) {
+            var t;
+            if (!ctx.noWait &&
+                    (t=OM.match(node.value,fiberCallTmpl)) &&
+                    stype(ctx.scope[t.N])==ST.METHOD &&
+                    !getMethod(t.N).nowait) {
+                t.type="varDecl";
+                annotation(node, {fiberCall:t});
+                fiberCallRequired(this.path);
+            }
+            this.visit(node.value);
         }
     });
     varAccessesAnnotator.def=visitSub;//S
