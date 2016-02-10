@@ -6,7 +6,7 @@ define(["Tonyu","ObjectMatcher", "TError"],
             FIELD:"field", METHOD:"method", NATIVE:"native",//B
             LOCAL:"local", THVAR:"threadvar",
             PARAM:"param", GLOBAL:"global",
-            CLASS:"class"
+            CLASS:"class", MODULE:"module"
     };
     cu.ScopeTypes=ScopeTypes;
     var symSeq=1;//B

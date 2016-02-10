@@ -36,8 +36,8 @@ function initClassDecls(klass, env ) {//S
     //console.log(klass.testid);
     var MAIN={name:"main",stmts:[],pos:0};
     // method := fiber | function
-    var fields={}, methods={main: MAIN}, natives={};
-    klass.decls={fields:fields, methods:methods, natives: natives};
+    var fields={}, methods={main: MAIN}, natives={}, modules={};
+    klass.decls={fields:fields, methods:methods, natives: natives, modules:modules };
     klass.node=node;
     /*function nc(o, mesg) {
         if (!o) throw mesg+" is null";
@@ -113,8 +113,9 @@ function annotateSource2(klass, env) {//B
     var decls=klass.decls;
     var fields=decls.fields,
         methods=decls.methods,
-        natives=decls.natives;
-    // ↑ このクラスが持つフィールド，ファイバ，関数，ネイティブ変数の集まり．親クラスの宣言は含まない
+        natives=decls.natives,
+        modules=decls.modules;
+    // ↑ このクラスが持つフィールド，ファイバ，関数，ネイティブ変数，モジュール変数の集まり．親クラスの宣言は含まない
     var ST=ScopeTypes;
     var topLevelScope={};
     // ↑ このソースコードのトップレベル変数の種類 ，親クラスの宣言を含む
@@ -195,6 +196,9 @@ function annotateSource2(klass, env) {//B
         var s=topLevelScope;
         getDependingClasses(klass).forEach(initTopLevelScope2);
         var decls=klass.decls;// Do not inherit parents' natives
+        /*for (var i in decls.modules) {
+            s[i]=genSt(ST.MODULE,{name:"module::"+i});
+        }*/
         for (var i in decls.natives) {
             s[i]=genSt(ST.NATIVE,{name:"native::"+i});
         }
@@ -235,10 +239,19 @@ function annotateSource2(klass, env) {//B
         var si=ctx.scope[n];
         var t=stype(si);
         if (!t) {
-            var isg=n.match(/^\$/);
-            t=isg?ST.GLOBAL:ST.FIELD;
+            if (env.modulePaths && env.modulePaths[n]) {
+                t=ST.MODULE;
+                klass.decls.modules[n]=env.modulePaths[n];
+                //console.log(n,"is module");
+            } else {
+                var isg=n.match(/^\$/);
+                t=isg?ST.GLOBAL:ST.FIELD;
+            }
             var opt={name:n};
-            if (!isg) opt.klass=klass.name;
+            if (t==ST.FIELD) {
+                opt.klass=klass.name;
+                klass.decls.fields[n]=si;
+            }
             si=topLevelScope[n]=genSt(t,opt);
         }
         return si;
@@ -305,6 +318,7 @@ function annotateSource2(klass, env) {//B
     var varAccessesAnnotator=Visitor({//S
         varAccess: function (node) {
             var si=getScopeInfo(node.name.text);
+            var t=stype(si);
             annotation(node,{scopeInfo:si});
         },
         funcDecl: function (node) {/*FDITSELFIGNORE*/

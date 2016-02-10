@@ -51,6 +51,7 @@ function genJS(klass, env) {//B
     var ST=ScopeTypes;
     var fnSeq=0;
     var diagnose=env.options.compiler.diagnose;
+    var genMod=env.options.compiler.genModule;
 
     function annotation(node, aobj) {//B
         return annotation3(klass.annotation,node,aobj);
@@ -91,7 +92,7 @@ function genJS(klass, env) {//B
             buf.printf("%s",getClassName(n));
         } else if (t==ST.GLOBAL) {
             buf.printf("%s%s",GLOBAL_HEAD, n);
-        } else if (t==ST.PARAM || t==ST.LOCAL || t==ST.NATIVE) {
+        } else if (t==ST.PARAM || t==ST.LOCAL || t==ST.NATIVE || t==ST.MODULE) {
             buf.printf("%s",n);
         } else {
             console.log("Unknown scope type: ",t);
@@ -767,29 +768,15 @@ function genJS(klass, env) {//B
     };
     v.cnt=0;
     function genSource() {//G
-        /*if (env.options.compiler.asModule) {
-            klass.moduleName=getClassName(klass);
-            printf("if (typeof requireSimulator=='object') requireSimulator.setName(%l);%n",klass.moduleName);
-            printf("//requirejs(['Tonyu'%f],function (Tonyu) {%{", function (){
-                getDependingClasses(klass).forEach(function (k) {
-                    printf(",%l",k.moduleName);
-                });
-            });
-        }*/
         ctx.enter({}, function () {
-            /*var nspObj=CLASS_HEAD+klass.namespace;
-            printf("Tonyu.klass.ensureNamespace(%s,%l);%n",CLASS_HEAD.replace(/\.$/,""), klass.namespace);
-            if (klass.superclass) {
-                printf("%s=Tonyu.klass(%s,[%s],{%{",
-                        getClassName(klass),
-                        getClassName(klass.superclass),
-                        getClassNames(klass.includes).join(","));
-            } else {
-                printf("%s=Tonyu.klass([%s],{%{",
-                        getClassName(klass),
-                        getClassNames(klass.includes).join(","));
-            }*/
-            printf("Tonyu.klass.define({%{");
+            if (genMod) {
+                printf("define(function (require) {%{");
+                printf("var %s=require('%s');%n","Tonyu","Tonyu");
+                for (var mod in klass.decls.modules) {
+                    printf("var %s=require('%s');%n",mod,mod);
+                }
+            }
+            printf((genMod?"return ":"")+"Tonyu.klass.define({%{");
             printf("fullName: %l,%n", klass.fullName);
             printf("shortName: %l,%n", klass.shortName);
             printf("namespace: %l,%n", klass.namespace);
@@ -814,6 +801,7 @@ function genJS(klass, env) {//B
             printf("%}},%n");
             printf("decls: %s%n", JSON.stringify(digestDecls(klass)));
             printf("%}});");
+            if (genMod) printf("%n%}});");
             //printf("%}});%n");
         });
         //printf("Tonyu.klass.addMeta(%s,%s);%n",
@@ -998,7 +986,12 @@ function genJS(klass, env) {//B
         return OM.match(f, {ftype:"constructor"}) || OM.match(f, {name:"new"});
     }
     genSource();//G
-    klass.src.js=buf.buf;//G
+    if (genMod) {
+        klass.src.js=klass.src.tonyu.up().rel(klass.src.tonyu.truncExt()+".js");
+        klass.src.js.text(buf.buf);
+    } else {
+        klass.src.js=buf.buf;//G
+    }
     if (debug) {
         console.log("method4", buf.buf);
         //throw "ERR";

@@ -154,7 +154,7 @@ var TPRC=function (dir) {
                  env.aliases[ cl.shortName] = cl.fullName;
              }
              myClasses={};
-             fileAddedOrRemoved=!!ctx.options.noIncremental;
+             fileAddedOrRemoved=!!ctxOpt.noIncremental;
              sf=TPR.sourceFiles(myNsp);
              for (var shortCn in sf) {
                  var f=sf[shortCn];
@@ -210,7 +210,9 @@ var TPRC=function (dir) {
              TPR.genJS(ord.filter(function (c) {
                  return compilingClasses[c.fullName];
              }));
-             return TPR.concatJS(ord);
+             if (!TPR.getOptions().compiler.genModule) {
+                 return TPR.concatJS(ord);
+             }
          }));
      };
      TPR.genJS=function (ord) {
@@ -227,7 +229,15 @@ var TPRC=function (dir) {
          TPR.showProgress("generate :"+outf.name());
          console.log("generate :"+outf);
          ord.forEach(function (c) {
-             cbuf+=A(c.src.js, "Src for "+c.fullName+" not generated ")+"\n";
+             if (typeof (c.src.js)=="string") {
+                 cbuf+=c.src.js+"\n";
+             } else if (c.src.js && c.src.js.isSFile && c.src.js.isSFile()) {
+                 /*return $.when(c.src.text()).then(function () {
+                 });*/
+                 cbuf+=c.src.js.text()+"\n";
+             } else {
+                 throw new Error("Src for "+c.fullName+" not generated ");
+             }
          });
          outf.text(cbuf);
          return evalFile(outf);
@@ -366,6 +376,9 @@ var TPRC=function (dir) {
         }
     };
     TPR.showProgress=function (m) {
+    };
+    TPR.setModulePaths=function (paths) {
+        TPR.env.modulePaths=paths;
     };
     return TPR;
 }
