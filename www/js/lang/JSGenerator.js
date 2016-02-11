@@ -792,6 +792,14 @@ function genJS(klass, env) {//B
                 for (var mod in klass.decls.modules) {
                     printf("var %s=require('%s');%n",mod,mod);
                 }
+                if (klass.superclass) {
+                    var mod=klass.superclass.shortName;
+                    printf("var %s=require('%s');%n",mod,mod);
+                }
+                (klass.includes||[]).forEach(function (klass) {
+                    var mod=klass.shortName;
+                    printf("var %s=require('%s');%n",mod,mod);
+                });
             }
             printf((genMod?"return ":"")+"Tonyu.klass.define({%{");
             printf("fullName: %l,%n", klass.fullName);
