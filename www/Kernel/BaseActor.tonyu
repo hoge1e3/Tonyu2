@@ -9,7 +9,7 @@ native FS;
 native Array;
 
 \new(x,y,p) {
-    _th=$Boot.schedule(this,"main",[]);
+    if (Tonyu.runMode) _th=$Boot.schedule(this,"main",[]);
     if (typeof x=="object") Tonyu.extend(this,x);
     else if (typeof x=="number") {
         this.x=x;

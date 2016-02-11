@@ -71,6 +71,8 @@ function initClassDecls(klass, env ) {//S
                 throw TError ( "親クラス "+spcn+"は定義されていません", s, pos);
             }
             klass.superclass=spc;
+        } else {
+            delete klass.superclass;
         }
         program.stmts.forEach(function (stmt) {
             if (stmt.type=="funcDecl") {

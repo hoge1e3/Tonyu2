@@ -5,7 +5,7 @@ native Tonyu;
 
 \new(x,y,p) {
     super(x,y,p);
-    /*if (Tonyu.runMode)*/ initSprite();
+    if (Tonyu.runMode) initSprite();
 }
 \initSprite() {
     if(layer && typeof layer.add=="function"){
