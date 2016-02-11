@@ -25,7 +25,9 @@ return Tonyu=function () {
         if (Tonyu.onRuntimeError) {
             Tonyu.onRuntimeError(e);
         } else {
+            if (typeof $LASTPOS=="undefined") $LASTPOS=0;
             alert ("エラー! at "+$LASTPOS+" メッセージ  : "+e);
+            console.log(e.stack);
             throw e;
         }
     }
