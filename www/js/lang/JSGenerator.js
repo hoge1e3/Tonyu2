@@ -2,9 +2,9 @@ if (typeof define!=="function") {//B
    define=require("requirejs").define;
 }
 define(["Tonyu", "Tonyu.Iterator", "TonyuLang", "ObjectMatcher", "TError", "IndentBuffer",
-        "context", "Visitor","Tonyu.Compiler"],
+        "context", "Visitor","Tonyu.Compiler","assert"],
 function(Tonyu, Tonyu_iterator, TonyuLang, ObjectMatcher, TError, IndentBuffer,
-        context, Visitor,cu) {
+        context, Visitor,cu,A) {
 return cu.JSGenerator=(function () {
 // TonyuソースファイルをJavascriptに変換する
 var TH="_thread",THIZ="_this", ARGS="_arguments",FIBPRE="fiber$", FRMPC="__pc", LASTPOS="$LASTPOS",CNTV="__cnt",CNTC=100;//G
@@ -186,10 +186,24 @@ function genJS(klass, env) {//B
                 buf.printf("%s", node.text);
             }
         },
-        varDecl: function (node) {//VDC
+        varDecl: function (node) {
             if (node.value) {
-                var fbr=!!annotation(node).fiberCall;//Required;
-                buf.printf("%v = %v/*%s*/", node.name, node.value,fbr );
+                var t=(!ctx.noWait) && annotation(node).fiberCall;
+                if (t) {
+                    A.is(ctx.pc,Number);
+                    buf.printf(//VDC
+                        "%s.%s%s(%j);%n" +
+                        "%s=%s;return;%n" +/*B*/
+                        "%}case %d:%{"+
+                        "%v=%s.retVal;%n",
+                            THIZ, FIBPRE, t.N, [", ",[THNode].concat(t.A)],
+                            FRMPC, ctx.pc,
+                            ctx.pc++,
+                            node.name, TH
+                    );
+                } else {
+                    buf.printf("%v = %v;%n", node.name, node.value);
+                }
             } else {
                 //buf.printf("%v", node.name);
             }
@@ -198,7 +212,9 @@ function genJS(klass, env) {//B
             var decls=node.decls.filter(function (n) { return n.value; });
             if (decls.length>0) {
                 lastPosF(node)();
-                buf.printf("%j;", [",",decls]);
+                decls.forEach(function (decl) {
+                    buf.printf("%v",decl);
+                });
             }
         },
         jsonElem: function (node) {
@@ -564,7 +580,7 @@ function genJS(klass, env) {//B
                     var cntpos=buf.lazy();
                     var pc=ctx.pc++;
                     buf.printf(
-                            "%v;%n"+
+                            "%v%n"+
                             "%}case %d:%{" +
                             "if (!(%v)) { %s=%z; break; }%n" +
                             "%f%n" +
@@ -585,13 +601,13 @@ function genJS(klass, env) {//B
                     ctx.enter({noWait:true},function() {
                         if (node.inFor.init.type=="varsDecl" || node.inFor.init.type=="exprstmt") {
                             buf.printf(
-                                    "for (%f  %v ; %v) {%{"+
+                                    "%v"+
+                                    "for (; %v ; %v) {%{"+
                                        "%v%n" +
                                     "%}}"
                                        ,
-                                    enterV({noLastPos:true}, node.inFor.init),
-                                    node.inFor.cond,
-                                    node.inFor.next,
+                                    /*enterV({noLastPos:true},*/ node.inFor.init,
+                                    node.inFor.cond, node.inFor.next,
                                     node.loop
                                 );
                         } else {
