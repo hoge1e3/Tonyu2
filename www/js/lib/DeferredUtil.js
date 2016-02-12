@@ -1,6 +1,21 @@
 define([], function () {
     var DU;
     DU={
+            ensureDefer: function (v) {
+                var d=new $.Deferred;
+                var isDeferred;
+                $.when(v).then(function (r) {
+                    if (!isDeferred) {
+                        setTimeout(function () {
+                            d.resolve(r);
+                        },0);
+                    } else {
+                        d.resolve(r);
+                    }
+                });
+                isDeferred=true;
+                return d.promise();
+            },
             directPromise:function (v) {
                 var d=new $.Deferred;
                 setTimeout(function () {d.resolve(v);},0);

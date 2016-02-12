@@ -1,4 +1,4 @@
-define(["Class"],function (Class) {
+define(["DeferredUtil","Class"],function (DU,Class) {
     var cnts={enterC:{},exitC:0};
     try {window.cnts=cnts;}catch(e){}
     var TonyuThread=Class({
@@ -139,7 +139,7 @@ define(["Class"],function (Class) {
             var fb=this;
             fb._isWaiting=true;
             fb.suspend();
-            return $.when(j).then(function (r) {
+            return DU.ensureDefer(j).then(function (r) {
                 fb.retVal=r;
                 fb.steps();
             }).fail(function (e) {
