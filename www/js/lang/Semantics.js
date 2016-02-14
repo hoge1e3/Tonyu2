@@ -34,7 +34,7 @@ function initClassDecls(klass, env ) {//S
     //console.log(s+"",  !!klass.node, klass.nodeTimestamp, s.lastUpdate());
     //if (!klass.testid) klass.testid=Math.random();
     //console.log(klass.testid);
-    var MAIN={name:"main",stmts:[],pos:0};
+    var MAIN={name:"main",stmts:[],pos:0, isMain:true};
     // method := fiber | function
     var fields={}, methods={main: MAIN}, natives={}, modules={};
     klass.decls={fields:fields, methods:methods, natives: natives, modules:modules };
@@ -494,8 +494,43 @@ function annotateSource2(klass, env) {//B
         }
     }
     function initParamsLocals(f) {//S
-        f.locals=collectLocals(f.stmts);
-        f.params=getParams(f);
+        console.log("IS_MAIN", f.name, f.isMain);
+        ctx.enter({isMain:f.isMain}, function () {
+            f.locals=collectLocals(f.stmts);
+            f.params=getParams(f);
+        });
+    }
+    function annotateSubFuncExpr(node) {// annotateSubFunc or FuncExpr
+        var m,ps;
+        var body=node.body;
+        var name=(node.head.name ? node.head.name.text : "anonymous_"+node.pos );
+        if (m=OM.match( node, {head:{params:{params:OM.P}}})) {
+            ps=m.P;
+        } else {
+            ps=[];
+        }
+        var ns=newScope(ctx.scope);
+        ps.forEach(function (p) {
+            ns[p.name.text]=genSt(ST.PARAM);
+        });
+        var locals=collectLocals(body);
+        copyLocals(locals,ns);
+        var finfo=annotation(node);
+        ctx.enter({finfo: finfo}, function () {
+            annotateVarAccesses(body,ns);
+        });
+        var res={scope:ns, locals:locals, name:name, params:ps};
+        annotation(node,res);
+        annotation(node,finfo);
+        annotateSubFuncExprs(locals, ns);
+        return res;
+    }
+    function annotateSubFuncExprs(locals, scope) {//S
+        ctx.enter({scope:scope}, function () {
+            for (var n in locals.subFuncDecls) {
+                annotateSubFuncExpr(locals.subFuncDecls[n]);
+            }
+        });
     }
     function annotateMethodFiber(f) {//S
         var ns=newScope(ctx.scope);
@@ -517,40 +552,8 @@ function annotateSource2(klass, env) {//B
             for (var name in methods) {
                 if (debug) console.log("anon method1", name);
                 var method=methods[name];
-                initParamsLocals(method);
+                initParamsLocals(method);//MAINVAR
                 annotateMethodFiber(method);
-            }
-        });
-    }
-    function annotateSubFuncExpr(node) {// annotateSubFunc or FuncExpr
-        var m,ps;
-        var body=node.body;
-        var name=(node.head.name ? node.head.name.text : "anonymous_"+node.pos );
-        if (m=OM.match( node, {head:{params:{params:OM.P}}})) {
-            ps=m.P;
-        } else {
-            ps=[];
-        }
-        var ns=newScope(ctx.scope);
-        ps.forEach(function (p) {
-            ns[p.name.text]=genSt(ST.PARAM);
-        });
-        var locals=collectLocals(body, ns);
-        copyLocals(locals,ns);
-        var finfo=annotation(node);
-        ctx.enter({finfo: finfo}, function () {
-            annotateVarAccesses(body,ns);
-        });
-        var res={scope:ns, locals:locals, name:name, params:ps};
-        annotation(node,res);
-        annotation(node,finfo);
-        annotateSubFuncExprs(locals, ns);
-        return res;
-    }
-    function annotateSubFuncExprs(locals, scope) {//S
-        ctx.enter({scope:scope}, function () {
-            for (var n in locals.subFuncDecls) {
-                annotateSubFuncExpr(locals.subFuncDecls[n]);
             }
         });
     }
