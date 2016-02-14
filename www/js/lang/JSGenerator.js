@@ -187,6 +187,8 @@ function genJS(klass, env) {//B
             }
         },
         varDecl: function (node) {
+            var a=annotation(node);
+            var thisForVIM=a.varInMain? THIZ+"." :"";
             if (node.value) {
                 var t=(!ctx.noWait) && annotation(node).fiberCall;
                 if (t) {
@@ -195,14 +197,14 @@ function genJS(klass, env) {//B
                         "%s.%s%s(%j);%n" +
                         "%s=%s;return;%n" +/*B*/
                         "%}case %d:%{"+
-                        "%v=%s.retVal;%n",
+                        "%s%v=%s.retVal;%n",
                             THIZ, FIBPRE, t.N, [", ",[THNode].concat(t.A)],
                             FRMPC, ctx.pc,
                             ctx.pc++,
-                            node.name, TH
+                            thisForVIM, node.name, TH
                     );
                 } else {
-                    buf.printf("%v = %v;%n", node.name, node.value);
+                    buf.printf("%s%v = %v;%n", thisForVIM, node.name, node.value);
                 }
             } else {
                 //buf.printf("%v", node.name);

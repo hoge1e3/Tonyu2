@@ -263,7 +263,12 @@ function annotateSource2(klass, env) {//B
     }
     var localsCollector=Visitor({
         varDecl: function (node) {
-            ctx.locals.varDecls[node.name.text]=node;
+            if (ctx.isMain) {
+                annotation(node,{varInMain:true});
+                //console.log("var in main",node.name.text);
+            } else {
+                ctx.locals.varDecls[node.name.text]=node;
+            }
         },
         funcDecl: function (node) {/*FDITSELFIGNORE*/
             ctx.locals.subFuncDecls[node.head.name.text]=node;
@@ -494,7 +499,7 @@ function annotateSource2(klass, env) {//B
         }
     }
     function initParamsLocals(f) {//S
-        console.log("IS_MAIN", f.name, f.isMain);
+        //console.log("IS_MAIN", f.name, f.isMain);
         ctx.enter({isMain:f.isMain}, function () {
             f.locals=collectLocals(f.stmts);
             f.params=getParams(f);
