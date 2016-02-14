@@ -210,7 +210,8 @@ var TPRC=function (dir) {
              TPR.genJS(ord.filter(function (c) {
                  return compilingClasses[c.fullName];
              }));
-             if (!TPR.getOptions().compiler.genModule) {
+             var copt=TPR.getOptions().compiler;
+             if (!copt.genAMD) {
                  return TPR.concatJS(ord);
              }
          }));
@@ -377,8 +378,8 @@ var TPRC=function (dir) {
     };
     TPR.showProgress=function (m) {
     };
-    TPR.setModulePaths=function (paths) {
-        TPR.env.modulePaths=paths;
+    TPR.setAMDPaths=function (paths) {
+        TPR.env.amdPaths=paths;
     };
     return TPR;
 }

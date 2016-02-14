@@ -51,7 +51,7 @@ function genJS(klass, env) {//B
     var ST=ScopeTypes;
     var fnSeq=0;
     var diagnose=env.options.compiler.diagnose;
-    var genMod=env.options.compiler.genModule;
+    var genMod=env.options.compiler.genAMD;
 
     function annotation(node, aobj) {//B
         return annotation3(klass.annotation,node,aobj);
@@ -790,18 +790,21 @@ function genJS(klass, env) {//B
         ctx.enter({}, function () {
             if (genMod) {
                 printf("define(function (require) {%{");
-                printf("var %s=require('%s');%n","Tonyu","Tonyu");
-                for (var mod in klass.decls.modules) {
-                    printf("var %s=require('%s');%n",mod,mod);
+                var reqs={Tonyu:1};
+                for (var mod in klass.decls.amds) {
+                    reqs[mod]=1;
                 }
                 if (klass.superclass) {
                     var mod=klass.superclass.shortName;
-                    printf("var %s=require('%s');%n",mod,mod);
+                    reqs[mod]=1;
                 }
                 (klass.includes||[]).forEach(function (klass) {
                     var mod=klass.shortName;
-                    printf("var %s=require('%s');%n",mod,mod);
+                    reqs[mod]=1;
                 });
+                for (var mod in reqs) {
+                    printf("var %s=require('%s');%n",mod,mod);
+                }
             }
             printf((genMod?"return ":"")+"Tonyu.klass.define({%{");
             printf("fullName: %l,%n", klass.fullName);

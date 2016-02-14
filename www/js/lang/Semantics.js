@@ -36,8 +36,8 @@ function initClassDecls(klass, env ) {//S
     //console.log(klass.testid);
     var MAIN={name:"main",stmts:[],pos:0, isMain:true};
     // method := fiber | function
-    var fields={}, methods={main: MAIN}, natives={}, modules={};
-    klass.decls={fields:fields, methods:methods, natives: natives, modules:modules };
+    var fields={}, methods={main: MAIN}, natives={}, amds={};
+    klass.decls={fields:fields, methods:methods, natives: natives, amds:amds };
     klass.node=node;
     /*function nc(o, mesg) {
         if (!o) throw mesg+" is null";
@@ -116,7 +116,7 @@ function annotateSource2(klass, env) {//B
     var fields=decls.fields,
         methods=decls.methods,
         natives=decls.natives,
-        modules=decls.modules;
+        amds=decls.amds;
     // ↑ このクラスが持つフィールド，ファイバ，関数，ネイティブ変数，モジュール変数の集まり．親クラスの宣言は含まない
     var ST=ScopeTypes;
     var topLevelScope={};
@@ -201,9 +201,6 @@ function annotateSource2(klass, env) {//B
         var s=topLevelScope;
         getDependingClasses(klass).forEach(initTopLevelScope2);
         var decls=klass.decls;// Do not inherit parents' natives
-        /*for (var i in decls.modules) {
-            s[i]=genSt(ST.MODULE,{name:"module::"+i});
-        }*/
         for (var i in decls.natives) {
             s[i]=genSt(ST.NATIVE,{name:"native::"+i});
         }
@@ -244,9 +241,9 @@ function annotateSource2(klass, env) {//B
         var si=ctx.scope[n];
         var t=stype(si);
         if (!t) {
-            if (env.modulePaths && env.modulePaths[n]) {
+            if (env.amdPaths && env.amdPaths[n]) {
                 t=ST.MODULE;
-                klass.decls.modules[n]=env.modulePaths[n];
+                klass.decls.amds[n]=env.amdPaths[n];
                 //console.log(n,"is module");
             } else {
                 var isg=n.match(/^\$/);
