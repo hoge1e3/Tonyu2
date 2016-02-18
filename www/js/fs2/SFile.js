@@ -227,7 +227,7 @@ SFile.prototype={
         return this.act.fs.getURL(this.act.path);
     },
     lines:function () {
-        return this.text().split("\n");
+        return this.text().replace(/\r/g,"").split("\n");
     },
     obj: function () {
         var file=this;
