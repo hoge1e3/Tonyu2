@@ -39,7 +39,7 @@ define([], function () {
                 return d.promise();
             },
             throwPromise:function (e) {
-                d=new $.Deferred;
+                var d=new $.Deferred;
                 setTimeout(function () {
                     d.reject(e);
                 }, 0);
