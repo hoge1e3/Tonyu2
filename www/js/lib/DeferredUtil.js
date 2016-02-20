@@ -12,6 +12,14 @@ define([], function () {
                     } else {
                         d.resolve(r);
                     }
+                }).fail(function (r) {
+                    if (!isDeferred) {
+                        setTimeout(function () {
+                            d.reject(r);
+                        },0);
+                    } else {
+                        d.reject(r);
+                    }
                 });
                 isDeferred=true;
                 return d.promise();
@@ -50,7 +58,7 @@ define([], function () {
                     try {
                         return f.apply(this,arguments);
                     } catch(e) {
-                        console.log(e.stack);
+                        console.log(e,e.stack);
                         return DU.throwPromise(e);
                     }
                 };
