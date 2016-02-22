@@ -1,4 +1,4 @@
-// Created at Sat Jan 09 2016 08:08:36 GMT+0900 (東京 (標準時))
+// Created at Mon Feb 22 2016 14:03:38 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -514,6 +514,105 @@ define([],function () {
     return assert;
 });
 
+requireSimulator.setName('DeferredUtil');
+define([], function () {
+    var DU;
+    DU={
+            ensureDefer: function (v) {
+                var d=new $.Deferred;
+                var isDeferred;
+                $.when(v).then(function (r) {
+                    if (!isDeferred) {
+                        setTimeout(function () {
+                            d.resolve(r);
+                        },0);
+                    } else {
+                        d.resolve(r);
+                    }
+                }).fail(function (r) {
+                    if (!isDeferred) {
+                        setTimeout(function () {
+                            d.reject(r);
+                        },0);
+                    } else {
+                        d.reject(r);
+                    }
+                });
+                isDeferred=true;
+                return d.promise();
+            },
+            directPromise:function (v) {
+                var d=new $.Deferred;
+                setTimeout(function () {d.resolve(v);},0);
+                return d.promise();
+            },
+            then: function (f) {
+                return DU.directPromise().then(f);
+            },
+            timeout:function (timeout) {
+                var d=new $.Deferred;
+                setTimeout(function () {d.resolve();},timeout);
+                return d.promise();
+            },
+            funcPromise:function (f) {
+                var d=new $.Deferred;
+                f(function (v) {
+                    d.resolve(v);
+                },function (e) {
+                    d.reject(e);
+                });
+                return d.promise();
+            },
+            throwPromise:function (e) {
+                var d=new $.Deferred;
+                setTimeout(function () {
+                    d.reject(e);
+                }, 0);
+                return d.promise();
+            },
+            throwF: function (f) {
+                return function () {
+                    try {
+                        return f.apply(this,arguments);
+                    } catch(e) {
+                        console.log(e,e.stack);
+                        return DU.throwPromise(e);
+                    }
+                };
+            },
+            each: function (set,f) {
+                if (set instanceof Array) {
+                    return DU.loop(function (i) {
+                        if (i>=set.length) return DU.brk();
+                        return $.when(f(set[i],i)).then(function () {
+                            return i+1;
+                        });
+                    },0);
+                } else {
+                    var objs=[];
+                    for (var i in set) {
+                        objs.push({k:i,v:set[i]});
+                    }
+                    return DU.each(objs,function (e) {
+                        return f(e.k, e.v);
+                    });
+                }
+            },
+            loop: function (f,r) {
+                return DU.directPromise(r).then(DU.throwF(function () {
+                    var r=f.apply(this,arguments);
+                    if (r.DU_BRK) return r.res;
+                    return $.when(r).then(function (r) {
+                        return DU.loop(f,r);
+                    });
+                }));
+            },
+            brk: function (res) {
+                return {DU_BRK:true,res:res};
+            }
+    };
+    return DU;
+});
 requireSimulator.setName('Class');
 define(["assert"],function (A) {
     function Class() {
@@ -544,7 +643,7 @@ define(["assert"],function (A) {
     return Class;
 });
 requireSimulator.setName('Tonyu.Thread');
-define(["Class"],function (Class) {
+define(["DeferredUtil","Class"],function (DU,Class) {
     var cnts={enterC:{},exitC:0};
     try {window.cnts=cnts;}catch(e){}
     var TonyuThread=Class({
@@ -685,34 +784,19 @@ define(["Class"],function (Class) {
             var fb=this;
             fb._isWaiting=true;
             fb.suspend();
-            if (!j) return;
-            /*if (j.addTerminatedListener) j.addTerminatedListener(function () {
-                fb._isWaiting=false;
-                if (fb.group) fb.group.notifyResume();
-                else if (fb.isAlive()) {
-                    try {
-                        fb.steps();
-                    }catch(e) {
-                        fb.handleEx(e);
-                    }
+            return DU.ensureDefer(j).then(function (r) {
+                fb.retVal=r;
+                fb.steps();
+            }).fail(function (e) {
+                if (e instanceof Error) {
+                    fb.gotoCatch(e);
+                } else {
+                    var re=new Error(e);
+                    re.original=e;
+                    fb.gotoCatch(re);
                 }
+                fb.steps();
             });
-            else */if (j.then && j.fail) {
-                j.then(function (r) {
-                    fb.retVal=r;
-                    fb.steps();
-                });
-                j.fail(function (e) {
-                    if (e instanceof Error) {
-                        fb.gotoCatch(e);
-                    } else {
-                        var re=new Error(e);
-                        re.original=e;
-                        fb.gotoCatch(re);
-                    }
-                    fb.steps();
-                });
-            }
         },
         resume: function (retVal) {
             this.retVal=retVal;
@@ -873,79 +957,6 @@ define(["Class"], function (Class) {
 //   Tonyu.iterator=IT;
     return IT;
 });
-requireSimulator.setName('DeferredUtil');
-define([], function () {
-    var DU;
-    DU={
-            directPromise:function (v) {
-                var d=new $.Deferred;
-                setTimeout(function () {d.resolve(v);},0);
-                return d.promise();
-            },
-            timeout:function (timeout) {
-                var d=new $.Deferred;
-                setTimeout(function () {d.resolve();},timeout);
-                return d.promise();
-            },
-            funcPromise:function (f) {
-                var d=new $.Deferred;
-                f(function (v) {
-                    d.resolve(v);
-                },function (e) {
-                    d.reject(e);
-                });
-                return d.promise();
-            },
-            throwPromise:function (e) {
-                d=new $.Deferred;
-                setTimeout(function () {
-                    d.reject(e);
-                }, 0);
-                return d.promise();
-            },
-            throwF: function (f) {
-                return function () {
-                    try {
-                        return f.apply(this,arguments);
-                    } catch(e) {
-                        console.log(e.stack);
-                        return DU.throwPromise(e);
-                    }
-                };
-            },
-            each: function (set,f) {
-                if (set instanceof Array) {
-                    return DU.loop(function (i) {
-                        if (i>=set.length) return DU.brk();
-                        return $.when(f(set[i],i)).then(function () {
-                            return i+1;
-                        });
-                    },0);
-                } else {
-                    var objs=[];
-                    for (var i in set) {
-                        objs.push({k:i,v:set[i]});
-                    }
-                    return DU.each(objs,function (e) {
-                        return f(e.k, e.v);
-                    });
-                }
-            },
-            loop: function (f,r) {
-                return DU.directPromise(r).then(DU.throwF(function () {
-                    var r=f.apply(this,arguments);
-                    if (r.DU_BRK) return r.res;
-                    return $.when(r).then(function (r) {
-                        return DU.loop(f,r);
-                    });
-                }));
-            },
-            brk: function (res) {
-                return {DU_BRK:true,res:res};
-            }
-    };
-    return DU;
-});
 requireSimulator.setName('Tonyu');
 if (typeof define!=="function") {
     define=require("requirejs").define;
@@ -959,395 +970,27 @@ return Tonyu=function () {
         t.handleEx=handleEx;
         return t;
     }
-    /*function threadOLD() {
-        //var stpd=0;
-        var fb={enter:enter, apply:apply,
-                exit:exit, steps:steps, step:step, isAlive:isAlive, isWaiting:isWaiting,
-                suspend:suspend,retVal:0,tryStack:[],
-                kill:kill, waitFor: waitFor,setGroup:setGroup,
-                enterTry:enterTry,exitTry:exitTry,startCatch:startCatch,
-                waitEvent:waitEvent,runAsync:runAsync,clearFrame:clearFrame};
-        var frame=null;
-        var _isAlive=true;
-        var cnt=0;
-        //var retVal;
-        var _isWaiting=false;
-        var fSuspended=false;
-        function isAlive() {
-            return frame!=null && _isAlive;
-        }
-        function isWaiting() {
-            return _isWaiting;
-        }
-        function suspend() {
-            //throw new Error("Suspend call");
-            fSuspended=true;
-            cnt=0;
-        }
-        function enter(frameFunc) {
-            frame={prev:frame, func:frameFunc};
-        }
-        function apply(obj, methodName, args) {
-            if (!args) args=[];
-            var method;
-            if (typeof methodName=="string") {
-                method=obj["fiber$"+methodName];
-            }
-            if (typeof methodName=="function") {
-                method=methodName.fiber;
-            }
-            args=[fb].concat(args);
-            var pc=0;
-            enter(function () {
-                switch (pc){
-                case 0:
-                    method.apply(obj,args);
-                    pc=1;break;
-                case 1:
-                    exit();
-                    pc=2;break;
-                }
-            });
-        }
-        function step() {
-            if (frame) {
-                try {
-                    frame.func(fb);
-                } catch(e) {
-                    gotoCatch(e);
-                }
-            }
-        }
-        function gotoCatch(e) {
-            if (fb.tryStack.length==0) {
-                kill();
-                handleEx(e);
-                return;
-            }
-            fb.lastEx=e;
-            var s=fb.tryStack.pop();
-            while (frame) {
-                if (s.frame===frame) {
-                    fb.catchPC=s.catchPC;
-                    break;
-                } else {
-                    frame=frame.prev;
-                }
-            }
-        }
-        function startCatch() {
-            var e=fb.lastEx;
-            fb.lastEx=null;
-            return e;
-        }
-        function exit(res) {
-            frame=(frame ? frame.prev:null);
-            //if (frame) frame.res=res;
-            fb.retVal=res;
-        }
-        function enterTry(catchPC) {
-            fb.tryStack.push({frame:frame,catchPC:catchPC});
-        }
-        function exitTry() {
-            fb.tryStack.pop();
-        }
-        function waitEvent(obj,eventSpec) { // eventSpec=[EventType, arg1, arg2....]
-            suspend();
-            if (!obj.on) return;
-            var h;
-            eventSpec=eventSpec.concat(function () {
-                fb.lastEvent=arguments;
-                fb.retVal=arguments[0];
-                h.remove();
-                steps();
-            });
-            h=obj.on.apply(obj, eventSpec);
-        }
-        function runAsync(f) {
-            var succ=function () {
-                fb.retVal=arguments;
-                steps();
-            };
-            var err=function () {
-                var msg="";
-                for (var i=0; i<arguments.length; i++) {
-                    msg+=arguments[i]+",";
-                }
-                if (msg.length==0) msg="Async fail";
-                var e=new Error(msg);
-                e.args=arguments;
-                gotoCatch(e);
-                steps();
-            };
-            f(succ,err);
-            suspend();
-        }
-        function waitFor(j) {
-            _isWaiting=true;
-            suspend();
-            if (!j) return;
-            if (j.addTerminatedListener) j.addTerminatedListener(function () {
-                _isWaiting=false;
-                if (fb.group) fb.group.notifyResume();
-                else if (isAlive()) {
-                    try {
-                        fb.steps();
-                    }catch(e) {
-                        handleEx(e);
-                    }
-                }
-                //fb.group.add(fb);
-            });
-            else if (j.then && j.fail) {
-                j.then(function (r) {
-                    fb.retVal=r;
-                    steps();
-                });
-                j.fail(function (e) {
-                    if (e instanceof Error) {
-                        gotoCatch(e);
-                    } else {
-                        var re=new Error(e);
-                        re.original=e;
-                        gotoCatch(re);
-                    }
-                    steps();
-                });
-            }
-        }
-        function setGroup(g) {
-            fb.group=g;
-            if (g) g.add(fb);
-        }
-        //function retVal() {
-            return retVal;
-        //}/
-        function steps() {
-            //stpd++;
-            //if (stpd>5) throw new Error("Depth too much");
-            var sv=Tonyu.currentThread;
-            Tonyu.currentThread=fb;
-            //var lim=new Date().getTime()+preemptionTime;
-            cnt=preemptionTime;
-            fb.preempted=false;
-            fSuspended=false;
-            //while (new Date().getTime()<lim) {
-            while (cnt-->0 && frame) {
-                step();
-            }
-            fb.preempted= (!fSuspended) && isAlive();
-            //stpd--;
-            Tonyu.currentThread=sv;
-        }
-        function kill() {
-            _isAlive=false;
-            frame=null;
-        }
-        function clearFrame() {
-            frame=null;
-            tryStack=[];
-        }
-        return fb;
-    }*/
     function timeout(t) {
         return DU.funcPromise(function (s) {
             setTimeout(s,t);
         });
-        /*var res={};
-        var ls=[];
-        res.addTerminatedListener=function (l) {
-            ls.push(l);
-        };
-        setTimeout(function () {
-            ls.forEach(function (l) {
-                l();
-            });
-        },t);
-        return res;*/
     }
     function animationFrame() {
         return DU.funcPromise( function (f) {
             requestAnimationFrame(f);
         });
-        /*var res={};
-        var ls=[];
-        res.addTerminatedListener=function (l) {
-            ls.push(l);
-        };
-        requestAnimationFrame(function () {
-            ls.forEach(function (l) {
-                l();
-            });
-        });
-        return res;*/
     }
 
-    /*function asyncResult() {
-        var res=[];
-        var ls=[];
-        var hasRes=false;
-        res.addTerminatedListener=function (l) {
-            if (hasRes) setTimeout(l,0);
-            else ls.push(l);
-        };
-        res.receiver=function () {
-            hasRes=true;
-            for (var i=0; i<arguments.length; i++) {
-                res[i]=arguments[i];
-            }
-            res.notify();
-        };
-        res.notify=function () {
-            ls.forEach(function (l) {
-                l();
-            });
-        };
-        return res;
-    }*/
-    /*function threadGroup() {//@deprecated
-        var threads=[];
-        var waits=[];
-        var _isAlive=true;
-        var thg;
-        var _isWaiting=false;
-        var willAdd=null;
-        function add(thread) {
-            thread.group=thg;
-            if (willAdd) {
-                willAdd.push(thread);
-            } else {
-                threads.push(thread);
-            }
-        }
-        function addObj(obj, methodName,args) {
-            if (!methodName) methodName="main";
-            var th=thread();
-            th.apply(obj,methodName,args);
-            //obj["fiber$"+methodName](th);
-            add(th);
-            return th;
-        }
-        function steps() {
-            try {
-                stepsNoEx();
-            } catch(e) {
-                handleEx(e);
-            }
-        }
-        function stepsNoEx() {
-            for (var i=threads.length-1; i>=0 ;i--) {
-                var thr=threads[i];
-                if (thr.isAlive() && thr.group===thg) continue;
-                threads.splice(i,1);
-            }
-            _isWaiting=true;
-            willAdd=[];
-            threads.forEach(iter);
-            while (willAdd.length>0) {
-                w=willAdd;
-                willAdd=[];
-                w.forEach(function (th) {
-                    threads.push(th);
-                    iter(th);
-                });
-            }
-            willAdd=null;
-            function iter(th){
-                if (th.isWaiting()) return;
-                _isWaiting=false;
-                th.steps();
-            }
-        }
-        function kill() {
-            _isAlive=false;
-        }
-        var _interval=0, _onStepsEnd;
-        function notifyResume() {
-            if (_isWaiting) {
-                //console.log("resume!");
-                //run();
-            }
-        }
-        return thg={add:add, addObj:addObj,  steps:steps, kill:kill, notifyResume: notifyResume, threads:threads};
-    }*/
     function handleEx(e) {
         if (Tonyu.onRuntimeError) {
             Tonyu.onRuntimeError(e);
         } else {
+            if (typeof $LASTPOS=="undefined") $LASTPOS=0;
             alert ("エラー! at "+$LASTPOS+" メッセージ  : "+e);
+            console.log(e.stack);
             throw e;
         }
     }
-    /*function defunct(f) {
-        if (f===Function) {
-            return null;
-        }
-        if (typeof f=="function") {
-            f.constructor=null;
-        } else if (typeof f=="object"){
-            for (var i in f) {
-                f[i]=defunct(f[i]);
-            }
-        }
-        return f;
-    }*/
-    /*function klass() {
-        var parent, prot, includes=[];
-        if (arguments.length==1) {
-            prot=arguments[0];
-        } else if (arguments.length==2 && typeof arguments[0]=="function") {
-            parent=arguments[0];
-            prot=arguments[1];
-        } else if (arguments.length==2 && arguments[0] instanceof Array) {
-            includes=arguments[0];
-            prot=arguments[1];
-        } else if (arguments.length==3) {
-            parent=arguments[0];
-            if (!parent) {
-                console.log(arguments[2]);
-                throw new Error("No parent class ");
-            }
-            includes=arguments[1];
-            prot=arguments[2];
-        } else {
-            console.log(arguments);
-            throw "Invalid argument spec";
-        }
-        prot=defunct(prot);
-        var res=(prot.initialize? prot.initialize:
-            (parent? function () {
-                parent.apply(this,arguments);
-            }:function (){})
-        );
-        delete prot.initialize;
-        //A includes B  B includes C  B extends D
-        //A extends E   E includes F
-        //A has methods in B,C,E,F. [Mod] A extends D.
-        // Known examples:
-        // Actor extends BaseActor, includes PlayMod.
-        // PlayMod extends BaseActor(because use update() in play())
-        res.methods=prot;
-        //prot=bless(parent, prot);
-        includes.forEach(function (m) {
-            if (!m.methods) throw m+" Does not have methods";
-            for (var n in m.methods) {
-                if (!(n in prot)) {
-                    prot[n]=m.methods[n];
-                }
-            }
-        });
-        res.prototype=bless(parent, prot);
-        res.prototype.isTonyuObject=true;
-        addMeta(res,{
-            superclass:parent ? parent.meta : null,
-                    includes:includes.map(function(c){return c.meta;})
-        });
-        var m=klass.getMeta(res);
-        res.prototype.getClassInfo=function () {
-            return m;
-        };
-        return res;
-    }*/
     klass=function () {
         alert("この関数は古くなりました。コンパイルをやり直してください。 Deprecated. compile again.");
         throw new Error("この関数は古くなりました。コンパイルをやり直してください。 Deprecated. compile again.");
@@ -1357,6 +1000,9 @@ return Tonyu=function () {
         assert.is(arguments,[String,Object]);
         return extend(klass.getMeta(fn), m);
     }
+    klass.removeMeta=function (n) {
+        delete classMetas[n];
+    };
     klass.getMeta=function (k) {// Class or fullName
         if (typeof k=="function") {
             return k.meta;
@@ -1395,14 +1041,18 @@ return Tonyu=function () {
         delete prot.initialize;
         var res;
         res=(init?
-            (parent? function () {
+            /*(parent? function () {
                 if (!(this instanceof res)) useNew(fullName);
                 if (Tonyu.runMode) init.apply(this,arguments);
                 else parent.apply(this,arguments);
             }:function () {
                 if (!(this instanceof res)) useNew(fullName);
                 if (Tonyu.runMode) init.apply(this,arguments);
-            }):
+            })*/
+            function () {
+                if (!(this instanceof res)) useNew(fullName);
+                init.apply(this,arguments);
+            }:
             (parent? function () {
                 if (!(this instanceof res)) useNew(fullName);
                 parent.apply(this,arguments);
@@ -1451,9 +1101,33 @@ return Tonyu=function () {
         };
         return res;
     };
+    klass.isSourceChanged=function (k) {
+        k=k.meta||k;
+        if (k.src && k.src.tonyu) {
+            if (!k.nodeTimestamp) return true;
+            return k.src.tonyu.lastUpdate()> k.nodeTimestamp;
+        }
+        return false;
+    };
+    klass.shouldCompile=function (k) {
+        k=k.meta||k;
+        if (klass.isSourceChanged(k)) return true;
+        var dks=klass.getDependingClasses(k);
+        for (var i=0 ; i<dks.length ;i++) {
+            if (klass.shouldCompile(dks[i])) return true;
+        }
+    };
+    klass.getDependingClasses=function (k) {
+        k=k.meta||k;
+        var res=[];
+        if (k.superclass) res=[k.superclass];
+        if (k.includes) res=res.concat(k.includes);
+        return res;
+    };
     function bless( klass, val) {
         if (!klass) return val;
-        return extend( new klass() , val);
+        return extend( Object.create(klass.prototype) , val);
+        //return extend( new klass() , val);
     }
     function extend (dst, src) {
         if (src && typeof src=="object") {
@@ -1559,7 +1233,7 @@ return Tonyu=function () {
             bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,iterator:IT,
-            VERSION:1452294512773,//EMBED_VERSION
+            VERSION:1456117412016,//EMBED_VERSION
             A:A};
 }();
 });
@@ -3219,7 +2893,7 @@ SFile.prototype={
         return this.act.fs.getURL(this.act.path);
     },
     lines:function () {
-        return this.text().split("\n");
+        return this.text().replace(/\r/g,"").split("\n");
     },
     obj: function () {
         var file=this;
@@ -3831,7 +3505,7 @@ define(["Util","exceptionCatcher"],function (Util, EC) {
 });
 
 requireSimulator.setName('FileMenu');
-define(["UI","FS"], function (UI,FS) {
+define(["UI","FS","DeferredUtil"], function (UI,FS,DU) {
 var FileMenu=function () {
     var FM={on:{}};
     FM.on.validateName=function (name,action) {
@@ -3950,16 +3624,23 @@ var FileMenu=function () {
         else { oldName=oldNameD.name; mode=oldNameD.mode;}*/
         FM.dialogOpt({title:"名前変更", name:oldName, action:"mv", extraUI:FM.on.mvExtraUI, onend:function (nf) {
             if (!nf) return;
-            if (FM.on.mv && FM.on.mv(curFile,nf)===false) {
-                return;
-            }
-            var t=curFile.text();
-            curFile.rm();
-            FM.on.close(curFile);
-            curFile=nf;
-            nf.text(t);
-            FM.on.ls();
-            FM.on.open(curFile);
+            return DU.then(function () {
+                /*if (FM.on.mv && FM.on.mv(curFile,nf)===false) {
+                    return;
+                }*/
+                if (FM.on.mv) {
+                    return FM.on.mv(curFile,nf);
+                }
+            }).then(function (r) {
+                if (r===false) return;
+                var t=curFile.text();
+                curFile.rm();
+                FM.on.close(curFile);
+                curFile=nf;
+                nf.text(t);
+                FM.on.ls();
+                FM.on.open(curFile);
+            });
         }});
     };
     FM.rm=function (){
@@ -6998,7 +6679,7 @@ define(["Tonyu","ObjectMatcher", "TError"],
             FIELD:"field", METHOD:"method", NATIVE:"native",//B
             LOCAL:"local", THVAR:"threadvar",
             PARAM:"param", GLOBAL:"global",
-            CLASS:"class"
+            CLASS:"class", MODULE:"module"
     };
     cu.ScopeTypes=ScopeTypes;
     var symSeq=1;//B
@@ -7088,9 +6769,9 @@ if (typeof define!=="function") {//B
    define=require("requirejs").define;
 }
 define(["Tonyu", "Tonyu.Iterator", "TonyuLang", "ObjectMatcher", "TError", "IndentBuffer",
-        "context", "Visitor","Tonyu.Compiler"],
+        "context", "Visitor","Tonyu.Compiler","assert"],
 function(Tonyu, Tonyu_iterator, TonyuLang, ObjectMatcher, TError, IndentBuffer,
-        context, Visitor,cu) {
+        context, Visitor,cu,A) {
 return cu.JSGenerator=(function () {
 // TonyuソースファイルをJavascriptに変換する
 var TH="_thread",THIZ="_this", ARGS="_arguments",FIBPRE="fiber$", FRMPC="__pc", LASTPOS="$LASTPOS",CNTV="__cnt",CNTC=100;//G
@@ -7137,6 +6818,7 @@ function genJS(klass, env) {//B
     var ST=ScopeTypes;
     var fnSeq=0;
     var diagnose=env.options.compiler.diagnose;
+    var genMod=env.options.compiler.genAMD;
 
     function annotation(node, aobj) {//B
         return annotation3(klass.annotation,node,aobj);
@@ -7177,7 +6859,7 @@ function genJS(klass, env) {//B
             buf.printf("%s",getClassName(n));
         } else if (t==ST.GLOBAL) {
             buf.printf("%s%s",GLOBAL_HEAD, n);
-        } else if (t==ST.PARAM || t==ST.LOCAL || t==ST.NATIVE) {
+        } else if (t==ST.PARAM || t==ST.LOCAL || t==ST.NATIVE || t==ST.MODULE) {
             buf.printf("%s",n);
         } else {
             console.log("Unknown scope type: ",t);
@@ -7272,8 +6954,25 @@ function genJS(klass, env) {//B
             }
         },
         varDecl: function (node) {
+            var a=annotation(node);
+            var thisForVIM=a.varInMain? THIZ+"." :"";
             if (node.value) {
-                buf.printf("%v = %v", node.name, node.value );
+                var t=(!ctx.noWait) && annotation(node).fiberCall;
+                if (t) {
+                    A.is(ctx.pc,Number);
+                    buf.printf(//VDC
+                        "%s.%s%s(%j);%n" +
+                        "%s=%s;return;%n" +/*B*/
+                        "%}case %d:%{"+
+                        "%s%v=%s.retVal;%n",
+                            THIZ, FIBPRE, t.N, [", ",[THNode].concat(t.A)],
+                            FRMPC, ctx.pc,
+                            ctx.pc++,
+                            thisForVIM, node.name, TH
+                    );
+                } else {
+                    buf.printf("%s%v = %v;%n", thisForVIM, node.name, node.value);
+                }
             } else {
                 //buf.printf("%v", node.name);
             }
@@ -7282,7 +6981,9 @@ function genJS(klass, env) {//B
             var decls=node.decls.filter(function (n) { return n.value; });
             if (decls.length>0) {
                 lastPosF(node)();
-                buf.printf("%j;", [",",decls]);
+                decls.forEach(function (decl) {
+                    buf.printf("%v",decl);
+                });
             }
         },
         jsonElem: function (node) {
@@ -7326,7 +7027,7 @@ function genJS(klass, env) {//B
                             ctx.pc++
                 );
             } else if (t.type=="ret") {
-                buf.printf(
+                buf.printf(//VDC
                         "%s.%s%s(%j);%n" +
                         "%s=%s;return;%n" +/*B*/
                         "%}case %d:%{"+
@@ -7648,7 +7349,7 @@ function genJS(klass, env) {//B
                     var cntpos=buf.lazy();
                     var pc=ctx.pc++;
                     buf.printf(
-                            "%v;%n"+
+                            "%v%n"+
                             "%}case %d:%{" +
                             "if (!(%v)) { %s=%z; break; }%n" +
                             "%f%n" +
@@ -7669,13 +7370,13 @@ function genJS(klass, env) {//B
                     ctx.enter({noWait:true},function() {
                         if (node.inFor.init.type=="varsDecl" || node.inFor.init.type=="exprstmt") {
                             buf.printf(
-                                    "for (%f  %v ; %v) {%{"+
+                                    "%v"+
+                                    "for (; %v ; %v) {%{"+
                                        "%v%n" +
                                     "%}}"
                                        ,
-                                    enterV({noLastPos:true}, node.inFor.init),
-                                    node.inFor.cond,
-                                    node.inFor.next,
+                                    /*enterV({noLastPos:true},*/ node.inFor.init,
+                                    node.inFor.cond, node.inFor.next,
                                     node.loop
                                 );
                         } else {
@@ -7853,29 +7554,26 @@ function genJS(klass, env) {//B
     };
     v.cnt=0;
     function genSource() {//G
-        /*if (env.options.compiler.asModule) {
-            klass.moduleName=getClassName(klass);
-            printf("if (typeof requireSimulator=='object') requireSimulator.setName(%l);%n",klass.moduleName);
-            printf("//requirejs(['Tonyu'%f],function (Tonyu) {%{", function (){
-                getDependingClasses(klass).forEach(function (k) {
-                    printf(",%l",k.moduleName);
-                });
-            });
-        }*/
         ctx.enter({}, function () {
-            /*var nspObj=CLASS_HEAD+klass.namespace;
-            printf("Tonyu.klass.ensureNamespace(%s,%l);%n",CLASS_HEAD.replace(/\.$/,""), klass.namespace);
-            if (klass.superclass) {
-                printf("%s=Tonyu.klass(%s,[%s],{%{",
-                        getClassName(klass),
-                        getClassName(klass.superclass),
-                        getClassNames(klass.includes).join(","));
-            } else {
-                printf("%s=Tonyu.klass([%s],{%{",
-                        getClassName(klass),
-                        getClassNames(klass.includes).join(","));
-            }*/
-            printf("Tonyu.klass.define({%{");
+            if (genMod) {
+                printf("define(function (require) {%{");
+                var reqs={Tonyu:1};
+                for (var mod in klass.decls.amds) {
+                    reqs[mod]=1;
+                }
+                if (klass.superclass) {
+                    var mod=klass.superclass.shortName;
+                    reqs[mod]=1;
+                }
+                (klass.includes||[]).forEach(function (klass) {
+                    var mod=klass.shortName;
+                    reqs[mod]=1;
+                });
+                for (var mod in reqs) {
+                    printf("var %s=require('%s');%n",mod,mod);
+                }
+            }
+            printf((genMod?"return ":"")+"Tonyu.klass.define({%{");
             printf("fullName: %l,%n", klass.fullName);
             printf("shortName: %l,%n", klass.shortName);
             printf("namespace: %l,%n", klass.namespace);
@@ -7900,6 +7598,7 @@ function genJS(klass, env) {//B
             printf("%}},%n");
             printf("decls: %s%n", JSON.stringify(digestDecls(klass)));
             printf("%}});");
+            if (genMod) printf("%n%}});");
             //printf("%}});%n");
         });
         //printf("Tonyu.klass.addMeta(%s,%s);%n",
@@ -8084,7 +7783,12 @@ function genJS(klass, env) {//B
         return OM.match(f, {ftype:"constructor"}) || OM.match(f, {name:"new"});
     }
     genSource();//G
-    klass.src.js=buf.buf;//G
+    if (genMod) {
+        klass.src.js=klass.src.tonyu.up().rel(klass.src.tonyu.truncExt()+".js");
+        klass.src.js.text(buf.buf);
+    } else {
+        klass.src.js=buf.buf;//G
+    }
     if (debug) {
         console.log("method4", buf.buf);
         //throw "ERR";
@@ -8132,10 +7836,10 @@ function initClassDecls(klass, env ) {//S
     //console.log(s+"",  !!klass.node, klass.nodeTimestamp, s.lastUpdate());
     //if (!klass.testid) klass.testid=Math.random();
     //console.log(klass.testid);
-    var MAIN={name:"main",stmts:[],pos:0};
+    var MAIN={name:"main",stmts:[],pos:0, isMain:true};
     // method := fiber | function
-    var fields={}, methods={main: MAIN}, natives={};
-    klass.decls={fields:fields, methods:methods, natives: natives};
+    var fields={}, methods={main: MAIN}, natives={}, amds={};
+    klass.decls={fields:fields, methods:methods, natives: natives, amds:amds };
     klass.node=node;
     /*function nc(o, mesg) {
         if (!o) throw mesg+" is null";
@@ -8169,6 +7873,8 @@ function initClassDecls(klass, env ) {//S
                 throw TError ( "親クラス "+spcn+"は定義されていません", s, pos);
             }
             klass.superclass=spc;
+        } else {
+            delete klass.superclass;
         }
         program.stmts.forEach(function (stmt) {
             if (stmt.type=="funcDecl") {
@@ -8211,8 +7917,9 @@ function annotateSource2(klass, env) {//B
     var decls=klass.decls;
     var fields=decls.fields,
         methods=decls.methods,
-        natives=decls.natives;
-    // ↑ このクラスが持つフィールド，ファイバ，関数，ネイティブ変数の集まり．親クラスの宣言は含まない
+        natives=decls.natives,
+        amds=decls.amds;
+    // ↑ このクラスが持つフィールド，ファイバ，関数，ネイティブ変数，モジュール変数の集まり．親クラスの宣言は含まない
     var ST=ScopeTypes;
     var topLevelScope={};
     // ↑ このソースコードのトップレベル変数の種類 ，親クラスの宣言を含む
@@ -8234,6 +7941,9 @@ function annotateSource2(klass, env) {//B
             left: OM.T,
             op:{type:"member",name:{text:OM.N}}
     };
+    // These has same value but different purposes: 
+    //  myMethodCallTmpl: avoid using bounded field for normal method(); call
+    //  fiberCallTmpl: detect fiber call
     var myMethodCallTmpl=fiberCallTmpl={
             type:"postfix",
             left:{type:"varAccess", name: {text:OM.N}},
@@ -8333,17 +8043,31 @@ function annotateSource2(klass, env) {//B
         var si=ctx.scope[n];
         var t=stype(si);
         if (!t) {
-            var isg=n.match(/^\$/);
-            t=isg?ST.GLOBAL:ST.FIELD;
+            if (env.amdPaths && env.amdPaths[n]) {
+                t=ST.MODULE;
+                klass.decls.amds[n]=env.amdPaths[n];
+                //console.log(n,"is module");
+            } else {
+                var isg=n.match(/^\$/);
+                t=isg?ST.GLOBAL:ST.FIELD;
+            }
             var opt={name:n};
-            if (!isg) opt.klass=klass.name;
+            if (t==ST.FIELD) {
+                opt.klass=klass.name;
+                klass.decls.fields[n]=si;
+            }
             si=topLevelScope[n]=genSt(t,opt);
         }
         return si;
     }
     var localsCollector=Visitor({
         varDecl: function (node) {
-            ctx.locals.varDecls[node.name.text]=node;
+            if (ctx.isMain) {
+                annotation(node,{varInMain:true});
+                //console.log("var in main",node.name.text);
+            } else {
+                ctx.locals.varDecls[node.name.text]=node;
+            }
         },
         funcDecl: function (node) {/*FDITSELFIGNORE*/
             ctx.locals.subFuncDecls[node.head.name.text]=node;
@@ -8403,6 +8127,7 @@ function annotateSource2(klass, env) {//B
     var varAccessesAnnotator=Visitor({//S
         varAccess: function (node) {
             var si=getScopeInfo(node.name.text);
+            var t=stype(si);
             annotation(node,{scopeInfo:si});
         },
         funcDecl: function (node) {/*FDITSELFIGNORE*/
@@ -8544,6 +8269,18 @@ function annotateSource2(klass, env) {//B
                 }
             }
             this.visit(node.expr);
+        },
+        varDecl: function (node) {
+            var t;
+            if (!ctx.noWait &&
+                    (t=OM.match(node.value,fiberCallTmpl)) &&
+                    stype(ctx.scope[t.N])==ST.METHOD &&
+                    !getMethod(t.N).nowait) {
+                t.type="varDecl";
+                annotation(node, {fiberCall:t});
+                fiberCallRequired(this.path);
+            }
+            this.visit(node.value);
         }
     });
     varAccessesAnnotator.def=visitSub;//S
@@ -8561,8 +8298,43 @@ function annotateSource2(klass, env) {//B
         }
     }
     function initParamsLocals(f) {//S
-        f.locals=collectLocals(f.stmts);
-        f.params=getParams(f);
+        //console.log("IS_MAIN", f.name, f.isMain);
+        ctx.enter({isMain:f.isMain}, function () {
+            f.locals=collectLocals(f.stmts);
+            f.params=getParams(f);
+        });
+    }
+    function annotateSubFuncExpr(node) {// annotateSubFunc or FuncExpr
+        var m,ps;
+        var body=node.body;
+        var name=(node.head.name ? node.head.name.text : "anonymous_"+node.pos );
+        if (m=OM.match( node, {head:{params:{params:OM.P}}})) {
+            ps=m.P;
+        } else {
+            ps=[];
+        }
+        var ns=newScope(ctx.scope);
+        ps.forEach(function (p) {
+            ns[p.name.text]=genSt(ST.PARAM);
+        });
+        var locals=collectLocals(body);
+        copyLocals(locals,ns);
+        var finfo=annotation(node);
+        ctx.enter({finfo: finfo}, function () {
+            annotateVarAccesses(body,ns);
+        });
+        var res={scope:ns, locals:locals, name:name, params:ps};
+        annotation(node,res);
+        annotation(node,finfo);
+        annotateSubFuncExprs(locals, ns);
+        return res;
+    }
+    function annotateSubFuncExprs(locals, scope) {//S
+        ctx.enter({scope:scope}, function () {
+            for (var n in locals.subFuncDecls) {
+                annotateSubFuncExpr(locals.subFuncDecls[n]);
+            }
+        });
     }
     function annotateMethodFiber(f) {//S
         var ns=newScope(ctx.scope);
@@ -8584,40 +8356,8 @@ function annotateSource2(klass, env) {//B
             for (var name in methods) {
                 if (debug) console.log("anon method1", name);
                 var method=methods[name];
-                initParamsLocals(method);
+                initParamsLocals(method);//MAINVAR
                 annotateMethodFiber(method);
-            }
-        });
-    }
-    function annotateSubFuncExpr(node) {// annotateSubFunc or FuncExpr
-        var m,ps;
-        var body=node.body;
-        var name=(node.head.name ? node.head.name.text : "anonymous_"+node.pos );
-        if (m=OM.match( node, {head:{params:{params:OM.P}}})) {
-            ps=m.P;
-        } else {
-            ps=[];
-        }
-        var ns=newScope(ctx.scope);
-        ps.forEach(function (p) {
-            ns[p.name.text]=genSt(ST.PARAM);
-        });
-        var locals=collectLocals(body, ns);
-        copyLocals(locals,ns);
-        var finfo=annotation(node);
-        ctx.enter({finfo: finfo}, function () {
-            annotateVarAccesses(body,ns);
-        });
-        var res={scope:ns, locals:locals, name:name, params:ps};
-        annotation(node,res);
-        annotation(node,finfo);
-        annotateSubFuncExprs(locals, ns);
-        return res;
-    }
-    function annotateSubFuncExprs(locals, scope) {//S
-        ctx.enter({scope:scope}, function () {
-            for (var n in locals.subFuncDecls) {
-                annotateSubFuncExpr(locals.subFuncDecls[n]);
             }
         });
     }
@@ -8935,7 +8675,7 @@ var TPRC=function (dir) {
      };
      TPR.getOutputFile=function (lang) {
          var opt=TPR.getOptions();
-         var outF=TPR.resolve(A(opt.compiler.outputFile,"output file should be specified in options"));
+         var outF=TPR.resolve(A(opt.compiler.outputFile,"outputFile should be specified in options"));
          if (outF.isDir()) {
              throw new Error("out: directory style not supported");
          }
@@ -8955,6 +8695,7 @@ var TPRC=function (dir) {
      // Difference of ctx and env:  env is of THIS project. ctx is of cross-project
      TPR.loadClasses=function (ctx/*or options(For external call)*/) {
          Tonyu.runMode=false;
+         TPR.showProgress("LoadClasses: "+dir.name());
          console.log("LoadClasses: "+dir.path());
          ctx=initCtx(ctx);
          var visited=ctx.visited||{};
@@ -8967,29 +8708,14 @@ var TPRC=function (dir) {
                  return TPR.compile(ctx);
              } else {
                  var outF=TPR.getOutputFile("js");
+                 TPR.showProgress("Eval "+outF.name());
                  return evalFile(outF);//.then(F(copyToClasses));
              }
          });
-         /*function copyToClasses() {
-             var ns=TPR.getNamespace();
-            //same as compiledProject (XXXX)
-             var cls=Tonyu.classes;
-             ns.split(".").forEach(function (c) {
-                 if (cls) cls=cls[c];
-                 // comment out : when empty concat.js
-                 //if (!cls) throw new Error("namespace Not found :"+ns);
-             });
-             if (cls) {
-                 for (var cln in cls) {
-                     var cl=cls[cln];
-                     var m=Tonyu.klass.getMeta(cl);
-                     ctx.classes[m.fullName]=m;
-                 }
-             }
-             //------------------XXXX
-         }*/
      };
      function initCtx(ctx) {
+         //どうしてclassMetasとclassesをわけるのか？
+         // metaはFunctionより先に作られるから
          var env=TPR.env;
          if (!ctx) ctx={};
          if (!ctx.visited) {
@@ -8999,14 +8725,16 @@ var TPRC=function (dir) {
      }
      TPR.compile=function (ctx/*or options(For external call)*/) {
          Tonyu.runMode=false;
+         TPR.showProgress("Compile: "+dir.name());
          console.log("Compile: "+dir.path());
          ctx=initCtx(ctx);
          var myNsp=TPR.getNamespace();
+         var baseClasses,ctxOpt,env,myClasses,fileAddedOrRemoved,sf;
+         var compilingClasses;
          return TPR.loadDependingClasses(ctx).then(F(function () {
-             var baseClasses=ctx.classes;
-             //console.log("baseClasses", baseClasses);
-             var ctxOpt=ctx.options;
-             var env=TPR.env;
+             baseClasses=ctx.classes;
+             ctxOpt=ctx.options;
+             env=TPR.env;
              env.aliases={};
              env.parsedNode=env.parsedNode||{};
              env.classes=baseClasses;
@@ -9014,13 +8742,18 @@ var TPRC=function (dir) {
                  var cl=baseClasses[n];
                  env.aliases[ cl.shortName] = cl.fullName;
              }
-             var newClasses={};
-             var sf=TPR.sourceFiles(myNsp);
+             myClasses={};
+             fileAddedOrRemoved=!!ctxOpt.noIncremental;
+             sf=TPR.sourceFiles(myNsp);
              for (var shortCn in sf) {
                  var f=sf[shortCn];
                  var fullCn=myNsp+"."+shortCn;
+                 if (!baseClasses[fullCn]) {
+                     console.log("Class",fullCn,"is added.");
+                     fileAddedOrRemoved=true;
+                 }
                  var m=Tonyu.klass.getMeta(fullCn);
-                 newClasses[fullCn]=baseClasses[fullCn]=m;
+                 myClasses[fullCn]=baseClasses[fullCn]=m;
                  Tonyu.extend(m,{
                      fullName:  fullCn,
                      shortName: shortCn,
@@ -9030,29 +8763,74 @@ var TPRC=function (dir) {
                  m.src.tonyu=f;
                  env.aliases[shortCn]=fullCn;
              }
-             for (var n in newClasses) {
-                 console.log("initClassDecl: "+n);
-                 Semantics.initClassDecls(newClasses[n], env);/*ENVC*/
+             for (var n in baseClasses) {
+                 if (myClasses[n] && myClasses[n].src && !myClasses[n].src.js) {
+                     //前回コンパイルエラーだとここにくるかも
+                     console.log("Class",n,"has no js src");
+                     fileAddedOrRemoved=true;
+                 }
+                 if (!myClasses[n] && baseClasses[n].namespace==myNsp) {
+                     console.log("Class",n,"is removed");
+                     Tonyu.klass.removeMeta(n);
+                     fileAddedOrRemoved=true;
+                 }
              }
-             var ord=orderByInheritance(newClasses);/*ENVC*/
+             if (!fileAddedOrRemoved) {
+                 compilingClasses={};
+                 for (var n in myClasses) {
+                     if (Tonyu.klass.shouldCompile(myClasses[n])) {
+                         compilingClasses[n]=myClasses[n];
+                     }
+                 }
+             } else {
+                 compilingClasses=myClasses;
+             }
+             for (var n in compilingClasses) {
+                 console.log("initClassDecl: "+n);
+                 Semantics.initClassDecls(compilingClasses[n], env);/*ENVC*/
+             }
+             var ord=orderByInheritance(myClasses);/*ENVC*/
              ord.forEach(function (c) {
-                 console.log("annotate :"+c.fullName);
-                 Semantics.annotate(c, env);
+                 if (compilingClasses[c.fullName]) {
+                     console.log("annotate :"+c.fullName);
+                     Semantics.annotate(c, env);
+                 }
              });
-             TPR.concatJS(ord);
+             TPR.genJS(ord.filter(function (c) {
+                 return compilingClasses[c.fullName];
+             }));
+             var copt=TPR.getOptions().compiler;
+             if (!copt.genAMD) {
+                 return TPR.concatJS(ord);
+             }
          }));
      };
-     TPR.concatJS=function (ord) {
+     TPR.genJS=function (ord) {
+         // 途中でコンパイルエラーを起こすと。。。
          var env=TPR.env;
-         var cbuf="";
          ord.forEach(function (c) {
-             console.log("concatJS :"+c.fullName);
+             console.log("genJS :"+c.fullName);
              JSGenerator.genJS(c, env);
-             cbuf+=c.src.js+"\n";
          });
+     };
+     TPR.concatJS=function (ord) {
+         var cbuf="";
          var outf=TPR.getOutputFile();
+         TPR.showProgress("generate :"+outf.name());
+         console.log("generate :"+outf);
+         ord.forEach(function (c) {
+             if (typeof (c.src.js)=="string") {
+                 cbuf+=c.src.js+"\n";
+             } else if (c.src.js && c.src.js.isSFile && c.src.js.isSFile()) {
+                 /*return $.when(c.src.text()).then(function () {
+                 });*/
+                 cbuf+=c.src.js.text()+"\n";
+             } else {
+                 throw new Error("Src for "+c.fullName+" not generated ");
+             }
+         });
          outf.text(cbuf);
-         evalFile(outf);
+         return evalFile(outf);
      };
      TPR.getDependingProjects=function () {
          var opt=TPR.getOptions();
@@ -9186,6 +8964,11 @@ var TPRC=function (dir) {
                 }
             }
         }
+    };
+    TPR.showProgress=function (m) {
+    };
+    TPR.setAMDPaths=function (paths) {
+        TPR.env.amdPaths=paths;
     };
     return TPR;
 }
@@ -9376,7 +9159,11 @@ define(["PatternParser","Util","Assets","assert"], function (PP,Util,Assets,asse
         resImgs=excludeEmpty(resImgs);
         var resa=[];
         var cnt=resImgs.length;
-        if (cnt==0) setTimeout(onLoad,0);
+        if (cnt==0) setTimeout(function () {
+            var res=[];
+            res.names={};
+            onLoad(res);
+        },0);
         resImgs.forEach(function (resImg,i) {
             console.log("loading", resImg,i);
             var url=resImg.url;
@@ -10019,6 +9806,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         }
     };
     TPR.rawBoot=function (bootClassName) {
+        TPR.showProgress("Running "+bootClassName)
         Tonyu.run(bootClassName);
     };
 
@@ -10042,45 +9830,55 @@ return Tonyu.Project=function (dir, kernelDir) {
     TPR.getDir=function () {return dir;};
     TPR.getName=function () { return dir.name().replace(/\/$/,""); };
     TPR.renameClassName=function (o,n) {// o: key of aliases
-        TPR.compile();
-        var cls=TPR.env.classes;/*ENVC*/
-        for (var cln in cls) {/*ENVC*/
-            var klass=cls[cln];/*ENVC*/
-            var f=klass.src ? klass.src.tonyu : null;
-            var a=klass.annotation;
-            var changes=[];
-            if (a && f) {
-                for (var id in a) {
-                    try {
-                        var an=a[id];
-                        var si=an.scopeInfo;
-                        if (si && si.type=="class") {
-                            if (si.name==o) {
-                                var pos=an.node.pos;
-                                var len=an.node.len;
-                                var sub=f.text().substring(pos,pos+len);
-                                if (sub==o) {
-                                    changes.push({pos:pos,len:len});
-                                    console.log(f.path(), pos, len, f.text().substring(pos-5,pos+len+5) ,"->",n);
+        return TPR.compile({noIncremental:true}).then(function () {
+            var cls=TPR.env.classes;/*ENVC*/
+            for (var cln in cls) {/*ENVC*/
+                var klass=cls[cln];/*ENVC*/
+                var f=klass.src ? klass.src.tonyu : null;
+                var a=klass.annotation;
+                var changes=[];
+                if (a && f) {
+                    console.log("Check", cln);
+                    for (var id in a) {
+                        try {
+                            var an=a[id];
+                            var si=an.scopeInfo;
+                            if (si && si.type=="class") {
+                                //console.log("si.type==class",an,si);
+                                if (si.name==o) {
+                                    var pos=an.node.pos;
+                                    var len=an.node.len;
+                                    var sub=f.text().substring(pos,pos+len);
+                                    if (sub==o) {
+                                        changes.push({pos:pos,len:len});
+                                        console.log(f.path(), pos, len, f.text().substring(pos-5,pos+len+5) ,"->",n);
+                                    }
                                 }
                             }
+                        } catch(e) {
+                            console.log(e);
                         }
-                    } catch(e) {
-                        console.log(e);
                     }
-                }
-                changes=changes.sort(function (a,b) {return b.pos-a.pos;});
-                console.log(f.path(),changes);
-                var src=f.text();
-                var ssrc=src;
-                changes.forEach(function (ch) {
-                    src=src.substring(0,ch.pos)+n+src.substring(ch.pos+ch.len);
-                });
-                if (ssrc!=src && !f.isReadOnly()) {
-                    console.log("Refact:",f.path(),src);
-                    f.text(src);
+                    changes=changes.sort(function (a,b) {return b.pos-a.pos;});
+                    console.log(f.path(),changes);
+                    var src=f.text();
+                    var ssrc=src;
+                    changes.forEach(function (ch) {
+                        src=src.substring(0,ch.pos)+n+src.substring(ch.pos+ch.len);
+                    });
+                    if (ssrc!=src && !f.isReadOnly()) {
+                        console.log("Refact:",f.path(),src);
+                        f.text(src);
+                    }
+                } else {
+                    console.log("No Check", cln);
                 }
             }
+        });
+    };
+    TPR.showProgress=function (m) {
+        if (typeof SplashScreen!="undefined") {
+            SplashScreen.progress(m);
         }
     };
     return TPR;
@@ -12599,53 +12397,6 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
     return ResEditor;
 });
 
-requireSimulator.setName('SoundDiag');
-define(["T2MediaLib"],function (T2MediaLib) {
-    SoundDiag={};
-    SoundDiag.show=function (/*cv,*/ onSelect) {
-        var bsty={fontSize:"2em"};
-        onSelect=onSelect||function (){};
-        var d=$("<div>").css({position:"absolute", left:100,top:100}).append(
-                $("<button>").css(bsty).text("Sound on").click(soundOn)
-        ).append(
-                $("<button>").css(bsty).text("Sound off").click(soundOff)
-        ).appendTo("body");
-        function soundOn() {
-            T2MediaLib.init();
-            T2MediaLib.disabled=false;
-            T2MediaLib.activate();
-            console.log("Sound ON");
-            d.remove();
-            onSelect();
-        }
-        function soundOff() {
-            T2MediaLib.disabled=true;
-            console.log("Sound OFF");
-            d.remove();
-            onSelect();
-        }
-        /*var ctx=cv[0].getContext("2d");
-        var w=cv.width(),h=cv.height();
-        var size=30;
-        ctx.fillStyle="black";
-        ctx.font=size+"px monospace";
-        drawCenter("Sound on",h/3);
-        drawCenter("Sound off",h/3*2);
-        cv.on("click", func);
-        function func(e) {
-            if (e.originalEvent.y<h/2) {
-
-            } else {
-
-            }
-        }
-        function drawCenter(text,y) {
-            var t=ctx.measureText(text);
-            ctx.fillText(text, w/2-t.width/2, y+size/2);
-        }*/
-    };
-    return SoundDiag;
-});
 requireSimulator.setName('MainClassDialog');
 define(["UI"],function (UI) {
     var res={};
@@ -13149,7 +12900,7 @@ requirejs(["Util", "Tonyu", "FS", "PathUtil","FileList", "FileMenu",
            /*"copySample",*/"Shell","Shell2","ProjectOptionsEditor","copyToKernel","KeyEventChecker",
            "IFrameDialog",/*"WikiDialog",*/"runtime", "KernelDiffDialog","Sync","searchDialog","StackTrace","syncWithKernel",
            "UI","ResEditor","WebSite","exceptionCatcher","Tonyu.TraceTbl",
-           "SoundDiag","Log","MainClassDialog","DeferredUtil","NWMenu",
+           "Log","MainClassDialog","DeferredUtil","NWMenu",
            "ProjectCompiler","compiledProject","mkrunDiag","zip","LSFS","WebFS",
            "extLink"
           ],
@@ -13158,7 +12909,7 @@ function (Util, Tonyu, FS, PathUtil, FileList, FileMenu,
           /*copySample,*/sh,sh2, ProjectOptionsEditor, ctk, KeyEventChecker,
           IFrameDialog,/*WikiDialog,*/ rt , KDD,Sync,searchDialog,StackTrace,swk,
           UI,ResEditor,WebSite,EC,TTB,
-          sd,Log,MainClassDialog,DU,NWMenu,
+          Log,MainClassDialog,DU,NWMenu,
           TPRC,CPPRJ,mkrunDiag,zip,LSFS,WebFS,
           extLink
           ) {
@@ -13289,22 +13040,23 @@ $(function () {
     };
     FM.on.mv=function (old,_new) {
         if (!refactorUI) return;
-        var oldCN=old.truncExt(EXT);
-        var newCN=_new.truncExt(EXT);
-        if (refactorUI.$vars.chk.prop("checked")) {
-            //alert(oldCN+"=>"+newCN);
-            save();
-            try {
-                curPrj.renameClassName(oldCN,newCN);
-            } catch (e) {
-                alert("プログラム内にエラーがあります．エラーを修正するか，「プログラム中のクラス名も変更する」のチェックを外してもう一度やり直してください．");
-                console.log(e);
-                return false;
+
+        //alert(oldCN+"=>"+newCN);
+        return $.when(save()).then(function () {
+            if (refactorUI.$vars.chk.prop("checked")) {
+                var oldCN=old.truncExt(EXT);
+                var newCN=_new.truncExt(EXT);
+                return curPrj.renameClassName(oldCN,newCN);
             }
-        }
+        }).then(function () {
+            refactorUI=null;
+            return reloadFromFiles();
+        }).fail(function (e) {
+            alert("プログラム内にエラーがあります．エラーを修正するか，「プログラム中のクラス名も変更する」のチェックを外してもう一度やり直してください．");
+            console.log(e);
+            return false;
+        });
         //close(old);  does in FileMenu
-        reloadFromFiles();
-        refactorUI=null;
     };
     F(FM.on);
     fl.ls(curProjectDir);
@@ -13538,7 +13290,7 @@ $(function () {
             //var userAgent = window.navigator.userAgent.toLowerCase();
             //if(userAgent.indexOf('msie')<0) throw e;
         } else {
-            UI("div",{title:"Error"},e,["pre",e.stack]).dialog({width:800});
+            UI("div",{title:"Error"},e+"",["pre",e.stack]).dialog({width:800});
             stop();
             //alertOnce(e);
             //throw e;
@@ -13568,9 +13320,13 @@ $(function () {
     }
     function fixEditorIndent(prog) {
         var cur=prog.getCursorPosition();
-        prog.setValue(fixIndent( prog.getValue() ));
-        prog.clearSelection();
-        prog.moveCursorTo(cur.row, cur.column);
+        var orig=prog.getValue();
+        var fixed=fixIndent( orig );
+        if (orig!=fixed) {
+            prog.setValue(fixed);
+            prog.clearSelection();
+            prog.moveCursorTo(cur.row, cur.column);
+        }
     }
     function reloadFromFiles() {
         for (var path in editors) {
