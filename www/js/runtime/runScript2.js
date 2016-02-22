@@ -2,9 +2,11 @@ requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu
         function (FS,  CPTR, sh,  rt,WebSite,LSFS,Tonyu) {
     $(function () {
 
-        SplashScreen={hide: function () {
-            $("#splash").hide();
-        },show:function(){}};
+        SplashScreen={
+            hide: function () {$("#splash").hide();},
+            show:function(){},
+            progress:function(t) {$("#splash").text(t);}
+        };
 
         var w=$(window).width();
         var h=$(window).height();

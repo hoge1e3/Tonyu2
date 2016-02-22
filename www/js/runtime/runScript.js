@@ -14,9 +14,12 @@ requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS",
                         ],
                         sounds:[]
         };
-        SplashScreen={hide: function () {
-            $("#splash").hide();
-        },show:function(){}};
+        SplashScreen={
+            hide: function () {$("#splash").hide();},
+            show:function(){},
+            progress:function(t) {$("#splash").text(t);}
+        };
+
         var w=$(window).width();
         var h=$(window).height();
         $("body").css({overflow:"hidden", margin:"0px"});

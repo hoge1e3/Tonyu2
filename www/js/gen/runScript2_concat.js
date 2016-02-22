@@ -1,4 +1,4 @@
-// Created at Mon Feb 22 2016 14:03:58 GMT+0900 (東京 (標準時))
+// Created at Mon Feb 22 2016 16:44:28 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -3460,7 +3460,7 @@ return Tonyu=function () {
             bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,iterator:IT,
-            VERSION:1456117412016,//EMBED_VERSION
+            VERSION:1456127034661,//EMBED_VERSION
             A:A};
 }();
 });
@@ -4639,9 +4639,11 @@ requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu
         function (FS,  CPTR, sh,  rt,WebSite,LSFS,Tonyu) {
     $(function () {
 
-        SplashScreen={hide: function () {
-            $("#splash").hide();
-        },show:function(){}};
+        SplashScreen={
+            hide: function () {$("#splash").hide();},
+            show:function(){},
+            progress:function(t) {$("#splash").text(t);}
+        };
 
         var w=$(window).width();
         var h=$(window).height();
