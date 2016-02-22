@@ -16,13 +16,16 @@ define(["FS","Util"], function (FS,Util) {
         buf+="http://tonyuedit.appspot.com/html/build/importFromJsdoit.html\n";
         buf+="を開きます．\n";
         buf+="-->\n";
-        var nonTonyu=[];
+        var binary=[],json=[];
         //dir=FS.get(dir);
         dir.recursive(function (f) {
             var rel=f.relPath(dir);
             if (excludes[rel]) return;
-            if (!f.endsWith(".tonyu")) {
-                nonTonyu.push(f);
+            if (f.endsWith(".json") && rel.indexOf("maps/")<0) {
+                json.push(f);
+                return;
+            } else if (!f.endsWith(".tonyu")) {
+                binary.push(f);
                 return;
             }
             //var name=f.truncExt(".tonyu");
@@ -32,7 +35,14 @@ define(["FS","Util"], function (FS,Util) {
             buf+=f.text();
             buf+="</script>\n\n";
         },{excludes:["files/"]});
-        nonTonyu.forEach(function (f) {
+        json.forEach(function (f) {
+            var rel=f.relPath(dir);
+            var lu=" data-lastupdate='"+f.lastUpdate()+"' ";
+            buf+="<script language='text/tonyu' type='text/tonyu' data-filename='"+rel+"'"+lu+">\n";
+            buf+=beautifyJSON(f.text());
+            buf+="</script>\n\n";
+        });
+        binary.forEach(function (f) {
             var rel=f.relPath(dir);
             var lu=" data-lastupdate='"+f.lastUpdate()+"' ";
             buf+="<script language='text/tonyu' type='text/tonyu' data-filename='"+rel+"' data-wrap='80'"+lu+">";
@@ -56,6 +66,14 @@ define(["FS","Util"], function (FS,Util) {
                 return buf;
             });
             return buf;
+        }
+        function beautifyJSON(str) {
+            try {
+                var o=JSON.parse(str);
+                return JSON.stringify(o,null,4);
+            }catch(e) {
+                return str;
+            }
         }
     };
     return east;

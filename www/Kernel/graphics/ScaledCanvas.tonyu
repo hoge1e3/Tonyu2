@@ -10,7 +10,7 @@ native Math;
     cw=canvas.width();
     ch=canvas.height();
     cctx=canvas[0].getContext("2d");
-    this.color="rgb(20,80,180)";
+    this._color="rgb(20,80,180)";
     sx=0;
     sy=0;
     isDrawGrid=$Sprites.isDrawGrid;
@@ -74,13 +74,12 @@ native Math;
     y: (point.y-marginh)/calch*height};
 }
 \setBGColor(color){
-    this.color=color;
+    this._color=color;
 }
 \fillCanvas(cv){
     var ctx=cv.getContext("2d");
     ctx.save();
-    ctx.fillStyle=$Screen.color;
-    ctx.fillStyle=color;
+    ctx.fillStyle=_color;
     ctx.fillRect(0,0,cv.width,cv.height);
     if (isDrawGrid) drawGrid(cv);
     ctx.restore();
