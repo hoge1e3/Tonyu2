@@ -2,6 +2,7 @@ extends Actor;
 native $;
 native Math;
 native isNaN;
+native Tonyu;
 \new(opt){
     super(opt);
     this.width=width;
@@ -22,6 +23,14 @@ native isNaN;
 \getContext(){
     _drawn=true;
     return buf[0].getContext("2d");
+}
+\context {
+    _drawn=true;
+    return buf[0].getContext("2d");
+}
+\image {
+    _drawn=true;
+    return buf[0];
 }
 \setFillStyle(color){
     this.fillStyle=color;
@@ -96,5 +105,35 @@ native isNaN;
         pImg, 0, 0,width,height,
         -width/2, -height/2, width ,height);
         ctx.restore();
+    }
+}
+nowait \copy() {
+    /*context . drawImage(image, dx, dy)
+    context . drawImage(image, dx, dy, dw, dh)
+    context . drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh)*/
+    var sx, sy, sw, sh, dx, dy, dw, dh;
+    var a=argParser(arguments);
+    var srcPanel=(a[0] is Panel ? a.shift() :this);
+    if (a.length<=4) {
+        dx=a.shift();
+        dy=a.shift();
+        if (a.length==0) {
+            context.drawImage(srcPanel.image,dx, dy);
+        } else {
+            dw=a.shift();
+            dh=a.shift();
+            context.drawImage(srcPanel.image,dx,dy,dw,dh);
+        }
+    } else {
+        sx=a.shift();
+        sy=a.shift();
+        sw=a.shift();
+        sh=a.shift();
+        dx=a.shift();
+        dy=a.shift();
+        dw=a.shift() || sw;
+        dh=a.shift() || sh;
+        //print(sx, sy, sw, sh, dx, dy, dw, dh);
+        context.drawImage(srcPanel.image,sx, sy, sw, sh, dx, dy, dw, dh);
     }
 }

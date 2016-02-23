@@ -123,9 +123,6 @@ nowait \crashTo(t) {
 }
 nowait \crashTo1(t) {
     if (!t || t._isDead) return false;
-    /*if (_sprite && t._sprite) {
-        return _sprite.crashTo(t._sprite);
-    }*/
     var t1=getCrashRect();
     var t2=t.getCrashRect();
     return
@@ -250,13 +247,6 @@ nowait \detectShape() {
     width=pImg.width;
     height=pImg.height;
 }
-/*
-\waitFor(f) {
-    if (_thread) {
-        _thread.waitFor(f);
-    }
-    //update();
-}*/
 nowait \isDead() {
     return _isDead;
 }
@@ -319,9 +309,6 @@ nowait \draw(ctx) {
         }
     }
 }
-/*nowait \asyncResult() {//@deperecated
-    return Tonyu.asyncResult();
-}*/
 
 \runAsync(f) {
     if (!_thread) throw new Error("runAsync should run in wait mode");
@@ -341,7 +328,6 @@ nowait \draw(ctx) {
     return r;
 }
 \screenOutChecker(d,f){
-    //print("yobareta!", getClassInfo().fullName);
     while(true){
         while(true){
             if(screenOut()>d){
@@ -368,24 +354,6 @@ nowait \draw(ctx) {
     runAsync \(f){
         $InputDevice.addOnetimeListener(f);
     };
-    /*if (fl!==false) {
-        if (!origTG) {
-            ifwait {
-                origTG=_thread.group;
-                _thread.setGroup(null);
-            }
-        }
-        a=asyncResult();
-        $InputDevice.addOnetimeListener(a.receiver);
-        waitFor(a);
-    } else {
-        if (origTG) {
-            ifwait {
-                _thread.setGroup(origTG);
-                origTG=null;
-            }
-        }
-    }*/
 }
 \redrawScreen() {
     $Sprites.draw($Screen.buf[0]);
@@ -396,28 +364,6 @@ nowait \draw(ctx) {
 \color(r,g,b) {
     return "rgb("+[r,g,b].join(",")+")";
 }
-/*
-\drawText(x,y,text,col,size) {
-    if ($debug) return;
-    if (!size) size=15;
-    if (!col) col="cyan";
-    var tp=all(T1Text).find \(t) {return t.hidden;};
-    if (tp.length>0) {
-        tp[0].extend{x,y,text,fillStyle:col, size,hidden:false};
-    }else {
-        new T1Text{x,y,text,fillStyle:col, size};
-    }
-}
-\drawLine(x,y,tx,ty,col) {
-    if (!col) col="white";
-    var tp=all(T1Line).find \(t) {return t.hidden;};
-    if (tp.length>0) {
-        tp[0].extend{x,y,tx,ty,col, hidden:false};
-    }else {
-        new T1Line{x,y,tx,ty,col};
-    }
-}
-*/
 \loadPage(page,arg){
     all().die();
     new page(arg);
