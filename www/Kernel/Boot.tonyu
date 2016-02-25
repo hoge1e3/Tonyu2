@@ -2,7 +2,7 @@ extends Actor;
 includes T2MediaPlayer;
 
 native $;
-native TError;
+//native TError;
 native $LASTPOS;
 native Key;
 native Date;
@@ -66,8 +66,7 @@ native requestAnimationFrame;
     print("MainClass= "+mainClassName);
     mainClass=Tonyu.getClass(mainClassName);
     if (!mainClass) {
-        TError( mainClassName+" というクラスはありません",
-        "" ,0).raise();
+        throw new Error( mainClassName+" というクラスはありません");
     }
     scheduler=$Scheduler=new Scheduler;
     new mainClass();

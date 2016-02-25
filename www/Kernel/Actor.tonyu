@@ -1,6 +1,5 @@
 extends BaseActor;
 includes PlayMod, ParallelMod;
-native Sprites;
 native Tonyu;
 
 \new(x,y,p) {

@@ -1,5 +1,4 @@
 extends BaseActor;
-native Tonyu;
 
 nowait \parallel() {
      var args=[];

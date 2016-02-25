@@ -1,0 +1,30 @@
+\new(asrc) {
+    length=0;
+    a=this;
+    for (var i=0; i<asrc.length;i++) push(asrc[i]);
+}
+\push(v) {
+    a[length++]=v;
+}
+\shift(type) {
+    if (typeof type=="number") {
+        var res=[];
+        for (var i=0;i<type; i++) res.push(shift());
+        return res;
+    } else if (type) {
+        if (a[0] is type) return shift();
+        return _undef;
+    }
+    var res=a[0];
+    for (var i=1 ; i<length ; i++ ){
+        a[i-1]=a[i];
+    }
+    length--;//3->2 012 -> 01
+    delete a[length]; // 2
+    return res;
+}
+\toArray() {
+    var res=[];
+    for (var i=0 ;i<a.length; i++) res.push(a);
+    return res;
+}
