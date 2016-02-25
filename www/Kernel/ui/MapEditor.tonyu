@@ -100,10 +100,14 @@ if(!loadMode){
     panel.fillRect(0,0,panel.width,panel.height);
 }
 // mapchip data
-mIW=$Sprites.getImageList()[$pat_mapchip].image.width;
+mIW=$imageList[$pat_mapchip].image.width;
+mIH=$imageList[$pat_mapchip].image.height;
+mCW=$imageList[$pat_mapchip+0].width;
+mCH=$imageList[$pat_mapchip+0].height;
+/*mIW=$Sprites.getImageList()[$pat_mapchip].image.width;
 mIH=$Sprites.getImageList()[$pat_mapchip].image.height;
 mCW=$Sprites.getImageList()[$pat_mapchip+0].width;
-mCH=$Sprites.getImageList()[$pat_mapchip+0].height;
+mCH=$Sprites.getImageList()[$pat_mapchip+0].height;*/
 $mp=new Map{row:floor(mIH/mCH),col:floor(mIW/mCW),chipWidth:mCW,chipHeight:mCH};
 counter=0;
 for(var i=0;i<$mp.row;i++){

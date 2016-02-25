@@ -38,9 +38,12 @@ native requestAnimationFrame;
     var rs=$currentProject.getResource();
     var r;
     r=runAsync \(succ) {
-        ImageList.load( rs.images, succ) {baseDir:$currentProject.getDir()};
+        ImageList.load( rs.images, succ) {
+            baseDir:$currentProject.getDir()
+        };
     };
     //var r=a[0];
+    $imageList=r[0];
     $Sprites.setImageList(r[0]);
     for (var name,val in r[0].names) {
         Tonyu.setGlobal(name, val);
