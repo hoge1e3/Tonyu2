@@ -2,7 +2,6 @@ extends OneframeSprite;
 native Math;
 \draw(ctx) {
     pImg=$imageList[Math.floor(p||0)];
-    //$Sprites.getImageList()[Math.floor(p||0)];
     if (!pImg) return;
     ctx.save();
     ctx.translate(x,y);

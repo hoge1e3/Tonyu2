@@ -76,7 +76,7 @@ native $;
     //mapOnTable[setRow][setCol]=-1;
     ctx=buf[0].getContext("2d");
     p=Math.floor(p);
-    pImg=$imageList[p];//$Sprites.getImageList()[p];
+    pImg=$imageList[p];
     if (!pImg) {
         ctx.clearRect(setCol*chipWidth,setRow*chipHeight,chipWidth,chipHeight);
         return;
@@ -94,7 +94,7 @@ native $;
     mapOnTable[setRow][setCol]=p;
     ctx=buf[0].getContext("2d");
     p=Math.floor(p);
-    pImg=$imageList[p];//$Sprites.getImageList()[p];
+    pImg=$imageList[p];
     if (!pImg) return;
     ctx.save();
     ctx.drawImage(

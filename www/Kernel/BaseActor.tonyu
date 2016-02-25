@@ -242,7 +242,7 @@ nowait \detectShape() {
         p=0;
     }
     p=Math.floor(p);
-    pImg=$imageList[p]; //$Sprites.getImageList()[p];
+    pImg=$imageList[p];
     if (!pImg) return;
     width=pImg.width;
     height=pImg.height;

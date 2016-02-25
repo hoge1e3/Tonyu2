@@ -140,12 +140,12 @@ function drawGrid(c) {
     }
     ctx.restore();
 }
-function setImageList(il) {
+/*function setImageList(il) {
     imageList=il;
 }
 function getImageList() {
     return imageList;
-}
+}*/
 function scrollTo(scrollX,scrollY){
     sx=scrollX;
     sy=scrollY;
