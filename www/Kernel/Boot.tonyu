@@ -2,7 +2,6 @@ extends Actor;
 includes T2MediaPlayer;
 
 native $;
-//native TError;
 native $LASTPOS;
 native Key;
 native Date;
@@ -11,6 +10,18 @@ native Tonyu;
 native SplashScreen;
 native Math;
 native requestAnimationFrame;
+native console;
+
+$Boot=this;
+initEvents();
+initLayers();
+initPeripherals();
+loadPlugins();
+loadImages();
+loadSounds();
+createMainObject();
+progress();
+mainLoop();
 
 \new(param) {
     extend(param);
@@ -19,12 +30,13 @@ native requestAnimationFrame;
     waitFor(Tonyu.timeout(50)); // waitFor calls update...
 }
 \loadPlugins() {
-    print ("Loading plugins..");
+    progress("Loading plugins..");
     runAsync \(r) {
         $currentProject.loadPlugins(r);
     };
+    progress("Loading plugins done");
 }
-\initSprites() {
+\initLayers() {
     $Sprites=new Sprites();
     $FrontSprites=new Sprites();
     cvj=$("canvas");
@@ -34,7 +46,9 @@ native requestAnimationFrame;
         $Screen=new ScaledCanvas{canvas:cvj, width:465, height:465};
     }
     drawFrame();
-    print ("Loading pats..");
+}
+\loadImages() {
+    progress("Loading pats..");
     var rs=$currentProject.getResource();
     var r;
     r=runAsync \(succ) {
@@ -48,13 +62,13 @@ native requestAnimationFrame;
     for (var name,val in r[0].names) {
         Tonyu.setGlobal(name, val);
     }
-    print ("Loading pats done.");
+    progress("Loading pats done.");
 }
-\initSounds() {
-    print ("Loading sounds...");
+\loadSounds() {
+    progress("Loading sounds...");
     initT2MediaPlayer();
     loadFromProject($currentProject);
-    print ("Loading sounds done.");
+    progress("Loading sounds done.");
     on("stop")\{
         clearSEData();
     };
@@ -63,15 +77,14 @@ native requestAnimationFrame;
 \hide() {
 }
 
-\initThread() {
+\createMainObject() {
     var o=Tonyu.currentProject.getOptions();
     var mainClassName=o.run.mainClass;
-    print("MainClass= "+mainClassName);
+    progress("MainClass= "+mainClassName);
     mainClass=Tonyu.getClass(mainClassName);
     if (!mainClass) {
         throw new Error( mainClassName+" というクラスはありません");
     }
-    scheduler=$Scheduler=new Scheduler;
     new mainClass();
 }
 \stop() {
@@ -87,38 +100,43 @@ native requestAnimationFrame;
     return th;
 }
 \initEvents() {
+    // used in EventMod
     eventTypes={
         "screenOut":ScreenOutHandler,
         "crashTo":CrashToHandler,
         "within":WithinHandler
     };
 }
-$Boot=this;
-initEvents();
-loadPlugins();
-initSprites();
-initSounds();
-$InputDevice=new InputDevice;
-$InputDevice.initCanvasEvents(cvj);
-initThread();
+\progress(m) {
+    if (typeof SplashScreen=="undefined") return;
+    if (m) {
+        console.log.apply(console,arguments);
+        SplashScreen.progress(m);
+    } else SplashScreen.hide();
+}
+\initPeripherals() {
+    $InputDevice=new InputDevice;
+    $InputDevice.initCanvasEvents(cvj);
+    scheduler=$Scheduler=new Scheduler;
+    $ObjectPool=new ObjectPool;
+    $pat_fruits=30;
+    $Keys=new Keys;
+    $Math=Math;
+    $consolePanel=new Panel{align:"center",x:465/2,y:465/2,width:465,height:465,zOrder:-10,layer:$FrontSprites};
+    $consolePrintY=465-15;
+    $panel=new Panel{align:"center",x:$screenWidth/2,y:$screenHeight/2,width:$screenWidth,height:$screenHeight,zOrder:-1,layer:$FrontSprites};
+    initFPSParams();
+    $mouseX=$mouseX||0;
+    $mouseY=$mouseY||0;
+}
 
-$ObjectPool=new ObjectPool;
-$pat_fruits=30;
-$Keys=new Keys;
-$Math=Math;
-$consolePanel=new Panel{align:"center",x:465/2,y:465/2,width:465,height:465,zOrder:-10,layer:$FrontSprites};
-$consolePrintY=465-15;
-$panel=new Panel{align:"center",x:$screenWidth/2,y:$screenHeight/2,width:$screenWidth,height:$screenHeight,zOrder:-1,layer:$FrontSprites};
-initFPSParams();
-
-$mouseX=$mouseX||0;
-$mouseY=$mouseY||0;
-if (typeof SplashScreen!="undefined") SplashScreen.hide();
-while (true) {
-	if (_useRAF) loopRAF();
-	else loopTimer();
-    measureFps();
-	handlePause();
+\mainLoop() {
+    while (true) {
+    	if (_useRAF) loopRAF();
+    	else loopTimer();
+        measureFps();
+    	handlePause();
+    }
 }
 \loopRAF() {
 	var start=now(),elapsed;
