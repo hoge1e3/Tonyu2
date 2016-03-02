@@ -29,12 +29,28 @@ mainLoop();
 \update() {
     waitFor(Tonyu.timeout(50)); // waitFor calls update...
 }
-\loadPlugins() {
-    progress("Loading plugins..");
-    runAsync \(r) {
-        $currentProject.loadPlugins(r);
+\initEvents() {
+    // used in EventMod
+    eventTypes={
+        "screenOut":ScreenOutHandler,
+        "crashTo":CrashToHandler,
+        "within":WithinHandler
     };
-    progress("Loading plugins done");
+}
+\initPeripherals() {
+    $InputDevice=new InputDevice;
+    $InputDevice.initCanvasEvents(cvj);
+    scheduler=$Scheduler=new Scheduler;
+    $ObjectPool=new ObjectPool;
+    $pat_fruits=30;
+    $Keys=new Keys;
+    $Math=Math;
+    $consolePanel=new Panel{align:"center",x:465/2,y:465/2,width:465,height:465,zOrder:-10,layer:$FrontSprites};
+    $consolePrintY=465-15;
+    $panel=new Panel{align:"center",x:$screenWidth/2,y:$screenHeight/2,width:$screenWidth,height:$screenHeight,zOrder:-1,layer:$FrontSprites};
+    initFPSParams();
+    $mouseX=$mouseX||0;
+    $mouseY=$mouseY||0;
 }
 \initLayers() {
     $Sprites=new Sprites();
@@ -46,6 +62,13 @@ mainLoop();
         $Screen=new ScaledCanvas{canvas:cvj, width:465, height:465};
     }
     drawFrame();
+}
+\loadPlugins() {
+    progress("Loading plugins..");
+    runAsync \(r) {
+        $currentProject.loadPlugins(r);
+    };
+    progress("Loading plugins done");
 }
 \loadImages() {
     progress("Loading pats..");
@@ -74,8 +97,6 @@ mainLoop();
     };
     $sound=this;
 }
-\hide() {
-}
 
 \createMainObject() {
     var o=Tonyu.currentProject.getOptions();
@@ -91,6 +112,8 @@ mainLoop();
     fireEvent("stop");
     die();
 }
+\hide() {
+}
 \schedule(obj,method,args) {
     method=method||"main";
     args=args||[];
@@ -99,35 +122,12 @@ mainLoop();
     th.setThreadGroup(obj);
     return th;
 }
-\initEvents() {
-    // used in EventMod
-    eventTypes={
-        "screenOut":ScreenOutHandler,
-        "crashTo":CrashToHandler,
-        "within":WithinHandler
-    };
-}
 \progress(m) {
     if (typeof SplashScreen=="undefined") return;
     if (m) {
         console.log.apply(console,arguments);
         SplashScreen.progress(m);
     } else SplashScreen.hide();
-}
-\initPeripherals() {
-    $InputDevice=new InputDevice;
-    $InputDevice.initCanvasEvents(cvj);
-    scheduler=$Scheduler=new Scheduler;
-    $ObjectPool=new ObjectPool;
-    $pat_fruits=30;
-    $Keys=new Keys;
-    $Math=Math;
-    $consolePanel=new Panel{align:"center",x:465/2,y:465/2,width:465,height:465,zOrder:-10,layer:$FrontSprites};
-    $consolePrintY=465-15;
-    $panel=new Panel{align:"center",x:$screenWidth/2,y:$screenHeight/2,width:$screenWidth,height:$screenHeight,zOrder:-1,layer:$FrontSprites};
-    initFPSParams();
-    $mouseX=$mouseX||0;
-    $mouseY=$mouseY||0;
 }
 
 \mainLoop() {
