@@ -36,8 +36,12 @@ function initClassDecls(klass, env ) {//S
     //console.log(klass.testid);
     var MAIN={name:"main",stmts:[],pos:0, isMain:true};
     // method := fiber | function
-    var fields={}, methods={main: MAIN}, natives={}, amds={};
-    klass.decls={fields:fields, methods:methods, natives: natives, amds:amds };
+    var fields={}, methods={main: MAIN}, natives={}, amds={},softRefClasses={};
+    klass.decls={fields:fields, methods:methods, natives: natives, amds:amds,
+    softRefClasses:softRefClasses};
+    // ↑ このクラスが持つフィールド，ファイバ，関数，ネイティブ変数，AMDモジュール変数
+    //   extends/includes以外から参照してれるクラス の集まり．親クラスの宣言は含まない
+
     klass.node=node;
     /*function nc(o, mesg) {
         if (!o) throw mesg+" is null";
@@ -97,6 +101,12 @@ function initClassDecls(klass, env ) {//S
             } else if (stmt.type=="nativeDecl") {
                 natives[stmt.name.text]=stmt;
             } else {
+                if (stmt.type=="varsDecl") {
+                    stmt.decls.forEach(function (d) {
+                        console.log("varDecl", d.name.text);
+                        fields[d.name.text]=d;
+                    });
+                }
                 MAIN.stmts.push(stmt);
             }
         });
@@ -255,6 +265,9 @@ function annotateSource2(klass, env) {//B
                 klass.decls.fields[n]=si;
             }
             si=topLevelScope[n]=genSt(t,opt);
+        }
+        if (t==ST.CLASS) {
+            klass.decls.softRefClasses[n]=si;
         }
         return si;
     }

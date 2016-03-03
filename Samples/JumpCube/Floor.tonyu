@@ -1,8 +1,2 @@
 extends BodyActor;
 p=$pat_wood_texture_00005;
-/*今後の課題
-while(true) {
-rotation=$mouseX;
-update();   
-}
-*/
