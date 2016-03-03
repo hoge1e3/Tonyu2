@@ -802,6 +802,9 @@ function genJS(klass, env) {//B
                     var mod=klass.shortName;
                     reqs[mod]=1;
                 });
+                for (var mod in klass.decls.softRefClasses) {
+                    reqs[mod]=1;
+                }
                 for (var mod in reqs) {
                     printf("var %s=require('%s');%n",mod,mod);
                 }
