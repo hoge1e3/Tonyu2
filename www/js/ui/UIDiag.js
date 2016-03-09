@@ -28,6 +28,10 @@ define(["UI"],function (UI) {
                     di.dialog("close");
                     d.resolve();
                 }});
+        setTimeout(function () {
+            di.$vars.val.focus();
+            //console.log("FOcus");
+        },10);
         var d=$.Deferred();
         function ok() {
             var r=di.$vars.val.val();

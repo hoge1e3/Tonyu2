@@ -2,11 +2,14 @@
 
 *特定のオブジェクトだけスクロールの影響を受けないようにする
 
+-作成するオブジェクトのパラメータに[[@cfrag layer:$frontLayer]]を設定することで、表示されるテキストオブジェクトだけスクロールの影響を受けないにしている。
+-他のオブジェクトより後ろに表示する場合は[[@cfrag layer:$backLayer]]を指定する
+
 <<code Main
 //事前にマップを作っておく
 
 $score=0;
-new Score{x:200, y:200, text:$score, layer:$FrontSprites};
+new Score{x:200, y:200, text:$score, layer:$frontLayer};//★
 i=0;
 while(true){
     if(getkey("z")==1) $score+=10;
@@ -24,15 +27,7 @@ while(true) {
 }
 >>
 
-上の命令は「new Score」に「layer:$FrontSprites」を設定することで、表示されるテキストオブジェクトだけスクロールの影響を受けないにしている。
-
-スクリーン全体をスクロールさせる場合は、$Screen.scrollTo(sx,sy);を使用する．
-
--[[スクリーン全体をスクロール>ScreenscrollTo-実例]]
-
-
-マップだけをスクロールさせる場合は、$map.scrollTo(sx,sy);を使用する．
-
+参考：
+-[[スクリーン全体をスクロールさせる>ScreenscrollTo-実例]]
 -[[マップだけをスクロールさせる>mapscrollTo]]
-
 

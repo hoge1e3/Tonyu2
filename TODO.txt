@@ -3,10 +3,13 @@ UI
   フルスクリーン
 
 言語仕様
- do..while
- switch
+ からぶん
+ a||={};
  nowait {  }
  (x,y)=>x+y
+ native a,b,c;
+ OK do..while
+ OK switch
  OK \myProp {}
  OK \myProp=val {}
  OK annotation?? (スコープチェックとコード出力の分離)

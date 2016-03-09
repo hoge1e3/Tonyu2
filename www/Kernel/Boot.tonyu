@@ -53,8 +53,10 @@ mainLoop();
     $mouseY=$mouseY||0;
 }
 \initLayers() {
-    $Sprites=new Sprites();
-    $FrontSprites=new Sprites();
+    $mainLayer=$Sprites=new Sprites();
+    $frontLayer=$FrontSprites=new Sprites();
+    $backLayer=new Sprites();
+    $UILayer=new Sprites();
     cvj=$("canvas");
     if (Tonyu.noviceMode) {
         $Screen=new ScaledCanvas{canvas:cvj, width:600, height:300};
@@ -223,9 +225,11 @@ nowait \detectRAFResolution(t) {
 }
 nowait \drawFrame() {
 	var s=now();
+	var ctx=$Screen.buf[0].getContext("2d");
     $Screen.fillCanvas($Screen.buf[0]);
-    $Sprites.draw($Screen.buf[0]);
-    $FrontSprites.draw($Screen.buf[0]);
+    $backLayer.draw(ctx);
+    $Sprites.draw(ctx);
+    $FrontSprites.draw(ctx);
     $Screen.draw();
     drawTime=now()-s;
     fps_fpsCnt ++;

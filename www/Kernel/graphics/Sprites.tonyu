@@ -62,8 +62,8 @@ function compOrder(obj1, obj2){
         return 0;
     }
 }
-function draw(cv) {
-    var ctx=cv.getContext("2d");
+function draw(ctx) {
+    //var ctx=cv.getContext("2d");
     ctx.save();
     var orderArray=[];
     if (t1Sprites) {
