@@ -1,4 +1,4 @@
-// Created at Mon Feb 22 2016 16:44:18 GMT+0900 (東京 (標準時))
+// Created at Wed Mar 09 2016 12:19:29 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -98,6 +98,7 @@ define([],function () {
     var Assertion=function(failMesg) {
         this.failMesg=flatten(failMesg || "Assertion failed: ");
     };
+    var $a;
     Assertion.prototype={
         fail:function () {
             var a=$a(arguments);
@@ -191,12 +192,6 @@ define([],function () {
             this.fail(action,"should throw an error",err);
         }
     };
-    /*var assert=function () {
-      var a=assert.a(arguments);
-      var t=a.shift();
-      if (!t) assert.fail(a);
-      return true;
-   };*/
     $a=function (args) {
         var a=[];
         for (var i=0; i<args.length ;i++) a.push(args[i]);
@@ -210,7 +205,17 @@ define([],function () {
             throw new Error(e.message);
         }
     };
-    assert.is=function () {
+    ["is","isset","ne","eq","ensureError"].forEach(function (m) {
+        assert[m]=function () {
+            try {
+                return top[m].apply(top,arguments);
+            } catch(e) {
+                console.log(e.stack);
+                throw new Error(e.message);
+            }
+        };
+    });
+    /*assert.is=function () {
         try {
             return top.is.apply(top,arguments);
         } catch(e) {
@@ -245,50 +250,8 @@ define([],function () {
         } catch(e) {
             throw new Error(e.message);
         }
-    };
+    };*/
     assert.fail=top.fail.bind(top);
-    /*
-   assert.fail=function () {
-      var a=assert.a(arguments);
-      a=flatten(a);
-      a.unshift("Assertion failed: ");
-      console.log.apply(console,a);
-      throw new Error(a.join(" "));
-   };
-   assert.is=function (value, type, mesg) {
-      var t=type,v=value;
-      mesg=mesg||[];
-      if (t==null) return true;
-      assert(value!=null,mesg.concat([value, "should not be null/undef"]));
-      if (t instanceof Array) {
-          if (!value || typeof value.length!="number") {
-              assert.fail(mesg.concat([value, "should be array:", type]));
-          }
-          t.forEach(function (te,i) {
-              assert.is(value[i],te,mesg.concat(["failed at ",value,"[",i,"]: "]));
-          });
-          return;
-      }
-      if (t===String || t=="string") {
-          return assert(typeof(v)=="string",
-          mesg.concat([v,"should be string "]));
-      }
-      if (t===Number || t=="number") {
-          return assert(typeof(v)=="number",
-          mesg.concat([v,"should be number"]));
-      }
-      if (t instanceof Object) {
-          for (var k in t) {
-              assert.is(value[k],t[k],mesg.concat(["failed at ",value,".",k,":"]));
-          }
-          return true;
-      }
-      if (t._assert_func) {
-          return t._assert_func(v,mesg);
-      }
-      return assert(v instanceof t,
-      mesg.concat([v, "should be ",t]));
-   };*/
     assert.f=function (f) {
         return {
             _assert_func: f
@@ -3124,7 +3087,7 @@ return Tonyu=function () {
             bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,iterator:IT,
-            VERSION:1456127034661,//EMBED_VERSION
+            VERSION:1457493553039,//EMBED_VERSION
             A:A};
 }();
 });
@@ -6088,6 +6051,9 @@ function genJS(klass, env) {//B
                     var mod=klass.shortName;
                     reqs[mod]=1;
                 });
+                for (var mod in klass.decls.softRefClasses) {
+                    reqs[mod]=1;
+                }
                 for (var mod in reqs) {
                     printf("var %s=require('%s');%n",mod,mod);
                 }
@@ -6357,8 +6323,12 @@ function initClassDecls(klass, env ) {//S
     //console.log(klass.testid);
     var MAIN={name:"main",stmts:[],pos:0, isMain:true};
     // method := fiber | function
-    var fields={}, methods={main: MAIN}, natives={}, amds={};
-    klass.decls={fields:fields, methods:methods, natives: natives, amds:amds };
+    var fields={}, methods={main: MAIN}, natives={}, amds={},softRefClasses={};
+    klass.decls={fields:fields, methods:methods, natives: natives, amds:amds,
+    softRefClasses:softRefClasses};
+    // ↑ このクラスが持つフィールド，ファイバ，関数，ネイティブ変数，AMDモジュール変数
+    //   extends/includes以外から参照してれるクラス の集まり．親クラスの宣言は含まない
+
     klass.node=node;
     /*function nc(o, mesg) {
         if (!o) throw mesg+" is null";
@@ -6418,6 +6388,12 @@ function initClassDecls(klass, env ) {//S
             } else if (stmt.type=="nativeDecl") {
                 natives[stmt.name.text]=stmt;
             } else {
+                if (stmt.type=="varsDecl") {
+                    stmt.decls.forEach(function (d) {
+                        console.log("varDecl", d.name.text);
+                        fields[d.name.text]=d;
+                    });
+                }
                 MAIN.stmts.push(stmt);
             }
         });
@@ -6576,6 +6552,9 @@ function annotateSource2(klass, env) {//B
                 klass.decls.fields[n]=si;
             }
             si=topLevelScope[n]=genSt(t,opt);
+        }
+        if (t==ST.CLASS) {
+            klass.decls.softRefClasses[n]=si;
         }
         return si;
     }
@@ -9535,6 +9514,10 @@ define(["UI"],function (UI) {
                     di.dialog("close");
                     d.resolve();
                 }});
+        setTimeout(function () {
+            di.$vars.val.focus();
+            //console.log("FOcus");
+        },10);
         var d=$.Deferred();
         function ok() {
             var r=di.$vars.val.val();

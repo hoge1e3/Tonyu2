@@ -1,4 +1,4 @@
-// Created at Mon Feb 22 2016 16:44:28 GMT+0900 (東京 (標準時))
+// Created at Wed Mar 09 2016 12:19:39 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -98,6 +98,7 @@ define([],function () {
     var Assertion=function(failMesg) {
         this.failMesg=flatten(failMesg || "Assertion failed: ");
     };
+    var $a;
     Assertion.prototype={
         fail:function () {
             var a=$a(arguments);
@@ -191,12 +192,6 @@ define([],function () {
             this.fail(action,"should throw an error",err);
         }
     };
-    /*var assert=function () {
-      var a=assert.a(arguments);
-      var t=a.shift();
-      if (!t) assert.fail(a);
-      return true;
-   };*/
     $a=function (args) {
         var a=[];
         for (var i=0; i<args.length ;i++) a.push(args[i]);
@@ -210,7 +205,17 @@ define([],function () {
             throw new Error(e.message);
         }
     };
-    assert.is=function () {
+    ["is","isset","ne","eq","ensureError"].forEach(function (m) {
+        assert[m]=function () {
+            try {
+                return top[m].apply(top,arguments);
+            } catch(e) {
+                console.log(e.stack);
+                throw new Error(e.message);
+            }
+        };
+    });
+    /*assert.is=function () {
         try {
             return top.is.apply(top,arguments);
         } catch(e) {
@@ -245,50 +250,8 @@ define([],function () {
         } catch(e) {
             throw new Error(e.message);
         }
-    };
+    };*/
     assert.fail=top.fail.bind(top);
-    /*
-   assert.fail=function () {
-      var a=assert.a(arguments);
-      a=flatten(a);
-      a.unshift("Assertion failed: ");
-      console.log.apply(console,a);
-      throw new Error(a.join(" "));
-   };
-   assert.is=function (value, type, mesg) {
-      var t=type,v=value;
-      mesg=mesg||[];
-      if (t==null) return true;
-      assert(value!=null,mesg.concat([value, "should not be null/undef"]));
-      if (t instanceof Array) {
-          if (!value || typeof value.length!="number") {
-              assert.fail(mesg.concat([value, "should be array:", type]));
-          }
-          t.forEach(function (te,i) {
-              assert.is(value[i],te,mesg.concat(["failed at ",value,"[",i,"]: "]));
-          });
-          return;
-      }
-      if (t===String || t=="string") {
-          return assert(typeof(v)=="string",
-          mesg.concat([v,"should be string "]));
-      }
-      if (t===Number || t=="number") {
-          return assert(typeof(v)=="number",
-          mesg.concat([v,"should be number"]));
-      }
-      if (t instanceof Object) {
-          for (var k in t) {
-              assert.is(value[k],t[k],mesg.concat(["failed at ",value,".",k,":"]));
-          }
-          return true;
-      }
-      if (t._assert_func) {
-          return t._assert_func(v,mesg);
-      }
-      return assert(v instanceof t,
-      mesg.concat([v, "should be ",t]));
-   };*/
     assert.f=function (f) {
         return {
             _assert_func: f
@@ -3460,7 +3423,7 @@ return Tonyu=function () {
             bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,iterator:IT,
-            VERSION:1456127034661,//EMBED_VERSION
+            VERSION:1457493553039,//EMBED_VERSION
             A:A};
 }();
 });
@@ -4612,6 +4575,10 @@ define(["UI"],function (UI) {
                     di.dialog("close");
                     d.resolve();
                 }});
+        setTimeout(function () {
+            di.$vars.val.focus();
+            //console.log("FOcus");
+        },10);
         var d=$.Deferred();
         function ok() {
             var r=di.$vars.val.val();
