@@ -9,53 +9,53 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=1000000;//user.Bounce:0
+      //$LASTPOS=54000000;//user.Bounce:0
       _this.x=_this.rnd(Tonyu.globals.$screenWidth);
-      //$LASTPOS=1000021;//user.Bounce:21
+      //$LASTPOS=54000022;//user.Bounce:22
       _this.y=_this.rnd(Tonyu.globals.$screenHeight);
-      //$LASTPOS=1000043;//user.Bounce:43
+      //$LASTPOS=54000045;//user.Bounce:45
       _this.vx=_this.spd();
-      //$LASTPOS=1000053;//user.Bounce:53
+      //$LASTPOS=54000056;//user.Bounce:56
       _this.vy=_this.spd();
-      //$LASTPOS=1000063;//user.Bounce:63
+      //$LASTPOS=54000067;//user.Bounce:67
       while (true) {
-        //$LASTPOS=1000082;//user.Bounce:82
+        //$LASTPOS=54000087;//user.Bounce:87
         _this.x+=_this.vx;
-        //$LASTPOS=1000093;//user.Bounce:93
+        //$LASTPOS=54000099;//user.Bounce:99
         _this.y+=_this.vy;
-        //$LASTPOS=1000104;//user.Bounce:104
+        //$LASTPOS=54000111;//user.Bounce:111
         if (_this.x<0) {
-          //$LASTPOS=1000123;//user.Bounce:123
+          //$LASTPOS=54000131;//user.Bounce:131
           _this.x=0;
-          //$LASTPOS=1000136;//user.Bounce:136
+          //$LASTPOS=54000145;//user.Bounce:145
           _this.vx=_this.spd();
           
         }
-        //$LASTPOS=1000156;//user.Bounce:156
+        //$LASTPOS=54000167;//user.Bounce:167
         if (_this.y<0) {
-          //$LASTPOS=1000175;//user.Bounce:175
+          //$LASTPOS=54000187;//user.Bounce:187
           _this.y=0;
-          //$LASTPOS=1000188;//user.Bounce:188
+          //$LASTPOS=54000201;//user.Bounce:201
           _this.vy=_this.spd();
           
         }
-        //$LASTPOS=1000208;//user.Bounce:208
+        //$LASTPOS=54000223;//user.Bounce:223
         if (_this.x>Tonyu.globals.$screenWidth) {
-          //$LASTPOS=1000238;//user.Bounce:238
+          //$LASTPOS=54000254;//user.Bounce:254
           _this.x=Tonyu.globals.$screenWidth;
-          //$LASTPOS=1000262;//user.Bounce:262
+          //$LASTPOS=54000279;//user.Bounce:279
           _this.vx=- _this.spd();
           
         }
-        //$LASTPOS=1000283;//user.Bounce:283
+        //$LASTPOS=54000302;//user.Bounce:302
         if (_this.y>Tonyu.globals.$screenHeight) {
-          //$LASTPOS=1000314;//user.Bounce:314
+          //$LASTPOS=54000334;//user.Bounce:334
           _this.y=Tonyu.globals.$screenHeight;
-          //$LASTPOS=1000339;//user.Bounce:339
+          //$LASTPOS=54000360;//user.Bounce:360
           _this.vy=- _this.spd();
           
         }
-        //$LASTPOS=1000360;//user.Bounce:360
+        //$LASTPOS=54000383;//user.Bounce:383
         _this.update();
         
       }
@@ -66,9 +66,9 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=1000000;//user.Bounce:0
+      //$LASTPOS=54000000;//user.Bounce:0
       _this.x=_this.rnd(Tonyu.globals.$screenWidth);
-      //$LASTPOS=1000021;//user.Bounce:21
+      //$LASTPOS=54000022;//user.Bounce:22
       _this.y=_this.rnd(Tonyu.globals.$screenHeight);
       
       _thread.enter(function _trc_Bounce_ent_main(_thread) {
@@ -76,29 +76,29 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=1000043;//user.Bounce:43
+            //$LASTPOS=54000045;//user.Bounce:45
             _this.fiber$spd(_thread);
             __pc=1;return;
           case 1:
             _this.vx=_thread.retVal;
             
-            //$LASTPOS=1000053;//user.Bounce:53
+            //$LASTPOS=54000056;//user.Bounce:56
             _this.fiber$spd(_thread);
             __pc=2;return;
           case 2:
             _this.vy=_thread.retVal;
             
-            //$LASTPOS=1000063;//user.Bounce:63
+            //$LASTPOS=54000067;//user.Bounce:67
           case 3:
-            //$LASTPOS=1000082;//user.Bounce:82
+            //$LASTPOS=54000087;//user.Bounce:87
             _this.x+=_this.vx;
-            //$LASTPOS=1000093;//user.Bounce:93
+            //$LASTPOS=54000099;//user.Bounce:99
             _this.y+=_this.vy;
-            //$LASTPOS=1000104;//user.Bounce:104
+            //$LASTPOS=54000111;//user.Bounce:111
             if (!(_this.x<0)) { __pc=5; break; }
-            //$LASTPOS=1000123;//user.Bounce:123
+            //$LASTPOS=54000131;//user.Bounce:131
             _this.x=0;
-            //$LASTPOS=1000136;//user.Bounce:136
+            //$LASTPOS=54000145;//user.Bounce:145
             _this.fiber$spd(_thread);
             __pc=4;return;
           case 4:
@@ -106,11 +106,11 @@ Tonyu.klass.define({
             
           case 5:
             
-            //$LASTPOS=1000156;//user.Bounce:156
+            //$LASTPOS=54000167;//user.Bounce:167
             if (!(_this.y<0)) { __pc=7; break; }
-            //$LASTPOS=1000175;//user.Bounce:175
+            //$LASTPOS=54000187;//user.Bounce:187
             _this.y=0;
-            //$LASTPOS=1000188;//user.Bounce:188
+            //$LASTPOS=54000201;//user.Bounce:201
             _this.fiber$spd(_thread);
             __pc=6;return;
           case 6:
@@ -118,23 +118,23 @@ Tonyu.klass.define({
             
           case 7:
             
-            //$LASTPOS=1000208;//user.Bounce:208
+            //$LASTPOS=54000223;//user.Bounce:223
             if (_this.x>Tonyu.globals.$screenWidth) {
-              //$LASTPOS=1000238;//user.Bounce:238
+              //$LASTPOS=54000254;//user.Bounce:254
               _this.x=Tonyu.globals.$screenWidth;
-              //$LASTPOS=1000262;//user.Bounce:262
+              //$LASTPOS=54000279;//user.Bounce:279
               _this.vx=- _this.spd();
               
             }
-            //$LASTPOS=1000283;//user.Bounce:283
+            //$LASTPOS=54000302;//user.Bounce:302
             if (_this.y>Tonyu.globals.$screenHeight) {
-              //$LASTPOS=1000314;//user.Bounce:314
+              //$LASTPOS=54000334;//user.Bounce:334
               _this.y=Tonyu.globals.$screenHeight;
-              //$LASTPOS=1000339;//user.Bounce:339
+              //$LASTPOS=54000360;//user.Bounce:360
               _this.vy=- _this.spd();
               
             }
-            //$LASTPOS=1000360;//user.Bounce:360
+            //$LASTPOS=54000383;//user.Bounce:383
             _this.fiber$update(_thread);
             __pc=8;return;
           case 8:
@@ -179,39 +179,41 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=2000000;//user.Main:0
-      //$LASTPOS=2000005;//user.Main:5
-      _this.i=0;
-      while(_this.i<20) {
+      //$LASTPOS=55000000;//user.Main:0
+      //$LASTPOS=55000005;//user.Main:5
+      _this.i=0;for (; _this.i<20 ; _this.i++) {
         {
-          //$LASTPOS=2000027;//user.Main:27
+          //$LASTPOS=55000028;//user.Main:28
           new Tonyu.classes.user.Bounce();
         }
-        _this.i++;
       }
-      //$LASTPOS=2000043;//user.Main:43
+      //$LASTPOS=55000046;//user.Main:46
       _this.text="↑ Portrait   → Landscape";
-      //$LASTPOS=2000076;//user.Main:76
+      //$LASTPOS=55000080;//user.Main:80
       _this.size=20;
-      //$LASTPOS=2000085;//user.Main:85
+      //$LASTPOS=55000090;//user.Main:90
       while (true) {
-        //$LASTPOS=2000104;//user.Main:104
+        //$LASTPOS=55000110;//user.Main:110
         _this.x=Tonyu.globals.$screenWidth/2;
-        //$LASTPOS=2000126;//user.Main:126
+        //$LASTPOS=55000133;//user.Main:133
         _this.y=Tonyu.globals.$screenHeight/2;
-        //$LASTPOS=2000149;//user.Main:149
+        //$LASTPOS=55000157;//user.Main:157
         if (_this.getkey("right")==1) {
-          //$LASTPOS=2000211;//user.Main:211
+          //$LASTPOS=55000221;//user.Main:221
           Tonyu.globals.$Screen.resize(400,300);
+          //$LASTPOS=55000255;//user.Main:255
+          _this.print("Landscape");
           
         }
-        //$LASTPOS=2000246;//user.Main:246
+        //$LASTPOS=55000287;//user.Main:287
         if (_this.getkey("up")==1) {
-          //$LASTPOS=2000305;//user.Main:305
+          //$LASTPOS=55000348;//user.Main:348
           Tonyu.globals.$Screen.resize(300,400);
+          //$LASTPOS=55000382;//user.Main:382
+          _this.print("Portrait");
           
         }
-        //$LASTPOS=2000340;//user.Main:340
+        //$LASTPOS=55000413;//user.Main:413
         _this.update();
         
       }
@@ -222,19 +224,17 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=2000000;//user.Main:0
-      //$LASTPOS=2000005;//user.Main:5
-      _this.i=0;
-      while(_this.i<20) {
+      //$LASTPOS=55000000;//user.Main:0
+      //$LASTPOS=55000005;//user.Main:5
+      _this.i=0;for (; _this.i<20 ; _this.i++) {
         {
-          //$LASTPOS=2000027;//user.Main:27
+          //$LASTPOS=55000028;//user.Main:28
           new Tonyu.classes.user.Bounce();
         }
-        _this.i++;
       }
-      //$LASTPOS=2000043;//user.Main:43
+      //$LASTPOS=55000046;//user.Main:46
       _this.text="↑ Portrait   → Landscape";
-      //$LASTPOS=2000076;//user.Main:76
+      //$LASTPOS=55000080;//user.Main:80
       _this.size=20;
       
       _thread.enter(function _trc_Main_ent_main(_thread) {
@@ -242,25 +242,29 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=2000085;//user.Main:85
+            //$LASTPOS=55000090;//user.Main:90
           case 1:
-            //$LASTPOS=2000104;//user.Main:104
+            //$LASTPOS=55000110;//user.Main:110
             _this.x=Tonyu.globals.$screenWidth/2;
-            //$LASTPOS=2000126;//user.Main:126
+            //$LASTPOS=55000133;//user.Main:133
             _this.y=Tonyu.globals.$screenHeight/2;
-            //$LASTPOS=2000149;//user.Main:149
+            //$LASTPOS=55000157;//user.Main:157
             if (_this.getkey("right")==1) {
-              //$LASTPOS=2000211;//user.Main:211
+              //$LASTPOS=55000221;//user.Main:221
               Tonyu.globals.$Screen.resize(400,300);
+              //$LASTPOS=55000255;//user.Main:255
+              _this.print("Landscape");
               
             }
-            //$LASTPOS=2000246;//user.Main:246
+            //$LASTPOS=55000287;//user.Main:287
             if (_this.getkey("up")==1) {
-              //$LASTPOS=2000305;//user.Main:305
+              //$LASTPOS=55000348;//user.Main:348
               Tonyu.globals.$Screen.resize(300,400);
+              //$LASTPOS=55000382;//user.Main:382
+              _this.print("Portrait");
               
             }
-            //$LASTPOS=2000340;//user.Main:340
+            //$LASTPOS=55000413;//user.Main:413
             _this.fiber$update(_thread);
             __pc=2;return;
           case 2:

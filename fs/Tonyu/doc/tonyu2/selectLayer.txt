@@ -1,0 +1,14 @@
+[[Screen]]
+
+*selectLayerメソッド
+
+[[$Screen.scrollTo>Screen.scrollTo]]メソッドでスクロールさせるレイヤーを指定します。
+デフォルトでは[[@cfrag $mainLayer]]です。
+
+<<code
+$Screen.selectLayer(l);
+>>
+
+-[[@cfrag l]]には、[[@cfrag $frontLayer]]、[[@cfrag $mainLayer]]、[[@cfrag $backLayer]]のいずれかを指定します。
+
+.

@@ -1,4 +1,4 @@
-// Created at Mon Mar 21 2016 14:01:47 GMT+0900 (東京 (標準時))
+// Created at Thu Mar 31 2016 20:22:25 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -1196,7 +1196,7 @@ return Tonyu=function () {
             bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,iterator:IT,
-            VERSION:1458536502798,//EMBED_VERSION
+            VERSION:1459423341263,//EMBED_VERSION
             A:A};
 }();
 });
@@ -8176,7 +8176,7 @@ function annotateSource2(klass, env) {//B
             this.visit(node.value);
         },
         "break": function (node) {
-            if (!ctx.brkable) throw TError( "break； は繰り返しの中で使います." , srcFile, node.pos);
+            if (!ctx.brkable) throw TError( "break； は繰り返しまたはswitch文の中で使います." , srcFile, node.pos);
             if (!ctx.noWait) annotateParents(this.path,{hasJump:true});
         },
         "continue": function (node) {
@@ -12770,10 +12770,13 @@ define(["UI","extLink","mkrun","Tonyu","zip"], function (UI,extLink,mkrun,Tonyu,
                 }
                 UIDiag.alert(UI("div",
                          ["p",(options.hiddenFolder?"":model.dest+"に")+"ランタイムを作成しました。"],
-                         ["p",(model.zip?"保存したZIPファイルを":"上のフォルダをZIPで圧縮したものを"),
+                         ["p","次のいずれかの方法でWebアプリとして公開することができます。"],
+                         ["ul",
+                         ["li",(model.zip?"解凍した":"")+"フォルダをお手持ちのWebサーバにアップロードする"],
+                         ["li",(model.zip?"保存したZIPファイルを":"上のフォルダをZIPで圧縮したものを"),
                           extLink("http://hoge1e3.sakura.ne.jp/tonyu/project/",
                                   "プロジェクトボード",{style:"color: blue;"}),
-                          "にてWebアプリとして公開することができます。"]
+                          "にアップロードする"]]
                         ),{width:"auto"}
                 );
                 res.d.$vars.OKButton.prop("disabled", false);

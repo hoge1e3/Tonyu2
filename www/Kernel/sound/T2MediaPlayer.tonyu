@@ -55,7 +55,7 @@ native Tonyu;
          var name=s.name, url=Tonyu.Assets.resolve(s.url, prj.getDir());
          Tonyu.setGlobal(name, name);
          try {
-            print("Loading Sound2: "+name);
+            //print("Loading Sound2: "+name);
             loadSE(name, url);
          } catch(e) {
             print("Fail");

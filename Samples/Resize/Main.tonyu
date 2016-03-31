@@ -9,10 +9,12 @@ while (true) {
     if (getkey("right")==1) {
         // ゲーム画面のサイズを変更（横長）
         $Screen.resize(400,300);
+        print("Landscape");
     }
     if (getkey("up")==1) {
         // ゲーム画面のサイズを変更（縦長）
         $Screen.resize(300,400);
+        print("Portrait");
     }
     update();
 }

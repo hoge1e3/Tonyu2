@@ -3,13 +3,13 @@ SplashScreen=function () {
             left: 100, top:100, fontSize: 30, background: "white"
         });
     var SS={};
-    SS.show=function () {
+    SS.show=function (mesg) {
     	if (!s) return;
+        s.text(mesg||"Please wait...");
     	if (SS.showing) return;
     	SS.showing=true;
     	console.log("Show");
     	s.appendTo("body");
-        s.text("Please wait...");
         var top=$(window).height()/2-s.height()/2;
         var left=$(window).width()/2-s.width()/2;
         s.css("left",left);
@@ -21,7 +21,7 @@ SplashScreen=function () {
         cnt++;
     },100);
     SS.progress=function (me) {
-        s.text(me);
+        SS.show(me);
     };
     SS.hide=function () {
     	if (!SS.showing) return;

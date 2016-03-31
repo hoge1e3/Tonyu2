@@ -1,4 +1,4 @@
-// Created at Mon Mar 21 2016 14:02:02 GMT+0900 (東京 (標準時))
+// Created at Thu Mar 31 2016 20:22:41 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -3087,7 +3087,7 @@ return Tonyu=function () {
             bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,iterator:IT,
-            VERSION:1458536502798,//EMBED_VERSION
+            VERSION:1459423341263,//EMBED_VERSION
             A:A};
 }();
 });
@@ -6695,7 +6695,7 @@ function annotateSource2(klass, env) {//B
             this.visit(node.value);
         },
         "break": function (node) {
-            if (!ctx.brkable) throw TError( "break； は繰り返しの中で使います." , srcFile, node.pos);
+            if (!ctx.brkable) throw TError( "break； は繰り返しまたはswitch文の中で使います." , srcFile, node.pos);
             if (!ctx.noWait) annotateParents(this.path,{hasJump:true});
         },
         "continue": function (node) {

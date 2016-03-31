@@ -1,0 +1,25 @@
+[[Screen>ScaledCanvas]]
+
+*convertメソッド
+
+ある[[レイヤー>座標系とレイヤー]]における座標を、見た目の位置を変えずに別のレイヤーの座標に変換します。
+
+<<code
+$Screen.convert(obj, toLayer)
+>>
+
+-[[@cfrag obj]] には、次の3つのフィールドをもつオブジェクトを指定します。なお、[[Actor]]オブジェクトはこれら3つのフィールドをもっているので、そのまま渡すことができます
+-- [[@cfrag layer]]: 変換元のレイヤー
+-- [[@cfrag x]]: [[@cfrag layer]]におけるx座標
+-- [[@cfrag y]]: [[@cfrag layer]]におけるy座標
+-[[@cfrag toLayer]]には、変換先のレイヤーを指定します。
+-[[@cfrag obj.layer]] および[[@cfrag toLayer]]に指定できる値は次のいずれかです
+-- [[@cfrag $uiLayer]]
+-- [[@cfrag $Screen]]
+--[[@cfrag $frontLayer]]
+-- [[@cfrag $mainLayer]]
+--[[@cfrag $backLayer]]
+
+-戻り値は、変換後のx,y座標を含んだオブジェクトになります。
+
+.

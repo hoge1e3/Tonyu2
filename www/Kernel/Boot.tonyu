@@ -61,6 +61,21 @@ mainLoop();
     $screenWidth=465;
     $screenHeight=465;
     $Screen=new Screen{width:$screenWidth, height:$screenHeight, layer:$uiLayer};
+    $Screen.on("resize") \{
+        $screenWidth=$Screen.width;
+        $screenHeight=$Screen.height;
+        if($panel){
+            $panel.setPanel($screenWidth,$screenHeight);
+            $panel.x=$screenWidth/2;
+            $panel.y=$screenHeight/2;
+        }
+        if($consolePanel){
+            $consolePanel.setPanel($screenWidth,$screenHeight);
+            $consolePanel.x=$screenWidth/2;
+            $consolePanel.y=$screenHeight/2;
+            $consolePrintY=$screenHeight-15;
+        }
+    };
     $Screen.addLayer($frontLayer);
     $Screen.addLayer($mainLayer);
     $Screen.addLayer($backLayer);
@@ -71,7 +86,7 @@ mainLoop();
     $uiScreen.setBGColor("#888");
     $uiScreen.addLayer($uiLayer);
     $layoutManager=new UILayout{layer:$uiLayer};
-    drawFrame();
+    //drawFrame();
 }
 /*----OLD
 \initLayers() {

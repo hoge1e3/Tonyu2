@@ -1,0 +1,17 @@
+[[座標系とレイヤー]]
+
+*$InputDevice.defaultLayer
+
+[[$touches]]および、[[$mouseX, $mouseY]]の座標系を指定します。
+
+デフォルトでは$Screen（$Screenの左上が(0,0)、右下が($screenWidth, $screenHeight)）になっています。
+
+-$InputDevice.defaultLayerに代入できる値は次のいずれかです
+--[[@cfrag $uiLayer]]
+--[[@cfrag $Screen]]
+--[[@cfrag $frontLayer]]
+--[[@cfrag $mainLayer]]
+--[[@cfrag $backLayer]]
+
+
+.

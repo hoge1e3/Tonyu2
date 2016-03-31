@@ -1,12 +1,21 @@
 [[api]]
 
-*ScaledCanvasクラス
+*Screenクラス
 
 ゲーム画面をあらわすオブジェクトです．[[Boot]]クラスで[[@cfrag $Screen]] というオブジェクトで初期化されます．
+
+[[@cfrag $Screen]]は、画面の手前から順に [[$frontLayer]]、 [[$mainLayer]]、 [[$backLayer]]という3つの[[レイヤー>座標系とレイヤー]]
+からなります。これらの3つのレイヤーは独立して [[スクロール>Screen.scrollTo]]
+（平行移動・回転・伸縮）が可能です
 
 **メソッド
 
 -[[resize]]
 -[[setBGColor]]
+-[[scrollTo>Screen.scrollTo]]
+-[[setPivot]]
+-[[selectLayer]]
+-[[convert]]
 
+.
  

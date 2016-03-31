@@ -1,0 +1,42 @@
+[[$touches]]
+
+*座標系とレイヤー
+
+Tonyu2の画面はいくつかの層（レイヤー）から成り立っています。
+
+-まず、ゲームが動作しているデバイスの画面全体のレイヤーを[[$uiLayer]]、その中に配置されたゲーム画面を[[$Screen>ScaledCanvas]]と呼びます。
+
+[[img layers.png]]
+
+-さらに、$Screenは、画面の手前から順に[[$frontLayer]]、[[$mainLayer]]、[[$backLayer]]という3つのレイヤーからなります。
+-これらの3つのレイヤーは独立してスクロール（平行移動・回転・伸縮）が可能です
+
+[[img layers2.png]]
+
+*オブジェクトを配置するレイヤーの指定
+
+オブジェクト([[Actor]])を生成すると、デフォルトでは$mainLayerに配置されますが、生成時に[[layer]]フィールドを設定すると、他のレイヤーに配置できます。
+
+例：
+<<code
+new ScoreLabel{x:100, y:400, text:"Score: 0", layer:$frontLayer};
+>>
+
+
+
+*レイヤーのスクロール
+
+$Screen.[[scrollTo>Screen.scrollTo]]メソッド を用います。デフォルトでは$mainLayerをスクロールの対象としていますが、$Screen.[[selectLayer]]で別のレイヤーもスクロール可能です。
+
+*レイヤー間の座標変換
+
+$Screen.[[convert]]メソッドを用いると、
+あるレイヤーに置かれているオブジェクトの座標を、見た目の位置を変えずに別のレイヤーの座標に変換することができます。
+
+*マウスおよびタッチの座標系
+
+[[$touches]]および、[[$mouseX, $mouseY]]の座標系はデフォルトでは$Screenの左上を(0,0)、右下を($screenWidth, $screenHeight)としたものになっています。
+
+[[$InputDevice.defaultLayer]]で座標系を変更できます。
+
+.

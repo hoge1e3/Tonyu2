@@ -390,21 +390,17 @@ Tonyu.klass.define({
       new Tonyu.classes.user.Ball({x: 200,y: 300,shape: "circle",p: 12,restitution: 1,density: 0.1,friction: 0,vx: 2,vy: 4});
       //$LASTPOS=5000208;//user.Main:208
       //$LASTPOS=5000213;//user.Main:213
-      _this.i=0;
-      while(_this.i<3) {
+      _this.i=0;for (; _this.i<3 ; _this.i++) {
         {
           //$LASTPOS=5000234;//user.Main:234
           //$LASTPOS=5000239;//user.Main:239
-          _this.j=0;
-          while(_this.j<6) {
+          _this.j=0;for (; _this.j<6 ; _this.j++) {
             {
               //$LASTPOS=5000265;//user.Main:265
               new Tonyu.classes.user.Block({x: 100+_this.j*50,y: 100+_this.i*50,p: 2+_this.i});
             }
-            _this.j++;
           }
         }
-        _this.i++;
       }
       //$LASTPOS=5000320;//user.Main:320
       new Tonyu.classes.user.Kabe({x: 200,y: 0,scaleX: 20,scaleY: 1});
@@ -437,21 +433,17 @@ Tonyu.klass.define({
       new Tonyu.classes.user.Ball({x: 200,y: 300,shape: "circle",p: 12,restitution: 1,density: 0.1,friction: 0,vx: 2,vy: 4});
       //$LASTPOS=5000208;//user.Main:208
       //$LASTPOS=5000213;//user.Main:213
-      _this.i=0;
-      while(_this.i<3) {
+      _this.i=0;for (; _this.i<3 ; _this.i++) {
         {
           //$LASTPOS=5000234;//user.Main:234
           //$LASTPOS=5000239;//user.Main:239
-          _this.j=0;
-          while(_this.j<6) {
+          _this.j=0;for (; _this.j<6 ; _this.j++) {
             {
               //$LASTPOS=5000265;//user.Main:265
               new Tonyu.classes.user.Block({x: 100+_this.j*50,y: 100+_this.i*50,p: 2+_this.i});
             }
-            _this.j++;
           }
         }
-        _this.i++;
       }
       //$LASTPOS=5000320;//user.Main:320
       new Tonyu.classes.user.Kabe({x: 200,y: 0,scaleX: 20,scaleY: 1});
