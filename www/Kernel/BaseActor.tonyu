@@ -16,7 +16,7 @@ native Array;
         this.y=y;
         this.p=p;
     }
-
+    layer=layer||$mainLayer;
     if (scaleX==null) scaleX=1;
     if (rotation==null) rotation=0;
     if (rotate==null) rotate=0;
@@ -219,18 +219,10 @@ nowait \die() {
     }
 }
 nowait \hide() {
-    if(layer && typeof layer.remove=="function"){
-        layer.remove(this);
-    }else{
-        $Sprites.remove(this);
-    }
+    layer.remove(this);
 }
 nowait \show(x,y,p) {
-    if(layer && typeof layer.add=="function"){
-        layer.add(this);
-    }else{
-        $Sprites.add(this);
-    }
+    layer.add(this);
     if (x!=null) this.x=x;
     if (y!=null) this.y=y;
     if (p!=null) this.p=p;
@@ -251,7 +243,7 @@ nowait \isDead() {
     return _isDead;
 }
 
-nowait \animation(){
+nowait \_animation(){
     age++;
     if(animMode && age%animFps==0){
         p=anim[animFrame%anim.length];
@@ -266,7 +258,7 @@ nowait \draw(ctx) {
         ctx.translate(x,y);
         //if (typeof rotate=="number" ) rotation=rotate;// 削除予定
         //ctx.rotate(this.rotation/180*Math.PI);
-        animation();
+        _animation();
         if(this.rotation!=0){
             ctx.rotate(this.rotation/180*Math.PI);
         }else{
@@ -319,13 +311,16 @@ nowait \draw(ctx) {
 \screenOut(a) {
     //オブジェクトが画面外に出たかどうかを判定します。
     if (!a) a=0;
-    var r=0;
-    var viewX=$Sprites.sx,viewY=$Sprites.sy;
+    //var r=0;
+    var cp=$Screen.convert(this,$Screen);
+    return abs(clamped(cp.x,-a,$screenWidth+a))+
+        abs(clamped(cp.y,-a,$screenHeight+a));
+    /*var viewX=$Sprites.sx,viewY=$Sprites.sy;
     if (x<viewX+a)               r+=viewX+a-x;
     if (y<viewY+a)               r+=viewY+a-y;
     if (x>$screenWidth +viewX-a) r+=x-($screenWidth +viewX-a);
     if (y>$screenHeight+viewY-a) r+=y-($screenHeight+viewY-a);
-    return r;
+    return r;*/
 }
 \screenOutChecker(d,f){
     while(true){

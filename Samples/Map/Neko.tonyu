@@ -6,6 +6,8 @@ pListLR=[3,4];
 dir="stop";
 p=$pat_neko+0;
 parallel("animate");
+$Screen.setPivot($screenWidth/2, $screenHeight/2);
+sc=1;
 while(true){
     dir="stop";
     sx=x;sy=y;
@@ -32,7 +34,8 @@ while(true){
         x=sx;y=sy;
         dir="stop";
     }
-    $Screen.scrollTo(x-$screenWidth/2, y-$screenHeight/2);
+    if (getkey("z")==1) sc=1.5-sc;
+    $Screen.scrollTo(x,y,sc);
     
     update();
 }

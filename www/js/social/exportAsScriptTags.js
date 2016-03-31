@@ -9,7 +9,7 @@ define(["FS","Util"], function (FS,Util) {
             buf+='<script src="http://tonyuedit.appspot.com/js/gen/runScript_concat.min.js" type="text/javascript"></script>\n';
         }
         buf+="<div id='splash' style='position:relative'>\n";
-        buf+="<!--ここに，ロード中に表示する内容を記述できます-->\n";
+        buf+="<!--ここに，ロード中に表示する内容を記述できます。表示したくない場合はこのdiv要素を削除してください。-->\n";
         buf+="</div>\n";
         buf+="<!--\n";
         buf+="このプログラムをTonyuの開発環境で編集するには，\n";

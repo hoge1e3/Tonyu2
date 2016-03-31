@@ -6,6 +6,7 @@ native T2MediaLib;
 \new() {
     listeners=[];
     touchEmu=true;
+    defaultLayer=$Screen;
 }
 \handleListeners() {
     var l=listeners;
@@ -19,8 +20,8 @@ native T2MediaLib;
     var cv=cvj[0];
     $handleMouse=\(e) {
         var p=cvj.offset();
-        var mp={x:e.clientX-p.left, y:e.clientY-p.top};
-        mp=$Screen.canvas2buf(mp);
+        var mp={x:e.clientX-p.left, y:e.clientY-p.top,layer:$Screen.layer};
+        mp=$Screen.convert(mp,defaultLayer);// $Screen.canvas2buf(mp);
         $mouseX=mp.x;
         $mouseY=mp.y;
         if (touchEmu) {
@@ -55,8 +56,8 @@ native T2MediaLib;
                 }
             }
             if (dst) {
-                mp={x:src.pageX-p.left, y:src.pageY-p.top};
-                mp=$Screen.canvas2buf(mp);
+                mp={x:src.pageX-p.left, y:src.pageY-p.top,layer:$Screen.layer};
+                mp=$Screen.convert(mp,defaultLayer);//$Screen.canvas2buf(mp);
                 dst.x=mp.x;
                 dst.y=mp.y;
                 if(!dst.touched) dst.touched=1;

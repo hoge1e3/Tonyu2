@@ -1,0 +1,35 @@
+extends Actor;
+
+doLayout();
+$Screen.on("resize",doLayout);
+$uiScreen.on("resize",doLayout);
+\doLayout() {
+    var cw=$uiScreen.width;
+    var ch=$uiScreen.height;
+    var width=$Screen.width;
+    var height=$Screen.height;
+    
+    var calcw=ch/height*width; // calch=ch(縦幅いっぱい)
+    var calch=cw/width*height; // calcw=cw(横幅いっぱい)
+    if (calch>ch) calch=ch;
+    if (calcw>cw) calcw=cw;
+    var scl=1;
+    if (shouldDraw1x1(width,height,calcw,calch)) {
+        calcw=width;calch=height;
+        $Screen.scaleX=1;
+    } else {
+        $Screen.scaleX=calcw/width;    
+    }
+    $Screen.x=cw/2;
+    $Screen.y=ch/2;
+    
+}
+
+
+\shouldDraw1x1(srcw,srch,dstw,dsth) {
+    // srcw=465 -> dstw=460...665
+    var larger=200;
+    var smaller=5;
+    return srcw-smaller<=dstw && dstw<=srcw+larger &&
+    srch-smaller<=dsth && dsth<=srch+larger;
+}

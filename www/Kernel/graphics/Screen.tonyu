@@ -1,0 +1,139 @@
+extends Panel;
+
+\onAppear() {
+    layers=[];
+    _color="black";
+}
+
+\drawLayers() {
+    if (!_drawing) {
+        if (!canvas) {
+            throw new Error("canvas is null");
+        }
+        _drawing=true;
+        fillStyle=_color;
+        fillRect(0,0,width,height);
+        var c=getContext();
+        for (var i=layers.length-1;i>=0;i--) {
+            var l=layers[i];
+            var group=l.group;
+            c.save();
+            var wpx=l.wpx,wpy=l.wpy;
+            var spx=l.spx,spy=l.spy;
+            var rt=l.rotation,sc=l.scale;
+            //print(wpx,wpy,spx,spy,sc,rt);
+            // wpOnS =    R(rt)*wp*sc; 
+            var wpOnSX=(cos(rt)*wpx+cos(rt+90)*wpy)*sc;
+            var wpOnSY=(sin(rt)*wpx+sin(rt+90)*wpy)*sc;
+            //console.log(wcOnSX,wcOnSY);
+            c.translate(-wpOnSX+spx,-wpOnSY+spy);
+            c.rotate(rad(rt));
+            c.scale(sc,sc);
+            group.draw(c);
+            c.restore();
+        }
+        _drawing=false;
+    }
+}
+\draw(ctx) {
+    drawLayers();
+    super.draw(ctx);
+}
+\addLayer(group) {
+    group=group||new Sprites;
+    layers.push{
+        spx:0,spy:0,
+        wpx:0,wpy:0,rotation:0,scale:1,
+        group,layer:this
+    };   
+    return layers.length-1;
+}
+\selectLayer(i) {
+    var r=findLayer(i);
+    if (r!=null) index=r;
+}
+\findLayer(i) {
+    if (typeof i=="number") {
+        if (layers[i]) return i;
+    } else {
+        for (var j=0; j<layers.length;j++) {
+            if (layers[j]==i || layers[j].group==i) {
+                return j;
+            }
+        }
+    }
+}
+\setPivot(x,y) {
+    layers[index].spx=x;    
+    layers[index].spy=y;    
+}
+\scrollTo(x,y,scl,rot) {
+    layers[index].wpx=x;    
+    layers[index].wpy=y;    
+    if (typeof scl=="number") layers[index].scale=scl;    
+    if (typeof rot=="number") layers[index].rotation=rot;    
+}
+\canvas2buf(p) {
+    p.layer=layer;
+    return convert(p, this);
+}
+/*\resize(w,h) {
+    super.resize(w,h);
+    if (layoutManager && !layoutManager.isDead()) {
+        layoutManager.doLayout();
+    }
+}*/
+
+\convert(obj, toLayer) {
+    if (toLayer==null) toLayer=this;
+    if (!obj.layer) throw new Error("layer not set");
+    if (obj.layer!==this && toLayer!==this) {
+        var p=convert(obj,this);
+        return convert(p,toLayer);
+    } else if (obj.layer!==this && toLayer===this) {
+        var l=findLayer(obj.layer);
+        if (l!=null) {
+            l=layers[l];
+            var dx=obj.x-l.wpx;
+            var dy=obj.y-l.wpy;
+            var rt=l.rotation;
+            // (x,y)= l.sp + R(rt)*(obj-l.wp)/l.scale; 
+            // (x)= l.spx + (cos(rt) cos(rt+90))*(dx)/l.scale; 
+            // (y)= l.spy + (sin(rt) sin(rt+90))*(dy)/l.scale; 
+            var x=l.spx + (cos(rt)*dx+cos(rt+90)*dy)/l.scale;
+            var y=l.spy + (sin(rt)*dx+sin(rt+90)*dy)/l.scale;
+            return {x,y,
+                rotation:obj.rotation,
+                scale:obj.scale,
+                layer:this
+            };
+        } else {
+            return super.convert(obj,this);
+        }
+    } else if (obj.layer===this && toLayer!==this) {
+        var l=findLayer(toLayer);
+        if (l!=null) {
+            l=layers[l];
+            
+            var rt=-l.rotation;
+            var dx=obj.x-l.spx;
+            var dy=obj.y-l.spy;
+            // (x,y)= l.sp + R(rt)*(obj-l.wp)/l.scale; 
+            // (x)= l.spx + (cos(rt) cos(rt+90))*(dx)/l.scale; 
+            // (y)= l.spy + (sin(rt) sin(rt+90))*(dy)/l.scale; 
+            var x=l.wpx + (cos(rt)*dx+cos(rt+90)*dy)/l.scale;
+            var y=l.wpy + (sin(rt)*dx+sin(rt+90)*dy)/l.scale;
+            return {x,y,
+                rotation:rt,
+                scale:1/l.scale,
+                layer:toLayer
+            };
+        } else {
+            return super.convert(obj,toLayer);
+        }
+    } else return obj;
+}
+\setBGColor(color){
+    this._color=color;
+}
+

@@ -408,7 +408,7 @@ function annotateSource2(klass, env) {//B
             this.visit(node.value);
         },
         "break": function (node) {
-            if (!ctx.brkable) throw TError( "break； は繰り返しの中で使います." , srcFile, node.pos);
+            if (!ctx.brkable) throw TError( "break； は繰り返しまたはswitch文の中で使います." , srcFile, node.pos);
             if (!ctx.noWait) annotateParents(this.path,{hasJump:true});
         },
         "continue": function (node) {

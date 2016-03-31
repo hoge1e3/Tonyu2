@@ -7,6 +7,7 @@ native Math;
         _th=$Boot.schedule(this,"tMain",[]);
         initSprite();
     }
+    layer=layer||$mainLayer;
     if (typeof x=="object") Tonyu.extend(this,x);
     else if (typeof x=="number") {
         this.x=x;

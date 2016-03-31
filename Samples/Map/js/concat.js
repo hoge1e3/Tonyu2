@@ -59,64 +59,73 @@ Tonyu.klass.define({
       //$LASTPOS=2000142;//user.Neko:142
       _this.parallel("animate");
       //$LASTPOS=2000164;//user.Neko:164
+      Tonyu.globals.$Screen.setPivot(Tonyu.globals.$screenWidth/2,Tonyu.globals.$screenHeight/2);
+      //$LASTPOS=2000216;//user.Neko:216
+      _this.sc=1;
+      //$LASTPOS=2000223;//user.Neko:223
       while (true) {
-        //$LASTPOS=2000182;//user.Neko:182
+        //$LASTPOS=2000241;//user.Neko:241
         _this.dir="stop";
-        //$LASTPOS=2000199;//user.Neko:199
+        //$LASTPOS=2000258;//user.Neko:258
         _this.sx=_this.x;
-        //$LASTPOS=2000204;//user.Neko:204
+        //$LASTPOS=2000263;//user.Neko:263
         _this.sy=_this.y;
-        //$LASTPOS=2000215;//user.Neko:215
+        //$LASTPOS=2000274;//user.Neko:274
         if (_this.getkey("down")) {
-          //$LASTPOS=2000244;//user.Neko:244
+          //$LASTPOS=2000303;//user.Neko:303
           _this.y+=4;
-          //$LASTPOS=2000259;//user.Neko:259
+          //$LASTPOS=2000318;//user.Neko:318
           _this.dir="down";
           
         }
-        //$LASTPOS=2000283;//user.Neko:283
+        //$LASTPOS=2000342;//user.Neko:342
         if (_this.getkey("up")) {
-          //$LASTPOS=2000310;//user.Neko:310
+          //$LASTPOS=2000369;//user.Neko:369
           _this.y-=4;
-          //$LASTPOS=2000325;//user.Neko:325
+          //$LASTPOS=2000384;//user.Neko:384
           _this.dir="up";
           
         }
-        //$LASTPOS=2000347;//user.Neko:347
+        //$LASTPOS=2000406;//user.Neko:406
         if (_this.getkey("left")) {
-          //$LASTPOS=2000376;//user.Neko:376
+          //$LASTPOS=2000435;//user.Neko:435
           _this.x-=4;
-          //$LASTPOS=2000391;//user.Neko:391
+          //$LASTPOS=2000450;//user.Neko:450
           _this.scaleX=- 1;
-          //$LASTPOS=2000411;//user.Neko:411
+          //$LASTPOS=2000470;//user.Neko:470
           _this.scaleY=1;
-          //$LASTPOS=2000430;//user.Neko:430
+          //$LASTPOS=2000489;//user.Neko:489
           _this.dir="lr";
           
         }
-        //$LASTPOS=2000452;//user.Neko:452
+        //$LASTPOS=2000511;//user.Neko:511
         if (_this.getkey("right")) {
-          //$LASTPOS=2000482;//user.Neko:482
+          //$LASTPOS=2000541;//user.Neko:541
           _this.scaleX=1;
-          //$LASTPOS=2000501;//user.Neko:501
+          //$LASTPOS=2000560;//user.Neko:560
           _this.x+=4;
-          //$LASTPOS=2000516;//user.Neko:516
+          //$LASTPOS=2000575;//user.Neko:575
           _this.dir="lr";
           
         }
-        //$LASTPOS=2000538;//user.Neko:538
+        //$LASTPOS=2000597;//user.Neko:597
         if (Tonyu.globals.$map.getOnAt(_this.x,_this.y)>- 1) {
-          //$LASTPOS=2000575;//user.Neko:575
+          //$LASTPOS=2000634;//user.Neko:634
           _this.x=_this.sx;
-          //$LASTPOS=2000580;//user.Neko:580
+          //$LASTPOS=2000639;//user.Neko:639
           _this.y=_this.sy;
-          //$LASTPOS=2000595;//user.Neko:595
+          //$LASTPOS=2000654;//user.Neko:654
           _this.dir="stop";
           
         }
-        //$LASTPOS=2000619;//user.Neko:619
-        Tonyu.globals.$Screen.scrollTo(_this.x-Tonyu.globals.$screenWidth/2,_this.y-Tonyu.globals.$screenHeight/2);
-        //$LASTPOS=2000685;//user.Neko:685
+        //$LASTPOS=2000678;//user.Neko:678
+        if (_this.getkey("z")==1) {
+          //$LASTPOS=2000698;//user.Neko:698
+          _this.sc=1.5-_this.sc;
+        }
+        //$LASTPOS=2000714;//user.Neko:714
+        Tonyu.globals.$Screen.scrollTo(_this.x,_this.y,_this.sc);
+        //$LASTPOS=2000751;//user.Neko:751
         _this.update();
         
       }
@@ -139,71 +148,80 @@ Tonyu.klass.define({
       _this.p=Tonyu.globals.$pat_neko+0;
       //$LASTPOS=2000142;//user.Neko:142
       _this.parallel("animate");
+      //$LASTPOS=2000164;//user.Neko:164
+      Tonyu.globals.$Screen.setPivot(Tonyu.globals.$screenWidth/2,Tonyu.globals.$screenHeight/2);
+      //$LASTPOS=2000216;//user.Neko:216
+      _this.sc=1;
       
       _thread.enter(function _trc_Neko_ent_main(_thread) {
         if (_thread.lastEx) __pc=_thread.catchPC;
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=2000164;//user.Neko:164
+            //$LASTPOS=2000223;//user.Neko:223
           case 1:
-            //$LASTPOS=2000182;//user.Neko:182
+            //$LASTPOS=2000241;//user.Neko:241
             _this.dir="stop";
-            //$LASTPOS=2000199;//user.Neko:199
+            //$LASTPOS=2000258;//user.Neko:258
             _this.sx=_this.x;
-            //$LASTPOS=2000204;//user.Neko:204
+            //$LASTPOS=2000263;//user.Neko:263
             _this.sy=_this.y;
-            //$LASTPOS=2000215;//user.Neko:215
+            //$LASTPOS=2000274;//user.Neko:274
             if (_this.getkey("down")) {
-              //$LASTPOS=2000244;//user.Neko:244
+              //$LASTPOS=2000303;//user.Neko:303
               _this.y+=4;
-              //$LASTPOS=2000259;//user.Neko:259
+              //$LASTPOS=2000318;//user.Neko:318
               _this.dir="down";
               
             }
-            //$LASTPOS=2000283;//user.Neko:283
+            //$LASTPOS=2000342;//user.Neko:342
             if (_this.getkey("up")) {
-              //$LASTPOS=2000310;//user.Neko:310
+              //$LASTPOS=2000369;//user.Neko:369
               _this.y-=4;
-              //$LASTPOS=2000325;//user.Neko:325
+              //$LASTPOS=2000384;//user.Neko:384
               _this.dir="up";
               
             }
-            //$LASTPOS=2000347;//user.Neko:347
+            //$LASTPOS=2000406;//user.Neko:406
             if (_this.getkey("left")) {
-              //$LASTPOS=2000376;//user.Neko:376
+              //$LASTPOS=2000435;//user.Neko:435
               _this.x-=4;
-              //$LASTPOS=2000391;//user.Neko:391
+              //$LASTPOS=2000450;//user.Neko:450
               _this.scaleX=- 1;
-              //$LASTPOS=2000411;//user.Neko:411
+              //$LASTPOS=2000470;//user.Neko:470
               _this.scaleY=1;
-              //$LASTPOS=2000430;//user.Neko:430
+              //$LASTPOS=2000489;//user.Neko:489
               _this.dir="lr";
               
             }
-            //$LASTPOS=2000452;//user.Neko:452
+            //$LASTPOS=2000511;//user.Neko:511
             if (_this.getkey("right")) {
-              //$LASTPOS=2000482;//user.Neko:482
+              //$LASTPOS=2000541;//user.Neko:541
               _this.scaleX=1;
-              //$LASTPOS=2000501;//user.Neko:501
+              //$LASTPOS=2000560;//user.Neko:560
               _this.x+=4;
-              //$LASTPOS=2000516;//user.Neko:516
+              //$LASTPOS=2000575;//user.Neko:575
               _this.dir="lr";
               
             }
-            //$LASTPOS=2000538;//user.Neko:538
+            //$LASTPOS=2000597;//user.Neko:597
             if (Tonyu.globals.$map.getOnAt(_this.x,_this.y)>- 1) {
-              //$LASTPOS=2000575;//user.Neko:575
+              //$LASTPOS=2000634;//user.Neko:634
               _this.x=_this.sx;
-              //$LASTPOS=2000580;//user.Neko:580
+              //$LASTPOS=2000639;//user.Neko:639
               _this.y=_this.sy;
-              //$LASTPOS=2000595;//user.Neko:595
+              //$LASTPOS=2000654;//user.Neko:654
               _this.dir="stop";
               
             }
-            //$LASTPOS=2000619;//user.Neko:619
-            Tonyu.globals.$Screen.scrollTo(_this.x-Tonyu.globals.$screenWidth/2,_this.y-Tonyu.globals.$screenHeight/2);
-            //$LASTPOS=2000685;//user.Neko:685
+            //$LASTPOS=2000678;//user.Neko:678
+            if (_this.getkey("z")==1) {
+              //$LASTPOS=2000698;//user.Neko:698
+              _this.sc=1.5-_this.sc;
+            }
+            //$LASTPOS=2000714;//user.Neko:714
+            Tonyu.globals.$Screen.scrollTo(_this.x,_this.y,_this.sc);
+            //$LASTPOS=2000751;//user.Neko:751
             _this.fiber$update(_thread);
             __pc=2;return;
           case 2:
@@ -220,25 +238,25 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=2000716;//user.Neko:716
+      //$LASTPOS=2000782;//user.Neko:782
       _this.counter=0;
-      //$LASTPOS=2000751;//user.Neko:751
+      //$LASTPOS=2000817;//user.Neko:817
       while (true) {
-        //$LASTPOS=2000773;//user.Neko:773
+        //$LASTPOS=2000839;//user.Neko:839
         if (_this.dir=="down") {
-          //$LASTPOS=2000803;//user.Neko:803
+          //$LASTPOS=2000869;//user.Neko:869
           _this.p=Tonyu.globals.$pat_neko+_this.pListDown[_this.counter%4];
           
         } else {
-          //$LASTPOS=2000852;//user.Neko:852
+          //$LASTPOS=2000918;//user.Neko:918
           if (_this.dir=="up") {
-            //$LASTPOS=2000880;//user.Neko:880
+            //$LASTPOS=2000946;//user.Neko:946
             _this.p=Tonyu.globals.$pat_neko+_this.pListUp[_this.counter%4];
             
           } else {
-            //$LASTPOS=2000927;//user.Neko:927
+            //$LASTPOS=2000993;//user.Neko:993
             if (_this.dir=="lr") {
-              //$LASTPOS=2000955;//user.Neko:955
+              //$LASTPOS=2001021;//user.Neko:1021
               _this.p=Tonyu.globals.$pat_neko+_this.pListLR[_this.counter%2];
               
             } else {
@@ -247,9 +265,9 @@ Tonyu.klass.define({
             }
           }
         }
-        //$LASTPOS=2001053;//user.Neko:1053
+        //$LASTPOS=2001119;//user.Neko:1119
         _this.counter++;
-        //$LASTPOS=2001102;//user.Neko:1102
+        //$LASTPOS=2001168;//user.Neko:1168
         _this.updateEx(4);
         
       }
@@ -260,7 +278,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=2000716;//user.Neko:716
+      //$LASTPOS=2000782;//user.Neko:782
       _this.counter=0;
       
       _thread.enter(function _trc_Neko_ent_animate(_thread) {
@@ -268,23 +286,23 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=2000751;//user.Neko:751
+            //$LASTPOS=2000817;//user.Neko:817
           case 1:
-            //$LASTPOS=2000773;//user.Neko:773
+            //$LASTPOS=2000839;//user.Neko:839
             if (_this.dir=="down") {
-              //$LASTPOS=2000803;//user.Neko:803
+              //$LASTPOS=2000869;//user.Neko:869
               _this.p=Tonyu.globals.$pat_neko+_this.pListDown[_this.counter%4];
               
             } else {
-              //$LASTPOS=2000852;//user.Neko:852
+              //$LASTPOS=2000918;//user.Neko:918
               if (_this.dir=="up") {
-                //$LASTPOS=2000880;//user.Neko:880
+                //$LASTPOS=2000946;//user.Neko:946
                 _this.p=Tonyu.globals.$pat_neko+_this.pListUp[_this.counter%4];
                 
               } else {
-                //$LASTPOS=2000927;//user.Neko:927
+                //$LASTPOS=2000993;//user.Neko:993
                 if (_this.dir=="lr") {
-                  //$LASTPOS=2000955;//user.Neko:955
+                  //$LASTPOS=2001021;//user.Neko:1021
                   _this.p=Tonyu.globals.$pat_neko+_this.pListLR[_this.counter%2];
                   
                 } else {
@@ -293,9 +311,9 @@ Tonyu.klass.define({
                 }
               }
             }
-            //$LASTPOS=2001053;//user.Neko:1053
+            //$LASTPOS=2001119;//user.Neko:1119
             _this.counter++;
-            //$LASTPOS=2001102;//user.Neko:1102
+            //$LASTPOS=2001168;//user.Neko:1168
             _this.fiber$updateEx(_thread, 4);
             __pc=2;return;
           case 2:

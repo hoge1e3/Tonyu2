@@ -42,10 +42,13 @@ define(["UI","extLink","mkrun","Tonyu","zip"], function (UI,extLink,mkrun,Tonyu,
                 }
                 UIDiag.alert(UI("div",
                          ["p",(options.hiddenFolder?"":model.dest+"に")+"ランタイムを作成しました。"],
-                         ["p",(model.zip?"保存したZIPファイルを":"上のフォルダをZIPで圧縮したものを"),
+                         ["p","次のいずれかの方法でWebアプリとして公開することができます。"],
+                         ["ul",
+                         ["li",(model.zip?"解凍した":"")+"フォルダをお手持ちのWebサーバにアップロードする"],
+                         ["li",(model.zip?"保存したZIPファイルを":"上のフォルダをZIPで圧縮したものを"),
                           extLink("http://hoge1e3.sakura.ne.jp/tonyu/project/",
                                   "プロジェクトボード",{style:"color: blue;"}),
-                          "にてWebアプリとして公開することができます。"]
+                          "にアップロードする"]]
                         ),{width:"auto"}
                 );
                 res.d.$vars.OKButton.prop("disabled", false);

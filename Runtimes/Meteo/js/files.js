@@ -1,0 +1,4 @@
+function loadFiles(dir){
+	dir.rel('res.json').obj({"images":[{"name":"$pat_ball1","url":"images/Ball.png"},{"name":"$pat_Drop","url":"images/Drop.png"},{"name":"$pat_chars","url":"images/chars.png"},{"name":"$pat_sentouki","url":"images/sentouki.png"},{"name":"$pat_bomb","url":"images/bomb.png"},{"name":"$icon_thumbnail","pwidth":100,"pheight":100,"url":"images/icon_thumbnail.png"},{"pwidth":55,"pheight":55,"name":"$pat_Inseki","url":"images/inseki.png"}],"sounds":[]});
+	dir.rel('options.json').obj({"compiler":{"defaultSuperClass":"Actor","commentLastPos":true,"diagnose":false},"run":{"mainClass":"Page_index","bootClass":"Boot"},"kernelEditable":false,"plugins":{"timbre":1}});
+}

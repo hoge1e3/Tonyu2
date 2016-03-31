@@ -1,5 +1,6 @@
 extends null;
 
+
 nowait function drawTextRect(ctx, text, x, topY, h, align , type) {
     if (!align) align="center";
     ctx.textBaseline="top";

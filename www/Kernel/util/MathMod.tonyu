@@ -68,4 +68,16 @@ nowait \rnd(r) {
 nowait \parseFloat(s) {
     return parseFloat(s);
 }
-
+nowait \clamp(v,min,max) {
+    if (min>max) return clamp(v,max,min);
+    return v<min?min:v>max?max:v;
+}
+nowait \clamped(v,min,max) {
+    return clamp(v,min,max)-v;
+}
+nowait \min() {
+    return Math.min.apply(Math,arguments);
+}
+nowait \max() {
+    return Math.max.apply(Math,arguments);
+}

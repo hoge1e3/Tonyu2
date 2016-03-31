@@ -23,3 +23,6 @@ panel=new Panel();
 -[[fillText]]
 -[[clearRect]]
 -[[getPixel]]
+-[[copy>Panel.copy]]
+
+.

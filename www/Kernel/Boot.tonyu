@@ -13,6 +13,7 @@ native requestAnimationFrame;
 native console;
 
 $Boot=this;
+scheduler=$Scheduler=new Scheduler;
 initEvents();
 initLayers();
 initPeripherals();
@@ -40,7 +41,6 @@ mainLoop();
 \initPeripherals() {
     $InputDevice=new InputDevice;
     $InputDevice.initCanvasEvents(cvj);
-    scheduler=$Scheduler=new Scheduler;
     $ObjectPool=new ObjectPool;
     $pat_fruits=30;
     $Keys=new Keys;
@@ -56,15 +56,33 @@ mainLoop();
     $mainLayer=$Sprites=new Sprites();
     $frontLayer=$FrontSprites=new Sprites();
     $backLayer=new Sprites();
-    $UILayer=new Sprites();
+    $uiLayer=new Sprites();
     cvj=$("canvas");
-    if (Tonyu.noviceMode) {
-        $Screen=new ScaledCanvas{canvas:cvj, width:600, height:300};
-    } else {
-        $Screen=new ScaledCanvas{canvas:cvj, width:465, height:465};
-    }
+    $screenWidth=465;
+    $screenHeight=465;
+    $Screen=new Screen{width:$screenWidth, height:$screenHeight, layer:$uiLayer};
+    $Screen.addLayer($frontLayer);
+    $Screen.addLayer($mainLayer);
+    $Screen.addLayer($backLayer);
+    $Screen.setBGColor("rgb(20,80,180)");
+    $Screen.selectLayer($mainLayer);
+    $rootLayer=new Sprites();
+    $uiScreen=new Screen{canvas:$("canvas")[0],layer:$rootLayer};    
+    $uiScreen.setBGColor("#888");
+    $uiScreen.addLayer($uiLayer);
+    $layoutManager=new UILayout{layer:$uiLayer};
     drawFrame();
 }
+/*----OLD
+\initLayers() {
+    $mainLayer=$Sprites=new Sprites();
+    $frontLayer=$FrontSprites=new Sprites();
+    $backLayer=new Sprites();
+    $UILayer=new Sprites();
+    cvj=$("canvas");
+    $Screen=new ScaledCanvas{canvas:cvj, width:465, height:465};
+    drawFrame();
+}*/
 \loadPlugins() {
     progress("Loading plugins..");
     runAsync \(r) {
@@ -224,6 +242,13 @@ nowait \detectRAFResolution(t) {
     }
 }
 nowait \drawFrame() {
+    var s=now(); 
+    $uiScreen.drawLayers();
+    drawTime=now()-s;
+    fps_fpsCnt ++;
+}
+/*----OLD
+nowait \drawFrame() {
 	var s=now();
 	var ctx=$Screen.buf[0].getContext("2d");
     $Screen.fillCanvas($Screen.buf[0]);
@@ -234,6 +259,7 @@ nowait \drawFrame() {
     drawTime=now()-s;
     fps_fpsCnt ++;
 }
+*/
 nowait \moveFrame() {
 	var s=now();
     scheduler.stepsAll();
