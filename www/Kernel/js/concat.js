@@ -9625,22 +9625,22 @@ Tonyu.klass.define({
           
           //$LASTPOS=35002363;//kernel.Screen:2363
           if (l!=null) {
-            //$LASTPOS=35002390;//kernel.Screen:2390
+            //$LASTPOS=35002421;//kernel.Screen:2421
             l=_this.layers[l];
-            //$LASTPOS=35002415;//kernel.Screen:2415
+            //$LASTPOS=35002446;//kernel.Screen:2446
             dx = obj.x-l.wpx;
             
-            //$LASTPOS=35002447;//kernel.Screen:2447
+            //$LASTPOS=35002478;//kernel.Screen:2478
             dy = obj.y-l.wpy;
             
-            //$LASTPOS=35002479;//kernel.Screen:2479
+            //$LASTPOS=35002510;//kernel.Screen:2510
             rt = l.rotation;
             
-            //$LASTPOS=35002694;//kernel.Screen:2694
-            x = l.spx+(_this.cos(rt)*dx+_this.cos(rt+90)*dy)/l.scale;
+            //$LASTPOS=35002725;//kernel.Screen:2725
+            x = l.spx+(_this.cos(rt)*dx+_this.cos(rt+90)*dy)*l.scale;
             
-            //$LASTPOS=35002756;//kernel.Screen:2756
-            y = l.spy+(_this.sin(rt)*dx+_this.sin(rt+90)*dy)/l.scale;
+            //$LASTPOS=35002787;//kernel.Screen:2787
+            y = l.spy+(_this.sin(rt)*dx+_this.sin(rt+90)*dy)*l.scale;
             
             return {x: x,y: y,rotation: obj.rotation,scale: obj.scale,layer: _this};
             
@@ -9650,28 +9650,28 @@ Tonyu.klass.define({
           }
           
         } else {
-          //$LASTPOS=35003027;//kernel.Screen:3027
+          //$LASTPOS=35003058;//kernel.Screen:3058
           if (obj.layer===_this&&toLayer!==_this) {
-            //$LASTPOS=35003077;//kernel.Screen:3077
+            //$LASTPOS=35003108;//kernel.Screen:3108
             l = _this.findLayer(toLayer);
             
-            //$LASTPOS=35003111;//kernel.Screen:3111
+            //$LASTPOS=35003142;//kernel.Screen:3142
             if (l!=null) {
-              //$LASTPOS=35003138;//kernel.Screen:3138
+              //$LASTPOS=35003200;//kernel.Screen:3200
               l=_this.layers[l];
-              //$LASTPOS=35003176;//kernel.Screen:3176
+              //$LASTPOS=35003238;//kernel.Screen:3238
               rt = - l.rotation;
               
-              //$LASTPOS=35003208;//kernel.Screen:3208
+              //$LASTPOS=35003270;//kernel.Screen:3270
               dx = obj.x-l.spx;
               
-              //$LASTPOS=35003240;//kernel.Screen:3240
+              //$LASTPOS=35003302;//kernel.Screen:3302
               dy = obj.y-l.spy;
               
-              //$LASTPOS=35003456;//kernel.Screen:3456
+              //$LASTPOS=35003518;//kernel.Screen:3518
               x = l.wpx+(_this.cos(rt)*dx+_this.cos(rt+90)*dy)/l.scale;
               
-              //$LASTPOS=35003518;//kernel.Screen:3518
+              //$LASTPOS=35003580;//kernel.Screen:3580
               y = l.wpy+(_this.sin(rt)*dx+_this.sin(rt+90)*dy)/l.scale;
               
               return {x: x,y: y,rotation: rt,scale: 1/l.scale,layer: toLayer};
@@ -9737,22 +9737,22 @@ Tonyu.klass.define({
             
             //$LASTPOS=35002363;//kernel.Screen:2363
             if (!(l!=null)) { __pc=4; break; }
-            //$LASTPOS=35002390;//kernel.Screen:2390
+            //$LASTPOS=35002421;//kernel.Screen:2421
             l=_this.layers[l];
-            //$LASTPOS=35002415;//kernel.Screen:2415
+            //$LASTPOS=35002446;//kernel.Screen:2446
             dx = obj.x-l.wpx;
             
-            //$LASTPOS=35002447;//kernel.Screen:2447
+            //$LASTPOS=35002478;//kernel.Screen:2478
             dy = obj.y-l.wpy;
             
-            //$LASTPOS=35002479;//kernel.Screen:2479
+            //$LASTPOS=35002510;//kernel.Screen:2510
             rt = l.rotation;
             
-            //$LASTPOS=35002694;//kernel.Screen:2694
-            x = l.spx+(_this.cos(rt)*dx+_this.cos(rt+90)*dy)/l.scale;
+            //$LASTPOS=35002725;//kernel.Screen:2725
+            x = l.spx+(_this.cos(rt)*dx+_this.cos(rt+90)*dy)*l.scale;
             
-            //$LASTPOS=35002756;//kernel.Screen:2756
-            y = l.spy+(_this.sin(rt)*dx+_this.sin(rt+90)*dy)/l.scale;
+            //$LASTPOS=35002787;//kernel.Screen:2787
+            y = l.spy+(_this.sin(rt)*dx+_this.sin(rt+90)*dy)*l.scale;
             
             _thread.exit({x: x,y: y,rotation: obj.rotation,scale: obj.scale,layer: _this});return;
             __pc=5;break;
@@ -9762,31 +9762,31 @@ Tonyu.klass.define({
             
             __pc=12;break;
           case 6:
-            //$LASTPOS=35003027;//kernel.Screen:3027
+            //$LASTPOS=35003058;//kernel.Screen:3058
             if (!(obj.layer===_this&&toLayer!==_this)) { __pc=10; break; }
-            //$LASTPOS=35003077;//kernel.Screen:3077
+            //$LASTPOS=35003108;//kernel.Screen:3108
             _this.fiber$findLayer(_thread, toLayer);
             __pc=7;return;
           case 7:
             l=_thread.retVal;
             
-            //$LASTPOS=35003111;//kernel.Screen:3111
+            //$LASTPOS=35003142;//kernel.Screen:3142
             if (!(l!=null)) { __pc=8; break; }
-            //$LASTPOS=35003138;//kernel.Screen:3138
+            //$LASTPOS=35003200;//kernel.Screen:3200
             l=_this.layers[l];
-            //$LASTPOS=35003176;//kernel.Screen:3176
+            //$LASTPOS=35003238;//kernel.Screen:3238
             rt = - l.rotation;
             
-            //$LASTPOS=35003208;//kernel.Screen:3208
+            //$LASTPOS=35003270;//kernel.Screen:3270
             dx = obj.x-l.spx;
             
-            //$LASTPOS=35003240;//kernel.Screen:3240
+            //$LASTPOS=35003302;//kernel.Screen:3302
             dy = obj.y-l.spy;
             
-            //$LASTPOS=35003456;//kernel.Screen:3456
+            //$LASTPOS=35003518;//kernel.Screen:3518
             x = l.wpx+(_this.cos(rt)*dx+_this.cos(rt+90)*dy)/l.scale;
             
-            //$LASTPOS=35003518;//kernel.Screen:3518
+            //$LASTPOS=35003580;//kernel.Screen:3580
             y = l.wpy+(_this.sin(rt)*dx+_this.sin(rt+90)*dy)/l.scale;
             
             _thread.exit({x: x,y: y,rotation: rt,scale: 1/l.scale,layer: toLayer});return;
@@ -9813,7 +9813,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=35003823;//kernel.Screen:3823
+      //$LASTPOS=35003885;//kernel.Screen:3885
       _this._color=color;
     },
     fiber$setBGColor :function _trc_Screen_f_setBGColor(_thread,color) {
@@ -9822,7 +9822,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=35003823;//kernel.Screen:3823
+      //$LASTPOS=35003885;//kernel.Screen:3885
       _this._color=color;
       
       _thread.retVal=_this;return;

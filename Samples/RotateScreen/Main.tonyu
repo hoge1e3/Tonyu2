@@ -1,0 +1,6 @@
+$map=new Map{chipWidth:32,chipHeight:32};
+$map.load("map.json");
+$Screen.setBGColor("#444");
+$Screen.setPivot($screenWidth/2,$screenHeight-100);
+new Actor{x:230,y:50,text:"Use  ←, →, Space",size:30,layer:$frontLayer};
+new Car{x:300,y:150};

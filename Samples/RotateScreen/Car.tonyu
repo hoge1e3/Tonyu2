@@ -1,0 +1,20 @@
+p=$pat_neko+45;
+rotation=90;
+speed=0;
+while(true) {
+    $Screen.scrollTo(x,y,1/(abs(speed)*0.05+1),-rotation);
+    if (getkey(32)) {
+        speed+=0.3;
+    }
+    if (getkey("left")) rotation-=speed/2;
+    if (getkey("right")) rotation+=speed/2;
+    speed*=0.96;
+    sx=x;sy=y;
+    x+=cos(rotation-90)*speed;
+    y+=sin(rotation-90)*speed;
+    if ($map.getOnAt(x,y)>=0) {
+        speed*=-1;
+        x=sx;y=sy;
+    }
+    update();
+}

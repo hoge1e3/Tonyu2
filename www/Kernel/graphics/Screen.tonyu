@@ -93,6 +93,7 @@ extends Panel;
     } else if (obj.layer!==this && toLayer===this) {
         var l=findLayer(obj.layer);
         if (l!=null) {
+            // world to screen
             l=layers[l];
             var dx=obj.x-l.wpx;
             var dy=obj.y-l.wpy;
@@ -100,8 +101,8 @@ extends Panel;
             // (x,y)= l.sp + R(rt)*(obj-l.wp)/l.scale; 
             // (x)= l.spx + (cos(rt) cos(rt+90))*(dx)/l.scale; 
             // (y)= l.spy + (sin(rt) sin(rt+90))*(dy)/l.scale; 
-            var x=l.spx + (cos(rt)*dx+cos(rt+90)*dy)/l.scale;
-            var y=l.spy + (sin(rt)*dx+sin(rt+90)*dy)/l.scale;
+            var x=l.spx + (cos(rt)*dx+cos(rt+90)*dy)*l.scale;
+            var y=l.spy + (sin(rt)*dx+sin(rt+90)*dy)*l.scale;
             return {x,y,
                 rotation:obj.rotation,
                 scale:obj.scale,
@@ -113,6 +114,7 @@ extends Panel;
     } else if (obj.layer===this && toLayer!==this) {
         var l=findLayer(toLayer);
         if (l!=null) {
+            // screen to world
             l=layers[l];
             
             var rt=-l.rotation;
