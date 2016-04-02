@@ -138,4 +138,12 @@ extends Panel;
 \setBGColor(color){
     this._color=color;
 }
+\all() {
+    var res=new TQuery;
+    for (var l in layers) {
+        var q=l.group.all.apply(l.group,arguments);
+        res.push(q);
+    }
+    return res;
+}
 

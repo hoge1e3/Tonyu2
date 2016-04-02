@@ -18,4 +18,6 @@ $Screen.scrollTo(worldX,worldY, scale, rotation)
 ※2 スクロール基準点はデフォルトでは画面の左上です。[[setPivot]]メソッドで変更可能です。
 
 
+[[ScreenscrollTo-実例]]
+
 .

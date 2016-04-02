@@ -141,7 +141,14 @@ mainLoop();
     if (!mainClass) {
         throw new Error( mainClassName+" というクラスはありません");
     }
+    $excludeFromAll=$Screen.all();
     new mainClass();
+}
+\loadPage(page,arg) {
+    var a=$Screen.all();
+    a=a.find \(e) { return !$excludeFromAll.contains(e); };
+    a.die();
+    new page(arg);
 }
 \stop() {
     fireEvent("stop");

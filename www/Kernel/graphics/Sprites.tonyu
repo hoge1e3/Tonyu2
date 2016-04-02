@@ -150,3 +150,17 @@ function scrollTo(scrollX,scrollY){
     sx=scrollX;
     sy=scrollY;
 }
+
+nowait \all(c) {
+    var res=new TQuery;
+    if (arguments.length>0 && typeof c!="function") {
+        return res;
+    }
+    sprites.forEach \(s) {
+        if (s===this) return;
+        if (!c || s instanceof c) {
+            res.push(s);
+        }
+    };
+    return res;
+}

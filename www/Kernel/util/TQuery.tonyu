@@ -3,6 +3,12 @@ includes MathMod;
 \new () {
     length=0;
 }
+\contains(t) {
+    for (var o in this) {
+        if (o===t) return true;
+    }
+    return false;
+}
 \tonyuIterator(arity) {
     var res={};
     res.i=0;
@@ -126,8 +132,12 @@ includes MathMod;
     return res;
 }
 \push(e) {
-    this[length]=e;
-    length++;
+    if (e is TQuery || e is Array) {
+        for (var ee in e) push(ee);
+    } else {
+        this[length]=e;
+        length++;
+    }
 }
 \size() {return length;}
 \find(f) {

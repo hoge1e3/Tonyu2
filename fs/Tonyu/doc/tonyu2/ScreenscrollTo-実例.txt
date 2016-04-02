@@ -2,22 +2,27 @@
 
 *スクリーン全体をスクロールさせる
 
-<<code Main
-//事前にマップを作っておく
+[[$Screen.scrollTo>Screen.scrollTo]]、[[$Screen.setPivot>setPivot]]を用いる。
 
-i=0;
+
+<<code Main
+//このキャラクタ単独ではスクロールしていることがわかりにくいので、動かないオブジェクトをいくつか置いておく
+for (i=0;i<10;i++) {
+    new Actor{x:rnd(400),y:rnd(400)};
+}
+x=200;y=200;p=$pat_neko;
+// $Screen.scrollToの基準点を画面真ん中に設定
+$Screen.setPivot($screenWidth/2,$screenHeight/2);
 while(true){
-    $Screen.scrollTo(i,0);
-    i++;
+    // このキャラクタが画面真ん中に来るように設定
+    $Screen.scrollTo(x,y);
+    x++;
     update();
 }
 >>
 
--scrollTo(xの元の位置からの移動距離,yの元の位置からの移動距離);
 
 
-
+参考
 -[[特定のオブジェクトだけスクロールの影響を受けないようにする>layer-実例]]
--[[マップだけをスクロールさせる>mapscrollTo]]
-
 

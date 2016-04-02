@@ -29,5 +29,4 @@ while(true) {
 
 参考：
 -[[スクリーン全体をスクロールさせる>ScreenscrollTo-実例]]
--[[マップだけをスクロールさせる>mapscrollTo]]
 

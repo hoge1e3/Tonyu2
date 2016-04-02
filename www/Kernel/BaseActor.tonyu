@@ -84,24 +84,25 @@ nowait \hitTo(t) {
     return crashTo(t);
 }
 nowait \all(c) {
-    var res=new TQuery;
+    return layer.all(c);
+    /*var res=new TQuery;
     if (arguments.length>0 && typeof c!="function") {
         return res;
     }
-    $Sprites.sprites.forEach \(s) {
+    layer.sprites.forEach \(s) {
         if (s===this) return;
         if (!c || s instanceof c) {
             res.push(s);
         }
     };
-    return res;// new TQuery{objects:res};
+    return res;*/
 }
 nowait \allCrash(t) {
     var res=new TQuery;
     var sp=this; //_sprite || this;
     var t1=getCrashRect();
     if (!t1) return res;
-    $Sprites.sprites.forEach(\(s) {
+    layer.sprites.forEach(\(s) {
         var t2;
         if (s!==this &&
         !s.excludeFromAll &&
@@ -162,7 +163,7 @@ nowait \allWithin(t,distance) {
     var sp=this; //_sprite || this;
     var t1=getCrashRect();
     if (!t1) return res;
-    $Sprites.sprites.forEach(\(s) {
+    layer.sprites.forEach(\(s) {
         var t2;
         if (s!==this &&
         !s.excludeFromAll &&
@@ -201,7 +202,7 @@ nowait \within1(t,distance){
     }
 }
 nowait \watchHit(typeA,typeB,onHit) {
-    $Sprites.watchHit(typeA , typeB, \(a,b) {
+    layer.watchHit(typeA , typeB, \(a,b) {
         onHit.apply(this,[a,b]);
     });
 }
@@ -350,19 +351,20 @@ nowait \draw(ctx) {
         $InputDevice.addOnetimeListener(f);
     };
 }
-\redrawScreen() {
+/*\redrawScreen() {
     $Sprites.draw($Screen.buf[0]);
     $Screen.draw();
-}
+}*/
 
 // from PlainChar
-\color(r,g,b) {
+nowait \color(r,g,b) {
     return "rgb("+[r,g,b].join(",")+")";
 }
-\loadPage(page,arg){
-    all().die();
+nowait \loadPage(){
+    $Boot.loadPage.apply($Boot,arguments);
+    /*    all().die();
     new page(arg);
-    die();
+    die();*/
 }
 
 \setVisible(v) {
