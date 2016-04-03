@@ -84,8 +84,8 @@ nowait \hitTo(t) {
     return crashTo(t);
 }
 nowait \all(c) {
-    return layer.all(c);
-    /*var res=new TQuery;
+    //return layer.all.apply(layer,arguments); <- includes myself!
+    var res=new TQuery;
     if (arguments.length>0 && typeof c!="function") {
         return res;
     }
@@ -95,7 +95,7 @@ nowait \all(c) {
             res.push(s);
         }
     };
-    return res;*/
+    return res;
 }
 nowait \allCrash(t) {
     var res=new TQuery;

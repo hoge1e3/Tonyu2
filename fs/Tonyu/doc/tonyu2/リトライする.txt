@@ -1,26 +1,24 @@
 [[用途別リファレンス]]
 
-[[キャラクターを消す]]
+*リトライする
 
-[[すべてのオブジェクトを消す]]
-*Main全体をwhileで囲う
+[[loadPage]]を使うと、画面を読み込み直すことができる。
+
 <<code Main
-while(true){
-//プレイヤーの配置などの初期設定
-  p=new Player{x:300,y:300,HP:1};
-  e=new Enemy{x:100,y:100,p:5};
-  l=new Label{x:230,y:400,text:"GAMESTART"};
+//初期設定
+p=new Player{x:300,y:300,HP:1};
+e=new Enemy{x:100,y:100,p:5};
+l=new Label{x:230,y:400,text:"GAMESTART"};
 //初期設定ここまで
 
-  while(true){
-    if(p.HP==0)l.text="GAMEOVER rを押すとリトライ";
-    if(p.HP==0 && getkey("r")==1) {
-      all().die();
-      break;
-    }
-    update();
-  }
-  update();
+while(true){
+   if(p.HP==0) {
+      l.text="GAMEOVER rを押すとリトライ";
+      if(getkey("r")==1) {//rが押されたら
+          loadPage(Main);//Mainを読み込みしなおす
+      }
+   }
+   update();
 }
 >>
 <<code Player
@@ -41,4 +39,4 @@ while(true){
 何も書かなくてよい
 >>
 
-ゲームの初期設定などを再度行うためにプログラム全体をループさせる事で、ゲームオーバーになった後に再度ゲームを実行してゲームを繰り返しプレイする事が出来る。
+

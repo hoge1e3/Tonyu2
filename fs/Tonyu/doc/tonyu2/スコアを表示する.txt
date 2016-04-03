@@ -1,44 +1,43 @@
-[[用途別リファレンス]]
-
-[[文字を表示する]]
-
-[[文字をテキストオブジェクトとして表示する]]
+[[用途別リファレンス]] ‐ [[文字をテキストオブジェクトとして表示する]]
 
 *スコアを表示する
 
 やり方１
 
+-[[@cfrag $score]]という[[グローバル変数]]を用意します。
+-[[@cfrag ScoreLabel]]というクラスを作り、そのオブジェクト自身が[[@cfrag $score]]の値を用いて文字を更新します。
+
 <<code Main
 $score=0;
-new Score;
+new ScoreLabel;
 while(true){
   if(getkey("z")==1) $score+=10;
   update();
 }
 >>
-<<code Score
+<<code ScoreLabel
 x=200;
 y=200;
 while(true) {
-  text="Score:"+$score;
+  text="Score:"+$score;//Score XXX という文字を表示させる
   update();
 }
 >>
 
 やり方２
 
+-[[@cfrag Label]]というクラスの[[@cfrag $scoreLabel]]というオブジェクトを作り、Mainオブジェクトから[[@cfrag $scoreLabel]]の文字を更新します。
+
 <<code Main
 $score=0;
 $scoreLabel=new Label{x:200,y:300};
 while(true){
   if(getkey("z")==1) $score+=10;
-  $scoreLabel.text="Score : "+$score;
+  $scoreLabel.text="Score : "+$score;//$scoreLabelにScore XXX という文字を表示させる
   update();
 }
 >>
 
 <<code Label
-中身は何も書かなくてよい
+//中身は何も書かなくてよいが、Labelというnameのファイルを作る
 >>
-
-やり方１とやり方２は、二つともzキーを押すとscoreが10増える。
