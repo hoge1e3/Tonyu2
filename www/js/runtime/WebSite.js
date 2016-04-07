@@ -114,11 +114,11 @@ define(["PathUtil"], function (P) {
             WebSite.projects=[P.rel(WebSite.cwd,"Projects/"),
                               P.rel(WebSite.tonyuHome,"Projects/")];
         }
+        WebSite.kernelDir=P.rel(WebSite.wwwDir,"Kernel/");
     } else {
         WebSite.wwwDir=location.protocol+"//"+location.host+"/";
         WebSite.projects=[P.rel(WebSite.tonyuHome,"Projects/")];
     }
-    WebSite.kernelDir=P.rel(WebSite.wwwDir,"Kernel/");
     if (loc.match(/tonyuedit\.appspot\.com/) ||
         loc.match(/localhost:888/) ||
         WebSite.isNW) {

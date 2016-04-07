@@ -1,8 +1,4 @@
-[[用途別リファレンス]]
-
-[[オブジェクトを動かす]]
-
-[[上下左右に移動させる]]
+[[用途別リファレンス]] - [[オブジェクトを動かす]] - [[上下左右に移動させる]]
 
 *キャラが画面端から出ないようにする
 <<code Main
@@ -13,7 +9,7 @@ while(true){
   if(getkey("left")>0)	x-=3;
   if(getkey("down")>0)	y+=3;
   if(getkey("up")>0)	y-=3;
-  //ここから画面端の判定
+  //★ここから画面端の判定
   if(x<0)            x=0;
   if(x>$screenWidth) x=$screenWidth;
   if(y<0)            y=0;
@@ -21,4 +17,23 @@ while(true){
   update();
 }
 >>
-画面端(左がx=0,右がx=$screenWidth,上がy=0,下がy=$screenHeight)を設定して、それを超えそうになったら画面端に戻るようにする。
+画面端(左がx=0,右がx=$screenWidth,上がy=0,下がy=$screenHeight)を設定して、それを超えそうになったら画面端に戻るようにしています。
+
+★以降の部分は、[[clamp>MathMod]]メソッドを利用することもできます。
+
+[[@cfrag clamp(a,min,max)]]は、[[@cfrag a]] が[[@cfrag min]]～[[@cfrag max]]の範囲内なら[[@cfrag a]]自身を、範囲をはみ出していれば、範囲内の一番近い値を返します。
+
+<<code Main
+x=$screenWidth/2;
+y=$screenHeight/2;
+while(true){
+  if(getkey("right")>0)	x+=3;
+  if(getkey("left")>0)	x-=3;
+  if(getkey("down")>0)	y+=3;
+  if(getkey("up")>0)	y-=3;
+  //★ここから画面端の判定
+  x=clamp(x,0,$screenWidth);
+  y=clamp(y,0,$screenHeight);
+  update();
+}
+>>

@@ -8,7 +8,7 @@ function startsWith(str,prefix) {
     return str.substring(0, prefix.length)===prefix;
 }
 var driveLetter=/^([a-zA-Z]):/;
-var url=/^([a-z]+):\/\/([^\/]+)\//;
+var url=/^([a-z]+):\/\/\/?([^\/]+)\//;
 var PathUtil;
 var Path=assert.f(function (s) {
     this.is(s,String);

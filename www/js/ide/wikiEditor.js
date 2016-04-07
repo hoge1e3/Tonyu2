@@ -18,12 +18,14 @@ $(function () {
         if (!file.isDir()) {
         	if (!showfl) showWiki(file);
             //return true;
+        } else {
+            f.ls();
         }
     };
     w.on.show=function (file) {
         //console.log("onsho "+f);
         t.open(file);
-        f.ls();
+        //f.ls();
     	showfl=true;
     	f.select(file);
     	showfl=false;

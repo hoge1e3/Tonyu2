@@ -7,23 +7,35 @@
 <script src='../../js/ide/NWMenu.js'/></script>
 <style>body{padding-top:20px; margin-left: 20px; margin-right:20px; font-family:"MS UI Gothic",sans-serif;}</style>
 <button onclick='javascript:history.back();'>←Back</button><br/>
-<div><a id="line_marker_-0" name="line_marker_-0"></a><a href="E794A8E98094E588A5E383AAE38395E382A1E383ACE383B3E382B9.html">用途別リファレンス</a><span>
-</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><a id="line_marker_-2" name="line_marker_-2"></a><a href="E382AAE38396E382B8E382A7E382AFE38388E38292E58B95E3818BE38199.html">オブジェクトを動かす</a><span>
-</span><a id="line_marker_-3" name="line_marker_-3"></a><p></p><a id="line_marker_-4" name="line_marker_-4"></a><a href="E4B88AE4B88BE5B7A6E58FB3E381ABE7A7BBE58B95E38195E3819BE3828B.html">上下左右に移動させる</a><span>
-</span><a id="line_marker_-5" name="line_marker_-5"></a><p></p><h1><a id="line_marker_-6" name="line_marker_-6"></a><span>キャラが画面端から出ないようにする</span></h1><a id="line_marker_-7" name="line_marker_-7"></a><div class="plist">Main</div><a id="line_marker_-22" name="line_marker_-22"></a><pre><a id="line_marker_-8" name="line_marker_-8"></a><span>x=$screenWidth/2;</span><span>
-</span><a id="line_marker_-9" name="line_marker_-9"></a><span>y=$screenHeight/2;</span><span>
-</span><a id="line_marker_-10" name="line_marker_-10"></a><span>while(true){</span><span>
-</span><a id="line_marker_-11" name="line_marker_-11"></a><span>  if(getkey("right")&gt;0)	x+=3;</span><span>
-</span><a id="line_marker_-12" name="line_marker_-12"></a><span>  if(getkey("left")&gt;0)	x-=3;</span><span>
-</span><a id="line_marker_-13" name="line_marker_-13"></a><span>  if(getkey("down")&gt;0)	y+=3;</span><span>
-</span><a id="line_marker_-14" name="line_marker_-14"></a><span>  if(getkey("up")&gt;0)	y-=3;</span><span>
-</span><a id="line_marker_-15" name="line_marker_-15"></a><span>  //ここから画面端の判定</span><span>
-</span><a id="line_marker_-16" name="line_marker_-16"></a><span>  if(x&lt;0)            x=0;</span><span>
-</span><a id="line_marker_-17" name="line_marker_-17"></a><span>  if(x&gt;$screenWidth) x=$screenWidth;</span><span>
-</span><a id="line_marker_-18" name="line_marker_-18"></a><span>  if(y&lt;0)            y=0;</span><span>
-</span><a id="line_marker_-19" name="line_marker_-19"></a><span>  if(y&gt;$screenHeight)y=$screenHeight;</span><span>
-</span><a id="line_marker_-20" name="line_marker_-20"></a><span>  update();</span><span>
-</span><a id="line_marker_-21" name="line_marker_-21"></a><span>}</span><span>
-</span></pre><a id="line_marker_-23" name="line_marker_-23"></a><span>画面端(左がx=0,右がx=$screenWidth,上がy=0,下がy=$screenHeight)を設定して、それを超えそうになったら画面端に戻るようにする。</span><span>
-</span></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
+<div><a id="line_marker_-0" name="line_marker_-0"></a><a href="E794A8E98094E588A5E383AAE38395E382A1E383ACE383B3E382B9.html">用途別リファレンス</a><span> - </span><a href="E382AAE38396E382B8E382A7E382AFE38388E38292E58B95E3818BE38199.html">オブジェクトを動かす</a><span> - </span><a href="E4B88AE4B88BE5B7A6E58FB3E381ABE7A7BBE58B95E38195E3819BE3828B.html">上下左右に移動させる</a><span>
+</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><h1><a id="line_marker_-2" name="line_marker_-2"></a><span>キャラが画面端から出ないようにする</span></h1><a id="line_marker_-3" name="line_marker_-3"></a><div class="plist">Main</div><a id="line_marker_-18" name="line_marker_-18"></a><pre><a id="line_marker_-4" name="line_marker_-4"></a><span>x=$screenWidth/2;</span><span>
+</span><a id="line_marker_-5" name="line_marker_-5"></a><span>y=$screenHeight/2;</span><span>
+</span><a id="line_marker_-6" name="line_marker_-6"></a><span>while(true){</span><span>
+</span><a id="line_marker_-7" name="line_marker_-7"></a><span>  if(getkey("right")&gt;0)	x+=3;</span><span>
+</span><a id="line_marker_-8" name="line_marker_-8"></a><span>  if(getkey("left")&gt;0)	x-=3;</span><span>
+</span><a id="line_marker_-9" name="line_marker_-9"></a><span>  if(getkey("down")&gt;0)	y+=3;</span><span>
+</span><a id="line_marker_-10" name="line_marker_-10"></a><span>  if(getkey("up")&gt;0)	y-=3;</span><span>
+</span><a id="line_marker_-11" name="line_marker_-11"></a><span>  //★ここから画面端の判定</span><span>
+</span><a id="line_marker_-12" name="line_marker_-12"></a><span>  if(x&lt;0)            x=0;</span><span>
+</span><a id="line_marker_-13" name="line_marker_-13"></a><span>  if(x&gt;$screenWidth) x=$screenWidth;</span><span>
+</span><a id="line_marker_-14" name="line_marker_-14"></a><span>  if(y&lt;0)            y=0;</span><span>
+</span><a id="line_marker_-15" name="line_marker_-15"></a><span>  if(y&gt;$screenHeight)y=$screenHeight;</span><span>
+</span><a id="line_marker_-16" name="line_marker_-16"></a><span>  update();</span><span>
+</span><a id="line_marker_-17" name="line_marker_-17"></a><span>}</span><span>
+</span></pre><a id="line_marker_-19" name="line_marker_-19"></a><span>画面端(左がx=0,右がx=$screenWidth,上がy=0,下がy=$screenHeight)を設定して、それを超えそうになったら画面端に戻るようにしています。</span><span>
+</span><a id="line_marker_-20" name="line_marker_-20"></a><p></p><a id="line_marker_-21" name="line_marker_-21"></a><span>★以降の部分は、</span><a href="MathMod.html">clamp</a><span>メソッドを利用することもできます。</span><span>
+</span><a id="line_marker_-22" name="line_marker_-22"></a><p></p><a id="line_marker_-23" name="line_marker_-23"></a><code><span>clamp(a,min,max)</span></code><span>は、</span><code><span>a</span></code><span> が</span><code><span>min</span></code><span>～</span><code><span>max</span></code><span>の範囲内なら</span><code><span>a</span></code><span>自身を、範囲をはみ出していれば、範囲内の一番近い値を返します。</span><span>
+</span><a id="line_marker_-24" name="line_marker_-24"></a><p></p><a id="line_marker_-25" name="line_marker_-25"></a><div class="plist">Main</div><a id="line_marker_-38" name="line_marker_-38"></a><pre><a id="line_marker_-26" name="line_marker_-26"></a><span>x=$screenWidth/2;</span><span>
+</span><a id="line_marker_-27" name="line_marker_-27"></a><span>y=$screenHeight/2;</span><span>
+</span><a id="line_marker_-28" name="line_marker_-28"></a><span>while(true){</span><span>
+</span><a id="line_marker_-29" name="line_marker_-29"></a><span>  if(getkey("right")&gt;0)	x+=3;</span><span>
+</span><a id="line_marker_-30" name="line_marker_-30"></a><span>  if(getkey("left")&gt;0)	x-=3;</span><span>
+</span><a id="line_marker_-31" name="line_marker_-31"></a><span>  if(getkey("down")&gt;0)	y+=3;</span><span>
+</span><a id="line_marker_-32" name="line_marker_-32"></a><span>  if(getkey("up")&gt;0)	y-=3;</span><span>
+</span><a id="line_marker_-33" name="line_marker_-33"></a><span>  //★ここから画面端の判定</span><span>
+</span><a id="line_marker_-34" name="line_marker_-34"></a><span>  x=clamp(x,0,$screenWidth);</span><span>
+</span><a id="line_marker_-35" name="line_marker_-35"></a><span>  y=clamp(y,0,$screenHeight);</span><span>
+</span><a id="line_marker_-36" name="line_marker_-36"></a><span>  update();</span><span>
+</span><a id="line_marker_-37" name="line_marker_-37"></a><span>}</span><span>
+</span></pre><a id="line_marker_-39" name="line_marker_-39"></a><p></p></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
 </body></html>

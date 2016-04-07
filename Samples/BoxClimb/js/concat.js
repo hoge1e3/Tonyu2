@@ -105,10 +105,7 @@ Tonyu.klass.define({
           case 11:
             
             //$LASTPOS=1000448;//user.Ball:448
-            _this.fiber$loadPage(_thread, Tonyu.classes.user.Title);
-            __pc=12;return;
-          case 12:
-            
+            _this.loadPage(Tonyu.classes.user.Title);
             //$LASTPOS=1000466;//user.Ball:466
             _this.die();
             _thread.exit(_this);return;
@@ -452,21 +449,17 @@ Tonyu.klass.define({
             //$LASTPOS=5000141;//user.Title:141
           case 1:
             //$LASTPOS=5000160;//user.Title:160
-            if (!(_this.getkey(32)||Tonyu.globals.$touches[0].touched)) { __pc=3; break; }
-            //$LASTPOS=5000198;//user.Title:198
-            _this.fiber$loadPage(_thread, Tonyu.classes.user.Main);
+            if (_this.getkey(32)||Tonyu.globals.$touches[0].touched) {
+              //$LASTPOS=5000198;//user.Title:198
+              _this.loadPage(Tonyu.classes.user.Main);
+            }
+            //$LASTPOS=5000219;//user.Title:219
+            _this.fiber$update(_thread);
             __pc=2;return;
           case 2:
             
-          case 3:
-            
-            //$LASTPOS=5000219;//user.Title:219
-            _this.fiber$update(_thread);
-            __pc=4;return;
-          case 4:
-            
             __pc=1;break;
-          case 5:
+          case 3:
             
             _thread.exit(_this);return;
           }

@@ -10,43 +10,39 @@
 <div><a id="line_marker_-0" name="line_marker_-0"></a><a href="E794A8E98094E588A5E383AAE38395E382A1E383ACE383B3E382B9.html">用途別リファレンス</a><span>
 </span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><a id="line_marker_-2" name="line_marker_-2"></a><a href="E382AAE38396E382B8E382A7E382AFE38388E38292E58B95E3818BE38199.html">オブジェクトを動かす</a><span>
 </span><a id="line_marker_-3" name="line_marker_-3"></a><p></p><a id="line_marker_-4" name="line_marker_-4"></a><a href="E4B88AE4B88BE5B7A6E58FB3E381ABE7A7BBE58B95E38195E3819BE3828B.html">上下左右に移動させる</a><span>
-</span><a id="line_marker_-5" name="line_marker_-5"></a><p></p><h1><a id="line_marker_-6" name="line_marker_-6"></a><span>当たり判定で壁にぶつかる</span></h1><a id="line_marker_-7" name="line_marker_-7"></a><div class="plist">Main</div><a id="line_marker_-40" name="line_marker_-40"></a><pre><a id="line_marker_-8" name="line_marker_-8"></a><span>new Chara1{x:100, y:100, p:5};</span><span>
-</span><a id="line_marker_-9" name="line_marker_-9"></a><span>new Chara1{x:100, y:132, p:5};</span><span>
-</span><a id="line_marker_-10" name="line_marker_-10"></a><span>new Chara1{x:100, y:164, p:5};</span><span>
-</span><a id="line_marker_-11" name="line_marker_-11"></a><span>x=$screenWidth/2;</span><span>
-</span><a id="line_marker_-12" name="line_marker_-12"></a><span>y=$screenHeight/2;</span><span>
-</span><a id="line_marker_-13" name="line_marker_-13"></a><span>while(true){</span><span>
-</span><a id="line_marker_-14" name="line_marker_-14"></a><span>  if(getkey("right")&gt;0){</span><span>
-</span><a id="line_marker_-15" name="line_marker_-15"></a><span>    x+=3;</span><span>
-</span><a id="line_marker_-16" name="line_marker_-16"></a><span>    if(crashTo(Chara1)){</span><span>
-</span><a id="line_marker_-17" name="line_marker_-17"></a><span>      x-=3;</span><span>
-</span><a id="line_marker_-18" name="line_marker_-18"></a><span>    }</span><span>
-</span><a id="line_marker_-19" name="line_marker_-19"></a><span>  }</span><span>
-</span><a id="line_marker_-20" name="line_marker_-20"></a><span>  if(getkey("left")&gt;0){</span><span>
-</span><a id="line_marker_-21" name="line_marker_-21"></a><span>    x-=3;</span><span>
-</span><a id="line_marker_-22" name="line_marker_-22"></a><span>    if(crashTo(Chara1)){</span><span>
-</span><a id="line_marker_-23" name="line_marker_-23"></a><span>      x+=3;</span><span>
-</span><a id="line_marker_-24" name="line_marker_-24"></a><span>    }</span><span>
-</span><a id="line_marker_-25" name="line_marker_-25"></a><span>  }</span><span>
-</span><a id="line_marker_-26" name="line_marker_-26"></a><span>  if(getkey("down")&gt;0){</span><span>
-</span><a id="line_marker_-27" name="line_marker_-27"></a><span>    y+=3;</span><span>
-</span><a id="line_marker_-28" name="line_marker_-28"></a><span>    if(crashTo(Chara1)){</span><span>
-</span><a id="line_marker_-29" name="line_marker_-29"></a><span>      y-=3;</span><span>
-</span><a id="line_marker_-30" name="line_marker_-30"></a><span>    }</span><span>
-</span><a id="line_marker_-31" name="line_marker_-31"></a><span>  }</span><span>
-</span><a id="line_marker_-32" name="line_marker_-32"></a><span>  if(getkey("up")&gt;0){</span><span>
-</span><a id="line_marker_-33" name="line_marker_-33"></a><span>    y-=3;</span><span>
-</span><a id="line_marker_-34" name="line_marker_-34"></a><span>    if(crashTo(Chara1)){</span><span>
-</span><a id="line_marker_-35" name="line_marker_-35"></a><span>      y+=3;</span><span>
-</span><a id="line_marker_-36" name="line_marker_-36"></a><span>    }</span><span>
-</span><a id="line_marker_-37" name="line_marker_-37"></a><span>  }</span><span>
-</span><a id="line_marker_-38" name="line_marker_-38"></a><span>  update();</span><span>
-</span><a id="line_marker_-39" name="line_marker_-39"></a><span>}</span><span>
-</span></pre><a id="line_marker_-41" name="line_marker_-41"></a><p></p><a id="line_marker_-42" name="line_marker_-42"></a><div class="plist">Chara1</div><a id="line_marker_-44" name="line_marker_-44"></a><pre><a id="line_marker_-43" name="line_marker_-43"></a><span>中身は何も書かなくてよい</span><span>
-</span></pre><a id="line_marker_-45" name="line_marker_-45"></a><p></p><a id="line_marker_-46" name="line_marker_-46"></a><span>上下左右に動かせる中央のオブジェクトがChara1とぶつかると押し戻されるようにし、重なることができないようにする。</span><span>
-</span><a id="line_marker_-47" name="line_marker_-47"></a><p></p><a id="line_marker_-48" name="line_marker_-48"></a><span>※crashTo()...()内のオブジェクトと当たり判定を行い値を返す。</span><span>
-</span><a id="line_marker_-51" name="line_marker_-51"></a><ul><li><a id="line_marker_-49" name="line_marker_-49"></a><span>当たってる=true</span><span>
-</span></li><li><a id="line_marker_-50" name="line_marker_-50"></a><span>当たってない=false</span><span>
-</span></li></ul><p></p><a id="line_marker_-52" name="line_marker_-52"></a><p></p><a id="line_marker_-53" name="line_marker_-53"></a><a href="E3839EE38383E38397E38381E38383E38397E381A8E381AEE5BD93E3819FE3828AE588A4E5AE9A.html">マップチップとの当たり判定</a><span>
-</span><a id="line_marker_-54" name="line_marker_-54"></a><p></p><a id="line_marker_-55" name="line_marker_-55"></a><p></p></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
+</span><a id="line_marker_-5" name="line_marker_-5"></a><p></p><h1><a id="line_marker_-6" name="line_marker_-6"></a><span>当たり判定で壁にぶつかる</span></h1><a id="line_marker_-7" name="line_marker_-7"></a><p></p><a id="line_marker_-8" name="line_marker_-8"></a><span>次の方法を用います</span><span>
+</span><a id="line_marker_-12" name="line_marker_-12"></a><ul><li><a id="line_marker_-9" name="line_marker_-9"></a><span>移動前に現在の位置を別の変数に覚える</span><span>
+</span></li><li><a id="line_marker_-10" name="line_marker_-10"></a><span>移動する</span><span>
+</span></li><li><a id="line_marker_-11" name="line_marker_-11"></a><span>壁にあたっていたら移動前の場所に戻る</span><span>
+</span></li></ul><p></p><a id="line_marker_-13" name="line_marker_-13"></a><div class="plist">Main</div><a id="line_marker_-39" name="line_marker_-39"></a><pre><a id="line_marker_-14" name="line_marker_-14"></a><span>new Chara1{x:100, y:100, p:5};</span><span>
+</span><a id="line_marker_-15" name="line_marker_-15"></a><span>new Chara1{x:100, y:132, p:5};</span><span>
+</span><a id="line_marker_-16" name="line_marker_-16"></a><span>new Chara1{x:100, y:164, p:5};</span><span>
+</span><a id="line_marker_-17" name="line_marker_-17"></a><span>x=$screenWidth/2;</span><span>
+</span><a id="line_marker_-18" name="line_marker_-18"></a><span>y=$screenHeight/2;</span><span>
+</span><a id="line_marker_-19" name="line_marker_-19"></a><span>while(true){</span><span>
+</span><a id="line_marker_-20" name="line_marker_-20"></a><span>  // 移動前の値をsx,syに覚えておく</span><span>
+</span><a id="line_marker_-21" name="line_marker_-21"></a><span>  sx=x;sy=y;</span><span>
+</span><a id="line_marker_-22" name="line_marker_-22"></a><span>  if(getkey("right")&gt;0){</span><span>
+</span><a id="line_marker_-23" name="line_marker_-23"></a><span>    x+=3;</span><span>
+</span><a id="line_marker_-24" name="line_marker_-24"></a><span>  }</span><span>
+</span><a id="line_marker_-25" name="line_marker_-25"></a><span>  if(getkey("left")&gt;0){</span><span>
+</span><a id="line_marker_-26" name="line_marker_-26"></a><span>    x-=3;</span><span>
+</span><a id="line_marker_-27" name="line_marker_-27"></a><span>  }</span><span>
+</span><a id="line_marker_-28" name="line_marker_-28"></a><span>  if(getkey("down")&gt;0){</span><span>
+</span><a id="line_marker_-29" name="line_marker_-29"></a><span>    y+=3;</span><span>
+</span><a id="line_marker_-30" name="line_marker_-30"></a><span>  }</span><span>
+</span><a id="line_marker_-31" name="line_marker_-31"></a><span>  if(getkey("up")&gt;0){</span><span>
+</span><a id="line_marker_-32" name="line_marker_-32"></a><span>    y-=3;</span><span>
+</span><a id="line_marker_-33" name="line_marker_-33"></a><span>  }</span><span>
+</span><a id="line_marker_-34" name="line_marker_-34"></a><span>  if(crashTo(Chara1)){//Chara1にぶつかっていたら</span><span>
+</span><a id="line_marker_-35" name="line_marker_-35"></a><span>    x=sx;y=sy;//移動前の値に戻す</span><span>
+</span><a id="line_marker_-36" name="line_marker_-36"></a><span>  }</span><span>
+</span><a id="line_marker_-37" name="line_marker_-37"></a><span>  update();</span><span>
+</span><a id="line_marker_-38" name="line_marker_-38"></a><span>}</span><span>
+</span></pre><a id="line_marker_-40" name="line_marker_-40"></a><p></p><a id="line_marker_-41" name="line_marker_-41"></a><div class="plist">Chara1</div><a id="line_marker_-43" name="line_marker_-43"></a><pre><a id="line_marker_-42" name="line_marker_-42"></a><span>中身は何も書かなくてよい</span><span>
+</span></pre><a id="line_marker_-44" name="line_marker_-44"></a><p></p><a id="line_marker_-45" name="line_marker_-45"></a><span>※</span><a href="crashTo.html">crashTo</a><span>メソッドはオブジェクトと当たり判定を行います。</span><span>
+</span><a id="line_marker_-48" name="line_marker_-48"></a><ul><li><a id="line_marker_-46" name="line_marker_-46"></a><span>当たってる場合は当たったオブジェクトを返します（if文で判定した場合</span><code><span>true</span></code><span>扱いになります）</span><span>
+</span></li><li><a id="line_marker_-47" name="line_marker_-47"></a><span>当たっていない場合は</span><code><span>undefined</span></code><span>を返します（if文で判定した場合</span><code><span>false</span></code><span>扱いになります）</span><span>
+</span></li></ul><p></p><a id="line_marker_-49" name="line_marker_-49"></a><p></p><a id="line_marker_-50" name="line_marker_-50"></a><a href="E3839EE38383E38397E38381E38383E38397E381A8E381AEE5BD93E3819FE3828AE588A4E5AE9A.html">マップチップとの当たり判定</a><span>
+</span><a id="line_marker_-51" name="line_marker_-51"></a><p></p></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
 </body></html>
