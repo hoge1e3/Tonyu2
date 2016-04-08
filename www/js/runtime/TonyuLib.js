@@ -209,6 +209,7 @@ return Tonyu=function () {
         return res;//classes[n];
     }
     function bindFunc(t,meth) {
+        if (typeof meth!="function") return meth;
         var res=function () {
             return meth.apply(t,arguments);
         };

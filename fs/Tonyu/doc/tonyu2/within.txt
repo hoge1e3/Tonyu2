@@ -1,0 +1,38 @@
+[[BaseActor]]
+
+*withinメソッド
+
+他のオブジェクトとの距離が一定以内かを判定します．
+
+**書式1
+
+<<code
+within(obj,d)
+>>
+
+このオブジェクトと[[@arg obj]]との距離が[[@arg d]]以下であれば[[@cfrag true]]，そうでなければ[[@cfrag false]]を返します．
+
+*書式2
+
+<<code
+crashTo(Class,d)
+>>
+
+このオブジェクトが[[@arg Class]]で指定されるクラスのオブジェクトのうちどれかとの距離が[[@arg d]]以下であれば，そのうちどれか1つのオブジェクトを返します．そうでなければ[[@cfrag null]]を返します
+
+*例
+
+<<code
+// $playerというオブジェクトとの距離が10以下なら，$playerを消します
+if (within($player,10)) {
+   $player.die();
+}
+>>
+
+*参考
+
+-[[allWithin]]
+-[[allCrash]]
+-[[getCrashRect]]
+
+.

@@ -10,4 +10,12 @@ nowait \parallel() {
      th=$Boot.schedule(this,name,args);
      return th;
 }
-
+\call() {
+    var a=new ArgParser(arguments);
+    var t=a.shift();
+    var n=a.shift();
+    var f=t["fiber$"+n];
+    var ag2=a.toArray();
+    ag2.unshift(_thread);
+    return f.apply(t,ag2);
+}

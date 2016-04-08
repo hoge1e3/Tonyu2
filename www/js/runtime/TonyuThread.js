@@ -11,6 +11,7 @@ define(["DeferredUtil","Class"],function (DU,Class) {
             this.fSuspended=false;
             this.tryStack=[];
             this.preemptionTime=60;
+            this.onEndHandlers=[];
             this.age=0; // inc if object pooled
         },
         isAlive:function isAlive() {
@@ -52,16 +53,25 @@ define(["DeferredUtil","Class"],function (DU,Class) {
             }
             args=[this].concat(args);
             var pc=0;
-            return this.enter(function () {
+            return this.enter(function (th) {
                 switch (pc){
                 case 0:
                     method.apply(obj,args);
                     pc=1;break;
                 case 1:
+                    th.notifyEnd(th.retVal);
                     args[0].exit();
                     pc=2;break;
                 }
             });
+        },
+        notifyEnd:function (r) {
+            this.onEndHandlers.forEach(function (e) {
+                e(r);
+            });
+        },
+        on: function (type,f) {
+            if (type=="end") this.onEndHandlers.push(f);
         },
         gotoCatch: function gotoCatch(e) {
             var fb=this;

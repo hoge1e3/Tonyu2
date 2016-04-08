@@ -6,6 +6,13 @@
 \push(v) {
     a[length++]=v;
 }
+\trimUndefs() {
+    while(length>0) {
+        if (a[length-1]!==_undef) break;
+        length--;
+        delete a[length];
+    }
+}
 \shift(type) {
     if (typeof type=="number") {
         var res=[];
@@ -25,6 +32,6 @@
 }
 \toArray() {
     var res=[];
-    for (var i=0 ;i<a.length; i++) res.push(a);
+    for (var i=0 ;i<a.length; i++) res.push(a[i]);
     return res;
 }

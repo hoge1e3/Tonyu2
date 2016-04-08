@@ -2,6 +2,10 @@ extends Actor;
 includes T2Mod;
 native Box2D;
 
+\new(p) {
+    super(p);
+    _th.on("end", initBody);
+}
 \getWorld() {
     if ($t2World) return $t2World;
     $t2World=new T2World;
@@ -62,6 +66,7 @@ native Box2D;
     body.SetLinearVelocity(ve);
     rotation=r;
     vrotation=vr;
+    fireEvent("createBody");
 }
 \allContactPoints(klass) {
     initBody();

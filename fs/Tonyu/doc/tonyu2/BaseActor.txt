@@ -63,6 +63,9 @@ x,y,pの値をフィールドに書き込みます
 -[[allCrash]]
 -[[all]]
 -[[getCrashRect]]
+-[[within]]
+-[[allWithin]]
+
 表示
 -[[hide]]
 -[[show]]
@@ -87,5 +90,6 @@ x,y,pの値をフィールドに書き込みます
 -[[file]]
 -[[extend]]
 -[[appear]]
+-[[screenOut]]
 
 .
