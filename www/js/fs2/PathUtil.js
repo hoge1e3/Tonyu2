@@ -143,7 +143,7 @@ PathUtil={
         return resPath;
     },
     relPath: function(path,base) {
-		assert.is(arguments,[Absolute,AbsDir]);
+		assert.is(arguments,[Absolute,Absolute]);
         if (path.substring(0,base.length)!=base) {
             return "../"+PathUtil.relPath(path, this.up(base));
         }

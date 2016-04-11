@@ -453,6 +453,7 @@ $(function () {
             var nw=prog.getValue();
             if (old!=nw) {
                 curFile.text(nw);
+                inf.lastTimeStamp=curFile.lastUpdate();
             }
         }
         fl.setModified(false);
@@ -460,9 +461,13 @@ $(function () {
     function watchModified() {
         var inf=getCurrentEditorInfo();
         if (!inf) return;
-        var curFile=inf.file; //fl.curFile();
-    	var prog=inf.editor;//getCurrentEditor();
-    	fl.setModified(curFile.text()!=prog.getValue());
+        if (!inf.file.exists()) return;
+        if (inf.lastTimeStamp<inf.file.lastUpdate()) {
+            inf.editor.setValue(inf.file.text());
+            inf.editor.clearSelection();
+            inf.lastTimeStamp=inf.file.lastUpdate();
+        }
+    	fl.setModified(inf.file.text()!=inf.editor.getValue());
     }
     setInterval(watchModified,1000);
     var curDOM;
@@ -481,7 +486,7 @@ $(function () {
             if (typeof desktopEnv.editorFontSize=="number") prog.setFontSize(desktopEnv.editorFontSize);
             prog.setTheme("ace/theme/eclipse");
             prog.getSession().setMode("ace/mode/tonyu");
-            editors[f.path()]={file:f , editor: prog, dom:progDOM};
+            inf=editors[f.path()]={file:f , editor: prog, dom:progDOM};
             progDOM.click(F(function () {
                 displayMode("edit");
             }));
@@ -495,10 +500,16 @@ $(function () {
 
             curDOM=progDOM;
         } else {
+            if (inf.lastTimeStamp<inf.file.lastUpdate()) {
+                inf.editor.setValue(inf.file.text());
+                inf.editor.clearSelection();
+                inf.lastTimeStamp=inf.file.lastUpdate();
+            }
             inf.dom.show();
             inf.editor.focus();
             curDOM=inf.dom;
         }
+        inf.lastTimeStamp=inf.file.lastUpdate();
     }
     d=function () {
         Tonyu.currentProject.dumpJS.apply(this,arguments);
