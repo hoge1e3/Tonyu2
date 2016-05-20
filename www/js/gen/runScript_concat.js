@@ -1,4 +1,4 @@
-// Created at Sun Apr 03 2016 21:40:38 GMT+0900 (東京 (標準時))
+// Created at Fri May 20 2016 10:14:12 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -294,7 +294,7 @@ function startsWith(str,prefix) {
     return str.substring(0, prefix.length)===prefix;
 }
 var driveLetter=/^([a-zA-Z]):/;
-var url=/^([a-z]+):\/\/([^\/]+)\//;
+var url=/^([a-z]+):\/\/\/?([^\/]+)\//;
 var PathUtil;
 var Path=assert.f(function (s) {
     this.is(s,String);
@@ -429,7 +429,7 @@ PathUtil={
         return resPath;
     },
     relPath: function(path,base) {
-		assert.is(arguments,[Absolute,AbsDir]);
+		assert.is(arguments,[Absolute,Absolute]);
         if (path.substring(0,base.length)!=base) {
             return "../"+PathUtil.relPath(path, this.up(base));
         }
@@ -846,11 +846,11 @@ define(["PathUtil"], function (P) {
             WebSite.projects=[P.rel(WebSite.cwd,"Projects/"),
                               P.rel(WebSite.tonyuHome,"Projects/")];
         }
+        WebSite.kernelDir=P.rel(WebSite.wwwDir,"Kernel/");
     } else {
         WebSite.wwwDir=location.protocol+"//"+location.host+"/";
         WebSite.projects=[P.rel(WebSite.tonyuHome,"Projects/")];
     }
-    WebSite.kernelDir=P.rel(WebSite.wwwDir,"Kernel/");
     if (loc.match(/tonyuedit\.appspot\.com/) ||
         loc.match(/localhost:888/) ||
         WebSite.isNW) {
@@ -2510,6 +2510,7 @@ define(["DeferredUtil","Class"],function (DU,Class) {
             this.fSuspended=false;
             this.tryStack=[];
             this.preemptionTime=60;
+            this.onEndHandlers=[];
             this.age=0; // inc if object pooled
         },
         isAlive:function isAlive() {
@@ -2551,16 +2552,25 @@ define(["DeferredUtil","Class"],function (DU,Class) {
             }
             args=[this].concat(args);
             var pc=0;
-            return this.enter(function () {
+            return this.enter(function (th) {
                 switch (pc){
                 case 0:
                     method.apply(obj,args);
                     pc=1;break;
                 case 1:
+                    th.notifyEnd(th.retVal);
                     args[0].exit();
                     pc=2;break;
                 }
             });
+        },
+        notifyEnd:function (r) {
+            this.onEndHandlers.forEach(function (e) {
+                e(r);
+            });
+        },
+        on: function (type,f) {
+            if (type=="end") this.onEndHandlers.push(f);
         },
         gotoCatch: function gotoCatch(e) {
             var fb=this;
@@ -3023,6 +3033,7 @@ return Tonyu=function () {
         return res;//classes[n];
     }
     function bindFunc(t,meth) {
+        if (typeof meth!="function") return meth;
         var res=function () {
             return meth.apply(t,arguments);
         };
@@ -3087,7 +3098,7 @@ return Tonyu=function () {
             bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,iterator:IT,
-            VERSION:1459687222784,//EMBED_VERSION
+            VERSION:1463706844062,//EMBED_VERSION
             A:A};
 }();
 });

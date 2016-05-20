@@ -1,4 +1,4 @@
-// Created at Sun Apr 03 2016 21:40:29 GMT+0900 (東京 (標準時))
+// Created at Fri May 20 2016 10:14:07 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -619,6 +619,7 @@ define(["DeferredUtil","Class"],function (DU,Class) {
             this.fSuspended=false;
             this.tryStack=[];
             this.preemptionTime=60;
+            this.onEndHandlers=[];
             this.age=0; // inc if object pooled
         },
         isAlive:function isAlive() {
@@ -660,16 +661,25 @@ define(["DeferredUtil","Class"],function (DU,Class) {
             }
             args=[this].concat(args);
             var pc=0;
-            return this.enter(function () {
+            return this.enter(function (th) {
                 switch (pc){
                 case 0:
                     method.apply(obj,args);
                     pc=1;break;
                 case 1:
+                    th.notifyEnd(th.retVal);
                     args[0].exit();
                     pc=2;break;
                 }
             });
+        },
+        notifyEnd:function (r) {
+            this.onEndHandlers.forEach(function (e) {
+                e(r);
+            });
+        },
+        on: function (type,f) {
+            if (type=="end") this.onEndHandlers.push(f);
         },
         gotoCatch: function gotoCatch(e) {
             var fb=this;
@@ -1132,6 +1142,7 @@ return Tonyu=function () {
         return res;//classes[n];
     }
     function bindFunc(t,meth) {
+        if (typeof meth!="function") return meth;
         var res=function () {
             return meth.apply(t,arguments);
         };
@@ -1196,7 +1207,7 @@ return Tonyu=function () {
             bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,iterator:IT,
-            VERSION:1459687222784,//EMBED_VERSION
+            VERSION:1463706844062,//EMBED_VERSION
             A:A};
 }();
 });
@@ -1218,7 +1229,7 @@ function startsWith(str,prefix) {
     return str.substring(0, prefix.length)===prefix;
 }
 var driveLetter=/^([a-zA-Z]):/;
-var url=/^([a-z]+):\/\/([^\/]+)\//;
+var url=/^([a-z]+):\/\/\/?([^\/]+)\//;
 var PathUtil;
 var Path=assert.f(function (s) {
     this.is(s,String);
@@ -1353,7 +1364,7 @@ PathUtil={
         return resPath;
     },
     relPath: function(path,base) {
-		assert.is(arguments,[Absolute,AbsDir]);
+		assert.is(arguments,[Absolute,Absolute]);
         if (path.substring(0,base.length)!=base) {
             return "../"+PathUtil.relPath(path, this.up(base));
         }
@@ -1770,11 +1781,11 @@ define(["PathUtil"], function (P) {
             WebSite.projects=[P.rel(WebSite.cwd,"Projects/"),
                               P.rel(WebSite.tonyuHome,"Projects/")];
         }
+        WebSite.kernelDir=P.rel(WebSite.wwwDir,"Kernel/");
     } else {
         WebSite.wwwDir=location.protocol+"//"+location.host+"/";
         WebSite.projects=[P.rel(WebSite.tonyuHome,"Projects/")];
     }
-    WebSite.kernelDir=P.rel(WebSite.wwwDir,"Kernel/");
     if (loc.match(/tonyuedit\.appspot\.com/) ||
         loc.match(/localhost:888/) ||
         WebSite.isNW) {
@@ -13336,6 +13347,7 @@ $(function () {
             var nw=prog.getValue();
             if (old!=nw) {
                 curFile.text(nw);
+                inf.lastTimeStamp=curFile.lastUpdate();
             }
         }
         fl.setModified(false);
@@ -13343,9 +13355,13 @@ $(function () {
     function watchModified() {
         var inf=getCurrentEditorInfo();
         if (!inf) return;
-        var curFile=inf.file; //fl.curFile();
-    	var prog=inf.editor;//getCurrentEditor();
-    	fl.setModified(curFile.text()!=prog.getValue());
+        if (!inf.file.exists()) return;
+        if (inf.lastTimeStamp<inf.file.lastUpdate()) {
+            inf.editor.setValue(inf.file.text());
+            inf.editor.clearSelection();
+            inf.lastTimeStamp=inf.file.lastUpdate();
+        }
+    	fl.setModified(inf.file.text()!=inf.editor.getValue());
     }
     setInterval(watchModified,1000);
     var curDOM;
@@ -13364,7 +13380,7 @@ $(function () {
             if (typeof desktopEnv.editorFontSize=="number") prog.setFontSize(desktopEnv.editorFontSize);
             prog.setTheme("ace/theme/eclipse");
             prog.getSession().setMode("ace/mode/tonyu");
-            editors[f.path()]={file:f , editor: prog, dom:progDOM};
+            inf=editors[f.path()]={file:f , editor: prog, dom:progDOM};
             progDOM.click(F(function () {
                 displayMode("edit");
             }));
@@ -13378,10 +13394,16 @@ $(function () {
 
             curDOM=progDOM;
         } else {
+            if (inf.lastTimeStamp<inf.file.lastUpdate()) {
+                inf.editor.setValue(inf.file.text());
+                inf.editor.clearSelection();
+                inf.lastTimeStamp=inf.file.lastUpdate();
+            }
             inf.dom.show();
             inf.editor.focus();
             curDOM=inf.dom;
         }
+        inf.lastTimeStamp=inf.file.lastUpdate();
     }
     d=function () {
         Tonyu.currentProject.dumpJS.apply(this,arguments);
