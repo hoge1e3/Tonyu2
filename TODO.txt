@@ -1,6 +1,9 @@
 UI
   テキスト入力
   フルスクリーン
+Doc
+  $uiScreen(.width)
+  
 
 言語仕様
  からぶん
@@ -19,7 +22,7 @@ UI
 Kernel
  Contoller (Game machine)
  OK? layer
-
+ 1フレームの間に押す＋離す＝無反応
 
 jsdo.it -> load from tonyuexe
 ファイルが増えるとメニューがあふれる

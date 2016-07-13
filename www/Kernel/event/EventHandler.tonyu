@@ -5,19 +5,22 @@ native Tonyu;
 
 if (Tonyu.runMode) listeners=[];
 
-\addListener(f) {
+nowait \toListener(f) {
     if (target && (typeof f)=="string") {
         f=target[f];
     }
     if (typeof f!="function") throw new Error("Not a event listener: "+target+" / "+f);
-    listeners.push(f);
+    return f;    
+}
+nowait \addListener(f) {
+    listeners.push(toListener(f));
     return {
         remove: \{
            removeListener(f);
         }
     };
 }
-\removeListener(f) {
+nowait \removeListener(f) {
     var i=listeners.indexOf(f);
     listeners.splice(i,1);
 }
@@ -35,6 +38,6 @@ if (Tonyu.runMode) listeners=[];
         callEventHandler(h, args);
     }
 }
-\release() {
+nowait \release() {
     released=true;
 }

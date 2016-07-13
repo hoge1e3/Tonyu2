@@ -1,6 +1,6 @@
 extends EventHandler;
 \addListener(d, f) {
-    var retThread=target.parallel("screenOutChecker",d,f);
+    var retThread=target.parallel("screenOutChecker",d,toListener(f));
     return {
         remove: \{
             retThread.kill();

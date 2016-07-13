@@ -2,6 +2,7 @@ extends TObject;
 native String;
 native $;
 native document;
+native console;
 //\new () {this.main();}
 stats={};
 codes={
@@ -19,16 +20,24 @@ if (!$.data(document,"key_event")) {
     $(document).keydown \(e) {$Keys.keydown(e);};
     $(document).keyup \(e) {$Keys.keyup(e);};
     $(document).mousedown \(e) {
+        lastMouseDown=$frameCount;
         if ($InputDevice.touchEmu) {
             $touches[0].touched=1;
         }
         $Keys.keydown{keyCode:1};
     };
     $(document).mouseup \(e) {
-        if ($InputDevice.touchEmu) {
-            $touches[0].touched=0;
+        var a=\{
+            if ($InputDevice.touchEmu) {
+                $touches[0].touched=0;
+            }
+            $Keys.keyup{keyCode:1};
+        };
+        if (lastMouseDown==$frameCount && !reservedAction) {
+            reservedAction={at:$frameCount+2,action:a};
+        } else {
+            a();
         }
-        $Keys.keyup{keyCode:1};
     };
 }
 function getkey(code) {
@@ -44,6 +53,10 @@ function update() {
     for (var i in stats) {
         if (stats[i]>0) {stats[i]++;}
         if (stats[i]==-1) stats[i]=1;
+    }
+    if (reservedAction && reservedAction.at==$frameCount) {
+        reservedAction.action();
+        reservedAction=null;
     }
 }
 \keydown(e) {

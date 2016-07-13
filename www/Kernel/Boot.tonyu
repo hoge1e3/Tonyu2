@@ -173,11 +173,13 @@ mainLoop();
 }
 
 \mainLoop() {
+    $frameCount=0;
     while (true) {
     	if (_useRAF) loopRAF();
     	else loopTimer();
         measureFps();
     	handlePause();
+        $frameCount++;
     }
 }
 \loopRAF() {

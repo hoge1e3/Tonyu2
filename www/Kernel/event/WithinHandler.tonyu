@@ -1,6 +1,6 @@
 extends EventHandler;
 \addListener(d, r, f) {
-    var retThread=target.parallel("withinChecker",d,r,f);
+    var retThread=target.parallel("withinChecker",d,r,toListener(f));
     return {
         remove: \{
             retThread.kill();

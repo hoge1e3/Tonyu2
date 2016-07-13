@@ -1,6 +1,6 @@
 extends EventHandler;
 \addListener(d, f) {
-    var retThread=target.parallel("crashToChecker",d,f);
+    var retThread=target.parallel("crashToChecker",d,toListener(f));
     return {
         remove: \{
             retThread.kill();
