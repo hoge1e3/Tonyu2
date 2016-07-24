@@ -41,7 +41,9 @@ define(["UI","extLink","mkrun","Tonyu","zip"], function (UI,extLink,mkrun,Tonyu,
                     zip.dlzip(FS.get(model.dest));
                 }
                 UIDiag.alert(UI("div",
-                         ["p",(options.hiddenFolder?"":model.dest+"に")+"ランタイムを作成しました。"],
+                         ["p",(options.hiddenFolder?"":
+                         ["a",{href:"javascript:;",style:"color: blue;",on:{click:openFolder}},model.dest+"に"]),
+                         "ランタイムを作成しました。"],
                          ["p","次のいずれかの方法でWebアプリとして公開することができます。"],
                          ["ul",
                          ["li",(model.zip?"解凍した":"")+"フォルダをお手持ちのWebサーバにアップロードする"],
@@ -55,6 +57,11 @@ define(["UI","extLink","mkrun","Tonyu","zip"], function (UI,extLink,mkrun,Tonyu,
                 if (res.d.dialog) res.d.dialog("close");
                 if (options.onEnd) options.onEnd();
             });
+            function openFolder() {
+                var f=FS.get(model.dest);
+                var gui = nwDispatcher.requireNwGui(); 
+                gui.Shell.showItemInFolder(f.path().replace(/\//g,"\\"));
+            }
         };
         return res.d;
     };

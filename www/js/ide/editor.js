@@ -79,19 +79,23 @@ $(function () {
     //ImageList(Tonyu.defaultResource.images, Sprites.setImageList);
 
     var screenH;
+    var runDialogMode,dialogClosed;
     function onResize() {
         //console.log($(window).height(), $("#navBar").height());
         var h=$(window).height()-$("#navBar").height();
         h-=20;
         screenH=h;
-        var rw=$("#runArea").width();
+        if (!runDialogMode) resizeCanvas($("#runArea").width(),screenH);
         $("#progs pre").css("height",h+"px");
-        console.log("canvas size",rw,h);
-        $("#cv").attr("height", h).attr("width", rw);
-        cv=$("#cv")[0].getContext("2d");
         $("#fileItemList").height(h);
     }
+    function resizeCanvas(w,h) {
+        console.log("canvas size",w,h);
+        $("#cv").attr("height", h).attr("width",w);
+        cv=$("#cv")[0].getContext("2d");
+    }
     onResize();
+    
     var editors={};
 
     KeyEventChecker.down(document,"F9",F(run));
@@ -296,6 +300,9 @@ $(function () {
                 $("#runAreaParent").show().attr("class","col-xs-12");
                 $("#mainArea").hide();//attr("class","col-xs-12");
                 onResize();
+            }
+            if (runDialogMode && dialogClosed) {
+                showRunDialog();
             }
             break;
         case "compile_error":
@@ -602,6 +609,27 @@ $(function () {
         if (prog) prog.setFontSize(desktopEnv.editorFontSize||12);
         saveDesktopEnv();
     }));
+    $("#openFolder").click(F(function () {
+        var f=curPrjDir;
+        var gui = nwDispatcher.requireNwGui(); 
+        gui.Shell.showItemInFolder(f.path().replace(/\//g,"\\"));
+    }));
+    $("#runDialog").click(F(showRunDialog));
+    function showRunDialog() {
+        runDialogMode=true;
+        $("#mainArea").removeClass("col-xs-6").addClass("col-xs-11");
+        $("#runArea").css({height:screenH-100});
+        var w=$(window).width()-100;
+        $("#runArea").dialog({width:w,height:screenH,
+            resize:function (e,u) {
+                console.log("RSZ",u);
+                resizeCanvas($("#runArea").width()-10,$("#runArea").height()-10);
+            },
+            close:function () {dialogClosed=true;stop();}
+        });
+        console.log("Diag",w,screenH-100);
+        resizeCanvas(w,screenH-100);
+    }
     sh.curFile=function () {
         return fl.curFile();
     };
