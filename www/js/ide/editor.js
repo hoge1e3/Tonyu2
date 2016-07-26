@@ -5,7 +5,7 @@ requirejs(["Util", "Tonyu", "FS", "PathUtil","FileList", "FileMenu",
            "UI","ResEditor","WebSite","exceptionCatcher","Tonyu.TraceTbl",
            "Log","MainClassDialog","DeferredUtil","NWMenu",
            "ProjectCompiler","compiledProject","mkrunDiag","zip","LSFS","WebFS",
-           "extLink"
+           "extLink","DiagAdjuster"
           ],
 function (Util, Tonyu, FS, PathUtil, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,
@@ -14,7 +14,7 @@ function (Util, Tonyu, FS, PathUtil, FileList, FileMenu,
           UI,ResEditor,WebSite,EC,TTB,
           Log,MainClassDialog,DU,NWMenu,
           TPRC,CPPRJ,mkrunDiag,zip,LSFS,WebFS,
-          extLink
+          extLink,DiagAdjuster
           ) {
 $(function () {
     if (!WebSite.isNW) {
@@ -95,6 +95,25 @@ $(function () {
         cv=$("#cv")[0].getContext("2d");
     }
     onResize();
+    $("#runDialog").click(F(showRunDialog));
+    //var rszt;
+    var da=new DiagAdjuster($("#runArea"));
+    da.afterResize=function (d) {
+        resizeCanvas(d.width(),d.height());
+    };
+    function showRunDialog() {
+        runDialogMode=true;
+        $("#mainArea").removeClass("col-xs-6").addClass("col-xs-11");
+        $("#runArea").css({height:screenH-100});
+        var w=$(window).width()-100;
+        $("#runArea").dialog({width:w,height:screenH,
+            resize:da.handleResizeF(),
+            close:function () {dialogClosed=true;stop();}
+        });
+        da.handleResize();
+        console.log("Diag",w,screenH-100);
+        //resizeCanvas(w,screenH-100);
+    }
     
     var editors={};
 
@@ -614,22 +633,6 @@ $(function () {
         var gui = nwDispatcher.requireNwGui(); 
         gui.Shell.showItemInFolder(f.path().replace(/\//g,"\\"));
     }));
-    $("#runDialog").click(F(showRunDialog));
-    function showRunDialog() {
-        runDialogMode=true;
-        $("#mainArea").removeClass("col-xs-6").addClass("col-xs-11");
-        $("#runArea").css({height:screenH-100});
-        var w=$(window).width()-100;
-        $("#runArea").dialog({width:w,height:screenH,
-            resize:function (e,u) {
-                console.log("RSZ",u);
-                resizeCanvas($("#runArea").width()-10,$("#runArea").height()-10);
-            },
-            close:function () {dialogClosed=true;stop();}
-        });
-        console.log("Diag",w,screenH-100);
-        resizeCanvas(w,screenH-100);
-    }
     sh.curFile=function () {
         return fl.curFile();
     };
