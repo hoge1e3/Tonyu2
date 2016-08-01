@@ -34,8 +34,8 @@ define(["UI"], function (UI) {
         var menu=UI("div",{"class":"collapse navbar-collapse"},ul1);
         $("body").append(UI(
           "div",{"class":"navbar navbar-inverse navbar-fixed-top",id:"navBar"},
-                ["div",{"class":"container"},
-                    ["div", {"class":"navbar-header"}
+                ["div",{"class":"container",id:"nav-A"},
+                    ["div", {"class":"navbar-header",id:"nav-B"},
                         ["button",{type:"button", "class":"navbar-toggle",
                             "data-toggle":"collapse",
                             "data-target":".navbar-collapse"},
