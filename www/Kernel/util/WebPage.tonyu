@@ -1,0 +1,59 @@
+extends Actor;
+native document;
+native window;
+native encodeURIComponent;
+
+eventWindowOpen = \(e) {
+    window.console.log("evtwinopen",postUrl);
+    
+    window.open(postUrl);
+    if (canvas.removeEventListener) {
+        canvas.removeEventListener("click", eventWindowOpen, false);
+        canvas.removeEventListener("touchend", eventWindowOpen, false);
+        listenerExists = false;
+    } else if(canvas.detachEvent) {
+        canvas.detachEvent("onclick", eventWindowOpen);
+        canvas.detachEvent("touchend", eventWindowOpen);
+        listenerExists = false;
+    }
+};
+
+\openNewWindow(url) {
+    postUrl = url;
+    //window.console.log("opennw",postUrl,listenerExists);
+    canvas=document.getElementsByTagName("canvas")[0];
+    if (!listenerExists) {
+        if (canvas.addEventListener) {
+            canvas.addEventListener("click", eventWindowOpen, false);
+            canvas.addEventListener("touchend", eventWindowOpen, false);
+            //window.console.log("openn2",postUrl,eventWindowOpen);
+            listenerExists = true;
+        } else if(canvas.attachEvent) {
+            canvas.attachEvent("onclick", eventWindowOpen);
+            canvas.attachEvent("touchend", eventWindowOpen);
+            listenerExists = true;
+        }
+    }
+}
+
+\openPage(url) {
+    window.location.href = url;
+}
+
+\openTweet(text) {
+    url = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text);
+    openNewWindow(url);
+}
+
+\openShareTweet(url,text) {
+    if (arguments.length<2) {
+        text=url;url=null;
+    }
+    if (url == null) {
+        url = window.location.href;
+    }
+    tempUrl = "http://twitter.com/intent/tweet?"
+    +"text=" + encodeURIComponent(text)
+    +"&"+"url=" + encodeURIComponent(url);
+    openNewWindow(tempUrl);
+}

@@ -1,0 +1,78 @@
+// https://w3g.jp/blog/js_browser_sniffing2015
+// http://black-flag.net/javascript/20130213-4472.html
+// http://qiita.com/nightyknite/items/b2590a69f2e0135756dc
+
+native navigator;
+
+\getUserAgent() {
+    return navigator.userAgent;
+}
+
+\isTablet() {
+    var u = getUserAgent().toLowerCase();
+    return (
+    (u.indexOf("windows") != -1 && u.indexOf("touch") != -1 && u.indexOf("tablet pc") == -1)
+    || u.indexOf("ipad") != -1
+    || (u.indexOf("android") != -1 && u.indexOf("windows") == -1 && u.indexOf("mobile") == -1)
+    || (u.indexOf("firefox") != -1 && u.indexOf("tablet") != -1)
+    || u.indexOf("kindle") != -1 || u.indexOf("silk") != -1
+    || u.indexOf("playbook") != -1
+    || u.indexOf('a1_07') != -1
+    || u.indexOf('sc-01c') != -1
+    );
+}
+
+\isMobile() {
+    var u = getUserAgent().toLowerCase();
+    return (
+    (u.indexOf("windows") != -1 && u.indexOf("phone") != -1)
+    || u.indexOf("iphone") != -1
+    || u.indexOf("ipod") != -1
+    || (u.indexOf("android") != -1 && u.indexOf("windows") == -1 && u.indexOf("mobile") != -1)
+    || (u.indexOf("firefox") != -1 && u.indexOf("mobile") != -1)
+    || (u.indexOf("blackberry") != -1 || (u.indexOf("bb10") != -1 && u.indexOf("mobile") != -1))
+    );
+}
+
+\isWindows() {
+    var u = getUserAgent().toLowerCase();
+    return u.indexOf("windows") != -1;
+}
+
+\isAndroid() {
+    var u = getUserAgent().toLowerCase();
+    return (
+    u.indexOf("android") != -1 && u.indexOf("windows") == -1
+    );
+}
+
+\isIOS() {
+    var u = getUserAgent().toLowerCase();
+    return (
+    u.indexOf("iphone") != -1
+    || u.indexOf("ipad") != -1
+    || u.indexOf("ipod") != -1
+    );
+}
+
+\isFirefoxOS() {
+    var u = getUserAgent().toLowerCase();
+    return u.indexOf("firefox") != 1;
+}
+
+\isKindle() {
+    var u = getUserAgent().toLowerCase();
+    return (
+    u.indexOf("kindle") != -1
+    || u.indexOf("silk") != -1
+    );
+}
+
+\isBlackBerry() {
+    var u = getUserAgent().toLowerCase();
+    return (
+    u.indexOf("blackberry") != -1
+    || u.indexOf("playbook") != -1
+    || (u.indexOf("bb10") != -1 && u.indexOf("mobile") != -1)
+    );
+}

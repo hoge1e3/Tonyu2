@@ -20,8 +20,8 @@ $uiScreen.on("resize",doLayout);
     } else {
         $Screen.scaleX=calcw/width;    
     }
-    $Screen.x=cw/2;
-    $Screen.y=ch/2;
+    $Screen.x=trunc(cw/2)+0.5;
+    $Screen.y=trunc(ch/2)+0.5;
     
 }
 

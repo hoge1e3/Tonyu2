@@ -1,0 +1,17 @@
+[[api]]
+
+* $WebPage オブジェクト
+
+他のWebページを開くためのオブジェクトです。
+
+-$WebPage.openPage(url)
+--指定したアドレスに移動します。
+- $WebPage.openNewWindow(url)
+--指定したアドレスを別ウィンドウで開きます。
+--クリック動作に反応して呼び出してください。（ポップアップブロックを避けるためです）
+- $WebPage.openShareTweet(url) または $WebPage.openShareTweet(text,url)
+-- Twitterへの投稿フォームを開きます。
+-- [[@cfrag text]]にツイートする内容、[[@cfrag url]]にツイートに埋め込むURLを指定します。
+--クリック動作に反応して呼び出してください。（ポップアップブロックを避けるためです）
+
+.

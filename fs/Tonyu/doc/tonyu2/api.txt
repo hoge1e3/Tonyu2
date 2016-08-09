@@ -12,6 +12,8 @@ Tonyu2で最初から使えるクラス群です．[[ファイルシステム>fs
 -[[Boot]]
 -[[TQuery]]
 -[[MathMod]]
+-[[Button]]
+-[[Label]]
 **物理運動
 -[[BodyActor]]
 **グラフィックス
@@ -36,6 +38,8 @@ Tonyu2で最初から使えるクラス群です．[[ファイルシステム>fs
 -[[$touches]]
 -[[$screenWidth,$screenHeight]]
 -[[$sound>T2MediaPlayer]]
+-[[$WebPage]]
+-[[$Navigator]]
 
 標準クラスの具体的な使い方は、[[用途別リファレンス]]を参照してください。
 

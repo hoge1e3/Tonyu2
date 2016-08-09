@@ -1,0 +1,15 @@
+[[api]]
+
+*$Navigator オブジェクト
+
+プラットフォームを判別します。
+
+-getUserAgent
+-- Javascriptの[[@cfrag navigator.userAgent]]の値を返します
+
+次のメソッドは、対応するプラットフォームかどうかを[[@cfrag true]]または[[@cfrag false]]で返します
+-isTablet   タブレット
+-isMobile   スマートフォン
+-isWindows   Windows
+-isAndroid   Android
+-isIOS   iOS

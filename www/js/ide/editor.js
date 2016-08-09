@@ -97,21 +97,31 @@ $(function () {
     onResize();
     $("#runDialog").click(F(showRunDialog));
     //var rszt;
-    var da=new DiagAdjuster($("#runArea"));
+    /*var da=new DiagAdjuster($("#runArea"));
     da.afterResize=function (d) {
-        resizeCanvas(d.width(),d.height());
-    };
+        //resizeCanvas(d.width(),d.height());
+    };*/
+    var dialogSize={};
     function showRunDialog() {
         runDialogMode=true;
         $("#mainArea").removeClass("col-xs-6").addClass("col-xs-11");
-        $("#runArea").css({height:screenH-100});
-        var w=$(window).width()-100;
-        $("#runArea").dialog({width:w,height:screenH,
-            resize:da.handleResizeF(),
+        var d=$("#runArea");
+        //$("#runArea").css({height:screenH-100});
+        dialogSize.w=dialogSize.w||$(window).width()-100;
+        dialogSize.h=dialogSize.h||screenH;
+        $("#runArea").dialog({
+            width:dialogSize.w,
+            height:dialogSize.h,
+            resize:function () {
+                dialogSize.w=d.width();    
+                dialogSize.h=d.height();    
+                resizeCanvas(d.width(),d.height());       
+            },//da.handleResizeF(),
             close:function () {dialogClosed=true;stop();}
         });
-        da.handleResize();
-        console.log("Diag",w,screenH-100);
+        resizeCanvas(d.width(),d.height());       
+        //da.handleResize();
+        console.log("Diag",dialogSize);
         //resizeCanvas(w,screenH-100);
     }
     

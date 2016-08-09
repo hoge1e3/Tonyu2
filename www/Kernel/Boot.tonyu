@@ -49,6 +49,8 @@ mainLoop();
     $consolePrintY=465-15;
     $panel=new Panel{align:"center",x:$screenWidth/2,y:$screenHeight/2,width:$screenWidth,height:$screenHeight,zOrder:-1,layer:$FrontSprites};
     initFPSParams();
+    $WebPage=new WebPage;
+    $Navigator=new Navigator;
     $mouseX=$mouseX||0;
     $mouseY=$mouseY||0;
 }

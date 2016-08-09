@@ -1,0 +1,48 @@
+extends Actor;
+
+// padding, left, top ,width, height, text, fillStyle, strokeStyle, clickedStyle
+\new(options) {
+    options.layer=options.layer||$frontLayer;
+    super(options);
+    fillStyle=fillStyle||"rgb(179,255,142)";
+    strokeStyle=strokeStyle||"black";
+    clickedStyle=clickedStyle||"white";
+    disabledStrokeStyle=disabledStrokeStyle||"#ddd";
+    padding= padding || 5;
+    width = width || $screenWidth-100;
+    height = height || 50;
+    left=left || 50;
+    
+}
+while(true) {
+    if (!disabled && (getkey(1) || $touches[0].touched) ) {
+        if (inRect{x:$mouseX,y:$mouseY}) {
+            clicked=getkey(1) || $touches[0].touched;
+        }
+        if (clicked==1) {
+            Button.last=this;
+            if (onClick) onClick();
+        }
+    } else {
+        clicked=0;
+    }
+    update();
+}
+\inRect(p) {
+    return p.x>=left && p.x<=left+width && p.y>=top && p.y<=top+height;
+}
+\draw(c) {
+    c.fillStyle=fillStyle || "gray";
+    c.strokeStyle=strokeStyle || "black";
+    if (disabled) c.strokeStyle=disabledStrokeStyle;
+    c.fillRect(left, top, width, height);
+    c.strokeRect(left, top, width, height);
+    var size=height-padding*2;
+    var f=c.font.replace(/^[0-9]+px /,"");
+    c.font=size+"px "+f;//monospace";
+    c.textBaseline="top";
+    c.fillStyle=clicked?clickedStyle:
+    disabled?disabledStrokeStyle:strokeStyle;
+    var r=c.measureText(text);
+    c.fillText(text, left+width/2-r.width/2, top+padding);
+}
