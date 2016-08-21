@@ -14689,11 +14689,27 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=49000048;//kernel.Label:48
+      //$LASTPOS=49000049;//kernel.Label:49
+      if (typeof  x=="object") {
+        //$LASTPOS=49000084;//kernel.Label:84
+        x.layer=x.layer||Tonyu.globals.$frontLayer;
+        
+      }
+      //$LASTPOS=49000126;//kernel.Label:126
       Tonyu.classes.kernel.Actor.apply( _this, [x,y,- 1]);
-      //$LASTPOS=49000067;//kernel.Label:67
+      //$LASTPOS=49000146;//kernel.Label:146
+      if (x==null) {
+        //$LASTPOS=49000159;//kernel.Label:159
+        x=50;
+      }
+      //$LASTPOS=49000170;//kernel.Label:170
+      if (y==null) {
+        //$LASTPOS=49000183;//kernel.Label:183
+        y=50;
+      }
+      //$LASTPOS=49000194;//kernel.Label:194
       if (! _this.template&&! _this._text) {
-        //$LASTPOS=49000102;//kernel.Label:102
+        //$LASTPOS=49000230;//kernel.Label:230
         _this.text="text";
         
       }
@@ -14702,32 +14718,39 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=49000139;//kernel.Label:139
+      //$LASTPOS=49000268;//kernel.Label:268
       if (! _this.template) {
         return _this._text;
       }
-      return _this.template.replace(/\$[A-Za-z0-9\.]* ?/g,(function anonymous_220(v) {
+      return _this.template.replace(/[\$\@][A-Za-z0-9\.]* ?/g,(function anonymous_353(v) {
         
-        //$LASTPOS=49000236;//kernel.Label:236
+        //$LASTPOS=49000369;//kernel.Label:369
         v=v.replace(/ $/,"");
-        //$LASTPOS=49000267;//kernel.Label:267
+        //$LASTPOS=49000400;//kernel.Label:400
         if (v=="") {
           return "$";
         }
-        return _this.expandVal(Tonyu.globals,v.split("."));
+        //$LASTPOS=49000432;//kernel.Label:432
+        if (v.match(/^@/)) {
+          return _this.exapndVal(_this.target,v.substring(1).split("."));
+          
+        } else {
+          return _this.expandVal(Tonyu.globals,v.split("."));
+          
+        }
       }));
     },
     expandVal :function _trc_Label_expandVal(obj,flds) {
       "use strict";
       var _this=this;
       
-      //$LASTPOS=49000389;//kernel.Label:389
+      //$LASTPOS=49000654;//kernel.Label:654
       while (flds.length>0) {
-        //$LASTPOS=49000422;//kernel.Label:422
+        //$LASTPOS=49000687;//kernel.Label:687
         if (! obj) {
           return "";
         }
-        //$LASTPOS=49000452;//kernel.Label:452
+        //$LASTPOS=49000717;//kernel.Label:717
         obj=obj[flds.shift()];
         
       }
@@ -14745,15 +14768,15 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=49000389;//kernel.Label:389
+            //$LASTPOS=49000654;//kernel.Label:654
           case 1:
             if (!(flds.length>0)) { __pc=3; break; }
-            //$LASTPOS=49000422;//kernel.Label:422
+            //$LASTPOS=49000687;//kernel.Label:687
             if (!(! obj)) { __pc=2; break; }
             _thread.exit("");return;
           case 2:
             
-            //$LASTPOS=49000452;//kernel.Label:452
+            //$LASTPOS=49000717;//kernel.Label:717
             obj=obj[flds.shift()];
             __pc=1;break;
           case 3:
@@ -14768,9 +14791,9 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=49000518;//kernel.Label:518
+      //$LASTPOS=49000783;//kernel.Label:783
       delete _this.template;
-      //$LASTPOS=49000540;//kernel.Label:540
+      //$LASTPOS=49000805;//kernel.Label:805
       _this._text=v;
     },
     __dummy: false

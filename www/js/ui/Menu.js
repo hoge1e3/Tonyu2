@@ -43,7 +43,7 @@ define(["UI"], function (UI) {
                             ["span",{"class":"icon-bar"}],
                             ["span",{"class":"icon-bar"}]
                         ],
-                        ["a", {"class":"navbar-brand" ,href:"#"},title]
+                        ["a", {"class":"navbar-brand" ,href:"#",id:title.id},title.label]
                     ],
                     menu
                 ]

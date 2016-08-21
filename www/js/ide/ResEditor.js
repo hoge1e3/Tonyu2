@@ -5,7 +5,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
     var ResEditor=function (prj, mediaType) {
         var mediaInfos={
                 image:{name:"画像",exts:["png","gif","jpg"],path:"images/",key:"images",
-                    extPattern:/\.(png|gif|jpe?g)$/,contentType:/image\/(png|gif|jpe?g)/,
+                    extPattern:/\.(png|gif|jpe?g)$/i,contentType:/image\/(png|gif|jpe?g)/,
                     newItem:function (name) {
                         var r={pwidth:32,pheight:32};
                         if (name) r.name="$pat_"+name;
@@ -13,7 +13,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                     }
                 },
                 sound:{name:"音声",exts:["mp3","ogg"],path:"sounds/",key:"sounds",
-                    extPattern:/\.(mp3|ogg)$/,contentType:/audio\/(mp3|ogg)/,
+                    extPattern:/\.(mp3|ogg)$/i,contentType:/audio\/(mp3|ogg)/,
                     newItem:function (name) {
                         var r={};
                         if (name) r.name="$se_"+name;
@@ -69,7 +69,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                 var itemName=file.name.replace(mediaInfo.extPattern,"").replace(/\W/g,"_");
                 var itemExt="";
                 if (file.name.match(mediaInfo.extPattern)) {
-                    itemExt=RegExp.lastMatch;
+                    itemExt=RegExp.lastMatch.toLowerCase();
                 }
                 var v=mediaInfo.newItem(itemName);
                 if (useBlob) {

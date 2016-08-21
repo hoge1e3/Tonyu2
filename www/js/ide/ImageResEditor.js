@@ -65,10 +65,10 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                     e.preventDefault();
                     return false;
                 }
-                var imgName=file.name.replace(/\.(png|gif|jpe?g)$/,"").replace(/\W/g,"_");
+                var imgName=file.name.replace(/\.(png|gif|jpe?g)$/i,"").replace(/\W/g,"_");
                 var imgExt="";
-                if (file.name.match(/\.(png|gif|jpe?g)$/)) {
-                    imgExt=RegExp.lastMatch;
+                if (file.name.match(/\.(png|gif|jpe?g)$/i)) {
+                    imgExt=RegExp.lastMatch.toLowerCase();
                 }
                 var v={pwidth:32,pheight:32,name:"$pat_"+imgName};
                 if (useBlob) {
