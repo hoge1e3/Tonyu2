@@ -8,11 +8,25 @@
 <style>body{padding-top:20px; margin-left: 20px; margin-right:20px; font-family:"MS UI Gothic",sans-serif;}</style>
 <button onclick='javascript:history.back();'>←Back</button><br/>
 <div><a id="line_marker_-0" name="line_marker_-0"></a><a href="on.html">on</a><span>
-</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><h1><a id="line_marker_-2" name="line_marker_-2"></a><span>イベントの種類一覧</span></h1><a id="line_marker_-3" name="line_marker_-3"></a><p></p><ul><li><a id="line_marker_-4" name="line_marker_-4"></a><span> "die"</span><span>
-</span></li><a id="line_marker_-6" name="line_marker_-6"></a><ul><li><a id="line_marker_-5" name="line_marker_-5"></a><span>オブジェクトに</span><a href="die.html">die</a><span>メソッドが呼ばれたときに実行されます</span><span>
-</span></li></ul></ul><p></p><h1><a id="line_marker_-7" name="line_marker_-7"></a><span> 新しいイベントの種類を作る</span></h1><a id="line_marker_-11" name="line_marker_-11"></a><ul><li><a id="line_marker_-8" name="line_marker_-8"></a><span> 適当なイベントの名前を決めます。ここでは</span><code><span>"foo"</span></code><span>という名前のイベントを作るものとします。</span><span>
-</span></li><li><a id="line_marker_-9" name="line_marker_-9"></a><span> </span><a href="on.html">on</a><span>メソッドまたは</span><a href="waitEvent.html">waitEvent</a><span>メソッドの第1引数に</span><code><span>"foo"</span></code><span>を設定し、</span><code><span>"foo"</span></code><span>イベントが発生したときの動作を記述します。</span><span>
-</span></li><li><a id="line_marker_-10" name="line_marker_-10"></a><span> </span><code><span>"foo"</span></code><span>イベントを発生させたいときに、</span><a href="sendEvent.html">sendEvent</a><span>を呼びます。第1引数に</span><code><span>"foo"</span></code><span>を設定します。</span><span>
-</span></li></ul><p></p><a id="line_marker_-12" name="line_marker_-12"></a><span>※</span><a href="on.html">on</a><span>メソッドが呼び出された際に特別な処理をする（例：入力デバイスからの入力を受け付ける）場合、</span><a href="registerEventHandler.html">registerEventHandler</a><span>メソッドを呼び出して下さい</span><span>
-</span><a id="line_marker_-13" name="line_marker_-13"></a><p></p><a id="line_marker_-14" name="line_marker_-14"></a><p></p></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
+</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><h1><a id="line_marker_-2" name="line_marker_-2"></a><span>イベントの種類一覧</span></h1><a id="line_marker_-3" name="line_marker_-3"></a><p></p><h2><a id="line_marker_-4" name="line_marker_-4"></a><span> "die"</span></h2><a id="line_marker_-6" name="line_marker_-6"></a><ul><li><a id="line_marker_-5" name="line_marker_-5"></a><span>オブジェクトに</span><a href="die.html">die</a><span>メソッドが呼ばれたときに発生します</span><span>
+</span></li></ul><p></p><a id="line_marker_-12" name="line_marker_-12"></a><pre><a id="line_marker_-8" name="line_marker_-8"></a><span>p=new Player;</span><span>
+</span><a id="line_marker_-9" name="line_marker_-9"></a><span>p.on("die") \{</span><span>
+</span><a id="line_marker_-10" name="line_marker_-10"></a><span>  print ("Player is dead!");</span><span>
+</span><a id="line_marker_-11" name="line_marker_-11"></a><span>};</span><span>
+</span></pre><a id="line_marker_-13" name="line_marker_-13"></a><p></p><h2><a id="line_marker_-14" name="line_marker_-14"></a><span> "screenOut"</span></h2><a id="line_marker_-17" name="line_marker_-17"></a><ul><li><a id="line_marker_-15" name="line_marker_-15"></a><span>オブジェクトが画面外に出たときに発生します</span><span>
+</span></li><li><a id="line_marker_-16" name="line_marker_-16"></a><span>画面外から何ピクセル出たときにイベントが発生するか(</span><a href="screenOut.html">screenOut</a><span>の第1引数)をイベント引数として指定します。</span><span>
+</span></li></ul><p></p><a id="line_marker_-26" name="line_marker_-26"></a><pre><a id="line_marker_-19" name="line_marker_-19"></a><span>on("screenOut",0) \{</span><span>
+</span><a id="line_marker_-20" name="line_marker_-20"></a><span>   die();</span><span>
+</span><a id="line_marker_-21" name="line_marker_-21"></a><span>};</span><span>
+</span><a id="line_marker_-22" name="line_marker_-22"></a><span>while(true) {</span><span>
+</span><a id="line_marker_-23" name="line_marker_-23"></a><span>   x++;</span><span>
+</span><a id="line_marker_-24" name="line_marker_-24"></a><span>   update();</span><span>
+</span><a id="line_marker_-25" name="line_marker_-25"></a><span>}</span><span>
+</span></pre><a id="line_marker_-27" name="line_marker_-27"></a><p></p><h2><a id="line_marker_-28" name="line_marker_-28"></a><span> "crashTo"</span></h2><a id="line_marker_-29" name="line_marker_-29"></a><p></p><a id="line_marker_-32" name="line_marker_-32"></a><ul><li><a id="line_marker_-30" name="line_marker_-30"></a><span>オブジェクトが他のオブジェクトに衝突したときに発生します</span><span>
+</span></li><li><a id="line_marker_-31" name="line_marker_-31"></a><span>衝突の対象となるオブジェクト(</span><a href="crashTo.html">crashTo</a><span>の第1引数)をイベント引数として指定します</span><span>
+</span></li></ul><p></p><a id="line_marker_-33" name="line_marker_-33"></a><p></p><a id="line_marker_-34" name="line_marker_-34"></a><p></p><h1><a id="line_marker_-35" name="line_marker_-35"></a><span> 新しいイベントの種類を作る</span></h1><a id="line_marker_-39" name="line_marker_-39"></a><ul><li><a id="line_marker_-36" name="line_marker_-36"></a><span> 適当なイベントの名前を決めます。ここでは</span><code><span>"foo"</span></code><span>という名前のイベントを作るものとします。</span><span>
+</span></li><li><a id="line_marker_-37" name="line_marker_-37"></a><span> </span><a href="on.html">on</a><span>メソッドまたは</span><a href="waitEvent.html">waitEvent</a><span>メソッドの第1引数に</span><code><span>"foo"</span></code><span>を設定し、</span><code><span>"foo"</span></code><span>イベントが発生したときの動作を記述します。</span><span>
+</span></li><li><a id="line_marker_-38" name="line_marker_-38"></a><span> </span><code><span>"foo"</span></code><span>イベントを発生させたいときに、</span><a href="sendEvent.html">sendEvent</a><span>を呼びます。第1引数に</span><code><span>"foo"</span></code><span>を設定します。</span><span>
+</span></li></ul><p></p><a id="line_marker_-40" name="line_marker_-40"></a><span>※</span><a href="on.html">on</a><span>メソッドが呼び出された際に特別な処理をする（例：入力デバイスからの入力を受け付ける）場合、</span><a href="registerEventHandler.html">registerEventHandler</a><span>メソッドを呼び出して下さい</span><span>
+</span><a id="line_marker_-41" name="line_marker_-41"></a><p></p></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
 </body></html>

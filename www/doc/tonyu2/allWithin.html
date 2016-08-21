@@ -1,0 +1,24 @@
+<html><head><meta charset="utf-8"/>
+<meta http-equiv="Content-type" content="text/html; charset=utf8"/>
+<title>allWithin</title>
+</head><body><link rel='stylesheet' href='../../css/bootstrap.css'/>
+<link rel='stylesheet' href='../../css/tonyu.css'/>
+<script src='../../js/lib/jquery-1.10.1.js'/></script>
+<script src='../../js/ide/NWMenu.js'/></script>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px; font-family:"MS UI Gothic",sans-serif;}</style>
+<button onclick='javascript:history.back();'>←Back</button><br/>
+<div><a id="line_marker_-0" name="line_marker_-0"></a><a href="BaseActor.html">BaseActor</a><span>
+</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><h1><a id="line_marker_-2" name="line_marker_-2"></a><span> allWithinメソッド</span></h1><a id="line_marker_-3" name="line_marker_-3"></a><p></p><a id="line_marker_-4" name="line_marker_-4"></a><span>指定されたクラスのオブジェクトのうち，自分との距離が一定以下のすべてのオブジェクトをあらわす</span><a href="TQuery.html">TQuery</a><span>オブジェクトを返します．</span><span>
+</span><a id="line_marker_-5" name="line_marker_-5"></a><p></p><h2><a id="line_marker_-6" name="line_marker_-6"></a><span>書式</span></h2><a id="line_marker_-9" name="line_marker_-9"></a><pre><a id="line_marker_-8" name="line_marker_-8"></a><span>allWithin(Class,d)</span><span>
+</span></pre><a id="line_marker_-10" name="line_marker_-10"></a><p></p><a id="line_marker_-11" name="line_marker_-11"></a><i><span>Class</span></i><span>で指定されたクラスのオブジェクトのうち，自分との距離が</span><i><span>d</span></i><span>以下のすべてのオブジェクトをあらわす</span><a href="TQuery.html">TQuery</a><span>オブジェクトを返します．</span><span>
+</span><a id="line_marker_-12" name="line_marker_-12"></a><p></p><a id="line_marker_-13" name="line_marker_-13"></a><p></p><h1><a id="line_marker_-14" name="line_marker_-14"></a><span>例</span></h1><a id="line_marker_-15" name="line_marker_-15"></a><p></p><a id="line_marker_-22" name="line_marker_-22"></a><pre><a id="line_marker_-17" name="line_marker_-17"></a><span>    // このオブジェクトとTargetクラスのオブジェクトと距離が10以下なら，</span><span>
+</span><a id="line_marker_-18" name="line_marker_-18"></a><span>    // そのオブジェクトを消す</span><span>
+</span><a id="line_marker_-19" name="line_marker_-19"></a><span>    for (t in allWithin(Target,10)) {</span><span>
+</span><a id="line_marker_-20" name="line_marker_-20"></a><span>        t.die();</span><span>
+</span><a id="line_marker_-21" name="line_marker_-21"></a><span>    }</span><span>
+</span></pre><a id="line_marker_-23" name="line_marker_-23"></a><p></p><a id="line_marker_-24" name="line_marker_-24"></a><span>上の例は，次のように書くこともできます．</span><span>
+</span><a id="line_marker_-25" name="line_marker_-25"></a><p></p><a id="line_marker_-30" name="line_marker_-30"></a><pre><a id="line_marker_-27" name="line_marker_-27"></a><span>    // このオブジェクトとTargetクラスのオブジェクトと距離が10以下なら，</span><span>
+</span><a id="line_marker_-28" name="line_marker_-28"></a><span>    // そのオブジェクトを消す</span><span>
+</span><a id="line_marker_-29" name="line_marker_-29"></a><span>    allWithin(Target,10).die();</span><span>
+</span></pre><a id="line_marker_-31" name="line_marker_-31"></a><p></p><a id="line_marker_-32" name="line_marker_-32"></a><p></p></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
+</body></html>

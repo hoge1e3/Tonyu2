@@ -1,4 +1,4 @@
-// Created at Wed Jul 13 2016 11:51:18 GMT+0900 (東京 (標準時))
+// Created at Sun Aug 21 2016 12:15:48 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -657,7 +657,7 @@ define(["extend","PathUtil","MIMETypes","assert"],function (extend, P, M,assert)
             if (this.isReadOnly(path)) this.err(path, "read only.");
         },
         getContentType: function (path, options) {
-            var e=P.ext(path);
+            var e=(P.ext(path)+"").toLowerCase();
             return M[e] || (options||{}).def || "text/plain";
         },
         isText:function (path) {
@@ -3434,7 +3434,7 @@ return Tonyu=function () {
             bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,iterator:IT,
-            VERSION:1468378258241,//EMBED_VERSION
+            VERSION:1471749335201,//EMBED_VERSION
             A:A};
 }();
 });

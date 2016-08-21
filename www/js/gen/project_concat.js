@@ -1,4 +1,4 @@
-// Created at Wed Jul 13 2016 11:51:03 GMT+0900 (東京 (標準時))
+// Created at Sun Aug 21 2016 12:15:39 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -1207,7 +1207,7 @@ return Tonyu=function () {
             bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,iterator:IT,
-            VERSION:1468378258241,//EMBED_VERSION
+            VERSION:1471749335201,//EMBED_VERSION
             A:A};
 }();
 });
@@ -1592,7 +1592,7 @@ define(["extend","PathUtil","MIMETypes","assert"],function (extend, P, M,assert)
             if (this.isReadOnly(path)) this.err(path, "read only.");
         },
         getContentType: function (path, options) {
-            var e=P.ext(path);
+            var e=(P.ext(path)+"").toLowerCase();
             return M[e] || (options||{}).def || "text/plain";
         },
         isText:function (path) {
@@ -12127,7 +12127,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
     var ResEditor=function (prj, mediaType) {
         var mediaInfos={
                 image:{name:"画像",exts:["png","gif","jpg"],path:"images/",key:"images",
-                    extPattern:/\.(png|gif|jpe?g)$/,contentType:/image\/(png|gif|jpe?g)/,
+                    extPattern:/\.(png|gif|jpe?g)$/i,contentType:/image\/(png|gif|jpe?g)/,
                     newItem:function (name) {
                         var r={pwidth:32,pheight:32};
                         if (name) r.name="$pat_"+name;
@@ -12135,7 +12135,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                     }
                 },
                 sound:{name:"音声",exts:["mp3","ogg"],path:"sounds/",key:"sounds",
-                    extPattern:/\.(mp3|ogg)$/,contentType:/audio\/(mp3|ogg)/,
+                    extPattern:/\.(mp3|ogg)$/i,contentType:/audio\/(mp3|ogg)/,
                     newItem:function (name) {
                         var r={};
                         if (name) r.name="$se_"+name;
@@ -12191,7 +12191,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                 var itemName=file.name.replace(mediaInfo.extPattern,"").replace(/\W/g,"_");
                 var itemExt="";
                 if (file.name.match(mediaInfo.extPattern)) {
-                    itemExt=RegExp.lastMatch;
+                    itemExt=RegExp.lastMatch.toLowerCase();
                 }
                 var v=mediaInfo.newItem(itemName);
                 if (useBlob) {
@@ -12780,7 +12780,9 @@ define(["UI","extLink","mkrun","Tonyu","zip"], function (UI,extLink,mkrun,Tonyu,
                     zip.dlzip(FS.get(model.dest));
                 }
                 UIDiag.alert(UI("div",
-                         ["p",(options.hiddenFolder?"":model.dest+"に")+"ランタイムを作成しました。"],
+                         ["p",(options.hiddenFolder?"":
+                         ["a",{href:"javascript:;",style:"color: blue;",on:{click:openFolder}},model.dest+"に"]),
+                         "ランタイムを作成しました。"],
                          ["p","次のいずれかの方法でWebアプリとして公開することができます。"],
                          ["ul",
                          ["li",(model.zip?"解凍した":"")+"フォルダをお手持ちのWebサーバにアップロードする"],
@@ -12794,6 +12796,11 @@ define(["UI","extLink","mkrun","Tonyu","zip"], function (UI,extLink,mkrun,Tonyu,
                 if (res.d.dialog) res.d.dialog("close");
                 if (options.onEnd) options.onEnd();
             });
+            function openFolder() {
+                var f=FS.get(model.dest);
+                var gui = nwDispatcher.requireNwGui(); 
+                gui.Shell.showItemInFolder(f.path().replace(/\//g,"\\"));
+            }
         };
         return res.d;
     };
@@ -12891,6 +12898,37 @@ define(["FS2","jquery.binarytransport","DeferredUtil","Content","PathUtil"],
     return WebFS;
 
 });
+requireSimulator.setName('DiagAdjuster');
+define([],function () {
+    var DiagAdjuster=function (diagElem) {
+        this.diagElem=diagElem;
+        this.rszt=null;
+        this.margin=30;
+        this.timeout=100;
+    };
+    DiagAdjuster.prototype.handleResize=function () {
+        var self=this;
+        if (this.rszt) clearTimeout(this.rszt);
+        this.rszt=setTimeout(function () {
+            var d=self.diagElem.closest(".ui-dialog");
+            var t=d.find(".ui-dialog-titlebar");
+            var dw=d.width(),dh=d.height(),th=t.height();
+            var pad=self.margin;
+            var sz={w:dw-pad, h:dh-th-pad};
+            self.diagElem.css({width:sz.w,height:sz.h});
+            self.afterResize(self.diagElem);
+        },this.timeout);
+    };
+    DiagAdjuster.prototype.handleResizeF=function () {
+        var self=this;
+        return function () {
+            self.handleResize();    
+        };
+    };
+    DiagAdjuster.prototype.afterResize=function (){};
+    return DiagAdjuster;
+});
+
 requireSimulator.setName('ide/editor');
 requirejs(["Util", "Tonyu", "FS", "PathUtil","FileList", "FileMenu",
            "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project",
@@ -12899,7 +12937,7 @@ requirejs(["Util", "Tonyu", "FS", "PathUtil","FileList", "FileMenu",
            "UI","ResEditor","WebSite","exceptionCatcher","Tonyu.TraceTbl",
            "Log","MainClassDialog","DeferredUtil","NWMenu",
            "ProjectCompiler","compiledProject","mkrunDiag","zip","LSFS","WebFS",
-           "extLink"
+           "extLink","DiagAdjuster"
           ],
 function (Util, Tonyu, FS, PathUtil, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,
@@ -12908,7 +12946,7 @@ function (Util, Tonyu, FS, PathUtil, FileList, FileMenu,
           UI,ResEditor,WebSite,EC,TTB,
           Log,MainClassDialog,DU,NWMenu,
           TPRC,CPPRJ,mkrunDiag,zip,LSFS,WebFS,
-          extLink
+          extLink,DiagAdjuster
           ) {
 $(function () {
     if (!WebSite.isNW) {
@@ -12973,19 +13011,52 @@ $(function () {
     //ImageList(Tonyu.defaultResource.images, Sprites.setImageList);
 
     var screenH;
+    var runDialogMode,dialogClosed;
     function onResize() {
         //console.log($(window).height(), $("#navBar").height());
         var h=$(window).height()-$("#navBar").height();
         h-=20;
         screenH=h;
-        var rw=$("#runArea").width();
+        if (!runDialogMode) resizeCanvas($("#runArea").width(),screenH);
         $("#progs pre").css("height",h+"px");
-        console.log("canvas size",rw,h);
-        $("#cv").attr("height", h).attr("width", rw);
-        cv=$("#cv")[0].getContext("2d");
         $("#fileItemList").height(h);
     }
+    function resizeCanvas(w,h) {
+        console.log("canvas size",w,h);
+        $("#cv").attr("height", h).attr("width",w);
+        cv=$("#cv")[0].getContext("2d");
+    }
     onResize();
+    $("#runDialog").click(F(showRunDialog));
+    //var rszt;
+    /*var da=new DiagAdjuster($("#runArea"));
+    da.afterResize=function (d) {
+        //resizeCanvas(d.width(),d.height());
+    };*/
+    var dialogSize={};
+    function showRunDialog() {
+        runDialogMode=true;
+        $("#mainArea").removeClass("col-xs-6").addClass("col-xs-11");
+        var d=$("#runArea");
+        //$("#runArea").css({height:screenH-100});
+        dialogSize.w=dialogSize.w||$(window).width()-100;
+        dialogSize.h=dialogSize.h||screenH;
+        $("#runArea").dialog({
+            width:dialogSize.w,
+            height:dialogSize.h,
+            resize:function () {
+                dialogSize.w=d.width();    
+                dialogSize.h=d.height();    
+                resizeCanvas(d.width(),d.height());       
+            },//da.handleResizeF(),
+            close:function () {dialogClosed=true;stop();}
+        });
+        resizeCanvas(d.width(),d.height());       
+        //da.handleResize();
+        console.log("Diag",dialogSize);
+        //resizeCanvas(w,screenH-100);
+    }
+    
     var editors={};
 
     KeyEventChecker.down(document,"F9",F(run));
@@ -13190,6 +13261,9 @@ $(function () {
                 $("#runAreaParent").show().attr("class","col-xs-12");
                 $("#mainArea").hide();//attr("class","col-xs-12");
                 onResize();
+            }
+            if (runDialogMode && dialogClosed) {
+                showRunDialog();
             }
             break;
         case "compile_error":
@@ -13495,6 +13569,11 @@ $(function () {
         desktopEnv.editorFontSize=parseInt(s);
         if (prog) prog.setFontSize(desktopEnv.editorFontSize||12);
         saveDesktopEnv();
+    }));
+    $("#openFolder").click(F(function () {
+        var f=curPrjDir;
+        var gui = nwDispatcher.requireNwGui(); 
+        gui.Shell.showItemInFolder(f.path().replace(/\//g,"\\"));
     }));
     sh.curFile=function () {
         return fl.curFile();
