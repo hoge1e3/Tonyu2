@@ -9,9 +9,9 @@
 - $WebPage.openNewWindow(url)
 --指定したアドレスを別ウィンドウで開きます。
 --クリック動作に反応して呼び出してください。（ポップアップブロックを避けるためです）
-- $WebPage.openShareTweet(url) または $WebPage.openShareTweet(text,url)
+- $WebPage.openShareTweet(text) または $WebPage.openShareTweet(url,text)
 -- Twitterへの投稿フォームを開きます。
--- [[@cfrag text]]にツイートする内容、[[@cfrag url]]にツイートに埋め込むURLを指定します。
+-- [[@cfrag text]]にツイートする内容、[[@cfrag url]]にツイートに埋め込むURLを指定します。[[@cfrag url]]を省略した場合は現在のページが埋め込まれます。
 --クリック動作に反応して呼び出してください。（ポップアップブロックを避けるためです）
 
 .
