@@ -18883,11 +18883,11 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=54000016;//kernel.UILayout:16
+      //$LASTPOS=54000018;//kernel.UILayout:18
       _this.doLayout();
-      //$LASTPOS=54000028;//kernel.UILayout:28
+      //$LASTPOS=54000031;//kernel.UILayout:31
       Tonyu.globals.$Screen.on("resize",Tonyu.bindFunc(_this,_this.doLayout));
-      //$LASTPOS=54000059;//kernel.UILayout:59
+      //$LASTPOS=54000063;//kernel.UILayout:63
       Tonyu.globals.$uiScreen.on("resize",Tonyu.bindFunc(_this,_this.doLayout));
     },
     fiber$main :function _trc_UILayout_f_main(_thread) {
@@ -18902,14 +18902,14 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=54000016;//kernel.UILayout:16
+            //$LASTPOS=54000018;//kernel.UILayout:18
             _this.fiber$doLayout(_thread);
             __pc=1;return;
           case 1:
             
-            //$LASTPOS=54000028;//kernel.UILayout:28
+            //$LASTPOS=54000031;//kernel.UILayout:31
             Tonyu.globals.$Screen.on("resize",Tonyu.bindFunc(_this,_this.doLayout));
-            //$LASTPOS=54000059;//kernel.UILayout:59
+            //$LASTPOS=54000063;//kernel.UILayout:63
             Tonyu.globals.$uiScreen.on("resize",Tonyu.bindFunc(_this,_this.doLayout));
             _thread.exit(_this);return;
           }
@@ -18927,55 +18927,55 @@ Tonyu.klass.define({
       var calch;
       var scl;
       
-      //$LASTPOS=54000110;//kernel.UILayout:110
+      //$LASTPOS=54000116;//kernel.UILayout:116
       cw = Tonyu.globals.$uiScreen.width;
       
-      //$LASTPOS=54000138;//kernel.UILayout:138
+      //$LASTPOS=54000145;//kernel.UILayout:145
       ch = Tonyu.globals.$uiScreen.height;
       
-      //$LASTPOS=54000167;//kernel.UILayout:167
+      //$LASTPOS=54000175;//kernel.UILayout:175
       width = Tonyu.globals.$Screen.width;
       
-      //$LASTPOS=54000196;//kernel.UILayout:196
+      //$LASTPOS=54000205;//kernel.UILayout:205
       height = Tonyu.globals.$Screen.height;
       
-      //$LASTPOS=54000232;//kernel.UILayout:232
+      //$LASTPOS=54000243;//kernel.UILayout:243
       calcw = ch/height*width;
       
-      //$LASTPOS=54000283;//kernel.UILayout:283
+      //$LASTPOS=54000295;//kernel.UILayout:295
       calch = cw/width*height;
       
-      //$LASTPOS=54000334;//kernel.UILayout:334
+      //$LASTPOS=54000347;//kernel.UILayout:347
       if (calch>ch) {
-        //$LASTPOS=54000348;//kernel.UILayout:348
+        //$LASTPOS=54000361;//kernel.UILayout:361
         calch=ch;
       }
-      //$LASTPOS=54000362;//kernel.UILayout:362
+      //$LASTPOS=54000376;//kernel.UILayout:376
       if (calcw>cw) {
-        //$LASTPOS=54000376;//kernel.UILayout:376
+        //$LASTPOS=54000390;//kernel.UILayout:390
         calcw=cw;
       }
-      //$LASTPOS=54000390;//kernel.UILayout:390
+      //$LASTPOS=54000405;//kernel.UILayout:405
       scl = 1;
       
-      //$LASTPOS=54000405;//kernel.UILayout:405
+      //$LASTPOS=54000421;//kernel.UILayout:421
       if (_this.shouldDraw1x1(width,height,calcw,calch)) {
-        //$LASTPOS=54000460;//kernel.UILayout:460
+        //$LASTPOS=54000477;//kernel.UILayout:477
         calcw=width;
-        //$LASTPOS=54000472;//kernel.UILayout:472
+        //$LASTPOS=54000489;//kernel.UILayout:489
         calch=height;
-        //$LASTPOS=54000494;//kernel.UILayout:494
+        //$LASTPOS=54000512;//kernel.UILayout:512
         Tonyu.globals.$Screen.scaleX=1;
         
       } else {
-        //$LASTPOS=54000533;//kernel.UILayout:533
+        //$LASTPOS=54000553;//kernel.UILayout:553
         Tonyu.globals.$Screen.scaleX=calcw/width;
         
       }
-      //$LASTPOS=54000575;//kernel.UILayout:575
-      Tonyu.globals.$Screen.x=_this.trunc(cw/2)+0.5;
-      //$LASTPOS=54000606;//kernel.UILayout:606
-      Tonyu.globals.$Screen.y=_this.trunc(ch/2)+0.5;
+      //$LASTPOS=54000597;//kernel.UILayout:597
+      Tonyu.globals.$Screen.x=_this.trunc(cw/2)+width/2%1;
+      //$LASTPOS=54000635;//kernel.UILayout:635
+      Tonyu.globals.$Screen.y=_this.trunc(ch/2)+height/2%1;
     },
     fiber$doLayout :function _trc_UILayout_f_doLayout(_thread) {
       "use strict";
@@ -18990,55 +18990,55 @@ Tonyu.klass.define({
       var calch;
       var scl;
       
-      //$LASTPOS=54000110;//kernel.UILayout:110
+      //$LASTPOS=54000116;//kernel.UILayout:116
       cw = Tonyu.globals.$uiScreen.width;
       
-      //$LASTPOS=54000138;//kernel.UILayout:138
+      //$LASTPOS=54000145;//kernel.UILayout:145
       ch = Tonyu.globals.$uiScreen.height;
       
-      //$LASTPOS=54000167;//kernel.UILayout:167
+      //$LASTPOS=54000175;//kernel.UILayout:175
       width = Tonyu.globals.$Screen.width;
       
-      //$LASTPOS=54000196;//kernel.UILayout:196
+      //$LASTPOS=54000205;//kernel.UILayout:205
       height = Tonyu.globals.$Screen.height;
       
-      //$LASTPOS=54000232;//kernel.UILayout:232
+      //$LASTPOS=54000243;//kernel.UILayout:243
       calcw = ch/height*width;
       
-      //$LASTPOS=54000283;//kernel.UILayout:283
+      //$LASTPOS=54000295;//kernel.UILayout:295
       calch = cw/width*height;
       
-      //$LASTPOS=54000334;//kernel.UILayout:334
+      //$LASTPOS=54000347;//kernel.UILayout:347
       if (calch>ch) {
-        //$LASTPOS=54000348;//kernel.UILayout:348
+        //$LASTPOS=54000361;//kernel.UILayout:361
         calch=ch;
       }
-      //$LASTPOS=54000362;//kernel.UILayout:362
+      //$LASTPOS=54000376;//kernel.UILayout:376
       if (calcw>cw) {
-        //$LASTPOS=54000376;//kernel.UILayout:376
+        //$LASTPOS=54000390;//kernel.UILayout:390
         calcw=cw;
       }
-      //$LASTPOS=54000390;//kernel.UILayout:390
+      //$LASTPOS=54000405;//kernel.UILayout:405
       scl = 1;
       
-      //$LASTPOS=54000405;//kernel.UILayout:405
+      //$LASTPOS=54000421;//kernel.UILayout:421
       if (_this.shouldDraw1x1(width,height,calcw,calch)) {
-        //$LASTPOS=54000460;//kernel.UILayout:460
+        //$LASTPOS=54000477;//kernel.UILayout:477
         calcw=width;
-        //$LASTPOS=54000472;//kernel.UILayout:472
+        //$LASTPOS=54000489;//kernel.UILayout:489
         calch=height;
-        //$LASTPOS=54000494;//kernel.UILayout:494
+        //$LASTPOS=54000512;//kernel.UILayout:512
         Tonyu.globals.$Screen.scaleX=1;
         
       } else {
-        //$LASTPOS=54000533;//kernel.UILayout:533
+        //$LASTPOS=54000553;//kernel.UILayout:553
         Tonyu.globals.$Screen.scaleX=calcw/width;
         
       }
-      //$LASTPOS=54000575;//kernel.UILayout:575
-      Tonyu.globals.$Screen.x=_this.trunc(cw/2)+0.5;
-      //$LASTPOS=54000606;//kernel.UILayout:606
-      Tonyu.globals.$Screen.y=_this.trunc(ch/2)+0.5;
+      //$LASTPOS=54000597;//kernel.UILayout:597
+      Tonyu.globals.$Screen.x=_this.trunc(cw/2)+width/2%1;
+      //$LASTPOS=54000635;//kernel.UILayout:635
+      Tonyu.globals.$Screen.y=_this.trunc(ch/2)+height/2%1;
       
       _thread.retVal=_this;return;
     },
@@ -19048,10 +19048,10 @@ Tonyu.klass.define({
       var larger;
       var smaller;
       
-      //$LASTPOS=54000718;//kernel.UILayout:718
+      //$LASTPOS=54000761;//kernel.UILayout:761
       larger = 200;
       
-      //$LASTPOS=54000738;//kernel.UILayout:738
+      //$LASTPOS=54000782;//kernel.UILayout:782
       smaller = 5;
       
       return srcw-smaller<=dstw&&dstw<=srcw+larger&&srch-smaller<=dsth&&dsth<=srch+larger;
@@ -19064,10 +19064,10 @@ Tonyu.klass.define({
       var larger;
       var smaller;
       
-      //$LASTPOS=54000718;//kernel.UILayout:718
+      //$LASTPOS=54000761;//kernel.UILayout:761
       larger = 200;
       
-      //$LASTPOS=54000738;//kernel.UILayout:738
+      //$LASTPOS=54000782;//kernel.UILayout:782
       smaller = 5;
       
       _thread.retVal=srcw-smaller<=dstw&&dstw<=srcw+larger&&srch-smaller<=dsth&&dsth<=srch+larger;return;
