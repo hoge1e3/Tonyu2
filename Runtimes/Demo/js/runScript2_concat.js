@@ -1,4 +1,4 @@
-// Created at Thu Nov 26 2015 10:15:26 GMT+0900 (東京 (標準時))
+// Created at Sun Aug 21 2016 12:15:48 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -89,7 +89,7 @@
 requireSimulator.setName('extend');
 define([],function (){
    return function extend(d,s) {
-      for (var i in s) {d[i]=s[i];}
+      for (var i in s) {d[i]=s[i];} 
    };
 });
 
@@ -98,6 +98,7 @@ define([],function () {
     var Assertion=function(failMesg) {
         this.failMesg=flatten(failMesg || "Assertion failed: ");
     };
+    var $a;
     Assertion.prototype={
         fail:function () {
             var a=$a(arguments);
@@ -119,9 +120,20 @@ define([],function () {
             if (a!==b) this.fail(a,"!==",b);
             return a;
         },
+        ne: function (a,b) {
+            if (a===b) this.fail(a,"===",b);
+            return a;
+        },
+        isset: function (a, n) {
+            if (a==null) this.fail((n||"")+" is null/undef");
+            return a;
+        },
         is: function (value,type) {
             var t=type,v=value;
-            if (t==null) return t;
+            if (t==null) {
+                this.fail("assert.is: type must be set");
+                // return t; Why!!!!???? because is(args,[String,Number])
+            }
             if (t._assert_func) {
                 t._assert_func.apply(this,[v]);
                 return value;
@@ -134,6 +146,9 @@ define([],function () {
                 var self=this;
                 for (var i=0 ;i<t.length; i++) {
                     var na=self.subAssertion("failed at ",value,"[",i,"]: ");
+                    if (t[i]==null) {
+                        console.log("WOW!7", v[i],t[i])
+                    }
                     na.is(v[i],t[i]);
                 }
                 return value;
@@ -177,12 +192,6 @@ define([],function () {
             this.fail(action,"should throw an error",err);
         }
     };
-    /*var assert=function () {
-      var a=assert.a(arguments);
-      var t=a.shift();
-      if (!t) assert.fail(a);
-      return true;
-   };*/
     $a=function (args) {
         var a=[];
         for (var i=0; i<args.length ;i++) a.push(args[i]);
@@ -196,9 +205,34 @@ define([],function () {
             throw new Error(e.message);
         }
     };
-    assert.is=function () {
+    ["is","isset","ne","eq","ensureError"].forEach(function (m) {
+        assert[m]=function () {
+            try {
+                return top[m].apply(top,arguments);
+            } catch(e) {
+                console.log(e.stack);
+                throw new Error(e.message);
+            }
+        };
+    });
+    /*assert.is=function () {
         try {
             return top.is.apply(top,arguments);
+        } catch(e) {
+            console.log(e.stack);
+            throw new Error(e.message);
+        }
+    };
+    assert.isset=function () {
+        try {
+            return top.isset.apply(top,arguments);
+        } catch(e) {
+            throw new Error(e.message);
+        }
+    };
+    assert.ne=function () {
+        try {
+            return top.ne.apply(top,arguments);
         } catch(e) {
             throw new Error(e.message);
         }
@@ -216,50 +250,8 @@ define([],function () {
         } catch(e) {
             throw new Error(e.message);
         }
-    };
+    };*/
     assert.fail=top.fail.bind(top);
-    /*
-   assert.fail=function () {
-      var a=assert.a(arguments);
-      a=flatten(a);
-      a.unshift("Assertion failed: ");
-      console.log.apply(console,a);
-      throw new Error(a.join(" "));
-   };
-   assert.is=function (value, type, mesg) {
-      var t=type,v=value;
-      mesg=mesg||[];
-      if (t==null) return true;
-      assert(value!=null,mesg.concat([value, "should not be null/undef"]));
-      if (t instanceof Array) {
-          if (!value || typeof value.length!="number") {
-              assert.fail(mesg.concat([value, "should be array:", type]));
-          }
-          t.forEach(function (te,i) {
-              assert.is(value[i],te,mesg.concat(["failed at ",value,"[",i,"]: "]));
-          });
-          return;
-      }
-      if (t===String || t=="string") {
-          return assert(typeof(v)=="string",
-          mesg.concat([v,"should be string "]));
-      }
-      if (t===Number || t=="number") {
-          return assert(typeof(v)=="number",
-          mesg.concat([v,"should be number"]));
-      }
-      if (t instanceof Object) {
-          for (var k in t) {
-              assert.is(value[k],t[k],mesg.concat(["failed at ",value,".",k,":"]));
-          }
-          return true;
-      }
-      if (t._assert_func) {
-          return t._assert_func(v,mesg);
-      }
-      return assert(v instanceof t,
-      mesg.concat([v, "should be ",t]));
-   };*/
     assert.f=function (f) {
         return {
             _assert_func: f
@@ -302,6 +294,7 @@ function startsWith(str,prefix) {
     return str.substring(0, prefix.length)===prefix;
 }
 var driveLetter=/^([a-zA-Z]):/;
+var url=/^([a-z]+):\/\/\/?([^\/]+)\//;
 var PathUtil;
 var Path=assert.f(function (s) {
     this.is(s,String);
@@ -315,6 +308,7 @@ var Relative=assert.f(function (s) {
     this.is(s,String);
     this.assert( !PathUtil.isAbsolutePath(s) , [s, " is not a relative path"]);
 });
+
 var Dir=assert.f(function (s) {
     this.is(s,Path);
     this.assert( PathUtil.isDir(s) , [s, " is not a directory path"]);
@@ -334,9 +328,14 @@ PathUtil={
     hasDriveLetter: function (path) {
         return driveLetter.exec(path);
     },
+    isURL: function (path) {
+        var r=url.exec(path);
+        if (!r) return;
+        return {protocol:r[1], hostPort:r[2], path:SEP+path.substring(r[0].length)  };
+    },
     isPath: function (path) {
     	assert.is(arguments,[String]);
-		return !path.match(/\/\//);
+		return true;//!path.match(/\/\//);
     },
     isRelativePath: function (path) {
 		assert.is(arguments,[String]);
@@ -345,14 +344,36 @@ PathUtil={
     isAbsolutePath: function (path) {
 		assert.is(arguments,[String]);
 		return PathUtil.isPath(path) &&
-		(PathUtil.startsWith(path,SEP) || PathUtil.hasDriveLetter(path));
+		(PathUtil.startsWith(path,SEP) || PathUtil.hasDriveLetter(path) ||  PathUtil.isURL(path));
     },
     isDir: function (path) {
+        path=PathUtil.fixSep(path);
 		assert.is(arguments,[Path]);
         return endsWith(path,SEP);
     },
+    fixSep: function (path) {
+        assert.is(arguments,[String]);
+        return assert.is( path.replace(/\\/g,"/"), Path);
+    },
+    directorify: function (path) {
+        path=PathUtil.fixSep(path);
+        if (PathUtil.isDir(path)) return path;
+        return assert.is(path+SEP, Dir);
+    },
+    filify: function (path) {
+        path=PathUtil.fixSep(path);
+        if (!PathUtil.isDir(path)) return path;
+        return assert.is(path.substring(0,path.length-1),File);
+    },
 	splitPath: function (path) {
 		assert.is(arguments,[Path]);
+		var u;
+		if (u=this.isURL(path)) {
+		    var p=this.splitPath(u.path);
+		    p[0]=u.protocol+"://"+u.hostPort;
+		    return p;
+		}
+		path=path.replace(/\/+/g,SEP);
 	    var res=path.split(SEP);
         if (res[res.length-1]=="") {
             res[res.length-2]+=SEP;
@@ -408,20 +429,23 @@ PathUtil={
         return resPath;
     },
     relPath: function(path,base) {
-		assert.is(arguments,[AbsDir,AbsDir]);
+		assert.is(arguments,[Absolute,Absolute]);
         if (path.substring(0,base.length)!=base) {
             return "../"+PathUtil.relPath(path, this.up(base));
         }
         return path.substring(base.length);
     },
     up: function(path) {
-		assert.is(arguments,[Path]);
+        path=PathUtil.fixSep(path);
         if (path==SEP) return null;
         var ps=PathUtil.splitPath(path);
         ps.pop();
         return ps.join(SEP)+SEP;
     }
 };
+PathUtil.isAbsolute=PathUtil.isAbsolutePath;
+PathUtil.isRelative=PathUtil.isRelativePath;
+if (typeof window=="object") window.PathUtil=PathUtil;
 return PathUtil;
 });
 requireSimulator.setName('MIMETypes');
@@ -466,187 +490,377 @@ define([], function () {
       ".tonyu":"text/tonyu"
    };
 });
-requireSimulator.setName('DataURL');
-define(["extend","assert"],function (extend,assert) {
-    var A=(typeof Buffer!="undefined") ? Buffer :ArrayBuffer;
-    function isBuffer(data) {
-        return data instanceof ArrayBuffer ||
-        (typeof Buffer!="undefined" && data instanceof Buffer);
+requireSimulator.setName('FS2');
+define(["extend","PathUtil","MIMETypes","assert"],function (extend, P, M,assert){
+    var FS=function () {
+    };
+    var fstypes={};
+    FS.addFSType=function (name,fsgen) {
+        fstypes[name]=fsgen;
+    };
+    FS.availFSTypes=function () {
+        return fstypes;
+    };
+    function stub(n) {
+        throw new Error (n+" is STUB!");
     }
-    var DataURL=function (data, contentType){
-      // data: String/Array/ArrayBuffer
-      if (typeof data=="string") {
-          this.url=data;
-          this.dataURL2bin(data);
-      } else if (data && isBuffer(data.buffer)) {
-          this.buffer=data.buffer;
-          assert.is(contentType,String);
-          this.contentType=contentType;
-          this.bin2dataURL(this.buffer, this.contentType);
-      } else if (isBuffer(data)) {
-          this.buffer=data;
-          assert.is(contentType,String);
-          this.contentType=contentType;
-          this.bin2dataURL(this.buffer, this.contentType);
-      } else assert.fail("Invalid args: ",arguments);
-   };
-   extend(DataURL.prototype,{
-      bin2dataURL: function (b, contentType) {
-          assert(isBuffer(b));
-          assert.is(contentType,String);
-  	     var head=this.dataHeader(contentType);
-	     var base64=Base64_From_ArrayBuffer(b);
-	     assert.is(base64,String);
-	     return this.url=head+base64;
-	  },
-	  dataURL2bin: function (dataURL) {
-          assert.is(arguments,[String]);
-	      var reg=/^data:([^;]+);base64,/i;
-	      var r=reg.exec(dataURL);
-	      assert(r, ["malformed dataURL:", dataURL] );
-	      this.contentType=r[1];
-	      this.buffer=Base64_To_ArrayBuffer(dataURL.substring(r[0].length));
-          return assert.is(this.buffer , A);
-  	  },
-  	  dataHeader: function (ctype) {
-	      assert.is(arguments,[String]);
-	      return "data:"+ctype+";base64,";
-   	  },
-   	  toString: function () {return assert.is(this.url,String);}
-   });
-
-	function Base64_To_ArrayBuffer(base64){
-	    base64=base64.replace(/[\n=]/g,"");
-	    var dic = new Object();
-	    dic[0x41]= 0; dic[0x42]= 1; dic[0x43]= 2; dic[0x44]= 3; dic[0x45]= 4; dic[0x46]= 5; dic[0x47]= 6; dic[0x48]= 7; dic[0x49]= 8; dic[0x4a]= 9; dic[0x4b]=10; dic[0x4c]=11; dic[0x4d]=12; dic[0x4e]=13; dic[0x4f]=14; dic[0x50]=15;
-	    dic[0x51]=16; dic[0x52]=17; dic[0x53]=18; dic[0x54]=19; dic[0x55]=20; dic[0x56]=21; dic[0x57]=22; dic[0x58]=23; dic[0x59]=24; dic[0x5a]=25; dic[0x61]=26; dic[0x62]=27; dic[0x63]=28; dic[0x64]=29; dic[0x65]=30; dic[0x66]=31;
-	    dic[0x67]=32; dic[0x68]=33; dic[0x69]=34; dic[0x6a]=35; dic[0x6b]=36; dic[0x6c]=37; dic[0x6d]=38; dic[0x6e]=39; dic[0x6f]=40; dic[0x70]=41; dic[0x71]=42; dic[0x72]=43; dic[0x73]=44; dic[0x74]=45; dic[0x75]=46; dic[0x76]=47;
-	    dic[0x77]=48; dic[0x78]=49; dic[0x79]=50; dic[0x7a]=51; dic[0x30]=52; dic[0x31]=53; dic[0x32]=54; dic[0x33]=55; dic[0x34]=56; dic[0x35]=57; dic[0x36]=58; dic[0x37]=59; dic[0x38]=60; dic[0x39]=61; dic[0x2b]=62; dic[0x2f]=63;
-	    var num = base64.length;
-	    var n = 0;
-	    var b = 0;
-	    var e;
-
-	    if(!num) return (new A(0));
-	    //if(num < 4) return null;
-	    //if(num % 4) return null;
-
-	    // AA     12    1
-	    // AAA    18    2
-	    // AAAA   24    3
-	    // AAAAA  30    3
-	    // AAAAAA 36    4
-	    // num*6/8
-	    e = Math.floor(num / 4 * 3);
-	    if(base64.charAt(num - 1) == '=') e -= 1;
-	    if(base64.charAt(num - 2) == '=') e -= 1;
-
-	    var ary_buffer = new A( e );
-	    var ary_u8 = (typeof Buffer!="undefined" ? ary_buffer : new Uint8Array( ary_buffer ));
-	    var i = 0;
-	    var p = 0;
-	    while(p < e){
-	        b = dic[base64.charCodeAt(i)];
-	        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i));//return null;
-	        n = (b << 2);
-	        i ++;
-
-	        b = dic[base64.charCodeAt(i)];
-	        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i))
-            ary_u8[p] = n | ((b >> 4) & 0x3);
-	        /*if (p==0) {
-	            console.log("WOW!", n | ((b >> 4) & 0x3), ary_u8[p]);
-	        }*/
-	        n = (b & 0x0f) << 4;
-	        i ++;
-	        p ++;
-	        if(p >= e) break;
-
-	        b = dic[base64.charCodeAt(i)];
-	        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i))
-	        ary_u8[p] = n | ((b >> 2) & 0xf);
-	        n = (b & 0x03) << 6;
-	        i ++;
-	        p ++;
-	        if(p >= e) break;
-
-	        b = dic[base64.charCodeAt(i)];
-	        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i))
-	        ary_u8[p] = n | b;
-	        i ++;
-	        p ++;
-	    }
-	    function fail(m) {
-	        console.log(m);
-	        console.log(base64,i);
-	        throw new Error(m);
-	    }
-        //console.log("WOW!", ary_buffer[0],ary_u8[0]);
-	    return ary_buffer;
-	}
-	function Base64_From_ArrayBuffer(ary_buffer){
-		var dic = [
-			'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P',
-			'Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f',
-			'g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v',
-			'w','x','y','z','0','1','2','3','4','5','6','7','8','9','+','/'
-		];
-		var base64 = "";
-		var ary_u8 = new Uint8Array( ary_buffer );
-		var num = ary_u8.length;
-		var n = 0;
-		var b = 0;
-
-		var i = 0;
-		while(i < num){
-			b = ary_u8[i];
-			base64 += dic[(b >> 2)];
-			n = (b & 0x03) << 4;
-			i ++;
-			if(i >= num) break;
-
-			b = ary_u8[i];
-			base64 += dic[n | (b >> 4)];
-			n = (b & 0x0f) << 2;
-			i ++;
-			if(i >= num) break;
-
-			b = ary_u8[i];
-			base64 += dic[n | (b >> 6)];
-			base64 += dic[(b & 0x3f)];
-			i ++;
-		}
-
-		var m = num % 3;
-		if(m){
-			base64 += dic[n];
-		}
-		if(m == 1){
-			base64 += "==";
-		}else if(m == 2){
-			base64 += "=";
-		}
-		return base64;
-	}
-    return DataURL;
+    extend(FS.prototype, {
+        err: function (path, mesg) {
+            throw new Error(path+": "+mesg);
+        },
+        fstype:function () {
+            return "Unknown";
+        },
+        isReadOnly: function (path, options) {// mainly for check ENTIRELY read only
+            stub("isReadOnly");
+        },
+        supportsSync: function () {
+            return true;
+        },
+        resolveFS:function (path, options) {
+            assert(this.getRootFS()!==this);
+            return this.getRootFS().resolveFS(path);
+        },
+        mounted: function (rootFS, mountPoint ) {
+            //assert.is(arguments,[FS,P.AbsDir]);
+            this.rootFS=rootFS;
+            this.mountPoint=mountPoint;
+        },
+        inMyFS:function (path) {
+            return !this.mountPoint || P.startsWith(path, this.mountPoint);
+        },
+        /*dirFromFstab: function (path, options) {
+            assert.is(path, P.AbsDir);
+            var res=(options||{}).res || [];
+            this.fstab().forEach(function (tb) {
+                if (P.up( tb.path )==path) res.push(P.name(tb.path));
+            });
+            return res;
+        },*/
+        getRootFS: function () {
+            return assert( this.rootFS, "rootFS is not set" );
+        },
+        //-------- end of mouting
+        //-------- spec
+        getReturnTypes: function (path, options) {
+            //{getContent:String|DataURL|ArrayBuffer|OutputStream|Writer
+            //   ,opendir:Array|...}
+            stub("");
+        },
+        //-------  for file
+        getContent: function (path, options) {
+            // options:{type:String|DataURL|ArrayBuffer|OutputStream|Writer}
+            // succ : [type],
+            stub("getContent");
+        },
+        getContentAsync: function (path, options) {
+            if (!this.supportsSync()) stub("getContentAsync");
+            return $.when(this.getContent.apply(this,arguments));
+        },
+        setContent: function (path, content, options) {
+            // content: String|ArrayBuffer|InputStream|Reader
+            stub("");
+        },
+        setContentAsync: function (path, content, options) {
+            var t=this;
+            if (!t.supportsSync()) stub("setContentAsync");
+            return $.when(content).then(function (content) {
+                return $.when(t.setContent(path,content,options));
+            });
+        },
+        getMetaInfo: function (path, options) {
+            stub("");
+        },
+        setMetaInfo: function (path, info, options) {
+            stub("");
+        },
+        mkdir: function (path, options) {
+            stub("mkdir");
+        },
+        touch: function (path) {
+            stub("touch");
+        },
+        exists: function (path, options) {
+            // exists return false if path is existent by follwing symlink
+            stub("exists");
+        },
+        opendir: function (path, options) {
+            //ret: [String] || Stream<string> // https://nodejs.org/api/stream.html#stream_class_stream_readable
+            stub("opendir");
+        },
+        cp: function(path, dst, options) {
+            assert.is(arguments,[P.Absolute,P.Absolute]);
+            this.assertExist(path);
+            options=options||{};
+            var srcIsDir=this.isDir(path);
+            var dstfs=this.getRootFS().resolveFS(dst);
+            var dstIsDir=dstfs.isDir(dst);
+            if (!srcIsDir && !dstIsDir) {
+                if (this.supportsSync() && dstfs.supportsSync()) {
+                    var cont=this.getContent(path);
+                    var res=dstfs.setContent(dst,cont);
+                    if (options.a) {
+                        dstfs.setMetaInfo(dst, this.getMetaInfo(path));
+                    }
+                    return res;
+                } else {
+                    return dstfs.setContentAsync(
+                            dst,
+                            this.getContentAsync(path)
+                    ).then(function (res) {
+                        if (options.a) {
+                            return dstfs.setMetaInfo(dst, this.getMetaInfo(path));
+                        }
+                        return res;
+                    });
+                }
+            } else {
+                throw new Error("only file to file supports");
+            }
+        },
+        mv: function (path,to,options) {
+            this.cp(path,to,options);
+            return this.rm(path,{r:true});
+        },
+        rm:function (path, options) {
+            stub("");
+        },
+        link: function (path, to, options) {
+            throw new Error("ln "+to+" "+path+" : This FS not support link.");
+        },
+        getURL: function (path) {
+            stub("");
+        }
+    });
+    //res=[]; for (var k in a) { res.push(k); } res;
+    FS.delegateMethods=function (prototype,  methods) {
+        for (var n in methods) {
+            (function (n){
+                assert.ne(n,"inMyFS");
+                prototype[n]=function () {
+                    var path=arguments[0];
+                    assert.is(path,P.Absolute);
+                    var fs=this.resolveFS(path);
+                    //console.log(n, f.fs===this  ,f.fs, this);
+                    if (fs!==this) {
+                        //arguments[0]=f.path;
+                        return fs[n].apply(fs, arguments);
+                    } else {
+                        return methods[n].apply(this, arguments);
+                    }
+                };
+            })(n);
+        }
+    };
+    FS.delegateMethods(FS.prototype, {
+        assertWriteable: function (path) {
+            if (this.isReadOnly(path)) this.err(path, "read only.");
+        },
+        getContentType: function (path, options) {
+            var e=(P.ext(path)+"").toLowerCase();
+            return M[e] || (options||{}).def || "text/plain";
+        },
+        isText:function (path) {
+            var m=this.getContentType(path);
+            return P.startsWith( m, "text");
+        },
+        assertExist: function (path, options) {
+            if (!this.exists(path, options)) {
+                this.err(path, ": No such "+(P.isDir(path)?"directory":"file"));
+            }
+        },
+        isDir: function (path,options) {
+            return P.isDir(path);
+        },
+        find: function (path, options) {
+            assert.is(arguments,[P.Absolute]);
+            var ls=this.opendir(path, options);
+            var t=this;
+            var res=[path];
+            ls.forEach(function (e) {
+                var ep=P.rel(path, e);
+                if (P.isDir(ep)) {
+                    var fs=t.resolveFS(ep);
+                    res=res.concat(
+                            fs.find( ep ,options)
+                    );
+                } else {
+                    res.push( ep );//getPathFromRootFS
+                }
+            });
+            return res;
+        },
+        resolveLink: function (path) {
+            assert.is(path,P.Absolute);
+            // returns non-link path
+            // ln -s /a/b/ /c/d/
+            // resolveLink /a/b/    ->  /a/b/
+            // resolveLink /c/d/e/f -> /a/b/e/f
+            // resolveLink /c/d/non_existent -> /a/b/non_existent
+            // isLink      /c/d/    -> /a/b/
+            // isLink      /c/d/e/f -> null
+            // ln /testdir/ /ram/files/
+            // resolveLink /ram/files/sub/test2.txt -> /testdir/sub/test2.txt
+            // path=/ram/files/test.txt
+            for (var p=path ; p ; p=P.up(p)) {
+                assert(!this.mountPoint || P.startsWith(p, this.mountPoint), p+" is out of mountPoint. path="+path);
+                var l=this.isLink(p);  // p=/ram/files/ l=/testdir/
+                if (l) {
+                    assert(l!=p,"l==p=="+l);
+                    //        /testdir/    test.txt
+                    var np=P.rel(l,P.relPath(path, p));  //   /testdir/test.txt
+                    assert(np!=path,"np==path=="+np);
+                    return assert.is(this.getRootFS().resolveFS(np).resolveLink(np),P.Absolute)  ;
+                }
+                if (this.exists(p)) return path;
+            }
+            return path;
+        },
+        isLink: function (path) {
+            return null;
+        }//,
+        /*get: function (path) {
+            assert.eq(this.resolveFS(path), this);
+            return new SFile(this, path);
+            //var r=this.resolveFS(path);
+            //return new SFile(r.fs, r.path);
+        }*/
+    });
+    return FS;
 });
-requireSimulator.setName('Contents');
-define(["DataURL"],function (DataURL){
-   var Contents={
-      convert: function (src, destType, options) {
-         // options:{encoding: , contentType: }
-         // src: String|DataURL|ArrayBuffer|OutputStream|Writer
-         // destType: String|DataURL|ArrayBuffer|InputStream|Reader
-         var srcType;
-         if (typeof src=="string") srcType=String;
-         if (src instanceof DataURL) srcType=DataURL;
-         if (src instanceof ArrayBuffer) srcType=ArrayBuffer;
-         if (srcType==destType) return src;
-         throw new Error("Cannot convert from "+srcType+" to "+destType);
-      }
-   };
-   return Contents;
+
+requireSimulator.setName('WebSite');
+define(["PathUtil"], function (P) {
+    var loc=document.location.href;
+    var devMode=!!loc.match(/html\/dev\//) && !!loc.match(/localhost:3/);
+    var WebSite;
+    if (loc.match(/jsrun\.it/)) {
+        WebSite={
+            urlAliases: {
+                "images/Ball.png":"http://jsrun.it/assets/9/X/T/b/9XTbt.png",
+                "images/base.png":"http://jsrun.it/assets/6/F/y/3/6Fy3B.png",
+                "images/Sample.png":"http://jsrun.it/assets/s/V/S/l/sVSlZ.png",
+                "images/neko.png":"http://jsrun.it/assets/f/D/z/z/fDzze.png",//"http://jsrun.it/assets/j/D/9/q/jD9qQ.png",
+                "images/mapchip.png":"http://jsrun.it/assets/f/u/N/v/fuNvz.png",
+                "images/inputPad.png":"http://jsrun.it/assets/r/K/T/Y/rKTY9.png"
+            },top:"",devMode:devMode, pluginTop: "http://tonyuedit.appspot.com/js/plugins",
+            removeJSOutput:true
+        };
+    } else if (
+      loc.match(/tonyuexe\.appspot\.com/) ||
+      loc.match(/localhost:8887/) ||
+ 	  (
+ 	    /*(
+ 	       loc.match(/^file:/) ||
+ 	       loc.match(/localhost/) ||
+	       loc.match(/tonyuedit\.appspot\.com/)
+	    ) &&*/
+	    loc.match(/\/html\/((dev)|(build))\//)
+	  )
+    ) {
+        WebSite={
+            urlAliases: {
+                "images/Ball.png":"../../images/Ball.png",
+                "images/base.png":"../../images/base.png",
+                "images/Sample.png":"../../images/Sample.png",
+                "images/neko.png":"../../images/neko.png",
+                "images/inputPad.png":"../../images/inputPad.png",
+                "images/mapchip.png":"../../images/mapchip.png",
+                "images/sound.png":"../../images/sound.png",
+                    "images/ecl.png":"../../images/ecl.png"
+            },top:"../..",devMode:devMode
+        };
+    } else {
+        WebSite={
+           urlAliases: {}, top: ".",devMode:devMode
+        };
+    }
+    // from https://w3g.jp/blog/js_browser_sniffing2015
+    var u=window.navigator.userAgent.toLowerCase();
+    WebSite.tablet=(u.indexOf("windows") != -1 && u.indexOf("touch") != -1)
+    || u.indexOf("ipad") != -1
+    || (u.indexOf("android") != -1 && u.indexOf("mobile") == -1)
+    || (u.indexOf("firefox") != -1 && u.indexOf("tablet") != -1)
+    || u.indexOf("kindle") != -1
+    || u.indexOf("silk") != -1
+    || u.indexOf("playbook") != -1;
+    WebSite.mobile=(u.indexOf("windows") != -1 && u.indexOf("phone") != -1)
+    || u.indexOf("iphone") != -1
+    || u.indexOf("ipod") != -1
+    || (u.indexOf("android") != -1 && u.indexOf("mobile") != -1)
+    || (u.indexOf("firefox") != -1 && u.indexOf("mobile") != -1)
+    || u.indexOf("blackberry") != -1;
+
+    if (!WebSite.pluginTop) {
+        WebSite.pluginTop=WebSite.top+"/js/plugins";
+    }
+    WebSite.disableROM={};
+	if (loc.match(/tonyuedit\.appspot\.com/) || loc.match(/localhost:8888/) ) {
+	    //WebSite.disableROM={"ROM_d.js":true};
+	}
+    if (loc.match(/\.appspot\.com/) ||  loc.match(/localhost:888[87]/)) {
+        WebSite.serverType="GAE";
+    }
+    if (loc.match(/localhost:3000/) ) {
+        WebSite.serverType="Node";
+    }
+    if (loc.match(/tonyuexe\.appspot\.com/) ||
+        loc.match(/localhost:8887/)) {
+        WebSite.serverTop=WebSite.top+"/exe"; // Fix NetModule.tonyu!!
+    } else {
+        WebSite.serverTop=WebSite.top+"/edit";// Fix NetModule.tonyu!!
+    }
+    WebSite.sampleImg=WebSite.top+"/images";
+    WebSite.blobPath=WebSite.serverTop+"/serveBlob";        //TODO: urlchange!
+    WebSite.isNW=(typeof process=="object" && process.__node_webkit);
+    WebSite.mp3Disabled=WebSite.isNW;
+    WebSite.tonyuHome="/Tonyu/";
+    WebSite.url={
+        getDirInfo:WebSite.serverTop+"/getDirInfo",
+        getFiles:WebSite.serverTop+"/File2LSSync",
+        putFiles:WebSite.serverTop+"/LS2FileSync"
+    };
+    if (WebSite.isNW) {
+        WebSite.cwd=P.directorify(process.cwd());
+        //WebSite.exeDir=WebSite.execDir=P.up(P.fixSep(process.execPath)); not suitable when mac
+        if (process.env.TONYU_HOME) {
+            WebSite.tonyuHome=P.directorify(process.env.TONYU_HOME);
+        } else {
+            WebSite.tonyuHome=P.rel(WebSite.cwd,"fs/Tonyu/");
+        }
+        WebSite.logdir=process.env.TONYU_LOGDIR;//"C:/var/log/Tonyu/";
+        WebSite.wwwDir=P.rel(WebSite.cwd,"www/");
+        WebSite.platform=process.platform;
+        WebSite.ffmpeg=P.rel(WebSite.cwd,(WebSite.platform=="win32"?
+                "ffmpeg/bin/ffmpeg.exe":"ffmpeg/bin/ffmpeg"));
+        WebSite.pkgInfo=require(P.rel(WebSite.cwd, "package.json"));
+        if (process.env.TONYU_PROJECTS) {
+            WebSite.projects=process.env.TONYU_PROJECTS.replace(/\\/g,"/").split(require('path').delimiter);
+        } else if ( WebSite.pkgInfo && WebSite.pkgInfo.config && WebSite.pkgInfo.config.prjDirs ){
+            WebSite.projects=WebSite.pkgInfo.config.prjDirs.map(function (d) {
+                d=P.directorify(d);
+                if (P.isAbsolute(d)) return d;
+                return P.rel(WebSite.cwd,d);
+            });
+        } else {
+            WebSite.projects=[P.rel(WebSite.cwd,"Projects/"),
+                              P.rel(WebSite.tonyuHome,"Projects/")];
+        }
+        WebSite.kernelDir=P.rel(WebSite.wwwDir,"Kernel/");
+    } else {
+        WebSite.wwwDir=location.protocol+"//"+location.host+"/";
+        WebSite.projects=[P.rel(WebSite.tonyuHome,"Projects/")];
+    }
+    if (loc.match(/tonyuedit\.appspot\.com/) ||
+        loc.match(/localhost:888/) ||
+        WebSite.isNW) {
+        WebSite.compiledKernel=WebSite.top+"/Kernel/js/concat.js";
+    } else {
+        WebSite.compiledKernel="http://tonyuexe.appspot.com/Kernel/js/concat.js";
+    }
+    return window.WebSite=WebSite;
 });
+
 requireSimulator.setName('Util');
 Util=(function () {
 
@@ -798,724 +1012,378 @@ function privatize(o){
     }
     return res;
 }
+function hasNodeBuffer() {
+    return typeof Buffer!="undefined";
+}
+function isNodeBuffer(data) {
+    return (hasNodeBuffer() && data instanceof Buffer);
+}
+function isBuffer(data) {
+    return data instanceof ArrayBuffer || isNodeBuffer(data);
+}
+function utf8bytes2str(bytes) {
+    var e=[];
+    for (var i=0 ; i<bytes.length ; i++) {
+         e.push("%"+("0"+bytes[i].toString(16)).slice(-2));
+    }
+    try {
+        return decodeURIComponent(e.join(""));
+    } catch (er) {
+        console.log(e.join(""));
+        throw er;
+    }
+}
+function str2utf8bytes(str, binType) {
+    var e=encodeURIComponent(str);
+    var r=/^%(..)/;
+    var a=[];
+    var ad=0;
+    for (var i=0 ; i<e.length; i++) {
+        var m=r.exec( e.substring(i));
+        if (m) {
+            a.push(parseInt("0x"+m[1]));
+            i+=m[0].length-1;
+        } else a.push(e.charCodeAt(i));
+    }
+    return (typeof Buffer!="undefined" && binType===Buffer ? new Buffer(a) : new Uint8Array(a).buffer);
+}
 
 return {
     getQueryString:getQueryString,
     endsWith: endsWith, startsWith: startsWith,
     Base64_To_ArrayBuffer:Base64_To_ArrayBuffer,
     Base64_From_ArrayBuffer:Base64_From_ArrayBuffer,
-    privatize: privatize
+    utf8bytes2str: utf8bytes2str,
+    str2utf8bytes: str2utf8bytes,
+    privatize: privatize,
+    hasNodeBuffer:hasNodeBuffer,
+    isNodeBuffer: isNodeBuffer,
+    isBuffer: isBuffer
 };
 })();
 
-requireSimulator.setName('SFile');
-define(["Contents","extend","assert","PathUtil","Util"],
-function (C,extend,A,P,Util) {
+requireSimulator.setName('DataURL');
+define(["extend","assert","Util"],function (extend,assert,Util) {
+    var A=Util.hasNodeBuffer() ? Buffer :ArrayBuffer;
+    var isNodeBuffer=Util.isNodeBuffer;
+    var isBuffer=Util.isBuffer;
+    var DataURL=function (data, contentType){
+      // data: String/Array/ArrayBuffer
+      if (typeof data=="string") {
+          this.url=data;
+          this.binType=contentType || A;
+          this.dataURL2bin(data);
+      } else if (data && isBuffer(data.buffer)) {
+          this.buffer=data.buffer;
+          assert.is(contentType,String);
+          this.contentType=contentType;
+          this.bin2dataURL(this.buffer, this.contentType);
+      } else if (isBuffer(data)) {
+          this.buffer=data;
+          assert.is(contentType,String);
+          this.contentType=contentType;
+          this.bin2dataURL(this.buffer, this.contentType);
+      } else {
+          console.log(arguments);
+          assert.fail("Invalid args: ",arguments);
+      }
+   };
+   DataURL.isBuffer=isBuffer;
+   extend(DataURL.prototype,{
+      bin2dataURL: function (b, contentType) {
+          assert(isBuffer(b));
+          assert.is(contentType,String);
+  	     var head=this.dataHeader(contentType);
+	     var base64=Base64_From_ArrayBuffer(b);
+	     assert.is(base64,String);
+	     return this.url=head+base64;
+	  },
+	  dataURL2bin: function (dataURL) {
+          assert.is(arguments,[String]);
+	      var reg=/^data:([^;]+);base64,/i;
+	      var r=reg.exec(dataURL);
+	      assert(r, ["malformed dataURL:", dataURL] );
+	      this.contentType=r[1];
+	      this.buffer=Base64_To_ArrayBuffer(dataURL.substring(r[0].length) , this.binType);
+          return assert.is(this.buffer , this.binType);
+  	  },
+  	  dataHeader: function (ctype) {
+	      assert.is(arguments,[String]);
+	      return "data:"+ctype+";base64,";
+   	  },
+   	  toString: function () {return assert.is(this.url,String);}
+   });
 
-var SFile=function (fs, path) {
-    A.is(path, P.Absolute);
-    A(fs && fs.getReturnTypes);
-    this._path=path;
-    this.fs=fs;
-    if (this.isDir() && !P.isDir(path)) {
-        this._path+=P.SEP;
-    }
-};
-SFile.is=function (path) {
-    return path && typeof (path.isSFile)=="function" && path.isSFile();
-};
-function getPath(f) {
-    if (SFile.is(f)) {
-        return f.path();
-    } else {
-        A.is(f,P.Absolute);
-        return f;
-    }
-}
-SFile.prototype={
-    isSFile: function (){return true;},
-    setPolicy: function (p) {
-        if (this.policy) throw new Error("policy already set");
-        this.policy=p;
-        return this._clone();
-    },
-    _clone: function (){
-        return this._resolve(this.path());
-    },
-    _resolve: function (path, options) {
-        var res;
-        options=options||{};
-        if (SFile.is(path)) {
-            res=path;
-        } else {
-            A.is(path,P.Absolute);
-            var topdir;
-            var policy=options.policy || this.policy;
-            if (policy && (topdir=policy.topDir)) {
-                if (topdir.path) topdir=topdir.path();
-                if (!P.startsWith(path, topdir)) {
-                    throw new Error(path+": cannot access. Restricted to "+topdir);
-                }
-            }
-            res=this.fs.getRootFS().get(path);
-            res.policy=policy;
-        }
-        if (res.policy) {
-            return Util.privatize(res);
-        } else {
-            return res;
-        }
-    },
-    contains: function (file) {
-        A(SFile.is(file),file+" shoud be a SFile object.");
-        if (!this.isDir()) return false;
-        return P.startsWith( file.path(), this.path());
-    },
-    // Path from Root
-    path: function () {
-        return this._path;//this.fs.getPathFromRootFS(this.pathT);
-    },
-    // Path from This fs
-    /*pathInThisFS: function () {
-        return this.pathT;
-    },*/
-    name: function () {
-        return P.name(this.path());
-    },
-    truncExt: function (ext) {
-        return P.truncExt(this.path(),ext);
-    },
-    ext: function () {
-        return P.ext(this.path());
-    },
-    relPath: function (base) {
-        // base should be SFile or Path from rootFS
-        var bp=(base.path ?
-                base.path() :
-                base );
-        return P.relPath(this.path(), A.is(bp,P.Absolute) );
-    },
-    up:function () {
-        var pathR=this.path();
-        var pa=P.up(pathR);
-        if (pa==null) return null;
-        return this._resolve(pa);
-    },
-    rel: function (relPath) {
-        A.is(relPath, P.Relative);
-        this.assertDir();
-        var pathR=this.path();
-        return this._resolve(P.rel(pathR, relPath));
-    },
-    startsWith: function (pre) {
-        return P.startsWith(this.name(),pre);
-    },
-    endsWith: function (post) {
-        return P.endsWith(this.name(),post);
-    },
-    equals:function (o) {
-        return (o && typeof o.path=="function" && o.path()==this.path());
-    },
-    toString:function (){
-        return this.path();
-    },
-    //Common
-    touch: function () {
-        this.fs.touch(this.path());
-    },
-    isReadOnly: function () {
-        this.fs.isReadOnly(this.path());
-    },
-    isTrashed:function () {
-        var m=this.metaInfo();
-        if (!m) return false;
-        return m.trashed;
-    },
-    metaInfo: function () {
-        if (arguments.length==0) {
-            return this.getMetaInfo.apply(this,arguments);
-        } else {
-            return this.setMetaInfo.apply(this,arguments);
-        }
-    },
-    getMetaInfo: function (options) {
-        return this.fs.getMetaInfo(this.path(),options);
-    },
-    setMetaInfo: function (info, options) {
-        return this.fs.setMetaInfo(this.path(),info, options);
-    },
-    lastUpdate:function () {
-        A(this.exists());
-        return this.metaInfo().lastUpdate;
-    },
-    /*rootFS: function () {
-        return this.fs.getRootFS();
-    },*/
-    exists: function (options) {
-        options=options||{};
-        var p=this.fs.exists(this.path(),options);
-        if (p || options.noFollowLink) {
-            return p;
-        } else {
-            return this._resolveLinkNoPolicy().exists({noFollowLink:true});
-        }
-    },
-    /*copyTo: function (dst, options) {
-        this.fs.cp(this.path(),getPath(dst),options);
-    },*/
-    rm: function (options) {
-        options=options||{};
-        if (!this.exists({noFollowLink:true})) {
-            var l=this._resolveLinkNoPolicy();
-            if (!this.equals(l)) return l.rm(options);
-        }
-        if (this.isDir() && (options.recursive||options.r)) {
-            this.each(function (f) {
-                f.rm(options);
-            });
-        }
-        var pathT=this.path();
-        this.fs.rm(pathT, options);
-    },
-    removeWithoutTrash: function (options) {
-        options=options||{};
-        options.noTrash=true;
-        this.rm(options);
-    },
-    isDir: function () {
-        return this.fs.isDir(this.path());
-    },
-    // File
-    text:function () {
-        var l=this._resolveLinkNoPolicy();
-        if (!this.equals(l)) return l.text.apply(l,arguments);
-        if (arguments.length>0) {
-            this.setText(arguments[0]);
-        } else {
-            return this.getText();
-        }
-    },
-    setText:function (t) {
-        A.is(t,String);
-        this.fs.setContent(this.path(), t);
-    },
-    getText:function (t) {
-        return this.fs.getContent(this.path(), {type:String});
-    },
-    isText: function () {
-        return this.fs.isText(this.path());
-    },
-    setBytes:function (b) {
-        A.is(t,ArrayBuffer);
-        return this.fs.setContent(b);
-    },
-    getBytes:function (t) {
-        return this.fs.getContent(this.path(), {type:ArrayBuffer});
-    },
-    getURL: function () {
-        return this.fs.getURL(this.path());
-    },
-    lines:function () {
-        return this.text().split("\n");
-    },
-    obj: function () {
-        var file=this;
-        if (arguments.length==0) {
-            var t=file.text();
-            if (!t) return null;
-            return JSON.parse(t);
-        } else {
-            file.text(JSON.stringify(A.is(arguments[0],Object) ));
-        }
-    },
-    copyTo: function (dst, options) {
-        return dst.copyFrom(this,options);
-    },
-    copyFrom: function (src, options) {
-        var dst=this;
-        var options=options||{};
-        var srcIsDir=src.isDir();
-        var dstIsDir=dst.isDir();
-        if (!srcIsDir && dstIsDir) {
-            dst=dst.rel(src.name());
-            A(!dst.isDir(), dst+" is a directory.");
-            dstIsDir=false;
-        }
-        if (srcIsDir && !dstIsDir) {
-           this.err("Cannot move dir to file");
-        } else if (!srcIsDir && !dstIsDir) {
-            if (options.echo) options.echo(src+" -> "+dst);
-            return this.fs.cp(A.is(src.path(), P.Absolute), dst.path(),options);
-            /*var srcc=src.getText(); // TODO
-            var res=dst.setText(srcc);
-            if (options.a) {
-                dst.setMetaInfo(src.getMetaInfo());
-            }
-            return res;*/
-        } else {
-            A(srcIsDir && dstIsDir);
-            src.each(function (s) {
-                dst.rel(s.name()).copyFrom(s, options);
-            });
-        }
-        //file.text(src.text());
-        //if (options.a) file.metaInfo(src.metaInfo());
-    },
-    moveFrom: function (src, options) {
-        var res=this.copyFrom(src,options);
-        src.rm({recursive:true});
-        return res;//this.fs.mv(getPath(src),this.path(),options);
-    },
-    // Dir
-    assertDir:function () {
-        A.is(this.path(),P.Dir);
-        return this;
-    },
-    /*files:function (f,options) {
-        var dir=this.assertDir();
-        var res=[];
-        this.each(function (f) {
-            res.add(f);
-        },options);
-        return res;
-    },*/
-    each:function (f,options) {
-        var dir=this.assertDir();
-        dir.listFiles(options).forEach(f);
-    },
-    recursive:function (fun,options) {
-        var dir=this.assertDir();
-        dir.each(function (f) {
-            if (f.isDir()) f.recursive(fun);
-            else fun(f);
-        },options);
-    },
-    listFiles:function (options) {
-        A(options==null || typeof options=="object");
-        var dir=this.assertDir();
-        var l=this._resolveLinkNoPolicy();
-        if (!this.equals(l)) {
-            return l.listFiles.apply(l,arguments).map(function (f) {
-                return dir.rel(f.name());
-            });
-        }
-        var path=this.path();
-        var ord;
-        if (typeof options=="function") ord=options;
-        options=dir.convertOptions(options);
-        if (!ord) ord=options.order;
-        var di=this.fs.opendir(path, options);
-        var res=[];
-        for (var i=0;i<di.length; i++) {
-            var name=di[i];
-            //if (!options.includeTrashed && dinfo[i].trashed) continue;
-            if (options.excludes[path+name] ) continue;
-            res.push(dir.rel(name));
-        }
-        if (typeof ord=="function" && res.sort) res.sort(ord);
-        return res;
-    },
-    ls:function (options) {
-        A(options==null || typeof options=="object");
-        var dir=this.assertDir();
-        var res=dir.listFiles(options);
-        return res.map(function (f) {
-            return f.name();
-        });
-    },
-    convertOptions:function(options) {
-        var dir=this.assertDir();
-        var pathR=this.path();
-        if (!options) options={};
-        if (!options.excludes) options.excludes={};
-        if (options.excludes instanceof Array) {
-            var excludes={};
-            options.excludes.forEach(function (e) {
-                if (P.startsWith(e,"/")) {
-                    excludes[e]=1;
-                } else {
-                    excludes[pathR+e]=1;
-                }
-            });
-            options.excludes=excludes;
-        }
-        return A.is(options,{excludes:{}});
-    },
-    mkdir: function () {
-        this.touch();
-    },
-    link: function (to,options) {// % ln to path
-        to=this._resolve(A(to));
-        this.fs.link(this.path(),to.path(),options);
-    },
-    _resolveLinkOpt: function (options) {
-        var l=this.fs.resolveLink(this.path());
-        A.is(l,P.Absolute);
-        return this._resolve(l, options);
-    },
-    _resolveLinkNoPolicy: function () {
-        return this._resolveLinkOpt({policy:{}});
-    },
-    resolveLink:function () {
-        return this._resolveLinkOpt();
-    },
-    isLink: function () {
-        return this.fs.isLink(this.path());
-    }
-};
-return SFile;
-});
+	function Base64_To_ArrayBuffer(base64, binType){
+	    var A=binType;
+	    base64=base64.replace(/[\n=]/g,"");
+	    var dic = new Object();
+	    dic[0x41]= 0; dic[0x42]= 1; dic[0x43]= 2; dic[0x44]= 3; dic[0x45]= 4; dic[0x46]= 5; dic[0x47]= 6; dic[0x48]= 7; dic[0x49]= 8; dic[0x4a]= 9; dic[0x4b]=10; dic[0x4c]=11; dic[0x4d]=12; dic[0x4e]=13; dic[0x4f]=14; dic[0x50]=15;
+	    dic[0x51]=16; dic[0x52]=17; dic[0x53]=18; dic[0x54]=19; dic[0x55]=20; dic[0x56]=21; dic[0x57]=22; dic[0x58]=23; dic[0x59]=24; dic[0x5a]=25; dic[0x61]=26; dic[0x62]=27; dic[0x63]=28; dic[0x64]=29; dic[0x65]=30; dic[0x66]=31;
+	    dic[0x67]=32; dic[0x68]=33; dic[0x69]=34; dic[0x6a]=35; dic[0x6b]=36; dic[0x6c]=37; dic[0x6d]=38; dic[0x6e]=39; dic[0x6f]=40; dic[0x70]=41; dic[0x71]=42; dic[0x72]=43; dic[0x73]=44; dic[0x74]=45; dic[0x75]=46; dic[0x76]=47;
+	    dic[0x77]=48; dic[0x78]=49; dic[0x79]=50; dic[0x7a]=51; dic[0x30]=52; dic[0x31]=53; dic[0x32]=54; dic[0x33]=55; dic[0x34]=56; dic[0x35]=57; dic[0x36]=58; dic[0x37]=59; dic[0x38]=60; dic[0x39]=61; dic[0x2b]=62; dic[0x2f]=63;
+	    var num = base64.length;
+	    var n = 0;
+	    var b = 0;
+	    var e;
 
-requireSimulator.setName('FS2');
-define(["extend","PathUtil","MIMETypes","assert","SFile"],function (extend, P, M,assert,SFile){
-    var FS=function () {
-    };
-    function stub(n) {
-        throw new Error (n+" is STUB!");
-    }
-    extend(FS.prototype, {
-        err: function (path, mesg) {
-            throw new Error(path+": "+mesg);
-        },
-        // mounting
-        fstab: function () {
-            return this._fstab=this._fstab||[];//[{fs:this, path:P.SEP}];
-        },
-        resolveFS:function (path, options) {
-            assert.is(path,P.Absolute);
-            var res;
-            this.fstab().forEach(function (tb) {
-                if (res) return;
-                if (P.startsWith(path, tb.path)) {
-                    res=tb.fs;
-                }
-            });
-            if (!res) res=this; //this.err(path,"Cannot resolve");
-            return assert.is(res,FS);
-        },
-        isReadOnly: function (path, options) {// mainly for check ENTIRELY read only
-            stub("isReadOnly");
-        },
-        mounted: function (parentFS, mountPoint ) {
-            assert.is(arguments,[FS,P.AbsDir]);
-            this.parentFS=parentFS;
-            this.mountPoint=mountPoint;
-        },
-        relFromMountPoint: function (path) {
-            assert.is(path, P.Absolute);
-            if (this.parentFS) {
-                assert.is(this.mountPoint, P.AbsDir);
-                return P.relPath(path, this.mountPoint);
-            } else {
-                return P.relPath(path, P.SEP);
-            }
-        },
-        dirFromFstab: function (path, options) {
-            assert.is(path, P.AbsDir);
-            var res=(options||{}).res || [];
-            this.fstab().forEach(function (tb) {
-                if (P.up( tb.path )==path) res.push(P.name(tb.path));
-            });
-            return res;
-        },
-        getRootFS: function () {
-            var res;
-            for (var r=this;r;r=r.parentFS){res=r;}
-            return assert.is(res,FS);
-        },
-        //-------- end of mouting
-        //-------- spec
-        getReturnTypes: function (path, options) {
-            //{getContent:String|DataURL|ArrayBuffer|OutputStream|Writer
-            //   ,opendir:Array|...}
-            stub("");
-        },
-        //-------  for file
-        getContent: function (path, options) {
-            // options:{type:String|DataURL|ArrayBuffer|OutputStream|Writer}
-            // succ : [type],
-            stub("");
-        },
-        setContent: function (path, content, options) {
-            // content: String|ArrayBuffer|InputStream|Reader
-            stub("");
-        },
-        getMetaInfo: function (path, options) {
-            stub("");
-        },
-        setMetaInfo: function (path, info, options) {
-            stub("");
-        },
-        mkdir: function (path, options) {
-            stub("mkdir");
-        },
-        touch: function (path) {
-            stub("touch");
-        },
-        exists: function (path, options) {
-            // exists return false if path is existent by follwing symlink
-            stub("exists");
-        },
-        opendir: function (path, options) {
-            //ret: [String] || Stream<string> // https://nodejs.org/api/stream.html#stream_class_stream_readable
-            stub("opendir");
-        },
-        cp: function(path, dst, options) {
-            assert.is(arguments,[P.Absolute,P.Absolute]);
-            options=options||{};
-            var srcIsDir=this.isDir(path);
-            var dstIsDir=this.resolveFS(dst).isDir(dst);
-            if (!srcIsDir && !dstIsDir) {
-                var cont=this.getContent(path);
-                var res=this.resolveFS(dst).setContent(dst,cont);
-                if (options.a) {
-                    //console.log("-a", this.getMetaInfo(path));
-                    this.setMetaInfo(dst, this.getMetaInfo(path));
-                }
-                return res;
-            } else {
-                throw "only file to file supports";
-            }
-        },
-        mv: function (path,to,options) {
-            this.cp(path,to,options);
-            return this.rm(path,{r:true});
-        },
-        rm:function (path, options) {
-            stub("");
-        },
-        link: function (path, to, options) {
-            throw new Error("This FS not support link.");
-        },
-        getURL: function (path) {
-            stub("");
-        }
-    });
-    //res=[]; for (var k in a) { res.push(k); } res;
-    FS.delegateMethods=function (prototype,  methods) {
-        for (var n in methods) {
-            (function (n){
-                prototype[n]=function () {
-                    var path=arguments[0];
-                    assert.is(path,P.Absolute);
-                    var fs=this.resolveFS(path);
-                    //console.log(n, f.fs===this  ,f.fs, this);
-                    if (fs!==this) {
-                        //arguments[0]=f.path;
-                        return fs[n].apply(fs, arguments);
-                    } else {
-                        return methods[n].apply(this, arguments);
-                    }
-                };
-            })(n);
-        }
-    };
-    FS.delegateMethods(FS.prototype, {
-        assertWriteable: function (path) {
-            if (this.isReadOnly(path)) this.err(path, "read only.");
-        },
-        mount: function (path, fs, options) {
-            assert.is(arguments,[P.AbsDir, FS] );
-            if (this.exists(path)) {
-                throw new Error(path+": Directory exists");
-            }
-            var parent=P.up(path);
-            if (parent==null) throw new Error("Cannot mount on root");
-            if (!this.exists(parent)) {
-                throw new Error(path+": Parent Directory not exist");
-            }
-            fs.mounted(this, path);
-            this.fstab().unshift({path:path, fs:fs});
-        },
-        getContentType: function (path, options) {
-            var e=P.ext(path);
-            return M[e] || (options||{}).def || "text/plain";
-        },
-        isText:function (path) {
-            var m=this.getContentType(path);
-            return P.startsWith( m, "text");
-        },
-        assertExist: function (path, options) {
-            if (!this.exists(path, options)) {
-                this.err(path, ": No such "+(P.isDir(path)?"directory":"file"));
-            }
-        },
-        isDir: function (path,options) {
-            return P.isDir(path);
-        },
-        find: function (path, options) {
-            assert.is(arguments,[P.Absolute]);
-            var ls=this.opendir(path, options);
-            var t=this;
-            var res=[path];
-            ls.forEach(function (e) {
-                var ep=P.rel(path, e);
-                if (P.isDir(ep)) {
-                    var fs=t.resolveFS(ep);
-                    res=res.concat(
-                            fs.find( ep ,options)
-                    );
-                } else {
-                    res.push( ep );//getPathFromRootFS
-                }
-            });
-            return res;
-        },
-        resolveLink: function (path) {
-            assert.is(path,P.Absolute);
-            // returns non-link path
-            // ln -s /a/b/ /c/d/
-            // resolveLink /a/b/    ->  /a/b/
-            // resolveLink /c/d/e/f -> /a/b/e/f
-            // resolveLink /c/d/non_existent -> /a/b/non_existent
-            // isLink      /c/d/    -> /a/b/
-            // isLink      /c/d/e/f -> null
-            // ln /testdir/ /ram/files/
-            // resolveLink /ram/files/sub/test2.txt -> /testdir/sub/test2.txt
-            // path=/ram/files/test.txt
-            for (var p=path ; p ; p=P.up(p)) {
-                assert(!this.mountPoint || P.startsWith(p, this.mountPoint), p+" is out of mountPoint. path="+path);
-                var l=this.isLink(p);  // p=/ram/files/ l=/testdir/
-                if (l) {
-                    assert(l!=p,"l==p=="+l);
-                    //        /testdir/    test.txt
-                    var np=P.rel(l,P.relPath(path, p));  //   /testdir/test.txt
-                    assert(np!=path,"np==path=="+np);
-                    return assert.is(this.getRootFS().resolveFS(np).resolveLink(np),P.Absolute)  ;
-                }
-                if (this.exists(p)) return path;
-            }
-            return path;
-        },
-        isLink: function (path) {
-            return null;
-        },
-        get: function (path) {
-            assert.eq(this.resolveFS(path), this);
-            return new SFile(this, path);
-            //var r=this.resolveFS(path);
-            //return new SFile(r.fs, r.path);
-        }
-    });
-    return FS;
-});
+	    if(!num) return (new A(0));
+	    //if(num < 4) return null;
+	    //if(num % 4) return null;
 
-requireSimulator.setName('WebSite');
-define([], function () {
-    var loc=document.location.href;
-    var devMode=!!loc.match(/html\/dev\//) && !!loc.match(/localhost:3/);
-    var WebSite;
-    if (loc.match(/jsrun\.it/)) {
-        WebSite={
-            urlAliases: {
-                "images/Ball.png":"http://jsrun.it/assets/9/X/T/b/9XTbt.png",
-                "images/base.png":"http://jsrun.it/assets/6/F/y/3/6Fy3B.png",
-                "images/Sample.png":"http://jsrun.it/assets/s/V/S/l/sVSlZ.png",
-                "images/neko.png":"http://jsrun.it/assets/f/D/z/z/fDzze.png",//"http://jsrun.it/assets/j/D/9/q/jD9qQ.png",
-                "images/mapchip.png":"http://jsrun.it/assets/f/u/N/v/fuNvz.png",
-                "images/inputPad.png":"http://jsrun.it/assets/r/K/T/Y/rKTY9.png"
-            },top:"",devMode:devMode, pluginTop: "http://tonyuedit.appspot.com/js/plugins",
-            removeJSOutput:true
-        };
-    } else if (
-      loc.match(/tonyuexe\.appspot\.com/) ||
-      loc.match(/localhost:8887/) ||
- 	  (
- 	    /*(
- 	       loc.match(/^file:/) ||
- 	       loc.match(/localhost/) ||
-	       loc.match(/tonyuedit\.appspot\.com/)
-	    ) &&*/
-	    loc.match(/\/html\/((dev)|(build))\//)
-	  )
-    ) {
-        WebSite={
-            urlAliases: {
-                "images/Ball.png":"../../images/Ball.png",
-                "images/base.png":"../../images/base.png",
-                "images/Sample.png":"../../images/Sample.png",
-                "images/neko.png":"../../images/neko.png",
-                "images/inputPad.png":"../../images/inputPad.png",
-                "images/mapchip.png":"../../images/mapchip.png",
-                "images/sound.png":"../../images/sound.png",
-                    "images/ecl.png":"../../images/ecl.png"
-            },top:"../..",devMode:devMode
-        };
-    } else {
-        WebSite={
-           urlAliases: {}, top: ".",devMode:devMode
-        };
-    }
-    // from https://w3g.jp/blog/js_browser_sniffing2015
-    var u=window.navigator.userAgent.toLowerCase();
-    WebSite.tablet=(u.indexOf("windows") != -1 && u.indexOf("touch") != -1)
-    || u.indexOf("ipad") != -1
-    || (u.indexOf("android") != -1 && u.indexOf("mobile") == -1)
-    || (u.indexOf("firefox") != -1 && u.indexOf("tablet") != -1)
-    || u.indexOf("kindle") != -1
-    || u.indexOf("silk") != -1
-    || u.indexOf("playbook") != -1;
-    WebSite.mobile=(u.indexOf("windows") != -1 && u.indexOf("phone") != -1)
-    || u.indexOf("iphone") != -1
-    || u.indexOf("ipod") != -1
-    || (u.indexOf("android") != -1 && u.indexOf("mobile") != -1)
-    || (u.indexOf("firefox") != -1 && u.indexOf("mobile") != -1)
-    || u.indexOf("blackberry") != -1;
+	    // AA     12    1
+	    // AAA    18    2
+	    // AAAA   24    3
+	    // AAAAA  30    3
+	    // AAAAAA 36    4
+	    // num*6/8
+	    e = Math.floor(num / 4 * 3);
+	    if(base64.charAt(num - 1) == '=') e -= 1;
+	    if(base64.charAt(num - 2) == '=') e -= 1;
 
-    if (!WebSite.pluginTop) {
-        WebSite.pluginTop=WebSite.top+"/js/plugins";
-    }
-    WebSite.disableROM={};
-	if (loc.match(/tonyuedit\.appspot\.com/) || loc.match(/localhost:8888/) ) {
-	    //WebSite.disableROM={"ROM_d.js":true};
+	    var ary_buffer = new A( e );
+	    var ary_u8 = (Util.isNodeBuffer(ary_buffer) ? ary_buffer : new Uint8Array( ary_buffer ));
+	    var i = 0;
+	    var p = 0;
+	    while(p < e){
+	        b = dic[base64.charCodeAt(i)];
+	        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i));//return null;
+	        n = (b << 2);
+	        i ++;
+
+	        b = dic[base64.charCodeAt(i)];
+	        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i))
+            ary_u8[p] = n | ((b >> 4) & 0x3);
+	        /*if (p==0) {
+	            console.log("WOW!", n | ((b >> 4) & 0x3), ary_u8[p]);
+	        }*/
+	        n = (b & 0x0f) << 4;
+	        i ++;
+	        p ++;
+	        if(p >= e) break;
+
+	        b = dic[base64.charCodeAt(i)];
+	        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i))
+	        ary_u8[p] = n | ((b >> 2) & 0xf);
+	        n = (b & 0x03) << 6;
+	        i ++;
+	        p ++;
+	        if(p >= e) break;
+
+	        b = dic[base64.charCodeAt(i)];
+	        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i))
+	        ary_u8[p] = n | b;
+	        i ++;
+	        p ++;
+	    }
+	    function fail(m) {
+	        console.log(m);
+	        console.log(base64,i);
+	        throw new Error(m);
+	    }
+        //console.log("WOW!", ary_buffer[0],ary_u8[0], ary_buffer===ary_u8.buffer);
+	    if (binType===Uint8Array) {
+	        return ary_u8;
+	    }
+	    return ary_buffer;
 	}
-    if (loc.match(/\.appspot\.com/) ||  loc.match(/localhost:888[87]/)) {
-        WebSite.serverType="GAE";
-    }
-    if (loc.match(/localhost:3000/) ) {
-        WebSite.serverType="Node";
-    }
-    if (loc.match(/tonyuexe\.appspot\.com/) ||
-        loc.match(/localhost:8887/)) {
-        WebSite.serverTop=WebSite.top+"/exe"; // Fix NetModule.tonyu!!
-    } else {
-        WebSite.serverTop=WebSite.top+"/edit";// Fix NetModule.tonyu!!
-    }
-    WebSite.sampleImg=WebSite.top+"/images";
-    WebSite.blobPath=WebSite.serverTop+"/serveBlob";        //TODO: urlchange!
-    WebSite.isNW=(typeof process=="object" && process.__node_webkit);
-    WebSite.mp3Disabled=WebSite.isNW;
-    WebSite.tonyuHome="/Tonyu/";
-    WebSite.url={
-        getDirInfo:WebSite.serverTop+"/getDirInfo",
-        getFiles:WebSite.serverTop+"/File2LSSync",
-        putFiles:WebSite.serverTop+"/LS2FileSync"
-    };
-    if (WebSite.isNW) {
-        WebSite.cwd=process.cwd().replace(/\\/g,"/").replace(/\/?$/,"/");
-        if (process.env.TONYU_HOME) {
-            WebSite.tonyuHome=process.env.TONYU_HOME.replace(/\\/g,"/").replace(/\/?$/,"/");
-        } else {
-            WebSite.tonyuHome=WebSite.cwd+"fs/Tonyu/";
-        }
-        WebSite.logdir="/var/log/Tonyu/";
-        WebSite.wwwDir=WebSite.cwd+"www/";
-        WebSite.kernelDir=WebSite.wwwDir+"Kernel/";
-        WebSite.ffmpeg=WebSite.cwd+("ffmpeg/bin/ffmpeg.exe");
-    }
-    if (loc.match(/tonyuedit\.appspot\.com/) ||
-        loc.match(/localhost:888/) ||
-        WebSite.isNW) {
-        WebSite.compiledKernel=WebSite.top+"/Kernel/js/concat.js";
-    } else {
-        WebSite.compiledKernel="http://tonyuexe.appspot.com/Kernel/js/concat.js";
-    }
-    return window.WebSite=WebSite;
-});
+	function Base64_From_ArrayBuffer(ary_buffer){
+		var dic = [
+			'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P',
+			'Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f',
+			'g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v',
+			'w','x','y','z','0','1','2','3','4','5','6','7','8','9','+','/'
+		];
+		var base64 = "";
+		var ary_u8 = Util.isNodeBuffer(ary_buffer) ? ary_buffer : new Uint8Array( ary_buffer );
+		var num = ary_u8.length;
+		var n = 0;
+		var b = 0;
 
+		var i = 0;
+		while(i < num){
+			b = ary_u8[i];
+			base64 += dic[(b >> 2)];
+			n = (b & 0x03) << 4;
+			i ++;
+			if(i >= num) break;
+
+			b = ary_u8[i];
+			base64 += dic[n | (b >> 4)];
+			n = (b & 0x0f) << 2;
+			i ++;
+			if(i >= num) break;
+
+			b = ary_u8[i];
+			base64 += dic[n | (b >> 6)];
+			base64 += dic[(b & 0x3f)];
+			i ++;
+		}
+
+		var m = num % 3;
+		if(m){
+			base64 += dic[n];
+		}
+		if(m == 1){
+			base64 += "==";
+		}else if(m == 2){
+			base64 += "=";
+		}
+		return base64;
+	}
+    return DataURL;
+});
+requireSimulator.setName('Content');
+define(["DataURL","Util","assert"],function (DataURL,Util,assert) {
+    var Content=function () {};
+    var isNodeBuffer=Util.isNodeBuffer;
+    var isBuffer=Util.isBuffer;
+
+    Content.plainText=function (s,contentType){
+        var b=new Content;
+        b.contentType=contentType||"text/plain";
+        b.plain=s;
+        return b;
+    };
+    Content.url=function (s) {
+        var b=new Content;
+        b.url=s;
+        return b;
+    };
+    Content.buffer2ArrayBuffer = function (a) {
+        if (Util.isBuffer(a)) {
+            return assert(new Uint8Array(a).buffer,"n2a: buf is not set");
+        }
+        return assert(a,"n2a: a is not set");
+    };
+    Content.arrayBuffer2Buffer= function (a) {
+        if (a instanceof ArrayBuffer) {
+            var b=new Buffer(new Uint8Array(a));
+            return b;
+        }
+        return assert(a,"a2n: a is not set");
+    };
+
+    Content.bin=function (bin, contentType) {
+        assert(contentType, "contentType should be set");
+        var b=new Content;
+        if (bin && isBuffer(bin.buffer)) {
+            b.arrayBuffer=bin.buffer;
+        } else if (Util.isNodeBuffer(bin)) {
+            b.nodeBuffer=bin;
+        } else if (bin instanceof ArrayBuffer) {
+            b.arrayBuffer=bin;
+        } else {
+            throw new Error(bin+" is not a bin");
+        }
+        b.contentType=contentType;
+        return b;
+    };
+
+    var p=Content.prototype;
+    p.toBin = function (binType) {
+        binType=binType || (Util.hasNodeBuffer() ? Buffer: ArrayBuffer);
+        if (this.nodeBuffer) {
+            if (binType===Buffer) {
+                return this.nodeBuffer;
+            } else {
+                return this.arrayBuffer=( Content.buffer2ArrayBuffer(this.nodeBuffer) );
+            }
+        } else if (this.arrayBuffer) {
+            if (binType===ArrayBuffer) {
+                return this.arrayBuffer;
+            } else {
+                return this.nodeBuffer=( Content.arrayBuffer2Buffer(this.arrayBuffer) );
+            }
+        } else if (this.url) {
+            var d=new DataURL(this.url, binType);
+            return this.setBuffer(d.buffer);
+        } else if (this.plain!=null) {
+            return this.setBuffer( Util.str2utf8bytes(this.plain, binType) );
+        }
+        throw new Error("No data");
+    };
+    p.setBuffer=function (b) {
+        assert(b,"b is not set");
+        if (Util.isNodeBuffer(b)) {
+            return this.nodeBuffer=b;
+        } else {
+            return this.arrayBuffer=b;
+        }
+    };
+    p.toArrayBuffer=function () {
+        return this.toBin(ArrayBuffer);
+    };
+    p.toNodeBuffer=function () {
+        return this.toBin(Buffer);
+    };
+    p.toURL=function () {
+        if (this.url) {
+            return this.url;
+        } else {
+            if (!this.arrayBuffer && this.plain!=null) {
+                this.arrayBuffer=Util.str2utf8bytes(this.plain,ArrayBuffer);
+            }
+            if (this.arrayBuffer || this.nodeBuffer) {
+                var d=new DataURL(this.arrayBuffer || this.nodeBuffer,this.contentType);
+                return this.url=d.url;
+            }
+        }
+        throw new Error("No data");
+    };
+    p.toPlainText=function () {
+        if (this.plain!=null) {
+            return this.plain;
+        } else {
+            if (this.url && !this.hasBin() ) {
+                var d=new DataURL(this.url,ArrayBuffer);
+                this.arrayBuffer=d.buffer;
+            }
+            if (this.hasBin()) {
+                return this.plain=Util.utf8bytes2str(
+                        this.nodeBuffer || new Uint8Array(this.arrayBuffer)
+                );
+            }
+        }
+        throw new Error("No data");
+    };
+    p.hasURL=function (){return this.url;};
+    p.hasPlainText=function (){return this.plain!=null;};
+    p.hasBin=function (){return this.nodeBuffer || this.arrayBuffer;};
+    p.hasNodeBuffer= function () {return this.nodeBuffer;}
+    p.hasArrayBuffer= function () {return this.arrayBuffer;}
+    return Content;
+});
+/*
+requirejs(["Content"], function (C) {
+   var s="てすとabc";
+   var c1=C.plainText(s);
+   test(c1,[s]);
+
+   function test(c,path) {
+       var p=c.toPlainText();
+       var u=c.toURL();
+       var a=c.toArrayBuffer();
+       var n=c.toNodeBuffer();
+       console.log(path,"->",p,u,a,n);
+       var c1=C.plainText(p);
+       var c2=C.url(u);
+       var c3=C.bin(a,"text/plain");
+       var c4=C.bin(n,"text/plain");
+       if (path.length<2) {
+           test(c1, path.concat([p]));
+           test(c2, path.concat([u]));
+           test(c3, path.concat([a]));
+           test(c4, path.concat([n]));
+       }
+
+   }
+
+});
+*/
 requireSimulator.setName('NativeFS');
-define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
-        function (FS,A,P,extend,MIME,DataURL) {
+define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL","Content"],
+        function (FS,A,P,extend,MIME,DataURL,Content) {
     var available=(typeof process=="object" && process.__node_webkit);
     if (!available) {
         return function () {
@@ -1530,20 +1398,46 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
             this.rootPoint=rootPoint;
         }
     };
+    var hasDriveLetter=P.hasDriveLetter(process.cwd());
     NativeFS.available=true;
     var SEP=P.SEP;
     var json=JSON; // JSON changes when page changes, if this is node module, JSON is original JSON
     var Pro=NativeFS.prototype=new FS;
     Pro.toNativePath = function (path) {
+        // rootPoint: on NativePath   C:/jail/
+        // mountPoint: on VirtualFS   /mnt/natfs/
         if (!this.rootPoint) return path;
         A.is(path, P.Absolute);
-        return P.rel( this.rootPoint, this.relFromMountPoint(path));
+        A(this.inMyFS(path),path+" is not fs of "+this);
+        return P.rel( this.rootPoint, P.relPath(path, this.mountPoint || P.SEP));
     };
+    Pro.arrayBuffer2Buffer= function (a) {
+        if (a instanceof ArrayBuffer) {
+            var b=new Buffer(new Uint8Array(a));
+            return b;
+        }
+        return a;
+    };
+
     /*Pro.isText=function (path) {
         var e=P.ext(path);
         var m=MIME[e];
         return P.startsWith( m, "text");
     };*/
+    FS.addFSType("NativeFS",function (path, options) {
+            return new NativeFS(options.r);
+    });
+    NativeFS.prototype.fstype=function () {
+        return "Native"+(this.rootPoint?"("+this.rootPoint+")":"");
+    };
+    NativeFS.prototype.inMyFS=function (path) {
+        if (this.mountPoint) {
+            return P.startsWith(path, this.mountPoint)
+        } else {
+//            console.log(path, hasDriveLetter , P.hasDriveLetter(path));
+            return !( !!hasDriveLetter ^ !!P.hasDriveLetter(path));
+        }
+    };
     FS.delegateMethods(NativeFS.prototype, {
         getReturnTypes: function(path, options) {
             assert.is(arguments,[String]);
@@ -1555,46 +1449,23 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
             options=options||{};
             A.is(path,P.Absolute);
             var np=this.toNativePath(path);
-            var t=options.type;
+            this.assertExist(path);
             if (this.isText(path)) {
-                if (t===String) {
-                    return fs.readFileSync(np, {encoding:"utf8"});
-                } else {
-                    return fs.readFileSync(np);
-                    //TODOvar bin=fs.readFileSync(np);
-                    //throw new Error("TODO: handling bin file "+path);
-                }
+                return Content.plainText( fs.readFileSync(np, {encoding:"utf8"}) );
             } else {
-                if (t===String) {
-                    var bin=fs.readFileSync(np);
-                    var d=new DataURL(bin, this.getContentType(path) );
-                    return d.url;
-                } else {
-                    return fs.readFileSync(np);
-                }
+                return Content.bin( fs.readFileSync(np) , this.getContentType(path));
             }
         },
         setContent: function (path,content) {
-            A.is(path,P.Absolute);
+            A.is(arguments,[P.Absolute,Content]);
             var pa=P.up(path);
-            if (pa) this.getRootFS().mkdir(pa);
+            if (pa) this.getRootFS().resolveFS(pa).mkdir(pa);
             var np=this.toNativePath(path);
-            var cs=typeof content=="string";
-            if (this.isText(path)) {
-                fs.writeFileSync(np, content)
-                /*if (cs) return fs.writeFileSync(np, content);
-                else {
-                    return fs.writeFileSync(np, content);
-                    //throw new Error("TODO");
-                }*/
+            if (content.hasBin() || !content.hasPlainText() ) {
+                fs.writeFileSync(np, content.toNodeBuffer() );
             } else {
-//                console.log("NatFS", cs, content);
-                if (!cs) return fs.writeFileSync(np, content);
-                else {
-                    var d=new DataURL(content);
-                    //console.log(d.buffer);
-                    return fs.writeFileSync(np, d.buffer);
-                }
+                // !hasBin && hasText
+                fs.writeFileSync(np, content.toPlainText());
             }
         },
         getMetaInfo: function(path, options) {
@@ -1629,9 +1500,10 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
             }
             this.assertWriteable(path);
             var pa=P.up(path);
-            if (pa) this.getRootFS().mkdir(pa);
+            if (pa) this.getRootFS().resolveFS(pa).mkdir(pa);
             var np=this.toNativePath(path);
-            return fs.mkdirSync(np);
+            fs.mkdirSync(np);
+            return this.assertExist(np);
         },
         opendir: function (path, options) {
             assert.is(arguments,[String]);
@@ -1642,7 +1514,7 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
                 var ss=s.isDirectory()?SEP:"";
                 return e+ss;
             });
-            var res=this.dirFromFstab(path);
+            var res=[]; //this.dirFromFstab(path);
             return assert.is(res.concat(r),Array);
         },
         rm: function(path, options) {
@@ -1673,8 +1545,9 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
         touch: function (path) {
             if (!this.exists(path) && this.isDir(path)) {
                 this.mkdir(path);
-            } else if (this.exists(path) && !this.isDir(path) ) {
+            } else if (this.exists(path) /*&& !this.isDir(path)*/ ) {
                 // TODO(setlastupdate)
+                fs.utimesSync(path,Date.now()/1000,Date.now()/1000);
             }
         },
         getURL:function (path) {
@@ -1684,7 +1557,8 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL"],
     return NativeFS;
 });
 requireSimulator.setName('LSFS');
-define(["FS2","PathUtil","extend","assert","DataURL"], function(FS,P,extend,assert,DataURL) {
+define(["FS2","PathUtil","extend","assert","Util","Content"],
+        function(FS,P,extend,assert,Util,Content) {
     var LSFS = function(storage,options) {
     	this.storage=storage;
     	this.options=options||{};
@@ -1704,12 +1578,23 @@ define(["FS2","PathUtil","extend","assert","DataURL"], function(FS,P,extend,asse
         s[P.SEP]="{}";
         return new LSFS(s);
     };
+    FS.addFSType("localStorage",function (path, options) {
+        return new LSFS(localStorage);
+    });
+    FS.addFSType("ram",function (path, options) {
+        return LSFS.ramDisk();
+    });
+
     LSFS.now=now;
     LSFS.prototype=new FS;
     //private methods
     LSFS.prototype.resolveKey=function (path) {
         assert.is(path,P.Absolute);
-        return P.SEP+this.relFromMountPoint(path);
+        if (this.mountPoint) {
+            return P.SEP+P.relPath(path,this.mountPoint);//FromMountPoint(path);
+        } else {
+            return path;
+        }
     };
     LSFS.prototype.getItem=function (path) {
         assert.is(path,P.Absolute);
@@ -1736,9 +1621,9 @@ define(["FS2","PathUtil","extend","assert","DataURL"], function(FS,P,extend,asse
         var key=this.resolveKey(path);
         return key in this.storage;
     };
-    LSFS.prototype.inMyFS=function (path){
+    /*LSFS.prototype.inMyFS=function (path){
         return !this.mountPoint || P.startsWith(path, this.mountPoint);
-    };
+    };*/
     LSFS.prototype.getDirInfo=function getDirInfo(path) {
         assert.is(arguments,[P.AbsDir]);
         if (path == null) throw new Error("getDir: Null path");
@@ -1763,8 +1648,8 @@ define(["FS2","PathUtil","extend","assert","DataURL"], function(FS,P,extend,asse
         var ppath = up(path);
         if (ppath == null) return;
         if (!this.inMyFS(ppath)) {
-            assert(this.getRootFS()!==this);
-            this.getRootFS().touch(ppath);
+            //assert(this.getRootFS()!==this);
+            //this.getRootFS().resolveFS(ppath).touch(ppath);
             return;
         }
         var pdinfo = this.getDirInfo(ppath);
@@ -1800,6 +1685,13 @@ define(["FS2","PathUtil","extend","assert","DataURL"], function(FS,P,extend,asse
             this.putDirInfo(path, dinfo, true);
         }
     };
+    LSFS.prototype.isRAM=function (){
+        return this.storage!==localStorage;
+    };
+    LSFS.prototype.fstype=function () {
+        return (this.isRAM() ? "ramDisk" : "localStorage" );
+    };
+
     // public methods (with resolve fs)
     FS.delegateMethods(LSFS.prototype, {
         isReadOnly: function () {return this.options.readOnly;},
@@ -1811,17 +1703,23 @@ define(["FS2","PathUtil","extend","assert","DataURL"], function(FS,P,extend,asse
         },
         getContent: function(path, options) {
             assert.is(arguments,[Absolute]);
-            this.assertExist(path);
-            if (options && options.type==ArrayBuffer) {
-                var d=new DataURL(this.getItem(path));
-                return d.buffer;
+            this.assertExist(path); // Do not use this??( because it does not follow symlinks)
+            var c;
+            if (this.isText(path)) {
+                c=Content.plainText(this.getItem(path));
+            } else {
+                c=Content.url(this.getItem(path));
             }
-            return this.getItem(path);
+            return c;
         },
         setContent: function(path, content, options) {
-            assert.is(arguments,[Absolute,String]);
+            assert.is(arguments,[Absolute,Content]);
             this.assertWriteable(path);
-            this.setItem(path, content);
+            if (this.isText(path)) {
+                this.setItem(path, content.toPlainText());
+            } else {
+                this.setItem(path, content.toURL());
+            }
             this.touch(path);
         },
         getMetaInfo: function(path, options) {
@@ -1862,7 +1760,7 @@ define(["FS2","PathUtil","extend","assert","DataURL"], function(FS,P,extend,asse
             // options: {includeTrashed:Boolean}
             options=options||{};
             var inf=this.getDirInfo(path);
-            var res=this.dirFromFstab(path);
+            var res=[]; //this.dirFromFstab(path);
             for (var i in inf) {
                 assert(inf[i]);
                 if (!inf[i].trashed || options.includeTrashed) res.push(i);
@@ -1908,14 +1806,14 @@ define(["FS2","PathUtil","extend","assert","DataURL"], function(FS,P,extend,asse
                 if (this.isDir(path)) {
 
                 } else {
-                    assert.fail("Inconsistent "+path+": trashed, but remains in storage");
+                    //assert.fail("Inconsistent "+path+": trashed, but remains in storage");
                 }
             }
             if (!res && this.itemExists(path)) {
-                assert.fail("Inconsistent "+path+": not exists in metadata, but remains in storage");
+                //assert.fail("Inconsistent "+path+": not exists in metadata, but remains in storage");
             }
             if (res && !res.trashed && !res.link && !this.itemExists(path)) {
-                assert.fail("Inconsistent "+path+": exists in metadata, but not in storage");
+                //assert.fail("Inconsistent "+path+": exists in metadata, but not in storage");
             }
             if (res && !options.includeTrashed) {
                 res=!res.trashed;
@@ -1923,7 +1821,7 @@ define(["FS2","PathUtil","extend","assert","DataURL"], function(FS,P,extend,asse
             return !!res;
         },
         link: function(path, to, options) {
-            assert.is(arguments,[P.AbsDir,P.AbsDir]);
+            assert.is(arguments,[P.Absolute,P.Absolute]);
             this.assertWriteable(path);
             if (this.exists(path)) this.err(path,"file exists");
             if (P.isDir(path) && !P.isDir(to)) {
@@ -1937,13 +1835,13 @@ define(["FS2","PathUtil","extend","assert","DataURL"], function(FS,P,extend,asse
             m.lastUpdate=now();
             this.setMetaInfo(path, m);
             //console.log(this.getMetaInfo(path));
-            console.log(this.storage);
+            //console.log(this.storage);
             //console.log(this.getMetaInfo(P.up(path)));
             assert(this.exists(path));
             assert(this.isLink(path));
         },
         isLink: function (path) {
-            assert.is(arguments,[P.AbsDir]);
+            assert.is(arguments,[P.Absolute]);
             if (!this.exists(path)) return null;
             var m=assert(this.getMetaInfo(path));
             return m.link;
@@ -1965,12 +1863,12 @@ define(["FS2","PathUtil","extend","assert","DataURL"], function(FS,P,extend,asse
                     this._touch(pinfo, parent , P.name(path), false);
                 } else {
                     assert(this.getRootFS()!==this);
-                    this.getRootFS().touch(parent);
+                    this.getRootFS().resolveFS(parent).touch(parent);
                 }
             }
         },
         getURL: function (path) {
-            return this.getContent(path,{type:String});
+            return this.getContent(path).toURL();
         }
     });
     return LSFS;
@@ -1993,6 +1891,7 @@ define(["assert","PathUtil"],function (A,P) {
                 A.is(path,String);
                 path=this.expand(path);
                 path=path.replace(/\/+/g,"/");
+                path=path.replace(/^[a-z][a-z]+:\//, function (r) { return r+"/"; } );
                 return A.is(path,P.Path);
             },
             get: function (key) {
@@ -2004,20 +1903,448 @@ define(["assert","PathUtil"],function (A,P) {
     };
     return Env;
 });
+requireSimulator.setName('SFile');
+define(["extend","assert","PathUtil","Util","Content","FS2"],
+function (extend,A,P,Util,Content,FS2) {
+
+var SFile=function (rootFS, path) {
+    A.is(path, P.Absolute);
+    //A(fs && fs.getReturnTypes, fs);
+    this._path=path;
+    this.rootFS=rootFS;
+    this.fs=rootFS.resolveFS(path);
+    this.act={};// path/fs after follwed symlink
+    this.act.path=this.fs.resolveLink(path);
+    this.act.fs=rootFS.resolveFS(this.act.path);
+    A.is(this.act, {fs:FS2, path:P.Absolute});
+    if (this.isDir() && !P.isDir(path)) {
+        this._path+=P.SEP;
+    }
+};
+SFile.is=function (path) {
+    return path && typeof (path.isSFile)=="function" && path.isSFile();
+};
+function getPath(f) {
+    if (SFile.is(f)) {
+        return f.path();
+    } else {
+        A.is(f,P.Absolute);
+        return f;
+    }
+}
+SFile.prototype={
+    isSFile: function (){return true;},
+    setPolicy: function (p) {
+        if (this.policy) throw new Error("policy already set");
+        this.policy=p;
+        return this._clone();
+    },
+    getPolicy: function (p) {
+        return this.policy;
+    },
+    _clone: function (){
+        return this._resolve(this.path());
+    },
+    _resolve: function (path, options) {
+        var res;
+        options=options||{};
+        if (SFile.is(path)) {
+            res=path;
+        } else {
+            A.is(path,P.Absolute);
+            var topdir;
+            var policy=options.policy || this.policy;
+            if (policy && (topdir=policy.topDir)) {
+                if (topdir.path) topdir=topdir.path();
+                if (!P.startsWith(path, topdir)) {
+                    throw new Error(path+": cannot access. Restricted to "+topdir);
+                }
+            }
+            res=new SFile(this.rootFS, path);
+            res.policy=policy;
+        }
+        if (res.policy) {
+            return Util.privatize(res);
+        } else {
+            return res;
+        }
+    },
+    contains: function (file) {
+        A(SFile.is(file),file+" shoud be a SFile object.");
+        if (!this.isDir()) return false;
+        return P.startsWith( file.path(), this.path());
+    },
+    path: function () {
+        return this._path;
+    },
+    name: function () {
+        return P.name(this.path());
+    },
+    truncExt: function (ext) {
+        return P.truncExt(this.path(),ext);
+    },
+    ext: function () {
+        return P.ext(this.path());
+    },
+    relPath: function (base) {
+        // base should be SFile or Path from rootFS
+        var bp=(base.path ?
+                base.path() :
+                base );
+        return P.relPath(this.path(), A.is(bp,P.Absolute) );
+    },
+    up:function () {
+        var pathR=this.path();
+        var pa=P.up(pathR);
+        if (pa==null) return null;
+        return this._resolve(pa);
+    },
+    rel: function (relPath) {
+        A.is(relPath, P.Relative);
+        this.assertDir();
+        var pathR=this.path();
+        return this._resolve(P.rel(pathR, relPath));
+    },
+    startsWith: function (pre) {
+        return P.startsWith(this.name(),pre);
+    },
+    endsWith: function (post) {
+        return P.endsWith(this.name(),post);
+    },
+    equals:function (o) {
+        return (o && typeof o.path=="function" && o.path()==this.path());
+    },
+    toString:function (){
+        return this.path();
+    },
+    //Common
+    touch: function () {
+        this.act.fs.touch(this.act.path);
+    },
+    isReadOnly: function () {
+        return this.act.fs.isReadOnly(this.act.path);
+    },
+    isTrashed:function () {
+        var m=this.metaInfo();
+        if (!m) return false;
+        return m.trashed;
+    },
+    metaInfo: function () {
+        if (arguments.length==0) {
+            return this.getMetaInfo.apply(this,arguments);
+        } else {
+            return this.setMetaInfo.apply(this,arguments);
+        }
+    },
+    getMetaInfo: function (options) {
+        return this.act.fs.getMetaInfo(this.act.path,options);
+    },
+    setMetaInfo: function (info, options) {
+        return this.act.fs.setMetaInfo(this.act.path,info, options);
+    },
+    lastUpdate:function () {
+        A(this.exists());
+        return this.metaInfo().lastUpdate;
+    },
+    exists: function (options) {
+        options=options||{};
+        var p=this.fs.exists(this.path(),options);
+        if (p || options.noFollowLink) {
+            return p;
+        } else {
+            return this.act.fs.exists(this.act.path,{noFollowLink:true});
+        }
+    },
+    rm: function (options) {
+        //   ln /test/c /a/b/
+        //   rm a/b/c/
+        //   rm a/b/c/d
+        options=options||{};
+        if (this.isLink()) {
+            return this.fs.rm(this.path(),options);
+        }
+        /*if (!this.exists({noFollowLink:true})) {
+            return this.act.fs.rm(this.act.path, options);
+        }*/
+        if (this.isDir() && (options.recursive||options.r)) {
+            this.each(function (f) {
+                f.rm(options);
+            });
+        }
+        return this.act.fs.rm(this.act.path, options);
+        //var pathT=this.path();
+        //this.fs.rm(pathT, options);
+    },
+    removeWithoutTrash: function (options) {
+        options=options||{};
+        options.noTrash=true;
+        this.rm(options);
+    },
+    isDir: function () {
+        return this.act.fs.isDir(this.act.path);
+    },
+    // File
+    text:function () {
+        if (arguments.length>0) {
+            this.setText(arguments[0]);
+        } else {
+            return this.getText();
+        }
+    },
+    setText:function (t) {
+        A.is(t,String);
+        if (this.isText()) {
+            this.act.fs.setContent(this.act.path, Content.plainText(t));
+        } else {
+            this.act.fs.setContent(this.act.path, Content.url(t));
+        }
+    },
+    getContent: function (f) {
+        if (typeof f=="function") {
+            return this.act.fs.getContentAsync(this.act.path).then(f);
+        }
+        return this.act.fs.getContent(this.act.path);
+    },
+    setContent: function (c) {
+        return this.act.fs.setContentAsync(this.act.path,c);
+    },
+
+    getText:function () {
+        if (this.isText()) {
+            return this.act.fs.getContent(this.act.path).toPlainText();
+        } else {
+            return this.act.fs.getContent(this.act.path).toURL();
+        }
+    },
+    isText: function () {
+        return this.act.fs.isText(this.act.path);
+    },
+    contentType: function () {
+        return this.act.fs.getContentType(this.act.path);
+    },
+    setBytes:function (b) {
+        return this.act.fs.setContent(this.act.path, Content.bin(b,this.contentType()));
+    },
+    getBytes:function (options) {
+        options=options||{};
+        return this.act.fs.getContent(this.act.path).toBin(options.binType);
+    },
+    getURL: function () {
+        return this.act.fs.getURL(this.act.path);
+    },
+    lines:function () {
+        return this.text().replace(/\r/g,"").split("\n");
+    },
+    obj: function () {
+        var file=this;
+        if (arguments.length==0) {
+            var t=file.text();
+            if (!t) return null;
+            return JSON.parse(t);
+        } else {
+            file.text(JSON.stringify(A.is(arguments[0],Object) ));
+        }
+    },
+    copyFrom: function (src, options) {
+        return src.copyTo(this,options);
+    },
+    copyTo: function (dst, options) {
+        A(dst && dst.isSFile(),dst+" is not a file");
+        var src=this;
+        var options=options||{};
+        var srcIsDir=src.isDir();
+        var dstIsDir=dst.isDir();
+        if (!srcIsDir && dstIsDir) {
+            dst=dst.rel(src.name());
+            A(!dst.isDir(), dst+" is a directory.");
+            dstIsDir=false;
+        }
+        if (srcIsDir && !dstIsDir) {
+           this.err("Cannot move dir to file");
+        } else if (!srcIsDir && !dstIsDir) {
+            if (options.echo) options.echo(src+" -> "+dst);
+            var res=this.act.fs.cp(this.act.path, dst.getResolvedLinkPath(),options);
+            if (options.a) {
+                dst.setMetaInfo(src.getMetaInfo());
+            }
+            return res;
+        } else {
+            A(srcIsDir && dstIsDir);
+            src.each(function (s) {
+                dst.rel(s.name()).copyFrom(s, options);
+            });
+        }
+        //file.text(src.text());
+        //if (options.a) file.metaInfo(src.metaInfo());
+    },
+    moveFrom: function (src, options) {
+        var res=this.copyFrom(src,options);
+        src.rm({recursive:true});
+        return res;
+    },
+    // Dir
+    assertDir:function () {
+        A.is(this.path(),P.Dir);
+        return this;
+    },
+    /*files:function (f,options) {
+        var dir=this.assertDir();
+        var res=[];
+        this.each(function (f) {
+            res.add(f);
+        },options);
+        return res;
+    },*/
+    each:function (f,options) {
+        var dir=this.assertDir();
+        dir.listFiles(options).forEach(f);
+    },
+    recursive:function (fun,options) {
+        var dir=this.assertDir();
+        dir.each(function (f) {
+            if (f.isDir()) f.recursive(fun);
+            else fun(f);
+        },options);
+    },
+    listFiles:function (options) {
+        A(options==null || typeof options=="object");
+        var dir=this.assertDir();
+        var path=this.path();
+        var ord;
+        if (typeof options=="function") ord=options;
+        options=dir.convertOptions(options);
+        if (!ord) ord=options.order;
+        var di=this.act.fs.opendir(this.act.path, options);
+        var res=[];
+        for (var i=0;i<di.length; i++) {
+            var name=di[i];
+            //if (!options.includeTrashed && dinfo[i].trashed) continue;
+            if (options.excludes[path+name] ) continue;
+            res.push(dir.rel(name));
+        }
+        if (typeof ord=="function" && res.sort) res.sort(ord);
+        return res;
+    },
+    ls:function (options) {
+        A(options==null || typeof options=="object");
+        var dir=this.assertDir();
+        var res=dir.listFiles(options);
+        return res.map(function (f) {
+            return f.name();
+        });
+    },
+    convertOptions:function(options) {
+        var dir=this.assertDir();
+        var pathR=this.path();
+        if (!options) options={};
+        if (!options.excludes) options.excludes={};
+        if (options.excludes instanceof Array) {
+            var excludes={};
+            options.excludes.forEach(function (e) {
+                if (P.startsWith(e,"/")) {
+                    excludes[e]=1;
+                } else {
+                    excludes[pathR+e]=1;
+                }
+            });
+            options.excludes=excludes;
+        }
+        return A.is(options,{excludes:{}});
+    },
+    mkdir: function () {
+        this.touch();
+    },
+    link: function (to,options) {// % ln to path
+        if (this.exists()) throw new Error(this.path()+": exists.");
+        return this.act.fs.link(this.act.path,to.path(),options);
+    },
+    resolveLink:function () {
+        return this._resolve(this.act.path);
+    },
+    isLink: function () {
+        return this.fs.isLink(this.path());
+    },
+    getResolvedLinkPath: function () {
+        return this.act.path;
+    }
+};
+return SFile;
+});
+
+requireSimulator.setName('RootFS');
+define(["assert","FS2","PathUtil","SFile"], function (assert,FS,P,SFile) {
+    var RootFS=function (defaultFS){
+        assert.is(defaultFS,FS);
+        this.mount(null, defaultFS);
+    };
+    var dst=RootFS.prototype;
+    var p={
+            err: function (path, mesg) {
+                throw new Error(path+": "+mesg);
+            },
+            // mounting
+            fstab: function () {
+                return this._fstab=this._fstab||[];//[{fs:this, path:P.SEP}];
+            },
+            unmount: function (path, options) {
+                assert.is(arguments,[P.AbsDir] );
+                var t=this.fstab();
+                console.log(t);
+                for (var i=0; i<t.length; i++) {
+                    if (t[i].mountPoint==path) {
+                        t.splice(i,1);
+                        return true;
+                    }
+                }
+                return false;
+            },
+            availFSTypes:function (){
+                return FS.availFSTypes();
+            },
+            mount: function (path, fs, options) {
+                if (typeof fs=="string") {
+                    var fact=assert( FS.availFSTypes()[fs] ,"fstype "+fs+" is undefined.");
+                    fs=fact(path, options||{});
+                }
+                assert.is(fs,FS);
+                fs.mounted(this, path);
+                this.fstab().unshift(fs);
+            },
+            resolveFS:function (path, options) {
+                assert.is(path,P.Absolute);
+                var res;
+                this.fstab().forEach(function (fs) {
+                    if (res) return;
+                    if (fs.inMyFS(path)) {
+                        res=fs;
+                    }
+                });
+                if (!res) this.err(path,"Cannot resolve");
+                return assert.is(res,FS);
+            },
+            get: function (path) {
+                assert.is(path,P.Absolute);
+                return new SFile(this.resolveFS(path), path);
+            }
+    };
+    for (var i in p) {
+        dst[i]=p[i];
+    }
+    return RootFS;
+});
 requireSimulator.setName('FS');
-define(["FS2","WebSite","NativeFS","LSFS", "PathUtil","Env","assert","SFile"],
-        function (FS,WebSite,NativeFS,LSFS, P,Env,A,SFile) {
+define(["FS2","WebSite","NativeFS","LSFS", "PathUtil","Env","assert","SFile","RootFS"],
+        function (FS,WebSite,NativeFS,LSFS, P,Env,A,SFile,RootFS) {
     var FS={};
     if (typeof window=="object") window.FS=FS;
     var rootFS;
     var env=new Env(WebSite);
     if (WebSite.isNW) {
-        //var nfsp=process.env.TONYU_FS_HOME || P.rel(process.cwd().replace(/\\/g,"/"), "www/fs/");
-        //console.log("nfsp",nfsp);
-        rootFS=new NativeFS();//(nfsp);
+        rootFS=new RootFS(new NativeFS());
     } else {
-        rootFS=new LSFS(localStorage);
+        rootFS=new RootFS(new LSFS(localStorage));
     }
+    FS.getRootFS=function () {return rootFS;};
     FS.get=function () {
         return rootFS.get.apply(rootFS,arguments);
     };
@@ -2035,6 +2362,9 @@ define(["FS2","WebSite","NativeFS","LSFS", "PathUtil","Env","assert","SFile"],
     };
     FS.mount=function () {
         return rootFS.mount.apply(rootFS,arguments);
+    };
+    FS.unmount=function () {
+        return rootFS.unmount.apply(rootFS,arguments);
     };
     return FS;
 });
@@ -2068,7 +2398,7 @@ define(["WebSite"],function (WebSite){
         }
         var i=0;
         console.log("loading plugins",namea);
-        loadNext();
+        setTimeout(loadNext,0);
         function loadNext() {
             if (i>=namea.length) options.onload();
             else plugins.load(namea[i++],loadNext);
@@ -2103,13 +2433,53 @@ requireSimulator.setName('DeferredUtil');
 define([], function () {
     var DU;
     DU={
+            ensureDefer: function (v) {
+                var d=new $.Deferred;
+                var isDeferred;
+                $.when(v).then(function (r) {
+                    if (!isDeferred) {
+                        setTimeout(function () {
+                            d.resolve(r);
+                        },0);
+                    } else {
+                        d.resolve(r);
+                    }
+                }).fail(function (r) {
+                    if (!isDeferred) {
+                        setTimeout(function () {
+                            d.reject(r);
+                        },0);
+                    } else {
+                        d.reject(r);
+                    }
+                });
+                isDeferred=true;
+                return d.promise();
+            },
             directPromise:function (v) {
                 var d=new $.Deferred;
                 setTimeout(function () {d.resolve(v);},0);
                 return d.promise();
             },
+            then: function (f) {
+                return DU.directPromise().then(f);
+            },
+            timeout:function (timeout) {
+                var d=new $.Deferred;
+                setTimeout(function () {d.resolve();},timeout);
+                return d.promise();
+            },
+            funcPromise:function (f) {
+                var d=new $.Deferred;
+                f(function (v) {
+                    d.resolve(v);
+                },function (e) {
+                    d.reject(e);
+                });
+                return d.promise();
+            },
             throwPromise:function (e) {
-                d=new $.Deferred;
+                var d=new $.Deferred;
                 setTimeout(function () {
                     d.reject(e);
                 }, 0);
@@ -2120,7 +2490,7 @@ define([], function () {
                     try {
                         return f.apply(this,arguments);
                     } catch(e) {
-                        console.log(e.stack);
+                        console.log(e,e.stack);
                         return DU.throwPromise(e);
                     }
                 };
@@ -2129,7 +2499,7 @@ define([], function () {
                 if (set instanceof Array) {
                     return DU.loop(function (i) {
                         if (i>=set.length) return DU.brk();
-                        return $.when(f(set[i])).then(function () {
+                        return $.when(f(set[i],i)).then(function () {
                             return i+1;
                         });
                     },0);
@@ -2139,12 +2509,12 @@ define([], function () {
                         objs.push({k:i,v:set[i]});
                     }
                     return DU.each(objs,function (e) {
-                        f(e.k, e.v);
+                        return f(e.k, e.v);
                     });
                 }
             },
             loop: function (f,r) {
-                DU.directPromise(r).then(DU.throwF(function () {
+                return DU.directPromise(r).then(DU.throwF(function () {
                     var r=f.apply(this,arguments);
                     if (r.DU_BRK) return r.res;
                     return $.when(r).then(function (r) {
@@ -2257,8 +2627,9 @@ define(["plugins","compiledProject"], function (plugins,CPR) {
     return CPTR;
 });
 requireSimulator.setName('Shell');
-define(["FS","Util","WebSite"],function (FS,Util,WebSite) {
-    var Shell={cwd:FS.get("/")};
+define(["FS","Util","WebSite","PathUtil","assert"],
+        function (FS,Util,WebSite,PathUtil,assert) {
+    var Shell={};
     Shell.cd=function (dir) {
         Shell.cwd=resolve(dir,true);
         return Shell.pwd();
@@ -2268,10 +2639,35 @@ define(["FS","Util","WebSite"],function (FS,Util,WebSite) {
         if (mustExist && !r.exists()) throw r+": no such file or directory";
         return r;
     }
+
+    Shell.mount=function (options, path) {
+        //var r=resolve(path);
+        if (!options || !options.t) {
+            var fst=[];
+            for (var k in FS.getRootFS().availFSTypes()) {
+                fst.push(k);
+            }
+            sh.err("-t=("+fst.join("|")+") should be specified.");
+            return;
+        }
+        FS.mount(path,options.t, options);
+    };
+    Shell.unmount=function (path) {
+        FS.unmount(path);
+    };
+    Shell.fstab=function () {
+        var rfs=FS.getRootFS();
+        var t=rfs.fstab();
+        var sh=this;
+        //sh.echo(rfs.fstype()+"\t"+"<Root>");
+        t.forEach(function (fs) {
+            sh.echo(fs.fstype()+"\t"+(fs.mountPoint||""));
+        });
+    }
     Shell.resolve=resolve;
     function resolve2(v) {
         if (typeof v!="string") return v;
-        if (Util.startsWith(v,"/")) return FS.get(v);
+        if (PathUtil.isAbsolutePath(v)) return FS.get(v);
         var c=Shell.cwd;
         /*while (Util.startsWith(v,"../")) {
             c=c.up();
@@ -2296,30 +2692,17 @@ define(["FS","Util","WebSite"],function (FS,Util,WebSite) {
         var f=resolve(from, true);
         var t=resolve(to);
         return f.copyTo(t,options);
-
-        /*if (f.isDir() && t.isDir()) {
-            var sum=0;
-            f.recursive(function (src) {
-                var rel=src.relPath(f);
-                var dst=t.rel(rel);
-                if (options.test || options.v) {
-                    Shell.echo((dst.exists()?"[ovr]":"[new]")+dst+"<-"+src);
-                }
-                if (!options.test) {
-                    dst.copyFrom(src,options);
-                }
-                sum++;
-            });
-            return sum;
-        } else if (!f.isDir() && !t.isDir()) {
-            t.text(f.text());
-            return 1;
-        } else if (!f.isDir() && t.isDir()) {
-            t.rel(f.name()).text(f.text());
-            return 1;
-        } else {
-            throw "Cannot copy directory "+f+" to file "+t;
-        }*/
+    };
+    Shell.ln=function (to , from ,options) {
+        var f=resolve(from);
+        var t=resolve(to, true);
+        if (f.isDir() && f.exists()) {
+            f=f.rel(t.name());
+        }
+        if (f.exists()) {
+            throw new Error(f+" exists");
+        }
+        return f.link(t,options);
     };
     Shell.rm=function (file, options) {
         if (!options) options={};
@@ -2346,13 +2729,18 @@ define(["FS","Util","WebSite"],function (FS,Util,WebSite) {
     };
     Shell.cat=function (file,options) {
         file=resolve(file, true);
-        Shell.echo(file.text());
-        //else return file.text();
+        return Shell.echo(file.getContent(function (c) {
+            if (file.isText()) {
+                return c.toPlainText();
+            } else {
+                return c.toURL();
+            }
+        }));
     };
     Shell.resolve=function (file) {
-	if (!file) file=".";
-	file=resolve(file);
-	return file;
+        if (!file) file=".";
+        file=resolve(file);
+        return file;
     };
     Shell.grep=function (pattern, file, options) {
         file=resolve(file, true);
@@ -2397,6 +2785,7 @@ define(["FS","Util","WebSite"],function (FS,Util,WebSite) {
         if (Shell.outUI && Shell.outUI.err) Shell.outUI.err.apply(Shell.outUI,arguments);
     };
 
+
     Shell.prompt=function () {};
     Shell.ASYNC={r:"SH_ASYNC"};
     Shell.help=function () {
@@ -2414,42 +2803,81 @@ define(["FS","Util","WebSite"],function (FS,Util,WebSite) {
     return Shell;
 });
 
-requireSimulator.setName('Tonyu');
-if (typeof define!=="function") {
-    define=require("requirejs").define;
-}
-define(["assert"],function (assert) {
-return Tonyu=function () {
-    var preemptionTime=60;
-    function thread() {
-        //var stpd=0;
-        var fb={enter:enter, apply:apply,
-                exit:exit, steps:steps, step:step, isAlive:isAlive, isWaiting:isWaiting,
-                suspend:suspend,retVal:0/*retVal*/,tryStack:[],
-                kill:kill, waitFor: waitFor,setGroup:setGroup,
-                enterTry:enterTry,exitTry:exitTry,startCatch:startCatch,
-                waitEvent:waitEvent,runAsync:runAsync,clearFrame:clearFrame};
-        var frame=null;
-        var _isAlive=true;
-        var cnt=0;
-        //var retVal;
-        var _isWaiting=false;
-        var fSuspended=false;
-        function isAlive() {
-            return frame!=null && _isAlive;
+requireSimulator.setName('Class');
+define(["assert"],function (A) {
+    function Class() {
+        var superClass,defs;
+        if (arguments.length==2) {
+            superClass=A.is(arguments[0],Function);
+            defs=A.is(arguments[1],Object);
+        } else if (arguments.length==1) {
+            superClass=Object;
+            defs=A.is(arguments[0],Object);
         }
-        function isWaiting() {
-            return _isWaiting;
+        var c=defs.initialize || function (){};
+        var p=c.prototype;
+        for (var m in defs) {
+            p[m]=defs[m];
         }
-        function suspend() {
-            //throw new Error("Suspend call");
-            fSuspended=true;
-            cnt=0;
-        }
-        function enter(frameFunc) {
-            frame={prev:frame, func:frameFunc};
-        }
-        function apply(obj, methodName, args) {
+        p.callSuper=function () {
+            var a=[];
+            for (var i=0; arguments.length;i++) {
+                a.push(arguments[i]);
+            }
+            var n=A.is(a.shift(),String);
+            var f=A.is(superClass.prototype[n], Function);
+            return f.apply(this,a);
+        };
+        return c;
+    }
+    return Class;
+});
+requireSimulator.setName('Tonyu.Thread');
+define(["DeferredUtil","Class"],function (DU,Class) {
+    var cnts={enterC:{},exitC:0};
+    try {window.cnts=cnts;}catch(e){}
+    var TonyuThread=Class({
+        initialize: function TonyuThread() {
+            this.frame=null;
+            this._isDead=false;
+            //this._isAlive=true;
+            this.cnt=0;
+            this._isWaiting=false;
+            this.fSuspended=false;
+            this.tryStack=[];
+            this.preemptionTime=60;
+            this.onEndHandlers=[];
+            this.age=0; // inc if object pooled
+        },
+        isAlive:function isAlive() {
+            return !this.isDead();
+            //return this.frame!=null && this._isAlive;
+        },
+        isDead: function () {
+            return this._isDead=this._isDead || (this.frame==null) ||
+            (this._threadGroup && (
+                    this._threadGroup.objectPoolAge!=this.tGrpObjectPoolAge ||
+                    this._threadGroup.isDeadThreadGroup()
+            ));
+        },
+        setThreadGroup: function setThreadGroup(g) {// g:TonyuThread
+            this._threadGroup=g;
+            this.tGrpObjectPoolAge=g.objectPoolAge;
+            //if (g) g.add(fb);
+        },
+        isWaiting:function isWaiting() {
+            return this._isWaiting;
+        },
+        suspend:function suspend() {
+            this.fSuspended=true;
+            this.cnt=0;
+        },
+        enter:function enter(frameFunc) {
+            //var n=frameFunc.name;
+            //cnts.enterC[n]=(cnts.enterC[n]||0)+1;
+            this.frame={prev:this.frame, func:frameFunc};
+        },
+        apply:function apply(obj, methodName, args) {
             if (!args) args=[];
             var method;
             if (typeof methodName=="string") {
@@ -2458,77 +2886,83 @@ return Tonyu=function () {
             if (typeof methodName=="function") {
                 method=methodName.fiber;
             }
-            args=[fb].concat(args);
+            args=[this].concat(args);
             var pc=0;
-            enter(function () {
+            return this.enter(function (th) {
                 switch (pc){
                 case 0:
                     method.apply(obj,args);
                     pc=1;break;
                 case 1:
-                    exit();
+                    th.notifyEnd(th.retVal);
+                    args[0].exit();
                     pc=2;break;
                 }
             });
-        }
-        function step() {
-            if (frame) {
-                try {
-                    frame.func(fb);
-                } catch(e) {
-                    gotoCatch(e);
-                }
-            }
-        }
-        function gotoCatch(e) {
+        },
+        notifyEnd:function (r) {
+            this.onEndHandlers.forEach(function (e) {
+                e(r);
+            });
+        },
+        on: function (type,f) {
+            if (type=="end") this.onEndHandlers.push(f);
+        },
+        gotoCatch: function gotoCatch(e) {
+            var fb=this;
             if (fb.tryStack.length==0) {
-                kill();
-                handleEx(e);
+                fb.kill();
+                fb.handleEx(e);
                 return;
             }
             fb.lastEx=e;
             var s=fb.tryStack.pop();
-            while (frame) {
-                if (s.frame===frame) {
+            while (fb.frame) {
+                if (s.frame===fb.frame) {
                     fb.catchPC=s.catchPC;
                     break;
                 } else {
-                    frame=frame.prev;
+                    fb.frame=fb.frame.prev;
                 }
             }
-        }
-        function startCatch() {
+        },
+        startCatch: function startCatch() {
+            var fb=this;
             var e=fb.lastEx;
             fb.lastEx=null;
             return e;
-        }
-        function exit(res) {
-            frame=(frame ? frame.prev:null);
-            //if (frame) frame.res=res;
-            fb.retVal=res;
-        }
-        function enterTry(catchPC) {
-            fb.tryStack.push({frame:frame,catchPC:catchPC});
-        }
-        function exitTry() {
+        },
+        exit: function exit(res) {
+            //cnts.exitC++;
+            this.frame=(this.frame ? this.frame.prev:null);
+            this.retVal=res;
+        },
+        enterTry: function enterTry(catchPC) {
+            var fb=this;
+            fb.tryStack.push({frame:fb.frame,catchPC:catchPC});
+        },
+        exitTry: function exitTry() {
+            var fb=this;
             fb.tryStack.pop();
-        }
-        function waitEvent(obj,eventSpec) { // eventSpec=[EventType, arg1, arg2....]
-            suspend();
+        },
+        waitEvent: function waitEvent(obj,eventSpec) { // eventSpec=[EventType, arg1, arg2....]
+            var fb=this;
+            fb.suspend();
             if (!obj.on) return;
             var h;
             eventSpec=eventSpec.concat(function () {
                 fb.lastEvent=arguments;
                 fb.retVal=arguments[0];
                 h.remove();
-                steps();
+                fb.steps();
             });
             h=obj.on.apply(obj, eventSpec);
-        }
-        function runAsync(f) {
+        },
+        runAsync: function runAsync(f) {
+            var fb=this;
             var succ=function () {
                 fb.retVal=arguments;
-                steps();
+                fb.steps();
             };
             var err=function () {
                 var msg="";
@@ -2538,255 +2972,225 @@ return Tonyu=function () {
                 if (msg.length==0) msg="Async fail";
                 var e=new Error(msg);
                 e.args=arguments;
-                gotoCatch(e);
-                steps();
+                fb.gotoCatch(e);
+                fb.steps();
             };
-            f(succ,err);
-            suspend();
-        }
-        function waitFor(j) {
-            _isWaiting=true;
-            suspend();
-            if (j && j.addTerminatedListener) j.addTerminatedListener(function () {
-                _isWaiting=false;
-                if (fb.group) fb.group.notifyResume();
-                else if (isAlive()) {
-                    try {
-                        fb.steps();
-                    }catch(e) {
-                        handleEx(e);
-                    }
+            fb.suspend();
+            setTimeout(function () {
+                f(succ,err);
+            },0);
+        },
+        waitFor: function waitFor(j) {
+            var fb=this;
+            fb._isWaiting=true;
+            fb.suspend();
+            return DU.ensureDefer(j).then(function (r) {
+                fb.retVal=r;
+                fb.steps();
+            }).fail(function (e) {
+                if (e instanceof Error) {
+                    fb.gotoCatch(e);
+                } else {
+                    var re=new Error(e);
+                    re.original=e;
+                    fb.gotoCatch(re);
                 }
-                //fb.group.add(fb);
+                fb.steps();
             });
-        }
-        function setGroup(g) {
-            fb.group=g;
-            if (g) g.add(fb);
-        }
-        /*function retVal() {
-            return retVal;
-        }*/
-        function steps() {
-            //stpd++;
-            //if (stpd>5) throw new Error("Depth too much");
+        },
+        resume: function (retVal) {
+            this.retVal=retVal;
+            this.steps();
+        },
+        steps: function steps() {
+            var fb=this;
+            if (fb.isDead()) return;
             var sv=Tonyu.currentThread;
             Tonyu.currentThread=fb;
-            //var lim=new Date().getTime()+preemptionTime;
-            cnt=preemptionTime;
+            fb.cnt=fb.preemptionTime;
             fb.preempted=false;
-            fSuspended=false;
-            //while (new Date().getTime()<lim) {
-            while (cnt-->0 && frame) {
-                step();
+            fb.fSuspended=false;
+            while (fb.cnt>0 && fb.frame) {
+                try {
+                    //while (new Date().getTime()<lim) {
+                    while (fb.cnt-->0 && fb.frame) {
+                        fb.frame.func(fb);
+                    }
+                    fb.preempted= (!fb.fSuspended) && fb.isAlive();
+                } catch(e) {
+                    fb.gotoCatch(e);
+                }
             }
-            fb.preempted= (!fSuspended) && isAlive();
-            //stpd--;
             Tonyu.currentThread=sv;
+        },
+        kill: function kill() {
+            var fb=this;
+            //fb._isAlive=false;
+            fb._isDead=true;
+            fb.frame=null;
+        },
+        clearFrame: function clearFrame() {
+            this.frame=null;
+            this.tryStack=[];
         }
-        function kill() {
-            _isAlive=false;
-            frame=null;
+    });
+    return TonyuThread;
+});
+requireSimulator.setName('Tonyu.Iterator');
+define(["Class"], function (Class) {
+    var ArrayValueIterator=Class({
+        initialize: function ArrayValueIterator(set) {
+            this.set=set;
+            this.i=0;
+        },
+        next:function () {
+            if (this.i>=this.set.length) return false;
+            this[0]=this.set[this.i];
+            this.i++;
+            return true;
         }
-        function clearFrame() {
-            frame=null;
-            tryStack=[];
+    });
+    var ArrayKeyValueIterator=Class({
+        initialize: function ArrayKeyValueIterator(set) {
+            this.set=set;
+            this.i=0;
+        },
+        next:function () {
+            if (this.i>=this.set.length) return false;
+            this[0]=this.i;
+            this[1]=this.set[this.i];
+            this.i++;
+            return true;
         }
-        return fb;
+    });
+    var ObjectKeyIterator=Class({
+        initialize: function ObjectKeyIterator(set) {
+            this.elems=[];
+            for (var k in set) {
+                this.elems.push(k);
+            }
+            this.i=0;
+        },
+        next:function () {
+            if (this.i>=this.elems.length) return false;
+            this[0]=this.elems[this.i];
+            this.i++;
+            return true;
+        }
+    });
+    var ObjectKeyValueIterator=Class({
+        initialize: function ObjectKeyValueIterator(set) {
+            this.elems=[];
+            for (var k in set) {
+                this.elems.push([k,set[k]]);
+            }
+            this.i=0;
+        },
+        next:function () {
+            if (this.i>=this.elems.length) return false;
+            this[0]=this.elems[this.i][0];
+            this[1]=this.elems[this.i][1];
+            this.i++;
+            return true;
+        }
+    });
+
+
+    function IT(set, arity) {
+        //var res={};
+       if (set.tonyuIterator) {
+    	   return set.tonyuIterator(arity);
+       } else if (set instanceof Array) {
+           //res.i=0;
+           if (arity==1) {
+               return new ArrayValueIterator(set);
+               /*res.next=function () {
+                   if (res.i>=set.length) return false;
+                   this[0]=set[res.i];
+                   res.i++;
+                   return true;
+               };*/
+           } else {
+               return new ArrayKeyValueIterator(set);
+               /*res.next=function () {
+                   if (res.i>=set.length) return false;
+                   this[0]=res.i;
+                   this[1]=set[res.i];
+                   res.i++;
+                   return true;
+               };*/
+           }
+       } else if (set instanceof Object){
+           //res.i=0;
+           //var elems=[];
+           if (arity==1) {
+               return new ObjectKeyIterator(set);
+               /*for (var k in set) {
+                   elems.push(k);
+               }
+               res.next=function () {
+                   if (res.i>=elems.length) return false;
+                   this[0]=elems[res.i];
+                   res.i++;
+                   return true;
+               };*/
+           } else {
+               return new ObjectKeyValueIterator(set);
+               /*for (var k in set) {
+                   elems.push([k, set[k]]);
+               }
+               res.next=function () {
+                   if (res.i>=elems.length) return false;
+                   this[0]=elems[res.i][0];
+                   this[1]=elems[res.i][1];
+                   res.i++;
+                   return true;
+               };*/
+           }
+       } else {
+           console.log(set);
+           throw new Error(set+" is not iterable");
+       }
+       return res;
+   }
+
+//   Tonyu.iterator=IT;
+    return IT;
+});
+requireSimulator.setName('Tonyu');
+if (typeof define!=="function") {
+    define=require("requirejs").define;
+}
+define(["assert","Tonyu.Thread","Tonyu.Iterator","DeferredUtil"],
+        function (assert,TT,IT,DU) {
+return Tonyu=function () {
+    var preemptionTime=60;
+    function thread() {
+        var t=new TT;
+        t.handleEx=handleEx;
+        return t;
     }
     function timeout(t) {
-        var res={};
-        var ls=[];
-        res.addTerminatedListener=function (l) {
-            ls.push(l);
-        };
-        setTimeout(function () {
-            ls.forEach(function (l) {
-                l();
-            });
-        },t);
-        return res;
+        return DU.funcPromise(function (s) {
+            setTimeout(s,t);
+        });
     }
     function animationFrame() {
-        var res={};
-        var ls=[];
-        res.addTerminatedListener=function (l) {
-            ls.push(l);
-        };
-        requestAnimationFrame(function () {
-            ls.forEach(function (l) {
-                l();
-            });
+        return DU.funcPromise( function (f) {
+            requestAnimationFrame(f);
         });
-        return res;
     }
 
-    function asyncResult() {
-        var res=[];
-        var ls=[];
-        var hasRes=false;
-        res.addTerminatedListener=function (l) {
-            if (hasRes) setTimeout(l,0);
-            else ls.push(l);
-        };
-        res.receiver=function () {
-            hasRes=true;
-            for (var i=0; i<arguments.length; i++) {
-                res[i]=arguments[i];
-            }
-            res.notify();
-        };
-        res.notify=function () {
-            ls.forEach(function (l) {
-                l();
-            });
-        };
-        return res;
-    }
-    function threadGroup() {//@deprecated
-        var threads=[];
-        var waits=[];
-        var _isAlive=true;
-        var thg;
-        var _isWaiting=false;
-        var willAdd=null;
-        function add(thread) {
-            thread.group=thg;
-            if (willAdd) {
-                willAdd.push(thread);
-            } else {
-                threads.push(thread);
-            }
-        }
-        function addObj(obj, methodName,args) {
-            if (!methodName) methodName="main";
-            var th=thread();
-            th.apply(obj,methodName,args);
-            //obj["fiber$"+methodName](th);
-            add(th);
-            return th;
-        }
-        function steps() {
-            try {
-                stepsNoEx();
-            } catch(e) {
-                handleEx(e);
-            }
-        }
-        function stepsNoEx() {
-            for (var i=threads.length-1; i>=0 ;i--) {
-                var thr=threads[i];
-                if (thr.isAlive() && thr.group===thg) continue;
-                threads.splice(i,1);
-            }
-            _isWaiting=true;
-            willAdd=[];
-            threads.forEach(iter);
-            while (willAdd.length>0) {
-                w=willAdd;
-                willAdd=[];
-                w.forEach(function (th) {
-                    threads.push(th);
-                    iter(th);
-                });
-            }
-            willAdd=null;
-            function iter(th){
-                if (th.isWaiting()) return;
-                _isWaiting=false;
-                th.steps();
-            }
-        }
-        function kill() {
-            _isAlive=false;
-        }
-        var _interval=0, _onStepsEnd;
-        function notifyResume() {
-            if (_isWaiting) {
-                //console.log("resume!");
-                //run();
-            }
-        }
-        return thg={add:add, addObj:addObj,  steps:steps, kill:kill, notifyResume: notifyResume, threads:threads};
-    }
     function handleEx(e) {
         if (Tonyu.onRuntimeError) {
             Tonyu.onRuntimeError(e);
         } else {
+            if (typeof $LASTPOS=="undefined") $LASTPOS=0;
             alert ("エラー! at "+$LASTPOS+" メッセージ  : "+e);
+            console.log(e.stack);
             throw e;
         }
     }
-    function defunct(f) {
-        if (f===Function) {
-            return null;
-        }
-        if (typeof f=="function") {
-            f.constructor=null;
-        } else if (typeof f=="object"){
-            for (var i in f) {
-                f[i]=defunct(f[i]);
-            }
-        }
-        return f;
-    }
-    /*function klass() {
-        var parent, prot, includes=[];
-        if (arguments.length==1) {
-            prot=arguments[0];
-        } else if (arguments.length==2 && typeof arguments[0]=="function") {
-            parent=arguments[0];
-            prot=arguments[1];
-        } else if (arguments.length==2 && arguments[0] instanceof Array) {
-            includes=arguments[0];
-            prot=arguments[1];
-        } else if (arguments.length==3) {
-            parent=arguments[0];
-            if (!parent) {
-                console.log(arguments[2]);
-                throw new Error("No parent class ");
-            }
-            includes=arguments[1];
-            prot=arguments[2];
-        } else {
-            console.log(arguments);
-            throw "Invalid argument spec";
-        }
-        prot=defunct(prot);
-        var res=(prot.initialize? prot.initialize:
-            (parent? function () {
-                parent.apply(this,arguments);
-            }:function (){})
-        );
-        delete prot.initialize;
-        //A includes B  B includes C  B extends D
-        //A extends E   E includes F
-        //A has methods in B,C,E,F. [Mod] A extends D.
-        // Known examples:
-        // Actor extends BaseActor, includes PlayMod.
-        // PlayMod extends BaseActor(because use update() in play())
-        res.methods=prot;
-        //prot=bless(parent, prot);
-        includes.forEach(function (m) {
-            if (!m.methods) throw m+" Does not have methods";
-            for (var n in m.methods) {
-                if (!(n in prot)) {
-                    prot[n]=m.methods[n];
-                }
-            }
-        });
-        res.prototype=bless(parent, prot);
-        res.prototype.isTonyuObject=true;
-        addMeta(res,{
-            superclass:parent ? parent.meta : null,
-                    includes:includes.map(function(c){return c.meta;})
-        });
-        var m=klass.getMeta(res);
-        res.prototype.getClassInfo=function () {
-            return m;
-        };
-        return res;
-    }*/
     klass=function () {
         alert("この関数は古くなりました。コンパイルをやり直してください。 Deprecated. compile again.");
         throw new Error("この関数は古くなりました。コンパイルをやり直してください。 Deprecated. compile again.");
@@ -2796,6 +3200,9 @@ return Tonyu=function () {
         assert.is(arguments,[String,Object]);
         return extend(klass.getMeta(fn), m);
     }
+    klass.removeMeta=function (n) {
+        delete classMetas[n];
+    };
     klass.getMeta=function (k) {// Class or fullName
         if (typeof k=="function") {
             return k.meta;
@@ -2816,6 +3223,9 @@ return Tonyu=function () {
         }
         return o;
     };
+    Function.prototype.constructor=function () {
+        throw new Error("This method should not be called");
+    };
     klass.define=function (params) {
         // fullName, shortName,namspace, superclass, includes, methods:{name/fiber$name: func}, decls
         var parent=params.superclass;
@@ -2826,24 +3236,28 @@ return Tonyu=function () {
         var methods=params.methods;
         var decls=params.decls;
         var nso=klass.ensureNamespace(Tonyu.classes, namespace);
-        var prot=defunct(methods);
+        var prot=methods;
         var init=prot.initialize;
         delete prot.initialize;
         var res;
         res=(init?
-            (parent? function () {
-                if (!(this instanceof res)) useNew();
+            /*(parent? function () {
+                if (!(this instanceof res)) useNew(fullName);
                 if (Tonyu.runMode) init.apply(this,arguments);
                 else parent.apply(this,arguments);
             }:function () {
-                if (!(this instanceof res)) useNew();
+                if (!(this instanceof res)) useNew(fullName);
                 if (Tonyu.runMode) init.apply(this,arguments);
-            }):
+            })*/
+            function () {
+                if (!(this instanceof res)) useNew(fullName);
+                init.apply(this,arguments);
+            }:
             (parent? function () {
-                if (!(this instanceof res)) useNew();
+                if (!(this instanceof res)) useNew(fullName);
                 parent.apply(this,arguments);
             }:function (){
-                if (!(this instanceof res)) useNew();
+                if (!(this instanceof res)) useNew(fullName);
             })
         );
         nso[shortName]=res;
@@ -2887,9 +3301,33 @@ return Tonyu=function () {
         };
         return res;
     };
+    klass.isSourceChanged=function (k) {
+        k=k.meta||k;
+        if (k.src && k.src.tonyu) {
+            if (!k.nodeTimestamp) return true;
+            return k.src.tonyu.lastUpdate()> k.nodeTimestamp;
+        }
+        return false;
+    };
+    klass.shouldCompile=function (k) {
+        k=k.meta||k;
+        if (klass.isSourceChanged(k)) return true;
+        var dks=klass.getDependingClasses(k);
+        for (var i=0 ; i<dks.length ;i++) {
+            if (klass.shouldCompile(dks[i])) return true;
+        }
+    };
+    klass.getDependingClasses=function (k) {
+        k=k.meta||k;
+        var res=[];
+        if (k.superclass) res=[k.superclass];
+        if (k.includes) res=res.concat(k.includes);
+        return res;
+    };
     function bless( klass, val) {
         if (!klass) return val;
-        return extend( new klass() , val);
+        return extend( Object.create(klass.prototype) , val);
+        //return extend( new klass() , val);
     }
     function extend (dst, src) {
         if (src && typeof src=="object") {
@@ -2931,6 +3369,7 @@ return Tonyu=function () {
         return res;//classes[n];
     }
     function bindFunc(t,meth) {
+        if (typeof meth!="function") return meth;
         var res=function () {
             return meth.apply(t,arguments);
         };
@@ -2964,8 +3403,8 @@ return Tonyu=function () {
         }
         return res;
     }
-    function useNew() {
-        throw new Error("クラス名はnewをつけて呼び出して下さい。");
+    function useNew(c) {
+        throw new Error("クラス名"+c+"はnewをつけて呼び出して下さい。");
     }
     function not_a_tonyu_object(o) {
         console.log("Not a tonyu object: ",o);
@@ -2989,12 +3428,13 @@ return Tonyu=function () {
         $LASTPOS=0;
         th.steps();
     }
-    return Tonyu={thread:thread, threadGroup:threadGroup, klass:klass, bless:bless, extend:extend,
+    return Tonyu={thread:thread, /*threadGroup:threadGroup,*/ klass:klass, bless:bless, extend:extend,
             globals:globals, classes:classes, classMetas:classMetas, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
-            timeout:timeout,animationFrame:animationFrame, asyncResult:asyncResult,bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
+            timeout:timeout,animationFrame:animationFrame, /*asyncResult:asyncResult,*/
+            bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
-            run:run,
-            VERSION:1448500513331,//EMBED_VERSION
+            run:run,iterator:IT,
+            VERSION:1471749335201,//EMBED_VERSION
             A:A};
 }();
 });
@@ -3055,7 +3495,7 @@ define(["Tonyu"], function (Tonyu) {
             } catch (p) {
                 if (p.isParseError) {
                     console.log("parse error! "+p);
-                    return {image: this.img, x:0, y:0, width:this.width, height:this.height};
+                    return [{image: this.img, x:0, y:0, width:this.width, height:this.height}];
                 }
                 throw p;
             }
@@ -3158,7 +3598,7 @@ define(["WebSite","Util","Tonyu"],function (WebSite,Util,Tonyu) {
     return Assets;
 });
 requireSimulator.setName('ImageList');
-define(["PatternParser","Util","Assets"], function (PP,Util,Assets) {
+define(["PatternParser","Util","Assets","assert"], function (PP,Util,Assets,assert) {
     var cache={};
     function excludeEmpty(resImgs) {
         var r=[];
@@ -3175,6 +3615,11 @@ define(["PatternParser","Util","Assets"], function (PP,Util,Assets) {
         resImgs=excludeEmpty(resImgs);
         var resa=[];
         var cnt=resImgs.length;
+        if (cnt==0) setTimeout(function () {
+            var res=[];
+            res.names={};
+            onLoad(res);
+        },0);
         resImgs.forEach(function (resImg,i) {
             console.log("loading", resImg,i);
             var url=resImg.url;
@@ -3214,6 +3659,7 @@ define(["PatternParser","Util","Assets"], function (PP,Util,Assets) {
                     resa[i]=p.parse();
                 }
                 resa[i].name=resImg.name;
+                assert.is(resa[i],Array);
                 cnt--;
                 if (cnt==0) {
                     var res=[];
@@ -3250,7 +3696,7 @@ define(["PatternParser","Util","Assets"], function (PP,Util,Assets) {
             res=p.parse();
         }
         res.name=resImg.name;
-        return res;
+        return assert.is(res,Array);
     };
 	IL.convURL=function (url, baseDir) {
 	    /*if (url==null) url="";
@@ -3861,66 +4307,309 @@ setTimeout(function(){ T2MediaLib.stopAudio(); }, 10000);
 
 
 
-requireSimulator.setName('Tonyu.Iterator');
-define(["Tonyu"], function (T) {
-   function IT(set, arity) {
-       var res={};
-       if (set.tonyuIterator) {
-    	   return set.tonyuIterator(arity);
-       } else if (set instanceof Array) {
-           res.i=0;
-           if (arity==1) {
-               res.next=function () {
-                   if (res.i>=set.length) return false;
-                   this[0]=set[res.i];
-                   res.i++;
-                   return true;
-               };
-           } else {
-               res.next=function () {
-                   if (res.i>=set.length) return false;
-                   this[0]=res.i;
-                   this[1]=set[res.i];
-                   res.i++;
-                   return true;
-               };
+requireSimulator.setName('exceptionCatcher');
+define([], function () {
+    var res={};
+    res.f=function (f) {
+        if (typeof f=="function") {
+            if (f.isTrcf) return f;
+            var r=function () {
+                if (res.handleException && !res.enter) {
+                    try {
+                        res.enter=true;
+                        return f.apply(this,arguments);
+                    } catch (e) {
+                        res.handleException(e);
+                    } finally {
+                        res.enter=false;
+                    }
+                } else {
+                    return f.apply(this,arguments);
+                }
+            };
+            r.isTrcf=true;
+            return r;
+        } else if(typeof f=="object") {
+            for (var k in f) {
+                f[k]=res.f(f[k]);
+            }
+            return f;
+        }
+    };
+    //res.handleException=function (){};
+    return res;
+});
+requireSimulator.setName('UI');
+define(["Util","exceptionCatcher"],function (Util, EC) {
+    var UI={};
+    var F=EC.f;
+    UI=function () {
+        var expr=[];
+        for (var i=0 ; i<arguments.length ; i++) {
+            expr[i]=arguments[i];
+        }
+        var listeners=[];
+        var $vars={};
+        var $edits=[];
+        var res=parse(expr);
+        res.$edits=$edits;
+        res.$vars=$vars;
+        $edits.load=function (model) {
+            $edits.model=model;
+            $edits.forEach(function (edit) {
+                $edits.writeToJq(edit.params.$edit, edit.jq);
+            });
+        };
+        $edits.writeToJq=function ($edit, jq) {
+        	var m=$edits.model;
+            if (!m) return;
+            var name = $edit.name;
+            var a=name.split(".");
+            for (var i=0 ; i<a.length ;i++) {
+                m=m[a[i]];
+            }
+            m=$edit.type.toVal(m);
+            if (jq.attr("type")=="checkbox") {
+                jq.prop("checked",!!m);
+            } else {
+                jq.val(m);
+            }
+        };
+        $edits.validator={
+       		errors:{},
+       		show: function () {
+       			if ($vars.validationMessage) {
+       				$vars.validationMessage.empty();
+       				for (var name in this.errors) {
+       					$vars.validationMessage.append(UI("div", this.errors[name].mesg));
+       				}
+       			}
+       			if ($vars.OKButton) {
+       				var ok=true;
+       				for (var name in this.errors) {
+       					ok=false;
+       				}
+       				$vars.OKButton.attr("disabled", !ok);
+       			}
+       		},
+       		on: {
+       			validate: function () {}
+       		},
+       		addError: function (name, mesg, jq) {
+       			this.errors[name]={mesg:mesg, jq:jq};
+       			this.show();
+       		},
+       		removeError: function (name) {
+       			delete this.errors[name];
+       			this.show();
+       		},
+       		allOK: function () {
+       			for (var i in this.errors) {
+       				delete this.errors[i];
+       			}
+       			this.show();
+       		},
+       		isValid: function () {
+       		    var res=true;
+       		    for (var i in this.errors) res=false;
+       		    return res;
+       		}
+        };
+        $edits.writeToModel=function ($edit, val ,jq) {
+            var m=$edits.model;
+        	//console.log($edit, m);
+            if (!m) return;
+            var name = $edit.name;
+            try {
+                val=$edit.type.fromVal(val);
+            } catch (e) {
+            	$edits.validator.addError(name, e, jq);
+            	//$edits.validator.errors[name]={mesg:e, jq:jq};
+                //$edits.validator.change(name, e, jq);
+                return;
+            }
+            $edits.validator.removeError(name);
+            /*
+            if ($edits.validator.errors[name]) {
+                delete $edits.validator.errors[name];
+                $edits.validator.change(name, null, jq);
+            }*/
+            var a=name.split(".");
+            for (var i=0 ; i<a.length ;i++) {
+                if (i==a.length-1) {
+                    if ($edits.on.writeToModel(name,val)) {
+
+                    } else {
+                        m[a[i]]=val;
+                    }
+                } else {
+                    m=m[a[i]];
+                }
+            }
+            $edits.validator.on.validate.call($edits.validator, $edits.model);
+        };
+        $edits.on={};
+        $edits.on.writeToModel= function (name, val) {};
+
+        if (listeners.length>0) {
+            setTimeout(F(l),50);
+        }
+        function l() {
+            listeners.forEach(function (li) {
+                li();
+            });
+            setTimeout(F(l),50);
+        }
+        return res;
+        function parse(expr) {
+            if (expr instanceof Array) return parseArray(expr);
+            else if (typeof expr=="string") return parseString(expr);
+            else return expr;
+        }
+        function parseArray(a) {
+            var tag=a[0];
+            var i=1;
+            var res=$("<"+tag+">");
+            if (typeof a[i]=="object" && !(a[i] instanceof Array) && !(a[i] instanceof $) ) {
+                parseAttr(res, a[i],tag);
+                i++;
+            }
+            while (i<a.length) {
+                res.append(parse(a[i]));
+                i++;
+            }
+            return res;
+        }
+        function parseAttr(jq, o, tag) {
+            if (o.$var) {
+                $vars[o.$var]=jq;
+            }
+            if (o.$edit) {
+                if (typeof o.$edit=="string") {
+                    o.$edit={name: o.$edit, type: UI.types.String};
+                }
+                if (!o.on) o.on={};
+                o.on.realtimechange=F(function (val) {
+                    $edits.writeToModel(o.$edit, val, jq);
+                });
+                if (!$vars[o.$edit.name]) $vars[o.$edit.name]=jq;
+                $edits.push({jq:jq,params:o});
+            }
+            for (var k in o) {
+                if (k=="on") {
+                    for (var e in o.on) on(e, o.on[e]);
+                } else if (k=="css" && o[k]!=null) {//ADDJSL
+                    jq.css(o[k]);
+                } else if (!Util.startsWith(k,"$") && o[k]!=null) {//ADDJSL
+                    jq.attr(k,o[k]);
+                }
+            }
+            function on(eType, li) {
+                if (!li) return; //ADDJSL
+                if (eType=="enterkey") {
+                    jq.on("keypress",F(function (ev) {
+                        if (ev.which==13) li.apply(jq,arguments);
+                    }));
+                } else if (eType=="realtimechange") {
+                    var first=true, prev;
+                    listeners.push(function () {
+                        var cur;
+                        if (o.type=="checkbox") {
+                            cur=!!jq.prop("checked");
+                        } else {
+                            cur=jq.val();
+                        }
+                        if (first || prev!=cur) {
+                            li.apply(jq,[cur,prev]);
+                            prev=cur;
+                        }
+                        first=false;
+                    });
+                } else {
+                    jq.on(eType, F(li));
+                }
+            }
+        }
+        function parseString(str) {
+            return $("<span>").text(str);
+        }
+    };
+    UI.types={
+       String: {
+           toVal: function (val) {
+               return val;
+           },
+           fromVal: function (val) {
+               return val;
            }
-       } else if (set instanceof Object){
-           res.i=0;
-           var elems=[];
-           if (arity==1) {
-               for (var k in set) {
-                   elems.push(k);
-               }
-               res.next=function () {
-                   if (res.i>=elems.length) return false;
-                   this[0]=elems[res.i];
-                   res.i++;
-                   return true;
-               };
-           } else {
-               for (var k in set) {
-                   elems.push([k, set[k]]);
-               }
-               res.next=function () {
-                   if (res.i>=elems.length) return false;
-                   this[0]=elems[res.i][0];
-                   this[1]=elems[res.i][1];
-                   res.i++;
-                   return true;
-               };
+       },
+       Number: {
+           toVal: function (val) {
+               return val+"";
+           },
+           fromVal: function (val) {
+               return parseFloat(val);
            }
-       } else {
-           console.log(set);
-           throw new Error(set+" is not iterable");
        }
-       return res;
-   }
-   Tonyu.iterator=IT;
-    return IT;
+   };
+    return UI;
+});
+
+requireSimulator.setName('UIDiag');
+define(["UI"],function (UI) {
+    var UIDiag={};
+    UIDiag.confirm=function (mesg) {
+        var di=UI("div",{title:"確認"},["div",mesg],
+                ["button",{on:{click:sendF(true)}},"OK"],
+                ["button",{on:{click:sendF(false)}},"キャンセル"]).dialog({width:"auto",close:sendF(false)});
+        var d=$.Deferred();
+        function sendF(r) {
+            return function () { d.resolve(r); di.dialog("close"); di.remove(); };
+        }
+        return d.promise();
+    };
+    UIDiag.alert=function (mesg) {
+        var di=UI("div",{title:"確認"},["div",mesg],
+                ["button",{on:{click:sendF(true)}},"OK"]).dialog({width:"auto",close:sendF(false)});
+        var d=$.Deferred();
+        function sendF(r) {
+            return function () { d.resolve(r); di.dialog("close"); di.remove(); };
+        }
+        return d.promise();
+    };
+
+    UIDiag.prompt=function (mesg,value) {
+        var di=UI("div",{title:"入力"},["div",mesg],
+                ["input",{on:{enterkey:ok},$var:"val", value:value}],["br"],
+                ["button",{on:{click:ok}},"OK"],
+                ["button",{on:{click:cancel}},"キャンセル"]).dialog({width:"auto",close:function (){
+                    di.dialog("close");
+                    d.resolve();
+                }});
+        setTimeout(function () {
+            di.$vars.val.focus();
+            //console.log("FOcus");
+        },10);
+        var d=$.Deferred();
+        function ok() {
+            var r=di.$vars.val.val();
+            d.resolve(r);
+            di.dialog("close");
+            di.remove();
+        }
+        function cancel() {
+            di.dialog("close");
+            di.remove();
+            d.resolve();
+        }
+        return d.promise();
+
+    };
+    if (typeof window!="undefined") window.UIDiag=UIDiag;
+    return UIDiag;
 });
 requireSimulator.setName('runtime');
-requirejs(["ImageList","T2MediaLib","Tonyu","Tonyu.Iterator"], function () {
+requirejs(["ImageList","T2MediaLib","Tonyu","UIDiag"], function () {
 
 });
 requireSimulator.setName('runScript2');
@@ -3928,9 +4617,11 @@ requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu
         function (FS,  CPTR, sh,  rt,WebSite,LSFS,Tonyu) {
     $(function () {
 
-        SplashScreen={hide: function () {
-            $("#splash").hide();
-        },show:function(){}};
+        SplashScreen={
+            hide: function () {$("#splash").hide();},
+            show:function(){},
+            progress:function(t) {$("#splash").text(t);}
+        };
 
         var w=$(window).width();
         var h=$(window).height();
@@ -3964,16 +4655,6 @@ requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu
             ramHome.rel("files/").link(actualFilesDir);
         }
 
-        /*var fo=ScriptTagFS.toObj();
-        for (var fn in fo) {
-            var f=curProjectDir.rel(fn);
-            if (!f.isDir()) {
-                var m=fo[fn];
-                f.text(m.text);
-                delete m.text;
-                if (m.lastUpdate) f.metaInfo(m);
-            }
-        }*/
         loadFiles(curProjectDir);
         sh.cd(curProjectDir);
         WebSite.compiledKernel="js/kernel.js";

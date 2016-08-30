@@ -16,10 +16,10 @@ define(["genROM","Util","FS","Sync","Shell","WebSite"],
         var ds=require("dumpScript");
         var reqConf=ds.genShim();
         window.generatedShim=reqConf;
-        ds.concat({names:[/*"fs/ROMk","fs/ROMd","fs/ROMs",*/"ide/selProject"], outFile:"index",reqConf:reqConf});
-        ds.concat({names: [/*"fs/ROMk","fs/ROMd","fs/ROMs",*/"ide/editor"], outFile:"project",reqConf:reqConf});
-        ds.concat({names: [/*"fs/ROMk",*/"runScript"], outFile:"runScript",reqConf:reqConf});
-        ds.concat({names: [/*"fs/ROMk",*/"runScript2"], outFile:"runScript2",reqConf:reqConf});
+        ds.concat({names:["ide/selProject"], outFile:"index",reqConf:reqConf});
+        ds.concat({names:["ide/editor"], outFile:"project",reqConf:reqConf});
+        ds.concat({names:["runScript"], outFile:"runScript",reqConf:reqConf});
+        ds.concat({names:["runScript2"], outFile:"runScript2",reqConf:reqConf});
         sh.echo("To compile documents, type:");
         sh.echo("wiki2serv ../fs/Tonyu/doc/ ../www/doc/");
     }
