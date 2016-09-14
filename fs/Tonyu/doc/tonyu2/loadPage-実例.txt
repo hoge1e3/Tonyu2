@@ -1,12 +1,20 @@
 [[用途別リファレンス]]
 
+*場面の切り替え(loadPage)
+
+[[loadPage]]はそれまで動いていたオブジェクトをすべて消して、新しいページを読み込む命令です。
+
+-上の二つの命令は、オブジェクトを左クリックすることでPage1からPage2に、又はPage2からPage1行くものです。
+
+
 <<code Page1
 x=100;
 y=100;
+new Label{x:200,y:10,text:"Page1"};
 
 while(true){
-    if(getkey("mouseleft")==1 && $mouseX>=68 && $mouseX<=132
-    && $mouseY>=68 && $mouseY<=132){
+    //オブジェクトの近くがクリックされたらPage2に移動
+    if(getkey("mouseleft")==1 && dist($mouseX-x,$mouseY-y)<32){
         loadPage(Page2);
     }
     update();
@@ -16,19 +24,15 @@ while(true){
 <<code Page2
 x=200;
 y=200;
+new Label{x:200,y:10,text:"Page2"};
 
 while(true){
-    if(getkey("mouseleft")==1 && $mouseX>=168 && $mouseX<=232
-    && $mouseY>=168 && $mouseY<=232){
+    //オブジェクトの近くがクリックされたらPage1に移動
+    if(getkey("mouseleft")==1 && dist($mouseX-x,$mouseY-y)<32){
         loadPage(Page1);
     }
     update();
 }
 >>
-
-
-[[loadPage]]()はそれまで動いていたオブジェクトをすべて消して、新しいページを読み込む命令です。
-
--上の二つの命令は、オブジェクトを左クリックすることでPage1からPage2に、又はPage2からPage1行くものです。
 
 

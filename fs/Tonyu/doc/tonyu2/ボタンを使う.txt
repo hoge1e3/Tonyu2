@@ -1,0 +1,42 @@
+[[用途別リファレンス]]
+
+* ボタンを使う
+
+**その1
+
+[[Button]]オブジェクトでボタンを作成し、[[@cfrag clicked]]で現在クリックしているかどうかを判定します。
+
+<<code
+$b=new Button{top:300,text:"Click Me"};
+x=100;
+y=100;
+while(true) {
+   // $b が押されているかどうかは $b.clickedで調べる
+   // 0:押されていない 1:押されたばかり 2以上：押し続けられている
+   if($b.clicked==1) {
+      x+=10;
+   }
+   update();
+}
+
+>>
+
+
+**その2
+
+[[Button]]オブジェクトでボタンを作成し、[[@cfrag onClick]]にクリックされたときに呼び出すメソッド名を記述します。
+
+
+<<code
+//  クリックされたときは、下に定義したwalkメソッドを呼ぶ
+$b=new Button{top:300,text:"Click Me",onClick:walk};
+x=100;
+y=100;
+
+// walkメソッドの定義
+\walk() {
+    x+=10;
+}
+>>
+
+

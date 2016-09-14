@@ -7,9 +7,6 @@ new Label{x:100, y:100, text:"文字A"};
 new Label{x:100, y:200, text:"文字B", fillStyle:"black"};
 new Label{x:100, y:300, text:"文字C", size:50};
 >>
-<<code Label
-//中身は何も書かなくてもよいが、Labelという名前のファイルを作る必要がある
->>
 
 -オブジェクトに[[@cfrag text]]という変数を設定すると、文字を表示するオブジェクトになります。
 -[[@cfrag fillStyle]]で文字の色、[[@cfrag size]]で文字の大きさを設定できます。

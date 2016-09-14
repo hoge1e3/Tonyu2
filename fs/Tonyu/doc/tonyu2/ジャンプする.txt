@@ -1,0 +1,28 @@
+[[用途別リファレンス]]
+
+*ジャンプする
+
+-[[contactTo]]で、他の物理オブジェクトと触れているかどうかを判定できます。
+
+<<code Ball
+extends BodyActor;
+shape="circle";
+while(true) {
+    if (getkey("left")) vx=-3;   
+    if (getkey("right")) vx=3;   
+    // スペースキーが押されていて、しかもFloorと触れているときに上に力を加える
+    if (getkey("space")==1 && contactTo(Floor)) vy=-10;
+    update();
+}
+>>
+
+
+*参照
+
+-[[物理運動するオブジェクトを作る]]
+-[[壁・床を作る]]
+-[[オブジェクトに力を加える]]
+-[[ジャンプする]]
+-[[重力を変更する]]
+.
+

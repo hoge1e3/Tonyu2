@@ -15,7 +15,7 @@ while(true){
 <<code Chara1
 while(true){
   y+=4;
-  if(y>$screenHeight){
+  if(screenOut(0) ){
     die();
   }
   update();

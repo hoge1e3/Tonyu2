@@ -1,19 +1,18 @@
 [[用途別リファレンス]]
 
-[[オブジェクトを消す]]
 *他のオブジェクトを消す
 <<code Main
-$enemy=new Enemy{x:100, y:100};
+$enemy1=new Enemy{x:100, y:100};
 $enemy2=new Enemy{x:100, y:200};
-new Enemy{x:100, y:300};
 while(true){
-  if(getkey("z")) $enemy.die();
+  if(getkey("z")) $enemy1.die();
+  if(getkey("x")) $enemy2.die();
   update();
 }
 >>
 <<code Enemy
-何も書かなくてよい
+// 敵の動作を書く。（とりあえず何も書かなくてもよい）
 >>
-zキーを押すと$enemyだけが消える。「Enemy.die()」のようにクラス名を指定してdieをすることは出来ないので注意。
+zキーを押すと$enemy1だけが消え、xキーを押すと$enemy2だけが消える。「Enemy.die()」のようにクラス名を指定してdieをすることは出来ないので注意。
 
 ※～.die()...～で指定したオブジェクトを消す。

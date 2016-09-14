@@ -8,9 +8,9 @@ for(i=0; i<5; i++){
 }
 
 while(true){
-                          //↓これのこと
+                          //↓敵の残り数を表示
     print("Enemy.length="+all(Enemy).length);
-       //↓これのこと
+       //↓敵の残り数が0になったら
     if(all(Enemy).length==0) break;
     update();
     

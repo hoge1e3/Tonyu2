@@ -3,11 +3,11 @@
 [[オブジェクトを動かす]]
 *弾を撃つ
 <<code Main
-if(getkey("space")==1){
-  $b = new Bullet;
-  $b.x=x;
-  $b.y=y;
-  $b.p=25;
+while(true) {
+  if(getkey("space")==1){
+    new Bullet{x:x, y:y, p:25};
+  }
+  update();
 }
 >>
 <<code Bullet

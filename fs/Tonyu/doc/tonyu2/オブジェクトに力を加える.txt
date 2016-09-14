@@ -1,0 +1,44 @@
+[[壁・床を作る]]
+
+*オブジェクトに力を加える
+
+**その1
+
+[[@cfrag vx]], 
+[[@cfrag vy]]に速度（1フレームあたりのピクセル数）を直接設定する
+
+<<code Ball
+extends BodyActor;
+
+shape="circle";
+while(true) {
+    if (getkey("left")) vx=-3;   
+    if (getkey("right")) vx=3;   
+    update();
+}
+>>
+
+**その2
+
+[[applyForce]]または[[applyImpulse]]を使う
+
+<<code Ball
+extends BodyActor;
+
+shape="circle";
+while(true) {
+    if (getkey("left")) applyForce(-10,0);   
+    if (getkey("right")) applyForce(10,0);   
+    update();
+}
+>>
+
+
+*参照
+
+-[[物理運動するオブジェクトを作る]]
+-[[壁・床を作る]]
+-[[オブジェクトに力を加える]]
+-[[ジャンプする]]
+-[[重力を変更する]]
+.
