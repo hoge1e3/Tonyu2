@@ -7,114 +7,112 @@
 <script src='../../js/ide/NWMenu.js'/></script>
 <style>body{padding-top:20px; margin-left: 20px; margin-right:20px; font-family:"MS UI Gothic",sans-serif;}</style>
 <button onclick='javascript:history.back();'>←Back</button><br/>
-<div><a id="line_marker_-0" name="line_marker_-0"></a><a href="E38381E383A5E383BCE38388E383AAE382A2E383AB.html">チュートリアル</a><span>
-</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><a id="line_marker_-2" name="line_marker_-2"></a><a href="E382AAE38396E382B8E382A7E382AFE38388E381AEE5A5A5E8A18CE3818DE381AEE8A8ADE5AE9A.html">前へ</a><span>←　→ </span><a href="E794A8E98094E588A5E383AAE38395E382A1E383ACE383B3E382B9.html">用途別リファレンス</a><span>へ</span><span>
-</span><a id="line_marker_-3" name="line_marker_-3"></a><p></p><h1><a id="line_marker_-4" name="line_marker_-4"></a><span>キャラクターを歩いているように見せる</span></h1><a id="line_marker_-5" name="line_marker_-5"></a><p></p><a id="line_marker_-6" name="line_marker_-6"></a><span>配列を使うことでキャラクターが歩いているように見せることができる。</span><span>
-</span><a id="line_marker_-7" name="line_marker_-7"></a><p></p><a id="line_marker_-8" name="line_marker_-8"></a><p></p><a id="line_marker_-9" name="line_marker_-9"></a><div class="plist">Main</div><a id="line_marker_-13" name="line_marker_-13"></a><pre><a id="line_marker_-10" name="line_marker_-10"></a><span>new Chara1{x:100,y:100};</span><span>
-</span><a id="line_marker_-11" name="line_marker_-11"></a><p></p><a id="line_marker_-12" name="line_marker_-12"></a><p></p></pre><a id="line_marker_-14" name="line_marker_-14"></a><p></p><a id="line_marker_-15" name="line_marker_-15"></a><span>Mainは共通です。Chara1をアニメーションをさせる方法は次の二通りがあります。</span><span>
-</span><a id="line_marker_-16" name="line_marker_-16"></a><span>一つ目は、キャラクターが動く処理と描画処理を一つのwhileの中で行います。</span><span>
-</span><a id="line_marker_-17" name="line_marker_-17"></a><p></p><a id="line_marker_-18" name="line_marker_-18"></a><p></p><a id="line_marker_-19" name="line_marker_-19"></a><div class="plist">Chara1</div><a id="line_marker_-81" name="line_marker_-81"></a><pre><a id="line_marker_-20" name="line_marker_-20"></a><p></p><a id="line_marker_-21" name="line_marker_-21"></a><span>//毎フレーム画像を変更すると動きが速すぎるので、ここの配列の値が4つずつ続いている</span><span>
-</span><a id="line_marker_-22" name="line_marker_-22"></a><span>//下方向を向いているときのpの値の配列</span><span>
-</span><a id="line_marker_-23" name="line_marker_-23"></a><span>pListDown=[0,0,0,0,1,1,1,1,0,0,0,0,2,2,2,2];</span><span>
-</span><a id="line_marker_-24" name="line_marker_-24"></a><span>//上方向を向いているときのpの値の配列</span><span>
-</span><a id="line_marker_-25" name="line_marker_-25"></a><span>pListUp=[5,5,5,5,6,6,6,6,5,5,5,5,7,7,7,7];</span><span>
-</span><a id="line_marker_-26" name="line_marker_-26"></a><span>//左か右方向を向いているときのpの値の配列</span><span>
-</span><a id="line_marker_-27" name="line_marker_-27"></a><span>pListLR=[3,3,3,3,4,4,4,4];</span><span>
-</span><a id="line_marker_-28" name="line_marker_-28"></a><p></p><a id="line_marker_-29" name="line_marker_-29"></a><span>counter=0;</span><span>
-</span><a id="line_marker_-30" name="line_marker_-30"></a><span>p=$pat_neko+0;</span><span>
-</span><a id="line_marker_-31" name="line_marker_-31"></a><p></p><a id="line_marker_-32" name="line_marker_-32"></a><span>//状態の初期値</span><span>
-</span><a id="line_marker_-33" name="line_marker_-33"></a><span>dir="stop";</span><span>
-</span><a id="line_marker_-34" name="line_marker_-34"></a><p></p><a id="line_marker_-35" name="line_marker_-35"></a><span>while(true){</span><span>
-</span><a id="line_marker_-36" name="line_marker_-36"></a><span>    dir="stop";</span><span>
-</span><a id="line_marker_-37" name="line_marker_-37"></a><span>    if(getkey("down")){</span><span>
-</span><a id="line_marker_-38" name="line_marker_-38"></a><span>        y+=2;</span><span>
-</span><a id="line_marker_-39" name="line_marker_-39"></a><span>　　　　　//状態の設定</span><span>
-</span><a id="line_marker_-40" name="line_marker_-40"></a><span>        dir="down";</span><span>
-</span><a id="line_marker_-41" name="line_marker_-41"></a><span>    }</span><span>
-</span><a id="line_marker_-42" name="line_marker_-42"></a><span>    if(getkey("up")){</span><span>
-</span><a id="line_marker_-43" name="line_marker_-43"></a><span>        y-=2;</span><span>
-</span><a id="line_marker_-44" name="line_marker_-44"></a><span>        //状態の設定</span><span>
-</span><a id="line_marker_-45" name="line_marker_-45"></a><span>        dir="up";</span><span>
-</span><a id="line_marker_-46" name="line_marker_-46"></a><span>    }</span><span>
-</span><a id="line_marker_-47" name="line_marker_-47"></a><span>    if(getkey("left")){</span><span>
-</span><a id="line_marker_-48" name="line_marker_-48"></a><span>        x-=2;</span><span>
-</span><a id="line_marker_-49" name="line_marker_-49"></a><p></p><a id="line_marker_-50" name="line_marker_-50"></a><span>        //左に向いているpの値がないので、右に向いているのをscaleXを-1にし反転させる</span><span>
-</span><a id="line_marker_-51" name="line_marker_-51"></a><span>        scaleX=-1;</span><span>
-</span><a id="line_marker_-52" name="line_marker_-52"></a><span>        //scaleXを変更した場合、scaleYもそれに合わせて-1に変化するので、scaleYは1に設定しておく</span><span>
-</span><a id="line_marker_-53" name="line_marker_-53"></a><p></p><a id="line_marker_-54" name="line_marker_-54"></a><span>        scaleY=1;</span><span>
-</span><a id="line_marker_-55" name="line_marker_-55"></a><p></p><a id="line_marker_-56" name="line_marker_-56"></a><span>        //状態の設定</span><span>
-</span><a id="line_marker_-57" name="line_marker_-57"></a><span>        dir="lr";</span><span>
-</span><a id="line_marker_-58" name="line_marker_-58"></a><span>    }</span><span>
-</span><a id="line_marker_-59" name="line_marker_-59"></a><span>    if(getkey("right")){</span><span>
-</span><a id="line_marker_-60" name="line_marker_-60"></a><span>        scaleX=1;</span><span>
-</span><a id="line_marker_-61" name="line_marker_-61"></a><span>        x+=2;</span><span>
-</span><a id="line_marker_-62" name="line_marker_-62"></a><span>        //状態の設定</span><span>
-</span><a id="line_marker_-63" name="line_marker_-63"></a><span>        dir="lr";</span><span>
-</span><a id="line_marker_-64" name="line_marker_-64"></a><span>    }</span><span>
-</span><a id="line_marker_-65" name="line_marker_-65"></a><p></p><a id="line_marker_-66" name="line_marker_-66"></a><span>    if(dir=="down"){</span><span>
-</span><a id="line_marker_-67" name="line_marker_-67"></a><span>        //下方向を向いてるアニメーションの表示</span><span>
-</span><a id="line_marker_-68" name="line_marker_-68"></a><span>        p=$pat_neko+pListDown[counter%16];</span><span>
-</span><a id="line_marker_-69" name="line_marker_-69"></a><span>    }else if(dir=="up"){</span><span>
-</span><a id="line_marker_-70" name="line_marker_-70"></a><span>        //上方向を向いてるアニメーションの表示</span><span>
-</span><a id="line_marker_-71" name="line_marker_-71"></a><span>        p=$pat_neko+pListUp[counter%16];</span><span>
-</span><a id="line_marker_-72" name="line_marker_-72"></a><span>    }else if(dir=="lr"){</span><span>
-</span><a id="line_marker_-73" name="line_marker_-73"></a><span>        //左か右方向を向いてるアニメーションの表示</span><span>
-</span><a id="line_marker_-74" name="line_marker_-74"></a><span>        p=$pat_neko+pListLR[counter%8];</span><span>
-</span><a id="line_marker_-75" name="line_marker_-75"></a><span>    }</span><span>
-</span><a id="line_marker_-76" name="line_marker_-76"></a><span>    counter++;</span><span>
-</span><a id="line_marker_-77" name="line_marker_-77"></a><span>    update();</span><span>
-</span><a id="line_marker_-78" name="line_marker_-78"></a><span>}</span><span>
-</span><a id="line_marker_-79" name="line_marker_-79"></a><p></p><a id="line_marker_-80" name="line_marker_-80"></a><p></p></pre><a id="line_marker_-82" name="line_marker_-82"></a><p></p><a id="line_marker_-83" name="line_marker_-83"></a><span>二つ目は、キャラクターが動く処理と描画処理を別々にしたい場合は</span><span>
-</span><a id="line_marker_-84" name="line_marker_-84"></a><p></p><a id="line_marker_-85" name="line_marker_-85"></a><div class="plist">Chara1</div><a id="line_marker_-138" name="line_marker_-138"></a><pre><a id="line_marker_-86" name="line_marker_-86"></a><span>//ここでは毎フレーム画像の変更をしていないので、配列の値を4つずつ設定する必要はない</span><span>
-</span><a id="line_marker_-87" name="line_marker_-87"></a><span>//pの値の配列</span><span>
-</span><a id="line_marker_-88" name="line_marker_-88"></a><span>pListDown=[0,1,0,2];</span><span>
-</span><a id="line_marker_-89" name="line_marker_-89"></a><span>pListUp=[5,6,5,7];</span><span>
-</span><a id="line_marker_-90" name="line_marker_-90"></a><span>pListLR=[3,4];</span><span>
-</span><a id="line_marker_-91" name="line_marker_-91"></a><p></p><a id="line_marker_-92" name="line_marker_-92"></a><span>dir="stop";</span><span>
-</span><a id="line_marker_-93" name="line_marker_-93"></a><span>p=$pat_neko+0;</span><span>
-</span><a id="line_marker_-94" name="line_marker_-94"></a><p></p><a id="line_marker_-95" name="line_marker_-95"></a><span>parallel("animate");</span><span>
-</span><a id="line_marker_-96" name="line_marker_-96"></a><span>while(true){</span><span>
-</span><a id="line_marker_-97" name="line_marker_-97"></a><span>    dir="stop";</span><span>
-</span><a id="line_marker_-98" name="line_marker_-98"></a><span>    if(getkey("down")){</span><span>
-</span><a id="line_marker_-99" name="line_marker_-99"></a><span>        y+=2;</span><span>
-</span><a id="line_marker_-100" name="line_marker_-100"></a><span>        dir="down";</span><span>
-</span><a id="line_marker_-101" name="line_marker_-101"></a><span>    }</span><span>
-</span><a id="line_marker_-102" name="line_marker_-102"></a><span>    if(getkey("up")){</span><span>
-</span><a id="line_marker_-103" name="line_marker_-103"></a><span>        y-=2;</span><span>
-</span><a id="line_marker_-104" name="line_marker_-104"></a><span>        dir="up";</span><span>
-</span><a id="line_marker_-105" name="line_marker_-105"></a><span>    }</span><span>
-</span><a id="line_marker_-106" name="line_marker_-106"></a><span>    if(getkey("left")){</span><span>
-</span><a id="line_marker_-107" name="line_marker_-107"></a><span>        x-=2;</span><span>
-</span><a id="line_marker_-108" name="line_marker_-108"></a><span>        scaleX=-1;</span><span>
-</span><a id="line_marker_-109" name="line_marker_-109"></a><span>        scaleY=1;</span><span>
-</span><a id="line_marker_-110" name="line_marker_-110"></a><span>        dir="lr";</span><span>
-</span><a id="line_marker_-111" name="line_marker_-111"></a><span>    }</span><span>
-</span><a id="line_marker_-112" name="line_marker_-112"></a><span>    if(getkey("right")){</span><span>
-</span><a id="line_marker_-113" name="line_marker_-113"></a><span>        scaleX=1;</span><span>
-</span><a id="line_marker_-114" name="line_marker_-114"></a><span>        x+=2;</span><span>
-</span><a id="line_marker_-115" name="line_marker_-115"></a><span>        dir="lr";</span><span>
-</span><a id="line_marker_-116" name="line_marker_-116"></a><span>    }</span><span>
-</span><a id="line_marker_-117" name="line_marker_-117"></a><span>    update();</span><span>
-</span><a id="line_marker_-118" name="line_marker_-118"></a><span>}</span><span>
-</span><a id="line_marker_-119" name="line_marker_-119"></a><span>\animate(){</span><span>
-</span><a id="line_marker_-120" name="line_marker_-120"></a><span>    counter=0;</span><span>
-</span><a id="line_marker_-121" name="line_marker_-121"></a><span>    // アニメーションの処理</span><span>
-</span><a id="line_marker_-122" name="line_marker_-122"></a><span>    while(true){</span><span>
-</span><a id="line_marker_-123" name="line_marker_-123"></a><span>        if(dir=="down"){</span><span>
-</span><a id="line_marker_-124" name="line_marker_-124"></a><span>            p=$pat_neko+pListDown[counter%4];</span><span>
-</span><a id="line_marker_-125" name="line_marker_-125"></a><span>        }else if(dir=="up"){</span><span>
-</span><a id="line_marker_-126" name="line_marker_-126"></a><span>            p=$pat_neko+pListUp[counter%4];</span><span>
-</span><a id="line_marker_-127" name="line_marker_-127"></a><span>        }else if(dir=="lr"){</span><span>
-</span><a id="line_marker_-128" name="line_marker_-128"></a><span>            p=$pat_neko+pListLR[counter%2];</span><span>
-</span><a id="line_marker_-129" name="line_marker_-129"></a><span>        }else{</span><span>
-</span><a id="line_marker_-130" name="line_marker_-130"></a><span>            //p=$pat_neko+0;</span><span>
-</span><a id="line_marker_-131" name="line_marker_-131"></a><span>        }</span><span>
-</span><a id="line_marker_-132" name="line_marker_-132"></a><span>        counter++;</span><span>
-</span><a id="line_marker_-133" name="line_marker_-133"></a><span>        //4フレームごとにupdateを行う</span><span>
-</span><a id="line_marker_-134" name="line_marker_-134"></a><span>        updateEx(4);</span><span>
-</span><a id="line_marker_-135" name="line_marker_-135"></a><span>    }</span><span>
-</span><a id="line_marker_-136" name="line_marker_-136"></a><span>}</span><span>
-</span><a id="line_marker_-137" name="line_marker_-137"></a><p></p></pre><a id="line_marker_-139" name="line_marker_-139"></a><p></p><a id="line_marker_-140" name="line_marker_-140"></a><span>下のChara1は、配列と</span><a href="parallel.html">parallel</a><span>という並列処理を行うメソッドを使用しています。</span><span>
-</span><a id="line_marker_-141" name="line_marker_-141"></a><p></p><a id="line_marker_-142" name="line_marker_-142"></a><p></p><a id="line_marker_-143" name="line_marker_-143"></a><p></p><a id="line_marker_-144" name="line_marker_-144"></a><span>以上でチュートリアルは終了です。さらなる情報は</span><a href="E794A8E98094E588A5E383AAE38395E382A1E383ACE383B3E382B9.html">用途別リファレンス</a><span>にまとめています。</span><span>
-</span></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
+<div><a id="line_marker_-0" name="line_marker_-0"></a><a href="E794A8E98094E588A5E383AAE38395E382A1E383ACE383B3E382B9.html">用途別リファレンス</a><span>
+</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><h1><a id="line_marker_-2" name="line_marker_-2"></a><span>キャラクターを歩いているように見せる</span></h1><a id="line_marker_-3" name="line_marker_-3"></a><p></p><a id="line_marker_-4" name="line_marker_-4"></a><span>配列を使うことでキャラクターが歩いているように見せることができる。</span><span>
+</span><a id="line_marker_-5" name="line_marker_-5"></a><p></p><a id="line_marker_-6" name="line_marker_-6"></a><p></p><a id="line_marker_-7" name="line_marker_-7"></a><div class="plist">Main</div><a id="line_marker_-11" name="line_marker_-11"></a><pre><a id="line_marker_-8" name="line_marker_-8"></a><span>new Chara1{x:100,y:100};</span><span>
+</span><a id="line_marker_-9" name="line_marker_-9"></a><p></p><a id="line_marker_-10" name="line_marker_-10"></a><p></p></pre><a id="line_marker_-12" name="line_marker_-12"></a><p></p><a id="line_marker_-13" name="line_marker_-13"></a><span>Mainは共通です。Chara1をアニメーションをさせる方法は次の二通りがあります。</span><span>
+</span><a id="line_marker_-14" name="line_marker_-14"></a><span>一つ目は、キャラクターが動く処理と描画処理を一つのwhileの中で行います。</span><span>
+</span><a id="line_marker_-15" name="line_marker_-15"></a><p></p><a id="line_marker_-16" name="line_marker_-16"></a><p></p><a id="line_marker_-17" name="line_marker_-17"></a><div class="plist">Chara1</div><a id="line_marker_-79" name="line_marker_-79"></a><pre><a id="line_marker_-18" name="line_marker_-18"></a><p></p><a id="line_marker_-19" name="line_marker_-19"></a><span>//毎フレーム画像を変更すると動きが速すぎるので、ここの配列の値が4つずつ続いている</span><span>
+</span><a id="line_marker_-20" name="line_marker_-20"></a><span>//下方向を向いているときのpの値の配列</span><span>
+</span><a id="line_marker_-21" name="line_marker_-21"></a><span>pListDown=[0,0,0,0,1,1,1,1,0,0,0,0,2,2,2,2];</span><span>
+</span><a id="line_marker_-22" name="line_marker_-22"></a><span>//上方向を向いているときのpの値の配列</span><span>
+</span><a id="line_marker_-23" name="line_marker_-23"></a><span>pListUp=[5,5,5,5,6,6,6,6,5,5,5,5,7,7,7,7];</span><span>
+</span><a id="line_marker_-24" name="line_marker_-24"></a><span>//左か右方向を向いているときのpの値の配列</span><span>
+</span><a id="line_marker_-25" name="line_marker_-25"></a><span>pListLR=[3,3,3,3,4,4,4,4];</span><span>
+</span><a id="line_marker_-26" name="line_marker_-26"></a><p></p><a id="line_marker_-27" name="line_marker_-27"></a><span>counter=0;</span><span>
+</span><a id="line_marker_-28" name="line_marker_-28"></a><span>p=$pat_neko+0;</span><span>
+</span><a id="line_marker_-29" name="line_marker_-29"></a><p></p><a id="line_marker_-30" name="line_marker_-30"></a><span>//状態の初期値</span><span>
+</span><a id="line_marker_-31" name="line_marker_-31"></a><span>dir="stop";</span><span>
+</span><a id="line_marker_-32" name="line_marker_-32"></a><p></p><a id="line_marker_-33" name="line_marker_-33"></a><span>while(true){</span><span>
+</span><a id="line_marker_-34" name="line_marker_-34"></a><span>    dir="stop";</span><span>
+</span><a id="line_marker_-35" name="line_marker_-35"></a><span>    if(getkey("down")){</span><span>
+</span><a id="line_marker_-36" name="line_marker_-36"></a><span>        y+=2;</span><span>
+</span><a id="line_marker_-37" name="line_marker_-37"></a><span>　　　　　//状態の設定</span><span>
+</span><a id="line_marker_-38" name="line_marker_-38"></a><span>        dir="down";</span><span>
+</span><a id="line_marker_-39" name="line_marker_-39"></a><span>    }</span><span>
+</span><a id="line_marker_-40" name="line_marker_-40"></a><span>    if(getkey("up")){</span><span>
+</span><a id="line_marker_-41" name="line_marker_-41"></a><span>        y-=2;</span><span>
+</span><a id="line_marker_-42" name="line_marker_-42"></a><span>        //状態の設定</span><span>
+</span><a id="line_marker_-43" name="line_marker_-43"></a><span>        dir="up";</span><span>
+</span><a id="line_marker_-44" name="line_marker_-44"></a><span>    }</span><span>
+</span><a id="line_marker_-45" name="line_marker_-45"></a><span>    if(getkey("left")){</span><span>
+</span><a id="line_marker_-46" name="line_marker_-46"></a><span>        x-=2;</span><span>
+</span><a id="line_marker_-47" name="line_marker_-47"></a><p></p><a id="line_marker_-48" name="line_marker_-48"></a><span>        //左に向いているpの値がないので、右に向いているのをscaleXを-1にし反転させる</span><span>
+</span><a id="line_marker_-49" name="line_marker_-49"></a><span>        scaleX=-1;</span><span>
+</span><a id="line_marker_-50" name="line_marker_-50"></a><span>        //scaleXを変更した場合、scaleYもそれに合わせて-1に変化するので、scaleYは1に設定しておく</span><span>
+</span><a id="line_marker_-51" name="line_marker_-51"></a><p></p><a id="line_marker_-52" name="line_marker_-52"></a><span>        scaleY=1;</span><span>
+</span><a id="line_marker_-53" name="line_marker_-53"></a><p></p><a id="line_marker_-54" name="line_marker_-54"></a><span>        //状態の設定</span><span>
+</span><a id="line_marker_-55" name="line_marker_-55"></a><span>        dir="lr";</span><span>
+</span><a id="line_marker_-56" name="line_marker_-56"></a><span>    }</span><span>
+</span><a id="line_marker_-57" name="line_marker_-57"></a><span>    if(getkey("right")){</span><span>
+</span><a id="line_marker_-58" name="line_marker_-58"></a><span>        scaleX=1;</span><span>
+</span><a id="line_marker_-59" name="line_marker_-59"></a><span>        x+=2;</span><span>
+</span><a id="line_marker_-60" name="line_marker_-60"></a><span>        //状態の設定</span><span>
+</span><a id="line_marker_-61" name="line_marker_-61"></a><span>        dir="lr";</span><span>
+</span><a id="line_marker_-62" name="line_marker_-62"></a><span>    }</span><span>
+</span><a id="line_marker_-63" name="line_marker_-63"></a><p></p><a id="line_marker_-64" name="line_marker_-64"></a><span>    if(dir=="down"){</span><span>
+</span><a id="line_marker_-65" name="line_marker_-65"></a><span>        //下方向を向いてるアニメーションの表示</span><span>
+</span><a id="line_marker_-66" name="line_marker_-66"></a><span>        p=$pat_neko+pListDown[counter%16];</span><span>
+</span><a id="line_marker_-67" name="line_marker_-67"></a><span>    }else if(dir=="up"){</span><span>
+</span><a id="line_marker_-68" name="line_marker_-68"></a><span>        //上方向を向いてるアニメーションの表示</span><span>
+</span><a id="line_marker_-69" name="line_marker_-69"></a><span>        p=$pat_neko+pListUp[counter%16];</span><span>
+</span><a id="line_marker_-70" name="line_marker_-70"></a><span>    }else if(dir=="lr"){</span><span>
+</span><a id="line_marker_-71" name="line_marker_-71"></a><span>        //左か右方向を向いてるアニメーションの表示</span><span>
+</span><a id="line_marker_-72" name="line_marker_-72"></a><span>        p=$pat_neko+pListLR[counter%8];</span><span>
+</span><a id="line_marker_-73" name="line_marker_-73"></a><span>    }</span><span>
+</span><a id="line_marker_-74" name="line_marker_-74"></a><span>    counter++;</span><span>
+</span><a id="line_marker_-75" name="line_marker_-75"></a><span>    update();</span><span>
+</span><a id="line_marker_-76" name="line_marker_-76"></a><span>}</span><span>
+</span><a id="line_marker_-77" name="line_marker_-77"></a><p></p><a id="line_marker_-78" name="line_marker_-78"></a><p></p></pre><a id="line_marker_-80" name="line_marker_-80"></a><p></p><a id="line_marker_-81" name="line_marker_-81"></a><span>二つ目は、キャラクターが動く処理と描画処理を別々にしたい場合は</span><span>
+</span><a id="line_marker_-82" name="line_marker_-82"></a><p></p><a id="line_marker_-83" name="line_marker_-83"></a><div class="plist">Chara1</div><a id="line_marker_-136" name="line_marker_-136"></a><pre><a id="line_marker_-84" name="line_marker_-84"></a><span>//ここでは毎フレーム画像の変更をしていないので、配列の値を4つずつ設定する必要はない</span><span>
+</span><a id="line_marker_-85" name="line_marker_-85"></a><span>//pの値の配列</span><span>
+</span><a id="line_marker_-86" name="line_marker_-86"></a><span>pListDown=[0,1,0,2];</span><span>
+</span><a id="line_marker_-87" name="line_marker_-87"></a><span>pListUp=[5,6,5,7];</span><span>
+</span><a id="line_marker_-88" name="line_marker_-88"></a><span>pListLR=[3,4];</span><span>
+</span><a id="line_marker_-89" name="line_marker_-89"></a><p></p><a id="line_marker_-90" name="line_marker_-90"></a><span>dir="stop";</span><span>
+</span><a id="line_marker_-91" name="line_marker_-91"></a><span>p=$pat_neko+0;</span><span>
+</span><a id="line_marker_-92" name="line_marker_-92"></a><p></p><a id="line_marker_-93" name="line_marker_-93"></a><span>parallel("animate");</span><span>
+</span><a id="line_marker_-94" name="line_marker_-94"></a><span>while(true){</span><span>
+</span><a id="line_marker_-95" name="line_marker_-95"></a><span>    dir="stop";</span><span>
+</span><a id="line_marker_-96" name="line_marker_-96"></a><span>    if(getkey("down")){</span><span>
+</span><a id="line_marker_-97" name="line_marker_-97"></a><span>        y+=2;</span><span>
+</span><a id="line_marker_-98" name="line_marker_-98"></a><span>        dir="down";</span><span>
+</span><a id="line_marker_-99" name="line_marker_-99"></a><span>    }</span><span>
+</span><a id="line_marker_-100" name="line_marker_-100"></a><span>    if(getkey("up")){</span><span>
+</span><a id="line_marker_-101" name="line_marker_-101"></a><span>        y-=2;</span><span>
+</span><a id="line_marker_-102" name="line_marker_-102"></a><span>        dir="up";</span><span>
+</span><a id="line_marker_-103" name="line_marker_-103"></a><span>    }</span><span>
+</span><a id="line_marker_-104" name="line_marker_-104"></a><span>    if(getkey("left")){</span><span>
+</span><a id="line_marker_-105" name="line_marker_-105"></a><span>        x-=2;</span><span>
+</span><a id="line_marker_-106" name="line_marker_-106"></a><span>        scaleX=-1;</span><span>
+</span><a id="line_marker_-107" name="line_marker_-107"></a><span>        scaleY=1;</span><span>
+</span><a id="line_marker_-108" name="line_marker_-108"></a><span>        dir="lr";</span><span>
+</span><a id="line_marker_-109" name="line_marker_-109"></a><span>    }</span><span>
+</span><a id="line_marker_-110" name="line_marker_-110"></a><span>    if(getkey("right")){</span><span>
+</span><a id="line_marker_-111" name="line_marker_-111"></a><span>        scaleX=1;</span><span>
+</span><a id="line_marker_-112" name="line_marker_-112"></a><span>        x+=2;</span><span>
+</span><a id="line_marker_-113" name="line_marker_-113"></a><span>        dir="lr";</span><span>
+</span><a id="line_marker_-114" name="line_marker_-114"></a><span>    }</span><span>
+</span><a id="line_marker_-115" name="line_marker_-115"></a><span>    update();</span><span>
+</span><a id="line_marker_-116" name="line_marker_-116"></a><span>}</span><span>
+</span><a id="line_marker_-117" name="line_marker_-117"></a><span>\animate(){</span><span>
+</span><a id="line_marker_-118" name="line_marker_-118"></a><span>    counter=0;</span><span>
+</span><a id="line_marker_-119" name="line_marker_-119"></a><span>    // アニメーションの処理</span><span>
+</span><a id="line_marker_-120" name="line_marker_-120"></a><span>    while(true){</span><span>
+</span><a id="line_marker_-121" name="line_marker_-121"></a><span>        if(dir=="down"){</span><span>
+</span><a id="line_marker_-122" name="line_marker_-122"></a><span>            p=$pat_neko+pListDown[counter%4];</span><span>
+</span><a id="line_marker_-123" name="line_marker_-123"></a><span>        }else if(dir=="up"){</span><span>
+</span><a id="line_marker_-124" name="line_marker_-124"></a><span>            p=$pat_neko+pListUp[counter%4];</span><span>
+</span><a id="line_marker_-125" name="line_marker_-125"></a><span>        }else if(dir=="lr"){</span><span>
+</span><a id="line_marker_-126" name="line_marker_-126"></a><span>            p=$pat_neko+pListLR[counter%2];</span><span>
+</span><a id="line_marker_-127" name="line_marker_-127"></a><span>        }else{</span><span>
+</span><a id="line_marker_-128" name="line_marker_-128"></a><span>            //p=$pat_neko+0;</span><span>
+</span><a id="line_marker_-129" name="line_marker_-129"></a><span>        }</span><span>
+</span><a id="line_marker_-130" name="line_marker_-130"></a><span>        counter++;</span><span>
+</span><a id="line_marker_-131" name="line_marker_-131"></a><span>        //4フレームごとにupdateを行う</span><span>
+</span><a id="line_marker_-132" name="line_marker_-132"></a><span>        updateEx(4);</span><span>
+</span><a id="line_marker_-133" name="line_marker_-133"></a><span>    }</span><span>
+</span><a id="line_marker_-134" name="line_marker_-134"></a><span>}</span><span>
+</span><a id="line_marker_-135" name="line_marker_-135"></a><p></p></pre><a id="line_marker_-137" name="line_marker_-137"></a><p></p><a id="line_marker_-138" name="line_marker_-138"></a><span>下のChara1は、配列と</span><a href="parallel.html">parallel</a><span>という並列処理を行うメソッドを使用しています。</span><span>
+</span><a id="line_marker_-139" name="line_marker_-139"></a><p></p><a id="line_marker_-140" name="line_marker_-140"></a><p></p></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
 </body></html>

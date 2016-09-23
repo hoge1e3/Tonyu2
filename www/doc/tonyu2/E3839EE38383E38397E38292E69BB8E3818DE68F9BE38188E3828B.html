@@ -1,0 +1,25 @@
+<html><head><meta charset="utf-8"/>
+<meta http-equiv="Content-type" content="text/html; charset=utf8"/>
+<title>マップを書き換える</title>
+</head><body><link rel='stylesheet' href='../../css/bootstrap.css'/>
+<link rel='stylesheet' href='../../css/tonyu.css'/>
+<script src='../../js/lib/jquery-1.10.1.js'/></script>
+<script src='../../js/ide/NWMenu.js'/></script>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px; font-family:"MS UI Gothic",sans-serif;}</style>
+<button onclick='javascript:history.back();'>←Back</button><br/>
+<div><a id="line_marker_-0" name="line_marker_-0"></a><a href="mapEditor.html">mapEditor</a><span>
+</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><h1><a id="line_marker_-2" name="line_marker_-2"></a><span>マップを書き換える</span></h1><a id="line_marker_-3" name="line_marker_-3"></a><p></p><a id="line_marker_-4" name="line_marker_-4"></a><a href="setAt.html">Map.setAt</a><span>またはsetOnAtを使うと、プログラムの実行中にマップチップを書き換えることができます。</span><span>
+</span><a id="line_marker_-5" name="line_marker_-5"></a><p></p><a id="line_marker_-6" name="line_marker_-6"></a><div class="plist">Main</div><a id="line_marker_-9" name="line_marker_-9"></a><pre><a id="line_marker_-7" name="line_marker_-7"></a><span>$map=new Map{row:20,col:20 ,chipWidth:32,chipHeight:32};</span><span>
+</span><a id="line_marker_-8" name="line_marker_-8"></a><span>new Player;</span><span>
+</span></pre><a id="line_marker_-10" name="line_marker_-10"></a><p></p><a id="line_marker_-11" name="line_marker_-11"></a><div class="plist">Player</div><a id="line_marker_-22" name="line_marker_-22"></a><pre><a id="line_marker_-12" name="line_marker_-12"></a><span>x=0;</span><span>
+</span><a id="line_marker_-13" name="line_marker_-13"></a><span>y=0;</span><span>
+</span><a id="line_marker_-14" name="line_marker_-14"></a><span>while(true) {</span><span>
+</span><a id="line_marker_-15" name="line_marker_-15"></a><span>    x+=2;</span><span>
+</span><a id="line_marker_-16" name="line_marker_-16"></a><span>    y++;</span><span>
+</span><a id="line_marker_-17" name="line_marker_-17"></a><span>    //現在プレイヤーがいる場所のマップチップを書き換える</span><span>
+</span><a id="line_marker_-18" name="line_marker_-18"></a><span>    //奥のレイヤーを書き換える場合はsetAt、手前のレイヤーを書き換えるときにはsetOnAt</span><span>
+</span><a id="line_marker_-19" name="line_marker_-19"></a><span>    $map.setAt(x,y,$pat_mapchip+88);</span><span>
+</span><a id="line_marker_-20" name="line_marker_-20"></a><span>    update();</span><span>
+</span><a id="line_marker_-21" name="line_marker_-21"></a><span>}</span><span>
+</span></pre></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
+</body></html>

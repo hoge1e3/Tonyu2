@@ -1,0 +1,27 @@
+<html><head><meta charset="utf-8"/>
+<meta http-equiv="Content-type" content="text/html; charset=utf8"/>
+<title>マップチップとの当たり判定 - 当たり判定を大きくする</title>
+</head><body><link rel='stylesheet' href='../../css/bootstrap.css'/>
+<link rel='stylesheet' href='../../css/tonyu.css'/>
+<script src='../../js/lib/jquery-1.10.1.js'/></script>
+<script src='../../js/ide/NWMenu.js'/></script>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px; font-family:"MS UI Gothic",sans-serif;}</style>
+<button onclick='javascript:history.back();'>←Back</button><br/>
+<div><a id="line_marker_-0" name="line_marker_-0"></a><a href="E3839EE38383E38397E38381E38383E38397E381A8E381AEE5BD93E3819FE3828AE588A4E5AE9A.html">マップチップとの当たり判定</a><span>
+</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><h1><a id="line_marker_-2" name="line_marker_-2"></a><span>当たり判定を大きくする</span></h1><a id="line_marker_-3" name="line_marker_-3"></a><p></p><a id="line_marker_-4" name="line_marker_-4"></a><a href="E3839EE38383E38397E38381E38383E38397E381A8E381AEE5BD93E3819FE3828AE588A4E5AE9A.html">マップチップとの当たり判定</a><span>では、プレイヤーの中心部分にマップチップがあれば「衝突している」と判定していますが、プレイヤーの大きさを考慮してもう少し広い範囲に当たり判定を設けるには、次のようにします。</span><span>
+</span><a id="line_marker_-5" name="line_marker_-5"></a><p></p><a id="line_marker_-6" name="line_marker_-6"></a><span>Playerに、当たり判定専用のメソッドを作成します。</span><span>
+</span><a id="line_marker_-7" name="line_marker_-7"></a><p></p><a id="line_marker_-8" name="line_marker_-8"></a><div class="plist">Player(追加)</div><a id="line_marker_-16" name="line_marker_-16"></a><pre><a id="line_marker_-9" name="line_marker_-9"></a><span>\hitToChip(x,y) {</span><span>
+</span><a id="line_marker_-10" name="line_marker_-10"></a><span>//(x,y)の位置から上下左右10ピクセルの場所のうち、どれかがマップチップに触れていればtrue</span><span>
+</span><a id="line_marker_-11" name="line_marker_-11"></a><span>    return $map.getOnAt(x-10,y)&gt;-1 ||</span><span>
+</span><a id="line_marker_-12" name="line_marker_-12"></a><span>    $map.getOnAt(x+10,y)&gt;-1 ||</span><span>
+</span><a id="line_marker_-13" name="line_marker_-13"></a><span>    $map.getOnAt(x,y+10)&gt;-1 ||</span><span>
+</span><a id="line_marker_-14" name="line_marker_-14"></a><span>    $map.getOnAt(x,y-10)&gt;-1;</span><span>
+</span><a id="line_marker_-15" name="line_marker_-15"></a><span>}</span><span>
+</span></pre><a id="line_marker_-17" name="line_marker_-17"></a><p></p><a id="line_marker_-18" name="line_marker_-18"></a><p></p><a id="line_marker_-19" name="line_marker_-19"></a><span>$map.getOnAtを呼び出している部分も変更します。</span><span>
+</span><a id="line_marker_-20" name="line_marker_-20"></a><p></p><a id="line_marker_-21" name="line_marker_-21"></a><div class="plist">Main(変更)</div><a id="line_marker_-26" name="line_marker_-26"></a><pre><a id="line_marker_-22" name="line_marker_-22"></a><span>    if(hitToChip(x,y)){</span><span>
+</span><a id="line_marker_-23" name="line_marker_-23"></a><span>        //マップチップにぶつかっていたら、移動前の座標に戻す</span><span>
+</span><a id="line_marker_-24" name="line_marker_-24"></a><span>        x=sx;y=sy;</span><span>
+</span><a id="line_marker_-25" name="line_marker_-25"></a><span>    }</span><span>
+</span></pre><a id="line_marker_-27" name="line_marker_-27"></a><p></p><a id="line_marker_-28" name="line_marker_-28"></a><span>.</span><span>
+</span></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
+</body></html>

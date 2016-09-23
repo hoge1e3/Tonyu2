@@ -1,0 +1,29 @@
+<html><head><meta charset="utf-8"/>
+<meta http-equiv="Content-type" content="text/html; charset=utf8"/>
+<title>マップチップとの当たり判定 - 斜め移動をスムーズにする</title>
+</head><body><link rel='stylesheet' href='../../css/bootstrap.css'/>
+<link rel='stylesheet' href='../../css/tonyu.css'/>
+<script src='../../js/lib/jquery-1.10.1.js'/></script>
+<script src='../../js/ide/NWMenu.js'/></script>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px; font-family:"MS UI Gothic",sans-serif;}</style>
+<button onclick='javascript:history.back();'>←Back</button><br/>
+<div><a id="line_marker_-0" name="line_marker_-0"></a><a href="E3839EE38383E38397E38381E38383E38397E381A8E381AEE5BD93E3819FE3828AE588A4E5AE9A.html">マップチップとの当たり判定</a><span>
+</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><h1><a id="line_marker_-2" name="line_marker_-2"></a><span>斜め移動をスムーズにする</span></h1><a id="line_marker_-3" name="line_marker_-3"></a><p></p><a id="line_marker_-4" name="line_marker_-4"></a><a href="E3839EE38383E38397E38381E38383E38397E381A8E381AEE5BD93E3819FE3828AE588A4E5AE9A.html">マップチップとの当たり判定</a><span>のプログラムでは、プレイヤーが斜め移動しているときに壁にひっかかると、まったく動けなくなります。図1のように、壁づたいに移動させたい場合は次のようにします</span><span>
+</span><a id="line_marker_-5" name="line_marker_-5"></a><p></p><a id="line_marker_-6" name="line_marker_-6"></a><div class="figure"><div style="margin:10px; padding:10px; border:solid black 1px;"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAR8AAACXCAIAAACjocgbAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAARqSURBVHhe7djRTtxAEERR/v+nCaBrpTtZs+t1t5eh73l0DZFmVIUU3t4l9XBdUhfXJXVxXVIX1yV1cV1SF9cldXFdUhfXJXVxXVIX1yV1cV1SF9cldXFdUhfXJXVxXVIX1yV1cV1SF9cldXFdUhfXJXVxXVIX1yV1WXtdb/8hkH6AJevIkvZxTnqp9YrIgO7htPQ6i7WQ6TyGn5FeZKUKMpoj+EnpFZbpH3PJyDZ8zcikyy28LoKMLCCQLrdG+RhKQHALJwIC6VpLrouv+zi34at0rQWax0QCgn2cCwikC623Lr7ew+kNX6ULuS6pi+uSurguqYvrkrqst64PBPs4FxBIF1qjdkxkw9d9nNvwVbrWkuv6QHALJwIC6VqrrusDWUaWkUnXWqZ5DCUj2/A1I5Mut1L5mMsR/KT0Cov1j9E8hp+RXmS9CjKdezgtvc6SLWRA+zgnvdTCRWRJGZn0A1hHqYvrkrq4LqmL65K6TFwXfwDxTyBqNq5hDGvDV6nB9HV9IJCqua5PZFKpicViUgGBVGposVhVQCDVmdsqVhUQSEVcV0ImVRjdJyaVkUmnTS8Tk8rIpHNskv8BUxeb9IlVBQTSCdYIrCogkJ5lh8CkMjLpKRboLyaVkUnH2Z6ESWVk0kFW519MKiOTjrA3NzCpgEA6wt7cxqoCAulhlmYXqwoIpMfYmF1MKiOTHmBdvsOkMjLpHrtyB5PKyKRvWZT7mFRAIH3LojyEVQUE0j5b8ihWFRBIO6zIo5hURibdYj8OYFIZ2Ug8gb9ldvgux9CmjGwYLr/hqwIf5TDaFBAMw+UDAm18kWfQpoBgEm4eEGjjizyJQgUEk3DzgEBffI4n0aaMbBJuHhDIdZ1BmzKyMbh2QCDXdRKFysjG4NoBwXg+xFkUKiCYhJsHBLP5CgUoVEAwBtcOCGbzFWrQqYBgDK4dEAzmE9SgUBnZGFw7IJjKdZWhUBnZDNw5IJjKdVWiUxnZDNw5IBjJdRWjUxnZDNw5IJjHddWjUwHBDNw5IJjHdbWgVgHBDNw5IBjGdXWhVtrwLpO4ri50ShveZRLX1Yha6QuPMonr6kWz5LrUgXKNx3NM4rquQL8Cgl+KSwYEw7guFWNPAcE8rkvFmFRAMI/rUiX2FBCM5LpUhj0FBFO5LtVgTxnZVK5LNdhTQDCYT6AC7CkgmM1X0FnsKSAYz4fQWUwqIBjPh9Ap7CkgkOvSGewpINAXn0PPY1IBgb74HHoek9rwVRtfRKcwLKd1i48idXlmXfyykn4jWl7BdUkJLa/guqSElldwXVJCyyu4Limh5RVcl5TQ8gquS0poeQXXJSW0vILrkhJaXsF1SQktr+C6pISWV3BdUkLLK7guKaHlFVyXlNDyCq5LSmh5BdclJbS8guuSElpewXVJCS2v4LqkhJZXcF1SQssruC4poeUVXJeU0PIKlf+WpMh1SV1cl9TFdUldXJfUxXVJXVyX1MV1SV1cl9TFdUldXJfUxXVJPd7f/wCzbNWq7Wx89AAAAABJRU5ErkJggg=="></div><div><span>図1.</span><span>img nanameido.png</span></div></div><span>
+</span><a id="line_marker_-7" name="line_marker_-7"></a><p></p><a id="line_marker_-8" name="line_marker_-8"></a><p></p><a id="line_marker_-9" name="line_marker_-9"></a><a href="E3839EE38383E38397E38381E38383E38397E381A8E381AEE5BD93E3819FE3828AE588A4E5AE9A20-20E5BD93E3819FE3828AE588A4E5AE9AE38292E5A4A7E3818DE3818FE38199E3828B.html">当たり判定を大きくする</a><span>も参照してください。</span><span>
+</span><a id="line_marker_-10" name="line_marker_-10"></a><p></p><a id="line_marker_-11" name="line_marker_-11"></a><p></p><a id="line_marker_-12" name="line_marker_-12"></a><div class="plist">Player(一部)</div><a id="line_marker_-26" name="line_marker_-26"></a><pre><a id="line_marker_-13" name="line_marker_-13"></a><span>    //マップチップとの当たり判定</span><span>
+</span><a id="line_marker_-14" name="line_marker_-14"></a><span>    if(hitToChip(x,y) ){</span><span>
+</span><a id="line_marker_-15" name="line_marker_-15"></a><span>        if (!hitToChip(sx,y)) {</span><span>
+</span><a id="line_marker_-16" name="line_marker_-16"></a><span>            //x座標を元に戻したらぶつかっていない→x座標だけ元に戻す</span><span>
+</span><a id="line_marker_-17" name="line_marker_-17"></a><span>            x=sx;</span><span>
+</span><a id="line_marker_-18" name="line_marker_-18"></a><span>        } else if (!hitToChip(x,sy)) {</span><span>
+</span><a id="line_marker_-19" name="line_marker_-19"></a><span>            //y座標を元に戻したらぶつかっていない→y座標だけ元に戻す</span><span>
+</span><a id="line_marker_-20" name="line_marker_-20"></a><span>            y=sy;   </span><span>
+</span><a id="line_marker_-21" name="line_marker_-21"></a><span>        } else {</span><span>
+</span><a id="line_marker_-22" name="line_marker_-22"></a><span>            //片方だけ戻してもやっぱりぶつかっている→両方元に戻す</span><span>
+</span><a id="line_marker_-23" name="line_marker_-23"></a><span>            x=sx;y=sy;</span><span>
+</span><a id="line_marker_-24" name="line_marker_-24"></a><span>        }</span><span>
+</span><a id="line_marker_-25" name="line_marker_-25"></a><span>    }</span><span>
+</span></pre><a id="line_marker_-27" name="line_marker_-27"></a><p></p><a id="line_marker_-28" name="line_marker_-28"></a><p></p><a id="line_marker_-29" name="line_marker_-29"></a><span>.</span><span>
+</span></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
+</body></html>

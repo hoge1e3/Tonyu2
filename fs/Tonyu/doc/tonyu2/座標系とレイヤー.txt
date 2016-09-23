@@ -1,4 +1,4 @@
-[[$touches]]
+[[api]]
 
 *座標系とレイヤー
 
@@ -22,6 +22,7 @@ Tonyu2の画面はいくつかの層（レイヤー）から成り立ってい�
 new ScoreLabel{x:100, y:400, text:"Score: 0", layer:$frontLayer};
 >>
 
+なお、[[Label]]オブジェクトはデフォルトで$frontLayerに配置されます。
 
 
 *レイヤーのスクロール

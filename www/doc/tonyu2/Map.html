@@ -8,16 +8,23 @@
 <style>body{padding-top:20px; margin-left: 20px; margin-right:20px; font-family:"MS UI Gothic",sans-serif;}</style>
 <button onclick='javascript:history.back();'>←Back</button><br/>
 <div><a id="line_marker_-0" name="line_marker_-0"></a><a href="api.html">api</a><span>
-</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><h1><a id="line_marker_-2" name="line_marker_-2"></a><span>Mapクラス</span></h1><a id="line_marker_-3" name="line_marker_-3"></a><p></p><a id="line_marker_-4" name="line_marker_-4"></a><span>マップの表示クラスです．</span><span>
-</span><h1><a id="line_marker_-5" name="line_marker_-5"></a><span> コンストラクタ</span></h1><a id="line_marker_-6" name="line_marker_-6"></a><p></p><a id="line_marker_-9" name="line_marker_-9"></a><pre><a id="line_marker_-8" name="line_marker_-8"></a><span>\new(param)</span><span>
-</span></pre><a id="line_marker_-10" name="line_marker_-10"></a><p></p><a id="line_marker_-11" name="line_marker_-11"></a><span>paramでマップのチップサイズとその個数を指定します．</span><span>
-</span><a id="line_marker_-12" name="line_marker_-12"></a><p></p><a id="line_marker_-13" name="line_marker_-13"></a><span>例： </span><span>
-</span><a id="line_marker_-17" name="line_marker_-17"></a><pre><a id="line_marker_-15" name="line_marker_-15"></a><span>// 16*16のチップを横に15，縦に10並べる</span><span>
-</span><a id="line_marker_-16" name="line_marker_-16"></a><span>$map=new Map{chipWidth:16,chipHeight:16, col:15, row:10};</span><span>
-</span></pre><a id="line_marker_-18" name="line_marker_-18"></a><p></p><h1><a id="line_marker_-19" name="line_marker_-19"></a><span>メソッド</span></h1><a id="line_marker_-25" name="line_marker_-25"></a><ul><li><a id="line_marker_-20" name="line_marker_-20"></a><a href="set.html">set</a><span>
-</span></li><li><a id="line_marker_-21" name="line_marker_-21"></a><a href="setAt.html">setAt</a><span>
-</span></li><li><a id="line_marker_-22" name="line_marker_-22"></a><a href="get.html">get</a><span>
-</span></li><li><a id="line_marker_-23" name="line_marker_-23"></a><a href="getAt.html">getAt</a><span>
-</span></li><li><a id="line_marker_-24" name="line_marker_-24"></a><a href="scrollTo.html">scrollTo</a><span>
-</span></li></ul><p></p></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
+</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><h1><a id="line_marker_-2" name="line_marker_-2"></a><span>Mapクラス</span></h1><a id="line_marker_-3" name="line_marker_-3"></a><p></p><a id="line_marker_-4" name="line_marker_-4"></a><span>マップの表示クラスです．マップチップと呼ばれる画像を格子状に敷き詰めて表示します。</span><span>
+</span><a id="line_marker_-5" name="line_marker_-5"></a><p></p><a id="line_marker_-6" name="line_marker_-6"></a><span>マップは「奥のレイヤー」と「手前のレイヤー」の2層のレイヤーで構成され、それぞれマップチップを独立して配置できます。</span><span>
+</span><a id="line_marker_-7" name="line_marker_-7"></a><p></p><h1><a id="line_marker_-8" name="line_marker_-8"></a><span> コンストラクタ</span></h1><a id="line_marker_-9" name="line_marker_-9"></a><p></p><a id="line_marker_-12" name="line_marker_-12"></a><pre><a id="line_marker_-11" name="line_marker_-11"></a><span>\new(param)</span><span>
+</span></pre><a id="line_marker_-13" name="line_marker_-13"></a><p></p><a id="line_marker_-14" name="line_marker_-14"></a><span>paramでマップのチップサイズとその個数を指定します．</span><span>
+</span><a id="line_marker_-15" name="line_marker_-15"></a><p></p><a id="line_marker_-16" name="line_marker_-16"></a><span>例： </span><span>
+</span><a id="line_marker_-20" name="line_marker_-20"></a><pre><a id="line_marker_-18" name="line_marker_-18"></a><span>// 32*32ピクセルのチップを横に15，縦に10並べる</span><span>
+</span><a id="line_marker_-19" name="line_marker_-19"></a><span>$map=new Map{chipWidth:32,chipHeight:32, col:15, row:10};</span><span>
+</span></pre><a id="line_marker_-21" name="line_marker_-21"></a><p></p><h1><a id="line_marker_-22" name="line_marker_-22"></a><span>メソッド</span></h1><a id="line_marker_-28" name="line_marker_-28"></a><ul><li><a id="line_marker_-23" name="line_marker_-23"></a><a href="set.html">set/setOn</a><span>
+</span></li><li><a id="line_marker_-24" name="line_marker_-24"></a><a href="setAt.html">setAt/setOnAt</a><span>
+</span></li><li><a id="line_marker_-25" name="line_marker_-25"></a><a href="get.html">get/getOn</a><span>
+</span></li><li><a id="line_marker_-26" name="line_marker_-26"></a><a href="getAt.html">getAt/getOnAt</a><span>
+</span></li><li><a id="line_marker_-27" name="line_marker_-27"></a><a href="scrollTo.html">scrollTo</a><span>
+</span></li></ul><p></p><h1><a id="line_marker_-29" name="line_marker_-29"></a><span>参考</span></h1><a id="line_marker_-30" name="line_marker_-30"></a><p></p><a id="line_marker_-36" name="line_marker_-36"></a><ul><li><a id="line_marker_-31" name="line_marker_-31"></a><a href="mapEditor.html">マップエディタ</a><span>
+</span></li><li><a id="line_marker_-32" name="line_marker_-32"></a><a href="mapGet.html">マップチップを取得する</a><span>
+</span></li><li><a id="line_marker_-33" name="line_marker_-33"></a><a href="E3839EE38383E38397E38381E38383E38397E381A8E381AEE5BD93E3819FE3828AE588A4E5AE9A.html">マップチップとの当たり判定</a><span>
+</span></li><li><a id="line_marker_-34" name="line_marker_-34"></a><a href="E3839EE38383E38397E38292E69BB8E3818DE68F9BE38188E3828B.html">マップを書き換える</a><span>
+</span></li><li><a id="line_marker_-35" name="line_marker_-35"></a><a href="mapEditor.html">マップを描く</a><span>
+</span></li></ul><p></p><a id="line_marker_-37" name="line_marker_-37"></a><p></p><a id="line_marker_-38" name="line_marker_-38"></a><span>.</span><span>
+</span></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
 </body></html>

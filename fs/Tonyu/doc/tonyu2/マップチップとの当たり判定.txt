@@ -2,57 +2,52 @@
 
 *マップチップとの当たり判定
 
+-まず、[[マップを作成>mapEditor]]します。このとき、当たり判定のあるマップはonモードを用いて手前のレイヤーに配置してください。
+
 <<code Main
 $map=new Map{chipWidth:32,chipHeight:32};
 $map.load("stage1.json");
-
-x=$screenWidth/2;
-y=$screenHeight/2;
+new Player;
+>>
+<<code Player
+x=100;
+y=100;
 while(true){
+    //移動前の座標を覚える
+    sx=x;sy=y;
     if(getkey("right")>0){
         x+=3;
-        //マップチップとの当たり判定
-        if($map.getAt(x,y)>-1){
-            x-=3;
-        }
     }
     if(getkey("left")>0){
         x-=3;
-        //マップチップとの当たり判定
-        if($map.getAt(x,y)>-1){
-            x+=3;
-        }
     }
     if(getkey("down")>0){
         y+=3;
-        //マップチップとの当たり判定
-        if($map.getAt(x,y)>-1){
-            y-=3;
-        }
     }
     if(getkey("up")>0){
         y-=3;
-        //マップチップとの当たり判定
-        if($map.getAt(x,y)>-1){
-            y+=3;
-        }
+    }
+    //マップチップとの当たり判定
+    if($map.getOnAt(x,y)>-1){
+        //マップチップにぶつかっていたら、移動前の座標に戻す
+        x=sx;y=sy;
     }
     update();
 }
-
-
 >>
 
-これは上下左右に動かせる中央のオブジェクトがset modeで置いたマップチップを[[$map.getAt>getAt]]でマップチップの値を取得してとぶつかると押し戻されるようにし、重なることができないようにしたもの。
+*応用
 
--setOn modeで置いたマップチップとの当たり判定を得たい場合は、$map.getAtを$map.getOnAtに変える。
-
-
-
+-[[マップチップとの当たり判定 - 当たり判定を大きくする]]
+-[[マップチップとの当たり判定 - 斜め移動をスムーズにする]]
 
 
 
-[[当たり判定で壁にぶつかる]]
+*参考
 
-[[マップチップを取得する>mapGet]]
-
+-[[マップを描く>mapEditor]]
+-[[マップチップを取得する>mapGet]]
+-[[マップチップとの当たり判定]]
+-[[マップを書き換える]]
+-[[マップを描く>mapEditor]]
+-[[当たり判定で壁にぶつかる]]

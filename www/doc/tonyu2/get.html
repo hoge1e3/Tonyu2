@@ -8,9 +8,12 @@
 <style>body{padding-top:20px; margin-left: 20px; margin-right:20px; font-family:"MS UI Gothic",sans-serif;}</style>
 <button onclick='javascript:history.back();'>←Back</button><br/>
 <div><a id="line_marker_-0" name="line_marker_-0"></a><a href="Map.html">Map</a><span>
-</span><h1><a id="line_marker_-1" name="line_marker_-1"></a><span>getメソッド</span></h1><a id="line_marker_-2" name="line_marker_-2"></a><p></p><a id="line_marker_-3" name="line_marker_-3"></a><span>指定したマップ上の座標に対応するマップパターンを取得します．</span><span>
-</span><a id="line_marker_-4" name="line_marker_-4"></a><p></p><a id="line_marker_-7" name="line_marker_-7"></a><pre><a id="line_marker_-6" name="line_marker_-6"></a><span>map.get(getCol,getRow);</span><span>
-</span></pre><a id="line_marker_-8" name="line_marker_-8"></a><p></p><a id="line_marker_-9" name="line_marker_-9"></a><p></p><a id="line_marker_-10" name="line_marker_-10"></a><p></p><a id="line_marker_-13" name="line_marker_-13"></a><ul><li><a id="line_marker_-11" name="line_marker_-11"></a><span>getCol : パターンを取得するx座標をあらわします</span><span>
-</span></li><li><a id="line_marker_-12" name="line_marker_-12"></a><span>getRow : パターンを取得するy座標をあらわします</span><span>
-</span></li></ul><p></p></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
+</span><h1><a id="line_marker_-1" name="line_marker_-1"></a><span>getメソッド</span></h1><a id="line_marker_-2" name="line_marker_-2"></a><p></p><a id="line_marker_-3" name="line_marker_-3"></a><span>マップの奥のレイヤーにおけるマップチップのパターンを取得します．</span><span>
+</span><a id="line_marker_-4" name="line_marker_-4"></a><p></p><a id="line_marker_-5" name="line_marker_-5"></a><span>一番左上のチップを(0,0)，その右隣のチップを(1,0)として指定された座標のパターンを取得します．</span><span>
+</span><a id="line_marker_-6" name="line_marker_-6"></a><p></p><a id="line_marker_-9" name="line_marker_-9"></a><pre><a id="line_marker_-8" name="line_marker_-8"></a><span>map.get(getCol,getRow);</span><span>
+</span></pre><a id="line_marker_-10" name="line_marker_-10"></a><p></p><a id="line_marker_-11" name="line_marker_-11"></a><span>戻り値は整数で、</span><a href="cpats.html">画像リスト</a><span>の該当するパターン番号が戻されます。チップが何も指定されていない場所では-1が戻されます</span><span>
+</span><a id="line_marker_-12" name="line_marker_-12"></a><p></p><a id="line_marker_-15" name="line_marker_-15"></a><ul><li><a id="line_marker_-13" name="line_marker_-13"></a><span>getCol : パターンを取得するx座標をあらわします</span><span>
+</span></li><li><a id="line_marker_-14" name="line_marker_-14"></a><span>getRow : パターンを取得するy座標をあらわします</span><span>
+</span></li></ul><p></p><h1><a id="line_marker_-16" name="line_marker_-16"></a><span>getOnメソッド</span></h1><a id="line_marker_-17" name="line_marker_-17"></a><p></p><a id="line_marker_-18" name="line_marker_-18"></a><span>手前のレイヤーのマップチップを取得します．使い方はgetメソッドと同じです。</span><span>
+</span><a id="line_marker_-19" name="line_marker_-19"></a><p></p></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
 </body></html>

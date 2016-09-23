@@ -9,44 +9,45 @@
 <button onclick='javascript:history.back();'>←Back</button><br/>
 <div><a id="line_marker_-0" name="line_marker_-0"></a><a href="api.html">api</a><span>
 </span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><h1><a id="line_marker_-2" name="line_marker_-2"></a><span>BodyActor</span></h1><a id="line_marker_-3" name="line_marker_-3"></a><p></p><a id="line_marker_-4" name="line_marker_-4"></a><span>物理演算を行なうオブジェクトはこのクラスを継承してください。</span><span>
-</span><a id="line_marker_-5" name="line_marker_-5"></a><p></p><h2><a id="line_marker_-6" name="line_marker_-6"></a><span>親クラス</span></h2><a id="line_marker_-7" name="line_marker_-7"></a><p></p><a id="line_marker_-8" name="line_marker_-8"></a><a href="Actor.html">Actor</a><span>
-</span><a id="line_marker_-9" name="line_marker_-9"></a><p></p><h2><a id="line_marker_-10" name="line_marker_-10"></a><span>コンストラクタ</span></h2><a id="line_marker_-11" name="line_marker_-11"></a><p></p><a id="line_marker_-14" name="line_marker_-14"></a><pre><a id="line_marker_-13" name="line_marker_-13"></a><span>\new(params)</span><span>
-</span></pre><a id="line_marker_-15" name="line_marker_-15"></a><p></p><a id="line_marker_-16" name="line_marker_-16"></a><span>paramsにはオブジェクトを指定します．paramsの値をフィールドに書き込みます</span><span>
-</span><a id="line_marker_-17" name="line_marker_-17"></a><p></p><h2><a id="line_marker_-18" name="line_marker_-18"></a><span>フィールド</span></h2><a id="line_marker_-19" name="line_marker_-19"></a><p></p><ul><li><a id="line_marker_-20" name="line_marker_-20"></a><a href="Actor.html">Actor</a><span>のフィールドに指定できるものは同様に指定できます</span><span>
-</span></li><a id="line_marker_-22" name="line_marker_-22"></a><ul><li><a id="line_marker_-21" name="line_marker_-21"></a><span>xとyについては、代入による座標の変更は可能ですが、初期位置を決める以外には推奨されません（衝突が正しく行われないなどの問題が発生します）。</span><a href="applyForce.html">applyForce</a><span>、</span><a href="applyImpulse.html">applyImpulse</a><span>、およびvxとvyを使ってください</span><span>
-</span></li></ul></ul><p></p><a id="line_marker_-23" name="line_marker_-23"></a><span>以下のフィールドは、オブジェクト作成時にパラメータを渡して初期化するか、mainメソッドの最初のupdateが行われる前に初期化する必要があります。</span><span>
-</span><ul><li><a id="line_marker_-24" name="line_marker_-24"></a><span>density</span><span>
-</span></li><a id="line_marker_-26" name="line_marker_-26"></a><ul><li><a id="line_marker_-25" name="line_marker_-25"></a><span>物体の密度（重さ/大きさ）</span><span>
+</span><a id="line_marker_-5" name="line_marker_-5"></a><p></p><a id="line_marker_-6" name="line_marker_-6"></a><span>実例は</span><a href="E789A9E79086E9818BE58B95E38199E3828BE382AAE38396E382B8E382A7E382AFE38388E38292E4BD9CE3828B.html">物理運動するオブジェクトを作る</a><span>を参照してください。</span><span>
+</span><a id="line_marker_-7" name="line_marker_-7"></a><p></p><h2><a id="line_marker_-8" name="line_marker_-8"></a><span>親クラス</span></h2><a id="line_marker_-9" name="line_marker_-9"></a><p></p><a id="line_marker_-10" name="line_marker_-10"></a><a href="Actor.html">Actor</a><span>
+</span><a id="line_marker_-11" name="line_marker_-11"></a><p></p><h2><a id="line_marker_-12" name="line_marker_-12"></a><span>コンストラクタ</span></h2><a id="line_marker_-13" name="line_marker_-13"></a><p></p><a id="line_marker_-16" name="line_marker_-16"></a><pre><a id="line_marker_-15" name="line_marker_-15"></a><span>\new(params)</span><span>
+</span></pre><a id="line_marker_-17" name="line_marker_-17"></a><p></p><a id="line_marker_-18" name="line_marker_-18"></a><span>paramsにはオブジェクトを指定します．paramsの値をフィールドに書き込みます</span><span>
+</span><a id="line_marker_-19" name="line_marker_-19"></a><p></p><h2><a id="line_marker_-20" name="line_marker_-20"></a><span>フィールド</span></h2><a id="line_marker_-21" name="line_marker_-21"></a><p></p><ul><li><a id="line_marker_-22" name="line_marker_-22"></a><a href="Actor.html">Actor</a><span>のフィールドに指定できるものは同様に指定できます</span><span>
+</span></li><a id="line_marker_-24" name="line_marker_-24"></a><ul><li><a id="line_marker_-23" name="line_marker_-23"></a><span>xとyについては、代入による座標の変更は可能ですが、初期位置を決める以外には推奨されません（衝突が正しく行われないなどの問題が発生します）。</span><a href="applyForce.html">applyForce</a><span>、</span><a href="applyImpulse.html">applyImpulse</a><span>、およびvxとvyを使ってください</span><span>
+</span></li></ul></ul><p></p><a id="line_marker_-25" name="line_marker_-25"></a><span>以下のフィールドは、オブジェクト作成時にパラメータを渡して初期化するか、mainメソッドの最初のupdateが行われる前に初期化する必要があります。</span><span>
+</span><ul><li><a id="line_marker_-26" name="line_marker_-26"></a><span>density</span><span>
+</span></li><a id="line_marker_-28" name="line_marker_-28"></a><ul><li><a id="line_marker_-27" name="line_marker_-27"></a><span>物体の密度（重さ/大きさ）</span><span>
 </span></li></ul><li><span>friction</span><span>
-</span></li><a id="line_marker_-28" name="line_marker_-28"></a><ul><li><a id="line_marker_-27" name="line_marker_-27"></a><span>物体の摩擦係数</span><span>
+</span></li><a id="line_marker_-30" name="line_marker_-30"></a><ul><li><a id="line_marker_-29" name="line_marker_-29"></a><span>物体の摩擦係数</span><span>
 </span></li></ul><li><span>restitution</span><span>
-</span></li><a id="line_marker_-30" name="line_marker_-30"></a><ul><li><a id="line_marker_-29" name="line_marker_-29"></a><span>物体の反発係数</span><span>
+</span></li><a id="line_marker_-32" name="line_marker_-32"></a><ul><li><a id="line_marker_-31" name="line_marker_-31"></a><span>物体の反発係数</span><span>
 </span></li></ul><li><span>shape</span><span>
-</span></li><a id="line_marker_-32" name="line_marker_-32"></a><ul><li><a id="line_marker_-31" name="line_marker_-31"></a><span>物体の衝突判定を円にするには</span><code><span>"circle"</span></code><span>を、長方形にするには</span><code><span>"box"</span></code><span>を指定します。</span><span>
+</span></li><a id="line_marker_-34" name="line_marker_-34"></a><ul><li><a id="line_marker_-33" name="line_marker_-33"></a><span>物体の衝突判定を円にするには</span><code><span>"circle"</span></code><span>を、長方形にするには</span><code><span>"box"</span></code><span>を指定します。</span><span>
 </span></li></ul><li><span>width、height</span><span>
-</span></li><a id="line_marker_-35" name="line_marker_-35"></a><ul><li><a id="line_marker_-33" name="line_marker_-33"></a><span>物体の衝突判定の幅と高さ（ピクセル数）を指定します。</span><span>
-</span></li><li><a id="line_marker_-34" name="line_marker_-34"></a><span>これらが指定されていると自動的に衝突判定の形状は長方形になります</span><span>
+</span></li><a id="line_marker_-37" name="line_marker_-37"></a><ul><li><a id="line_marker_-35" name="line_marker_-35"></a><span>物体の衝突判定の幅と高さ（ピクセル数）を指定します。</span><span>
+</span></li><li><a id="line_marker_-36" name="line_marker_-36"></a><span>これらが指定されていると自動的に衝突判定の形状は長方形になります</span><span>
 </span></li></ul><li><span>radius</span><span>
-</span></li><a id="line_marker_-38" name="line_marker_-38"></a><ul><li><a id="line_marker_-36" name="line_marker_-36"></a><span>物体の衝突判定の半径（ピクセル数）を指定します。</span><span>
-</span></li><li><a id="line_marker_-37" name="line_marker_-37"></a><span>これが指定されていると自動的に衝突判定の形状は円になります</span><span>
+</span></li><a id="line_marker_-40" name="line_marker_-40"></a><ul><li><a id="line_marker_-38" name="line_marker_-38"></a><span>物体の衝突判定の半径（ピクセル数）を指定します。</span><span>
+</span></li><li><a id="line_marker_-39" name="line_marker_-39"></a><span>これが指定されていると自動的に衝突判定の形状は円になります</span><span>
 </span></li></ul><li><span>vx,vy</span><span>
-</span></li><a id="line_marker_-41" name="line_marker_-41"></a><ul><li><a id="line_marker_-39" name="line_marker_-39"></a><span>横方向、縦方向の速度（1フレームあたり・ピクセル数）を指定します</span><span>
-</span></li><li><a id="line_marker_-40" name="line_marker_-40"></a><span>代入することで速度を変更できます</span><span>
+</span></li><a id="line_marker_-43" name="line_marker_-43"></a><ul><li><a id="line_marker_-41" name="line_marker_-41"></a><span>横方向、縦方向の速度（1フレームあたり・ピクセル数）を指定します</span><span>
+</span></li><li><a id="line_marker_-42" name="line_marker_-42"></a><span>代入することで速度を変更できます</span><span>
 </span></li></ul><li><span>vrotation</span><span>
-</span></li><a id="line_marker_-44" name="line_marker_-44"></a><ul><li><a id="line_marker_-42" name="line_marker_-42"></a><span>1フレームあたりの回転速度を表します</span><span>
-</span></li><li><a id="line_marker_-43" name="line_marker_-43"></a><span>代入することで回転速度を変更できます</span><span>
+</span></li><a id="line_marker_-46" name="line_marker_-46"></a><ul><li><a id="line_marker_-44" name="line_marker_-44"></a><span>1フレームあたりの回転速度を表します</span><span>
+</span></li><li><a id="line_marker_-45" name="line_marker_-45"></a><span>代入することで回転速度を変更できます</span><span>
 </span></li></ul><li><span>manualRotation</span><span>
-</span></li><a id="line_marker_-46" name="line_marker_-46"></a><ul><li><a id="line_marker_-45" name="line_marker_-45"></a><span>これを</span><code><span>true</span></code><span>に設定すると、物体が回転してもオブジェクトの見かけは回転しなくなります。例えば、キャラクタを物理運動させつつも、見かけ上は常に直立しているように見せることができます。</span><span>
+</span></li><a id="line_marker_-48" name="line_marker_-48"></a><ul><li><a id="line_marker_-47" name="line_marker_-47"></a><span>これを</span><code><span>true</span></code><span>に設定すると、物体が回転してもオブジェクトの見かけは回転しなくなります。例えば、キャラクタを物理運動させつつも、見かけ上は常に直立しているように見せることができます。</span><span>
 </span></li></ul></ul><span>※ width,height,radiusがいずれも指定されていない場合、フィールドpの値によって指定される画像の大きさ、およびscaleX,scaleYにより物体の衝突判定を決定します。</span><span>
-</span><a id="line_marker_-47" name="line_marker_-47"></a><p></p><a id="line_marker_-48" name="line_marker_-48"></a><p></p><h2><a id="line_marker_-49" name="line_marker_-49"></a><span>メソッド</span></h2><a id="line_marker_-50" name="line_marker_-50"></a><p></p><a id="line_marker_-60" name="line_marker_-60"></a><ul><li><a id="line_marker_-51" name="line_marker_-51"></a><a href="applyForce.html">applyForce</a><span>
-</span></li><li><a id="line_marker_-52" name="line_marker_-52"></a><a href="applyImpulse.html">applyImpulse</a><span>
-</span></li><li><a id="line_marker_-53" name="line_marker_-53"></a><a href="applyTorque.html">applyTorque</a><span>
-</span></li><li><a id="line_marker_-54" name="line_marker_-54"></a><a href="contactTo.html">contactTo</a><span>
-</span></li><li><a id="line_marker_-55" name="line_marker_-55"></a><a href="allContacts.html">allContacts</a><span>
-</span></li><li><a id="line_marker_-56" name="line_marker_-56"></a><a href="contactPoint.html">contactPoint</a><span>
-</span></li><li><a id="line_marker_-57" name="line_marker_-57"></a><a href="allContactPoints.html">allContactPoints</a><span>
-</span></li><li><a id="line_marker_-58" name="line_marker_-58"></a><a href="addRevoluteJoint.html">addRevoluteJoint</a><span>
-</span></li><li><a id="line_marker_-59" name="line_marker_-59"></a><a href="initBody.html">initBody</a><span>
+</span><a id="line_marker_-49" name="line_marker_-49"></a><p></p><a id="line_marker_-50" name="line_marker_-50"></a><p></p><h2><a id="line_marker_-51" name="line_marker_-51"></a><span>メソッド</span></h2><a id="line_marker_-52" name="line_marker_-52"></a><p></p><a id="line_marker_-62" name="line_marker_-62"></a><ul><li><a id="line_marker_-53" name="line_marker_-53"></a><a href="applyForce.html">applyForce</a><span>
+</span></li><li><a id="line_marker_-54" name="line_marker_-54"></a><a href="applyImpulse.html">applyImpulse</a><span>
+</span></li><li><a id="line_marker_-55" name="line_marker_-55"></a><a href="applyTorque.html">applyTorque</a><span>
+</span></li><li><a id="line_marker_-56" name="line_marker_-56"></a><a href="contactTo.html">contactTo</a><span>
+</span></li><li><a id="line_marker_-57" name="line_marker_-57"></a><a href="allContacts.html">allContacts</a><span>
+</span></li><li><a id="line_marker_-58" name="line_marker_-58"></a><a href="contactPoint.html">contactPoint</a><span>
+</span></li><li><a id="line_marker_-59" name="line_marker_-59"></a><a href="allContactPoints.html">allContactPoints</a><span>
+</span></li><li><a id="line_marker_-60" name="line_marker_-60"></a><a href="addRevoluteJoint.html">addRevoluteJoint</a><span>
+</span></li><li><a id="line_marker_-61" name="line_marker_-61"></a><a href="initBody.html">initBody</a><span>
 </span></li></ul><span>.</span><span>
-</span><a id="line_marker_-61" name="line_marker_-61"></a><p></p></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
+</span></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
 </body></html>
