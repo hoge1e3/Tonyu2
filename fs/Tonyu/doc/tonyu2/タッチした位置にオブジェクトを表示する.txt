@@ -1,7 +1,7 @@
 [[用途別リファレンス]]
 
 [[オブジェクトを動かす]]
-*タッチした位置にオブジェクトを表示する
+*タッチした位置にオブジェクトを移動させる
 <<code
 while(true){
     if($touches[0].touched){
@@ -12,6 +12,8 @@ while(true){
 }
 >>
 $touches[0].touchedでタッチされているかどうかの判定を行う。
--touched=true...タッチされていない
--touched=false...タッチされている
+-touched が 0...タッチされていない
+-touched が 1...タッチされた瞬間
+-touched が 2以上...タッチされ続けている
+
 また、タッチした座標はそれぞれ$touches[0].xと$touches[0].yに入っている。

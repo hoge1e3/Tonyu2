@@ -1,0 +1,40 @@
+<html><head><meta charset="utf-8"/>
+<meta http-equiv="Content-type" content="text/html; charset=utf8"/>
+<title>プレイヤーを追いかける</title>
+</head><body><link rel='stylesheet' href='../../css/bootstrap.css'/>
+<link rel='stylesheet' href='../../css/tonyu.css'/>
+<script src='../../js/lib/jquery-1.10.1.js'/></script>
+<script src='../../js/ide/NWMenu.js'/></script>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px; font-family:"MS UI Gothic",sans-serif;}</style>
+<button onclick='javascript:history.back();'>←Back</button><br/>
+<div><a id="line_marker_-0" name="line_marker_-0"></a><a href="E794A8E98094E588A5E383AAE38395E382A1E383ACE383B3E382B9.html">用途別リファレンス</a><span>
+</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><h1><a id="line_marker_-2" name="line_marker_-2"></a><span>プレイヤーを追いかける敵</span></h1><a id="line_marker_-3" name="line_marker_-3"></a><p></p><a id="line_marker_-4" name="line_marker_-4"></a><div class="plist">Main</div><a id="line_marker_-10" name="line_marker_-10"></a><pre><a id="line_marker_-5" name="line_marker_-5"></a><span>$player=new Player{x:250,y:250};</span><span>
+</span><a id="line_marker_-6" name="line_marker_-6"></a><span>new Enemy{x:200,y:100};</span><span>
+</span><a id="line_marker_-7" name="line_marker_-7"></a><span>new Enemy{x:300,y:100};</span><span>
+</span><a id="line_marker_-8" name="line_marker_-8"></a><span>new Enemy{x:400,y:300};</span><span>
+</span><a id="line_marker_-9" name="line_marker_-9"></a><span>new Enemy{x:100,y:300};</span><span>
+</span></pre><a id="line_marker_-11" name="line_marker_-11"></a><p></p><a id="line_marker_-12" name="line_marker_-12"></a><div class="plist">Enemy</div><a id="line_marker_-22" name="line_marker_-22"></a><pre><a id="line_marker_-13" name="line_marker_-13"></a><span>// $player は，Mainで初期化されているグローバル変数（Mainを参照）</span><span>
+</span><a id="line_marker_-14" name="line_marker_-14"></a><span>while (true) {</span><span>
+</span><a id="line_marker_-15" name="line_marker_-15"></a><span>    // $playerとの座標を比較して移動方向を決める</span><span>
+</span><a id="line_marker_-16" name="line_marker_-16"></a><span>    if (x&lt;$player.x) x+=2;</span><span>
+</span><a id="line_marker_-17" name="line_marker_-17"></a><span>    if (x&gt;$player.x) x-=2;</span><span>
+</span><a id="line_marker_-18" name="line_marker_-18"></a><span>    if (y&lt;$player.y) y+=2;</span><span>
+</span><a id="line_marker_-19" name="line_marker_-19"></a><span>    if (y&gt;$player.y) y-=2;</span><span>
+</span><a id="line_marker_-20" name="line_marker_-20"></a><span>    update();</span><span>
+</span><a id="line_marker_-21" name="line_marker_-21"></a><span>}</span><span>
+</span></pre><a id="line_marker_-23" name="line_marker_-23"></a><p></p><a id="line_marker_-24" name="line_marker_-24"></a><div class="plist">Player</div><a id="line_marker_-26" name="line_marker_-26"></a><pre><a id="line_marker_-25" name="line_marker_-25"></a><span>//プレイヤーの動作を書く（とりあえず何も書かなくてもよい）</span><span>
+</span></pre><a id="line_marker_-27" name="line_marker_-27"></a><p></p><a id="line_marker_-28" name="line_marker_-28"></a><p></p><h1><a id="line_marker_-29" name="line_marker_-29"></a><span>プレイヤーを追いかける敵（慣性あり）</span></h1><a id="line_marker_-30" name="line_marker_-30"></a><p></p><a id="line_marker_-31" name="line_marker_-31"></a><div class="plist">Enemy</div><a id="line_marker_-45" name="line_marker_-45"></a><pre><a id="line_marker_-32" name="line_marker_-32"></a><span>//敵の速度</span><span>
+</span><a id="line_marker_-33" name="line_marker_-33"></a><span>vx=0;vy=0;</span><span>
+</span><a id="line_marker_-34" name="line_marker_-34"></a><span>while (true) {</span><span>
+</span><a id="line_marker_-35" name="line_marker_-35"></a><span>    //速度の分だけx,yを変化させる</span><span>
+</span><a id="line_marker_-36" name="line_marker_-36"></a><span>    x+=vx;</span><span>
+</span><a id="line_marker_-37" name="line_marker_-37"></a><span>    y+=vy;</span><span>
+</span><a id="line_marker_-38" name="line_marker_-38"></a><span>    //$playerとの座標を比較して速度を変化させる</span><span>
+</span><a id="line_marker_-39" name="line_marker_-39"></a><span>    if (x&lt;$player.x) vx+=0.2;</span><span>
+</span><a id="line_marker_-40" name="line_marker_-40"></a><span>    if (x&gt;$player.x) vx-=0.2;</span><span>
+</span><a id="line_marker_-41" name="line_marker_-41"></a><span>    if (y&lt;$player.y) vy+=0.2;</span><span>
+</span><a id="line_marker_-42" name="line_marker_-42"></a><span>    if (y&gt;$player.y) vy-=0.2;</span><span>
+</span><a id="line_marker_-43" name="line_marker_-43"></a><span>    update();</span><span>
+</span><a id="line_marker_-44" name="line_marker_-44"></a><span>}</span><span>
+</span></pre></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
+</body></html>

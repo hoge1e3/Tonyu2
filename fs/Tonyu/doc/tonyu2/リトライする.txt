@@ -6,13 +6,13 @@
 
 <<code Main
 //初期設定
-p=new Player{x:300,y:300,HP:1};
+$p=new Player{x:300,y:300,HP:1};
 e=new Enemy{x:100,y:100,p:5};
 l=new Label{x:230,y:400,text:"GAMESTART"};
 //初期設定ここまで
 
 while(true){
-   if(p.HP==0) {
+   if($p.HP==0) {//プレイヤーの体力が0になったら
       l.text="GAMEOVER rを押すとリトライ";
       if(getkey("r")==1) {//rが押されたら
           loadPage(Main);//Mainを読み込みしなおす
@@ -27,16 +27,14 @@ while(true){
   if(getkey("left")>0)	x-=3;
   if(getkey("down")>0)	y+=3;
   if(getkey("up")>0)	y-=3;
+  //敵に当たっている間体力が減る
   if(crashTo(Enemy))    HP-=1;
   if(HP==0)             die();
   update();
 }
 >>
 <<code Enemy
-何も書かなくてよい
->>
-<<code Label
-何も書かなくてよい
+//敵の動作を書く（とりあえず何も書かなくてもよい）
 >>
 
 

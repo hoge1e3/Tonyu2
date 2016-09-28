@@ -8,29 +8,35 @@
 <style>body{padding-top:20px; margin-left: 20px; margin-right:20px; font-family:"MS UI Gothic",sans-serif;}</style>
 <button onclick='javascript:history.back();'>←Back</button><br/>
 <div><a id="line_marker_-0" name="line_marker_-0"></a><a href="E794A8E98094E588A5E383AAE38395E382A1E383ACE383B3E382B9.html">用途別リファレンス</a><span>
-</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><a id="line_marker_-2" name="line_marker_-2"></a><a href="E382AAE38396E382B8E382A7E382AFE38388E38292E6B688E38199.html">オブジェクトを消す</a><span>
-</span><h1><a id="line_marker_-3" name="line_marker_-3"></a><span>当たり判定で当たったオブジェクトを消す</span></h1><a id="line_marker_-4" name="line_marker_-4"></a><div class="plist">Main</div><a id="line_marker_-21" name="line_marker_-21"></a><pre><a id="line_marker_-5" name="line_marker_-5"></a><span>x=$screenWidth/2;</span><span>
-</span><a id="line_marker_-6" name="line_marker_-6"></a><span>y=$screenHeight/2;</span><span>
-</span><a id="line_marker_-7" name="line_marker_-7"></a><span>new Enemy{x:100, y:100, p:4};</span><span>
-</span><a id="line_marker_-8" name="line_marker_-8"></a><span>new Enemy{x:100, y:200, p:4};</span><span>
-</span><a id="line_marker_-9" name="line_marker_-9"></a><span>new Enemy{x:100, y:300, p:4};</span><span>
-</span><a id="line_marker_-10" name="line_marker_-10"></a><span>while(true){</span><span>
-</span><a id="line_marker_-11" name="line_marker_-11"></a><span>    if(getkey("right")&gt;0)	x+=3;</span><span>
-</span><a id="line_marker_-12" name="line_marker_-12"></a><span>    if(getkey("left")&gt;0)	x-=3;</span><span>
-</span><a id="line_marker_-13" name="line_marker_-13"></a><span>    if(getkey("down")&gt;0)	y+=3;</span><span>
-</span><a id="line_marker_-14" name="line_marker_-14"></a><span>    if(getkey("up")&gt;0)	y-=3;</span><span>
-</span><a id="line_marker_-15" name="line_marker_-15"></a><span>    e=crashTo(Enemy);</span><span>
-</span><a id="line_marker_-16" name="line_marker_-16"></a><span>    if(e){</span><span>
-</span><a id="line_marker_-17" name="line_marker_-17"></a><span>        e.die();</span><span>
-</span><a id="line_marker_-18" name="line_marker_-18"></a><span>    }</span><span>
-</span><a id="line_marker_-19" name="line_marker_-19"></a><span>    update();</span><span>
-</span><a id="line_marker_-20" name="line_marker_-20"></a><span>}</span><span>
-</span></pre><a id="line_marker_-22" name="line_marker_-22"></a><div class="plist">Enemy</div><a id="line_marker_-24" name="line_marker_-24"></a><pre><a id="line_marker_-23" name="line_marker_-23"></a><span>何も書かなくてよい</span><span>
-</span></pre><a id="line_marker_-25" name="line_marker_-25"></a><span>上下左右に動かせる中央のオブジェクトにぶつかったEnemyが消える。</span><span>
-</span><a id="line_marker_-26" name="line_marker_-26"></a><p></p><a id="line_marker_-27" name="line_marker_-27"></a><span>※crashTo()...()内のオブジェクトと当たり判定を行い値を返す。</span><span>
-</span><a id="line_marker_-30" name="line_marker_-30"></a><ul><li><a id="line_marker_-28" name="line_marker_-28"></a><span>当たってる=true</span><span>
-</span></li><li><a id="line_marker_-29" name="line_marker_-29"></a><span>当たってない=false</span><span>
-</span></li></ul><p></p><a id="line_marker_-31" name="line_marker_-31"></a><span>当たり判定を変更するにはgetCrashRect()という命令を使う。</span><span>
-</span><a id="line_marker_-32" name="line_marker_-32"></a><p></p><a id="line_marker_-33" name="line_marker_-33"></a><span>→</span><a href="E5BD93E3819FE3828AE588A4E5AE9AE38292E5A489E69BB4E38199E3828B.html">当たり判定を変更する</a><span>
-</span></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
+</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><h1><a id="line_marker_-2" name="line_marker_-2"></a><span>当たり判定で当たったオブジェクトを消す</span></h1><a id="line_marker_-3" name="line_marker_-3"></a><div class="plist">Main</div><a id="line_marker_-20" name="line_marker_-20"></a><pre><a id="line_marker_-4" name="line_marker_-4"></a><span>x=$screenWidth/2;</span><span>
+</span><a id="line_marker_-5" name="line_marker_-5"></a><span>y=$screenHeight/2;</span><span>
+</span><a id="line_marker_-6" name="line_marker_-6"></a><span>new Enemy{x:100, y:100, p:4};</span><span>
+</span><a id="line_marker_-7" name="line_marker_-7"></a><span>new Enemy{x:100, y:200, p:4};</span><span>
+</span><a id="line_marker_-8" name="line_marker_-8"></a><span>new Enemy{x:100, y:300, p:4};</span><span>
+</span><a id="line_marker_-9" name="line_marker_-9"></a><span>while(true){</span><span>
+</span><a id="line_marker_-10" name="line_marker_-10"></a><span>    if(getkey("right")&gt;0)	x+=3;</span><span>
+</span><a id="line_marker_-11" name="line_marker_-11"></a><span>    if(getkey("left")&gt;0)	x-=3;</span><span>
+</span><a id="line_marker_-12" name="line_marker_-12"></a><span>    if(getkey("down")&gt;0)	y+=3;</span><span>
+</span><a id="line_marker_-13" name="line_marker_-13"></a><span>    if(getkey("up")&gt;0)	y-=3;</span><span>
+</span><a id="line_marker_-14" name="line_marker_-14"></a><span>    e=crashTo(Enemy);</span><span>
+</span><a id="line_marker_-15" name="line_marker_-15"></a><span>    if(e){</span><span>
+</span><a id="line_marker_-16" name="line_marker_-16"></a><span>        e.die();</span><span>
+</span><a id="line_marker_-17" name="line_marker_-17"></a><span>    }</span><span>
+</span><a id="line_marker_-18" name="line_marker_-18"></a><span>    update();</span><span>
+</span><a id="line_marker_-19" name="line_marker_-19"></a><span>}</span><span>
+</span></pre><a id="line_marker_-21" name="line_marker_-21"></a><div class="plist">Enemy</div><a id="line_marker_-23" name="line_marker_-23"></a><pre><a id="line_marker_-22" name="line_marker_-22"></a><span>// 敵の動作を書く。（とりあえず何も書かなくてもよい）</span><span>
+</span></pre><a id="line_marker_-24" name="line_marker_-24"></a><span>上下左右に動かせる中央のオブジェクトにぶつかったEnemyが消える。</span><span>
+</span><a id="line_marker_-25" name="line_marker_-25"></a><p></p><a id="line_marker_-26" name="line_marker_-26"></a><span>※crashTo()...()内のオブジェクトと当たり判定を行い値を返す。</span><span>
+</span><a id="line_marker_-29" name="line_marker_-29"></a><ul><li><a id="line_marker_-27" name="line_marker_-27"></a><span>当たってる=true</span><span>
+</span></li><li><a id="line_marker_-28" name="line_marker_-28"></a><span>当たってない=false</span><span>
+</span></li></ul><p></p><a id="line_marker_-30" name="line_marker_-30"></a><span>当たり判定を変更するにはgetCrashRect()という命令を使う。</span><span>
+</span><a id="line_marker_-31" name="line_marker_-31"></a><p></p><a id="line_marker_-32" name="line_marker_-32"></a><span>→</span><a href="E5BD93E3819FE3828AE588A4E5AE9AE38292E5A489E69BB4E38199E3828B.html">当たり判定を変更する</a><span>
+</span><a id="line_marker_-33" name="line_marker_-33"></a><p></p><ul><li><a id="line_marker_-34" name="line_marker_-34"></a><span>参考</span><span>
+</span></li><a id="line_marker_-41" name="line_marker_-41"></a><ul><li><a id="line_marker_-35" name="line_marker_-35"></a><a href="E887AAE58886E887AAE8BAABE38292E6B688E38199.html">自分自身を消す</a><span>
+</span></li><li><a id="line_marker_-36" name="line_marker_-36"></a><a href="E4BB96E381AEE382AAE38396E382B8E382A7E382AFE38388E38292E6B688E38199.html">他のオブジェクトを消す</a><span>
+</span></li><li><a id="line_marker_-37" name="line_marker_-37"></a><a href="E5BD93E3819FE3828AE588A4E5AE9AE381A7E5BD93E3819FE381A3E3819FE382AAE38396E382B8E382A7E382AFE38388E38292E6B688E38199.html">当たり判定で当たったオブジェクトを消す</a><span>
+</span></li><a id="line_marker_-39" name="line_marker_-39"></a><ul><li><a id="line_marker_-38" name="line_marker_-38"></a><a href="E5BD93E3819FE3828AE588A4E5AE9AE38292E5A489E69BB4E38199E3828B.html">当たり判定を変更する</a><span>
+</span></li></ul><li><a href="E794BBE99DA2E5A496E381ABE587BAE3819FE3818BE381A9E38186E3818BE381AEE588A4E5AE9A.html">画面外に出たオブジェクトを消す</a><span>
+</span></li><li><a id="line_marker_-40" name="line_marker_-40"></a><a href="E38199E381B9E381A6E381AEE382AAE38396E382B8E382A7E382AFE38388E38292E6B688E38199.html">すべてのオブジェクトを消す</a><span>
+</span></li></ul></ul><p></p></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
 </body></html>

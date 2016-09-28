@@ -1,0 +1,41 @@
+<html><head><meta charset="utf-8"/>
+<meta http-equiv="Content-type" content="text/html; charset=utf8"/>
+<title>旋回しながらプレイヤーを追いかける</title>
+</head><body><link rel='stylesheet' href='../../css/bootstrap.css'/>
+<link rel='stylesheet' href='../../css/tonyu.css'/>
+<script src='../../js/lib/jquery-1.10.1.js'/></script>
+<script src='../../js/ide/NWMenu.js'/></script>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px; font-family:"MS UI Gothic",sans-serif;}</style>
+<button onclick='javascript:history.back();'>←Back</button><br/>
+<div><a id="line_marker_-0" name="line_marker_-0"></a><a href="E794A8E98094E588A5E383AAE38395E382A1E383ACE383B3E382B9.html">用途別リファレンス</a><span>
+</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><h1><a id="line_marker_-2" name="line_marker_-2"></a><span> 旋回しながらプレイヤーを追いかける敵</span></h1><a id="line_marker_-3" name="line_marker_-3"></a><p></p><a id="line_marker_-4" name="line_marker_-4"></a><div class="plist">Main</div><a id="line_marker_-10" name="line_marker_-10"></a><pre><a id="line_marker_-5" name="line_marker_-5"></a><span>$player=new Player{x:250,y:250};</span><span>
+</span><a id="line_marker_-6" name="line_marker_-6"></a><span>new Enemy{x:200,y:100};</span><span>
+</span><a id="line_marker_-7" name="line_marker_-7"></a><span>new Enemy{x:300,y:100};</span><span>
+</span><a id="line_marker_-8" name="line_marker_-8"></a><span>new Enemy{x:400,y:300};</span><span>
+</span><a id="line_marker_-9" name="line_marker_-9"></a><span>new Enemy{x:100,y:300};</span><span>
+</span></pre><a id="line_marker_-11" name="line_marker_-11"></a><p></p><a id="line_marker_-12" name="line_marker_-12"></a><div class="plist">Enemy</div><a id="line_marker_-35" name="line_marker_-35"></a><pre><a id="line_marker_-13" name="line_marker_-13"></a><span>//移動方向の角度</span><span>
+</span><a id="line_marker_-14" name="line_marker_-14"></a><span>dir=0;</span><span>
+</span><a id="line_marker_-15" name="line_marker_-15"></a><span>while (true) {</span><span>
+</span><a id="line_marker_-16" name="line_marker_-16"></a><span>    //オブジェクトの見た目を回転させる</span><span>
+</span><a id="line_marker_-17" name="line_marker_-17"></a><span>    rotation=dir;</span><span>
+</span><a id="line_marker_-18" name="line_marker_-18"></a><span>    //dirの方向に移動する</span><span>
+</span><a id="line_marker_-19" name="line_marker_-19"></a><span>    x+=cos(dir);</span><span>
+</span><a id="line_marker_-20" name="line_marker_-20"></a><span>    y+=sin(dir);</span><span>
+</span><a id="line_marker_-21" name="line_marker_-21"></a><span>    //(tx,ty)の場所を目指して移動</span><span>
+</span><a id="line_marker_-22" name="line_marker_-22"></a><span>    //この例では$playerの位置</span><span>
+</span><a id="line_marker_-23" name="line_marker_-23"></a><span>    tx=$player.x;</span><span>
+</span><a id="line_marker_-24" name="line_marker_-24"></a><span>    ty=$player.y;</span><span>
+</span><a id="line_marker_-25" name="line_marker_-25"></a><span>    //自分の位置からの(tx,ty)の角度</span><span>
+</span><a id="line_marker_-26" name="line_marker_-26"></a><span>    tdir=atanxy(tx-x, ty-y);</span><span>
+</span><a id="line_marker_-27" name="line_marker_-27"></a><span>    //移動方向とtdirを比較し、</span><span>
+</span><a id="line_marker_-28" name="line_marker_-28"></a><span>    d=angleDiff(dir,tdir);</span><span>
+</span><a id="line_marker_-29" name="line_marker_-29"></a><span>    //どちらに旋回するかを決める</span><span>
+</span><a id="line_marker_-30" name="line_marker_-30"></a><span>    if (d&gt;0) dir-=2;</span><span>
+</span><a id="line_marker_-31" name="line_marker_-31"></a><span>    else dir+=2;</span><span>
+</span><a id="line_marker_-32" name="line_marker_-32"></a><span>    </span><span>
+</span><a id="line_marker_-33" name="line_marker_-33"></a><span>    update();</span><span>
+</span><a id="line_marker_-34" name="line_marker_-34"></a><span>}</span><span>
+</span></pre><a id="line_marker_-36" name="line_marker_-36"></a><p></p><a id="line_marker_-38" name="line_marker_-38"></a><ul><li><a id="line_marker_-37" name="line_marker_-37"></a><code><span>atanxy</span></code><span>と</span><code><span>angleDiff</span></code><span>の詳細は</span><a href="MathMod.html">MathMod</a><span>クラスを参照してください</span><span>
+</span></li></ul><p></p><a id="line_marker_-39" name="line_marker_-39"></a><div class="plist">Player</div><a id="line_marker_-41" name="line_marker_-41"></a><pre><a id="line_marker_-40" name="line_marker_-40"></a><span>//プレイヤーの動作を書く（とりあえず何も書かなくてもよい）</span><span>
+</span></pre><a id="line_marker_-42" name="line_marker_-42"></a><p></p><a id="line_marker_-43" name="line_marker_-43"></a><p></p><a id="line_marker_-44" name="line_marker_-44"></a><p></p></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
+</body></html>

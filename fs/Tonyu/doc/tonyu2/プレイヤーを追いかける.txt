@@ -1,0 +1,46 @@
+[[用途別リファレンス]]
+
+*プレイヤーを追いかける敵
+
+<<code Main
+$player=new Player{x:250,y:250};
+new Enemy{x:200,y:100};
+new Enemy{x:300,y:100};
+new Enemy{x:400,y:300};
+new Enemy{x:100,y:300};
+>>
+
+<<code Enemy
+// $player は，Mainで初期化されているグローバル変数（Mainを参照）
+while (true) {
+    // $playerとの座標を比較して移動方向を決める
+    if (x<$player.x) x+=2;
+    if (x>$player.x) x-=2;
+    if (y<$player.y) y+=2;
+    if (y>$player.y) y-=2;
+    update();
+}
+>>
+
+<<code Player
+//プレイヤーの動作を書く（とりあえず何も書かなくてもよい）
+>>
+
+
+*プレイヤーを追いかける敵（慣性あり）
+
+<<code Enemy
+//敵の速度
+vx=0;vy=0;
+while (true) {
+    //速度の分だけx,yを変化させる
+    x+=vx;
+    y+=vy;
+    //$playerとの座標を比較して速度を変化させる
+    if (x<$player.x) vx+=0.2;
+    if (x>$player.x) vx-=0.2;
+    if (y<$player.y) vy+=0.2;
+    if (y>$player.y) vy-=0.2;
+    update();
+}
+>>

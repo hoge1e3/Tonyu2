@@ -9,7 +9,7 @@
 <button onclick='javascript:history.back();'>←Back</button><br/>
 <div><a id="line_marker_-0" name="line_marker_-0"></a><a href="E794A8E98094E588A5E383AAE38395E382A1E383ACE383B3E382B9.html">用途別リファレンス</a><span>
 </span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><a id="line_marker_-2" name="line_marker_-2"></a><a href="E382AAE38396E382B8E382A7E382AFE38388E38292E58B95E3818BE38199.html">オブジェクトを動かす</a><span>
-</span><h1><a id="line_marker_-3" name="line_marker_-3"></a><span>タッチした位置にオブジェクトを表示する</span></h1><a id="line_marker_-12" name="line_marker_-12"></a><pre><a id="line_marker_-5" name="line_marker_-5"></a><span>while(true){</span><span>
+</span><h1><a id="line_marker_-3" name="line_marker_-3"></a><span>タッチした位置にオブジェクトを移動させる</span></h1><a id="line_marker_-12" name="line_marker_-12"></a><pre><a id="line_marker_-5" name="line_marker_-5"></a><span>while(true){</span><span>
 </span><a id="line_marker_-6" name="line_marker_-6"></a><span>    if($touches[0].touched){</span><span>
 </span><a id="line_marker_-7" name="line_marker_-7"></a><span>        x=$touches[0].x;</span><span>
 </span><a id="line_marker_-8" name="line_marker_-8"></a><span>        y=$touches[0].y;</span><span>
@@ -17,8 +17,9 @@
 </span><a id="line_marker_-10" name="line_marker_-10"></a><span>    update();</span><span>
 </span><a id="line_marker_-11" name="line_marker_-11"></a><span>}</span><span>
 </span></pre><a id="line_marker_-13" name="line_marker_-13"></a><span>$touches[0].touchedでタッチされているかどうかの判定を行う。</span><span>
-</span><a id="line_marker_-16" name="line_marker_-16"></a><ul><li><a id="line_marker_-14" name="line_marker_-14"></a><span>touched=true...タッチされていない</span><span>
-</span></li><li><a id="line_marker_-15" name="line_marker_-15"></a><span>touched=false...タッチされている</span><span>
-</span></li></ul><span>また、タッチした座標はそれぞれ$touches[0].xと$touches[0].yに入っている。</span><span>
+</span><a id="line_marker_-17" name="line_marker_-17"></a><ul><li><a id="line_marker_-14" name="line_marker_-14"></a><span>touched が 0...タッチされていない</span><span>
+</span></li><li><a id="line_marker_-15" name="line_marker_-15"></a><span>touched が 1...タッチされた瞬間</span><span>
+</span></li><li><a id="line_marker_-16" name="line_marker_-16"></a><span>touched が 2以上...タッチされ続けている</span><span>
+</span></li></ul><p></p><a id="line_marker_-18" name="line_marker_-18"></a><span>また、タッチした座標はそれぞれ$touches[0].xと$touches[0].yに入っている。</span><span>
 </span></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
 </body></html>
