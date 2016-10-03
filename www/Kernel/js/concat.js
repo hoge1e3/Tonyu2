@@ -14301,31 +14301,27 @@ Tonyu.klass.define({
       //$LASTPOS=47000492;//kernel.Button:492
       while (true) {
         //$LASTPOS=47000511;//kernel.Button:511
-        if (! _this.disabled&&(_this.getkey(1)||Tonyu.globals.$touches[0].touched)) {
-          //$LASTPOS=47000576;//kernel.Button:576
-          if (_this.inRect({x: Tonyu.globals.$mouseX,y: Tonyu.globals.$mouseY})) {
-            //$LASTPOS=47000624;//kernel.Button:624
-            _this.clicked=_this.getkey(1)||Tonyu.globals.$touches[0].touched;
-            
-          }
-          //$LASTPOS=47000686;//kernel.Button:686
+        if (! _this.disabled) {
+          //$LASTPOS=47000537;//kernel.Button:537
+          _this.clicked=_this.checkTouch();
+          //$LASTPOS=47000568;//kernel.Button:568
           if (_this.clicked==1) {
-            //$LASTPOS=47000717;//kernel.Button:717
+            //$LASTPOS=47000599;//kernel.Button:599
             Tonyu.classes.kernel.Button.last=_this;
-            //$LASTPOS=47000748;//kernel.Button:748
+            //$LASTPOS=47000630;//kernel.Button:630
             if (_this.onClick) {
-              //$LASTPOS=47000761;//kernel.Button:761
+              //$LASTPOS=47000643;//kernel.Button:643
               _this.onClick();
             }
             
           }
           
         } else {
-          //$LASTPOS=47000806;//kernel.Button:806
+          //$LASTPOS=47000691;//kernel.Button:691
           _this.clicked=0;
           
         }
-        //$LASTPOS=47000829;//kernel.Button:829
+        //$LASTPOS=47001036;//kernel.Button:1036
         _this.update();
         
       }
@@ -14345,37 +14341,39 @@ Tonyu.klass.define({
             //$LASTPOS=47000492;//kernel.Button:492
           case 1:
             //$LASTPOS=47000511;//kernel.Button:511
-            if (! _this.disabled&&(_this.getkey(1)||Tonyu.globals.$touches[0].touched)) {
-              //$LASTPOS=47000576;//kernel.Button:576
-              if (_this.inRect({x: Tonyu.globals.$mouseX,y: Tonyu.globals.$mouseY})) {
-                //$LASTPOS=47000624;//kernel.Button:624
-                _this.clicked=_this.getkey(1)||Tonyu.globals.$touches[0].touched;
-                
-              }
-              //$LASTPOS=47000686;//kernel.Button:686
-              if (_this.clicked==1) {
-                //$LASTPOS=47000717;//kernel.Button:717
-                Tonyu.classes.kernel.Button.last=_this;
-                //$LASTPOS=47000748;//kernel.Button:748
-                if (_this.onClick) {
-                  //$LASTPOS=47000761;//kernel.Button:761
-                  _this.onClick();
-                }
-                
-              }
-              
-            } else {
-              //$LASTPOS=47000806;//kernel.Button:806
-              _this.clicked=0;
-              
-            }
-            //$LASTPOS=47000829;//kernel.Button:829
-            _this.fiber$update(_thread);
+            if (!(! _this.disabled)) { __pc=3; break; }
+            //$LASTPOS=47000537;//kernel.Button:537
+            _this.fiber$checkTouch(_thread);
             __pc=2;return;
           case 2:
+            _this.clicked=_thread.retVal;
+            
+            //$LASTPOS=47000568;//kernel.Button:568
+            if (_this.clicked==1) {
+              //$LASTPOS=47000599;//kernel.Button:599
+              Tonyu.classes.kernel.Button.last=_this;
+              //$LASTPOS=47000630;//kernel.Button:630
+              if (_this.onClick) {
+                //$LASTPOS=47000643;//kernel.Button:643
+                _this.onClick();
+              }
+              
+            }
+            __pc=4;break;
+          case 3:
+            {
+              //$LASTPOS=47000691;//kernel.Button:691
+              _this.clicked=0;
+            }
+          case 4:
+            
+            //$LASTPOS=47001036;//kernel.Button:1036
+            _this.fiber$update(_thread);
+            __pc=5;return;
+          case 5:
             
             __pc=1;break;
-          case 3:
+          case 6:
             
             _thread.exit(_this);return;
           }
@@ -14407,6 +14405,46 @@ Tonyu.klass.define({
       //$LASTPOS=47000465;//kernel.Button:465
       _this.left=_this.left||50;
     },
+    checkTouch :function _trc_Button_checkTouch() {
+      "use strict";
+      var _this=this;
+      
+      //$LASTPOS=47001071;//kernel.Button:1071
+      //$LASTPOS=47001076;//kernel.Button:1076
+      _this.i=0;for (; _this.i<2 ; _this.i++) {
+        {
+          //$LASTPOS=47001103;//kernel.Button:1103
+          if (Tonyu.globals.$touches[_this.i].touched>0&&_this.inRect(Tonyu.globals.$touches[_this.i])) {
+            return Tonyu.globals.$touches[_this.i].touched;
+            
+          }
+        }
+      }
+      return 0;
+    },
+    fiber$checkTouch :function _trc_Button_f_checkTouch(_thread) {
+      "use strict";
+      var _this=this;
+      //var _arguments=Tonyu.A(arguments);
+      var __pc=0;
+      
+      //$LASTPOS=47001071;//kernel.Button:1071
+      //$LASTPOS=47001076;//kernel.Button:1076
+      _this.i=0;for (; _this.i<2 ; _this.i++) {
+        {
+          //$LASTPOS=47001103;//kernel.Button:1103
+          if (Tonyu.globals.$touches[_this.i].touched>0&&_this.inRect(Tonyu.globals.$touches[_this.i])) {
+            _thread.retVal=Tonyu.globals.$touches[_this.i].touched;return;
+            
+            
+          }
+        }
+      }
+      _thread.retVal=0;return;
+      
+      
+      _thread.retVal=_this;return;
+    },
     inRect :function _trc_Button_inRect(p) {
       "use strict";
       var _this=this;
@@ -14431,40 +14469,40 @@ Tonyu.klass.define({
       var f;
       var r;
       
-      //$LASTPOS=47000949;//kernel.Button:949
+      //$LASTPOS=47001339;//kernel.Button:1339
       c.fillStyle=_this.fillStyle||"gray";
-      //$LASTPOS=47000987;//kernel.Button:987
+      //$LASTPOS=47001377;//kernel.Button:1377
       c.strokeStyle=_this.strokeStyle||"black";
-      //$LASTPOS=47001030;//kernel.Button:1030
+      //$LASTPOS=47001420;//kernel.Button:1420
       if (_this.disabled) {
-        //$LASTPOS=47001044;//kernel.Button:1044
+        //$LASTPOS=47001434;//kernel.Button:1434
         c.strokeStyle=_this.disabledStrokeStyle;
       }
-      //$LASTPOS=47001084;//kernel.Button:1084
+      //$LASTPOS=47001474;//kernel.Button:1474
       c.fillRect(_this.left,_this.top,_this.width,_this.height);
-      //$LASTPOS=47001127;//kernel.Button:1127
+      //$LASTPOS=47001517;//kernel.Button:1517
       c.strokeRect(_this.left,_this.top,_this.width,_this.height);
-      //$LASTPOS=47001172;//kernel.Button:1172
+      //$LASTPOS=47001562;//kernel.Button:1562
       size = _this.height-_this.padding*2;
       
-      //$LASTPOS=47001204;//kernel.Button:1204
+      //$LASTPOS=47001594;//kernel.Button:1594
       f = c.font.replace(/^[0-9]+px /,"");
       
-      //$LASTPOS=47001248;//kernel.Button:1248
+      //$LASTPOS=47001638;//kernel.Button:1638
       c.font=size+"px "+f;
-      //$LASTPOS=47001287;//kernel.Button:1287
+      //$LASTPOS=47001677;//kernel.Button:1677
       c.textBaseline="top";
-      //$LASTPOS=47001314;//kernel.Button:1314
+      //$LASTPOS=47001704;//kernel.Button:1704
       c.fillStyle=_this.clicked?_this.clickedStyle:_this.disabled?_this.disabledStrokeStyle:_this.strokeStyle;
-      //$LASTPOS=47001400;//kernel.Button:1400
+      //$LASTPOS=47001790;//kernel.Button:1790
       r = c.measureText(_this.text);
       
-      //$LASTPOS=47001432;//kernel.Button:1432
+      //$LASTPOS=47001822;//kernel.Button:1822
       c.fillText(_this.text,_this.left+_this.width/2-r.width/2,_this.top+_this.padding);
     },
     __dummy: false
   },
-  decls: {"methods":{"main":{"nowait":false},"new":{"nowait":false},"inRect":{"nowait":false},"draw":{"nowait":true}}}
+  decls: {"methods":{"main":{"nowait":false},"new":{"nowait":false},"checkTouch":{"nowait":false},"inRect":{"nowait":false},"draw":{"nowait":true}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.GameConsole',

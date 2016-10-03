@@ -1,0 +1,21 @@
+[[用途別リファレンス]]
+
+*図形を表示する
+
+[[$panel>Panel]]を使うと、画面に四角形などの図形を描くことができます。
+
+これを利用してゲージなどを描画することができます。
+
+<<code Main
+$progress=0;
+
+while(true) {
+    $panel.setFillStyle("#f00");
+    $panel.fillRect(10,100,100,20);
+    $panel.setFillStyle("#0f0");
+    $panel.fillRect(10,100,$progress,20);
+    if ($progress<100)$progress++;
+    update();
+}
+>>
+

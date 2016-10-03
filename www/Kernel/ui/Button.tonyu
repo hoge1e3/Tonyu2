@@ -15,7 +15,16 @@ extends Actor;
     
 }
 while(true) {
-    if (!disabled && (getkey(1) || $touches[0].touched) ) {
+    if (!disabled) {
+        clicked=checkTouch();
+        if (clicked==1) {
+            Button.last=this;
+            if (onClick) onClick();
+        }   
+    } else {
+        clicked=0;
+    }
+    /*if (!disabled && (getkey(1) || $touches[0].touched) ) {
         if (inRect{x:$mouseX,y:$mouseY}) {
             clicked=getkey(1) || $touches[0].touched;
         }
@@ -25,8 +34,16 @@ while(true) {
         }
     } else {
         clicked=0;
-    }
+    }*/
     update();
+}
+\checkTouch() {
+    for (i=0 ; i<2; i++) {
+        if ($touches[i].touched>0 && inRect($touches[i])) {
+            return $touches[i].touched;
+        }
+    }
+    return 0;
 }
 \inRect(p) {
     return p.x>=left && p.x<=left+width && p.y>=top && p.y<=top+height;
