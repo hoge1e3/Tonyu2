@@ -185,36 +185,53 @@ mainLoop();
     }
 }
 \loopRAF() {
-	var start=now(),elapsed;
-	var time=1000/_fps; // 1フレームにかけられる時間
+    var nowTime=now();
+    //var elapsed;
+	var frameTime=1000/_fps; // 1フレームにかけられる時間
 	var moves=0;
-	while(moves<frameSkip) {
+    //var procCnt;
+    //var subTime;
+    var bufferTime;
+    subTime = trunc(nowTime - rafProcNowTime);
+    procCnt = subTime / frameTime;
+    // 誤差丸めの範囲
+    bufferTime = (0.5*_fps/60);
+    // 60FPS時、procCntが0,2,0,2,…となり実質30FPSになることがあるため、誤差を丸める
+    if (procCnt >= 1.0-bufferTime && procCnt <= 1.0+bufferTime) procCnt = 1.0;
+    procCnt = floor(procCnt);
+    if (procCnt > maxFrameSkip) {
+        procCnt = maxFrameSkip;
+        rafProcNowTime = nowTime;
+    } else {
+        rafProcNowTime += procCnt * frameTime;
+    }
+    //print("procCnt:"+procCnt+" subTime:"+subTime);
+	while(moves<procCnt) {
 		moveFrame();
 		moves++;
-		if (moves<frameSkip) afterDraw(false);
+	    if (moves<procCnt) afterDraw(false);
 	}
-	drawFrame();
-	afterDraw(true);
-	waitRAF();//★
-    elapsed = now()-start;
-    var cnt=rafCount-1;
-    if (rafResolution) {//★で何回分のRAFが実行されたか？（描画移動に手間取ると2回分以上経過しているかも)
-    	var rafResMS=time/rafResolution;  //RAFの分解能をmsで  time=30  res=2   resMS=15
-		var elapsedRAF=floor(elapsed/rafResMS+0.5);  // rafの経過回数
-		if (elapsedRAF>1) cnt-=(elapsedRAF-1); // 2回以上の時間かかっていたらその分は減らす
+    if (moves > 0) {
+        drawFrame();
+        afterDraw(true);
     }
-    rafCntDebug=cnt;
-	while(cnt>0) {
-		waitRAF();
-		cnt--;
-    }
+	waitRAF();
+    //elapsed = now()-start;
+    //var cnt=rafCount-1;
+    //if (rafResolution) {//★で何回分のRAFが実行されたか？（描画移動に手間取ると2回分以上経過しているかも)
+    //	var rafResMS=time/rafResolution;  //RAFの分解能をmsで  time=30  res=2   resMS=15
+	//	var elapsedRAF=floor(elapsed/rafResMS+0.5);  // rafの経過回数
+	//	if (elapsedRAF>1) cnt-=(elapsedRAF-1); // 2回以上の時間かかっていたらその分は減らす
+    //}
+    //rafCntDebug=cnt;
 }
 \waitRAF() {
     waitFor(Tonyu.animationFrame());
-    var rafStart=now();
-    if (pRafStart) detectRAFResolution(rafStart-pRafStart);
-    pRafStart=rafStart;
+    //var rafStart=now();
+    //if (pRafStart) detectRAFResolution(rafStart-pRafStart);
+    //pRafStart=rafStart;
 }
+/*
 nowait \detectRAFResolution(t) {
 	if (rafResolution) return;
 // RAFの分解能（1フレーム時間をRAFの回数に換算したもの）を求める。tはRAFとRAFの間隔ms
@@ -235,8 +252,8 @@ nowait \detectRAFResolution(t) {
 			frameSkip=1;
 		}
 	}
-}
-
+}*/
+/*
 \measureRAFInterval() {
 	if ($RAFInterval) return;
 	var s=now();
@@ -244,7 +261,7 @@ nowait \detectRAFResolution(t) {
 	    waitFor(Tonyu.animationFrame());
 	}
 	$RAFInterval=(now()-s)/20;
-}
+}*/
 \loopTimer() {
     moveFrame();
     doDraw=now()<deadLine;
@@ -311,11 +328,13 @@ nowait \initFPSParams() {
     lastMeasured=now();
     fps_fps=fps_rps=fps_fpsCnt=fps_rpsCnt=0;
     drawTime=5;moveTime=5;
-	rafAccept=1.1;
-	rafInterval=1000/60;
+	//rafAccept=1.1;
+	//rafInterval=1000/60;
 	_useRAF=true;
-	rafCount=2;
-	frameSkip=1;
+	//rafCount=2;
+	//frameSkip=1;
+    
+    rafProcNowTime=now();
 }
 nowait \now() {
     return new Date().getTime();
@@ -342,14 +361,15 @@ nowait \getFrameRate() {
 
 // Tonyu1の$System.setFrameRate() //
 nowait \setFrameRate(fps, maxFrameSkip) {
-	if (_fps!=fps) {
-		rafRess={};
-		rafResolution=null;
-		frameSkip=1;
-		rafCnt=floor(60/fps+0.5);
-	}
+//    if (_fps!=fps) {
+//		rafRess={};
+//		rafResolution=null;
+//		frameSkip=1;
+//		rafCnt=floor(60/fps+0.5);
+//    }
     _fps = fps;
     if (typeof maxFrameSkip!="number") maxFrameSkip=5;
+    if (maxFrameSkip<=0) maxFrameSkip=1;
     this.maxFrameSkip = maxFrameSkip;
     resetDeadLine();
 }
@@ -357,6 +377,12 @@ nowait \setFrameRate(fps, maxFrameSkip) {
 	return _useRAF;
 }
 \useRAF=v {
+    // 切り替え時にフレームスキップが発生するのを防止する
+    if (v) {
+        rafProcNowTime=now();
+    } else {
+        resetDeadLine();
+    }
 	return _useRAF=v;
 }
 
@@ -371,12 +397,13 @@ nowait \getMeasuredRps() {
 }
 
 nowait \measureFps() {
-    if (now()>lastMeasured+1000) {
+    var nowTime = now();
+    if (nowTime>=lastMeasured+1000) {
         fps_fps=fps_fpsCnt;
         fps_rps=fps_rpsCnt;
         fps_fpsCnt=0;
         fps_rpsCnt=0;
-        lastMeasured=now();
+        lastMeasured=nowTime;
     }
 }
 
