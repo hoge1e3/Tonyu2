@@ -39,6 +39,7 @@ native T2MediaLib;
         }
     };
     $handleTouch=\(e) {
+        T2MediaLib.activate();
         touchEmu=false;
         var p=cvj.offset();
         e.preventDefault();

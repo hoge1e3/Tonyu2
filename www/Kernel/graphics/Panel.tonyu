@@ -32,8 +32,8 @@ native Tonyu;
 }
 //\setPanel({width,height})
 \setPanel(width,height){
-    this.width=width;
-    this.height=height;
+    this.width=trunc(width);
+    this.height=trunc(height);
     buf=$("<canvas>").attr{width,height};
     canvas=buf[0];
     fireEvent("resize",{width,height,force:true});
