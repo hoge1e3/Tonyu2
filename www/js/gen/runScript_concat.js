@@ -1,4 +1,4 @@
-// Created at Sun Aug 21 2016 12:15:45 GMT+0900 (東京 (標準時))
+// Created at Thu Oct 06 2016 12:42:23 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -3098,7 +3098,7 @@ return Tonyu=function () {
             bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,iterator:IT,
-            VERSION:1471749335201,//EMBED_VERSION
+            VERSION:1475725335210,//EMBED_VERSION
             A:A};
 }();
 });
@@ -9298,6 +9298,7 @@ define(["Util","exceptionCatcher"],function (Util, EC) {
             $edits.forEach(function (edit) {
                 $edits.writeToJq(edit.params.$edit, edit.jq);
             });
+            $edits.validator.on.validate.call($edits.validator, $edits.model);
         };
         $edits.writeToJq=function ($edit, jq) {
         	var m=$edits.model;
