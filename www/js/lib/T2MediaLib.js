@@ -275,7 +275,8 @@ var T2MediaLib = {
     	var ary = buffer.getChannelData(0);
     	var lam = Math.floor(myContext.sampleRate/860);
         for (var i = 0; i < ary.length; i++) {
-    	     ary[i] = (i % lam<lam/2?0.1:-0.1)*(i<lam?2:1) ;
+    	     //ary[i] = (i % lam<lam/2?0.1:-0.1)*(i<lam?2:1) ;
+    	     ary[i] = 0; // 無音化
     	}
         //console.log(ary);
 	    var source = myContext.createBufferSource();
