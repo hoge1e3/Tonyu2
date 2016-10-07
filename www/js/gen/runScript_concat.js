@@ -1,4 +1,4 @@
-// Created at Thu Oct 06 2016 12:42:23 GMT+0900 (東京 (標準時))
+// Created at Fri Oct 07 2016 18:53:58 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -3098,7 +3098,7 @@ return Tonyu=function () {
             bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,iterator:IT,
-            VERSION:1475725335210,//EMBED_VERSION
+            VERSION:1475834029413,//EMBED_VERSION
             A:A};
 }();
 });
@@ -8934,7 +8934,8 @@ var T2MediaLib = {
     	var ary = buffer.getChannelData(0);
     	var lam = Math.floor(myContext.sampleRate/860);
         for (var i = 0; i < ary.length; i++) {
-    	     ary[i] = (i % lam<lam/2?0.1:-0.1)*(i<lam?2:1) ;
+    	     //ary[i] = (i % lam<lam/2?0.1:-0.1)*(i<lam?2:1) ;
+    	     ary[i] = 0; // 無音化
     	}
         //console.log(ary);
 	    var source = myContext.createBufferSource();
@@ -9575,15 +9576,28 @@ requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS",
             progress:function(t) {$("#splash").text(t);}
         };
 
+        function getMargin() {
+            var u = navigator.userAgent.toLowerCase();
+            if ((u.indexOf("iphone") != -1
+                || u.indexOf("ipad") != -1
+                || u.indexOf("ipod") != -1
+                ) && window != window.parent) {
+                return 5;
+            }
+            return 0;
+        }
+
+        var margin = getMargin();
         var w=$(window).width();
         var h=$(window).height();
         $("body").css({overflow:"hidden", margin:"0px"});
-        var cv=$("<canvas>").attr({width: w-10, height:h-10}).appendTo("body");
+        var cv=$("<canvas>").attr({width: w-margin, height: h-margin}).appendTo("body");
         $(window).resize(onResize);
         function onResize() {
+            var margin = getMargin();
             w=$(window).width();
             h=$(window).height();
-            cv.attr({width: w-10, height: h-10});
+            cv.attr({width: w-margin, height: h-margin});
         }
         var locs=location.href.replace(/\?.*/,"").split(/\//);
         var prj=locs.pop() || "runscript";
