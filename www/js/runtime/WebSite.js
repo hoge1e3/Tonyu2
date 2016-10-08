@@ -122,6 +122,7 @@ define(["PathUtil"], function (P) {
     if (loc.match(/tonyuedit\.appspot\.com/) ||
         loc.match(/localhost:888/) ||
         WebSite.isNW) {
+        WebSite.kernelDir=location.protocol+"//"+location.host+"/Kernel/";
         WebSite.compiledKernel=WebSite.top+"/Kernel/js/concat.js";
     } else {
         WebSite.compiledKernel="http://tonyuexe.appspot.com/Kernel/js/concat.js";
