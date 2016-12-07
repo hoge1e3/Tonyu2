@@ -1,18 +1,16 @@
 [[用途別リファレンス]]
 
-[[オブジェクトを消す]]
-
-[[当たり判定で当たったオブジェクトを消す]]
 *当たり判定を変更する
+
+[[@cfrag crashScale]]に値を設定すると，当たり判定の大きさの比率が変更できる．（1で画像の大きさと同じ，0.5でその大きさの半分）
+
 <<code Main
 x=$screenWidth/2;
 y=$screenHeight/2;
-\getCrashRect() {
-  return {x,y,width:5, height:5};
-}
-new Enemy{x:100, y:100, p:4};
-new Enemy{x:100, y:200, p:4};
-new Enemy{x:100, y:300, p:4};
+crashScale=0.5; //★
+new Enemy{x:100, y:100, p:4,crashScale:0.5};//★
+new Enemy{x:100, y:200, p:4,crashScale:0.5};//★
+new Enemy{x:100, y:300, p:4,crashScale:0.5};//★
 while(true){
   if(getkey("right")>0)	x+=3;
   if(getkey("left")>0)	x-=3;
@@ -28,7 +26,6 @@ while(true){
 <<code Enemy
 何も書かなくてよい
 >>
-\getCrashRect()...オブジェクトの当たり判定をreturnで返した値に変更する。
 
 -参考
 --[[自分自身を消す]]

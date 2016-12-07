@@ -11,4 +11,6 @@ $Screen.setPivot(sx,sy);
 スクロール基準点の座標を(sx,sy)で指定します。(0,0)が画面左上、($screenWidth, $screenHeight)が画面左下です。
 
 
+-[[画面全体をスクロールさせる>ScreenscrollTo-実例]]
 
+.

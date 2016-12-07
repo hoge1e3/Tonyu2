@@ -12,12 +12,12 @@
 </span><a id="line_marker_-3" name="line_marker_-3"></a><p></p><h1><a id="line_marker_-4" name="line_marker_-4"></a><span>オブジェクトに名前を付けて値を設定する</span></h1><a id="line_marker_-5" name="line_marker_-5"></a><p></p><a id="line_marker_-6" name="line_marker_-6"></a><code><span>名前=new ファイル名;</span></code><span>
 </span><a id="line_marker_-7" name="line_marker_-7"></a><span>のように、作成したオブジェクトに名前を付けることで、そのオブジェクトに値を設定することができます。</span><span>
 </span><a id="line_marker_-8" name="line_marker_-8"></a><p></p><a id="line_marker_-9" name="line_marker_-9"></a><span>Mainを</span><strong>リスト1</strong><span>のように変更します：</span><span>
-</span><a id="line_marker_-10" name="line_marker_-10"></a><p></p><a id="line_marker_-11" name="line_marker_-11"></a><div class="plist">リスト1 Main</div><a id="line_marker_-18" name="line_marker_-18"></a><pre><a id="line_marker_-12" name="line_marker_-12"></a><span>a=new Chara1;</span><span>
-</span><a id="line_marker_-13" name="line_marker_-13"></a><span>a.x=100;</span><span>
-</span><a id="line_marker_-14" name="line_marker_-14"></a><span>a.y=100;</span><span>
-</span><a id="line_marker_-15" name="line_marker_-15"></a><span>b=new Chara1;</span><span>
-</span><a id="line_marker_-16" name="line_marker_-16"></a><span>b.x=100;</span><span>
-</span><a id="line_marker_-17" name="line_marker_-17"></a><span>b.y=200;</span><span>
+</span><a id="line_marker_-10" name="line_marker_-10"></a><p></p><a id="line_marker_-11" name="line_marker_-11"></a><div class="plist">リスト1 Main</div><a id="line_marker_-18" name="line_marker_-18"></a><pre><a id="line_marker_-12" name="line_marker_-12"></a><span>$a=new Chara1;</span><span>
+</span><a id="line_marker_-13" name="line_marker_-13"></a><span>$a.x=100;</span><span>
+</span><a id="line_marker_-14" name="line_marker_-14"></a><span>$a.y=100;</span><span>
+</span><a id="line_marker_-15" name="line_marker_-15"></a><span>$b=new Chara1;</span><span>
+</span><a id="line_marker_-16" name="line_marker_-16"></a><span>$b.x=100;</span><span>
+</span><a id="line_marker_-17" name="line_marker_-17"></a><span>$b.y=200;</span><span>
 </span></pre><a id="line_marker_-19" name="line_marker_-19"></a><p></p><a id="line_marker_-20" name="line_marker_-20"></a><span>Chara1は、前ページの先頭2行（</span><code><span>x=100;</span></code><span>と</span><code><span>y=100;</span></code><span>）を削除してください。</span><span>
 </span><a id="line_marker_-21" name="line_marker_-21"></a><p></p><a id="line_marker_-22" name="line_marker_-22"></a><div class="plist">リスト2 Chara1</div><a id="line_marker_-27" name="line_marker_-27"></a><pre><a id="line_marker_-23" name="line_marker_-23"></a><span>while(true){</span><span>
 </span><a id="line_marker_-24" name="line_marker_-24"></a><span>  x++;</span><span>
@@ -25,6 +25,10 @@
 </span><a id="line_marker_-26" name="line_marker_-26"></a><span>}</span><span>
 </span></pre><a id="line_marker_-28" name="line_marker_-28"></a><p></p><a id="line_marker_-29" name="line_marker_-29"></a><span>実行すると、Chara1 のオブジェクトが違う場所に2つ表示されます。</span><span>
 </span><a id="line_marker_-30" name="line_marker_-30"></a><p></p><a id="line_marker_-31" name="line_marker_-31"></a><strong>リスト1</strong><span> では、Chara1のオブジェクトを2つ作り、それぞれa,bという名前をつけています。</span><span>
-</span><a id="line_marker_-32" name="line_marker_-32"></a><p></p><a id="line_marker_-33" name="line_marker_-33"></a><code><span>a.x</span></code><span> のように</span><code><span>オブジェクトの名前 . 変数名 </span></code><span>で、そのオブジェクトの変数に値を代入したり、読み出したりできます。</span><span>
-</span><a id="line_marker_-34" name="line_marker_-34"></a><p></p></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
+</span><a id="line_marker_-32" name="line_marker_-32"></a><p></p><a id="line_marker_-33" name="line_marker_-33"></a><code><span>$a.x</span></code><span> のように</span><code><span>オブジェクトの名前 . 変数名 </span></code><span>で、そのオブジェクトの変数に値を代入したり、読み出したりできます。</span><span>
+</span><a id="line_marker_-34" name="line_marker_-34"></a><p></p><h2><a id="line_marker_-35" name="line_marker_-35"></a><span>[補足] グローバル変数とオブジェクト変数</span></h2><a id="line_marker_-36" name="line_marker_-36"></a><p></p><a id="line_marker_-37" name="line_marker_-37"></a><code><span>$a</span></code><span>や</span><code><span>$b</span></code><span>など，変数名の先頭に$をつけた変数は，すべてのプログラムから参照可能になります．これらを「グローバル変数」と呼びます</span><span>
+</span><a id="line_marker_-38" name="line_marker_-38"></a><p></p><a id="line_marker_-39" name="line_marker_-39"></a><strong>リスト2</strong><span>の</span><code><span>x</span></code><span>のように，$がついていない変数は，そのプログラムだけから参照できます(※)．これを「オブジェクト変数」と呼びます．オブジェクトごとに異なる値をもたせたい場合はオブジェクト変数を用います．</span><span>
+</span><a id="line_marker_-40" name="line_marker_-40"></a><p></p><a id="line_marker_-41" name="line_marker_-41"></a><span>※ただし，</span><code><span>$a.x</span></code><span>のように，「オブジェクトの名前 . オブジェクト変数名 」を用いると，他のプログラムのオブジェクト変数を参照できます．</span><span>
+</span><a id="line_marker_-42" name="line_marker_-42"></a><p></p><a id="line_marker_-43" name="line_marker_-43"></a><span>.</span><span>
+</span><a id="line_marker_-44" name="line_marker_-44"></a><p></p></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
 </body></html>

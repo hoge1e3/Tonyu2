@@ -4,22 +4,27 @@
 
 [[loadPage]]を使うと、画面を読み込み直すことができる。
 
-<<code Main
+<<code Main m
 //初期設定
-$p=new Player{x:300,y:300,HP:1};
+$player=new Player{x:300,y:300,HP:1};
 e=new Enemy{x:100,y:100,p:5};
-l=new Label{x:230,y:400,text:"GAMESTART"};
 //初期設定ここまで
 
 while(true){
-   if($p.HP==0) {//プレイヤーの体力が0になったら
-      l.text="GAMEOVER rを押すとリトライ";
-      if(getkey("r")==1) {//rが押されたら
-          loadPage(Main);//Mainを読み込みしなおす
-      }
+   if($player.HP==0) {//プレイヤーの体力が0になったら
+      break; // 繰り返しをやめる
    }
    update();
 }
+// ゲームオーバー
+new Label{x:230,y:400,text:"GAMEOVER rを押すとリトライ"};
+while(true) {
+   if(getkey("r")==1) {//rが押されたら
+      loadPage(Main);//Mainを読み込みしなおす
+   }
+   update();
+}
+
 >>
 <<code Player
 while(true){
@@ -37,4 +42,18 @@ while(true){
 //敵の動作を書く（とりあえず何も書かなくてもよい）
 >>
 
+**Rキーの代わりにボタンでリトライ
 
+[[@plistref m]]のゲームオーバー以降を変更
+<<code Main 
+//これ以前のプログラムは省略
+//ゲームオーバー
+new Label{x:230,y:350,text:"GAMEOVER"};
+//ボタンを作成．クリック時にretryメソッドを呼ぶ
+new Button{top:400,text:"Retry",onClick:retry};
+//retryメソッドの定義
+function retry () {
+    loadPage(Main);
+}
+>>
+.

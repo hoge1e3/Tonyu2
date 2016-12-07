@@ -71,6 +71,14 @@ nowait \method2() {
 }
 >>
 
+*待機系メソッド一覧
+
+-[[update]]
+-[[updateEx]]
+-[[waitEvent]]
+-[[waitFor]]
+
+.
 
 
 

@@ -26,7 +26,8 @@ parallel(methodName, args...)
 
 <<code
 // objオブジェクトのfooメソッドを待機可能モードで実行
-obj.parallel("foo"); // この呼出自身は待機不能モードで呼び出される
+// このプログラム自身は待機不能モードでもOK
+obj.parallel("foo");
 >>
 
 

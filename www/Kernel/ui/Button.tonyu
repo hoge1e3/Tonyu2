@@ -8,10 +8,10 @@ extends Actor;
     strokeStyle=strokeStyle||"black";
     clickedStyle=clickedStyle||"white";
     disabledStrokeStyle=disabledStrokeStyle||"#ddd";
-    padding= padding || 5;
+    padding= typeof(padding)=="number"?padding:5;
     width = width || $screenWidth-100;
     height = height || 50;
-    left=left || 50;
+    left=typeof(left)=="number"?left:50;
     
 }
 while(true) {

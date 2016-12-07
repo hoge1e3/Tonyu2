@@ -1,30 +1,20 @@
 [[用途別リファレンス]]
 
-[[オブジェクトを動かす]]
-*クリックした時に動作をする
+*クリック/タッチした時に動作をする
+
+$touches[0].touchedで，タッチパネル（タッチパネルがない場合，マウスの左ボタン）が押されたかを判定する
+
 <<code Main
 
-$score=0;
-new Score;
-
+x=100;
+y=100;
 while(true){
-  if(getkey("mouseleft")==1){
-    $Score+=10;
+  if($touches[0].touched==1){
+    x+=10;
   }
-update();
+  update();
 }
 >>
 
-<<code Score
-x=200;
-y=200;
-while(true) {
-    text="Score:"+$score;
-    update();
-}
 
-
->>
-
-
-これは[[スコアを表示する]]の『zキーを押すとscoreが10増える』という動作を左クリックした時にscoreを10増やすに変えたもの。
+.

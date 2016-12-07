@@ -14,5 +14,11 @@ native Tonyu;
     }
     onAppear();
 }
+\changeLayer(l) {
+    if (typeof l.add!=="function") return;
+    if (layer) layer.remove(this);
+    l.add(this);
+    layer=l;
+}
 \onAppear() {
 }

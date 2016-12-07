@@ -7,7 +7,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                 image:{name:"画像",exts:["png","gif","jpg"],path:"images/",key:"images",
                     extPattern:/\.(png|gif|jpe?g)$/i,contentType:/image\/(png|gif|jpe?g)/,
                     newItem:function (name) {
-                        var r={pwidth:32,pheight:32};
+                        var r={type:"single"};//pwidth:32,pheight:32};
                         if (name) r.name="$pat_"+name;
                         return r;
                     }

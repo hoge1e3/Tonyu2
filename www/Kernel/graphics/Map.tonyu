@@ -67,8 +67,15 @@ native $;
     col=mapTable[0].length;
     mapOnTable=baseData[1];
     mapOnData=mapOnTable;
+    if (!chipWidth && typeof baseData[2]=="number") chipWidth=baseData[2];
+    if (!chipHeight && typeof baseData[3]=="number") chipHeight=baseData[3];
     buf=$("<canvas>").attr{width:col*chipWidth,height:row*chipHeight};
     initMap();
+}
+\save(saveFileName) {
+    var saveDataFile=file("../maps/").rel(saveFileName);
+    var data=[mapTable,mapOnTable,chipWidth,chipHeight];
+    saveDataFile.obj(data);
 }
 \set(setCol,setRow,p){
     if(setCol>=col || setRow>=row || setCol<0 || setRow<0) return;

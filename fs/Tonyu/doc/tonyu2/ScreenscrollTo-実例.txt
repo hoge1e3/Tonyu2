@@ -1,6 +1,6 @@
 [[用途別リファレンス]]
 
-*スクリーン全体をスクロールさせる
+*画面全体をスクロールさせる
 
 [[$Screen.scrollTo>Screen.scrollTo]]、[[$Screen.setPivot>setPivot]]を用いる。
 
@@ -10,6 +10,7 @@
 for (i=0;i<10;i++) {
     new Actor{x:rnd(400),y:rnd(400)};
 }
+//-----
 x=200;y=200;p=$pat_neko;
 // $Screen.scrollToの基準点を画面真ん中に設定
 $Screen.setPivot($screenWidth/2,$screenHeight/2);

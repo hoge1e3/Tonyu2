@@ -1,0 +1,39 @@
+<html><head><meta charset="utf-8"/>
+<meta http-equiv="Content-type" content="text/html; charset=utf8"/>
+<title>マップと物理オブジェクトに当たり判定を設定する</title>
+</head><body><link rel='stylesheet' href='../../css/bootstrap.css'/>
+<link rel='stylesheet' href='../../css/tonyu.css'/>
+<script src='../../js/lib/jquery-1.10.1.js'/></script>
+<script src='../../js/ide/NWMenu.js'/></script>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px; font-family:"MS UI Gothic",sans-serif;}</style>
+<button onclick='javascript:history.back();'>←Back</button><br/>
+<div><a id="line_marker_-0" name="line_marker_-0"></a><a href="E794A8E98094E588A5E383AAE38395E382A1E383ACE383B3E382B9.html">用途別リファレンス</a><span>
+</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><h1><a id="line_marker_-2" name="line_marker_-2"></a><span>マップと物理オブジェクトに当たり判定を設定する</span></h1><a id="line_marker_-3" name="line_marker_-3"></a><p></p><a id="line_marker_-4" name="line_marker_-4"></a><span>マップチップが置いてある場所にBodyActorを配置することで，物理オブジェクトがマップに反応してぶつかるようになります．</span><span>
+</span><a id="line_marker_-5" name="line_marker_-5"></a><p></p><a id="line_marker_-6" name="line_marker_-6"></a><span>次のコードを実行するには予め次のことを行ってください</span><span>
+</span><a id="line_marker_-9" name="line_marker_-9"></a><ul><li><a id="line_marker_-7" name="line_marker_-7"></a><span>FloorクラスをBodyActorで作成する(</span><a href="E5A381E383BBE5BA8AE38292E4BD9CE3828B.html">壁・床を作る</a><span>を参照)</span><span>
+</span></li><li><a id="line_marker_-8" name="line_marker_-8"></a><code><span>$map</span></code><span>にマップを作成する</span><span>
+</span></li></ul><p></p><a id="line_marker_-27" name="line_marker_-27"></a><pre><a id="line_marker_-11" name="line_marker_-11"></a><p></p><a id="line_marker_-12" name="line_marker_-12"></a><span>for (i=0;i&lt;$map.row;i++) {</span><span>
+</span><a id="line_marker_-13" name="line_marker_-13"></a><span>    for (j=0;j&lt;$map.col;j++) {</span><span>
+</span><a id="line_marker_-14" name="line_marker_-14"></a><span>        pa=$map.get(j,i);//←奥のレイヤーで判定</span><span>
+</span><a id="line_marker_-15" name="line_marker_-15"></a><span>        //pa=$map.getOn(j,i);  //←手前のレイヤーで判定</span><span>
+</span><a id="line_marker_-16" name="line_marker_-16"></a><span>        if (pa&gt;=0) {//マップチップが置いてあったら</span><span>
+</span><a id="line_marker_-17" name="line_marker_-17"></a><span>            // Floorを配置</span><span>
+</span><a id="line_marker_-18" name="line_marker_-18"></a><span>            new Floor{</span><span>
+</span><a id="line_marker_-19" name="line_marker_-19"></a><span>                x:(j+0.5)*$map.chipWidth,</span><span>
+</span><a id="line_marker_-20" name="line_marker_-20"></a><span>                y:(i+0.5)*$map.chipHeight,</span><span>
+</span><a id="line_marker_-21" name="line_marker_-21"></a><span>                isStatic:true,</span><span>
+</span><a id="line_marker_-22" name="line_marker_-22"></a><span>                p:pa</span><span>
+</span><a id="line_marker_-23" name="line_marker_-23"></a><span>            };</span><span>
+</span><a id="line_marker_-24" name="line_marker_-24"></a><span>        }</span><span>
+</span><a id="line_marker_-25" name="line_marker_-25"></a><span>    }</span><span>
+</span><a id="line_marker_-26" name="line_marker_-26"></a><span>}</span><span>
+</span></pre><a id="line_marker_-28" name="line_marker_-28"></a><p></p><h1><a id="line_marker_-29" name="line_marker_-29"></a><span>参考</span></h1><a id="line_marker_-31" name="line_marker_-31"></a><ul><li><a id="line_marker_-30" name="line_marker_-30"></a><a href="mapEditor.html">マップエディタでマップを描く</a><span>
+</span></li></ul><p></p><a id="line_marker_-38" name="line_marker_-38"></a><ul><li><a id="line_marker_-32" name="line_marker_-32"></a><a href="E789A9E79086E9818BE58B95E38199E3828BE382AAE38396E382B8E382A7E382AFE38388E38292E4BD9CE3828B.html">物理運動するオブジェクトを作る</a><span>
+</span></li><li><a id="line_marker_-33" name="line_marker_-33"></a><a href="E5A381E383BBE5BA8AE38292E4BD9CE3828B.html">壁・床を作る</a><span>
+</span></li><li><a id="line_marker_-34" name="line_marker_-34"></a><a href="E382AAE38396E382B8E382A7E382AFE38388E381ABE58A9BE38292E58AA0E38188E3828B.html">オブジェクトに力を加える</a><span>
+</span></li><li><a id="line_marker_-35" name="line_marker_-35"></a><a href="E382B8E383A3E383B3E38397E38199E3828B.html">ジャンプする</a><span>
+</span></li><li><a id="line_marker_-36" name="line_marker_-36"></a><a href="E9878DE58A9BE38292E5A489E69BB4E38199E3828B.html">重力を変更する</a><span>
+</span></li><li><a id="line_marker_-37" name="line_marker_-37"></a><a href="E3839EE38383E38397E381A8E789A9E79086E382AAE38396E382B8E382A7E382AFE38388E381ABE5BD93E3819FE3828AE588A4E5AE9AE38292E8A8ADE5AE9AE38199E3828B.html">マップと物理オブジェクトに当たり判定を設定する</a><span>
+</span></li></ul><span>.</span><span>
+</span></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
+</body></html>

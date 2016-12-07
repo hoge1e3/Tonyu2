@@ -17,6 +17,7 @@ native Array;
         this.p=p;
     }
     layer=layer||$mainLayer;
+    crashScale=1;
     if (scaleX==null) scaleX=1;
     if (rotation==null) rotation=0;
     if (rotate==null) rotate=0;
@@ -146,11 +147,11 @@ nowait \crashTo1(t) {
     }
 }
 nowait \getCrashRect() {
-    var actWidth=width*scaleX, actHeight;
+    var actWidth=width*scaleX*crashScale, actHeight;
     if(typeof scaleY==="undefined"){
-        actHeight=height*scaleX;
+        actHeight=height*scaleX*crashScale;
     }else{
-        actHeight=height*scaleY;
+        actHeight=height*scaleY*crashScale;
     }
     return typeof x=="number" &&
     typeof y=="number" &&

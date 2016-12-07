@@ -1,0 +1,17 @@
+<html><head><meta charset="utf-8"/>
+<meta http-equiv="Content-type" content="text/html; charset=utf8"/>
+<title>出現するオブジェクトの個数を制限する</title>
+</head><body><link rel='stylesheet' href='../../css/bootstrap.css'/>
+<link rel='stylesheet' href='../../css/tonyu.css'/>
+<script src='../../js/lib/jquery-1.10.1.js'/></script>
+<script src='../../js/ide/NWMenu.js'/></script>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px; font-family:"MS UI Gothic",sans-serif;}</style>
+<button onclick='javascript:history.back();'>←Back</button><br/>
+<div><h1><a id="line_marker_-0" name="line_marker_-0"></a><span>出現するオブジェクトの個数を制限する</span></h1><a id="line_marker_-1" name="line_marker_-1"></a><p></p><a id="line_marker_-2" name="line_marker_-2"></a><a href="E7A2BAE78E87E381A7E382AAE38396E382B8E382A7E382AFE38388E38292E587BAE78FBEE38195E3819BE3828B.html">確率でオブジェクトを出現させる</a><span>，</span><a href="E5BCBEE38292E69283E381A4.html">弾を撃つ</a><span> などでオブジェクトを出現させるときに，同時に出現する個数を制限したいときは</span><code><span>all(クラス名).length</span></code><span>でオブジェクトの出現している個数を調べ，決められた数より少ない場合だけ出現させる．</span><span>
+</span><a id="line_marker_-3" name="line_marker_-3"></a><p></p><a id="line_marker_-4" name="line_marker_-4"></a><div class="plist">(一部)</div><a id="line_marker_-8" name="line_marker_-8"></a><pre><a id="line_marker_-5" name="line_marker_-5"></a><span>  if(rnd(100)&lt;5 &amp;&amp; all(Chara1).length&lt;10 ){ // 同時に10個まで出現する</span><span>
+</span><a id="line_marker_-6" name="line_marker_-6"></a><span>    new Chara1{x:rnd($screenWidth),y:0,p:1};</span><span>
+</span><a id="line_marker_-7" name="line_marker_-7"></a><span>  }</span><span>
+</span></pre><a id="line_marker_-9" name="line_marker_-9"></a><p></p><h1><a id="line_marker_-10" name="line_marker_-10"></a><span>参考</span></h1><a id="line_marker_-11" name="line_marker_-11"></a><p></p><a id="line_marker_-13" name="line_marker_-13"></a><ul><li><a id="line_marker_-12" name="line_marker_-12"></a><a href="all.html">all</a><span>
+</span></li></ul><span>.</span><span>
+</span></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
+</body></html>

@@ -1,0 +1,12 @@
+[[用途別リファレンス]]
+
+*物理オブジェクトが回転したときに見た目は回転しないようにする
+
+[[manualRotation>BodyActor]]をtrueに設定します．
+
+物理オブジェクトのプログラムに追加：
+<<code
+manualRotation=false;
+>>
+
+.

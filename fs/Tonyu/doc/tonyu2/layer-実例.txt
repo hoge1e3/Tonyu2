@@ -6,8 +6,11 @@
 -他のオブジェクトより後ろに表示する場合は[[@cfrag layer:$backLayer]]を指定する
 
 <<code Main
-//事前にマップを作っておく
-
+//このキャラクタ単独ではスクロールしていることがわかりにくいので、動かないオブジェクトをいくつか置いておく
+for (i=0;i<10;i++) {
+    new Actor{x:rnd(400),y:rnd(400)};
+}
+//-----
 $score=0;
 new Score{x:200, y:200, text:$score, layer:$frontLayer};//★
 i=0;

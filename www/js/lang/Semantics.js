@@ -350,6 +350,9 @@ function annotateSource2(klass, env) {//B
             if (node.value) {
                 this.visit(node.value);
             } else {
+                if (node.key.type=="literal") { 
+                    throw TError( "オブジェクトリテラルのパラメタに単独の文字列は使えません" , srcFile, node.pos);
+                }
                 var si=getScopeInfo(node.key.text);
                 annotation(node,{scopeInfo:si});
             }

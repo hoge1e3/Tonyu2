@@ -8,6 +8,6 @@ new Chara1{x:rnd($screenWidth),y:rnd($screenHeight),p:2};
 new Chara1{x:rnd($screenWidth),y:rnd($screenHeight),p:3};
 >>
 <<code Chara1
-何も書かないでよい
+//Chara1の動作（とりあえず何も書かないでもよい）
 >>
 実行すると画面上にランダムで3つのオブジェクトが表示される。

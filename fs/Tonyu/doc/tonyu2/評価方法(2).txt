@@ -4,17 +4,15 @@
 
 -ここでは既に前のページで作成したOnpuクラスに、更に追加することによって、coolやbadなどの評価を分けることができることを書き記している。
 
--「追加」と書かれている行を追加する。
 
 <<code Onpu(追加)
-beforeTouched=false; //追加
 start=$c.play().currentTime();
 while(y<$screenHeight){
     t=$c.play().currentTime();
-    y=(t-start)*($screenHeight*3/4)/2000;
+    y=(t-start)*$linePanel.y/2000;
 
-//ここから
-if($touches[0].touched && !beforeTouched && abs($linePanel.y-y)<43) {
+    //ここから
+    if($touches[0].touched==1 && abs($linePanel.y-y)<40) {
         
         print("            "+$linePanel.y-y);
         die();
@@ -34,9 +32,7 @@ if($touches[0].touched && !beforeTouched && abs($linePanel.y-y)<43) {
         
         
     }
-    
-    beforeTouched=$touches[0].touched;
-//ここまで追加
+    //ここまで追加
     update();
 }
 

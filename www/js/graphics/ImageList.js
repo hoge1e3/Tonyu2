@@ -38,7 +38,9 @@ define(["PatternParser","Util","Assets","assert"], function (PP,Util,Assets,asse
             im.attr("src",url);
             function proc() {
                 var pw,ph;
-                if ((pw=resImg.pwidth) && (ph=resImg.pheight)) {
+                if (resImg.type=="single") {
+                    resa[i]=[{image:this, x:0,y:0, width:this.width, height:this.height}];
+                } else if ((pw=resImg.pwidth) && (ph=resImg.pheight)) {
                     var x=0, y=0, w=this.width, h=this.height;
                     var r=[];
                     while (true) {

@@ -28,8 +28,7 @@ die();
 
 >>
 
-『all(Enemy).length』を使って敵の数を数え、print()で表示させている。
+『[[all]](Enemy).length』を使って敵の数を数え、print()で表示させている。
 敵が全滅すると『clear』と表示される。
 
-
-[[allについて>all]]
+.

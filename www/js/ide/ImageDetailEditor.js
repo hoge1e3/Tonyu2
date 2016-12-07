@@ -6,9 +6,10 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite"],
                ["a",{$var:"openImg",target:"img"},"画像を確認..."]],
              ["canvas",{$edit:"cv",width:500,height:250,on:{mousemove:cvMouse,mousedown:cvClick}}] ],
              ["form",{$var:"theForm"},
-              ["div",radio("rc"),"分割数指定：",
-               ["input",{$var:"cols",size:5,on:{realtimechange:setRC,focus:selRC}}],"x",
-               ["input",{$var:"rows",size:5,on:{realtimechange:setRC,focus:selRC}}]],
+               ["div",radio("single"),"１枚絵"],
+               ["div",radio("rc"),"分割数指定：",
+                ["input",{$var:"cols",size:5,on:{realtimechange:setRC,focus:selRC}}],"x",
+                ["input",{$var:"rows",size:5,on:{realtimechange:setRC,focus:selRC}}]],
                ["div",radio("wh"),"1パターンの大きさ指定：",
                 ["input",{$var:"pwidth",size:5,on:{realtimechange:setWH,focus:selWH}}],"x",
                 ["input",{$var:"pheight",size:5,on:{realtimechange:setWH,focus:selWH}}]],
@@ -18,7 +19,24 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite"],
                ["button",{on:{click:close}},"OK"]]
     );
     function radio(v) {
-        return UI("input",{type:"radio",name:"type",value:v});
+        return UI("input",{type:"radio",name:"type",value:v,on:{
+            click:function (){selval(v);}
+        }});
+    }
+    function selval(v) {
+        switch (v) {
+        case "single":
+            if (!item) return false;
+            cols=1;//nNan( parseInt(v.cols.val()) ,cols);
+            rows=1;//nNan( parseInt(v.rows.val()) ,rows);
+            calcWH();
+            redrawImage();
+            return false;
+        case "rc":
+            return setRC();
+        case "wh":
+            return setWH();
+        } 
     }
     var v=d.$vars;
     var w,h,rows,cols;
@@ -38,6 +56,9 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite"],
     function selWH() {
         v.theForm[0].type.value="wh";
     }
+    function selSingle() {
+        v.theForm[0].type.value="single";
+    }
     IMD.show=function (_item,baseDir, itemName, options) {
         if (!options) options={};
         onclose=options.onclose;
@@ -53,7 +74,9 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite"],
             srcImg=res.src;
             w=srcImg.width;
             h=srcImg.height;
-            if (item.pwidth && item.pheight) {
+            if (item.type=="single") {
+                v.theForm[0].type.value="single";
+            } else if (item.pwidth && item.pheight) {
                 v.pwidth.val(item.pwidth);
                 v.pheight.val(item.pheight);
                 calcRC();
@@ -152,6 +175,7 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite"],
     }
     function calcWH() {
         if (!item) return false;
+        item.type="wh";
         item.pwidth=nNan( Math.floor(w/cols), item.pwidth);
         item.pheight=nNan( Math.floor(h/rows), item.pheight);
         v.pwidth.val(item.pwidth);

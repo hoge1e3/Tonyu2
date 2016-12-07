@@ -7,8 +7,8 @@
 [[前ページ>オブジェクトに名前を付けて値を設定する]]のMainクラスは、[[@plistref main]]のように短く書くことができます：
 
 <<code Main main
-new Chara1{x:100, y:100};
-c=new Chara1{x:100, y:200};
+$a=new Chara1{x:100, y:100};
+$b=new Chara1{x:100, y:200};
 >>
 
 [[@cfrag new クラス名{変数名:値, ....}]]で、オブジェクトを生成すると同時に変数の値も設定できます。

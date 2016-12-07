@@ -1,5 +1,33 @@
-[[asyncResult]]
+[[BaseActor]]
 
 *waitForメソッド
 
-使い方は[[asyncResult]]を参照してください．
+指定した動作が終わるまで待機します
+
+
+**書式
+
+※必ず[[待機可能モード>waitmode]]で呼び出して下さい
+<<code
+r=waitFor(promise);
+>>
+
+[[@cfrag promise]]には，JQueryのPromiseオブジェクトを指定します（例：[[@cfrag $.get(...)]]など )．
+
+[[@cfrag promise]]が結果を返す（[[@cfrag promise.done(f)]] の関数[[@cfrag f]]が呼び出される）と，waitForメソッドは終了し，[[@cfrag f]]に渡された第1引数の値が戻り値として返されます．
+
+[[@cfrag promise]]が失敗する（[[@cfrag promise.fail(f)]] の関数[[@cfrag f]]が呼び出される）と，waitForメソッドは例外を投げます．例外オブジェクト[[@cfrag e]]の[[@cfrag e.original]]に，[[@cfrag f]]に渡された第1引数が格納されます
+
+例
+<<code
+native $;
+try {
+    // $.getの結果がrに入る
+    r=waitFor($.get("http://tonyu.jp/"));
+    print(r.substring(0,100));
+} catch(e) {
+    //エラーの場合
+    print(e.original.statusText);
+}
+>>
+.

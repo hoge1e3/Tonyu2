@@ -17,8 +17,9 @@
 </span><a id="line_marker_-16" name="line_marker_-16"></a><p></p><h2><a id="line_marker_-17" name="line_marker_-17"></a><span> 戻り値</span></h2><a id="line_marker_-18" name="line_marker_-18"></a><p></p><a id="line_marker_-19" name="line_marker_-19"></a><span>生成された</span><a href="thread.html">スレッド</a><span>
 </span><a id="line_marker_-20" name="line_marker_-20"></a><p></p><h2><a id="line_marker_-21" name="line_marker_-21"></a><span>補足</span></h2><a id="line_marker_-22" name="line_marker_-22"></a><p></p><a id="line_marker_-25" name="line_marker_-25"></a><ul><li><a id="line_marker_-23" name="line_marker_-23"></a><span>parallelメソッドで指定されたメソッドは</span><a href="waitmode.html">待機可能モード</a><span>で実行されます。</span><span>
 </span></li><li><a id="line_marker_-24" name="line_marker_-24"></a><span>parallelメソッド自身は</span><a href="waitmode.html">待機不能モード</a><span>であっても呼び出すことができます。</span><span>
-</span></li></ul><p></p><a id="line_marker_-29" name="line_marker_-29"></a><pre><a id="line_marker_-27" name="line_marker_-27"></a><span>// objオブジェクトのfooメソッドを待機可能モードで実行</span><span>
-</span><a id="line_marker_-28" name="line_marker_-28"></a><span>obj.parallel("foo"); // この呼出自身は待機不能モードで呼び出される</span><span>
-</span></pre><a id="line_marker_-30" name="line_marker_-30"></a><p></p><a id="line_marker_-31" name="line_marker_-31"></a><p></p><a id="line_marker_-32" name="line_marker_-32"></a><span>.</span><span>
+</span></li></ul><p></p><a id="line_marker_-30" name="line_marker_-30"></a><pre><a id="line_marker_-27" name="line_marker_-27"></a><span>// objオブジェクトのfooメソッドを待機可能モードで実行</span><span>
+</span><a id="line_marker_-28" name="line_marker_-28"></a><span>// このプログラム自身は待機不能モードでもOK</span><span>
+</span><a id="line_marker_-29" name="line_marker_-29"></a><span>obj.parallel("foo");</span><span>
+</span></pre><a id="line_marker_-31" name="line_marker_-31"></a><p></p><a id="line_marker_-32" name="line_marker_-32"></a><p></p><a id="line_marker_-33" name="line_marker_-33"></a><span>.</span><span>
 </span></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
 </body></html>
