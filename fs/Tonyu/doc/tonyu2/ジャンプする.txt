@@ -16,6 +16,25 @@ while(true) {
 }
 >>
 
+なお，上のプログラムではFloorに横から当たったときにもジャンプ（壁蹴り）ができるようになっています．壁蹴りをできなくするには，当たった位置を特定するために[[contactPoint]]メソッドを用います．
+
+<<code Ball
+extends BodyActor;
+shape="circle";
+while(true) {
+    if (getkey("left")) vx=-3;   
+    if (getkey("right")) vx=3;   
+    if (getkey("space")==1) {
+        cp=contactPoint(Floor);//触れている位置を含めて判定
+        if (cp) {//触れいていれば
+            if (cp.y>y+2) {//当たった点(cp)のy座標が自分より少し下だったら，ジャンプできると判定
+               vy=-10;
+            }
+        }
+    }
+    update();
+}
+>>
 
 *参照
 

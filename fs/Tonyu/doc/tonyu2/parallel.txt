@@ -12,8 +12,6 @@ parallel(methodName, args...)
 -methodName に、新しいスレッドが実行するメソッド名を指定します。指定されるメソッドは[[待機可能メソッド>waitmode]]である必要があります。
 -args （省略可）に、メソッドに渡す引数を指定します
 
-[[実行例>http://tonyuexe.appspot.com/exe/hoge1e4/ParaTest]] / 
-[[ソース>http://tonyuexe.appspot.com/exe/hoge1e4/ParaTest/view-source]]
 
 ** 戻り値
 
@@ -30,5 +28,10 @@ parallel(methodName, args...)
 obj.parallel("foo");
 >>
 
+** 実行例
 
+-[[往復＋拡大縮小＋弾発射>http://tonyuexe.appspot.com/exe/hoge1e4/ParaTest]] 
+--[[ソース>http://tonyuexe.appspot.com/exe/hoge1e4/ParaTest/view-source]]
+-[[ボタンが押されたとき，複数フレームにまたがる動作を行なう]]
+-[[キャラクターを歩いているように見せる]]
 .

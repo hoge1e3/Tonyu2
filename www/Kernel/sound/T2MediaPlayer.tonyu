@@ -58,7 +58,7 @@ native Tonyu;
             //print("Loading Sound2: "+name);
             loadSE(name, url);
          } catch(e) {
-            print("Fail");
+            print("Failed to load",name);
             Tonyu.setGlobal(name, "ERROR");
          }
     }

@@ -26,8 +26,6 @@ while(true) {
 
 [[Button]]オブジェクトでボタンを作成し、[[@cfrag onClick]]にクリックされたときに呼び出すメソッド名を記述します。
 
-※クリック時に呼び出されるメソッド内では，updateやupdateExが使えません
-
 <<code
 //  クリックされたときは、下に定義したwalkメソッドを呼ぶ
 $b=new Button{top:300,text:"Click Me",onClick:walk};
@@ -39,5 +37,10 @@ function walk() {
     x+=10;
 }
 >>
+
+※クリック時に呼び出されるメソッド内では，updateやupdateExが使えません．使いたい場合は[[この例>ボタンが押されたとき，複数フレームにまたがる動作を行なう]]をご覧ください．
+
+
+
 
 
