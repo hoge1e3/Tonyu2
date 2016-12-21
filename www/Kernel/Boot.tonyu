@@ -406,4 +406,3 @@ nowait \measureFps() {
         lastMeasured=nowTime;
     }
 }
-

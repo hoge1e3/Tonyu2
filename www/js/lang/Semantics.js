@@ -346,6 +346,24 @@ function annotateSource2(klass, env) {//B
         funcExpr: function (node) {/*FEIGNORE*/
             annotateSubFuncExpr(node);
         },
+        objlit:function (node) {
+            var t=this;
+            var dup={};
+            node.elems.forEach(function (e) {
+                var kn;
+                if (e.key.type=="literal") { 
+                    kn=e.key.text.substring(1,e.key.text.length-1);   
+                } else {
+                    kn=e.key.text;
+                }
+                if (dup[kn]) {
+                    throw TError( "オブジェクトリテラルのキー名'"+kn+"'が重複しています" , srcFile, e.pos);
+                } 
+                dup[kn]=1;
+                //console.log("objlit",e.key.text);
+                t.visit(e);
+            });
+        },
         jsonElem: function (node) {
             if (node.value) {
                 this.visit(node.value);

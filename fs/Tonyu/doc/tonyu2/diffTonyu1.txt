@@ -76,7 +76,9 @@ appear(new Player(100,220,12));
 
 - [[getkey]]メソッド
 --（上位互換）引数に数値以外にキー名をあらわす文字列が渡せます
-- angle → [[@cfrag rotation]]
+- [フィールド]angle → [[@cfrag rotation]]
+-- （名称変更） 
+- [メソッド]angle(x,y) → [[@cfrag atanxy]]
 -- （名称変更） 
 - 画面の大きさ変更
 -- （仕様変更）Tonyu1では，$screenWidth,$screenHeightに代入することで画面の大きさを変更していましたが，Tonyu2 では[[$Screen.resize>resize]]を用います
