@@ -1,4 +1,4 @@
-// Created at Wed Oct 12 2016 15:10:49 GMT+0900 (東京 (標準時))
+// Created at Wed Dec 21 2016 17:42:29 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -852,9 +852,12 @@ define(["PathUtil"], function (P) {
         WebSite.projects=[P.rel(WebSite.tonyuHome,"Projects/")];
     }
     if (loc.match(/tonyuedit\.appspot\.com/) ||
+        loc.match(/localhost:888/)) {
+        WebSite.kernelDir=location.protocol+"//"+location.host+"/Kernel/";
+    }
+    if (loc.match(/tonyuedit\.appspot\.com/) ||
         loc.match(/localhost:888/) ||
         WebSite.isNW) {
-        WebSite.kernelDir=location.protocol+"//"+location.host+"/Kernel/";
         WebSite.compiledKernel=WebSite.top+"/Kernel/js/concat.js";
     } else {
         WebSite.compiledKernel="http://tonyuexe.appspot.com/Kernel/js/concat.js";
@@ -3435,7 +3438,7 @@ return Tonyu=function () {
             bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,iterator:IT,
-            VERSION:1476252635402,//EMBED_VERSION
+            VERSION:1482309728523,//EMBED_VERSION
             A:A};
 }();
 });
@@ -3639,7 +3642,9 @@ define(["PatternParser","Util","Assets","assert"], function (PP,Util,Assets,asse
             im.attr("src",url);
             function proc() {
                 var pw,ph;
-                if ((pw=resImg.pwidth) && (ph=resImg.pheight)) {
+                if (resImg.type=="single") {
+                    resa[i]=[{image:this, x:0,y:0, width:this.width, height:this.height}];
+                } else if ((pw=resImg.pwidth) && (ph=resImg.pheight)) {
                     var x=0, y=0, w=this.width, h=this.height;
                     var r=[];
                     while (true) {

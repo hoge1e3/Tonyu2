@@ -1,4 +1,4 @@
-// Created at Wed Oct 12 2016 15:10:39 GMT+0900 (東京 (標準時))
+// Created at Wed Dec 21 2016 17:42:13 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -1207,7 +1207,7 @@ return Tonyu=function () {
             bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,iterator:IT,
-            VERSION:1476252635402,//EMBED_VERSION
+            VERSION:1482309728523,//EMBED_VERSION
             A:A};
 }();
 });
@@ -1787,9 +1787,12 @@ define(["PathUtil"], function (P) {
         WebSite.projects=[P.rel(WebSite.tonyuHome,"Projects/")];
     }
     if (loc.match(/tonyuedit\.appspot\.com/) ||
+        loc.match(/localhost:888/)) {
+        WebSite.kernelDir=location.protocol+"//"+location.host+"/Kernel/";
+    }
+    if (loc.match(/tonyuedit\.appspot\.com/) ||
         loc.match(/localhost:888/) ||
         WebSite.isNW) {
-        WebSite.kernelDir=location.protocol+"//"+location.host+"/Kernel/";
         WebSite.compiledKernel=WebSite.top+"/Kernel/js/concat.js";
     } else {
         WebSite.compiledKernel="http://tonyuexe.appspot.com/Kernel/js/concat.js";
@@ -8127,10 +8130,31 @@ function annotateSource2(klass, env) {//B
         funcExpr: function (node) {/*FEIGNORE*/
             annotateSubFuncExpr(node);
         },
+        objlit:function (node) {
+            var t=this;
+            var dup={};
+            node.elems.forEach(function (e) {
+                var kn;
+                if (e.key.type=="literal") { 
+                    kn=e.key.text.substring(1,e.key.text.length-1);   
+                } else {
+                    kn=e.key.text;
+                }
+                if (dup[kn]) {
+                    throw TError( "オブジェクトリテラルのキー名'"+kn+"'が重複しています" , srcFile, e.pos);
+                } 
+                dup[kn]=1;
+                //console.log("objlit",e.key.text);
+                t.visit(e);
+            });
+        },
         jsonElem: function (node) {
             if (node.value) {
                 this.visit(node.value);
             } else {
+                if (node.key.type=="literal") { 
+                    throw TError( "オブジェクトリテラルのパラメタに単独の文字列は使えません" , srcFile, node.pos);
+                }
                 var si=getScopeInfo(node.key.text);
                 annotation(node,{scopeInfo:si});
             }
@@ -9174,7 +9198,9 @@ define(["PatternParser","Util","Assets","assert"], function (PP,Util,Assets,asse
             im.attr("src",url);
             function proc() {
                 var pw,ph;
-                if ((pw=resImg.pwidth) && (ph=resImg.pheight)) {
+                if (resImg.type=="single") {
+                    resa[i]=[{image:this, x:0,y:0, width:this.width, height:this.height}];
+                } else if ((pw=resImg.pwidth) && (ph=resImg.pheight)) {
                     var x=0, y=0, w=this.width, h=this.height;
                     var r=[];
                     while (true) {
@@ -11903,9 +11929,10 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite"],
                ["a",{$var:"openImg",target:"img"},"画像を確認..."]],
              ["canvas",{$edit:"cv",width:500,height:250,on:{mousemove:cvMouse,mousedown:cvClick}}] ],
              ["form",{$var:"theForm"},
-              ["div",radio("rc"),"分割数指定：",
-               ["input",{$var:"cols",size:5,on:{realtimechange:setRC,focus:selRC}}],"x",
-               ["input",{$var:"rows",size:5,on:{realtimechange:setRC,focus:selRC}}]],
+               ["div",radio("single"),"１枚絵"],
+               ["div",radio("rc"),"分割数指定：",
+                ["input",{$var:"cols",size:5,on:{realtimechange:setRC,focus:selRC}}],"x",
+                ["input",{$var:"rows",size:5,on:{realtimechange:setRC,focus:selRC}}]],
                ["div",radio("wh"),"1パターンの大きさ指定：",
                 ["input",{$var:"pwidth",size:5,on:{realtimechange:setWH,focus:selWH}}],"x",
                 ["input",{$var:"pheight",size:5,on:{realtimechange:setWH,focus:selWH}}]],
@@ -11915,7 +11942,24 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite"],
                ["button",{on:{click:close}},"OK"]]
     );
     function radio(v) {
-        return UI("input",{type:"radio",name:"type",value:v});
+        return UI("input",{type:"radio",name:"type",value:v,on:{
+            click:function (){selval(v);}
+        }});
+    }
+    function selval(v) {
+        switch (v) {
+        case "single":
+            if (!item) return false;
+            cols=1;//nNan( parseInt(v.cols.val()) ,cols);
+            rows=1;//nNan( parseInt(v.rows.val()) ,rows);
+            calcWH();
+            redrawImage();
+            return false;
+        case "rc":
+            return setRC();
+        case "wh":
+            return setWH();
+        } 
     }
     var v=d.$vars;
     var w,h,rows,cols;
@@ -11935,6 +11979,9 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite"],
     function selWH() {
         v.theForm[0].type.value="wh";
     }
+    function selSingle() {
+        v.theForm[0].type.value="single";
+    }
     IMD.show=function (_item,baseDir, itemName, options) {
         if (!options) options={};
         onclose=options.onclose;
@@ -11950,7 +11997,9 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite"],
             srcImg=res.src;
             w=srcImg.width;
             h=srcImg.height;
-            if (item.pwidth && item.pheight) {
+            if (item.type=="single") {
+                v.theForm[0].type.value="single";
+            } else if (item.pwidth && item.pheight) {
                 v.pwidth.val(item.pwidth);
                 v.pheight.val(item.pheight);
                 calcRC();
@@ -12049,6 +12098,7 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite"],
     }
     function calcWH() {
         if (!item) return false;
+        item.type="wh";
         item.pwidth=nNan( Math.floor(w/cols), item.pwidth);
         item.pheight=nNan( Math.floor(h/rows), item.pheight);
         v.pwidth.val(item.pwidth);
@@ -12132,7 +12182,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                 image:{name:"画像",exts:["png","gif","jpg"],path:"images/",key:"images",
                     extPattern:/\.(png|gif|jpe?g)$/i,contentType:/image\/(png|gif|jpe?g)/,
                     newItem:function (name) {
-                        var r={pwidth:32,pheight:32};
+                        var r={type:"single"};//pwidth:32,pheight:32};
                         if (name) r.name="$pat_"+name;
                         return r;
                     }

@@ -1,0 +1,28 @@
+<html><head><meta charset="utf-8"/>
+<meta http-equiv="Content-type" content="text/html; charset=utf8"/>
+<title>ボタンが押されたとき，複数フレームにまたがる動作を行なう</title>
+</head><body><link rel='stylesheet' href='../../css/bootstrap.css'/>
+<link rel='stylesheet' href='../../css/tonyu.css'/>
+<script src='../../js/lib/jquery-1.10.1.js'/></script>
+<script src='../../js/ide/NWMenu.js'/></script>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px; font-family:"MS UI Gothic",sans-serif;}</style>
+<button onclick='javascript:history.back();'>←Back</button><br/>
+<div><a id="line_marker_-0" name="line_marker_-0"></a><a href="E3839CE382BFE383B3E38292E4BDBFE38186.html">ボタンを使う</a><span>
+</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><a id="line_marker_-2" name="line_marker_-2"></a><p></p><h1><a id="line_marker_-3" name="line_marker_-3"></a><span>ボタンが押されたとき，複数フレームにまたがる動作を行なう</span></h1><a id="line_marker_-4" name="line_marker_-4"></a><p></p><a id="line_marker_-5" name="line_marker_-5"></a><span>ボタンが押されたときに，</span><a href="parallel.html">parallel</a><span>メソッドで別のメソッドを並列実行させます．</span><span>
+</span><a id="line_marker_-6" name="line_marker_-6"></a><p></p><a id="line_marker_-24" name="line_marker_-24"></a><pre><a id="line_marker_-8" name="line_marker_-8"></a><span>//  クリックされたときは、下に定義したstartWalkメソッドを呼ぶ</span><span>
+</span><a id="line_marker_-9" name="line_marker_-9"></a><span>$b=new Button{top:300,text:"Click Me",onClick:startWalk};</span><span>
+</span><a id="line_marker_-10" name="line_marker_-10"></a><span>x=100;</span><span>
+</span><a id="line_marker_-11" name="line_marker_-11"></a><span>y=100;</span><span>
+</span><a id="line_marker_-12" name="line_marker_-12"></a><p></p><a id="line_marker_-13" name="line_marker_-13"></a><span>function startWalk() {</span><span>
+</span><a id="line_marker_-14" name="line_marker_-14"></a><span>//walkメソッドを並列実行する</span><span>
+</span><a id="line_marker_-15" name="line_marker_-15"></a><span>    parallel(walk);</span><span>
+</span><a id="line_marker_-16" name="line_marker_-16"></a><span>}</span><span>
+</span><a id="line_marker_-17" name="line_marker_-17"></a><span>// walkメソッドの定義</span><span>
+</span><a id="line_marker_-18" name="line_marker_-18"></a><span>function walk() {</span><span>
+</span><a id="line_marker_-19" name="line_marker_-19"></a><span>    for(i=0;i&lt;10;i++) {</span><span>
+</span><a id="line_marker_-20" name="line_marker_-20"></a><span>       x+=1;</span><span>
+</span><a id="line_marker_-21" name="line_marker_-21"></a><span>       update();</span><span>
+</span><a id="line_marker_-22" name="line_marker_-22"></a><span>    }</span><span>
+</span><a id="line_marker_-23" name="line_marker_-23"></a><span>}</span><span>
+</span></pre></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
+</body></html>
