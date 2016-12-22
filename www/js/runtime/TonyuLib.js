@@ -274,7 +274,7 @@ return Tonyu=function () {
             bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,iterator:IT,
-            VERSION:1482309728523,//EMBED_VERSION
+            VERSION:1482372694842,//EMBED_VERSION
             A:A};
 }();
 });
