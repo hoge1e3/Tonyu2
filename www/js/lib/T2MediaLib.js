@@ -1,4 +1,6 @@
 // forked from makkii_bcr's "T2MediaLib" http://jsdo.it/makkii_bcr/3ioQ
+
+//define(["PicoAudio"], function(PicoAudio) {
 // T2MediaLib_BGMPlayer //
 
 var T2MediaLib_BGMPlayer = function(arg_id) {
@@ -129,6 +131,7 @@ T2MediaLib_BGMPlayer.prototype.getBGMLength = function() {
 
 var T2MediaLib = {
     context : null,
+    picoAudio : null,
 
     seDataAry : {
         data : []
@@ -212,34 +215,53 @@ var T2MediaLib = {
             return null;
         }
         if (typeof WebSite=="object" && WebSite.mp3Disabled) {
-            url=url.replace(/\.mp3$/,".ogg");
+            url=url.replace(/\.(mp3|mp4|m4a)$/,".ogg");
         }
         var xhr = new XMLHttpRequest();
         xhr.onload = function() {
             if (xhr.status === 200 || xhr.status=== 0 /*@hoge1e3 for node-webkit base64url */) {
                 var arrayBuffer = xhr.response;
                 if (arrayBuffer instanceof ArrayBuffer) {
-                    var successCallback = function(audioBuffer) {
-                        /*
-                        window.alert('Success : ' +
-                                     'sampleRate:' + audioBuffer.sampleRate + '\n' +
-                                     'length:' + audioBuffer.length + '\n' +
-                                     'duration:' + audioBuffer.duration + '\n' +
-                                     'numberOfChannels:' + audioBuffer.numberOfChannels + '\n');
-                        */
-                        T2MediaLib.seDataAry.data[idx] = audioBuffer;
-                        if (callbacks && callbacks.succ) callbacks.succ(idx);//@hoge1e3
-                    };
-                    var errorCallback = function(error) {
-                        if (error instanceof Error) {
-                            console.log('T2MediaLib: '+error.message,url);
-                        } else {
-                            console.log('T2MediaLib: Error decodeAudioData()',url);
-                        }
-                        T2MediaLib.seDataAry.data[idx] = -4;
-                        if (callbacks && callbacks.err) callbacks.err(idx,T2MediaLib.seDataAry.data[idx]);//@hoge1e3
-                    };
-                    T2MediaLib.context.decodeAudioData(arrayBuffer, successCallback, errorCallback);
+                    if (xhr.responseURL.match(/\.(midi?)$/)) {
+                        // Midiデータ(mid)
+                        
+                        // TODO 
+                        // PicoAudio.jsにデコードしてもらう
+                        //if (T2MediaLib.picoAudio == null) {
+                        //    T2MediaLib.picoAudio = new PicoAudio();
+                        //}
+                        //var smf = new Uint8Array(arrayBuffer);
+                        //var data = T2MediaLib.picoAudio.parseSMF(smf);
+                        //T2MediaLib.seDataAry.data[idx] = data;
+                        //if (callbacks && callbacks.succ) callbacks.succ(idx);
+                        
+                        // TODO 仮↓
+                        T2MediaLib.seDataAry.data[idx] = arrayBuffer;
+                        if (callbacks && callbacks.succ) callbacks.succ(idx);
+                    } else {
+                        // 音声データ(ogg,mp3,mp4,m4a)
+                        var successCallback = function(audioBuffer) {
+                            /*
+                            window.alert('Success : ' +
+                                         'sampleRate:' + audioBuffer.sampleRate + '\n' +
+                                         'length:' + audioBuffer.length + '\n' +
+                                         'duration:' + audioBuffer.duration + '\n' +
+                                         'numberOfChannels:' + audioBuffer.numberOfChannels + '\n');
+                            */
+                            T2MediaLib.seDataAry.data[idx] = audioBuffer;
+                            if (callbacks && callbacks.succ) callbacks.succ(idx);//@hoge1e3
+                        };
+                        var errorCallback = function(error) {
+                            if (error instanceof Error) {
+                                console.log('T2MediaLib: '+error.message,url);
+                            } else {
+                                console.log('T2MediaLib: Error decodeAudioData()',url);
+                            }
+                            T2MediaLib.seDataAry.data[idx] = -4;
+                            if (callbacks && callbacks.err) callbacks.err(idx,T2MediaLib.seDataAry.data[idx]);//@hoge1e3
+                        };
+                        T2MediaLib.context.decodeAudioData(arrayBuffer, successCallback, errorCallback);
+                    }
                 } else {
                     T2MediaLib.seDataAry.data[idx] = -3;
                     if (callbacks && callbacks.err) callbacks.err(idx,T2MediaLib.seDataAry.data[idx]);//@hoge1e3
@@ -271,26 +293,35 @@ var T2MediaLib = {
         if (this.isActivated) return;
         this.isActivated=true;
         var myContext=T2MediaLib.context;
-    	var buffer = myContext.createBuffer(1, Math.floor(myContext.sampleRate/32), myContext.sampleRate);
-    	var ary = buffer.getChannelData(0);
-    	var lam = Math.floor(myContext.sampleRate/860);
+        var buffer = myContext.createBuffer(1, Math.floor(myContext.sampleRate/32), myContext.sampleRate);
+        var ary = buffer.getChannelData(0);
+        var lam = Math.floor(myContext.sampleRate/860);
         for (var i = 0; i < ary.length; i++) {
-    	     //ary[i] = (i % lam<lam/2?0.1:-0.1)*(i<lam?2:1) ;
-    	     ary[i] = 0; // 無音化
-    	}
+             //ary[i] = (i % lam<lam/2?0.1:-0.1)*(i<lam?2:1) ;
+             ary[i] = 0; // 無音化
+        }
         //console.log(ary);
-	    var source = myContext.createBufferSource();
-	    source.buffer = buffer;
-    	// connect to output (your speakers)
-    	source.connect(myContext.destination);
+        var source = myContext.createBufferSource();
+        source.buffer = buffer;
+        // connect to output (your speakers)
+        source.connect(myContext.destination);
         // play the file
-	    if (source.noteOn) source.noteOn(0);
-	    else if (source.start) source.start(0);
+        if (source.noteOn) source.noteOn(0);
+        else if (source.start) source.start(0);
     },
     playSE : function(idx, vol, rate, offset, loop, loopStart, loopEnd) {
         if (!T2MediaLib.context) return null;
         var audioBuffer = T2MediaLib.seDataAry.data[idx];
-        if (!(audioBuffer instanceof AudioBuffer)) return null;
+        
+        if (!(audioBuffer instanceof AudioBuffer)) {
+            if (audioBuffer instanceof Object) {
+                // Midi
+                //T2MediaLib.picoAudio.setData(audioBuffer);
+                //T2MediaLib.picoAudio.play();
+                //return pAudio;
+            }
+            return null;
+        }
 
         // 引数チェック
         if (vol === null) {
@@ -377,6 +408,11 @@ var T2MediaLib = {
         return source;
     },
     stopSE : function(sourceObj) {
+        if ((sourceObj instanceof PicoAudio)) {
+            // Midi
+            //T2MediaLib.picoAudio.stop(audioBuffer);
+            //return pAudio;
+        }
         if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
         sourceObj.stop(0);
         return sourceObj;
@@ -586,4 +622,5 @@ setTimeout(function(){ T2MediaLib.setAudioPosition(20); }, 7000);
 setTimeout(function(){ T2MediaLib.stopAudio(); }, 10000);
 */
 
-
+//    return T2MediaLib;
+//});

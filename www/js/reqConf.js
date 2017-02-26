@@ -72,8 +72,12 @@ var reqConf={
                 deps: ["Shell","FS"]
             },
             T2MediaLib: {
+            //    deps: ["PicoAudio"],
                 exports: "T2MediaLib"
             },
+            //PicoAudio: {
+            //    exports: "PicoAudio"
+            //},
             JSZip: {
                 exports:"JSZip"
             },
@@ -100,6 +104,7 @@ var reqConf={
             timbre: "lib/timbre",
             SoundDiag: "runtime/soundDiag",
             T2MediaLib: "lib/T2MediaLib",
+            //PicoAudio: "lib/PicoAudio",
             KernelDiffDialog: "ide/KernelDiffDialog",
             searchDialog: "ide/searchDialog",
             DiffDialog: "ide/DiffDialog",
