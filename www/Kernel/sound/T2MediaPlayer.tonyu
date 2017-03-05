@@ -65,15 +65,13 @@ native Tonyu;
 }
 
 
-// vol:0-128
+// vol:0-128-∞
 \playSE(idx, vol, rate, offset, loop, loopStart, loopEnd) {
     if (mute) return;
-    // vol : Tonyu1のように0～128の範囲にする
+    // vol : Tonyu1のように0～128の範囲にし、128以上は音量増幅とする
     if (vol == null) vol = 128;
-    // vol はgainで実装しているため絶対値の大きい値を入れると危険
-    // そのため0.0～1.0の範囲になるようにする
-    if      (vol <   0) vol =   0;
-    else if (vol > 128) vol = 128;
+    // vol はgainで実装しているため大きい値を入れると大音量となるので注意！
+    if (vol < 0.0) vol = 0.0;
     return T2MediaLib.playSE(idx, vol / 128, rate, offset, loop, loopStart, loopEnd);
 }
 
@@ -119,11 +117,11 @@ native Tonyu;
 }
 
 \setBGMVolume(vol) {
+    if (vol == null) return null;
+    // vol : Tonyu1のように0～128の範囲にし、128以上は音量増幅とする
     vol = vol / 128;
-    // vol はgainで実装しているため絶対値の大きい値を入れると危険
-    // そのため0.0～1.0の範囲になるようにする
-    if      (vol > 1.0) vol = 1.0;
-    else if (vol < 0.0) vol = 0.0;
+    // vol はgainで実装しているため大きい値を入れると大音量となるので注意！
+    if (vol < 0.0) vol = 0.0;
     return T2MediaLib.setBGMVolume(0, vol);
 }
 
@@ -167,11 +165,11 @@ native Tonyu;
 }
 
 \setBGMVolumeID(id, vol) {
+    if (vol == null) return null;
+    // vol : Tonyu1のように0～128の範囲にし、128以上は音量増幅とする
     vol = vol / 128;
-    // vol はgainで実装しているため絶対値の大きい値を入れると危険
-    // そのため0.0～1.0の範囲になるようにする
-    if      (vol > 1.0) vol = 1.0;
-    else if (vol < 0.0) vol = 0.0;
+    // vol はgainで実装しているため大きい値を入れると大音量となるので注意！
+    if (vol < 0.0) vol = 0.0;
     return T2MediaLib.setBGMVolume(id, vol);
 }
 
