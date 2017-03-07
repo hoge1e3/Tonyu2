@@ -14,7 +14,7 @@ requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu
                 || u.indexOf("ipad") != -1
                 || u.indexOf("ipod") != -1
                 ) && window != window.parent) {
-                return 5;
+                return 40;
             }
             return 0;
         }
