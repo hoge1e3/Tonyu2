@@ -14,7 +14,8 @@ $uiScreen.on("resize",doLayout);
     if (calch>ch) calch=ch;
     if (calcw>cw) calcw=cw;
     var scl=1;
-    if (shouldDraw1x1(width,height,calcw,calch)) {
+    var isPC = !($Navigator.isTablet()||$Navigator.isMobile());
+    if (isPC&&shouldDraw1x1(width,height,calcw,calch)) {
         calcw=width;calch=height;
         $Screen.scaleX=1;
     } else {
@@ -27,9 +28,9 @@ $uiScreen.on("resize",doLayout);
 
 
 \shouldDraw1x1(srcw,srch,dstw,dsth) {
-    // srcw=465 -> dstw=460...665
-    var larger=200;
-    var smaller=5;
+    // srcw=465 -> dstw=465...565
+    var larger=100;
+    var smaller=0;
     return srcw-smaller<=dstw && dstw<=srcw+larger &&
     srch-smaller<=dsth && dsth<=srch+larger;
 }
