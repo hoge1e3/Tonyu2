@@ -11,6 +11,7 @@ define([], function () {
       ".m4a":"audio/x-m4a",
       ".mid":"audio/mid",
       ".midi":"audio/mid",
+      ".wav":"audio/wav",
       ".txt":"text/plain",
       ".html":"text/html",
       ".htm":"text/html",

@@ -12,8 +12,8 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                         return r;
                     }
                 },
-                sound:{name:"音声",exts:["mp3","ogg","mp4","m4a","mid"],path:"sounds/",key:"sounds",
-                    extPattern:/\.(mp3|ogg|mp4|m4a|midi?)$/i,contentType:/((audio\/(mp3|ogg|x-m4a|midi?))|(video\/mp4))/,
+                sound:{name:"音声",exts:["mp3","ogg","mp4","m4a","mid","wav"],path:"sounds/",key:"sounds",
+                    extPattern:/\.(mp3|ogg|mp4|m4a|midi?|wav)$/i,contentType:/((audio\/(mp3|ogg|x-m4a|midi?|wav))|(video\/mp4))/,
                     newItem:function (name) {
                         var r={};
                         if (name) r.name="$se_"+name;
@@ -40,6 +40,8 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                     u=WebSite.urlAliases["images/sound_m4a.png"];
                 } else if (Util.endsWith(u,".mid") || Util.endsWith(u,".midi")) {
                     u=WebSite.urlAliases["images/sound_mid.png"];
+                } else if (Util.endsWith(u,".wav")) {
+                    u=WebSite.urlAliases["images/sound_wav.png"];
                 }
                 return IL.convURL(u,prj.getDir());
             }catch(e) {
