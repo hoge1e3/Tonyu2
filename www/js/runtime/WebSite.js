@@ -35,6 +35,12 @@ define(["PathUtil"], function (P) {
                 "images/inputPad.png":"../../images/inputPad.png",
                 "images/mapchip.png":"../../images/mapchip.png",
                 "images/sound.png":"../../images/sound.png",
+                "images/sound_ogg.png":"../../images/sound_ogg.png",
+                "images/sound_mp3.png":"../../images/sound_mp3.png",
+                "images/sound_mp4.png":"../../images/sound_mp4.png",
+                "images/sound_m4a.png":"../../images/sound_m4a.png",
+                "images/sound_mid.png":"../../images/sound_mid.png",
+                "images/sound_wav.png":"../../images/sound_wav.png",
                     "images/ecl.png":"../../images/ecl.png"
             },top:"../..",devMode:devMode
         };

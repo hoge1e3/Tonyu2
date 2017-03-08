@@ -30,9 +30,16 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
         if (!rsrc) prj.setResource();
         function convURL(u) {
             try {
-                if (Util.endsWith(u,".ogg") || Util.endsWith(u,".mp3") || Util.endsWith(u,".mp4")
-                    || Util.endsWith(u,".m4a") || Util.endsWith(u,".mid") || Util.endsWith(u,".midi") ) {
-                    u=WebSite.urlAliases["images/sound.png"];
+                if (Util.endsWith(u,".ogg")) {
+                    u=WebSite.urlAliases["images/sound_ogg.png"];
+                } else if (Util.endsWith(u,".mp3")) {
+                    u=WebSite.urlAliases["images/sound_mp3.png"];
+                } else if (Util.endsWith(u,".mp4")) {
+                    u=WebSite.urlAliases["images/sound_mp4.png"];
+                } else if (Util.endsWith(u,".m4a")) {
+                    u=WebSite.urlAliases["images/sound_m4a.png"];
+                } else if (Util.endsWith(u,".mid") || Util.endsWith(u,".midi")) {
+                    u=WebSite.urlAliases["images/sound_mid.png"];
                 }
                 return IL.convURL(u,prj.getDir());
             }catch(e) {
