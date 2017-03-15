@@ -10,6 +10,9 @@ nowait \drawLine(x,y,tx,ty,col,zOrder) {
     appear(T1Line){x,y,tx,ty,col,zOrder, owner:this};
 }
 
+nowait \fillRect(x,y,w,h,col,zOrder) {
+    appear(T1Rect) {x,y,w,h,col,zOrder,owner:this};   
+}
 nowait \drawSprite(x,y,p,f,zOrder) {
     drawDxSprite(x,y,p,f,zOrder,0,255,1,1);
 }

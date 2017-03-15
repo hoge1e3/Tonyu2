@@ -23,6 +23,7 @@ if (!$.data(document,"key_event")) {
         lastMouseDown=$frameCount;
         if ($InputDevice.touchEmu) {
             $touches[0].touched=1;
+            $touches[0].vx=$touches[0].vy=0;
         }
         $Keys.keydown{keyCode:1};
     };
@@ -30,6 +31,7 @@ if (!$.data(document,"key_event")) {
         var a=\{
             if ($InputDevice.touchEmu) {
                 $touches[0].touched=0;
+                $touches[0].vx=$touches[0].vy=0;
             }
             $Keys.keyup{keyCode:1};
         };

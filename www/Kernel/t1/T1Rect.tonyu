@@ -1,0 +1,6 @@
+extends OneframeSprite;
+\draw(ctx) {
+    ctx.fillStyle=col;
+    ctx.fillRect(x,y,w,h);   
+    drawn=true;
+}
