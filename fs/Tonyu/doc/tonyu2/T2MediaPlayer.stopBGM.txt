@@ -1,0 +1,11 @@
+[[T2MediaPlayer]] | [[T2MediaPlayer(詳細)>T2MediaPlayer_detail]]
+
+*stopBGMメソッド
+
+BGMの再生を停止します
+
+<<code
+stopBGM()
+>>
+
+.

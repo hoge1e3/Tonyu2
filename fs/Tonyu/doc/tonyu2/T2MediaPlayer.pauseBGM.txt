@@ -1,0 +1,13 @@
+[[T2MediaPlayer]] | [[T2MediaPlayer(詳細)>T2MediaPlayer_detail]]
+
+*pauseBGMメソッド
+
+再生中のBGMを一時停止します
+
+再び再生する場合は[[resumeBGM>T2MediaPlayer.resumeBGM]]を使います
+
+<<code
+pauseBGM()
+>>
+
+.

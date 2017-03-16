@@ -1,0 +1,11 @@
+[[T2MediaPlayer]] | [[T2MediaPlayer(詳細)>T2MediaPlayer_detail]]
+
+*resumeBGMメソッド
+
+[[pauseBGM>T2MediaPlayer.pauseBGM]]で一時停止したBGMを再開します
+
+<<code
+resumeBGM()
+>>
+
+.

@@ -1,0 +1,22 @@
+[[T2MediaPlayer]] | [[T2MediaPlayer(詳細)>T2MediaPlayer_detail]]
+
+*playBGMメソッド
+
+BGMを再生します
+
+<<code
+playBGM(name, repeat, startTime, loopStart, loopEnd)
+>>
+
+-name
+--再生するBGMの名前([[音声リスト>sndres]]で指定した名前）を指定します
+-repeat（省略可）
+--trueを指定すると繰り返し再生します。（省略時：false）
+-startTime（省略可）
+--音声データで再生開始する位置を指定します。（単位：秒）（省略時：0）
+--例えば、3を指定すると音声データの3秒の部分から再生が開始されます
+-loopStart（省略可）
+--ループ始端位置を指定します。繰り返し再生時に有効となります（省略時：0）
+-loopEnd（省略可）
+--ループ終端位置を指定します。繰り返し再生時に有効となります（省略時：再生する音声データの長さ）
+.
