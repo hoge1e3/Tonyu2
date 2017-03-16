@@ -12,9 +12,10 @@ Tonyu System 2 includes these third party libraries and assets:
  js/lib/FileSaver.min.js    https://github.com/eligrey/FileSaver.js/#filesaverjs
  js/lib/encoding.min.js https://github.com/polygonplanet/encoding.js
  js/lib/util.js Util.{Base64_To_ArrayBuffer, Base64_From_ArrayBuffer} http://hakuhin.jp/js/base64.html
+ js/lib/PicoAudio.js  https://github.com/cagpie/PicoAudio.js (@cagpie)
  images/mapchip.png  http://rmake.jp/published_items/7526  (Public domain)
  fs/Tonyu/Projects/StateMachine/images/Denzi_050817_a.png  http://www3.wind.ne.jp/DENZI/diary/  (CC BY-SA 2.1 JP)
 
 Special thanks to:
- @makkii_bcr  Inproves Boot.tonyu and Contributes Pad.tonyu, js/lib/T2MediaLib.js, fs/Tonyu/Kernel/sound/T2MediaPlayer.tonyu
+ @makkii_bcr  Improves Boot.tonyu and Contributes Pad.tonyu, js/lib/T2MediaLib.js, fs/Tonyu/Kernel/sound/T2MediaPlayer.tonyu
 
