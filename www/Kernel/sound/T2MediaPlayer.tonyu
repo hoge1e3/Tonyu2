@@ -190,8 +190,8 @@ native Tonyu;
 
 \playBGM(idx, loop, offset, loopStart, loopEnd) {
     if (mute) return;
-    if (loop === null) loop = false;
-    if (offset === null) offset = 0;
+    if (loop == null) loop = false;
+    if (offset == null) offset = 0;
     return T2MediaLib.playBGM(0, idx, loop, offset, loopStart, loopEnd);
 }
 
@@ -302,8 +302,8 @@ native Tonyu;
 // BGM ID指定 //
 \playBGMID(id, idx, loop, offset, loopStart, loopEnd) {
     if (mute) return;
-    if (loop === null) loop = false;
-    if (offset === null) offset = 0;
+    if (loop == null) loop = false;
+    if (offset == null) offset = 0;
     return T2MediaLib.playBGM(id, idx, loop, offset, loopStart, loopEnd);
 }
 
@@ -413,8 +413,8 @@ native Tonyu;
 
 \playAudio(idx, loop, startTime) {
     if (mute) return;
-    if (loop === null) loop = false;
-    if (startTime === null) startTime = 0;
+    if (loop == null) loop = false;
+    if (startTime == null) startTime = 0;
     return T2MediaLib.playAudio(idx, loop, startTime);
 }
 
