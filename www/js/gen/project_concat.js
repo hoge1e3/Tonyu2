@@ -1,4 +1,4 @@
-// Created at Sun Mar 19 2017 12:09:57 GMT+0900 (東京 (標準時))
+// Created at Sun Mar 19 2017 13:52:16 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -1207,7 +1207,7 @@ return Tonyu=function () {
             bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,iterator:IT,
-            VERSION:1489892993004,//EMBED_VERSION
+            VERSION:1489899131616,//EMBED_VERSION
             A:A};
 }();
 });
@@ -11598,7 +11598,7 @@ var T2MediaLib = {
                 if (arrayBuffer instanceof ArrayBuffer) {
                     // xhr.responseURL が実装されていないブラウザがあるので使わない
                     var url = xhr.t2MediaLib_requestURL;
-                    if (url.match(/\.(midi?)$/)) {
+                    if (url.match(/\.(midi?)$/) || url.match(/^data:audio\/mid/) ) {
                         // Midi
                         // PicoAudio.jsにデコードしてもらう
                         if (T2MediaLib.picoAudio == null) {
@@ -11680,10 +11680,10 @@ var T2MediaLib = {
         if (!(audioBuffer instanceof AudioBuffer)) return null;
 
         // 引数チェック
-        if (vol === null) {
+        if (vol == null) {
             vol = 1.0;
         }
-        if (pan === null) {
+        if (pan == null) {
             pan = 0.0;
         }
         if (!rate) rate = 1.0;

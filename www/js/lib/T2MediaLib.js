@@ -418,7 +418,7 @@ var T2MediaLib = {
                 if (arrayBuffer instanceof ArrayBuffer) {
                     // xhr.responseURL が実装されていないブラウザがあるので使わない
                     var url = xhr.t2MediaLib_requestURL;
-                    if (url.match(/\.(midi?)$/)) {
+                    if (url.match(/\.(midi?)$/) || url.match(/^data:audio\/mid/) ) {
                         // Midi
                         // PicoAudio.jsにデコードしてもらう
                         if (T2MediaLib.picoAudio == null) {
