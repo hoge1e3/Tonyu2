@@ -13761,16 +13761,16 @@ Tonyu.klass.define({
       var _this=this;
       var data;
       
-      //$LASTPOS=41004099;//kernel.T2MediaPlayer:4099
+      //$LASTPOS=41004097;//kernel.T2MediaPlayer:4097
       T2MediaLib.loadBGM(idx,src);
-      //$LASTPOS=41004159;//kernel.T2MediaPlayer:4159
+      //$LASTPOS=41004157;//kernel.T2MediaPlayer:4157
       data = T2MediaLib.getBGMData(idx);
       
-      //$LASTPOS=41004203;//kernel.T2MediaPlayer:4203
+      //$LASTPOS=41004201;//kernel.T2MediaPlayer:4201
       while (data==null) {
-        //$LASTPOS=41004235;//kernel.T2MediaPlayer:4235
+        //$LASTPOS=41004233;//kernel.T2MediaPlayer:4233
         _this.update();
-        //$LASTPOS=41004254;//kernel.T2MediaPlayer:4254
+        //$LASTPOS=41004252;//kernel.T2MediaPlayer:4252
         data=T2MediaLib.getBGMData(idx);
         
       }
@@ -13783,9 +13783,9 @@ Tonyu.klass.define({
       var __pc=0;
       var data;
       
-      //$LASTPOS=41004099;//kernel.T2MediaPlayer:4099
+      //$LASTPOS=41004097;//kernel.T2MediaPlayer:4097
       T2MediaLib.loadBGM(idx,src);
-      //$LASTPOS=41004159;//kernel.T2MediaPlayer:4159
+      //$LASTPOS=41004157;//kernel.T2MediaPlayer:4157
       data = T2MediaLib.getBGMData(idx);
       
       
@@ -13794,15 +13794,15 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=41004203;//kernel.T2MediaPlayer:4203
+            //$LASTPOS=41004201;//kernel.T2MediaPlayer:4201
           case 1:
             if (!(data==null)) { __pc=3; break; }
-            //$LASTPOS=41004235;//kernel.T2MediaPlayer:4235
+            //$LASTPOS=41004233;//kernel.T2MediaPlayer:4233
             _this.fiber$update(_thread);
             __pc=2;return;
           case 2:
             
-            //$LASTPOS=41004254;//kernel.T2MediaPlayer:4254
+            //$LASTPOS=41004252;//kernel.T2MediaPlayer:4252
             data=T2MediaLib.getBGMData(idx);
             __pc=1;break;
           case 3:
@@ -13817,18 +13817,18 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=41004375;//kernel.T2MediaPlayer:4375
+      //$LASTPOS=41004373;//kernel.T2MediaPlayer:4373
       if (_this.mute) {
         return _this;
       }
-      //$LASTPOS=41004398;//kernel.T2MediaPlayer:4398
-      if (loop===null) {
-        //$LASTPOS=41004417;//kernel.T2MediaPlayer:4417
+      //$LASTPOS=41004396;//kernel.T2MediaPlayer:4396
+      if (loop==null) {
+        //$LASTPOS=41004414;//kernel.T2MediaPlayer:4414
         loop=false;
       }
-      //$LASTPOS=41004436;//kernel.T2MediaPlayer:4436
-      if (offset===null) {
-        //$LASTPOS=41004457;//kernel.T2MediaPlayer:4457
+      //$LASTPOS=41004433;//kernel.T2MediaPlayer:4433
+      if (offset==null) {
+        //$LASTPOS=41004453;//kernel.T2MediaPlayer:4453
         offset=0;
       }
       return T2MediaLib.playBGM(0,idx,loop,offset,loopStart,loopEnd);
@@ -13839,19 +13839,19 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=41004375;//kernel.T2MediaPlayer:4375
+      //$LASTPOS=41004373;//kernel.T2MediaPlayer:4373
       if (_this.mute) {
         _thread.retVal=_this;return;
         
       }
-      //$LASTPOS=41004398;//kernel.T2MediaPlayer:4398
-      if (loop===null) {
-        //$LASTPOS=41004417;//kernel.T2MediaPlayer:4417
+      //$LASTPOS=41004396;//kernel.T2MediaPlayer:4396
+      if (loop==null) {
+        //$LASTPOS=41004414;//kernel.T2MediaPlayer:4414
         loop=false;
       }
-      //$LASTPOS=41004436;//kernel.T2MediaPlayer:4436
-      if (offset===null) {
-        //$LASTPOS=41004457;//kernel.T2MediaPlayer:4457
+      //$LASTPOS=41004433;//kernel.T2MediaPlayer:4433
+      if (offset==null) {
+        //$LASTPOS=41004453;//kernel.T2MediaPlayer:4453
         offset=0;
       }
       _thread.retVal=T2MediaLib.playBGM(0,idx,loop,offset,loopStart,loopEnd);return;
@@ -13897,7 +13897,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=41004679;//kernel.T2MediaPlayer:4679
+      //$LASTPOS=41004675;//kernel.T2MediaPlayer:4675
       if (_this.mute) {
         return _this;
       }
@@ -13909,7 +13909,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=41004679;//kernel.T2MediaPlayer:4679
+      //$LASTPOS=41004675;//kernel.T2MediaPlayer:4675
       if (_this.mute) {
         _thread.retVal=_this;return;
         
@@ -13940,13 +13940,13 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=41004853;//kernel.T2MediaPlayer:4853
+      //$LASTPOS=41004849;//kernel.T2MediaPlayer:4849
       if (typeof  vol==="number") {
-        //$LASTPOS=41004893;//kernel.T2MediaPlayer:4893
+        //$LASTPOS=41004889;//kernel.T2MediaPlayer:4889
         vol/=128;
-        //$LASTPOS=41004914;//kernel.T2MediaPlayer:4914
+        //$LASTPOS=41004910;//kernel.T2MediaPlayer:4910
         if (vol<0) {
-          //$LASTPOS=41004929;//kernel.T2MediaPlayer:4929
+          //$LASTPOS=41004925;//kernel.T2MediaPlayer:4925
           vol=0;
         }
         
@@ -13962,13 +13962,13 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=41004853;//kernel.T2MediaPlayer:4853
+      //$LASTPOS=41004849;//kernel.T2MediaPlayer:4849
       if (typeof  vol==="number") {
-        //$LASTPOS=41004893;//kernel.T2MediaPlayer:4893
+        //$LASTPOS=41004889;//kernel.T2MediaPlayer:4889
         vol/=128;
-        //$LASTPOS=41004914;//kernel.T2MediaPlayer:4914
+        //$LASTPOS=41004910;//kernel.T2MediaPlayer:4910
         if (vol<0) {
-          //$LASTPOS=41004929;//kernel.T2MediaPlayer:4929
+          //$LASTPOS=41004925;//kernel.T2MediaPlayer:4925
           vol=0;
         }
         
@@ -13987,7 +13987,7 @@ Tonyu.klass.define({
       var _this=this;
       var vol;
       
-      //$LASTPOS=41005155;//kernel.T2MediaPlayer:5155
+      //$LASTPOS=41005151;//kernel.T2MediaPlayer:5151
       vol = T2MediaLib.getBGMVolume(0);
       
       return typeof  vol==="number"?vol*128:vol;
@@ -13999,7 +13999,7 @@ Tonyu.klass.define({
       var __pc=0;
       var vol;
       
-      //$LASTPOS=41005155;//kernel.T2MediaPlayer:5155
+      //$LASTPOS=41005151;//kernel.T2MediaPlayer:5151
       vol = T2MediaLib.getBGMVolume(0);
       
       _thread.retVal=typeof  vol==="number"?vol*128:vol;return;
@@ -14011,13 +14011,13 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=41005376;//kernel.T2MediaPlayer:5376
+      //$LASTPOS=41005372;//kernel.T2MediaPlayer:5372
       if (typeof  vol==="number") {
-        //$LASTPOS=41005416;//kernel.T2MediaPlayer:5416
+        //$LASTPOS=41005412;//kernel.T2MediaPlayer:5412
         vol/=128;
-        //$LASTPOS=41005437;//kernel.T2MediaPlayer:5437
+        //$LASTPOS=41005433;//kernel.T2MediaPlayer:5433
         if (vol<0) {
-          //$LASTPOS=41005452;//kernel.T2MediaPlayer:5452
+          //$LASTPOS=41005448;//kernel.T2MediaPlayer:5448
           vol=0;
         }
         
@@ -14033,13 +14033,13 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=41005376;//kernel.T2MediaPlayer:5376
+      //$LASTPOS=41005372;//kernel.T2MediaPlayer:5372
       if (typeof  vol==="number") {
-        //$LASTPOS=41005416;//kernel.T2MediaPlayer:5416
+        //$LASTPOS=41005412;//kernel.T2MediaPlayer:5412
         vol/=128;
-        //$LASTPOS=41005437;//kernel.T2MediaPlayer:5437
+        //$LASTPOS=41005433;//kernel.T2MediaPlayer:5433
         if (vol<0) {
-          //$LASTPOS=41005452;//kernel.T2MediaPlayer:5452
+          //$LASTPOS=41005448;//kernel.T2MediaPlayer:5448
           vol=0;
         }
         
@@ -14295,18 +14295,18 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=41006730;//kernel.T2MediaPlayer:6730
+      //$LASTPOS=41006726;//kernel.T2MediaPlayer:6726
       if (_this.mute) {
         return _this;
       }
-      //$LASTPOS=41006753;//kernel.T2MediaPlayer:6753
-      if (loop===null) {
-        //$LASTPOS=41006772;//kernel.T2MediaPlayer:6772
+      //$LASTPOS=41006749;//kernel.T2MediaPlayer:6749
+      if (loop==null) {
+        //$LASTPOS=41006767;//kernel.T2MediaPlayer:6767
         loop=false;
       }
-      //$LASTPOS=41006791;//kernel.T2MediaPlayer:6791
-      if (offset===null) {
-        //$LASTPOS=41006812;//kernel.T2MediaPlayer:6812
+      //$LASTPOS=41006786;//kernel.T2MediaPlayer:6786
+      if (offset==null) {
+        //$LASTPOS=41006806;//kernel.T2MediaPlayer:6806
         offset=0;
       }
       return T2MediaLib.playBGM(id,idx,loop,offset,loopStart,loopEnd);
@@ -14317,19 +14317,19 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=41006730;//kernel.T2MediaPlayer:6730
+      //$LASTPOS=41006726;//kernel.T2MediaPlayer:6726
       if (_this.mute) {
         _thread.retVal=_this;return;
         
       }
-      //$LASTPOS=41006753;//kernel.T2MediaPlayer:6753
-      if (loop===null) {
-        //$LASTPOS=41006772;//kernel.T2MediaPlayer:6772
+      //$LASTPOS=41006749;//kernel.T2MediaPlayer:6749
+      if (loop==null) {
+        //$LASTPOS=41006767;//kernel.T2MediaPlayer:6767
         loop=false;
       }
-      //$LASTPOS=41006791;//kernel.T2MediaPlayer:6791
-      if (offset===null) {
-        //$LASTPOS=41006812;//kernel.T2MediaPlayer:6812
+      //$LASTPOS=41006786;//kernel.T2MediaPlayer:6786
+      if (offset==null) {
+        //$LASTPOS=41006806;//kernel.T2MediaPlayer:6806
         offset=0;
       }
       _thread.retVal=T2MediaLib.playBGM(id,idx,loop,offset,loopStart,loopEnd);return;
@@ -14375,7 +14375,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=41007049;//kernel.T2MediaPlayer:7049
+      //$LASTPOS=41007043;//kernel.T2MediaPlayer:7043
       if (_this.mute) {
         return _this;
       }
@@ -14387,7 +14387,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=41007049;//kernel.T2MediaPlayer:7049
+      //$LASTPOS=41007043;//kernel.T2MediaPlayer:7043
       if (_this.mute) {
         _thread.retVal=_this;return;
         
@@ -14402,7 +14402,7 @@ Tonyu.klass.define({
       var _this=this;
       var vol;
       
-      //$LASTPOS=41007138;//kernel.T2MediaPlayer:7138
+      //$LASTPOS=41007132;//kernel.T2MediaPlayer:7132
       vol = T2MediaLib.getBGMVolume(id);
       
       return typeof  vol==="number"?vol*128:vol;
@@ -14414,7 +14414,7 @@ Tonyu.klass.define({
       var __pc=0;
       var vol;
       
-      //$LASTPOS=41007138;//kernel.T2MediaPlayer:7138
+      //$LASTPOS=41007132;//kernel.T2MediaPlayer:7132
       vol = T2MediaLib.getBGMVolume(id);
       
       _thread.retVal=typeof  vol==="number"?vol*128:vol;return;
@@ -14426,13 +14426,13 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=41007366;//kernel.T2MediaPlayer:7366
+      //$LASTPOS=41007360;//kernel.T2MediaPlayer:7360
       if (typeof  vol==="number") {
-        //$LASTPOS=41007406;//kernel.T2MediaPlayer:7406
+        //$LASTPOS=41007400;//kernel.T2MediaPlayer:7400
         vol/=128;
-        //$LASTPOS=41007427;//kernel.T2MediaPlayer:7427
+        //$LASTPOS=41007421;//kernel.T2MediaPlayer:7421
         if (vol<0) {
-          //$LASTPOS=41007442;//kernel.T2MediaPlayer:7442
+          //$LASTPOS=41007436;//kernel.T2MediaPlayer:7436
           vol=0;
         }
         
@@ -14448,13 +14448,13 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=41007366;//kernel.T2MediaPlayer:7366
+      //$LASTPOS=41007360;//kernel.T2MediaPlayer:7360
       if (typeof  vol==="number") {
-        //$LASTPOS=41007406;//kernel.T2MediaPlayer:7406
+        //$LASTPOS=41007400;//kernel.T2MediaPlayer:7400
         vol/=128;
-        //$LASTPOS=41007427;//kernel.T2MediaPlayer:7427
+        //$LASTPOS=41007421;//kernel.T2MediaPlayer:7421
         if (vol<0) {
-          //$LASTPOS=41007442;//kernel.T2MediaPlayer:7442
+          //$LASTPOS=41007436;//kernel.T2MediaPlayer:7436
           vol=0;
         }
         
@@ -14710,7 +14710,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=41008742;//kernel.T2MediaPlayer:8742
+      //$LASTPOS=41008736;//kernel.T2MediaPlayer:8736
       T2MediaLib.allStopBGM();
     },
     fiber$allStopBGM :function _trc_T2MediaPlayer_f_allStopBGM(_thread) {
@@ -14719,7 +14719,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=41008742;//kernel.T2MediaPlayer:8742
+      //$LASTPOS=41008736;//kernel.T2MediaPlayer:8736
       T2MediaLib.allStopBGM();
       
       _thread.retVal=_this;return;
@@ -14728,7 +14728,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=41008795;//kernel.T2MediaPlayer:8795
+      //$LASTPOS=41008789;//kernel.T2MediaPlayer:8789
       T2MediaLib.allResetBGM();
     },
     fiber$allResetBGM :function _trc_T2MediaPlayer_f_allResetBGM(_thread) {
@@ -14737,7 +14737,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=41008795;//kernel.T2MediaPlayer:8795
+      //$LASTPOS=41008789;//kernel.T2MediaPlayer:8789
       T2MediaLib.allResetBGM();
       
       _thread.retVal=_this;return;
@@ -14746,11 +14746,11 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=41008875;//kernel.T2MediaPlayer:8875
+      //$LASTPOS=41008869;//kernel.T2MediaPlayer:8869
       T2MediaLib.loadAudio(idx,src);
-      //$LASTPOS=41008937;//kernel.T2MediaPlayer:8937
+      //$LASTPOS=41008931;//kernel.T2MediaPlayer:8931
       while (T2MediaLib.getAudioData(idx)==null) {
-        //$LASTPOS=41008982;//kernel.T2MediaPlayer:8982
+        //$LASTPOS=41008976;//kernel.T2MediaPlayer:8976
         _this.update();
       }
     },
@@ -14760,7 +14760,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=41008875;//kernel.T2MediaPlayer:8875
+      //$LASTPOS=41008869;//kernel.T2MediaPlayer:8869
       T2MediaLib.loadAudio(idx,src);
       
       _thread.enter(function _trc_T2MediaPlayer_ent_loadAudio(_thread) {
@@ -14768,10 +14768,10 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=41008937;//kernel.T2MediaPlayer:8937
+            //$LASTPOS=41008931;//kernel.T2MediaPlayer:8931
           case 1:
             if (!(T2MediaLib.getAudioData(idx)==null)) { __pc=3; break; }
-            //$LASTPOS=41008982;//kernel.T2MediaPlayer:8982
+            //$LASTPOS=41008976;//kernel.T2MediaPlayer:8976
             _this.fiber$update(_thread);
             __pc=2;return;
           case 2:
@@ -14788,18 +14788,18 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=41009038;//kernel.T2MediaPlayer:9038
+      //$LASTPOS=41009032;//kernel.T2MediaPlayer:9032
       if (_this.mute) {
         return _this;
       }
-      //$LASTPOS=41009061;//kernel.T2MediaPlayer:9061
-      if (loop===null) {
-        //$LASTPOS=41009080;//kernel.T2MediaPlayer:9080
+      //$LASTPOS=41009055;//kernel.T2MediaPlayer:9055
+      if (loop==null) {
+        //$LASTPOS=41009073;//kernel.T2MediaPlayer:9073
         loop=false;
       }
-      //$LASTPOS=41009099;//kernel.T2MediaPlayer:9099
-      if (startTime===null) {
-        //$LASTPOS=41009123;//kernel.T2MediaPlayer:9123
+      //$LASTPOS=41009092;//kernel.T2MediaPlayer:9092
+      if (startTime==null) {
+        //$LASTPOS=41009115;//kernel.T2MediaPlayer:9115
         startTime=0;
       }
       return T2MediaLib.playAudio(idx,loop,startTime);
@@ -14810,19 +14810,19 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=41009038;//kernel.T2MediaPlayer:9038
+      //$LASTPOS=41009032;//kernel.T2MediaPlayer:9032
       if (_this.mute) {
         _thread.retVal=_this;return;
         
       }
-      //$LASTPOS=41009061;//kernel.T2MediaPlayer:9061
-      if (loop===null) {
-        //$LASTPOS=41009080;//kernel.T2MediaPlayer:9080
+      //$LASTPOS=41009055;//kernel.T2MediaPlayer:9055
+      if (loop==null) {
+        //$LASTPOS=41009073;//kernel.T2MediaPlayer:9073
         loop=false;
       }
-      //$LASTPOS=41009099;//kernel.T2MediaPlayer:9099
-      if (startTime===null) {
-        //$LASTPOS=41009123;//kernel.T2MediaPlayer:9123
+      //$LASTPOS=41009092;//kernel.T2MediaPlayer:9092
+      if (startTime==null) {
+        //$LASTPOS=41009115;//kernel.T2MediaPlayer:9115
         startTime=0;
       }
       _thread.retVal=T2MediaLib.playAudio(idx,loop,startTime);return;
@@ -14868,7 +14868,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=41009338;//kernel.T2MediaPlayer:9338
+      //$LASTPOS=41009330;//kernel.T2MediaPlayer:9330
       if (_this.mute) {
         return _this;
       }
@@ -14880,7 +14880,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=41009338;//kernel.T2MediaPlayer:9338
+      //$LASTPOS=41009330;//kernel.T2MediaPlayer:9330
       if (_this.mute) {
         _thread.retVal=_this;return;
         
@@ -14894,16 +14894,16 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=41009428;//kernel.T2MediaPlayer:9428
+      //$LASTPOS=41009420;//kernel.T2MediaPlayer:9420
       vol=vol/128;
-      //$LASTPOS=41009450;//kernel.T2MediaPlayer:9450
+      //$LASTPOS=41009442;//kernel.T2MediaPlayer:9442
       if (vol>1) {
-        //$LASTPOS=41009470;//kernel.T2MediaPlayer:9470
+        //$LASTPOS=41009462;//kernel.T2MediaPlayer:9462
         vol=1;
       } else {
-        //$LASTPOS=41009491;//kernel.T2MediaPlayer:9491
+        //$LASTPOS=41009483;//kernel.T2MediaPlayer:9483
         if (vol<0) {
-          //$LASTPOS=41009506;//kernel.T2MediaPlayer:9506
+          //$LASTPOS=41009498;//kernel.T2MediaPlayer:9498
           vol=0;
         }
       }
@@ -14915,16 +14915,16 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=41009428;//kernel.T2MediaPlayer:9428
+      //$LASTPOS=41009420;//kernel.T2MediaPlayer:9420
       vol=vol/128;
-      //$LASTPOS=41009450;//kernel.T2MediaPlayer:9450
+      //$LASTPOS=41009442;//kernel.T2MediaPlayer:9442
       if (vol>1) {
-        //$LASTPOS=41009470;//kernel.T2MediaPlayer:9470
+        //$LASTPOS=41009462;//kernel.T2MediaPlayer:9462
         vol=1;
       } else {
-        //$LASTPOS=41009491;//kernel.T2MediaPlayer:9491
+        //$LASTPOS=41009483;//kernel.T2MediaPlayer:9483
         if (vol<0) {
-          //$LASTPOS=41009506;//kernel.T2MediaPlayer:9506
+          //$LASTPOS=41009498;//kernel.T2MediaPlayer:9498
           vol=0;
         }
       }
@@ -14937,14 +14937,14 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=41009596;//kernel.T2MediaPlayer:9596
+      //$LASTPOS=41009588;//kernel.T2MediaPlayer:9588
       if (tempo>4) {
-        //$LASTPOS=41009618;//kernel.T2MediaPlayer:9618
+        //$LASTPOS=41009610;//kernel.T2MediaPlayer:9610
         tempo=4;
       } else {
-        //$LASTPOS=41009641;//kernel.T2MediaPlayer:9641
+        //$LASTPOS=41009633;//kernel.T2MediaPlayer:9633
         if (tempo<0.5) {
-          //$LASTPOS=41009658;//kernel.T2MediaPlayer:9658
+          //$LASTPOS=41009650;//kernel.T2MediaPlayer:9650
           tempo=0.5;
         }
       }
@@ -14956,14 +14956,14 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=41009596;//kernel.T2MediaPlayer:9596
+      //$LASTPOS=41009588;//kernel.T2MediaPlayer:9588
       if (tempo>4) {
-        //$LASTPOS=41009618;//kernel.T2MediaPlayer:9618
+        //$LASTPOS=41009610;//kernel.T2MediaPlayer:9610
         tempo=4;
       } else {
-        //$LASTPOS=41009641;//kernel.T2MediaPlayer:9641
+        //$LASTPOS=41009633;//kernel.T2MediaPlayer:9633
         if (tempo<0.5) {
-          //$LASTPOS=41009658;//kernel.T2MediaPlayer:9658
+          //$LASTPOS=41009650;//kernel.T2MediaPlayer:9650
           tempo=0.5;
         }
       }

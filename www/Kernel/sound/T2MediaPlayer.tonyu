@@ -174,7 +174,6 @@ native Tonyu;
     return T2MediaLib.getSEData(idx);
 }
 
-
 // BGM //
 \loadBGM(idx, src) {
     // 非同期呼び出し
