@@ -2,32 +2,32 @@
 
 * オブジェクトをドラッグする
 
--[[特定の位置をクリックした時に動作をする]]を参考に，オブジェクトがタッチされたかを判定する
--タッチされている間，ドラッグ中の移動の処理を行なう（dragメソッド）
+-[[findTouch]]メソッドを用いて，オブジェクトがタッチされたかを判定する
+-dragメソッドを自分で定義し，タッチされている間，ドラッグ中の移動の処理を行なう
 
 
 <<code
 x=100;y=200;
-while(true){
-  t=$touches[0];
-  if(t.touched==1 && dist(x-t.x,y-t.y)<20){//自分の近くをタッチされたら
-     drag(); //ドラッグ開始
-  }
-  update();
+while(true) {
+    t=findTouch();
+    if (t) {
+        drag(t);
+    }
+    update();   
 }
-
-\drag() {
-    // (px,py)に，直前のタッチされた位置を覚える
-    px=$touches[0].x;
-    py=$touches[0].y;
-    while($touches[0].touched) {//タッチされている間繰り返す
-        // (px,py)からの差分だけ移動させる
-        x+= $touches[0].x-px;
-        y+= $touches[0].y-py;
-        // (px,py)を更新
-        px=$touches[0].x;
-        py=$touches[0].y;
+\drag(t) {
+    while(!t.ended) {
+        x+=t.vx;
+        y+=t.vy;
         update();
     }
 }
 >>
+
+*参考
+
+-[[特定の位置をクリックした時に動作をする]]
+-[[findTouch]]
+-[[$touches]]
+
+.

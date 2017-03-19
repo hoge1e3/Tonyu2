@@ -48,6 +48,7 @@ x,y,pの値をフィールドに書き込みます
 
 入力
 -[[getkey]]
+-[[findTouch]]
 動作制御
 -[[update]]
 -[[updateEx]]

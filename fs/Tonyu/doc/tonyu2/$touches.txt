@@ -7,7 +7,10 @@
 [[@cfrag $touches[i] ]]は，i番目（0が最初の指）の指がタッチした場所についての情報を格納するオブジェクトです．
 
 -[[@cfrag $touches[i].x]]と[[@cfrag $touches[i].y]]は，タッチされた場所のx,y座標（※）です．
+-[[@cfrag $touches[i].vx]]と[[@cfrag $touches[i].vy]]は，タッチ後，スワイプした量（１フレームあたりの移動量）です
 -[[@cfrag $touches[i].touched]]は，今その場所がタッチされたばかりなら[[@cfrag 1]]，タッチされ続けていればそのフレーム数，タッチされていなければ[[@cfrag 0]]を返します(2014/11/25 仕様変更)
+-[[@cfrag $touches.findWithin(obj,dist)]]メソッドは，オブジェクト[[@cfrag obj]]から距離[[@cfrag dist]]以内にタッチしている指があれば，それをオブジェクトで返します．
+--返されたオブジェクトは，指が離れたときに[[@cfrag ended]]がtrueにセットされます．例：[[特定の位置をクリックした時に動作をする]]，[[オブジェクトをドラッグする]]
 
 ※[[座標系>座標系とレイヤー]]は[[$InputDevice.defaultLayer]]で指定します。デフォルトでは[[$Screen>ScaledCanvas]]の左上を(0,0)としています
 

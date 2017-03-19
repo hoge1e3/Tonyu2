@@ -257,6 +257,9 @@ nowait \draw(ctx) {
     detectShape();
     if (pImg) {
         ctx.save();
+        if (x!==x || y!==y || x==null || y==null) {
+            console.log("警告：",getClassInfo().shortName,"で座標の指定に誤りがあります");
+        }
         ctx.translate(x,y);
         //if (typeof rotate=="number" ) rotation=rotate;// 削除予定
         //ctx.rotate(this.rotation/180*Math.PI);
@@ -414,6 +417,23 @@ nowait \notify() {
              _th.waitCount=0;
         } else {
             if ($Scheduler) $Scheduler.addToCur(_th);
+        }
+    }
+}
+nowait \findTouch(params) {
+    if (typeof params==="number") params={scale:params};
+    params=params||{};
+    params.scale=params.scale||2;
+    var r=getCrashRect();
+    if (!r) return null;
+    r.width*=params.scale;
+    r.height*=params.scale;
+    for (var t in $touches) {
+        if (params.pickup || t.touched==1) {
+            if (Math.abs(r.x-t.x)<r.width/2 &&
+                Math.abs(r.y-t.y)<r.height/2) {
+                return t;
+            }       
         }
     }
 }
