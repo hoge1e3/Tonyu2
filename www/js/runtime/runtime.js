@@ -1,3 +1,3 @@
-requirejs(["ImageList","T2MediaLib","Tonyu","UIDiag"], function () {
+requirejs(["ImageList","PicoAudio","T2MediaLib","Tonyu","UIDiag"], function () {
 
 });

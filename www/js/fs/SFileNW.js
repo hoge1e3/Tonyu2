@@ -30,7 +30,7 @@ function truncSep(path) {
 }
 // same as zip.js
 var binMap={".png": "image/png", ".jpg":"image/jpg", ".gif": "image/gif", ".jpeg":"image/jpg",
-        ".mp3":"audio/mp3", ".ogg":"audio/ogg"};
+        ".mp3":"audio/mp3", ".ogg":"audio/ogg", ".mp4":"video/mp4", ".m4a":"audio/x-m4a", ".mid":"audio/mid", ".midi":"audio/mid", ".wav":"audio/wav"};
 exports.resolve=function (path, base) {
     path=env.expandPath(path);
     return exports.get(toCanonicalPath(path, base));

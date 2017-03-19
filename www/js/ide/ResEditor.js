@@ -12,8 +12,8 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                         return r;
                     }
                 },
-                sound:{name:"音声",exts:["mp3","ogg"],path:"sounds/",key:"sounds",
-                    extPattern:/\.(mp3|ogg)$/i,contentType:/audio\/(mp3|ogg)/,
+                sound:{name:"音声",exts:["mp3","ogg","mp4","m4a","mid","wav"],path:"sounds/",key:"sounds",
+                    extPattern:/\.(mp3|ogg|mp4|m4a|midi?|wav)$/i,contentType:/((audio\/(mp3|ogg|x-m4a|midi?|wav))|(video\/mp4))/,
                     newItem:function (name) {
                         var r={};
                         if (name) r.name="$se_"+name;
@@ -30,8 +30,18 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
         if (!rsrc) prj.setResource();
         function convURL(u) {
             try {
-                if (Util.endsWith(u,".ogg") || Util.endsWith(u,".mp3") ) {
-                    u=WebSite.urlAliases["images/sound.png"];
+                if (Util.endsWith(u,".ogg")) {
+                    u=WebSite.urlAliases["images/sound_ogg.png"];
+                } else if (Util.endsWith(u,".mp3")) {
+                    u=WebSite.urlAliases["images/sound_mp3.png"];
+                } else if (Util.endsWith(u,".mp4")) {
+                    u=WebSite.urlAliases["images/sound_mp4.png"];
+                } else if (Util.endsWith(u,".m4a")) {
+                    u=WebSite.urlAliases["images/sound_m4a.png"];
+                } else if (Util.endsWith(u,".mid") || Util.endsWith(u,".midi")) {
+                    u=WebSite.urlAliases["images/sound_mid.png"];
+                } else if (Util.endsWith(u,".wav")) {
+                    u=WebSite.urlAliases["images/sound_wav.png"];
                 }
                 return IL.convURL(u,prj.getDir());
             }catch(e) {
@@ -188,7 +198,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                     var a,ogg;
                     if (a=Blob.isBlobURL(item.url)) {
                         rtf.push(a.fileName);
-                        ogg=a.fileName.replace(/\.mp3$/,".ogg");
+                        ogg=a.fileName.replace(/\.(mp3|mp4|m4a)$/,".ogg");
                         if (ogg!=a.fileName) rtf.push(ogg);
                     }
                 });
@@ -214,7 +224,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
             rsrc=prj.getResource();
             items.forEach(function (item){
                 delete cleanFile[item.url];
-                delete cleanFile[item.url.replace(/\.mp3$/,".ogg")];
+                delete cleanFile[item.url.replace(/\.(mp3|mp4|m4a)$/,".ogg")];
             });
             console.log(cleanFile);
             for (var ci in cleanFile) {

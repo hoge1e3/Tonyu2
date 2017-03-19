@@ -7,8 +7,12 @@ define(["FS","WebSite"], function (FS,WebSite) {
         var ffmpeg=FS.get(WebSite.ffmpeg);
         if (!ffmpeg.exists()) return;
         dir.each(function (src) {
-            if (src.endsWith(".mp3")) {
-                var dst=src.up().rel(src.truncExt(".mp3")+".ogg");
+            if (src.endsWith(".mp3") || src.endsWith(".mp4") || src.endsWith(".m4a")) {
+                var ext;
+                if (src.endsWith(".mp3")) ext=".mp3";
+                if (src.endsWith(".mp4")) ext=".mp4";
+                if (src.endsWith(".m4a")) ext=".m4a";
+                var dst=src.up().rel(src.truncExt(ext)+".ogg");
                 if (!dst.exists()) {
                     console.log("running",ffmpeg.path(),"-i",src.path(),dst.path());
                     var proc=spawn(ffmpeg.path(),["-i",src.path(),dst.path()]);

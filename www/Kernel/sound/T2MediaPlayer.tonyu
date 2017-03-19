@@ -15,7 +15,7 @@ native Tonyu;
 }
 
 \clearSEData() {
-    T2MediaLib.allStopBGM();
+    T2MediaLib.allResetBGM();
     T2MediaLib.allClearData();
 }
 
@@ -25,6 +25,20 @@ native Tonyu;
 
 \deleteSEData(idx) {
     T2MediaLib.clearData(idx);
+}
+
+\getMasterVolume() {
+    return T2MediaLib.getMasterVolume() * 128;
+}
+
+\setMasterVolume(vol) {
+    if (typeof vol === "number") {
+        vol /= 128;
+        if (vol < 0.0) vol = 0.0;
+    } else {
+        return T2MediaLib.setMasterVolume(T2MediaLib.getMasterVolume());
+    }
+    return T2MediaLib.setMasterVolume(vol);
 }
 
 // SE //
@@ -65,20 +79,95 @@ native Tonyu;
 }
 
 
-// vol:0-128
-\playSE(idx, vol, rate, offset, loop, loopStart, loopEnd) {
+// vol:0-128-∞
+// pan:-1.0～1.0
+\playSE(idx, vol, pan, rate, offset, loop, loopStart, loopEnd) {
     if (mute) return;
-    // vol : Tonyu1のように0～128の範囲にする
+    // vol : Tonyu1のように0～128の範囲にし、128より大きい場合は音量増幅とする
+    // vol はgainで実装しているため大きい値を入れると大音量となるので注意！
     if (vol == null) vol = 128;
-    // vol はgainで実装しているため絶対値の大きい値を入れると危険
-    // そのため0.0～1.0の範囲になるようにする
-    if      (vol <   0) vol =   0;
-    else if (vol > 128) vol = 128;
-    return T2MediaLib.playSE(idx, vol / 128, rate, offset, loop, loopStart, loopEnd);
+    if (typeof vol === "number") {
+        vol /= 128;
+        if (vol < 0.0) vol = 0.0;
+    } else {
+        vol = 1.0;
+    }
+    return T2MediaLib.playSE(idx, vol, pan, rate, offset, loop, loopStart, loopEnd);
 }
 
 \stopSE(sourceObj) {
     return T2MediaLib.stopSE(sourceObj);
+}
+
+\getSEMasterVolume() {
+    return T2MediaLib.getSEMasterVolume() * 128;
+}
+
+\setSEMasterVolume(vol) {
+    if (typeof vol === "number") {
+        vol /= 128;
+        if (vol < 0.0) vol = 0.0;
+    } else {
+        // 引数が不正の場合音量を変更しない（戻り値は返す）
+        return T2MediaLib.setSEMasterVolume(T2MediaLib.getSEMasterVolume());
+    }
+    return T2MediaLib.setSEMasterVolume(vol);
+}
+
+\getSEVolume(sourceObj) {
+    var vol = T2MediaLib.getSEVolume(sourceObj);
+    return typeof vol === "number" ? vol * 128 : vol;
+}
+
+\setSEVolume(sourceObj, vol) {
+    if (typeof vol === "number") {
+        vol /= 128;
+        if (vol < 0.0) vol = 0.0;
+    } else {
+        // 引数が不正の場合音量を変更しない（戻り値は返す）
+        return T2MediaLib.setSEVolume(sourceObj, T2MediaLib.getSEVolume(sourceObj));
+    }
+    return T2MediaLib.setSEVolume(sourceObj, vol);
+}
+
+\getSERate(sourceObj) {
+    return T2MediaLib.getSERate(sourceObj);
+}
+
+\setSERate(sourceObj, rate) {
+    return T2MediaLib.setSERate(sourceObj, rate);
+}
+
+\getSEPan(sourceObj) {
+    return T2MediaLib.getSEPan(sourceObj);
+}
+
+\setSEPan(sourceObj, pan) {
+    return T2MediaLib.setSEPan(sourceObj, pan);
+}
+
+\isSELoop(sourceObj) {
+    return T2MediaLib.isSELoop(sourceObj);
+}
+
+\setSELoop(sourceObj, loop) {
+    return T2MediaLib.setSELoop(sourceObj, loop);
+}
+
+\getSELoopStartTime(sourceObj) {
+    return T2MediaLib.getSELoopStartTime(sourceObj);
+}
+
+\setSELoopStartTime(sourceObj, loopStart) {
+    return T2MediaLib.setSELoopStartTime(setSELoopStartTime, loopStart);
+}
+
+\getSELoopEndTime(sourceObj) {
+    return T2MediaLib.getSELoopEndTime(sourceObj);
+}
+
+\setSELoopEndTime(sourceObj, loopEnd) {
+    return T2MediaLib.setSELoopEndTime(setSELoopStartTime, loopEnd);
 }
 
 \getSEData(idx) {
@@ -115,22 +204,81 @@ native Tonyu;
 }
 
 \resumeBGM() {
+    if (mute) return;
     return T2MediaLib.resumeBGM(0);
 }
 
+\getBGMMasterVolume() {
+    return T2MediaLib.getBGMMasterVolume() * 128;
+}
+
+\setBGMMasterVolume(vol) {
+    if (typeof vol === "number") {
+        vol /= 128;
+        if (vol < 0.0) vol = 0.0;
+    } else {
+        // 引数が不正の場合音量を変更しない（戻り値は返す）
+        return T2MediaLib.setBGMMasterVolume(T2MediaLib.getBGMMasterVolume());
+    }
+    return T2MediaLib.setBGMMasterVolume(vol);
+}
+
+\getBGMVolume() {
+    var vol = T2MediaLib.getBGMVolume(0);
+    return typeof vol === "number" ? vol * 128 : vol;
+}
+
 \setBGMVolume(vol) {
-    vol = vol / 128;
-    // vol はgainで実装しているため絶対値の大きい値を入れると危険
-    // そのため0.0～1.0の範囲になるようにする
-    if      (vol > 1.0) vol = 1.0;
-    else if (vol < 0.0) vol = 0.0;
+    // vol : Tonyu1のように0～128の範囲にし、128以上は音量増幅とする
+    // vol はgainで実装しているため大きい値を入れると大音量となるので注意！
+    if (typeof vol === "number") {
+        vol /= 128;
+        if (vol < 0.0) vol = 0.0;
+    } else {
+        // 引数が不正の場合音量を変更しない（戻り値は返す）
+        return T2MediaLib.setBGMVolume(0, T2MediaLib.getBGMVolume(0));
+    }
     return T2MediaLib.setBGMVolume(0, vol);
 }
 
+\getBGMTempo() {
+    return T2MediaLib.getBGMTempo(0);
+}
+
 \setBGMTempo(tempo) {
-    //if      (tempo > 4.0) tempo = 4.0;
-    //else if (tempo < 0.5) tempo = 0.5;
     return T2MediaLib.setBGMTempo(0, tempo);
+}
+
+\getBGMPan() {
+    return T2MediaLib.getBGMPan(0);
+}
+
+\setBGMPan(pan) {
+    return T2MediaLib.setBGMPan(0, pan);
+}
+
+\isBGMLoop() {
+    return T2MediaLib.isBGMLoop(0);
+}
+
+\setBGMLoop(loop) {
+    return T2MediaLib.setBGMLoop(0, loop);
+}
+
+\getBGMLoopStartTime() {
+    return T2MediaLib.getBGMLoopStartTime(0);
+}
+
+\setBGMLoopStartTime(loopStart) {
+    return T2MediaLib.setBGMLoopStartTime(0, loopStart);
+}
+
+\getBGMLoopEndTime() {
+    return T2MediaLib.getBGMLoopEndTime(0);
+}
+
+\setBGMLoopEndTime(loopEnd) {
+    return T2MediaLib.setBGMLoopEndTime(0, loopEnd);
 }
 
 \getBGMCurrentTime() {
@@ -141,6 +289,10 @@ native Tonyu;
     return T2MediaLib.getBGMLength(0);
 }
 
+\getPlayingBGMName() {
+    return T2MediaLib.getPlayingBGMName(0);
+}
+
 \getBGMData(idx) {
     return T2MediaLib.getBGMData(idx);
 }
@@ -149,6 +301,7 @@ native Tonyu;
 
 // BGM ID指定 //
 \playBGMID(id, idx, loop, offset, loopStart, loopEnd) {
+    if (mute) return;
     if (loop === null) loop = false;
     if (offset === null) offset = 0;
     return T2MediaLib.playBGM(id, idx, loop, offset, loopStart, loopEnd);
@@ -163,22 +316,66 @@ native Tonyu;
 }
 
 \resumeBGMID(id) {
+    if (mute) return;
     return T2MediaLib.resumeBGM(id);
 }
 
+\getBGMVolumeID(id) {
+    var vol = T2MediaLib.getBGMVolume(id);
+    return typeof vol === "number" ? vol * 128 : vol;
+}
+
 \setBGMVolumeID(id, vol) {
-    vol = vol / 128;
-    // vol はgainで実装しているため絶対値の大きい値を入れると危険
-    // そのため0.0～1.0の範囲になるようにする
-    if      (vol > 1.0) vol = 1.0;
-    else if (vol < 0.0) vol = 0.0;
+    // vol : Tonyu1のように0～128の範囲にし、128以上は音量増幅とする
+    // vol はgainで実装しているため大きい値を入れると大音量となるので注意！
+    if (typeof vol === "number") {
+        vol /= 128;
+        if (vol < 0.0) vol = 0.0;
+    } else {
+        // 引数が不正の場合音量を変更しない（戻り値は返す）
+        return T2MediaLib.setBGMVolume(id, T2MediaLib.getBGMVolume(id));
+    }
     return T2MediaLib.setBGMVolume(id, vol);
 }
 
+\getBGMTempoID(id) {
+    return T2MediaLib.getBGMTempo(id);
+}
+
 \setBGMTempoID(id, tempo) {
-    //if      (tempo > 4.0) tempo = 4.0;
-    //else if (tempo < 0.5) tempo = 0.5;
     return T2MediaLib.setBGMTempo(id, tempo);
+}
+
+\getBGMPanID(id) {
+    return T2MediaLib.getBGMPan(id);
+}
+
+\setBGMPanID(id, pan) {
+    return T2MediaLib.setBGMPan(id, pan);
+}
+
+\isBGMLoopID(id) {
+    return T2MediaLib.isBGMLoop(id);
+}
+
+\setBGMLoopID(id, loop) {
+    return T2MediaLib.setBGMLoop(id, loop);
+}
+
+\getBGMLoopStartTimeID(id) {
+    return T2MediaLib.getBGMLoopStartTime(id);
+}
+
+\setBGMLoopStartTimeID(id, loopStart) {
+    return T2MediaLib.setBGMLoopStartTime(id, loopStart);
+}
+
+\getBGMLoopEndTimeID(id) {
+    return T2MediaLib.getBGMLoopEndTime(id);
+}
+
+\setBGMLoopEndTimeID(id, loopEnd) {
+    return T2MediaLib.setBGMLoopEndTime(id, loopEnd);
 }
 
 \getBGMCurrentTimeID(id) {
@@ -189,12 +386,20 @@ native Tonyu;
     return T2MediaLib.getBGMLength(id);
 }
 
-\sizeBGMID() {
+\getPlayingBGMNameID(id) {
+    return T2MediaLib.getPlayingBGMName(id);
+}
+
+\getBGMPlayerMax() {
     return T2MediaLib.getBGMPlayerMax();
 }
 
 \allStopBGM() {
     T2MediaLib.allStopBGM();
+}
+
+\allResetBGM() {
+    T2MediaLib.allResetBGM();
 }
 
 
@@ -207,6 +412,7 @@ native Tonyu;
 }
 
 \playAudio(idx, loop, startTime) {
+    if (mute) return;
     if (loop === null) loop = false;
     if (startTime === null) startTime = 0;
     return T2MediaLib.playAudio(idx, loop, startTime);
@@ -221,6 +427,7 @@ native Tonyu;
 }
 
 \resumeAudio() {
+    if (mute) return;
     return T2MediaLib.resumeAudio();
 }
 

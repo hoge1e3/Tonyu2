@@ -21,7 +21,7 @@ function truncSep(path) {
     return path;
 }
 var binMap={".png": "image/png", ".jpg":"image/jpg", ".gif": "image/gif", ".jpeg":"image/jpg",
-        ".mp3":"audio/mps", ".ogg":"audio/ogg"};
+        ".mp3":"audio/mps", ".ogg":"audio/ogg", ".mp4":"video/mp4", ".m4a":"audio/x-m4a", ".mid":"audio/mid", ".midi":"audio/mid", ".wav":"audio/wav"};
 function toCanonicalPath(path) {
     path=path.replace(/\\/g,SEP);
     if (startsWith(path,SEP)) {

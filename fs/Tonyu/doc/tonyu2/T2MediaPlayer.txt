@@ -2,32 +2,55 @@
 
 *T2MediaPlayerクラス
 
-サウンド(mp3/ogg)を演奏するためのクラスです。
+サウンドを再生するためのクラスです。
 グローバル変数$soundに自動的に設定されます。
 
 **サウンドの追加
 
 メニューのウィンドウ→[[音声リスト>sndres]]から追加します。
 
+**対応している音声ファイル形式
+
+-MP3 (.mp3)
+-- ほとんどの環境で再生可能な音声ファイルです。
+-AAC (.mp4 .m4a)
+-- ほとんどの環境で再生可能な音声ファイルです。MP3より音質が良い場合があります。
+-Ogg Vorbis (.ogg)
+-- iOS等で再生不可です。MP3より音質が良いです。
+-MIDIファイル (.mid .midi)
+-- ほとんどの環境で再生可能です。音の鳴らし方などの情報が入った楽譜のようなファイルです。Tonyu2ではPicoAudio.jsというライブラリを用いてピコピコ音で再生します。
+-WAV (.wav)
+-- Microsoft Edgeで再生不可です。通常未圧縮のため音質劣化はありませんが、ファイルサイズが大きいです。
+※()内は対応している拡張子
+
 **フィールド
 
 -available
 --サウンドが鳴らせる環境であれば[[@cfrag true]]を返します
 -mute
---[[@cfrag true]]に設定すると、playBGMとplaySEを無効にします
+--[[@cfrag true]]に設定すると、playSEとplayBGM、resumeBGMを無効にします
 
 **メソッド
 
--[[playBGM]]
--[[stopBGM]]
 -[[playSE>T2MediaPlayer.playSE]]
--[[setBGMVolume]]
--- 0...128の範囲で音量を設定します
--[[setBGMTempo]]
--- 演奏中のBGMのテンポを設定します。1がもとの速さです
--[[getBGMCurrentTime]]
--- BGMの演奏開始からの経過時間を取得します（単位：秒）
--[[getBGMLength]]
--- 演奏中のBGMの長さを取得します（単位：秒）
+-[[playBGM>T2MediaPlayer.playBGM]]
+-[[stopBGM>T2MediaPlayer.stopBGM]]
+-[[pauseBGM>T2MediaPlayer.pauseBGM]]
+-[[resumeBGM>T2MediaPlayer.resumeBGM]]
+-setBGMVolume(vol)
+-- BGMの音量を設定します。範囲(0-128-∞)
+---0：消音
+---128：もとの音量(100%)
+---128より大きい：100%より大きい音量
+-setBGMTempo(tempo)
+-- BGMの再生速度を設定します。1がもとの速さです
+-getBGMCurrentTime()
+-- 再生中のBGMの現在再生位置を取得します（単位：秒）
+-getBGMLength()
+-- 再生中のBGMの長さを取得します（単位：秒）
+-getPlayingBGMName()
+-- 再生中のBGMの名前を取得します（"$se_bgm1"のように文字列が返ります）
+
+**[[T2MediaPlayerクラスの詳細→>T2MediaPlayer_detail]]
 
 .
