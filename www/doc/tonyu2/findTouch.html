@@ -1,0 +1,28 @@
+<html><head><meta charset="utf-8"/>
+<meta http-equiv="Content-type" content="text/html; charset=utf8"/>
+<title>findTouch</title>
+</head><body><link rel='stylesheet' href='../../css/bootstrap.css'/>
+<link rel='stylesheet' href='../../css/tonyu.css'/>
+<script src='../../js/lib/jquery-1.10.1.js'/></script>
+<script src='../../js/ide/NWMenu.js'/></script>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px; font-family:"MS UI Gothic",sans-serif;}</style>
+<button onclick='javascript:history.back();'>←Back</button><br/>
+<div><a id="line_marker_-0" name="line_marker_-0"></a><a href="BaseActor.html">BaseActor</a><span>
+</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><h1><a id="line_marker_-2" name="line_marker_-2"></a><span> findTouchメソッド</span></h1><a id="line_marker_-3" name="line_marker_-3"></a><p></p><a id="line_marker_-4" name="line_marker_-4"></a><span>このオブジェクトの近くで指がタッチされた場合，タッチに関する情報をオブジェクトで返します．</span><span>
+</span><a id="line_marker_-5" name="line_marker_-5"></a><p></p><h2><a id="line_marker_-6" name="line_marker_-6"></a><span>書式</span></h2><a id="line_marker_-7" name="line_marker_-7"></a><p></p><a id="line_marker_-10" name="line_marker_-10"></a><pre><a id="line_marker_-9" name="line_marker_-9"></a><span>findTouch(options)</span><span>
+</span></pre><ul><li><a id="line_marker_-11" name="line_marker_-11"></a><span>options には数値またはオブジェクトを指定することができます（省略可能）．</span><span>
+</span></li><li><a id="line_marker_-12" name="line_marker_-12"></a><span>options に数値を指定した場合(※A)，タッチ判定される範囲の大きさを，</span><a href="getCrashRect.html">getCrashRect</a><span>で得られる当たり判定の大きさを基準に倍率で指定します．省略すると2です．</span><span>
+</span></li><li><a id="line_marker_-13" name="line_marker_-13"></a><span>optionsにオブジェクトを指定した場合</span><span>
+</span></li><a id="line_marker_-16" name="line_marker_-16"></a><ul><li><a id="line_marker_-14" name="line_marker_-14"></a><code><span>scale</span></code><span> 衝突判定の大きさの割合．(※A)の数値と同じ意味です．</span><span>
+</span></li><li><a id="line_marker_-15" name="line_marker_-15"></a><code><span>pickup</span></code><span> 通常は，タッチ開始位置がこのオブジェクトの近くのときだけ反応しますが，これをtrueにすると，「このオブジェクトの遠くでタッチ開始→スワイプしてこのオブジェクトの近くまできた」，という場合でも反応します．</span><span>
+</span></li></ul></ul><p></p><h1><a id="line_marker_-17" name="line_marker_-17"></a><span>戻り値</span></h1><a id="line_marker_-18" name="line_marker_-18"></a><p></p><a id="line_marker_-19" name="line_marker_-19"></a><span>タッチされたオブジェクトがある場合，次の形式のオブジェクトを返し，なければ</span><code><span>null</span></code><span>を返します．</span><span>
+</span><a id="line_marker_-20" name="line_marker_-20"></a><p></p><a id="line_marker_-26" name="line_marker_-26"></a><ul><li><a id="line_marker_-21" name="line_marker_-21"></a><span>x タッチされている横位置</span><span>
+</span></li><li><a id="line_marker_-22" name="line_marker_-22"></a><span>y タッチされている横位置</span><span>
+</span></li><li><a id="line_marker_-23" name="line_marker_-23"></a><span>vx スワイプによる横移動量</span><span>
+</span></li><li><a id="line_marker_-24" name="line_marker_-24"></a><span>vy スワイプによる縦移動量</span><span>
+</span></li><li><a id="line_marker_-25" name="line_marker_-25"></a><span>ended 指が離れたときに true になる</span><span>
+</span></li></ul><p></p><h1><a id="line_marker_-27" name="line_marker_-27"></a><span>参考</span></h1><a id="line_marker_-30" name="line_marker_-30"></a><ul><li><a id="line_marker_-28" name="line_marker_-28"></a><a href="E382AAE38396E382B8E382A7E382AFE38388E38292E38389E383A9E38383E382B0E38199E3828B.html">オブジェクトをドラッグする</a><span>
+</span></li><li><a id="line_marker_-29" name="line_marker_-29"></a><a href="E38389E383A9E38383E382B0E38284E382B9E383AFE382A4E38397E38197E3819FE9878FE381ABE5BF9CE38198E381A6E382AAE38396E382B8E382A7E382AFE38388E38292E58B95E3818BE38199.html">ドラッグやスワイプした量に応じてオブジェクトを動かす</a><span>
+</span></li></ul><p></p><a id="line_marker_-31" name="line_marker_-31"></a><span>.</span><span>
+</span></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
+</body></html>

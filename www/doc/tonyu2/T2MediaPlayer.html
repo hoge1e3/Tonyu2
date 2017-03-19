@@ -8,24 +8,42 @@
 <style>body{padding-top:20px; margin-left: 20px; margin-right:20px; font-family:"MS UI Gothic",sans-serif;}</style>
 <button onclick='javascript:history.back();'>←Back</button><br/>
 <div><a id="line_marker_-0" name="line_marker_-0"></a><a href="api.html">api</a><span>
-</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><h1><a id="line_marker_-2" name="line_marker_-2"></a><span>T2MediaPlayerクラス</span></h1><a id="line_marker_-3" name="line_marker_-3"></a><p></p><a id="line_marker_-4" name="line_marker_-4"></a><span>サウンド(mp3/ogg)を演奏するためのクラスです。</span><span>
+</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><h1><a id="line_marker_-2" name="line_marker_-2"></a><span>T2MediaPlayerクラス</span></h1><a id="line_marker_-3" name="line_marker_-3"></a><p></p><a id="line_marker_-4" name="line_marker_-4"></a><span>サウンドを再生するためのクラスです。</span><span>
 </span><a id="line_marker_-5" name="line_marker_-5"></a><span>グローバル変数$soundに自動的に設定されます。</span><span>
 </span><a id="line_marker_-6" name="line_marker_-6"></a><p></p><h2><a id="line_marker_-7" name="line_marker_-7"></a><span>サウンドの追加</span></h2><a id="line_marker_-8" name="line_marker_-8"></a><p></p><a id="line_marker_-9" name="line_marker_-9"></a><span>メニューのウィンドウ→</span><a href="sndres.html">音声リスト</a><span>から追加します。</span><span>
-</span><a id="line_marker_-10" name="line_marker_-10"></a><p></p><h2><a id="line_marker_-11" name="line_marker_-11"></a><span>フィールド</span></h2><a id="line_marker_-12" name="line_marker_-12"></a><p></p><ul><li><a id="line_marker_-13" name="line_marker_-13"></a><span>available</span><span>
-</span></li><a id="line_marker_-15" name="line_marker_-15"></a><ul><li><a id="line_marker_-14" name="line_marker_-14"></a><span>サウンドが鳴らせる環境であれば</span><code><span>true</span></code><span>を返します</span><span>
+</span><a id="line_marker_-10" name="line_marker_-10"></a><p></p><h2><a id="line_marker_-11" name="line_marker_-11"></a><span>対応している音声ファイル形式</span></h2><a id="line_marker_-12" name="line_marker_-12"></a><p></p><ul><li><a id="line_marker_-13" name="line_marker_-13"></a><span>MP3 (.mp3)</span><span>
+</span></li><a id="line_marker_-15" name="line_marker_-15"></a><ul><li><a id="line_marker_-14" name="line_marker_-14"></a><span> ほとんどの環境で再生可能な音声ファイルです。</span><span>
+</span></li></ul><li><span>AAC (.mp4 .m4a)</span><span>
+</span></li><a id="line_marker_-17" name="line_marker_-17"></a><ul><li><a id="line_marker_-16" name="line_marker_-16"></a><span> ほとんどの環境で再生可能な音声ファイルです。MP3より音質が良い場合があります。</span><span>
+</span></li></ul><li><span>Ogg Vorbis (.ogg)</span><span>
+</span></li><a id="line_marker_-19" name="line_marker_-19"></a><ul><li><a id="line_marker_-18" name="line_marker_-18"></a><span> iOS等で再生不可です。MP3より音質が良いです。</span><span>
+</span></li></ul><li><span>MIDIファイル (.mid .midi)</span><span>
+</span></li><a id="line_marker_-21" name="line_marker_-21"></a><ul><li><a id="line_marker_-20" name="line_marker_-20"></a><span> ほとんどの環境で再生可能です。音の鳴らし方などの情報が入った楽譜のようなファイルです。Tonyu2ではPicoAudio.jsというライブラリを用いてピコピコ音で再生します。</span><span>
+</span></li></ul><li><span>WAV (.wav)</span><span>
+</span></li><a id="line_marker_-23" name="line_marker_-23"></a><ul><li><a id="line_marker_-22" name="line_marker_-22"></a><span> Microsoft Edgeで再生不可です。通常未圧縮のため音質劣化はありませんが、ファイルサイズが大きいです。</span><span>
+</span></li></ul></ul><span>※()内は対応している拡張子</span><span>
+</span><a id="line_marker_-24" name="line_marker_-24"></a><p></p><h2><a id="line_marker_-25" name="line_marker_-25"></a><span>フィールド</span></h2><a id="line_marker_-26" name="line_marker_-26"></a><p></p><ul><li><a id="line_marker_-27" name="line_marker_-27"></a><span>available</span><span>
+</span></li><a id="line_marker_-29" name="line_marker_-29"></a><ul><li><a id="line_marker_-28" name="line_marker_-28"></a><span>サウンドが鳴らせる環境であれば</span><code><span>true</span></code><span>を返します</span><span>
 </span></li></ul><li><span>mute</span><span>
-</span></li><a id="line_marker_-17" name="line_marker_-17"></a><ul><li><a id="line_marker_-16" name="line_marker_-16"></a><code><span>true</span></code><span>に設定すると、playBGMとplaySEを無効にします</span><span>
-</span></li></ul></ul><p></p><h2><a id="line_marker_-18" name="line_marker_-18"></a><span>メソッド</span></h2><a id="line_marker_-19" name="line_marker_-19"></a><p></p><ul><li><a id="line_marker_-20" name="line_marker_-20"></a><a href="playBGM.html">playBGM</a><span>
-</span></li><li><a id="line_marker_-21" name="line_marker_-21"></a><a href="stopBGM.html">stopBGM</a><span>
-</span></li><li><a id="line_marker_-22" name="line_marker_-22"></a><a href="T2MediaPlayer.playSE.html">playSE</a><span>
-</span></li><li><a id="line_marker_-23" name="line_marker_-23"></a><span>setBGMVolume</span><span>
-</span></li><a id="line_marker_-25" name="line_marker_-25"></a><ul><li><a id="line_marker_-24" name="line_marker_-24"></a><span> 0...128の範囲で音量を設定します</span><span>
-</span></li></ul><li><span>setBGMTempo</span><span>
-</span></li><a id="line_marker_-27" name="line_marker_-27"></a><ul><li><a id="line_marker_-26" name="line_marker_-26"></a><span> 演奏中のBGMのテンポを設定します。1がもとの速さです</span><span>
-</span></li></ul><li><span>getBGMCurrentTime</span><span>
-</span></li><a id="line_marker_-29" name="line_marker_-29"></a><ul><li><a id="line_marker_-28" name="line_marker_-28"></a><span> BGMの演奏開始からの経過時間を取得します（単位：秒）</span><span>
-</span></li></ul><li><span>getBGMLength</span><span>
-</span></li><a id="line_marker_-31" name="line_marker_-31"></a><ul><li><a id="line_marker_-30" name="line_marker_-30"></a><span> 演奏中のBGMの長さを取得します（単位：秒）</span><span>
-</span></li></ul></ul><p></p><a id="line_marker_-32" name="line_marker_-32"></a><span>.</span><span>
+</span></li><a id="line_marker_-31" name="line_marker_-31"></a><ul><li><a id="line_marker_-30" name="line_marker_-30"></a><code><span>true</span></code><span>に設定すると、playSEとplayBGM、resumeBGMを無効にします</span><span>
+</span></li></ul></ul><p></p><h2><a id="line_marker_-32" name="line_marker_-32"></a><span>メソッド</span></h2><a id="line_marker_-33" name="line_marker_-33"></a><p></p><ul><li><a id="line_marker_-34" name="line_marker_-34"></a><a href="T2MediaPlayer.playSE.html">playSE</a><span>
+</span></li><li><a id="line_marker_-35" name="line_marker_-35"></a><a href="T2MediaPlayer.playBGM.html">playBGM</a><span>
+</span></li><li><a id="line_marker_-36" name="line_marker_-36"></a><a href="T2MediaPlayer.stopBGM.html">stopBGM</a><span>
+</span></li><li><a id="line_marker_-37" name="line_marker_-37"></a><a href="T2MediaPlayer.pauseBGM.html">pauseBGM</a><span>
+</span></li><li><a id="line_marker_-38" name="line_marker_-38"></a><a href="T2MediaPlayer.resumeBGM.html">resumeBGM</a><span>
+</span></li><li><a id="line_marker_-39" name="line_marker_-39"></a><span>setBGMVolume(vol)</span><span>
+</span></li><ul><li><a id="line_marker_-40" name="line_marker_-40"></a><span> BGMの音量を設定します。範囲(0-128-∞)</span><span>
+</span></li><a id="line_marker_-44" name="line_marker_-44"></a><ul><li><a id="line_marker_-41" name="line_marker_-41"></a><span>0：消音</span><span>
+</span></li><li><a id="line_marker_-42" name="line_marker_-42"></a><span>128：もとの音量(100%)</span><span>
+</span></li><li><a id="line_marker_-43" name="line_marker_-43"></a><span>128より大きい：100%より大きい音量</span><span>
+</span></li></ul></ul><li><span>setBGMTempo(tempo)</span><span>
+</span></li><a id="line_marker_-46" name="line_marker_-46"></a><ul><li><a id="line_marker_-45" name="line_marker_-45"></a><span> BGMの再生速度を設定します。1がもとの速さです</span><span>
+</span></li></ul><li><span>getBGMCurrentTime()</span><span>
+</span></li><a id="line_marker_-48" name="line_marker_-48"></a><ul><li><a id="line_marker_-47" name="line_marker_-47"></a><span> 再生中のBGMの現在再生位置を取得します（単位：秒）</span><span>
+</span></li></ul><li><span>getBGMLength()</span><span>
+</span></li><a id="line_marker_-50" name="line_marker_-50"></a><ul><li><a id="line_marker_-49" name="line_marker_-49"></a><span> 再生中のBGMの長さを取得します（単位：秒）</span><span>
+</span></li></ul><li><span>getPlayingBGMName()</span><span>
+</span></li><a id="line_marker_-52" name="line_marker_-52"></a><ul><li><a id="line_marker_-51" name="line_marker_-51"></a><span> 再生中のBGMの名前を取得します（"$se_bgm1"のように文字列が返ります）</span><span>
+</span></li></ul></ul><p></p><h2><a id="line_marker_-53" name="line_marker_-53"></a><a href="T2MediaPlayer_detail.html">T2MediaPlayerクラスの詳細→</a></h2><a id="line_marker_-54" name="line_marker_-54"></a><p></p><a id="line_marker_-55" name="line_marker_-55"></a><span>.</span><span>
 </span></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
 </body></html>

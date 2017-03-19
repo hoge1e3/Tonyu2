@@ -1,4 +1,4 @@
-// Created at Thu Dec 22 2016 11:11:36 GMT+0900 (東京 (標準時))
+// Created at Sun Mar 19 2017 12:09:54 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -458,6 +458,11 @@ define([], function () {
       ".ico":"image/icon",
       ".mp3":"audio/mp3",
       ".ogg":"audio/ogg",
+      ".mp4":"video/mp4",
+      ".m4a":"audio/x-m4a",
+      ".mid":"audio/mid",
+      ".midi":"audio/mid",
+      ".wav":"audio/wav",
       ".txt":"text/plain",
       ".html":"text/html",
       ".htm":"text/html",
@@ -767,6 +772,12 @@ define(["PathUtil"], function (P) {
                 "images/inputPad.png":"../../images/inputPad.png",
                 "images/mapchip.png":"../../images/mapchip.png",
                 "images/sound.png":"../../images/sound.png",
+                "images/sound_ogg.png":"../../images/sound_ogg.png",
+                "images/sound_mp3.png":"../../images/sound_mp3.png",
+                "images/sound_mp4.png":"../../images/sound_mp4.png",
+                "images/sound_m4a.png":"../../images/sound_m4a.png",
+                "images/sound_mid.png":"../../images/sound_mid.png",
+                "images/sound_wav.png":"../../images/sound_wav.png",
                     "images/ecl.png":"../../images/ecl.png"
             },top:"../..",devMode:devMode
         };
@@ -3968,7 +3979,7 @@ define(["FS","Shell","Util"/*"JSZip","FileSaver"*/],function (FS,sh,Util/*,JSZip
     }
     // same as SFileNW.js
     var binMap={".png": "image/png", ".jpg":"image/jpg", ".gif": "image/gif", ".jpeg":"image/jpg",
-            ".mp3":"audio/mp3", ".ogg":"audio/ogg"};
+            ".mp3":"audio/mp3", ".ogg":"audio/ogg", ".mp4":"video/mp4", ".m4a":"audio/x-m4a", ".mid":"audio/mid", ".midi":"audio/mid", ".wav":"audio/wav"};
     zip.unzip=function (arrayBuf,destDir) {
         var zip=new JSZip(arrayBuf);
         for (var i in zip.files) {

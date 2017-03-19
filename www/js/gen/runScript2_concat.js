@@ -1,4 +1,4 @@
-// Created at Thu Dec 22 2016 11:12:01 GMT+0900 (東京 (標準時))
+// Created at Sun Mar 19 2017 12:10:08 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -458,6 +458,11 @@ define([], function () {
       ".ico":"image/icon",
       ".mp3":"audio/mp3",
       ".ogg":"audio/ogg",
+      ".mp4":"video/mp4",
+      ".m4a":"audio/x-m4a",
+      ".mid":"audio/mid",
+      ".midi":"audio/mid",
+      ".wav":"audio/wav",
       ".txt":"text/plain",
       ".html":"text/html",
       ".htm":"text/html",
@@ -767,6 +772,12 @@ define(["PathUtil"], function (P) {
                 "images/inputPad.png":"../../images/inputPad.png",
                 "images/mapchip.png":"../../images/mapchip.png",
                 "images/sound.png":"../../images/sound.png",
+                "images/sound_ogg.png":"../../images/sound_ogg.png",
+                "images/sound_mp3.png":"../../images/sound_mp3.png",
+                "images/sound_mp4.png":"../../images/sound_mp4.png",
+                "images/sound_m4a.png":"../../images/sound_m4a.png",
+                "images/sound_mid.png":"../../images/sound_mid.png",
+                "images/sound_wav.png":"../../images/sound_wav.png",
                     "images/ecl.png":"../../images/ecl.png"
             },top:"../..",devMode:devMode
         };
@@ -3438,7 +3449,7 @@ return Tonyu=function () {
             bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,iterator:IT,
-            VERSION:1482372694842,//EMBED_VERSION
+            VERSION:1489892993004,//EMBED_VERSION
             A:A};
 }();
 });
@@ -3588,8 +3599,8 @@ define(["WebSite","Util","Tonyu"],function (WebSite,Util,Tonyu) {
             if (!baseDir) throw new Error("Basedir not specified");
             var f=baseDir.rel(rel);
             if (!f.exists()) throw new Error("Resource file not found: "+f);
-            if (WebSite.mp3Disabled && rel.match(/\.mp3$/)) {
-                var oggf=baseDir.rel(rel.replace(/\.mp3$/,".ogg"));
+            if (WebSite.mp3Disabled && rel.match(/\.(mp3|mp4|m4a)$/)) {
+                var oggf=baseDir.rel(rel.replace(/\.(mp3|mp4|m4a)$/,".ogg"));
                 if (oggf.exists()) {
                     f=oggf;
                 }
@@ -3723,6 +3734,974 @@ define(["PatternParser","Util","Assets","assert"], function (PP,Util,Assets,asse
 	window.ImageList=IL;
     return IL;
 });
+requireSimulator.setName('PicoAudio');
+var PicoAudio = (function(){
+	function PicoAudio(_audioContext){
+		var AudioContext = window.AudioContext || window.webkitAudioContext;
+		this.context = _audioContext ? _audioContext : new AudioContext();
+		this.settings = {
+			globalVolume: 0.2,
+			tempo: 120,
+			basePitch: 440,
+			resolution: 480,
+			hashLength: 100,
+			hashBuffer: 1,
+			isWebMIDI: false,
+			WebMIDIPortOutputs: null,
+			WebMIDIPort: 0,
+			loop: false
+		};
+		this.trigger = { isNoteTrigger: true, noteOn: function(){}, noteOff: function(){}, songEnd: function(){ /*console.log("end")*/ } };
+		this.states = { isPlaying: false, playIndex:0, startTime:0, stopTime:0, stopFuncs:[] };
+		this.hashedDataList = [];
+		this.channels = [];
+		this.tempoTrack = [{ timing:0, value:120 },{ timing:0, value:120 }];
+		for(var i=0; i<17; i++)
+			this.channels.push([0,0,1]);
+		this.whitenoise = this.context.createBuffer(2, this.context.sampleRate, this.context.sampleRate);
+		for (var ch=0; ch<2; ch++){
+			for (var i=0; i<this.context.sampleRate; i++){
+				this.whitenoise.getChannelData(ch)[i] = Math.random() * 2 - 1;
+			}
+		}
+	}
+
+	PicoAudio.prototype.createNote = function(option){
+		var note = this.createBaseNote(option, true);
+		var oscillator = note.oscillator;
+		var gainNode = note.gainNode;
+		var panNode = note.panNode;
+		// 音色別の音色振り分け 書き方(ry
+		switch(this.channels[note.channel][0]/10 || option.instrument){
+			// Sine
+			case 0.1:
+			case  6: case 15: case 24: case 26: case 46: case 50: case 51:
+			case 52: case 53: case 54: case 82: case 85: case 86:
+			{
+				oscillator.type = "sine";
+				gainNode.gain.value *= 1.5;
+				break;
+			}
+			// Square
+			case 0.2:
+			case  4: case 12: case 13: case 16: case 19: case 20: case 32: case 34: case 45: case 48: case 49:
+			case 55: case 56: case 57: case 61: case 62: case 63: case 71: case 72: case 73: case 74: case 75:
+			case 76: case 77: case 78: case 79: case 80: case 84:
+			{
+				oscillator.type = "square";
+				gainNode.gain.value *= 0.8;
+				break;
+			}
+			// Sawtooth
+			case 0.3:
+			case  0: case  1: case  2: case  3: case  6: case  7: case 17: case 18: case 21: case 22: case 23:
+			case 27: case 28: case 29: case 30: case 36: case 37: case 38: case 39: case 40: case 41: case 42:
+			case 43: case 44: case 47: case 59: case 64: case 65: case 66: case 67: case 68: case 69: case 70:
+			case 71: case 82: case 87:
+			{
+				oscillator.type = "sawtooth";
+				break;
+			}
+			// Triangle
+			case 0.4:
+			case  8: case  9: case 10: case 11: case 14: case 25: case 31: case 33: case 35: case 58: case 60:
+			case 83: case 88: case 89: case 90: case 91: case 92: case 93: case 94: case 95:
+			{
+				oscillator.type = "triangle";
+				gainNode.gain.value *= 1.5;
+				break;
+			}
+			// Other - Square
+			default:{
+				oscillator.type = "square";
+			}
+		}
+		// 音色別の減衰　書き方ミスったなあ
+		switch(this.channels[note.channel][1]/10 || option.instrument){
+			// 
+			case 0.2:
+			case 12: case 13: case 45: case 55:
+			{
+				gainNode.gain.value *= 1.1;
+				gainNode.gain.setValueAtTime(gainNode.gain.value, note.start);
+				gainNode.gain.linearRampToValueAtTime(0.0, note.start+0.2);
+				//oscillator.stop(note.start+0.5);
+				stopAudioNode(oscillator, note.start+0.5);
+				break;
+			}
+			// ピアノ程度に伸ばす系
+			case 0.3:
+			case  0: case  1: case  2: case  3: case  6: case  9: case 11: case 14: case 15:
+			case 32: case 36: case 37: case 46: case 47:
+			{
+				gainNode.gain.value *= 1.1;
+				gainNode.gain.setValueAtTime(gainNode.gain.value, note.start);
+				gainNode.gain.linearRampToValueAtTime(gainNode.gain.value*0.95, note.start+0.1);
+				gainNode.gain.setValueAtTime(gainNode.gain.value*0.95, note.start+0.1);
+				gainNode.gain.linearRampToValueAtTime(0.0, note.start+1.5+note.velocity*3);
+				break;
+			}
+			// ギター系
+			case 0.4:
+			case 24: case 25: case 26: case 27: case 28: case 29: case 30: case 31: case 34:
+			{
+				gainNode.gain.value *= 1.1;
+				gainNode.gain.setValueAtTime(gainNode.gain.value, note.start);
+				gainNode.gain.linearRampToValueAtTime(0.0, note.start+1.0+note.velocity*4);
+				break;
+			}
+			// 減衰していくけど終わらない系
+			case 0.5:
+			case 4: case 5: case 7: case 8: case 10: case 33: case 35:
+			{
+				gainNode.gain.value *= 1.0;
+				gainNode.gain.setValueAtTime(gainNode.gain.value, note.start);
+				gainNode.gain.linearRampToValueAtTime(gainNode.gain.value*0.95, note.start+0.1);
+				gainNode.gain.setValueAtTime(gainNode.gain.value*0.95, note.start+0.1);
+				gainNode.gain.linearRampToValueAtTime(0.0, note.start+2.0+note.velocity*10);
+				break;
+			}
+			// 再生しない系
+			case 119:
+			{
+				gainNode.gain.value = 0;
+				stopAudioNode(oscillator, 0);
+			}
+			default:{
+				//gainNode.gain.setValueAtTime(note.velocity, note.start);
+			}
+		}
+
+/*
+		var real = new Float32Array(10);
+		var imag = new Float32Array(10);
+		for(var i = 0; i < 10; ++i)
+			real[i] = imag[i] = 0;
+		imag[1] = 1;
+		imag[2] = 0.5;
+		imag[3] = 0.3;
+		imag[4] = 0.2;
+		imag[5] = 0.1;
+		imag[6] = 0.1;
+		imag[7] = 0.1;
+		imag[8] = 0.1;
+		imag[9] = 0.1;
+		var wavtable = this.context.createPeriodicWave(real, imag);
+		oscillator.setPeriodicWave(wavtable);
+*/
+		function stopAudioNode(tar, time){
+			try{
+				tar.stop(time);
+			} catch(e) {
+				try {
+					tar.disconnect();
+					stopGainNode(gainNode);
+				} catch(e) {}
+			}
+		}
+		function stopGainNode(tar){
+			tar.disconnect();
+			tar.gain.cancelScheduledValues(0);
+		}
+		return function(){
+			stopAudioNode(oscillator, 0);
+			stopGainNode(gainNode);
+		};
+	};
+
+	PicoAudio.prototype.createPercussionNote = function(option){
+		var note = this.createBaseNote(option, false);
+		var source = note.oscillator;
+		var gainNode = note.gainNode;
+		var panNode = note.panNode;
+		var start = note.start;
+		var stop = note.stop;
+		var velocity = note.velocity * ((option.expression ? option.expression[0].value : 100) / 127);
+		var note2 = this.createBaseNote(option, false, true);
+		var oscillator = note2.oscillator;
+		var gainNode2 = note2.gainNode;
+		var panNode2 = note2.panNode;
+		var that = this;
+		switch(option.pitch){
+			// Bass drum
+			case 35:
+			case 36:
+				// w
+				gainNode.gain.value = velocity*0.6;
+				source.playbackRate.value = 0.02;
+				source.stop(start+0.07);
+				// s
+				gainNode2.gain.value = velocity*1.1;
+				oscillator.frequency.setValueAtTime(120, start);
+				oscillator.frequency.linearRampToValueAtTime(50, start+0.07);
+				oscillator.stop(start+0.07);
+				break;
+			// Snare
+			case 38:
+			case 40:
+				// w
+				source.playbackRate.value = 0.7;
+				source.stop(start+0.05);
+				// s
+				gainNode2.gain.setValueAtTime(velocity*0.8, start);
+				gainNode2.gain.linearRampToValueAtTime(0.0, start+0.05);
+				oscillator.frequency.setValueAtTime(300, start);
+				oscillator.frequency.linearRampToValueAtTime(200, start+0.05);
+				oscillator.stop(start+0.05);
+				break;
+			// Toms
+			case 41: case 43: case 45:
+			case 47: case 48: case 50:
+				// w
+				source.playbackRate.value = 0.01;
+				source.stop(start+0.1);
+				// s
+				oscillator.type = "square";
+				gainNode2.gain.setValueAtTime(velocity, start);
+				gainNode2.gain.linearRampToValueAtTime(0.01, start+0.1);
+				oscillator.frequency.setValueAtTime(150+20*(option.pitch-40), start);
+				oscillator.frequency.linearRampToValueAtTime(50+20*(option.pitch-40), start+0.1);
+				oscillator.stop(start+0.1);
+				break;
+			// Close Hihat
+			case 42:
+			case 44:
+				source.playbackRate.value = 1.5;
+				source.stop(start+0.02);
+				oscillator.stop(0);
+				break;
+			// Open Hihat
+			case 46:
+				source.playbackRate.value = 1.5;
+				source.stop(start+0.3);
+				gainNode.gain.setValueAtTime(velocity*0.9, start);
+				gainNode.gain.linearRampToValueAtTime(0.0, start+0.3);
+				oscillator.stop(0);
+				break;
+			// Cymbal
+			case 49: case 51: case 52:
+			case 53: case 55: case 57:
+				source.playbackRate.value = 1.2;
+				source.stop(start+0.5);
+				gainNode.gain.setValueAtTime(velocity*1, start);
+				gainNode.gain.linearRampToValueAtTime(0.0, start+0.5);
+				oscillator.stop(0);
+				break;
+			// Cymbal2
+			case 51:
+				source.playbackRate.value = 1.1;
+				source.stop(start+0.4);
+				gainNode.gain.setValueAtTime(velocity*0.8, start);
+				gainNode.gain.linearRampToValueAtTime(0.0, start+0.4);
+				oscillator.stop(0);
+				break;
+			// Cymbal3
+			 case 59:
+			 	source.playbackRate.value = 1.8;
+				source.stop(start+0.3);
+				gainNode.gain.setValueAtTime(velocity*0.5, start);
+				gainNode.gain.linearRampToValueAtTime(0.0, start+0.3);
+				oscillator.stop(0);
+				break;
+			// Bongo
+			case 60: case 61:
+				// w
+				source.playbackRate.value = 0.03;
+				source.stop(start+0.03);
+				// s
+				gainNode2.gain.setValueAtTime(velocity*0.8, start);
+				gainNode2.gain.linearRampToValueAtTime(0.0, start+0.1);
+				oscillator.frequency.setValueAtTime(400-40*(option.pitch-60), start);
+				oscillator.frequency.linearRampToValueAtTime(450-40*(option.pitch-60), start+0.1);
+				oscillator.stop(start+0.1);
+				break;
+			// mute Conga
+			case 62:
+				// w
+				source.playbackRate.value = 0.03;
+				source.stop(start+0.03);
+				// s
+				gainNode2.gain.setValueAtTime(velocity, start);
+				gainNode2.gain.linearRampToValueAtTime(0.0, start+0.03);
+				oscillator.frequency.setValueAtTime(200, start);
+				oscillator.frequency.linearRampToValueAtTime(250, start+0.03);
+				oscillator.stop(start+0.03);
+				break;
+			// open Conga
+			case 63: case 64:
+				// w
+				source.playbackRate.value = 0.03;
+				source.stop(start+0.03);
+				// s
+				gainNode2.gain.setValueAtTime(velocity, start);
+				gainNode2.gain.linearRampToValueAtTime(0.0, start+0.1);
+				oscillator.frequency.setValueAtTime(200-30*(option.pitch-63), start);
+				oscillator.frequency.linearRampToValueAtTime(250-30*(option.pitch-63), start+0.1);
+				oscillator.stop(start+0.1);
+				break;
+			// Cowbell, Claves
+			case 56:
+			case 75:
+				// w
+				source.playbackRate.value = 0.01;
+				source.stop(start+0.1);
+				// s
+				gainNode2.gain.setValueAtTime(velocity, start);
+				gainNode2.gain.linearRampToValueAtTime(0.0, start+0.1);
+				oscillator.frequency.setValueAtTime(1000+48*(option.pitch-56), start);
+				oscillator.stop(start+0.1);
+				break;
+			// mute triangle
+			case 80:
+				// w
+				source.playbackRate.value = 5;
+				gainNode.gain.setValueAtTime(velocity*0.5, start);
+				gainNode.gain.linearRampToValueAtTime(0.0, start+0.2);
+				source.stop(start+0.05);
+				// s
+				oscillator.type = "triangle"
+				gainNode2.gain.setValueAtTime(velocity*0.7, start);
+				gainNode2.gain.linearRampToValueAtTime(0.0, start+0.2);
+				oscillator.frequency.setValueAtTime(6000, start);
+				oscillator.stop(start+0.05);
+				break;
+			// open triangle
+			case 81:
+				// w
+				source.playbackRate.value = 5;
+				gainNode.gain.setValueAtTime(velocity*0.9, start);
+				gainNode.gain.linearRampToValueAtTime(0.0, start+0.5);
+				source.stop(start+0.5);
+				// s
+				oscillator.type = "triangle"
+				gainNode2.gain.setValueAtTime(velocity*0.8, start);
+				gainNode2.gain.linearRampToValueAtTime(0.0, start+0.3);
+				oscillator.frequency.setValueAtTime(6000, start);
+				oscillator.stop(start+0.3);
+				break;
+			default:
+				source.playbackRate.value = option.pitch/69*2;
+				source.stop(start+0.05);
+				stopAudioNode(oscillator, 0);
+		}
+		function stopAudioNode(tar, time){
+			try{
+				tar.stop(time);
+			} catch(e) {
+				try {
+					tar.disconnect();
+				} catch(e) {}
+			}
+		}
+		function stopGainNode(tar){
+			tar.disconnect();
+			tar.gain.cancelScheduledValues(0);
+		}
+		return function(){
+			stopAudioNode(source, 0);
+			stopAudioNode(oscillator, 0);
+			stopGainNode(gainNode);
+			stopGainNode(gainNode2);
+		};
+	};
+
+	PicoAudio.prototype.createBaseNote = function(option, isExpression, nonChannel){
+		var settings = this.settings;
+		var context = this.context;
+		var songStartTime = this.states.startTime;
+		var start = this.getTime(option.start) + songStartTime;
+		var stop = this.getTime(option.stop) + songStartTime;
+		var pitch = settings.basePitch * Math.pow(Math.pow(2, 1/12), (option.pitch || 69) - 69);
+		var channel = nonChannel ? 0 : (option.channel || 0);
+		var velocity = (option.velocity || 0.1) * Number(nonChannel ? 1 : (this.channels[channel][2] || 1)) * settings.globalVolume;
+		var oscillator = channel!=9 ? context.createOscillator() : context.createBufferSource();
+		var panNode = context.createStereoPanner ? context.createStereoPanner() : 
+				context.createPanner ? context.createPanner() : { pan: { setValueAtTime: function(){} } };
+		var gainNode = context.createGain();
+		var that = this;
+		
+		if(!context.createStereoPanner && context.createPanner) {
+			var panValue = option.pan ? (option.pan[0].value / 127) * 2 - 1 : 0;
+			var panAngle = panValue * 90;
+			var panX = Math.sin(panAngle * (Math.PI / 180));
+			var panZ = -Math.cos(panAngle * (Math.PI / 180));
+			panNode.panningModel = "equalpower";
+			panNode.setPosition(panX, 0, panZ);
+		} else {
+			panNode.pan.value = option.pan ? (option.pan[0].value / 127) * 2 - 1 : 0;
+		}
+		
+		gainNode.gain.value = velocity * ((option.expression ? option.expression[0].value : 100) / 127);
+		if(channel!=9){
+			oscillator.type = option.type || "sine";
+			oscillator.detune.value = 0;
+			oscillator.frequency.value = pitch;
+			option.pitchBend ? option.pitchBend.forEach(function(p){
+				oscillator.frequency.setValueAtTime(
+					settings.basePitch * Math.pow(Math.pow(2, 1/12), option.pitch - 69 + p.value),
+					that.getTime(p.timing) + songStartTime
+				);
+			}) : false;
+		} else {
+			oscillator.loop = true;
+			oscillator.buffer = this.whitenoise
+		}
+		if(isExpression){
+			option.expression ? option.expression.forEach(function(p){
+				gainNode.gain.setValueAtTime(
+					velocity * (p.value / 127),
+					that.getTime(p.timing) + songStartTime
+				);
+			}) : false;
+		}
+		if(context.createStereoPanner || context.createPanner){
+			if(context.createStereoPanner) {
+				option.pan ? option.pan.forEach(function(p){
+					panNode.pan.setValueAtTime(
+						(p.value / 127) * 2 - 1,
+						that.getTime(p.timing) + songStartTime
+					);
+				}) : false;
+			} else if(context.createPanner){
+				if(panNode.positionX) {
+					option.pan ? option.pan.forEach(function(p){
+						var v = (p.value / 127) * 2 - 1;
+						var a = v * 90;
+						var x = Math.sin(a * (Math.PI / 180));
+						var z = -Math.cos(a * (Math.PI / 180));
+						panNode.positionX.setValueAtTime(x, that.getTime(p.timing) + songStartTime);
+						panNode.positionY.setValueAtTime(0, that.getTime(p.timing) + songStartTime);
+						panNode.positionZ.setValueAtTime(z, that.getTime(p.timing) + songStartTime);
+						panNode.setPosition(panX, 0, panZ);
+					}) : false;
+				}
+			}
+			oscillator.connect(panNode);
+			panNode.connect(gainNode);
+			gainNode.connect(context.destination);
+		} else {
+			oscillator.connect(gainNode);
+			gainNode.connect(context.destination);
+		}
+		oscillator.start(start);
+		if(channel!=9 && !nonChannel)
+			oscillator.stop(stop);
+		return {
+			start: start,
+			stop: stop,
+			pitch: pitch,
+			channel: channel,
+			velocity: velocity,
+			oscillator: oscillator,
+			panNode: panNode,
+			gainNode: gainNode
+		};
+	};
+
+	PicoAudio.prototype.startWebMIDI = function(){
+		var outputs;
+		var that = this;
+		navigator.requestMIDIAccess()
+			.then(function(midiAccess){
+					outputs = midiAccess.outputs;
+					that.settings.WebMIDIPortOutputs = outputs;
+					return outputs;
+			})
+			.catch(function(err){
+					console.log(err);
+			});
+	};
+
+	PicoAudio.prototype.initStatus = function(){
+		this.stop();
+		this.states = { isPlaying: false, playIndex:0, startTime:0, stopTime:0, stopFuncs:[] };
+		if(this.settings.isWebMIDI){
+			for(var t=0; t<16; t++){
+				this.settings.WebMIDIPortOutputs.get(this.settings.WebMIDIPort).send([0xE0+t, 0, 64]);
+				this.settings.WebMIDIPortOutputs.get(this.settings.WebMIDIPort).send([0xB0+t, 6, 0]);
+				this.settings.WebMIDIPortOutputs.get(this.settings.WebMIDIPort).send([0xB0+t, 7, 100]);
+				this.settings.WebMIDIPortOutputs.get(this.settings.WebMIDIPort).send([0xB0+t, 10, 64]);
+				this.settings.WebMIDIPortOutputs.get(this.settings.WebMIDIPort).send([0xB0+t, 11, 127]);
+			}
+		}
+	};
+
+	PicoAudio.prototype.stop = function(){
+		var states = this.states;
+		states.isPlaying = false;
+		states.playIndex -= this.settings.hashBuffer;
+		states.stopTime = this.context.currentTime;
+		states.stopFuncs.forEach(function(n){
+			n.stopFunc();
+		});
+		states.stopFuncs = [];
+		if(this.settings.isWebMIDI){
+			for(var t=0; t<16; t++){
+				for(var i=0; i<128; i++){
+					this.settings.WebMIDIPortOutputs.get(this.settings.WebMIDIPort).send([0x80+t, i, 0]);
+				}
+			}
+		}
+	};
+
+	PicoAudio.prototype.play = function(){
+		var context = this.context;
+		var settings = this.settings;
+		var trigger = this.trigger;
+		var states = this.states;
+		var hashedDataList = this.hashedDataList;
+		var that = this;
+		states.isPlaying = true;
+		states.startTime = !states.startTime && !states.stopTime ? this.context.currentTime : (states.startTime + this.context.currentTime - states.stopTime);
+		states.stopFuncs = [];
+		// 曲終了コールバックを予約
+		var reserveFunc = function(){
+			if (that.getTime(that.getTiming(Number.MAX_SAFE_INTEGER)) - context.currentTime + states.startTime <= 0) {
+				// 予定の時間以降に曲終了
+				that.onSongEnd();
+			} else {
+				// 処理落ちしたりしてまだ演奏中の場合、1ms後に曲終了コールバックを呼び出すよう予約
+				var reserveAgain = setTimeout(reserveFunc, 1);
+				pushFunc({
+					rootTimeout: reserveAgain,
+					stopFunc: function(){ clearTimeout(reserveAgain); }
+				});
+			}
+		};
+		var reserveTime = (that.getTime(that.getTiming(Number.MAX_SAFE_INTEGER)) - context.currentTime + states.startTime) * 1000;
+		var reserve = setTimeout(reserveFunc, reserveTime);
+		pushFunc({
+			rootTimeout: reserve,
+			stopFunc: function(){ clearTimeout(reserve); }
+		});
+		(function playHash(idx){
+			states.playIndex = idx;
+			if(hashedDataList && hashedDataList[idx]){
+				if(!settings.isWebMIDI){
+					hashedDataList[idx].forEach(function(note){
+						pushFunc({
+							note: note,
+							stopFunc: note.channel!=9 ? that.createNote(note) : that.createPercussionNote(note)
+						});
+						var noteOn = setTimeout(function(){
+							clearFunc("timeout", noteOn);
+							if(trigger.isNoteTrigger) trigger.noteOn(note);
+							var noteOff = setTimeout(function(){
+								clearFunc("timeout", noteOff);
+								clearFunc("note", note);
+								if(trigger.isNoteTrigger) trigger.noteOff(note);
+							}, that.getTime(note.stop - note.start) * 1000);
+							pushFunc({
+								timeout: noteOff,
+								stopFunc: function(){ clearTimeout(noteOff); }
+							});
+						}, (that.getTime(note.start) - context.currentTime + states.startTime) * 1000);
+						pushFunc({
+							timeout: noteOn,
+							stopFunc: function(){ clearTimeout(noteOn); }
+						});
+					});
+				} else {
+					hashedDataList[idx].forEach(function(message){
+						if(message.message[0]!=0xf0 && message.message[0]!=0xff)
+						settings.WebMIDIPortOutputs.get(settings.WebMIDIPort).send(message.message, (that.getTime(message.timing) - context.currentTime +window.performance.now()/1000 + states.startTime) * 1000);
+					});
+				}
+			}
+			if(idx < hashedDataList.length){
+				if(idx - Math.floor((context.currentTime - states.startTime) * 1000 / settings.hashLength) <= settings.hashBuffer){
+					playHash(idx + 1);
+				} else {
+					var reserve = setTimeout(function(){
+						playHash(idx + 1);
+						clearFunc("rootTimeout", reserve);
+					}, settings.hashLength);
+					pushFunc({
+						rootTimeout: reserve,
+						stopFunc: function(){ clearTimeout(reserve); }
+					});
+				}
+			} else {
+				trigger.songEnd();
+			}
+		})(states.playIndex || 0);
+		function pushFunc(tar){
+			if(!tar.note && !tar.rootTimeout && !trigger.isNoteTrigger) return;
+			states.stopFuncs.push(tar);
+		}
+		function clearFunc(tar1, tar2){
+			if(tar1!="note" && tar1!="rootTimeout" && !trigger.isNoteTrigger) return;
+			states.stopFuncs.some(function(n, i){
+				if(n[tar1] == tar2){
+					states.stopFuncs.splice(i, 1);
+					return true;
+				}
+			});
+		}
+	};
+
+	PicoAudio.prototype.setData = function(data){
+		if(this.states.isPlaying) this.stop();
+		this.settings.resolution = data.header.resolution;
+		this.settings.tempo = data.tempo || 120; 
+		this.tempoTrack = data.tempoTrack;
+		var that = this;
+		var hashedDataList = [];
+		if(!this.settings.isWebMIDI){
+			data.tracks.forEach(function(track){
+				track.notes.forEach(function(note){
+					var option = note;
+					option.instrument = track.instrument;
+					var time = that.getTime(note.start) * (1000/that.settings.hashLength);
+					if(!hashedDataList[Math.floor(time)])
+						hashedDataList[Math.floor(time)] = [];
+					hashedDataList[Math.floor(time)].push(note);
+				});
+			});
+		} else {
+			data.messages.forEach(function(message){
+				var time = that.getTime(message.timing) * (1000/that.settings.hashLength);
+				if(!hashedDataList[Math.floor(time)])
+					hashedDataList[Math.floor(time)] = [];
+				hashedDataList[Math.floor(time)].push(message);
+			});
+		}
+		this.hashedDataList = hashedDataList;
+		this.initStatus();
+		return this;
+	};
+
+	PicoAudio.prototype.getGlobalVolume = function(){
+		return this.settings.globalVolume;
+	};
+
+	PicoAudio.prototype.setGlobalVolume = function(volume){
+		this.settings.globalVolume = volume;
+	};
+
+	PicoAudio.prototype.isLoop = function(){
+		return this.settings.loop;
+	};
+
+	PicoAudio.prototype.setLoop = function(loop){
+		this.settings.loop = loop;
+	};
+
+	PicoAudio.prototype.setStartTime = function(offset){
+		this.states.startTime -= offset;
+		this.states.playIndex = Math.floor(offset * 1000 / this.settings.hashLength);
+	};
+
+	PicoAudio.prototype.onSongEnd = function(){
+		if (this.settings.loop){
+			this.initStatus();
+			this.play();
+		}
+	};
+
+	PicoAudio.prototype.getTime = function(timing){
+		var time = 0;
+		var tempo = 120;
+		var currentTiming = 0;
+		var that = this;
+		this.tempoTrack.some(function(tempoObj){
+			if(timing < tempoObj.timing)
+				return true;
+			time += (60 / tempo / that.settings.resolution) * (tempoObj.timing - currentTiming);
+			currentTiming = tempoObj.timing;
+			tempo = tempoObj.value;
+		});
+		time += (60 / tempo / that.settings.resolution) * (timing - currentTiming);
+		return time;
+	};
+
+	PicoAudio.prototype.getTiming = function(time){
+		var totalTime = 0;
+		var tempo = 120;
+		var currentTiming = 0;
+		var that = this;
+		this.tempoTrack.some(function(tempoObj){
+			totalTime += (60 / tempo / that.settings.resolution) * (tempoObj.timing - currentTiming);
+			if(totalTime > time){
+				totalTime -= (60 / tempo / that.settings.resolution) * (tempoObj.timing - currentTiming);
+				currentTiming += (time - totalTime) / (60 / tempo / that.settings.resolution);
+				return true;
+			}
+			currentTiming = tempoObj.timing;
+			tempo = tempoObj.value;
+		});
+		return currentTiming;
+	};
+
+	PicoAudio.prototype.parseSMF = function(smf){
+		if(smf[0] != 77 || smf[1] != 84 || smf[2] != 104 || smf[3] != 100)
+			return "Not Sandard MIDI File.";
+		var data = new Object;
+		var p = 4;
+		var header = new Object();
+		header.size = getInt(smf.subarray(4, 8));
+		header.format = smf[9];
+		header.trackcount = getInt(smf.subarray(10, 12));
+		header.timemanage = smf[12];
+		header.resolution = getInt(smf.subarray(12, 14));
+		p += 4+header.size;
+		var tracks = new Array();
+		var tempoTrack = new Array();
+		var beatTrack = new Array();
+		var songLength = 0;
+		if(this.settings.isWebMIDI) var messages = [];
+		for(var t=0; t<header.trackcount; t++){
+			if(smf[p] != 77 || smf[p+1] != 84 || smf[p+2] != 114 || smf[p+3] != 107)
+				return "Irregular SMF.";
+			p += 4;
+			var track = new Object();
+			tracks.push(track);
+			track.size = getInt(smf.subarray(p, p+4));
+			p += 4;
+			track.notes = [];
+			track.instrument = null;
+			var endPoint = p+track.size;
+			var time = 0;
+			var dataEntry = 2;
+			var pitchBend = 0;
+			var pan = 64;
+			var expression = 127;
+			var velocity = 100;
+			var lastState = 1;
+			var RpnLsb = -1;
+			var RpnMsb = -1;
+			while(p<endPoint){
+				// DeltaTime
+				if(lastState!=null){
+					var dt = 0;
+					while(smf[p]>=0x80){
+						dt = (dt<<7) + (smf[p]-0x80);
+						p++;
+					}
+					dt = (dt<<7) + smf[p];
+					time += dt;
+					p++;
+				}
+				// WebMIDIAPI
+				if(this.settings.isWebMIDI) var cashP = p;
+				// Events
+				switch(Math.floor(smf[p]/0x10)){
+					// Note OFF - 8[ch], Pitch, Velocity
+					case 0x8:
+						lastState = smf[p];
+						track.notes.some(function(note){
+							if(note.pitch==smf[p+1] && note.stop==null){
+								note.stop = time;
+								return true;
+							}
+						});
+						p+=3;
+						break;
+					// Note ON - 9[ch], Pitch, Velocity
+					case 0x9:
+						lastState = smf[p];
+						if(smf[p+2]!=0){
+							track.notes.push({
+								start: time,
+								stop: null,
+								pitch: smf[p+1],
+								pitchBend: [{timing:time,value:pitchBend}],
+								pan: [{timing:time,value:pan}],
+								expression: [{timing:time,value:expression}],
+								velocity: (smf[p+2]/127)*velocity/127,
+								channel: smf[p]-0x90
+							});
+						} else {
+							track.notes.some(function(note){
+								if(note.pitch==smf[p+1] && note.stop==null){
+									note.stop = time;
+									return true;
+								}
+							});
+						}
+						p+=3;
+						break;
+					// Polyfonic Key Pressure - A[ch], Pitch?, Velocity?
+					case 0xA:
+						lastState = smf[p];
+						p+=3;
+						break;
+					// Control Change - B[ch],,
+					case 0xB:
+						lastState = smf[p];
+						switch(smf[p+1]){
+							case 6:
+								// RLSB=0 & RMSB=0 -> 6はピッチ
+								if(RpnLsb==0 && RpnMsb==0){
+									dataEntry = smf[p+2];
+								}
+								break;
+							case 7:
+								velocity = smf[p+2];
+								break;
+							case 10:
+								//Pan
+								track.notes.forEach(function(note){
+									if(note.stop==null){
+										note.pan.push({
+											timing: time,
+											value: smf[p+2]
+										});
+									}
+								});
+								pan = smf[p+2];
+								break;
+							case 11:
+								//Expression
+								track.notes.forEach(function(note){
+									if(note.stop==null){
+										note.expression.push({
+											timing: time,
+											value: smf[p+2]
+										});
+									}
+								});
+								expression = smf[p+2];
+								break;
+							case 100:
+								RpnLsb = smf[p+2];
+								break;
+							case 101:
+								RpnMsb = smf[p+2];
+								break;
+						}
+						p+=3;
+						break;
+					// Program Change - C[ch],
+					case 0xC:
+						lastState = smf[p];
+						track.instrument = smf[p+1];
+						p+=2;
+						break;
+					// Channel Pre - D[ch],
+					case 0xD:
+						lastState = smf[p];
+						p+=2;
+						break;
+					// PitchBend Change - E[ch],,
+					case 0xE:
+						lastState = smf[p];
+						pitchBend = ((smf[p+2]*128+smf[p+1])-8192)/8192*dataEntry;
+						track.notes.forEach(function(note){
+							if(note.stop==null){
+								note.pitchBend.push({
+									timing: time,
+									value: pitchBend
+								});
+							}
+						});
+						p+=3;
+						break;
+					// Meta Events - F[ch], ...
+					case 0xF:{
+						//lastState = smf[p]; <- ランニングナントカは無いらしい
+						switch(smf[p]){
+							case 0xF0:
+								while(smf[p+1]!=0xF7){
+									p++;
+								}
+								p+=2;
+								break;
+							case 0xF1:
+								p+=2;
+								break;
+							case 0xF2:
+								p+=3;
+								break;
+							case 0xF3:
+								p+=2;
+								break;
+							case 0xF6:
+							case 0xF7:
+							case 0xF8:
+							case 0xFA:
+							case 0xFB:
+							case 0xFC:
+							case 0xFE:
+								p+=1;
+								break;
+							case 0xFF:{
+								switch(smf[p+1]){
+									case 0x00:
+									case 0x01:
+									case 0x02:
+									case 0x03:
+									case 0x04:
+									case 0x05:
+									case 0x06:
+									case 0x07:
+									case 0x20:
+										break;
+									case 0x2F:
+										time += header.resolution - dt;
+										break;
+									// Tempo
+									case 0x51:
+										data.tempo = 60*1000000/(smf[p+3]*0xffff + smf[p+4]*0xff + smf[p+5]);
+										tempoTrack.push({
+											timing: time,
+											value: 60*1000000/(smf[p+3]*0xffff + smf[p+4]*0xff + smf[p+5])
+										});
+										break;
+									case 0x54:
+										break;
+									// Beat
+									case 0x58:
+										beatTrack.push({
+											timing: time,
+											value: [smf[p+3], Math.pow(2, smf[p+4])]
+										});
+										break;
+									case 0x59:
+									case 0x7F:
+										break;
+								}
+								p+=smf[p+2]+3;
+								break;
+							}
+						}
+						break;
+					}
+					default: {
+						p--;
+						smf[p] = lastState;
+						lastState = null;
+
+					}
+				}
+				// WebMIDIAPI
+				if(this.settings.isWebMIDI){
+					messages.push({ message: smf.slice(cashP, p), timing: time });
+				}
+			}
+			if(songLength<time) songLength = time;
+		}
+		tempoTrack.push({ timing:songLength, value:120 });
+		data.header = header;
+		data.tracks = tracks;
+		data.tempoTrack = tempoTrack;
+		data.beatTrack = beatTrack;
+		data.songLength = songLength;
+		if(this.settings.isWebMIDI) data.messages = messages;
+		return data;
+	};
+
+	function getInt(arr){
+		var value = 0;
+		for (var  i=0;i<arr.length;i++){
+			value = (value << 8) + arr[i];
+		}
+		return value;
+	}
+
+	return PicoAudio;
+})();
+
 requireSimulator.setName('T2MediaLib');
 // forked from makkii_bcr's "T2MediaLib" http://jsdo.it/makkii_bcr/3ioQ
 // T2MediaLib_BGMPlayer //
@@ -3740,111 +4719,298 @@ var T2MediaLib_BGMPlayer = function(arg_id) {
     this.bgmPauseLoopEnd = 0;
     this.bgmVolume = 1.0;
     this.bgmTempo = 1.0;
+    this.bgmPan = 0.0;
+    this.picoAudio = null;//new PicoAudio(T2MediaLib.context);
+    this.PICO_AUDIO_VOLUME_COEF = 0.2;
 };
 
 // BGM関数郡 //
 
 T2MediaLib_BGMPlayer.prototype.playBGM = function(idx, loop, offset, loopStart, loopEnd) {
     if (!T2MediaLib.context) return null;
-    var bgm = this.playingBGM;
-    if (bgm instanceof AudioBufferSourceNode) bgm.stop(0);
-    this.playingBGM = T2MediaLib.playSE(idx, this.bgmVolume, this.bgmTempo, offset, loop, loopStart, loopEnd);
+    this.stopBGM();
+
+    var audioBuffer = T2MediaLib.seDataAry.data[idx];
+    if (audioBuffer instanceof AudioBuffer) {
+        // MP3, Ogg, AAC, WAV
+        this.playingBGM = T2MediaLib.playSE(idx, this.bgmVolume, this.bgmPan, this.bgmTempo, offset, loop, loopStart, loopEnd);
+    } else if (audioBuffer instanceof Object) {
+        // Midi
+        if (this.picoAudio == null) {
+            this.picoAudio = new PicoAudio(T2MediaLib.context); // AudioContextオブジェクトがmax6つまで？なので使いまわす
+        }
+        this.picoAudio.setData(audioBuffer);
+        this.picoAudio.setLoop(loop);
+        this.picoAudio.setGlobalVolume(this.PICO_AUDIO_VOLUME_COEF * this.bgmVolume * T2MediaLib.bgmMasterVolume * T2MediaLib.masterVolume);
+        if (!offset) {
+            offset = 0;
+        } else {
+            var bgmLengthTime = this.picoAudio.getTime(this.picoAudio.getTiming(Number.MAX_SAFE_INTEGER));
+            if      (offset > bgmLengthTime) offset = bgmLengthTime;
+            else if (offset < 0.0) offset = 0.0;
+        }
+        this.picoAudio.setStartTime(offset);
+        this.picoAudio.play();
+        this.playingBGM = this.picoAudio;
+    }
     this.playingBGMName = idx;
     this.bgmPause = 0;
-    return this.playingBGM;
+    return this;
 };
 T2MediaLib_BGMPlayer.prototype.stopBGM = function() {
     var bgm = this.playingBGM;
-    if (!(bgm instanceof AudioBufferSourceNode)) return null;
-    bgm.stop(0);
-    this.playingBGM = null;
-    return bgm;
+    if (bgm instanceof PicoAudio) {
+        // Midi
+        this.picoAudio.stop();
+        this.playingBGM = null;
+        this.playingBGMName = null;
+    } else if (bgm instanceof AudioBufferSourceNode) {
+        // MP3, Ogg, AAC, WAV
+        bgm.stop(0);
+        this.playingBGM = null;
+        this.playingBGMName = null;
+    }
+    return this;
 };
 T2MediaLib_BGMPlayer.prototype.pauseBGM = function() {
     var bgm = this.playingBGM;
-    if (!(bgm instanceof AudioBufferSourceNode)) return null;
-    if (this.bgmPause === 0) {
-        this.bgmPauseTime = this.getBGMCurrentTime();
-        this.bgmPauseLoopStart = bgm.loopStart;
-        this.bgmPauseLoopEnd = bgm.loopEnd;
-        this.bgmPauseLoop = bgm.loop;
-        this.bgmPauseCurrentTime = bgm.context.currentTime;
-        this.bgmPauseTempo = T2MediaLib.bgmTempo;
-        bgm.stop(0);
-        this.bgmPause = 1;
+    if (bgm instanceof PicoAudio) {
+        // Midi
+        if (this.bgmPause === 0) {
+            this.bgmPauseTime = this.getBGMCurrentTime();
+            this.bgmPauseCurrentTime = bgm.context.currentTime;
+            bgm.stop();
+            this.bgmPause = 1;
+        }
+    } else if (bgm instanceof AudioBufferSourceNode) {
+        // MP3, Ogg, AAC, WAV
+        if (this.bgmPause === 0) {
+            this.bgmPauseTime = this.getBGMCurrentTime();
+            this.bgmPauseLoopStart = T2MediaLib.getSELoopStartTime(bgm);
+            this.bgmPauseLoopEnd = T2MediaLib.getSELoopEndTime(bgm);
+            this.bgmPauseLoop = T2MediaLib.isSELoop(bgm);
+            this.bgmPauseCurrentTime = bgm.context.currentTime;
+            this.bgmPauseTempo = this.bgmTempo;
+            bgm.stop(0);
+            this.bgmPause = 1;
+        }
     }
-    return bgm;
+    return this;
 };
 T2MediaLib_BGMPlayer.prototype.resumeBGM = function() {
     var bgm = this.playingBGM;
-    if (!(bgm instanceof AudioBufferSourceNode)) return null;
-    if (this.bgmPause === 1) {
-        bgm = this.playBGM(this.playingBGMName, this.bgmPauseLoop, this.bgmPauseTime, this.bgmPauseLoopStart, this.bgmPauseLoopEnd);
-        this.bgmPause = 0;
+    if (bgm instanceof PicoAudio) {
+        // Midi
+        if (this.bgmPause === 1) {
+            bgm.play();
+            this.bgmPause = 0;
+        }
+    } else if (bgm instanceof AudioBufferSourceNode) {
+        // MP3, Ogg, AAC, WAV
+        if (this.bgmPause === 1) {
+            bgm = this.playBGM(this.playingBGMName, this.bgmPauseLoop, this.bgmPauseTime, this.bgmPauseLoopStart, this.bgmPauseLoopEnd);
+            this.bgmPause = 0;
+        }
     }
-    return bgm;
+    return this;
+};
+T2MediaLib_BGMPlayer.prototype.onChangeBGMMasterVolume = function() {
+    this.setBGMVolume(this.getBGMVolume());
+};
+T2MediaLib_BGMPlayer.prototype.getBGMVolume = function() {
+    return this.bgmVolume;
 };
 T2MediaLib_BGMPlayer.prototype.setBGMVolume = function(vol) {
     var bgm = this.playingBGM;
-    if (!(bgm instanceof AudioBufferSourceNode)) return null;
     this.bgmVolume = vol;
-    T2MediaLib.setSEVolume(bgm, vol);
+    if (bgm instanceof PicoAudio) {
+        // Midi
+        this.picoAudio.setGlobalVolume(this.PICO_AUDIO_VOLUME_COEF * vol * T2MediaLib.bgmMasterVolume * T2MediaLib.masterVolume);
+    } else if (bgm instanceof AudioBufferSourceNode) {
+        // MP3, Ogg, AAC, WAV
+        bgm.gainNode.gain.value = vol * T2MediaLib.bgmMasterVolume * T2MediaLib.masterVolume;
+        //↓seMasterVolumeが音量に乗算されてしまう
+        //T2MediaLib.setSEVolume(bgm, vol);
+    }
+    return this;
+};
+T2MediaLib_BGMPlayer.prototype.getBGMTempo = function() {
+    return this.bgmTempo;
 };
 T2MediaLib_BGMPlayer.prototype.setBGMTempo = function(tempo) {
+    // MP3, Ogg, AAC, WAV
     var bgm = this.playingBGM;
-    if (!(bgm instanceof AudioBufferSourceNode)) return null;
 
-    if (this.bgmPause === 0) {
+    if (tempo <= 0) tempo = 1;
+    if ((bgm instanceof AudioBufferSourceNode) && this.bgmPause === 0) {
         bgm.plusTime -= (T2MediaLib.context.currentTime - bgm.playStartTime) * (tempo - this.bgmTempo);
     }
     this.bgmTempo = tempo;
     T2MediaLib.setSERate(bgm, tempo);
+    return this;
+};
+T2MediaLib_BGMPlayer.prototype.getBGMPan = function() {
+    return this.bgmPan;
+};
+T2MediaLib_BGMPlayer.prototype.setBGMPan = function(pan) {
+    var bgm = this.playingBGM;
+    this.bgmPan = pan;
+    if (bgm instanceof AudioBufferSourceNode) {
+        // MP3, Ogg, AAC, WAV
+        T2MediaLib.setSEPan(bgm, pan);
+    }
+    return this;
+};
+T2MediaLib_BGMPlayer.prototype.isBGMLoop = function() {
+    var bgm = this.playingBGM;
+    if (bgm instanceof PicoAudio) {
+        // Midi
+        return this.picoAudio.isLoop();
+    } else if (bgm instanceof AudioBufferSourceNode) {
+        // MP3, Ogg, AAC, WAV
+        if (this.bgmPause === 1) {
+            return this.bgmPauseLoop;
+        } else {
+            return T2MediaLib.isSELoop(bgm);
+        }
+    }
+    return null;
+};
+T2MediaLib_BGMPlayer.prototype.setBGMLoop = function(loop) {
+    var bgm = this.playingBGM;
+    if (bgm instanceof PicoAudio) {
+        // Midi
+        this.picoAudio.setLoop(loop);
+    } else if (bgm instanceof AudioBufferSourceNode) {
+        // MP3, Ogg, AAC, WAV
+        if (this.bgmPause === 1) {
+            this.bgmPauseLoop = loop;
+        } else {
+            T2MediaLib.setSELoop(bgm, loop);
+        }
+    }
+    return this;
+};
+T2MediaLib_BGMPlayer.prototype.getBGMLoopStartTime = function() {
+    var bgm = this.playingBGM;
+    if (bgm instanceof PicoAudio) {
+        // Midi
+        return 0;
+    } else if (bgm instanceof AudioBufferSourceNode) {
+        // MP3, Ogg, AAC, WAV
+        if (this.bgmPause === 1) {
+            return this.bgmPauseLoopStart;
+        } else {
+            return T2MediaLib.getSELoopStartTime(bgm);
+        }
+    }
+    return null;
+};
+T2MediaLib_BGMPlayer.prototype.setBGMLoopStartTime = function(loopStart) {
+    var bgm = this.playingBGM;
+    if (bgm instanceof AudioBufferSourceNode) {
+        // MP3, Ogg, AAC, WAV
+        if (this.bgmPause === 1) {
+            this.bgmPauseLoopStart = loopStart;
+        } else {
+            return T2MediaLib.setSELoopStartTime(bgm, loopStart);
+        }
+    }
+    return this;
+};
+T2MediaLib_BGMPlayer.prototype.getBGMLoopEndTime = function() {
+    var bgm = this.playingBGM;
+    if (bgm instanceof PicoAudio) {
+        // Midi
+        return this.getBGMLength();
+    } else if (bgm instanceof AudioBufferSourceNode) {
+        // MP3, Ogg, AAC, WAV
+        if (this.bgmPause === 1) {
+            return this.bgmPauseLoopEnd;
+        } else {
+            return T2MediaLib.getSELoopEndTime(bgm);
+        }
+    }
+    return null;
+};
+T2MediaLib_BGMPlayer.prototype.setBGMLoopEndTime = function(loopEnd) {
+    var bgm = this.playingBGM;
+    if (bgm instanceof AudioBufferSourceNode) {
+        // MP3, Ogg, AAC, WAV
+        if (this.bgmPause === 1) {
+            this.bgmPauseLoopEnd = loopEnd;
+        } else {
+            return T2MediaLib.setSELoopEndTime(bgm, loopEnd);
+        }
+    }
+    return this;
 };
 T2MediaLib_BGMPlayer.prototype.getBGMCurrentTime = function() {
     var bgm = this.playingBGM;
-    if (!(bgm instanceof AudioBufferSourceNode)) return null;
-    var time, time2, currenTime, tempo, plusTime, minusTime, mod;
-
-    if (this.bgmPause === 0) {
-        currenTime = T2MediaLib.context.currentTime;
-        tempo = this.bgmTempo;
-    } else {
-        currenTime = this.bgmPauseCurrentTime;
-        tempo = this.bgmPauseTempo;
-    }
-
-    time2 = (currenTime - bgm.playStartTime) * tempo + bgm.plusTime;
-    if (bgm.loop) {
-        if (bgm.loopEnd - bgm.loopStart > 0) { // ループ範囲正常
-
-            if (time2 < bgm.loopStart) { // ループ範囲前
-                plusTime  = 0;
-                minusTime = 0;
-                mod = bgm.buffer.duration;
-            } else { // ループ範囲内
-                plusTime  = bgm.loopStart;
-                minusTime = bgm.loopStart;
-                mod = bgm.loopEnd - bgm.loopStart;
-            }
-        } else { // ループ範囲マイナス（ループ無効）
-            mod = bgm.buffer.duration;
-            plusTime = 0;
-            minusTime = 0;
+    if (bgm instanceof PicoAudio) {
+        // Midi
+        var time;
+        if (this.bgmPause === 0) {
+            time = this.picoAudio.getTime(this.picoAudio.getTiming(this.picoAudio.context.currentTime - this.picoAudio.states.startTime));
+        } else {
+            time = this.bgmPauseTime;
         }
-    }
+        return time;
+    } else if (bgm instanceof AudioBufferSourceNode) {
+        // MP3, Ogg, AAC, WAV
+        var time, time2, currenTime, tempo, plusTime, minusTime, mod;
 
-    if (bgm.loop) {
-        time = ((time2 - minusTime) % mod) + plusTime;
-    } else {
-        time = time2;
-        if (time > bgm.buffer.duration) time = bgm.buffer.duration;
+        if (this.bgmPause === 0) {
+            currenTime = T2MediaLib.context.currentTime;
+            tempo = this.bgmTempo;
+        } else {
+            currenTime = this.bgmPauseCurrentTime;
+            tempo = this.bgmPauseTempo;
+        }
+
+        time2 = (currenTime - bgm.playStartTime) * tempo + bgm.plusTime;
+        if (bgm.loop) {
+            if (bgm.loopEnd - bgm.loopStart > 0) { // ループ範囲正常
+
+                if (time2 < bgm.loopStart) { // ループ範囲前
+                    plusTime  = 0;
+                    minusTime = 0;
+                    mod = bgm.buffer.duration;
+                } else { // ループ範囲内
+                    plusTime  = bgm.loopStart;
+                    minusTime = bgm.loopStart;
+                    mod = bgm.loopEnd - bgm.loopStart;
+                }
+            } else { // ループ範囲マイナス（ループ無効）
+                mod = bgm.buffer.duration;
+                plusTime = 0;
+                minusTime = 0;
+            }
+        }
+
+        if (bgm.loop) {
+            time = ((time2 - minusTime) % mod) + plusTime;
+        } else {
+            time = time2;
+            if (time > bgm.buffer.duration) time = bgm.buffer.duration;
+        }
+        return time;
     }
-    return time;
+    return null;
 };
 T2MediaLib_BGMPlayer.prototype.getBGMLength = function() {
     var bgm = this.playingBGM;
-    if (!(bgm instanceof AudioBufferSourceNode)) return null;
-    return bgm.buffer.duration;
+    if (bgm instanceof PicoAudio) {
+        // Midi
+        return this.picoAudio.getTime(this.picoAudio.getTiming(Number.MAX_SAFE_INTEGER));
+    } else if (bgm instanceof AudioBufferSourceNode) {
+        // MP3, Ogg, AAC, WAV
+        return bgm.buffer.duration;
+    }
+    return null;
+};
+T2MediaLib_BGMPlayer.prototype.getPlayingBGMName = function() {
+    return this.playingBGMName;
 };
 
 
@@ -3855,6 +5021,7 @@ T2MediaLib_BGMPlayer.prototype.getBGMLength = function() {
 
 var T2MediaLib = {
     context : null,
+    picoAudio : null,
 
     seDataAry : {
         data : []
@@ -3862,17 +5029,10 @@ var T2MediaLib = {
 
     bgmPlayerMax : 16,
     bgmPlayerAry : [],
-    playingBGM : null,
-    playingBGMName : null,
-    bgmPause : 0,
-    bgmPauseTime : 0,
-    bgmPauseCurrentTime : 0,
-    bgmPauseTempo : 0,
-    bgmPauseLoop : false,
-    bgmPauseLoopStart : 0,
-    bgmPauseLoopEnd : 0,
-    bgmVolume : 1.0,
-    bgmTempo : 1.0,
+
+    masterVolume : 1.0,
+    seMasterVolume : 1.0,
+    bgmMasterVolume : 1.0,
 
     playingAudio : null,
     audioVolume : 1.0,
@@ -3917,20 +5077,36 @@ var T2MediaLib = {
         delete dataAry[idx];
     },
 
+    // SE&BGMの音量 //
+    getMasterVolume : function() {
+        return T2MediaLib.masterVolume;
+    },
+
+    setMasterVolume : function(vol) {
+        T2MediaLib.masterVolume = vol;
+        for (var i=0; i<T2MediaLib.bgmPlayerMax; i++) {
+            var bgmPlayer = T2MediaLib.bgmPlayerAry[i];
+            if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) continue;
+            bgmPlayer.onChangeBGMMasterVolume();
+        }
+    },
 
     // SEメソッド郡 //
-    loadSEFromArray: function (idx, array) {
-        var ctx=T2MediaLib.context;
-        var myArrayBuffer = ctx.createBuffer(
-            1, array.length, ctx.sampleRate);
-        var nowBuffering = myArrayBuffer.getChannelData(0);
+    loadSEFromArray: function (idx, array1, array2) {
+        var ctx = T2MediaLib.context;
+        var numOfChannels = array1 != null && array2 != null ? 2 : 1;
+        var audioBuffer = ctx.createBuffer(numOfChannels, array.length, ctx.sampleRate);
+        var buffer1 = audioBuffer.getChannelData(0);
+        var buffer2 = array2 != null ? audioBuffer.getChannelData(1) : null;
         for (var i = 0; i < array.length ; i++) {
-             nowBuffering[i] = array[i];
+             buffer1[i] = array1[i];
         }
-        //var source = ctx.createBufferSource();
-        // set the buffer in the AudioBufferSourceNode
-        //source.buffer = myArrayBuffer;
-        T2MediaLib.seDataAry.data[idx]=myArrayBuffer;//source;
+        if (buffer2) {
+            for (var i = 0; i < array.length ; i++) {
+                 buffer2[i] = array2[i];
+            }
+        }
+        T2MediaLib.seDataAry.data[idx] = audioBuffer;
     },
     loadSE : function(idx, url, callbacks) { //@hoge1e3
         if (!T2MediaLib.context || T2MediaLib.disabled) {
@@ -3938,34 +5114,42 @@ var T2MediaLib = {
             return null;
         }
         if (typeof WebSite=="object" && WebSite.mp3Disabled) {
-            url=url.replace(/\.mp3$/,".ogg");
+            url=url.replace(/\.(mp3|mp4|m4a)$/,".ogg");
         }
         var xhr = new XMLHttpRequest();
         xhr.onload = function() {
             if (xhr.status === 200 || xhr.status=== 0 /*@hoge1e3 for node-webkit base64url */) {
                 var arrayBuffer = xhr.response;
                 if (arrayBuffer instanceof ArrayBuffer) {
-                    var successCallback = function(audioBuffer) {
-                        /*
-                        window.alert('Success : ' +
-                                     'sampleRate:' + audioBuffer.sampleRate + '\n' +
-                                     'length:' + audioBuffer.length + '\n' +
-                                     'duration:' + audioBuffer.duration + '\n' +
-                                     'numberOfChannels:' + audioBuffer.numberOfChannels + '\n');
-                        */
-                        T2MediaLib.seDataAry.data[idx] = audioBuffer;
-                        if (callbacks && callbacks.succ) callbacks.succ(idx);//@hoge1e3
-                    };
-                    var errorCallback = function(error) {
-                        if (error instanceof Error) {
-                            console.log('T2MediaLib: '+error.message,url);
-                        } else {
-                            console.log('T2MediaLib: Error decodeAudioData()',url);
+                    // xhr.responseURL が実装されていないブラウザがあるので使わない
+                    var url = xhr.t2MediaLib_requestURL;
+                    if (url.match(/\.(midi?)$/)) {
+                        // Midi
+                        // PicoAudio.jsにデコードしてもらう
+                        if (T2MediaLib.picoAudio == null) {
+                            T2MediaLib.picoAudio = new PicoAudio(T2MediaLib.context);
                         }
-                        T2MediaLib.seDataAry.data[idx] = -4;
-                        if (callbacks && callbacks.err) callbacks.err(idx,T2MediaLib.seDataAry.data[idx]);//@hoge1e3
-                    };
-                    T2MediaLib.context.decodeAudioData(arrayBuffer, successCallback, errorCallback);
+                        var smf = new Uint8Array(arrayBuffer);
+                        var data = T2MediaLib.picoAudio.parseSMF(smf);
+                        T2MediaLib.seDataAry.data[idx] = data;
+                        if (callbacks && callbacks.succ) callbacks.succ(idx);
+                    } else {
+                        // MP3, Ogg, AAC, WAV
+                        var successCallback = function(audioBuffer) {
+                            T2MediaLib.seDataAry.data[idx] = audioBuffer;
+                            if (callbacks && callbacks.succ) callbacks.succ(idx);//@hoge1e3
+                        };
+                        var errorCallback = function(error) {
+                            if (error instanceof Error) {
+                                console.log('T2MediaLib: '+error.message,url);
+                            } else {
+                                console.log('T2MediaLib: Error decodeAudioData()',url);
+                            }
+                            T2MediaLib.seDataAry.data[idx] = -4;
+                            if (callbacks && callbacks.err) callbacks.err(idx,T2MediaLib.seDataAry.data[idx]);//@hoge1e3
+                        };
+                        T2MediaLib.context.decodeAudioData(arrayBuffer, successCallback, errorCallback);
+                    }
                 } else {
                     T2MediaLib.seDataAry.data[idx] = -3;
                     if (callbacks && callbacks.err) callbacks.err(idx,T2MediaLib.seDataAry.data[idx]);//@hoge1e3
@@ -3981,10 +5165,12 @@ var T2MediaLib = {
         T2MediaLib.seDataAry.data[idx] = null;
         if (url.match(/^data:/) && Util && Util.Base64_To_ArrayBuffer) {//@hoge1e3
             xhr={onload:xhr.onload};
+            xhr.t2MediaLib_requestURL = url;
             xhr.response=Util.Base64_To_ArrayBuffer( url.replace(/^data:audio\/[a-zA-Z0-9]+;base64,/i,""));
             xhr.status=200;
             xhr.onload();
         } else {
+            xhr.t2MediaLib_requestURL = url;
             xhr.open('GET', url, true);
             xhr.responseType = 'arraybuffer';  // XMLHttpRequest Level 2
             xhr.send(null);
@@ -3997,30 +5183,33 @@ var T2MediaLib = {
         if (this.isActivated) return;
         this.isActivated=true;
         var myContext=T2MediaLib.context;
-    	var buffer = myContext.createBuffer(1, Math.floor(myContext.sampleRate/32), myContext.sampleRate);
-    	var ary = buffer.getChannelData(0);
-    	var lam = Math.floor(myContext.sampleRate/860);
+        var buffer = myContext.createBuffer(1, Math.floor(myContext.sampleRate/32), myContext.sampleRate);
+        var ary = buffer.getChannelData(0);
+        var lam = Math.floor(myContext.sampleRate/860);
         for (var i = 0; i < ary.length; i++) {
-    	     //ary[i] = (i % lam<lam/2?0.1:-0.1)*(i<lam?2:1) ;
-    	     ary[i] = 0; // 無音化
-    	}
+             //ary[i] = (i % lam<lam/2?0.1:-0.1)*(i<lam?2:1) ;
+             ary[i] = 0; // 無音化
+        }
         //console.log(ary);
-	    var source = myContext.createBufferSource();
-	    source.buffer = buffer;
-    	// connect to output (your speakers)
-    	source.connect(myContext.destination);
+        var source = myContext.createBufferSource();
+        source.buffer = buffer;
+        // connect to output (your speakers)
+        source.connect(myContext.destination);
         // play the file
-	    if (source.noteOn) source.noteOn(0);
-	    else if (source.start) source.start(0);
+        if (source.noteOn) source.noteOn(0);
+        else if (source.start) source.start(0);
     },
-    playSE : function(idx, vol, rate, offset, loop, loopStart, loopEnd) {
+    playSE : function(idx, vol, pan, rate, offset, loop, loopStart, loopEnd) {
         if (!T2MediaLib.context) return null;
         var audioBuffer = T2MediaLib.seDataAry.data[idx];
         if (!(audioBuffer instanceof AudioBuffer)) return null;
 
         // 引数チェック
         if (vol === null) {
-            vol = 1;
+            vol = 1.0;
+        }
+        if (pan === null) {
+            pan = 0.0;
         }
         if (!rate) rate = 1.0;
         if (!offset) {
@@ -4046,20 +5235,36 @@ var T2MediaLib = {
         var source = T2MediaLib.context.createBufferSource();
         T2MediaLib.context.createGain = T2MediaLib.context.createGain || T2MediaLib.context.createGainNode;
         var gainNode = T2MediaLib.context.createGain();
+        var panNode = T2MediaLib.context.createPanner();
 
         source.buffer = audioBuffer;
-
-        source.loop               = loop;
-        source.loopStart          = loopStart;
-        source.loopEnd            = loopEnd;//audioBuffer.duration;
+        source.loop = loop;
+        source.loopStart = loopStart;
+        source.loopEnd = loopEnd;//audioBuffer.duration;
         source.playbackRate.value = rate;
 
-        // 通常ノード接続
-        //source.connect(T2MediaLib.context.destination);
-
-        // 音量変更できるようノード接続
+        // 音量＆パン設定
         source.connect(gainNode);
-        gainNode.connect(T2MediaLib.context.destination);
+        gainNode.connect(panNode);
+        panNode.connect(T2MediaLib.context.destination);
+        panNode.panningModel = "equalpower";
+        if      (pan < -1.0) pan = -1.0;
+        else if (pan >  1.0) pan =  1.0;
+        var panAngle = pan * 90;
+        var panX = Math.sin(panAngle * (Math.PI / 180));
+        var panZ = -Math.cos(panAngle * (Math.PI / 180));
+        if (pan === -1.0 || pan === 1.0) panZ = 0; // 6.123233995736766e-17となるので0にしておく
+        if (panNode.positionX) {
+            panNode.positionX.value = panX;
+            panNode.positionY.value = 0;
+            panNode.positionZ.value = panZ;
+        } else {
+            panNode.setPosition(panX, 0, panZ);
+        }
+        // 左右どちらかにパンがよると、音量が大きくなるので半減する
+        //gainNode.gain.value = vol / (1 + Math.abs(pan));
+        // ↑パンはそいうものらしいので、音量はそのままにする
+        gainNode.gain.value = vol * T2MediaLib.seMasterVolume * T2MediaLib.masterVolume;
 
         // ループ開始位置修正
         var offset_adj;
@@ -4071,6 +5276,9 @@ var T2MediaLib = {
 
         // 変数追加
         source.gainNode = gainNode;
+        source.volumeValue = vol;
+        source.panNode = panNode;
+        source.panValue = pan;
         source.playStartTime = T2MediaLib.context.currentTime;
         source.playOffset = offset_adj;
         source.plusTime = offset_adj;
@@ -4078,8 +5286,6 @@ var T2MediaLib = {
         // 再生
         source.start = source.start || source.noteOn;
         source.stop  = source.stop  || source.noteOff;
-
-        gainNode.gain.value = vol * vol;
 
         if (offset) {
             if (loop) source.start(0, offset, 86400);
@@ -4089,17 +5295,10 @@ var T2MediaLib = {
         }
 
         source.onended = function(event) {
-            //console.log('"on' + event.type + '" event handler !!');
-            //source.stop(0);
-
-            delete source.gainNode;
-            //delete source.playStartTime;
-            //delete source.playOffset;
-            //delete source.plusTime;
-
+            source.disconnect();
             source.onended = null;
         };
-        //console.log(source);
+        
         return source;
     },
     stopSE : function(sourceObj) {
@@ -4107,13 +5306,75 @@ var T2MediaLib = {
         sourceObj.stop(0);
         return sourceObj;
     },
+    getSEMasterVolume : function() {
+        return T2MediaLib.seMasterVolume;
+    },
+    setSEMasterVolume : function(vol) {
+        T2MediaLib.seMasterVolume = vol;
+    },
+    getSEVolume : function(sourceObj) {
+        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        return source.volumeValue;
+    },
     setSEVolume : function(sourceObj, vol) {
         if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
-        sourceObj.gainNode.gain.value = vol * vol;
+        sourceObj.gainNode.gain.value = vol * T2MediaLib.seMasterVolume * T2MediaLib.masterVolume;
+        source.volumeValue = vol;
+        return sourceObj;
+    },
+    getSERate : function(sourceObj) {
+        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        return sourceObj.playbackRate.value;
     },
     setSERate : function(sourceObj, rate) {
         if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
         sourceObj.playbackRate.value = rate;
+    },
+    getSEPan : function(sourceObj) {
+        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        return sourceObj.panValue;
+    },
+    setSEPan : function(sourceObj, pan) {
+        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        var panNode = sourceObj.panNode;
+        if      (pan < -1.0) pan = -1.0;
+        else if (pan >  1.0) pan =  1.0;
+        var panAngle = pan * 90;
+        var panX = Math.sin(panAngle * (Math.PI / 180));
+        var panZ = Math.cos(panAngle * (Math.PI / 180));
+        if (pan === -1.0 || pan === 1.0) panZ = 0; // 6.123233995736766e-17となるので0にしておく
+        if (panNode.positionX) {
+            panNode.positionX.value = panX;
+            panNode.positionY.value = 0;
+            panNode.positionZ.value = panZ;
+        } else {
+            panNode.setPosition(panX, 0, panZ);
+        }
+        sourceObj.panValue = pan;
+    },
+    isSELoop : function(sourceObj) {
+        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        return sourceObj.loop;
+    },
+    setSELoop : function(sourceObj, loop) {
+        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        sourceObj.loop = loop;
+    },
+    getSELoopStartTime : function(sourceObj) {
+        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        return sourceObj.loopStart;
+    },
+    setSELoopStartTime : function(sourceObj, loopStart) {
+        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        sourceObj.loopStart = loopStart;
+    },
+    getSELoopEndTime : function(sourceObj) {
+        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        return sourceObj.loopEnd;
+    },
+    setSELoopEndTime : function(sourceObj, loopEnd) {
+        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        sourceObj.loopEnd = loopEnd;
     },
     getSEData : function(idx) {
         return T2MediaLib.seDataAry.data[idx];
@@ -4149,17 +5410,88 @@ var T2MediaLib = {
         if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
         return bgmPlayer.resumeBGM();
     },
+    getBGMMasterVolume : function() {
+        return T2MediaLib.bgmMasterVolume;
+    },
+    setBGMMasterVolume : function(vol) {
+        T2MediaLib.bgmMasterVolume = vol;
+        for (var i=0; i<T2MediaLib.bgmPlayerMax; i++) {
+            var bgmPlayer = T2MediaLib.bgmPlayerAry[i];
+            if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) continue;
+            bgmPlayer.onChangeBGMMasterVolume();
+        }
+    },
+    getBGMVolume : function(id) {
+        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
+        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
+        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        return bgmPlayer.getBGMVolume();
+    },
     setBGMVolume : function(id, vol) {
         if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
         var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
         if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
         return bgmPlayer.setBGMVolume(vol);
     },
+    getBGMTempo : function(id) {
+        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
+        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
+        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        return bgmPlayer.getBGMTempo();
+    },
     setBGMTempo : function(id, tempo) {
         if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
         var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
         if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
         return bgmPlayer.setBGMTempo(tempo);
+    },
+    getBGMPan : function(id) {
+        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
+        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
+        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        return bgmPlayer.getBGMPan();
+    },
+    setBGMPan : function(id, pan) {
+        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
+        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
+        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        return bgmPlayer.setBGMPan(pan);
+    },
+    isBGMLoop : function(id) {
+        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
+        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
+        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        return bgmPlayer.isBGMLoop();
+    },
+    setBGMLoop : function(id, loop) {
+        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
+        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
+        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        return bgmPlayer.setBGMLoop(loop);
+    },
+    getBGMLoopStartTime : function(id) {
+        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
+        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
+        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        return bgmPlayer.getBGMLoopStartTime();
+    },
+    setBGMLoopStartTime : function(id, loopStart) {
+        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
+        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
+        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        return bgmPlayer.setBGMLoopStartTime(loopStart);
+    },
+    getBGMLoopEndTime : function(id) {
+        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
+        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
+        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        return bgmPlayer.getBGMLoopEndTime();
+    },
+    setBGMLoopEndTime : function(id, loopEnd) {
+        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
+        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
+        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        return bgmPlayer.setBGMLoopEndTime(loopEnd);
     },
     getBGMCurrentTime : function(id) {
         if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
@@ -4173,6 +5505,12 @@ var T2MediaLib = {
         if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
         return bgmPlayer.getBGMLength();
     },
+    getPlayingBGMName : function(id) {
+        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
+        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
+        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        return bgmPlayer.getPlayingBGMName();
+    },
     getBGMData : function(idx) {
         return T2MediaLib.getSEData(idx);
     },
@@ -4183,6 +5521,17 @@ var T2MediaLib = {
         for (var i=0; i<T2MediaLib.bgmPlayerMax; i++) {
             T2MediaLib.stopBGM(i);
         }
+    },
+    allResetBGM : function() {
+        for (var i=0; i<T2MediaLib.bgmPlayerMax; i++) {
+            T2MediaLib.stopBGM(i);
+            T2MediaLib.setBGMVolume(i, 1.0);
+            T2MediaLib.setBGMTempo(i, 1.0);
+            T2MediaLib.setBGMPan(i, 0.0);
+        }
+        T2MediaLib.setMasterVolume(1.0);
+        T2MediaLib.setSEMasterVolume(1.0);
+        T2MediaLib.setBGMMasterVolume(1.0);
     },
 
     // Audioメソッド郡 //
@@ -4271,48 +5620,6 @@ var T2MediaLib = {
         return T2MediaLib.playingAudio.duration;
     }
 };
-
-// 旧名。そのうち消す
-//T2SoundLib = T2MediaLib;
-
-
-
-// テスト
-//'http://jsrun.it/assets/c/X/4/S/cX4S7.ogg'
-//'http://jsrun.it/assets/5/Z/s/x/5ZsxE.ogg'
-
-//alert((!window.hasOwnProperty('webkitAudioContext'))+" "+(window.webkitAudioContext.prototype.createGain===undefined));
-
-//T2MediaLib.init();
-
-
-//playSE : function(idx, vol, rate, offset, loop, loopStart, loopEnd) {
-//T2MediaLib.loadSE('test','http://jsrun.it/assets/5/Z/s/x/5ZsxE.ogg');
-//setTimeout(function(){ bgm1 = T2MediaLib.playSE('test', 1.0, 1.0, 0, true, 0, 0); }, 500);
-//setTimeout(function(){ T2MediaLib.stopSE(bgm1); }, 5000);
-
-/*
-//playSE : function(idx, vol, rate, offset, loop, loopStart, loopEnd) {
-T2MediaLib.loadSE('test','http://jsrun.it/assets/c/X/4/S/cX4S7.ogg');
-setTimeout(function(){ bgm1 = T2MediaLib.playSE('test', 1.0, 1.1, 8, true, 12, 19); }, 500);
-setTimeout(function(){ bgm1.playbackRate.value = 1.2; }, 5000);
-setTimeout(function(){ bgm1.stop(); }, 6000);
-setTimeout(function(){ T2MediaLib.playSE('test'); }, 7000);
-//setTimeout(function(){ T2MediaLib.stopSE(bgm1); }, 5000);
-*/
-/*
-T2MediaLib.loadAudio('test','http://jsrun.it/assets/c/X/4/S/cX4S7.ogg');
-T2MediaLib.loadAudio('test2','http://jsrun.it/assets/q/S/1/C/qS1Ch.ogg');
-setTimeout(function(){ T2MediaLib.playAudio('test'); }, 5000);
-setTimeout(function(){ T2MediaLib.playAudio('test2'); }, 1000);
-setTimeout(function(){ T2MediaLib.playAudio('test', true, 11.5); console.log(T2MediaLib.getAudioCurrentTime()); console.log(T2MediaLib.getAudioLength());}, 1050);
-setTimeout(function(){ T2MediaLib.setAudioTempo(1.5); }, 3000);
-setTimeout(function(){ T2MediaLib.setAudioVolume(0.5); }, 6000);
-setTimeout(function(){ T2MediaLib.setAudioPosition(20); }, 7000);
-setTimeout(function(){ T2MediaLib.stopAudio(); }, 10000);
-*/
-
-
 
 requireSimulator.setName('exceptionCatcher');
 define([], function () {
@@ -4617,7 +5924,7 @@ define(["UI"],function (UI) {
     return UIDiag;
 });
 requireSimulator.setName('runtime');
-requirejs(["ImageList","T2MediaLib","Tonyu","UIDiag"], function () {
+requirejs(["ImageList","PicoAudio","T2MediaLib","Tonyu","UIDiag"], function () {
 
 });
 requireSimulator.setName('runScript2');
@@ -4637,7 +5944,7 @@ requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu
                 || u.indexOf("ipad") != -1
                 || u.indexOf("ipod") != -1
                 ) && window != window.parent) {
-                return 5;
+                return 40;
             }
             return 0;
         }

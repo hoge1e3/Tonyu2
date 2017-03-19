@@ -7,10 +7,26 @@
 <script src='../../js/ide/NWMenu.js'/></script>
 <style>body{padding-top:20px; margin-left: 20px; margin-right:20px; font-family:"MS UI Gothic",sans-serif;}</style>
 <button onclick='javascript:history.back();'>←Back</button><br/>
-<div><a id="line_marker_-0" name="line_marker_-0"></a><a href="T2MediaPlayer.html">T2MediaPlayer</a><span>
-</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><h1><a id="line_marker_-2" name="line_marker_-2"></a><span>playSEメソッド</span></h1><a id="line_marker_-3" name="line_marker_-3"></a><p></p><a id="line_marker_-4" name="line_marker_-4"></a><span>効果音を演奏します</span><span>
-</span><a id="line_marker_-5" name="line_marker_-5"></a><p></p><a id="line_marker_-8" name="line_marker_-8"></a><pre><a id="line_marker_-7" name="line_marker_-7"></a><span>playSE(name)</span><span>
-</span></pre><a id="line_marker_-9" name="line_marker_-9"></a><p></p><a id="line_marker_-11" name="line_marker_-11"></a><ul><li><a id="line_marker_-10" name="line_marker_-10"></a><span>name に演奏するBGMの名前(</span><a href="sndres.html">音声リスト</a><span>で指定した名前）を指定します</span><span>
-</span></li></ul><p></p><a id="line_marker_-12" name="line_marker_-12"></a><span>.</span><span>
+<div><a id="line_marker_-0" name="line_marker_-0"></a><a href="T2MediaPlayer.html">T2MediaPlayer</a><span> | </span><a href="T2MediaPlayer_detail.html">T2MediaPlayer(詳細)</a><span>
+</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><h1><a id="line_marker_-2" name="line_marker_-2"></a><span>playSEメソッド</span></h1><a id="line_marker_-3" name="line_marker_-3"></a><p></p><a id="line_marker_-4" name="line_marker_-4"></a><span>効果音を再生します</span><span>
+</span><a id="line_marker_-5" name="line_marker_-5"></a><p></p><a id="line_marker_-8" name="line_marker_-8"></a><pre><a id="line_marker_-7" name="line_marker_-7"></a><span>playSE(name, volume, pan, rate, startTime)</span><span>
+</span></pre><a id="line_marker_-9" name="line_marker_-9"></a><p></p><ul><li><a id="line_marker_-10" name="line_marker_-10"></a><span>name</span><span>
+</span></li><a id="line_marker_-12" name="line_marker_-12"></a><ul><li><a id="line_marker_-11" name="line_marker_-11"></a><span>再生する効果音の名前(</span><a href="sndres.html">音声リスト</a><span>で指定した名前）を指定します</span><span>
+</span></li></ul><li><span>volume（省略可）</span><span>
+</span></li><ul><li><a id="line_marker_-13" name="line_marker_-13"></a><span>効果音の音量を指定します。範囲(0-128-∞)（省略時：128）</span><span>
+</span></li><a id="line_marker_-17" name="line_marker_-17"></a><ul><li><a id="line_marker_-14" name="line_marker_-14"></a><span>0：消音</span><span>
+</span></li><li><a id="line_marker_-15" name="line_marker_-15"></a><span>128：もとの音量(100%)</span><span>
+</span></li><li><a id="line_marker_-16" name="line_marker_-16"></a><span>128より大きい：100%より大きい音量</span><span>
+</span></li></ul></ul><li><span>pan（省略可）</span><span>
+</span></li><ul><li><a id="line_marker_-18" name="line_marker_-18"></a><span>効果音のパン（音の位置）を指定します。範囲(-1.0 ～ 1.0)（省略時：0.0）</span><span>
+</span></li><a id="line_marker_-22" name="line_marker_-22"></a><ul><li><a id="line_marker_-19" name="line_marker_-19"></a><span> -1.0 : 最も左から音が鳴ります</span><span>
+</span></li><li><a id="line_marker_-20" name="line_marker_-20"></a><span> 0.0 : 中央から音が鳴ります</span><span>
+</span></li><li><a id="line_marker_-21" name="line_marker_-21"></a><span> 1.0 : 最も右から音が鳴ります</span><span>
+</span></li></ul></ul><li><span>rate（省略可）</span><span>
+</span></li><a id="line_marker_-24" name="line_marker_-24"></a><ul><li><a id="line_marker_-23" name="line_marker_-23"></a><span>効果音の再生速度を設定します。1がもとの速さです（省略時：1.0）</span><span>
+</span></li></ul><li><span>startTime（省略可）</span><span>
+</span></li><a id="line_marker_-27" name="line_marker_-27"></a><ul><li><a id="line_marker_-25" name="line_marker_-25"></a><span>音声データで再生開始する位置を指定します。（単位：秒）（省略時：0）</span><span>
+</span></li><li><a id="line_marker_-26" name="line_marker_-26"></a><span>例えば、3を指定すると音声データの3秒の部分から再生が開始されます</span><span>
+</span></li></ul></ul><span>.</span><span>
 </span></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
 </body></html>

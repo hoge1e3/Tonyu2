@@ -1,0 +1,135 @@
+<html><head><meta charset="utf-8"/>
+<meta http-equiv="Content-type" content="text/html; charset=utf8"/>
+<title>T2MediaPlayer_detail</title>
+</head><body><link rel='stylesheet' href='../../css/bootstrap.css'/>
+<link rel='stylesheet' href='../../css/tonyu.css'/>
+<script src='../../js/lib/jquery-1.10.1.js'/></script>
+<script src='../../js/ide/NWMenu.js'/></script>
+<style>body{padding-top:20px; margin-left: 20px; margin-right:20px; font-family:"MS UI Gothic",sans-serif;}</style>
+<button onclick='javascript:history.back();'>←Back</button><br/>
+<div><a id="line_marker_-0" name="line_marker_-0"></a><a href="T2MediaPlayer.html">T2MediaPlayer</a><span>
+</span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><h1><a id="line_marker_-2" name="line_marker_-2"></a><span>T2MediaPlayerクラス（詳細）</span></h1><a id="line_marker_-3" name="line_marker_-3"></a><p></p><h2><a id="line_marker_-4" name="line_marker_-4"></a><span>仕様</span></h2><a id="line_marker_-5" name="line_marker_-5"></a><p></p><a id="line_marker_-6" name="line_marker_-6"></a><span>T2MediaPlayerクラスでは、音の再生方法にSE（効果音用）とBGM（背景音用）の２つがあります。</span><span>
+</span><a id="line_marker_-7" name="line_marker_-7"></a><p></p><ul><li><a id="line_marker_-8" name="line_marker_-8"></a><span>SE</span><span>
+</span></li><a id="line_marker_-11" name="line_marker_-11"></a><ul><li><a id="line_marker_-9" name="line_marker_-9"></a><span>一度再生すると音声データの最後まで再生します。途中で音を止めることはできません</span><span>
+</span></li><li><a id="line_marker_-10" name="line_marker_-10"></a><span>他の音といくつも重ねて鳴らすことができます</span><span>
+</span></li></ul><li><span>BGM</span><span>
+</span></li><ul><li><a id="line_marker_-12" name="line_marker_-12"></a><span>1つの音声データを再生、停止、一時停止／再開、繰り返し再生などができます</span><span>
+</span></li><li><a id="line_marker_-13" name="line_marker_-13"></a><span>再生中に音量、再生速度、音の位置などを変更できます</span><span>
+</span></li><li><a id="line_marker_-14" name="line_marker_-14"></a><span>現在、BGMプレイヤーが16個用意されています</span><span>
+</span></li><a id="line_marker_-21" name="line_marker_-21"></a><ul><li><a id="line_marker_-15" name="line_marker_-15"></a><span>BGMプレイヤーとは、BGMの再生を管理するオブジェクトです</span><span>
+</span></li><li><a id="line_marker_-16" name="line_marker_-16"></a><span>1つのBGMプレイヤーにつき、1つの音声データを再生する仕組みとなっています</span><span>
+</span></li><li><a id="line_marker_-17" name="line_marker_-17"></a><span>最大16個の音をBGMとして重ねて鳴らすことができます</span><span>
+</span></li><li><a id="line_marker_-18" name="line_marker_-18"></a><span>BGMプレイヤーにはそれぞれ0～15の番号が割り振られています。番号を指定して個々のBGMプレイヤーに対して制御ができます。</span><span>
+</span></li><li><a id="line_marker_-19" name="line_marker_-19"></a><span>番号を指定しない場合、0番目のBGMプレイヤーに対して制御を行います。</span><span>
+</span></li><li><a id="line_marker_-20" name="line_marker_-20"></a><span>例えば、0番目のBGMプレイヤーにBGM1を音量100%で再生し、同時に1番目にBGM2を音量0%で再生させておき、音量を徐々に変えるように処理すれば、BGM1からBGM2に音楽が変わっていくという演出なども可能です</span><span>
+</span></li></ul></ul></ul><p></p><h2><a id="line_marker_-22" name="line_marker_-22"></a><span>音量の仕様</span></h2><a id="line_marker_-23" name="line_marker_-23"></a><p></p><ul><li><a id="line_marker_-24" name="line_marker_-24"></a><span>マスター音量</span><span>
+</span></li><a id="line_marker_-26" name="line_marker_-26"></a><ul><li><a id="line_marker_-25" name="line_marker_-25"></a><span>SE/BGMの全体の音量です</span><span>
+</span></li></ul><li><span>SEマスター音量</span><span>
+</span></li><ul><li><a id="line_marker_-27" name="line_marker_-27"></a><span>SE全体の音量です</span><span>
+</span></li><li><a id="line_marker_-28" name="line_marker_-28"></a><span>SEの実際の音量は以下の式となります</span><span>
+</span></li><a id="line_marker_-30" name="line_marker_-30"></a><ul><li><a id="line_marker_-29" name="line_marker_-29"></a><span>マスター音量 × SEマスター音量 × SE再生時に（playSEメソッドで）設定した音量</span><span>
+</span></li></ul></ul><li><span>BGMマスター音量</span><span>
+</span></li><ul><li><a id="line_marker_-31" name="line_marker_-31"></a><span>BGM全体の音量です</span><span>
+</span></li><li><a id="line_marker_-32" name="line_marker_-32"></a><span>BGMの実際の音量は以下の式となります</span><span>
+</span></li><a id="line_marker_-34" name="line_marker_-34"></a><ul><li><a id="line_marker_-33" name="line_marker_-33"></a><span>マスター音量 × BGMマスター音量 × 該当のBGMプレイヤーの音量</span><span>
+</span></li></ul></ul></ul><p></p><a id="line_marker_-35" name="line_marker_-35"></a><p></p><h2><a id="line_marker_-36" name="line_marker_-36"></a><span>機能制限</span></h2><a id="line_marker_-37" name="line_marker_-37"></a><p></p><a id="line_marker_-38" name="line_marker_-38"></a><span>MP3、Ogg、AAC、WAVの音声ファイルは、SEとBGMのどちらも再生可能です。全ての機能が使えます。</span><span>
+</span><a id="line_marker_-39" name="line_marker_-39"></a><p></p><a id="line_marker_-40" name="line_marker_-40"></a><span>MidiファイルはBGMでのみ再生可能です。</span><span>
+</span><a id="line_marker_-41" name="line_marker_-41"></a><span>また、一部BGMメソッドで設定しても演奏自体に反映されないメソッドがあります。</span><span>
+</span><a id="line_marker_-42" name="line_marker_-42"></a><p></p><h2><a id="line_marker_-43" name="line_marker_-43"></a><span>メソッド</span></h2><a id="line_marker_-44" name="line_marker_-44"></a><p></p><h2><a id="line_marker_-45" name="line_marker_-45"></a><span>SE のメソッド</span></h2><a id="line_marker_-47" name="line_marker_-47"></a><ul><li><a id="line_marker_-46" name="line_marker_-46"></a><a href="T2MediaPlayer.playSE.html">playSE</a><span>
+</span></li></ul><p></p><h2><a id="line_marker_-48" name="line_marker_-48"></a><span>BGMプレイヤー番号省略版メソッド</span></h2><a id="line_marker_-49" name="line_marker_-49"></a><p></p><a id="line_marker_-50" name="line_marker_-50"></a><span>※0番目のBGMプレイヤーに対するメソッドになります</span><span>
+</span><a id="line_marker_-51" name="line_marker_-51"></a><p></p><a id="line_marker_-56" name="line_marker_-56"></a><ul><li><a id="line_marker_-52" name="line_marker_-52"></a><a href="T2MediaPlayer.playBGM.html">playBGM</a><span>
+</span></li><li><a id="line_marker_-53" name="line_marker_-53"></a><a href="T2MediaPlayer.stopBGM.html">stopBGM</a><span>
+</span></li><li><a id="line_marker_-54" name="line_marker_-54"></a><a href="T2MediaPlayer.pauseBGM.html">pauseBGM</a><span>
+</span></li><li><a id="line_marker_-55" name="line_marker_-55"></a><a href="T2MediaPlayer.resumeBGM.html">resumeBGM</a><span>
+</span></li></ul><p></p><ul><li><a id="line_marker_-57" name="line_marker_-57"></a><span>getBGMVolume()</span><span>
+</span></li><a id="line_marker_-59" name="line_marker_-59"></a><ul><li><a id="line_marker_-58" name="line_marker_-58"></a><span>BGMプレイヤーの音量を取得します</span><span>
+</span></li></ul><li><span>setBGMVolume(vol)</span><span>
+</span></li><a id="line_marker_-65" name="line_marker_-65"></a><ul><li><a id="line_marker_-60" name="line_marker_-60"></a><span>BGMプレイヤーの音量を設定します。範囲(0-128-∞)</span><span>
+</span></li><a id="line_marker_-64" name="line_marker_-64"></a><ul><li><a id="line_marker_-61" name="line_marker_-61"></a><span>0 : 消音</span><span>
+</span></li><li><a id="line_marker_-62" name="line_marker_-62"></a><span>128 : もとの音量(100%)</span><span>
+</span></li><li><a id="line_marker_-63" name="line_marker_-63"></a><span>128より大きい : 100%より大きい音量</span><span>
+</span></li></ul><li><span>設定するとそれ以降その設定値を使い続けます。BGM再生時は即座に音量が反映されます</span><span>
+</span></li></ul></ul><p></p><ul><li><a id="line_marker_-66" name="line_marker_-66"></a><span>getBGMTempo()</span><span>
+</span></li><a id="line_marker_-68" name="line_marker_-68"></a><ul><li><a id="line_marker_-67" name="line_marker_-67"></a><span>BGMプレイヤーの再生速度を取得します</span><span>
+</span></li></ul><li><span>setBGMTempo(tempo) </span><code><span>*1</span></code><span>
+</span></li><a id="line_marker_-71" name="line_marker_-71"></a><ul><li><a id="line_marker_-69" name="line_marker_-69"></a><span>BGMプレイヤーのBGMの再生速度を設定します。1がもとの速さです</span><span>
+</span></li><li><a id="line_marker_-70" name="line_marker_-70"></a><span>設定するとそれ以降その設定値を使い続けます。BGM再生時は即座に再生速度が反映されます</span><span>
+</span></li></ul><li><span>getBGMPan()</span><span>
+</span></li><a id="line_marker_-73" name="line_marker_-73"></a><ul><li><a id="line_marker_-72" name="line_marker_-72"></a><span>BGMプレイヤーのパン(音の位置)を取得します。</span><span>
+</span></li></ul><li><span>setBGMPan(pan) </span><code><span>*1</span></code><span>
+</span></li><a id="line_marker_-79" name="line_marker_-79"></a><ul><li><a id="line_marker_-74" name="line_marker_-74"></a><span>BGMプレイヤーのパン(音の位置)を設定します。範囲(-1.0 ～ 1.0)</span><span>
+</span></li><a id="line_marker_-78" name="line_marker_-78"></a><ul><li><a id="line_marker_-75" name="line_marker_-75"></a><span> -1.0 : 最も左から音が鳴ります</span><span>
+</span></li><li><a id="line_marker_-76" name="line_marker_-76"></a><span> 0.0 : 中央から音が鳴ります</span><span>
+</span></li><li><a id="line_marker_-77" name="line_marker_-77"></a><span> 1.0 : 最も右から音が鳴ります</span><span>
+</span></li></ul><li><span>設定するとそれ以降その設定値を使い続けます。BGM再生時は即座にパンが反映されます</span><span>
+</span></li></ul></ul><p></p><ul><li><a id="line_marker_-80" name="line_marker_-80"></a><span>isBGMLoop()</span><span>
+</span></li><a id="line_marker_-82" name="line_marker_-82"></a><ul><li><a id="line_marker_-81" name="line_marker_-81"></a><span>再生中のBGMが繰り返し再生するかどうかを取得します。</span><code><span>true</span></code><span>で繰り返し再生で設定されています</span><span>
+</span></li></ul><li><span>setBGMLoop(loop)</span><span>
+</span></li><a id="line_marker_-84" name="line_marker_-84"></a><ul><li><a id="line_marker_-83" name="line_marker_-83"></a><span>再生中のBGMが繰り返し再生するかどうかの設定を変更します。</span><code><span>true</span></code><span>で繰り返し再生に設定します</span><span>
+</span></li></ul><li><span>getBGMLoopStartTime()</span><span>
+</span></li><a id="line_marker_-87" name="line_marker_-87"></a><ul><li><a id="line_marker_-85" name="line_marker_-85"></a><span>再生中のBGMのループ始端位置を取得します。（単位：秒）</span><span>
+</span></li><li><a id="line_marker_-86" name="line_marker_-86"></a><span>ループ始端位置とは、BGMの繰り返し再生時、音声データの終端またはループ終端位置から、繰り返し再生するときに戻ってくる再生位置です</span><span>
+</span></li></ul><li><span>setBGMLoopStartTime(loopStart) </span><code><span>*1</span></code><span>
+</span></li><a id="line_marker_-89" name="line_marker_-89"></a><ul><li><a id="line_marker_-88" name="line_marker_-88"></a><span>再生中のBGMのループ始端位置を変更します。（単位：秒）</span><span>
+</span></li></ul><li><span>getBGMLoopEndTime()</span><span>
+</span></li><a id="line_marker_-92" name="line_marker_-92"></a><ul><li><a id="line_marker_-90" name="line_marker_-90"></a><span>再生中のBGMのループ終端位置を取得します。（単位：秒）</span><span>
+</span></li><li><a id="line_marker_-91" name="line_marker_-91"></a><span>ループ終端位置とは、BGMの繰り返し再生時、ループ終端位置を超えた際ループ始端位置に戻す位置です</span><span>
+</span></li></ul><li><span>setBGMLoopEndTime(loopEnd) </span><code><span>*1</span></code><span>
+</span></li><a id="line_marker_-94" name="line_marker_-94"></a><ul><li><a id="line_marker_-93" name="line_marker_-93"></a><span>再生中のBGMのループ終端位置を変更します。（単位：秒）</span><span>
+</span></li></ul></ul><p></p><ul><li><a id="line_marker_-95" name="line_marker_-95"></a><span>getBGMCurrentTime()</span><span>
+</span></li><a id="line_marker_-98" name="line_marker_-98"></a><ul><li><a id="line_marker_-96" name="line_marker_-96"></a><span> 再生中のBGMの現在再生位置を取得します（単位：秒）</span><span>
+</span></li><li><a id="line_marker_-97" name="line_marker_-97"></a><span> BGMを停止している場合、nullが返ります</span><span>
+</span></li></ul><li><span>getBGMLength()</span><span>
+</span></li><a id="line_marker_-101" name="line_marker_-101"></a><ul><li><a id="line_marker_-99" name="line_marker_-99"></a><span> 再生中のBGMの長さを取得します（単位：秒）</span><span>
+</span></li><li><a id="line_marker_-100" name="line_marker_-100"></a><span> BGMを停止している場合、nullが返ります</span><span>
+</span></li></ul><li><span>getPlayingBGMName()</span><span>
+</span></li><a id="line_marker_-104" name="line_marker_-104"></a><ul><li><a id="line_marker_-102" name="line_marker_-102"></a><span> 再生中のBGMの名前を取得します（"$se_bgm1"のように文字列が返ります）</span><span>
+</span></li><li><a id="line_marker_-103" name="line_marker_-103"></a><span> BGMを停止している場合、nullが返ります</span><span>
+</span></li></ul></ul><p></p><h2><a id="line_marker_-105" name="line_marker_-105"></a><span>BGMプレイヤー番号指定版メソッド</span></h2><a id="line_marker_-106" name="line_marker_-106"></a><p></p><a id="line_marker_-107" name="line_marker_-107"></a><code><span>BGMプレイヤー番号省略版メソッド</span></code><span>のメソッド名の末尾に"ID"を付け、第1引数に</span><code><span>BGMプレイヤー番号(0-15)</span></code><span>を指定します。</span><span>
+</span><a id="line_marker_-108" name="line_marker_-108"></a><p></p><a id="line_marker_-109" name="line_marker_-109"></a><span>第1引数(id)に指定したBGMプレイヤーに対してメソッドが実行されます。</span><span>
+</span><a id="line_marker_-110" name="line_marker_-110"></a><p></p><a id="line_marker_-130" name="line_marker_-130"></a><ul><li><a id="line_marker_-111" name="line_marker_-111"></a><span>playBGMID(id, idx, loop, offset, loopStart, loopEnd)</span><span>
+</span></li><li><a id="line_marker_-112" name="line_marker_-112"></a><span>stopBGMID(id)</span><span>
+</span></li><li><a id="line_marker_-113" name="line_marker_-113"></a><span>pauseBGMID(id)</span><span>
+</span></li><li><a id="line_marker_-114" name="line_marker_-114"></a><span>resumeBGMID(id)</span><span>
+</span></li><li><a id="line_marker_-115" name="line_marker_-115"></a><span>getBGMVolumeID(id)</span><span>
+</span></li><li><a id="line_marker_-116" name="line_marker_-116"></a><span>setBGMVolumeID(id, vol)</span><span>
+</span></li><li><a id="line_marker_-117" name="line_marker_-117"></a><span>getBGMTempoID(id)</span><span>
+</span></li><li><a id="line_marker_-118" name="line_marker_-118"></a><span>setBGMTempoID(id, tempo) </span><code><span>*1</span></code><span>
+</span></li><li><a id="line_marker_-119" name="line_marker_-119"></a><span>getBGMPanID(id)</span><span>
+</span></li><li><a id="line_marker_-120" name="line_marker_-120"></a><span>setBGMPanID(id, pan) </span><code><span>*1</span></code><span>
+</span></li><li><a id="line_marker_-121" name="line_marker_-121"></a><span>isBGMLoopID(id)</span><span>
+</span></li><li><a id="line_marker_-122" name="line_marker_-122"></a><span>setBGMLoopID(id, loop)</span><span>
+</span></li><li><a id="line_marker_-123" name="line_marker_-123"></a><span>getBGMLoopStartTimeID(id)</span><span>
+</span></li><li><a id="line_marker_-124" name="line_marker_-124"></a><span>setBGMLoopStartTimeID(id, loopStart) </span><code><span>*1</span></code><span>
+</span></li><li><a id="line_marker_-125" name="line_marker_-125"></a><span>getBGMLoopEndTimeID(id)</span><span>
+</span></li><li><a id="line_marker_-126" name="line_marker_-126"></a><span>setBGMLoopEndTimeID(id, loopEnd) </span><code><span>*1</span></code><span>
+</span></li><li><a id="line_marker_-127" name="line_marker_-127"></a><span>getBGMCurrentTimeID(id)</span><span>
+</span></li><li><a id="line_marker_-128" name="line_marker_-128"></a><span>getBGMLengthID(id)</span><span>
+</span></li><li><a id="line_marker_-129" name="line_marker_-129"></a><span>getPlayingBGMNameID(id)</span><span>
+</span></li></ul><p></p><h2><a id="line_marker_-131" name="line_marker_-131"></a><span>BGMプレイヤー全体のメソッド</span></h2><a id="line_marker_-132" name="line_marker_-132"></a><p></p><ul><li><a id="line_marker_-133" name="line_marker_-133"></a><span>getBGMPlayerMax()</span><span>
+</span></li><a id="line_marker_-135" name="line_marker_-135"></a><ul><li><a id="line_marker_-134" name="line_marker_-134"></a><span>BGMプレイヤーの数を取得します。現在16が返ります</span><span>
+</span></li></ul><li><span>allStopBGM()</span><span>
+</span></li><a id="line_marker_-137" name="line_marker_-137"></a><ul><li><a id="line_marker_-136" name="line_marker_-136"></a><span>0～15番目の全てのBGMプレイヤーのBGM再生を停止します</span><span>
+</span></li></ul><li><span>allResetBGM()</span><span>
+</span></li><a id="line_marker_-140" name="line_marker_-140"></a><ul><li><a id="line_marker_-138" name="line_marker_-138"></a><span>0～15番目の全てのBGMプレイヤーのBGM再生を停止し、音量、再生速度、パンを初期値に戻します</span><span>
+</span></li><li><a id="line_marker_-139" name="line_marker_-139"></a><span>マスター音量、SEマスター音量、BGMマスター音量も初期値に戻します</span><span>
+</span></li></ul></ul><p></p><h2><a id="line_marker_-141" name="line_marker_-141"></a><span>SE/BGM共通のメソッド</span></h2><a id="line_marker_-142" name="line_marker_-142"></a><p></p><ul><li><a id="line_marker_-143" name="line_marker_-143"></a><span>getMasterVolume()</span><span>
+</span></li><a id="line_marker_-145" name="line_marker_-145"></a><ul><li><a id="line_marker_-144" name="line_marker_-144"></a><span>マスター音量を取得します</span><span>
+</span></li></ul><li><span>setMasterVolume(vol)</span><span>
+</span></li><a id="line_marker_-148" name="line_marker_-148"></a><ul><li><a id="line_marker_-146" name="line_marker_-146"></a><span>マスター音量を設定します</span><span>
+</span></li><li><a id="line_marker_-147" name="line_marker_-147"></a><span>再生中のBGMは即座に音量が反映されます</span><span>
+</span></li></ul><li><span>getSEMasterVolume()</span><span>
+</span></li><a id="line_marker_-150" name="line_marker_-150"></a><ul><li><a id="line_marker_-149" name="line_marker_-149"></a><span>SEマスター音量を取得します</span><span>
+</span></li></ul><li><span>setSEMasterVolume(vol)</span><span>
+</span></li><a id="line_marker_-154" name="line_marker_-154"></a><ul><li><a id="line_marker_-151" name="line_marker_-151"></a><span>SEマスター音量を設定します</span><span>
+</span></li><li><a id="line_marker_-152" name="line_marker_-152"></a><span>この設定以降に再生するSEに音量が反映されます</span><span>
+</span></li><li><a id="line_marker_-153" name="line_marker_-153"></a><span>再生中のSEには音量は反映されません</span><span>
+</span></li></ul><li><span>getBGMMasterVolume()</span><span>
+</span></li><a id="line_marker_-156" name="line_marker_-156"></a><ul><li><a id="line_marker_-155" name="line_marker_-155"></a><span>BGMマスター音量を設定します</span><span>
+</span></li></ul><li><span>setBGMMasterVolume(vol)</span><span>
+</span></li><a id="line_marker_-159" name="line_marker_-159"></a><ul><li><a id="line_marker_-157" name="line_marker_-157"></a><span>BGMマスター音量を設定します</span><span>
+</span></li><li><a id="line_marker_-158" name="line_marker_-158"></a><span>再生中のBGMは即座に音量が反映されます</span><span>
+</span></li></ul></ul><p></p><a id="line_marker_-160" name="line_marker_-160"></a><code><span>*1</span></code><span>Midi再生時の場合、このメソッドの設定は演奏に反映されません</span><span>
+</span><a id="line_marker_-161" name="line_marker_-161"></a><span>.</span><span>
+</span></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
+</body></html>
