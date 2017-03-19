@@ -500,10 +500,10 @@ var T2MediaLib = {
         if (!(audioBuffer instanceof AudioBuffer)) return null;
 
         // 引数チェック
-        if (vol === null) {
+        if (vol == null) {
             vol = 1.0;
         }
-        if (pan === null) {
+        if (pan == null) {
             pan = 0.0;
         }
         if (!rate) rate = 1.0;
