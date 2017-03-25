@@ -337,7 +337,6 @@ var T2MediaLib = {
     },
 
     // 初期化 //
-
     init : function() {
         if (this.inited) return;
         this.inited=true;
@@ -376,7 +375,6 @@ var T2MediaLib = {
     getMasterVolume : function() {
         return T2MediaLib.masterVolume;
     },
-
     setMasterVolume : function(vol) {
         T2MediaLib.masterVolume = vol;
         for (var i=0; i<T2MediaLib.bgmPlayerMax; i++) {
@@ -386,8 +384,8 @@ var T2MediaLib = {
         }
     },
 
-    // SEメソッド郡 //
-    loadSEFromArray: function (idx, array1, array2) {
+    // 配列データからサウンドを作成・登録
+    loadSoundFromArray : function (idx, array1, array2) {
         var ctx = T2MediaLib.context;
         var numOfChannels = array1 != null && array2 != null ? 2 : 1;
         var audioBuffer = ctx.createBuffer(numOfChannels, array.length, ctx.sampleRate);
@@ -403,7 +401,8 @@ var T2MediaLib = {
         }
         T2MediaLib.seDataAry.data[idx] = audioBuffer;
     },
-    loadSE : function(idx, url, callbacks) { //@hoge1e3
+    // サウンドの受信・デコード・登録
+    loadSound : function(idx, url, callbacks) { //@hoge1e3
         if (!T2MediaLib.context || T2MediaLib.disabled) {
             T2MediaLib.seDataAry.data[idx] = -1;
             return null;
@@ -494,6 +493,11 @@ var T2MediaLib = {
         if (source.noteOn) source.noteOn(0);
         else if (source.start) source.start(0);
     },
+    getSoundData : function(idx) {
+        return T2MediaLib.seDataAry.data[idx];
+    },
+
+    // SEメソッド郡 //
     playSE : function(idx, vol, pan, rate, offset, loop, loopStart, loopEnd) {
         if (!T2MediaLib.context) return null;
         var audioBuffer = T2MediaLib.seDataAry.data[idx];
@@ -671,16 +675,10 @@ var T2MediaLib = {
         if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
         sourceObj.loopEnd = loopEnd;
     },
-    getSEData : function(idx) {
-        return T2MediaLib.seDataAry.data[idx];
-    },
 
 
     // BGMメソッド郡 //
 
-    loadBGM : function(idx, url, callbacks) {
-        return T2MediaLib.loadSE(idx, url, callbacks);
-    },
     playBGM : function(id, idx, loop, offset, loopStart, loopEnd) {
         if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
         var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
@@ -805,9 +803,6 @@ var T2MediaLib = {
         var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
         if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
         return bgmPlayer.getPlayingBGMName();
-    },
-    getBGMData : function(idx) {
-        return T2MediaLib.getSEData(idx);
     },
     getBGMPlayerMax : function() {
         return T2MediaLib.bgmPlayerMax;

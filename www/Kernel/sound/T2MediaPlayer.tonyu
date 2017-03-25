@@ -41,18 +41,17 @@ native Tonyu;
     return T2MediaLib.setMasterVolume(vol);
 }
 
-// SE //
-\loadSE(idx, src) {//@hoge1e3
+\loadSound(idx, src) {//@hoge1e3
     // 非同期呼び出し
     runAsync \(succ,err) {
        // 読み込み完了するまでブロッキング
-       T2MediaLib.loadSE(idx, src) {succ,err};
+       T2MediaLib.loadSound(idx, src) {succ,err};
     };
-    var data = T2MediaLib.getSEData(idx);
+    var data = T2MediaLib.getSoundData(idx);
     /*
     while (data == null) {
         update();
-        data = T2MediaLib.getSEData(idx);
+        data = T2MediaLib.getSoundData(idx);
     }*/
     return data;
 }
@@ -70,7 +69,7 @@ native Tonyu;
          Tonyu.setGlobal(name, name);
          try {
             //print("Loading Sound2: "+name);
-            loadSE(name, url);
+            loadSound(name, url);
          } catch(e) {
             print("Failed to load",name);
             Tonyu.setGlobal(name, "ERROR");
@@ -78,6 +77,12 @@ native Tonyu;
     }
 }
 
+\getSoundData(idx) {
+    return T2MediaLib.getSoundData(idx);
+}
+
+
+// SE //
 
 // vol:0-128-∞
 // pan:-1.0～1.0
@@ -168,10 +173,6 @@ native Tonyu;
 
 \setSELoopEndTime(sourceObj, loopEnd) {
     return T2MediaLib.setSELoopEndTime(setSELoopStartTime, loopEnd);
-}
-
-\getSEData(idx) {
-    return T2MediaLib.getSEData(idx);
 }
 
 // BGM //
