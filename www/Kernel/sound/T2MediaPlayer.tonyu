@@ -293,6 +293,10 @@ native Tonyu;
     return T2MediaLib.getPlayingBGMName(0);
 }
 
+\setBGMOnSongEndListener() {
+    return T2MediaLib.getPlayingBGMName(0);
+}
+
 \getBGMData(idx) {
     return T2MediaLib.getBGMData(idx);
 }

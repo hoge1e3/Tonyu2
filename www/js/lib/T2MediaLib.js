@@ -34,7 +34,12 @@ T2MediaLib_BGMPlayer.prototype.playBGM = function(idx, loop, offset, loopStart, 
         if (this.picoAudio == null) {
             this.picoAudio = new PicoAudio(T2MediaLib.context); // AudioContextオブジェクトがmax6つまで？なので使いまわす
         }
-        this.picoAudio.setData(audioBuffer);
+        var copyAudioBuffer = audioBuffer.slice(0);
+        var smf = new Uint8Array(copyAudioBuffer);
+        var data = T2MediaLib.picoAudio.parseSMF(smf);
+        console.log(data);
+        this.picoAudio.setData(data);
+        //this.picoAudio.setData(audioBuffer);
         this.picoAudio.setLoop(loop);
         this.picoAudio.setGlobalVolume(this.PICO_AUDIO_VOLUME_COEF * this.bgmVolume * T2MediaLib.bgmMasterVolume * T2MediaLib.masterVolume);
         if (!offset) {
@@ -307,6 +312,11 @@ T2MediaLib_BGMPlayer.prototype.getBGMLength = function() {
 T2MediaLib_BGMPlayer.prototype.getPlayingBGMName = function() {
     return this.playingBGMName;
 };
+T2MediaLib_BGMPlayer.prototype.setOnBGMEndListener = function(listener) {
+    if (this.picoAudio == null) {
+        this.picoAudio.setOnSongEndListener(listener);
+    }
+};
 
 
 
@@ -423,9 +433,11 @@ var T2MediaLib = {
                         if (T2MediaLib.picoAudio == null) {
                             T2MediaLib.picoAudio = new PicoAudio(T2MediaLib.context);
                         }
-                        var smf = new Uint8Array(arrayBuffer);
-                        var data = T2MediaLib.picoAudio.parseSMF(smf);
-                        T2MediaLib.seDataAry.data[idx] = data;
+                        //var smf = new Uint8Array(arrayBuffer);
+                        //var data = T2MediaLib.picoAudio.parseSMF(smf);
+                        //console.log(data);
+                        //T2MediaLib.seDataAry.data[idx] = data;
+                        T2MediaLib.seDataAry.data[idx] = arrayBuffer;
                         if (callbacks && callbacks.succ) callbacks.succ(idx);
                     } else {
                         // MP3, Ogg, AAC, WAV
@@ -803,6 +815,12 @@ var T2MediaLib = {
         var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
         if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
         return bgmPlayer.getPlayingBGMName();
+    },
+    setOnBGMEndListener : function(id, listener) {
+        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
+        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
+        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        return bgmPlayer.setOnBGMEndListener(listener);
     },
     getBGMPlayerMax : function() {
         return T2MediaLib.bgmPlayerMax;
