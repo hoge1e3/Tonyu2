@@ -1,4 +1,4 @@
-// Created at Sun Mar 19 2017 12:10:04 GMT+0900 (東京 (標準時))
+// Created at Wed Apr 05 2017 21:44:14 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -3113,7 +3113,7 @@ return Tonyu=function () {
             bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,iterator:IT,
-            VERSION:1489892993004,//EMBED_VERSION
+            VERSION:1491396245786,//EMBED_VERSION
             A:A};
 }();
 });
@@ -10165,10 +10165,10 @@ var T2MediaLib = {
         if (!(audioBuffer instanceof AudioBuffer)) return null;
 
         // 引数チェック
-        if (vol === null) {
+        if (vol == null) {
             vol = 1.0;
         }
-        if (pan === null) {
+        if (pan == null) {
             pan = 0.0;
         }
         if (!rate) rate = 1.0;
