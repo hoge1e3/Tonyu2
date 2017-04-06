@@ -1,4 +1,4 @@
-// Created at Sun Mar 19 2017 13:52:38 GMT+0900 (東京 (標準時))
+// Created at Thu Apr 06 2017 13:24:18 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -2897,6 +2897,9 @@ define(["DeferredUtil","Class"],function (DU,Class) {
             var method;
             if (typeof methodName=="string") {
                 method=obj["fiber$"+methodName];
+                if (!method) {
+                    throw new Error("メソッド"+methodName+"が見つかりません");
+                }
             }
             if (typeof methodName=="function") {
                 method=methodName.fiber;
@@ -3449,7 +3452,7 @@ return Tonyu=function () {
             bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,iterator:IT,
-            VERSION:1489899131616,//EMBED_VERSION
+            VERSION:1491452641583,//EMBED_VERSION
             A:A};
 }();
 });
