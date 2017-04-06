@@ -47,6 +47,9 @@ define(["DeferredUtil","Class"],function (DU,Class) {
             var method;
             if (typeof methodName=="string") {
                 method=obj["fiber$"+methodName];
+                if (!method) {
+                    throw new Error("メソッド"+methodName+"が見つかりません");
+                }
             }
             if (typeof methodName=="function") {
                 method=methodName.fiber;

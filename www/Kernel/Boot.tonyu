@@ -176,12 +176,13 @@ mainLoop();
 
 \mainLoop() {
     $frameCount=0;
+    $drawnFrameCount=0;
     while (true) {
     	if (_useRAF) loopRAF();
     	else loopTimer();
         measureFps();
     	handlePause();
-        $frameCount++;
+        $drawnFrameCount++;
     }
 }
 \loopRAF() {
@@ -312,6 +313,7 @@ nowait \moveFrame() {
     $screenHeight=$Screen.height;
     moveTime=now()-s;
     fps_rpsCnt ++;
+    $frameCount=fps_rpsCnt;
 }
 nowait \afterDraw(drawn) {// should call (after draw) or (move and frame skip)
     $Sprites.checkHit();

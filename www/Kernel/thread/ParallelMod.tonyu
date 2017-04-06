@@ -15,6 +15,9 @@ nowait \parallel() {
     var t=a.shift();
     var n=a.shift();
     var f=t["fiber$"+n];
+    if (!f) {
+        throw new Error("メソッド"+n+"が見つかりません");
+    }
     var ag2=a.toArray();
     ag2.unshift(_thread);
     return f.apply(t,ag2);
