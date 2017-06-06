@@ -36,7 +36,7 @@ function genJS(klass, env) {//B
     function getSource(node) {
         return cu.getSource(srcCont,node);
     }
-    var buf=IndentBuffer();
+    var buf=IndentBuffer({fixLazyLength:6});
     var printf=buf.printf;
     var ctx=context();
     var debug=false;
@@ -642,7 +642,7 @@ function genJS(klass, env) {//B
             var an=annotation(node);
             if (!ctx.noWait &&
                     (an.fiberCallRequired || an.hasJump || an.hasReturn)) {
-                var fipos={}, elpos={};
+                var fipos=buf.lazy(), elpos=buf.lazy();
                 if (node._else) {
                     buf.printf(
                             "if (!(%v)) { %s=%z; break; }%n" +

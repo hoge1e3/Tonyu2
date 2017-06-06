@@ -831,13 +831,13 @@ Tonyu.klass.define({
           case 0:
             //$LASTPOS=7000223;//kernel.InputDevice:223
           case 1:
-            if (!(l.length>0)) { __pc=2; break; }
+            if (!(l.length>0)) { __pc=2     ; break; }
             {
               //$LASTPOS=7000244;//kernel.InputDevice:244
               (l.shift())();
             }
             __pc=1;break;
-          case 2:
+          case 2     :
             
             _thread.exit(_this);return;
           }
@@ -1848,19 +1848,19 @@ Tonyu.klass.define({
           case 0:
             //$LASTPOS=8000154;//kernel.ArgParser:154
           case 1:
-            if (!(_this.length>0)) { __pc=3; break; }
+            if (!(_this.length>0)) { __pc=3     ; break; }
             //$LASTPOS=8000181;//kernel.ArgParser:181
-            if (!(_this.a[_this.length-1]!==_this._undef)) { __pc=2; break; }
-            __pc=3; break;
+            if (!(_this.a[_this.length-1]!==_this._undef)) { __pc=2     ; break; }
+            __pc=3     ; break;
             
-          case 2:
+          case 2     :
             
             //$LASTPOS=8000223;//kernel.ArgParser:223
             _this.length--;
             //$LASTPOS=8000242;//kernel.ArgParser:242
             delete _this.a[_this.length];
             __pc=1;break;
-          case 3:
+          case 3     :
             
             _thread.exit(_this);return;
           }
@@ -3398,11 +3398,11 @@ Tonyu.klass.define({
           switch (__pc) {
           case 0:
             //$LASTPOS=13002764;//kernel.TQuery:2764
-            if (!(e instanceof Tonyu.classes.kernel.TQuery||e instanceof Array)) { __pc=4; break; }
+            if (!(e instanceof Tonyu.classes.kernel.TQuery||e instanceof Array)) { __pc=4     ; break; }
             //$LASTPOS=13002806;//kernel.TQuery:2806
             _it_137=Tonyu.iterator(e,1);
           case 1:
-            if (!(_it_137.next())) { __pc=3; break; }
+            if (!(_it_137.next())) { __pc=3     ; break; }
             ee=_it_137[0];
             
             //$LASTPOS=13002824;//kernel.TQuery:2824
@@ -3411,17 +3411,17 @@ Tonyu.klass.define({
           case 2:
             
             __pc=1;break;
-          case 3:
+          case 3     :
             
-            __pc=5;break;
-          case 4:
+            __pc=5     ;break;
+          case 4     :
             {
               //$LASTPOS=13002857;//kernel.TQuery:2857
               _this[_this.length]=e;
               //$LASTPOS=13002882;//kernel.TQuery:2882
               _this.length++;
             }
-          case 5:
+          case 5     :
             
             _thread.exit(_this);return;
           }
@@ -3643,9 +3643,9 @@ Tonyu.klass.define({
             a=_thread.retVal;
             
             //$LASTPOS=13003478;//kernel.TQuery:3478
-            if (!(a.length==0)) { __pc=2; break; }
+            if (!(a.length==0)) { __pc=2     ; break; }
             _thread.exit(false);return;
-          case 2:
+          case 2     :
             
             //$LASTPOS=13003514;//kernel.TQuery:3514
             a.apply("die");
@@ -3799,7 +3799,7 @@ Tonyu.klass.define({
             //$LASTPOS=14000611;//kernel.EventHandler:611
             _it_153=Tonyu.iterator(_this.listeners,1);
           case 1:
-            if (!(_it_153.next())) { __pc=3; break; }
+            if (!(_it_153.next())) { __pc=3     ; break; }
             h=_it_153[0];
             
             //$LASTPOS=14000855;//kernel.EventHandler:855
@@ -3808,7 +3808,7 @@ Tonyu.klass.define({
           case 2:
             
             __pc=1;break;
-          case 3:
+          case 3     :
             
             _thread.exit(_this);return;
           }
@@ -4045,13 +4045,13 @@ Tonyu.klass.define({
           switch (__pc) {
           case 0:
             //$LASTPOS=18000105;//kernel.MML:105
-            if (!(! _this.isPlaying())) { __pc=2; break; }
+            if (!(! _this.isPlaying())) { __pc=2     ; break; }
             //$LASTPOS=18000134;//kernel.MML:134
             _this.fiber$playNext(_thread);
             __pc=1;return;
           case 1:
             
-          case 2:
+          case 2     :
             
             _thread.exit(_this);return;
           }
@@ -4333,7 +4333,7 @@ Tonyu.klass.define({
           switch (__pc) {
           case 0:
             //$LASTPOS=19000335;//kernel.WaveTable:335
-            if (!(typeof  T!=="undefined")) { __pc=3; break; }
+            if (!(typeof  T!=="undefined")) { __pc=3     ; break; }
             //$LASTPOS=19000416;//kernel.WaveTable:416
             _this.env=T("env",{table: [1,[0.6,50],[0,100]],releaseNode: 2});
             //$LASTPOS=19000485;//kernel.WaveTable:485
@@ -4346,7 +4346,7 @@ Tonyu.klass.define({
             __pc=2;return;
           case 2:
             
-          case 3:
+          case 3     :
             
             _thread.exit(_this);return;
           }
@@ -5089,13 +5089,13 @@ Tonyu.klass.define({
             //$LASTPOS=24000815;//kernel.Scheduler:815
             _it_168=Tonyu.iterator(_this.cur,1);
           case 1:
-            if (!(_it_168.next())) { __pc=7; break; }
+            if (!(_it_168.next())) { __pc=7     ; break; }
             t=_it_168[0];
             
             //$LASTPOS=24000842;//kernel.Scheduler:842
             delete t.scheduled;
             //$LASTPOS=24000868;//kernel.Scheduler:868
-            if (!(t.waitCount)) { __pc=3; break; }
+            if (!(t.waitCount)) { __pc=3     ; break; }
             //$LASTPOS=24000897;//kernel.Scheduler:897
             t.waitCount--;
             //$LASTPOS=24000925;//kernel.Scheduler:925
@@ -5103,23 +5103,23 @@ Tonyu.klass.define({
             __pc=2;return;
           case 2:
             
-            __pc=6;break;
-          case 3:
+            __pc=6     ;break;
+          case 3     :
             //$LASTPOS=24000967;//kernel.Scheduler:967
             t.steps();
             //$LASTPOS=24000991;//kernel.Scheduler:991
-            if (!(t.preempted)) { __pc=5; break; }
+            if (!(t.preempted)) { __pc=5     ; break; }
             //$LASTPOS=24001076;//kernel.Scheduler:1076
             _this.fiber$addToNext(_thread, t);
             __pc=4;return;
           case 4:
             
-          case 5:
+          case 5     :
             
-          case 6:
+          case 6     :
             
             __pc=1;break;
-          case 7:
+          case 7     :
             
             //$LASTPOS=24001128;//kernel.Scheduler:1128
             _this.cur=_this.next;
@@ -5901,16 +5901,16 @@ Tonyu.klass.define({
             updateCount = 0;
             
           case 1:
-            if (!(updateCount<updateT)) { __pc=4; break; }
+            if (!(updateCount<updateT)) { __pc=4     ; break; }
             //$LASTPOS=27001929;//kernel.BaseActor:1929
             _this.fiber$update(_thread);
             __pc=2;return;
           case 2:
             
-          case 3:
+          case 3     :
             updateCount++;
             __pc=1;break;
-          case 4:
+          case 4     :
             
             _thread.exit(_this);return;
           }
@@ -6075,11 +6075,11 @@ Tonyu.klass.define({
             //$LASTPOS=27003442;//kernel.BaseActor:3442
           case 1:
             //$LASTPOS=27003464;//kernel.BaseActor:3464
-            if (!(typeof  d=="function")) { __pc=5; break; }
+            if (!(typeof  d=="function")) { __pc=5     ; break; }
             //$LASTPOS=27003503;//kernel.BaseActor:3503
             _it_197=Tonyu.iterator(_this.allCrash(d),1);
           case 2:
-            if (!(_it_197.next())) { __pc=4; break; }
+            if (!(_it_197.next())) { __pc=4     ; break; }
             obj=_it_197[0];
             
             //$LASTPOS=27003545;//kernel.BaseActor:3545
@@ -6088,20 +6088,20 @@ Tonyu.klass.define({
           case 3:
             
             __pc=2;break;
-          case 4:
+          case 4     :
             
-            __pc=8;break;
-          case 5:
+            __pc=8     ;break;
+          case 5     :
             //$LASTPOS=27003602;//kernel.BaseActor:3602
-            if (!(_this.crashTo(d))) { __pc=7; break; }
+            if (!(_this.crashTo(d))) { __pc=7     ; break; }
             //$LASTPOS=27003631;//kernel.BaseActor:3631
             _this.fiber$callEventHandler(_thread, f, [d]);
             __pc=6;return;
           case 6:
             
-          case 7:
+          case 7     :
             
-          case 8:
+          case 8     :
             
             //$LASTPOS=27003676;//kernel.BaseActor:3676
             _this.fiber$update(_thread);
@@ -6109,7 +6109,7 @@ Tonyu.klass.define({
           case 9:
             
             __pc=1;break;
-          case 10:
+          case 10    :
             
             _thread.exit(_this);return;
           }
@@ -6276,7 +6276,7 @@ Tonyu.klass.define({
           case 2:
             
             __pc=1;break;
-          case 3:
+          case 3     :
             
             _thread.exit(_this);return;
           }
@@ -6644,12 +6644,12 @@ Tonyu.klass.define({
             //$LASTPOS=27008846;//kernel.BaseActor:8846
           case 2:
             //$LASTPOS=27008872;//kernel.BaseActor:8872
-            if (!(_this.screenOut()>d)) { __pc=3; break; }
+            if (!(_this.screenOut()>d)) { __pc=3     ; break; }
             //$LASTPOS=27008908;//kernel.BaseActor:8908
             f();
-            __pc=5; break;
+            __pc=5     ; break;
             
-          case 3:
+          case 3     :
             
             //$LASTPOS=27008965;//kernel.BaseActor:8965
             _this.fiber$update(_thread);
@@ -6657,15 +6657,15 @@ Tonyu.klass.define({
           case 4:
             
             __pc=2;break;
-          case 5:
+          case 5     :
             
             //$LASTPOS=27008995;//kernel.BaseActor:8995
           case 6:
             //$LASTPOS=27009021;//kernel.BaseActor:9021
-            if (!(_this.screenOut()<=d)) { __pc=7; break; }
-            __pc=9; break;
+            if (!(_this.screenOut()<=d)) { __pc=7     ; break; }
+            __pc=9     ; break;
             
-          case 7:
+          case 7     :
             
             //$LASTPOS=27009093;//kernel.BaseActor:9093
             _this.fiber$update(_thread);
@@ -6673,7 +6673,7 @@ Tonyu.klass.define({
           case 8:
             
             __pc=6;break;
-          case 9:
+          case 9     :
             
             //$LASTPOS=27009123;//kernel.BaseActor:9123
             _this.fiber$update(_thread);
@@ -6681,7 +6681,7 @@ Tonyu.klass.define({
           case 10:
             
             __pc=1;break;
-          case 11:
+          case 11    :
             
             _thread.exit(_this);return;
           }
@@ -7159,16 +7159,16 @@ Tonyu.klass.define({
             //$LASTPOS=29000075;//kernel.NoviceActor:75
             n;
           case 1:
-            if (!(n>0)) { __pc=4; break; }
+            if (!(n>0)) { __pc=4     ; break; }
             //$LASTPOS=29000086;//kernel.NoviceActor:86
             _this.fiber$update(_thread);
             __pc=2;return;
           case 2:
             
-          case 3:
+          case 3     :
             n--;
             __pc=1;break;
-          case 4:
+          case 4     :
             
             _thread.exit(_this);return;
           }
@@ -7544,14 +7544,14 @@ Tonyu.klass.define({
           case 0:
             //$LASTPOS=30000756;//kernel.PlayMod:756
           case 1:
-            if (!(_this._mml.bufferCount()>2)) { __pc=3; break; }
+            if (!(_this._mml.bufferCount()>2)) { __pc=3     ; break; }
             //$LASTPOS=30000796;//kernel.PlayMod:796
             _this.fiber$update(_thread);
             __pc=2;return;
           case 2:
             
             __pc=1;break;
-          case 3:
+          case 3     :
             
             _thread.exit(_this._mml);return;
             _thread.exit(_this);return;
@@ -8226,59 +8226,59 @@ Tonyu.klass.define({
             i = 0;
             
           case 1:
-            if (!(i<_this.row)) { __pc=7; break; }
+            if (!(i<_this.row)) { __pc=7     ; break; }
             //$LASTPOS=34000707;//kernel.Map:707
             //$LASTPOS=34000711;//kernel.Map:711
             j = 0;
             
           case 2:
-            if (!(j<_this.col)) { __pc=5; break; }
+            if (!(j<_this.col)) { __pc=5     ; break; }
             //$LASTPOS=34000744;//kernel.Map:744
             _this.fiber$set(_thread, j, i, _this.mapData[i][j]);
             __pc=3;return;
           case 3:
             
-          case 4:
+          case 4     :
             j++;
             __pc=2;break;
-          case 5:
+          case 5     :
             
-          case 6:
+          case 6     :
             i++;
             __pc=1;break;
-          case 7:
+          case 7     :
             
             //$LASTPOS=34000791;//kernel.Map:791
-            if (!(! _this.mapOnData)) { __pc=8; break; }
+            if (!(! _this.mapOnData)) { __pc=8     ; break; }
             _thread.exit(_this);return;
-          case 8:
+          case 8     :
             
             //$LASTPOS=34000819;//kernel.Map:819
             //$LASTPOS=34000823;//kernel.Map:823
             i = 0;
             
           case 9:
-            if (!(i<_this.row)) { __pc=15; break; }
+            if (!(i<_this.row)) { __pc=15    ; break; }
             //$LASTPOS=34000852;//kernel.Map:852
             //$LASTPOS=34000856;//kernel.Map:856
             j = 0;
             
           case 10:
-            if (!(j<_this.col)) { __pc=13; break; }
+            if (!(j<_this.col)) { __pc=13    ; break; }
             //$LASTPOS=34000889;//kernel.Map:889
             _this.fiber$setOn(_thread, j, i, _this.mapOnData[i][j]);
             __pc=11;return;
           case 11:
             
-          case 12:
+          case 12    :
             j++;
             __pc=10;break;
-          case 13:
+          case 13    :
             
-          case 14:
+          case 14    :
             i++;
             __pc=9;break;
-          case 15:
+          case 15    :
             
             _thread.exit(_this);return;
           }
@@ -8360,59 +8360,59 @@ Tonyu.klass.define({
             i = 0;
             
           case 1:
-            if (!(i<_this.row)) { __pc=7; break; }
+            if (!(i<_this.row)) { __pc=7     ; break; }
             //$LASTPOS=34001090;//kernel.Map:1090
             //$LASTPOS=34001094;//kernel.Map:1094
             j = 0;
             
           case 2:
-            if (!(j<_this.col)) { __pc=5; break; }
+            if (!(j<_this.col)) { __pc=5     ; break; }
             //$LASTPOS=34001127;//kernel.Map:1127
             _this.fiber$set(_thread, j, i, _this.mapTable[i][j]);
             __pc=3;return;
           case 3:
             
-          case 4:
+          case 4     :
             j++;
             __pc=2;break;
-          case 5:
+          case 5     :
             
-          case 6:
+          case 6     :
             i++;
             __pc=1;break;
-          case 7:
+          case 7     :
             
             //$LASTPOS=34001175;//kernel.Map:1175
-            if (!(! _this.mapOnTable)) { __pc=8; break; }
+            if (!(! _this.mapOnTable)) { __pc=8     ; break; }
             _thread.exit(_this);return;
-          case 8:
+          case 8     :
             
             //$LASTPOS=34001204;//kernel.Map:1204
             //$LASTPOS=34001208;//kernel.Map:1208
             i = 0;
             
           case 9:
-            if (!(i<_this.row)) { __pc=15; break; }
+            if (!(i<_this.row)) { __pc=15    ; break; }
             //$LASTPOS=34001237;//kernel.Map:1237
             //$LASTPOS=34001241;//kernel.Map:1241
             j = 0;
             
           case 10:
-            if (!(j<_this.col)) { __pc=13; break; }
+            if (!(j<_this.col)) { __pc=13    ; break; }
             //$LASTPOS=34001274;//kernel.Map:1274
             _this.fiber$setOn(_thread, j, i, _this.mapOnTable[i][j]);
             __pc=11;return;
           case 11:
             
-          case 12:
+          case 12    :
             j++;
             __pc=10;break;
-          case 13:
+          case 13    :
             
-          case 14:
+          case 14    :
             i++;
             __pc=9;break;
-          case 15:
+          case 15    :
             
             _thread.exit(_this);return;
           }
@@ -8674,9 +8674,9 @@ Tonyu.klass.define({
             //$LASTPOS=34002891;//kernel.Map:2891
             _this.pImg=Tonyu.globals.$imageList[p];
             //$LASTPOS=34002916;//kernel.Map:2916
-            if (!(! _this.pImg)) { __pc=2; break; }
+            if (!(! _this.pImg)) { __pc=2     ; break; }
             _thread.exit(_this);return;
-          case 2:
+          case 2     :
             
             //$LASTPOS=34002940;//kernel.Map:2940
             _this.ctx.save();
@@ -8984,7 +8984,7 @@ Tonyu.klass.define({
           case 2:
             
             __pc=1;break;
-          case 3:
+          case 3     :
             
             _thread.exit(_this);return;
           }
@@ -9294,7 +9294,7 @@ Tonyu.klass.define({
           switch (__pc) {
           case 0:
             //$LASTPOS=35002229;//kernel.Panel:2229
-            if (!(typeof  getX=="number"&&! isNaN(getX)&&typeof  getY=="number"&&! isNaN(getY))) { __pc=2; break; }
+            if (!(typeof  getX=="number"&&! isNaN(getX)&&typeof  getY=="number"&&! isNaN(getY))) { __pc=2     ; break; }
             //$LASTPOS=35002328;//kernel.Panel:2328
             _this.fiber$getContext(_thread);
             __pc=1;return;
@@ -9305,13 +9305,13 @@ Tonyu.klass.define({
             _this.imagedata=_this.ctx.getImageData(getX,getY,1,1);
             //$LASTPOS=35002407;//kernel.Panel:2407
             _this.colordata=[_this.imagedata.data[0],_this.imagedata.data[1],_this.imagedata.data[2],_this.imagedata.data[3]];
-            __pc=3;break;
-          case 2:
+            __pc=3     ;break;
+          case 2     :
             {
               //$LASTPOS=35002547;//kernel.Panel:2547
               _this.colordata=[0,0,0,0];
             }
-          case 3:
+          case 3     :
             
             _thread.exit((_this.colordata));return;
             _thread.exit(_this);return;
@@ -10189,7 +10189,7 @@ Tonyu.klass.define({
           switch (__pc) {
           case 0:
             //$LASTPOS=37000088;//kernel.Screen:88
-            if (!(! _this._drawing)) { __pc=2; break; }
+            if (!(! _this._drawing)) { __pc=2     ; break; }
             //$LASTPOS=37000113;//kernel.Screen:113
             if (! _this.canvas) {
               throw new Error("canvas is null");
@@ -10253,7 +10253,7 @@ Tonyu.klass.define({
             }
             //$LASTPOS=37000960;//kernel.Screen:960
             _this._drawing=false;
-          case 2:
+          case 2     :
             
             _thread.exit(_this);return;
           }
@@ -10612,7 +10612,7 @@ Tonyu.klass.define({
           switch (__pc) {
           case 0:
             //$LASTPOS=37002156;//kernel.Screen:2156
-            if (!(obj.layer!==_this&&toLayer!==_this)) { __pc=2; break; }
+            if (!(obj.layer!==_this&&toLayer!==_this)) { __pc=2     ; break; }
             //$LASTPOS=37002206;//kernel.Screen:2206
             _this.fiber$convert(_thread, obj, _this);
             __pc=1;return;
@@ -10620,10 +10620,10 @@ Tonyu.klass.define({
             p=_thread.retVal;
             
             _thread.exit(_this.convert(p,toLayer));return;
-            __pc=13;break;
-          case 2:
+            __pc=13    ;break;
+          case 2     :
             //$LASTPOS=37002277;//kernel.Screen:2277
-            if (!(obj.layer!==_this&&toLayer===_this)) { __pc=6; break; }
+            if (!(obj.layer!==_this&&toLayer===_this)) { __pc=6     ; break; }
             //$LASTPOS=37002327;//kernel.Screen:2327
             _this.fiber$findLayer(_thread, obj.layer);
             __pc=3;return;
@@ -10631,7 +10631,7 @@ Tonyu.klass.define({
             l=_thread.retVal;
             
             //$LASTPOS=37002363;//kernel.Screen:2363
-            if (!(l!=null)) { __pc=4; break; }
+            if (!(l!=null)) { __pc=4     ; break; }
             //$LASTPOS=37002421;//kernel.Screen:2421
             l=_this.layers[l];
             //$LASTPOS=37002446;//kernel.Screen:2446
@@ -10650,15 +10650,15 @@ Tonyu.klass.define({
             y = l.spy+(_this.sin(rt)*dx+_this.sin(rt+90)*dy)*l.scale;
             
             _thread.exit({x: x,y: y,rotation: obj.rotation,scale: obj.scale,layer: _this});return;
-            __pc=5;break;
-          case 4:
+            __pc=5     ;break;
+          case 4     :
             _thread.exit(Tonyu.classes.kernel.Panel.prototype.convert.apply( _this, [obj,_this]));return;
-          case 5:
+          case 5     :
             
-            __pc=12;break;
-          case 6:
+            __pc=12    ;break;
+          case 6     :
             //$LASTPOS=37003058;//kernel.Screen:3058
-            if (!(obj.layer===_this&&toLayer!==_this)) { __pc=10; break; }
+            if (!(obj.layer===_this&&toLayer!==_this)) { __pc=10    ; break; }
             //$LASTPOS=37003108;//kernel.Screen:3108
             _this.fiber$findLayer(_thread, toLayer);
             __pc=7;return;
@@ -10666,7 +10666,7 @@ Tonyu.klass.define({
             l=_thread.retVal;
             
             //$LASTPOS=37003142;//kernel.Screen:3142
-            if (!(l!=null)) { __pc=8; break; }
+            if (!(l!=null)) { __pc=8     ; break; }
             //$LASTPOS=37003200;//kernel.Screen:3200
             l=_this.layers[l];
             //$LASTPOS=37003238;//kernel.Screen:3238
@@ -10685,19 +10685,19 @@ Tonyu.klass.define({
             y = l.wpy+(_this.sin(rt)*dx+_this.sin(rt+90)*dy)/l.scale;
             
             _thread.exit({x: x,y: y,rotation: rt,scale: 1/l.scale,layer: toLayer});return;
-            __pc=9;break;
-          case 8:
+            __pc=9     ;break;
+          case 8     :
             _thread.exit(Tonyu.classes.kernel.Panel.prototype.convert.apply( _this, [obj,toLayer]));return;
-          case 9:
+          case 9     :
             
-            __pc=11;break;
-          case 10:
+            __pc=11    ;break;
+          case 10    :
             _thread.exit(obj);return;
-          case 11:
+          case 11    :
             
-          case 12:
+          case 12    :
             
-          case 13:
+          case 13    :
             
             _thread.exit(_this);return;
           }
@@ -12978,7 +12978,7 @@ Tonyu.klass.define({
           case 2:
             
             __pc=1;break;
-          case 3:
+          case 3     :
             
             _thread.exit(_this);return;
           }
@@ -13365,7 +13365,7 @@ Tonyu.klass.define({
             //$LASTPOS=41001312;//kernel.T2MediaPlayer:1312
             _it_392=Tonyu.iterator(r.sounds,1);
           case 1:
-            if (!(_it_392.next())) { __pc=5; break; }
+            if (!(_it_392.next())) { __pc=5     ; break; }
             s=_it_392[0];
             
             //$LASTPOS=41001348;//kernel.T2MediaPlayer:1348
@@ -13374,14 +13374,14 @@ Tonyu.klass.define({
             
             //$LASTPOS=41001422;//kernel.T2MediaPlayer:1422
             Tonyu.setGlobal(name,name);
-            _thread.enterTry(3);
+            _thread.enterTry(3     );
             //$LASTPOS=41001527;//kernel.T2MediaPlayer:1527
             _this.fiber$loadSE(_thread, name, url);
             __pc=2;return;
           case 2:
             _thread.exitTry();
-            __pc=4;break;
-          case 3:
+            __pc=4     ;break;
+          case 3     :
             e=_thread.startCatch();
             _thread.exitTry();
             {
@@ -13390,10 +13390,10 @@ Tonyu.klass.define({
               //$LASTPOS=41001625;//kernel.T2MediaPlayer:1625
               Tonyu.setGlobal(name,"ERROR");
             }
-          case 4:
+          case 4     :
             
             __pc=1;break;
-          case 5:
+          case 5     :
             
             _thread.exit(_this);return;
           }
@@ -13808,7 +13808,7 @@ Tonyu.klass.define({
           case 0:
             //$LASTPOS=41004201;//kernel.T2MediaPlayer:4201
           case 1:
-            if (!(data==null)) { __pc=3; break; }
+            if (!(data==null)) { __pc=3     ; break; }
             //$LASTPOS=41004233;//kernel.T2MediaPlayer:4233
             _this.fiber$update(_thread);
             __pc=2;return;
@@ -13817,7 +13817,7 @@ Tonyu.klass.define({
             //$LASTPOS=41004252;//kernel.T2MediaPlayer:4252
             data=T2MediaLib.getBGMData(idx);
             __pc=1;break;
-          case 3:
+          case 3     :
             
             _thread.exit(data);return;
             _thread.exit(_this);return;
@@ -14782,14 +14782,14 @@ Tonyu.klass.define({
           case 0:
             //$LASTPOS=41008931;//kernel.T2MediaPlayer:8931
           case 1:
-            if (!(T2MediaLib.getAudioData(idx)==null)) { __pc=3; break; }
+            if (!(T2MediaLib.getAudioData(idx)==null)) { __pc=3     ; break; }
             //$LASTPOS=41008976;//kernel.T2MediaPlayer:8976
             _this.fiber$update(_thread);
             __pc=2;return;
           case 2:
             
             __pc=1;break;
-          case 3:
+          case 3     :
             
             _thread.exit(_this);return;
           }
@@ -15802,7 +15802,7 @@ Tonyu.klass.define({
             //$LASTPOS=48000535;//kernel.Button:535
           case 1:
             //$LASTPOS=48000554;//kernel.Button:554
-            if (!(! _this.disabled)) { __pc=3; break; }
+            if (!(! _this.disabled)) { __pc=3     ; break; }
             //$LASTPOS=48000580;//kernel.Button:580
             _this.fiber$checkTouch(_thread);
             __pc=2;return;
@@ -15820,13 +15820,13 @@ Tonyu.klass.define({
               }
               
             }
-            __pc=4;break;
-          case 3:
+            __pc=4     ;break;
+          case 3     :
             {
               //$LASTPOS=48000734;//kernel.Button:734
               _this.clicked=0;
             }
-          case 4:
+          case 4     :
             
             //$LASTPOS=48001079;//kernel.Button:1079
             _this.fiber$update(_thread);
@@ -15834,7 +15834,7 @@ Tonyu.klass.define({
           case 5:
             
             __pc=1;break;
-          case 6:
+          case 6     :
             
             _thread.exit(_this);return;
           }
@@ -16269,16 +16269,16 @@ Tonyu.klass.define({
           case 0:
             //$LASTPOS=50000654;//kernel.Label:654
           case 1:
-            if (!(flds.length>0)) { __pc=3; break; }
+            if (!(flds.length>0)) { __pc=3     ; break; }
             //$LASTPOS=50000687;//kernel.Label:687
-            if (!(! obj)) { __pc=2; break; }
+            if (!(! obj)) { __pc=2     ; break; }
             _thread.exit("");return;
-          case 2:
+          case 2     :
             
             //$LASTPOS=50000717;//kernel.Label:717
             obj=obj[flds.shift()];
             __pc=1;break;
-          case 3:
+          case 3     :
             
             _thread.exit(obj);return;
             _thread.exit(_this);return;
@@ -16896,26 +16896,26 @@ Tonyu.klass.define({
               
             }
             //$LASTPOS=51000388;//kernel.MapEditor:388
-            if (!(_this.fileExist)) { __pc=12; break; }
+            if (!(_this.fileExist)) { __pc=12    ; break; }
             //$LASTPOS=51000408;//kernel.MapEditor:408
             _this.print("Load Data?: Y or N");
             //$LASTPOS=51000442;//kernel.MapEditor:442
           case 2:
             //$LASTPOS=51000464;//kernel.MapEditor:464
-            if (!(_this.getkey("y")>0)) { __pc=3; break; }
+            if (!(_this.getkey("y")>0)) { __pc=3     ; break; }
             //$LASTPOS=51000496;//kernel.MapEditor:496
             _this.loadMode=true;
-            __pc=6; break;
+            __pc=6     ; break;
             
-          case 3:
+          case 3     :
             
             //$LASTPOS=51000551;//kernel.MapEditor:551
-            if (!(_this.getkey("n")>0)) { __pc=4; break; }
+            if (!(_this.getkey("n")>0)) { __pc=4     ; break; }
             //$LASTPOS=51000583;//kernel.MapEditor:583
             _this.loadMode=false;
-            __pc=6; break;
+            __pc=6     ; break;
             
-          case 4:
+          case 4     :
             
             //$LASTPOS=51000639;//kernel.MapEditor:639
             _this.fiber$update(_thread);
@@ -16923,10 +16923,10 @@ Tonyu.klass.define({
           case 5:
             
             __pc=2;break;
-          case 6:
+          case 6     :
             
             //$LASTPOS=51000661;//kernel.MapEditor:661
-            if (!(_this.loadMode)) { __pc=11; break; }
+            if (!(_this.loadMode)) { __pc=11    ; break; }
             //$LASTPOS=51000684;//kernel.MapEditor:684
             _this.fiber$prompt(_thread, "Input json file (*.json)", "map.json");
             __pc=7;return;
@@ -16940,15 +16940,15 @@ Tonyu.klass.define({
               
             }
             //$LASTPOS=51000840;//kernel.MapEditor:840
-            if (!(_this.mapDataFile.obj())) { __pc=8; break; }
+            if (!(_this.mapDataFile.obj())) { __pc=8     ; break; }
             {
               //$LASTPOS=51000876;//kernel.MapEditor:876
               _this.baseData=_this.mapDataFile.obj();
               //$LASTPOS=51000917;//kernel.MapEditor:917
               _this.loadedFile=_this.fileName;
             }
-            __pc=10;break;
-          case 8:
+            __pc=10    ;break;
+          case 8     :
             //$LASTPOS=51000967;//kernel.MapEditor:967
             _this.fiber$file(_thread, _this.fileName);
             __pc=9;return;
@@ -16963,7 +16963,7 @@ Tonyu.klass.define({
               _this.loadedFile=_this.fileName;
               
             }
-          case 10:
+          case 10    :
             
             //$LASTPOS=51001149;//kernel.MapEditor:1149
             if (_this.baseData==undefined) {
@@ -16990,9 +16990,9 @@ Tonyu.klass.define({
                 
               }
             }
-          case 11:
+          case 11    :
             
-          case 12:
+          case 12    :
             
             //$LASTPOS=51001541;//kernel.MapEditor:1541
             _this.fiber$update(_thread);
@@ -17000,7 +17000,7 @@ Tonyu.klass.define({
           case 13:
             
             //$LASTPOS=51001855;//kernel.MapEditor:1855
-            if (!(! _this.loadMode)) { __pc=18; break; }
+            if (!(! _this.loadMode)) { __pc=18    ; break; }
             //$LASTPOS=51001875;//kernel.MapEditor:1875
             _this.fiber$prompt(_thread, "input row");
             __pc=14;return;
@@ -17037,8 +17037,8 @@ Tonyu.klass.define({
             _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
             //$LASTPOS=51002233;//kernel.MapEditor:2233
             Tonyu.globals.$map=new Tonyu.classes.kernel.Map({row: _this.row,col: _this.col,chipWidth: _this.chipWidth,chipHeight: _this.chipHeight});
-            __pc=19;break;
-          case 18:
+            __pc=19    ;break;
+          case 18    :
             {
               //$LASTPOS=51002544;//kernel.MapEditor:2544
               Tonyu.globals.$map=new Tonyu.classes.kernel.Map({chipWidth: 32,chipHeight: 32});
@@ -17055,7 +17055,7 @@ Tonyu.klass.define({
               //$LASTPOS=51002809;//kernel.MapEditor:2809
               _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
             }
-          case 19:
+          case 19    :
             
             //$LASTPOS=51002876;//kernel.MapEditor:2876
             _this.mIW=Tonyu.globals.$imageList[Tonyu.globals.$pat_mapchip].image.width;
@@ -17136,7 +17136,7 @@ Tonyu.klass.define({
             //$LASTPOS=51003710;//kernel.MapEditor:3710
             _this.p=_this.mapp;
             //$LASTPOS=51003723;//kernel.MapEditor:3723
-            if (!(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<120&&Tonyu.globals.$touches[0].y>560&&Tonyu.globals.$touches[0].y<640)) { __pc=24; break; }
+            if (!(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<120&&Tonyu.globals.$touches[0].y>560&&Tonyu.globals.$touches[0].y<640)) { __pc=24    ; break; }
             //$LASTPOS=51003842;//kernel.MapEditor:3842
             Tonyu.globals.$mp.scrollTo(1000,1000);
             //$LASTPOS=51003876;//kernel.MapEditor:3876
@@ -17146,10 +17146,10 @@ Tonyu.klass.define({
             __pc=23;return;
           case 23:
             
-          case 24:
+          case 24    :
             
             //$LASTPOS=51003961;//kernel.MapEditor:3961
-            if (!(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<120&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560)) { __pc=26; break; }
+            if (!(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<120&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560)) { __pc=26    ; break; }
             //$LASTPOS=51004080;//kernel.MapEditor:4080
             Tonyu.globals.$mp.scrollTo(1000,1000);
             //$LASTPOS=51004114;//kernel.MapEditor:4114
@@ -17159,10 +17159,10 @@ Tonyu.klass.define({
             __pc=25;return;
           case 25:
             
-          case 26:
+          case 26    :
             
             //$LASTPOS=51004165;//kernel.MapEditor:4165
-            if (!(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>120&&Tonyu.globals.$touches[0].x<240&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560)) { __pc=29; break; }
+            if (!(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>120&&Tonyu.globals.$touches[0].x<240&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560)) { __pc=29    ; break; }
             //$LASTPOS=51004286;//kernel.MapEditor:4286
             _this.lc++;
             //$LASTPOS=51004301;//kernel.MapEditor:4301
@@ -17177,10 +17177,10 @@ Tonyu.klass.define({
             __pc=28;return;
           case 28:
             
-          case 29:
+          case 29    :
             
             //$LASTPOS=51004515;//kernel.MapEditor:4515
-            if (!(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>240&&Tonyu.globals.$touches[0].x<360&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560)) { __pc=31; break; }
+            if (!(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>240&&Tonyu.globals.$touches[0].x<360&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560)) { __pc=31    ; break; }
             //$LASTPOS=51004636;//kernel.MapEditor:4636
             if (_this.mode!="get") {
               //$LASTPOS=51004666;//kernel.MapEditor:4666
@@ -17206,27 +17206,27 @@ Tonyu.klass.define({
             __pc=30;return;
           case 30:
             
-          case 31:
+          case 31    :
             
             //$LASTPOS=51004954;//kernel.MapEditor:4954
-            if (!(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>360&&Tonyu.globals.$touches[0].x<480&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560)) { __pc=36; break; }
+            if (!(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>360&&Tonyu.globals.$touches[0].x<480&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560)) { __pc=36    ; break; }
             //$LASTPOS=51005090;//kernel.MapEditor:5090
-            if (!(_this.loadedFile)) { __pc=33; break; }
+            if (!(_this.loadedFile)) { __pc=33    ; break; }
             //$LASTPOS=51005119;//kernel.MapEditor:5119
             _this.fiber$prompt(_thread, "input json file(*.json)", _this.loadedFile);
             __pc=32;return;
           case 32:
             _this.saveFileName=_thread.retVal;
             
-            __pc=35;break;
-          case 33:
+            __pc=35    ;break;
+          case 33    :
             //$LASTPOS=51005207;//kernel.MapEditor:5207
             _this.fiber$prompt(_thread, "input json file(*.json)", "map.json");
             __pc=34;return;
           case 34:
             _this.saveFileName=_thread.retVal;
             
-          case 35:
+          case 35    :
             
             //$LASTPOS=51005301;//kernel.MapEditor:5301
             if (_this.saveFileName) {
@@ -17240,10 +17240,10 @@ Tonyu.klass.define({
               _this.print(_this.saveFileName+" Saved");
               
             }
-          case 36:
+          case 36    :
             
             //$LASTPOS=51005646;//kernel.MapEditor:5646
-            if (!(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>120&&Tonyu.globals.$touches[0].x<240&&Tonyu.globals.$touches[0].y>560&&Tonyu.globals.$touches[0].y<640)) { __pc=38; break; }
+            if (!(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>120&&Tonyu.globals.$touches[0].x<240&&Tonyu.globals.$touches[0].y>560&&Tonyu.globals.$touches[0].y<640)) { __pc=38    ; break; }
             //$LASTPOS=51005767;//kernel.MapEditor:5767
             Tonyu.globals.$mp.scrollTo(1000,1000);
             //$LASTPOS=51005801;//kernel.MapEditor:5801
@@ -17253,7 +17253,7 @@ Tonyu.klass.define({
             __pc=37;return;
           case 37:
             
-          case 38:
+          case 38    :
             
             //$LASTPOS=51005885;//kernel.MapEditor:5885
             if (_this.mode!="get") {
@@ -17366,7 +17366,7 @@ Tonyu.klass.define({
             //$LASTPOS=51008141;//kernel.MapEditor:8141
             _this.panel.y=_this.panel.height/2-_this.my;
             //$LASTPOS=51008173;//kernel.MapEditor:8173
-            if (!(_this.mode=="set"&&_this.getkey(1)>0&&_this.inRect())) { __pc=39; break; }
+            if (!(_this.mode=="set"&&_this.getkey(1)>0&&_this.inRect())) { __pc=39    ; break; }
             {
               //$LASTPOS=51008226;//kernel.MapEditor:8226
               if (_this.selectedLayer=="base") {
@@ -17392,10 +17392,10 @@ Tonyu.klass.define({
                 }
               }
             }
-            __pc=51;break;
-          case 39:
+            __pc=51    ;break;
+          case 39    :
             //$LASTPOS=51008661;//kernel.MapEditor:8661
-            if (!(_this.mode=="erase"&&_this.getkey(1)>0&&_this.inRect())) { __pc=40; break; }
+            if (!(_this.mode=="erase"&&_this.getkey(1)>0&&_this.inRect())) { __pc=40    ; break; }
             {
               //$LASTPOS=51008716;//kernel.MapEditor:8716
               if (_this.selectedLayer=="base") {
@@ -17421,10 +17421,10 @@ Tonyu.klass.define({
                 }
               }
             }
-            __pc=50;break;
-          case 40:
+            __pc=50    ;break;
+          case 40    :
             //$LASTPOS=51009141;//kernel.MapEditor:9141
-            if (!(_this.mode=="get"&&_this.getkey(1)>0&&_this.inRect())) { __pc=43; break; }
+            if (!(_this.mode=="get"&&_this.getkey(1)>0&&_this.inRect())) { __pc=43    ; break; }
             //$LASTPOS=51009194;//kernel.MapEditor:9194
             _this.mapp=Tonyu.globals.$mp.getAt(Tonyu.globals.$mouseX+_this.chipX,Tonyu.globals.$mouseY+_this.chipY);
             //$LASTPOS=51009274;//kernel.MapEditor:9274
@@ -17441,18 +17441,18 @@ Tonyu.klass.define({
             __pc=42;return;
           case 42:
             
-            __pc=49;break;
-          case 43:
+            __pc=49    ;break;
+          case 43    :
             //$LASTPOS=51009413;//kernel.MapEditor:9413
-            if (!(_this.mode=="setOn"&&_this.getkey(1)>0&&_this.inRect())) { __pc=44; break; }
+            if (!(_this.mode=="setOn"&&_this.getkey(1)>0&&_this.inRect())) { __pc=44    ; break; }
             {
               //$LASTPOS=51009468;//kernel.MapEditor:9468
               Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,_this.mapp);
             }
-            __pc=48;break;
-          case 44:
+            __pc=48    ;break;
+          case 44    :
             //$LASTPOS=51009521;//kernel.MapEditor:9521
-            if (!(_this.mode=="copy"&&_this.getkey(1)>0&&_this.inRect())) { __pc=47; break; }
+            if (!(_this.mode=="copy"&&_this.getkey(1)>0&&_this.inRect())) { __pc=47    ; break; }
             //$LASTPOS=51009575;//kernel.MapEditor:9575
             if (_this.selectedLayer=="base") {
               //$LASTPOS=51009615;//kernel.MapEditor:9615
@@ -17486,15 +17486,15 @@ Tonyu.klass.define({
             __pc=46;return;
           case 46:
             
-          case 47:
+          case 47    :
             
-          case 48:
+          case 48    :
             
-          case 49:
+          case 49    :
             
-          case 50:
+          case 50    :
             
-          case 51:
+          case 51    :
             
             //$LASTPOS=51010087;//kernel.MapEditor:10087
             _this.fiber$update(_thread);
@@ -17502,7 +17502,7 @@ Tonyu.klass.define({
           case 52:
             
             __pc=22;break;
-          case 53:
+          case 53    :
             
             _thread.exit(_this);return;
           }
@@ -18164,20 +18164,20 @@ Tonyu.klass.define({
             //$LASTPOS=52000079;//kernel.MapEditorOLD:79
           case 1:
             //$LASTPOS=52000097;//kernel.MapEditorOLD:97
-            if (!(_this.getkey("y")>0)) { __pc=2; break; }
+            if (!(_this.getkey("y")>0)) { __pc=2     ; break; }
             //$LASTPOS=52000125;//kernel.MapEditorOLD:125
             _this.loadMode=true;
-            __pc=5; break;
+            __pc=5     ; break;
             
-          case 2:
+          case 2     :
             
             //$LASTPOS=52000168;//kernel.MapEditorOLD:168
-            if (!(_this.getkey("n")>0)) { __pc=3; break; }
+            if (!(_this.getkey("n")>0)) { __pc=3     ; break; }
             //$LASTPOS=52000196;//kernel.MapEditorOLD:196
             _this.loadMode=false;
-            __pc=5; break;
+            __pc=5     ; break;
             
-          case 3:
+          case 3     :
             
             //$LASTPOS=52000240;//kernel.MapEditorOLD:240
             _this.fiber$update(_thread);
@@ -18185,10 +18185,10 @@ Tonyu.klass.define({
           case 4:
             
             __pc=1;break;
-          case 5:
+          case 5     :
             
             //$LASTPOS=52000254;//kernel.MapEditorOLD:254
-            if (!(_this.loadMode)) { __pc=9; break; }
+            if (!(_this.loadMode)) { __pc=9     ; break; }
             //$LASTPOS=52000273;//kernel.MapEditorOLD:273
             _this.fileName=prompt("Input json file (*.json)","map.json");
             //$LASTPOS=52000334;//kernel.MapEditorOLD:334
@@ -18198,13 +18198,13 @@ Tonyu.klass.define({
               
             }
             //$LASTPOS=52000413;//kernel.MapEditorOLD:413
-            if (!(_this.mapDataFile.obj())) { __pc=6; break; }
+            if (!(_this.mapDataFile.obj())) { __pc=6     ; break; }
             {
               //$LASTPOS=52000445;//kernel.MapEditorOLD:445
               _this.baseData=_this.mapDataFile.obj();
             }
-            __pc=8;break;
-          case 6:
+            __pc=8     ;break;
+          case 6     :
             //$LASTPOS=52000494;//kernel.MapEditorOLD:494
             _this.fiber$file(_thread, _this.fileName);
             __pc=7;return;
@@ -18217,7 +18217,7 @@ Tonyu.klass.define({
               _this.baseData=_this.mapDataFile.obj();
               
             }
-          case 8:
+          case 8     :
             
             //$LASTPOS=52000618;//kernel.MapEditorOLD:618
             if (_this.baseData==undefined) {
@@ -18236,7 +18236,7 @@ Tonyu.klass.define({
                 
               }
             }
-          case 9:
+          case 9     :
             
             //$LASTPOS=52000815;//kernel.MapEditorOLD:815
             _this.fiber$update(_thread);
@@ -18244,7 +18244,7 @@ Tonyu.klass.define({
           case 10:
             
             //$LASTPOS=52001093;//kernel.MapEditorOLD:1093
-            if (!(! _this.loadMode)) { __pc=12; break; }
+            if (!(! _this.loadMode)) { __pc=12    ; break; }
             //$LASTPOS=52001113;//kernel.MapEditorOLD:1113
             _this.row=prompt("input row");
             //$LASTPOS=52001143;//kernel.MapEditorOLD:1143
@@ -18266,8 +18266,8 @@ Tonyu.klass.define({
             _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
             //$LASTPOS=52001382;//kernel.MapEditorOLD:1382
             Tonyu.globals.$map=new Tonyu.classes.kernel.Map({row: _this.row,col: _this.col,chipWidth: 32,chipHeight: 32});
-            __pc=13;break;
-          case 12:
+            __pc=13    ;break;
+          case 12    :
             {
               //$LASTPOS=52001445;//kernel.MapEditorOLD:1445
               if (! _this.mapOnData) {
@@ -18290,7 +18290,7 @@ Tonyu.klass.define({
               //$LASTPOS=52001856;//kernel.MapEditorOLD:1856
               _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
             }
-          case 13:
+          case 13    :
             
             //$LASTPOS=52001906;//kernel.MapEditorOLD:1906
             Tonyu.globals.$mp=new Tonyu.classes.kernel.Map({row: 16,col: 8,chipWidth: 32,chipHeight: 32});
@@ -18477,25 +18477,25 @@ Tonyu.klass.define({
             //$LASTPOS=52004385;//kernel.MapEditorOLD:4385
             _this.panel.y=_this.panel.height/2-_this.my;
             //$LASTPOS=52004417;//kernel.MapEditorOLD:4417
-            if (!(_this.mode=="set"&&_this.getkey(1)>0)) { __pc=15; break; }
+            if (!(_this.mode=="set"&&_this.getkey(1)>0)) { __pc=15    ; break; }
             {
               //$LASTPOS=52004458;//kernel.MapEditorOLD:4458
               Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,_this.mapp);
               //$LASTPOS=52004507;//kernel.MapEditorOLD:4507
               Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,- 1);
             }
-            __pc=25;break;
-          case 15:
+            __pc=25    ;break;
+          case 15    :
             //$LASTPOS=52004558;//kernel.MapEditorOLD:4558
-            if (!(_this.mode=="erase"&&_this.getkey(1)>0)) { __pc=16; break; }
+            if (!(_this.mode=="erase"&&_this.getkey(1)>0)) { __pc=16    ; break; }
             {
               //$LASTPOS=52004601;//kernel.MapEditorOLD:4601
               Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,- 1);
             }
-            __pc=24;break;
-          case 16:
+            __pc=24    ;break;
+          case 16    :
             //$LASTPOS=52004650;//kernel.MapEditorOLD:4650
-            if (!(_this.mode=="get"&&_this.getkey(1)>0)) { __pc=18; break; }
+            if (!(_this.mode=="get"&&_this.getkey(1)>0)) { __pc=18    ; break; }
             //$LASTPOS=52004691;//kernel.MapEditorOLD:4691
             _this.mapp=Tonyu.globals.$mp.getAt(Tonyu.globals.$mouseX+_this.chipX,Tonyu.globals.$mouseY+_this.chipY);
             //$LASTPOS=52004745;//kernel.MapEditorOLD:4745
@@ -18509,18 +18509,18 @@ Tonyu.klass.define({
             __pc=17;return;
           case 17:
             
-            __pc=23;break;
-          case 18:
+            __pc=23    ;break;
+          case 18    :
             //$LASTPOS=52004858;//kernel.MapEditorOLD:4858
-            if (!(_this.mode=="setOn"&&_this.getkey(1)>0)) { __pc=19; break; }
+            if (!(_this.mode=="setOn"&&_this.getkey(1)>0)) { __pc=19    ; break; }
             {
               //$LASTPOS=52004901;//kernel.MapEditorOLD:4901
               Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,_this.mapp);
             }
-            __pc=22;break;
-          case 19:
+            __pc=22    ;break;
+          case 19    :
             //$LASTPOS=52004954;//kernel.MapEditorOLD:4954
-            if (!(_this.mode=="spuit"&&_this.getkey(1)>0)) { __pc=21; break; }
+            if (!(_this.mode=="spuit"&&_this.getkey(1)>0)) { __pc=21    ; break; }
             //$LASTPOS=52004997;//kernel.MapEditorOLD:4997
             _this.mapp=Tonyu.globals.$map.getAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my);
             //$LASTPOS=52005046;//kernel.MapEditorOLD:5046
@@ -18532,15 +18532,15 @@ Tonyu.klass.define({
             __pc=20;return;
           case 20:
             
-          case 21:
+          case 21    :
             
-          case 22:
+          case 22    :
             
-          case 23:
+          case 23    :
             
-          case 24:
+          case 24    :
             
-          case 25:
+          case 25    :
             
             //$LASTPOS=52005123;//kernel.MapEditorOLD:5123
             _this.fiber$update(_thread);
@@ -18548,7 +18548,7 @@ Tonyu.klass.define({
           case 26:
             
             __pc=14;break;
-          case 27:
+          case 27    :
             
             _thread.exit(_this);return;
           }
@@ -19085,26 +19085,26 @@ Tonyu.klass.define({
               
             }
             //$LASTPOS=53000308;//kernel.MapEditorOLD2:308
-            if (!(_this.fileExist)) { __pc=11; break; }
+            if (!(_this.fileExist)) { __pc=11    ; break; }
             //$LASTPOS=53000328;//kernel.MapEditorOLD2:328
             _this.print("Load Data?: Y or N");
             //$LASTPOS=53000362;//kernel.MapEditorOLD2:362
           case 2:
             //$LASTPOS=53000384;//kernel.MapEditorOLD2:384
-            if (!(_this.getkey("y")>0)) { __pc=3; break; }
+            if (!(_this.getkey("y")>0)) { __pc=3     ; break; }
             //$LASTPOS=53000416;//kernel.MapEditorOLD2:416
             _this.loadMode=true;
-            __pc=6; break;
+            __pc=6     ; break;
             
-          case 3:
+          case 3     :
             
             //$LASTPOS=53000471;//kernel.MapEditorOLD2:471
-            if (!(_this.getkey("n")>0)) { __pc=4; break; }
+            if (!(_this.getkey("n")>0)) { __pc=4     ; break; }
             //$LASTPOS=53000503;//kernel.MapEditorOLD2:503
             _this.loadMode=false;
-            __pc=6; break;
+            __pc=6     ; break;
             
-          case 4:
+          case 4     :
             
             //$LASTPOS=53000559;//kernel.MapEditorOLD2:559
             _this.fiber$update(_thread);
@@ -19112,10 +19112,10 @@ Tonyu.klass.define({
           case 5:
             
             __pc=2;break;
-          case 6:
+          case 6     :
             
             //$LASTPOS=53000581;//kernel.MapEditorOLD2:581
-            if (!(_this.loadMode)) { __pc=10; break; }
+            if (!(_this.loadMode)) { __pc=10    ; break; }
             //$LASTPOS=53000604;//kernel.MapEditorOLD2:604
             _this.fileName=prompt("Input json file (*.json)","map.json");
             //$LASTPOS=53000669;//kernel.MapEditorOLD2:669
@@ -19125,15 +19125,15 @@ Tonyu.klass.define({
               
             }
             //$LASTPOS=53000760;//kernel.MapEditorOLD2:760
-            if (!(_this.mapDataFile.obj())) { __pc=7; break; }
+            if (!(_this.mapDataFile.obj())) { __pc=7     ; break; }
             {
               //$LASTPOS=53000796;//kernel.MapEditorOLD2:796
               _this.baseData=_this.mapDataFile.obj();
               //$LASTPOS=53000837;//kernel.MapEditorOLD2:837
               _this.loadedFile=_this.fileName;
             }
-            __pc=9;break;
-          case 7:
+            __pc=9     ;break;
+          case 7     :
             //$LASTPOS=53000887;//kernel.MapEditorOLD2:887
             _this.fiber$file(_thread, _this.fileName);
             __pc=8;return;
@@ -19148,7 +19148,7 @@ Tonyu.klass.define({
               _this.loadedFile=_this.fileName;
               
             }
-          case 9:
+          case 9     :
             
             //$LASTPOS=53001069;//kernel.MapEditorOLD2:1069
             if (_this.baseData==undefined) {
@@ -19175,9 +19175,9 @@ Tonyu.klass.define({
                 
               }
             }
-          case 10:
+          case 10    :
             
-          case 11:
+          case 11    :
             
             //$LASTPOS=53001461;//kernel.MapEditorOLD2:1461
             _this.fiber$update(_thread);
@@ -19492,25 +19492,25 @@ Tonyu.klass.define({
             //$LASTPOS=53008320;//kernel.MapEditorOLD2:8320
             _this.panel.y=_this.panel.height/2-_this.my;
             //$LASTPOS=53008352;//kernel.MapEditorOLD2:8352
-            if (!(_this.mode=="set"&&_this.getkey(1)>0&&_this.inRect())) { __pc=15; break; }
+            if (!(_this.mode=="set"&&_this.getkey(1)>0&&_this.inRect())) { __pc=15    ; break; }
             {
               //$LASTPOS=53008405;//kernel.MapEditorOLD2:8405
               Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,_this.mapp);
               //$LASTPOS=53008454;//kernel.MapEditorOLD2:8454
               Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,- 1);
             }
-            __pc=25;break;
-          case 15:
+            __pc=25    ;break;
+          case 15    :
             //$LASTPOS=53008505;//kernel.MapEditorOLD2:8505
-            if (!(_this.mode=="erase"&&_this.getkey(1)>0&&_this.inRect())) { __pc=16; break; }
+            if (!(_this.mode=="erase"&&_this.getkey(1)>0&&_this.inRect())) { __pc=16    ; break; }
             {
               //$LASTPOS=53008560;//kernel.MapEditorOLD2:8560
               Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,- 1);
             }
-            __pc=24;break;
-          case 16:
+            __pc=24    ;break;
+          case 16    :
             //$LASTPOS=53008609;//kernel.MapEditorOLD2:8609
-            if (!(_this.mode=="get"&&_this.getkey(1)>0&&_this.inRect())) { __pc=18; break; }
+            if (!(_this.mode=="get"&&_this.getkey(1)>0&&_this.inRect())) { __pc=18    ; break; }
             //$LASTPOS=53008662;//kernel.MapEditorOLD2:8662
             _this.mapp=Tonyu.globals.$mp.getAt(Tonyu.globals.$mouseX+_this.chipX,Tonyu.globals.$mouseY+_this.chipY);
             //$LASTPOS=53008716;//kernel.MapEditorOLD2:8716
@@ -19524,18 +19524,18 @@ Tonyu.klass.define({
             __pc=17;return;
           case 17:
             
-            __pc=23;break;
-          case 18:
+            __pc=23    ;break;
+          case 18    :
             //$LASTPOS=53008829;//kernel.MapEditorOLD2:8829
-            if (!(_this.mode=="setOn"&&_this.getkey(1)>0&&_this.inRect())) { __pc=19; break; }
+            if (!(_this.mode=="setOn"&&_this.getkey(1)>0&&_this.inRect())) { __pc=19    ; break; }
             {
               //$LASTPOS=53008884;//kernel.MapEditorOLD2:8884
               Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,_this.mapp);
             }
-            __pc=22;break;
-          case 19:
+            __pc=22    ;break;
+          case 19    :
             //$LASTPOS=53008937;//kernel.MapEditorOLD2:8937
-            if (!(_this.mode=="copy"&&_this.getkey(1)>0&&_this.inRect())) { __pc=21; break; }
+            if (!(_this.mode=="copy"&&_this.getkey(1)>0&&_this.inRect())) { __pc=21    ; break; }
             //$LASTPOS=53008991;//kernel.MapEditorOLD2:8991
             _this.mapp=Tonyu.globals.$map.getAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my);
             //$LASTPOS=53009040;//kernel.MapEditorOLD2:9040
@@ -19547,15 +19547,15 @@ Tonyu.klass.define({
             __pc=20;return;
           case 20:
             
-          case 21:
+          case 21    :
             
-          case 22:
+          case 22    :
             
-          case 23:
+          case 23    :
             
-          case 24:
+          case 24    :
             
-          case 25:
+          case 25    :
             
             //$LASTPOS=53009117;//kernel.MapEditorOLD2:9117
             _this.fiber$update(_thread);
@@ -19563,7 +19563,7 @@ Tonyu.klass.define({
           case 26:
             
             __pc=14;break;
-          case 27:
+          case 27    :
             
             _thread.exit(_this);return;
           }
@@ -19782,7 +19782,7 @@ Tonyu.klass.define({
           case 3:
             
             __pc=1;break;
-          case 4:
+          case 4     :
             
             _thread.exit(_this);return;
           }
@@ -21680,20 +21680,20 @@ Tonyu.klass.define({
             //$LASTPOS=57004738;//kernel.Boot:4738
           case 1:
             //$LASTPOS=57004759;//kernel.Boot:4759
-            if (!(_this._useRAF)) { __pc=3; break; }
+            if (!(_this._useRAF)) { __pc=3     ; break; }
             //$LASTPOS=57004772;//kernel.Boot:4772
             _this.fiber$loopRAF(_thread);
             __pc=2;return;
           case 2:
             
-            __pc=5;break;
-          case 3:
+            __pc=5     ;break;
+          case 3     :
             //$LASTPOS=57004794;//kernel.Boot:4794
             _this.fiber$loopTimer(_thread);
             __pc=4;return;
           case 4:
             
-          case 5:
+          case 5     :
             
             //$LASTPOS=57004816;//kernel.Boot:4816
             _this.measureFps();
@@ -21705,7 +21705,7 @@ Tonyu.klass.define({
             //$LASTPOS=57004860;//kernel.Boot:4860
             Tonyu.globals.$drawnFrameCount++;
             __pc=1;break;
-          case 7:
+          case 7     :
             
             _thread.exit(_this);return;
           }
@@ -21832,7 +21832,7 @@ Tonyu.klass.define({
           case 0:
             //$LASTPOS=57005600;//kernel.Boot:5600
           case 1:
-            if (!(moves<_this.procCnt)) { __pc=2; break; }
+            if (!(moves<_this.procCnt)) { __pc=2     ; break; }
             {
               //$LASTPOS=57005626;//kernel.Boot:5626
               _this.moveFrame();
@@ -21845,7 +21845,7 @@ Tonyu.klass.define({
               }
             }
             __pc=1;break;
-          case 2:
+          case 2     :
             
             //$LASTPOS=57005703;//kernel.Boot:5703
             if (moves>0) {
@@ -22005,7 +22005,7 @@ Tonyu.klass.define({
           case 0:
             //$LASTPOS=57007481;//kernel.Boot:7481
           case 1:
-            if (!(_this.paused)) { __pc=3; break; }
+            if (!(_this.paused)) { __pc=3     ; break; }
             //$LASTPOS=57007506;//kernel.Boot:7506
             _this.fiber$waitFor(_thread, Tonyu.timeout(1));
             __pc=2;return;
@@ -22017,7 +22017,7 @@ Tonyu.klass.define({
               _this.resetDeadLine();
             }
             __pc=1;break;
-          case 3:
+          case 3     :
             
             _thread.exit(_this);return;
           }

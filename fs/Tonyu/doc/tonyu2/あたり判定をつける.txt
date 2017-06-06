@@ -10,7 +10,7 @@ Shotクラスのループ外に下記を打ち込む
 Shotクラスのループ内に下記を打ち込む 
 <<codeShot
 
-    for(c in all(chara2)){
+    for(c in all(Chara2)){
         if(abs(ox-c.ox)<50 && abs(oy-c.oy)<50 && abs(z-c.z)<50){//あたり判定
             c.hit = c.hit+1;//chara2のヒットカウントに1プラス
             thit = thit+1;

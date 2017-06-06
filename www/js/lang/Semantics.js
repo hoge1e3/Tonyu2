@@ -275,9 +275,12 @@ function annotateSource2(klass, env) {//B
         varDecl: function (node) {
             if (ctx.isMain) {
                 annotation(node,{varInMain:true});
+                annotation(node,{declaringClass:klass});
                 //console.log("var in main",node.name.text);
             } else {
                 ctx.locals.varDecls[node.name.text]=node;
+                //console.log("DeclaringFunc of ",node.name.text,ctx.finfo);
+                annotation(node,{declaringFunc:ctx.finfo});
             }
         },
         funcDecl: function (node) {/*FDITSELFIGNORE*/
@@ -531,7 +534,7 @@ function annotateSource2(klass, env) {//B
     }
     function initParamsLocals(f) {//S
         //console.log("IS_MAIN", f.name, f.isMain);
-        ctx.enter({isMain:f.isMain}, function () {
+        ctx.enter({isMain:f.isMain,finfo:f}, function () {
             f.locals=collectLocals(f.stmts);
             f.params=getParams(f);
         });
@@ -545,14 +548,15 @@ function annotateSource2(klass, env) {//B
         } else {
             ps=[];
         }
-        var ns=newScope(ctx.scope);
-        ps.forEach(function (p) {
-            ns[p.name.text]=genSt(ST.PARAM);
-        });
-        var locals=collectLocals(body);
-        copyLocals(locals,ns);
         var finfo=annotation(node);
+        var ns=newScope(ctx.scope);
+        var locals;
         ctx.enter({finfo: finfo}, function () {
+            ps.forEach(function (p) {
+                ns[p.name.text]=genSt(ST.PARAM,{declaringFunc:finfo});
+            });
+            locals=collectLocals(body);
+            copyLocals(locals,ns);
             annotateVarAccesses(body,ns);
         });
         var res={scope:ns, locals:locals, name:name, params:ps};
@@ -572,7 +576,7 @@ function annotateSource2(klass, env) {//B
         var ns=newScope(ctx.scope);
         f.params.forEach(function (p,cnt) {
             ns[p.name.text]=genSt(ST.PARAM,{
-                klass:klass.name, name:f.name, no:cnt
+                klass:klass.name, name:f.name, no:cnt, declaringFunc:f
             });
         });
         copyLocals(f.locals, ns);

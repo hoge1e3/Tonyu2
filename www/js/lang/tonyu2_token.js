@@ -43,6 +43,7 @@ return TT=function () {
             res.toString=function (){
                 return this.text;
             };
+            res.isToken=true;
             return res;
         });
         if (fst) res=res.first(space, fst);
@@ -112,6 +113,7 @@ return TT=function () {
             "catch": true,
             "finally": true,
             "throw": true,
+            "of": true,
             "in": true,
             fiber:true,
             "native": true,

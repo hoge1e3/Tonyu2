@@ -71,7 +71,8 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                 eo=e.originalEvent;
                 var file = eo.dataTransfer.files[0];
                 var useBlob=WebSite.serverType=="GAE" && (file.size>1000*300);
-                if(!file.type.match(mediaInfo.contentType)[1]) {
+                if(!file.type.match(mediaInfo.contentType)) {
+                    alert("このファイルは追加できません："+(file.name));
                     e.stopPropagation();
                     e.preventDefault();
                     return false;

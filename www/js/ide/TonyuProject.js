@@ -1,8 +1,8 @@
 define(["Tonyu", "ProjectCompiler", "TError", "FS", "Tonyu.TraceTbl","ImageList","StackTrace",
-        "typeCheck","Blob","thumbnail","WebSite","plugins", "Tonyu.Compiler.Semantics", "Tonyu.Compiler.JSGenerator",
+        "Blob","thumbnail","WebSite","plugins", "Tonyu.Compiler.Semantics", "Tonyu.Compiler.JSGenerator",
         "DeferredUtil","compiledProject"],
         function (Tonyu, ProjectCompiler, TError, FS, Tonyu_TraceTbl, ImageList,StackTrace,
-                tc,Blob,thumbnail,WebSite,plugins, Semantics, JSGenerator,
+                Blob,thumbnail,WebSite,plugins, Semantics, JSGenerator,
                 DU,CPRJ) {
 return Tonyu.Project=function (dir, kernelDir) {
     var TPR=ProjectCompiler(dir);

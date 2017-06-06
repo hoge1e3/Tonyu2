@@ -191,8 +191,8 @@ return TonyuLang=function () {
     /*var trailFor=tk(";").and(expr.opt()).and(tk(";")).and(expr.opt()).ret(function (s, cond, s2, next) {
         return {cond: cond, next:next  };
     });*/
-    var forin=g("forin").ands(tk("var").opt(), symbol.sep1(tk(","),true), tk("in"), expr).ret(
-                                       "isVar", "vars",null, "set" );
+    var forin=g("forin").ands(tk("var").opt(), symbol.sep1(tk(","),true), tk("in").or(tk("of")), expr).ret(
+                                       "isVar", "vars","inof", "set" );
     var normalFor=g("normalFor").ands(stmt, expr.opt() , tk(";") , expr.opt()).ret(
                                      "init", "cond",     null, "next");
     /*var infor=expr.and(trailFor.opt()).ret(function (a,b) {
@@ -217,9 +217,9 @@ return TonyuLang=function () {
     var throwSt=g("throw").ands(tk("throw"),expr,tk(";")).ret(null,"ex");
     var typeExpr=symbol;
     var typeDecl=g("typeDecl").ands(tk(":"),typeExpr).ret(null,"vtype");
-    var varDecl=g("varDecl").ands(symbol, typeDecl.opt(), tk("=").and(expr).ret(retF(1)).opt() ).ret("name","vtype","value");
+    var varDecl=g("varDecl").ands(symbol, typeDecl.opt(), tk("=").and(expr).ret(retF(1)).opt() ).ret("name","typeDecl","value");
     var varsDecl= g("varsDecl").ands(tk("var"), varDecl.sep1(tk(","),true), tk(";") ).ret(null ,"decls");
-    var paramDecl= g("paramDecl").ands(symbol,typeDecl.opt() ).ret("name","vtype");
+    var paramDecl= g("paramDecl").ands(symbol,typeDecl.opt() ).ret("name","typeDecl");
     var paramDecls=g("paramDecls").ands(tk("("), paramDecl.sep0(tk(","),true), tk(")")  ).ret(null, "params");
     var setterDecl= g("setterDecl").ands(tk("="), paramDecl).ret(null,"value");
     g("funcDeclHead").ands(
@@ -262,8 +262,8 @@ return TonyuLang=function () {
 	    var tokenRes=TT.parse(str);
 	    if (!tokenRes.isSuccess() ) {
 	    	//return "ERROR\nToken error at "+tokenRes.src.maxPos+"\n"+
-		//	str.substring(0,tokenRes.src.maxPos)+"!!HERE!!"+str.substring(tokenRes.src.maxPos);
-		throw TError("文法エラー(Token)", file ,  tokenRes.src.maxPos);
+    		//	str.substring(0,tokenRes.src.maxPos)+"!!HERE!!"+str.substring(tokenRes.src.maxPos);
+	    	throw TError("文法エラー(Token)", file ,  tokenRes.src.maxPos);
 	    }
 	    var tokens=tokenRes.result[0];
         //console.log("Tokens: "+tokens.join(","));
