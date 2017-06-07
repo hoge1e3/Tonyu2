@@ -41,7 +41,6 @@ function initClassDecls(klass, env ) {//S
     softRefClasses:softRefClasses};
     // ↑ このクラスが持つフィールド，ファイバ，関数，ネイティブ変数，AMDモジュール変数
     //   extends/includes以外から参照してれるクラス の集まり．親クラスの宣言は含まない
-
     klass.node=node;
     /*function nc(o, mesg) {
         if (!o) throw mesg+" is null";
@@ -89,22 +88,31 @@ function initClassDecls(klass, env ) {//S
                 var name=head.name.text;
                 var propHead=(head.params ? "" : head.setter ? "__setter__" : "__getter__");
                 name=propHead+name;
-
                 methods[name]={
-                        nowait: (!!head.nowait || propHead!=""),
+                        nowait: (!!head.nowait || propHead!==""),
                         ftype:  ftype,
                         name:  name,
+                        klass: klass.fullName,
                         head:  head,
                         pos: head.pos,
-                        stmts: stmt.body.stmts
+                        stmts: stmt.body.stmts,
+                        node: stmt
                 };
+                //annotation(stmt,methods[name]);
+                //annotation(stmt,{finfo:methods[name]});
             } else if (stmt.type=="nativeDecl") {
                 natives[stmt.name.text]=stmt;
             } else {
                 if (stmt.type=="varsDecl") {
                     stmt.decls.forEach(function (d) {
-                        console.log("varDecl", d.name.text);
-                        fields[d.name.text]=d;
+                        //console.log("varDecl", d.name.text);
+                        //fields[d.name.text]=d;
+                        fields[d.name.text]={
+                            node:d,
+                            klass:klass.fullName,
+                            name:d.name.text,
+                            pos:d.pos
+                        };
                     });
                 }
                 MAIN.stmts.push(stmt);
@@ -112,7 +120,7 @@ function initClassDecls(klass, env ) {//S
         });
     }
     initMethods(node);        // node=program
-}
+}// of initClassDecls
 function annotateSource2(klass, env) {//B
     var srcFile=klass.src.tonyu; //file object  //S
     var srcCont=srcFile.text();
@@ -200,11 +208,20 @@ function annotateSource2(klass, env) {//B
     	if (klass.builtin) return;
         var s=topLevelScope;
         var decls=klass.decls;
-        for (var i in decls.fields) {
-            s[i]=genSt(ST.FIELD,{klass:klass.name,name:i});
+        var i;
+        for (i in decls.fields) {
+            var info=decls.fields[i];
+            s[i]=genSt(ST.FIELD,{klass:klass.fullName,name:i,info:info});
+            if (info.node) {
+                annotation(info.node,{info:info});
+            }
         }
-        for (var i in decls.methods) {
-            s[i]=genSt(ST.METHOD,{klass:klass.name, name:i});
+        for (i in decls.methods) {
+            var info=decls.methods[i];
+            s[i]=genSt(ST.METHOD,{klass:klass.fullName,name:i,info:info});
+            if (info.node) {
+                annotation(info.node,{info:info});
+            }
         }
     }
     function initTopLevelScope() {//S
@@ -262,7 +279,11 @@ function annotateSource2(klass, env) {//B
             var opt={name:n};
             if (t==ST.FIELD) {
                 opt.klass=klass.name;
-                klass.decls.fields[n]=si;
+                klass.decls.fields[n]=klass.decls.fields[n]||{};
+                cu.extend(klass.decls.fields[n],{
+                    klass:klass.fullName,
+                    name:n
+                });//si;
             }
             si=topLevelScope[n]=genSt(t,opt);
         }
@@ -524,12 +545,18 @@ function annotateSource2(klass, env) {//B
             varAccessesAnnotator.visit(node);
         });
     }
-    function copyLocals(locals, scope) {//S
+    function copyLocals(finfo, scope) {//S
+        var locals=finfo.locals;
         for (var i in locals.varDecls) {
-            scope[i]=genSt(ST.LOCAL);
+            //console.log("LocalVar ",i,"declared by ",finfo);
+            var si=genSt(ST.LOCAL,{declaringFunc:finfo});
+            scope[i]=si;
+            annotation(locals.varDecls[i],{scopeInfo:si});
         }
         for (var i in locals.subFuncDecls) {
-            scope[i]=genSt(ST.LOCAL);
+            var si=genSt(ST.LOCAL,{declaringFunc:finfo});
+            scope[i]=si;
+            annotation(locals.subFuncDecls[i],{scopeInfo:si});
         }
     }
     function initParamsLocals(f) {//S
@@ -550,19 +577,21 @@ function annotateSource2(klass, env) {//B
         }
         var finfo=annotation(node);
         var ns=newScope(ctx.scope);
-        var locals;
+        //var locals;
         ctx.enter({finfo: finfo}, function () {
             ps.forEach(function (p) {
-                ns[p.name.text]=genSt(ST.PARAM,{declaringFunc:finfo});
+                var si=genSt(ST.PARAM,{declaringFunc:finfo});
+                annotation(p,{scopeInfo:si});
+                ns[p.name.text]=si;
             });
-            locals=collectLocals(body);
-            copyLocals(locals,ns);
+            finfo.locals=collectLocals(body);
+            copyLocals(finfo, ns);
             annotateVarAccesses(body,ns);
         });
-        var res={scope:ns, locals:locals, name:name, params:ps};
+        var res={scope:ns, locals:finfo.locals, name:name, params:ps};
         annotation(node,res);
         annotation(node,finfo);
-        annotateSubFuncExprs(locals, ns);
+        annotateSubFuncExprs(finfo.locals, ns);
         return res;
     }
     function annotateSubFuncExprs(locals, scope) {//S
@@ -575,11 +604,13 @@ function annotateSource2(klass, env) {//B
     function annotateMethodFiber(f) {//S
         var ns=newScope(ctx.scope);
         f.params.forEach(function (p,cnt) {
-            ns[p.name.text]=genSt(ST.PARAM,{
+            var si=genSt(ST.PARAM,{
                 klass:klass.name, name:f.name, no:cnt, declaringFunc:f
             });
+            ns[p.name.text]=si;
+            annotation(p,{scopeInfo:si});
         });
-        copyLocals(f.locals, ns);
+        copyLocals(f, ns);
         ctx.enter({method:f,finfo:f, noWait:false}, function () {
             annotateVarAccesses(f.stmts, ns);
         });
@@ -600,7 +631,7 @@ function annotateSource2(klass, env) {//B
     initTopLevelScope();//S
     inheritSuperMethod();//S
     annotateSource();
-}//B
+}//B  end of annotateSource2
 return {initClassDecls:initClassDecls, annotate:annotateSource2};
 })();
 //if (typeof getReq=="function") getReq.exports("Tonyu.Compiler");

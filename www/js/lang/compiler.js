@@ -50,6 +50,10 @@ define(["Tonyu","ObjectMatcher", "TError"],
         }
         return res;
     }
+    cu.extend=function (res,aobj) {
+        for (var i in aobj) res[i]=aobj[i];
+        return res;
+    };
     cu.annotation=annotation3;
     function getSource(srcCont,node) {//B
         return srcCont.substring(node.pos,node.pos+node.len);
