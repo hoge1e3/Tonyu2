@@ -608,7 +608,7 @@ function annotateSource2(klass, env) {//B
                 klass:klass.name, name:f.name, no:cnt, declaringFunc:f
             });
             ns[p.name.text]=si;
-            annotation(p,{scopeInfo:si});
+            annotation(p,{scopeInfo:si,declaringFunc:f});
         });
         copyLocals(f, ns);
         ctx.enter({method:f,finfo:f, noWait:false}, function () {

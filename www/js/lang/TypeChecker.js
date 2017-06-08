@@ -52,7 +52,18 @@ TypeChecker.check=function (klass,env) {
                     console.log("VA typeof",node.name+":",si.vtype);
                     annotation(node,{vtype:si.vtype});
                 } else if (si.type===ScopeTypes.FIELD) {
-                    var fld=klass.decls.fields[node.name+""];
+                    if (!klass.decls.fields) {
+                        console.log("no fields info",klass);
+                        return;
+                    }
+                    var fld;
+                    //try {
+                        fld=klass.decls.fields[node.name+""];
+                    /*}catch(e) {
+                        console.log("no fields info2",klass);
+                        return;
+                        
+                    }*/
                     if (!fld) {
                         // because parent field does not contain...
                         console.log("TC Warning: fld not found",klass,node.name+"");
@@ -60,10 +71,10 @@ TypeChecker.check=function (klass,env) {
                     }
                     var vtype=fld.vtype;
                     if (!vtype) {
-                        //console.log("VA vtype not found",node.name+":",fld);
+                        console.log("VA vtype not found",node.name+":",fld);
                     } else {
                         annotation(node,{vtype:vtype});
-                        //console.log("VA typeof",node.name+":",vtype);
+                        console.log("VA typeof",node.name+":",vtype);
                     }
                 }
             }
@@ -74,14 +85,18 @@ TypeChecker.check=function (klass,env) {
             if (node.name && node.typeDecl) {
                 console.log("var typeis",node.name+"", node.typeDecl.vtype+"");
                 var a=annotation(node);
-                var si=a.scopeInfo;
+                var si=a.scopeInfo;// for local
+                var info=a.info;// for field
                 if (si) {
                     console.log("set var type",node.name+"", node.typeDecl.vtype+"");
                     si.vtype=node.typeDecl.vtype;
-                } else if (a.declaringClass) {
+                } else if (info) {
+                    info.vtype=node.typeDecl.vtype;
+                }
+                /*} else if (a.declaringClass) {
                     //console.log("set fld type",a.declaringClass,a.declaringClass.decls.fields[node.name+""],node.name+"", node.typeDecl.vtype+"");
                     a.declaringClass.decls.fields[node.name+""].vtype=node.typeDecl.vtype;
-                }
+                }*/
             }
         },
         paramDecl: function (node) {
@@ -90,15 +105,20 @@ TypeChecker.check=function (klass,env) {
                 var a=annotation(node);
                 var si=a.scopeInfo;
                 if (si) {
-                    //console.log("set param type",node.name+"", node.typeDecl.vtype+"");
+                    console.log("set param type",node.name+"", node.typeDecl.vtype+"");
                     si.vtype=node.typeDecl.vtype;
                 }
             }
         },
-        funcDeclHead: function (node) {
-            if (node.name && node.rtype) {
+        funcDecl: function (node) {
+            var head=node.head;
+            var finfo=annotation(node);
+            if (head.name && head.rtype) {
                 console.log("ret typeis",node.name+"", node.rtype.vtype+"");
+                finfo.rtype=node.rtype.vtype;
             }
+            this.visit(head);
+            this.visit(node.body);
         }
     });
     var ctx=context();

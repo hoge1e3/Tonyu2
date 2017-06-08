@@ -209,9 +209,13 @@ var TPRC=function (dir) {
                      Semantics.annotate(c, env);
                  }
              });
-             ord.forEach(function (c) {
-                 TypeChecker.check(c,env);
-             });
+             try {
+                /*for (var n in compilingClasses) {
+                    TypeChecker.check(compilingClasses[n],env);
+                }*/
+             } catch(e) {
+                console.log("Error in Typecheck(It doesnt matter because Experimental)",e); 
+             }
              TPR.genJS(ord.filter(function (c) {
                  return compilingClasses[c.fullName];
              }));
