@@ -844,10 +844,13 @@ function genJS(klass, env) {//B
         //}
     }
     function digestDecls(klass) {
-        var res={methods:{}};
+        var res={methods:{},fields:{}};
         for (var i in klass.decls.methods) {
             res.methods[i]=
             {nowait:!!klass.decls.methods[i].nowait};
+        }
+        for (var i in klass.decls.fields) {
+            res.fields[i]={};
         }
         return res;
     }

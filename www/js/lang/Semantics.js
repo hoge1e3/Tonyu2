@@ -602,6 +602,7 @@ function annotateSource2(klass, env) {//B
         });
     }
     function annotateMethodFiber(f) {//S
+        //f:info  (of method)
         var ns=newScope(ctx.scope);
         f.params.forEach(function (p,cnt) {
             var si=genSt(ST.PARAM,{

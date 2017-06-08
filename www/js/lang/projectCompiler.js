@@ -216,6 +216,7 @@ var TPRC=function (dir) {
              } catch(e) {
                 console.log("Error in Typecheck(It doesnt matter because Experimental)",e); 
              }
+             //throw "test break";
              TPR.genJS(ord.filter(function (c) {
                  return compilingClasses[c.fullName];
              }));
