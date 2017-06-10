@@ -99,6 +99,7 @@ return TT=function () {
     	dtk(DIV, name, parser, DIV);
     }*/
     var reserved={"function":true, "var":true , "return":true, "typeof": true, "if":true,
+            "__typeof": true,
             "for":true,
             "else": true,
             "super": true,

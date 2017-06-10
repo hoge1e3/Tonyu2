@@ -44,6 +44,22 @@ TypeChecker.check=function (klass,env) {
         literal: function (node) {
             annotation(node,{vtype:String});
         },
+        postfix:function (node) {
+          var a=annotation(node);
+          if (a.memberAccess) {
+            var m=a.memberAccess;
+            var vtype=visitExpr(m.target);
+            if (vtype) {
+              var f=cu.getField(vtype,m.name);
+              if (f && f.vtype) {
+                annotation(node,{vtype:f.vtype});
+              }
+            }
+          } else {
+            this.visit(node.left);
+            this.visit(node.op);
+          }
+        },
         varAccess: function (node) {
             var a=annotation(node);
             var si=a.scopeInfo;
@@ -52,18 +68,8 @@ TypeChecker.check=function (klass,env) {
                     console.log("VA typeof",node.name+":",si.vtype);
                     annotation(node,{vtype:si.vtype});
                 } else if (si.type===ScopeTypes.FIELD) {
-                    if (!klass.decls.fields) {
-                        console.log("no fields info",klass);
-                        return;
-                    }
                     var fld;
-                    //try {
-                        fld=klass.decls.fields[node.name+""];
-                    /*}catch(e) {
-                        console.log("no fields info2",klass);
-                        return;
-                        
-                    }*/
+                    fld=klass.decls.fields[node.name+""];
                     if (!fld) {
                         // because parent field does not contain...
                         console.log("TC Warning: fld not found",klass,node.name+"");
@@ -83,15 +89,17 @@ TypeChecker.check=function (klass,env) {
             //console.log("TCV","varDecl",node);
             if (node.value) checker.visit(node.value);
             if (node.name && node.typeDecl) {
-                console.log("var typeis",node.name+"", node.typeDecl.vtype+"");
+                var va=annotation(node.typeDecl.vtype);
+                console.log("var typeis",node.name+"", node.typeDecl.vtype, va.resolvedType);
                 var a=annotation(node);
                 var si=a.scopeInfo;// for local
                 var info=a.info;// for field
                 if (si) {
-                    console.log("set var type",node.name+"", node.typeDecl.vtype+"");
-                    si.vtype=node.typeDecl.vtype;
+                    console.log("set var type",node.name+"", va.resolvedType );
+                    si.vtype=va.resolvedType;
                 } else if (info) {
-                    info.vtype=node.typeDecl.vtype;
+                    console.log("set fld type",node.name+"", va.resolvedType );
+                    info.vtype=va.resolvedType;
                 }
                 /*} else if (a.declaringClass) {
                     //console.log("set fld type",a.declaringClass,a.declaringClass.decls.fields[node.name+""],node.name+"", node.typeDecl.vtype+"");
@@ -102,20 +110,22 @@ TypeChecker.check=function (klass,env) {
         paramDecl: function (node) {
             if (node.name && node.typeDecl) {
                 console.log("param typeis",node.name+"", node.typeDecl.vtype+"");
+                var va=annotation(node.typeDecl.vtype);
                 var a=annotation(node);
                 var si=a.scopeInfo;
-                if (si) {
+                if (si && va.resolvedType) {
                     console.log("set param type",node.name+"", node.typeDecl.vtype+"");
-                    si.vtype=node.typeDecl.vtype;
+                    si.vtype=va.resolvedType;
                 }
             }
         },
         funcDecl: function (node) {
+            //console.log("Visit funcDecl",node);
             var head=node.head;
             var finfo=annotation(node);
-            if (head.name && head.rtype) {
-                console.log("ret typeis",node.name+"", node.rtype.vtype+"");
-                finfo.rtype=node.rtype.vtype;
+            if (head.rtype) {
+                console.log("ret typeis",head.name+"", head.rtype.vtype+"");
+                finfo.rtype=head.rtype.vtype;
             }
             this.visit(head);
             this.visit(node.body);
@@ -124,6 +134,11 @@ TypeChecker.check=function (klass,env) {
     var ctx=context();
     checker.def=visitSub;//S
     checker.visit(klass.node);
+    function visitExpr(node) {
+      checker.visit(node);
+      var va=annotation(node);
+      return va.vtype;
+    }
     function lit(s) {
         return "'"+s+"'";
     }

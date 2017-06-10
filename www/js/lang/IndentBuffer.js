@@ -137,7 +137,7 @@ return IndentBuffer=function (options) {
 	};
 	$.addMapping=function (token) {
 		//console.log("Token",token,$.srcFile+"");
-		if (!$.srcFile) return ;	
+		if (!$.srcFile) return ;
 		// token:extend({text:String},{pos:Number}|{row:Number,col:Number})
 		var rc;
 		if (typeof token.row=="number" && typeof token.col=="number") {
@@ -214,7 +214,7 @@ return IndentBuffer=function (options) {
 			        $.lazyOverflow=true;
 			    }
 			    while (this.val.length<this.length) {
-			        this.val+=this.pad;      
+			        this.val+=this.pad;
 			    }
 			    var place=this;
                 this.puts.forEach(function (i) {
@@ -253,6 +253,10 @@ return IndentBuffer=function (options) {
 	};
 	$.toLiteral= function (s, quote) {
 		if (!quote) quote="'";
+    if (typeof s!=="string") {
+      console.log("no literal ",s);
+      throw new Error("toLiteral:"+s+" is not a literal");
+    }
 		s = s.replace(/\\/g, "\\\\");
 		s = s.replace(/\r/g, "\\r");
 		s = s.replace(/\n/g, "\\n");

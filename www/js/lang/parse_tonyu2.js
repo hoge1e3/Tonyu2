@@ -152,6 +152,7 @@ return TonyuLang=function () {
     e.infixl(prio,mod);
     prio++;
     e.prefix(prio,tk("typeof"));
+    e.prefix(prio,tk("__typeof"));
     e.prefix(prio,tk("delete"));
     e.prefix(prio,tk("++"));
     e.prefix(prio,tk("--"));
@@ -215,7 +216,7 @@ return TonyuLang=function () {
     var catches=g("catches").ors("catch","finally");
     var trys=g("try").ands(tk("try"),"stmt",catches.rep1() ).ret(null, "stmt","catches");
     var throwSt=g("throw").ands(tk("throw"),expr,tk(";")).ret(null,"ex");
-    var typeExpr=symbol;
+    var typeExpr=g("typeExpr").ands(symbol).ret("name");
     var typeDecl=g("typeDecl").ands(tk(":"),typeExpr).ret(null,"vtype");
     var varDecl=g("varDecl").ands(symbol, typeDecl.opt(), tk("=").and(expr).ret(retF(1)).opt() ).ret("name","typeDecl","value");
     var varsDecl= g("varsDecl").ands(tk("var"), varDecl.sep1(tk(","),true), tk(";") ).ret(null ,"decls");

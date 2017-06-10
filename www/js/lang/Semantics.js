@@ -157,7 +157,7 @@ function annotateSource2(klass, env) {//B
             left: OM.T,
             op:{type:"member",name:{text:OM.N}}
     };
-    // These has same value but different purposes: 
+    // These has same value but different purposes:
     //  myMethodCallTmpl: avoid using bounded field for normal method(); call
     //  fiberCallTmpl: detect fiber call
     var myMethodCallTmpl=fiberCallTmpl={
@@ -229,13 +229,14 @@ function annotateSource2(klass, env) {//B
         getDependingClasses(klass).forEach(initTopLevelScope2);
         var decls=klass.decls;// Do not inherit parents' natives
         for (var i in decls.natives) {
-            s[i]=genSt(ST.NATIVE,{name:"native::"+i});
+            s[i]=genSt(ST.NATIVE,{name:"native::"+i,value:window[i]});
         }
         for (var i in JSNATIVES) {
-            s[i]=genSt(ST.NATIVE,{name:"native::"+i});
+            s[i]=genSt(ST.NATIVE,{name:"native::"+i,value:window[i]});
         }
         for (var i in env.aliases) {/*ENVC*/ //CFN  env.classes->env.aliases
-            s[i]=genSt(ST.CLASS,{name:i});
+            var fullName=env.aliases[i];
+            s[i]=genSt(ST.CLASS,{name:i,fullName:fullName,info:env.classes[fullName]});
         }
     }
     function inheritSuperMethod() {//S
@@ -375,14 +376,14 @@ function annotateSource2(klass, env) {//B
             var dup={};
             node.elems.forEach(function (e) {
                 var kn;
-                if (e.key.type=="literal") { 
-                    kn=e.key.text.substring(1,e.key.text.length-1);   
+                if (e.key.type=="literal") {
+                    kn=e.key.text.substring(1,e.key.text.length-1);
                 } else {
                     kn=e.key.text;
                 }
                 if (dup[kn]) {
                     throw TError( "オブジェクトリテラルのキー名'"+kn+"'が重複しています" , srcFile, e.pos);
-                } 
+                }
                 dup[kn]=1;
                 //console.log("objlit",e.key.text);
                 t.visit(e);
@@ -392,7 +393,7 @@ function annotateSource2(klass, env) {//B
             if (node.value) {
                 this.visit(node.value);
             } else {
-                if (node.key.type=="literal") { 
+                if (node.key.type=="literal") {
                     throw TError( "オブジェクトリテラルのパラメタに単独の文字列は使えません" , srcFile, node.pos);
                 }
                 var si=getScopeInfo(node.key.text);
@@ -537,8 +538,23 @@ function annotateSource2(klass, env) {//B
                 fiberCallRequired(this.path);
             }
             this.visit(node.value);
+            this.visit(node.typeDecl);
+        },
+        typeExpr: function (node) {
+          resolveType(node);
         }
     });
+    function resolveType(node) {//node:typeExpr
+      var name=node.name+"";
+      var si=getScopeInfo(name);
+      var t=stype(si);
+      console.log("TExpr",name,si,t);
+      if (t===ST.NATIVE) {
+          annotation(node, {resolvedType: si.value});
+      } else if (t===ST.CLASS){
+          annotation(node, {resolvedType: si.info});
+      }
+    }
     varAccessesAnnotator.def=visitSub;//S
     function annotateVarAccesses(node,scope) {//S
         ctx.enter({scope:scope}, function () {
@@ -559,12 +575,21 @@ function annotateSource2(klass, env) {//B
             annotation(locals.subFuncDecls[i],{scopeInfo:si});
         }
     }
+    function resolveTypesOfParams(params) {
+      params.forEach(function (param) {
+          if (param.typeDecl) {
+            console.log("restype",param);
+            resolveType(param.typeDecl.vtype);
+          }
+      });
+    }
     function initParamsLocals(f) {//S
         //console.log("IS_MAIN", f.name, f.isMain);
         ctx.enter({isMain:f.isMain,finfo:f}, function () {
             f.locals=collectLocals(f.stmts);
             f.params=getParams(f);
         });
+        resolveTypesOfParams(f.params);
     }
     function annotateSubFuncExpr(node) {// annotateSubFunc or FuncExpr
         var m,ps;
@@ -589,6 +614,7 @@ function annotateSource2(klass, env) {//B
             annotateVarAccesses(body,ns);
         });
         var res={scope:ns, locals:finfo.locals, name:name, params:ps};
+        resolveTypesOfParams(res.params);
         annotation(node,res);
         annotation(node,finfo);
         annotateSubFuncExprs(finfo.locals, ns);

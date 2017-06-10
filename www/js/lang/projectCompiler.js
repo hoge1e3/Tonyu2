@@ -210,11 +210,11 @@ var TPRC=function (dir) {
                  }
              });
              try {
-                /*for (var n in compilingClasses) {
+                for (var n in compilingClasses) {
                     TypeChecker.check(compilingClasses[n],env);
-                }*/
+                }
              } catch(e) {
-                console.log("Error in Typecheck(It doesnt matter because Experimental)",e); 
+                console.log("Error in Typecheck(It doesnt matter because Experimental)",e.stack); 
              }
              //throw "test break";
              TPR.genJS(ord.filter(function (c) {
@@ -411,4 +411,3 @@ if (typeof sh=="object") {
 }
 return TPRC;
 });
-

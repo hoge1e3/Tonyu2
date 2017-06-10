@@ -59,6 +59,15 @@ define(["Tonyu","ObjectMatcher", "TError"],
         return srcCont.substring(node.pos,node.pos+node.len);
     }
     cu.getSource=getSource;
+    cu.getField=function(klass,name){
+      if (klass instanceof Function) return null;
+      var res=null;
+      getDependingClasses(klass).forEach(function (k) {
+          if (res) return;
+          res=k.decls.fields[name];
+      });
+      return res;
+    };
     function getMethod2(klass,name) {//B
         var res=null;
         getDependingClasses(klass).forEach(function (k) {

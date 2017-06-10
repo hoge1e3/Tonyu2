@@ -318,6 +318,15 @@ function genJS(klass, env) {//B
             buf.printf("%v%v%v%v%v", node.left, node.op1, node.mid, node.op2, node.right);
         },
         prefix: function (node) {
+            if (node.op.text==="__typeof") {
+                var a=annotation(node.right);
+                if (a.vtype) {
+                  buf.printf("%l",a.vtype.name||a.vtype.fullName||"No type name?");
+                } else {
+                  buf.printf("%l","Any");
+                }
+                return;
+            }
             buf.printf("%v %v", node.op, node.right);
         },
         postfix: function (node) {
