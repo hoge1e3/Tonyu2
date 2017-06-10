@@ -600,7 +600,7 @@ function annotateSource2(klass, env) {//B
         } else {
             ps=[];
         }
-        var finfo=annotation(node);
+        var finfo={};
         var ns=newScope(ctx.scope);
         //var locals;
         ctx.enter({finfo: finfo}, function () {
@@ -613,12 +613,15 @@ function annotateSource2(klass, env) {//B
             copyLocals(finfo, ns);
             annotateVarAccesses(body,ns);
         });
-        var res={scope:ns, locals:finfo.locals, name:name, params:ps};
-        resolveTypesOfParams(res.params);
-        annotation(node,res);
-        annotation(node,finfo);
+        finfo.scope=ns;
+        finfo.name=name;
+        finfo.params=ps;
+        //var res={scope:ns, locals:finfo.locals, name:name, params:ps};
+        resolveTypesOfParams(finfo.params);
+        //annotation(node,res);
+        annotation(node,{finfo:finfo});
         annotateSubFuncExprs(finfo.locals, ns);
-        return res;
+        return finfo;
     }
     function annotateSubFuncExprs(locals, scope) {//S
         ctx.enter({scope:scope}, function () {
