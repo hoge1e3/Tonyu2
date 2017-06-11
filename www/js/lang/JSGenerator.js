@@ -969,7 +969,7 @@ function genJS(klass, env) {//B
         }
     }
     function genFuncExpr(node) {//G
-        var finfo=annotation(node).finfo;// annotateSubFuncExpr(node);
+        var finfo=annotation(node).info;// annotateSubFuncExpr(node);
 
         buf.printf("(function %s(%j) {%{"+
                        "%f%n"+
@@ -995,7 +995,7 @@ function genJS(klass, env) {//B
 //        return ("_trc_func_"+traceTbl.add(klass,pos )+"_"+(fnSeq++));//  Math.random()).replace(/\./g,"");
     }
     function genSubFunc(node) {//G
-        var finfo=annotation(node).finfo;// annotateSubFuncExpr(node);
+        var finfo=annotation(node).info;// annotateSubFuncExpr(node);
         buf.printf("function %s(%j) {%{"+
                       "%f%n"+
                       "%f"+

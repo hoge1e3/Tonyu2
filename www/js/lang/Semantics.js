@@ -619,7 +619,7 @@ function annotateSource2(klass, env) {//B
         //var res={scope:ns, locals:finfo.locals, name:name, params:ps};
         resolveTypesOfParams(finfo.params);
         //annotation(node,res);
-        annotation(node,{finfo:finfo});
+        annotation(node,{info:finfo});
         annotateSubFuncExprs(finfo.locals, ns);
         return finfo;
     }
