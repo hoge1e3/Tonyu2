@@ -859,7 +859,17 @@ function genJS(klass, env) {//B
             {nowait:!!klass.decls.methods[i].nowait};
         }
         for (var i in klass.decls.fields) {
-            res.fields[i]={};
+          var src=klass.decls.fields[i];
+          var dst={};
+          console.log("digestDecls",src);
+          if (src.vtype) {
+            if (typeof (src.vtype)==="string") {
+              dst.vtype=src.vtype;
+            } else {
+              dst.vtype=src.vtype.fullName || src.vtype.name;
+            }
+          }
+          res.fields[i]=dst;
         }
         return res;
     }

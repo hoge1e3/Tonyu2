@@ -66,6 +66,9 @@ define(["Tonyu","ObjectMatcher", "TError"],
           if (res) return;
           res=k.decls.fields[name];
       });
+      if (typeof (res.vtype)==="string") {
+        res.vtype=Tonyu.classMetas[res.vtype] || window[res.vtype];
+      }
       return res;
     };
     function getMethod2(klass,name) {//B

@@ -201,6 +201,7 @@ var reqConf={
             forkBlobs: "social/forkBlobs",
             JSZip:"lib/jszip.min",
             FileSaver:"lib/FileSaver.min",
+            Klass:"lib/Klass",
             plugins:"plugins/plugins",
             exceptionCatcher:"lib/exceptionCatcher",
             Assets:"fs/Assets",
