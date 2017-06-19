@@ -176,18 +176,6 @@ native Tonyu;
 }
 
 // BGM //
-\loadBGM(idx, src) {
-    // 非同期呼び出し
-    T2MediaLib.loadBGM(idx, src);
-    // 読み込み完了するまでブロッキング
-    var data = T2MediaLib.getBGMData(idx);
-    while (data == null) {
-        update();
-        data = T2MediaLib.getBGMData(idx);
-    }
-    return data;
-}
-
 \playBGM(idx, loop, offset, loopStart, loopEnd) {
     if (mute) return;
     if (loop == null) loop = false;
