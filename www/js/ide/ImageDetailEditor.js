@@ -36,7 +36,7 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite"],
             return setRC();
         case "wh":
             return setWH();
-        } 
+        }
     }
     var v=d.$vars;
     var w,h,rows,cols;
@@ -202,6 +202,7 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite"],
         if (!item) return false;
         delete item.pwidth;
         delete item.pheight;
+        item.type="t1";
         v.theForm[0].type.value="t1";
         try {
             redrawImage();

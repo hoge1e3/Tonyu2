@@ -12,6 +12,7 @@ define(["DeferredUtil","Class"],function (DU,Class) {
             this.tryStack=[];
             this.preemptionTime=60;
             this.onEndHandlers=[];
+            this.onTerminateHandlers=[];
             this.age=0; // inc if object pooled
         },
         isAlive:function isAlive() {
@@ -62,6 +63,7 @@ define(["DeferredUtil","Class"],function (DU,Class) {
                     method.apply(obj,args);
                     pc=1;break;
                 case 1:
+                    th.termStatus="success";
                     th.notifyEnd(th.retVal);
                     args[0].exit();
                     pc=2;break;
@@ -72,15 +74,48 @@ define(["DeferredUtil","Class"],function (DU,Class) {
             this.onEndHandlers.forEach(function (e) {
                 e(r);
             });
+            this.notifyTermination({status:"success",value:r});
+        },
+        notifyTermination:function (tst) {
+            this.onTerminateHandlers.forEach(function (e) {
+                e(tst);
+            });
         },
         on: function (type,f) {
-            if (type=="end") this.onEndHandlers.push(f);
+            if (type==="end"||type==="success") this.onEndHandlers.push(f);
+            if (type==="terminate") {
+                this.onTerminateHandlers.push(f);
+                if (this.handleEx) delete this.handleEx;
+            }
+        },
+        promise: function () {
+            var fb=this;
+            return DU.funcPromise(function (succ,err) {
+                fb.on("terminate",function (st) {
+                    if (st.status==="success") {
+                        succ(st.value);
+                    } else if (st.status==="exception"){
+                        err(st.exception);
+                    } else {
+                        err(new Error(st.status));
+                    }
+                });
+            });
+        },
+        then: function (succ,err) {
+            if (err) return this.proimse().then(succ,err);
+            else return this.proimse().then(succ);
+        },
+        fail: function (err) {
+            return this.promise().fail(err);
         },
         gotoCatch: function gotoCatch(e) {
             var fb=this;
             if (fb.tryStack.length==0) {
+                fb.termStatus="exception";
                 fb.kill();
-                fb.handleEx(e);
+                if (fb.handleEx) fb.handleEx(e);
+                else fb.notifyTermination({status:"exception",exception:e});
                 return;
             }
             fb.lastEx=e;
@@ -152,6 +187,7 @@ define(["DeferredUtil","Class"],function (DU,Class) {
             var fb=this;
             fb._isWaiting=true;
             fb.suspend();
+            if (j instanceof TonyuThread) j=j.promise();
             return DU.ensureDefer(j).then(function (r) {
                 fb.retVal=r;
                 fb.steps();
@@ -196,6 +232,10 @@ define(["DeferredUtil","Class"],function (DU,Class) {
             //fb._isAlive=false;
             fb._isDead=true;
             fb.frame=null;
+            if (!fb.termStatus) {
+                fb.termStatus="killed";
+                fb.notifyTermination({status:"killed"});
+            }
         },
         clearFrame: function clearFrame() {
             this.frame=null;

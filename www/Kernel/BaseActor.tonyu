@@ -258,7 +258,7 @@ nowait \draw(ctx) {
     if (pImg) {
         ctx.save();
         if (x!==x || y!==y || x==null || y==null) {
-            console.log("警告：",getClassInfo().shortName,"で座標の指定に誤りがあります");
+            //console.log("警告：",getClassInfo().shortName,"で座標の指定に誤りがあります");
         }
         ctx.translate(x,y);
         //if (typeof rotate=="number" ) rotation=rotate;// 削除予定
@@ -433,7 +433,7 @@ nowait \findTouch(params) {
             if (Math.abs(r.x-t.x)<r.width/2 &&
                 Math.abs(r.y-t.y)<r.height/2) {
                 return t;
-            }       
+            }
         }
     }
 }

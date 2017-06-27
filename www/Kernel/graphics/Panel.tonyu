@@ -12,7 +12,7 @@ native Tonyu;
         height=canvas.height;
         parallel("watchResize");
     } else {
-        setPanel(width||$screenWidth||465,height||$screenHeight||465); 
+        setPanel(width||$screenWidth||465,height||$screenHeight||465);
         //buf=$("<canvas>").attr{width,height};
     }
     x=x||width/2;
@@ -58,7 +58,7 @@ native Tonyu;
     this.fillStyle=color;
 }
 \fillRect(x,y,rectWidth,rectHeight){
-    ctx=getContext();
+    var ctx=getContext();
     ctx.save();
     //ctx.clearRect(0,0,this.width,this.height);
     ctx.fillStyle=fillStyle;
@@ -66,7 +66,7 @@ native Tonyu;
     ctx.restore();
 }
 \fillText(text,x,y,size,align){
-    ctx=getContext();
+    var ctx=getContext();
     ctx.save();
     text=text+"";
     var splits = text.split("\n");
@@ -81,13 +81,14 @@ native Tonyu;
     ctx.restore();
 }
 \clearRect(clearX,clearY,clearW,clearH){
-    ctx=getContext();
+    var ctx=getContext();
     ctx.save();
     ctx.clearRect(clearX,clearY,clearW,clearH);
     ctx.restore();
 }
 \getPixel(getX,getY){
-    if(typeof getX=="number" && !isNaN(getX) && 
+    var ctx;
+    if(typeof getX=="number" && !isNaN(getX) &&
     typeof getY=="number" && !isNaN(getY)){
         ctx=getContext();
         imagedata=ctx.getImageData(getX,getY,1,1);
@@ -99,7 +100,7 @@ native Tonyu;
     return(colordata);
 }
 \scroll(scrollX,scrollY){
-    ctx=getContext();
+    var ctx=getContext();
     ctx.save();
     imagedata=ctx.getImageData(0,0,this.width,this.height);
     clearRect(0,0,width,height);
@@ -133,6 +134,25 @@ native Tonyu;
         -width/2, -height/2, width ,height);
         ctx.restore();
     }
+}
+nowait \drawSprite(x,y,p,options) {
+    var pImg=$imageList[p];
+    if (options===true) options={f:true};
+    options=options||{};
+    var scaleX=typeof (options.scaleX)==="number"?options.scaleX:1;
+    var scaleY=typeof (options.scaleY)==="number"?options.scaleY:scaleX;
+    var rotation=options.rotation||options.angle||0;
+    var ctx=context;
+    if (options.f) scaleX*=-1;
+
+    ctx.save();
+    ctx.translate(x,y);
+    ctx.rotate(rotation/180*Math.PI);
+    ctx.scale(scaleX,scaleY);
+    ctx.drawImage(
+    pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,
+    -pImg.width/2, -pImg.height/2, pImg.width, pImg.height);
+    ctx.restore();
 }
 nowait \copy() {
     /*context . drawImage(image, dx, dy)
@@ -172,13 +192,13 @@ nowait \copy() {
     if (toLayer==null) toLayer=this;
     var scaleY=this.scaleY||scaleX;
     if (!obj.layer) throw new Error("layer not set");
-    if (obj.layer===this && toLayer===layer) {   
+    if (obj.layer===this && toLayer===layer) {
         var dx=obj.x-width/2;
         var dy=obj.y-height/2;
         var rt=rotation;
-        // (x,y)= l.sp + R(rt)*(obj-l.wp)/l.scale; 
-        // (x)= l.spx + (cos(rt) cos(rt+90))*(dx)/l.scale; 
-        // (y)= l.spy + (sin(rt) sin(rt+90))*(dy)/l.scale; 
+        // (x,y)= l.sp + R(rt)*(obj-l.wp)/l.scale;
+        // (x)= l.spx + (cos(rt) cos(rt+90))*(dx)/l.scale;
+        // (y)= l.spy + (sin(rt) sin(rt+90))*(dy)/l.scale;
         var x=this.x+(cos(rt)*dx+cos(rt+90)*dy)*scaleX;
         var y=this.y+(sin(rt)*dx+sin(rt+90)*dy)*scaleY;
         return {x,y,
@@ -186,14 +206,14 @@ nowait \copy() {
             scale:obj.scale,
             layer:toLayer
         };
-    } else if (obj.layer===layer && toLayer===this) { 
+    } else if (obj.layer===layer && toLayer===this) {
         var rt=-rotation;
         var dx=obj.x-(this.x);
         var dy=obj.y-(this.y);
         //   print(width,height,rt,scaleX,scaleY);
-        // (x,y)= l.sp + R(rt)*(obj-l.wp)/l.scale; 
-        // (x)= l.spx + (cos(rt) cos(rt+90))*(dx)/l.scale; 
-        // (y)= l.spy + (sin(rt) sin(rt+90))*(dy)/l.scale; 
+        // (x,y)= l.sp + R(rt)*(obj-l.wp)/l.scale;
+        // (x)= l.spx + (cos(rt) cos(rt+90))*(dx)/l.scale;
+        // (y)= l.spy + (sin(rt) sin(rt+90))*(dy)/l.scale;
         var x=width/2 + (cos(rt)*dx+cos(rt+90)*dy)/scaleX;
         var y=height/2 + (sin(rt)*dx+sin(rt+90)*dy)/scaleY;
         return {x,y,

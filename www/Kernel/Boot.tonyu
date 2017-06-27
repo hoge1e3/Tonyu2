@@ -84,7 +84,7 @@ mainLoop();
     $Screen.setBGColor("rgb(20,80,180)");
     $Screen.selectLayer($mainLayer);
     $rootLayer=new Sprites();
-    $uiScreen=new Screen{canvas:$("canvas")[0],layer:$rootLayer};    
+    $uiScreen=new Screen{canvas:$("canvas")[0],layer:$rootLayer};
     $uiScreen.setBGColor("#888");
     $uiScreen.addLayer($uiLayer);
     $layoutManager=new UILayout{layer:$uiLayer};
@@ -159,7 +159,7 @@ mainLoop();
 \hide() {
 }
 \schedule(obj,method,args) {
-    method=method||"main";
+    if (!method) throw new Error("指定されたメソッドは定義されていません:"+method);
     args=args||[];
     var th=scheduler.newThread(obj, method, args);
     obj.setThreadGroup(this);
@@ -286,7 +286,7 @@ nowait \detectRAFResolution(t) {
     }
 }
 nowait \drawFrame() {
-    var s=now(); 
+    var s=now();
     $uiScreen.drawLayers();
     drawTime=now()-s;
     fps_fpsCnt ++;
@@ -335,7 +335,7 @@ nowait \initFPSParams() {
 	_useRAF=true;
 	//rafCount=2;
 	//frameSkip=1;
-    
+
     rafProcNowTime=now();
 }
 nowait \now() {
