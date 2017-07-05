@@ -19,8 +19,8 @@ getCrashRect()
 
 **オーバライド
 
-デフォルトのgetCrashRectは，画像の大きさを基準に当たり判定を計算しますが，
-getCrashRectをオーバーライドすると，当たり判定の大きさを変更できます．
+デフォルトのgetCrashRectは，画像の大きさ*crashScaleを基準に当たり判定を計算しますが，
+getCrashRectをオーバーライドすると，当たり判定の大きさを変更できます（crashScaleを明示的に書かない場合，crashScaleの値は無視されるようになります）．
 
 [[@plistref chg]]の例では，当たり判定の大きさを5*5に設定しています．
 

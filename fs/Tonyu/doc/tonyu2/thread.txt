@@ -11,4 +11,5 @@
 
 *参照
 -[[parallel]]
+-[[waitFor]]
 .

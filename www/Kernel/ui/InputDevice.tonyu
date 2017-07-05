@@ -28,6 +28,7 @@ native T2MediaLib;
         mp=$Screen.convert(mp,defaultLayer);// $Screen.canvas2buf(mp);
         $mouseX=mp.x;
         $mouseY=mp.y;
+        isMouseDown=true;
         if ($InputDevice.touchEmu) {
             $handleTouchStart({
                preventDefault: function (){},
@@ -48,7 +49,7 @@ native T2MediaLib;
         mp=$Screen.convert(mp,defaultLayer);// $Screen.canvas2buf(mp);
         $mouseX=mp.x;
         $mouseY=mp.y;
-        if ($InputDevice.touchEmu) {
+        if (isMouseDown && $InputDevice.touchEmu) {
             $handleTouchMove({
                preventDefault: function (){},
                originalEvent: {
@@ -61,8 +62,10 @@ native T2MediaLib;
             //$touches[0].y=mp.y;
         }
         handleListeners();
+        //window.console.log("MXY2",$mouseX,$mouseY);
     };
     $handleMouseUp=\(e) {
+        isMouseDown=false;
         if ($InputDevice.touchEmu) {
             $handleTouchEnd({
                preventDefault: function (){},

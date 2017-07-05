@@ -12,11 +12,11 @@
 r=waitFor(promise);
 >>
 
-[[@cfrag promise]]には，JQueryのPromiseオブジェクトを指定します（例：[[@cfrag $.get(...)]]など )．
+[[@cfrag promise]]には，[[スレッド>thread]]またはjQueryのPromiseオブジェクトを指定します（例：[[@cfrag $.get(...)]]など )．
 
-[[@cfrag promise]]が結果を返す（[[@cfrag promise.done(f)]] の関数[[@cfrag f]]が呼び出される）と，waitForメソッドは終了し，[[@cfrag f]]に渡された第1引数の値が戻り値として返されます．
+[[@cfrag promise]]が結果を返す（スレッドが正常終了する，または[[@cfrag promise.done(f)]] の関数[[@cfrag f]]が呼び出される）と，waitForメソッドは終了し，スレッドの戻り値または[[@cfrag f]]に渡された第1引数の値が戻り値として返されます．
 
-[[@cfrag promise]]が失敗する（[[@cfrag promise.fail(f)]] の関数[[@cfrag f]]が呼び出される）と，waitForメソッドは例外を投げます．例外オブジェクト[[@cfrag e]]の[[@cfrag e.original]]に，[[@cfrag f]]に渡された第1引数が格納されます
+[[@cfrag promise]]が失敗する（スレッドが例外を投げるか，killメソッドで停止させられる，[[@cfrag promise.fail(f)]] の関数[[@cfrag f]]が呼び出される）と，waitForメソッドは例外を投げます．例外オブジェクト[[@cfrag e]]の[[@cfrag e.original]]に，[[@cfrag f]]に渡された第1引数が格納されます
 
 例
 <<code
@@ -30,4 +30,21 @@ try {
     print(e.original.statusText);
 }
 >>
+
+<<code
+try {
+    // okを実行し，その結果がrに入る
+    r=waitFor(parallel("ok"));
+    print("Succ",r);
+} catch(e) {
+    //エラーの場合
+    print("Err",e);
+}
+
+\ok() {
+    updateEx(30);
+    return "OK";
+}
+>>
+
 .

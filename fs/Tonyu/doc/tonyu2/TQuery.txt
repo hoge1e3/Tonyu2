@@ -37,4 +37,6 @@ for (e in all(Enemy)) {
 -[[apply>TQuery.apply]]
 -[[min, max>TQuery.minmax]]
 
+※TQueryオブジェクトは配列のように扱うことができますが，配列(Array)オブジェクトではありません．
 
+.
