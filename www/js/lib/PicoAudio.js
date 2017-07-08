@@ -76,8 +76,7 @@ var PicoAudio = (function(){
 			this.convolverGainNode = this.context.createGain();
 			this.convolverGainNode.gain.value = this.settings.reverbVolume;
 			this.convolver.connect(this.convolverGainNode);
-			this.convolverGainNode.connect(this.masterGainNode);
-			this.masterGainNode.connect(this.context.destination);
+			this.convolverGainNode.connect(this.context.destination);
 		}
 		
 		if(_picoAudio && _picoAudio.chorusDelayNode){ // 使いまわし
@@ -94,8 +93,7 @@ var PicoAudio = (function(){
 			this.chorusOscillator.connect(this.chorusLfoGainNode);
 			this.chorusLfoGainNode.connect(this.chorusDelayNode.delayTime);
 			this.chorusDelayNode.connect(this.chorusGainNode);
-			this.chorusGainNode.connect(this.masterGainNode);
-			this.masterGainNode.connect(this.context.destination);
+			this.chorusGainNode.connect(this.context.destination);
 			this.chorusOscillator.start(0);
 		}
 		
@@ -557,6 +555,7 @@ var PicoAudio = (function(){
 		
 		if(this.settings.isReverb && option.reverb && (option.reverb.length >= 2 || option.reverb[0].value > 0)){
 			var convolver = this.convolver;
+			var masterGainNode = this.masterGainNode;
 			var convolverGainNode = context.createGain();
 			firstPan = true;
 			option.reverb ? option.reverb.forEach(function(p){
@@ -575,11 +574,13 @@ var PicoAudio = (function(){
 			if(r > 1.0) r = 1.0;
 			convolverGainNode.gain.value = r;
 			gainNode.connect(convolverGainNode);
-			convolverGainNode.connect(convolver);
+			convolverGainNode.connect(masterGainNode);
+			masterGainNode.connect(convolver);
 		}
 		
 		if(this.settings.isChorus && option.chorus && (option.chorus.length >= 2 || option.chorus[0].value > 0)){
 			var chorusDelayNode = this.chorusDelayNode;
+			var masterGainNode = this.masterGainNode;
 			var chorusGainNode = context.createGain();
 			firstPan = true;
 			option.chorus ? option.chorus.forEach(function(p){
@@ -598,7 +599,8 @@ var PicoAudio = (function(){
 			if(c > 1.0) c = 1.0;
 			chorusGainNode.gain.value = c;
 			gainNode.connect(chorusGainNode);
-			chorusGainNode.connect(chorusDelayNode);
+			chorusGainNode.connect(masterGainNode);
+			masterGainNode.connect(chorusDelayNode);
 		}
 		
 		if(modulationOscillator){
@@ -775,6 +777,8 @@ var PicoAudio = (function(){
 		states.isPlaying = true;
 		states.startTime = !states.startTime && !states.stopTime ? this.context.currentTime : (states.startTime + this.context.currentTime - states.stopTime);
 		states.stopFuncs = [];
+		// 先頭の無音の時間をスキップ
+		//this.setStartTime(this.getTime(this.firstNoteOnTiming));
 		// 曲終了コールバックを予約
 		var reserveSongEnd;
 		var reserveSongEndFunc = function(){
@@ -788,7 +792,7 @@ var PicoAudio = (function(){
 				reserveSongEnd = setTimeout(reserveSongEndFunc, 1);
 				that.pushFunc({
 					rootTimeout: reserveSongEnd,
-					stopFunc: function(){ clearTimeout(reserveSongEndAgain); }
+					stopFunc: function(){ clearTimeout(reserveSongEnd); }
 				});
 			}
 		};
@@ -1245,7 +1249,7 @@ var PicoAudio = (function(){
 			var expression = 127;
 			var velocity = 100;
 			var modulation = 0;
-			var reverb = 10;
+			var reverb = 0;
 			var chorus = 0;
 			var nrpnLsb = 127;
 			var nrpnMsb = 127;

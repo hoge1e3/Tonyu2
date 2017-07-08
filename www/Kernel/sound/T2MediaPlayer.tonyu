@@ -47,13 +47,6 @@ native Tonyu;
        // 読み込み完了するまでブロッキング
        T2MediaLib.loadSound(idx, src) {succ,err};
     };
-    var data = T2MediaLib.getSoundData(idx);
-    /*
-    while (data == null) {
-        update();
-        data = T2MediaLib.getSoundData(idx);
-    }*/
-    return data;
 }
 
 \available {

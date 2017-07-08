@@ -402,6 +402,9 @@ T2MediaLib_SoundData.prototype.isDecoding = function() {
 T2MediaLib_SoundData.prototype.isDecodeComplete = function() {
     return this.state == "decoded";
 };
+T2MediaLib_SoundData.prototype.getDecodedData = function() {
+    return this.decodedData;
+};
 
 
 
@@ -557,7 +560,6 @@ var T2MediaLib = {
             }
             var smf = new Uint8Array(arrayBuffer);
             var data = T2MediaLib.picoAudio.parseSMF(smf);
-            console.log(data);
             T2MediaLib.soundDataAry[idx].onDecodeComplete(data);
             if (callbacks && callbacks.succ) callbacks.succ(idx);
         } else {
@@ -601,10 +603,16 @@ var T2MediaLib = {
         else if (source.start) source.start(0);
     },
     getSoundData : function(idx) {
-        return T2MediaLib.soundDataAry[idx];
+        var soundDataObj = T2MediaLib.soundDataAry[idx];
+        if (soundDataObj) {
+            return soundDataObj.getDecodedData();
+        } else {
+            return null;
+        }
     },
 
     // SEメソッド郡 //
+
     playSE : function(idx, vol, pan, rate, offset, loop, loopStart, loopEnd) {
         if (!T2MediaLib.context) return null;
         var soundData = T2MediaLib.soundDataAry[idx];
@@ -796,7 +804,6 @@ var T2MediaLib = {
         if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
         sourceObj.loopEnd = loopEnd;
     },
-
 
     // BGMメソッド郡 //
 
