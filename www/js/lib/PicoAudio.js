@@ -774,11 +774,15 @@ var PicoAudio = (function(){
 				states.webMIDIWaitState = null;
 			}
 		}
+		// 先頭の無音の時間をスキップ
+		var firstNoteOnTime = this.getTime(this.firstNoteOnTiming);
+		if (-states.startTime < firstNoteOnTime) {
+			this.setStartTime(firstNoteOnTime);
+		}
+		
 		states.isPlaying = true;
 		states.startTime = !states.startTime && !states.stopTime ? this.context.currentTime : (states.startTime + this.context.currentTime - states.stopTime);
 		states.stopFuncs = [];
-		// 先頭の無音の時間をスキップ
-		//this.setStartTime(this.getTime(this.firstNoteOnTiming));
 		// 曲終了コールバックを予約
 		var reserveSongEnd;
 		var reserveSongEndFunc = function(){
@@ -933,7 +937,7 @@ var PicoAudio = (function(){
 	};
 
 	PicoAudio.prototype.setStartTime = function(offset){
-		this.states.startTime -= offset;
+		this.states.startTime = -offset;
 		this.states.playIndex = Math.floor(offset * 1000 / this.settings.hashLength);
 	};
 
