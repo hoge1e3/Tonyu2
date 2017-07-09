@@ -41,20 +41,12 @@ native Tonyu;
     return T2MediaLib.setMasterVolume(vol);
 }
 
-// SE //
-\loadSE(idx, src) {//@hoge1e3
+\loadSound(idx, src) {//@hoge1e3
     // 非同期呼び出し
     runAsync \(succ,err) {
        // 読み込み完了するまでブロッキング
-       T2MediaLib.loadSE(idx, src) {succ,err};
+       T2MediaLib.loadSound(idx, src) {succ,err};
     };
-    var data = T2MediaLib.getSEData(idx);
-    /*
-    while (data == null) {
-        update();
-        data = T2MediaLib.getSEData(idx);
-    }*/
-    return data;
 }
 
 \available {
@@ -70,7 +62,7 @@ native Tonyu;
          Tonyu.setGlobal(name, name);
          try {
             //print("Loading Sound2: "+name);
-            loadSE(name, url);
+            loadSound(name, url);
          } catch(e) {
             print("Failed to load",name);
             Tonyu.setGlobal(name, "ERROR");
@@ -78,6 +70,12 @@ native Tonyu;
     }
 }
 
+\getSoundData(idx) {
+    return T2MediaLib.getSoundData(idx);
+}
+
+
+// SE //
 
 // vol:0-128-∞
 // pan:-1.0～1.0
@@ -170,23 +168,7 @@ native Tonyu;
     return T2MediaLib.setSELoopEndTime(setSELoopStartTime, loopEnd);
 }
 
-\getSEData(idx) {
-    return T2MediaLib.getSEData(idx);
-}
-
 // BGM //
-\loadBGM(idx, src) {
-    // 非同期呼び出し
-    T2MediaLib.loadBGM(idx, src);
-    // 読み込み完了するまでブロッキング
-    var data = T2MediaLib.getBGMData(idx);
-    while (data == null) {
-        update();
-        data = T2MediaLib.getBGMData(idx);
-    }
-    return data;
-}
-
 \playBGM(idx, loop, offset, loopStart, loopEnd) {
     if (mute) return;
     if (loop == null) loop = false;
@@ -289,6 +271,10 @@ native Tonyu;
 }
 
 \getPlayingBGMName() {
+    return T2MediaLib.getPlayingBGMName(0);
+}
+
+\setBGMOnSongEndListener() {
     return T2MediaLib.getPlayingBGMName(0);
 }
 
