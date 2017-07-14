@@ -11,7 +11,7 @@
 </span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><h2><a id="line_marker_-2" name="line_marker_-2"></a><span>・あたり判定をつける</span></h2><a id="line_marker_-3" name="line_marker_-3"></a><p></p><a id="line_marker_-4" name="line_marker_-4"></a><span>Shotクラスのループ外に下記を打ち込む</span><span>
 </span><a id="line_marker_-7" name="line_marker_-7"></a><pre><a id="line_marker_-6" name="line_marker_-6"></a><span>  thit=0;</span><span>
 </span></pre><a id="line_marker_-8" name="line_marker_-8"></a><p></p><a id="line_marker_-9" name="line_marker_-9"></a><span>Shotクラスのループ内に下記を打ち込む </span><span>
-</span><a id="line_marker_-10" name="line_marker_-10"></a><div class="plist">Shot</div><a id="line_marker_-25" name="line_marker_-25"></a><pre><a id="line_marker_-11" name="line_marker_-11"></a><p></p><a id="line_marker_-12" name="line_marker_-12"></a><span>    for(c in all(chara2)){</span><span>
+</span><a id="line_marker_-10" name="line_marker_-10"></a><div class="plist">Shot</div><a id="line_marker_-25" name="line_marker_-25"></a><pre><a id="line_marker_-11" name="line_marker_-11"></a><p></p><a id="line_marker_-12" name="line_marker_-12"></a><span>    for(c in all(Chara2)){</span><span>
 </span><a id="line_marker_-13" name="line_marker_-13"></a><span>        if(abs(ox-c.ox)&lt;50 &amp;&amp; abs(oy-c.oy)&lt;50 &amp;&amp; abs(z-c.z)&lt;50){//あたり判定</span><span>
 </span><a id="line_marker_-14" name="line_marker_-14"></a><span>            c.hit = c.hit+1;//chara2のヒットカウントに1プラス</span><span>
 </span><a id="line_marker_-15" name="line_marker_-15"></a><span>            thit = thit+1;</span><span>

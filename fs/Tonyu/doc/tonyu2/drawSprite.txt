@@ -1,0 +1,23 @@
+[[Panel]]
+
+*Panel.drawSpriteメソッド
+
+パネルに画像を描画します．
+
+**書式
+
+<<code
+panel.drawSprite(x,y,p,options)
+>>
+
+-x 描画横位置（画像の中心）
+-y 描画縦位置（画像の中心）
+-p [[キャラクタパターン番号>cpats]]
+-options には次のような属性をもつオブジェクトを指定できます．
+-- rotation 回転（省略すると0）
+-- scaleX 横拡大率（省略すると1）
+-- scaleY 縦拡大率（省略するとscaleXと同じ）
+-- f  [[@cfrag true]]なら左右反転
+
+
+.

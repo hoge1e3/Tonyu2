@@ -210,12 +210,12 @@ var TPRC=function (dir) {
                  }
              });
              try {
-                for (var n in compilingClasses) {
+                /*for (var n in compilingClasses) {
                     TypeChecker.checkTypeDecl(compilingClasses[n],env);
                 }
                 for (var n in compilingClasses) {
                     TypeChecker.checkExpr(compilingClasses[n],env);
-                }
+                }*/
              } catch(e) {
                 console.log("Error in Typecheck(It doesnt matter because Experimental)",e.stack);
              }

@@ -28,6 +28,7 @@ panel=new Panel();
 -[[fillText]]
 -[[clearRect]]
 -[[getPixel]]
+-[[drawSprite]]
 -[[copy>Panel.copy]]
 
 .

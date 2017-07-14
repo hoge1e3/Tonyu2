@@ -1,4 +1,4 @@
-// Created at Tue Jun 27 2017 12:06:58 GMT+0900 (東京 (標準時))
+// Created at Thu Jul 06 2017 11:46:15 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -1257,7 +1257,7 @@ return Tonyu=function () {
             bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
             hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
             run:run,iterator:IT,
-            VERSION:1498532811692,//EMBED_VERSION
+            VERSION:1499309160822,//EMBED_VERSION
             A:A};
 }();
 });
@@ -12335,12 +12335,12 @@ var TPRC=function (dir) {
                  }
              });
              try {
-                for (var n in compilingClasses) {
+                /*for (var n in compilingClasses) {
                     TypeChecker.checkTypeDecl(compilingClasses[n],env);
                 }
                 for (var n in compilingClasses) {
                     TypeChecker.checkExpr(compilingClasses[n],env);
-                }
+                }*/
              } catch(e) {
                 console.log("Error in Typecheck(It doesnt matter because Experimental)",e.stack);
              }

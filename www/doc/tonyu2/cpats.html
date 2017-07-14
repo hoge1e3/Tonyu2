@@ -28,22 +28,24 @@
 </span><a id="line_marker_-27" name="line_marker_-27"></a><p></p><a id="line_marker_-28" name="line_marker_-28"></a><span> 例えば， $pat_balls という名前の画像ファイルの中の，4番目のキャラクタパターン（一番最初は0番目とする）を指定するには</span><span>
 </span><a id="line_marker_-31" name="line_marker_-31"></a><pre><a id="line_marker_-30" name="line_marker_-30"></a><span>    p=$pat_balls + 4; </span><span>
 </span></pre><a id="line_marker_-32" name="line_marker_-32"></a><span>    とします．</span><span>
-</span><a id="line_marker_-33" name="line_marker_-33"></a><p></p><a id="line_marker_-34" name="line_marker_-34"></a><span>また、パターン番号は</span><a href="Map.html">Map</a><span>オブジェクトで、マップチップを変更したり取得したりするときにも用います。</span><span>
-</span><a id="line_marker_-35" name="line_marker_-35"></a><p></p><h1><a id="line_marker_-36" name="line_marker_-36"></a><span>例1 - 最初から用意されている画像を用いる</span></h1><a id="line_marker_-37" name="line_marker_-37"></a><p></p><a id="line_marker_-38" name="line_marker_-38"></a><a href="E382AAE38396E382B8E382A7E382AFE38388E381AEE382B0E383A9E38395E382A3E38383E382AFE38292E5A489E38188E3828B.html">使用例</a><span>
-</span><a id="line_marker_-39" name="line_marker_-39"></a><p></p><h1><a id="line_marker_-40" name="line_marker_-40"></a><span>例2 - 独自の画像を追加する</span></h1><a id="line_marker_-41" name="line_marker_-41"></a><p></p><a id="line_marker_-42" name="line_marker_-42"></a><span>※ </span><a href="http://jsrun.it/assets/w/K/x/V/wKxV7.png" target="ext">$pat_ballsという名前の画像</a><span>を追加してから実行してください。</span><span>
-</span><a id="line_marker_-43" name="line_marker_-43"></a><p></p><a id="line_marker_-44" name="line_marker_-44"></a><div class="plist">Main</div><a id="line_marker_-55" name="line_marker_-55"></a><pre><a id="line_marker_-45" name="line_marker_-45"></a><span>t=0;</span><span>
-</span><a id="line_marker_-46" name="line_marker_-46"></a><span>while(true) {</span><span>
-</span><a id="line_marker_-47" name="line_marker_-47"></a><span>    if (t%5==0) {</span><span>
-</span><a id="line_marker_-48" name="line_marker_-48"></a><span>        // 新しく作るBall オブジェクトの変数pに，</span><span>
-</span><a id="line_marker_-49" name="line_marker_-49"></a><span>        // $pat_balls の0 - 15番目のキャラクタパターンをランダムに設定</span><span>
-</span><a id="line_marker_-50" name="line_marker_-50"></a><span>        new Ball{x:rnd($screenWidth),y:0, p:$pat_balls+rnd(16)};</span><span>
-</span><a id="line_marker_-51" name="line_marker_-51"></a><span>    }</span><span>
-</span><a id="line_marker_-52" name="line_marker_-52"></a><span>    t++;</span><span>
-</span><a id="line_marker_-53" name="line_marker_-53"></a><span>    update();</span><span>
-</span><a id="line_marker_-54" name="line_marker_-54"></a><span>}</span><span>
-</span></pre><a id="line_marker_-56" name="line_marker_-56"></a><p></p><a id="line_marker_-57" name="line_marker_-57"></a><div class="plist">Ball</div><a id="line_marker_-62" name="line_marker_-62"></a><pre><a id="line_marker_-58" name="line_marker_-58"></a><span>while(y&lt;$screenHeight) {</span><span>
-</span><a id="line_marker_-59" name="line_marker_-59"></a><span>    y+=6;</span><span>
-</span><a id="line_marker_-60" name="line_marker_-60"></a><span>    update();</span><span>
-</span><a id="line_marker_-61" name="line_marker_-61"></a><span>}</span><span>
+</span><a id="line_marker_-33" name="line_marker_-33"></a><p></p><a id="line_marker_-34" name="line_marker_-34"></a><span>他にも、パターン番号は次のような場合に用います．</span><span>
+</span><a id="line_marker_-37" name="line_marker_-37"></a><ul><li><a id="line_marker_-35" name="line_marker_-35"></a><a href="Map.html">Map</a><span>オブジェクトで、マップチップを変更したり取得したりするとき</span><span>
+</span></li><li><a id="line_marker_-36" name="line_marker_-36"></a><span>Panel.</span><a href="drawSprite.html">drawSprite</a><span>メソッドで描画する画像を指定するとき</span><span>
+</span></li></ul><p></p><h1><a id="line_marker_-38" name="line_marker_-38"></a><span>例1 - 最初から用意されている画像を用いる</span></h1><a id="line_marker_-39" name="line_marker_-39"></a><p></p><a id="line_marker_-40" name="line_marker_-40"></a><a href="E382AAE38396E382B8E382A7E382AFE38388E381AEE382B0E383A9E38395E382A3E38383E382AFE38292E5A489E38188E3828B.html">使用例</a><span>
+</span><a id="line_marker_-41" name="line_marker_-41"></a><p></p><h1><a id="line_marker_-42" name="line_marker_-42"></a><span>例2 - 独自の画像を追加する</span></h1><a id="line_marker_-43" name="line_marker_-43"></a><p></p><a id="line_marker_-44" name="line_marker_-44"></a><span>※ </span><a href="http://jsrun.it/assets/w/K/x/V/wKxV7.png" target="ext">$pat_ballsという名前の画像</a><span>を追加してから実行してください。</span><span>
+</span><a id="line_marker_-45" name="line_marker_-45"></a><p></p><a id="line_marker_-46" name="line_marker_-46"></a><div class="plist">Main</div><a id="line_marker_-57" name="line_marker_-57"></a><pre><a id="line_marker_-47" name="line_marker_-47"></a><span>t=0;</span><span>
+</span><a id="line_marker_-48" name="line_marker_-48"></a><span>while(true) {</span><span>
+</span><a id="line_marker_-49" name="line_marker_-49"></a><span>    if (t%5==0) {</span><span>
+</span><a id="line_marker_-50" name="line_marker_-50"></a><span>        // 新しく作るBall オブジェクトの変数pに，</span><span>
+</span><a id="line_marker_-51" name="line_marker_-51"></a><span>        // $pat_balls の0 - 15番目のキャラクタパターンをランダムに設定</span><span>
+</span><a id="line_marker_-52" name="line_marker_-52"></a><span>        new Ball{x:rnd($screenWidth),y:0, p:$pat_balls+rnd(16)};</span><span>
+</span><a id="line_marker_-53" name="line_marker_-53"></a><span>    }</span><span>
+</span><a id="line_marker_-54" name="line_marker_-54"></a><span>    t++;</span><span>
+</span><a id="line_marker_-55" name="line_marker_-55"></a><span>    update();</span><span>
+</span><a id="line_marker_-56" name="line_marker_-56"></a><span>}</span><span>
+</span></pre><a id="line_marker_-58" name="line_marker_-58"></a><p></p><a id="line_marker_-59" name="line_marker_-59"></a><div class="plist">Ball</div><a id="line_marker_-64" name="line_marker_-64"></a><pre><a id="line_marker_-60" name="line_marker_-60"></a><span>while(y&lt;$screenHeight) {</span><span>
+</span><a id="line_marker_-61" name="line_marker_-61"></a><span>    y+=6;</span><span>
+</span><a id="line_marker_-62" name="line_marker_-62"></a><span>    update();</span><span>
+</span><a id="line_marker_-63" name="line_marker_-63"></a><span>}</span><span>
 </span></pre></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
 </body></html>
