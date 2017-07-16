@@ -17,66 +17,74 @@
 </span><a id="line_marker_-18" name="line_marker_-18"></a><span>// a.x=50  a.y=30 a.power=20  a.hp=50 となる</span><span>
 </span></pre><a id="line_marker_-20" name="line_marker_-20"></a><p></p><h1><a id="line_marker_-21" name="line_marker_-21"></a><span> コンストラクタ(2)</span></h1><a id="line_marker_-22" name="line_marker_-22"></a><p></p><a id="line_marker_-25" name="line_marker_-25"></a><pre><a id="line_marker_-24" name="line_marker_-24"></a><span>\new(x,y,p)</span><span>
 </span></pre><a id="line_marker_-26" name="line_marker_-26"></a><p></p><a id="line_marker_-27" name="line_marker_-27"></a><span>x,y,pの値をフィールドに書き込みます</span><span>
-</span><a id="line_marker_-28" name="line_marker_-28"></a><p></p><h1><a id="line_marker_-29" name="line_marker_-29"></a><span> フィールド</span></h1><a id="line_marker_-30" name="line_marker_-30"></a><p></p><a id="line_marker_-45" name="line_marker_-45"></a><ul><li><a id="line_marker_-31" name="line_marker_-31"></a><span>x : オブジェクトのx座標をあらわします</span><a href="E5BAA7E6A899E38292E68C87E5AE9AE38197E381A6E382AAE38396E382B8E382A7E382AFE38388E38292E8A1A8E7A4BAE38199E3828B.html">使用例</a><span>
-</span></li><li><a id="line_marker_-32" name="line_marker_-32"></a><span>y : オブジェクトのy座標をあらわします</span><a href="E5BAA7E6A899E38292E68C87E5AE9AE38197E381A6E382AAE38396E382B8E382A7E382AFE38388E38292E8A1A8E7A4BAE38199E3828B.html">使用例</a><span>
-</span></li><li><a id="line_marker_-33" name="line_marker_-33"></a><span>p : 表示する</span><a href="cpats.html">画像の番号</a><span>をあらわします。 </span><a href="E382AAE38396E382B8E382A7E382AFE38388E381AEE382B0E383A9E38395E382A3E38383E382AFE38292E5A489E38188E3828B.html">使用例</a><span>
-</span></li><li><a id="line_marker_-34" name="line_marker_-34"></a><span>text : textに値がセットされると，文字を表示します（キャラクタパターンは表示されなくなります）</span><span>
-</span></li><a id="line_marker_-38" name="line_marker_-38"></a><ul><li><a id="line_marker_-35" name="line_marker_-35"></a><span>size : 文字の大きさをあらわします</span><span>
-</span></li><li><a id="line_marker_-36" name="line_marker_-36"></a><span>fillStyle : 文字の色などをあらわします(JavascriptのCanvasにおけるfillStyleと同じ書式です）</span><span>
-</span></li><li><a id="line_marker_-37" name="line_marker_-37"></a><span>align:  "center" "left" "right"のいずれかを指定します．xの値であらわされる横位置がそれぞれ文字の中央，左端，右端になるように表示します．</span><span>
-</span></li></ul><li><span>zOrder : オブジェクト同士が重なった場合、この値が小さい方が手前に表示されます。</span><a href="E382AAE38396E382B8E382A7E382AFE38388E381AEE5A5A5E8A18CE3818DE381AEE8A8ADE5AE9A.html">使用例</a><span>
-</span></li><li><a id="line_marker_-39" name="line_marker_-39"></a><span>alpha : 表示する画像の透明度を指定します(255-0)。</span><a href="E382AAE38396E382B8E382A7E382AFE38388E381AEE5A4A7E3818DE38195E38284E582BEE3818DE38081E9808FE6988EE5BAA6E38292E8A8ADE5AE9AE38199E3828B.html">使用例</a><span>
-</span></li><li><a id="line_marker_-40" name="line_marker_-40"></a><span>scaleX : オブジェクトの横方向の拡大率を指定します．scaleYが未定義の場合は縦方向にもscaleXの拡大率が適用されます。</span><a href="E382AAE38396E382B8E382A7E382AFE38388E381AEE5A4A7E3818DE38195E38284E582BEE3818DE38081E9808FE6988EE5BAA6E38292E8A8ADE5AE9AE38199E3828B.html">使用例</a><span>
-</span></li><li><a id="line_marker_-41" name="line_marker_-41"></a><span>scaleY : オブジェクトの縦方向の拡大率を指定します</span><span>
-</span></li><li><a id="line_marker_-42" name="line_marker_-42"></a><span>rotation : オブジェクトの回転を指定します．右回りで指定した値の角度回転します。</span><a href="E382AAE38396E382B8E382A7E382AFE38388E381AEE5A4A7E3818DE38195E38284E582BEE3818DE38081E9808FE6988EE5BAA6E38292E8A8ADE5AE9AE38199E3828B.html">使用例</a><span>
-</span></li><li><a id="line_marker_-43" name="line_marker_-43"></a><span>crashScale: 当たり判定の大きさの比率を設定します．初期値は1です</span><span>
-</span></li><li><a id="line_marker_-44" name="line_marker_-44"></a><span>useObjectPool: この値を</span><code><span>true</span></code><span>にすると、このオブジェクトが消滅した後、</span><a href="E382AAE38396E382B8E382A7E382AFE38388E38397E383BCE383AB.html">オブジェクトプール</a><span>に保存されるようになります。</span><span>
-</span></li></ul><p></p><h1><a id="line_marker_-46" name="line_marker_-46"></a><span> メソッド</span></h1><a id="line_marker_-47" name="line_marker_-47"></a><p></p><a id="line_marker_-48" name="line_marker_-48"></a><span>入力</span><span>
-</span><a id="line_marker_-51" name="line_marker_-51"></a><ul><li><a id="line_marker_-49" name="line_marker_-49"></a><a href="getkey.html">getkey</a><span>
-</span></li><li><a id="line_marker_-50" name="line_marker_-50"></a><a href="findTouch.html">findTouch</a><span>
+</span><a id="line_marker_-28" name="line_marker_-28"></a><p></p><h1><a id="line_marker_-29" name="line_marker_-29"></a><span> フィールドと表示モード</span></h1><a id="line_marker_-30" name="line_marker_-30"></a><p></p><a id="line_marker_-31" name="line_marker_-31"></a><span>表示モードは，「グラフィックス」「文字」「図形」のいずれかです．</span><span>
+</span><a id="line_marker_-32" name="line_marker_-32"></a><p></p><a id="line_marker_-36" name="line_marker_-36"></a><ul><li><a id="line_marker_-33" name="line_marker_-33"></a><span>textに値がセットされている場合，表示モードは「文字」です</span><span>
+</span></li><li><a id="line_marker_-34" name="line_marker_-34"></a><span>textに値がセットされておらず，fillStyleに値がセットされている場合，表示モードは「図形」です</span><span>
+</span></li><li><a id="line_marker_-35" name="line_marker_-35"></a><span>textにもfillStyleにも値がセットされていない場合，表示モードは「グラフィックス」です</span><span>
+</span></li></ul><p></p><h2><a id="line_marker_-37" name="line_marker_-37"></a><span>「グラフィックス」におけるフィールド</span></h2><a id="line_marker_-38" name="line_marker_-38"></a><p></p><a id="line_marker_-40" name="line_marker_-40"></a><ul><li><a id="line_marker_-39" name="line_marker_-39"></a><span>p : 表示する</span><a href="cpats.html">画像の番号</a><span>をあらわします。 </span><a href="E382AAE38396E382B8E382A7E382AFE38388E381AEE382B0E383A9E38395E382A3E38383E382AFE38292E5A489E38188E3828B.html">使用例</a><span>
+</span></li></ul><p></p><h2><a id="line_marker_-41" name="line_marker_-41"></a><span>「文字」におけるフィールド</span></h2><a id="line_marker_-42" name="line_marker_-42"></a><p></p><a id="line_marker_-47" name="line_marker_-47"></a><ul><li><a id="line_marker_-43" name="line_marker_-43"></a><span>text : 表示される文字</span><span>
+</span></li><li><a id="line_marker_-44" name="line_marker_-44"></a><span>size : 文字の大きさ</span><span>
+</span></li><li><a id="line_marker_-45" name="line_marker_-45"></a><span>align: "center" "left" "right"のいずれかを指定します．xの値であらわされる横位置がそれぞれ文字の中央，左端，右端になるように表示します．</span><span>
+</span></li><li><a id="line_marker_-46" name="line_marker_-46"></a><span>fillStyle : 文字の色(JavascriptのCanvasにおけるfillStyleと同じ書式です）．</span><span>
+</span></li></ul><p></p><h2><a id="line_marker_-48" name="line_marker_-48"></a><span>「図形」におけるフィールド</span></h2><a id="line_marker_-49" name="line_marker_-49"></a><p></p><a id="line_marker_-53" name="line_marker_-53"></a><ul><li><a id="line_marker_-50" name="line_marker_-50"></a><span>radius: 値をセットすると円を表示し，その半径を表します</span><span>
+</span></li><li><a id="line_marker_-51" name="line_marker_-51"></a><span>width: radiusがセットされていない場合，四角形を表示し，その幅を表します</span><span>
+</span></li><li><a id="line_marker_-52" name="line_marker_-52"></a><span>height: radiusがセットされていない場合，四角形を表示し，その高さを表します</span><span>
+</span></li></ul><p></p><h2><a id="line_marker_-54" name="line_marker_-54"></a><span> すべてのモードで共通のフィールド</span></h2><a id="line_marker_-55" name="line_marker_-55"></a><p></p><a id="line_marker_-65" name="line_marker_-65"></a><ul><li><a id="line_marker_-56" name="line_marker_-56"></a><span>x : オブジェクトのx座標をあらわします</span><a href="E5BAA7E6A899E38292E68C87E5AE9AE38197E381A6E382AAE38396E382B8E382A7E382AFE38388E38292E8A1A8E7A4BAE38199E3828B.html">使用例</a><span>
+</span></li><li><a id="line_marker_-57" name="line_marker_-57"></a><span>y : オブジェクトのy座標をあらわします</span><a href="E5BAA7E6A899E38292E68C87E5AE9AE38197E381A6E382AAE38396E382B8E382A7E382AFE38388E38292E8A1A8E7A4BAE38199E3828B.html">使用例</a><span>
+</span></li><li><a id="line_marker_-58" name="line_marker_-58"></a><span>zOrder : オブジェクト同士が重なった場合、この値が小さい方が手前に表示されます。</span><a href="E382AAE38396E382B8E382A7E382AFE38388E381AEE5A5A5E8A18CE3818DE381AEE8A8ADE5AE9A.html">使用例</a><span>
+</span></li><li><a id="line_marker_-59" name="line_marker_-59"></a><span>alpha : 表示する画像の透明度を指定します(255-0)。</span><a href="E382AAE38396E382B8E382A7E382AFE38388E381AEE5A4A7E3818DE38195E38284E582BEE3818DE38081E9808FE6988EE5BAA6E38292E8A8ADE5AE9AE38199E3828B.html">使用例</a><span>
+</span></li><li><a id="line_marker_-60" name="line_marker_-60"></a><span>scaleX : オブジェクトの横方向の拡大率を指定します．scaleYが未定義の場合は縦方向にもscaleXの拡大率が適用されます。</span><a href="E382AAE38396E382B8E382A7E382AFE38388E381AEE5A4A7E3818DE38195E38284E582BEE3818DE38081E9808FE6988EE5BAA6E38292E8A8ADE5AE9AE38199E3828B.html">使用例</a><span>
+</span></li><li><a id="line_marker_-61" name="line_marker_-61"></a><span>scaleY : オブジェクトの縦方向の拡大率を指定します</span><span>
+</span></li><li><a id="line_marker_-62" name="line_marker_-62"></a><span>rotation : オブジェクトの回転を指定します．右回りで指定した値の角度回転します。</span><a href="E382AAE38396E382B8E382A7E382AFE38388E381AEE5A4A7E3818DE38195E38284E582BEE3818DE38081E9808FE6988EE5BAA6E38292E8A8ADE5AE9AE38199E3828B.html">使用例</a><span>
+</span></li><li><a id="line_marker_-63" name="line_marker_-63"></a><span>crashScale: 当たり判定の大きさの比率を設定します．初期値は1です</span><span>
+</span></li><li><a id="line_marker_-64" name="line_marker_-64"></a><span>useObjectPool: この値を</span><code><span>true</span></code><span>にすると、このオブジェクトが消滅した後、</span><a href="E382AAE38396E382B8E382A7E382AFE38388E38397E383BCE383AB.html">オブジェクトプール</a><span>に保存されるようになります。</span><span>
+</span></li></ul><p></p><h2><a id="line_marker_-66" name="line_marker_-66"></a><span>その他のフィールド</span></h2><a id="line_marker_-67" name="line_marker_-67"></a><p></p><a id="line_marker_-68" name="line_marker_-68"></a><span>上記以外のフィールドには値を自由に設定できます（表示には影響しません）</span><span>
+</span><a id="line_marker_-69" name="line_marker_-69"></a><p></p><a id="line_marker_-70" name="line_marker_-70"></a><p></p><h1><a id="line_marker_-71" name="line_marker_-71"></a><span> メソッド</span></h1><a id="line_marker_-72" name="line_marker_-72"></a><p></p><a id="line_marker_-73" name="line_marker_-73"></a><span>入力</span><span>
+</span><a id="line_marker_-76" name="line_marker_-76"></a><ul><li><a id="line_marker_-74" name="line_marker_-74"></a><a href="getkey.html">getkey</a><span>
+</span></li><li><a id="line_marker_-75" name="line_marker_-75"></a><a href="findTouch.html">findTouch</a><span>
 </span></li></ul><span>動作制御</span><span>
-</span><a id="line_marker_-61" name="line_marker_-61"></a><ul><li><a id="line_marker_-52" name="line_marker_-52"></a><a href="update.html">update</a><span>
-</span></li><li><a id="line_marker_-53" name="line_marker_-53"></a><a href="updateEx.html">updateEx</a><span>
-</span></li><li><a id="line_marker_-54" name="line_marker_-54"></a><a href="onUpdate.html">onUpdate</a><span>
-</span></li><li><a id="line_marker_-55" name="line_marker_-55"></a><a href="die.html">die</a><span>
-</span></li><li><a id="line_marker_-56" name="line_marker_-56"></a><a href="isDead.html">isDead</a><span> </span><span>
-</span></li><li><a id="line_marker_-57" name="line_marker_-57"></a><a href="parallel.html">parallel</a><span>
-</span></li><li><a id="line_marker_-58" name="line_marker_-58"></a><a href="asyncResult.html">asyncResult</a><span>
-</span></li><li><a id="line_marker_-59" name="line_marker_-59"></a><a href="runAsync.html">runAsync</a><span>
-</span></li><li><a id="line_marker_-60" name="line_marker_-60"></a><a href="waitFor.html">waitFor</a><span>
+</span><a id="line_marker_-86" name="line_marker_-86"></a><ul><li><a id="line_marker_-77" name="line_marker_-77"></a><a href="update.html">update</a><span>
+</span></li><li><a id="line_marker_-78" name="line_marker_-78"></a><a href="updateEx.html">updateEx</a><span>
+</span></li><li><a id="line_marker_-79" name="line_marker_-79"></a><a href="onUpdate.html">onUpdate</a><span>
+</span></li><li><a id="line_marker_-80" name="line_marker_-80"></a><a href="die.html">die</a><span>
+</span></li><li><a id="line_marker_-81" name="line_marker_-81"></a><a href="isDead.html">isDead</a><span> </span><span>
+</span></li><li><a id="line_marker_-82" name="line_marker_-82"></a><a href="parallel.html">parallel</a><span>
+</span></li><li><a id="line_marker_-83" name="line_marker_-83"></a><a href="asyncResult.html">asyncResult</a><span>
+</span></li><li><a id="line_marker_-84" name="line_marker_-84"></a><a href="runAsync.html">runAsync</a><span>
+</span></li><li><a id="line_marker_-85" name="line_marker_-85"></a><a href="waitFor.html">waitFor</a><span>
 </span></li></ul><span>衝突判定</span><span>
-</span><a id="line_marker_-69" name="line_marker_-69"></a><ul><li><a id="line_marker_-62" name="line_marker_-62"></a><a href="crashTo.html">crashTo</a><span>
-</span></li><li><a id="line_marker_-63" name="line_marker_-63"></a><a href="crashTo1.html">crashTo1</a><span>
-</span></li><li><a id="line_marker_-64" name="line_marker_-64"></a><a href="allCrash.html">allCrash</a><span>
-</span></li><li><a id="line_marker_-65" name="line_marker_-65"></a><a href="all.html">all</a><span>
-</span></li><li><a id="line_marker_-66" name="line_marker_-66"></a><a href="getCrashRect.html">getCrashRect</a><span>
-</span></li><li><a id="line_marker_-67" name="line_marker_-67"></a><a href="within.html">within</a><span>
-</span></li><li><a id="line_marker_-68" name="line_marker_-68"></a><a href="allWithin.html">allWithin</a><span>
-</span></li></ul><p></p><a id="line_marker_-70" name="line_marker_-70"></a><span>表示</span><span>
-</span><a id="line_marker_-78" name="line_marker_-78"></a><ul><li><a id="line_marker_-71" name="line_marker_-71"></a><a href="hide.html">hide</a><span>
-</span></li><li><a id="line_marker_-72" name="line_marker_-72"></a><a href="show.html">show</a><span>
-</span></li><li><a id="line_marker_-73" name="line_marker_-73"></a><a href="draw.html">draw</a><span>
-</span></li><li><a id="line_marker_-74" name="line_marker_-74"></a><a href="print.html">print</a><span>
-</span></li><li><a id="line_marker_-75" name="line_marker_-75"></a><span>color</span><span>
-</span></li><li><a id="line_marker_-76" name="line_marker_-76"></a><span>drawLine</span><span>
-</span></li><li><a id="line_marker_-77" name="line_marker_-77"></a><span>drawText</span><span>
+</span><a id="line_marker_-94" name="line_marker_-94"></a><ul><li><a id="line_marker_-87" name="line_marker_-87"></a><a href="crashTo.html">crashTo</a><span>
+</span></li><li><a id="line_marker_-88" name="line_marker_-88"></a><a href="crashTo1.html">crashTo1</a><span>
+</span></li><li><a id="line_marker_-89" name="line_marker_-89"></a><a href="allCrash.html">allCrash</a><span>
+</span></li><li><a id="line_marker_-90" name="line_marker_-90"></a><a href="all.html">all</a><span>
+</span></li><li><a id="line_marker_-91" name="line_marker_-91"></a><a href="getCrashRect.html">getCrashRect</a><span>
+</span></li><li><a id="line_marker_-92" name="line_marker_-92"></a><a href="within.html">within</a><span>
+</span></li><li><a id="line_marker_-93" name="line_marker_-93"></a><a href="allWithin.html">allWithin</a><span>
+</span></li></ul><p></p><a id="line_marker_-95" name="line_marker_-95"></a><span>表示</span><span>
+</span><a id="line_marker_-103" name="line_marker_-103"></a><ul><li><a id="line_marker_-96" name="line_marker_-96"></a><a href="hide.html">hide</a><span>
+</span></li><li><a id="line_marker_-97" name="line_marker_-97"></a><a href="show.html">show</a><span>
+</span></li><li><a id="line_marker_-98" name="line_marker_-98"></a><a href="draw.html">draw</a><span>
+</span></li><li><a id="line_marker_-99" name="line_marker_-99"></a><a href="print.html">print</a><span>
+</span></li><li><a id="line_marker_-100" name="line_marker_-100"></a><span>color</span><span>
+</span></li><li><a id="line_marker_-101" name="line_marker_-101"></a><span>drawLine</span><span>
+</span></li><li><a id="line_marker_-102" name="line_marker_-102"></a><span>drawText</span><span>
 </span></li></ul><span>音声</span><span>
-</span><a id="line_marker_-81" name="line_marker_-81"></a><ul><li><a id="line_marker_-79" name="line_marker_-79"></a><a href="play.html">play</a><span>
-</span></li><li><a id="line_marker_-80" name="line_marker_-80"></a><a href="playSE.html">playSE</a><span>
+</span><a id="line_marker_-106" name="line_marker_-106"></a><ul><li><a id="line_marker_-104" name="line_marker_-104"></a><a href="play.html">play</a><span>
+</span></li><li><a id="line_marker_-105" name="line_marker_-105"></a><a href="playSE.html">playSE</a><span>
 </span></li></ul><span>数学関数</span><span>
-</span><a id="line_marker_-84" name="line_marker_-84"></a><ul><li><a id="line_marker_-82" name="line_marker_-82"></a><a href="rnd.html">rnd</a><span>
-</span></li><li><a id="line_marker_-83" name="line_marker_-83"></a><a href="MathMod.html">MathMod</a><span>モジュールクラスがもつメソッド</span><span>
+</span><a id="line_marker_-109" name="line_marker_-109"></a><ul><li><a id="line_marker_-107" name="line_marker_-107"></a><a href="rnd.html">rnd</a><span>
+</span></li><li><a id="line_marker_-108" name="line_marker_-108"></a><a href="MathMod.html">MathMod</a><span>モジュールクラスがもつメソッド</span><span>
 </span></li></ul><a href="EventMod.html">イベント</a><span>
-</span><a id="line_marker_-89" name="line_marker_-89"></a><ul><li><a id="line_marker_-85" name="line_marker_-85"></a><a href="on.html">on</a><span>
-</span></li><li><a id="line_marker_-86" name="line_marker_-86"></a><a href="waitEvent.html">waitEvent</a><span>
-</span></li><li><a id="line_marker_-87" name="line_marker_-87"></a><a href="sendEvent.html">sendEvent</a><span>
-</span></li><li><a id="line_marker_-88" name="line_marker_-88"></a><a href="registerEventHandler.html">registerEventHandler</a><span>
+</span><a id="line_marker_-114" name="line_marker_-114"></a><ul><li><a id="line_marker_-110" name="line_marker_-110"></a><a href="on.html">on</a><span>
+</span></li><li><a id="line_marker_-111" name="line_marker_-111"></a><a href="waitEvent.html">waitEvent</a><span>
+</span></li><li><a id="line_marker_-112" name="line_marker_-112"></a><a href="sendEvent.html">sendEvent</a><span>
+</span></li><li><a id="line_marker_-113" name="line_marker_-113"></a><a href="registerEventHandler.html">registerEventHandler</a><span>
 </span></li></ul><span>その他</span><span>
-</span><a id="line_marker_-95" name="line_marker_-95"></a><ul><li><a id="line_marker_-90" name="line_marker_-90"></a><a href="loadPage.html">loadPage</a><span>
-</span></li><li><a id="line_marker_-91" name="line_marker_-91"></a><a href="file.html">file</a><span>
-</span></li><li><a id="line_marker_-92" name="line_marker_-92"></a><a href="extend.html">extend</a><span>
-</span></li><li><a id="line_marker_-93" name="line_marker_-93"></a><a href="appear.html">appear</a><span>
-</span></li><li><a id="line_marker_-94" name="line_marker_-94"></a><a href="screenOut.html">screenOut</a><span>
-</span></li></ul><p></p><a id="line_marker_-96" name="line_marker_-96"></a><span>.</span><span>
+</span><a id="line_marker_-120" name="line_marker_-120"></a><ul><li><a id="line_marker_-115" name="line_marker_-115"></a><a href="loadPage.html">loadPage</a><span>
+</span></li><li><a id="line_marker_-116" name="line_marker_-116"></a><a href="file.html">file</a><span>
+</span></li><li><a id="line_marker_-117" name="line_marker_-117"></a><a href="extend.html">extend</a><span>
+</span></li><li><a id="line_marker_-118" name="line_marker_-118"></a><a href="appear.html">appear</a><span>
+</span></li><li><a id="line_marker_-119" name="line_marker_-119"></a><a href="screenOut.html">screenOut</a><span>
+</span></li></ul><p></p><a id="line_marker_-121" name="line_marker_-121"></a><span>.</span><span>
 </span></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
 </body></html>
