@@ -10,9 +10,14 @@
 		};
 		R.loadIfAvailable(m);
 	};
-	define=function (reqs,func) {
+	define=function () {
+		var a=Array.prototype.slice.call(arguments);
+		if (typeof a[0]==="string") R.curName=a.shift();
+		var reqs=a.shift();
+		var func=a.shift();
 		R.def(reqs,func,"define");
 	};
+	define.amd={jQuery:true};
 	/*require=*/requirejs=function (reqs,func) {
 		R.def(reqs,func,"require");
 	};

@@ -1,4 +1,4 @@
-// Created at Sun Jul 16 2017 15:26:40 GMT+0900 (東京 (標準時))
+// Created at Sun Jul 16 2017 16:16:24 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -11,9 +11,14 @@
 		};
 		R.loadIfAvailable(m);
 	};
-	define=function (reqs,func) {
+	define=function () {
+		var a=Array.prototype.slice.call(arguments);
+		if (typeof a[0]==="string") R.curName=a.shift();
+		var reqs=a.shift();
+		var func=a.shift();
 		R.def(reqs,func,"define");
 	};
+	define.amd={jQuery:true};
 	/*require=*/requirejs=function (reqs,func) {
 		R.def(reqs,func,"require");
 	};
