@@ -93,6 +93,9 @@ SFile.prototype={
         if (pa==null) return null;
         return this._resolve(pa);
     },
+    sibling: function (relPath) {
+        return this.up().rel(relPath);
+    },
     rel: function (relPath) {
         A.is(relPath, P.Relative);
         this.assertDir();

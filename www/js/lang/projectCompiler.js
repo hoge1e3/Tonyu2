@@ -1,9 +1,9 @@
 define(["Tonyu","Tonyu.Compiler.JSGenerator","Tonyu.Compiler.Semantics",
 		"Tonyu.TraceTbl","FS","assert","DeferredUtil","compiledProject",
-		"TypeChecker"],
+		"source-map","TypeChecker"],
 		function (Tonyu,JSGenerator,Semantics,
 				ttb,FS,A,DU,CPR,
-				TypeChecker) {
+				S,TypeChecker) {
 var TPRC=function (dir) {
 	A(FS.isFile(dir) && dir.isDir(), "projectCompiler: "+dir+" is not dir obj");
 	var TPR={env:{}};
@@ -238,22 +238,33 @@ var TPRC=function (dir) {
 		});
 	};
 	TPR.concatJS=function (ord) {
-		var cbuf="";
+		//var cbuf="";
 		var outf=TPR.getOutputFile();
 		TPR.showProgress("generate :"+outf.name());
 		console.log("generate :"+outf);
+		var mapNode=new S.SourceNode(null,null,outf.path());
 		ord.forEach(function (c) {
+			var cbuf2,fn=null;
 			if (typeof (c.src.js)=="string") {
-				cbuf+=c.src.js+"\n";
+				cbuf2=c.src.js+"\n";
 			} else if (FS.isFile(c.src.js)) {
-				/*return $.when(c.src.text()).then(function () {
-				});*/
-				cbuf+=c.src.js.text()+"\n";
+				fn=c.src.js.path();
+				cbuf2=c.src.js.text()+"\n";
 			} else {
 				throw new Error("Src for "+c.fullName+" not generated ");
 			}
+			var snd;
+			if (c.src.map) {
+				snd=S.SourceNode.fromStringWithSourceMap(cbuf2,new S.SourceMapConsumer(c.src.map));
+			} else {
+				snd=new S.SourceNode(null,null,fn,cbuf2);
+			}
+			mapNode.add(snd);
 		});
-		outf.text(cbuf);
+		var mapFile=outf.sibling(outf.name()+".map");
+		var gc=mapNode.toStringWithSourceMap();
+		outf.text(gc.code+"\n//# sourceMappingURL="+mapFile.name());
+		mapFile.text(gc.map+"");
 		return evalFile(outf);
 	};
 	TPR.getDependingProjects=function () {

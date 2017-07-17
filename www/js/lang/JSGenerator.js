@@ -37,6 +37,7 @@ function genJS(klass, env) {//B
 		return cu.getSource(srcCont,node);
 	}
 	var buf=env.codeBuffer || IndentBuffer({fixLazyLength:6});
+	buf.setSrcFile(srcFile);
 	var printf=buf.printf;
 	var ctx=context();
 	var debug=false;
@@ -1051,7 +1052,9 @@ function genJS(klass, env) {//B
 		console.log("method4", buf.buf);
 		//throw "ERR";
 	}
-	return buf.buf;
+	var bufres=buf.close();
+	klass.src.map=buf.mapStr;
+	return bufres;
 }//B
 return {genJS:genJS};
 })();

@@ -268,8 +268,9 @@ return IndentBuffer=function (options) {
 	$.indentBuf="";
 	$.indentStr="  ";
 	$.close=function () {
+		$.mapStr=$.srcmap.toString();
 		if ($.mapFile && $.dstFile) {
-			$.mapFile.text($.srcmap.toString());
+			$.mapFile.text($.mapStr);
 			$.printf("%n//# sourceMappingURL=%s%n",$.mapFile.relPath($.dstFile.up()));
 		}
 		if ($.dstFile) {

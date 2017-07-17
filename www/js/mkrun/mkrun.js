@@ -54,9 +54,13 @@ define(["FS","Util","WebSite","plugins","Shell","Tonyu"],
         }
         function copyScripts() {
             var usrjs=prjDir.rel("js/concat.js");
+            var usrjsmap=prjDir.rel("js/concat.js.map");
+            //TODO async...
+            //dest.rel("js/concat.js").text(usrjs.text()+"\n//# sourceMappingURL=concat.js.map");// js/ is needed??
             var kerjs=FS.get(WebSite.kernelDir).rel("js/concat.js");
             var runScr2=jsDir.rel("gen/runScript2_concat.js");
             return $.when(
+                usrjsmap.copyTo(dest.rel("js/concat.js.map")),
                 usrjs.copyTo(dest.rel("js/concat.js")),
                 kerjs.copyTo(dest.rel("js/kernel.js")),
                 runScr2.copyTo(dest.rel("js/runScript2_concat.js"))
