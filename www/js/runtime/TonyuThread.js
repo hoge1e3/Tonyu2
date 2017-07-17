@@ -1,8 +1,8 @@
-define(["DeferredUtil","Class"],function (DU,Class) {
+define(["DeferredUtil","Klass"],function (DU,Klass) {
 	var cnts={enterC:{},exitC:0};
 	try {window.cnts=cnts;}catch(e){}
-	var TonyuThread=Class({
-		initialize: function TonyuThread() {
+	var TonyuThread=Klass.define({
+		$: function TonyuThread() {
 			this.frame=null;
 			this._isDead=false;
 			//this._isAlive=true;

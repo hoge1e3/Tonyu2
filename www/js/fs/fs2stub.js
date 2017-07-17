@@ -9,6 +9,9 @@ define(["FS2","WebSite","NativeFS","LSFS", "PathUtil","Env","assert","SFile","Ro
     } else {
         rootFS=new RootFS(new LSFS(localStorage));
     }
+    FS.isFile=function (f) {
+        return SFile.is(f);
+    };
     FS.getRootFS=function () {return rootFS;};
     FS.get=function () {
         return rootFS.get.apply(rootFS,arguments);

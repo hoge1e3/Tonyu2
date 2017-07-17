@@ -1,6 +1,6 @@
-define(["Class"], function (Class) {
-	var ArrayValueIterator=Class({
-		initialize: function ArrayValueIterator(set) {
+define(["Klass"], function (Klass) {
+	var ArrayValueIterator=Klass.define({
+		$: function ArrayValueIterator(set) {
 			this.set=set;
 			this.i=0;
 		},
@@ -11,8 +11,8 @@ define(["Class"], function (Class) {
 			return true;
 		}
 	});
-	var ArrayKeyValueIterator=Class({
-		initialize: function ArrayKeyValueIterator(set) {
+	var ArrayKeyValueIterator=Klass.define({
+		$: function ArrayKeyValueIterator(set) {
 			this.set=set;
 			this.i=0;
 		},
@@ -24,8 +24,8 @@ define(["Class"], function (Class) {
 			return true;
 		}
 	});
-	var ObjectKeyIterator=Class({
-		initialize: function ObjectKeyIterator(set) {
+	var ObjectKeyIterator=Klass.define({
+		$: function ObjectKeyIterator(set) {
 			this.elems=[];
 			for (var k in set) {
 				this.elems.push(k);
@@ -39,8 +39,8 @@ define(["Class"], function (Class) {
 			return true;
 		}
 	});
-	var ObjectKeyValueIterator=Class({
-		initialize: function ObjectKeyValueIterator(set) {
+	var ObjectKeyValueIterator=Klass.define({
+		$: function ObjectKeyValueIterator(set) {
 			this.elems=[];
 			for (var k in set) {
 				this.elems.push([k,set[k]]);
