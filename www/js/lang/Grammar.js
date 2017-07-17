@@ -1,5 +1,5 @@
 if (typeof define!=="function") {
-   define=require("requirejs").define;
+	define=require("requirejs").define;
 }
 
 define(["Parser"], function (Parser) {
@@ -28,19 +28,19 @@ Grammar=function () {
 			$.defs[name]=p;
 			var $$$={};
 			$$$.autoNode=function () {
-                var res=p.ret(function () {
-                    var res={type:name};
-                    for (var i=0 ; i<arguments.length ;i++) {
-                        var e=arguments[i];
-                        var rg=Parser.setRange(e);
-                        Parser.addRange(res, rg);
-                        res["-element"+i]=e;
-                    }
-                    res.toString=function () {
-                        return "("+this.type+")";
-                    };
-                }).setName(name);
-                return $.defs[name]=res;
+				var res=p.ret(function () {
+					var res={type:name};
+					for (var i=0 ; i<arguments.length ;i++) {
+						var e=arguments[i];
+						var rg=Parser.setRange(e);
+						Parser.addRange(res, rg);
+						res["-element"+i]=e;
+					}
+					res.toString=function () {
+						return "("+this.type+")";
+					};
+				}).setName(name);
+				return $.defs[name]=res;
 			};
 			$$$.ret=function (f) {
 				if (arguments.length==0) return p;
@@ -92,7 +92,7 @@ Grammar=function () {
 		if ($.defs[name]) return $.defs[name];
 		return p.lazy(function () {
 			var r=$.defs[name];
-		    if (!r) throw "grammar named '"+name +"' is undefined";
+			if (!r) throw "grammar named '"+name +"' is undefined";
 			return r;
 		}).setName("(Lazy of "+name+")");
 	};

@@ -2,7 +2,7 @@
 // b(node);
 // console.log(b.buf);
 if (typeof define!=="function") {
-   define=require("requirejs").define;
+	define=require("requirejs").define;
 }
 define(["Parser"],
 function(Parser) {
@@ -20,8 +20,8 @@ XMLBuffer=function (src) {
 		if (node==null) return;
 		if (attrName) $.startTag("attr_"+attrName+"");
 		if (node.type) {
-		    if (node.isToken) $.startTag("token_"+node.type+"");
-		    else $.startTag(node.type+"");
+			if (node.isToken) $.startTag("token_"+node.type+"");
+			else $.startTag(node.type+"");
 		}
 		if (node.text) $.src(r.text);
 		else {
@@ -40,8 +40,8 @@ XMLBuffer=function (src) {
 			}
 		}
 		if (node.type) {
-		    if (node.isToken) $.endTag("token_"+node.type+"");
-		    else $.endTag(""+node.type+"");
+			if (node.isToken) $.endTag("token_"+node.type+"");
+			else $.endTag(""+node.type+"");
 		}
 		if (attrName) $.endTag("attr_"+attrName);
 	};
@@ -54,20 +54,20 @@ XMLBuffer=function (src) {
 		$.buf+=str;
 	};
 	$.startTag=function (tagName) {
-	    if (tagName.match(/^[a-zA-Z_0-9]+$/)) {
-    	    $.tag("<"+tagName+">");
-	    } else {
-	        $.tag("<token>");
-	        //$.tag("<operator name=\""+tagName+"\">");
-	    }
+		if (tagName.match(/^[a-zA-Z_0-9]+$/)) {
+			$.tag("<"+tagName+">");
+		} else {
+			$.tag("<token>");
+			//$.tag("<operator name=\""+tagName+"\">");
+		}
 	};
 	$.endTag=function (tagName) {
-	    if (tagName.match(/^[a-zA-Z_0-9]+$/)) {
-    	    $.tag("</"+tagName+">");
-	    } else {
-	        $.tag("</token>");
-            //$.tag("</operator>");
-	    }
+		if (tagName.match(/^[a-zA-Z_0-9]+$/)) {
+			$.tag("</"+tagName+">");
+		} else {
+			$.tag("</token>");
+			//$.tag("</operator>");
+		}
 	};
 
 	$.buf="";
@@ -77,11 +77,11 @@ XMLBuffer=function (src) {
 XMLBuffer.orderByPos=function (node) {
 	var res=[];
 	/*if (node[XMLBuffer.SUBELEMENTS]) {
-	    //console.log("subele",node);
+		//console.log("subele",node);
 		node[XMLBuffer.SUBELEMENTS].forEach(function (e,i) {
-		    if (e) {
-    			res.push({value:e});
-		    }
+			if (e) {
+				res.push({value:e});
+			}
 		});
 	} else {*/
 		for (var i in node) {
@@ -89,9 +89,9 @@ XMLBuffer.orderByPos=function (node) {
 			if (node[i]==null || typeof node[i]=="string" || typeof node[i]=="number") continue;
 			if (typeof(node[i].pos)!="number") continue;
 			if (isNaN(parseInt(i)) && !(i+"").match(/^-/)) {
-			    res.push({name: i, value: node[i]}); 
+				res.push({name: i, value: node[i]}); 
 			} else {
-			    res.push({value: node[i]}); 
+				res.push({value: node[i]}); 
 			}
 		}
 	//}

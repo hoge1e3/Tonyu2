@@ -1,5 +1,5 @@
 if (typeof define!=="function") {
-   define=require("requirejs").define;
+	define=require("requirejs").define;
 }
 define(["assert","source-map"],function (A, S) {
 var Pos2RC=function (src) {
@@ -190,7 +190,7 @@ return IndentBuffer=function (options) {
 	$.lazy=function (place) {
 		if (!place) place={};
 		if (options.fixLazyLength) {
-		    place.length=place.length||options.fixLazyLength;
+			place.length=place.length||options.fixLazyLength;
 			place.pad=place.pad||" ";
 			place.gen=(function () {
 				var r="";
@@ -200,9 +200,9 @@ return IndentBuffer=function (options) {
 			place.puts=[];
 			$.useLengthPlace=true;
 		} else {
-		    //cannot use with sourcemap
+			//cannot use with sourcemap
 			place.gen=("GENERETID"+Math.random()+"DITERENEG").replace(/\W/g,"");
-    		place.reg=new RegExp(place.gen,"g");
+			place.reg=new RegExp(place.gen,"g");
 			A(!$.useLengthPlace,"GENERETID cannot be used");
 		}
 		place.inited=true;
@@ -210,27 +210,27 @@ return IndentBuffer=function (options) {
 		place.put=function (val) {
 			this.val=val+"";
 			if (this.puts) {
-			    if (this.val.length>this.length) {
-			        $.lazyOverflow=true;
-			    }
-			    while (this.val.length<this.length) {
-			        this.val+=this.pad;
-			    }
-			    var place=this;
-                this.puts.forEach(function (i) {
-                    var pl=$.buf.length;
-                    $.buf=$.buf.substring(0,i)+place.val+$.buf.substring(i+place.length);
-                    A.eq(pl,$.buf.length);
-			    });
+				if (this.val.length>this.length) {
+					$.lazyOverflow=true;
+				}
+				while (this.val.length<this.length) {
+					this.val+=this.pad;
+				}
+				var place=this;
+				this.puts.forEach(function (i) {
+					var pl=$.buf.length;
+					$.buf=$.buf.substring(0,i)+place.val+$.buf.substring(i+place.length);
+					A.eq(pl,$.buf.length);
+				});
 			}
 			if (this.reg) {
-    			$.buf=$.buf.replace(this.reg, val);
+				$.buf=$.buf.replace(this.reg, val);
 			}
 			return this.val;
 		};
 		place.print=function () {
-		    if (this.puts) this.puts.push($.buf.length);
-		    $.print(this.gen);
+			if (this.puts) this.puts.push($.buf.length);
+			$.print(this.gen);
 		};
 		return place;
 		//return {put: function () {} };
@@ -253,10 +253,10 @@ return IndentBuffer=function (options) {
 	};
 	$.toLiteral= function (s, quote) {
 		if (!quote) quote="'";
-    if (typeof s!=="string") {
-      console.log("no literal ",s);
-      throw new Error("toLiteral:"+s+" is not a literal");
-    }
+	if (typeof s!=="string") {
+		console.log("no literal ",s);
+		throw new Error("toLiteral:"+s+" is not a literal");
+	}
 		s = s.replace(/\\/g, "\\\\");
 		s = s.replace(/\r/g, "\\r");
 		s = s.replace(/\n/g, "\\n");
