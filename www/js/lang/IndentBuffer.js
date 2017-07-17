@@ -85,6 +85,7 @@ return IndentBuffer=function (options) {
 				i++;
 			} else if (fstr=="%") {
 				$.print("%");
+				i++;
 			} else if (fstr=="f") {
 				shiftArg()($);
 				i++;
