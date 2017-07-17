@@ -23,6 +23,12 @@ var TPRC=function (dir) {
 		TPR.fixOptions(env.options);
 		return env.options;
 	};
+	TPR.getEXT=function(){
+		var opt=TPR.getOptions();
+		if(!opt.language || opt.language=="js") TPR.EXT=".tonyu";
+		else TPR.EXT="."+opt.language;
+		return TPR.EXT;
+	};
 	TPR.setOptions=function (opt) {
 		TPR.getOptionsFile().obj(opt);
 	}; // ADDJSL
