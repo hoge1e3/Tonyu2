@@ -29,6 +29,7 @@ T2MediaLib_BGMPlayer.prototype.playBGM = function(idx, loop, offset, loopStart, 
     this.stopBGM();
 
     var soundData = T2MediaLib.soundDataAry[idx];
+    if (soundData == null) return null;
     if (!soundData.isDecodeComplete()) {
         if (!soundData.isDecoding()) {
             var that = this;
@@ -616,6 +617,7 @@ var T2MediaLib = {
     playSE : function(idx, vol, pan, rate, offset, loop, loopStart, loopEnd) {
         if (!T2MediaLib.context) return null;
         var soundData = T2MediaLib.soundDataAry[idx];
+        if (soundData == null) return null;
         if (!soundData.isDecodeComplete()) {
             var callbacks = {};
             callbacks.succ = function() {
