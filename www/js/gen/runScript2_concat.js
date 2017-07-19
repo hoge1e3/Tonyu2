@@ -1,4 +1,4 @@
-// Created at Sun Jul 16 2017 16:16:46 GMT+0900 (東京 (標準時))
+// Created at Wed Jul 19 2017 10:56:15 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -747,144 +747,144 @@ define(["extend","PathUtil","MIMETypes","assert"],function (extend, P, M,assert)
 
 requireSimulator.setName('WebSite');
 define(["PathUtil"], function (P) {
-    var loc=document.location.href;
-    var devMode=!!loc.match(/html\/dev\//) && !!loc.match(/localhost:3/);
-    var WebSite;
-    if (loc.match(/jsrun\.it/)) {
-        WebSite={
-            urlAliases: {
-                "images/Ball.png":"http://jsrun.it/assets/9/X/T/b/9XTbt.png",
-                "images/base.png":"http://jsrun.it/assets/6/F/y/3/6Fy3B.png",
-                "images/Sample.png":"http://jsrun.it/assets/s/V/S/l/sVSlZ.png",
-                "images/neko.png":"http://jsrun.it/assets/f/D/z/z/fDzze.png",//"http://jsrun.it/assets/j/D/9/q/jD9qQ.png",
-                "images/mapchip.png":"http://jsrun.it/assets/f/u/N/v/fuNvz.png",
-                "images/inputPad.png":"http://jsrun.it/assets/r/K/T/Y/rKTY9.png"
-            },top:"",devMode:devMode, pluginTop: "http://tonyuedit.appspot.com/js/plugins",
-            removeJSOutput:true
-        };
-    } else if (
-      loc.match(/tonyuexe\.appspot\.com/) ||
-      loc.match(/localhost:8887/) ||
- 	  (
- 	    /*(
- 	       loc.match(/^file:/) ||
- 	       loc.match(/localhost/) ||
-	       loc.match(/tonyuedit\.appspot\.com/)
-	    ) &&*/
-	    loc.match(/\/html\/((dev)|(build))\//)
-	  )
-    ) {
-        WebSite={
-            urlAliases: {
-                "images/Ball.png":"../../images/Ball.png",
-                "images/base.png":"../../images/base.png",
-                "images/Sample.png":"../../images/Sample.png",
-                "images/neko.png":"../../images/neko.png",
-                "images/inputPad.png":"../../images/inputPad.png",
-                "images/mapchip.png":"../../images/mapchip.png",
-                "images/sound.png":"../../images/sound.png",
-                "images/sound_ogg.png":"../../images/sound_ogg.png",
-                "images/sound_mp3.png":"../../images/sound_mp3.png",
-                "images/sound_mp4.png":"../../images/sound_mp4.png",
-                "images/sound_m4a.png":"../../images/sound_m4a.png",
-                "images/sound_mid.png":"../../images/sound_mid.png",
-                "images/sound_wav.png":"../../images/sound_wav.png",
-                    "images/ecl.png":"../../images/ecl.png"
-            },top:"../..",devMode:devMode
-        };
-    } else {
-        WebSite={
-           urlAliases: {}, top: ".",devMode:devMode
-        };
-    }
-    // from https://w3g.jp/blog/js_browser_sniffing2015
-    var u=window.navigator.userAgent.toLowerCase();
-    WebSite.tablet=(u.indexOf("windows") != -1 && u.indexOf("touch") != -1)
-    || u.indexOf("ipad") != -1
-    || (u.indexOf("android") != -1 && u.indexOf("mobile") == -1)
-    || (u.indexOf("firefox") != -1 && u.indexOf("tablet") != -1)
-    || u.indexOf("kindle") != -1
-    || u.indexOf("silk") != -1
-    || u.indexOf("playbook") != -1;
-    WebSite.mobile=(u.indexOf("windows") != -1 && u.indexOf("phone") != -1)
-    || u.indexOf("iphone") != -1
-    || u.indexOf("ipod") != -1
-    || (u.indexOf("android") != -1 && u.indexOf("mobile") != -1)
-    || (u.indexOf("firefox") != -1 && u.indexOf("mobile") != -1)
-    || u.indexOf("blackberry") != -1;
-
-    if (!WebSite.pluginTop) {
-        WebSite.pluginTop=WebSite.top+"/js/plugins";
-    }
-    WebSite.disableROM={};
-	if (loc.match(/tonyuedit\.appspot\.com/) || loc.match(/localhost:8888/) ) {
-	    //WebSite.disableROM={"ROM_d.js":true};
+	var loc=document.location.href;
+	var devMode=!!loc.match(/html\/dev\//) && !!loc.match(/localhost:3/);
+	var WebSite;
+	if (loc.match(/jsrun\.it/)) {
+		WebSite={
+			urlAliases: {
+				"images/Ball.png":"http://jsrun.it/assets/9/X/T/b/9XTbt.png",
+				"images/base.png":"http://jsrun.it/assets/6/F/y/3/6Fy3B.png",
+				"images/Sample.png":"http://jsrun.it/assets/s/V/S/l/sVSlZ.png",
+				"images/neko.png":"http://jsrun.it/assets/f/D/z/z/fDzze.png",//"http://jsrun.it/assets/j/D/9/q/jD9qQ.png",
+				"images/mapchip.png":"http://jsrun.it/assets/f/u/N/v/fuNvz.png",
+				"images/inputPad.png":"http://jsrun.it/assets/r/K/T/Y/rKTY9.png"
+			},top:"",devMode:devMode, pluginTop: "http://tonyuedit.appspot.com/js/plugins",
+			removeJSOutput:true
+		};
+	} else if (
+		loc.match(/tonyuexe\.appspot\.com/) ||
+		loc.match(/localhost:8887/) ||
+		(
+		/*(
+			loc.match(/^file:/) ||
+			loc.match(/localhost/) ||
+			loc.match(/tonyuedit\.appspot\.com/)
+		) &&*/
+		loc.match(/\/html\/((dev)|(build))\//)
+		)
+	) {
+		WebSite={
+			urlAliases: {
+				"images/Ball.png":"../../images/Ball.png",
+				"images/base.png":"../../images/base.png",
+				"images/Sample.png":"../../images/Sample.png",
+				"images/neko.png":"../../images/neko.png",
+				"images/inputPad.png":"../../images/inputPad.png",
+				"images/mapchip.png":"../../images/mapchip.png",
+				"images/sound.png":"../../images/sound.png",
+				"images/sound_ogg.png":"../../images/sound_ogg.png",
+				"images/sound_mp3.png":"../../images/sound_mp3.png",
+				"images/sound_mp4.png":"../../images/sound_mp4.png",
+				"images/sound_m4a.png":"../../images/sound_m4a.png",
+				"images/sound_mid.png":"../../images/sound_mid.png",
+				"images/sound_wav.png":"../../images/sound_wav.png",
+					"images/ecl.png":"../../images/ecl.png"
+			},top:"../..",devMode:devMode
+		};
+	} else {
+		WebSite={
+			urlAliases: {}, top: ".",devMode:devMode
+		};
 	}
-    if (loc.match(/\.appspot\.com/) ||  loc.match(/localhost:888[87]/)) {
-        WebSite.serverType="GAE";
-    }
-    if (loc.match(/localhost:3000/) ) {
-        WebSite.serverType="Node";
-    }
-    if (loc.match(/tonyuexe\.appspot\.com/) ||
-        loc.match(/localhost:8887/)) {
-        WebSite.serverTop=WebSite.top+"/exe"; // Fix NetModule.tonyu!!
-    } else {
-        WebSite.serverTop=WebSite.top+"/edit";// Fix NetModule.tonyu!!
-    }
-    WebSite.sampleImg=WebSite.top+"/images";
-    WebSite.blobPath=WebSite.serverTop+"/serveBlob";        //TODO: urlchange!
-    WebSite.isNW=(typeof process=="object" && process.__node_webkit);
-    WebSite.mp3Disabled=WebSite.isNW;
-    WebSite.tonyuHome="/Tonyu/";
-    WebSite.url={
-        getDirInfo:WebSite.serverTop+"/getDirInfo",
-        getFiles:WebSite.serverTop+"/File2LSSync",
-        putFiles:WebSite.serverTop+"/LS2FileSync"
-    };
-    if (WebSite.isNW) {
-        WebSite.cwd=P.directorify(process.cwd());
-        //WebSite.exeDir=WebSite.execDir=P.up(P.fixSep(process.execPath)); not suitable when mac
-        if (process.env.TONYU_HOME) {
-            WebSite.tonyuHome=P.directorify(process.env.TONYU_HOME);
-        } else {
-            WebSite.tonyuHome=P.rel(WebSite.cwd,"fs/Tonyu/");
-        }
-        WebSite.logdir=process.env.TONYU_LOGDIR;//"C:/var/log/Tonyu/";
-        WebSite.wwwDir=P.rel(WebSite.cwd,"www/");
-        WebSite.platform=process.platform;
-        WebSite.ffmpeg=P.rel(WebSite.cwd,(WebSite.platform=="win32"?
-                "ffmpeg/bin/ffmpeg.exe":"ffmpeg/bin/ffmpeg"));
-        WebSite.pkgInfo=require(P.rel(WebSite.cwd, "package.json"));
-        if (process.env.TONYU_PROJECTS) {
-            WebSite.projects=process.env.TONYU_PROJECTS.replace(/\\/g,"/").split(require('path').delimiter);
-        } else if ( WebSite.pkgInfo && WebSite.pkgInfo.config && WebSite.pkgInfo.config.prjDirs ){
-            WebSite.projects=WebSite.pkgInfo.config.prjDirs.map(function (d) {
-                d=P.directorify(d);
-                if (P.isAbsolute(d)) return d;
-                return P.rel(WebSite.cwd,d);
-            });
-        } else {
-            WebSite.projects=[P.rel(WebSite.cwd,"Projects/"),
-                              P.rel(WebSite.tonyuHome,"Projects/")];
-        }
-        WebSite.kernelDir=P.rel(WebSite.wwwDir,"Kernel/");
-    } else {
-        WebSite.wwwDir=location.protocol+"//"+location.host+"/";
-        WebSite.projects=[P.rel(WebSite.tonyuHome,"Projects/")];
-    }
-    if (loc.match(/tonyuedit\.appspot\.com/) ||
-        loc.match(/localhost:888/)) {
-        WebSite.kernelDir=location.protocol+"//"+location.host+"/Kernel/";
-    }
-    if (loc.match(/tonyuedit\.appspot\.com/) ||
-        loc.match(/localhost:888/) ||
-        WebSite.isNW) {
-        WebSite.compiledKernel=WebSite.top+"/Kernel/js/concat.js";
-    } else {
-        WebSite.compiledKernel="http://tonyuexe.appspot.com/Kernel/js/concat.js";
-    }
-    return window.WebSite=WebSite;
+	// from https://w3g.jp/blog/js_browser_sniffing2015
+	var u=window.navigator.userAgent.toLowerCase();
+	WebSite.tablet=(u.indexOf("windows") != -1 && u.indexOf("touch") != -1)
+	|| u.indexOf("ipad") != -1
+	|| (u.indexOf("android") != -1 && u.indexOf("mobile") == -1)
+	|| (u.indexOf("firefox") != -1 && u.indexOf("tablet") != -1)
+	|| u.indexOf("kindle") != -1
+	|| u.indexOf("silk") != -1
+	|| u.indexOf("playbook") != -1;
+	WebSite.mobile=(u.indexOf("windows") != -1 && u.indexOf("phone") != -1)
+	|| u.indexOf("iphone") != -1
+	|| u.indexOf("ipod") != -1
+	|| (u.indexOf("android") != -1 && u.indexOf("mobile") != -1)
+	|| (u.indexOf("firefox") != -1 && u.indexOf("mobile") != -1)
+	|| u.indexOf("blackberry") != -1;
+
+	if (!WebSite.pluginTop) {
+		WebSite.pluginTop=WebSite.top+"/js/plugins";
+	}
+	WebSite.disableROM={};
+	if (loc.match(/tonyuedit\.appspot\.com/) || loc.match(/localhost:8888/) ) {
+		//WebSite.disableROM={"ROM_d.js":true};
+	}
+	if (loc.match(/\.appspot\.com/) ||  loc.match(/localhost:888[87]/)) {
+		WebSite.serverType="GAE";
+	}
+	if (loc.match(/localhost:3000/) ) {
+		WebSite.serverType="Node";
+	}
+	if (loc.match(/tonyuexe\.appspot\.com/) ||
+		loc.match(/localhost:8887/)) {
+		WebSite.serverTop=WebSite.top+"/exe"; // Fix NetModule.tonyu!!
+	} else {
+		WebSite.serverTop=WebSite.top+"/edit";// Fix NetModule.tonyu!!
+	}
+	WebSite.sampleImg=WebSite.top+"/images";
+	WebSite.blobPath=WebSite.serverTop+"/serveBlob";        //TODO: urlchange!
+	WebSite.isNW=(typeof process=="object" && process.__node_webkit);
+	WebSite.mp3Disabled=WebSite.isNW;
+	WebSite.tonyuHome="/Tonyu/";
+	WebSite.url={
+		getDirInfo:WebSite.serverTop+"/getDirInfo",
+		getFiles:WebSite.serverTop+"/File2LSSync",
+		putFiles:WebSite.serverTop+"/LS2FileSync"
+	};
+	if (WebSite.isNW) {
+		WebSite.cwd=P.directorify(process.cwd());
+		//WebSite.exeDir=WebSite.execDir=P.up(P.fixSep(process.execPath)); not suitable when mac
+		if (process.env.TONYU_HOME) {
+			WebSite.tonyuHome=P.directorify(process.env.TONYU_HOME);
+		} else {
+			WebSite.tonyuHome=P.rel(WebSite.cwd,"fs/Tonyu/");
+		}
+		WebSite.logdir=process.env.TONYU_LOGDIR;//"C:/var/log/Tonyu/";
+		WebSite.wwwDir=P.rel(WebSite.cwd,"www/");
+		WebSite.platform=process.platform;
+		WebSite.ffmpeg=P.rel(WebSite.cwd,(WebSite.platform=="win32"?
+				"ffmpeg/bin/ffmpeg.exe":"ffmpeg/bin/ffmpeg"));
+		WebSite.pkgInfo=require(P.rel(WebSite.cwd, "package.json"));
+		if (process.env.TONYU_PROJECTS) {
+			WebSite.projects=process.env.TONYU_PROJECTS.replace(/\\/g,"/").split(require('path').delimiter);
+		} else if ( WebSite.pkgInfo && WebSite.pkgInfo.config && WebSite.pkgInfo.config.prjDirs ){
+			WebSite.projects=WebSite.pkgInfo.config.prjDirs.map(function (d) {
+				d=P.directorify(d);
+				if (P.isAbsolute(d)) return d;
+				return P.rel(WebSite.cwd,d);
+			});
+		} else {
+			WebSite.projects=[P.rel(WebSite.cwd,"Projects/"),
+								P.rel(WebSite.tonyuHome,"Projects/")];
+		}
+		WebSite.kernelDir=P.rel(WebSite.wwwDir,"Kernel/");
+	} else {
+		WebSite.wwwDir=location.protocol+"//"+location.host+"/";
+		WebSite.projects=[P.rel(WebSite.tonyuHome,"Projects/")];
+	}
+	if (loc.match(/tonyuedit\.appspot\.com/) ||
+		loc.match(/localhost:888/)) {
+		WebSite.kernelDir=location.protocol+"//"+location.host+"/Kernel/";
+	}
+	if (loc.match(/tonyuedit\.appspot\.com/) ||
+		loc.match(/localhost:888/) ||
+		WebSite.isNW) {
+		WebSite.compiledKernel=WebSite.top+"/Kernel/js/concat.js";
+	} else {
+		WebSite.compiledKernel="http://tonyuexe.appspot.com/Kernel/js/concat.js";
+	}
+	return window.WebSite=WebSite;
 });
 
 requireSimulator.setName('Util');
@@ -2025,6 +2025,9 @@ SFile.prototype={
         if (pa==null) return null;
         return this._resolve(pa);
     },
+    sibling: function (relPath) {
+        return this.up().rel(relPath);
+    },
     rel: function (relPath) {
         A.is(relPath, P.Relative);
         this.assertDir();
@@ -2370,6 +2373,10 @@ define(["FS2","WebSite","NativeFS","LSFS", "PathUtil","Env","assert","SFile","Ro
     } else {
         rootFS=new RootFS(new LSFS(localStorage));
     }
+    FS.isFile=function (f) {
+        return SFile.is(f);
+    };
+    FS.PathUtil=P;
     FS.getRootFS=function () {return rootFS;};
     FS.get=function () {
         return rootFS.get.apply(rootFS,arguments);
@@ -2394,6 +2401,7 @@ define(["FS2","WebSite","NativeFS","LSFS", "PathUtil","Env","assert","SFile","Ro
     };
     return FS;
 });
+
 requireSimulator.setName('plugins');
 define(["WebSite"],function (WebSite){
     var plugins={};
@@ -2556,65 +2564,65 @@ define([], function () {
 });
 requireSimulator.setName('compiledProject');
 define(["DeferredUtil"], function (DU) {
-    var CPR=function (ns, url) {
-        return {
-            getNamespace:function () {return ns;},
-            sourceDir: function () {return null;},
-            getDependingProjects: function () {return [];},// virtual
-            loadDependingClasses: function (ctx) {
-                //Same as projectCompiler /TPR/this/ (XXXX)
-                var task=DU.directPromise();
-                var myNsp=this.getNamespace();
-                this.getDependingProjects().forEach(function (p) {
-                    if (p.getNamespace()==myNsp) return;
-                    task=task.then(function () {
-                        return p.loadClasses(ctx);
-                    });
-                });
-                return task;
-            },
-            loadClasses: function (ctx) {
-                console.log("Load compiled classes ns=",ns,"url=",url);
-                var d=new $.Deferred;
-                var head = document.getElementsByTagName("head")[0] || document.documentElement;
-                var script = document.createElement("script");
-                script.src = url;
-                var done = false;
-                script.onload = script.onreadystatechange = function() {
-                    if ( !done && (!this.readyState ||
-                            this.readyState === "loaded" || this.readyState === "complete") ) {
-                        done = true;
-                        script.onload = script.onreadystatechange = null;
-                        if ( head && script.parentNode ) {
-                            head.removeChild( script );
-                        }
-                        console.log("Done Load compiled classes ns=",ns,"url=",url,Tonyu.classes);
-                        //same as projectCompiler (XXXX)
-                        /*var cls=Tonyu.classes;
-                        ns.split(".").forEach(function (c) {
-                            if (cls) cls=cls[c];
-                            // comment out : when empty concat.js
-                            //if (!cls) throw new Error("namespace Not found :"+ns);
-                        });
-                        if (cls) {
-                            for (var cln in cls) {
-                                var cl=cls[cln];
-                                var m=Tonyu.klass.getMeta(cl);
-                                ctx.classes[m.fullName]=m;
-                            }
-                        }*/
-                        //------------------XXXX
-                        d.resolve();
-                    }
-                };
-                this.loadDependingClasses(ctx).then(function () {
-                    head.insertBefore( script, head.firstChild );
-                });
-                return d.promise();
-            }
-        }
-    };
-    return CPR;
+	var CPR=function (ns, url) {
+		return {
+			getNamespace:function () {return ns;},
+			sourceDir: function () {return null;},
+			getDependingProjects: function () {return [];},// virtual
+			loadDependingClasses: function (ctx) {
+				//Same as projectCompiler /TPR/this/ (XXXX)
+				var task=DU.directPromise();
+				var myNsp=this.getNamespace();
+				this.getDependingProjects().forEach(function (p) {
+					if (p.getNamespace()==myNsp) return;
+					task=task.then(function () {
+						return p.loadClasses(ctx);
+					});
+				});
+				return task;
+			},
+			loadClasses: function (ctx) {
+				console.log("Load compiled classes ns=",ns,"url=",url);
+				var d=new $.Deferred;
+				var head = document.getElementsByTagName("head")[0] || document.documentElement;
+				var script = document.createElement("script");
+				script.src = url;
+				var done = false;
+				script.onload = script.onreadystatechange = function() {
+					if ( !done && (!this.readyState ||
+							this.readyState === "loaded" || this.readyState === "complete") ) {
+						done = true;
+						script.onload = script.onreadystatechange = null;
+						if ( head && script.parentNode ) {
+							head.removeChild( script );
+						}
+						console.log("Done Load compiled classes ns=",ns,"url=",url,Tonyu.classes);
+						//same as projectCompiler (XXXX)
+						/*var cls=Tonyu.classes;
+						ns.split(".").forEach(function (c) {
+							if (cls) cls=cls[c];
+							// comment out : when empty concat.js
+							//if (!cls) throw new Error("namespace Not found :"+ns);
+						});
+						if (cls) {
+							for (var cln in cls) {
+								var cl=cls[cln];
+								var m=Tonyu.klass.getMeta(cl);
+								ctx.classes[m.fullName]=m;
+							}
+						}*/
+						//------------------XXXX
+						d.resolve();
+					}
+				};
+				this.loadDependingClasses(ctx).then(function () {
+					head.insertBefore( script, head.firstChild );
+				});
+				return d.promise();
+			}
+		}
+	};
+	return CPR;
 });
 requireSimulator.setName('compiledTonyuProject');
 define(["plugins","compiledProject"], function (plugins,CPR) {
@@ -2829,683 +2837,758 @@ define(["FS","Util","WebSite","PathUtil","assert"],
     return Shell;
 });
 
-requireSimulator.setName('Class');
+requireSimulator.setName('Klass');
 define(["assert"],function (A) {
-    function Class() {
-        var superClass,defs;
-        if (arguments.length==2) {
-            superClass=A.is(arguments[0],Function);
-            defs=A.is(arguments[1],Object);
-        } else if (arguments.length==1) {
-            superClass=Object;
-            defs=A.is(arguments[0],Object);
+    var Klass={};
+    Klass.define=function (pd) {
+        var p,parent;
+        if (pd.$parent) {
+            parent=pd.$parent;
+            p=Object.create(parent.prototype);
+            p.super=function () {
+                var a=Array.prototype.slice.call(arguments);
+                var n=a.shift();
+                return parent.prototype[n].apply(this,a);
+            };
+        } else {
+            p={};
         }
-        var c=defs.initialize || function (){};
-        var p=c.prototype;
-        for (var m in defs) {
-            p[m]=defs[m];
-        }
-        p.callSuper=function () {
-            var a=[];
-            for (var i=0; arguments.length;i++) {
-                a.push(arguments[i]);
+        var init=pd.$ || function (e) {
+            if (e && typeof e=="object") {
+                for (var k in e) {
+                    this[k]=e[k];
+                }
             }
-            var n=A.is(a.shift(),String);
-            var f=A.is(superClass.prototype[n], Function);
-            return f.apply(this,a);
         };
+        var fldinit;
+        var check;
+        if (init instanceof Array) {
+            fldinit=init;
+            init=function () {
+                var a=Array.prototype.slice.call(arguments);
+                for (var i=0;i<fldinit.length;i++) {
+                    if (a.length>0) this[fldinit[i]]=a.shift();
+                }
+            };
+        }
+        var klass;
+        function checkSchema(self) {
+            if (pd.$fields) {
+                //console.log("Checking schema",self,pd.$fields);
+                A.is(self,pd.$fields);
+            }
+        }
+        klass=function () {
+            if (! (this instanceof klass)) {
+                var res=Object.create(p);
+                init.apply(res,arguments);
+                checkSchema(res);
+                return res;
+            }
+            init.apply(this,arguments);
+            checkSchema(this);
+        };
+        if (parent) {
+            klass.super=function () {
+                var a=Array.prototype.slice.call(arguments);
+                var t=a.shift();
+                var n=a.shift();
+                return parent.prototype[n].apply(t,a);
+            };
+        }
+        klass.inherit=function (pd) {
+            pd.$parent=klass;
+            return Klass.define(pd);
+        };
+        klass.prototype=p;
+        for (var name in pd) {
+            if (name[0]=="$") continue;
+            if (name.substring(0,7)=="static$") {
+                klass[name.substring(7)]=pd[name];
+            } else {
+                if (isPropDesc(pd[name])) {
+                    Object.defineProperty(p,name,pd[name]);
+                } else {
+                    p[name]=pd[name];
+                }
+            }
+        }
+        p.$=init;
+        return klass;
+    };
+    function isPropDesc(o) {
+        if (typeof o!=="object") return false;
+        if (!o) return false;
+        var pk={configurable:1,enumerable:1,value:1,writable:1,get:1,set:1};
+        var c=0;
+        for (var k in o) {
+            if (!pk[k]) return false;
+            c+=pk[k];
+        }
         return c;
     }
-    return Class;
+    Klass.Function=function () {throw new Exception("Abstract");}
+    Klass.opt=A.opt;
+    return Klass;
 });
+/*
+requirejs(["Klass"],function (k) {
+  P=k.define ({
+     $:["x","y"]
+  });    
+  p=P(2,3);
+  console.log(p.x,p.y);
+});
+*/
 requireSimulator.setName('Tonyu.Thread');
-define(["DeferredUtil","Class"],function (DU,Class) {
-    var cnts={enterC:{},exitC:0};
-    try {window.cnts=cnts;}catch(e){}
-    var TonyuThread=Class({
-        initialize: function TonyuThread() {
-            this.frame=null;
-            this._isDead=false;
-            //this._isAlive=true;
-            this.cnt=0;
-            this._isWaiting=false;
-            this.fSuspended=false;
-            this.tryStack=[];
-            this.preemptionTime=60;
-            this.onEndHandlers=[];
-            this.onTerminateHandlers=[];
-            this.age=0; // inc if object pooled
-        },
-        isAlive:function isAlive() {
-            return !this.isDead();
-            //return this.frame!=null && this._isAlive;
-        },
-        isDead: function () {
-            return this._isDead=this._isDead || (this.frame==null) ||
-            (this._threadGroup && (
-                    this._threadGroup.objectPoolAge!=this.tGrpObjectPoolAge ||
-                    this._threadGroup.isDeadThreadGroup()
-            ));
-        },
-        setThreadGroup: function setThreadGroup(g) {// g:TonyuThread
-            this._threadGroup=g;
-            this.tGrpObjectPoolAge=g.objectPoolAge;
-            //if (g) g.add(fb);
-        },
-        isWaiting:function isWaiting() {
-            return this._isWaiting;
-        },
-        suspend:function suspend() {
-            this.fSuspended=true;
-            this.cnt=0;
-        },
-        enter:function enter(frameFunc) {
-            //var n=frameFunc.name;
-            //cnts.enterC[n]=(cnts.enterC[n]||0)+1;
-            this.frame={prev:this.frame, func:frameFunc};
-        },
-        apply:function apply(obj, methodName, args) {
-            if (!args) args=[];
-            var method;
-            if (typeof methodName=="string") {
-                method=obj["fiber$"+methodName];
-                if (!method) {
-                    throw new Error("メソッド"+methodName+"が見つかりません");
-                }
-            }
-            if (typeof methodName=="function") {
-                method=methodName.fiber;
-            }
-            args=[this].concat(args);
-            var pc=0;
-            return this.enter(function (th) {
-                switch (pc){
-                case 0:
-                    method.apply(obj,args);
-                    pc=1;break;
-                case 1:
-                    th.termStatus="success";
-                    th.notifyEnd(th.retVal);
-                    args[0].exit();
-                    pc=2;break;
-                }
-            });
-        },
-        notifyEnd:function (r) {
-            this.onEndHandlers.forEach(function (e) {
-                e(r);
-            });
-            this.notifyTermination({status:"success",value:r});
-        },
-        notifyTermination:function (tst) {
-            this.onTerminateHandlers.forEach(function (e) {
-                e(tst);
-            });
-        },
-        on: function (type,f) {
-            if (type==="end"||type==="success") this.onEndHandlers.push(f);
-            if (type==="terminate") {
-                this.onTerminateHandlers.push(f);
-                if (this.handleEx) delete this.handleEx;
-            }
-        },
-        promise: function () {
-            var fb=this;
-            return DU.funcPromise(function (succ,err) {
-                fb.on("terminate",function (st) {
-                    if (st.status==="success") {
-                        succ(st.value);
-                    } else if (st.status==="exception"){
-                        err(st.exception);
-                    } else {
-                        err(new Error(st.status));
-                    }
-                });
-            });
-        },
-        then: function (succ,err) {
-            if (err) return this.proimse().then(succ,err);
-            else return this.proimse().then(succ);
-        },
-        fail: function (err) {
-            return this.promise().fail(err);
-        },
-        gotoCatch: function gotoCatch(e) {
-            var fb=this;
-            if (fb.tryStack.length==0) {
-                fb.termStatus="exception";
-                fb.kill();
-                if (fb.handleEx) fb.handleEx(e);
-                else fb.notifyTermination({status:"exception",exception:e});
-                return;
-            }
-            fb.lastEx=e;
-            var s=fb.tryStack.pop();
-            while (fb.frame) {
-                if (s.frame===fb.frame) {
-                    fb.catchPC=s.catchPC;
-                    break;
-                } else {
-                    fb.frame=fb.frame.prev;
-                }
-            }
-        },
-        startCatch: function startCatch() {
-            var fb=this;
-            var e=fb.lastEx;
-            fb.lastEx=null;
-            return e;
-        },
-        exit: function exit(res) {
-            //cnts.exitC++;
-            this.frame=(this.frame ? this.frame.prev:null);
-            this.retVal=res;
-        },
-        enterTry: function enterTry(catchPC) {
-            var fb=this;
-            fb.tryStack.push({frame:fb.frame,catchPC:catchPC});
-        },
-        exitTry: function exitTry() {
-            var fb=this;
-            fb.tryStack.pop();
-        },
-        waitEvent: function waitEvent(obj,eventSpec) { // eventSpec=[EventType, arg1, arg2....]
-            var fb=this;
-            fb.suspend();
-            if (!obj.on) return;
-            var h;
-            eventSpec=eventSpec.concat(function () {
-                fb.lastEvent=arguments;
-                fb.retVal=arguments[0];
-                h.remove();
-                fb.steps();
-            });
-            h=obj.on.apply(obj, eventSpec);
-        },
-        runAsync: function runAsync(f) {
-            var fb=this;
-            var succ=function () {
-                fb.retVal=arguments;
-                fb.steps();
-            };
-            var err=function () {
-                var msg="";
-                for (var i=0; i<arguments.length; i++) {
-                    msg+=arguments[i]+",";
-                }
-                if (msg.length==0) msg="Async fail";
-                var e=new Error(msg);
-                e.args=arguments;
-                fb.gotoCatch(e);
-                fb.steps();
-            };
-            fb.suspend();
-            setTimeout(function () {
-                f(succ,err);
-            },0);
-        },
-        waitFor: function waitFor(j) {
-            var fb=this;
-            fb._isWaiting=true;
-            fb.suspend();
-            if (j instanceof TonyuThread) j=j.promise();
-            return DU.ensureDefer(j).then(function (r) {
-                fb.retVal=r;
-                fb.steps();
-            }).fail(function (e) {
-                if (e instanceof Error) {
-                    fb.gotoCatch(e);
-                } else {
-                    var re=new Error(e);
-                    re.original=e;
-                    fb.gotoCatch(re);
-                }
-                fb.steps();
-            });
-        },
-        resume: function (retVal) {
-            this.retVal=retVal;
-            this.steps();
-        },
-        steps: function steps() {
-            var fb=this;
-            if (fb.isDead()) return;
-            var sv=Tonyu.currentThread;
-            Tonyu.currentThread=fb;
-            fb.cnt=fb.preemptionTime;
-            fb.preempted=false;
-            fb.fSuspended=false;
-            while (fb.cnt>0 && fb.frame) {
-                try {
-                    //while (new Date().getTime()<lim) {
-                    while (fb.cnt-->0 && fb.frame) {
-                        fb.frame.func(fb);
-                    }
-                    fb.preempted= (!fb.fSuspended) && fb.isAlive();
-                } catch(e) {
-                    fb.gotoCatch(e);
-                }
-            }
-            Tonyu.currentThread=sv;
-        },
-        kill: function kill() {
-            var fb=this;
-            //fb._isAlive=false;
-            fb._isDead=true;
-            fb.frame=null;
-            if (!fb.termStatus) {
-                fb.termStatus="killed";
-                fb.notifyTermination({status:"killed"});
-            }
-        },
-        clearFrame: function clearFrame() {
-            this.frame=null;
-            this.tryStack=[];
-        }
-    });
-    return TonyuThread;
+define(["DeferredUtil","Klass"],function (DU,Klass) {
+	var cnts={enterC:{},exitC:0};
+	try {window.cnts=cnts;}catch(e){}
+	var TonyuThread=Klass.define({
+		$: function TonyuThread() {
+			this.frame=null;
+			this._isDead=false;
+			//this._isAlive=true;
+			this.cnt=0;
+			this._isWaiting=false;
+			this.fSuspended=false;
+			this.tryStack=[];
+			this.preemptionTime=60;
+			this.onEndHandlers=[];
+			this.onTerminateHandlers=[];
+			this.age=0; // inc if object pooled
+		},
+		isAlive:function isAlive() {
+			return !this.isDead();
+			//return this.frame!=null && this._isAlive;
+		},
+		isDead: function () {
+			return this._isDead=this._isDead || (this.frame==null) ||
+			(this._threadGroup && (
+					this._threadGroup.objectPoolAge!=this.tGrpObjectPoolAge ||
+					this._threadGroup.isDeadThreadGroup()
+			));
+		},
+		setThreadGroup: function setThreadGroup(g) {// g:TonyuThread
+			this._threadGroup=g;
+			this.tGrpObjectPoolAge=g.objectPoolAge;
+			//if (g) g.add(fb);
+		},
+		isWaiting:function isWaiting() {
+			return this._isWaiting;
+		},
+		suspend:function suspend() {
+			this.fSuspended=true;
+			this.cnt=0;
+		},
+		enter:function enter(frameFunc) {
+			//var n=frameFunc.name;
+			//cnts.enterC[n]=(cnts.enterC[n]||0)+1;
+			this.frame={prev:this.frame, func:frameFunc};
+		},
+		apply:function apply(obj, methodName, args) {
+			if (!args) args=[];
+			var method;
+			if (typeof methodName=="string") {
+				method=obj["fiber$"+methodName];
+				if (!method) {
+					throw new Error("メソッド"+methodName+"が見つかりません");
+				}
+			}
+			if (typeof methodName=="function") {
+				method=methodName.fiber;
+			}
+			args=[this].concat(args);
+			var pc=0;
+			return this.enter(function (th) {
+				switch (pc){
+				case 0:
+					method.apply(obj,args);
+					pc=1;break;
+				case 1:
+					th.termStatus="success";
+					th.notifyEnd(th.retVal);
+					args[0].exit();
+					pc=2;break;
+				}
+			});
+		},
+		notifyEnd:function (r) {
+			this.onEndHandlers.forEach(function (e) {
+				e(r);
+			});
+			this.notifyTermination({status:"success",value:r});
+		},
+		notifyTermination:function (tst) {
+			this.onTerminateHandlers.forEach(function (e) {
+				e(tst);
+			});
+		},
+		on: function (type,f) {
+			if (type==="end"||type==="success") this.onEndHandlers.push(f);
+			if (type==="terminate") {
+				this.onTerminateHandlers.push(f);
+				if (this.handleEx) delete this.handleEx;
+			}
+		},
+		promise: function () {
+			var fb=this;
+			return DU.funcPromise(function (succ,err) {
+				fb.on("terminate",function (st) {
+					if (st.status==="success") {
+						succ(st.value);
+					} else if (st.status==="exception"){
+						err(st.exception);
+					} else {
+						err(new Error(st.status));
+					}
+				});
+			});
+		},
+		then: function (succ,err) {
+			if (err) return this.proimse().then(succ,err);
+			else return this.proimse().then(succ);
+		},
+		fail: function (err) {
+			return this.promise().fail(err);
+		},
+		gotoCatch: function gotoCatch(e) {
+			var fb=this;
+			if (fb.tryStack.length==0) {
+				fb.termStatus="exception";
+				fb.kill();
+				if (fb.handleEx) fb.handleEx(e);
+				else fb.notifyTermination({status:"exception",exception:e});
+				return;
+			}
+			fb.lastEx=e;
+			var s=fb.tryStack.pop();
+			while (fb.frame) {
+				if (s.frame===fb.frame) {
+					fb.catchPC=s.catchPC;
+					break;
+				} else {
+					fb.frame=fb.frame.prev;
+				}
+			}
+		},
+		startCatch: function startCatch() {
+			var fb=this;
+			var e=fb.lastEx;
+			fb.lastEx=null;
+			return e;
+		},
+		exit: function exit(res) {
+			//cnts.exitC++;
+			this.frame=(this.frame ? this.frame.prev:null);
+			this.retVal=res;
+		},
+		enterTry: function enterTry(catchPC) {
+			var fb=this;
+			fb.tryStack.push({frame:fb.frame,catchPC:catchPC});
+		},
+		exitTry: function exitTry() {
+			var fb=this;
+			fb.tryStack.pop();
+		},
+		waitEvent: function waitEvent(obj,eventSpec) { // eventSpec=[EventType, arg1, arg2....]
+			var fb=this;
+			fb.suspend();
+			if (!obj.on) return;
+			var h;
+			eventSpec=eventSpec.concat(function () {
+				fb.lastEvent=arguments;
+				fb.retVal=arguments[0];
+				h.remove();
+				fb.steps();
+			});
+			h=obj.on.apply(obj, eventSpec);
+		},
+		runAsync: function runAsync(f) {
+			var fb=this;
+			var succ=function () {
+				fb.retVal=arguments;
+				fb.steps();
+			};
+			var err=function () {
+				var msg="";
+				for (var i=0; i<arguments.length; i++) {
+					msg+=arguments[i]+",";
+				}
+				if (msg.length==0) msg="Async fail";
+				var e=new Error(msg);
+				e.args=arguments;
+				fb.gotoCatch(e);
+				fb.steps();
+			};
+			fb.suspend();
+			setTimeout(function () {
+				f(succ,err);
+			},0);
+		},
+		waitFor: function waitFor(j) {
+			var fb=this;
+			fb._isWaiting=true;
+			fb.suspend();
+			if (j instanceof TonyuThread) j=j.promise();
+			return DU.ensureDefer(j).then(function (r) {
+				fb.retVal=r;
+				fb.steps();
+			}).fail(function (e) {
+				if (e instanceof Error) {
+					fb.gotoCatch(e);
+				} else {
+					var re=new Error(e);
+					re.original=e;
+					fb.gotoCatch(re);
+				}
+				fb.steps();
+			});
+		},
+		resume: function (retVal) {
+			this.retVal=retVal;
+			this.steps();
+		},
+		steps: function steps() {
+			var fb=this;
+			if (fb.isDead()) return;
+			var sv=Tonyu.currentThread;
+			Tonyu.currentThread=fb;
+			fb.cnt=fb.preemptionTime;
+			fb.preempted=false;
+			fb.fSuspended=false;
+			while (fb.cnt>0 && fb.frame) {
+				try {
+					//while (new Date().getTime()<lim) {
+					while (fb.cnt-->0 && fb.frame) {
+						fb.frame.func(fb);
+					}
+					fb.preempted= (!fb.fSuspended) && fb.isAlive();
+				} catch(e) {
+					fb.gotoCatch(e);
+				}
+			}
+			Tonyu.currentThread=sv;
+		},
+		kill: function kill() {
+			var fb=this;
+			//fb._isAlive=false;
+			fb._isDead=true;
+			fb.frame=null;
+			if (!fb.termStatus) {
+				fb.termStatus="killed";
+				fb.notifyTermination({status:"killed"});
+			}
+		},
+		clearFrame: function clearFrame() {
+			this.frame=null;
+			this.tryStack=[];
+		}
+	});
+	return TonyuThread;
 });
 
 requireSimulator.setName('Tonyu.Iterator');
-define(["Class"], function (Class) {
-    var ArrayValueIterator=Class({
-        initialize: function ArrayValueIterator(set) {
-            this.set=set;
-            this.i=0;
-        },
-        next:function () {
-            if (this.i>=this.set.length) return false;
-            this[0]=this.set[this.i];
-            this.i++;
-            return true;
-        }
-    });
-    var ArrayKeyValueIterator=Class({
-        initialize: function ArrayKeyValueIterator(set) {
-            this.set=set;
-            this.i=0;
-        },
-        next:function () {
-            if (this.i>=this.set.length) return false;
-            this[0]=this.i;
-            this[1]=this.set[this.i];
-            this.i++;
-            return true;
-        }
-    });
-    var ObjectKeyIterator=Class({
-        initialize: function ObjectKeyIterator(set) {
-            this.elems=[];
-            for (var k in set) {
-                this.elems.push(k);
-            }
-            this.i=0;
-        },
-        next:function () {
-            if (this.i>=this.elems.length) return false;
-            this[0]=this.elems[this.i];
-            this.i++;
-            return true;
-        }
-    });
-    var ObjectKeyValueIterator=Class({
-        initialize: function ObjectKeyValueIterator(set) {
-            this.elems=[];
-            for (var k in set) {
-                this.elems.push([k,set[k]]);
-            }
-            this.i=0;
-        },
-        next:function () {
-            if (this.i>=this.elems.length) return false;
-            this[0]=this.elems[this.i][0];
-            this[1]=this.elems[this.i][1];
-            this.i++;
-            return true;
-        }
-    });
+define(["Klass"], function (Klass) {
+	var ArrayValueIterator=Klass.define({
+		$: function ArrayValueIterator(set) {
+			this.set=set;
+			this.i=0;
+		},
+		next:function () {
+			if (this.i>=this.set.length) return false;
+			this[0]=this.set[this.i];
+			this.i++;
+			return true;
+		}
+	});
+	var ArrayKeyValueIterator=Klass.define({
+		$: function ArrayKeyValueIterator(set) {
+			this.set=set;
+			this.i=0;
+		},
+		next:function () {
+			if (this.i>=this.set.length) return false;
+			this[0]=this.i;
+			this[1]=this.set[this.i];
+			this.i++;
+			return true;
+		}
+	});
+	var ObjectKeyIterator=Klass.define({
+		$: function ObjectKeyIterator(set) {
+			this.elems=[];
+			for (var k in set) {
+				this.elems.push(k);
+			}
+			this.i=0;
+		},
+		next:function () {
+			if (this.i>=this.elems.length) return false;
+			this[0]=this.elems[this.i];
+			this.i++;
+			return true;
+		}
+	});
+	var ObjectKeyValueIterator=Klass.define({
+		$: function ObjectKeyValueIterator(set) {
+			this.elems=[];
+			for (var k in set) {
+				this.elems.push([k,set[k]]);
+			}
+			this.i=0;
+		},
+		next:function () {
+			if (this.i>=this.elems.length) return false;
+			this[0]=this.elems[this.i][0];
+			this[1]=this.elems[this.i][1];
+			this.i++;
+			return true;
+		}
+	});
 
 
-    function IT(set, arity) {
-        //var res={};
-       if (set.tonyuIterator) {
-    	   return set.tonyuIterator(arity);
-       } else if (set instanceof Array) {
-           //res.i=0;
-           if (arity==1) {
-               return new ArrayValueIterator(set);
-               /*res.next=function () {
-                   if (res.i>=set.length) return false;
-                   this[0]=set[res.i];
-                   res.i++;
-                   return true;
-               };*/
-           } else {
-               return new ArrayKeyValueIterator(set);
-               /*res.next=function () {
-                   if (res.i>=set.length) return false;
-                   this[0]=res.i;
-                   this[1]=set[res.i];
-                   res.i++;
-                   return true;
-               };*/
-           }
-       } else if (set instanceof Object){
-           //res.i=0;
-           //var elems=[];
-           if (arity==1) {
-               return new ObjectKeyIterator(set);
-               /*for (var k in set) {
-                   elems.push(k);
-               }
-               res.next=function () {
-                   if (res.i>=elems.length) return false;
-                   this[0]=elems[res.i];
-                   res.i++;
-                   return true;
-               };*/
-           } else {
-               return new ObjectKeyValueIterator(set);
-               /*for (var k in set) {
-                   elems.push([k, set[k]]);
-               }
-               res.next=function () {
-                   if (res.i>=elems.length) return false;
-                   this[0]=elems[res.i][0];
-                   this[1]=elems[res.i][1];
-                   res.i++;
-                   return true;
-               };*/
-           }
-       } else {
-           console.log(set);
-           throw new Error(set+" is not iterable");
-       }
-       return res;
-   }
+	function IT(set, arity) {
+		//var res={};
+		if (set.tonyuIterator) {
+			return set.tonyuIterator(arity);
+		} else if (set instanceof Array) {
+			//res.i=0;
+			if (arity==1) {
+				return new ArrayValueIterator(set);
+				/*res.next=function () {
+					if (res.i>=set.length) return false;
+					this[0]=set[res.i];
+					res.i++;
+					return true;
+				};*/
+			} else {
+				return new ArrayKeyValueIterator(set);
+				/*res.next=function () {
+					if (res.i>=set.length) return false;
+					this[0]=res.i;
+					this[1]=set[res.i];
+					res.i++;
+					return true;
+				};*/
+			}
+		} else if (set instanceof Object){
+			//res.i=0;
+			//var elems=[];
+			if (arity==1) {
+				return new ObjectKeyIterator(set);
+				/*for (var k in set) {
+					elems.push(k);
+				}
+				res.next=function () {
+					if (res.i>=elems.length) return false;
+					this[0]=elems[res.i];
+					res.i++;
+					return true;
+				};*/
+			} else {
+				return new ObjectKeyValueIterator(set);
+				/*for (var k in set) {
+					elems.push([k, set[k]]);
+				}
+				res.next=function () {
+					if (res.i>=elems.length) return false;
+					this[0]=elems[res.i][0];
+					this[1]=elems[res.i][1];
+					res.i++;
+					return true;
+				};*/
+			}
+		} else {
+			console.log(set);
+			throw new Error(set+" is not iterable");
+		}
+		return res;
+	}
 
 //   Tonyu.iterator=IT;
-    return IT;
+	return IT;
 });
+
 requireSimulator.setName('Tonyu');
 if (typeof define!=="function") {
-    define=require("requirejs").define;
+	define=require("requirejs").define;
 }
 define(["assert","Tonyu.Thread","Tonyu.Iterator","DeferredUtil"],
-        function (assert,TT,IT,DU) {
+		function (assert,TT,IT,DU) {
 return Tonyu=function () {
-    var preemptionTime=60;
-    function thread() {
-        var t=new TT;
-        t.handleEx=handleEx;
-        return t;
-    }
-    function timeout(t) {
-        return DU.funcPromise(function (s) {
-            setTimeout(s,t);
-        });
-    }
-    function animationFrame() {
-        return DU.funcPromise( function (f) {
-            requestAnimationFrame(f);
-        });
-    }
+	var preemptionTime=60;
+	function thread() {
+		var t=new TT;
+		t.handleEx=handleEx;
+		return t;
+	}
+	function timeout(t) {
+		return DU.funcPromise(function (s) {
+			setTimeout(s,t);
+		});
+	}
+	function animationFrame() {
+		return DU.funcPromise( function (f) {
+			requestAnimationFrame(f);
+		});
+	}
 
-    function handleEx(e) {
-        if (Tonyu.onRuntimeError) {
-            Tonyu.onRuntimeError(e);
-        } else {
-            if (typeof $LASTPOS=="undefined") $LASTPOS=0;
-            alert ("エラー! at "+$LASTPOS+" メッセージ  : "+e);
-            console.log(e.stack);
-            throw e;
-        }
-    }
-    klass=function () {
-        alert("この関数は古くなりました。コンパイルをやり直してください。 Deprecated. compile again.");
-        throw new Error("この関数は古くなりました。コンパイルをやり直してください。 Deprecated. compile again.");
-    };
-    klass.addMeta=addMeta;
-    function addMeta(fn,m) {
-        assert.is(arguments,[String,Object]);
-        return extend(klass.getMeta(fn), m);
-    }
-    klass.removeMeta=function (n) {
-        delete classMetas[n];
-    };
-    klass.getMeta=function (k) {// Class or fullName
-        if (typeof k=="function") {
-            return k.meta;
-        } else if (typeof k=="string"){
-            var mm = classMetas[k];
-            if (!mm) classMetas[k]=mm={};
-            return mm;
-        }
-    };
-    klass.ensureNamespace=function (top,nsp) {
-        var keys=nsp.split(".");
-        var o=top;
-        var i;
-        for (i=0; i<keys.length; i++) {
-            var k=keys[i];
-            if (!o[k]) o[k]={};
-            o=o[k];
-        }
-        return o;
-    };
-    Function.prototype.constructor=function () {
-        throw new Error("This method should not be called");
-    };
-    klass.define=function (params) {
-        // fullName, shortName,namspace, superclass, includes, methods:{name/fiber$name: func}, decls
-        var parent=params.superclass;
-        var includes=params.includes;
-        var fullName=params.fullName;
-        var shortName=params.shortName;
-        var namespace=params.namespace;
-        var methods=params.methods;
-        var decls=params.decls;
-        var nso=klass.ensureNamespace(Tonyu.classes, namespace);
-        var prot=methods;
-        var init=prot.initialize;
-        delete prot.initialize;
-        var res;
-        res=(init?
-            /*(parent? function () {
-                if (!(this instanceof res)) useNew(fullName);
-                if (Tonyu.runMode) init.apply(this,arguments);
-                else parent.apply(this,arguments);
-            }:function () {
-                if (!(this instanceof res)) useNew(fullName);
-                if (Tonyu.runMode) init.apply(this,arguments);
-            })*/
-            function () {
-                if (!(this instanceof res)) useNew(fullName);
-                init.apply(this,arguments);
-            }:
-            (parent? function () {
-                if (!(this instanceof res)) useNew(fullName);
-                parent.apply(this,arguments);
-            }:function (){
-                if (!(this instanceof res)) useNew(fullName);
-            })
-        );
-        nso[shortName]=res;
-        res.methods=prot;
-        includes.forEach(function (m) {
-            if (!m.methods) throw m+" Does not have methods";
-            for (var n in m.methods) {
-                if (!(n in prot)) {
-                    prot[n]=m.methods[n];
-                }
-            }
-        });
-        var props={};
-        var propReg=/^__([gs]et)ter__(.*)$/;
-        for (var k in prot) {
-            if (k.match(/^fiber\$/)) continue;
-            if (prot["fiber$"+k]) {
-                prot[k].fiber=prot["fiber$"+k];
-                prot[k].fiber.methodInfo={name:k,klass:res,fiber:true};
-            }
-            prot[k].methodInfo={name:k,klass:res};
-            var r=propReg.exec(k);
-            if (r) {
-                props[r[2]]=props[r[2]]||{};
-                props[r[2]][r[1]]=prot[k];
-            }
-        }
-        res.prototype=bless(parent, prot);
-        res.prototype.isTonyuObject=true;
-        for (var k in props) {
-            Object.defineProperty(res.prototype, k , props[k]);
-        }
-        res.meta=addMeta(fullName,{
-            fullName:fullName,shortName:shortName,namepsace:namespace,decls:decls,
-            superclass:parent ? parent.meta : null,func:res,
-            includes:includes.map(function(c){return c.meta;})
-        });
-        var m=klass.getMeta(res);
-        res.prototype.getClassInfo=function () {
-            return m;
-        };
-        return res;
-    };
-    klass.isSourceChanged=function (k) {
-        k=k.meta||k;
-        if (k.src && k.src.tonyu) {
-            if (!k.nodeTimestamp) return true;
-            return k.src.tonyu.lastUpdate()> k.nodeTimestamp;
-        }
-        return false;
-    };
-    klass.shouldCompile=function (k) {
-        k=k.meta||k;
-        if (klass.isSourceChanged(k)) return true;
-        var dks=klass.getDependingClasses(k);
-        for (var i=0 ; i<dks.length ;i++) {
-            if (klass.shouldCompile(dks[i])) return true;
-        }
-    };
-    klass.getDependingClasses=function (k) {
-        k=k.meta||k;
-        var res=[];
-        if (k.superclass) res=[k.superclass];
-        if (k.includes) res=res.concat(k.includes);
-        return res;
-    };
-    function bless( klass, val) {
-        if (!klass) return val;
-        return extend( Object.create(klass.prototype) , val);
-        //return extend( new klass() , val);
-    }
-    function extend (dst, src) {
-        if (src && typeof src=="object") {
-            for (var i in src) {
-                dst[i]=src[i];
-            }
-        }
-        return dst;
-    }
+	function handleEx(e) {
+		if (Tonyu.onRuntimeError) {
+			Tonyu.onRuntimeError(e);
+		} else {
+			if (typeof $LASTPOS=="undefined") $LASTPOS=0;
+			alert ("エラー! at "+$LASTPOS+" メッセージ  : "+e);
+			console.log(e.stack);
+			throw e;
+		}
+	}
+	klass=function () {
+		alert("この関数は古くなりました。コンパイルをやり直してください。 Deprecated. compile again.");
+		throw new Error("この関数は古くなりました。コンパイルをやり直してください。 Deprecated. compile again.");
+	};
+	klass.addMeta=addMeta;
+	function addMeta(fn,m) {
+		assert.is(arguments,[String,Object]);
+		return extend(klass.getMeta(fn), m);
+	}
+	klass.removeMeta=function (n) {
+		delete classMetas[n];
+	};
+	klass.getMeta=function (k) {// Class or fullName
+		if (typeof k=="function") {
+			return k.meta;
+		} else if (typeof k=="string"){
+			var mm = classMetas[k];
+			if (!mm) classMetas[k]=mm={};
+			return mm;
+		}
+	};
+	klass.ensureNamespace=function (top,nsp) {
+		var keys=nsp.split(".");
+		var o=top;
+		var i;
+		for (i=0; i<keys.length; i++) {
+			var k=keys[i];
+			if (!o[k]) o[k]={};
+			o=o[k];
+		}
+		return o;
+	};
+	Function.prototype.constructor=function () {
+		throw new Error("This method should not be called");
+	};
+	klass.define=function (params) {
+		// fullName, shortName,namspace, superclass, includes, methods:{name/fiber$name: func}, decls
+		var parent=params.superclass;
+		var includes=params.includes;
+		var fullName=params.fullName;
+		var shortName=params.shortName;
+		var namespace=params.namespace;
+		var methods=params.methods;
+		var decls=params.decls;
+		var nso=klass.ensureNamespace(Tonyu.classes, namespace);
+		var prot=methods;
+		var init=prot.initialize;
+		delete prot.initialize;
+		var res;
+		res=(init?
+			/*(parent? function () {
+				if (!(this instanceof res)) useNew(fullName);
+				if (Tonyu.runMode) init.apply(this,arguments);
+				else parent.apply(this,arguments);
+			}:function () {
+				if (!(this instanceof res)) useNew(fullName);
+				if (Tonyu.runMode) init.apply(this,arguments);
+			})*/
+			function () {
+				if (!(this instanceof res)) useNew(fullName);
+				init.apply(this,arguments);
+			}:
+			(parent? function () {
+				if (!(this instanceof res)) useNew(fullName);
+				parent.apply(this,arguments);
+			}:function (){
+				if (!(this instanceof res)) useNew(fullName);
+			})
+		);
+		nso[shortName]=res;
+		res.methods=prot;
+		includes.forEach(function (m) {
+			if (!m.methods) throw m+" Does not have methods";
+			for (var n in m.methods) {
+				if (!(n in prot)) {
+					prot[n]=m.methods[n];
+				}
+			}
+		});
+		var props={};
+		var propReg=/^__([gs]et)ter__(.*)$/;
+		for (var k in prot) {
+			if (k.match(/^fiber\$/)) continue;
+			if (prot["fiber$"+k]) {
+				prot[k].fiber=prot["fiber$"+k];
+				prot[k].fiber.methodInfo={name:k,klass:res,fiber:true};
+			}
+			prot[k].methodInfo={name:k,klass:res};
+			var r=propReg.exec(k);
+			if (r) {
+				props[r[2]]=props[r[2]]||{};
+				props[r[2]][r[1]]=prot[k];
+			}
+		}
+		res.prototype=bless(parent, prot);
+		res.prototype.isTonyuObject=true;
+		for (var k in props) {
+			Object.defineProperty(res.prototype, k , props[k]);
+		}
+		res.meta=addMeta(fullName,{
+			fullName:fullName,shortName:shortName,namepsace:namespace,decls:decls,
+			superclass:parent ? parent.meta : null,func:res,
+			includes:includes.map(function(c){return c.meta;})
+		});
+		var m=klass.getMeta(res);
+		res.prototype.getClassInfo=function () {
+			return m;
+		};
+		return res;
+	};
+	klass.isSourceChanged=function (k) {
+		k=k.meta||k;
+		if (k.src && k.src.tonyu) {
+			if (!k.nodeTimestamp) return true;
+			return k.src.tonyu.lastUpdate()> k.nodeTimestamp;
+		}
+		return false;
+	};
+	klass.shouldCompile=function (k) {
+		k=k.meta||k;
+		if (klass.isSourceChanged(k)) return true;
+		var dks=klass.getDependingClasses(k);
+		for (var i=0 ; i<dks.length ;i++) {
+			if (klass.shouldCompile(dks[i])) return true;
+		}
+	};
+	klass.getDependingClasses=function (k) {
+		k=k.meta||k;
+		var res=[];
+		if (k.superclass) res=[k.superclass];
+		if (k.includes) res=res.concat(k.includes);
+		return res;
+	};
+	function bless( klass, val) {
+		if (!klass) return val;
+		return extend( Object.create(klass.prototype) , val);
+		//return extend( new klass() , val);
+	}
+	function extend (dst, src) {
+		if (src && typeof src=="object") {
+			for (var i in src) {
+				dst[i]=src[i];
+			}
+		}
+		return dst;
+	}
 
-    //alert("init");
-    var globals={};
-    var classes={};// classes.namespace.classname= function
-    var classMetas={}; // classes.namespace.classname.meta ( or env.classes / ctx.classes)
-    function setGlobal(n,v) {
-        globals[n]=v;
-    }
-    function getGlobal(n) {
-        return globals[n];
-    }
-    function getClass(n) {
-        //CFN: n.split(".")
-        var ns=n.split(".");
-        var res=classes;
-        ns.forEach(function (na) {
-            if (!res) return;
-            res=res[na];
-        });
-        if (!res && ns.length==1) {
-            var found;
-            for (var nn in classes) {
-                var nr=classes[nn][n];
-                if (nr) {
-                    if (!res) { res=nr; found=nn+"."+n; }
-                    else throw new Error("曖昧なクラス名： "+nn+"."+n+", "+found);
-                }
-            }
-        }
-        return res;//classes[n];
-    }
-    function bindFunc(t,meth) {
-        if (typeof meth!="function") return meth;
-        var res=function () {
-            return meth.apply(t,arguments);
-        };
-        res.methodInfo=Tonyu.extend({thiz:t},meth.methodInfo||{});
-        if (meth.fiber) {
-            res.fiber=function fiber_func() {
-                return meth.fiber.apply(t,arguments);
-            };
-            res.fiber.methodInfo=Tonyu.extend({thiz:t},meth.fiber.methodInfo||{});
-        }
-        return res;
-    }
-    function invokeMethod(t, name, args, objName) {
-        if (!t) throw new Error(objName+"(="+t+")のメソッド "+name+"を呼び出せません");
-        var f=t[name];
-        if (typeof f!="function") throw new Error((objName=="this"? "": objName+".")+name+"(="+f+")はメソッドではありません");
-        return f.apply(t,args);
-    }
-    function callFunc(f,args, fName) {
-        if (typeof f!="function") throw new Error(fName+"は関数ではありません");
-        return f.apply({},args);
-    }
-    function checkNonNull(v, name) {
-        if (v!=v || v==null) throw new Error(name+"(="+v+")は初期化されていません");
-        return v;
-    }
-    function A(args) {
-        var res=[];
-        for (var i=1 ; i<args.length; i++) {
-            res[i-1]=args[i];
-        }
-        return res;
-    }
-    function useNew(c) {
-        throw new Error("クラス名"+c+"はnewをつけて呼び出して下さい。");
-    }
-    function not_a_tonyu_object(o) {
-        console.log("Not a tonyu object: ",o);
-        throw new Error(o+" is not a tonyu object");
-    }
-    function hasKey(k, obj) {
-        return k in obj;
-    }
-    function run(bootClassName) {
-        var bootClass=getClass(bootClassName);
-        if (!bootClass) throw new Error( bootClassName+" というクラスはありません");
-        Tonyu.runMode=true;
-        var boot=new bootClass();
-        var th=thread();
-        th.apply(boot,"main");
-        var TPR;
-        if (TPR=Tonyu.currentProject) {
-            TPR.runningThread=th;
-            TPR.runningObj=boot;
-        }
-        $LASTPOS=0;
-        th.steps();
-    }
-    return Tonyu={thread:thread, /*threadGroup:threadGroup,*/ klass:klass, bless:bless, extend:extend,
-            globals:globals, classes:classes, classMetas:classMetas, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
-            timeout:timeout,animationFrame:animationFrame, /*asyncResult:asyncResult,*/
-            bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
-            hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
-            run:run,iterator:IT,
-            VERSION:1500189381377,//EMBED_VERSION
-            A:A};
+	//alert("init");
+	var globals={};
+	var classes={};// classes.namespace.classname= function
+	var classMetas={}; // classes.namespace.classname.meta ( or env.classes / ctx.classes)
+	function setGlobal(n,v) {
+		globals[n]=v;
+	}
+	function getGlobal(n) {
+		return globals[n];
+	}
+	function getClass(n) {
+		//CFN: n.split(".")
+		var ns=n.split(".");
+		var res=classes;
+		ns.forEach(function (na) {
+			if (!res) return;
+			res=res[na];
+		});
+		if (!res && ns.length==1) {
+			var found;
+			for (var nn in classes) {
+				var nr=classes[nn][n];
+				if (nr) {
+					if (!res) { res=nr; found=nn+"."+n; }
+					else throw new Error("曖昧なクラス名： "+nn+"."+n+", "+found);
+				}
+			}
+		}
+		return res;//classes[n];
+	}
+	function bindFunc(t,meth) {
+		if (typeof meth!="function") return meth;
+		var res=function () {
+			return meth.apply(t,arguments);
+		};
+		res.methodInfo=Tonyu.extend({thiz:t},meth.methodInfo||{});
+		if (meth.fiber) {
+			res.fiber=function fiber_func() {
+				return meth.fiber.apply(t,arguments);
+			};
+			res.fiber.methodInfo=Tonyu.extend({thiz:t},meth.fiber.methodInfo||{});
+		}
+		return res;
+	}
+	function invokeMethod(t, name, args, objName) {
+		if (!t) throw new Error(objName+"(="+t+")のメソッド "+name+"を呼び出せません");
+		var f=t[name];
+		if (typeof f!="function") throw new Error((objName=="this"? "": objName+".")+name+"(="+f+")はメソッドではありません");
+		return f.apply(t,args);
+	}
+	function callFunc(f,args, fName) {
+		if (typeof f!="function") throw new Error(fName+"は関数ではありません");
+		return f.apply({},args);
+	}
+	function checkNonNull(v, name) {
+		if (v!=v || v==null) throw new Error(name+"(="+v+")は初期化されていません");
+		return v;
+	}
+	function A(args) {
+		var res=[];
+		for (var i=1 ; i<args.length; i++) {
+			res[i-1]=args[i];
+		}
+		return res;
+	}
+	function useNew(c) {
+		throw new Error("クラス名"+c+"はnewをつけて呼び出して下さい。");
+	}
+	function not_a_tonyu_object(o) {
+		console.log("Not a tonyu object: ",o);
+		throw new Error(o+" is not a tonyu object");
+	}
+	function hasKey(k, obj) {
+		return k in obj;
+	}
+	function run(bootClassName) {
+		var bootClass=getClass(bootClassName);
+		if (!bootClass) throw new Error( bootClassName+" というクラスはありません");
+		Tonyu.runMode=true;
+		var boot=new bootClass();
+		var th=thread();
+		th.apply(boot,"main");
+		var TPR;
+		if (TPR=Tonyu.currentProject) {
+			TPR.runningThread=th;
+			TPR.runningObj=boot;
+		}
+		$LASTPOS=0;
+		th.steps();
+	}
+	return Tonyu={thread:thread, /*threadGroup:threadGroup,*/ klass:klass, bless:bless, extend:extend,
+			globals:globals, classes:classes, classMetas:classMetas, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
+			timeout:timeout,animationFrame:animationFrame, /*asyncResult:asyncResult,*/
+			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
+			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
+			run:run,iterator:IT,
+			VERSION:1500429352329,//EMBED_VERSION
+			A:A};
 }();
 });
 requireSimulator.setName('PatternParser');
@@ -5367,6 +5450,7 @@ T2MediaLib_BGMPlayer.prototype.playBGM = function(idx, loop, offset, loopStart, 
     this.stopBGM();
 
     var soundData = T2MediaLib.soundDataAry[idx];
+    if (soundData == null) return null;
     if (!soundData.isDecodeComplete()) {
         if (!soundData.isDecoding()) {
             var that = this;
@@ -5954,6 +6038,7 @@ var T2MediaLib = {
     playSE : function(idx, vol, pan, rate, offset, loop, loopStart, loopEnd) {
         if (!T2MediaLib.context) return null;
         var soundData = T2MediaLib.soundDataAry[idx];
+        if (soundData == null) return null;
         if (!soundData.isDecodeComplete()) {
             var callbacks = {};
             callbacks.succ = function() {
@@ -6691,72 +6776,72 @@ requirejs(["ImageList","PicoAudio","T2MediaLib","Tonyu","UIDiag"], function () {
 });
 requireSimulator.setName('runScript2');
 requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu","NativeFS"],
-        function (FS,  CPTR, sh,  rt,WebSite,LSFS,Tonyu) {
-    $(function () {
+		function (FS,  CPTR, sh,  rt,WebSite,LSFS,Tonyu) {
+	$(function () {
 
-        SplashScreen={
-            hide: function () {$("#splash").hide();},
-            show:function(){},
-            progress:function(t) {$("#splash").text(t);}
-        };
+		SplashScreen={
+			hide: function () {$("#splash").hide();},
+			show:function(){},
+			progress:function(t) {$("#splash").text(t);}
+		};
 
-        function getMargin() {
-            var u = navigator.userAgent.toLowerCase();
-            if ((u.indexOf("iphone") != -1
-                || u.indexOf("ipad") != -1
-                || u.indexOf("ipod") != -1
-                ) && window != window.parent) {
-                return 40;
-            }
-            return 0;
-        }
+		function getMargin() {
+			var u = navigator.userAgent.toLowerCase();
+			if ((u.indexOf("iphone") != -1
+				|| u.indexOf("ipad") != -1
+				|| u.indexOf("ipod") != -1
+				) && window != window.parent) {
+				return 40;
+			}
+			return 0;
+		}
 
-        var margin = getMargin();
-        var w=$(window).width();
-        var h=$(window).height();
-        $("body").css({overflow:"hidden", margin:"0px"});
-        var cv=$("<canvas>").attr({width: w-margin, height:h-margin}).appendTo("body");
-        $(window).resize(onResize);
-        function onResize() {
-            var margin = getMargin();
-            w=$(window).width();
-            h=$(window).height();
-            cv.attr({width: w-margin, height: h-margin});
-        }
+		var margin = getMargin();
+		var w=$(window).width();
+		var h=$(window).height();
+		$("body").css({overflow:"hidden", margin:"0px"});
+		var cv=$("<canvas>").attr({width: w-margin, height:h-margin}).appendTo("body");
+		$(window).resize(onResize);
+		function onResize() {
+			var margin = getMargin();
+			w=$(window).width();
+			h=$(window).height();
+			cv.attr({width: w-margin, height: h-margin});
+		}
 
-        var curProjectDir;
-        if (WebSite.isNW) {
-            var home=location.href.replace(/^file:\/\//,"");
-            if (home.match(/^\/[a-z]:/i)) {
-                home=home.replace(/^\//,"");
-            }
-            home=FS.get(home);
-            if (!home.isDir()) home=home.up();
-            curProjectDir=home.rel("data/");
-        } else {
-            var locs=location.href.replace(/\?.*/,"").split(/\//);
-            var prj=locs.pop() || "runscript";
-            var user=locs.pop() || "nobody";
-            var home=FS.get(WebSite.tonyuHome);
-            var ramHome=FS.get("/ram/");
-            FS.mount(ramHome.path(), LSFS.ramDisk() );
-            curProjectDir=ramHome;
-            var actualFilesDir=home.rel(user+"/"+prj+"/");
-            ramHome.rel("files/").link(actualFilesDir);
-        }
+		var curProjectDir;
+		if (WebSite.isNW) {
+			var home=location.href.replace(/^file:\/\//,"");
+			if (home.match(/^\/[a-z]:/i)) {
+				home=home.replace(/^\//,"");
+			}
+			home=FS.get(home);
+			if (!home.isDir()) home=home.up();
+			curProjectDir=home.rel("data/");
+		} else {
+			var locs=location.href.replace(/\?.*/,"").split(/\//);
+			var prj=locs.pop() || "runscript";
+			var user=locs.pop() || "nobody";
+			var home=FS.get(WebSite.tonyuHome);
+			var ramHome=FS.get("/ram/");
+			FS.mount(ramHome.path(), LSFS.ramDisk() );
+			curProjectDir=ramHome;
+			var actualFilesDir=home.rel(user+"/"+prj+"/");
+			ramHome.rel("files/").link(actualFilesDir);
+		}
 
-        loadFiles(curProjectDir);
-        sh.cd(curProjectDir);
-        WebSite.compiledKernel="js/kernel.js";
-        var curPrj=CPTR("user", "js/concat.js",curProjectDir);
-        start();
-        function start() {
-            Tonyu.currentProject=Tonyu.globals.$currentProject=curPrj;
-            var o=curPrj.getOptions();
-            curPrj.runScriptMode=true;
-            curPrj.run(o.run.bootClass);
-        }
-    });
+		loadFiles(curProjectDir);
+		sh.cd(curProjectDir);
+		WebSite.compiledKernel="js/kernel.js";
+		var curPrj=CPTR("user", "js/concat.js",curProjectDir);
+		start();
+		function start() {
+			Tonyu.currentProject=Tonyu.globals.$currentProject=curPrj;
+			var o=curPrj.getOptions();
+			curPrj.runScriptMode=true;
+			curPrj.run(o.run.bootClass);
+		}
+	});
 });
 
 requireSimulator.setName();
