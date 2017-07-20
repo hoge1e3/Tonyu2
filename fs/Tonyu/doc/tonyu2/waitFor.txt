@@ -12,7 +12,7 @@
 r=waitFor(promise);
 >>
 
-[[@cfrag promise]]には，[[スレッド>thread]]またはjQueryのPromiseオブジェクトを指定します（例：[[@cfrag $.get(...)]]など )．
+[[@cfrag promise]]には，[[スレッド>thread]]またはJavaScript/jQueryのPromiseオブジェクトを指定します（例：[[@cfrag $.get(...)]]など )．
 
 [[@cfrag promise]]が結果を返す（スレッドが正常終了する，または[[@cfrag promise.done(f)]] の関数[[@cfrag f]]が呼び出される）と，waitForメソッドは終了し，スレッドの戻り値または[[@cfrag f]]に渡された第1引数の値が戻り値として返されます．
 

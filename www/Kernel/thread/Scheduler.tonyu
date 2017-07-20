@@ -1,6 +1,7 @@
 extends TObject;
 native Tonyu;
 native console;
+native Date;
 cur=[];
 next=[];
 \addObj(obj,name,args) {
@@ -11,6 +12,7 @@ next=[];
     args=args||[];
     var th=Tonyu.thread();
     th.apply(obj,name,args);
+    th.name=(obj.getClassInfo? obj.getClassInfo().shortName:"Unknown")+"::"+name;
     addToCur(th);
     return th;
 }
@@ -37,16 +39,25 @@ next=[];
     	}
     }
 }
+\checkTimeout() {
+    var now=new Date().getTime();
+    if (now-lastSteps>1000) {
+        throw new Error("待機不能モードでupdateが呼ばれています．ブラウザが固まるのを防ぐために停止します．");
+    }
+}
 \stepsAll() {
+    lastSteps=new Date().getTime();
     for (var t in cur) {
     	delete t.scheduled;
     	if (t.waitCount) {
     	    t.waitCount--;
             addToNext(t);
     	} else {
+            //$Boot.debug("StepsAll",t.name);
             t.steps();
+            //$Boot.debug("StepsAllEnd",t.name);
             if (t.preempted) {
-                //console.log("Preempted: ",t);
+                //$Boot.debug("Preempted: ",t);
                 addToNext(t);
             }
         }

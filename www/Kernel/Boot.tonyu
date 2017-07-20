@@ -11,6 +11,7 @@ native SplashScreen;
 native Math;
 native requestAnimationFrame;
 native console;
+native Array;
 
 $Boot=this;
 scheduler=$Scheduler=new Scheduler;
@@ -53,6 +54,7 @@ mainLoop();
     $Navigator=new Navigator;
     $mouseX=$mouseX||0;
     $mouseY=$mouseY||0;
+    debugCnt=50;
 }
 \initLayers() {
     $mainLayer=$Sprites=new Sprites();
@@ -89,6 +91,14 @@ mainLoop();
     $uiScreen.addLayer($uiLayer);
     $layoutManager=new UILayout{layer:$uiLayer};
     //drawFrame();
+}
+\debug() {
+    if (!debugCnt) return;
+    debugCnt--;
+    var a=Array.prototype.slice.call(arguments);
+    a.unshift(debugCnt);
+    a.unshift("DEBUG");
+    console.log.apply(console,a);
 }
 /*----OLD
 \initLayers() {
@@ -206,17 +216,20 @@ mainLoop();
     } else {
         rafProcNowTime += procCnt * frameTime;
     }
-    //print("procCnt:"+procCnt+" subTime:"+subTime);
+    //debug("procCnt:",procCnt,"Moves:",moves);
 	while(moves<procCnt) {
 		moveFrame();
 		moves++;
 	    if (moves<procCnt) afterDraw(false);
 	}
+    //debug("endWhile");
     if (moves > 0) {
         drawFrame();
         afterDraw(true);
     }
+    //debug("beforeWaitRAF");
 	waitRAF();
+    //debug("afterWaitRAF");
     //elapsed = now()-start;
     //var cnt=rafCount-1;
     //if (rafResolution) {//★で何回分のRAFが実行されたか？（描画移動に手間取ると2回分以上経過しているかも)
@@ -306,9 +319,13 @@ nowait \drawFrame() {
 */
 nowait \moveFrame() {
 	var s=now();
+    //debug("MoveFrame",1);
     scheduler.stepsAll();
+    //debug("MoveFrame",2);
     $Keys.update();
+    //debug("MoveFrame",3);
     $InputDevice.update();
+    //debug("MoveFrame",4);
     $screenWidth=$Screen.width;
     $screenHeight=$Screen.height;
     moveTime=now()-s;
@@ -316,8 +333,11 @@ nowait \moveFrame() {
     $frameCount=fps_rpsCnt;
 }
 nowait \afterDraw(drawn) {// should call (after draw) or (move and frame skip)
+    //debug("AfterDraw",1);
     $Sprites.checkHit();
+    //debug("AfterDraw",2);
     $Sprites.removeOneframes(drawn);
+    //debug("AfterDraw",3);
 }
 nowait \initFPSParams() {
     // フレームレートの設定
