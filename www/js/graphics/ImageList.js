@@ -28,7 +28,7 @@ define(["PatternParser","Util","Assets","assert"], function (PP,Util,Assets,asse
             	proc.apply(cache[urlKey],[]);
             	return;
             }
-            url=IL.convURL(url,options.baseDir);
+            url=Assets.resolve(url,options.prj||options.baseDir);
             //if (!Util.startsWith(url,"data:")) url+="?" + new Date().getTime();
             var im=$("<img>");
             im.load(function () {
@@ -100,22 +100,10 @@ define(["PatternParser","Util","Assets","assert"], function (PP,Util,Assets,asse
         res.name=resImg.name;
         return assert.is(res,Array);
     };
-	IL.convURL=function (url, baseDir) {
-	    /*if (url==null) url="";
-	    url=url.replace(/\$\{([a-zA-Z0-9_]+)\}/g, function (t,name) {
-	        return WebSite[name];
-	    });
-        if (WebSite.urlAliases[url]) url=WebSite.urlAliases[url];
-	    if (Util.startsWith(url,"ls:")) {
-	        var rel=url.substring("ls:".length);
-	        if (!baseDir) throw new Error("Basedir not specified");
-	        var f=baseDir.rel(rel);
-	        if (!f.exists()) throw "ImageList file not found: "+f;
-	        url=f.text();
-	    }
-	    return url;*/
-	    return Assets.resolve(url, baseDir);
-	};
+	/*IL.convURL=function (url, prj) {
+
+	    return Assets.resolve(url, prj);
+	};*/
 	window.ImageList=IL;
     return IL;
 });

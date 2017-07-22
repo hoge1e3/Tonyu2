@@ -58,7 +58,7 @@ native Tonyu;
     var r=prj.getResource();
     if (!r || !r.sounds) return;
     for (var s in r.sounds) {
-         var name=s.name, url=Tonyu.Assets.resolve(s.url, prj.getDir());
+         var name=s.name, url=Tonyu.Assets.resolve(s.url, prj);
          Tonyu.setGlobal(name, name);
          try {
             //print("Loading Sound2: "+name);

@@ -1,5 +1,5 @@
-define(["UI","ImageList","ImageRect","PatternParser","WebSite"],
-        function (UI,ImageList,ImageRect,PP,WebSite) {
+define(["UI","ImageList","ImageRect","PatternParser","WebSite","Assets"],
+        function (UI,ImageList,ImageRect,PP,WebSite,Assets) {
     var d=UI("div",{title:"画像詳細"},
             ["div",
              ["div","URL:",["input",{$var:"url",size:40,on:{change:setURL}}],
@@ -59,14 +59,14 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite"],
     function selSingle() {
         v.theForm[0].type.value="single";
     }
-    IMD.show=function (_item,baseDir, itemName, options) {
+    IMD.show=function (_item,prj, itemName, options) {
         if (!options) options={};
         onclose=options.onclose;
         item=_item;
         curItemName=itemName;
         d.dialog({width:600,height:520});
         v.url.val(item.url);
-        var url=ImageList.convURL(item.url,baseDir);
+        var url=Assets.resolve(item.url,prj);
         v.openImg.attr("href",url);
         ImageRect(url, v.cv[0])(function (res) {
             canvasRect=res;

@@ -1,7 +1,7 @@
 define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
-        ,"ImageDetailEditor","Util","OggConverter"],
+        ,"ImageDetailEditor","Util","OggConverter","Assets"],
         function (FS, Tonyu, UI,IL,Blob,Auth,WebSite,
-                ImageDetailEditor,Util,OggConverter) {
+                ImageDetailEditor,Util,OggConverter,Assets) {
     var ResEditor=function (prj, mediaType) {
         var mediaInfos={
                 image:{name:"画像",exts:["png","gif","jpg"],path:"images/",key:"images",
@@ -27,7 +27,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
         var rsrc=prj.getResource();
         var rsrcDir=prj.getDir().rel(mediaInfo.path);
         var itemUIs=[];
-        if (!rsrc) prj.setResource();
+        if (!rsrc) prj.setResource({images:[],sounds:[]});
         function convURL(u) {
             try {
                 if (Util.endsWith(u,".ogg")) {
@@ -43,7 +43,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                 } else if (Util.endsWith(u,".wav")) {
                     u=WebSite.urlAliases["images/sound_wav.png"];
                 }
-                return IL.convURL(u,prj.getDir());
+                return Assets.resolve(u,prj);
             }catch(e) {
                 return WebSite.urlAliases["images/ecl.png"];
             }
@@ -123,7 +123,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
             function genItemUI(item) {
                 function detail() {
                     if (mediaType=="sound") return;
-                    ImageDetailEditor.show(item,prj.getDir(), item.name, {
+                    ImageDetailEditor.show(item,prj, item.name, {
                         onclose: function () {
                             prj.setResource(rsrc);
                             reload();

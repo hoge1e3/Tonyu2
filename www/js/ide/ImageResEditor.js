@@ -1,7 +1,7 @@
 define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
-        ,"ImageDetailEditor"],
+        ,"ImageDetailEditor","Assets"],
         function (FS, Tonyu, UI,IL,Blob,Auth,WebSite,
-                ImageDetailEditor) {
+                ImageDetailEditor,Assets) {
     var ImageResEditor=function (prj) {
         var d=UI("div", {title:"画像リスト"});
         d.css({height:200+"px", "overflow-v":"scroll"});
@@ -11,7 +11,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
         if (!rsrc) prj.setResource();
         function convURL(u) {
             try {
-                return IL.convURL(u,prj.getDir());
+                return Assets.resolve(u,prj);
             }catch(e) {
                 return WebSite.urlAliases["images/ecl.png"];
             }//return ((typeof WebSite=="object") && WebSite.urlAliases[u]) || u;

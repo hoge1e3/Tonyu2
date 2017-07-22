@@ -123,7 +123,8 @@ mainLoop();
     var r;
     r=runAsync \(succ) {
         ImageList.load( rs.images, succ) {
-            baseDir:$currentProject.getDir()
+            baseDir:$currentProject.getDir(),
+            prj:$currentProject
         };
     };
     //var r=a[0];

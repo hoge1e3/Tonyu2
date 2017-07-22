@@ -1,6 +1,7 @@
-define(["WebSite","Util","Tonyu"],function (WebSite,Util,Tonyu) {
+define(["WebSite","Util","Tonyu","FS"],function (WebSite,Util,Tonyu,FS) {
     var Assets={};
-    Assets.resolve=function (url, baseDir) {
+    Assets.resolve=function (url, prj) {
+        var baseDir=FS.isFile(prj)?prj:prj.getDir();
         if (url==null) url="";
         url=url.replace(/\$\{([a-zA-Z0-9_]+)\}/g, function (t,name) {
             return WebSite[name];
