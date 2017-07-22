@@ -1,4 +1,4 @@
-// Created at Wed Jul 19 2017 10:56:06 GMT+0900 (東京 (標準時))
+// Created at Sat Jul 22 2017 15:39:49 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -3251,7 +3251,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,
-			VERSION:1500429352329,//EMBED_VERSION
+			VERSION:1500705574229,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -11309,9 +11309,10 @@ define(["Tonyu"], function (Tonyu) {
     return PP;
 });
 requireSimulator.setName('Assets');
-define(["WebSite","Util","Tonyu"],function (WebSite,Util,Tonyu) {
+define(["WebSite","Util","Tonyu","FS"],function (WebSite,Util,Tonyu,FS) {
     var Assets={};
-    Assets.resolve=function (url, baseDir) {
+    Assets.resolve=function (url, prj) {
+        var baseDir=FS.isFile(prj)?prj:prj.getDir();
         if (url==null) url="";
         url=url.replace(/\$\{([a-zA-Z0-9_]+)\}/g, function (t,name) {
             return WebSite[name];
@@ -11335,6 +11336,7 @@ define(["WebSite","Util","Tonyu"],function (WebSite,Util,Tonyu) {
     Tonyu.Assets=Assets;
     return Assets;
 });
+
 requireSimulator.setName('ImageList');
 define(["PatternParser","Util","Assets","assert"], function (PP,Util,Assets,assert) {
     var cache={};
@@ -11366,7 +11368,7 @@ define(["PatternParser","Util","Assets","assert"], function (PP,Util,Assets,asse
             	proc.apply(cache[urlKey],[]);
             	return;
             }
-            url=IL.convURL(url,options.baseDir);
+            url=Assets.resolve(url,options.prj||options.baseDir);
             //if (!Util.startsWith(url,"data:")) url+="?" + new Date().getTime();
             var im=$("<img>");
             im.load(function () {
@@ -11438,25 +11440,14 @@ define(["PatternParser","Util","Assets","assert"], function (PP,Util,Assets,asse
         res.name=resImg.name;
         return assert.is(res,Array);
     };
-	IL.convURL=function (url, baseDir) {
-	    /*if (url==null) url="";
-	    url=url.replace(/\$\{([a-zA-Z0-9_]+)\}/g, function (t,name) {
-	        return WebSite[name];
-	    });
-        if (WebSite.urlAliases[url]) url=WebSite.urlAliases[url];
-	    if (Util.startsWith(url,"ls:")) {
-	        var rel=url.substring("ls:".length);
-	        if (!baseDir) throw new Error("Basedir not specified");
-	        var f=baseDir.rel(rel);
-	        if (!f.exists()) throw "ImageList file not found: "+f;
-	        url=f.text();
-	    }
-	    return url;*/
-	    return Assets.resolve(url, baseDir);
-	};
+	/*IL.convURL=function (url, prj) {
+
+	    return Assets.resolve(url, prj);
+	};*/
 	window.ImageList=IL;
     return IL;
 });
+
 requireSimulator.setName('Auth');
 define(["WebSite"],function (WebSite) {
     var auth={};
