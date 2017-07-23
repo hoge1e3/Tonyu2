@@ -1,4 +1,4 @@
-// Created at Sat Jul 22 2017 15:39:40 GMT+0900 (東京 (標準時))
+// Created at Sun Jul 23 2017 21:37:58 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -1337,7 +1337,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,
-			VERSION:1500705574229,//EMBED_VERSION
+			VERSION:1500813473635,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -17783,6 +17783,7 @@ define(["FS","WebSite"], function (FS,WebSite) {
         if (!WebSite.isNW) return;
         var ffmpeg=FS.get(WebSite.ffmpeg);
         if (!ffmpeg.exists()) return;
+        console.log("Convert ogg->mp3 ",dir.path());
         dir.each(function (src) {
             if (src.endsWith(".mp3") || src.endsWith(".mp4") || src.endsWith(".m4a")) {
                 var ext;
@@ -17800,6 +17801,7 @@ define(["FS","WebSite"], function (FS,WebSite) {
     };
     return C;
 });
+
 requireSimulator.setName('ResEditor');
 define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
         ,"ImageDetailEditor","Util","OggConverter","Assets"],
@@ -17926,7 +17928,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
             function genItemUI(item) {
                 function detail() {
                     if (mediaType=="sound") return;
-                    ImageDetailEditor.show(item,prj, item.name, {
+                    ImageDetailEditor.show(item, prj, item.name, {
                         onclose: function () {
                             prj.setResource(rsrc);
                             reload();

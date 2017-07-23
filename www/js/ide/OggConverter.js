@@ -6,6 +6,7 @@ define(["FS","WebSite"], function (FS,WebSite) {
         if (!WebSite.isNW) return;
         var ffmpeg=FS.get(WebSite.ffmpeg);
         if (!ffmpeg.exists()) return;
+        console.log("Convert ogg->mp3 ",dir.path());
         dir.each(function (src) {
             if (src.endsWith(".mp3") || src.endsWith(".mp4") || src.endsWith(".m4a")) {
                 var ext;
