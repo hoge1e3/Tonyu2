@@ -44,6 +44,28 @@ define(["PathUtil"], function (P) {
 					"images/ecl.png":"../../images/ecl.png"
 			},top:"../..",devMode:devMode
 		};
+	} else if (
+		loc.match(/bitarrow/) ||
+		loc.match(/localhost.*pub/))  {
+		WebSite={};
+		var WS=WebSite;
+		WebSite.serverType="BA";
+		WS.runtime="../../../runtime/";
+		WS.urlAliases= {
+				"images/base.png":WS.runtime+"images/base.png",
+				"images/Sample.png":WS.runtime+"images/Sample.png",
+				"images/neko.png":WS.runtime+"images/neko.png",
+				"images/inputPad.png":WS.runtime+"images/inputPad.png",
+				"images/mapchip.png":WS.runtime+"images/mapchip.png",
+				"images/sound.png":WS.runtime+"images/sound.png",
+				"images/sound_ogg.png":WS.runtime+"images/sound_ogg.png",
+				"images/sound_mp3.png":WS.runtime+"images/sound_mp3.png",
+				"images/sound_mp4.png":WS.runtime+"images/sound_mp4.png",
+				"images/sound_m4a.png":WS.runtime+"images/sound_m4a.png",
+				"images/sound_mid.png":WS.runtime+"images/sound_mid.png",
+				"images/sound_wav.png":WS.runtime+"images/sound_wav.png",
+				"images/ecl.png":WS.runtime+"images/ecl.png"
+		};
 	} else {
 		WebSite={
 			urlAliases: {}, top: ".",devMode:devMode
@@ -133,6 +155,8 @@ define(["PathUtil"], function (P) {
 		loc.match(/localhost:888/) ||
 		WebSite.isNW) {
 		WebSite.compiledKernel=WebSite.top+"/Kernel/js/concat.js";
+	} else if (WebSite.serverType==="BA") {
+		WebSite.compiledKernel=WebSite.runtime+"lib/tonyu/kernel.js";
 	} else {
 		WebSite.compiledKernel="http://tonyuexe.appspot.com/Kernel/js/concat.js";
 	}
