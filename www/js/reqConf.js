@@ -231,6 +231,7 @@ var reqConf={
             "WebFS":"fs2/WebFS",
             "jquery.binarytransport":"lib/jquery.binarytransport",
             "Class":"lib/Class",
+            "tonyu.kernel":"../Kernel/js/concat.js",
 
             "foo":"bar"
         },

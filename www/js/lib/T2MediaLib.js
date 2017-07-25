@@ -53,7 +53,7 @@ T2MediaLib_BGMPlayer.prototype.playBGM = function(idx, loop, offset, loopStart, 
         }
         return this;
     }
-    
+
     var decodedData = soundData.decodedData;
     if (decodedData instanceof AudioBuffer) {
         // MP3, Ogg, AAC, WAV
@@ -486,7 +486,7 @@ var T2MediaLib = {
     // 配列データからサウンドを作成・登録
     loadSoundFromArray : function (idx, array1, array2) {
         T2MediaLib.soundDataAry[idx] = new T2MediaLib_SoundData();
-        
+
         var ctx = T2MediaLib.context;
         var numOfChannels = array1 != null && array2 != null ? 2 : 1;
         var audioBuffer = ctx.createBuffer(numOfChannels, array.length, ctx.sampleRate);
@@ -505,7 +505,7 @@ var T2MediaLib = {
     // サウンドの受信・デコード・登録
     loadSound : function(idx, url, callbacks) { //@hoge1e3
         T2MediaLib.soundDataAry[idx] = new T2MediaLib_SoundData();
-        
+
         if (!T2MediaLib.context || T2MediaLib.disabled) {
             T2MediaLib.soundDataAry[idx].onError("FUNC_DISABLED_ERROR");
             return null;
@@ -533,7 +533,7 @@ var T2MediaLib = {
             T2MediaLib.soundDataAry[idx].onError("XHR_ERROR");
             if (callbacks && callbacks.err) callbacks.err(idx,e+"");
         };
-        
+
         T2MediaLib.soundDataAry[idx].onLoad(url);
         if (url.match(/^data:/) && Util && Util.Base64_To_ArrayBuffer) {//@hoge1e3
             xhr={onload:xhr.onload};
@@ -550,7 +550,7 @@ var T2MediaLib = {
     decodeSound: function(idx, callbacks) {
         var soundData = T2MediaLib.soundDataAry[idx];
         if (soundData == null) return;
-        
+
         var arrayBuffer = soundData.fileData;
         soundData.onDecode();
         if (soundData.url.match(/\.(midi?)$/) || soundData.url.match(/^data:audio\/mid/)) {
@@ -571,9 +571,9 @@ var T2MediaLib = {
             };
             var errorCallback = function(error) {
                 if (error instanceof Error) {
-                    console.log('T2MediaLib: '+error.message, url);
+                    console.log('T2MediaLib: '+error.message, soundData.url);//@hoge1e3
                 } else {
-                    console.log('T2MediaLib: Error decodeAudioData()', url);
+                    console.log('T2MediaLib: Error decodeAudioData()', soundData.url);//@hoge1e3
                 }
                 T2MediaLib.soundDataAry[idx].onError("DECODE_ERROR");
                 if (callbacks && callbacks.err) callbacks.err(idx, T2MediaLib.soundDataAry[idx]);//@hoge1e3
@@ -628,7 +628,7 @@ var T2MediaLib = {
             T2MediaLib.decodeSound(idx, callbacks);
             return null;
         }
-        
+
         var audioBuffer = soundData.decodedData;
         if (!(audioBuffer instanceof AudioBuffer)) return null;
 
@@ -722,7 +722,7 @@ var T2MediaLib = {
             source.start(0);
         }
 
-        source.onended = function(event) { 
+        source.onended = function(event) {
             source.disconnect();
             source.onended = null;
             delete source.gainNode;

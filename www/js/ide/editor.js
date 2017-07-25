@@ -20,6 +20,12 @@ $(function () {
     if (!WebSite.isNW) {
         FS.mount(location.protocol+"//"+location.host+"/", new WebFS);
     }
+    /*
+    location.href
+"chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/index.html"
+window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/index.html")
+    */
+
     var F=EC.f;
     $LASTPOS=0;
     //copySample();
@@ -113,18 +119,18 @@ $(function () {
             width:dialogSize.w,
             height:dialogSize.h,
             resize:function () {
-                dialogSize.w=d.width();    
-                dialogSize.h=d.height();    
-                resizeCanvas(d.width(),d.height());       
+                dialogSize.w=d.width();
+                dialogSize.h=d.height();
+                resizeCanvas(d.width(),d.height());
             },//da.handleResizeF(),
             close:function () {dialogClosed=true;stop();}
         });
-        resizeCanvas(d.width(),d.height());       
+        resizeCanvas(d.width(),d.height());
         //da.handleResize();
         console.log("Diag",dialogSize);
         //resizeCanvas(w,screenH-100);
     }
-    
+
     var editors={};
 
     KeyEventChecker.down(document,"F9",F(run));
@@ -640,7 +646,7 @@ $(function () {
     }));
     $("#openFolder").click(F(function () {
         var f=curPrjDir;
-        var gui = nwDispatcher.requireNwGui(); 
+        var gui = nwDispatcher.requireNwGui();
         gui.Shell.showItemInFolder(f.path().replace(/\//g,"\\"));
     }));
     sh.curFile=function () {

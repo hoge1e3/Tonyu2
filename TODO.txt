@@ -1,3 +1,9 @@
+Lib
+ CPTR - use requirejs
+ Prj + Builder
+ Use other window also in NW.js
+  see editor.js  chrome-extension:...
+
 UI
   テキスト入力
   フルスクリーン
