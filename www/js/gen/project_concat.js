@@ -1,4 +1,4 @@
-// Created at Sun Jul 23 2017 21:37:58 GMT+0900 (東京 (標準時))
+// Created at Mon Aug 14 2017 10:39:00 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -1331,16 +1331,31 @@ return Tonyu=function () {
 		$LASTPOS=0;
 		th.steps();
 	}
+	var lastLoopCheck=new Date().getTime();
+	var prevCheckLoopCalled;
+	function checkLoop() {
+		var now=new Date().getTime();
+		if (now-lastLoopCheck>1000) {
+			resetLoopCheck(10000);
+			throw new Error("無限ループをストップしました"+(now-prevCheckLoopCalled));
+		}
+		prevCheckLoopCalled=now;
+	}
+	function resetLoopCheck(disableTime) {
+		lastLoopCheck=new Date().getTime()+(disableTime||0);
+	}
+	setInterval(resetLoopCheck,16);
 	return Tonyu={thread:thread, /*threadGroup:threadGroup,*/ klass:klass, bless:bless, extend:extend,
 			globals:globals, classes:classes, classMetas:classMetas, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
 			timeout:timeout,animationFrame:animationFrame, /*asyncResult:asyncResult,*/
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
-			run:run,iterator:IT,
-			VERSION:1500813473635,//EMBED_VERSION
+			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
+			VERSION:1502674731618,//EMBED_VERSION
 			A:A};
 }();
 });
+
 requireSimulator.setName('extend');
 define([],function (){
    return function extend(d,s) {
@@ -1846,6 +1861,28 @@ define(["PathUtil"], function (P) {
 					"images/ecl.png":"../../images/ecl.png"
 			},top:"../..",devMode:devMode
 		};
+	} else if (
+		loc.match(/bitarrow/) ||
+		loc.match(/localhost.*pub/))  {
+		WebSite={};
+		var WS=WebSite;
+		WebSite.serverType="BA";
+		WS.runtime="../../../runtime/";
+		WS.urlAliases= {
+				"images/base.png":WS.runtime+"images/base.png",
+				"images/Sample.png":WS.runtime+"images/Sample.png",
+				"images/neko.png":WS.runtime+"images/neko.png",
+				"images/inputPad.png":WS.runtime+"images/inputPad.png",
+				"images/mapchip.png":WS.runtime+"images/mapchip.png",
+				"images/sound.png":WS.runtime+"images/sound.png",
+				"images/sound_ogg.png":WS.runtime+"images/sound_ogg.png",
+				"images/sound_mp3.png":WS.runtime+"images/sound_mp3.png",
+				"images/sound_mp4.png":WS.runtime+"images/sound_mp4.png",
+				"images/sound_m4a.png":WS.runtime+"images/sound_m4a.png",
+				"images/sound_mid.png":WS.runtime+"images/sound_mid.png",
+				"images/sound_wav.png":WS.runtime+"images/sound_wav.png",
+				"images/ecl.png":WS.runtime+"images/ecl.png"
+		};
 	} else {
 		WebSite={
 			urlAliases: {}, top: ".",devMode:devMode
@@ -1888,7 +1925,7 @@ define(["PathUtil"], function (P) {
 	}
 	WebSite.sampleImg=WebSite.top+"/images";
 	WebSite.blobPath=WebSite.serverTop+"/serveBlob";        //TODO: urlchange!
-	WebSite.isNW=(typeof process=="object" && process.__node_webkit);
+	WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
 	WebSite.mp3Disabled=WebSite.isNW;
 	WebSite.tonyuHome="/Tonyu/";
 	WebSite.url={
@@ -1935,6 +1972,8 @@ define(["PathUtil"], function (P) {
 		loc.match(/localhost:888/) ||
 		WebSite.isNW) {
 		WebSite.compiledKernel=WebSite.top+"/Kernel/js/concat.js";
+	} else if (WebSite.serverType==="BA") {
+		WebSite.compiledKernel=WebSite.runtime+"lib/tonyu/kernel.js";
 	} else {
 		WebSite.compiledKernel="http://tonyuexe.appspot.com/Kernel/js/concat.js";
 	}
@@ -2263,7 +2302,7 @@ requirejs(["Content"], function (C) {
 requireSimulator.setName('NativeFS');
 define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL","Content"],
         function (FS,A,P,extend,MIME,DataURL,Content) {
-    var available=(typeof process=="object" && process.__node_webkit);
+    var available=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
     if (!available) {
         return function () {
             throw new Error("This system not suppert native FS");
@@ -2435,6 +2474,7 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL","Content"],
     });
     return NativeFS;
 });
+
 requireSimulator.setName('LSFS');
 define(["FS2","PathUtil","extend","assert","Util","Content"],
         function(FS,P,extend,assert,Util,Content) {
@@ -10632,7 +10672,7 @@ function genJS(klass, env) {//B
 				);
 			} else {
 				ctx.enter({noWait:true},function () {
-					buf.printf("while (%v) {%{%f%n%}}", node.cond, noSurroundCompoundF(node.loop));
+					buf.printf("while (%v) {%{Tonyu.checkLoop();%n%f%n%}}", node.cond, noSurroundCompoundF(node.loop));
 				});
 			}
 		},
@@ -10658,7 +10698,7 @@ function genJS(klass, env) {//B
 				);
 			} else {
 				ctx.enter({noWait:true},function () {
-					buf.printf("do {%{%f%n%}} while (%v);%n",
+					buf.printf("do {%{Tonyu.checkLoop();%n%f%n%}} while (%v);%n",
 							noSurroundCompoundF(node.loop), node.cond );
 				});
 			}
@@ -10733,6 +10773,7 @@ function genJS(klass, env) {//B
 							buf.printf(
 									"%v"+
 									"for (; %v ; %v) {%{"+
+										"Tonyu.checkLoop();%n"+
 										"%v%n" +
 									"%}}"
 										,
@@ -10744,6 +10785,7 @@ function genJS(klass, env) {//B
 							buf.printf(
 									"%v%n"+
 									"while(%v) {%{" +
+										"Tonyu.checkLoop();%n"+
 										"%v%n" +
 										"%v;%n" +
 									"%}}",
@@ -12005,7 +12047,7 @@ return Tonyu.TraceTbl=(function () {
 //if (typeof getReq=="function") getReq.exports("Tonyu.TraceTbl");
 });
 requireSimulator.setName('compiledProject');
-define(["DeferredUtil"], function (DU) {
+define(["DeferredUtil","WebSite"], function (DU,WebSite) {
 	var CPR=function (ns, url) {
 		return {
 			getNamespace:function () {return ns;},
@@ -12028,7 +12070,7 @@ define(["DeferredUtil"], function (DU) {
 				var d=new $.Deferred;
 				var head = document.getElementsByTagName("head")[0] || document.documentElement;
 				var script = document.createElement("script");
-				script.src = url;
+				script.src = url+(WebSite.serverType==="BA"?"?"+Math.random():"");
 				var done = false;
 				script.onload = script.onreadystatechange = function() {
 					if ( !done && (!this.readyState ||
@@ -12066,6 +12108,7 @@ define(["DeferredUtil"], function (DU) {
 	};
 	return CPR;
 });
+
 requireSimulator.setName('TypeChecker');
 if (typeof define!=="function") {
 	define=require("requirejs").define;
@@ -15417,7 +15460,7 @@ T2MediaLib_BGMPlayer.prototype.playBGM = function(idx, loop, offset, loopStart, 
         }
         return this;
     }
-    
+
     var decodedData = soundData.decodedData;
     if (decodedData instanceof AudioBuffer) {
         // MP3, Ogg, AAC, WAV
@@ -15850,7 +15893,7 @@ var T2MediaLib = {
     // 配列データからサウンドを作成・登録
     loadSoundFromArray : function (idx, array1, array2) {
         T2MediaLib.soundDataAry[idx] = new T2MediaLib_SoundData();
-        
+
         var ctx = T2MediaLib.context;
         var numOfChannels = array1 != null && array2 != null ? 2 : 1;
         var audioBuffer = ctx.createBuffer(numOfChannels, array.length, ctx.sampleRate);
@@ -15869,7 +15912,7 @@ var T2MediaLib = {
     // サウンドの受信・デコード・登録
     loadSound : function(idx, url, callbacks) { //@hoge1e3
         T2MediaLib.soundDataAry[idx] = new T2MediaLib_SoundData();
-        
+
         if (!T2MediaLib.context || T2MediaLib.disabled) {
             T2MediaLib.soundDataAry[idx].onError("FUNC_DISABLED_ERROR");
             return null;
@@ -15897,7 +15940,7 @@ var T2MediaLib = {
             T2MediaLib.soundDataAry[idx].onError("XHR_ERROR");
             if (callbacks && callbacks.err) callbacks.err(idx,e+"");
         };
-        
+
         T2MediaLib.soundDataAry[idx].onLoad(url);
         if (url.match(/^data:/) && Util && Util.Base64_To_ArrayBuffer) {//@hoge1e3
             xhr={onload:xhr.onload};
@@ -15914,7 +15957,7 @@ var T2MediaLib = {
     decodeSound: function(idx, callbacks) {
         var soundData = T2MediaLib.soundDataAry[idx];
         if (soundData == null) return;
-        
+
         var arrayBuffer = soundData.fileData;
         soundData.onDecode();
         if (soundData.url.match(/\.(midi?)$/) || soundData.url.match(/^data:audio\/mid/)) {
@@ -15935,9 +15978,9 @@ var T2MediaLib = {
             };
             var errorCallback = function(error) {
                 if (error instanceof Error) {
-                    console.log('T2MediaLib: '+error.message, url);
+                    console.log('T2MediaLib: '+error.message, soundData.url);//@hoge1e3
                 } else {
-                    console.log('T2MediaLib: Error decodeAudioData()', url);
+                    console.log('T2MediaLib: Error decodeAudioData()', soundData.url);//@hoge1e3
                 }
                 T2MediaLib.soundDataAry[idx].onError("DECODE_ERROR");
                 if (callbacks && callbacks.err) callbacks.err(idx, T2MediaLib.soundDataAry[idx]);//@hoge1e3
@@ -15992,7 +16035,7 @@ var T2MediaLib = {
             T2MediaLib.decodeSound(idx, callbacks);
             return null;
         }
-        
+
         var audioBuffer = soundData.decodedData;
         if (!(audioBuffer instanceof AudioBuffer)) return null;
 
@@ -16086,7 +16129,7 @@ var T2MediaLib = {
             source.start(0);
         }
 
-        source.onended = function(event) { 
+        source.onended = function(event) {
             source.disconnect();
             source.onended = null;
             delete source.gainNode;
@@ -18503,7 +18546,7 @@ define(["UI","extLink","mkrun","Tonyu","zip"], function (UI,extLink,mkrun,Tonyu,
             });
             function openFolder() {
                 var f=FS.get(model.dest);
-                var gui = nwDispatcher.requireNwGui(); 
+                var gui = require("nw.gui");//nwDispatcher.requireNwGui(); 
                 gui.Shell.showItemInFolder(f.path().replace(/\//g,"\\"));
             }
         };
@@ -18511,6 +18554,7 @@ define(["UI","extLink","mkrun","Tonyu","zip"], function (UI,extLink,mkrun,Tonyu,
     };
     return res;
 });
+
 requireSimulator.setName('jquery.binarytransport');
 /**
  *
@@ -18657,6 +18701,12 @@ $(function () {
     if (!WebSite.isNW) {
         FS.mount(location.protocol+"//"+location.host+"/", new WebFS);
     }
+    /*
+    location.href
+"chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/index.html"
+window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/index.html")
+    */
+
     var F=EC.f;
     $LASTPOS=0;
     //copySample();
@@ -18750,18 +18800,18 @@ $(function () {
             width:dialogSize.w,
             height:dialogSize.h,
             resize:function () {
-                dialogSize.w=d.width();    
-                dialogSize.h=d.height();    
-                resizeCanvas(d.width(),d.height());       
+                dialogSize.w=d.width();
+                dialogSize.h=d.height();
+                resizeCanvas(d.width(),d.height());
             },//da.handleResizeF(),
             close:function () {dialogClosed=true;stop();}
         });
-        resizeCanvas(d.width(),d.height());       
+        resizeCanvas(d.width(),d.height());
         //da.handleResize();
         console.log("Diag",dialogSize);
         //resizeCanvas(w,screenH-100);
     }
-    
+
     var editors={};
 
     KeyEventChecker.down(document,"F9",F(run));
@@ -19277,7 +19327,7 @@ $(function () {
     }));
     $("#openFolder").click(F(function () {
         var f=curPrjDir;
-        var gui = nwDispatcher.requireNwGui(); 
+        var gui = require("nw.gui");//(global.nwDispatcher||global.nw).requireNwGui();
         gui.Shell.showItemInFolder(f.path().replace(/\//g,"\\"));
     }));
     sh.curFile=function () {

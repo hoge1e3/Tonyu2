@@ -20,6 +20,10 @@ next=[];
     if (th.scheduled) return;
     cur.push(th);
     th.scheduled=this;
+    if ($Boot.newLimit) {
+        $Boot.newLimitCount--;
+        if ($Boot.newLimitCount<=0) throw new Error("一度にたくさんのスレッドを作りすぎています");
+    }
 }
 \addToNext(th) {
     if (th.scheduled) return;

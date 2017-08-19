@@ -199,7 +199,7 @@ var reqConf={
             importFromJsdoit: "social/importFromJsdoit",
             importFromTonyu1:"tonyu1/importFromTonyu1",
             forkBlobs: "social/forkBlobs",
-            JSZip:"lib/jszip.min",
+            JSZip:"lib/jszip",
             FileSaver:"lib/FileSaver.min",
             Klass:"lib/Klass",
             plugins:"plugins/plugins",

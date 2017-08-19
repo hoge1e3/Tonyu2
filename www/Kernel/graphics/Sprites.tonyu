@@ -10,6 +10,10 @@ native Tonyu;
     objId=0;
 }
 function add(s) {
+    if ($Boot.newLimit) {
+        $Boot.newLimitCount--;
+        if ($Boot.newLimitCount<=0) throw new Error("一度にたくさんのオブジェクトを作りすぎています");
+    }
     if (s.__addedToSprites) return;
     if (s instanceof PlainChar) {
         t1Sprites=t1Sprites||[];

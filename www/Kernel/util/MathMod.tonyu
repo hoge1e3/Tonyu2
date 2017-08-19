@@ -61,10 +61,27 @@ nowait \trunc(f) {
 nowait \ceil(f){
     return Math.ceil(f);
 }
+nowait \rndFloat(r,m) {
+    if (typeof r!=="number") r=0;
+    if (typeof m!=="number") m=1;
+    if (r<m) {
+        return Math.random()*(m-r)+r;
+    } else {
+        return Math.random()*(r-m)+m;
+    }
+}
 
-nowait \rnd(r) {
+nowait \rnd(r,m) {
     if (typeof r=="number") {
-        return Math.floor(Math.random()*(r>0?r:0));
+        if (typeof m=="number") {
+            if (r<m) {
+                return Math.floor(Math.random()*(m-r)+r);
+            } else {
+                return Math.floor(Math.random()*(r-m)+m);
+            }
+        } else {
+            return Math.floor(Math.random()*(r>0?r:0));
+        }
     }
     return Math.random();
 }

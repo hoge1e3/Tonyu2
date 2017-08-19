@@ -268,13 +268,27 @@ return Tonyu=function () {
 		$LASTPOS=0;
 		th.steps();
 	}
+	var lastLoopCheck=new Date().getTime();
+	var prevCheckLoopCalled;
+	function checkLoop() {
+		var now=new Date().getTime();
+		if (now-lastLoopCheck>1000) {
+			resetLoopCheck(10000);
+			throw new Error("無限ループをストップしました"+(now-prevCheckLoopCalled));
+		}
+		prevCheckLoopCalled=now;
+	}
+	function resetLoopCheck(disableTime) {
+		lastLoopCheck=new Date().getTime()+(disableTime||0);
+	}
+	setInterval(resetLoopCheck,16);
 	return Tonyu={thread:thread, /*threadGroup:threadGroup,*/ klass:klass, bless:bless, extend:extend,
 			globals:globals, classes:classes, classMetas:classMetas, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
 			timeout:timeout,animationFrame:animationFrame, /*asyncResult:asyncResult,*/
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
-			run:run,iterator:IT,
-			VERSION:1500813473635,//EMBED_VERSION
+			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
+			VERSION:1502674731618,//EMBED_VERSION
 			A:A};
 }();
 });

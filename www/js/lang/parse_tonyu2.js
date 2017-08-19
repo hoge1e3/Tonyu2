@@ -238,9 +238,9 @@ return TonyuLang=function () {
 	var funcExpr=g("funcExpr").ands("funcExprHead","compound").ret("head","body");
 	var jsonElem=g("jsonElem").ands(
 			symbol.or(literal),
-			tk(":").and(expr).ret(function (c,v) {return v;}).opt()
+			tk(":").or(tk("=")).and(expr).ret(function (c,v) {return v;}).opt()
 	).ret("key","value");
-	var objlit=g("objlit").ands(tk("{"), jsonElem.sep0(tk(","),true),  tk("}")).ret(null, "elems");
+	var objlit=g("objlit").ands(tk("{"), jsonElem.sep0(tk(","),true), tk(",").opt(), tk("}")).ret(null, "elems");
 	var arylit=g("arylit").ands(tk("["), expr.sep0(tk(","),true),  tk("]")).ret(null, "elems");
 	var ext=g("extends").ands(tk("extends"),symbol.or(tk("null")), tk(";")).
 	ret(null, "superclassName");
