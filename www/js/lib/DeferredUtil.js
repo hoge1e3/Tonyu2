@@ -94,5 +94,8 @@ define([], function () {
                 return {DU_BRK:true,res:res};
             }
     };
+    DU.begin=DU.try=DU.tr=DU.throwF;
+    DU.promise=DU.callbackToPromise=DU.funcPromise;
+
     return DU;
 });

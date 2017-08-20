@@ -363,6 +363,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         curPrj.stop();
         displayMode("edit");
     }
+    //\run
     function run(name) {
         curPrj.stop();
         if (typeof name!="string") {

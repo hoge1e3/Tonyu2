@@ -320,9 +320,13 @@ return Tonyu.Project=function (dir, kernelDir) {
         });
     };
     TPR.showProgress=function (m) {
+        console.log("PROGRESS",m);
         if (typeof SplashScreen!="undefined") {
             SplashScreen.progress(m);
         }
+        return DU.promise(function (succ) {
+            setTimeout(succ,0);
+        });
     };
     return TPR;
 };
