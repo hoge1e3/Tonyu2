@@ -16,7 +16,8 @@ define(["DataURL","Util","assert"],function (DataURL,Util,assert) {
     };
     Content.buffer2ArrayBuffer = function (a) {
         if (Util.isBuffer(a)) {
-            return assert(new Uint8Array(a).buffer,"n2a: buf is not set");
+            a=Array.prototype.slice.call(a);
+            return assert.is(new Uint8Array(a).buffer,ArrayBuffer);//"n2a: buf is not set");
         }
         return assert(a,"n2a: a is not set");
     };

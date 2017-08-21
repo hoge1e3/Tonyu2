@@ -59,7 +59,7 @@ define(["UI","extLink","mkrun","Tonyu","zip"], function (UI,extLink,mkrun,Tonyu,
             });
             function openFolder() {
                 var f=FS.get(model.dest);
-                var gui = nwDispatcher.requireNwGui(); 
+                var gui = require("nw.gui");//nwDispatcher.requireNwGui(); 
                 gui.Shell.showItemInFolder(f.path().replace(/\//g,"\\"));
             }
         };

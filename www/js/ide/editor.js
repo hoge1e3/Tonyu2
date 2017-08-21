@@ -363,6 +363,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         curPrj.stop();
         displayMode("edit");
     }
+    //\run
     function run(name) {
         curPrj.stop();
         if (typeof name!="string") {
@@ -646,7 +647,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     }));
     $("#openFolder").click(F(function () {
         var f=curPrjDir;
-        var gui = nwDispatcher.requireNwGui();
+        var gui = require("nw.gui");//(global.nwDispatcher||global.nw).requireNwGui();
         gui.Shell.showItemInFolder(f.path().replace(/\//g,"\\"));
     }));
     sh.curFile=function () {

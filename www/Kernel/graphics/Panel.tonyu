@@ -55,7 +55,22 @@ native Tonyu;
     return canvas;
 }
 \setFillStyle(color){
-    this.fillStyle=color;
+    fillStyle=color;
+}
+\fillStyle {
+    return _fillStyle;
+}
+\fillStyle=val {
+    _fillStyle=val;
+    context.fillStyle=val;
+}
+\fillCircle(x,y,r) {
+    var ctx=context;
+    ctx.fillStyle=fillStyle;
+    ctx.beginPath();
+    ctx.arc(x,y,r,0,2*$Math.PI);
+    ctx.closePath();
+    ctx.fill();
 }
 \fillRect(x,y,rectWidth,rectHeight){
     var ctx=getContext();

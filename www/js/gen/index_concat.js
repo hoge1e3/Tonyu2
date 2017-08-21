@@ -1,4 +1,4 @@
-// Created at Sun Jul 23 2017 21:37:55 GMT+0900 (東京 (標準時))
+// Created at Mon Aug 21 2017 11:02:43 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -792,6 +792,28 @@ define(["PathUtil"], function (P) {
 					"images/ecl.png":"../../images/ecl.png"
 			},top:"../..",devMode:devMode
 		};
+	} else if (
+		loc.match(/bitarrow/) ||
+		loc.match(/localhost.*pub/))  {
+		WebSite={};
+		var WS=WebSite;
+		WebSite.serverType="BA";
+		WS.runtime="../../../runtime/";
+		WS.urlAliases= {
+				"images/base.png":WS.runtime+"images/base.png",
+				"images/Sample.png":WS.runtime+"images/Sample.png",
+				"images/neko.png":WS.runtime+"images/neko.png",
+				"images/inputPad.png":WS.runtime+"images/inputPad.png",
+				"images/mapchip.png":WS.runtime+"images/mapchip.png",
+				"images/sound.png":WS.runtime+"images/sound.png",
+				"images/sound_ogg.png":WS.runtime+"images/sound_ogg.png",
+				"images/sound_mp3.png":WS.runtime+"images/sound_mp3.png",
+				"images/sound_mp4.png":WS.runtime+"images/sound_mp4.png",
+				"images/sound_m4a.png":WS.runtime+"images/sound_m4a.png",
+				"images/sound_mid.png":WS.runtime+"images/sound_mid.png",
+				"images/sound_wav.png":WS.runtime+"images/sound_wav.png",
+				"images/ecl.png":WS.runtime+"images/ecl.png"
+		};
 	} else {
 		WebSite={
 			urlAliases: {}, top: ".",devMode:devMode
@@ -834,7 +856,7 @@ define(["PathUtil"], function (P) {
 	}
 	WebSite.sampleImg=WebSite.top+"/images";
 	WebSite.blobPath=WebSite.serverTop+"/serveBlob";        //TODO: urlchange!
-	WebSite.isNW=(typeof process=="object" && process.__node_webkit);
+	WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
 	WebSite.mp3Disabled=WebSite.isNW;
 	WebSite.tonyuHome="/Tonyu/";
 	WebSite.url={
@@ -881,6 +903,8 @@ define(["PathUtil"], function (P) {
 		loc.match(/localhost:888/) ||
 		WebSite.isNW) {
 		WebSite.compiledKernel=WebSite.top+"/Kernel/js/concat.js";
+	} else if (WebSite.serverType==="BA") {
+		WebSite.compiledKernel=WebSite.runtime+"lib/tonyu/kernel.js";
 	} else {
 		WebSite.compiledKernel="http://tonyuexe.appspot.com/Kernel/js/concat.js";
 	}
@@ -1278,7 +1302,8 @@ define(["DataURL","Util","assert"],function (DataURL,Util,assert) {
     };
     Content.buffer2ArrayBuffer = function (a) {
         if (Util.isBuffer(a)) {
-            return assert(new Uint8Array(a).buffer,"n2a: buf is not set");
+            a=Array.prototype.slice.call(a);
+            return assert.is(new Uint8Array(a).buffer,ArrayBuffer);//"n2a: buf is not set");
         }
         return assert(a,"n2a: a is not set");
     };
@@ -1407,10 +1432,11 @@ requirejs(["Content"], function (C) {
 
 });
 */
+
 requireSimulator.setName('NativeFS');
 define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL","Content"],
         function (FS,A,P,extend,MIME,DataURL,Content) {
-    var available=(typeof process=="object" && process.__node_webkit);
+    var available=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
     if (!available) {
         return function () {
             throw new Error("This system not suppert native FS");
@@ -1582,6 +1608,7 @@ define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL","Content"],
     });
     return NativeFS;
 });
+
 requireSimulator.setName('LSFS');
 define(["FS2","PathUtil","extend","assert","Util","Content"],
         function(FS,P,extend,assert,Util,Content) {
@@ -3981,17 +4008,17 @@ define(["FS","Shell","Util"/*"JSZip","FileSaver"*/],function (FS,sh,Util/*,JSZip
         //zip.file("Hello.txt", "Hello World\n");
         //var img = zip.folder("images");
         //img.file("smile.gif", imgData, {base64: true});
-        var content = zip.generate({type:"blob"});
-        return content;
+        return zip.generateAsync({type:"blob"});
     };
     if (typeof saveAs!="undefined") {
         zip.dlzip=function (dir) {
-            var content=zip.zip(dir);
-            saveAs(content, dir.name().replace(/\/$/,"")+".zip");
+            return zip.zip(dir).then(function (content) {
+                return saveAs(content, dir.name().replace(/\/$/,"")+".zip");
+            });
         };
         sh.dlzip=function (dir) {
             dir=sh.resolve(dir||".");
-            zip.dlzip(dir);
+            return zip.dlzip(dir);
             //var content=zip.zip(dir);
             //saveAs(content, dir.name().replace(/\//g,"")+".zip");
         };
@@ -4000,25 +4027,27 @@ define(["FS","Shell","Util"/*"JSZip","FileSaver"*/],function (FS,sh,Util/*,JSZip
     var binMap={".png": "image/png", ".jpg":"image/jpg", ".gif": "image/gif", ".jpeg":"image/jpg",
             ".mp3":"audio/mp3", ".ogg":"audio/ogg", ".mp4":"video/mp4", ".m4a":"audio/x-m4a", ".mid":"audio/mid", ".midi":"audio/mid", ".wav":"audio/wav"};
     zip.unzip=function (arrayBuf,destDir) {
-        var zip=new JSZip(arrayBuf);
-        for (var i in zip.files) {
-            var zipEntry=zip.files[i];
-            var dest=destDir.rel(zipEntry.name);
-            for (var ext in binMap) {
-                var text;
-                if (dest.endsWith(ext)) {
-                    var ct=binMap[ext];
-                    text="data:"+ct+";base64,"+Util.Base64_From_ArrayBuffer(zipEntry.asArrayBuffer());
-                } else {
-                    text=zipEntry.asText();
+        return JSZip.loadAsync(arrayBuf).then(function (zip) {
+            for (var i in zip.files) {
+                var zipEntry=zip.files[i];
+                var dest=destDir.rel(zipEntry.name);
+                for (var ext in binMap) {
+                    var text;
+                    if (dest.endsWith(ext)) {
+                        var ct=binMap[ext];
+                        text="data:"+ct+";base64,"+Util.Base64_From_ArrayBuffer(zipEntry.asArrayBuffer());
+                    } else {
+                        text=zipEntry.asText();
+                    }
+                    dest.text(text);
                 }
-                dest.text(text);
+                console.log(zipEntry.name);
             }
-            console.log(zipEntry.name);
-        }
+        });//new JSZip(arrayBuf);
     };
     return zip;
 });
+
 requireSimulator.setName('extLink');
 define(["WebSite","UI","PathUtil","Util","assert"],
         function (WebSite,UI,PathUtil,Util,assert) {
@@ -4159,8 +4188,12 @@ define([], function () {
                 return {DU_BRK:true,res:res};
             }
     };
+    DU.begin=DU.try=DU.tr=DU.throwF;
+    DU.promise=DU.callbackToPromise=DU.funcPromise;
+
     return DU;
 });
+
 requireSimulator.setName('ide/selProject');
 requirejs(["FS","Wiki","Shell","Shell2",
            /*"copySample",*/"NewProjectDialog","UI","Sync","Auth",

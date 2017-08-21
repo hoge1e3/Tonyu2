@@ -88,7 +88,7 @@ nowait \hitTo(t) {
 }
 nowait \all(c) {
     //return layer.all.apply(layer,arguments); <- includes myself!
-    var res=new TQuery;
+    var res=new TQuery(this);
     if (arguments.length>0 && typeof c!="function") {
         return res;
     }
@@ -101,7 +101,7 @@ nowait \all(c) {
     return res;
 }
 nowait \allCrash(t) {
-    var res=new TQuery;
+    var res=new TQuery(this);
     var sp=this; //_sprite || this;
     var t1=getCrashRect();
     if (!t1) return res;
@@ -162,7 +162,7 @@ nowait \getCrashRect() {
     {x,y,width:Math.abs(actWidth),height:Math.abs(actHeight)};
 }
 nowait \allWithin(t,distance) {
-    var res=new TQuery;
+    var res=new TQuery(this);
     var sp=this; //_sprite || this;
     var t1=getCrashRect();
     if (!t1) return res;

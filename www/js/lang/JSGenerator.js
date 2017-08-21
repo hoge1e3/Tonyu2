@@ -514,7 +514,7 @@ function genJS(klass, env) {//B
 				);
 			} else {
 				ctx.enter({noWait:true},function () {
-					buf.printf("while (%v) {%{%f%n%}}", node.cond, noSurroundCompoundF(node.loop));
+					buf.printf("while (%v) {%{Tonyu.checkLoop();%n%f%n%}}", node.cond, noSurroundCompoundF(node.loop));
 				});
 			}
 		},
@@ -540,7 +540,7 @@ function genJS(klass, env) {//B
 				);
 			} else {
 				ctx.enter({noWait:true},function () {
-					buf.printf("do {%{%f%n%}} while (%v);%n",
+					buf.printf("do {%{Tonyu.checkLoop();%n%f%n%}} while (%v);%n",
 							noSurroundCompoundF(node.loop), node.cond );
 				});
 			}
@@ -615,6 +615,7 @@ function genJS(klass, env) {//B
 							buf.printf(
 									"%v"+
 									"for (; %v ; %v) {%{"+
+										"Tonyu.checkLoop();%n"+
 										"%v%n" +
 									"%}}"
 										,
@@ -626,6 +627,7 @@ function genJS(klass, env) {//B
 							buf.printf(
 									"%v%n"+
 									"while(%v) {%{" +
+										"Tonyu.checkLoop();%n"+
 										"%v%n" +
 										"%v;%n" +
 									"%}}",

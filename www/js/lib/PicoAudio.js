@@ -1182,7 +1182,7 @@ var PicoAudio = (function(){
 									case 0x20:
 										break;
 									case 0x2F:
-										time += header.resolution - dt;
+										time += /*header.resolution*/ - dt; //@hoge1e3
 										break;
 									// Tempo
 									case 0x51:

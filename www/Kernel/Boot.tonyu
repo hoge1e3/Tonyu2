@@ -13,6 +13,7 @@ native requestAnimationFrame;
 native console;
 native Array;
 
+Tonyu.resetLoopCheck(10000);
 $Boot=this;
 scheduler=$Scheduler=new Scheduler;
 initEvents();
@@ -55,6 +56,7 @@ mainLoop();
     $mouseX=$mouseX||0;
     $mouseY=$mouseY||0;
     debugCnt=50;
+    newLimit=1000;
 }
 \initLayers() {
     $mainLayer=$Sprites=new Sprites();
@@ -320,6 +322,8 @@ nowait \drawFrame() {
 */
 nowait \moveFrame() {
 	var s=now();
+    Tonyu.resetLoopCheck();
+    if (newLimit) newLimitCount=newLimit;
     //debug("MoveFrame",1);
     scheduler.stepsAll();
     //debug("MoveFrame",2);

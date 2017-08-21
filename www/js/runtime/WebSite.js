@@ -108,7 +108,7 @@ define(["PathUtil"], function (P) {
 	}
 	WebSite.sampleImg=WebSite.top+"/images";
 	WebSite.blobPath=WebSite.serverTop+"/serveBlob";        //TODO: urlchange!
-	WebSite.isNW=(typeof process=="object" && process.__node_webkit);
+	WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
 	WebSite.mp3Disabled=WebSite.isNW;
 	WebSite.tonyuHome="/Tonyu/";
 	WebSite.url={

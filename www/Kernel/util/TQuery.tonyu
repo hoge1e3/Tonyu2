@@ -1,7 +1,11 @@
 extends TObject;
 includes MathMod;
-\new () {
+\new (parent) {
     length=0;
+    this.parent=parent;
+}
+\create() {
+    return new TQuery(parent);
 }
 \contains(t) {
     for (var o in this) {
@@ -57,13 +61,31 @@ includes MathMod;
         return key;
     }
 }
+\applyArrayMethod(name,args) {
+    var res=create();
+    var a=toArray();
+    var r=a[name].apply(a,args);
+    res.push(r);
+    return res;
+}
+\toArray() {
+    var res=[];
+    for(var i=0;i<length;i++) res.push(this[i]);
+    return res;
+}
+\sort() {
+    return applyArrayMethod("sort",arguments);
+}
+\slice() {
+    return applyArrayMethod("slice",arguments);
+}
 \maxs(key) {
     var f=genKeyfunc(key);
-    var res,reso=new TQuery;
+    var res,reso=create();
     for (var o in this) {
         var v=f(o);
         if (res==null || v>=res) {
-            if (v>res) reso=new TQuery;
+            if (v>res) reso=create();
             reso.push(o);
             res=v;
         }
@@ -72,11 +94,11 @@ includes MathMod;
 }
 \mins(key) {
     var f=genKeyfunc(key);
-    var res,reso=new TQuery;
+    var res,reso=create();
     for (var o in this) {
         var v=f(o);
         if (res==null || v<=res) {
-            if (v<res) reso=new TQuery;
+            if (v<res) reso=create();
             reso.push(o);
             res=v;
         }
@@ -100,7 +122,11 @@ includes MathMod;
 }
 \withins(xo,yd,d) {
     var x,y;
-    if (typeof xo=="object") {
+    if (arguments.length==1) {
+        x=parent.x;
+        y=parent.y;
+        d=xo;
+    } else if (typeof xo=="object") {
         x=xo.x;y=xo.y;d=yd;
     } else {
         x=xo;y=yd;
@@ -141,7 +167,7 @@ includes MathMod;
 }
 \size() {return length;}
 \find(f) {
-    var no=new TQuery;
+    var no=create();
     for (var o in this) {
         if (f(o)) no.push(o);
     }
@@ -149,7 +175,11 @@ includes MathMod;
 }
 \find1(f) {
     return find(f)[0];
-} 
+}
+\random() {
+    if (length===0) return null;
+    return this[rnd(length)];
+}
 \apply(name, args) {
     var res;
     if (!args) args=[];
