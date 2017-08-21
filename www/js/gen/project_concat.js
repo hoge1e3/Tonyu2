@@ -1,4 +1,4 @@
-// Created at Mon Aug 14 2017 10:39:00 GMT+0900 (東京 (標準時))
+// Created at Mon Aug 21 2017 11:02:50 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -585,8 +585,12 @@ define([], function () {
                 return {DU_BRK:true,res:res};
             }
     };
+    DU.begin=DU.try=DU.tr=DU.throwF;
+    DU.promise=DU.callbackToPromise=DU.funcPromise;
+
     return DU;
 });
+
 requireSimulator.setName('Klass');
 define(["assert"],function (A) {
     var Klass={};
@@ -1351,7 +1355,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
-			VERSION:1502674731618,//EMBED_VERSION
+			VERSION:1503280961746,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -2170,7 +2174,8 @@ define(["DataURL","Util","assert"],function (DataURL,Util,assert) {
     };
     Content.buffer2ArrayBuffer = function (a) {
         if (Util.isBuffer(a)) {
-            return assert(new Uint8Array(a).buffer,"n2a: buf is not set");
+            a=Array.prototype.slice.call(a);
+            return assert.is(new Uint8Array(a).buffer,ArrayBuffer);//"n2a: buf is not set");
         }
         return assert(a,"n2a: a is not set");
     };
@@ -2299,6 +2304,7 @@ requirejs(["Content"], function (C) {
 
 });
 */
+
 requireSimulator.setName('NativeFS');
 define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL","Content"],
         function (FS,A,P,extend,MIME,DataURL,Content) {
@@ -9185,9 +9191,9 @@ return TonyuLang=function () {
 	var funcExpr=g("funcExpr").ands("funcExprHead","compound").ret("head","body");
 	var jsonElem=g("jsonElem").ands(
 			symbol.or(literal),
-			tk(":").and(expr).ret(function (c,v) {return v;}).opt()
+			tk(":").or(tk("=")).and(expr).ret(function (c,v) {return v;}).opt()
 	).ret("key","value");
-	var objlit=g("objlit").ands(tk("{"), jsonElem.sep0(tk(","),true),  tk("}")).ret(null, "elems");
+	var objlit=g("objlit").ands(tk("{"), jsonElem.sep0(tk(","),true), tk(",").opt(), tk("}")).ret(null, "elems");
 	var arylit=g("arylit").ands(tk("["), expr.sep0(tk(","),true),  tk("]")).ret(null, "elems");
 	var ext=g("extends").ands(tk("extends"),symbol.or(tk("null")), tk(";")).
 	ret(null, "superclassName");
@@ -12417,7 +12423,7 @@ var TPRC=function (dir) {
 		console.log("Compile: "+dir.path());
 		ctx=initCtx(ctx);
 		var myNsp=TPR.getNamespace();
-		var baseClasses,ctxOpt,env,myClasses,fileAddedOrRemoved,sf;
+		var baseClasses,ctxOpt,env,myClasses,fileAddedOrRemoved,sf,ord;
 		var compilingClasses;
 		return TPR.loadDependingClasses(ctx).then(F(function () {
 			baseClasses=ctx.classes;
@@ -12430,6 +12436,8 @@ var TPRC=function (dir) {
 				var cl=baseClasses[n];
 				env.aliases[ cl.shortName] = cl.fullName;
 			}
+			return TPR.showProgress("scan sources");
+		})).then(F(function () {
 			myClasses={};
 			fileAddedOrRemoved=!!ctxOpt.noIncremental;
 			sf=TPR.sourceFiles(myNsp);
@@ -12451,6 +12459,8 @@ var TPRC=function (dir) {
 				m.src.tonyu=f;
 				env.aliases[shortCn]=fullCn;
 			}
+			return TPR.showProgress("update check");
+		})).then(F(function () {
 			for (var n in baseClasses) {
 				if (myClasses[n] && myClasses[n].src && !myClasses[n].src.js) {
 					//前回コンパイルエラーだとここにくるかも
@@ -12473,11 +12483,15 @@ var TPRC=function (dir) {
 			} else {
 				compilingClasses=myClasses;
 			}
+			return TPR.showProgress("initClassDecl");
+		})).then(F(function () {
 			for (var n in compilingClasses) {
 				console.log("initClassDecl: "+n);
 				Semantics.initClassDecls(compilingClasses[n], env);/*ENVC*/
 			}
-			var ord=orderByInheritance(myClasses);/*ENVC*/
+			return TPR.showProgress("order");
+		})).then(F(function () {
+			ord=orderByInheritance(myClasses);/*ENVC*/
 			ord.forEach(function (c) {
 				if (compilingClasses[c.fullName]) {
 					console.log("annotate :"+c.fullName);
@@ -12494,10 +12508,14 @@ var TPRC=function (dir) {
 			} catch(e) {
 				console.log("Error in Typecheck(It doesnt matter because Experimental)",e.stack);
 			}
+			return TPR.showProgress("genJS");
+		})).then(F(function () {
 			//throw "test break";
 			TPR.genJS(ord.filter(function (c) {
 				return compilingClasses[c.fullName];
 			}));
+			return TPR.showProgress("concat");
+		})).then(F(function () {
 			var copt=TPR.getOptions().compiler;
 			if (!copt.genAMD) {
 				return TPR.concatJS(ord);
@@ -13555,9 +13573,13 @@ return Tonyu.Project=function (dir, kernelDir) {
         });
     };
     TPR.showProgress=function (m) {
+        console.log("PROGRESS",m);
         if (typeof SplashScreen!="undefined") {
             SplashScreen.progress(m);
         }
+        return DU.promise(function (succ) {
+            setTimeout(succ,0);
+        });
     };
     return TPR;
 };
@@ -15043,7 +15065,7 @@ var PicoAudio = (function(){
 									case 0x20:
 										break;
 									case 0x2F:
-										time += header.resolution - dt;
+										time += /*header.resolution*/ - dt; //@hoge1e3
 										break;
 									// Tempo
 									case 0x51:
@@ -18446,17 +18468,17 @@ define(["FS","Shell","Util"/*"JSZip","FileSaver"*/],function (FS,sh,Util/*,JSZip
         //zip.file("Hello.txt", "Hello World\n");
         //var img = zip.folder("images");
         //img.file("smile.gif", imgData, {base64: true});
-        var content = zip.generate({type:"blob"});
-        return content;
+        return zip.generateAsync({type:"blob"});
     };
     if (typeof saveAs!="undefined") {
         zip.dlzip=function (dir) {
-            var content=zip.zip(dir);
-            saveAs(content, dir.name().replace(/\/$/,"")+".zip");
+            return zip.zip(dir).then(function (content) {
+                return saveAs(content, dir.name().replace(/\/$/,"")+".zip");
+            });
         };
         sh.dlzip=function (dir) {
             dir=sh.resolve(dir||".");
-            zip.dlzip(dir);
+            return zip.dlzip(dir);
             //var content=zip.zip(dir);
             //saveAs(content, dir.name().replace(/\//g,"")+".zip");
         };
@@ -18465,25 +18487,27 @@ define(["FS","Shell","Util"/*"JSZip","FileSaver"*/],function (FS,sh,Util/*,JSZip
     var binMap={".png": "image/png", ".jpg":"image/jpg", ".gif": "image/gif", ".jpeg":"image/jpg",
             ".mp3":"audio/mp3", ".ogg":"audio/ogg", ".mp4":"video/mp4", ".m4a":"audio/x-m4a", ".mid":"audio/mid", ".midi":"audio/mid", ".wav":"audio/wav"};
     zip.unzip=function (arrayBuf,destDir) {
-        var zip=new JSZip(arrayBuf);
-        for (var i in zip.files) {
-            var zipEntry=zip.files[i];
-            var dest=destDir.rel(zipEntry.name);
-            for (var ext in binMap) {
-                var text;
-                if (dest.endsWith(ext)) {
-                    var ct=binMap[ext];
-                    text="data:"+ct+";base64,"+Util.Base64_From_ArrayBuffer(zipEntry.asArrayBuffer());
-                } else {
-                    text=zipEntry.asText();
+        return JSZip.loadAsync(arrayBuf).then(function (zip) {
+            for (var i in zip.files) {
+                var zipEntry=zip.files[i];
+                var dest=destDir.rel(zipEntry.name);
+                for (var ext in binMap) {
+                    var text;
+                    if (dest.endsWith(ext)) {
+                        var ct=binMap[ext];
+                        text="data:"+ct+";base64,"+Util.Base64_From_ArrayBuffer(zipEntry.asArrayBuffer());
+                    } else {
+                        text=zipEntry.asText();
+                    }
+                    dest.text(text);
                 }
-                dest.text(text);
+                console.log(zipEntry.name);
             }
-            console.log(zipEntry.name);
-        }
+        });//new JSZip(arrayBuf);
     };
     return zip;
 });
+
 requireSimulator.setName('mkrunDiag');
 define(["UI","extLink","mkrun","Tonyu","zip"], function (UI,extLink,mkrun,Tonyu,zip) {
     var res={};
@@ -19044,6 +19068,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         curPrj.stop();
         displayMode("edit");
     }
+    //\run
     function run(name) {
         curPrj.stop();
         if (typeof name!="string") {

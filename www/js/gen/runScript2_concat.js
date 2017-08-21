@@ -1,4 +1,4 @@
-// Created at Mon Aug 14 2017 10:39:40 GMT+0900 (東京 (標準時))
+// Created at Mon Aug 21 2017 11:03:29 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -1302,7 +1302,8 @@ define(["DataURL","Util","assert"],function (DataURL,Util,assert) {
     };
     Content.buffer2ArrayBuffer = function (a) {
         if (Util.isBuffer(a)) {
-            return assert(new Uint8Array(a).buffer,"n2a: buf is not set");
+            a=Array.prototype.slice.call(a);
+            return assert.is(new Uint8Array(a).buffer,ArrayBuffer);//"n2a: buf is not set");
         }
         return assert(a,"n2a: a is not set");
     };
@@ -1431,6 +1432,7 @@ requirejs(["Content"], function (C) {
 
 });
 */
+
 requireSimulator.setName('NativeFS');
 define(["FS2","assert","PathUtil","extend","MIMETypes","DataURL","Content"],
         function (FS,A,P,extend,MIME,DataURL,Content) {
@@ -2585,8 +2587,12 @@ define([], function () {
                 return {DU_BRK:true,res:res};
             }
     };
+    DU.begin=DU.try=DU.tr=DU.throwF;
+    DU.promise=DU.callbackToPromise=DU.funcPromise;
+
     return DU;
 });
+
 requireSimulator.setName('compiledProject');
 define(["DeferredUtil","WebSite"], function (DU,WebSite) {
 	var CPR=function (ns, url) {
@@ -3627,7 +3633,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
-			VERSION:1502674731618,//EMBED_VERSION
+			VERSION:1503280961746,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -5089,7 +5095,7 @@ var PicoAudio = (function(){
 									case 0x20:
 										break;
 									case 0x2F:
-										time += header.resolution - dt;
+										time += /*header.resolution*/ - dt; //@hoge1e3
 										break;
 									// Tempo
 									case 0x51:
