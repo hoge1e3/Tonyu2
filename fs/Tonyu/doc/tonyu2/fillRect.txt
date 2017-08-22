@@ -10,7 +10,7 @@ panel.fillRect(x,y,rectWidth,rectHeight);
 
 
 
--x : 四角形を描き始めるパネル内のx座標をあらわします
--y : 四角形を描き始めるパネル内のy座標をあらわします
+-x : 四角形の左上の座標のx座標（[[パネルの座標系>panelCoord]]）をあらわします
+-y : 四角形の左上の座標のy座標（[[パネルの座標系>panelCoord]]）をあらわします
 -rectWidth : 描画する四角形の横幅をあらわします
 -rectHeight : 描画する四角形の縦幅をあらわします

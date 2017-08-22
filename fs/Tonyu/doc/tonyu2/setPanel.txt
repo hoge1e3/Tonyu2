@@ -1,10 +1,15 @@
 [[Panel]]
-*setPanelメソッド
+*resizeメソッド/ setPanelメソッド
 
-パネルのサイズを設定します．
+パネルのサイズを設定します．resizeもsetPanelも同じ動作をします．
 
 <<code
 panel.setPanel(width,height);
+//パネルのサイズをwidth*heightに設定します．
+>>
+
+<<code
+panel.resize(width,height);
 //パネルのサイズをwidth*heightに設定します．
 >>
 

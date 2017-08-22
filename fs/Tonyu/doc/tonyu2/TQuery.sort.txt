@@ -1,0 +1,9 @@
+[[TQuery]]
+
+*TQuery.sort メソッド
+
+このTQueryオブジェクトがもつオブジェクトを並べ替えます
+
+書式はJavaScriptのArrayオブジェクトのsortメソッドと同じです．
+
+.

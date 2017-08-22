@@ -12,19 +12,32 @@
 \new(param)
 >>
 
-paramでパネルの横幅と縦幅を設定します．paramに何も与えずにsetPanelメソッドを使用してサイズを設定することもできます．
+paramでパネルの横幅と縦幅を設定します．paramに何も与えずにresizeメソッドを使用してサイズを設定することもできます．
 
 例： 
 <<code
 panel=new Panel();
 >>
 
+[[パネルの座標系について>panelCoord]]
+
+*フィールド
+
+-x,y
+--パネルの中心のx,y座標（ゲーム画面内の座標）をあらわします．
+-fillStyle
+--値[[@cfrag f]]を代入することで，[[setFillStyle]]([[@cfrag f]])と同じ効果があります
+-context
+--Canvasオブジェクトのコンテキストに直接アクセスします．（パネルはHTML5のCanvasオブジェクトで実装しています．）
+-その他，[[BaseActor]]クラスのフィールドも利用できます．
 
 *メソッド
 
 -[[setPanel]]
+-[[resize>setPanel]]
 -[[setFillStyle]]
 -[[fillRect]]
+-[[fillCircle]]
 -[[fillText]]
 -[[clearRect]]
 -[[getPixel]]

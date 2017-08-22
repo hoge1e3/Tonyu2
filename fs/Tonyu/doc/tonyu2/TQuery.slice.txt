@@ -1,0 +1,9 @@
+[[TQuery]]
+
+*TQuery.slice メソッド
+
+このTQueryオブジェクトがもつオブジェクトから一部分を切り出した新しいTQueryオブジェクトを返します．
+
+書式はJavaScriptのArrayオブジェクトのsliceメソッドと同じです．
+
+.

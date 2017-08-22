@@ -11,7 +11,10 @@
 </span><a id="line_marker_-1" name="line_marker_-1"></a><p></p><h1><a id="line_marker_-2" name="line_marker_-2"></a><span> for(..in..)の動作</span></h1><a id="line_marker_-3" name="line_marker_-3"></a><p></p><a id="line_marker_-4" name="line_marker_-4"></a><code><span>for (e in set)</span></code><span> はJavaScriptとは動作が異なります．</span><span>
 </span><a id="line_marker_-5" name="line_marker_-5"></a><p></p><a id="line_marker_-8" name="line_marker_-8"></a><ul><li><a id="line_marker_-6" name="line_marker_-6"></a><span>setが配列または</span><a href="TQuery.html">TQuery</a><span>オブジェクトの場合，eには（添字ではなく）値を入れながら繰り返します．</span><span>
 </span></li><li><a id="line_marker_-7" name="line_marker_-7"></a><span>setがオブジェクトの場合，eには(キーではなく）値を入れながら繰り返します．</span><span>
-</span></li></ul><p></p><a id="line_marker_-9" name="line_marker_-9"></a><span>また，</span><code><span>for (k,v in set)</span></code><span>という構文があります． </span><span>
-</span><a id="line_marker_-10" name="line_marker_-10"></a><p></p><a id="line_marker_-12" name="line_marker_-12"></a><ul><li><a id="line_marker_-11" name="line_marker_-11"></a><span>setがオブジェクトの場合，kにキー，vに値を入れながら繰り返します．</span><span>
-</span></li></ul><p></p><a id="line_marker_-13" name="line_marker_-13"></a><p></p><a id="line_marker_-14" name="line_marker_-14"></a><p></p><a id="line_marker_-15" name="line_marker_-15"></a><p></p></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
+</span></li></ul><p></p><a id="line_marker_-9" name="line_marker_-9"></a><span>※</span><code><span>for (e in set)</span></code><span> は非推奨になりました．</span><span>
+</span><a id="line_marker_-12" name="line_marker_-12"></a><ul><li><a id="line_marker_-10" name="line_marker_-10"></a><span>将来，一般的なJavaScriptと同じく，添字を取り出す動作になる可能性があります．（コンパイラオプション等で切り替える形を予定しています）</span><span>
+</span></li><li><a id="line_marker_-11" name="line_marker_-11"></a><span>今後は，一般的なJavaScriptで同等の動作を行なう</span><code><span>for (e of set)</span></code><span> を使用してください．</span><span>
+</span></li></ul><p></p><a id="line_marker_-13" name="line_marker_-13"></a><span>また，</span><code><span>for (k,v in set)</span></code><span>という構文があります． </span><span>
+</span><a id="line_marker_-14" name="line_marker_-14"></a><p></p><a id="line_marker_-16" name="line_marker_-16"></a><ul><li><a id="line_marker_-15" name="line_marker_-15"></a><span>setがオブジェクトの場合，kにキー，vに値を入れながら繰り返します．</span><span>
+</span></li></ul><p></p><a id="line_marker_-17" name="line_marker_-17"></a><p></p><a id="line_marker_-18" name="line_marker_-18"></a><p></p><a id="line_marker_-19" name="line_marker_-19"></a><p></p></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
 </body></html>

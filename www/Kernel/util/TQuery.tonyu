@@ -112,6 +112,7 @@ includes MathMod;
     return maxs(key)[0];
 }
 \nearests(x,y) {
+    if (x==null) {x=parent.x;y=parent.y;}
     if (typeof x=="object") {y=x.y;x=x.x;}
     return mins \(o) {
         return dist(o.x-x,o.y-y);

@@ -10,6 +10,8 @@ TQueryオブジェクトに格納しているActorの個数は[[@cfrag .length]]
 
 各Actorへは[[@cfrag [添字] ]]でアクセスします．
 
+※TQueryオブジェクトは配列のように扱うことができますが，JavaScriptのArrayオブジェクトではありません．Arrayオブジェクトに変換する場合は[[toArrayメソッド>TQuery.toArray]]を用います．
+
 **例
 
 <<code
@@ -18,12 +20,12 @@ print("敵の数=", a.length);
 if (a.length>0) print("最初の敵のx座標",a[0].x);
 >>
 
-* for ... in の使用
+* for ... of の使用
 
-for ... in を使って各Actorへに同じ処理を一斉に行うことができます．
+for ... of を使って各Actorへに同じ処理を一斉に行うことができます．
 
 <<code
-for (e in all(Enemy)) {
+for (e of all(Enemy)) {
    e.die();
 }
 >>
@@ -34,9 +36,14 @@ for (e in all(Enemy)) {
 -[[alive>TQuery.alive]]
 -[[attr>TQuery.attr]]
 -[[find>TQuery.find]]
+-[[withins>TQuery.withins]]
+-[[min, max, minObj, maxObj, mins, maxs>TQuery.minmax]]
+-[[nearest, nearests>TQuery.nearest]]
+-[[random>TQuery.random]]
 -[[apply>TQuery.apply]]
--[[min, max>TQuery.minmax]]
+-[[toArray>TQuery.toArray]]
+-[[slice>TQuery.slice]]
+-[[sort>TQuery.sort]]
 
-※TQueryオブジェクトは配列のように扱うことができますが，配列(Array)オブジェクトではありません．
 
 .

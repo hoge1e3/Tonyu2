@@ -11,17 +11,27 @@
 </span><h1><a id="line_marker_-1" name="line_marker_-1"></a><span>Panelクラス</span></h1><a id="line_marker_-2" name="line_marker_-2"></a><p></p><a id="line_marker_-3" name="line_marker_-3"></a><span>パネルの表示クラスです．Bootクラスで$panelがスクリーン幅に合わせて初期化されています．</span><span>
 </span><a id="line_marker_-4" name="line_marker_-4"></a><p></p><a id="line_marker_-5" name="line_marker_-5"></a><a href="E382B2E383BCE382B8E381AEE8A1A8E7A4BA.html">実例</a><span>
 </span><a id="line_marker_-6" name="line_marker_-6"></a><p></p><a id="line_marker_-7" name="line_marker_-7"></a><p></p><h1><a id="line_marker_-8" name="line_marker_-8"></a><span> コンストラクタ</span></h1><a id="line_marker_-9" name="line_marker_-9"></a><p></p><a id="line_marker_-12" name="line_marker_-12"></a><pre><a id="line_marker_-11" name="line_marker_-11"></a><span>\new(param)</span><span>
-</span></pre><a id="line_marker_-13" name="line_marker_-13"></a><p></p><a id="line_marker_-14" name="line_marker_-14"></a><span>paramでパネルの横幅と縦幅を設定します．paramに何も与えずにsetPanelメソッドを使用してサイズを設定することもできます．</span><span>
+</span></pre><a id="line_marker_-13" name="line_marker_-13"></a><p></p><a id="line_marker_-14" name="line_marker_-14"></a><span>paramでパネルの横幅と縦幅を設定します．paramに何も与えずにresizeメソッドを使用してサイズを設定することもできます．</span><span>
 </span><a id="line_marker_-15" name="line_marker_-15"></a><p></p><a id="line_marker_-16" name="line_marker_-16"></a><span>例： </span><span>
 </span><a id="line_marker_-19" name="line_marker_-19"></a><pre><a id="line_marker_-18" name="line_marker_-18"></a><span>panel=new Panel();</span><span>
-</span></pre><a id="line_marker_-20" name="line_marker_-20"></a><p></p><a id="line_marker_-21" name="line_marker_-21"></a><p></p><h1><a id="line_marker_-22" name="line_marker_-22"></a><span>メソッド</span></h1><a id="line_marker_-23" name="line_marker_-23"></a><p></p><a id="line_marker_-32" name="line_marker_-32"></a><ul><li><a id="line_marker_-24" name="line_marker_-24"></a><a href="setPanel.html">setPanel</a><span>
-</span></li><li><a id="line_marker_-25" name="line_marker_-25"></a><a href="setFillStyle.html">setFillStyle</a><span>
-</span></li><li><a id="line_marker_-26" name="line_marker_-26"></a><a href="fillRect.html">fillRect</a><span>
-</span></li><li><a id="line_marker_-27" name="line_marker_-27"></a><a href="fillText.html">fillText</a><span>
-</span></li><li><a id="line_marker_-28" name="line_marker_-28"></a><a href="clearRect.html">clearRect</a><span>
-</span></li><li><a id="line_marker_-29" name="line_marker_-29"></a><a href="getPixel.html">getPixel</a><span>
-</span></li><li><a id="line_marker_-30" name="line_marker_-30"></a><a href="drawSprite.html">drawSprite</a><span>
-</span></li><li><a id="line_marker_-31" name="line_marker_-31"></a><a href="Panel.copy.html">copy</a><span>
-</span></li></ul><p></p><a id="line_marker_-33" name="line_marker_-33"></a><span>.</span><span>
+</span></pre><a id="line_marker_-20" name="line_marker_-20"></a><p></p><a id="line_marker_-21" name="line_marker_-21"></a><a href="panelCoord.html">パネルの座標系について</a><span>
+</span><a id="line_marker_-22" name="line_marker_-22"></a><p></p><h1><a id="line_marker_-23" name="line_marker_-23"></a><span>フィールド</span></h1><a id="line_marker_-24" name="line_marker_-24"></a><p></p><a id="line_marker_-32" name="line_marker_-32"></a><ul><li><a id="line_marker_-25" name="line_marker_-25"></a><span>x,y</span><span>
+</span></li><a id="line_marker_-27" name="line_marker_-27"></a><ul><li><a id="line_marker_-26" name="line_marker_-26"></a><span>パネルの中心のx,y座標（ゲーム画面内の座標）をあらわします．</span><span>
+</span></li></ul><li><span>fillStyle</span><span>
+</span></li><a id="line_marker_-29" name="line_marker_-29"></a><ul><li><a id="line_marker_-28" name="line_marker_-28"></a><span>値</span><code><span>f</span></code><span>を代入することで，</span><a href="setFillStyle.html">setFillStyle</a><span>(</span><code><span>f</span></code><span>)と同じ効果があります</span><span>
+</span></li></ul><li><span>context</span><span>
+</span></li><a id="line_marker_-31" name="line_marker_-31"></a><ul><li><a id="line_marker_-30" name="line_marker_-30"></a><span>Canvasオブジェクトのコンテキストに直接アクセスします．（パネルはHTML5のCanvasオブジェクトで実装しています．）</span><span>
+</span></li></ul><li><span>その他，</span><a href="BaseActor.html">BaseActor</a><span>クラスのフィールドも利用できます．</span><span>
+</span></li></ul><p></p><h1><a id="line_marker_-33" name="line_marker_-33"></a><span>メソッド</span></h1><a id="line_marker_-34" name="line_marker_-34"></a><p></p><a id="line_marker_-45" name="line_marker_-45"></a><ul><li><a id="line_marker_-35" name="line_marker_-35"></a><a href="setPanel.html">setPanel</a><span>
+</span></li><li><a id="line_marker_-36" name="line_marker_-36"></a><a href="setPanel.html">resize</a><span>
+</span></li><li><a id="line_marker_-37" name="line_marker_-37"></a><a href="setFillStyle.html">setFillStyle</a><span>
+</span></li><li><a id="line_marker_-38" name="line_marker_-38"></a><a href="fillRect.html">fillRect</a><span>
+</span></li><li><a id="line_marker_-39" name="line_marker_-39"></a><a href="fillCircle.html">fillCircle</a><span>
+</span></li><li><a id="line_marker_-40" name="line_marker_-40"></a><a href="fillText.html">fillText</a><span>
+</span></li><li><a id="line_marker_-41" name="line_marker_-41"></a><a href="clearRect.html">clearRect</a><span>
+</span></li><li><a id="line_marker_-42" name="line_marker_-42"></a><a href="getPixel.html">getPixel</a><span>
+</span></li><li><a id="line_marker_-43" name="line_marker_-43"></a><a href="drawSprite.html">drawSprite</a><span>
+</span></li><li><a id="line_marker_-44" name="line_marker_-44"></a><a href="Panel.copy.html">copy</a><span>
+</span></li></ul><p></p><a id="line_marker_-46" name="line_marker_-46"></a><span>.</span><span>
 </span></div><div style="height: 100px;"></div><br/><button onclick='javascript:history.back();'>←Back</button>
 </body></html>

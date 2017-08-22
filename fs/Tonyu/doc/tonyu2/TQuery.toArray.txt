@@ -1,0 +1,17 @@
+[[TQuery]]
+
+*TQuery.toArrayメソッド
+
+このTQueryオブジェクトがもつすべての要素からなる配列（JavaScriptのArrayオブジェクト）を返します．
+
+*書式
+
+<<code
+t.toArray()
+>>
+
+* 戻り値
+
+[[@cfrag t]]がもつすべての要素からなる配列（JavaScriptのArrayオブジェクト）
+
+.

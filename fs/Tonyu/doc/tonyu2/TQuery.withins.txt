@@ -1,0 +1,33 @@
+[[TQuery]]
+
+*TQuery.withins
+
+このTQueryオブジェクトが格納しているオブジェクトのうち，特定の位置からの距離が指定された値以内のものだけを残した新しいTQueryオブジェクトを作成します．
+
+*書式1
+
+<<code
+t.withins(x,y,d)
+>>
+
+([[@cfrag x]],[[@cfrag y]]) からの距離が[[@cfrag d]]以内のものからなる新しいTQueryオブジェクトを返します．
+
+*書式2
+
+<<code
+t.withins(obj,d)
+>>
+
+オブジェクト [[@cfrag obj]] からの距離が[[@cfrag d]]以内のものからなる新しいTQueryオブジェクトを返します．
+
+
+*書式3
+
+
+<<code
+t.withins(d)
+>>
+
+[[@cfrag t]]を作成したオブジェクト([[all]]などが呼び出されたオブジェクト)からの距離が[[@cfrag d]]以内のものからなる新しいTQueryオブジェクトを返します．
+
+.
