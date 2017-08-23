@@ -1,4 +1,4 @@
-// Created at Tue Aug 22 2017 10:53:34 GMT+0900 (東京 (標準時))
+// Created at Wed Aug 23 2017 10:53:52 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -3296,7 +3296,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
-			VERSION:1503366788557,//EMBED_VERSION
+			VERSION:1503453200013,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -8735,6 +8735,7 @@ function genJS(klass, env) {//B
 	var fnSeq=0;
 	var diagnose=env.options.compiler.diagnose;
 	var genMod=env.options.compiler.genAMD;
+	var doLoopCheck=!env.options.compiler.noLoopCheck;
 
 	function annotation(node, aobj) {//B
 		return annotation3(klass.annotation,node,aobj);
@@ -9196,7 +9197,10 @@ function genJS(klass, env) {//B
 				);
 			} else {
 				ctx.enter({noWait:true},function () {
-					buf.printf("while (%v) {%{Tonyu.checkLoop();%n%f%n%}}", node.cond, noSurroundCompoundF(node.loop));
+					buf.printf("while (%v) {%{"+
+						(doLoopCheck?"Tonyu.checkLoop();%n":"")+
+						"%f%n"+
+					"%}}", node.cond, noSurroundCompoundF(node.loop));
 				});
 			}
 		},
@@ -9222,8 +9226,11 @@ function genJS(klass, env) {//B
 				);
 			} else {
 				ctx.enter({noWait:true},function () {
-					buf.printf("do {%{Tonyu.checkLoop();%n%f%n%}} while (%v);%n",
-							noSurroundCompoundF(node.loop), node.cond );
+					buf.printf("do {%{"+
+						(doLoopCheck?"Tonyu.checkLoop();%n":"")+
+						"%f%n"+
+					"%}} while (%v);%n",
+						noSurroundCompoundF(node.loop), node.cond );
 				});
 			}
 		},
@@ -9297,7 +9304,7 @@ function genJS(klass, env) {//B
 							buf.printf(
 									"%v"+
 									"for (; %v ; %v) {%{"+
-										"Tonyu.checkLoop();%n"+
+										(doLoopCheck?"Tonyu.checkLoop();%n":"")+
 										"%v%n" +
 									"%}}"
 										,
@@ -9309,7 +9316,7 @@ function genJS(klass, env) {//B
 							buf.printf(
 									"%v%n"+
 									"while(%v) {%{" +
-										"Tonyu.checkLoop();%n"+
+										(doLoopCheck?"Tonyu.checkLoop();%n":"")+
 										"%v%n" +
 										"%v;%n" +
 									"%}}",

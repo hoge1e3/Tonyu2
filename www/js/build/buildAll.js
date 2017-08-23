@@ -6,20 +6,23 @@ define(["genROM","Util","FS","Sync","Shell","WebSite"],
     }
     sh.build=WebSite.isNW?doBuildNW:function(){throw"NOT support";};
     sh.build.description="Build files before commit.";
-    function doBuildNW() {
-        var home=FS.get(WebSite.tonyuHome);
-        var genHome=FS.get(FS.expandPath("${cwd}/www/"));
-        embedVersion(genHome.rel("js/runtime/TonyuLib.js"));
-        //genROM(home.rel("Kernel/"),     genHome.rel("js/gen/ROM_k.js"));
-        //genROM(home.rel("doc/"),        genHome.rel("js/gen/ROM_d.js"));
-        //genROM(home.rel("SampleROM/"),  genHome.rel("js/gen/ROM_s.js"));
-        var ds=require("dumpScript");
-        var reqConf=ds.genShim();
-        window.generatedShim=reqConf;
-        ds.concat({names:["ide/selProject"], outFile:"index",reqConf:reqConf});
-        ds.concat({names:["ide/editor"], outFile:"project",reqConf:reqConf});
-        ds.concat({names:["runScript"], outFile:"runScript",reqConf:reqConf});
-        ds.concat({names:["runScript2"], outFile:"runScript2",reqConf:reqConf});
+    function doBuildNW(options) {
+        options=options||{};
+        if (!options.d) {
+            var home=FS.get(WebSite.tonyuHome);
+            var genHome=FS.get(FS.expandPath("${cwd}/www/"));
+            embedVersion(genHome.rel("js/runtime/TonyuLib.js"));
+            //genROM(home.rel("Kernel/"),     genHome.rel("js/gen/ROM_k.js"));
+            //genROM(home.rel("doc/"),        genHome.rel("js/gen/ROM_d.js"));
+            //genROM(home.rel("SampleROM/"),  genHome.rel("js/gen/ROM_s.js"));
+            var ds=require("dumpScript");
+            var reqConf=ds.genShim();
+            window.generatedShim=reqConf;
+            ds.concat({names:["ide/selProject"], outFile:"index",reqConf:reqConf});
+            ds.concat({names:["ide/editor"], outFile:"project",reqConf:reqConf});
+            ds.concat({names:["runScript"], outFile:"runScript",reqConf:reqConf});
+            ds.concat({names:["runScript2"], outFile:"runScript2",reqConf:reqConf});
+        }
         sh.echo("To compile documents, type:");
         sh.echo("wiki2serv ../fs/Tonyu/doc/ ../www/doc/");
     }

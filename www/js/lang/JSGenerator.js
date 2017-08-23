@@ -53,6 +53,7 @@ function genJS(klass, env) {//B
 	var fnSeq=0;
 	var diagnose=env.options.compiler.diagnose;
 	var genMod=env.options.compiler.genAMD;
+	var doLoopCheck=!env.options.compiler.noLoopCheck;
 
 	function annotation(node, aobj) {//B
 		return annotation3(klass.annotation,node,aobj);
@@ -514,7 +515,10 @@ function genJS(klass, env) {//B
 				);
 			} else {
 				ctx.enter({noWait:true},function () {
-					buf.printf("while (%v) {%{Tonyu.checkLoop();%n%f%n%}}", node.cond, noSurroundCompoundF(node.loop));
+					buf.printf("while (%v) {%{"+
+						(doLoopCheck?"Tonyu.checkLoop();%n":"")+
+						"%f%n"+
+					"%}}", node.cond, noSurroundCompoundF(node.loop));
 				});
 			}
 		},
@@ -540,8 +544,11 @@ function genJS(klass, env) {//B
 				);
 			} else {
 				ctx.enter({noWait:true},function () {
-					buf.printf("do {%{Tonyu.checkLoop();%n%f%n%}} while (%v);%n",
-							noSurroundCompoundF(node.loop), node.cond );
+					buf.printf("do {%{"+
+						(doLoopCheck?"Tonyu.checkLoop();%n":"")+
+						"%f%n"+
+					"%}} while (%v);%n",
+						noSurroundCompoundF(node.loop), node.cond );
 				});
 			}
 		},
@@ -615,7 +622,7 @@ function genJS(klass, env) {//B
 							buf.printf(
 									"%v"+
 									"for (; %v ; %v) {%{"+
-										"Tonyu.checkLoop();%n"+
+										(doLoopCheck?"Tonyu.checkLoop();%n":"")+
 										"%v%n" +
 									"%}}"
 										,
@@ -627,7 +634,7 @@ function genJS(klass, env) {//B
 							buf.printf(
 									"%v%n"+
 									"while(%v) {%{" +
-										"Tonyu.checkLoop();%n"+
+										(doLoopCheck?"Tonyu.checkLoop();%n":"")+
 										"%v%n" +
 										"%v;%n" +
 									"%}}",
