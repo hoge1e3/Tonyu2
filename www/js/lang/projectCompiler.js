@@ -236,10 +236,10 @@ var TPRC=function (dir) {
 			return TPR.showProgress("genJS");
 		})).then(F(function () {
 			//throw "test break";
-			TPR.genJS(ord.filter(function (c) {
+			return TPR.genJS(ord.filter(function (c) {
 				return compilingClasses[c.fullName];
 			}));
-			return TPR.showProgress("concat");
+			//return TPR.showProgress("concat");
 		})).then(F(function () {
 			var copt=TPR.getOptions().compiler;
 			if (!copt.genAMD) {
@@ -250,9 +250,10 @@ var TPRC=function (dir) {
 	TPR.genJS=function (ord) {
 		// 途中でコンパイルエラーを起こすと。。。
 		var env=TPR.env;
-		ord.forEach(function (c) {
+		return DU.each(ord,function (c) {
 			console.log("genJS :"+c.fullName);
 			JSGenerator.genJS(c, env);
+			return TPR.showProgress("genJS :"+c.fullName);
 		});
 	};
 	TPR.concatJS=function (ord) {
