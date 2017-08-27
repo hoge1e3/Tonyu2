@@ -133,9 +133,9 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
 
     var editors={};
 
-    KeyEventChecker.down(document,"F12",F(function () {
+    /*KeyEventChecker.down(document,"F12",F(function () {
         require('nw.gui').Window.get().showDevTools();
-    }));
+    }));*/
     KeyEventChecker.down(document,"F9",F(run));
     KeyEventChecker.down(document,"F2",F(stop));
     KeyEventChecker.down(document,"ctrl+s",F(function (e) {

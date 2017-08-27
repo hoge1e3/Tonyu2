@@ -1,5 +1,6 @@
 {
     "compiler":{
+    	"noLoopCheck": true,
         "namespace": "kernel",
         "commentLastPos": true,
         "outputFile": "js/concat.js"
