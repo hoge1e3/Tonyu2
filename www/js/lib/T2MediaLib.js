@@ -61,7 +61,12 @@ T2MediaLib_BGMPlayer.prototype.playBGM = function(idx, loop, offset, loopStart, 
     } else if (decodedData instanceof Object) {
         // Midi
         if (this.picoAudio == null) {
-            this.picoAudio = new PicoAudio(T2MediaLib.context, T2MediaLib.picoAudio); // AudioContextオブジェクトがmax6つまで？なので使いまわす
+            if (this.id == 0) {
+                this.picoAudio = T2MediaLib.picoAudio; // 0番目はT2MediaLib.picoAudioを使いまわす（初期化に時間がかかるため）
+            }
+            if (this.picoAudio == null) {
+                this.picoAudio = new PicoAudio(T2MediaLib.context, T2MediaLib.picoAudio); // AudioContextオブジェクトがmax6つまで？なので使いまわす
+            }
         }
         if (idx != this.picoAudioSetDataBGMName) {
             this.picoAudio.setData(decodedData);
@@ -454,7 +459,7 @@ var T2MediaLib = {
                 T2MediaLib.bgmPlayerAry[i] = new T2MediaLib_BGMPlayer(i);
             }
             // MIDIデコード用PicoAudio生成
-            T2MediaLib.picoAudio = new PicoAudio(T2MediaLib.context);
+            //T2MediaLib.picoAudio = new PicoAudio(T2MediaLib.context); // 作成が少し重いので必要なときのみ作成する
         }
     },
 
@@ -510,6 +515,12 @@ var T2MediaLib = {
             T2MediaLib.soundDataAry[idx].onError("FUNC_DISABLED_ERROR");
             return null;
         }
+        // midiがあったらpicoAudioを準備しておく
+        if (url.match(/\.(midi?)$/) || url.match(/^data:audio\/mid/)) {
+            if (T2MediaLib.picoAudio == null) {
+                T2MediaLib.picoAudio = new PicoAudio(T2MediaLib.context);
+            }
+        }
         if (typeof WebSite=="object" && WebSite.mp3Disabled) {
             url=url.replace(/\.(mp3|mp4|m4a)$/,".ogg");
         }
@@ -552,6 +563,7 @@ var T2MediaLib = {
         if (soundData == null) return;
 
         var arrayBuffer = soundData.fileData;
+        if (soundData.isDecoding()) return;
         soundData.onDecode();
         if (soundData.url.match(/\.(midi?)$/) || soundData.url.match(/^data:audio\/mid/)) {
             // Midi
