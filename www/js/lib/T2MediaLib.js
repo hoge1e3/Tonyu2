@@ -37,7 +37,7 @@ T2MediaLib_BGMPlayer.prototype.playBGM = function(idx, loop, offset, loopStart, 
             callbacks.succ = function() {
                 var pending = that.playingStatePending; // 途中で値が変わるため保存
                 that._setPlayingState("stop", true);
-                if (pending != "stop") {
+                if (pending != "stop" && that.playingBGMName == idx) {
                     that.playBGM(idx, loop, offset, loopStart, loopEnd);
                 }
                 if (pending == "pause") {
@@ -51,6 +51,7 @@ T2MediaLib_BGMPlayer.prototype.playBGM = function(idx, loop, offset, loopStart, 
             this._setPlayingState("decoding", true);
             T2MediaLib.decodeSound(idx, callbacks);
         }
+        this._setPlayingState("play");
         return this;
     }
 
