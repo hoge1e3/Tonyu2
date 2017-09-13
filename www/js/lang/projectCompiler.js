@@ -11,6 +11,7 @@ var TPRC=function (dir) {
 	var F=DU.throwF;
 	TPR.env.traceTbl=traceTbl;
 	TPR.EXT=".tonyu";
+	TPR.getDir=function () {return dir;};
 	TPR.getOptionsFile=function () {
 		var resFile=dir.rel("options.json");
 		return resFile;
@@ -88,9 +89,19 @@ var TPRC=function (dir) {
 		});
 		return res;
 	};
+	TPR.getName=function () { return dir.name().replace(/\/$/,""); };
 	TPR.getNamespace=function () {
 		var opt=TPR.getOptions();
 		return A(opt.compiler.namespace,"namespace not specified opt="+JSON.stringify(opt));
+	};
+	TPR.getPublishedURL=function () {//ADDBA
+		if (TPR._publishedURL) return TPR._publishedURL;
+		return DU.requirejs(["Auth"]).then(function (Auth) {
+			return Auth.publishedURL(TPR.getName()+"/");
+		}).then(function (r) {
+			TPR._publishedURL=r;
+			return r;
+		});
 	};
 	TPR.getOutputFile=function (lang) {
 		var opt=TPR.getOptions();
