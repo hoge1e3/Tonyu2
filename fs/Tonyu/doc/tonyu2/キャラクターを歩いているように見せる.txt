@@ -6,7 +6,7 @@
 
 
 <<code Main
-new Chara1{x:100,y:100};
+new Chara1{x=100,y=100};
 
 
 >>

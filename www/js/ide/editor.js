@@ -414,13 +414,6 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             te=curPrj.decodeTrace(tid);
         }
         console.log("onRunTimeError:stackTrace1",e.stack,te,$LASTPOS);
-        /*var trc;//=StackTrace.get(e,t);
-        var te=((trc && trc[0]) ? trc[0] : t.decode($LASTPOS));
-        console.log("onRunTimeError:stackTrace1",e.stack,te,$LASTPOS);
-        if (te) {
-            te=curPrj.decodeTrace(te);
-        }
-        console.log("onRunTimeError:stackTrace2",te,$LASTPOS);*/
         if (te) {
             te.mesg=e;
             if (e.pluginName) {
@@ -430,19 +423,21 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
                 displayMode("runtime_error");
                 $("#errorPos").find(".quickFix").append(
                         UI("button",{on:{click: function () {
-                            setDiagMode(true);
-                            diag.dialog("close");
-                            run();
-                        }}},"診断モードで実行しなおす"));
+                            //setDiagMode(true);
+                            //diag.dialog("close");
+                            //run();
+                            var trcpre=UI("pre",e.stack);
+                            var html=trcpre.html().replace(/_trc_([\w]*)/g,function (n) {
+                                return "<strong>"+n+"</strong>";
+                            });
+                            trcpre.html(html);
+                            $("#errorPos").find(".quickFix").append(trcpre);
+                        }}},"トレース表示"));
             }
             stop();
-            //var userAgent = window.navigator.userAgent.toLowerCase();
-            //if(userAgent.indexOf('msie')<0) throw e;
         } else {
             UI("div",{title:"Error"},e+"",["pre",e.stack]).dialog({width:800});
             stop();
-            //alertOnce(e);
-            //throw e;
         }
     };
     $("#mapEditor").click(F(function () {

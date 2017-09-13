@@ -5,17 +5,17 @@
 [[zOrder>BaseActor]]の値を設定することでオブジェクトの奥行きを決められます。値が小さいほど手前に表示されます。
 
 <<code Main
-new Chara1{x:100, y:100, p:0, zOrder:0};
-new Chara1{x:100, y:116, p:5, zOrder:1};
-new Chara1{x:100, y:132, p:9, zOrder:2};
+new Chara1{x=100, y=100, p=0, zOrder=0};
+new Chara1{x=100, y=116, p=5, zOrder=1};
+new Chara1{x=100, y=132, p=9, zOrder=2};
 
-new Chara1{x:200, y:100, p:0, zOrder:0};
-new Chara1{x:200, y:116, p:5, zOrder:2};
-new Chara1{x:200, y:132, p:9, zOrder:1};
+new Chara1{x=200, y=100, p=0, zOrder=0};
+new Chara1{x=200, y=116, p=5, zOrder=2};
+new Chara1{x=200, y=132, p=9, zOrder=1};
 
-new Chara1{x:300, y:100, p:0, zOrder:1};
-new Chara1{x:300, y:116, p:5, zOrder:0};
-new Chara1{x:300, y:132, p:9, zOrder:2};
+new Chara1{x=300, y=100, p=0, zOrder=1};
+new Chara1{x=300, y=116, p=5, zOrder=0};
+new Chara1{x=300, y=132, p=9, zOrder=2};
 >>
 
 <<code Chara1

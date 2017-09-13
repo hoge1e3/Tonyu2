@@ -8,8 +8,8 @@
 pの値の使い方や、独自の画像を使う方法については[[画像リスト>cpats]]を参照してください。
 
 <<code Main
-new Chara1{x:100, y:100, p:$pat_base+2};
-new Chara1{x:100, y:200, p:$pat_base+5};
+new Chara1{x=100, y=100, p=$pat_base+2};
+new Chara1{x=100, y=200, p=$pat_base+5};
 >>
 
 

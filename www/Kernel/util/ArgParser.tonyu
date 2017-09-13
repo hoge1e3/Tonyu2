@@ -18,6 +18,10 @@
         var res=[];
         for (var i=0;i<type; i++) res.push(shift());
         return res;
+    } else if (typeof type=="string") {
+        if (a[0]==null) return _undef;  // typeof null==="object", but it is denied.
+        if (typeof a[0]===type) return shift();
+        return _undef;
     } else if (type) {
         if (a[0] is type) return shift();
         return _undef;

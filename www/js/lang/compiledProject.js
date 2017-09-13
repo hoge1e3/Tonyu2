@@ -1,5 +1,6 @@
-define(["DeferredUtil","WebSite"], function (DU,WebSite) {
+define(["DeferredUtil","WebSite","assert"], function (DU,WebSite,A) {
 	var CPR=function (ns, url) {
+		A.is(arguments,[String,String]);
 		return {
 			getNamespace:function () {return ns;},
 			sourceDir: function () {return null;},

@@ -6,9 +6,9 @@
 オブジェクトの大きさ、傾き、透明度はそれぞれ[[scaleX、rotate、alpha>BaseActor]]で管理されています。これらの値も加減算することで回転や拡大などをさせたり、半透明のオブジェクトを表示させたりすることができます。
 
 <<code Main
-new Chara1{x:100, y:100, scaleX:2};
-new Chara1{x:200, y:200, rotation:45};
-new Chara1{x:300, y:300, alpha:128};
+new Chara1{x=100, y=100, scaleX=2};
+new Chara1{x=200, y=200, rotation=45};
+new Chara1{x=300, y=300, alpha=128};
 >>
 <<code Chara1
 while(true){

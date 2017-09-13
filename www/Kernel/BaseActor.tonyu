@@ -8,6 +8,9 @@ native Math;
 native FS;
 native Array;
 
+\defaultLayer {
+    return $mainLayer;
+}
 \new(x,y,p) {
     if (Tonyu.runMode) _th=$Boot.schedule(this,"main",[]);
     if (typeof x=="object") Tonyu.extend(this,x);
@@ -16,7 +19,8 @@ native Array;
         this.y=y;
         this.p=p;
     }
-    layer=layer||$mainLayer;
+    scheduler=scheduler||$Scheduler;
+    layer=layer||defaultLayer;
     crashScale=1;
     if (scaleX==null) scaleX=1;
     if (rotation==null) rotation=0;
@@ -67,9 +71,9 @@ nowait \stopAnim(){
     onUpdate();
     if(_thread) {
         _thread.suspend();
-        if ($Scheduler) $Scheduler.addToNext(_thread);
+        if (scheduler) scheduler.addToNext(_thread);
     } else {
-        $Scheduler.checkTimeout();
+        scheduler.checkTimeout();
     }
 }
 nowait \onUpdate() {
@@ -210,7 +214,7 @@ nowait \watchHit(typeA,typeB,onHit) {
     });
 }
 nowait \currentThreadGroup() {//@deprecated
-    return $Scheduler; //$currentThreadGroup;
+    return scheduler; //$currentThreadGroup;
 }
 nowait \die() {
     killThreadGroup();
@@ -417,7 +421,7 @@ nowait \loadPage(){
         _thread.suspend();
         if (t) {
             _thread.waitCount=t;
-            if ($Scheduler) $Scheduler.addToNext(_thread);
+            if (scheduler) scheduler.addToNext(_thread);
         }
     } else if (_th) {
         if (t) {
@@ -432,18 +436,26 @@ nowait \notify() {
         if (_th.scheduled) {
              _th.waitCount=0;
         } else {
-            if ($Scheduler) $Scheduler.addToCur(_th);
+            if (scheduler) scheduler.addToCur(_th);
         }
     }
 }
 nowait \findTouch(params) {
     if (typeof params==="number") params={scale:params};
     params=params||{};
-    params.scale=params.scale||2;
-    var r=getCrashRect();
-    if (!r) return null;
-    r.width*=params.scale;
-    r.height*=params.scale;
+    var r;
+    if (params.width && params.height) {
+        r={x,y,width=params.width, height=params.height};
+    } else {
+        params.scale=params.scale||2;
+        r=getCrashRect();
+        if (!r) return null;
+        r={
+            x,y,
+            width=r.width*params.scale,
+            height=r.height*params.scale
+        };
+    }
     for (var t in $touches) {
         if (params.pickup || t.touched==1) {
             if (Math.abs(r.x-t.x)<r.width/2 &&
