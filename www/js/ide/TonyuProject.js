@@ -270,8 +270,8 @@ return Tonyu.Project=function (dir, kernelDir) {
     TPR.isKernelEditable=function () {
     	return env.options.kernelEditable;
     };
-    TPR.getDir=function () {return dir;};
-    TPR.getName=function () { return dir.name().replace(/\/$/,""); };
+    //TPR.getDir=function () {return dir;};
+    //TPR.getName=function () { return dir.name().replace(/\/$/,""); };
     TPR.renameClassName=function (o,n) {// o: key of aliases
         return TPR.compile({noIncremental:true}).then(function () {
             var cls=TPR.env.classes;/*ENVC*/
