@@ -1,4 +1,4 @@
-// Created at Wed Aug 23 2017 10:53:52 GMT+0900 (東京 (標準時))
+// Created at Wed Sep 13 2017 12:00:24 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -2524,6 +2524,21 @@ define([], function () {
             },
             brk: function (res) {
                 return {DU_BRK:true,res:res};
+            },
+            tryLoop: function (f,r) {
+                return DU.loop(DU.tr(f),r);
+            },
+            tryEach: function (s,f) {
+                return DU.loop(s,DU.tr(f));
+            },
+            documentReady:function () {
+                return DU.callbackToPromise(function (s) {$(s);});
+            },
+            requirejs:function (modules) {
+                if (!window.requirejs) throw new Error("requirejs is not loaded");
+                return DU.callbackToPromise(function (s) {
+                    window.requirejs(modules,s);
+                });
             }
     };
     DU.begin=DU.try=DU.tr=DU.throwF;
@@ -3289,6 +3304,18 @@ return Tonyu=function () {
 	function resetLoopCheck(disableTime) {
 		lastLoopCheck=new Date().getTime()+(disableTime||0);
 	}
+	function is(obj,klass) {
+		if (klass===Number) {
+			return typeof obj==="number";
+		}
+		if (klass===String) {
+			return typeof obj==="string";
+		}
+		if (klass===Boolean) {
+			return typeof obj==="boolean";
+		}
+		//Functi.... never mind.
+	}
 	setInterval(resetLoopCheck,16);
 	return Tonyu={thread:thread, /*threadGroup:threadGroup,*/ klass:klass, bless:bless, extend:extend,
 			globals:globals, classes:classes, classMetas:classMetas, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
@@ -3296,7 +3323,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
-			VERSION:1503453200013,//EMBED_VERSION
+			VERSION:1505271607744,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -10578,8 +10605,9 @@ return Tonyu.TraceTbl=(function () {
 //if (typeof getReq=="function") getReq.exports("Tonyu.TraceTbl");
 });
 requireSimulator.setName('compiledProject');
-define(["DeferredUtil","WebSite"], function (DU,WebSite) {
+define(["DeferredUtil","WebSite","assert"], function (DU,WebSite,A) {
 	var CPR=function (ns, url) {
+		A.is(arguments,[String,String]);
 		return {
 			getNamespace:function () {return ns;},
 			sourceDir: function () {return null;},
@@ -10597,6 +10625,15 @@ define(["DeferredUtil","WebSite"], function (DU,WebSite) {
 				return task;
 			},
 			loadClasses: function (ctx) {
+				console.log("Loading compiled classes ns=",ns,"url=",url);
+				var src = url+(WebSite.serverType==="BA"?"?"+Math.random():"");
+				return this.loadDependingClasses(ctx).then(function () {
+					return DU.requirejs([src]);
+				}).then(function () {
+					console.log("Done Loading compiled classes ns=",ns,"url=",src,Tonyu.classes);
+				});
+			},
+			loadClassesOLD: function (ctx) {
 				console.log("Load compiled classes ns=",ns,"url=",url);
 				var d=new $.Deferred;
 				var head = document.getElementsByTagName("head")[0] || document.documentElement;
@@ -10811,6 +10848,7 @@ var TPRC=function (dir) {
 	var F=DU.throwF;
 	TPR.env.traceTbl=traceTbl;
 	TPR.EXT=".tonyu";
+	TPR.getDir=function () {return dir;};
 	TPR.getOptionsFile=function () {
 		var resFile=dir.rel("options.json");
 		return resFile;
@@ -10888,9 +10926,19 @@ var TPRC=function (dir) {
 		});
 		return res;
 	};
+	TPR.getName=function () { return dir.name().replace(/\/$/,""); };
 	TPR.getNamespace=function () {
 		var opt=TPR.getOptions();
 		return A(opt.compiler.namespace,"namespace not specified opt="+JSON.stringify(opt));
+	};
+	TPR.getPublishedURL=function () {//ADDBA
+		if (TPR._publishedURL) return TPR._publishedURL;
+		return DU.requirejs(["Auth"]).then(function (Auth) {
+			return Auth.publishedURL(TPR.getName()+"/");
+		}).then(function (r) {
+			TPR._publishedURL=r;
+			return r;
+		});
 	};
 	TPR.getOutputFile=function (lang) {
 		var opt=TPR.getOptions();
@@ -11036,10 +11084,10 @@ var TPRC=function (dir) {
 			return TPR.showProgress("genJS");
 		})).then(F(function () {
 			//throw "test break";
-			TPR.genJS(ord.filter(function (c) {
+			return TPR.genJS(ord.filter(function (c) {
 				return compilingClasses[c.fullName];
 			}));
-			return TPR.showProgress("concat");
+			//return TPR.showProgress("concat");
 		})).then(F(function () {
 			var copt=TPR.getOptions().compiler;
 			if (!copt.genAMD) {
@@ -11050,9 +11098,10 @@ var TPRC=function (dir) {
 	TPR.genJS=function (ord) {
 		// 途中でコンパイルエラーを起こすと。。。
 		var env=TPR.env;
-		ord.forEach(function (c) {
+		return DU.each(ord,function (c) {
 			console.log("genJS :"+c.fullName);
 			JSGenerator.genJS(c, env);
+			return TPR.showProgress("genJS :"+c.fullName);
 		});
 	};
 	TPR.concatJS=function (ord) {
@@ -11198,7 +11247,7 @@ var TPRC=function (dir) {
 		return res;
 	}
 	function evalFile(f) {
-		console.log("loading: "+f.path());
+		console.log("evalFile: "+f.path());
 		var lastEvaled=new Function(f.text());
 		traceTbl.addSource(f.path(),lastEvaled+"");
 		return DU.directPromise( lastEvaled() );
@@ -12048,8 +12097,8 @@ return Tonyu.Project=function (dir, kernelDir) {
     TPR.isKernelEditable=function () {
     	return env.options.kernelEditable;
     };
-    TPR.getDir=function () {return dir;};
-    TPR.getName=function () { return dir.name().replace(/\/$/,""); };
+    //TPR.getDir=function () {return dir;};
+    //TPR.getName=function () { return dir.name().replace(/\/$/,""); };
     TPR.renameClassName=function (o,n) {// o: key of aliases
         return TPR.compile({noIncremental:true}).then(function () {
             var cls=TPR.env.classes;/*ENVC*/

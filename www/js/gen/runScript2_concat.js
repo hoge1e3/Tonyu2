@@ -1,4 +1,4 @@
-// Created at Wed Aug 23 2017 10:54:09 GMT+0900 (東京 (標準時))
+// Created at Wed Sep 13 2017 12:00:33 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -2585,6 +2585,21 @@ define([], function () {
             },
             brk: function (res) {
                 return {DU_BRK:true,res:res};
+            },
+            tryLoop: function (f,r) {
+                return DU.loop(DU.tr(f),r);
+            },
+            tryEach: function (s,f) {
+                return DU.loop(s,DU.tr(f));
+            },
+            documentReady:function () {
+                return DU.callbackToPromise(function (s) {$(s);});
+            },
+            requirejs:function (modules) {
+                if (!window.requirejs) throw new Error("requirejs is not loaded");
+                return DU.callbackToPromise(function (s) {
+                    window.requirejs(modules,s);
+                });
             }
     };
     DU.begin=DU.try=DU.tr=DU.throwF;
@@ -2594,8 +2609,9 @@ define([], function () {
 });
 
 requireSimulator.setName('compiledProject');
-define(["DeferredUtil","WebSite"], function (DU,WebSite) {
+define(["DeferredUtil","WebSite","assert"], function (DU,WebSite,A) {
 	var CPR=function (ns, url) {
+		A.is(arguments,[String,String]);
 		return {
 			getNamespace:function () {return ns;},
 			sourceDir: function () {return null;},
@@ -2613,6 +2629,15 @@ define(["DeferredUtil","WebSite"], function (DU,WebSite) {
 				return task;
 			},
 			loadClasses: function (ctx) {
+				console.log("Loading compiled classes ns=",ns,"url=",url);
+				var src = url+(WebSite.serverType==="BA"?"?"+Math.random():"");
+				return this.loadDependingClasses(ctx).then(function () {
+					return DU.requirejs([src]);
+				}).then(function () {
+					console.log("Done Loading compiled classes ns=",ns,"url=",src,Tonyu.classes);
+				});
+			},
+			loadClassesOLD: function (ctx) {
 				console.log("Load compiled classes ns=",ns,"url=",url);
 				var d=new $.Deferred;
 				var head = document.getElementsByTagName("head")[0] || document.documentElement;
@@ -3626,6 +3651,18 @@ return Tonyu=function () {
 	function resetLoopCheck(disableTime) {
 		lastLoopCheck=new Date().getTime()+(disableTime||0);
 	}
+	function is(obj,klass) {
+		if (klass===Number) {
+			return typeof obj==="number";
+		}
+		if (klass===String) {
+			return typeof obj==="string";
+		}
+		if (klass===Boolean) {
+			return typeof obj==="boolean";
+		}
+		//Functi.... never mind.
+	}
 	setInterval(resetLoopCheck,16);
 	return Tonyu={thread:thread, /*threadGroup:threadGroup,*/ klass:klass, bless:bless, extend:extend,
 			globals:globals, classes:classes, classMetas:classMetas, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
@@ -3633,7 +3670,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
-			VERSION:1503453200013,//EMBED_VERSION
+			VERSION:1505271607744,//EMBED_VERSION
 			A:A};
 }();
 });

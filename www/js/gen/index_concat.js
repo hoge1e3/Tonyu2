@@ -1,4 +1,4 @@
-// Created at Wed Aug 23 2017 10:53:21 GMT+0900 (東京 (標準時))
+// Created at Wed Sep 13 2017 12:00:09 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -4186,6 +4186,21 @@ define([], function () {
             },
             brk: function (res) {
                 return {DU_BRK:true,res:res};
+            },
+            tryLoop: function (f,r) {
+                return DU.loop(DU.tr(f),r);
+            },
+            tryEach: function (s,f) {
+                return DU.loop(s,DU.tr(f));
+            },
+            documentReady:function () {
+                return DU.callbackToPromise(function (s) {$(s);});
+            },
+            requirejs:function (modules) {
+                if (!window.requirejs) throw new Error("requirejs is not loaded");
+                return DU.callbackToPromise(function (s) {
+                    window.requirejs(modules,s);
+                });
             }
     };
     DU.begin=DU.try=DU.tr=DU.throwF;
