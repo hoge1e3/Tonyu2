@@ -18,6 +18,15 @@ define(["DeferredUtil","WebSite","assert"], function (DU,WebSite,A) {
 				return task;
 			},
 			loadClasses: function (ctx) {
+				console.log("Loading compiled classes ns=",ns,"url=",url);
+				var src = url+(WebSite.serverType==="BA"?"?"+Math.random():"");
+				return this.loadDependingClasses(ctx).then(function () {
+					return DU.requirejs([src]);
+				}).then(function () {
+					console.log("Done Loading compiled classes ns=",ns,"url=",src,Tonyu.classes);
+				});
+			},
+			loadClassesOLD: function (ctx) {
 				console.log("Load compiled classes ns=",ns,"url=",url);
 				var d=new $.Deferred;
 				var head = document.getElementsByTagName("head")[0] || document.documentElement;

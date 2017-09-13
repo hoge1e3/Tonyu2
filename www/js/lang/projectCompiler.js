@@ -410,7 +410,7 @@ var TPRC=function (dir) {
 		return res;
 	}
 	function evalFile(f) {
-		console.log("loading: "+f.path());
+		console.log("evalFile: "+f.path());
 		var lastEvaled=new Function(f.text());
 		traceTbl.addSource(f.path(),lastEvaled+"");
 		return DU.directPromise( lastEvaled() );
