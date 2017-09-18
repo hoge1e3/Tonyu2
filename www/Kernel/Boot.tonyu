@@ -174,7 +174,8 @@ mainLoop();
 \schedule(obj,method,args) {
     if (!method) throw new Error("指定されたメソッドは定義されていません:"+method);
     args=args||[];
-    var th=scheduler.newThread(obj, method, args);
+    var s=obj.scheduler||scheduler;
+    var th=s.newThread(obj, method, args);
     obj.setThreadGroup(this);
     th.setThreadGroup(obj);
     return th;

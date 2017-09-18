@@ -12,7 +12,6 @@ native Array;
     return $mainLayer;
 }
 \new(x,y,p) {
-    if (Tonyu.runMode) _th=$Boot.schedule(this,"main",[]);
     if (typeof x=="object") Tonyu.extend(this,x);
     else if (typeof x=="number") {
         this.x=x;
@@ -20,6 +19,7 @@ native Array;
         this.p=p;
     }
     scheduler=scheduler||$Scheduler;
+    if (Tonyu.runMode) _th=$Boot.schedule(this,"main",[]);
     layer=layer||defaultLayer;
     crashScale=1;
     if (scaleX==null) scaleX=1;
