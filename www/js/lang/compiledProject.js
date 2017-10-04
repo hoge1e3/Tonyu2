@@ -20,10 +20,32 @@ define(["DeferredUtil","WebSite","assert"], function (DU,WebSite,A) {
 			loadClasses: function (ctx) {
 				console.log("Loading compiled classes ns=",ns,"url=",url);
 				var src = url+(WebSite.serverType==="BA"?"?"+Math.random():"");
+				var t=this;
 				return this.loadDependingClasses(ctx).then(function () {
-					return DU.requirejs([src]);
+					return t.requirejs(src);
 				}).then(function () {
 					console.log("Done Loading compiled classes ns=",ns,"url=",src,Tonyu.classes);
+				});
+			},
+			requirejs: function (src) {
+				return DU.promise(function (s) {
+					var head = document.getElementsByTagName("head")[0] || document.documentElement;
+					var script = document.createElement("script");
+					script.src = src;
+					var done = false;
+					script.onload = script.onreadystatechange = function() {
+						if ( !done && (!this.readyState ||
+								this.readyState === "loaded" || this.readyState === "complete") ) {
+							done = true;
+							console.log("Done load ",src);
+							script.onload = script.onreadystatechange = null;
+							if ( head && script.parentNode ) {
+								head.removeChild( script );
+							}
+							s();
+						}
+					};
+					head.insertBefore( script, head.firstChild );
 				});
 			},
 			loadClassesOLD: function (ctx) {

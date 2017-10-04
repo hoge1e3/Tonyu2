@@ -6,23 +6,26 @@
 
 
 <<code Main
-//このキャラクタ単独ではスクロールしていることがわかりにくいので、動かないオブジェクトをいくつか置いておく
+//スクロールしていることをわかりやすくするため、動かないオブジェクトをいくつか置いておく
 for (i=0;i<10;i++) {
     new Actor{x:rnd(400),y:rnd(400)};
 }
-//-----
+//プレイヤーの作成
+new Player;
+>>
+
+<<code Player
 x=200;y=200;p=$pat_neko;
 // $Screen.scrollToの基準点を画面真ん中に設定
 $Screen.setPivot($screenWidth/2,$screenHeight/2);
 while(true){
     // このキャラクタが画面真ん中に来るように設定
     $Screen.scrollTo(x,y);
-    x++;
+    x++;// 横に移動
     update();
 }
+
 >>
-
-
 
 参考
 -[[特定のオブジェクトだけスクロールの影響を受けないようにする>layer-実例]]

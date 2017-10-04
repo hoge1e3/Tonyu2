@@ -18,8 +18,9 @@ nowait \deg(d) {
 nowait \abs(v) {
     return Math.abs(v);
 }
-nowait \sgn(v) {
-    return (v>0?1:v<0?-1:0);
+nowait \sgn(v,base) {
+    base=base||0;
+    return (v>base?1:v<-base?-1:0);
 }
 nowait \atan2(y,x) {
     return deg(Math.atan2(y,x));

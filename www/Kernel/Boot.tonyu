@@ -323,6 +323,7 @@ nowait \drawFrame() {
 */
 nowait \moveFrame() {
 	var s=now();
+    $_printCount=0;
     Tonyu.resetLoopCheck();
     if (newLimit) newLimitCount=newLimit;
     //debug("MoveFrame",1);

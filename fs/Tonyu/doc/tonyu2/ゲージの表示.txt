@@ -1,6 +1,6 @@
 [[用途別リファレンス]]
 
-*図形を表示する
+*ゲージを表示する
 
 [[$panel>Panel]]を使うと、画面に四角形などの図形を描くことができます。
 
@@ -19,3 +19,26 @@ while(true) {
 }
 >>
 
+
+*オブジェクト毎に個別のゲージを表示する
+
+キャラクタの体力表示などを各キャラクタに個別に出す場合は，キャラクタごとにパネルを作成します．
+
+<<code Player
+x=100;y=100;
+panel=new Panel;
+panel.resize(100,10);
+life=30;
+while(true) {
+    // パネルを自分の頭上に移動
+    panel.x=x;
+    panel.y=y-20;
+    // パネルの描画
+    panel.fillStyle="red";
+    panel.fillRect(0,0,100,10);
+    panel.fillStyle="green";
+    panel.fillRect(0,0,life,10);
+    x++;
+    update();
+}
+>>
