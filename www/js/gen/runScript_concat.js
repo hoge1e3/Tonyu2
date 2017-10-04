@@ -1,4 +1,4 @@
-// Created at Wed Sep 13 2017 12:00:24 GMT+0900 (東京 (標準時))
+// Created at Wed Oct 04 2017 15:10:01 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -3323,7 +3323,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
-			VERSION:1505271607744,//EMBED_VERSION
+			VERSION:1507097381832,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -10627,10 +10627,32 @@ define(["DeferredUtil","WebSite","assert"], function (DU,WebSite,A) {
 			loadClasses: function (ctx) {
 				console.log("Loading compiled classes ns=",ns,"url=",url);
 				var src = url+(WebSite.serverType==="BA"?"?"+Math.random():"");
+				var t=this;
 				return this.loadDependingClasses(ctx).then(function () {
-					return DU.requirejs([src]);
+					return t.requirejs(src);
 				}).then(function () {
 					console.log("Done Loading compiled classes ns=",ns,"url=",src,Tonyu.classes);
+				});
+			},
+			requirejs: function (src) {
+				return DU.promise(function (s) {
+					var head = document.getElementsByTagName("head")[0] || document.documentElement;
+					var script = document.createElement("script");
+					script.src = src;
+					var done = false;
+					script.onload = script.onreadystatechange = function() {
+						if ( !done && (!this.readyState ||
+								this.readyState === "loaded" || this.readyState === "complete") ) {
+							done = true;
+							console.log("Done load ",src);
+							script.onload = script.onreadystatechange = null;
+							if ( head && script.parentNode ) {
+								head.removeChild( script );
+							}
+							s();
+						}
+					};
+					head.insertBefore( script, head.firstChild );
 				});
 			},
 			loadClassesOLD: function (ctx) {
