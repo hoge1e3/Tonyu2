@@ -409,8 +409,9 @@ T2MediaLib_SoundData.prototype.isDecoding = function() {
 T2MediaLib_SoundData.prototype.isDecodeComplete = function() {
     return this.state == "decoded";
 };
-T2MediaLib_SoundData.prototype.getDecodedData = function() {
-    return this.decodedData;
+T2MediaLib_SoundData.prototype.removeDecodedData = function() {
+    this.state = "loaded";
+    this.decodedData = null;
 };
 
 
@@ -465,15 +466,29 @@ var T2MediaLib = {
     },
 
     // CLEAR系関数 //
-    allClearData : function() {
+    allClearSoundData : function() {
         var dataAry = T2MediaLib.soundDataAry;
-        for (var data in dataAry) {
+        for (var data of dataAry) {
             delete dataAry[data];
         }
     },
-    clearData : function(idx) {
+    clearSoundData : function(idx) {
         var dataAry = T2MediaLib.soundDataAry;
         delete dataAry[idx];
+    },
+    allRemoveDecordedSoundData : function() {
+        var dataAry = T2MediaLib.soundDataAry;
+        for (var soundData of dataAry) {
+            if (soundData == null) return;
+            if (!soundData.isDecodeComplete()) return;
+            soundData.removeDecodedData();
+        }
+    },
+    removeDecordedSoundData : function(idx) {
+        var soundData = T2MediaLib.soundDataAry[idx];
+        if (soundData == null) return;
+        if (!soundData.isDecodeComplete()) return;
+        soundData.removeDecodedData();
     },
 
     // SE&BGMの音量 //
@@ -490,7 +505,7 @@ var T2MediaLib = {
     },
 
     // 配列データからサウンドを作成・登録
-    loadSoundFromArray : function (idx, array1, array2) {
+    createSoundFromArray : function (idx, array1, array2) {
         T2MediaLib.soundDataAry[idx] = new T2MediaLib_SoundData();
 
         var ctx = T2MediaLib.context;
@@ -562,8 +577,9 @@ var T2MediaLib = {
     decodeSound: function(idx, callbacks) {
         var soundData = T2MediaLib.soundDataAry[idx];
         if (soundData == null) return;
+        if (soundData.isDecodeComplete()) return;
 
-        var arrayBuffer = soundData.fileData;
+        var arrayBuffer = soundData.fileData.slice(0);
         if (soundData.isDecoding()) return;
         soundData.onDecode();
         if (soundData.url.match(/\.(midi?)$/) || soundData.url.match(/^data:audio\/mid/)) {
@@ -619,7 +635,7 @@ var T2MediaLib = {
     getSoundData : function(idx) {
         var soundDataObj = T2MediaLib.soundDataAry[idx];
         if (soundDataObj) {
-            return soundDataObj.getDecodedData();
+            return soundDataObj.decodedData;
         } else {
             return null;
         }
