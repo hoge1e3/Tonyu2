@@ -468,8 +468,8 @@ var T2MediaLib = {
     // CLEAR系関数 //
     allClearSoundData : function() {
         var dataAry = T2MediaLib.soundDataAry;
-        for (var data of dataAry) {
-            delete dataAry[data];
+        for (var idx in dataAry) {
+            delete dataAry[idx];
         }
     },
     clearSoundData : function(idx) {
@@ -478,9 +478,10 @@ var T2MediaLib = {
     },
     allRemoveDecordedSoundData : function() {
         var dataAry = T2MediaLib.soundDataAry;
-        for (var soundData of dataAry) {
-            if (soundData == null) return;
-            if (!soundData.isDecodeComplete()) return;
+        for (var idx in dataAry) {
+            var soundData = dataAry[idx]
+            if (soundData == null) continue;
+            if (!soundData.isDecodeComplete()) continue;
             soundData.removeDecodedData();
         }
     },
@@ -752,10 +753,10 @@ var T2MediaLib = {
         }
 
         source.onended = function(event) {
-            source.disconnect();
+            //source.disconnect();
             source.onended = null;
-            delete source.gainNode;
-            delete source.panNode;
+            //delete source.gainNode;
+            //delete source.panNode;
         };
 
         return source;
