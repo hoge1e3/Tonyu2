@@ -369,7 +369,13 @@ T2MediaLib_BGMPlayer.prototype._setPlayingState = function(state, force) {
 // T2MediaLib_SoundData //
 
 var T2MediaLib_SoundData = function(idx, url) {
-    this.state = "none"; // "none":データなし, "loading":読み込み中, "loaded":読み込み完了, "decoding":デコード中, "decoded":デコード完了, "error":エラー
+    // "none"    :データなし
+    // "loading" :読み込み中
+    // "loaded"  :読み込み完了
+    // "decoding":デコード中
+    // "decoded" :デコード完了
+    // "error"   :エラー
+    this.state = "none";
     this.errorID = null;
     this.url = null;
     this.fileData = null;
@@ -481,14 +487,14 @@ var T2MediaLib = {
         for (var idx in dataAry) {
             var soundData = dataAry[idx]
             if (soundData == null) continue;
-            if (!soundData.isDecodeComplete()) continue;
+            if (!soundData.isDecodeComplete() && !soundData.isDecoding()) continue;
             soundData.removeDecodedData();
         }
     },
     removeDecordedSoundData : function(idx) {
         var soundData = T2MediaLib.soundDataAry[idx];
         if (soundData == null) return;
-        if (!soundData.isDecodeComplete()) return;
+        if (!soundData.isDecodeComplete() && !soundData.isDecoding()) return;
         soundData.removeDecodedData();
     },
 
@@ -596,8 +602,11 @@ var T2MediaLib = {
         } else {
             // MP3, Ogg, AAC, WAV
             var successCallback = function(audioBuffer) {
-                T2MediaLib.soundDataAry[idx].onDecodeComplete(audioBuffer);
-                if (callbacks && callbacks.succ) callbacks.succ(idx);//@hoge1e3
+                // デコード中にremoveDecodeSoundData()したらデータを捨てる
+                if (T2MediaLib.soundDataAry[idx].isDecoding()) {
+                    T2MediaLib.soundDataAry[idx].onDecodeComplete(audioBuffer);
+                    if (callbacks && callbacks.succ) callbacks.succ(idx);//@hoge1e3
+                }
             };
             var errorCallback = function(error) {
                 if (error instanceof Error) {
@@ -650,7 +659,7 @@ var T2MediaLib = {
         if (soundData == null) return null;
         if (!soundData.isDecodeComplete()) {
             var callbacks = {};
-            callbacks.succ = function() {
+            callbacks.succ = function(idx) {
                 T2MediaLib.playSE(idx, vol, pan, rate, offset, loop, loopStart, loopEnd);
             };
             callbacks.err = function() {
