@@ -483,7 +483,7 @@ var T2MediaLib = {
         var dataAry = T2MediaLib.soundDataAry;
         delete dataAry[idx];
     },
-    allRemoveDecordedSoundData : function() {
+    allRemoveDecodedSoundData : function() {
         var dataAry = T2MediaLib.soundDataAry;
         for (var idx in dataAry) {
             var soundData = dataAry[idx]
@@ -492,7 +492,7 @@ var T2MediaLib = {
             soundData.removeDecodedData();
         }
     },
-    removeDecordedSoundData : function(idx) {
+    removeDecodedSoundData : function(idx) {
         var soundData = T2MediaLib.soundDataAry[idx];
         if (soundData == null) return;
         if (!soundData.isDecodeComplete() && !soundData.isDecoding()) return;

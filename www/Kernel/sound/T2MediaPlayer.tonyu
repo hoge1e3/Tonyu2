@@ -23,12 +23,12 @@ native Tonyu;
     T2MediaLib.clearSoundData(idx);
 }
 
-\allRemoveDecordedSoundData() {
-    T2MediaLib.allRemoveDecordedSoundData();
+\allRemoveDecodedSoundData() {
+    T2MediaLib.allRemoveDecodedSoundData();
 }
 
-\removeDecordedSoundData(idx) {
-    T2MediaLib.removeDecordedSoundData(idx);
+\removeDecodedSoundData(idx) {
+    T2MediaLib.removeDecodedSoundData(idx);
 }
 
 \getMasterVolume() {

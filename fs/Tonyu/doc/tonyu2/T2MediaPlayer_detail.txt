@@ -182,11 +182,11 @@ decodeSoundメソッドで再生する前にあらかじめデコードするこ
 ---デコード完了時にcallbacks.succ(name)がコールバックされ、デコード失敗時callbacks.err(name, errorID)がコールバックされます
 ---コールバックを受け取る場合は、decodeSoundメソッドの前に下記のように記述します
 ---callbacks={};callbacks.succ=\(name){処理};callbacks.err=\(name, errorID){処理};
--removeDecordedSoundData(name)
+-removeDecodedSoundData(name)
 --音声データのデコード済みデータを削除します（メモリ使用量を抑えるときに使います）
 --name
 ---再生するBGMの名前([[音声リスト>sndres]]で指定した名前）を指定します
--allRemoveDecordedSoundData()
+-allRemoveDecodedSoundData()
 --全ての音声データのデコード済みデータを削除します（メモリ使用量を抑えるときに使います）
 
 

@@ -143,11 +143,11 @@
 </span></li><a id="line_marker_-184" name="line_marker_-184"></a><ul><li><a id="line_marker_-181" name="line_marker_-181"></a><span>デコード完了時にcallbacks.succ(name)がコールバックされ、デコード失敗時callbacks.err(name, errorID)がコールバックされます</span><span>
 </span></li><li><a id="line_marker_-182" name="line_marker_-182"></a><span>コールバックを受け取る場合は、decodeSoundメソッドの前に下記のように記述します</span><span>
 </span></li><li><a id="line_marker_-183" name="line_marker_-183"></a><span>callbacks={};callbacks.succ=\(name){処理};callbacks.err=\(name, errorID){処理};</span><span>
-</span></li></ul></ul><li><span>removeDecordedSoundData(name)</span><span>
+</span></li></ul></ul><li><span>removeDecodedSoundData(name)</span><span>
 </span></li><ul><li><a id="line_marker_-185" name="line_marker_-185"></a><span>音声データのデコード済みデータを削除します（メモリ使用量を抑えるときに使います）</span><span>
 </span></li><li><a id="line_marker_-186" name="line_marker_-186"></a><span>name</span><span>
 </span></li><a id="line_marker_-188" name="line_marker_-188"></a><ul><li><a id="line_marker_-187" name="line_marker_-187"></a><span>再生するBGMの名前(</span><a href="sndres.html">音声リスト</a><span>で指定した名前）を指定します</span><span>
-</span></li></ul></ul><li><span>allRemoveDecordedSoundData()</span><span>
+</span></li></ul></ul><li><span>allRemoveDecodedSoundData()</span><span>
 </span></li><a id="line_marker_-190" name="line_marker_-190"></a><ul><li><a id="line_marker_-189" name="line_marker_-189"></a><span>全ての音声データのデコード済みデータを削除します（メモリ使用量を抑えるときに使います）</span><span>
 </span></li></ul></ul><p></p><a id="line_marker_-191" name="line_marker_-191"></a><p></p><a id="line_marker_-192" name="line_marker_-192"></a><p></p><a id="line_marker_-193" name="line_marker_-193"></a><code><span>*1</span></code><span>Midi再生時の場合、このメソッドの設定は演奏に反映されません</span><span>
 </span><a id="line_marker_-194" name="line_marker_-194"></a><span>.</span><span>
