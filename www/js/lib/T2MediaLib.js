@@ -556,16 +556,17 @@ var T2MediaLib = {
                     if (callbacks && callbacks.succ) callbacks.succ(idx);
                 } else {
                     T2MediaLib.soundDataAry[idx].onError("XHR_RESPONSE_ERROR");
-                    if (callbacks && callbacks.err) callbacks.err(idx,T2MediaLib.soundDataAry[idx]);//@hoge1e3
+                    if (callbacks && callbacks.err) callbacks.err(idx,T2MediaLib.soundDataAry[idx].errorID);
                 }
             } else {
                 T2MediaLib.soundDataAry[idx].onError("XHR_STATUS_ERROR");
-                if (callbacks && callbacks.err) callbacks.err(idx,T2MediaLib.soundDataAry[idx]);//@hoge1e3
+                if (callbacks && callbacks.err) callbacks.err(idx,T2MediaLib.soundDataAry[idx].errorID);
             }
         };
-        xhr.onerror=function (e) {//@hoge1e3
+        xhr.onerror=function (e) {
+            console.log(e+"");
             T2MediaLib.soundDataAry[idx].onError("XHR_ERROR");
-            if (callbacks && callbacks.err) callbacks.err(idx,e+"");
+            if (callbacks && callbacks.err) callbacks.err(idx,T2MediaLib.soundDataAry[idx].errorID);
         };
 
         T2MediaLib.soundDataAry[idx].onLoad(url);
@@ -585,10 +586,9 @@ var T2MediaLib = {
         var soundData = T2MediaLib.soundDataAry[idx];
         if (soundData == null) return;
         if (soundData.isDecodeComplete()) return;
-
-        var arrayBuffer = soundData.fileData.slice(0);
         if (soundData.isDecoding()) return;
         soundData.onDecode();
+        var arrayBuffer = soundData.fileData.slice(0);
         if (soundData.url.match(/\.(midi?)$/) || soundData.url.match(/^data:audio\/mid/)) {
             // Midi
             // PicoAudio.jsにデコードしてもらう
@@ -597,8 +597,14 @@ var T2MediaLib = {
             }
             var smf = new Uint8Array(arrayBuffer);
             var data = T2MediaLib.picoAudio.parseSMF(smf);
-            T2MediaLib.soundDataAry[idx].onDecodeComplete(data);
-            if (callbacks && callbacks.succ) callbacks.succ(idx);
+            if (typeof data == "string") {
+                console.log('T2MediaLib: Error parseSMF()', data);
+                T2MediaLib.soundDataAry[idx].onError("DECODE_ERROR");
+                if (callbacks && callbacks.err) callbacks.err(idx, T2MediaLib.soundDataAry[idx].errorID);
+            } else {
+                T2MediaLib.soundDataAry[idx].onDecodeComplete(data);
+                if (callbacks && callbacks.succ) callbacks.succ(idx);
+            }
         } else {
             // MP3, Ogg, AAC, WAV
             var successCallback = function(audioBuffer) {
@@ -615,7 +621,7 @@ var T2MediaLib = {
                     console.log('T2MediaLib: Error decodeAudioData()', soundData.url);//@hoge1e3
                 }
                 T2MediaLib.soundDataAry[idx].onError("DECODE_ERROR");
-                if (callbacks && callbacks.err) callbacks.err(idx, T2MediaLib.soundDataAry[idx]);//@hoge1e3
+                if (callbacks && callbacks.err) callbacks.err(idx, T2MediaLib.soundDataAry[idx].errorID);
             };
             T2MediaLib.context.decodeAudioData(arrayBuffer, successCallback, errorCallback);
         }
