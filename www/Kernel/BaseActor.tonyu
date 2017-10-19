@@ -18,7 +18,7 @@ native Array;
         this.y=y;
         this.p=p;
     }
-    scheduler=scheduler||$Scheduler;
+    _scheduler=_scheduler||$Scheduler;
     if (Tonyu.runMode) _th=$Boot.schedule(this,"main",[]);
     layer=layer||defaultLayer;
     crashScale=1;
@@ -72,9 +72,9 @@ nowait \stopAnim(){
     onUpdate();
     if(_thread) {
         _thread.suspend();
-        if (scheduler) scheduler.addToNext(_thread);
+        if (_scheduler) _scheduler.addToNext(_thread);
     } else {
-        scheduler.checkTimeout();
+        _scheduler.checkTimeout();
     }
 }
 nowait \onUpdate() {
@@ -215,7 +215,7 @@ nowait \watchHit(typeA,typeB,onHit) {
     });
 }
 nowait \currentThreadGroup() {//@deprecated
-    return scheduler; //$currentThreadGroup;
+    return _scheduler; //$currentThreadGroup;
 }
 nowait \die() {
     killThreadGroup();
@@ -422,7 +422,7 @@ nowait \loadPage(){
         _thread.suspend();
         if (t) {
             _thread.waitCount=t;
-            if (scheduler) scheduler.addToNext(_thread);
+            if (_scheduler) _scheduler.addToNext(_thread);
         }
     } else if (_th) {
         if (t) {
@@ -437,7 +437,7 @@ nowait \notify() {
         if (_th.scheduled) {
              _th.waitCount=0;
         } else {
-            if (scheduler) scheduler.addToCur(_th);
+            if (_scheduler) _scheduler.addToCur(_th);
         }
     }
 }
@@ -465,4 +465,7 @@ nowait \findTouch(params) {
             }
         }
     }
+}
+\timeStop() {
+    return $Boot.timeStop(this);
 }

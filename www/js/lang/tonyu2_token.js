@@ -137,9 +137,9 @@ return TT=function () {
 			"includes":true
 	};
 
-	var num=tk(/^[0-9\.]+/).ret(function (n) {
+	var num=tk(/^[0-9][xb]?[0-9a-f\.]*/i).ret(function (n) {
 		n.type="number";
-		n.value=parseInt(n.text);
+		n.value=n.text-0;//parseInt(n.text);
 		return n;
 	}).first(space,"0123456789");
 	var literal=tk({exec: function (s) {

@@ -15,7 +15,7 @@ native Array;
 
 Tonyu.resetLoopCheck(10000);
 $Boot=this;
-scheduler=$Scheduler=new Scheduler;
+_scheduler=$Scheduler=new Scheduler;
 initEvents();
 initLayers();
 initPeripherals();
@@ -28,6 +28,27 @@ mainLoop();
 
 \new(param) {
     extend(param);
+}
+\timeStop(except) {
+    var oldS=_scheduler;
+    _scheduler=$Scheduler=new Scheduler;
+    var newS=_scheduler;
+    var res={
+        release: \(a) {
+            a._scheduler=newS;
+            if (a._th.scheduled===newS) return;
+            a._th.scheduled=null;
+            newS.addToNext(a._th);
+        },
+        releaseAll: \{
+            var a=$Screen.all();
+            for (var e in a) {
+                res.release(e);
+            }
+        }
+    };
+    res.release(except);
+    return res;
 }
 \update() {
     waitFor(Tonyu.timeout(50)); // waitFor calls update...
@@ -174,7 +195,7 @@ mainLoop();
 \schedule(obj,method,args) {
     if (!method) throw new Error("指定されたメソッドは定義されていません:"+method);
     args=args||[];
-    var s=obj.scheduler||scheduler;
+    var s=obj._scheduler||_scheduler;
     var th=s.newThread(obj, method, args);
     obj.setThreadGroup(this);
     th.setThreadGroup(obj);
@@ -327,7 +348,7 @@ nowait \moveFrame() {
     Tonyu.resetLoopCheck();
     if (newLimit) newLimitCount=newLimit;
     //debug("MoveFrame",1);
-    scheduler.stepsAll();
+    _scheduler.stepsAll();
     //debug("MoveFrame",2);
     $Keys.update();
     //debug("MoveFrame",3);

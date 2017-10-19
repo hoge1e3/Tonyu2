@@ -40,9 +40,6 @@ Tonyu2で最初から使えるクラス群です．[[ファイルシステム>fs
 -[[$sound>T2MediaPlayer]]
 -[[$WebPage]]
 -[[$Navigator]]
+-[[$imageList]]
 
 標準クラスの具体的な使い方は、[[用途別リファレンス]]を参照してください。
-
-
-
-

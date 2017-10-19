@@ -22,7 +22,7 @@ return TonyuLang=function () {
 	var num=tk("number").ret(function (n) {
 		n.type="number";
 		if (typeof n.text!="string") throw "No text for "+disp(n);
-		n.value=parseFloat(n.text);
+		n.value=(n.text-0);
 		if (isNaN(n.value)) throw "No value for "+disp(n);
 		return n;
 	});
