@@ -164,7 +164,7 @@ mainLoop();
     loadFromProject($currentProject);
     progress("Loading sounds done.");
     on("stop")\{
-        clearSEData();
+        allClearSoundData();
     };
     $sound=this;
 }
