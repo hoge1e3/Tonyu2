@@ -258,15 +258,15 @@ return Tonyu=function () {
 		if (!bootClass) throw new Error( bootClassName+" というクラスはありません");
 		Tonyu.runMode=true;
 		var boot=new bootClass();
-		var th=thread();
-		th.apply(boot,"main");
+		//var th=thread();
+		//th.apply(boot,"main");
 		var TPR;
 		if (TPR=Tonyu.currentProject) {
-			TPR.runningThread=th;
+			//TPR.runningThread=th;
 			TPR.runningObj=boot;
 		}
 		$LASTPOS=0;
-		th.steps();
+		//th.steps();
 	}
 	var lastLoopCheck=new Date().getTime();
 	var prevCheckLoopCalled;

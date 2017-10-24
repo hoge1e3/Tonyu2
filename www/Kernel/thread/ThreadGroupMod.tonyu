@@ -14,27 +14,3 @@ extends null;
 \killThreadGroup() {
     _isDeadThreadGroup=true;
 }
-/*
-\addThreadGroup(tg) { // tg:BaseActor, mainly
-    tg.setThreadGroup(g);
-    //threadGroups=threadGroups||[];
-    //threadGroups.push(tg);
-}
-\addThread(t) {// t:TonyuThread
-    t.setThreadGroup(this);
-    //threads=threads||[];
-    //threads.push(t);
-}
-\killThreadGroup() {
-    if (threads) {
-        for (var thread in threads) {
-            thread.kill();
-        }
-    }
-    if (threadGroups) {
-        for (var threadGroup in threadGroups) {
-            threadGroup.killThreadGroup();
-        }
-    }
-}
-*/

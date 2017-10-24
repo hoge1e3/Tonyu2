@@ -63,7 +63,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         var cur=TPR.runningThread; // Tonyu.getGlobal("$currentThreadGroup");
         if (cur) cur.kill();
         var main=TPR.runningObj;
-        if (main && main.stop) main.stop();
+        if (main && main.stop) return main.stop();
     };
     TPR.rawRun=function (bootClassName) {
         if (WebSite.removeJSOutput) {

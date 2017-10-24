@@ -28,6 +28,12 @@ mainLoop();
 
 \new(param) {
     extend(param);
+    _th=Tonyu.thread();
+    _th.apply(this,"main");
+    _th.stepsLoop();
+    on ("die") \{
+        if (_th) _th.kill();
+    };
 }
 \timeStop(except) {
     var oldS=_scheduler;
@@ -36,9 +42,11 @@ mainLoop();
     var res={
         release: \(a) {
             a._scheduler=newS;
-            if (a._th.scheduled===newS) return;
-            a._th.scheduled=null;
-            newS.addToNext(a._th);
+            oldS.findByThreadGroup(a).forEach \(th) {
+                if (th.scheduled===newS) return;
+                th.scheduled=null;
+                newS.addToNext(th);
+            };
         },
         releaseAll: \{
             var a=$Screen.all();
@@ -187,8 +195,9 @@ mainLoop();
     new page(arg);
 }
 \stop() {
-    fireEvent("stop");
+    var r=fireEvent("stop");
     die();
+    return r;
 }
 \hide() {
 }

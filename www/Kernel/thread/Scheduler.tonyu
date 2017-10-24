@@ -69,3 +69,11 @@ next=[];
     cur=next;
     next=[];
 }
+\allThreads {
+    return cur.concat(next);
+}
+\findByThreadGroup(o) {
+    return allThreads.filter \(t) {
+        return t._threadGroup===o;
+    };
+}

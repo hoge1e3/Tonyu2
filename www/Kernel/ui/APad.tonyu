@@ -1,0 +1,86 @@
+extends Actor;
+
+\new(p) {
+    p=p||{};
+    if (!p.alpha) p.alpha=128;
+    super(p);
+    vx=0;vy=0;
+    outerRadius=outerRadius||50;
+    fillStyle=fillStyle||"white";
+    strokeStyle=strokeStyle||"white";
+    innerRadius=innerRadius||10;
+    keySpeed=15;
+    leftKey=leftKey||"left";
+    rightKey=rightKey||"right";
+    upKey=upKey||"up";
+    downKey=downKey||"down";
+    decay=decay||0.8;
+    if ((typeof x!=="number") || x!==x) {
+        x=$screenWidth/2;
+    }
+    if ((typeof y!=="number") || y!==y) {
+        y=$screenHeight-outerRadius-innerRadius;
+    }
+    //print(x,y,outerRadius,radius);
+    ix=x;iy=y;
+}
+loop();
+\defaultLayer{
+    return $frontLayer;
+}
+\draw(ctx) {
+    //super.draw(ctx);
+    ctx.globalAlpha=alpha/255;
+    ctx.fillStyle=fillStyle;
+    ctx.beginPath();
+    ctx.arc(ix,iy,innerRadius,0,$Math.PI*2);
+    ctx.closePath();
+    ctx.fill();
+    ctx.strokeStyle=strokeStyle;
+    ctx.beginPath();
+    ctx.arc(x,y,outerRadius,0,$Math.PI*2);
+    ctx.closePath();
+    ctx.stroke();
+}
+\findTouch() {
+	for (var t in $touches) {
+		if ((!touchRadius || dist(t)<touchRadius) && t.touched==1) {
+			return t;
+		}
+	}
+}
+\loop() {//ab
+    var vx=0,vy=0;
+    while(true) {
+		if (!t || t.ended) t=findTouch();
+        if (t) {
+            vx+=t.vx;
+            vy+=t.vy;
+        } else {
+			vx*=decay;
+            vy*=decay;
+        }
+        //vx=clamp(vx,-50,50);
+        //vy=clamp(vy,-50,50);
+        if (getkey(leftKey)) vx-=keySpeed;
+        if (getkey(rightKey)) vx+=keySpeed;
+        if (getkey(upKey)) vy-=keySpeed;
+        if (getkey(downKey)) vy+=keySpeed;
+        d=dist(vx,vy);
+        if (d>outerRadius) {
+            vx=vx/d*outerRadius;
+            vy=vy/d*outerRadius;
+        }
+        ix=x+vx;
+        iy=y+vy;
+        this.vx=clamp(vx/outerRadius,-1,1);
+        this.vy=clamp(vy/outerRadius,-1,1);
+        update();
+    }
+}
+\speed {
+    return sqrt(vx*vx+vy*vy);
+}
+\direction {
+    return atanxy(vx,vy);
+}

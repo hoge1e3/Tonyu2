@@ -4,9 +4,9 @@
 
 キャラクタパターンを格納する配列です．
 
-- $imageList[p] で，p番目のキャラクタの情報を取得します
--- $imageList[p].width  :  キャラクタの幅
--- $imageList[p].height  :  キャラクタの高さ
--- $imageList[p].image : このキャラクタを定義しているImage要素
--- $imageList[p].x : このキャラクタのImage要素内の左上の位置（横）
--- $imageList[p].y : このキャラクタのImage要素内の左上の位置（縦）
+- [[@cfrag $imageList[p] ]] で，p番目のキャラクタの情報を取得します
+-- [[@cfrag $imageList[p].width]]  :  キャラクタの幅
+-- [[@cfrag $imageList[p].height]]  :  キャラクタの高さ
+-- [[@cfrag $imageList[p].image]] : このキャラクタを定義しているImage要素
+-- [[@cfrag $imageList[p].x]] : このキャラクタのImage要素内の左上の位置（横）
+-- [[@cfrag $imageList[p].y]] : このキャラクタのImage要素内の左上の位置（縦）

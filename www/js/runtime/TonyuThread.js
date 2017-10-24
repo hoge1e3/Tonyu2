@@ -190,7 +190,7 @@ define(["DeferredUtil","Klass"],function (DU,Klass) {
 			if (j instanceof TonyuThread) j=j.promise();
 			return DU.ensureDefer(j).then(function (r) {
 				fb.retVal=r;
-				fb.steps();
+				fb.stepsLoop();
 			}).fail(function (e) {
 				if (e instanceof Error) {
 					fb.gotoCatch(e);
@@ -199,7 +199,7 @@ define(["DeferredUtil","Klass"],function (DU,Klass) {
 					re.original=e;
 					fb.gotoCatch(re);
 				}
-				fb.steps();
+				fb.stepsLoop();
 			});
 		},
 		resume: function (retVal) {
@@ -226,6 +226,15 @@ define(["DeferredUtil","Klass"],function (DU,Klass) {
 				}
 			}
 			Tonyu.currentThread=sv;
+		},
+		stepsLoop: function () {
+			var fb=this;
+			fb.steps();
+			if (fb.preempted) {
+				setTimeout(function () {
+					fb.stepsLoop();
+				},0);
+			}
 		},
 		kill: function kill() {
 			var fb=this;
