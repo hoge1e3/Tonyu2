@@ -9,12 +9,13 @@ extends Actor;
     fillStyle=fillStyle||"white";
     strokeStyle=strokeStyle||"white";
     innerRadius=innerRadius||10;
-    keySpeed=15;
+    keySpeed=keySpeed||15/50;
     leftKey=leftKey||"left";
     rightKey=rightKey||"right";
     upKey=upKey||"up";
     downKey=downKey||"down";
     decay=decay||0.8;
+    velocity=new Vec3View(this) {x:"vx",y:"vy",z:"vz"};
     if ((typeof x!=="number") || x!==x) {
         x=$screenWidth/2;
     }
@@ -62,10 +63,10 @@ loop();
         }
         //vx=clamp(vx,-50,50);
         //vy=clamp(vy,-50,50);
-        if (getkey(leftKey)) vx-=keySpeed;
-        if (getkey(rightKey)) vx+=keySpeed;
-        if (getkey(upKey)) vy-=keySpeed;
-        if (getkey(downKey)) vy+=keySpeed;
+        if (getkey(leftKey)) vx-=keySpeed*outerRadius;
+        if (getkey(rightKey)) vx+=keySpeed*outerRadius;
+        if (getkey(upKey)) vy-=keySpeed*outerRadius;
+        if (getkey(downKey)) vy+=keySpeed*outerRadius;
         d=dist(vx,vy);
         if (d>outerRadius) {
             vx=vx/d*outerRadius;

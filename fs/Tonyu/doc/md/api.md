@@ -2,6 +2,9 @@
 
 *標準クラス
 
+[test](test.md)
+[test](test.html)
+
 Tonyu2で最初から使えるクラス群です．[[ファイルシステム>fs]]上の/Tonyu/Kernel/ で定義されています．
 
 ※ほとんどのオブジェクトは、[[BaseActor]]に定義されている命令を利用できます。

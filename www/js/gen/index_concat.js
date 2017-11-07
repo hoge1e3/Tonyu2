@@ -1,4 +1,4 @@
-// Created at Wed Oct 04 2017 15:09:44 GMT+0900 (東京 (標準時))
+// Created at Sat Nov 04 2017 11:30:41 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -3020,6 +3020,7 @@ define(["Util","exceptionCatcher"],function (Util, EC) {
 requireSimulator.setName('Wiki');
 define(["HttpHelper", "Arrow", "Util","WebSite","Log","UI","FS"],
 function (HttpHelper, Arrow, Util, WebSite,Log,UI,FS) {
+// MD https://qiita.com/tbpgr/items/989c6badefff69377da7
 return Wiki=function (placeHolder, home, options, plugins) {
     var W={};
     var refers={figures:"図", plists: "リスト"};
@@ -3106,6 +3107,15 @@ return Wiki=function (placeHolder, home, options, plugins) {
             }
             var uld=0;
             if (line.match(/^-+/)) {
+                /*MD
+- リスト1
+    - ネスト リスト1_1
+        - ネスト リスト1_1_1
+        - ネスト リスト1_1_2
+    - ネスト リスト1_2
+- リスト2
+- リスト3
+                */
                 uld=RegExp.lastMatch.length;
             }
             if (uld>ctx.ul) {
@@ -3116,7 +3126,7 @@ return Wiki=function (placeHolder, home, options, plugins) {
             } else unul(uld);
             line=line.substring(uld);
             if (uld>0) $h.enter("<li>");
-            if (line.match(/^\*+/)) {
+            if (line.match(/^\*+/)) {// MD  #
                 var r=RegExp.rightContext;
                 //unul();
                 var h="h"+RegExp.lastMatch.length;
@@ -3133,6 +3143,15 @@ return Wiki=function (placeHolder, home, options, plugins) {
                     ctx.toc=null;
                 }});
             } else if (line.match(/^<<code(.*)/)) {
+/*
+MD 半角スペース4個もしくはタブで、コードブロックをpre表示できます
+    # Tab
+    class Hoge
+        def hoge
+            print 'hoge'
+        end
+    end
+*/
                 var s=RegExp.$1;
                 s=s.replace(/^ */,"");
                 if (s.length>0) {
@@ -3208,18 +3227,22 @@ return Wiki=function (placeHolder, home, options, plugins) {
                     a=$("<strong>").text(fi.name);
                     fi.refs.push(a);
                 } else if (name.match(/^@cfrag (.*)/)) {
+                    // MD `code`
                     var code=RegExp.$1
                     a=$("<code>");
                     $h.enter(a);
                     parseLink(code);
                     $h.exit();
                 } else if (name.match(/^@arg (.*)/)) {
+                    // MD *code*
                     var varn=RegExp.$1
                     a=$("<i>");
                     $h.enter(a);
                     parseLink(varn);
                     $h.exit();
                 } else {
+                    // MD [表示文字](リンクURL)
+                    // MD ![代替テキスト](画像のURL "画像タイトル")
                     var cn=e.split(">",2);
                     if (cn.length==2) {
                         name=cn[1]+"";
@@ -3468,6 +3491,7 @@ return Wiki=function (placeHolder, home, options, plugins) {
     };
 };
 });
+
 requireSimulator.setName('Shell2');
 define(["Shell","UI","FS","Util"], function (sh,UI,FS,Util) {
     var res={};

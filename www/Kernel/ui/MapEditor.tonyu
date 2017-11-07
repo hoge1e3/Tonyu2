@@ -4,6 +4,31 @@ extends Actor;
 $Screen.resize(480,640);
 loadMode=false;
 fileExist=false;
+$Boot.on("stop") \(e) {
+    //print("MOD          ",modified);
+    if (modified) {
+        e.preventDefault();
+        parallel(st,e);
+    }
+};
+\getCurFileName() {
+    return saveFileName||loadedFile;
+}
+\st(e) {
+    var curFileName=getCurFileName()||"map.json";
+    var r=confirm("Save "+curFileName+"?");
+    if (r) {
+        save(curFileName);
+        update();
+        e.die();
+    } else {
+        r=confirm("Discard changes?");
+        if (r) {
+            update();
+            e.die();
+        }
+    }
+}
 print("map file(s)");
 // search exist file(s)
 fileList=file("../maps/");
@@ -48,6 +73,7 @@ if(fileExist){
             print("Load failed");
             loadMode=false;
         }else if(baseData[0] && baseData[1]){
+            modified=false;
             mapData=baseData[0];
             mapOnData=baseData[1];
             if(baseData.length>2){
@@ -58,21 +84,6 @@ if(fileExist){
     }
 }
 update();
-//if(mapData){
-    /*
-    print("Load Data?: Y or N");
-    while(true){
-        if(getkey("y")==1){
-            loadMode=true;
-            break;
-        }
-        if(getkey("n")==1){
-            loadMode=false;
-            break;
-        }
-    }*/
-//}
-
 // initialize (or load) map data
 if(!loadMode){
     row=prompt("input row");
@@ -182,13 +193,12 @@ while(true){
         }
         //add
         if(saveFileName){
-            saveDataFile=file("../maps/").rel(saveFileName);
+            save(saveFileName);
+            /*saveDataFile=file("../maps/").rel(saveFileName);
             data=[$map.mapTable,$map.mapOnTable,$map.chipWidth,$map.chipHeight];
-            //comment
-            //mapDataFile.obj(data);
-            //add
             saveDataFile.obj(data);
-            print(saveFileName+" Saved");
+            modified=false;
+            print(saveFileName+" Saved");*/
         }
     }
     if($touches[0].touched==1 && $touches[0].x>120 && $touches[0].x<240 && $touches[0].y>560 && $touches[0].y<640){
@@ -210,7 +220,7 @@ while(true){
         if(getkey("down")>0 || ($touches[0].touched && $touches[0].x>0 && $touches[0].x<$screenWidth && $touches[0].y<480&&$touches[0].y>440)) chipY=chipY+8;
         $mp.scrollTo(chipX,chipY);
     }
-    
+
     // add 11/25 zoom test
     if(getkey("i")==1){
         if($map.chipWidth<initialWidth) $map.chipWidth+=4;
@@ -234,9 +244,9 @@ while(true){
         panel.setFillStyle("cyan");
         panel.fillRect(0,0,panel.width,panel.height);
     }
-    
+
     // zoom test end
-    
+
     panel.x=panel.width/2-mx;
     panel.y=panel.height/2-my;
     if(mode=="set" && getkey(1)>0 && inRect()){
@@ -250,6 +260,7 @@ while(true){
             $map.setAt($mouseX+mx,$mouseY+my,mapp);
             $map.setOnAt($mouseX+mx,$mouseY+my,maponp);
         }
+        modified=true;
     }else if(mode=="erase" && getkey(1)>0 && inRect()){
         if(selectedLayer=="base"){
             tmpon=$map.getOnAt($mouseX+mx,$mouseY+my);
@@ -261,6 +272,7 @@ while(true){
             $map.setAt($mouseX+mx,$mouseY+my,-1);
             $map.setOnAt($mouseX+mx,$mouseY+my,-1);
         }
+        modified=true;
     }else if(mode=="get" && getkey(1)>0 && inRect()){
         mapp=$mp.getAt($mouseX+chipX,$mouseY+chipY);
         //mode=prevMode;
@@ -271,6 +283,7 @@ while(true){
         updateEx(10);
     }else if(mode=="setOn" && getkey(1)>0 && inRect()){
         $map.setOnAt($mouseX+mx,$mouseY+my,mapp);
+        modified=true;
     }else if(mode=="copy" && getkey(1)>0 && inRect()){
         if(selectedLayer=="base"){
             mapp=$map.getAt($mouseX+mx,$mouseY+my);
@@ -281,7 +294,7 @@ while(true){
             mapp=$map.getAt($mouseX+mx,$mouseY+my);
             maponp=$map.getOnAt($mouseX+mx,$mouseY+my);
         }
-        
+
         //mapp=$map.getAt($mouseX+mx,$mouseY+my);
         mode="set";
         //print(mode+" mode");
@@ -290,8 +303,15 @@ while(true){
     }
     update();
 }
+\save(fileName) {
+    saveDataFile=file("../maps/").rel(fileName);
+    data=[$map.mapTable,$map.mapOnTable,$map.chipWidth,$map.chipHeight];
+    saveDataFile.obj(data);
+    modified=false;
+    print(fileName+" Saved");
+}
 function inRect(){
-    return $mouseX > 40 && $mouseX < $screenWidth-40 && 
+    return $mouseX > 40 && $mouseX < $screenWidth-40 &&
     $mouseY > 40 && $mouseY < $screenHeight-200;
 }
 function drawPanel(){

@@ -1,4 +1,4 @@
-// Created at Wed Oct 04 2017 15:09:48 GMT+0900 (東京 (標準時))
+// Created at Sat Nov 04 2017 11:30:44 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -902,7 +902,7 @@ define(["DeferredUtil","Klass"],function (DU,Klass) {
 			if (j instanceof TonyuThread) j=j.promise();
 			return DU.ensureDefer(j).then(function (r) {
 				fb.retVal=r;
-				fb.steps();
+				fb.stepsLoop();
 			}).fail(function (e) {
 				if (e instanceof Error) {
 					fb.gotoCatch(e);
@@ -911,7 +911,7 @@ define(["DeferredUtil","Klass"],function (DU,Klass) {
 					re.original=e;
 					fb.gotoCatch(re);
 				}
-				fb.steps();
+				fb.stepsLoop();
 			});
 		},
 		resume: function (retVal) {
@@ -938,6 +938,15 @@ define(["DeferredUtil","Klass"],function (DU,Klass) {
 				}
 			}
 			Tonyu.currentThread=sv;
+		},
+		stepsLoop: function () {
+			var fb=this;
+			fb.steps();
+			if (fb.preempted) {
+				setTimeout(function () {
+					fb.stepsLoop();
+				},0);
+			}
 		},
 		kill: function kill() {
 			var fb=this;
@@ -1340,15 +1349,15 @@ return Tonyu=function () {
 		if (!bootClass) throw new Error( bootClassName+" というクラスはありません");
 		Tonyu.runMode=true;
 		var boot=new bootClass();
-		var th=thread();
-		th.apply(boot,"main");
+		//var th=thread();
+		//th.apply(boot,"main");
 		var TPR;
 		if (TPR=Tonyu.currentProject) {
-			TPR.runningThread=th;
+			//TPR.runningThread=th;
 			TPR.runningObj=boot;
 		}
 		$LASTPOS=0;
-		th.steps();
+		//th.steps();
 	}
 	var lastLoopCheck=new Date().getTime();
 	var prevCheckLoopCalled;
@@ -1382,7 +1391,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
-			VERSION:1507097381832,//EMBED_VERSION
+			VERSION:1509762639407,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -8542,9 +8551,9 @@ return TT=function () {
 			"includes":true
 	};
 
-	var num=tk(/^[0-9\.]+/).ret(function (n) {
+	var num=tk(/^[0-9][xb]?[0-9a-f\.]*/i).ret(function (n) {
 		n.type="number";
-		n.value=parseInt(n.text);
+		n.value=n.text-0;//parseInt(n.text);
 		return n;
 	}).first(space,"0123456789");
 	var literal=tk({exec: function (s) {
@@ -8701,6 +8710,7 @@ return TT=function () {
 }();
 
 });
+
 requireSimulator.setName('ExpressionParser');
 if (typeof define!=="function") {
 	define=require("requirejs").define;
@@ -9002,7 +9012,7 @@ return TonyuLang=function () {
 	var num=tk("number").ret(function (n) {
 		n.type="number";
 		if (typeof n.text!="string") throw "No text for "+disp(n);
-		n.value=parseFloat(n.text);
+		n.value=(n.text-0);
 		if (isNaN(n.value)) throw "No value for "+disp(n);
 		return n;
 	});
@@ -9517,6 +9527,7 @@ Arrow=function () {
 requireSimulator.setName('Wiki');
 define(["HttpHelper", "Arrow", "Util","WebSite","Log","UI","FS"],
 function (HttpHelper, Arrow, Util, WebSite,Log,UI,FS) {
+// MD https://qiita.com/tbpgr/items/989c6badefff69377da7
 return Wiki=function (placeHolder, home, options, plugins) {
     var W={};
     var refers={figures:"図", plists: "リスト"};
@@ -9603,6 +9614,15 @@ return Wiki=function (placeHolder, home, options, plugins) {
             }
             var uld=0;
             if (line.match(/^-+/)) {
+                /*MD
+- リスト1
+    - ネスト リスト1_1
+        - ネスト リスト1_1_1
+        - ネスト リスト1_1_2
+    - ネスト リスト1_2
+- リスト2
+- リスト3
+                */
                 uld=RegExp.lastMatch.length;
             }
             if (uld>ctx.ul) {
@@ -9613,7 +9633,7 @@ return Wiki=function (placeHolder, home, options, plugins) {
             } else unul(uld);
             line=line.substring(uld);
             if (uld>0) $h.enter("<li>");
-            if (line.match(/^\*+/)) {
+            if (line.match(/^\*+/)) {// MD  #
                 var r=RegExp.rightContext;
                 //unul();
                 var h="h"+RegExp.lastMatch.length;
@@ -9630,6 +9650,15 @@ return Wiki=function (placeHolder, home, options, plugins) {
                     ctx.toc=null;
                 }});
             } else if (line.match(/^<<code(.*)/)) {
+/*
+MD 半角スペース4個もしくはタブで、コードブロックをpre表示できます
+    # Tab
+    class Hoge
+        def hoge
+            print 'hoge'
+        end
+    end
+*/
                 var s=RegExp.$1;
                 s=s.replace(/^ */,"");
                 if (s.length>0) {
@@ -9705,18 +9734,22 @@ return Wiki=function (placeHolder, home, options, plugins) {
                     a=$("<strong>").text(fi.name);
                     fi.refs.push(a);
                 } else if (name.match(/^@cfrag (.*)/)) {
+                    // MD `code`
                     var code=RegExp.$1
                     a=$("<code>");
                     $h.enter(a);
                     parseLink(code);
                     $h.exit();
                 } else if (name.match(/^@arg (.*)/)) {
+                    // MD *code*
                     var varn=RegExp.$1
                     a=$("<i>");
                     $h.enter(a);
                     parseLink(varn);
                     $h.exit();
                 } else {
+                    // MD [表示文字](リンクURL)
+                    // MD ![代替テキスト](画像のURL "画像タイトル")
                     var cn=e.split(">",2);
                     if (cn.length==2) {
                         name=cn[1]+"";
@@ -9965,6 +9998,7 @@ return Wiki=function (placeHolder, home, options, plugins) {
     };
 };
 });
+
 requireSimulator.setName('ObjectMatcher');
 if (typeof define!=="function") {
 	define=require("requirejs").define;
@@ -11062,7 +11096,7 @@ function genJS(klass, env) {//B
 		for (var i in klass.decls.fields) {
 			var src=klass.decls.fields[i];
 			var dst={};
-			console.log("digestDecls",src);
+			//console.log("digestDecls",src);
 			if (src.vtype) {
 			if (typeof (src.vtype)==="string") {
 				dst.vtype=src.vtype;
@@ -13394,7 +13428,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         var cur=TPR.runningThread; // Tonyu.getGlobal("$currentThreadGroup");
         if (cur) cur.kill();
         var main=TPR.runningObj;
-        if (main && main.stop) main.stop();
+        if (main && main.stop) return main.stop();
     };
     TPR.rawRun=function (bootClassName) {
         if (WebSite.removeJSOutput) {
@@ -15548,7 +15582,7 @@ T2MediaLib_BGMPlayer.prototype.playBGM = function(idx, loop, offset, loopStart, 
             callbacks.succ = function() {
                 var pending = that.playingStatePending; // 途中で値が変わるため保存
                 that._setPlayingState("stop", true);
-                if (pending != "stop") {
+                if (pending != "stop" && that.playingBGMName == idx) {
                     that.playBGM(idx, loop, offset, loopStart, loopEnd);
                 }
                 if (pending == "pause") {
@@ -15562,6 +15596,8 @@ T2MediaLib_BGMPlayer.prototype.playBGM = function(idx, loop, offset, loopStart, 
             this._setPlayingState("decoding", true);
             T2MediaLib.decodeSound(idx, callbacks);
         }
+        this.playingBGMName = idx;
+        this._setPlayingState("play");
         return this;
     }
 
@@ -15572,7 +15608,12 @@ T2MediaLib_BGMPlayer.prototype.playBGM = function(idx, loop, offset, loopStart, 
     } else if (decodedData instanceof Object) {
         // Midi
         if (this.picoAudio == null) {
-            this.picoAudio = new PicoAudio(T2MediaLib.context, T2MediaLib.picoAudio); // AudioContextオブジェクトがmax6つまで？なので使いまわす
+            if (this.id == 0) {
+                this.picoAudio = T2MediaLib.picoAudio; // 0番目はT2MediaLib.picoAudioを使いまわす（初期化に時間がかかるため）
+            }
+            if (this.picoAudio == null) {
+                this.picoAudio = new PicoAudio(T2MediaLib.context, T2MediaLib.picoAudio); // AudioContextオブジェクトがmax6つまで？なので使いまわす
+            }
         }
         if (idx != this.picoAudioSetDataBGMName) {
             this.picoAudio.setData(decodedData);
@@ -15874,7 +15915,13 @@ T2MediaLib_BGMPlayer.prototype._setPlayingState = function(state, force) {
 // T2MediaLib_SoundData //
 
 var T2MediaLib_SoundData = function(idx, url) {
-    this.state = "none"; // "none":データなし, "loading":読み込み中, "loaded":読み込み完了, "decoding":デコード中, "decoded":デコード完了, "error":エラー
+    // "none"    :データなし
+    // "loading" :読み込み中
+    // "loaded"  :読み込み完了
+    // "decoding":デコード中
+    // "decoded" :デコード完了
+    // "error"   :エラー
+    this.state = "none";
     this.errorID = null;
     this.url = null;
     this.fileData = null;
@@ -15914,8 +15961,9 @@ T2MediaLib_SoundData.prototype.isDecoding = function() {
 T2MediaLib_SoundData.prototype.isDecodeComplete = function() {
     return this.state == "decoded";
 };
-T2MediaLib_SoundData.prototype.getDecodedData = function() {
-    return this.decodedData;
+T2MediaLib_SoundData.prototype.removeDecodedData = function() {
+    this.state = "loaded";
+    this.decodedData = null;
 };
 
 
@@ -15965,20 +16013,35 @@ var T2MediaLib = {
                 T2MediaLib.bgmPlayerAry[i] = new T2MediaLib_BGMPlayer(i);
             }
             // MIDIデコード用PicoAudio生成
-            T2MediaLib.picoAudio = new PicoAudio(T2MediaLib.context);
+            //T2MediaLib.picoAudio = new PicoAudio(T2MediaLib.context); // 作成が少し重いので必要なときのみ作成する
         }
     },
 
     // CLEAR系関数 //
-    allClearData : function() {
+    allClearSoundData : function() {
         var dataAry = T2MediaLib.soundDataAry;
-        for (var data in dataAry) {
-            delete dataAry[data];
+        for (var idx in dataAry) {
+            delete dataAry[idx];
         }
     },
-    clearData : function(idx) {
+    clearSoundData : function(idx) {
         var dataAry = T2MediaLib.soundDataAry;
         delete dataAry[idx];
+    },
+    allRemoveDecodedSoundData : function() {
+        var dataAry = T2MediaLib.soundDataAry;
+        for (var idx in dataAry) {
+            var soundData = dataAry[idx]
+            if (soundData == null) continue;
+            if (!soundData.isDecodeComplete() && !soundData.isDecoding()) continue;
+            soundData.removeDecodedData();
+        }
+    },
+    removeDecodedSoundData : function(idx) {
+        var soundData = T2MediaLib.soundDataAry[idx];
+        if (soundData == null) return;
+        if (!soundData.isDecodeComplete() && !soundData.isDecoding()) return;
+        soundData.removeDecodedData();
     },
 
     // SE&BGMの音量 //
@@ -15995,7 +16058,7 @@ var T2MediaLib = {
     },
 
     // 配列データからサウンドを作成・登録
-    loadSoundFromArray : function (idx, array1, array2) {
+    createSoundFromArray : function (idx, array1, array2) {
         T2MediaLib.soundDataAry[idx] = new T2MediaLib_SoundData();
 
         var ctx = T2MediaLib.context;
@@ -16021,6 +16084,12 @@ var T2MediaLib = {
             T2MediaLib.soundDataAry[idx].onError("FUNC_DISABLED_ERROR");
             return null;
         }
+        // midiがあったらpicoAudioを準備しておく
+        if (url.match(/\.(midi?)$/) || url.match(/^data:audio\/mid/)) {
+            if (T2MediaLib.picoAudio == null) {
+                T2MediaLib.picoAudio = new PicoAudio(T2MediaLib.context);
+            }
+        }
         if (typeof WebSite=="object" && WebSite.mp3Disabled) {
             url=url.replace(/\.(mp3|mp4|m4a)$/,".ogg");
         }
@@ -16033,16 +16102,17 @@ var T2MediaLib = {
                     if (callbacks && callbacks.succ) callbacks.succ(idx);
                 } else {
                     T2MediaLib.soundDataAry[idx].onError("XHR_RESPONSE_ERROR");
-                    if (callbacks && callbacks.err) callbacks.err(idx,T2MediaLib.soundDataAry[idx]);//@hoge1e3
+                    if (callbacks && callbacks.err) callbacks.err(idx,T2MediaLib.soundDataAry[idx].errorID);
                 }
             } else {
                 T2MediaLib.soundDataAry[idx].onError("XHR_STATUS_ERROR");
-                if (callbacks && callbacks.err) callbacks.err(idx,T2MediaLib.soundDataAry[idx]);//@hoge1e3
+                if (callbacks && callbacks.err) callbacks.err(idx,T2MediaLib.soundDataAry[idx].errorID);
             }
         };
-        xhr.onerror=function (e) {//@hoge1e3
+        xhr.onerror=function (e) {
+            console.log(e+"");
             T2MediaLib.soundDataAry[idx].onError("XHR_ERROR");
-            if (callbacks && callbacks.err) callbacks.err(idx,e+"");
+            if (callbacks && callbacks.err) callbacks.err(idx,T2MediaLib.soundDataAry[idx].errorID);
         };
 
         T2MediaLib.soundDataAry[idx].onLoad(url);
@@ -16061,9 +16131,10 @@ var T2MediaLib = {
     decodeSound: function(idx, callbacks) {
         var soundData = T2MediaLib.soundDataAry[idx];
         if (soundData == null) return;
-
-        var arrayBuffer = soundData.fileData;
+        if (soundData.isDecodeComplete()) return;
+        if (soundData.isDecoding()) return;
         soundData.onDecode();
+        var arrayBuffer = soundData.fileData.slice(0);
         if (soundData.url.match(/\.(midi?)$/) || soundData.url.match(/^data:audio\/mid/)) {
             // Midi
             // PicoAudio.jsにデコードしてもらう
@@ -16072,13 +16143,22 @@ var T2MediaLib = {
             }
             var smf = new Uint8Array(arrayBuffer);
             var data = T2MediaLib.picoAudio.parseSMF(smf);
-            T2MediaLib.soundDataAry[idx].onDecodeComplete(data);
-            if (callbacks && callbacks.succ) callbacks.succ(idx);
+            if (typeof data == "string") {
+                console.log('T2MediaLib: Error parseSMF()', data);
+                T2MediaLib.soundDataAry[idx].onError("DECODE_ERROR");
+                if (callbacks && callbacks.err) callbacks.err(idx, T2MediaLib.soundDataAry[idx].errorID);
+            } else {
+                T2MediaLib.soundDataAry[idx].onDecodeComplete(data);
+                if (callbacks && callbacks.succ) callbacks.succ(idx);
+            }
         } else {
             // MP3, Ogg, AAC, WAV
             var successCallback = function(audioBuffer) {
-                T2MediaLib.soundDataAry[idx].onDecodeComplete(audioBuffer);
-                if (callbacks && callbacks.succ) callbacks.succ(idx);//@hoge1e3
+                // デコード中にremoveDecodeSoundData()したらデータを捨てる
+                if (T2MediaLib.soundDataAry[idx].isDecoding()) {
+                    T2MediaLib.soundDataAry[idx].onDecodeComplete(audioBuffer);
+                    if (callbacks && callbacks.succ) callbacks.succ(idx);//@hoge1e3
+                }
             };
             var errorCallback = function(error) {
                 if (error instanceof Error) {
@@ -16087,7 +16167,7 @@ var T2MediaLib = {
                     console.log('T2MediaLib: Error decodeAudioData()', soundData.url);//@hoge1e3
                 }
                 T2MediaLib.soundDataAry[idx].onError("DECODE_ERROR");
-                if (callbacks && callbacks.err) callbacks.err(idx, T2MediaLib.soundDataAry[idx]);//@hoge1e3
+                if (callbacks && callbacks.err) callbacks.err(idx, T2MediaLib.soundDataAry[idx].errorID);
             };
             T2MediaLib.context.decodeAudioData(arrayBuffer, successCallback, errorCallback);
         }
@@ -16117,7 +16197,7 @@ var T2MediaLib = {
     getSoundData : function(idx) {
         var soundDataObj = T2MediaLib.soundDataAry[idx];
         if (soundDataObj) {
-            return soundDataObj.getDecodedData();
+            return soundDataObj.decodedData;
         } else {
             return null;
         }
@@ -16131,7 +16211,7 @@ var T2MediaLib = {
         if (soundData == null) return null;
         if (!soundData.isDecodeComplete()) {
             var callbacks = {};
-            callbacks.succ = function() {
+            callbacks.succ = function(idx) {
                 T2MediaLib.playSE(idx, vol, pan, rate, offset, loop, loopStart, loopEnd);
             };
             callbacks.err = function() {
@@ -16234,10 +16314,10 @@ var T2MediaLib = {
         }
 
         source.onended = function(event) {
-            source.disconnect();
+            //source.disconnect();
             source.onended = null;
-            delete source.gainNode;
-            delete source.panNode;
+            //delete source.gainNode;
+            //delete source.panNode;
         };
 
         return source;

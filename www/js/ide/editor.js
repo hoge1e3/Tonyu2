@@ -363,12 +363,15 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         }
     }
     function stop() {
-        curPrj.stop();
-        displayMode("edit");
+        return $.when(curPrj.stop()).then(function () {
+            displayMode("edit");
+        });
     }
     //\run
     function run(name) {
-        curPrj.stop();
+        return $.when(curPrj.stop()).then(function () {run2(name);});
+    }
+    function run2(name) {
         if (typeof name!="string") {
             if (runMenuOrd.length==0) {
                 alert("ファイルを作成してください");

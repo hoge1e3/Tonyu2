@@ -64,6 +64,12 @@ native Tonyu;
     _fillStyle=val;
     context.fillStyle=val;
 }
+\strokeStyle=val {
+    context.strokeStyle=val;
+}
+\lineWidth=val {
+    context.lineWidth=val;
+}
 \fillCircle(x,y,r) {
     var ctx=context;
     ctx.fillStyle=fillStyle;
@@ -240,4 +246,36 @@ nowait \copy() {
         print("no support",obj.layer, toLayer);
         throw new Error("not support");
     }
+}
+\drawLine(x,y,dx,dy) {
+    if (dx==null && dy==null) {
+        if (x==null && y==null) {
+            px=null;py=null;return;
+        }
+        if (px==null && py==null) {
+            px=x;py=y;return;
+        }
+        dx=x;dy=y;x=px;y=py;px=dx;py=dy;
+    }
+    context.beginPath();
+    context.moveTo(x,y);
+    context.lineTo(dx,dy);
+    context.stroke();
+}
+\slicePattern(x,y,width,height) {
+    return {image:canvas,x,y,width,height};
+}
+\addPattern(x,y,width,height) {
+    $imageList.push(slicePattern(x,y,width,height));
+    return $imageList.length-1;
+}
+\getImageData(x,y,width,height) {
+    return context.getImageData(x,y,width,height);
+}
+\putImageData(data,x,y) {
+    return context.putImageData(data,x,y);
+}
+
+\replace(x,y,width,height,replacement) {
+
 }

@@ -3,16 +3,26 @@ Lib
  Prj + Builder
  Use other window also in NW.js
   see editor.js  chrome-extension:...
-
+ Date
+ 
 UI
   テキスト入力
   フルスクリーン
+  ドラッグ時再描画
 Doc
   $uiScreen(.width)
-  
+Graphic
+  Color sprite
+  dynamic pattern manipulation
+Console
+  locate
+  color
+  peek
+Sound
+  dynamic sounde generation
 
 言語仕様
- からぶん
+ OK からぶん
  a||={};
  nowait {  }
  (x,y)=>x+y
@@ -64,4 +74,3 @@ OK Loading Proejct list
 OK HTML HELP
 OK project info with jsonp
 OK fork
-

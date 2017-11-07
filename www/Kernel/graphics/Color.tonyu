@@ -1,0 +1,142 @@
+extends TObject;
+includes MathMod;
+native $;
+
+\new() {
+	var a=new ArgParser(arguments);
+	var s;
+	var rgba;
+	maxs={r:255,g:255,b:255,a:255,h:360,s:1,l:1};
+	if (s=a.shift("string")) {
+		type="name";
+		value={name:s};
+	} else if (s=a.shift("object")) {
+		if (typeof s.r=="number") {
+			type="rgba";
+			value=s;
+			fillNum("g","b","a");
+		} else if (typeof s.h=="number") {
+			type="hsl";
+			value=s;
+			fillNum("s","l","a");
+		} else {
+			throw new Error("Invalid color spec");
+		}
+	} else if ( (s=a.shift("number"))!=null ) {
+		type="rgba";
+		value={r:s};
+		value.g=a.shift();
+		value.b=a.shift();
+		fillNum("g","b","a");
+	} else {
+		throw new Error("Invalid color spec");
+	}
+}
+\fillNum() {
+	var a=new ArgParser(arguments);
+	for (var k of a.toArray()) {
+		this[k]=this[k]||(k=="a"?255:0);
+	}
+}
+
+\hasRGBA() {
+	return typeof (value.r)==="number";
+}
+\hasHSLA() {
+	return typeof (value.h)==="number";
+}
+\hasName() {
+	return typeof (value.name)==="string";
+}
+\makeRGBA() {
+	if (hasRGBA()) return;
+	if (hasHSLA()) {
+		var rgb=HSLToRGB(value.h,value.s,value.l);
+		value.r=rgb.r;
+		value.g=rgb.g;
+		value.b=rgb.b;
+		return;
+	}
+	nameToRGB();
+}
+\nameToRGB() {
+	var ctx=tmpCanvas();
+	ctx.fillStyle=value.name;
+	ctx.fillRect(0,0,1,1);
+	var d=ctx.getImageData();
+	d=d.data;
+	value.r=d[0];
+	value.g=d[1];
+	value.b=d[2];
+	value.a=d[3];
+}
+\makeHSLA() {
+	if (hasHSLA()) return;
+	if (hasRGBA()) {
+		var hsl=RGBToHSL(value.r,value.g,value.b);
+		value.h=hsl.h;
+		value.s=hsl.s;
+		value.l=hsl.l;
+		return;
+	}
+	nameToRGB();
+}
+\makeName(type) {
+	if (hasName()) return;
+	type=type||"rgb";
+	if (type=="rgb") {
+		makeRGBA();
+		value.name="rgba("+[value.r,value.g,value.b,value.a].join(",")+")";
+	}
+	if (type=="hsl") {
+		makeHSLA();
+		value.name="hsla("+[value.h,value.s,value.l,value.a].join(",")+")";
+	}
+}
+\tmpCanvas() {
+	if (Color.ctx) return Color.ctx;
+	var cv=$("<canvas>").attr{width:1,height:1}.css{display:"none"}.appendTo("body");
+	Color.ctx=cv[0].getContext("2d");
+	return Color.ctx;
+}
+
+//https://gist.github.com/jonathantneal/2121882
+function RGBToHSL(r, g, b) {
+	var
+	min = $Math.min(r, g, b),
+	max = $Math.max(r, g, b),
+	diff = max - min,
+	h = 0, s = 0, l = (min + max) / 2;
+
+	if (diff != 0) {
+		s = l < 0.5 ? diff / (max + min) : diff / (2 - max - min);
+
+		h = (r == max ? (g - b) / diff : g == max ? 2 + (b - r) / diff : 4 + (r - g) / diff) * 60;
+	}
+
+	return [h, s, l];
+}
+
+function HSLToRGB(h, s, l) {
+	if (s == 0) {
+		return [l, l, l];
+	}
+
+	var temp2 = l < 0.5 ? l * (1 + s) : l + s - l * s;
+	var temp1 = 2 * l - temp2;
+
+	h /= 360;
+
+	var
+	rtemp = (h + 1 / 3) % 1,
+	gtemp = h,
+	btemp = (h + 2 / 3) % 1,
+	rgb = [rtemp, gtemp, btemp],
+	i = 0;
+
+	for (; i < 3; ++i) {
+		rgb[i] = rgb[i] < 1 / 6 ? temp1 + (temp2 - temp1) * 6 * rgb[i] : rgb[i] < 1 / 2 ? temp2 : rgb[i] < 2 / 3 ? temp1 + (temp2 - temp1) * 6 * (2 / 3 - rgb[i]) : temp1;
+	}
+
+	return rgb;
+}

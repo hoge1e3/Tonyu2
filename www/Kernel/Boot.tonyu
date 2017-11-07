@@ -195,9 +195,20 @@ mainLoop();
     new page(arg);
 }
 \stop() {
-    var r=fireEvent("stop");
-    die();
-    return r;
+    var res=new $.Deferred();
+    var evt={
+        die: \{
+            die();
+            res.resolve();
+        },
+        preventDefault: \{evt.defaultPrevented=true;}
+    };
+    var r=fireEvent("stop",evt);
+    if(!evt.defaultPrevented) {
+        evt.die();
+        res.resolve();
+    }
+    return res;
 }
 \hide() {
 }

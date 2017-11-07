@@ -714,6 +714,9 @@ function genJS(klass, env) {//B
 				}
 			}
 		},
+		empty: function (node) {
+			buf.printf(";%n");
+		},
 		call: function (node) {
 			buf.printf("(%j)", [",",node.args]);
 		},

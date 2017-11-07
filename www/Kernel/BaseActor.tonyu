@@ -22,6 +22,7 @@ native Array;
     if (Tonyu.runMode) _th=$Boot.schedule(this,"main",[]);
     layer=layer||defaultLayer;
     crashScale=1;
+    position=new Vec3View(this);
     if (scaleX==null) scaleX=1;
     if (rotation==null) rotation=0;
     //if (this.rotate==null) this.rotate=0;

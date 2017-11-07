@@ -1,0 +1,24 @@
+extends Vec3;
+includes MathMod;
+\new(target,attrs) {
+    this.target=target;
+    this.attrs=attrs||{x:"x",y:"y",z:"z"};
+}
+\x {
+    return target[attrs.x]||0;
+}
+\y {
+    return target[attrs.y]||0;
+}
+\z {
+    return target[attrs.z]||0;
+}
+\x=v {
+    return target[attrs.x]=v;
+}
+\y=v {
+    return target[attrs.y]=v;
+}
+\z=v {
+    return target[attrs.z]=v;
+}

@@ -1,0 +1,136 @@
+extends TObject;
+includes MathMod;
+\new(x,y,z) {
+    //checkNum{x,y,z};
+    this.x=x||0;
+    this.y=y||0;
+    this.z=z||0;
+}
+\checkNum(o) {
+    for (var name,val in o) {
+        if (typeof val!=="number") {
+            throw new Error(name+"("+val+")は数値ではありません．");
+        }
+    }
+}
+\parsePointArgs(args) {
+    var a=new ArgParser(args);
+    var p=a.shift(Object);
+    if (!p) {
+        p={};
+        p.x=a.shift();
+        p.y=a.shift();
+        p.z=a.shift();
+    }
+    return p;
+}
+function addX() {
+    var p=parsePointArgs(arguments);
+    x+=p.x;
+    y+=p.y;
+    z+=p.z;
+    return this;
+}
+function subX() {
+    var p=parsePointArgs(arguments);
+    x-=p.x;
+    y-=p.y;
+    z-=p.z;
+    return this;
+}
+
+function mulX(k) {
+    x=x*k;
+    y=y*k;
+    z=z*k;
+    return this;
+}
+
+\add(x,y,z) {
+    return clone().addX(x,y,z);
+}
+\sub(x,y,z) {
+    return clone().subX(x,y,z);
+}
+\mul(k) {
+    return clone().mulX(k);
+}
+
+function clone() {
+    return new Vec3(x,y,z);
+}
+function set() {
+    var p=parsePointArgs(arguments);
+    x=p.x;
+    y=p.y;
+    z=p.z;
+    return this;
+}
+\setTo(t) {
+    t.x=x;
+    t.y=y;
+    t.z=z;
+}
+\addTo(t) {
+    t.x+=x;
+    t.y+=y;
+    t.z+=z;
+}
+\dist() {
+    return sqrt(x*x+y*y+z*z);
+}
+\length {
+    return sqrt(x*x+y*y+z*z);
+}
+\length=l {
+    return normalizeX().mulX(l);
+}
+\normalizeX(len) {
+    var l=length;
+	if (l==0) return this;
+	len=(typeof len==="number")?len:1;
+    x*=len/l;
+    y*=len/l;
+    z*=len/l;
+	return this;
+}
+\normalize(len) {
+    return clone().normalizeX(len);
+}
+\productX() {
+    var a=parsePointArgs(arguments);
+    var b=this;
+    var i=a.y*b.z-a.z*b.y;
+    var j=a.z*b.x-a.x*b.z;
+    var k=a.x*b.y-a.y*b.x;
+    b.x=i;
+    b.y=j;
+    b.z=k;
+    return b;
+}
+\product(x,y,z) {
+    return clone().productX(x,y,z);
+}
+\rotate(angle, axis) {
+    if (!axis) axis=new Vec3(0,0,1);
+    var v90=product(axis);
+    v90.length=length;
+    return mul(cos(angle)).add(v90.mul(sin(angle)));
+}
+\rotateX(angle,axis) {
+    return set(rotate(angle,axis));
+}
+\set(x,y,z) {
+    if (typeof x==="object") {
+        y=x.y;
+        z=x.z;
+        x=x.x;
+    }
+    if (typeof x==="number") this.x=x;
+    if (typeof y==="number") this.y=y;
+    if (typeof z==="number") this.z=z;
+    return this;
+}
+\toString() {
+	return "("+[x,y,z].join(",")+")";
+}

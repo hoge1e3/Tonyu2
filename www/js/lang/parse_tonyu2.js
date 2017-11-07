@@ -232,7 +232,8 @@ return TonyuLang=function () {
 	var nativeDecl=g("nativeDecl").ands(tk("native"),symbol,tk(";")).ret(null, "name");
 	var ifwait=g("ifWait").ands(tk("ifwait"),"stmt",elseP.opt()).ret(null, "then","_else");
 	//var useThread=g("useThread").ands(tk("usethread"),symbol,"stmt").ret(null, "threadVarName","stmt");
-	stmt=g("stmt").ors("return", "if", "for", "while", "do","break", "continue", "switch","ifWait","try", "throw","nativeDecl", "funcDecl", "compound", "exprstmt", "varsDecl");
+	var empty=g("empty").ands(tk(";")).ret(null);
+	stmt=g("stmt").ors("return", "if", "for", "while", "do","break", "continue", "switch","ifWait","try", "throw","nativeDecl", "funcDecl", "compound", "exprstmt", "varsDecl","empty");
 	// ------- end of stmts
 	g("funcExprHead").ands(tk("function").or(tk("\\")), symbol.opt() ,paramDecls.opt() ).ret(null,"name","params");
 	var funcExpr=g("funcExpr").ands("funcExprHead","compound").ret("head","body");
