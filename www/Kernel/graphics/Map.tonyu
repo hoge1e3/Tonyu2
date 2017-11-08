@@ -4,6 +4,7 @@ native $;
 \new (param){
     sx=0;
     sy=0;
+    alpha=255;
     super(param);
     buf=$("<canvas>").attr{width:col*chipWidth,height:row*chipHeight};
     mapObj=true;
@@ -136,6 +137,7 @@ native $;
 \draw(ctx) {
     pImg=buf[0];
     ctx.save();
+    ctx.globalAlpha=alpha/255;
     ctx.drawImage(
     pImg, 0, 0,col*chipWidth, row*chipHeight,
     sx, sy, col*chipWidth, row*chipHeight);

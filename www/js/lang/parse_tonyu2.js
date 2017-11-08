@@ -51,10 +51,14 @@ return TonyuLang=function () {
 			return arguments[n];
 		};
 	}
-
+	function comLastOpt(p) {
+		return p.sep0(tk(","),true).and(tk(",").opt()).ret(function (list,opt) {
+			return list;
+		});
+	};
 	var e=ExpressionParser() ;
 	var arrayElem=g("arrayElem").ands(tk("["), e.lazy() , tk("]")).ret(null,"subscript");
-	var argList=g("argList").ands(tk("("), e.lazy().sep0(tk(","),true) , tk(")")).ret(null,"args");
+	var argList=g("argList").ands(tk("("), comLastOpt(e.lazy()) , tk(")")).ret(null,"args");
 	var member=g("member").ands(tk(".") , symbol ).ret(null,     "name" );
 	var parenExpr = g("parenExpr").ands(tk("("), e.lazy() , tk(")")).ret(null,"expr");
 	var varAccess = g("varAccess").ands(symbol).ret("name");
@@ -221,7 +225,7 @@ return TonyuLang=function () {
 	var varDecl=g("varDecl").ands(symbol, typeDecl.opt(), tk("=").and(expr).ret(retF(1)).opt() ).ret("name","typeDecl","value");
 	var varsDecl= g("varsDecl").ands(tk("var"), varDecl.sep1(tk(","),true), tk(";") ).ret(null ,"decls");
 	var paramDecl= g("paramDecl").ands(symbol,typeDecl.opt() ).ret("name","typeDecl");
-	var paramDecls=g("paramDecls").ands(tk("("), paramDecl.sep0(tk(","),true), tk(")")  ).ret(null, "params");
+	var paramDecls=g("paramDecls").ands(tk("("), comLastOpt(paramDecl), tk(")")  ).ret(null, "params");
 	var setterDecl= g("setterDecl").ands(tk("="), paramDecl).ret(null,"value");
 	g("funcDeclHead").ands(
 			tk("nowait").opt(),
@@ -241,8 +245,8 @@ return TonyuLang=function () {
 			symbol.or(literal),
 			tk(":").or(tk("=")).and(expr).ret(function (c,v) {return v;}).opt()
 	).ret("key","value");
-	var objlit=g("objlit").ands(tk("{"), jsonElem.sep0(tk(","),true), tk(",").opt(), tk("}")).ret(null, "elems");
-	var arylit=g("arylit").ands(tk("["), expr.sep0(tk(","),true),  tk("]")).ret(null, "elems");
+	var objlit=g("objlit").ands(tk("{"), comLastOpt( jsonElem ), tk("}")).ret(null, "elems");
+	var arylit=g("arylit").ands(tk("["), comLastOpt( expr ),  tk("]")).ret(null, "elems");
 	var ext=g("extends").ands(tk("extends"),symbol.or(tk("null")), tk(";")).
 	ret(null, "superclassName");
 	var incl=g("includes").ands(tk("includes"), symbol.sep1(tk(","),true),tk(";")).

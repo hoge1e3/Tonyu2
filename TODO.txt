@@ -4,6 +4,8 @@ Lib
  Use other window also in NW.js
   see editor.js  chrome-extension:...
  Date
+ Button onclick parallel
+ Copy screenshot
  
 UI
   テキスト入力
@@ -19,7 +21,7 @@ Console
   color
   peek
 Sound
-  dynamic sounde generation
+  dynamic sound generation
 
 言語仕様
  OK からぶん

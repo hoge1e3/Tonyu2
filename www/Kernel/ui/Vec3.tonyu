@@ -45,6 +45,12 @@ function mulX(k) {
     z=z*k;
     return this;
 }
+function divX(k) {
+    x=x/k;
+    y=y/k;
+    z=z/k;
+    return this;
+}
 
 \add(x,y,z) {
     return clone().addX(x,y,z);
@@ -54,6 +60,9 @@ function mulX(k) {
 }
 \mul(k) {
     return clone().mulX(k);
+}
+\div(k) {
+    return clone().divX(k);
 }
 
 function clone() {
