@@ -9,9 +9,43 @@
 - $WebPage.openNewWindow(url)
 --指定したアドレスを別ウィンドウで開きます。
 --クリック動作に反応して呼び出してください。（ポップアップブロックを避けるためです）
-- $WebPage.openShareTweet(text) または $WebPage.openShareTweet(url,text)
+- $WebPage.openShareTweet(text, url, hashtags, via, related, tl)
 -- Twitterへの投稿フォームを開きます。
--- [[@cfrag text]]にツイートする内容、[[@cfrag url]]にツイートに埋め込むURLを指定します。[[@cfrag url]]を省略した場合は現在のページが埋め込まれます。
+-- (2017/11/09 引数を(url, text)から変更。なお後方互換性あり)
 --クリック動作に反応して呼び出してください。（ポップアップブロックを避けるためです）
+-- [[@cfrag text]] ：ツイートする内容
+-- [[@cfrag url (省略可)]] ：ツイートに埋め込むURLを指定します。[[@cfrag url]]を省略した場合は現在のページが埋め込まれます。
+-- [[@cfrag hashtags (省略可)]] ：ツイートにハッシュタグ(#～)を含めます。複数タグを含める場合はカンマ(,)で区切ります。
+-- [[@cfrag via (省略可)]] ：ツイートに「@～さんより」を含めます。Twitterアカウント名を指定します。
+-- [[@cfrag related (省略可)]] ：ツイート後、関連アカウントを表示します。Twitterアカウント名を指定します。複数含める場合はカンマ(,)で区切ります。（投稿したTwitterアカウントで既にフォローしている場合、下記[[@cfrag tl]]を[[@cfrag true]]にした場合は表示されません）
+-- [[@cfrag tl(省略可)]] ：[[@cfrag true]]にするとツイート後、Twitterのトップページ(タイムライン)に遷移します。省略すると、ツイート後自動的にウィンドウが閉じられるか、または[[@cfrag related]]で指定した場合はツイートを投稿した旨のページが表示されます。
+- $WebPage.openTweet(text, url, hashtags, via, related, tl)
+-- $WebPage.openShareTweetとほぼ同じですが、urlを省略するとツイートにURLを埋め込みません。
+
+Twitter投稿の例1：
+<<code
+// リンクをあなたのフォロワーに共有する
+// -------------------
+// Tonyu2 ツイート機能テスト1 http://imahiraiteiru.adoresu/game1/
+// -------------------
+$WebPage.openShareTweet("Tonyu2 ツイート機能テスト1");
+>>
+Twitter投稿の例2：
+<<code
+// リンクをあなたのフォロワーに共有する
+// -------------------
+// Tonyu2 ツイート機能テスト2 http://www.tonyu.jp #tonyu2 #tonyusystem @twitterdevさんから
+// -------------------
+$WebPage.openShareTweet("Tonyu2 ツイート機能テスト2", "http://www.tonyu.jp", "tonyu2,tonyusystem", "twitterdev", "twitterapi,twitter");
+>>
+Twitter投稿の例3：
+<<code
+// いまどうしてる？
+// -------------------
+// Tonyu2 ツイート機能テスト3
+// -------------------
+$WebPage.openTweet("Tonyu2 ツイート機能テスト3");
+>>
+
 
 .
