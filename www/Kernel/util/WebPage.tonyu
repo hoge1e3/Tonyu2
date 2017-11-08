@@ -109,12 +109,10 @@ eventWindowOpen = \(e) {
     
     // openShareTweet(url,text) だった時の後方互換。第１引数がURLか分析する
     if (arguments.length==2) {
-        print(text.match(/^http/));
         if (text.match(/^http/)) {
             var tempText=text;
             text=url;url=tempText;
         }
-        print(text+" "+url);
     }
     sendUrl += "text=" + encodeURIComponent(text);
     sendUrl += "&";
