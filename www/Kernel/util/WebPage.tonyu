@@ -2,7 +2,6 @@ extends Actor;
 native document;
 native window;
 native encodeURIComponent;
-native String;
 
 eventWindowOpen = \(e) {
     //window.console.log("evtwinopen",postUrl);
