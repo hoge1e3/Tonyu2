@@ -4,7 +4,7 @@ native window;
 native encodeURIComponent;
 
 eventWindowOpen = \(e) {
-    window.console.log("evtwinopen",postUrl);
+    //window.console.log("evtwinopen",postUrl);
     
     window.open(postUrl);
     if (canvas.removeEventListener) {
@@ -40,11 +40,45 @@ eventWindowOpen = \(e) {
     window.location.href = url;
 }
 
-\openTweet(text) {
-    url = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text);
-    openNewWindow(url);
+/**
+ * ツイート機能
+ * Tweet Button Intent
+ * https://dev.twitter.com/web/tweet-button/parameters
+ * @param {string} text ツイート本文
+ * @param {string} url ツイートにURLを含める
+ * @param {string} hashtags ツイートにハッシュタグ(#～)を含める。複数タグを含める場合はカンマ(,)で区切る
+ * @param {string} via ツイートに「@～さんより」を含める。Twitterアカウント名を指定する
+ * @param {string} related ツイート後、関連アカウントを表示する。投稿したTwitterアカウントで既にフォローしている場合は表示されない。Twitterアカウント名を指定する。複数含める場合はカンマ(,)で区切る
+ * @param {boolean} tl trueにするとツイート後、Twitterのトップページ(タイムライン)に遷移します。
+ */
+\openTweet(text, url, hashtags, via, related, tl) {
+    var sendUrl = "https://twitter.com/intent/tweet?";
+    sendUrl += "text=" + encodeURIComponent(text);
+    if (url != null) {
+        sendUrl += "&";
+        sendUrl += "url=" + encodeURIComponent(url);
+    }
+    if (hashtags != null) {
+        sendUrl += "&";
+        sendUrl += "hashtags=" + encodeURIComponent(hashtags);
+    }
+    if (via != null) {
+        sendUrl += "&";
+        sendUrl += "via=" + encodeURIComponent(via);
+    }
+    if (related != null) {
+        sendUrl += "&";
+        sendUrl += "related=" + encodeURIComponent(related);
+    }
+    if (tl) {
+        sendUrl += "&";
+        sendUrl += "source=webclient";
+    }
+    openNewWindow(sendUrl);
 }
 
+// OLD
+/*
 \openShareTweet(url,text) {
     if (arguments.length<2) {
         text=url;url=null;
@@ -52,8 +86,56 @@ eventWindowOpen = \(e) {
     if (url == null) {
         url = window.location.href;
     }
-    tempUrl = "http://twitter.com/intent/tweet?"
+    tempUrl = "https://twitter.com/intent/tweet?"
     +"text=" + encodeURIComponent(text)
     +"&"+"url=" + encodeURIComponent(url);
     openNewWindow(tempUrl);
+}
+*/
+
+/**
+ * ツイート機能(URL自動版)
+ * Tweet Button Intent
+ * https://dev.twitter.com/web/tweet-button/parameters
+ * @param {string} text ツイート本文
+ * @param {string} url ツイートにURLを含める
+ * @param {string} hashtags ツイートにハッシュタグ(#～)を含める。複数タグを含める場合はカンマ(,)で区切る
+ * @param {string} via ツイートに「@～さんより」を含める。Twitterアカウント名を指定する
+ * @param {string} related ツイート後、関連アカウントを表示する。投稿したTwitterアカウントで既にフォローしている場合は表示されない。Twitterアカウント名を指定する。複数含める場合はカンマ(,)で区切る
+ * @param {boolean} tl trueにするとツイート後、Twitterのトップページ(タイムライン)に遷移します。
+ */
+\openShareTweet(text, url, hashtags, via, related, tl) {
+    var sendUrl = "https://twitter.com/intent/tweet?";
+    
+    // openShareTweet(url,text) だった時の後方互換。第１引数がURLか分析する
+    if (arguments.length==2) {
+        if (text.match(/^http/)) {
+            var tempText=text;
+            text=url;url=tempText;
+        }
+    }
+    sendUrl += "text=" + encodeURIComponent(text);
+    sendUrl += "&";
+    if (url == null) {
+        sendUrl += "url=" + window.location.href;
+    } else {
+        sendUrl += "url=" + encodeURIComponent(url);
+    }
+    if (hashtags != null) {
+        sendUrl += "&";
+        sendUrl += "hashtags=" + encodeURIComponent(hashtags);
+    }
+    if (via != null) {
+        sendUrl += "&";
+        sendUrl += "via=" + encodeURIComponent(via);
+    }
+    if (related != null) {
+        sendUrl += "&";
+        sendUrl += "related=" + encodeURIComponent(related);
+    }
+    if (tl) {
+        sendUrl += "&";
+        sendUrl += "source=webclient";
+    }
+    openNewWindow(sendUrl);
 }
