@@ -12,7 +12,7 @@
 
 paramsにはオブジェクトを指定します．paramsの値をフィールドに書き込みます
 
-例： 
+例：
 <<code
 // MyActorはBaseActorの子クラスとする
 a=new MyActor{x:50,y:30, power:20, hp:50};
@@ -63,6 +63,7 @@ x,y,pの値をフィールドに書き込みます
 -rotation : オブジェクトの回転を指定します．右回りで指定した値の角度回転します。[[使用例>オブジェクトの大きさや傾き、透明度を設定する]]
 -crashScale: 当たり判定の大きさの比率を設定します．初期値は1です
 -useObjectPool: この値を[[@cfrag true]]にすると、このオブジェクトが消滅した後、[[オブジェクトプール]]に保存されるようになります。
+-lifeKeeper: この値に他のActorを設定すると，そのActorがdieメソッドで消滅したときに，このオブジェクトも自動的に消滅します．
 
 **その他のフィールド
 
@@ -79,7 +80,7 @@ x,y,pの値をフィールドに書き込みます
 -[[updateEx]]
 -[[onUpdate]]
 -[[die]]
--[[isDead]] 
+-[[isDead]]
 -[[parallel]]
 -[[asyncResult]]
 -[[runAsync]]

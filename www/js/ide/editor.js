@@ -604,10 +604,16 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     }));
     $("#imgResEditor").click(F(function () {
         //ImgResEdit(curPrj);
-        ResEditor(curPrj,"image");
+        if (window.curResEditor) {
+            window.curResEditor.dialog("close");
+        }
+        window.curResEditor=ResEditor(curPrj,"image");
     }));
     $("#soundResEditor").click(F(function () {
-        ResEditor(curPrj,"sound");
+        if (window.curResEditor) {
+            window.curResEditor.dialog("close");
+        }
+        window.curResEditor=ResEditor(curPrj,"sound");
     }));
     $("#prjOptEditor").click(F(function () {
         ProjectOptionsEditor(curPrj);

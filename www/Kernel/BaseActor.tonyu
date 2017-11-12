@@ -221,12 +221,23 @@ nowait \currentThreadGroup() {//@deprecated
 nowait \die() {
     killThreadGroup();
     hide();
-    fireEvent("die");
-    _isDead=true;
-    if (_poolArray) {
-        _poolArray.push(this);
-        objectPoolAge=(objectPoolAge||0)+1;
+    if (!_isDead) {
+        fireEvent("die");
+        _isDead=true;
+        if (_poolArray) {
+            _poolArray.push(this);
+            objectPoolAge=(objectPoolAge||0)+1;
+        }
     }
+}
+\lifeKeeper=v {
+    _lifeKeeper=v;
+    if (v && typeof v.on==="function") {
+        v.on("die",die);
+    }
+}
+\lifeKeeper {
+    return _lifeKeeper;
 }
 nowait \hide() {
     layer.remove(this);
@@ -274,7 +285,7 @@ nowait \performTransform(ctx) {
     }else{
         ctx.scale(this.scaleX,this.scaleY);
     }
-    ctx.globalAlpha=this.alpha/255;
+    ctx.globalAlpha=(alpha<0?0:alpha>255?255:alpha)/255;
 }
 nowait \draw(ctx) {
     if (x==null || y==null || _isInvisible) return;

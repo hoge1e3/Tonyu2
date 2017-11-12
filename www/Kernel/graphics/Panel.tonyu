@@ -16,6 +16,7 @@ native Image;
         setPanel(width||$screenWidth||465,height||$screenHeight||465);
         //buf=$("<canvas>").attr{width,height};
     }
+    if (_fillStyle && canvas) canvas.getContext("2d").fillStyle=_fillStyle;
     x=x||width/2;
     y=y||height/2;
     if(align==null) align="center";
@@ -63,6 +64,7 @@ native Image;
 }
 \fillStyle=val {
     _fillStyle=val;
+    if (!canvas) return;
     context.fillStyle=val;
 }
 \strokeStyle=val {

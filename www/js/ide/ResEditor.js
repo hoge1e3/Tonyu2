@@ -215,7 +215,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                 $.ajax({url:WebSite.serverTop+"/retainBlobs",type:"get",
                     data:data
                 });
-            })
+            });
             var cleanFile={};
             if (rsrcDir.exists()) {
                 rsrcDir.each(function (f) {
@@ -239,7 +239,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
             return parseInt(s);
         }
         reload();
-        d.dialog({
+        return d.dialog({
             modal:true,
             width: 800,
             height: 500,
