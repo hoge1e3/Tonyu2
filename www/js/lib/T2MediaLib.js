@@ -694,14 +694,14 @@ var T2MediaLib = {
 
     // SEメソッド郡 //
 
-    playSE : function(idx, vol, pan, rate, offset, loop, loopStart, loopEnd) {
+    playSE : function(idx, vol, pan, rate, offset, loop, loopStart, loopEnd,start,duration) {//add start,duration by @hoge1e3
         if (!T2MediaLib.context) return null;
         var soundData = T2MediaLib.soundDataAry[idx];
         if (soundData == null) return null;
         if (!soundData.isDecodeComplete()) {
             var callbacks = {};
             callbacks.succ = function(idx) {
-                T2MediaLib.playSE(idx, vol, pan, rate, offset, loop, loopStart, loopEnd);
+                T2MediaLib.playSE(idx, vol, pan, rate, offset, loop, loopStart, loopEnd,start,duration);//@hoge1e3
             };
             callbacks.err = function() {
             };
@@ -726,6 +726,9 @@ var T2MediaLib = {
             if      (offset > audioBuffer.duration) offset = audioBuffer.duration;
             else if (offset < 0.0) offset = 0.0;
         }
+        if (!duration) {//@hoge1e3
+            duration=audioBuffer.duration-offset;
+        }
         if (!loop) loop = false;
         if (!loopStart) {
             loopStart = 0.0;
@@ -739,6 +742,7 @@ var T2MediaLib = {
             if      (loopEnd < 0.0) loopEnd = 0.0;
             else if (loopEnd > audioBuffer.duration) loopEnd = audioBuffer.duration;
         }
+        start=start||0;//@hoge1e3
 
         var source = T2MediaLib.context.createBufferSource();
         T2MediaLib.context.createGain = T2MediaLib.context.createGain || T2MediaLib.context.createGainNode;
@@ -787,19 +791,18 @@ var T2MediaLib = {
         source.volumeValue = vol;
         source.panNode = panNode;
         source.panValue = pan;
-        source.playStartTime = T2MediaLib.context.currentTime;
+        source.playStartTime = T2MediaLib.context.currentTime+start;//@hoge1e3
         source.playOffset = offset_adj;
         source.plusTime = offset_adj;
 
         // 再生
         source.start = source.start || source.noteOn;
         source.stop  = source.stop  || source.noteOff;
-
         if (offset) {
-            if (loop) source.start(0, offset, 86400);
-            else      source.start(0, offset);
+            if (loop) source.start(start, offset, 86400);//@hoge1e3
+            else      source.start(start, offset, duration);//@hoge1e3
         } else {
-            source.start(0);
+            source.start(start,0,duration);//@hoge1e3
         }
 
         source.onended = function(event) {
@@ -1120,6 +1123,9 @@ var T2MediaLib = {
     getAudioCurrentTime : function() {
         if (!(T2MediaLib.playingAudio instanceof Audio)) return null;
         return T2MediaLib.playingAudio.currentTime;
+    },
+    getCurrentTime: function () {//@hoge1e3
+        return T2MediaLib.context.currentTime;
     },
     getAudioLength : function() {
         if (!(T2MediaLib.playingAudio instanceof Audio)) return null;

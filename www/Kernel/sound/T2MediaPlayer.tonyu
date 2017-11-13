@@ -88,8 +88,22 @@ native Tonyu;
 
 // vol:0-128-∞
 // pan:-1.0～1.0
-\playSE(idx, vol, pan, rate, offset, loop, loopStart, loopEnd) {
+\playSE(idx, vol, pan, rate, offset, loop, loopStart, loopEnd,start,duration) {//start,duration add by @hoge1e3
     if (mute) return;
+    if (vol && typeof vol==="object") {//@hoge1e3
+        var o=vol;
+        vol=o.vol;
+        pan=o.pan;
+        rate=o.rate;
+        offset=o.offset;
+        loop=o.loop;
+        loopStart=o.loopStart;
+        loopEnd=o.loopEnd;
+        start=o.start;
+        duration=o.duration;
+        //print("ps",o,start);
+    }
+
     // vol : Tonyu1のように0～128の範囲にし、128より大きい場合は音量増幅とする
     // vol はgainで実装しているため大きい値を入れると大音量となるので注意！
     if (vol == null) vol = 128;
@@ -99,7 +113,7 @@ native Tonyu;
     } else {
         vol = 1.0;
     }
-    return T2MediaLib.playSE(idx, vol, pan, rate, offset, loop, loopStart, loopEnd);
+    return T2MediaLib.playSE(idx, vol, pan, rate, offset, loop, loopStart, loopEnd,start,duration);//@hoge1e3
 }
 
 \stopSE(sourceObj) {
@@ -444,6 +458,9 @@ native Tonyu;
 
 \getAudioCurrentTime() {
     return T2MediaLib.getAudioCurrentTime();
+}
+\getCurrentTime() {
+    return T2MediaLib.getCurrentTime();
 }
 
 \getAudioLength() {
