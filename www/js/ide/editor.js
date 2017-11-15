@@ -20,6 +20,9 @@ $(function () {
     if (!WebSite.isNW) {
         FS.mount(location.protocol+"//"+location.host+"/", new WebFS);
     }
+    if (WebSite.serverType==="projectBoard") {
+        $.ajax("../../../a.php?Test/test").then(function (r){console.log("Session",r);})
+    }
     /*
     location.href
 "chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/index.html"
