@@ -1,4 +1,4 @@
-// Created at Sat Nov 04 2017 11:30:54 GMT+0900 (東京 (標準時))
+// Created at Thu Nov 16 2017 10:06:40 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -3332,7 +3332,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
-			VERSION:1509762639407,//EMBED_VERSION
+			VERSION:1510794387306,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -8213,10 +8213,14 @@ return TonyuLang=function () {
 			return arguments[n];
 		};
 	}
-
+	function comLastOpt(p) {
+		return p.sep0(tk(","),true).and(tk(",").opt()).ret(function (list,opt) {
+			return list;
+		});
+	};
 	var e=ExpressionParser() ;
 	var arrayElem=g("arrayElem").ands(tk("["), e.lazy() , tk("]")).ret(null,"subscript");
-	var argList=g("argList").ands(tk("("), e.lazy().sep0(tk(","),true) , tk(")")).ret(null,"args");
+	var argList=g("argList").ands(tk("("), comLastOpt(e.lazy()) , tk(")")).ret(null,"args");
 	var member=g("member").ands(tk(".") , symbol ).ret(null,     "name" );
 	var parenExpr = g("parenExpr").ands(tk("("), e.lazy() , tk(")")).ret(null,"expr");
 	var varAccess = g("varAccess").ands(symbol).ret("name");
@@ -8383,7 +8387,7 @@ return TonyuLang=function () {
 	var varDecl=g("varDecl").ands(symbol, typeDecl.opt(), tk("=").and(expr).ret(retF(1)).opt() ).ret("name","typeDecl","value");
 	var varsDecl= g("varsDecl").ands(tk("var"), varDecl.sep1(tk(","),true), tk(";") ).ret(null ,"decls");
 	var paramDecl= g("paramDecl").ands(symbol,typeDecl.opt() ).ret("name","typeDecl");
-	var paramDecls=g("paramDecls").ands(tk("("), paramDecl.sep0(tk(","),true), tk(")")  ).ret(null, "params");
+	var paramDecls=g("paramDecls").ands(tk("("), comLastOpt(paramDecl), tk(")")  ).ret(null, "params");
 	var setterDecl= g("setterDecl").ands(tk("="), paramDecl).ret(null,"value");
 	g("funcDeclHead").ands(
 			tk("nowait").opt(),
@@ -8394,7 +8398,8 @@ return TonyuLang=function () {
 	var nativeDecl=g("nativeDecl").ands(tk("native"),symbol,tk(";")).ret(null, "name");
 	var ifwait=g("ifWait").ands(tk("ifwait"),"stmt",elseP.opt()).ret(null, "then","_else");
 	//var useThread=g("useThread").ands(tk("usethread"),symbol,"stmt").ret(null, "threadVarName","stmt");
-	stmt=g("stmt").ors("return", "if", "for", "while", "do","break", "continue", "switch","ifWait","try", "throw","nativeDecl", "funcDecl", "compound", "exprstmt", "varsDecl");
+	var empty=g("empty").ands(tk(";")).ret(null);
+	stmt=g("stmt").ors("return", "if", "for", "while", "do","break", "continue", "switch","ifWait","try", "throw","nativeDecl", "funcDecl", "compound", "exprstmt", "varsDecl","empty");
 	// ------- end of stmts
 	g("funcExprHead").ands(tk("function").or(tk("\\")), symbol.opt() ,paramDecls.opt() ).ret(null,"name","params");
 	var funcExpr=g("funcExpr").ands("funcExprHead","compound").ret("head","body");
@@ -8402,8 +8407,8 @@ return TonyuLang=function () {
 			symbol.or(literal),
 			tk(":").or(tk("=")).and(expr).ret(function (c,v) {return v;}).opt()
 	).ret("key","value");
-	var objlit=g("objlit").ands(tk("{"), jsonElem.sep0(tk(","),true), tk(",").opt(), tk("}")).ret(null, "elems");
-	var arylit=g("arylit").ands(tk("["), expr.sep0(tk(","),true),  tk("]")).ret(null, "elems");
+	var objlit=g("objlit").ands(tk("{"), comLastOpt( jsonElem ), tk("}")).ret(null, "elems");
+	var arylit=g("arylit").ands(tk("["), comLastOpt( expr ),  tk("]")).ret(null, "elems");
 	var ext=g("extends").ands(tk("extends"),symbol.or(tk("null")), tk(";")).
 	ret(null, "superclassName");
 	var incl=g("includes").ands(tk("includes"), symbol.sep1(tk(","),true),tk(";")).
@@ -9433,6 +9438,9 @@ function genJS(klass, env) {//B
 				}
 			}
 		},
+		empty: function (node) {
+			buf.printf(";%n");
+		},
 		call: function (node) {
 			buf.printf("(%j)", [",",node.args]);
 		},
@@ -9810,7 +9818,7 @@ var annotation3=cu.annotation;
 var getMethod2=cu.getMethod;
 var getDependingClasses=cu.getDependingClasses;
 var getParams=cu.getParams;
-var JSNATIVES={Array:1, String:1, Boolean:1, Number:1, Void:1, Object:1,RegExp:1,Error:1};
+var JSNATIVES={Array:1, String:1, Boolean:1, Number:1, Void:1, Object:1,RegExp:1,Error:1,Date:1};
 //-----------
 function initClassDecls(klass, env ) {//S
 	var s=klass.src.tonyu; //file object
@@ -14033,26 +14041,26 @@ T2MediaLib_BGMPlayer.prototype.playBGM = function(idx, loop, offset, loopStart, 
     var soundData = T2MediaLib.soundDataAry[idx];
     if (soundData == null) return null;
     if (!soundData.isDecodeComplete()) {
-        if (!soundData.isDecoding()) {
-            var that = this;
-            var callbacks = {};
-            callbacks.succ = function() {
-                var pending = that.playingStatePending; // 途中で値が変わるため保存
-                that._setPlayingState("stop", true);
-                if (pending != "stop" && that.playingBGMName == idx) {
-                    that.playBGM(idx, loop, offset, loopStart, loopEnd);
-                }
-                if (pending == "pause") {
-                    that.pauseBGM();
-                }
-            };
-            callbacks.err = function() {
-                that._setPlayingState("stop", true);
-            };
-            this.playingBGMName = idx;
-            this._setPlayingState("decoding", true);
-            T2MediaLib.decodeSound(idx, callbacks);
-        }
+        //if (!soundData.isDecoding()) {
+        var that = this;
+        var callbacks = {};
+        callbacks.succ = function() {
+            var pending = that.playingStatePending; // 途中で値が変わるため保存
+            that._setPlayingState("stop", true);
+            if (pending != "stop" && that.playingBGMName == idx) {
+                that.playBGM(idx, loop, offset, loopStart, loopEnd);
+            }
+            if (pending == "pause") {
+                that.pauseBGM();
+            }
+        };
+        callbacks.err = function() {
+            that._setPlayingState("stop", true);
+        };
+        this.playingBGMName = idx;
+        this._setPlayingState("decoding", true);
+        T2MediaLib.decodeSound(idx, callbacks);
+        //}
         this.playingBGMName = idx;
         this._setPlayingState("play");
         return this;
@@ -14181,7 +14189,7 @@ T2MediaLib_BGMPlayer.prototype.setBGMTempo = function(tempo) {
     // MP3, Ogg, AAC, WAV
     var bgm = this.playingBGM;
 
-    if (tempo <= 0) tempo = 1;
+    if (tempo <= 0 || isNaN(tempo)) tempo = 1;
     if ((bgm instanceof AudioBufferSourceNode) && this.bgmPause === 0) {
         bgm.plusTime -= (T2MediaLib.context.currentTime - bgm.playStartTime) * (tempo - this.bgmTempo);
     }
@@ -14383,6 +14391,8 @@ var T2MediaLib_SoundData = function(idx, url) {
     this.url = null;
     this.fileData = null;
     this.decodedData = null;
+    this.decodedSuccCallbacks = null;
+    this.decodedErrCallbacks = null;
 };
 T2MediaLib_SoundData.prototype.onLoad = function(url) {
     this.state = "loading";
@@ -14589,8 +14599,24 @@ var T2MediaLib = {
         var soundData = T2MediaLib.soundDataAry[idx];
         if (soundData == null) return;
         if (soundData.isDecodeComplete()) return;
+
+        // Adding Callback
+        if (soundData.decodedSuccCallbacks == null) {
+            soundData.decodedSuccCallbacks = []; // 複数コールバックを呼べるようにする
+        }
+        if (soundData.decodedErrCallbacks == null) {
+            soundData.decodedErrCallbacks = []; // 複数コールバックを呼べるようにする
+        }
+        if (callbacks && callbacks.succ) {
+            soundData.decodedSuccCallbacks.push(callbacks.succ);
+        }
+        if (callbacks && callbacks.err) {
+            soundData.decodedErrCallbacks.push(callbacks.err);
+        }
+
         if (soundData.isDecoding()) return;
         soundData.onDecode();
+
         var arrayBuffer = soundData.fileData.slice(0);
         if (soundData.url.match(/\.(midi?)$/) || soundData.url.match(/^data:audio\/mid/)) {
             // Midi
@@ -14603,10 +14629,18 @@ var T2MediaLib = {
             if (typeof data == "string") {
                 console.log('T2MediaLib: Error parseSMF()', data);
                 T2MediaLib.soundDataAry[idx].onError("DECODE_ERROR");
-                if (callbacks && callbacks.err) callbacks.err(idx, T2MediaLib.soundDataAry[idx].errorID);
+                //if (callbacks && callbacks.err) callbacks.err(idx, T2MediaLib.soundDataAry[idx].errorID);
+                soundData.decodedErrCallbacks.forEach(function(value, index, array) {
+                    console.log(value, index, array);
+                    value(idx, T2MediaLib.soundDataAry[idx].errorID);
+                });
             } else {
                 T2MediaLib.soundDataAry[idx].onDecodeComplete(data);
-                if (callbacks && callbacks.succ) callbacks.succ(idx);
+                //if (callbacks && callbacks.succ) callbacks.succ(idx);
+                soundData.decodedSuccCallbacks.forEach(function(value, index, array) {
+                    console.log(value, index, array);
+                    value(idx);
+                });
             }
         } else {
             // MP3, Ogg, AAC, WAV
@@ -14614,7 +14648,11 @@ var T2MediaLib = {
                 // デコード中にremoveDecodeSoundData()したらデータを捨てる
                 if (T2MediaLib.soundDataAry[idx].isDecoding()) {
                     T2MediaLib.soundDataAry[idx].onDecodeComplete(audioBuffer);
-                    if (callbacks && callbacks.succ) callbacks.succ(idx);//@hoge1e3
+                    //if (callbacks && callbacks.succ) callbacks.succ(idx);//@hoge1e3
+                    soundData.decodedSuccCallbacks.forEach(function(value, index, array) {
+                        console.log(value, index, array);
+                        value(idx);
+                    });
                 }
             };
             var errorCallback = function(error) {
@@ -14624,7 +14662,11 @@ var T2MediaLib = {
                     console.log('T2MediaLib: Error decodeAudioData()', soundData.url);//@hoge1e3
                 }
                 T2MediaLib.soundDataAry[idx].onError("DECODE_ERROR");
-                if (callbacks && callbacks.err) callbacks.err(idx, T2MediaLib.soundDataAry[idx].errorID);
+                //if (callbacks && callbacks.err) callbacks.err(idx, T2MediaLib.soundDataAry[idx].errorID);
+                soundData.decodedSuccCallbacks.forEach(function(value, index, array) {
+                    console.log(value, index, array);
+                    value(idx, T2MediaLib.soundDataAry[idx].errorID);
+                });
             };
             T2MediaLib.context.decodeAudioData(arrayBuffer, successCallback, errorCallback);
         }
@@ -14662,14 +14704,14 @@ var T2MediaLib = {
 
     // SEメソッド郡 //
 
-    playSE : function(idx, vol, pan, rate, offset, loop, loopStart, loopEnd) {
+    playSE : function(idx, vol, pan, rate, offset, loop, loopStart, loopEnd,start,duration) {//add start,duration by @hoge1e3
         if (!T2MediaLib.context) return null;
         var soundData = T2MediaLib.soundDataAry[idx];
         if (soundData == null) return null;
         if (!soundData.isDecodeComplete()) {
             var callbacks = {};
             callbacks.succ = function(idx) {
-                T2MediaLib.playSE(idx, vol, pan, rate, offset, loop, loopStart, loopEnd);
+                T2MediaLib.playSE(idx, vol, pan, rate, offset, loop, loopStart, loopEnd,start,duration);//@hoge1e3
             };
             callbacks.err = function() {
             };
@@ -14694,6 +14736,9 @@ var T2MediaLib = {
             if      (offset > audioBuffer.duration) offset = audioBuffer.duration;
             else if (offset < 0.0) offset = 0.0;
         }
+        if (!duration) {//@hoge1e3
+            duration=audioBuffer.duration-offset;
+        }
         if (!loop) loop = false;
         if (!loopStart) {
             loopStart = 0.0;
@@ -14707,6 +14752,7 @@ var T2MediaLib = {
             if      (loopEnd < 0.0) loopEnd = 0.0;
             else if (loopEnd > audioBuffer.duration) loopEnd = audioBuffer.duration;
         }
+        start=start||0;//@hoge1e3
 
         var source = T2MediaLib.context.createBufferSource();
         T2MediaLib.context.createGain = T2MediaLib.context.createGain || T2MediaLib.context.createGainNode;
@@ -14755,19 +14801,18 @@ var T2MediaLib = {
         source.volumeValue = vol;
         source.panNode = panNode;
         source.panValue = pan;
-        source.playStartTime = T2MediaLib.context.currentTime;
+        source.playStartTime = T2MediaLib.context.currentTime+start;//@hoge1e3
         source.playOffset = offset_adj;
         source.plusTime = offset_adj;
 
         // 再生
         source.start = source.start || source.noteOn;
         source.stop  = source.stop  || source.noteOff;
-
         if (offset) {
-            if (loop) source.start(0, offset, 86400);
-            else      source.start(0, offset);
+            if (loop) source.start(start, offset, 86400);//@hoge1e3
+            else      source.start(start, offset, duration);//@hoge1e3
         } else {
-            source.start(0);
+            source.start(start,0,duration);//@hoge1e3
         }
 
         source.onended = function(event) {
@@ -15088,6 +15133,9 @@ var T2MediaLib = {
     getAudioCurrentTime : function() {
         if (!(T2MediaLib.playingAudio instanceof Audio)) return null;
         return T2MediaLib.playingAudio.currentTime;
+    },
+    getCurrentTime: function () {//@hoge1e3
+        return T2MediaLib.context.currentTime;
     },
     getAudioLength : function() {
         if (!(T2MediaLib.playingAudio instanceof Audio)) return null;
