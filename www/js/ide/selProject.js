@@ -95,7 +95,7 @@ $(function () {
             var u=UI("div", {"class":"project"},
                     ["a", {href:"project.html?dir="+f.path()},
                      ["img",{$var:"t",src:"../../images/nowprint.png"}],
-                     ["div", {"class":"projectName"},name]
+                     ["div", {"class":"projectName"},name.replace(/[\/\\]$/,"")]
                      ]);
             u.appendTo(prj1dirList);
             if (kw!="" && name.toLowerCase().indexOf(kw)<0) u.hide();
