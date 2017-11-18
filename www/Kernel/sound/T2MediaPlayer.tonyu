@@ -68,7 +68,7 @@ native Tonyu;
             //print("Loading Sound2: "+name);
             loadSound(name, url);
          } catch(e) {
-            print("Failed to load",name);
+            //print("Failed to load",name);
             Tonyu.setGlobal(name, "ERROR");
          }
     }
@@ -79,8 +79,20 @@ native Tonyu;
     T2MediaLib.decodeSound(idx, callbacks);
 }
 
-\getSoundData(idx) {
-    return T2MediaLib.getSoundData(idx);
+\getSoundFileData(idx) {
+    return T2MediaLib.getSoundFileData(idx);
+}
+
+\getSoundDecodedData(idx) {
+    return T2MediaLib.getSoundDecodedData(idx);
+}
+
+\getCurrentTime() {
+    return T2MediaLib.getCurrentTime();
+}
+
+\getContext() {
+    return T2MediaLib.context;
 }
 
 
@@ -191,6 +203,8 @@ native Tonyu;
     return T2MediaLib.setSELoopEndTime(setSELoopStartTime, loopEnd);
 }
 
+
+
 // BGM //
 \playBGM(idx, loop, offset, loopStart, loopEnd) {
     if (mute) return;
@@ -297,15 +311,29 @@ native Tonyu;
     return T2MediaLib.getPlayingBGMName(0);
 }
 
-\setBGMOnSongEndListener() {
-    return T2MediaLib.getPlayingBGMName(0);
+\setOnBGMEndListener() {
+    return T2MediaLib.setOnBGMEndListener(0);
 }
 
-\getBGMData(idx) {
-    return T2MediaLib.getBGMData(idx);
+\getPlayingBGMState() {
+    return T2MediaLib.getPlayingBGMState(0);
 }
 
+\getBGMPicoAudio() {
+    return T2MediaLib.getBGMPicoAudio(0);
+}
 
+\getBGMPlayerMax() {
+    return T2MediaLib.getBGMPlayerMax();
+}
+
+\allStopBGM() {
+    T2MediaLib.allStopBGM();
+}
+
+\allResetBGM() {
+    T2MediaLib.allResetBGM();
+}
 
 // BGM ID指定 //
 \playBGMID(id, idx, loop, offset, loopStart, loopEnd) {
@@ -398,20 +426,21 @@ native Tonyu;
     return T2MediaLib.getPlayingBGMName(id);
 }
 
-\getBGMPlayerMax() {
-    return T2MediaLib.getBGMPlayerMax();
+\setBGMOnSongEndListener(id) {
+    return T2MediaLib.setOnBGMEndListener(id);
 }
 
-\allStopBGM() {
-    T2MediaLib.allStopBGM();
+\getPlayingBGMState(id) {
+    return T2MediaLib.getPlayingBGMState(id);
 }
 
-\allResetBGM() {
-    T2MediaLib.allResetBGM();
+\getBGMPicoAudio(id) {
+    return T2MediaLib.getBGMPicoAudio(id);
 }
 
 
 
+// Audio //
 \loadAudio(idx, src) {
     // 非同期呼び出し
     T2MediaLib.loadAudio(idx, src);
@@ -458,9 +487,6 @@ native Tonyu;
 
 \getAudioCurrentTime() {
     return T2MediaLib.getAudioCurrentTime();
-}
-\getCurrentTime() {
-    return T2MediaLib.getCurrentTime();
 }
 
 \getAudioLength() {

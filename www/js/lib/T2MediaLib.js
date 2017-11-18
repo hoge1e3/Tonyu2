@@ -3,8 +3,8 @@
 
 var T2MediaLib_BGMPlayer = function(arg_id) {
     this.id = arg_id;
-    this.playingState = "stop";
-    this.playingStatePending = null;
+    this.playingBGMState = "stop";
+    this.playingBGMStatePending = null;
     this.playingBGM = null;
     this.playingBGMName = null;
     this.bgmPause = 0;
@@ -31,12 +31,12 @@ T2MediaLib_BGMPlayer.prototype.playBGM = function(idx, loop, offset, loopStart, 
     var soundData = T2MediaLib.soundDataAry[idx];
     if (soundData == null) return null;
     if (!soundData.isDecodeComplete()) {
-        //if (!soundData.isDecoding()) {
         var that = this;
         var callbacks = {};
+        callbacks.bgmPlayerId = this.id;
         callbacks.succ = function() {
-            var pending = that.playingStatePending; // 途中で値が変わるため保存
-            that._setPlayingState("stop", true);
+            var pending = that.playingBGMStatePending; // 途中で値が変わるため保存
+            that._setPlayingBGMState("stop", true);
             if (pending != "stop" && that.playingBGMName == idx) {
                 that.playBGM(idx, loop, offset, loopStart, loopEnd);
             }
@@ -45,14 +45,13 @@ T2MediaLib_BGMPlayer.prototype.playBGM = function(idx, loop, offset, loopStart, 
             }
         };
         callbacks.err = function() {
-            that._setPlayingState("stop", true);
+            that._setPlayingBGMState("stop", true);
         };
-        this.playingBGMName = idx;
-        this._setPlayingState("decoding", true);
+        this._setPlayingBGMState("decoding", true);
         T2MediaLib.decodeSound(idx, callbacks);
-        //}
+
         this.playingBGMName = idx;
-        this._setPlayingState("play");
+        this._setPlayingBGMState("play");
         return this;
     }
 
@@ -62,14 +61,7 @@ T2MediaLib_BGMPlayer.prototype.playBGM = function(idx, loop, offset, loopStart, 
         this.playingBGM = T2MediaLib.playSE(idx, this.bgmVolume, this.bgmPan, this.bgmTempo, offset, loop, loopStart, loopEnd);
     } else if (decodedData instanceof Object) {
         // Midi
-        if (this.picoAudio == null) {
-            if (this.id == 0) {
-                this.picoAudio = T2MediaLib.picoAudio; // 0番目はT2MediaLib.picoAudioを使いまわす（初期化に時間がかかるため）
-            }
-            if (this.picoAudio == null) {
-                this.picoAudio = new PicoAudio(T2MediaLib.context, T2MediaLib.picoAudio); // AudioContextオブジェクトがmax6つまで？なので使いまわす
-            }
-        }
+        this._initPicoAudio();
         if (idx != this.picoAudioSetDataBGMName) {
             this.picoAudio.setData(decodedData);
             this.picoAudioSetDataBGMName = idx;
@@ -91,7 +83,7 @@ T2MediaLib_BGMPlayer.prototype.playBGM = function(idx, loop, offset, loopStart, 
     }
     this.playingBGMName = idx;
     this.bgmPause = 0;
-    this._setPlayingState("play");
+    this._setPlayingBGMState("play");
     return this;
 };
 T2MediaLib_BGMPlayer.prototype.stopBGM = function() {
@@ -105,7 +97,7 @@ T2MediaLib_BGMPlayer.prototype.stopBGM = function() {
     }
     this.playingBGM = null;
     this.playingBGMName = null;
-    this._setPlayingState("stop");
+    this._setPlayingBGMState("stop");
     return this;
 };
 T2MediaLib_BGMPlayer.prototype.pauseBGM = function() {
@@ -131,8 +123,8 @@ T2MediaLib_BGMPlayer.prototype.pauseBGM = function() {
             this.bgmPause = 1;
         }
     }
-    if (this.playingState != "stop") {
-        this._setPlayingState("pause");
+    if (this.playingBGMState != "stop") {
+        this._setPlayingBGMState("pause");
     }
     return this;
 };
@@ -351,19 +343,33 @@ T2MediaLib_BGMPlayer.prototype.getPlayingBGMName = function() {
     return this.playingBGMName;
 };
 T2MediaLib_BGMPlayer.prototype.setOnBGMEndListener = function(listener) {
-    if (this.picoAudio == null) {
+    if (this.picoAudio != null) {
         this.picoAudio.setOnSongEndListener(listener);
     }
 };
-T2MediaLib_BGMPlayer.prototype.getPlayingState = function() {
-    return this.playingState;
+T2MediaLib_BGMPlayer.prototype.getPlayingBGMState = function() {
+    return this.playingBGMState;
 };
-T2MediaLib_BGMPlayer.prototype._setPlayingState = function(state, force) {
-    if (force || this.playingState != "decoding") {
-        this.playingState = state;
-        this.playingStatePending = null;
+T2MediaLib_BGMPlayer.prototype.getBGMPicoAudio = function() {
+    this._initPicoAudio();
+    return this.picoAudio;
+};
+T2MediaLib_BGMPlayer.prototype._setPlayingBGMState = function(state, force) {
+    if (force || this.playingBGMState != "decoding") {
+        this.playingBGMState = state;
+        this.playingBGMStatePending = null;
     } else {
-        this.playingStatePending = state;
+        this.playingBGMStatePending = state;
+    }
+};
+T2MediaLib_BGMPlayer.prototype._initPicoAudio = function() {
+    if (this.picoAudio == null) {
+        if (this.id == 0) {
+            this.picoAudio = T2MediaLib.picoAudio; // 0番目はT2MediaLib.picoAudioを使いまわす（初期化に時間がかかるため）
+        }
+        if (this.picoAudio == null) {
+            this.picoAudio = new PicoAudio(T2MediaLib.context, T2MediaLib.picoAudio); // AudioContextオブジェクトがmax6つまで？なので使いまわす
+        }
     }
 };
 
@@ -381,8 +387,7 @@ var T2MediaLib_SoundData = function(idx, url) {
     this.url = null;
     this.fileData = null;
     this.decodedData = null;
-    this.decodedSuccCallbacks = null;
-    this.decodedErrCallbacks = null;
+    this.decodedCallbacksAry = null;
 };
 T2MediaLib_SoundData.prototype.onLoad = function(url) {
     this.state = "loading";
@@ -533,7 +538,7 @@ var T2MediaLib = {
         }
         T2MediaLib.soundDataAry[idx].onDecodeComplete(audioBuffer);
     },
-    // サウンドの受信・デコード・登録
+    // サウンドの読み込み・登録
     loadSound : function(idx, url, callbacks) { //@hoge1e3
         T2MediaLib.soundDataAry[idx] = new T2MediaLib_SoundData();
 
@@ -585,28 +590,35 @@ var T2MediaLib = {
         }
         //setTimeout(T2MediaLib.activate.bind(T2MediaLib),0);
     },
+    // サウンドのデコード
     decodeSound: function(idx, callbacks) {
         var soundData = T2MediaLib.soundDataAry[idx];
         if (soundData == null) return;
         if (soundData.isDecodeComplete()) return;
 
         // Adding Callback
-        if (soundData.decodedSuccCallbacks == null) {
-            soundData.decodedSuccCallbacks = []; // 複数コールバックを呼べるようにする
+        if (soundData.decodedCallbacksAry == null) {
+            soundData.decodedCallbacksAry = []; // 複数コールバックを呼べるようにする
         }
-        if (soundData.decodedErrCallbacks == null) {
-            soundData.decodedErrCallbacks = []; // 複数コールバックを呼べるようにする
-        }
-        if (callbacks && callbacks.succ) {
-            soundData.decodedSuccCallbacks.push(callbacks.succ);
-        }
-        if (callbacks && callbacks.err) {
-            soundData.decodedErrCallbacks.push(callbacks.err);
+        if (callbacks) {
+            if (callbacks.bgmPlayerId != null) { // 同じbgmPlayerIdのcallbacksがあれば上書きする(処理軽量化)
+                var exists = soundData.decodedCallbacksAry.some(function(c, i) {
+                    if (callbacks.bgmPlayerId == c.bgmPlayerId) {
+                        soundData.decodedCallbacksAry[i] = callbacks;
+                        return true;
+                    }
+                    return false;
+                });
+                if (!exists) {
+                    soundData.decodedCallbacksAry.push(callbacks);
+                }
+            } else {
+                soundData.decodedCallbacksAry.push(callbacks);
+            }
         }
 
         if (soundData.isDecoding()) return;
         soundData.onDecode();
-
         var arrayBuffer = soundData.fileData.slice(0);
         if (soundData.url.match(/\.(midi?)$/) || soundData.url.match(/^data:audio\/mid/)) {
             // Midi
@@ -616,21 +628,25 @@ var T2MediaLib = {
             }
             var smf = new Uint8Array(arrayBuffer);
             var data = T2MediaLib.picoAudio.parseSMF(smf);
-            if (typeof data == "string") {
+            if (typeof data == "string") { // parseSMF Error
                 console.log('T2MediaLib: Error parseSMF()', data);
                 T2MediaLib.soundDataAry[idx].onError("DECODE_ERROR");
                 //if (callbacks && callbacks.err) callbacks.err(idx, T2MediaLib.soundDataAry[idx].errorID);
-                soundData.decodedErrCallbacks.forEach(function(value, index, array) {
-                    console.log(value, index, array);
-                    value(idx, T2MediaLib.soundDataAry[idx].errorID);
+                soundData.decodedCallbacksAry.forEach(function(callbacks) {
+                    if (typeof callbacks.err == "function") {
+                        callbacks.err(idx, T2MediaLib.soundDataAry[idx].errorID);
+                    }
                 });
+                soundData.decodedCallbacksAry = null;
             } else {
                 T2MediaLib.soundDataAry[idx].onDecodeComplete(data);
                 //if (callbacks && callbacks.succ) callbacks.succ(idx);
-                soundData.decodedSuccCallbacks.forEach(function(value, index, array) {
-                    console.log(value, index, array);
-                    value(idx);
+                soundData.decodedCallbacksAry.forEach(function(callbacks) {
+                    if (typeof callbacks.succ == "function") {
+                        callbacks.succ(idx);
+                    }
                 });
+                soundData.decodedCallbacksAry = null;
             }
         } else {
             // MP3, Ogg, AAC, WAV
@@ -639,10 +655,12 @@ var T2MediaLib = {
                 if (T2MediaLib.soundDataAry[idx].isDecoding()) {
                     T2MediaLib.soundDataAry[idx].onDecodeComplete(audioBuffer);
                     //if (callbacks && callbacks.succ) callbacks.succ(idx);//@hoge1e3
-                    soundData.decodedSuccCallbacks.forEach(function(value, index, array) {
-                        console.log(value, index, array);
-                        value(idx);
+                    soundData.decodedCallbacksAry.forEach(function(callbacks) {
+                        if (typeof callbacks.succ == "function") {
+                            callbacks.succ(idx);
+                        }
                     });
+                    soundData.decodedCallbacksAry = null;
                 }
             };
             var errorCallback = function(error) {
@@ -653,16 +671,18 @@ var T2MediaLib = {
                 }
                 T2MediaLib.soundDataAry[idx].onError("DECODE_ERROR");
                 //if (callbacks && callbacks.err) callbacks.err(idx, T2MediaLib.soundDataAry[idx].errorID);
-                soundData.decodedSuccCallbacks.forEach(function(value, index, array) {
-                    console.log(value, index, array);
-                    value(idx, T2MediaLib.soundDataAry[idx].errorID);
+                soundData.decodedCallbacksAry.forEach(function(callbacks) {
+                    if (typeof callbacks.err == "function") {
+                        callbacks.err(idx, T2MediaLib.soundDataAry[idx].errorID);
+                    }
                 });
+                soundData.decodedCallbacksAry = null;
             };
             T2MediaLib.context.decodeAudioData(arrayBuffer, successCallback, errorCallback);
         }
     },
+    // 無音サウンドを鳴らしWeb Audio APIを使えるようにする(iOS対策)
     activate: function () {
-      // create empty buffer
         this.init();
         if (this.isActivated) return;
         this.isActivated=true;
@@ -674,22 +694,34 @@ var T2MediaLib = {
              //ary[i] = (i % lam<lam/2?0.1:-0.1)*(i<lam?2:1) ;
              ary[i] = 0; // 無音化
         }
-        //console.log(ary);
         var source = myContext.createBufferSource();
         source.buffer = buffer;
-        // connect to output (your speakers)
         source.connect(myContext.destination);
-        // play the file
-        if (source.noteOn) source.noteOn(0);
-        else if (source.start) source.start(0);
+        source.start = source.start || source.noteOn;
+        source.start(0);
     },
-    getSoundData : function(idx) {
+    // 指定したサウンドのファイルデータを返す
+    getSoundFileData : function(idx) {
+        var soundDataObj = T2MediaLib.soundDataAry[idx];
+        if (soundDataObj) {
+            return soundDataObj.fileData;
+        } else {
+            return null;
+        }
+    },
+    // 指定したサウンドのデコード済みデータを返す
+    getSoundDecodedData : function(idx) {
         var soundDataObj = T2MediaLib.soundDataAry[idx];
         if (soundDataObj) {
             return soundDataObj.decodedData;
         } else {
             return null;
         }
+    },
+    // AudioContextのcurrentTimeを返す
+    getCurrentTime: function () {//@hoge1e3
+        if (!T2MediaLib.context) return null;
+        return T2MediaLib.context.currentTime;
     },
 
     // SEメソッド郡 //
@@ -888,27 +920,23 @@ var T2MediaLib = {
     // BGMメソッド郡 //
 
     playBGM : function(id, idx, loop, offset, loopStart, loopEnd) {
-        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
-        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
-        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
         return bgmPlayer.playBGM(idx, loop, offset, loopStart, loopEnd);
     },
     stopBGM : function(id) {
-        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
-        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
-        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
         return bgmPlayer.stopBGM();
     },
     pauseBGM : function(id) {
-        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
-        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
-        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
         return bgmPlayer.pauseBGM();
     },
     resumeBGM : function(id) {
-        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
-        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
-        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
         return bgmPlayer.resumeBGM();
     },
     getBGMMasterVolume : function() {
@@ -923,100 +951,94 @@ var T2MediaLib = {
         }
     },
     getBGMVolume : function(id) {
-        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
-        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
-        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
         return bgmPlayer.getBGMVolume();
     },
     setBGMVolume : function(id, vol) {
-        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
-        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
-        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
         return bgmPlayer.setBGMVolume(vol);
     },
     getBGMTempo : function(id) {
-        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
-        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
-        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
         return bgmPlayer.getBGMTempo();
     },
     setBGMTempo : function(id, tempo) {
-        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
-        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
-        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
         return bgmPlayer.setBGMTempo(tempo);
     },
     getBGMPan : function(id) {
-        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
-        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
-        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
         return bgmPlayer.getBGMPan();
     },
     setBGMPan : function(id, pan) {
-        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
-        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
-        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
         return bgmPlayer.setBGMPan(pan);
     },
     isBGMLoop : function(id) {
-        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
-        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
-        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
         return bgmPlayer.isBGMLoop();
     },
     setBGMLoop : function(id, loop) {
-        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
-        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
-        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
         return bgmPlayer.setBGMLoop(loop);
     },
     getBGMLoopStartTime : function(id) {
-        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
-        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
-        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
         return bgmPlayer.getBGMLoopStartTime();
     },
     setBGMLoopStartTime : function(id, loopStart) {
-        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
-        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
-        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
         return bgmPlayer.setBGMLoopStartTime(loopStart);
     },
     getBGMLoopEndTime : function(id) {
-        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
-        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
-        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
         return bgmPlayer.getBGMLoopEndTime();
     },
     setBGMLoopEndTime : function(id, loopEnd) {
-        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
-        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
-        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
         return bgmPlayer.setBGMLoopEndTime(loopEnd);
     },
     getBGMCurrentTime : function(id) {
-        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
-        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
-        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
         return bgmPlayer.getBGMCurrentTime();
     },
     getBGMLength : function(id) {
-        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
-        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
-        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
         return bgmPlayer.getBGMLength();
     },
     getPlayingBGMName : function(id) {
-        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
-        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
-        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
         return bgmPlayer.getPlayingBGMName();
     },
     setOnBGMEndListener : function(id, listener) {
-        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
-        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
-        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
         return bgmPlayer.setOnBGMEndListener(listener);
+    },
+    getPlayingBGMState : function(id) {
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
+        return bgmPlayer.getPlayingBGMState();
+    },
+    getBGMPicoAudio : function(id) {
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
+        return bgmPlayer.getBGMPicoAudio();
     },
     getBGMPlayerMax : function() {
         return T2MediaLib.bgmPlayerMax;
@@ -1036,6 +1058,12 @@ var T2MediaLib = {
         T2MediaLib.setMasterVolume(1.0);
         T2MediaLib.setSEMasterVolume(1.0);
         T2MediaLib.setBGMMasterVolume(1.0);
+    },
+    _getBgmPlayer : function(id) {
+        if (id < 0 || T2MediaLib.bgmPlayerMax <= id) return null;
+        var bgmPlayer = T2MediaLib.bgmPlayerAry[id];
+        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        return bgmPlayer;
     },
 
     // Audioメソッド郡 //
@@ -1118,9 +1146,6 @@ var T2MediaLib = {
     getAudioCurrentTime : function() {
         if (!(T2MediaLib.playingAudio instanceof Audio)) return null;
         return T2MediaLib.playingAudio.currentTime;
-    },
-    getCurrentTime: function () {//@hoge1e3
-        return T2MediaLib.context.currentTime;
     },
     getAudioLength : function() {
         if (!(T2MediaLib.playingAudio instanceof Audio)) return null;
