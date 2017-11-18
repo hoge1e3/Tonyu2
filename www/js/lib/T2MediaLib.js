@@ -47,11 +47,10 @@ T2MediaLib_BGMPlayer.prototype.playBGM = function(idx, loop, offset, loopStart, 
         callbacks.err = function() {
             that._setPlayingBGMState("stop", true);
         };
-        this._setPlayingBGMState("decoding", true);
-        T2MediaLib.decodeSound(idx, callbacks);
-
         this.playingBGMName = idx;
+        this._setPlayingBGMState("decoding", true);
         this._setPlayingBGMState("play");
+        T2MediaLib.decodeSound(idx, callbacks);
         return this;
     }
 
