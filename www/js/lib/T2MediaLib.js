@@ -727,7 +727,7 @@ var T2MediaLib = {
             else if (offset < 0.0) offset = 0.0;
         }
         if (!duration) {//@hoge1e3
-            duration=audioBuffer.duration-offset;
+            duration=undefined;
         }
         if (!loop) loop = false;
         if (!loopStart) {
@@ -798,12 +798,7 @@ var T2MediaLib = {
         // 再生
         source.start = source.start || source.noteOn;
         source.stop  = source.stop  || source.noteOff;
-        if (offset) {
-            if (loop) source.start(start, offset, 86400);//@hoge1e3
-            else      source.start(start, offset, duration);//@hoge1e3
-        } else {
-            source.start(start,0,duration);//@hoge1e3
-        }
+        source.start(start, offset, duration);
 
         source.onended = function(event) {
             //source.disconnect();
