@@ -8,34 +8,31 @@ native Tonyu;
 }
 
 \initT2MediaPlayer() {
-    if (!t2MediaLib) {
-        t2MediaLib = new T2MediaLib();
+    if (!$t2MediaLib) {
+        $t2MediaLib = new T2MediaLib();
     }
-    if (t2MediaLib.inited) return;
-    t2MediaLib.init();
-    t2MediaLib.inited=true;
-    bgmPlayerMax = t2MediaLib.bgmPlayerMax;
+    bgmPlayerMax = $t2MediaLib.bgmPlayerMax;
 }
 
 \allClearSoundData() {
-    t2MediaLib.allResetBGM();
-    t2MediaLib.allClearSoundData();
+    $t2MediaLib.allResetBGM();
+    $t2MediaLib.allClearSoundData();
 }
 
 \clearSoundData(idx) {
-    t2MediaLib.clearSoundData(idx);
+    $t2MediaLib.clearSoundData(idx);
 }
 
 \allRemoveDecodedSoundData() {
-    t2MediaLib.allRemoveDecodedSoundData();
+    $t2MediaLib.allRemoveDecodedSoundData();
 }
 
 \removeDecodedSoundData(idx) {
-    t2MediaLib.removeDecodedSoundData(idx);
+    $t2MediaLib.removeDecodedSoundData(idx);
 }
 
 \getMasterVolume() {
-    return t2MediaLib.getMasterVolume() * 128;
+    return $t2MediaLib.getMasterVolume() * 128;
 }
 
 \setMasterVolume(vol) {
@@ -43,21 +40,21 @@ native Tonyu;
         vol /= 128;
         if (vol < 0.0) vol = 0.0;
     } else {
-        return t2MediaLib.setMasterVolume(t2MediaLib.getMasterVolume());
+        return $t2MediaLib.setMasterVolume($t2MediaLib.getMasterVolume());
     }
-    return t2MediaLib.setMasterVolume(vol);
+    return $t2MediaLib.setMasterVolume(vol);
 }
 
 \loadSound(idx, src) {//@hoge1e3
     // 非同期呼び出し
     runAsync \(succ,err) {
         // 読み込み完了するまでブロッキング
-        t2MediaLib.loadSound(idx, src) {succ,err};
+        $t2MediaLib.loadSound(idx, src) {succ,err};
     };
 }
 
 \available {
-    return !!t2MediaLib.context;
+    return !!$t2MediaLib.context;
 }
 //@hoge1e3
 \loadFromProject(prj) {
@@ -79,23 +76,23 @@ native Tonyu;
 
 \decodeSound(idx, callbacks) {
     // デコード完了するまでブロッキング
-    t2MediaLib.decodeSound(idx, callbacks);
+    $t2MediaLib.decodeSound(idx, callbacks);
 }
 
 \getSoundFileData(idx) {
-    return t2MediaLib.getSoundFileData(idx);
+    return $t2MediaLib.getSoundFileData(idx);
 }
 
 \getSoundDecodedData(idx) {
-    return t2MediaLib.getSoundDecodedData(idx);
+    return $t2MediaLib.getSoundDecodedData(idx);
 }
 
 \getCurrentTime() {
-    return t2MediaLib.getCurrentTime();
+    return $t2MediaLib.getCurrentTime();
 }
 
 \getContext() {
-    return t2MediaLib.context;
+    return $t2MediaLib.context;
 }
 
 
@@ -128,15 +125,15 @@ native Tonyu;
     } else {
         vol = 1.0;
     }
-    return t2MediaLib.playSE(idx, vol, pan, rate, offset, loop, loopStart, loopEnd,start,duration);//@hoge1e3
+    return $t2MediaLib.playSE(idx, vol, pan, rate, offset, loop, loopStart, loopEnd,start,duration);//@hoge1e3
 }
 
 \stopSE(sourceObj) {
-    return t2MediaLib.stopSE(sourceObj);
+    return $t2MediaLib.stopSE(sourceObj);
 }
 
 \getSEMasterVolume() {
-    return t2MediaLib.getSEMasterVolume() * 128;
+    return $t2MediaLib.getSEMasterVolume() * 128;
 }
 
 \setSEMasterVolume(vol) {
@@ -145,13 +142,13 @@ native Tonyu;
         if (vol < 0.0) vol = 0.0;
     } else {
         // 引数が不正の場合音量を変更しない（戻り値は返す）
-        return t2MediaLib.setSEMasterVolume(t2MediaLib.getSEMasterVolume());
+        return $t2MediaLib.setSEMasterVolume($t2MediaLib.getSEMasterVolume());
     }
-    return t2MediaLib.setSEMasterVolume(vol);
+    return $t2MediaLib.setSEMasterVolume(vol);
 }
 
 \getSEVolume(sourceObj) {
-    var vol = t2MediaLib.getSEVolume(sourceObj);
+    var vol = $t2MediaLib.getSEVolume(sourceObj);
     return typeof vol === "number" ? vol * 128 : vol;
 }
 
@@ -161,49 +158,49 @@ native Tonyu;
         if (vol < 0.0) vol = 0.0;
     } else {
         // 引数が不正の場合音量を変更しない（戻り値は返す）
-        return t2MediaLib.setSEVolume(sourceObj, t2MediaLib.getSEVolume(sourceObj));
+        return $t2MediaLib.setSEVolume(sourceObj, $t2MediaLib.getSEVolume(sourceObj));
     }
-    return t2MediaLib.setSEVolume(sourceObj, vol);
+    return $t2MediaLib.setSEVolume(sourceObj, vol);
 }
 
 \getSERate(sourceObj) {
-    return t2MediaLib.getSERate(sourceObj);
+    return $t2MediaLib.getSERate(sourceObj);
 }
 
 \setSERate(sourceObj, rate) {
-    return t2MediaLib.setSERate(sourceObj, rate);
+    return $t2MediaLib.setSERate(sourceObj, rate);
 }
 
 \getSEPan(sourceObj) {
-    return t2MediaLib.getSEPan(sourceObj);
+    return $t2MediaLib.getSEPan(sourceObj);
 }
 
 \setSEPan(sourceObj, pan) {
-    return t2MediaLib.setSEPan(sourceObj, pan);
+    return $t2MediaLib.setSEPan(sourceObj, pan);
 }
 
 \isSELoop(sourceObj) {
-    return t2MediaLib.isSELoop(sourceObj);
+    return $t2MediaLib.isSELoop(sourceObj);
 }
 
 \setSELoop(sourceObj, loop) {
-    return t2MediaLib.setSELoop(sourceObj, loop);
+    return $t2MediaLib.setSELoop(sourceObj, loop);
 }
 
 \getSELoopStartTime(sourceObj) {
-    return t2MediaLib.getSELoopStartTime(sourceObj);
+    return $t2MediaLib.getSELoopStartTime(sourceObj);
 }
 
 \setSELoopStartTime(sourceObj, loopStart) {
-    return t2MediaLib.setSELoopStartTime(setSELoopStartTime, loopStart);
+    return $t2MediaLib.setSELoopStartTime(setSELoopStartTime, loopStart);
 }
 
 \getSELoopEndTime(sourceObj) {
-    return t2MediaLib.getSELoopEndTime(sourceObj);
+    return $t2MediaLib.getSELoopEndTime(sourceObj);
 }
 
 \setSELoopEndTime(sourceObj, loopEnd) {
-    return t2MediaLib.setSELoopEndTime(setSELoopStartTime, loopEnd);
+    return $t2MediaLib.setSELoopEndTime(setSELoopStartTime, loopEnd);
 }
 
 
@@ -213,24 +210,24 @@ native Tonyu;
     if (mute) return;
     if (loop == null) loop = false;
     if (offset == null) offset = 0;
-    return t2MediaLib.playBGM(0, idx, loop, offset, loopStart, loopEnd);
+    return $t2MediaLib.playBGM(0, idx, loop, offset, loopStart, loopEnd);
 }
 
 \stopBGM() {
-    return t2MediaLib.stopBGM(0);
+    return $t2MediaLib.stopBGM(0);
 }
 
 \pauseBGM() {
-    return t2MediaLib.pauseBGM(0);
+    return $t2MediaLib.pauseBGM(0);
 }
 
 \resumeBGM() {
     if (mute) return;
-    return t2MediaLib.resumeBGM(0);
+    return $t2MediaLib.resumeBGM(0);
 }
 
 \getBGMMasterVolume() {
-    return t2MediaLib.getBGMMasterVolume() * 128;
+    return $t2MediaLib.getBGMMasterVolume() * 128;
 }
 
 \setBGMMasterVolume(vol) {
@@ -239,13 +236,13 @@ native Tonyu;
         if (vol < 0.0) vol = 0.0;
     } else {
         // 引数が不正の場合音量を変更しない（戻り値は返す）
-        return t2MediaLib.setBGMMasterVolume(t2MediaLib.getBGMMasterVolume());
+        return $t2MediaLib.setBGMMasterVolume($t2MediaLib.getBGMMasterVolume());
     }
-    return t2MediaLib.setBGMMasterVolume(vol);
+    return $t2MediaLib.setBGMMasterVolume(vol);
 }
 
 \getBGMVolume() {
-    var vol = t2MediaLib.getBGMVolume(0);
+    var vol = $t2MediaLib.getBGMVolume(0);
     return typeof vol === "number" ? vol * 128 : vol;
 }
 
@@ -257,85 +254,85 @@ native Tonyu;
         if (vol < 0.0) vol = 0.0;
     } else {
         // 引数が不正の場合音量を変更しない（戻り値は返す）
-        return t2MediaLib.setBGMVolume(0, t2MediaLib.getBGMVolume(0));
+        return $t2MediaLib.setBGMVolume(0, $t2MediaLib.getBGMVolume(0));
     }
-    return t2MediaLib.setBGMVolume(0, vol);
+    return $t2MediaLib.setBGMVolume(0, vol);
 }
 
 \getBGMTempo() {
-    return t2MediaLib.getBGMTempo(0);
+    return $t2MediaLib.getBGMTempo(0);
 }
 
 \setBGMTempo(tempo) {
-    return t2MediaLib.setBGMTempo(0, tempo);
+    return $t2MediaLib.setBGMTempo(0, tempo);
 }
 
 \getBGMPan() {
-    return t2MediaLib.getBGMPan(0);
+    return $t2MediaLib.getBGMPan(0);
 }
 
 \setBGMPan(pan) {
-    return t2MediaLib.setBGMPan(0, pan);
+    return $t2MediaLib.setBGMPan(0, pan);
 }
 
 \isBGMLoop() {
-    return t2MediaLib.isBGMLoop(0);
+    return $t2MediaLib.isBGMLoop(0);
 }
 
 \setBGMLoop(loop) {
-    return t2MediaLib.setBGMLoop(0, loop);
+    return $t2MediaLib.setBGMLoop(0, loop);
 }
 
 \getBGMLoopStartTime() {
-    return t2MediaLib.getBGMLoopStartTime(0);
+    return $t2MediaLib.getBGMLoopStartTime(0);
 }
 
 \setBGMLoopStartTime(loopStart) {
-    return t2MediaLib.setBGMLoopStartTime(0, loopStart);
+    return $t2MediaLib.setBGMLoopStartTime(0, loopStart);
 }
 
 \getBGMLoopEndTime() {
-    return t2MediaLib.getBGMLoopEndTime(0);
+    return $t2MediaLib.getBGMLoopEndTime(0);
 }
 
 \setBGMLoopEndTime(loopEnd) {
-    return t2MediaLib.setBGMLoopEndTime(0, loopEnd);
+    return $t2MediaLib.setBGMLoopEndTime(0, loopEnd);
 }
 
 \getBGMCurrentTime() {
-    return t2MediaLib.getBGMCurrentTime(0);
+    return $t2MediaLib.getBGMCurrentTime(0);
 }
 
 \getBGMLength() {
-    return t2MediaLib.getBGMLength(0);
+    return $t2MediaLib.getBGMLength(0);
 }
 
 \getPlayingBGMName() {
-    return t2MediaLib.getPlayingBGMName(0);
+    return $t2MediaLib.getPlayingBGMName(0);
 }
 
 \setOnBGMEndListener() {
-    return t2MediaLib.setOnBGMEndListener(0);
+    return $t2MediaLib.setOnBGMEndListener(0);
 }
 
 \getPlayingBGMState() {
-    return t2MediaLib.getPlayingBGMState(0);
+    return $t2MediaLib.getPlayingBGMState(0);
 }
 
 \getBGMPicoAudio() {
-    return t2MediaLib.getBGMPicoAudio(0);
+    return $t2MediaLib.getBGMPicoAudio(0);
 }
 
 \getBGMPlayerMax() {
-    return t2MediaLib.getBGMPlayerMax();
+    return $t2MediaLib.getBGMPlayerMax();
 }
 
 \allStopBGM() {
-    t2MediaLib.allStopBGM();
+    $t2MediaLib.allStopBGM();
 }
 
 \allResetBGM() {
-    t2MediaLib.allResetBGM();
+    $t2MediaLib.allResetBGM();
 }
 
 // BGM ID指定 //
@@ -343,24 +340,24 @@ native Tonyu;
     if (mute) return;
     if (loop == null) loop = false;
     if (offset == null) offset = 0;
-    return t2MediaLib.playBGM(id, idx, loop, offset, loopStart, loopEnd);
+    return $t2MediaLib.playBGM(id, idx, loop, offset, loopStart, loopEnd);
 }
 
 \stopBGMID(id) {
-    return t2MediaLib.stopBGM(id);
+    return $t2MediaLib.stopBGM(id);
 }
 
 \pauseBGMID(id) {
-    return t2MediaLib.pauseBGM(id);
+    return $t2MediaLib.pauseBGM(id);
 }
 
 \resumeBGMID(id) {
     if (mute) return;
-    return t2MediaLib.resumeBGM(id);
+    return $t2MediaLib.resumeBGM(id);
 }
 
 \getBGMVolumeID(id) {
-    var vol = t2MediaLib.getBGMVolume(id);
+    var vol = $t2MediaLib.getBGMVolume(id);
     return typeof vol === "number" ? vol * 128 : vol;
 }
 
@@ -372,73 +369,73 @@ native Tonyu;
         if (vol < 0.0) vol = 0.0;
     } else {
         // 引数が不正の場合音量を変更しない（戻り値は返す）
-        return t2MediaLib.setBGMVolume(id, t2MediaLib.getBGMVolume(id));
+        return $t2MediaLib.setBGMVolume(id, $t2MediaLib.getBGMVolume(id));
     }
-    return t2MediaLib.setBGMVolume(id, vol);
+    return $t2MediaLib.setBGMVolume(id, vol);
 }
 
 \getBGMTempoID(id) {
-    return t2MediaLib.getBGMTempo(id);
+    return $t2MediaLib.getBGMTempo(id);
 }
 
 \setBGMTempoID(id, tempo) {
-    return t2MediaLib.setBGMTempo(id, tempo);
+    return $t2MediaLib.setBGMTempo(id, tempo);
 }
 
 \getBGMPanID(id) {
-    return t2MediaLib.getBGMPan(id);
+    return $t2MediaLib.getBGMPan(id);
 }
 
 \setBGMPanID(id, pan) {
-    return t2MediaLib.setBGMPan(id, pan);
+    return $t2MediaLib.setBGMPan(id, pan);
 }
 
 \isBGMLoopID(id) {
-    return t2MediaLib.isBGMLoop(id);
+    return $t2MediaLib.isBGMLoop(id);
 }
 
 \setBGMLoopID(id, loop) {
-    return t2MediaLib.setBGMLoop(id, loop);
+    return $t2MediaLib.setBGMLoop(id, loop);
 }
 
 \getBGMLoopStartTimeID(id) {
-    return t2MediaLib.getBGMLoopStartTime(id);
+    return $t2MediaLib.getBGMLoopStartTime(id);
 }
 
 \setBGMLoopStartTimeID(id, loopStart) {
-    return t2MediaLib.setBGMLoopStartTime(id, loopStart);
+    return $t2MediaLib.setBGMLoopStartTime(id, loopStart);
 }
 
 \getBGMLoopEndTimeID(id) {
-    return t2MediaLib.getBGMLoopEndTime(id);
+    return $t2MediaLib.getBGMLoopEndTime(id);
 }
 
 \setBGMLoopEndTimeID(id, loopEnd) {
-    return t2MediaLib.setBGMLoopEndTime(id, loopEnd);
+    return $t2MediaLib.setBGMLoopEndTime(id, loopEnd);
 }
 
 \getBGMCurrentTimeID(id) {
-    return t2MediaLib.getBGMCurrentTime(id);
+    return $t2MediaLib.getBGMCurrentTime(id);
 }
 
 \getBGMLengthID(id) {
-    return t2MediaLib.getBGMLength(id);
+    return $t2MediaLib.getBGMLength(id);
 }
 
 \getPlayingBGMNameID(id) {
-    return t2MediaLib.getPlayingBGMName(id);
+    return $t2MediaLib.getPlayingBGMName(id);
 }
 
 \setBGMOnSongEndListener(id) {
-    return t2MediaLib.setOnBGMEndListener(id);
+    return $t2MediaLib.setOnBGMEndListener(id);
 }
 
 \getPlayingBGMState(id) {
-    return t2MediaLib.getPlayingBGMState(id);
+    return $t2MediaLib.getPlayingBGMState(id);
 }
 
 \getBGMPicoAudio(id) {
-    return t2MediaLib.getBGMPicoAudio(id);
+    return $t2MediaLib.getBGMPicoAudio(id);
 }
 
 
@@ -446,56 +443,56 @@ native Tonyu;
 // Audio //
 \loadAudio(idx, src) {
     // 非同期呼び出し
-    t2MediaLib.loadAudio(idx, src);
+    $t2MediaLib.loadAudio(idx, src);
     // 読み込み完了するまでブロッキング
-    while (t2MediaLib.getAudioData(idx) == null) update();
+    while ($t2MediaLib.getAudioData(idx) == null) update();
 }
 
 \playAudio(idx, loop, startTime) {
     if (mute) return;
     if (loop == null) loop = false;
     if (startTime == null) startTime = 0;
-    return t2MediaLib.playAudio(idx, loop, startTime);
+    return $t2MediaLib.playAudio(idx, loop, startTime);
 }
 
 \stopAudio() {
-    return t2MediaLib.stopAudio();
+    return $t2MediaLib.stopAudio();
 }
 
 \pauseAudio() {
-    return t2MediaLib.pauseAudio();
+    return $t2MediaLib.pauseAudio();
 }
 
 \resumeAudio() {
     if (mute) return;
-    return t2MediaLib.resumeAudio();
+    return $t2MediaLib.resumeAudio();
 }
 
 \setAudioVolume(vol) {
     vol = vol / 128;
     if      (vol > 1.0) vol = 1.0;
     else if (vol < 0.0) vol = 0.0;
-    return t2MediaLib.setAudioVolume(vol);
+    return $t2MediaLib.setAudioVolume(vol);
 }
 
 \setAudioTempo(tempo) {
     if      (tempo > 4.0) tempo = 4.0;
     else if (tempo < 0.5) tempo = 0.5;
-    return t2MediaLib.setAudioTempo(tempo);
+    return $t2MediaLib.setAudioTempo(tempo);
 }
 
 \setAudioPosition(time) {
-    return t2MediaLib.setAudioPosition(time);
+    return $t2MediaLib.setAudioPosition(time);
 }
 
 \getAudioCurrentTime() {
-    return t2MediaLib.getAudioCurrentTime();
+    return $t2MediaLib.getAudioCurrentTime();
 }
 
 \getAudioLength() {
-    return t2MediaLib.getAudioLength();
+    return $t2MediaLib.getAudioLength();
 }
 
 \getAudioData(idx) {
-    return t2MediaLib.getAudioData(idx);
+    return $t2MediaLib.getAudioData(idx);
 }

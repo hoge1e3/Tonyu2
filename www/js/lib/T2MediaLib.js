@@ -1,7 +1,7 @@
 // forked from makkii_bcr's "T2MediaLib" http://jsdo.it/makkii_bcr/3ioQ
 
 var T2MediaLib = (function(){
-    var T2MediaLib = function() {
+    var T2MediaLib = function(_context) {
         this.context = null;
         this.picoAudio = null;
         this.soundDataAry = []; // T2MediaLib_SoundData
@@ -18,20 +18,26 @@ var T2MediaLib = (function(){
         this.audioDataAry = {
             data : []
         };
+        
+        this.init(_context);
     };
 
     // 初期化 //
-    T2MediaLib.prototype.init = function() {
+    T2MediaLib.prototype.init = function(_context) {
         if (this.inited) return;
         this.inited=true;
         if (this.disabled) return;
-        if (window.AudioContext) {
-            this.context = new AudioContext();
-        } else if (window.webkitAudioContext) {
-            this.context = new webkitAudioContext();
+        if (!_context) {
+            if (window.AudioContext) {
+                this.context = new AudioContext();
+            } else if (window.webkitAudioContext) {
+                this.context = new webkitAudioContext();
+            } else {
+                this.context = null;
+                console.log('Your browser does not support yet Web Audio API');
+            }
         } else {
-            this.context = null;
-            console.log('Your browser does not support yet Web Audio API');
+            this.context = _context;
         }
 
         // Web Audio API 起動成功
