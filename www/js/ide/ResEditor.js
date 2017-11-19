@@ -68,49 +68,83 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                          ["button", {on:{click:function (){ d.dialog("close"); }}}, "完了"]
             ));
             function dropAdd(e) {
-                eo=e.originalEvent;
-                var file = eo.dataTransfer.files[0];
-                var useBlob=WebSite.serverType=="GAE" && (file.size>1000*300);
-                if(!file.type.match(mediaInfo.contentType)) {
-                    alert("このファイルは追加できません："+(file.name));
-                    e.stopPropagation();
-                    e.preventDefault();
-                    return false;
+                var eo=e.originalEvent;
+                var files = eo.dataTransfer.files;
+                var readFiles = new Array(files.length);
+                var readFileSum = files.length;
+                var notReadFiles = [];
+                for (var i=0; i<files.length; i++) {
+                    var file = files[i];
+                    var useBlob=WebSite.serverType=="GAE" && (file.size>1000*300);
+                    if(!file.type.match(mediaInfo.contentType)) {
+                        readFileSum--;
+                        notReadFiles.push(file);
+                        e.stopPropagation();
+                        e.preventDefault();
+                        continue;
+                    }
+                    var itemName=file.name.replace(mediaInfo.extPattern,"").replace(/\W/g,"_");
+                    var itemExt="";
+                    if (file.name.match(mediaInfo.extPattern)) {
+                        itemExt=RegExp.lastMatch.toLowerCase();
+                    }
+                    var v=mediaInfo.newItem(itemName);
+                    renameUnique(v);
+                    if (useBlob) {
+                        Auth.assertLogin({
+                            showLoginLink:function (u) {
+                                dragPoint.css("border","solid red 2px").empty().append(
+                                        UI("div","大きい"+mediaInfo.name+"を追加するには，ログインが必要です：",
+                                           ["a",{href:u,target:"login",style:"color: blue;"},"ログインする"])
+                                );
+                            },success:function (u) {
+                                dragPoint.text("アップロード中...");
+                                var prjN=prj.getName();
+                                Blob.upload(u,prjN,file,{success:function (){
+                                    dragPoint.text(dragMsg);
+                                    v.url="${blobPath}/"+u+"/"+prjN+"/"+file.name;
+                                    add(v);
+                                }});
+                            }
+                        });
+                    } else {
+                        var readCnt = 0;
+                        var reader = new FileReader();
+                        reader.temp_file=file;
+                        reader.temp_itemName=itemName;
+                        reader.temp_itemExt=itemExt;
+                        reader.temp_v=v;
+                        reader.onloadend = function(e) {
+                            var target = e.target;
+                            var fileContent = target.result;
+                            if (target.error==null && fileContent!=null) {
+                                var itemFile=rsrcDir.rel(target.temp_itemName+target.temp_itemExt);
+                                itemFile.setBytes(fileContent);
+                                target.temp_v.url="ls:"+itemFile.relPath(prj.getDir());// fileContent;
+                                for (var i=0;i<files.length;i++) {
+                                    if (files[i]==target.temp_file) {
+                                        readFiles[i]=target.temp_v;
+                                        break;
+                                    }
+                                }
+                            }
+                            readCnt++;
+                            if (readCnt == readFileSum) {
+                                addAry(readFiles);
+                            }
+                        };
+                        reader.readAsArrayBuffer(file);
+                    }
                 }
-                var itemName=file.name.replace(mediaInfo.extPattern,"").replace(/\W/g,"_");
-                var itemExt="";
-                if (file.name.match(mediaInfo.extPattern)) {
-                    itemExt=RegExp.lastMatch.toLowerCase();
-                }
-                var v=mediaInfo.newItem(itemName);
-                if (useBlob) {
-                    Auth.assertLogin({
-                        showLoginLink:function (u) {
-                            dragPoint.css("border","solid red 2px").empty().append(
-                                    UI("div","大きい"+mediaInfo.name+"を追加するには，ログインが必要です：",
-                                       ["a",{href:u,target:"login",style:"color: blue;"},"ログインする"])
-                            );
-                        },success:function (u) {
-                            dragPoint.text("アップロード中...");
-                            var prjN=prj.getName();
-                            Blob.upload(u,prjN,file,{success:function (){
-                                dragPoint.text(dragMsg);
-                                v.url="${blobPath}/"+u+"/"+prjN+"/"+file.name;
-                                add(v);
-                            }});
-                        }
+                
+                if (notReadFiles.length>0) {
+                    var mes="このファイルは追加できません：\n";
+                    notReadFiles.forEach(function(f){
+                        if (f) mes+=f.name+"\n";
                     });
-                } else {
-                    var reader = new FileReader();
-                    reader.onload = function(e) {
-                        var fileContent = reader.result;
-                        var itemFile=rsrcDir.rel(itemName+itemExt);
-                        itemFile.setBytes(fileContent);
-                        v.url="ls:"+itemFile.relPath(prj.getDir());// fileContent;
-                        add(v);
-                    };
-                    reader.readAsArrayBuffer(file);
+                    alert(mes);
                 }
+                
                 e.stopPropagation();
                 e.preventDefault();
                 return false;
@@ -178,6 +212,27 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
             function add(v) {
                 items.push(v || mediaInfo.newItem());
                 update();
+            }
+            function addAry(vAry) {
+                vAry.forEach(function(v){
+                    if (v) items.push(v || mediaInfo.newItem());
+                });
+                update();
+            }
+            function renameUnique(v) {
+                var name=v.name;
+                var rename=name;
+                var cnt=1;
+                for (var i=items.length-1; i>=0 ; i--) {
+                    var o=items[i];
+                    if (o.name==rename) {
+                        rename=name+"_"+cnt;
+                        cnt++;
+                        i=items.length;
+                        continue;
+                    }
+                }
+                v.name=rename;
             }
         }
         function update() {
