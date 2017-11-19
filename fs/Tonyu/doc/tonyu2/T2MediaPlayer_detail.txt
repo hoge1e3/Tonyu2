@@ -59,15 +59,20 @@ decodeSoundメソッドで再生する前にあらかじめデコードするこ
 
 **SE のメソッド
 -[[playSE>T2MediaPlayer.playSE]]
+-- SE(効果音)を再生します
 
 **BGMプレイヤー番号省略版メソッド
 
 ※0番目のBGMプレイヤーに対するメソッドになります
 
 -[[playBGM>T2MediaPlayer.playBGM]]
+-- BGMを再生します
 -[[stopBGM>T2MediaPlayer.stopBGM]]
+-- BGMを停止します
 -[[pauseBGM>T2MediaPlayer.pauseBGM]]
+-- BGMを一時停止します
 -[[resumeBGM>T2MediaPlayer.resumeBGM]]
+-- 一時停止したBGMを再び再生します
 
 -getBGMVolume()
 --BGMプレイヤーの音量を取得します

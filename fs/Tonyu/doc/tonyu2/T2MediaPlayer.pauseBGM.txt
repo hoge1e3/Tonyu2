@@ -10,4 +10,15 @@
 pauseBGM()
 >>
 
+例：
+
+あらかじめbgm.mp3などの音声ファイルを[[音声リスト>sndres]]から追加しておきます。（以下の例では１０秒～１分程度の音声ファイルを想定しています）
+<<code
+$sound.playBGM($se_bgm);
+updateEx(150); // ５秒待つ（30で１秒）
+$sound.pauseBGM(); // ５秒後に一時停止
+updateEx(60); // ２秒待つ
+$sound.resumeBGM(); // ７秒後に再生を再開
+>>
+
 .

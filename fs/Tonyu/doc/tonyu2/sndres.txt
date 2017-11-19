@@ -8,6 +8,10 @@ mp3、ogg、mp4、m4a、mid、wavファイルを青枠にドラッグ＆ドロ�
 $se_xxxxx という名前で追加されます
 
 ※現在、ダウンロード版Tonyu2はmp3,mp4,m4aファイルを再生できません。
+- プロジェクトフォルダのsoundsフォルダに、mp3,mp4,m4aファイルと同名のoggファイルを置いておくことで、mp3ファイルとして追加した音声データも再生できるようになっています
+- [[ffmpeg>http://www.tonyu.jp/tonyu2/ffmpeg.html]]を追加インストールすることで、mp3,mp4,m4aファイルを追加するだけで自動的にoggファイルを生成させることができます
+
+
 
 演奏するのは[[$sound>T2MediaPlayer]]オブジェクトを用います。
 
