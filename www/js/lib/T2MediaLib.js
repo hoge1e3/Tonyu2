@@ -401,6 +401,7 @@ var T2MediaLib = (function(){
         source.start = source.start || source.noteOn;
         source.stop  = source.stop  || source.noteOff;
         source.start(start, offset, duration);
+        if (loop && duration != null) source.stop(start + duration); // iOS, Firefoxではloopがtrueのときdurationを指定しても止まらない
 
         source.onended = function(event) {
             //source.disconnect();
