@@ -56,6 +56,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
             ).appendTo(d);
             rsrc=prj.getResource();
             var items=rsrc[mediaInfo.key];
+            var tempFiles = items.slice();
             itemUIs=[];
             var itemTbl=UI("div").appendTo(d);
             items.forEach(function (item){
@@ -90,6 +91,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                     }
                     var v=mediaInfo.newItem(itemName);
                     renameUnique(v);
+                    tempFiles.push(v);
                     if (useBlob) {
                         Auth.assertLogin({
                             showLoginLink:function (u) {
@@ -223,12 +225,12 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                 var name=v.name;
                 var rename=name;
                 var cnt=1;
-                for (var i=items.length-1; i>=0 ; i--) {
-                    var o=items[i];
+                for (var i=tempFiles.length-1; i>=0 ; i--) {
+                    var o=tempFiles[i];
                     if (o.name==rename) {
                         rename=name+"_"+cnt;
                         cnt++;
-                        i=items.length;
+                        i=tempFiles.length;
                         continue;
                     }
                 }
