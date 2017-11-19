@@ -100,7 +100,7 @@ native T2MediaLib;
     };
     $handleTouchStart=\(e) {
         Tonyu.resetLoopCheck();
-        $sound.t2MediaLib.activate();
+        $t2MediaLib.activate();
         var p=cvj.offset();
         e.preventDefault();
         var ts=e.originalEvent.changedTouches;
@@ -128,7 +128,7 @@ native T2MediaLib;
     };
     $handleTouchMove=\(e) {
         Tonyu.resetLoopCheck();
-        $sound.t2MediaLib.activate();
+        $t2MediaLib.activate();
         var p=cvj.offset();
         e.preventDefault();
         var ts=e.originalEvent.changedTouches;
@@ -149,7 +149,7 @@ native T2MediaLib;
     };
     $handleTouchEnd=\(e) {
         Tonyu.resetLoopCheck();
-        $sound.t2MediaLib.activate();
+        $t2MediaLib.activate();
         var ts=e.originalEvent.changedTouches;
         for (var i =0 ; i<ts.length ; i++) {
             var src=ts[i];
