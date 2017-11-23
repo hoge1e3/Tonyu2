@@ -45,12 +45,8 @@ native Tonyu;
     return $t2MediaLib.setMasterVolume(vol);
 }
 
-\loadSound(idx, src) {//@hoge1e3
-    // 非同期呼び出し
-    runAsync \(succ,err) {
-        // 読み込み完了するまでブロッキング
-        $t2MediaLib.loadSound(idx, src) {succ,err};
-    };
+\loadSound(idx, src, callbacks) {//@hoge1e3
+    $t2MediaLib.loadSound(idx, src, callbacks);
 }
 
 \available {
@@ -61,16 +57,43 @@ native Tonyu;
     if (!available) return;
     var r=prj.getResource();
     if (!r || !r.sounds) return;
-    for (var s of r.sounds) {
-         var name=s.name, url=Tonyu.Assets.resolve(s.url, prj);
-         Tonyu.setGlobal(name, name);
-         try {
-            //print("Loading Sound2: "+name);
-            loadSound(name, url);
-         } catch(e) {
-            //print("Failed to load",name);
-            Tonyu.setGlobal(name, "ERROR");
-         }
+    if (r.sounds <= 0) return;
+    
+    progress("Loading sounds...[0/"+r.sounds.length+"]");
+    // 6つ同時読み込み
+    var jobs=6;
+    var cnt=0;
+    var callbacks={};
+    var s, name, url;
+    var func = function(idx, errorID){
+        if (errorID) {
+            console.log(errorID);
+            //print("Failed to load",idx);
+            Tonyu.setGlobal(idx, "ERROR");
+        } else {
+            //print("Loading Sound2: "+idx);
+            Tonyu.setGlobal(idx, idx);
+        }
+        
+        cnt ++;
+        if (cnt >= r.sounds.length) return;
+        progress("Loading sounds...["+(cnt+1)+"/"+r.sounds.length+"]");
+        var s = r.sounds[cnt];
+        var name=s.name;
+        var url=Tonyu.Assets.resolve(s.url, prj);
+        loadSound(name, url, callbacks);
+    };
+    callbacks.succ=func;
+    callbacks.err=func;
+    for (var i=0; i<jobs; i++) {
+        if (i >= r.sounds.length) break;
+        s = r.sounds[i];
+        name=s.name;
+        url=Tonyu.Assets.resolve(s.url, prj);
+        loadSound(name, url, callbacks);
+    }
+    while (cnt < r.sounds.length) {
+        update();
     }
 }
 
