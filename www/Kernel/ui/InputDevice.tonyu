@@ -190,6 +190,7 @@ native T2MediaLib;
         cvj.on("touchstart",handleTouchStart);
         cvj.on("touchmove",handleTouchMove);
         cvj.on("touchend",handleTouchEnd);
+        cvj.on("touchcancel",handleTouchEnd);
     }
 }
 
