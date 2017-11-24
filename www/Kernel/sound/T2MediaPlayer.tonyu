@@ -59,7 +59,7 @@ native Tonyu;
     if (!r || !r.sounds) return;
     if (r.sounds <= 0) return;
     
-    progress("Loading sounds...[0/"+r.sounds.length+"]");
+    progressNoLog("Loading sounds...[0/"+r.sounds.length+"]");
     // 6つ同時読み込み
     var jobs=6;
     var cnt=0;
@@ -77,7 +77,7 @@ native Tonyu;
         
         cnt ++;
         if (cnt >= r.sounds.length) return;
-        progress("Loading sounds...["+(cnt+1)+"/"+r.sounds.length+"]");
+        progressNoLog("Loading sounds...["+(cnt+1)+"/"+r.sounds.length+"]");
         var s = r.sounds[cnt];
         var name=s.name;
         var url=Tonyu.Assets.resolve(s.url, prj);
