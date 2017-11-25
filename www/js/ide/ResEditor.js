@@ -74,6 +74,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                 var readFiles = new Array(files.length);
                 var readFileSum = files.length;
                 var notReadFiles = [];
+                var existsFiles = [];
                 for (var i=0; i<files.length; i++) {
                     var file = files[i];
                     var useBlob=WebSite.serverType=="GAE" && (file.size>1000*300);
@@ -89,6 +90,22 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                     if (file.name.match(mediaInfo.extPattern)) {
                         itemExt=RegExp.lastMatch.toLowerCase();
                     }
+                    var itemFile=rsrcDir.rel(itemName+itemExt);
+                    var itemRelPath="ls:"+itemFile.relPath(prj.getDir());
+                    var existsFile;
+                    var fileExists=tempFiles.some(function(f){
+                        existsFile=f;
+                        return f.url==itemRelPath;
+                    });
+                    if (fileExists) {
+                        readFileSum--;
+                        file.existsFile=existsFile;
+                        existsFiles.push(file);
+                        e.stopPropagation();
+                        e.preventDefault();
+                        continue;
+                    }
+
                     var v=mediaInfo.newItem(itemName);
                     renameUnique(v);
                     tempFiles.push(v);
@@ -138,7 +155,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                         reader.readAsArrayBuffer(file);
                     }
                 }
-                
+
                 if (notReadFiles.length>0) {
                     var mes="このファイルは追加できません：\n";
                     notReadFiles.forEach(function(f){
@@ -146,7 +163,14 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                     });
                     alert(mes);
                 }
-                
+                if (existsFiles.length>0) {
+                    var mes="この名前のファイルは既に登録されています：\n";
+                    existsFiles.forEach(function(f){
+                        if (f) mes+=f.name+" ("+f.existsFile.name+")\n";
+                    });
+                    alert(mes);
+                }
+
                 e.stopPropagation();
                 e.preventDefault();
                 return false;
