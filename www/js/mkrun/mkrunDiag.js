@@ -38,7 +38,11 @@ define(["UI","extLink","mkrun","Tonyu","zip"], function (UI,extLink,mkrun,Tonyu,
             res.d.$vars.OKButton.prop("disabled", true);
             return mkrun.run(prj, FS.get(model.dest), {copySrc:model.src}).then(function () {
                 if (model.zip) {
-                    zip.dlzip(FS.get(model.dest));
+                    zip.zip(FS.get(model.dest)).then(function () {
+                        console.log("ZIPPED?");
+                    },function (e) {
+                        console.log(e.stack);
+                    });
                 }
                 UIDiag.alert(UI("div",
                          ["p",(options.hiddenFolder?"":
@@ -59,7 +63,7 @@ define(["UI","extLink","mkrun","Tonyu","zip"], function (UI,extLink,mkrun,Tonyu,
             });
             function openFolder() {
                 var f=FS.get(model.dest);
-                var gui = require("nw.gui");//nwDispatcher.requireNwGui(); 
+                var gui = require("nw.gui");//nwDispatcher.requireNwGui();
                 gui.Shell.showItemInFolder(f.path().replace(/\//g,"\\"));
             }
         };

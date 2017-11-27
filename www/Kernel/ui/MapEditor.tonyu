@@ -34,9 +34,9 @@ print("map file(s)");
 fileList=file("../maps/");
 if(fileList.exists()){
     fileList.recursive(function a(f){
-        f=f+"";
-        fNames=f.split("/");
-        print(fNames[fNames.length-1]);
+        //f=f+"";
+        //fNames=f.split("/");
+        print(f.name());//   fNames[fNames.length-1]);
         fileExist=true;
     });
 }

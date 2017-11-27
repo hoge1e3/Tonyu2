@@ -1,4 +1,5 @@
-define(["PathUtil"], function (P) {
+define(["FS"], function (FS) {
+	var P=FS.PathUtil;
 	var loc=document.location.href;
 	var devMode=!!loc.match(/html\/dev\//) && !!loc.match(/localhost:3/);
 	var WebSite;
@@ -160,5 +161,6 @@ define(["PathUtil"], function (P) {
 	} else {
 		WebSite.compiledKernel="http://tonyuexe.appspot.com/Kernel/js/concat.js";
 	}
+	FS.setEnvProvider(new FS.Env(WebSite));
 	return window.WebSite=WebSite;
 });

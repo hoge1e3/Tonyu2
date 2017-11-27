@@ -1,0 +1,14 @@
+native Tonyu;
+\generator() {
+    var a=new ArgParser(arguments);
+    var methodName=a.shift();
+    var th=Tonyu.thread();
+    var a=a.toArray();
+    a.unshift(yielder);
+    var res={
+        tonyuIterator: \{
+
+        }
+    };
+    th.apply(this, methodName, a);
+}
