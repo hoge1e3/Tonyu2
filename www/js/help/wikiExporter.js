@@ -42,5 +42,5 @@ requirejs(["Shell","Wiki","FS","requestFragment","WebSite"], function (sh,Wiki,F
 
         });
     };
-    sh.wiki2serv.description="wiki2serv ../doc/ ../../../doc/";
+    sh.wiki2serv.description="wiki2serv ../fs/Tonyu/doc/ ../www/doc/";
 });
