@@ -5,18 +5,43 @@
 BGMを再生します
 
 <<code
-playBGM(name, repeat, startTime, loopStart, loopEnd)
+playBGM(name, loop, offset, loopStart, loopEnd)
 >>
 
 -name
 --再生するBGMの名前([[音声リスト>sndres]]で指定した名前）を指定します
--repeat（省略可）
+-loop（省略可）
 --trueを指定すると繰り返し再生します。（省略時：false）
--startTime（省略可）
+-offset（省略可）
 --音声データで再生開始する位置を指定します。（単位：秒）（省略時：0）
 --例えば、3を指定すると音声データの3秒の部分から再生が開始されます
 -loopStart（省略可）
 --ループ始端位置を指定します。繰り返し再生時に有効となります（省略時：0）
 -loopEnd（省略可）
 --ループ終端位置を指定します。繰り返し再生時に有効となります（省略時：再生する音声データの長さ）
+
+例１：
+
+あらかじめbgm.mp3などの音声ファイルを[[音声リスト>sndres]]から追加しておきます。（以下の例では１０秒～１分程度の音声ファイルを想定しています）
+<<code
+$sound.playBGM($se_bgm);
+>>
+
+例２：
+<<code
+$sound.playBGM($se_bgm, true); // リピート再生します
+>>
+
+例３：
+<<code
+$sound.playBGM($se_bgm, true, 3); // 音声データの3秒の部分から再生が開始
+>>
+
+例４：
+<<code
+// 引数にnullを入れると省略時の値が設定されます
+// 音声データの最初から再生が開始され、6秒まで再生されると3秒の位置に戻り再生されます
+$sound.playBGM($se_bgm, true, null, 3, 6);
+>>
+
 .

@@ -5,12 +5,12 @@
 効果音を再生します
 
 <<code
-playSE(name, volume, pan, rate, startTime)
+playSE(name, vol, pan, rate, offset, loop, loopStart, loopEnd, start, duration)
 >>
 
 -name
 --再生する効果音の名前([[音声リスト>sndres]]で指定した名前）を指定します
--volume（省略可）
+-vol（省略可）
 --効果音の音量を指定します。範囲(0-128-∞)（省略時：128）
 ---0：消音
 ---128：もとの音量(100%)
@@ -22,7 +22,61 @@ playSE(name, volume, pan, rate, startTime)
 --- 1.0 : 最も右から音が鳴ります
 -rate（省略可）
 --効果音の再生速度を設定します。1がもとの速さです（省略時：1.0）
--startTime（省略可）
+-offset（省略可）
 --音声データで再生開始する位置を指定します。（単位：秒）（省略時：0）
 --例えば、3を指定すると音声データの3秒の部分から再生が開始されます
+-loop (省略可)
+--falseにしてください。trueにすると音が止まりません。（省略時：false）
+--(止める方法の説明は今後作成します)
+-loopStart (省略可)
+--ループ始端位置を指定します。繰り返し再生時に有効となります（省略時：0）
+-loopEnd (省略可)
+--ループ終端位置を指定します。繰り返し再生時に有効となります（省略時：再生する音声データの長さ）
+-start (省略可)
+--再生開始を遅らせる秒数を指定します。（省略時：0）
+-duration (省略可)
+--再生時間を遅らせる秒数を指定します。（省略時：0）
+
+オブジェクトでパラメタを渡す方法もあります。
+<<code
+playSE(name, {vol, pan, rate, offset, loop, loopStart, loopEnd, start, duration})
+>>
+
+例１：
+
+あらかじめsound.mp3などの音声ファイルを[[音声リスト>sndres]]から追加しておきます。（以下の例では１秒以上の音声ファイルを想定しています）
+<<code
+$sound.playSE($se_sound);
+>>
+
+例２：
+<<code
+$sound.playSE($se_sound, 64); // 半分の音量で再生
+>>
+オブジェクトでパラメタを渡す方法
+<<code
+$sound.playSE($se_sound, {vol:64}); // 半分の音量で再生
+>>
+
+例３：
+<<code
+$sound.playSE($se_sound, 128, 0.8, 1.2); // 右側スピーカーから1.2倍速で再生
+>>
+オブジェクトでパラメタを渡す方法
+<<code
+$sound.playSE($se_sound, {vol:128, pan:0.8, rate:1.2}); // 右側スピーカーから1.2倍速で再生
+>>
+
+例４：
+<<code
+// 0.5の値は音声データに合わせて値を変更してください
+// 引数にnullを指定するとデフォルト値が設定されます
+$sound.playSE($se_sound, null, null, null, 0.5); // 音声データの0.5秒の部分から再生が開始される
+>>
+オブジェクトでパラメタを渡す方法
+<<code
+$sound.playSE($se_sound, {offset:0.5}); // 音声データの0.5秒の部分から再生が開始される
+>>
+
+
 .

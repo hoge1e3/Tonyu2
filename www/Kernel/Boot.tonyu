@@ -228,6 +228,12 @@ mainLoop();
         SplashScreen.progress(m);
     } else SplashScreen.hide();
 }
+\progressNoLog(m) {
+    if (typeof SplashScreen=="undefined") return;
+    if (m) {
+        SplashScreen.progress(m);
+    } else SplashScreen.hide();
+}
 
 \mainLoop() {
     $frameCount=0;
