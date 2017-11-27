@@ -1,13 +1,13 @@
 [[file]]
 
-*FS.exitsメソッド
+*FS.existsメソッド
 
 ファイルまたはディレクトリが存在するかどうかを返します
 
 **書式
 
 <<code
-fs.exits()
+fs.exists()
 >>
 
 [[@arg fs]]があらわすファイルまたはディレクトリが存在すれば[[@cfrag true]]を，なければ[[@cfrag false]]を返します
