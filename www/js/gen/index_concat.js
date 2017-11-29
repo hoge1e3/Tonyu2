@@ -1,4 +1,4 @@
-// Created at Mon Nov 27 2017 15:55:32 GMT+0900 (東京 (標準時))
+// Created at Wed Nov 29 2017 14:09:08 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -93,7 +93,7 @@
 
 requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
-//   define("FSLib",[], function () { ... 
+//   define("FSLib",[], function () { ...
 //(function (global) {
 //var useGlobal=(typeof global.define!="function");
 //var define=(useGlobal ? define=function(_,f){f();} : global.define);
@@ -113,7 +113,7 @@ define([],function () {
     			var res=func(R.doLoad,module,module.exports);
     			return res || module.exports;
     		};
-		} else { 
+		} else {
     		R.setReqs( m, reqs);
     		m.func=function () {
     			return func.apply(this, R.getObjs(reqs));
@@ -176,16 +176,16 @@ define([],function () {
 	    var str=f+"";
 	    var res=[];
 	    str.replace(/require\s*\(\s*["']([^"']+)["']\s*\)/g,function (m,a) {
-	       res.push(a); 
+	       res.push(a);
 	    });
 	    return res;
 	};
 	R.modules={};
-	requireSimulator=R;
+	//requireSimulator=R;
 //----------
 define('extend',[],function (){
    return function extend(d,s) {
-      for (var i in s) {d[i]=s[i];} 
+      for (var i in s) {d[i]=s[i];}
    };
 });
 
@@ -452,7 +452,7 @@ PathUtil={
         return endsWith(path,SEP);
     },
     hasBackslashSep:function (path) {
-        return path.indexOf("\\")>=0;   
+        return path.indexOf("\\")>=0;
     },
     fixSep: function (path,to) {
         to=to||"/";
@@ -553,7 +553,7 @@ PathUtil={
         var backslashifyAfter=false;
         var a=Array.prototype.slice.call(arguments).map(function (e) {
             if (PathUtil.hasBackslashSep(e)) {
-                backslashifyAfter=true; 
+                backslashifyAfter=true;
                 return PathUtil.fixSep(e);
             } else {
                 return e;
@@ -1231,7 +1231,7 @@ function privatize(o){
     return res;
 }
 function extend(d,s) {
-    for (var i in (s||{})) {d[i]=s[i];} 
+    for (var i in (s||{})) {d[i]=s[i];}
     return d;
 }
 return {
@@ -1728,7 +1728,7 @@ define('NativeFS',["FS2","assert","PathUtil","extend","MIMETypes","Content"],
                 return fs.unlinkSync(np);
             }
         },
-        // mv: is Difficult, should check dst.fs==src.fs 
+        // mv: is Difficult, should check dst.fs==src.fs
         //     and both have not subFileSystems
         exists: function (path, options) {
             var np=this.toNativePath(path);
@@ -2766,7 +2766,7 @@ define('RootFS',["assert","FS2","PathUtil","SFile"], function (assert,FS,P,SFile
             get: function (path) {
                 assert.is(path,P.Absolute);
                 return new SFile(this.resolveFS(path), path);
-            },   
+            },
             addObserver: function () {
                 this.observers=this.observers||[];
                 var path,f;
@@ -6266,8 +6266,8 @@ exports.prepareContent = function(name, inputData, isBinary, isOptimizedBinarySt
 
     // if inputData is already a promise, this flatten it.
     var promise = external.Promise.resolve(inputData).then(function(data) {
-        
-        
+
+
         var isBlob = support.blob && (data instanceof Blob || ['[object File]', '[object Blob]'].indexOf(Object.prototype.toString.call(data)) !== -1);
 
         if (isBlob && typeof FileReader !== "undefined") {
@@ -7126,7 +7126,7 @@ $export.P = 8;   // proto
 $export.B = 16;  // bind
 $export.W = 32;  // wrap
 $export.U = 64;  // safe
-$export.R = 128; // real proto method for `library` 
+$export.R = 128; // real proto method for `library`
 module.exports = $export;
 },{"./_core":40,"./_ctx":41,"./_global":46,"./_hide":47}],45:[function(require,module,exports){
 module.exports = function(exec){
