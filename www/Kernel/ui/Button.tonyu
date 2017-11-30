@@ -23,17 +23,6 @@ while(true) {
     } else {
         clicked=0;
     }
-    /*if (!disabled && (getkey(1) || $touches[0].touched) ) {
-        if (inRect{x:$mouseX,y:$mouseY}) {
-            clicked=getkey(1) || $touches[0].touched;
-        }
-        if (clicked==1) {
-            Button.last=this;
-            if (onClick) onClick();
-        }
-    } else {
-        clicked=0;
-    }*/
     update();
 }
 \checkTouch() {
@@ -46,6 +35,7 @@ while(true) {
     return 0;
 }
 \inRect(p) {
+    p=$Screen.convert(p,layer);
     return p.x>=left && p.x<=left+width && p.y>=top && p.y<=top+height;
 }
 \draw(c) {

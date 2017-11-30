@@ -471,8 +471,10 @@ nowait \findTouch(params) {
     }
     for (var t in $touches) {
         if (params.pickup || t.touched==1) {
-            if (Math.abs(r.x-t.x)<r.width/2 &&
-                Math.abs(r.y-t.y)<r.height/2) {
+            var tt=$Screen.convert(t,layer);
+            if (Math.abs(r.x-tt.x)<r.width/2 &&
+                Math.abs(r.y-tt.y)<r.height/2) {
+                $InputDevice.changeTouchLayer(t,layer);
                 return t;
             }
         }

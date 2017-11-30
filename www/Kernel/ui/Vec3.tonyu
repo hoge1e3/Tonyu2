@@ -120,6 +120,10 @@ function set() {
 \product(x,y,z) {
     return clone().productX(x,y,z);
 }
+\innerProduct() {
+    var a=parsePointArgs(arguments);
+    return x*a.x+y*a.y+z*a.z;
+}
 \rotate(angle, axis) {
     if (!axis) axis=new Vec3(0,0,1);
     var v90=product(axis);

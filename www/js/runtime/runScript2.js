@@ -56,7 +56,7 @@ requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu
 		loadFiles(curProjectDir);
 		sh.cd(curProjectDir);
 		WebSite.compiledKernel="js/kernel.js";
-		if (WebSite.serverType==="BA") {//ADDBA
+		if (WebSite.serverType==="BA" && window.runtimePath) {//ADDBA
 			WebSite.compiledKernel=window.runtimePath+"lib/tonyu/kernel.js";
 		}
 		var curPrj=CPTR("user", "js/concat.js",curProjectDir);

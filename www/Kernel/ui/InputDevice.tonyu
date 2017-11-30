@@ -17,7 +17,16 @@ native T2MediaLib;
     listeners.push(l);
 }
 \newTouch(i) {
-    return {index:i,x:0,y:0,vx:0,vy:0,touched:0,identifier:-1,ended:false};
+    return {index:i,px:0,py:0,x:0,y:0,vx:0,vy:0,touched:0,identifier:-1,ended:false,layer:defaultLayer};
+}
+\changeTouchLayer(t,toLayer) {
+    var p=$Screen.convert(t,toLayer);
+    t.x=p.x;
+    t.y=p.y;
+    t.layer=p.layer;
+    t.px=t.x;
+    t.py=t.y;
+    t.vx=t.vy=0;
 }
 \initCanvasEvents(cvj) {
     var cv=cvj[0];
@@ -119,6 +128,7 @@ native T2MediaLib;
                 mp=$Screen.convert(mp,defaultLayer);//$Screen.canvas2buf(mp);
                 dst.px=dst.x=mp.x;
                 dst.py=dst.y=mp.y;
+                dst.layer=mp.layer;
                 dst.touched=1;
             }
         }
@@ -138,9 +148,10 @@ native T2MediaLib;
             var dst=$touches.findById(src.identifier);
             if (dst) {
                 mp={x:src.pageX-p.left, y:src.pageY-p.top,layer:$Screen.layer};
-                mp=$Screen.convert(mp,defaultLayer);//$Screen.canvas2buf(mp);
+                mp=$Screen.convert(mp,dst.layer||defaultLayer);//$Screen.canvas2buf(mp);
                 dst.x=mp.x;
                 dst.y=mp.y;
+                dst.layer=mp.layer;
             }
         }
         $mouseX=$touches[0].x;
@@ -158,6 +169,7 @@ native T2MediaLib;
                 $touches[dst.index]=$InputDevice.newTouch(dst.index);
                 $touches[dst.index].x=dst.x;
                 $touches[dst.index].y=dst.y;
+                $touches[dst.index].layer=defaultLayer;
                 dst.ended=true;
                 /*dst.touched=0;
                 dst.vx=dst.vy=0;

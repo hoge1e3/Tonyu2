@@ -287,7 +287,7 @@ nowait \copy() {
 \save(fn) {
     var url=buf[0].toDataURL();
     if (typeof fn==="string") fn=file(fn);
-    fn.text( url );
+    return fn.text( url );
 }
 \load(fn) {
     if (typeof fn==="string") fn=file(fn);

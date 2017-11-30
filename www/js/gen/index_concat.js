@@ -1,4 +1,4 @@
-// Created at Wed Nov 29 2017 14:09:08 GMT+0900 (東京 (標準時))
+// Created at Wed Nov 29 2017 15:13:07 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -15094,26 +15094,22 @@ define(["FS"], function (FS) {
 	return window.WebSite=WebSite;
 });
 
-requireSimulator.setName('PathUtil');
-define(["FS"],function (FS){return FS.PathUtil;});
-
 requireSimulator.setName('assert');
 define(["FS"],function (FS){return FS.assert;});
 
 requireSimulator.setName('Shell');
-define(["FS","Util","WebSite","PathUtil","assert"],
-        function (FS,Util,WebSite,PathUtil,assert) {
+define(["FS","assert"],
+        function (FS,assert) {
     var Shell={};
+    var PathUtil=assert(FS.PathUtil);
+    Shell.newCommand=function (name,func) {
+        this[name]=func;
+    };
     Shell.cd=function (dir) {
         Shell.cwd=resolve(dir,true);
         return Shell.pwd();
     };
-    function resolve(v, mustExist) {
-        var r=resolve2(v);
-        if (mustExist && !r.exists()) throw r+": no such file or directory";
-        return r;
-    }
-
+    Shell.vars=Object.create(FS.getEnv());
     Shell.mount=function (options, path) {
         //var r=resolve(path);
         if (!options || !options.t) {
@@ -15135,18 +15131,20 @@ define(["FS","Util","WebSite","PathUtil","assert"],
         var sh=this;
         //sh.echo(rfs.fstype()+"\t"+"<Root>");
         t.forEach(function (fs) {
-            sh.echo(fs.fstype()+"\t"+(fs.mountPoint||""));
+            sh.echo(fs.fstype()+"\t"+(fs.mountPoint||"<Default>"));
         });
     }
     Shell.resolve=resolve;
+    function resolve(v, mustExist) {
+        var r=resolve2(v);
+        if (!FS.SFile.is(r)) {console.log(r," is not file");}
+        if (mustExist && !r.exists()) throw new Error(r+": no such file or directory");
+        return r;
+    }
     function resolve2(v) {
         if (typeof v!="string") return v;
-        if (PathUtil.isAbsolutePath(v)) return FS.get(v);
         var c=Shell.cwd;
-        /*while (Util.startsWith(v,"../")) {
-            c=c.up();
-            v=v.substring(3);
-        }*/
+        if (PathUtil.isAbsolutePath(v)) return FS.resolve(v,c);
         return c.rel(v);
     }
     Shell.pwd=function () {
@@ -15201,6 +15199,12 @@ define(["FS","Util","WebSite","PathUtil","assert"],
             return 1;
         }
     };
+    Shell.mkdir=function (file,options) {
+        file=resolve(file, false);
+        if (file.exists()) throw new Error(file+" : exists");
+        return file.mkdir();
+
+    };
     Shell.cat=function (file,options) {
         file=resolve(file, true);
         return Shell.echo(file.getContent(function (c) {
@@ -15251,14 +15255,58 @@ define(["FS","Util","WebSite","PathUtil","assert"],
         Shell.outUI=ui;
     };
     Shell.echo=function () {
-        console.log.apply(console,arguments);
-        if (Shell.outUI && Shell.outUI.log) Shell.outUI.log.apply(Shell.outUI,arguments);
+        return $.when.apply($,arguments).then(function () {
+            console.log.apply(console,arguments);
+            if (Shell.outUI && Shell.outUI.log) Shell.outUI.log.apply(Shell.outUI,arguments);
+        });
     };
-    Shell.err=function () {
+    Shell.err=function (e) {
         console.log.apply(console,arguments);
+        if (e && e.stack) console.log(e.stack);
         if (Shell.outUI && Shell.outUI.err) Shell.outUI.err.apply(Shell.outUI,arguments);
     };
-
+    Shell.clone= function () {
+        var r=Object.create(this);
+        r.vars=Object.create(this.vars);
+        return r;
+    };
+    Shell.getvar=function (k) {
+        return this.vars[k] || (process && process.env[k]);
+    };
+    Shell.get=Shell.getvar;
+    Shell.set=function (k,v) {
+        return this.vars[k]=v;
+    };
+    Shell.strcat=function () {
+        if (arguments.length==1) return arguments[0];
+        var s="";
+        for (var i=0;i<arguments.length;i++) s+=arguments[i];
+        return s;
+    };
+    Shell.exists=function (f) {
+        f=this.resolve(f);
+        return f.exists();
+    };
+    Shell.dl=function (f) {
+        f=this.resolve(f||".");
+        return f.download();
+    };
+    Shell.zip=function () {
+        var t=this;
+        var a=Array.prototype.slice.call(arguments).map(function (e) {
+            if (typeof e==="string") return t.resolve(e);
+            return e;
+        });
+        return FS.zip.zip.apply(FS.zip,a);
+    };
+    Shell.unzip=function () {
+        var t=this;
+        var a=Array.prototype.slice.call(arguments).map(function (e) {
+            if (typeof e==="string") return t.resolve(e);
+            return e;
+        });
+        return FS.zip.unzip.apply(FS.zip,a);
+    };
 
     Shell.prompt=function () {};
     Shell.ASYNC={r:"SH_ASYNC"};
@@ -15270,9 +15318,12 @@ define(["FS","Util","WebSite","PathUtil","assert"],
             }
         }
     };
-    sh=Shell;
-    if (WebSite.isNW) {
+    if (!window.sh) window.sh=Shell;
+    if (typeof process=="object") {
         sh.devtool=function () { require('nw.gui').Window.get().showDevTools();}
+        sh.cd(process.cwd().replace(/\\/g,"/"));
+    } else {
+        sh.cd("/");
     }
     return Shell;
 });
@@ -16580,6 +16631,9 @@ define(["WebSite"],function (WebSite) {
 });
 requireSimulator.setName('zip');
 define(["FS"],function (FS){return FS.zip;});
+
+requireSimulator.setName('PathUtil');
+define(["FS"],function (FS){return FS.PathUtil;});
 
 requireSimulator.setName('extLink');
 define(["WebSite","UI","PathUtil","Util","assert"],
