@@ -16,16 +16,4 @@ extends PlainChar;
     if (_isInvisible) return;
     onDraw();
     drawText(x,y,text,col,size);
-    /*if (!size) size=15;
-    if (!align) align="left";
-    if (!fillStyle) fillStyle="white";
-    ctx.fillStyle=fillStyle;
-    ctx.globalAlpha=this.alpha/255;
-    ctx.font=size+"px 'ＭＳ Ｐゴシック'";
-    var rect=drawTextRect(ctx, text, x, y, size, align , "fill");
-    width=rect.w;
-    height=rect.h;
-*/
-    //    fillStyle=col;
-    //super.draw(ctx);
 }

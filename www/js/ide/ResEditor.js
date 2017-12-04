@@ -193,6 +193,11 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                 function del() {
                     for (var i=items.length-1; i>=0 ; i--) {
                         if (items[i]===item) {
+                            var r=Assets.resolve( items[i].url, prj,{asFile:1});
+                            if (FS.isFile(r)) {
+                                console.log(r.path()," is removed.");
+                                r.rm();
+                            }
                             items.splice(i,1);
                             break;
                         }
@@ -309,11 +314,11 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                 delete cleanFile[item.url.replace(/\.(mp3|mp4|m4a)$/,".ogg")];
             });
             console.log(cleanFile);
-            for (var ci in cleanFile) {
+            /*for (var ci in cleanFile) {
                 var cf=cleanFile[ci];
                 console.log(cf+" is removed");
                 cf.rm();
-            }
+            }*/
         }
         function toi(s) {
             if (!s || s=="") return undefined;

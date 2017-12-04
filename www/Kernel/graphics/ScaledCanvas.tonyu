@@ -19,7 +19,7 @@ native Math;
     this.width=width;
     this.height=height;
     buf=$("<canvas>").attr{width,height};
-    ctx=buf[0].getContext("2d");  
+    ctx=buf[0].getContext("2d");
     $screenWidth=width;
     $screenHeight=height;
     if($panel){
@@ -55,7 +55,7 @@ native Math;
     var marginw=Math.floor((cw-calcw)/2);
     var marginh=Math.floor((ch-calch)/2);
     cctx.drawImage(buf[0],
-    0,0,width, height, 
+    0,0,width, height,
     marginw,marginh,calcw, calch );
 }
 \canvas2buf(point) {
@@ -70,7 +70,7 @@ native Math;
     var marginh=Math.floor((ch-calch)/2);
     //For mysterious bug of Chrome on Android 5....
     _ret="("+point.x+"-"+marginw+")/"+calcw+"*"+width+",";
-    return {x: (point.x-marginw)/calcw*width, 
+    return {x: (point.x-marginw)/calcw*width,
     y: (point.y-marginh)/calch*height};
 }
 \setBGColor(color){
@@ -79,7 +79,7 @@ native Math;
 \fillCanvas(cv){
     var ctx=cv.getContext("2d");
     ctx.save();
-    ctx.fillStyle=_color;
+    ctx.fillStyle=_color+"";
     ctx.fillRect(0,0,cv.width,cv.height);
     if (isDrawGrid) drawGrid(cv);
     ctx.restore();

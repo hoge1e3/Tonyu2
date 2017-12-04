@@ -296,7 +296,7 @@ nowait \draw(ctx) {
         if (!align) align="center";
         if (!fillStyle) fillStyle="white";
         if (font) ctx.font=size+"px "+font;
-        ctx.fillStyle=fillStyle;
+        ctx.fillStyle=fillStyle+"";
         ctx.globalAlpha=this.alpha/255;
         height=0;width=0;
         for(var textCount=0;textCount<splitsText.length;textCount++){
@@ -308,7 +308,7 @@ nowait \draw(ctx) {
     } else if (fillStyle!=null) {
         ctx.save();
         performTransform(ctx);
-        ctx.fillStyle=fillStyle;
+        ctx.fillStyle=fillStyle+"";
         if (radius) {
             ctx.beginPath();
             ctx.arc(0,0,radius,0,2*Math.PI);

@@ -1,6 +1,7 @@
 define(["WebSite","Util","Tonyu","FS"],function (WebSite,Util,Tonyu,FS) {
     var Assets={};
-    Assets.resolve=function (url, prj) {
+    Assets.resolve=function (url, prj, options) {
+        options=options||{};
         var baseDir=FS.isFile(prj)?prj:prj.getDir();
         if (url==null) url="";
         url=url.replace(/\$\{([a-zA-Z0-9_]+)\}/g, function (t,name) {
@@ -19,6 +20,7 @@ define(["WebSite","Util","Tonyu","FS"],function (WebSite,Util,Tonyu,FS) {
                 }
             }
             url=f.getURL();
+            if (options.asFile) return f;
         }
         return url;
     };

@@ -1,6 +1,6 @@
 extends OneframeSprite;
 \draw(ctx) {
-    ctx.strokeStyle=col;
+    ctx.strokeStyle=col+"";
     ctx.beginPath();
     ctx.moveTo(x,y);
     ctx.lineTo(tx,ty);

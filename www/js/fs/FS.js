@@ -91,7 +91,7 @@ define([],function () {
 //----------
 define('extend',[],function (){
    return function extend(d,s) {
-      for (var i in s) {d[i]=s[i];}
+      for (var i in s) {d[i]=s[i];} 
    };
 });
 
@@ -235,7 +235,7 @@ define('assert',[],function () {
         try {
             return top.assert.apply(top,arguments);
         } catch(e) {
-            throw new Error(e.message);
+            throw new Error(e.stack);
         }
     };
     ["setMode","isDefensive","is","isset","ne","eq","ensureError"].forEach(function (m) {
@@ -358,7 +358,7 @@ PathUtil={
         return endsWith(path,SEP);
     },
     hasBackslashSep:function (path) {
-        return path.indexOf("\\")>=0;
+        return path.indexOf("\\")>=0;   
     },
     fixSep: function (path,to) {
         to=to||"/";
@@ -459,7 +459,7 @@ PathUtil={
         var backslashifyAfter=false;
         var a=Array.prototype.slice.call(arguments).map(function (e) {
             if (PathUtil.hasBackslashSep(e)) {
-                backslashifyAfter=true;
+                backslashifyAfter=true; 
                 return PathUtil.fixSep(e);
             } else {
                 return e;
@@ -488,6 +488,8 @@ define('MIMETypes',[], function () {
       ".ico":"image/icon",
       ".mp3":"audio/mp3",
       ".ogg":"audio/ogg",
+      ".midi":"audio/midi",
+      ".mid":"audio/midi",
       ".txt":"text/plain",
       ".html":"text/html",
       ".htm":"text/html",
@@ -517,9 +519,12 @@ define('MIMETypes',[], function () {
       '.ppsx':'application/vnd.openxmlformats-officedocument.presentationml.slideshow',
       '.ppsm':'application/vnd.ms-powerpoint.slideshow.macroEnabled.12',
       '.ppam':'application/vnd.ms-powerpoint.addin.macroEnabled.12',
-      ".tonyu":"text/tonyu"
+      ".tonyu":"text/tonyu",
+      ".c":"text/c",
+      ".dtl":"text/dolittle"
    };
 });
+
 define('DeferredUtil',[], function () {
     //  promise.then(S,F)  and promise.then(S).fail(F) is not same!
     //  ->  when fail on S,  F is executed?
@@ -569,6 +574,27 @@ define('DeferredUtil',[], function () {
             if (DU.confing.useJQ) {
                 return $.when(p);
             }*/
+        },
+        throwNowIfRejected: function (p) {
+            // If Promise p has already rejected, throws the rejeceted reason immediately.
+            var state;
+            var err;
+            var res=p.then(function (r) {
+                if (!state) {
+                    state="resolved";
+                }
+                return r;
+            },function (e) {
+                if (!state) {
+                    state="rejected";
+                    err=e;
+                } else {
+                    return DU.reject(e);
+                }
+            });
+            if (!state) state="notyet";
+            if (state==="rejected") throw err;
+            return res;
         },
         assertResolved: function (p) {
             var res,resolved;
@@ -948,7 +974,7 @@ function (extend, P, M,assert,DU){
         },
         getContentType: function (path, options) {
             var e=(P.ext(path)+"").toLowerCase();
-            return M[e] || (options||{}).def || "text/plain";
+            return M[e] || (options||{}).def || "application/octet-stream";
         },
         getBlob: function (path, options) {
             var c=this.getContent(path);
@@ -1137,7 +1163,7 @@ function privatize(o){
     return res;
 }
 function extend(d,s) {
-    for (var i in (s||{})) {d[i]=s[i];}
+    for (var i in (s||{})) {d[i]=s[i];} 
     return d;
 }
 return {
@@ -1195,6 +1221,9 @@ define('Content',["assert","Util"],function (assert,Util) {
         b.contentType=contentType;
         return b;
     };
+    Content.looksLikeDataURL=function (text) {
+        return text.match(/^data:/);
+    };
     //------- methods
     var p=Content.prototype;
     p.toBin = function (binType) {
@@ -1248,7 +1277,7 @@ define('Content',["assert","Util"],function (assert,Util) {
         throw new Error("No data");
     };
     p.toPlainText=function () {
-        if (this.plain!=null) {
+        if (this.hasPlainText()) {
             return this.plain;
         } else {
             if (this.url && !this.hasBin() ) {
@@ -1396,12 +1425,12 @@ define('Content',["assert","Util"],function (assert,Util) {
         for (var i=0 ; i<bytes.length ; i++) {
              e.push("%"+("0"+bytes[i].toString(16)).slice(-2));
         }
-        try {
+        //try {
             return decodeURIComponent(e.join(""));
-        } catch (er) {
+        /*} catch (er) {
             console.log(e.join(""));
             throw er;
-        }
+        }*/
     };
     Content.str2utf8bytes=function (str, binType) {
         var e=encodeURIComponent(str);
@@ -1470,8 +1499,8 @@ define('Content',["assert","Util"],function (assert,Util) {
     return Content;
 });
 
-define('NativeFS',["FS2","assert","PathUtil","extend","MIMETypes","Content"],
-        function (FS,A,P,extend,MIME,Content) {
+define('NativeFS',["FS2","assert","PathUtil","extend","Content"],
+        function (FS,A,P,extend,Content) {
     var available=(typeof process=="object"/* && process.__node_webkit*/);
     if (!available) {
         return function () {
@@ -1508,11 +1537,6 @@ define('NativeFS',["FS2","assert","PathUtil","extend","MIMETypes","Content"],
         return a;
     };
 
-    /*Pro.isText=function (path) {
-        var e=P.ext(path);
-        var m=MIME[e];
-        return P.startsWith( m, "text");
-    };*/
     FS.addFSType("NativeFS",function (path, options) {
             return new NativeFS(options.r);
     });
@@ -1540,11 +1564,11 @@ define('NativeFS',["FS2","assert","PathUtil","extend","MIMETypes","Content"],
             A.is(path,P.Absolute);
             var np=this.toNativePath(path);
             this.assertExist(path);
-            if (this.isText(path)) {
+            /*if (this.isText(path)) {
                 return Content.plainText( fs.readFileSync(np, {encoding:"utf8"}) );
-            } else {
+            } else {*/
                 return Content.bin( fs.readFileSync(np) , this.getContentType(path));
-            }
+            //}
         },
         setContent: function (path,content) {
             A.is(arguments,[P.Absolute,Content]);
@@ -1664,6 +1688,7 @@ define('NativeFS',["FS2","assert","PathUtil","extend","MIMETypes","Content"],
     });
     return NativeFS;
 });
+
 define('LSFS',["FS2","PathUtil","extend","assert","Util","Content"],
         function(FS,P,extend,assert,Util,Content) {
     var LSFS = function(storage,options) {
@@ -1821,18 +1846,24 @@ define('LSFS',["FS2","PathUtil","extend","assert","Util","Content"],
             assert.is(arguments,[Absolute]);
             this.assertExist(path); // Do not use this??( because it does not follow symlinks)
             var c;
-            if (this.isText(path)) {
-                c=Content.plainText(this.getItem(path));
+            var cs=this.getItem(path);
+            if (Content.looksLikeDataURL(cs)) {
+                c=Content.url(cs);
             } else {
-                c=Content.url(this.getItem(path));
+                c=Content.plainText(cs);
             }
             return c;
         },
         setContent: function(path, content, options) {
             assert.is(arguments,[Absolute,Content]);
             this.assertWriteable(path);
-            if (this.isText(path)) {
-                this.setItem(path, content.toPlainText());
+            var t=null;
+            if (content.hasPlainText()) {
+                t=content.toPlainText();
+                if (Content.looksLikeDataURL(t)) t=null;
+            }
+            if (t!=null) {
+                this.setItem(path, t);
             } else {
                 this.setItem(path, content.toURL());
             }
@@ -2349,21 +2380,26 @@ SFile.prototype={
         if (this.isDir()) {
             throw new Error("Cannot write to directory: "+this.path());
         }
-        if (this.isText()) {
-            // if use fs.setContentAsync, the error should be handled by .fail
-            // setText will throw error immediately
-            return DU.resolve(this.act.fs.setContent(this.act.path, Content.plainText(t)));
-        } else {
+        var ct=this.contentType({def:null});
+        //if (this.isText()) {
+        if (ct!==null && !ct.match(/^text/) && Content.looksLikeDataURL(t)) {
+            // bad knowhow: if this is a binary file apparently, convert to URL
+            return DU.throwNowIfRejected(this.setContent(Content.url(t)));
             return DU.resolve(this.act.fs.setContent(this.act.path, Content.url(t)));
+        } else {
+            // if use fs.setContentAsync, the error should be handled by .fail
+            // setText should throw error immediately (Why? maybe old style of text("foo") did it so...)
+            return DU.throwNowIfRejected(this.setContent(Content.plainText(t)));
+            return DU.resolve(this.act.fs.setContent(this.act.path, Content.plainText(t)));
         }
     },
     appendText:function (t) {
         A.is(t,String);
-        if (this.isText()) {
-            return this.act.fs.appendContent(this.act.path, Content.plainText(t));
-        } else {
+        //if (this.isText()) {
+        return this.act.fs.appendContent(this.act.path, Content.plainText(t));
+        /*} else {
             throw new Error("append only for text file");
-        }
+        }*/
     },
     getContent: function (f) {
         if (typeof f=="function") {
@@ -2381,25 +2417,44 @@ SFile.prototype={
     getText:function (f) {
     	if (typeof f==="function") {
     		var t=this;
-    	    return this.getContent(function (c) {
-    	    	if (t.isText()) {
-	    	    	return c.toPlainText();
-	    	    } else {
-	    	    	return c.toURL();
-	    	    }
-    	    }).then(f);
+    	    return this.getContent(forceText).then(f);
     	}
-        if (this.isText()) {
+        return forceText(this.act.fs.getContent(this.act.path));
+        /*if (this.isText()) {
             return this.act.fs.getContent(this.act.path).toPlainText();
         } else {
             return this.act.fs.getContent(this.act.path).toURL();
+        }*/
+        function forceText(c) {
+	    	//if (t.isText()) {
+            try {
+                return c.toPlainText();
+            } catch(e) {
+    	    	return c.toURL();
+    	    }
         }
+    },
+    getDataURL: function (f) {
+        if (typeof f==="function") {
+            return this.getContent(function (c) {
+                return c.toURL();
+            });
+        }
+        return this.getContent().toURL();
+    },
+    setDataURL: function (u) {
+        return this.setContent(Content.url(u));
+    },
+    dataURL:function (d) {
+        if (typeof d==="string") return this.setDataURL(d);
+        if (typeof d==="function") return this.getDataURL(d);
+        return this.getDataURL();
     },
     isText: function () {
         return this.act.fs.isText(this.act.path);
     },
-    contentType: function () {
-        return this.act.fs.getContentType(this.act.path);
+    contentType: function (options) {
+        return this.act.fs.getContentType(this.act.path,options);
     },
     bytes: function (b) {
         if (Content.isBuffer(b)) return this.setBytes(b);
@@ -2672,7 +2727,7 @@ define('RootFS',["assert","FS2","PathUtil","SFile"], function (assert,FS,P,SFile
             get: function (path) {
                 assert.is(path,P.Absolute);
                 return new SFile(this.resolveFS(path), path);
-            },
+            },   
             addObserver: function () {
                 this.observers=this.observers||[];
                 var path,f;
@@ -6172,8 +6227,8 @@ exports.prepareContent = function(name, inputData, isBinary, isOptimizedBinarySt
 
     // if inputData is already a promise, this flatten it.
     var promise = external.Promise.resolve(inputData).then(function(data) {
-
-
+        
+        
         var isBlob = support.blob && (data instanceof Blob || ['[object File]', '[object Blob]'].indexOf(Object.prototype.toString.call(data)) !== -1);
 
         if (isBlob && typeof FileReader !== "undefined") {
@@ -7032,7 +7087,7 @@ $export.P = 8;   // proto
 $export.B = 16;  // bind
 $export.W = 32;  // wrap
 $export.U = 64;  // safe
-$export.R = 128; // real proto method for `library`
+$export.R = 128; // real proto method for `library` 
 module.exports = $export;
 },{"./_core":40,"./_ctx":41,"./_global":46,"./_hide":47}],45:[function(require,module,exports){
 module.exports = function(exec){
@@ -14339,8 +14394,8 @@ module.exports = ZStream;
 
 },{}]},{},[10])(10)
 });
-define('zip',["SFile","jszip","FileSaver.min","Util","MIMETypes","DeferredUtil"],
-function (SFile,JSZip,fsv,Util,M,DU) {
+define('zip',["SFile","jszip","FileSaver.min","Util","DeferredUtil"],
+function (SFile,JSZip,fsv,Util,DU) {
     var zip={};
     zip.zip=function (dir,dstZip,options) {
         if (!SFile.is(dstZip)) options=dstZip;

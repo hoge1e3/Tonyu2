@@ -32,7 +32,7 @@ loop();
 \draw(ctx) {
     //super.draw(ctx);
     ctx.globalAlpha=alpha/255;
-    ctx.fillStyle=fillStyle;
+    ctx.fillStyle=fillStyle+"";
     ctx.beginPath();
     ctx.arc(ix,iy,innerRadius,0,$Math.PI*2);
     ctx.closePath();

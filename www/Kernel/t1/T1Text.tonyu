@@ -7,7 +7,7 @@ includes TextRectMod;
     if (!size) size=15;
     if (!align) align="left";
     if (!fillStyle) fillStyle="white";
-    ctx.fillStyle=col;
+    ctx.fillStyle=col+"";
     ctx.globalAlpha=this.alpha/255;
     height=0;width=0;
     for(var textCount=0;textCount<splitsText.length;textCount++){

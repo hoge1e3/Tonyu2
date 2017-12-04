@@ -16,7 +16,7 @@ native Image;
         setPanel(width||$screenWidth||465,height||$screenHeight||465);
         //buf=$("<canvas>").attr{width,height};
     }
-    if (_fillStyle && canvas) canvas.getContext("2d").fillStyle=_fillStyle;
+    if (_fillStyle && canvas) canvas.getContext("2d").fillStyle=_fillStyle+"";
     x=x||width/2;
     y=y||height/2;
     if(align==null) align="center";
@@ -65,17 +65,17 @@ native Image;
 \fillStyle=val {
     _fillStyle=val;
     if (!canvas) return;
-    context.fillStyle=val;
+    context.fillStyle=val+"";
 }
 \strokeStyle=val {
-    context.strokeStyle=val;
+    context.strokeStyle=val+"";
 }
 \lineWidth=val {
     context.lineWidth=val;
 }
 \fillCircle(x,y,r) {
     var ctx=context;
-    ctx.fillStyle=fillStyle;
+    ctx.fillStyle=fillStyle+"";
     ctx.beginPath();
     ctx.arc(x,y,r,0,2*$Math.PI);
     ctx.closePath();
@@ -85,7 +85,7 @@ native Image;
     var ctx=getContext();
     ctx.save();
     //ctx.clearRect(0,0,this.width,this.height);
-    ctx.fillStyle=fillStyle;
+    ctx.fillStyle=fillStyle+"";
     ctx.fillRect(x,y,rectWidth,rectHeight);
     ctx.restore();
 }
@@ -97,7 +97,7 @@ native Image;
     //ctx.clearRect(0,0,this.width,this.height);
     ctx.textAlign = align ||"center";
     size=size||15;
-    ctx.fillStyle=fillStyle;
+    ctx.fillStyle=fillStyle+"";
     var f=ctx.font.replace(/^[0-9\.]+/,"");
     ctx.font=size+f;
     for(var colCount=0;colCount<splits.length;colCount++){

@@ -39,17 +39,17 @@ while(true) {
     return p.x>=left && p.x<=left+width && p.y>=top && p.y<=top+height;
 }
 \draw(c) {
-    c.fillStyle=fillStyle || "gray";
-    c.strokeStyle=strokeStyle || "black";
-    if (disabled) c.strokeStyle=disabledStrokeStyle;
+    c.fillStyle=fillStyle ? fillStyle+"" : "gray";
+    c.strokeStyle=strokeStyle ? strokeStyle+"" : "black";
+    if (disabled) c.strokeStyle=disabledStrokeStyle+"";
     c.fillRect(left, top, width, height);
     c.strokeRect(left, top, width, height);
     var size=height-padding*2;
     var f=c.font.replace(/^[0-9]+px /,"");
     c.font=size+"px "+f;//monospace";
     c.textBaseline="top";
-    c.fillStyle=clicked?clickedStyle:
-    disabled?disabledStrokeStyle:strokeStyle;
+    c.fillStyle=clicked?clickedStyle+"":
+    disabled?disabledStrokeStyle+"":strokeStyle+"";
     var r=c.measureText(text);
     c.fillText(text, left+width/2-r.width/2, top+padding);
 }

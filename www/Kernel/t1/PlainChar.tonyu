@@ -8,6 +8,8 @@ native Math;
         initSprite();
     }
     layer=layer||$mainLayer;
+    _scheduler=_scheduler||$Scheduler;
+    crashScale=1;
     if (typeof x=="object") Tonyu.extend(this,x);
     else if (typeof x=="number") {
         this.x=x;
@@ -45,5 +47,3 @@ native Math;
     main();
     die();
 }
-
-

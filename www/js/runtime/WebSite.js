@@ -118,7 +118,7 @@ define(["FS"], function (FS) {
 		putFiles:WebSite.serverTop+"/LS2FileSync"
 	};
 	if (WebSite.isNW) {
-		WebSite.cwd=P.directorify(process.cwd());
+		WebSite.cwd=P.directorify(process.cwd().replace(/\\/g,"/"));
 		//WebSite.exeDir=WebSite.execDir=P.up(P.fixSep(process.execPath)); not suitable when mac
 		if (process.env.TONYU_HOME) {
 			WebSite.tonyuHome=P.directorify(process.env.TONYU_HOME);

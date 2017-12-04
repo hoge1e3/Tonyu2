@@ -11,7 +11,7 @@ extends Panel;
             throw new Error("canvas is null");
         }
         _drawing=true;
-        fillStyle=_color;
+        fillStyle=_color+"";
         fillRect(0,0,width,height);
         var c=getContext();
         for (var i=layers.length-1;i>=0;i--) {
@@ -22,7 +22,7 @@ extends Panel;
             var spx=l.spx,spy=l.spy;
             var rt=l.rotation,sc=l.scale;
             //print(wpx,wpy,spx,spy,sc,rt);
-            // wpOnS =    R(rt)*wp*sc; 
+            // wpOnS =    R(rt)*wp*sc;
             var wpOnSX=(cos(rt)*wpx+cos(rt+90)*wpy)*sc;
             var wpOnSY=(sin(rt)*wpx+sin(rt+90)*wpy)*sc;
             //console.log(wcOnSX,wcOnSY);
@@ -45,7 +45,7 @@ extends Panel;
         spx:0,spy:0,
         wpx:0,wpy:0,rotation:0,scale:1,
         group,layer:this
-    };   
+    };
     return layers.length-1;
 }
 \selectLayer(i) {
@@ -64,14 +64,14 @@ extends Panel;
     }
 }
 \setPivot(x,y) {
-    layers[index].spx=x;    
-    layers[index].spy=y;    
+    layers[index].spx=x;
+    layers[index].spy=y;
 }
 \scrollTo(x,y,scl,rot) {
-    layers[index].wpx=x;    
-    layers[index].wpy=y;    
-    if (typeof scl=="number") layers[index].scale=scl;    
-    if (typeof rot=="number") layers[index].rotation=rot;    
+    layers[index].wpx=x;
+    layers[index].wpy=y;
+    if (typeof scl=="number") layers[index].scale=scl;
+    if (typeof rot=="number") layers[index].rotation=rot;
 }
 \canvas2buf(p) {
     p.layer=layer;
@@ -98,9 +98,9 @@ extends Panel;
             var dx=obj.x-l.wpx;
             var dy=obj.y-l.wpy;
             var rt=l.rotation;
-            // (x,y)= l.sp + R(rt)*(obj-l.wp)/l.scale; 
-            // (x)= l.spx + (cos(rt) cos(rt+90))*(dx)/l.scale; 
-            // (y)= l.spy + (sin(rt) sin(rt+90))*(dy)/l.scale; 
+            // (x,y)= l.sp + R(rt)*(obj-l.wp)/l.scale;
+            // (x)= l.spx + (cos(rt) cos(rt+90))*(dx)/l.scale;
+            // (y)= l.spy + (sin(rt) sin(rt+90))*(dy)/l.scale;
             var x=l.spx + (cos(rt)*dx+cos(rt+90)*dy)*l.scale;
             var y=l.spy + (sin(rt)*dx+sin(rt+90)*dy)*l.scale;
             return {x,y,
@@ -116,13 +116,13 @@ extends Panel;
         if (l!=null) {
             // screen to world
             l=layers[l];
-            
+
             var rt=-l.rotation;
             var dx=obj.x-l.spx;
             var dy=obj.y-l.spy;
-            // (x,y)= l.sp + R(rt)*(obj-l.wp)/l.scale; 
-            // (x)= l.spx + (cos(rt) cos(rt+90))*(dx)/l.scale; 
-            // (y)= l.spy + (sin(rt) sin(rt+90))*(dy)/l.scale; 
+            // (x,y)= l.sp + R(rt)*(obj-l.wp)/l.scale;
+            // (x)= l.spx + (cos(rt) cos(rt+90))*(dx)/l.scale;
+            // (y)= l.spy + (sin(rt) sin(rt+90))*(dy)/l.scale;
             var x=l.wpx + (cos(rt)*dx+cos(rt+90)*dy)/l.scale;
             var y=l.wpy + (sin(rt)*dx+sin(rt+90)*dy)/l.scale;
             return {x,y,
@@ -146,4 +146,3 @@ extends Panel;
     }
     return res;
 }
-

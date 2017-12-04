@@ -531,6 +531,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             var prog=ace.edit(progDOM[0]);
             window.lastEditor=prog;
             if (typeof desktopEnv.editorFontSize=="number") prog.setFontSize(desktopEnv.editorFontSize);
+            else prog.setFontSize(16);
             prog.setTheme("ace/theme/eclipse");
             prog.getSession().setMode("ace/mode/tonyu");
             inf=editors[f.path()]={file:f , editor: prog, dom:progDOM};
@@ -650,9 +651,9 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     }));
     $("#editorEditor").click(F(function () {
         var prog=getCurrentEditor();
-        var s=prompt("エディタの文字の大きさ", desktopEnv.editorFontSize||12);
+        var s=prompt("エディタの文字の大きさ", desktopEnv.editorFontSize||16);
         desktopEnv.editorFontSize=parseInt(s);
-        if (prog) prog.setFontSize(desktopEnv.editorFontSize||12);
+        if (prog) prog.setFontSize(desktopEnv.editorFontSize||16);
         saveDesktopEnv();
     }));
     $("#openFolder").click(F(function () {

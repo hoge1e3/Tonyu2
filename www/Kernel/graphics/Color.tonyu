@@ -27,6 +27,7 @@ native $;
 		value={r:s};
 		value.g=a.shift();
 		value.b=a.shift();
+		value.a=a.shift();
 		fillNum("g","b","a");
 	} else {
 		throw new Error("Invalid color spec");
@@ -35,8 +36,77 @@ native $;
 \fillNum() {
 	var a=new ArgParser(arguments);
 	for (var k of a.toArray()) {
-		this[k]=this[k]||(k=="a"?255:0);
+		if (value[k]==null) value[k]=(k=="a"?maxs.a:0);
 	}
+}
+\r {
+	makeRGBA();
+	return value.r;
+}
+\g {
+	makeRGBA();
+	return value.g;
+}
+\b {
+	makeRGBA();
+	return value.b;
+}
+\a {
+	return value.a;
+}
+\a=v {
+	clearName();
+	value.a=clamp(v,0,maxs.a);
+}
+
+\r=v {
+	makeRGBA();
+	clearName();
+	clearHSLA();
+	value.r=clamp(v,0,maxs.r);
+}
+\g=v {
+	makeRGBA();
+	clearName();
+	clearHSLA();
+	value.g=clamp(v,0,maxs.g);
+}
+\b=v {
+	makeRGBA();
+	clearName();
+	clearHSLA();
+	value.b=clamp(v,0,maxs.b);
+}
+
+\h {
+	makeHSLA();
+	return value.h;
+}
+\s {
+	makeHSLA();
+	return value.s;
+}
+\l {
+	makeHSLA();
+	return value.l;
+}
+\h=v {
+	makeHSLA();
+	clearName();
+	clearRGBA();
+	value.h=amod(v,360);
+}
+\s=v {
+	makeHSLA();
+	clearName();
+	clearRGBA();
+	value.s=clamp(v,0,maxs.s);
+}
+\l=v {
+	makeHSLA();
+	clearName();
+	clearRGBA();
+	value.l=clamp(v,0,maxs.l);
 }
 
 \hasRGBA() {
@@ -48,13 +118,42 @@ native $;
 \hasName() {
 	return typeof (value.name)==="string";
 }
+\clearRGBA() {
+	delete value.r;
+}
+\clearHSLA() {
+	delete value.h;
+}
+\clearName() {
+	delete value.name;
+}
+\distRGBA(other) {
+	if (other is Color) {}
+	else { other = new Color(other+""); }
+	var dr=(r/maxs.r-other.r/other.maxs.r);
+	var dg=(g/maxs.g-other.g/other.maxs.g);
+	var db=(b/maxs.b-other.b/other.maxs.b);
+	var da=(a/maxs.a-other.a/other.maxs.a);
+	return sqrt(dr*dr+dg*dg+db*db+da*da);
+}
+\distHSLA(other) {
+	if (other is Color) {}
+	else { other = new Color(other+""); }
+	var dh=angleDiff(h,other.h)/180;
+	var ds=(s/maxs.s-other.s/other.maxs.s);
+	var dl=(l/maxs.l-other.l/other.maxs.l);
+	var da=(a/maxs.a-other.a/other.maxs.a);
+	return sqrt(dh*dh+ds*ds+dl*dl+da*da);
+}
+
+
 \makeRGBA() {
 	if (hasRGBA()) return;
 	if (hasHSLA()) {
 		var rgb=HSLToRGB(value.h,value.s,value.l);
-		value.r=rgb.r;
-		value.g=rgb.g;
-		value.b=rgb.b;
+		value.r=rgb[0]*maxs.r;
+		value.g=rgb[1]*maxs.g;
+		value.b=rgb[2]*maxs.b;
 		return;
 	}
 	nameToRGB();
@@ -72,26 +171,31 @@ native $;
 }
 \makeHSLA() {
 	if (hasHSLA()) return;
-	if (hasRGBA()) {
-		var hsl=RGBToHSL(value.r,value.g,value.b);
-		value.h=hsl.h;
-		value.s=hsl.s;
-		value.l=hsl.l;
-		return;
-	}
-	nameToRGB();
+	if (!hasRGBA()) nameToRGB();
+	var hsl=RGBToHSL(value.r/maxs.r,value.g/maxs.g,value.b/maxs.b);
+	value.h=hsl[0];
+	value.s=hsl[1];
+	value.l=hsl[2];
+	return;
 }
 \makeName(type) {
 	if (hasName()) return;
 	type=type||"rgb";
 	if (type=="rgb") {
 		makeRGBA();
-		value.name="rgba("+[value.r,value.g,value.b,value.a].join(",")+")";
+		value.name="rgba("+[floor(value.r),floor(value.g),floor(value.b),value.a/maxs.a].join(",")+")";
 	}
 	if (type=="hsl") {
 		makeHSLA();
-		value.name="hsla("+[value.h,value.s,value.l,value.a].join(",")+")";
+		value.name="hsla("+[floor(value.h),p(value.s),p(value.l),value.a/maxs.a].join(",")+")";
 	}
+	\p(r) {
+		return floor(r*100)+"%";
+	}
+}
+nowait \toString() {
+	makeName();
+	return value.name;
 }
 \tmpCanvas() {
 	if (Color.ctx) return Color.ctx;

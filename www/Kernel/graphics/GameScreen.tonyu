@@ -14,7 +14,7 @@ native Math;
     this.width=width;
     this.height=height;
     buf=$("<canvas>").attr{width,height};
-    ctx=buf[0].getContext("2d");  
+    ctx=buf[0].getContext("2d");
     fireEvent("resize", width, height);
     /*$screenWidth=width;
     $screenHeight=height;
@@ -30,13 +30,13 @@ native Math;
     fillCanvas();
     sprites.draw(buf[0]);
     cctx.drawImage(buf[0],
-    0,0,width, height, 
+    0,0,width, height,
     b.left, b.top, b.width, b.height);
 }
 \canvas2buf(point) {// canvas=gameConsole
     var b=bounds;
     if (!b) return point;
-    return {x: (point.x-b.left)/b.width*width, 
+    return {x: (point.x-b.left)/b.width*width,
     y: (point.y-b.top)/b.height*height};
 }
 \setBGColor(c){
@@ -45,7 +45,7 @@ native Math;
 \fillCanvas(){
     var ctx=buf[0].getContext("2d");
     ctx.save();
-    ctx.fillStyle=bgColor;
+    ctx.fillStyle=bgColor+"";
     ctx.fillRect(0,0,width,height);
     //if (isDrawGrid) drawGrid(cv);
     ctx.restore();
@@ -53,4 +53,3 @@ native Math;
 \scrollTo(scrollX,scrollY){
     sprites.scrollTo(scrollX,scrollY);
 }
-
