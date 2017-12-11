@@ -7,4 +7,13 @@ $(function () {
             $(this).attr("href",url);
         }
     });
+    $("body").prepend(backButton());
+    $("body").append(backButton());
+    function backButton() {
+        return $("<div>").append(
+            $("<Button>").text(String.fromCharCode(8592)+"Back").click(function () {
+                history.back();
+            })
+        );
+    }
 });
