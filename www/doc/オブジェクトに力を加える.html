@@ -1,0 +1,41 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="壁・床を作る">壁・床を作る</a></p>
+<h1 id="-">物理オブジェクトに力を加える</h1>
+<h2 id="-1">その1</h2>
+<p><code>vx</code>,<br><code>vy</code>に速度（1フレームあたりに移動するピクセル数）を直接設定することで力を加えることができます．</p>
+<p>Ball</p>
+<pre><code class="lang-JS">extends BodyActor;
+
+shape=&quot;circle&quot;;
+while(true) {
+    if (getkey(&quot;left&quot;)) vx=-3;   
+    if (getkey(&quot;right&quot;)) vx=3;   
+    update();
+}
+</code></pre>
+<h2 id="-2">その2</h2>
+<p><a href="applyForce">applyForce</a>または<a href="applyImpulse">applyImpulse</a>を使うことで，<code>vx</code>や<code>vy</code>に値を直接設定するより実際の物理運動に近い動きにすることができます．</p>
+<p>Ball</p>
+<pre><code class="lang-JS">extends BodyActor;
+
+shape=&quot;circle&quot;;
+while(true) {
+    if (getkey(&quot;left&quot;)) applyForce(-10,0);   
+    if (getkey(&quot;right&quot;)) applyForce(10,0);   
+    update();
+}
+</code></pre>
+<h1 id="-">参照</h1>
+<ul>
+<li><a href="物理運動するオブジェクトを作る">物理運動するオブジェクトを作る</a></li>
+<li><a href="壁・床を作る">壁・床を作る</a></li>
+<li><a href="オブジェクトに力を加える">オブジェクトに力を加える</a></li>
+<li><a href="ジャンプする">ジャンプする</a></li>
+<li><a href="重力を変更する">重力を変更する</a><br>.</li>
+</ul>
+</body></html>

@@ -1,0 +1,41 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!--Konbaatiddo from Tonyu2 non-md document-->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<p><a href="オブジェクトを動かす">オブジェクトを動かす</a></p>
+<h1 id="-">特定の座標に向けて弾を撃つ</h1>
+<p>下のプログラムにおいて，</p>
+<ul>
+<li>ShooterオブジェクトはBulletオブジェクトを発射します．</li>
+<li>Bulletオブジェクトはマウスの座標に向かって移動します．</li>
+</ul>
+<p>※Bulletオブジェクトの $mouseX,$mouseYなどをプレイヤーの座標にすれば，プレイヤーに向けて撃つ弾も作れます．</p>
+<p>Shooter</p>
+<pre><code class="lang-JS">x=100;y=100;
+while(true) {
+  if(getkey(&quot;space&quot;)==1){
+    new Bullet{x:x, y:y, p:25};
+  }
+  update();
+}
+</code></pre>
+<p>Bullet</p>
+<pre><code class="lang-JS">// マウスの座標と自分の座標を比較
+dx=$mouseX-x;
+dy=$mouseY-y;
+d=dist(dx,dy);//マウスの座標までの距離
+vx=dx/d*5; // 移動速度(x座標)
+vy=dy/d*5; // 移動速度(y座標)
+while(y&gt;0){
+  x+=vx;//移動速度の分だけxを変化させる
+  y+=vy;//移動速度の分だけyを変化させる
+  update();
+}
+die();
+</code></pre>
+<h1 id="-">参考</h1>
+<p><a href="弾を撃つ">弾を撃つ</a><br>.</p>
+</body></html>

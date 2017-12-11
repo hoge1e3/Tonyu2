@@ -1,0 +1,32 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="appear">appear</a>|<a href="BaseActor">BaseActor</a></p>
+<h1 id="-">オブジェクトプール</h1>
+<p>オブジェクトプールは、<a href="die">die</a>メソッドで消したオブジェクトを、<br>別のオブジェクトとして再利用するための仕組みです。<br>オブジェクトを頻繁に出現・消滅させる場合、メモリの使用効率が上がる場合があります。</p>
+<h2 id="-">オブジェクトプールを利用するには</h2>
+<p>オブジェクトプールを利用するかどうかはクラス毎に設定します。<br>ここではChara1にオブジェクトプールを利用する例を示します。</p>
+<ul>
+<li>オブジェクトが生成されたときに<code>useObjectPool</code>を<code>true</code>を設定します。</li>
+</ul>
+<p>Chara1</p>
+<pre><code class="lang-JS">useObjectPool=true;
+for(i=0;i&lt;10;i++) {
+   x+=10;
+   update();
+}
+die();
+</code></pre>
+<ul>
+<li>Chara1を生成するときには、<a href="appear">appear</a>メソッドを用います。</li>
+</ul>
+<p>Main</p>
+<pre><code class="lang-JS">while(true){
+   appear(Chara1) {x=rnd(400),y=rnd(400)};
+   update();
+}
+</code></pre>
+</body></html>

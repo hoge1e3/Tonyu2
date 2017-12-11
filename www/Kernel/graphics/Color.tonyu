@@ -7,6 +7,15 @@ native $;
 	var s;
 	var rgba;
 	maxs={r:255,g:255,b:255,a:255,h:360,s:1,l:1};
+	var p=a.peek(0);
+	if (p && p.height && p.width && p.data) {
+		imageData=a.shift();
+		var x=a.shift();
+		var y=a.shift();
+		index=(x+y*p.width)*4;
+		value={};
+		return;
+	}
 	if (s=a.shift("string")) {
 		type="name";
 		value={name:s};
@@ -41,41 +50,53 @@ native $;
 }
 \r {
 	makeRGBA();
+	if (imageData) return imageData.data[index];
 	return value.r;
 }
 \g {
 	makeRGBA();
+	if (imageData) return imageData.data[index+1];
 	return value.g;
 }
 \b {
 	makeRGBA();
+	if (imageData) return imageData.data[index+2];
 	return value.b;
 }
 \a {
+	if (imageData) return imageData.data[index+3];
 	return value.a;
 }
 \a=v {
 	clearName();
-	value.a=clamp(v,0,maxs.a);
+	v=clamp(v,0,maxs.a);
+	if (imageData) imageData.data[index+3]=v;
+	else value.a=v;
 }
 
 \r=v {
 	makeRGBA();
 	clearName();
 	clearHSLA();
-	value.r=clamp(v,0,maxs.r);
+	v=clamp(v,0,maxs.r);
+	if (imageData) imageData.data[index]=v;
+	else value.r=v;
 }
 \g=v {
 	makeRGBA();
 	clearName();
 	clearHSLA();
-	value.g=clamp(v,0,maxs.g);
+	v=clamp(v,0,maxs.g);
+	if (imageData) imageData.data[index+1]=v;
+	value.g=v;
 }
 \b=v {
 	makeRGBA();
 	clearName();
 	clearHSLA();
-	value.b=clamp(v,0,maxs.b);
+	v=clamp(v,0,maxs.b);
+	if (imageData) imageData.data[index+2]=v;
+	value.b=v;
 }
 
 \h {
@@ -93,24 +114,48 @@ native $;
 \h=v {
 	makeHSLA();
 	clearName();
-	clearRGBA();
 	value.h=amod(v,360);
+	if (imageData) makeRGBA(true);
+	else clearRGBA();
 }
 \s=v {
 	makeHSLA();
 	clearName();
-	clearRGBA();
 	value.s=clamp(v,0,maxs.s);
+	if (imageData) makeRGBA(true);
+	else clearRGBA();
 }
 \l=v {
 	makeHSLA();
 	clearName();
-	clearRGBA();
 	value.l=clamp(v,0,maxs.l);
+	if (imageData) makeRGBA(true);
+	else clearRGBA();
+}
+\setHSLA(h,s,l,a) {
+	value.h=h;
+	value.s=s;
+	value.l=l;
+	if(typeof a==="number") value.a=a;
+	if (imageData) makeRGBA(true);
+	else clearRGBA();
+	return true;
+}
+\setRGBA(r,g,b,a) {
+	if (imageData) {
+		for(var i=0;i<4;i++) imageData.data[index+i]=[r,g,b,a][i];
+	} else {
+		value.r=r;
+		value.g=g;
+		value.b=b;
+		if(typeof a==="number") value.a=a;
+		clearHSLA();
+		clearName();
+	}
 }
 
 \hasRGBA() {
-	return typeof (value.r)==="number";
+	return imageData || typeof (value.r)==="number";
 }
 \hasHSLA() {
 	return typeof (value.h)==="number";
@@ -147,13 +192,18 @@ native $;
 }
 
 
-\makeRGBA() {
-	if (hasRGBA()) return;
+\makeRGBA(force) {
+	if (!force && hasRGBA()) return;
 	if (hasHSLA()) {
 		var rgb=HSLToRGB(value.h,value.s,value.l);
-		value.r=rgb[0]*maxs.r;
-		value.g=rgb[1]*maxs.g;
-		value.b=rgb[2]*maxs.b;
+		if (imageData) {
+			for(var i=0;i<3;i++) imageData.data[index+i]=rgb[i]*maxs.r;
+			imageData.data[index+3]=value.a;
+		} else {
+			value.r=rgb[0]*maxs.r;
+			value.g=rgb[1]*maxs.g;
+			value.b=rgb[2]*maxs.b;
+		}
 		return;
 	}
 	nameToRGB();
@@ -164,10 +214,14 @@ native $;
 	ctx.fillRect(0,0,1,1);
 	var d=ctx.getImageData();
 	d=d.data;
-	value.r=d[0];
-	value.g=d[1];
-	value.b=d[2];
-	value.a=d[3];
+	if (imageData) {
+		for(var i=0;i<4;i++) imageData.data[index+i]=d[i];
+	} else {
+		value.r=d[0];
+		value.g=d[1];
+		value.b=d[2];
+		value.a=d[3];
+	}
 }
 \makeHSLA() {
 	if (hasHSLA()) return;
@@ -183,7 +237,11 @@ native $;
 	type=type||"rgb";
 	if (type=="rgb") {
 		makeRGBA();
-		value.name="rgba("+[floor(value.r),floor(value.g),floor(value.b),value.a/maxs.a].join(",")+")";
+		if (imageData) {
+			value.name="rgba("+[floor(imageData.data[index]),floor(imageData.data[index+1]),floor(imageData.data[index+2]),imageData.data[index+3]/maxs.a].join(",")+")";
+		} else {
+			value.name="rgba("+[floor(value.r),floor(value.g),floor(value.b),value.a/maxs.a].join(",")+")";
+		}
 	}
 	if (type=="hsl") {
 		makeHSLA();

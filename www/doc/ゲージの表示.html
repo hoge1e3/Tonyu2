@@ -1,0 +1,50 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<h1 id="-">ゲージを表示する</h1>
+<p><a href="Panel">$panel</a>を使うと、画面に四角形などの図形を描くことができます。</p>
+<p>これを利用してゲージなどを描画することができます。</p>
+<p>Main</p>
+<pre><code class="lang-JS">$progress=0;
+
+while(true) {
+    $panel.setFillStyle(&quot;#f00&quot;);
+    $panel.fillRect(10,100,100,20);
+    $panel.setFillStyle(&quot;#0f0&quot;);
+    $panel.fillRect(10,100,$progress,20);
+    if ($progress&lt;100)$progress++;
+    update();
+}
+</code></pre>
+<p>※$panelの内容はページを切り替えても残ります．パネルの内容をクリアしたい場合は次のようにします．</p>
+<pre><code class="lang-JS">$panel.clearRect(0,0,$screenWidth,$screenHeight);
+</code></pre>
+<h1 id="-">オブジェクト毎に個別のゲージを表示する</h1>
+<p>キャラクタの体力表示などを各キャラクタに個別に出す場合は，キャラクタごとにパネルを作成します．</p>
+<p>Player</p>
+<pre><code class="lang-JS">x=100;y=100;
+// パネルの作成．
+// lifeKeeper=this は，このPlayerオブジェクトが消えたときにpanelも消えるための設定．
+panel=new Panel{lifeKeeper=this};
+panel.resize(100,10);
+life=30;
+while(true) {
+    // パネルを自分の頭上に移動
+    panel.x=x;
+    panel.y=y-20;
+    // パネルの描画
+    panel.fillStyle=&quot;red&quot;;
+    panel.fillRect(0,0,100,10);
+    panel.fillStyle=&quot;green&quot;;
+    panel.fillRect(0,0,life,10);
+    life--;
+    if (life&lt;=0) die();
+    x++;
+    update();
+}
+</code></pre>
+</body></html>

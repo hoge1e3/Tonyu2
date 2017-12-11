@@ -1,0 +1,44 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<h1 id="-">マップと物理オブジェクトに当たり判定を設定する</h1>
+<p>マップチップが置いてある場所にBodyActorを配置することで，物理オブジェクトがマップに反応してぶつかるようになります．</p>
+<p>次のコードを実行するには予め次のことを行ってください</p>
+<ul>
+<li>FloorクラスをBodyActorで作成する(<a href="壁・床を作る">壁・床を作る</a>を参照)</li>
+<li><code>$map</code>にマップを作成する</li>
+</ul>
+<pre><code class="lang-JS">
+for (i=0;i&lt;$map.row;i++) {
+    for (j=0;j&lt;$map.col;j++) {
+        pa=$map.get(j,i);//←奥のレイヤーで判定
+        //pa=$map.getOn(j,i);  //←手前のレイヤーで判定
+        if (pa&gt;=0) {//マップチップが置いてあったら
+            // Floorを配置
+            new Floor{
+                x:(j+0.5)*$map.chipWidth,
+                y:(i+0.5)*$map.chipHeight,
+                isStatic:true,
+                p:pa
+            };
+        }
+    }
+}
+</code></pre>
+<h1 id="-">参考</h1>
+<ul>
+<li><p><a href="mapEditor">マップエディタでマップを描く</a></p>
+</li>
+<li><p><a href="物理運動するオブジェクトを作る">物理運動するオブジェクトを作る</a></p>
+</li>
+<li><a href="壁・床を作る">壁・床を作る</a></li>
+<li><a href="オブジェクトに力を加える">オブジェクトに力を加える</a></li>
+<li><a href="ジャンプする">ジャンプする</a></li>
+<li><a href="重力を変更する">重力を変更する</a></li>
+<li><a href="マップと物理オブジェクトに当たり判定を設定する">マップと物理オブジェクトに当たり判定を設定する</a><br>.</li>
+</ul>
+</body></html>

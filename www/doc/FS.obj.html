@@ -1,0 +1,25 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="file">file</a></p>
+<h1 id="fs-obj-">FS.objメソッド</h1>
+<p>ファイルに対して，オブジェクトデータ（JSON形式の文字列）を読み書きします．</p>
+<h2 id="-">読み出し</h2>
+<pre><code class="lang-JS">fs.obj()
+</code></pre>
+<p><em>fs</em> があらわすファイルの内容をJSON形式で解釈し，そのオブジェクトを返します．</p>
+<ul>
+<li>ファイルが存在しない場合，<code>null</code>を返します</li>
+</ul>
+<h2 id="-">書き込み</h2>
+<pre><code class="lang-JS">fs.obj(o)
+</code></pre>
+<p><em>fs</em>があらわすファイルにオブジェクト<em>o</em> のJSON表現を書き込みます．</p>
+<ul>
+<li>ファイルが存在しない場合，ファイルが自動的に新規作成されます．</li>
+<li>ファイルが存在する場合，これまでのファイルの内容は削除され，新しくオブジェクトが上書きされます．</li>
+</ul>
+</body></html>

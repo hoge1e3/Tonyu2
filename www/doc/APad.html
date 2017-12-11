@@ -1,0 +1,46 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="api">api</a></p>
+<h1 id="apad-">APadクラス</h1>
+<p>アナログパッドのクラスです．スマートフォン上でスワイプ動作で移動させることができます．<br>PCではキーボードを使って動かすこともできます．</p>
+<p>newでパッドを表示することができます．表示させた時の画面サイズに準拠して画面下部に自動的に表示されます．</p>
+<p>例：</p>
+<pre><code class="lang-JS">apad=new APad;
+x=100;y=100;
+while(true) {
+    x+=apad.vx*5;
+    y+=apad.vy*5;
+    update();
+}
+</code></pre>
+<h1 id="-">コンストラクタ</h1>
+<p>次のようにパラメータを指定して作成することもできます．</p>
+<pre><code class="lang-JS">apad=new APad{x=100,y=100};
+</code></pre>
+<ul>
+<li><code>x</code>,<code>y</code> パッドの位置．省略すると画面下中央に配置します．</li>
+<li><code>outerRadius</code>  外側の円の半径．省略すると50．</li>
+<li><code>strokeStyle</code>  外側の円の色．省略すると&quot;white&quot;</li>
+<li><code>innerRadius</code>  内側の円の色．省略すると10．</li>
+<li><code>fillStyle</code>  内側の円の色．省略すると&quot;white&quot;</li>
+<li><code>decay</code> タッチしていないときに中央に戻る割合(0から1まで)．省略すると0.8</li>
+<li><code>keySpeed</code>  キーボードで操作したときの倒れる速度(0から1まで)．省略すると0.3</li>
+<li><code>leftKey</code>, <code>rightKey</code>, <code>upKey</code>, <code>downKey</code>  キーボードで操作するときに使用する上下左右のキー名（<a href="getkey">getkey</a>の引数と同じ文字列）．省略すると矢印キー．</li>
+<li><code>touchRadius</code>  タッチが反応する距離（パッドを中心とした半径<em>touchRadius</em>までの範囲で反応）．<ul>
+<li>省略すると画面のどこをタッチしても反応します．</li>
+<li>ボタンなど，他のクリック可能なものがある場合は距離を指定することをおすすめします．</li>
+</ul>
+</li>
+</ul>
+<h1 id="-">プロパティ</h1>
+<ul>
+<li><code>vx</code>, <code>vy</code>  パッドの傾き（横方向，縦方向）を-1から1の範囲で返します．</li>
+<li><code>speed</code>   パッドの傾きの距離，つまり(0,0)から(vx,vy）までの距離を返します．</li>
+<li><code>direction</code> パッドの向きを角度で返します．</li>
+</ul>
+<p>.</p>
+</body></html>

@@ -1,0 +1,52 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<h1 id="mp3-midi-bgm-">MP3やMIDIファイルを用いたBGM・効果音の演奏</h1>
+<h2 id="-">サウンドの追加</h2>
+<p>メニューのウィンドウ→<a href="sndres">音声リスト</a>から追加します。</p>
+<h2 id="-">対応している音声ファイル形式</h2>
+<ul>
+<li>MP3 (.mp3)<ul>
+<li>よく使われている音声ファイルです。</li>
+<li>Chromiumベースのブラウザで再生不可なブラウザがあります。</li>
+</ul>
+</li>
+<li>AAC (.mp4 .m4a)<ul>
+<li>MP3より新しい音声ファイルです。MP3より音質が良いです。</li>
+<li>Chromiumベースのブラウザで再生不可なブラウザがあります。</li>
+</ul>
+</li>
+<li>Ogg Vorbis (.ogg)<ul>
+<li>MP3より音質が良いです。</li>
+<li>iOS等で再生不可です。</li>
+</ul>
+</li>
+<li>MIDIファイル (.mid .midi)<ul>
+<li>音の鳴らし方などの情報が入った楽譜のようなファイルです。Tonyu2ではPicoAudio.jsというライブラリを用いてピコピコ音で再生します。</li>
+<li>ほとんどの環境で再生可能です。</li>
+</ul>
+</li>
+<li>WAV (.wav)<ul>
+<li>通常未圧縮のため音質劣化はありませんが、ファイルサイズが大きいです。</li>
+<li>ほとんどの環境で再生可能です。<br>※()内は対応している拡張子</li>
+</ul>
+</li>
+</ul>
+<h2 id="-">演奏例</h2>
+<p>ここでは，<code>$se_main</code> と <code>$se_bomb</code> という音声ファイルを追加しているものとします．</p>
+<p>Main</p>
+<pre><code class="lang-JS">// BGMをループ再生する
+$sound.playBGM($se_main,true);
+// ループしない場合：
+//$sound.playBGM($se_main);
+while(true) {
+    if (getkey(&quot;space&quot;)==1) {
+        //効果音を再生する
+        $sound.playSE($se_bomb);
+    }
+    update();
+}
+</code></pre>
+</body></html>

@@ -1,0 +1,39 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<h1 id="-loadpage-">場面の切り替え(loadPage)</h1>
+<p><a href="loadPage">loadPage</a>はそれまで動いていたオブジェクトをすべて消して、新しいページを読み込む命令です。</p>
+<ul>
+<li>上の二つの命令は、オブジェクトを左クリックすることでPage1からPage2に、又はPage2からPage1行くものです。</li>
+</ul>
+<p>Page1</p>
+<pre><code class="lang-JS">x=100;
+y=100;
+new Label{x:200,y:10,text:&quot;Page1&quot;};
+
+while(true){
+    //オブジェクトの近くがクリックされたらPage2に移動
+    if(getkey(&quot;mouseleft&quot;)==1 &amp;&amp; dist($mouseX-x,$mouseY-y)&lt;32){
+        loadPage(Page2);
+    }
+    update();
+}
+</code></pre>
+<p>Page2</p>
+<pre><code class="lang-JS">x=200;
+y=200;
+new Label{x:200,y:10,text:&quot;Page2&quot;};
+
+while(true){
+    //オブジェクトの近くがクリックされたらPage1に移動
+    if(getkey(&quot;mouseleft&quot;)==1 &amp;&amp; dist($mouseX-x,$mouseY-y)&lt;32){
+        loadPage(Page1);
+    }
+    update();
+}
+</code></pre>
+</body></html>

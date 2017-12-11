@@ -1,0 +1,25 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="BaseActor">BaseActor</a></p>
+<h1 id="die-">dieメソッド</h1>
+<p>オブジェクトを画面から消去し，そのオブジェクトが行っている処理を中断します※</p>
+<h2 id="-">書式</h2>
+<pre><code class="lang-JS">die();
+</code></pre>
+<h2 id="-">使用例</h2>
+<ul>
+<li><a href="当たり判定で敵に当たったらプレイヤーを消す">敵に当たったらプレイヤーを消す</a></li>
+<li><a href="当たり判定で当たったオブジェクトを消す">当たったオブジェクトを消す</a></li>
+</ul>
+<h2 id="-">※注意</h2>
+<p>dieが呼び出されたあと，次の待機系メソッドが実行されるまでは処理が継続されます．例えば次のプログラムにおいては，★の処理は実行されます．</p>
+<pre><code class="lang-JS">die();
+print(&quot;DEAD&quot;);//★
+update();//ここで処理が終了
+print(&quot;This is never shown.&quot;);
+</code></pre>
+</body></html>

@@ -1,0 +1,19 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><a href="Boot">Boot</a></p>
+<h1 id="boot-on-">Boot.onメソッド</h1>
+<p>プログラム実行全体に関連するイベントについて，イベントハンドラを設定します．</p>
+<p>現状はイベントの種類に <code>&quot;stop&quot;</code> のみが使用できます．</p>
+<h2 id="-">書式</h2>
+<pre><code class="lang-JS">$Boot.on(&quot;stop&quot;) \(e) {
+    //処理
+};
+</code></pre>
+<p>プログラムが停止したとき（開発環境のメニュー 実行→停止 が選択されたとき）に処理が実行されます．関数ブロックに渡される引数<code>e</code>は，次のメソッドが用意されているオブジェクトです．</p>
+<ul>
+<li><code>preventDefault()</code> 停止をキャンセルします．</li>
+<li><code>die()</code> 停止をキャンセルした後，実際に停止させたいときに呼び出します．</li>
+</ul>
+</body></html>

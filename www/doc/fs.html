@@ -1,0 +1,30 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="index">index</a></p>
+<h1 id="-">（ブラウザ版）ファイルシステム</h1>
+<ul>
+<li>Tonyu2 は，WebブラウザのJavascriptだけで動作するように設計されています．</li>
+<li>プログラムなどを保存・読み出しするために，サーバとの通信は行わず，localStorage を用いています．</li>
+<li>localStorageでは，単純なキー/値の格納・読み出しの仕組みだけが提供されていますが，Tonyu2は，localStorage上でディレクトリ構造を再現するためのライブラリ( <a href="https://github.com/hoge1e3/fsjs">fsjs</a> )を搭載しています．</li>
+</ul>
+<h1 id="-">（ブラウザ版）注意点</h1>
+<p>プログラムがlocalStorageに保存されるため，他のPCや他のWebブラウザではプログラムは共有されません．</p>
+<p>今のところ，他のWebブラウザ等とプログラムを送受信するには，</p>
+<ul>
+<li><a href="jsdoit">jsdo.itへのインポート・エクスポート</a>を用いる</li>
+<li><a href="login">ログイン</a>を行い，<a href="sync">ファイルの同期</a>を行う</li>
+</ul>
+<h1 id="-">（ダウンロード版）ファイルシステム</h1>
+<ul>
+<li>ダウンロード版では、ローカルファイルを直接扱います</li>
+<li>プログラムはホームフォルダ（Tonyu2.exeのあるフォルダ）を基準に次の場所に保存されます<ul>
+<li>fs/Tonyu/Kernel : 標準ライブラリ</li>
+<li>fs/Tonyu/Projects : プロジェクト</li>
+</ul>
+</li>
+</ul>
+</body></html>

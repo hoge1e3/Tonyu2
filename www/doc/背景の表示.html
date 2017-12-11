@@ -1,0 +1,26 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<h1 id="-">背景の表示</h1>
+<ul>
+<li>背景として表示させたい画像を<a href="cpats">画像リスト</a>に追加してください．</li>
+</ul>
+<p>次の例では，<code>$pat_bg</code>という名前の500x500の大きさの画像を追加した場合の例を示します．</p>
+<p>Main</p>
+<pre><code class="lang-JS">//画像の幅，高さを指定
+$Screen.resize(500,500);
+// $pat_bg は追加した画像の名前に応じて変更
+new Bg{x:$screenWidth/2,y:$screenHeight/2,p:$pat_bg,zOrder:1};
+</code></pre>
+<p>Bg</p>
+<pre><code class="lang-JS">//メニューのファイル→新規作成でBgを作成してください．内容は空でもかまいません．
+</code></pre>
+<ul>
+<li>「<a href="オブジェクトの奥行きの設定">zOrder</a>」は、画像を他のオブジェクトより奥に表示させるために使用しています．値が大きいほど奥に表示されます．</li>
+</ul>
+<p><a href="背景をスクロールさせる">背景をスクロールさせる</a></p>
+</body></html>

@@ -1,0 +1,46 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="Panel">Panel</a></p>
+<h1 id="-">パネルの座標系について</h1>
+<p>次のようなプログラムを実行したとき</p>
+<ul>
+<li>★1パネルの大きさは100x100になります</li>
+<li>★2panel.x, panel.yにそれぞれ150を代入することで，パネルの中心が(150,150)になるように移動します．<ul>
+<li>この(150,150)は「画面の座標系」（画面左上を(0,0)とした座標系）です</li>
+</ul>
+</li>
+<li>「パネルの座標系」はパネルの左上が(0,0)になるような座標系です．<ul>
+<li>パネルの中心が ( パネルの幅/2, パネルの高さ/2 ) になるような座標系と言い換えることもできます．</li>
+</ul>
+</li>
+<li>パネルの左上は，画面の座標系でいうと(100,100)になります<ul>
+<li>（panel.x-パネル幅/2,panel.y-パネル高さ/2)</li>
+</ul>
+</li>
+<li>★3の<a href="fillRect">fillRect</a>で赤い■を描いています．描かれる位置は，パネルの座標系で指定します．<ul>
+<li>パネルの座標系で(10,20)が■の左上になるように描いています．</li>
+<li>パネルの座標系(10,20)は，この場合画面の座標系では(110,120)です（画面の座標系におけるパネルの左上の座標=(100,100)を加算）</li>
+</ul>
+</li>
+</ul>
+<pre><code class="lang-JS">panel=new Panel;
+panel.resize(100,100);//大きさ指定★1
+panel.x=150;//場所指定★2
+panel.y=150;
+//パネル全体を白で塗る
+panel.fillStyle=&quot;white&quot;;
+panel.fillRect(0,0,100,100);
+//パネルに赤い■を描く
+panel.fillStyle=&quot;red&quot;;
+panel.fillRect(10,20,30,30);//★3
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/hoge1e3/Tonyu2/master/fs/Tonyu/doc/images/panel.png" alt="panel.png"></p>
+<ul>
+<li>パネルの座標系は，<a href="fillRect">fillRect</a>,<a href="fillCircle">fillCircle</a>,<a href="Panel.copy">copy</a>などの各メソッドで描画位置を指定するのに用いられます</li>
+</ul>
+<p>.</p>
+</body></html>

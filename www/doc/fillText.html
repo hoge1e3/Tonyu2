@@ -1,0 +1,26 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="Panel">Panel</a></p>
+<h1 id="filltext-">fillTextメソッド</h1>
+<p>パネルに文字列を描画します．</p>
+<pre><code class="lang-JS">panel.fillText(text,x,y,size,align);
+</code></pre>
+<ul>
+<li><code>text</code> : 描画する文字列を指定します</li>
+<li><code>x</code> <code>y</code> : 文字列を書く位置を指定します．パネルの左上が(0,0)となります．</li>
+<li><code>size</code> : 描画する文字列のサイズを指定します．省略すると15になります．</li>
+<li><code>align</code> : 次のいずれかを指定します．省略すると<code>center</code>になります．<ul>
+<li><code>left</code> : <code>x</code>の位置が文字列の左端になるように描画します</li>
+<li><code>center</code> : <code>x</code>の位置が文字列の中央になるように描画します</li>
+<li><code>right</code> : <code>x</code>の位置が文字列の右端になるように描画します</li>
+</ul>
+</li>
+</ul>
+<h2 id="-">例</h2>
+<pre><code class="lang-JS">panel.fillText(&quot;text&quot;,50,50,30,&quot;center&quot;);
+</code></pre>
+</body></html>

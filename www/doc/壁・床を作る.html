@@ -1,0 +1,28 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<h1 id="-">壁・床を作る</h1>
+<p>BodyActorオブジェクトに <code>isStatic</code>を設定すると、動かない物理オブジェクトになります。他の物理オブジェクトと衝突します。</p>
+<p>Floor</p>
+<pre><code class="lang-JS">extends BodyActor;
+
+isStatic=true; // 動かない物理オブジェクト
+</code></pre>
+<p>Main</p>
+<pre><code class="lang-JS">new Ball{x:100,y:100};
+new Floor{x:100,y:300,scaleX:10,scaleY:1, rotation:10};
+</code></pre>
+<p>※Ballクラスは<a href="物理運動するオブジェクトを作る">物理運動するオブジェクトを作る</a>を参照</p>
+<h1 id="-">参照</h1>
+<ul>
+<li><a href="物理運動するオブジェクトを作る">物理運動するオブジェクトを作る</a></li>
+<li><a href="壁・床を作る">壁・床を作る</a></li>
+<li><a href="オブジェクトに力を加える">オブジェクトに力を加える</a></li>
+<li><a href="ジャンプする">ジャンプする</a></li>
+<li><a href="重力を変更する">重力を変更する</a><br>.</li>
+</ul>
+</body></html>

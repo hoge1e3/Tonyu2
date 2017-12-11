@@ -1,0 +1,93 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="index">index</a></p>
+<h1 id="tonyu1-tonyu2-">Tonyu1 と Tonyu2 の違い</h1>
+<p>ここでは，従来のTonyu System（Tonyu1）とTonyu System 2（Tonyu2）の違いを説明します．</p>
+<h2 id="-">親クラス</h2>
+<ul>
+<li><code>extends</code> は省略可能です。省略すると<a href="Actor">Actor</a>クラスを継承します。</li>
+<li><p>Tonyu1 の SpriteChar, DxChar, TextChar, SecretChar はActorクラスで代用可能です</p>
+<ul>
+<li>Actorクラスのオブジェクトのフィールド<code>x</code>, <code>y</code> に値を設定するとSpriteCharと同等</li>
+<li><code>alpha</code>, <code>rotation</code>, <code>scaleX</code>, <code>scaleY</code>に値を設定すると DxCharと同等</li>
+<li><code>text</code>に値を設定すると TextCharと同等</li>
+<li>いずれも設定しないか，<code>p</code>に-1を設定すると SecretCharと同等</li>
+</ul>
+</li>
+<li><p>PanelCharクラスは，Actorクラスのオブジェクトに<a href="Panel">Panel</a>クラスのオブジェクトを作成させることで代用します．</p>
+</li>
+<li>FrameManagerは未実装です．最初に実行させるクラス（たいてい「Main」などの名前をもつクラス）に，フレームが実行されるごとの処理を記述してください．</li>
+</ul>
+<h2 id="main-">mainメソッド処理終了時の動作</h2>
+<p>mainメソッドが終了してもオブジェクトは消えません．明示的に<a href="die">die</a>メソッドを呼び出して下さい．</p>
+<p>この仕様により，「表示だけを行なう，何も動作しないオブジェクト」をActorクラスを継承せずとも作成可能です．（Tonyu1では，明示的にクラスを作成し，waitメソッドを呼び出す必要があります）</p>
+<p>例：</p>
+<pre><code class="lang-JS">new Actor{p:$pat_BG, x:$screenWidth/2, y:$screenHeight/2}; // 背景
+new Actor{text:&quot;タイトル&quot;, x:200, y:200}; // タイトルのテキスト
+</code></pre>
+<h2 id="-">オブジェクトの生成と出現</h2>
+<p>Tonyu1ではオブジェクトの生成は次のように，オブジェクトの種類によって指定されたフィールド（SpriteCharならx,y,p）の値を渡して生成していました．</p>
+<p>Main</p>
+<pre><code class="lang-JS">new Player(100,220,12);
+</code></pre>
+<p>指定されたフィールド以外の値を渡す場合，次のように，生成したオブジェクトを一旦変数に入れ，別の文を追加する必要がありました．<br>Main</p>
+<pre><code class="lang-JS">$player=new Player(100,220,12);
+$player.life=5;
+</code></pre>
+<p>Tonyu2では，次のようにすべてのフィールドをオブジェクト生成時に一文で渡せるようになりました．<br>なお，Tonyu2でも，Tonyu1と同じ方法でx,y,pを渡すことも可能です．</p>
+<p>Main</p>
+<pre><code class="lang-JS">new Player{x:100, y:220,p:12, life:5};
+</code></pre>
+<p>また，Tonyu1ではオブジェクトを実際に出現させるには次のように<a href="appear">appearメソッド</a>を呼び出す必要がありましたが，Tonyu2では不要になっています．なお，Tonyu2でも互換性のためにこの書き方も許容されています．</p>
+<p>Main</p>
+<pre><code class="lang-JS">appear(new Player(100,220,12));
+</code></pre>
+<h2 id="-">当たり判定の機能拡張</h2>
+<ul>
+<li><a href="crashTo">crashTo</a>メソッドにクラスを渡すことが可能になりました<ul>
+<li>画面中の特定のクラスのオブジェクトのうちどれか１つ以上に衝突しているかどうかが判定できます</li>
+<li>戻り値は衝突したオブジェクトのうちどれか１つになります．</li>
+</ul>
+</li>
+</ul>
+<h2 id="-">オブジェクトの一括操作機能の追加</h2>
+<ul>
+<li>複数のオブジェクトに同じ操作を適用させる命令が追加されました<ul>
+<li><a href="all">all</a>メソッド ： 画面上のすべてのオブジェクトや，特定のクラスのすべてのオブジェクトに対して操作を行う</li>
+<li><a href="allCrash">allCrash</a>メソッド： 衝突しているすべてのオブジェクトに対して操作を行う</li>
+</ul>
+</li>
+</ul>
+<h2 id="-">タッチパネル・マルチタッチ対応</h2>
+<ul>
+<li><a href="$touches">$touches</a></li>
+</ul>
+<h2 id="-">メソッド・フィールドの変更点</h2>
+<ul>
+<li><a href="getkey">getkey</a>メソッド<ul>
+<li>上位互換）引数に数値以外にキー名をあらわす文字列が渡せます</li>
+</ul>
+</li>
+<li>[フィールド]angle → <code>rotation</code><ul>
+<li>（名称変更）</li>
+</ul>
+</li>
+<li>[メソッド]angle(x,y) → <code>atanxy</code><ul>
+<li>（名称変更）</li>
+</ul>
+</li>
+<li>画面の大きさ変更<ul>
+<li>（仕様変更）Tonyu1では，$screenWidth,$screenHeightに代入することで画面の大きさを変更していましたが，Tonyu2 では<a href="resize">$Screen.resize</a>を用います</li>
+</ul>
+</li>
+<li>ファイルアクセス<ul>
+<li>（仕様変更）Tonyu1では，FileReader, FileWriterクラスを用いてファイルにアクセスしましたが，Tonyu2では<a href="file">file</a>メソッドを用います．</li>
+</ul>
+</li>
+</ul>
+<p>.</p>
+</body></html>

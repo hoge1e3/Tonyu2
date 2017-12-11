@@ -1,0 +1,42 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a> - <a href="オブジェクトを動かす">オブジェクトを動かす</a> - <a href="上下左右に移動させる">上下左右に移動させる</a></p>
+<h1 id="-">キャラが画面端から出ないようにする</h1>
+<p>Main</p>
+<pre><code class="lang-JS">x=$screenWidth/2;
+y=$screenHeight/2;
+while(true){
+  if(getkey(&quot;right&quot;)&gt;0)    x+=3;
+  if(getkey(&quot;left&quot;)&gt;0)    x-=3;
+  if(getkey(&quot;down&quot;)&gt;0)    y+=3;
+  if(getkey(&quot;up&quot;)&gt;0)    y-=3;
+  //★ここから画面端の判定
+  if(x&lt;0)            x=0;
+  if(x&gt;$screenWidth) x=$screenWidth;
+  if(y&lt;0)            y=0;
+  if(y&gt;$screenHeight)y=$screenHeight;
+  update();
+}
+</code></pre>
+<p>画面端(左がx=0,右がx=$screenWidth,上がy=0,下がy=$screenHeight)を設定して、それを超えそうになったら画面端に戻るようにしています。</p>
+<p>★以降の部分は、<a href="MathMod">clamp</a>メソッドを利用することもできます。</p>
+<p><code>clamp(a,min,max)</code>は、<code>a</code> が<code>min</code>～<code>max</code>の範囲内なら<code>a</code>自身を、範囲をはみ出していれば、範囲内の一番近い値を返します。</p>
+<p>Main</p>
+<pre><code class="lang-JS">x=$screenWidth/2;
+y=$screenHeight/2;
+while(true){
+  if(getkey(&quot;right&quot;)&gt;0)    x+=3;
+  if(getkey(&quot;left&quot;)&gt;0)    x-=3;
+  if(getkey(&quot;down&quot;)&gt;0)    y+=3;
+  if(getkey(&quot;up&quot;)&gt;0)    y-=3;
+  //★ここから画面端の判定
+  x=clamp(x,0,$screenWidth);
+  y=clamp(y,0,$screenHeight);
+  update();
+}
+</code></pre>
+</body></html>

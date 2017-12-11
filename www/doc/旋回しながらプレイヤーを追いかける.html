@@ -1,0 +1,46 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<h1 id="-">旋回しながらプレイヤーを追いかける敵</h1>
+<p>Main</p>
+<pre><code class="lang-JS">$player=new Player{x:250,y:250};
+new Enemy{x:200,y:100};
+new Enemy{x:300,y:100};
+new Enemy{x:400,y:300};
+new Enemy{x:100,y:300};
+</code></pre>
+<p>Enemy</p>
+<pre><code class="lang-JS">//移動方向の角度
+dir=0;
+while (true) {
+    //オブジェクトの見た目を回転させる
+    rotation=dir;
+    //dirの方向に移動する
+    x+=cos(dir);
+    y+=sin(dir);
+    //(tx,ty)の場所を目指して移動
+    //この例では$playerの位置
+    tx=$player.x;
+    ty=$player.y;
+    //自分の位置からの(tx,ty)の角度
+    tdir=atanxy(tx-x, ty-y);
+    //移動方向とtdirを比較し、
+    d=angleDiff(dir,tdir);
+    //どちらに旋回するかを決める
+    if (d&gt;0) dir-=2;
+    else dir+=2;
+
+    update();
+}
+</code></pre>
+<ul>
+<li><code>atanxy</code>と<code>angleDiff</code>の詳細は<a href="MathMod">MathMod</a>クラスを参照してください</li>
+</ul>
+<p>Player</p>
+<pre><code class="lang-JS">//プレイヤーの動作を書く（とりあえず何も書かなくてもよい）
+</code></pre>
+</body></html>

@@ -1,0 +1,72 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<h1 id="-">曲の作成</h1>
+<p><a href="play">play</a>，<a href="playSE">playSE</a>メソッドで曲を演奏できます．</p>
+<h2 id="-">音符の設定</h2>
+<ul>
+<li>ド=c レ=d ミ=e ファ=f ソ=g ラ=a シ=b</li>
+</ul>
+<pre><code class="lang-JS"> play(&quot;c&quot;); //ドの音を鳴らす
+</code></pre>
+<ul>
+<li><p>連続で音を鳴らす</p>
+<pre><code class="lang-JS">play(&quot;cd&quot;); //ド→レと連続鳴らす
+</code></pre>
+</li>
+<li><p>c○=ドの音を○分音符で鳴らす</p>
+<pre><code class="lang-JS">play(&quot;c4&quot;); //ドの音を4分音符で鳴らす
+</code></pre>
+</li>
+<li><p>休符を置く</p>
+<pre><code class="lang-JS">play(&quot;r1&quot;); //全休符を置く
+</code></pre>
+</li>
+<li>l(英字のエル)○=指定がない場合○分音符</li>
+</ul>
+<pre><code class="lang-JS">play(&quot;l4 c&quot;); //特に指定がなければ4分音符分の長さのドを鳴らす
+</code></pre>
+<ul>
+<li><code>&lt;</code>...1オクターブ上がる</li>
+<li><p><code>&gt;</code>...1オクターブ下がる</p>
+<pre><code class="lang-JS">play(&quot;cd&lt;cd&quot;); //&lt;の後が1オクターブ上がる
+</code></pre>
+</li>
+<li><p>同時に音を鳴らす</p>
+<pre><code class="lang-JS">play(&quot;a&quot;,&quot;c&quot;) = ラとドを同時に鳴らす
+</code></pre>
+</li>
+<li><p>半音上げる<code>+</code>、半音下げる<code>-</code></p>
+<pre><code class="lang-JS">play(&quot;a-&quot;,&quot;a+&quot;); //ドのフラット、ドのシャープを鳴らす
+</code></pre>
+</li>
+<li><p>オクターブを変更する<code>o</code></p>
+<ul>
+<li>デフォルトでは <code>o4</code> になっています．<pre><code class="lang-JS">play(&quot;o3cdef&quot;); //1オクターブ(音階)下げてドレミファと鳴らす
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>効果音を作る。<pre><code class="lang-JS">playSE(&quot;l40o5&lt;ccccccccccccccr2cccccccccccccc&quot;);   //着信音
+playSE(&quot;o5l28e&lt;c&quot;);// 決定音
+</code></pre>
+</li>
+</ul>
+<h2 id="-">例：キラキラ星</h2>
+<p>演奏を担当するクラスを作成し（ここではStarクラスとします)、Mainクラスから生成します．</p>
+<p>Star</p>
+<pre><code class="lang-JS">play(&quot;r1&quot;);
+play(&quot;l4 ccggaag2ffeeddc2&quot;,&quot;l4 eeeeffe2ddcc&gt;ab&lt;g2&quot;,&quot;r1r1r1r2/1e2&quot;);
+play(&quot;l4 ggffeed2ggffeed2&quot;,&quot;l4 eeddcc&gt;b2 &lt;l4eeddcc&gt;b2&quot;);
+play(&quot;l4 ccggaag2ffeeddc2&quot;,&quot;l4 r1a8b8&lt;c8&gt;a8g2r8/1f8g8f8r8/1e8g8e8r8/1d8g8d8c2&quot;);
+</code></pre>
+<p>Main</p>
+<pre><code class="lang-JS">$c=new Star;
+</code></pre>
+</body></html>

@@ -1,0 +1,44 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="api">api</a></p>
+<h1 id="map-">Mapクラス</h1>
+<p>マップの表示クラスです．マップチップと呼ばれる画像を格子状に敷き詰めて表示します。</p>
+<p>マップは「奥のレイヤー」と「手前のレイヤー」の2層のレイヤーで構成され、それぞれマップチップを独立して配置できます。</p>
+<p>※ここでの「レイヤー」は<a href="座標系とレイヤー">画面全体のレイヤー</a>とは別の概念です．</p>
+<h1 id="-">コンストラクタ</h1>
+<pre><code class="lang-JS">\new(param)
+</code></pre>
+<p>paramオブジェクトでマップのチップサイズとその個数を指定します．</p>
+<ul>
+<li><code>row</code> 敷き詰めるチップの縦の行数</li>
+<li><code>col</code> 敷き詰めるチップの横の列数</li>
+<li><code>chipWidth</code> チップ1個の幅（ピクセル単位）</li>
+<li><code>chipHeight</code> チップ1個の高さ（ピクセル単位）</li>
+</ul>
+<p>例：</p>
+<pre><code class="lang-JS">// 32*32ピクセルのチップを横に15，縦に10並べる
+$map=new Map{chipWidth:32,chipHeight:32, col:15, row:10};
+</code></pre>
+<h1 id="-">メソッド</h1>
+<ul>
+<li><a href="set">set/setOn</a></li>
+<li><a href="setAt">setAt/setOnAt</a></li>
+<li><a href="get">get/getOn</a></li>
+<li><a href="getAt">getAt/getOnAt</a></li>
+<li><a href="scrollTo">scrollTo</a></li>
+<li><a href="Map.load">load</a></li>
+</ul>
+<h1 id="-">参考</h1>
+<ul>
+<li><a href="mapEditor">マップエディタ</a></li>
+<li><a href="mapGet">マップチップを取得する</a></li>
+<li><a href="マップチップとの当たり判定">マップチップとの当たり判定</a></li>
+<li><a href="マップを書き換える">マップを書き換える</a></li>
+<li><a href="mapEditor">マップを描く</a></li>
+</ul>
+<p>.</p>
+</body></html>

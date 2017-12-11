@@ -1,0 +1,41 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<p><a href="時間を計る">時間を計る</a></p>
+<h1 id="-">オブジェクトに連続でぶつからないようにする</h1>
+<p>プレイヤーが敵に当たったときに，一定時間無敵になって連続で敵に当たらないようにします．</p>
+<p>Main</p>
+<pre><code class="lang-JS">new Enemy{x=rnd($screenWidth),y=rnd($screenHeight),p=8};
+new Enemy{x=rnd($screenWidth),y=rnd($screenHeight),p=8};
+new Enemy{x=rnd($screenWidth),y=rnd($screenHeight),p=8};
+new Player{x=$screenWidth/2,y=$screenHeight/2};
+</code></pre>
+<p>Player</p>
+<pre><code class="lang-JS">c=0;//c&gt;0なら無敵,c==0なら無敵でない
+life=5;
+while(true){
+    x=$mouseX;
+    y=$mouseY;
+    if(crashTo(Enemy) &amp;&amp; c&lt;=0){
+        // 無敵でない場合のみ，ここが実行される
+        c=30;//無敵時間を30フレーム（1秒）に設定
+        // 体力を減らす
+        life--;
+        print(&quot;Life&quot;,life);
+        if (life&lt;=0) die();
+    }
+    //無敵中であれば無敵時間を減らす
+    if (c&gt;0) c--;
+    //無敵中に点滅させる処理
+    if (c%2==0) alpha=255; else alpha=0;
+    update();
+}
+</code></pre>
+<p>Enemy</p>
+<pre><code class="lang-JS">//何も書かなくてもよいが，ファイルEnemyは作成する
+</code></pre>
+</body></html>

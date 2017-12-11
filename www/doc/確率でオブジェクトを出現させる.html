@@ -1,0 +1,34 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<h1 id="-">確率でオブジェクトを出現させる</h1>
+<p>毎フレーム0～99の値をランダムに決めて、それが5未満(5%の確率)ならば画面の上部にオブジェクトが生成されます．</p>
+<p>Main</p>
+<pre><code class="lang-JS">while(true){
+  if(rnd(100)&lt;5){
+    new Enemy{x:rnd($screenWidth),y:0,p:1};
+  }
+  update();
+}
+</code></pre>
+<p>Enemy</p>
+<pre><code class="lang-JS">while(true){
+  y+=4;
+  if(screenOut(0) ){
+    die();
+  }
+  update();
+}
+</code></pre>
+<h1 id="-">参考</h1>
+<ul>
+<li><a href="乱数を使う">乱数を使う</a></li>
+<li><a href="弾を撃つ">弾を撃つ</a></li>
+<li><a href="出現するオブジェクトの個数を制限する">出現するオブジェクトの個数を制限する</a></li>
+</ul>
+<p>.</p>
+</body></html>

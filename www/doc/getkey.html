@@ -1,0 +1,45 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="BaseActor">BaseActor</a></p>
+<h1 id="getkey-">getkeyメソッド</h1>
+<p>キーの押下状態を取得します．</p>
+<h2 id="-">書式</h2>
+<pre><code class="lang-JS">getkey(code)
+</code></pre>
+<ul>
+<li>code に調べたいキーのキーコード（数値）またはキーの名前（文字列）を指定します．</li>
+<li>キーの状態に応じて次の数値を返します<ul>
+<li>0: 押されていない</li>
+<li>1: 押されたばかり</li>
+<li>2以上:  押しっぱなしになっている（押されて続けているフレーム数）</li>
+</ul>
+</li>
+</ul>
+<h1 id="-">キーの名前の一覧</h1>
+<ul>
+<li><code>&quot;right&quot;</code>,<code>&quot;left&quot;</code>,<code>&quot;down&quot;</code>,<code>&quot;up&quot;</code> : 矢印キー</li>
+<li><code>&quot;space&quot;</code>: スペースキー</li>
+<li><code>&quot;0&quot;</code>～<code>&quot;9&quot;</code>, <code>&quot;A&quot;</code>～<code>&quot;Z&quot;</code>, <code>&quot;a&quot;</code>～<code>&quot;z&quot;</code>: それぞれの英数字キー</li>
+<li><code>&quot;mouseleft&quot;</code>, <code>&quot;moueright&quot;</code>: マウスの左右ボタン</li>
+<li><code>&quot;shift&quot;</code>, <code>&quot;ctrl&quot;</code>, <code>&quot;alt&quot;</code>, <code>&quot;enter&quot;</code> : それぞれ対応するキー</li>
+</ul>
+<h1 id="-">キーコード一覧</h1>
+<pre><code class="lang-JS">left: 37 , up:38 , right: 39, down:40,
+space:32, enter:13, shift:16, ctrl:17, alt:18,
+A-Z: 65-90,  0-9: 48-57,  mouseleft: 1
+</code></pre>
+<p>例：</p>
+<pre><code class="lang-JS">if (getkey(&quot;a&quot;)) {
+   // a が押されている場合、この部分が実行される
+}
+if (getkey(&quot;a&quot;)==1) {
+   // a が押されたばかりの場合、この部分が実行される
+}
+</code></pre>
+<p>参照</p>
+<p><a href="オブジェクトを動かす">オブジェクトを動かす</a></p>
+</body></html>

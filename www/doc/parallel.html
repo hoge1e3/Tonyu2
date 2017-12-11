@@ -1,0 +1,37 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="BaseActor">BaseActor</a></p>
+<h1 id="parallel-">parallelメソッド</h1>
+<p>新しく<a href="thread">スレッド</a>を起動し、並行処理を行います</p>
+<h2 id="-">書式</h2>
+<pre><code class="lang-JS">parallel(methodName, args...)
+</code></pre>
+<ul>
+<li>methodName に、新しいスレッドが実行するメソッド名を指定します。指定されるメソッドは<a href="waitmode">待機可能メソッド</a>である必要があります。</li>
+<li>args （省略可）に、メソッドに渡す引数を指定します</li>
+</ul>
+<h2 id="-">戻り値</h2>
+<p>生成された<a href="thread">スレッド</a></p>
+<h2 id="-">補足</h2>
+<ul>
+<li>parallelメソッドで指定されたメソッドは<a href="waitmode">待機可能モード</a>で実行されます。</li>
+<li>parallelメソッド自身は<a href="waitmode">待機不能モード</a>であっても呼び出すことができます。</li>
+</ul>
+<pre><code class="lang-JS">// objオブジェクトのfooメソッドを待機可能モードで実行
+// このプログラム自身は待機不能モードでもOK
+obj.parallel(&quot;foo&quot;);
+</code></pre>
+<h2 id="-">実行例</h2>
+<ul>
+<li><a href="http://tonyuexe.appspot.com/exe/hoge1e4/ParaTest">往復＋拡大縮小＋弾発射</a> <ul>
+<li><a href="http://tonyuexe.appspot.com/exe/hoge1e4/ParaTest/view-source">ソース</a></li>
+</ul>
+</li>
+<li><a href="ボタンが押されたとき，複数フレームにまたがる動作を行なう">ボタンが押されたとき，複数フレームにまたがる動作を行なう</a></li>
+<li><a href="キャラクターを歩いているように見せる">キャラクターを歩いているように見せる</a><br>.</li>
+</ul>
+</body></html>

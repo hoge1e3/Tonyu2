@@ -1,0 +1,128 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="api">api</a></p>
+<h1 id="baseactor">BaseActor</h1>
+<p>画面に表示されるオブジェクトの基本クラスです．実際には<a href="Actor">Actor</a>を継承してクラスを作成してください．</p>
+<h1 id="-1-">コンストラクタ(1)</h1>
+<pre><code class="lang-JS">\new(params)
+</code></pre>
+<p>paramsにはオブジェクトを指定します．paramsの値をフィールドに書き込みます</p>
+<p>例：</p>
+<pre><code class="lang-JS">// MyActorはBaseActorの子クラスとする
+a=new MyActor{x:50,y:30, power:20, hp:50};
+// a.x=50  a.y=30 a.power=20  a.hp=50 となる
+</code></pre>
+<h1 id="-2-">コンストラクタ(2)</h1>
+<pre><code class="lang-JS">\new(x,y,p)
+</code></pre>
+<p>x,y,pの値をフィールドに書き込みます</p>
+<h1 id="-">フィールドと表示モード</h1>
+<p>表示モードは，「グラフィックス」「文字」「図形」のいずれかです．</p>
+<ul>
+<li>textに値がセットされている場合，表示モードは「文字」です</li>
+<li>textに値がセットされておらず，fillStyleに値がセットされている場合，表示モードは「図形」です</li>
+<li>textにもfillStyleにも値がセットされていない場合，表示モードは「グラフィックス」です</li>
+</ul>
+<h2 id="-">「グラフィックス」におけるフィールド</h2>
+<ul>
+<li>p : 表示する<a href="cpats">画像の番号</a>をあらわします。 <a href="オブジェクトのグラフィックを変える">使用例</a></li>
+</ul>
+<h2 id="-">「文字」におけるフィールド</h2>
+<ul>
+<li>text : 表示される文字</li>
+<li>size : 文字の大きさ</li>
+<li>align: &quot;center&quot; &quot;left&quot; &quot;right&quot;のいずれかを指定します．xの値であらわされる横位置がそれぞれ文字の中央，左端，右端になるように表示します．</li>
+<li>fillStyle : 文字の色(JavascriptのCanvasにおけるfillStyleと同じ書式です）．</li>
+</ul>
+<h2 id="-">「図形」におけるフィールド</h2>
+<ul>
+<li>radius: 値をセットすると円を表示し，その半径を表します</li>
+<li>width: radiusがセットされていない場合，四角形を表示し，その幅を表します</li>
+<li>height: radiusがセットされていない場合，四角形を表示し，その高さを表します</li>
+</ul>
+<h2 id="-">すべてのモードで共通のフィールド</h2>
+<ul>
+<li>x : オブジェクトのx座標をあらわします<a href="座標を指定してオブジェクトを表示する">使用例</a></li>
+<li>y : オブジェクトのy座標をあらわします<a href="座標を指定してオブジェクトを表示する">使用例</a></li>
+<li>zOrder : オブジェクト同士が重なった場合、この値が小さい方が手前に表示されます。<a href="オブジェクトの奥行きの設定">使用例</a></li>
+<li>alpha : 表示する画像の透明度を指定します(255-0)。<a href="オブジェクトの大きさや傾き、透明度を設定する">使用例</a></li>
+<li>scaleX : オブジェクトの横方向の拡大率を指定します．scaleYが未定義の場合は縦方向にもscaleXの拡大率が適用されます。<a href="オブジェクトの大きさや傾き、透明度を設定する">使用例</a></li>
+<li>scaleY : オブジェクトの縦方向の拡大率を指定します</li>
+<li>rotation : オブジェクトの回転を指定します．右回りで指定した値の角度回転します。<a href="オブジェクトの大きさや傾き、透明度を設定する">使用例</a></li>
+<li>crashScale: 当たり判定の大きさの比率を設定します．初期値は1です</li>
+<li>useObjectPool: この値を<code>true</code>にすると、このオブジェクトが消滅した後、<a href="オブジェクトプール">オブジェクトプール</a>に保存されるようになります。</li>
+<li>lifeKeeper: この値に他のActorを設定すると，そのActorが<a href="die">dieメソッド</a>で消滅したときに，このオブジェクトも自動的に消滅します．</li>
+</ul>
+<h2 id="-">その他のフィールド</h2>
+<p>上記以外のフィールドには値を自由に設定できます（表示には影響しません）</p>
+<h1 id="-">メソッド</h1>
+<ul>
+<li>入力<ul>
+<li><a href="getkey">getkey</a></li>
+<li><a href="findTouch">findTouch</a></li>
+</ul>
+</li>
+<li>動作制御<ul>
+<li><a href="update">update</a></li>
+<li><a href="updateEx">updateEx</a></li>
+<li><a href="onUpdate">onUpdate</a></li>
+<li><a href="die">die</a></li>
+<li><a href="isDead">isDead</a></li>
+<li><a href="parallel">parallel</a></li>
+<li><a href="asyncResult">asyncResult</a></li>
+<li><a href="runAsync">runAsync</a></li>
+<li><a href="waitFor">waitFor</a></li>
+</ul>
+</li>
+<li>衝突判定<ul>
+<li><a href="crashTo">crashTo</a></li>
+<li><a href="crashTo1">crashTo1</a></li>
+<li><a href="allCrash">allCrash</a></li>
+<li><a href="all">all</a></li>
+<li><a href="getCrashRect">getCrashRect</a></li>
+<li><a href="within">within</a></li>
+<li><a href="allWithin">allWithin</a></li>
+</ul>
+</li>
+<li>表示<ul>
+<li><a href="hide">hide</a></li>
+<li><a href="show">show</a></li>
+<li><a href="draw">draw</a></li>
+<li><a href="print">print</a></li>
+<li><a href="color">color</a></li>
+<li><a href="drawLine">drawLine</a></li>
+<li><a href="drawText">drawText</a></li>
+</ul>
+</li>
+<li>音声<ul>
+<li><a href="play">play</a></li>
+<li><a href="playSE">playSE</a></li>
+</ul>
+</li>
+<li>数学関数<ul>
+<li><a href="rnd">rnd</a></li>
+<li><a href="rndFloat">rndFloat</a></li>
+<li><a href="MathMod">MathMod</a>モジュールクラスがもつメソッド</li>
+</ul>
+</li>
+<li><a href="EventMod">イベント</a><ul>
+<li><a href="on">on</a></li>
+<li><a href="waitEvent">waitEvent</a></li>
+<li><a href="sendEvent">sendEvent</a></li>
+<li><a href="registerEventHandler">registerEventHandler</a></li>
+</ul>
+</li>
+<li>その他<ul>
+<li><a href="loadPage">loadPage</a></li>
+<li><a href="file">file</a></li>
+<li><a href="extend">extend</a></li>
+<li><a href="appear">appear</a></li>
+<li><a href="screenOut">screenOut</a></li>
+</ul>
+</li>
+</ul>
+</body></html>

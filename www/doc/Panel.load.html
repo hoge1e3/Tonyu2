@@ -1,0 +1,16 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><a href="Panel">Panel</a></p>
+<h1 id="panel-load-">Panel.load メソッド</h1>
+<p>pngファイルのイメージをパネルに読み込みます．読み込み後のパネルのサイズはファイルのイメージと同じ大きさになります．</p>
+<h2 id="-">書式</h2>
+<pre><code class="lang-JS">panel.load(fn)
+</code></pre>
+<p><em>fn</em>に読み込むファイル名(files/ フォルダからの相対パス)または<a href="file">FSオブジェクト</a>を指定します．</p>
+<h2 id="-">注意</h2>
+<p>読み込みがすぐに完了しない場合もありますので，次のようにwaitFor メソッドを組み合わせると，読み込み完了を待ってから次の処理に進ことができます．</p>
+<pre><code class="lang-JS">waitFor(panel.load(fn));
+</code></pre>
+</body></html>

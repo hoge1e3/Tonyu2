@@ -1,0 +1,53 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<p><a href="オブジェクトを動かす">オブジェクトを動かす</a></p>
+<h1 id="-">アナログパッドで上下左右に移動させる</h1>
+<p><a href="APad">APad</a>クラスを使用すると，PCなどのキーボードおよび，スマートフォンなどのタッチパネルの両方でプレイヤーを動作させることができます．</p>
+<p>Player</p>
+<pre><code class="lang-JS">x=$screenWidth/2;
+y=$screenHeight/2;
+pad=new APad; // APadの作成
+while(true){
+  // padの倒れた向きに応じて移動する
+  x+=pad.vx*5;
+  y+=pad.vy*5;
+  update();
+}
+</code></pre>
+<h1 id="-">キーボードで上下左右に移動させる</h1>
+<p>キーボードのみで操作する場合，<a href="getkey">getkey</a>メソッドを利用して、オブジェクトを矢印キーの上下左右で動かすことができます。</p>
+<p>Player</p>
+<pre><code class="lang-JS">x=$screenWidth/2;
+y=$screenHeight/2;
+while(true){
+  // それぞれの方向について、押されているかを判定して動かす
+  if(getkey(&quot;right&quot;)&gt;0)    x+=3;
+  if(getkey(&quot;left&quot;)&gt;0)    x-=3;
+  if(getkey(&quot;down&quot;)&gt;0)    y+=3;
+  if(getkey(&quot;up&quot;)&gt;0)    y-=3;
+  update();
+}
+</code></pre>
+<p>※このままでは画面端より外側にはみ出すことができてしまうので、<a href="画面端から出ないようにする">画面端から出ないようにする</a>も参照してください。</p>
+<p>※壁などの障害物にぶつかったら止まるようにするには<a href="当たり判定で壁にぶつかる">当たり判定で壁にぶつかる</a>も参照してくだあい。</p>
+<h1 id="-">パッドで上下左右に移動させる</h1>
+<p>スマートフォンの画面に表示するバーチャルパッドで動かす場合はgetkeyではなく<a href="Pad">Pad</a>クラスを使用します。</p>
+<p>Player</p>
+<pre><code class="lang-JS">x=$screenWidth/2;
+y=$screenHeight/2;
+pad=new Pad(); // Padの作成
+while(true){
+  // それぞれの方向について、押されているかを判定して動かす
+  if(pad.getRight()&gt;0)    x+=3;
+  if(pad.getLeft()&gt;0)    x-=3;
+  if(pad.getDown()&gt;0)    y+=3;
+  if(pad.getUp()&gt;0)    y-=3;
+  update();
+}
+</code></pre>
+</body></html>

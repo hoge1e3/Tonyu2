@@ -1,0 +1,35 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<h1 id="-">自分自身を消す</h1>
+<p><a href="die">die</a>メソッドを呼び出すと，自分自身を消す<br>ことができます．</p>
+<p>Chara1</p>
+<pre><code class="lang-JS">x=100;
+y=100;
+while(true){
+  x++;
+  // 画面右端に来ると消える
+  if(x&gt;$screenWidth) die();
+  update();
+}
+</code></pre>
+<ul>
+<li>オブジェクトは画面外に出ても実行はされています．</li>
+<li>あまり多くのオブジェクトを出現したままにしておくと処理が遅くなってしまうので，必要のなくなったオブジェクトは消すようにしてください．</li>
+</ul>
+<h1 id="-">参考</h1>
+<ul>
+<li><a href="自分自身を消す">自分自身を消す</a></li>
+<li><a href="他のオブジェクトを消す">他のオブジェクトを消す</a></li>
+<li><a href="当たり判定で当たったオブジェクトを消す">当たり判定で当たったオブジェクトを消す</a><ul>
+<li><a href="当たり判定を変更する">当たり判定を変更する</a></li>
+</ul>
+</li>
+<li><a href="画面外に出たかどうかの判定">画面外に出たオブジェクトを消す</a></li>
+<li><a href="すべてのオブジェクトを消す">すべてのオブジェクトを消す</a></li>
+</ul>
+</body></html>

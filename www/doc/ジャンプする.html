@@ -1,0 +1,50 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<h1 id="-">ジャンプする</h1>
+<ul>
+<li><a href="contactTo">contactTo</a>で、他の物理オブジェクトと触れているかどうかを判定できます。</li>
+</ul>
+<p>Ball</p>
+<pre><code class="lang-JS">extends BodyActor;
+shape=&quot;circle&quot;;
+while(true) {
+    if (getkey(&quot;left&quot;)) vx=-3;   
+    if (getkey(&quot;right&quot;)) vx=3;   
+    // スペースキーが押されていて、しかもFloorと触れているときに上に力を加える
+    if (getkey(&quot;space&quot;)==1 &amp;&amp; contactTo(Floor)) vy=-10;
+    update();
+}
+</code></pre>
+<p>なお，上のプログラムではFloorに横から当たったときにもジャンプ（壁蹴り）ができるようになっています．壁蹴りをできなくするには，当たった位置を特定するために<a href="contactPoint">contactPoint</a>メソッドを用います．</p>
+<p>Ball</p>
+<pre><code class="lang-JS">extends BodyActor;
+shape=&quot;circle&quot;;
+while(true) {
+    if (getkey(&quot;left&quot;)) vx=-3;   
+    if (getkey(&quot;right&quot;)) vx=3;   
+    if (getkey(&quot;space&quot;)==1) {
+        cp=contactPoint(Floor);//触れている位置を含めて判定
+        if (cp) {//触れいていれば
+            if (cp.y&gt;y+2) {//当たった点(cp)のy座標が自分より少し下だったら，ジャンプできると判定
+               vy=-10;
+            }
+        }
+    }
+    update();
+}
+</code></pre>
+<h1 id="-">参照</h1>
+<ul>
+<li><a href="物理運動するオブジェクトを作る">物理運動するオブジェクトを作る</a></li>
+<li><a href="壁・床を作る">壁・床を作る</a></li>
+<li><a href="オブジェクトに力を加える">オブジェクトに力を加える</a></li>
+<li><a href="ジャンプする">ジャンプする</a></li>
+<li><a href="重力を変更する">重力を変更する</a></li>
+<li><a href="マップと物理オブジェクトに当たり判定を設定する">マップと物理オブジェクトに当たり判定を設定する</a><br>.</li>
+</ul>
+</body></html>

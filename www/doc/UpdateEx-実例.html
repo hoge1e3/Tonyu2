@@ -1,0 +1,27 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<p>Chara1</p>
+<pre><code class="lang-JS">x=100;
+y=100;
+
+p=$pat_neko+0;
+
+while(true){
+    p++;
+    updateEx(10);//ここで10フレーム待つ
+    p++;
+    updateEx(10);//ここで10フレーム待つ
+    p=p-2;
+}
+</code></pre>
+<p>オブジェクトの画像の値を変化させることでそれが画面にも反映されます。</p>
+<ul>
+<li><a href="updateEx">updateEx</a>()は<a href="update">update</a>メソッドを複数フレーム行う命令で、上の例だと10フレーム分動作を停止させます。</li>
+<li>この命令を使うことで、アニメーションなどを自然に見えるようにすることができます。</li>
+</ul>
+</body></html>

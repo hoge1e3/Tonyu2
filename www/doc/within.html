@@ -1,0 +1,31 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="BaseActor">BaseActor</a></p>
+<h1 id="within-">withinメソッド</h1>
+<p>他のオブジェクトとの距離が一定以内かを判定します．</p>
+<h2 id="-1">書式1</h2>
+<pre><code class="lang-JS">within(obj,d)
+</code></pre>
+<p>このオブジェクトと<em>obj</em>との距離が<em>d</em>以下であれば<code>true</code>，そうでなければ<code>false</code>を返します．</p>
+<h1 id="-2">書式2</h1>
+<pre><code class="lang-JS">crashTo(Class,d)
+</code></pre>
+<p>このオブジェクトが<em>Class</em>で指定されるクラスのオブジェクトのうちどれかとの距離が<em>d</em>以下であれば，そのうちどれか1つのオブジェクトを返します．そうでなければ<code>null</code>を返します</p>
+<h1 id="-">例</h1>
+<pre><code class="lang-JS">// $playerというオブジェクトとの距離が10以下なら，$playerを消します
+if (within($player,10)) {
+   $player.die();
+}
+</code></pre>
+<h1 id="-">参考</h1>
+<ul>
+<li><a href="allWithin">allWithin</a></li>
+<li><a href="allCrash">allCrash</a></li>
+<li><a href="getCrashRect">getCrashRect</a></li>
+</ul>
+<p>.</p>
+</body></html>

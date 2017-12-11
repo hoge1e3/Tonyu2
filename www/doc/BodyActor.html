@@ -1,0 +1,80 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="api">api</a></p>
+<h1 id="bodyactor">BodyActor</h1>
+<p>物理演算を行なうオブジェクトはこのクラスを継承してください。</p>
+<p>実例は<a href="物理運動するオブジェクトを作る">物理運動するオブジェクトを作る</a>を参照してください。</p>
+<h2 id="-">親クラス</h2>
+<p><a href="Actor">Actor</a></p>
+<h2 id="-">コンストラクタ</h2>
+<pre><code class="lang-JS">\new(params)
+</code></pre>
+<p>paramsにはオブジェクトを指定します．paramsの値をフィールドに書き込みます</p>
+<h2 id="-">フィールド</h2>
+<ul>
+<li><a href="Actor">Actor</a>のフィールドに指定できるものは同様に指定できます<ul>
+<li>xとyについては、代入による座標の変更は可能ですが、初期位置を決める以外には推奨されません（衝突が正しく行われないなどの問題が発生します）。<a href="applyForce">applyForce</a>、<a href="applyImpulse">applyImpulse</a>、およびvxとvyを使ってください</li>
+</ul>
+</li>
+</ul>
+<p>以下のフィールドは、オブジェクト作成時にパラメータを渡して初期化するか、mainメソッドの最初のupdateが行われる前に初期化する必要があります。</p>
+<ul>
+<li>density<ul>
+<li>物体の密度（重さ/大きさ）</li>
+</ul>
+</li>
+<li>friction<ul>
+<li>物体の摩擦係数</li>
+</ul>
+</li>
+<li>restitution<ul>
+<li>物体の反発係数</li>
+</ul>
+</li>
+<li>shape<ul>
+<li>物体の衝突判定を円にするには<code>&quot;circle&quot;</code>を、長方形にするには<code>&quot;box&quot;</code>を指定します。</li>
+</ul>
+</li>
+<li>width、height<ul>
+<li>物体の衝突判定の幅と高さ（ピクセル数）を指定します。</li>
+<li>これらが指定されていると自動的に衝突判定の形状は長方形になります</li>
+</ul>
+</li>
+<li>radius<ul>
+<li>物体の衝突判定の半径（ピクセル数）を指定します。</li>
+<li>これが指定されていると自動的に衝突判定の形状は円になります</li>
+</ul>
+</li>
+<li>vx,vy<ul>
+<li>横方向、縦方向の速度（1フレームあたり・ピクセル数）を指定します</li>
+<li>代入することで速度を変更できます</li>
+</ul>
+</li>
+<li>vrotation<ul>
+<li>1フレームあたりの回転速度を表します</li>
+<li>代入することで回転速度を変更できます</li>
+</ul>
+</li>
+<li>manualRotation<ul>
+<li>これを<code>true</code>に設定すると、物体が回転してもオブジェクトの見かけは回転しなくなります。例えば、キャラクタを物理運動させつつも、見かけ上は常に直立しているように見せることができます。</li>
+</ul>
+</li>
+</ul>
+<p>※ width,height,radiusがいずれも指定されていない場合、フィールドpの値によって指定される画像の大きさ、およびscaleX,scaleYにより物体の衝突判定を決定します。</p>
+<h2 id="-">メソッド</h2>
+<ul>
+<li><a href="applyForce">applyForce</a></li>
+<li><a href="applyImpulse">applyImpulse</a></li>
+<li><a href="applyTorque">applyTorque</a></li>
+<li><a href="contactTo">contactTo</a></li>
+<li><a href="allContacts">allContacts</a></li>
+<li><a href="contactPoint">contactPoint</a></li>
+<li><a href="allContactPoints">allContactPoints</a></li>
+<li><a href="addRevoluteJoint">addRevoluteJoint</a></li>
+<li><a href="initBody">initBody</a><br>.</li>
+</ul>
+</body></html>

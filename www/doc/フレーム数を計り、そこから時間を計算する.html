@@ -1,0 +1,25 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<p><a href="時間を計る">時間を計る</a></p>
+<ul>
+<li>Tonyu System2のfpsはデフォルト※では30です．</li>
+<li>変数を毎フレーム1ずつ増加させ，30で割ることで経過時間を秒数で計ることができます．<ul>
+<li>30で割った数値の整数部分を得るにはfloor関数を用います．</li>
+</ul>
+</li>
+</ul>
+<h1 id="-">フレーム数から時間を計算する</h1>
+<pre><code class="lang-JS">time=0;
+while(true){
+  time++;
+  text=floor(time/30)+&quot;秒経過&quot;;
+  update();
+}
+</code></pre>
+<p>※fpsは<a href="setFrameRate">$Boot.setFramRate</a> で変更可能です．</p>
+</body></html>

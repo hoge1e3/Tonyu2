@@ -1,0 +1,28 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="BodyActor">BodyActor</a></p>
+<h1 id="addrevolutejoint-">addRevoluteJointメソッド</h1>
+<p>回転するジョイントを作成します。シーソーやピンボールのフリッパーを作るのに適しています。</p>
+<pre><code>addRevoluteJoint(param);
+</code></pre><p><code>param</code>に指定できるものは次のものです</p>
+<ul>
+<li><code>x</code>: 回転の中心のx座標です。省略するとこのオブジェクトのx座標を用います</li>
+<li><code>y</code>: 回転の中心のy座標です。省略するとこのオブジェクトのy座標を用います</li>
+<li><code>lowerAngle</code>, <code>upperAngle</code>: 回転角に制限を加える場合、それぞれ最小角度と最大角度を指定します。</li>
+</ul>
+<h1 id="-">例</h1>
+<pre><code>extends BodyActor;
+addRevoluteJoint{x:300,y:200,lowerAngle:-30,upperAngle:30};
+
+while(true) {
+    if(getkey(32)) applyImpulse(0,-30);
+    update();
+}
+
+new Flipper{x:200,y:200,scaleX:10,scaleY:1};
+</code></pre><p>.</p>
+</body></html>

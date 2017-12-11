@@ -1,0 +1,41 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="BaseActor">BaseActor</a></p>
+<h1 id="tquery">TQuery</h1>
+<p><a href="all">all</a>メソッド， <a href="allCrash">allCrash</a>メソッドなどで返されるオブジェクトです．複数の<a href="Actor">Actor</a>に対して一斉に動作を行わせることができます．</p>
+<h1 id="-">要素数・要素へのアクセス</h1>
+<p>TQueryオブジェクトに格納しているActorの個数は<code>.length</code>で取得します．</p>
+<p>各Actorへは<code>[添字]</code>でアクセスします．</p>
+<p>※TQueryオブジェクトは配列のように扱うことができますが，JavaScriptのArrayオブジェクトではありません．Arrayオブジェクトに変換する場合は<a href="TQuery.toArray">toArrayメソッド</a>を用います．</p>
+<h2 id="-">例</h2>
+<pre><code class="lang-JS">a=all(Enemy);
+print(&quot;敵の数=&quot;, a.length);
+if (a.length&gt;0) print(&quot;最初の敵のx座標&quot;,a[0].x);
+</code></pre>
+<h1 id="for-of-">for ... of の使用</h1>
+<p>for ... of を使って各Actorへに同じ処理を一斉に行うことができます．</p>
+<pre><code class="lang-JS">for (e of all(Enemy)) {
+   e.die();
+}
+</code></pre>
+<h1 id="-">メソッド</h1>
+<ul>
+<li><a href="TQuery.die">die</a></li>
+<li><a href="TQuery.alive">alive</a></li>
+<li><a href="TQuery.attr">attr</a></li>
+<li><a href="TQuery.find">find</a></li>
+<li><a href="TQuery.withins">withins</a></li>
+<li><a href="TQuery.minmax">min, max, minObj, maxObj, mins, maxs</a></li>
+<li><a href="TQuery.nearest">nearest, nearests</a></li>
+<li><a href="TQuery.random">random</a></li>
+<li><a href="TQuery.apply">apply</a></li>
+<li><a href="TQuery.toArray">toArray</a></li>
+<li><a href="TQuery.slice">slice</a></li>
+<li><a href="TQuery.sort">sort</a></li>
+</ul>
+<p>.</p>
+</body></html>

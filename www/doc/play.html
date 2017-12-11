@@ -1,0 +1,51 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="BaseActor">BaseActor</a></p>
+<h1 id="play-">playメソッド</h1>
+<p>音楽の演奏または停止を行います．</p>
+<h2 id="-">書式</h2>
+<pre><code class="lang-JS">play(mml1, mml2, ...)
+</code></pre>
+<p>mml に，音楽を演奏するための文字列を指定します．<br>書き方は，<a href="http://mohayonao.github.io/timbre.js/ja/mml.html">timbre.jsのMML</a><br>を参照してください．</p>
+<p>playメソッドを連続して実行すると，<br>最初に実行したplayメソッドの音楽の演奏が終わってから，<br>次の音楽が演奏されます．．</p>
+<p>例：</p>
+<pre><code class="lang-JS">// ドレミとミファソの和音を演奏し，それが終わったら
+play(&quot;cde&quot;,&quot;efg&quot;);
+// ミレドとソファミの和音を演奏する
+play(&quot;edc&quot;,&quot;gfe&quot;);
+</code></pre>
+<h2 id="-">音楽の停止</h2>
+<p>自分が鳴らしている音楽を止めるには次のようにします．</p>
+<pre><code class="lang-JS">play().stop()
+</code></pre>
+<p>あるいは，<a href="die">die</a>メソッドを呼び出すと停止します．</p>
+<p>注意：音楽は，それぞれのオブジェクトが独立に鳴らすことができます．<br>そのため，音楽を鳴らしているオブジェクトを指定して止める必要があります．<br>例えば，自分以外のオブジェクト<code>a</code>が演奏中であれば，次のようにします．</p>
+<pre><code class="lang-JS">a.play().stop()
+</code></pre>
+<p>あるいは</p>
+<pre><code class="lang-JS">a.die()
+</code></pre>
+<h2 id="-">演奏時間の取得</h2>
+<p>演奏開始からの経過時間を取得するには，次のcurrentTimeメソッドを使います．</p>
+<pre><code class="lang-JS">c.play().currentTime()
+</code></pre>
+<p>ここで，cは演奏中のオブジェクトを指します．</p>
+<p>例：<br>BGMObj</p>
+<pre><code class="lang-JS">while (true) {
+    play(&quot;cdefgfedc&quot;);
+}
+</code></pre>
+<p>CurTimeDisp</p>
+<pre><code class="lang-JS">c=new BGMObj;
+while (true) {
+    print(c.play().currentTime());
+    update();
+}
+</code></pre>
+<h2 id="-">参照</h2>
+<p><a href="playSE">playSE</a> 　<a href="用途別リファレンス">用途別リファレンス</a></p>
+</body></html>

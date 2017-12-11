@@ -1,0 +1,36 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<h1 id="-">ボタンを使う</h1>
+<h2 id="-1">その1</h2>
+<p><a href="Button">Button</a>オブジェクトでボタンを作成し、<code>clicked</code>で現在クリックしているかどうかを判定します。</p>
+<pre><code class="lang-JS">$b=new Button{top:300,text:&quot;Click Me&quot;};
+x=100;
+y=100;
+while(true) {
+   // $b が押されているかどうかは $b.clickedで調べる
+   // 0:押されていない 1:押されたばかり 2以上：押し続けられている
+   if($b.clicked==1) {
+      x+=10;
+   }
+   update();
+}
+</code></pre>
+<h2 id="-2">その2</h2>
+<p><a href="Button">Button</a>オブジェクトでボタンを作成し、<code>onClick</code>にクリックされたときに呼び出すメソッド名を記述します。</p>
+<pre><code class="lang-JS">//  クリックされたときは、下に定義したwalkメソッドを呼ぶ
+$b=new Button{top:300,text:&quot;Click Me&quot;,onClick:walk};
+x=100;
+y=100;
+
+// walkメソッドの定義
+function walk() {
+    x+=10;
+}
+</code></pre>
+<p>※クリック時に呼び出されるメソッド内では，updateやupdateExが使えません．使いたい場合は<a href="ボタンが押されたとき，複数フレームにまたがる動作を行なう">この例</a>をご覧ください．</p>
+</body></html>

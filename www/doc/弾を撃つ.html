@@ -1,0 +1,44 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<p><a href="オブジェクトを動かす">オブジェクトを動かす</a></p>
+<h1 id="-">弾を撃つ</h1>
+<ul>
+<li>キーボードなどの動作に反応してオブジェクトを生成します</li>
+<li>弾が出現する位置は，弾を撃つオブジェクトと同じ位置になるようにします．</li>
+</ul>
+<p>Player</p>
+<pre><code class="lang-JS">while(true) {
+//スペースキーを押すとBulletオブジェクトが出現する。
+  if(getkey(&quot;space&quot;)==1){
+    // このオブジェクト（Player）と同じ位置にBulletオブジェクトを出現させる※
+    new Bullet{x=x, y=y, p=25};
+  }
+  update();
+}
+</code></pre>
+<p>Bullet</p>
+<pre><code class="lang-JS">//画面上端に到達するまで上に移動していき、上端に到達すると消える。
+while(y&gt;0){
+  y=y-4;
+  update();
+}
+die();
+</code></pre>
+<p>※上のPlayerクラスの</p>
+<pre><code class="lang-JS">new Bullet{x=x, y=y, p=25};
+</code></pre>
+<p>は，次のように省略して書くことができます．</p>
+<pre><code class="lang-JS">//オブジェクトへのパラメタ内で x と書くと x=x と等価
+new Bullet{x, y, p=25};
+</code></pre>
+<h2 id="-">参考</h2>
+<ul>
+<li><a href="特定の座標に向けて弾を撃つ">特定の座標に向けて弾を撃つ</a></li>
+<li><a href="出現するオブジェクトの個数を制限する">出現するオブジェクトの個数を制限する</a><br>.</li>
+</ul>
+</body></html>

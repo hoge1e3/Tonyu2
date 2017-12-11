@@ -1,0 +1,27 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="ボタンを使う">ボタンを使う</a></p>
+<h1 id="-">ボタンが押されたとき，複数フレームにまたがる動作を行なう</h1>
+<p>ボタンが押されたときに，<a href="parallel">parallel</a>メソッドで別のメソッドを並列実行させます．</p>
+<pre><code class="lang-JS">//  クリックされたときは、下に定義したstartWalkメソッドを呼ぶ
+$b=new Button{top:300,text:&quot;Click Me&quot;,onClick:startWalk};
+x=100;
+y=100;
+
+function startWalk() {
+//walkメソッドを並列実行する
+    parallel(walk);
+}
+// walkメソッドの定義
+function walk() {
+    for(i=0;i&lt;10;i++) {
+       x+=1;
+       update();
+    }
+}
+</code></pre>
+</body></html>

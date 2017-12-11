@@ -1,0 +1,39 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="BaseActor">BaseActor</a> / <a href="EventMod">EventMod</a></p>
+<h1 id="waitevent-">waitEventメソッド</h1>
+<p>オブジェクトにイベントが送られてくるまで処理を中断します。</p>
+<h2 id="-">書式</h2>
+<pre><code class="lang-JS">e=waitEvent(オブジェクト, イベント名,[イベント引数...])
+</code></pre>
+<ul>
+<li>オブジェクト には、イベントを受け取る対象のオブジェクトを指定します。<ul>
+<li>省略した(つまり、第1引数にイベント名を書いた)場合、このオブジェクト自身が対象になります。</li>
+</ul>
+</li>
+<li>イベント名には、<a href="eventTypes">イベントの種類</a>をあらわす文字列か、<a href="EventHandler">EventHandler</a>クラスを継承したクラスの名前を指定します。</li>
+<li>イベントの種類によっては、イベント引数を指定します。</li>
+<li>オブジェクトにイベントが送られると、イベント変数 e にイベントの内容（<a href="sendEvent">sendEvent</a>の第2引数）が送られ、処理が再開されます</li>
+</ul>
+<p><a href="eventTypes">イベントの種類一覧</a></p>
+<h2 id="-1">例1</h2>
+<p>※<a href="sendEvent">sendEvent</a>の例と組み合わせて使ってください。</p>
+<p>Receiver</p>
+<pre><code class="lang-JS">e=waitEvent(&quot;foo&quot;);
+print (&quot;fooイベントが送られました: &quot; + e);
+</code></pre>
+<h2 id="-2">例2</h2>
+<p>WaitDie</p>
+<pre><code class="lang-JS">p=new Player;
+print (&quot;Wait until player is dead&quot;);
+waitEvent(p,&quot;die&quot;);
+print (&quot;Player is Dead!&quot;);
+</code></pre>
+<h1 id="-">その他</h1>
+<p>このメソッドは待機系メソッドです．待機不能モードでは何も動作を行いません．（詳細は<a href="waitmode">動作モード</a>を参照してください）</p>
+<p>.</p>
+</body></html>

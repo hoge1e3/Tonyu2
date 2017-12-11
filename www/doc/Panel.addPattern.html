@@ -1,0 +1,34 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><a href="Panel">Panel</a></p>
+<h1 id="panel-addpattern-">Panel.addPattern メソッド</h1>
+<p>パネルに書かれている画像の一部を<a href="cpats">キャラクタパターン</a>に登録します．動的にキャラクタパターンを生成することができます．</p>
+<h2 id="-">書式</h2>
+<pre><code class="lang-JS">panel.addPattern(x,y,width,height)
+</code></pre>
+<p>パネル内の座標で，左上が(<em>x</em>,<em>y</em>)，幅<em>width</em>，高さ<em>height</em> の領域をキャラクタパターンに登録します．</p>
+<h2 id="-">戻り値</h2>
+<p>登録したキャラクタパターンの番号を返します．</p>
+<h2 id="-">例</h2>
+<pre><code class="lang-JS">panel=new Panel;//パネルの作成
+panel.alpha=0;//パネル自身を表示しない
+panel.resize(256,256);//パネルの大きさ
+//---パターンの描画
+panel.fillStyle=&quot;#aaa&quot;;
+panel.fillRect(0,0,32,32);
+panel.fillStyle=&quot;#fff&quot;;
+panel.fillRect(0,0,32,1);
+panel.fillRect(0,0,1,32);
+panel.fillStyle=&quot;#000&quot;;
+panel.fillRect(0,31,32,1);
+panel.fillRect(31,0,1,32);
+//----- パターンを登録し，p1にパターン番号が入る
+p1=panel.addPattern(0,0,32,32);
+for (i=0; i&lt;10;i++) {
+    // p=p1 とすれば，そのパターンのオブジェクトを生成できる
+    new Actor{x=rnd(400),y=rnd(400),p=p1};
+}
+</code></pre>
+</body></html>

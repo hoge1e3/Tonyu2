@@ -1,0 +1,44 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<p><a href="オブジェクトを消す">オブジェクトを消す</a></p>
+<h1 id="-">すべてのオブジェクトを消す</h1>
+<ul>
+<li><a href="all">all</a>().<a href="TQuery.die">die</a>()...自身以外のオブジェクトをすべて消します</li>
+<li><a href="all">all</a>(クラス名).<a href="TQuery.die">die</a>()...指定されたクラスのオブジェクト（自身以外）をすべて消します</li>
+</ul>
+<p>Main</p>
+<pre><code class="lang-JS">x=$screenWidth/2;
+y=$screenHeight/2;
+new Enemy{x:100, y:100, p:4};
+new Enemy{x:100, y:200, p:4};
+new Enemy{x:100, y:300, p:4};
+while(true){
+    if(getkey(&quot;space&quot;)==1){//スペースキーを押すと
+        all(Enemy).die();//Enemyクラスのオブジェクトが消える。
+        die();
+    }
+    update();
+}
+</code></pre>
+<p>Enemy</p>
+<pre><code class="lang-JS">//何も書かなくてよいが、Enemyというファイルは作成する
+</code></pre>
+<ul>
+<li>参考<ul>
+<li><a href="自分自身を消す">自分自身を消す</a></li>
+<li><a href="他のオブジェクトを消す">他のオブジェクトを消す</a></li>
+<li><a href="当たり判定で当たったオブジェクトを消す">当たり判定で当たったオブジェクトを消す</a><ul>
+<li><a href="当たり判定を変更する">当たり判定を変更する</a></li>
+</ul>
+</li>
+<li><a href="画面外に出たかどうかの判定">画面外に出たオブジェクトを消す</a></li>
+<li><a href="すべてのオブジェクトを消す">すべてのオブジェクトを消す</a></li>
+</ul>
+</li>
+</ul>
+</body></html>

@@ -1,0 +1,19 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="T2MediaPlayer">T2MediaPlayer</a> | <a href="T2MediaPlayer_detail">T2MediaPlayer(詳細)</a></p>
+<h1 id="stopbgm-">stopBGMメソッド</h1>
+<p>BGMの再生を停止します</p>
+<pre><code class="lang-JS">stopBGM()
+</code></pre>
+<p>例：</p>
+<p>あらかじめbgm.mp3などの音声ファイルを<a href="sndres">音声リスト</a>から追加しておきます。（以下の例では１０秒～１分程度の音声ファイルを想定しています）</p>
+<pre><code class="lang-JS">$sound.playBGM($se_bgm);
+updateEx(150); // ５秒待つ（30で１秒）
+$sound.stopBGM(); // ５秒後に停止
+</code></pre>
+<p>.</p>
+</body></html>

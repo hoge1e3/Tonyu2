@@ -1,0 +1,23 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="チュートリアル">チュートリアル</a></p>
+<p><a href="オブジェクトに名前を付けて値を設定する">前へ</a>←　→<a href="オブジェクトの大きさや傾き、透明度を設定する">次へ</a></p>
+<h1 id="-">オブジェクトの生成と値の設定を同時に行なう</h1>
+<p><a href="オブジェクトに名前を付けて値を設定する">前ページ</a>のMainクラスは、次のように短く書くことができます：</p>
+<p>Main</p>
+<pre><code class="lang-JS">$a=new Chara1{x=100, y=100};
+$b=new Chara1{x=100, y=200};
+</code></pre>
+<p><code>new クラス名{変数名=値, ....}</code>で、オブジェクトを生成すると同時に変数の値も設定できます。(<code>変数名=値</code>の部分は，<code>変数名:値</code>でも可)</p>
+<p>なお、Chara1は前ページと同じです：</p>
+<p>Chara1</p>
+<pre><code class="lang-JS">while(true){
+  x++;
+  update();
+}
+</code></pre>
+</body></html>

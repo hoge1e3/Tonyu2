@@ -1,0 +1,20 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="Map">Map</a></p>
+<h1 id="get-">getメソッド</h1>
+<p>マップの奥のレイヤーにおけるマップチップのパターンを取得します．</p>
+<p>一番左上のチップを(0,0)，その右隣のチップを(1,0)として指定された座標のパターンを取得します．</p>
+<pre><code class="lang-JS">map.get(getCol,getRow);
+</code></pre>
+<p>戻り値は整数で、<a href="cpats">画像リスト</a>の該当するパターン番号が戻されます。チップが何も指定されていない場所では-1が戻されます</p>
+<ul>
+<li>getCol : パターンを取得するx座標をあらわします</li>
+<li>getRow : パターンを取得するy座標をあらわします</li>
+</ul>
+<h1 id="geton-">getOnメソッド</h1>
+<p>手前のレイヤーのマップチップを取得します．使い方はgetメソッドと同じです。</p>
+</body></html>

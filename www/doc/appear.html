@@ -1,0 +1,23 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="BaseActor">BaseActor</a></p>
+<h1 id="appear-">appearメソッド</h1>
+<p>オブジェクトを出現させます。 new を用いた場合と違い、<a href="オブジェクトプール">オブジェクトプール</a>を使用して出現させることが可能です。</p>
+<h2 id="-1">書式1</h2>
+<pre><code class="lang-JS">appear(Class,params)
+</code></pre>
+<p><em>Class</em>で指定したクラスのオブジェクトを、<em>params</em>で指定したパラメタを使って出現させます。戻り値は出現したオブジェクトです。</p>
+<p>次の2つは同じ動作をしますが、リスト１の場合、オブジェクトプールにオブジェクトがある場合は、新しいオブジェクトを作らずに、プールされているオブジェクトを使って出現させます。</p>
+<pre><code class="lang-JS">appear(Class,params)
+</code></pre>
+<pre><code class="lang-JS">new Class(params)
+</code></pre>
+<h1 id="-2">書式2</h1>
+<p>この書式は何も行わずo（oはオブジェクト) を返します。Tonyu1との互換性のために用意されている機能です</p>
+<pre><code class="lang-JS">appear(o)
+</code></pre>
+</body></html>

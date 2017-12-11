@@ -1,0 +1,29 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<h1 id="-">パネル内の指定された座標の色を取得</h1>
+<p><a href="getPixel">panel.getPixel</a>を用いると，パネル内の指定された座標の色を取得を取得できます．次の例では，クリックされた位置のパネルの色を表示させています．</p>
+<p>Main</p>
+<pre><code class="lang-JS">$panel.setFillStyle(&quot;red&quot;);
+$panel.fillRect(100,100,100,100);
+$panel.setFillStyle(&quot;black&quot;);
+$panel.fillRect(150,150,100,100);
+
+while(true){
+    //マウスでクリックしたら
+    if(getkey(&quot;mouseleft&quot;)==1){
+        //aにクリックした場所の色の値を代入
+        a=$panel.getPixel($mouseX,$mouseY);
+        //色の値を(r,g,b,a)で表示
+        print(a);
+        //色の値の(r)だけ表示
+        print(a[0]);
+    }
+    update();
+}
+</code></pre>
+</body></html>

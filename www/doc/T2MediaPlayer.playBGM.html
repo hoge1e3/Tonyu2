@@ -1,0 +1,51 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="T2MediaPlayer">T2MediaPlayer</a> | <a href="T2MediaPlayer_detail">T2MediaPlayer(詳細)</a></p>
+<h1 id="playbgm-">playBGMメソッド</h1>
+<p>BGMを再生します</p>
+<pre><code class="lang-JS">playBGM(name, loop, offset, loopStart, loopEnd)
+</code></pre>
+<ul>
+<li>name<ul>
+<li>再生するBGMの名前(<a href="sndres">音声リスト</a>で指定した名前）を指定します</li>
+</ul>
+</li>
+<li>loop（省略可）<ul>
+<li>trueを指定すると繰り返し再生します。（省略時：false）</li>
+</ul>
+</li>
+<li>offset（省略可）<ul>
+<li>音声データで再生開始する位置を指定します。（単位：秒）（省略時：0）</li>
+<li>例えば、3を指定すると音声データの3秒の部分から再生が開始されます</li>
+</ul>
+</li>
+<li>loopStart（省略可）<ul>
+<li>ループ始端位置を指定します。繰り返し再生時に有効となります（省略時：0）</li>
+</ul>
+</li>
+<li>loopEnd（省略可）<ul>
+<li>ループ終端位置を指定します。繰り返し再生時に有効となります（省略時：再生する音声データの長さ）</li>
+</ul>
+</li>
+</ul>
+<p>例１：</p>
+<p>あらかじめbgm.mp3などの音声ファイルを<a href="sndres">音声リスト</a>から追加しておきます。（以下の例では１０秒～１分程度の音声ファイルを想定しています）</p>
+<pre><code class="lang-JS">$sound.playBGM($se_bgm);
+</code></pre>
+<p>例２：</p>
+<pre><code class="lang-JS">$sound.playBGM($se_bgm, true); // リピート再生します
+</code></pre>
+<p>例３：</p>
+<pre><code class="lang-JS">$sound.playBGM($se_bgm, true, 3); // 音声データの3秒の部分から再生が開始
+</code></pre>
+<p>例４：</p>
+<pre><code class="lang-JS">// 引数にnullを入れると省略時の値が設定されます
+// 音声データの最初から再生が開始され、6秒まで再生されると3秒の位置に戻り再生されます
+$sound.playBGM($se_bgm, true, null, 3, 6);
+</code></pre>
+<p>.</p>
+</body></html>

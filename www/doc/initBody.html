@@ -1,0 +1,15 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="BodyActor">BodyActor</a></p>
+<h1 id="initbody-">initBodyメソッド</h1>
+<p>物理オブジェクトの初期化を行います。通常は自動的に呼び出されるので、呼び出す必要はありません。</p>
+<p>initBodyメソッドは、BodyActorオブジェクトが作られた時のフレームが終了する時点で呼び出されます。もし、オブジェクトが作られたときにすぐに物理オブジェクトを初期化したい場合、次のような形でinitBodyメソッドを明示的に呼び出してください。なお、initBodyメソッドは2回以上呼び出した場合は何も動作をおこないません。</p>
+<pre><code class="lang-JS">b=new BodyActor{....};
+b.initBody();
+</code></pre>
+<p>.</p>
+</body></html>

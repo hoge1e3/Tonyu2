@@ -1,0 +1,56 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="api">api</a></p>
+<h1 id="panel-">Panelクラス</h1>
+<p>パネルの表示クラスです．Bootクラスで$panelがスクリーン幅に合わせて初期化されています．</p>
+<p><a href="ゲージの表示">実例</a></p>
+<h1 id="-">コンストラクタ</h1>
+<pre><code class="lang-JS">\new(param)
+</code></pre>
+<p>paramでパネルの横幅と縦幅を設定します．paramに何も与えずにresizeメソッドを使用してサイズを設定することもできます．</p>
+<p>例：</p>
+<pre><code class="lang-JS">panel=new Panel();
+</code></pre>
+<p><a href="panelCoord">パネルの座標系について</a></p>
+<h1 id="-">フィールド</h1>
+<ul>
+<li>x,y<ul>
+<li>パネルの中心のx,y座標（ゲーム画面内の座標）をあらわします．</li>
+</ul>
+</li>
+<li>fillStyle<ul>
+<li>値<code>f</code>を代入することで，<a href="setFillStyle">setFillStyle</a>(<code>f</code>)と同じ効果があります</li>
+</ul>
+</li>
+<li>context<ul>
+<li>Canvasオブジェクトのコンテキストに直接アクセスします．（パネルはHTML5のCanvasオブジェクトで実装しています．）</li>
+</ul>
+</li>
+<li>その他，<a href="BaseActor">BaseActor</a>クラスのフィールドも利用できます．</li>
+</ul>
+<h1 id="-">メソッド</h1>
+<ul>
+<li><a href="setPanel">setPanel</a></li>
+<li><a href="setPanel">resize</a></li>
+<li><a href="setFillStyle">setFillStyle</a></li>
+<li><a href="fillRect">fillRect</a></li>
+<li><a href="fillCircle">fillCircle</a></li>
+<li><a href="fillText">fillText</a></li>
+<li><a href="clearRect">clearRect</a></li>
+<li><a href="getPixel">getPixel</a></li>
+<li><a href="drawSprite">drawSprite</a></li>
+<li><a href="Panel.copy">copy</a></li>
+<li><a href="Panel.save">save</a></li>
+<li><a href="Panel.load">load</a></li>
+<li><a href="Panel.addPattern">addPattern</a></li>
+<li>getImageData, putImageData<ul>
+<li>このパネルで使用されているCanvasオブジェクトのcontextの同名メソッドと同じ動作をします．</li>
+</ul>
+</li>
+</ul>
+<p>.</p>
+</body></html>

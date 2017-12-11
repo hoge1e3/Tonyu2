@@ -1,0 +1,35 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<h1 id="-">マップチップの番号を取得する</h1>
+<h2 id="-">マップチップの何番目かを指定して取得する</h2>
+<p>Main.Tonyu</p>
+<pre><code class="lang-JS">//get(マップチップの左からx番目,マップ配列の上からy番目);
+//左上のチップを(0,0)、そのすぐ右のチップを(1,0)....のように指定する
+//奥のレイヤーを取得する場合はget、
+chip=$map.get(2,3);
+//手前のレイヤーを取得する場合はgetOn
+chipOn=$map.get(2,3);
+</code></pre>
+<h2 id="-">画面の座標を指定して取得する</h2>
+<p>Main.Tonyu</p>
+<pre><code class="lang-JS">//getAt(スクリーンのx座標,スクリーンのy座標);
+//(x,y)の位置にあるマップチップの番号を取得する．
+//奥のレイヤーを取得する場合はgetAt、
+chip=$map.getAt(x,y);
+//手前のレイヤーを取得する場合はgetOnAt
+chipOn=$map.getOnAt(x,y);
+</code></pre>
+<h1 id="-">参考</h1>
+<ul>
+<li><a href="mapEditor">マップを描く</a></li>
+<li><a href="mapGet">マップチップを取得する</a></li>
+<li><a href="マップチップとの当たり判定">マップチップとの当たり判定</a></li>
+<li><a href="マップを書き換える">マップを書き換える</a></li>
+<li><a href="mapEditor">マップを描く</a></li>
+</ul>
+</body></html>

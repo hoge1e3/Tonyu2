@@ -1,0 +1,23 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="lang">lang</a></p>
+<h1 id="for-in-">for(..in..)の動作</h1>
+<p><code>for (e in set)</code> はJavaScriptとは動作が異なります．</p>
+<ul>
+<li>setが配列または<a href="TQuery">TQuery</a>オブジェクトの場合，eには（添字ではなく）値を入れながら繰り返します．</li>
+<li>setがオブジェクトの場合，eには(キーではなく）値を入れながら繰り返します．</li>
+</ul>
+<p>※<code>for (e in set)</code> は非推奨になりました．</p>
+<ul>
+<li>将来，一般的なJavaScriptと同じく，添字を取り出す動作になる可能性があります．（コンパイラオプション等で切り替える形を予定しています）</li>
+<li>今後は，一般的なJavaScriptで同等の動作を行なう<code>for (e of set)</code> を使用してください．</li>
+</ul>
+<p>また，<code>for (k,v in set)</code>という構文があります．</p>
+<ul>
+<li>setがオブジェクトの場合，kにキー，vに値を入れながら繰り返します．</li>
+</ul>
+</body></html>

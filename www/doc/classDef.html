@@ -1,0 +1,152 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="lang">lang</a></p>
+<h1 id="-">クラス定義</h1>
+<p>Tonyu2では，1つの<a href="fs">ファイル</a>に1つのクラスを定義します．</p>
+<ul>
+<li>ファイル名は <code>クラス名</code>.tonyu という形式になります．<ul>
+<li>例えば，Hello.tonyu という名前のファイルは，Hello という名前のクラスを定義します．</li>
+</ul>
+</li>
+<li>ファイル全体がクラス定義になります.クラスを定義するための構文（例えば，Javaの<code>class MyClass {...  }</code>など）は不要です．</li>
+<li>ファイルには，次のいずれかを複数記述できます．<ul>
+<li>継承宣言</li>
+<li>組み込み宣言</li>
+<li>native宣言</li>
+<li>mainメソッドの処理内容</li>
+<li>非mainメソッドの定義</li>
+</ul>
+</li>
+<li>定義された(Tonyu2の)クラスは，Javascriptのいわゆる「クラス」(function+prototypeによるメソッド定義）として機能します．</li>
+</ul>
+<h2 id="-">継承宣言</h2>
+<p>このクラスの親クラスを設定します．ファイルの先頭に次のように宣言します</p>
+<pre><code class="lang-JS">extends 親クラス名;
+</code></pre>
+<ul>
+<li>継承宣言を省略すると，<a href="options">プロジェクト設定</a>によって設定されている親クラスを自動的に継承します．</li>
+<li>親クラス名 に <code>null</code>を設定すると，親クラスがないクラスになります．</li>
+<li>継承は，JavaScriptの一般的な継承の方法（このクラスを表す関数オブジェクトのprototypeが，親クラスのオブジェクトになる）で行われます．</li>
+</ul>
+<h2 id="-">組み込み宣言</h2>
+<p>このクラスに組み込むクラス（モジュールクラス）を設定します．ファイルの先頭，または継承宣言続いて次のように宣言します</p>
+<pre><code class="lang-JS">includes モジュールクラス名[, モジュールクラス名...];
+</code></pre>
+<ul>
+<li>このクラスでは，組み込んだモジュールクラスがもつメソッドを利用できます．</li>
+<li>組み込みは継承とは異なり，複数のクラスを組み込むことができます</li>
+<li>モジュールクラスの実体は通常のクラスと同じ方法で作成します．</li>
+<li>モジュールクラスが他のモジュールクラスを組み込んでいる場合，組み込んだ先のクラスでもそれらのモジュールクラスのメソッドが組み込まれます．</li>
+<li>モジュールクラスが他のクラスを継承している場合，組み込んだ先のクラスもそのモジュールの親クラスを継承している必要があります．</li>
+<li>組み込みは，モジュールクラスがもつメソッドの一覧を，このクラスの関数オブジェクトのprototypeオブジェクトに追記する方式で行われます．継承とは異なり，<code>instanceof</code>演算子によって検査されるオブジェクトのクラスが，特定のモジュールクラスを組み込んでいるかどうかは判定できません．</li>
+</ul>
+<h2 id="native-">native宣言</h2>
+<p>native宣言は，Tonyu2のプログラムからJavascriptのネイティブオブジェクトにアクセスするために用います．ファイル中で次のように宣言します．</p>
+<p>native</p>
+<pre><code class="lang-JS">native 変数名;
+</code></pre>
+<ul>
+<li>指定された変数名を，このファイル中ではJavascriptのトップレベルスコープ（一般的にはwindowオブジェクト）に定義されている変数の値として扱います．</li>
+<li>親クラスに書いてあるnative宣言は子クラスには適用されません．必要に応じて子クラスにも同じnative宣言を書く必要があります．</li>
+</ul>
+<h2 id="main-">mainメソッドの処理内容</h2>
+<p>mainメソッドは，mainという名前をもつメソッドです．<a href="Actor">Actor</a>クラスなどでは，オブジェクトが出現してから停止するまでの動作を記述するのに用いられます．</p>
+<p>ファイルのトップレベル（メソッド定義に囲まれていない部分）に書かれた文はmainメソッドの内容として定義されます．</p>
+<p>mainメソッドは引数を受け取ることはできません．</p>
+<h2 id="-main-">非mainメソッドの定義</h2>
+<p>名前がmainでないメソッドは非mainメソッドです．</p>
+<p>ファイルのトップレベルにおいて次の形式で定義します．</p>
+<pre><code class="lang-JS">function メソッド名(引数リスト) {
+   処理内容
+}
+</code></pre>
+<p>※function の代わりに \ が使用可能です（<a href="sugar">拡張構文</a>参照)</p>
+<h2 id="-">プロパティの定義</h2>
+<p>プロパティ（getter/setter）は次の書式で定義します</p>
+<pre><code class="lang-JS">//getter
+\プロパティ名 {
+  処理内容
+}
+//setter
+\プロパティ名=値 {
+  処理内容
+}
+</code></pre>
+<p>例</p>
+<pre><code class="lang-JS">\myProp {
+   print(&quot;Get myProp=&quot;+_myp);
+   return _myp;
+}
+\myProp=value {
+   print(&quot;Set myProp to &quot;+value);
+   _myp=value;
+}
+myProp=10; //  Set myProp to 10
+x=myProp;  //  Get myProp=10
+</code></pre>
+<h1 id="-">変数の種類</h1>
+<ul>
+<li>引数<ul>
+<li>１つのメソッドに渡される値です．メソッド宣言の引数リストに記述されます．１回のメソッド呼び出しが終わると破棄されます．</li>
+</ul>
+</li>
+<li>ローカル変数<ul>
+<li>メソッド宣言の処理中でvar で宣言されます．１回のメソッド呼び出しが終わると破棄されます．</li>
+</ul>
+</li>
+<li>グローバル変数<ul>
+<li>名前が$で始まる変数はグローバル変数です．すべてのTonyu2オブジェクトから直接参照できます．</li>
+<li>Javascriptからは<code>Tonyu.globals.グローバル変数名</code>で参照できます．</li>
+</ul>
+</li>
+<li>クラス変数<ul>
+<li>現在のプロジェクトおよび<a href="api">標準ライブラリ</a>で定義されているクラス名と同じ名前の変数はクラス変数です．そのクラスをあらわす関数オブジェクトを参照します．</li>
+<li>Javascriptからは<code>Tonyu.classes.クラス変数名</code>で参照できます．</li>
+</ul>
+</li>
+<li>native変数<ul>
+<li>native宣言によって宣言された名前の変数です．Javascriptのトップレベルスコープにおける同名の変数を参照します．</li>
+</ul>
+</li>
+<li>束縛されたメソッド<ul>
+<li>このオブジェクトがもつメソッドと同じ名前の変数で、後ろに引数リスト<code>()</code>を伴わない場合、この変数はこのオブジェクトに束縛されたメソッドになります。この値は関数オブジェクトであり、呼び出し方にかかわらずこのオブジェクトを<code>this</code>として呼び出します。</li>
+<li>後ろに引数リストを伴う場合、束縛を行わず即時にこのオブジェクトの同名のメソッドを呼び出します。</li>
+</ul>
+</li>
+<li>フィールド<ul>
+<li>そのクラスのオブジェクトがもつ値です．上のどれにもあてはまらない変数はフィールドとして解釈されます．</li>
+<li>Javascriptではいわゆる<code>this.x</code>という形式で参照されるものです．Tonyu2でもこの方式でも参照できます．</li>
+</ul>
+</li>
+</ul>
+<h1 id="-">例</h1>
+<p>MyClass</p>
+<pre><code class="lang-JS">extends Actor;
+native alert;
+// main関数
+x=3;
+rate=5;
+y=mult(x);
+alert(y); // 15
+// main関数終わり
+\mult(a) {
+  var res=a*rate;
+  return res;
+}
+</code></pre>
+<ul>
+<li>クラス名はMyClass</li>
+<li>親クラスはActor</li>
+<li>Javascriptの <code>alert</code> 関数を利用する</li>
+<li><code>x,rate,y</code> はフィールド</li>
+<li>multメソッドを定義<ul>
+<li><code>a</code>は引数，<code>res</code>はローカル変数，<code>rate</code>はフィールド</li>
+</ul>
+</li>
+</ul>
+<p>.</p>
+</body></html>

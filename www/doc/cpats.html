@@ -1,0 +1,66 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="ide">ide</a></p>
+<h1 id="-">画像リスト</h1>
+<p>メニュー階層： ウィンドウ → 画像リスト</p>
+<p>オブジェクトに用いるキャラクタパターン（画像）を追加します．</p>
+<p>一番上の「ここに画像ファイル(png/gif/jpg)をドラッグ＆ドロップして追加」に<br>画像ファイルをドラッグ＆ドロップするか，一番下の「追加」ボタンを押して，各項目を設定します．</p>
+<p>※ブラウザ版で300KBを超える画像を追加するには，<a href="login">ログイン</a>が必要です</p>
+<ul>
+<li>名前<ul>
+<li>この画像につける名前です．名前は$ で始めます．先頭のキャラクタパターンの番号を指す数値が、同名の<a href="グローバル変数">グローバル変数</a>に入ります．</li>
+<li>ファイルを追加した時点で自動的に設定されますが、変更することが可能です．</li>
+</ul>
+</li>
+<li>URL  <ul>
+<li>画像のURLを記述します．通常は自動的に設定されるので変更する必要はありません．</li>
+</ul>
+</li>
+<li>画像の分割方法<ul>
+<li>1枚絵： 画像を分割しない場合はこちらを選びます．</li>
+<li>分割数指定：画像内を決められた区画数で分割する場合，こちらを選びます．例えば5x4と入力すると、横を5分割、縦を4分割して計20個の画像に分割されます</li>
+<li>1パターンの大きさ指定：画像内を決められた大きさで分割する場合，こちらを選びます．例えば32x32と入力すると、1個あたり 32ピクセルx32ピクセル の画像に分割されます</li>
+<li>Tonyu1互換： Tonyu1で利用されている画像をそのまま使う場合はこちらを選びます<ul>
+<li>URL欄に他ドメインの画像ファイルを指定する場合，「Tonyu1互換」は使えません．</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>キャラクタパターンには，それぞれキャラクタパターン番号が割り振られます．<br><a href="BaseActor">変数p</a>にキャラクタパターン番号を代入することでそのキャラクタパターンを表示できます．</p>
+<p> 例えば， $pat_balls という名前の画像ファイルの中の，4番目のキャラクタパターン（一番最初は0番目とする）を指定するには</p>
+<pre><code class="lang-JS">    p=$pat_balls + 4;
+</code></pre>
+<p>とします．</p>
+<p>他にも、パターン番号は次のような場合に用います．</p>
+<ul>
+<li><a href="Map">Map</a>オブジェクトで、マップチップを変更したり取得したりするとき</li>
+<li>Panel.<a href="drawSprite">drawSprite</a>メソッドで描画する画像を指定するとき</li>
+</ul>
+<h1 id="-1-">例1 - 最初から用意されている画像を用いる</h1>
+<p><a href="オブジェクトのグラフィックを変える">使用例</a></p>
+<h1 id="-2-">例2 - 独自の画像を追加する</h1>
+<p>※ <a href="http://jsrun.it/assets/w/K/x/V/wKxV7.png">$pat_ballsという名前の画像</a>を追加してから実行してください。</p>
+<p>Main</p>
+<pre><code class="lang-JS">t=0;
+while(true) {
+    if (t%5==0) {
+        // 新しく作るBall オブジェクトの変数pに，
+        // $pat_balls の0 - 15番目のキャラクタパターンをランダムに設定
+        new Ball{x:rnd($screenWidth),y:0, p:$pat_balls+rnd(16)};
+    }
+    t++;
+    update();
+}
+</code></pre>
+<p>Ball</p>
+<pre><code class="lang-JS">while(y&lt;$screenHeight) {
+    y+=6;
+    update();
+}
+</code></pre>
+</body></html>

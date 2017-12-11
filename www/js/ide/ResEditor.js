@@ -332,7 +332,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
             close: function () {
                 update();
                 cleanFiles();
-                if (mediaType=="sound") {
+                if (mediaType=="sound" && rsrcDir.exists()) {
                     OggConverter.convert(rsrcDir);
                 }
             }

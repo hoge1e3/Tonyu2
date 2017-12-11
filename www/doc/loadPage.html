@@ -1,0 +1,41 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="BaseActor">BaseActor</a></p>
+<h1 id="loadpage-">loadPageメソッド</h1>
+<p>それまで動いていたオブジェクトをすべて消して、新しいページを読み込みます。</p>
+<h2 id="-">書式</h2>
+<pre><code class="lang-JS">loadPage(Class, args);
+</code></pre>
+<ul>
+<li>Class には、ページオブジェクト（後述）のクラスを指定します。</li>
+<li>args （省略可）には ページオブジェクトを生成するときに渡す引数を指定します。</li>
+</ul>
+<h2 id="-">ページオブジェクトの作り方</h2>
+<p>ページオブジェクトとは、通常のオブジェクトと同じものですが、主に他のオブジェクトを生成する働きをもったオブジェクトのことを指します。</p>
+<p>ページオブジェクトの例：</p>
+<p>Stage1</p>
+<pre><code class="lang-JS">//プレイヤーを生成
+new Player{x:200,y:400};
+//敵を10体生成
+for (i=0 ;i&lt;10; i++) {
+   new Enemy{x:rnd(300),y:rnd(300)};
+}
+</code></pre>
+<p>例えば、上で作成したStage1 をloadPageを用いて呼び出すには次のようにします：</p>
+<p>Title</p>
+<pre><code class="lang-JS">new Actor{x:230,y:50, text:&quot;Press Space Key&quot;};
+while(true) {
+  if(getkey(&quot;space&quot;)==1) loadPage(Stage1);
+  update();
+}
+</code></pre>
+<h2 id="-">例</h2>
+<ul>
+<li><a href="loadPage-実例">場面の切り替え</a></li>
+<li><a href="リトライする">リトライする</a></li>
+</ul>
+</body></html>

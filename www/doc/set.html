@@ -1,0 +1,21 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="Map">Map</a></p>
+<h1 id="set-">setメソッド</h1>
+<p>マップの奥のレイヤーのマップチップを変更します．</p>
+<p>一番左上のチップを(0,0)，その右隣のチップを(1,0)として指定された座標のパターンを設定します．</p>
+<pre><code class="lang-JS">map.set(setCol,setRow,p);
+//マップのsetCol，setRow座標のパターンをpに設定します．
+</code></pre>
+<ul>
+<li>setCol : セットする場所の横位置をあらわします</li>
+<li>setRow : セットする場所の縦位置をあらわします</li>
+<li>p : セットするパターンの番号をあらわします。パターンの番号は、設定した画像の<a href="cpats">画像リスト</a>におけるパターン番号を指定します。マップチップを消去したい場合は-1を指定します</li>
+</ul>
+<h1 id="seton-">setOnメソッド</h1>
+<p>マップの手前のレイヤーのマップチップを変更します。setメソッドと使い方は同じです。</p>
+</body></html>

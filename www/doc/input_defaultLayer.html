@@ -1,0 +1,15 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><a href="ScreenscrollTo-実例">画面全体をスクロールさせる</a></p>
+<h1 id="-">スクロールしたときのマウスやタッチの座標について</h1>
+<ul>
+<li>マウスカーソルの位置やタッチされた位置(<a href="$touches">$touches</a>等で取得できる値)は，初期設定では画面の左上を(0,0)とした座標系(<a href="座標系とレイヤー">$frontLayer</a>)になっています．</li>
+<li>画面内をスクロールさせても，画面の左上を(0,0)と見なすため，スクロールとマウス・タッチ操作を併用するゲームでは座標がずれてしまうことがあります．</li>
+<li>次のプログラムのように，プログラム開始時に<a href="$InputDevice.defaultLayer">$InputDevice.defaultLayer</a>を <code>$mainLayer</code>にすることで，この問題を解決できます．</li>
+</ul>
+<p>Main</p>
+<pre><code class="lang-JS">$InputDevice.defaultLayer=$mainLayer;
+</code></pre>
+</body></html>

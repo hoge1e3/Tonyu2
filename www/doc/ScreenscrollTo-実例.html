@@ -1,0 +1,41 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<h1 id="-">画面全体をスクロールさせる</h1>
+<ul>
+<li><a href="Screen.scrollTo">$Screen.scrollTo</a>を用いて画面をスクロールさせることができます．<ul>
+<li><a href="setPivot">$Screen.setPivot</a>を用いて，キャラクタが画面中央に来るように設定してください</li>
+</ul>
+</li>
+</ul>
+<p>Main</p>
+<pre><code class="lang-JS">//スクロールしていることをわかりやすくするため、動かないオブジェクトをいくつか置いておく
+for (i=0;i&lt;10;i++) {
+    new Actor{x:rnd(400),y:rnd(400)};
+}
+//プレイヤーの作成
+new Player;
+</code></pre>
+<p>Player</p>
+<pre><code class="lang-JS">x=200;y=200;p=$pat_neko;
+// $Screen.scrollToの基準点を画面真ん中に設定
+$Screen.setPivot($screenWidth/2,$screenHeight/2);
+while(true){
+    // このキャラクタが画面真ん中に来るように設定
+    $Screen.scrollTo(x,y);
+    x++;// 横に移動(移動の処理がすでに書いてある場合，この行は省略してください)
+    update();
+}
+</code></pre>
+<p>参考</p>
+<ul>
+<li><p><a href="layer-実例">特定のオブジェクトだけスクロールの影響を受けないようにする</a></p>
+</li>
+<li><p><a href="input_defaultLayer">スクロールしたときのマウスやタッチの座標について</a></p>
+</li>
+</ul>
+</body></html>

@@ -1,0 +1,57 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="registerEventHandler">registerEventHandler</a> / <a href="EventMod">EventMod</a></p>
+<h1 id="eventhandler-">EventHandlerクラス</h1>
+<p>Tonyu外部からの（JavaScript関連の）イベントに対応するイベントハンドラを自作する場合に、このクラスを継承してください。</p>
+<h2 id="-">フィールド</h2>
+<ul>
+<li>target<ul>
+<li>このイベントハンドラが処理するイベントの送付先となるオブジェクトです。</li>
+<li><a href="registerEventHandler">registerEventHandler</a>メソッドが呼び出されたオブジェクトを指します。</li>
+</ul>
+</li>
+</ul>
+<h2 id="-">メソッド</h2>
+<p>以下のメソッドをオーバーライドしてください。</p>
+<p>ここで登場する、<code>eventType</code>は<a href="registerEventHandler">registerEventHandler</a>でこのイベントハンドラを登録したときの第一引数を指します</p>
+<ul>
+<li>addListenerメソッド<ul>
+<li><code>target</code>で示さるオブジェクトに <a href="on">on</a>(<code>eventType</code>,...) または <a href="waitEvent">waitEvent</a>(<code>eventType</code>,...)が呼び出された時に呼び出されます。</li>
+<li>onが呼び出された場合、onに渡された引数の第２引数以降が引数に渡されます</li>
+<li>waitEventが呼び出された場合、waitEventに渡された引数の第２引数以降に、関数オブジェクトを１つ加えたものが引数に渡されます。この関数オブジェクトは、waitEventを呼び出した側に処理を再開させる際に呼び出してください。この呼出の第1引数がwaitEventの戻り値になります。</li>
+<li>戻り値には、removeという名前の関数オブジェクトを含むオブジェクトを返してください。この関数オブジェクトには、この<a href="on">on</a>の呼出によって設定されたイベント処理を無効にする処理を記述します。</li>
+</ul>
+</li>
+<li>fireメソッド<ul>
+<li><code>target</code>で示さるオブジェクトに <a href="sendEvent">sendEvent</a>(<code>eventType</code>,...)が呼び出された時に呼び出されます。<a href="sendEvent">sendEvent</a>の第２引数以降が渡されます。</li>
+<li>sendEvent(<code>eventType</code>,...)が呼ばれないようなイベントの場合、オーバーライドの必要はありません。（下の例参照）</li>
+</ul>
+</li>
+</ul>
+<h1 id="-">例</h1>
+<p>IntervalEventHandler</p>
+<pre><code class="lang-JS">extends EventHandler;
+native setInterval;
+native clearInterval;
+
+\addListener(d, f) {
+    var t=setInterval(f, d);
+    return {
+        remove: \{
+            clearInterval(t);
+        }
+    };
+}
+</code></pre>
+<p>MyActor</p>
+<pre><code class="lang-JS">registerEventHandler(&quot;intervalMsec&quot;, new IntervalEventHandler);
+on(&quot;intervalMsec&quot;,500) \{
+    x+=10;
+};
+</code></pre>
+<p>.</p>
+</body></html>

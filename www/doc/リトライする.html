@@ -1,0 +1,54 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<h1 id="-">リトライする</h1>
+<ul>
+<li>ゲームオーバーになったときに，メッセージやボタンを置きます．</li>
+<li>ボタンが押されたら <a href="loadPage">loadPage</a>を呼び出し、別の場面に移動したり，現在の場面をやり直したりできます．</li>
+</ul>
+<p>Main</p>
+<pre><code class="lang-JS">//初期設定
+$player=new Player{x=300,y=300,hp=1};
+e=new Enemy{x=100,y=100,p=5};
+//初期設定ここまで
+
+while(true){
+   if($player.isDead()) {//プレイヤーが消えたら
+      break; // 繰り返しをやめる
+   }
+   update();
+}
+// ゲームオーバー
+// ラベルの配置
+new Label{x=230,y=200,text=&quot;GAMEOVER&quot;};
+// ボタンの配置
+rb=new Button{top=400,text=&quot;Retry&quot;,onClick=retry,key=&quot;r&quot;};
+//retryメソッドの定義
+while(true) {
+   if(rb.clicked==1) {//ボタンが押されたら
+      loadPage(Main);//Mainを読み込みしなおす
+   }
+   update();
+}
+</code></pre>
+<p>Player</p>
+<pre><code class="lang-JS">while(true){
+  if(getkey(&quot;right&quot;)&gt;0)    x+=3;
+  if(getkey(&quot;left&quot;)&gt;0)    x-=3;
+  if(getkey(&quot;down&quot;)&gt;0)    y+=3;
+  if(getkey(&quot;up&quot;)&gt;0)    y-=3;
+  //敵に当たっている間体力が減る
+  if(crashTo(Enemy))    hp-=1;
+  //hpが0になったら消える
+  if(hp&lt;=0)             die();
+  update();
+}
+</code></pre>
+<p>Enemy</p>
+<pre><code class="lang-JS">//敵の動作を書く（とりあえず何も書かなくてもよい）
+</code></pre>
+</body></html>

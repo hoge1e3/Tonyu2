@@ -1,0 +1,56 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="api">api</a></p>
+<h1 id="-webpage-">$WebPage オブジェクト</h1>
+<p>他のWebページを開くためのオブジェクトです。</p>
+<ul>
+<li>$WebPage.openPage(url)<ul>
+<li>指定したアドレスに移動します。</li>
+</ul>
+</li>
+<li>$WebPage.openNewWindow(url)<ul>
+<li>指定したアドレスを別ウィンドウで開きます。</li>
+<li>クリック動作に反応して呼び出してください。（ポップアップブロックを避けるためです）</li>
+</ul>
+</li>
+<li>$WebPage.openShareTweet(text, url, hashtags, via, related, tl)<ul>
+<li>Twitterへの投稿フォームを開きます。</li>
+<li>(2017/11/09 引数を(url, text)から変更。なお後方互換性あり)</li>
+<li>クリック動作に反応して呼び出してください。（ポップアップブロックを避けるためです）</li>
+<li><code>text</code> ：ツイートする内容</li>
+<li><code>url (省略可)</code> ：ツイートに埋め込むURLを指定します。<code>url</code>を省略した場合は現在のページが埋め込まれます。</li>
+<li><code>hashtags (省略可)</code> ：ツイートにハッシュタグ(#～)を含めます。複数タグを含める場合はカンマ(,)で区切ります。</li>
+<li><code>via (省略可)</code> ：ツイートに「@～さんより」を含めます。Twitterアカウント名を指定します。</li>
+<li><code>related (省略可)</code> ：ツイート後、関連アカウントを表示します。Twitterアカウント名を指定します。複数含める場合はカンマ(,)で区切ります。（投稿したTwitterアカウントで既にフォローしている場合、下記<code>tl</code>を<code>true</code>にした場合は表示されません）</li>
+<li><code>tl(省略可)</code> ：<code>true</code>にするとツイート後、Twitterのトップページ(タイムライン)に遷移します。省略すると、ツイート後自動的にウィンドウが閉じられるか、または<code>related</code>で指定した場合はツイートを投稿した旨のページが表示されます。</li>
+</ul>
+</li>
+<li>$WebPage.openTweet(text, url, hashtags, via, related, tl)<ul>
+<li>$WebPage.openShareTweetとほぼ同じですが、urlを省略するとツイートにURLを埋め込みません。</li>
+</ul>
+</li>
+</ul>
+<p>Twitter投稿の例1：</p>
+<pre><code>// リンクをあなたのフォロワーに共有する
+// -------------------
+// Tonyu2 ツイート機能テスト1 http://imahiraiteiru.adoresu/game1/
+// -------------------
+$WebPage.openShareTweet(&quot;Tonyu2 ツイート機能テスト1&quot;);
+</code></pre><p>Twitter投稿の例2：</p>
+<pre><code>// リンクをあなたのフォロワーに共有する
+// -------------------
+// Tonyu2 ツイート機能テスト2 http://www.tonyu.jp #tonyu2 #tonyusystem @twitterdevさんから
+// -------------------
+$WebPage.openShareTweet(&quot;Tonyu2 ツイート機能テスト2&quot;, &quot;http://www.tonyu.jp&quot;, &quot;tonyu2,tonyusystem&quot;, &quot;twitterdev&quot;, &quot;twitterapi,twitter&quot;);
+</code></pre><p>Twitter投稿の例3：</p>
+<pre><code>// いまどうしてる？
+// -------------------
+// Tonyu2 ツイート機能テスト3
+// -------------------
+$WebPage.openTweet(&quot;Tonyu2 ツイート機能テスト3&quot;);
+</code></pre><p>.</p>
+</body></html>

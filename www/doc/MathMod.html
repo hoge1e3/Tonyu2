@@ -1,0 +1,92 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="BaseActor">BaseActor</a></p>
+<h1 id="mathmod-">MathModモジュールクラス</h1>
+<p>数学関数を提供するモジュールクラスです．</p>
+<ul>
+<li>sin(d), cos(d)<ul>
+<li>角度d（度数法）の正弦，余弦を返します</li>
+</ul>
+</li>
+<li>rad(d)<ul>
+<li>角度d（度数法）をラジアンに変換します</li>
+</ul>
+</li>
+<li>deg(r)<ul>
+<li>角度r（ラジアン）を度数法に変換します</li>
+</ul>
+</li>
+<li>atan2(y,x)<ul>
+<li>線分(0,0)-(x,y)とx軸のなす角を度数法で返します</li>
+<li>※yが先，xが後です．</li>
+</ul>
+</li>
+<li>atanxy(x,y)<ul>
+<li>線分(0,0)-(x,y)とx軸のなす角を度数法で返します</li>
+<li>※xが先，yが後です．</li>
+</ul>
+</li>
+<li>abs(v)<ul>
+<li>絶対値 |v| を返します</li>
+</ul>
+</li>
+<li>sgn(v,base)<ul>
+<li>vが正の数なら1，負の数なら-1，0なら0を返します．baseを指定した場合，vの絶対値がbase以内のときには0を返します</li>
+</ul>
+</li>
+<li>sqrt(t)<ul>
+<li>平方根 √t を返します</li>
+</ul>
+</li>
+<li>dist(dx,dy)<ul>
+<li>線分(0,0)-(dx,dy)の長さを返します</li>
+</ul>
+</li>
+<li>dist(obj)<ul>
+<li>オブジェクト obj とこのオブジェクト間の距離を返します</li>
+</ul>
+</li>
+<li>angleDiff(a,b)<ul>
+<li>角度a-b と同じ向きを持つ、-180 から 179 までの角度を返します．</li>
+<li>angleDiff(a,b)の値が正のとき、a から b に 至るには 左回り（aを減らす)が近く、負のときは右回り(aを増やす) のほうが近くなります．</li>
+<li>実例 - <a href="旋回しながらプレイヤーを追いかける">旋回しながらプレイヤーを追いかける</a></li>
+</ul>
+</li>
+<li>floor(x)<ul>
+<li>xを超えない最大の整数を返します</li>
+</ul>
+</li>
+<li>ceil(f)<ul>
+<li>f以上の最小の整数を返します．</li>
+</ul>
+</li>
+<li>trunc(f)<ul>
+<li>fの小数点を除いた値を返します．</li>
+<li>fが正の値の場合、floorと同じ値を返し、fが負の値の場合、ceilと同じ値を返します．</li>
+</ul>
+</li>
+<li>clamp(v,a,b)<ul>
+<li>vの値がa～bの範囲内に収まっていればv自身を返します。</li>
+<li>vの値がa～bの範囲をはみ出していれば、aまたはbのうちvに近いほうの値を返します。</li>
+<li>a&lt;=b、a&gt;=b いずれでも可</li>
+</ul>
+</li>
+<li>clamped(v,a,b)<ul>
+<li>clamp(v,a,b)-v と等価です。（はみ出した分の差を返す）</li>
+</ul>
+</li>
+<li>amod(v,m)<ul>
+<li>m には正の値を渡してください．</li>
+<li>v を超えない最大の m で割り切れる数をiとし，v-iを返します．<ul>
+<li>v&gt;=0 の場合， v % m と等価です．</li>
+<li>v&lt;0 の場合， v % m は負の値を返しますが，amod(v,m)は0以上m未満の正の値を返します．<br>.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</body></html>

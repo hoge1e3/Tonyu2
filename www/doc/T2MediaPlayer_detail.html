@@ -1,0 +1,278 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="T2MediaPlayer">T2MediaPlayer</a></p>
+<h1 id="t2mediaplayer-">T2MediaPlayerクラス（詳細）</h1>
+<h2 id="-">仕様</h2>
+<p>T2MediaPlayerクラスでは、音の再生方法にSE（効果音用）とBGM（背景音用）の２つがあります。</p>
+<ul>
+<li>SE<ul>
+<li>一度再生すると音声データの最後まで再生します。途中で音を止めることはできません</li>
+<li>他の音といくつも重ねて鳴らすことができます</li>
+</ul>
+</li>
+<li>BGM<ul>
+<li>1つの音声データを再生、停止、一時停止／再開、繰り返し再生などができます</li>
+<li>再生中に音量、再生速度、音の位置などを変更できます</li>
+<li>現在、BGMプレイヤーが16個用意されています<ul>
+<li>BGMプレイヤーとは、BGMの再生を管理するオブジェクトです</li>
+<li>1つのBGMプレイヤーにつき、1つの音声データを再生する仕組みとなっています</li>
+<li>最大16個の音をBGMとして重ねて鳴らすことができます</li>
+<li>BGMプレイヤーにはそれぞれ0～15の番号が割り振られています。番号を指定して個々のBGMプレイヤーに対して制御ができます。</li>
+<li>番号を指定しない場合、0番目のBGMプレイヤーに対して制御を行います。</li>
+<li>例えば、0番目のBGMプレイヤーにBGM1を音量100%で再生し、同時に1番目にBGM2を音量0%で再生させておき、音量を徐々に変えるように処理すれば、BGM1からBGM2に音楽が変わっていくという演出なども可能です</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>SEは効果音、BGMは背景音とそれぞれに特化した作りになっていますが、<br>効果音を細かく制御したい場合はBGM系のメソッドで効果音を再生することも可能です。</p>
+<h2 id="-">音量の仕様</h2>
+<ul>
+<li>マスター音量<ul>
+<li>SE/BGMの全体の音量です</li>
+</ul>
+</li>
+<li>SEマスター音量<ul>
+<li>SE全体の音量です</li>
+<li>SEの実際の音量は以下の式となります<ul>
+<li>マスター音量 × SEマスター音量 × SE再生時に（playSEメソッドで）設定した音量</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>BGMマスター音量<ul>
+<li>BGM全体の音量です</li>
+<li>BGMの実際の音量は以下の式となります<ul>
+<li>マスター音量 × BGMマスター音量 × 該当のBGMプレイヤーの音量</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="-">機能制限</h2>
+<p>MP3、Ogg、AAC、WAVの音声ファイルは、SEとBGMのどちらも再生可能です。全ての機能が使えます。</p>
+<p>MidiファイルはBGMでのみ再生可能です。<br>また、一部BGMメソッドで設定しても演奏自体に反映されないメソッドがあります。</p>
+<h2 id="-">音声データは再生時にデコード</h2>
+<p>ゲーム開始後一度も再生していない音声データは、初回再生時は再生されるまで時間がかかる場合があります。</p>
+<p>ある音声データを初めて再生（playSE, playBGMメソッド呼び出し）した場合、<br>デコードが非同期に行われ、デコード完了すると再生します。（Midiのみデコードが同期処理で行われます）</p>
+<p>decodeSoundメソッドで再生する前にあらかじめデコードすることができます。</p>
+<h2 id="-">メソッド</h2>
+<h2 id="se-">SE のメソッド</h2>
+<ul>
+<li><a href="T2MediaPlayer.playSE">playSE</a><ul>
+<li>SE(効果音)を再生します</li>
+</ul>
+</li>
+</ul>
+<h2 id="bgm-">BGMプレイヤー番号省略版メソッド</h2>
+<p>※0番目のBGMプレイヤーに対するメソッドになります</p>
+<ul>
+<li><a href="T2MediaPlayer.playBGM">playBGM</a><ul>
+<li>BGMを再生します</li>
+</ul>
+</li>
+<li><a href="T2MediaPlayer.stopBGM">stopBGM</a><ul>
+<li>BGMを停止します</li>
+</ul>
+</li>
+<li><a href="T2MediaPlayer.pauseBGM">pauseBGM</a><ul>
+<li>BGMを一時停止します</li>
+</ul>
+</li>
+<li><p><a href="T2MediaPlayer.resumeBGM">resumeBGM</a></p>
+<ul>
+<li>一時停止したBGMを再び再生します</li>
+</ul>
+</li>
+<li><p>getBGMVolume()</p>
+<ul>
+<li>BGMプレイヤーの音量を取得します</li>
+</ul>
+</li>
+<li><p>setBGMVolume(vol)</p>
+<ul>
+<li>BGMプレイヤーの音量を設定します。範囲(0-128-∞)<ul>
+<li>0 : 消音</li>
+<li>128 : もとの音量(100%)</li>
+<li>128より大きい : 100%より大きい音量</li>
+</ul>
+</li>
+<li>設定するとそれ以降その設定値を使い続けます。BGM再生時は即座に音量が反映されます</li>
+</ul>
+</li>
+<li><p>getBGMTempo()</p>
+<ul>
+<li>BGMプレイヤーの再生速度を取得します</li>
+</ul>
+</li>
+<li>setBGMTempo(tempo) <code>*1</code><ul>
+<li>BGMプレイヤーのBGMの再生速度を設定します。1がもとの速さです</li>
+<li>設定するとそれ以降その設定値を使い続けます。BGM再生時は即座に再生速度が反映されます</li>
+</ul>
+</li>
+<li>getBGMPan()<ul>
+<li>BGMプレイヤーのパン(音の位置)を取得します。</li>
+</ul>
+</li>
+<li><p>setBGMPan(pan) <code>*1</code></p>
+<ul>
+<li>BGMプレイヤーのパン(音の位置)を設定します。範囲(-1.0 ～ 1.0)<ul>
+<li>-1.0 : 最も左から音が鳴ります</li>
+<li>0.0 : 中央から音が鳴ります</li>
+<li>1.0 : 最も右から音が鳴ります</li>
+</ul>
+</li>
+<li>設定するとそれ以降その設定値を使い続けます。BGM再生時は即座にパンが反映されます</li>
+</ul>
+</li>
+<li><p>isBGMLoop()</p>
+<ul>
+<li>再生中のBGMが繰り返し再生するかどうかを取得します。<code>true</code>で繰り返し再生で設定されています</li>
+</ul>
+</li>
+<li>setBGMLoop(loop)<ul>
+<li>再生中のBGMが繰り返し再生するかどうかの設定を変更します。<code>true</code>で繰り返し再生に設定します</li>
+</ul>
+</li>
+<li>getBGMLoopStartTime()<ul>
+<li>再生中のBGMのループ始端位置を取得します。（単位：秒）</li>
+<li>ループ始端位置とは、BGMの繰り返し再生時、音声データの終端またはループ終端位置から、繰り返し再生するときに戻ってくる再生位置です</li>
+</ul>
+</li>
+<li>setBGMLoopStartTime(loopStart) <code>*1</code><ul>
+<li>再生中のBGMのループ始端位置を変更します。（単位：秒）</li>
+</ul>
+</li>
+<li>getBGMLoopEndTime()<ul>
+<li>再生中のBGMのループ終端位置を取得します。（単位：秒）</li>
+<li>ループ終端位置とは、BGMの繰り返し再生時、ループ終端位置を超えた際ループ始端位置に戻す位置です</li>
+</ul>
+</li>
+<li><p>setBGMLoopEndTime(loopEnd) <code>*1</code></p>
+<ul>
+<li>再生中のBGMのループ終端位置を変更します。（単位：秒）</li>
+</ul>
+</li>
+<li><p>getBGMCurrentTime()</p>
+<ul>
+<li>再生中のBGMの現在再生位置を取得します（単位：秒）</li>
+<li>BGMを停止している場合、nullが返ります</li>
+</ul>
+</li>
+<li>getBGMLength()<ul>
+<li>再生中のBGMの長さを取得します（単位：秒）</li>
+<li>BGMを停止している場合、nullが返ります</li>
+</ul>
+</li>
+<li>getPlayingBGMName()<ul>
+<li>再生中のBGMの名前を取得します（&quot;$se_bgm1&quot;のように文字列が返ります）</li>
+<li>BGMを停止している場合、nullが返ります</li>
+</ul>
+</li>
+</ul>
+<h2 id="bgm-">BGMプレイヤー番号指定版メソッド</h2>
+<p><code>BGMプレイヤー番号省略版メソッド</code>のメソッド名の末尾に&quot;ID&quot;を付け、第1引数に<code>BGMプレイヤー番号(0-15)</code>を指定します。</p>
+<p>第1引数(id)に指定したBGMプレイヤーに対してメソッドが実行されます。</p>
+<ul>
+<li>playBGMID(id, idx, loop, offset, loopStart, loopEnd)</li>
+<li>stopBGMID(id)</li>
+<li>pauseBGMID(id)</li>
+<li>resumeBGMID(id)</li>
+<li>getBGMVolumeID(id)</li>
+<li>setBGMVolumeID(id, vol)</li>
+<li>getBGMTempoID(id)</li>
+<li>setBGMTempoID(id, tempo) <code>*1</code></li>
+<li>getBGMPanID(id)</li>
+<li>setBGMPanID(id, pan) <code>*1</code></li>
+<li>isBGMLoopID(id)</li>
+<li>setBGMLoopID(id, loop)</li>
+<li>getBGMLoopStartTimeID(id)</li>
+<li>setBGMLoopStartTimeID(id, loopStart) <code>*1</code></li>
+<li>getBGMLoopEndTimeID(id)</li>
+<li>setBGMLoopEndTimeID(id, loopEnd) <code>*1</code></li>
+<li>getBGMCurrentTimeID(id)</li>
+<li>getBGMLengthID(id)</li>
+<li>getPlayingBGMNameID(id)</li>
+</ul>
+<h2 id="bgm-">BGMプレイヤー全体のメソッド</h2>
+<ul>
+<li>getBGMPlayerMax()<ul>
+<li>BGMプレイヤーの数を取得します。現在16が返ります</li>
+</ul>
+</li>
+<li>allStopBGM()<ul>
+<li>0～15番目の全てのBGMプレイヤーのBGM再生を停止します</li>
+</ul>
+</li>
+<li>allResetBGM()<ul>
+<li>0～15番目の全てのBGMプレイヤーのBGM再生を停止し、音量、再生速度、パンを初期値に戻します</li>
+<li>マスター音量、SEマスター音量、BGMマスター音量も初期値に戻します</li>
+</ul>
+</li>
+</ul>
+<h2 id="se-bgm-">SE/BGM共通のメソッド</h2>
+<ul>
+<li>getMasterVolume()<ul>
+<li>マスター音量を取得します</li>
+</ul>
+</li>
+<li>setMasterVolume(vol)<ul>
+<li>マスター音量を設定します</li>
+<li>再生中のBGMは即座に音量が反映されます</li>
+</ul>
+</li>
+<li>getSEMasterVolume()<ul>
+<li>SEマスター音量を取得します</li>
+</ul>
+</li>
+<li>setSEMasterVolume(vol)<ul>
+<li>SEマスター音量を設定します</li>
+<li>この設定以降に再生するSEに音量が反映されます</li>
+<li>再生中のSEには音量は反映されません</li>
+</ul>
+</li>
+<li>getBGMMasterVolume()<ul>
+<li>BGMマスター音量を設定します</li>
+</ul>
+</li>
+<li>setBGMMasterVolume(vol)<ul>
+<li>BGMマスター音量を設定します</li>
+<li>再生中のBGMは即座に音量が反映されます</li>
+</ul>
+</li>
+</ul>
+<h2 id="-">音声データ関連のメソッド</h2>
+<ul>
+<li>decodeSound(name, callbacks)<ul>
+<li>音声データをデコードします</li>
+<li>name<ul>
+<li>再生するBGMの名前(<a href="sndres">音声リスト</a>で指定した名前）を指定します</li>
+</ul>
+</li>
+<li>callbacks（省略可）<ul>
+<li>デコード完了時にcallbacks.succ(name)がコールバックされ、デコード失敗時callbacks.err(name, errorID)がコールバックされます</li>
+<li>コールバックを受け取る場合は、decodeSoundメソッドの前に下記のように記述します</li>
+<li>callbacks={};callbacks.succ=(name){処理};callbacks.err=(name, errorID){処理};</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>removeDecodedSoundData(name)<ul>
+<li>音声データのデコード済みデータを削除します（メモリ使用量を抑えるときに使います）</li>
+<li>name<ul>
+<li>再生するBGMの名前(<a href="sndres">音声リスト</a>で指定した名前）を指定します</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>allRemoveDecodedSoundData()<ul>
+<li>全ての音声データのデコード済みデータを削除します（メモリ使用量を抑えるときに使います）</li>
+</ul>
+</li>
+</ul>
+<p><code>*1</code>Midi再生時の場合、このメソッドの設定は演奏に反映されません<br>.</p>
+</body></html>

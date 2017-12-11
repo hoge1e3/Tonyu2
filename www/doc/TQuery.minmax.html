@@ -1,0 +1,45 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="TQuery">TQuery</a></p>
+<h1 id="tquery-min-tquery-max-">TQuery.min / TQuery.max メソッド</h1>
+<p>このTQueryオブジェクトが格納しているすべてのActorのうち，指定された値の最小（最大）値を返します．</p>
+<h2 id="-1">書式1</h2>
+<pre><code class="lang-JS">t.min(key)
+</code></pre>
+<pre><code class="lang-JS">t.max(key)
+</code></pre>
+<p>このTQueryオブジェクトが格納しているすべてのActorにおける，<br><em>key</em>(文字列)で指定された名前をもつフィールドの値の最小（最大）値</p>
+<h2 id="-2">書式2</h2>
+<pre><code class="lang-JS">t.min(func)
+</code></pre>
+<pre><code class="lang-JS">t.max(func)
+</code></pre>
+<p>このTQueryオブジェクトが格納しているすべてのActorについて，そえｒぞれ<br>そのActorを第1引数に渡して<em>func</em>(関数)を呼び出した結果の最小（最大）値</p>
+<h2 id="-">例</h2>
+<pre><code class="lang-JS">all(Enemy).min(&quot;x&quot;)  //すべてのEnemyオブジェクトにおけるxの値の最小値
+</code></pre>
+<p>※min,maxメソッドで返される値は最小値，最大値そのもの（数値等）であり，最小値，最大値をもつオブジェクトではありません．オブジェクトを返す場合は次のminObj, maxObjメソッドを使います．</p>
+<h1 id="tquery-minobj-tquery-maxobj-">TQuery.minObj / TQuery.maxObj メソッド</h1>
+<p>このTQueryオブジェクトが格納しているすべてのActorのうち，指定された値の最小（最大）値をもつオブジェクトを返します．</p>
+<p>書式はmin, maxと同じです．返されるのはオブジェクト（Actor)です．</p>
+<h2 id="-">例</h2>
+<pre><code class="lang-JS">all(Enemy).minObj(&quot;x&quot;)  //すべてのEnemyオブジェクトにおける，xの値が最小のオブジェクト（一番左にいるEnemy）
+</code></pre>
+<h2 id="-">最小値，最大値をもつオブジェクトが複数ある場合</h2>
+<ul>
+<li>min,maxメソッドは格納順で先頭のもの（添字[0]でアクセスできるもの）を返します．</li>
+<li>最小値，最大値をもつすべてのオブジェクトを調べたい場合，次のmins, maxsメソッドを使います．</li>
+</ul>
+<h1 id="tquery-mins-tquery-maxs-">TQuery.mins / TQuery.maxs メソッド</h1>
+<p>このTQueryオブジェクトが格納しているすべてのActorのうち，指定された値の最小（最大）値をもつオブジェクトだけからなるTQueryオブジェクトを返します．</p>
+<p>書式はmin, maxと同じですが，返されるはTQueryオブジェクトです．</p>
+<p>最小値，最大値をもつオブジェクトからランダムに1つ返すには次のようにします．</p>
+<h2 id="-">例</h2>
+<pre><code class="lang-JS">all(Enemy).mins(&quot;x&quot;).random()  //すべてのEnemyオブジェクトにおける，xの値が最小のオブジェクト（一番左にいるEnemy）
+//一番左にいるEnemyが複数の場合，その中からランダムに1つ選ぶ
+</code></pre>
+</body></html>

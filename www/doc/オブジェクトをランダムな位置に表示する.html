@@ -1,0 +1,25 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<p><a href="乱数を使う">乱数を使う</a></p>
+<h1 id="-">オブジェクトをランダムな位置に表示する</h1>
+<ul>
+<li>オブジェクトを生成するときに，xとyに乱数を設定して作成すると，画面上にランダムに配置することができます．<ul>
+<li>xには0以上<code>$screenWidth</code>(画面幅のピクセル数)未満の乱数を設定します．</li>
+<li>yには0以上<code>$screenHeight</code>(画面高さのピクセル数)未満の乱数を設定します．</li>
+</ul>
+</li>
+</ul>
+<p>Main</p>
+<pre><code class="lang-JS">new Chara1{x=rnd($screenWidth),y=rnd($screenHeight),p=1};
+new Chara1{x=rnd($screenWidth),y=rnd($screenHeight),p=2};
+new Chara1{x=rnd($screenWidth),y=rnd($screenHeight),p=3};
+</code></pre>
+<p>Chara1</p>
+<pre><code class="lang-JS">//Chara1の動作（とりあえず何も書かないでもよい）
+</code></pre>
+</body></html>

@@ -1,0 +1,51 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<h1 id="-">文字に動きをつける</h1>
+<p><a href="Label">Label</a>オブジェクトで作成した文字を動かしたり，一定時間経過した後消したりするには，新しくファイルを作成し，Labelクラスを継承します．</p>
+<h2 id="-">例１：一定時間で消えるラベル</h2>
+<p>次の例では，PopupLabel というクラスを作成し，30フレーム経過後に自動的に消える処理を行っています．</p>
+<p>PopupLabel</p>
+<pre><code class="lang-JS">extends Label;//Labelクラスを継承
+
+// ラベルに対する処理を書く
+updateEx(30);//30フレーム待機
+die();//消える
+</code></pre>
+<p>Main</p>
+<pre><code class="lang-JS">new PopupLabel{template:&quot;START&quot;,x:200,y:200};
+</code></pre>
+<h2 id="-">例２：プレイヤー等の他のオブジェクトから出現するラベル</h2>
+<p>次の例では，プレイヤーの位置と同じ位置に出現するPointLabel というクラスを作成しています．</p>
+<p>PointLabel</p>
+<pre><code class="lang-JS">extends Label;//Labelクラスを継承
+// ラベルに対する処理を書く
+for(i=0;i&lt;30;i++) {//30フレーム上に移動
+    y--;
+    update();
+}
+die();//消える
+</code></pre>
+<p>Player</p>
+<pre><code class="lang-JS">while(true) {
+    x=$touches[0].x;y=$touches[0].y;
+    if ($touches[0].touched==1) {
+        // タッチされると「100」と書かれたPointLabelを生成
+        // x,y : プレイヤーと同じ位置に出現させる
+        // layer: プレイヤーと同じレイヤーに出現させる※
+        new PointLabel{x,y,layer,template:&quot;100&quot;};
+    }
+    update();
+}
+</code></pre>
+<p>※Labelオブジェクトはデフォルトでは<a href="座標系とレイヤー">$frontLayer</a>に出現するため，スクロールしたときに出現位置がずれてしまいます．layerを指定することでプレイヤーと同じレイヤー($mainLayer)に出現させることができます．</p>
+<p>なお，Labelオブジェクトのtemplateの機能（<code>$</code>で始まる部分を展開）を使用しないのであれば，通常の<a href="Actor">Actor</a>クラスの<code>text</code>に代入することでも同等の動作になります．この場合は上の※に書いたようなlayerの指定も不要です．</p>
+<h2 id="-">参考</h2>
+<ul>
+<li><a href="文字をテキストオブジェクトとして表示する">文字をテキストオブジェクトとして表示する</a></li>
+</ul>
+</body></html>

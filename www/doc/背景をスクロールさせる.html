@@ -1,0 +1,36 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<h1 id="-">背景をスクロールさせる</h1>
+<p><a href="背景の表示">背景の表示</a>を参考に画像を用意してください．</p>
+<p>Main</p>
+<pre><code class="lang-JS">//画像の縦と横の値を入れる
+$Screen.resize(500,500);
+new Bg{x:$screenWidth/2,y:$screenHeight/2,p:$pat_bg,zOrder:1};
+new Bg{x:$screenWidth/2,y:-$screenHeight/2,p:$pat_bg,zOrder:1};
+</code></pre>
+<p>Bg</p>
+<pre><code class="lang-JS">
+while(true){
+    //画像を下に移動
+    y+=10;
+    //画像が画面から出たら
+    if(y-$screenHeight/2&gt;=$screenHeight){
+        //画像を上に戻す
+        y=0-$screenHeight/2;
+    }    
+    update();
+}
+</code></pre>
+<p>このプログラムでは、</p>
+<ul>
+<li>背景の画像を縦に二枚表示させ，</li>
+<li>それぞれ下方向に移動させ</li>
+<li>画面外に画像が出たら、その画像を上に戻す</li>
+</ul>
+<p>という処理によって，連続した画像が流れているように表示しています．</p>
+</body></html>

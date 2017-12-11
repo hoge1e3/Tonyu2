@@ -1,0 +1,27 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="BodyActor">BodyActor</a></p>
+<h1 id="contactpoint-">contactPointメソッド</h1>
+<p>他の物理オブジェクトと衝突しているかを判定し、衝突点を返します</p>
+<pre><code class="lang-JS">contactPoint(obj)
+</code></pre>
+<p>特定のオブジェクト<code>obj</code>に衝突しているかを判定し、衝突していれば衝突点オブジェクト（後述）を、衝突していなければ<code>undefined</code>を返します</p>
+<pre><code class="lang-JS">contactPoint(Class)
+</code></pre>
+<p>特定のクラスの<em>Class</em>のオブジェクトのうちどれかに衝突しているかを判定し、衝突していれば衝突点オブジェクト（後述）のうちどれかを、衝突していなければ<code>undefined</code>を返します。</p>
+<p>※自分の属するクラスが指定された場合，自分自身が結果に含まれることはありません．</p>
+<h2 id="-">衝突点オブジェクトの形式</h2>
+<pre><code class="lang-JS">{
+  x:衝突点のx座標,
+  y:衝突点のy座標,
+  target: 衝突したオブジェクト
+}
+</code></pre>
+<h1 id="-">例</h1>
+<p><a href="ジャンプする">ジャンプする</a></p>
+<p>.</p>
+</body></html>

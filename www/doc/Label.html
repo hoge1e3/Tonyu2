@@ -1,0 +1,21 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="api">api</a></p>
+<h1 id="label-">Labelクラス</h1>
+<p>文字列の表示に特化した<a href="Actor">Actor</a>です。<br><code>template</code>を設定することで、グローバル変数の内容を常に更新しながら表示することができます。</p>
+<p>例</p>
+<pre><code class="lang-JS">//$scoreの内容を表示
+new Label{x:200,y:200,template:&quot;Score=$score&quot; };
+$score=0;
+while(true) {
+    $score++;
+    update();
+}
+</code></pre>
+<h2 id="-">注意</h2>
+<p>このオブジェクトはデフォルトでは<a href="$frontLayer">$frontLayer</a> に配置されます．</p>
+</body></html>

@@ -1,0 +1,28 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="マップチップとの当たり判定">マップチップとの当たり判定</a></p>
+<h1 id="-">当たり判定を大きくする</h1>
+<p><a href="マップチップとの当たり判定">マップチップとの当たり判定</a>では、プレイヤーの中心部分にマップチップがあれば「衝突している」と判定していますが、プレイヤーの大きさを考慮してもう少し広い範囲に当たり判定を設けるには、次のようにします。</p>
+<p>Playerに、当たり判定専用のメソッドを作成します。</p>
+<p>Player</p>
+<pre><code class="lang-JS">\hitToChip(x,y) {
+//(x,y)の位置から上下左右10ピクセルの場所のうち、どれかがマップチップに触れていればtrue
+    return $map.getOnAt(x-10,y)&gt;-1 ||
+    $map.getOnAt(x+10,y)&gt;-1 ||
+    $map.getOnAt(x,y+10)&gt;-1 ||
+    $map.getOnAt(x,y-10)&gt;-1;
+}
+</code></pre>
+<p>$map.getOnAtを呼び出している部分も変更します。</p>
+<p>Main</p>
+<pre><code class="lang-JS">    if(hitToChip(x,y)){
+        //マップチップにぶつかっていたら、移動前の座標に戻す
+        x=sx;y=sy;
+    }
+</code></pre>
+<p>.</p>
+</body></html>

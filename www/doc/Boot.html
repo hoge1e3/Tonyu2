@@ -1,0 +1,31 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="api">api</a></p>
+<h1 id="boot-">Bootクラス</h1>
+<p>プログラム実行時に最初に起動するオブジェクトです．次のような動作（ブート）を実行時に自動的に行います．</p>
+<ul>
+<li>画面の初期化</li>
+<li>マウス・タッチイベントの初期化</li>
+<li><a href="thread">スレッド</a>の初期化</li>
+<li>Mainクラス※のオブジェクトの配置</li>
+<li>メインループ<ul>
+<li>スレッドの実行</li>
+<li>描画</li>
+<li>フレームレートに応じた待機</li>
+</ul>
+</li>
+</ul>
+<p>実行時に作成されたBootクラスのオブジェクトはグローバル変数<code>$Boot</code>に格納されます</p>
+<p>※MainクラスとBootクラスの違い：Mainクラスはユーザが作成したクラスで，ブート中に作成されます．Bootクラスは<a href="api">Kernelクラス（標準ライブラリ）</a>として定義されており，ブート全体をとりしきる役割があります．</p>
+<h2 id="-">メソッド</h2>
+<ul>
+<li><a href="setFrameRate">setFrameRate</a></li>
+<li><a href="useRAF">useRAF</a></li>
+<li><a href="Boot.on">on</a></li>
+</ul>
+<p>.</p>
+</body></html>

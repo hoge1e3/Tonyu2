@@ -1,0 +1,63 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<h1 id="-">プレイヤーを追いかける敵</h1>
+<p>Main</p>
+<pre><code class="lang-JS">$player=new Player{x:250,y:250};
+new Enemy{x:200,y:100};
+new Enemy{x:300,y:100};
+new Enemy{x:400,y:300};
+new Enemy{x:100,y:300};
+</code></pre>
+<p>Enemy</p>
+<pre><code class="lang-JS">// $player は，Mainで初期化されているグローバル変数（Mainを参照）
+while (true) {
+    // $playerとの座標を比較して移動方向を決める
+    if (x&lt;$player.x) x+=2;
+    if (x&gt;$player.x) x-=2;
+    if (y&lt;$player.y) y+=2;
+    if (y&gt;$player.y) y-=2;
+    update();
+}
+</code></pre>
+<p>Player</p>
+<pre><code class="lang-JS">//プレイヤーの動作を書く（とりあえず何も書かなくてもよい）
+</code></pre>
+<p>※Enemyが物理オブジェクトの場合，vx,vyに値を代入して移動させてください</p>
+<p>Enemy</p>
+<pre><code class="lang-JS">extends BodyActor;
+// $player は，Mainで初期化されているグローバル変数（Mainを参照）
+while (true) {
+    // $playerとの座標を比較して移動方向を決める
+    if (x&lt;$player.x) vx=2;
+    if (x&gt;$player.x) vx=-2;
+    if (y&lt;$player.y) vy=2;
+    if (y&gt;$player.y) vy=-2;
+    update();
+}
+</code></pre>
+<h1 id="-">プレイヤーを追いかける敵（慣性あり）</h1>
+<p>Enemy</p>
+<pre><code class="lang-JS">//敵の速度
+vx=0;vy=0;
+while (true) {
+    //速度の分だけx,yを変化させる
+    x+=vx;//※物理オブジェクトの場合は不要
+    y+=vy;//※物理オブジェクトの場合は不要
+    //$playerとの座標を比較して速度を変化させる
+    if (x&lt;$player.x) vx+=0.2;
+    if (x&gt;$player.x) vx-=0.2;
+    if (y&lt;$player.y) vy+=0.2;
+    if (y&gt;$player.y) vy-=0.2;
+    update();
+}
+</code></pre>
+<p>※Enemyが物理オブジェクトの場合，次の処理は不要です．</p>
+<pre><code class="lang-JS">    x+=vx;
+    y+=vy;
+</code></pre>
+</body></html>

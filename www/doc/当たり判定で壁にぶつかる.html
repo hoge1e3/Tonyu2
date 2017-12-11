@@ -1,0 +1,48 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<p><a href="オブジェクトを動かす">オブジェクトを動かす</a> - <a href="上下左右に移動させる">上下左右に移動させる</a></p>
+<h1 id="-">当たり判定で壁にぶつかる</h1>
+<p>次の方法を用います</p>
+<ul>
+<li>移動前に現在の位置を別の変数に覚える</li>
+<li>移動する</li>
+<li>壁にあたっていたら移動前の場所に戻る</li>
+</ul>
+<p>Main</p>
+<pre><code class="lang-JS">new Chara1{x:100, y:100, p:5};
+new Chara1{x:100, y:132, p:5};
+new Chara1{x:100, y:164, p:5};
+x=$screenWidth/2;
+y=$screenHeight/2;
+while(true){
+  // 移動前の値をsx,syに覚えておく
+  sx=x;sy=y;
+  if(getkey(&quot;right&quot;)&gt;0){
+    x+=3;
+  }
+  if(getkey(&quot;left&quot;)&gt;0){
+    x-=3;
+  }
+  if(getkey(&quot;down&quot;)&gt;0){
+    y+=3;
+  }
+  if(getkey(&quot;up&quot;)&gt;0){
+    y-=3;
+  }
+  if(crashTo(Chara1)){//Chara1にぶつかっていたら
+    x=sx;y=sy;//移動前の値に戻す
+  }
+  update();
+}
+</code></pre>
+<p>Chara1</p>
+<pre><code class="lang-JS">//中身は何も書かなくてもよい
+</code></pre>
+<h1 id="-">参考</h1>
+<p><a href="マップチップとの当たり判定">マップチップとの当たり判定</a></p>
+</body></html>

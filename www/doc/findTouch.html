@@ -1,0 +1,39 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="BaseActor">BaseActor</a></p>
+<h1 id="findtouch-">findTouchメソッド</h1>
+<p>このオブジェクトの近くで指がタッチされた場合，タッチに関する情報をオブジェクトで返します．</p>
+<h2 id="-">書式</h2>
+<pre><code class="lang-JS">findTouch(options)
+</code></pre>
+<ul>
+<li>options には数値またはオブジェクトを指定することができます（省略可能）．</li>
+<li>options に数値を指定した場合(※A)，タッチ判定される範囲の大きさを，<a href="getCrashRect">getCrashRect</a>で得られる当たり判定の大きさを基準に倍率で指定します．省略すると2です．</li>
+<li>optionsにオブジェクトを指定した場合<ul>
+<li><code>scale</code> タッチ判定の大きさの割合．(※A)の数値と同じ意味です．width,heightと併用不可</li>
+<li><code>width,height</code> タッチ判定の大きさを直接指定します．scaleと併用不可．</li>
+<li><code>pickup</code> 通常は，タッチ開始位置がこのオブジェクトの近くのときだけ反応しますが，これをtrueにすると，「このオブジェクトの遠くでタッチ開始→スワイプしてこのオブジェクトの近くまできた」，という場合でも反応します．</li>
+</ul>
+</li>
+</ul>
+<h1 id="-">戻り値</h1>
+<p>タッチされたオブジェクトがある場合，次の形式のオブジェクトを返し，なければ<code>null</code>を返します．</p>
+<ul>
+<li><code>x</code> タッチされている横位置</li>
+<li><code>y</code> タッチされている横位置</li>
+<li><code>vx</code> スワイプによる横移動量</li>
+<li><code>vy</code> スワイプによる縦移動量</li>
+<li><code>ended</code> 指が離れたときに true になる</li>
+</ul>
+<p>このオブジェクトはタッチした指が離れるまでこれらの値を更新しつづけます．したがって，ドラッグ（スワイプ）動作中に改めてfindTouchを呼び出す必要はありません．</p>
+<h1 id="-">参考</h1>
+<ul>
+<li><a href="オブジェクトをドラッグする">オブジェクトをドラッグする</a></li>
+<li><a href="ドラッグやスワイプした量に応じてオブジェクトを動かす">ドラッグやスワイプした量に応じてオブジェクトを動かす</a></li>
+</ul>
+<p>.</p>
+</body></html>

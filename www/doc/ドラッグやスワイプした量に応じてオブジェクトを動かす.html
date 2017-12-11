@@ -1,0 +1,29 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<h1 id="-">ドラッグやスワイプした量に応じてオブジェクトを動かす</h1>
+<ul>
+<li><a href="$touches">$touches</a>[0].vxと <a href="$touches">$touches</a>[0].vy にドラッグまたはスワイプしたときの移動量が格納されます</li>
+<li>これらの値をxやyに加算することで移動量に応じてオブジェクトが移動します．<ul>
+<li>ゲーム画面のどこをタッチしても移動できます（オブジェクトの近くをタッチする必要はない）</li>
+</ul>
+</li>
+</ul>
+<pre><code class="lang-JS">x=100;y=200;
+while(true) {
+    x+=$touches[0].vx;
+    y+=$touches[0].vy;
+    update();   
+}
+</code></pre>
+<h2 id="-">参考</h2>
+<ul>
+<li><a href="オブジェクトをドラッグする">オブジェクトをドラッグする</a></li>
+<li><a href="ドラッグやスワイプした量に応じてオブジェクトを動かす">ドラッグやスワイプした量に応じてオブジェクトを動かす</a></li>
+<li><a href="タッチした位置にオブジェクトを表示する">タッチした位置にオブジェクトを移動させる</a><br>.</li>
+</ul>
+</body></html>

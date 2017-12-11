@@ -1,0 +1,44 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<h1 id="-">他のオブジェクトを消す</h1>
+<ul>
+<li><em>obj</em>.die() のように書くと，指定されたオブジェクトを消すことができます．<ul>
+<li><em>obj</em>にはオブジェクトの名前などを指定します</li>
+</ul>
+</li>
+<li><code>Enemy.die()</code> のようにクラス名を指定してdieを呼び出すことは出来ません．<ul>
+<li><a href="すべてのオブジェクトを消す">指定したクラスのオブジェクトをすべて消す</a> には， <code>all(Enemy).die()</code> のように書きます．</li>
+</ul>
+</li>
+</ul>
+<p>Main</p>
+<pre><code class="lang-JS">$enemy1=new Enemy{x:100, y:100};
+$enemy2=new Enemy{x:100, y:200};
+while(true){
+  //zキーを押すと$enemy1だけが消える
+  if(getkey(&quot;z&quot;)) $enemy1.die();
+  //xキーを押すと$enemy2だけが消える
+  if(getkey(&quot;x&quot;)) $enemy2.die();
+  update();
+}
+</code></pre>
+<p>Enemy</p>
+<pre><code class="lang-JS">// 敵の動作を書く。（とりあえず何も書かなくてもよい）
+</code></pre>
+<h2 id="-">参考</h2>
+<ul>
+<li><a href="自分自身を消す">自分自身を消す</a></li>
+<li><a href="他のオブジェクトを消す">他のオブジェクトを消す</a></li>
+<li><a href="当たり判定で当たったオブジェクトを消す">当たり判定で当たったオブジェクトを消す</a><ul>
+<li><a href="当たり判定を変更する">当たり判定を変更する</a></li>
+</ul>
+</li>
+<li><a href="画面外に出たかどうかの判定">画面外に出たオブジェクトを消す</a></li>
+<li><a href="すべてのオブジェクトを消す">すべてのオブジェクトを消す</a></li>
+</ul>
+</body></html>

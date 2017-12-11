@@ -1,0 +1,105 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="api">api</a></p>
+<h1 id="t2mediaplayer-">T2MediaPlayerクラス</h1>
+<p>サウンドを再生するためのクラスです。<br>グローバル変数$soundに自動的に設定されます。</p>
+<h2 id="-">サウンドの追加</h2>
+<p>メニューのウィンドウ→<a href="sndres">音声リスト</a>から追加します。</p>
+<h2 id="-">対応している音声ファイル形式</h2>
+<ul>
+<li>MP3 (.mp3)<ul>
+<li>よく使われている音声ファイルです。</li>
+<li>Chromiumベースのブラウザで再生不可なブラウザがあります。</li>
+</ul>
+</li>
+<li>AAC (.mp4 .m4a)<ul>
+<li>MP3より新しい音声ファイルです。MP3より音質が良いです。</li>
+<li>Chromiumベースのブラウザで再生不可なブラウザがあります。</li>
+</ul>
+</li>
+<li>Ogg Vorbis (.ogg)<ul>
+<li>MP3より音質が良いです。</li>
+<li>iOS等で再生不可です。</li>
+</ul>
+</li>
+<li>MIDIファイル (.mid .midi)<ul>
+<li>音の鳴らし方などの情報が入った楽譜のようなファイルです。Tonyu2ではPicoAudio.jsというライブラリを用いてピコピコ音で再生します。</li>
+<li>ほとんどの環境で再生可能です。</li>
+</ul>
+</li>
+<li>WAV (.wav)<ul>
+<li>通常未圧縮のため音質劣化はありませんが、ファイルサイズが大きいです。</li>
+<li>ほとんどの環境で再生可能です。<br>※()内は対応している拡張子</li>
+</ul>
+</li>
+</ul>
+<h2 id="-">フィールド</h2>
+<ul>
+<li>available<ul>
+<li>サウンドが鳴らせる環境であれば<code>true</code>を返します</li>
+</ul>
+</li>
+<li>mute<ul>
+<li><code>true</code>に設定すると、playSEとplayBGM、resumeBGMを無効にします</li>
+</ul>
+</li>
+</ul>
+<h2 id="-">メソッド</h2>
+<ul>
+<li><a href="T2MediaPlayer.playSE">playSE</a><ul>
+<li>SE(効果音)を再生します</li>
+</ul>
+</li>
+<li><a href="T2MediaPlayer.playBGM">playBGM</a><ul>
+<li>BGM(背景音)を再生します</li>
+</ul>
+</li>
+<li><a href="T2MediaPlayer.stopBGM">stopBGM</a><ul>
+<li>BGMを停止します</li>
+</ul>
+</li>
+<li><a href="T2MediaPlayer.pauseBGM">pauseBGM</a><ul>
+<li>BGMを一時停止します</li>
+</ul>
+</li>
+<li><a href="T2MediaPlayer.resumeBGM">resumeBGM</a><ul>
+<li>一時停止したBGMを再び再生します</li>
+</ul>
+</li>
+<li>setBGMVolume(vol)<ul>
+<li>BGMの音量を設定します。範囲(0-128-∞)<ul>
+<li>0：消音</li>
+<li>128：もとの音量(100%)</li>
+<li>128より大きい：100%より大きい音量</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>setBGMTempo(tempo)<ul>
+<li>BGMの再生速度を設定します。1がもとの速さです</li>
+</ul>
+</li>
+<li>getBGMCurrentTime()<ul>
+<li>再生中のBGMの現在再生位置を取得します（単位：秒）</li>
+</ul>
+</li>
+<li>getBGMLength()<ul>
+<li>再生中のBGMの長さを取得します（単位：秒）</li>
+</ul>
+</li>
+<li>getPlayingBGMName()<ul>
+<li>再生中のBGMの名前を取得します（&quot;$se_bgm1&quot;のように文字列が返ります）</li>
+</ul>
+</li>
+<li>getCurrentTime()<ul>
+<li>T2MediaPlayerが生成されからの時間を返します（単位：秒）．なお，再度実行された場合でもリセットされないことがあります．</li>
+</ul>
+</li>
+</ul>
+<h2 id="-t2mediaplayer-t2mediaplayer_detail-"><a href="T2MediaPlayer_detail">T2MediaPlayerクラスの詳細→</a></h2>
+<p>.</p>
+</body></html>

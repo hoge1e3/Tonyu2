@@ -1,0 +1,44 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<h1 id="error-cannot-read-property-of-undefined-">Error: Cannot read property ??? of undefined などのエラーメッセージについて</h1>
+<h2 id="-">正しく動くプログラム</h2>
+<p>次のプログラムは，オブジェクト<code>a</code>のフィールド<code>s</code>の値である10を表示します．</p>
+<p>Main</p>
+<pre><code class="lang-JS">//aにx=100,y=100,s=10の値を代入
+a=new Chara{x:100,y:100,s:10};
+//aの中に入っているsの値を画面に表示
+print(a.s);
+</code></pre>
+<p>Chara</p>
+<pre><code class="lang-JS">//中身は何も書かなくていいが、Charaのファイルは作る
+</code></pre>
+<h2 id="-">エラーが発生するプログラム</h2>
+<p>次のプログラムは</p>
+<p><code>Cannot read property &#39;s&#39; of undefined</code></p>
+<p>というエラーが発生します．（このエラーメッセージは，ダウンロード版および，Chromeの場合です．ブラウザによりメッセージは異なります）</p>
+<p>Main</p>
+<pre><code class="lang-JS">//aの中に入っているsの値を画面に表示
+print(a.s);
+//aにx=100,y=100,s=10の値を代入
+a=new Chara{x:100,y:100,s:10};
+</code></pre>
+<p>Chara</p>
+<pre><code class="lang-JS">//中身は何も書かなくていいが、Charaのファイルは作る
+</code></pre>
+<p>しかし次の場合は、画面に<code>undefined</code>と出力されます．</p>
+<p>Main</p>
+<pre><code class="lang-JS">//aに入っている値を画面に表示
+print(a);
+//aにx=100,y=100,s=100の値を代入
+a=new Chara{x:100,y:100,s:10};
+</code></pre>
+<p>これらのことから，値が入ってない変数（ここではa）には<code>undefined</code>という値が入っていることがわかります．unefined自身は関数に渡したり，他の変数に代入したりできる値ですが，undefineの値に対して，<code>a.s</code>のようにフィールドへのアクセスを行なうとエラーが起きます．</p>
+<p>このようなエラーが起きた場合、エラーメッセージで書かれている</p>
+<p><code>Cannot read property &#39;s&#39; of undefined</code></p>
+<p>の<code>&#39;s&#39;</code> に注目し，ソースコード中でその手前に書いてある変数（ここでは<code>a.s</code>の<code>a</code>）がエラーが起きた場所より前で初期化されていない可能性を調べてください．</p>
+</body></html>

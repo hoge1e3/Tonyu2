@@ -1,0 +1,22 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="BaseActor">BaseActor</a></p>
+<h1 id="onupdate-">onUpdateメソッド</h1>
+<p><a href="update">update</a>、<a href="updateEx">updateEx</a>が呼び出されたときにしたい処理をユーザが定義するメソッドです．</p>
+<p>詳しい処理内容については<a href="frame">フレーム</a>を参照してください．</p>
+<h1 id="-">書式</h1>
+<pre><code class="lang-JS">onUpdate();
+</code></pre>
+<p>※onUpdateは<a href="update">update</a>メソッドから自動的に呼び出されます．ユーザが直接呼び出す必要はありません．</p>
+<h1 id="-1">例1</h1>
+<pre><code class="lang-JS">function onUpdate(){
+    print(&quot;onUpdate&quot;);
+}
+</code></pre>
+<p>このように書くと、<a href="update">update</a>の度に&quot;onUpdate&quot;という文字列がコンソールに表示されます．</p>
+<p><a href="onUpdate-実例">実例</a></p>
+</body></html>

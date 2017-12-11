@@ -1,0 +1,27 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="BaseActor">BaseActor</a></p>
+<h1 id="allcrash-">allCrashメソッド</h1>
+<p>指定されたクラスのオブジェクトのうち，自分と衝突しているすべてのオブジェクトをあらわす<a href="TQuery">TQuery</a>オブジェクトを返します．</p>
+<h2 id="-">書式</h2>
+<pre><code class="lang-JS">allCrash(Class)
+</code></pre>
+<p><em>Class</em>で指定されたクラスのオブジェクトのうち，自分と衝突しているすべてのオブジェクトをあらわす<a href="TQuery">TQuery</a>オブジェクトを返します．</p>
+<p>※自分の属するクラスが指定された場合，自分自身が結果に含まれることはありません．</p>
+<h1 id="-">例</h1>
+<pre><code class="lang-JS">    // このオブジェクトがTargetクラスのオブジェクトとぶつかっていたら，
+    // そのオブジェクトを消す
+    for (t in allCrash(Target)) {
+        t.die();
+    }
+</code></pre>
+<p>上の例は，次のように書くこともできます．</p>
+<pre><code class="lang-JS">    // このオブジェクトがTargetクラスのオブジェクトとぶつかっていたら，
+    // そのオブジェクトを消す
+    allCrash(Target).die();
+</code></pre>
+</body></html>

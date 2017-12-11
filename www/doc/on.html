@@ -1,0 +1,35 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="BaseActor">BaseActor</a> / <a href="EventMod">EventMod</a></p>
+<h1 id="on-">onメソッド</h1>
+<p>このオブジェクトに送られてきたイベントに反応して処理を行います。</p>
+<h2 id="-">書式</h2>
+<pre><code class="lang-JS">on(イベント名,[イベント引数...],イベントハンドラ)
+</code></pre>
+<ul>
+<li>イベント名には、イベントの種類をあらわす文字列か、<a href="EventHandler">EventHandler</a>クラスを継承したクラスの名前を指定します。</li>
+<li>イベントの種類によっては、イベント引数を指定します。</li>
+<li>イベントハンドラには、このオブジェクトに対してイベントが発生したときに処理する内容を関数オブジェクトまたはメソッド名をあらわす文字列で指定します。</li>
+</ul>
+<p><a href="eventTypes">イベントの種類一覧</a></p>
+<h2 id="-1">例1</h2>
+<pre><code class="lang-JS">
+//dieメソッドが呼ばれたときに、「負けちゃったー」を表示し、$Scoreを10増やす
+on(&quot;die&quot;) \{
+   print(&quot;負けちゃったー&quot;);
+   $Score+=10;
+};
+</code></pre>
+<h2 id="-">実行モードについて</h2>
+<p>イベントハンドラに指定された内容は、次のような<a href="waitmode">実行モード</a>で実行されます</p>
+<ul>
+<li>イベントハンドラが文字列で、このオブジェクトがその文字列で表される名前のメソッドをもつ場合、そのメソッドが待機可能メソッドであれば待機可能モードで実行されます。</li>
+<li>イベントハンドラが<a href="classDef">束縛されたメソッド</a>を指す場合、そのメソッドが待機可能メソッドであれば待機可能モードで実行されます。</li>
+<li>それ以外の場合は、待機不能モードで実行されます。</li>
+</ul>
+<p>.</p>
+</body></html>

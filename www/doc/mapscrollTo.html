@@ -1,0 +1,28 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<h1 id="-">マップだけをスクロールさせる</h1>
+<ul>
+<li>scrollTo(xの元の位置からの移動距離,yの元の位置からの移動距離);</li>
+</ul>
+<p>Main.Tonyu</p>
+<pre><code class="lang-JS">//事前にマップを作っておく
+i=0;
+while(true){
+    $map.scrollTo(i,0);
+    i++;
+    update();
+}
+</code></pre>
+<ul>
+<li>この例はマップだけがスクロールするので，ほかのオブジェクトはスクロールしません．<ul>
+<li>シューティングゲームなどの強制スクロールを実現するのに適しています．</li>
+</ul>
+</li>
+<li>ほかのオブジェクトもあわせてスクロールさせる場合は<a href="ScreenscrollTo-実例">スクリーン全体をスクロール</a><br>を参照してください．</li>
+</ul>
+</body></html>

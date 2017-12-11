@@ -1,0 +1,38 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<p><a href="乱数を使う">乱数を使う</a></p>
+<h1 id="-">画面の上からランダムにオブジェクトを降らせる</h1>
+<ul>
+<li>オブジェクトの出現位置のx座標を乱数を使って指定します．<ul>
+<li>乱数の範囲は0から<code>$screenWidth</code>(画面幅のピクセル数)未満の範囲にします．</li>
+</ul>
+</li>
+<li>オブジェクトを生成する処理を定期的に行います．</li>
+</ul>
+<p>Main</p>
+<pre><code class="lang-JS">c=0;//経過時間（フレーム数）を数える変数
+while(true) {
+    c++;
+    if (c%30==0) {//30フレームに1回
+        //Enemyを出現
+        new Enemy{x:rnd($screenWidth),y:0,p:1};
+    }
+    update();
+}
+</code></pre>
+<p>Enemy</p>
+<pre><code class="lang-JS">while(true){
+  y+=4;
+  //画面外に出たら消える
+  if(screenOut()){
+    die();
+  }
+  update();
+}
+</code></pre>
+</body></html>

@@ -1,0 +1,33 @@
+<html><body class="markdown-body">
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<h1 id="-">敵が全滅したかどうか調べる</h1>
+<p><a href="all">all</a>メソッドを使って，特定のクラスのオブジェクトが出現している個数を数えることができます．</p>
+<p>次の例では，<code>all(Enemy).length</code>を使って，Enemyクラスのオブジェクトの数を数えています．</p>
+<p>Main</p>
+<pre><code class="lang-JS">for(i=0; i&lt;5; i++){
+    new Enemy{x:100+i*50,y:rnd(200)+50,p:2};
+}
+while(true){
+                          //↓敵の残り数を表示
+    print(&quot;Enemy.length=&quot;+all(Enemy).length);
+       //↓敵の残り数が0になったら，繰り返しをやめる
+    if(all(Enemy).length==0) break;
+    update();
+}
+print(&quot;clear&quot;);
+</code></pre>
+<p>Enemy</p>
+<pre><code class="lang-JS">//画面外に出ると消える
+while(y&lt;$screenHeight){
+    y+=5;
+    update();
+}
+die();
+</code></pre>
+<p>.</p>
+</body></html>
