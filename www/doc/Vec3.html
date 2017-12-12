@@ -1,0 +1,137 @@
+<html><body class="markdown-body">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><a href="api">api</a></p>
+<h1 id="vec3-vec3view-">Vec3クラス / Vec3Viewクラス</h1>
+<p>3次元のベクトルを表すクラスです．（2次元のベクトルとしても使えます）</p>
+<h2 id="-">コンストラクタ</h2>
+<pre><code class="lang-JS">new Vec3(x,y,z)
+</code></pre>
+<ul>
+<li>x,y,zを要素にもつベクトルを作成します（zは省略可能）</li>
+</ul>
+<pre><code class="lang-JS">new Vec3View(target, keys)
+</code></pre>
+<ul>
+<li>オブジェクト<em>target</em> の3つのフィールドをx,y,zを要素としてVec3Viewオブジェクトを作成します．<ul>
+<li><em>keys</em> にはx,y,z要素となるフィールド名を {x:<em>x_key</em>, y:<em>y_key</em>,z:<em>z_key</em>}という形式で渡します．<ul>
+<li><em>x_key</em>, <em>y_key</em>, <em>z_key</em>はそれぞれx,y,z成分をあらわす，<em>target</em>オブジェクトのフィールド名です</li>
+<li><em>keys</em>を省略すると <code>{x:&quot;x&quot;,y:&quot;y&quot;,z:&quot;z&quot;}</code> です．</li>
+</ul>
+</li>
+<li>Vec3ViewオブジェクトはVec3オブジェクトと同様に操作できます．</li>
+<li>Vec3Viewオブジェクトに対して変更を行うとtargetオブジェクトの該当フィールドが変更されます．</li>
+<li><a href="BaseActor">BaseActorオブジェクト</a>のpositionフィールドはそのBaseActorオブジェクトのx,y,zを変更できるVec3Viewオブジェクトとして自動的に初期化されます．</li>
+</ul>
+</li>
+</ul>
+<h2 id="-">プロパティ</h2>
+<ul>
+<li>x,y,z<ul>
+<li>x,y,z成分を表します</li>
+</ul>
+</li>
+<li>length<ul>
+<li>ベクトルの長さを表します</li>
+<li>代入すると，向きを変えずに長さを変更します．</li>
+</ul>
+</li>
+</ul>
+<h2 id="-">メソッド</h2>
+<p>※以下の引数において、vおよびaxisはx,y,zをフィールドに持つオブジェクト（Vec3オブジェクトも含む）を表し，それ以外の引数は数値を表します。</p>
+<p>※「破壊的に」とは，このオブジェクト自身のx,y,z成分を書き換えることを意味します．</p>
+<ul>
+<li>add(x,y,z)<ul>
+<li>このベクトルとベクトル(x,y,z)を加算した新しいベクトルを返します．</li>
+</ul>
+</li>
+<li>add(v)<ul>
+<li>このベクトルとベクトルvを加算した新しいベクトルを返します．</li>
+</ul>
+</li>
+<li>addX(x,y,z)<ul>
+<li>このベクトルにベクトル(x,y,z)を破壊的に加算し，このベクトル自身を返します．</li>
+</ul>
+</li>
+<li>addX(v)<ul>
+<li>このベクトルにベクトルvを破壊的に加算し，このベクトル自身を返します．</li>
+</ul>
+</li>
+<li>sub(x,y,z)<ul>
+<li>このベクトルからベクトル(x,y,z)を減算した新しいベクトルを返します．</li>
+</ul>
+</li>
+<li>sub(v)<ul>
+<li>このベクトルとベクトルvを減算した新しいベクトルを返します．</li>
+</ul>
+</li>
+<li>subX(x,y,z)<ul>
+<li>このベクトルにベクトル(x,y,z)を破壊的に減算し，このベクトル自身を返します．</li>
+</ul>
+</li>
+<li>subX(v)<ul>
+<li>このベクトルにベクトルvを破壊的に減算し，このベクトル自身を返します．</li>
+</ul>
+</li>
+<li>mul(k)<ul>
+<li>このベクトルをk倍した新しいベクトルを返します．</li>
+</ul>
+</li>
+<li>mulX(k)<ul>
+<li>このベクトルを破壊的にk倍し，このベクトルを返します．</li>
+</ul>
+</li>
+<li>div(k)<ul>
+<li>このベクトルを1/k倍した新しいベクトルを返します．</li>
+</ul>
+</li>
+<li>divX(k)<ul>
+<li>このベクトルを破壊的に1/k倍し，このベクトルを返します．</li>
+</ul>
+</li>
+<li>normalize(len)<ul>
+<li>このベクトルと同じ向きで長さが<em>len</em>(省略すると1)の新しいベクトルを返します．</li>
+</ul>
+</li>
+<li>normalizeX(len)<ul>
+<li>このベクトルの長さを，向きを変えずに<em>len</em>(省略すると1)に破壊的に変更します．</li>
+</ul>
+</li>
+<li>innerProduct(x,y,z)<ul>
+<li>このベクトルとベクトル(x,y,z)との内積を返します．</li>
+</ul>
+</li>
+<li>innerProduct(v)<ul>
+<li>このベクトルとベクトルvとの内積を返します．</li>
+</ul>
+</li>
+<li>product(x,y,z)<ul>
+<li>このベクトルとベクトル(x,y,z)との外積をあらわす新しいベクトルを返します．</li>
+</ul>
+</li>
+<li>product(v)<ul>
+<li>このベクトルとベクトルvとの外積をあらわす新しいベクトルを返します．</li>
+</ul>
+</li>
+<li>rotate(deg, axis)<ul>
+<li>このベクトルをaxisを軸にdeg度回転した新しいベクトルを返します．</li>
+<li>axisを省略すると(0,0,1)になり，x,y成分の回転を行います</li>
+</ul>
+</li>
+<li>rotateX(deg, axis)<ul>
+<li>このベクトルをaxisを軸にdeg度破壊的に回転させ，このベクトルを返します．</li>
+<li>axisを省略すると(0,0,1)になり，x,y成分の回転を行います</li>
+</ul>
+</li>
+<li>set(x,y,z)<ul>
+<li>このベクトルに(x,y,z)の内容を破壊的にコピーします．</li>
+</ul>
+</li>
+<li>set(v)<ul>
+<li>このベクトルにvの内容を破壊的にコピーします．</li>
+</ul>
+</li>
+</ul>
+</body></html>

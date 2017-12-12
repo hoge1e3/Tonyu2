@@ -13,11 +13,11 @@
 </code></pre>
 <p>(<code>x</code>,<code>y</code>) からの距離がもっとも近いオブジェクトを返します．</p>
 <h2 id="-2">書式2</h2>
-<pre><code class="lang-JS">t.nearest(obj,d)
+<pre><code class="lang-JS">t.nearest(obj)
 </code></pre>
 <p>オブジェクト <code>obj</code> からの距離がもっとも近いオブジェクトを返します</p>
 <h2 id="-3">書式3</h2>
-<pre><code class="lang-JS">t.nearest(d)
+<pre><code class="lang-JS">t.nearest()
 </code></pre>
 <p><code>t</code>を作成したオブジェクト(<a href="all">all</a>などが呼び出されたオブジェクト)からの距離がもっとも近いものを返します<br>.</p>
 <h2 id="-">もっとも近いオブジェクトが複数ある場合</h2>
@@ -29,6 +29,6 @@
 <p>このTQueryオブジェクトが格納しているオブジェクトのうち，特定の位置からの距離がもっとも近いものだけからなるTQueryオブジェクト返します．</p>
 <p>書式はnearestメソッドと同じですが，戻り値はTQueryオブジェクトになります．</p>
 <p>もっとも近いオブジェクトが複数ある場合で，その中からランダムに1つ選ぶ場合は次のようにします</p>
-<pre><code class="lang-JS">t.nearests(d).random()
+<pre><code class="lang-JS">t.nearests().random()
 </code></pre>
 </body></html>

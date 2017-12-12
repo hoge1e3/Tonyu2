@@ -1,4 +1,4 @@
-// Created at Tue Dec 05 2017 12:58:57 GMT+0900 (東京 (標準時))
+// Created at Tue Dec 12 2017 16:20:57 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -15786,7 +15786,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
-			VERSION:1512446328730,//EMBED_VERSION
+			VERSION:1513063253232,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -31029,7 +31029,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                     for (var i=items.length-1; i>=0 ; i--) {
                         if (items[i]===item) {
                             var r=Assets.resolve( items[i].url, prj,{asFile:1});
-                            if (FS.isFile(r)) {
+                            if (FS.isFile(r) && rsrcDir.contains(r)) {
                                 console.log(r.path()," is removed.");
                                 r.rm();
                             }
@@ -31167,7 +31167,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
             close: function () {
                 update();
                 cleanFiles();
-                if (mediaType=="sound") {
+                if (mediaType=="sound" && rsrcDir.exists()) {
                     OggConverter.convert(rsrcDir);
                 }
             }

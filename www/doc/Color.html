@@ -1,0 +1,95 @@
+<html><body class="markdown-body">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><a href="api">api</a></p>
+<h1 id="color-">Colorクラス</h1>
+<p>色情報を扱うクラスです．RGB値（赤・緑・青の輝度）←→HSL値(色相・彩度・明度）への変換をサポートします．</p>
+<h2 id="-">コンストラクタ</h2>
+<pre><code class="lang-JS">new Color(r,g,b,a)
+</code></pre>
+<ul>
+<li>RGB値と a(透明度) を渡して初期化します．</li>
+</ul>
+<pre><code class="lang-JS">new Color(name)
+</code></pre>
+<ul>
+<li>HTMLの色名を表す文字列を渡して初期化します．</li>
+</ul>
+<pre><code class="lang-JS">new Color(param)
+</code></pre>
+<ul>
+<li>h, s, l を属性としてもつオブジェクト<em>param</em>を渡して，初期化します．</li>
+<li>a を渡すことも可能です．</li>
+</ul>
+<pre><code class="lang-JS">new Color(imageData, x, y);
+</code></pre>
+<ul>
+<li><a href="Panel">panel.getImageData</a> で得られたイメージデータの点 (x,y)における色情報を用いて初期化します</li>
+<li>このオブジェクトに対して変更を行うと，<em>imageData</em> に反映されます</li>
+</ul>
+<h2 id="-">値の範囲</h2>
+<ul>
+<li><code>r</code>,<code>g</code>,<code>b</code> それぞれ0から255まで</li>
+<li><code>a</code> 0から255まで</li>
+<li><code>h</code> 0から359まで</li>
+<li><code>s</code>,<code>l</code> 0から1まで</li>
+<li>範囲外の値を書き込んだ場合<ul>
+<li><code>h</code> は同じ向きの角度を表す範囲内の値に変換されます</li>
+<li>それ以外は範囲にもっとも近い値に変換されます</li>
+</ul>
+</li>
+</ul>
+<h2 id="-">プロパティ</h2>
+<ul>
+<li><code>r</code>, <code>g</code>, <code>b</code><ul>
+<li>読み出し：それぞれRGBの値を読み出します<ul>
+<li>初期化時にRGBの値を設定していない場合でも，RGBの値を算出して読み出します</li>
+</ul>
+</li>
+<li>書き込み：それぞれRGBの値を書き込みます．</li>
+</ul>
+</li>
+<li><code>h</code>, <code>s</code>, <code>l</code><ul>
+<li>読み出し：それぞれHSLの値を読み出します<ul>
+<li>初期化時にHSLの値を設定していない場合でも，HSLの値を算出して読み出します</li>
+</ul>
+</li>
+<li>書き込み：それぞれHSLの値を書き込みます．</li>
+</ul>
+</li>
+<li><code>a</code> 透明度を読み書きします</li>
+<li><code>name</code><ul>
+<li>読み出し：HTMLで利用可能な名前に変換します<ul>
+<li>初期化時に名前が設定されていない場合は読み出し時に名前を生成します．</li>
+</ul>
+</li>
+<li>書き込み：名前を設定します．</li>
+</ul>
+</li>
+</ul>
+<h2 id="-">メソッド</h2>
+<ul>
+<li>setRGBA(r,g,b,a)<ul>
+<li>RGB値と透明度を書き込みます</li>
+<li>a は省略可能</li>
+</ul>
+</li>
+<li>setHSLA(h,s,l,a)<ul>
+<li>HSL値と透明度を書き込みます</li>
+<li>a は省略可能</li>
+</ul>
+</li>
+<li>distRGBA(c)<ul>
+<li>他のColorオブジェクト<em>c</em>との距離をRGB値と透明度を用いて計算します．</li>
+<li>距離の範囲は0から1までです．</li>
+</ul>
+</li>
+<li>distHSLA(c)<ul>
+<li>他のColorオブジェクト<em>c</em>との距離をHSL値と透明度を用いて計算します．</li>
+<li>距離の範囲は0から1までです．</li>
+</ul>
+</li>
+</ul>
+</body></html>
