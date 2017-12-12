@@ -18,7 +18,7 @@ while(true) {
         clicked=checkTouch();
         if (clicked==1) {
             Button.last=this;
-            if (onClick) onClick();
+            if (onClick) onClick(this);
         }
     } else {
         clicked=0;

@@ -136,7 +136,11 @@ native $;
 	value.h=h;
 	value.s=s;
 	value.l=l;
-	if(typeof a==="number") value.a=a;
+	if(typeof a==="number") {
+		if (imageData) {
+			imageData.data[index+3]=a;
+		} else value.a=a;
+	}
 	if (imageData) makeRGBA(true);
 	else clearRGBA();
 	return true;
@@ -198,7 +202,7 @@ native $;
 		var rgb=HSLToRGB(value.h,value.s,value.l);
 		if (imageData) {
 			for(var i=0;i<3;i++) imageData.data[index+i]=rgb[i]*maxs.r;
-			imageData.data[index+3]=value.a;
+			//imageData.data[index+3]=value.a;
 		} else {
 			value.r=rgb[0]*maxs.r;
 			value.g=rgb[1]*maxs.g;

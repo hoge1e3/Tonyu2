@@ -194,7 +194,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                     for (var i=items.length-1; i>=0 ; i--) {
                         if (items[i]===item) {
                             var r=Assets.resolve( items[i].url, prj,{asFile:1});
-                            if (FS.isFile(r)) {
+                            if (FS.isFile(r) && rsrcDir.contains(r)) {
                                 console.log(r.path()," is removed.");
                                 r.rm();
                             }

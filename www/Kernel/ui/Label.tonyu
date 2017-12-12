@@ -7,21 +7,21 @@ native Tonyu;
     super(x,y,-1);
     if (x==null) x=50;
     if (y==null) y=50;
-    if (!template && !_text) {
+    if (typeof template!=="string" && _text==null) {
         text="text";
-    } 
+    }
 }
 \text {
-    if (!template) return _text;
+    if (typeof template!=="string") return _text;
     return template.replace(/[\$\@][A-Za-z0-9\.]* ?/g) \(v) {
         v=v.replace(/ $/,"");
         if (v=="") return "$";
         if (v.match(/^@/)) {
-            return exapndVal(target, v.substring(1).split("."));   
+            return exapndVal(target, v.substring(1).split("."));
         } else {
             return expandVal(Tonyu.globals,v.split("."));
         }
-    };    
+    };
 }
 \expandVal(obj,flds) {
     while (flds.length>0) {
