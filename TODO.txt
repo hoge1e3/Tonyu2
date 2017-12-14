@@ -1,3 +1,10 @@
+﻿System
+ Node version up to date (64/32)
+ makerun urlArgs
+ test older games in tonyuexe
+ test framework
+ mugenLoopCheck is OK?
+
 Lib
  CPTR - use requirejs
  Prj + Builder
@@ -8,6 +15,7 @@ Lib
  Copy screenshot
  
 UI
+  ダイアログがデフォルト
   テキスト入力
   フルスクリーン
   ドラッグ時再描画
