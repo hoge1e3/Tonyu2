@@ -10,3 +10,8 @@
 [0819/173653.860:WARNING:process_subrange_reader.cc(59)] range 0x140104000 + 0x48af8 (64) outside of  range 0x140000000 + 0x10e000 (64) for C:\bin\Dropbox\workspace120324\Tonyu2\Tonyu2.exe resources
 [0819/173653.873:WARNING:in_range_cast.h(38)] value 216174981153816576 out of range
 [0819/173653.873:WARNING:in_range_cast.h(38)] value 3098522723807143936 out of range
+[1214/115144.862:ERROR:crashpad_client_win.cc(722)] not connected
+[1214/115145.118:ERROR:process_info.cc(632)] range at 0xc30e2abc00000000, size 0x25d fully unreadable
+[1214/115145.118:ERROR:process_info.cc(632)] range at 0xc30e2adc00000000, size 0x25d fully unreadable
+[1214/115145.118:ERROR:process_info.cc(632)] range at 0x0, size 0x25d fully unreadable
+[1214/115145.161:ERROR:http_transport_win.cc(170)] WinHttpCrackUrl: URL は認識されているプロトコルを使用していません  (0x2ee6)
