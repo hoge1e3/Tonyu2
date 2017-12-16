@@ -5,7 +5,7 @@ native encodeURIComponent;
 
 eventWindowOpen = \(e) {
     //window.console.log("evtwinopen",postUrl);
-    
+
     window.open(postUrl);
     if (canvas.removeEventListener) {
         canvas.removeEventListener("click", eventWindowOpen, false);
@@ -106,10 +106,10 @@ eventWindowOpen = \(e) {
  */
 \openShareTweet(text, url, hashtags, via, related, tl) {
     var sendUrl = "https://twitter.com/intent/tweet?";
-    
+
     // openShareTweet(url,text) だった時の後方互換。第１引数がURLか分析する
     if (arguments.length==2) {
-        if (text.match(/^http/)) {
+        if (text==null || text.match(/^http/)) {
             var tempText=text;
             text=url;url=tempText;
         }

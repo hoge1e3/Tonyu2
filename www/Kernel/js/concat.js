@@ -16477,20 +16477,20 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45000069;//kernel.T2MediaPlayer:69
+      //$LASTPOS=45000086;//kernel.T2MediaPlayer:86
       _this.initT2MediaPlayer();
     },
     initT2MediaPlayer :function _trc_T2MediaPlayer_initT2MediaPlayer() {
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45000124;//kernel.T2MediaPlayer:124
+      //$LASTPOS=45000141;//kernel.T2MediaPlayer:141
       if (! Tonyu.globals.$t2MediaLib) {
-        //$LASTPOS=45000153;//kernel.T2MediaPlayer:153
+        //$LASTPOS=45000170;//kernel.T2MediaPlayer:170
         Tonyu.globals.$t2MediaLib=new T2MediaLib();
         
       }
-      //$LASTPOS=45000197;//kernel.T2MediaPlayer:197
+      //$LASTPOS=45000214;//kernel.T2MediaPlayer:214
       _this.bgmPlayerMax=Tonyu.globals.$t2MediaLib.bgmPlayerMax;
     },
     fiber$initT2MediaPlayer :function _trc_T2MediaPlayer_f_initT2MediaPlayer(_thread) {
@@ -16499,13 +16499,13 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=45000124;//kernel.T2MediaPlayer:124
+      //$LASTPOS=45000141;//kernel.T2MediaPlayer:141
       if (! Tonyu.globals.$t2MediaLib) {
-        //$LASTPOS=45000153;//kernel.T2MediaPlayer:153
+        //$LASTPOS=45000170;//kernel.T2MediaPlayer:170
         Tonyu.globals.$t2MediaLib=new T2MediaLib();
         
       }
-      //$LASTPOS=45000197;//kernel.T2MediaPlayer:197
+      //$LASTPOS=45000214;//kernel.T2MediaPlayer:214
       _this.bgmPlayerMax=Tonyu.globals.$t2MediaLib.bgmPlayerMax;
       
       _thread.retVal=_this;return;
@@ -16514,9 +16514,9 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45000272;//kernel.T2MediaPlayer:272
+      //$LASTPOS=45000289;//kernel.T2MediaPlayer:289
       Tonyu.globals.$t2MediaLib.allResetBGM();
-      //$LASTPOS=45000304;//kernel.T2MediaPlayer:304
+      //$LASTPOS=45000321;//kernel.T2MediaPlayer:321
       Tonyu.globals.$t2MediaLib.allClearSoundData();
     },
     fiber$allClearSoundData :function _trc_T2MediaPlayer_f_allClearSoundData(_thread) {
@@ -16525,9 +16525,9 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=45000272;//kernel.T2MediaPlayer:272
+      //$LASTPOS=45000289;//kernel.T2MediaPlayer:289
       Tonyu.globals.$t2MediaLib.allResetBGM();
-      //$LASTPOS=45000304;//kernel.T2MediaPlayer:304
+      //$LASTPOS=45000321;//kernel.T2MediaPlayer:321
       Tonyu.globals.$t2MediaLib.allClearSoundData();
       
       _thread.retVal=_this;return;
@@ -16536,7 +16536,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45000371;//kernel.T2MediaPlayer:371
+      //$LASTPOS=45000388;//kernel.T2MediaPlayer:388
       Tonyu.globals.$t2MediaLib.clearSoundData(idx);
     },
     fiber$clearSoundData :function _trc_T2MediaPlayer_f_clearSoundData(_thread,idx) {
@@ -16545,7 +16545,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=45000371;//kernel.T2MediaPlayer:371
+      //$LASTPOS=45000388;//kernel.T2MediaPlayer:388
       Tonyu.globals.$t2MediaLib.clearSoundData(idx);
       
       _thread.retVal=_this;return;
@@ -16554,7 +16554,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45000446;//kernel.T2MediaPlayer:446
+      //$LASTPOS=45000463;//kernel.T2MediaPlayer:463
       Tonyu.globals.$t2MediaLib.allRemoveDecodedSoundData();
     },
     fiber$allRemoveDecodedSoundData :function _trc_T2MediaPlayer_f_allRemoveDecodedSoundData(_thread) {
@@ -16563,7 +16563,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=45000446;//kernel.T2MediaPlayer:446
+      //$LASTPOS=45000463;//kernel.T2MediaPlayer:463
       Tonyu.globals.$t2MediaLib.allRemoveDecodedSoundData();
       
       _thread.retVal=_this;return;
@@ -16572,7 +16572,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45000529;//kernel.T2MediaPlayer:529
+      //$LASTPOS=45000546;//kernel.T2MediaPlayer:546
       Tonyu.globals.$t2MediaLib.removeDecodedSoundData(idx);
     },
     fiber$removeDecodedSoundData :function _trc_T2MediaPlayer_f_removeDecodedSoundData(_thread,idx) {
@@ -16581,7 +16581,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=45000529;//kernel.T2MediaPlayer:529
+      //$LASTPOS=45000546;//kernel.T2MediaPlayer:546
       Tonyu.globals.$t2MediaLib.removeDecodedSoundData(idx);
       
       _thread.retVal=_this;return;
@@ -16607,13 +16607,13 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45000681;//kernel.T2MediaPlayer:681
+      //$LASTPOS=45000698;//kernel.T2MediaPlayer:698
       if (typeof  vol==="number") {
-        //$LASTPOS=45000721;//kernel.T2MediaPlayer:721
+        //$LASTPOS=45000738;//kernel.T2MediaPlayer:738
         vol/=128;
-        //$LASTPOS=45000742;//kernel.T2MediaPlayer:742
+        //$LASTPOS=45000759;//kernel.T2MediaPlayer:759
         if (vol<0) {
-          //$LASTPOS=45000757;//kernel.T2MediaPlayer:757
+          //$LASTPOS=45000774;//kernel.T2MediaPlayer:774
           vol=0;
         }
         
@@ -16629,13 +16629,13 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=45000681;//kernel.T2MediaPlayer:681
+      //$LASTPOS=45000698;//kernel.T2MediaPlayer:698
       if (typeof  vol==="number") {
-        //$LASTPOS=45000721;//kernel.T2MediaPlayer:721
+        //$LASTPOS=45000738;//kernel.T2MediaPlayer:738
         vol/=128;
-        //$LASTPOS=45000742;//kernel.T2MediaPlayer:742
+        //$LASTPOS=45000759;//kernel.T2MediaPlayer:759
         if (vol<0) {
-          //$LASTPOS=45000757;//kernel.T2MediaPlayer:757
+          //$LASTPOS=45000774;//kernel.T2MediaPlayer:774
           vol=0;
         }
         
@@ -16653,7 +16653,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45000966;//kernel.T2MediaPlayer:966
+      //$LASTPOS=45000983;//kernel.T2MediaPlayer:983
       Tonyu.globals.$t2MediaLib.loadSound(idx,src,callbacks);
     },
     fiber$loadSound :function _trc_T2MediaPlayer_f_loadSound(_thread,idx,src,callbacks) {
@@ -16662,7 +16662,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=45000966;//kernel.T2MediaPlayer:966
+      //$LASTPOS=45000983;//kernel.T2MediaPlayer:983
       Tonyu.globals.$t2MediaLib.loadSound(idx,src,callbacks);
       
       _thread.retVal=_this;return;
@@ -16686,99 +16686,99 @@ Tonyu.klass.define({
       var func;
       var i;
       
-      //$LASTPOS=45001109;//kernel.T2MediaPlayer:1109
+      //$LASTPOS=45001126;//kernel.T2MediaPlayer:1126
       if (! _this.available) {
         return _this;
       }
-      //$LASTPOS=45001138;//kernel.T2MediaPlayer:1138
+      //$LASTPOS=45001155;//kernel.T2MediaPlayer:1155
       r = prj.getResource();
       
-      //$LASTPOS=45001168;//kernel.T2MediaPlayer:1168
+      //$LASTPOS=45001185;//kernel.T2MediaPlayer:1185
       if (! r||! r.sounds) {
         return _this;
       }
-      //$LASTPOS=45001202;//kernel.T2MediaPlayer:1202
+      //$LASTPOS=45001219;//kernel.T2MediaPlayer:1219
       if (r.sounds<=0) {
         return _this;
       }
-      //$LASTPOS=45001240;//kernel.T2MediaPlayer:1240
+      //$LASTPOS=45001253;//kernel.T2MediaPlayer:1253
       _this.progressNoLog("Loading sounds...[0/"+r.sounds.length+"]");
-      //$LASTPOS=45001321;//kernel.T2MediaPlayer:1321
+      //$LASTPOS=45001334;//kernel.T2MediaPlayer:1334
       jobs = 6;
       
-      //$LASTPOS=45001338;//kernel.T2MediaPlayer:1338
+      //$LASTPOS=45001351;//kernel.T2MediaPlayer:1351
       cnt = 0;
       
-      //$LASTPOS=45001354;//kernel.T2MediaPlayer:1354
+      //$LASTPOS=45001367;//kernel.T2MediaPlayer:1367
       callbacks = {};
       
       
-      //$LASTPOS=45001400;//kernel.T2MediaPlayer:1400
-      func = (function anonymous_1411(idx,errorID) {
+      //$LASTPOS=45001413;//kernel.T2MediaPlayer:1413
+      func = (function anonymous_1424(idx,errorID) {
         var s;
         var name;
         var url;
         
-        //$LASTPOS=45001444;//kernel.T2MediaPlayer:1444
+        //$LASTPOS=45001457;//kernel.T2MediaPlayer:1457
         if (errorID) {
-          //$LASTPOS=45001472;//kernel.T2MediaPlayer:1472
-          _this.console.log(errorID);
-          //$LASTPOS=45001551;//kernel.T2MediaPlayer:1551
+          //$LASTPOS=45001485;//kernel.T2MediaPlayer:1485
+          console.log(errorID);
+          //$LASTPOS=45001564;//kernel.T2MediaPlayer:1564
           Tonyu.setGlobal(idx,"ERROR");
           
         } else {
-          //$LASTPOS=45001659;//kernel.T2MediaPlayer:1659
+          //$LASTPOS=45001672;//kernel.T2MediaPlayer:1672
           Tonyu.setGlobal(idx,idx);
           
         }
-        //$LASTPOS=45001716;//kernel.T2MediaPlayer:1716
+        //$LASTPOS=45001721;//kernel.T2MediaPlayer:1721
         cnt++;
-        //$LASTPOS=45001733;//kernel.T2MediaPlayer:1733
+        //$LASTPOS=45001738;//kernel.T2MediaPlayer:1738
         if (cnt>=r.sounds.length) {
           return _this;
         }
-        //$LASTPOS=45001778;//kernel.T2MediaPlayer:1778
+        //$LASTPOS=45001783;//kernel.T2MediaPlayer:1783
         _this.progressNoLog("Loading sounds...["+(cnt+1)+"/"+r.sounds.length+"]");
-        //$LASTPOS=45001856;//kernel.T2MediaPlayer:1856
+        //$LASTPOS=45001861;//kernel.T2MediaPlayer:1861
         s = r.sounds[cnt];
         
-        //$LASTPOS=45001888;//kernel.T2MediaPlayer:1888
+        //$LASTPOS=45001893;//kernel.T2MediaPlayer:1893
         name = s.name;
         
-        //$LASTPOS=45001914;//kernel.T2MediaPlayer:1914
+        //$LASTPOS=45001919;//kernel.T2MediaPlayer:1919
         url = Tonyu.Assets.resolve(s.url,prj);
         
-        //$LASTPOS=45001965;//kernel.T2MediaPlayer:1965
+        //$LASTPOS=45001970;//kernel.T2MediaPlayer:1970
         _this.loadSound(name,url,callbacks);
       });
       
-      //$LASTPOS=45002011;//kernel.T2MediaPlayer:2011
+      //$LASTPOS=45002016;//kernel.T2MediaPlayer:2016
       callbacks.succ=func;
-      //$LASTPOS=45002037;//kernel.T2MediaPlayer:2037
+      //$LASTPOS=45002042;//kernel.T2MediaPlayer:2042
       callbacks.err=func;
-      //$LASTPOS=45002062;//kernel.T2MediaPlayer:2062
       //$LASTPOS=45002067;//kernel.T2MediaPlayer:2067
+      //$LASTPOS=45002072;//kernel.T2MediaPlayer:2072
       i = 0;
       for (; i<jobs ; i++) {
         {
-          //$LASTPOS=45002100;//kernel.T2MediaPlayer:2100
+          //$LASTPOS=45002105;//kernel.T2MediaPlayer:2105
           if (i>=r.sounds.length) {
             break;
             
           }
-          //$LASTPOS=45002142;//kernel.T2MediaPlayer:2142
+          //$LASTPOS=45002147;//kernel.T2MediaPlayer:2147
           s=r.sounds[i];
-          //$LASTPOS=45002168;//kernel.T2MediaPlayer:2168
+          //$LASTPOS=45002173;//kernel.T2MediaPlayer:2173
           name=s.name;
-          //$LASTPOS=45002190;//kernel.T2MediaPlayer:2190
+          //$LASTPOS=45002195;//kernel.T2MediaPlayer:2195
           url=Tonyu.Assets.resolve(s.url,prj);
-          //$LASTPOS=45002237;//kernel.T2MediaPlayer:2237
+          //$LASTPOS=45002242;//kernel.T2MediaPlayer:2242
           _this.loadSound(name,url,callbacks);
         }
       }
-      //$LASTPOS=45002282;//kernel.T2MediaPlayer:2282
+      //$LASTPOS=45002287;//kernel.T2MediaPlayer:2287
       while (cnt<r.sounds.length) {
-        //$LASTPOS=45002323;//kernel.T2MediaPlayer:2323
+        //$LASTPOS=45002328;//kernel.T2MediaPlayer:2328
         _this.update();
         
       }
@@ -16798,33 +16798,33 @@ Tonyu.klass.define({
       var func;
       var i;
       
-      //$LASTPOS=45001109;//kernel.T2MediaPlayer:1109
+      //$LASTPOS=45001126;//kernel.T2MediaPlayer:1126
       if (! _this.available) {
         _thread.retVal=_this;return;
         
       }
-      //$LASTPOS=45001138;//kernel.T2MediaPlayer:1138
+      //$LASTPOS=45001155;//kernel.T2MediaPlayer:1155
       r = prj.getResource();
       
-      //$LASTPOS=45001168;//kernel.T2MediaPlayer:1168
+      //$LASTPOS=45001185;//kernel.T2MediaPlayer:1185
       if (! r||! r.sounds) {
         _thread.retVal=_this;return;
         
       }
-      //$LASTPOS=45001202;//kernel.T2MediaPlayer:1202
+      //$LASTPOS=45001219;//kernel.T2MediaPlayer:1219
       if (r.sounds<=0) {
         _thread.retVal=_this;return;
         
       }
-      //$LASTPOS=45001240;//kernel.T2MediaPlayer:1240
+      //$LASTPOS=45001253;//kernel.T2MediaPlayer:1253
       _this.progressNoLog("Loading sounds...[0/"+r.sounds.length+"]");
-      //$LASTPOS=45001321;//kernel.T2MediaPlayer:1321
+      //$LASTPOS=45001334;//kernel.T2MediaPlayer:1334
       jobs = 6;
       
-      //$LASTPOS=45001338;//kernel.T2MediaPlayer:1338
+      //$LASTPOS=45001351;//kernel.T2MediaPlayer:1351
       cnt = 0;
       
-      //$LASTPOS=45001354;//kernel.T2MediaPlayer:1354
+      //$LASTPOS=45001367;//kernel.T2MediaPlayer:1367
       callbacks = {};
       
       
@@ -16834,68 +16834,68 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=45001400;//kernel.T2MediaPlayer:1400
-            func = (function anonymous_1411(idx,errorID) {
+            //$LASTPOS=45001413;//kernel.T2MediaPlayer:1413
+            func = (function anonymous_1424(idx,errorID) {
               var s;
               var name;
               var url;
               
-              //$LASTPOS=45001444;//kernel.T2MediaPlayer:1444
+              //$LASTPOS=45001457;//kernel.T2MediaPlayer:1457
               if (errorID) {
-                //$LASTPOS=45001472;//kernel.T2MediaPlayer:1472
-                _this.console.log(errorID);
-                //$LASTPOS=45001551;//kernel.T2MediaPlayer:1551
+                //$LASTPOS=45001485;//kernel.T2MediaPlayer:1485
+                console.log(errorID);
+                //$LASTPOS=45001564;//kernel.T2MediaPlayer:1564
                 Tonyu.setGlobal(idx,"ERROR");
                 
               } else {
-                //$LASTPOS=45001659;//kernel.T2MediaPlayer:1659
+                //$LASTPOS=45001672;//kernel.T2MediaPlayer:1672
                 Tonyu.setGlobal(idx,idx);
                 
               }
-              //$LASTPOS=45001716;//kernel.T2MediaPlayer:1716
+              //$LASTPOS=45001721;//kernel.T2MediaPlayer:1721
               cnt++;
-              //$LASTPOS=45001733;//kernel.T2MediaPlayer:1733
+              //$LASTPOS=45001738;//kernel.T2MediaPlayer:1738
               if (cnt>=r.sounds.length) {
                 return _this;
               }
-              //$LASTPOS=45001778;//kernel.T2MediaPlayer:1778
+              //$LASTPOS=45001783;//kernel.T2MediaPlayer:1783
               _this.progressNoLog("Loading sounds...["+(cnt+1)+"/"+r.sounds.length+"]");
-              //$LASTPOS=45001856;//kernel.T2MediaPlayer:1856
+              //$LASTPOS=45001861;//kernel.T2MediaPlayer:1861
               s = r.sounds[cnt];
               
-              //$LASTPOS=45001888;//kernel.T2MediaPlayer:1888
+              //$LASTPOS=45001893;//kernel.T2MediaPlayer:1893
               name = s.name;
               
-              //$LASTPOS=45001914;//kernel.T2MediaPlayer:1914
+              //$LASTPOS=45001919;//kernel.T2MediaPlayer:1919
               url = Tonyu.Assets.resolve(s.url,prj);
               
-              //$LASTPOS=45001965;//kernel.T2MediaPlayer:1965
+              //$LASTPOS=45001970;//kernel.T2MediaPlayer:1970
               _this.loadSound(name,url,callbacks);
             });
             
-            //$LASTPOS=45002011;//kernel.T2MediaPlayer:2011
+            //$LASTPOS=45002016;//kernel.T2MediaPlayer:2016
             callbacks.succ=func;
-            //$LASTPOS=45002037;//kernel.T2MediaPlayer:2037
+            //$LASTPOS=45002042;//kernel.T2MediaPlayer:2042
             callbacks.err=func;
-            //$LASTPOS=45002062;//kernel.T2MediaPlayer:2062
             //$LASTPOS=45002067;//kernel.T2MediaPlayer:2067
+            //$LASTPOS=45002072;//kernel.T2MediaPlayer:2072
             i = 0;
             
           case 1:
             if (!(i<jobs)) { __pc=5     ; break; }
-            //$LASTPOS=45002100;//kernel.T2MediaPlayer:2100
+            //$LASTPOS=45002105;//kernel.T2MediaPlayer:2105
             if (!(i>=r.sounds.length)) { __pc=2     ; break; }
             __pc=5     ; break;
             
           case 2     :
             
-            //$LASTPOS=45002142;//kernel.T2MediaPlayer:2142
+            //$LASTPOS=45002147;//kernel.T2MediaPlayer:2147
             s=r.sounds[i];
-            //$LASTPOS=45002168;//kernel.T2MediaPlayer:2168
+            //$LASTPOS=45002173;//kernel.T2MediaPlayer:2173
             name=s.name;
-            //$LASTPOS=45002190;//kernel.T2MediaPlayer:2190
+            //$LASTPOS=45002195;//kernel.T2MediaPlayer:2195
             url=Tonyu.Assets.resolve(s.url,prj);
-            //$LASTPOS=45002237;//kernel.T2MediaPlayer:2237
+            //$LASTPOS=45002242;//kernel.T2MediaPlayer:2242
             _this.fiber$loadSound(_thread, name, url, callbacks);
             __pc=3;return;
           case 3:
@@ -16905,10 +16905,10 @@ Tonyu.klass.define({
             __pc=1;break;
           case 5     :
             
-            //$LASTPOS=45002282;//kernel.T2MediaPlayer:2282
+            //$LASTPOS=45002287;//kernel.T2MediaPlayer:2287
           case 6:
             if (!(cnt<r.sounds.length)) { __pc=8     ; break; }
-            //$LASTPOS=45002323;//kernel.T2MediaPlayer:2323
+            //$LASTPOS=45002328;//kernel.T2MediaPlayer:2328
             _this.fiber$update(_thread);
             __pc=7;return;
           case 7:
@@ -16925,7 +16925,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45002407;//kernel.T2MediaPlayer:2407
+      //$LASTPOS=45002412;//kernel.T2MediaPlayer:2412
       Tonyu.globals.$t2MediaLib.decodeSound(idx,callbacks);
     },
     fiber$decodeSound :function _trc_T2MediaPlayer_f_decodeSound(_thread,idx,callbacks) {
@@ -16934,7 +16934,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=45002407;//kernel.T2MediaPlayer:2407
+      //$LASTPOS=45002412;//kernel.T2MediaPlayer:2412
       Tonyu.globals.$t2MediaLib.decodeSound(idx,callbacks);
       
       _thread.retVal=_this;return;
@@ -17012,52 +17012,52 @@ Tonyu.klass.define({
       var _this=this;
       var o;
       
-      //$LASTPOS=45002903;//kernel.T2MediaPlayer:2903
+      //$LASTPOS=45002908;//kernel.T2MediaPlayer:2908
       if (_this.mute) {
         return _this;
       }
-      //$LASTPOS=45002926;//kernel.T2MediaPlayer:2926
+      //$LASTPOS=45002931;//kernel.T2MediaPlayer:2931
       if (vol&&typeof  vol==="object") {
-        //$LASTPOS=45002981;//kernel.T2MediaPlayer:2981
+        //$LASTPOS=45002986;//kernel.T2MediaPlayer:2986
         o = vol;
         
-        //$LASTPOS=45003001;//kernel.T2MediaPlayer:3001
+        //$LASTPOS=45003006;//kernel.T2MediaPlayer:3006
         vol=o.vol;
-        //$LASTPOS=45003021;//kernel.T2MediaPlayer:3021
+        //$LASTPOS=45003026;//kernel.T2MediaPlayer:3026
         pan=o.pan;
-        //$LASTPOS=45003041;//kernel.T2MediaPlayer:3041
+        //$LASTPOS=45003046;//kernel.T2MediaPlayer:3046
         rate=o.rate;
-        //$LASTPOS=45003063;//kernel.T2MediaPlayer:3063
+        //$LASTPOS=45003068;//kernel.T2MediaPlayer:3068
         offset=o.offset;
-        //$LASTPOS=45003089;//kernel.T2MediaPlayer:3089
+        //$LASTPOS=45003094;//kernel.T2MediaPlayer:3094
         loop=o.loop;
-        //$LASTPOS=45003111;//kernel.T2MediaPlayer:3111
+        //$LASTPOS=45003116;//kernel.T2MediaPlayer:3116
         loopStart=o.loopStart;
-        //$LASTPOS=45003143;//kernel.T2MediaPlayer:3143
+        //$LASTPOS=45003148;//kernel.T2MediaPlayer:3148
         loopEnd=o.loopEnd;
-        //$LASTPOS=45003171;//kernel.T2MediaPlayer:3171
+        //$LASTPOS=45003176;//kernel.T2MediaPlayer:3176
         start=o.start;
-        //$LASTPOS=45003195;//kernel.T2MediaPlayer:3195
+        //$LASTPOS=45003200;//kernel.T2MediaPlayer:3200
         duration=o.duration;
         
       }
-      //$LASTPOS=45003363;//kernel.T2MediaPlayer:3363
+      //$LASTPOS=45003368;//kernel.T2MediaPlayer:3368
       if (vol==null) {
-        //$LASTPOS=45003380;//kernel.T2MediaPlayer:3380
+        //$LASTPOS=45003385;//kernel.T2MediaPlayer:3385
         vol=128;
       }
-      //$LASTPOS=45003396;//kernel.T2MediaPlayer:3396
+      //$LASTPOS=45003401;//kernel.T2MediaPlayer:3401
       if (typeof  vol==="number") {
-        //$LASTPOS=45003436;//kernel.T2MediaPlayer:3436
+        //$LASTPOS=45003441;//kernel.T2MediaPlayer:3441
         vol/=128;
-        //$LASTPOS=45003457;//kernel.T2MediaPlayer:3457
+        //$LASTPOS=45003462;//kernel.T2MediaPlayer:3462
         if (vol<0) {
-          //$LASTPOS=45003472;//kernel.T2MediaPlayer:3472
+          //$LASTPOS=45003477;//kernel.T2MediaPlayer:3477
           vol=0;
         }
         
       } else {
-        //$LASTPOS=45003506;//kernel.T2MediaPlayer:3506
+        //$LASTPOS=45003511;//kernel.T2MediaPlayer:3511
         vol=1;
         
       }
@@ -17101,13 +17101,13 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45003823;//kernel.T2MediaPlayer:3823
+      //$LASTPOS=45003828;//kernel.T2MediaPlayer:3828
       if (typeof  vol==="number") {
-        //$LASTPOS=45003863;//kernel.T2MediaPlayer:3863
+        //$LASTPOS=45003868;//kernel.T2MediaPlayer:3868
         vol/=128;
-        //$LASTPOS=45003884;//kernel.T2MediaPlayer:3884
+        //$LASTPOS=45003889;//kernel.T2MediaPlayer:3889
         if (vol<0) {
-          //$LASTPOS=45003899;//kernel.T2MediaPlayer:3899
+          //$LASTPOS=45003904;//kernel.T2MediaPlayer:3904
           vol=0;
         }
         
@@ -17123,13 +17123,13 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=45003823;//kernel.T2MediaPlayer:3823
+      //$LASTPOS=45003828;//kernel.T2MediaPlayer:3828
       if (typeof  vol==="number") {
-        //$LASTPOS=45003863;//kernel.T2MediaPlayer:3863
+        //$LASTPOS=45003868;//kernel.T2MediaPlayer:3868
         vol/=128;
-        //$LASTPOS=45003884;//kernel.T2MediaPlayer:3884
+        //$LASTPOS=45003889;//kernel.T2MediaPlayer:3889
         if (vol<0) {
-          //$LASTPOS=45003899;//kernel.T2MediaPlayer:3899
+          //$LASTPOS=45003904;//kernel.T2MediaPlayer:3904
           vol=0;
         }
         
@@ -17148,7 +17148,7 @@ Tonyu.klass.define({
       var _this=this;
       var vol;
       
-      //$LASTPOS=45004133;//kernel.T2MediaPlayer:4133
+      //$LASTPOS=45004138;//kernel.T2MediaPlayer:4138
       vol = Tonyu.globals.$t2MediaLib.getSEVolume(sourceObj);
       
       return typeof  vol==="number"?vol*128:vol;
@@ -17160,7 +17160,7 @@ Tonyu.klass.define({
       var __pc=0;
       var vol;
       
-      //$LASTPOS=45004133;//kernel.T2MediaPlayer:4133
+      //$LASTPOS=45004138;//kernel.T2MediaPlayer:4138
       vol = Tonyu.globals.$t2MediaLib.getSEVolume(sourceObj);
       
       _thread.retVal=typeof  vol==="number"?vol*128:vol;return;
@@ -17172,13 +17172,13 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45004276;//kernel.T2MediaPlayer:4276
+      //$LASTPOS=45004281;//kernel.T2MediaPlayer:4281
       if (typeof  vol==="number") {
-        //$LASTPOS=45004316;//kernel.T2MediaPlayer:4316
+        //$LASTPOS=45004321;//kernel.T2MediaPlayer:4321
         vol/=128;
-        //$LASTPOS=45004337;//kernel.T2MediaPlayer:4337
+        //$LASTPOS=45004342;//kernel.T2MediaPlayer:4342
         if (vol<0) {
-          //$LASTPOS=45004352;//kernel.T2MediaPlayer:4352
+          //$LASTPOS=45004357;//kernel.T2MediaPlayer:4357
           vol=0;
         }
         
@@ -17194,13 +17194,13 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=45004276;//kernel.T2MediaPlayer:4276
+      //$LASTPOS=45004281;//kernel.T2MediaPlayer:4281
       if (typeof  vol==="number") {
-        //$LASTPOS=45004316;//kernel.T2MediaPlayer:4316
+        //$LASTPOS=45004321;//kernel.T2MediaPlayer:4321
         vol/=128;
-        //$LASTPOS=45004337;//kernel.T2MediaPlayer:4337
+        //$LASTPOS=45004342;//kernel.T2MediaPlayer:4342
         if (vol<0) {
-          //$LASTPOS=45004352;//kernel.T2MediaPlayer:4352
+          //$LASTPOS=45004357;//kernel.T2MediaPlayer:4357
           vol=0;
         }
         
@@ -17388,18 +17388,18 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45005548;//kernel.T2MediaPlayer:5548
+      //$LASTPOS=45005553;//kernel.T2MediaPlayer:5553
       if (_this.mute) {
         return _this;
       }
-      //$LASTPOS=45005571;//kernel.T2MediaPlayer:5571
+      //$LASTPOS=45005576;//kernel.T2MediaPlayer:5576
       if (loop==null) {
-        //$LASTPOS=45005589;//kernel.T2MediaPlayer:5589
+        //$LASTPOS=45005594;//kernel.T2MediaPlayer:5594
         loop=false;
       }
-      //$LASTPOS=45005608;//kernel.T2MediaPlayer:5608
+      //$LASTPOS=45005613;//kernel.T2MediaPlayer:5613
       if (offset==null) {
-        //$LASTPOS=45005628;//kernel.T2MediaPlayer:5628
+        //$LASTPOS=45005633;//kernel.T2MediaPlayer:5633
         offset=0;
       }
       return Tonyu.globals.$t2MediaLib.playBGM(0,idx,loop,offset,loopStart,loopEnd);
@@ -17410,19 +17410,19 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=45005548;//kernel.T2MediaPlayer:5548
+      //$LASTPOS=45005553;//kernel.T2MediaPlayer:5553
       if (_this.mute) {
         _thread.retVal=_this;return;
         
       }
-      //$LASTPOS=45005571;//kernel.T2MediaPlayer:5571
+      //$LASTPOS=45005576;//kernel.T2MediaPlayer:5576
       if (loop==null) {
-        //$LASTPOS=45005589;//kernel.T2MediaPlayer:5589
+        //$LASTPOS=45005594;//kernel.T2MediaPlayer:5594
         loop=false;
       }
-      //$LASTPOS=45005608;//kernel.T2MediaPlayer:5608
+      //$LASTPOS=45005613;//kernel.T2MediaPlayer:5613
       if (offset==null) {
-        //$LASTPOS=45005628;//kernel.T2MediaPlayer:5628
+        //$LASTPOS=45005633;//kernel.T2MediaPlayer:5633
         offset=0;
       }
       _thread.retVal=Tonyu.globals.$t2MediaLib.playBGM(0,idx,loop,offset,loopStart,loopEnd);return;
@@ -17468,7 +17468,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45005853;//kernel.T2MediaPlayer:5853
+      //$LASTPOS=45005858;//kernel.T2MediaPlayer:5858
       if (_this.mute) {
         return _this;
       }
@@ -17480,7 +17480,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=45005853;//kernel.T2MediaPlayer:5853
+      //$LASTPOS=45005858;//kernel.T2MediaPlayer:5858
       if (_this.mute) {
         _thread.retVal=_this;return;
         
@@ -17511,13 +17511,13 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45006029;//kernel.T2MediaPlayer:6029
+      //$LASTPOS=45006034;//kernel.T2MediaPlayer:6034
       if (typeof  vol==="number") {
-        //$LASTPOS=45006069;//kernel.T2MediaPlayer:6069
+        //$LASTPOS=45006074;//kernel.T2MediaPlayer:6074
         vol/=128;
-        //$LASTPOS=45006090;//kernel.T2MediaPlayer:6090
+        //$LASTPOS=45006095;//kernel.T2MediaPlayer:6095
         if (vol<0) {
-          //$LASTPOS=45006105;//kernel.T2MediaPlayer:6105
+          //$LASTPOS=45006110;//kernel.T2MediaPlayer:6110
           vol=0;
         }
         
@@ -17533,13 +17533,13 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=45006029;//kernel.T2MediaPlayer:6029
+      //$LASTPOS=45006034;//kernel.T2MediaPlayer:6034
       if (typeof  vol==="number") {
-        //$LASTPOS=45006069;//kernel.T2MediaPlayer:6069
+        //$LASTPOS=45006074;//kernel.T2MediaPlayer:6074
         vol/=128;
-        //$LASTPOS=45006090;//kernel.T2MediaPlayer:6090
+        //$LASTPOS=45006095;//kernel.T2MediaPlayer:6095
         if (vol<0) {
-          //$LASTPOS=45006105;//kernel.T2MediaPlayer:6105
+          //$LASTPOS=45006110;//kernel.T2MediaPlayer:6110
           vol=0;
         }
         
@@ -17558,7 +17558,7 @@ Tonyu.klass.define({
       var _this=this;
       var vol;
       
-      //$LASTPOS=45006334;//kernel.T2MediaPlayer:6334
+      //$LASTPOS=45006339;//kernel.T2MediaPlayer:6339
       vol = Tonyu.globals.$t2MediaLib.getBGMVolume(0);
       
       return typeof  vol==="number"?vol*128:vol;
@@ -17570,7 +17570,7 @@ Tonyu.klass.define({
       var __pc=0;
       var vol;
       
-      //$LASTPOS=45006334;//kernel.T2MediaPlayer:6334
+      //$LASTPOS=45006339;//kernel.T2MediaPlayer:6339
       vol = Tonyu.globals.$t2MediaLib.getBGMVolume(0);
       
       _thread.retVal=typeof  vol==="number"?vol*128:vol;return;
@@ -17582,13 +17582,13 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45006556;//kernel.T2MediaPlayer:6556
+      //$LASTPOS=45006561;//kernel.T2MediaPlayer:6561
       if (typeof  vol==="number") {
-        //$LASTPOS=45006596;//kernel.T2MediaPlayer:6596
+        //$LASTPOS=45006601;//kernel.T2MediaPlayer:6601
         vol/=128;
-        //$LASTPOS=45006617;//kernel.T2MediaPlayer:6617
+        //$LASTPOS=45006622;//kernel.T2MediaPlayer:6622
         if (vol<0) {
-          //$LASTPOS=45006632;//kernel.T2MediaPlayer:6632
+          //$LASTPOS=45006637;//kernel.T2MediaPlayer:6637
           vol=0;
         }
         
@@ -17604,13 +17604,13 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=45006556;//kernel.T2MediaPlayer:6556
+      //$LASTPOS=45006561;//kernel.T2MediaPlayer:6561
       if (typeof  vol==="number") {
-        //$LASTPOS=45006596;//kernel.T2MediaPlayer:6596
+        //$LASTPOS=45006601;//kernel.T2MediaPlayer:6601
         vol/=128;
-        //$LASTPOS=45006617;//kernel.T2MediaPlayer:6617
+        //$LASTPOS=45006622;//kernel.T2MediaPlayer:6622
         if (vol<0) {
-          //$LASTPOS=45006632;//kernel.T2MediaPlayer:6632
+          //$LASTPOS=45006637;//kernel.T2MediaPlayer:6637
           vol=0;
         }
         
@@ -17917,7 +17917,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45008098;//kernel.T2MediaPlayer:8098
+      //$LASTPOS=45008103;//kernel.T2MediaPlayer:8103
       Tonyu.globals.$t2MediaLib.allStopBGM();
     },
     fiber$allStopBGM :function _trc_T2MediaPlayer_f_allStopBGM(_thread) {
@@ -17926,7 +17926,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=45008098;//kernel.T2MediaPlayer:8098
+      //$LASTPOS=45008103;//kernel.T2MediaPlayer:8103
       Tonyu.globals.$t2MediaLib.allStopBGM();
       
       _thread.retVal=_this;return;
@@ -17935,7 +17935,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45008152;//kernel.T2MediaPlayer:8152
+      //$LASTPOS=45008157;//kernel.T2MediaPlayer:8157
       Tonyu.globals.$t2MediaLib.allResetBGM();
     },
     fiber$allResetBGM :function _trc_T2MediaPlayer_f_allResetBGM(_thread) {
@@ -17944,7 +17944,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=45008152;//kernel.T2MediaPlayer:8152
+      //$LASTPOS=45008157;//kernel.T2MediaPlayer:8157
       Tonyu.globals.$t2MediaLib.allResetBGM();
       
       _thread.retVal=_this;return;
@@ -17953,18 +17953,18 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45008262;//kernel.T2MediaPlayer:8262
+      //$LASTPOS=45008267;//kernel.T2MediaPlayer:8267
       if (_this.mute) {
         return _this;
       }
-      //$LASTPOS=45008285;//kernel.T2MediaPlayer:8285
+      //$LASTPOS=45008290;//kernel.T2MediaPlayer:8290
       if (loop==null) {
-        //$LASTPOS=45008303;//kernel.T2MediaPlayer:8303
+        //$LASTPOS=45008308;//kernel.T2MediaPlayer:8308
         loop=false;
       }
-      //$LASTPOS=45008322;//kernel.T2MediaPlayer:8322
+      //$LASTPOS=45008327;//kernel.T2MediaPlayer:8327
       if (offset==null) {
-        //$LASTPOS=45008342;//kernel.T2MediaPlayer:8342
+        //$LASTPOS=45008347;//kernel.T2MediaPlayer:8347
         offset=0;
       }
       return Tonyu.globals.$t2MediaLib.playBGM(id,idx,loop,offset,loopStart,loopEnd);
@@ -17975,19 +17975,19 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=45008262;//kernel.T2MediaPlayer:8262
+      //$LASTPOS=45008267;//kernel.T2MediaPlayer:8267
       if (_this.mute) {
         _thread.retVal=_this;return;
         
       }
-      //$LASTPOS=45008285;//kernel.T2MediaPlayer:8285
+      //$LASTPOS=45008290;//kernel.T2MediaPlayer:8290
       if (loop==null) {
-        //$LASTPOS=45008303;//kernel.T2MediaPlayer:8303
+        //$LASTPOS=45008308;//kernel.T2MediaPlayer:8308
         loop=false;
       }
-      //$LASTPOS=45008322;//kernel.T2MediaPlayer:8322
+      //$LASTPOS=45008327;//kernel.T2MediaPlayer:8327
       if (offset==null) {
-        //$LASTPOS=45008342;//kernel.T2MediaPlayer:8342
+        //$LASTPOS=45008347;//kernel.T2MediaPlayer:8347
         offset=0;
       }
       _thread.retVal=Tonyu.globals.$t2MediaLib.playBGM(id,idx,loop,offset,loopStart,loopEnd);return;
@@ -18033,7 +18033,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45008582;//kernel.T2MediaPlayer:8582
+      //$LASTPOS=45008587;//kernel.T2MediaPlayer:8587
       if (_this.mute) {
         return _this;
       }
@@ -18045,7 +18045,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=45008582;//kernel.T2MediaPlayer:8582
+      //$LASTPOS=45008587;//kernel.T2MediaPlayer:8587
       if (_this.mute) {
         _thread.retVal=_this;return;
         
@@ -18060,7 +18060,7 @@ Tonyu.klass.define({
       var _this=this;
       var vol;
       
-      //$LASTPOS=45008672;//kernel.T2MediaPlayer:8672
+      //$LASTPOS=45008677;//kernel.T2MediaPlayer:8677
       vol = Tonyu.globals.$t2MediaLib.getBGMVolume(id);
       
       return typeof  vol==="number"?vol*128:vol;
@@ -18072,7 +18072,7 @@ Tonyu.klass.define({
       var __pc=0;
       var vol;
       
-      //$LASTPOS=45008672;//kernel.T2MediaPlayer:8672
+      //$LASTPOS=45008677;//kernel.T2MediaPlayer:8677
       vol = Tonyu.globals.$t2MediaLib.getBGMVolume(id);
       
       _thread.retVal=typeof  vol==="number"?vol*128:vol;return;
@@ -18084,13 +18084,13 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45008901;//kernel.T2MediaPlayer:8901
+      //$LASTPOS=45008906;//kernel.T2MediaPlayer:8906
       if (typeof  vol==="number") {
-        //$LASTPOS=45008941;//kernel.T2MediaPlayer:8941
+        //$LASTPOS=45008946;//kernel.T2MediaPlayer:8946
         vol/=128;
-        //$LASTPOS=45008962;//kernel.T2MediaPlayer:8962
+        //$LASTPOS=45008967;//kernel.T2MediaPlayer:8967
         if (vol<0) {
-          //$LASTPOS=45008977;//kernel.T2MediaPlayer:8977
+          //$LASTPOS=45008982;//kernel.T2MediaPlayer:8982
           vol=0;
         }
         
@@ -18106,13 +18106,13 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=45008901;//kernel.T2MediaPlayer:8901
+      //$LASTPOS=45008906;//kernel.T2MediaPlayer:8906
       if (typeof  vol==="number") {
-        //$LASTPOS=45008941;//kernel.T2MediaPlayer:8941
+        //$LASTPOS=45008946;//kernel.T2MediaPlayer:8946
         vol/=128;
-        //$LASTPOS=45008962;//kernel.T2MediaPlayer:8962
+        //$LASTPOS=45008967;//kernel.T2MediaPlayer:8967
         if (vol<0) {
-          //$LASTPOS=45008977;//kernel.T2MediaPlayer:8977
+          //$LASTPOS=45008982;//kernel.T2MediaPlayer:8982
           vol=0;
         }
         
@@ -18368,11 +18368,11 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45010504;//kernel.T2MediaPlayer:10504
+      //$LASTPOS=45010509;//kernel.T2MediaPlayer:10509
       Tonyu.globals.$t2MediaLib.loadAudio(idx,src);
-      //$LASTPOS=45010567;//kernel.T2MediaPlayer:10567
+      //$LASTPOS=45010572;//kernel.T2MediaPlayer:10572
       while (Tonyu.globals.$t2MediaLib.getAudioData(idx)==null) {
-        //$LASTPOS=45010613;//kernel.T2MediaPlayer:10613
+        //$LASTPOS=45010618;//kernel.T2MediaPlayer:10618
         _this.update();
       }
     },
@@ -18382,7 +18382,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=45010504;//kernel.T2MediaPlayer:10504
+      //$LASTPOS=45010509;//kernel.T2MediaPlayer:10509
       Tonyu.globals.$t2MediaLib.loadAudio(idx,src);
       
       _thread.enter(function _trc_T2MediaPlayer_ent_loadAudio(_thread) {
@@ -18390,10 +18390,10 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=45010567;//kernel.T2MediaPlayer:10567
+            //$LASTPOS=45010572;//kernel.T2MediaPlayer:10572
           case 1:
             if (!(Tonyu.globals.$t2MediaLib.getAudioData(idx)==null)) { __pc=3     ; break; }
-            //$LASTPOS=45010613;//kernel.T2MediaPlayer:10613
+            //$LASTPOS=45010618;//kernel.T2MediaPlayer:10618
             _this.fiber$update(_thread);
             __pc=2;return;
           case 2:
@@ -18410,18 +18410,18 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45010669;//kernel.T2MediaPlayer:10669
+      //$LASTPOS=45010674;//kernel.T2MediaPlayer:10674
       if (_this.mute) {
         return _this;
       }
-      //$LASTPOS=45010692;//kernel.T2MediaPlayer:10692
+      //$LASTPOS=45010697;//kernel.T2MediaPlayer:10697
       if (loop==null) {
-        //$LASTPOS=45010710;//kernel.T2MediaPlayer:10710
+        //$LASTPOS=45010715;//kernel.T2MediaPlayer:10715
         loop=false;
       }
-      //$LASTPOS=45010729;//kernel.T2MediaPlayer:10729
+      //$LASTPOS=45010734;//kernel.T2MediaPlayer:10734
       if (startTime==null) {
-        //$LASTPOS=45010752;//kernel.T2MediaPlayer:10752
+        //$LASTPOS=45010757;//kernel.T2MediaPlayer:10757
         startTime=0;
       }
       return Tonyu.globals.$t2MediaLib.playAudio(idx,loop,startTime);
@@ -18432,19 +18432,19 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=45010669;//kernel.T2MediaPlayer:10669
+      //$LASTPOS=45010674;//kernel.T2MediaPlayer:10674
       if (_this.mute) {
         _thread.retVal=_this;return;
         
       }
-      //$LASTPOS=45010692;//kernel.T2MediaPlayer:10692
+      //$LASTPOS=45010697;//kernel.T2MediaPlayer:10697
       if (loop==null) {
-        //$LASTPOS=45010710;//kernel.T2MediaPlayer:10710
+        //$LASTPOS=45010715;//kernel.T2MediaPlayer:10715
         loop=false;
       }
-      //$LASTPOS=45010729;//kernel.T2MediaPlayer:10729
+      //$LASTPOS=45010734;//kernel.T2MediaPlayer:10734
       if (startTime==null) {
-        //$LASTPOS=45010752;//kernel.T2MediaPlayer:10752
+        //$LASTPOS=45010757;//kernel.T2MediaPlayer:10757
         startTime=0;
       }
       _thread.retVal=Tonyu.globals.$t2MediaLib.playAudio(idx,loop,startTime);return;
@@ -18490,7 +18490,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45010970;//kernel.T2MediaPlayer:10970
+      //$LASTPOS=45010975;//kernel.T2MediaPlayer:10975
       if (_this.mute) {
         return _this;
       }
@@ -18502,7 +18502,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=45010970;//kernel.T2MediaPlayer:10970
+      //$LASTPOS=45010975;//kernel.T2MediaPlayer:10975
       if (_this.mute) {
         _thread.retVal=_this;return;
         
@@ -18516,16 +18516,16 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45011061;//kernel.T2MediaPlayer:11061
+      //$LASTPOS=45011066;//kernel.T2MediaPlayer:11066
       vol=vol/128;
-      //$LASTPOS=45011083;//kernel.T2MediaPlayer:11083
+      //$LASTPOS=45011088;//kernel.T2MediaPlayer:11088
       if (vol>1) {
-        //$LASTPOS=45011103;//kernel.T2MediaPlayer:11103
+        //$LASTPOS=45011108;//kernel.T2MediaPlayer:11108
         vol=1;
       } else {
-        //$LASTPOS=45011124;//kernel.T2MediaPlayer:11124
+        //$LASTPOS=45011129;//kernel.T2MediaPlayer:11129
         if (vol<0) {
-          //$LASTPOS=45011139;//kernel.T2MediaPlayer:11139
+          //$LASTPOS=45011144;//kernel.T2MediaPlayer:11144
           vol=0;
         }
       }
@@ -18537,16 +18537,16 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=45011061;//kernel.T2MediaPlayer:11061
+      //$LASTPOS=45011066;//kernel.T2MediaPlayer:11066
       vol=vol/128;
-      //$LASTPOS=45011083;//kernel.T2MediaPlayer:11083
+      //$LASTPOS=45011088;//kernel.T2MediaPlayer:11088
       if (vol>1) {
-        //$LASTPOS=45011103;//kernel.T2MediaPlayer:11103
+        //$LASTPOS=45011108;//kernel.T2MediaPlayer:11108
         vol=1;
       } else {
-        //$LASTPOS=45011124;//kernel.T2MediaPlayer:11124
+        //$LASTPOS=45011129;//kernel.T2MediaPlayer:11129
         if (vol<0) {
-          //$LASTPOS=45011139;//kernel.T2MediaPlayer:11139
+          //$LASTPOS=45011144;//kernel.T2MediaPlayer:11144
           vol=0;
         }
       }
@@ -18559,14 +18559,14 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=45011230;//kernel.T2MediaPlayer:11230
+      //$LASTPOS=45011235;//kernel.T2MediaPlayer:11235
       if (tempo>4) {
-        //$LASTPOS=45011252;//kernel.T2MediaPlayer:11252
+        //$LASTPOS=45011257;//kernel.T2MediaPlayer:11257
         tempo=4;
       } else {
-        //$LASTPOS=45011275;//kernel.T2MediaPlayer:11275
+        //$LASTPOS=45011280;//kernel.T2MediaPlayer:11280
         if (tempo<0.5) {
-          //$LASTPOS=45011292;//kernel.T2MediaPlayer:11292
+          //$LASTPOS=45011297;//kernel.T2MediaPlayer:11297
           tempo=0.5;
         }
       }
@@ -18578,14 +18578,14 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=45011230;//kernel.T2MediaPlayer:11230
+      //$LASTPOS=45011235;//kernel.T2MediaPlayer:11235
       if (tempo>4) {
-        //$LASTPOS=45011252;//kernel.T2MediaPlayer:11252
+        //$LASTPOS=45011257;//kernel.T2MediaPlayer:11257
         tempo=4;
       } else {
-        //$LASTPOS=45011275;//kernel.T2MediaPlayer:11275
+        //$LASTPOS=45011280;//kernel.T2MediaPlayer:11280
         if (tempo<0.5) {
-          //$LASTPOS=45011292;//kernel.T2MediaPlayer:11292
+          //$LASTPOS=45011297;//kernel.T2MediaPlayer:11297
           tempo=0.5;
         }
       }
@@ -18664,7 +18664,7 @@ Tonyu.klass.define({
     },
     __dummy: false
   },
-  decls: {"methods":{"main":{"nowait":false},"new":{"nowait":false},"initT2MediaPlayer":{"nowait":false},"allClearSoundData":{"nowait":false},"clearSoundData":{"nowait":false},"allRemoveDecodedSoundData":{"nowait":false},"removeDecodedSoundData":{"nowait":false},"getMasterVolume":{"nowait":false},"setMasterVolume":{"nowait":false},"loadSound":{"nowait":false},"__getter__available":{"nowait":true},"loadFromProject":{"nowait":false},"decodeSound":{"nowait":false},"getSoundFileData":{"nowait":false},"getSoundDecodedData":{"nowait":false},"getCurrentTime":{"nowait":false},"getContext":{"nowait":false},"playSE":{"nowait":true},"stopSE":{"nowait":false},"getSEMasterVolume":{"nowait":false},"setSEMasterVolume":{"nowait":false},"getSEVolume":{"nowait":false},"setSEVolume":{"nowait":false},"getSERate":{"nowait":false},"setSERate":{"nowait":false},"getSEPan":{"nowait":false},"setSEPan":{"nowait":false},"isSELoop":{"nowait":false},"setSELoop":{"nowait":false},"getSELoopStartTime":{"nowait":false},"setSELoopStartTime":{"nowait":false},"getSELoopEndTime":{"nowait":false},"setSELoopEndTime":{"nowait":false},"playBGM":{"nowait":false},"stopBGM":{"nowait":false},"pauseBGM":{"nowait":false},"resumeBGM":{"nowait":false},"getBGMMasterVolume":{"nowait":false},"setBGMMasterVolume":{"nowait":false},"getBGMVolume":{"nowait":false},"setBGMVolume":{"nowait":false},"getBGMTempo":{"nowait":false},"setBGMTempo":{"nowait":false},"getBGMPan":{"nowait":false},"setBGMPan":{"nowait":false},"isBGMLoop":{"nowait":false},"setBGMLoop":{"nowait":false},"getBGMLoopStartTime":{"nowait":false},"setBGMLoopStartTime":{"nowait":false},"getBGMLoopEndTime":{"nowait":false},"setBGMLoopEndTime":{"nowait":false},"getBGMCurrentTime":{"nowait":false},"getBGMLength":{"nowait":false},"getPlayingBGMName":{"nowait":false},"setOnBGMEndListener":{"nowait":false},"getPlayingBGMState":{"nowait":false},"getBGMPicoAudio":{"nowait":false},"getBGMPlayerMax":{"nowait":false},"allStopBGM":{"nowait":false},"allResetBGM":{"nowait":false},"playBGMID":{"nowait":false},"stopBGMID":{"nowait":false},"pauseBGMID":{"nowait":false},"resumeBGMID":{"nowait":false},"getBGMVolumeID":{"nowait":false},"setBGMVolumeID":{"nowait":false},"getBGMTempoID":{"nowait":false},"setBGMTempoID":{"nowait":false},"getBGMPanID":{"nowait":false},"setBGMPanID":{"nowait":false},"isBGMLoopID":{"nowait":false},"setBGMLoopID":{"nowait":false},"getBGMLoopStartTimeID":{"nowait":false},"setBGMLoopStartTimeID":{"nowait":false},"getBGMLoopEndTimeID":{"nowait":false},"setBGMLoopEndTimeID":{"nowait":false},"getBGMCurrentTimeID":{"nowait":false},"getBGMLengthID":{"nowait":false},"getPlayingBGMNameID":{"nowait":false},"setBGMOnSongEndListener":{"nowait":false},"loadAudio":{"nowait":false},"playAudio":{"nowait":false},"stopAudio":{"nowait":false},"pauseAudio":{"nowait":false},"resumeAudio":{"nowait":false},"setAudioVolume":{"nowait":false},"setAudioTempo":{"nowait":false},"setAudioPosition":{"nowait":false},"getAudioCurrentTime":{"nowait":false},"getAudioLength":{"nowait":false},"getAudioData":{"nowait":false}},"fields":{"bgmPlayerMax":{},"available":{},"progressNoLog":{},"console":{},"mute":{}}}
+  decls: {"methods":{"main":{"nowait":false},"new":{"nowait":false},"initT2MediaPlayer":{"nowait":false},"allClearSoundData":{"nowait":false},"clearSoundData":{"nowait":false},"allRemoveDecodedSoundData":{"nowait":false},"removeDecodedSoundData":{"nowait":false},"getMasterVolume":{"nowait":false},"setMasterVolume":{"nowait":false},"loadSound":{"nowait":false},"__getter__available":{"nowait":true},"loadFromProject":{"nowait":false},"decodeSound":{"nowait":false},"getSoundFileData":{"nowait":false},"getSoundDecodedData":{"nowait":false},"getCurrentTime":{"nowait":false},"getContext":{"nowait":false},"playSE":{"nowait":true},"stopSE":{"nowait":false},"getSEMasterVolume":{"nowait":false},"setSEMasterVolume":{"nowait":false},"getSEVolume":{"nowait":false},"setSEVolume":{"nowait":false},"getSERate":{"nowait":false},"setSERate":{"nowait":false},"getSEPan":{"nowait":false},"setSEPan":{"nowait":false},"isSELoop":{"nowait":false},"setSELoop":{"nowait":false},"getSELoopStartTime":{"nowait":false},"setSELoopStartTime":{"nowait":false},"getSELoopEndTime":{"nowait":false},"setSELoopEndTime":{"nowait":false},"playBGM":{"nowait":false},"stopBGM":{"nowait":false},"pauseBGM":{"nowait":false},"resumeBGM":{"nowait":false},"getBGMMasterVolume":{"nowait":false},"setBGMMasterVolume":{"nowait":false},"getBGMVolume":{"nowait":false},"setBGMVolume":{"nowait":false},"getBGMTempo":{"nowait":false},"setBGMTempo":{"nowait":false},"getBGMPan":{"nowait":false},"setBGMPan":{"nowait":false},"isBGMLoop":{"nowait":false},"setBGMLoop":{"nowait":false},"getBGMLoopStartTime":{"nowait":false},"setBGMLoopStartTime":{"nowait":false},"getBGMLoopEndTime":{"nowait":false},"setBGMLoopEndTime":{"nowait":false},"getBGMCurrentTime":{"nowait":false},"getBGMLength":{"nowait":false},"getPlayingBGMName":{"nowait":false},"setOnBGMEndListener":{"nowait":false},"getPlayingBGMState":{"nowait":false},"getBGMPicoAudio":{"nowait":false},"getBGMPlayerMax":{"nowait":false},"allStopBGM":{"nowait":false},"allResetBGM":{"nowait":false},"playBGMID":{"nowait":false},"stopBGMID":{"nowait":false},"pauseBGMID":{"nowait":false},"resumeBGMID":{"nowait":false},"getBGMVolumeID":{"nowait":false},"setBGMVolumeID":{"nowait":false},"getBGMTempoID":{"nowait":false},"setBGMTempoID":{"nowait":false},"getBGMPanID":{"nowait":false},"setBGMPanID":{"nowait":false},"isBGMLoopID":{"nowait":false},"setBGMLoopID":{"nowait":false},"getBGMLoopStartTimeID":{"nowait":false},"setBGMLoopStartTimeID":{"nowait":false},"getBGMLoopEndTimeID":{"nowait":false},"setBGMLoopEndTimeID":{"nowait":false},"getBGMCurrentTimeID":{"nowait":false},"getBGMLengthID":{"nowait":false},"getPlayingBGMNameID":{"nowait":false},"setBGMOnSongEndListener":{"nowait":false},"loadAudio":{"nowait":false},"playAudio":{"nowait":false},"stopAudio":{"nowait":false},"pauseAudio":{"nowait":false},"resumeAudio":{"nowait":false},"setAudioVolume":{"nowait":false},"setAudioTempo":{"nowait":false},"setAudioPosition":{"nowait":false},"getAudioCurrentTime":{"nowait":false},"getAudioLength":{"nowait":false},"getAudioData":{"nowait":false}},"fields":{"bgmPlayerMax":{},"available":{},"progressNoLog":{},"mute":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.PlainChar',
@@ -24723,25 +24723,25 @@ Tonyu.klass.define({
       //$LASTPOS=61000080;//kernel.WebPage:80
       _this.eventWindowOpen=(function anonymous_98(e) {
         
-        //$LASTPOS=61000165;//kernel.WebPage:165
+        //$LASTPOS=61000161;//kernel.WebPage:161
         window.open(_this.postUrl);
-        //$LASTPOS=61000192;//kernel.WebPage:192
+        //$LASTPOS=61000188;//kernel.WebPage:188
         if (_this.canvas.removeEventListener) {
-          //$LASTPOS=61000235;//kernel.WebPage:235
+          //$LASTPOS=61000231;//kernel.WebPage:231
           _this.canvas.removeEventListener("click",_this.eventWindowOpen,false);
-          //$LASTPOS=61000305;//kernel.WebPage:305
+          //$LASTPOS=61000301;//kernel.WebPage:301
           _this.canvas.removeEventListener("touchend",_this.eventWindowOpen,false);
-          //$LASTPOS=61000378;//kernel.WebPage:378
+          //$LASTPOS=61000374;//kernel.WebPage:374
           _this.listenerExists=false;
           
         } else {
-          //$LASTPOS=61000414;//kernel.WebPage:414
+          //$LASTPOS=61000410;//kernel.WebPage:410
           if (_this.canvas.detachEvent) {
-            //$LASTPOS=61000448;//kernel.WebPage:448
+            //$LASTPOS=61000444;//kernel.WebPage:444
             _this.canvas.detachEvent("onclick",_this.eventWindowOpen);
-            //$LASTPOS=61000505;//kernel.WebPage:505
+            //$LASTPOS=61000501;//kernel.WebPage:501
             _this.canvas.detachEvent("touchend",_this.eventWindowOpen);
-            //$LASTPOS=61000563;//kernel.WebPage:563
+            //$LASTPOS=61000559;//kernel.WebPage:559
             _this.listenerExists=false;
             
           }
@@ -24757,25 +24757,25 @@ Tonyu.klass.define({
       //$LASTPOS=61000080;//kernel.WebPage:80
       _this.eventWindowOpen=(function anonymous_98(e) {
         
-        //$LASTPOS=61000165;//kernel.WebPage:165
+        //$LASTPOS=61000161;//kernel.WebPage:161
         window.open(_this.postUrl);
-        //$LASTPOS=61000192;//kernel.WebPage:192
+        //$LASTPOS=61000188;//kernel.WebPage:188
         if (_this.canvas.removeEventListener) {
-          //$LASTPOS=61000235;//kernel.WebPage:235
+          //$LASTPOS=61000231;//kernel.WebPage:231
           _this.canvas.removeEventListener("click",_this.eventWindowOpen,false);
-          //$LASTPOS=61000305;//kernel.WebPage:305
+          //$LASTPOS=61000301;//kernel.WebPage:301
           _this.canvas.removeEventListener("touchend",_this.eventWindowOpen,false);
-          //$LASTPOS=61000378;//kernel.WebPage:378
+          //$LASTPOS=61000374;//kernel.WebPage:374
           _this.listenerExists=false;
           
         } else {
-          //$LASTPOS=61000414;//kernel.WebPage:414
+          //$LASTPOS=61000410;//kernel.WebPage:410
           if (_this.canvas.detachEvent) {
-            //$LASTPOS=61000448;//kernel.WebPage:448
+            //$LASTPOS=61000444;//kernel.WebPage:444
             _this.canvas.detachEvent("onclick",_this.eventWindowOpen);
-            //$LASTPOS=61000505;//kernel.WebPage:505
+            //$LASTPOS=61000501;//kernel.WebPage:501
             _this.canvas.detachEvent("touchend",_this.eventWindowOpen);
-            //$LASTPOS=61000563;//kernel.WebPage:563
+            //$LASTPOS=61000559;//kernel.WebPage:559
             _this.listenerExists=false;
             
           }
@@ -24788,29 +24788,29 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=61000628;//kernel.WebPage:628
+      //$LASTPOS=61000624;//kernel.WebPage:624
       _this.postUrl=url;
-      //$LASTPOS=61000708;//kernel.WebPage:708
+      //$LASTPOS=61000704;//kernel.WebPage:704
       _this.canvas=document.getElementsByTagName("canvas")[0];
-      //$LASTPOS=61000764;//kernel.WebPage:764
+      //$LASTPOS=61000760;//kernel.WebPage:760
       if (! _this.listenerExists) {
-        //$LASTPOS=61000796;//kernel.WebPage:796
+        //$LASTPOS=61000792;//kernel.WebPage:792
         if (_this.canvas.addEventListener) {
-          //$LASTPOS=61000840;//kernel.WebPage:840
+          //$LASTPOS=61000836;//kernel.WebPage:836
           _this.canvas.addEventListener("click",_this.eventWindowOpen,false);
-          //$LASTPOS=61000911;//kernel.WebPage:911
+          //$LASTPOS=61000907;//kernel.WebPage:907
           _this.canvas.addEventListener("touchend",_this.eventWindowOpen,false);
-          //$LASTPOS=61001054;//kernel.WebPage:1054
+          //$LASTPOS=61001050;//kernel.WebPage:1050
           _this.listenerExists=true;
           
         } else {
-          //$LASTPOS=61001093;//kernel.WebPage:1093
+          //$LASTPOS=61001089;//kernel.WebPage:1089
           if (_this.canvas.attachEvent) {
-            //$LASTPOS=61001131;//kernel.WebPage:1131
+            //$LASTPOS=61001127;//kernel.WebPage:1127
             _this.canvas.attachEvent("onclick",_this.eventWindowOpen);
-            //$LASTPOS=61001192;//kernel.WebPage:1192
+            //$LASTPOS=61001188;//kernel.WebPage:1188
             _this.canvas.attachEvent("touchend",_this.eventWindowOpen);
-            //$LASTPOS=61001254;//kernel.WebPage:1254
+            //$LASTPOS=61001250;//kernel.WebPage:1250
             _this.listenerExists=true;
             
           }
@@ -24824,29 +24824,29 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=61000628;//kernel.WebPage:628
+      //$LASTPOS=61000624;//kernel.WebPage:624
       _this.postUrl=url;
-      //$LASTPOS=61000708;//kernel.WebPage:708
+      //$LASTPOS=61000704;//kernel.WebPage:704
       _this.canvas=document.getElementsByTagName("canvas")[0];
-      //$LASTPOS=61000764;//kernel.WebPage:764
+      //$LASTPOS=61000760;//kernel.WebPage:760
       if (! _this.listenerExists) {
-        //$LASTPOS=61000796;//kernel.WebPage:796
+        //$LASTPOS=61000792;//kernel.WebPage:792
         if (_this.canvas.addEventListener) {
-          //$LASTPOS=61000840;//kernel.WebPage:840
+          //$LASTPOS=61000836;//kernel.WebPage:836
           _this.canvas.addEventListener("click",_this.eventWindowOpen,false);
-          //$LASTPOS=61000911;//kernel.WebPage:911
+          //$LASTPOS=61000907;//kernel.WebPage:907
           _this.canvas.addEventListener("touchend",_this.eventWindowOpen,false);
-          //$LASTPOS=61001054;//kernel.WebPage:1054
+          //$LASTPOS=61001050;//kernel.WebPage:1050
           _this.listenerExists=true;
           
         } else {
-          //$LASTPOS=61001093;//kernel.WebPage:1093
+          //$LASTPOS=61001089;//kernel.WebPage:1089
           if (_this.canvas.attachEvent) {
-            //$LASTPOS=61001131;//kernel.WebPage:1131
+            //$LASTPOS=61001127;//kernel.WebPage:1127
             _this.canvas.attachEvent("onclick",_this.eventWindowOpen);
-            //$LASTPOS=61001192;//kernel.WebPage:1192
+            //$LASTPOS=61001188;//kernel.WebPage:1188
             _this.canvas.attachEvent("touchend",_this.eventWindowOpen);
-            //$LASTPOS=61001254;//kernel.WebPage:1254
+            //$LASTPOS=61001250;//kernel.WebPage:1250
             _this.listenerExists=true;
             
           }
@@ -24860,7 +24860,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=61001323;//kernel.WebPage:1323
+      //$LASTPOS=61001319;//kernel.WebPage:1319
       window.location.href=url;
     },
     fiber$openPage :function _trc_WebPage_f_openPage(_thread,url) {
@@ -24869,7 +24869,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=61001323;//kernel.WebPage:1323
+      //$LASTPOS=61001319;//kernel.WebPage:1319
       window.location.href=url;
       
       _thread.retVal=_this;return;
@@ -24879,52 +24879,52 @@ Tonyu.klass.define({
       var _this=this;
       var sendUrl;
       
-      //$LASTPOS=61001906;//kernel.WebPage:1906
+      //$LASTPOS=61001902;//kernel.WebPage:1902
       sendUrl = "https://twitter.com/intent/tweet?";
       
-      //$LASTPOS=61001962;//kernel.WebPage:1962
+      //$LASTPOS=61001958;//kernel.WebPage:1958
       sendUrl+="text="+encodeURIComponent(text);
-      //$LASTPOS=61002014;//kernel.WebPage:2014
+      //$LASTPOS=61002010;//kernel.WebPage:2010
       if (url!=null) {
-        //$LASTPOS=61002042;//kernel.WebPage:2042
+        //$LASTPOS=61002038;//kernel.WebPage:2038
         sendUrl+="&";
-        //$LASTPOS=61002067;//kernel.WebPage:2067
+        //$LASTPOS=61002063;//kernel.WebPage:2063
         sendUrl+="url="+encodeURIComponent(url);
         
       }
-      //$LASTPOS=61002124;//kernel.WebPage:2124
+      //$LASTPOS=61002120;//kernel.WebPage:2120
       if (hashtags!=null) {
-        //$LASTPOS=61002157;//kernel.WebPage:2157
+        //$LASTPOS=61002153;//kernel.WebPage:2153
         sendUrl+="&";
-        //$LASTPOS=61002182;//kernel.WebPage:2182
+        //$LASTPOS=61002178;//kernel.WebPage:2178
         sendUrl+="hashtags="+encodeURIComponent(hashtags);
         
       }
-      //$LASTPOS=61002249;//kernel.WebPage:2249
+      //$LASTPOS=61002245;//kernel.WebPage:2245
       if (via!=null) {
-        //$LASTPOS=61002277;//kernel.WebPage:2277
+        //$LASTPOS=61002273;//kernel.WebPage:2273
         sendUrl+="&";
-        //$LASTPOS=61002302;//kernel.WebPage:2302
+        //$LASTPOS=61002298;//kernel.WebPage:2298
         sendUrl+="via="+encodeURIComponent(via);
         
       }
-      //$LASTPOS=61002359;//kernel.WebPage:2359
+      //$LASTPOS=61002355;//kernel.WebPage:2355
       if (related!=null) {
-        //$LASTPOS=61002391;//kernel.WebPage:2391
+        //$LASTPOS=61002387;//kernel.WebPage:2387
         sendUrl+="&";
-        //$LASTPOS=61002416;//kernel.WebPage:2416
+        //$LASTPOS=61002412;//kernel.WebPage:2412
         sendUrl+="related="+encodeURIComponent(related);
         
       }
-      //$LASTPOS=61002481;//kernel.WebPage:2481
+      //$LASTPOS=61002477;//kernel.WebPage:2477
       if (tl) {
-        //$LASTPOS=61002500;//kernel.WebPage:2500
+        //$LASTPOS=61002496;//kernel.WebPage:2496
         sendUrl+="&";
-        //$LASTPOS=61002525;//kernel.WebPage:2525
+        //$LASTPOS=61002521;//kernel.WebPage:2521
         sendUrl+="source=webclient";
         
       }
-      //$LASTPOS=61002568;//kernel.WebPage:2568
+      //$LASTPOS=61002564;//kernel.WebPage:2564
       _this.openNewWindow(sendUrl);
     },
     fiber$openTweet :function _trc_WebPage_f_openTweet(_thread,text,url,hashtags,via,related,tl) {
@@ -24934,48 +24934,48 @@ Tonyu.klass.define({
       var __pc=0;
       var sendUrl;
       
-      //$LASTPOS=61001906;//kernel.WebPage:1906
+      //$LASTPOS=61001902;//kernel.WebPage:1902
       sendUrl = "https://twitter.com/intent/tweet?";
       
-      //$LASTPOS=61001962;//kernel.WebPage:1962
+      //$LASTPOS=61001958;//kernel.WebPage:1958
       sendUrl+="text="+encodeURIComponent(text);
-      //$LASTPOS=61002014;//kernel.WebPage:2014
+      //$LASTPOS=61002010;//kernel.WebPage:2010
       if (url!=null) {
-        //$LASTPOS=61002042;//kernel.WebPage:2042
+        //$LASTPOS=61002038;//kernel.WebPage:2038
         sendUrl+="&";
-        //$LASTPOS=61002067;//kernel.WebPage:2067
+        //$LASTPOS=61002063;//kernel.WebPage:2063
         sendUrl+="url="+encodeURIComponent(url);
         
       }
-      //$LASTPOS=61002124;//kernel.WebPage:2124
+      //$LASTPOS=61002120;//kernel.WebPage:2120
       if (hashtags!=null) {
-        //$LASTPOS=61002157;//kernel.WebPage:2157
+        //$LASTPOS=61002153;//kernel.WebPage:2153
         sendUrl+="&";
-        //$LASTPOS=61002182;//kernel.WebPage:2182
+        //$LASTPOS=61002178;//kernel.WebPage:2178
         sendUrl+="hashtags="+encodeURIComponent(hashtags);
         
       }
-      //$LASTPOS=61002249;//kernel.WebPage:2249
+      //$LASTPOS=61002245;//kernel.WebPage:2245
       if (via!=null) {
-        //$LASTPOS=61002277;//kernel.WebPage:2277
+        //$LASTPOS=61002273;//kernel.WebPage:2273
         sendUrl+="&";
-        //$LASTPOS=61002302;//kernel.WebPage:2302
+        //$LASTPOS=61002298;//kernel.WebPage:2298
         sendUrl+="via="+encodeURIComponent(via);
         
       }
-      //$LASTPOS=61002359;//kernel.WebPage:2359
+      //$LASTPOS=61002355;//kernel.WebPage:2355
       if (related!=null) {
-        //$LASTPOS=61002391;//kernel.WebPage:2391
+        //$LASTPOS=61002387;//kernel.WebPage:2387
         sendUrl+="&";
-        //$LASTPOS=61002416;//kernel.WebPage:2416
+        //$LASTPOS=61002412;//kernel.WebPage:2412
         sendUrl+="related="+encodeURIComponent(related);
         
       }
-      //$LASTPOS=61002481;//kernel.WebPage:2481
+      //$LASTPOS=61002477;//kernel.WebPage:2477
       if (tl) {
-        //$LASTPOS=61002500;//kernel.WebPage:2500
+        //$LASTPOS=61002496;//kernel.WebPage:2496
         sendUrl+="&";
-        //$LASTPOS=61002525;//kernel.WebPage:2525
+        //$LASTPOS=61002521;//kernel.WebPage:2521
         sendUrl+="source=webclient";
         
       }
@@ -24985,7 +24985,7 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=61002568;//kernel.WebPage:2568
+            //$LASTPOS=61002564;//kernel.WebPage:2564
             _this.fiber$openNewWindow(_thread, sendUrl);
             __pc=1;return;
           case 1:
@@ -25001,71 +25001,71 @@ Tonyu.klass.define({
       var sendUrl;
       var tempText;
       
-      //$LASTPOS=61003509;//kernel.WebPage:3509
+      //$LASTPOS=61003505;//kernel.WebPage:3505
       sendUrl = "https://twitter.com/intent/tweet?";
       
-      //$LASTPOS=61003628;//kernel.WebPage:3628
+      //$LASTPOS=61003620;//kernel.WebPage:3620
       if (arguments.length==2) {
-        //$LASTPOS=61003664;//kernel.WebPage:3664
-        if (text.match(/^http/)) {
-          //$LASTPOS=61003704;//kernel.WebPage:3704
+        //$LASTPOS=61003656;//kernel.WebPage:3656
+        if (text==null||text.match(/^http/)) {
+          //$LASTPOS=61003710;//kernel.WebPage:3710
           tempText = text;
           
-          //$LASTPOS=61003736;//kernel.WebPage:3736
+          //$LASTPOS=61003742;//kernel.WebPage:3742
           text=url;
-          //$LASTPOS=61003745;//kernel.WebPage:3745
+          //$LASTPOS=61003751;//kernel.WebPage:3751
           url=tempText;
           
         }
         
       }
-      //$LASTPOS=61003782;//kernel.WebPage:3782
+      //$LASTPOS=61003788;//kernel.WebPage:3788
       sendUrl+="text="+encodeURIComponent(text);
-      //$LASTPOS=61003834;//kernel.WebPage:3834
+      //$LASTPOS=61003840;//kernel.WebPage:3840
       sendUrl+="&";
-      //$LASTPOS=61003855;//kernel.WebPage:3855
+      //$LASTPOS=61003861;//kernel.WebPage:3861
       if (url==null) {
-        //$LASTPOS=61003883;//kernel.WebPage:3883
+        //$LASTPOS=61003889;//kernel.WebPage:3889
         sendUrl+="url="+window.location.href;
         
       } else {
-        //$LASTPOS=61003948;//kernel.WebPage:3948
+        //$LASTPOS=61003954;//kernel.WebPage:3954
         sendUrl+="url="+encodeURIComponent(url);
         
       }
-      //$LASTPOS=61004005;//kernel.WebPage:4005
+      //$LASTPOS=61004011;//kernel.WebPage:4011
       if (hashtags!=null) {
-        //$LASTPOS=61004038;//kernel.WebPage:4038
+        //$LASTPOS=61004044;//kernel.WebPage:4044
         sendUrl+="&";
-        //$LASTPOS=61004063;//kernel.WebPage:4063
+        //$LASTPOS=61004069;//kernel.WebPage:4069
         sendUrl+="hashtags="+encodeURIComponent(hashtags);
         
       }
-      //$LASTPOS=61004130;//kernel.WebPage:4130
+      //$LASTPOS=61004136;//kernel.WebPage:4136
       if (via!=null) {
-        //$LASTPOS=61004158;//kernel.WebPage:4158
+        //$LASTPOS=61004164;//kernel.WebPage:4164
         sendUrl+="&";
-        //$LASTPOS=61004183;//kernel.WebPage:4183
+        //$LASTPOS=61004189;//kernel.WebPage:4189
         sendUrl+="via="+encodeURIComponent(via);
         
       }
-      //$LASTPOS=61004240;//kernel.WebPage:4240
+      //$LASTPOS=61004246;//kernel.WebPage:4246
       if (related!=null) {
-        //$LASTPOS=61004272;//kernel.WebPage:4272
+        //$LASTPOS=61004278;//kernel.WebPage:4278
         sendUrl+="&";
-        //$LASTPOS=61004297;//kernel.WebPage:4297
+        //$LASTPOS=61004303;//kernel.WebPage:4303
         sendUrl+="related="+encodeURIComponent(related);
         
       }
-      //$LASTPOS=61004362;//kernel.WebPage:4362
+      //$LASTPOS=61004368;//kernel.WebPage:4368
       if (tl) {
-        //$LASTPOS=61004381;//kernel.WebPage:4381
+        //$LASTPOS=61004387;//kernel.WebPage:4387
         sendUrl+="&";
-        //$LASTPOS=61004406;//kernel.WebPage:4406
+        //$LASTPOS=61004412;//kernel.WebPage:4412
         sendUrl+="source=webclient";
         
       }
-      //$LASTPOS=61004449;//kernel.WebPage:4449
+      //$LASTPOS=61004455;//kernel.WebPage:4455
       _this.openNewWindow(sendUrl);
     },
     fiber$openShareTweet :function _trc_WebPage_f_openShareTweet(_thread,text,url,hashtags,via,related,tl) {
@@ -25076,67 +25076,67 @@ Tonyu.klass.define({
       var sendUrl;
       var tempText;
       
-      //$LASTPOS=61003509;//kernel.WebPage:3509
+      //$LASTPOS=61003505;//kernel.WebPage:3505
       sendUrl = "https://twitter.com/intent/tweet?";
       
-      //$LASTPOS=61003628;//kernel.WebPage:3628
+      //$LASTPOS=61003620;//kernel.WebPage:3620
       if (_arguments.length==2) {
-        //$LASTPOS=61003664;//kernel.WebPage:3664
-        if (text.match(/^http/)) {
-          //$LASTPOS=61003704;//kernel.WebPage:3704
+        //$LASTPOS=61003656;//kernel.WebPage:3656
+        if (text==null||text.match(/^http/)) {
+          //$LASTPOS=61003710;//kernel.WebPage:3710
           tempText = text;
           
-          //$LASTPOS=61003736;//kernel.WebPage:3736
+          //$LASTPOS=61003742;//kernel.WebPage:3742
           text=url;
-          //$LASTPOS=61003745;//kernel.WebPage:3745
+          //$LASTPOS=61003751;//kernel.WebPage:3751
           url=tempText;
           
         }
         
       }
-      //$LASTPOS=61003782;//kernel.WebPage:3782
+      //$LASTPOS=61003788;//kernel.WebPage:3788
       sendUrl+="text="+encodeURIComponent(text);
-      //$LASTPOS=61003834;//kernel.WebPage:3834
+      //$LASTPOS=61003840;//kernel.WebPage:3840
       sendUrl+="&";
-      //$LASTPOS=61003855;//kernel.WebPage:3855
+      //$LASTPOS=61003861;//kernel.WebPage:3861
       if (url==null) {
-        //$LASTPOS=61003883;//kernel.WebPage:3883
+        //$LASTPOS=61003889;//kernel.WebPage:3889
         sendUrl+="url="+window.location.href;
         
       } else {
-        //$LASTPOS=61003948;//kernel.WebPage:3948
+        //$LASTPOS=61003954;//kernel.WebPage:3954
         sendUrl+="url="+encodeURIComponent(url);
         
       }
-      //$LASTPOS=61004005;//kernel.WebPage:4005
+      //$LASTPOS=61004011;//kernel.WebPage:4011
       if (hashtags!=null) {
-        //$LASTPOS=61004038;//kernel.WebPage:4038
+        //$LASTPOS=61004044;//kernel.WebPage:4044
         sendUrl+="&";
-        //$LASTPOS=61004063;//kernel.WebPage:4063
+        //$LASTPOS=61004069;//kernel.WebPage:4069
         sendUrl+="hashtags="+encodeURIComponent(hashtags);
         
       }
-      //$LASTPOS=61004130;//kernel.WebPage:4130
+      //$LASTPOS=61004136;//kernel.WebPage:4136
       if (via!=null) {
-        //$LASTPOS=61004158;//kernel.WebPage:4158
+        //$LASTPOS=61004164;//kernel.WebPage:4164
         sendUrl+="&";
-        //$LASTPOS=61004183;//kernel.WebPage:4183
+        //$LASTPOS=61004189;//kernel.WebPage:4189
         sendUrl+="via="+encodeURIComponent(via);
         
       }
-      //$LASTPOS=61004240;//kernel.WebPage:4240
+      //$LASTPOS=61004246;//kernel.WebPage:4246
       if (related!=null) {
-        //$LASTPOS=61004272;//kernel.WebPage:4272
+        //$LASTPOS=61004278;//kernel.WebPage:4278
         sendUrl+="&";
-        //$LASTPOS=61004297;//kernel.WebPage:4297
+        //$LASTPOS=61004303;//kernel.WebPage:4303
         sendUrl+="related="+encodeURIComponent(related);
         
       }
-      //$LASTPOS=61004362;//kernel.WebPage:4362
+      //$LASTPOS=61004368;//kernel.WebPage:4368
       if (tl) {
-        //$LASTPOS=61004381;//kernel.WebPage:4381
+        //$LASTPOS=61004387;//kernel.WebPage:4387
         sendUrl+="&";
-        //$LASTPOS=61004406;//kernel.WebPage:4406
+        //$LASTPOS=61004412;//kernel.WebPage:4412
         sendUrl+="source=webclient";
         
       }
@@ -25146,7 +25146,7 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=61004449;//kernel.WebPage:4449
+            //$LASTPOS=61004455;//kernel.WebPage:4455
             _this.fiber$openNewWindow(_thread, sendUrl);
             __pc=1;return;
           case 1:

@@ -2,6 +2,7 @@ extends Actor;
 
 native T2MediaLib;
 native Tonyu;
+native console;
 
 \new() {
     initT2MediaPlayer();
@@ -58,7 +59,7 @@ native Tonyu;
     var r=prj.getResource();
     if (!r || !r.sounds) return;
     if (r.sounds <= 0) return;
-    
+
     progressNoLog("Loading sounds...[0/"+r.sounds.length+"]");
     // 6つ同時読み込み
     var jobs=6;
@@ -74,7 +75,7 @@ native Tonyu;
             //print("Loading Sound2: "+idx);
             Tonyu.setGlobal(idx, idx);
         }
-        
+
         cnt ++;
         if (cnt >= r.sounds.length) return;
         progressNoLog("Loading sounds...["+(cnt+1)+"/"+r.sounds.length+"]");
