@@ -31,6 +31,7 @@ define(["DeferredUtil","WebSite","assert"], function (DU,WebSite,A) {
 				return DU.promise(function (s) {
 					var head = document.getElementsByTagName("head")[0] || document.documentElement;
 					var script = document.createElement("script");
+					if (typeof tonyu_app_version==="string") src+="?"+tonyu_app_version;
 					script.src = src;
 					var done = false;
 					script.onload = script.onreadystatechange = function() {

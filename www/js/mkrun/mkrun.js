@@ -50,7 +50,10 @@ define(["FS","Util","WebSite","plugins","Shell","Tonyu"],
             dest.rel("js/files.js").text(loadFilesBuf+"}");
         }
         function copyIndexHtml() {
-            return wwwDir.rel("html/runtimes/index.html").copyTo(dest);
+            var htmlfile=wwwDir.rel("html/runtimes/index.html");
+            var htmlcont=htmlfile.text();
+            htmlcont=htmlcont.replace(/TONYU_APP_VERSION/g,Math.floor(Math.random()*100000));
+            return dest.rel(htmlfile.name()).text(htmlcont);
         }
         function copyScripts() {
             var usrjs=prjDir.rel("js/concat.js");

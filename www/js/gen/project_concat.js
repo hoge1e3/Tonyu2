@@ -1,4 +1,4 @@
-// Created at Sat Dec 16 2017 17:54:07 GMT+0900 (東京 (標準時))
+// Created at Tue Jan 02 2018 20:52:20 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -15786,7 +15786,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
-			VERSION:1513414431368,//EMBED_VERSION
+			VERSION:1514893927687,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -24841,6 +24841,7 @@ define(["DeferredUtil","WebSite","assert"], function (DU,WebSite,A) {
 				return DU.promise(function (s) {
 					var head = document.getElementsByTagName("head")[0] || document.documentElement;
 					var script = document.createElement("script");
+					if (typeof tonyu_app_version==="string") src+="?"+tonyu_app_version;
 					script.src = src;
 					var done = false;
 					script.onload = script.onreadystatechange = function() {
@@ -30605,6 +30606,7 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite","Assets"],
             cols=1;//nNan( parseInt(v.cols.val()) ,cols);
             rows=1;//nNan( parseInt(v.rows.val()) ,rows);
             calcWH();
+            setWH();//?
             redrawImage();
             return false;
         case "rc":
@@ -30650,12 +30652,12 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite","Assets"],
             w=srcImg.width;
             h=srcImg.height;
             if (item.type=="single") {
-                v.theForm[0].type.value="single";
+                selSingle();
             } else if (item.pwidth && item.pheight) {
                 v.pwidth.val(item.pwidth);
                 v.pheight.val(item.pheight);
                 calcRC();
-                v.theForm[0].type.value="wh";
+                selWH();
             } else {
                 v.theForm[0].type.value="t1";
             }
@@ -30751,15 +30753,17 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite","Assets"],
     function calcWH() {
         if (!item) return false;
         item.type="wh";
-        item.pwidth=nNan( Math.floor(w/cols), item.pwidth);
-        item.pheight=nNan( Math.floor(h/rows), item.pheight);
+        item.pwidth=nNan( Math.floor(w/cols), w);//item.pwidth);
+        item.pheight=nNan( Math.floor(h/rows), h);//item.pheight);
+        console.log("calcWH",item);
         v.pwidth.val(item.pwidth);
         v.pheight.val(item.pheight);
     }
     function setWH() {
         if (v.theForm[0].type.value!="wh") return false;
         if (!item) return false;
-        //console.log("setWH");
+        //console.log("setWH",item);
+        item.type="wh";
         item.pwidth=nNan( parseInt(v.pwidth.val()), item.pwidth);
         item.pheight=nNan( parseInt(v.pheight.val()), item.pheight);
         calcRC();
@@ -31411,7 +31415,10 @@ define(["FS","Util","WebSite","plugins","Shell","Tonyu"],
             dest.rel("js/files.js").text(loadFilesBuf+"}");
         }
         function copyIndexHtml() {
-            return wwwDir.rel("html/runtimes/index.html").copyTo(dest);
+            var htmlfile=wwwDir.rel("html/runtimes/index.html");
+            var htmlcont=htmlfile.text();
+            htmlcont=htmlcont.replace(/TONYU_APP_VERSION/g,Math.floor(Math.random()*100000));
+            return dest.rel(htmlfile.name()).text(htmlcont);
         }
         function copyScripts() {
             var usrjs=prjDir.rel("js/concat.js");

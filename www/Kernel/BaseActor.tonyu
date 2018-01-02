@@ -42,7 +42,7 @@ nowait \extend(obj) {
 }
 
 nowait \print(pt) {
-    $_printCount++; if ($_printCount>100) throw new Error("printをしすぎています.");
+    $_printCount++; if ($_printCount>$printLimit) throw new Error("printをしすぎています.");
     console.log.apply(console,arguments);
     var mergedArg="";
     if($consolePanel){

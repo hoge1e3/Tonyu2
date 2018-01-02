@@ -27,16 +27,16 @@ native Box2D;
     var b2Fixture = Box2D.Dynamics.b2Fixture;
     var b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;
     var b2CircleShape = Box2D.Collision.Shapes.b2CircleShape;
-    
+
     var fixDef = new b2FixtureDef;
     fixDef.density = defv(density, 1.0);
     fixDef.friction = defv(friction, 0.5);
     fixDef.restitution = defv(restitution, 0.2);
-    
+
     var bodyDef = new b2BodyDef;
     bodyDef.type = isStatic ? b2Body.b2_staticBody :
     b2Body.b2_dynamicBody;
-    
+
     bodyDef.position.x = x /scale;
     bodyDef.position.y = y /scale;
     shape=shape || (radius ? "circle" : "box");
@@ -57,7 +57,7 @@ native Box2D;
         radius/scale
         );
         width=height=radius*2;
-    } 
+    }
     var fps=wworld.fps;
     var r=rotation,ve=bvec(defv(vx*fps ,0),defv(vy*fps,0)),vr=defv(vrotation,0);
     body=world.CreateBody(bodyDef);
@@ -78,11 +78,11 @@ native Box2D;
             if (m.m_points[0]) {
                 if (m.m_points[1] && m.m_points[1].x && m.m_points[1].y) {
 	            	point={
-	            	x:(m.m_points[0].x+m.m_points[1].x)/2*w.scale, 
+	            	x:(m.m_points[0].x+m.m_points[1].x)/2*w.scale,
 	            	y:(m.m_points[0].y+m.m_points[1].y)/2*w.scale};
                 } else {
     	        	point={x:m.m_points[0].x*w.scale, y:m.m_points[0].y*w.scale};
-                } 
+                }
             } else point={x,y};
             var a=c.GetFixtureA().GetBody().GetUserData();
             var b=c.GetFixtureB().GetBody().GetUserData();
@@ -171,11 +171,17 @@ native Box2D;
     var b2Body = Box2D.Dynamics.b2Body;
     var JDC=Box2D.Dynamics.Joints.b2RevoluteJointDef;
     var jd=new JDC;
-    var bodyDef = new b2BodyDef;
-    bodyDef.type = b2Body.b2_staticBody;
-    bodyDef.position.x = px /scale;
-    bodyDef.position.y = py /scale;
-    var bodyB=world.CreateBody(bodyDef);
+    var bodyB;
+    if (params.other && params.other is BodyActor) {
+        params.other.initBody();
+        bodyB=params.other.body;
+    } else {
+        var bodyDef = new b2BodyDef;
+        bodyDef.type = b2Body.b2_staticBody;
+        bodyDef.position.x = px /scale;
+        bodyDef.position.y = py /scale;
+        bodyB=world.CreateBody(bodyDef);
+    }
     var b2Vec2 = Box2D.Common.Math.b2Vec2;
     jd.Initialize(body,bodyB,new b2Vec2(px/scale, py/scale));
     if (params.lowerAngle && params.upperAngle) {
@@ -183,7 +189,7 @@ native Box2D;
        jd.upperAngle = rad(params.upperAngle);
        jd.enableLimit = true;
     }
-    world.CreateJoint(jd);    
+    world.CreateJoint(jd);
 }
 \rotation {
     if (!body || manualRotation) return _rotation;
@@ -193,7 +199,7 @@ native Box2D;
     r=r||0;
     if (!body || manualRotation) return _rotation=r;
     body.SetAngle(rad(r));
-} 
+}
 
 \x {
     if (!body) return _x;
@@ -256,4 +262,3 @@ native Box2D;
     if (v) body.SetAwake(true);
     body.SetAngularVelocity(rad(v*getWorld().fps));
 }
-

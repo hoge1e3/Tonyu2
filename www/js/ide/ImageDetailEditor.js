@@ -30,6 +30,7 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite","Assets"],
             cols=1;//nNan( parseInt(v.cols.val()) ,cols);
             rows=1;//nNan( parseInt(v.rows.val()) ,rows);
             calcWH();
+            setWH();//?
             redrawImage();
             return false;
         case "rc":
@@ -75,12 +76,12 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite","Assets"],
             w=srcImg.width;
             h=srcImg.height;
             if (item.type=="single") {
-                v.theForm[0].type.value="single";
+                selSingle();
             } else if (item.pwidth && item.pheight) {
                 v.pwidth.val(item.pwidth);
                 v.pheight.val(item.pheight);
                 calcRC();
-                v.theForm[0].type.value="wh";
+                selWH();
             } else {
                 v.theForm[0].type.value="t1";
             }
@@ -176,15 +177,17 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite","Assets"],
     function calcWH() {
         if (!item) return false;
         item.type="wh";
-        item.pwidth=nNan( Math.floor(w/cols), item.pwidth);
-        item.pheight=nNan( Math.floor(h/rows), item.pheight);
+        item.pwidth=nNan( Math.floor(w/cols), w);//item.pwidth);
+        item.pheight=nNan( Math.floor(h/rows), h);//item.pheight);
+        console.log("calcWH",item);
         v.pwidth.val(item.pwidth);
         v.pheight.val(item.pheight);
     }
     function setWH() {
         if (v.theForm[0].type.value!="wh") return false;
         if (!item) return false;
-        //console.log("setWH");
+        //console.log("setWH",item);
+        item.type="wh";
         item.pwidth=nNan( parseInt(v.pwidth.val()), item.pwidth);
         item.pheight=nNan( parseInt(v.pheight.val()), item.pheight);
         calcRC();

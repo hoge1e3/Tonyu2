@@ -1,4 +1,4 @@
-// Created at Sat Dec 16 2017 17:54:59 GMT+0900 (東京 (標準時))
+// Created at Tue Jan 02 2018 20:52:59 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -15063,6 +15063,7 @@ define(["DeferredUtil","WebSite","assert"], function (DU,WebSite,A) {
 				return DU.promise(function (s) {
 					var head = document.getElementsByTagName("head")[0] || document.documentElement;
 					var script = document.createElement("script");
+					if (typeof tonyu_app_version==="string") src+="?"+tonyu_app_version;
 					script.src = src;
 					var done = false;
 					script.onload = script.onreadystatechange = function() {
@@ -16176,7 +16177,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
-			VERSION:1513414431368,//EMBED_VERSION
+			VERSION:1514893927687,//EMBED_VERSION
 			A:A};
 }();
 });
