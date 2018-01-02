@@ -14,16 +14,37 @@
 <li><code>x</code>: 回転の中心のx座標です。省略するとこのオブジェクトのx座標を用います</li>
 <li><code>y</code>: 回転の中心のy座標です。省略するとこのオブジェクトのy座標を用います</li>
 <li><code>lowerAngle</code>, <code>upperAngle</code>: 回転角に制限を加える場合、それぞれ最小角度と最大角度を指定します。</li>
+<li><code>other</code> 他のBodyActorと接続する場合に指定します．指定がない場合は，回転の中心が(x,y)の位置に固定されます．</li>
 </ul>
-<h1 id="-">例</h1>
-<pre><code>extends BodyActor;
+<h2 id="-1">例1</h2>
+<p>Flipper</p>
+<pre><code class="lang-JS">extends BodyActor;
+//(300,200)を中心に回転する
 addRevoluteJoint{x:300,y:200,lowerAngle:-30,upperAngle:30};
 
 while(true) {
     if(getkey(32)) applyImpulse(0,-30);
     update();
 }
-
-new Flipper{x:200,y:200,scaleX:10,scaleY:1};
-</code></pre><p>.</p>
+</code></pre>
+<p>Main</p>
+<pre><code class="lang-JS">new Flipper{x:200,y:200,scaleX:10,scaleY:1};
+</code></pre>
+<h2 id="-">例２</h2>
+<p>Main</p>
+<pre><code class="lang-JS">r=new BodyActor{
+    fillStyle=&quot;white&quot;,
+    width=100,height=10,
+    x=100,y=0
+};
+r2=new BodyActor{
+    fillStyle=&quot;white&quot;,
+    width=100,height=10,
+    x=200,y=0
+};
+//r自身は(50,0)を中心に回転
+r.addRevoluteJoint{x:50,y:0};
+//rとr2を接続．回転の中心は初期状態では(150,0)，その後の物理運動に応じて変化
+r.addRevoluteJoint{x:150,y:0,other:r2};
+</code></pre>
 </body></html>
