@@ -300,7 +300,9 @@ html {
 }
 
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  /*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
+  font-family: 'Lucida Grande','Hiragino Kaku Gothic ProN','ヒラギノ角ゴ ProN W3','メイリオ',Meiryo,Helvetica,Arial,sans-serif;
+  
   font-size: 14px;
   line-height: 1.428571429;
   color: #333333;
@@ -4495,13 +4497,13 @@ textarea.input-group-sm > .input-group-btn > .btn {
 }
 
 .navbar-inverse .navbar-brand {
-  color: #999999;
+  color: #ffffff;
 }
 
 .navbar-inverse .navbar-brand:hover,
 .navbar-inverse .navbar-brand:focus {
   color: #ffffff;
-  background-color: transparent;
+  background: linear-gradient(to bottom, #808080, #404040);
 }
 
 .navbar-inverse .navbar-text {
@@ -4509,13 +4511,15 @@ textarea.input-group-sm > .input-group-btn > .btn {
 }
 
 .navbar-inverse .navbar-nav > li > a {
-  color: #999999;
+  color: #ffffff;
+  font-weight:bold;
 }
 
 .navbar-inverse .navbar-nav > li > a:hover,
 .navbar-inverse .navbar-nav > li > a:focus {
   color: #ffffff;
-  background-color: transparent;
+  /*background-color: transparent;*/
+  background: linear-gradient(to bottom, #808080, #404040);
 }
 
 .navbar-inverse .navbar-nav > .active > a,
