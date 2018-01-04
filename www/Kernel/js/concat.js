@@ -26910,6 +26910,152 @@ Tonyu.klass.define({
   decls: {"methods":{"main":{"nowait":false},"new":{"nowait":false},"timeStop":{"nowait":false},"update":{"nowait":false},"initEvents":{"nowait":false},"initPeripherals":{"nowait":false},"initLayers":{"nowait":false},"debug":{"nowait":false},"loadPlugins":{"nowait":false},"loadImages":{"nowait":false},"loadSounds":{"nowait":false},"createMainObject":{"nowait":false},"loadPage":{"nowait":true},"stop":{"nowait":false},"hide":{"nowait":true},"schedule":{"nowait":false},"progress":{"nowait":false},"progressNoLog":{"nowait":false},"mainLoop":{"nowait":false},"loopRAF":{"nowait":false},"waitRAF":{"nowait":false},"loopTimer":{"nowait":false},"handlePause":{"nowait":false},"drawFrame":{"nowait":true},"moveFrame":{"nowait":true},"afterDraw":{"nowait":true},"initFPSParams":{"nowait":true},"now":{"nowait":true},"resetDeadLine":{"nowait":true},"waitFrame":{"nowait":false},"getFrameRate":{"nowait":true},"setFrameRate":{"nowait":true},"__getter__useRAF":{"nowait":true},"__setter__useRAF":{"nowait":true},"getMeasuredFps":{"nowait":true},"getMeasuredRps":{"nowait":true},"measureFps":{"nowait":true}},"fields":{"eventTypes":{},"cvj":{},"debugCnt":{},"newLimit":{},"mainClass":{},"_useRAF":{},"_fps":{},"subTime":{},"rafProcNowTime":{},"procCnt":{},"maxFrameSkip":{},"doDraw":{},"deadLine":{},"frameSkipped":{},"paused":{},"drawTime":{},"fps_fpsCnt":{},"newLimitCount":{},"moveTime":{},"fps_rpsCnt":{},"minFrameSkip":{},"frameCnt":{},"lastMeasured":{},"fps_fps":{},"fps_rps":{}}}
 });
 Tonyu.klass.define({
+  fullName: 'kernel.FadeEffect',
+  shortName: 'FadeEffect',
+  namespace: 'kernel',
+  superclass: Tonyu.classes.kernel.Panel,
+  includes: [],
+  methods: {
+    main :function _trc_FadeEffect_main() {
+      "use strict";
+      var _this=this;
+      
+      
+      
+      
+      //$LASTPOS=63000070;//kernel.FadeEffect:70
+      _this.fillStyle = _this.fillStyle||"black";
+      
+      
+      //$LASTPOS=63000133;//kernel.FadeEffect:133
+      _this.duration = _this.duration||30;
+      
+      switch (_this.type) {
+      case "in":
+        //$LASTPOS=63000202;//kernel.FadeEffect:202
+        _this.alpha=255;
+        //$LASTPOS=63000212;//kernel.FadeEffect:212
+        _this.alphaTo=0;
+        break;
+        
+      case "out":
+        //$LASTPOS=63000249;//kernel.FadeEffect:249
+        _this.alpha=0;
+        //$LASTPOS=63000257;//kernel.FadeEffect:257
+        _this.alphaTo=255;
+        break;
+        
+      }
+      //$LASTPOS=63000278;//kernel.FadeEffect:278
+      _this.fillRect(0,0,Tonyu.globals.$screenWidth,Tonyu.globals.$screenHeight);
+      //$LASTPOS=63000320;//kernel.FadeEffect:320
+      _this.sa=_this.alpha;
+      //$LASTPOS=63000330;//kernel.FadeEffect:330
+      //$LASTPOS=63000335;//kernel.FadeEffect:335
+      _this.i=0;for (; _this.i<_this.duration ; _this.i++) {
+        {
+          //$LASTPOS=63000361;//kernel.FadeEffect:361
+          _this.progress=_this.i/(_this.duration-1);
+          //$LASTPOS=63000390;//kernel.FadeEffect:390
+          _this.alpha=_this.alphaTo*_this.progress+_this.sa*(1-_this.progress);
+          //$LASTPOS=63000434;//kernel.FadeEffect:434
+          _this.update();
+        }
+      }
+      //$LASTPOS=63000446;//kernel.FadeEffect:446
+      _this.sendEvent("complete");
+      //$LASTPOS=63000469;//kernel.FadeEffect:469
+      if (_this.page) {
+        //$LASTPOS=63000485;//kernel.FadeEffect:485
+        _this.loadPage(_this.page);
+        
+      }
+    },
+    fiber$main :function _trc_FadeEffect_f_main(_thread) {
+      "use strict";
+      var _this=this;
+      //var _arguments=Tonyu.A(arguments);
+      var __pc=0;
+      
+      
+      
+      
+      //$LASTPOS=63000070;//kernel.FadeEffect:70
+      _this.fillStyle = _this.fillStyle||"black";
+      
+      
+      //$LASTPOS=63000133;//kernel.FadeEffect:133
+      _this.duration = _this.duration||30;
+      
+      switch (_this.type) {
+      case "in":
+        //$LASTPOS=63000202;//kernel.FadeEffect:202
+        _this.alpha=255;
+        //$LASTPOS=63000212;//kernel.FadeEffect:212
+        _this.alphaTo=0;
+        break;
+        
+      case "out":
+        //$LASTPOS=63000249;//kernel.FadeEffect:249
+        _this.alpha=0;
+        //$LASTPOS=63000257;//kernel.FadeEffect:257
+        _this.alphaTo=255;
+        break;
+        
+      }
+      //$LASTPOS=63000278;//kernel.FadeEffect:278
+      _this.fillRect(0,0,Tonyu.globals.$screenWidth,Tonyu.globals.$screenHeight);
+      //$LASTPOS=63000320;//kernel.FadeEffect:320
+      _this.sa=_this.alpha;
+      
+      _thread.enter(function _trc_FadeEffect_ent_main(_thread) {
+        if (_thread.lastEx) __pc=_thread.catchPC;
+        for(var __cnt=100 ; __cnt--;) {
+          switch (__pc) {
+          case 0:
+            //$LASTPOS=63000330;//kernel.FadeEffect:330
+            //$LASTPOS=63000335;//kernel.FadeEffect:335
+            _this.i=0;
+          case 1:
+            if (!(_this.i<_this.duration)) { __pc=4     ; break; }
+            //$LASTPOS=63000361;//kernel.FadeEffect:361
+            _this.progress=_this.i/(_this.duration-1);
+            //$LASTPOS=63000390;//kernel.FadeEffect:390
+            _this.alpha=_this.alphaTo*_this.progress+_this.sa*(1-_this.progress);
+            //$LASTPOS=63000434;//kernel.FadeEffect:434
+            _this.fiber$update(_thread);
+            __pc=2;return;
+          case 2:
+            
+          case 3     :
+            _this.i++;
+            __pc=1;break;
+          case 4     :
+            
+            //$LASTPOS=63000446;//kernel.FadeEffect:446
+            _this.sendEvent("complete");
+            //$LASTPOS=63000469;//kernel.FadeEffect:469
+            if (_this.page) {
+              //$LASTPOS=63000485;//kernel.FadeEffect:485
+              _this.loadPage(_this.page);
+              
+            }
+            _thread.exit(_this);return;
+          }
+        }
+      });
+    },
+    __getter__defaultLayer :function _trc_FadeEffect___getter__defaultLayer() {
+      "use strict";
+      var _this=this;
+      
+      return Tonyu.globals.$frontLayer;
+    },
+    __dummy: false
+  },
+  decls: {"methods":{"main":{"nowait":false},"__getter__defaultLayer":{"nowait":true}},"fields":{"type":{},"alphaTo":{},"alpha":{},"fillStyle":{},"page":{},"duration":{},"sa":{},"i":{},"progress":{}}}
+});
+Tonyu.klass.define({
   fullName: 'kernel.DxChar',
   shortName: 'DxChar',
   namespace: 'kernel',
@@ -26934,27 +27080,27 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=63000057;//kernel.DxChar:57
+      //$LASTPOS=64000057;//kernel.DxChar:57
       Tonyu.classes.kernel.SpriteChar.apply( _this, [xx,yy,pp,ff]);
-      //$LASTPOS=63000082;//kernel.DxChar:82
+      //$LASTPOS=64000082;//kernel.DxChar:82
       _this.scaleX=1;
-      //$LASTPOS=63000097;//kernel.DxChar:97
+      //$LASTPOS=64000097;//kernel.DxChar:97
       if (sz) {
-        //$LASTPOS=63000105;//kernel.DxChar:105
+        //$LASTPOS=64000105;//kernel.DxChar:105
         _this.scaleX=sz;
       }
-      //$LASTPOS=63000121;//kernel.DxChar:121
+      //$LASTPOS=64000121;//kernel.DxChar:121
       _this.angle=0;
-      //$LASTPOS=63000135;//kernel.DxChar:135
+      //$LASTPOS=64000135;//kernel.DxChar:135
       if (rt) {
-        //$LASTPOS=63000143;//kernel.DxChar:143
+        //$LASTPOS=64000143;//kernel.DxChar:143
         _this.angle=rt;
       }
-      //$LASTPOS=63000158;//kernel.DxChar:158
+      //$LASTPOS=64000158;//kernel.DxChar:158
       _this.alpha=255;
-      //$LASTPOS=63000174;//kernel.DxChar:174
+      //$LASTPOS=64000174;//kernel.DxChar:174
       if (al) {
-        //$LASTPOS=63000182;//kernel.DxChar:182
+        //$LASTPOS=64000182;//kernel.DxChar:182
         _this.alpha=al;
       }
     },
@@ -26962,15 +27108,15 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=63000212;//kernel.DxChar:212
+      //$LASTPOS=64000212;//kernel.DxChar:212
       if (_this._isInvisible) {
         return _this;
       }
-      //$LASTPOS=63000243;//kernel.DxChar:243
+      //$LASTPOS=64000243;//kernel.DxChar:243
       _this.onDraw();
-      //$LASTPOS=63000258;//kernel.DxChar:258
+      //$LASTPOS=64000258;//kernel.DxChar:258
       _this.detectShape();
-      //$LASTPOS=63000278;//kernel.DxChar:278
+      //$LASTPOS=64000278;//kernel.DxChar:278
       _this.drawDxSprite(_this.x,_this.y,_this.p,_this.f,_this.zOrder,_this.angle,_this.alpha,_this.scaleX,_this.scaleY);
     },
     __dummy: false

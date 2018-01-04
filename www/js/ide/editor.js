@@ -111,29 +111,35 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         //resizeCanvas(d.width(),d.height());
     };*/
     var dialogSize={};
-    function showRunDialog() {
+    function showRunDialog(first) {
         runDialogMode=true;
         $("#mainArea").removeClass("col-xs-6").addClass("col-xs-11");
         var d=$("#runArea");
         //$("#runArea").css({height:screenH-100});
-        dialogSize.w=dialogSize.w||$(window).width()-100;
+        dialogSize.w=dialogSize.w||($(window).width()-100)/2;
         dialogSize.h=dialogSize.h||screenH;
-        $("#runArea").dialog({
-            width:dialogSize.w,
-            height:dialogSize.h,
-            resize:function () {
-                dialogSize.w=d.width();
-                dialogSize.h=d.height();
-                resizeCanvas(d.width(),d.height());
-            },//da.handleResizeF(),
-            close:function () {dialogClosed=true;stop();}
-        });
+        if (first) {
+            d.dialog({
+                width:dialogSize.w,
+                height:dialogSize.h,
+                position:{my:"right top",at:"right bottom",of:$("#navBar")},
+                resize:function () {
+                    dialogSize.w=d.width();
+                    dialogSize.h=d.height();
+                    resizeCanvas(d.width(),d.height());
+                },//da.handleResizeF(),
+                close:function () {dialogClosed=true;stop();}
+            });
+            d.dialog("close");
+        } else {
+            d.dialog();
+        }
+        $(".ui-dialog-titlebar-close").blur();
         resizeCanvas(d.width(),d.height());
         //da.handleResize();
         console.log("Diag",dialogSize);
         //resizeCanvas(w,screenH-100);
     }
-
     var editors={};
 
     /*KeyEventChecker.down(document,"F12",F(function () {
@@ -666,6 +672,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     };
     FM.onMenuStart=save;
     //curPrj.compileKernel();
+    showRunDialog(true);
     SplashScreen.hide();
     if (curPrj.getBlobInfos().length>0) {
         var ld=UI("div",{title:"ログイン"},["div","このプロジェクトを正常に動作させるにはログインが必要です"]);

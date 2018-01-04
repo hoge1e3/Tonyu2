@@ -1,0 +1,28 @@
+extends Panel;
+var type:String;
+var alphaTo:Number;
+var alpha:Number;
+var fillStyle:String=fillStyle||"black";
+var page;//Page class
+var duration:Number=duration||30;
+
+switch(type) {
+    case "in":
+    alpha=255;alphaTo=0;break;
+    case "out":
+    alpha=0;alphaTo=255;break;
+}
+fillRect(0,0,$screenWidth,$screenHeight);
+sa=alpha;
+for (i=0;i<duration;i++) {
+    progress=i/(duration-1);
+    alpha=alphaTo*progress+sa*(1-progress);
+    update();
+}
+sendEvent("complete");
+if (page) {
+    loadPage(page);
+}
+\defaultLayer {
+    return $frontLayer;
+}
