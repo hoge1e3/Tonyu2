@@ -131,7 +131,7 @@ return Tonyu=function () {
 			Object.defineProperty(res.prototype, k , props[k]);
 		}
 		res.meta=addMeta(fullName,{
-			fullName:fullName,shortName:shortName,namepsace:namespace,decls:decls,
+			fullName:fullName,shortName:shortName,namespace:namespace,decls:decls,
 			superclass:parent ? parent.meta : null,func:res,
 			includes:includes.map(function(c){return c.meta;})
 		});

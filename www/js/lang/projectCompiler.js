@@ -53,6 +53,7 @@ var TPRC=function (dir) {
 	TPR.shouldCompile=function () {
 		var outF=TPR.getOutputFile();
 		if (!outF.exists()) {
+			console.log("Should compile: ", outF.name()+" does not exist.");
 			return true;
 		}
 		if (outF.isReadOnly()) return false;
@@ -110,6 +111,20 @@ var TPRC=function (dir) {
 			throw new Error("out: directory style not supported");
 		}
 		return outF;
+	};
+	TPR.requestRebuild=function () {
+		var env=this.env;
+		var ns=this.getNamespace();
+		for (var kn in env.classes) {
+			var k=env.classes[kn];
+			if (k.namespace==ns) {
+				console.log("REQRB","remove env.classes.",kn);
+				delete env.classes[kn];
+			}
+		}
+	};
+	TPR.removeOutputFile=function () {
+		this.getOutputFile().rm();
 	};
 	TPR.loadDependingClasses=function (ctx) {
 		var task=DU.directPromise();

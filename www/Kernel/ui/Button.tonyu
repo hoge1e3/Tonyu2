@@ -8,6 +8,7 @@ extends Actor;
     strokeStyle=strokeStyle||"black";
     clickedStyle=clickedStyle||"white";
     disabledStrokeStyle=disabledStrokeStyle||"#ddd";
+    alpha=typeof(alpha)=="number"?alpha:255;
     padding= typeof(padding)=="number"?padding:5;
     width = width || $screenWidth-100;
     height = height || 50;
@@ -39,6 +40,7 @@ while(true) {
     return p.x>=left && p.x<=left+width && p.y>=top && p.y<=top+height;
 }
 \draw(c) {
+    c.globalAlpha=alpha/255;
     c.fillStyle=fillStyle ? fillStyle+"" : "gray";
     c.strokeStyle=strokeStyle ? strokeStyle+"" : "black";
     if (disabled) c.strokeStyle=disabledStrokeStyle+"";

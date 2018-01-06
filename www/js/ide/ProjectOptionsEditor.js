@@ -44,6 +44,7 @@ define(["UI"], function (UI) {
                     TPR.odiag.dialog("close");
                     //console.log("Project opt Saved ",JSON.stringify(opt));
                     TPR.setOptions();
+                    TPR.requestRebuild();
                     //console.log("new opt ",JSON.stringify(TPR.getOptions()));
                 }
             }
