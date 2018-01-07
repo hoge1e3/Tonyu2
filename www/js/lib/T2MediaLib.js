@@ -334,8 +334,9 @@ var T2MediaLib = (function(){
             if      (offset > audioBuffer.duration) offset = audioBuffer.duration;
             else if (offset < 0.0) offset = 0.0;
         }
-        if (!duration) {//@hoge1e3
-            duration=undefined;
+        if (!duration) {
+            //duration=undefined; // iOS9でduration==undefinedだとsource.start(start, offset, duration);でエラー発生する
+            duration=86400; // Number.MAX_SAFE_INTEGERを入れてもiOS9ではエラー起きないけど、昔なんかの環境で数値大き過ぎるとエラーになって86400(24時間)に設定した気がする
         }
         if (!loop) loop = false;
         if (!loopStart) {
