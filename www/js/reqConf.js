@@ -221,6 +221,7 @@ var reqConf={
             "exportToExe": "social/exportToExe",
             "exportToJsdoit": "social/exportToJsdoit",
             "forkBlobs": "social/forkBlobs",
+            "importFromPrjB": "social/importFromPrjB",
             "importFromJsdoit": "social/importFromJsdoit",
             "importFromTonyu1": "tonyu1/importFromTonyu1",
             "T1Map": "tonyu1/t1map",
