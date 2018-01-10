@@ -30,7 +30,9 @@
 <script>
 $(function () { SplashScreen.show(); });
 requirejs.config(reqConf);
-requirejs(["ide/selProject","buildAll","wikiExporter"],function (){});
+requirejs(
+	["ide/selProject","buildAll","wikiExporter"],
+function (){});
 </script>
 
 </head>

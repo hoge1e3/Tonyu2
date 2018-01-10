@@ -8,6 +8,9 @@ body {
     box-sizing: content-box!important;
 }
 
+.dragging {
+    background-color: #af8;
+}
 .starter-template {
   padding: 40px 15px;
   text-align: center;

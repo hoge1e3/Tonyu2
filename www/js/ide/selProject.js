@@ -1,9 +1,11 @@
 requirejs(["FS","Wiki","Shell","Shell2",
            /*"copySample",*/"NewProjectDialog","UI","Sync","Auth",
-           "zip","requestFragment","WebSite","extLink","DeferredUtil"],
+           "zip","requestFragment","WebSite","extLink","DeferredUtil",
+       "ImportFromZip"],
   function (FS, Wiki,   sh,sh2,
             /*copySample,  */NPD,           UI, Sync, Auth,
-            zip,requestFragment,WebSite,extLink,DU) {
+            zip,requestFragment,WebSite,extLink,DU,
+        ImportFromZip) {
 $(function () {
 
     //copySample();
@@ -49,7 +51,7 @@ $(function () {
         var prj1dirList=$("<section>");
         $("#prjItemList").append(prj1dirList);
         prj1dirList.append(UI("h2",{"class":"prjDirHeader"},curDir.path()));
-        var u=UI("div", {"class":"project"},
+        var u=UI("div", {"class":"project newprj"},
                 ["a", {href:"javascript:;", on:{click:newDiag}},
                  ["img",{$var:"t",src:"../../images/tonew.png"}],
                  ["div", "新規作成"]
@@ -74,6 +76,16 @@ $(function () {
         //$("#prjItemList").append(UI("div",["h2",{"class":"prjDirHeader"},"----"]));
     }
     function dols(curDir,prj1dirList) {
+        new ImportFromZip(curDir,prj1dirList,{
+            onComplete: refresh
+        });
+        function refresh() {
+            prj1dirList.find(".existentproject").remove();
+            dols2(curDir,prj1dirList);
+        }
+        dols2(curDir,prj1dirList);
+    }
+    function dols2(curDir,prj1dirList) {
         var d=[];
         curDir.each(function (f) {
             if (!f.isDir()) return;
@@ -92,7 +104,7 @@ $(function () {
             var name=f.name();
 
             if (!f.isDir()) return;
-            var u=UI("div", {"class":"project"},
+            var u=UI("div", {"class":"project existentproject"},
                     ["a", {href:"project.html?dir="+f.path()},
                      ["img",{$var:"t",src:"../../images/nowprint.png"}],
                      ["div", {"class":"projectName"},name.replace(/[\/\\]$/,"")]
