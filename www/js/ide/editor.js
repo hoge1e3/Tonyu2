@@ -665,7 +665,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     $("#openFolder").click(F(function () {
         var f=curPrjDir;
         var gui = require("nw.gui");//(global.nwDispatcher||global.nw).requireNwGui();
-        gui.Shell.showItemInFolder(f.path().replace(/\//g,"\\"));
+        gui.Shell.showItemInFolder(f.path().replace(/\//g,require("path").sep));
     }));
     sh.curFile=function () {
         return fl.curFile();
