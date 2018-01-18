@@ -1,4 +1,4 @@
-// Created at Tue Jan 02 2018 20:52:09 GMT+0900 (東京 (標準時))
+// Created at Thu Jan 18 2018 20:58:50 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -620,6 +620,11 @@ define('MIMETypes',[], function () {
 });
 
 define('DeferredUtil',[], function () {
+    var root=(
+        typeof window!=="undefined" ? window :
+        typeof self!=="undefined" ? self :
+        typeof global!=="undefined" ? global : null
+    );
     //  promise.then(S,F)  and promise.then(S).fail(F) is not same!
     //  ->  when fail on S,  F is executed?
     var DU;
@@ -864,9 +869,9 @@ define('DeferredUtil',[], function () {
             return DU.callbackToPromise(function (s) {$(s);});
         },
         requirejs:function (modules) {
-            if (!window.requirejs) throw new Error("requirejs is not loaded");
+            if (!root.requirejs) throw new Error("requirejs is not loaded");
             return DU.callbackToPromise(function (s) {
-                window.requirejs(modules,s);
+                root.requirejs(modules,s);
             });
         }
     };
@@ -875,11 +880,11 @@ define('DeferredUtil',[], function () {
     DU.promise=DU.callbackToPromise=DU.funcPromise;
     DU.when1=DU.resolve;
     DU.config={};
-    if (window.$ && window.$.Deferred) {
+    if (root.$ && root.$.Deferred) {
         DU.config.useJQ=true;
     }
-    DU.external={Promise:window.Promise};
-    if (!window.DeferredUtil) window.DeferredUtil=DU;
+    DU.external={Promise:root.Promise};
+    if (!root.DeferredUtil) root.DeferredUtil=DU;
     return DU;
 });
 
@@ -2592,7 +2597,7 @@ SFile.prototype={
             dstIsDir=false;
         }
         if (srcIsDir && !dstIsDir) {
-           this.err("Cannot move dir to file");
+           this.err("Cannot move dir "+src.path()+" to file "+dst.path());
         } else if (!srcIsDir && !dstIsDir) {
             if (options.echo) options.echo(src+" -> "+dst);
             var res=this.act.fs.cp(this.act.path, dst.getResolvedLinkPath(),options);
@@ -2752,6 +2757,11 @@ SFile.prototype={
     download: function () {
         if (this.isDir()) throw new Error(this+": Download dir is not support yet. Use 'zip' instead.");
         saveAs(this.getBlob(),this.name());;
+    },
+    err: function () {
+        var a=Array.prototype.slice.call(arguments);
+        console.log.apply(console,a);
+        throw new Error(a.join(""));
     }
 };
 Object.defineProperty(SFile.prototype,"act",{
@@ -15101,7 +15111,9 @@ define(["FS"], function (FS) {
 		getFiles:WebSite.serverTop+"/File2LSSync",
 		putFiles:WebSite.serverTop+"/LS2FileSync"
 	};
+	WebSite.PathSep="/";
 	if (WebSite.isNW) {
+		WebSite.PathSep=require("path").sep;
 		WebSite.cwd=P.directorify(process.cwd().replace(/\\/g,"/"));
 		//WebSite.exeDir=WebSite.execDir=P.up(P.fixSep(process.execPath)); not suitable when mac
 		if (process.env.TONYU_HOME) {
@@ -15669,7 +15681,8 @@ define(["Util","exceptionCatcher"],function (Util, EC) {
             }
         }
         function parseString(str) {
-            return $("<span>").text(str);
+            return $(document.createTextNode(str));
+            //return $("<span>").text(str);
         }
     };
     UI.types={
@@ -16734,132 +16747,558 @@ define(["WebSite","UI","PathUtil","Util","assert"],
     return extLink;
 });
 requireSimulator.setName('DeferredUtil');
-define([], function () {
-    var DU;
-    DU={
-            ensureDefer: function (v) {
-                var d=new $.Deferred;
-                var isDeferred;
-                $.when(v).then(function (r) {
-                    if (!isDeferred) {
-                        setTimeout(function () {
-                            d.resolve(r);
-                        },0);
-                    } else {
-                        d.resolve(r);
-                    }
-                }).fail(function (r) {
-                    if (!isDeferred) {
-                        setTimeout(function () {
-                            d.reject(r);
-                        },0);
-                    } else {
-                        d.reject(r);
-                    }
-                });
-                isDeferred=true;
-                return d.promise();
-            },
-            directPromise:function (v) {
-                var d=new $.Deferred;
-                setTimeout(function () {d.resolve(v);},0);
-                return d.promise();
-            },
-            then: function (f) {
-                return DU.directPromise().then(f);
-            },
-            timeout:function (timeout) {
-                var d=new $.Deferred;
-                setTimeout(function () {d.resolve();},timeout);
-                return d.promise();
-            },
-            funcPromise:function (f) {
-                var d=new $.Deferred;
-                f(function (v) {
-                    d.resolve(v);
-                },function (e) {
-                    d.reject(e);
-                });
-                return d.promise();
-            },
-            throwPromise:function (e) {
-                var d=new $.Deferred;
-                setTimeout(function () {
-                    d.reject(e);
-                }, 0);
-                return d.promise();
-            },
-            throwF: function (f) {
-                return function () {
-                    try {
-                        return f.apply(this,arguments);
-                    } catch(e) {
-                        console.log(e,e.stack);
-                        return DU.throwPromise(e);
-                    }
-                };
-            },
-            each: function (set,f) {
-                if (set instanceof Array) {
-                    return DU.loop(function (i) {
-                        if (i>=set.length) return DU.brk();
-                        return $.when(f(set[i],i)).then(function () {
-                            return i+1;
-                        });
-                    },0);
+define(["FS"],function (FS){return FS.DeferredUtil;});
+
+requireSimulator.setName('Klass');
+define(["assert"],function (A) {
+    var Klass={};
+    Klass.define=function (pd) {
+        var p,parent;
+        if (pd.$parent) {
+            parent=pd.$parent;
+            p=Object.create(parent.prototype);
+            p.super=function () {
+                var a=Array.prototype.slice.call(arguments);
+                var n=a.shift();
+                return parent.prototype[n].apply(this,a);
+            };
+        } else {
+            p={};
+        }
+        var thisName,singletonName;
+        if (pd.$this) {
+            thisName=pd.$this;
+        }
+        if (pd.$singleton) {
+            singletonName=pd.$singleton;
+        }
+        var init=wrap(pd.$) || function (e) {
+            if (e && typeof e=="object") {
+                for (var k in e) {
+                    this[k]=e[k];
+                }
+            }
+        };
+        var fldinit;
+        var check;
+        if (init instanceof Array) {
+            fldinit=init;
+            init=function () {
+                var a=Array.prototype.slice.call(arguments);
+                for (var i=0;i<fldinit.length;i++) {
+                    if (a.length>0) this[fldinit[i]]=a.shift();
+                }
+            };
+        }
+        var klass;
+        function checkSchema(self) {
+            if (pd.$fields) {
+                //console.log("Checking schema",self,pd.$fields);
+                A.is(self,pd.$fields);
+            }
+        }
+        klass=function () {
+            if (! (this instanceof klass)) {
+                var res=Object.create(p);
+                init.apply(res,arguments);
+                checkSchema(res);
+                return res;
+            }
+            init.apply(this,arguments);
+            checkSchema(this);
+        };
+        if (parent) {
+            klass.super=function () {
+                var a=Array.prototype.slice.call(arguments);
+                var t=a.shift();
+                var n=a.shift();
+                return parent.prototype[n].apply(t,a);
+            };
+        }
+        klass.inherit=function (pd) {
+            pd.$parent=klass;
+            return Klass.define(pd);
+        };
+        klass.prototype=p;
+        for (var name in pd) {
+            if (name[0]=="$") continue;
+            if (name.substring(0,7)=="static$") {
+                klass[name.substring(7)]=wrapStatic(pd[name]);
+            } else {
+                if (isPropDesc(pd[name])) {
+                    Object.defineProperty(p,name,wrap(pd[name]));
                 } else {
-                    var objs=[];
-                    for (var i in set) {
-                        objs.push({k:i,v:set[i]});
+                    p[name]=wrap(pd[name]);
+                }
+            }
+        }
+        function wrapStatic(m) {
+            if (!singletonName) return m;
+            var args=getArgs(m);
+            if (args[0]!==singletonName) return m;
+            return (function () {
+                var a=Array.prototype.slice.call(arguments);
+                a.unshift(klass);
+                return m.apply(klass,a);
+            });
+        }
+        function wrap(m) {
+            if (!thisName) return m;
+            if (isPropDesc(m)) {
+                for (var k in m) {
+                    m[k]=wrap(m[k]);
+                }
+                return m;
+            }
+            if (typeof m!=="function") return m;
+            var args=getArgs(m);
+            if (args[0]!==thisName) return m;
+            return (function () {
+                var a=Array.prototype.slice.call(arguments);
+                a.unshift(this);
+                return m.apply(this,a);
+            });
+        }
+        p.$=init;
+        Object.defineProperty(p,"$bind",{
+            get: function () {
+                if (!this.__bounded) {
+                    this.__bounded=new Klass.Binder(this);
+                }
+                return this.__bounded;
+            }
+        });
+        return klass;
+    };
+    function getArgs(f) {
+        var fpat=/function[^\(]+\(([^\)]*)\)/;
+        var r=fpat.exec(f+"");
+        if (r) {
+            return r[1].replace(/\s/g,"").split(",");
+        }
+        return [];
+    }
+    function isPropDesc(o) {
+        if (typeof o!=="object") return false;
+        if (!o) return false;
+        var pk={configurable:1,enumerable:1,value:1,writable:1,get:1,set:1};
+        var c=0;
+        for (var k in o) {
+            if (!pk[k]) return false;
+            c+=pk[k];
+        }
+        return c;
+    }
+    Klass.Function=function () {throw new Exception("Abstract");}
+    Klass.opt=A.opt;
+    Klass.Binder=Klass.define({
+        $this:"t",
+        $:function (t,target) {
+            for (var k in target) (function (k){
+                if (typeof target[k]!=="function") return;
+                t[k]=function () {
+                    var a=Array.prototype.slice.call(arguments);
+                    //console.log(this, this.__target);
+                    //A(this.__target,"target is not set");
+                    return target[k].apply(target,a);
+                };
+            })(k);
+        }
+    });
+    return Klass;
+});
+/*
+requirejs(["Klass"],function (k) {
+  P=k.define ({
+     $:["x","y"]
+  });
+  p=P(2,3);
+  console.log(p.x,p.y);
+});
+*/
+
+requireSimulator.setName('DragDrop');
+define(["FS"],function (FS) {
+    var DU=FS.DeferredUtil;
+    var SFile=FS.SFile;
+    DragDrop={};
+    DragDrop.readFile=function (file) {
+        return DU.promise(function (succ) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                //var fileContent = reader.result;
+                //console.log("SUCC",reader);
+                succ(reader);
+            };
+            reader.readAsArrayBuffer(file);
+        });
+    };
+    DragDrop.accept=function (dom, fdst,options) {
+        options=options||{};
+        options.draggingClass=options.draggingClass||"dragging";
+        dom.on("dragover",over);
+        dom.on("dragenter",enter);
+        dom.on("dragleave",leave);
+        dom.on("drop",dropAdd);
+        if (!options.onCheckFile) {
+            options.onCheckFile=function (f) {
+                if (options.overwrite) {
+                    return f;
+                } else {
+                    if (f.exists()) return false;
+                    return f;
+                }
+            };
+        }
+        if (!options.onError) {
+            options.onError=function (e) {
+                console.error(e);
+            };
+        }
+        function dropAdd(e) {
+            var dst=fdst;
+            if (typeof dst==="function") dst=dst();
+            dom.removeClass(options.draggingClass);
+            var status={};
+            var eo=e.originalEvent;
+            e.stopPropagation();
+            e.preventDefault();
+            var files = Array.prototype.slice.call(eo.dataTransfer.files);
+            var added=[],cnt=files.length;
+            DU.each(files,function (file) {
+                var itemName=file.name;
+                var itemFile=dst.rel(itemName),actFile;
+                return DU.resolve(
+                    options.onCheckFile(itemFile,file)
+                ).then(function (cr) {
+                    if (cr===false) {
+                        status[itemFile.path()]={
+                            file:itemFile,
+                            status:"cancelled"
+                        };
+                        return;
                     }
-                    return DU.each(objs,function (e) {
-                        return f(e.k, e.v);
+                    if (SFile.is(cr)) actFile=cr;
+                    else actFile=itemFile;
+                    return DragDrop.readFile(file).then(function (reader) {
+                        var fileContent=reader.result;
+                        actFile.setBytes(fileContent);
+                        status[itemFile.path()]={
+                            file:itemFile,
+                            status:"uploaded"
+                        };
+                        if (actFile.path()!==itemFile.path()) {
+                            status[itemFile.path()].redirectedTo=actFile;
+                        }
+                    });
+                });
+            }).then(function () {
+                if (options.onComplete) options.onComplete(status);
+            }).fail(function (e) {
+                //console.log(e);
+                options.onError(e);
+            });
+            return false;
+        }
+        function over(e) {
+            //console.log("over",e);
+            e.stopPropagation();
+            e.preventDefault();
+        }
+        var entc=0;
+        function enter(e) {
+            var eo=e.originalEvent;
+            //console.log("enter",eo.target.innerHTML,e);
+            entc++;
+            /*if (dom[0]===eo.relatedTarget) {
+                dom.addClass(options.draggingClass);
+            }*/
+            //if (eo.target===dom[0]) {
+            dom.addClass(options.draggingClass);
+            //}
+                //$(eo.target).addClass(options.draggingClass);
+            //e.stopPropagation();
+            //e.preventDefault();
+        }
+        function leave(e) {
+            var eo=e.originalEvent;
+            //dom.removeClass(options.draggingClass);
+            console.log("leave",eo.target.innerHTML,e);
+            entc--;
+            /*if (dom[0]===eo.relatedTarget) {
+                dom.removeClass(options.draggingClass);
+            }*/
+            //if (eo.target===dom[0]) {
+            if (entc<=0) dom.removeClass(options.draggingClass);
+            //}
+            //$(eo.target).removeClass(options.draggingClass);
+            //e.stopPropagation();
+            //e.preventDefault();
+        }
+    };
+    return DragDrop;
+});
+
+requireSimulator.setName('ZipImporter');
+define(["Klass","FS","Util","DragDrop","DeferredUtil","UI"],
+function (Klass,FS,Util,DD,DU,UI) {
+    FS.mount("/ram/","ram");
+    var zip=FS.zip;
+    var tmpDir=FS.get("/ram/");
+    var ZipImporter=Klass.define({
+        $: function (dir, elem, options) {
+            var t=this;
+            t.elem=elem;
+            t.dir=dir;
+            t.tmpDir=tmpDir.rel(dir.name());
+            options=options||{};
+            t.onComplete=options.onComplete;
+            DD.accept(elem, t.tmpDir, {
+                onComplete: function (status) {
+                    t.dialog=UI("div",{title:"Zipからインポート"},
+                        ["span",{$var:"mesg"}, "ZIPからインポート中です..."]
+                    ).dialog({modal:true});
+                    t.mesg=t.dialog.$vars.mesg;
+                    t.acceptDrag(status).then(function () {
+                        t.dialog.dialog("close");
+                        if (t.onComplete) t.onComplete(status);
+                    },function (e) {
+                        t.dialog.dialog("close");
+                        console.error(e);
                     });
                 }
-            },
-            loop: function (f,r) {
-                return DU.directPromise(r).then(DU.throwF(function () {
-                    var r=f.apply(this,arguments);
-                    if (r.DU_BRK) return r.res;
-                    return $.when(r).then(function (r) {
-                        return DU.loop(f,r);
-                    });
-                }));
-            },
-            brk: function (res) {
-                return {DU_BRK:true,res:res};
-            },
-            tryLoop: function (f,r) {
-                return DU.loop(DU.tr(f),r);
-            },
-            tryEach: function (s,f) {
-                return DU.loop(s,DU.tr(f));
-            },
-            documentReady:function () {
-                return DU.callbackToPromise(function (s) {$(s);});
-            },
-            requirejs:function (modules) {
-                if (!window.requirejs) throw new Error("requirejs is not loaded");
-                return DU.callbackToPromise(function (s) {
-                    window.requirejs(modules,s);
-                });
+            });
+        },
+        acceptDrag: function (status) {
+            var t=this;
+            return DU.each(status,function(k,s) {
+                //s.file;
+                //s.status;
+                if (s.status==="uploaded" && s.file.ext()===".zip") {
+                    return t.unzip(s.file);
+                }
+            });
+        },
+        unzip: function (file) {
+            var t=this;
+            t.mesg.text(file.name()+"を展開中...");
+            var zipexdir=t.tmpDir.rel(file.truncExt()+"/");
+            return FS.zip.unzip(file, zipexdir ).then(function () {
+                return t.traverse(zipexdir);
+            });
+        },
+        traverse: function (zipexdir) {
+            var t=this;
+            return zipexdir.each(function (f) {
+                t.mesg.text(f.name()+"をチェック中...");
+                console.log("traverse",f.path());
+                if (f.isDir()) {
+                    return t.traverse(f);
+                } else if (f.name()==="options.json") {
+                    return t.importFrom(f.up());
+                }
+            });
+        },
+        importFrom: function (src) {
+            var t=this;
+            var dstParent=t.dir;
+            var nameT=FS.PathUtil.truncSEP(src.name());
+            if (nameT==="src") {
+                nameT=FS.PathUtil.truncSEP(src.up().name());
             }
-    };
-    DU.begin=DU.try=DU.tr=DU.throwF;
-    DU.promise=DU.callbackToPromise=DU.funcPromise;
+            var name=nameT+"/";
+            var dst=dstParent.rel(name);
+            t.mesg.text(src.name()+ "から"+ dst.name()+"にコピー");
+            console.log("importFrom",src.path(), "to", dst.path());
+            var i=2;
+            while (dst.exists()) {
+                name=nameT+i+"/";
+                i++;
+                dst=dstParent.rel(name);
+            }
+            return src.copyTo(dst);
+        },
+        checkFromPrjB: function () {
+            var t=this;
+            var file=Util.getQueryString("fromPrjB");
+            if (file) {
+                FS.mount("http://www.tonyu.jp/","web");
+                return t.fromPrjB(file);
+            }
+        },
+        fromPrjB: function (fileName) {
+            var t=this;
+            var f=FS.get("http://www.tonyu.jp/project/pages/dl.cgi?userOnly=1&file="+file);
+            var dst=FS.get("/ram/").rel(file);
+            f.copyTo(dst).then(function (r) {
+                return t.unzip(dst);
+            });
+        }
+    });
+    return ZipImporter;
+});
 
-    return DU;
+requireSimulator.setName('ProjectItem');
+define(["Klass","UI","FS","DeferredUtil","WebSite"],
+function (Klass,UI,FS,DU,WebSite) {
+    var HNOP="javascript:;";
+    var S;
+    ProjectItem=S=Klass.define({
+//----METHODS
+$this:"t",
+$:function (t,projectDir,prjList) {
+    var f=projectDir;
+    var name=FS.PathUtil.truncSEP(f.name());
+    t.prjList=prjList;
+    t.projectDir=projectDir;
+    t.name=name;
+    var u=t.dom(f);
+    t.u=u;
+    u.appendTo(t.prjList);
+    setTimeout(function () {
+        var tn=f.rel("images/").rel("icon_thumbnail.png");
+        if (tn.exists()) {
+            u.$vars.t.attr("src",tn.getURL());
+        }
+    },10);
+},
+hide: function (t) {
+    if (t.u) t.u.hide();
+},
+show: function (t) {
+    if (t.u) t.u.show();
+},
+url: {
+    get: function (t) {
+        var f=t.projectDir;
+        return "project.html?dir="+f.path();
+    }
+},
+dom: function (t) {
+    var url=t.url;
+    var name=t.name;
+    return UI("div", {"class":"project existentproject"},
+        ["a", {href:url},
+             ["img",{$var:"t",src:"../../images/nowprint.png"}]],
+        ["div",
+            ["a", {href:url,"class":"projectName"},name],
+            t.submenuExpr()
+        ]
+    );
+},
+submenuExpr:function submenuExpr(t) {
+    var f=t.projectDir;
+    return ["span",{class:"dropdown"},
+        ["button",{
+            //href:HNOP,
+            class:"submenu prjMenuButton",
+            on:{click:t.$bind.openSubmenu},"data-path":f.path() }," "],
+        ["span",{class:"dropdown-content"},
+            ["a",{href:HNOP,class:"submenu",on:{click:t.$bind.rename}},"名前変更"],
+            ["a",{href:HNOP,class:"submenu",on:{click:t.$bind.download}},"ZIPダウンロード"],
+            ["a",{href:HNOP,class:"submenu nwmenu",on:{click:t.$bind.openFolder}},"フォルダを開く"],
+            ["a",{href:HNOP,class:"submenu",on:{click:t.$bind.remove}},"削除"]
+        ]
+    ];
+},
+download: function (t) {
+    S.closeSubmenu();
+    return FS.zip.zip(t.projectDir);
+},
+remove: function (t) {
+    S.closeSubmenu();
+    if (!t.rmd) t.rmd=UI("div",{title:"プロジェクトの削除"},
+        ["div","プロジェクト",t.name,"を削除しますか？"],
+        ["div",
+            ["input",{$var:"dl",type:"checkbox",checked:true}],
+            ["label",{for:"dl"},"削除前にZIPでダウンロードする"]
+        ],
+        ["div",
+            ["button",{on:{click:doRemove}},"はい"],
+            ["button",{on:{click:cancel}},"いいえ"]
+        ]
+    );
+    t.rmd.$vars.dl.prop("checked",true);
+    t.rmd.dialog();
+    function doRemove() {
+        var dl=t.rmd.$vars.dl.prop("checked");
+        return (dl?t.download():DU.resolve()).then(function () {
+            t.projectDir.rm({r:1});
+            t.u.remove();
+            t.rmd.dialog("close");
+        });
+    }
+    function cancel() {
+        t.rmd.dialog("close");
+    }
+    //t.projectDir.rm({r:1});
+},
+rename: function (t) {
+    S.closeSubmenu();
+    var np=prompt("新しいプロジェクトの名前を入れてください",
+    t.name);
+    if (!np || np=="") return;
+    np=FS.PathUtil.truncSEP(np);
+    var npd=t.projectDir.sibling(np+"/");
+    var link=t.u.find(".projectName");
+    return npd.exists(function (e) {
+        if (e) {
+            alert(np+" はすでに存在します");
+            return;
+        }
+        link.attr("href",HNOP).text("Wait...");
+        return t.projectDir.moveTo(npd).then(function () {
+            t.projectDir=npd;
+            t.name=npd;
+            link.attr("href",t.url).text(np);
+            S.closeSubmenu();
+        });
+    });
+},
+openFolder: function (t){
+    var gui = require("nw.gui");//(global.nwDispatcher||global.nw).requireNwGui();
+    var SEP = process.execPath;
+    gui.Shell.showItemInFolder(t.projectDir.path().replace(/\//g,require("path").sep));
+    S.closeSubmenu();
+},
+openSubmenu: function openSubmenu(t) {
+    S.addMenuHandler();
+    S.closeSubmenu();
+    S.showingSubMenu=t.u.find(".dropdown-content");
+    S.showingSubMenu.addClass("show");
+    if (!WebSite.isNW) S.showingSubMenu.find(".nwmenu").hide();
+},
+static$closeSubmenu: function () {
+    if (S.showingSubMenu) {
+        S.showingSubMenu.removeClass("show");
+        S.showingSubMenu=null;
+    }
+},
+static$addMenuHandler: function () {
+    if (S.menuHandlerAdded) return;
+    S.menuHandlerAdded=true;
+    $('html').click(function(e) {
+        if(!$(e.target).hasClass('submenu')) {
+            S.closeSubmenu();
+        }
+    });
+}
+//----END OF METHODS
+    });// end of klass
+    return S;
 });
 
 requireSimulator.setName('ide/selProject');
 requirejs(["FS","Wiki","Shell","Shell2",
            /*"copySample",*/"NewProjectDialog","UI","Sync","Auth",
-           "zip","requestFragment","WebSite","extLink","DeferredUtil"],
+           "zip","requestFragment","WebSite","extLink","DeferredUtil",
+       "ZipImporter","ProjectItem"],
   function (FS, Wiki,   sh,sh2,
             /*copySample,  */NPD,           UI, Sync, Auth,
-            zip,requestFragment,WebSite,extLink,DU) {
+            zip,requestFragment,WebSite,extLink,DU,
+        ZipImporter,ProjectItem) {
 $(function () {
-
+    var HNOP="javascript:;";
     //copySample();
     //var home=FS.get(WebSite.tonyuHome);
     //var projects=FS.get(WebSite.projects[0]);//home.rel("Projects/");
@@ -16884,12 +17323,6 @@ $(function () {
     },1000);
     var prjDirs=WebSite.projects.map(function (e) {return FS.get(e);});
     prjDirs.forEach(ls);
-    /*DU.each(prjDirs, function (dir){
-        console.log("Each",dir);
-        return ls(dir);
-    });*/
-
-    //var curDir=projects;
     if (WebSite.isNW) {
         $("#loginGrp").hide();
     }
@@ -16903,11 +17336,11 @@ $(function () {
         var prj1dirList=$("<section>");
         $("#prjItemList").append(prj1dirList);
         prj1dirList.append(UI("h2",{"class":"prjDirHeader"},curDir.path()));
-        var u=UI("div", {"class":"project"},
-                ["a", {href:"javascript:;", on:{click:newDiag}},
-                 ["img",{$var:"t",src:"../../images/tonew.png"}],
-                 ["div", "新規作成"]
-                 ]);
+        var u=UI("div", {"class":"project newprj"},
+            ["a", {href:HNOP, on:{click:newDiag}},
+            ["img",{$var:"t",src:"../../images/tonew.png"}],
+            ["div", "新規作成"]
+        ]);
         u.appendTo(prj1dirList);
         function newDiag() {
             NPD.show(curDir, function (prjDir) {
@@ -16928,6 +17361,16 @@ $(function () {
         //$("#prjItemList").append(UI("div",["h2",{"class":"prjDirHeader"},"----"]));
     }
     function dols(curDir,prj1dirList) {
+        new ZipImporter(curDir,prj1dirList,{
+            onComplete: refresh
+        });
+        function refresh() {
+            prj1dirList.find(".existentproject").remove();
+            dols2(curDir,prj1dirList);
+        }
+        return dols2(curDir,prj1dirList);
+    }
+    function dols2(curDir,prj1dirList) {
         var d=[];
         curDir.each(function (f) {
             if (!f.isDir()) return;
@@ -16943,30 +17386,85 @@ $(function () {
         });
         return DU.each(d,function (e) {
             var f=e[0];
-            var name=f.name();
+            if (!f.isDir()) return;
+            var it=new ProjectItem(f,prj1dirList);
+            if (kw!="" && it.name.toLowerCase().indexOf(kw)<0) it.hide();
+            /*var name=f.name();
 
             if (!f.isDir()) return;
-            var u=UI("div", {"class":"project"},
-                    ["a", {href:"project.html?dir="+f.path()},
-                     ["img",{$var:"t",src:"../../images/nowprint.png"}],
-                     ["div", {"class":"projectName"},name.replace(/[\/\\]$/,"")]
-                     ]);
+            var u=prjItem(f);
             u.appendTo(prj1dirList);
             if (kw!="" && name.toLowerCase().indexOf(kw)<0) u.hide();
             setTimeout(function () {
                 var tn=f.rel("images/").rel("icon_thumbnail.png");
-                //console.log(tn.path());
                 if (tn.exists()) {
                     u.$vars.t.attr("src",tn.getURL());
                 }
-            },10);
-            //$("#fileItem").tmpl({name: name, href:"project.html?dir="+f.path()}).appendTo("#prjItemList");
+            },10);*/
             return DU.timeout(10);
         }).then(function (){
             //prj1dirList.append(UI("h3",{style:"height:150px;"},"end"));
             //prj1dirList.append(UI("div",{style:"height:150px;"}," "));
         });
     }
+    /*function prjItem(f) {
+        var url="project.html?dir="+f.path();
+        var name=f.name();
+        return UI("div", {"class":"project existentproject"},
+            ["a", {href:url},
+                 ["img",{$var:"t",src:"../../images/nowprint.png"}]],
+            ["div",
+                ["a", {href:url},
+                {"class":"projectName"},name.replace(/[\/\\]$/,"")],
+                prjSubmenu(f)
+            ]
+        );
+    }
+    function prjSubmenu(f) {
+        return ["span",{class:"dropdown"},
+            ["button",{
+                //href:HNOP,
+                class:"submenu prjMenuButton",
+                on:{click:openSubmenu},"data-path":f.path() }," "],
+            ["span",{class:"dropdown-content"},
+                ["a",{href:HNOP,class:"submenu",on:{click:prjRename}},"名前変更"],
+                ["a",{href:HNOP,class:"submenu",on:{click:prjDL}},"ZIPダウンロード"],
+                ["a",{href:HNOP,class:"submenu",on:{click:prjDel}},"削除"]
+            ]
+        ];
+    }
+    function prjRename() {
+        var path=$(this).closest(".dropdown").find(".prjMenuButton").attr("data-path");
+        var prjDir=FS.get(path);
+        new ProjectMenu(prjDir).rename();
+    }
+    function prjDL() {
+
+    }
+    function prjDel() {
+        var path=$(this).closest(".dropdown").find(".prjMenuButton").attr("data-path");
+        var prjDir=FS.get(path);
+        new ProjectMenu(prjDir).remove();
+    }
+    var showingSubMenu;
+    function openSubmenu() {
+        closeSubmenu();
+        showingSubMenu=$(this).closest(".dropdown").find(".dropdown-content");
+        showingSubMenu.addClass("show");
+        //$(this).remove();
+    }
+    function closeSubmenu() {
+        if (showingSubMenu) {
+            showingSubMenu.removeClass("show");
+            showingSubMenu=null;
+        }
+    }
+    $('html').click(function(e) {
+        console.log(e.target);
+        if(!$(e.target).hasClass('submenu')) {
+            closeSubmenu();
+        }
+    });*/
     Auth.currentUser(function (r){
         if (r) {
             $(".while-logged-out").hide();
@@ -16978,7 +17476,6 @@ $(function () {
     var help=$("<iframe>").attr("src",WebSite.top+"/doc/index.html");
     help.height($(window).height()-$("#navBar").height());
     $("#wikiViewArea").append(help);
-
 
 
     $("#newPrj").click(function (){
@@ -16999,6 +17496,7 @@ $(function () {
             }
         }
     });*/
+
     sh.cd(FS.get(WebSite.projects[0]));
     extLink.all();
     sh.wikiEditor=function () {document.location.href="wikiEditor.html";};

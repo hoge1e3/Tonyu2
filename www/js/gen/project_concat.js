@@ -1,4 +1,4 @@
-// Created at Tue Jan 02 2018 20:52:20 GMT+0900 (東京 (標準時))
+// Created at Thu Jan 18 2018 20:59:00 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -821,6 +821,11 @@ define('MIMETypes',[], function () {
 });
 
 define('DeferredUtil',[], function () {
+    var root=(
+        typeof window!=="undefined" ? window :
+        typeof self!=="undefined" ? self :
+        typeof global!=="undefined" ? global : null
+    );
     //  promise.then(S,F)  and promise.then(S).fail(F) is not same!
     //  ->  when fail on S,  F is executed?
     var DU;
@@ -1065,9 +1070,9 @@ define('DeferredUtil',[], function () {
             return DU.callbackToPromise(function (s) {$(s);});
         },
         requirejs:function (modules) {
-            if (!window.requirejs) throw new Error("requirejs is not loaded");
+            if (!root.requirejs) throw new Error("requirejs is not loaded");
             return DU.callbackToPromise(function (s) {
-                window.requirejs(modules,s);
+                root.requirejs(modules,s);
             });
         }
     };
@@ -1076,11 +1081,11 @@ define('DeferredUtil',[], function () {
     DU.promise=DU.callbackToPromise=DU.funcPromise;
     DU.when1=DU.resolve;
     DU.config={};
-    if (window.$ && window.$.Deferred) {
+    if (root.$ && root.$.Deferred) {
         DU.config.useJQ=true;
     }
-    DU.external={Promise:window.Promise};
-    if (!window.DeferredUtil) window.DeferredUtil=DU;
+    DU.external={Promise:root.Promise};
+    if (!root.DeferredUtil) root.DeferredUtil=DU;
     return DU;
 });
 
@@ -2793,7 +2798,7 @@ SFile.prototype={
             dstIsDir=false;
         }
         if (srcIsDir && !dstIsDir) {
-           this.err("Cannot move dir to file");
+           this.err("Cannot move dir "+src.path()+" to file "+dst.path());
         } else if (!srcIsDir && !dstIsDir) {
             if (options.echo) options.echo(src+" -> "+dst);
             var res=this.act.fs.cp(this.act.path, dst.getResolvedLinkPath(),options);
@@ -2953,6 +2958,11 @@ SFile.prototype={
     download: function () {
         if (this.isDir()) throw new Error(this+": Download dir is not support yet. Use 'zip' instead.");
         saveAs(this.getBlob(),this.name());;
+    },
+    err: function () {
+        var a=Array.prototype.slice.call(arguments);
+        console.log.apply(console,a);
+        throw new Error(a.join(""));
     }
 };
 Object.defineProperty(SFile.prototype,"act",{
@@ -14884,122 +14894,7 @@ requireSimulator.setName('assert');
 define(["FS"],function (FS){return FS.assert;});
 
 requireSimulator.setName('DeferredUtil');
-define([], function () {
-    var DU;
-    DU={
-            ensureDefer: function (v) {
-                var d=new $.Deferred;
-                var isDeferred;
-                $.when(v).then(function (r) {
-                    if (!isDeferred) {
-                        setTimeout(function () {
-                            d.resolve(r);
-                        },0);
-                    } else {
-                        d.resolve(r);
-                    }
-                }).fail(function (r) {
-                    if (!isDeferred) {
-                        setTimeout(function () {
-                            d.reject(r);
-                        },0);
-                    } else {
-                        d.reject(r);
-                    }
-                });
-                isDeferred=true;
-                return d.promise();
-            },
-            directPromise:function (v) {
-                var d=new $.Deferred;
-                setTimeout(function () {d.resolve(v);},0);
-                return d.promise();
-            },
-            then: function (f) {
-                return DU.directPromise().then(f);
-            },
-            timeout:function (timeout) {
-                var d=new $.Deferred;
-                setTimeout(function () {d.resolve();},timeout);
-                return d.promise();
-            },
-            funcPromise:function (f) {
-                var d=new $.Deferred;
-                f(function (v) {
-                    d.resolve(v);
-                },function (e) {
-                    d.reject(e);
-                });
-                return d.promise();
-            },
-            throwPromise:function (e) {
-                var d=new $.Deferred;
-                setTimeout(function () {
-                    d.reject(e);
-                }, 0);
-                return d.promise();
-            },
-            throwF: function (f) {
-                return function () {
-                    try {
-                        return f.apply(this,arguments);
-                    } catch(e) {
-                        console.log(e,e.stack);
-                        return DU.throwPromise(e);
-                    }
-                };
-            },
-            each: function (set,f) {
-                if (set instanceof Array) {
-                    return DU.loop(function (i) {
-                        if (i>=set.length) return DU.brk();
-                        return $.when(f(set[i],i)).then(function () {
-                            return i+1;
-                        });
-                    },0);
-                } else {
-                    var objs=[];
-                    for (var i in set) {
-                        objs.push({k:i,v:set[i]});
-                    }
-                    return DU.each(objs,function (e) {
-                        return f(e.k, e.v);
-                    });
-                }
-            },
-            loop: function (f,r) {
-                return DU.directPromise(r).then(DU.throwF(function () {
-                    var r=f.apply(this,arguments);
-                    if (r.DU_BRK) return r.res;
-                    return $.when(r).then(function (r) {
-                        return DU.loop(f,r);
-                    });
-                }));
-            },
-            brk: function (res) {
-                return {DU_BRK:true,res:res};
-            },
-            tryLoop: function (f,r) {
-                return DU.loop(DU.tr(f),r);
-            },
-            tryEach: function (s,f) {
-                return DU.loop(s,DU.tr(f));
-            },
-            documentReady:function () {
-                return DU.callbackToPromise(function (s) {$(s);});
-            },
-            requirejs:function (modules) {
-                if (!window.requirejs) throw new Error("requirejs is not loaded");
-                return DU.callbackToPromise(function (s) {
-                    window.requirejs(modules,s);
-                });
-            }
-    };
-    DU.begin=DU.try=DU.tr=DU.throwF;
-    DU.promise=DU.callbackToPromise=DU.funcPromise;
-
-    return DU;
-});
+define(["FS"],function (FS){return FS.DeferredUtil;});
 
 requireSimulator.setName('Klass');
 define(["assert"],function (A) {
@@ -15017,7 +14912,14 @@ define(["assert"],function (A) {
         } else {
             p={};
         }
-        var init=pd.$ || function (e) {
+        var thisName,singletonName;
+        if (pd.$this) {
+            thisName=pd.$this;
+        }
+        if (pd.$singleton) {
+            singletonName=pd.$singleton;
+        }
+        var init=wrap(pd.$) || function (e) {
             if (e && typeof e=="object") {
                 for (var k in e) {
                     this[k]=e[k];
@@ -15068,18 +14970,61 @@ define(["assert"],function (A) {
         for (var name in pd) {
             if (name[0]=="$") continue;
             if (name.substring(0,7)=="static$") {
-                klass[name.substring(7)]=pd[name];
+                klass[name.substring(7)]=wrapStatic(pd[name]);
             } else {
                 if (isPropDesc(pd[name])) {
-                    Object.defineProperty(p,name,pd[name]);
+                    Object.defineProperty(p,name,wrap(pd[name]));
                 } else {
-                    p[name]=pd[name];
+                    p[name]=wrap(pd[name]);
                 }
             }
         }
+        function wrapStatic(m) {
+            if (!singletonName) return m;
+            var args=getArgs(m);
+            if (args[0]!==singletonName) return m;
+            return (function () {
+                var a=Array.prototype.slice.call(arguments);
+                a.unshift(klass);
+                return m.apply(klass,a);
+            });
+        }
+        function wrap(m) {
+            if (!thisName) return m;
+            if (isPropDesc(m)) {
+                for (var k in m) {
+                    m[k]=wrap(m[k]);
+                }
+                return m;
+            }
+            if (typeof m!=="function") return m;
+            var args=getArgs(m);
+            if (args[0]!==thisName) return m;
+            return (function () {
+                var a=Array.prototype.slice.call(arguments);
+                a.unshift(this);
+                return m.apply(this,a);
+            });
+        }
         p.$=init;
+        Object.defineProperty(p,"$bind",{
+            get: function () {
+                if (!this.__bounded) {
+                    this.__bounded=new Klass.Binder(this);
+                }
+                return this.__bounded;
+            }
+        });
         return klass;
     };
+    function getArgs(f) {
+        var fpat=/function[^\(]+\(([^\)]*)\)/;
+        var r=fpat.exec(f+"");
+        if (r) {
+            return r[1].replace(/\s/g,"").split(",");
+        }
+        return [];
+    }
     function isPropDesc(o) {
         if (typeof o!=="object") return false;
         if (!o) return false;
@@ -15093,17 +15038,32 @@ define(["assert"],function (A) {
     }
     Klass.Function=function () {throw new Exception("Abstract");}
     Klass.opt=A.opt;
+    Klass.Binder=Klass.define({
+        $this:"t",
+        $:function (t,target) {
+            for (var k in target) (function (k){
+                if (typeof target[k]!=="function") return;
+                t[k]=function () {
+                    var a=Array.prototype.slice.call(arguments);
+                    //console.log(this, this.__target);
+                    //A(this.__target,"target is not set");
+                    return target[k].apply(target,a);
+                };
+            })(k);
+        }
+    });
     return Klass;
 });
 /*
 requirejs(["Klass"],function (k) {
   P=k.define ({
      $:["x","y"]
-  });    
+  });
   p=P(2,3);
   console.log(p.x,p.y);
 });
 */
+
 requireSimulator.setName('Tonyu.Thread');
 define(["DeferredUtil","Klass"],function (DU,Klass) {
 	var cnts={enterC:{},exitC:0};
@@ -15617,7 +15577,7 @@ return Tonyu=function () {
 			Object.defineProperty(res.prototype, k , props[k]);
 		}
 		res.meta=addMeta(fullName,{
-			fullName:fullName,shortName:shortName,namepsace:namespace,decls:decls,
+			fullName:fullName,shortName:shortName,namespace:namespace,decls:decls,
 			superclass:parent ? parent.meta : null,func:res,
 			includes:includes.map(function(c){return c.meta;})
 		});
@@ -15786,7 +15746,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
-			VERSION:1514893927687,//EMBED_VERSION
+			VERSION:1516276728956,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -16147,7 +16107,8 @@ define(["Util","exceptionCatcher"],function (Util, EC) {
             }
         }
         function parseString(str) {
-            return $("<span>").text(str);
+            return $(document.createTextNode(str));
+            //return $("<span>").text(str);
         }
     };
     UI.types={
@@ -16450,7 +16411,9 @@ define(["FS"], function (FS) {
 		getFiles:WebSite.serverTop+"/File2LSSync",
 		putFiles:WebSite.serverTop+"/LS2FileSync"
 	};
+	WebSite.PathSep="/";
 	if (WebSite.isNW) {
+		WebSite.PathSep=require("path").sep;
 		WebSite.cwd=P.directorify(process.cwd().replace(/\\/g,"/"));
 		//WebSite.exeDir=WebSite.execDir=P.up(P.fixSep(process.execPath)); not suitable when mac
 		if (process.env.TONYU_HOME) {
@@ -25116,6 +25079,7 @@ var TPRC=function (dir) {
 	TPR.shouldCompile=function () {
 		var outF=TPR.getOutputFile();
 		if (!outF.exists()) {
+			console.log("Should compile: ", outF.name()+" does not exist.");
 			return true;
 		}
 		if (outF.isReadOnly()) return false;
@@ -25173,6 +25137,20 @@ var TPRC=function (dir) {
 			throw new Error("out: directory style not supported");
 		}
 		return outF;
+	};
+	TPR.requestRebuild=function () {
+		var env=this.env;
+		var ns=this.getNamespace();
+		for (var kn in env.classes) {
+			var k=env.classes[kn];
+			if (k.namespace==ns) {
+				console.log("REQRB","remove env.classes.",kn);
+				delete env.classes[kn];
+			}
+		}
+	};
+	TPR.removeOutputFile=function () {
+		this.getOutputFile().rm();
 	};
 	TPR.loadDependingClasses=function (ctx) {
 		var task=DU.directPromise();
@@ -26600,6 +26578,7 @@ define(["UI"], function (UI) {
                     TPR.odiag.dialog("close");
                     //console.log("Project opt Saved ",JSON.stringify(opt));
                     TPR.setOptions();
+                    TPR.requestRebuild();
                     //console.log("new opt ",JSON.stringify(TPR.getOptions()));
                 }
             }
@@ -28572,8 +28551,9 @@ var T2MediaLib = (function(){
             if      (offset > audioBuffer.duration) offset = audioBuffer.duration;
             else if (offset < 0.0) offset = 0.0;
         }
-        if (!duration) {//@hoge1e3
-            duration=undefined;
+        if (!duration) {
+            //duration=undefined; // iOS9でduration==undefinedだとsource.start(start, offset, duration);でエラー発生する
+            duration=86400; // Number.MAX_SAFE_INTEGERを入れてもiOS9ではエラー起きないけど、昔なんかの環境で数値大き過ぎるとエラーになって86400(24時間)に設定した気がする
         }
         if (!loop) loop = false;
         if (!loopStart) {
@@ -31731,29 +31711,35 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         //resizeCanvas(d.width(),d.height());
     };*/
     var dialogSize={};
-    function showRunDialog() {
+    function showRunDialog(first) {
         runDialogMode=true;
         $("#mainArea").removeClass("col-xs-6").addClass("col-xs-11");
         var d=$("#runArea");
         //$("#runArea").css({height:screenH-100});
-        dialogSize.w=dialogSize.w||$(window).width()-100;
+        dialogSize.w=dialogSize.w||($(window).width()-100)/2;
         dialogSize.h=dialogSize.h||screenH;
-        $("#runArea").dialog({
-            width:dialogSize.w,
-            height:dialogSize.h,
-            resize:function () {
-                dialogSize.w=d.width();
-                dialogSize.h=d.height();
-                resizeCanvas(d.width(),d.height());
-            },//da.handleResizeF(),
-            close:function () {dialogClosed=true;stop();}
-        });
+        if (first) {
+            d.dialog({
+                width:dialogSize.w,
+                height:dialogSize.h,
+                position:{my:"right top",at:"right bottom",of:$("#navBar")},
+                resize:function () {
+                    dialogSize.w=d.width();
+                    dialogSize.h=d.height();
+                    resizeCanvas(d.width(),d.height());
+                },//da.handleResizeF(),
+                close:function () {dialogClosed=true;stop();}
+            });
+            d.dialog("close");
+        } else {
+            d.dialog();
+        }
+        $(".ui-dialog-titlebar-close").blur();
         resizeCanvas(d.width(),d.height());
         //da.handleResize();
         console.log("Diag",dialogSize);
         //resizeCanvas(w,screenH-100);
     }
-
     var editors={};
 
     /*KeyEventChecker.down(document,"F12",F(function () {
@@ -32279,13 +32265,14 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     $("#openFolder").click(F(function () {
         var f=curPrjDir;
         var gui = require("nw.gui");//(global.nwDispatcher||global.nw).requireNwGui();
-        gui.Shell.showItemInFolder(f.path().replace(/\//g,"\\"));
+        gui.Shell.showItemInFolder(f.path().replace(/\//g,require("path").sep));
     }));
     sh.curFile=function () {
         return fl.curFile();
     };
     FM.onMenuStart=save;
     //curPrj.compileKernel();
+    showRunDialog(true);
     SplashScreen.hide();
     if (curPrj.getBlobInfos().length>0) {
         var ld=UI("div",{title:"ログイン"},["div","このプロジェクトを正常に動作させるにはログインが必要です"]);
