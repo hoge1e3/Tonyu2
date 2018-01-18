@@ -1,13 +1,13 @@
 requirejs(["FS","Wiki","Shell","Shell2",
            /*"copySample",*/"NewProjectDialog","UI","Sync","Auth",
            "zip","requestFragment","WebSite","extLink","DeferredUtil",
-       "ImportFromZip"],
+       "ZipImporter","ProjectItem"],
   function (FS, Wiki,   sh,sh2,
             /*copySample,  */NPD,           UI, Sync, Auth,
             zip,requestFragment,WebSite,extLink,DU,
-        ImportFromZip) {
+        ZipImporter,ProjectItem) {
 $(function () {
-
+    var HNOP="javascript:;";
     //copySample();
     //var home=FS.get(WebSite.tonyuHome);
     //var projects=FS.get(WebSite.projects[0]);//home.rel("Projects/");
@@ -32,12 +32,6 @@ $(function () {
     },1000);
     var prjDirs=WebSite.projects.map(function (e) {return FS.get(e);});
     prjDirs.forEach(ls);
-    /*DU.each(prjDirs, function (dir){
-        console.log("Each",dir);
-        return ls(dir);
-    });*/
-
-    //var curDir=projects;
     if (WebSite.isNW) {
         $("#loginGrp").hide();
     }
@@ -52,10 +46,10 @@ $(function () {
         $("#prjItemList").append(prj1dirList);
         prj1dirList.append(UI("h2",{"class":"prjDirHeader"},curDir.path()));
         var u=UI("div", {"class":"project newprj"},
-                ["a", {href:"javascript:;", on:{click:newDiag}},
-                 ["img",{$var:"t",src:"../../images/tonew.png"}],
-                 ["div", "新規作成"]
-                 ]);
+            ["a", {href:HNOP, on:{click:newDiag}},
+            ["img",{$var:"t",src:"../../images/tonew.png"}],
+            ["div", "新規作成"]
+        ]);
         u.appendTo(prj1dirList);
         function newDiag() {
             NPD.show(curDir, function (prjDir) {
@@ -76,14 +70,14 @@ $(function () {
         //$("#prjItemList").append(UI("div",["h2",{"class":"prjDirHeader"},"----"]));
     }
     function dols(curDir,prj1dirList) {
-        new ImportFromZip(curDir,prj1dirList,{
+        new ZipImporter(curDir,prj1dirList,{
             onComplete: refresh
         });
         function refresh() {
             prj1dirList.find(".existentproject").remove();
             dols2(curDir,prj1dirList);
         }
-        dols2(curDir,prj1dirList);
+        return dols2(curDir,prj1dirList);
     }
     function dols2(curDir,prj1dirList) {
         var d=[];
@@ -101,30 +95,85 @@ $(function () {
         });
         return DU.each(d,function (e) {
             var f=e[0];
-            var name=f.name();
+            if (!f.isDir()) return;
+            var it=new ProjectItem(f,prj1dirList);
+            if (kw!="" && it.name.toLowerCase().indexOf(kw)<0) it.hide();
+            /*var name=f.name();
 
             if (!f.isDir()) return;
-            var u=UI("div", {"class":"project existentproject"},
-                    ["a", {href:"project.html?dir="+f.path()},
-                     ["img",{$var:"t",src:"../../images/nowprint.png"}],
-                     ["div", {"class":"projectName"},name.replace(/[\/\\]$/,"")]
-                     ]);
+            var u=prjItem(f);
             u.appendTo(prj1dirList);
             if (kw!="" && name.toLowerCase().indexOf(kw)<0) u.hide();
             setTimeout(function () {
                 var tn=f.rel("images/").rel("icon_thumbnail.png");
-                //console.log(tn.path());
                 if (tn.exists()) {
                     u.$vars.t.attr("src",tn.getURL());
                 }
-            },10);
-            //$("#fileItem").tmpl({name: name, href:"project.html?dir="+f.path()}).appendTo("#prjItemList");
+            },10);*/
             return DU.timeout(10);
         }).then(function (){
             //prj1dirList.append(UI("h3",{style:"height:150px;"},"end"));
             //prj1dirList.append(UI("div",{style:"height:150px;"}," "));
         });
     }
+    /*function prjItem(f) {
+        var url="project.html?dir="+f.path();
+        var name=f.name();
+        return UI("div", {"class":"project existentproject"},
+            ["a", {href:url},
+                 ["img",{$var:"t",src:"../../images/nowprint.png"}]],
+            ["div",
+                ["a", {href:url},
+                {"class":"projectName"},name.replace(/[\/\\]$/,"")],
+                prjSubmenu(f)
+            ]
+        );
+    }
+    function prjSubmenu(f) {
+        return ["span",{class:"dropdown"},
+            ["button",{
+                //href:HNOP,
+                class:"submenu prjMenuButton",
+                on:{click:openSubmenu},"data-path":f.path() }," "],
+            ["span",{class:"dropdown-content"},
+                ["a",{href:HNOP,class:"submenu",on:{click:prjRename}},"名前変更"],
+                ["a",{href:HNOP,class:"submenu",on:{click:prjDL}},"ZIPダウンロード"],
+                ["a",{href:HNOP,class:"submenu",on:{click:prjDel}},"削除"]
+            ]
+        ];
+    }
+    function prjRename() {
+        var path=$(this).closest(".dropdown").find(".prjMenuButton").attr("data-path");
+        var prjDir=FS.get(path);
+        new ProjectMenu(prjDir).rename();
+    }
+    function prjDL() {
+
+    }
+    function prjDel() {
+        var path=$(this).closest(".dropdown").find(".prjMenuButton").attr("data-path");
+        var prjDir=FS.get(path);
+        new ProjectMenu(prjDir).remove();
+    }
+    var showingSubMenu;
+    function openSubmenu() {
+        closeSubmenu();
+        showingSubMenu=$(this).closest(".dropdown").find(".dropdown-content");
+        showingSubMenu.addClass("show");
+        //$(this).remove();
+    }
+    function closeSubmenu() {
+        if (showingSubMenu) {
+            showingSubMenu.removeClass("show");
+            showingSubMenu=null;
+        }
+    }
+    $('html').click(function(e) {
+        console.log(e.target);
+        if(!$(e.target).hasClass('submenu')) {
+            closeSubmenu();
+        }
+    });*/
     Auth.currentUser(function (r){
         if (r) {
             $(".while-logged-out").hide();
@@ -136,7 +185,6 @@ $(function () {
     var help=$("<iframe>").attr("src",WebSite.top+"/doc/index.html");
     help.height($(window).height()-$("#navBar").height());
     $("#wikiViewArea").append(help);
-
 
 
     $("#newPrj").click(function (){
@@ -157,6 +205,7 @@ $(function () {
             }
         }
     });*/
+
     sh.cd(FS.get(WebSite.projects[0]));
     extLink.all();
     sh.wikiEditor=function () {document.location.href="wikiEditor.html";};

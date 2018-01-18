@@ -3,7 +3,7 @@ function (Klass,FS,Util,DD,DU,UI) {
     FS.mount("/ram/","ram");
     var zip=FS.zip;
     var tmpDir=FS.get("/ram/");
-    var ImportFromZip=Klass.define({
+    var ZipImporter=Klass.define({
         $: function (dir, elem, options) {
             var t=this;
             t.elem=elem;
@@ -60,17 +60,17 @@ function (Klass,FS,Util,DD,DU,UI) {
         importFrom: function (src) {
             var t=this;
             var dstParent=t.dir;
-            var nameT=src.name();
-            if (nameT==="src/") {
-                nameT=src.up().name();
+            var nameT=FS.PathUtil.truncSEP(src.name());
+            if (nameT==="src") {
+                nameT=FS.PathUtil.truncSEP(src.up().name());
             }
-            var name=nameT;
+            var name=nameT+"/";
             var dst=dstParent.rel(name);
             t.mesg.text(src.name()+ "から"+ dst.name()+"にコピー");
             console.log("importFrom",src.path(), "to", dst.path());
             var i=2;
             while (dst.exists()) {
-                name=nameT+i;
+                name=nameT+i+"/";
                 i++;
                 dst=dstParent.rel(name);
             }
@@ -93,5 +93,5 @@ function (Klass,FS,Util,DD,DU,UI) {
             });
         }
     });
-    return ImportFromZip;
+    return ZipImporter;
 });

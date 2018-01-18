@@ -190,7 +190,8 @@ define(["Util","exceptionCatcher"],function (Util, EC) {
             }
         }
         function parseString(str) {
-            return $("<span>").text(str);
+            return $(document.createTextNode(str));
+            //return $("<span>").text(str);
         }
     };
     UI.types={

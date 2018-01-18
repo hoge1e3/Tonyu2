@@ -111,6 +111,40 @@ iframe.wikiDialog {
     box-sizing: border-box;
     -moz-box-sizing: border-box;
 }
+.dropdown-content {
+    display: none;
+    min-width: 160px;
+    position: absolute;
+    background-color: #f9f9f9;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+}
+.dropdown-content .show {
+    display: block;
+    position: absolute;
+}
+.dropdown-content a {
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.428571429;
+    color: #333333;
+    white-space: nowrap;
+}
+.dropdown-content a:hover, .dropdown-content a:focus {
+    color: #ffffff;
+    text-decoration: none;
+    background-color: #428bca;
+}
+.prjMenuButton {
+    width:21px;
+    height:20px;
+    background-image: url(images/ui-icons_222222_256x240.png);
+    background-position: -64px -16px;
+}
+
 .col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4,
 .col-xs-5,.col-xs-6,.col-xs-7,.col-xs-8,
 .col-xs-9,.col-xs-10,.col-xs-11,.col-xs-12   {
