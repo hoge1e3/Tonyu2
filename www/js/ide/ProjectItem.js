@@ -37,10 +37,10 @@ dom: function (t) {
     var url=t.url;
     var name=t.name;
     return UI("div", {"class":"project existentproject"},
-        ["a", {href:url},
+        ["a", {href:url,"class":"projectLink"},
              ["img",{$var:"t",src:"../../images/nowprint.png"}]],
         ["div",
-            ["a", {href:url,"class":"projectName"},name],
+            ["a", {href:url,"class":"projectLink projectName"},name],
             t.submenuExpr()
         ]
     );
@@ -99,17 +99,18 @@ rename: function (t) {
     if (!np || np=="") return;
     np=FS.PathUtil.truncSEP(np);
     var npd=t.projectDir.sibling(np+"/");
-    var link=t.u.find(".projectName");
     return npd.exists(function (e) {
         if (e) {
             alert(np+" はすでに存在します");
             return;
         }
-        link.attr("href",HNOP).text("Wait...");
+        //link.attr("href",HNOP).text("Wait...");
         return t.projectDir.moveTo(npd).then(function () {
             t.projectDir=npd;
             t.name=npd;
-            link.attr("href",t.url).text(np);
+            t.u.find(".projectName").text(np);
+            t.u.find(".projectLink").attr("href",t.url);
+            //console.log("Renamed",t.url);
             S.closeSubmenu();
         });
     });

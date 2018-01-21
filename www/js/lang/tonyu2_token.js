@@ -18,10 +18,11 @@ return TT=function () {
 			tbl[c].profile();//(c+" of "+tbl[name);
 		}
 	}
+
 	var sp=Parser.StringParser;
 	var SAMENAME="SAMENAME";
 	var DIV=1,REG=2;
-	var space=sp.reg(/^(\s*(\/\*([^\/]|[^*]\/|\r|\n)*\*\/)*(\/\/.*\r?\n)*)*/).setName("space");
+	var space=sp.reg(/^(\s*(\/\*\/?([^\/]|[^*]\/|\r|\n)*\*\/)*(\/\/.*\r?\n)*)*/).setName("space");
 	function tk(r, name) {
 		var pat;
 		var fst;
