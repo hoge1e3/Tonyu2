@@ -62,7 +62,7 @@ submenuExpr:function submenuExpr(t) {
 },
 download: function (t) {
     S.closeSubmenu();
-    return FS.zip.zip(t.projectDir);
+    return FS.zip.zip(t.projectDir).catch(DU.E);
 },
 remove: function (t) {
     S.closeSubmenu();
@@ -85,7 +85,7 @@ remove: function (t) {
             t.projectDir.rm({r:1});
             t.u.remove();
             t.rmd.dialog("close");
-        });
+        }).catch(DU.E);
     }
     function cancel() {
         t.rmd.dialog("close");
@@ -112,7 +112,7 @@ rename: function (t) {
             t.u.find(".projectLink").attr("href",t.url);
             //console.log("Renamed",t.url);
             S.closeSubmenu();
-        });
+        }).catch(DU.E);
     });
 },
 openFolder: function (t){

@@ -782,6 +782,17 @@ define('DeferredUtil',[], function () {
         }
     };
     DU.NOP=function (r) {return r;};
+    DU.E=function () {
+        console.log("DUE",arguments);
+        DU.errorHandler.apply(DU,arguments);
+    };
+    DU.errorHandler=function (e) {
+        console.error.apply(console,arguments);
+        alert(e);
+    };
+    DU.setE=function (f) {
+        DU.errorHandler=f;
+    };
     DU.begin=DU.try=DU.tr=DU.throwF;
     DU.promise=DU.callbackToPromise=DU.funcPromise;
     DU.when1=DU.resolve;
@@ -1837,6 +1848,62 @@ define('LSFS',["FS2","PathUtil","extend","assert","Util","Content"],
     LSFS.prototype.fstype=function () {
         return (this.isRAM() ? "ramDisk" : "localStorage" );
     };
+    LSFS.getUsage=function () {
+        var using=0;
+        for (var i in localStorage) {
+            if (typeof localStorage[i]=="string"){
+                using+=localStorage[i].length;
+            }
+        }
+        return using;
+    };
+    LSFS.getCapacity=function () {
+        var seq=0;
+        var str="a";
+        var KEY="___checkls___";
+        var using=0;
+        var lim=Math.pow(2,25);//32MB?
+        try {
+            // make 1KB str
+            for (var i=0; i<10 ;i++) {
+                str+=str;
+            }
+            for (var i in localStorage) {
+                if (i.substring(0,KEY.length)==KEY) delete localStorage[i];
+                else if (typeof localStorage[i]=="string"){
+                    using+=localStorage[i].length;
+                }
+            }
+            var ru=using;
+            while (add()) {
+                if (str.length<lim) {
+                    str+=str;
+                } else break;
+            }
+            while(str.length>1024) {
+                str=str.substring(str.length/2);
+                add();
+            }
+            return {using:ru, max:using};
+        } finally {
+            for (var i=0; i<seq; i++) {
+                 delete localStorage[KEY+i];
+            }
+        }
+        function add() {
+            try {
+                localStorage[KEY+seq]=str;
+                seq++;
+                using+=str.length;
+                //console.log("Added "+str.length, str.length, using);
+                return true;
+            } catch(e) {
+                delete localStorage[KEY+seq];
+                //console.log("Add Fail "+str.length);
+                return false;
+            }
+        }
+    };
 
     // public methods (with resolve fs)
     FS.delegateMethods(LSFS.prototype, {
@@ -2507,22 +2574,34 @@ SFile.prototype={
         } else if (!srcIsDir && !dstIsDir) {
             if (options.echo) options.echo(src+" -> "+dst);
             var res=this.act.fs.cp(this.act.path, dst.getResolvedLinkPath(),options);
+            res=DU.resolve(res);
             if (options.a) {
-                dst.setMetaInfo(src.getMetaInfo());
+                return res.then(function () {
+                    return dst.setMetaInfo(src.getMetaInfo());
+                });
             }
-            return DU.resolve(res);
+            return res;
         } else {
             A(srcIsDir && dstIsDir,"Both src and dst should be dir");
             return src.each(function (s) {
-                dst.rel(s.name()).copyFrom(s, options);
+                return dst.rel(s.name()).copyFrom(s, options);
             });
         }
         //file.text(src.text());
         //if (options.a) file.metaInfo(src.metaInfo());
     },
     moveFrom: function (src, options) {
-        return this.copyFrom(src,options).then(function () {
-            return src.rm({recursive:true});
+        var t=this;
+        return t.exists(function (ex) {
+            return t.copyFrom(src,options).then(function () {
+                return src.rm({recursive:true});
+            },function (e) {
+                // rollback
+                if (!ex) return t.exists(function (ex) {
+                    if (ex) return t.rm({recursive:true});
+                }).then(function () {throw e;});
+                throw e;
+            });
         });
     },
     moveTo: function (dst, options) {

@@ -98,82 +98,9 @@ $(function () {
             if (!f.isDir()) return;
             var it=new ProjectItem(f,prj1dirList);
             if (kw!="" && it.name.toLowerCase().indexOf(kw)<0) it.hide();
-            /*var name=f.name();
-
-            if (!f.isDir()) return;
-            var u=prjItem(f);
-            u.appendTo(prj1dirList);
-            if (kw!="" && name.toLowerCase().indexOf(kw)<0) u.hide();
-            setTimeout(function () {
-                var tn=f.rel("images/").rel("icon_thumbnail.png");
-                if (tn.exists()) {
-                    u.$vars.t.attr("src",tn.getURL());
-                }
-            },10);*/
             return DU.timeout(10);
-        }).then(function (){
-            //prj1dirList.append(UI("h3",{style:"height:150px;"},"end"));
-            //prj1dirList.append(UI("div",{style:"height:150px;"}," "));
         });
     }
-    /*function prjItem(f) {
-        var url="project.html?dir="+f.path();
-        var name=f.name();
-        return UI("div", {"class":"project existentproject"},
-            ["a", {href:url},
-                 ["img",{$var:"t",src:"../../images/nowprint.png"}]],
-            ["div",
-                ["a", {href:url},
-                {"class":"projectName"},name.replace(/[\/\\]$/,"")],
-                prjSubmenu(f)
-            ]
-        );
-    }
-    function prjSubmenu(f) {
-        return ["span",{class:"dropdown"},
-            ["button",{
-                //href:HNOP,
-                class:"submenu prjMenuButton",
-                on:{click:openSubmenu},"data-path":f.path() }," "],
-            ["span",{class:"dropdown-content"},
-                ["a",{href:HNOP,class:"submenu",on:{click:prjRename}},"名前変更"],
-                ["a",{href:HNOP,class:"submenu",on:{click:prjDL}},"ZIPダウンロード"],
-                ["a",{href:HNOP,class:"submenu",on:{click:prjDel}},"削除"]
-            ]
-        ];
-    }
-    function prjRename() {
-        var path=$(this).closest(".dropdown").find(".prjMenuButton").attr("data-path");
-        var prjDir=FS.get(path);
-        new ProjectMenu(prjDir).rename();
-    }
-    function prjDL() {
-
-    }
-    function prjDel() {
-        var path=$(this).closest(".dropdown").find(".prjMenuButton").attr("data-path");
-        var prjDir=FS.get(path);
-        new ProjectMenu(prjDir).remove();
-    }
-    var showingSubMenu;
-    function openSubmenu() {
-        closeSubmenu();
-        showingSubMenu=$(this).closest(".dropdown").find(".dropdown-content");
-        showingSubMenu.addClass("show");
-        //$(this).remove();
-    }
-    function closeSubmenu() {
-        if (showingSubMenu) {
-            showingSubMenu.removeClass("show");
-            showingSubMenu=null;
-        }
-    }
-    $('html').click(function(e) {
-        console.log(e.target);
-        if(!$(e.target).hasClass('submenu')) {
-            closeSubmenu();
-        }
-    });*/
     Auth.currentUser(function (r){
         if (r) {
             $(".while-logged-out").hide();
