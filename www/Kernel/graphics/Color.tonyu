@@ -216,7 +216,7 @@ native $;
 	var ctx=tmpCanvas();
 	ctx.fillStyle=value.name;
 	ctx.fillRect(0,0,1,1);
-	var d=ctx.getImageData();
+	var d=ctx.getImageData(0,0,1,1);
 	d=d.data;
 	if (imageData) {
 		for(var i=0;i<4;i++) imageData.data[index+i]=d[i];

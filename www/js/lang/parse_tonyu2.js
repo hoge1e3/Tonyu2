@@ -37,6 +37,8 @@ return TonyuLang=function () {
 	var lt=tk("<");
 	var andand=tk("&&");
 	var oror=tk("||");
+	var bitand=tk("&");
+	var bitor=tk("|");
 
 	var minus=tk("-");//.first(space,"-");
 	var plus=tk("+");//.first(space,"+");
@@ -133,6 +135,10 @@ return TonyuLang=function () {
 	e.infixl(prio,oror);
 	prio++;
 	e.infixl(prio,andand);
+	prio++;
+	e.infixl(prio,bitor);
+	prio++;
+	e.infixl(prio,bitand);
 	prio++;
 	e.infix(prio,tk("instanceof"));
 	e.infix(prio,tk("is"));
