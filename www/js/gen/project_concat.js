@@ -1,4 +1,4 @@
-// Created at Mon Jan 22 2018 14:54:28 GMT+0900 (東京 (標準時))
+// Created at Tue Jan 30 2018 21:04:56 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -15825,7 +15825,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
-			VERSION:1516600453471,//EMBED_VERSION
+			VERSION:1517313883908,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -21749,6 +21749,10 @@ return TonyuLang=function () {
 	var lt=tk("<");
 	var andand=tk("&&");
 	var oror=tk("||");
+	var bitand=tk("&");
+	var bitor=tk("|");
+	var shr=tk(">>");
+	var shl=tk("<<");
 
 	var minus=tk("-");//.first(space,"-");
 	var plus=tk("+");//.first(space,"+");
@@ -21846,6 +21850,10 @@ return TonyuLang=function () {
 	prio++;
 	e.infixl(prio,andand);
 	prio++;
+	e.infixl(prio,bitor);
+	prio++;
+	e.infixl(prio,bitand);
+	prio++;
 	e.infix(prio,tk("instanceof"));
 	e.infix(prio,tk("is"));
 	//e.infix(prio,tk("in"));
@@ -21857,6 +21865,9 @@ return TonyuLang=function () {
 	e.infix(prio,le);
 	e.infix(prio,gt);
 	e.infix(prio,lt);
+	prio++;
+	e.infixl(prio,shl);
+	e.infixl(prio,shr);
 	prio++;
 	e.postfix(prio+3,tk("++"));
 	e.postfix(prio+3,tk("--"));

@@ -111,24 +111,24 @@ native $;
     ctx.restore();
 }
 \setOnAt(setX,setY,p){
-    setOn(Math.floor(setX/chipWidth),Math.floor(setY/chipHeight),p);
+    setOn(Math.floor((setX-sx)/chipWidth),Math.floor((setY-sy)/chipHeight),p);
 }
 \setAt(setX,setY,p){
-    set(Math.floor(setX/chipWidth),Math.floor(setY/chipHeight),p);
+    set(Math.floor((setX-sx)/chipWidth),Math.floor((setY-sy)/chipHeight),p);
 }
 \get(getCol,getRow){
     if(getCol<col && getRow<row && getCol>=0 && getRow>=0) return mapTable[getRow][getCol];
     return -1;
 }
 \getAt(getX,getY){
-    return get(Math.floor(getX/chipWidth),Math.floor(getY/chipHeight));
+    return get(Math.floor((getX-sx)/chipWidth),Math.floor((getY-sy)/chipHeight));
 }
 \getOn(getCol,getRow){
     if(getCol<col && getRow<row && getCol>=0 && getRow>=0) return mapOnTable[getRow][getCol];
     return -1;
 }
 \getOnAt(getX,getY){
-    return getOn(Math.floor(getX/chipWidth),Math.floor(getY/chipHeight));
+    return getOn(Math.floor((getX-sx)/chipWidth),Math.floor((getY-sy)/chipHeight));
 }
 \scrollTo(scrollX,scrollY){
     sx=-scrollX;

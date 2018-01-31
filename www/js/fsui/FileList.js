@@ -87,7 +87,8 @@ function FileList(elem, options) {
         }
         var i=0;
         var dirs=_curDir.listFiles();
-        setTimeout(lp,0);//_curDir.each(
+        if (dirs.length>0) setTimeout(lp,0);
+        else wait.remove();
         function lp() {
             if (i==0) wait.remove();
             var f=dirs[i++];

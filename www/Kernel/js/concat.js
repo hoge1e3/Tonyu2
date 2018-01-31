@@ -11634,7 +11634,7 @@ Tonyu.klass.define({
       var _this=this;
       
       //$LASTPOS=38003164;//kernel.Map:3164
-      _this.setOn(Math.floor(setX/_this.chipWidth),Math.floor(setY/_this.chipHeight),p);
+      _this.setOn(Math.floor((setX-_this.sx)/_this.chipWidth),Math.floor((setY-_this.sy)/_this.chipHeight),p);
     },
     fiber$setOnAt :function _trc_Map_f_setOnAt(_thread,setX,setY,p) {
       "use strict";
@@ -11649,7 +11649,7 @@ Tonyu.klass.define({
           switch (__pc) {
           case 0:
             //$LASTPOS=38003164;//kernel.Map:3164
-            _this.fiber$setOn(_thread, Math.floor(setX/_this.chipWidth), Math.floor(setY/_this.chipHeight), p);
+            _this.fiber$setOn(_thread, Math.floor((setX-_this.sx)/_this.chipWidth), Math.floor((setY-_this.sy)/_this.chipHeight), p);
             __pc=1;return;
           case 1:
             
@@ -11662,8 +11662,8 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=38003259;//kernel.Map:3259
-      _this.set(Math.floor(setX/_this.chipWidth),Math.floor(setY/_this.chipHeight),p);
+      //$LASTPOS=38003269;//kernel.Map:3269
+      _this.set(Math.floor((setX-_this.sx)/_this.chipWidth),Math.floor((setY-_this.sy)/_this.chipHeight),p);
     },
     fiber$setAt :function _trc_Map_f_setAt(_thread,setX,setY,p) {
       "use strict";
@@ -11677,8 +11677,8 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=38003259;//kernel.Map:3259
-            _this.fiber$set(_thread, Math.floor(setX/_this.chipWidth), Math.floor(setY/_this.chipHeight), p);
+            //$LASTPOS=38003269;//kernel.Map:3269
+            _this.fiber$set(_thread, Math.floor((setX-_this.sx)/_this.chipWidth), Math.floor((setY-_this.sy)/_this.chipHeight), p);
             __pc=1;return;
           case 1:
             
@@ -11691,7 +11691,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=38003352;//kernel.Map:3352
+      //$LASTPOS=38003372;//kernel.Map:3372
       if (getCol<_this.col&&getRow<_this.row&&getCol>=0&&getRow>=0) {
         return _this.mapTable[getRow][getCol];
       }
@@ -11703,7 +11703,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=38003352;//kernel.Map:3352
+      //$LASTPOS=38003372;//kernel.Map:3372
       if (getCol<_this.col&&getRow<_this.row&&getCol>=0&&getRow>=0) {
         _thread.retVal=_this.mapTable[getRow][getCol];return;
         
@@ -11717,7 +11717,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      return _this.get(Math.floor(getX/_this.chipWidth),Math.floor(getY/_this.chipHeight));
+      return _this.get(Math.floor((getX-_this.sx)/_this.chipWidth),Math.floor((getY-_this.sy)/_this.chipHeight));
     },
     fiber$getAt :function _trc_Map_f_getAt(_thread,getX,getY) {
       "use strict";
@@ -11725,7 +11725,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      _thread.retVal=_this.get(Math.floor(getX/_this.chipWidth),Math.floor(getY/_this.chipHeight));return;
+      _thread.retVal=_this.get(Math.floor((getX-_this.sx)/_this.chipWidth),Math.floor((getY-_this.sy)/_this.chipHeight));return;
       
       
       _thread.retVal=_this;return;
@@ -11734,7 +11734,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=38003584;//kernel.Map:3584
+      //$LASTPOS=38003614;//kernel.Map:3614
       if (getCol<_this.col&&getRow<_this.row&&getCol>=0&&getRow>=0) {
         return _this.mapOnTable[getRow][getCol];
       }
@@ -11746,7 +11746,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=38003584;//kernel.Map:3584
+      //$LASTPOS=38003614;//kernel.Map:3614
       if (getCol<_this.col&&getRow<_this.row&&getCol>=0&&getRow>=0) {
         _thread.retVal=_this.mapOnTable[getRow][getCol];return;
         
@@ -11760,7 +11760,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      return _this.getOn(Math.floor(getX/_this.chipWidth),Math.floor(getY/_this.chipHeight));
+      return _this.getOn(Math.floor((getX-_this.sx)/_this.chipWidth),Math.floor((getY-_this.sy)/_this.chipHeight));
     },
     fiber$getOnAt :function _trc_Map_f_getOnAt(_thread,getX,getY) {
       "use strict";
@@ -11768,7 +11768,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      _thread.retVal=_this.getOn(Math.floor(getX/_this.chipWidth),Math.floor(getY/_this.chipHeight));return;
+      _thread.retVal=_this.getOn(Math.floor((getX-_this.sx)/_this.chipWidth),Math.floor((getY-_this.sy)/_this.chipHeight));return;
       
       
       _thread.retVal=_this;return;
@@ -11777,9 +11777,9 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=38003827;//kernel.Map:3827
+      //$LASTPOS=38003867;//kernel.Map:3867
       _this.sx=- scrollX;
-      //$LASTPOS=38003845;//kernel.Map:3845
+      //$LASTPOS=38003885;//kernel.Map:3885
       _this.sy=- scrollY;
     },
     fiber$scrollTo :function _trc_Map_f_scrollTo(_thread,scrollX,scrollY) {
@@ -11788,9 +11788,9 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=38003827;//kernel.Map:3827
+      //$LASTPOS=38003867;//kernel.Map:3867
       _this.sx=- scrollX;
-      //$LASTPOS=38003845;//kernel.Map:3845
+      //$LASTPOS=38003885;//kernel.Map:3885
       _this.sy=- scrollY;
       
       _thread.retVal=_this;return;
@@ -11799,15 +11799,15 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=38003880;//kernel.Map:3880
+      //$LASTPOS=38003920;//kernel.Map:3920
       _this.pImg=_this.buf[0];
-      //$LASTPOS=38003898;//kernel.Map:3898
+      //$LASTPOS=38003938;//kernel.Map:3938
       ctx.save();
-      //$LASTPOS=38003915;//kernel.Map:3915
+      //$LASTPOS=38003955;//kernel.Map:3955
       ctx.globalAlpha=_this.alpha/255;
-      //$LASTPOS=38003947;//kernel.Map:3947
+      //$LASTPOS=38003987;//kernel.Map:3987
       ctx.drawImage(_this.pImg,0,0,_this.col*_this.chipWidth,_this.row*_this.chipHeight,_this.sx,_this.sy,_this.col*_this.chipWidth,_this.row*_this.chipHeight);
-      //$LASTPOS=38004059;//kernel.Map:4059
+      //$LASTPOS=38004099;//kernel.Map:4099
       ctx.restore();
     },
     __dummy: false
