@@ -4,6 +4,7 @@ var alphaTo:Number;
 var alpha:Number;
 var fillStyle:String=fillStyle||"black";
 var page;//Page class
+var params;// Page params
 var duration:Number=duration||30;
 
 switch(type) {
@@ -21,7 +22,7 @@ for (i=0;i<duration;i++) {
 }
 sendEvent("complete");
 if (page) {
-    loadPage(page);
+    loadPage(page,params||{});
 }
 \defaultLayer {
     return $frontLayer;

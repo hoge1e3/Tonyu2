@@ -9,6 +9,12 @@ extends Actor;
     fillStyle=fillStyle||"white";
     strokeStyle=strokeStyle||"white";
     innerRadius=innerRadius||10;
+    if (typeof keys==="object") {
+        leftKey=keys.left;
+        rightKey=keys.right;
+        upKey=keys.up;
+        downKey=keys.down;
+    }
     keySpeed=keySpeed||15/50;
     leftKey=leftKey||"left";
     rightKey=rightKey||"right";
@@ -25,12 +31,16 @@ extends Actor;
     //print(x,y,outerRadius,radius);
     ix=x;iy=y;
 }
-loop();
+if (!auto) loop();
 \defaultLayer{
     return $frontLayer;
 }
 \draw(ctx) {
     //super.draw(ctx);
+    if (auto) {
+        ix=x+vx*outerRadius;
+        iy=y+vy*outerRadius;
+    }
     ctx.globalAlpha=alpha/255;
     ctx.fillStyle=fillStyle+"";
     ctx.beginPath();
@@ -44,21 +54,21 @@ loop();
     ctx.stroke();
 }
 \findTouch() {
-	for (var t in $touches) {
-		if ((!touchRadius || dist(t)<touchRadius) && t.touched==1) {
-			return t;
-		}
-	}
+    for (var t in $touches) {
+        if ((!touchRadius || dist(t)<touchRadius) && t.touched==1) {
+            return t;
+        }
+    }
 }
 \loop() {//ab
     var vx=0,vy=0;
     while(true) {
-		if (!t || t.ended) t=findTouch();
+        if (!t || t.ended) t=findTouch();
         if (t) {
             vx+=t.vx;
             vy+=t.vy;
         } else {
-			vx*=decay;
+            vx*=decay;
             vy*=decay;
         }
         //vx=clamp(vx,-50,50);
