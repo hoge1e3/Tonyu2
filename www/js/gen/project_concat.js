@@ -1,4 +1,4 @@
-// Created at Tue Jan 30 2018 21:04:56 GMT+0900 (東京 (標準時))
+// Created at Mon Feb 05 2018 13:17:18 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -15825,7 +15825,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
-			VERSION:1517313883908,//EMBED_VERSION
+			VERSION:1517804235859,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -15923,7 +15923,8 @@ function FileList(elem, options) {
         }
         var i=0;
         var dirs=_curDir.listFiles();
-        setTimeout(lp,0);//_curDir.each(
+        if (dirs.length>0) setTimeout(lp,0);
+        else wait.remove();
         function lp() {
             if (i==0) wait.remove();
             var f=dirs[i++];
@@ -15961,6 +15962,7 @@ function FileList(elem, options) {
     }
     return FL;
 }
+
 requireSimulator.setName('exceptionCatcher');
 define([], function () {
     var res={};
