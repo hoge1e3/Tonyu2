@@ -1,4 +1,4 @@
-// Created at Tue Feb 06 2018 17:43:25 GMT+0900 (東京 (標準時))
+// Created at Tue Feb 06 2018 17:50:58 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -16221,7 +16221,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
-			VERSION:1517906591819,//EMBED_VERSION
+			VERSION:1517907046442,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -18288,7 +18288,7 @@ var T2MediaLib = (function(){
         this.audioDataAry = {
             data : []
         };
-        
+
         this.init(_context);
     };
 
@@ -18424,7 +18424,7 @@ var T2MediaLib = (function(){
         this.soundDataAry[idx].onLoad(url);
         if (url.match(/^data:/) && Util && Util.Base64_To_ArrayBuffer) {//@hoge1e3
             xhr={onload:xhr.onload};
-            xhr.response=Util.Base64_To_ArrayBuffer( url.replace(/^data:audio\/[a-zA-Z0-9]+;base64,/i,""));
+            xhr.response=Util.Base64_To_ArrayBuffer( url.replace(/^data:audio\/[a-zA-Z0-9\-]+;base64,/i,""));
             xhr.status=200;
             xhr.onload();
         } else {

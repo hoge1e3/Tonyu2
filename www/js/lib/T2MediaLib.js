@@ -18,7 +18,7 @@ var T2MediaLib = (function(){
         this.audioDataAry = {
             data : []
         };
-        
+
         this.init(_context);
     };
 
@@ -154,7 +154,7 @@ var T2MediaLib = (function(){
         this.soundDataAry[idx].onLoad(url);
         if (url.match(/^data:/) && Util && Util.Base64_To_ArrayBuffer) {//@hoge1e3
             xhr={onload:xhr.onload};
-            xhr.response=Util.Base64_To_ArrayBuffer( url.replace(/^data:audio\/[a-zA-Z0-9]+;base64,/i,""));
+            xhr.response=Util.Base64_To_ArrayBuffer( url.replace(/^data:audio\/[a-zA-Z0-9\-]+;base64,/i,""));
             xhr.status=200;
             xhr.onload();
         } else {
