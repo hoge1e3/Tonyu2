@@ -12,7 +12,7 @@
 <p>※必ず<a href="waitmode">待機可能モード</a>で呼び出して下さい</p>
 <pre><code class="lang-JS">r=waitFor(promise);
 </code></pre>
-<p><code>promise</code>には，<a href="thread">スレッド</a>またはJavaScript/jQueryのPromiseオブジェクトを指定します（例：<code>$.get(...)</code>など )．</p>
+<p><code>promise</code>には，<a href="thread">スレッド</a>またはJavaScript/jQueryのPromiseオブジェクトを指定します（例：<code>$.get(...)</code>，<a href="Panel.load">Panel.load</a>など． )．</p>
 <p><code>promise</code>が結果を返す（スレッドが正常終了する，または<code>promise.done(f)</code> の関数<code>f</code>が呼び出される）と，waitForメソッドは終了し，スレッドの戻り値または<code>f</code>に渡された第1引数の値が戻り値として返されます．</p>
 <p><code>promise</code>が失敗する（スレッドが例外を投げるか，killメソッドで停止させられる，<code>promise.fail(f)</code> の関数<code>f</code>が呼び出される）と，waitForメソッドは例外を投げます．例外オブジェクト<code>e</code>の<code>e.original</code>に，<code>f</code>に渡された第1引数が格納されます</p>
 <p>例</p>

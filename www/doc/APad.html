@@ -26,16 +26,21 @@ while(true) {
 <li><code>x</code>,<code>y</code> パッドの位置．省略すると画面下中央に配置します．</li>
 <li><code>outerRadius</code>  外側の円の半径．省略すると50．</li>
 <li><code>strokeStyle</code>  外側の円の色．省略すると&quot;white&quot;</li>
-<li><code>innerRadius</code>  内側の円の色．省略すると10．</li>
+<li><code>innerRadius</code>  内側の円の半径．省略すると10．</li>
 <li><code>fillStyle</code>  内側の円の色．省略すると&quot;white&quot;</li>
 <li><code>decay</code> タッチしていないときに中央に戻る割合(0から1まで)．省略すると0.8</li>
 <li><code>keySpeed</code>  キーボードで操作したときの倒れる速度(0から1まで)．省略すると0.3</li>
 <li><code>leftKey</code>, <code>rightKey</code>, <code>upKey</code>, <code>downKey</code>  キーボードで操作するときに使用する上下左右のキー名（<a href="getkey">getkey</a>の引数と同じ文字列）．省略すると矢印キー．</li>
+<li><code>keys</code>  キーボードで操作するときに使用する上下左右のキー名を属性 <code>left</code> <code>right</code> <code>up</code>  <code>down</code> をもつオブジェクトで指定．<ul>
+<li><code>{leftKey:L, rightKey:R, upKey:U, downKey:D}</code> と <code>{ keys:{left:L, right:R, up:U, down:D}}</code> は等価</li>
+</ul>
+</li>
 <li><code>touchRadius</code>  タッチが反応する距離（パッドを中心とした半径<em>touchRadius</em>までの範囲で反応）．<ul>
 <li>省略すると画面のどこをタッチしても反応します．</li>
 <li>ボタンなど，他のクリック可能なものがある場合は距離を指定することをおすすめします．</li>
 </ul>
 </li>
+<li><code>auto</code>  trueにすると，ユーザからの操作を禁止し，<code>vx</code>，<code>vy</code>をプログラムで書き換えることでパッドを動かすモードになります．主にCOMプレイヤーの動作を作るときに使います</li>
 </ul>
 <p>※色には文字列または<a href="Color">Color</a>オブジェクトを指定します．</p>
 <h1 id="-">プロパティ</h1>

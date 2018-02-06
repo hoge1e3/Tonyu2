@@ -30,7 +30,7 @@ while(true) {
     if (getkey(&quot;right&quot;)) vx=3;   
     if (getkey(&quot;space&quot;)==1) {
         cp=contactPoint(Floor);//触れている位置を含めて判定
-        if (cp) {//触れいていれば
+        if (cp) {//触れていれば
             if (cp.y&gt;y+2) {//当たった点(cp)のy座標が自分より少し下だったら，ジャンプできると判定
                vy=-10;
             }

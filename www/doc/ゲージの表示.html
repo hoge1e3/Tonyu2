@@ -28,20 +28,20 @@ while(true) {
 <p>キャラクタの体力表示などを各キャラクタに個別に出す場合は，キャラクタごとにパネルを作成します．</p>
 <p>Player</p>
 <pre><code class="lang-JS">x=100;y=100;
-// パネルの作成．
-// lifeKeeper=this は，このPlayerオブジェクトが消えたときにpanelも消えるための設定．
-panel=new Panel{lifeKeeper=this};
-panel.resize(100,10);
+// パネルをgauge(ゲージ)という名前で作成．
+// lifeKeeper=this は，このPlayerオブジェクトが消えたときにゲージも消えるための設定．
+gauge=new Panel{lifeKeeper=this};
+gauge.resize(100,10);
 life=30;
 while(true) {
     // パネルを自分の頭上に移動
-    panel.x=x;
-    panel.y=y-20;
+    gauge.x=x;
+    gauge.y=y-20;
     // パネルの描画
-    panel.fillStyle=&quot;red&quot;;
-    panel.fillRect(0,0,100,10);
-    panel.fillStyle=&quot;green&quot;;
-    panel.fillRect(0,0,life,10);
+    gauge.fillStyle=&quot;red&quot;;
+    gauge.fillRect(0,0,100,10);
+    gauge.fillStyle=&quot;green&quot;;
+    gauge.fillRect(0,0,life,10);
     life--;
     if (life&lt;=0) die();
     x++;

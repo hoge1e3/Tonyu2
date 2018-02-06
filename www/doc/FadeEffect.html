@@ -1,0 +1,24 @@
+<html><body class="markdown-body">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><a href="api">api</a></p>
+<h1 id="fadeeffect-">FadeEffectクラス</h1>
+<p>フェードイン・フェードアウトする効果を表示します．フェードアウト後に別ページに移動させることもできます．</p>
+<h2 id="-">フィールド</h2>
+<p>オブジェクト作成時に次の値を設定できます．</p>
+<ul>
+<li>type <code>&quot;in&quot;</code> または <code>&quot;out&quot;</code> を指定することができます．それぞれフェードイン，フェードアウトを表示します．</li>
+<li>alpha 開始時の不透明度をあらわします．type=<code>&quot;in&quot;</code>の場合は255に，type=<code>&quot;out&quot;</code>の場合は0に設定されます．</li>
+<li>alphaTo 終了時の不透明度をあらわします．type=<code>&quot;in&quot;</code>の場合は0に，type=<code>&quot;out&quot;</code>の場合は255に設定されます．</li>
+<li>fillStyle 塗りつぶす色をあらわします．省略すると<code>&quot;black&quot;</code>になります．</li>
+<li>duration  フェードイン・フェードアウトにかけるフレーム数です．省略すると30になります．</li>
+<li>page  フェードアウトしたあとに読み込むページクラス（<a href="loadPage">loadPage</a>参照)を指定することができます．省略すると何も行いません．</li>
+<li>params  pageを指定した場合，ページクラスのオブジェクトに渡すパラメータ（第1引数のみ，通常はオブジェクト）を指定することができます．省略すると空のオブジェクトを渡します</li>
+</ul>
+<h2 id="-">イベント</h2>
+<ul>
+<li>complete  フェードイン・フェードアウト完了時に呼ばれます．</li>
+</ul>
+</body></html>

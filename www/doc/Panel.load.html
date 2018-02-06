@@ -10,8 +10,10 @@
 <pre><code class="lang-JS">panel.load(fn)
 </code></pre>
 <p><em>fn</em>に読み込むファイル名(files/ フォルダからの相対パス)または<a href="file">FSオブジェクト</a>を指定します．</p>
+<h2 id="-">戻り値</h2>
+<p>読み込み完了時に解決されるJavaScriptのPromiseオブジェクト．（次の「注意」参照）</p>
 <h2 id="-">注意</h2>
-<p>読み込みがすぐに完了しない場合もありますので，次のようにwaitFor メソッドを組み合わせると，読み込み完了を待ってから次の処理に進ことができます．</p>
+<p>読み込みがすぐに完了しない場合もありますので，次のように<a href="waitFor">waitForメソッド</a>を組み合わせると，読み込み完了を待ってから次の処理に進ことができます．</p>
 <pre><code class="lang-JS">waitFor(panel.load(fn));
 </code></pre>
 </body></html>
