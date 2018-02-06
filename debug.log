@@ -15,3 +15,4 @@
 [1214/115145.118:ERROR:process_info.cc(632)] range at 0xc30e2adc00000000, size 0x25d fully unreadable
 [1214/115145.118:ERROR:process_info.cc(632)] range at 0x0, size 0x25d fully unreadable
 [1214/115145.161:ERROR:http_transport_win.cc(170)] WinHttpCrackUrl: URL は認識されているプロトコルを使用していません  (0x2ee6)
+[0205/205716.806:ERROR:registration_protocol_win.cc(56)] CreateFile: 指定されたファイルが見つかりません。 (0x2)

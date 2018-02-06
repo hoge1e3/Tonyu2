@@ -1,4 +1,6 @@
 Bug
+ Zipファイル解凍後，daturlのでコードでエラー
+ Actor表示座標は整数
  ResEditor
     Add new image
     Select 分割数 2 x  (None)
