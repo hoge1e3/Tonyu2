@@ -51,9 +51,10 @@ define(["FS","Util","WebSite","plugins","Shell","Tonyu"],
         }
         function copyIndexHtml() {
             var htmlfile=wwwDir.rel("html/runtimes/index.html");
-            var htmlcont=htmlfile.text();
-            htmlcont=htmlcont.replace(/TONYU_APP_VERSION/g,Math.floor(Math.random()*100000));
-            return dest.rel(htmlfile.name()).text(htmlcont);
+            return htmlfile.text(function (htmlcont) {
+                htmlcont=htmlcont.replace(/TONYU_APP_VERSION/g,Math.floor(Math.random()*100000));
+                return dest.rel(htmlfile.name()).text(htmlcont);
+            });
         }
         function copyScripts() {
             var usrjs=prjDir.rel("js/concat.js");
