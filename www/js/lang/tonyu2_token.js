@@ -183,6 +183,7 @@ return TT=function () {
 
 	dtk(REG|DIV,SAMENAME ,"!==",REG );
 	dtk(REG|DIV,SAMENAME ,"===",REG );
+	dtk(REG|DIV,SAMENAME ,">>>",REG );
 	dtk(REG|DIV,SAMENAME ,"+=",REG );
 	dtk(REG|DIV,SAMENAME ,"-=",REG );
 	dtk(REG|DIV,SAMENAME ,"*=",REG );
@@ -212,6 +213,7 @@ return TT=function () {
 
 	dtk(REG|DIV,SAMENAME ,">",REG );
 	dtk(REG|DIV,SAMENAME ,"<",REG );
+	dtk(REG|DIV,SAMENAME ,"^",REG );
 	dtk(REG|DIV,SAMENAME ,"+",REG );
 	dtk(REG|DIV,SAMENAME ,"-",REG );
 	dtk(REG|DIV, SAMENAME ,".",REG );
