@@ -477,7 +477,7 @@ function genJS(klass, env) {//B
 				buf.printf(
 						"switch (%v) {%{"+
 						"%j"+
-						(node.defs?"%v":"%D")+
+						(node.defs?"%n%v":"%D")+
 						"%n%}}"
 						,
 						node.value,
