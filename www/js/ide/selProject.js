@@ -69,10 +69,15 @@ $(function () {
         prj1dirList.append(showAll);
         //$("#prjItemList").append(UI("div",["h2",{"class":"prjDirHeader"},"----"]));
     }
+    var zipchecked;
     function dols(curDir,prj1dirList) {
-        new ZipImporter(curDir,prj1dirList,{
+        var zi=new ZipImporter(curDir,prj1dirList,{
             onComplete: refresh
         });
+        if (!zipchecked) {
+            zipchecked=true;
+            zi.checkFromPrjB();
+        }
         function refresh() {
             prj1dirList.find(".existentproject").remove();
             dols2(curDir,prj1dirList);
