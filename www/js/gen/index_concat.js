@@ -1,4 +1,4 @@
-// Created at Tue Feb 06 2018 17:50:46 GMT+0900 (東京 (標準時))
+// Created at Tue Feb 13 2018 11:35:16 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -17135,18 +17135,20 @@ function (Klass,FS,Util,DD,DU,UI) {
             t.tmpDir=tmpDir.rel(dir.name());
             options=options||{};
             t.onComplete=options.onComplete;
-            DD.accept(elem, t.tmpDir, {
+            if (t.elem) t.prepareDragDrop();
+        },
+        prepareDragDrop: function () {
+            var t=this;
+            DD.accept(t.elem, t.tmpDir, {
                 onComplete: function (status) {
-                    t.dialog=UI("div",{title:"Zipからインポート"},
-                        ["span",{$var:"mesg"}, "ZIPからインポート中です..."]
-                    ).dialog({modal:true});
-                    t.mesg=t.dialog.$vars.mesg;
+                    t.showDialog();
                     t.acceptDrag(status).then(function () {
-                        t.dialog.dialog("close");
+                        t.closeDialog();
                         if (t.onComplete) t.onComplete(status);
                     },function (e) {
-                        t.dialog.dialog("close");
+                        t.closeDialog();
                         console.error(e);
+                        alert(e);
                     });
                 }
             });
@@ -17161,24 +17163,55 @@ function (Klass,FS,Util,DD,DU,UI) {
                 }
             });
         },
+        showDialog: function (mesg) {
+            var t=this;
+            mesg=mesg||"ZIPからインポート中です...";
+            if (!t.dialog) {
+                t.dialog=UI("div",{title:"Zipからインポート"},
+                    ["span",{$var:"mesg"}, mesg]
+                );
+                t.mesg=t.dialog.$vars.mesg;
+            } else {
+                t.mesg.text(mesg);
+            }
+            if (!t.dialogOpened) {
+                t.dialog.dialog({modal:true});
+            }
+            t.dialogOpened=true;
+        },
+        closeDialog: function () {
+            var t=this;
+            if (t.dialog) {
+                t.dialog.dialog("close");
+                t.dialogOpened=false;
+            }
+        },
         unzip: function (file) {
             var t=this;
-            t.mesg.text(file.name()+"を展開中...");
+            t.showDialog(file.name()+"を展開中...");
             var zipexdir=t.tmpDir.rel(file.truncExt()+"/");
             return FS.zip.unzip(file, zipexdir ).then(function () {
                 return t.traverse(zipexdir);
+            }).then(function (imported) {
+                if (imported===0) throw new Error(
+                    file.name()+
+                    "にはTonyu2の編集可能なプロジェクトが含まれていません.");
             });
         },
-        traverse: function (zipexdir) {
+        traverse: function (zipexdir,ctx) {
             var t=this;
+            var ctx=ctx||{imported:0};
             return zipexdir.each(function (f) {
-                t.mesg.text(f.name()+"をチェック中...");
+                t.showDialog(f.name()+"をチェック中...");
                 console.log("traverse",f.path());
                 if (f.isDir()) {
-                    return t.traverse(f);
+                    return t.traverse(f,ctx);
                 } else if (f.name()==="options.json") {
+                    ctx.imported++;
                     return t.importFrom(f.up());
                 }
+            }).then(function (){
+                return ctx.imported;
             });
         },
         importFrom: function (src) {
@@ -17190,7 +17223,7 @@ function (Klass,FS,Util,DD,DU,UI) {
             }
             var name=nameT+"/";
             var dst=dstParent.rel(name);
-            t.mesg.text(src.name()+ "から"+ dst.name()+"にコピー");
+            t.showDialog(src.name()+ "から"+ dst.name()+"にコピー");
             console.log("importFrom",src.path(), "to", dst.path());
             var i=2;
             while (dst.exists()) {
@@ -17198,21 +17231,43 @@ function (Klass,FS,Util,DD,DU,UI) {
                 i++;
                 dst=dstParent.rel(name);
             }
-            return src.copyTo(dst);
+            return src.copyTo(dst).then(function () {
+                if (t.prjID) {
+                    var options=dst.rel("options.json");
+                    if (options.exists()) {
+                        var optobj=options.obj();
+                        optobj.info=optobj.info||{};
+                        optobj.info.prjID=t.prjID;
+                        options.obj(optobj);
+                    }
+                }
+            });
         },
         checkFromPrjB: function () {
             var t=this;
             var file=Util.getQueryString("fromPrjB");
+            var prjID=Util.getQueryString("prjID");
+            t.prjID=prjID;
+            console.log("checkFromPrjB",file);
             if (file) {
                 FS.mount("http://www.tonyu.jp/","web");
-                return t.fromPrjB(file);
+                return t.fromPrjB(file).then(function (r) {
+                    t.closeDialog();
+                    if (t.onComplete) t.onComplete(status);
+                    return r;
+                },function (e) {
+                    t.closeDialog();
+                    alert(e);
+                    console.error(e);
+                });
             }
         },
         fromPrjB: function (fileName) {
             var t=this;
-            var f=FS.get("http://www.tonyu.jp/project/pages/dl.cgi?userOnly=1&file="+file);
-            var dst=FS.get("/ram/").rel(file);
-            f.copyTo(dst).then(function (r) {
+            var f=FS.get("http://www.tonyu.jp/project/dl.cgi?userOnly=1&file="+fileName);
+            var dst=FS.get("/ram/").rel(fileName);
+            t.showDialog("プロジェクトボードから"+fileName+"をダウンロード....");
+            return f.copyTo(dst).then(function (r) {
                 return t.unzip(dst);
             });
         }
@@ -17443,10 +17498,15 @@ $(function () {
         prj1dirList.append(showAll);
         //$("#prjItemList").append(UI("div",["h2",{"class":"prjDirHeader"},"----"]));
     }
+    var zipchecked;
     function dols(curDir,prj1dirList) {
-        new ZipImporter(curDir,prj1dirList,{
+        var zi=new ZipImporter(curDir,prj1dirList,{
             onComplete: refresh
         });
+        if (!zipchecked) {
+            zipchecked=true;
+            zi.checkFromPrjB();
+        }
         function refresh() {
             prj1dirList.find(".existentproject").remove();
             dols2(curDir,prj1dirList);

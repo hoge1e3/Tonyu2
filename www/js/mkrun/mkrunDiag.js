@@ -52,7 +52,7 @@ define(["UI","extLink","mkrun","Tonyu","zip"], function (UI,extLink,mkrun,Tonyu,
                          ["ul",
                          ["li",(model.zip?"解凍した":"")+"フォルダをお手持ちのWebサーバにアップロードする"],
                          ["li",(model.zip?"保存したZIPファイルを":"上のフォルダをZIPで圧縮したものを"),
-                          extLink("http://hoge1e3.sakura.ne.jp/tonyu/project/",
+                          extLink("http://www.tonyu.jp/project/",
                                   "プロジェクトボード",{style:"color: blue;"}),
                           "にアップロードする"]]
                         ),{width:"auto"}

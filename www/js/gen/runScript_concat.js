@@ -1,4 +1,4 @@
-// Created at Tue Feb 06 2018 17:50:54 GMT+0900 (東京 (標準時))
+// Created at Tue Feb 13 2018 11:35:47 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -15627,7 +15627,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
-			VERSION:1517907046442,//EMBED_VERSION
+			VERSION:1518489314741,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -20064,6 +20064,7 @@ return TT=function () {
 
 	dtk(REG|DIV,SAMENAME ,"!==",REG );
 	dtk(REG|DIV,SAMENAME ,"===",REG );
+	dtk(REG|DIV,SAMENAME ,">>>",REG );
 	dtk(REG|DIV,SAMENAME ,"+=",REG );
 	dtk(REG|DIV,SAMENAME ,"-=",REG );
 	dtk(REG|DIV,SAMENAME ,"*=",REG );
@@ -20093,6 +20094,7 @@ return TT=function () {
 
 	dtk(REG|DIV,SAMENAME ,">",REG );
 	dtk(REG|DIV,SAMENAME ,"<",REG );
+	dtk(REG|DIV,SAMENAME ,"^",REG );
 	dtk(REG|DIV,SAMENAME ,"+",REG );
 	dtk(REG|DIV,SAMENAME ,"-",REG );
 	dtk(REG|DIV, SAMENAME ,".",REG );
@@ -20497,8 +20499,10 @@ return TonyuLang=function () {
 	var oror=tk("||");
 	var bitand=tk("&");
 	var bitor=tk("|");
+	var bitxor=tk("^");
 	var shr=tk(">>");
 	var shl=tk("<<");
+	var ushr=tk(">>>");
 
 	var minus=tk("-");//.first(space,"-");
 	var plus=tk("+");//.first(space,"+");
@@ -20598,6 +20602,8 @@ return TonyuLang=function () {
 	prio++;
 	e.infixl(prio,bitor);
 	prio++;
+	e.infixl(prio,bitxor);
+	prio++;
 	e.infixl(prio,bitand);
 	prio++;
 	e.infix(prio,tk("instanceof"));
@@ -20612,6 +20618,7 @@ return TonyuLang=function () {
 	e.infix(prio,gt);
 	e.infix(prio,lt);
 	prio++;
+	e.infixl(prio,ushr);
 	e.infixl(prio,shl);
 	e.infixl(prio,shr);
 	prio++;
@@ -21508,7 +21515,7 @@ function genJS(klass, env) {//B
 				buf.printf(
 						"switch (%v) {%{"+
 						"%j"+
-						(node.defs?"%v":"%D")+
+						(node.defs?"%n%v":"%D")+
 						"%n%}}"
 						,
 						node.value,
@@ -21824,7 +21831,7 @@ function genJS(klass, env) {//B
 	});
 	var opTokens=["++", "--", "!==", "===", "+=", "-=", "*=", "/=",
 			"%=", ">=", "<=",
-	"!=", "==", ">>", "<<", "&&", "||", ">", "<", "+", "?", "=", "*",
+	"!=", "==", ">>>",">>", "<<", "&&", "||", ">", "<", "+", "?", "=", "*",
 	"%", "/", "^", "~", "\\", ":", ";", ",", "!", "&", "|", "-"
 	,"delete"	 ];
 	opTokens.forEach(function (opt) {

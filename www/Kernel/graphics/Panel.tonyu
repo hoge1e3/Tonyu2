@@ -205,6 +205,10 @@ nowait \copy() {
         sw=a.shift();
         sh=a.shift();
         dx=a.shift();
+        if (typeof dx==="object") {
+            var params=dx;
+            // params: x,y,scaleX,scaleY,rotation
+        }
         dy=a.shift();
         dw=a.shift() || sw;
         dh=a.shift() || sh;

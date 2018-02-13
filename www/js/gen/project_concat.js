@@ -1,4 +1,4 @@
-// Created at Tue Feb 06 2018 17:50:49 GMT+0900 (東京 (標準時))
+// Created at Tue Feb 13 2018 11:35:26 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -15828,7 +15828,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
-			VERSION:1517907046442,//EMBED_VERSION
+			VERSION:1518489314741,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -21323,6 +21323,7 @@ return TT=function () {
 
 	dtk(REG|DIV,SAMENAME ,"!==",REG );
 	dtk(REG|DIV,SAMENAME ,"===",REG );
+	dtk(REG|DIV,SAMENAME ,">>>",REG );
 	dtk(REG|DIV,SAMENAME ,"+=",REG );
 	dtk(REG|DIV,SAMENAME ,"-=",REG );
 	dtk(REG|DIV,SAMENAME ,"*=",REG );
@@ -21352,6 +21353,7 @@ return TT=function () {
 
 	dtk(REG|DIV,SAMENAME ,">",REG );
 	dtk(REG|DIV,SAMENAME ,"<",REG );
+	dtk(REG|DIV,SAMENAME ,"^",REG );
 	dtk(REG|DIV,SAMENAME ,"+",REG );
 	dtk(REG|DIV,SAMENAME ,"-",REG );
 	dtk(REG|DIV, SAMENAME ,".",REG );
@@ -21756,8 +21758,10 @@ return TonyuLang=function () {
 	var oror=tk("||");
 	var bitand=tk("&");
 	var bitor=tk("|");
+	var bitxor=tk("^");
 	var shr=tk(">>");
 	var shl=tk("<<");
+	var ushr=tk(">>>");
 
 	var minus=tk("-");//.first(space,"-");
 	var plus=tk("+");//.first(space,"+");
@@ -21857,6 +21861,8 @@ return TonyuLang=function () {
 	prio++;
 	e.infixl(prio,bitor);
 	prio++;
+	e.infixl(prio,bitxor);
+	prio++;
 	e.infixl(prio,bitand);
 	prio++;
 	e.infix(prio,tk("instanceof"));
@@ -21871,6 +21877,7 @@ return TonyuLang=function () {
 	e.infix(prio,gt);
 	e.infix(prio,lt);
 	prio++;
+	e.infixl(prio,ushr);
 	e.infixl(prio,shl);
 	e.infixl(prio,shr);
 	prio++;
@@ -23445,7 +23452,7 @@ function genJS(klass, env) {//B
 				buf.printf(
 						"switch (%v) {%{"+
 						"%j"+
-						(node.defs?"%v":"%D")+
+						(node.defs?"%n%v":"%D")+
 						"%n%}}"
 						,
 						node.value,
@@ -23761,7 +23768,7 @@ function genJS(klass, env) {//B
 	});
 	var opTokens=["++", "--", "!==", "===", "+=", "-=", "*=", "/=",
 			"%=", ">=", "<=",
-	"!=", "==", ">>", "<<", "&&", "||", ">", "<", "+", "?", "=", "*",
+	"!=", "==", ">>>",">>", "<<", "&&", "||", ">", "<", "+", "?", "=", "*",
 	"%", "/", "^", "~", "\\", ":", ";", ",", "!", "&", "|", "-"
 	,"delete"	 ];
 	opTokens.forEach(function (opt) {
@@ -31512,9 +31519,10 @@ define(["FS","Util","WebSite","plugins","Shell","Tonyu"],
         }
         function copyIndexHtml() {
             var htmlfile=wwwDir.rel("html/runtimes/index.html");
-            var htmlcont=htmlfile.text();
-            htmlcont=htmlcont.replace(/TONYU_APP_VERSION/g,Math.floor(Math.random()*100000));
-            return dest.rel(htmlfile.name()).text(htmlcont);
+            return htmlfile.text(function (htmlcont) {
+                htmlcont=htmlcont.replace(/TONYU_APP_VERSION/g,Math.floor(Math.random()*100000));
+                return dest.rel(htmlfile.name()).text(htmlcont);
+            });
         }
         function copyScripts() {
             var usrjs=prjDir.rel("js/concat.js");
@@ -31656,7 +31664,7 @@ define(["UI","extLink","mkrun","Tonyu","zip"], function (UI,extLink,mkrun,Tonyu,
                          ["ul",
                          ["li",(model.zip?"解凍した":"")+"フォルダをお手持ちのWebサーバにアップロードする"],
                          ["li",(model.zip?"保存したZIPファイルを":"上のフォルダをZIPで圧縮したものを"),
-                          extLink("http://hoge1e3.sakura.ne.jp/tonyu/project/",
+                          extLink("http://www.tonyu.jp/project/",
                                   "プロジェクトボード",{style:"color: blue;"}),
                           "にアップロードする"]]
                         ),{width:"auto"}
