@@ -78,9 +78,13 @@ $(function () {
             zipchecked=true;
             zi.checkFromPrjB();
         }
-        function refresh() {
-            prj1dirList.find(".existentproject").remove();
-            dols2(curDir,prj1dirList);
+        function refresh(e) {
+            if (e.from==="prjB") {
+                location.href=location.href.replace(/\?.*/,"");
+            } else {
+                prj1dirList.find(".existentproject").remove();
+                dols2(curDir,prj1dirList);
+            }
         }
         return dols2(curDir,prj1dirList);
     }

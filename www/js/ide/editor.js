@@ -598,13 +598,14 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     }*/
     $("#mkrun").click(F(function () {
         if (WebSite.isNW) {
-            mkrunDiag.show(curPrj,
-                    FS.get(WebSite.cwd).rel("Runtimes/").rel( curProjectDir.name()) );
+            mkrunDiag.show(curPrj,{
+                dest: FS.get(WebSite.cwd).rel("Runtimes/").rel( curProjectDir.name())
+            });
         } else {
-            var mkram=FS.get("/mkram/");
+            /*var mkram=FS.get("/mkram/");
             if (mkram.exists()) mkram.rm({r:1});
-            FS.mount(mkram.path(), LSFS.ramDisk() );
-            mkrunDiag.show(curPrj, mkram.rel(curProjectDir.name()), {
+            FS.mount(mkram.path(), LSFS.ramDisk() );*/
+            mkrunDiag.show(curPrj, /*mkram.rel(curProjectDir.name()),*/ {
                 hiddenFolder:true,
                 onEnd:function () {
                     FS.unmount(mkram.path());

@@ -1,8 +1,51 @@
-define(["FS","Util","WebSite","plugins","Shell","Tonyu"],
-        function (FS,Util,WebSite,plugins,sh,Tonyu) {
+define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu"],
+        function (FS,Util,assert,WebSite,plugins,sh,Tonyu) {
     var MkRun={};
     sh.mkrun=function (dest) {
         return MkRun.run( Tonyu.currentProject, FS.get(dest));
+    };
+    MkRun.run2=function (prj,type,options) {
+        // type: zip , prj, dir
+        // when type=="dir" , options.dest is required
+        var destZip;
+        switch(type) {
+            case "prj":
+            destZip=this.tmpDir().rel("prj.zip");
+            case "zip":
+            dest=this.tmpDir().rel(prj.getDir().name());
+            break;
+            case "dir":
+            dest=options.dest;
+        }
+        assert(dest,"dest is not set");
+        console.log("mkrun2",dest,destZip);
+        return MkRun.run(prj,dest,options).then(function () {
+            switch(type) {
+                case "zip":
+                return FS.zip.zip(dest);
+                case "prj":
+                return FS.zip.zip(dest,destZip).then(function () {
+                    return destZip.getContent(function (c) {
+                        var f=new FormData();
+                        var url="http://edit.tonyu.jp/cgi-bin/uploadTmp.cgi";
+                        f.append( "content" , new Blob( [c.toBin(ArrayBuffer)], {type:c.contentType} ) , destZip.name() );
+                        return $.ajax({url:url,method:"POST",data:f,processData: false, contentType: false});
+                    });
+                }).then(function (r) {
+                    console.log(r);
+                    //alert(r);
+                    return {tmpFileName:r};
+                });
+            }
+        });
+    };
+    MkRun.tmpDir=function () {
+        var mkramPath="/mkram/";
+        if (!MkRun.mounted) FS.mount(mkramPath, FS.LSFS.ramDisk() );
+        MkRun.mounted=true;
+        var mkram=FS.get(mkramPath);
+        if (mkram.exists()) mkram.rm({r:1});
+        return mkram;
     };
     MkRun.run=function (prj,dest,options) {
         options=options||{};

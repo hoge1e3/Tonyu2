@@ -18,9 +18,10 @@ function (Klass,FS,Util,DD,DU,UI) {
             DD.accept(t.elem, t.tmpDir, {
                 onComplete: function (status) {
                     t.showDialog();
-                    t.acceptDrag(status).then(function () {
+                    var ctx={imported:0, from:"dragDrop"};
+                    t.acceptDrag(status,ctx).then(function () {
                         t.closeDialog();
-                        if (t.onComplete) t.onComplete(status);
+                        if (t.onComplete) t.onComplete(ctx);
                     },function (e) {
                         t.closeDialog();
                         console.error(e);
@@ -29,13 +30,13 @@ function (Klass,FS,Util,DD,DU,UI) {
                 }
             });
         },
-        acceptDrag: function (status) {
+        acceptDrag: function (status,ctx) {
             var t=this;
             return DU.each(status,function(k,s) {
                 //s.file;
                 //s.status;
                 if (s.status==="uploaded" && s.file.ext()===".zip") {
-                    return t.unzip(s.file);
+                    return t.unzip(s.file,ctx);
                 }
             });
         },
@@ -62,21 +63,23 @@ function (Klass,FS,Util,DD,DU,UI) {
                 t.dialogOpened=false;
             }
         },
-        unzip: function (file) {
+        unzip: function (file,ctx) {
+            // ctx.dstDir is set when fromPrjB, /Tonyu/Project/prjfile_0.00/
             var t=this;
             t.showDialog(file.name()+"を展開中...");
             var zipexdir=t.tmpDir.rel(file.truncExt()+"/");
             return FS.zip.unzip(file, zipexdir ).then(function () {
-                return t.traverse(zipexdir);
-            }).then(function (imported) {
-                if (imported===0) throw new Error(
+                return t.traverse(zipexdir,ctx);
+            }).then(function (ctx) {
+                if (ctx.from==="prjB" && ctx.imported===0) throw new Error(
                     file.name()+
                     "にはTonyu2の編集可能なプロジェクトが含まれていません.");
             });
         },
         traverse: function (zipexdir,ctx) {
             var t=this;
-            var ctx=ctx||{imported:0};
+            var ctx=ctx||{};
+            ctx.imported=ctx.imported||0;
             return zipexdir.each(function (f) {
                 t.showDialog(f.name()+"をチェック中...");
                 console.log("traverse",f.path());
@@ -84,29 +87,34 @@ function (Klass,FS,Util,DD,DU,UI) {
                     return t.traverse(f,ctx);
                 } else if (f.name()==="options.json") {
                     ctx.imported++;
-                    return t.importFrom(f.up());
+                    return t.importFrom(f.up(),ctx);
                 }
             }).then(function (){
-                return ctx.imported;
+                return ctx;
             });
         },
-        importFrom: function (src) {
+        importFrom: function (src,ctx) {
             var t=this;
-            var dstParent=t.dir;
-            var nameT=FS.PathUtil.truncSEP(src.name());
-            if (nameT==="src") {
-                nameT=FS.PathUtil.truncSEP(src.up().name());
+            var dst;
+            if (ctx.dstDir) {
+                dst=ctx.dstDir;
+            } else {
+                var dstParent=t.dir;
+                var nameT=FS.PathUtil.truncSEP(src.name());
+                if (nameT==="src") {
+                    nameT=FS.PathUtil.truncSEP(src.up().name());
+                }
+                var name=nameT+"/";
+                dst=dstParent.rel(name);
+                var i=2;
+                while (dst.exists()) {
+                    name=nameT+i+"/";
+                    i++;
+                    dst=dstParent.rel(name);
+                }
             }
-            var name=nameT+"/";
-            var dst=dstParent.rel(name);
             t.showDialog(src.name()+ "から"+ dst.name()+"にコピー");
             console.log("importFrom",src.path(), "to", dst.path());
-            var i=2;
-            while (dst.exists()) {
-                name=nameT+i+"/";
-                i++;
-                dst=dstParent.rel(name);
-            }
             return src.copyTo(dst).then(function () {
                 if (t.prjID) {
                     var options=dst.rel("options.json");
@@ -126,10 +134,16 @@ function (Klass,FS,Util,DD,DU,UI) {
             t.prjID=prjID;
             console.log("checkFromPrjB",file);
             if (file) {
-                FS.mount("http://www.tonyu.jp/","web");
-                return t.fromPrjB(file).then(function (r) {
+                var dstDir=t.dir.rel(file.replace(/\.zip$/i,"/"));
+                if (dstDir.exists() ){
+                    console.log(dstDir+" already exists ");
+                    return 0;
+                }
+                FS.mount("http://edit.tonyu.jp/","web");
+                var ctx={from:"prjB", imported:0, dstDir:dstDir};
+                return t.fromPrjB(file,ctx).then(function (r) {
                     t.closeDialog();
-                    if (t.onComplete) t.onComplete(status);
+                    if (t.onComplete) t.onComplete(ctx);
                     return r;
                 },function (e) {
                     t.closeDialog();
@@ -138,13 +152,13 @@ function (Klass,FS,Util,DD,DU,UI) {
                 });
             }
         },
-        fromPrjB: function (fileName) {
+        fromPrjB: function (fileName,ctx) {
             var t=this;
-            var f=FS.get("http://www.tonyu.jp/project/dl.cgi?userOnly=1&file="+fileName);
-            var dst=FS.get("/ram/").rel(fileName);
+            var f=FS.get("http://edit.tonyu.jp/cgi-bin/dl.cgi?file="+fileName);
+            var tmp=FS.get("/ram/").rel(fileName);
             t.showDialog("プロジェクトボードから"+fileName+"をダウンロード....");
-            return f.copyTo(dst).then(function (r) {
-                return t.unzip(dst);
+            return f.copyTo(tmp).then(function (r) {
+                return t.unzip(tmp,ctx);
             });
         }
     });
