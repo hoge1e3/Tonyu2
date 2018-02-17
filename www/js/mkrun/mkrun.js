@@ -22,7 +22,9 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu"],
         return MkRun.run(prj,dest,options).then(function () {
             switch(type) {
                 case "zip":
-                return FS.zip.zip(dest);
+                return FS.zip.zip(dest).finally(function () {
+                    return dest.rm({r:1});
+                });
                 case "prj":
                 return FS.zip.zip(dest,destZip).then(function () {
                     return destZip.getContent(function (c) {
@@ -35,6 +37,10 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu"],
                     console.log(r);
                     //alert(r);
                     return {tmpFileName:r};
+                }).finally(function (r) {
+                    return dest.rm({r:1}).then(function () {
+                        destZip.rm();
+                    }).then(function () {return r;});
                 });
             }
         });

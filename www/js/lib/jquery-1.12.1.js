@@ -3400,11 +3400,13 @@ jQuery.extend( {
 					deferred.done( arguments ).fail( arguments );
 					return this;
 				},
-				"finally": function () {//@hoge1e3
-					return this.always.apply(this,arguments);
+				"finally": function (f) {//@hoge1e3
+					return this.then(f,f);
 				},
-				"catch": function () {//@hoge1e3
-					return this.fail.apply(this,arguments);
+				"catch": function (f) {//@hoge1e3
+					return this.then(function (e) {
+						return e;
+					},f);
 				},
 				then: function( /* fnDone, fnFail, fnProgress */ ) {
 					function throwF(f) {//@hoge1e3

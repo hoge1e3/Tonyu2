@@ -1,4 +1,4 @@
-// Created at Fri Feb 16 2018 20:40:08 GMT+0900 (東京 (標準時))
+// Created at Sat Feb 17 2018 10:56:03 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -15828,7 +15828,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
-			VERSION:1518781198258,//EMBED_VERSION
+			VERSION:1518832552190,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -16470,9 +16470,9 @@ define(["FS"], function (FS) {
 		WebSite.pluginTop=WebSite.top+"/js/plugins";
 	}
 	WebSite.disableROM={};
-	if (loc.match(/tonyuedit\.appspot\.com/) || loc.match(/localhost:8888/) ) {
+	/*if (loc.match(/tonyuedit\.appspot\.com/) || loc.match(/localhost:8888/) ) {
 		//WebSite.disableROM={"ROM_d.js":true};
-	}
+	}*/
 	if (loc.match(/\.appspot\.com/) ||  loc.match(/localhost:888[87]/)) {
 		WebSite.serverType="GAE";
 	}
@@ -16528,14 +16528,17 @@ define(["FS"], function (FS) {
 		WebSite.wwwDir=location.protocol+"//"+location.host+"/";
 		WebSite.projects=[P.rel(WebSite.tonyuHome,"Projects/")];
 	}
-	if (loc.match(/tonyuedit\.appspot\.com/) ||
+	if (loc.match(/edit\.tonyu\.jp/) ||
+		loc.match(/tonyuedit\.appspot\.com/) ||
 		loc.match(/localhost:888/)) {
-		WebSite.kernelDir=location.protocol+"//"+location.host+"/Kernel/";
+		WebSite.kernelDir=WebSite.top+"/Kernel/";
+		//WebSite.kernelDir=location.protocol+"//"+location.host+"/Kernel/";
 	}
-	if (loc.match(/tonyuedit\.appspot\.com/) ||
+	if (loc.match(/edit\.tonyu\.jp/) ||
+		loc.match(/tonyuedit\.appspot\.com/) ||
 		loc.match(/localhost:888/) ||
 		WebSite.isNW) {
-		WebSite.compiledKernel=WebSite.top+"/Kernel/js/concat.js";
+		WebSite.compiledKernel=WebSite.kernelDir+"js/concat.js";
 	} else if (WebSite.serverType==="BA") {
 		WebSite.compiledKernel=WebSite.runtime+"lib/tonyu/kernel.js";
 	} else {
@@ -31490,7 +31493,9 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu"],
         return MkRun.run(prj,dest,options).then(function () {
             switch(type) {
                 case "zip":
-                return FS.zip.zip(dest);
+                return FS.zip.zip(dest).finally(function () {
+                    return dest.rm({r:1});
+                });
                 case "prj":
                 return FS.zip.zip(dest,destZip).then(function () {
                     return destZip.getContent(function (c) {
@@ -31503,6 +31508,10 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu"],
                     console.log(r);
                     //alert(r);
                     return {tmpFileName:r};
+                }).finally(function (r) {
+                    return dest.rm({r:1}).then(function () {
+                        destZip.rm();
+                    }).then(function () {return r;});
                 });
             }
         });
@@ -32426,7 +32435,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             mkrunDiag.show(curPrj, /*mkram.rel(curProjectDir.name()),*/ {
                 hiddenFolder:true,
                 onEnd:function () {
-                    FS.unmount(mkram.path());
+                    //FS.unmount(mkram.path());
                 }
             });
         }

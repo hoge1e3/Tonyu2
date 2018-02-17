@@ -1,4 +1,4 @@
-// Created at Fri Feb 16 2018 20:39:59 GMT+0900 (東京 (標準時))
+// Created at Sat Feb 17 2018 10:55:52 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -15168,9 +15168,9 @@ define(["FS"], function (FS) {
 		WebSite.pluginTop=WebSite.top+"/js/plugins";
 	}
 	WebSite.disableROM={};
-	if (loc.match(/tonyuedit\.appspot\.com/) || loc.match(/localhost:8888/) ) {
+	/*if (loc.match(/tonyuedit\.appspot\.com/) || loc.match(/localhost:8888/) ) {
 		//WebSite.disableROM={"ROM_d.js":true};
-	}
+	}*/
 	if (loc.match(/\.appspot\.com/) ||  loc.match(/localhost:888[87]/)) {
 		WebSite.serverType="GAE";
 	}
@@ -15226,14 +15226,17 @@ define(["FS"], function (FS) {
 		WebSite.wwwDir=location.protocol+"//"+location.host+"/";
 		WebSite.projects=[P.rel(WebSite.tonyuHome,"Projects/")];
 	}
-	if (loc.match(/tonyuedit\.appspot\.com/) ||
+	if (loc.match(/edit\.tonyu\.jp/) ||
+		loc.match(/tonyuedit\.appspot\.com/) ||
 		loc.match(/localhost:888/)) {
-		WebSite.kernelDir=location.protocol+"//"+location.host+"/Kernel/";
+		WebSite.kernelDir=WebSite.top+"/Kernel/";
+		//WebSite.kernelDir=location.protocol+"//"+location.host+"/Kernel/";
 	}
-	if (loc.match(/tonyuedit\.appspot\.com/) ||
+	if (loc.match(/edit\.tonyu\.jp/) ||
+		loc.match(/tonyuedit\.appspot\.com/) ||
 		loc.match(/localhost:888/) ||
 		WebSite.isNW) {
-		WebSite.compiledKernel=WebSite.top+"/Kernel/js/concat.js";
+		WebSite.compiledKernel=WebSite.kernelDir+"js/concat.js";
 	} else if (WebSite.serverType==="BA") {
 		WebSite.compiledKernel=WebSite.runtime+"lib/tonyu/kernel.js";
 	} else {

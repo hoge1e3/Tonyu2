@@ -608,7 +608,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             mkrunDiag.show(curPrj, /*mkram.rel(curProjectDir.name()),*/ {
                 hiddenFolder:true,
                 onEnd:function () {
-                    FS.unmount(mkram.path());
+                    //FS.unmount(mkram.path());
                 }
             });
         }
