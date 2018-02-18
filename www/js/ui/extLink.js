@@ -2,25 +2,33 @@ define(["WebSite","UI","PathUtil","Util","assert"],
         function (WebSite,UI,PathUtil,Util,assert) {
     var exec = (WebSite.isNW? require('child_process').exec : function (){});
     function extLink(href,caption,options) {
-        var opt=getOpt(href);
-        if (options) for (var k in options) opt[k]=options[k];
+        options=options||{};
+        var opt=getOpt(href,options);
+        //for (var k in options) opt[k]=options[k];
         return UI("a",opt,caption);
     };
-    function getOpt(href) {
+    function getOpt(href,options) {
         var p=WebSite.platform;
-        var opt;
+        options=options||{};
+        options.on=options.on||{};
+        var afterClick=(options.on && options.on.click) || function(){};
         if (p=="win32") {
-            opt={href:"javascript:;", on:{click: ext("start",href)}};
+            options.href="javascript:;";
+            options.on.click=ext("start",href,afterClick);
         } else if (p=="darwin") {
-            opt={href:"javascript:;", on:{click: ext("open",href)}};
+            options.href="javascript:;";
+            options.on.click=ext("open",href,afterClick);
         } else {
-            opt={href:href, target:"_new"};
+            options.href=href;
+            options.on.click=afterClick;
+            options.target="_new";
         }
-        return opt;
+        return options;
     }
-    function ext(cmd, href) {
+    function ext(cmd, href,afterClick) {
         return function () {
             exec(cmd+" "+href);
+            if (afterClick) afterClick();
         };
     }
     extLink.all=function () {

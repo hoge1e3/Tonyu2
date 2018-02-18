@@ -1,4 +1,4 @@
-// Created at Sat Feb 17 2018 10:55:52 GMT+0900 (東京 (標準時))
+// Created at Sun Feb 18 2018 09:45:26 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -15229,8 +15229,9 @@ define(["FS"], function (FS) {
 	if (loc.match(/edit\.tonyu\.jp/) ||
 		loc.match(/tonyuedit\.appspot\.com/) ||
 		loc.match(/localhost:888/)) {
-		WebSite.kernelDir=WebSite.top+"/Kernel/";
-		//WebSite.kernelDir=location.protocol+"//"+location.host+"/Kernel/";
+		//WebSite.kernelDir=WebSite.top+"/Kernel/";
+		// kernelDir must be absolute
+		WebSite.kernelDir=location.protocol+"//"+location.host+"/Kernel/";
 	}
 	if (loc.match(/edit\.tonyu\.jp/) ||
 		loc.match(/tonyuedit\.appspot\.com/) ||
@@ -16793,25 +16794,33 @@ define(["WebSite","UI","PathUtil","Util","assert"],
         function (WebSite,UI,PathUtil,Util,assert) {
     var exec = (WebSite.isNW? require('child_process').exec : function (){});
     function extLink(href,caption,options) {
-        var opt=getOpt(href);
-        if (options) for (var k in options) opt[k]=options[k];
+        options=options||{};
+        var opt=getOpt(href,options);
+        //for (var k in options) opt[k]=options[k];
         return UI("a",opt,caption);
     };
-    function getOpt(href) {
+    function getOpt(href,options) {
         var p=WebSite.platform;
-        var opt;
+        options=options||{};
+        options.on=options.on||{};
+        var afterClick=(options.on && options.on.click) || function(){};
         if (p=="win32") {
-            opt={href:"javascript:;", on:{click: ext("start",href)}};
+            options.href="javascript:;";
+            options.on.click=ext("start",href,afterClick);
         } else if (p=="darwin") {
-            opt={href:"javascript:;", on:{click: ext("open",href)}};
+            options.href="javascript:;";
+            options.on.click=ext("open",href,afterClick);
         } else {
-            opt={href:href, target:"_new"};
+            options.href=href;
+            options.on.click=afterClick;
+            options.target="_new";
         }
-        return opt;
+        return options;
     }
-    function ext(cmd, href) {
+    function ext(cmd, href,afterClick) {
         return function () {
             exec(cmd+" "+href);
+            if (afterClick) afterClick();
         };
     }
     extLink.all=function () {
@@ -16831,6 +16840,7 @@ define(["WebSite","UI","PathUtil","Util","assert"],
     };
     return extLink;
 });
+
 requireSimulator.setName('DeferredUtil');
 define(["FS"],function (FS){return FS.DeferredUtil;});
 

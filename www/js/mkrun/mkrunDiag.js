@@ -95,14 +95,33 @@ define(["UI","extLink","mkrun","Tonyu","zip"], function (UI,extLink,mkrun,Tonyu,
                 );
                 break;
                 case "prj":
-                UIDiag.alert(UI("div",
+                var diag;
+                diag=UI("div",
                     ["p",["strong","まだアップロードは完了していません"]],
                     ["p",
                       extLink("http://www.tonyu.jp/project/newVersion.cgi?tmpFile="+r.tmpFileName,
-                              "新規バージョンページ",{style:"color: blue;"}),
-                    "に必要事項を記入して，アップロードを完了させてください"]
-                    ),{width:"auto"}
+                        "新規バージョンページ",{
+                            style:"color: blue;",
+                            on:{
+                                click: function () {
+                                    diag.$vars.button.prop("disabled", false);
+                                }
+                            }
+                        }),
+                        "に必要事項を記入して，アップロードを完了させてください"
+                    ],
+                    ["button",{
+                        $var:"button",
+                        on:{
+                            click: function () {
+                                diag.dialog("close");
+                                diag.remove();
+                            }
+                        }
+                    },"OK"]
                 );
+                diag.$vars.button.prop("disabled", true);
+                diag.dialog();
                 break;
                 }
                 res.d.$vars.OKButton.prop("disabled", false);

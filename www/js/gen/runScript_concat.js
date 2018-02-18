@@ -1,4 +1,4 @@
-// Created at Sat Feb 17 2018 10:56:23 GMT+0900 (東京 (標準時))
+// Created at Sun Feb 18 2018 09:46:03 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -15627,7 +15627,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
-			VERSION:1518832552190,//EMBED_VERSION
+			VERSION:1518914725706,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -23092,8 +23092,9 @@ define(["FS"], function (FS) {
 	if (loc.match(/edit\.tonyu\.jp/) ||
 		loc.match(/tonyuedit\.appspot\.com/) ||
 		loc.match(/localhost:888/)) {
-		WebSite.kernelDir=WebSite.top+"/Kernel/";
-		//WebSite.kernelDir=location.protocol+"//"+location.host+"/Kernel/";
+		//WebSite.kernelDir=WebSite.top+"/Kernel/";
+		// kernelDir must be absolute
+		WebSite.kernelDir=location.protocol+"//"+location.host+"/Kernel/";
 	}
 	if (loc.match(/edit\.tonyu\.jp/) ||
 		loc.match(/tonyuedit\.appspot\.com/) ||

@@ -1,4 +1,4 @@
-// Created at Sat Feb 17 2018 10:56:03 GMT+0900 (東京 (標準時))
+// Created at Sun Feb 18 2018 09:45:36 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -15828,7 +15828,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
-			VERSION:1518832552190,//EMBED_VERSION
+			VERSION:1518914725706,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -16531,8 +16531,9 @@ define(["FS"], function (FS) {
 	if (loc.match(/edit\.tonyu\.jp/) ||
 		loc.match(/tonyuedit\.appspot\.com/) ||
 		loc.match(/localhost:888/)) {
-		WebSite.kernelDir=WebSite.top+"/Kernel/";
-		//WebSite.kernelDir=location.protocol+"//"+location.host+"/Kernel/";
+		//WebSite.kernelDir=WebSite.top+"/Kernel/";
+		// kernelDir must be absolute
+		WebSite.kernelDir=location.protocol+"//"+location.host+"/Kernel/";
 	}
 	if (loc.match(/edit\.tonyu\.jp/) ||
 		loc.match(/tonyuedit\.appspot\.com/) ||
@@ -31430,25 +31431,33 @@ define(["WebSite","UI","PathUtil","Util","assert"],
         function (WebSite,UI,PathUtil,Util,assert) {
     var exec = (WebSite.isNW? require('child_process').exec : function (){});
     function extLink(href,caption,options) {
-        var opt=getOpt(href);
-        if (options) for (var k in options) opt[k]=options[k];
+        options=options||{};
+        var opt=getOpt(href,options);
+        //for (var k in options) opt[k]=options[k];
         return UI("a",opt,caption);
     };
-    function getOpt(href) {
+    function getOpt(href,options) {
         var p=WebSite.platform;
-        var opt;
+        options=options||{};
+        options.on=options.on||{};
+        var afterClick=(options.on && options.on.click) || function(){};
         if (p=="win32") {
-            opt={href:"javascript:;", on:{click: ext("start",href)}};
+            options.href="javascript:;";
+            options.on.click=ext("start",href,afterClick);
         } else if (p=="darwin") {
-            opt={href:"javascript:;", on:{click: ext("open",href)}};
+            options.href="javascript:;";
+            options.on.click=ext("open",href,afterClick);
         } else {
-            opt={href:href, target:"_new"};
+            options.href=href;
+            options.on.click=afterClick;
+            options.target="_new";
         }
-        return opt;
+        return options;
     }
-    function ext(cmd, href) {
+    function ext(cmd, href,afterClick) {
         return function () {
             exec(cmd+" "+href);
+            if (afterClick) afterClick();
         };
     }
     extLink.all=function () {
@@ -31468,6 +31477,7 @@ define(["WebSite","UI","PathUtil","Util","assert"],
     };
     return extLink;
 });
+
 requireSimulator.setName('mkrun');
 define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu"],
         function (FS,Util,assert,WebSite,plugins,sh,Tonyu) {
@@ -31759,14 +31769,33 @@ define(["UI","extLink","mkrun","Tonyu","zip"], function (UI,extLink,mkrun,Tonyu,
                 );
                 break;
                 case "prj":
-                UIDiag.alert(UI("div",
+                var diag;
+                diag=UI("div",
                     ["p",["strong","まだアップロードは完了していません"]],
                     ["p",
                       extLink("http://www.tonyu.jp/project/newVersion.cgi?tmpFile="+r.tmpFileName,
-                              "新規バージョンページ",{style:"color: blue;"}),
-                    "に必要事項を記入して，アップロードを完了させてください"]
-                    ),{width:"auto"}
+                        "新規バージョンページ",{
+                            style:"color: blue;",
+                            on:{
+                                click: function () {
+                                    diag.$vars.button.prop("disabled", false);
+                                }
+                            }
+                        }),
+                        "に必要事項を記入して，アップロードを完了させてください"
+                    ],
+                    ["button",{
+                        $var:"button",
+                        on:{
+                            click: function () {
+                                diag.dialog("close");
+                                diag.remove();
+                            }
+                        }
+                    },"OK"]
                 );
+                diag.$vars.button.prop("disabled", true);
+                diag.dialog();
                 break;
                 }
                 res.d.$vars.OKButton.prop("disabled", false);
