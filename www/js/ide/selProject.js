@@ -47,7 +47,7 @@ $(function () {
         prj1dirList.append(UI("h2",{"class":"prjDirHeader"},curDir.path()));
         var u=UI("div", {"class":"project newprj"},
             ["a", {href:HNOP, on:{click:newDiag}},
-            ["img",{$var:"t",src:"../../images/tonew.png"}],
+            ["img",{$var:"t",src:WebSite.top+"/images/tonew.png"}],
             ["div", "新規作成"]
         ]);
         u.appendTo(prj1dirList);

@@ -167,6 +167,14 @@ define(["FS"], function (FS) {
 	} else {
 		WebSite.compiledKernel="http://tonyuexe.appspot.com/Kernel/js/concat.js";
 	}
+	if (loc.match(/((index)|(project))2/)) {
+		WebSite.version=2;
+		if (WebSite.isNW) {
+			WebSite.devMode=true;
+		} else {
+			WebSite.devMode=false;
+		}
+	}
 	FS.setEnvProvider(new FS.Env(WebSite));
 	return window.WebSite=WebSite;
 });

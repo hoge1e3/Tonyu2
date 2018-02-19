@@ -30,6 +30,10 @@ show: function (t) {
 url: {
     get: function (t) {
         var f=t.projectDir;
+        // temporaly
+        if (WebSite.version==2) {
+            return "project2.html?dir="+f.path();
+        }
         return "project.html?dir="+f.path();
     }
 },
@@ -38,7 +42,7 @@ dom: function (t) {
     var name=t.name;
     return UI("div", {"class":"project existentproject"},
         ["a", {href:url,"class":"projectLink"},
-             ["img",{$var:"t",src:"../../images/nowprint.png"}]],
+             ["img",{$var:"t",src:WebSite.top+"/images/nowprint.png"}]],
         ["div",
             ["a", {href:url,"class":"projectLink projectName"},name],
             t.submenuExpr()
