@@ -167,6 +167,17 @@ define(["FS"], function (FS) {
 	} else {
 		WebSite.compiledKernel="http://tonyuexe.appspot.com/Kernel/js/concat.js";
 	}
+	if (loc.match(/localhost\/tonyu2/)) {
+		WebSite.wwwDir=location.protocol+"//"+location.host+"/tonyu2/";
+		WebSite.kernelDir=WebSite.wwwDir+"Kernel/";
+		WebSite.compiledKernel=WebSite.kernelDir+"js/concat.js";
+		WebSite.uploadTmpUrl="http://localhost/tsite/tonyu/e/cgi-bin/uploadTmp.cgi";
+		WebSite.newVersionUrl="http://localhost/tsite/tonyu/project/newVersion.cgi";
+	} else {
+		WebSite.uploadTmpUrl="http://edit.tonyu.jp/cgi-bin/uploadTmp.cgi";
+		WebSite.newVersionUrl="http://www.tonyu.jp/project/newVersion.cgi";
+	}
+
 	if (loc.match(/((index)|(project))2/)) {
 		WebSite.version=2;
 		if (WebSite.isNW) {

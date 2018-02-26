@@ -99,7 +99,7 @@ define(["UI","extLink","mkrun","Tonyu","zip"], function (UI,extLink,mkrun,Tonyu,
                 diag=UI("div",
                     ["p",["strong","まだアップロードは完了していません"]],
                     ["p",
-                      extLink("http://www.tonyu.jp/project/newVersion.cgi?tmpFile="+r.tmpFileName,
+                      extLink(WebSite.newVersionUrl+"?tmpFile="+r.tmpFileName,
                         "新規バージョンページ",{
                             style:"color: blue;",
                             on:{

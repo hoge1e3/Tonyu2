@@ -29,7 +29,7 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu"],
                 return FS.zip.zip(dest,destZip).then(function () {
                     return destZip.getContent(function (c) {
                         var f=new FormData();
-                        var url="http://edit.tonyu.jp/cgi-bin/uploadTmp.cgi";
+                        var url=WebSite.uploadTmpUrl;
                         f.append( "content" , new Blob( [c.toBin(ArrayBuffer)], {type:c.contentType} ) , destZip.name() );
                         return $.ajax({url:url,method:"POST",data:f,processData: false, contentType: false});
                     });
@@ -61,6 +61,7 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu"],
         var loadFilesBuf="function loadFiles(dir){\n";
         var wwwDir=FS.get(WebSite.wwwDir);
         var jsDir=wwwDir.rel("js/");
+        console.log("jsDir",jsDir);
         //var sampleImgDir=wwwDir.rel("images/");
         if (options.copySrc) copySrc();
         return $.when(
