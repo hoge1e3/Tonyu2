@@ -1,6 +1,6 @@
 extends null;
 includes MathMod,EventMod,TextRectMod,OneframeSpriteMod,
-ThreadGroupMod,EventHandlerCaller,DialogMod;
+ThreadGroupMod,EventHandlerCaller,DialogMod,FileMod;
 native Tonyu;
 native Key;
 native console;
@@ -377,11 +377,6 @@ nowait \draw(ctx) {
         }
         update();
     }
-}
-\file(path) {
-    var d=Tonyu.currentProject.getDir();
-    var files=d.rel("files/");
-    return files.rel(path).setPolicy {topDir:d};
 }
 \waitInputDevice(fl) {
     runAsync \(f){

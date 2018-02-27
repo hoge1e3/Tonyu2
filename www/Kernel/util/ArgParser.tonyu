@@ -1,4 +1,5 @@
 \new(asrc) {
+    if (!asrc) throw new Error("Use as: new ArgParser(arguments)");
     length=0;
     a=this;
     for (var i=0; i<asrc.length;i++) push(asrc[i]);
@@ -40,5 +41,36 @@
 \toArray() {
     var res=[];
     for (var i=0 ;i<a.length; i++) res.push(a[i]);
+    return res;
+}
+\parseOptions(spec) {
+    var speca=spec.split(",");
+    var res={};
+    if (length>speca.length) {
+        throw new Error("# of arguments("+length+
+        ") is more than spec("+speca.length+").");
+    }
+    while(length>1) {
+        var name=speca.shift();
+        res[name]=shift();
+    }
+    var opt=shift(),notOption;
+    if (typeof opt!=="object") {
+        notOption=true;
+    } else {
+        for (var k,v in opt) {
+            if (speca.indexOf(k)<0) {
+                notOption=true;
+                break;
+            }
+        }
+    }
+    if (notOption) {
+        res[speca.shift()]=opt;
+    } else {
+        for (var k,v in opt) {
+            res[k]=v;
+        }
+    }
     return res;
 }

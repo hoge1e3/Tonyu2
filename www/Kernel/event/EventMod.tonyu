@@ -80,6 +80,8 @@ nowait \sendEvent(type, arg) {
 
 \waitFor(f) {
     if (_thread) {
-        _thread.waitFor(f);
+        var r=_thread.waitFor(f);
+        return r;
     }
+    return f;
 }

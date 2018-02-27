@@ -433,6 +433,7 @@ function genJS(klass, env) {//B
 					return buf.lazy();
 				});
 				if (node.defs) labels.push(buf.lazy());
+				var brkpos=buf.lazy();
 				buf.printf(
 						"switch (%v) {%{"+
 						"%f"+
@@ -448,9 +449,10 @@ function genJS(klass, env) {//B
 							});
 							if (node.defs) {
 								buf.printf("%}default:%{%s=%z;break;%n", FRMPC, labels[i]);
+							} else {
+								buf.printf("%}default:%{%s=%z;break;%n", FRMPC, brkpos);
 							}
 						});
-				var brkpos=buf.lazy();
 				ctx.enter({closestBrk:brkpos}, function () {
 					var i=0;
 					node.cases.forEach(function (c) {
