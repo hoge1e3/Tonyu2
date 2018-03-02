@@ -163,6 +163,7 @@ native Image;
 }
 nowait \drawSprite(x,y,p,options) {
     var pImg=$imageList[p];
+    if (!pImg) return;
     if (options===true) options={f:true};
     options=options||{};
     var scaleX=typeof (options.scaleX)==="number"?options.scaleX:1;

@@ -808,7 +808,7 @@ define('DeferredUtil',[], function () {
     return DU;
 });
 
-define('FS2',["extend","PathUtil","MIMETypes","assert","DeferredUtil"],
+define('FSClass',["extend","PathUtil","MIMETypes","assert","DeferredUtil"],
 function (extend, P, M,assert,DU){
     var FS=function () {
     };
@@ -1518,7 +1518,7 @@ define('Content',["assert","Util"],function (assert,Util) {
     return Content;
 });
 
-define('NativeFS',["FS2","assert","PathUtil","extend","Content"],
+define('NativeFS',["FSClass","assert","PathUtil","extend","Content"],
         function (FS,A,P,extend,Content) {
     var available=(typeof process=="object"/* && process.__node_webkit*/);
     if (!available) {
@@ -1708,7 +1708,7 @@ define('NativeFS',["FS2","assert","PathUtil","extend","Content"],
     return NativeFS;
 });
 
-define('LSFS',["FS2","PathUtil","extend","assert","Util","Content"],
+define('LSFS',["FSClass","PathUtil","extend","assert","Util","Content"],
         function(FS,P,extend,assert,Util,Content) {
     var LSFS = function(storage,options) {
         assert(storage," new LSFS fail: no storage");
@@ -2167,7 +2167,7 @@ $.ajaxTransport("+binary", function(options, originalOptions, jqXHR){
 });
 define("jquery.binarytransport", function(){});
 
-define('WebFS',["FS2","jquery.binarytransport","DeferredUtil","Content","PathUtil"],
+define('WebFS',["FSClass","jquery.binarytransport","DeferredUtil","Content","PathUtil"],
         function (FS,j,DU,Content,P) {
     // FS.mount(location.protocol+"//"+location.host+"/", "web");
     var WebFS=function (){};
@@ -2240,8 +2240,8 @@ a).createObjectURL(c);p?p.location.href=f:void 0==a.open(f,"_blank")&&"undefined
 c.size,"application/octet-stream"),l=!0);q&&"download"!==e&&(e+=".download");if("application/octet-stream"===b||q)p=a;u?(r+=c.size,u(a.TEMPORARY,r,h(function(a){a.root.getDirectory("saved",m,h(function(a){var b=function(){a.getFile(e,m,h(function(a){a.createWriter(h(function(b){b.onwriteend=function(b){p.location.href=a.toURL();d.readyState=d.DONE;t(d,"writeend",b);s(a)};b.onerror=function(){var a=b.error;a.code!==a.ABORT_ERR&&g()};["writestart","progress","write","abort"].forEach(function(a){b["on"+
 a]=d["on"+a]});b.write(c);d.abort=function(){b.abort();d.readyState=d.DONE};d.readyState=d.WRITING}),g)}),g)};a.getFile(e,{create:!1},h(function(a){a.remove();b()}),h(function(a){a.code===a.NOT_FOUND_ERR?b():g()}))}),g)}),g)):g()}},b=m.prototype;b.abort=function(){this.readyState=this.DONE;t(this,"abort")};b.readyState=b.INIT=0;b.WRITING=1;b.DONE=2;b.error=b.onwritestart=b.onprogress=b.onwrite=b.onabort=b.onerror=b.onwriteend=null;return function(a,b){return new m(a,b)}}}("undefined"!==typeof self&&
 self||"undefined"!==typeof window&&window||this.content);"undefined"!==typeof module&&null!==module?module.exports=saveAs:"undefined"!==typeof define&&null!==define&&null!=define.amd&&define('FileSaver.min',[],function(){return saveAs});
-define('SFile',["extend","assert","PathUtil","Util","Content","FS2","FileSaver.min","DeferredUtil"],
-function (extend,A,P,Util,Content,FS2,sv,DU) {
+define('SFile',["extend","assert","PathUtil","Util","Content","FSClass","FileSaver.min","DeferredUtil"],
+function (extend,A,P,Util,Content,FSClass,sv,DU) {
 
 var SFile=function (rootFS, path) {
     A.is(path, P.Absolute);
@@ -2252,7 +2252,7 @@ var SFile=function (rootFS, path) {
     /*this.act={};// path/fs after follwed symlink
     this.act.path=this.fs.resolveLink(path);
     this.act.fs=rootFS.resolveFS(this.act.path);
-    A.is(this.act, {fs:FS2, path:P.Absolute});*/
+    A.is(this.act, {fs:FSClass, path:P.Absolute});*/
     if (this.isDir() && !P.isDir(path)) {
         this._path+=P.SEP;
     }
@@ -2758,7 +2758,7 @@ Object.defineProperty(SFile.prototype,"act",{
         this._act={};// path/fs after follwed symlink
         this._act.path=this.fs.resolveLink(this._path);
         this._act.fs=this.rootFS.resolveFS(this._act.path);
-        A.is(this._act, {fs:FS2, path:P.Absolute});
+        A.is(this._act, {fs:FSClass, path:P.Absolute});
         return this._act;
     }
 });
@@ -2766,7 +2766,7 @@ Object.defineProperty(SFile.prototype,"act",{
 return SFile;
 });
 
-define('RootFS',["assert","FS2","PathUtil","SFile"], function (assert,FS,P,SFile) {
+define('RootFS',["assert","FSClass","PathUtil","SFile"], function (assert,FS,P,SFile) {
     var RootFS=function (defaultFS){
         assert.is(defaultFS,FS);
         this.mount(null, defaultFS);
@@ -2863,6 +2863,96 @@ define('RootFS',["assert","FS2","PathUtil","SFile"], function (assert,FS,P,SFile
     }
     return RootFS;
 });
+define('FSNoZip',["FSClass","NativeFS","LSFS", "WebFS", "PathUtil","Env","assert","SFile","RootFS","Content",/*"zip",*/"DeferredUtil"],
+        function (FSClass,NativeFS,LSFS,WebFS, P,Env,A,SFile,RootFS,Content,/*zip,*/DU) {
+    var FS={};
+    FS.assert=A;
+    FS.Content=Content;
+    FS.Class=FSClass;
+    FS.DeferredUtil=DU;
+    FS.Env=Env;
+    FS.LSFS=LSFS;
+    FS.NativeFS=NativeFS;
+    FS.PathUtil=P;
+    FS.RootFS=RootFS;
+    FS.SFile=SFile;
+    FS.WebFS=WebFS;
+    //FS.zip=zip;
+    //DU.external.Promise=zip.JSZip.external.Promise;
+    if (typeof window=="object") window.FS=FS;
+    var rootFS;
+    var env=new Env({});
+    FS.addFSType=FSClass.addFSType;
+    FS.availFSTypes=FSClass.availFSTypes;
+
+    FS.setEnvProvider=function (e) {
+        env=e;
+    };
+    FS.getEnvProvider=function () {
+        return env;
+    };
+    FS.setEnv=function (key, value) {
+        if (typeof key=="object") {
+            for (var k in key) {
+                env.set(k,key[k]);
+            }
+        }else {
+            env.set(key,value);
+        }
+    };
+    FS.getEnv=function (key) {
+        if (typeof key=="string") {
+            return env.get(key);
+        }else {
+            return env.value;
+        }
+    };
+    FS.init=function (fs) {
+        if (rootFS) return;
+        if (!fs) {
+            if (typeof process=="object") {
+                fs=new NativeFS();
+            } else {
+                fs=new LSFS(localStorage);
+            }
+        }
+        rootFS=new RootFS(fs);
+    };
+    FS.getRootFS=function () {
+        FS.init();
+        return rootFS;
+    };
+    FS.get=function () {
+        FS.init();
+        return rootFS.get.apply(rootFS,arguments);
+    };
+    FS.expandPath=function () {
+        return env.expandPath.apply(env,arguments);
+    };
+    FS.resolve=function (path, base) {
+        FS.init();
+        if (SFile.is(path)) return path;
+        path=env.expandPath(path);
+        if (base && !P.isAbsolutePath(path)) {
+            base=env.expandPath(base);
+            return FS.get(base).rel(path);
+        }
+        return FS.get(path);
+    };
+    FS.mount=function () {
+        FS.init();
+        return rootFS.mount.apply(rootFS,arguments);
+    };
+    FS.unmount=function () {
+        FS.init();
+        return rootFS.unmount.apply(rootFS,arguments);
+    };
+    FS.isFile=function (f) {
+        return SFile.is(f);
+    };
+    return FS;
+});
+
 /*!
 
 JSZip v3.1.5 - A JavaScript class for generating and reading zip files
@@ -14577,93 +14667,9 @@ function (SFile,JSZip,fsv,Util,DU) {
     return zip;
 });
 
-define('FS',["FS2","NativeFS","LSFS", "WebFS", "PathUtil","Env","assert","SFile","RootFS","Content","zip","DeferredUtil"],
-        function (FSClass,NativeFS,LSFS,WebFS, P,Env,A,SFile,RootFS,Content,zip,DU) {
-    var FS={};
-    FS.assert=A;
-    FS.Content=Content;
-    FS.Class=FSClass;
-    FS.DeferredUtil=DU;
-    FS.Env=Env;
-    FS.LSFS=LSFS;
-    FS.NativeFS=NativeFS;
-    FS.PathUtil=P;
-    FS.RootFS=RootFS;
-    FS.SFile=SFile;
-    FS.WebFS=WebFS;
+define('FS',["FSNoZip","zip"], function (FS,zip) {
     FS.zip=zip;
-    if (typeof window=="object") window.FS=FS;
-    var rootFS;
-    var env=new Env({});
-    DU.external.Promise=zip.JSZip.external.Promise;
-    FS.addFSType=FSClass.addFSType;
-    FS.availFSTypes=FSClass.availFSTypes;
-
-    FS.setEnvProvider=function (e) {
-        env=e;
-    };
-    FS.getEnvProvider=function () {
-        return env;
-    };
-    FS.setEnv=function (key, value) {
-        if (typeof key=="object") {
-            for (var k in key) {
-                env.set(k,key[k]);
-            }
-        }else {
-            env.set(key,value);
-        }
-    };
-    FS.getEnv=function (key) {
-        if (typeof key=="string") {
-            return env.get(key);
-        }else {
-            return env.value;
-        }
-    };
-    FS.init=function (fs) {
-        if (rootFS) return;
-        if (!fs) {
-            if (typeof process=="object") {
-                fs=new NativeFS();
-            } else {
-                fs=new LSFS(localStorage);
-            }
-        }
-        rootFS=new RootFS(fs);
-    };
-    FS.getRootFS=function () {
-        FS.init();
-        return rootFS;
-    };
-    FS.get=function () {
-        FS.init();
-        return rootFS.get.apply(rootFS,arguments);
-    };
-    FS.expandPath=function () {
-        return env.expandPath.apply(env,arguments);
-    };
-    FS.resolve=function (path, base) {
-        FS.init();
-        if (SFile.is(path)) return path;
-        path=env.expandPath(path);
-        if (base && !P.isAbsolutePath(path)) {
-            base=env.expandPath(base);
-            return FS.get(base).rel(path);
-        }
-        return FS.get(path);
-    };
-    FS.mount=function () {
-        FS.init();
-        return rootFS.mount.apply(rootFS,arguments);
-    };
-    FS.unmount=function () {
-        FS.init();
-        return rootFS.unmount.apply(rootFS,arguments);
-    };
-    FS.isFile=function (f) {
-        return SFile.is(f);
-    };
+    FS.DeferredUtil.external.Promise=zip.JSZip.external.Promise;
     return FS;
 });
 

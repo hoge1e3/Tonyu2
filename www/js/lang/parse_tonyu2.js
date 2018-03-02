@@ -179,6 +179,7 @@ return TonyuLang=function () {
 	e.prefix(prio,tk("+"));
 	e.prefix(prio,tk("-"));
 	e.prefix(prio,tk("!"));
+	e.prefix(prio,tk("~"));
 	prio++;
 //    e.postfix(prio,tk("++"));
 //    e.postfix(prio,tk("--"));
