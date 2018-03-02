@@ -103,6 +103,7 @@ var reqConf={
             "Blob": "fs/blob",
             "copyToKernel": "fs/copyToKernel",
             "FS": "fs/FS",
+            //"FSWithZip": "fs/FS",
             //"FS": "fs/fs2stub",
             "requestFragment": "fs/requestFragment",
             "Sync": "fs/sync",
