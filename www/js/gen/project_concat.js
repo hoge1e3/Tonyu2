@@ -1,4 +1,4 @@
-// Created at Fri Mar 02 2018 21:48:40 GMT+0900 (東京 (標準時))
+// Created at Sat Mar 03 2018 12:42:31 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -4211,7 +4211,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
-			VERSION:1519994912818,//EMBED_VERSION
+			VERSION:1520048546089,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -4833,6 +4833,11 @@ define(["FS"], function (FS) {
 			urlAliases: {}, top: ".",devMode:devMode
 		};
 	}
+	if (typeof BuiltinAssets==="object") {
+		for (var k in BuiltinAssets) {
+			WebSite.urlAliases[k]=BuiltinAssets[k];
+		}
+	}
 	// from https://w3g.jp/blog/js_browser_sniffing2015
 	var u=window.navigator.userAgent.toLowerCase();
 	WebSite.tablet=(u.indexOf("windows") != -1 && u.indexOf("touch") != -1)
@@ -4926,7 +4931,8 @@ define(["FS"], function (FS) {
 	} else if (WebSite.serverType==="BA") {
 		WebSite.compiledKernel=WebSite.runtime+"lib/tonyu/kernel.js";
 	} else {
-		WebSite.compiledKernel="http://tonyuexe.appspot.com/Kernel/js/concat.js";
+		WebSite.compiledKernel="http://edit.tonyu.jp/Kernel/js/concat.js";
+		//WebSite.compiledKernel="http://tonyuexe.appspot.com/Kernel/js/concat.js";
 	}
 	if (loc.match(/localhost\/tonyu2/)) {
 		WebSite.wwwDir=location.protocol+"//"+location.host+"/tonyu2/";
@@ -14275,10 +14281,6 @@ define(["PatternParser","Util","Assets","assert"], function (PP,Util,Assets,asse
         res.name=resImg.name;
         return assert.is(res,Array);
     };
-	/*IL.convURL=function (url, prj) {
-
-	    return Assets.resolve(url, prj);
-	};*/
 	window.ImageList=IL;
     return IL;
 });

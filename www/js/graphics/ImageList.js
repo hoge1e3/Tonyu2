@@ -100,10 +100,6 @@ define(["PatternParser","Util","Assets","assert"], function (PP,Util,Assets,asse
         res.name=resImg.name;
         return assert.is(res,Array);
     };
-	/*IL.convURL=function (url, prj) {
-
-	    return Assets.resolve(url, prj);
-	};*/
 	window.ImageList=IL;
     return IL;
 });

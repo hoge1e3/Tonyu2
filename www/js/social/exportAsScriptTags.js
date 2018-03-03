@@ -1,12 +1,19 @@
-define(["FS","Util"], function (FS,Util) {
+define(["FS","Util","WebSite"], function (FS,Util,WebSite) {
     var east=function (dir,options) {
         options=options||{};
         var excludes=options.excludes||{};
         var includeJSScript=options.includeJSScript;
         var buf="";
         if (includeJSScript) {
-            buf+='<script src="http://tonyuedit.appspot.com/js/lib/jquery-1.10.1.js" type="text/javascript"></script>\n';
-            buf+='<script src="http://tonyuedit.appspot.com/js/gen/runScript_concat.min.js" type="text/javascript"></script>\n';
+            var resFile=dir.rel("res.json");
+            var resObj=resFile.obj();
+            resObj.images.forEach(function (im) {
+                if (WebSite.builtinAssetNames[im.url]) {
+                    buf+='<script src="http://edit.tonyu.jp/'+im.url+'.js"></script>\n';
+                }
+            });
+            buf+='<script src="http://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>\n';
+            buf+='<script src="http://edit.tonyu.jp/js/gen/runScript_concat.min.js" type="text/javascript"></script>\n';
         }
         buf+="<div id='splash' style='position:relative'>\n";
         buf+="<!--ここに，ロード中に表示する内容を記述できます。表示したくない場合はこのdiv要素を削除してください。-->\n";
