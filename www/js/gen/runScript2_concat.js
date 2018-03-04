@@ -1,4 +1,4 @@
-// Created at Sat Mar 03 2018 12:43:02 GMT+0900 (東京 (標準時))
+// Created at Sun Mar 04 2018 17:38:46 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -3160,16 +3160,19 @@ define(["FS"], function (FS) {
 	var loc=document.location.href;
 	var devMode=!!loc.match(/html\/dev\//) && !!loc.match(/localhost:3/);
 	var WebSite;
+	var prot=location.protocol;
+	if (!prot.match(/^http/)) prot="https";
 	if (loc.match(/jsrun\.it/)) {
 		WebSite={
 			urlAliases: {
-				"images/Ball.png":"http://jsrun.it/assets/9/X/T/b/9XTbt.png",
-				"images/base.png":"http://jsrun.it/assets/6/F/y/3/6Fy3B.png",
-				"images/Sample.png":"http://jsrun.it/assets/s/V/S/l/sVSlZ.png",
-				"images/neko.png":"http://jsrun.it/assets/f/D/z/z/fDzze.png",//"http://jsrun.it/assets/j/D/9/q/jD9qQ.png",
-				"images/mapchip.png":"http://jsrun.it/assets/f/u/N/v/fuNvz.png",
-				"images/inputPad.png":"http://jsrun.it/assets/r/K/T/Y/rKTY9.png"
-			},top:"",devMode:devMode, pluginTop: "http://tonyuedit.appspot.com/js/plugins",
+				"images/Ball.png":"http:"+"//jsrun.it/assets/9/X/T/b/9XTbt.png",
+				"images/base.png":"http:"+"//jsrun.it/assets/6/F/y/3/6Fy3B.png",
+				"images/Sample.png":"http:"+"//jsrun.it/assets/s/V/S/l/sVSlZ.png",
+				"images/neko.png":"http:"+"//jsrun.it/assets/f/D/z/z/fDzze.png",
+				"images/mapchip.png":"http:"+"//jsrun.it/assets/f/u/N/v/fuNvz.png",
+				"images/inputPad.png":"http:"+"//jsrun.it/assets/r/K/T/Y/rKTY9.png"
+			},top:"",devMode:devMode,
+			pluginTop: "https://edit.tonyu.jp/js/plugins",
 			removeJSOutput:true
 		};
 	} else if (
@@ -3234,6 +3237,14 @@ define(["FS"], function (FS) {
 			WebSite.urlAliases[k]=BuiltinAssets[k];
 		}
 	}
+	WebSite.builtinAssetNames={
+		"images/Ball.png":1,
+		"images/base.png":1,
+		"images/Sample.png":1,
+		"images/neko.png":1,
+		"images/mapchip.png":1,
+		"images/inputPad.png":1
+	};
 	// from https://w3g.jp/blog/js_browser_sniffing2015
 	var u=window.navigator.userAgent.toLowerCase();
 	WebSite.tablet=(u.indexOf("windows") != -1 && u.indexOf("touch") != -1)
@@ -3309,7 +3320,7 @@ define(["FS"], function (FS) {
 		}
 		WebSite.kernelDir=P.rel(WebSite.wwwDir,"Kernel/");
 	} else {
-		WebSite.wwwDir=location.protocol+"//"+location.host+"/";
+		WebSite.wwwDir=prot+"//"+location.host+"/";
 		WebSite.projects=[P.rel(WebSite.tonyuHome,"Projects/")];
 	}
 	if (loc.match(/edit\.tonyu\.jp/) ||
@@ -3317,7 +3328,7 @@ define(["FS"], function (FS) {
 		loc.match(/localhost:888/)) {
 		//WebSite.kernelDir=WebSite.top+"/Kernel/";
 		// kernelDir must be absolute
-		WebSite.kernelDir=location.protocol+"//"+location.host+"/Kernel/";
+		WebSite.kernelDir=prot+"//"+location.host+"/Kernel/";
 	}
 	if (loc.match(/edit\.tonyu\.jp/) ||
 		loc.match(/tonyuedit\.appspot\.com/) ||
@@ -3327,18 +3338,18 @@ define(["FS"], function (FS) {
 	} else if (WebSite.serverType==="BA") {
 		WebSite.compiledKernel=WebSite.runtime+"lib/tonyu/kernel.js";
 	} else {
-		WebSite.compiledKernel="http://edit.tonyu.jp/Kernel/js/concat.js";
-		//WebSite.compiledKernel="http://tonyuexe.appspot.com/Kernel/js/concat.js";
+		WebSite.compiledKernel="https://edit.tonyu.jp/Kernel/js/concat.js";
+		//WebSite.compiledKernel=prot+"//tonyuexe.appspot.com/Kernel/js/concat.js";
 	}
 	if (loc.match(/localhost\/tonyu2/)) {
-		WebSite.wwwDir=location.protocol+"//"+location.host+"/tonyu2/";
+		WebSite.wwwDir=prot+"//"+location.host+"/tonyu2/";
 		WebSite.kernelDir=WebSite.wwwDir+"Kernel/";
 		WebSite.compiledKernel=WebSite.kernelDir+"js/concat.js";
-		WebSite.uploadTmpUrl="http://localhost/tsite/tonyu/e/cgi-bin/uploadTmp.cgi";
-		WebSite.newVersionUrl="http://localhost/tsite/tonyu/project/newVersion.cgi";
+		WebSite.uploadTmpUrl=prot+"//localhost/tsite/tonyu/e/cgi-bin/uploadTmp.cgi";
+		WebSite.newVersionUrl=prot+"//localhost/tsite/tonyu/project/newVersion.cgi";
 	} else {
-		WebSite.uploadTmpUrl="http://edit.tonyu.jp/cgi-bin/uploadTmp.cgi";
-		WebSite.newVersionUrl="http://www.tonyu.jp/project/newVersion.cgi";
+		WebSite.uploadTmpUrl=prot+"//edit.tonyu.jp/cgi-bin/uploadTmp.cgi";
+		WebSite.newVersionUrl=prot+"//www.tonyu.jp/project/newVersion.cgi";
 	}
 
 	if (loc.match(/((index)|(project))2/)) {
@@ -4633,7 +4644,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
-			VERSION:1520048546089,//EMBED_VERSION
+			VERSION:1520152687266,//EMBED_VERSION
 			A:A};
 }();
 });

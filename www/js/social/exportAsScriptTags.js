@@ -9,19 +9,18 @@ define(["FS","Util","WebSite"], function (FS,Util,WebSite) {
             var resObj=resFile.obj();
             resObj.images.forEach(function (im) {
                 if (WebSite.builtinAssetNames[im.url]) {
-                    buf+='<script src="http://edit.tonyu.jp/'+im.url+'.js"></script>\n';
+                    buf+='<script src="https://edit.tonyu.jp/'+im.url+'.js"></script>\n';
                 }
             });
-            buf+='<script src="http://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>\n';
-            buf+='<script src="http://edit.tonyu.jp/js/gen/runScript_concat.min.js" type="text/javascript"></script>\n';
+            buf+='<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>\n';
+            buf+='<script src="https://edit.tonyu.jp/js/gen/runScript_concat.min.js" type="text/javascript"></script>\n';
         }
         buf+="<div id='splash' style='position:relative'>\n";
         buf+="<!--ここに，ロード中に表示する内容を記述できます。表示したくない場合はこのdiv要素を削除してください。-->\n";
         buf+="</div>\n";
         buf+="<!--\n";
-        buf+="このプログラムをTonyuの開発環境で編集するには，\n";
-        buf+="http://tonyuedit.appspot.com/html/build/importFromJsdoit.html\n";
-        buf+="を開きます．\n";
+        buf+="Open this site when editing this game:\n";
+        buf+="https://edit.tonyu.jp/html/build/importFromJsdoit.html\n";
         buf+="-->\n";
         var binary=[],json=[];
         //dir=FS.get(dir);
