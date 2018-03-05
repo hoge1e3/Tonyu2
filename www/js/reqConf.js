@@ -215,6 +215,7 @@ var reqConf={
             "Tonyu.Thread": "runtime/TonyuThread",
             "Tonyu.TraceTbl": "runtime/TraceTbl",
             "WebSite": "runtime/WebSite",
+            "Platform": "runtime/",
             "runScript": "runtime/runScript",
             "runScript2": "runtime/runScript2",
             "runtime": "runtime/runtime",
@@ -237,6 +238,10 @@ var reqConf={
         },
         "baseUrl": "../../js"
 };
+(function(){
+    for (var k in reqConf.paths)
+    if (reqConf.paths[k].match(/\/$/)) reqConf.paths[k]+=k;
+})();
 if (typeof exports!=="undefined") exports.conf=reqConf;
 function sortReqConf() {
     var paths=reqConf.paths;

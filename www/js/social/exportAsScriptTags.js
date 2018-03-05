@@ -4,16 +4,18 @@ define(["FS","Util","WebSite"], function (FS,Util,WebSite) {
         var excludes=options.excludes||{};
         var includeJSScript=options.includeJSScript;
         var buf="";
+        buf+="<script>WebSite_runType='singleHTML';</script>\n";
         if (includeJSScript) {
             var resFile=dir.rel("res.json");
             var resObj=resFile.obj();
+            var scriptServer="https://edit.tonyu.jp/";
             resObj.images.forEach(function (im) {
                 if (WebSite.builtinAssetNames[im.url]) {
-                    buf+='<script src="https://edit.tonyu.jp/'+im.url+'.js"></script>\n';
+                    buf+='<script src="'+scriptServer+im.url+'.js"></script>\n';
                 }
             });
-            buf+='<script src="https://edit.tonyu.jp/js/lib/jquery-1.10.1.js" type="text/javascript"></script>\n';
-            buf+='<script src="https://edit.tonyu.jp/js/gen/runScript_concat.min.js" type="text/javascript"></script>\n';
+            buf+='<script src="'+scriptServer+'js/lib/jquery-1.10.1.js" type="text/javascript"></script>\n';
+            buf+='<script src="'+scriptServer+'js/gen/runScript_concat.min.js" type="text/javascript"></script>\n';
         }
         buf+="<div id='splash' style='position:relative'>\n";
         buf+="<!--ここに，ロード中に表示する内容を記述できます。表示したくない場合はこのdiv要素を削除してください。-->\n";

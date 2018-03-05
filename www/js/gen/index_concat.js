@@ -1,4 +1,4 @@
-// Created at Sun Mar 04 2018 17:38:08 GMT+0900 (東京 (標準時))
+// Created at Mon Mar 05 2018 12:32:17 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {

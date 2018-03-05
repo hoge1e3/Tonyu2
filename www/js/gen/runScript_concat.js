@@ -1,4 +1,4 @@
-// Created at Sun Mar 04 2018 17:38:31 GMT+0900 (東京 (標準時))
+// Created at Mon Mar 05 2018 12:32:33 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -4010,7 +4010,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
-			VERSION:1520152687266,//EMBED_VERSION
+			VERSION:1520220737537,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -13002,14 +13002,12 @@ define(["Tonyu", "ProjectCompiler", "TError", "FS", "Tonyu.TraceTbl","ImageList"
 return Tonyu.Project=function (dir, kernelDir) {
     var TPR=ProjectCompiler(dir);
     var _super=Tonyu.extend({},TPR);
-    var home=FS.get(WebSite.tonyuHome);
     TPR.EXT=".tonyu";
     TPR.NSP_KER="kernel";
     TPR.NSP_USR="user";
     var kernelProject;
     if (!kernelDir) {
         kernelProject=CPRJ(TPR.NSP_KER, WebSite.compiledKernel);
-        //kernelDir=home.rel("Kernel/");
     } else {
         kernelProject=ProjectCompiler(kernelDir);
     }
@@ -16724,12 +16722,67 @@ requireSimulator.setName('runtime');
 requirejs(["ImageList","PicoAudio","T2MediaLib","Tonyu","UIDiag"], function () {
 
 });
+requireSimulator.setName('Platform');
+define([],function () {
+    var WebSite={};
+    // from https://w3g.jp/blog/js_browser_sniffing2015
+    var u=window.navigator.userAgent.toLowerCase();
+    WebSite.tablet=(u.indexOf("windows") != -1 && u.indexOf("touch") != -1)
+    || u.indexOf("ipad") != -1
+    || (u.indexOf("android") != -1 && u.indexOf("mobile") == -1)
+    || (u.indexOf("firefox") != -1 && u.indexOf("tablet") != -1)
+    || u.indexOf("kindle") != -1
+    || u.indexOf("silk") != -1
+    || u.indexOf("playbook") != -1;
+    WebSite.mobile=(u.indexOf("windows") != -1 && u.indexOf("phone") != -1)
+    || u.indexOf("iphone") != -1
+    || u.indexOf("ipod") != -1
+    || (u.indexOf("android") != -1 && u.indexOf("mobile") != -1)
+    || (u.indexOf("firefox") != -1 && u.indexOf("mobile") != -1)
+    || u.indexOf("blackberry") != -1;
+    return WebSite;
+});
+
+requireSimulator.setName('WebSiteR1');
+define(["FS","Platform"], function (FS,Platform) {
+	var P=FS.PathUtil;
+	var loc=document.location.href;
+	var devMode=false;
+	var WebSite;
+	var prot=location.protocol;
+	if (!prot.match(/^http/)) prot="https";
+	WebSite={
+		urlAliases: {}, top: ".",devMode:devMode
+	};
+	if (typeof BuiltinAssets==="object") {
+		for (var k in BuiltinAssets) {
+			WebSite.urlAliases[k]=BuiltinAssets[k];
+		}
+	}
+	WebSite.tablet=Platform.tablet;
+	WebSite.mobile=Platform.mobile;
+	WebSite.tonyuHome="/Tonyu/";
+	WebSite.projects=[P.rel(WebSite.tonyuHome,"Projects/")];
+
+	if (loc.match(/localhost\/tonyu2/)) {
+		WebSite.scriptServer="http://localhost/tonyu2/";
+	} else {
+		WebSite.scriptServer="https://edit.tonyu.jp/";
+	}
+	WebSite.pluginTop=WebSite.scriptServer+"js/plugins";
+
+	WebSite.PathSep="/";
+	WebSite.compiledKernel=WebSite.scriptServer+"Kernel/js/concat.js";
+	FS.setEnvProvider(new FS.Env(WebSite));
+	return window.WebSite=WebSite;
+});
+
 requireSimulator.setName('LSFS');
 define(["FS"],function (FS){return FS.LSFS;});
 
 requireSimulator.setName('runScript');
 requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS",
-			"runtime","WebSite","LSFS"],
+			"runtime","WebSiteR1","LSFS"],
 		function (FS,  Tonyu_Project, sh,      KeyEventChecker, ScriptTagFS,
 				rt,WebSite,LSFS) {
 	$(function () {

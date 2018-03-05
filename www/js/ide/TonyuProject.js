@@ -7,14 +7,12 @@ define(["Tonyu", "ProjectCompiler", "TError", "FS", "Tonyu.TraceTbl","ImageList"
 return Tonyu.Project=function (dir, kernelDir) {
     var TPR=ProjectCompiler(dir);
     var _super=Tonyu.extend({},TPR);
-    var home=FS.get(WebSite.tonyuHome);
     TPR.EXT=".tonyu";
     TPR.NSP_KER="kernel";
     TPR.NSP_USR="user";
     var kernelProject;
     if (!kernelDir) {
         kernelProject=CPRJ(TPR.NSP_KER, WebSite.compiledKernel);
-        //kernelDir=home.rel("Kernel/");
     } else {
         kernelProject=ProjectCompiler(kernelDir);
     }
