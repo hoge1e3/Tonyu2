@@ -105,6 +105,7 @@ define(["FS","Platform"], function (FS,Platform) {
 			tablet:Platform.tablet,
 			mobile:Platform.mobile
 		};
+		WebSite.tonyuHome="/Tonyu/";
 		WebSite.pluginTop=WebSite.top+"/js/plugins";
 		WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
 		WebSite.PathSep="/";

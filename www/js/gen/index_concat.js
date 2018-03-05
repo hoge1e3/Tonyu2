@@ -1,4 +1,4 @@
-// Created at Mon Mar 05 2018 12:32:17 GMT+0900 (東京 (標準時))
+// Created at Mon Mar 05 2018 18:25:49 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -3456,14 +3456,152 @@ return {
 };
 })();
 
+requireSimulator.setName('Platform');
+define([],function () {
+    var WebSite={};
+    // from https://w3g.jp/blog/js_browser_sniffing2015
+    var u=window.navigator.userAgent.toLowerCase();
+    WebSite.tablet=(u.indexOf("windows") != -1 && u.indexOf("touch") != -1)
+    || u.indexOf("ipad") != -1
+    || (u.indexOf("android") != -1 && u.indexOf("mobile") == -1)
+    || (u.indexOf("firefox") != -1 && u.indexOf("tablet") != -1)
+    || u.indexOf("kindle") != -1
+    || u.indexOf("silk") != -1
+    || u.indexOf("playbook") != -1;
+    WebSite.mobile=(u.indexOf("windows") != -1 && u.indexOf("phone") != -1)
+    || u.indexOf("iphone") != -1
+    || u.indexOf("ipod") != -1
+    || (u.indexOf("android") != -1 && u.indexOf("mobile") != -1)
+    || (u.indexOf("firefox") != -1 && u.indexOf("mobile") != -1)
+    || u.indexOf("blackberry") != -1;
+    return WebSite;
+});
+
 requireSimulator.setName('WebSite');
-define(["FS"], function (FS) {
+define(["FS","Platform"], function (FS,Platform) {
 	var P=FS.PathUtil;
 	var loc=document.location.href;
 	var devMode=!!loc.match(/html\/dev\//) && !!loc.match(/localhost:3/);
 	var WebSite;
 	var prot=location.protocol;
 	if (!prot.match(/^http/)) prot="https";
+	switch(window.WebSite_runType) {
+	case "IDE":
+		WebSite={
+			urlAliases: {}, top: ".",
+			tablet:Platform.tablet,
+			mobile:Platform.mobile
+		};
+		WebSite.builtinAssetNames={
+			"images/Ball.png":1,
+			"images/base.png":1,
+			"images/Sample.png":1,
+			"images/neko.png":1,
+			"images/mapchip.png":1,
+			"images/inputPad.png":1
+		};
+		if (!WebSite.pluginTop) {
+			WebSite.pluginTop=WebSite.top+"/js/plugins";
+		}
+		WebSite.sampleImg=WebSite.top+"/images";
+		WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
+		WebSite.mp3Disabled=WebSite.isNW;
+		WebSite.tonyuHome="/Tonyu/";
+		WebSite.PathSep="/";
+		if (WebSite.isNW) {
+			WebSite.PathSep=require("path").sep;
+			WebSite.cwd=P.directorify(process.cwd().replace(/\\/g,"/"));
+			//WebSite.exeDir=WebSite.execDir=P.up(P.fixSep(process.execPath)); not suitable when mac
+			if (process.env.TONYU_HOME) {
+				WebSite.tonyuHome=P.directorify(process.env.TONYU_HOME);
+			} else {
+				WebSite.tonyuHome=P.rel(WebSite.cwd,"fs/Tonyu/");
+			}
+			WebSite.logdir=process.env.TONYU_LOGDIR;//"C:/var/log/Tonyu/";
+			WebSite.wwwDir=P.rel(WebSite.cwd,"www/");
+			WebSite.platform=process.platform;
+			WebSite.ffmpeg=P.rel(WebSite.cwd,(WebSite.platform=="win32"?
+					"ffmpeg/bin/ffmpeg.exe":"ffmpeg/bin/ffmpeg"));
+			WebSite.pkgInfo=require(P.rel(WebSite.cwd, "package.json"));
+			if (process.env.TONYU_PROJECTS) {
+				WebSite.projects=process.env.TONYU_PROJECTS.replace(/\\/g,"/").split(require('path').delimiter);
+			} else if ( WebSite.pkgInfo && WebSite.pkgInfo.config && WebSite.pkgInfo.config.prjDirs ){
+				WebSite.projects=WebSite.pkgInfo.config.prjDirs.map(function (d) {
+					d=P.directorify(d);
+					if (P.isAbsolute(d)) return d;
+					return P.rel(WebSite.cwd,d);
+				});
+			} else {
+				WebSite.projects=[P.rel(WebSite.cwd,"Projects/"),
+					P.rel(WebSite.tonyuHome,"Projects/")];
+			}
+			WebSite.kernelDir=P.rel(WebSite.wwwDir,"Kernel/");
+		} else {
+			WebSite.wwwDir=prot+"//"+location.host+"/";
+			WebSite.projects=[P.rel(WebSite.tonyuHome,"Projects/")];
+		}
+		//WebSite.kernelDir=WebSite.top+"/Kernel/";
+		// kernelDir must be absolute
+		WebSite.kernelDir=P.rel(WebSite.wwwDir,"Kernel/");
+		WebSite.compiledKernel=P.rel(WebSite.kernelDir,"js/concat.js");
+		if (loc.match(/localhost\/tonyu2/)) {
+			WebSite.wwwDir=prot+"//"+location.host+"/tonyu2/";
+			WebSite.kernelDir=WebSite.wwwDir+"Kernel/";
+			WebSite.compiledKernel=WebSite.kernelDir+"js/concat.js";
+			WebSite.uploadTmpUrl=prot+"//localhost/tsite/tonyu/e/cgi-bin/uploadTmp.cgi";
+			WebSite.newVersionUrl=prot+"//localhost/tsite/tonyu/project/newVersion.cgi";
+		} else {
+			WebSite.uploadTmpUrl=prot+"//edit.tonyu.jp/cgi-bin/uploadTmp.cgi";
+			WebSite.newVersionUrl=prot+"//www.tonyu.jp/project/newVersion.cgi";
+		}
+		WebSite.version=2;
+		WebSite.hoge="fuga";
+		FS.setEnvProvider(new FS.Env(WebSite));
+		return window.WebSite=WebSite;
+	case "singleHTML":
+		WebSite={
+			urlAliases: {}, top: ".",
+			tablet:Platform.tablet,
+			mobile:Platform.mobile
+		};
+		if (typeof BuiltinAssets==="object") {
+			for (var k in BuiltinAssets) {
+				WebSite.urlAliases[k]=BuiltinAssets[k];
+			}
+		}
+
+		WebSite.tonyuHome="/Tonyu/";
+		WebSite.projects=[P.rel(WebSite.tonyuHome,"Projects/")];
+		WebSite.scriptServer="https://edit.tonyu.jp/";
+		WebSite.pluginTop=WebSite.scriptServer+"js/plugins";
+		WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
+		WebSite.PathSep="/";
+		WebSite.compiledKernel=WebSite.scriptServer+"Kernel/js/concat.js";
+		FS.setEnvProvider(new FS.Env(WebSite));
+		return window.WebSite=WebSite;
+	case "multiHTML":
+		WebSite={
+			urlAliases: {}, top: ".",
+			tablet:Platform.tablet,
+			mobile:Platform.mobile
+		};
+		WebSite.tonyuHome="/Tonyu/";
+		WebSite.pluginTop=WebSite.top+"/js/plugins";
+		WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
+		WebSite.PathSep="/";
+		WebSite.mp3Disabled=WebSite.isNW;
+		if (WebSite.isNW) {
+			WebSite.PathSep=require("path").sep;
+			WebSite.cwd=P.directorify(process.cwd().replace(/\\/g,"/"));
+			WebSite.platform=process.platform;
+		}
+		// this sets at runScript2.js
+		//WebSite.compiledKernel=WebSite.top+"/js/kernel.js";
+		//-------------
+		FS.setEnvProvider(new FS.Env(WebSite));
+		return window.WebSite=WebSite;
+	}
+
 	if (loc.match(/jsrun\.it/)) {
 		WebSite={
 			urlAliases: {
