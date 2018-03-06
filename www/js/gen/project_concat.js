@@ -1,4 +1,4 @@
-// Created at Tue Mar 06 2018 12:14:45 GMT+0900 (東京 (標準時))
+// Created at Tue Mar 06 2018 15:55:00 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -4211,7 +4211,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
-			VERSION:1520306079111,//EMBED_VERSION
+			VERSION:1520319295165,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -4786,7 +4786,7 @@ define(["FS","Platform"], function (FS,Platform) {
 	var devMode=!!loc.match(/html\/dev\//) && !!loc.match(/localhost:3/);
 	var WebSite;
 	var prot=location.protocol;
-	if (!prot.match(/^http/)) prot="https";
+	if (!prot.match(/^http/)) prot="https:";
 	switch(window.WebSite_runType) {
 	case "IDE":
 		WebSite={

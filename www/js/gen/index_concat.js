@@ -1,4 +1,4 @@
-// Created at Tue Mar 06 2018 12:14:40 GMT+0900 (東京 (標準時))
+// Created at Tue Mar 06 2018 15:54:56 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -3484,7 +3484,7 @@ define(["FS","Platform"], function (FS,Platform) {
 	var devMode=!!loc.match(/html\/dev\//) && !!loc.match(/localhost:3/);
 	var WebSite;
 	var prot=location.protocol;
-	if (!prot.match(/^http/)) prot="https";
+	if (!prot.match(/^http/)) prot="https:";
 	switch(window.WebSite_runType) {
 	case "IDE":
 		WebSite={

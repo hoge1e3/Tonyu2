@@ -1,6 +1,6 @@
 {
   "name": "Tonyu2",
-  "main": "www/html/dev/index.html",
+  "main": "www/index.html",
   "single-instance": false,
   "window": {
     "width": 1024,

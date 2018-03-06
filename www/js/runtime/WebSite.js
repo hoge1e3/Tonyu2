@@ -4,7 +4,7 @@ define(["FS","Platform"], function (FS,Platform) {
 	var devMode=!!loc.match(/html\/dev\//) && !!loc.match(/localhost:3/);
 	var WebSite;
 	var prot=location.protocol;
-	if (!prot.match(/^http/)) prot="https";
+	if (!prot.match(/^http/)) prot="https:";
 	switch(window.WebSite_runType) {
 	case "IDE":
 		WebSite={
