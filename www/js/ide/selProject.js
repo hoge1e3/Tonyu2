@@ -156,6 +156,9 @@ $(function () {
     window.importFromHTML=function () {
         importHTMLDialog.show();
     };
+    if (Util.getQueryString("importFromHTML")) {
+        importHTMLDialog.show();
+    }
     sh.cd(FS.get(WebSite.projects[0]));
     extLink.all();
     sh.wikiEditor=function () {document.location.href="wikiEditor.html";};

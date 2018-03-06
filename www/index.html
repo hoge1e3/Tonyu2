@@ -1,1 +1,8 @@
-<meta http-equiv="refresh" content="0; URL=html/build/index.html">
+<script>
+var loc=location.href;
+if (loc.match(/index\.html/)) {
+    location.href=loc.replace(/index\.html/,"index2.html");
+} else {
+    location.href="index2.html";
+}
+</script>

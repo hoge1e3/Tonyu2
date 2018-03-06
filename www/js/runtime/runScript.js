@@ -17,7 +17,7 @@ requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS",
 		SplashScreen={
 			hide: function () {$("#splash").hide();},
 			show:function(){},
-			progress:function(t) {$("#splash").text(t);}
+			progress:function(t) {$("#splash .progress").text(t);}
 		};
 
 		function getMargin() {
