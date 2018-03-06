@@ -1,4 +1,4 @@
-// Created at Mon Mar 05 2018 18:25:49 GMT+0900 (東京 (標準時))
+// Created at Tue Mar 06 2018 11:19:18 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -3509,6 +3509,7 @@ define(["FS","Platform"], function (FS,Platform) {
 		WebSite.tonyuHome="/Tonyu/";
 		WebSite.PathSep="/";
 		if (WebSite.isNW) {
+			WebSite.noconcat=true;
 			WebSite.PathSep=require("path").sep;
 			WebSite.cwd=P.directorify(process.cwd().replace(/\\/g,"/"));
 			//WebSite.exeDir=WebSite.execDir=P.up(P.fixSep(process.execPath)); not suitable when mac
@@ -4994,6 +4995,7 @@ define(["UI"], function (UI) {
     	d.dialog({width:600});
 	};
 	res.embed=function (prjDir, onOK, options) {
+        res.onOK=onOK;
 	    if (!options) options={};
         if (!res.d) {
             var FType={
@@ -5040,8 +5042,8 @@ define(["UI"], function (UI) {
     	};
     	d.done=function () {
     	    if (d.$edits.validator.isValid()) {
-                onOK(model.dstDir);
-                if (d.dialog) d.dialog("close");// not exists when embed
+                res.onOK(model.dstDir);
+                if ($.data(d[0],"ui-dialog")) d.dialog("close");// not exists when embed
     	    }
     	};
     	return d;
@@ -5945,6 +5947,7 @@ remove: function (t) {
     );
     t.rmd.$vars.dl.prop("checked",true);
     t.rmd.dialog();
+    //console.log("t.rmd.data",$.data(t.rmd[0],"ui-dialog"));
     function doRemove() {
         var dl=t.rmd.$vars.dl.prop("checked");
         return (dl?t.download():DU.resolve()).then(function () {
@@ -5954,6 +5957,7 @@ remove: function (t) {
         }).catch(DU.E);
     }
     function cancel() {
+        //console.log("t.rmd.data.cancel",$.data(t.rmd[0],"ui-dialog"));
         t.rmd.dialog("close");
     }
     //t.projectDir.rm({r:1});
@@ -6014,15 +6018,249 @@ static$addMenuHandler: function () {
     return S;
 });
 
+requireSimulator.setName('exportAsScriptTags');
+define(["FS","Util","WebSite"], function (FS,Util,WebSite) {
+    var east=function (dir,options) {
+        options=options||{};
+        var excludes=options.excludes||{};
+        var includeJSScript=options.includeJSScript;
+        var buf="";
+        buf+="<script>WebSite_runType='singleHTML';</script>\n";
+        if (includeJSScript) {
+            var resFile=dir.rel("res.json");
+            var resObj=resFile.obj();
+            var scriptServer="https://edit.tonyu.jp/";
+            resObj.images.forEach(function (im) {
+                if (WebSite.builtinAssetNames[im.url]) {
+                    buf+='<script src="'+scriptServer+im.url+'.js"></script>\n';
+                }
+            });
+            buf+='<script src="'+scriptServer+'js/lib/jquery-1.10.1.js" type="text/javascript"></script>\n';
+            buf+='<script src="'+scriptServer+'js/gen/runScript_concat.min.js" type="text/javascript"></script>\n';
+        }
+        buf+="<div id='splash' style='position:relative'>\n";
+        buf+="<!--ここに，ロード中に表示する内容を記述できます。表示したくない場合はこのdiv要素を削除してください。-->\n";
+        buf+="</div>\n";
+        buf+="<!--\n";
+        buf+="Open this site when editing this game:\n";
+        buf+="https://edit.tonyu.jp/html/build/importFromJsdoit.html\n";
+        buf+="-->\n";
+        var binary=[],json=[];
+        //dir=FS.get(dir);
+        dir.recursive(function (f) {
+            var rel=f.relPath(dir);
+            if (excludes[rel]) return;
+            if (f.endsWith(".json") && rel.indexOf("maps/")<0) {
+                json.push(f);
+                return;
+            } else if (!f.endsWith(".tonyu")) {
+                binary.push(f);
+                return;
+            }
+            //var name=f.truncExt(".tonyu");
+            var m="";//(name==main?" data-main='true'":"");
+            var lu=" data-lastupdate='"+f.lastUpdate()+"' ";
+            buf+="<script language='text/tonyu' type='text/tonyu' data-filename='"+rel+"'"+lu+">";
+            buf+=f.text();
+            buf+="</script>\n\n";
+        },{excludes:["files/"]});
+        json.forEach(function (f) {
+            var rel=f.relPath(dir);
+            var lu=" data-lastupdate='"+f.lastUpdate()+"' ";
+            buf+="<script language='text/tonyu' type='text/tonyu' data-filename='"+rel+"'"+lu+">\n";
+            buf+=beautifyJSON(f.text());
+            buf+="</script>\n\n";
+        });
+        binary.forEach(function (f) {
+            var rel=f.relPath(dir);
+            var lu=" data-lastupdate='"+f.lastUpdate()+"' ";
+            buf+="<script language='text/tonyu' type='text/tonyu' data-filename='"+rel+"' data-wrap='80'"+lu+">";
+            buf+=wrap(f.text(),80);
+            buf+="</script>\n\n";
+        });
+        return buf;
+        function wrap(str, cols) {
+            var lines=str.split("\n");
+            var buf="";
+            lines.forEach(function (line) {
+                while (true) {
+                    if (line.length>cols) {
+                        buf+=line.substring(0,cols)+"\\\n";
+                        line=line.substring(cols);
+                    } else {
+                        buf+=line+"\n";
+                        break;
+                    }
+                }
+                return buf;
+            });
+            return buf;
+        }
+        function beautifyJSON(str) {
+            try {
+                var o=JSON.parse(str);
+                return JSON.stringify(o,null,4);
+            }catch(e) {
+                return str;
+            }
+        }
+    };
+    return east;
+});
+
+requireSimulator.setName('Content');
+define(["FS"],function (FS){return FS.Content;});
+
+requireSimulator.setName('ScriptTagFS');
+define(["Content"],function (Content) {
+	var STF={};
+	STF.toObj=function () {
+	    var scrs=$("script");
+	    var res={};
+	    scrs.each(function (){
+	        var s=this;
+	        if (s.type=="text/tonyu") {
+	            var fn=$(s).data("filename");
+	            if (fn) {
+	                var l=parseInt($(s).data("lastupdate"));
+	                var w=$(s).data("wrap");
+	                if (w) {
+	                    w=parseInt(w);
+	                    res[fn]={lastUpdate:l, text:unwrap(s.innerHTML, w)};
+	                } else {
+	                    res[fn]={lastUpdate:l, text:s.innerHTML};
+	                }
+	            }
+	        }
+	    });
+	    return res;
+	    function unwrap(str, cols) {
+	        var lines=str.split("\n");
+	        var buf="";
+	        lines.forEach(function (line) {
+	            if (line.length>cols) {
+	                buf+=line.substring(0,cols);
+	            } else {
+	                buf+=line+"\n";
+	            }
+	        });
+	        return buf;
+	    }
+	};
+	STF.copyTo=function (dir) {
+	    var o=STF.toObj();
+	    for (var fn in o) {
+            var f=dir.rel(fn);
+            if (f.isText()) {
+                f.text(o[fn].text);
+            } else {
+                f.setBytes(Content.url(o[fn].text).toByteArray() );
+            }
+        }
+	};
+	return STF;
+});
+requireSimulator.setName('ImportHTMLDialog');
+define(["exportAsScriptTags","UI","Klass","NewProjectDialog","ScriptTagFS"],
+function (east,UI,Klass,NPD,STF) {
+    ImportHTMLDialog=Klass.define({
+        $this:"t",
+        show: function (t,options) {
+            t.createDOM();
+            t.dom.dialog({width:800,height:600});
+            //console.log("imp.dom.data",$.data(t.dom[0],"ui-dialog"));
+            t.mode("src");
+        },
+        createDOM:function (t) {
+            if (t.dom) return t.dom;
+            t.dom=UI("div",{title:"HTMLからインポート"},
+                ["div",{$var:"src"},
+                    ["div","ここにHTMLを貼り付けます"],
+                    ["div",["button",{on:{click:t.$bind.selDir}},"Next->"]],
+                    ["div",
+                        ["textarea",{
+                            $var:"prog",rows:20,cols:60,
+                            placeholder:"Paste HTML Here"
+                        }]
+                    ],
+                    ["div",["button",{on:{click:t.$bind.selDir}},"Next->"]]
+                ],
+                ["div",{$var:"selDir"}],
+                ["div",{$var:"confirm"}],
+                ["div",{$var:"complete"}],
+                ["div",{$var:"files",css:{display:"none"}}]
+            );
+            //t.dom.__ID=Math.random();
+            //console.log("createDOM",t.dom);
+            t.vars=t.dom.$vars;
+            return t.dom;
+        },
+        selDir: function (t) {
+            t.vars.selDir.empty();
+            t.vars.selDir.append($("<h1>").text("インポート先のフォルダを入力してください"));
+            t.vars.selDir.append( NPD.embed(
+                t.prjDirs[0],t.$bind.confirm,{}
+            ));
+            t.mode("selDir");
+        },
+        confirm: function confirm(t,dir) {
+            t.dst=dir;
+            var s=t.vars.prog.val();
+            var buf="";
+            s.split("\n").forEach(function (l) {
+                if (!l.match(/<script[^>]*src[^>]*javascript/)) {
+                    buf+=l+"\n";
+                }
+            });
+            t.vars.files.html(buf);
+            t.mode("confirm");
+            t.vars.confirm.empty();
+            t.vars.confirm.append(UI("div",["button",{on:{click:t.$bind.complete}},"インポート開始"]));
+            var o=STF.toObj();
+            for (var fn in o) {
+                var f=dir.rel(fn);
+                var ex=f.exists()?"上書":"新規";
+                t.vars.confirm.append(UI("div","[", ex,"]", f.path()));
+            }
+        },
+        complete: function run(t) {
+            var dir=t.dst;
+            t.mode("complete");
+            var o=STF.toObj();
+            for (var fn in o) {
+                var f=dir.rel(fn);
+                f.text(o[fn].text);
+            }
+            t.vars.complete.empty();
+            t.vars.complete.append(UI("h1","インポート完了"));
+            /*t.vars.complete.append(UI("div",
+                ["a",{href:"project.html?dir="+dst.path()},
+                dst.path()+"を開く"]
+            ));*/
+            //console.log("close",t.dom);
+            //console.log("imp.dom.data2",$.data(t.dom[0],"ui-dialog"));
+            t.dom.dialog("close");
+            t.onComplete();
+        },
+        mode:function mode(t,n) {
+            ["src","selDir","confirm","complete"].forEach(function (k) {
+                t.vars[k].hide();
+            });
+            t.vars[n].show();
+        }
+    });
+    return ImportHTMLDialog;
+});
+
 requireSimulator.setName('ide/selProject');
 requirejs(["FS","Wiki","Shell","Shell2",
            /*"copySample",*/"NewProjectDialog","UI","Sync","Auth",
            "zip","requestFragment","WebSite","extLink","DeferredUtil",
-       "ZipImporter","ProjectItem"],
+       "ZipImporter","ProjectItem","ImportHTMLDialog"],
   function (FS, Wiki,   sh,sh2,
             /*copySample,  */NPD,           UI, Sync, Auth,
             zip,requestFragment,WebSite,extLink,DU,
-        ZipImporter,ProjectItem) {
+        ZipImporter,ProjectItem,ImportHTMLDialog) {
 $(function () {
     var HNOP="javascript:;";
     //copySample();
@@ -6071,7 +6309,12 @@ $(function () {
         function newDiag() {
             NPD.show(curDir, function (prjDir) {
                 prjDir.mkdir();
-                document.location.href="project.html?dir="+prjDir.path();
+                // temporaly
+                if (WebSite.version==2) {
+                    location.href="project2.html?dir="+prjDir.path();
+                } else {
+                    location.href="project.html?dir="+prjDir.path();
+                }
             });
         }
         var showAll;
@@ -6127,25 +6370,25 @@ $(function () {
             return DU.timeout(10);
         });
     }
-    Auth.currentUser(function (r){
+    /*Auth.currentUser(function (r){
         if (r) {
             $(".while-logged-out").hide();
             $("#login").text(r);
         } else {
             $(".while-logged-in").hide();
         }
-    });
-    var help=$("<iframe>").attr("src",WebSite.top+"/doc/index.html");
+    });*/
+    /*var help=$("<iframe>").attr("src",WebSite.top+"/doc/index.html");
     help.height($(window).height()-$("#navBar").height());
     $("#wikiViewArea").append(help);
+*/
 
-
-    $("#newPrj").click(function (){
+    /*$("#newPrj").click(function (){
     	NPD.show(FS.get(WebSite.projects[0]), function (prjDir) {
             prjDir.mkdir();
             document.location.href="project.html?dir="+prjDir.path();
     	});
-    });
+    })*/;
     SplashScreen.hide();
     /*$("body").on("keydown",function (e) {
         if (e.keyCode==77 && WebSite.devMode) {
@@ -6158,7 +6401,16 @@ $(function () {
             }
         }
     });*/
-
+    var importHTMLDialog=new ImportHTMLDialog({
+        onComplete: function (){
+            //prjDirs.forEach(ls);
+            location.reload();
+        },
+        prjDirs:prjDirs
+    });
+    window.importFromHTML=function () {
+        importHTMLDialog.show();
+    };
     sh.cd(FS.get(WebSite.projects[0]));
     extLink.all();
     sh.wikiEditor=function () {document.location.href="wikiEditor.html";};

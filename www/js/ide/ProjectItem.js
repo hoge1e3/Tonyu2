@@ -83,6 +83,7 @@ remove: function (t) {
     );
     t.rmd.$vars.dl.prop("checked",true);
     t.rmd.dialog();
+    //console.log("t.rmd.data",$.data(t.rmd[0],"ui-dialog"));
     function doRemove() {
         var dl=t.rmd.$vars.dl.prop("checked");
         return (dl?t.download():DU.resolve()).then(function () {
@@ -92,6 +93,7 @@ remove: function (t) {
         }).catch(DU.E);
     }
     function cancel() {
+        //console.log("t.rmd.data.cancel",$.data(t.rmd[0],"ui-dialog"));
         t.rmd.dialog("close");
     }
     //t.projectDir.rm({r:1});

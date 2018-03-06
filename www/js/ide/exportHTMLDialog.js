@@ -1,15 +1,25 @@
 define(["exportAsScriptTags","UI","Klass"], function (east,UI,Klass) {
-    Klass.define({
+    ExportHTMLDialog=Klass.define({
         $this:"t",
-        createDOM:function (t) {
-
+        $:["prj"],
+        show: function (t,options) {
+            var dir=t.prj.getDir();
+            t.createDOM();
+            t.dom.dialog({width:800,height:400});
+            setTimeout(function () {
+                var buf=east(dir,options);
+                t.prog.val(buf);
+            },0);
         },
-        
-    })
-    var dir=Util.getQueryString("dir", "/Tonyu/Projects/1_Animation/");
-    dir=FS.get(dir);
-    $("#prog").val(east(dir,{
-        excludes:{"js/concat.js":1,"js/concat.js.map":1},
-         includeJSScript:true
-     }));
+        createDOM:function (t) {
+            if (t.dom) return t.dom;
+            t.dom=UI("div",{title:"HTML生成"},
+                ["div","このHTMLをjsdo.itやcodepenなどのJS共有サイトに張り付けて実行できます．"],
+                ["textarea",{$var:"prog",rows:20,cols:60,placeholder:"Please wait..."}]
+            );
+            t.prog=t.dom.$vars.prog;
+            return t.dom;
+        }
+    });
+    return ExportHTMLDialog;
 });

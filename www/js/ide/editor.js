@@ -5,7 +5,7 @@ requirejs(["Util", "Tonyu", "FS", "PathUtil","FileList", "FileMenu",
            "UI","ResEditor","WebSite","exceptionCatcher","Tonyu.TraceTbl",
            "Log","MainClassDialog","DeferredUtil","NWMenu",
            "ProjectCompiler","compiledProject","mkrunDiag","zip","LSFS","WebFS",
-           "extLink","DiagAdjuster"
+           "extLink","DiagAdjuster","ExportHTMLDialog",
           ],
 function (Util, Tonyu, FS, PathUtil, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,
@@ -14,7 +14,7 @@ function (Util, Tonyu, FS, PathUtil, FileList, FileMenu,
           UI,ResEditor,WebSite,EC,TTB,
           Log,MainClassDialog,DU,NWMenu,
           TPRC,CPPRJ,mkrunDiag,zip,LSFS,WebFS,
-          extLink,DiagAdjuster
+          extLink,DiagAdjuster,ExportHTMLDialog
           ) {
 $(function () {
     if (!WebSite.isNW) {
@@ -59,6 +59,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     var EXT=curPrj.EXT;
     var desktopEnv=loadDesktopEnv();
     var runMenuOrd=desktopEnv.runMenuOrd;
+    var exportHTMLDialog=new ExportHTMLDialog(curPrj);
     function setDiagMode(d) {
         var opt=curPrj.getOptions();
         if (opt.compiler.diagnose!=d) {
@@ -289,7 +290,13 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
                         }))));
 
         //saveDesktopEnv();
-        $("#exportToJsdoit").attr("href", "exportToJsdoit.html?dir="+curProjectDir.path());//+"&main="+runMenuOrd[0]);
+        $("#exportToJsdoit").attr("href", "javascript:;").click(function () {
+            exportHTMLDialog.show({
+                excludes:{"js/concat.js":1,"js/concat.js.map":1},
+                includeJSScript:true
+            });
+        });
+        //$("#exportToJsdoit").attr("href", "exportToJsdoit.html?dir="+curProjectDir.path());//+"&main="+runMenuOrd[0]);
         $("#exportToExe").attr("href", "exportToExe.html?dir="+curProjectDir.path());//+"&main="+runMenuOrd[0]);
     }
     function dispName(f) {

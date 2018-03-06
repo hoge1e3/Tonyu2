@@ -5,6 +5,7 @@ define(["UI"], function (UI) {
     	d.dialog({width:600});
 	};
 	res.embed=function (prjDir, onOK, options) {
+        res.onOK=onOK;
 	    if (!options) options={};
         if (!res.d) {
             var FType={
@@ -51,8 +52,8 @@ define(["UI"], function (UI) {
     	};
     	d.done=function () {
     	    if (d.$edits.validator.isValid()) {
-                onOK(model.dstDir);
-                if (d.dialog) d.dialog("close");// not exists when embed
+                res.onOK(model.dstDir);
+                if ($.data(d[0],"ui-dialog")) d.dialog("close");// not exists when embed
     	    }
     	};
     	return d;

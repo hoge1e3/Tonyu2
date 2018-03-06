@@ -29,6 +29,7 @@ define(["FS","Platform"], function (FS,Platform) {
 		WebSite.tonyuHome="/Tonyu/";
 		WebSite.PathSep="/";
 		if (WebSite.isNW) {
+			WebSite.noconcat=true;
 			WebSite.PathSep=require("path").sep;
 			WebSite.cwd=P.directorify(process.cwd().replace(/\\/g,"/"));
 			//WebSite.exeDir=WebSite.execDir=P.up(P.fixSep(process.execPath)); not suitable when mac

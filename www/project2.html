@@ -38,7 +38,16 @@ reqConf.baseUrl="js";
 //var progBar=ProgressBar(42);
 $(function () { SplashScreen.show(); });
 requirejs.config(reqConf);
-requirejs(["ide/editor","buildAll"],function (){});
+var isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
+if (isNW || localStorage.noconcat) {
+	requirejs(
+		["ide/editor","buildAll"],
+	function (){});
+} else {
+	requirejs(
+		["editor_concat"],
+	function (){});
+}
 </script>
 
 </head>
@@ -91,7 +100,7 @@ requirejs(["ide/editor","buildAll"],function (){});
 						<ul class="dropdown-menu" id="publishMenu">
                             <li><a href="#" id="mkrun">ランタイム作成</a></li>
                             <!--li><a href="#" id="exportToExe">tonyuexeで公開する</a></li-->
-							<li><a href="#" id="exportToJsdoit">jsdo.itで公開する</a></li>
+							<li><a href="#" id="exportToJsdoit">HTML生成</a></li>
 						</ul>
 					</li>
 					<li><a href="#" id="publish" class="dropdown-toggle" data-toggle="dropdown">ヘルプ</a>

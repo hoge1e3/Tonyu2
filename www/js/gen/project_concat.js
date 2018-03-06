@@ -1,4 +1,4 @@
-// Created at Mon Mar 05 2018 18:25:55 GMT+0900 (東京 (標準時))
+// Created at Tue Mar 06 2018 11:19:24 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -4211,7 +4211,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
-			VERSION:1520241949039,//EMBED_VERSION
+			VERSION:1520302758568,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -4811,6 +4811,7 @@ define(["FS","Platform"], function (FS,Platform) {
 		WebSite.tonyuHome="/Tonyu/";
 		WebSite.PathSep="/";
 		if (WebSite.isNW) {
+			WebSite.noconcat=true;
 			WebSite.PathSep=require("path").sep;
 			WebSite.cwd=P.directorify(process.cwd().replace(/\\/g,"/"));
 			//WebSite.exeDir=WebSite.execDir=P.up(P.fixSep(process.execPath)); not suitable when mac
@@ -20408,6 +20409,123 @@ define([],function () {
     return DiagAdjuster;
 });
 
+requireSimulator.setName('exportAsScriptTags');
+define(["FS","Util","WebSite"], function (FS,Util,WebSite) {
+    var east=function (dir,options) {
+        options=options||{};
+        var excludes=options.excludes||{};
+        var includeJSScript=options.includeJSScript;
+        var buf="";
+        buf+="<script>WebSite_runType='singleHTML';</script>\n";
+        if (includeJSScript) {
+            var resFile=dir.rel("res.json");
+            var resObj=resFile.obj();
+            var scriptServer="https://edit.tonyu.jp/";
+            resObj.images.forEach(function (im) {
+                if (WebSite.builtinAssetNames[im.url]) {
+                    buf+='<script src="'+scriptServer+im.url+'.js"></script>\n';
+                }
+            });
+            buf+='<script src="'+scriptServer+'js/lib/jquery-1.10.1.js" type="text/javascript"></script>\n';
+            buf+='<script src="'+scriptServer+'js/gen/runScript_concat.min.js" type="text/javascript"></script>\n';
+        }
+        buf+="<div id='splash' style='position:relative'>\n";
+        buf+="<!--ここに，ロード中に表示する内容を記述できます。表示したくない場合はこのdiv要素を削除してください。-->\n";
+        buf+="</div>\n";
+        buf+="<!--\n";
+        buf+="Open this site when editing this game:\n";
+        buf+="https://edit.tonyu.jp/html/build/importFromJsdoit.html\n";
+        buf+="-->\n";
+        var binary=[],json=[];
+        //dir=FS.get(dir);
+        dir.recursive(function (f) {
+            var rel=f.relPath(dir);
+            if (excludes[rel]) return;
+            if (f.endsWith(".json") && rel.indexOf("maps/")<0) {
+                json.push(f);
+                return;
+            } else if (!f.endsWith(".tonyu")) {
+                binary.push(f);
+                return;
+            }
+            //var name=f.truncExt(".tonyu");
+            var m="";//(name==main?" data-main='true'":"");
+            var lu=" data-lastupdate='"+f.lastUpdate()+"' ";
+            buf+="<script language='text/tonyu' type='text/tonyu' data-filename='"+rel+"'"+lu+">";
+            buf+=f.text();
+            buf+="</script>\n\n";
+        },{excludes:["files/"]});
+        json.forEach(function (f) {
+            var rel=f.relPath(dir);
+            var lu=" data-lastupdate='"+f.lastUpdate()+"' ";
+            buf+="<script language='text/tonyu' type='text/tonyu' data-filename='"+rel+"'"+lu+">\n";
+            buf+=beautifyJSON(f.text());
+            buf+="</script>\n\n";
+        });
+        binary.forEach(function (f) {
+            var rel=f.relPath(dir);
+            var lu=" data-lastupdate='"+f.lastUpdate()+"' ";
+            buf+="<script language='text/tonyu' type='text/tonyu' data-filename='"+rel+"' data-wrap='80'"+lu+">";
+            buf+=wrap(f.text(),80);
+            buf+="</script>\n\n";
+        });
+        return buf;
+        function wrap(str, cols) {
+            var lines=str.split("\n");
+            var buf="";
+            lines.forEach(function (line) {
+                while (true) {
+                    if (line.length>cols) {
+                        buf+=line.substring(0,cols)+"\\\n";
+                        line=line.substring(cols);
+                    } else {
+                        buf+=line+"\n";
+                        break;
+                    }
+                }
+                return buf;
+            });
+            return buf;
+        }
+        function beautifyJSON(str) {
+            try {
+                var o=JSON.parse(str);
+                return JSON.stringify(o,null,4);
+            }catch(e) {
+                return str;
+            }
+        }
+    };
+    return east;
+});
+
+requireSimulator.setName('ExportHTMLDialog');
+define(["exportAsScriptTags","UI","Klass"], function (east,UI,Klass) {
+    ExportHTMLDialog=Klass.define({
+        $this:"t",
+        $:["prj"],
+        show: function (t,options) {
+            var dir=t.prj.getDir();
+            t.createDOM();
+            t.dom.dialog({width:800,height:400});
+            setTimeout(function () {
+                var buf=east(dir,options);
+                t.prog.val(buf);
+            },0);
+        },
+        createDOM:function (t) {
+            if (t.dom) return t.dom;
+            t.dom=UI("div",{title:"HTML生成"},
+                ["div","このHTMLをjsdo.itやcodepenなどのJS共有サイトに張り付けて実行できます．"],
+                ["textarea",{$var:"prog",rows:20,cols:60,placeholder:"Please wait..."}]
+            );
+            t.prog=t.dom.$vars.prog;
+            return t.dom;
+        }
+    });
+    return ExportHTMLDialog;
+});
+
 requireSimulator.setName('ide/editor');
 requirejs(["Util", "Tonyu", "FS", "PathUtil","FileList", "FileMenu",
            "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project",
@@ -20416,7 +20534,7 @@ requirejs(["Util", "Tonyu", "FS", "PathUtil","FileList", "FileMenu",
            "UI","ResEditor","WebSite","exceptionCatcher","Tonyu.TraceTbl",
            "Log","MainClassDialog","DeferredUtil","NWMenu",
            "ProjectCompiler","compiledProject","mkrunDiag","zip","LSFS","WebFS",
-           "extLink","DiagAdjuster"
+           "extLink","DiagAdjuster","ExportHTMLDialog",
           ],
 function (Util, Tonyu, FS, PathUtil, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,
@@ -20425,7 +20543,7 @@ function (Util, Tonyu, FS, PathUtil, FileList, FileMenu,
           UI,ResEditor,WebSite,EC,TTB,
           Log,MainClassDialog,DU,NWMenu,
           TPRC,CPPRJ,mkrunDiag,zip,LSFS,WebFS,
-          extLink,DiagAdjuster
+          extLink,DiagAdjuster,ExportHTMLDialog
           ) {
 $(function () {
     if (!WebSite.isNW) {
@@ -20470,6 +20588,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     var EXT=curPrj.EXT;
     var desktopEnv=loadDesktopEnv();
     var runMenuOrd=desktopEnv.runMenuOrd;
+    var exportHTMLDialog=new ExportHTMLDialog(curPrj);
     function setDiagMode(d) {
         var opt=curPrj.getOptions();
         if (opt.compiler.diagnose!=d) {
@@ -20700,7 +20819,13 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
                         }))));
 
         //saveDesktopEnv();
-        $("#exportToJsdoit").attr("href", "exportToJsdoit.html?dir="+curProjectDir.path());//+"&main="+runMenuOrd[0]);
+        $("#exportToJsdoit").attr("href", "javascript:;").click(function () {
+            exportHTMLDialog.show({
+                excludes:{"js/concat.js":1,"js/concat.js.map":1},
+                includeJSScript:true
+            });
+        });
+        //$("#exportToJsdoit").attr("href", "exportToJsdoit.html?dir="+curProjectDir.path());//+"&main="+runMenuOrd[0]);
         $("#exportToExe").attr("href", "exportToExe.html?dir="+curProjectDir.path());//+"&main="+runMenuOrd[0]);
     }
     function dispName(f) {

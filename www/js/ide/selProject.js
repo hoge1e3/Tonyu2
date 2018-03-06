@@ -1,11 +1,11 @@
 requirejs(["FS","Wiki","Shell","Shell2",
            /*"copySample",*/"NewProjectDialog","UI","Sync","Auth",
            "zip","requestFragment","WebSite","extLink","DeferredUtil",
-       "ZipImporter","ProjectItem"],
+       "ZipImporter","ProjectItem","ImportHTMLDialog"],
   function (FS, Wiki,   sh,sh2,
             /*copySample,  */NPD,           UI, Sync, Auth,
             zip,requestFragment,WebSite,extLink,DU,
-        ZipImporter,ProjectItem) {
+        ZipImporter,ProjectItem,ImportHTMLDialog) {
 $(function () {
     var HNOP="javascript:;";
     //copySample();
@@ -54,7 +54,12 @@ $(function () {
         function newDiag() {
             NPD.show(curDir, function (prjDir) {
                 prjDir.mkdir();
-                document.location.href="project.html?dir="+prjDir.path();
+                // temporaly
+                if (WebSite.version==2) {
+                    location.href="project2.html?dir="+prjDir.path();
+                } else {
+                    location.href="project.html?dir="+prjDir.path();
+                }
             });
         }
         var showAll;
@@ -110,25 +115,25 @@ $(function () {
             return DU.timeout(10);
         });
     }
-    Auth.currentUser(function (r){
+    /*Auth.currentUser(function (r){
         if (r) {
             $(".while-logged-out").hide();
             $("#login").text(r);
         } else {
             $(".while-logged-in").hide();
         }
-    });
-    var help=$("<iframe>").attr("src",WebSite.top+"/doc/index.html");
+    });*/
+    /*var help=$("<iframe>").attr("src",WebSite.top+"/doc/index.html");
     help.height($(window).height()-$("#navBar").height());
     $("#wikiViewArea").append(help);
+*/
 
-
-    $("#newPrj").click(function (){
+    /*$("#newPrj").click(function (){
     	NPD.show(FS.get(WebSite.projects[0]), function (prjDir) {
             prjDir.mkdir();
             document.location.href="project.html?dir="+prjDir.path();
     	});
-    });
+    })*/;
     SplashScreen.hide();
     /*$("body").on("keydown",function (e) {
         if (e.keyCode==77 && WebSite.devMode) {
@@ -141,7 +146,16 @@ $(function () {
             }
         }
     });*/
-
+    var importHTMLDialog=new ImportHTMLDialog({
+        onComplete: function (){
+            //prjDirs.forEach(ls);
+            location.reload();
+        },
+        prjDirs:prjDirs
+    });
+    window.importFromHTML=function () {
+        importHTMLDialog.show();
+    };
     sh.cd(FS.get(WebSite.projects[0]));
     extLink.all();
     sh.wikiEditor=function () {document.location.href="wikiEditor.html";};
