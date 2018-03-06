@@ -1,4 +1,4 @@
-// Created at Tue Mar 06 2018 11:19:24 GMT+0900 (東京 (標準時))
+// Created at Tue Mar 06 2018 12:14:45 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -4211,7 +4211,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
-			VERSION:1520302758568,//EMBED_VERSION
+			VERSION:1520306079111,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -20430,11 +20430,16 @@ define(["FS","Util","WebSite"], function (FS,Util,WebSite) {
             buf+='<script src="'+scriptServer+'js/gen/runScript_concat.min.js" type="text/javascript"></script>\n';
         }
         buf+="<div id='splash' style='position:relative'>\n";
-        buf+="<!--ここに，ロード中に表示する内容を記述できます。表示したくない場合はこのdiv要素を削除してください。-->\n";
+        buf+="<!--ここに，ロード中に表示する内容を記述できます。-->\n";
+        buf+="<!--You can write here what you want to show while loading. -->\n";
+        buf+="<div class='progress'>\n";
+        buf+="<!-- ここにロード中の進捗が表示されます．表示したくない場合はこのdiv要素を削除してください。 -->\n";
+        buf+="<!-- This shows progress. If you don't want to shot, remove this element -->\n";
+        buf+="</div>\n";
         buf+="</div>\n";
         buf+="<!--\n";
         buf+="Open this site when editing this game:\n";
-        buf+="https://edit.tonyu.jp/html/build/importFromJsdoit.html\n";
+        buf+="https://edit.tonyu.jp/index.html?importFromHTML=1\n";
         buf+="-->\n";
         var binary=[],json=[];
         //dir=FS.get(dir);
