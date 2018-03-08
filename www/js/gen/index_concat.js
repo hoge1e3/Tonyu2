@@ -1,4 +1,4 @@
-// Created at Tue Mar 06 2018 15:54:56 GMT+0900 (東京 (標準時))
+// Created at Thu Mar 08 2018 11:27:46 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -2973,14 +2973,20 @@ function (SFile,/*JSZip,*/fsv,Util,DU) {
         var jszip = new zip.JSZip();
         function loop(dst, dir) {
             return dir.each(function (f) {
-                if (f.isDir()) {
-                    var sf=dst.folder(f.name().replace(/[\/\\]$/,""));
-                    return loop(sf, f);
-                } else {
-                    return f.getContent(function (c) {
-                        dst.file(f.name(),c.toArrayBuffer());
-                    });
+                var r=DU.resolve();
+                if (options.progress) {
+                    r=options.progress(f);
                 }
+                return r.then(function () {
+                    if (f.isDir()) {
+                        var sf=dst.folder(f.name().replace(/[\/\\]$/,""));
+                        return loop(sf, f);
+                    } else {
+                        return f.getContent(function (c) {
+                            dst.file(f.name(),c.toArrayBuffer());
+                        });
+                    }
+                });
             });
         }
         return loop(jszip, dir).then(function () {
@@ -3020,12 +3026,18 @@ function (SFile,/*JSZip,*/fsv,Util,DU) {
                 }
             };
         }
-        var zip=new zip.JSZip();
-        return DU.resolve(zip.loadAsync(arrayBuf)).then(function () {
-            return DU.each(zip.files,function (key,zipEntry) {
-                //var zipEntry=zip.files[i];
-                return DU.resolve(zipEntry.async("arraybuffer")).then(function (buf) {
-                    var dest=destDir.rel(zipEntry.name);
+        var jszip=new zip.JSZip();
+        return DU.resolve(jszip.loadAsync(arrayBuf)).then(function () {
+            return DU.each(jszip.files,function (key,zipEntry) {
+                //var zipEntry=jszip.files[i];
+                var buf,dest;
+                return DU.resolve(zipEntry.async("arraybuffer")).then(function (_buf) {
+                    buf=_buf;
+                    dest=destDir.rel(zipEntry.name);
+                    if (options.progress) {
+                        return DU.resolve(options.progress(dest));
+                    }
+                }).then(function () {
                     console.log("Inflating",zipEntry.name);
                     if (dest.isDir()) return;
                     var s={
@@ -5764,7 +5776,13 @@ function (Klass,FS,Util,DD,DU,UI) {
             var t=this;
             t.showDialog(file.name()+"を展開中...");
             var zipexdir=t.tmpDir.rel(file.truncExt()+"/");
-            return FS.zip.unzip(file, zipexdir ).then(function () {
+            var opt={
+                progress: function (file) {
+                    t.showDialog(file.name()+"を展開中...");
+                    return DU.timeout(0);
+                }
+            };
+            return FS.zip.unzip(file, zipexdir,opt ).then(function () {
                 return t.traverse(zipexdir,ctx);
             }).then(function (ctx) {
                 if (ctx.from==="prjB" && ctx.imported===0) throw new Error(

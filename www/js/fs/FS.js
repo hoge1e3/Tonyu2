@@ -2879,14 +2879,20 @@ function (SFile,/*JSZip,*/fsv,Util,DU) {
         var jszip = new zip.JSZip();
         function loop(dst, dir) {
             return dir.each(function (f) {
-                if (f.isDir()) {
-                    var sf=dst.folder(f.name().replace(/[\/\\]$/,""));
-                    return loop(sf, f);
-                } else {
-                    return f.getContent(function (c) {
-                        dst.file(f.name(),c.toArrayBuffer());
-                    });
+                var r=DU.resolve();
+                if (options.progress) {
+                    r=options.progress(f);
                 }
+                return r.then(function () {
+                    if (f.isDir()) {
+                        var sf=dst.folder(f.name().replace(/[\/\\]$/,""));
+                        return loop(sf, f);
+                    } else {
+                        return f.getContent(function (c) {
+                            dst.file(f.name(),c.toArrayBuffer());
+                        });
+                    }
+                });
             });
         }
         return loop(jszip, dir).then(function () {
@@ -2926,12 +2932,18 @@ function (SFile,/*JSZip,*/fsv,Util,DU) {
                 }
             };
         }
-        var zip=new zip.JSZip();
-        return DU.resolve(zip.loadAsync(arrayBuf)).then(function () {
-            return DU.each(zip.files,function (key,zipEntry) {
-                //var zipEntry=zip.files[i];
-                return DU.resolve(zipEntry.async("arraybuffer")).then(function (buf) {
-                    var dest=destDir.rel(zipEntry.name);
+        var jszip=new zip.JSZip();
+        return DU.resolve(jszip.loadAsync(arrayBuf)).then(function () {
+            return DU.each(jszip.files,function (key,zipEntry) {
+                //var zipEntry=jszip.files[i];
+                var buf,dest;
+                return DU.resolve(zipEntry.async("arraybuffer")).then(function (_buf) {
+                    buf=_buf;
+                    dest=destDir.rel(zipEntry.name);
+                    if (options.progress) {
+                        return DU.resolve(options.progress(dest));
+                    }
+                }).then(function () {
                     console.log("Inflating",zipEntry.name);
                     if (dest.isDir()) return;
                     var s={

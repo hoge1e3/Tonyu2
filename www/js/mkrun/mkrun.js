@@ -22,11 +22,11 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu"],
         return MkRun.run(prj,dest,options).then(function () {
             switch(type) {
                 case "zip":
-                return FS.zip.zip(dest).finally(function () {
+                return FS.zip.zip(dest,options).finally(function () {
                     return dest.rm({r:1});
                 });
                 case "prj":
-                return FS.zip.zip(dest,destZip).then(function () {
+                return FS.zip.zip(dest,destZip,options).then(function () {
                     return destZip.getContent(function (c) {
                         var f=new FormData();
                         var url=WebSite.uploadTmpUrl;

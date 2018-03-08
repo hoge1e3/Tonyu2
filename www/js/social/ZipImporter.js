@@ -68,7 +68,13 @@ function (Klass,FS,Util,DD,DU,UI) {
             var t=this;
             t.showDialog(file.name()+"を展開中...");
             var zipexdir=t.tmpDir.rel(file.truncExt()+"/");
-            return FS.zip.unzip(file, zipexdir ).then(function () {
+            var opt={
+                progress: function (file) {
+                    t.showDialog(file.name()+"を展開中...");
+                    return DU.timeout(0);
+                }
+            };
+            return FS.zip.unzip(file, zipexdir,opt ).then(function () {
                 return t.traverse(zipexdir,ctx);
             }).then(function (ctx) {
                 if (ctx.from==="prjB" && ctx.imported===0) throw new Error(

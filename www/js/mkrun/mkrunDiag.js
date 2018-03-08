@@ -1,4 +1,5 @@
-define(["UI","extLink","mkrun","Tonyu","zip"], function (UI,extLink,mkrun,Tonyu,zip) {
+define(["UI","extLink","mkrun","Tonyu","zip","DeferredUtil"],
+function (UI,extLink,mkrun,Tonyu,zip,DU) {
     var res={};
     res.show=function (prj,dest,options) {
         var d=res.embed(prj,dest,options);
@@ -36,10 +37,12 @@ define(["UI","extLink","mkrun","Tonyu","zip"], function (UI,extLink,mkrun,Tonyu,
                     ],
                     ["button", {$var:"OKButton", on:{click: function () {
                          res.run();
-                    }}}, "作成"]
+                    }}}, "作成"],
+                    ["span",{$var:"progress"}]
                 ]
             );
         }
+        var vars=res.d.$vars;
         res.d.$vars.OKButton.prop("disabled", false);
         if (!options.dest) {
             res.d.$vars.folder.hide();
@@ -55,6 +58,10 @@ define(["UI","extLink","mkrun","Tonyu","zip"], function (UI,extLink,mkrun,Tonyu,
             var type=outtype.value;
             res.d.$vars.OKButton.prop("disabled", true);
             var opt={copySrc:model.src};
+            opt.progress=function (f) {
+                vars.progress.text(f.name());
+                return DU.timeout(0);
+            };
             if (type==="dir") opt.dest=FS.get(model.dest);
             return mkrun.run2(prj,type, opt ).then(function (r) {
                 /*if (outtype.value==="zip") {

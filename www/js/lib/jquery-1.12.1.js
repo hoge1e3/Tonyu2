@@ -3401,7 +3401,13 @@ jQuery.extend( {
 					return this;
 				},
 				"finally": function (f) {//@hoge1e3
-					return this.then(f,f);
+					return this.then(function (r) {
+						f();
+						return r;
+					},function (e) {
+						f();
+						throw e;
+					});
 				},
 				"catch": function (f) {//@hoge1e3
 					return this.then(function (e) {
