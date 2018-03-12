@@ -41,6 +41,8 @@ extends Panel;
 }
 \addLayer(group) {
     group=group||new Sprites;
+    // spx,spy  Screen pivot x,y
+    // wpx,wpy  World pivot x,y
     layers.push{
         spx:0,spy:0,
         wpx:0,wpy:0,rotation:0,scale:1,

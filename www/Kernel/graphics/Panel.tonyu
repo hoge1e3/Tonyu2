@@ -220,10 +220,30 @@ nowait \copy() {
     }
 }
 \convert(obj, toLayer) {
-    if (toLayer==null) toLayer=this;
+    // Only supports this <-> this.layer
+    // Why?  other layers (i.e. $mainLayer) are depends on screen(When Multi screen)
+    // ({x,y})   -> from==this to==layer
+    // ({x,y},layer) -> from==this to==layer
+    // ({x,y,this})  -> from==this to==layer
+    // ({x,y},this)  -> from==layer to==this
+    // ({x,y,layer}) -> from==layer to==this
+    var fromLayer=obj.layer;
+    if (fromLayer==null && toLayer==null) {
+        fromLayer=this;toLayer=layer;
+    } else if (fromLayer==null && toLayer===layer) {
+        fromLayer=this;
+    } else if (fromLayer===this && toLayer==null) {
+        toLayer=layer;
+    } else if (fromLayer==null && toLayer===this) {
+        fromLayer=layer;
+    } else if (fromLayer===layer && toLayer==null) {
+        toLayer=this;
+    }
+    if (fromLayer===toLayer) return obj;
     var scaleY=this.scaleY||scaleX;
-    if (!obj.layer) throw new Error("layer not set");
-    if (obj.layer===this && toLayer===layer) {
+    if (fromLayer==null || toLayer==null) throw new Error("layer not set");
+    if (fromLayer===this && toLayer===layer) {
+        // panelXY to world
         var dx=obj.x-width/2;
         var dy=obj.y-height/2;
         var rt=rotation;
@@ -237,7 +257,8 @@ nowait \copy() {
             scale:obj.scale,
             layer:toLayer
         };
-    } else if (obj.layer===layer && toLayer===this) {
+    } else if (fromLayer===layer && toLayer===this) {
+        // world to panelXY
         var rt=-rotation;
         var dx=obj.x-(this.x);
         var dy=obj.y-(this.y);
