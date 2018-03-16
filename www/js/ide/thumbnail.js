@@ -2,6 +2,7 @@ define(["ImageRect","Content"],function (IR,Content) {
     var TN={};
     var createThumbnail;
     var NAME="$icon_thumbnail";
+    var WIDTH=200;HEIGHT=200;
     TN.set=function (prj,delay) {
         setTimeout(function () { crt(prj);} ,delay);
     };
@@ -19,7 +20,7 @@ define(["ImageRect","Content"],function (IR,Content) {
     function crt(prj) {
         try {
             var img=Tonyu.globals.$Screen.buf[0];
-            var cv=$("<canvas>").attr({width:100,height:100});
+            var cv=$("<canvas>").attr({width:WIDTH,height:HEIGHT});
             IR(img, cv[0]);
             var url=cv[0].toDataURL();
             var rsrc=prj.getResource();
@@ -28,7 +29,8 @@ define(["ImageRect","Content"],function (IR,Content) {
             imfile.text( url );
             var item={
                 name:NAME,
-                pwidth:100,pheight:100,url:"ls:"+imfile.relPath(prjdir)
+                pwidth:WIDTH,pheight:HEIGHT,
+                url:"ls:"+imfile.relPath(prjdir)
             };
             var imgs=rsrc.images;
             var add=false;

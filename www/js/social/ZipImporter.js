@@ -145,7 +145,7 @@ function (Klass,FS,Util,DD,DU,UI) {
                     console.log(dstDir+" already exists ");
                     return 0;
                 }
-                FS.mount("http://edit.tonyu.jp/","web");
+                FS.mount("https://edit.tonyu.jp/","web");
                 var ctx={from:"prjB", imported:0, dstDir:dstDir};
                 return t.fromPrjB(file,ctx).then(function (r) {
                     t.closeDialog();
@@ -160,7 +160,7 @@ function (Klass,FS,Util,DD,DU,UI) {
         },
         fromPrjB: function (fileName,ctx) {
             var t=this;
-            var f=FS.get("http://edit.tonyu.jp/cgi-bin/dl.cgi?file="+fileName);
+            var f=FS.get("https://edit.tonyu.jp/cgi-bin/dl.cgi?file="+fileName);
             var tmp=FS.get("/ram/").rel(fileName);
             t.showDialog("プロジェクトボードから"+fileName+"をダウンロード....");
             return f.copyTo(tmp).then(function (r) {

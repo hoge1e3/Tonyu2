@@ -7,7 +7,8 @@ native console;
 stats={};
 codes={
     left: 37 , up:38 , right: 39, down:40, space:32, enter:13,
-    shift:16, ctrl:17, alt:18, mouseleft: 1
+    shift:16, ctrl:17, alt:18,
+    mouseleft: 1,mouseright:2, mousewheel: 4,
 };
 for (var i=65 ; i<65+26; i++) {
     codes[String.fromCharCode(i).toLowerCase()]=i;
@@ -16,6 +17,7 @@ for (var i=48 ; i<58; i++) {
     codes[String.fromCharCode(i)]=i;
 }
 if (!$.data(document,"key_event")) {
+    var bmap=[1,4,2];
     $.data(document,"key_event",true);
     $(document).keydown \(e) {$Keys.keydown(e);};
     $(document).keyup \(e) {$Keys.keyup(e);};
@@ -25,7 +27,7 @@ if (!$.data(document,"key_event")) {
             $touches[0].touched=1;
             $touches[0].vx=$touches[0].vy=0;
         }*/
-        $Keys.keydown{keyCode:1};
+        $Keys.keydown{keyCode:bmap[e.button]||1};
     };
     $(document).mouseup \(e) {
         var a=\{
@@ -33,7 +35,7 @@ if (!$.data(document,"key_event")) {
                 $touches[0].touched=0;
                 $touches[0].vx=$touches[0].vy=0;
             }*/
-            $Keys.keyup{keyCode:1};
+            $Keys.keyup{keyCode:bmap[e.button]||1};
         };
         if (lastMouseDown==$frameCount && !reservedAction) {
             reservedAction={at:$frameCount+2,action:a};

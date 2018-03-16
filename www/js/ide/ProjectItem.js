@@ -42,7 +42,7 @@ dom: function (t) {
     var name=t.name;
     return UI("div", {"class":"project existentproject"},
         ["a", {href:url,"class":"projectLink"},
-             ["img",{$var:"t",src:WebSite.top+"/images/nowprint.png"}]],
+             ["img",{width:100,$var:"t",src:WebSite.top+"/images/nowprint.png"}]],
         ["div",
             ["a", {href:url,"class":"projectLink projectName"},name],
             t.submenuExpr()

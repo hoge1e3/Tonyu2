@@ -3,9 +3,17 @@ native Math;
 native parseFloat;
 
 nowait \sin(d) {
+    if (d%90==0) {
+        d=amod(d,360);
+        return [0,1,0,-1][floor(d/90)];
+    }
     return Math.sin(rad(d));
 }
 nowait \cos(d) {
+    if (d%90==0) {
+        d=amod(d,360);
+        return [1,0,-1,0][floor(d/90)];
+    }
     return Math.cos(rad(d));
 }
 nowait \rad(d) {
@@ -103,5 +111,5 @@ nowait \max() {
     return Math.max.apply(Math,arguments);
 }
 nowait \amod(v,d) {
-    return (v % d + d) % d;  
+    return (v % d + d) % d;
 }
