@@ -141,6 +141,7 @@ var reqConf={
             "WikiDialog": "help/wikiDialog",
             "wikiExporter": "help/wikiExporter",
             "wikiFullScreen": "help/wikiFullScreen",
+            "RunDialog": "ide/",
             "DiffDialog": "ide/DiffDialog",
             "ProjectItem": "ide/ProjectItem",
             "showErrorPos": "ide/ErrorPos",

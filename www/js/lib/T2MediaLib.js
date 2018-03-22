@@ -262,6 +262,7 @@ var T2MediaLib = (function(){
         if (this.isActivated) return;
         this.isActivated=true;
         var myContext=this.context;
+        if (!myContext) return;
         var buffer = myContext.createBuffer(1, Math.floor(myContext.sampleRate/32), myContext.sampleRate);
         var ary = buffer.getChannelData(0);
         var lam = Math.floor(myContext.sampleRate/860);

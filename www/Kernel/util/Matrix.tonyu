@@ -1,0 +1,144 @@
+extends TObject;
+includes MathMod,EventMod,FileMod;
+
+\new(d) {
+    data={}||d;
+}
+\load(csvFile) {
+    var f=file(csvFile);
+    var x=0,y=0;
+    var SEP=",";
+    var lines=f.lines();//waitFor(f.lines());
+    for (var l of lines) {
+        row=l.split(SEP);
+        x=0;
+        for (cell of row) {
+            set(x,y,cell);
+            x++;
+        }
+        y++;
+    }
+}
+\cross(col,row) {
+    var colr=find(col);
+    var rowr=find(row);
+    return get(colr.x,rowr.y);
+}
+\search(cell,options) {
+    for (var k,v in data) {
+        if (v===cell) {
+            return unkey(k);
+        }
+    }
+}
+\find() {
+    var r=search.apply(this,arguments);
+    if (r==null) {
+        throw new Error(arguments[0]+" not found.");
+    }
+    return r;
+}
+\crop() {
+    var a=new ArgParser(arguments);
+    var o=a.parseOptions("left,top,right,bottom,width,height,keepXY");
+    var r=new Matrix;
+    if (o.width) o.right=o.left+o.width-1;
+    if (o.height) o.bottom=o.top+o.height-1;
+    if (o.right==null) o.right=xmax;
+    if (o.bottom==null) o.bottom=ymax;
+    for(var y=o.top;y<=o.bottom;y++) {
+        for(var x=o.left;x<=o.right;x++){
+            if (o.keepXY) {
+                r.set(x,y,get(x,y));
+            } else {
+                r.set(x-o.left,y-o.top,get(x,y));
+            }
+        }
+    }
+    return r;
+}
+/*\mirror(pat) {
+    var res=[];
+    res.used=pat.used+rnd()*0.1;
+    res.id=pat.id+"M";
+    for (var line of pat){
+        res.push(rev(line));
+    }
+    pats.push(res);
+}*/
+\rev(line) {
+    var res=[];
+    for (var e of line) {
+        res.unshift(e);
+    }
+    return res;
+}
+\tonyuIterator(arity) {
+    var res={x:xmin,y:ymin,cnt:0};
+    if (xmin==null||ymin==null||xmax==null||ymax==null) {
+        res.next=\{return false;};
+        return res;
+    }
+    switch(arity) {
+        case 3:
+        res.next=function () {
+            //if (res.cnt++>1000) throw new Error("OVER! "+res.x+" "+res.y+" "+xmax+" "+ymax+" ");
+            if (res.x>xmax) {
+                res.x=xmin;
+                res.y++;
+            }
+            if (res.y>ymax) return false;
+            res[0]=res.x;
+            res[1]=res.y;
+            res[2]=get(res.x,res.y);
+            res.x++;
+            return true;
+        };
+        break;
+        default:
+        throw new Error("Matrix: in の前には3つの変数が必要です");
+    }
+    return res;
+}
+\unkey(key) {
+    var r=key.split(",");
+    return {x:r[0]-0,y:r[1]-0};
+}
+\key(x,y,updateRange) {
+    x=floor(x);
+    y=floor(y);
+    if (updateRange) {
+        if (xmin==null || x<xmin) xmin=x;
+        if (xmax==null || x>xmax) xmax=x;
+        if (ymin==null || y<ymin) ymin=y;
+        if (ymax==null || y>ymax) ymax=y;
+    }
+    return x+","+y;
+}
+\rows {
+    return xmax-xmin+1;
+}
+\cols {
+    return ymax-ymin+1;
+}
+\get(x,y) {
+    var res=data[key(x,y)];
+    if (res===undefined) {
+        var e={
+            set: \(v){
+                e.value=v;
+                set(x,y,v);
+            },x,y,
+        };
+        sendEvent("newCell",e);
+        return e.value;
+    }
+    return res;
+}
+\set(x,y,v) {
+    if (v===undefined) {
+        delete data[key(x,y)];
+    } else {
+        return data[key(x,y,true)]=v;
+    }
+}
