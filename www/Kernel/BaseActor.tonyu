@@ -249,6 +249,20 @@ nowait \show(x,y,p) {
     if (p!=null) this.p=p;
 }
 
+nowait \isDead() {
+    return _isDead;
+}
+
+nowait \_animation(){
+    if(animMode) {
+        age++;
+        if (age%animFps==0){
+            p=anim[animFrame%anim.length];
+            animFrame++;
+        }
+    }
+}
+
 nowait \detectShape() {
     if (typeof p!="number") {
         p=0;
@@ -258,17 +272,6 @@ nowait \detectShape() {
     if (!pImg) return;
     width=pImg.width;
     height=pImg.height;
-}
-nowait \isDead() {
-    return _isDead;
-}
-
-nowait \_animation(){
-    age++;
-    if(animMode && age%animFps==0){
-        p=anim[animFrame%anim.length];
-        animFrame++;
-    }
 }
 nowait \performTransform(ctx) {
     if (x!==x || y!==y || x==null || y==null) {
@@ -327,15 +330,6 @@ nowait \draw(ctx) {
             pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,
             -width/2, -height/2, width, height);
             ctx.restore();
-        }
-    }
-    if (_fukidashi) {
-        if (_fukidashi.c>0) {
-            _fukidashi.c--;
-            ctx.fillStyle="white";
-            ctx.strokeStyle="black";
-            fukidashi ( ctx , _fukidashi.text,
-            x, y-height/2-10, _fukidashi.size);
         }
     }
 }

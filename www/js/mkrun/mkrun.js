@@ -81,7 +81,7 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu"],
         function genReadme() {
             dest.rel("Readme.txt").text(
                     "このフォルダは、Webサーバにアップロードしないと正常に動作しない可能性があります。\n"+
-                    "詳しくは\nhttp://hoge1e3.sakura.ne.jp/tonyu/tonyu2/runtime.html\nを御覧ください。\n"
+                    "詳しくは\nhttps://www.tonyu.jp/tonyu2/runtime.html\nを御覧ください。\n"
             );
         }
         function copyResources(dir) {
