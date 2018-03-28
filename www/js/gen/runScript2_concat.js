@@ -1,4 +1,4 @@
-// Created at Thu Mar 08 2018 11:28:00 GMT+0900 (東京 (標準時))
+// Created at Wed Mar 28 2018 11:32:37 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -4795,7 +4795,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
-			VERSION:1520476065982,//EMBED_VERSION
+			VERSION:1522204327679,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -7102,6 +7102,7 @@ var T2MediaLib = (function(){
         if (this.isActivated) return;
         this.isActivated=true;
         var myContext=this.context;
+        if (!myContext) return;
         var buffer = myContext.createBuffer(1, Math.floor(myContext.sampleRate/32), myContext.sampleRate);
         var ary = buffer.getChannelData(0);
         var lam = Math.floor(myContext.sampleRate/860);
@@ -8385,6 +8386,7 @@ requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu
 		var h=$(window).height();
 		$("body").css({overflow:"hidden", margin:"0px"});
 		var cv=$("<canvas>").attr({width: w-margin, height:h-margin}).appendTo("body");
+		Tonyu.globals.$mainCanvas=cv;
 		$(window).resize(onResize);
 		function onResize() {
 			var margin = getMargin();

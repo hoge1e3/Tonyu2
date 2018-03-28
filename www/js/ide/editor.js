@@ -353,7 +353,10 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         }
         if (typeof name!="string") {console.log(name); alert("not a string3: "+name);}
         save();
-        displayMode("run");
+        curPrj.initCanvas=function () {
+            displayMode("run");
+            Tonyu.globals.$mainCanvas=runDialog.canvas;
+        };
         Log.dumpProject(curProjectDir);
         if (typeof SplashScreen!="undefined") SplashScreen.show();
         var o=curPrj.getOptions();
@@ -366,7 +369,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             if (e.isTError) {
                 console.log("showErr: run");
 
-                showErrorPos($("#errorPos"),e);
+                showErrorPos($("#errorPos"),e,{jump:jump});
                 displayMode("compile_error");
             }else{
                 Tonyu.onRuntimeError(e);
@@ -380,6 +383,17 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         alert(e);
         alertOnce=function(){};
     };
+    function jump(file,row,col) {
+        //alert(file+":"+row+":"+col);
+        fl.select(file);
+        var inf=getCurrentEditorInfo();
+        if (inf) {
+            setTimeout(function () {
+                var prog=getCurrentEditor();
+                if (prog) prog.gotoLine(row,col);
+            },50);
+        }
+    }
     window.onerror=EC.handleException=Tonyu.onRuntimeError=function (e) {
         Tonyu.globals.$lastError=e;
         var t=curPrj.env.traceTbl;
@@ -394,7 +408,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             if (e.pluginName) {
                 alert(e.message);
             } else {
-                var diag=showErrorPos($("#errorPos"),te);
+                var diag=showErrorPos($("#errorPos"),te,{jump:jump});
                 displayMode("runtime_error");
                 $("#errorPos").find(".quickFix").append(
                         UI("button",{on:{click: function () {

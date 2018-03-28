@@ -93,7 +93,7 @@ mainLoop();
     $frontLayer=$FrontSprites=new Sprites();
     $backLayer=new Sprites();
     $uiLayer=new Sprites();
-    cvj=$("canvas");
+    cvj=$mainCanvas||$("canvas");
     $screenWidth=465;
     $screenHeight=465;
     $Screen=new Screen{width:$screenWidth, height:$screenHeight, layer:$uiLayer};

@@ -247,10 +247,13 @@ return Tonyu.Project=function (dir, kernelDir) {
         }
     };
     TPR.rawBoot=function (bootClassName) {
-        TPR.showProgress("Running "+bootClassName)
+        TPR.showProgress("Running "+bootClassName);
+        TPR.initCanvas();
         Tonyu.run(bootClassName);
     };
-
+    TPR.initCanvas=function () {
+        Tonyu.globals.$mainCanvas=$("canvas");
+    };
     TPR.srcExists=function (className, dir) {
         var r=null;
         dir.recursive(function (e) {

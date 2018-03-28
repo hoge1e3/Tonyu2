@@ -68,6 +68,9 @@ requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS",
 				kernelEditable: false
 		};
 		var curPrj=Tonyu_Project(curProjectDir);//, kernelDir);
+		curPrj.initCanvas=function () {
+			Tonyu.globals.$mainCanvas=cv;
+		};
 		start();
 		function start() {
 			Tonyu.currentProject=Tonyu.globals.$currentProject=curPrj;

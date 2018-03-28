@@ -1,4 +1,4 @@
-// Created at Thu Mar 08 2018 11:27:55 GMT+0900 (東京 (標準時))
+// Created at Wed Mar 28 2018 11:32:25 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -4022,7 +4022,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
-			VERSION:1520476065982,//EMBED_VERSION
+			VERSION:1522204327679,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -13035,6 +13035,7 @@ define(["ImageRect","Content"],function (IR,Content) {
     var TN={};
     var createThumbnail;
     var NAME="$icon_thumbnail";
+    var WIDTH=200;HEIGHT=200;
     TN.set=function (prj,delay) {
         setTimeout(function () { crt(prj);} ,delay);
     };
@@ -13052,7 +13053,7 @@ define(["ImageRect","Content"],function (IR,Content) {
     function crt(prj) {
         try {
             var img=Tonyu.globals.$Screen.buf[0];
-            var cv=$("<canvas>").attr({width:100,height:100});
+            var cv=$("<canvas>").attr({width:WIDTH,height:HEIGHT});
             IR(img, cv[0]);
             var url=cv[0].toDataURL();
             var rsrc=prj.getResource();
@@ -13061,7 +13062,8 @@ define(["ImageRect","Content"],function (IR,Content) {
             imfile.text( url );
             var item={
                 name:NAME,
-                pwidth:100,pheight:100,url:"ls:"+imfile.relPath(prjdir)
+                pwidth:WIDTH,pheight:HEIGHT,
+                url:"ls:"+imfile.relPath(prjdir)
             };
             var imgs=rsrc.images;
             var add=false;
@@ -13082,6 +13084,7 @@ define(["ImageRect","Content"],function (IR,Content) {
     };
     return TN;
 });
+
 requireSimulator.setName('plugins');
 define(["WebSite"],function (WebSite){
     var plugins={};
@@ -13393,10 +13396,13 @@ return Tonyu.Project=function (dir, kernelDir) {
         }
     };
     TPR.rawBoot=function (bootClassName) {
-        TPR.showProgress("Running "+bootClassName)
+        TPR.showProgress("Running "+bootClassName);
+        TPR.initCanvas();
         Tonyu.run(bootClassName);
     };
-
+    TPR.initCanvas=function () {
+        Tonyu.globals.$mainCanvas=$("canvas");
+    };
     TPR.srcExists=function (className, dir) {
         var r=null;
         dir.recursive(function (e) {
@@ -15623,6 +15629,7 @@ var T2MediaLib = (function(){
         if (this.isActivated) return;
         this.isActivated=true;
         var myContext=this.context;
+        if (!myContext) return;
         var buffer = myContext.createBuffer(1, Math.floor(myContext.sampleRate/32), myContext.sampleRate);
         var ary = buffer.getChannelData(0);
         var lam = Math.floor(myContext.sampleRate/860);
@@ -16947,6 +16954,9 @@ requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS",
 				kernelEditable: false
 		};
 		var curPrj=Tonyu_Project(curProjectDir);//, kernelDir);
+		curPrj.initCanvas=function () {
+			Tonyu.globals.$mainCanvas=cv;
+		};
 		start();
 		function start() {
 			Tonyu.currentProject=Tonyu.globals.$currentProject=curPrj;

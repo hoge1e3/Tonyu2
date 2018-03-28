@@ -15,6 +15,7 @@ return RunDialog=Klass.define({
             }]
         );
         t.dom=d;
+        t.canvas=d.$vars.cv;
     },
     show: function (t) {
         var d=t.dom;

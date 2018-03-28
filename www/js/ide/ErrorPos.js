@@ -1,5 +1,6 @@
 define(["Log","FS"],function (Log,FS) {//MODJSL
-return function showErrorPos(elem, err) {
+return function showErrorPos(elem, err, options) {
+    options=options||{};
     var mesg, src, pos;
     if (!err) {
         close();
@@ -20,11 +21,24 @@ return function showErrorPos(elem, err) {
         mesg=err;
     }
     function close(){
-        elem.empty();
+        if ($.data(elem,"opened")) {
+            elem.dialog("close");
+            $.data(elem,"opened",false);            
+        }
+        //elem.empty();
+    }
+    function jump() {
+        if (options.jump) {
+            options.jump(src,row,col);
+            close();
+        }
     }
     if(typeof pos=="object") {row=pos.row; col=pos.col;}
-    close();
+    elem.empty();
     var mesgd=$("<div>").text(mesg+" 場所："+src.name()+(typeof row=="number"?":"+row+":"+col:""));
+    if(typeof row==="number" && typeof col==="number") {
+        mesgd.append($("<button>").text("エラー箇所に移動").click(jump));
+    }
     //mesgd.append($("<button>").text("閉じる").click(close));
     elem.append(mesgd);
     elem.append($("<div>").attr("class","quickFix"));
@@ -46,8 +60,9 @@ return function showErrorPos(elem, err) {
     elem.append(srcd);
     //elem.attr("title",mesg+" 場所："+src.name());
     elem.attr("title","エラー");
-    var diag=elem.dialog({width:600,height:400});
+    elem.dialog({width:600,height:400});
+    $.data(elem,"opened",true);
     Log.d("error", mesg+"\nat "+src+":"+err.pos+"\n"+str.substring(0,err.pos)+"##HERE##"+str.substring(err.pos));
-    return diag;
+    return elem;
 };
 });
