@@ -1,4 +1,4 @@
-// Created at Wed Mar 28 2018 11:32:12 GMT+0900 (東京 (標準時))
+// Created at Thu Mar 29 2018 12:14:41 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -4223,7 +4223,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
-			VERSION:1522204327679,//EMBED_VERSION
+			VERSION:1522293276491,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -20679,6 +20679,10 @@ $(function () {
     if (WebSite.serverType==="projectBoard") {
         $.ajax("../../../a.php?Test/test").then(function (r){console.log("Session",r);});
     }
+    $.get("https://edit.tonyu.jp/doc/welcome_edit.html?a").then(function (t) {
+        $("#welcome").append(t);
+    });
+
     /*
     location.href
 "chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/index.html"
@@ -20786,6 +20790,13 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     $("#newFile").click(F(FM.create));
     $("#mvFile").click(F(FM.mv));
     $("#rmFile").click(F(FM.rm));
+    $("#closeFile").click(F(function () {
+        var inf=getCurrentEditorInfo();
+        if (inf) {
+            close(inf.file);
+        }
+    }));
+
     FM.on.close=close;
     FM.on.ls=ls;
     FM.on.validateName=fixName;
@@ -21105,6 +21116,9 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             i.editor.destroy();
             i.dom.remove();
             delete editors[rm.path()];
+            var remains;
+            for (var k in editors) remains=true;
+            if (!remains) $("#welcome").show();
         }
     }
     function fixEditorIndent(prog) {
@@ -21162,6 +21176,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         if (f.isDir()) {
             return;
         }
+        $("#welcome").hide();
         save();
         if (curDOM) curDOM.hide();
         var inf=editors[f.path()];
@@ -21268,6 +21283,10 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         if (!helpd) helpd=IFrameDialog.create(WebSite.top+"/doc/index.html");
     	helpd.show();
     }));
+    window.startTutorial=F(function () {
+        if (!helpd) helpd=IFrameDialog.create(WebSite.top+"/doc/tutorial.html");
+    	helpd.show();
+    });
     if (typeof progBar=="object") {progBar.clear();}
     $("#rmPRJ").click(F(function () {
         if (prompt(curProjectDir+"内のファイルをすべて削除しますか？削除する場合はDELETE と入力してください．","")!="DELETE") {

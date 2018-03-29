@@ -1,4 +1,4 @@
-// Created at Wed Mar 28 2018 11:32:07 GMT+0900 (東京 (標準時))
+// Created at Thu Mar 29 2018 12:14:37 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -6289,6 +6289,9 @@ $(function () {
     //copySample();
     //var home=FS.get(WebSite.tonyuHome);
     //var projects=FS.get(WebSite.projects[0]);//home.rel("Projects/");
+    $.get("https://edit.tonyu.jp/doc/welcome_sel.html").then(function (t) {
+        $("#welcome").append(t);
+    });
     $("#prjItemList").empty();
     var search, prevKW="",kw="";
     $("#prjItemList").append(search=UI("div",

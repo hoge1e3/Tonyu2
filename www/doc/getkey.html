@@ -25,13 +25,14 @@
 <li><code>&quot;right&quot;</code>,<code>&quot;left&quot;</code>,<code>&quot;down&quot;</code>,<code>&quot;up&quot;</code> : 矢印キー</li>
 <li><code>&quot;space&quot;</code>: スペースキー</li>
 <li><code>&quot;0&quot;</code>～<code>&quot;9&quot;</code>, <code>&quot;A&quot;</code>～<code>&quot;Z&quot;</code>, <code>&quot;a&quot;</code>～<code>&quot;z&quot;</code>: それぞれの英数字キー</li>
-<li><code>&quot;mouseleft&quot;</code>, <code>&quot;moueright&quot;</code>: マウスの左右ボタン</li>
+<li><code>&quot;mouseleft&quot;</code>, <code>&quot;moueright&quot;</code>, <code>&quot;mousewheel&quot;</code>: マウスの左右ボタン，ホイールボタン</li>
 <li><code>&quot;shift&quot;</code>, <code>&quot;ctrl&quot;</code>, <code>&quot;alt&quot;</code>, <code>&quot;enter&quot;</code> : それぞれ対応するキー</li>
 </ul>
 <h1 id="-">キーコード一覧</h1>
 <pre><code class="lang-JS">left: 37 , up:38 , right: 39, down:40,
 space:32, enter:13, shift:16, ctrl:17, alt:18,
-A-Z: 65-90,  0-9: 48-57,  mouseleft: 1
+A-Z: 65-90,  0-9: 48-57,  mouseleft: 1, mouseright:2,
+mousewheel: 4
 </code></pre>
 <p>例：</p>
 <pre><code class="lang-JS">if (getkey(&quot;a&quot;)) {

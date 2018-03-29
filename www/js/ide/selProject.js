@@ -11,6 +11,9 @@ $(function () {
     //copySample();
     //var home=FS.get(WebSite.tonyuHome);
     //var projects=FS.get(WebSite.projects[0]);//home.rel("Projects/");
+    $.get("https://edit.tonyu.jp/doc/welcome_sel.html").then(function (t) {
+        $("#welcome").append(t);
+    });
     $("#prjItemList").empty();
     var search, prevKW="",kw="";
     $("#prjItemList").append(search=UI("div",
