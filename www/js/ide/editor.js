@@ -140,6 +140,9 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             close(inf.file);
         }
     }));
+    $("#runDialog").click(F(function () {
+        runDialog.show(true);
+    }));
 
     FM.on.close=close;
     FM.on.ls=ls;
@@ -345,14 +348,32 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             break;
         }
     }
+    var cmdrun;
+    function setCmdStat(c) {
+        if (c && cmdrun) {
+            alert("他のコマンド("+cmdrun+")が実行されているのでお待ちください．\n"+
+                "しばらくたってもこのメッセージが出る場合，一旦Homeに戻ってください．");
+            return;
+        }
+        cmdrun=c;
+        return c;
+    }
     function stop() {
+        if (!setCmdStat("stop")) return;
         return $.when(curPrj.stop()).then(function () {
             displayMode("edit");
+        }).finally(function () {
+            setCmdStat();
         });
     }
     //\run
     function run(name) {
-        return $.when(curPrj.stop()).then(function () {run2(name);});
+        if (!setCmdStat("run")) return;
+        return $.when(curPrj.stop()).then(function () {
+            return run2(name);
+        }).finally(function () {
+            setCmdStat();
+        });
     }
     function run2(name) {
         if (typeof name!="string") {
@@ -376,16 +397,15 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             curPrj.setOptions();
         }
         curPrjDir.touch();
-        curPrj.rawRun(o.run.bootClass).fail(function (e) {
+        return curPrj.rawRun(o.run.bootClass).catch(function (e) {
             if (e.isTError) {
                 console.log("showErr: run");
-
                 showErrorPos($("#errorPos"),e,{jump:jump});
                 displayMode("compile_error");
             }else{
                 Tonyu.onRuntimeError(e);
             }
-        }).done(function () {
+        }).finally(function () {
             if (typeof SplashScreen!="undefined") SplashScreen.hide();
         });
     }

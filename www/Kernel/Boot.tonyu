@@ -118,7 +118,7 @@ mainLoop();
     $Screen.setBGColor("rgb(20,80,180)");
     $Screen.selectLayer($mainLayer);
     $rootLayer=new Sprites();
-    $uiScreen=new Screen{canvas:$("canvas")[0],layer:$rootLayer};
+    $uiScreen=new Screen{canvas:cvj[0],layer:$rootLayer};
     $uiScreen.setBGColor("#888");
     $uiScreen.addLayer($uiLayer);
     $layoutManager=new UILayout{layer:$uiLayer};

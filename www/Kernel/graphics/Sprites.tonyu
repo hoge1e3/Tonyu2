@@ -66,7 +66,7 @@ function compOrder(obj1, obj2){
         return 0;
     }
 }
-function draw(ctx) {
+function draw(ctx, camera) {
     //var ctx=cv.getContext("2d");
     ctx.save();
     var orderArray=[];
@@ -83,7 +83,7 @@ function draw(ctx) {
     ctx.translate(-sx,-sy);
     drawing=ctx;
     orderArray.forEach(\(s){
-        s.draw(ctx);
+        s.draw(ctx, camera);
     });
     drawing=null;
     ctx.restore();

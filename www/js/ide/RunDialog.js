@@ -17,16 +17,17 @@ return RunDialog=Klass.define({
         t.dom=d;
         t.canvas=d.$vars.cv;
     },
-    show: function (t) {
+    show: function (t,reset) {
         var d=t.dom;
         var param=t.param;
         var desktopEnv=param.desktopEnv;
+        if (reset) desktopEnv.runDialog={};
         t.size=desktopEnv.runDialog||(desktopEnv.runDialog={});
         var size=t.size;
         t.cv=d.$vars.cv;
         size.width=size.width||($(window).width()-100)/2-20;
         size.height=size.height||param.screenH-20;
-        if (!t.shownOnce) {
+        if (!t.shownOnce || reset) {
             console.log("DIag::show",size);
             d.dialog({
                 width:size.width,

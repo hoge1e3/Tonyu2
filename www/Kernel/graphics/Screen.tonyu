@@ -3,6 +3,7 @@ extends Panel;
 \onAppear() {
     layers=[];
     _color="black";
+    camera={screen=this};
 }
 
 \drawLayers() {
@@ -29,7 +30,7 @@ extends Panel;
             c.translate(-wpOnSX+spx,-wpOnSY+spy);
             c.rotate(rad(rt));
             c.scale(sc,sc);
-            group.draw(c);
+            group.draw(c,camera);
             c.restore();
         }
         _drawing=false;
