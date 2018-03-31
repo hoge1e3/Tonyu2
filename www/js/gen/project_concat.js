@@ -1,4 +1,4 @@
-// Created at Thu Mar 29 2018 12:14:41 GMT+0900 (東京 (標準時))
+// Created at Sat Mar 31 2018 15:43:08 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -4223,7 +4223,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
-			VERSION:1522293276491,//EMBED_VERSION
+			VERSION:1522478582355,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -19566,18 +19566,21 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
         if (!rsrc) prj.setResource({images:[],sounds:[]});
         function convURL(u) {
             try {
+                function cvs(u) {
+                    return WebSite.urlAliases[u] || u;
+                }
                 if (Util.endsWith(u,".ogg")) {
-                    u=WebSite.urlAliases["images/sound_ogg.png"];
+                    u=cvs("images/sound_ogg.png");
                 } else if (Util.endsWith(u,".mp3")) {
-                    u=WebSite.urlAliases["images/sound_mp3.png"];
+                    u=cvs("images/sound_mp3.png");
                 } else if (Util.endsWith(u,".mp4")) {
-                    u=WebSite.urlAliases["images/sound_mp4.png"];
+                    u=cvs("images/sound_mp4.png");
                 } else if (Util.endsWith(u,".m4a")) {
-                    u=WebSite.urlAliases["images/sound_m4a.png"];
+                    u=cvs("images/sound_m4a.png");
                 } else if (Util.endsWith(u,".mid") || Util.endsWith(u,".midi")) {
-                    u=WebSite.urlAliases["images/sound_mid.png"];
+                    u=cvs("images/sound_mid.png");
                 } else if (Util.endsWith(u,".wav")) {
-                    u=WebSite.urlAliases["images/sound_wav.png"];
+                    u=cvs("images/sound_wav.png");
                 }
                 return Assets.resolve(u,prj);
             }catch(e) {
@@ -20593,16 +20596,17 @@ return RunDialog=Klass.define({
         t.dom=d;
         t.canvas=d.$vars.cv;
     },
-    show: function (t) {
+    show: function (t,reset) {
         var d=t.dom;
         var param=t.param;
         var desktopEnv=param.desktopEnv;
+        if (reset) desktopEnv.runDialog={};
         t.size=desktopEnv.runDialog||(desktopEnv.runDialog={});
         var size=t.size;
         t.cv=d.$vars.cv;
         size.width=size.width||($(window).width()-100)/2-20;
         size.height=size.height||param.screenH-20;
-        if (!t.shownOnce) {
+        if (!t.shownOnce || reset) {
             console.log("DIag::show",size);
             d.dialog({
                 width:size.width,
@@ -20795,6 +20799,9 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         if (inf) {
             close(inf.file);
         }
+    }));
+    $("#runDialog").click(F(function () {
+        runDialog.show(true);
     }));
 
     FM.on.close=close;
@@ -21001,14 +21008,32 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             break;
         }
     }
+    var cmdrun;
+    function setCmdStat(c) {
+        if (c && cmdrun) {
+            alert("他のコマンド("+cmdrun+")が実行されているのでお待ちください．\n"+
+                "しばらくたってもこのメッセージが出る場合，一旦Homeに戻ってください．");
+            return;
+        }
+        cmdrun=c;
+        return c;
+    }
     function stop() {
+        if (!setCmdStat("stop")) return;
         return $.when(curPrj.stop()).then(function () {
             displayMode("edit");
+        }).finally(function () {
+            setCmdStat();
         });
     }
     //\run
     function run(name) {
-        return $.when(curPrj.stop()).then(function () {run2(name);});
+        if (!setCmdStat("run")) return;
+        return $.when(curPrj.stop()).then(function () {
+            return run2(name);
+        }).finally(function () {
+            setCmdStat();
+        });
     }
     function run2(name) {
         if (typeof name!="string") {
@@ -21032,16 +21057,15 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             curPrj.setOptions();
         }
         curPrjDir.touch();
-        curPrj.rawRun(o.run.bootClass).fail(function (e) {
+        return curPrj.rawRun(o.run.bootClass).catch(function (e) {
             if (e.isTError) {
                 console.log("showErr: run");
-
                 showErrorPos($("#errorPos"),e,{jump:jump});
                 displayMode("compile_error");
             }else{
                 Tonyu.onRuntimeError(e);
             }
-        }).done(function () {
+        }).finally(function () {
             if (typeof SplashScreen!="undefined") SplashScreen.hide();
         });
     }
