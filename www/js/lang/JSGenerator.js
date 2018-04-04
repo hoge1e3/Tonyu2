@@ -652,6 +652,7 @@ function genJS(klass, env) {//B
 			function getElemF(itn, isVar, vars) {
 				return function () {
 					vars.forEach(function (v,i) {
+						// getScopeInfo?
 						buf.printf("%s=%s[%s];%n", v.text, itn, i);
 					});
 				};

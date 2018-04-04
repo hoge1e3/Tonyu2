@@ -180,10 +180,12 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         }).then(function () {
             refactorUI=null;
             return reloadFromFiles();
-        }).fail(function (e) {
+        }).catch(function (e) {
             alert("プログラム内にエラーがあります．エラーを修正するか，「プログラム中のクラス名も変更する」のチェックを外してもう一度やり直してください．");
             console.log(e);
             return false;
+        }).finally(function () {
+            if (typeof SplashScreen==="object") SplashScreen.hide();
         });
         //close(old);  does in FileMenu
     };

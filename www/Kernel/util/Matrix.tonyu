@@ -73,7 +73,44 @@ includes MathMod,EventMod,FileMod;
     }
     return res;
 }
+\keysIterator() {
+    return {
+        tonyuIterator=tonyuIteratorKeys
+    };
+}
+\rectIterator() {
+    return {
+        tonyuIterator=tonyuIteratorRect
+    };
+}
+\tonyuIteratorKeys(arity) {
+    var res={i:0,keys:[]};
+    for (var k,v in data) {
+        res.keys.push(k);
+    }
+    switch(arity) {
+        case 3:
+        res.next=\{
+            if (res.i>=res.keys.length) return false;
+            var key=res.keys[res.i];
+            res.i++;
+            var xy=unkey(key);
+            res[0]=xy.x;
+            res[1]=xy.y;
+            res[2]=data[key];
+            return true;
+        };
+        break;
+        default:
+        throw new Error("Matrix: in の前には3つの変数が必要です");
+    }
+    return res;
+}
 \tonyuIterator(arity) {
+    if (iterateMode==="keys") return tonyuIteratorKeys(arity);
+    return tonyuIteratorRect(arity);
+}
+\tonyuIteratorRect(arity) {
     var res={x:xmin,y:ymin,cnt:0};
     if (xmin==null||ymin==null||xmax==null||ymax==null) {
         res.next=\{return false;};
@@ -135,10 +172,52 @@ includes MathMod,EventMod,FileMod;
     }
     return res;
 }
+\exists(x,y) {
+    return data[key(x,y)]!==undefined;
+}
 \set(x,y,v) {
     if (v===undefined) {
         delete data[key(x,y)];
     } else {
         return data[key(x,y,true)]=v;
+    }
+}
+\neighbors(x,y,options) {
+    //var x=src.x,y=src.y;
+    // options: {dirs: 4 or 8, includeEmpty: bool }
+    options=options||{dirs:neighborDirs};
+    options.dirs=options.dirs||neighborDirs||4;
+    var dirs=[
+    [0,-1],[1,-1],[1,0], [1,1],
+    [0,1], [-1,1],[-1,0],[-1,-1]];
+    var res=[];
+    for(var dir of dirs) {
+        var i=dir[1],j=dir[0];
+        if (i==0&&j==0) continue;
+        if (options.dirs==4) {
+            if (i*j!=0) continue;
+        }
+        var r;
+        if (exists(x+j,y+i)) {
+            r=get(x+j,y+i);
+            res.push{x:x+j,y:y+i,ox:j,oy:i,value:r};
+        } else if (options.includeEmpty) {
+            res.push{x:x+j,y:y+i,ox:j,oy:i};
+        }
+    }
+    return res;
+}
+\fill(left,top,cols,rows,data) {
+    data=data||{};
+    for (var i=top;i<top+rows;i++) {
+        for (var j=left;j<left+cols;j++) {
+            var d=data;
+            if (typeof data==="object") {
+                d=Object.create(data);
+            } else if (typeof data==="function") {
+                d=data(j,i);
+            }
+            set(j,i,d);
+        }
     }
 }
