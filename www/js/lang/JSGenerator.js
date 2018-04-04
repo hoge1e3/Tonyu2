@@ -652,8 +652,10 @@ function genJS(klass, env) {//B
 			function getElemF(itn, isVar, vars) {
 				return function () {
 					vars.forEach(function (v,i) {
-						// getScopeInfo?
-						buf.printf("%s=%s[%s];%n", v.text, itn, i);
+						var an=annotation(v);
+						varAccess(v.text, an.scopeInfo,an);
+						buf.printf("=%s[%s];%n", itn, i);
+						//buf.printf("%s=%s[%s];%n", v.text, itn, i);
 					});
 				};
 			}

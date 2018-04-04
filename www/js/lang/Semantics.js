@@ -320,7 +320,15 @@ function annotateSource2(klass, env) {//B
 		"forin": function (node) {
 			var isVar=node.isVar;
 			node.vars.forEach(function (v) {
-				/* if (isVar) */ctx.locals.varDecls[v.text]=node;
+				if (isVar) {
+					if (ctx.isMain) {
+						annotation(v,{varInMain:true});
+						annotation(v,{declaringClass:klass});
+					} else {
+						ctx.locals.varDecls[v.text]=v;//node??;
+						annotation(v,{declaringFunc:ctx.finfo});
+					}
+				}
 			});
 			var n=genSym("_it_");
 			annotation(node, {iterName:n});
