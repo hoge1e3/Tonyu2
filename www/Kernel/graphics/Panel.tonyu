@@ -109,7 +109,7 @@ native Image;
 \clearRect(clearX,clearY,clearW,clearH){
     var ctx=getContext();
     ctx.save();
-    ctx.clearRect(clearX,clearY,clearW,clearH);
+    ctx.clearRect(clearX||0,clearY||0,clearW||width,clearH||height);
     ctx.restore();
 }
 \getPixel(getX,getY){
