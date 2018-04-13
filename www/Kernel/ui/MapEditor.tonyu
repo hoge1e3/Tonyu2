@@ -251,30 +251,30 @@ while(true){
     panel.y=panel.height/2-my;
     if(mode=="set" && getkey(1)>0 && inRect()){
         if(selectedLayer=="base"){
-            tmpon=$map.getOnAt($mouseX+mx,$mouseY+my);
-            $map.setAt($mouseX+mx,$mouseY+my,mapp);
-            $map.setOnAt($mouseX+mx,$mouseY+my,tmpon);
+            tmpon=$map.getOnAt($mouseX,$mouseY);
+            $map.setAt($mouseX,$mouseY,mapp);
+            $map.setOnAt($mouseX,$mouseY,tmpon);
         }else if(selectedLayer=="on"){
-            $map.setOnAt($mouseX+mx,$mouseY+my,mapp);
+            $map.setOnAt($mouseX,$mouseY,mapp);
         }else{
-            $map.setAt($mouseX+mx,$mouseY+my,mapp);
-            $map.setOnAt($mouseX+mx,$mouseY+my,maponp);
+            $map.setAt($mouseX,$mouseY,mapp);
+            $map.setOnAt($mouseX,$mouseY,maponp);
         }
         modified=true;
     }else if(mode=="erase" && getkey(1)>0 && inRect()){
         if(selectedLayer=="base"){
-            tmpon=$map.getOnAt($mouseX+mx,$mouseY+my);
-            $map.setAt($mouseX+mx,$mouseY+my,-1);
-            $map.setOnAt($mouseX+mx,$mouseY+my,tmpon);
+            tmpon=$map.getOnAt($mouseX,$mouseY);
+            $map.setAt($mouseX,$mouseY,-1);
+            $map.setOnAt($mouseX,$mouseY,tmpon);
         }else if(selectedLayer=="on"){
-            $map.setOnAt($mouseX+mx,$mouseY+my,-1);
+            $map.setOnAt($mouseX,$mouseY,-1);
         }else{
-            $map.setAt($mouseX+mx,$mouseY+my,-1);
-            $map.setOnAt($mouseX+mx,$mouseY+my,-1);
+            $map.setAt($mouseX,$mouseY,-1);
+            $map.setOnAt($mouseX,$mouseY,-1);
         }
         modified=true;
     }else if(mode=="get" && getkey(1)>0 && inRect()){
-        mapp=$mp.getAt($mouseX+chipX,$mouseY+chipY);
+        mapp=$mp.getAt($mouseX,$mouseY);
         //mode=prevMode;
         mode="set";
         $mp.scrollTo(1000,1000);
@@ -282,17 +282,17 @@ while(true){
         drawLetter(mode);
         updateEx(10);
     }else if(mode=="setOn" && getkey(1)>0 && inRect()){
-        $map.setOnAt($mouseX+mx,$mouseY+my,mapp);
+        $map.setOnAt($mouseX,$mouseY,mapp);
         modified=true;
     }else if(mode=="copy" && getkey(1)>0 && inRect()){
         if(selectedLayer=="base"){
-            mapp=$map.getAt($mouseX+mx,$mouseY+my);
+            mapp=$map.getAt($mouseX,$mouseY);
             maponp=-1;
         }else if(selectedLayer=="on"){
-            mapp=$map.getOnAt($mouseX+mx,$mouseY+my);
+            mapp=$map.getOnAt($mouseX,$mouseY);
         }else{
-            mapp=$map.getAt($mouseX+mx,$mouseY+my);
-            maponp=$map.getOnAt($mouseX+mx,$mouseY+my);
+            mapp=$map.getAt($mouseX,$mouseY);
+            maponp=$map.getOnAt($mouseX,$mouseY);
         }
 
         //mapp=$map.getAt($mouseX+mx,$mouseY+my);
