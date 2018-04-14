@@ -396,7 +396,7 @@ nowait \afterDraw(drawn) {// should call (after draw) or (move and frame skip)
 }
 nowait \initFPSParams() {
     // フレームレートの設定
-    _fps = 30;
+    _fps = 60;
     maxFrameSkip = 5;
     minFrameSkip = 1;
     // フレームレート制御でつかう変数 //
