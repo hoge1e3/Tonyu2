@@ -199,11 +199,13 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                 function del() {
                     for (var i=items.length-1; i>=0 ; i--) {
                         if (items[i]===item) {
-                            var r=Assets.resolve( items[i].url, prj,{asFile:1});
-                            if (FS.isFile(r) && rsrcDir.contains(r)) {
-                                console.log(r.path()," is removed.");
-                                r.rm();
-                            }
+                            try {
+                                var r=Assets.resolve( items[i].url, prj,{asFile:1});
+                                if (FS.isFile(r) && rsrcDir.contains(r)) {
+                                    console.log(r.path()," is removed.");
+                                    r.rm();
+                                }
+                            } catch(e) {}
                             items.splice(i,1);
                             break;
                         }
