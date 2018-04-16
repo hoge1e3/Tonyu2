@@ -72,6 +72,8 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                          ["button", {on:{click:function (){ d.dialog("close"); }}}, "完了"]
             ));
             function dropAdd(e) {
+                e.stopPropagation();
+                e.preventDefault();
                 var eo=e.originalEvent;
                 var files = eo.dataTransfer.files;
                 var readFiles = new Array(files.length);
@@ -84,8 +86,6 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                     if(!file.type.match(mediaInfo.contentType)) {
                         readFileSum--;
                         notReadFiles.push(file);
-                        e.stopPropagation();
-                        e.preventDefault();
                         continue;
                     }
                     var itemName=file.name.replace(mediaInfo.extPattern,"").replace(/\W/g,"_");
@@ -98,18 +98,19 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                     var existsFile;
                     var fileExists=tempFiles.some(function(f){
                         existsFile=f;
-                        return f.url==itemRelPath;
+                        var fNameTemp=f.url.replace(mediaInfo.extPattern,"");
+                        var fName=fNameTemp.substring(fNameTemp.lastIndexOf("/")+1,fNameTemp.length);
+                        return fName==itemName;
                     });
                     if (fileExists) {
                         readFileSum--;
                         file.existsFile=existsFile;
                         existsFiles.push(file);
-                        e.stopPropagation();
-                        e.preventDefault();
                         continue;
                     }
 
                     var v=mediaInfo.newItem(itemName);
+                    v.url=itemRelPath;
                     renameUnique(v);
                     tempFiles.push(v);
                     if (useBlob) {
@@ -167,15 +168,17 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                     alert(mes);
                 }
                 if (existsFiles.length>0) {
-                    var mes="この名前のファイルは既に登録されています：\n";
+                    var mes="同じ名前のファイルが既に登録されています：\n";
                     existsFiles.forEach(function(f){
-                        if (f) mes+=f.name+" ("+f.existsFile.name+")\n";
+                        if (f) {
+                            var fNameTemp=f.existsFile.url;
+                            var fName=fNameTemp.substring(fNameTemp.lastIndexOf("/")+1,fNameTemp.length);
+                            mes+=f.name+" ⇒ "+fName+"("+f.existsFile.name+") と重複\n";
+                            //mes+=f.name+" ("+f.existsFile.name+")\n";
+                        }
                     });
                     alert(mes);
                 }
-
-                e.stopPropagation();
-                e.preventDefault();
                 return false;
             }
             function s(e) {
