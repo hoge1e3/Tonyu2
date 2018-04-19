@@ -487,7 +487,7 @@ var PicoAudio = (function(){
 			}) : false;
 		} else {
 			oscillator.loop = true;
-			oscillator.buffer = this.whitenoise
+			oscillator.buffer = this.whitenoise;
 		}
 
 		if(context.createStereoPanner || context.createPanner){
@@ -802,7 +802,7 @@ var PicoAudio = (function(){
 		states.startTime = !states.startTime && !states.stopTime ? currentTime : (states.startTime + currentTime - states.stopTime);
 		states.stopFuncs = [];
 		// 冒頭の余白をスキップ
-		if (this.isSkipBeginning) {
+		if (this.settings.isSkipBeginning) {
 			var firstNoteOnTime = this.getTime(this.firstNoteOnTiming);
 			if (-states.startTime + currentTime < firstNoteOnTime) {
 				this.setStartTime(firstNoteOnTime + states.startTime - currentTime);
@@ -1101,7 +1101,6 @@ var PicoAudio = (function(){
 					var lengthAry = variableLengthToInt(smf.subarray(p, p+5));
 					var dt = lengthAry[0];
 					time += dt;
-					if(time>100000000) time = 100000000; // 長すぎる曲は途中で打ち切る(PicotuneのCanvas生成で時間がかかるため)
 					p += lengthAry[1];
 				}
 				// WebMIDIAPI
@@ -1263,9 +1262,8 @@ var PicoAudio = (function(){
 					}
 				}
 			}
-			if(songLength<time) songLength = time;
+			if(!this.settings.isSkipEnding && songLength<time) songLength = time;
 		}
-		tempoTrack.push({ timing:songLength, value:120 });
 
 		// Midi Events (0x8n - 0xEn) parse
 		for(var ch=0; ch<channels.length; ch++){
@@ -1494,6 +1492,8 @@ var PicoAudio = (function(){
 			}
 			delete channel.messages;
 		}
+		if(this.settings.isSkipEnding) songLength = lastNoteOffTiming;
+		tempoTrack.push({ timing:songLength, value:120 });
 
 		data.header = header;
 		data.tempoTrack = tempoTrack;
