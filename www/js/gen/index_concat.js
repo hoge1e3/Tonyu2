@@ -1,4 +1,4 @@
-// Created at Sat Mar 31 2018 15:43:03 GMT+0900 (東京 (標準時))
+// Created at Sat Apr 21 2018 21:10:07 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -4159,6 +4159,8 @@ define(["Util","exceptionCatcher"],function (Util, EC) {
         var res=parse(expr);
         res.$edits=$edits;
         res.$vars=$vars;
+        $.data(res,"edits",$edits);
+        $.data(res,"vars",$vars);
         $edits.load=function (model) {
             $edits.model=model;
             $edits.forEach(function (edit) {

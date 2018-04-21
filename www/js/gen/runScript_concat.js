@@ -1,4 +1,4 @@
-// Created at Sat Mar 31 2018 15:43:24 GMT+0900 (東京 (標準時))
+// Created at Sat Apr 21 2018 21:10:37 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -4022,7 +4022,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
-			VERSION:1522478582355,//EMBED_VERSION
+			VERSION:1524312603658,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -10086,7 +10086,10 @@ function genJS(klass, env) {//B
 			function getElemF(itn, isVar, vars) {
 				return function () {
 					vars.forEach(function (v,i) {
-						buf.printf("%s=%s[%s];%n", v.text, itn, i);
+						var an=annotation(v);
+						varAccess(v.text, an.scopeInfo,an);
+						buf.printf("=%s[%s];%n", itn, i);
+						//buf.printf("%s=%s[%s];%n", v.text, itn, i);
 					});
 				};
 			}
@@ -10832,7 +10835,15 @@ function annotateSource2(klass, env) {//B
 		"forin": function (node) {
 			var isVar=node.isVar;
 			node.vars.forEach(function (v) {
-				/* if (isVar) */ctx.locals.varDecls[v.text]=node;
+				if (isVar) {
+					if (ctx.isMain) {
+						annotation(v,{varInMain:true});
+						annotation(v,{declaringClass:klass});
+					} else {
+						ctx.locals.varDecls[v.text]=v;//node??;
+						annotation(v,{declaringFunc:ctx.finfo});
+					}
+				}
 			});
 			var n=genSym("_it_");
 			annotation(node, {iterName:n});
@@ -11944,6 +11955,9 @@ define(["Tonyu","Tonyu.Compiler.JSGenerator","Tonyu.Compiler.Semantics",
 				ttb,FS,A,DU,CPR,
 				S,TypeChecker) {
 var TPRC=function (dir) {
+	// Difference from TonyuProject
+	//    projectCompiler defines projects of Tonyu 'Language'.
+	//    Responsible for transpilation.
 	A(FS.isFile(dir) && dir.isDir(), "projectCompiler: "+dir+" is not dir obj");
 	var TPR={env:{}};
 	var traceTbl=Tonyu.TraceTbl;//();
@@ -11963,17 +11977,17 @@ var TPRC=function (dir) {
 		TPR.fixOptions(env.options);
 		return env.options;
 	};
+	TPR.fixOptions=function (opt) {
+		if (!opt.compiler) opt.compiler={};
+	};
+	TPR.setOptions=function (opt) {
+		TPR.getOptionsFile().obj(opt);
+	}; // ADDJSL
 	TPR.getEXT=function(){
 		var opt=TPR.getOptions();
 		if(!opt.language || opt.language=="js") TPR.EXT=".tonyu";
 		else TPR.EXT="."+opt.language;
 		return TPR.EXT;
-	};
-	TPR.setOptions=function (opt) {
-		TPR.getOptionsFile().obj(opt);
-	}; // ADDJSL
-	TPR.fixOptions=function (opt) {
-		if (!opt.compiler) opt.compiler={};
 	};
 	TPR.resolve=function (rdir){
 		if (rdir instanceof Array) {
@@ -13154,6 +13168,9 @@ define(["Tonyu", "ProjectCompiler", "TError", "FS", "Tonyu.TraceTbl","ImageList"
                 Blob,thumbnail,WebSite,plugins, Semantics, JSGenerator,
                 DU,CPRJ) {
 return Tonyu.Project=function (dir, kernelDir) {
+  // Difference from projectCompiler:
+  //   TonyuProject Defines Tonyu 'System' (the game engine) specific projects
+  //   such as resource management, booting.
     var TPR=ProjectCompiler(dir);
     var _super=Tonyu.extend({},TPR);
     TPR.EXT=".tonyu";
@@ -13167,19 +13184,19 @@ return Tonyu.Project=function (dir, kernelDir) {
     }
     var traceTbl=Tonyu.TraceTbl;//();
     var env={classes:Tonyu.classMetas, traceTbl:traceTbl, options:{compiler:{}} };
-    function orderByInheritance(classes) {/*ENVC*/
+    /*function orderByInheritance(classes) {//ENVC
         var added={};
         var res=[];
         var ccnt=0;
-        for (var n in classes) {/*ENVC*/
+        for (var n in classes) {//ENVC
             added[n]=false;
             ccnt++;
         }
         while (res.length<ccnt) {
             var p=res.length;
-            for (var n in classes) {/*ENVC*/
+            for (var n in classes) {//ENVC
                 if (added[n]) continue;
-                var c=classes[n];/*ENVC*/
+                var c=classes[n];//ENVC
                 var spc=c.superclass;
                 var deps=[spc];
                 var ready=true;
@@ -13195,7 +13212,7 @@ return Tonyu.Project=function (dir, kernelDir) {
             if (res.length==p) throw TError( "クラスの循環参照があります", "不明" ,0);
         }
         return res;
-    }
+    }*/
     TPR.env=env;
     TPR.dumpJS=function (n) {
         function dumpn(n) {
@@ -13309,7 +13326,7 @@ return Tonyu.Project=function (dir, kernelDir) {
             if (next) next();
         });
     };
-    TPR.getOptions=function () {
+    TPR.getOptions=function () {//override
         env.options=null;
         var resFile=dir.rel("options.json");
         if (resFile.exists()) env.options=resFile.obj();
@@ -13320,7 +13337,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         TPR.fixOptions(env.options);
         return env.options;
     };
-    TPR.fixOptions=function (opt) {
+    TPR.fixOptions=function (opt) {//override
         if (!opt.compiler) opt.compiler={};
         opt.compiler.commentLastPos=TPR.runScriptMode || StackTrace.isAvailable();
         if (!opt.plugins) {
@@ -14288,7 +14305,7 @@ var PicoAudio = (function(){
 			}) : false;
 		} else {
 			oscillator.loop = true;
-			oscillator.buffer = this.whitenoise
+			oscillator.buffer = this.whitenoise;
 		}
 
 		if(context.createStereoPanner || context.createPanner){
@@ -14603,7 +14620,7 @@ var PicoAudio = (function(){
 		states.startTime = !states.startTime && !states.stopTime ? currentTime : (states.startTime + currentTime - states.stopTime);
 		states.stopFuncs = [];
 		// 冒頭の余白をスキップ
-		if (this.isSkipBeginning) {
+		if (this.settings.isSkipBeginning) {
 			var firstNoteOnTime = this.getTime(this.firstNoteOnTiming);
 			if (-states.startTime + currentTime < firstNoteOnTime) {
 				this.setStartTime(firstNoteOnTime + states.startTime - currentTime);
@@ -14902,7 +14919,6 @@ var PicoAudio = (function(){
 					var lengthAry = variableLengthToInt(smf.subarray(p, p+5));
 					var dt = lengthAry[0];
 					time += dt;
-					if(time>100000000) time = 100000000; // 長すぎる曲は途中で打ち切る(PicotuneのCanvas生成で時間がかかるため)
 					p += lengthAry[1];
 				}
 				// WebMIDIAPI
@@ -15064,9 +15080,8 @@ var PicoAudio = (function(){
 					}
 				}
 			}
-			if(songLength<time) songLength = time;
+			if(!this.settings.isSkipEnding && songLength<time) songLength = time;
 		}
-		tempoTrack.push({ timing:songLength, value:120 });
 
 		// Midi Events (0x8n - 0xEn) parse
 		for(var ch=0; ch<channels.length; ch++){
@@ -15295,6 +15310,8 @@ var PicoAudio = (function(){
 			}
 			delete channel.messages;
 		}
+		if(this.settings.isSkipEnding) songLength = lastNoteOffTiming;
+		tempoTrack.push({ timing:songLength, value:120 });
 
 		data.header = header;
 		data.tempoTrack = tempoTrack;
@@ -16620,6 +16637,8 @@ define(["Util","exceptionCatcher"],function (Util, EC) {
         var res=parse(expr);
         res.$edits=$edits;
         res.$vars=$vars;
+        $.data(res,"edits",$edits);
+        $.data(res,"vars",$vars);
         $edits.load=function (model) {
             $edits.model=model;
             $edits.forEach(function (edit) {

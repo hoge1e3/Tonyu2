@@ -1,4 +1,4 @@
-// Created at Sat Mar 31 2018 15:43:08 GMT+0900 (東京 (標準時))
+// Created at Sat Apr 21 2018 21:10:17 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -4223,7 +4223,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
-			VERSION:1522478582355,//EMBED_VERSION
+			VERSION:1524312603658,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -4408,6 +4408,8 @@ define(["Util","exceptionCatcher"],function (Util, EC) {
         var res=parse(expr);
         res.$edits=$edits;
         res.$vars=$vars;
+        $.data(res,"edits",$edits);
+        $.data(res,"vars",$vars);
         $edits.load=function (model) {
             $edits.model=model;
             $edits.forEach(function (edit) {
@@ -12218,7 +12220,10 @@ function genJS(klass, env) {//B
 			function getElemF(itn, isVar, vars) {
 				return function () {
 					vars.forEach(function (v,i) {
-						buf.printf("%s=%s[%s];%n", v.text, itn, i);
+						var an=annotation(v);
+						varAccess(v.text, an.scopeInfo,an);
+						buf.printf("=%s[%s];%n", itn, i);
+						//buf.printf("%s=%s[%s];%n", v.text, itn, i);
 					});
 				};
 			}
@@ -12964,7 +12969,15 @@ function annotateSource2(klass, env) {//B
 		"forin": function (node) {
 			var isVar=node.isVar;
 			node.vars.forEach(function (v) {
-				/* if (isVar) */ctx.locals.varDecls[v.text]=node;
+				if (isVar) {
+					if (ctx.isMain) {
+						annotation(v,{varInMain:true});
+						annotation(v,{declaringClass:klass});
+					} else {
+						ctx.locals.varDecls[v.text]=v;//node??;
+						annotation(v,{declaringFunc:ctx.finfo});
+					}
+				}
 			});
 			var n=genSym("_it_");
 			annotation(node, {iterName:n});
@@ -13727,6 +13740,9 @@ define(["Tonyu","Tonyu.Compiler.JSGenerator","Tonyu.Compiler.Semantics",
 				ttb,FS,A,DU,CPR,
 				S,TypeChecker) {
 var TPRC=function (dir) {
+	// Difference from TonyuProject
+	//    projectCompiler defines projects of Tonyu 'Language'.
+	//    Responsible for transpilation.
 	A(FS.isFile(dir) && dir.isDir(), "projectCompiler: "+dir+" is not dir obj");
 	var TPR={env:{}};
 	var traceTbl=Tonyu.TraceTbl;//();
@@ -13746,17 +13762,17 @@ var TPRC=function (dir) {
 		TPR.fixOptions(env.options);
 		return env.options;
 	};
+	TPR.fixOptions=function (opt) {
+		if (!opt.compiler) opt.compiler={};
+	};
+	TPR.setOptions=function (opt) {
+		TPR.getOptionsFile().obj(opt);
+	}; // ADDJSL
 	TPR.getEXT=function(){
 		var opt=TPR.getOptions();
 		if(!opt.language || opt.language=="js") TPR.EXT=".tonyu";
 		else TPR.EXT="."+opt.language;
 		return TPR.EXT;
-	};
-	TPR.setOptions=function (opt) {
-		TPR.getOptionsFile().obj(opt);
-	}; // ADDJSL
-	TPR.fixOptions=function (opt) {
-		if (!opt.compiler) opt.compiler={};
 	};
 	TPR.resolve=function (rdir){
 		if (rdir instanceof Array) {
@@ -14736,6 +14752,9 @@ define(["Tonyu", "ProjectCompiler", "TError", "FS", "Tonyu.TraceTbl","ImageList"
                 Blob,thumbnail,WebSite,plugins, Semantics, JSGenerator,
                 DU,CPRJ) {
 return Tonyu.Project=function (dir, kernelDir) {
+  // Difference from projectCompiler:
+  //   TonyuProject Defines Tonyu 'System' (the game engine) specific projects
+  //   such as resource management, booting.
     var TPR=ProjectCompiler(dir);
     var _super=Tonyu.extend({},TPR);
     TPR.EXT=".tonyu";
@@ -14749,19 +14768,19 @@ return Tonyu.Project=function (dir, kernelDir) {
     }
     var traceTbl=Tonyu.TraceTbl;//();
     var env={classes:Tonyu.classMetas, traceTbl:traceTbl, options:{compiler:{}} };
-    function orderByInheritance(classes) {/*ENVC*/
+    /*function orderByInheritance(classes) {//ENVC
         var added={};
         var res=[];
         var ccnt=0;
-        for (var n in classes) {/*ENVC*/
+        for (var n in classes) {//ENVC
             added[n]=false;
             ccnt++;
         }
         while (res.length<ccnt) {
             var p=res.length;
-            for (var n in classes) {/*ENVC*/
+            for (var n in classes) {//ENVC
                 if (added[n]) continue;
-                var c=classes[n];/*ENVC*/
+                var c=classes[n];//ENVC
                 var spc=c.superclass;
                 var deps=[spc];
                 var ready=true;
@@ -14777,7 +14796,7 @@ return Tonyu.Project=function (dir, kernelDir) {
             if (res.length==p) throw TError( "クラスの循環参照があります", "不明" ,0);
         }
         return res;
-    }
+    }*/
     TPR.env=env;
     TPR.dumpJS=function (n) {
         function dumpn(n) {
@@ -14891,7 +14910,7 @@ return Tonyu.Project=function (dir, kernelDir) {
             if (next) next();
         });
     };
-    TPR.getOptions=function () {
+    TPR.getOptions=function () {//override
         env.options=null;
         var resFile=dir.rel("options.json");
         if (resFile.exists()) env.options=resFile.obj();
@@ -14902,7 +14921,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         TPR.fixOptions(env.options);
         return env.options;
     };
-    TPR.fixOptions=function (opt) {
+    TPR.fixOptions=function (opt) {//override
         if (!opt.compiler) opt.compiler={};
         opt.compiler.commentLastPos=TPR.runScriptMode || StackTrace.isAvailable();
         if (!opt.plugins) {
@@ -15227,8 +15246,117 @@ define(["Shell","UI","FS","Util"], function (sh,UI,FS,Util) {
     };
     return res;
 });
+requireSimulator.setName('GlobalDialog');
+define(["UI","Klass"], function (UI,Klass) {
+    GlobalDialog=Klass.define({
+        $this:"t",
+        $:["prj"],
+        show: function (t,options) {
+            t.opt=t.prj.getOptions();
+            t.createDOM();
+            t.load();
+            t.dom.dialog({width:800,height:500});
+        },
+        load: function (t) {
+            if (!t.opt.run) t.opt.run={};
+            if (!t.opt.run.globals) t.opt.run.globals={};
+            var g=t.opt.run.globals;
+            var params=[];
+            for (var k in g) {
+                params.push({key:k,value:JSON.stringify(g[k])});
+            }
+            t.editor.keyvalueeditor("reset",params);
+        },
+        createDOM:function (t) {
+            if (t.dom) return t.dom;
+            t.dom=UI("div",{title:"グローバル変数設定"},
+                ["ul",
+                ["li","実行時に，これらのグローバル変数が指定した値に初期化されます．"],
+                  ["li","「値」欄には文字列またはJSON形式で記入してください．"]
+                  //["li","JSONとして解釈できない場合は，前後にダブルクォーテーションを自動的に追加し，文字列とみなします．"]
+                ],
+                ["div",{$var:"editor",css:{height:"350px","overflow-y":"scroll"}}],
+                ["div",["button",{on:{click:t.$bind.save}},"保存"]]
+            );
+            t.vars=$.data(t.dom,"vars");
+            console.log(t.vars,t.dom.$vars);
+            t.editor=t.vars.editor;
+            var params = {
+                placeHolderKey:"グローバル変数名",
+                placeHolderValue:"値",
+                toggleButton: null,
+                deleteButton:'<img class="deleteButton" src="images/delete.png">'
+            };
+            t.editor.keyvalueeditor('init',params);
+            t.editor.on('change', '.keyvalueeditor-key', function () {
+                var val=this.value;
+                if (!val.match(/^[a-zA-Z0-9_$]+$/)) {
+                    alert("変数名には半角英数字を使ってください");
+                    return;
+                }
+                if (!val.match(/^\$/)) {
+                    this.value="$"+this.value;
+                }
+                t.getValuesA();
+            });
+            t.editor.on('change', '.keyvalueeditor-value', function (e) {
+                var val=this.value;
+                try {
+                    var o=JSON.parse(val);
+                    this.value=JSON.stringify(o);
+                } catch (ex) {
+                    var qval=JSON.stringify(val);
+                    if (qval==='"'+val+'"') this.value=qval;
+                    else {
+                        alert("解釈できない値です．この値をそのまま文字列として登録したい場合，前後をダブルクォーテーションで囲ってください．\n"+
+                        "ダブルクォーテーション自身を文字列に含める場合は \\\" と書いてください．\n"+
+                        "\\自身を文字列に含める場合は \\\\ と書いてください．\n"
+                        );
+                        e.stopPropagation();
+                    }
+                }
+                t.getValuesA();
+            });
+            return t.dom;
+        },
+        save: function (t) {
+            var res=t.getValuesA();
+            if (res) {
+                t.opt.run.globals=res;
+                t.prj.setOptions(t.opt);
+                t.dom.dialog("close");
+            }
+        },
+        getValuesA: function (t) {
+            try {
+                return t.getValues();
+            } catch(e) {
+                console.error(e.stack);
+                alert(e);
+            }
+        },
+        getValues: function (t) {
+            var vs=t.editor.keyvalueeditor("getValues");
+            var res={};
+            vs.forEach(function (v) {
+                if (v.key in res) throw new Error("変数名'"+v.key+"'が重複しています．");
+                if (!v.key.match(/^\$[a-zA-Z0-9_$]*$/)) {
+                    throw new Error("変数名'"+v.key+"'はグローバル変数名として使えません．");
+                }
+                try {
+                    res[v.key]=JSON.parse(v.value);
+                } catch (e) {
+                    res[v.key]=v.value;
+                }
+            });
+            return res;
+        }
+    });
+    return GlobalDialog;
+});
+
 requireSimulator.setName('ProjectOptionsEditor');
-define(["UI"], function (UI) {
+define(["UI","GlobalDialog"], function (UI,GlobalDialog) {
     return function (TPR) {
         var opt=TPR.getOptions();
         //opt.id=Math.random();
@@ -15259,12 +15387,17 @@ define(["UI"], function (UI) {
                      ["h5","実行"],
                      ["div", "Main クラス", ["input", {$edit: "run.mainClass"}] ],
                      ["div", "Boot クラス", ["input", {$edit: "run.bootClass"}] ],
+                     ["div", "グローバル変数",["button", {on:{click: editG}},"編集..."] ],
                      ["h5","開発"],
                      ["div",
                       ["input", {type:"checkbox", $edit: "kernelEditable"}],
                       "Kernelの開発を行う"],
                       ["div", {$var:"validationMessage", css:{color:"red"}}]
             );
+        }
+        var gdiag=new GlobalDialog(TPR);
+        function editG() {
+          gdiag.show();
         }
         TPR.odiag.$edits.load(opt);
         TPR.odiag.dialog({
@@ -15854,7 +15987,7 @@ var PicoAudio = (function(){
 			}) : false;
 		} else {
 			oscillator.loop = true;
-			oscillator.buffer = this.whitenoise
+			oscillator.buffer = this.whitenoise;
 		}
 
 		if(context.createStereoPanner || context.createPanner){
@@ -16169,7 +16302,7 @@ var PicoAudio = (function(){
 		states.startTime = !states.startTime && !states.stopTime ? currentTime : (states.startTime + currentTime - states.stopTime);
 		states.stopFuncs = [];
 		// 冒頭の余白をスキップ
-		if (this.isSkipBeginning) {
+		if (this.settings.isSkipBeginning) {
 			var firstNoteOnTime = this.getTime(this.firstNoteOnTiming);
 			if (-states.startTime + currentTime < firstNoteOnTime) {
 				this.setStartTime(firstNoteOnTime + states.startTime - currentTime);
@@ -16468,7 +16601,6 @@ var PicoAudio = (function(){
 					var lengthAry = variableLengthToInt(smf.subarray(p, p+5));
 					var dt = lengthAry[0];
 					time += dt;
-					if(time>100000000) time = 100000000; // 長すぎる曲は途中で打ち切る(PicotuneのCanvas生成で時間がかかるため)
 					p += lengthAry[1];
 				}
 				// WebMIDIAPI
@@ -16630,9 +16762,8 @@ var PicoAudio = (function(){
 					}
 				}
 			}
-			if(songLength<time) songLength = time;
+			if(!this.settings.isSkipEnding && songLength<time) songLength = time;
 		}
-		tempoTrack.push({ timing:songLength, value:120 });
 
 		// Midi Events (0x8n - 0xEn) parse
 		for(var ch=0; ch<channels.length; ch++){
@@ -16861,6 +16992,8 @@ var PicoAudio = (function(){
 			}
 			delete channel.messages;
 		}
+		if(this.settings.isSkipEnding) songLength = lastNoteOffTiming;
+		tempoTrack.push({ timing:songLength, value:120 });
 
 		data.header = header;
 		data.tempoTrack = tempoTrack;
@@ -19608,6 +19741,8 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                          ["button", {on:{click:function (){ d.dialog("close"); }}}, "完了"]
             ));
             function dropAdd(e) {
+                e.stopPropagation();
+                e.preventDefault();
                 var eo=e.originalEvent;
                 var files = eo.dataTransfer.files;
                 var readFiles = new Array(files.length);
@@ -19620,8 +19755,6 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                     if(!file.type.match(mediaInfo.contentType)) {
                         readFileSum--;
                         notReadFiles.push(file);
-                        e.stopPropagation();
-                        e.preventDefault();
                         continue;
                     }
                     var itemName=file.name.replace(mediaInfo.extPattern,"").replace(/\W/g,"_");
@@ -19634,18 +19767,19 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                     var existsFile;
                     var fileExists=tempFiles.some(function(f){
                         existsFile=f;
-                        return f.url==itemRelPath;
+                        var fNameTemp=f.url.replace(mediaInfo.extPattern,"");
+                        var fName=fNameTemp.substring(fNameTemp.lastIndexOf("/")+1,fNameTemp.length);
+                        return fName==itemName;
                     });
                     if (fileExists) {
                         readFileSum--;
                         file.existsFile=existsFile;
                         existsFiles.push(file);
-                        e.stopPropagation();
-                        e.preventDefault();
                         continue;
                     }
 
                     var v=mediaInfo.newItem(itemName);
+                    v.url=itemRelPath;
                     renameUnique(v);
                     tempFiles.push(v);
                     if (useBlob) {
@@ -19703,15 +19837,17 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                     alert(mes);
                 }
                 if (existsFiles.length>0) {
-                    var mes="この名前のファイルは既に登録されています：\n";
+                    var mes="同じ名前のファイルが既に登録されています：\n";
                     existsFiles.forEach(function(f){
-                        if (f) mes+=f.name+" ("+f.existsFile.name+")\n";
+                        if (f) {
+                            var fNameTemp=f.existsFile.url;
+                            var fName=fNameTemp.substring(fNameTemp.lastIndexOf("/")+1,fNameTemp.length);
+                            mes+=f.name+" ⇒ "+fName+"("+f.existsFile.name+") と重複\n";
+                            //mes+=f.name+" ("+f.existsFile.name+")\n";
+                        }
                     });
                     alert(mes);
                 }
-
-                e.stopPropagation();
-                e.preventDefault();
                 return false;
             }
             function s(e) {
@@ -19732,11 +19868,13 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                 function del() {
                     for (var i=items.length-1; i>=0 ; i--) {
                         if (items[i]===item) {
-                            var r=Assets.resolve( items[i].url, prj,{asFile:1});
-                            if (FS.isFile(r) && rsrcDir.contains(r)) {
-                                console.log(r.path()," is removed.");
-                                r.rm();
-                            }
+                            try {
+                                var r=Assets.resolve( items[i].url, prj,{asFile:1});
+                                if (FS.isFile(r) && rsrcDir.contains(r)) {
+                                    console.log(r.path()," is removed.");
+                                    r.rm();
+                                }
+                            } catch(e) {}
                             items.splice(i,1);
                             break;
                         }
@@ -20665,7 +20803,7 @@ requirejs(["Util", "Tonyu", "FS", "PathUtil","FileList", "FileMenu",
            "UI","ResEditor","WebSite","exceptionCatcher","Tonyu.TraceTbl",
            "Log","MainClassDialog","DeferredUtil","NWMenu",
            "ProjectCompiler","compiledProject","mkrunDiag","zip","LSFS","WebFS",
-           "extLink","DiagAdjuster","ExportHTMLDialog","RunDialog"
+           "extLink","DiagAdjuster","ExportHTMLDialog","RunDialog","GlobalDialog"
           ],
 function (Util, Tonyu, FS, PathUtil, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,
@@ -20674,7 +20812,7 @@ function (Util, Tonyu, FS, PathUtil, FileList, FileMenu,
           UI,ResEditor,WebSite,EC,TTB,
           Log,MainClassDialog,DU,NWMenu,
           TPRC,CPPRJ,mkrunDiag,zip,LSFS,WebFS,
-          extLink,DiagAdjuster,ExportHTMLDialog,RunDialog
+          extLink,DiagAdjuster,ExportHTMLDialog,RunDialog,GlobalDialog
           ) {
 $(function () {
     if (!WebSite.isNW) {
@@ -20746,8 +20884,9 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     }
     Tonyu.defaultOptions={
         compiler: { defaultSuperClass: "Actor"},
-        run: {mainClass: "Main", bootClass: "Boot"},
-        kernelEditable: false
+        run: {mainClass: "Main", bootClass: "Boot", globals:{$defaultFPS:60}},
+        kernelEditable: false,
+        version: Tonyu.VERSION
     };
     setDiagMode(false);
     //ImageList(Tonyu.defaultResource.images, Sprites.setImageList);
@@ -20840,10 +20979,12 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         }).then(function () {
             refactorUI=null;
             return reloadFromFiles();
-        }).fail(function (e) {
+        }).catch(function (e) {
             alert("プログラム内にエラーがあります．エラーを修正するか，「プログラム中のクラス名も変更する」のチェックを外してもう一度やり直してください．");
             console.log(e);
             return false;
+        }).finally(function () {
+            if (typeof SplashScreen==="object") SplashScreen.hide();
         });
         //close(old);  does in FileMenu
     };

@@ -1,4 +1,4 @@
-// Created at Sat Mar 31 2018 15:43:38 GMT+0900 (東京 (標準時))
+// Created at Sat Apr 21 2018 21:10:52 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -4795,7 +4795,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
-			VERSION:1522478582355,//EMBED_VERSION
+			VERSION:1524312603658,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -5761,7 +5761,7 @@ var PicoAudio = (function(){
 			}) : false;
 		} else {
 			oscillator.loop = true;
-			oscillator.buffer = this.whitenoise
+			oscillator.buffer = this.whitenoise;
 		}
 
 		if(context.createStereoPanner || context.createPanner){
@@ -6076,7 +6076,7 @@ var PicoAudio = (function(){
 		states.startTime = !states.startTime && !states.stopTime ? currentTime : (states.startTime + currentTime - states.stopTime);
 		states.stopFuncs = [];
 		// 冒頭の余白をスキップ
-		if (this.isSkipBeginning) {
+		if (this.settings.isSkipBeginning) {
 			var firstNoteOnTime = this.getTime(this.firstNoteOnTiming);
 			if (-states.startTime + currentTime < firstNoteOnTime) {
 				this.setStartTime(firstNoteOnTime + states.startTime - currentTime);
@@ -6375,7 +6375,6 @@ var PicoAudio = (function(){
 					var lengthAry = variableLengthToInt(smf.subarray(p, p+5));
 					var dt = lengthAry[0];
 					time += dt;
-					if(time>100000000) time = 100000000; // 長すぎる曲は途中で打ち切る(PicotuneのCanvas生成で時間がかかるため)
 					p += lengthAry[1];
 				}
 				// WebMIDIAPI
@@ -6537,9 +6536,8 @@ var PicoAudio = (function(){
 					}
 				}
 			}
-			if(songLength<time) songLength = time;
+			if(!this.settings.isSkipEnding && songLength<time) songLength = time;
 		}
-		tempoTrack.push({ timing:songLength, value:120 });
 
 		// Midi Events (0x8n - 0xEn) parse
 		for(var ch=0; ch<channels.length; ch++){
@@ -6768,6 +6766,8 @@ var PicoAudio = (function(){
 			}
 			delete channel.messages;
 		}
+		if(this.settings.isSkipEnding) songLength = lastNoteOffTiming;
+		tempoTrack.push({ timing:songLength, value:120 });
 
 		data.header = header;
 		data.tempoTrack = tempoTrack;
@@ -8093,6 +8093,8 @@ define(["Util","exceptionCatcher"],function (Util, EC) {
         var res=parse(expr);
         res.$edits=$edits;
         res.$vars=$vars;
+        $.data(res,"edits",$edits);
+        $.data(res,"vars",$vars);
         $edits.load=function (model) {
             $edits.model=model;
             $edits.forEach(function (edit) {
