@@ -5,6 +5,9 @@ define(["Tonyu", "ProjectCompiler", "TError", "FS", "Tonyu.TraceTbl","ImageList"
                 Blob,thumbnail,WebSite,plugins, Semantics, JSGenerator,
                 DU,CPRJ) {
 return Tonyu.Project=function (dir, kernelDir) {
+  // Difference from projectCompiler:
+  //   TonyuProject Defines Tonyu 'System' (the game engine) specific projects
+  //   such as resource management, booting.
     var TPR=ProjectCompiler(dir);
     var _super=Tonyu.extend({},TPR);
     TPR.EXT=".tonyu";
@@ -18,19 +21,19 @@ return Tonyu.Project=function (dir, kernelDir) {
     }
     var traceTbl=Tonyu.TraceTbl;//();
     var env={classes:Tonyu.classMetas, traceTbl:traceTbl, options:{compiler:{}} };
-    function orderByInheritance(classes) {/*ENVC*/
+    /*function orderByInheritance(classes) {//ENVC
         var added={};
         var res=[];
         var ccnt=0;
-        for (var n in classes) {/*ENVC*/
+        for (var n in classes) {//ENVC
             added[n]=false;
             ccnt++;
         }
         while (res.length<ccnt) {
             var p=res.length;
-            for (var n in classes) {/*ENVC*/
+            for (var n in classes) {//ENVC
                 if (added[n]) continue;
-                var c=classes[n];/*ENVC*/
+                var c=classes[n];//ENVC
                 var spc=c.superclass;
                 var deps=[spc];
                 var ready=true;
@@ -46,7 +49,7 @@ return Tonyu.Project=function (dir, kernelDir) {
             if (res.length==p) throw TError( "クラスの循環参照があります", "不明" ,0);
         }
         return res;
-    }
+    }*/
     TPR.env=env;
     TPR.dumpJS=function (n) {
         function dumpn(n) {
@@ -160,7 +163,7 @@ return Tonyu.Project=function (dir, kernelDir) {
             if (next) next();
         });
     };
-    TPR.getOptions=function () {
+    TPR.getOptions=function () {//override
         env.options=null;
         var resFile=dir.rel("options.json");
         if (resFile.exists()) env.options=resFile.obj();
@@ -171,7 +174,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         TPR.fixOptions(env.options);
         return env.options;
     };
-    TPR.fixOptions=function (opt) {
+    TPR.fixOptions=function (opt) {//override
         if (!opt.compiler) opt.compiler={};
         opt.compiler.commentLastPos=TPR.runScriptMode || StackTrace.isAvailable();
         if (!opt.plugins) {

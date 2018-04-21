@@ -5,7 +5,7 @@ requirejs(["Util", "Tonyu", "FS", "PathUtil","FileList", "FileMenu",
            "UI","ResEditor","WebSite","exceptionCatcher","Tonyu.TraceTbl",
            "Log","MainClassDialog","DeferredUtil","NWMenu",
            "ProjectCompiler","compiledProject","mkrunDiag","zip","LSFS","WebFS",
-           "extLink","DiagAdjuster","ExportHTMLDialog","RunDialog"
+           "extLink","DiagAdjuster","ExportHTMLDialog","RunDialog","GlobalDialog"
           ],
 function (Util, Tonyu, FS, PathUtil, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,
@@ -14,7 +14,7 @@ function (Util, Tonyu, FS, PathUtil, FileList, FileMenu,
           UI,ResEditor,WebSite,EC,TTB,
           Log,MainClassDialog,DU,NWMenu,
           TPRC,CPPRJ,mkrunDiag,zip,LSFS,WebFS,
-          extLink,DiagAdjuster,ExportHTMLDialog,RunDialog
+          extLink,DiagAdjuster,ExportHTMLDialog,RunDialog,GlobalDialog
           ) {
 $(function () {
     if (!WebSite.isNW) {
@@ -86,7 +86,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     }
     Tonyu.defaultOptions={
         compiler: { defaultSuperClass: "Actor"},
-        run: {mainClass: "Main", bootClass: "Boot"},
+        run: {mainClass: "Main", bootClass: "Boot", globals:{$defaultFPS:60}},
         kernelEditable: false
     };
     setDiagMode(false);

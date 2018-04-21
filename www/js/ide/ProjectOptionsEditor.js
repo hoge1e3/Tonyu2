@@ -1,4 +1,4 @@
-define(["UI"], function (UI) {
+define(["UI","GlobalDialog"], function (UI,GlobalDialog) {
     return function (TPR) {
         var opt=TPR.getOptions();
         //opt.id=Math.random();
@@ -29,12 +29,17 @@ define(["UI"], function (UI) {
                      ["h5","実行"],
                      ["div", "Main クラス", ["input", {$edit: "run.mainClass"}] ],
                      ["div", "Boot クラス", ["input", {$edit: "run.bootClass"}] ],
+                     ["div", "グローバル変数",["button", {on:{click: editG}},"編集..."] ],
                      ["h5","開発"],
                      ["div",
                       ["input", {type:"checkbox", $edit: "kernelEditable"}],
                       "Kernelの開発を行う"],
                       ["div", {$var:"validationMessage", css:{color:"red"}}]
             );
+        }
+        var gdiag=new GlobalDialog(TPR);
+        function editG() {
+          gdiag.show();
         }
         TPR.odiag.$edits.load(opt);
         TPR.odiag.dialog({

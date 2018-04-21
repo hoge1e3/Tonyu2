@@ -12,6 +12,8 @@ define(["Util","exceptionCatcher"],function (Util, EC) {
         var res=parse(expr);
         res.$edits=$edits;
         res.$vars=$vars;
+        $.data(res,"edits",$edits);
+        $.data(res,"vars",$vars);
         $edits.load=function (model) {
             $edits.model=model;
             $edits.forEach(function (edit) {

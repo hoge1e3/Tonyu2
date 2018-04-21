@@ -5,6 +5,9 @@ define(["Tonyu","Tonyu.Compiler.JSGenerator","Tonyu.Compiler.Semantics",
 				ttb,FS,A,DU,CPR,
 				S,TypeChecker) {
 var TPRC=function (dir) {
+	// Difference from TonyuProject
+	//    projectCompiler defines projects of Tonyu 'Language'.
+	//    Responsible for transpilation.
 	A(FS.isFile(dir) && dir.isDir(), "projectCompiler: "+dir+" is not dir obj");
 	var TPR={env:{}};
 	var traceTbl=Tonyu.TraceTbl;//();
@@ -24,17 +27,17 @@ var TPRC=function (dir) {
 		TPR.fixOptions(env.options);
 		return env.options;
 	};
+	TPR.fixOptions=function (opt) {
+		if (!opt.compiler) opt.compiler={};
+	};
+	TPR.setOptions=function (opt) {
+		TPR.getOptionsFile().obj(opt);
+	}; // ADDJSL
 	TPR.getEXT=function(){
 		var opt=TPR.getOptions();
 		if(!opt.language || opt.language=="js") TPR.EXT=".tonyu";
 		else TPR.EXT="."+opt.language;
 		return TPR.EXT;
-	};
-	TPR.setOptions=function (opt) {
-		TPR.getOptionsFile().obj(opt);
-	}; // ADDJSL
-	TPR.fixOptions=function (opt) {
-		if (!opt.compiler) opt.compiler={};
 	};
 	TPR.resolve=function (rdir){
 		if (rdir instanceof Array) {

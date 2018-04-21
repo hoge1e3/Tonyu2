@@ -151,6 +151,7 @@ var reqConf={
             "MainClassDialog": "ide/MainClassDialog",
             "NWMenu": "ide/NWMenu",
             "NewProjectDialog": "ide/NewProjectDialog",
+            "GlobalDialog": "ide/",
             "ExportHTMLDialog": "ide/",
             "ImportHTMLDialog": "ide/",
             "OggConverter": "ide/OggConverter",

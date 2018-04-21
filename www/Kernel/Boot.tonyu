@@ -16,6 +16,7 @@ native Array;
 Tonyu.resetLoopCheck(10000);
 $Boot=this;
 _scheduler=$Scheduler=new Scheduler;
+initGlobals();
 initEvents();
 initLayers();
 initPeripherals();
@@ -60,6 +61,15 @@ mainLoop();
 }
 \update() {
     waitFor(Tonyu.timeout(50)); // waitFor calls update...
+}
+\initGlobals() {
+  var opt=Tonyu.currentProject.getOptions();
+  if (opt.run && opt.run.globals) {
+    var g=opt.run.globals;
+    for (var name in g) {
+      Tonyu.setGlobal(name, g[name]);
+    }
+  }
 }
 \initEvents() {
     // used in EventMod
@@ -396,7 +406,7 @@ nowait \afterDraw(drawn) {// should call (after draw) or (move and frame skip)
 }
 nowait \initFPSParams() {
     // フレームレートの設定
-    _fps = 30;
+    _fps = $defaultFPS || 30;
     maxFrameSkip = 5;
     minFrameSkip = 1;
     // フレームレート制御でつかう変数 //
