@@ -87,7 +87,8 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     Tonyu.defaultOptions={
         compiler: { defaultSuperClass: "Actor"},
         run: {mainClass: "Main", bootClass: "Boot", globals:{$defaultFPS:60}},
-        kernelEditable: false
+        kernelEditable: false,
+        version: Tonyu.VERSION
     };
     setDiagMode(false);
     //ImageList(Tonyu.defaultResource.images, Sprites.setImageList);
