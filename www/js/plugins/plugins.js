@@ -44,7 +44,7 @@ define(["WebSite"],function (WebSite){
         if (!i) throw new Error("plugin not found: "+name);
         options=convOpt(options);
         var src=WebSite.pluginTop+"/"+i.src;
-        if (location.href.match(/^file:/)) {
+        if (location.href.match(/^chrome-extension:/)) {
             $("<script>").attr("src",src).appendTo("body");
             setTimeout(options.onload,500);
         } else {
