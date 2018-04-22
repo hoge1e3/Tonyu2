@@ -1,9 +1,9 @@
 x=230;
-y=460;
+y=455;
 vx=-3+i*0.5;
 vy=-25;
 fillStyle="black";
-size=40;
+size=38;
 while(vy<12) {
     x+=vx;y+=vy;
     vy+=1;
