@@ -1,5 +1,5 @@
 {
-  "name": "Tonyu2",
+  "name": "Tonyu2-runtime",
   "main": "Demo/index.html",
   "single-instance": false,
   "window": {

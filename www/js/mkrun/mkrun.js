@@ -139,6 +139,7 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu"],
             );
         }
         function addFileToLoadFiles(name, data) {
+            dest.rel(name).obj(data);
             loadFilesBuf+="\tdir.rel('"+name+"').obj("+JSON.stringify(data)+");\n";
         }
         function convertLSURL(r) {
