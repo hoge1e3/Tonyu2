@@ -58,7 +58,8 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu"],
         var prjDir=prj.getDir();
         var resc=prj.getResource();
         var opt=prj.getOptions();
-        var loadFilesBuf="function loadFiles(dir){\n";
+        var loadFilesBuf="function loadFiles(dir){\n"+
+        "   if (WebSite.isNW) return;\n";
         var wwwDir=FS.get(WebSite.wwwDir);
         var jsDir=wwwDir.rel("js/");
         console.log("jsDir",jsDir);
