@@ -141,7 +141,7 @@ define(["FS","Platform"], function (FS,Platform) {
 		loc.match(/localhost:8887/) ||
 		(
 		/*(
-			loc.match(/^file:/) ||
+			loc.match(/^chrome-extension:/) ||
 			loc.match(/localhost/) ||
 			loc.match(/tonyuedit\.appspot\.com/)
 		) &&*/

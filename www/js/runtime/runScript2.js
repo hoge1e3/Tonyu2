@@ -35,13 +35,11 @@ requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu
 
 		var curProjectDir;
 		if (WebSite.isNW) {
-			var home=location.href.replace(/^file:\/\//,"");
-			if (home.match(/^\/[a-z]:/i)) {
-				home=home.replace(/^\//,"");
-			}
-			home=FS.get(home);
+			var cur=process.cwd().replace(/\\/g,"/");
+			var prj=location.href.replace(/^chrome-extension:\/\/\w*/,"");
+			home=FS.get(cur+prj);
 			if (!home.isDir()) home=home.up();
-			curProjectDir=home.rel("data/");
+			curProjectDir=home;
 		} else {
 			var locs=location.href.replace(/\?.*/,"").split(/\//);
 			var prj=locs.pop() || "runscript";
