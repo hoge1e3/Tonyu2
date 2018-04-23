@@ -1,0 +1,30 @@
+Tonyu2.exe
+d3dcompiler_47.dll
+ffmpeg.dll
+icudtl.dat
+libEGL.dll
+libGLESv2.dll
+locales
+natives_blob.bin
+node.dll
+node_modules  ?
+nw.dll
+nw_100_percent.pak
+nw_200_percent.pak
+nw_elf.dll
+resources.pak
+snapshot_blob.bin  XX(deleted at v30)
+v8_context_snapshot.bin  (added at v30) 
+swiftshader/libGLESv2.dll  (added at v30)
+swiftshader/libEGL.dll  (added at v30)
+
+---------(Not-related)
+LICENSE.txt
+Libs.txt
+Projects
+README.md
+Samples
+package.json
+runtimes
+www
+
