@@ -1,4 +1,4 @@
-// Created at Sat Apr 21 2018 21:10:07 GMT+0900 (東京 (標準時))
+// Created at Mon Apr 23 2018 11:55:11 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -3633,7 +3633,7 @@ define(["FS","Platform"], function (FS,Platform) {
 		loc.match(/localhost:8887/) ||
 		(
 		/*(
-			loc.match(/^file:/) ||
+			loc.match(/^chrome-extension:/) ||
 			loc.match(/localhost/) ||
 			loc.match(/tonyuedit\.appspot\.com/)
 		) &&*/

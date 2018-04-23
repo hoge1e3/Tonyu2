@@ -1,4 +1,4 @@
-// Created at Sat Apr 21 2018 21:10:52 GMT+0900 (東京 (標準時))
+// Created at Mon Apr 23 2018 11:55:28 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -3331,7 +3331,7 @@ define(["FS","Platform"], function (FS,Platform) {
 		loc.match(/localhost:8887/) ||
 		(
 		/*(
-			loc.match(/^file:/) ||
+			loc.match(/^chrome-extension:/) ||
 			loc.match(/localhost/) ||
 			loc.match(/tonyuedit\.appspot\.com/)
 		) &&*/
@@ -3562,7 +3562,7 @@ define(["WebSite"],function (WebSite){
         if (!i) throw new Error("plugin not found: "+name);
         options=convOpt(options);
         var src=WebSite.pluginTop+"/"+i.src;
-        if (location.href.match(/^file:/)) {
+        if (location.href.match(/^chrome-extension:/)) {
             $("<script>").attr("src",src).appendTo("body");
             setTimeout(options.onload,500);
         } else {
@@ -3576,6 +3576,7 @@ define(["WebSite"],function (WebSite){
     };
     return plugins;
 });
+
 requireSimulator.setName('DeferredUtil');
 define(["FS"],function (FS){return FS.DeferredUtil;});
 
@@ -4795,7 +4796,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
-			VERSION:1524312603658,//EMBED_VERSION
+			VERSION:1524452110460,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -8399,13 +8400,11 @@ requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu
 
 		var curProjectDir;
 		if (WebSite.isNW) {
-			var home=location.href.replace(/^file:\/\//,"");
-			if (home.match(/^\/[a-z]:/i)) {
-				home=home.replace(/^\//,"");
-			}
-			home=FS.get(home);
+			var cur=process.cwd().replace(/\\/g,"/");
+			var prj=location.href.replace(/^chrome-extension:\/\/\w*/,"");
+			home=FS.get(cur+prj);
 			if (!home.isDir()) home=home.up();
-			curProjectDir=home.rel("data/");
+			curProjectDir=home;
 		} else {
 			var locs=location.href.replace(/\?.*/,"").split(/\//);
 			var prj=locs.pop() || "runscript";
