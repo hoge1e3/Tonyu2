@@ -115,7 +115,7 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu"],
             var kerjs=FS.get(WebSite.kernelDir).rel("js/concat.js");
             var runScr2=jsDir.rel("gen/runScript2_concat.js");
             return $.when(
-                usrjsmap.copyTo(dest.rel("js/concat.js.map")),
+                usrjsmap.exists() && usrjsmap.copyTo(dest.rel("js/concat.js.map")),
                 usrjs.copyTo(dest.rel("js/concat.js")),
                 kerjs.copyTo(dest.rel("js/kernel.js")),
                 runScr2.copyTo(dest.rel("js/runScript2_concat.js"))

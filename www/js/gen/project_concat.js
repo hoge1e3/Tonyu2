@@ -1,4 +1,4 @@
-// Created at Mon Apr 23 2018 11:55:14 GMT+0900 (東京 (標準時))
+// Created at Thu Apr 26 2018 17:14:52 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -4223,7 +4223,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,
-			VERSION:1524452110460,//EMBED_VERSION
+			VERSION:1524730487842,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -20271,7 +20271,8 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu"],
         var prjDir=prj.getDir();
         var resc=prj.getResource();
         var opt=prj.getOptions();
-        var loadFilesBuf="function loadFiles(dir){\n";
+        var loadFilesBuf="function loadFiles(dir){\n"+
+        "   if (WebSite.isNW) return;\n";
         var wwwDir=FS.get(WebSite.wwwDir);
         var jsDir=wwwDir.rel("js/");
         console.log("jsDir",jsDir);
@@ -20327,7 +20328,7 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu"],
             var kerjs=FS.get(WebSite.kernelDir).rel("js/concat.js");
             var runScr2=jsDir.rel("gen/runScript2_concat.js");
             return $.when(
-                usrjsmap.copyTo(dest.rel("js/concat.js.map")),
+                usrjsmap.exists() && usrjsmap.copyTo(dest.rel("js/concat.js.map")),
                 usrjs.copyTo(dest.rel("js/concat.js")),
                 kerjs.copyTo(dest.rel("js/kernel.js")),
                 runScr2.copyTo(dest.rel("js/runScript2_concat.js"))
@@ -20416,23 +20417,32 @@ function (UI,extLink,mkrun,Tonyu,zip,DU) {
     res.embed=function (prj,/*dest,*/options) {
         options=options||{};
         var dest=options.dest;
+        var ote={
+            click: function () {
+                if (outtype.value==="dir") {
+                    vars.dest.prop("disabled",false);
+                } else {
+                    vars.dest.prop("disabled",true);
+                }
+            }
+        };
         if (!res.d) {
             res.d=UI("div",{title:"ランタイム作成"},
                   // ["span", {$var:"hiddenFolder"},
                   ["form",{action:"javascript:;",$var:"form",name:"mkrunform"},
                 ["h1","出力方法"],
                     ["div",
-                        ["input", {id:"src",type:"radio",name:"outtype",value:"zip"}],
+                        ["input", {type:"radio",name:"outtype",value:"zip",on:ote}],
                         ["label",{"for":"outtype"},"ZIP圧縮したものを保存する"]
                     ],//],
                     ["div",
-                        ["input", {id:"src",type:"radio",name:"outtype",value:"prj"}],
+                        ["input", {type:"radio",name:"outtype",value:"prj",on:ote}],
                         ["label",{"for":"outtype"},"プロジェクトボードにアップロードする"]
                     ],//],
                     ["div",{$var:"folder"},
-                        ["input",{type:"radio",name:"outtype",value:"dir"}],
+                        ["input",{type:"radio",name:"outtype",value:"dir",on:ote}],
                         ["label",{"for":"dest"},"次のフォルダに出力："],["br"],
-                        ["input", {id:"dest",$edit:"dest",size:60}]
+                        ["input", {$var:"dest",id:"dest",$edit:"dest",size:60}]
                     ],
                 ["h1","オプション"],
                     ["div",
@@ -20451,15 +20461,16 @@ function (UI,extLink,mkrun,Tonyu,zip,DU) {
             );
         }
         var vars=res.d.$vars;
-        res.d.$vars.OKButton.prop("disabled", false);
+        vars.OKButton.prop("disabled", false);
         if (!options.dest) {
-            res.d.$vars.folder.hide();
+            vars.folder.hide();
         } else {
-            res.d.$vars.folder.show();
+            vars.folder.show();
         }
         var model={dest:dest?dest.path():"", src:true, zip:true};
-        var form=res.d.$vars.form[0];
+        var form=vars.form[0];
         var outtype=form.outtype;
+        vars.dest.prop("disabled",true);
         outtype.value="zip";
         res.d.$edits.load(model);
         res.run=function () {
