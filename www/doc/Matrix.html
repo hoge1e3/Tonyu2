@@ -1,0 +1,99 @@
+<html><body class="markdown-body">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><a href="api">api</a></p>
+<h1 id="matrix-">Matrixクラス</h1>
+<p>2次元配列を扱うクラスです．縦横の要素数の限度はなく，任意の座標に要素（任意の値，オブジェクト）を格納できます．</p>
+<h2 id="-">例</h2>
+<pre><code class="lang-JS">m=new Matrix;
+m.set(3,5,&quot;test&quot;);
+print(m.get(3,5)); // test
+m.set(4,6,{name:&quot;tonyu&quot;});
+print(m.get(4,6).name);// tonyu
+</code></pre>
+<h2 id="-">コンストラクタ</h2>
+<pre><code class="lang-JS">new Matrix
+</code></pre>
+<p>空のMatrixを作成します．</p>
+<pre><code class="lang-JS">new Matrix(data)
+</code></pre>
+<p>指定されたデータをもつMatrixを作成します．<code>data</code>にはオブジェクトを指定します．キーには横座標,縦座標をあらわす数値をカンマで区切った文字列を与えます（例:<code>&quot;12,34&quot;</code>)．</p>
+<h2 id="-">プロパティ</h2>
+<ul>
+<li>xmin,xmax,ymin,ymax<ul>
+<li>それぞれ，現在データが格納されている領域のx座標またはy座標の最大値または最小値を返します．</li>
+<li>データが１つも格納されていない場合，<code>undefined</code>が返ります．</li>
+</ul>
+</li>
+<li>rows, cols<ul>
+<li>データが格納されている領域の高さ，幅を返します．</li>
+</ul>
+</li>
+<li>例:(-5,4)と(5,6)にデータを格納した場合<ul>
+<li>xmin=-5, xmax=5, ymin=4, ymax=6，</li>
+<li>rows=6-4+1=3, cols=5-(-5)+1=11</li>
+</ul>
+</li>
+<li>neighborDirs<ul>
+<li>neighbors メソッドにおいて，隣接領域のデフォルトの数（4または8）を指定します．</li>
+</ul>
+</li>
+</ul>
+<h2 id="-">メソッド</h2>
+<ul>
+<li>set(x,y,d)<ul>
+<li>(x,y)の位置にデータdを格納します．</li>
+</ul>
+</li>
+<li>get(x,y)<ul>
+<li>(x,y)の位置に格納されているデータを読み出します．格納されていない場合は<code>undefined</code>を返します．</li>
+</ul>
+</li>
+<li>load(csvfile)<ul>
+<li>csvファイルからデータを読み込みます．</li>
+</ul>
+</li>
+<li>search(value)<ul>
+<li>指定された値がある場所をオブジェクト{x,y}で返します．</li>
+</ul>
+</li>
+<li>cross(rowValue,colValue)<ul>
+<li>rowValueで指定された値がある行，colValueで指定された値がある列が交わる箇所の値を返します．</li>
+</ul>
+</li>
+<li>crop(params)<ul>
+<li>指定した領域のデータだけを切り出した新しいMatrixオブジェクトを返します．</li>
+<li>params には，left,top,right,bottom,width,height,keepXY を属性にもつオブジェクトを渡します（一部省略可能）<ul>
+<li><code>left, top</code>: 切り出す位置の左上の座標（必須）</li>
+<li><code>right, bottom</code>: 切り出す位置の右下の座標（<code>width,height</code>を指定した場合は省略）</li>
+<li><code>width, height</code>: 切り出す領域の幅と高さ（<code>right,bottom</code>を指定した場合は省略）</li>
+<li><code>keepXY</code>: trueを指定した場合，切り出したあとの新しいMatrixオブジェクトをにおいて，各データのある座標をこのMatrixオブジェクトと同じ座標にする．falseを指定したり省略したりした場合，切り出した範囲の左上(left,top)にあるデータは，新しいMatrixオブジェクトにおいては(0,0)の位置に配置され，他のデータの座標もそれに準じてずれる．</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>neighbors(x,y,options)<ul>
+<li>このMatrixオブジェクトの指定された位置(x,y)を中心とし，それに隣接する要素の座標とデータを配列で返します．</li>
+<li><code>options</code> には次を指定できます<ul>
+<li><code>dirs</code>  隣接する領域の数．4または8を指定．4を指定した場合，上下左右のみを隣接するとみなし，8の場合は斜めも含めて隣接するとみなす．省略した場合はneighborDirsを用いる．</li>
+<li><code>includeEmpty</code>  trueを指定した場合，データのない要素も含めて結果に返す(<code>value</code>は<code>undefined</code>になる)</li>
+</ul>
+</li>
+<li>戻り値は，隣接する要素をあわらす次のオブジェクトの配列になります<ul>
+<li><code>{x:x座標, y:y座標, ox:中心からの変位のx座標, oy:中心からの変位のy座標, value:データ }</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="for-in">for ... in</h2>
+<p>データが格納されている領域内について繰り返します．</p>
+<pre><code class="lang-JS">// mはMatrixクラスのオブジェクト
+for (x,y,d in m) {
+    // xmin&lt;=x&lt;=xmax,  ymin&lt;=y&lt;=ymax をみたすすべての座標について繰り返す
+    // x,y に座標, dにデータ(格納されていない場所ではundefined)
+}
+</code></pre>
+</body></html>
