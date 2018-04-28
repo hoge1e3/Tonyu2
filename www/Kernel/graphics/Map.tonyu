@@ -48,7 +48,10 @@ native $;
         }
     }
 }
-\redrawMap(){
+\redrawMap() {
+    return redraw();
+}
+\redraw(){
     if(!mapTable) return;
     buf=$("<canvas>").attr{width:col*chipWidth,height:row*chipHeight};
     for(var i=0;i<row;i++){

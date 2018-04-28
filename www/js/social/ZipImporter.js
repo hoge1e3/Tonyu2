@@ -75,6 +75,12 @@ function (Klass,FS,Util,DD,DU,UI) {
                 }
             };
             return FS.zip.unzip(file, zipexdir,opt ).then(function () {
+                if (ctx.rel) {
+                    zipexdir=zipexdir.rel(ctx.rel);
+                    if (!zipexdir.exists()) {
+                        return ctx;
+                    }
+                }
                 return t.traverse(zipexdir,ctx);
             }).then(function (ctx) {
                 if (ctx.from==="prjB" && ctx.imported===0) throw new Error(
@@ -146,7 +152,7 @@ function (Klass,FS,Util,DD,DU,UI) {
                     return 0;
                 }
                 FS.mount("https://edit.tonyu.jp/","web");
-                var ctx={from:"prjB", imported:0, dstDir:dstDir};
+                var ctx={from:"prjB", imported:0, dstDir:dstDir, rel:"src/"};
                 return t.fromPrjB(file,ctx).then(function (r) {
                     t.closeDialog();
                     if (t.onComplete) t.onComplete(ctx);
