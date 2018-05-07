@@ -1,5 +1,6 @@
 Bug
- Zipファイル解凍後，daturlのでコードでエラー
+ The AudioContext was not allowed to start. It must be resume (or created) after a user gesture on the page. https://goo.gl/7K7WLu
+ Zipファイル解凍後，dataurlのでコードでエラー
  Actor表示座標は整数
  ResEditor
     Add new image
