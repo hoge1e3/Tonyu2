@@ -19,7 +19,7 @@ native T2MediaLib;
 \newTouch(i) {
     return {index:i,px:0,py:0,x:0,y:0,vx:0,vy:0,touched:0,identifier:-1,ended:false,layer:defaultLayer};
 }
-\changeTouchLayer(t,toLayer) {
+\changeTouchLayer(t,toLayer) {//Retain...?
     var p=$Screen.convert(t,toLayer);
     t.x=p.x;
     t.y=p.y;
@@ -50,8 +50,6 @@ native T2MediaLib;
                     ]
                }
             });
-            //$touches[0].x=mp.x;
-            //$touches[0].y=mp.y;
         }
         handleListeners();
     };
@@ -72,11 +70,8 @@ native T2MediaLib;
                     ]
                }
             });
-            //$touches[0].x=mp.x;
-            //$touches[0].y=mp.y;
         }
         handleListeners();
-        //window.console.log("MXY2",$mouseX,$mouseY);
     };
     $handleMouseUp=\(e) {
         Tonyu.resetLoopCheck();
@@ -92,8 +87,6 @@ native T2MediaLib;
                     ]
                }
             });
-            //$touches[0].x=mp.x;
-            //$touches[0].y=mp.y;
         }
     };
     $touches=[];
@@ -176,9 +169,6 @@ native T2MediaLib;
                 $touches[dst.index].y=dst.y;
                 $touches[dst.index].layer=defaultLayer;
                 dst.ended=true;
-                /*dst.touched=0;
-                dst.vx=dst.vy=0;
-                dst.identifier=-1;*/
             }
         }
         handleListeners();

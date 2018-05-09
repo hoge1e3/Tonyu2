@@ -1,0 +1,40 @@
+extends TObject;
+
+\new(id, layer, screen) {
+    identifier=id;
+    px=py=0;
+    x=y=vx=vy=touched=0;
+    ended=false;
+    _layer=layer;
+    this.screen=screen||$Screen;
+}
+\layer {
+    return _layer;
+}
+\layer=toLayer {
+    if (_layer===toLayer) return;
+    var p=screen.convert(t,toLayer);
+    x=p.x;
+    y=p.y;
+    _layer=p.layer;
+    px=t.x;
+    py=t.y;
+    vx=vy=0;
+}
+\copyFrom(src) {
+    identifier=src.identifier;
+    px=src.px;
+    py=src.py;
+    x=src.x;
+    y=src.y;
+    vx=src.vx;
+    vy=src.vy;
+    touched=src.touched;
+    ended=src.ended;
+    var slayer=_layer;
+    _layer=src.layer;
+    layer=slayer;
+}
+\copyToBound(t) {
+    if (bound) t.bound.copyFrom(t);
+}
