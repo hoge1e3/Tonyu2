@@ -88,6 +88,7 @@ extends Panel;
 }*/
 
 \convert(obj, toLayer) {
+    if (obj.layer===toLayer) return obj;
     if (toLayer==null) toLayer=this;
     if (!obj.layer) throw new Error("layer not set");
     if (obj.layer!==this && toLayer!==this) {

@@ -1,33 +1,39 @@
+extends TObject;
+native Tonyu;
+native console;
 \new(dev) {
     inputDevice=dev;
     fingerSet={};
     fingerArray=[];
     fingerArray.findById=\(id) {
-        for (var j=0 ; j<fingerArray.length ; j++) {
-            if (fingerArray[j].identifier==id) {
-                return fingerArray[j];
-            }
-        }
+        return fingerSet[id];
     };
     fingerArray.findWithin=function (o,d) {
-        for (var j=0 ; j<fingerArray.length ; j++) {
-            if (o.within(fingerArray[j],d)) {
-                return fingerArray[j];
+        for (var j,t in fingerSet) {
+            if (o.within(t,d)) {
+                return t;
             }
         }
     };
-    for (var i=0;i<5;i++) fingerArray.push(new TouchFinger(-1,inputDevice.defaultLayer, $Screen) );
+    fingerArray.findTouch=function (f) {
+        for (var j,t in fingerSet) {
+            if (f(t)) {
+                return t;
+            }
+        }
+    };
+    for (var i=0;i<5;i++) fingerArray.push(new TouchFinger(inputDevice.defaultLayer, $Screen) );
 }
 \handleStart(e) {
     Tonyu.resetLoopCheck();
     $t2MediaLib.activate();
-    var p=inputDevice.cvj.offset();
+    var p=inputDevice.rootCanvas.offset();
     e.preventDefault();
     var ts=e.originalEvent.changedTouches;
     var dst;
     for (var i =0 ; i<ts.length ; i++) {
         var src=ts[i];
-        dst=new TouchFinger(src.identifier,inputDevice.defaultLayer, $Screen);
+        dst=new TouchFinger(inputDevice.defaultLayer, $Screen);
         fingerSet[src.identifier]=dst;
 
         for (var j=0 ; j<fingerArray.length ; j++) {
@@ -38,11 +44,7 @@
         }
         var mp={x:src.pageX-p.left, y:src.pageY-p.top,layer:$Screen.layer};
         mp=$Screen.convert(mp,inputDevice.defaultLayer);
-        dst.px=dst.x=mp.x;
-        dst.py=dst.y=mp.y;
-        dst.layer=mp.layer;
-        dst.touched=1;
-        dst.copyToBound();
+        dst.doStart(src.identifier,mp);
     }
     $mouseX=fingerArray[0].x;
     $mouseY=fingerArray[0].y;
@@ -51,7 +53,7 @@
 \handleMove(e) {
     Tonyu.resetLoopCheck();
     $t2MediaLib.activate();
-    var p=inputDevice.cvj.offset();
+    var p=inputDevice.rootCanvas.offset();
     e.preventDefault();
     var ts=e.originalEvent.changedTouches;
     var dst;
@@ -60,11 +62,9 @@
         var dst=fingerSet[src.identifier];
         if (dst) {
             mp={x:src.pageX-p.left, y:src.pageY-p.top,layer:$Screen.layer};
-            mp=$Screen.convert(mp,dst.layer||inputDevice.defaultLayer);
-            dst.x=mp.x;
-            dst.y=mp.y;
-            dst.layer=mp.layer;
-            dst.copyToBound();
+            //mp=$Screen.convert(mp,dst.layer||inputDevice.defaultLayer);
+            dst.doMove(mp);
+            //console.log(dst.show(),dst.bound.show());
         }
     }
     $mouseX=fingerArray[0].x;
@@ -80,10 +80,28 @@
         var dst=fingerSet[src.identifier];
         if (dst) {
             delete fingerSet[src.identifier];
-            dst.ended=true;
-            dst.copyToBound();
-            delete dst.bound;
+            dst.doEnd();
         }
     }
     inputDevice.handleListeners();
+}
+\unsetEmu(ID_MOUSE) {
+    for (var t of fingerArray) {
+        if (t.identifier==ID_MOUSE) {
+            t.reset();
+        }
+    }
+    for (var i,t in fingerSet) {
+        if (t.identifier==ID_MOUSE) {
+            t.reset();
+        }
+    }
+}
+\updateFingers() {
+    for (var t of fingerArray) {
+        t.update();
+    }
+    for (var i,t in fingerSet) {
+        t.update();
+    }
 }

@@ -20,6 +20,7 @@ native T2MediaLib;
     return {index:i,px:0,py:0,x:0,y:0,vx:0,vy:0,touched:0,identifier:-1,ended:false,layer:defaultLayer};
 }
 \changeTouchLayer(t,toLayer) {//Retain...?
+    return t.layer=toLayer;//---T
     var p=$Screen.convert(t,toLayer);
     t.x=p.x;
     t.y=p.y;
@@ -29,6 +30,7 @@ native T2MediaLib;
     t.vx=t.vy=0;
 }
 \initCanvasEvents(cvj) {
+    rootCanvas=cvj;
     var cv=cvj[0];
     var ID_MOUSE=31238612;
     $handleMouseDown=\(e) {
@@ -89,6 +91,10 @@ native T2MediaLib;
             });
         }
     };
+    //--T
+    touch=new Touch(this);
+    $touches=touch.fingerArray;
+    /*--T
     $touches=[];
     for (var i=0;i<5;i++)$touches.push(newTouch(i));
     $touches.findById=\(id) {
@@ -105,7 +111,9 @@ native T2MediaLib;
             }
         }
     };
+    */
     $handleTouchStart=\(e) {
+        return touch.handleStart(e);    //--T
         Tonyu.resetLoopCheck();
         $t2MediaLib.activate();
         var p=cvj.offset();
@@ -135,6 +143,7 @@ native T2MediaLib;
         handleListeners();
     };
     $handleTouchMove=\(e) {
+        return touch.handleMove(e);    //--T
         Tonyu.resetLoopCheck();
         $t2MediaLib.activate();
         var p=cvj.offset();
@@ -157,6 +166,7 @@ native T2MediaLib;
         handleListeners();
     };
     $handleTouchEnd=\(e) {
+        return touch.handleEnd(e);    //--T
         Tonyu.resetLoopCheck();
         $t2MediaLib.activate();
         var ts=e.originalEvent.changedTouches;
@@ -176,6 +186,7 @@ native T2MediaLib;
     $unsetTouchEmu=\() {
         Tonyu.resetLoopCheck();
         $InputDevice.touchEmu=false;
+        return touch.unsetEmu();    //--T
         for (var i,t in $touches) {
             if (t.identifier==ID_MOUSE) {
                 t[i]=$InputDevice.newTouch(i);
@@ -206,6 +217,7 @@ native T2MediaLib;
 }
 
 \update() {
+    return touch.updateFingers();//---T
     for (var i in $touches) {
         if (i.touched>0) {i.touched++;}
         else if (i.touched==-1) i.touched=1;
