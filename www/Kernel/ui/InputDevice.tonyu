@@ -92,7 +92,7 @@ native T2MediaLib;
         }
     };
     //--T
-    touch=new Touch(this);
+    touch=new TouchFingers(this);
     $touches=touch.fingerArray;
     /*--T
     $touches=[];

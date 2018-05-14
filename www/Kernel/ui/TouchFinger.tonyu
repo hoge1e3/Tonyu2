@@ -89,7 +89,7 @@ native console;
     }
 }
 \doEnd(){
-    touched=0;
+    vx=vy=touched=0;
     ended=true;
     if (bound) {
         bound.doEnd();
