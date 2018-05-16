@@ -6,9 +6,23 @@ native console;
 native Uint8Array;
 \new(params) {
     super(params);
+    // delay   length   after filename
     target=target || $Screen;
     fps=fps || 15;
     interval=interval || floor ( $Boot.getFrameRate() /  fps );
+    if (!manual) {
+        if (delay) {
+            var cnt=0;
+            var wevt;
+            wevt=$Boot.on("afterDraw") \{
+                cnt++;
+                if (cnt>=delay) {
+                    wevt.remove();
+                    start();
+                }
+            };
+        } else start();
+    }
 }
 \start() {
     if (e) return;
@@ -25,6 +39,15 @@ native Uint8Array;
             if (cnt>=interval) {
                 cnt=0;
                 addFrame();
+            }
+            if (typeof length==="number") {
+                length--;
+                if (length<=0) {
+                    switch (after) {
+                    case "save":return save();
+                    case "download":return download();
+                    }
+                }
             }
         };
     }
@@ -57,7 +80,7 @@ native Uint8Array;
     return encoded/(encoded+frames.length);
 }
 \save(f) {
-    if (!f) return download("download.gif");
+    if (!f) return download(f);
     return parallel(saveP,f);
 }
 \download(f) {
@@ -76,12 +99,12 @@ native Uint8Array;
 }
 \downloadP(f) {
     finishP();
-    e.download(f);
+    e.download(f||filename||"download.gif");
     e=null;
 }
 \saveP(f) {
     finishP();
-    f=file(f);
+    f=file(f||filename);
     var binary_gif = e.stream().bin;//getData();
     f.bytes(new Uint8Array(binary_gif).buffer);
     e=null;
