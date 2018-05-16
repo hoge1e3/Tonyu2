@@ -334,11 +334,12 @@ nowait \draw(ctx) {
     }
 }
 
+/*
 \runAsync(f) {
     if (!_thread) throw new Error("runAsync should run in wait mode");
     _thread.runAsync(f);
 }
-
+*/
 
 \screenOut(a) {
     //オブジェクトが画面外に出たかどうかを判定します。

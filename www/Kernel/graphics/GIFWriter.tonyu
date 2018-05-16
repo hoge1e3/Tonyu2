@@ -1,0 +1,88 @@
+extends TObject;
+includes ParallelMod,MathMod,FileMod,EventMod,ThreadGroupMod;
+native GIFEncoder;
+native setTimeout;
+native console;
+native Uint8Array;
+\new(params) {
+    super(params);
+    target=target || $Screen;
+    fps=fps || 15;
+    interval=interval || floor ( $Boot.getFrameRate() /  fps );
+}
+\start() {
+    if (e) return;
+    frames=[];
+    e=new GIFEncoder();
+    e.setRepeat(0);
+    e.setDelay(1000/fps);
+    e.start();
+    encoded=0;
+    if (!manual) {
+        var cnt=0;
+        evt=$Boot.on("afterDraw") \(drawn) {
+            cnt++;
+            if (cnt>=interval) {
+                cnt=0;
+                addFrame();
+            }
+        };
+    }
+}
+\addFrame() {
+    if (!e) start();
+    frames.push(target.getImageData(
+        0,0,target.canvas.width,target.canvas.height
+    ));
+}
+\encode1() {
+    if (!e) start();
+    if (frames.length==0) return false;
+    e.addFrame(frames.shift(),true);
+    encoded++;
+    return true;
+}
+\encodeAll() {
+    return parallel(encodeP);
+}
+\encodeP() {
+    while(encode1()) {
+        runAsync \(s) {
+            setTimeout(s,0);
+        };
+    }
+}
+\progress {
+    if (!e) return 0;
+    return encoded/(encoded+frames.length);
+}
+\save(f) {
+    if (!f) return download("download.gif");
+    return parallel(saveP,f);
+}
+\download(f) {
+    return parallel(downloadP,f);
+}
+\finish() {
+    return parallel(finishP);
+}
+\finishP() {
+    if (evt) {
+        evt.remove();
+        evt=null;
+    }
+    encodeP();
+    e.finish();
+}
+\downloadP(f) {
+    finishP();
+    e.download(f);
+    e=null;
+}
+\saveP(f) {
+    finishP();
+    f=file(f);
+    var binary_gif = e.stream().bin;//getData();
+    f.bytes(new Uint8Array(binary_gif).buffer);
+    e=null;
+}

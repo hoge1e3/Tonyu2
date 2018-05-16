@@ -85,3 +85,8 @@ nowait \sendEvent(type, arg) {
     }
     return f;
 }
+
+\runAsync(f) {
+    if (!_thread) throw new Error("runAsync should run in wait mode");
+    _thread.runAsync(f);
+}

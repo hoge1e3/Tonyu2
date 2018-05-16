@@ -402,6 +402,7 @@ nowait \afterDraw(drawn) {// should call (after draw) or (move and frame skip)
     $Sprites.checkHit();
     //debug("AfterDraw",2);
     $Sprites.removeOneframes(drawn);
+    sendEvent("afterDraw",drawn);
     //debug("AfterDraw",3);
 }
 nowait \initFPSParams() {

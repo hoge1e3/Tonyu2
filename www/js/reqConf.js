@@ -78,6 +78,10 @@ var reqConf={
             PicoAudio: {
                 exports: "PicoAudio"
             },
+            GIFEncoder: {
+                deps: ["LZWEncoder","NeuQuant"],
+                exports: "GIFEncoder"
+            },
             JSZip: {
                 exports:"JSZip"
             },
@@ -134,6 +138,9 @@ var reqConf={
             "PatternParser": "graphics/PatternParser",
             "TextRect": "graphics/TextRect",
             "fukidashi": "graphics/fukidashi",
+            "GIFEncoder": "graphics/gif/",
+            "LZWEncoder": "graphics/gif/",
+            "NeuQuant": "graphics/gif/",
             "Arrow": "help/Arrow",
             "HttpHelper": "help/HttpHelper",
             "IFrameDialog": "help/IFrameDialog",
