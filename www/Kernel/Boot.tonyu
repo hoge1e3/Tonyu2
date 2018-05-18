@@ -282,12 +282,12 @@ mainLoop();
 	while(moves<procCnt) {
 		moveFrame();
 		moves++;
-	    if (moves<procCnt) afterDraw(false);
+	    if (moves<procCnt) afterDraw{drawn:false};
 	}
     //debug("endWhile");
     if (moves > 0) {
         drawFrame();
-        afterDraw(true);
+        afterDraw{drawn:false};
     }
     //debug("beforeWaitRAF");
 	waitRAF();

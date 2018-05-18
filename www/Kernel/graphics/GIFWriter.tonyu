@@ -34,7 +34,8 @@ native Uint8Array;
     encoded=0;
     if (!manual) {
         var cnt=0;
-        evt=$Boot.on("afterDraw") \(drawn) {
+        evt=$Boot.on("afterDraw") \(e) {
+            var drawn=e.drawn;
             cnt++;
             if (cnt>=interval) {
                 cnt=0;
