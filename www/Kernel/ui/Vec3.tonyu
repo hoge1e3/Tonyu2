@@ -124,6 +124,16 @@ function set() {
     var a=parsePointArgs(arguments);
     return x*a.x+y*a.y+z*a.z;
 }
+\angleXY {
+    return atanxy(x,y);
+}
+\angleXY=a {
+    var l=$Math.sqrt(x*x+y*y);
+    x=cos(a)*l;
+    y=sin(a)*l;
+    return a;
+}
+
 \rotate(angle, axis) {
     if (!axis) axis=new Vec3(0,0,1);
     var v90=product(axis);

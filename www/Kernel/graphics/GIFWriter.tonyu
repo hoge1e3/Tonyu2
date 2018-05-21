@@ -4,6 +4,7 @@ native GIFEncoder;
 native setTimeout;
 native console;
 native Uint8Array;
+native workerLoader;
 \new(params) {
     super(params);
     // delay   length   after filename

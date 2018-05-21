@@ -141,6 +141,7 @@ var reqConf={
             "GIFEncoder": "graphics/gif/",
             "LZWEncoder": "graphics/gif/",
             "NeuQuant": "graphics/gif/",
+            "GIFWorker": "worker/",
             "Arrow": "help/Arrow",
             "HttpHelper": "help/HttpHelper",
             "IFrameDialog": "help/IFrameDialog",
@@ -214,6 +215,8 @@ var reqConf={
             "jquery.binarytransport": "lib/jquery.binarytransport",
             "JSZip": "lib/jszip",
             "Profiler": "lib/profiler",
+            "promise": "lib/",
+            "WorkerLib": "lib/",
             "timbre": "lib/timbre",
             "Util": "lib/util",
             "mkrun": "mkrun/mkrun",
@@ -233,6 +236,7 @@ var reqConf={
             "runScript2": "runtime/runScript2",
             "runtime": "runtime/runtime",
             "SoundDiag": "runtime/soundDiag",
+            "workerLoader": "runtime/",
             "exportAsScriptTags": "social/exportAsScriptTags",
             "exportToExe": "social/exportToExe",
             "exportToJsdoit": "social/exportToJsdoit",
@@ -249,7 +253,7 @@ var reqConf={
             "extLink": "ui/extLink",
             "foo":"bar"
         },
-        "baseUrl": "../../js"
+        "baseUrl": "js"
 };
 (function(){
     for (var k in reqConf.paths)
