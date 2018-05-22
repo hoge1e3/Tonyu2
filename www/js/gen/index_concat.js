@@ -1,4 +1,4 @@
-// Created at Sat Apr 28 2018 15:59:48 GMT+0900 (東京 (標準時))
+// Created at Tue May 22 2018 15:28:45 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -1337,6 +1337,7 @@ define('Content',["assert","Util"],function (assert,Util) {
     Content.looksLikeDataURL=function (text) {
         return text.match(/^data:/);
     };
+    // why blob is not here... because blob content requires FileReader (cannot read instantly!)
     //------- methods
     var p=Content.prototype;
     p.toBin = function (binType) {
@@ -2681,7 +2682,14 @@ SFile.prototype={
         } else {
             A(srcIsDir && dstIsDir,"Both src and dst should be dir");
             return src.each(function (s) {
-                return dst.rel(s.name()).copyFrom(s, options);
+                var r;
+                var dstf=dst.rel(s.name());
+                if (options.progress) {
+                    r=options.progress(dstf,{src:s,dst:dstf});
+                }
+                return DU.resolve(r).then(function () {
+                    return dstf.copyFrom(s, options);
+                });
             });
         }
         //file.text(src.text());
@@ -2835,6 +2843,17 @@ SFile.prototype={
     },
     getBlob: function () {
         return new Blob([this.bytes()],{type:this.contentType()});
+    },
+    setBlob: function (blob) {
+        var t=this;
+        return DU.promise(function (succ,err) {
+            var reader = new FileReader();
+            reader.addEventListener("loadend", function() {
+                // reader.result contains the contents of blob as a typed array
+                DU.resolve(t.setBytes(reader.result)).then(succ);
+            });
+            reader.readAsArrayBuffer(blob);
+        });
     },
     download: function () {
         if (this.isDir()) throw new Error(this+": Download dir is not support yet. Use 'zip' instead.");

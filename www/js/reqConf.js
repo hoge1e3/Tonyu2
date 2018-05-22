@@ -94,6 +94,9 @@ var reqConf={
             GIF: {
                 exports:"GIF"
             },
+            promise: {
+                export:"Promise"
+            },
             FileSaver: {
                 exports:"saveAs"
             }
