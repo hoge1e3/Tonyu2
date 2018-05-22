@@ -147,7 +147,7 @@ var reqConf={
             "GIFEncoder": "graphics/gif/",
             "LZWEncoder": "graphics/gif/",
             "NeuQuant": "graphics/gif/",
-            "GIF": "graphics/gif2/",// CHANGE!
+            "GIF": "graphics/gif2/gif-concat",// CHANGE!
             "GIFWorker": "worker/",
             "Arrow": "help/Arrow",
             "HttpHelper": "help/HttpHelper",

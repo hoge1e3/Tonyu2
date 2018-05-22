@@ -1,6 +1,7 @@
 extends TObject;
 includes ParallelMod,MathMod,FileMod,EventMod,ThreadGroupMod;
 native GIF;
+native GIF_WORKER_URL;
 native document;
 native URL;
 native setTimeout;
@@ -31,7 +32,8 @@ native Uint8Array;
     if (e) return;
     frames=[];
     e=new GIF({
-        workerScript:"js/graphics/gif2/gif.worker.js",  // CHANGE!
+        workerScript: GIF_WORKER_URL,
+        //workerScript:"js/graphics/gif2/gif.worker.js",  // CHANGE!
         workers: 2,
         quality: 10
     });
