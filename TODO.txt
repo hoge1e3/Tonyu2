@@ -42,6 +42,9 @@ Sound
   dynamic sound generation
 
 言語仕様
+ 予約語のメソッド名
+ 絵文字
+ return waitable();
  OK からぶん
  a||={};
  nowait {  }

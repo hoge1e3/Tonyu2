@@ -1,6 +1,8 @@
 extends TObject;
 includes ParallelMod,MathMod,FileMod,EventMod,ThreadGroupMod;
 native GIF;
+native document;
+native URL;
 native setTimeout;
 native console;
 native Uint8Array;
@@ -78,13 +80,19 @@ native Uint8Array;
     };
     return r;
 }
-\downloadP(f) {
-    finishP();
-    e.download(f||filename||"download.gif");
-    e=null;
-}
 \download(f) {
-    return parallel(downloadP,f);
+    f=f||filename||"download.gif";
+    console.log("DL",f);
+    var r=runPromise \(succ,err) {
+        finish().then \(blob) {
+            var templink = document.createElement("a");
+            templink.download=f;
+            templink.href= URL.createObjectURL(blob);
+            templink.click();
+            e=null;
+        }.then (\{console.log("DL OK");}, err);
+    };
+    return r;
 }
 \save(f) {
     console.log("Save",f);
@@ -95,7 +103,7 @@ native Uint8Array;
         }.then \{
             e=null;
             succ();
-        }.then (\{console.log("OK");}, err  /* \(e){console.error(e);} */ );
+        }.then (\{console.log("Save OK");}, err  /* \(e){console.error(e);} */ );
     };
     return r;
 }
