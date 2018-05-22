@@ -91,6 +91,9 @@ var reqConf={
             Base64: {
                 exports:"Base64"
             },
+            GIF: {
+                exports:"GIF"
+            },
             FileSaver: {
                 exports:"saveAs"
             }
@@ -141,6 +144,7 @@ var reqConf={
             "GIFEncoder": "graphics/gif/",
             "LZWEncoder": "graphics/gif/",
             "NeuQuant": "graphics/gif/",
+            "GIF": "graphics/gif2/",// CHANGE!
             "GIFWorker": "worker/",
             "Arrow": "help/Arrow",
             "HttpHelper": "help/HttpHelper",

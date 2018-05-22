@@ -1,16 +1,16 @@
 extends TObject;
 includes ParallelMod,MathMod,FileMod,EventMod,ThreadGroupMod;
-native GIF;
+native GIFEncoder;
 native setTimeout;
 native console;
 native Uint8Array;
+native workerLoader;
 \new(params) {
     super(params);
     // delay   length   after filename
     target=target || $Screen;
     fps=fps || 15;
     interval=interval || floor ( $Boot.getFrameRate() /  fps );
-    duration=( 1000/$Boot.getFrameRate() )*interval;
     if (!manual) {
         if (delay) {
             var cnt=0;
@@ -28,14 +28,10 @@ native Uint8Array;
 \start() {
     if (e) return;
     frames=[];
-    e=new GIF({
-        workerScript:"js/graphics/gif2/gif.worker.js",  // CHANGE!
-        workers: 2,
-        quality: 10
-    });
-    //e.setRepeat(0);
-    //e.setDelay(1000/fps);
-    //e.start();
+    e=new GIFEncoder();
+    e.setRepeat(0);
+    e.setDelay(1000/fps);
+    e.start();
     encoded=0;
     if (!manual) {
         var cnt=0;
@@ -50,7 +46,7 @@ native Uint8Array;
                 length--;
                 if (length<=0) {
                     switch (after) {
-                    case "save":return save()["catch"]( \(e) { console.error(e); } );
+                    case "save":return save();
                     case "download":return download();
                     }
                 }
@@ -60,42 +56,58 @@ native Uint8Array;
 }
 \addFrame() {
     if (!e) start();
-    e.addFrame(target.image,{delay:duration,copy:true});
-    //console.log("addF");
-    /*frames.push(target.getImageData(
+    frames.push(target.getImageData(
         0,0,target.canvas.width,target.canvas.height
-    ));*/
+    ));
 }
-
+\encode1() {
+    if (!e) start();
+    if (frames.length==0) return false;
+    e.addFrame(frames.shift(),true);
+    encoded++;
+    return true;
+}
+\encodeAll() {
+    return parallel(encodeP);
+}
+\encodeP() {
+    while(encode1()) {
+        runAsync \(s) {
+            setTimeout(s,0);
+        };
+    }
+}
+\progress {
+    if (!e) return 0;
+    return encoded/(encoded+frames.length);
+}
+\save(f) {
+    if (!f) return download(f);
+    return parallel(saveP,f);
+}
+\download(f) {
+    return parallel(downloadP,f);
+}
 \finish() {
-    var r=runPromise \(onFinish,fail) {
-        if (evt) {
-            evt.remove();
-            evt=null;
-        }
-        e.on('finished', onFinish);
-        e.render();
-    };
-    return r;
+    return parallel(finishP);
+}
+\finishP() {
+    if (evt) {
+        evt.remove();
+        evt=null;
+    }
+    encodeP();
+    e.finish();
 }
 \downloadP(f) {
     finishP();
     e.download(f||filename||"download.gif");
     e=null;
 }
-\download(f) {
-    return parallel(downloadP,f);
-}
-\save(f) {
-    console.log("Save",f);
-    var r=runPromise \(succ,err) {
-        finish().then \(blob) {
-            f=file(f||filename);
-            return f.setBlob(blob);
-        }.then \{
-            e=null;
-            succ();
-        }.then (\{console.log("OK");}, err  /* \(e){console.error(e);} */ );
-    };
-    return r;
+\saveP(f) {
+    finishP();
+    f=file(f||filename);
+    var binary_gif = e.stream().bin;//getData();
+    f.bytes(new Uint8Array(binary_gif).buffer);
+    e=null;
 }

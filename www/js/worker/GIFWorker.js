@@ -5,6 +5,7 @@ define(["GIFEncoder","WorkerLib"],function (GIFEncoder,WL) {
         g=new GIFEncoder();
         g.setDelay(params.delay);
         g.setRepeat(params.repeat);
+        g.start();
     });
     WL.install("GIFWriter/addFrame",function (params) {
         // params:   image: width, height, data
