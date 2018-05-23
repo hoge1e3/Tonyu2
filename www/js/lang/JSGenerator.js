@@ -150,7 +150,21 @@ function genJS(klass, env) {//B
 			if (ctx.inTry) throw TError("現実装では、tryの中にreturnは書けません",srcFile,node.pos);
 			if (!ctx.noWait) {
 				if (node.value) {
-					buf.printf("%s.exit(%v);return;",TH,node.value);
+					var t=annotation(node.value).fiberCall;
+					if (t) {
+						buf.printf(//VDC
+							"%s.%s%s(%j);%n" +//FIBERCALL
+							"%s=%s;return;%n" +
+							"%}case %d:%{"+
+							"%s.exit(%s.retVal);return;%n",
+								THIZ, FIBPRE, t.N, [", ",[THNode].concat(t.A)],
+								FRMPC, ctx.pc,
+								ctx.pc++,
+								TH,TH
+						);
+					} else {
+						buf.printf("%s.exit(%v);return;",TH,node.value);
+					}
 				} else {
 					buf.printf("%s.exit(%s);return;",TH,THIZ);
 				}
@@ -196,7 +210,7 @@ function genJS(klass, env) {//B
 				if (t) {
 					A.is(ctx.pc,Number);
 					buf.printf(//VDC
-						"%s.%s%s(%j);%n" +
+						"%s.%s%s(%j);%n" +//FIBERCALL
 						"%s=%s;return;%n" +/*B*/
 						"%}case %d:%{"+
 						"%s%v=%s.retVal;%n",
@@ -254,7 +268,7 @@ function genJS(klass, env) {//B
 			}
 			if (t.type=="noRet") {
 				buf.printf(
-						"%s.%s%s(%j);%n" +
+						"%s.%s%s(%j);%n" +//FIBERCALL
 						"%s=%s;return;%n" +/*B*/
 						"%}case %d:%{",
 							THIZ, FIBPRE, t.N,  [", ",[THNode].concat(t.A)],
@@ -263,7 +277,7 @@ function genJS(klass, env) {//B
 				);
 			} else if (t.type=="ret") {
 				buf.printf(//VDC
-						"%s.%s%s(%j);%n" +
+						"%s.%s%s(%j);%n" +//FIBERCALL
 						"%s=%s;return;%n" +/*B*/
 						"%}case %d:%{"+
 						"%v%v%s.retVal;%n",
@@ -275,7 +289,7 @@ function genJS(klass, env) {//B
 			} else if (t.type=="noRetSuper") {
 				var p=getClassName(klass.superclass);
 					buf.printf(
-							"%s.prototype.%s%s.apply( %s, [%j]);%n" +
+							"%s.prototype.%s%s.apply( %s, [%j]);%n" +//FIBERCALL
 							"%s=%s;return;%n" +/*B*/
 							"%}case %d:%{",
 							p,  FIBPRE, t.S.name.text,  THIZ,  [", ",[THNode].concat(t.A)],
@@ -284,7 +298,7 @@ function genJS(klass, env) {//B
 					);
 			} else if (t.type=="retSuper") {
 					buf.printf(
-							"%s.prototype.%s%s.apply( %s, [%j]);%n" +
+							"%s.prototype.%s%s.apply( %s, [%j]);%n" +//FIBERCALL
 							"%s=%s;return;%n" +/*B*/
 							"%}case %d:%{"+
 							"%v%v%s.retVal;%n",

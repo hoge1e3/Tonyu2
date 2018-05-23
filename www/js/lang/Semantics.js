@@ -254,6 +254,10 @@ function annotateSource2(klass, env) {//B
 	function getMethod(name) {//B
 		return getMethod2(klass,name);
 	}
+	function isFiberMethod(name) {
+		return stype(ctx.scope[name])==ST.METHOD &&
+		!getMethod(name).nowait ;
+	}
 	function checkLVal(node) {//S
 		if (node.type=="varAccess" ||
 				node.type=="postfix" && (node.op.type=="member" || node.op.type=="arrayElem") ) {
@@ -458,7 +462,15 @@ function annotateSource2(klass, env) {//B
 			this.def(node);
 		},
 		"return": function (node) {
-			if (!ctx.noWait) annotateParents(this.path,{hasReturn:true});
+			var t;
+			if (!ctx.noWait) {
+				if ( (t=OM.match(node.value, fiberCallTmpl)) &&
+				isFiberMethod(t.N)) {
+					annotation(node.value, {fiberCall:t});
+					fiberCallRequired(this.path);
+				}
+				annotateParents(this.path,{hasReturn:true});
+			}
 			this.visit(node.value);
 		},
 		"break": function (node) {
