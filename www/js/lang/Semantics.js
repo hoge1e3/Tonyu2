@@ -510,15 +510,13 @@ function annotateSource2(klass, env) {//B
 			var t,m;
 			if (!ctx.noWait &&
 					(t=OM.match(node,noRetFiberCallTmpl)) &&
-					stype(ctx.scope[t.N])==ST.METHOD &&
-					!getMethod(t.N).nowait) {
+					isFiberMethod(t.N)) {
 				t.type="noRet";
 				annotation(node, {fiberCall:t});
 				fiberCallRequired(this.path);
 			} else if (!ctx.noWait &&
 					(t=OM.match(node,retFiberCallTmpl)) &&
-					stype(ctx.scope[t.N])==ST.METHOD &&
-					!getMethod(t.N).nowait) {
+					isFiberMethod(t.N)) {
 				t.type="ret";
 				annotation(node, {fiberCall:t});
 				fiberCallRequired(this.path);
@@ -551,8 +549,7 @@ function annotateSource2(klass, env) {//B
 			var t;
 			if (!ctx.noWait &&
 					(t=OM.match(node.value,fiberCallTmpl)) &&
-					stype(ctx.scope[t.N])==ST.METHOD &&
-					!getMethod(t.N).nowait) {
+					isFiberMethod(t.N)) {
 				t.type="varDecl";
 				annotation(node, {fiberCall:t});
 				fiberCallRequired(this.path);
