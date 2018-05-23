@@ -44,10 +44,12 @@ Sound
 言語仕様
  予約語のメソッド名
  絵文字
- return waitable();
+ OK return waitable();
  OK からぶん
  a||={};
  nowait {  }
+ nowait オーバーライド時にnowait を強制
+ Kernel内の nowait 削減
  (x,y)=>x+y
  native a,b,c;
  OK do..while

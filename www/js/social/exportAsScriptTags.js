@@ -45,7 +45,7 @@ define(["FS","Util","WebSite"], function (FS,Util,WebSite) {
             var m="";//(name==main?" data-main='true'":"");
             var lu=" data-lastupdate='"+f.lastUpdate()+"' ";
             buf+="<script language='text/tonyu' type='text/tonyu' data-filename='"+rel+"'"+lu+">";
-            buf+=f.text();
+            buf+=escapeLoosely(f.text());
             buf+="</script>\n\n";
         },{excludes:["files/"]});
         json.forEach(function (f) {
@@ -89,5 +89,14 @@ define(["FS","Util","WebSite"], function (FS,Util,WebSite) {
             }
         }
     };
+    function escapeLoosely(text) {
+        text=text.replace(/&(#?[\w\d]+;)/g, function (_,a){
+            return "&amp;"+a;
+        });
+        text=text.replace(/<(\s*)\/(\s*)script(\s*)>/ig,function (_,s1,s2,s3) {
+            return "&lt;"+s1+"/"+s2+"script"+s3+"&gt;" ;
+        });
+        return text;
+    }
     return east;
 });

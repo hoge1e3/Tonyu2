@@ -10,11 +10,12 @@ define(["Content"],function (Content) {
 	            if (fn) {
 	                var l=parseInt($(s).data("lastupdate"));
 	                var w=$(s).data("wrap");
+					var src=unescapeHTML(s.innerHTML);
 	                if (w) {
 	                    w=parseInt(w);
-	                    res[fn]={lastUpdate:l, text:unwrap(s.innerHTML, w)};
+	                    res[fn]={lastUpdate:l, text:unwrap(src, w)};
 	                } else {
-	                    res[fn]={lastUpdate:l, text:s.innerHTML};
+	                    res[fn]={lastUpdate:l, text:src};
 	                }
 	            }
 	        }
@@ -44,5 +45,14 @@ define(["Content"],function (Content) {
             }
         }
 	};
+	function unescapeHTML(str) {
+		var div = document.createElement("div");
+		div.innerHTML = str.replace(/</g,"&lt;")
+							 .replace(/>/g,"&gt;")
+							 .replace(/ /g, "&#32;")
+							 .replace(/\r/g, "&#13;")
+							 .replace(/\n/g, "&#10;");
+		return div.textContent || div.innerText;
+	}
 	return STF;
 });
