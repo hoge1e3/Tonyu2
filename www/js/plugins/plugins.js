@@ -2,7 +2,8 @@ define(["WebSite"],function (WebSite){
     var plugins={};
     var installed= {
         box2d:{src: "Box2dWeb-2.1.a.3.min.js",detection:/BodyActor/,symbol:"Box2D" },
-        timbre: {src:"timbre.js",detection:/\bplay(SE)?\b/,symbol:"T" }
+        timbre: {src:"timbre.js",detection:/\bplay(SE)?\b/,symbol:"T" },
+        gif: {src:"gif-concat.js",detection:/GIFWriter/,symbol:"GIF"}
     };
     plugins.installed=installed;
     plugins.detectNeeded=function (src,res) {
@@ -44,12 +45,17 @@ define(["WebSite"],function (WebSite){
         if (!i) throw new Error("plugin not found: "+name);
         options=convOpt(options);
         var src=WebSite.pluginTop+"/"+i.src;
-        if (location.href.match(/^chrome-extension:/)) {
-            $("<script>").attr("src",src).appendTo("body");
-            setTimeout(options.onload,500);
+        if (typeof requirejs==="function" && typeof requireSimulator==="undefined") {
+            //console.log("Loading plugin via requirejs",src);
+            requirejs([src], function (res) {
+                if (!window[i.symbol] && res) window[i.symbol]=res;
+                options.onload(res);
+            });
         } else {
-            $.getScript(src, options.onload);
+            $("<script>").on("load",options.onload).attr("src",src).appendTo("body");
         }
+        //setTimeout(options.onload,500);
+
     };
     plugins.request=function (name) {
         if (plugins.loaded(name)) return;

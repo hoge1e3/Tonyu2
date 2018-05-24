@@ -269,11 +269,40 @@ var reqConf={
 if (typeof exports!=="undefined") exports.conf=reqConf;
 function sortReqConf() {
     var paths=reqConf.paths;
-    var ary=[];
+    var ary=[],tree={};
     for (var k in paths) {
         ary.push({key:k,val:paths[k]});
+        addTree(tree,paths[k],{ moduleName:k, fileName:paths[k] });
     }
-    ary.sort(function (a,b) {
+    function addTree(tree,path,v) {
+        var patha=path.split("/");
+        var h=patha.shift();
+        if (patha.length==0) {
+            if (h==v.moduleName) v.same=true;
+            tree[h]=v;
+        } else {
+            tree[h]=tree[h]||{};
+            addTree(tree[h],patha.join("/"), v);
+        }
+    }
+    function genSame(tree) {
+        for (var k in tree) {
+            var v=tree[k];
+            if (v.moduleName) {
+                if (v.same) {
+                    tree[k]=1;
+                } else {
+                    tree[k]=v.moduleName;
+                    //console.log("Notsame", v.moduleName, "js/"+v.fileName);
+                    //delete tree[k];
+                }
+            } else {
+                genSame(v);
+            }
+        }
+        return tree;
+    }
+    /*ary.sort(function (a,b) {
         return a.val>b.val?1:a.val<b.val?-1:0;
     });
     console.log(ary);
@@ -281,5 +310,7 @@ function sortReqConf() {
     ary.forEach(function (e) {
         buf+='"'+e.key+'": "'+e.val+'",\n';
     });
-    console.log(buf);
+    console.log(buf);*/
+
+    console.log(JSON.stringify(genSame(tree),null,4));
 }
