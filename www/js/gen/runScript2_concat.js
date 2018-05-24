@@ -1,4 +1,3 @@
-// Created at Thu May 24 2018 15:09:42 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -11,7 +10,7 @@
 		};
 		R.loadIfAvailable(m);
 	};
-	define=function () {
+	var define=function () {
 		var a=Array.prototype.slice.call(arguments);
 		if (typeof a[0]==="string") R.curName=a.shift();
 		var reqs=a.shift();
@@ -19,9 +18,10 @@
 		R.def(reqs,func,"define");
 	};
 	define.amd={jQuery:true};
-	/*require=*/requirejs=function (reqs,func) {
+	var /*require=*/requirejs=function (reqs,func) {
 		R.def(reqs,func,"require");
 	};
+	requirejs.isRequireSimulator=true;
 	R.setReqs=function (m, reqs) {
 		reqs.forEach(function (req) {
 			var reqm=R.getModuleInfo(req);
@@ -87,10 +87,8 @@
 			R.curName=n;
 		}
 	};
-	requireSimulator=R;
-	return R;
-})();
-
+	var requireSimulator=R;
+	// Created at Thu May 24 2018 17:12:09 GMT+0900 (東京 (標準時))
 requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
@@ -3589,7 +3587,11 @@ define(["WebSite"],function (WebSite){
                 options.onload(res);
             });
         } else {
-            $("<script>").on("load",options.onload).attr("src",src).appendTo("body");
+            var s=document.createElement("script");
+            s.src=src;
+            s.onload=options.onload;
+            document.body.appendChild(s);
+            //$("<script>").on("load",options.onload).attr("src",src).appendTo("body");
         }
         //setTimeout(options.onload,500);
 
@@ -4821,7 +4823,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,DeferredUtil:DU,
-			VERSION:1527142152210,//EMBED_VERSION
+			VERSION:1527149525255,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -8380,6 +8382,10 @@ define(["UI"],function (UI) {
 requireSimulator.setName('runtime');
 requirejs(["ImageList","PicoAudio","T2MediaLib","Tonyu","UIDiag"],
 function (i,p,t,tn,u) {
+    if (!window.PicoAudio &&
+    typeof PicoAudio!=="undefined") window.PicoAudio=PicoAudio;
+    if (!window.T2MediaLib &&
+    typeof T2MediaLib!=="undefined") window.T2MediaLib=T2MediaLib;
 });
 
 requireSimulator.setName('LSFS');
@@ -8461,3 +8467,5 @@ requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu
 });
 
 requireSimulator.setName();
+
+})();

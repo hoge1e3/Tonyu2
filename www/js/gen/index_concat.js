@@ -1,4 +1,3 @@
-// Created at Thu May 24 2018 15:09:12 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -11,7 +10,7 @@
 		};
 		R.loadIfAvailable(m);
 	};
-	define=function () {
+	var define=function () {
 		var a=Array.prototype.slice.call(arguments);
 		if (typeof a[0]==="string") R.curName=a.shift();
 		var reqs=a.shift();
@@ -19,9 +18,10 @@
 		R.def(reqs,func,"define");
 	};
 	define.amd={jQuery:true};
-	/*require=*/requirejs=function (reqs,func) {
+	var /*require=*/requirejs=function (reqs,func) {
 		R.def(reqs,func,"require");
 	};
+	requirejs.isRequireSimulator=true;
 	R.setReqs=function (m, reqs) {
 		reqs.forEach(function (req) {
 			var reqm=R.getModuleInfo(req);
@@ -87,10 +87,8 @@
 			R.curName=n;
 		}
 	};
-	requireSimulator=R;
-	return R;
-})();
-
+	var requireSimulator=R;
+	// Created at Thu May 24 2018 17:12:05 GMT+0900 (東京 (標準時))
 requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
@@ -6495,3 +6493,5 @@ $(function () {
 });
 
 requireSimulator.setName();
+
+})();

@@ -10,7 +10,7 @@
 		};
 		R.loadIfAvailable(m);
 	};
-	define=function () {
+	var define=function () {
 		var a=Array.prototype.slice.call(arguments);
 		if (typeof a[0]==="string") R.curName=a.shift();
 		var reqs=a.shift();
@@ -18,9 +18,10 @@
 		R.def(reqs,func,"define");
 	};
 	define.amd={jQuery:true};
-	/*require=*/requirejs=function (reqs,func) {
+	var /*require=*/requirejs=function (reqs,func) {
 		R.def(reqs,func,"require");
 	};
+	requirejs.isRequireSimulator=true;
 	R.setReqs=function (m, reqs) {
 		reqs.forEach(function (req) {
 			var reqm=R.getModuleInfo(req);
@@ -86,6 +87,6 @@
 			R.curName=n;
 		}
 	};
-	requireSimulator=R;
-	return R;
+	var requireSimulator=R;
+	//INCLUDE_CONCAT
 })();

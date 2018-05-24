@@ -52,7 +52,11 @@ define(["WebSite"],function (WebSite){
                 options.onload(res);
             });
         } else {
-            $("<script>").on("load",options.onload).attr("src",src).appendTo("body");
+            var s=document.createElement("script");
+            s.src=src;
+            s.onload=options.onload;
+            document.body.appendChild(s);
+            //$("<script>").on("load",options.onload).attr("src",src).appendTo("body");
         }
         //setTimeout(options.onload,500);
 
