@@ -1,4 +1,4 @@
-// Created at Tue May 22 2018 15:28:45 GMT+0900 (東京 (標準時))
+// Created at Thu May 24 2018 15:09:12 GMT+0900 (東京 (標準時))
 (function () {
 	var R={};
 	R.def=function (reqs,func,type) {
@@ -6111,7 +6111,7 @@ define(["FS","Util","WebSite"], function (FS,Util,WebSite) {
             var m="";//(name==main?" data-main='true'":"");
             var lu=" data-lastupdate='"+f.lastUpdate()+"' ";
             buf+="<script language='text/tonyu' type='text/tonyu' data-filename='"+rel+"'"+lu+">";
-            buf+=f.text();
+            buf+=escapeLoosely(f.text());
             buf+="</script>\n\n";
         },{excludes:["files/"]});
         json.forEach(function (f) {
@@ -6155,6 +6155,15 @@ define(["FS","Util","WebSite"], function (FS,Util,WebSite) {
             }
         }
     };
+    function escapeLoosely(text) {
+        text=text.replace(/&(#?[\w\d]+;)/g, function (_,a){
+            return "&amp;"+a;
+        });
+        text=text.replace(/<(\s*)\/(\s*)script(\s*)>/ig,function (_,s1,s2,s3) {
+            return "&lt;"+s1+"/"+s2+"script"+s3+"&gt;" ;
+        });
+        return text;
+    }
     return east;
 });
 
@@ -6174,11 +6183,12 @@ define(["Content"],function (Content) {
 	            if (fn) {
 	                var l=parseInt($(s).data("lastupdate"));
 	                var w=$(s).data("wrap");
+					var src=unescapeHTML(s.innerHTML);
 	                if (w) {
 	                    w=parseInt(w);
-	                    res[fn]={lastUpdate:l, text:unwrap(s.innerHTML, w)};
+	                    res[fn]={lastUpdate:l, text:unwrap(src, w)};
 	                } else {
-	                    res[fn]={lastUpdate:l, text:s.innerHTML};
+	                    res[fn]={lastUpdate:l, text:src};
 	                }
 	            }
 	        }
@@ -6208,8 +6218,18 @@ define(["Content"],function (Content) {
             }
         }
 	};
+	function unescapeHTML(str) {
+		var div = document.createElement("div");
+		div.innerHTML = str.replace(/</g,"&lt;")
+							 .replace(/>/g,"&gt;")
+							 .replace(/ /g, "&#32;")
+							 .replace(/\r/g, "&#13;")
+							 .replace(/\n/g, "&#10;");
+		return div.textContent || div.innerText;
+	}
 	return STF;
 });
+
 requireSimulator.setName('ImportHTMLDialog');
 define(["exportAsScriptTags","UI","Klass","NewProjectDialog","ScriptTagFS"],
 function (east,UI,Klass,NPD,STF) {
