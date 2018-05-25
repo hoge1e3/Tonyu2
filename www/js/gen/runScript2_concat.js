@@ -88,7 +88,7 @@
 		}
 	};
 	var requireSimulator=R;
-	// Created at Thu May 24 2018 17:12:09 GMT+0900 (東京 (標準時))
+	// Created at Fri May 25 2018 12:22:20 GMT+0900 (東京 (標準時))
 requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
@@ -3300,7 +3300,11 @@ define(["FS","Platform"], function (FS,Platform) {
 
 		WebSite.tonyuHome="/Tonyu/";
 		WebSite.projects=[P.rel(WebSite.tonyuHome,"Projects/")];
-		WebSite.scriptServer="https://edit.tonyu.jp/";
+		if (loc.match(/localhost\/tonyu2/)) {
+			WebSite.scriptServer="http://localhost/tonyu2/";
+		} else {
+			WebSite.scriptServer="https://edit.tonyu.jp/";
+		}
 		WebSite.pluginTop=WebSite.scriptServer+"js/plugins";
 		WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
 		WebSite.PathSep="/";
@@ -4823,7 +4827,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,DeferredUtil:DU,
-			VERSION:1527149525255,//EMBED_VERSION
+			VERSION:1527218529846,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -6029,10 +6033,10 @@ var PicoAudio = (function(){
 					this.settings.WebMIDIPortOutput.send([0xB0+t, 6, 2]); //pitchbend
 					this.settings.WebMIDIPortOutput.send([0xB0+t, 100, 1]);
 					this.settings.WebMIDIPortOutput.send([0xB0+t, 96, 0]);
-					this.settings.WebMIDIPortOutput.send([0xB0+t, 97, 64]);　//tuning?
-					this.settings.WebMIDIPortOutput.send([0xB0+t, 7, 100]); // volume
-					this.settings.WebMIDIPortOutput.send([0xB0+t, 10, 64]); // pan
-					this.settings.WebMIDIPortOutput.send([0xB0+t, 11, 127]); // expression
+					this.settings.WebMIDIPortOutput.send([0xB0+t, 97, 64]);//tuning?
+					this.settings.WebMIDIPortOutput.send([0xB0+t, 7, 100]);// volume
+					this.settings.WebMIDIPortOutput.send([0xB0+t, 10, 64]);// pan
+					this.settings.WebMIDIPortOutput.send([0xB0+t, 11, 127]);// expression
 					//this.settings.WebMIDIPortOutput.send([0xB0+t, 91, 40]); // リバーブ以外のエフェクトに設定される場合がありそうなのでコメントアウト
 					//this.settings.WebMIDIPortOutput.send([0xB0+t, 93, 0]); // コーラス以外のエフェクトに設定されるのか音が出なくなる場合があるのでコメントアウト
 					this.settings.WebMIDIPortOutput.send([0xB0+t, 98, 0]);

@@ -93,7 +93,11 @@ define(["FS","Platform"], function (FS,Platform) {
 
 		WebSite.tonyuHome="/Tonyu/";
 		WebSite.projects=[P.rel(WebSite.tonyuHome,"Projects/")];
-		WebSite.scriptServer="https://edit.tonyu.jp/";
+		if (loc.match(/localhost\/tonyu2/)) {
+			WebSite.scriptServer="http://localhost/tonyu2/";
+		} else {
+			WebSite.scriptServer="https://edit.tonyu.jp/";
+		}
 		WebSite.pluginTop=WebSite.scriptServer+"js/plugins";
 		WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
 		WebSite.PathSep="/";

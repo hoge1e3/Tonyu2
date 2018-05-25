@@ -88,7 +88,7 @@
 		}
 	};
 	var requireSimulator=R;
-	// Created at Thu May 24 2018 17:12:05 GMT+0900 (東京 (標準時))
+	// Created at Fri May 25 2018 12:22:11 GMT+0900 (東京 (標準時))
 requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
@@ -3602,7 +3602,11 @@ define(["FS","Platform"], function (FS,Platform) {
 
 		WebSite.tonyuHome="/Tonyu/";
 		WebSite.projects=[P.rel(WebSite.tonyuHome,"Projects/")];
-		WebSite.scriptServer="https://edit.tonyu.jp/";
+		if (loc.match(/localhost\/tonyu2/)) {
+			WebSite.scriptServer="http://localhost/tonyu2/";
+		} else {
+			WebSite.scriptServer="https://edit.tonyu.jp/";
+		}
 		WebSite.pluginTop=WebSite.scriptServer+"js/plugins";
 		WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
 		WebSite.PathSep="/";

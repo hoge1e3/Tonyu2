@@ -88,7 +88,7 @@
 		}
 	};
 	var requireSimulator=R;
-	// Created at Thu May 24 2018 17:12:07 GMT+0900 (東京 (標準時))
+	// Created at Fri May 25 2018 12:22:13 GMT+0900 (東京 (標準時))
 requireSimulator.setName('Util');
 Util=(function () {
 
@@ -4240,7 +4240,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,DeferredUtil:DU,
-			VERSION:1527149525255,//EMBED_VERSION
+			VERSION:1527218529846,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -4906,7 +4906,11 @@ define(["FS","Platform"], function (FS,Platform) {
 
 		WebSite.tonyuHome="/Tonyu/";
 		WebSite.projects=[P.rel(WebSite.tonyuHome,"Projects/")];
-		WebSite.scriptServer="https://edit.tonyu.jp/";
+		if (loc.match(/localhost\/tonyu2/)) {
+			WebSite.scriptServer="http://localhost/tonyu2/";
+		} else {
+			WebSite.scriptServer="https://edit.tonyu.jp/";
+		}
 		WebSite.pluginTop=WebSite.scriptServer+"js/plugins";
 		WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
 		WebSite.PathSep="/";
@@ -6447,9 +6451,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	*/
 	function toSetString(aStr) {
 		if (isProtoString(aStr)) {
-		return '
-})();
- + aStr;
+		return '$' + aStr;
 		}
 
 		return aStr;
@@ -6489,9 +6491,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 
 		for (var i = length - 10; i >= 0; i--) {
-		if (s.charCodeAt(i) !== 36 /* '
-})();
- */) {
+		if (s.charCodeAt(i) !== 36 /* '$' */) {
 			return false;
 		}
 		}
@@ -8167,7 +8167,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// Private symbol for identifying `SourceNode`s when multiple versions of
 	// the source-map library are loaded. This MUST NOT CHANGE across
 	// versions!
-	var isSourceNode = "$$isSourceNode$$";
+	var isSourceNode = "$$$isSourceNode$$$";
 
 	/**
 	* SourceNodes provide a way to abstract over interpolating/concatenating
@@ -9498,16 +9498,16 @@ Grammar=function () {
 		});
 	}
 	$=function (name){
-		var $={};
-		$.ands=function() {
+		var $$={};
+		$$.ands=function() {
 			var p=trans(arguments[0]);  //  ;
 			for (var i=1 ; i<arguments.length ;i++) {
 				p=p.and( trans(arguments[i]) );
 			}
 			p=p.tap(name);
 			$.defs[name]=p;
-			var $$={};
-			$$.autoNode=function () {
+			var $$$={};
+			$$$.autoNode=function () {
 				var res=p.ret(function () {
 					var res={type:name};
 					for (var i=0 ; i<arguments.length ;i++) {
@@ -9522,7 +9522,7 @@ Grammar=function () {
 				}).setName(name);
 				return $.defs[name]=res;
 			};
-			$$.ret=function (f) {
+			$$$.ret=function (f) {
 				if (arguments.length==0) return p;
 				if (typeof f=="function") {
 					return $.defs[name]=p.ret(f);
@@ -9555,16 +9555,16 @@ Grammar=function () {
 				}).setName(name);
 				return  $.defs[name]=res;
 			};
-			return $$;
+			return $$$;
 		};
-		$.ors= function () {
+		$$.ors= function () {
 			var p=trans(arguments[0]);
 			for (var i=1 ; i<arguments.length ;i++) {
 				p=p.or( trans(arguments[i]) );
 			}
 			return $.defs[name]=p.setName(name);
 		};
-		return $;
+		return $$;
 	};
 
 	$.defs={};
@@ -16282,10 +16282,10 @@ var PicoAudio = (function(){
 					this.settings.WebMIDIPortOutput.send([0xB0+t, 6, 2]); //pitchbend
 					this.settings.WebMIDIPortOutput.send([0xB0+t, 100, 1]);
 					this.settings.WebMIDIPortOutput.send([0xB0+t, 96, 0]);
-					this.settings.WebMIDIPortOutput.send([0xB0+t, 97, 64]);　//tuning?
-					this.settings.WebMIDIPortOutput.send([0xB0+t, 7, 100]); // volume
-					this.settings.WebMIDIPortOutput.send([0xB0+t, 10, 64]); // pan
-					this.settings.WebMIDIPortOutput.send([0xB0+t, 11, 127]); // expression
+					this.settings.WebMIDIPortOutput.send([0xB0+t, 97, 64]);//tuning?
+					this.settings.WebMIDIPortOutput.send([0xB0+t, 7, 100]);// volume
+					this.settings.WebMIDIPortOutput.send([0xB0+t, 10, 64]);// pan
+					this.settings.WebMIDIPortOutput.send([0xB0+t, 11, 127]);// expression
 					//this.settings.WebMIDIPortOutput.send([0xB0+t, 91, 40]); // リバーブ以外のエフェクトに設定される場合がありそうなのでコメントアウト
 					//this.settings.WebMIDIPortOutput.send([0xB0+t, 93, 0]); // コーラス以外のエフェクトに設定されるのか音が出なくなる場合があるのでコメントアウト
 					this.settings.WebMIDIPortOutput.send([0xB0+t, 98, 0]);
