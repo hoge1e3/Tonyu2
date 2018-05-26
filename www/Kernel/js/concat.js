@@ -13596,43 +13596,43 @@ Tonyu.klass.define({
       var cnt;
       var wevt;
       
-      //$LASTPOS=42000226;//kernel.GIFWriter:226
+      //$LASTPOS=42000240;//kernel.GIFWriter:240
       Tonyu.classes.kernel.TObject.apply( _this, [params]);
-      //$LASTPOS=42000246;//kernel.GIFWriter:246
+      //$LASTPOS=42000260;//kernel.GIFWriter:260
       Tonyu.globals.$currentProject.requestPlugin("gif");
-      //$LASTPOS=42000331;//kernel.GIFWriter:331
+      //$LASTPOS=42000343;//kernel.GIFWriter:343
       _this.target=_this.target||Tonyu.globals.$Screen;
-      //$LASTPOS=42000362;//kernel.GIFWriter:362
+      //$LASTPOS=42000374;//kernel.GIFWriter:374
       _this.fps=_this.fps||15;
-      //$LASTPOS=42000382;//kernel.GIFWriter:382
+      //$LASTPOS=42000394;//kernel.GIFWriter:394
       _this.interval=_this.interval||_this.floor(Tonyu.globals.$Boot.getFrameRate()/_this.fps);
-      //$LASTPOS=42000447;//kernel.GIFWriter:447
+      //$LASTPOS=42000459;//kernel.GIFWriter:459
       _this.duration=(1000/Tonyu.globals.$Boot.getFrameRate())*_this.interval;
-      //$LASTPOS=42000501;//kernel.GIFWriter:501
+      //$LASTPOS=42000513;//kernel.GIFWriter:513
       if (! _this.manual) {
-        //$LASTPOS=42000525;//kernel.GIFWriter:525
+        //$LASTPOS=42000537;//kernel.GIFWriter:537
         if (_this.delay) {
-          //$LASTPOS=42000551;//kernel.GIFWriter:551
+          //$LASTPOS=42000563;//kernel.GIFWriter:563
           cnt = 0;
           
           
-          //$LASTPOS=42000598;//kernel.GIFWriter:598
-          wevt=Tonyu.globals.$Boot.on("afterDraw",(function anonymous_625() {
+          //$LASTPOS=42000610;//kernel.GIFWriter:610
+          wevt=Tonyu.globals.$Boot.on("afterDraw",(function anonymous_637() {
             
-            //$LASTPOS=42000645;//kernel.GIFWriter:645
+            //$LASTPOS=42000657;//kernel.GIFWriter:657
             cnt++;
-            //$LASTPOS=42000669;//kernel.GIFWriter:669
+            //$LASTPOS=42000681;//kernel.GIFWriter:681
             if (cnt>=_this.delay) {
-              //$LASTPOS=42000708;//kernel.GIFWriter:708
+              //$LASTPOS=42000720;//kernel.GIFWriter:720
               wevt.remove();
-              //$LASTPOS=42000744;//kernel.GIFWriter:744
+              //$LASTPOS=42000756;//kernel.GIFWriter:756
               _this.start();
               
             }
           }));
           
         } else {
-          //$LASTPOS=42000804;//kernel.GIFWriter:804
+          //$LASTPOS=42000816;//kernel.GIFWriter:816
           _this.start();
         }
         
@@ -13643,49 +13643,49 @@ Tonyu.klass.define({
       var _this=this;
       var cnt;
       
-      //$LASTPOS=42000840;//kernel.GIFWriter:840
+      //$LASTPOS=42000852;//kernel.GIFWriter:852
       if (_this.e) {
         return _this;
       }
-      //$LASTPOS=42000860;//kernel.GIFWriter:860
+      //$LASTPOS=42000872;//kernel.GIFWriter:872
       _this.frames=[];
-      //$LASTPOS=42000876;//kernel.GIFWriter:876
+      //$LASTPOS=42000888;//kernel.GIFWriter:888
       _this.e=new GIF({workerScript: GIF_WORKER_URL,workers: 2,quality: 10});
-      //$LASTPOS=42001123;//kernel.GIFWriter:1123
+      //$LASTPOS=42001135;//kernel.GIFWriter:1135
       _this.encoded=0;
-      //$LASTPOS=42001139;//kernel.GIFWriter:1139
+      //$LASTPOS=42001151;//kernel.GIFWriter:1151
       if (! _this.manual) {
-        //$LASTPOS=42001163;//kernel.GIFWriter:1163
+        //$LASTPOS=42001175;//kernel.GIFWriter:1175
         cnt = 0;
         
-        //$LASTPOS=42001183;//kernel.GIFWriter:1183
-        _this.evt=Tonyu.globals.$Boot.on("afterDraw",(function anonymous_1209(e) {
+        //$LASTPOS=42001195;//kernel.GIFWriter:1195
+        _this.evt=Tonyu.globals.$Boot.on("afterDraw",(function anonymous_1221(e) {
           var drawn;
           
-          //$LASTPOS=42001229;//kernel.GIFWriter:1229
+          //$LASTPOS=42001241;//kernel.GIFWriter:1241
           drawn = e.drawn;
           
-          //$LASTPOS=42001261;//kernel.GIFWriter:1261
+          //$LASTPOS=42001273;//kernel.GIFWriter:1273
           cnt++;
-          //$LASTPOS=42001281;//kernel.GIFWriter:1281
+          //$LASTPOS=42001293;//kernel.GIFWriter:1293
           if (cnt>=_this.interval) {
-            //$LASTPOS=42001319;//kernel.GIFWriter:1319
+            //$LASTPOS=42001331;//kernel.GIFWriter:1331
             cnt=0;
-            //$LASTPOS=42001343;//kernel.GIFWriter:1343
+            //$LASTPOS=42001355;//kernel.GIFWriter:1355
             _this.addFrame();
             
           }
-          //$LASTPOS=42001383;//kernel.GIFWriter:1383
+          //$LASTPOS=42001395;//kernel.GIFWriter:1395
           if (typeof  _this.length==="number") {
-            //$LASTPOS=42001432;//kernel.GIFWriter:1432
+            //$LASTPOS=42001444;//kernel.GIFWriter:1444
             _this.length--;
-            //$LASTPOS=42001459;//kernel.GIFWriter:1459
+            //$LASTPOS=42001471;//kernel.GIFWriter:1471
             if (_this.length<=0) {
               switch (_this.after) {
               case "save":
-                return _this.save()["catch"]((function anonymous_1571(e) {
+                return _this.save()["catch"]((function anonymous_1583(e) {
                   
-                  //$LASTPOS=42001578;//kernel.GIFWriter:1578
+                  //$LASTPOS=42001590;//kernel.GIFWriter:1590
                   console.error(e);
                 }));
               case "download":
@@ -13706,16 +13706,16 @@ Tonyu.klass.define({
       var __pc=0;
       var cnt;
       
-      //$LASTPOS=42000840;//kernel.GIFWriter:840
+      //$LASTPOS=42000852;//kernel.GIFWriter:852
       if (_this.e) {
         _thread.retVal=_this;return;
         
       }
-      //$LASTPOS=42000860;//kernel.GIFWriter:860
+      //$LASTPOS=42000872;//kernel.GIFWriter:872
       _this.frames=[];
-      //$LASTPOS=42000876;//kernel.GIFWriter:876
+      //$LASTPOS=42000888;//kernel.GIFWriter:888
       _this.e=new GIF({workerScript: GIF_WORKER_URL,workers: 2,quality: 10});
-      //$LASTPOS=42001123;//kernel.GIFWriter:1123
+      //$LASTPOS=42001135;//kernel.GIFWriter:1135
       _this.encoded=0;
       
       _thread.enter(function _trc_GIFWriter_ent_start(_thread) {
@@ -13723,39 +13723,39 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=42001139;//kernel.GIFWriter:1139
+            //$LASTPOS=42001151;//kernel.GIFWriter:1151
             if (!(! _this.manual)) { __pc=1     ; break; }
-            //$LASTPOS=42001163;//kernel.GIFWriter:1163
+            //$LASTPOS=42001175;//kernel.GIFWriter:1175
             cnt = 0;
             
-            //$LASTPOS=42001183;//kernel.GIFWriter:1183
-            _this.evt=Tonyu.globals.$Boot.on("afterDraw",(function anonymous_1209(e) {
+            //$LASTPOS=42001195;//kernel.GIFWriter:1195
+            _this.evt=Tonyu.globals.$Boot.on("afterDraw",(function anonymous_1221(e) {
               var drawn;
               
-              //$LASTPOS=42001229;//kernel.GIFWriter:1229
+              //$LASTPOS=42001241;//kernel.GIFWriter:1241
               drawn = e.drawn;
               
-              //$LASTPOS=42001261;//kernel.GIFWriter:1261
+              //$LASTPOS=42001273;//kernel.GIFWriter:1273
               cnt++;
-              //$LASTPOS=42001281;//kernel.GIFWriter:1281
+              //$LASTPOS=42001293;//kernel.GIFWriter:1293
               if (cnt>=_this.interval) {
-                //$LASTPOS=42001319;//kernel.GIFWriter:1319
+                //$LASTPOS=42001331;//kernel.GIFWriter:1331
                 cnt=0;
-                //$LASTPOS=42001343;//kernel.GIFWriter:1343
+                //$LASTPOS=42001355;//kernel.GIFWriter:1355
                 _this.addFrame();
                 
               }
-              //$LASTPOS=42001383;//kernel.GIFWriter:1383
+              //$LASTPOS=42001395;//kernel.GIFWriter:1395
               if (typeof  _this.length==="number") {
-                //$LASTPOS=42001432;//kernel.GIFWriter:1432
+                //$LASTPOS=42001444;//kernel.GIFWriter:1444
                 _this.length--;
-                //$LASTPOS=42001459;//kernel.GIFWriter:1459
+                //$LASTPOS=42001471;//kernel.GIFWriter:1471
                 if (_this.length<=0) {
                   switch (_this.after) {
                   case "save":
-                    return _this.save()["catch"]((function anonymous_1571(e) {
+                    return _this.save()["catch"]((function anonymous_1583(e) {
                       
-                      //$LASTPOS=42001578;//kernel.GIFWriter:1578
+                      //$LASTPOS=42001590;//kernel.GIFWriter:1590
                       console.error(e);
                     }));
                   case "download":
@@ -13777,12 +13777,12 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=42001756;//kernel.GIFWriter:1756
+      //$LASTPOS=42001768;//kernel.GIFWriter:1768
       if (! _this.e) {
-        //$LASTPOS=42001764;//kernel.GIFWriter:1764
+        //$LASTPOS=42001776;//kernel.GIFWriter:1776
         _this.start();
       }
-      //$LASTPOS=42001778;//kernel.GIFWriter:1778
+      //$LASTPOS=42001790;//kernel.GIFWriter:1790
       _this.e.addFrame(_this.target.image,{delay: _this.duration,copy: true});
     },
     fiber$addFrame :function _trc_GIFWriter_f_addFrame(_thread) {
@@ -13797,16 +13797,16 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=42001756;//kernel.GIFWriter:1756
+            //$LASTPOS=42001768;//kernel.GIFWriter:1768
             if (!(! _this.e)) { __pc=2     ; break; }
-            //$LASTPOS=42001764;//kernel.GIFWriter:1764
+            //$LASTPOS=42001776;//kernel.GIFWriter:1776
             _this.fiber$start(_thread);
             __pc=1;return;
           case 1:
             
           case 2     :
             
-            //$LASTPOS=42001778;//kernel.GIFWriter:1778
+            //$LASTPOS=42001790;//kernel.GIFWriter:1790
             _this.e.addFrame(_this.target.image,{delay: _this.duration,copy: true});
             _thread.exit(_this);return;
           }
@@ -13818,20 +13818,20 @@ Tonyu.klass.define({
       var _this=this;
       var r;
       
-      //$LASTPOS=42001987;//kernel.GIFWriter:1987
-      r = _this.runPromise((function anonymous_2004(onFinish,fail) {
+      //$LASTPOS=42001999;//kernel.GIFWriter:1999
+      r = _this.runPromise((function anonymous_2016(onFinish,fail) {
         
-        //$LASTPOS=42002032;//kernel.GIFWriter:2032
+        //$LASTPOS=42002044;//kernel.GIFWriter:2044
         if (_this.evt) {
-          //$LASTPOS=42002056;//kernel.GIFWriter:2056
+          //$LASTPOS=42002068;//kernel.GIFWriter:2068
           _this.evt.remove();
-          //$LASTPOS=42002083;//kernel.GIFWriter:2083
+          //$LASTPOS=42002095;//kernel.GIFWriter:2095
           _this.evt=null;
           
         }
-        //$LASTPOS=42002113;//kernel.GIFWriter:2113
+        //$LASTPOS=42002125;//kernel.GIFWriter:2125
         _this.e.on('finished',onFinish);
-        //$LASTPOS=42002150;//kernel.GIFWriter:2150
+        //$LASTPOS=42002162;//kernel.GIFWriter:2162
         _this.e.render();
       }));
       
@@ -13850,20 +13850,20 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=42001987;//kernel.GIFWriter:1987
-            _this.fiber$runPromise(_thread, (function anonymous_2004(onFinish,fail) {
+            //$LASTPOS=42001999;//kernel.GIFWriter:1999
+            _this.fiber$runPromise(_thread, (function anonymous_2016(onFinish,fail) {
               
-              //$LASTPOS=42002032;//kernel.GIFWriter:2032
+              //$LASTPOS=42002044;//kernel.GIFWriter:2044
               if (_this.evt) {
-                //$LASTPOS=42002056;//kernel.GIFWriter:2056
+                //$LASTPOS=42002068;//kernel.GIFWriter:2068
                 _this.evt.remove();
-                //$LASTPOS=42002083;//kernel.GIFWriter:2083
+                //$LASTPOS=42002095;//kernel.GIFWriter:2095
                 _this.evt=null;
                 
               }
-              //$LASTPOS=42002113;//kernel.GIFWriter:2113
+              //$LASTPOS=42002125;//kernel.GIFWriter:2125
               _this.e.on('finished',onFinish);
-              //$LASTPOS=42002150;//kernel.GIFWriter:2150
+              //$LASTPOS=42002162;//kernel.GIFWriter:2162
               _this.e.render();
             }));
             __pc=1;return;
@@ -13881,31 +13881,23 @@ Tonyu.klass.define({
       var _this=this;
       var r;
       
-      //$LASTPOS=42002209;//kernel.GIFWriter:2209
+      //$LASTPOS=42002221;//kernel.GIFWriter:2221
       f=f||_this.filename||"download.gif";
-      //$LASTPOS=42002245;//kernel.GIFWriter:2245
+      //$LASTPOS=42002257;//kernel.GIFWriter:2257
       console.log("DL",f);
-      //$LASTPOS=42002271;//kernel.GIFWriter:2271
-      r = _this.runPromise((function anonymous_2288(succ,err) {
+      //$LASTPOS=42002283;//kernel.GIFWriter:2283
+      r = _this.runPromise((function anonymous_2300(succ,err) {
         
-        //$LASTPOS=42002311;//kernel.GIFWriter:2311
-        _this.finish().then((function anonymous_2325(blob) {
-          var templink;
+        //$LASTPOS=42002323;//kernel.GIFWriter:2323
+        _this.finish().then((function anonymous_2337(blob) {
           
-          //$LASTPOS=42002348;//kernel.GIFWriter:2348
-          templink = document.createElement("a");
-          
-          //$LASTPOS=42002405;//kernel.GIFWriter:2405
-          templink.download=f;
-          //$LASTPOS=42002439;//kernel.GIFWriter:2439
-          templink.href=URL.createObjectURL(blob);
-          //$LASTPOS=42002494;//kernel.GIFWriter:2494
-          templink.click();
-          //$LASTPOS=42002525;//kernel.GIFWriter:2525
+          //$LASTPOS=42002360;//kernel.GIFWriter:2360
+          FS.Content.download(blob,f);
+          //$LASTPOS=42002402;//kernel.GIFWriter:2402
           _this.e=null;
-        })).then((function anonymous_2550() {
+        })).then((function anonymous_2427() {
           
-          //$LASTPOS=42002552;//kernel.GIFWriter:2552
+          //$LASTPOS=42002429;//kernel.GIFWriter:2429
           console.log("DL OK");
         }),err);
       }));
@@ -13919,9 +13911,9 @@ Tonyu.klass.define({
       var __pc=0;
       var r;
       
-      //$LASTPOS=42002209;//kernel.GIFWriter:2209
+      //$LASTPOS=42002221;//kernel.GIFWriter:2221
       f=f||_this.filename||"download.gif";
-      //$LASTPOS=42002245;//kernel.GIFWriter:2245
+      //$LASTPOS=42002257;//kernel.GIFWriter:2257
       console.log("DL",f);
       
       _thread.enter(function _trc_GIFWriter_ent_download(_thread) {
@@ -13929,27 +13921,19 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=42002271;//kernel.GIFWriter:2271
-            _this.fiber$runPromise(_thread, (function anonymous_2288(succ,err) {
+            //$LASTPOS=42002283;//kernel.GIFWriter:2283
+            _this.fiber$runPromise(_thread, (function anonymous_2300(succ,err) {
               
-              //$LASTPOS=42002311;//kernel.GIFWriter:2311
-              _this.finish().then((function anonymous_2325(blob) {
-                var templink;
+              //$LASTPOS=42002323;//kernel.GIFWriter:2323
+              _this.finish().then((function anonymous_2337(blob) {
                 
-                //$LASTPOS=42002348;//kernel.GIFWriter:2348
-                templink = document.createElement("a");
-                
-                //$LASTPOS=42002405;//kernel.GIFWriter:2405
-                templink.download=f;
-                //$LASTPOS=42002439;//kernel.GIFWriter:2439
-                templink.href=URL.createObjectURL(blob);
-                //$LASTPOS=42002494;//kernel.GIFWriter:2494
-                templink.click();
-                //$LASTPOS=42002525;//kernel.GIFWriter:2525
+                //$LASTPOS=42002360;//kernel.GIFWriter:2360
+                FS.Content.download(blob,f);
+                //$LASTPOS=42002402;//kernel.GIFWriter:2402
                 _this.e=null;
-              })).then((function anonymous_2550() {
+              })).then((function anonymous_2427() {
                 
-                //$LASTPOS=42002552;//kernel.GIFWriter:2552
+                //$LASTPOS=42002429;//kernel.GIFWriter:2429
                 console.log("DL OK");
               }),err);
             }));
@@ -13968,26 +13952,26 @@ Tonyu.klass.define({
       var _this=this;
       var r;
       
-      //$LASTPOS=42002625;//kernel.GIFWriter:2625
+      //$LASTPOS=42002502;//kernel.GIFWriter:2502
       console.log("Save",f);
-      //$LASTPOS=42002653;//kernel.GIFWriter:2653
-      r = _this.runPromise((function anonymous_2670(succ,err) {
+      //$LASTPOS=42002530;//kernel.GIFWriter:2530
+      r = _this.runPromise((function anonymous_2547(succ,err) {
         
-        //$LASTPOS=42002693;//kernel.GIFWriter:2693
-        _this.finish().then((function anonymous_2707(blob) {
+        //$LASTPOS=42002570;//kernel.GIFWriter:2570
+        _this.finish().then((function anonymous_2584(blob) {
           
-          //$LASTPOS=42002730;//kernel.GIFWriter:2730
+          //$LASTPOS=42002607;//kernel.GIFWriter:2607
           f=_this.file(f||_this.filename);
           return f.setBlob(blob);
-        })).then((function anonymous_2804() {
+        })).then((function anonymous_2681() {
           
-          //$LASTPOS=42002820;//kernel.GIFWriter:2820
+          //$LASTPOS=42002697;//kernel.GIFWriter:2697
           _this.e=null;
-          //$LASTPOS=42002841;//kernel.GIFWriter:2841
+          //$LASTPOS=42002718;//kernel.GIFWriter:2718
           succ();
-        })).then((function anonymous_2866() {
+        })).then((function anonymous_2743() {
           
-          //$LASTPOS=42002868;//kernel.GIFWriter:2868
+          //$LASTPOS=42002745;//kernel.GIFWriter:2745
           console.log("Save OK");
         }),err);
       }));
@@ -14001,7 +13985,7 @@ Tonyu.klass.define({
       var __pc=0;
       var r;
       
-      //$LASTPOS=42002625;//kernel.GIFWriter:2625
+      //$LASTPOS=42002502;//kernel.GIFWriter:2502
       console.log("Save",f);
       
       _thread.enter(function _trc_GIFWriter_ent_save(_thread) {
@@ -14009,24 +13993,24 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=42002653;//kernel.GIFWriter:2653
-            _this.fiber$runPromise(_thread, (function anonymous_2670(succ,err) {
+            //$LASTPOS=42002530;//kernel.GIFWriter:2530
+            _this.fiber$runPromise(_thread, (function anonymous_2547(succ,err) {
               
-              //$LASTPOS=42002693;//kernel.GIFWriter:2693
-              _this.finish().then((function anonymous_2707(blob) {
+              //$LASTPOS=42002570;//kernel.GIFWriter:2570
+              _this.finish().then((function anonymous_2584(blob) {
                 
-                //$LASTPOS=42002730;//kernel.GIFWriter:2730
+                //$LASTPOS=42002607;//kernel.GIFWriter:2607
                 f=_this.file(f||_this.filename);
                 return f.setBlob(blob);
-              })).then((function anonymous_2804() {
+              })).then((function anonymous_2681() {
                 
-                //$LASTPOS=42002820;//kernel.GIFWriter:2820
+                //$LASTPOS=42002697;//kernel.GIFWriter:2697
                 _this.e=null;
-                //$LASTPOS=42002841;//kernel.GIFWriter:2841
+                //$LASTPOS=42002718;//kernel.GIFWriter:2718
                 succ();
-              })).then((function anonymous_2866() {
+              })).then((function anonymous_2743() {
                 
-                //$LASTPOS=42002868;//kernel.GIFWriter:2868
+                //$LASTPOS=42002745;//kernel.GIFWriter:2745
                 console.log("Save OK");
               }),err);
             }));
@@ -17929,16 +17913,16 @@ Tonyu.klass.define({
       var _this=this;
       var res;
       var l;
-      var _it_522;
+      var _it_521;
       var q;
       
       //$LASTPOS=47004015;//kernel.Screen:4015
       res = new Tonyu.classes.kernel.TQuery;
       
       //$LASTPOS=47004039;//kernel.Screen:4039
-      _it_522=Tonyu.iterator(_this.layers,1);
-      while(_it_522.next()) {
-        l=_it_522[0];
+      _it_521=Tonyu.iterator(_this.layers,1);
+      while(_it_521.next()) {
+        l=_it_521[0];
         
         //$LASTPOS=47004071;//kernel.Screen:4071
         q = l.group.all.apply(l.group,arguments);
@@ -23358,12 +23342,12 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       var t;
-      var _it_628;
+      var _it_627;
       
       //$LASTPOS=58001384;//kernel.APad:1384
-      _it_628=Tonyu.iterator(Tonyu.globals.$touches,1);
-      while(_it_628.next()) {
-        t=_it_628[0];
+      _it_627=Tonyu.iterator(Tonyu.globals.$touches,1);
+      while(_it_627.next()) {
+        t=_it_627[0];
         
         //$LASTPOS=58001419;//kernel.APad:1419
         if ((! _this.touchRadius||_this.dist(t)<_this.touchRadius)&&t.touched==1) {
@@ -29199,15 +29183,15 @@ Tonyu.klass.define({
       }),releaseAll: (function anonymous_1060() {
         var a;
         var e;
-        var _it_673;
+        var _it_672;
         
         //$LASTPOS=68001076;//kernel.Boot:1076
         a = Tonyu.globals.$Screen.all();
         
         //$LASTPOS=68001110;//kernel.Boot:1110
-        _it_673=Tonyu.iterator(a,1);
-        while(_it_673.next()) {
-          e=_it_673[0];
+        _it_672=Tonyu.iterator(a,1);
+        while(_it_672.next()) {
+          e=_it_672[0];
           
           //$LASTPOS=68001146;//kernel.Boot:1146
           res.release(e);
@@ -29256,15 +29240,15 @@ Tonyu.klass.define({
       }),releaseAll: (function anonymous_1060() {
         var a;
         var e;
-        var _it_673;
+        var _it_672;
         
         //$LASTPOS=68001076;//kernel.Boot:1076
         a = Tonyu.globals.$Screen.all();
         
         //$LASTPOS=68001110;//kernel.Boot:1110
-        _it_673=Tonyu.iterator(a,1);
-        while(_it_673.next()) {
-          e=_it_673[0];
+        _it_672=Tonyu.iterator(a,1);
+        while(_it_672.next()) {
+          e=_it_672[0];
           
           //$LASTPOS=68001146;//kernel.Boot:1146
           res.release(e);
@@ -29314,7 +29298,7 @@ Tonyu.klass.define({
       var opt;
       var g;
       var name;
-      var _it_677;
+      var _it_676;
       
       //$LASTPOS=68001339;//kernel.Boot:1339
       opt = Tonyu.currentProject.getOptions();
@@ -29325,9 +29309,9 @@ Tonyu.klass.define({
         g = opt.run.globals;
         
         //$LASTPOS=68001452;//kernel.Boot:1452
-        _it_677=Tonyu.iterator(g,1);
-        while(_it_677.next()) {
-          name=_it_677[0];
+        _it_676=Tonyu.iterator(g,1);
+        while(_it_676.next()) {
+          name=_it_676[0];
           
           //$LASTPOS=68001481;//kernel.Boot:1481
           Tonyu.setGlobal(name,g[name]);
@@ -29344,7 +29328,7 @@ Tonyu.klass.define({
       var opt;
       var g;
       var name;
-      var _it_677;
+      var _it_676;
       
       //$LASTPOS=68001339;//kernel.Boot:1339
       opt = Tonyu.currentProject.getOptions();
@@ -29355,9 +29339,9 @@ Tonyu.klass.define({
         g = opt.run.globals;
         
         //$LASTPOS=68001452;//kernel.Boot:1452
-        _it_677=Tonyu.iterator(g,1);
-        while(_it_677.next()) {
-          name=_it_677[0];
+        _it_676=Tonyu.iterator(g,1);
+        while(_it_676.next()) {
+          name=_it_676[0];
           
           //$LASTPOS=68001481;//kernel.Boot:1481
           Tonyu.setGlobal(name,g[name]);
@@ -29719,7 +29703,7 @@ Tonyu.klass.define({
       var r;
       var name;
       var val;
-      var _it_684;
+      var _it_683;
       
       //$LASTPOS=68004312;//kernel.Boot:4312
       _this.progress("Loading pats..");
@@ -29736,10 +29720,10 @@ Tonyu.klass.define({
       //$LASTPOS=68004589;//kernel.Boot:4589
       Tonyu.globals.$imageList=r[0];
       //$LASTPOS=68004647;//kernel.Boot:4647
-      _it_684=Tonyu.iterator(r[0].names,2);
-      while(_it_684.next()) {
-        name=_it_684[0];
-        val=_it_684[1];
+      _it_683=Tonyu.iterator(r[0].names,2);
+      while(_it_683.next()) {
+        name=_it_683[0];
+        val=_it_683[1];
         
         //$LASTPOS=68004691;//kernel.Boot:4691
         Tonyu.setGlobal(name,val);
@@ -29757,7 +29741,7 @@ Tonyu.klass.define({
       var r;
       var name;
       var val;
-      var _it_684;
+      var _it_683;
       
       
       _thread.enter(function _trc_Boot_ent_loadImages(_thread) {
@@ -29787,10 +29771,10 @@ Tonyu.klass.define({
             //$LASTPOS=68004589;//kernel.Boot:4589
             Tonyu.globals.$imageList=r[0];
             //$LASTPOS=68004647;//kernel.Boot:4647
-            _it_684=Tonyu.iterator(r[0].names,2);
-            while(_it_684.next()) {
-              name=_it_684[0];
-              val=_it_684[1];
+            _it_683=Tonyu.iterator(r[0].names,2);
+            while(_it_683.next()) {
+              name=_it_683[0];
+              val=_it_683[1];
               
               //$LASTPOS=68004691;//kernel.Boot:4691
               Tonyu.setGlobal(name,val);

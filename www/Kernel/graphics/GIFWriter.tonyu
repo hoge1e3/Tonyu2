@@ -7,9 +7,11 @@ native URL;
 native setTimeout;
 native console;
 native Uint8Array;
+native FS;
+
 \new(params) {
     super(params);
-    $currentProject.requestPlugin("gif");  
+    $currentProject.requestPlugin("gif");
     // delay   length   after filename
     target=target || $Screen;
     fps=fps || 15;
@@ -88,10 +90,7 @@ native Uint8Array;
     console.log("DL",f);
     var r=runPromise \(succ,err) {
         finish().then \(blob) {
-            var templink = document.createElement("a");
-            templink.download=f;
-            templink.href= URL.createObjectURL(blob);
-            templink.click();
+            FS.Content.download(blob,f);
             e=null;
         }.then (\{console.log("DL OK");}, err);
     };
