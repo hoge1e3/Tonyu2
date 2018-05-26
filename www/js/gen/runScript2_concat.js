@@ -88,7 +88,7 @@
 		}
 	};
 	var requireSimulator=R;
-	// Created at Sat May 26 2018 12:13:48 GMT+0900 (東京 (標準時))
+	// Created at Sat May 26 2018 15:35:55 GMT+0900 (東京 (標準時))
 requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
@@ -4834,7 +4834,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,DeferredUtil:DU,
-			VERSION:1527304411238,//EMBED_VERSION
+			VERSION:1527316538923,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -5172,6 +5172,7 @@ return {
 };
 })();
 
+define('Util',[],function (){ return Util; });
 requireSimulator.setName('Assets');
 define(["WebSite","Util","Tonyu","FS"],function (WebSite,Util,Tonyu,FS) {
     var Assets={};
@@ -6876,6 +6877,7 @@ var PicoAudio = (function(){
 	return PicoAudio;
 })();
 
+define('PicoAudio',[],function (){ return PicoAudio; });
 requireSimulator.setName('T2MediaLib');
 // forked from makkii_bcr's "T2MediaLib" http://jsdo.it/makkii_bcr/3ioQ
 
@@ -8085,6 +8087,7 @@ var T2MediaLib_SoundData = (function(){
     return T2MediaLib_SoundData;
 })();
 
+define('T2MediaLib',[],function (){ return T2MediaLib; });
 requireSimulator.setName('exceptionCatcher');
 define([], function () {
     var res={};
@@ -8393,10 +8396,9 @@ define(["UI"],function (UI) {
 requireSimulator.setName('runtime');
 requirejs(["ImageList","PicoAudio","T2MediaLib","Tonyu","UIDiag"],
 function (i,p,t,tn,u) {
-    if (!window.PicoAudio &&
-    typeof PicoAudio!=="undefined") window.PicoAudio=PicoAudio;
-    if (!window.T2MediaLib &&
-    typeof T2MediaLib!=="undefined") window.T2MediaLib=T2MediaLib;
+    console.log("runtimes loaded",arguments);
+    if (!window.PicoAudio) window.PicoAudio=p;
+    if (!window.T2MediaLib) window.T2MediaLib=t;
 });
 
 requireSimulator.setName('LSFS');

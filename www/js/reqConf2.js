@@ -13,8 +13,8 @@ var reqConf={
             exports: "T"
         },
         "disp": {
-            "deps": ["IndentBuffer"],
-            "exports": "disp"
+            "deps": ["IndentBuffer"]
+            //"exports": "disp"
         },
         "Util": {
             "exports": "Util"
@@ -35,9 +35,9 @@ var reqConf={
         "Key": {
             "exports": "Key"
         },
-        "TError": {
+        /*"TError": {
             "exports": "TError"
-        },
+        },*/
         "fs/ROMk": {
             "deps": ["FS","WebSite"]
         },
@@ -313,4 +313,5 @@ var reqConf={
     genPaths(reqConf.revpaths,"");
     delete reqConf.revpaths;
     console.log(reqConf);
+    if (typeof exports!=="undefined") exports.conf=reqConf;
 })();

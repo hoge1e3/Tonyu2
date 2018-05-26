@@ -88,7 +88,7 @@
 		}
 	};
 	var requireSimulator=R;
-	// Created at Sat May 26 2018 12:13:31 GMT+0900 (東京 (標準時))
+	// Created at Sat May 26 2018 15:35:39 GMT+0900 (東京 (標準時))
 requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
@@ -3239,6 +3239,7 @@ function HttpHelper(options) {
     };
     return $h;
 }
+define('HttpHelper',[],function (){ return HttpHelper; });
 requireSimulator.setName('Arrow');
 Arrow=function () {
     var A={};
@@ -3291,6 +3292,7 @@ Arrow=function () {
     };
     return A;
 }();
+define('Arrow',[],function (){ return Arrow; });
 requireSimulator.setName('Util');
 Util=(function () {
 
@@ -3492,6 +3494,7 @@ return {
 };
 })();
 
+define('Util',[],function (){ return Util; });
 requireSimulator.setName('Platform');
 define([],function () {
     var WebSite={};
