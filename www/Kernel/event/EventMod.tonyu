@@ -96,7 +96,12 @@ nowait \sendEvent(type, arg) {
     if (!_thread) {
         return Tonyu.DeferredUtil.promise (f);
     } else {
-        var r=runAsync(f);
+        var r;
+        try {
+            r=runAsync(f);
+        } catch (e) {
+            throw e.args[0];
+        }
         return r[0];
     }
 }
