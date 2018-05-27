@@ -20,6 +20,10 @@ define(["DeferredUtil","WebSite","assert"], function (DU,WebSite,A) {
 			loadClasses: function (ctx) {
 				console.log("Loading compiled classes ns=",ns,"url=",url);
 				var src = url+(WebSite.serverType==="BA"?"?"+Math.random():"");
+				var u=window.navigator.userAgent.toLowerCase();
+				if (WebSite.isNW && u.indexOf("mac")!=-1) {
+					src = "/www/Kernel/js/concat.js";
+				}
 				var t=this;
 				return this.loadDependingClasses(ctx).then(function () {
 					return t.requirejs(src);
