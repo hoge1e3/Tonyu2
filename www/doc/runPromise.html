@@ -1,0 +1,48 @@
+<html><body class="markdown-body">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="BaseActor">BaseActor</a></p>
+<h1 id="runpromise-">runPromiseメソッド</h1>
+<p>非同期処理を行なうためのメソッドです。</p>
+<p>※<a href="runAsync">runAsync</a>メソッドとの違いは，結果を返す関数に渡せる引数が１つだけである点と，<a href="waitMode">待機不能モード</a>でも動作する点です．</p>
+<h2 id="-">書式</h2>
+<pre><code class="lang-JS">runPromise \(success,error) {
+    処理
+};
+</code></pre>
+<ul>
+<li>処理の中では、コールバック関数を伴う処理（非同期処理）を行います。</li>
+<li>非同期処理が完了したときのコールバック関数を指定する部分に<code>success</code>を指定してください。<ul>
+<li>待機可能モードでは，非同期処理が完了すると、runPromiseは終了します。戻り値は、コールバック関数に渡された第一引数になります。</li>
+<li>待機不能モードでは，runPromiseはただちに終了し，Promiseオブジェクト(jQuery.Deferred)を返します．</li>
+</ul>
+</li>
+<li>非同期処理が失敗する可能性がある場合、失敗したときのコールバック関数を指定する部分に<code>error</code>を指定してください。<ul>
+<li>非同期処理が失敗すると、例外が投げられます</li>
+<li>投げられる例外はerrorの第一引数に指定したオブジェクトです</li>
+</ul>
+</li>
+</ul>
+<h2 id="-">例</h2>
+<pre><code class="lang-JS">native setTimeout;
+\test(x) {
+    // 1秒後にxを返す
+    return runPromise \(s) {
+        setTimeout(\() {
+            s(x);
+        },1000);        
+    };
+}
+//待機可能モードでの呼び出し
+t=test(5);
+print(t);
+
+// 待機不能モードでの呼び出し．waitForを組み合わせると終わるまで待つことができる．
+t=waitFor(this.test(10));
+print(t);
+</code></pre>
+</body></html>

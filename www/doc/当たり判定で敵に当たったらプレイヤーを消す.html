@@ -22,7 +22,7 @@ while(true){
     //Enemyオブジェクトのどれかにぶつかっているか？
     // eがundefined →ぶつかっていない
     // eがundefined以外→ぶつかったEnemyオブジェクトがeに格納される
-    e=crashTo(Enemy);
+    e=crashTo(Enemy);//★
     if(e){//eがundefined以外なら
         die();//Playerが消える
     }
@@ -32,5 +32,9 @@ while(true){
 <p>Enemy</p>
 <pre><code class="lang-JS">// 敵の動作を書く。（とりあえず何も書かなくてもよい）
 </code></pre>
-<p>Playerオブジェクトは，EnemyオブジェクトのどれかにぶつかったときにPlayerオブジェクト自身が消えます。</p>
+<p>Playerオブジェクトは，★の箇所で<a href="crashTo">crashToメソッド</a>を呼び出し，Enemyオブジェクトのどれかにぶつかったかを判定します．</p>
+<ul>
+<li>当たっていたらそのオブジェクトを変数<code>e</code>に格納します．</li>
+<li>当たっていなかったら<code>undefined</code>を変数<code>e</code>に格納します．</li>
+</ul>
 </body></html>

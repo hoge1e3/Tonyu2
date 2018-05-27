@@ -88,7 +88,7 @@
 		}
 	};
 	var requireSimulator=R;
-	// Created at Sat May 26 2018 15:35:55 GMT+0900 (東京 (標準時))
+	// Created at Sun May 27 2018 17:53:38 GMT+0900 (東京 (標準時))
 requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
@@ -3278,7 +3278,9 @@ define(["FS","Platform"], function (FS,Platform) {
 		//WebSite.kernelDir=WebSite.top+"/Kernel/";
 		// kernelDir must be absolute
 		WebSite.kernelDir=P.rel(WebSite.wwwDir,"Kernel/");
-		WebSite.compiledKernel=P.rel(WebSite.kernelDir,"js/concat.js");
+		// compiledKernel is URL , not file path.
+		// It is correct as long as the html pages in www/ (not html/build|dev )
+		WebSite.compiledKernel="Kernel/js/concat.js";   //P.rel(WebSite.kernelDir,"js/concat.js");
 		if (loc.match(/localhost\/tonyu2/)) {
 			WebSite.wwwDir=prot+"//"+location.host+"/tonyu2/";
 			WebSite.kernelDir=WebSite.wwwDir+"Kernel/";
@@ -3644,6 +3646,11 @@ define(["DeferredUtil","WebSite","assert"], function (DU,WebSite,A) {
 			loadClasses: function (ctx) {
 				console.log("Loading compiled classes ns=",ns,"url=",url);
 				var src = url+(WebSite.serverType==="BA"?"?"+Math.random():"");
+				var u=window.navigator.userAgent.toLowerCase();
+				/*if (WebSite.isNW && u.indexOf("mac")!=-1) {
+					//Resolved in WebSite
+					src = "/www/Kernel/js/concat.js";
+				}*/
 				var t=this;
 				return this.loadDependingClasses(ctx).then(function () {
 					return t.requirejs(src);
@@ -4347,15 +4354,15 @@ define(["DeferredUtil","Klass"],function (DU,Klass) {
 				fb.retVal=r;
 				fb.stepsLoop();
 			}).fail(function (e) {
-				if (e instanceof Error) {
-					fb.gotoCatch(e);
-				} else {
-					var re=new Error(e);
-					re.original=e;
-					fb.gotoCatch(re);
-				}
+				fb.gotoCatch(fb.wrapError(e));
 				fb.stepsLoop();
 			});
+		},
+		wrapError: function (e) {
+			if (e instanceof Error) return e;
+			var re=new Error(e);
+			re.original=e;
+			return re;
 		},
 		resume: function (retVal) {
 			this.retVal=retVal;
@@ -4834,7 +4841,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,DeferredUtil:DU,
-			VERSION:1527316538923,//EMBED_VERSION
+			VERSION:1527411186424,//EMBED_VERSION
 			A:A};
 }();
 });

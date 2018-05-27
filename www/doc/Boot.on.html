@@ -6,8 +6,8 @@
 <p><a href="Boot">Boot</a></p>
 <h1 id="boot-on-">Boot.onメソッド</h1>
 <p>プログラム実行全体に関連するイベントについて，イベントハンドラを設定します．</p>
-<p>現状はイベントの種類に <code>&quot;stop&quot;</code> のみが使用できます．</p>
-<h2 id="-">書式</h2>
+<p>現状はイベントの種類に <code>&quot;stop&quot;</code> と <code>&quot;afterDraw&quot;</code> が使用できます．</p>
+<h2 id="stop-">stop : 書式</h2>
 <pre><code class="lang-JS">$Boot.on(&quot;stop&quot;) \(e) {
     //処理
 };
@@ -17,4 +17,14 @@
 <li><code>preventDefault()</code> 停止をキャンセルします．</li>
 <li><code>die()</code> 停止をキャンセルした後，実際に停止させたいときに呼び出します．</li>
 </ul>
+<h2 id="afterdraw-">afterDraw : 書式</h2>
+<p>フレームごとの描画が行われた後に実行されます．処理速度が間に合わなくて描画をスキップした場合にも，本来描画が行われるはずのタイミングで実行されます．</p>
+<p>eには次のフィールドをもつオブジェクトが渡されます．</p>
+<ul>
+<li><code>drawn</code> 実際に描画があった場合は<code>true</code>． 描画がスキップされた場合は<code>false</code>が格納されます．</li>
+</ul>
+<pre><code class="lang-JS">$Boot.on(&quot;afterDraw&quot;) \(e) {
+    //処理
+};
+</code></pre>
 </body></html>

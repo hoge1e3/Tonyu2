@@ -18,6 +18,10 @@
 <li>待機可能モードで動作している間に，次のいずれかの形式をもつ文から呼び出されるメソッドは，待機可能モードで動作します．ただし，メソッド名はそのオブジェクト自身がもつメソッドを指しており，それが待機不能メソッド（後述）でない場合に限ります．<ul>
 <li><code>メソッド名(引数...);</code></li>
 <li><code>戻り値=メソッド名(引数...);</code></li>
+<li><code>var 戻り値=メソッド名(引数...);</code></li>
+<li><code>super.メソッド名(引数...);</code></li>
+<li><code>戻り値=super.メソッド名(引数...);</code></li>
+<li><code>return メソッド名(引数...);</code></li>
 </ul>
 </li>
 </ul>
@@ -67,5 +71,7 @@ nowait \method2() {
 <li><a href="updateEx">updateEx</a></li>
 <li><a href="waitEvent">waitEvent</a></li>
 <li><a href="waitFor">waitFor</a></li>
+<li><a href="runAsync">runAsync</a></li>
+<li><a href="runPromise">runPromise</a></li>
 </ul>
 </body></html>

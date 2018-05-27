@@ -1,0 +1,63 @@
+<html><body class="markdown-body">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><a href="api">api</a></p>
+<h1 id="gifwriter-">GIFWriterクラス</h1>
+<p>画面やパネルの画像からアニメーションGIFを作成します．</p>
+<h2 id="-">例</h2>
+<pre><code class="lang-JS">// 5フレーム後から撮影開始，撮影長さ30フレーム，終了後&quot;anim.gif&quot;というファイル名でダウンロード
+g=new GIFWriter{delay=5,length=30,after=&quot;download&quot;,filename=&quot;anim.gif&quot;};
+</code></pre>
+<h2 id="-">コンストラクタ</h2>
+<pre><code class="lang-JS">new GIFWriter(param)
+</code></pre>
+<p>paramには，次の値をもつオブジェクトを渡します．</p>
+<ul>
+<li><code>target</code>：  撮影対象となるPanelオブジェクト．省略すると<code>$Screen</code>．</li>
+<li><code>delay</code> ： 撮影開始するまでに待機するフレーム数．省略するとすぐに撮影開始．</li>
+<li><code>fps</code>：  フレームレート．省略すると 15</li>
+<li><code>interval</code> ：フレームを撮影する間隔（1ならすべてのフレームを撮影，2なら2フレームに1回撮影）．省略すると$Bootで指定されているフレームレートを<code>fps</code>で割った値で算出．<br>例えば，$Bootで60FPSが指定されていて，<code>fps</code>が15の場合，4フレームに1回撮影．</li>
+<li><code>length</code>：  撮影する期間をフレーム数で指定．省略した場合，<code>save</code>または<code>download</code>メソッドが明示的に呼ばれるまで撮影する．<ul>
+<li>GIFファイルに実際に格納されるフレーム数は，length / interval になります．</li>
+</ul>
+</li>
+<li><code>after</code>：  <code>length</code>が指定されている場合，撮影完了後の動作を指定．<code>&quot;save&quot;</code>ならfiles/フォルダに保存，<code>&quot;download&quot;</code>ならダウンロードを行う．</li>
+<li><code>filename</code>：  保存またはダウンロードするファイル名</li>
+<li><code>manual</code>：  <code>true</code>の場合，<code>start</code>，<code>addFrame</code>，<code>save</code>または<code>download</code>メソッドを明示的に呼び出して撮影する．</li>
+</ul>
+<h2 id="-">メソッド</h2>
+<p>これらのメソッドは，主に<code>manual</code>が<code>true</code>の時に用います．</p>
+<ul>
+<li>start<ul>
+<li>撮影を開始します．</li>
+</ul>
+</li>
+<li>addFrame<ul>
+<li>現在のフレームを撮影します．startを呼んでいない場合は自動的に呼び出します．</li>
+</ul>
+</li>
+<li>save(f)<ul>
+<li>撮影したGIF画像をファイルfに保存します．fはファイルオブジェクトかファイル名です．省略すると作成時の<code>filename</code>の値を参照．</li>
+</ul>
+</li>
+<li>download(name)<ul>
+<li>撮影したGIF画像をnameというファイル名で保存します．<code>name</code>省略すると作成時の<code>filename</code>の値を参照．</li>
+</ul>
+</li>
+</ul>
+<h2 id="-">注意</h2>
+<ul>
+<li>save, download の各メソッドは，呼び出しが完了してもそれぞれの動作は完了しません．動作の完了を待つには<a href="waitFor">waitFor</a>を利用してください．</li>
+</ul>
+<p>例：</p>
+<pre><code class="lang-JS">g=new GIFWriter{manual=true};
+for (i=0; i&lt;30; i++) {
+    g.addFrame();
+    update();
+}
+waitFor(g.save(&quot;anim.gif&quot;));
+print(&quot;Save complete!&quot;);
+</code></pre>
+</body></html>

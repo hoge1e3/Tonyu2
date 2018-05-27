@@ -88,7 +88,7 @@
 		}
 	};
 	var requireSimulator=R;
-	// Created at Sat May 26 2018 15:35:39 GMT+0900 (東京 (標準時))
+	// Created at Sun May 27 2018 17:53:06 GMT+0900 (東京 (標準時))
 requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
@@ -3583,7 +3583,9 @@ define(["FS","Platform"], function (FS,Platform) {
 		//WebSite.kernelDir=WebSite.top+"/Kernel/";
 		// kernelDir must be absolute
 		WebSite.kernelDir=P.rel(WebSite.wwwDir,"Kernel/");
-		WebSite.compiledKernel=P.rel(WebSite.kernelDir,"js/concat.js");
+		// compiledKernel is URL , not file path.
+		// It is correct as long as the html pages in www/ (not html/build|dev )
+		WebSite.compiledKernel="Kernel/js/concat.js";   //P.rel(WebSite.kernelDir,"js/concat.js");
 		if (loc.match(/localhost\/tonyu2/)) {
 			WebSite.wwwDir=prot+"//"+location.host+"/tonyu2/";
 			WebSite.kernelDir=WebSite.wwwDir+"Kernel/";

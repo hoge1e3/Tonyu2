@@ -87,13 +87,27 @@ print(m.get(4,6).name);// tonyu
 </li>
 </ul>
 </li>
+<li>keysIterator()<ul>
+<li>データのある点のみを走査するイテレータです．次のfor...in の節参照．</li>
+</ul>
+</li>
+<li>rectIterator()<ul>
+<li>データのある領域を囲う四角形の領域を走査するイテレータです．次のfor...in の節参照．</li>
+</ul>
+</li>
 </ul>
 <h2 id="for-in">for ... in</h2>
-<p>データが格納されている領域内について繰り返します．</p>
+<p>次のようにすると，データが格納されている領域を囲う四角形の領域を繰り返します．</p>
 <pre><code class="lang-JS">// mはMatrixクラスのオブジェクト
 for (x,y,d in m) {
     // xmin&lt;=x&lt;=xmax,  ymin&lt;=y&lt;=ymax をみたすすべての座標について繰り返す
     // x,y に座標, dにデータ(格納されていない場所ではundefined)
+}
+</code></pre>
+<p>データのない点を繰り返したくない場合は，次のようにkeysIteratorを使います．</p>
+<pre><code class="lang-JS">// mはMatrixクラスのオブジェクト
+for (x,y,d in m.keysIterator()) {
+    // x,y に座標, dにデータ
 }
 </code></pre>
 </body></html>
