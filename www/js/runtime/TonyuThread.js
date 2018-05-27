@@ -192,15 +192,15 @@ define(["DeferredUtil","Klass"],function (DU,Klass) {
 				fb.retVal=r;
 				fb.stepsLoop();
 			}).fail(function (e) {
-				if (e instanceof Error) {
-					fb.gotoCatch(e);
-				} else {
-					var re=new Error(e);
-					re.original=e;
-					fb.gotoCatch(re);
-				}
+				fb.gotoCatch(fb.wrapError(e));
 				fb.stepsLoop();
 			});
+		},
+		wrapError: function (e) {
+			if (e instanceof Error) return e;
+			var re=new Error(e);
+			re.original=e;
+			return re;
 		},
 		resume: function (retVal) {
 			this.retVal=retVal;

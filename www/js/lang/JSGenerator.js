@@ -422,7 +422,7 @@ function genJS(klass, env) {//B
 						buf.print(catchPos.put(ctx.pc++));
 				});
 				buf.printf("%s=%s.startCatch();%n",ct.name.text, TH);
-				buf.printf("%s.exitTry();%n",TH);
+				//buf.printf("%s.exitTry();%n",TH);
 				buf.printf("%v%n", ct.stmt);
 				buf.printf("%}case %f:%{",function (){
 					buf.print(finPos.put(ctx.pc++));

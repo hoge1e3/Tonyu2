@@ -100,7 +100,7 @@ nowait \sendEvent(type, arg) {
         try {
             r=runAsync(f);
         } catch (e) {
-            throw e.args[0];
+            throw _thread.wrapError(e.args[0]);
         }
         return r[0];
     }

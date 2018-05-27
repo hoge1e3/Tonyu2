@@ -359,7 +359,7 @@ Tonyu.klass.define({
           r=_this.runAsync(f);
           
         } catch (e) {
-          throw e.args[0];
+          throw null.wrapError(e.args[0]);
           
           
         }
@@ -397,9 +397,8 @@ Tonyu.klass.define({
             __pc=4     ;break;
           case 3     :
             e=_thread.startCatch();
-            _thread.exitTry();
             {
-              throw e.args[0];
+              throw _thread.wrapError(e.args[0]);
               
             }
           case 4     :
