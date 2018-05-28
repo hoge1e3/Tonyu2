@@ -1,0 +1,56 @@
+extends null;
+
+native Tonyu;
+native Key;
+native console;
+native Math;
+native FS;
+native Array;
+
+\update() {
+    onUpdate();
+    if(_thread) {
+        _thread.suspend();
+        if (_scheduler) _scheduler.addToNext(_thread);
+    } else {
+        _scheduler.checkTimeout();
+    }
+}
+nowait \onUpdate() {
+
+}
+\updateEx(updateT){
+    for(var updateCount=0;updateCount<updateT;updateCount++){
+        update();
+    }
+}
+nowait \currentThreadGroup() {//@deprecated
+    return _scheduler; //$currentThreadGroup;
+}
+\wait(t) {
+    if(_thread) {
+        _thread.suspend();
+        if (t) {
+            _thread.waitCount=t;
+            if (_scheduler) _scheduler.addToNext(_thread);
+        }
+    } else if (_th) {
+        if (t) {
+            _th.waitCount=t;
+        } else {
+            if (_th.scheduled) _th.scheduled.unschedule(_th);
+        }
+    }
+}
+nowait \notify() {
+    if (_th) {
+        if (_th.scheduled) {
+             _th.waitCount=0;
+        } else {
+            if (_scheduler) _scheduler.addToCur(_th);
+        }
+    }
+}
+\timeStop() {
+    return $Boot.timeStop(this);
+}

@@ -1,0 +1,81 @@
+extends null;
+native Tonyu;
+native Key;
+native console;
+native Math;
+native FS;
+native Array;
+
+nowait \die() {
+    killThreadGroup();
+    hide();
+    if (!_isDead) {
+        fireEvent("die");
+        _isDead=true;
+        if (_poolArray) {
+            _poolArray.push(this);
+            objectPoolAge=(objectPoolAge||0)+1;
+        }
+    }
+}
+
+\lifeKeeper=v {
+    _lifeKeeper=v;
+    if (v && typeof v.on==="function") {
+        v.on("die",die);
+    }
+}
+\lifeKeeper {
+    return _lifeKeeper;
+}
+
+nowait \isDead() {
+    return _isDead;
+}
+
+\screenOut(a) {
+    if (!a) a=0;
+    var cp=$Screen.convert(this,$Screen);
+    return abs(clamped(cp.x,-a,$screenWidth+a))+
+        abs(clamped(cp.y,-a,$screenHeight+a));
+}
+\screenOutChecker(d,f){
+    while(true){
+        while(true){
+            if(screenOut()>d){
+                f();
+                break;
+            }
+            update();
+        }
+        while(true){
+            if(screenOut()<=d){
+                break;
+            }
+            update();
+        }
+        update();
+    }
+}
+\useObjectPool=value {
+    if (value) {
+        _poolArray=$ObjectPool.poolList(getClassInfo().fullName);
+    }
+}
+\appear(o,param) {
+    if (typeof o=="function") {
+        if (param) { param.layer=param.layer||layer; }
+        var p=$ObjectPool.withdraw(o.meta.fullName);
+        if (p) {
+        	for (var k in Object.keys(p)) {
+        	   if (k!="objectPoolAge") delete p[k];
+		    }
+		    o.call(p,param);
+        	return p;
+        } else {
+        	return new o(param);
+        }
+    } else {
+	    return o;
+	}
+}

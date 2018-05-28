@@ -1,6 +1,7 @@
 extends null;
 includes MathMod,EventMod,TextRectMod,OneframeSpriteMod,
-ThreadGroupMod,EventHandlerCaller,DialogMod,FileMod;
+ThreadGroupMod,EventHandlerCaller,DialogMod,FileMod,AnimMod,SchedulerMod,
+QueryMod,InputMod,LifeCycleMod;
 native Tonyu;
 native Key;
 native console;
@@ -58,184 +59,6 @@ nowait \print(pt) {
     }
 }
 
-nowait \setAnimFps(f){
-    this.animFps=f;
-    this.animFrame=0;
-    this.animMode=true;
-}
-nowait \startAnim(){
-    this.animMode=true;
-}
-nowait \stopAnim(){
-    this.animMode=false;
-}
-\update() {
-    onUpdate();
-    if(_thread) {
-        _thread.suspend();
-        if (_scheduler) _scheduler.addToNext(_thread);
-    } else {
-        _scheduler.checkTimeout();
-    }
-}
-nowait \onUpdate() {
-
-}
-\updateEx(updateT){
-    for(var updateCount=0;updateCount<updateT;updateCount++){
-        update();
-    }
-}
-nowait \getkey(k) {
-    return $Keys.getkey(k);
-}
-nowait \hitTo(t) {
-    return crashTo(t);
-}
-nowait \all(c) {
-    //return layer.all.apply(layer,arguments); <- includes myself!
-    var res=new TQuery(this);
-    if (arguments.length>0 && typeof c!="function") {
-        return res;
-    }
-    layer.sprites.forEach \(s) {
-        if (s===this) return;
-        if (!c || s instanceof c) {
-            res.push(s);
-        }
-    };
-    return res;
-}
-nowait \allCrash(t) {
-    var res=new TQuery(this);
-    var sp=this;
-    var t1=getCrashRect();
-    if (!t1) return res;
-    layer.sprites.forEach(\(s) {
-        var t2;
-        if (s!==this &&
-        !s.excludeFromAll &&
-        s instanceof t &&
-        (t2=s.getCrashRect()) &&
-        Math.abs(t1.x-t2.x)*2<t1.width+t2.width &&
-        Math.abs(t1.y-t2.y)*2<t1.height+t2.height) {
-            res.push(s);
-        }
-    });
-    return res;
-}
-nowait \crashTo(t) {
-    if (!t) return false;
-    if (typeof t=="function") {
-        return allCrash(t)[0];
-    }
-    return crashTo1(t);
-}
-nowait \crashTo1(t) {
-    if (!t || t._isDead) return false;
-    var t1=getCrashRect();
-    var t2=t.getCrashRect();
-    return
-    t1 && t2 &&
-    Math.abs(t1.x-t2.x)*2<t1.width+t2.width &&
-    Math.abs(t1.y-t2.y)*2<t1.height+t2.height;
-}
-\crashToChecker(d,f){
-    while(true){
-        if(typeof d=="function"){
-            for(obj in allCrash(d)){
-                callEventHandler(f,[obj]);
-            }
-        }else if(crashTo(d)){
-            callEventHandler(f,[d]);
-        }
-        update();
-    }
-}
-nowait \getCrashRect() {
-    var actWidth=(width||radius*2)*scaleX*crashScale, actHeight;
-    if(typeof scaleY==="undefined"){
-        actHeight=(height||radius*2)*scaleX*crashScale;
-    }else{
-        actHeight=(height||radius*2)*scaleY*crashScale;
-    }
-    return typeof x=="number" &&
-    typeof y=="number" &&
-    typeof actWidth=="number" &&
-    typeof actHeight=="number" &&
-    {x,y,width:Math.abs(actWidth),height:Math.abs(actHeight)};
-}
-nowait \allWithin(t,distance) {
-    var res=new TQuery(this);
-    var sp=this;
-    var t1=getCrashRect();
-    if (!t1) return res;
-    layer.sprites.forEach(\(s) {
-        var t2;
-        if (s!==this &&
-        !s.excludeFromAll &&
-        s instanceof t &&
-        Math.sqrt(Math.abs(x-s.x)*Math.abs(x-s.x)+ Math.abs(y-s.y)*Math.abs(y-s.y))<distance) {
-            res.push(s);
-        }
-    });
-    return res;
-}
-nowait \within(t,distance){
-    if(!t) return false;
-    if(typeof t=="function"){
-        return allWithin(t,distance)[0];
-    }
-    return within1(t,distance);
-}
-nowait \within1(t,distance){
-    if(!t || t._isDead) return false;
-    if(Math.sqrt(Math.abs(x-t.x)*Math.abs(x-t.x)+ Math.abs(y-t.y)*Math.abs(y-t.y))<distance){
-        return true;
-    }
-    return false;
-}
-\withinChecker(d,r,f){
-    while(true){
-        if(typeof d=="function"){
-            for(obj in allWithin(d,r)){
-                f(obj);
-            }
-        }else if(within(d,r)){
-            f(d);
-        }
-        update();
-    }
-}
-nowait \watchHit(typeA,typeB,onHit) {
-    layer.watchHit(typeA , typeB, \(a,b) {
-        onHit.apply(this,[a,b]);
-    });
-}
-nowait \currentThreadGroup() {//@deprecated
-    return _scheduler; //$currentThreadGroup;
-}
-nowait \die() {
-    killThreadGroup();
-    hide();
-    if (!_isDead) {
-        fireEvent("die");
-        _isDead=true;
-        if (_poolArray) {
-            _poolArray.push(this);
-            objectPoolAge=(objectPoolAge||0)+1;
-        }
-    }
-}
-\lifeKeeper=v {
-    _lifeKeeper=v;
-    if (v && typeof v.on==="function") {
-        v.on("die",die);
-    }
-}
-\lifeKeeper {
-    return _lifeKeeper;
-}
 nowait \hide() {
     layer.remove(this);
 }
@@ -244,20 +67,6 @@ nowait \show(x,y,p) {
     if (x!=null) this.x=x;
     if (y!=null) this.y=y;
     if (p!=null) this.p=p;
-}
-
-nowait \isDead() {
-    return _isDead;
-}
-
-nowait \_animation(){
-    if(animMode) {
-        age++;
-        if (age%animFps==0){
-            p=anim[animFrame%anim.length];
-            animFrame++;
-        }
-    }
 }
 
 nowait \detectShape() {
@@ -330,37 +139,6 @@ nowait \draw(ctx) {
         }
     }
 }
-
-\screenOut(a) {
-    if (!a) a=0;
-    var cp=$Screen.convert(this,$Screen);
-    return abs(clamped(cp.x,-a,$screenWidth+a))+
-        abs(clamped(cp.y,-a,$screenHeight+a));
-}
-\screenOutChecker(d,f){
-    while(true){
-        while(true){
-            if(screenOut()>d){
-                f();
-                break;
-            }
-            update();
-        }
-        while(true){
-            if(screenOut()<=d){
-                break;
-            }
-            update();
-        }
-        update();
-    }
-}
-\waitInputDevice(fl) {
-    runAsync \(f){
-        $InputDevice.addOnetimeListener(f);
-    };
-}
-
 // from PlainChar
 nowait \color(r,g,b) {
     return "rgb("+[r,g,b].join(",")+")";
@@ -371,85 +149,4 @@ nowait \loadPage(){
 
 \setVisible(v) {
     _isInvisible=!v;
-}
-\useObjectPool=value {
-    if (value) {
-        _poolArray=$ObjectPool.poolList(getClassInfo().fullName);
-    }
-}
-\appear(o,param) {
-    if (typeof o=="function") {
-        if (param) { param.layer=param.layer||layer; }
-        var p=$ObjectPool.withdraw(o.meta.fullName);
-        if (p) {
-        	for (var k in Object.keys(p)) {
-        	   if (k!="objectPoolAge") delete p[k];
-		    }
-		    o.call(p,param);
-        	return p;
-        } else {
-        	return new o(param);
-        }
-    } else {
-	    return o;
-	}
-}
-\wait(t) {
-    if(_thread) {
-        _thread.suspend();
-        if (t) {
-            _thread.waitCount=t;
-            if (_scheduler) _scheduler.addToNext(_thread);
-        }
-    } else if (_th) {
-        if (t) {
-            _th.waitCount=t;
-        } else {
-            if (_th.scheduled) _th.scheduled.unschedule(_th);
-        }
-    }
-}
-nowait \notify() {
-    if (_th) {
-        if (_th.scheduled) {
-             _th.waitCount=0;
-        } else {
-            if (_scheduler) _scheduler.addToCur(_th);
-        }
-    }
-}
-nowait \findTouch(params) {
-    if (typeof params==="number") params={scale:params};
-    params=params||{};
-    var r;
-    if (params.width && params.height) {
-        r={x,y,width=params.width, height=params.height};
-    } else {
-        params.scale=params.scale||2;
-        r=getCrashRect();
-        if (!r) return null;
-        r={
-            x,y,
-            width=r.width*params.scale,
-            height=r.height*params.scale
-        };
-    }
-    //---T
-    var res=$touches.findTouch \(t) {
-        if (params.pickup || t.touched==1) {
-            var tt=$Screen.convert(t,layer);
-            if (Math.abs(r.x-tt.x)<r.width/2 &&
-                Math.abs(r.y-tt.y)<r.height/2) {
-                return true;
-            }
-        }
-    };
-    if (res) {
-        res.layer=layer;
-        return res;
-    }
-    //----
-}
-\timeStop() {
-    return $Boot.timeStop(this);
 }

@@ -1,0 +1,22 @@
+extends null;
+
+nowait \setAnimFps(f){
+    this.animFps=f;
+    this.animFrame=0;
+    this.animMode=true;
+}
+nowait \startAnim(){
+    this.animMode=true;
+}
+nowait \stopAnim(){
+    this.animMode=false;
+}
+nowait \_animation(){
+    if(animMode) {
+        age++;
+        if (age%animFps==0){
+            p=anim[animFrame%anim.length];
+            animFrame++;
+        }
+    }
+}

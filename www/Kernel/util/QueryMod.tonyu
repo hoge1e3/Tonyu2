@@ -1,0 +1,132 @@
+extends null;
+
+native Tonyu;
+native Key;
+native console;
+native Math;
+native FS;
+native Array;
+
+nowait \hitTo(t) {
+    return crashTo(t);
+}
+nowait \all(c) {
+    //return layer.all.apply(layer,arguments); <- includes myself!
+    var res=new TQuery(this);
+    if (arguments.length>0 && typeof c!="function") {
+        return res;
+    }
+    layer.sprites.forEach \(s) {
+        if (s===this) return;
+        if (!c || s instanceof c) {
+            res.push(s);
+        }
+    };
+    return res;
+}
+nowait \allCrash(t) {
+    var res=new TQuery(this);
+    var sp=this;
+    var t1=getCrashRect();
+    if (!t1) return res;
+    layer.sprites.forEach(\(s) {
+        var t2;
+        if (s!==this &&
+        !s.excludeFromAll &&
+        s instanceof t &&
+        (t2=s.getCrashRect()) &&
+        Math.abs(t1.x-t2.x)*2<t1.width+t2.width &&
+        Math.abs(t1.y-t2.y)*2<t1.height+t2.height) {
+            res.push(s);
+        }
+    });
+    return res;
+}
+nowait \crashTo(t) {
+    if (!t) return false;
+    if (typeof t=="function") {
+        return allCrash(t)[0];
+    }
+    return crashTo1(t);
+}
+nowait \crashTo1(t) {
+    if (!t || t._isDead) return false;
+    var t1=getCrashRect();
+    var t2=t.getCrashRect();
+    return
+    t1 && t2 &&
+    Math.abs(t1.x-t2.x)*2<t1.width+t2.width &&
+    Math.abs(t1.y-t2.y)*2<t1.height+t2.height;
+}
+\crashToChecker(d,f){
+    while(true){
+        if(typeof d=="function"){
+            for(obj in allCrash(d)){
+                callEventHandler(f,[obj]);
+            }
+        }else if(crashTo(d)){
+            callEventHandler(f,[d]);
+        }
+        update();
+    }
+}
+nowait \getCrashRect() {
+    var actWidth=(width||radius*2)*scaleX*crashScale, actHeight;
+    if(typeof scaleY==="undefined"){
+        actHeight=(height||radius*2)*scaleX*crashScale;
+    }else{
+        actHeight=(height||radius*2)*scaleY*crashScale;
+    }
+    return typeof x=="number" &&
+    typeof y=="number" &&
+    typeof actWidth=="number" &&
+    typeof actHeight=="number" &&
+    {x,y,width:Math.abs(actWidth),height:Math.abs(actHeight)};
+}
+nowait \allWithin(t,distance) {
+    var res=new TQuery(this);
+    var sp=this;
+    var t1=getCrashRect();
+    if (!t1) return res;
+    layer.sprites.forEach(\(s) {
+        var t2;
+        if (s!==this &&
+        !s.excludeFromAll &&
+        s instanceof t &&
+        Math.sqrt(Math.abs(x-s.x)*Math.abs(x-s.x)+ Math.abs(y-s.y)*Math.abs(y-s.y))<distance) {
+            res.push(s);
+        }
+    });
+    return res;
+}
+nowait \within(t,distance){
+    if(!t) return false;
+    if(typeof t=="function"){
+        return allWithin(t,distance)[0];
+    }
+    return within1(t,distance);
+}
+nowait \within1(t,distance){
+    if(!t || t._isDead) return false;
+    if(Math.sqrt(Math.abs(x-t.x)*Math.abs(x-t.x)+ Math.abs(y-t.y)*Math.abs(y-t.y))<distance){
+        return true;
+    }
+    return false;
+}
+\withinChecker(d,r,f){
+    while(true){
+        if(typeof d=="function"){
+            for(obj in allWithin(d,r)){
+                f(obj);
+            }
+        }else if(within(d,r)){
+            f(d);
+        }
+        update();
+    }
+}
+nowait \watchHit(typeA,typeB,onHit) {
+    layer.watchHit(typeA , typeB, \(a,b) {
+        onHit.apply(this,[a,b]);
+    });
+}
