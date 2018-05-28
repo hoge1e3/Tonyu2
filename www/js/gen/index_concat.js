@@ -1,4 +1,9 @@
-(function () {
+(function (f) {
+	if (typeof define==="function" && define.amd &&
+		typeof requirejs==="function") {
+		f({requirejs:requirejs,define:define});
+	} else f({});
+})(function (real) {
 	var R={};
 	R.def=function (reqs,func,type) {
 		var m=R.getModuleInfo(R.curName);
@@ -87,8 +92,9 @@
 			R.curName=n;
 		}
 	};
+	R.real=real;
 	var requireSimulator=R;
-	// Created at Sun May 27 2018 17:53:06 GMT+0900 (東京 (標準時))
+	// Created at Mon May 28 2018 09:53:54 GMT+0900 (東京 (標準時))
 requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
@@ -6510,4 +6516,4 @@ $(function () {
 
 requireSimulator.setName();
 
-})();
+});

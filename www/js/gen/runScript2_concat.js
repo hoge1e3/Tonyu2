@@ -1,4 +1,9 @@
-(function () {
+(function (f) {
+	if (typeof define==="function" && define.amd &&
+		typeof requirejs==="function") {
+		f({requirejs:requirejs,define:define});
+	} else f({});
+})(function (real) {
 	var R={};
 	R.def=function (reqs,func,type) {
 		var m=R.getModuleInfo(R.curName);
@@ -87,8 +92,9 @@
 			R.curName=n;
 		}
 	};
+	R.real=real;
 	var requireSimulator=R;
-	// Created at Sun May 27 2018 17:53:38 GMT+0900 (東京 (標準時))
+	// Created at Mon May 28 2018 09:54:23 GMT+0900 (東京 (標準時))
 requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
@@ -3593,13 +3599,21 @@ define(["WebSite"],function (WebSite){
         if (!i) throw new Error("plugin not found: "+name);
         options=convOpt(options);
         var src=WebSite.pluginTop+"/"+i.src;
-        if (typeof requirejs==="function" && typeof requireSimulator==="undefined") {
-            //console.log("Loading plugin via requirejs",src);
-            requirejs([src], function (res) {
+        var reqj;
+        if (typeof requireSimulator==="undefined") {
+            if (typeof requirejs==="function") reqj=requirejs;
+        } else {
+            if (requireSimulator.real) reqj=requireSimulator.real.requirejs;
+        }
+        if (reqj) {
+            src=src.replace(/\.js$/,"");
+            console.log("Loading plugin via requirejs",src);
+            reqj([src], function (res) {
                 if (!window[i.symbol] && res) window[i.symbol]=res;
                 options.onload(res);
             });
         } else {
+            console.log("Loading plugin via <script>",src);
             var s=document.createElement("script");
             s.src=src;
             s.onload=options.onload;
@@ -4841,7 +4855,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,DeferredUtil:DU,
-			VERSION:1527411186424,//EMBED_VERSION
+			VERSION:1527468833941,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -8488,4 +8502,4 @@ requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu
 
 requireSimulator.setName();
 
-})();
+});

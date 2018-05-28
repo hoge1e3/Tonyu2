@@ -1,4 +1,9 @@
-(function () {
+(function (f) {
+	if (typeof define==="function" && define.amd &&
+		typeof requirejs==="function") {
+		f({requirejs:requirejs,define:define});
+	} else f({});
+})(function (real) {
 	var R={};
 	R.def=function (reqs,func,type) {
 		var m=R.getModuleInfo(R.curName);
@@ -87,6 +92,7 @@
 			R.curName=n;
 		}
 	};
+	R.real=real;
 	var requireSimulator=R;
 	//INCLUDE_CONCAT
-})();
+});

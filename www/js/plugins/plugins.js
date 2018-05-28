@@ -45,13 +45,21 @@ define(["WebSite"],function (WebSite){
         if (!i) throw new Error("plugin not found: "+name);
         options=convOpt(options);
         var src=WebSite.pluginTop+"/"+i.src;
-        if (typeof requirejs==="function" && typeof requireSimulator==="undefined") {
-            //console.log("Loading plugin via requirejs",src);
-            requirejs([src], function (res) {
+        var reqj;
+        if (typeof requireSimulator==="undefined") {
+            if (typeof requirejs==="function") reqj=requirejs;
+        } else {
+            if (requireSimulator.real) reqj=requireSimulator.real.requirejs;
+        }
+        if (reqj) {
+            src=src.replace(/\.js$/,"");
+            console.log("Loading plugin via requirejs",src);
+            reqj([src], function (res) {
                 if (!window[i.symbol] && res) window[i.symbol]=res;
                 options.onload(res);
             });
         } else {
+            console.log("Loading plugin via <script>",src);
             var s=document.createElement("script");
             s.src=src;
             s.onload=options.onload;
