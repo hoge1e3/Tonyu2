@@ -108,7 +108,7 @@ nowait \all(c) {
 }
 nowait \allCrash(t) {
     var res=new TQuery(this);
-    var sp=this; //_sprite || this;
+    var sp=this;
     var t1=getCrashRect();
     if (!t1) return res;
     layer.sprites.forEach(\(s) {
@@ -136,8 +136,6 @@ nowait \crashTo1(t) {
     var t1=getCrashRect();
     var t2=t.getCrashRect();
     return
-    //    t1.x!=null && t1.y!=null && t1.width && t1.height &&
-    //    t2.x!=null && t2.y!=null && t2.width && t2.height &&
     t1 && t2 &&
     Math.abs(t1.x-t2.x)*2<t1.width+t2.width &&
     Math.abs(t1.y-t2.y)*2<t1.height+t2.height;
@@ -169,7 +167,7 @@ nowait \getCrashRect() {
 }
 nowait \allWithin(t,distance) {
     var res=new TQuery(this);
-    var sp=this; //_sprite || this;
+    var sp=this;
     var t1=getCrashRect();
     if (!t1) return res;
     layer.sprites.forEach(\(s) {
@@ -201,7 +199,6 @@ nowait \within1(t,distance){
     while(true){
         if(typeof d=="function"){
             for(obj in allWithin(d,r)){
-                //print(r);
                 f(obj);
             }
         }else if(within(d,r)){
@@ -334,26 +331,11 @@ nowait \draw(ctx) {
     }
 }
 
-/*
-\runAsync(f) {
-    if (!_thread) throw new Error("runAsync should run in wait mode");
-    _thread.runAsync(f);
-}
-*/
-
 \screenOut(a) {
-    //オブジェクトが画面外に出たかどうかを判定します。
     if (!a) a=0;
-    //var r=0;
     var cp=$Screen.convert(this,$Screen);
     return abs(clamped(cp.x,-a,$screenWidth+a))+
         abs(clamped(cp.y,-a,$screenHeight+a));
-    /*var viewX=$Sprites.sx,viewY=$Sprites.sy;
-    if (x<viewX+a)               r+=viewX+a-x;
-    if (y<viewY+a)               r+=viewY+a-y;
-    if (x>$screenWidth +viewX-a) r+=x-($screenWidth +viewX-a);
-    if (y>$screenHeight+viewY-a) r+=y-($screenHeight+viewY-a);
-    return r;*/
 }
 \screenOutChecker(d,f){
     while(true){
@@ -378,10 +360,6 @@ nowait \draw(ctx) {
         $InputDevice.addOnetimeListener(f);
     };
 }
-/*\redrawScreen() {
-    $Sprites.draw($Screen.buf[0]);
-    $Screen.draw();
-}*/
 
 // from PlainChar
 nowait \color(r,g,b) {
@@ -389,9 +367,6 @@ nowait \color(r,g,b) {
 }
 nowait \loadPage(){
     $Boot.loadPage.apply($Boot,arguments);
-    /*    all().die();
-    new page(arg);
-    die();*/
 }
 
 \setVisible(v) {
