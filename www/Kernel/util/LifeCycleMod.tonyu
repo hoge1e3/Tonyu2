@@ -1,11 +1,11 @@
 extends null;
+includes SchedulerMod,EventMod,EventHandlerCaller,MathMod;
 native Tonyu;
 native Key;
 native console;
 native Math;
 native FS;
 native Array;
-
 nowait \die() {
     killThreadGroup();
     hide();
