@@ -66,6 +66,7 @@ return Tonyu=function () {
 	Function.prototype.constructor=function () {
 		throw new Error("This method should not be called");
 	};
+	klass.propReg=/^__([gs]et)ter__(.*)$/;
 	klass.define=function (params) {
 		// fullName, shortName,namspace, superclass, includes, methods:{name/fiber$name: func}, decls
 		var parent=params.superclass;
@@ -111,7 +112,7 @@ return Tonyu=function () {
 			}
 		});
 		var props={};
-		var propReg=/^__([gs]et)ter__(.*)$/;
+		var propReg=klass.propReg;//^__([gs]et)ter__(.*)$/;
 		for (var k in prot) {
 			if (k.match(/^fiber\$/)) continue;
 			if (prot["fiber$"+k]) {

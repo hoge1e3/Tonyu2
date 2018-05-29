@@ -94,6 +94,7 @@ function initClassDecls(klass, env ) {//S
 		} else {
 			delete klass.superclass;
 		}
+		klass.directives={};
 		//--
 		function addField(name,node) {// name should be node
 			node=node||name;
@@ -117,6 +118,10 @@ function initClassDecls(klass, env ) {//S
 			"catch": function (node) {
 			},
 			exprstmt: function (node) {
+				if (node.expr.type==="literal"
+					&& node.expr.text.match(/^.field strict.$/)) {
+					klass.directives.field_strict=true;
+				}
 			},
 			"forin": function (node) {
 				var isVar=node.isVar;
@@ -272,7 +277,12 @@ function annotateSource2(klass, env) {//B
 		}
 		for (i in decls.methods) {
 			var info=decls.methods[i];
-			s[i]=genSt(ST.METHOD,{klass:klass.fullName,name:i,info:info});
+			var r=Tonyu.klass.propReg.exec(i);
+			if (r) {
+				s[r[2]]=genSt(ST.PROP,{klass:klass.fullName,name:r[2],info:info});
+			} else {
+				s[i]=genSt(ST.METHOD,{klass:klass.fullName,name:i,info:info});
+			}
 			if (info.node) {
 				annotation(info.node,{info:info});
 			}
@@ -335,7 +345,7 @@ function annotateSource2(klass, env) {//B
 				//console.log(n,"is module");
 			} else {
 				var isg=n.match(/^\$/);
-				if (env.options.compiler.requireFieldDecl) {
+				if (env.options.compiler.field_strict || klass.directives.field_strict) {
 					if (!isg) throw new TError(n+"は宣言されていません（フィールドの場合，明示的に宣言してください）．",srcFile,node.pos);
 				}
 				t=isg?ST.GLOBAL:ST.FIELD;

@@ -4,7 +4,7 @@ define(["Tonyu","ObjectMatcher", "TError"],
 	Tonyu.Compiler=cu;
 	var ScopeTypes={
 			FIELD:"field", METHOD:"method", NATIVE:"native",//B
-			LOCAL:"local", THVAR:"threadvar",
+			LOCAL:"local", THVAR:"threadvar",PROP:"property",
 			PARAM:"param", GLOBAL:"global",
 			CLASS:"class", MODULE:"module"
 	};

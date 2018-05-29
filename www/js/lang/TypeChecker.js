@@ -99,21 +99,21 @@ TypeChecker.checkExpr=function (klass,env) {
 				annotation(node,{vtype:String});
 			},
 			postfix:function (node) {
-			var a=annotation(node);
-			if (a.memberAccess) {
-				var m=a.memberAccess;
-				var vtype=visitExpr(m.target);
-				if (vtype) {
-				var f=cu.getField(vtype,m.name);
-				console.log("GETF",vtype,m.name,f);
-				if (f && f.vtype) {
-					annotation(node,{vtype:f.vtype});
+				var a=annotation(node);
+				if (a.memberAccess) {
+					var m=a.memberAccess;
+					var vtype=visitExpr(m.target);
+					if (vtype) {
+					var f=cu.getField(vtype,m.name);
+					console.log("GETF",vtype,m.name,f);
+					if (f && f.vtype) {
+						annotation(node,{vtype:f.vtype});
+					}
+					}
+				} else {
+					this.visit(node.left);
+					this.visit(node.op);
 				}
-				}
-			} else {
-				this.visit(node.left);
-				this.visit(node.op);
-			}
 			},
 			varAccess: function (node) {
 				var a=annotation(node);
@@ -137,6 +137,8 @@ TypeChecker.checkExpr=function (klass,env) {
 							annotation(node,{vtype:vtype});
 							console.log("VA typeof",node.name+":",vtype);
 						}
+					} else if (si.type===ScopeTypes.PROP) {
+						//TODO
 					}
 				}
 			}

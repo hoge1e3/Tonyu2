@@ -82,7 +82,7 @@ function genJS(klass, env) {//B
 		var t=stype(si);
 		if (t==ST.THVAR) {
 			buf.printf("%s",TH);
-		} else if (t==ST.FIELD) {
+		} else if (t==ST.FIELD || t==ST.PROP) {
 			buf.printf("%s.%s",THIZ, n);
 		} else if (t==ST.METHOD) {
 			if (an && an.noBind) {
@@ -352,7 +352,7 @@ function genJS(klass, env) {//B
 					var mc=a.myMethodCall;
 					var si=mc.scopeInfo;
 					var st=stype(si);
-					if (st==ST.FIELD || st==ST.METHOD) {
+					if (st==ST.FIELD || st==ST.PROP || st==ST.METHOD) {
 						buf.printf("%s(%s, %l, [%j], %l )", INVOKE_FUNC,THIZ, mc.name, [",",mc.args],"this");
 					} else {
 						buf.printf("%s(%v, [%j], %l)", CALL_FUNC, node.left, [",",mc.args], getSource(node.left));
