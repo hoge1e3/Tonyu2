@@ -237,6 +237,7 @@ var TPRC=function (dir) {
 			} else {
 				compilingClasses=myClasses;
 			}
+			console.log("compilingClasses",compilingClasses);
 			return TPR.showProgress("initClassDecl");
 		})).then(F(function () {
 			for (var n in compilingClasses) {

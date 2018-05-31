@@ -66,6 +66,7 @@ return Tonyu=function () {
 	Function.prototype.constructor=function () {
 		throw new Error("This method should not be called");
 	};
+	klass.propReg=/^__([gs]et)ter__(.*)$/;
 	klass.define=function (params) {
 		// fullName, shortName,namspace, superclass, includes, methods:{name/fiber$name: func}, decls
 		var parent=params.superclass;
@@ -111,7 +112,7 @@ return Tonyu=function () {
 			}
 		});
 		var props={};
-		var propReg=/^__([gs]et)ter__(.*)$/;
+		var propReg=klass.propReg;//^__([gs]et)ter__(.*)$/;
 		for (var k in prot) {
 			if (k.match(/^fiber\$/)) continue;
 			if (prot["fiber$"+k]) {
@@ -151,6 +152,7 @@ return Tonyu=function () {
 	};
 	klass.shouldCompile=function (k) {
 		k=k.meta||k;
+		if (k.hasSemanticError) return true;
 		if (klass.isSourceChanged(k)) return true;
 		var dks=klass.getDependingClasses(k);
 		for (var i=0 ; i<dks.length ;i++) {

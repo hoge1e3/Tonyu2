@@ -50,7 +50,7 @@ nowait \print(pt) {
         for(var argCount=0;argCount<arguments.length;argCount++){
             mergedArg=mergedArg+arguments[argCount]+" ";
         }
-        splits=mergedArg.split("\n");
+        var splits=mergedArg.split("\n");
         for(var printCount=0;printCount<splits.length;printCount++){
             $consolePanel.scroll(0,20);
             $consolePanel.setFillStyle("white");
@@ -97,6 +97,7 @@ nowait \performTransform(ctx) {
     ctx.globalAlpha=(alpha<0?0:alpha>255?255:alpha)/255;
 }
 nowait \draw(ctx) {
+    var drawY;
     if (x==null || y==null || _isInvisible) return;
     if (text!=null) {
         var splitsText=(text+"").split("\n");

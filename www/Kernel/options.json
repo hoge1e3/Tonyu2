@@ -3,6 +3,7 @@
     	"noLoopCheck": true,
         "namespace": "kernel",
         "commentLastPos": true,
-        "outputFile": "js/concat.js"
+        "outputFile": "js/concat.js",
+        "requireFieldDecl": false
     }
 }

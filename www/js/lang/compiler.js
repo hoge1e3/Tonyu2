@@ -4,11 +4,12 @@ define(["Tonyu","ObjectMatcher", "TError"],
 	Tonyu.Compiler=cu;
 	var ScopeTypes={
 			FIELD:"field", METHOD:"method", NATIVE:"native",//B
-			LOCAL:"local", THVAR:"threadvar",
+			LOCAL:"local", THVAR:"threadvar",PROP:"property",
 			PARAM:"param", GLOBAL:"global",
 			CLASS:"class", MODULE:"module"
 	};
 	cu.ScopeTypes=ScopeTypes;
+	var nodeIdSeq=1;
 	var symSeq=1;//B
 	function genSt(st, options) {//B
 		var res={type:st};
@@ -40,11 +41,15 @@ define(["Tonyu","ObjectMatcher", "TError"],
 	cu.genSym=genSym;
 	function annotation3(aobjs, node, aobj) {//B
 		if (!node._id) {
-			if (!aobjs._idseq) aobjs._idseq=0;
-			node._id=++aobjs._idseq;
+			//if (!aobjs._idseq) aobjs._idseq=0;
+			node._id=++nodeIdSeq;
 		}
 		var res=aobjs[node._id];
 		if (!res) res=aobjs[node._id]={node:node};
+		if (res.node!==node) {
+			console.log("NOMATCH",res.node,node);
+			throw new Error("annotation node not match!");
+		}
 		if (aobj) {
 			for (var i in aobj) res[i]=aobj[i];
 		}

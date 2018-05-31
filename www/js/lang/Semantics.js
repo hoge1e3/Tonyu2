@@ -19,10 +19,28 @@ var getMethod2=cu.getMethod;
 var getDependingClasses=cu.getDependingClasses;
 var getParams=cu.getParams;
 var JSNATIVES={Array:1, String:1, Boolean:1, Number:1, Void:1, Object:1,RegExp:1,Error:1,Date:1};
+function visitSub(node) {//S
+	var t=this;
+	if (!node || typeof node!="object") return;
+	var es;
+	if (node instanceof Array) es=node;
+	else es=node[Grammar.SUBELEMENTS];
+	if (!es) {
+		es=[];
+		for (var i in node) {
+			es.push(node[i]);
+		}
+	}
+	es.forEach(function (e) {
+		t.visit(e);
+	});
+}
 //-----------
 function initClassDecls(klass, env ) {//S
+	// The main task of initClassDecls is resolve 'dependency', it calls before orderByInheritance
 	var s=klass.src.tonyu; //file object
 	var node;
+	klass.hasSemanticError=true;
 	if (klass.node && klass.nodeTimestamp==s.lastUpdate()) {
 		node=klass.node;
 	}
@@ -77,6 +95,47 @@ function initClassDecls(klass, env ) {//S
 		} else {
 			delete klass.superclass;
 		}
+		klass.directives={};
+		//--
+		function addField(name,node) {// name should be node
+			node=node||name;
+			fields[name+""]={
+				node:node,
+				klass:klass.fullName,
+				name:name+"",
+				pos:node.pos
+			};
+		}
+		var fieldsCollector=Visitor({
+			varDecl: function (node) {
+				addField(node.name, node);
+			},
+			nativeDecl: function (node) {//-- Unify later
+			},
+			funcDecl: function (node) {//-- Unify later
+			},
+			funcExpr: function (node) {
+			},
+			"catch": function (node) {
+			},
+			exprstmt: function (node) {
+				if (node.expr.type==="literal"
+					&& node.expr.text.match(/^.field strict.$/)) {
+					klass.directives.field_strict=true;
+				}
+			},
+			"forin": function (node) {
+				var isVar=node.isVar;
+				if (isVar) {
+					node.vars.forEach(function (v) {
+						addField(v);
+					});
+				}
+			}
+		});
+		fieldsCollector.def=visitSub;
+		fieldsCollector.visit(program.stmts);
+		//-- end of fieldsCollector
 		program.stmts.forEach(function (stmt) {
 			if (stmt.type=="funcDecl") {
 				var head=stmt.head;
@@ -103,7 +162,7 @@ function initClassDecls(klass, env ) {//S
 			} else if (stmt.type=="nativeDecl") {
 				natives[stmt.name.text]=stmt;
 			} else {
-				if (stmt.type=="varsDecl") {
+				/*if (stmt.type=="varsDecl") {
 					stmt.decls.forEach(function (d) {
 						//console.log("varDecl", d.name.text);
 						//fields[d.name.text]=d;
@@ -114,14 +173,17 @@ function initClassDecls(klass, env ) {//S
 							pos:d.pos
 						};
 					});
-				}
+				}*/
 				MAIN.stmts.push(stmt);
 			}
 		});
 	}
 	initMethods(node);        // node=program
+	delete klass.hasSemanticError;
 }// of initClassDecls
 function annotateSource2(klass, env) {//B
+	// annotateSource2 is call after orderByInheritance
+	klass.hasSemanticError=true;
 	var srcFile=klass.src.tonyu; //file object  //S
 	var srcCont=srcFile.text();
 	function getSource(node) {
@@ -218,7 +280,12 @@ function annotateSource2(klass, env) {//B
 		}
 		for (i in decls.methods) {
 			var info=decls.methods[i];
-			s[i]=genSt(ST.METHOD,{klass:klass.fullName,name:i,info:info});
+			var r=Tonyu.klass.propReg.exec(i);
+			if (r) {
+				s[r[2]]=genSt(ST.PROP,{klass:klass.fullName,name:r[2],info:info});
+			} else {
+				s[i]=genSt(ST.METHOD,{klass:klass.fullName,name:i,info:info});
+			}
 			if (info.node) {
 				annotation(info.node,{info:info});
 			}
@@ -270,6 +337,8 @@ function annotateSource2(klass, env) {//B
 		throw TError( "'"+getSource(node)+"'は左辺には書けません．" , srcFile, node.pos);
 	}
 	function getScopeInfo(n) {//S
+		var node=n;
+		n=n+"";
 		var si=ctx.scope[n];
 		var t=stype(si);
 		if (!t) {
@@ -279,6 +348,9 @@ function annotateSource2(klass, env) {//B
 				//console.log(n,"is module");
 			} else {
 				var isg=n.match(/^\$/);
+				if (env.options.compiler.field_strict || klass.directives.field_strict) {
+					if (!isg) throw new TError(n+"は宣言されていません（フィールドの場合，明示的に宣言してください）．",srcFile,node.pos);
+				}
 				t=isg?ST.GLOBAL:ST.FIELD;
 			}
 			var opt={name:n};
@@ -340,22 +412,7 @@ function annotateSource2(klass, env) {//B
 		}
 	});
 	localsCollector.def=visitSub;//S
-	function visitSub(node) {//S
-		var t=this;
-		if (!node || typeof node!="object") return;
-		var es;
-		if (node instanceof Array) es=node;
-		else es=node[Grammar.SUBELEMENTS];
-		if (!es) {
-			es=[];
-			for (var i in node) {
-				es.push(node[i]);
-			}
-		}
-		es.forEach(function (e) {
-			t.visit(e);
-		});
-	}
+
 	function collectLocals(node) {//S
 		var locals={varDecls:{}, subFuncDecls:{}};
 		ctx.enter({locals:locals},function () {
@@ -374,7 +431,7 @@ function annotateSource2(klass, env) {//B
 	}
 	var varAccessesAnnotator=Visitor({//S
 		varAccess: function (node) {
-			var si=getScopeInfo(node.name.text);
+			var si=getScopeInfo(node.name);
 			var t=stype(si);
 			annotation(node,{scopeInfo:si});
 		},
@@ -408,7 +465,7 @@ function annotateSource2(klass, env) {//B
 				if (node.key.type=="literal") {
 					throw TError( "オブジェクトリテラルのパラメタに単独の文字列は使えません" , srcFile, node.pos);
 				}
-				var si=getScopeInfo(node.key.text);
+				var si=getScopeInfo(node.key);
 				annotation(node,{scopeInfo:si});
 			}
 		},
@@ -439,7 +496,7 @@ function annotateSource2(klass, env) {//B
 		},
 		"forin": function (node) {
 			node.vars.forEach(function (v) {
-				var si=getScopeInfo(v.text);
+				var si=getScopeInfo(v);
 				annotation(v,{scopeInfo:si});
 			});
 			this.visit(node.set);
@@ -563,7 +620,7 @@ function annotateSource2(klass, env) {//B
 	});
 	function resolveType(node) {//node:typeExpr
 		var name=node.name+"";
-		var si=getScopeInfo(name);
+		var si=getScopeInfo(node.name);
 		var t=stype(si);
 		console.log("TExpr",name,si,t);
 		if (t===ST.NATIVE) {
@@ -678,6 +735,7 @@ function annotateSource2(klass, env) {//B
 	initTopLevelScope();//S
 	inheritSuperMethod();//S
 	annotateSource();
+	delete klass.hasSemanticError;
 }//B  end of annotateSource2
 return {initClassDecls:initClassDecls, annotate:annotateSource2};
 })();
