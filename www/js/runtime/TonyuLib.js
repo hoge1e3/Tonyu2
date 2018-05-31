@@ -152,6 +152,7 @@ return Tonyu=function () {
 	};
 	klass.shouldCompile=function (k) {
 		k=k.meta||k;
+		if (k.hasSemanticError) return true;
 		if (klass.isSourceChanged(k)) return true;
 		var dks=klass.getDependingClasses(k);
 		for (var i=0 ; i<dks.length ;i++) {

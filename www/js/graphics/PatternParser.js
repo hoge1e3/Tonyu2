@@ -83,7 +83,7 @@ define(["Tonyu"], function (Tonyu) {
             }
             dy--;
             var sx=x+1,sy=y+1,w=dx-sx,h=dy-sy;
-            console.log("PP",sx,sy,w,h,dx,dy);
+            //console.log("PP",sx,sy,w,h,dx,dy);
             if (w*h==0) throw PatterParseError(dx, dy,"w*h==0");
             var newim=this.newImage(w,h);
             var nc=newim.getContext("2d");

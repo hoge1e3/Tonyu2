@@ -40,6 +40,7 @@ function initClassDecls(klass, env ) {//S
 	// The main task of initClassDecls is resolve 'dependency', it calls before orderByInheritance
 	var s=klass.src.tonyu; //file object
 	var node;
+	klass.hasSemanticError=true;
 	if (klass.node && klass.nodeTimestamp==s.lastUpdate()) {
 		node=klass.node;
 	}
@@ -178,9 +179,11 @@ function initClassDecls(klass, env ) {//S
 		});
 	}
 	initMethods(node);        // node=program
+	delete klass.hasSemanticError;
 }// of initClassDecls
 function annotateSource2(klass, env) {//B
 	// annotateSource2 is call after orderByInheritance
+	klass.hasSemanticError=true;
 	var srcFile=klass.src.tonyu; //file object  //S
 	var srcCont=srcFile.text();
 	function getSource(node) {
@@ -732,6 +735,7 @@ function annotateSource2(klass, env) {//B
 	initTopLevelScope();//S
 	inheritSuperMethod();//S
 	annotateSource();
+	delete klass.hasSemanticError;
 }//B  end of annotateSource2
 return {initClassDecls:initClassDecls, annotate:annotateSource2};
 })();
