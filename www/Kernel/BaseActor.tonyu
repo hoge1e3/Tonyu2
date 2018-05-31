@@ -1,6 +1,15 @@
 extends null;
 includes MathMod,EventMod,TextRectMod,OneframeSpriteMod,
 ThreadGroupMod,EventHandlerCaller,DialogMod,FileMod;
+
+"field strict";
+var x,y,p,pImg,text,size,font,align,fillStyle,scaleX,scaleY,width,height,radius,rotation,alpha,
+layer,position,zOrder;
+var crashScale;
+var age,anim,animMode,animFrame,animFps;
+var _scheduler,_th;
+var _isDead,_isInvisible,_poolArray,objectPoolAge,_lifeKeeper;
+
 native Tonyu;
 native Key;
 native console;
@@ -49,7 +58,7 @@ nowait \print(pt) {
         for(var argCount=0;argCount<arguments.length;argCount++){
             mergedArg=mergedArg+arguments[argCount]+" ";
         }
-        splits=mergedArg.split("\n");
+        var splits=mergedArg.split("\n");
         for(var printCount=0;printCount<splits.length;printCount++){
             $consolePanel.scroll(0,20);
             $consolePanel.setFillStyle("white");
@@ -143,7 +152,7 @@ nowait \crashTo1(t) {
 \crashToChecker(d,f){
     while(true){
         if(typeof d=="function"){
-            for(obj in allCrash(d)){
+            for(var obj in allCrash(d)){
                 callEventHandler(f,[obj]);
             }
         }else if(crashTo(d)){
@@ -198,7 +207,7 @@ nowait \within1(t,distance){
 \withinChecker(d,r,f){
     while(true){
         if(typeof d=="function"){
-            for(obj in allWithin(d,r)){
+            for(var obj in allWithin(d,r)){
                 f(obj);
             }
         }else if(within(d,r)){
@@ -288,6 +297,7 @@ nowait \performTransform(ctx) {
     ctx.globalAlpha=(alpha<0?0:alpha>255?255:alpha)/255;
 }
 nowait \draw(ctx) {
+    var drawY;
     if (x==null || y==null || _isInvisible) return;
     if (text!=null) {
         var splitsText=(text+"").split("\n");
@@ -374,7 +384,7 @@ nowait \loadPage(){
 }
 \useObjectPool=value {
     if (value) {
-        _poolArray=$ObjectPool.poolList(getClassInfo().fullName);
+        _poolArray=$ObjectPool.poolList(this.getClassInfo().fullName);
     }
 }
 \appear(o,param) {
