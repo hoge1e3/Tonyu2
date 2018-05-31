@@ -1,5 +1,6 @@
 extends null;
 includes EventMod, QueryMod;
+"field strict";
 
 native Tonyu;
 native Key;

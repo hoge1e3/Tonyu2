@@ -401,7 +401,30 @@ var TPRC=function (dir) {
 			});
 			return deps;
 		}
-		function detectLoop(c, prev){
+		function detectLoop(c) {
+			var path=[];
+			var visited={};
+			function pushPath(c) {
+				path.push(c.fullName);
+				if (visited[c.fullName]) {
+					throw TError( "次のクラス間に循環参照があります: "+path.join("->"), "不明" ,0);
+				}
+				visited[c.fullName]=true;
+ 			}
+			function popPath() {
+				var p=path.pop();
+				delete visited[p];
+			}
+			function loop(c) {
+				//console.log("detectLoop2",c.fullName,JSON.stringify(visited));
+				pushPath(c);
+				var dep=dep1(c);
+				dep.forEach(loop);
+				popPath();
+			}
+			loop(c);
+		}
+		function detectLoopOLD(c, prev){
 			//  A->B->C->A
 			// c[B]=A  c[C]=B   c[A]=C
 			console.log("detectloop",c.fullName);
@@ -409,9 +432,14 @@ var TPRC=function (dir) {
 				console.log("Detected: ",c.fullName, crumbs, crumbs[c.fullName]);
 				var n=c.fullName;
 				var loop=[];
+				var cnt=0;
 				do {
 					loop.unshift(n);    // A      C       B
 					n=crumbs[n];        // C      B       A
+					if (!n || cnt++>100) {
+						console.log(n,crumbs, loop);
+						throw new Error("detectLoop entered infty loop. Now THAT's scary!");
+					}
 				} while(n!=c.fullName);
 				loop.unshift(c.fullName);
 				return loop;

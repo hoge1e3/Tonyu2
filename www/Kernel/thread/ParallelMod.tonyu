@@ -1,4 +1,6 @@
-extends BaseActor;
+//extends BaseActor;
+extends null;
+"field strict";
 
 nowait \parallel() {
      var args=[];

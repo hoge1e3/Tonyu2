@@ -1,4 +1,6 @@
 extends null;
+"field strict";
+var _scheduler,_th;
 
 native Tonyu;
 native Key;

@@ -1,11 +1,25 @@
 extends null;
-includes SchedulerMod,EventMod,EventHandlerCaller,MathMod;
+includes EventMod,EventHandlerCaller,MathMod,ThreadGroupMod;
+"field strict";
+var layer,_isDead,_poolArray,objectPoolAge,_lifeKeeper;
 native Tonyu;
 native Key;
 native console;
 native Math;
 native FS;
 native Array;
+
+
+nowait \hide() {
+    layer.remove(this);
+}
+nowait \show(x,y,p) {
+    layer.add(this);
+    if (x!=null) this.x=x;
+    if (y!=null) this.y=y;
+    if (p!=null) this.p=p;
+}
+
 nowait \die() {
     killThreadGroup();
     hide();
@@ -33,33 +47,10 @@ nowait \isDead() {
     return _isDead;
 }
 
-\screenOut(a) {
-    if (!a) a=0;
-    var cp=$Screen.convert(this,$Screen);
-    return abs(clamped(cp.x,-a,$screenWidth+a))+
-        abs(clamped(cp.y,-a,$screenHeight+a));
-}
-\screenOutChecker(d,f){
-    while(true){
-        while(true){
-            if(screenOut()>d){
-                f();
-                break;
-            }
-            update();
-        }
-        while(true){
-            if(screenOut()<=d){
-                break;
-            }
-            update();
-        }
-        update();
-    }
-}
+
 \useObjectPool=value {
     if (value) {
-        _poolArray=$ObjectPool.poolList(getClassInfo().fullName);
+        _poolArray=$ObjectPool.poolList(this.getClassInfo().fullName);
     }
 }
 \appear(o,param) {

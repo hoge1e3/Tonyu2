@@ -1,5 +1,5 @@
 extends null;
-
+"field strict";
 
 nowait function drawTextRect(ctx, text, x, topY, h, align , type) {
     if (!align) align="center";
@@ -36,10 +36,9 @@ nowait function fukidashi(ctx, text, x, y, sz) {
     ctx.closePath();
     ctx.fill();
     ctx.stroke();
-    
+
     var fs=ctx.fillStyle;
     ctx.fillStyle=ctx.strokeStyle;
     drawTextRect(ctx, text, x, y-theight-margin-sz, sz, align, "fill");
     ctx.fillStyle=fs;
 }
-

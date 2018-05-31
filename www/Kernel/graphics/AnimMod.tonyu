@@ -1,22 +1,32 @@
 extends null;
+includes SpriteMod,SchedulerMod,ParallelMod;
+"field strict";
+var anim,animMode,animFrame,animFps;
 
 nowait \setAnimFps(f){
-    this.animFps=f;
-    this.animFrame=0;
-    this.animMode=true;
+    animFps=f;
+    animFrame=0;
+    startAnim();
 }
 nowait \startAnim(){
-    this.animMode=true;
+    if (!animMode) {
+        animMode=parallel(_animation);
+    }
 }
 nowait \stopAnim(){
-    this.animMode=false;
+    if (animMode) {
+        animMode.kill();
+        animMode=null;
+    }
 }
 nowait \_animation(){
-    if(animMode) {
+    var age=0;
+    while(true) {
         age++;
-        if (age%animFps==0){
+        if (age%animFps==0 && anim instanceof Array){
             p=anim[animFrame%anim.length];
             animFrame++;
         }
+        update();
     }
 }

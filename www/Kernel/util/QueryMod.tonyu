@@ -1,5 +1,8 @@
 extends null;
-includes SchedulerMod,EventMod,EventHandlerCaller,MathMod;
+includes SchedulerMod,EventMod,EventHandlerCaller,MathMod,LifeCycleMod,SpriteMod;
+"field strict";
+var crashScale;
+
 native Tonyu;
 native Key;
 native console;
@@ -61,7 +64,7 @@ nowait \crashTo1(t) {
 \crashToChecker(d,f){
     while(true){
         if(typeof d=="function"){
-            for(obj in allCrash(d)){
+            for(var obj in allCrash(d)){
                 callEventHandler(f,[obj]);
             }
         }else if(crashTo(d)){
@@ -116,7 +119,7 @@ nowait \within1(t,distance){
 \withinChecker(d,r,f){
     while(true){
         if(typeof d=="function"){
-            for(obj in allWithin(d,r)){
+            for(var obj in allWithin(d,r)){
                 f(obj);
             }
         }else if(within(d,r)){
@@ -129,4 +132,28 @@ nowait \watchHit(typeA,typeB,onHit) {
     layer.watchHit(typeA , typeB, \(a,b) {
         onHit.apply(this,[a,b]);
     });
+}
+\screenOut(a) {
+    if (!a) a=0;
+    var cp=$Screen.convert(this,$Screen);
+    return abs(clamped(cp.x,-a,$screenWidth+a))+
+        abs(clamped(cp.y,-a,$screenHeight+a));
+}
+\screenOutChecker(d,f){
+    while(true){
+        while(true){
+            if(screenOut()>d){
+                f();
+                break;
+            }
+            update();
+        }
+        while(true){
+            if(screenOut()<=d){
+                break;
+            }
+            update();
+        }
+        update();
+    }
 }
