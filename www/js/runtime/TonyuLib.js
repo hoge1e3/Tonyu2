@@ -108,6 +108,10 @@ return Tonyu=function () {
 			for (var n in m.methods) {
 				if (!(n in prot)) {
 					prot[n]=m.methods[n];
+					if (n!=="__dummy" && !prot[n]) {
+						console.log("WHY2!",prot[n],prot,n);
+						throw new Error("WHY2!"+n);
+					}
 				}
 			}
 		});
@@ -118,6 +122,10 @@ return Tonyu=function () {
 			if (prot["fiber$"+k]) {
 				prot[k].fiber=prot["fiber$"+k];
 				prot[k].fiber.methodInfo={name:k,klass:res,fiber:true};
+			}
+			if (k!=="__dummy" && !prot[k]) {
+				console.log("WHY!",prot[k],prot,k);
+				throw new Error("WHY!"+k);
 			}
 			prot[k].methodInfo={name:k,klass:res};
 			var r=propReg.exec(k);
@@ -167,7 +175,7 @@ return Tonyu=function () {
 		return res;
 	};
 	function bless( klass, val) {
-		if (!klass) return val;
+		if (!klass) return extend({},val);
 		return extend( Object.create(klass.prototype) , val);
 		//return extend( new klass() , val);
 	}
