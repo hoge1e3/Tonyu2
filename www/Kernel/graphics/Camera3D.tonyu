@@ -1,6 +1,10 @@
 extends Actor3D;
 "field strict";
 var sprites;
-\add2DSprite(s) {
+\addSprite2D(s) {
     sprites.push(s);
+}
+\to2D(pos) {
+    var p=pos.sub(position);
+    
 }

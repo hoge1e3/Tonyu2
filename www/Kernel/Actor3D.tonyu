@@ -14,3 +14,11 @@ native Tonyu;
 \defaultLayer{
     return $mainLayer3D;
 }
+\draw3D(camera) {
+    var p=camera.to2D(position);
+    camera.addSprite2D(new ActorSprite{
+        x=p.x, y=p.y, scaleX=p.scale, p=this.p,
+        rotation, alpha, zOrder=z
+    });
+
+}
