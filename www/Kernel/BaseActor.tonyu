@@ -20,7 +20,7 @@ native console;
     layer=layer||defaultLayer;
     crashScale=1;
     initSpriteMod();
-    if (Tonyu.runMode) initSprite();
+    if (Tonyu.runMode) addToLayer();
     initAnimMod();
 }
 nowait \extend(obj) {

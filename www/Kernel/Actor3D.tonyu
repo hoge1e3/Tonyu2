@@ -1,2 +1,16 @@
-extends null;
+extends BaseActor;
 "field strict";
+var z;
+native Tonyu;
+\new(params) {
+    super(params);
+    initSchedulerMod();
+    layer=layer||defaultLayer;
+    crashScale=1;
+    initSpriteMod();
+    if (Tonyu.runMode) addToLayer();
+    initAnimMod();
+}
+\defaultLayer{
+    return $mainLayer3D;
+}

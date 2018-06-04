@@ -71,7 +71,7 @@ nowait \isDead() {
 	}
 }
 
-\initSprite() {
+\addToLayer() {
     if(layer && typeof layer.add=="function"){
         layer.add(this);
     }else{
