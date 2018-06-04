@@ -8,6 +8,13 @@ native Tonyu;
 native Math;
 native console;
 
+\initSpriteMod() {
+    position=new Vec3View(this);
+    if (scaleX==null) scaleX=1;
+    if (rotation==null) rotation=0;
+    if (alpha==null) alpha=255;
+    if (zOrder==null) zOrder=0;
+}
 nowait \detectShape() {
     if (typeof p!="number") {
         p=0;

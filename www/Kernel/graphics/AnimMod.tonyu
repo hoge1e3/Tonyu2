@@ -3,6 +3,15 @@ includes SpriteMod,SchedulerMod,ParallelMod;
 "field strict";
 var anim,animMode,animFrame,animFps;
 
+\initAnimMod(){
+    if (anim!=null && typeof anim=="object"){
+        animMode=true;
+        animFrame=0;
+    }else{
+        animMode=false;
+    }
+    if (animFps==null) animFps=1;
+}
 nowait \setAnimFps(f){
     animFps=f;
     animFrame=0;

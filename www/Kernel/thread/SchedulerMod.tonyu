@@ -9,6 +9,11 @@ native Math;
 native FS;
 native Array;
 
+\initSchedulerMod() {
+    _scheduler=_scheduler||$Scheduler;
+    if (Tonyu.runMode) _th=$Boot.schedule(this,"main",[]);
+}
+
 \update() {
     onUpdate();
     if(_thread) {

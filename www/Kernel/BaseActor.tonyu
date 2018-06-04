@@ -19,24 +19,11 @@ native Array;
         this.y=y;
         this.p=p;
     }
-    _scheduler=_scheduler||$Scheduler;
-    if (Tonyu.runMode) _th=$Boot.schedule(this,"main",[]);
+    initSchedulerMod();
     layer=layer||defaultLayer;
     crashScale=1;
-    position=new Vec3View(this);
-    if (scaleX==null) scaleX=1;
-    if (rotation==null) rotation=0;
-    //if (this.rotate==null) this.rotate=0;
-    if (alpha==null) alpha=255;
-    if (zOrder==null) zOrder=0;
-    //if (age==null) age=0;
-    if (anim!=null && typeof anim=="object"){
-        animMode=true;
-        animFrame=0;
-    }else{
-        animMode=false;
-    }
-    if (animFps==null) animFps=1;
+    initSpriteMod();
+    initAnimMod();
 }
 nowait \extend(obj) {
     return Tonyu.extend(this,obj);
