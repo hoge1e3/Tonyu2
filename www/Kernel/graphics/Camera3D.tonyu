@@ -6,5 +6,5 @@ var sprites;
 }
 \to2D(pos) {
     var p=pos.sub(position);
-    
+
 }

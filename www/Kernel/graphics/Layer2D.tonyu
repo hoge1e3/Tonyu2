@@ -1,0 +1,51 @@
+extends TObject;
+includes MathMod;
+"field strict";
+var spx,spy,wpx,wpy,rotation,scale,group,screen;
+
+\draw(c) {
+    c.save();
+    var rt=rotation,sc=scale;
+    //print(wpx,wpy,spx,spy,sc,rt);
+    // wpOnS =    R(rt)*wp*sc;
+    var wpOnSX=(cos(rt)*wpx+cos(rt+90)*wpy)*sc;
+    var wpOnSY=(sin(rt)*wpx+sin(rt+90)*wpy)*sc;
+    //console.log(wcOnSX,wcOnSY);
+    c.translate(-wpOnSX+spx,-wpOnSY+spy);
+    c.rotate(rad(rt));
+    c.scale(sc,sc);
+    group.draw(c);
+    c.restore();
+}
+\world2screen(obj) {// world<=>group
+    //obj.layer===group
+    var dx=obj.x-wpx;
+    var dy=obj.y-wpy;
+    var rt=rotation;
+    // (x,y)= sp + R(rt)*(obj-wp)/scale;
+    // (x)= spx + (cos(rt) cos(rt+90))*(dx)/scale;
+    // (y)= spy + (sin(rt) sin(rt+90))*(dy)/scale;
+    var x=spx + (cos(rt)*dx+cos(rt+90)*dy)*scale;
+    var y=spy + (sin(rt)*dx+sin(rt+90)*dy)*scale;
+    return {x,y,
+        rotation:obj.rotation,
+        scale:obj.scale,
+        layer:screen
+    };
+}
+\screen2world(obj) {
+    // obj.layer===screen
+    var rt=-rotation;
+    var dx=obj.x-spx;
+    var dy=obj.y-spy;
+    // (x,y)= sp + R(rt)*(obj-wp)/scale;
+    // (x)= spx + (cos(rt) cos(rt+90))*(dx)/scale;
+    // (y)= spy + (sin(rt) sin(rt+90))*(dy)/scale;
+    var x=wpx + (cos(rt)*dx+cos(rt+90)*dy)/scale;
+    var y=wpy + (sin(rt)*dx+sin(rt+90)*dy)/scale;
+    return {x,y,
+        rotation:rt,
+        scale:1/scale,
+        layer:group
+    };
+}

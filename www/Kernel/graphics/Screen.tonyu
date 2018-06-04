@@ -17,6 +17,8 @@ extends Panel;
         var c=getContext();
         for (var i=layers.length-1;i>=0;i--) {
             var l=layers[i];
+            l.draw(c);
+            /*
             var group=l.group;
             c.save();
             var wpx=l.wpx,wpy=l.wpy;
@@ -32,6 +34,7 @@ extends Panel;
             c.scale(sc,sc);
             group.draw(c,camera);
             c.restore();
+            */
         }
         _drawing=false;
     }
@@ -44,11 +47,11 @@ extends Panel;
     group=group||new Sprites;
     // spx,spy  Screen pivot x,y
     // wpx,wpy  World pivot x,y
-    layers.push{
+    layers.push(new Layer2D{
         spx:0,spy:0,
         wpx:0,wpy:0,rotation:0,scale:1,
-        group,layer:this
-    };
+        group,screen:this
+    });
     return layers.length-1;
 }
 \selectLayer(i) {
@@ -87,7 +90,7 @@ extends Panel;
     }
 }*/
 
-\convert(obj, toLayer) {
+\convert(obj, toLayer) {// toLayer: Sprites
     if (obj.layer===toLayer) return obj;
     if (toLayer==null) toLayer=this;
     if (!obj.layer) throw new Error("layer not set");
@@ -99,6 +102,7 @@ extends Panel;
         if (l!=null) {
             // world to screen
             l=layers[l];
+            return l.world2screen(obj);
             var dx=obj.x-l.wpx;
             var dy=obj.y-l.wpy;
             var rt=l.rotation;
@@ -120,7 +124,7 @@ extends Panel;
         if (l!=null) {
             // screen to world
             l=layers[l];
-
+            return l.screen2world(obj);
             var rt=-l.rotation;
             var dx=obj.x-l.spx;
             var dy=obj.y-l.spy;
