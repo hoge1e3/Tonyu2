@@ -4,9 +4,8 @@ includes SpriteMod,SchedulerMod,ParallelMod;
 var anim,animMode,animFrame,animFps;
 
 \initAnimMod(){
-    if (anim!=null && typeof anim=="object"){
-        animMode=true;
-        animFrame=0;
+    if (anim instanceof Array){
+        startAnim();
     }else{
         animMode=false;
     }
@@ -20,6 +19,7 @@ nowait \setAnimFps(f){
 nowait \startAnim(){
     if (!animMode) {
         animMode=parallel(_animation);
+        animFrame=animFrame||0;
     }
 }
 nowait \stopAnim(){
@@ -28,7 +28,7 @@ nowait \stopAnim(){
         animMode=null;
     }
 }
-nowait \_animation(){
+\_animation(){
     var age=0;
     while(true) {
         age++;

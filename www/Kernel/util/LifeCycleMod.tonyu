@@ -70,3 +70,20 @@ nowait \isDead() {
 	    return o;
 	}
 }
+
+\initSprite() {
+    if(layer && typeof layer.add=="function"){
+        layer.add(this);
+    }else{
+        $Sprites.add(this);
+    }
+    onAppear();
+}
+\changeLayer(l) {
+    if (typeof l.add!=="function") return;
+    if (layer) layer.remove(this);
+    l.add(this);
+    layer=l;
+}
+\onAppear() {
+}

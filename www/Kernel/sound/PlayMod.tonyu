@@ -1,4 +1,8 @@
-extends BaseActor;
+extends null;
+includes EventMod, SchedulerMod, LifeCycleMod;
+"field strict";
+var mmlInited, _mml;
+
 nowait \initMML() {
     if (mmlInited) return;
     mmlInited=true;
@@ -16,7 +20,7 @@ nowait \releaseMML() {
           v.stop();
        }
        $MMLS=null;
-    } 
+    }
     if ($WaveTable) {
        $WaveTable.stop();
        $WaveTable=null;

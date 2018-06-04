@@ -54,6 +54,10 @@ define(["DeferredUtil","Klass"],function (DU,Klass) {
 			}
 			if (typeof methodName=="function") {
 				method=methodName.fiber;
+				if (!method) {
+					var n=methodName.methodInfo ? methodName.methodInfo.name : methodName.name;
+					throw new Error("メソッド"+n+"は待機可能メソッドではありません");
+				}
 			}
 			args=[this].concat(args);
 			var pc=0;
