@@ -1,0 +1,6 @@
+extends Actor3D;
+"field strict";
+var sprites;
+\add2DSprite(s) {
+    sprites.push(s);
+}

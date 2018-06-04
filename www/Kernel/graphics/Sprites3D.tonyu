@@ -1,0 +1,19 @@
+extends TObject;
+"field strict";
+var sprites;
+\new(p) {
+    super(p);
+    sprites=[];
+}
+\draw3D(camera) {
+    camera.sprites=[];
+    for (var s of sprites) {
+        s.draw3D(camera);
+    }
+    var s2ds=camera.sprites.sort \(a,b) {
+        return b.z-a.z;
+    };
+    for (var s2d of s2ds) {
+        s2d.draw(camera.context);
+    }
+}
