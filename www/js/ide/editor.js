@@ -86,7 +86,9 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     }
     Tonyu.defaultOptions={
         compiler: { defaultSuperClass: "Actor"},
-        run: {mainClass: "Main", bootClass: "Boot", globals:{$defaultFPS:60}},
+        run: {mainClass: "Main", bootClass: "Boot", globals:{
+            $defaultFPS:60,$imageSmoothingDisabled:true
+        }},
         kernelEditable: false,
         version: Tonyu.VERSION
     };

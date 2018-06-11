@@ -91,9 +91,9 @@ extends Panel;
 }*/
 
 \convert(obj, toLayer) {// toLayer: Sprites
-    if (obj.layer===toLayer) return obj;
     if (toLayer==null) toLayer=this;
-    if (!obj.layer) throw new Error("layer not set");
+    if (!obj.layer) obj.layer=this; //throw new Error("layer not set");
+    if (obj.layer===toLayer) return obj;
     if (obj.layer!==this && toLayer!==this) {
         var p=convert(obj,this);
         return convert(p,toLayer);

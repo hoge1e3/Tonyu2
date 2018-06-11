@@ -1,6 +1,7 @@
 extends Actor;
 native Math;
 native $;
+native console;
 \new (param){
     sx=0;
     sy=0;
@@ -99,6 +100,8 @@ native $;
     }
     ctx.clearRect(setCol*chipWidth,setRow*chipHeight,chipWidth,chipHeight);
     ctx.save();
+    //console.log("SET",    pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,
+    //    setCol*chipWidth, setRow*chipHeight, chipWidth, chipHeight);
     ctx.drawImage(
     pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,
     setCol*chipWidth, setRow*chipHeight, chipWidth, chipHeight);

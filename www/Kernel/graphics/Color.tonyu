@@ -147,7 +147,8 @@ native $;
 }
 \setRGBA(r,g,b,a) {
 	if (imageData) {
-		for(var i=0;i<4;i++) imageData.data[index+i]=[r,g,b,a][i];
+		var n=((typeof a==="number")?4:3);
+		for(var i=0;i<n;i++) imageData.data[index+i]=[r,g,b,a][i];
 	} else {
 		value.r=r;
 		value.g=g;
@@ -230,7 +231,14 @@ native $;
 \makeHSLA() {
 	if (hasHSLA()) return;
 	if (!hasRGBA()) nameToRGB();
-	var hsl=RGBToHSL(value.r/maxs.r,value.g/maxs.g,value.b/maxs.b);
+	var hsl;
+	if (imageData) {
+		hsl=RGBToHSL(imageData.data[index]/maxs.r,
+		imageData.data[index+1]/maxs.g,
+		imageData.data[index+2]/maxs.b);
+	} else {
+		hsl=RGBToHSL(value.r/maxs.r,value.g/maxs.g,value.b/maxs.b);
+	}
 	value.h=hsl[0];
 	value.s=hsl[1];
 	value.l=hsl[2];

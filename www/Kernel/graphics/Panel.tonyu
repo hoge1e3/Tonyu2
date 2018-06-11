@@ -38,6 +38,8 @@ native Image;
     this.height=trunc(height);
     buf=$("<canvas>").attr{width,height};
     canvas=buf[0];
+    context.imageSmoothingEnabled=!$imageSmoothingDisabled;
+    _drawn=false;
     fireEvent("resize",{width,height,force:true});
 }
 \resize(width,height){
@@ -111,6 +113,7 @@ native Image;
     ctx.save();
     ctx.clearRect(clearX||0,clearY||0,clearW||width,clearH||height);
     ctx.restore();
+    if (arguments.length==0) _drawn=false;
 }
 \getPixel(getX,getY){
     var ctx;
@@ -332,4 +335,37 @@ nowait \copy() {
     };
     element.attr{src=url};
     return d.promise();
+}
+\imageSmoothingEnabled=v {
+    if (typeof context.msImageSmoothingEnabled==="boolean") {
+        context.msImageSmoothingEnabled=v;
+    } else {
+        context.imageSmoothingEnabled=v;
+    }
+}
+\imageSmoothingEnabled {
+    if (typeof context.msImageSmoothingEnabled==="boolean") {
+        return context.msImageSmoothingEnabled;
+    } else {
+        return context.imageSmoothingEnabled;
+    }
+}
+\replaceColor() {
+    var a=new ArgParser(arguments);
+    var top=0,left=0;
+    var w=width, h=height;
+    if (a.length==5) {
+        left=a.shift();
+        top=a.shift();
+        w=a.shift();
+        h=a.shift();
+    }
+    var func=a.shift();
+    var data=getImageData(left,top,w,h);
+    for (var i=0;i<h;i++) {
+        for (var j=0;j<w;j++) {
+            func(new Color(data,j,i),left+j,top+i);
+        }
+    }
+    putImageData(data,left,top);
 }
