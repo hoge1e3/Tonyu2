@@ -47,12 +47,13 @@ extends Panel;
     group=group||new Sprites;
     // spx,spy  Screen pivot x,y
     // wpx,wpy  World pivot x,y
-    layers.push(new Layer2D{
+    var layer=new Layer2D{
         spx:0,spy:0,
         wpx:0,wpy:0,rotation:0,scale:1,
-        group,screen:this
-    });
-    return layers.length-1;
+        group,screen:this,index:layers.length
+    };
+    layers.push(layer);
+    return layer;
 }
 \selectLayer(i) {
     var r=findLayer(i);

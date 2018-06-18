@@ -18,6 +18,7 @@ native console;
     }
     initSchedulerMod();
     layer=layer||defaultLayer;
+    if (layer.group instanceof Sprites) layer=layer.group;
     crashScale=1;
     initSpriteMod();
     if (Tonyu.runMode) addToLayer();

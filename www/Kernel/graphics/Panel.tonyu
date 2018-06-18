@@ -83,13 +83,12 @@ native Image;
     ctx.closePath();
     ctx.fill();
 }
-\fillRect(x,y,rectWidth,rectHeight){
+\fillRect(x,y,w,h){
     var ctx=getContext();
-    ctx.save();
-    //ctx.clearRect(0,0,this.width,this.height);
-    ctx.fillStyle=fillStyle+"";
-    ctx.fillRect(x,y,rectWidth,rectHeight);
-    ctx.restore();
+    //ctx.save();
+    //ctx.fillStyle=fillStyle+"";
+    ctx.fillRect(x,y,w,h);
+    //ctx.restore();
 }
 \fillText(text,x,y,size,align){
     var ctx=getContext();
@@ -354,13 +353,29 @@ nowait \copy() {
     var a=new ArgParser(arguments);
     var top=0,left=0;
     var w=width, h=height;
-    if (a.length==5) {
+    if (a.length>=4) {
         left=a.shift();
         top=a.shift();
         w=a.shift();
         h=a.shift();
     }
     var func=a.shift();
+    if (typeof func!=="function") {
+        var ctx=context;
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(left,top);
+        ctx.lineTo(left+w,top);
+        ctx.lineTo(left+w,top+h);
+        ctx.lineTo(left,top+h);
+        ctx.closePath();
+        ctx.clip();
+        ctx.globalCompositeOperation="source-in";
+        if (func) fillStyle=func;
+        ctx.fillRect(left,top,w,h);
+        ctx.restore();
+        return;
+    }
     var data=getImageData(left,top,w,h);
     for (var i=0;i<h;i++) {
         for (var j=0;j<w;j++) {
