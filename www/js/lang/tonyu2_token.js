@@ -1,14 +1,3 @@
-/*sys.load("js/parser.js");
-sys.load("js/ExpressionParser2Tonyu.js");
-sys.load("js/GrammarTonyu.js");
-sys.load("js/XMLBuffer.js");
-sys.load("js/IndentBuffer.js");
-sys.load("js/disp.js");
-sys.load("js/profiler.js");
-*/
-if (typeof define!=="function") {
-	define=require("requirejs").define;
-}
 define(["Grammar", "XMLBuffer", "IndentBuffer","disp", "Parser","TError"],
 function (Grammar, XMLBuffer, IndentBuffer, disp, Parser,TError) {
 return TT=function () {
@@ -90,15 +79,6 @@ return TT=function () {
 		st.result[0]=res;
 		return st;
 	});
-	/*function exprHead(name, parser) {
-		dtk(REG, name, parser, DIV);
-	}
-	function exprMid(name, parser) {
-		dtk(DIV, name, parser, REG);
-	}
-	function exprTail(name, parser) {
-		dtk(DIV, name, parser, DIV);
-	}*/
 	var reserved={"function":true, "var":true , "return":true, "typeof": true, "if":true,
 			"__typeof": true,
 			"for":true,
@@ -248,54 +228,15 @@ return TT=function () {
 	parsers[REG]=or(parsers[REG],symresv);
 	parsers[DIV]=or(parsers[DIV],symresv);
 
-//	dtk(REG|DIV, "symbol", tk(/^[a-zA-Z_$][a-zA-Z0-9_$]*/,"ident_reg").except(function (s) {
-	/*      return reserved.hasOwnProperty(s.text);
-	}).first(space), DIV);
-	dtk(REG|DIV, "tk_constructor", "constructor", REG);
-	var resvs=[];
-	for (var n in reserved) {
-		if (n!="constructor") resvs.push(n);
-	}
-	resvs.sort(function (a,b) {
-		return b.length-a.length;
-	});
-	resvs.forEach(function (n) {
-		dtk(REG|DIV, SAMENAME, n, REG);
-	});
-*/
-	//profileTbl( parsers[REG],"reg");
-	//profileTbl( parsers[DIV],"div");
-	//profileTbl( parsers[REG|DIV],"regdiv");
-	//parsers[REG|DIV]=parsers[REG].or(parsers[DIV]);
 	function parse(str) {
-		//if (str.length>100000) return;
-		var t1=new Date().getTime();
 		var res=Parser.StringParser.parse(all, str);
-		//console.log("Time="+(new Date().getTime()-t1));
 		if (res.success) {
-			/*res.result[0].forEach(function (e) {
-				if (e.type=="REGEX" || e.type=="DIV") {
-					console.log(e.type+"\t"+ str.substring(e.pos-5,e.pos+6));
-					//console.log( e.text+"\t"+e.type+"\t"+e.pos+"-"+e.len);
-				}
-			});*/
 		} else {
 			console.log("Stopped at "+str.substring( res.src.maxPos-5, res.src.maxPos+5));
 		}
-		/*if (typeof WebSite=="object" && WebSite.devMode) {//DELJSL
-			window.tokenStat=window.tokenStat||{};
-			res.result[0].forEach(function (r) {
-				window.tokenStat[ r.text ]= window.tokenStat[ r.text ] || 0;
-				window.tokenStat[ r.text ]++;
-			});
-			//buf=""; for (var k in tokenStat) {  buf+=k+"\t"+tokenStat[k]+"\n"; }; buf;
-			//console.log(res);
-		}*/
 		return res;
-		//console.log(Profiler.report());
-		//console.log( disp(res.result[0]) );
 	}
-	return {parse:parse, extension:"js"};
+	return {parse:parse, extension:"js",reserved:reserved};
 }();
 
 });

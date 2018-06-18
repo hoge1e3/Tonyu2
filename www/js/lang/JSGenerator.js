@@ -772,7 +772,7 @@ function genJS(klass, env) {//B
 			buf.printf("[%v]",node.subscript);
 		},
 		member: function (node) {
-			buf.printf(".%v",node.name);
+			buf.printf(".%s",node.name);
 		},
 		symbol: function (node) {
 			buf.print(node.text);

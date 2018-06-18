@@ -27,6 +27,17 @@ return TonyuLang=function () {
 		return n;
 	});
 	var symbol=tk("symbol");
+	var symresv=tk("symbol");
+	for (var resvk in TT.reserved) {
+		var resvp=tk(resvk);
+		//console.log(resvk,resvp, resvp instanceof Parser.Parser);
+		if (resvp instanceof Parser.Parser && resvk!=="constructor") {
+			/*if (resvk==="constructor") {
+				console.log("c");
+			}*/
+			symresv=symresv.or(resvp);
+		}
+	}
 	var eqq=tk("===");
 	var nee=tk("!==");
 	var eq=tk("==");
@@ -65,7 +76,7 @@ return TonyuLang=function () {
 	var e=ExpressionParser() ;
 	var arrayElem=g("arrayElem").ands(tk("["), e.lazy() , tk("]")).ret(null,"subscript");
 	var argList=g("argList").ands(tk("("), comLastOpt(e.lazy()) , tk(")")).ret(null,"args");
-	var member=g("member").ands(tk(".") , symbol ).ret(null,     "name" );
+	var member=g("member").ands(tk(".") , symresv ).ret(null,     "name" );
 	var parenExpr = g("parenExpr").ands(tk("("), e.lazy() , tk(")")).ret(null,"expr");
 	var varAccess = g("varAccess").ands(symbol).ret("name");
 	var funcExpr_l=G("funcExpr").firstTokens(["function","\\"]);
