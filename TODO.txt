@@ -1,4 +1,23 @@
 Bug
+ Compile error
+     DBall  $mat.get -> $mat is null
+     Add getSBall to PzScreen with undef variable (field strict)
+     Fix DBall $mat.get -> scr.getSBall
+     compile
+     compiler tells "undef variable"
+     fix PzScreen
+     compile
+     kowareta! (DBall still old!)
+    Generarize
+       create A and B
+       A: print(1);
+       run A -> get 1
+       Mod A print(2);  and B: break;
+       compile and get semantics error on B
+       Fix B //break;
+       Run A again
+       get 1, kowareta!
+
  The AudioContext was not allowed to start. It must be resume (or created) after a user gesture on the page. https://goo.gl/7K7WLu
  Zipファイル解凍後，dataurlのでコードでエラー
  Actor表示座標は整数

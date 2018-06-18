@@ -41,6 +41,10 @@ function initClassDecls(klass, env ) {//S
 	var s=klass.src.tonyu; //file object
 	var node;
 	klass.hasSemanticError=true;
+	if (klass.src && klass.src.js) {
+		// falsify on generateJS. if some class hasSemanticError, it remains true
+		klass.jsNotUpToDate=true;
+	}
 	if (klass.node && klass.nodeTimestamp==s.lastUpdate()) {
 		node=klass.node;
 	}

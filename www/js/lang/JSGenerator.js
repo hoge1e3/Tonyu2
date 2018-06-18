@@ -1079,6 +1079,7 @@ function genJS(klass, env) {//B
 	} else {
 		klass.src.js=buf.buf;//G
 	}
+	delete klass.jsNotUpToDate;
 	if (debug) {
 		console.log("method4", buf.buf);
 		//throw "ERR";

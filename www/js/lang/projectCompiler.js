@@ -267,7 +267,7 @@ var TPRC=function (dir) {
 		})).then(F(function () {
 			//throw "test break";
 			return TPR.genJS(ord.filter(function (c) {
-				return compilingClasses[c.fullName];
+				return compilingClasses[c.fullName] || c.jsNotUpToDate;
 			}));
 			//return TPR.showProgress("concat");
 		})).then(F(function () {

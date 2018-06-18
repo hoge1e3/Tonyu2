@@ -1,9 +1,10 @@
 extends Panel;
 
-\onAppear() {
+\new(opt){
     layers=[];
     _color="black";
     camera={screen=this};
+    super(opt);
 }
 
 \drawLayers() {
