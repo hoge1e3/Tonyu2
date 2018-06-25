@@ -169,6 +169,15 @@ includes MathMod;
 \size() {return length;}
 \find(f) {
     var no=create();
+    if (typeof f==="object") {
+        var q=f;
+        f=\(o) {
+            for (var k,v in q) {
+                if (o[k]!==v) return false;
+            }
+            return true;
+        };
+    }
     for (var o in this) {
         if (f(o)) no.push(o);
     }

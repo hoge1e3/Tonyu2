@@ -1,5 +1,5 @@
 Bug
- Compile error
+ OK Compile error
      DBall  $mat.get -> $mat is null
      Add getSBall to PzScreen with undef variable (field strict)
      Fix DBall $mat.get -> scr.getSBall
@@ -26,8 +26,9 @@ Bug
     Select 分割数 2 x  (None)
     OK
     save as {type:wh,pwidth:N}; -> Tonyu1 互換？
+Import from Tonyu1
 
-﻿System
+?System
  Node version up to date (64/32)
  makerun urlArgs
  test older games in tonyuexe
@@ -41,7 +42,11 @@ Lib
   see editor.js  chrome-extension:...
  Date
  Button onclick parallel
- Copy screenshot
+ OK? Copy screenshot
+
+IDE
+ Web: http -> https
+ プラグイン追加したら自動再実行
 
 UI
   ダイアログがデフォルト
@@ -52,25 +57,26 @@ Doc
   $uiScreen(.width)
 Graphic
   Color sprite
-  dynamic pattern manipulation
+  OK dynamic pattern manipulation
 Console
   locate
   color
   peek
 Sound
   dynamic sound generation
+  Node off on stop
 
 言語仕様
- 予約語のメソッド名
- 絵文字
- OK return waitable();
- OK からぶん
  a||={};
  nowait {  }
  nowait オーバーライド時にnowait を強制
  Kernel内の nowait 削減
  (x,y)=>x+y
  native a,b,c;
+ OK 予約語のメソッド名
+ OK 絵文字
+ OK return waitable();
+ OK からぶん
  OK do..while
  OK switch
  OK \myProp {}
@@ -85,19 +91,19 @@ Kernel
  1フレームの間に押す＋離す＝無反応
 
 jsdo.it -> load from tonyuexe
-ファイルが増えるとメニューがあふれる
- Main Selector
+OK ファイルが増えるとメニューがあふれる
+ OK Main Selector
 Library 公開
  Merge project
 Timestamp on Appauth
 View count
-クラス名変更時にコンパイルエラーがあると...
+
+OK? クラス名変更時にコンパイルエラーがあると...
 
 Doc同期を省力化
  ls -json
 
-Disk usage
-
+OK Disk usage
 
 Graphic editor
 

@@ -38,7 +38,7 @@ native Image;
     this.height=trunc(height);
     buf=$("<canvas>").attr{width,height};
     canvas=buf[0];
-    context.imageSmoothingEnabled=!$imageSmoothingDisabled;
+    imageSmoothingEnabled=!$imageSmoothingDisabled;
     _drawn=false;
     fireEvent("resize",{width,height,force:true});
 }

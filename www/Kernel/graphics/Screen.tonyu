@@ -13,6 +13,9 @@ extends Panel;
             throw new Error("canvas is null");
         }
         _drawing=true;
+        if (clearBG) {
+            clearRect(0,0,width,height);
+        }
         fillStyle=_color+"";
         fillRect(0,0,width,height);
         var c=getContext();
