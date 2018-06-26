@@ -351,7 +351,7 @@ nowait \detectRAFResolution(t) {
     } else {
         frameSkipped++;
     }
-    afterDraw(doDraw);
+    afterDraw{drawn:doDraw};
     waitFrame(); // FPS制御
 }
 \handlePause() {
@@ -397,12 +397,12 @@ nowait \moveFrame() {
     fps_rpsCnt ++;
     $frameCount++;//=fps_rpsCnt;
 }
-nowait \afterDraw(drawn) {// should call (after draw) or (move and frame skip)
+nowait \afterDraw(e) {// should call (after draw, e.drawn==true) or (move and frame skip, e.drawn==false)
     //debug("AfterDraw",1);
     $Sprites.checkHit();
     //debug("AfterDraw",2);
-    $Sprites.removeOneframes(drawn);
-    sendEvent("afterDraw",drawn);
+    $Sprites.removeOneframes(e.drawn);
+    sendEvent("afterDraw",e);
     //debug("AfterDraw",3);
 }
 nowait \initFPSParams() {

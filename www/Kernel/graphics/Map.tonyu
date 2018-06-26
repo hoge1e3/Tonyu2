@@ -8,7 +8,7 @@ native console;
     alpha=255;
     super(param);
     chipWidth=chipWidth||32;
-    chipHeight=chipHeight||32;
+    chipHeight=chipHeight||chipWidth||32;
     if (typeof col!=="number") col=$screenWidth/chipWidth;
     if (typeof row!=="number") row=$screenHeight/chipHeight;
     col=floor(col);row=floor(row);
