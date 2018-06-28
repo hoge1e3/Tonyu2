@@ -155,6 +155,9 @@ native console;
 \stopSE(sourceObj) {
     return $t2MediaLib.stopSE(sourceObj);
 }
+\stopAllSE() {
+    return $t2MediaLib.stopAllSE();
+}
 
 \getSEMasterVolume() {
     return $t2MediaLib.getSEMasterVolume() * 128;

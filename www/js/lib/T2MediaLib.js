@@ -18,7 +18,7 @@ var T2MediaLib = (function(){
         this.audioDataAry = {
             data : []
         };
-
+        this.seSources=[];
         this.init(_context);
     };
 
@@ -410,20 +410,28 @@ var T2MediaLib = (function(){
         source.stop  = source.stop  || source.noteOff;
         source.start(start, offset, duration);
         if (loop && duration != null) source.stop(start + duration); // iOS, Firefoxではloopがtrueのときdurationを指定しても止まらない
-
+        var t=this;
+        t.seSources.push(source);
         source.onended = function(event) {
             //source.disconnect();
             source.onended = null;
+            var idx=t.seSources.indexOf(source);
+            if (idx>=0) t.seSources.splice(idx,1);
             //delete source.gainNode;
             //delete source.panNode;
         };
-
         return source;
     };
     T2MediaLib.prototype.stopSE = function(sourceObj) {
         if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
         sourceObj.stop(0);
         return sourceObj;
+    };
+    T2MediaLib.prototype.stopAllSE = function(sourceObj) {
+        var t=this;
+        this.seSources.forEach(function (s) {
+            t.stopSE(s);
+        });
     };
     T2MediaLib.prototype.getSEMasterVolume = function() {
         return this.seMasterVolume;
