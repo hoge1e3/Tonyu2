@@ -35,6 +35,7 @@ native T2MediaLib;
     var ID_MOUSE=31238612;
     $handleMouseDown=\(e) {
         Tonyu.resetLoopCheck();
+        $t2MediaLib.activate();
         e.preventDefault();
         var p=cvj.offset();
         var mp={x:e.clientX-p.left, y:e.clientY-p.top,layer:$Screen.layer};
@@ -77,6 +78,7 @@ native T2MediaLib;
     };
     $handleMouseUp=\(e) {
         Tonyu.resetLoopCheck();
+        $t2MediaLib.activate();
         e.preventDefault();
         isMouseDown=false;
         mouseButton=mouseButton&~(1<<e.button);
