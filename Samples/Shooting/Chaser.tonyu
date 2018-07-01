@@ -2,10 +2,10 @@
 
 // $player は，Mainで初期化されているグローバル変数です（Mainを参照）
 while (true) {
-    if (x<$player.x) x+=2;
-    if (x>$player.x) x-=2;
-    if (y<$player.y) y+=2;
-    if (y>$player.y) y-=2;
+    if (x<$player.x) x+=1;
+    if (x>$player.x) x-=1;
+    if (y<$player.y) y+=1;
+    if (y>$player.y) y-=1;
     // crashToは，指定されたオブジェクトと衝突しているかどうかを判定します．
     if (crashTo($player)) {
         // die メソッドは，オブジェクトを消滅させます．

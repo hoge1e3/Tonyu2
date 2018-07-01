@@ -1,3 +1,6 @@
 new Touch{index:0}; //0番目のタッチ位置を表示するオブジェクト
 new Touch{index:1}; //1番目のタッチ位置を表示するオブジェクト
+new Touch{index:2}; //2番目のタッチ位置を表示するオブジェクト
+new Touch{index:3}; //3番目のタッチ位置を表示するオブジェクト
+new Touch{index:4}; //4番目のタッチ位置を表示するオブジェクト
 

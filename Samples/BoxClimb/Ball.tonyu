@@ -12,6 +12,6 @@ while(y<450) {
     update();
 }
 new Actor{x:230,y:200,text:"GameOver",size:20};
-updateEx(60);
+updateEx(120);
 loadPage(Title);
 die();

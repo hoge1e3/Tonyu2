@@ -12,22 +12,22 @@ while(true){
     dir="stop";
     sx=x;sy=y;
     if(getkey("down")){
-        y+=4;
+        y+=2;
         dir="down";
     }
     if(getkey("up")){
-        y-=4;
+        y-=2;
         dir="up";
     }
     if(getkey("left")){
-        x-=4;
+        x-=2;
         scaleX=-1;
         scaleY=1;
         dir="lr";
     }
     if(getkey("right")){
         scaleX=1;
-        x+=4;
+        x+=2;
         dir="lr";
     }
     if ($map.getOnAt(x,y)>-1) {
@@ -53,7 +53,7 @@ while(true){
             //p=$pat_neko+0;
         }
         counter++;
-        //4フレームごとにupdateを行う
-        updateEx(4);
+        //8フレームごとにupdateを行う
+        updateEx(8);
     }
 }

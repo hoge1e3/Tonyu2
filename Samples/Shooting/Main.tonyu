@@ -6,5 +6,5 @@ $player=new Player;
 new Status;
 while(true) {
     new Chaser{x:rnd(400),y:20,p:5};
-    updateEx(30);
+    updateEx(60);
 }

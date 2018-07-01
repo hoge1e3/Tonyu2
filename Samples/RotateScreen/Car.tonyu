@@ -2,9 +2,9 @@ p=$pat_neko+45;
 rotation=90;
 speed=0;
 while(true) {
-    $Screen.scrollTo(x,y,1/(abs(speed)*0.05+1),-rotation);
+    $Screen.scrollTo(x,y,1/(abs(speed)*0.1+1),-rotation);
     if (getkey(32)) {
-        speed+=0.3;
+        speed+=0.15;
     }
     if (getkey("left")) rotation-=speed/2;
     if (getkey("right")) rotation+=speed/2;

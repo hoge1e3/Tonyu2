@@ -11,5 +11,5 @@ scaleX:10,scaleY:1,isStatic:true};
 while (true) {
     new Block{x:rnd()*400,y:0,p:$pat_floor,
     scaleX:3,scaleY:1,rotation:rnd(360)};
-    updateEx(60);
+    updateEx(120);
 }

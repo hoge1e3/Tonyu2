@@ -1,0 +1,1 @@
+{"version":3,"sources":["C:/git/Tonyu2/Samples/Mouse/MouseChaser.tonyu"],"names":[],"mappings":";;;;;;;;;;;OAAC;cAAM;;;SACF,OAAC,CAAC;;SACF,OAAC,CAAC;;SACF;;;;;;;;;;;;;;;;aAHJ;;;aACI,OAAC,CAAC;;aACF,OAAC,CAAC","sourcesContent":["while(true) {\r\n    x=$mouseX;\r\n    y=$mouseY;\r\n    update();\r\n}"]}

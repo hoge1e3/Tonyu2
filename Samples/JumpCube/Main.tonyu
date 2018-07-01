@@ -33,7 +33,7 @@ new Player{
 }; 
 
 while(true) {
-    updateEx(rnd(60)+30);
+    updateEx(rnd(120)+60);
     new Ball{
         x:rnd(200),
         y:50,
