@@ -58,9 +58,8 @@ native T2MediaLib;
         handleListeners();
     };
     $handleMouseMove=\(e) {
-        if (!mouseDownAtCV) return;
         Tonyu.resetLoopCheck();
-        e.preventDefault();
+        if (mouseDownAtCV) e.preventDefault();
         var p=cvj.offset();
         var mp={x:e.clientX-p.left, y:e.clientY-p.top,layer:$Screen.layer};
         mp=$Screen.convert(mp,defaultLayer);// $Screen.canvas2buf(mp);
@@ -79,10 +78,9 @@ native T2MediaLib;
         handleListeners();
     };
     $handleMouseUp=\(e) {
-        if (!mouseDownAtCV) return;
-        mouseDownAtCV=false;
         Tonyu.resetLoopCheck();
-        e.preventDefault();
+        if (mouseDownAtCV) e.preventDefault();
+        mouseDownAtCV=false;
         isMouseDown=false;
         mouseButton=mouseButton&~(1<<e.button);
         if ($InputDevice.touchEmu) {
