@@ -4,5 +4,5 @@ extends BodyActor;
     friction=0;
     restitution=1;
     p=$pat_wood_texture_00005;
-    super.onAppear(); 
+    super.onAppear();
 }

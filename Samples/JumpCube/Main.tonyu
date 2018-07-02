@@ -17,7 +17,7 @@ new Floor{
     scaleY: 1,
     rotation: -10,
     isStatic:true
-}; 
+};
 new Floor{
     x:300, y:400,
     scaleX: 20,
@@ -30,7 +30,7 @@ new Floor{
 new Player{
     x:400, y:400,
     shape:"circle"
-}; 
+};
 
 while(true) {
     updateEx(rnd(120)+60);
@@ -40,7 +40,7 @@ while(true) {
         shape:"circle",
         density:0.1,
         p: $pat_base+12
-    }; 
+    };
 }
 
 

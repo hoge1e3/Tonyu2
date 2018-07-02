@@ -40,5 +40,5 @@ while(true) {
 new Player{
     x:200, y:100,
     shape:"circle"
-}; 
+};
 */

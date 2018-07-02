@@ -4,7 +4,7 @@ put();
 while(true) {
     if (crashTo(Ball)) {
         nextLevel();
-    } 
+    }
     update();
 }
 
