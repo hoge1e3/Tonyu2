@@ -1,5 +1,6 @@
 extends null;
 native $;
+native document;
 native window;
 native Tonyu;
 native T2MediaLib;
@@ -34,6 +35,7 @@ native T2MediaLib;
     var cv=cvj[0];
     var ID_MOUSE=31238612;
     $handleMouseDown=\(e) {
+        mouseDownAtCV=true;
         Tonyu.resetLoopCheck();
         e.preventDefault();
         var p=cvj.offset();
@@ -56,6 +58,7 @@ native T2MediaLib;
         handleListeners();
     };
     $handleMouseMove=\(e) {
+        if (!mouseDownAtCV) return;
         Tonyu.resetLoopCheck();
         e.preventDefault();
         var p=cvj.offset();
@@ -76,6 +79,8 @@ native T2MediaLib;
         handleListeners();
     };
     $handleMouseUp=\(e) {
+        if (!mouseDownAtCV) return;
+        mouseDownAtCV=false;
         Tonyu.resetLoopCheck();
         e.preventDefault();
         isMouseDown=false;
@@ -203,8 +208,8 @@ native T2MediaLib;
     if (!d) {
         $.data(cv,"events","true");
         cvj.mousedown(handleMouseDown);
-        cvj.mousemove(handleMouseMove);
-        cvj.mouseup(handleMouseUp);
+        $(document).mousemove(handleMouseMove);
+        $(document).mouseup(handleMouseUp);
         cvj.on("contextmenu",function (e) {
             e.stopPropagation();
             e.preventDefault();

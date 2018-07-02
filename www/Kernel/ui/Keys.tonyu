@@ -71,6 +71,9 @@ function update() {
     $InputDevice.handleListeners();
 }
 \keyup(e) {
+    /*if (e.keyCode>=1 && e.keyCode<=4) {
+        if ($handleMouseUp) $handleMouseUp(e);
+    }*/
     stats[e.keyCode]=0;
     $InputDevice.handleListeners();
 }
