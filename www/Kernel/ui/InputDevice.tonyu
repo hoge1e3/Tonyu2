@@ -1,5 +1,6 @@
 extends null;
 native $;
+native document;
 native window;
 native Tonyu;
 native T2MediaLib;
@@ -34,6 +35,7 @@ native T2MediaLib;
     var cv=cvj[0];
     var ID_MOUSE=31238612;
     $handleMouseDown=\(e) {
+        mouseDownAtCV=true;
         Tonyu.resetLoopCheck();
         $t2MediaLib.activate();
         e.preventDefault();
@@ -58,7 +60,7 @@ native T2MediaLib;
     };
     $handleMouseMove=\(e) {
         Tonyu.resetLoopCheck();
-        e.preventDefault();
+        if (mouseDownAtCV) e.preventDefault();
         var p=cvj.offset();
         var mp={x:e.clientX-p.left, y:e.clientY-p.top,layer:$Screen.layer};
         mp=$Screen.convert(mp,defaultLayer);// $Screen.canvas2buf(mp);
@@ -79,7 +81,8 @@ native T2MediaLib;
     $handleMouseUp=\(e) {
         Tonyu.resetLoopCheck();
         $t2MediaLib.activate();
-        e.preventDefault();
+        if (mouseDownAtCV) e.preventDefault();
+        mouseDownAtCV=false;
         isMouseDown=false;
         mouseButton=mouseButton&~(1<<e.button);
         if ($InputDevice.touchEmu) {
@@ -205,8 +208,8 @@ native T2MediaLib;
     if (!d) {
         $.data(cv,"events","true");
         cvj.mousedown(handleMouseDown);
-        cvj.mousemove(handleMouseMove);
-        cvj.mouseup(handleMouseUp);
+        $(document).mousemove(handleMouseMove);
+        $(document).mouseup(handleMouseUp);
         cvj.on("contextmenu",function (e) {
             e.stopPropagation();
             e.preventDefault();
