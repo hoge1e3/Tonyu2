@@ -16,7 +16,7 @@ while (true) {
     if (getkey("space")==1) {
         saveDataFile.obj{x,y};
         print ("Position saved to files/save.json");
-    } 
+    }
     if (getkey("r")==1) {
         if (saveDataFile.exists()) saveDataFile.rm();
         print ("files/save.json removed");
@@ -25,7 +25,7 @@ while (true) {
     if (getkey("down")) y+=5;
     if (getkey("left")) x-=5;
     if (getkey("right")) x+=5;
-    update();    
+    update();
 }
 
 

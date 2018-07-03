@@ -17,5 +17,5 @@ while(true) {
     return x<min ? min-x : x>max ? max-x : 0;
 }
 \sgn(s) {
-    return s<0 ? -1 : s>0 ? 1:0; 
+    return s<0 ? -1 : s>0 ? 1:0;
 }

@@ -21,14 +21,16 @@ while(true) {
             applyImpulse(2);
         }
     }
-    if (crashTo(Goal)) {
+    g=crashTo(Goal);
+    if (g) {
+        g.die();
         print("Goal!");
-        updateEx(30);
+        updateEx(60);
         loadPage(Main);
     }
     if (x<0 || x>$screenWidth) {
         print("Game over");
-        updateEx(30);
+        updateEx(60);
         loadPage(Main);
         die();
     }
@@ -38,5 +40,5 @@ while(true) {
 new Player{
     x:200, y:100,
     shape:"circle"
-}; 
+};
 */

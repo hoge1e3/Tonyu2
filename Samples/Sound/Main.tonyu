@@ -33,22 +33,22 @@ while (true) {
         $sound.setBGMTempo(t);
         tmp.text="Tempo="+t;
     }
-    
+
     if (getkey("a")==1) {
         $sound.playSE($se_fpon1);
-    }       
+    }
     if (getkey("b")==1) {
         $sound.playSE($se_putprop);
-    }       
+    }
     if (getkey("c")==1) {
         $sound.playSE($se_ret);
-    }       
+    }
     if (getkey("d")==1) {
         $sound.playSE($se_ftaki);
     }
     if (getkey("p")==1) {
         $sound.playBGM($se_fuwa1, true);
-        
+
     }
     if (getkey("z")==1) {
         $sound.stopBGM();

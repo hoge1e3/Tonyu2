@@ -6,9 +6,9 @@ while(true) {
     if (pad.getLeft()) x-=spd;
     if (pad.getRight()) x+=spd;
     if (pad.getButton(0)) {
-        spd=8; p=4; 
+        spd=4; p=4;
     }else {
-        spd=3; p=0;
+        spd=2; p=0;
     }
     update();
 }

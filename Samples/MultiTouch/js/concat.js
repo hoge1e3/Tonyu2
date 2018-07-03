@@ -13,6 +13,12 @@ Tonyu.klass.define({
       new Tonyu.classes.user.Touch({index: 0});
       //$LASTPOS=1000044;//user.Main:44
       new Tonyu.classes.user.Touch({index: 1});
+      //$LASTPOS=1000088;//user.Main:88
+      new Tonyu.classes.user.Touch({index: 2});
+      //$LASTPOS=1000132;//user.Main:132
+      new Tonyu.classes.user.Touch({index: 3});
+      //$LASTPOS=1000176;//user.Main:176
+      new Tonyu.classes.user.Touch({index: 4});
     },
     fiber$main :function _trc_Main_f_main(_thread) {
       "use strict";
@@ -24,6 +30,12 @@ Tonyu.klass.define({
       new Tonyu.classes.user.Touch({index: 0});
       //$LASTPOS=1000044;//user.Main:44
       new Tonyu.classes.user.Touch({index: 1});
+      //$LASTPOS=1000088;//user.Main:88
+      new Tonyu.classes.user.Touch({index: 2});
+      //$LASTPOS=1000132;//user.Main:132
+      new Tonyu.classes.user.Touch({index: 3});
+      //$LASTPOS=1000176;//user.Main:176
+      new Tonyu.classes.user.Touch({index: 4});
       
       _thread.retVal=_this;return;
     },
@@ -117,7 +129,7 @@ Tonyu.klass.define({
     },
     __dummy: false
   },
-  decls: {"methods":{"main":{"nowait":false}},"fields":{"index":{},"t":{}}}
+  decls: {"methods":{"main":{"nowait":false}},"fields":{"t":{},"index":{}}}
 });
 
 //# sourceMappingURL=concat.js.map
