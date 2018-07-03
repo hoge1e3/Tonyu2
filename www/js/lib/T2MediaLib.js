@@ -257,22 +257,26 @@ var T2MediaLib = (function(){
         }
     };
     // 無音サウンドを鳴らしWeb Audio APIを使えるようにする(iOS対策)
+    // Chrome Autoplay Policy 対策
     T2MediaLib.prototype.activate = function () {
         this.init();
+        if (!this.context) return;
+        if (!this.isContextResumed && this.context.resume) { // fix Autoplay Policy in Chrome
+            var that = this;
+            this.context.resume().then(function () {
+                that.isContextResumed = true;
+            });
+        }
         if (this.isActivated) return;
         this.isActivated=true;
-        var myContext=this.context;
-        if (!myContext) return;
-        var buffer = myContext.createBuffer(1, Math.floor(myContext.sampleRate/32), myContext.sampleRate);
+        var buffer = this.context.createBuffer(1, Math.floor(this.context.sampleRate/32), this.context.sampleRate);
         var ary = buffer.getChannelData(0);
-        var lam = Math.floor(myContext.sampleRate/860);
         for (var i = 0; i < ary.length; i++) {
-             //ary[i] = (i % lam<lam/2?0.1:-0.1)*(i<lam?2:1) ;
              ary[i] = 0; // 無音化
         }
-        var source = myContext.createBufferSource();
+        var source = this.context.createBufferSource();
         source.buffer = buffer;
-        source.connect(myContext.destination);
+        source.connect(this.context.destination);
         source.start = source.start || source.noteOn;
         source.start(0);
     };
