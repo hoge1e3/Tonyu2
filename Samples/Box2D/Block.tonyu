@@ -1,5 +1,5 @@
 extends BodyActor;
 while(!screenOut()) {
-    update();   
+    update();
 }
 die();

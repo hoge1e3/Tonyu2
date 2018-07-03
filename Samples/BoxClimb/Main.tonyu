@@ -14,5 +14,5 @@ $level=0;
 while (true) {
     new Block{x:$b.x};
     //,y:0,p:$pat_floor,//scaleX:1+$level*0.1,rotation:rnd(360);
-    updateEx(60);
+    updateEx(120);
 }

@@ -6,6 +6,6 @@ scaleX=1+$level*0.1;
 rotation=rnd(360);
 on("screenOut",0,die);
 /*while(y<$screenHeight) {
-update();    
+update();
 }
 die();*/

@@ -2,17 +2,17 @@ extends BodyActor;
 
 while (true) {
     if (getkey("left")) {
-        vx=-5;        
+        vx=-3;
     } else if (getkey("right")) {
-        vx=5;      
+        vx=3;
     } else {
         vx=0;
     }
     //vx*=0.95;
     if (getkey("up")) {
-        vy=-5;     
+        vy=-3;
     } else if (getkey("down")) {
-        vy=5;
+        vy=3;
     } else {
         vy=0;
     }

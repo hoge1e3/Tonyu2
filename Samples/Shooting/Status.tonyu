@@ -10,5 +10,5 @@ while (!$player.isDead()) {
     update();
 }
 text="Game Over";
-updateEx(30);
+updateEx(60);
 loadPage(Title);
