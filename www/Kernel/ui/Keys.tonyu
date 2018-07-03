@@ -64,7 +64,7 @@ function update() {
     }
 }
 \keydown(e) {
-    if (e.preventDefault) e.preventDefault();
+    //if (e.preventDefault) e.preventDefault();
     $t2MediaLib.activate();
     var s=stats[e.keyCode];
     if (!s) {
@@ -73,7 +73,7 @@ function update() {
     $InputDevice.handleListeners();
 }
 \keyup(e) {
-    if (e.preventDefault) e.preventDefault();
+    //if (e.preventDefault) e.preventDefault();
     $t2MediaLib.activate();
     stats[e.keyCode]=0;
     $InputDevice.handleListeners();
