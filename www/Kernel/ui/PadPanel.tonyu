@@ -1,0 +1,108 @@
+// Pad version 2.0
+// @makkii_bcr
+
+// Pad用カスタムパネル
+extends Panel;
+native $;
+native Math;
+native isNaN;
+
+// 追加
+\fillPolygon3(x1,y1,x2,y2,x3,y3,color,color2){
+    ctx=getContext();
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.lineTo(x3, y3);
+    ctx.closePath();
+    if (color==null) {
+        ctx.fillStyle=fillStyle;
+    } else {
+        ctx.fillStyle=color;
+    }
+    ctx.fill();
+    // if (color2==null) {
+        //     if (strokeStyle==null) {
+            //         ctx.strokeStyle=ctx.fillStyle;
+        //     } else {
+            //         ctx.strokeStyle=strokeStyle;
+        //     }
+    // } else {
+        //     ctx.strokeStyle=color2;
+    // }
+    //ctx.stroke();
+    ctx.restore();
+}
+
+// オーバーライド
+\fillRect(x,y,rectWidth,rectHeight,color){
+    ctx=getContext();
+    ctx.save();
+    //ctx.clearRect(0,0,this.width,this.height);
+    if (color==null) {
+        ctx.fillStyle=fillStyle;
+    } else {
+        ctx.fillStyle=color; // 追加
+    }
+    ctx.fillRect(x,y,rectWidth,rectHeight);
+    ctx.restore();
+}
+
+// オーバーロード？(引数colorを追加)
+\fillText(text,x,y,color,size,align,baseline){
+    ctx=getContext();
+    ctx.save();
+    text=text+"";
+    var splits = text.split("\n");
+    //ctx.clearRect(0,0,this.width,this.height);
+    ctx.textAlign = align;
+    if (baseline!=null) {
+        ctx.textBaseline = baseline;
+    }
+    if (color==null) {
+        ctx.fillStyle=fillStyle;
+    } else {
+        ctx.fillStyle=color; // 追加
+    }
+    ctx.font=size+"px 'Courier New'";
+    for(var colCount=0;colCount<splits.length;colCount++){
+        ctx.fillText(splits[colCount],x,y);
+        y+=size;
+    }
+    ctx.restore();
+}
+
+// オーバーライド
+// \draw(ctx){
+    //     if(_drawn){
+        //         pImg=canvas;
+        //         ctx.save();
+        //         if(align=="left"){
+            //             ctx.translate(x+width/2,y+height/2);
+        //         }else if(align=="center"){
+            //             ctx.translate(x,y);
+        //         }else if(align=="right"){
+            //             ctx.translate(x-width/2,y-height/2);
+        //         }
+        //         if(this.rotation!=0){
+            //             ctx.rotate(this.rotation/180*Math.PI);
+        //         }else{
+            //             ctx.rotate(this.rotate/180*Math.PI);
+        //         }
+        //         if(typeof this.scaleY==="undefined") { // 追加
+            //             ctx.scale(this.scaleX,this.scaleX);
+        //         }else{
+            //             ctx.scale(this.scaleX,this.scaleY);
+        //         }
+        //         ctx.globalAlpha=this.alpha/255;
+        //         ctx.drawImage(
+        //         pImg, 0, 0,width,height,
+        //         -width/2, -height/2, width ,height);
+        //         ctx.restore();
+    //     }
+// }
+
+// while (true) {
+//     update();
+// }

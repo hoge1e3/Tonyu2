@@ -1,0 +1,524 @@
+// Pad version 2.0
+// @makkii_bcr
+
+// Pad用ボタン部品クラス
+extends Actor;
+
+\new(opt) {
+    super(opt);
+    died = false;
+    zOrder = -10000;
+    init();
+    // [引数]
+    // mode :     0 : 通常ボタン  (ユーザ定義用・画像番号指定型)
+    //      :     1 : 十字キー    (ユーザ定義用・画像番号指定型)
+    //      :     2 : アナログキー(ユーザ定義用・画像番号指定型)
+    //      : 10000 : Padクラス用・通常ボタン
+    //      : 10001 : Padクラス用・十字キー
+    //      : 10002 : Padクラス用・アナログキー
+    // x        : ボタン中心X座標
+    // y        : ボタン中心Y座標
+    // p        : ボタン画像の番号
+    // alpha    : 透明度
+}
+
+\die() {
+    died = true;
+    padCnt = 0;
+    padCntL = 0;
+    padCntR = 0;
+    padCntU = 0;
+    padCntD = 0;
+    if (panel != null) {
+        panel.hide();
+        panel.die();
+    }
+    if (panelPush != null) {
+        panelPush.hide();
+        panelPush.die();
+    }
+    if (panelPushL != null) {
+        panelPushL.hide();
+        panelPushL.die();
+    }
+    if (panelPushR != null) {
+        panelPushR.hide();
+        panelPushR.die();
+    }
+    if (panelPushU != null) {
+        panelPushU.hide();
+        panelPushU.die();
+    }
+    if (panelPushD != null) {
+        panelPushD.hide();
+        panelPushD.die();
+    }
+    super.die();
+}
+
+\init() {
+    TOUCHES_MAX = 5; // タッチ判定
+
+    loop = true; // ループ処理するか
+    padCnt = 0;
+    padCntL = 0;
+    padCntR = 0;
+    padCntU = 0;
+    padCntD = 0;
+    padNotapCnt = 0;
+    padUpdateFrame = -1;
+
+    if (mode == 0) {
+        // 普通ボタン
+        // [引数]
+        // pushP : ボタン押下画像の番号
+        // drawMode : null, 0 : ボタン押下時、画像pの上に、画像pushPを重ねて表示
+        //                  1 : ボタン押下時、画像pを非表示、画像pushPのみ表示
+        if (p == null) p = 0;
+        if (pushP == null) pushP = 1;
+        if (drawMode == null) drawMode = 0;
+
+    } else if (mode == 1) {
+        // 十字キー
+        // [引数]
+        // pushLP : 左ボタン押下画像の番号
+        // pushRP : 右ボタン押下画像の番号
+        // pushUP : 上ボタン押下画像の番号
+        // pushDP : 下ボタン押下画像の番号
+        // drawMode : null, 0 : ボタン押下時、画像pの上に、ボタン押下画像すべてを表示
+        //                  1 : ボタン押下時、画像pを非表示、ボタン押下画像すべてを表示
+        // diagonalEnable : true  : 斜め押し有効(デフォルト)
+        //                : false : 斜め押し無効
+        if (this.p == null) this.p = 0;
+        if (pushLP == null) pushLP = 1;
+        if (pushRP == null) pushRP = 1;
+        if (pushUP == null) pushUP = 1;
+        if (pushDP == null) pushDP = 1;
+        if (drawMode == null) drawMode = 0;
+        if (diagonalEnable == null) diagonalEnable = true;
+
+    } else if (mode == 2) {
+        // アナログキー
+        if (p == null) p = 0;
+        if (pushP == null) pushP = 1;
+
+    } else if (mode == 10000) {
+        // Pad.layout == 1 の普通ボタン
+        // [引数]
+        // width          : ボタン幅
+        // height         : ボタン高さ
+        // padFillColor   : ボタン背景色
+        // padBorder      : ボタン枠幅
+        // padBorderColor : ボタン枠色
+        // padPushColor   : ボタン押下色
+        // padText        : ボタン文字
+        // padTextSize    : ボタン文字サイズ
+        // padTextColor   : ボタン文字色
+        p = -1;
+        if (width == null) width = 96;
+        if (height == null) height = 96;
+        if (padFillColor == null) padFillColor = "rgba(0,0,0,0.125)";
+        if (padBorder == null) padBorder = 4;
+        if (padBorderColor == null) padBorderColor = "rgba(255,255,255,0.5)";
+        if (padPushColor == null) padPushColor = "rgba(255,255,255,0.25)";
+        if (padText == null) padText = "";
+        if (padTextSize == null) padTextSize = 72;
+        if (padTextColor == null) padTextColor = "rgba(255,255,255,0.625)";
+
+        panel = new PadPanel{layer};
+        panelPush = new PadPanel{layer};
+        drawPanel();
+
+        //loop = false;
+        padPush = 0;
+        padPushList = [];
+        for (var i=0; i<TOUCHES_MAX; i++) {
+            padPushList[i] = false;
+        }
+
+    } else if (mode == 10001) {
+        // Pad.layout == 1 の十字キー
+        // [引数]
+        // scale          : ボタンサイズ
+        // padFillColor   : ボタン背景色
+        // padBorder      : ボタン枠幅
+        // padBorderColor : ボタン枠色
+        // padPushLColor  : 左ボタン押下色
+        // padPushRColor  : 右ボタン押下色
+        // padPushUColor  : 上ボタン押下色
+        // padPushDColor  : 下ボタン押下色
+        // padLColor      : 左ボタン矢印色
+        // padRColor      : 右ボタン矢印色
+        // padUColor      : 上ボタン矢印色
+        // padDColor      : 下ボタン矢印色
+        // diagonalEnable : true  : 斜め押し有効(デフォルト)
+        //                : false : 斜め押し無効
+        p = -1;
+        if (width == null) width = 216;
+        if (height == null) height = 216;
+        if (padFillColor == null) padFillColor = "rgba(0,0,0,0.125)";
+        if (padBorder == null) padBorder = 4;
+        if (padBorderColor == null) padBorderColor = "rgba(255,255,255,0.5)";
+        if (padPushLColor == null) padPushLColor = "rgba(255,255,255,0.25)";
+        if (padPushRColor == null) padPushRColor = "rgba(255,255,255,0.25)";
+        if (padPushUColor == null) padPushUColor = "rgba(255,255,255,0.25)";
+        if (padPushDColor == null) padPushDColor = "rgba(255,255,255,0.25)";
+        if (padLColor == null) padLColor = "rgba(255,255,255,0.625)";
+        if (padRColor == null) padRColor = "rgba(255,255,255,0.625)";
+        if (padUColor == null) padUColor = "rgba(255,255,255,0.625)";
+        if (padDColor == null) padDColor = "rgba(255,255,255,0.625)";
+        if (diagonalEnable == null) diagonalEnable = true;
+
+        panel = new PadPanel{layer};
+        panelPushL = new PadPanel{layer};
+        panelPushR = new PadPanel{layer};
+        panelPushU = new PadPanel{layer};
+        panelPushD = new PadPanel{layer};
+        drawPanel();
+
+        //loop = false;
+        padPushTouchNo = -1;
+
+    } else if (mode == 10002) {
+        // Pad.layout == 2 のアナログキー
+        p = -1;
+
+        panel = new PadPanel;
+        drawPanel();
+
+        //loop = false;
+
+    }
+}
+
+// パネル画像書き換え //
+\drawPanel() {
+    if (mode == 10000) {
+        drawPanelMode10000();
+    } else if (mode == 10001) {
+        drawPanelMode10001();
+    } else if (mode == 10002) {
+        drawPanelMode10002();
+    }
+}
+
+\drawPanelMode10000() {
+    var w, h;
+    var bw, bh;
+    var ts;
+
+    w = width;
+    h = height;
+    bw = padBorder;
+    bh = padBorder;
+    ts = padTextSize;
+    if (bw < 0) bw = 0;
+    if (bh < 0) bh = 0;
+
+    panel.setPanel(w+1, h+1);
+    panel.clearRect(0, 0, w+2, h+2);
+    panel.setFillStyle(padBorderColor);
+    panel.fillRect(0, 0, w, h);
+    panel.clearRect(bw, bh, w-bw*2, h-bh*2);
+    panel.setFillStyle(padFillColor);
+    panel.fillRect(bw, bh, w-bw*2, h-bh*2);
+    panel.fillText(padText, w/2, h/2, padTextColor, ts, "center", "middle");
+
+    panelPush.setPanel(w+1, h+1);
+    panelPush.clearRect(0, 0, w+2, h+2);
+    panelPush.setFillStyle(padPushColor);
+    panelPush.fillRect(0, 0, w, h);
+}
+
+\drawPanelMode10001() {
+    var screenSize;
+    var w, h;
+    var tsx, tsy;
+    var cw, ch;
+    var cw2, ch2;
+    var bw, bh;
+
+    cw = width / 3;
+    ch = height / 3;
+    cw2 = width * 2 / 3;
+    ch2 = height * 2 / 3;
+    w = width;
+    h = height;
+    tsx = width / (64 * 3);
+    tsy = height / (64 * 3);
+    bw = padBorder;
+    bh = padBorder;
+    if (bw < 0) bw = 0;
+    if (bh < 0) bh = 0;
+
+    panel.setPanel(w, h);
+    panel.clearRect(0, 0, w+2, h+2);
+    panel.setFillStyle(padBorderColor);
+    panel.fillRect(cw, 0, cw, ch);
+    panel.fillRect(0, ch, w, ch);
+    panel.fillRect(cw, ch2, cw, ch);
+    panel.clearRect(cw+bw, bh, cw-bw*2, h-bh*2);
+    panel.clearRect(bw, ch+bh, w-bw*2, ch-bh*2);
+    panel.setFillStyle(padFillColor);
+    panel.fillRect(cw+bw, bh, cw-bw*2, ch);
+    panel.fillRect(bw, ch+bh, w-bw*2, ch-bh*2);
+    panel.fillRect(cw+bw, ch2-bh, cw-bw*2, ch);
+    panel.fillPolygon3(96*tsx, 14.5*tsy, 113*tsx, 48*tsy, 79*tsx, 48*tsy, padUColor);
+    panel.fillPolygon3(14.5*tsx, 96*tsy, 48*tsx, 79*tsy, 48*tsx, 113*tsy, padLColor);
+    panel.fillPolygon3(96*tsx, 177.5*tsy, 79*tsx, 144*tsy, 113*tsx, 144*tsy, padDColor);
+    panel.fillPolygon3(177.5*tsx, 96*tsy, 144*tsx, 113*tsy, 144*tsx, 79*tsy, padRColor);
+
+    panelPushL.setPanel(cw+bw, ch);
+    panelPushL.clearRect(0, 0, cw+bw+2, ch+2);
+    panelPushL.setFillStyle(padPushLColor);
+    panelPushL.fillRect(0, 0, cw+bw, ch);
+
+    panelPushR.setPanel(cw+bw, ch);
+    panelPushR.clearRect(0, 0, cw+bw+2, ch+2);
+    panelPushR.setFillStyle(padPushRColor);
+    panelPushR.fillRect(0, 0, cw+bw, ch);
+
+    panelPushU.setPanel(cw, ch+bh);
+    panelPushU.clearRect(0, 0, cw+2, ch+bh+2);
+    panelPushU.setFillStyle(padPushUColor);
+    panelPushU.fillRect(0, 0, cw, ch+bh);
+
+    panelPushD.setPanel(cw, ch+bh);
+    panelPushD.clearRect(0, 0, cw+2, ch+bh+2);
+    panelPushD.setFillStyle(padPushDColor);
+    panelPushD.fillRect(0, 0, cw, ch+bh);
+
+}
+
+\drawPanelMode10002() {
+
+}
+
+// ボタン処理 //
+\padUpdate() {
+    // 同じフレームでは一回のみ実行
+    if (padUpdateFrame == $frameCount) return;
+    padUpdateFrame = $frameCount;
+    if (mode == 0) {
+        padUpdateMode0();
+    } else if (mode == 1) {
+        padUpdateMode1();
+    } else if (mode == 2) {
+        padUpdateMode2();
+    } else if (mode == 10000) {
+        padUpdateMode10000();
+    } else if (mode == 10001) {
+        padUpdateMode10001();
+    } else if (mode == 10002) {
+        padUpdateMode10002();
+    }
+}
+
+\padUpdateMode0() {
+
+}
+
+\padUpdateMode1() {
+
+}
+
+\padUpdateMode2() {
+
+}
+
+\padUpdateMode10000() {
+    if (died) return;
+
+    panel.x = x;
+    panel.y = y;
+    panel.zOrder = zOrder;
+    panel.alpha = alpha;
+    panel.layer = layer;
+    panelPush.x = x;
+    panelPush.y = y;
+    panelPush.zOrder = zOrder;
+    panelPush.alpha = alpha;
+    panelPush.layer = layer;
+    // ボタン範囲内でtouchDownした場合、touchUpするまで解除しない(複数指対応)
+    var allNoTouche = true;
+    for (var i=0; i<TOUCHES_MAX; i++) {
+        var t = $touches[i];
+        if (t.touched == 1) {
+            if (crashXY10000(t.x, t.y)) {
+                padPush = 1;
+                padPushList[i] = true;
+            }
+        } else if (t.touched == 0) {
+            padPushList[i] = false;
+        }
+        if (padPushList[i]) {
+            allNoTouche = false;
+        }
+    }
+    if (allNoTouche) {
+        padPush = false;
+    }
+    if (padPush) {
+        padCnt ++;
+        padNotapCnt = 0;
+        panelPush.show();
+    } else {
+        padCnt = 0;
+        padNotapCnt ++;
+        panelPush.hide();
+    }
+}
+
+\padUpdateMode10001() {
+    if (died) return;
+
+    var w, h;
+    var cw, ch;
+    var cw2, ch2;
+    var cwh, chh;
+    var bw, bh;
+
+    cw = width / 3;
+    ch = height / 3;
+    cw2 = width * 2 / 3;
+    ch2 = height * 2 / 3;
+    cwh = trunc(cw / 2);
+    chh = trunc(ch / 2);
+    w = width;
+    h = height;
+    bw = padBorder;
+    bh = padBorder;
+
+    panel.x = x;
+    panel.y = y;
+    panel.zOrder = zOrder;
+    panel.alpha = alpha;
+    panel.layer = layer;
+    padPushL = 0;
+    padPushR = 0;
+    padPushU = 0;
+    padPushD = 0;
+    if (padPushTouchNo == -1) { // 未タッチ
+        padNotapCnt ++;
+        for (var i=0; i<TOUCHES_MAX; i++) { // タップ判定・マウス判定 //
+            var t = $touches[i];
+            if (t.touched == 1) { // touchDown
+                if (isOnRectWH(t.x, t.y, x-cwh-cw, y-chh-ch, w, h)) padPushTouchNo = i;
+                padNotapCnt = 0;
+                break;
+            }
+        }
+    }
+    if (padPushTouchNo != -1) { // タッチ中
+        var t = $touches[padPushTouchNo];
+        if (t.touched == 0) { // touchUp
+            padPushTouchNo = -1;
+        } else { // タッチし続けている
+            if (diagonalEnable) {
+                if (isOnRectWH(t.x, t.y, x-cwh-cw, y-chh-ch, w, h)) { // 十字キー範囲内
+                    if (isOnRectWH(t.x, t.y, x-cwh-cw, y-chh-ch, cw, h)) padPushL = 1;
+                    if (isOnRectWH(t.x, t.y, x-cwh+cw, y-chh-ch, cw, h)) padPushR = 1;
+                    if (isOnRectWH(t.x, t.y, x-cwh-cw, y-chh-ch, w, ch)) padPushU = 1;
+                    if (isOnRectWH(t.x, t.y, x-cwh-cw, y-chh+ch, w, ch)) padPushD = 1;
+                } else { // 十字キー範囲外
+                    var subX = t.x - x;
+                    var subY = t.y - y;
+                    if (subX < -cwh-(abs(subY)-chh-ch)/2) padPushL = 1;
+                    if (subX >  cwh+(abs(subY)-chh-ch)/2) padPushR = 1;
+                    if (subY < -chh-(abs(subX)-cwh-cw)/2) padPushU = 1;
+                    if (subY >  chh+(abs(subX)-cwh-cw)/2) padPushD = 1;
+                }
+            } else {
+                if (!isOnRectWH(t.x, t.y, x-cwh, y-chh, cw, ch)) { // 十字キー中央範囲以外
+                    var subX = t.x - x;
+                    var subY = t.y - y;
+                    if (subX <= -abs(subY)) padPushL = 1;
+                    else if (subY <= -abs(subX)) padPushU = 1;
+                    else if (subX >=  abs(subY)) padPushR = 1;
+                    else if (subY >=  abs(subX)) padPushD = 1;
+                }
+            }
+        }
+    }
+    if (padPushL) {
+        padCntL ++;
+        panelPushL.x = x - cw + bw/2;
+        panelPushL.y = y;
+        panelPushL.zOrder = zOrder;
+        panelPushL.alpha = alpha;
+        panelPushL.layer = layer;
+        panelPushL.show();
+    } else {
+        padCntL = 0;
+        panelPushL.hide();
+    }
+    if (padPushR) {
+        padCntR ++;
+        panelPushR.x = x + cw - bw/2;
+        panelPushR.y = y;
+        panelPushR.zOrder = zOrder;
+        panelPushR.alpha = alpha;
+        panelPushR.layer = layer;
+        panelPushR.show();
+    } else {
+        padCntR = 0;
+        panelPushR.hide();
+    }
+    if (padPushU) {
+        padCntU ++;
+        panelPushU.x = x;
+        panelPushU.y = y - ch + bh/2;
+        panelPushU.zOrder = zOrder;
+        panelPushU.alpha = alpha;
+        panelPushU.layer = layer;
+        panelPushU.show();
+    } else {
+        padCntU = 0;
+        panelPushU.hide();
+    }
+    if (padPushD) {
+        padCntD ++;
+        panelPushD.x = x;
+        panelPushD.y = y + ch - bh/2;
+        panelPushD.zOrder = zOrder;
+        panelPushD.alpha = alpha;
+        panelPushD.layer = layer;
+        panelPushD.show();
+    } else {
+        padCntD = 0;
+        panelPushD.hide();
+    }
+}
+
+\padUpdateMode10002() {
+
+}
+
+// 範囲XY //
+\isOnRect(mx, my, rx, ry, rx2, ry2) {
+    return (mx >= rx && mx < rx2 && my >= ry && my < ry2);
+}
+
+// 範囲WH //
+\isOnRectWH(mx, my, rx, ry, rw, rh) {
+    return (mx >= rx && mx < rx+rw && my >= ry && my < ry+rh);
+}
+
+// 範囲Crash //
+\crashXY(mx, my) {
+    return (mx >= x-width/2 && mx < x+width/2 && my >= y-height/2 && my < y+height/2);
+}
+
+// 範囲Crash10000 //
+\crashXY10000(mx, my) {
+    var w, h;
+    w = width  + 2;
+    h = height + 2;
+
+    return (mx >= x-w/2 && mx < x+w/2 && my >= y-h/2 && my < y+h/2);
+}
+
+while (loop) {
+    padUpdate();
+    update();
+}
