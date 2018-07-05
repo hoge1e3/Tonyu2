@@ -214,6 +214,7 @@ mainLoop();
         },
         preventDefault: \{evt.defaultPrevented=true;}
     };
+    $sound.stopAllSE();
     var r=fireEvent("stop",evt);
     if(!evt.defaultPrevented) {
         evt.die();
