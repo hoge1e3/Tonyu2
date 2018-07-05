@@ -94,7 +94,7 @@
 	};
 	R.real=real;
 	var requireSimulator=R;
-	// Created at Mon May 28 2018 09:54:23 GMT+0900 (東京 (標準時))
+	// Created at Thu Jul 05 2018 13:40:08 GMT+0900 (東京 (標準時))
 requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
@@ -4230,6 +4230,10 @@ define(["DeferredUtil","Klass"],function (DU,Klass) {
 			}
 			if (typeof methodName=="function") {
 				method=methodName.fiber;
+				if (!method) {
+					var n=methodName.methodInfo ? methodName.methodInfo.name : methodName.name;
+					throw new Error("メソッド"+n+"は待機可能メソッドではありません");
+				}
 			}
 			args=[this].concat(args);
 			var pc=0;
@@ -4621,6 +4625,7 @@ return Tonyu=function () {
 	Function.prototype.constructor=function () {
 		throw new Error("This method should not be called");
 	};
+	klass.propReg=/^__([gs]et)ter__(.*)$/;
 	klass.define=function (params) {
 		// fullName, shortName,namspace, superclass, includes, methods:{name/fiber$name: func}, decls
 		var parent=params.superclass;
@@ -4662,16 +4667,24 @@ return Tonyu=function () {
 			for (var n in m.methods) {
 				if (!(n in prot)) {
 					prot[n]=m.methods[n];
+					if (n!=="__dummy" && !prot[n]) {
+						console.log("WHY2!",prot[n],prot,n);
+						throw new Error("WHY2!"+n);
+					}
 				}
 			}
 		});
 		var props={};
-		var propReg=/^__([gs]et)ter__(.*)$/;
+		var propReg=klass.propReg;//^__([gs]et)ter__(.*)$/;
 		for (var k in prot) {
 			if (k.match(/^fiber\$/)) continue;
 			if (prot["fiber$"+k]) {
 				prot[k].fiber=prot["fiber$"+k];
 				prot[k].fiber.methodInfo={name:k,klass:res,fiber:true};
+			}
+			if (k!=="__dummy" && !prot[k]) {
+				console.log("WHY!",prot[k],prot,k);
+				throw new Error("WHY!"+k);
 			}
 			prot[k].methodInfo={name:k,klass:res};
 			var r=propReg.exec(k);
@@ -4706,6 +4719,7 @@ return Tonyu=function () {
 	};
 	klass.shouldCompile=function (k) {
 		k=k.meta||k;
+		if (k.hasSemanticError) return true;
 		if (klass.isSourceChanged(k)) return true;
 		var dks=klass.getDependingClasses(k);
 		for (var i=0 ; i<dks.length ;i++) {
@@ -4720,7 +4734,7 @@ return Tonyu=function () {
 		return res;
 	};
 	function bless( klass, val) {
-		if (!klass) return val;
+		if (!klass) return extend({},val);
 		return extend( Object.create(klass.prototype) , val);
 		//return extend( new klass() , val);
 	}
@@ -4855,7 +4869,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,DeferredUtil:DU,
-			VERSION:1527468833941,//EMBED_VERSION
+			VERSION:1530765594073,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -4946,7 +4960,7 @@ define(["Tonyu"], function (Tonyu) {
             }
             dy--;
             var sx=x+1,sy=y+1,w=dx-sx,h=dy-sy;
-            console.log("PP",sx,sy,w,h,dx,dy);
+            //console.log("PP",sx,sy,w,h,dx,dy);
             if (w*h==0) throw PatterParseError(dx, dy,"w*h==0");
             var newim=this.newImage(w,h);
             var nc=newim.getContext("2d");
@@ -4992,6 +5006,7 @@ define(["Tonyu"], function (Tonyu) {
     });
     return PP;
 });
+
 requireSimulator.setName('Util');
 Util=(function () {
 
@@ -6920,7 +6935,7 @@ var T2MediaLib = (function(){
         this.audioDataAry = {
             data : []
         };
-
+        this.seSources=[];
         this.init(_context);
     };
 
@@ -7159,22 +7174,26 @@ var T2MediaLib = (function(){
         }
     };
     // 無音サウンドを鳴らしWeb Audio APIを使えるようにする(iOS対策)
+    // Chrome Autoplay Policy 対策
     T2MediaLib.prototype.activate = function () {
         this.init();
+        if (!this.context) return;
+        if (!this.isContextResumed && this.context.resume) { // fix Autoplay Policy in Chrome
+            var that = this;
+            this.context.resume().then(function () {
+                that.isContextResumed = true;
+            });
+        }
         if (this.isActivated) return;
         this.isActivated=true;
-        var myContext=this.context;
-        if (!myContext) return;
-        var buffer = myContext.createBuffer(1, Math.floor(myContext.sampleRate/32), myContext.sampleRate);
+        var buffer = this.context.createBuffer(1, Math.floor(this.context.sampleRate/32), this.context.sampleRate);
         var ary = buffer.getChannelData(0);
-        var lam = Math.floor(myContext.sampleRate/860);
         for (var i = 0; i < ary.length; i++) {
-             //ary[i] = (i % lam<lam/2?0.1:-0.1)*(i<lam?2:1) ;
              ary[i] = 0; // 無音化
         }
-        var source = myContext.createBufferSource();
+        var source = this.context.createBufferSource();
         source.buffer = buffer;
-        source.connect(myContext.destination);
+        source.connect(this.context.destination);
         source.start = source.start || source.noteOn;
         source.start(0);
     };
@@ -7312,20 +7331,28 @@ var T2MediaLib = (function(){
         source.stop  = source.stop  || source.noteOff;
         source.start(start, offset, duration);
         if (loop && duration != null) source.stop(start + duration); // iOS, Firefoxではloopがtrueのときdurationを指定しても止まらない
-
+        var t=this;
+        t.seSources.push(source);
         source.onended = function(event) {
             //source.disconnect();
             source.onended = null;
+            var idx=t.seSources.indexOf(source);
+            if (idx>=0) t.seSources.splice(idx,1);
             //delete source.gainNode;
             //delete source.panNode;
         };
-
         return source;
     };
     T2MediaLib.prototype.stopSE = function(sourceObj) {
         if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
         sourceObj.stop(0);
         return sourceObj;
+    };
+    T2MediaLib.prototype.stopAllSE = function(sourceObj) {
+        var t=this;
+        this.seSources.forEach(function (s) {
+            t.stopSE(s);
+        });
     };
     T2MediaLib.prototype.getSEMasterVolume = function() {
         return this.seMasterVolume;

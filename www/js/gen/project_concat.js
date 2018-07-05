@@ -94,7 +94,7 @@
 	};
 	R.real=real;
 	var requireSimulator=R;
-	// Created at Mon May 28 2018 09:53:59 GMT+0900 (東京 (標準時))
+	// Created at Thu Jul 05 2018 13:39:57 GMT+0900 (東京 (標準時))
 requireSimulator.setName('Util');
 Util=(function () {
 
@@ -3629,6 +3629,10 @@ define(["DeferredUtil","Klass"],function (DU,Klass) {
 			}
 			if (typeof methodName=="function") {
 				method=methodName.fiber;
+				if (!method) {
+					var n=methodName.methodInfo ? methodName.methodInfo.name : methodName.name;
+					throw new Error("メソッド"+n+"は待機可能メソッドではありません");
+				}
 			}
 			args=[this].concat(args);
 			var pc=0;
@@ -4020,6 +4024,7 @@ return Tonyu=function () {
 	Function.prototype.constructor=function () {
 		throw new Error("This method should not be called");
 	};
+	klass.propReg=/^__([gs]et)ter__(.*)$/;
 	klass.define=function (params) {
 		// fullName, shortName,namspace, superclass, includes, methods:{name/fiber$name: func}, decls
 		var parent=params.superclass;
@@ -4061,16 +4066,24 @@ return Tonyu=function () {
 			for (var n in m.methods) {
 				if (!(n in prot)) {
 					prot[n]=m.methods[n];
+					if (n!=="__dummy" && !prot[n]) {
+						console.log("WHY2!",prot[n],prot,n);
+						throw new Error("WHY2!"+n);
+					}
 				}
 			}
 		});
 		var props={};
-		var propReg=/^__([gs]et)ter__(.*)$/;
+		var propReg=klass.propReg;//^__([gs]et)ter__(.*)$/;
 		for (var k in prot) {
 			if (k.match(/^fiber\$/)) continue;
 			if (prot["fiber$"+k]) {
 				prot[k].fiber=prot["fiber$"+k];
 				prot[k].fiber.methodInfo={name:k,klass:res,fiber:true};
+			}
+			if (k!=="__dummy" && !prot[k]) {
+				console.log("WHY!",prot[k],prot,k);
+				throw new Error("WHY!"+k);
 			}
 			prot[k].methodInfo={name:k,klass:res};
 			var r=propReg.exec(k);
@@ -4105,6 +4118,7 @@ return Tonyu=function () {
 	};
 	klass.shouldCompile=function (k) {
 		k=k.meta||k;
+		if (k.hasSemanticError) return true;
 		if (klass.isSourceChanged(k)) return true;
 		var dks=klass.getDependingClasses(k);
 		for (var i=0 ; i<dks.length ;i++) {
@@ -4119,7 +4133,7 @@ return Tonyu=function () {
 		return res;
 	};
 	function bless( klass, val) {
-		if (!klass) return val;
+		if (!klass) return extend({},val);
 		return extend( Object.create(klass.prototype) , val);
 		//return extend( new klass() , val);
 	}
@@ -4254,7 +4268,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,DeferredUtil:DU,
-			VERSION:1527468833941,//EMBED_VERSION
+			VERSION:1530765594073,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -9768,17 +9782,6 @@ TError.calcRowCol=function (text,pos) {
 return TError;
 });
 requireSimulator.setName('TT');
-/*sys.load("js/parser.js");
-sys.load("js/ExpressionParser2Tonyu.js");
-sys.load("js/GrammarTonyu.js");
-sys.load("js/XMLBuffer.js");
-sys.load("js/IndentBuffer.js");
-sys.load("js/disp.js");
-sys.load("js/profiler.js");
-*/
-if (typeof define!=="function") {
-	define=require("requirejs").define;
-}
 define(["Grammar", "XMLBuffer", "IndentBuffer","disp", "Parser","TError"],
 function (Grammar, XMLBuffer, IndentBuffer, disp, Parser,TError) {
 return TT=function () {
@@ -9860,15 +9863,6 @@ return TT=function () {
 		st.result[0]=res;
 		return st;
 	});
-	/*function exprHead(name, parser) {
-		dtk(REG, name, parser, DIV);
-	}
-	function exprMid(name, parser) {
-		dtk(DIV, name, parser, REG);
-	}
-	function exprTail(name, parser) {
-		dtk(DIV, name, parser, DIV);
-	}*/
 	var reserved={"function":true, "var":true , "return":true, "typeof": true, "if":true,
 			"__typeof": true,
 			"for":true,
@@ -10018,54 +10012,15 @@ return TT=function () {
 	parsers[REG]=or(parsers[REG],symresv);
 	parsers[DIV]=or(parsers[DIV],symresv);
 
-//	dtk(REG|DIV, "symbol", tk(/^[a-zA-Z_$][a-zA-Z0-9_$]*/,"ident_reg").except(function (s) {
-	/*      return reserved.hasOwnProperty(s.text);
-	}).first(space), DIV);
-	dtk(REG|DIV, "tk_constructor", "constructor", REG);
-	var resvs=[];
-	for (var n in reserved) {
-		if (n!="constructor") resvs.push(n);
-	}
-	resvs.sort(function (a,b) {
-		return b.length-a.length;
-	});
-	resvs.forEach(function (n) {
-		dtk(REG|DIV, SAMENAME, n, REG);
-	});
-*/
-	//profileTbl( parsers[REG],"reg");
-	//profileTbl( parsers[DIV],"div");
-	//profileTbl( parsers[REG|DIV],"regdiv");
-	//parsers[REG|DIV]=parsers[REG].or(parsers[DIV]);
 	function parse(str) {
-		//if (str.length>100000) return;
-		var t1=new Date().getTime();
 		var res=Parser.StringParser.parse(all, str);
-		//console.log("Time="+(new Date().getTime()-t1));
 		if (res.success) {
-			/*res.result[0].forEach(function (e) {
-				if (e.type=="REGEX" || e.type=="DIV") {
-					console.log(e.type+"\t"+ str.substring(e.pos-5,e.pos+6));
-					//console.log( e.text+"\t"+e.type+"\t"+e.pos+"-"+e.len);
-				}
-			});*/
 		} else {
 			console.log("Stopped at "+str.substring( res.src.maxPos-5, res.src.maxPos+5));
 		}
-		/*if (typeof WebSite=="object" && WebSite.devMode) {//DELJSL
-			window.tokenStat=window.tokenStat||{};
-			res.result[0].forEach(function (r) {
-				window.tokenStat[ r.text ]= window.tokenStat[ r.text ] || 0;
-				window.tokenStat[ r.text ]++;
-			});
-			//buf=""; for (var k in tokenStat) {  buf+=k+"\t"+tokenStat[k]+"\n"; }; buf;
-			//console.log(res);
-		}*/
 		return res;
-		//console.log(Profiler.report());
-		//console.log( disp(res.result[0]) );
 	}
-	return {parse:parse, extension:"js"};
+	return {parse:parse, extension:"js",reserved:reserved};
 }();
 
 });
@@ -10376,6 +10331,17 @@ return TonyuLang=function () {
 		return n;
 	});
 	var symbol=tk("symbol");
+	var symresv=tk("symbol");
+	for (var resvk in TT.reserved) {
+		var resvp=tk(resvk);
+		//console.log(resvk,resvp, resvp instanceof Parser.Parser);
+		if (resvp instanceof Parser.Parser && resvk!=="constructor") {
+			/*if (resvk==="constructor") {
+				console.log("c");
+			}*/
+			symresv=symresv.or(resvp);
+		}
+	}
 	var eqq=tk("===");
 	var nee=tk("!==");
 	var eq=tk("==");
@@ -10414,7 +10380,7 @@ return TonyuLang=function () {
 	var e=ExpressionParser() ;
 	var arrayElem=g("arrayElem").ands(tk("["), e.lazy() , tk("]")).ret(null,"subscript");
 	var argList=g("argList").ands(tk("("), comLastOpt(e.lazy()) , tk(")")).ret(null,"args");
-	var member=g("member").ands(tk(".") , symbol ).ret(null,     "name" );
+	var member=g("member").ands(tk(".") , symresv ).ret(null,     "name" );
 	var parenExpr = g("parenExpr").ands(tk("("), e.lazy() , tk(")")).ret(null,"expr");
 	var varAccess = g("varAccess").ands(symbol).ret("name");
 	var funcExpr_l=G("funcExpr").firstTokens(["function","\\"]);
@@ -11502,11 +11468,12 @@ define(["Tonyu","ObjectMatcher", "TError"],
 	Tonyu.Compiler=cu;
 	var ScopeTypes={
 			FIELD:"field", METHOD:"method", NATIVE:"native",//B
-			LOCAL:"local", THVAR:"threadvar",
+			LOCAL:"local", THVAR:"threadvar",PROP:"property",
 			PARAM:"param", GLOBAL:"global",
 			CLASS:"class", MODULE:"module"
 	};
 	cu.ScopeTypes=ScopeTypes;
+	var nodeIdSeq=1;
 	var symSeq=1;//B
 	function genSt(st, options) {//B
 		var res={type:st};
@@ -11538,11 +11505,15 @@ define(["Tonyu","ObjectMatcher", "TError"],
 	cu.genSym=genSym;
 	function annotation3(aobjs, node, aobj) {//B
 		if (!node._id) {
-			if (!aobjs._idseq) aobjs._idseq=0;
-			node._id=++aobjs._idseq;
+			//if (!aobjs._idseq) aobjs._idseq=0;
+			node._id=++nodeIdSeq;
 		}
 		var res=aobjs[node._id];
 		if (!res) res=aobjs[node._id]={node:node};
+		if (res.node!==node) {
+			console.log("NOMATCH",res.node,node);
+			throw new Error("annotation node not match!");
+		}
 		if (aobj) {
 			for (var i in aobj) res[i]=aobj[i];
 		}
@@ -11691,7 +11662,7 @@ function genJS(klass, env) {//B
 		var t=stype(si);
 		if (t==ST.THVAR) {
 			buf.printf("%s",TH);
-		} else if (t==ST.FIELD) {
+		} else if (t==ST.FIELD || t==ST.PROP) {
 			buf.printf("%s.%s",THIZ, n);
 		} else if (t==ST.METHOD) {
 			if (an && an.noBind) {
@@ -11961,7 +11932,7 @@ function genJS(klass, env) {//B
 					var mc=a.myMethodCall;
 					var si=mc.scopeInfo;
 					var st=stype(si);
-					if (st==ST.FIELD || st==ST.METHOD) {
+					if (st==ST.FIELD || st==ST.PROP || st==ST.METHOD) {
 						buf.printf("%s(%s, %l, [%j], %l )", INVOKE_FUNC,THIZ, mc.name, [",",mc.args],"this");
 					} else {
 						buf.printf("%s(%v, [%j], %l)", CALL_FUNC, node.left, [",",mc.args], getSource(node.left));
@@ -12381,7 +12352,7 @@ function genJS(klass, env) {//B
 			buf.printf("[%v]",node.subscript);
 		},
 		member: function (node) {
-			buf.printf(".%v",node.name);
+			buf.printf(".%s",node.name);
 		},
 		symbol: function (node) {
 			buf.print(node.text);
@@ -12688,6 +12659,7 @@ function genJS(klass, env) {//B
 	} else {
 		klass.src.js=buf.buf;//G
 	}
+	delete klass.jsNotUpToDate;
 	if (debug) {
 		console.log("method4", buf.buf);
 		//throw "ERR";
@@ -12723,10 +12695,32 @@ var getMethod2=cu.getMethod;
 var getDependingClasses=cu.getDependingClasses;
 var getParams=cu.getParams;
 var JSNATIVES={Array:1, String:1, Boolean:1, Number:1, Void:1, Object:1,RegExp:1,Error:1,Date:1};
+function visitSub(node) {//S
+	var t=this;
+	if (!node || typeof node!="object") return;
+	var es;
+	if (node instanceof Array) es=node;
+	else es=node[Grammar.SUBELEMENTS];
+	if (!es) {
+		es=[];
+		for (var i in node) {
+			es.push(node[i]);
+		}
+	}
+	es.forEach(function (e) {
+		t.visit(e);
+	});
+}
 //-----------
 function initClassDecls(klass, env ) {//S
+	// The main task of initClassDecls is resolve 'dependency', it calls before orderByInheritance
 	var s=klass.src.tonyu; //file object
 	var node;
+	klass.hasSemanticError=true;
+	if (klass.src && klass.src.js) {
+		// falsify on generateJS. if some class hasSemanticError, it remains true
+		klass.jsNotUpToDate=true;
+	}
 	if (klass.node && klass.nodeTimestamp==s.lastUpdate()) {
 		node=klass.node;
 	}
@@ -12781,6 +12775,47 @@ function initClassDecls(klass, env ) {//S
 		} else {
 			delete klass.superclass;
 		}
+		klass.directives={};
+		//--
+		function addField(name,node) {// name should be node
+			node=node||name;
+			fields[name+""]={
+				node:node,
+				klass:klass.fullName,
+				name:name+"",
+				pos:node.pos
+			};
+		}
+		var fieldsCollector=Visitor({
+			varDecl: function (node) {
+				addField(node.name, node);
+			},
+			nativeDecl: function (node) {//-- Unify later
+			},
+			funcDecl: function (node) {//-- Unify later
+			},
+			funcExpr: function (node) {
+			},
+			"catch": function (node) {
+			},
+			exprstmt: function (node) {
+				if (node.expr.type==="literal"
+					&& node.expr.text.match(/^.field strict.$/)) {
+					klass.directives.field_strict=true;
+				}
+			},
+			"forin": function (node) {
+				var isVar=node.isVar;
+				if (isVar) {
+					node.vars.forEach(function (v) {
+						addField(v);
+					});
+				}
+			}
+		});
+		fieldsCollector.def=visitSub;
+		fieldsCollector.visit(program.stmts);
+		//-- end of fieldsCollector
 		program.stmts.forEach(function (stmt) {
 			if (stmt.type=="funcDecl") {
 				var head=stmt.head;
@@ -12807,7 +12842,7 @@ function initClassDecls(klass, env ) {//S
 			} else if (stmt.type=="nativeDecl") {
 				natives[stmt.name.text]=stmt;
 			} else {
-				if (stmt.type=="varsDecl") {
+				/*if (stmt.type=="varsDecl") {
 					stmt.decls.forEach(function (d) {
 						//console.log("varDecl", d.name.text);
 						//fields[d.name.text]=d;
@@ -12818,14 +12853,17 @@ function initClassDecls(klass, env ) {//S
 							pos:d.pos
 						};
 					});
-				}
+				}*/
 				MAIN.stmts.push(stmt);
 			}
 		});
 	}
 	initMethods(node);        // node=program
+	delete klass.hasSemanticError;
 }// of initClassDecls
 function annotateSource2(klass, env) {//B
+	// annotateSource2 is call after orderByInheritance
+	klass.hasSemanticError=true;
 	var srcFile=klass.src.tonyu; //file object  //S
 	var srcCont=srcFile.text();
 	function getSource(node) {
@@ -12922,7 +12960,12 @@ function annotateSource2(klass, env) {//B
 		}
 		for (i in decls.methods) {
 			var info=decls.methods[i];
-			s[i]=genSt(ST.METHOD,{klass:klass.fullName,name:i,info:info});
+			var r=Tonyu.klass.propReg.exec(i);
+			if (r) {
+				s[r[2]]=genSt(ST.PROP,{klass:klass.fullName,name:r[2],info:info});
+			} else {
+				s[i]=genSt(ST.METHOD,{klass:klass.fullName,name:i,info:info});
+			}
 			if (info.node) {
 				annotation(info.node,{info:info});
 			}
@@ -12974,6 +13017,8 @@ function annotateSource2(klass, env) {//B
 		throw TError( "'"+getSource(node)+"'は左辺には書けません．" , srcFile, node.pos);
 	}
 	function getScopeInfo(n) {//S
+		var node=n;
+		n=n+"";
 		var si=ctx.scope[n];
 		var t=stype(si);
 		if (!t) {
@@ -12983,6 +13028,9 @@ function annotateSource2(klass, env) {//B
 				//console.log(n,"is module");
 			} else {
 				var isg=n.match(/^\$/);
+				if (env.options.compiler.field_strict || klass.directives.field_strict) {
+					if (!isg) throw new TError(n+"は宣言されていません（フィールドの場合，明示的に宣言してください）．",srcFile,node.pos);
+				}
 				t=isg?ST.GLOBAL:ST.FIELD;
 			}
 			var opt={name:n};
@@ -13044,22 +13092,7 @@ function annotateSource2(klass, env) {//B
 		}
 	});
 	localsCollector.def=visitSub;//S
-	function visitSub(node) {//S
-		var t=this;
-		if (!node || typeof node!="object") return;
-		var es;
-		if (node instanceof Array) es=node;
-		else es=node[Grammar.SUBELEMENTS];
-		if (!es) {
-			es=[];
-			for (var i in node) {
-				es.push(node[i]);
-			}
-		}
-		es.forEach(function (e) {
-			t.visit(e);
-		});
-	}
+
 	function collectLocals(node) {//S
 		var locals={varDecls:{}, subFuncDecls:{}};
 		ctx.enter({locals:locals},function () {
@@ -13078,7 +13111,7 @@ function annotateSource2(klass, env) {//B
 	}
 	var varAccessesAnnotator=Visitor({//S
 		varAccess: function (node) {
-			var si=getScopeInfo(node.name.text);
+			var si=getScopeInfo(node.name);
 			var t=stype(si);
 			annotation(node,{scopeInfo:si});
 		},
@@ -13112,7 +13145,7 @@ function annotateSource2(klass, env) {//B
 				if (node.key.type=="literal") {
 					throw TError( "オブジェクトリテラルのパラメタに単独の文字列は使えません" , srcFile, node.pos);
 				}
-				var si=getScopeInfo(node.key.text);
+				var si=getScopeInfo(node.key);
 				annotation(node,{scopeInfo:si});
 			}
 		},
@@ -13143,7 +13176,7 @@ function annotateSource2(klass, env) {//B
 		},
 		"forin": function (node) {
 			node.vars.forEach(function (v) {
-				var si=getScopeInfo(v.text);
+				var si=getScopeInfo(v);
 				annotation(v,{scopeInfo:si});
 			});
 			this.visit(node.set);
@@ -13267,7 +13300,7 @@ function annotateSource2(klass, env) {//B
 	});
 	function resolveType(node) {//node:typeExpr
 		var name=node.name+"";
-		var si=getScopeInfo(name);
+		var si=getScopeInfo(node.name);
 		var t=stype(si);
 		console.log("TExpr",name,si,t);
 		if (t===ST.NATIVE) {
@@ -13382,6 +13415,7 @@ function annotateSource2(klass, env) {//B
 	initTopLevelScope();//S
 	inheritSuperMethod();//S
 	annotateSource();
+	delete klass.hasSemanticError;
 }//B  end of annotateSource2
 return {initClassDecls:initClassDecls, annotate:annotateSource2};
 })();
@@ -13746,21 +13780,21 @@ TypeChecker.checkExpr=function (klass,env) {
 				annotation(node,{vtype:String});
 			},
 			postfix:function (node) {
-			var a=annotation(node);
-			if (a.memberAccess) {
-				var m=a.memberAccess;
-				var vtype=visitExpr(m.target);
-				if (vtype) {
-				var f=cu.getField(vtype,m.name);
-				console.log("GETF",vtype,m.name,f);
-				if (f && f.vtype) {
-					annotation(node,{vtype:f.vtype});
+				var a=annotation(node);
+				if (a.memberAccess) {
+					var m=a.memberAccess;
+					var vtype=visitExpr(m.target);
+					if (vtype) {
+					var f=cu.getField(vtype,m.name);
+					console.log("GETF",vtype,m.name,f);
+					if (f && f.vtype) {
+						annotation(node,{vtype:f.vtype});
+					}
+					}
+				} else {
+					this.visit(node.left);
+					this.visit(node.op);
 				}
-				}
-			} else {
-				this.visit(node.left);
-				this.visit(node.op);
-			}
 			},
 			varAccess: function (node) {
 				var a=annotation(node);
@@ -13784,6 +13818,8 @@ TypeChecker.checkExpr=function (klass,env) {
 							annotation(node,{vtype:vtype});
 							console.log("VA typeof",node.name+":",vtype);
 						}
+					} else if (si.type===ScopeTypes.PROP) {
+						//TODO
 					}
 				}
 			}
@@ -14041,6 +14077,7 @@ var TPRC=function (dir) {
 			} else {
 				compilingClasses=myClasses;
 			}
+			console.log("compilingClasses",compilingClasses);
 			return TPR.showProgress("initClassDecl");
 		})).then(F(function () {
 			for (var n in compilingClasses) {
@@ -14070,7 +14107,7 @@ var TPRC=function (dir) {
 		})).then(F(function () {
 			//throw "test break";
 			return TPR.genJS(ord.filter(function (c) {
-				return compilingClasses[c.fullName];
+				return compilingClasses[c.fullName] || c.jsNotUpToDate;
 			}));
 			//return TPR.showProgress("concat");
 		})).then(F(function () {
@@ -14204,7 +14241,30 @@ var TPRC=function (dir) {
 			});
 			return deps;
 		}
-		function detectLoop(c, prev){
+		function detectLoop(c) {
+			var path=[];
+			var visited={};
+			function pushPath(c) {
+				path.push(c.fullName);
+				if (visited[c.fullName]) {
+					throw TError( "次のクラス間に循環参照があります: "+path.join("->"), "不明" ,0);
+				}
+				visited[c.fullName]=true;
+ 			}
+			function popPath() {
+				var p=path.pop();
+				delete visited[p];
+			}
+			function loop(c) {
+				//console.log("detectLoop2",c.fullName,JSON.stringify(visited));
+				pushPath(c);
+				var dep=dep1(c);
+				dep.forEach(loop);
+				popPath();
+			}
+			loop(c);
+		}
+		function detectLoopOLD(c, prev){
 			//  A->B->C->A
 			// c[B]=A  c[C]=B   c[A]=C
 			console.log("detectloop",c.fullName);
@@ -14212,9 +14272,14 @@ var TPRC=function (dir) {
 				console.log("Detected: ",c.fullName, crumbs, crumbs[c.fullName]);
 				var n=c.fullName;
 				var loop=[];
+				var cnt=0;
 				do {
 					loop.unshift(n);    // A      C       B
 					n=crumbs[n];        // C      B       A
+					if (!n || cnt++>100) {
+						console.log(n,crumbs, loop);
+						throw new Error("detectLoop entered infty loop. Now THAT's scary!");
+					}
 				} while(n!=c.fullName);
 				loop.unshift(c.fullName);
 				return loop;
@@ -14364,7 +14429,7 @@ define(["Tonyu"], function (Tonyu) {
             }
             dy--;
             var sx=x+1,sy=y+1,w=dx-sx,h=dy-sy;
-            console.log("PP",sx,sy,w,h,dx,dy);
+            //console.log("PP",sx,sy,w,h,dx,dy);
             if (w*h==0) throw PatterParseError(dx, dy,"w*h==0");
             var newim=this.newImage(w,h);
             var nc=newim.getContext("2d");
@@ -14410,6 +14475,7 @@ define(["Tonyu"], function (Tonyu) {
     });
     return PP;
 });
+
 requireSimulator.setName('Assets');
 define(["WebSite","Util","Tonyu","FS"],function (WebSite,Util,Tonyu,FS) {
     var Assets={};
@@ -15470,6 +15536,9 @@ define(["UI","GlobalDialog"], function (UI,GlobalDialog) {
                     ["div",
                      ["input", {type:"checkbox", $edit: "compiler.noLoopCheck"}],
                      "無限ループチェックをしない（チェックすると速度が速くなることがあります）"],
+                     ["div",
+                      ["input", {type:"checkbox", $edit: "compiler.field_strict"}],
+                      "フィールド宣言を明示的に行う(var n; のような宣言が必要になります)"],
                     ["div", "デフォルトの親クラス",
                      ["input", {$edit: "compiler.defaultSuperClass"}]],
                      ["h5","実行"],
@@ -17173,7 +17242,7 @@ var T2MediaLib = (function(){
         this.audioDataAry = {
             data : []
         };
-
+        this.seSources=[];
         this.init(_context);
     };
 
@@ -17412,22 +17481,26 @@ var T2MediaLib = (function(){
         }
     };
     // 無音サウンドを鳴らしWeb Audio APIを使えるようにする(iOS対策)
+    // Chrome Autoplay Policy 対策
     T2MediaLib.prototype.activate = function () {
         this.init();
+        if (!this.context) return;
+        if (!this.isContextResumed && this.context.resume) { // fix Autoplay Policy in Chrome
+            var that = this;
+            this.context.resume().then(function () {
+                that.isContextResumed = true;
+            });
+        }
         if (this.isActivated) return;
         this.isActivated=true;
-        var myContext=this.context;
-        if (!myContext) return;
-        var buffer = myContext.createBuffer(1, Math.floor(myContext.sampleRate/32), myContext.sampleRate);
+        var buffer = this.context.createBuffer(1, Math.floor(this.context.sampleRate/32), this.context.sampleRate);
         var ary = buffer.getChannelData(0);
-        var lam = Math.floor(myContext.sampleRate/860);
         for (var i = 0; i < ary.length; i++) {
-             //ary[i] = (i % lam<lam/2?0.1:-0.1)*(i<lam?2:1) ;
              ary[i] = 0; // 無音化
         }
-        var source = myContext.createBufferSource();
+        var source = this.context.createBufferSource();
         source.buffer = buffer;
-        source.connect(myContext.destination);
+        source.connect(this.context.destination);
         source.start = source.start || source.noteOn;
         source.start(0);
     };
@@ -17565,20 +17638,28 @@ var T2MediaLib = (function(){
         source.stop  = source.stop  || source.noteOff;
         source.start(start, offset, duration);
         if (loop && duration != null) source.stop(start + duration); // iOS, Firefoxではloopがtrueのときdurationを指定しても止まらない
-
+        var t=this;
+        t.seSources.push(source);
         source.onended = function(event) {
             //source.disconnect();
             source.onended = null;
+            var idx=t.seSources.indexOf(source);
+            if (idx>=0) t.seSources.splice(idx,1);
             //delete source.gainNode;
             //delete source.panNode;
         };
-
         return source;
     };
     T2MediaLib.prototype.stopSE = function(sourceObj) {
         if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
         sourceObj.stop(0);
         return sourceObj;
+    };
+    T2MediaLib.prototype.stopAllSE = function(sourceObj) {
+        var t=this;
+        this.seSources.forEach(function (s) {
+            t.stopSE(s);
+        });
     };
     T2MediaLib.prototype.getSEMasterVolume = function() {
         return this.seMasterVolume;
@@ -21001,7 +21082,9 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     }
     Tonyu.defaultOptions={
         compiler: { defaultSuperClass: "Actor"},
-        run: {mainClass: "Main", bootClass: "Boot", globals:{$defaultFPS:60}},
+        run: {mainClass: "Main", bootClass: "Boot", globals:{
+            $defaultFPS:60,$imageSmoothingDisabled:true
+        }},
         kernelEditable: false,
         version: Tonyu.VERSION
     };
