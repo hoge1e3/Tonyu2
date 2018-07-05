@@ -1,0 +1,36 @@
+<html><body class="markdown-body">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="Panel">Panel</a></p>
+<h1 id="replacecolor-">replaceColorメソッド</h1>
+<p>パネルの色の置き換えを行います．</p>
+<h2 id="-1-">書式1 関数による置き換え</h2>
+<pre><code class="lang-JS">panel.replaceColor(left,top,w,h) \(color,x,y) {
+    // 関数部分：colorオブジェクトに対する操作を行う
+};
+</code></pre>
+<ul>
+<li>left,top,w,h は，置き換えを行う範囲の左上の座標(left,top)，幅w，高さhを表します．省略するとパネル全体を置き換えます．</li>
+<li>関数部分では，第1引数にColorオブジェクト，第2，3引数に置き換え中の座標が渡されます．Colorオブジェクトに対して操作（フィールドの書き換え）を行うと，その箇所の色が書き換えた通りに変化します．</li>
+<li>書式1はピクセル数と同数の繰り返しを行うため，時間がかかることがあります．</li>
+</ul>
+<p>例：</p>
+<pre><code class="lang-JS">//パネル全体をグレースケールに変換
+$panel.replaceColor \(c) {
+    c.s=0;// 彩度を0にする
+};
+</code></pre>
+<h2 id="-2-">書式2  不透明部分の一括置き換え</h2>
+<pre><code class="lang-JS">panel.replaceColor(left,top,w,h,color);
+</code></pre>
+<ul>
+<li>left,top,w,h は，置き換えを行う範囲の左上の座標(left,top)，幅w，高さhを表します．省略するとパネル全体を置き換えます．</li>
+<li>color には色を表す文字列または<a href="Color">Color</a>オブジェクトを指定します．不透明部分がcolorで指定した色に置き換わります．</li>
+<li>書式2は高速に処理を行うことができます．（globalCompositeOperation=&quot;source-in&quot; を使用)</li>
+</ul>
+<p>.</p>
+</body></html>

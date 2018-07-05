@@ -11,12 +11,20 @@
 <h2 id="-">書式</h2>
 <pre><code class="lang-JS">$Screen.setBGColor(c)
 </code></pre>
-<p><em>c</em>は，画面の背景色をあらわす文字列（HTMLの色指定方法に準ずる）を指定します．</p>
+<ul>
+<li><em>c</em> は，画面の背景色をあらわす文字列（HTMLの色指定方法に準ずる）または<a href="Color">Color</a>オブジェクトを指定します．</li>
+<li>半透明の色を指定した場合，前フレームのキャラクタが完全には消えないため，残像効果が得られます．<ul>
+<li>clearBG が<code>true</code>の場合は残像は残らず，この画面の後ろが半透明になるように背景が描かれます</li>
+</ul>
+</li>
+</ul>
 <h2 id="-">例</h2>
 <pre><code class="lang-JS">$Screen.setBGColor(&quot;black&quot;);
 </code></pre>
 <pre><code class="lang-JS">$Screen.setBGColor(&quot;#ffeedd&quot;);
 </code></pre>
 <pre><code class="lang-JS">$Screen.setBGColor(&quot;rgb(200,100,50)&quot;);
+</code></pre>
+<pre><code class="lang-JS">$Screen.setBGColor(new Color(200,100,50));
 </code></pre>
 </body></html>

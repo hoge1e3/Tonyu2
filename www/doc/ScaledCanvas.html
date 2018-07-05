@@ -9,6 +9,10 @@
 <h1 id="screen-">Screenクラス</h1>
 <p>ゲーム画面をあらわすオブジェクトです．<a href="Boot">Boot</a>クラスで<code>$Screen</code> というオブジェクトで初期化されます．</p>
 <p><code>$Screen</code>は、画面の手前から順に <a href="$frontLayer">$frontLayer</a>、 <a href="$mainLayer">$mainLayer</a>、 <a href="$backLayer">$backLayer</a>という3つの<a href="座標系とレイヤー">レイヤー</a><br>からなります。これらの3つのレイヤーは独立して <a href="Screen.scrollTo">スクロール</a><br>（平行移動・回転・伸縮）が可能です</p>
+<h2 id="-">フィールド</h2>
+<ul>
+<li>clearBG  背景を透過色で消去したい場合は<code>true</code>を指定します．<a href="setBGColor">setBGColor</a>も参照してください．</li>
+</ul>
 <h2 id="-">メソッド</h2>
 <ul>
 <li><a href="resize">resize</a></li>

@@ -1,0 +1,33 @@
+<html><body class="markdown-body">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><a href="api">api</a></p>
+<h1 id="actorsprite">ActorSprite</h1>
+<p><a href="BaseActor">BaseActor</a>から，描画機能だけを抜き出したものです．</p>
+<p>これ自身で動作や当たり判定をすることはできません．主に他のActorの <a href="draw">draw</a>メソッド内で複数のスプライトを表示したい場合などに用います．</p>
+<h2 id="-">メソッド</h2>
+<ul>
+<li>draw(ctx)  指定されたキャンパスコンテキストに描画を行います．描画されるものはフィールドの値によって変化します．<a href="BaseActor">BaseActor</a>を参照してください．</li>
+</ul>
+<h2 id="-">例</h2>
+<pre><code class="lang-JS">\draw(ctx) {
+    // このActor本来の図形を描く（中心のスプライト）
+    super.draw(ctx);
+    var a;
+    // 周りに別のスプライトを2つ表示（本体の周りを回る）
+    a=new ActorSprite{x: x+cos(r)*50, y: y+sin(r)*50,p};
+    a.draw(ctx);
+    a=new ActorSprite{x: x-cos(r)*50, y: y-sin(r)*50,p};
+    a.draw(ctx);
+}
+
+x=100;y=100;r=0;
+while(true) {
+    x++;
+    r+=10;
+    update();
+}
+</code></pre>
+</body></html>

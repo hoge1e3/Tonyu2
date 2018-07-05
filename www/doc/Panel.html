@@ -31,6 +31,10 @@
 <li>Canvasオブジェクトのコンテキストに直接アクセスします．（パネルはHTML5のCanvasオブジェクトで実装しています．）</li>
 </ul>
 </li>
+<li>imageSmoothingEnabled<ul>
+<li>描画したイメージにぼかし効果を入れる場合は <code>true</code> を指定します．規定値はグローバル変数<code>$imageSmoothingDisabled</code> の否定になります．バージョン2018-0705以降，作成されるプロジェクトでは<code>$imageSmoothingDisabled</code>の値は<code>true</code>になります（つまりデフォルトではぼかし効果は入りません）</li>
+</ul>
+</li>
 <li>その他，<a href="BaseActor">BaseActor</a>クラスのフィールドも利用できます．</li>
 </ul>
 <h1 id="-">メソッド</h1>
@@ -49,6 +53,7 @@
 <li><a href="Panel.load">load</a></li>
 <li><a href="Panel.addPattern">addPattern</a></li>
 <li><a href="Panel.convert">convert</a></li>
+<li><a href="Panel.replaceColor">replaceColor</a></li>
 <li>getImageData, putImageData<ul>
 <li>このパネルで使用されているCanvasオブジェクトのcontextの同名メソッドと同じ動作をします．</li>
 </ul>
