@@ -38,7 +38,8 @@ native T2MediaLib;
         mouseDownAtCV=true;
         Tonyu.resetLoopCheck();
         $t2MediaLib.activate();
-        e.preventDefault();
+        // for inside iframe (preventDefault prevents also focus into this iframe)
+        // e.preventDefault();
         var p=cvj.offset();
         var mp={x:e.clientX-p.left, y:e.clientY-p.top,layer:$Screen.layer};
         mp=$Screen.convert(mp,defaultLayer);// $Screen.canvas2buf(mp);
