@@ -37,7 +37,7 @@ native T2MediaLib;
     $handleMouseDown=\(e) {
         mouseDownAtCV=true;
         Tonyu.resetLoopCheck();
-        $t2MediaLib.activate();
+        if ($t2MediaLib) $t2MediaLib.activate();
         // for inside iframe (preventDefault prevents also focus into this iframe)
         // e.preventDefault();
         var p=cvj.offset();
@@ -81,7 +81,7 @@ native T2MediaLib;
     };
     $handleMouseUp=\(e) {
         Tonyu.resetLoopCheck();
-        $t2MediaLib.activate();
+        if ($t2MediaLib) $t2MediaLib.activate();
         if (mouseDownAtCV) e.preventDefault();
         mouseDownAtCV=false;
         isMouseDown=false;
@@ -121,7 +121,7 @@ native T2MediaLib;
     $handleTouchStart=\(e) {
         return touch.handleStart(e);    //--T
         Tonyu.resetLoopCheck();
-        $t2MediaLib.activate();
+        if ($t2MediaLib) $t2MediaLib.activate();
         var p=cvj.offset();
         e.preventDefault();
         var ts=e.originalEvent.changedTouches;
@@ -151,7 +151,7 @@ native T2MediaLib;
     $handleTouchMove=\(e) {
         return touch.handleMove(e);    //--T
         Tonyu.resetLoopCheck();
-        $t2MediaLib.activate();
+        if ($t2MediaLib) $t2MediaLib.activate();
         var p=cvj.offset();
         e.preventDefault();
         var ts=e.originalEvent.changedTouches;
@@ -174,7 +174,7 @@ native T2MediaLib;
     $handleTouchEnd=\(e) {
         return touch.handleEnd(e);    //--T
         Tonyu.resetLoopCheck();
-        $t2MediaLib.activate();
+        if ($t2MediaLib) $t2MediaLib.activate();
         var ts=e.originalEvent.changedTouches;
         for (var i =0 ; i<ts.length ; i++) {
             var src=ts[i];
