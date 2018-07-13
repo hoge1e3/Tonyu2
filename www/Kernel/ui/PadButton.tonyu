@@ -56,6 +56,50 @@ extends Actor;
     super.die();
 }
 
+\hide() {
+    if (panel != null) {
+        panel.hide();
+    }
+    if (panelPush != null) {
+        panelPush.hide();
+    }
+    if (panelPushL != null) {
+        panelPushL.hide();
+    }
+    if (panelPushR != null) {
+        panelPushR.hide();
+    }
+    if (panelPushU != null) {
+        panelPushU.hide();
+    }
+    if (panelPushD != null) {
+        panelPushD.hide();
+    }
+    //super.hide();
+}
+
+\show() {
+    if (panel != null) {
+        panel.show();
+    }
+    if (panelPush != null) {
+        panelPush.show();
+    }
+    if (panelPushL != null) {
+        panelPushL.show();
+    }
+    if (panelPushR != null) {
+        panelPushR.show();
+    }
+    if (panelPushU != null) {
+        panelPushU.show();
+    }
+    if (panelPushD != null) {
+        panelPushD.show();
+    }
+    //super.show();
+}
+
 \init() {
     TOUCHES_MAX = 5; // タッチ判定
 
