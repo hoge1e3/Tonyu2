@@ -1,11 +1,18 @@
 extends TObject;
 includes MathMod;
-\new (parent) {
+\new (context) {
     length=0;
-    this.parent=parent;
+    if (context is BaseActor) context={actor:context};
+    if (context is Screen) context={screen:context};
+    context=context||{};
+    context.screen=context.screen||$Screen;
+    this.context=context;
+}
+\parent {
+    return context.actor;
 }
 \create() {
-    return new TQuery(parent);
+    return new TQuery(context);
 }
 \contains(t) {
     for (var o in this) {
@@ -112,7 +119,10 @@ includes MathMod;
     return maxs(key)[0];
 }
 \nearests(x,y) {
-    if (x==null) {x=parent.x;y=parent.y;}
+    if (x==null) {
+        if (!parent) throw new Error("nearests: 座標を指定してください");
+        x=parent.x;y=parent.y;
+    }
     if (typeof x=="object") {y=x.y;x=x.x;}
     return mins \(o) {
         return dist(o.x-x,o.y-y);
@@ -124,6 +134,7 @@ includes MathMod;
 \withins(xo,yd,d) {
     var x,y;
     if (arguments.length==1) {
+        if (!parent) throw new Error("withins: 座標を指定してください");
         x=parent.x;
         y=parent.y;
         d=xo;
@@ -216,4 +227,23 @@ includes MathMod;
 
 \klass(k) {
     return find \(o) { return o instanceof k; };
+}
+\allTouched(options) {
+    var res=clone();
+    options=options||{};
+    for (var e of this) {
+        var r=e.getCrashRect();
+        for (var i=0;i<$touches.length;i++) {
+            var t=$touches[0];
+            if (t.touched==1) {
+                var p=context.screen.convert(t,e.layer);
+                if (p.x>=r.x-r.width/2 && p.x<=r.x+r.width/2 &&
+                p.y>=r.y-r.height/2 && p.y<=r.y+r.height/2) {
+                    if (options.key) e[options.key]=t;
+                    res.push(e);
+                }
+            }
+        }
+    }
+    return res;
 }

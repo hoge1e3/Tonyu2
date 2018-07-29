@@ -1,4 +1,30 @@
 Bug
+onRunTimeError:stackTrace1 Error: undefined is not array. cannot join fmt:(%j) {%{"use strict";%nvar %s=%s;%n%f%n%f%}},%n
+    at $ (chrome-extension://jcgkikdhjbnogcmjkijniaengnagcbpe/www/js/lang/IndentBuffer.js:122:12)
+    at genFunc (chrome-extension://jcgkikdhjbnogcmjkijniaengnagcbpe/www/js/lang/JSGenerator.js:993:3)
+    at chrome-extension://jcgkikdhjbnogcmjkijniaengnagcbpe/www/js/lang/JSGenerator.js:864:6
+    at Object.enter (chrome-extension://jcgkikdhjbnogcmjkijniaengnagcbpe/www/js/lang/context.js:48:11)
+    at chrome-extension://jcgkikdhjbnogcmjkijniaengnagcbpe/www/js/lang/JSGenerator.js:863:9
+    at Object.enter (chrome-extension://jcgkikdhjbnogcmjkijniaengnagcbpe/www/js/lang/context.js:48:11)
+    at genSource (chrome-extension://jcgkikdhjbnogcmjkijniaengnagcbpe/www/js/lang/JSGenerator.js:831:7)
+    at Object.genJS (chrome-extension://jcgkikdhjbnogcmjkijniaengnagcbpe/www/js/lang/JSGenerator.js:1075:2)
+    at chrome-extension://jcgkikdhjbnogcmjkijniaengnagcbpe/www/js/lang/projectCompiler.js:285:16
+    at chrome-extension://jcgkikdhjbnogcmjkijniaengnagcbpe/www/js/fs/FS.js:728:39 u
+    ndefined 0
+onRunTimeError:stackTrace1 Error: undefined is not array. cannot join fmt:(%j) {%{"use strict";%nvar %s=%s;%n%f%n%f%}},%n
+   at $ (chrome-extension://jcgkikdhjbnogcmjkijniaengnagcbpe/www/js/lang/IndentBuffer.js:122:12)
+   at genFunc (chrome-extension://jcgkikdhjbnogcmjkijniaengnagcbpe/www/js/lang/JSGenerator.js:993:3)
+   at chrome-extension://jcgkikdhjbnogcmjkijniaengnagcbpe/www/js/lang/JSGenerator.js:864:6
+   at Object.enter (chrome-extension://jcgkikdhjbnogcmjkijniaengnagcbpe/www/js/lang/context.js:48:11)
+   at chrome-extension://jcgkikdhjbnogcmjkijniaengnagcbpe/www/js/lang/JSGenerator.js:863:9
+   at Object.enter (chrome-extension://jcgkikdhjbnogcmjkijniaengnagcbpe/www/js/lang/context.js:48:11)
+   at genSource (chrome-extension://jcgkikdhjbnogcmjkijniaengnagcbpe/www/js/lang/JSGenerator.js:831:7)
+   at Object.genJS (chrome-extension://jcgkikdhjbnogcmjkijniaengnagcbpe/www/js/lang/JSGenerator.js:1075:2)
+   at chrome-extension://jcgkikdhjbnogcmjkijniaengnagcbpe/www/js/lang/projectCompiler.js:285:16
+   at chrome-extension://jcgkikdhjbnogcmjkijniaengnagcbpe/www/js/fs/FS.js:728:39 undefined 0
+   function genFunc(func) {//G  func.name==="main" のときに起きる  func.param==undefined
+		var fname= isConstructor(func) ? "initialize" : func.name;
+		printf("%s :function %s(%j) {%{"+
  OK Compile error
      DBall  $mat.get -> $mat is null
      Add getSBall to PzScreen with undef variable (field strict)

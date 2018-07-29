@@ -152,7 +152,7 @@ extends Panel;
     this._color=color;
 }
 \all() {
-    var res=new TQuery;
+    var res=new TQuery{screen:this};
     for (var l in layers) {
         var q=l.group.all.apply(l.group,arguments);
         res.push(q);
