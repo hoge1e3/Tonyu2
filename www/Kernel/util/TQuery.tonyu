@@ -228,22 +228,3 @@ includes MathMod;
 \klass(k) {
     return find \(o) { return o instanceof k; };
 }
-\allTouched(options) {
-    var res=clone();
-    options=options||{};
-    for (var e of this) {
-        var r=e.getCrashRect();
-        for (var i=0;i<$touches.length;i++) {
-            var t=$touches[0];
-            if (t.touched==1) {
-                var p=context.screen.convert(t,e.layer);
-                if (p.x>=r.x-r.width/2 && p.x<=r.x+r.width/2 &&
-                p.y>=r.y-r.height/2 && p.y<=r.y+r.height/2) {
-                    if (options.key) e[options.key]=t;
-                    res.push(e);
-                }
-            }
-        }
-    }
-    return res;
-}

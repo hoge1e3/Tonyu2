@@ -98,6 +98,12 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu"],
                     addFileToLoadFiles( mf.relPath(prjDir), mf.obj());
                 });
             }
+            var staticd=prjDir.rel("static/");
+            if (staticd.exists()) {
+                staticd.recursive(function (mf) {
+                    addFileToLoadFiles( mf.relPath(prjDir));
+                });
+            }
             dest.rel("js/files.js").text(loadFilesBuf+"}");
         }
         function copyIndexHtml() {
@@ -140,7 +146,23 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu"],
             );
         }
         function addFileToLoadFiles(name, data) {
-            dest.rel(name).obj(data);
+            if (data==null) {
+                var file=prjDir.rel(name);
+                if (file.ext()===".json") {
+                    data=file.obj();
+                } else if (file.isText()) {
+                    //file.copyTo(dest.rel(name));
+                    data=file.text();
+                    loadFilesBuf+="\tdir.rel('"+name+"').text("+JSON.stringify(data)+");\n";
+                    return;
+                } else {
+                    //file.copyTo(dest.rel(name));
+                    data=file.dataURL();
+                    loadFilesBuf+="\tdir.rel('"+name+"').dataURL("+JSON.stringify(data)+");\n";
+                    return;
+                }
+            }
+            //dest.rel(name).obj(data);
             loadFilesBuf+="\tdir.rel('"+name+"').obj("+JSON.stringify(data)+");\n";
         }
         function convertLSURL(r) {

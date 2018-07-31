@@ -159,3 +159,23 @@ extends Panel;
     }
     return res;
 }
+\touchedFingers(q:TQuery,options) {
+    //options: filter, layer
+    var res=[];
+    options=options||{};
+    for (var e of q) {
+        var r=e.getCrashRect();
+        for (var i=0;i<$touches.length;i++) {
+            var t=$touches[i];
+            if (t.touched==1) {
+                var p=convert(t,e.layer);
+                if (p.x>=r.x-r.width/2 && p.x<=r.x+r.width/2 &&
+                p.y>=r.y-r.height/2 && p.y<=r.y+r.height/2) {
+                    t.captured=e;
+                    res.push(t);
+                }
+            }
+        }
+    }
+    return res;
+}
