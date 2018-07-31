@@ -22,13 +22,6 @@ native T2MediaLib;
 }
 \changeTouchLayer(t,toLayer) {//Retain...?
     return t.layer=toLayer;//---T
-    var p=$Screen.convert(t,toLayer);
-    t.x=p.x;
-    t.y=p.y;
-    t.layer=p.layer;
-    t.px=t.x;
-    t.py=t.y;
-    t.vx=t.vy=0;
 }
 \initCanvasEvents(cvj) {
     rootCanvas=cvj;
@@ -100,104 +93,19 @@ native T2MediaLib;
     //--T
     touch=new TouchFingers(this);
     $touches=touch.fingerArray;
-    /*--T
-    $touches=[];
-    for (var i=0;i<5;i++)$touches.push(newTouch(i));
-    $touches.findById=\(id) {
-        for (var j=0 ; j<$touches.length ; j++) {
-            if ($touches[j].identifier==id) {
-                return $touches[j];
-            }
-        }
-    };
-    $touches.findWithin=function (o,d) {
-        for (var j=0 ; j<$touches.length ; j++) {
-            if (o.within($touches[j],d)) {
-                return $touches[j];
-            }
-        }
-    };
-    */
     $handleTouchStart=\(e) {
         return touch.handleStart(e);    //--T
-        Tonyu.resetLoopCheck();
-        if ($t2MediaLib) $t2MediaLib.activate();
-        var p=cvj.offset();
-        e.preventDefault();
-        var ts=e.originalEvent.changedTouches;
-        var dst;
-        for (var i =0 ; i<ts.length ; i++) {
-            var src=ts[i];
-            for (var j=0 ; j<$touches.length ; j++) {
-                if (!$touches[j].touched) {
-                    dst=$touches[j];
-                    dst.identifier=src.identifier;
-                    break;
-                }
-            }
-            if (dst) {
-                mp={x:src.pageX-p.left, y:src.pageY-p.top,layer:$Screen.layer};
-                mp=$Screen.convert(mp,defaultLayer);//$Screen.canvas2buf(mp);
-                dst.px=dst.x=mp.x;
-                dst.py=dst.y=mp.y;
-                dst.layer=mp.layer;
-                dst.touched=1;
-            }
-        }
-        $mouseX=$touches[0].x;
-        $mouseY=$touches[0].y;
-        handleListeners();
     };
     $handleTouchMove=\(e) {
         return touch.handleMove(e);    //--T
-        Tonyu.resetLoopCheck();
-        if ($t2MediaLib) $t2MediaLib.activate();
-        var p=cvj.offset();
-        e.preventDefault();
-        var ts=e.originalEvent.changedTouches;
-        var dst;
-        for (var i =0 ; i<ts.length ; i++) {
-            var src=ts[i];
-            var dst=$touches.findById(src.identifier);
-            if (dst) {
-                mp={x:src.pageX-p.left, y:src.pageY-p.top,layer:$Screen.layer};
-                mp=$Screen.convert(mp,dst.layer||defaultLayer);//$Screen.canvas2buf(mp);
-                dst.x=mp.x;
-                dst.y=mp.y;
-                dst.layer=mp.layer;
-            }
-        }
-        $mouseX=$touches[0].x;
-        $mouseY=$touches[0].y;
-        handleListeners();
     };
     $handleTouchEnd=\(e) {
         return touch.handleEnd(e);    //--T
-        Tonyu.resetLoopCheck();
-        if ($t2MediaLib) $t2MediaLib.activate();
-        var ts=e.originalEvent.changedTouches;
-        for (var i =0 ; i<ts.length ; i++) {
-            var src=ts[i];
-            var dst=$touches.findById(src.identifier);
-            if (dst) {
-                $touches[dst.index]=$InputDevice.newTouch(dst.index);
-                $touches[dst.index].x=dst.x;
-                $touches[dst.index].y=dst.y;
-                $touches[dst.index].layer=defaultLayer;
-                dst.ended=true;
-            }
-        }
-        handleListeners();
     };
     $unsetTouchEmu=\() {
         Tonyu.resetLoopCheck();
         $InputDevice.touchEmu=false;
         return touch.unsetEmu();    //--T
-        for (var i,t in $touches) {
-            if (t.identifier==ID_MOUSE) {
-                t[i]=$InputDevice.newTouch(i);
-            }
-        }
     };
     var handleMouseDown=\(e){$handleMouseDown(e);};
     var handleMouseMove=\(e){$handleMouseMove(e);};
@@ -224,20 +132,4 @@ native T2MediaLib;
 
 \update() {
     return touch.updateFingers();//---T
-    for (var i in $touches) {
-        if (i.touched>0) {i.touched++;}
-        else if (i.touched==-1) i.touched=1;
-        else {
-            i.vx=i.vy=0;
-            i.px=null;
-        }
-        if (i.touched>0) {
-            if (typeof i.px=="number") {
-                i.vx=i.x-i.px || 0;
-                i.vy=i.y-i.py || 0;
-            }
-            i.px=i.x;
-            i.py=i.y;
-        }
-    }
 }
