@@ -23,7 +23,7 @@ includes MathMod;
         p={};
         p.x=a.shift();
         p.y=a.shift();
-        p.z=a.shift();
+        p.z=a.shift()||0;
     }
     return p;
 }

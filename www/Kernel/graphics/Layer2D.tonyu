@@ -14,7 +14,7 @@ var spx,spy,wpx,wpy,rotation,scale,group,screen;
     c.translate(-wpOnSX+spx,-wpOnSY+spy);
     c.rotate(rad(rt));
     c.scale(sc,sc);
-    group.draw(c);
+    group.draw(c,this);
     c.restore();
 }
 \world2screen(obj) {// world<=>group
