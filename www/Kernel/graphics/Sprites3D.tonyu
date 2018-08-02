@@ -5,15 +5,15 @@ var sprites;
     super(p);
     sprites=[];
 }
-\draw3D(camera) {
+\draw(ctx,camera) {
     camera.sprites=[];
     for (var s of sprites) {
         s.draw3D(camera);
     }
-    var s2ds=camera.sprites.sort \(a,b) {
+    var s2ds=sprites.sort \(a,b) {
         return b.zOrder-a.zOrder;
     };
     for (var s2d of s2ds) {
-        s2d.draw(camera.context);
+        s2d.draw(ctx);
     }
 }

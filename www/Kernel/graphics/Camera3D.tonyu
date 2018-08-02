@@ -1,10 +1,20 @@
 extends Actor3D;
 "field strict";
-/*var sprites;
-\addSprite2D(s) {
+var sprites;
+var z1:Number;// z where scale==1
+\addSprite2D(s) {// called during draw3D
     sprites.push(s);
-}*/
-\to2D(pos) {
+}
+\new(p) {
+    super(p);
+    rotation={x:0,y:0,z:0,order:"yxz"};
+}
+\to2D(pos:Vec3) {
     var p=pos.sub(position);
+
+
+}
+\unitVectors {
+    var v={x=new Vec3(1,0,0),y=new Vec(0,1,0),z=new Vec(0,0,1)};
 
 }

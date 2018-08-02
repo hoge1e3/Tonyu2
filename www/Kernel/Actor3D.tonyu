@@ -20,5 +20,4 @@ native Tonyu;
         x=p.x, y=p.y, scaleX=p.scale, p=this.p,
         rotation, alpha, zOrder=z
     });
-
 }
