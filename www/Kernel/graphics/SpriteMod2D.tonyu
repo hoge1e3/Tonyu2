@@ -2,6 +2,7 @@ extends null;
 includes SpriteMod,TextRectMod;
 "field strict";
 native Math;
+var x,y;
 
 nowait \performTransform(ctx) {//2D
     if (x!==x || y!==y || x==null || y==null) {

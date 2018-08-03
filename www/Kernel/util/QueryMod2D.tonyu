@@ -1,0 +1,27 @@
+extends null;
+includes QueryMod;
+native Math;
+"field strict";
+\getCrashShape() {// 2D
+    //return new CubeShape(...);// if 3D
+    return new RectShape(getCrashRect());
+}
+nowait \getCrashRect() {//2D
+    var actWidth=(width||radius*2)*scaleX*crashScale, actHeight;
+    if(typeof scaleY==="undefined"){
+        actHeight=(height||radius*2)*scaleX*crashScale;
+    }else{
+        actHeight=(height||radius*2)*scaleY*crashScale;
+    }
+    return typeof x=="number" &&
+    typeof y=="number" &&
+    typeof actWidth=="number" &&
+    typeof actHeight=="number" &&
+    {x,y,width:Math.abs(actWidth),height:Math.abs(actHeight)};
+}
+\screenOut(a) {//2D
+    if (!a) a=0;
+    var cp=$Screen.convert(this,$Screen);
+    return abs(clamped(cp.x,-a,$screenWidth+a))+
+        abs(clamped(cp.y,-a,$screenHeight+a));
+}

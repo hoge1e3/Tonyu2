@@ -1,5 +1,5 @@
 extends BaseActor;
-includes SpriteMod3D;
+includes SpriteMod3D,QueryMod3D;
 "field strict";
 var z,direction;
 native Tonyu;

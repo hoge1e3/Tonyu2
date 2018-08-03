@@ -519,26 +519,26 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=4000239;//kernel.SpriteMod:239
+      //$LASTPOS=4000235;//kernel.SpriteMod:235
       _this.position=new Tonyu.classes.kernel.Vec3View(_this);
-      //$LASTPOS=4000273;//kernel.SpriteMod:273
+      //$LASTPOS=4000269;//kernel.SpriteMod:269
       if (_this.scaleX==null) {
-        //$LASTPOS=4000291;//kernel.SpriteMod:291
+        //$LASTPOS=4000287;//kernel.SpriteMod:287
         _this.scaleX=1;
       }
-      //$LASTPOS=4000306;//kernel.SpriteMod:306
+      //$LASTPOS=4000302;//kernel.SpriteMod:302
       if (_this.rotation==null) {
-        //$LASTPOS=4000326;//kernel.SpriteMod:326
+        //$LASTPOS=4000322;//kernel.SpriteMod:322
         _this.rotation=0;
       }
-      //$LASTPOS=4000343;//kernel.SpriteMod:343
+      //$LASTPOS=4000339;//kernel.SpriteMod:339
       if (_this.alpha==null) {
-        //$LASTPOS=4000360;//kernel.SpriteMod:360
+        //$LASTPOS=4000356;//kernel.SpriteMod:356
         _this.alpha=255;
       }
-      //$LASTPOS=4000376;//kernel.SpriteMod:376
+      //$LASTPOS=4000372;//kernel.SpriteMod:372
       if (_this.zOrder==null) {
-        //$LASTPOS=4000394;//kernel.SpriteMod:394
+        //$LASTPOS=4000390;//kernel.SpriteMod:390
         _this.zOrder=0;
       }
     },
@@ -548,26 +548,26 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=4000239;//kernel.SpriteMod:239
+      //$LASTPOS=4000235;//kernel.SpriteMod:235
       _this.position=new Tonyu.classes.kernel.Vec3View(_this);
-      //$LASTPOS=4000273;//kernel.SpriteMod:273
+      //$LASTPOS=4000269;//kernel.SpriteMod:269
       if (_this.scaleX==null) {
-        //$LASTPOS=4000291;//kernel.SpriteMod:291
+        //$LASTPOS=4000287;//kernel.SpriteMod:287
         _this.scaleX=1;
       }
-      //$LASTPOS=4000306;//kernel.SpriteMod:306
+      //$LASTPOS=4000302;//kernel.SpriteMod:302
       if (_this.rotation==null) {
-        //$LASTPOS=4000326;//kernel.SpriteMod:326
+        //$LASTPOS=4000322;//kernel.SpriteMod:322
         _this.rotation=0;
       }
-      //$LASTPOS=4000343;//kernel.SpriteMod:343
+      //$LASTPOS=4000339;//kernel.SpriteMod:339
       if (_this.alpha==null) {
-        //$LASTPOS=4000360;//kernel.SpriteMod:360
+        //$LASTPOS=4000356;//kernel.SpriteMod:356
         _this.alpha=255;
       }
-      //$LASTPOS=4000376;//kernel.SpriteMod:376
+      //$LASTPOS=4000372;//kernel.SpriteMod:372
       if (_this.zOrder==null) {
-        //$LASTPOS=4000394;//kernel.SpriteMod:394
+        //$LASTPOS=4000390;//kernel.SpriteMod:390
         _this.zOrder=0;
       }
       
@@ -577,23 +577,23 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=4000442;//kernel.SpriteMod:442
+      //$LASTPOS=4000438;//kernel.SpriteMod:438
       if (typeof  _this.p!="number") {
-        //$LASTPOS=4000477;//kernel.SpriteMod:477
+        //$LASTPOS=4000473;//kernel.SpriteMod:473
         _this.p=0;
         
       }
-      //$LASTPOS=4000494;//kernel.SpriteMod:494
+      //$LASTPOS=4000490;//kernel.SpriteMod:490
       _this.p=Math.floor(_this.p);
-      //$LASTPOS=4000516;//kernel.SpriteMod:516
+      //$LASTPOS=4000512;//kernel.SpriteMod:512
       _this.pImg=Tonyu.globals.$imageList[_this.p];
-      //$LASTPOS=4000541;//kernel.SpriteMod:541
+      //$LASTPOS=4000537;//kernel.SpriteMod:537
       if (! _this.pImg) {
         return _this;
       }
-      //$LASTPOS=4000565;//kernel.SpriteMod:565
+      //$LASTPOS=4000561;//kernel.SpriteMod:561
       _this.width=_this.pImg.width;
-      //$LASTPOS=4000588;//kernel.SpriteMod:588
+      //$LASTPOS=4000584;//kernel.SpriteMod:584
       _this.height=_this.pImg.height;
     },
     color :function _trc_SpriteMod_color(r,g,b) {
@@ -606,7 +606,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=4003013;//kernel.SpriteMod:3013
+      //$LASTPOS=4003009;//kernel.SpriteMod:3009
       _this._isInvisible=! v;
     },
     fiber$setVisible :function _trc_SpriteMod_f_setVisible(_thread,v) {
@@ -615,14 +615,14 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=4003013;//kernel.SpriteMod:3013
+      //$LASTPOS=4003009;//kernel.SpriteMod:3009
       _this._isInvisible=! v;
       
       _thread.retVal=_this;return;
     },
     __dummy: false
   },
-  decls: {"methods":{"main":{"nowait":false},"initSpriteMod":{"nowait":false},"detectShape":{"nowait":true},"color":{"nowait":true},"setVisible":{"nowait":false}},"fields":{"x":{},"y":{},"p":{},"pImg":{},"text":{},"size":{},"font":{},"align":{},"fillStyle":{},"scaleX":{},"scaleY":{},"width":{},"height":{},"radius":{},"rotation":{},"alpha":{},"position":{},"zOrder":{},"_isInvisible":{}}}
+  decls: {"methods":{"main":{"nowait":false},"initSpriteMod":{"nowait":false},"detectShape":{"nowait":true},"color":{"nowait":true},"setVisible":{"nowait":false}},"fields":{"p":{},"pImg":{},"text":{},"size":{},"font":{},"align":{},"fillStyle":{},"scaleX":{},"scaleY":{},"width":{},"height":{},"radius":{},"rotation":{},"alpha":{},"position":{},"zOrder":{},"_isInvisible":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.SpriteMod3D',
@@ -636,6 +636,7 @@ Tonyu.klass.define({
       
       //$LASTPOS=5000036;//kernel.SpriteMod3D:36
       "field strict";
+      
     },
     fiber$main :function _trc_SpriteMod3D_f_main(_thread) {
       "use strict";
@@ -646,13 +647,16 @@ Tonyu.klass.define({
       //$LASTPOS=5000036;//kernel.SpriteMod3D:36
       "field strict";
       
+      
       _thread.retVal=_this;return;
     },
     draw3D :function _trc_SpriteMod3D_draw3D(camera) {
       "use strict";
       var _this=this;
       
-      //$LASTPOS=5000078;//kernel.SpriteMod3D:78
+      //$LASTPOS=5000090;//kernel.SpriteMod3D:90
+      _this.detectShape();
+      //$LASTPOS=5000110;//kernel.SpriteMod3D:110
       camera.addSprite3D(_this);
     },
     fiber$draw3D :function _trc_SpriteMod3D_f_draw3D(_thread,camera) {
@@ -661,14 +665,16 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=5000078;//kernel.SpriteMod3D:78
+      //$LASTPOS=5000090;//kernel.SpriteMod3D:90
+      _this.detectShape();
+      //$LASTPOS=5000110;//kernel.SpriteMod3D:110
       camera.addSprite3D(_this);
       
       _thread.retVal=_this;return;
     },
     __dummy: false
   },
-  decls: {"methods":{"main":{"nowait":false},"draw3D":{"nowait":false}},"fields":{}}
+  decls: {"methods":{"main":{"nowait":false},"draw3D":{"nowait":false}},"fields":{"x":{},"y":{},"z":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.TextRectMod',
@@ -8438,6 +8444,7 @@ Tonyu.klass.define({
       
       //$LASTPOS=31000048;//kernel.SpriteMod2D:48
       "field strict";
+      
     },
     fiber$main :function _trc_SpriteMod2D_f_main(_thread) {
       "use strict";
@@ -8448,40 +8455,41 @@ Tonyu.klass.define({
       //$LASTPOS=31000048;//kernel.SpriteMod2D:48
       "field strict";
       
+      
       _thread.retVal=_this;return;
     },
     performTransform :function _trc_SpriteMod2D_performTransform(ctx) {
       "use strict";
       var _this=this;
       
-      //$LASTPOS=31000122;//kernel.SpriteMod2D:122
+      //$LASTPOS=31000132;//kernel.SpriteMod2D:132
       if (_this.x!==_this.x||_this.y!==_this.y||_this.x==null||_this.y==null) {
         
         
       }
-      //$LASTPOS=31000251;//kernel.SpriteMod2D:251
+      //$LASTPOS=31000261;//kernel.SpriteMod2D:261
       ctx.translate(_this.x,_this.y);
-      //$LASTPOS=31000276;//kernel.SpriteMod2D:276
+      //$LASTPOS=31000286;//kernel.SpriteMod2D:286
       if (_this.rotation!=0) {
-        //$LASTPOS=31000307;//kernel.SpriteMod2D:307
+        //$LASTPOS=31000317;//kernel.SpriteMod2D:317
         ctx.rotate(_this.rotation/180*Math.PI);
         
       } else {
-        //$LASTPOS=31000367;//kernel.SpriteMod2D:367
+        //$LASTPOS=31000377;//kernel.SpriteMod2D:377
         ctx.rotate(_this.rotate/180*Math.PI);
         
       }
-      //$LASTPOS=31000416;//kernel.SpriteMod2D:416
+      //$LASTPOS=31000426;//kernel.SpriteMod2D:426
       if (typeof  _this.scaleY==="undefined") {
-        //$LASTPOS=31000464;//kernel.SpriteMod2D:464
+        //$LASTPOS=31000474;//kernel.SpriteMod2D:474
         ctx.scale(_this.scaleX,_this.scaleX);
         
       } else {
-        //$LASTPOS=31000521;//kernel.SpriteMod2D:521
+        //$LASTPOS=31000531;//kernel.SpriteMod2D:531
         ctx.scale(_this.scaleX,_this.scaleY);
         
       }
-      //$LASTPOS=31000569;//kernel.SpriteMod2D:569
+      //$LASTPOS=31000579;//kernel.SpriteMod2D:579
       ctx.globalAlpha=(_this.alpha<0?0:_this.alpha>255?255:_this.alpha)/255;
     },
     draw :function _trc_SpriteMod2D_draw(ctx) {
@@ -8493,123 +8501,123 @@ Tonyu.klass.define({
       var rect;
       
       
-      //$LASTPOS=31000671;//kernel.SpriteMod2D:671
+      //$LASTPOS=31000681;//kernel.SpriteMod2D:681
       if (_this.x==null||_this.y==null||_this._isInvisible) {
         return _this;
       }
-      //$LASTPOS=31000724;//kernel.SpriteMod2D:724
+      //$LASTPOS=31000734;//kernel.SpriteMod2D:734
       if (_this.text!=null) {
-        //$LASTPOS=31000751;//kernel.SpriteMod2D:751
+        //$LASTPOS=31000761;//kernel.SpriteMod2D:761
         splitsText = (_this.text+"").split("\n");
         
-        //$LASTPOS=31000798;//kernel.SpriteMod2D:798
+        //$LASTPOS=31000808;//kernel.SpriteMod2D:808
         drawY=_this.y;
-        //$LASTPOS=31000816;//kernel.SpriteMod2D:816
+        //$LASTPOS=31000826;//kernel.SpriteMod2D:826
         if (! _this.size) {
-          //$LASTPOS=31000827;//kernel.SpriteMod2D:827
+          //$LASTPOS=31000837;//kernel.SpriteMod2D:837
           _this.size=15;
         }
-        //$LASTPOS=31000845;//kernel.SpriteMod2D:845
+        //$LASTPOS=31000855;//kernel.SpriteMod2D:855
         if (! _this.align) {
-          //$LASTPOS=31000857;//kernel.SpriteMod2D:857
+          //$LASTPOS=31000867;//kernel.SpriteMod2D:867
           _this.align="center";
         }
-        //$LASTPOS=31000882;//kernel.SpriteMod2D:882
+        //$LASTPOS=31000892;//kernel.SpriteMod2D:892
         if (! _this.fillStyle) {
-          //$LASTPOS=31000898;//kernel.SpriteMod2D:898
+          //$LASTPOS=31000908;//kernel.SpriteMod2D:908
           _this.fillStyle="white";
         }
-        //$LASTPOS=31000926;//kernel.SpriteMod2D:926
+        //$LASTPOS=31000936;//kernel.SpriteMod2D:936
         if (_this.font) {
-          //$LASTPOS=31000936;//kernel.SpriteMod2D:936
+          //$LASTPOS=31000946;//kernel.SpriteMod2D:946
           ctx.font=_this.size+"px "+_this.font;
         }
-        //$LASTPOS=31000971;//kernel.SpriteMod2D:971
+        //$LASTPOS=31000981;//kernel.SpriteMod2D:981
         ctx.fillStyle=_this.fillStyle+"";
-        //$LASTPOS=31001008;//kernel.SpriteMod2D:1008
+        //$LASTPOS=31001018;//kernel.SpriteMod2D:1018
         ctx.globalAlpha=_this.alpha/255;
-        //$LASTPOS=31001049;//kernel.SpriteMod2D:1049
+        //$LASTPOS=31001059;//kernel.SpriteMod2D:1059
         _this.height=0;
-        //$LASTPOS=31001058;//kernel.SpriteMod2D:1058
+        //$LASTPOS=31001068;//kernel.SpriteMod2D:1068
         _this.width=0;
-        //$LASTPOS=31001076;//kernel.SpriteMod2D:1076
-        //$LASTPOS=31001080;//kernel.SpriteMod2D:1080
+        //$LASTPOS=31001086;//kernel.SpriteMod2D:1086
+        //$LASTPOS=31001090;//kernel.SpriteMod2D:1090
         textCount = 0;
         for (; textCount<splitsText.length ; textCount++) {
           {
-            //$LASTPOS=31001151;//kernel.SpriteMod2D:1151
+            //$LASTPOS=31001161;//kernel.SpriteMod2D:1161
             rect = _this.drawTextRect(ctx,splitsText[textCount],_this.x,drawY,_this.size,_this.align,"fill");
             
-            //$LASTPOS=31001247;//kernel.SpriteMod2D:1247
+            //$LASTPOS=31001257;//kernel.SpriteMod2D:1257
             if (_this.width<rect.w) {
-              //$LASTPOS=31001264;//kernel.SpriteMod2D:1264
+              //$LASTPOS=31001274;//kernel.SpriteMod2D:1274
               _this.width=rect.w;
             }
-            //$LASTPOS=31001291;//kernel.SpriteMod2D:1291
+            //$LASTPOS=31001301;//kernel.SpriteMod2D:1301
             _this.height+=rect.h;
-            //$LASTPOS=31001320;//kernel.SpriteMod2D:1320
+            //$LASTPOS=31001330;//kernel.SpriteMod2D:1330
             drawY+=_this.size;
           }
         }
         
       } else {
-        //$LASTPOS=31001356;//kernel.SpriteMod2D:1356
+        //$LASTPOS=31001366;//kernel.SpriteMod2D:1366
         if (_this.fillStyle!=null) {
-          //$LASTPOS=31001388;//kernel.SpriteMod2D:1388
+          //$LASTPOS=31001398;//kernel.SpriteMod2D:1398
           ctx.save();
-          //$LASTPOS=31001409;//kernel.SpriteMod2D:1409
+          //$LASTPOS=31001419;//kernel.SpriteMod2D:1419
           _this.performTransform(ctx);
-          //$LASTPOS=31001441;//kernel.SpriteMod2D:1441
+          //$LASTPOS=31001451;//kernel.SpriteMod2D:1451
           ctx.fillStyle=_this.fillStyle+"";
-          //$LASTPOS=31001478;//kernel.SpriteMod2D:1478
+          //$LASTPOS=31001488;//kernel.SpriteMod2D:1488
           if (_this.radius) {
-            //$LASTPOS=31001505;//kernel.SpriteMod2D:1505
+            //$LASTPOS=31001515;//kernel.SpriteMod2D:1515
             ctx.beginPath();
-            //$LASTPOS=31001535;//kernel.SpriteMod2D:1535
+            //$LASTPOS=31001545;//kernel.SpriteMod2D:1545
             ctx.arc(0,0,_this.radius,0,2*Math.PI);
-            //$LASTPOS=31001581;//kernel.SpriteMod2D:1581
+            //$LASTPOS=31001591;//kernel.SpriteMod2D:1591
             ctx.fill();
             
           } else {
-            //$LASTPOS=31001624;//kernel.SpriteMod2D:1624
+            //$LASTPOS=31001634;//kernel.SpriteMod2D:1634
             ctx.fillRect(- _this.width/2,- _this.height/2,_this.width,_this.height);
             
           }
-          //$LASTPOS=31001691;//kernel.SpriteMod2D:1691
+          //$LASTPOS=31001701;//kernel.SpriteMod2D:1701
           ctx.restore();
           
         } else {
-          //$LASTPOS=31001718;//kernel.SpriteMod2D:1718
+          //$LASTPOS=31001728;//kernel.SpriteMod2D:1728
           if (_this.p&&typeof  _this.p.draw==="function") {
-            //$LASTPOS=31001766;//kernel.SpriteMod2D:1766
+            //$LASTPOS=31001776;//kernel.SpriteMod2D:1776
             ctx.save();
-            //$LASTPOS=31001787;//kernel.SpriteMod2D:1787
+            //$LASTPOS=31001797;//kernel.SpriteMod2D:1797
             _this.performTransform(ctx);
-            //$LASTPOS=31001819;//kernel.SpriteMod2D:1819
+            //$LASTPOS=31001829;//kernel.SpriteMod2D:1829
             _this.p.draw(ctx);
-            //$LASTPOS=31001841;//kernel.SpriteMod2D:1841
+            //$LASTPOS=31001851;//kernel.SpriteMod2D:1851
             ctx.restore();
-            //$LASTPOS=31001865;//kernel.SpriteMod2D:1865
+            //$LASTPOS=31001875;//kernel.SpriteMod2D:1875
             if (_this.p.width*_this.p.height>0) {
-              //$LASTPOS=31001904;//kernel.SpriteMod2D:1904
+              //$LASTPOS=31001914;//kernel.SpriteMod2D:1914
               _this.width=_this.p.width;
-              //$LASTPOS=31001932;//kernel.SpriteMod2D:1932
+              //$LASTPOS=31001942;//kernel.SpriteMod2D:1942
               _this.height=_this.p.height;
               
             }
             
           } else {
-            //$LASTPOS=31001983;//kernel.SpriteMod2D:1983
+            //$LASTPOS=31001993;//kernel.SpriteMod2D:1993
             _this.detectShape();
-            //$LASTPOS=31002007;//kernel.SpriteMod2D:2007
+            //$LASTPOS=31002017;//kernel.SpriteMod2D:2017
             if (_this.pImg) {
-              //$LASTPOS=31002061;//kernel.SpriteMod2D:2061
+              //$LASTPOS=31002071;//kernel.SpriteMod2D:2071
               ctx.save();
-              //$LASTPOS=31002086;//kernel.SpriteMod2D:2086
+              //$LASTPOS=31002096;//kernel.SpriteMod2D:2096
               _this.performTransform(ctx);
-              //$LASTPOS=31002122;//kernel.SpriteMod2D:2122
+              //$LASTPOS=31002132;//kernel.SpriteMod2D:2132
               ctx.drawImage(_this.pImg.image,_this.pImg.x,_this.pImg.y,_this.pImg.width,_this.pImg.height,- _this.width/2,- _this.height/2,_this.width,_this.height);
-              //$LASTPOS=31002266;//kernel.SpriteMod2D:2266
+              //$LASTPOS=31002276;//kernel.SpriteMod2D:2276
               ctx.restore();
               
             }
@@ -8620,7 +8628,7 @@ Tonyu.klass.define({
     },
     __dummy: false
   },
-  decls: {"methods":{"main":{"nowait":false},"performTransform":{"nowait":true},"draw":{"nowait":true}},"fields":{}}
+  decls: {"methods":{"main":{"nowait":false},"performTransform":{"nowait":true},"draw":{"nowait":true}},"fields":{"x":{},"y":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.Sprites3D',
@@ -13211,27 +13219,27 @@ Tonyu.klass.define({
       var sp;
       var t1;
       
-      //$LASTPOS=47000707;//kernel.QueryMod:707
+      //$LASTPOS=47000678;//kernel.QueryMod:678
       res = new Tonyu.classes.kernel.TQuery(_this);
       
-      //$LASTPOS=47000738;//kernel.QueryMod:738
+      //$LASTPOS=47000709;//kernel.QueryMod:709
       sp = _this;
       
-      //$LASTPOS=47000756;//kernel.QueryMod:756
+      //$LASTPOS=47000727;//kernel.QueryMod:727
       t1 = _this.getCrashShape();
       
-      //$LASTPOS=47000785;//kernel.QueryMod:785
+      //$LASTPOS=47000784;//kernel.QueryMod:784
       if (! t1) {
         return res;
       }
-      //$LASTPOS=47000811;//kernel.QueryMod:811
-      _this.layer.sprites.forEach((function anonymous_833(s) {
+      //$LASTPOS=47000810;//kernel.QueryMod:810
+      _this.layer.sprites.forEach((function anonymous_832(s) {
         var t2;
         
         
-        //$LASTPOS=47000866;//kernel.QueryMod:866
+        //$LASTPOS=47000865;//kernel.QueryMod:865
         if (s!==_this&&! s.excludeFromAll&&s instanceof t&&(t2=s.getCrashShape())&&t1.intersects(t2)) {
-          //$LASTPOS=47001008;//kernel.QueryMod:1008
+          //$LASTPOS=47001007;//kernel.QueryMod:1007
           res.push(s);
           
         }
@@ -13242,11 +13250,11 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=47001093;//kernel.QueryMod:1093
+      //$LASTPOS=47001333;//kernel.QueryMod:1333
       if (! t) {
         return false;
       }
-      //$LASTPOS=47001120;//kernel.QueryMod:1120
+      //$LASTPOS=47001360;//kernel.QueryMod:1360
       if (typeof  t=="function") {
         return _this.allCrash(t)[0];
         
@@ -13259,14 +13267,14 @@ Tonyu.klass.define({
       var t1;
       var t2;
       
-      //$LASTPOS=47001276;//kernel.QueryMod:1276
+      //$LASTPOS=47001488;//kernel.QueryMod:1488
       if (! t||t._isDead) {
         return false;
       }
-      //$LASTPOS=47001316;//kernel.QueryMod:1316
+      //$LASTPOS=47001528;//kernel.QueryMod:1528
       t1 = _this.getCrashShape();
       
-      //$LASTPOS=47001345;//kernel.QueryMod:1345
+      //$LASTPOS=47001584;//kernel.QueryMod:1584
       t2 = t.getCrashShape();
       
       return t1&&t1.intersects(t2);
@@ -13277,29 +13285,29 @@ Tonyu.klass.define({
       var obj;
       var _it_415;
       
-      //$LASTPOS=47001444;//kernel.QueryMod:1444
+      //$LASTPOS=47001683;//kernel.QueryMod:1683
       while (true) {
-        //$LASTPOS=47001466;//kernel.QueryMod:1466
+        //$LASTPOS=47001705;//kernel.QueryMod:1705
         if (typeof  d=="function") {
-          //$LASTPOS=47001505;//kernel.QueryMod:1505
+          //$LASTPOS=47001744;//kernel.QueryMod:1744
           _it_415=Tonyu.iterator(_this.allCrash(d),1);
           while(_it_415.next()) {
             obj=_it_415[0];
             
-            //$LASTPOS=47001551;//kernel.QueryMod:1551
+            //$LASTPOS=47001790;//kernel.QueryMod:1790
             _this.callEventHandler(f,[obj]);
             
           }
           
         } else {
-          //$LASTPOS=47001608;//kernel.QueryMod:1608
+          //$LASTPOS=47001847;//kernel.QueryMod:1847
           if (_this.crashTo(d)) {
-            //$LASTPOS=47001637;//kernel.QueryMod:1637
+            //$LASTPOS=47001876;//kernel.QueryMod:1876
             _this.callEventHandler(f,[d]);
             
           }
         }
-        //$LASTPOS=47001682;//kernel.QueryMod:1682
+        //$LASTPOS=47001921;//kernel.QueryMod:1921
         _this.update();
         
       }
@@ -13318,17 +13326,17 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=47001444;//kernel.QueryMod:1444
+            //$LASTPOS=47001683;//kernel.QueryMod:1683
           case 1:
-            //$LASTPOS=47001466;//kernel.QueryMod:1466
+            //$LASTPOS=47001705;//kernel.QueryMod:1705
             if (!(typeof  d=="function")) { __pc=5     ; break; }
-            //$LASTPOS=47001505;//kernel.QueryMod:1505
+            //$LASTPOS=47001744;//kernel.QueryMod:1744
             _it_415=Tonyu.iterator(_this.allCrash(d),1);
           case 2:
             if (!(_it_415.next())) { __pc=4     ; break; }
             obj=_it_415[0];
             
-            //$LASTPOS=47001551;//kernel.QueryMod:1551
+            //$LASTPOS=47001790;//kernel.QueryMod:1790
             _this.fiber$callEventHandler(_thread, f, [obj]);
             __pc=3;return;
           case 3:
@@ -13338,9 +13346,9 @@ Tonyu.klass.define({
             
             __pc=8     ;break;
           case 5     :
-            //$LASTPOS=47001608;//kernel.QueryMod:1608
+            //$LASTPOS=47001847;//kernel.QueryMod:1847
             if (!(_this.crashTo(d))) { __pc=7     ; break; }
-            //$LASTPOS=47001637;//kernel.QueryMod:1637
+            //$LASTPOS=47001876;//kernel.QueryMod:1876
             _this.fiber$callEventHandler(_thread, f, [d]);
             __pc=6;return;
           case 6:
@@ -13349,7 +13357,7 @@ Tonyu.klass.define({
             
           case 8     :
             
-            //$LASTPOS=47001682;//kernel.QueryMod:1682
+            //$LASTPOS=47001921;//kernel.QueryMod:1921
             _this.fiber$update(_thread);
             __pc=9;return;
           case 9:
@@ -13362,67 +13370,29 @@ Tonyu.klass.define({
         }
       });
     },
-    getCrashShape :function _trc_QueryMod_getCrashShape() {
-      "use strict";
-      var _this=this;
-      
-      return new Tonyu.classes.kernel.RectShape(_this.getCrashRect());
-    },
-    fiber$getCrashShape :function _trc_QueryMod_f_getCrashShape(_thread) {
-      "use strict";
-      var _this=this;
-      //var _arguments=Tonyu.A(arguments);
-      var __pc=0;
-      
-      _thread.retVal=new Tonyu.classes.kernel.RectShape(_this.getCrashRect());return;
-      
-      
-      _thread.retVal=_this;return;
-    },
-    getCrashRect :function _trc_QueryMod_getCrashRect() {
-      "use strict";
-      var _this=this;
-      var actWidth;
-      var actHeight;
-      
-      //$LASTPOS=47001847;//kernel.QueryMod:1847
-      actWidth = (_this.width||_this.radius*2)*_this.scaleX*_this.crashScale;
-      
-      //$LASTPOS=47001913;//kernel.QueryMod:1913
-      if (typeof  _this.scaleY==="undefined") {
-        //$LASTPOS=47001955;//kernel.QueryMod:1955
-        actHeight=(_this.height||_this.radius*2)*_this.scaleX*_this.crashScale;
-        
-      } else {
-        //$LASTPOS=47002024;//kernel.QueryMod:2024
-        actHeight=(_this.height||_this.radius*2)*_this.scaleY*_this.crashScale;
-        
-      }
-      return typeof  _this.x=="number"&&typeof  _this.y=="number"&&typeof  actWidth=="number"&&typeof  actHeight=="number"&&{x: _this.x,y: _this.y,width: Math.abs(actWidth),height: Math.abs(actHeight)};
-    },
     allWithin :function _trc_QueryMod_allWithin(t,distance) {
       "use strict";
       var _this=this;
       var res;
       var sp;
       
-      //$LASTPOS=47002338;//kernel.QueryMod:2338
+      //$LASTPOS=47002005;//kernel.QueryMod:2005
       res = new Tonyu.classes.kernel.TQuery(_this);
       
-      //$LASTPOS=47002369;//kernel.QueryMod:2369
+      //$LASTPOS=47002036;//kernel.QueryMod:2036
       sp = _this;
       
-      //$LASTPOS=47002387;//kernel.QueryMod:2387
+      //$LASTPOS=47002054;//kernel.QueryMod:2054
       if (typeof  t!=="function") {
         throw new Error("allWithinの第一引数はクラスにしてください");
         
       }
-      //$LASTPOS=47002466;//kernel.QueryMod:2466
-      _this.layer.sprites.forEach((function anonymous_2488(s) {
+      //$LASTPOS=47002133;//kernel.QueryMod:2133
+      _this.layer.sprites.forEach((function anonymous_2155(s) {
         
-        //$LASTPOS=47002504;//kernel.QueryMod:2504
+        //$LASTPOS=47002171;//kernel.QueryMod:2171
         if (s!==_this&&! s.excludeFromAll&&s instanceof t&&_this.dist(s)<distance) {
-          //$LASTPOS=47002619;//kernel.QueryMod:2619
+          //$LASTPOS=47002286;//kernel.QueryMod:2286
           res.push(s);
           
         }
@@ -13433,11 +13403,11 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=47002711;//kernel.QueryMod:2711
+      //$LASTPOS=47002378;//kernel.QueryMod:2378
       if (! t) {
         return false;
       }
-      //$LASTPOS=47002737;//kernel.QueryMod:2737
+      //$LASTPOS=47002404;//kernel.QueryMod:2404
       if (typeof  t=="function") {
         return _this.allWithin(t,distance)[0];
         
@@ -13448,11 +13418,11 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=47002907;//kernel.QueryMod:2907
+      //$LASTPOS=47002574;//kernel.QueryMod:2574
       if (! t||t._isDead) {
         return false;
       }
-      //$LASTPOS=47002946;//kernel.QueryMod:2946
+      //$LASTPOS=47002613;//kernel.QueryMod:2613
       if (Math.sqrt(Math.abs(_this.x-t.x)*Math.abs(_this.x-t.x)+Math.abs(_this.y-t.y)*Math.abs(_this.y-t.y))<distance) {
         return true;
         
@@ -13463,31 +13433,31 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       var obj;
-      var _it_423;
+      var _it_421;
       
-      //$LASTPOS=47003121;//kernel.QueryMod:3121
+      //$LASTPOS=47002788;//kernel.QueryMod:2788
       while (true) {
-        //$LASTPOS=47003143;//kernel.QueryMod:3143
+        //$LASTPOS=47002810;//kernel.QueryMod:2810
         if (typeof  d=="function") {
-          //$LASTPOS=47003182;//kernel.QueryMod:3182
-          _it_423=Tonyu.iterator(_this.allWithin(d,r),1);
-          while(_it_423.next()) {
-            obj=_it_423[0];
+          //$LASTPOS=47002849;//kernel.QueryMod:2849
+          _it_421=Tonyu.iterator(_this.allWithin(d,r),1);
+          while(_it_421.next()) {
+            obj=_it_421[0];
             
-            //$LASTPOS=47003231;//kernel.QueryMod:3231
+            //$LASTPOS=47002898;//kernel.QueryMod:2898
             f(obj);
             
           }
           
         } else {
-          //$LASTPOS=47003269;//kernel.QueryMod:3269
+          //$LASTPOS=47002936;//kernel.QueryMod:2936
           if (_this.within(d,r)) {
-            //$LASTPOS=47003299;//kernel.QueryMod:3299
+            //$LASTPOS=47002966;//kernel.QueryMod:2966
             f(d);
             
           }
         }
-        //$LASTPOS=47003325;//kernel.QueryMod:3325
+        //$LASTPOS=47002992;//kernel.QueryMod:2992
         _this.update();
         
       }
@@ -13498,7 +13468,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       var obj;
-      var _it_423;
+      var _it_421;
       
       
       _thread.enter(function _trc_QueryMod_ent_withinChecker(_thread) {
@@ -13506,29 +13476,29 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=47003121;//kernel.QueryMod:3121
+            //$LASTPOS=47002788;//kernel.QueryMod:2788
           case 1:
-            //$LASTPOS=47003143;//kernel.QueryMod:3143
+            //$LASTPOS=47002810;//kernel.QueryMod:2810
             if (typeof  d=="function") {
-              //$LASTPOS=47003182;//kernel.QueryMod:3182
-              _it_423=Tonyu.iterator(_this.allWithin(d,r),1);
-              while(_it_423.next()) {
-                obj=_it_423[0];
+              //$LASTPOS=47002849;//kernel.QueryMod:2849
+              _it_421=Tonyu.iterator(_this.allWithin(d,r),1);
+              while(_it_421.next()) {
+                obj=_it_421[0];
                 
-                //$LASTPOS=47003231;//kernel.QueryMod:3231
+                //$LASTPOS=47002898;//kernel.QueryMod:2898
                 f(obj);
                 
               }
               
             } else {
-              //$LASTPOS=47003269;//kernel.QueryMod:3269
+              //$LASTPOS=47002936;//kernel.QueryMod:2936
               if (_this.within(d,r)) {
-                //$LASTPOS=47003299;//kernel.QueryMod:3299
+                //$LASTPOS=47002966;//kernel.QueryMod:2966
                 f(d);
                 
               }
             }
-            //$LASTPOS=47003325;//kernel.QueryMod:3325
+            //$LASTPOS=47002992;//kernel.QueryMod:2992
             _this.fiber$update(_thread);
             __pc=2;return;
           case 2:
@@ -13545,81 +13515,46 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=47003394;//kernel.QueryMod:3394
-      _this.layer.watchHit(typeA,typeB,(function anonymous_3424(a,b) {
+      //$LASTPOS=47003061;//kernel.QueryMod:3061
+      _this.layer.watchHit(typeA,typeB,(function anonymous_3091(a,b) {
         
-        //$LASTPOS=47003442;//kernel.QueryMod:3442
+        //$LASTPOS=47003109;//kernel.QueryMod:3109
         onHit.apply(_this,[a,b]);
       }));
-    },
-    screenOut :function _trc_QueryMod_screenOut(a) {
-      "use strict";
-      var _this=this;
-      var cp;
-      
-      //$LASTPOS=47003505;//kernel.QueryMod:3505
-      if (! a) {
-        //$LASTPOS=47003513;//kernel.QueryMod:3513
-        a=0;
-      }
-      //$LASTPOS=47003523;//kernel.QueryMod:3523
-      cp = Tonyu.globals.$Screen.convert(_this,Tonyu.globals.$Screen);
-      
-      return _this.abs(_this.clamped(cp.x,- a,Tonyu.globals.$screenWidth+a))+_this.abs(_this.clamped(cp.y,- a,Tonyu.globals.$screenHeight+a));
-    },
-    fiber$screenOut :function _trc_QueryMod_f_screenOut(_thread,a) {
-      "use strict";
-      var _this=this;
-      //var _arguments=Tonyu.A(arguments);
-      var __pc=0;
-      var cp;
-      
-      //$LASTPOS=47003505;//kernel.QueryMod:3505
-      if (! a) {
-        //$LASTPOS=47003513;//kernel.QueryMod:3513
-        a=0;
-      }
-      //$LASTPOS=47003523;//kernel.QueryMod:3523
-      cp = Tonyu.globals.$Screen.convert(_this,Tonyu.globals.$Screen);
-      
-      _thread.retVal=_this.abs(_this.clamped(cp.x,- a,Tonyu.globals.$screenWidth+a))+_this.abs(_this.clamped(cp.y,- a,Tonyu.globals.$screenHeight+a));return;
-      
-      
-      _thread.retVal=_this;return;
     },
     screenOutChecker :function _trc_QueryMod_screenOutChecker(d,f) {
       "use strict";
       var _this=this;
       
-      //$LASTPOS=47003699;//kernel.QueryMod:3699
+      //$LASTPOS=47003183;//kernel.QueryMod:3183
       while (true) {
-        //$LASTPOS=47003721;//kernel.QueryMod:3721
+        //$LASTPOS=47003205;//kernel.QueryMod:3205
         while (true) {
-          //$LASTPOS=47003747;//kernel.QueryMod:3747
+          //$LASTPOS=47003231;//kernel.QueryMod:3231
           if (_this.screenOut()>d) {
-            //$LASTPOS=47003783;//kernel.QueryMod:3783
+            //$LASTPOS=47003294;//kernel.QueryMod:3294
             f();
             break;
             
             
           }
-          //$LASTPOS=47003840;//kernel.QueryMod:3840
+          //$LASTPOS=47003351;//kernel.QueryMod:3351
           _this.update();
           
         }
-        //$LASTPOS=47003870;//kernel.QueryMod:3870
+        //$LASTPOS=47003381;//kernel.QueryMod:3381
         while (true) {
-          //$LASTPOS=47003896;//kernel.QueryMod:3896
+          //$LASTPOS=47003407;//kernel.QueryMod:3407
           if (_this.screenOut()<=d) {
             break;
             
             
           }
-          //$LASTPOS=47003968;//kernel.QueryMod:3968
+          //$LASTPOS=47003506;//kernel.QueryMod:3506
           _this.update();
           
         }
-        //$LASTPOS=47003998;//kernel.QueryMod:3998
+        //$LASTPOS=47003536;//kernel.QueryMod:3536
         _this.update();
         
       }
@@ -13636,19 +13571,19 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=47003699;//kernel.QueryMod:3699
+            //$LASTPOS=47003183;//kernel.QueryMod:3183
           case 1:
-            //$LASTPOS=47003721;//kernel.QueryMod:3721
+            //$LASTPOS=47003205;//kernel.QueryMod:3205
           case 2:
-            //$LASTPOS=47003747;//kernel.QueryMod:3747
+            //$LASTPOS=47003231;//kernel.QueryMod:3231
             if (!(_this.screenOut()>d)) { __pc=3     ; break; }
-            //$LASTPOS=47003783;//kernel.QueryMod:3783
+            //$LASTPOS=47003294;//kernel.QueryMod:3294
             f();
             __pc=5     ; break;
             
           case 3     :
             
-            //$LASTPOS=47003840;//kernel.QueryMod:3840
+            //$LASTPOS=47003351;//kernel.QueryMod:3351
             _this.fiber$update(_thread);
             __pc=4;return;
           case 4:
@@ -13656,15 +13591,15 @@ Tonyu.klass.define({
             __pc=2;break;
           case 5     :
             
-            //$LASTPOS=47003870;//kernel.QueryMod:3870
+            //$LASTPOS=47003381;//kernel.QueryMod:3381
           case 6:
-            //$LASTPOS=47003896;//kernel.QueryMod:3896
+            //$LASTPOS=47003407;//kernel.QueryMod:3407
             if (!(_this.screenOut()<=d)) { __pc=7     ; break; }
             __pc=9     ; break;
             
           case 7     :
             
-            //$LASTPOS=47003968;//kernel.QueryMod:3968
+            //$LASTPOS=47003506;//kernel.QueryMod:3506
             _this.fiber$update(_thread);
             __pc=8;return;
           case 8:
@@ -13672,7 +13607,7 @@ Tonyu.klass.define({
             __pc=6;break;
           case 9     :
             
-            //$LASTPOS=47003998;//kernel.QueryMod:3998
+            //$LASTPOS=47003536;//kernel.QueryMod:3536
             _this.fiber$update(_thread);
             __pc=10;return;
           case 10:
@@ -13687,7 +13622,221 @@ Tonyu.klass.define({
     },
     __dummy: false
   },
-  decls: {"methods":{"main":{"nowait":false},"hitTo":{"nowait":true},"all":{"nowait":true},"allCrash":{"nowait":true},"crashTo":{"nowait":true},"crashTo1":{"nowait":true},"crashToChecker":{"nowait":false},"getCrashShape":{"nowait":false},"getCrashRect":{"nowait":true},"allWithin":{"nowait":true},"within":{"nowait":true},"within1":{"nowait":true},"withinChecker":{"nowait":false},"watchHit":{"nowait":true},"screenOut":{"nowait":false},"screenOutChecker":{"nowait":false}},"fields":{"crashScale":{}}}
+  decls: {"methods":{"main":{"nowait":false},"hitTo":{"nowait":true},"all":{"nowait":true},"allCrash":{"nowait":true},"crashTo":{"nowait":true},"crashTo1":{"nowait":true},"crashToChecker":{"nowait":false},"allWithin":{"nowait":true},"within":{"nowait":true},"within1":{"nowait":true},"withinChecker":{"nowait":false},"watchHit":{"nowait":true},"screenOutChecker":{"nowait":false}},"fields":{"crashScale":{}}}
+});
+Tonyu.klass.define({
+  fullName: 'kernel.QueryMod2D',
+  shortName: 'QueryMod2D',
+  namespace: 'kernel',
+  includes: [Tonyu.classes.kernel.QueryMod],
+  methods: {
+    main :function _trc_QueryMod2D_main() {
+      "use strict";
+      var _this=this;
+      
+      //$LASTPOS=48000049;//kernel.QueryMod2D:49
+      "field strict";
+    },
+    fiber$main :function _trc_QueryMod2D_f_main(_thread) {
+      "use strict";
+      var _this=this;
+      //var _arguments=Tonyu.A(arguments);
+      var __pc=0;
+      
+      //$LASTPOS=48000049;//kernel.QueryMod2D:49
+      "field strict";
+      
+      _thread.retVal=_this;return;
+    },
+    getCrashShape :function _trc_QueryMod2D_getCrashShape() {
+      "use strict";
+      var _this=this;
+      
+      return new Tonyu.classes.kernel.RectShape(_this.getCrashRect());
+    },
+    fiber$getCrashShape :function _trc_QueryMod2D_f_getCrashShape(_thread) {
+      "use strict";
+      var _this=this;
+      //var _arguments=Tonyu.A(arguments);
+      var __pc=0;
+      
+      _thread.retVal=new Tonyu.classes.kernel.RectShape(_this.getCrashRect());return;
+      
+      
+      _thread.retVal=_this;return;
+    },
+    getCrashRect :function _trc_QueryMod2D_getCrashRect() {
+      "use strict";
+      var _this=this;
+      var actWidth;
+      var actHeight;
+      
+      //$LASTPOS=48000213;//kernel.QueryMod2D:213
+      actWidth = (_this.width||_this.radius*2)*_this.scaleX*_this.crashScale;
+      
+      //$LASTPOS=48000279;//kernel.QueryMod2D:279
+      if (typeof  _this.scaleY==="undefined") {
+        //$LASTPOS=48000321;//kernel.QueryMod2D:321
+        actHeight=(_this.height||_this.radius*2)*_this.scaleX*_this.crashScale;
+        
+      } else {
+        //$LASTPOS=48000390;//kernel.QueryMod2D:390
+        actHeight=(_this.height||_this.radius*2)*_this.scaleY*_this.crashScale;
+        
+      }
+      return typeof  _this.x=="number"&&typeof  _this.y=="number"&&typeof  actWidth=="number"&&typeof  actHeight=="number"&&{x: _this.x,y: _this.y,width: Math.abs(actWidth),height: Math.abs(actHeight)};
+    },
+    screenOut :function _trc_QueryMod2D_screenOut(a) {
+      "use strict";
+      var _this=this;
+      var cp;
+      
+      //$LASTPOS=48000668;//kernel.QueryMod2D:668
+      if (! a) {
+        //$LASTPOS=48000676;//kernel.QueryMod2D:676
+        a=0;
+      }
+      //$LASTPOS=48000686;//kernel.QueryMod2D:686
+      cp = Tonyu.globals.$Screen.convert(_this,Tonyu.globals.$Screen);
+      
+      return _this.abs(_this.clamped(cp.x,- a,Tonyu.globals.$screenWidth+a))+_this.abs(_this.clamped(cp.y,- a,Tonyu.globals.$screenHeight+a));
+    },
+    fiber$screenOut :function _trc_QueryMod2D_f_screenOut(_thread,a) {
+      "use strict";
+      var _this=this;
+      //var _arguments=Tonyu.A(arguments);
+      var __pc=0;
+      var cp;
+      
+      //$LASTPOS=48000668;//kernel.QueryMod2D:668
+      if (! a) {
+        //$LASTPOS=48000676;//kernel.QueryMod2D:676
+        a=0;
+      }
+      //$LASTPOS=48000686;//kernel.QueryMod2D:686
+      cp = Tonyu.globals.$Screen.convert(_this,Tonyu.globals.$Screen);
+      
+      _thread.retVal=_this.abs(_this.clamped(cp.x,- a,Tonyu.globals.$screenWidth+a))+_this.abs(_this.clamped(cp.y,- a,Tonyu.globals.$screenHeight+a));return;
+      
+      
+      _thread.retVal=_this;return;
+    },
+    __dummy: false
+  },
+  decls: {"methods":{"main":{"nowait":false},"getCrashShape":{"nowait":false},"getCrashRect":{"nowait":true},"screenOut":{"nowait":false}},"fields":{}}
+});
+Tonyu.klass.define({
+  fullName: 'kernel.QueryMod3D',
+  shortName: 'QueryMod3D',
+  namespace: 'kernel',
+  includes: [Tonyu.classes.kernel.QueryMod,Tonyu.classes.kernel.SpriteMod3D],
+  methods: {
+    main :function _trc_QueryMod3D_main() {
+      "use strict";
+      var _this=this;
+      
+      //$LASTPOS=49000061;//kernel.QueryMod3D:61
+      "field strict";
+    },
+    fiber$main :function _trc_QueryMod3D_f_main(_thread) {
+      "use strict";
+      var _this=this;
+      //var _arguments=Tonyu.A(arguments);
+      var __pc=0;
+      
+      //$LASTPOS=49000061;//kernel.QueryMod3D:61
+      "field strict";
+      
+      _thread.retVal=_this;return;
+    },
+    getCrashShape :function _trc_QueryMod3D_getCrashShape() {
+      "use strict";
+      var _this=this;
+      var actWidth;
+      var actHeight;
+      
+      //$LASTPOS=49000107;//kernel.QueryMod3D:107
+      actWidth = (_this.width||_this.radius*2)*_this.scaleX*_this.crashScale;
+      
+      //$LASTPOS=49000173;//kernel.QueryMod3D:173
+      if (typeof  _this.scaleY==="undefined") {
+        //$LASTPOS=49000215;//kernel.QueryMod3D:215
+        actHeight=(_this.height||_this.radius*2)*_this.scaleX*_this.crashScale;
+        
+      } else {
+        //$LASTPOS=49000284;//kernel.QueryMod3D:284
+        actHeight=(_this.height||_this.radius*2)*_this.scaleY*_this.crashScale;
+        
+      }
+      return typeof  _this.x=="number"&&typeof  _this.y=="number"&&typeof  actWidth=="number"&&typeof  actHeight=="number"&&new Tonyu.classes.kernel.CubeShape({x: _this.x,y: _this.y,z: _this.z,width: Math.abs(actWidth),height: Math.abs(actHeight),depth: (Math.abs(actWidth)+Math.abs(actHeight))/2});
+    },
+    fiber$getCrashShape :function _trc_QueryMod3D_f_getCrashShape(_thread) {
+      "use strict";
+      var _this=this;
+      //var _arguments=Tonyu.A(arguments);
+      var __pc=0;
+      var actWidth;
+      var actHeight;
+      
+      //$LASTPOS=49000107;//kernel.QueryMod3D:107
+      actWidth = (_this.width||_this.radius*2)*_this.scaleX*_this.crashScale;
+      
+      //$LASTPOS=49000173;//kernel.QueryMod3D:173
+      if (typeof  _this.scaleY==="undefined") {
+        //$LASTPOS=49000215;//kernel.QueryMod3D:215
+        actHeight=(_this.height||_this.radius*2)*_this.scaleX*_this.crashScale;
+        
+      } else {
+        //$LASTPOS=49000284;//kernel.QueryMod3D:284
+        actHeight=(_this.height||_this.radius*2)*_this.scaleY*_this.crashScale;
+        
+      }
+      _thread.retVal=typeof  _this.x=="number"&&typeof  _this.y=="number"&&typeof  actWidth=="number"&&typeof  actHeight=="number"&&new Tonyu.classes.kernel.CubeShape({x: _this.x,y: _this.y,z: _this.z,width: Math.abs(actWidth),height: Math.abs(actHeight),depth: (Math.abs(actWidth)+Math.abs(actHeight))/2});return;
+      
+      
+      _thread.retVal=_this;return;
+    },
+    screenOut :function _trc_QueryMod3D_screenOut(a) {
+      "use strict";
+      var _this=this;
+      var cp;
+      
+      //$LASTPOS=49000662;//kernel.QueryMod3D:662
+      if (! a) {
+        //$LASTPOS=49000670;//kernel.QueryMod3D:670
+        a=0;
+      }
+      return false;
+      //$LASTPOS=49000706;//kernel.QueryMod3D:706
+      cp = Tonyu.globals.$Screen.convert(_this,Tonyu.globals.$Screen);
+      
+      return _this.abs(_this.clamped(cp.x,- a,Tonyu.globals.$screenWidth+a))+_this.abs(_this.clamped(cp.y,- a,Tonyu.globals.$screenHeight+a));
+    },
+    fiber$screenOut :function _trc_QueryMod3D_f_screenOut(_thread,a) {
+      "use strict";
+      var _this=this;
+      //var _arguments=Tonyu.A(arguments);
+      var __pc=0;
+      var cp;
+      
+      //$LASTPOS=49000662;//kernel.QueryMod3D:662
+      if (! a) {
+        //$LASTPOS=49000670;//kernel.QueryMod3D:670
+        a=0;
+      }
+      _thread.retVal=false;return;
+      
+      //$LASTPOS=49000706;//kernel.QueryMod3D:706
+      cp = Tonyu.globals.$Screen.convert(_this,Tonyu.globals.$Screen);
+      
+      _thread.retVal=_this.abs(_this.clamped(cp.x,- a,Tonyu.globals.$screenWidth+a))+_this.abs(_this.clamped(cp.y,- a,Tonyu.globals.$screenHeight+a));return;
+      
+      
+      _thread.retVal=_this;return;
+    },
+    __dummy: false
+  },
+  decls: {"methods":{"main":{"nowait":false},"getCrashShape":{"nowait":false},"screenOut":{"nowait":false}},"fields":{}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.RectShape',
@@ -13700,7 +13849,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=48000018;//kernel.RectShape:18
+      //$LASTPOS=50000018;//kernel.RectShape:18
       "field strict";
       
     },
@@ -13710,7 +13859,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=48000018;//kernel.RectShape:18
+      //$LASTPOS=50000018;//kernel.RectShape:18
       "field strict";
       
       
@@ -13763,12 +13912,12 @@ Tonyu.klass.define({
       var _this=this;
       var retThread;
       
-      //$LASTPOS=49000049;//kernel.CrashToHandler:49
+      //$LASTPOS=51000049;//kernel.CrashToHandler:49
       retThread = _this.target.parallel("crashToChecker",d,_this.toListener(f));
       
       return {remove: (function anonymous_145() {
         
-        //$LASTPOS=49000161;//kernel.CrashToHandler:161
+        //$LASTPOS=51000161;//kernel.CrashToHandler:161
         retThread.kill();
       })};
     },
@@ -13776,9 +13925,9 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=49000221;//kernel.CrashToHandler:221
+      //$LASTPOS=51000221;//kernel.CrashToHandler:221
       Tonyu.classes.kernel.EventHandler.apply( _this, [param]);
-      //$LASTPOS=49000240;//kernel.CrashToHandler:240
+      //$LASTPOS=51000240;//kernel.CrashToHandler:240
       _this.id=(Tonyu.globals.$idseq=(Tonyu.globals.$idseq||0)+1);
     },
     __dummy: false
@@ -13821,7 +13970,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=50000066;//kernel.PanelMod:66
+      //$LASTPOS=52000066;//kernel.PanelMod:66
       "field strict";
       
     },
@@ -13831,7 +13980,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=50000066;//kernel.PanelMod:66
+      //$LASTPOS=52000066;//kernel.PanelMod:66
       "field strict";
       
       
@@ -13843,40 +13992,40 @@ Tonyu.klass.define({
       
       throw "Check overrides in spritesmod /oneframeSpritemod";
       
-      //$LASTPOS=50000323;//kernel.PanelMod:323
+      //$LASTPOS=52000323;//kernel.PanelMod:323
       if (_this.canvas) {
-        //$LASTPOS=50000346;//kernel.PanelMod:346
+        //$LASTPOS=52000346;//kernel.PanelMod:346
         _this.width=_this.canvas.width;
-        //$LASTPOS=50000375;//kernel.PanelMod:375
+        //$LASTPOS=52000375;//kernel.PanelMod:375
         _this.height=_this.canvas.height;
         
       } else {
-        //$LASTPOS=50000420;//kernel.PanelMod:420
+        //$LASTPOS=52000420;//kernel.PanelMod:420
         _this.setPanel(_this.width||Tonyu.globals.$screenWidth||465,_this.height||Tonyu.globals.$screenHeight||465);
         
       }
-      //$LASTPOS=50000544;//kernel.PanelMod:544
+      //$LASTPOS=52000544;//kernel.PanelMod:544
       if (_this._fillStyle&&_this.canvas) {
-        //$LASTPOS=50000570;//kernel.PanelMod:570
+        //$LASTPOS=52000570;//kernel.PanelMod:570
         _this.canvas.getContext("2d").fillStyle=_this._fillStyle+"";
       }
-      //$LASTPOS=50000624;//kernel.PanelMod:624
+      //$LASTPOS=52000624;//kernel.PanelMod:624
       _this.x=_this.x||_this.width/2;
-      //$LASTPOS=50000643;//kernel.PanelMod:643
+      //$LASTPOS=52000643;//kernel.PanelMod:643
       _this.y=_this.y||_this.height/2;
-      //$LASTPOS=50000663;//kernel.PanelMod:663
+      //$LASTPOS=52000663;//kernel.PanelMod:663
       if (_this.align==null) {
-        //$LASTPOS=50000679;//kernel.PanelMod:679
+        //$LASTPOS=52000679;//kernel.PanelMod:679
         _this.align="center";
       }
-      //$LASTPOS=50000700;//kernel.PanelMod:700
+      //$LASTPOS=52000700;//kernel.PanelMod:700
       if (_this.alpha==null) {
-        //$LASTPOS=50000716;//kernel.PanelMod:716
+        //$LASTPOS=52000716;//kernel.PanelMod:716
         _this.alpha=255;
       }
-      //$LASTPOS=50000732;//kernel.PanelMod:732
+      //$LASTPOS=52000732;//kernel.PanelMod:732
       if (_this._drawn==null) {
-        //$LASTPOS=50000749;//kernel.PanelMod:749
+        //$LASTPOS=52000749;//kernel.PanelMod:749
         _this._drawn=false;
       }
     },
@@ -13894,45 +14043,45 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=50000323;//kernel.PanelMod:323
+            //$LASTPOS=52000323;//kernel.PanelMod:323
             if (!(_this.canvas)) { __pc=1     ; break; }
             {
-              //$LASTPOS=50000346;//kernel.PanelMod:346
+              //$LASTPOS=52000346;//kernel.PanelMod:346
               _this.width=_this.canvas.width;
-              //$LASTPOS=50000375;//kernel.PanelMod:375
+              //$LASTPOS=52000375;//kernel.PanelMod:375
               _this.height=_this.canvas.height;
             }
             __pc=3     ;break;
           case 1     :
-            //$LASTPOS=50000420;//kernel.PanelMod:420
+            //$LASTPOS=52000420;//kernel.PanelMod:420
             _this.fiber$setPanel(_thread, _this.width||Tonyu.globals.$screenWidth||465, _this.height||Tonyu.globals.$screenHeight||465);
             __pc=2;return;
           case 2:
             
           case 3     :
             
-            //$LASTPOS=50000544;//kernel.PanelMod:544
+            //$LASTPOS=52000544;//kernel.PanelMod:544
             if (_this._fillStyle&&_this.canvas) {
-              //$LASTPOS=50000570;//kernel.PanelMod:570
+              //$LASTPOS=52000570;//kernel.PanelMod:570
               _this.canvas.getContext("2d").fillStyle=_this._fillStyle+"";
             }
-            //$LASTPOS=50000624;//kernel.PanelMod:624
+            //$LASTPOS=52000624;//kernel.PanelMod:624
             _this.x=_this.x||_this.width/2;
-            //$LASTPOS=50000643;//kernel.PanelMod:643
+            //$LASTPOS=52000643;//kernel.PanelMod:643
             _this.y=_this.y||_this.height/2;
-            //$LASTPOS=50000663;//kernel.PanelMod:663
+            //$LASTPOS=52000663;//kernel.PanelMod:663
             if (_this.align==null) {
-              //$LASTPOS=50000679;//kernel.PanelMod:679
+              //$LASTPOS=52000679;//kernel.PanelMod:679
               _this.align="center";
             }
-            //$LASTPOS=50000700;//kernel.PanelMod:700
+            //$LASTPOS=52000700;//kernel.PanelMod:700
             if (_this.alpha==null) {
-              //$LASTPOS=50000716;//kernel.PanelMod:716
+              //$LASTPOS=52000716;//kernel.PanelMod:716
               _this.alpha=255;
             }
-            //$LASTPOS=50000732;//kernel.PanelMod:732
+            //$LASTPOS=52000732;//kernel.PanelMod:732
             if (_this._drawn==null) {
-              //$LASTPOS=50000749;//kernel.PanelMod:749
+              //$LASTPOS=52000749;//kernel.PanelMod:749
               _this._drawn=false;
             }
             _thread.exit(_this);return;
@@ -13945,20 +14094,20 @@ Tonyu.klass.define({
       var _this=this;
       var buf;
       
-      //$LASTPOS=50000826;//kernel.PanelMod:826
+      //$LASTPOS=52000826;//kernel.PanelMod:826
       _this.width=_this.trunc(width);
-      //$LASTPOS=50000856;//kernel.PanelMod:856
+      //$LASTPOS=52000856;//kernel.PanelMod:856
       _this.height=_this.trunc(height);
-      //$LASTPOS=50000888;//kernel.PanelMod:888
+      //$LASTPOS=52000888;//kernel.PanelMod:888
       buf = $("<canvas>").attr({width: width,height: height});
       
-      //$LASTPOS=50000935;//kernel.PanelMod:935
+      //$LASTPOS=52000935;//kernel.PanelMod:935
       _this.canvas=buf[0];
-      //$LASTPOS=50000955;//kernel.PanelMod:955
+      //$LASTPOS=52000955;//kernel.PanelMod:955
       _this.imageSmoothingEnabled=! Tonyu.globals.$imageSmoothingDisabled;
-      //$LASTPOS=50001008;//kernel.PanelMod:1008
+      //$LASTPOS=52001008;//kernel.PanelMod:1008
       _this._drawn=false;
-      //$LASTPOS=50001027;//kernel.PanelMod:1027
+      //$LASTPOS=52001027;//kernel.PanelMod:1027
       _this.fireEvent("resize",{width: width,height: height,force: true});
     },
     fiber$setPanel :function _trc_PanelMod_f_setPanel(_thread,width,height) {
@@ -13968,20 +14117,20 @@ Tonyu.klass.define({
       var __pc=0;
       var buf;
       
-      //$LASTPOS=50000826;//kernel.PanelMod:826
+      //$LASTPOS=52000826;//kernel.PanelMod:826
       _this.width=_this.trunc(width);
-      //$LASTPOS=50000856;//kernel.PanelMod:856
+      //$LASTPOS=52000856;//kernel.PanelMod:856
       _this.height=_this.trunc(height);
-      //$LASTPOS=50000888;//kernel.PanelMod:888
+      //$LASTPOS=52000888;//kernel.PanelMod:888
       buf = $("<canvas>").attr({width: width,height: height});
       
-      //$LASTPOS=50000935;//kernel.PanelMod:935
+      //$LASTPOS=52000935;//kernel.PanelMod:935
       _this.canvas=buf[0];
-      //$LASTPOS=50000955;//kernel.PanelMod:955
+      //$LASTPOS=52000955;//kernel.PanelMod:955
       _this.imageSmoothingEnabled=! Tonyu.globals.$imageSmoothingDisabled;
-      //$LASTPOS=50001008;//kernel.PanelMod:1008
+      //$LASTPOS=52001008;//kernel.PanelMod:1008
       _this._drawn=false;
-      //$LASTPOS=50001027;//kernel.PanelMod:1027
+      //$LASTPOS=52001027;//kernel.PanelMod:1027
       _this.fireEvent("resize",{width: width,height: height,force: true});
       
       _thread.retVal=_this;return;
@@ -13990,11 +14139,11 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=50001106;//kernel.PanelMod:1106
+      //$LASTPOS=52001106;//kernel.PanelMod:1106
       if (_this.width==width&&_this.height==height) {
         return _this;
       }
-      //$LASTPOS=50001165;//kernel.PanelMod:1165
+      //$LASTPOS=52001165;//kernel.PanelMod:1165
       _this.setPanel(width,height);
     },
     fiber$resize :function _trc_PanelMod_f_resize(_thread,width,height) {
@@ -14003,7 +14152,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=50001106;//kernel.PanelMod:1106
+      //$LASTPOS=52001106;//kernel.PanelMod:1106
       if (_this.width==width&&_this.height==height) {
         _thread.retVal=_this;return;
         
@@ -14014,7 +14163,7 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=50001165;//kernel.PanelMod:1165
+            //$LASTPOS=52001165;//kernel.PanelMod:1165
             _this.fiber$setPanel(_thread, width, height);
             __pc=1;return;
           case 1:
@@ -14028,7 +14177,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=50001213;//kernel.PanelMod:1213
+      //$LASTPOS=52001213;//kernel.PanelMod:1213
       _this._drawn=true;
       return _this.canvas.getContext("2d");
     },
@@ -14038,7 +14187,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=50001213;//kernel.PanelMod:1213
+      //$LASTPOS=52001213;//kernel.PanelMod:1213
       _this._drawn=true;
       _thread.retVal=_this.canvas.getContext("2d");return;
       
@@ -14049,7 +14198,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=50001283;//kernel.PanelMod:1283
+      //$LASTPOS=52001283;//kernel.PanelMod:1283
       _this._drawn=true;
       return _this.canvas.getContext("2d");
     },
@@ -14057,7 +14206,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=50001351;//kernel.PanelMod:1351
+      //$LASTPOS=52001351;//kernel.PanelMod:1351
       _this._drawn=true;
       return _this.canvas;
     },
@@ -14065,7 +14214,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=50001415;//kernel.PanelMod:1415
+      //$LASTPOS=52001415;//kernel.PanelMod:1415
       _this.fillStyle=color;
     },
     fiber$setFillStyle :function _trc_PanelMod_f_setFillStyle(_thread,color) {
@@ -14074,7 +14223,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=50001415;//kernel.PanelMod:1415
+      //$LASTPOS=52001415;//kernel.PanelMod:1415
       _this.fillStyle=color;
       
       _thread.retVal=_this;return;
@@ -14089,27 +14238,27 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=50001499;//kernel.PanelMod:1499
+      //$LASTPOS=52001499;//kernel.PanelMod:1499
       _this._fillStyle=val;
-      //$LASTPOS=50001520;//kernel.PanelMod:1520
+      //$LASTPOS=52001520;//kernel.PanelMod:1520
       if (! _this.canvas) {
         return _this;
       }
-      //$LASTPOS=50001546;//kernel.PanelMod:1546
+      //$LASTPOS=52001546;//kernel.PanelMod:1546
       _this.context.fillStyle=val+"";
     },
     __setter__strokeStyle :function _trc_PanelMod___setter__strokeStyle(val) {
       "use strict";
       var _this=this;
       
-      //$LASTPOS=50001600;//kernel.PanelMod:1600
+      //$LASTPOS=52001600;//kernel.PanelMod:1600
       _this.context.strokeStyle=val+"";
     },
     __setter__lineWidth :function _trc_PanelMod___setter__lineWidth(val) {
       "use strict";
       var _this=this;
       
-      //$LASTPOS=50001654;//kernel.PanelMod:1654
+      //$LASTPOS=52001654;//kernel.PanelMod:1654
       _this.context.lineWidth=val;
     },
     fillCircle :function _trc_PanelMod_fillCircle(x,y,r) {
@@ -14117,18 +14266,18 @@ Tonyu.klass.define({
       var _this=this;
       var ctx;
       
-      //$LASTPOS=50001707;//kernel.PanelMod:1707
+      //$LASTPOS=52001707;//kernel.PanelMod:1707
       ctx = _this.context;
       
-      //$LASTPOS=50001729;//kernel.PanelMod:1729
+      //$LASTPOS=52001729;//kernel.PanelMod:1729
       ctx.fillStyle=_this.fillStyle+"";
-      //$LASTPOS=50001762;//kernel.PanelMod:1762
+      //$LASTPOS=52001762;//kernel.PanelMod:1762
       ctx.beginPath();
-      //$LASTPOS=50001784;//kernel.PanelMod:1784
+      //$LASTPOS=52001784;//kernel.PanelMod:1784
       ctx.arc(x,y,r,0,2*Tonyu.globals.$Math.PI);
-      //$LASTPOS=50001818;//kernel.PanelMod:1818
+      //$LASTPOS=52001818;//kernel.PanelMod:1818
       ctx.closePath();
-      //$LASTPOS=50001840;//kernel.PanelMod:1840
+      //$LASTPOS=52001840;//kernel.PanelMod:1840
       ctx.fill();
     },
     fiber$fillCircle :function _trc_PanelMod_f_fillCircle(_thread,x,y,r) {
@@ -14138,18 +14287,18 @@ Tonyu.klass.define({
       var __pc=0;
       var ctx;
       
-      //$LASTPOS=50001707;//kernel.PanelMod:1707
+      //$LASTPOS=52001707;//kernel.PanelMod:1707
       ctx = _this.context;
       
-      //$LASTPOS=50001729;//kernel.PanelMod:1729
+      //$LASTPOS=52001729;//kernel.PanelMod:1729
       ctx.fillStyle=_this.fillStyle+"";
-      //$LASTPOS=50001762;//kernel.PanelMod:1762
+      //$LASTPOS=52001762;//kernel.PanelMod:1762
       ctx.beginPath();
-      //$LASTPOS=50001784;//kernel.PanelMod:1784
+      //$LASTPOS=52001784;//kernel.PanelMod:1784
       ctx.arc(x,y,r,0,2*Tonyu.globals.$Math.PI);
-      //$LASTPOS=50001818;//kernel.PanelMod:1818
+      //$LASTPOS=52001818;//kernel.PanelMod:1818
       ctx.closePath();
-      //$LASTPOS=50001840;//kernel.PanelMod:1840
+      //$LASTPOS=52001840;//kernel.PanelMod:1840
       ctx.fill();
       
       _thread.retVal=_this;return;
@@ -14159,10 +14308,10 @@ Tonyu.klass.define({
       var _this=this;
       var ctx;
       
-      //$LASTPOS=50001881;//kernel.PanelMod:1881
+      //$LASTPOS=52001881;//kernel.PanelMod:1881
       ctx = _this.getContext();
       
-      //$LASTPOS=50001962;//kernel.PanelMod:1962
+      //$LASTPOS=52001962;//kernel.PanelMod:1962
       ctx.fillRect(x,y,w,h);
     },
     fiber$fillRect :function _trc_PanelMod_f_fillRect(_thread,x,y,w,h) {
@@ -14178,13 +14327,13 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=50001881;//kernel.PanelMod:1881
+            //$LASTPOS=52001881;//kernel.PanelMod:1881
             _this.fiber$getContext(_thread);
             __pc=1;return;
           case 1:
             ctx=_thread.retVal;
             
-            //$LASTPOS=50001962;//kernel.PanelMod:1962
+            //$LASTPOS=52001962;//kernel.PanelMod:1962
             ctx.fillRect(x,y,w,h);
             _thread.exit(_this);return;
           }
@@ -14199,39 +14348,39 @@ Tonyu.klass.define({
       var f;
       var colCount;
       
-      //$LASTPOS=50002048;//kernel.PanelMod:2048
+      //$LASTPOS=52002048;//kernel.PanelMod:2048
       ctx = _this.getContext();
       
-      //$LASTPOS=50002075;//kernel.PanelMod:2075
+      //$LASTPOS=52002075;//kernel.PanelMod:2075
       ctx.save();
-      //$LASTPOS=50002092;//kernel.PanelMod:2092
+      //$LASTPOS=52002092;//kernel.PanelMod:2092
       text=text+"";
-      //$LASTPOS=50002111;//kernel.PanelMod:2111
+      //$LASTPOS=52002111;//kernel.PanelMod:2111
       splits = text.split("\n");
       
-      //$LASTPOS=50002197;//kernel.PanelMod:2197
+      //$LASTPOS=52002197;//kernel.PanelMod:2197
       ctx.textAlign=align||"center";
-      //$LASTPOS=50002236;//kernel.PanelMod:2236
+      //$LASTPOS=52002236;//kernel.PanelMod:2236
       size=size||15;
-      //$LASTPOS=50002256;//kernel.PanelMod:2256
+      //$LASTPOS=52002256;//kernel.PanelMod:2256
       ctx.fillStyle=_this.fillStyle+"";
-      //$LASTPOS=50002289;//kernel.PanelMod:2289
+      //$LASTPOS=52002289;//kernel.PanelMod:2289
       f = ctx.font.replace(/^[0-9\.]+/,"");
       
-      //$LASTPOS=50002334;//kernel.PanelMod:2334
+      //$LASTPOS=52002334;//kernel.PanelMod:2334
       ctx.font=size+f;
-      //$LASTPOS=50002356;//kernel.PanelMod:2356
-      //$LASTPOS=50002360;//kernel.PanelMod:2360
+      //$LASTPOS=52002356;//kernel.PanelMod:2356
+      //$LASTPOS=52002360;//kernel.PanelMod:2360
       colCount = 0;
       for (; colCount<splits.length ; colCount++) {
         {
-          //$LASTPOS=50002420;//kernel.PanelMod:2420
+          //$LASTPOS=52002420;//kernel.PanelMod:2420
           ctx.fillText(splits[colCount],x,y);
-          //$LASTPOS=50002465;//kernel.PanelMod:2465
+          //$LASTPOS=52002465;//kernel.PanelMod:2465
           y+=size;
         }
       }
-      //$LASTPOS=50002486;//kernel.PanelMod:2486
+      //$LASTPOS=52002486;//kernel.PanelMod:2486
       ctx.restore();
     },
     fiber$fillText :function _trc_PanelMod_f_fillText(_thread,text,x,y,size,align) {
@@ -14250,42 +14399,42 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=50002048;//kernel.PanelMod:2048
+            //$LASTPOS=52002048;//kernel.PanelMod:2048
             _this.fiber$getContext(_thread);
             __pc=1;return;
           case 1:
             ctx=_thread.retVal;
             
-            //$LASTPOS=50002075;//kernel.PanelMod:2075
+            //$LASTPOS=52002075;//kernel.PanelMod:2075
             ctx.save();
-            //$LASTPOS=50002092;//kernel.PanelMod:2092
+            //$LASTPOS=52002092;//kernel.PanelMod:2092
             text=text+"";
-            //$LASTPOS=50002111;//kernel.PanelMod:2111
+            //$LASTPOS=52002111;//kernel.PanelMod:2111
             splits = text.split("\n");
             
-            //$LASTPOS=50002197;//kernel.PanelMod:2197
+            //$LASTPOS=52002197;//kernel.PanelMod:2197
             ctx.textAlign=align||"center";
-            //$LASTPOS=50002236;//kernel.PanelMod:2236
+            //$LASTPOS=52002236;//kernel.PanelMod:2236
             size=size||15;
-            //$LASTPOS=50002256;//kernel.PanelMod:2256
+            //$LASTPOS=52002256;//kernel.PanelMod:2256
             ctx.fillStyle=_this.fillStyle+"";
-            //$LASTPOS=50002289;//kernel.PanelMod:2289
+            //$LASTPOS=52002289;//kernel.PanelMod:2289
             f = ctx.font.replace(/^[0-9\.]+/,"");
             
-            //$LASTPOS=50002334;//kernel.PanelMod:2334
+            //$LASTPOS=52002334;//kernel.PanelMod:2334
             ctx.font=size+f;
-            //$LASTPOS=50002356;//kernel.PanelMod:2356
-            //$LASTPOS=50002360;//kernel.PanelMod:2360
+            //$LASTPOS=52002356;//kernel.PanelMod:2356
+            //$LASTPOS=52002360;//kernel.PanelMod:2360
             colCount = 0;
             for (; colCount<splits.length ; colCount++) {
               {
-                //$LASTPOS=50002420;//kernel.PanelMod:2420
+                //$LASTPOS=52002420;//kernel.PanelMod:2420
                 ctx.fillText(splits[colCount],x,y);
-                //$LASTPOS=50002465;//kernel.PanelMod:2465
+                //$LASTPOS=52002465;//kernel.PanelMod:2465
                 y+=size;
               }
             }
-            //$LASTPOS=50002486;//kernel.PanelMod:2486
+            //$LASTPOS=52002486;//kernel.PanelMod:2486
             ctx.restore();
             _thread.exit(_this);return;
           }
@@ -14297,18 +14446,18 @@ Tonyu.klass.define({
       var _this=this;
       var ctx;
       
-      //$LASTPOS=50002551;//kernel.PanelMod:2551
+      //$LASTPOS=52002551;//kernel.PanelMod:2551
       ctx = _this.getContext();
       
-      //$LASTPOS=50002578;//kernel.PanelMod:2578
+      //$LASTPOS=52002578;//kernel.PanelMod:2578
       ctx.save();
-      //$LASTPOS=50002595;//kernel.PanelMod:2595
+      //$LASTPOS=52002595;//kernel.PanelMod:2595
       ctx.clearRect(clearX||0,clearY||0,clearW||_this.width,clearH||_this.height);
-      //$LASTPOS=50002665;//kernel.PanelMod:2665
+      //$LASTPOS=52002665;//kernel.PanelMod:2665
       ctx.restore();
-      //$LASTPOS=50002685;//kernel.PanelMod:2685
+      //$LASTPOS=52002685;//kernel.PanelMod:2685
       if (arguments.length==0) {
-        //$LASTPOS=50002710;//kernel.PanelMod:2710
+        //$LASTPOS=52002710;//kernel.PanelMod:2710
         _this._drawn=false;
       }
     },
@@ -14325,21 +14474,21 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=50002551;//kernel.PanelMod:2551
+            //$LASTPOS=52002551;//kernel.PanelMod:2551
             _this.fiber$getContext(_thread);
             __pc=1;return;
           case 1:
             ctx=_thread.retVal;
             
-            //$LASTPOS=50002578;//kernel.PanelMod:2578
+            //$LASTPOS=52002578;//kernel.PanelMod:2578
             ctx.save();
-            //$LASTPOS=50002595;//kernel.PanelMod:2595
+            //$LASTPOS=52002595;//kernel.PanelMod:2595
             ctx.clearRect(clearX||0,clearY||0,clearW||_this.width,clearH||_this.height);
-            //$LASTPOS=50002665;//kernel.PanelMod:2665
+            //$LASTPOS=52002665;//kernel.PanelMod:2665
             ctx.restore();
-            //$LASTPOS=50002685;//kernel.PanelMod:2685
+            //$LASTPOS=52002685;//kernel.PanelMod:2685
             if (_arguments.length==0) {
-              //$LASTPOS=50002710;//kernel.PanelMod:2710
+              //$LASTPOS=52002710;//kernel.PanelMod:2710
               _this._drawn=false;
             }
             _thread.exit(_this);return;
@@ -14355,17 +14504,17 @@ Tonyu.klass.define({
       var colordata;
       
       
-      //$LASTPOS=50002789;//kernel.PanelMod:2789
+      //$LASTPOS=52002789;//kernel.PanelMod:2789
       if (typeof  getX=="number"&&! isNaN(getX)&&typeof  getY=="number"&&! isNaN(getY)) {
-        //$LASTPOS=50002887;//kernel.PanelMod:2887
+        //$LASTPOS=52002887;//kernel.PanelMod:2887
         ctx=_this.getContext();
-        //$LASTPOS=50002914;//kernel.PanelMod:2914
+        //$LASTPOS=52002914;//kernel.PanelMod:2914
         imagedata=ctx.getImageData(getX,getY,1,1);
-        //$LASTPOS=50002966;//kernel.PanelMod:2966
+        //$LASTPOS=52002966;//kernel.PanelMod:2966
         colordata=[imagedata.data[0],imagedata.data[1],imagedata.data[2],imagedata.data[3]];
         
       } else {
-        //$LASTPOS=50003106;//kernel.PanelMod:3106
+        //$LASTPOS=52003106;//kernel.PanelMod:3106
         colordata=[0,0,0,0];
         
       }
@@ -14387,22 +14536,22 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=50002789;//kernel.PanelMod:2789
+            //$LASTPOS=52002789;//kernel.PanelMod:2789
             if (!(typeof  getX=="number"&&! isNaN(getX)&&typeof  getY=="number"&&! isNaN(getY))) { __pc=2     ; break; }
-            //$LASTPOS=50002887;//kernel.PanelMod:2887
+            //$LASTPOS=52002887;//kernel.PanelMod:2887
             _this.fiber$getContext(_thread);
             __pc=1;return;
           case 1:
             ctx=_thread.retVal;
             
-            //$LASTPOS=50002914;//kernel.PanelMod:2914
+            //$LASTPOS=52002914;//kernel.PanelMod:2914
             imagedata=ctx.getImageData(getX,getY,1,1);
-            //$LASTPOS=50002966;//kernel.PanelMod:2966
+            //$LASTPOS=52002966;//kernel.PanelMod:2966
             colordata=[imagedata.data[0],imagedata.data[1],imagedata.data[2],imagedata.data[3]];
             __pc=3     ;break;
           case 2     :
             {
-              //$LASTPOS=50003106;//kernel.PanelMod:3106
+              //$LASTPOS=52003106;//kernel.PanelMod:3106
               colordata=[0,0,0,0];
             }
           case 3     :
@@ -14419,19 +14568,19 @@ Tonyu.klass.define({
       var ctx;
       var imagedata;
       
-      //$LASTPOS=50003193;//kernel.PanelMod:3193
+      //$LASTPOS=52003193;//kernel.PanelMod:3193
       ctx = _this.getContext();
       
-      //$LASTPOS=50003220;//kernel.PanelMod:3220
+      //$LASTPOS=52003220;//kernel.PanelMod:3220
       ctx.save();
-      //$LASTPOS=50003237;//kernel.PanelMod:3237
+      //$LASTPOS=52003237;//kernel.PanelMod:3237
       imagedata = ctx.getImageData(0,0,_this.width,_this.height);
       
-      //$LASTPOS=50003302;//kernel.PanelMod:3302
+      //$LASTPOS=52003302;//kernel.PanelMod:3302
       _this.clearRect(0,0,_this.width,_this.height);
-      //$LASTPOS=50003336;//kernel.PanelMod:3336
+      //$LASTPOS=52003336;//kernel.PanelMod:3336
       ctx.putImageData(imagedata,- scrollX,- scrollY);
-      //$LASTPOS=50003388;//kernel.PanelMod:3388
+      //$LASTPOS=52003388;//kernel.PanelMod:3388
       ctx.restore();
     },
     fiber$scroll :function _trc_PanelMod_f_scroll(_thread,scrollX,scrollY) {
@@ -14448,25 +14597,25 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=50003193;//kernel.PanelMod:3193
+            //$LASTPOS=52003193;//kernel.PanelMod:3193
             _this.fiber$getContext(_thread);
             __pc=1;return;
           case 1:
             ctx=_thread.retVal;
             
-            //$LASTPOS=50003220;//kernel.PanelMod:3220
+            //$LASTPOS=52003220;//kernel.PanelMod:3220
             ctx.save();
-            //$LASTPOS=50003237;//kernel.PanelMod:3237
+            //$LASTPOS=52003237;//kernel.PanelMod:3237
             imagedata = ctx.getImageData(0,0,_this.width,_this.height);
             
-            //$LASTPOS=50003302;//kernel.PanelMod:3302
+            //$LASTPOS=52003302;//kernel.PanelMod:3302
             _this.fiber$clearRect(_thread, 0, 0, _this.width, _this.height);
             __pc=2;return;
           case 2:
             
-            //$LASTPOS=50003336;//kernel.PanelMod:3336
+            //$LASTPOS=52003336;//kernel.PanelMod:3336
             ctx.putImageData(imagedata,- scrollX,- scrollY);
-            //$LASTPOS=50003388;//kernel.PanelMod:3388
+            //$LASTPOS=52003388;//kernel.PanelMod:3388
             ctx.restore();
             _thread.exit(_this);return;
           }
@@ -14478,58 +14627,58 @@ Tonyu.klass.define({
       var _this=this;
       var pImg;
       
-      //$LASTPOS=50003424;//kernel.PanelMod:3424
+      //$LASTPOS=52003424;//kernel.PanelMod:3424
       if (_this._drawn) {
-        //$LASTPOS=50003445;//kernel.PanelMod:3445
+        //$LASTPOS=52003445;//kernel.PanelMod:3445
         pImg = _this.canvas;
         
-        //$LASTPOS=50003471;//kernel.PanelMod:3471
+        //$LASTPOS=52003471;//kernel.PanelMod:3471
         ctx.save();
-        //$LASTPOS=50003492;//kernel.PanelMod:3492
+        //$LASTPOS=52003492;//kernel.PanelMod:3492
         if (_this.align=="left") {
-          //$LASTPOS=50003524;//kernel.PanelMod:3524
+          //$LASTPOS=52003524;//kernel.PanelMod:3524
           ctx.translate(_this.x+_this.width/2,_this.y+_this.height/2);
           
         } else {
-          //$LASTPOS=50003576;//kernel.PanelMod:3576
+          //$LASTPOS=52003576;//kernel.PanelMod:3576
           if (_this.align=="center") {
-            //$LASTPOS=50003610;//kernel.PanelMod:3610
+            //$LASTPOS=52003610;//kernel.PanelMod:3610
             ctx.translate(_this.x,_this.y);
             
           } else {
-            //$LASTPOS=50003645;//kernel.PanelMod:3645
+            //$LASTPOS=52003645;//kernel.PanelMod:3645
             if (_this.align=="right") {
-              //$LASTPOS=50003678;//kernel.PanelMod:3678
+              //$LASTPOS=52003678;//kernel.PanelMod:3678
               ctx.translate(_this.x-_this.width/2,_this.y-_this.height/2);
               
             }
           }
         }
-        //$LASTPOS=50003735;//kernel.PanelMod:3735
+        //$LASTPOS=52003735;//kernel.PanelMod:3735
         if (_this.rotation!=0) {
-          //$LASTPOS=50003770;//kernel.PanelMod:3770
+          //$LASTPOS=52003770;//kernel.PanelMod:3770
           ctx.rotate(_this.rotation/180*Math.PI);
           
         } else {
-          //$LASTPOS=50003838;//kernel.PanelMod:3838
+          //$LASTPOS=52003838;//kernel.PanelMod:3838
           ctx.rotate(_this.rotate/180*Math.PI);
           
         }
-        //$LASTPOS=50003895;//kernel.PanelMod:3895
+        //$LASTPOS=52003895;//kernel.PanelMod:3895
         if (typeof  _this.scaleY==="undefined") {
-          //$LASTPOS=50003947;//kernel.PanelMod:3947
+          //$LASTPOS=52003947;//kernel.PanelMod:3947
           ctx.scale(_this.scaleX,_this.scaleX);
           
         } else {
-          //$LASTPOS=50004012;//kernel.PanelMod:4012
+          //$LASTPOS=52004012;//kernel.PanelMod:4012
           ctx.scale(_this.scaleX,_this.scaleY);
           
         }
-        //$LASTPOS=50004068;//kernel.PanelMod:4068
+        //$LASTPOS=52004068;//kernel.PanelMod:4068
         ctx.globalAlpha=_this.alpha/255;
-        //$LASTPOS=50004109;//kernel.PanelMod:4109
+        //$LASTPOS=52004109;//kernel.PanelMod:4109
         ctx.drawImage(pImg,0,0,_this.width,_this.height,- _this.width/2,- _this.height/2,_this.width,_this.height);
-        //$LASTPOS=50004213;//kernel.PanelMod:4213
+        //$LASTPOS=52004213;//kernel.PanelMod:4213
         ctx.restore();
         
       }
@@ -14543,48 +14692,48 @@ Tonyu.klass.define({
       var rotation;
       var ctx;
       
-      //$LASTPOS=50004280;//kernel.PanelMod:4280
+      //$LASTPOS=52004280;//kernel.PanelMod:4280
       pImg = Tonyu.globals.$imageList[p];
       
-      //$LASTPOS=50004309;//kernel.PanelMod:4309
+      //$LASTPOS=52004309;//kernel.PanelMod:4309
       if (! pImg) {
         return _this;
       }
-      //$LASTPOS=50004333;//kernel.PanelMod:4333
+      //$LASTPOS=52004333;//kernel.PanelMod:4333
       if (options===true) {
-        //$LASTPOS=50004353;//kernel.PanelMod:4353
+        //$LASTPOS=52004353;//kernel.PanelMod:4353
         options={f: true};
       }
-      //$LASTPOS=50004376;//kernel.PanelMod:4376
+      //$LASTPOS=52004376;//kernel.PanelMod:4376
       options=options||{};
-      //$LASTPOS=50004402;//kernel.PanelMod:4402
+      //$LASTPOS=52004402;//kernel.PanelMod:4402
       scaleX = typeof  (options.scaleX)==="number"?options.scaleX:1;
       
-      //$LASTPOS=50004471;//kernel.PanelMod:4471
+      //$LASTPOS=52004471;//kernel.PanelMod:4471
       scaleY = typeof  (options.scaleY)==="number"?options.scaleY:scaleX;
       
-      //$LASTPOS=50004545;//kernel.PanelMod:4545
+      //$LASTPOS=52004545;//kernel.PanelMod:4545
       rotation = options.rotation||options.angle||0;
       
-      //$LASTPOS=50004599;//kernel.PanelMod:4599
+      //$LASTPOS=52004599;//kernel.PanelMod:4599
       ctx = _this.context;
       
-      //$LASTPOS=50004621;//kernel.PanelMod:4621
+      //$LASTPOS=52004621;//kernel.PanelMod:4621
       if (options.f) {
-        //$LASTPOS=50004636;//kernel.PanelMod:4636
+        //$LASTPOS=52004636;//kernel.PanelMod:4636
         scaleX*=- 1;
       }
-      //$LASTPOS=50004655;//kernel.PanelMod:4655
+      //$LASTPOS=52004655;//kernel.PanelMod:4655
       ctx.save();
-      //$LASTPOS=50004672;//kernel.PanelMod:4672
+      //$LASTPOS=52004672;//kernel.PanelMod:4672
       ctx.translate(x,y);
-      //$LASTPOS=50004697;//kernel.PanelMod:4697
+      //$LASTPOS=52004697;//kernel.PanelMod:4697
       ctx.rotate(rotation/180*Math.PI);
-      //$LASTPOS=50004736;//kernel.PanelMod:4736
+      //$LASTPOS=52004736;//kernel.PanelMod:4736
       ctx.scale(scaleX,scaleY);
-      //$LASTPOS=50004767;//kernel.PanelMod:4767
+      //$LASTPOS=52004767;//kernel.PanelMod:4767
       ctx.drawImage(pImg.image,pImg.x,pImg.y,pImg.width,pImg.height,- pImg.width/2,- pImg.height/2,pImg.width,pImg.height);
-      //$LASTPOS=50004907;//kernel.PanelMod:4907
+      //$LASTPOS=52004907;//kernel.PanelMod:4907
       ctx.restore();
     },
     copy :function _trc_PanelMod_copy() {
@@ -14603,31 +14752,31 @@ Tonyu.klass.define({
       var params;
       
       
-      //$LASTPOS=50005145;//kernel.PanelMod:5145
+      //$LASTPOS=52005145;//kernel.PanelMod:5145
       a = new Tonyu.classes.kernel.ArgParser(arguments);
       
-      //$LASTPOS=50005182;//kernel.PanelMod:5182
+      //$LASTPOS=52005182;//kernel.PanelMod:5182
       srcPanel = a.shift(Tonyu.classes.kernel.Panel)||_this;
       
-      //$LASTPOS=50005224;//kernel.PanelMod:5224
+      //$LASTPOS=52005224;//kernel.PanelMod:5224
       if (a.length<=4) {
-        //$LASTPOS=50005252;//kernel.PanelMod:5252
+        //$LASTPOS=52005252;//kernel.PanelMod:5252
         dx=a.shift();
-        //$LASTPOS=50005275;//kernel.PanelMod:5275
+        //$LASTPOS=52005275;//kernel.PanelMod:5275
         dy=a.shift();
-        //$LASTPOS=50005298;//kernel.PanelMod:5298
+        //$LASTPOS=52005298;//kernel.PanelMod:5298
         if (a.length==0) {
-          //$LASTPOS=50005330;//kernel.PanelMod:5330
+          //$LASTPOS=52005330;//kernel.PanelMod:5330
           _this.context.drawImage(srcPanel.image,dx,dy);
           
         } else {
-          //$LASTPOS=50005403;//kernel.PanelMod:5403
+          //$LASTPOS=52005403;//kernel.PanelMod:5403
           dw=a.shift();
-          //$LASTPOS=50005430;//kernel.PanelMod:5430
+          //$LASTPOS=52005430;//kernel.PanelMod:5430
           dh=a.shift();
-          //$LASTPOS=50005457;//kernel.PanelMod:5457
+          //$LASTPOS=52005457;//kernel.PanelMod:5457
           if (dw*dh!=0) {
-            //$LASTPOS=50005490;//kernel.PanelMod:5490
+            //$LASTPOS=52005490;//kernel.PanelMod:5490
             _this.context.drawImage(srcPanel.image,dx,dy,dw,dh);
             
           }
@@ -14635,32 +14784,32 @@ Tonyu.klass.define({
         }
         
       } else {
-        //$LASTPOS=50005586;//kernel.PanelMod:5586
+        //$LASTPOS=52005586;//kernel.PanelMod:5586
         sx=a.shift();
-        //$LASTPOS=50005609;//kernel.PanelMod:5609
+        //$LASTPOS=52005609;//kernel.PanelMod:5609
         sy=a.shift();
-        //$LASTPOS=50005632;//kernel.PanelMod:5632
+        //$LASTPOS=52005632;//kernel.PanelMod:5632
         sw=a.shift();
-        //$LASTPOS=50005655;//kernel.PanelMod:5655
+        //$LASTPOS=52005655;//kernel.PanelMod:5655
         sh=a.shift();
-        //$LASTPOS=50005678;//kernel.PanelMod:5678
+        //$LASTPOS=52005678;//kernel.PanelMod:5678
         dx=a.shift();
-        //$LASTPOS=50005701;//kernel.PanelMod:5701
+        //$LASTPOS=52005701;//kernel.PanelMod:5701
         if (typeof  dx==="object") {
-          //$LASTPOS=50005742;//kernel.PanelMod:5742
+          //$LASTPOS=52005742;//kernel.PanelMod:5742
           params = dx;
           
           
         }
-        //$LASTPOS=50005828;//kernel.PanelMod:5828
+        //$LASTPOS=52005828;//kernel.PanelMod:5828
         dy=a.shift();
-        //$LASTPOS=50005851;//kernel.PanelMod:5851
+        //$LASTPOS=52005851;//kernel.PanelMod:5851
         dw=a.shift()||sw;
-        //$LASTPOS=50005880;//kernel.PanelMod:5880
+        //$LASTPOS=52005880;//kernel.PanelMod:5880
         dh=a.shift()||sh;
-        //$LASTPOS=50005959;//kernel.PanelMod:5959
+        //$LASTPOS=52005959;//kernel.PanelMod:5959
         if (sw*sh*dw*dh!=0) {
-          //$LASTPOS=50005994;//kernel.PanelMod:5994
+          //$LASTPOS=52005994;//kernel.PanelMod:5994
           _this.context.drawImage(srcPanel.image,sx,sy,sw,sh,dx,dy,dw,dh);
           
         }
@@ -14671,47 +14820,47 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=50006110;//kernel.PanelMod:6110
+      //$LASTPOS=52006110;//kernel.PanelMod:6110
       if (dx==null&&dy==null) {
-        //$LASTPOS=50006147;//kernel.PanelMod:6147
+        //$LASTPOS=52006147;//kernel.PanelMod:6147
         if (x==null&&y==null) {
-          //$LASTPOS=50006186;//kernel.PanelMod:6186
+          //$LASTPOS=52006186;//kernel.PanelMod:6186
           _this.px=null;
-          //$LASTPOS=50006194;//kernel.PanelMod:6194
+          //$LASTPOS=52006194;//kernel.PanelMod:6194
           _this.py=null;
           return _this;
           
         }
-        //$LASTPOS=50006230;//kernel.PanelMod:6230
+        //$LASTPOS=52006230;//kernel.PanelMod:6230
         if (_this.px==null&&_this.py==null) {
-          //$LASTPOS=50006271;//kernel.PanelMod:6271
+          //$LASTPOS=52006271;//kernel.PanelMod:6271
           _this.px=x;
-          //$LASTPOS=50006276;//kernel.PanelMod:6276
+          //$LASTPOS=52006276;//kernel.PanelMod:6276
           _this.py=y;
           return _this;
           
         }
-        //$LASTPOS=50006309;//kernel.PanelMod:6309
+        //$LASTPOS=52006309;//kernel.PanelMod:6309
         dx=x;
-        //$LASTPOS=50006314;//kernel.PanelMod:6314
+        //$LASTPOS=52006314;//kernel.PanelMod:6314
         dy=y;
-        //$LASTPOS=50006319;//kernel.PanelMod:6319
+        //$LASTPOS=52006319;//kernel.PanelMod:6319
         x=_this.px;
-        //$LASTPOS=50006324;//kernel.PanelMod:6324
+        //$LASTPOS=52006324;//kernel.PanelMod:6324
         y=_this.py;
-        //$LASTPOS=50006329;//kernel.PanelMod:6329
+        //$LASTPOS=52006329;//kernel.PanelMod:6329
         _this.px=dx;
-        //$LASTPOS=50006335;//kernel.PanelMod:6335
+        //$LASTPOS=52006335;//kernel.PanelMod:6335
         _this.py=dy;
         
       }
-      //$LASTPOS=50006354;//kernel.PanelMod:6354
+      //$LASTPOS=52006354;//kernel.PanelMod:6354
       _this.context.beginPath();
-      //$LASTPOS=50006380;//kernel.PanelMod:6380
+      //$LASTPOS=52006380;//kernel.PanelMod:6380
       _this.context.moveTo(x,y);
-      //$LASTPOS=50006406;//kernel.PanelMod:6406
+      //$LASTPOS=52006406;//kernel.PanelMod:6406
       _this.context.lineTo(dx,dy);
-      //$LASTPOS=50006434;//kernel.PanelMod:6434
+      //$LASTPOS=52006434;//kernel.PanelMod:6434
       _this.context.stroke();
     },
     fiber$drawLine :function _trc_PanelMod_f_drawLine(_thread,x,y,dx,dy) {
@@ -14720,49 +14869,49 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=50006110;//kernel.PanelMod:6110
+      //$LASTPOS=52006110;//kernel.PanelMod:6110
       if (dx==null&&dy==null) {
-        //$LASTPOS=50006147;//kernel.PanelMod:6147
+        //$LASTPOS=52006147;//kernel.PanelMod:6147
         if (x==null&&y==null) {
-          //$LASTPOS=50006186;//kernel.PanelMod:6186
+          //$LASTPOS=52006186;//kernel.PanelMod:6186
           _this.px=null;
-          //$LASTPOS=50006194;//kernel.PanelMod:6194
+          //$LASTPOS=52006194;//kernel.PanelMod:6194
           _this.py=null;
           _thread.retVal=_this;return;
           
           
         }
-        //$LASTPOS=50006230;//kernel.PanelMod:6230
+        //$LASTPOS=52006230;//kernel.PanelMod:6230
         if (_this.px==null&&_this.py==null) {
-          //$LASTPOS=50006271;//kernel.PanelMod:6271
+          //$LASTPOS=52006271;//kernel.PanelMod:6271
           _this.px=x;
-          //$LASTPOS=50006276;//kernel.PanelMod:6276
+          //$LASTPOS=52006276;//kernel.PanelMod:6276
           _this.py=y;
           _thread.retVal=_this;return;
           
           
         }
-        //$LASTPOS=50006309;//kernel.PanelMod:6309
+        //$LASTPOS=52006309;//kernel.PanelMod:6309
         dx=x;
-        //$LASTPOS=50006314;//kernel.PanelMod:6314
+        //$LASTPOS=52006314;//kernel.PanelMod:6314
         dy=y;
-        //$LASTPOS=50006319;//kernel.PanelMod:6319
+        //$LASTPOS=52006319;//kernel.PanelMod:6319
         x=_this.px;
-        //$LASTPOS=50006324;//kernel.PanelMod:6324
+        //$LASTPOS=52006324;//kernel.PanelMod:6324
         y=_this.py;
-        //$LASTPOS=50006329;//kernel.PanelMod:6329
+        //$LASTPOS=52006329;//kernel.PanelMod:6329
         _this.px=dx;
-        //$LASTPOS=50006335;//kernel.PanelMod:6335
+        //$LASTPOS=52006335;//kernel.PanelMod:6335
         _this.py=dy;
         
       }
-      //$LASTPOS=50006354;//kernel.PanelMod:6354
+      //$LASTPOS=52006354;//kernel.PanelMod:6354
       _this.context.beginPath();
-      //$LASTPOS=50006380;//kernel.PanelMod:6380
+      //$LASTPOS=52006380;//kernel.PanelMod:6380
       _this.context.moveTo(x,y);
-      //$LASTPOS=50006406;//kernel.PanelMod:6406
+      //$LASTPOS=52006406;//kernel.PanelMod:6406
       _this.context.lineTo(dx,dy);
-      //$LASTPOS=50006434;//kernel.PanelMod:6434
+      //$LASTPOS=52006434;//kernel.PanelMod:6434
       _this.context.stroke();
       
       _thread.retVal=_this;return;
@@ -14788,7 +14937,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=50006576;//kernel.PanelMod:6576
+      //$LASTPOS=52006576;//kernel.PanelMod:6576
       Tonyu.globals.$imageList.push(_this.slicePattern(x,y,width,height));
       return Tonyu.globals.$imageList.length-1;
     },
@@ -14798,7 +14947,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=50006576;//kernel.PanelMod:6576
+      //$LASTPOS=52006576;//kernel.PanelMod:6576
       Tonyu.globals.$imageList.push(_this.slicePattern(x,y,width,height));
       _thread.retVal=Tonyu.globals.$imageList.length-1;return;
       
@@ -14844,12 +14993,12 @@ Tonyu.klass.define({
       var _this=this;
       var url;
       
-      //$LASTPOS=50006845;//kernel.PanelMod:6845
+      //$LASTPOS=52006845;//kernel.PanelMod:6845
       url = _this.canvas.toDataURL();
       
-      //$LASTPOS=50006878;//kernel.PanelMod:6878
+      //$LASTPOS=52006878;//kernel.PanelMod:6878
       if (typeof  fn==="string") {
-        //$LASTPOS=50006904;//kernel.PanelMod:6904
+        //$LASTPOS=52006904;//kernel.PanelMod:6904
         fn=_this.file(fn);
       }
       return fn.text(url);
@@ -14861,7 +15010,7 @@ Tonyu.klass.define({
       var __pc=0;
       var url;
       
-      //$LASTPOS=50006845;//kernel.PanelMod:6845
+      //$LASTPOS=52006845;//kernel.PanelMod:6845
       url = _this.canvas.toDataURL();
       
       
@@ -14870,9 +15019,9 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=50006878;//kernel.PanelMod:6878
+            //$LASTPOS=52006878;//kernel.PanelMod:6878
             if (!(typeof  fn==="string")) { __pc=2     ; break; }
-            //$LASTPOS=50006904;//kernel.PanelMod:6904
+            //$LASTPOS=52006904;//kernel.PanelMod:6904
             _this.fiber$file(_thread, fn);
             __pc=1;return;
           case 1:
@@ -14893,45 +15042,45 @@ Tonyu.klass.define({
       var url;
       var element;
       
-      //$LASTPOS=50006966;//kernel.PanelMod:6966
+      //$LASTPOS=52006966;//kernel.PanelMod:6966
       if (typeof  fn==="string") {
-        //$LASTPOS=50006992;//kernel.PanelMod:6992
+        //$LASTPOS=52006992;//kernel.PanelMod:6992
         fn=_this.file(fn);
       }
-      //$LASTPOS=50007010;//kernel.PanelMod:7010
+      //$LASTPOS=52007010;//kernel.PanelMod:7010
       d = new $.Deferred();
       
-      //$LASTPOS=50007039;//kernel.PanelMod:7039
+      //$LASTPOS=52007039;//kernel.PanelMod:7039
       url = fn.text();
       
-      //$LASTPOS=50007063;//kernel.PanelMod:7063
+      //$LASTPOS=52007063;//kernel.PanelMod:7063
       element = $("<img>").css({display: "none"}).appendTo("body");
       
-      //$LASTPOS=50007129;//kernel.PanelMod:7129
+      //$LASTPOS=52007129;//kernel.PanelMod:7129
       element.on("load",(function anonymous_7148() {
         var img;
         var width;
         var height;
         
-        //$LASTPOS=50007160;//kernel.PanelMod:7160
+        //$LASTPOS=52007160;//kernel.PanelMod:7160
         img = new Image();
         
-        //$LASTPOS=50007192;//kernel.PanelMod:7192
+        //$LASTPOS=52007192;//kernel.PanelMod:7192
         img.src=element.attr('src');
-        //$LASTPOS=50007232;//kernel.PanelMod:7232
+        //$LASTPOS=52007232;//kernel.PanelMod:7232
         width = img.width;
         
-        //$LASTPOS=50007264;//kernel.PanelMod:7264
+        //$LASTPOS=52007264;//kernel.PanelMod:7264
         height = img.height;
         
-        //$LASTPOS=50007330;//kernel.PanelMod:7330
+        //$LASTPOS=52007330;//kernel.PanelMod:7330
         _this.resize(width,height);
-        //$LASTPOS=50007361;//kernel.PanelMod:7361
+        //$LASTPOS=52007361;//kernel.PanelMod:7361
         _this.context.drawImage(img,0,0);
-        //$LASTPOS=50007399;//kernel.PanelMod:7399
+        //$LASTPOS=52007399;//kernel.PanelMod:7399
         d.resolve(_this);
       }));
-      //$LASTPOS=50007429;//kernel.PanelMod:7429
+      //$LASTPOS=52007429;//kernel.PanelMod:7429
       element.attr({src: url});
       return d.promise();
     },
@@ -14950,9 +15099,9 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=50006966;//kernel.PanelMod:6966
+            //$LASTPOS=52006966;//kernel.PanelMod:6966
             if (!(typeof  fn==="string")) { __pc=2     ; break; }
-            //$LASTPOS=50006992;//kernel.PanelMod:6992
+            //$LASTPOS=52006992;//kernel.PanelMod:6992
             _this.fiber$file(_thread, fn);
             __pc=1;return;
           case 1:
@@ -14960,40 +15109,40 @@ Tonyu.klass.define({
             
           case 2     :
             
-            //$LASTPOS=50007010;//kernel.PanelMod:7010
+            //$LASTPOS=52007010;//kernel.PanelMod:7010
             d = new $.Deferred();
             
-            //$LASTPOS=50007039;//kernel.PanelMod:7039
+            //$LASTPOS=52007039;//kernel.PanelMod:7039
             url = fn.text();
             
-            //$LASTPOS=50007063;//kernel.PanelMod:7063
+            //$LASTPOS=52007063;//kernel.PanelMod:7063
             element = $("<img>").css({display: "none"}).appendTo("body");
             
-            //$LASTPOS=50007129;//kernel.PanelMod:7129
+            //$LASTPOS=52007129;//kernel.PanelMod:7129
             element.on("load",(function anonymous_7148() {
               var img;
               var width;
               var height;
               
-              //$LASTPOS=50007160;//kernel.PanelMod:7160
+              //$LASTPOS=52007160;//kernel.PanelMod:7160
               img = new Image();
               
-              //$LASTPOS=50007192;//kernel.PanelMod:7192
+              //$LASTPOS=52007192;//kernel.PanelMod:7192
               img.src=element.attr('src');
-              //$LASTPOS=50007232;//kernel.PanelMod:7232
+              //$LASTPOS=52007232;//kernel.PanelMod:7232
               width = img.width;
               
-              //$LASTPOS=50007264;//kernel.PanelMod:7264
+              //$LASTPOS=52007264;//kernel.PanelMod:7264
               height = img.height;
               
-              //$LASTPOS=50007330;//kernel.PanelMod:7330
+              //$LASTPOS=52007330;//kernel.PanelMod:7330
               _this.resize(width,height);
-              //$LASTPOS=50007361;//kernel.PanelMod:7361
+              //$LASTPOS=52007361;//kernel.PanelMod:7361
               _this.context.drawImage(img,0,0);
-              //$LASTPOS=50007399;//kernel.PanelMod:7399
+              //$LASTPOS=52007399;//kernel.PanelMod:7399
               d.resolve(_this);
             }));
-            //$LASTPOS=50007429;//kernel.PanelMod:7429
+            //$LASTPOS=52007429;//kernel.PanelMod:7429
             element.attr({src: url});
             _thread.exit(d.promise());return;
             _thread.exit(_this);return;
@@ -15005,13 +15154,13 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=50007513;//kernel.PanelMod:7513
+      //$LASTPOS=52007513;//kernel.PanelMod:7513
       if (typeof  _this.context.msImageSmoothingEnabled==="boolean") {
-        //$LASTPOS=50007580;//kernel.PanelMod:7580
+        //$LASTPOS=52007580;//kernel.PanelMod:7580
         _this.context.msImageSmoothingEnabled=v;
         
       } else {
-        //$LASTPOS=50007638;//kernel.PanelMod:7638
+        //$LASTPOS=52007638;//kernel.PanelMod:7638
         _this.context.imageSmoothingEnabled=v;
         
       }
@@ -15020,7 +15169,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=50007712;//kernel.PanelMod:7712
+      //$LASTPOS=52007712;//kernel.PanelMod:7712
       if (typeof  _this.context.msImageSmoothingEnabled==="boolean") {
         return _this.context.msImageSmoothingEnabled;
         
@@ -15043,87 +15192,87 @@ Tonyu.klass.define({
       var i;
       var j;
       
-      //$LASTPOS=50007914;//kernel.PanelMod:7914
+      //$LASTPOS=52007914;//kernel.PanelMod:7914
       a = new Tonyu.classes.kernel.ArgParser(arguments);
       
-      //$LASTPOS=50007951;//kernel.PanelMod:7951
+      //$LASTPOS=52007951;//kernel.PanelMod:7951
       top = 0;
       left = 0;
       
-      //$LASTPOS=50007974;//kernel.PanelMod:7974
+      //$LASTPOS=52007974;//kernel.PanelMod:7974
       w = _this.width;
       h = _this.height;
       
-      //$LASTPOS=50008002;//kernel.PanelMod:8002
+      //$LASTPOS=52008002;//kernel.PanelMod:8002
       if (a.length>=4) {
-        //$LASTPOS=50008030;//kernel.PanelMod:8030
+        //$LASTPOS=52008030;//kernel.PanelMod:8030
         left=a.shift();
-        //$LASTPOS=50008055;//kernel.PanelMod:8055
+        //$LASTPOS=52008055;//kernel.PanelMod:8055
         top=a.shift();
-        //$LASTPOS=50008079;//kernel.PanelMod:8079
+        //$LASTPOS=52008079;//kernel.PanelMod:8079
         w=a.shift();
-        //$LASTPOS=50008101;//kernel.PanelMod:8101
+        //$LASTPOS=52008101;//kernel.PanelMod:8101
         h=a.shift();
         
       }
-      //$LASTPOS=50008126;//kernel.PanelMod:8126
+      //$LASTPOS=52008126;//kernel.PanelMod:8126
       func = a.shift();
       
-      //$LASTPOS=50008151;//kernel.PanelMod:8151
+      //$LASTPOS=52008151;//kernel.PanelMod:8151
       if (typeof  func!=="function") {
-        //$LASTPOS=50008192;//kernel.PanelMod:8192
+        //$LASTPOS=52008192;//kernel.PanelMod:8192
         ctx = _this.context;
         
-        //$LASTPOS=50008218;//kernel.PanelMod:8218
+        //$LASTPOS=52008218;//kernel.PanelMod:8218
         ctx.save();
-        //$LASTPOS=50008239;//kernel.PanelMod:8239
+        //$LASTPOS=52008239;//kernel.PanelMod:8239
         ctx.beginPath();
-        //$LASTPOS=50008265;//kernel.PanelMod:8265
+        //$LASTPOS=52008265;//kernel.PanelMod:8265
         ctx.moveTo(left,top);
-        //$LASTPOS=50008296;//kernel.PanelMod:8296
+        //$LASTPOS=52008296;//kernel.PanelMod:8296
         ctx.lineTo(left+w,top);
-        //$LASTPOS=50008329;//kernel.PanelMod:8329
+        //$LASTPOS=52008329;//kernel.PanelMod:8329
         ctx.lineTo(left+w,top+h);
-        //$LASTPOS=50008364;//kernel.PanelMod:8364
+        //$LASTPOS=52008364;//kernel.PanelMod:8364
         ctx.lineTo(left,top+h);
-        //$LASTPOS=50008397;//kernel.PanelMod:8397
+        //$LASTPOS=52008397;//kernel.PanelMod:8397
         ctx.closePath();
-        //$LASTPOS=50008423;//kernel.PanelMod:8423
+        //$LASTPOS=52008423;//kernel.PanelMod:8423
         ctx.clip();
-        //$LASTPOS=50008444;//kernel.PanelMod:8444
+        //$LASTPOS=52008444;//kernel.PanelMod:8444
         ctx.globalCompositeOperation="source-in";
-        //$LASTPOS=50008495;//kernel.PanelMod:8495
+        //$LASTPOS=52008495;//kernel.PanelMod:8495
         if (func) {
-          //$LASTPOS=50008505;//kernel.PanelMod:8505
+          //$LASTPOS=52008505;//kernel.PanelMod:8505
           _this.fillStyle=func;
         }
-        //$LASTPOS=50008530;//kernel.PanelMod:8530
+        //$LASTPOS=52008530;//kernel.PanelMod:8530
         ctx.fillRect(left,top,w,h);
-        //$LASTPOS=50008567;//kernel.PanelMod:8567
+        //$LASTPOS=52008567;//kernel.PanelMod:8567
         ctx.restore();
         return _this;
         
       }
-      //$LASTPOS=50008611;//kernel.PanelMod:8611
+      //$LASTPOS=52008611;//kernel.PanelMod:8611
       data = _this.getImageData(left,top,w,h);
       
-      //$LASTPOS=50008653;//kernel.PanelMod:8653
-      //$LASTPOS=50008658;//kernel.PanelMod:8658
+      //$LASTPOS=52008653;//kernel.PanelMod:8653
+      //$LASTPOS=52008658;//kernel.PanelMod:8658
       i = 0;
       for (; i<h ; i++) {
         {
-          //$LASTPOS=50008686;//kernel.PanelMod:8686
-          //$LASTPOS=50008691;//kernel.PanelMod:8691
+          //$LASTPOS=52008686;//kernel.PanelMod:8686
+          //$LASTPOS=52008691;//kernel.PanelMod:8691
           j = 0;
           for (; j<w ; j++) {
             {
-              //$LASTPOS=50008723;//kernel.PanelMod:8723
+              //$LASTPOS=52008723;//kernel.PanelMod:8723
               func(new Tonyu.classes.kernel.Color(data,j,i),left+j,top+i);
             }
           }
         }
       }
-      //$LASTPOS=50008786;//kernel.PanelMod:8786
+      //$LASTPOS=52008786;//kernel.PanelMod:8786
       _this.putImageData(data,left,top);
     },
     fiber$replaceColor :function _trc_PanelMod_f_replaceColor(_thread) {
@@ -15142,63 +15291,63 @@ Tonyu.klass.define({
       var i;
       var j;
       
-      //$LASTPOS=50007914;//kernel.PanelMod:7914
+      //$LASTPOS=52007914;//kernel.PanelMod:7914
       a = new Tonyu.classes.kernel.ArgParser(_arguments);
       
-      //$LASTPOS=50007951;//kernel.PanelMod:7951
+      //$LASTPOS=52007951;//kernel.PanelMod:7951
       top = 0;
       left = 0;
       
-      //$LASTPOS=50007974;//kernel.PanelMod:7974
+      //$LASTPOS=52007974;//kernel.PanelMod:7974
       w = _this.width;
       h = _this.height;
       
-      //$LASTPOS=50008002;//kernel.PanelMod:8002
+      //$LASTPOS=52008002;//kernel.PanelMod:8002
       if (a.length>=4) {
-        //$LASTPOS=50008030;//kernel.PanelMod:8030
+        //$LASTPOS=52008030;//kernel.PanelMod:8030
         left=a.shift();
-        //$LASTPOS=50008055;//kernel.PanelMod:8055
+        //$LASTPOS=52008055;//kernel.PanelMod:8055
         top=a.shift();
-        //$LASTPOS=50008079;//kernel.PanelMod:8079
+        //$LASTPOS=52008079;//kernel.PanelMod:8079
         w=a.shift();
-        //$LASTPOS=50008101;//kernel.PanelMod:8101
+        //$LASTPOS=52008101;//kernel.PanelMod:8101
         h=a.shift();
         
       }
-      //$LASTPOS=50008126;//kernel.PanelMod:8126
+      //$LASTPOS=52008126;//kernel.PanelMod:8126
       func = a.shift();
       
-      //$LASTPOS=50008151;//kernel.PanelMod:8151
+      //$LASTPOS=52008151;//kernel.PanelMod:8151
       if (typeof  func!=="function") {
-        //$LASTPOS=50008192;//kernel.PanelMod:8192
+        //$LASTPOS=52008192;//kernel.PanelMod:8192
         ctx = _this.context;
         
-        //$LASTPOS=50008218;//kernel.PanelMod:8218
+        //$LASTPOS=52008218;//kernel.PanelMod:8218
         ctx.save();
-        //$LASTPOS=50008239;//kernel.PanelMod:8239
+        //$LASTPOS=52008239;//kernel.PanelMod:8239
         ctx.beginPath();
-        //$LASTPOS=50008265;//kernel.PanelMod:8265
+        //$LASTPOS=52008265;//kernel.PanelMod:8265
         ctx.moveTo(left,top);
-        //$LASTPOS=50008296;//kernel.PanelMod:8296
+        //$LASTPOS=52008296;//kernel.PanelMod:8296
         ctx.lineTo(left+w,top);
-        //$LASTPOS=50008329;//kernel.PanelMod:8329
+        //$LASTPOS=52008329;//kernel.PanelMod:8329
         ctx.lineTo(left+w,top+h);
-        //$LASTPOS=50008364;//kernel.PanelMod:8364
+        //$LASTPOS=52008364;//kernel.PanelMod:8364
         ctx.lineTo(left,top+h);
-        //$LASTPOS=50008397;//kernel.PanelMod:8397
+        //$LASTPOS=52008397;//kernel.PanelMod:8397
         ctx.closePath();
-        //$LASTPOS=50008423;//kernel.PanelMod:8423
+        //$LASTPOS=52008423;//kernel.PanelMod:8423
         ctx.clip();
-        //$LASTPOS=50008444;//kernel.PanelMod:8444
+        //$LASTPOS=52008444;//kernel.PanelMod:8444
         ctx.globalCompositeOperation="source-in";
-        //$LASTPOS=50008495;//kernel.PanelMod:8495
+        //$LASTPOS=52008495;//kernel.PanelMod:8495
         if (func) {
-          //$LASTPOS=50008505;//kernel.PanelMod:8505
+          //$LASTPOS=52008505;//kernel.PanelMod:8505
           _this.fillStyle=func;
         }
-        //$LASTPOS=50008530;//kernel.PanelMod:8530
+        //$LASTPOS=52008530;//kernel.PanelMod:8530
         ctx.fillRect(left,top,w,h);
-        //$LASTPOS=50008567;//kernel.PanelMod:8567
+        //$LASTPOS=52008567;//kernel.PanelMod:8567
         ctx.restore();
         _thread.retVal=_this;return;
         
@@ -15210,29 +15359,29 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=50008611;//kernel.PanelMod:8611
+            //$LASTPOS=52008611;//kernel.PanelMod:8611
             _this.fiber$getImageData(_thread, left, top, w, h);
             __pc=1;return;
           case 1:
             data=_thread.retVal;
             
-            //$LASTPOS=50008653;//kernel.PanelMod:8653
-            //$LASTPOS=50008658;//kernel.PanelMod:8658
+            //$LASTPOS=52008653;//kernel.PanelMod:8653
+            //$LASTPOS=52008658;//kernel.PanelMod:8658
             i = 0;
             for (; i<h ; i++) {
               {
-                //$LASTPOS=50008686;//kernel.PanelMod:8686
-                //$LASTPOS=50008691;//kernel.PanelMod:8691
+                //$LASTPOS=52008686;//kernel.PanelMod:8686
+                //$LASTPOS=52008691;//kernel.PanelMod:8691
                 j = 0;
                 for (; j<w ; j++) {
                   {
-                    //$LASTPOS=50008723;//kernel.PanelMod:8723
+                    //$LASTPOS=52008723;//kernel.PanelMod:8723
                     func(new Tonyu.classes.kernel.Color(data,j,i),left+j,top+i);
                   }
                 }
               }
             }
-            //$LASTPOS=50008786;//kernel.PanelMod:8786
+            //$LASTPOS=52008786;//kernel.PanelMod:8786
             _this.fiber$putImageData(_thread, data, left, top);
             __pc=2;return;
           case 2:
@@ -15256,7 +15405,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=51000063;//kernel.PlayMod:63
+      //$LASTPOS=53000063;//kernel.PlayMod:63
       "field strict";
       
     },
@@ -15266,7 +15415,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=51000063;//kernel.PlayMod:63
+      //$LASTPOS=53000063;//kernel.PlayMod:63
       "field strict";
       
       
@@ -15276,28 +15425,28 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=51000129;//kernel.PlayMod:129
+      //$LASTPOS=53000129;//kernel.PlayMod:129
       if (_this.mmlInited) {
         return _this;
       }
-      //$LASTPOS=51000157;//kernel.PlayMod:157
+      //$LASTPOS=53000157;//kernel.PlayMod:157
       _this.mmlInited=true;
-      //$LASTPOS=51000178;//kernel.PlayMod:178
+      //$LASTPOS=53000178;//kernel.PlayMod:178
       Tonyu.globals.$currentProject.requestPlugin("timbre");
-      //$LASTPOS=51000224;//kernel.PlayMod:224
+      //$LASTPOS=53000224;//kernel.PlayMod:224
       if (! Tonyu.globals.$MMLS) {
-        //$LASTPOS=51000246;//kernel.PlayMod:246
+        //$LASTPOS=53000246;//kernel.PlayMod:246
         Tonyu.globals.$MMLS={};
-        //$LASTPOS=51000264;//kernel.PlayMod:264
+        //$LASTPOS=53000264;//kernel.PlayMod:264
         Tonyu.globals.$WaveTable=new Tonyu.classes.kernel.WaveTable;
-        //$LASTPOS=51000298;//kernel.PlayMod:298
+        //$LASTPOS=53000298;//kernel.PlayMod:298
         Tonyu.globals.$Boot.on("stop",Tonyu.bindFunc(_this,_this.releaseMML));
         
       }
-      //$LASTPOS=51000340;//kernel.PlayMod:340
+      //$LASTPOS=53000340;//kernel.PlayMod:340
       _this.on("die",(function anonymous_350() {
         
-        //$LASTPOS=51000356;//kernel.PlayMod:356
+        //$LASTPOS=53000356;//kernel.PlayMod:356
         _this.play().stop();
       }));
     },
@@ -15306,29 +15455,29 @@ Tonyu.klass.define({
       var _this=this;
       var k;
       var v;
-      var _it_477;
+      var _it_480;
       
-      //$LASTPOS=51000406;//kernel.PlayMod:406
+      //$LASTPOS=53000406;//kernel.PlayMod:406
       if (Tonyu.globals.$MMLS) {
-        //$LASTPOS=51000427;//kernel.PlayMod:427
-        _it_477=Tonyu.iterator(Tonyu.globals.$MMLS,2);
-        while(_it_477.next()) {
-          k=_it_477[0];
-          v=_it_477[1];
+        //$LASTPOS=53000427;//kernel.PlayMod:427
+        _it_480=Tonyu.iterator(Tonyu.globals.$MMLS,2);
+        while(_it_480.next()) {
+          k=_it_480[0];
+          v=_it_480[1];
           
-          //$LASTPOS=51000463;//kernel.PlayMod:463
+          //$LASTPOS=53000463;//kernel.PlayMod:463
           v.stop();
           
         }
-        //$LASTPOS=51000491;//kernel.PlayMod:491
+        //$LASTPOS=53000491;//kernel.PlayMod:491
         Tonyu.globals.$MMLS=null;
         
       }
-      //$LASTPOS=51000515;//kernel.PlayMod:515
+      //$LASTPOS=53000515;//kernel.PlayMod:515
       if (Tonyu.globals.$WaveTable) {
-        //$LASTPOS=51000541;//kernel.PlayMod:541
+        //$LASTPOS=53000541;//kernel.PlayMod:541
         Tonyu.globals.$WaveTable.stop();
-        //$LASTPOS=51000568;//kernel.PlayMod:568
+        //$LASTPOS=53000568;//kernel.PlayMod:568
         Tonyu.globals.$WaveTable=null;
         
       }
@@ -15339,34 +15488,34 @@ Tonyu.klass.define({
       var mmls;
       var i;
       
-      //$LASTPOS=51000611;//kernel.PlayMod:611
+      //$LASTPOS=53000611;//kernel.PlayMod:611
       _this.initMML();
-      //$LASTPOS=51000627;//kernel.PlayMod:627
+      //$LASTPOS=53000627;//kernel.PlayMod:627
       if (! _this._mml) {
-        //$LASTPOS=51000638;//kernel.PlayMod:638
+        //$LASTPOS=53000638;//kernel.PlayMod:638
         _this._mml=new Tonyu.classes.kernel.MML;
       }
-      //$LASTPOS=51000657;//kernel.PlayMod:657
+      //$LASTPOS=53000657;//kernel.PlayMod:657
       if (_this.isDead()||arguments.length==0) {
         return _this._mml;
       }
-      //$LASTPOS=51000712;//kernel.PlayMod:712
+      //$LASTPOS=53000712;//kernel.PlayMod:712
       mmls = [];
       
-      //$LASTPOS=51000730;//kernel.PlayMod:730
-      //$LASTPOS=51000735;//kernel.PlayMod:735
+      //$LASTPOS=53000730;//kernel.PlayMod:730
+      //$LASTPOS=53000735;//kernel.PlayMod:735
       i = 0;
       for (; i<arguments.length ; i++) {
         {
-          //$LASTPOS=51000780;//kernel.PlayMod:780
+          //$LASTPOS=53000780;//kernel.PlayMod:780
           mmls.push(arguments[i]);
         }
       }
-      //$LASTPOS=51000817;//kernel.PlayMod:817
+      //$LASTPOS=53000817;//kernel.PlayMod:817
       _this._mml.play(mmls);
-      //$LASTPOS=51000839;//kernel.PlayMod:839
+      //$LASTPOS=53000839;//kernel.PlayMod:839
       while (_this._mml.bufferCount()>2) {
-        //$LASTPOS=51000879;//kernel.PlayMod:879
+        //$LASTPOS=53000879;//kernel.PlayMod:879
         _this.update();
         
       }
@@ -15380,31 +15529,31 @@ Tonyu.klass.define({
       var mmls;
       var i;
       
-      //$LASTPOS=51000611;//kernel.PlayMod:611
+      //$LASTPOS=53000611;//kernel.PlayMod:611
       _this.initMML();
-      //$LASTPOS=51000627;//kernel.PlayMod:627
+      //$LASTPOS=53000627;//kernel.PlayMod:627
       if (! _this._mml) {
-        //$LASTPOS=51000638;//kernel.PlayMod:638
+        //$LASTPOS=53000638;//kernel.PlayMod:638
         _this._mml=new Tonyu.classes.kernel.MML;
       }
-      //$LASTPOS=51000657;//kernel.PlayMod:657
+      //$LASTPOS=53000657;//kernel.PlayMod:657
       if (_this.isDead()||_arguments.length==0) {
         _thread.retVal=_this._mml;return;
         
       }
-      //$LASTPOS=51000712;//kernel.PlayMod:712
+      //$LASTPOS=53000712;//kernel.PlayMod:712
       mmls = [];
       
-      //$LASTPOS=51000730;//kernel.PlayMod:730
-      //$LASTPOS=51000735;//kernel.PlayMod:735
+      //$LASTPOS=53000730;//kernel.PlayMod:730
+      //$LASTPOS=53000735;//kernel.PlayMod:735
       i = 0;
       for (; i<_arguments.length ; i++) {
         {
-          //$LASTPOS=51000780;//kernel.PlayMod:780
+          //$LASTPOS=53000780;//kernel.PlayMod:780
           mmls.push(_arguments[i]);
         }
       }
-      //$LASTPOS=51000817;//kernel.PlayMod:817
+      //$LASTPOS=53000817;//kernel.PlayMod:817
       _this._mml.play(mmls);
       
       _thread.enter(function _trc_PlayMod_ent_play(_thread) {
@@ -15412,10 +15561,10 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=51000839;//kernel.PlayMod:839
+            //$LASTPOS=53000839;//kernel.PlayMod:839
           case 1:
             if (!(_this._mml.bufferCount()>2)) { __pc=3     ; break; }
-            //$LASTPOS=51000879;//kernel.PlayMod:879
+            //$LASTPOS=53000879;//kernel.PlayMod:879
             _this.fiber$update(_thread);
             __pc=2;return;
           case 2:
@@ -15436,24 +15585,24 @@ Tonyu.klass.define({
       var mmls;
       var i;
       
-      //$LASTPOS=51000942;//kernel.PlayMod:942
+      //$LASTPOS=53000942;//kernel.PlayMod:942
       _this.initMML();
-      //$LASTPOS=51000958;//kernel.PlayMod:958
+      //$LASTPOS=53000958;//kernel.PlayMod:958
       mml = new Tonyu.classes.kernel.MML;
       
-      //$LASTPOS=51000980;//kernel.PlayMod:980
+      //$LASTPOS=53000980;//kernel.PlayMod:980
       mmls = [];
       
-      //$LASTPOS=51000998;//kernel.PlayMod:998
-      //$LASTPOS=51001003;//kernel.PlayMod:1003
+      //$LASTPOS=53000998;//kernel.PlayMod:998
+      //$LASTPOS=53001003;//kernel.PlayMod:1003
       i = 0;
       for (; i<arguments.length ; i++) {
         {
-          //$LASTPOS=51001048;//kernel.PlayMod:1048
+          //$LASTPOS=53001048;//kernel.PlayMod:1048
           mmls.push(arguments[i]);
         }
       }
-      //$LASTPOS=51001085;//kernel.PlayMod:1085
+      //$LASTPOS=53001085;//kernel.PlayMod:1085
       mml.play(mmls);
       return mml;
     },
@@ -15471,7 +15620,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=52000045;//kernel.InputMod:45
+      //$LASTPOS=54000045;//kernel.InputMod:45
       "field strict";
     },
     fiber$main :function _trc_InputMod_f_main(_thread) {
@@ -15480,7 +15629,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=52000045;//kernel.InputMod:45
+      //$LASTPOS=54000045;//kernel.InputMod:45
       "field strict";
       
       _thread.retVal=_this;return;
@@ -15495,10 +15644,10 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=52000233;//kernel.InputMod:233
+      //$LASTPOS=54000233;//kernel.InputMod:233
       _this.runAsync((function anonymous_242(f) {
         
-        //$LASTPOS=52000257;//kernel.InputMod:257
+        //$LASTPOS=54000257;//kernel.InputMod:257
         Tonyu.globals.$InputDevice.addOnetimeListener(f);
       }));
     },
@@ -15514,10 +15663,10 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=52000233;//kernel.InputMod:233
+            //$LASTPOS=54000233;//kernel.InputMod:233
             _this.fiber$runAsync(_thread, (function anonymous_242(f) {
               
-              //$LASTPOS=52000257;//kernel.InputMod:257
+              //$LASTPOS=54000257;//kernel.InputMod:257
               Tonyu.globals.$InputDevice.addOnetimeListener(f);
             }));
             __pc=1;return;
@@ -15534,42 +15683,42 @@ Tonyu.klass.define({
       var r;
       var res;
       
-      //$LASTPOS=52000338;//kernel.InputMod:338
+      //$LASTPOS=54000338;//kernel.InputMod:338
       if (typeof  params==="number") {
-        //$LASTPOS=52000368;//kernel.InputMod:368
+        //$LASTPOS=54000368;//kernel.InputMod:368
         params={scale: params};
       }
-      //$LASTPOS=52000396;//kernel.InputMod:396
+      //$LASTPOS=54000396;//kernel.InputMod:396
       params=params||{};
       
-      //$LASTPOS=52000432;//kernel.InputMod:432
+      //$LASTPOS=54000432;//kernel.InputMod:432
       if (params.width&&params.height) {
-        //$LASTPOS=52000478;//kernel.InputMod:478
+        //$LASTPOS=54000478;//kernel.InputMod:478
         r={x: _this.x,y: _this.y,width: params.width,height: params.height};
         
       } else {
-        //$LASTPOS=52000551;//kernel.InputMod:551
+        //$LASTPOS=54000551;//kernel.InputMod:551
         params.scale=params.scale||2;
-        //$LASTPOS=52000590;//kernel.InputMod:590
-        r=_this.getCrashRect();
-        //$LASTPOS=52000617;//kernel.InputMod:617
+        //$LASTPOS=54000590;//kernel.InputMod:590
+        r=_this.getCrashShape();
+        //$LASTPOS=54000639;//kernel.InputMod:639
         if (! r) {
           return null;
         }
-        //$LASTPOS=52000647;//kernel.InputMod:647
+        //$LASTPOS=54000669;//kernel.InputMod:669
         r={x: _this.x,y: _this.y,width: r.width*params.scale,height: r.height*params.scale};
         
       }
-      //$LASTPOS=52000788;//kernel.InputMod:788
-      res = Tonyu.globals.$touches.findTouch((function anonymous_815(t) {
+      //$LASTPOS=54000810;//kernel.InputMod:810
+      res = Tonyu.globals.$touches.findTouch((function anonymous_837(t) {
         var tt;
         
-        //$LASTPOS=52000831;//kernel.InputMod:831
+        //$LASTPOS=54000853;//kernel.InputMod:853
         if (params.pickup||t.touched==1) {
-          //$LASTPOS=52000881;//kernel.InputMod:881
+          //$LASTPOS=54000903;//kernel.InputMod:903
           tt = Tonyu.globals.$Screen.convert(t,_this.layer);
           
-          //$LASTPOS=52000927;//kernel.InputMod:927
+          //$LASTPOS=54000949;//kernel.InputMod:949
           if (Math.abs(r.x-tt.x)<r.width/2&&Math.abs(r.y-tt.y)<r.height/2) {
             return true;
             
@@ -15578,9 +15727,9 @@ Tonyu.klass.define({
         }
       }));
       
-      //$LASTPOS=52001082;//kernel.InputMod:1082
+      //$LASTPOS=54001104;//kernel.InputMod:1104
       if (res) {
-        //$LASTPOS=52001102;//kernel.InputMod:1102
+        //$LASTPOS=54001124;//kernel.InputMod:1124
         res.layer=_this.layer;
         return res;
         
@@ -15600,7 +15749,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=53000198;//kernel.BaseActor:198
+      //$LASTPOS=55000198;//kernel.BaseActor:198
       "field strict";
     },
     fiber$main :function _trc_BaseActor_f_main(_thread) {
@@ -15609,7 +15758,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=53000198;//kernel.BaseActor:198
+      //$LASTPOS=55000198;//kernel.BaseActor:198
       "field strict";
       
       _thread.retVal=_this;return;
@@ -15618,41 +15767,41 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=53000270;//kernel.BaseActor:270
+      //$LASTPOS=55000270;//kernel.BaseActor:270
       if (typeof  x=="object") {
-        //$LASTPOS=53000294;//kernel.BaseActor:294
+        //$LASTPOS=55000294;//kernel.BaseActor:294
         Tonyu.extend(_this,x);
       } else {
-        //$LASTPOS=53000326;//kernel.BaseActor:326
+        //$LASTPOS=55000326;//kernel.BaseActor:326
         if (typeof  x=="number") {
-          //$LASTPOS=53000361;//kernel.BaseActor:361
+          //$LASTPOS=55000361;//kernel.BaseActor:361
           _this.x=x;
-          //$LASTPOS=53000380;//kernel.BaseActor:380
+          //$LASTPOS=55000380;//kernel.BaseActor:380
           _this.y=y;
-          //$LASTPOS=53000399;//kernel.BaseActor:399
+          //$LASTPOS=55000399;//kernel.BaseActor:399
           _this.p=p;
           
         }
       }
-      //$LASTPOS=53000421;//kernel.BaseActor:421
+      //$LASTPOS=55000421;//kernel.BaseActor:421
       _this.initSchedulerMod();
-      //$LASTPOS=53000446;//kernel.BaseActor:446
+      //$LASTPOS=55000446;//kernel.BaseActor:446
       _this.layer=_this.layer||_this.defaultLayer;
-      //$LASTPOS=53000478;//kernel.BaseActor:478
+      //$LASTPOS=55000478;//kernel.BaseActor:478
       if (_this.layer.group instanceof Tonyu.classes.kernel.Sprites) {
-        //$LASTPOS=53000514;//kernel.BaseActor:514
+        //$LASTPOS=55000514;//kernel.BaseActor:514
         _this.layer=_this.layer.group;
       }
-      //$LASTPOS=53000538;//kernel.BaseActor:538
+      //$LASTPOS=55000538;//kernel.BaseActor:538
       _this.crashScale=1;
-      //$LASTPOS=53000557;//kernel.BaseActor:557
+      //$LASTPOS=55000557;//kernel.BaseActor:557
       _this.initSpriteMod();
-      //$LASTPOS=53000579;//kernel.BaseActor:579
+      //$LASTPOS=55000579;//kernel.BaseActor:579
       if (Tonyu.runMode) {
-        //$LASTPOS=53000598;//kernel.BaseActor:598
+        //$LASTPOS=55000598;//kernel.BaseActor:598
         _this.addToLayer();
       }
-      //$LASTPOS=53000617;//kernel.BaseActor:617
+      //$LASTPOS=55000617;//kernel.BaseActor:617
       _this.initAnimMod();
     },
     extend :function _trc_BaseActor_extend(obj) {
@@ -15669,42 +15818,42 @@ Tonyu.klass.define({
       var splits;
       var printCount;
       
-      //$LASTPOS=53000725;//kernel.BaseActor:725
+      //$LASTPOS=55000725;//kernel.BaseActor:725
       Tonyu.globals.$_printCount++;
-      //$LASTPOS=53000741;//kernel.BaseActor:741
+      //$LASTPOS=55000741;//kernel.BaseActor:741
       if (Tonyu.globals.$_printCount>Tonyu.globals.$printLimit) {
         throw new Error("printをしすぎています.");
         
       }
-      //$LASTPOS=53000811;//kernel.BaseActor:811
+      //$LASTPOS=55000811;//kernel.BaseActor:811
       console.log.apply(console,arguments);
-      //$LASTPOS=53000854;//kernel.BaseActor:854
+      //$LASTPOS=55000854;//kernel.BaseActor:854
       mergedArg = "";
       
-      //$LASTPOS=53000877;//kernel.BaseActor:877
+      //$LASTPOS=55000877;//kernel.BaseActor:877
       if (Tonyu.globals.$consolePanel) {
-        //$LASTPOS=53000905;//kernel.BaseActor:905
-        //$LASTPOS=53000909;//kernel.BaseActor:909
+        //$LASTPOS=55000905;//kernel.BaseActor:905
+        //$LASTPOS=55000909;//kernel.BaseActor:909
         argCount = 0;
         for (; argCount<arguments.length ; argCount++) {
           {
-            //$LASTPOS=53000976;//kernel.BaseActor:976
+            //$LASTPOS=55000976;//kernel.BaseActor:976
             mergedArg=mergedArg+arguments[argCount]+" ";
           }
         }
-        //$LASTPOS=53001041;//kernel.BaseActor:1041
+        //$LASTPOS=55001041;//kernel.BaseActor:1041
         splits = mergedArg.split("\n");
         
-        //$LASTPOS=53001084;//kernel.BaseActor:1084
-        //$LASTPOS=53001088;//kernel.BaseActor:1088
+        //$LASTPOS=55001084;//kernel.BaseActor:1084
+        //$LASTPOS=55001088;//kernel.BaseActor:1088
         printCount = 0;
         for (; printCount<splits.length ; printCount++) {
           {
-            //$LASTPOS=53001158;//kernel.BaseActor:1158
+            //$LASTPOS=55001158;//kernel.BaseActor:1158
             Tonyu.globals.$consolePanel.scroll(0,20);
-            //$LASTPOS=53001199;//kernel.BaseActor:1199
+            //$LASTPOS=55001199;//kernel.BaseActor:1199
             Tonyu.globals.$consolePanel.setFillStyle("white");
-            //$LASTPOS=53001249;//kernel.BaseActor:1249
+            //$LASTPOS=55001249;//kernel.BaseActor:1249
             Tonyu.globals.$consolePanel.fillText(splits[printCount],0,Tonyu.globals.$consolePrintY,20,"left");
           }
         }
@@ -15715,7 +15864,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=53001369;//kernel.BaseActor:1369
+      //$LASTPOS=55001369;//kernel.BaseActor:1369
       Tonyu.globals.$Boot.loadPage.apply(Tonyu.globals.$Boot,arguments);
     },
     __getter__defaultLayer :function _trc_BaseActor___getter__defaultLayer() {
@@ -15753,15 +15902,15 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=54000054;//kernel.NoviceActor:54
+      //$LASTPOS=56000054;//kernel.NoviceActor:54
       if (! n) {
-        //$LASTPOS=54000061;//kernel.NoviceActor:61
+        //$LASTPOS=56000061;//kernel.NoviceActor:61
         n=1;
       }
-      //$LASTPOS=54000071;//kernel.NoviceActor:71
-      //$LASTPOS=54000075;//kernel.NoviceActor:75
+      //$LASTPOS=56000071;//kernel.NoviceActor:71
+      //$LASTPOS=56000075;//kernel.NoviceActor:75
       n;for (; n>0 ; n--) {
-        //$LASTPOS=54000086;//kernel.NoviceActor:86
+        //$LASTPOS=56000086;//kernel.NoviceActor:86
         _this.update();
       }
     },
@@ -15771,9 +15920,9 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=54000054;//kernel.NoviceActor:54
+      //$LASTPOS=56000054;//kernel.NoviceActor:54
       if (! n) {
-        //$LASTPOS=54000061;//kernel.NoviceActor:61
+        //$LASTPOS=56000061;//kernel.NoviceActor:61
         n=1;
       }
       
@@ -15782,12 +15931,12 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=54000071;//kernel.NoviceActor:71
-            //$LASTPOS=54000075;//kernel.NoviceActor:75
+            //$LASTPOS=56000071;//kernel.NoviceActor:71
+            //$LASTPOS=56000075;//kernel.NoviceActor:75
             n;
           case 1:
             if (!(n>0)) { __pc=4     ; break; }
-            //$LASTPOS=54000086;//kernel.NoviceActor:86
+            //$LASTPOS=56000086;//kernel.NoviceActor:86
             _this.fiber$update(_thread);
             __pc=2;return;
           case 2:
@@ -15806,11 +15955,11 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=54000121;//kernel.NoviceActor:121
+      //$LASTPOS=56000121;//kernel.NoviceActor:121
       if (! _this._sprite) {
-        //$LASTPOS=54000146;//kernel.NoviceActor:146
+        //$LASTPOS=56000146;//kernel.NoviceActor:146
         _this._sprite=new Tonyu.classes.kernel.BaseActor({owner: _this});
-        //$LASTPOS=54000217;//kernel.NoviceActor:217
+        //$LASTPOS=56000217;//kernel.NoviceActor:217
         Tonyu.globals.$Sprites.add(_this);
         
       }
@@ -15821,11 +15970,11 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=54000121;//kernel.NoviceActor:121
+      //$LASTPOS=56000121;//kernel.NoviceActor:121
       if (! _this._sprite) {
-        //$LASTPOS=54000146;//kernel.NoviceActor:146
+        //$LASTPOS=56000146;//kernel.NoviceActor:146
         _this._sprite=new Tonyu.classes.kernel.BaseActor({owner: _this});
-        //$LASTPOS=54000217;//kernel.NoviceActor:217
+        //$LASTPOS=56000217;//kernel.NoviceActor:217
         Tonyu.globals.$Sprites.add(_this);
         
       }
@@ -15836,14 +15985,14 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=54000271;//kernel.NoviceActor:271
+      //$LASTPOS=56000271;//kernel.NoviceActor:271
       if (! size) {
-        //$LASTPOS=54000282;//kernel.NoviceActor:282
+        //$LASTPOS=56000282;//kernel.NoviceActor:282
         size=15;
       }
-      //$LASTPOS=54000296;//kernel.NoviceActor:296
+      //$LASTPOS=56000296;//kernel.NoviceActor:296
       _this.initSprite();
-      //$LASTPOS=54000315;//kernel.NoviceActor:315
+      //$LASTPOS=56000315;//kernel.NoviceActor:315
       _this._sprite._fukidashi={text: text,size: size,c: 30};
     },
     fiber$say :function _trc_NoviceActor_f_say(_thread,text,size) {
@@ -15852,9 +16001,9 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=54000271;//kernel.NoviceActor:271
+      //$LASTPOS=56000271;//kernel.NoviceActor:271
       if (! size) {
-        //$LASTPOS=54000282;//kernel.NoviceActor:282
+        //$LASTPOS=56000282;//kernel.NoviceActor:282
         size=15;
       }
       
@@ -15863,12 +16012,12 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=54000296;//kernel.NoviceActor:296
+            //$LASTPOS=56000296;//kernel.NoviceActor:296
             _this.fiber$initSprite(_thread);
             __pc=1;return;
           case 1:
             
-            //$LASTPOS=54000315;//kernel.NoviceActor:315
+            //$LASTPOS=56000315;//kernel.NoviceActor:315
             _this._sprite._fukidashi={text: text,size: size,c: 30};
             _thread.exit(_this);return;
           }
@@ -15879,7 +16028,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=54000390;//kernel.NoviceActor:390
+      //$LASTPOS=56000390;//kernel.NoviceActor:390
       _this.go(x,y,p);
     },
     fiber$sprite :function _trc_NoviceActor_f_sprite(_thread,x,y,p) {
@@ -15894,7 +16043,7 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=54000390;//kernel.NoviceActor:390
+            //$LASTPOS=56000390;//kernel.NoviceActor:390
             _this.fiber$go(_thread, x, y, p);
             __pc=1;return;
           case 1:
@@ -15908,14 +16057,14 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=54000425;//kernel.NoviceActor:425
+      //$LASTPOS=56000425;//kernel.NoviceActor:425
       _this.go(x,y,p);
     },
     draw :function _trc_NoviceActor_draw(ctx) {
       "use strict";
       var _this=this;
       
-      //$LASTPOS=54000465;//kernel.NoviceActor:465
+      //$LASTPOS=56000465;//kernel.NoviceActor:465
       _this._sprite.draw(ctx);
     },
     getCrashRect :function _trc_NoviceActor_getCrashRect() {
@@ -15924,19 +16073,30 @@ Tonyu.klass.define({
       
       return _this._sprite.getCrashRect();
     },
+    fiber$getCrashRect :function _trc_NoviceActor_f_getCrashRect(_thread) {
+      "use strict";
+      var _this=this;
+      //var _arguments=Tonyu.A(arguments);
+      var __pc=0;
+      
+      _thread.retVal=_this._sprite.getCrashRect();return;
+      
+      
+      _thread.retVal=_this;return;
+    },
     go :function _trc_NoviceActor_go(x,y,p) {
       "use strict";
       var _this=this;
       
-      //$LASTPOS=54000564;//kernel.NoviceActor:564
+      //$LASTPOS=56000564;//kernel.NoviceActor:564
       _this.initSprite();
-      //$LASTPOS=54000583;//kernel.NoviceActor:583
+      //$LASTPOS=56000583;//kernel.NoviceActor:583
       _this._sprite.x=x;
-      //$LASTPOS=54000601;//kernel.NoviceActor:601
+      //$LASTPOS=56000601;//kernel.NoviceActor:601
       _this._sprite.y=y;
-      //$LASTPOS=54000619;//kernel.NoviceActor:619
+      //$LASTPOS=56000619;//kernel.NoviceActor:619
       if (p!=null) {
-        //$LASTPOS=54000632;//kernel.NoviceActor:632
+        //$LASTPOS=56000632;//kernel.NoviceActor:632
         _this._sprite.p=p;
       }
     },
@@ -15952,18 +16112,18 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=54000564;//kernel.NoviceActor:564
+            //$LASTPOS=56000564;//kernel.NoviceActor:564
             _this.fiber$initSprite(_thread);
             __pc=1;return;
           case 1:
             
-            //$LASTPOS=54000583;//kernel.NoviceActor:583
+            //$LASTPOS=56000583;//kernel.NoviceActor:583
             _this._sprite.x=x;
-            //$LASTPOS=54000601;//kernel.NoviceActor:601
+            //$LASTPOS=56000601;//kernel.NoviceActor:601
             _this._sprite.y=y;
-            //$LASTPOS=54000619;//kernel.NoviceActor:619
+            //$LASTPOS=56000619;//kernel.NoviceActor:619
             if (p!=null) {
-              //$LASTPOS=54000632;//kernel.NoviceActor:632
+              //$LASTPOS=56000632;//kernel.NoviceActor:632
               _this._sprite.p=p;
             }
             _thread.exit(_this);return;
@@ -15975,9 +16135,9 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=54000684;//kernel.NoviceActor:684
+      //$LASTPOS=56000684;//kernel.NoviceActor:684
       _this.initSprite();
-      //$LASTPOS=54000703;//kernel.NoviceActor:703
+      //$LASTPOS=56000703;//kernel.NoviceActor:703
       _this._sprite.p=p;
     },
     fiber$change :function _trc_NoviceActor_f_change(_thread,p) {
@@ -15992,12 +16152,12 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=54000684;//kernel.NoviceActor:684
+            //$LASTPOS=56000684;//kernel.NoviceActor:684
             _this.fiber$initSprite(_thread);
             __pc=1;return;
           case 1:
             
-            //$LASTPOS=54000703;//kernel.NoviceActor:703
+            //$LASTPOS=56000703;//kernel.NoviceActor:703
             _this._sprite.p=p;
             _thread.exit(_this);return;
           }
@@ -16006,20 +16166,20 @@ Tonyu.klass.define({
     },
     __dummy: false
   },
-  decls: {"methods":{"main":{"nowait":false},"sleep":{"nowait":false},"initSprite":{"nowait":false},"say":{"nowait":false},"sprite":{"nowait":false},"show":{"nowait":true},"draw":{"nowait":true},"getCrashRect":{"nowait":true},"go":{"nowait":false},"change":{"nowait":false}},"fields":{"_sprite":{}}}
+  decls: {"methods":{"main":{"nowait":false},"sleep":{"nowait":false},"initSprite":{"nowait":false},"say":{"nowait":false},"sprite":{"nowait":false},"show":{"nowait":true},"draw":{"nowait":true},"getCrashRect":{"nowait":false},"go":{"nowait":false},"change":{"nowait":false}},"fields":{"_sprite":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.Actor',
   shortName: 'Actor',
   namespace: 'kernel',
   superclass: Tonyu.classes.kernel.BaseActor,
-  includes: [Tonyu.classes.kernel.SpriteMod2D,Tonyu.classes.kernel.OneframeSpriteMod],
+  includes: [Tonyu.classes.kernel.SpriteMod2D,Tonyu.classes.kernel.QueryMod2D,Tonyu.classes.kernel.OneframeSpriteMod],
   methods: {
     main :function _trc_Actor_main() {
       "use strict";
       var _this=this;
       
-      //$LASTPOS=55000061;//kernel.Actor:61
+      //$LASTPOS=57000072;//kernel.Actor:72
       "field strict";
     },
     fiber$main :function _trc_Actor_f_main(_thread) {
@@ -16028,7 +16188,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=55000061;//kernel.Actor:61
+      //$LASTPOS=57000072;//kernel.Actor:72
       "field strict";
       
       _thread.retVal=_this;return;
@@ -16042,13 +16202,13 @@ Tonyu.klass.define({
   shortName: 'Actor3D',
   namespace: 'kernel',
   superclass: Tonyu.classes.kernel.BaseActor,
-  includes: [Tonyu.classes.kernel.SpriteMod3D],
+  includes: [Tonyu.classes.kernel.SpriteMod3D,Tonyu.classes.kernel.QueryMod3D],
   methods: {
     main :function _trc_Actor3D_main() {
       "use strict";
       var _this=this;
       
-      //$LASTPOS=56000043;//kernel.Actor3D:43
+      //$LASTPOS=58000054;//kernel.Actor3D:54
       "field strict";
       
     },
@@ -16058,7 +16218,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=56000043;//kernel.Actor3D:43
+      //$LASTPOS=58000054;//kernel.Actor3D:54
       "field strict";
       
       
@@ -16068,9 +16228,9 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=56000113;//kernel.Actor3D:113
+      //$LASTPOS=58000124;//kernel.Actor3D:124
       Tonyu.classes.kernel.BaseActor.apply( _this, [params]);
-      //$LASTPOS=56000293;//kernel.Actor3D:293
+      //$LASTPOS=58000304;//kernel.Actor3D:304
       _this.direction={forward: new Tonyu.classes.kernel.Vec3(0,0,1),down: new Tonyu.classes.kernel.Vec3(0,1,0),right: new Tonyu.classes.kernel.Vec3(1,0,0)};
     },
     rotate :function _trc_Actor3D_rotate(mode,angle,unit) {
@@ -16086,46 +16246,46 @@ Tonyu.klass.define({
       
       switch (mode) {
       case "roll":
-        //$LASTPOS=56000581;//kernel.Actor3D:581
+        //$LASTPOS=58000592;//kernel.Actor3D:592
         xk="right";
-        //$LASTPOS=56000592;//kernel.Actor3D:592
+        //$LASTPOS=58000603;//kernel.Actor3D:603
         yk="down";
         break;
         
       case "pitch":
-        //$LASTPOS=56000637;//kernel.Actor3D:637
+        //$LASTPOS=58000648;//kernel.Actor3D:648
         xk="down";
-        //$LASTPOS=56000647;//kernel.Actor3D:647
+        //$LASTPOS=58000658;//kernel.Actor3D:658
         yk="forward";
         break;
         
       case "yaw":
-        //$LASTPOS=56000693;//kernel.Actor3D:693
+        //$LASTPOS=58000704;//kernel.Actor3D:704
         xk="forward";
-        //$LASTPOS=56000706;//kernel.Actor3D:706
+        //$LASTPOS=58000717;//kernel.Actor3D:717
         yk="right";
         break;
         
       default:
-        //$LASTPOS=56000743;//kernel.Actor3D:743
+        //$LASTPOS=58000754;//kernel.Actor3D:754
         _this.direction.forward.set(0,0,1);
-        //$LASTPOS=56000778;//kernel.Actor3D:778
+        //$LASTPOS=58000789;//kernel.Actor3D:789
         _this.direction.down.set(0,1,0);
-        //$LASTPOS=56000810;//kernel.Actor3D:810
+        //$LASTPOS=58000821;//kernel.Actor3D:821
         _this.direction.right.set(1,0,0);
         return _this;
       }
-      //$LASTPOS=56000863;//kernel.Actor3D:863
+      //$LASTPOS=58000874;//kernel.Actor3D:874
       x=_this.direction[xk];
-      //$LASTPOS=56000879;//kernel.Actor3D:879
+      //$LASTPOS=58000890;//kernel.Actor3D:890
       y=_this.direction[yk];
-      //$LASTPOS=56000901;//kernel.Actor3D:901
+      //$LASTPOS=58000912;//kernel.Actor3D:912
       nx=x.mul(_this.cos(angle)).add(y.mul(_this.sin(angle)));
-      //$LASTPOS=56000951;//kernel.Actor3D:951
+      //$LASTPOS=58000962;//kernel.Actor3D:962
       ny=x.mul(_this.cos(angle+90)).add(y.mul(_this.sin(angle+90)));
-      //$LASTPOS=56001007;//kernel.Actor3D:1007
+      //$LASTPOS=58001018;//kernel.Actor3D:1018
       _this.direction[xk].set(nx);
-      //$LASTPOS=56001035;//kernel.Actor3D:1035
+      //$LASTPOS=58001046;//kernel.Actor3D:1046
       _this.direction[yk].set(ny);
       return _this;
     },
@@ -16144,47 +16304,47 @@ Tonyu.klass.define({
       
       switch (mode) {
       case "roll":
-        //$LASTPOS=56000581;//kernel.Actor3D:581
+        //$LASTPOS=58000592;//kernel.Actor3D:592
         xk="right";
-        //$LASTPOS=56000592;//kernel.Actor3D:592
+        //$LASTPOS=58000603;//kernel.Actor3D:603
         yk="down";
         break;
         
       case "pitch":
-        //$LASTPOS=56000637;//kernel.Actor3D:637
+        //$LASTPOS=58000648;//kernel.Actor3D:648
         xk="down";
-        //$LASTPOS=56000647;//kernel.Actor3D:647
+        //$LASTPOS=58000658;//kernel.Actor3D:658
         yk="forward";
         break;
         
       case "yaw":
-        //$LASTPOS=56000693;//kernel.Actor3D:693
+        //$LASTPOS=58000704;//kernel.Actor3D:704
         xk="forward";
-        //$LASTPOS=56000706;//kernel.Actor3D:706
+        //$LASTPOS=58000717;//kernel.Actor3D:717
         yk="right";
         break;
         
       default:
-        //$LASTPOS=56000743;//kernel.Actor3D:743
+        //$LASTPOS=58000754;//kernel.Actor3D:754
         _this.direction.forward.set(0,0,1);
-        //$LASTPOS=56000778;//kernel.Actor3D:778
+        //$LASTPOS=58000789;//kernel.Actor3D:789
         _this.direction.down.set(0,1,0);
-        //$LASTPOS=56000810;//kernel.Actor3D:810
+        //$LASTPOS=58000821;//kernel.Actor3D:821
         _this.direction.right.set(1,0,0);
         _thread.retVal=_this;return;
         
       }
-      //$LASTPOS=56000863;//kernel.Actor3D:863
+      //$LASTPOS=58000874;//kernel.Actor3D:874
       x=_this.direction[xk];
-      //$LASTPOS=56000879;//kernel.Actor3D:879
+      //$LASTPOS=58000890;//kernel.Actor3D:890
       y=_this.direction[yk];
-      //$LASTPOS=56000901;//kernel.Actor3D:901
+      //$LASTPOS=58000912;//kernel.Actor3D:912
       nx=x.mul(_this.cos(angle)).add(y.mul(_this.sin(angle)));
-      //$LASTPOS=56000951;//kernel.Actor3D:951
+      //$LASTPOS=58000962;//kernel.Actor3D:962
       ny=x.mul(_this.cos(angle+90)).add(y.mul(_this.sin(angle+90)));
-      //$LASTPOS=56001007;//kernel.Actor3D:1007
+      //$LASTPOS=58001018;//kernel.Actor3D:1018
       _this.direction[xk].set(nx);
-      //$LASTPOS=56001035;//kernel.Actor3D:1035
+      //$LASTPOS=58001046;//kernel.Actor3D:1046
       _this.direction[yk].set(ny);
       _thread.retVal=_this;return;
       
@@ -16202,20 +16362,20 @@ Tonyu.klass.define({
       var _this=this;
       var t;
       
-      //$LASTPOS=56001157;//kernel.Actor3D:1157
+      //$LASTPOS=58001168;//kernel.Actor3D:1168
       if (typeof  dx=="object") {
-        //$LASTPOS=56001193;//kernel.Actor3D:1193
+        //$LASTPOS=58001204;//kernel.Actor3D:1204
         t = dx;
         
-        //$LASTPOS=56001212;//kernel.Actor3D:1212
+        //$LASTPOS=58001223;//kernel.Actor3D:1223
         dx=t.x-_this.x;
-        //$LASTPOS=56001221;//kernel.Actor3D:1221
+        //$LASTPOS=58001232;//kernel.Actor3D:1232
         dy=t.y-_this.y;
-        //$LASTPOS=56001230;//kernel.Actor3D:1230
+        //$LASTPOS=58001241;//kernel.Actor3D:1241
         dz=t.z-_this.z;
         
       }
-      //$LASTPOS=56001252;//kernel.Actor3D:1252
+      //$LASTPOS=58001263;//kernel.Actor3D:1263
       dz=dz||0;
       return _this.sqrt(dx*dx+dy*dy+dz*dz);
     },
@@ -16234,7 +16394,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=57000018;//kernel.Camera3D:18
+      //$LASTPOS=59000018;//kernel.Camera3D:18
       "field strict";
       
       
@@ -16247,7 +16407,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=57000018;//kernel.Camera3D:18
+      //$LASTPOS=59000018;//kernel.Camera3D:18
       "field strict";
       
       
@@ -16260,7 +16420,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=57000312;//kernel.Camera3D:312
+      //$LASTPOS=59000312;//kernel.Camera3D:312
       _this.sprites2D.push(s);
     },
     fiber$addSprite2D :function _trc_Camera3D_f_addSprite2D(_thread,s) {
@@ -16269,7 +16429,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=57000312;//kernel.Camera3D:312
+      //$LASTPOS=59000312;//kernel.Camera3D:312
       _this.sprites2D.push(s);
       
       _thread.retVal=_this;return;
@@ -16279,28 +16439,28 @@ Tonyu.klass.define({
       var _this=this;
       var p;
       
-      //$LASTPOS=57000358;//kernel.Camera3D:358
+      //$LASTPOS=59000358;//kernel.Camera3D:358
       p = _this.to2D(s.position||new Tonyu.classes.kernel.Vec3(s.x,s.y,s.z));
       
-      //$LASTPOS=57000412;//kernel.Camera3D:412
+      //$LASTPOS=59000412;//kernel.Camera3D:412
       if (p) {
-        //$LASTPOS=57000430;//kernel.Camera3D:430
+        //$LASTPOS=59000430;//kernel.Camera3D:430
         if (s instanceof Tonyu.classes.kernel.ActorSprite) {
-          //$LASTPOS=57000467;//kernel.Camera3D:467
+          //$LASTPOS=59000467;//kernel.Camera3D:467
           s.x=p.x;
-          //$LASTPOS=57000476;//kernel.Camera3D:476
+          //$LASTPOS=59000476;//kernel.Camera3D:476
           s.y=p.y;
-          //$LASTPOS=57000498;//kernel.Camera3D:498
+          //$LASTPOS=59000498;//kernel.Camera3D:498
           s.zOrder=p.z;
-          //$LASTPOS=57000525;//kernel.Camera3D:525
+          //$LASTPOS=59000525;//kernel.Camera3D:525
           s.scaleX*=p.scale;
           
         } else {
-          //$LASTPOS=57000575;//kernel.Camera3D:575
+          //$LASTPOS=59000575;//kernel.Camera3D:575
           s=new Tonyu.classes.kernel.ActorSprite({x: p.x,y: p.y,scaleX: p.scale,p: s.p,rotation: s.rotation||0,alpha: s.alpha||255,zOrder: p.z});
           
         }
-        //$LASTPOS=57000773;//kernel.Camera3D:773
+        //$LASTPOS=59000773;//kernel.Camera3D:773
         _this.addSprite2D(s);
         
       }
@@ -16318,31 +16478,31 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=57000358;//kernel.Camera3D:358
+            //$LASTPOS=59000358;//kernel.Camera3D:358
             _this.fiber$to2D(_thread, s.position||new Tonyu.classes.kernel.Vec3(s.x,s.y,s.z));
             __pc=1;return;
           case 1:
             p=_thread.retVal;
             
-            //$LASTPOS=57000412;//kernel.Camera3D:412
+            //$LASTPOS=59000412;//kernel.Camera3D:412
             if (!(p)) { __pc=3     ; break; }
-            //$LASTPOS=57000430;//kernel.Camera3D:430
+            //$LASTPOS=59000430;//kernel.Camera3D:430
             if (s instanceof Tonyu.classes.kernel.ActorSprite) {
-              //$LASTPOS=57000467;//kernel.Camera3D:467
+              //$LASTPOS=59000467;//kernel.Camera3D:467
               s.x=p.x;
-              //$LASTPOS=57000476;//kernel.Camera3D:476
+              //$LASTPOS=59000476;//kernel.Camera3D:476
               s.y=p.y;
-              //$LASTPOS=57000498;//kernel.Camera3D:498
+              //$LASTPOS=59000498;//kernel.Camera3D:498
               s.zOrder=p.z;
-              //$LASTPOS=57000525;//kernel.Camera3D:525
+              //$LASTPOS=59000525;//kernel.Camera3D:525
               s.scaleX*=p.scale;
               
             } else {
-              //$LASTPOS=57000575;//kernel.Camera3D:575
+              //$LASTPOS=59000575;//kernel.Camera3D:575
               s=new Tonyu.classes.kernel.ActorSprite({x: p.x,y: p.y,scaleX: p.scale,p: s.p,rotation: s.rotation||0,alpha: s.alpha||255,zOrder: p.z});
               
             }
-            //$LASTPOS=57000773;//kernel.Camera3D:773
+            //$LASTPOS=59000773;//kernel.Camera3D:773
             _this.fiber$addSprite2D(_thread, s);
             __pc=2;return;
           case 2:
@@ -16358,15 +16518,15 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=57000815;//kernel.Camera3D:815
+      //$LASTPOS=59000815;//kernel.Camera3D:815
       Tonyu.classes.kernel.Actor3D.apply( _this, [p]);
-      //$LASTPOS=57000830;//kernel.Camera3D:830
+      //$LASTPOS=59000830;//kernel.Camera3D:830
       _this.spx=_this.spx||Tonyu.globals.$screenWidth/2;
-      //$LASTPOS=57000860;//kernel.Camera3D:860
+      //$LASTPOS=59000860;//kernel.Camera3D:860
       _this.spy=_this.spy||Tonyu.globals.$screenHeight/2;
-      //$LASTPOS=57000891;//kernel.Camera3D:891
+      //$LASTPOS=59000891;//kernel.Camera3D:891
       _this.z1=_this.z1||Tonyu.globals.$screenWidth/2;
-      //$LASTPOS=57000919;//kernel.Camera3D:919
+      //$LASTPOS=59000919;//kernel.Camera3D:919
       _this.z=- _this.z1;
     },
     to2D :function _trc_Camera3D_to2D(pos) {
@@ -16377,25 +16537,25 @@ Tonyu.klass.define({
       var y;
       var z;
       
-      //$LASTPOS=57000996;//kernel.Camera3D:996
+      //$LASTPOS=59000996;//kernel.Camera3D:996
       p = pos.sub(_this.position);
       
-      //$LASTPOS=57001026;//kernel.Camera3D:1026
+      //$LASTPOS=59001026;//kernel.Camera3D:1026
       x = p.innerProduct(_this.direction.right);
       
-      //$LASTPOS=57001070;//kernel.Camera3D:1070
+      //$LASTPOS=59001070;//kernel.Camera3D:1070
       y = p.innerProduct(_this.direction.down);
       
-      //$LASTPOS=57001113;//kernel.Camera3D:1113
+      //$LASTPOS=59001113;//kernel.Camera3D:1113
       z = p.innerProduct(_this.direction.forward);
       
-      //$LASTPOS=57001159;//kernel.Camera3D:1159
+      //$LASTPOS=59001159;//kernel.Camera3D:1159
       if (z<=0) {
         return null;
       }
-      //$LASTPOS=57001187;//kernel.Camera3D:1187
+      //$LASTPOS=59001187;//kernel.Camera3D:1187
       x=x*_this.z1/z+_this.spx;
-      //$LASTPOS=57001206;//kernel.Camera3D:1206
+      //$LASTPOS=59001206;//kernel.Camera3D:1206
       y=y*_this.z1/z+_this.spy;
       return {x: x,y: y,z: z,scale: _this.z1/z};
     },
@@ -16409,26 +16569,26 @@ Tonyu.klass.define({
       var y;
       var z;
       
-      //$LASTPOS=57000996;//kernel.Camera3D:996
+      //$LASTPOS=59000996;//kernel.Camera3D:996
       p = pos.sub(_this.position);
       
-      //$LASTPOS=57001026;//kernel.Camera3D:1026
+      //$LASTPOS=59001026;//kernel.Camera3D:1026
       x = p.innerProduct(_this.direction.right);
       
-      //$LASTPOS=57001070;//kernel.Camera3D:1070
+      //$LASTPOS=59001070;//kernel.Camera3D:1070
       y = p.innerProduct(_this.direction.down);
       
-      //$LASTPOS=57001113;//kernel.Camera3D:1113
+      //$LASTPOS=59001113;//kernel.Camera3D:1113
       z = p.innerProduct(_this.direction.forward);
       
-      //$LASTPOS=57001159;//kernel.Camera3D:1159
+      //$LASTPOS=59001159;//kernel.Camera3D:1159
       if (z<=0) {
         _thread.retVal=null;return;
         
       }
-      //$LASTPOS=57001187;//kernel.Camera3D:1187
+      //$LASTPOS=59001187;//kernel.Camera3D:1187
       x=x*_this.z1/z+_this.spx;
-      //$LASTPOS=57001206;//kernel.Camera3D:1206
+      //$LASTPOS=59001206;//kernel.Camera3D:1206
       y=y*_this.z1/z+_this.spy;
       _thread.retVal={x: x,y: y,z: z,scale: _this.z1/z};return;
       
@@ -16439,7 +16599,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=57001274;//kernel.Camera3D:1274
+      //$LASTPOS=59001274;//kernel.Camera3D:1274
       _this.group.draw(ctx,_this);
     },
     fiber$draw :function _trc_Camera3D_f_draw(_thread,ctx) {
@@ -16448,7 +16608,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=57001274;//kernel.Camera3D:1274
+      //$LASTPOS=59001274;//kernel.Camera3D:1274
       _this.group.draw(ctx,_this);
       
       _thread.retVal=_this;return;
@@ -16482,28 +16642,28 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=58000113;//kernel.GameScreen:113
+      //$LASTPOS=60000113;//kernel.GameScreen:113
       _this.extend(opt);
-      //$LASTPOS=58000131;//kernel.GameScreen:131
+      //$LASTPOS=60000131;//kernel.GameScreen:131
       _this.resize(_this.width,_this.height);
-      //$LASTPOS=58000159;//kernel.GameScreen:159
+      //$LASTPOS=60000159;//kernel.GameScreen:159
       _this.bgColor="rgb(20,80,180)";
-      //$LASTPOS=58000195;//kernel.GameScreen:195
+      //$LASTPOS=60000195;//kernel.GameScreen:195
       _this.isDrawGrid=Tonyu.globals.$Sprites.isDrawGrid;
     },
     resize :function _trc_GameScreen_resize(width,height) {
       "use strict";
       var _this=this;
       
-      //$LASTPOS=58000260;//kernel.GameScreen:260
+      //$LASTPOS=60000260;//kernel.GameScreen:260
       _this.width=width;
-      //$LASTPOS=58000283;//kernel.GameScreen:283
+      //$LASTPOS=60000283;//kernel.GameScreen:283
       _this.height=height;
-      //$LASTPOS=58000308;//kernel.GameScreen:308
+      //$LASTPOS=60000308;//kernel.GameScreen:308
       _this.buf=$("<canvas>").attr({width: width,height: height});
-      //$LASTPOS=58000351;//kernel.GameScreen:351
+      //$LASTPOS=60000351;//kernel.GameScreen:351
       _this.ctx=_this.buf[0].getContext("2d");
-      //$LASTPOS=58000385;//kernel.GameScreen:385
+      //$LASTPOS=60000385;//kernel.GameScreen:385
       _this.fireEvent("resize",width,height);
     },
     fiber$resize :function _trc_GameScreen_f_resize(_thread,width,height) {
@@ -16512,15 +16672,15 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=58000260;//kernel.GameScreen:260
+      //$LASTPOS=60000260;//kernel.GameScreen:260
       _this.width=width;
-      //$LASTPOS=58000283;//kernel.GameScreen:283
+      //$LASTPOS=60000283;//kernel.GameScreen:283
       _this.height=height;
-      //$LASTPOS=58000308;//kernel.GameScreen:308
+      //$LASTPOS=60000308;//kernel.GameScreen:308
       _this.buf=$("<canvas>").attr({width: width,height: height});
-      //$LASTPOS=58000351;//kernel.GameScreen:351
+      //$LASTPOS=60000351;//kernel.GameScreen:351
       _this.ctx=_this.buf[0].getContext("2d");
-      //$LASTPOS=58000385;//kernel.GameScreen:385
+      //$LASTPOS=60000385;//kernel.GameScreen:385
       _this.fireEvent("resize",width,height);
       
       _thread.retVal=_this;return;
@@ -16529,7 +16689,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=58000620;//kernel.GameScreen:620
+      //$LASTPOS=60000620;//kernel.GameScreen:620
       _this.bounds=b;
     },
     fiber$setBounds :function _trc_GameScreen_f_setBounds(_thread,b) {
@@ -16538,7 +16698,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=58000620;//kernel.GameScreen:620
+      //$LASTPOS=60000620;//kernel.GameScreen:620
       _this.bounds=b;
       
       _thread.retVal=_this;return;
@@ -16548,14 +16708,14 @@ Tonyu.klass.define({
       var _this=this;
       var b;
       
-      //$LASTPOS=58000653;//kernel.GameScreen:653
+      //$LASTPOS=60000653;//kernel.GameScreen:653
       b = _this.bounds;
       
-      //$LASTPOS=58000672;//kernel.GameScreen:672
+      //$LASTPOS=60000672;//kernel.GameScreen:672
       _this.fillCanvas();
-      //$LASTPOS=58000691;//kernel.GameScreen:691
+      //$LASTPOS=60000691;//kernel.GameScreen:691
       _this.sprites.draw(_this.buf[0]);
-      //$LASTPOS=58000718;//kernel.GameScreen:718
+      //$LASTPOS=60000718;//kernel.GameScreen:718
       cctx.drawImage(_this.buf[0],0,0,_this.width,_this.height,b.left,b.top,b.width,b.height);
     },
     canvas2buf :function _trc_GameScreen_canvas2buf(point) {
@@ -16563,10 +16723,10 @@ Tonyu.klass.define({
       var _this=this;
       var b;
       
-      //$LASTPOS=58000856;//kernel.GameScreen:856
+      //$LASTPOS=60000856;//kernel.GameScreen:856
       b = _this.bounds;
       
-      //$LASTPOS=58000875;//kernel.GameScreen:875
+      //$LASTPOS=60000875;//kernel.GameScreen:875
       if (! b) {
         return point;
       }
@@ -16579,10 +16739,10 @@ Tonyu.klass.define({
       var __pc=0;
       var b;
       
-      //$LASTPOS=58000856;//kernel.GameScreen:856
+      //$LASTPOS=60000856;//kernel.GameScreen:856
       b = _this.bounds;
       
-      //$LASTPOS=58000875;//kernel.GameScreen:875
+      //$LASTPOS=60000875;//kernel.GameScreen:875
       if (! b) {
         _thread.retVal=point;return;
         
@@ -16596,7 +16756,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=58001012;//kernel.GameScreen:1012
+      //$LASTPOS=60001012;//kernel.GameScreen:1012
       _this.bgColor=c;
     },
     fiber$setBGColor :function _trc_GameScreen_f_setBGColor(_thread,c) {
@@ -16605,7 +16765,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=58001012;//kernel.GameScreen:1012
+      //$LASTPOS=60001012;//kernel.GameScreen:1012
       _this.bgColor=c;
       
       _thread.retVal=_this;return;
@@ -16615,16 +16775,16 @@ Tonyu.klass.define({
       var _this=this;
       var ctx;
       
-      //$LASTPOS=58001052;//kernel.GameScreen:1052
+      //$LASTPOS=60001052;//kernel.GameScreen:1052
       ctx = _this.buf[0].getContext("2d");
       
-      //$LASTPOS=58001090;//kernel.GameScreen:1090
+      //$LASTPOS=60001090;//kernel.GameScreen:1090
       ctx.save();
-      //$LASTPOS=58001107;//kernel.GameScreen:1107
+      //$LASTPOS=60001107;//kernel.GameScreen:1107
       ctx.fillStyle=_this.bgColor+"";
-      //$LASTPOS=58001138;//kernel.GameScreen:1138
+      //$LASTPOS=60001138;//kernel.GameScreen:1138
       ctx.fillRect(0,0,_this.width,_this.height);
-      //$LASTPOS=58001212;//kernel.GameScreen:1212
+      //$LASTPOS=60001212;//kernel.GameScreen:1212
       ctx.restore();
     },
     fiber$fillCanvas :function _trc_GameScreen_f_fillCanvas(_thread) {
@@ -16634,16 +16794,16 @@ Tonyu.klass.define({
       var __pc=0;
       var ctx;
       
-      //$LASTPOS=58001052;//kernel.GameScreen:1052
+      //$LASTPOS=60001052;//kernel.GameScreen:1052
       ctx = _this.buf[0].getContext("2d");
       
-      //$LASTPOS=58001090;//kernel.GameScreen:1090
+      //$LASTPOS=60001090;//kernel.GameScreen:1090
       ctx.save();
-      //$LASTPOS=58001107;//kernel.GameScreen:1107
+      //$LASTPOS=60001107;//kernel.GameScreen:1107
       ctx.fillStyle=_this.bgColor+"";
-      //$LASTPOS=58001138;//kernel.GameScreen:1138
+      //$LASTPOS=60001138;//kernel.GameScreen:1138
       ctx.fillRect(0,0,_this.width,_this.height);
-      //$LASTPOS=58001212;//kernel.GameScreen:1212
+      //$LASTPOS=60001212;//kernel.GameScreen:1212
       ctx.restore();
       
       _thread.retVal=_this;return;
@@ -16652,7 +16812,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=58001264;//kernel.GameScreen:1264
+      //$LASTPOS=60001264;//kernel.GameScreen:1264
       _this.sprites.scrollTo(scrollX,scrollY);
     },
     fiber$scrollTo :function _trc_GameScreen_f_scrollTo(_thread,scrollX,scrollY) {
@@ -16661,7 +16821,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=58001264;//kernel.GameScreen:1264
+      //$LASTPOS=60001264;//kernel.GameScreen:1264
       _this.sprites.scrollTo(scrollX,scrollY);
       
       _thread.retVal=_this;return;
@@ -16697,81 +16857,81 @@ Tonyu.klass.define({
       var j;
       var i;
       
-      //$LASTPOS=59000077;//kernel.Map:77
+      //$LASTPOS=61000077;//kernel.Map:77
       _this.sx=0;
-      //$LASTPOS=59000088;//kernel.Map:88
+      //$LASTPOS=61000088;//kernel.Map:88
       _this.sy=0;
-      //$LASTPOS=59000099;//kernel.Map:99
+      //$LASTPOS=61000099;//kernel.Map:99
       _this.alpha=255;
-      //$LASTPOS=59000115;//kernel.Map:115
+      //$LASTPOS=61000115;//kernel.Map:115
       Tonyu.classes.kernel.Actor.apply( _this, [param]);
-      //$LASTPOS=59000134;//kernel.Map:134
+      //$LASTPOS=61000134;//kernel.Map:134
       _this.chipWidth=_this.chipWidth||32;
-      //$LASTPOS=59000164;//kernel.Map:164
+      //$LASTPOS=61000164;//kernel.Map:164
       _this.chipHeight=_this.chipHeight||_this.chipWidth||32;
-      //$LASTPOS=59000207;//kernel.Map:207
+      //$LASTPOS=61000207;//kernel.Map:207
       if (typeof  _this.col!=="number") {
-        //$LASTPOS=59000234;//kernel.Map:234
+        //$LASTPOS=61000234;//kernel.Map:234
         _this.col=Tonyu.globals.$screenWidth/_this.chipWidth;
       }
-      //$LASTPOS=59000267;//kernel.Map:267
+      //$LASTPOS=61000267;//kernel.Map:267
       if (typeof  _this.row!=="number") {
-        //$LASTPOS=59000294;//kernel.Map:294
+        //$LASTPOS=61000294;//kernel.Map:294
         _this.row=Tonyu.globals.$screenHeight/_this.chipHeight;
       }
-      //$LASTPOS=59000329;//kernel.Map:329
+      //$LASTPOS=61000329;//kernel.Map:329
       _this.col=_this.floor(_this.col);
-      //$LASTPOS=59000344;//kernel.Map:344
+      //$LASTPOS=61000344;//kernel.Map:344
       _this.row=_this.floor(_this.row);
-      //$LASTPOS=59000365;//kernel.Map:365
+      //$LASTPOS=61000365;//kernel.Map:365
       _this.buf=$("<canvas>").attr({width: _this.col*_this.chipWidth,height: _this.row*_this.chipHeight});
-      //$LASTPOS=59000437;//kernel.Map:437
+      //$LASTPOS=61000437;//kernel.Map:437
       _this.mapObj=true;
-      //$LASTPOS=59000455;//kernel.Map:455
+      //$LASTPOS=61000455;//kernel.Map:455
       _this.mapTable=[];
-      //$LASTPOS=59000475;//kernel.Map:475
+      //$LASTPOS=61000475;//kernel.Map:475
       _this.mapOnTable=[];
-      //$LASTPOS=59000497;//kernel.Map:497
-      //$LASTPOS=59000501;//kernel.Map:501
+      //$LASTPOS=61000497;//kernel.Map:497
+      //$LASTPOS=61000501;//kernel.Map:501
       j = 0;
       for (; j<_this.row ; j++) {
         {
-          //$LASTPOS=59000530;//kernel.Map:530
+          //$LASTPOS=61000530;//kernel.Map:530
           _this.rows=[];
-          //$LASTPOS=59000550;//kernel.Map:550
-          //$LASTPOS=59000554;//kernel.Map:554
+          //$LASTPOS=61000550;//kernel.Map:550
+          //$LASTPOS=61000554;//kernel.Map:554
           i = 0;
           for (; i<_this.col ; i++) {
             {
-              //$LASTPOS=59000587;//kernel.Map:587
+              //$LASTPOS=61000587;//kernel.Map:587
               _this.rows.push(- 1);
             }
           }
-          //$LASTPOS=59000622;//kernel.Map:622
+          //$LASTPOS=61000622;//kernel.Map:622
           _this.mapTable.push(_this.rows);
         }
       }
-      //$LASTPOS=59000655;//kernel.Map:655
-      //$LASTPOS=59000659;//kernel.Map:659
+      //$LASTPOS=61000655;//kernel.Map:655
+      //$LASTPOS=61000659;//kernel.Map:659
       j = 0;
       for (; j<_this.row ; j++) {
         {
-          //$LASTPOS=59000688;//kernel.Map:688
+          //$LASTPOS=61000688;//kernel.Map:688
           _this.rows=[];
-          //$LASTPOS=59000708;//kernel.Map:708
-          //$LASTPOS=59000712;//kernel.Map:712
+          //$LASTPOS=61000708;//kernel.Map:708
+          //$LASTPOS=61000712;//kernel.Map:712
           i = 0;
           for (; i<_this.col ; i++) {
             {
-              //$LASTPOS=59000745;//kernel.Map:745
+              //$LASTPOS=61000745;//kernel.Map:745
               _this.rows.push(- 1);
             }
           }
-          //$LASTPOS=59000780;//kernel.Map:780
+          //$LASTPOS=61000780;//kernel.Map:780
           _this.mapOnTable.push(_this.rows);
         }
       }
-      //$LASTPOS=59000880;//kernel.Map:880
+      //$LASTPOS=61000880;//kernel.Map:880
       _this.initMap();
     },
     initMap :function _trc_Map_initMap() {
@@ -16780,41 +16940,41 @@ Tonyu.klass.define({
       var i;
       var j;
       
-      //$LASTPOS=59000912;//kernel.Map:912
+      //$LASTPOS=61000912;//kernel.Map:912
       if (! _this.mapData) {
         return _this;
       }
-      //$LASTPOS=59000938;//kernel.Map:938
-      //$LASTPOS=59000942;//kernel.Map:942
+      //$LASTPOS=61000938;//kernel.Map:938
+      //$LASTPOS=61000942;//kernel.Map:942
       i = 0;
       for (; i<_this.row ; i++) {
         {
-          //$LASTPOS=59000971;//kernel.Map:971
-          //$LASTPOS=59000975;//kernel.Map:975
+          //$LASTPOS=61000971;//kernel.Map:971
+          //$LASTPOS=61000975;//kernel.Map:975
           j = 0;
           for (; j<_this.col ; j++) {
             {
-              //$LASTPOS=59001008;//kernel.Map:1008
+              //$LASTPOS=61001008;//kernel.Map:1008
               _this.set(j,i,_this.mapData[i][j]);
             }
           }
         }
       }
-      //$LASTPOS=59001055;//kernel.Map:1055
+      //$LASTPOS=61001055;//kernel.Map:1055
       if (! _this.mapOnData) {
         return _this;
       }
-      //$LASTPOS=59001083;//kernel.Map:1083
-      //$LASTPOS=59001087;//kernel.Map:1087
+      //$LASTPOS=61001083;//kernel.Map:1083
+      //$LASTPOS=61001087;//kernel.Map:1087
       i = 0;
       for (; i<_this.row ; i++) {
         {
-          //$LASTPOS=59001116;//kernel.Map:1116
-          //$LASTPOS=59001120;//kernel.Map:1120
+          //$LASTPOS=61001116;//kernel.Map:1116
+          //$LASTPOS=61001120;//kernel.Map:1120
           j = 0;
           for (; j<_this.col ; j++) {
             {
-              //$LASTPOS=59001153;//kernel.Map:1153
+              //$LASTPOS=61001153;//kernel.Map:1153
               _this.setOn(j,i,_this.mapOnData[i][j]);
             }
           }
@@ -16829,7 +16989,7 @@ Tonyu.klass.define({
       var i;
       var j;
       
-      //$LASTPOS=59000912;//kernel.Map:912
+      //$LASTPOS=61000912;//kernel.Map:912
       if (! _this.mapData) {
         _thread.retVal=_this;return;
         
@@ -16840,19 +17000,19 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=59000938;//kernel.Map:938
-            //$LASTPOS=59000942;//kernel.Map:942
+            //$LASTPOS=61000938;//kernel.Map:938
+            //$LASTPOS=61000942;//kernel.Map:942
             i = 0;
             
           case 1:
             if (!(i<_this.row)) { __pc=7     ; break; }
-            //$LASTPOS=59000971;//kernel.Map:971
-            //$LASTPOS=59000975;//kernel.Map:975
+            //$LASTPOS=61000971;//kernel.Map:971
+            //$LASTPOS=61000975;//kernel.Map:975
             j = 0;
             
           case 2:
             if (!(j<_this.col)) { __pc=5     ; break; }
-            //$LASTPOS=59001008;//kernel.Map:1008
+            //$LASTPOS=61001008;//kernel.Map:1008
             _this.fiber$set(_thread, j, i, _this.mapData[i][j]);
             __pc=3;return;
           case 3:
@@ -16867,24 +17027,24 @@ Tonyu.klass.define({
             __pc=1;break;
           case 7     :
             
-            //$LASTPOS=59001055;//kernel.Map:1055
+            //$LASTPOS=61001055;//kernel.Map:1055
             if (!(! _this.mapOnData)) { __pc=8     ; break; }
             _thread.exit(_this);return;
           case 8     :
             
-            //$LASTPOS=59001083;//kernel.Map:1083
-            //$LASTPOS=59001087;//kernel.Map:1087
+            //$LASTPOS=61001083;//kernel.Map:1083
+            //$LASTPOS=61001087;//kernel.Map:1087
             i = 0;
             
           case 9:
             if (!(i<_this.row)) { __pc=15    ; break; }
-            //$LASTPOS=59001116;//kernel.Map:1116
-            //$LASTPOS=59001120;//kernel.Map:1120
+            //$LASTPOS=61001116;//kernel.Map:1116
+            //$LASTPOS=61001120;//kernel.Map:1120
             j = 0;
             
           case 10:
             if (!(j<_this.col)) { __pc=13    ; break; }
-            //$LASTPOS=59001153;//kernel.Map:1153
+            //$LASTPOS=61001153;//kernel.Map:1153
             _this.fiber$setOn(_thread, j, i, _this.mapOnData[i][j]);
             __pc=11;return;
           case 11:
@@ -16938,43 +17098,43 @@ Tonyu.klass.define({
       var i;
       var j;
       
-      //$LASTPOS=59001260;//kernel.Map:1260
+      //$LASTPOS=61001260;//kernel.Map:1260
       if (! _this.mapTable) {
         return _this;
       }
-      //$LASTPOS=59001287;//kernel.Map:1287
+      //$LASTPOS=61001287;//kernel.Map:1287
       _this.buf=$("<canvas>").attr({width: _this.col*_this.chipWidth,height: _this.row*_this.chipHeight});
-      //$LASTPOS=59001359;//kernel.Map:1359
-      //$LASTPOS=59001363;//kernel.Map:1363
+      //$LASTPOS=61001359;//kernel.Map:1359
+      //$LASTPOS=61001363;//kernel.Map:1363
       i = 0;
       for (; i<_this.row ; i++) {
         {
-          //$LASTPOS=59001392;//kernel.Map:1392
-          //$LASTPOS=59001396;//kernel.Map:1396
+          //$LASTPOS=61001392;//kernel.Map:1392
+          //$LASTPOS=61001396;//kernel.Map:1396
           j = 0;
           for (; j<_this.col ; j++) {
             {
-              //$LASTPOS=59001429;//kernel.Map:1429
+              //$LASTPOS=61001429;//kernel.Map:1429
               _this.set(j,i,_this.mapTable[i][j]);
             }
           }
         }
       }
-      //$LASTPOS=59001477;//kernel.Map:1477
+      //$LASTPOS=61001477;//kernel.Map:1477
       if (! _this.mapOnTable) {
         return _this;
       }
-      //$LASTPOS=59001506;//kernel.Map:1506
-      //$LASTPOS=59001510;//kernel.Map:1510
+      //$LASTPOS=61001506;//kernel.Map:1506
+      //$LASTPOS=61001510;//kernel.Map:1510
       i = 0;
       for (; i<_this.row ; i++) {
         {
-          //$LASTPOS=59001539;//kernel.Map:1539
-          //$LASTPOS=59001543;//kernel.Map:1543
+          //$LASTPOS=61001539;//kernel.Map:1539
+          //$LASTPOS=61001543;//kernel.Map:1543
           j = 0;
           for (; j<_this.col ; j++) {
             {
-              //$LASTPOS=59001576;//kernel.Map:1576
+              //$LASTPOS=61001576;//kernel.Map:1576
               _this.setOn(j,i,_this.mapOnTable[i][j]);
             }
           }
@@ -16989,12 +17149,12 @@ Tonyu.klass.define({
       var i;
       var j;
       
-      //$LASTPOS=59001260;//kernel.Map:1260
+      //$LASTPOS=61001260;//kernel.Map:1260
       if (! _this.mapTable) {
         _thread.retVal=_this;return;
         
       }
-      //$LASTPOS=59001287;//kernel.Map:1287
+      //$LASTPOS=61001287;//kernel.Map:1287
       _this.buf=$("<canvas>").attr({width: _this.col*_this.chipWidth,height: _this.row*_this.chipHeight});
       
       _thread.enter(function _trc_Map_ent_redraw(_thread) {
@@ -17002,19 +17162,19 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=59001359;//kernel.Map:1359
-            //$LASTPOS=59001363;//kernel.Map:1363
+            //$LASTPOS=61001359;//kernel.Map:1359
+            //$LASTPOS=61001363;//kernel.Map:1363
             i = 0;
             
           case 1:
             if (!(i<_this.row)) { __pc=7     ; break; }
-            //$LASTPOS=59001392;//kernel.Map:1392
-            //$LASTPOS=59001396;//kernel.Map:1396
+            //$LASTPOS=61001392;//kernel.Map:1392
+            //$LASTPOS=61001396;//kernel.Map:1396
             j = 0;
             
           case 2:
             if (!(j<_this.col)) { __pc=5     ; break; }
-            //$LASTPOS=59001429;//kernel.Map:1429
+            //$LASTPOS=61001429;//kernel.Map:1429
             _this.fiber$set(_thread, j, i, _this.mapTable[i][j]);
             __pc=3;return;
           case 3:
@@ -17029,24 +17189,24 @@ Tonyu.klass.define({
             __pc=1;break;
           case 7     :
             
-            //$LASTPOS=59001477;//kernel.Map:1477
+            //$LASTPOS=61001477;//kernel.Map:1477
             if (!(! _this.mapOnTable)) { __pc=8     ; break; }
             _thread.exit(_this);return;
           case 8     :
             
-            //$LASTPOS=59001506;//kernel.Map:1506
-            //$LASTPOS=59001510;//kernel.Map:1510
+            //$LASTPOS=61001506;//kernel.Map:1506
+            //$LASTPOS=61001510;//kernel.Map:1510
             i = 0;
             
           case 9:
             if (!(i<_this.row)) { __pc=15    ; break; }
-            //$LASTPOS=59001539;//kernel.Map:1539
-            //$LASTPOS=59001543;//kernel.Map:1543
+            //$LASTPOS=61001539;//kernel.Map:1539
+            //$LASTPOS=61001543;//kernel.Map:1543
             j = 0;
             
           case 10:
             if (!(j<_this.col)) { __pc=13    ; break; }
-            //$LASTPOS=59001576;//kernel.Map:1576
+            //$LASTPOS=61001576;//kernel.Map:1576
             _this.fiber$setOn(_thread, j, i, _this.mapOnTable[i][j]);
             __pc=11;return;
           case 11:
@@ -17070,38 +17230,38 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=59001651;//kernel.Map:1651
+      //$LASTPOS=61001651;//kernel.Map:1651
       _this.baseData=_this.file("../maps/").rel(dataFile).obj();
-      //$LASTPOS=59001703;//kernel.Map:1703
+      //$LASTPOS=61001703;//kernel.Map:1703
       if (! _this.baseData) {
-        //$LASTPOS=59001717;//kernel.Map:1717
+        //$LASTPOS=61001717;//kernel.Map:1717
         _this.baseData=_this.file(dataFile).obj();
       }
-      //$LASTPOS=59001753;//kernel.Map:1753
+      //$LASTPOS=61001753;//kernel.Map:1753
       _this.mapTable=_this.baseData[0];
-      //$LASTPOS=59001780;//kernel.Map:1780
+      //$LASTPOS=61001780;//kernel.Map:1780
       _this.mapData=_this.mapTable;
-      //$LASTPOS=59001803;//kernel.Map:1803
+      //$LASTPOS=61001803;//kernel.Map:1803
       _this.row=_this.mapTable.length;
-      //$LASTPOS=59001829;//kernel.Map:1829
+      //$LASTPOS=61001829;//kernel.Map:1829
       _this.col=_this.mapTable[0].length;
-      //$LASTPOS=59001858;//kernel.Map:1858
+      //$LASTPOS=61001858;//kernel.Map:1858
       _this.mapOnTable=_this.baseData[1];
-      //$LASTPOS=59001887;//kernel.Map:1887
+      //$LASTPOS=61001887;//kernel.Map:1887
       _this.mapOnData=_this.mapOnTable;
-      //$LASTPOS=59001914;//kernel.Map:1914
+      //$LASTPOS=61001914;//kernel.Map:1914
       if (typeof  Number(_this.baseData[2])=="number") {
-        //$LASTPOS=59001956;//kernel.Map:1956
+        //$LASTPOS=61001956;//kernel.Map:1956
         _this.chipWidth=Number(_this.baseData[2]);
       }
-      //$LASTPOS=59001992;//kernel.Map:1992
+      //$LASTPOS=61001992;//kernel.Map:1992
       if (typeof  Number(_this.baseData[3])=="number") {
-        //$LASTPOS=59002034;//kernel.Map:2034
+        //$LASTPOS=61002034;//kernel.Map:2034
         _this.chipHeight=Number(_this.baseData[3]);
       }
-      //$LASTPOS=59002071;//kernel.Map:2071
+      //$LASTPOS=61002071;//kernel.Map:2071
       _this.buf=$("<canvas>").attr({width: _this.col*_this.chipWidth,height: _this.row*_this.chipHeight});
-      //$LASTPOS=59002143;//kernel.Map:2143
+      //$LASTPOS=61002143;//kernel.Map:2143
       _this.initMap();
     },
     fiber$load :function _trc_Map_f_load(_thread,dataFile) {
@@ -17110,36 +17270,36 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=59001651;//kernel.Map:1651
+      //$LASTPOS=61001651;//kernel.Map:1651
       _this.baseData=_this.file("../maps/").rel(dataFile).obj();
-      //$LASTPOS=59001703;//kernel.Map:1703
+      //$LASTPOS=61001703;//kernel.Map:1703
       if (! _this.baseData) {
-        //$LASTPOS=59001717;//kernel.Map:1717
+        //$LASTPOS=61001717;//kernel.Map:1717
         _this.baseData=_this.file(dataFile).obj();
       }
-      //$LASTPOS=59001753;//kernel.Map:1753
+      //$LASTPOS=61001753;//kernel.Map:1753
       _this.mapTable=_this.baseData[0];
-      //$LASTPOS=59001780;//kernel.Map:1780
+      //$LASTPOS=61001780;//kernel.Map:1780
       _this.mapData=_this.mapTable;
-      //$LASTPOS=59001803;//kernel.Map:1803
+      //$LASTPOS=61001803;//kernel.Map:1803
       _this.row=_this.mapTable.length;
-      //$LASTPOS=59001829;//kernel.Map:1829
+      //$LASTPOS=61001829;//kernel.Map:1829
       _this.col=_this.mapTable[0].length;
-      //$LASTPOS=59001858;//kernel.Map:1858
+      //$LASTPOS=61001858;//kernel.Map:1858
       _this.mapOnTable=_this.baseData[1];
-      //$LASTPOS=59001887;//kernel.Map:1887
+      //$LASTPOS=61001887;//kernel.Map:1887
       _this.mapOnData=_this.mapOnTable;
-      //$LASTPOS=59001914;//kernel.Map:1914
+      //$LASTPOS=61001914;//kernel.Map:1914
       if (typeof  Number(_this.baseData[2])=="number") {
-        //$LASTPOS=59001956;//kernel.Map:1956
+        //$LASTPOS=61001956;//kernel.Map:1956
         _this.chipWidth=Number(_this.baseData[2]);
       }
-      //$LASTPOS=59001992;//kernel.Map:1992
+      //$LASTPOS=61001992;//kernel.Map:1992
       if (typeof  Number(_this.baseData[3])=="number") {
-        //$LASTPOS=59002034;//kernel.Map:2034
+        //$LASTPOS=61002034;//kernel.Map:2034
         _this.chipHeight=Number(_this.baseData[3]);
       }
-      //$LASTPOS=59002071;//kernel.Map:2071
+      //$LASTPOS=61002071;//kernel.Map:2071
       _this.buf=$("<canvas>").attr({width: _this.col*_this.chipWidth,height: _this.row*_this.chipHeight});
       
       _thread.enter(function _trc_Map_ent_load(_thread) {
@@ -17147,7 +17307,7 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=59002143;//kernel.Map:2143
+            //$LASTPOS=61002143;//kernel.Map:2143
             _this.fiber$initMap(_thread);
             __pc=1;return;
           case 1:
@@ -17163,13 +17323,13 @@ Tonyu.klass.define({
       var saveDataFile;
       var data;
       
-      //$LASTPOS=59002185;//kernel.Map:2185
+      //$LASTPOS=61002185;//kernel.Map:2185
       saveDataFile = _this.file("../maps/").rel(saveFileName);
       
-      //$LASTPOS=59002243;//kernel.Map:2243
+      //$LASTPOS=61002243;//kernel.Map:2243
       data = [_this.mapTable,_this.mapOnTable,_this.chipWidth,_this.chipHeight];
       
-      //$LASTPOS=59002301;//kernel.Map:2301
+      //$LASTPOS=61002301;//kernel.Map:2301
       saveDataFile.obj(data);
     },
     fiber$save :function _trc_Map_f_save(_thread,saveFileName) {
@@ -17180,13 +17340,13 @@ Tonyu.klass.define({
       var saveDataFile;
       var data;
       
-      //$LASTPOS=59002185;//kernel.Map:2185
+      //$LASTPOS=61002185;//kernel.Map:2185
       saveDataFile = _this.file("../maps/").rel(saveFileName);
       
-      //$LASTPOS=59002243;//kernel.Map:2243
+      //$LASTPOS=61002243;//kernel.Map:2243
       data = [_this.mapTable,_this.mapOnTable,_this.chipWidth,_this.chipHeight];
       
-      //$LASTPOS=59002301;//kernel.Map:2301
+      //$LASTPOS=61002301;//kernel.Map:2301
       saveDataFile.obj(data);
       
       _thread.retVal=_this;return;
@@ -17195,32 +17355,32 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=59002357;//kernel.Map:2357
+      //$LASTPOS=61002357;//kernel.Map:2357
       if (setCol>=_this.col||setRow>=_this.row||setCol<0||setRow<0) {
         return _this;
       }
-      //$LASTPOS=59002425;//kernel.Map:2425
+      //$LASTPOS=61002425;//kernel.Map:2425
       _this.mapTable[setRow][setCol]=p;
-      //$LASTPOS=59002496;//kernel.Map:2496
+      //$LASTPOS=61002496;//kernel.Map:2496
       _this.ctx=_this.buf[0].getContext("2d");
-      //$LASTPOS=59002530;//kernel.Map:2530
+      //$LASTPOS=61002530;//kernel.Map:2530
       p=Math.floor(p);
-      //$LASTPOS=59002552;//kernel.Map:2552
+      //$LASTPOS=61002552;//kernel.Map:2552
       _this.pImg=Tonyu.globals.$imageList[p];
-      //$LASTPOS=59002577;//kernel.Map:2577
+      //$LASTPOS=61002577;//kernel.Map:2577
       if (! _this.pImg) {
-        //$LASTPOS=59002599;//kernel.Map:2599
+        //$LASTPOS=61002599;//kernel.Map:2599
         _this.ctx.clearRect(setCol*_this.chipWidth,setRow*_this.chipHeight,_this.chipWidth,_this.chipHeight);
         return _this;
         
       }
-      //$LASTPOS=59002700;//kernel.Map:2700
+      //$LASTPOS=61002700;//kernel.Map:2700
       _this.ctx.clearRect(setCol*_this.chipWidth,setRow*_this.chipHeight,_this.chipWidth,_this.chipHeight);
-      //$LASTPOS=59002777;//kernel.Map:2777
+      //$LASTPOS=61002777;//kernel.Map:2777
       _this.ctx.save();
-      //$LASTPOS=59002948;//kernel.Map:2948
+      //$LASTPOS=61002948;//kernel.Map:2948
       _this.ctx.drawImage(_this.pImg.image,_this.pImg.x,_this.pImg.y,_this.pImg.width,_this.pImg.height,setCol*_this.chipWidth,setRow*_this.chipHeight,_this.chipWidth,_this.chipHeight);
-      //$LASTPOS=59003092;//kernel.Map:3092
+      //$LASTPOS=61003092;//kernel.Map:3092
       _this.ctx.restore();
     },
     fiber$set :function _trc_Map_f_set(_thread,setCol,setRow,p) {
@@ -17229,34 +17389,34 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=59002357;//kernel.Map:2357
+      //$LASTPOS=61002357;//kernel.Map:2357
       if (setCol>=_this.col||setRow>=_this.row||setCol<0||setRow<0) {
         _thread.retVal=_this;return;
         
       }
-      //$LASTPOS=59002425;//kernel.Map:2425
+      //$LASTPOS=61002425;//kernel.Map:2425
       _this.mapTable[setRow][setCol]=p;
-      //$LASTPOS=59002496;//kernel.Map:2496
+      //$LASTPOS=61002496;//kernel.Map:2496
       _this.ctx=_this.buf[0].getContext("2d");
-      //$LASTPOS=59002530;//kernel.Map:2530
+      //$LASTPOS=61002530;//kernel.Map:2530
       p=Math.floor(p);
-      //$LASTPOS=59002552;//kernel.Map:2552
+      //$LASTPOS=61002552;//kernel.Map:2552
       _this.pImg=Tonyu.globals.$imageList[p];
-      //$LASTPOS=59002577;//kernel.Map:2577
+      //$LASTPOS=61002577;//kernel.Map:2577
       if (! _this.pImg) {
-        //$LASTPOS=59002599;//kernel.Map:2599
+        //$LASTPOS=61002599;//kernel.Map:2599
         _this.ctx.clearRect(setCol*_this.chipWidth,setRow*_this.chipHeight,_this.chipWidth,_this.chipHeight);
         _thread.retVal=_this;return;
         
         
       }
-      //$LASTPOS=59002700;//kernel.Map:2700
+      //$LASTPOS=61002700;//kernel.Map:2700
       _this.ctx.clearRect(setCol*_this.chipWidth,setRow*_this.chipHeight,_this.chipWidth,_this.chipHeight);
-      //$LASTPOS=59002777;//kernel.Map:2777
+      //$LASTPOS=61002777;//kernel.Map:2777
       _this.ctx.save();
-      //$LASTPOS=59002948;//kernel.Map:2948
+      //$LASTPOS=61002948;//kernel.Map:2948
       _this.ctx.drawImage(_this.pImg.image,_this.pImg.x,_this.pImg.y,_this.pImg.width,_this.pImg.height,setCol*_this.chipWidth,setRow*_this.chipHeight,_this.chipWidth,_this.chipHeight);
-      //$LASTPOS=59003092;//kernel.Map:3092
+      //$LASTPOS=61003092;//kernel.Map:3092
       _this.ctx.restore();
       
       _thread.retVal=_this;return;
@@ -17265,29 +17425,29 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=59003141;//kernel.Map:3141
+      //$LASTPOS=61003141;//kernel.Map:3141
       if (setCol>=_this.col||setRow>=_this.row||setCol<0||setRow<0) {
         return _this;
       }
-      //$LASTPOS=59003209;//kernel.Map:3209
+      //$LASTPOS=61003209;//kernel.Map:3209
       _this.set(setCol,setRow,_this.mapTable[setRow][setCol]);
-      //$LASTPOS=59003259;//kernel.Map:3259
+      //$LASTPOS=61003259;//kernel.Map:3259
       _this.mapOnTable[setRow][setCol]=p;
-      //$LASTPOS=59003294;//kernel.Map:3294
+      //$LASTPOS=61003294;//kernel.Map:3294
       _this.ctx=_this.buf[0].getContext("2d");
-      //$LASTPOS=59003328;//kernel.Map:3328
+      //$LASTPOS=61003328;//kernel.Map:3328
       p=Math.floor(p);
-      //$LASTPOS=59003350;//kernel.Map:3350
+      //$LASTPOS=61003350;//kernel.Map:3350
       _this.pImg=Tonyu.globals.$imageList[p];
-      //$LASTPOS=59003375;//kernel.Map:3375
+      //$LASTPOS=61003375;//kernel.Map:3375
       if (! _this.pImg) {
         return _this;
       }
-      //$LASTPOS=59003399;//kernel.Map:3399
+      //$LASTPOS=61003399;//kernel.Map:3399
       _this.ctx.save();
-      //$LASTPOS=59003416;//kernel.Map:3416
+      //$LASTPOS=61003416;//kernel.Map:3416
       _this.ctx.drawImage(_this.pImg.image,_this.pImg.x,_this.pImg.y,_this.pImg.width,_this.pImg.height,setCol*_this.chipWidth,setRow*_this.chipHeight,_this.chipWidth,_this.chipHeight);
-      //$LASTPOS=59003560;//kernel.Map:3560
+      //$LASTPOS=61003560;//kernel.Map:3560
       _this.ctx.restore();
     },
     fiber$setOn :function _trc_Map_f_setOn(_thread,setCol,setRow,p) {
@@ -17296,7 +17456,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=59003141;//kernel.Map:3141
+      //$LASTPOS=61003141;//kernel.Map:3141
       if (setCol>=_this.col||setRow>=_this.row||setCol<0||setRow<0) {
         _thread.retVal=_this;return;
         
@@ -17307,29 +17467,29 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=59003209;//kernel.Map:3209
+            //$LASTPOS=61003209;//kernel.Map:3209
             _this.fiber$set(_thread, setCol, setRow, _this.mapTable[setRow][setCol]);
             __pc=1;return;
           case 1:
             
-            //$LASTPOS=59003259;//kernel.Map:3259
+            //$LASTPOS=61003259;//kernel.Map:3259
             _this.mapOnTable[setRow][setCol]=p;
-            //$LASTPOS=59003294;//kernel.Map:3294
+            //$LASTPOS=61003294;//kernel.Map:3294
             _this.ctx=_this.buf[0].getContext("2d");
-            //$LASTPOS=59003328;//kernel.Map:3328
+            //$LASTPOS=61003328;//kernel.Map:3328
             p=Math.floor(p);
-            //$LASTPOS=59003350;//kernel.Map:3350
+            //$LASTPOS=61003350;//kernel.Map:3350
             _this.pImg=Tonyu.globals.$imageList[p];
-            //$LASTPOS=59003375;//kernel.Map:3375
+            //$LASTPOS=61003375;//kernel.Map:3375
             if (!(! _this.pImg)) { __pc=2     ; break; }
             _thread.exit(_this);return;
           case 2     :
             
-            //$LASTPOS=59003399;//kernel.Map:3399
+            //$LASTPOS=61003399;//kernel.Map:3399
             _this.ctx.save();
-            //$LASTPOS=59003416;//kernel.Map:3416
+            //$LASTPOS=61003416;//kernel.Map:3416
             _this.ctx.drawImage(_this.pImg.image,_this.pImg.x,_this.pImg.y,_this.pImg.width,_this.pImg.height,setCol*_this.chipWidth,setRow*_this.chipHeight,_this.chipWidth,_this.chipHeight);
-            //$LASTPOS=59003560;//kernel.Map:3560
+            //$LASTPOS=61003560;//kernel.Map:3560
             _this.ctx.restore();
             _thread.exit(_this);return;
           }
@@ -17340,7 +17500,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=59003607;//kernel.Map:3607
+      //$LASTPOS=61003607;//kernel.Map:3607
       _this.setOn(Math.floor((setX-_this.sx)/_this.chipWidth),Math.floor((setY-_this.sy)/_this.chipHeight),p);
     },
     fiber$setOnAt :function _trc_Map_f_setOnAt(_thread,setX,setY,p) {
@@ -17355,7 +17515,7 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=59003607;//kernel.Map:3607
+            //$LASTPOS=61003607;//kernel.Map:3607
             _this.fiber$setOn(_thread, Math.floor((setX-_this.sx)/_this.chipWidth), Math.floor((setY-_this.sy)/_this.chipHeight), p);
             __pc=1;return;
           case 1:
@@ -17369,7 +17529,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=59003712;//kernel.Map:3712
+      //$LASTPOS=61003712;//kernel.Map:3712
       _this.set(Math.floor((setX-_this.sx)/_this.chipWidth),Math.floor((setY-_this.sy)/_this.chipHeight),p);
     },
     fiber$setAt :function _trc_Map_f_setAt(_thread,setX,setY,p) {
@@ -17384,7 +17544,7 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=59003712;//kernel.Map:3712
+            //$LASTPOS=61003712;//kernel.Map:3712
             _this.fiber$set(_thread, Math.floor((setX-_this.sx)/_this.chipWidth), Math.floor((setY-_this.sy)/_this.chipHeight), p);
             __pc=1;return;
           case 1:
@@ -17398,7 +17558,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=59003815;//kernel.Map:3815
+      //$LASTPOS=61003815;//kernel.Map:3815
       if (getCol<_this.col&&getRow<_this.row&&getCol>=0&&getRow>=0) {
         return _this.mapTable[getRow][getCol];
       }
@@ -17410,7 +17570,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=59003815;//kernel.Map:3815
+      //$LASTPOS=61003815;//kernel.Map:3815
       if (getCol<_this.col&&getRow<_this.row&&getCol>=0&&getRow>=0) {
         _thread.retVal=_this.mapTable[getRow][getCol];return;
         
@@ -17452,7 +17612,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=59004057;//kernel.Map:4057
+      //$LASTPOS=61004057;//kernel.Map:4057
       if (getCol<_this.col&&getRow<_this.row&&getCol>=0&&getRow>=0) {
         return _this.mapOnTable[getRow][getCol];
       }
@@ -17464,7 +17624,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=59004057;//kernel.Map:4057
+      //$LASTPOS=61004057;//kernel.Map:4057
       if (getCol<_this.col&&getRow<_this.row&&getCol>=0&&getRow>=0) {
         _thread.retVal=_this.mapOnTable[getRow][getCol];return;
         
@@ -17506,9 +17666,9 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=59004310;//kernel.Map:4310
+      //$LASTPOS=61004310;//kernel.Map:4310
       _this.sx=- scrollX;
-      //$LASTPOS=59004328;//kernel.Map:4328
+      //$LASTPOS=61004328;//kernel.Map:4328
       _this.sy=- scrollY;
     },
     fiber$scrollTo :function _trc_Map_f_scrollTo(_thread,scrollX,scrollY) {
@@ -17517,9 +17677,9 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=59004310;//kernel.Map:4310
+      //$LASTPOS=61004310;//kernel.Map:4310
       _this.sx=- scrollX;
-      //$LASTPOS=59004328;//kernel.Map:4328
+      //$LASTPOS=61004328;//kernel.Map:4328
       _this.sy=- scrollY;
       
       _thread.retVal=_this;return;
@@ -17528,15 +17688,15 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=59004363;//kernel.Map:4363
+      //$LASTPOS=61004363;//kernel.Map:4363
       _this.pImg=_this.buf[0];
-      //$LASTPOS=59004381;//kernel.Map:4381
+      //$LASTPOS=61004381;//kernel.Map:4381
       ctx.save();
-      //$LASTPOS=59004398;//kernel.Map:4398
+      //$LASTPOS=61004398;//kernel.Map:4398
       ctx.globalAlpha=_this.alpha/255;
-      //$LASTPOS=59004430;//kernel.Map:4430
+      //$LASTPOS=61004430;//kernel.Map:4430
       ctx.drawImage(_this.pImg,0,0,_this.col*_this.chipWidth,_this.row*_this.chipHeight,_this.sx,_this.sy,_this.col*_this.chipWidth,_this.row*_this.chipHeight);
-      //$LASTPOS=59004542;//kernel.Map:4542
+      //$LASTPOS=61004542;//kernel.Map:4542
       ctx.restore();
     },
     __dummy: false
@@ -17568,44 +17728,44 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=60002897;//kernel.Panel:2897
+      //$LASTPOS=62002897;//kernel.Panel:2897
       Tonyu.classes.kernel.Actor.apply( _this, [opt]);
-      //$LASTPOS=60002966;//kernel.Panel:2966
+      //$LASTPOS=62002966;//kernel.Panel:2966
       if (_this.canvas) {
-        //$LASTPOS=60002989;//kernel.Panel:2989
+        //$LASTPOS=62002989;//kernel.Panel:2989
         _this.width=_this.canvas.width;
-        //$LASTPOS=60003018;//kernel.Panel:3018
+        //$LASTPOS=62003018;//kernel.Panel:3018
         _this.height=_this.canvas.height;
-        //$LASTPOS=60003049;//kernel.Panel:3049
+        //$LASTPOS=62003049;//kernel.Panel:3049
         _this.parallel("watchResize");
         
       } else {
-        //$LASTPOS=60003097;//kernel.Panel:3097
+        //$LASTPOS=62003097;//kernel.Panel:3097
         _this.setPanel(_this.width||Tonyu.globals.$screenWidth||465,_this.height||Tonyu.globals.$screenHeight||465);
         
       }
-      //$LASTPOS=60003221;//kernel.Panel:3221
+      //$LASTPOS=62003221;//kernel.Panel:3221
       if (_this._fillStyle&&_this.canvas) {
-        //$LASTPOS=60003247;//kernel.Panel:3247
+        //$LASTPOS=62003247;//kernel.Panel:3247
         _this.canvas.getContext("2d").fillStyle=_this._fillStyle+"";
       }
-      //$LASTPOS=60003301;//kernel.Panel:3301
+      //$LASTPOS=62003301;//kernel.Panel:3301
       _this.x=_this.x||_this.width/2;
-      //$LASTPOS=60003320;//kernel.Panel:3320
+      //$LASTPOS=62003320;//kernel.Panel:3320
       _this.y=_this.y||_this.height/2;
-      //$LASTPOS=60003340;//kernel.Panel:3340
+      //$LASTPOS=62003340;//kernel.Panel:3340
       if (_this.align==null) {
-        //$LASTPOS=60003356;//kernel.Panel:3356
+        //$LASTPOS=62003356;//kernel.Panel:3356
         _this.align="center";
       }
-      //$LASTPOS=60003377;//kernel.Panel:3377
+      //$LASTPOS=62003377;//kernel.Panel:3377
       if (_this.alpha==null) {
-        //$LASTPOS=60003393;//kernel.Panel:3393
+        //$LASTPOS=62003393;//kernel.Panel:3393
         _this.alpha=255;
       }
-      //$LASTPOS=60003409;//kernel.Panel:3409
+      //$LASTPOS=62003409;//kernel.Panel:3409
       if (_this._drawn==null) {
-        //$LASTPOS=60003426;//kernel.Panel:3426
+        //$LASTPOS=62003426;//kernel.Panel:3426
         _this._drawn=false;
       }
     },
@@ -17613,19 +17773,19 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=60003466;//kernel.Panel:3466
+      //$LASTPOS=62003466;//kernel.Panel:3466
       while (true) {
-        //$LASTPOS=60003489;//kernel.Panel:3489
+        //$LASTPOS=62003489;//kernel.Panel:3489
         if (_this.width!=_this.canvas.width||_this.height!=_this.canvas.height) {
-          //$LASTPOS=60003554;//kernel.Panel:3554
+          //$LASTPOS=62003554;//kernel.Panel:3554
           _this.width=_this.canvas.width;
-          //$LASTPOS=60003573;//kernel.Panel:3573
+          //$LASTPOS=62003573;//kernel.Panel:3573
           _this.height=_this.canvas.height;
-          //$LASTPOS=60003608;//kernel.Panel:3608
+          //$LASTPOS=62003608;//kernel.Panel:3608
           _this.fireEvent("resize",{width: _this.width,height: _this.height});
           
         }
-        //$LASTPOS=60003664;//kernel.Panel:3664
+        //$LASTPOS=62003664;//kernel.Panel:3664
         _this.update();
         
       }
@@ -17642,19 +17802,19 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=60003466;//kernel.Panel:3466
+            //$LASTPOS=62003466;//kernel.Panel:3466
           case 1:
-            //$LASTPOS=60003489;//kernel.Panel:3489
+            //$LASTPOS=62003489;//kernel.Panel:3489
             if (_this.width!=_this.canvas.width||_this.height!=_this.canvas.height) {
-              //$LASTPOS=60003554;//kernel.Panel:3554
+              //$LASTPOS=62003554;//kernel.Panel:3554
               _this.width=_this.canvas.width;
-              //$LASTPOS=60003573;//kernel.Panel:3573
+              //$LASTPOS=62003573;//kernel.Panel:3573
               _this.height=_this.canvas.height;
-              //$LASTPOS=60003608;//kernel.Panel:3608
+              //$LASTPOS=62003608;//kernel.Panel:3608
               _this.fireEvent("resize",{width: _this.width,height: _this.height});
               
             }
-            //$LASTPOS=60003664;//kernel.Panel:3664
+            //$LASTPOS=62003664;//kernel.Panel:3664
             _this.fiber$update(_thread);
             __pc=2;return;
           case 2:
@@ -17671,19 +17831,19 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=60003744;//kernel.Panel:3744
+      //$LASTPOS=62003744;//kernel.Panel:3744
       _this.width=_this.trunc(width);
-      //$LASTPOS=60003774;//kernel.Panel:3774
+      //$LASTPOS=62003774;//kernel.Panel:3774
       _this.height=_this.trunc(height);
-      //$LASTPOS=60003806;//kernel.Panel:3806
+      //$LASTPOS=62003806;//kernel.Panel:3806
       _this.buf=$("<canvas>").attr({width: width,height: height});
-      //$LASTPOS=60003849;//kernel.Panel:3849
+      //$LASTPOS=62003849;//kernel.Panel:3849
       _this.canvas=_this.buf[0];
-      //$LASTPOS=60003869;//kernel.Panel:3869
+      //$LASTPOS=62003869;//kernel.Panel:3869
       _this.imageSmoothingEnabled=! Tonyu.globals.$imageSmoothingDisabled;
-      //$LASTPOS=60003922;//kernel.Panel:3922
+      //$LASTPOS=62003922;//kernel.Panel:3922
       _this._drawn=false;
-      //$LASTPOS=60003941;//kernel.Panel:3941
+      //$LASTPOS=62003941;//kernel.Panel:3941
       _this.fireEvent("resize",{width: width,height: height,force: true});
     },
     fiber$setPanel :function _trc_Panel_f_setPanel(_thread,width,height) {
@@ -17692,19 +17852,19 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=60003744;//kernel.Panel:3744
+      //$LASTPOS=62003744;//kernel.Panel:3744
       _this.width=_this.trunc(width);
-      //$LASTPOS=60003774;//kernel.Panel:3774
+      //$LASTPOS=62003774;//kernel.Panel:3774
       _this.height=_this.trunc(height);
-      //$LASTPOS=60003806;//kernel.Panel:3806
+      //$LASTPOS=62003806;//kernel.Panel:3806
       _this.buf=$("<canvas>").attr({width: width,height: height});
-      //$LASTPOS=60003849;//kernel.Panel:3849
+      //$LASTPOS=62003849;//kernel.Panel:3849
       _this.canvas=_this.buf[0];
-      //$LASTPOS=60003869;//kernel.Panel:3869
+      //$LASTPOS=62003869;//kernel.Panel:3869
       _this.imageSmoothingEnabled=! Tonyu.globals.$imageSmoothingDisabled;
-      //$LASTPOS=60003922;//kernel.Panel:3922
+      //$LASTPOS=62003922;//kernel.Panel:3922
       _this._drawn=false;
-      //$LASTPOS=60003941;//kernel.Panel:3941
+      //$LASTPOS=62003941;//kernel.Panel:3941
       _this.fireEvent("resize",{width: width,height: height,force: true});
       
       _thread.retVal=_this;return;
@@ -17713,11 +17873,11 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=60004020;//kernel.Panel:4020
+      //$LASTPOS=62004020;//kernel.Panel:4020
       if (_this.width==width&&_this.height==height) {
         return _this;
       }
-      //$LASTPOS=60004079;//kernel.Panel:4079
+      //$LASTPOS=62004079;//kernel.Panel:4079
       _this.setPanel(width,height);
     },
     fiber$resize :function _trc_Panel_f_resize(_thread,width,height) {
@@ -17726,7 +17886,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=60004020;//kernel.Panel:4020
+      //$LASTPOS=62004020;//kernel.Panel:4020
       if (_this.width==width&&_this.height==height) {
         _thread.retVal=_this;return;
         
@@ -17737,7 +17897,7 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=60004079;//kernel.Panel:4079
+            //$LASTPOS=62004079;//kernel.Panel:4079
             _this.fiber$setPanel(_thread, width, height);
             __pc=1;return;
           case 1:
@@ -17751,7 +17911,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=60004127;//kernel.Panel:4127
+      //$LASTPOS=62004127;//kernel.Panel:4127
       _this._drawn=true;
       return _this.canvas.getContext("2d");
     },
@@ -17761,7 +17921,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=60004127;//kernel.Panel:4127
+      //$LASTPOS=62004127;//kernel.Panel:4127
       _this._drawn=true;
       _thread.retVal=_this.canvas.getContext("2d");return;
       
@@ -17772,7 +17932,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=60004197;//kernel.Panel:4197
+      //$LASTPOS=62004197;//kernel.Panel:4197
       _this._drawn=true;
       return _this.canvas.getContext("2d");
     },
@@ -17780,7 +17940,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=60004265;//kernel.Panel:4265
+      //$LASTPOS=62004265;//kernel.Panel:4265
       _this._drawn=true;
       return _this.canvas;
     },
@@ -17788,7 +17948,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=60004329;//kernel.Panel:4329
+      //$LASTPOS=62004329;//kernel.Panel:4329
       _this.fillStyle=color;
     },
     fiber$setFillStyle :function _trc_Panel_f_setFillStyle(_thread,color) {
@@ -17797,7 +17957,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=60004329;//kernel.Panel:4329
+      //$LASTPOS=62004329;//kernel.Panel:4329
       _this.fillStyle=color;
       
       _thread.retVal=_this;return;
@@ -17812,27 +17972,27 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=60004413;//kernel.Panel:4413
+      //$LASTPOS=62004413;//kernel.Panel:4413
       _this._fillStyle=val;
-      //$LASTPOS=60004434;//kernel.Panel:4434
+      //$LASTPOS=62004434;//kernel.Panel:4434
       if (! _this.canvas) {
         return _this;
       }
-      //$LASTPOS=60004460;//kernel.Panel:4460
+      //$LASTPOS=62004460;//kernel.Panel:4460
       _this.context.fillStyle=val+"";
     },
     __setter__strokeStyle :function _trc_Panel___setter__strokeStyle(val) {
       "use strict";
       var _this=this;
       
-      //$LASTPOS=60004514;//kernel.Panel:4514
+      //$LASTPOS=62004514;//kernel.Panel:4514
       _this.context.strokeStyle=val+"";
     },
     __setter__lineWidth :function _trc_Panel___setter__lineWidth(val) {
       "use strict";
       var _this=this;
       
-      //$LASTPOS=60004568;//kernel.Panel:4568
+      //$LASTPOS=62004568;//kernel.Panel:4568
       _this.context.lineWidth=val;
     },
     fillCircle :function _trc_Panel_fillCircle(x,y,r) {
@@ -17840,18 +18000,18 @@ Tonyu.klass.define({
       var _this=this;
       var ctx;
       
-      //$LASTPOS=60004621;//kernel.Panel:4621
+      //$LASTPOS=62004621;//kernel.Panel:4621
       ctx = _this.context;
       
-      //$LASTPOS=60004643;//kernel.Panel:4643
+      //$LASTPOS=62004643;//kernel.Panel:4643
       ctx.fillStyle=_this.fillStyle+"";
-      //$LASTPOS=60004676;//kernel.Panel:4676
+      //$LASTPOS=62004676;//kernel.Panel:4676
       ctx.beginPath();
-      //$LASTPOS=60004698;//kernel.Panel:4698
+      //$LASTPOS=62004698;//kernel.Panel:4698
       ctx.arc(x,y,r,0,2*Tonyu.globals.$Math.PI);
-      //$LASTPOS=60004732;//kernel.Panel:4732
+      //$LASTPOS=62004732;//kernel.Panel:4732
       ctx.closePath();
-      //$LASTPOS=60004754;//kernel.Panel:4754
+      //$LASTPOS=62004754;//kernel.Panel:4754
       ctx.fill();
     },
     fiber$fillCircle :function _trc_Panel_f_fillCircle(_thread,x,y,r) {
@@ -17861,18 +18021,18 @@ Tonyu.klass.define({
       var __pc=0;
       var ctx;
       
-      //$LASTPOS=60004621;//kernel.Panel:4621
+      //$LASTPOS=62004621;//kernel.Panel:4621
       ctx = _this.context;
       
-      //$LASTPOS=60004643;//kernel.Panel:4643
+      //$LASTPOS=62004643;//kernel.Panel:4643
       ctx.fillStyle=_this.fillStyle+"";
-      //$LASTPOS=60004676;//kernel.Panel:4676
+      //$LASTPOS=62004676;//kernel.Panel:4676
       ctx.beginPath();
-      //$LASTPOS=60004698;//kernel.Panel:4698
+      //$LASTPOS=62004698;//kernel.Panel:4698
       ctx.arc(x,y,r,0,2*Tonyu.globals.$Math.PI);
-      //$LASTPOS=60004732;//kernel.Panel:4732
+      //$LASTPOS=62004732;//kernel.Panel:4732
       ctx.closePath();
-      //$LASTPOS=60004754;//kernel.Panel:4754
+      //$LASTPOS=62004754;//kernel.Panel:4754
       ctx.fill();
       
       _thread.retVal=_this;return;
@@ -17882,10 +18042,10 @@ Tonyu.klass.define({
       var _this=this;
       var ctx;
       
-      //$LASTPOS=60004795;//kernel.Panel:4795
+      //$LASTPOS=62004795;//kernel.Panel:4795
       ctx = _this.getContext();
       
-      //$LASTPOS=60004876;//kernel.Panel:4876
+      //$LASTPOS=62004876;//kernel.Panel:4876
       ctx.fillRect(x,y,w,h);
     },
     fillText :function _trc_Panel_fillText(text,x,y,size,align) {
@@ -17896,39 +18056,39 @@ Tonyu.klass.define({
       var f;
       var colCount;
       
-      //$LASTPOS=60004962;//kernel.Panel:4962
+      //$LASTPOS=62004962;//kernel.Panel:4962
       ctx = _this.getContext();
       
-      //$LASTPOS=60004989;//kernel.Panel:4989
+      //$LASTPOS=62004989;//kernel.Panel:4989
       ctx.save();
-      //$LASTPOS=60005006;//kernel.Panel:5006
+      //$LASTPOS=62005006;//kernel.Panel:5006
       text=text+"";
-      //$LASTPOS=60005025;//kernel.Panel:5025
+      //$LASTPOS=62005025;//kernel.Panel:5025
       splits = text.split("\n");
       
-      //$LASTPOS=60005111;//kernel.Panel:5111
+      //$LASTPOS=62005111;//kernel.Panel:5111
       ctx.textAlign=align||"center";
-      //$LASTPOS=60005150;//kernel.Panel:5150
+      //$LASTPOS=62005150;//kernel.Panel:5150
       size=size||15;
-      //$LASTPOS=60005170;//kernel.Panel:5170
+      //$LASTPOS=62005170;//kernel.Panel:5170
       ctx.fillStyle=_this.fillStyle+"";
-      //$LASTPOS=60005203;//kernel.Panel:5203
+      //$LASTPOS=62005203;//kernel.Panel:5203
       f = ctx.font.replace(/^[0-9\.]+/,"");
       
-      //$LASTPOS=60005248;//kernel.Panel:5248
+      //$LASTPOS=62005248;//kernel.Panel:5248
       ctx.font=size+f;
-      //$LASTPOS=60005270;//kernel.Panel:5270
-      //$LASTPOS=60005274;//kernel.Panel:5274
+      //$LASTPOS=62005270;//kernel.Panel:5270
+      //$LASTPOS=62005274;//kernel.Panel:5274
       colCount = 0;
       for (; colCount<splits.length ; colCount++) {
         {
-          //$LASTPOS=60005334;//kernel.Panel:5334
+          //$LASTPOS=62005334;//kernel.Panel:5334
           ctx.fillText(splits[colCount],x,y);
-          //$LASTPOS=60005379;//kernel.Panel:5379
+          //$LASTPOS=62005379;//kernel.Panel:5379
           y+=size;
         }
       }
-      //$LASTPOS=60005400;//kernel.Panel:5400
+      //$LASTPOS=62005400;//kernel.Panel:5400
       ctx.restore();
     },
     fiber$fillText :function _trc_Panel_f_fillText(_thread,text,x,y,size,align) {
@@ -17947,42 +18107,42 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=60004962;//kernel.Panel:4962
+            //$LASTPOS=62004962;//kernel.Panel:4962
             _this.fiber$getContext(_thread);
             __pc=1;return;
           case 1:
             ctx=_thread.retVal;
             
-            //$LASTPOS=60004989;//kernel.Panel:4989
+            //$LASTPOS=62004989;//kernel.Panel:4989
             ctx.save();
-            //$LASTPOS=60005006;//kernel.Panel:5006
+            //$LASTPOS=62005006;//kernel.Panel:5006
             text=text+"";
-            //$LASTPOS=60005025;//kernel.Panel:5025
+            //$LASTPOS=62005025;//kernel.Panel:5025
             splits = text.split("\n");
             
-            //$LASTPOS=60005111;//kernel.Panel:5111
+            //$LASTPOS=62005111;//kernel.Panel:5111
             ctx.textAlign=align||"center";
-            //$LASTPOS=60005150;//kernel.Panel:5150
+            //$LASTPOS=62005150;//kernel.Panel:5150
             size=size||15;
-            //$LASTPOS=60005170;//kernel.Panel:5170
+            //$LASTPOS=62005170;//kernel.Panel:5170
             ctx.fillStyle=_this.fillStyle+"";
-            //$LASTPOS=60005203;//kernel.Panel:5203
+            //$LASTPOS=62005203;//kernel.Panel:5203
             f = ctx.font.replace(/^[0-9\.]+/,"");
             
-            //$LASTPOS=60005248;//kernel.Panel:5248
+            //$LASTPOS=62005248;//kernel.Panel:5248
             ctx.font=size+f;
-            //$LASTPOS=60005270;//kernel.Panel:5270
-            //$LASTPOS=60005274;//kernel.Panel:5274
+            //$LASTPOS=62005270;//kernel.Panel:5270
+            //$LASTPOS=62005274;//kernel.Panel:5274
             colCount = 0;
             for (; colCount<splits.length ; colCount++) {
               {
-                //$LASTPOS=60005334;//kernel.Panel:5334
+                //$LASTPOS=62005334;//kernel.Panel:5334
                 ctx.fillText(splits[colCount],x,y);
-                //$LASTPOS=60005379;//kernel.Panel:5379
+                //$LASTPOS=62005379;//kernel.Panel:5379
                 y+=size;
               }
             }
-            //$LASTPOS=60005400;//kernel.Panel:5400
+            //$LASTPOS=62005400;//kernel.Panel:5400
             ctx.restore();
             _thread.exit(_this);return;
           }
@@ -17994,18 +18154,18 @@ Tonyu.klass.define({
       var _this=this;
       var ctx;
       
-      //$LASTPOS=60005465;//kernel.Panel:5465
+      //$LASTPOS=62005465;//kernel.Panel:5465
       ctx = _this.getContext();
       
-      //$LASTPOS=60005492;//kernel.Panel:5492
+      //$LASTPOS=62005492;//kernel.Panel:5492
       ctx.save();
-      //$LASTPOS=60005509;//kernel.Panel:5509
+      //$LASTPOS=62005509;//kernel.Panel:5509
       ctx.clearRect(clearX||0,clearY||0,clearW||_this.width,clearH||_this.height);
-      //$LASTPOS=60005579;//kernel.Panel:5579
+      //$LASTPOS=62005579;//kernel.Panel:5579
       ctx.restore();
-      //$LASTPOS=60005599;//kernel.Panel:5599
+      //$LASTPOS=62005599;//kernel.Panel:5599
       if (arguments.length==0) {
-        //$LASTPOS=60005624;//kernel.Panel:5624
+        //$LASTPOS=62005624;//kernel.Panel:5624
         _this._drawn=false;
       }
     },
@@ -18022,21 +18182,21 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=60005465;//kernel.Panel:5465
+            //$LASTPOS=62005465;//kernel.Panel:5465
             _this.fiber$getContext(_thread);
             __pc=1;return;
           case 1:
             ctx=_thread.retVal;
             
-            //$LASTPOS=60005492;//kernel.Panel:5492
+            //$LASTPOS=62005492;//kernel.Panel:5492
             ctx.save();
-            //$LASTPOS=60005509;//kernel.Panel:5509
+            //$LASTPOS=62005509;//kernel.Panel:5509
             ctx.clearRect(clearX||0,clearY||0,clearW||_this.width,clearH||_this.height);
-            //$LASTPOS=60005579;//kernel.Panel:5579
+            //$LASTPOS=62005579;//kernel.Panel:5579
             ctx.restore();
-            //$LASTPOS=60005599;//kernel.Panel:5599
+            //$LASTPOS=62005599;//kernel.Panel:5599
             if (_arguments.length==0) {
-              //$LASTPOS=60005624;//kernel.Panel:5624
+              //$LASTPOS=62005624;//kernel.Panel:5624
               _this._drawn=false;
             }
             _thread.exit(_this);return;
@@ -18050,17 +18210,17 @@ Tonyu.klass.define({
       var ctx;
       
       
-      //$LASTPOS=60005683;//kernel.Panel:5683
+      //$LASTPOS=62005683;//kernel.Panel:5683
       if (typeof  getX=="number"&&! isNaN(getX)&&typeof  getY=="number"&&! isNaN(getY)) {
-        //$LASTPOS=60005781;//kernel.Panel:5781
+        //$LASTPOS=62005781;//kernel.Panel:5781
         ctx=_this.getContext();
-        //$LASTPOS=60005808;//kernel.Panel:5808
+        //$LASTPOS=62005808;//kernel.Panel:5808
         _this.imagedata=ctx.getImageData(getX,getY,1,1);
-        //$LASTPOS=60005860;//kernel.Panel:5860
+        //$LASTPOS=62005860;//kernel.Panel:5860
         _this.colordata=[_this.imagedata.data[0],_this.imagedata.data[1],_this.imagedata.data[2],_this.imagedata.data[3]];
         
       } else {
-        //$LASTPOS=60006000;//kernel.Panel:6000
+        //$LASTPOS=62006000;//kernel.Panel:6000
         _this.colordata=[0,0,0,0];
         
       }
@@ -18080,22 +18240,22 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=60005683;//kernel.Panel:5683
+            //$LASTPOS=62005683;//kernel.Panel:5683
             if (!(typeof  getX=="number"&&! isNaN(getX)&&typeof  getY=="number"&&! isNaN(getY))) { __pc=2     ; break; }
-            //$LASTPOS=60005781;//kernel.Panel:5781
+            //$LASTPOS=62005781;//kernel.Panel:5781
             _this.fiber$getContext(_thread);
             __pc=1;return;
           case 1:
             ctx=_thread.retVal;
             
-            //$LASTPOS=60005808;//kernel.Panel:5808
+            //$LASTPOS=62005808;//kernel.Panel:5808
             _this.imagedata=ctx.getImageData(getX,getY,1,1);
-            //$LASTPOS=60005860;//kernel.Panel:5860
+            //$LASTPOS=62005860;//kernel.Panel:5860
             _this.colordata=[_this.imagedata.data[0],_this.imagedata.data[1],_this.imagedata.data[2],_this.imagedata.data[3]];
             __pc=3     ;break;
           case 2     :
             {
-              //$LASTPOS=60006000;//kernel.Panel:6000
+              //$LASTPOS=62006000;//kernel.Panel:6000
               _this.colordata=[0,0,0,0];
             }
           case 3     :
@@ -18111,18 +18271,18 @@ Tonyu.klass.define({
       var _this=this;
       var ctx;
       
-      //$LASTPOS=60006087;//kernel.Panel:6087
+      //$LASTPOS=62006087;//kernel.Panel:6087
       ctx = _this.getContext();
       
-      //$LASTPOS=60006114;//kernel.Panel:6114
+      //$LASTPOS=62006114;//kernel.Panel:6114
       ctx.save();
-      //$LASTPOS=60006131;//kernel.Panel:6131
+      //$LASTPOS=62006131;//kernel.Panel:6131
       _this.imagedata=ctx.getImageData(0,0,_this.width,_this.height);
-      //$LASTPOS=60006192;//kernel.Panel:6192
+      //$LASTPOS=62006192;//kernel.Panel:6192
       _this.clearRect(0,0,_this.width,_this.height);
-      //$LASTPOS=60006226;//kernel.Panel:6226
+      //$LASTPOS=62006226;//kernel.Panel:6226
       ctx.putImageData(_this.imagedata,- scrollX,- scrollY);
-      //$LASTPOS=60006278;//kernel.Panel:6278
+      //$LASTPOS=62006278;//kernel.Panel:6278
       ctx.restore();
     },
     fiber$scroll :function _trc_Panel_f_scroll(_thread,scrollX,scrollY) {
@@ -18138,24 +18298,24 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=60006087;//kernel.Panel:6087
+            //$LASTPOS=62006087;//kernel.Panel:6087
             _this.fiber$getContext(_thread);
             __pc=1;return;
           case 1:
             ctx=_thread.retVal;
             
-            //$LASTPOS=60006114;//kernel.Panel:6114
+            //$LASTPOS=62006114;//kernel.Panel:6114
             ctx.save();
-            //$LASTPOS=60006131;//kernel.Panel:6131
+            //$LASTPOS=62006131;//kernel.Panel:6131
             _this.imagedata=ctx.getImageData(0,0,_this.width,_this.height);
-            //$LASTPOS=60006192;//kernel.Panel:6192
+            //$LASTPOS=62006192;//kernel.Panel:6192
             _this.fiber$clearRect(_thread, 0, 0, _this.width, _this.height);
             __pc=2;return;
           case 2:
             
-            //$LASTPOS=60006226;//kernel.Panel:6226
+            //$LASTPOS=62006226;//kernel.Panel:6226
             ctx.putImageData(_this.imagedata,- scrollX,- scrollY);
-            //$LASTPOS=60006278;//kernel.Panel:6278
+            //$LASTPOS=62006278;//kernel.Panel:6278
             ctx.restore();
             _thread.exit(_this);return;
           }
@@ -18167,58 +18327,58 @@ Tonyu.klass.define({
       var _this=this;
       var pImg;
       
-      //$LASTPOS=60006314;//kernel.Panel:6314
+      //$LASTPOS=62006314;//kernel.Panel:6314
       if (_this._drawn) {
-        //$LASTPOS=60006335;//kernel.Panel:6335
+        //$LASTPOS=62006335;//kernel.Panel:6335
         pImg = _this.canvas;
         
-        //$LASTPOS=60006361;//kernel.Panel:6361
+        //$LASTPOS=62006361;//kernel.Panel:6361
         ctx.save();
-        //$LASTPOS=60006382;//kernel.Panel:6382
+        //$LASTPOS=62006382;//kernel.Panel:6382
         if (_this.align=="left") {
-          //$LASTPOS=60006414;//kernel.Panel:6414
+          //$LASTPOS=62006414;//kernel.Panel:6414
           ctx.translate(_this.x+_this.width/2,_this.y+_this.height/2);
           
         } else {
-          //$LASTPOS=60006466;//kernel.Panel:6466
+          //$LASTPOS=62006466;//kernel.Panel:6466
           if (_this.align=="center") {
-            //$LASTPOS=60006500;//kernel.Panel:6500
+            //$LASTPOS=62006500;//kernel.Panel:6500
             ctx.translate(_this.x,_this.y);
             
           } else {
-            //$LASTPOS=60006535;//kernel.Panel:6535
+            //$LASTPOS=62006535;//kernel.Panel:6535
             if (_this.align=="right") {
-              //$LASTPOS=60006568;//kernel.Panel:6568
+              //$LASTPOS=62006568;//kernel.Panel:6568
               ctx.translate(_this.x-_this.width/2,_this.y-_this.height/2);
               
             }
           }
         }
-        //$LASTPOS=60006625;//kernel.Panel:6625
+        //$LASTPOS=62006625;//kernel.Panel:6625
         if (_this.rotation!=0) {
-          //$LASTPOS=60006660;//kernel.Panel:6660
+          //$LASTPOS=62006660;//kernel.Panel:6660
           ctx.rotate(_this.rotation/180*Math.PI);
           
         } else {
-          //$LASTPOS=60006728;//kernel.Panel:6728
+          //$LASTPOS=62006728;//kernel.Panel:6728
           ctx.rotate(_this.rotate/180*Math.PI);
           
         }
-        //$LASTPOS=60006785;//kernel.Panel:6785
+        //$LASTPOS=62006785;//kernel.Panel:6785
         if (typeof  _this.scaleY==="undefined") {
-          //$LASTPOS=60006837;//kernel.Panel:6837
+          //$LASTPOS=62006837;//kernel.Panel:6837
           ctx.scale(_this.scaleX,_this.scaleX);
           
         } else {
-          //$LASTPOS=60006902;//kernel.Panel:6902
+          //$LASTPOS=62006902;//kernel.Panel:6902
           ctx.scale(_this.scaleX,_this.scaleY);
           
         }
-        //$LASTPOS=60006958;//kernel.Panel:6958
+        //$LASTPOS=62006958;//kernel.Panel:6958
         ctx.globalAlpha=_this.alpha/255;
-        //$LASTPOS=60006999;//kernel.Panel:6999
+        //$LASTPOS=62006999;//kernel.Panel:6999
         ctx.drawImage(pImg,0,0,_this.width,_this.height,- _this.width/2,- _this.height/2,_this.width,_this.height);
-        //$LASTPOS=60007103;//kernel.Panel:7103
+        //$LASTPOS=62007103;//kernel.Panel:7103
         ctx.restore();
         
       }
@@ -18232,48 +18392,48 @@ Tonyu.klass.define({
       var rotation;
       var ctx;
       
-      //$LASTPOS=60007170;//kernel.Panel:7170
+      //$LASTPOS=62007170;//kernel.Panel:7170
       pImg = Tonyu.globals.$imageList[p];
       
-      //$LASTPOS=60007199;//kernel.Panel:7199
+      //$LASTPOS=62007199;//kernel.Panel:7199
       if (! pImg) {
         return _this;
       }
-      //$LASTPOS=60007223;//kernel.Panel:7223
+      //$LASTPOS=62007223;//kernel.Panel:7223
       if (options===true) {
-        //$LASTPOS=60007243;//kernel.Panel:7243
+        //$LASTPOS=62007243;//kernel.Panel:7243
         options={f: true};
       }
-      //$LASTPOS=60007266;//kernel.Panel:7266
+      //$LASTPOS=62007266;//kernel.Panel:7266
       options=options||{};
-      //$LASTPOS=60007292;//kernel.Panel:7292
+      //$LASTPOS=62007292;//kernel.Panel:7292
       scaleX = typeof  (options.scaleX)==="number"?options.scaleX:1;
       
-      //$LASTPOS=60007361;//kernel.Panel:7361
+      //$LASTPOS=62007361;//kernel.Panel:7361
       scaleY = typeof  (options.scaleY)==="number"?options.scaleY:scaleX;
       
-      //$LASTPOS=60007435;//kernel.Panel:7435
+      //$LASTPOS=62007435;//kernel.Panel:7435
       rotation = options.rotation||options.angle||0;
       
-      //$LASTPOS=60007489;//kernel.Panel:7489
+      //$LASTPOS=62007489;//kernel.Panel:7489
       ctx = _this.context;
       
-      //$LASTPOS=60007511;//kernel.Panel:7511
+      //$LASTPOS=62007511;//kernel.Panel:7511
       if (options.f) {
-        //$LASTPOS=60007526;//kernel.Panel:7526
+        //$LASTPOS=62007526;//kernel.Panel:7526
         scaleX*=- 1;
       }
-      //$LASTPOS=60007545;//kernel.Panel:7545
+      //$LASTPOS=62007545;//kernel.Panel:7545
       ctx.save();
-      //$LASTPOS=60007562;//kernel.Panel:7562
+      //$LASTPOS=62007562;//kernel.Panel:7562
       ctx.translate(x,y);
-      //$LASTPOS=60007587;//kernel.Panel:7587
+      //$LASTPOS=62007587;//kernel.Panel:7587
       ctx.rotate(rotation/180*Math.PI);
-      //$LASTPOS=60007626;//kernel.Panel:7626
+      //$LASTPOS=62007626;//kernel.Panel:7626
       ctx.scale(scaleX,scaleY);
-      //$LASTPOS=60007657;//kernel.Panel:7657
+      //$LASTPOS=62007657;//kernel.Panel:7657
       ctx.drawImage(pImg.image,pImg.x,pImg.y,pImg.width,pImg.height,- pImg.width/2,- pImg.height/2,pImg.width,pImg.height);
-      //$LASTPOS=60007797;//kernel.Panel:7797
+      //$LASTPOS=62007797;//kernel.Panel:7797
       ctx.restore();
     },
     copy :function _trc_Panel_copy() {
@@ -18292,31 +18452,31 @@ Tonyu.klass.define({
       var params;
       
       
-      //$LASTPOS=60008035;//kernel.Panel:8035
+      //$LASTPOS=62008035;//kernel.Panel:8035
       a = new Tonyu.classes.kernel.ArgParser(arguments);
       
-      //$LASTPOS=60008072;//kernel.Panel:8072
+      //$LASTPOS=62008072;//kernel.Panel:8072
       srcPanel = a.shift(Tonyu.classes.kernel.Panel)||_this;
       
-      //$LASTPOS=60008114;//kernel.Panel:8114
+      //$LASTPOS=62008114;//kernel.Panel:8114
       if (a.length<=4) {
-        //$LASTPOS=60008142;//kernel.Panel:8142
+        //$LASTPOS=62008142;//kernel.Panel:8142
         dx=a.shift();
-        //$LASTPOS=60008165;//kernel.Panel:8165
+        //$LASTPOS=62008165;//kernel.Panel:8165
         dy=a.shift();
-        //$LASTPOS=60008188;//kernel.Panel:8188
+        //$LASTPOS=62008188;//kernel.Panel:8188
         if (a.length==0) {
-          //$LASTPOS=60008220;//kernel.Panel:8220
+          //$LASTPOS=62008220;//kernel.Panel:8220
           _this.context.drawImage(srcPanel.image,dx,dy);
           
         } else {
-          //$LASTPOS=60008293;//kernel.Panel:8293
+          //$LASTPOS=62008293;//kernel.Panel:8293
           dw=a.shift();
-          //$LASTPOS=60008320;//kernel.Panel:8320
+          //$LASTPOS=62008320;//kernel.Panel:8320
           dh=a.shift();
-          //$LASTPOS=60008347;//kernel.Panel:8347
+          //$LASTPOS=62008347;//kernel.Panel:8347
           if (dw*dh!=0) {
-            //$LASTPOS=60008380;//kernel.Panel:8380
+            //$LASTPOS=62008380;//kernel.Panel:8380
             _this.context.drawImage(srcPanel.image,dx,dy,dw,dh);
             
           }
@@ -18324,32 +18484,32 @@ Tonyu.klass.define({
         }
         
       } else {
-        //$LASTPOS=60008476;//kernel.Panel:8476
+        //$LASTPOS=62008476;//kernel.Panel:8476
         sx=a.shift();
-        //$LASTPOS=60008499;//kernel.Panel:8499
+        //$LASTPOS=62008499;//kernel.Panel:8499
         sy=a.shift();
-        //$LASTPOS=60008522;//kernel.Panel:8522
+        //$LASTPOS=62008522;//kernel.Panel:8522
         sw=a.shift();
-        //$LASTPOS=60008545;//kernel.Panel:8545
+        //$LASTPOS=62008545;//kernel.Panel:8545
         sh=a.shift();
-        //$LASTPOS=60008568;//kernel.Panel:8568
+        //$LASTPOS=62008568;//kernel.Panel:8568
         dx=a.shift();
-        //$LASTPOS=60008591;//kernel.Panel:8591
+        //$LASTPOS=62008591;//kernel.Panel:8591
         if (typeof  dx==="object") {
-          //$LASTPOS=60008632;//kernel.Panel:8632
+          //$LASTPOS=62008632;//kernel.Panel:8632
           params = dx;
           
           
         }
-        //$LASTPOS=60008718;//kernel.Panel:8718
+        //$LASTPOS=62008718;//kernel.Panel:8718
         dy=a.shift();
-        //$LASTPOS=60008741;//kernel.Panel:8741
+        //$LASTPOS=62008741;//kernel.Panel:8741
         dw=a.shift()||sw;
-        //$LASTPOS=60008770;//kernel.Panel:8770
+        //$LASTPOS=62008770;//kernel.Panel:8770
         dh=a.shift()||sh;
-        //$LASTPOS=60008849;//kernel.Panel:8849
+        //$LASTPOS=62008849;//kernel.Panel:8849
         if (sw*sh*dw*dh!=0) {
-          //$LASTPOS=60008884;//kernel.Panel:8884
+          //$LASTPOS=62008884;//kernel.Panel:8884
           _this.context.drawImage(srcPanel.image,sx,sy,sw,sh,dx,dy,dw,dh);
           
         }
@@ -18367,38 +18527,38 @@ Tonyu.klass.define({
       var x;
       var y;
       
-      //$LASTPOS=60009402;//kernel.Panel:9402
+      //$LASTPOS=62009402;//kernel.Panel:9402
       fromLayer = obj.layer;
       
-      //$LASTPOS=60009432;//kernel.Panel:9432
+      //$LASTPOS=62009432;//kernel.Panel:9432
       if (fromLayer==null&&toLayer==null) {
-        //$LASTPOS=60009481;//kernel.Panel:9481
+        //$LASTPOS=62009481;//kernel.Panel:9481
         fromLayer=_this;
-        //$LASTPOS=60009496;//kernel.Panel:9496
+        //$LASTPOS=62009496;//kernel.Panel:9496
         toLayer=_this.layer;
         
       } else {
-        //$LASTPOS=60009523;//kernel.Panel:9523
+        //$LASTPOS=62009523;//kernel.Panel:9523
         if (fromLayer==null&&toLayer===_this.layer) {
-          //$LASTPOS=60009574;//kernel.Panel:9574
+          //$LASTPOS=62009574;//kernel.Panel:9574
           fromLayer=_this;
           
         } else {
-          //$LASTPOS=60009602;//kernel.Panel:9602
+          //$LASTPOS=62009602;//kernel.Panel:9602
           if (fromLayer===_this&&toLayer==null) {
-            //$LASTPOS=60009652;//kernel.Panel:9652
+            //$LASTPOS=62009652;//kernel.Panel:9652
             toLayer=_this.layer;
             
           } else {
-            //$LASTPOS=60009679;//kernel.Panel:9679
+            //$LASTPOS=62009679;//kernel.Panel:9679
             if (fromLayer==null&&toLayer===_this) {
-              //$LASTPOS=60009729;//kernel.Panel:9729
+              //$LASTPOS=62009729;//kernel.Panel:9729
               fromLayer=_this.layer;
               
             } else {
-              //$LASTPOS=60009758;//kernel.Panel:9758
+              //$LASTPOS=62009758;//kernel.Panel:9758
               if (fromLayer===_this.layer&&toLayer==null) {
-                //$LASTPOS=60009809;//kernel.Panel:9809
+                //$LASTPOS=62009809;//kernel.Panel:9809
                 toLayer=_this;
                 
               }
@@ -18406,59 +18566,59 @@ Tonyu.klass.define({
           }
         }
       }
-      //$LASTPOS=60009835;//kernel.Panel:9835
+      //$LASTPOS=62009835;//kernel.Panel:9835
       if (fromLayer===toLayer) {
         return obj;
       }
-      //$LASTPOS=60009877;//kernel.Panel:9877
+      //$LASTPOS=62009877;//kernel.Panel:9877
       scaleY = _this.scaleY||_this.scaleX;
       
-      //$LASTPOS=60009914;//kernel.Panel:9914
+      //$LASTPOS=62009914;//kernel.Panel:9914
       if (fromLayer==null||toLayer==null) {
         throw new Error("layer not set");
         
       }
-      //$LASTPOS=60009991;//kernel.Panel:9991
+      //$LASTPOS=62009991;//kernel.Panel:9991
       if (fromLayer===_this&&toLayer===_this.layer) {
-        //$LASTPOS=60010072;//kernel.Panel:10072
+        //$LASTPOS=62010072;//kernel.Panel:10072
         dx = obj.x-_this.width/2;
         
-        //$LASTPOS=60010103;//kernel.Panel:10103
+        //$LASTPOS=62010103;//kernel.Panel:10103
         dy = obj.y-_this.height/2;
         
-        //$LASTPOS=60010135;//kernel.Panel:10135
+        //$LASTPOS=62010135;//kernel.Panel:10135
         rt = _this.rotation;
         
-        //$LASTPOS=60010333;//kernel.Panel:10333
+        //$LASTPOS=62010333;//kernel.Panel:10333
         x = _this.x+(_this.cos(rt)*dx+_this.cos(rt+90)*dy)*_this.scaleX;
         
-        //$LASTPOS=60010390;//kernel.Panel:10390
+        //$LASTPOS=62010390;//kernel.Panel:10390
         y = _this.y+(_this.sin(rt)*dx+_this.sin(rt+90)*dy)*scaleY;
         
         return {x: x,y: y,rotation: obj.rotation,scale: obj.scale,layer: toLayer};
         
       } else {
-        //$LASTPOS=60010577;//kernel.Panel:10577
+        //$LASTPOS=62010577;//kernel.Panel:10577
         if (fromLayer===_this.layer&&toLayer===_this) {
-          //$LASTPOS=60010658;//kernel.Panel:10658
+          //$LASTPOS=62010658;//kernel.Panel:10658
           rt = - _this.rotation;
           
-          //$LASTPOS=60010685;//kernel.Panel:10685
+          //$LASTPOS=62010685;//kernel.Panel:10685
           dx = obj.x-(_this.x);
           
-          //$LASTPOS=60010717;//kernel.Panel:10717
+          //$LASTPOS=62010717;//kernel.Panel:10717
           dy = obj.y-(_this.y);
           
-          //$LASTPOS=60010973;//kernel.Panel:10973
+          //$LASTPOS=62010973;//kernel.Panel:10973
           x = _this.width/2+(_this.cos(rt)*dx+_this.cos(rt+90)*dy)/_this.scaleX;
           
-          //$LASTPOS=60011033;//kernel.Panel:11033
+          //$LASTPOS=62011033;//kernel.Panel:11033
           y = _this.height/2+(_this.sin(rt)*dx+_this.sin(rt+90)*dy)/scaleY;
           
           return {x: x,y: y,rotation: rt,scale: 1/_this.scaleX,layer: toLayer};
           
         } else {
-          //$LASTPOS=60011224;//kernel.Panel:11224
+          //$LASTPOS=62011224;//kernel.Panel:11224
           _this.print("no support",obj.layer,toLayer);
           throw new Error("not support");
           
@@ -18479,38 +18639,38 @@ Tonyu.klass.define({
       var x;
       var y;
       
-      //$LASTPOS=60009402;//kernel.Panel:9402
+      //$LASTPOS=62009402;//kernel.Panel:9402
       fromLayer = obj.layer;
       
-      //$LASTPOS=60009432;//kernel.Panel:9432
+      //$LASTPOS=62009432;//kernel.Panel:9432
       if (fromLayer==null&&toLayer==null) {
-        //$LASTPOS=60009481;//kernel.Panel:9481
+        //$LASTPOS=62009481;//kernel.Panel:9481
         fromLayer=_this;
-        //$LASTPOS=60009496;//kernel.Panel:9496
+        //$LASTPOS=62009496;//kernel.Panel:9496
         toLayer=_this.layer;
         
       } else {
-        //$LASTPOS=60009523;//kernel.Panel:9523
+        //$LASTPOS=62009523;//kernel.Panel:9523
         if (fromLayer==null&&toLayer===_this.layer) {
-          //$LASTPOS=60009574;//kernel.Panel:9574
+          //$LASTPOS=62009574;//kernel.Panel:9574
           fromLayer=_this;
           
         } else {
-          //$LASTPOS=60009602;//kernel.Panel:9602
+          //$LASTPOS=62009602;//kernel.Panel:9602
           if (fromLayer===_this&&toLayer==null) {
-            //$LASTPOS=60009652;//kernel.Panel:9652
+            //$LASTPOS=62009652;//kernel.Panel:9652
             toLayer=_this.layer;
             
           } else {
-            //$LASTPOS=60009679;//kernel.Panel:9679
+            //$LASTPOS=62009679;//kernel.Panel:9679
             if (fromLayer==null&&toLayer===_this) {
-              //$LASTPOS=60009729;//kernel.Panel:9729
+              //$LASTPOS=62009729;//kernel.Panel:9729
               fromLayer=_this.layer;
               
             } else {
-              //$LASTPOS=60009758;//kernel.Panel:9758
+              //$LASTPOS=62009758;//kernel.Panel:9758
               if (fromLayer===_this.layer&&toLayer==null) {
-                //$LASTPOS=60009809;//kernel.Panel:9809
+                //$LASTPOS=62009809;//kernel.Panel:9809
                 toLayer=_this;
                 
               }
@@ -18518,62 +18678,62 @@ Tonyu.klass.define({
           }
         }
       }
-      //$LASTPOS=60009835;//kernel.Panel:9835
+      //$LASTPOS=62009835;//kernel.Panel:9835
       if (fromLayer===toLayer) {
         _thread.retVal=obj;return;
         
       }
-      //$LASTPOS=60009877;//kernel.Panel:9877
+      //$LASTPOS=62009877;//kernel.Panel:9877
       scaleY = _this.scaleY||_this.scaleX;
       
-      //$LASTPOS=60009914;//kernel.Panel:9914
+      //$LASTPOS=62009914;//kernel.Panel:9914
       if (fromLayer==null||toLayer==null) {
         throw new Error("layer not set");
         
       }
-      //$LASTPOS=60009991;//kernel.Panel:9991
+      //$LASTPOS=62009991;//kernel.Panel:9991
       if (fromLayer===_this&&toLayer===_this.layer) {
-        //$LASTPOS=60010072;//kernel.Panel:10072
+        //$LASTPOS=62010072;//kernel.Panel:10072
         dx = obj.x-_this.width/2;
         
-        //$LASTPOS=60010103;//kernel.Panel:10103
+        //$LASTPOS=62010103;//kernel.Panel:10103
         dy = obj.y-_this.height/2;
         
-        //$LASTPOS=60010135;//kernel.Panel:10135
+        //$LASTPOS=62010135;//kernel.Panel:10135
         rt = _this.rotation;
         
-        //$LASTPOS=60010333;//kernel.Panel:10333
+        //$LASTPOS=62010333;//kernel.Panel:10333
         x = _this.x+(_this.cos(rt)*dx+_this.cos(rt+90)*dy)*_this.scaleX;
         
-        //$LASTPOS=60010390;//kernel.Panel:10390
+        //$LASTPOS=62010390;//kernel.Panel:10390
         y = _this.y+(_this.sin(rt)*dx+_this.sin(rt+90)*dy)*scaleY;
         
         _thread.retVal={x: x,y: y,rotation: obj.rotation,scale: obj.scale,layer: toLayer};return;
         
         
       } else {
-        //$LASTPOS=60010577;//kernel.Panel:10577
+        //$LASTPOS=62010577;//kernel.Panel:10577
         if (fromLayer===_this.layer&&toLayer===_this) {
-          //$LASTPOS=60010658;//kernel.Panel:10658
+          //$LASTPOS=62010658;//kernel.Panel:10658
           rt = - _this.rotation;
           
-          //$LASTPOS=60010685;//kernel.Panel:10685
+          //$LASTPOS=62010685;//kernel.Panel:10685
           dx = obj.x-(_this.x);
           
-          //$LASTPOS=60010717;//kernel.Panel:10717
+          //$LASTPOS=62010717;//kernel.Panel:10717
           dy = obj.y-(_this.y);
           
-          //$LASTPOS=60010973;//kernel.Panel:10973
+          //$LASTPOS=62010973;//kernel.Panel:10973
           x = _this.width/2+(_this.cos(rt)*dx+_this.cos(rt+90)*dy)/_this.scaleX;
           
-          //$LASTPOS=60011033;//kernel.Panel:11033
+          //$LASTPOS=62011033;//kernel.Panel:11033
           y = _this.height/2+(_this.sin(rt)*dx+_this.sin(rt+90)*dy)/scaleY;
           
           _thread.retVal={x: x,y: y,rotation: rt,scale: 1/_this.scaleX,layer: toLayer};return;
           
           
         } else {
-          //$LASTPOS=60011224;//kernel.Panel:11224
+          //$LASTPOS=62011224;//kernel.Panel:11224
           _this.print("no support",obj.layer,toLayer);
           throw new Error("not support");
           
@@ -18587,47 +18747,47 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=60011344;//kernel.Panel:11344
+      //$LASTPOS=62011344;//kernel.Panel:11344
       if (dx==null&&dy==null) {
-        //$LASTPOS=60011381;//kernel.Panel:11381
+        //$LASTPOS=62011381;//kernel.Panel:11381
         if (x==null&&y==null) {
-          //$LASTPOS=60011420;//kernel.Panel:11420
+          //$LASTPOS=62011420;//kernel.Panel:11420
           _this.px=null;
-          //$LASTPOS=60011428;//kernel.Panel:11428
+          //$LASTPOS=62011428;//kernel.Panel:11428
           _this.py=null;
           return _this;
           
         }
-        //$LASTPOS=60011464;//kernel.Panel:11464
+        //$LASTPOS=62011464;//kernel.Panel:11464
         if (_this.px==null&&_this.py==null) {
-          //$LASTPOS=60011505;//kernel.Panel:11505
+          //$LASTPOS=62011505;//kernel.Panel:11505
           _this.px=x;
-          //$LASTPOS=60011510;//kernel.Panel:11510
+          //$LASTPOS=62011510;//kernel.Panel:11510
           _this.py=y;
           return _this;
           
         }
-        //$LASTPOS=60011543;//kernel.Panel:11543
+        //$LASTPOS=62011543;//kernel.Panel:11543
         dx=x;
-        //$LASTPOS=60011548;//kernel.Panel:11548
+        //$LASTPOS=62011548;//kernel.Panel:11548
         dy=y;
-        //$LASTPOS=60011553;//kernel.Panel:11553
+        //$LASTPOS=62011553;//kernel.Panel:11553
         x=_this.px;
-        //$LASTPOS=60011558;//kernel.Panel:11558
+        //$LASTPOS=62011558;//kernel.Panel:11558
         y=_this.py;
-        //$LASTPOS=60011563;//kernel.Panel:11563
+        //$LASTPOS=62011563;//kernel.Panel:11563
         _this.px=dx;
-        //$LASTPOS=60011569;//kernel.Panel:11569
+        //$LASTPOS=62011569;//kernel.Panel:11569
         _this.py=dy;
         
       }
-      //$LASTPOS=60011588;//kernel.Panel:11588
+      //$LASTPOS=62011588;//kernel.Panel:11588
       _this.context.beginPath();
-      //$LASTPOS=60011614;//kernel.Panel:11614
+      //$LASTPOS=62011614;//kernel.Panel:11614
       _this.context.moveTo(x,y);
-      //$LASTPOS=60011640;//kernel.Panel:11640
+      //$LASTPOS=62011640;//kernel.Panel:11640
       _this.context.lineTo(dx,dy);
-      //$LASTPOS=60011668;//kernel.Panel:11668
+      //$LASTPOS=62011668;//kernel.Panel:11668
       _this.context.stroke();
     },
     slicePattern :function _trc_Panel_slicePattern(x,y,width,height) {
@@ -18651,7 +18811,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=60011810;//kernel.Panel:11810
+      //$LASTPOS=62011810;//kernel.Panel:11810
       Tonyu.globals.$imageList.push(_this.slicePattern(x,y,width,height));
       return Tonyu.globals.$imageList.length-1;
     },
@@ -18661,7 +18821,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=60011810;//kernel.Panel:11810
+      //$LASTPOS=62011810;//kernel.Panel:11810
       Tonyu.globals.$imageList.push(_this.slicePattern(x,y,width,height));
       _thread.retVal=Tonyu.globals.$imageList.length-1;return;
       
@@ -18721,12 +18881,12 @@ Tonyu.klass.define({
       var _this=this;
       var url;
       
-      //$LASTPOS=60012126;//kernel.Panel:12126
+      //$LASTPOS=62012126;//kernel.Panel:12126
       url = _this.buf[0].toDataURL();
       
-      //$LASTPOS=60012159;//kernel.Panel:12159
+      //$LASTPOS=62012159;//kernel.Panel:12159
       if (typeof  fn==="string") {
-        //$LASTPOS=60012185;//kernel.Panel:12185
+        //$LASTPOS=62012185;//kernel.Panel:12185
         fn=_this.file(fn);
       }
       return fn.text(url);
@@ -18738,7 +18898,7 @@ Tonyu.klass.define({
       var __pc=0;
       var url;
       
-      //$LASTPOS=60012126;//kernel.Panel:12126
+      //$LASTPOS=62012126;//kernel.Panel:12126
       url = _this.buf[0].toDataURL();
       
       
@@ -18747,9 +18907,9 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=60012159;//kernel.Panel:12159
+            //$LASTPOS=62012159;//kernel.Panel:12159
             if (!(typeof  fn==="string")) { __pc=2     ; break; }
-            //$LASTPOS=60012185;//kernel.Panel:12185
+            //$LASTPOS=62012185;//kernel.Panel:12185
             _this.fiber$file(_thread, fn);
             __pc=1;return;
           case 1:
@@ -18770,45 +18930,45 @@ Tonyu.klass.define({
       var url;
       var element;
       
-      //$LASTPOS=60012247;//kernel.Panel:12247
+      //$LASTPOS=62012247;//kernel.Panel:12247
       if (typeof  fn==="string") {
-        //$LASTPOS=60012273;//kernel.Panel:12273
+        //$LASTPOS=62012273;//kernel.Panel:12273
         fn=_this.file(fn);
       }
-      //$LASTPOS=60012291;//kernel.Panel:12291
+      //$LASTPOS=62012291;//kernel.Panel:12291
       d = new $.Deferred();
       
-      //$LASTPOS=60012320;//kernel.Panel:12320
+      //$LASTPOS=62012320;//kernel.Panel:12320
       url = fn.text();
       
-      //$LASTPOS=60012344;//kernel.Panel:12344
+      //$LASTPOS=62012344;//kernel.Panel:12344
       element = $("<img>").css({display: "none"}).appendTo("body");
       
-      //$LASTPOS=60012410;//kernel.Panel:12410
+      //$LASTPOS=62012410;//kernel.Panel:12410
       element.on("load",(function anonymous_12429() {
         var img;
         var width;
         var height;
         
-        //$LASTPOS=60012441;//kernel.Panel:12441
+        //$LASTPOS=62012441;//kernel.Panel:12441
         img = new Image();
         
-        //$LASTPOS=60012473;//kernel.Panel:12473
+        //$LASTPOS=62012473;//kernel.Panel:12473
         img.src=element.attr('src');
-        //$LASTPOS=60012513;//kernel.Panel:12513
+        //$LASTPOS=62012513;//kernel.Panel:12513
         width = img.width;
         
-        //$LASTPOS=60012545;//kernel.Panel:12545
+        //$LASTPOS=62012545;//kernel.Panel:12545
         height = img.height;
         
-        //$LASTPOS=60012611;//kernel.Panel:12611
+        //$LASTPOS=62012611;//kernel.Panel:12611
         _this.resize(width,height);
-        //$LASTPOS=60012642;//kernel.Panel:12642
+        //$LASTPOS=62012642;//kernel.Panel:12642
         _this.context.drawImage(img,0,0);
-        //$LASTPOS=60012680;//kernel.Panel:12680
+        //$LASTPOS=62012680;//kernel.Panel:12680
         d.resolve(_this);
       }));
-      //$LASTPOS=60012710;//kernel.Panel:12710
+      //$LASTPOS=62012710;//kernel.Panel:12710
       element.attr({src: url});
       return d.promise();
     },
@@ -18827,9 +18987,9 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=60012247;//kernel.Panel:12247
+            //$LASTPOS=62012247;//kernel.Panel:12247
             if (!(typeof  fn==="string")) { __pc=2     ; break; }
-            //$LASTPOS=60012273;//kernel.Panel:12273
+            //$LASTPOS=62012273;//kernel.Panel:12273
             _this.fiber$file(_thread, fn);
             __pc=1;return;
           case 1:
@@ -18837,40 +18997,40 @@ Tonyu.klass.define({
             
           case 2     :
             
-            //$LASTPOS=60012291;//kernel.Panel:12291
+            //$LASTPOS=62012291;//kernel.Panel:12291
             d = new $.Deferred();
             
-            //$LASTPOS=60012320;//kernel.Panel:12320
+            //$LASTPOS=62012320;//kernel.Panel:12320
             url = fn.text();
             
-            //$LASTPOS=60012344;//kernel.Panel:12344
+            //$LASTPOS=62012344;//kernel.Panel:12344
             element = $("<img>").css({display: "none"}).appendTo("body");
             
-            //$LASTPOS=60012410;//kernel.Panel:12410
+            //$LASTPOS=62012410;//kernel.Panel:12410
             element.on("load",(function anonymous_12429() {
               var img;
               var width;
               var height;
               
-              //$LASTPOS=60012441;//kernel.Panel:12441
+              //$LASTPOS=62012441;//kernel.Panel:12441
               img = new Image();
               
-              //$LASTPOS=60012473;//kernel.Panel:12473
+              //$LASTPOS=62012473;//kernel.Panel:12473
               img.src=element.attr('src');
-              //$LASTPOS=60012513;//kernel.Panel:12513
+              //$LASTPOS=62012513;//kernel.Panel:12513
               width = img.width;
               
-              //$LASTPOS=60012545;//kernel.Panel:12545
+              //$LASTPOS=62012545;//kernel.Panel:12545
               height = img.height;
               
-              //$LASTPOS=60012611;//kernel.Panel:12611
+              //$LASTPOS=62012611;//kernel.Panel:12611
               _this.resize(width,height);
-              //$LASTPOS=60012642;//kernel.Panel:12642
+              //$LASTPOS=62012642;//kernel.Panel:12642
               _this.context.drawImage(img,0,0);
-              //$LASTPOS=60012680;//kernel.Panel:12680
+              //$LASTPOS=62012680;//kernel.Panel:12680
               d.resolve(_this);
             }));
-            //$LASTPOS=60012710;//kernel.Panel:12710
+            //$LASTPOS=62012710;//kernel.Panel:12710
             element.attr({src: url});
             _thread.exit(d.promise());return;
             _thread.exit(_this);return;
@@ -18882,13 +19042,13 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=60012794;//kernel.Panel:12794
+      //$LASTPOS=62012794;//kernel.Panel:12794
       if (typeof  _this.context.msImageSmoothingEnabled==="boolean") {
-        //$LASTPOS=60012861;//kernel.Panel:12861
+        //$LASTPOS=62012861;//kernel.Panel:12861
         _this.context.msImageSmoothingEnabled=v;
         
       } else {
-        //$LASTPOS=60012919;//kernel.Panel:12919
+        //$LASTPOS=62012919;//kernel.Panel:12919
         _this.context.imageSmoothingEnabled=v;
         
       }
@@ -18897,7 +19057,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=60012993;//kernel.Panel:12993
+      //$LASTPOS=62012993;//kernel.Panel:12993
       if (typeof  _this.context.msImageSmoothingEnabled==="boolean") {
         return _this.context.msImageSmoothingEnabled;
         
@@ -18920,87 +19080,87 @@ Tonyu.klass.define({
       var i;
       var j;
       
-      //$LASTPOS=60013195;//kernel.Panel:13195
+      //$LASTPOS=62013195;//kernel.Panel:13195
       a = new Tonyu.classes.kernel.ArgParser(arguments);
       
-      //$LASTPOS=60013232;//kernel.Panel:13232
+      //$LASTPOS=62013232;//kernel.Panel:13232
       top = 0;
       left = 0;
       
-      //$LASTPOS=60013255;//kernel.Panel:13255
+      //$LASTPOS=62013255;//kernel.Panel:13255
       w = _this.width;
       h = _this.height;
       
-      //$LASTPOS=60013283;//kernel.Panel:13283
+      //$LASTPOS=62013283;//kernel.Panel:13283
       if (a.length>=4) {
-        //$LASTPOS=60013311;//kernel.Panel:13311
+        //$LASTPOS=62013311;//kernel.Panel:13311
         left=a.shift();
-        //$LASTPOS=60013336;//kernel.Panel:13336
+        //$LASTPOS=62013336;//kernel.Panel:13336
         top=a.shift();
-        //$LASTPOS=60013360;//kernel.Panel:13360
+        //$LASTPOS=62013360;//kernel.Panel:13360
         w=a.shift();
-        //$LASTPOS=60013382;//kernel.Panel:13382
+        //$LASTPOS=62013382;//kernel.Panel:13382
         h=a.shift();
         
       }
-      //$LASTPOS=60013407;//kernel.Panel:13407
+      //$LASTPOS=62013407;//kernel.Panel:13407
       func = a.shift();
       
-      //$LASTPOS=60013432;//kernel.Panel:13432
+      //$LASTPOS=62013432;//kernel.Panel:13432
       if (typeof  func!=="function") {
-        //$LASTPOS=60013473;//kernel.Panel:13473
+        //$LASTPOS=62013473;//kernel.Panel:13473
         ctx = _this.context;
         
-        //$LASTPOS=60013499;//kernel.Panel:13499
+        //$LASTPOS=62013499;//kernel.Panel:13499
         ctx.save();
-        //$LASTPOS=60013520;//kernel.Panel:13520
+        //$LASTPOS=62013520;//kernel.Panel:13520
         ctx.beginPath();
-        //$LASTPOS=60013546;//kernel.Panel:13546
+        //$LASTPOS=62013546;//kernel.Panel:13546
         ctx.moveTo(left,top);
-        //$LASTPOS=60013577;//kernel.Panel:13577
+        //$LASTPOS=62013577;//kernel.Panel:13577
         ctx.lineTo(left+w,top);
-        //$LASTPOS=60013610;//kernel.Panel:13610
+        //$LASTPOS=62013610;//kernel.Panel:13610
         ctx.lineTo(left+w,top+h);
-        //$LASTPOS=60013645;//kernel.Panel:13645
+        //$LASTPOS=62013645;//kernel.Panel:13645
         ctx.lineTo(left,top+h);
-        //$LASTPOS=60013678;//kernel.Panel:13678
+        //$LASTPOS=62013678;//kernel.Panel:13678
         ctx.closePath();
-        //$LASTPOS=60013704;//kernel.Panel:13704
+        //$LASTPOS=62013704;//kernel.Panel:13704
         ctx.clip();
-        //$LASTPOS=60013725;//kernel.Panel:13725
+        //$LASTPOS=62013725;//kernel.Panel:13725
         ctx.globalCompositeOperation="source-in";
-        //$LASTPOS=60013776;//kernel.Panel:13776
+        //$LASTPOS=62013776;//kernel.Panel:13776
         if (func) {
-          //$LASTPOS=60013786;//kernel.Panel:13786
+          //$LASTPOS=62013786;//kernel.Panel:13786
           _this.fillStyle=func;
         }
-        //$LASTPOS=60013811;//kernel.Panel:13811
+        //$LASTPOS=62013811;//kernel.Panel:13811
         ctx.fillRect(left,top,w,h);
-        //$LASTPOS=60013848;//kernel.Panel:13848
+        //$LASTPOS=62013848;//kernel.Panel:13848
         ctx.restore();
         return _this;
         
       }
-      //$LASTPOS=60013892;//kernel.Panel:13892
+      //$LASTPOS=62013892;//kernel.Panel:13892
       data = _this.getImageData(left,top,w,h);
       
-      //$LASTPOS=60013934;//kernel.Panel:13934
-      //$LASTPOS=60013939;//kernel.Panel:13939
+      //$LASTPOS=62013934;//kernel.Panel:13934
+      //$LASTPOS=62013939;//kernel.Panel:13939
       i = 0;
       for (; i<h ; i++) {
         {
-          //$LASTPOS=60013967;//kernel.Panel:13967
-          //$LASTPOS=60013972;//kernel.Panel:13972
+          //$LASTPOS=62013967;//kernel.Panel:13967
+          //$LASTPOS=62013972;//kernel.Panel:13972
           j = 0;
           for (; j<w ; j++) {
             {
-              //$LASTPOS=60014004;//kernel.Panel:14004
+              //$LASTPOS=62014004;//kernel.Panel:14004
               func(new Tonyu.classes.kernel.Color(data,j,i),left+j,top+i);
             }
           }
         }
       }
-      //$LASTPOS=60014067;//kernel.Panel:14067
+      //$LASTPOS=62014067;//kernel.Panel:14067
       _this.putImageData(data,left,top);
     },
     fiber$replaceColor :function _trc_Panel_f_replaceColor(_thread) {
@@ -19019,63 +19179,63 @@ Tonyu.klass.define({
       var i;
       var j;
       
-      //$LASTPOS=60013195;//kernel.Panel:13195
+      //$LASTPOS=62013195;//kernel.Panel:13195
       a = new Tonyu.classes.kernel.ArgParser(_arguments);
       
-      //$LASTPOS=60013232;//kernel.Panel:13232
+      //$LASTPOS=62013232;//kernel.Panel:13232
       top = 0;
       left = 0;
       
-      //$LASTPOS=60013255;//kernel.Panel:13255
+      //$LASTPOS=62013255;//kernel.Panel:13255
       w = _this.width;
       h = _this.height;
       
-      //$LASTPOS=60013283;//kernel.Panel:13283
+      //$LASTPOS=62013283;//kernel.Panel:13283
       if (a.length>=4) {
-        //$LASTPOS=60013311;//kernel.Panel:13311
+        //$LASTPOS=62013311;//kernel.Panel:13311
         left=a.shift();
-        //$LASTPOS=60013336;//kernel.Panel:13336
+        //$LASTPOS=62013336;//kernel.Panel:13336
         top=a.shift();
-        //$LASTPOS=60013360;//kernel.Panel:13360
+        //$LASTPOS=62013360;//kernel.Panel:13360
         w=a.shift();
-        //$LASTPOS=60013382;//kernel.Panel:13382
+        //$LASTPOS=62013382;//kernel.Panel:13382
         h=a.shift();
         
       }
-      //$LASTPOS=60013407;//kernel.Panel:13407
+      //$LASTPOS=62013407;//kernel.Panel:13407
       func = a.shift();
       
-      //$LASTPOS=60013432;//kernel.Panel:13432
+      //$LASTPOS=62013432;//kernel.Panel:13432
       if (typeof  func!=="function") {
-        //$LASTPOS=60013473;//kernel.Panel:13473
+        //$LASTPOS=62013473;//kernel.Panel:13473
         ctx = _this.context;
         
-        //$LASTPOS=60013499;//kernel.Panel:13499
+        //$LASTPOS=62013499;//kernel.Panel:13499
         ctx.save();
-        //$LASTPOS=60013520;//kernel.Panel:13520
+        //$LASTPOS=62013520;//kernel.Panel:13520
         ctx.beginPath();
-        //$LASTPOS=60013546;//kernel.Panel:13546
+        //$LASTPOS=62013546;//kernel.Panel:13546
         ctx.moveTo(left,top);
-        //$LASTPOS=60013577;//kernel.Panel:13577
+        //$LASTPOS=62013577;//kernel.Panel:13577
         ctx.lineTo(left+w,top);
-        //$LASTPOS=60013610;//kernel.Panel:13610
+        //$LASTPOS=62013610;//kernel.Panel:13610
         ctx.lineTo(left+w,top+h);
-        //$LASTPOS=60013645;//kernel.Panel:13645
+        //$LASTPOS=62013645;//kernel.Panel:13645
         ctx.lineTo(left,top+h);
-        //$LASTPOS=60013678;//kernel.Panel:13678
+        //$LASTPOS=62013678;//kernel.Panel:13678
         ctx.closePath();
-        //$LASTPOS=60013704;//kernel.Panel:13704
+        //$LASTPOS=62013704;//kernel.Panel:13704
         ctx.clip();
-        //$LASTPOS=60013725;//kernel.Panel:13725
+        //$LASTPOS=62013725;//kernel.Panel:13725
         ctx.globalCompositeOperation="source-in";
-        //$LASTPOS=60013776;//kernel.Panel:13776
+        //$LASTPOS=62013776;//kernel.Panel:13776
         if (func) {
-          //$LASTPOS=60013786;//kernel.Panel:13786
+          //$LASTPOS=62013786;//kernel.Panel:13786
           _this.fillStyle=func;
         }
-        //$LASTPOS=60013811;//kernel.Panel:13811
+        //$LASTPOS=62013811;//kernel.Panel:13811
         ctx.fillRect(left,top,w,h);
-        //$LASTPOS=60013848;//kernel.Panel:13848
+        //$LASTPOS=62013848;//kernel.Panel:13848
         ctx.restore();
         _thread.retVal=_this;return;
         
@@ -19087,29 +19247,29 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=60013892;//kernel.Panel:13892
+            //$LASTPOS=62013892;//kernel.Panel:13892
             _this.fiber$getImageData(_thread, left, top, w, h);
             __pc=1;return;
           case 1:
             data=_thread.retVal;
             
-            //$LASTPOS=60013934;//kernel.Panel:13934
-            //$LASTPOS=60013939;//kernel.Panel:13939
+            //$LASTPOS=62013934;//kernel.Panel:13934
+            //$LASTPOS=62013939;//kernel.Panel:13939
             i = 0;
             for (; i<h ; i++) {
               {
-                //$LASTPOS=60013967;//kernel.Panel:13967
-                //$LASTPOS=60013972;//kernel.Panel:13972
+                //$LASTPOS=62013967;//kernel.Panel:13967
+                //$LASTPOS=62013972;//kernel.Panel:13972
                 j = 0;
                 for (; j<w ; j++) {
                   {
-                    //$LASTPOS=60014004;//kernel.Panel:14004
+                    //$LASTPOS=62014004;//kernel.Panel:14004
                     func(new Tonyu.classes.kernel.Color(data,j,i),left+j,top+i);
                   }
                 }
               }
             }
-            //$LASTPOS=60014067;//kernel.Panel:14067
+            //$LASTPOS=62014067;//kernel.Panel:14067
             _this.fiber$putImageData(_thread, data, left, top);
             __pc=2;return;
           case 2:
@@ -19148,60 +19308,60 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=61000095;//kernel.ScaledCanvas:95
+      //$LASTPOS=63000095;//kernel.ScaledCanvas:95
       _this.extend(opt);
-      //$LASTPOS=61000142;//kernel.ScaledCanvas:142
+      //$LASTPOS=63000142;//kernel.ScaledCanvas:142
       _this.resize(_this.width,_this.height);
-      //$LASTPOS=61000170;//kernel.ScaledCanvas:170
+      //$LASTPOS=63000170;//kernel.ScaledCanvas:170
       _this.cw=_this.canvas.width();
-      //$LASTPOS=61000194;//kernel.ScaledCanvas:194
+      //$LASTPOS=63000194;//kernel.ScaledCanvas:194
       _this.ch=_this.canvas.height();
-      //$LASTPOS=61000219;//kernel.ScaledCanvas:219
+      //$LASTPOS=63000219;//kernel.ScaledCanvas:219
       _this.cctx=_this.canvas[0].getContext("2d");
-      //$LASTPOS=61000257;//kernel.ScaledCanvas:257
+      //$LASTPOS=63000257;//kernel.ScaledCanvas:257
       _this._color="rgb(20,80,180)";
-      //$LASTPOS=61000292;//kernel.ScaledCanvas:292
+      //$LASTPOS=63000292;//kernel.ScaledCanvas:292
       _this.sx=0;
-      //$LASTPOS=61000303;//kernel.ScaledCanvas:303
+      //$LASTPOS=63000303;//kernel.ScaledCanvas:303
       _this.sy=0;
-      //$LASTPOS=61000314;//kernel.ScaledCanvas:314
+      //$LASTPOS=63000314;//kernel.ScaledCanvas:314
       _this.isDrawGrid=Tonyu.globals.$Sprites.isDrawGrid;
     },
     resize :function _trc_ScaledCanvas_resize(width,height) {
       "use strict";
       var _this=this;
       
-      //$LASTPOS=61000379;//kernel.ScaledCanvas:379
+      //$LASTPOS=63000379;//kernel.ScaledCanvas:379
       _this.width=width;
-      //$LASTPOS=61000402;//kernel.ScaledCanvas:402
+      //$LASTPOS=63000402;//kernel.ScaledCanvas:402
       _this.height=height;
-      //$LASTPOS=61000427;//kernel.ScaledCanvas:427
+      //$LASTPOS=63000427;//kernel.ScaledCanvas:427
       _this.buf=$("<canvas>").attr({width: width,height: height});
-      //$LASTPOS=61000470;//kernel.ScaledCanvas:470
+      //$LASTPOS=63000470;//kernel.ScaledCanvas:470
       _this.ctx=_this.buf[0].getContext("2d");
-      //$LASTPOS=61000504;//kernel.ScaledCanvas:504
+      //$LASTPOS=63000504;//kernel.ScaledCanvas:504
       Tonyu.globals.$screenWidth=width;
-      //$LASTPOS=61000529;//kernel.ScaledCanvas:529
+      //$LASTPOS=63000529;//kernel.ScaledCanvas:529
       Tonyu.globals.$screenHeight=height;
-      //$LASTPOS=61000556;//kernel.ScaledCanvas:556
+      //$LASTPOS=63000556;//kernel.ScaledCanvas:556
       if (Tonyu.globals.$panel) {
-        //$LASTPOS=61000577;//kernel.ScaledCanvas:577
+        //$LASTPOS=63000577;//kernel.ScaledCanvas:577
         Tonyu.globals.$panel.setPanel(Tonyu.globals.$screenWidth,Tonyu.globals.$screenHeight);
-        //$LASTPOS=61000631;//kernel.ScaledCanvas:631
+        //$LASTPOS=63000631;//kernel.ScaledCanvas:631
         Tonyu.globals.$panel.x=Tonyu.globals.$screenWidth/2;
-        //$LASTPOS=61000665;//kernel.ScaledCanvas:665
+        //$LASTPOS=63000665;//kernel.ScaledCanvas:665
         Tonyu.globals.$panel.y=Tonyu.globals.$screenHeight/2;
         
       }
-      //$LASTPOS=61000703;//kernel.ScaledCanvas:703
+      //$LASTPOS=63000703;//kernel.ScaledCanvas:703
       if (Tonyu.globals.$consolePanel) {
-        //$LASTPOS=61000731;//kernel.ScaledCanvas:731
+        //$LASTPOS=63000731;//kernel.ScaledCanvas:731
         Tonyu.globals.$consolePanel.setPanel(Tonyu.globals.$screenWidth,Tonyu.globals.$screenHeight);
-        //$LASTPOS=61000792;//kernel.ScaledCanvas:792
+        //$LASTPOS=63000792;//kernel.ScaledCanvas:792
         Tonyu.globals.$consolePanel.x=Tonyu.globals.$screenWidth/2;
-        //$LASTPOS=61000833;//kernel.ScaledCanvas:833
+        //$LASTPOS=63000833;//kernel.ScaledCanvas:833
         Tonyu.globals.$consolePanel.y=Tonyu.globals.$screenHeight/2;
-        //$LASTPOS=61000875;//kernel.ScaledCanvas:875
+        //$LASTPOS=63000875;//kernel.ScaledCanvas:875
         Tonyu.globals.$consolePrintY=Tonyu.globals.$screenHeight-15;
         
       }
@@ -19212,37 +19372,37 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=61000379;//kernel.ScaledCanvas:379
+      //$LASTPOS=63000379;//kernel.ScaledCanvas:379
       _this.width=width;
-      //$LASTPOS=61000402;//kernel.ScaledCanvas:402
+      //$LASTPOS=63000402;//kernel.ScaledCanvas:402
       _this.height=height;
-      //$LASTPOS=61000427;//kernel.ScaledCanvas:427
+      //$LASTPOS=63000427;//kernel.ScaledCanvas:427
       _this.buf=$("<canvas>").attr({width: width,height: height});
-      //$LASTPOS=61000470;//kernel.ScaledCanvas:470
+      //$LASTPOS=63000470;//kernel.ScaledCanvas:470
       _this.ctx=_this.buf[0].getContext("2d");
-      //$LASTPOS=61000504;//kernel.ScaledCanvas:504
+      //$LASTPOS=63000504;//kernel.ScaledCanvas:504
       Tonyu.globals.$screenWidth=width;
-      //$LASTPOS=61000529;//kernel.ScaledCanvas:529
+      //$LASTPOS=63000529;//kernel.ScaledCanvas:529
       Tonyu.globals.$screenHeight=height;
-      //$LASTPOS=61000556;//kernel.ScaledCanvas:556
+      //$LASTPOS=63000556;//kernel.ScaledCanvas:556
       if (Tonyu.globals.$panel) {
-        //$LASTPOS=61000577;//kernel.ScaledCanvas:577
+        //$LASTPOS=63000577;//kernel.ScaledCanvas:577
         Tonyu.globals.$panel.setPanel(Tonyu.globals.$screenWidth,Tonyu.globals.$screenHeight);
-        //$LASTPOS=61000631;//kernel.ScaledCanvas:631
+        //$LASTPOS=63000631;//kernel.ScaledCanvas:631
         Tonyu.globals.$panel.x=Tonyu.globals.$screenWidth/2;
-        //$LASTPOS=61000665;//kernel.ScaledCanvas:665
+        //$LASTPOS=63000665;//kernel.ScaledCanvas:665
         Tonyu.globals.$panel.y=Tonyu.globals.$screenHeight/2;
         
       }
-      //$LASTPOS=61000703;//kernel.ScaledCanvas:703
+      //$LASTPOS=63000703;//kernel.ScaledCanvas:703
       if (Tonyu.globals.$consolePanel) {
-        //$LASTPOS=61000731;//kernel.ScaledCanvas:731
+        //$LASTPOS=63000731;//kernel.ScaledCanvas:731
         Tonyu.globals.$consolePanel.setPanel(Tonyu.globals.$screenWidth,Tonyu.globals.$screenHeight);
-        //$LASTPOS=61000792;//kernel.ScaledCanvas:792
+        //$LASTPOS=63000792;//kernel.ScaledCanvas:792
         Tonyu.globals.$consolePanel.x=Tonyu.globals.$screenWidth/2;
-        //$LASTPOS=61000833;//kernel.ScaledCanvas:833
+        //$LASTPOS=63000833;//kernel.ScaledCanvas:833
         Tonyu.globals.$consolePanel.y=Tonyu.globals.$screenHeight/2;
-        //$LASTPOS=61000875;//kernel.ScaledCanvas:875
+        //$LASTPOS=63000875;//kernel.ScaledCanvas:875
         Tonyu.globals.$consolePrintY=Tonyu.globals.$screenHeight-15;
         
       }
@@ -19255,10 +19415,10 @@ Tonyu.klass.define({
       var larger;
       var smaller;
       
-      //$LASTPOS=61000997;//kernel.ScaledCanvas:997
+      //$LASTPOS=63000997;//kernel.ScaledCanvas:997
       larger = 200;
       
-      //$LASTPOS=61001018;//kernel.ScaledCanvas:1018
+      //$LASTPOS=63001018;//kernel.ScaledCanvas:1018
       smaller = 5;
       
       return srcw-smaller<=dstw&&dstw<=srcw+larger&&srch-smaller<=dsth&&dsth<=srch+larger;
@@ -19271,10 +19431,10 @@ Tonyu.klass.define({
       var larger;
       var smaller;
       
-      //$LASTPOS=61000997;//kernel.ScaledCanvas:997
+      //$LASTPOS=63000997;//kernel.ScaledCanvas:997
       larger = 200;
       
-      //$LASTPOS=61001018;//kernel.ScaledCanvas:1018
+      //$LASTPOS=63001018;//kernel.ScaledCanvas:1018
       smaller = 5;
       
       _thread.retVal=srcw-smaller<=dstw&&dstw<=srcw+larger&&srch-smaller<=dsth&&dsth<=srch+larger;return;
@@ -19290,43 +19450,43 @@ Tonyu.klass.define({
       var marginw;
       var marginh;
       
-      //$LASTPOS=61001153;//kernel.ScaledCanvas:1153
+      //$LASTPOS=63001153;//kernel.ScaledCanvas:1153
       _this.cw=_this.canvas.width();
-      //$LASTPOS=61001177;//kernel.ScaledCanvas:1177
+      //$LASTPOS=63001177;//kernel.ScaledCanvas:1177
       _this.ch=_this.canvas.height();
-      //$LASTPOS=61001202;//kernel.ScaledCanvas:1202
+      //$LASTPOS=63001202;//kernel.ScaledCanvas:1202
       calcw = _this.ch/_this.height*_this.width;
       
-      //$LASTPOS=61001246;//kernel.ScaledCanvas:1246
+      //$LASTPOS=63001246;//kernel.ScaledCanvas:1246
       calch = _this.cw/_this.width*_this.height;
       
-      //$LASTPOS=61001290;//kernel.ScaledCanvas:1290
+      //$LASTPOS=63001290;//kernel.ScaledCanvas:1290
       if (calch>_this.ch) {
-        //$LASTPOS=61001304;//kernel.ScaledCanvas:1304
+        //$LASTPOS=63001304;//kernel.ScaledCanvas:1304
         calch=_this.ch;
       }
-      //$LASTPOS=61001319;//kernel.ScaledCanvas:1319
+      //$LASTPOS=63001319;//kernel.ScaledCanvas:1319
       if (calcw>_this.cw) {
-        //$LASTPOS=61001333;//kernel.ScaledCanvas:1333
+        //$LASTPOS=63001333;//kernel.ScaledCanvas:1333
         calcw=_this.cw;
       }
-      //$LASTPOS=61001348;//kernel.ScaledCanvas:1348
+      //$LASTPOS=63001348;//kernel.ScaledCanvas:1348
       _this.cctx.clearRect(0,0,_this.cw,_this.ch);
-      //$LASTPOS=61001380;//kernel.ScaledCanvas:1380
+      //$LASTPOS=63001380;//kernel.ScaledCanvas:1380
       if (_this.shouldDraw1x1(_this.width,_this.height,calcw,calch)) {
-        //$LASTPOS=61001436;//kernel.ScaledCanvas:1436
+        //$LASTPOS=63001436;//kernel.ScaledCanvas:1436
         calcw=_this.width;
-        //$LASTPOS=61001448;//kernel.ScaledCanvas:1448
+        //$LASTPOS=63001448;//kernel.ScaledCanvas:1448
         calch=_this.height;
         
       }
-      //$LASTPOS=61001474;//kernel.ScaledCanvas:1474
+      //$LASTPOS=63001474;//kernel.ScaledCanvas:1474
       marginw = Math.floor((_this.cw-calcw)/2);
       
-      //$LASTPOS=61001517;//kernel.ScaledCanvas:1517
+      //$LASTPOS=63001517;//kernel.ScaledCanvas:1517
       marginh = Math.floor((_this.ch-calch)/2);
       
-      //$LASTPOS=61001560;//kernel.ScaledCanvas:1560
+      //$LASTPOS=63001560;//kernel.ScaledCanvas:1560
       _this.cctx.drawImage(_this.buf[0],0,0,_this.width,_this.height,marginw,marginh,calcw,calch);
     },
     canvas2buf :function _trc_ScaledCanvas_canvas2buf(point) {
@@ -19337,37 +19497,37 @@ Tonyu.klass.define({
       var marginw;
       var marginh;
       
-      //$LASTPOS=61001674;//kernel.ScaledCanvas:1674
+      //$LASTPOS=63001674;//kernel.ScaledCanvas:1674
       calcw = _this.ch/_this.height*_this.width;
       
-      //$LASTPOS=61001718;//kernel.ScaledCanvas:1718
+      //$LASTPOS=63001718;//kernel.ScaledCanvas:1718
       calch = _this.cw/_this.width*_this.height;
       
-      //$LASTPOS=61001762;//kernel.ScaledCanvas:1762
+      //$LASTPOS=63001762;//kernel.ScaledCanvas:1762
       if (calch>_this.ch) {
-        //$LASTPOS=61001776;//kernel.ScaledCanvas:1776
+        //$LASTPOS=63001776;//kernel.ScaledCanvas:1776
         calch=_this.ch;
       }
-      //$LASTPOS=61001791;//kernel.ScaledCanvas:1791
+      //$LASTPOS=63001791;//kernel.ScaledCanvas:1791
       if (calcw>_this.cw) {
-        //$LASTPOS=61001805;//kernel.ScaledCanvas:1805
+        //$LASTPOS=63001805;//kernel.ScaledCanvas:1805
         calcw=_this.cw;
       }
-      //$LASTPOS=61001820;//kernel.ScaledCanvas:1820
+      //$LASTPOS=63001820;//kernel.ScaledCanvas:1820
       if (_this.shouldDraw1x1(_this.width,_this.height,calcw,calch)) {
-        //$LASTPOS=61001876;//kernel.ScaledCanvas:1876
+        //$LASTPOS=63001876;//kernel.ScaledCanvas:1876
         calcw=_this.width;
-        //$LASTPOS=61001888;//kernel.ScaledCanvas:1888
+        //$LASTPOS=63001888;//kernel.ScaledCanvas:1888
         calch=_this.height;
         
       }
-      //$LASTPOS=61001914;//kernel.ScaledCanvas:1914
+      //$LASTPOS=63001914;//kernel.ScaledCanvas:1914
       marginw = Math.floor((_this.cw-calcw)/2);
       
-      //$LASTPOS=61001957;//kernel.ScaledCanvas:1957
+      //$LASTPOS=63001957;//kernel.ScaledCanvas:1957
       marginh = Math.floor((_this.ch-calch)/2);
       
-      //$LASTPOS=61002053;//kernel.ScaledCanvas:2053
+      //$LASTPOS=63002053;//kernel.ScaledCanvas:2053
       _this._ret="("+point.x+"-"+marginw+")/"+calcw+"*"+_this.width+",";
       return {x: (point.x-marginw)/calcw*_this.width,y: (point.y-marginh)/calch*_this.height};
     },
@@ -19381,37 +19541,37 @@ Tonyu.klass.define({
       var marginw;
       var marginh;
       
-      //$LASTPOS=61001674;//kernel.ScaledCanvas:1674
+      //$LASTPOS=63001674;//kernel.ScaledCanvas:1674
       calcw = _this.ch/_this.height*_this.width;
       
-      //$LASTPOS=61001718;//kernel.ScaledCanvas:1718
+      //$LASTPOS=63001718;//kernel.ScaledCanvas:1718
       calch = _this.cw/_this.width*_this.height;
       
-      //$LASTPOS=61001762;//kernel.ScaledCanvas:1762
+      //$LASTPOS=63001762;//kernel.ScaledCanvas:1762
       if (calch>_this.ch) {
-        //$LASTPOS=61001776;//kernel.ScaledCanvas:1776
+        //$LASTPOS=63001776;//kernel.ScaledCanvas:1776
         calch=_this.ch;
       }
-      //$LASTPOS=61001791;//kernel.ScaledCanvas:1791
+      //$LASTPOS=63001791;//kernel.ScaledCanvas:1791
       if (calcw>_this.cw) {
-        //$LASTPOS=61001805;//kernel.ScaledCanvas:1805
+        //$LASTPOS=63001805;//kernel.ScaledCanvas:1805
         calcw=_this.cw;
       }
-      //$LASTPOS=61001820;//kernel.ScaledCanvas:1820
+      //$LASTPOS=63001820;//kernel.ScaledCanvas:1820
       if (_this.shouldDraw1x1(_this.width,_this.height,calcw,calch)) {
-        //$LASTPOS=61001876;//kernel.ScaledCanvas:1876
+        //$LASTPOS=63001876;//kernel.ScaledCanvas:1876
         calcw=_this.width;
-        //$LASTPOS=61001888;//kernel.ScaledCanvas:1888
+        //$LASTPOS=63001888;//kernel.ScaledCanvas:1888
         calch=_this.height;
         
       }
-      //$LASTPOS=61001914;//kernel.ScaledCanvas:1914
+      //$LASTPOS=63001914;//kernel.ScaledCanvas:1914
       marginw = Math.floor((_this.cw-calcw)/2);
       
-      //$LASTPOS=61001957;//kernel.ScaledCanvas:1957
+      //$LASTPOS=63001957;//kernel.ScaledCanvas:1957
       marginh = Math.floor((_this.ch-calch)/2);
       
-      //$LASTPOS=61002053;//kernel.ScaledCanvas:2053
+      //$LASTPOS=63002053;//kernel.ScaledCanvas:2053
       _this._ret="("+point.x+"-"+marginw+")/"+calcw+"*"+_this.width+",";
       _thread.retVal={x: (point.x-marginw)/calcw*_this.width,y: (point.y-marginh)/calch*_this.height};return;
       
@@ -19422,7 +19582,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=61002225;//kernel.ScaledCanvas:2225
+      //$LASTPOS=63002225;//kernel.ScaledCanvas:2225
       _this._color=color;
     },
     fiber$setBGColor :function _trc_ScaledCanvas_f_setBGColor(_thread,color) {
@@ -19431,7 +19591,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=61002225;//kernel.ScaledCanvas:2225
+      //$LASTPOS=63002225;//kernel.ScaledCanvas:2225
       _this._color=color;
       
       _thread.retVal=_this;return;
@@ -19441,21 +19601,21 @@ Tonyu.klass.define({
       var _this=this;
       var ctx;
       
-      //$LASTPOS=61002270;//kernel.ScaledCanvas:2270
+      //$LASTPOS=63002270;//kernel.ScaledCanvas:2270
       ctx = cv.getContext("2d");
       
-      //$LASTPOS=61002304;//kernel.ScaledCanvas:2304
+      //$LASTPOS=63002304;//kernel.ScaledCanvas:2304
       ctx.save();
-      //$LASTPOS=61002321;//kernel.ScaledCanvas:2321
+      //$LASTPOS=63002321;//kernel.ScaledCanvas:2321
       ctx.fillStyle=_this._color+"";
-      //$LASTPOS=61002351;//kernel.ScaledCanvas:2351
+      //$LASTPOS=63002351;//kernel.ScaledCanvas:2351
       ctx.fillRect(0,0,cv.width,cv.height);
-      //$LASTPOS=61002394;//kernel.ScaledCanvas:2394
+      //$LASTPOS=63002394;//kernel.ScaledCanvas:2394
       if (_this.isDrawGrid) {
-        //$LASTPOS=61002410;//kernel.ScaledCanvas:2410
+        //$LASTPOS=63002410;//kernel.ScaledCanvas:2410
         _this.drawGrid(cv);
       }
-      //$LASTPOS=61002429;//kernel.ScaledCanvas:2429
+      //$LASTPOS=63002429;//kernel.ScaledCanvas:2429
       ctx.restore();
     },
     fiber$fillCanvas :function _trc_ScaledCanvas_f_fillCanvas(_thread,cv) {
@@ -19465,21 +19625,21 @@ Tonyu.klass.define({
       var __pc=0;
       var ctx;
       
-      //$LASTPOS=61002270;//kernel.ScaledCanvas:2270
+      //$LASTPOS=63002270;//kernel.ScaledCanvas:2270
       ctx = cv.getContext("2d");
       
-      //$LASTPOS=61002304;//kernel.ScaledCanvas:2304
+      //$LASTPOS=63002304;//kernel.ScaledCanvas:2304
       ctx.save();
-      //$LASTPOS=61002321;//kernel.ScaledCanvas:2321
+      //$LASTPOS=63002321;//kernel.ScaledCanvas:2321
       ctx.fillStyle=_this._color+"";
-      //$LASTPOS=61002351;//kernel.ScaledCanvas:2351
+      //$LASTPOS=63002351;//kernel.ScaledCanvas:2351
       ctx.fillRect(0,0,cv.width,cv.height);
-      //$LASTPOS=61002394;//kernel.ScaledCanvas:2394
+      //$LASTPOS=63002394;//kernel.ScaledCanvas:2394
       if (_this.isDrawGrid) {
-        //$LASTPOS=61002410;//kernel.ScaledCanvas:2410
+        //$LASTPOS=63002410;//kernel.ScaledCanvas:2410
         _this.drawGrid(cv);
       }
-      //$LASTPOS=61002429;//kernel.ScaledCanvas:2429
+      //$LASTPOS=63002429;//kernel.ScaledCanvas:2429
       ctx.restore();
       
       _thread.retVal=_this;return;
@@ -19488,7 +19648,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=61002773;//kernel.ScaledCanvas:2773
+      //$LASTPOS=63002773;//kernel.ScaledCanvas:2773
       Tonyu.globals.$Sprites.scrollTo(scrollX,scrollY);
     },
     fiber$scrollTo :function _trc_ScaledCanvas_f_scrollTo(_thread,scrollX,scrollY) {
@@ -19497,7 +19657,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=61002773;//kernel.ScaledCanvas:2773
+      //$LASTPOS=63002773;//kernel.ScaledCanvas:2773
       Tonyu.globals.$Sprites.scrollTo(scrollX,scrollY);
       
       _thread.retVal=_this;return;
@@ -19531,13 +19691,13 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=62000031;//kernel.Screen:31
+      //$LASTPOS=64000031;//kernel.Screen:31
       _this.layers=[];
-      //$LASTPOS=62000046;//kernel.Screen:46
+      //$LASTPOS=64000046;//kernel.Screen:46
       _this._color="black";
-      //$LASTPOS=62000066;//kernel.Screen:66
+      //$LASTPOS=64000066;//kernel.Screen:66
       _this.camera={screen: _this};
-      //$LASTPOS=62000092;//kernel.Screen:92
+      //$LASTPOS=64000092;//kernel.Screen:92
       Tonyu.classes.kernel.Panel.apply( _this, [opt]);
     },
     drawLayers :function _trc_Screen_drawLayers() {
@@ -19547,42 +19707,42 @@ Tonyu.klass.define({
       var i;
       var l;
       
-      //$LASTPOS=62000127;//kernel.Screen:127
+      //$LASTPOS=64000127;//kernel.Screen:127
       if (! _this._drawing) {
-        //$LASTPOS=62000152;//kernel.Screen:152
+        //$LASTPOS=64000152;//kernel.Screen:152
         if (! _this.canvas) {
           throw new Error("canvas is null");
           
           
         }
-        //$LASTPOS=62000232;//kernel.Screen:232
+        //$LASTPOS=64000232;//kernel.Screen:232
         _this._drawing=true;
-        //$LASTPOS=62000255;//kernel.Screen:255
+        //$LASTPOS=64000255;//kernel.Screen:255
         if (_this.clearBG) {
-          //$LASTPOS=62000282;//kernel.Screen:282
+          //$LASTPOS=64000282;//kernel.Screen:282
           _this.clearRect(0,0,_this.width,_this.height);
           
         }
-        //$LASTPOS=62000329;//kernel.Screen:329
+        //$LASTPOS=64000329;//kernel.Screen:329
         _this.fillStyle=_this._color+"";
-        //$LASTPOS=62000358;//kernel.Screen:358
+        //$LASTPOS=64000358;//kernel.Screen:358
         _this.fillRect(0,0,_this.width,_this.height);
-        //$LASTPOS=62000394;//kernel.Screen:394
+        //$LASTPOS=64000394;//kernel.Screen:394
         c = _this.getContext();
         
-        //$LASTPOS=62000422;//kernel.Screen:422
-        //$LASTPOS=62000427;//kernel.Screen:427
+        //$LASTPOS=64000422;//kernel.Screen:422
+        //$LASTPOS=64000427;//kernel.Screen:427
         i = _this.layers.length-1;
         for (; i>=0 ; i--) {
           {
-            //$LASTPOS=62000473;//kernel.Screen:473
+            //$LASTPOS=64000473;//kernel.Screen:473
             l = _this.layers[i];
             
-            //$LASTPOS=62000502;//kernel.Screen:502
+            //$LASTPOS=64000502;//kernel.Screen:502
             l.draw(c);
           }
         }
-        //$LASTPOS=62000531;//kernel.Screen:531
+        //$LASTPOS=64000531;//kernel.Screen:531
         _this._drawing=false;
         
       }
@@ -19602,48 +19762,48 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=62000127;//kernel.Screen:127
+            //$LASTPOS=64000127;//kernel.Screen:127
             if (!(! _this._drawing)) { __pc=4     ; break; }
-            //$LASTPOS=62000152;//kernel.Screen:152
+            //$LASTPOS=64000152;//kernel.Screen:152
             if (! _this.canvas) {
               throw new Error("canvas is null");
               
               
             }
-            //$LASTPOS=62000232;//kernel.Screen:232
+            //$LASTPOS=64000232;//kernel.Screen:232
             _this._drawing=true;
-            //$LASTPOS=62000255;//kernel.Screen:255
+            //$LASTPOS=64000255;//kernel.Screen:255
             if (!(_this.clearBG)) { __pc=2     ; break; }
-            //$LASTPOS=62000282;//kernel.Screen:282
+            //$LASTPOS=64000282;//kernel.Screen:282
             _this.fiber$clearRect(_thread, 0, 0, _this.width, _this.height);
             __pc=1;return;
           case 1:
             
           case 2     :
             
-            //$LASTPOS=62000329;//kernel.Screen:329
+            //$LASTPOS=64000329;//kernel.Screen:329
             _this.fillStyle=_this._color+"";
-            //$LASTPOS=62000358;//kernel.Screen:358
+            //$LASTPOS=64000358;//kernel.Screen:358
             _this.fillRect(0,0,_this.width,_this.height);
-            //$LASTPOS=62000394;//kernel.Screen:394
+            //$LASTPOS=64000394;//kernel.Screen:394
             _this.fiber$getContext(_thread);
             __pc=3;return;
           case 3:
             c=_thread.retVal;
             
-            //$LASTPOS=62000422;//kernel.Screen:422
-            //$LASTPOS=62000427;//kernel.Screen:427
+            //$LASTPOS=64000422;//kernel.Screen:422
+            //$LASTPOS=64000427;//kernel.Screen:427
             i = _this.layers.length-1;
             for (; i>=0 ; i--) {
               {
-                //$LASTPOS=62000473;//kernel.Screen:473
+                //$LASTPOS=64000473;//kernel.Screen:473
                 l = _this.layers[i];
                 
-                //$LASTPOS=62000502;//kernel.Screen:502
+                //$LASTPOS=64000502;//kernel.Screen:502
                 l.draw(c);
               }
             }
-            //$LASTPOS=62000531;//kernel.Screen:531
+            //$LASTPOS=64000531;//kernel.Screen:531
             _this._drawing=false;
           case 4     :
             
@@ -19656,9 +19816,9 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=62000572;//kernel.Screen:572
+      //$LASTPOS=64000572;//kernel.Screen:572
       _this.drawLayers();
-      //$LASTPOS=62000590;//kernel.Screen:590
+      //$LASTPOS=64000590;//kernel.Screen:590
       Tonyu.classes.kernel.Panel.prototype.draw.apply( _this, [ctx]);
     },
     addLayer :function _trc_Screen_addLayer(group) {
@@ -19667,22 +19827,22 @@ Tonyu.klass.define({
       var camera;
       var layer;
       
-      //$LASTPOS=62000632;//kernel.Screen:632
+      //$LASTPOS=64000632;//kernel.Screen:632
       if (group instanceof Tonyu.classes.kernel.Sprites3D) {
-        //$LASTPOS=62000666;//kernel.Screen:666
+        //$LASTPOS=64000666;//kernel.Screen:666
         camera = new Tonyu.classes.kernel.Camera3D({group: group});
         
-        //$LASTPOS=62000706;//kernel.Screen:706
+        //$LASTPOS=64000706;//kernel.Screen:706
         _this.layers.push(camera);
         return camera;
         
       }
-      //$LASTPOS=62000760;//kernel.Screen:760
+      //$LASTPOS=64000760;//kernel.Screen:760
       group=group||new Tonyu.classes.kernel.Sprites;
-      //$LASTPOS=62000855;//kernel.Screen:855
+      //$LASTPOS=64000855;//kernel.Screen:855
       layer = new Tonyu.classes.kernel.Layer2D({spx: 0,spy: 0,wpx: 0,wpy: 0,rotation: 0,scale: 1,group: group,screen: _this,index: _this.layers.length});
       
-      //$LASTPOS=62000996;//kernel.Screen:996
+      //$LASTPOS=64000996;//kernel.Screen:996
       _this.layers.push(layer);
       return layer;
     },
@@ -19694,23 +19854,23 @@ Tonyu.klass.define({
       var camera;
       var layer;
       
-      //$LASTPOS=62000632;//kernel.Screen:632
+      //$LASTPOS=64000632;//kernel.Screen:632
       if (group instanceof Tonyu.classes.kernel.Sprites3D) {
-        //$LASTPOS=62000666;//kernel.Screen:666
+        //$LASTPOS=64000666;//kernel.Screen:666
         camera = new Tonyu.classes.kernel.Camera3D({group: group});
         
-        //$LASTPOS=62000706;//kernel.Screen:706
+        //$LASTPOS=64000706;//kernel.Screen:706
         _this.layers.push(camera);
         _thread.retVal=camera;return;
         
         
       }
-      //$LASTPOS=62000760;//kernel.Screen:760
+      //$LASTPOS=64000760;//kernel.Screen:760
       group=group||new Tonyu.classes.kernel.Sprites;
-      //$LASTPOS=62000855;//kernel.Screen:855
+      //$LASTPOS=64000855;//kernel.Screen:855
       layer = new Tonyu.classes.kernel.Layer2D({spx: 0,spy: 0,wpx: 0,wpy: 0,rotation: 0,scale: 1,group: group,screen: _this,index: _this.layers.length});
       
-      //$LASTPOS=62000996;//kernel.Screen:996
+      //$LASTPOS=64000996;//kernel.Screen:996
       _this.layers.push(layer);
       _thread.retVal=layer;return;
       
@@ -19722,12 +19882,12 @@ Tonyu.klass.define({
       var _this=this;
       var r;
       
-      //$LASTPOS=62001058;//kernel.Screen:1058
+      //$LASTPOS=64001058;//kernel.Screen:1058
       r = _this.findLayer(i);
       
-      //$LASTPOS=62001082;//kernel.Screen:1082
+      //$LASTPOS=64001082;//kernel.Screen:1082
       if (r!=null) {
-        //$LASTPOS=62001095;//kernel.Screen:1095
+        //$LASTPOS=64001095;//kernel.Screen:1095
         _this.index=r;
       }
     },
@@ -19744,15 +19904,15 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=62001058;//kernel.Screen:1058
+            //$LASTPOS=64001058;//kernel.Screen:1058
             _this.fiber$findLayer(_thread, i);
             __pc=1;return;
           case 1:
             r=_thread.retVal;
             
-            //$LASTPOS=62001082;//kernel.Screen:1082
+            //$LASTPOS=64001082;//kernel.Screen:1082
             if (r!=null) {
-              //$LASTPOS=62001095;//kernel.Screen:1095
+              //$LASTPOS=64001095;//kernel.Screen:1095
               _this.index=r;
             }
             _thread.exit(_this);return;
@@ -19765,20 +19925,20 @@ Tonyu.klass.define({
       var _this=this;
       var j;
       
-      //$LASTPOS=62001126;//kernel.Screen:1126
+      //$LASTPOS=64001126;//kernel.Screen:1126
       if (typeof  i=="number") {
-        //$LASTPOS=62001160;//kernel.Screen:1160
+        //$LASTPOS=64001160;//kernel.Screen:1160
         if (_this.layers[i]) {
           return i;
         }
         
       } else {
-        //$LASTPOS=62001206;//kernel.Screen:1206
-        //$LASTPOS=62001211;//kernel.Screen:1211
+        //$LASTPOS=64001206;//kernel.Screen:1206
+        //$LASTPOS=64001211;//kernel.Screen:1211
         j = 0;
         for (; j<_this.layers.length ; j++) {
           {
-            //$LASTPOS=62001255;//kernel.Screen:1255
+            //$LASTPOS=64001255;//kernel.Screen:1255
             if (_this.layers[j]==i||_this.layers[j].group==i) {
               return j;
               
@@ -19795,21 +19955,21 @@ Tonyu.klass.define({
       var __pc=0;
       var j;
       
-      //$LASTPOS=62001126;//kernel.Screen:1126
+      //$LASTPOS=64001126;//kernel.Screen:1126
       if (typeof  i=="number") {
-        //$LASTPOS=62001160;//kernel.Screen:1160
+        //$LASTPOS=64001160;//kernel.Screen:1160
         if (_this.layers[i]) {
           _thread.retVal=i;return;
           
         }
         
       } else {
-        //$LASTPOS=62001206;//kernel.Screen:1206
-        //$LASTPOS=62001211;//kernel.Screen:1211
+        //$LASTPOS=64001206;//kernel.Screen:1206
+        //$LASTPOS=64001211;//kernel.Screen:1211
         j = 0;
         for (; j<_this.layers.length ; j++) {
           {
-            //$LASTPOS=62001255;//kernel.Screen:1255
+            //$LASTPOS=64001255;//kernel.Screen:1255
             if (_this.layers[j]==i||_this.layers[j].group==i) {
               _thread.retVal=j;return;
               
@@ -19826,9 +19986,9 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=62001376;//kernel.Screen:1376
+      //$LASTPOS=64001376;//kernel.Screen:1376
       _this.layers[_this.index].spx=x;
-      //$LASTPOS=62001401;//kernel.Screen:1401
+      //$LASTPOS=64001401;//kernel.Screen:1401
       _this.layers[_this.index].spy=y;
     },
     fiber$setPivot :function _trc_Screen_f_setPivot(_thread,x,y) {
@@ -19837,9 +19997,9 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=62001376;//kernel.Screen:1376
+      //$LASTPOS=64001376;//kernel.Screen:1376
       _this.layers[_this.index].spx=x;
-      //$LASTPOS=62001401;//kernel.Screen:1401
+      //$LASTPOS=64001401;//kernel.Screen:1401
       _this.layers[_this.index].spy=y;
       
       _thread.retVal=_this;return;
@@ -19848,18 +20008,18 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=62001453;//kernel.Screen:1453
+      //$LASTPOS=64001453;//kernel.Screen:1453
       _this.layers[_this.index].wpx=x;
-      //$LASTPOS=62001478;//kernel.Screen:1478
+      //$LASTPOS=64001478;//kernel.Screen:1478
       _this.layers[_this.index].wpy=y;
-      //$LASTPOS=62001503;//kernel.Screen:1503
+      //$LASTPOS=64001503;//kernel.Screen:1503
       if (typeof  scl=="number") {
-        //$LASTPOS=62001529;//kernel.Screen:1529
+        //$LASTPOS=64001529;//kernel.Screen:1529
         _this.layers[_this.index].scale=scl;
       }
-      //$LASTPOS=62001558;//kernel.Screen:1558
+      //$LASTPOS=64001558;//kernel.Screen:1558
       if (typeof  rot=="number") {
-        //$LASTPOS=62001584;//kernel.Screen:1584
+        //$LASTPOS=64001584;//kernel.Screen:1584
         _this.layers[_this.index].rotation=rot;
       }
     },
@@ -19869,18 +20029,18 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=62001453;//kernel.Screen:1453
+      //$LASTPOS=64001453;//kernel.Screen:1453
       _this.layers[_this.index].wpx=x;
-      //$LASTPOS=62001478;//kernel.Screen:1478
+      //$LASTPOS=64001478;//kernel.Screen:1478
       _this.layers[_this.index].wpy=y;
-      //$LASTPOS=62001503;//kernel.Screen:1503
+      //$LASTPOS=64001503;//kernel.Screen:1503
       if (typeof  scl=="number") {
-        //$LASTPOS=62001529;//kernel.Screen:1529
+        //$LASTPOS=64001529;//kernel.Screen:1529
         _this.layers[_this.index].scale=scl;
       }
-      //$LASTPOS=62001558;//kernel.Screen:1558
+      //$LASTPOS=64001558;//kernel.Screen:1558
       if (typeof  rot=="number") {
-        //$LASTPOS=62001584;//kernel.Screen:1584
+        //$LASTPOS=64001584;//kernel.Screen:1584
         _this.layers[_this.index].rotation=rot;
       }
       
@@ -19890,7 +20050,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=62001635;//kernel.Screen:1635
+      //$LASTPOS=64001635;//kernel.Screen:1635
       p.layer=_this.layer;
       return _this.convert(p,_this);
     },
@@ -19900,7 +20060,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=62001635;//kernel.Screen:1635
+      //$LASTPOS=64001635;//kernel.Screen:1635
       p.layer=_this.layer;
       
       _thread.enter(function _trc_Screen_ent_canvas2buf(_thread) {
@@ -19929,51 +20089,51 @@ Tonyu.klass.define({
       var x;
       var y;
       
-      //$LASTPOS=62001866;//kernel.Screen:1866
+      //$LASTPOS=64001866;//kernel.Screen:1866
       if (toLayer==null) {
-        //$LASTPOS=62001885;//kernel.Screen:1885
+        //$LASTPOS=64001885;//kernel.Screen:1885
         toLayer=_this;
       }
-      //$LASTPOS=62001903;//kernel.Screen:1903
+      //$LASTPOS=64001903;//kernel.Screen:1903
       if (! obj.layer) {
-        //$LASTPOS=62001919;//kernel.Screen:1919
+        //$LASTPOS=64001919;//kernel.Screen:1919
         obj.layer=_this;
       }
-      //$LASTPOS=62001975;//kernel.Screen:1975
+      //$LASTPOS=64001975;//kernel.Screen:1975
       if (obj.layer===toLayer) {
         return obj;
       }
-      //$LASTPOS=62002016;//kernel.Screen:2016
+      //$LASTPOS=64002016;//kernel.Screen:2016
       if (obj.layer!==_this&&toLayer!==_this) {
-        //$LASTPOS=62002066;//kernel.Screen:2066
+        //$LASTPOS=64002066;//kernel.Screen:2066
         p = _this.convert(obj,_this);
         
         return _this.convert(p,toLayer);
         
       } else {
-        //$LASTPOS=62002137;//kernel.Screen:2137
+        //$LASTPOS=64002137;//kernel.Screen:2137
         if (obj.layer!==_this&&toLayer===_this) {
-          //$LASTPOS=62002187;//kernel.Screen:2187
+          //$LASTPOS=64002187;//kernel.Screen:2187
           l = _this.findLayer(obj.layer);
           
-          //$LASTPOS=62002223;//kernel.Screen:2223
+          //$LASTPOS=64002223;//kernel.Screen:2223
           if (l!=null) {
-            //$LASTPOS=62002281;//kernel.Screen:2281
+            //$LASTPOS=64002281;//kernel.Screen:2281
             l=_this.layers[l];
             return l.world2screen(obj);
-            //$LASTPOS=62002346;//kernel.Screen:2346
+            //$LASTPOS=64002346;//kernel.Screen:2346
             dx = obj.x-l.wpx;
             
-            //$LASTPOS=62002378;//kernel.Screen:2378
+            //$LASTPOS=64002378;//kernel.Screen:2378
             dy = obj.y-l.wpy;
             
-            //$LASTPOS=62002410;//kernel.Screen:2410
+            //$LASTPOS=64002410;//kernel.Screen:2410
             rt = l.rotation;
             
-            //$LASTPOS=62002622;//kernel.Screen:2622
+            //$LASTPOS=64002622;//kernel.Screen:2622
             x = l.spx+(_this.cos(rt)*dx+_this.cos(rt+90)*dy)*l.scale;
             
-            //$LASTPOS=62002684;//kernel.Screen:2684
+            //$LASTPOS=64002684;//kernel.Screen:2684
             y = l.spy+(_this.sin(rt)*dx+_this.sin(rt+90)*dy)*l.scale;
             
             return {x: x,y: y,rotation: obj.rotation,scale: obj.scale,layer: _this};
@@ -19984,29 +20144,29 @@ Tonyu.klass.define({
           }
           
         } else {
-          //$LASTPOS=62002955;//kernel.Screen:2955
+          //$LASTPOS=64002955;//kernel.Screen:2955
           if (obj.layer===_this&&toLayer!==_this) {
-            //$LASTPOS=62003005;//kernel.Screen:3005
+            //$LASTPOS=64003005;//kernel.Screen:3005
             l = _this.findLayer(toLayer);
             
-            //$LASTPOS=62003039;//kernel.Screen:3039
+            //$LASTPOS=64003039;//kernel.Screen:3039
             if (l!=null) {
-              //$LASTPOS=62003097;//kernel.Screen:3097
+              //$LASTPOS=64003097;//kernel.Screen:3097
               l=_this.layers[l];
               return l.screen2world(obj);
-              //$LASTPOS=62003162;//kernel.Screen:3162
+              //$LASTPOS=64003162;//kernel.Screen:3162
               rt = - l.rotation;
               
-              //$LASTPOS=62003194;//kernel.Screen:3194
+              //$LASTPOS=64003194;//kernel.Screen:3194
               dx = obj.x-l.spx;
               
-              //$LASTPOS=62003226;//kernel.Screen:3226
+              //$LASTPOS=64003226;//kernel.Screen:3226
               dy = obj.y-l.spy;
               
-              //$LASTPOS=62003439;//kernel.Screen:3439
+              //$LASTPOS=64003439;//kernel.Screen:3439
               x = l.wpx+(_this.cos(rt)*dx+_this.cos(rt+90)*dy)/l.scale;
               
-              //$LASTPOS=62003501;//kernel.Screen:3501
+              //$LASTPOS=64003501;//kernel.Screen:3501
               y = l.wpy+(_this.sin(rt)*dx+_this.sin(rt+90)*dy)/l.scale;
               
               return {x: x,y: y,rotation: rt,scale: 1/l.scale,layer: toLayer};
@@ -20035,17 +20195,17 @@ Tonyu.klass.define({
       var x;
       var y;
       
-      //$LASTPOS=62001866;//kernel.Screen:1866
+      //$LASTPOS=64001866;//kernel.Screen:1866
       if (toLayer==null) {
-        //$LASTPOS=62001885;//kernel.Screen:1885
+        //$LASTPOS=64001885;//kernel.Screen:1885
         toLayer=_this;
       }
-      //$LASTPOS=62001903;//kernel.Screen:1903
+      //$LASTPOS=64001903;//kernel.Screen:1903
       if (! obj.layer) {
-        //$LASTPOS=62001919;//kernel.Screen:1919
+        //$LASTPOS=64001919;//kernel.Screen:1919
         obj.layer=_this;
       }
-      //$LASTPOS=62001975;//kernel.Screen:1975
+      //$LASTPOS=64001975;//kernel.Screen:1975
       if (obj.layer===toLayer) {
         _thread.retVal=obj;return;
         
@@ -20056,9 +20216,9 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=62002016;//kernel.Screen:2016
+            //$LASTPOS=64002016;//kernel.Screen:2016
             if (!(obj.layer!==_this&&toLayer!==_this)) { __pc=3     ; break; }
-            //$LASTPOS=62002066;//kernel.Screen:2066
+            //$LASTPOS=64002066;//kernel.Screen:2066
             _this.fiber$convert(_thread, obj, _this);
             __pc=1;return;
           case 1:
@@ -20071,32 +20231,32 @@ Tonyu.klass.define({
             
             __pc=14    ;break;
           case 3     :
-            //$LASTPOS=62002137;//kernel.Screen:2137
+            //$LASTPOS=64002137;//kernel.Screen:2137
             if (!(obj.layer!==_this&&toLayer===_this)) { __pc=7     ; break; }
-            //$LASTPOS=62002187;//kernel.Screen:2187
+            //$LASTPOS=64002187;//kernel.Screen:2187
             _this.fiber$findLayer(_thread, obj.layer);
             __pc=4;return;
           case 4:
             l=_thread.retVal;
             
-            //$LASTPOS=62002223;//kernel.Screen:2223
+            //$LASTPOS=64002223;//kernel.Screen:2223
             if (!(l!=null)) { __pc=5     ; break; }
-            //$LASTPOS=62002281;//kernel.Screen:2281
+            //$LASTPOS=64002281;//kernel.Screen:2281
             l=_this.layers[l];
             _thread.exit(l.world2screen(obj));return;
-            //$LASTPOS=62002346;//kernel.Screen:2346
+            //$LASTPOS=64002346;//kernel.Screen:2346
             dx = obj.x-l.wpx;
             
-            //$LASTPOS=62002378;//kernel.Screen:2378
+            //$LASTPOS=64002378;//kernel.Screen:2378
             dy = obj.y-l.wpy;
             
-            //$LASTPOS=62002410;//kernel.Screen:2410
+            //$LASTPOS=64002410;//kernel.Screen:2410
             rt = l.rotation;
             
-            //$LASTPOS=62002622;//kernel.Screen:2622
+            //$LASTPOS=64002622;//kernel.Screen:2622
             x = l.spx+(_this.cos(rt)*dx+_this.cos(rt+90)*dy)*l.scale;
             
-            //$LASTPOS=62002684;//kernel.Screen:2684
+            //$LASTPOS=64002684;//kernel.Screen:2684
             y = l.spy+(_this.sin(rt)*dx+_this.sin(rt+90)*dy)*l.scale;
             
             _thread.exit({x: x,y: y,rotation: obj.rotation,scale: obj.scale,layer: _this});return;
@@ -20107,32 +20267,32 @@ Tonyu.klass.define({
             
             __pc=13    ;break;
           case 7     :
-            //$LASTPOS=62002955;//kernel.Screen:2955
+            //$LASTPOS=64002955;//kernel.Screen:2955
             if (!(obj.layer===_this&&toLayer!==_this)) { __pc=11    ; break; }
-            //$LASTPOS=62003005;//kernel.Screen:3005
+            //$LASTPOS=64003005;//kernel.Screen:3005
             _this.fiber$findLayer(_thread, toLayer);
             __pc=8;return;
           case 8:
             l=_thread.retVal;
             
-            //$LASTPOS=62003039;//kernel.Screen:3039
+            //$LASTPOS=64003039;//kernel.Screen:3039
             if (!(l!=null)) { __pc=9     ; break; }
-            //$LASTPOS=62003097;//kernel.Screen:3097
+            //$LASTPOS=64003097;//kernel.Screen:3097
             l=_this.layers[l];
             _thread.exit(l.screen2world(obj));return;
-            //$LASTPOS=62003162;//kernel.Screen:3162
+            //$LASTPOS=64003162;//kernel.Screen:3162
             rt = - l.rotation;
             
-            //$LASTPOS=62003194;//kernel.Screen:3194
+            //$LASTPOS=64003194;//kernel.Screen:3194
             dx = obj.x-l.spx;
             
-            //$LASTPOS=62003226;//kernel.Screen:3226
+            //$LASTPOS=64003226;//kernel.Screen:3226
             dy = obj.y-l.spy;
             
-            //$LASTPOS=62003439;//kernel.Screen:3439
+            //$LASTPOS=64003439;//kernel.Screen:3439
             x = l.wpx+(_this.cos(rt)*dx+_this.cos(rt+90)*dy)/l.scale;
             
-            //$LASTPOS=62003501;//kernel.Screen:3501
+            //$LASTPOS=64003501;//kernel.Screen:3501
             y = l.wpy+(_this.sin(rt)*dx+_this.sin(rt+90)*dy)/l.scale;
             
             _thread.exit({x: x,y: y,rotation: rt,scale: 1/l.scale,layer: toLayer});return;
@@ -20159,7 +20319,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=62003806;//kernel.Screen:3806
+      //$LASTPOS=64003806;//kernel.Screen:3806
       _this._color=color;
     },
     fiber$setBGColor :function _trc_Screen_f_setBGColor(_thread,color) {
@@ -20168,7 +20328,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=62003806;//kernel.Screen:3806
+      //$LASTPOS=64003806;//kernel.Screen:3806
       _this._color=color;
       
       _thread.retVal=_this;return;
@@ -20178,21 +20338,21 @@ Tonyu.klass.define({
       var _this=this;
       var res;
       var l;
-      var _it_593;
+      var _it_596;
       var q;
       
-      //$LASTPOS=62003840;//kernel.Screen:3840
+      //$LASTPOS=64003840;//kernel.Screen:3840
       res = new Tonyu.classes.kernel.TQuery({screen: _this});
       
-      //$LASTPOS=62003877;//kernel.Screen:3877
-      _it_593=Tonyu.iterator(_this.layers,1);
-      while(_it_593.next()) {
-        l=_it_593[0];
+      //$LASTPOS=64003877;//kernel.Screen:3877
+      _it_596=Tonyu.iterator(_this.layers,1);
+      while(_it_596.next()) {
+        l=_it_596[0];
         
-        //$LASTPOS=62003909;//kernel.Screen:3909
+        //$LASTPOS=64003909;//kernel.Screen:3909
         q = l.group.all.apply(l.group,arguments);
         
-        //$LASTPOS=62003961;//kernel.Screen:3961
+        //$LASTPOS=64003961;//kernel.Screen:3961
         res.push(q);
         
       }
@@ -20203,43 +20363,43 @@ Tonyu.klass.define({
       var _this=this;
       var res;
       var e;
-      var _it_598;
+      var _it_601;
       var r;
       var i;
       var t;
       var p;
       
-      //$LASTPOS=62004067;//kernel.Screen:4067
+      //$LASTPOS=64004067;//kernel.Screen:4067
       res = [];
       
-      //$LASTPOS=62004083;//kernel.Screen:4083
+      //$LASTPOS=64004083;//kernel.Screen:4083
       options=options||{};
-      //$LASTPOS=62004108;//kernel.Screen:4108
-      _it_598=Tonyu.iterator(q,1);
-      while(_it_598.next()) {
-        e=_it_598[0];
+      //$LASTPOS=64004108;//kernel.Screen:4108
+      _it_601=Tonyu.iterator(q,1);
+      while(_it_601.next()) {
+        e=_it_601[0];
         
-        //$LASTPOS=62004135;//kernel.Screen:4135
+        //$LASTPOS=64004135;//kernel.Screen:4135
         r = e.getCrashRect();
         
-        //$LASTPOS=62004167;//kernel.Screen:4167
-        //$LASTPOS=62004172;//kernel.Screen:4172
+        //$LASTPOS=64004167;//kernel.Screen:4167
+        //$LASTPOS=64004172;//kernel.Screen:4172
         i = 0;
         for (; i<Tonyu.globals.$touches.length ; i++) {
           {
-            //$LASTPOS=62004217;//kernel.Screen:4217
+            //$LASTPOS=64004217;//kernel.Screen:4217
             t = Tonyu.globals.$touches[i];
             
-            //$LASTPOS=62004248;//kernel.Screen:4248
+            //$LASTPOS=64004248;//kernel.Screen:4248
             if (t.touched==1) {
-              //$LASTPOS=62004284;//kernel.Screen:4284
+              //$LASTPOS=64004284;//kernel.Screen:4284
               p = _this.convert(t,e.layer);
               
-              //$LASTPOS=62004326;//kernel.Screen:4326
+              //$LASTPOS=64004326;//kernel.Screen:4326
               if (p.x>=r.x-r.width/2&&p.x<=r.x+r.width/2&&p.y>=r.y-r.height/2&&p.y<=r.y+r.height/2) {
-                //$LASTPOS=62004456;//kernel.Screen:4456
+                //$LASTPOS=64004456;//kernel.Screen:4456
                 t.captured=e;
-                //$LASTPOS=62004490;//kernel.Screen:4490
+                //$LASTPOS=64004490;//kernel.Screen:4490
                 res.push(t);
                 
               }
@@ -20258,16 +20418,16 @@ Tonyu.klass.define({
       var __pc=0;
       var res;
       var e;
-      var _it_598;
+      var _it_601;
       var r;
       var i;
       var t;
       var p;
       
-      //$LASTPOS=62004067;//kernel.Screen:4067
+      //$LASTPOS=64004067;//kernel.Screen:4067
       res = [];
       
-      //$LASTPOS=62004083;//kernel.Screen:4083
+      //$LASTPOS=64004083;//kernel.Screen:4083
       options=options||{};
       
       _thread.enter(function _trc_Screen_ent_touchedFingers(_thread) {
@@ -20275,37 +20435,37 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=62004108;//kernel.Screen:4108
-            _it_598=Tonyu.iterator(q,1);
+            //$LASTPOS=64004108;//kernel.Screen:4108
+            _it_601=Tonyu.iterator(q,1);
           case 1:
-            if (!(_it_598.next())) { __pc=7     ; break; }
-            e=_it_598[0];
+            if (!(_it_601.next())) { __pc=7     ; break; }
+            e=_it_601[0];
             
-            //$LASTPOS=62004135;//kernel.Screen:4135
+            //$LASTPOS=64004135;//kernel.Screen:4135
             r = e.getCrashRect();
             
-            //$LASTPOS=62004167;//kernel.Screen:4167
-            //$LASTPOS=62004172;//kernel.Screen:4172
+            //$LASTPOS=64004167;//kernel.Screen:4167
+            //$LASTPOS=64004172;//kernel.Screen:4172
             i = 0;
             
           case 2:
             if (!(i<Tonyu.globals.$touches.length)) { __pc=6     ; break; }
-            //$LASTPOS=62004217;//kernel.Screen:4217
+            //$LASTPOS=64004217;//kernel.Screen:4217
             t = Tonyu.globals.$touches[i];
             
-            //$LASTPOS=62004248;//kernel.Screen:4248
+            //$LASTPOS=64004248;//kernel.Screen:4248
             if (!(t.touched==1)) { __pc=4     ; break; }
-            //$LASTPOS=62004284;//kernel.Screen:4284
+            //$LASTPOS=64004284;//kernel.Screen:4284
             _this.fiber$convert(_thread, t, e.layer);
             __pc=3;return;
           case 3:
             p=_thread.retVal;
             
-            //$LASTPOS=62004326;//kernel.Screen:4326
+            //$LASTPOS=64004326;//kernel.Screen:4326
             if (p.x>=r.x-r.width/2&&p.x<=r.x+r.width/2&&p.y>=r.y-r.height/2&&p.y<=r.y+r.height/2) {
-              //$LASTPOS=62004456;//kernel.Screen:4456
+              //$LASTPOS=64004456;//kernel.Screen:4456
               t.captured=e;
-              //$LASTPOS=62004490;//kernel.Screen:4490
+              //$LASTPOS=64004490;//kernel.Screen:4490
               res.push(t);
               
             }
@@ -20354,64 +20514,64 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=63000045;//kernel.Sprites:45
+      //$LASTPOS=65000045;//kernel.Sprites:45
       _this.sprites=[];
-      //$LASTPOS=63000062;//kernel.Sprites:62
+      //$LASTPOS=65000062;//kernel.Sprites:62
       _this.imageList=[];
-      //$LASTPOS=63000081;//kernel.Sprites:81
+      //$LASTPOS=65000081;//kernel.Sprites:81
       _this.hitWatchers=[];
-      //$LASTPOS=63000102;//kernel.Sprites:102
+      //$LASTPOS=65000102;//kernel.Sprites:102
       _this.isDrawGrid=Tonyu.noviceMode;
-      //$LASTPOS=63000136;//kernel.Sprites:136
+      //$LASTPOS=65000136;//kernel.Sprites:136
       _this.sx=0;
-      //$LASTPOS=63000147;//kernel.Sprites:147
+      //$LASTPOS=65000147;//kernel.Sprites:147
       _this.sy=0;
-      //$LASTPOS=63000158;//kernel.Sprites:158
+      //$LASTPOS=65000158;//kernel.Sprites:158
       _this.objId=0;
     },
     add :function _trc_Sprites_add(s) {
       "use strict";
       var _this=this;
       
-      //$LASTPOS=63000194;//kernel.Sprites:194
+      //$LASTPOS=65000194;//kernel.Sprites:194
       if (Tonyu.globals.$Boot.newLimit) {
-        //$LASTPOS=63000225;//kernel.Sprites:225
+        //$LASTPOS=65000225;//kernel.Sprites:225
         Tonyu.globals.$Boot.newLimitCount--;
-        //$LASTPOS=63000257;//kernel.Sprites:257
+        //$LASTPOS=65000257;//kernel.Sprites:257
         if (Tonyu.globals.$Boot.newLimitCount<=0) {
           throw new Error("一度にたくさんのオブジェクトを作りすぎています");
           
         }
         
       }
-      //$LASTPOS=63000341;//kernel.Sprites:341
+      //$LASTPOS=65000341;//kernel.Sprites:341
       if (s.__addedToSprites) {
         return _this;
       }
-      //$LASTPOS=63000378;//kernel.Sprites:378
+      //$LASTPOS=65000378;//kernel.Sprites:378
       if (s instanceof Tonyu.classes.kernel.PlainChar) {
-        //$LASTPOS=63000417;//kernel.Sprites:417
+        //$LASTPOS=65000417;//kernel.Sprites:417
         _this.t1Sprites=_this.t1Sprites||[];
         
       }
-      //$LASTPOS=63000454;//kernel.Sprites:454
+      //$LASTPOS=65000454;//kernel.Sprites:454
       if (_this.drawing) {
-        //$LASTPOS=63000478;//kernel.Sprites:478
+        //$LASTPOS=65000478;//kernel.Sprites:478
         s.draw(_this.drawing);
         return _this;
         
       }
-      //$LASTPOS=63000524;//kernel.Sprites:524
+      //$LASTPOS=65000524;//kernel.Sprites:524
       _this.sprites.push(s);
-      //$LASTPOS=63000546;//kernel.Sprites:546
+      //$LASTPOS=65000546;//kernel.Sprites:546
       if (s.__genId==null) {
-        //$LASTPOS=63000576;//kernel.Sprites:576
+        //$LASTPOS=65000576;//kernel.Sprites:576
         s.__genId=_this.objId;
-        //$LASTPOS=63000602;//kernel.Sprites:602
+        //$LASTPOS=65000602;//kernel.Sprites:602
         _this.objId++;
         
       }
-      //$LASTPOS=63000623;//kernel.Sprites:623
+      //$LASTPOS=65000623;//kernel.Sprites:623
       s.__addedToSprites=_this;
       return s;
     },
@@ -20421,47 +20581,47 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=63000194;//kernel.Sprites:194
+      //$LASTPOS=65000194;//kernel.Sprites:194
       if (Tonyu.globals.$Boot.newLimit) {
-        //$LASTPOS=63000225;//kernel.Sprites:225
+        //$LASTPOS=65000225;//kernel.Sprites:225
         Tonyu.globals.$Boot.newLimitCount--;
-        //$LASTPOS=63000257;//kernel.Sprites:257
+        //$LASTPOS=65000257;//kernel.Sprites:257
         if (Tonyu.globals.$Boot.newLimitCount<=0) {
           throw new Error("一度にたくさんのオブジェクトを作りすぎています");
           
         }
         
       }
-      //$LASTPOS=63000341;//kernel.Sprites:341
+      //$LASTPOS=65000341;//kernel.Sprites:341
       if (s.__addedToSprites) {
         _thread.retVal=_this;return;
         
       }
-      //$LASTPOS=63000378;//kernel.Sprites:378
+      //$LASTPOS=65000378;//kernel.Sprites:378
       if (s instanceof Tonyu.classes.kernel.PlainChar) {
-        //$LASTPOS=63000417;//kernel.Sprites:417
+        //$LASTPOS=65000417;//kernel.Sprites:417
         _this.t1Sprites=_this.t1Sprites||[];
         
       }
-      //$LASTPOS=63000454;//kernel.Sprites:454
+      //$LASTPOS=65000454;//kernel.Sprites:454
       if (_this.drawing) {
-        //$LASTPOS=63000478;//kernel.Sprites:478
+        //$LASTPOS=65000478;//kernel.Sprites:478
         s.draw(_this.drawing);
         _thread.retVal=_this;return;
         
         
       }
-      //$LASTPOS=63000524;//kernel.Sprites:524
+      //$LASTPOS=65000524;//kernel.Sprites:524
       _this.sprites.push(s);
-      //$LASTPOS=63000546;//kernel.Sprites:546
+      //$LASTPOS=65000546;//kernel.Sprites:546
       if (s.__genId==null) {
-        //$LASTPOS=63000576;//kernel.Sprites:576
+        //$LASTPOS=65000576;//kernel.Sprites:576
         s.__genId=_this.objId;
-        //$LASTPOS=63000602;//kernel.Sprites:602
+        //$LASTPOS=65000602;//kernel.Sprites:602
         _this.objId++;
         
       }
-      //$LASTPOS=63000623;//kernel.Sprites:623
+      //$LASTPOS=65000623;//kernel.Sprites:623
       s.__addedToSprites=_this;
       _thread.retVal=s;return;
       
@@ -20473,16 +20633,16 @@ Tonyu.klass.define({
       var _this=this;
       var idx;
       
-      //$LASTPOS=63000693;//kernel.Sprites:693
+      //$LASTPOS=65000693;//kernel.Sprites:693
       idx = _this.sprites.indexOf(s);
       
-      //$LASTPOS=63000726;//kernel.Sprites:726
+      //$LASTPOS=65000726;//kernel.Sprites:726
       if (idx<0) {
         return _this;
       }
-      //$LASTPOS=63000750;//kernel.Sprites:750
+      //$LASTPOS=65000750;//kernel.Sprites:750
       _this.sprites.splice(idx,1);
-      //$LASTPOS=63000778;//kernel.Sprites:778
+      //$LASTPOS=65000778;//kernel.Sprites:778
       delete s.__addedToSprites;
     },
     fiber$remove :function _trc_Sprites_f_remove(_thread,s) {
@@ -20492,17 +20652,17 @@ Tonyu.klass.define({
       var __pc=0;
       var idx;
       
-      //$LASTPOS=63000693;//kernel.Sprites:693
+      //$LASTPOS=65000693;//kernel.Sprites:693
       idx = _this.sprites.indexOf(s);
       
-      //$LASTPOS=63000726;//kernel.Sprites:726
+      //$LASTPOS=65000726;//kernel.Sprites:726
       if (idx<0) {
         _thread.retVal=_this;return;
         
       }
-      //$LASTPOS=63000750;//kernel.Sprites:750
+      //$LASTPOS=65000750;//kernel.Sprites:750
       _this.sprites.splice(idx,1);
-      //$LASTPOS=63000778;//kernel.Sprites:778
+      //$LASTPOS=65000778;//kernel.Sprites:778
       delete s.__addedToSprites;
       
       _thread.retVal=_this;return;
@@ -20514,18 +20674,18 @@ Tonyu.klass.define({
       var i;
       
       
-      //$LASTPOS=63000912;//kernel.Sprites:912
-      //$LASTPOS=63000917;//kernel.Sprites:917
+      //$LASTPOS=65000912;//kernel.Sprites:912
+      //$LASTPOS=65000917;//kernel.Sprites:917
       i = _this.sprites.length-1;
       for (; i>=0 ; i--) {
         {
-          //$LASTPOS=63000965;//kernel.Sprites:965
+          //$LASTPOS=65000965;//kernel.Sprites:965
           s=_this.sprites[i];
-          //$LASTPOS=63000988;//kernel.Sprites:988
+          //$LASTPOS=65000988;//kernel.Sprites:988
           if (s instanceof Tonyu.classes.kernel.OneframeSprite&&(! drawn||s.drawn)) {
-            //$LASTPOS=63001161;//kernel.Sprites:1161
+            //$LASTPOS=65001161;//kernel.Sprites:1161
             Tonyu.globals.$ObjectPool.poolList(s.getClassInfo().fullName).push(s);
-            //$LASTPOS=63001233;//kernel.Sprites:1233
+            //$LASTPOS=65001233;//kernel.Sprites:1233
             _this.sprites.splice(i,1);
             
           }
@@ -20541,18 +20701,18 @@ Tonyu.klass.define({
       var i;
       
       
-      //$LASTPOS=63000912;//kernel.Sprites:912
-      //$LASTPOS=63000917;//kernel.Sprites:917
+      //$LASTPOS=65000912;//kernel.Sprites:912
+      //$LASTPOS=65000917;//kernel.Sprites:917
       i = _this.sprites.length-1;
       for (; i>=0 ; i--) {
         {
-          //$LASTPOS=63000965;//kernel.Sprites:965
+          //$LASTPOS=65000965;//kernel.Sprites:965
           s=_this.sprites[i];
-          //$LASTPOS=63000988;//kernel.Sprites:988
+          //$LASTPOS=65000988;//kernel.Sprites:988
           if (s instanceof Tonyu.classes.kernel.OneframeSprite&&(! drawn||s.drawn)) {
-            //$LASTPOS=63001161;//kernel.Sprites:1161
+            //$LASTPOS=65001161;//kernel.Sprites:1161
             Tonyu.globals.$ObjectPool.poolList(s.getClassInfo().fullName).push(s);
-            //$LASTPOS=63001233;//kernel.Sprites:1233
+            //$LASTPOS=65001233;//kernel.Sprites:1233
             _this.sprites.splice(i,1);
             
           }
@@ -20565,7 +20725,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=63001294;//kernel.Sprites:1294
+      //$LASTPOS=65001294;//kernel.Sprites:1294
       _this.sprites.splice(0,_this.sprites.length);
     },
     fiber$clear :function _trc_Sprites_f_clear(_thread) {
@@ -20574,7 +20734,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=63001294;//kernel.Sprites:1294
+      //$LASTPOS=65001294;//kernel.Sprites:1294
       _this.sprites.splice(0,_this.sprites.length);
       
       _thread.retVal=_this;return;
@@ -20585,25 +20745,25 @@ Tonyu.klass.define({
       var val1;
       var val2;
       
-      //$LASTPOS=63001367;//kernel.Sprites:1367
+      //$LASTPOS=65001367;//kernel.Sprites:1367
       val1 = obj1.zOrder||0;
       
-      //$LASTPOS=63001397;//kernel.Sprites:1397
+      //$LASTPOS=65001397;//kernel.Sprites:1397
       val2 = obj2.zOrder||0;
       
-      //$LASTPOS=63001427;//kernel.Sprites:1427
+      //$LASTPOS=65001427;//kernel.Sprites:1427
       if (val1>val2) {
         return - 1;
         
       } else {
-        //$LASTPOS=63001473;//kernel.Sprites:1473
+        //$LASTPOS=65001473;//kernel.Sprites:1473
         if (val1<val2) {
           return 1;
           
         } else {
-          //$LASTPOS=63001518;//kernel.Sprites:1518
+          //$LASTPOS=65001518;//kernel.Sprites:1518
           if (val1==val2) {
-            //$LASTPOS=63001543;//kernel.Sprites:1543
+            //$LASTPOS=65001543;//kernel.Sprites:1543
             if (obj1.__genId>obj2.__genId) {
               return 1;
               
@@ -20625,27 +20785,27 @@ Tonyu.klass.define({
       var val1;
       var val2;
       
-      //$LASTPOS=63001367;//kernel.Sprites:1367
+      //$LASTPOS=65001367;//kernel.Sprites:1367
       val1 = obj1.zOrder||0;
       
-      //$LASTPOS=63001397;//kernel.Sprites:1397
+      //$LASTPOS=65001397;//kernel.Sprites:1397
       val2 = obj2.zOrder||0;
       
-      //$LASTPOS=63001427;//kernel.Sprites:1427
+      //$LASTPOS=65001427;//kernel.Sprites:1427
       if (val1>val2) {
         _thread.retVal=- 1;return;
         
         
       } else {
-        //$LASTPOS=63001473;//kernel.Sprites:1473
+        //$LASTPOS=65001473;//kernel.Sprites:1473
         if (val1<val2) {
           _thread.retVal=1;return;
           
           
         } else {
-          //$LASTPOS=63001518;//kernel.Sprites:1518
+          //$LASTPOS=65001518;//kernel.Sprites:1518
           if (val1==val2) {
-            //$LASTPOS=63001543;//kernel.Sprites:1543
+            //$LASTPOS=65001543;//kernel.Sprites:1543
             if (obj1.__genId>obj2.__genId) {
               _thread.retVal=1;return;
               
@@ -20669,85 +20829,85 @@ Tonyu.klass.define({
       var _this=this;
       var orderArray;
       
-      //$LASTPOS=63001748;//kernel.Sprites:1748
+      //$LASTPOS=65001748;//kernel.Sprites:1748
       ctx.save();
-      //$LASTPOS=63001765;//kernel.Sprites:1765
+      //$LASTPOS=65001765;//kernel.Sprites:1765
       orderArray = [];
       
-      //$LASTPOS=63001789;//kernel.Sprites:1789
+      //$LASTPOS=65001789;//kernel.Sprites:1789
       if (_this.t1Sprites) {
-        //$LASTPOS=63001815;//kernel.Sprites:1815
+        //$LASTPOS=65001815;//kernel.Sprites:1815
         _this.sprites.forEach((function anonymous_1831(s) {
           
-          //$LASTPOS=63001851;//kernel.Sprites:1851
+          //$LASTPOS=65001851;//kernel.Sprites:1851
           if (s instanceof Tonyu.classes.kernel.PlainChar) {
-            //$LASTPOS=63001898;//kernel.Sprites:1898
+            //$LASTPOS=65001898;//kernel.Sprites:1898
             s.draw();
             
           } else {
-            //$LASTPOS=63001928;//kernel.Sprites:1928
+            //$LASTPOS=65001928;//kernel.Sprites:1928
             orderArray.push(s);
           }
         }));
         
       } else {
-        //$LASTPOS=63001983;//kernel.Sprites:1983
+        //$LASTPOS=65001983;//kernel.Sprites:1983
         orderArray=orderArray.concat(_this.sprites);
         
       }
-      //$LASTPOS=63002034;//kernel.Sprites:2034
+      //$LASTPOS=65002034;//kernel.Sprites:2034
       orderArray.sort(Tonyu.bindFunc(_this,_this.compOrder));
-      //$LASTPOS=63002067;//kernel.Sprites:2067
+      //$LASTPOS=65002067;//kernel.Sprites:2067
       ctx.translate(- _this.sx,- _this.sy);
-      //$LASTPOS=63002096;//kernel.Sprites:2096
+      //$LASTPOS=65002096;//kernel.Sprites:2096
       _this.drawing=ctx;
-      //$LASTPOS=63002114;//kernel.Sprites:2114
+      //$LASTPOS=65002114;//kernel.Sprites:2114
       orderArray.forEach((function anonymous_2133(s) {
         
-        //$LASTPOS=63002148;//kernel.Sprites:2148
+        //$LASTPOS=65002148;//kernel.Sprites:2148
         s.draw(ctx,camera);
       }));
-      //$LASTPOS=63002183;//kernel.Sprites:2183
+      //$LASTPOS=65002183;//kernel.Sprites:2183
       _this.drawing=null;
-      //$LASTPOS=63002202;//kernel.Sprites:2202
+      //$LASTPOS=65002202;//kernel.Sprites:2202
       ctx.restore();
     },
     checkHit :function _trc_Sprites_checkHit() {
       "use strict";
       var _this=this;
       
-      //$LASTPOS=63002248;//kernel.Sprites:2248
+      //$LASTPOS=65002248;//kernel.Sprites:2248
       _this.hitWatchers.forEach((function anonymous_2268(w) {
         
-        //$LASTPOS=63002292;//kernel.Sprites:2292
+        //$LASTPOS=65002292;//kernel.Sprites:2292
         _this.sprites.forEach((function anonymous_2308(a) {
           var a_owner;
           
-          //$LASTPOS=63002380;//kernel.Sprites:2380
+          //$LASTPOS=65002380;//kernel.Sprites:2380
           a_owner = a;
           
-          //$LASTPOS=63002422;//kernel.Sprites:2422
+          //$LASTPOS=65002422;//kernel.Sprites:2422
           if (! (a_owner instanceof w.A)) {
             return _this;
           }
-          //$LASTPOS=63002475;//kernel.Sprites:2475
+          //$LASTPOS=65002475;//kernel.Sprites:2475
           _this.sprites.forEach((function anonymous_2491(b) {
             var b_owner;
             
-            //$LASTPOS=63002523;//kernel.Sprites:2523
+            //$LASTPOS=65002523;//kernel.Sprites:2523
             b_owner = b;
             
-            //$LASTPOS=63002569;//kernel.Sprites:2569
+            //$LASTPOS=65002569;//kernel.Sprites:2569
             if (a===b) {
               return _this;
             }
-            //$LASTPOS=63002605;//kernel.Sprites:2605
+            //$LASTPOS=65002605;//kernel.Sprites:2605
             if (! (b_owner instanceof w.B)) {
               return _this;
             }
-            //$LASTPOS=63002710;//kernel.Sprites:2710
+            //$LASTPOS=65002710;//kernel.Sprites:2710
             if (a.crashTo1(b)) {
-              //$LASTPOS=63002813;//kernel.Sprites:2813
+              //$LASTPOS=65002813;//kernel.Sprites:2813
               w.h(a_owner,b_owner);
               
             }
@@ -20761,38 +20921,38 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=63002248;//kernel.Sprites:2248
+      //$LASTPOS=65002248;//kernel.Sprites:2248
       _this.hitWatchers.forEach((function anonymous_2268(w) {
         
-        //$LASTPOS=63002292;//kernel.Sprites:2292
+        //$LASTPOS=65002292;//kernel.Sprites:2292
         _this.sprites.forEach((function anonymous_2308(a) {
           var a_owner;
           
-          //$LASTPOS=63002380;//kernel.Sprites:2380
+          //$LASTPOS=65002380;//kernel.Sprites:2380
           a_owner = a;
           
-          //$LASTPOS=63002422;//kernel.Sprites:2422
+          //$LASTPOS=65002422;//kernel.Sprites:2422
           if (! (a_owner instanceof w.A)) {
             return _this;
           }
-          //$LASTPOS=63002475;//kernel.Sprites:2475
+          //$LASTPOS=65002475;//kernel.Sprites:2475
           _this.sprites.forEach((function anonymous_2491(b) {
             var b_owner;
             
-            //$LASTPOS=63002523;//kernel.Sprites:2523
+            //$LASTPOS=65002523;//kernel.Sprites:2523
             b_owner = b;
             
-            //$LASTPOS=63002569;//kernel.Sprites:2569
+            //$LASTPOS=65002569;//kernel.Sprites:2569
             if (a===b) {
               return _this;
             }
-            //$LASTPOS=63002605;//kernel.Sprites:2605
+            //$LASTPOS=65002605;//kernel.Sprites:2605
             if (! (b_owner instanceof w.B)) {
               return _this;
             }
-            //$LASTPOS=63002710;//kernel.Sprites:2710
+            //$LASTPOS=65002710;//kernel.Sprites:2710
             if (a.crashTo1(b)) {
-              //$LASTPOS=63002813;//kernel.Sprites:2813
+              //$LASTPOS=65002813;//kernel.Sprites:2813
               w.h(a_owner,b_owner);
               
             }
@@ -20807,10 +20967,10 @@ Tonyu.klass.define({
       var _this=this;
       var p;
       
-      //$LASTPOS=63002943;//kernel.Sprites:2943
+      //$LASTPOS=65002943;//kernel.Sprites:2943
       p = {A: typeA,B: typeB,h: onHit};
       
-      //$LASTPOS=63003007;//kernel.Sprites:3007
+      //$LASTPOS=65003007;//kernel.Sprites:3007
       _this.hitWatchers.push(p);
     },
     drawGrid :function _trc_Sprites_drawGrid(c) {
@@ -20819,76 +20979,76 @@ Tonyu.klass.define({
       var ctx;
       var i;
       
-      //$LASTPOS=63003060;//kernel.Sprites:3060
+      //$LASTPOS=65003060;//kernel.Sprites:3060
       ctx = c.getContext("2d");
       
-      //$LASTPOS=63003093;//kernel.Sprites:3093
+      //$LASTPOS=65003093;//kernel.Sprites:3093
       ctx.textBaseline="top";
-      //$LASTPOS=63003122;//kernel.Sprites:3122
+      //$LASTPOS=65003122;//kernel.Sprites:3122
       ctx.save();
-      //$LASTPOS=63003139;//kernel.Sprites:3139
+      //$LASTPOS=65003139;//kernel.Sprites:3139
       ctx.strokeStyle="rgb(40,100,200)";
-      //$LASTPOS=63003179;//kernel.Sprites:3179
-      //$LASTPOS=63003184;//kernel.Sprites:3184
+      //$LASTPOS=65003179;//kernel.Sprites:3179
+      //$LASTPOS=65003184;//kernel.Sprites:3184
       i = 0;
       for (; i<c.width ; i+=10) {
         {
-          //$LASTPOS=63003224;//kernel.Sprites:3224
+          //$LASTPOS=65003224;//kernel.Sprites:3224
           ctx.beginPath();
-          //$LASTPOS=63003250;//kernel.Sprites:3250
+          //$LASTPOS=65003250;//kernel.Sprites:3250
           ctx.lineWidth=(i%100==0?4:1);
-          //$LASTPOS=63003296;//kernel.Sprites:3296
+          //$LASTPOS=65003296;//kernel.Sprites:3296
           ctx.moveTo(i,0);
-          //$LASTPOS=63003322;//kernel.Sprites:3322
+          //$LASTPOS=65003322;//kernel.Sprites:3322
           ctx.lineTo(i,c.height);
-          //$LASTPOS=63003355;//kernel.Sprites:3355
+          //$LASTPOS=65003355;//kernel.Sprites:3355
           ctx.closePath();
-          //$LASTPOS=63003381;//kernel.Sprites:3381
+          //$LASTPOS=65003381;//kernel.Sprites:3381
           ctx.stroke();
         }
       }
-      //$LASTPOS=63003409;//kernel.Sprites:3409
-      //$LASTPOS=63003414;//kernel.Sprites:3414
+      //$LASTPOS=65003409;//kernel.Sprites:3409
+      //$LASTPOS=65003414;//kernel.Sprites:3414
       i = 0;
       for (; i<c.height ; i+=10) {
         {
-          //$LASTPOS=63003455;//kernel.Sprites:3455
+          //$LASTPOS=65003455;//kernel.Sprites:3455
           ctx.beginPath();
-          //$LASTPOS=63003481;//kernel.Sprites:3481
+          //$LASTPOS=65003481;//kernel.Sprites:3481
           ctx.lineWidth=(i%100==0?4:1);
-          //$LASTPOS=63003527;//kernel.Sprites:3527
+          //$LASTPOS=65003527;//kernel.Sprites:3527
           ctx.moveTo(0,i);
-          //$LASTPOS=63003553;//kernel.Sprites:3553
+          //$LASTPOS=65003553;//kernel.Sprites:3553
           ctx.lineTo(c.width,i);
-          //$LASTPOS=63003585;//kernel.Sprites:3585
+          //$LASTPOS=65003585;//kernel.Sprites:3585
           ctx.closePath();
-          //$LASTPOS=63003611;//kernel.Sprites:3611
+          //$LASTPOS=65003611;//kernel.Sprites:3611
           ctx.stroke();
         }
       }
-      //$LASTPOS=63003637;//kernel.Sprites:3637
+      //$LASTPOS=65003637;//kernel.Sprites:3637
       ctx.fillStyle="white";
-      //$LASTPOS=63003665;//kernel.Sprites:3665
+      //$LASTPOS=65003665;//kernel.Sprites:3665
       ctx.font="15px monospaced";
-      //$LASTPOS=63003698;//kernel.Sprites:3698
-      //$LASTPOS=63003703;//kernel.Sprites:3703
+      //$LASTPOS=65003698;//kernel.Sprites:3698
+      //$LASTPOS=65003703;//kernel.Sprites:3703
       i = 100;
       for (; i<c.width ; i+=100) {
         {
-          //$LASTPOS=63003746;//kernel.Sprites:3746
+          //$LASTPOS=65003746;//kernel.Sprites:3746
           ctx.fillText(i,i,0);
         }
       }
-      //$LASTPOS=63003780;//kernel.Sprites:3780
-      //$LASTPOS=63003785;//kernel.Sprites:3785
+      //$LASTPOS=65003780;//kernel.Sprites:3780
+      //$LASTPOS=65003785;//kernel.Sprites:3785
       i = 100;
       for (; i<c.height ; i+=100) {
         {
-          //$LASTPOS=63003829;//kernel.Sprites:3829
+          //$LASTPOS=65003829;//kernel.Sprites:3829
           ctx.fillText(i,0,i);
         }
       }
-      //$LASTPOS=63003863;//kernel.Sprites:3863
+      //$LASTPOS=65003863;//kernel.Sprites:3863
       ctx.restore();
     },
     fiber$drawGrid :function _trc_Sprites_f_drawGrid(_thread,c) {
@@ -20899,76 +21059,76 @@ Tonyu.klass.define({
       var ctx;
       var i;
       
-      //$LASTPOS=63003060;//kernel.Sprites:3060
+      //$LASTPOS=65003060;//kernel.Sprites:3060
       ctx = c.getContext("2d");
       
-      //$LASTPOS=63003093;//kernel.Sprites:3093
+      //$LASTPOS=65003093;//kernel.Sprites:3093
       ctx.textBaseline="top";
-      //$LASTPOS=63003122;//kernel.Sprites:3122
+      //$LASTPOS=65003122;//kernel.Sprites:3122
       ctx.save();
-      //$LASTPOS=63003139;//kernel.Sprites:3139
+      //$LASTPOS=65003139;//kernel.Sprites:3139
       ctx.strokeStyle="rgb(40,100,200)";
-      //$LASTPOS=63003179;//kernel.Sprites:3179
-      //$LASTPOS=63003184;//kernel.Sprites:3184
+      //$LASTPOS=65003179;//kernel.Sprites:3179
+      //$LASTPOS=65003184;//kernel.Sprites:3184
       i = 0;
       for (; i<c.width ; i+=10) {
         {
-          //$LASTPOS=63003224;//kernel.Sprites:3224
+          //$LASTPOS=65003224;//kernel.Sprites:3224
           ctx.beginPath();
-          //$LASTPOS=63003250;//kernel.Sprites:3250
+          //$LASTPOS=65003250;//kernel.Sprites:3250
           ctx.lineWidth=(i%100==0?4:1);
-          //$LASTPOS=63003296;//kernel.Sprites:3296
+          //$LASTPOS=65003296;//kernel.Sprites:3296
           ctx.moveTo(i,0);
-          //$LASTPOS=63003322;//kernel.Sprites:3322
+          //$LASTPOS=65003322;//kernel.Sprites:3322
           ctx.lineTo(i,c.height);
-          //$LASTPOS=63003355;//kernel.Sprites:3355
+          //$LASTPOS=65003355;//kernel.Sprites:3355
           ctx.closePath();
-          //$LASTPOS=63003381;//kernel.Sprites:3381
+          //$LASTPOS=65003381;//kernel.Sprites:3381
           ctx.stroke();
         }
       }
-      //$LASTPOS=63003409;//kernel.Sprites:3409
-      //$LASTPOS=63003414;//kernel.Sprites:3414
+      //$LASTPOS=65003409;//kernel.Sprites:3409
+      //$LASTPOS=65003414;//kernel.Sprites:3414
       i = 0;
       for (; i<c.height ; i+=10) {
         {
-          //$LASTPOS=63003455;//kernel.Sprites:3455
+          //$LASTPOS=65003455;//kernel.Sprites:3455
           ctx.beginPath();
-          //$LASTPOS=63003481;//kernel.Sprites:3481
+          //$LASTPOS=65003481;//kernel.Sprites:3481
           ctx.lineWidth=(i%100==0?4:1);
-          //$LASTPOS=63003527;//kernel.Sprites:3527
+          //$LASTPOS=65003527;//kernel.Sprites:3527
           ctx.moveTo(0,i);
-          //$LASTPOS=63003553;//kernel.Sprites:3553
+          //$LASTPOS=65003553;//kernel.Sprites:3553
           ctx.lineTo(c.width,i);
-          //$LASTPOS=63003585;//kernel.Sprites:3585
+          //$LASTPOS=65003585;//kernel.Sprites:3585
           ctx.closePath();
-          //$LASTPOS=63003611;//kernel.Sprites:3611
+          //$LASTPOS=65003611;//kernel.Sprites:3611
           ctx.stroke();
         }
       }
-      //$LASTPOS=63003637;//kernel.Sprites:3637
+      //$LASTPOS=65003637;//kernel.Sprites:3637
       ctx.fillStyle="white";
-      //$LASTPOS=63003665;//kernel.Sprites:3665
+      //$LASTPOS=65003665;//kernel.Sprites:3665
       ctx.font="15px monospaced";
-      //$LASTPOS=63003698;//kernel.Sprites:3698
-      //$LASTPOS=63003703;//kernel.Sprites:3703
+      //$LASTPOS=65003698;//kernel.Sprites:3698
+      //$LASTPOS=65003703;//kernel.Sprites:3703
       i = 100;
       for (; i<c.width ; i+=100) {
         {
-          //$LASTPOS=63003746;//kernel.Sprites:3746
+          //$LASTPOS=65003746;//kernel.Sprites:3746
           ctx.fillText(i,i,0);
         }
       }
-      //$LASTPOS=63003780;//kernel.Sprites:3780
-      //$LASTPOS=63003785;//kernel.Sprites:3785
+      //$LASTPOS=65003780;//kernel.Sprites:3780
+      //$LASTPOS=65003785;//kernel.Sprites:3785
       i = 100;
       for (; i<c.height ; i+=100) {
         {
-          //$LASTPOS=63003829;//kernel.Sprites:3829
+          //$LASTPOS=65003829;//kernel.Sprites:3829
           ctx.fillText(i,0,i);
         }
       }
-      //$LASTPOS=63003863;//kernel.Sprites:3863
+      //$LASTPOS=65003863;//kernel.Sprites:3863
       ctx.restore();
       
       _thread.retVal=_this;return;
@@ -20977,9 +21137,9 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=63003923;//kernel.Sprites:3923
+      //$LASTPOS=65003923;//kernel.Sprites:3923
       _this.sx=scrollX;
-      //$LASTPOS=63003940;//kernel.Sprites:3940
+      //$LASTPOS=65003940;//kernel.Sprites:3940
       _this.sy=scrollY;
     },
     fiber$scrollTo :function _trc_Sprites_f_scrollTo(_thread,scrollX,scrollY) {
@@ -20988,9 +21148,9 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=63003923;//kernel.Sprites:3923
+      //$LASTPOS=65003923;//kernel.Sprites:3923
       _this.sx=scrollX;
-      //$LASTPOS=63003940;//kernel.Sprites:3940
+      //$LASTPOS=65003940;//kernel.Sprites:3940
       _this.sy=scrollY;
       
       _thread.retVal=_this;return;
@@ -21000,24 +21160,24 @@ Tonyu.klass.define({
       var _this=this;
       var res;
       
-      //$LASTPOS=63003980;//kernel.Sprites:3980
+      //$LASTPOS=65003980;//kernel.Sprites:3980
       res = new Tonyu.classes.kernel.TQuery;
       
-      //$LASTPOS=63004005;//kernel.Sprites:4005
+      //$LASTPOS=65004005;//kernel.Sprites:4005
       if (arguments.length>0&&typeof  c!="function") {
         return res;
         
       }
-      //$LASTPOS=63004088;//kernel.Sprites:4088
+      //$LASTPOS=65004088;//kernel.Sprites:4088
       _this.sprites.forEach((function anonymous_4104(s) {
         
-        //$LASTPOS=63004120;//kernel.Sprites:4120
+        //$LASTPOS=65004120;//kernel.Sprites:4120
         if (s===_this) {
           return _this;
         }
-        //$LASTPOS=63004151;//kernel.Sprites:4151
+        //$LASTPOS=65004151;//kernel.Sprites:4151
         if (! c||s instanceof c) {
-          //$LASTPOS=63004192;//kernel.Sprites:4192
+          //$LASTPOS=65004192;//kernel.Sprites:4192
           res.push(s);
           
         }
@@ -21053,20 +21213,20 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=64000065;//kernel.BodyActor:65
+      //$LASTPOS=66000065;//kernel.BodyActor:65
       Tonyu.classes.kernel.Actor.apply( _this, [p]);
-      //$LASTPOS=64000080;//kernel.BodyActor:80
+      //$LASTPOS=66000080;//kernel.BodyActor:80
       _this._th.on("end",Tonyu.bindFunc(_this,_this.initBody));
     },
     getWorld :function _trc_BodyActor_getWorld() {
       "use strict";
       var _this=this;
       
-      //$LASTPOS=64000128;//kernel.BodyActor:128
+      //$LASTPOS=66000128;//kernel.BodyActor:128
       if (Tonyu.globals.$t2World) {
         return Tonyu.globals.$t2World;
       }
-      //$LASTPOS=64000164;//kernel.BodyActor:164
+      //$LASTPOS=66000164;//kernel.BodyActor:164
       Tonyu.globals.$t2World=new Tonyu.classes.kernel.T2World;
       return Tonyu.globals.$t2World;
     },
@@ -21076,12 +21236,12 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=64000128;//kernel.BodyActor:128
+      //$LASTPOS=66000128;//kernel.BodyActor:128
       if (Tonyu.globals.$t2World) {
         _thread.retVal=Tonyu.globals.$t2World;return;
         
       }
-      //$LASTPOS=64000164;//kernel.BodyActor:164
+      //$LASTPOS=66000164;//kernel.BodyActor:164
       Tonyu.globals.$t2World=new Tonyu.classes.kernel.T2World;
       _thread.retVal=Tonyu.globals.$t2World;return;
       
@@ -21092,9 +21252,9 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=64000229;//kernel.BodyActor:229
+      //$LASTPOS=66000229;//kernel.BodyActor:229
       _this.initBody();
-      //$LASTPOS=64000246;//kernel.BodyActor:246
+      //$LASTPOS=66000246;//kernel.BodyActor:246
       Tonyu.classes.kernel.Actor.prototype.update.apply( _this, []);
     },
     fiber$update :function _trc_BodyActor_f_update(_thread) {
@@ -21109,12 +21269,12 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=64000229;//kernel.BodyActor:229
+            //$LASTPOS=66000229;//kernel.BodyActor:229
             _this.fiber$initBody(_thread);
             __pc=1;return;
           case 1:
             
-            //$LASTPOS=64000246;//kernel.BodyActor:246
+            //$LASTPOS=66000246;//kernel.BodyActor:246
             Tonyu.classes.kernel.Actor.prototype.fiber$update.apply( _this, [_thread]);
             __pc=2;return;
           case 2:
@@ -21144,114 +21304,114 @@ Tonyu.klass.define({
       var ve;
       var vr;
       
-      //$LASTPOS=64000285;//kernel.BodyActor:285
+      //$LASTPOS=66000285;//kernel.BodyActor:285
       if (_this.body) {
         return _this;
       }
-      //$LASTPOS=64000308;//kernel.BodyActor:308
+      //$LASTPOS=66000308;//kernel.BodyActor:308
       wworld = _this.getWorld();
       
-      //$LASTPOS=64000336;//kernel.BodyActor:336
+      //$LASTPOS=66000336;//kernel.BodyActor:336
       _this.world=wworld.world;
-      //$LASTPOS=64000361;//kernel.BodyActor:361
+      //$LASTPOS=66000361;//kernel.BodyActor:361
       _this.scale=wworld.scale;
-      //$LASTPOS=64000386;//kernel.BodyActor:386
+      //$LASTPOS=66000386;//kernel.BodyActor:386
       b2Vec2 = Box2D.Common.Math.b2Vec2;
       
-      //$LASTPOS=64000430;//kernel.BodyActor:430
+      //$LASTPOS=66000430;//kernel.BodyActor:430
       b2BodyDef = Box2D.Dynamics.b2BodyDef;
       
-      //$LASTPOS=64000477;//kernel.BodyActor:477
+      //$LASTPOS=66000477;//kernel.BodyActor:477
       b2Body = Box2D.Dynamics.b2Body;
       
-      //$LASTPOS=64000518;//kernel.BodyActor:518
+      //$LASTPOS=66000518;//kernel.BodyActor:518
       b2FixtureDef = Box2D.Dynamics.b2FixtureDef;
       
-      //$LASTPOS=64000571;//kernel.BodyActor:571
+      //$LASTPOS=66000571;//kernel.BodyActor:571
       b2Fixture = Box2D.Dynamics.b2Fixture;
       
-      //$LASTPOS=64000618;//kernel.BodyActor:618
+      //$LASTPOS=66000618;//kernel.BodyActor:618
       b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;
       
-      //$LASTPOS=64000683;//kernel.BodyActor:683
+      //$LASTPOS=66000683;//kernel.BodyActor:683
       b2CircleShape = Box2D.Collision.Shapes.b2CircleShape;
       
-      //$LASTPOS=64000748;//kernel.BodyActor:748
+      //$LASTPOS=66000748;//kernel.BodyActor:748
       fixDef = new b2FixtureDef;
       
-      //$LASTPOS=64000784;//kernel.BodyActor:784
+      //$LASTPOS=66000784;//kernel.BodyActor:784
       fixDef.density=_this.defv(_this.density,1);
-      //$LASTPOS=64000826;//kernel.BodyActor:826
+      //$LASTPOS=66000826;//kernel.BodyActor:826
       fixDef.friction=_this.defv(_this.friction,0.5);
-      //$LASTPOS=64000870;//kernel.BodyActor:870
+      //$LASTPOS=66000870;//kernel.BodyActor:870
       fixDef.restitution=_this.defv(_this.restitution,0.2);
-      //$LASTPOS=64000922;//kernel.BodyActor:922
+      //$LASTPOS=66000922;//kernel.BodyActor:922
       bodyDef = new b2BodyDef;
       
-      //$LASTPOS=64000956;//kernel.BodyActor:956
+      //$LASTPOS=66000956;//kernel.BodyActor:956
       bodyDef.type=_this.isStatic?b2Body.b2_staticBody:b2Body.b2_dynamicBody;
-      //$LASTPOS=64001040;//kernel.BodyActor:1040
+      //$LASTPOS=66001040;//kernel.BodyActor:1040
       bodyDef.position.x=_this.x/_this.scale;
-      //$LASTPOS=64001076;//kernel.BodyActor:1076
+      //$LASTPOS=66001076;//kernel.BodyActor:1076
       bodyDef.position.y=_this.y/_this.scale;
-      //$LASTPOS=64001112;//kernel.BodyActor:1112
+      //$LASTPOS=66001112;//kernel.BodyActor:1112
       _this.shape=_this.shape||(_this.radius?"circle":"box");
-      //$LASTPOS=64001161;//kernel.BodyActor:1161
+      //$LASTPOS=66001161;//kernel.BodyActor:1161
       w = _this.width;
       h = _this.height;
       
-      //$LASTPOS=64001188;//kernel.BodyActor:1188
+      //$LASTPOS=66001188;//kernel.BodyActor:1188
       if (! w) {
-        //$LASTPOS=64001207;//kernel.BodyActor:1207
+        //$LASTPOS=66001207;//kernel.BodyActor:1207
         _this.detectShape();
-        //$LASTPOS=64001231;//kernel.BodyActor:1231
+        //$LASTPOS=66001231;//kernel.BodyActor:1231
         w=_this.width*(_this.scaleX||1);
-        //$LASTPOS=64001261;//kernel.BodyActor:1261
+        //$LASTPOS=66001261;//kernel.BodyActor:1261
         h=_this.height*(_this.scaleY||_this.scaleX||1);
         
       }
-      //$LASTPOS=64001303;//kernel.BodyActor:1303
+      //$LASTPOS=66001303;//kernel.BodyActor:1303
       if (_this.shape=="box") {
-        //$LASTPOS=64001332;//kernel.BodyActor:1332
+        //$LASTPOS=66001332;//kernel.BodyActor:1332
         if (! h) {
-          //$LASTPOS=64001340;//kernel.BodyActor:1340
+          //$LASTPOS=66001340;//kernel.BodyActor:1340
           h=w;
         }
-        //$LASTPOS=64001354;//kernel.BodyActor:1354
+        //$LASTPOS=66001354;//kernel.BodyActor:1354
         fixDef.shape=new b2PolygonShape;
-        //$LASTPOS=64001398;//kernel.BodyActor:1398
+        //$LASTPOS=66001398;//kernel.BodyActor:1398
         fixDef.shape.SetAsOrientedBox(w/2/_this.scale,h/2/_this.scale,new b2Vec2(0,0),0);
         
       } else {
-        //$LASTPOS=64001502;//kernel.BodyActor:1502
+        //$LASTPOS=66001502;//kernel.BodyActor:1502
         _this.radius=_this.radius||w/2||16;
-        //$LASTPOS=64001539;//kernel.BodyActor:1539
+        //$LASTPOS=66001539;//kernel.BodyActor:1539
         fixDef.shape=new b2CircleShape(_this.radius/_this.scale);
-        //$LASTPOS=64001616;//kernel.BodyActor:1616
+        //$LASTPOS=66001616;//kernel.BodyActor:1616
         _this.width=_this.height=_this.radius*2;
         
       }
-      //$LASTPOS=64001651;//kernel.BodyActor:1651
+      //$LASTPOS=66001651;//kernel.BodyActor:1651
       fps = wworld.fps;
       
-      //$LASTPOS=64001676;//kernel.BodyActor:1676
+      //$LASTPOS=66001676;//kernel.BodyActor:1676
       r = _this.rotation;
       ve = _this.bvec(_this.defv(_this.vx*fps,0),_this.defv(_this.vy*fps,0));
       vr = _this.defv(_this.vrotation,0);
       
-      //$LASTPOS=64001758;//kernel.BodyActor:1758
+      //$LASTPOS=66001758;//kernel.BodyActor:1758
       _this.body=_this.world.CreateBody(bodyDef);
-      //$LASTPOS=64001795;//kernel.BodyActor:1795
+      //$LASTPOS=66001795;//kernel.BodyActor:1795
       _this.body.CreateFixture(fixDef);
-      //$LASTPOS=64001828;//kernel.BodyActor:1828
+      //$LASTPOS=66001828;//kernel.BodyActor:1828
       _this.body.SetUserData(_this);
-      //$LASTPOS=64001857;//kernel.BodyActor:1857
+      //$LASTPOS=66001857;//kernel.BodyActor:1857
       _this.body.SetLinearVelocity(ve);
-      //$LASTPOS=64001890;//kernel.BodyActor:1890
+      //$LASTPOS=66001890;//kernel.BodyActor:1890
       _this.rotation=r;
-      //$LASTPOS=64001907;//kernel.BodyActor:1907
+      //$LASTPOS=66001907;//kernel.BodyActor:1907
       _this.vrotation=vr;
-      //$LASTPOS=64001926;//kernel.BodyActor:1926
+      //$LASTPOS=66001926;//kernel.BodyActor:1926
       _this.fireEvent("createBody");
     },
     fiber$initBody :function _trc_BodyActor_f_initBody(_thread) {
@@ -21276,7 +21436,7 @@ Tonyu.klass.define({
       var ve;
       var vr;
       
-      //$LASTPOS=64000285;//kernel.BodyActor:285
+      //$LASTPOS=66000285;//kernel.BodyActor:285
       if (_this.body) {
         _thread.retVal=_this;return;
         
@@ -21287,108 +21447,108 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=64000308;//kernel.BodyActor:308
+            //$LASTPOS=66000308;//kernel.BodyActor:308
             _this.fiber$getWorld(_thread);
             __pc=1;return;
           case 1:
             wworld=_thread.retVal;
             
-            //$LASTPOS=64000336;//kernel.BodyActor:336
+            //$LASTPOS=66000336;//kernel.BodyActor:336
             _this.world=wworld.world;
-            //$LASTPOS=64000361;//kernel.BodyActor:361
+            //$LASTPOS=66000361;//kernel.BodyActor:361
             _this.scale=wworld.scale;
-            //$LASTPOS=64000386;//kernel.BodyActor:386
+            //$LASTPOS=66000386;//kernel.BodyActor:386
             b2Vec2 = Box2D.Common.Math.b2Vec2;
             
-            //$LASTPOS=64000430;//kernel.BodyActor:430
+            //$LASTPOS=66000430;//kernel.BodyActor:430
             b2BodyDef = Box2D.Dynamics.b2BodyDef;
             
-            //$LASTPOS=64000477;//kernel.BodyActor:477
+            //$LASTPOS=66000477;//kernel.BodyActor:477
             b2Body = Box2D.Dynamics.b2Body;
             
-            //$LASTPOS=64000518;//kernel.BodyActor:518
+            //$LASTPOS=66000518;//kernel.BodyActor:518
             b2FixtureDef = Box2D.Dynamics.b2FixtureDef;
             
-            //$LASTPOS=64000571;//kernel.BodyActor:571
+            //$LASTPOS=66000571;//kernel.BodyActor:571
             b2Fixture = Box2D.Dynamics.b2Fixture;
             
-            //$LASTPOS=64000618;//kernel.BodyActor:618
+            //$LASTPOS=66000618;//kernel.BodyActor:618
             b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;
             
-            //$LASTPOS=64000683;//kernel.BodyActor:683
+            //$LASTPOS=66000683;//kernel.BodyActor:683
             b2CircleShape = Box2D.Collision.Shapes.b2CircleShape;
             
-            //$LASTPOS=64000748;//kernel.BodyActor:748
+            //$LASTPOS=66000748;//kernel.BodyActor:748
             fixDef = new b2FixtureDef;
             
-            //$LASTPOS=64000784;//kernel.BodyActor:784
+            //$LASTPOS=66000784;//kernel.BodyActor:784
             _this.fiber$defv(_thread, _this.density, 1);
             __pc=2;return;
           case 2:
             fixDef.density=_thread.retVal;
             
-            //$LASTPOS=64000826;//kernel.BodyActor:826
+            //$LASTPOS=66000826;//kernel.BodyActor:826
             _this.fiber$defv(_thread, _this.friction, 0.5);
             __pc=3;return;
           case 3:
             fixDef.friction=_thread.retVal;
             
-            //$LASTPOS=64000870;//kernel.BodyActor:870
+            //$LASTPOS=66000870;//kernel.BodyActor:870
             _this.fiber$defv(_thread, _this.restitution, 0.2);
             __pc=4;return;
           case 4:
             fixDef.restitution=_thread.retVal;
             
-            //$LASTPOS=64000922;//kernel.BodyActor:922
+            //$LASTPOS=66000922;//kernel.BodyActor:922
             bodyDef = new b2BodyDef;
             
-            //$LASTPOS=64000956;//kernel.BodyActor:956
+            //$LASTPOS=66000956;//kernel.BodyActor:956
             bodyDef.type=_this.isStatic?b2Body.b2_staticBody:b2Body.b2_dynamicBody;
-            //$LASTPOS=64001040;//kernel.BodyActor:1040
+            //$LASTPOS=66001040;//kernel.BodyActor:1040
             bodyDef.position.x=_this.x/_this.scale;
-            //$LASTPOS=64001076;//kernel.BodyActor:1076
+            //$LASTPOS=66001076;//kernel.BodyActor:1076
             bodyDef.position.y=_this.y/_this.scale;
-            //$LASTPOS=64001112;//kernel.BodyActor:1112
+            //$LASTPOS=66001112;//kernel.BodyActor:1112
             _this.shape=_this.shape||(_this.radius?"circle":"box");
-            //$LASTPOS=64001161;//kernel.BodyActor:1161
+            //$LASTPOS=66001161;//kernel.BodyActor:1161
             w = _this.width;
             h = _this.height;
             
-            //$LASTPOS=64001188;//kernel.BodyActor:1188
+            //$LASTPOS=66001188;//kernel.BodyActor:1188
             if (! w) {
-              //$LASTPOS=64001207;//kernel.BodyActor:1207
+              //$LASTPOS=66001207;//kernel.BodyActor:1207
               _this.detectShape();
-              //$LASTPOS=64001231;//kernel.BodyActor:1231
+              //$LASTPOS=66001231;//kernel.BodyActor:1231
               w=_this.width*(_this.scaleX||1);
-              //$LASTPOS=64001261;//kernel.BodyActor:1261
+              //$LASTPOS=66001261;//kernel.BodyActor:1261
               h=_this.height*(_this.scaleY||_this.scaleX||1);
               
             }
-            //$LASTPOS=64001303;//kernel.BodyActor:1303
+            //$LASTPOS=66001303;//kernel.BodyActor:1303
             if (_this.shape=="box") {
-              //$LASTPOS=64001332;//kernel.BodyActor:1332
+              //$LASTPOS=66001332;//kernel.BodyActor:1332
               if (! h) {
-                //$LASTPOS=64001340;//kernel.BodyActor:1340
+                //$LASTPOS=66001340;//kernel.BodyActor:1340
                 h=w;
               }
-              //$LASTPOS=64001354;//kernel.BodyActor:1354
+              //$LASTPOS=66001354;//kernel.BodyActor:1354
               fixDef.shape=new b2PolygonShape;
-              //$LASTPOS=64001398;//kernel.BodyActor:1398
+              //$LASTPOS=66001398;//kernel.BodyActor:1398
               fixDef.shape.SetAsOrientedBox(w/2/_this.scale,h/2/_this.scale,new b2Vec2(0,0),0);
               
             } else {
-              //$LASTPOS=64001502;//kernel.BodyActor:1502
+              //$LASTPOS=66001502;//kernel.BodyActor:1502
               _this.radius=_this.radius||w/2||16;
-              //$LASTPOS=64001539;//kernel.BodyActor:1539
+              //$LASTPOS=66001539;//kernel.BodyActor:1539
               fixDef.shape=new b2CircleShape(_this.radius/_this.scale);
-              //$LASTPOS=64001616;//kernel.BodyActor:1616
+              //$LASTPOS=66001616;//kernel.BodyActor:1616
               _this.width=_this.height=_this.radius*2;
               
             }
-            //$LASTPOS=64001651;//kernel.BodyActor:1651
+            //$LASTPOS=66001651;//kernel.BodyActor:1651
             fps = wworld.fps;
             
-            //$LASTPOS=64001676;//kernel.BodyActor:1676
+            //$LASTPOS=66001676;//kernel.BodyActor:1676
             r = _this.rotation;
             _this.fiber$bvec(_thread, _this.defv(_this.vx*fps,0), _this.defv(_this.vy*fps,0));
             __pc=5;return;
@@ -21399,19 +21559,19 @@ Tonyu.klass.define({
           case 6:
             vr=_thread.retVal;
             
-            //$LASTPOS=64001758;//kernel.BodyActor:1758
+            //$LASTPOS=66001758;//kernel.BodyActor:1758
             _this.body=_this.world.CreateBody(bodyDef);
-            //$LASTPOS=64001795;//kernel.BodyActor:1795
+            //$LASTPOS=66001795;//kernel.BodyActor:1795
             _this.body.CreateFixture(fixDef);
-            //$LASTPOS=64001828;//kernel.BodyActor:1828
+            //$LASTPOS=66001828;//kernel.BodyActor:1828
             _this.body.SetUserData(_this);
-            //$LASTPOS=64001857;//kernel.BodyActor:1857
+            //$LASTPOS=66001857;//kernel.BodyActor:1857
             _this.body.SetLinearVelocity(ve);
-            //$LASTPOS=64001890;//kernel.BodyActor:1890
+            //$LASTPOS=66001890;//kernel.BodyActor:1890
             _this.rotation=r;
-            //$LASTPOS=64001907;//kernel.BodyActor:1907
+            //$LASTPOS=66001907;//kernel.BodyActor:1907
             _this.vrotation=vr;
-            //$LASTPOS=64001926;//kernel.BodyActor:1926
+            //$LASTPOS=66001926;//kernel.BodyActor:1926
             _this.fireEvent("createBody");
             _thread.exit(_this);return;
           }
@@ -21429,61 +21589,61 @@ Tonyu.klass.define({
       var a;
       var b;
       
-      //$LASTPOS=64001987;//kernel.BodyActor:1987
+      //$LASTPOS=66001987;//kernel.BodyActor:1987
       _this.initBody();
-      //$LASTPOS=64002004;//kernel.BodyActor:2004
+      //$LASTPOS=66002004;//kernel.BodyActor:2004
       res = [];
       
-      //$LASTPOS=64002029;//kernel.BodyActor:2029
+      //$LASTPOS=66002029;//kernel.BodyActor:2029
       w = _this.getWorld();
       
-      //$LASTPOS=64002052;//kernel.BodyActor:2052
-      //$LASTPOS=64002057;//kernel.BodyActor:2057
+      //$LASTPOS=66002052;//kernel.BodyActor:2052
+      //$LASTPOS=66002057;//kernel.BodyActor:2057
       c = _this.world.GetContactList();
       for (; c ; c=c.GetNext()) {
         {
-          //$LASTPOS=64002114;//kernel.BodyActor:2114
+          //$LASTPOS=66002114;//kernel.BodyActor:2114
           if (c.IsTouching()) {
-            //$LASTPOS=64002146;//kernel.BodyActor:2146
+            //$LASTPOS=66002146;//kernel.BodyActor:2146
             c.GetWorldManifold(m=new Box2D.Collision.b2WorldManifold);
-            //$LASTPOS=64002218;//kernel.BodyActor:2218
+            //$LASTPOS=66002218;//kernel.BodyActor:2218
             if (m.m_points[0]) {
-              //$LASTPOS=64002256;//kernel.BodyActor:2256
+              //$LASTPOS=66002256;//kernel.BodyActor:2256
               if (m.m_points[1]&&m.m_points[1].x&&m.m_points[1].y) {
-                //$LASTPOS=64002330;//kernel.BodyActor:2330
+                //$LASTPOS=66002330;//kernel.BodyActor:2330
                 point={x: (m.m_points[0].x+m.m_points[1].x)/2*w.scale,y: (m.m_points[0].y+m.m_points[1].y)/2*w.scale};
                 
               } else {
-                //$LASTPOS=64002504;//kernel.BodyActor:2504
+                //$LASTPOS=66002504;//kernel.BodyActor:2504
                 point={x: m.m_points[0].x*w.scale,y: m.m_points[0].y*w.scale};
                 
               }
               
             } else {
-              //$LASTPOS=64002605;//kernel.BodyActor:2605
+              //$LASTPOS=66002605;//kernel.BodyActor:2605
               point={x: _this.x,y: _this.y};
             }
-            //$LASTPOS=64002631;//kernel.BodyActor:2631
+            //$LASTPOS=66002631;//kernel.BodyActor:2631
             a = c.GetFixtureA().GetBody().GetUserData();
             
-            //$LASTPOS=64002691;//kernel.BodyActor:2691
+            //$LASTPOS=66002691;//kernel.BodyActor:2691
             b = c.GetFixtureB().GetBody().GetUserData();
             
-            //$LASTPOS=64002751;//kernel.BodyActor:2751
+            //$LASTPOS=66002751;//kernel.BodyActor:2751
             if (a===_this) {
-              //$LASTPOS=64002784;//kernel.BodyActor:2784
+              //$LASTPOS=66002784;//kernel.BodyActor:2784
               if (! klass||b===klass||b instanceof klass) {
-                //$LASTPOS=64002854;//kernel.BodyActor:2854
+                //$LASTPOS=66002854;//kernel.BodyActor:2854
                 res.push({target: b,manifold: m,x: point.x,y: point.y});
                 
               }
               
             } else {
-              //$LASTPOS=64002947;//kernel.BodyActor:2947
+              //$LASTPOS=66002947;//kernel.BodyActor:2947
               if (b===_this) {
-                //$LASTPOS=64002980;//kernel.BodyActor:2980
+                //$LASTPOS=66002980;//kernel.BodyActor:2980
                 if (! klass||a===klass||a instanceof klass) {
-                  //$LASTPOS=64003050;//kernel.BodyActor:3050
+                  //$LASTPOS=66003050;//kernel.BodyActor:3050
                   res.push({target: a,manifold: m,x: point.x,y: point.y});
                   
                 }
@@ -21515,67 +21675,67 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=64001987;//kernel.BodyActor:1987
+            //$LASTPOS=66001987;//kernel.BodyActor:1987
             _this.fiber$initBody(_thread);
             __pc=1;return;
           case 1:
             
-            //$LASTPOS=64002004;//kernel.BodyActor:2004
+            //$LASTPOS=66002004;//kernel.BodyActor:2004
             res = [];
             
-            //$LASTPOS=64002029;//kernel.BodyActor:2029
+            //$LASTPOS=66002029;//kernel.BodyActor:2029
             _this.fiber$getWorld(_thread);
             __pc=2;return;
           case 2:
             w=_thread.retVal;
             
-            //$LASTPOS=64002052;//kernel.BodyActor:2052
-            //$LASTPOS=64002057;//kernel.BodyActor:2057
+            //$LASTPOS=66002052;//kernel.BodyActor:2052
+            //$LASTPOS=66002057;//kernel.BodyActor:2057
             c = _this.world.GetContactList();
             for (; c ; c=c.GetNext()) {
               {
-                //$LASTPOS=64002114;//kernel.BodyActor:2114
+                //$LASTPOS=66002114;//kernel.BodyActor:2114
                 if (c.IsTouching()) {
-                  //$LASTPOS=64002146;//kernel.BodyActor:2146
+                  //$LASTPOS=66002146;//kernel.BodyActor:2146
                   c.GetWorldManifold(m=new Box2D.Collision.b2WorldManifold);
-                  //$LASTPOS=64002218;//kernel.BodyActor:2218
+                  //$LASTPOS=66002218;//kernel.BodyActor:2218
                   if (m.m_points[0]) {
-                    //$LASTPOS=64002256;//kernel.BodyActor:2256
+                    //$LASTPOS=66002256;//kernel.BodyActor:2256
                     if (m.m_points[1]&&m.m_points[1].x&&m.m_points[1].y) {
-                      //$LASTPOS=64002330;//kernel.BodyActor:2330
+                      //$LASTPOS=66002330;//kernel.BodyActor:2330
                       point={x: (m.m_points[0].x+m.m_points[1].x)/2*w.scale,y: (m.m_points[0].y+m.m_points[1].y)/2*w.scale};
                       
                     } else {
-                      //$LASTPOS=64002504;//kernel.BodyActor:2504
+                      //$LASTPOS=66002504;//kernel.BodyActor:2504
                       point={x: m.m_points[0].x*w.scale,y: m.m_points[0].y*w.scale};
                       
                     }
                     
                   } else {
-                    //$LASTPOS=64002605;//kernel.BodyActor:2605
+                    //$LASTPOS=66002605;//kernel.BodyActor:2605
                     point={x: _this.x,y: _this.y};
                   }
-                  //$LASTPOS=64002631;//kernel.BodyActor:2631
+                  //$LASTPOS=66002631;//kernel.BodyActor:2631
                   a = c.GetFixtureA().GetBody().GetUserData();
                   
-                  //$LASTPOS=64002691;//kernel.BodyActor:2691
+                  //$LASTPOS=66002691;//kernel.BodyActor:2691
                   b = c.GetFixtureB().GetBody().GetUserData();
                   
-                  //$LASTPOS=64002751;//kernel.BodyActor:2751
+                  //$LASTPOS=66002751;//kernel.BodyActor:2751
                   if (a===_this) {
-                    //$LASTPOS=64002784;//kernel.BodyActor:2784
+                    //$LASTPOS=66002784;//kernel.BodyActor:2784
                     if (! klass||b===klass||b instanceof klass) {
-                      //$LASTPOS=64002854;//kernel.BodyActor:2854
+                      //$LASTPOS=66002854;//kernel.BodyActor:2854
                       res.push({target: b,manifold: m,x: point.x,y: point.y});
                       
                     }
                     
                   } else {
-                    //$LASTPOS=64002947;//kernel.BodyActor:2947
+                    //$LASTPOS=66002947;//kernel.BodyActor:2947
                     if (b===_this) {
-                      //$LASTPOS=64002980;//kernel.BodyActor:2980
+                      //$LASTPOS=66002980;//kernel.BodyActor:2980
                       if (! klass||a===klass||a instanceof klass) {
-                        //$LASTPOS=64003050;//kernel.BodyActor:3050
+                        //$LASTPOS=66003050;//kernel.BodyActor:3050
                         res.push({target: a,manifold: m,x: point.x,y: point.y});
                         
                       }
@@ -21645,39 +21805,39 @@ Tonyu.klass.define({
       var a;
       var b;
       
-      //$LASTPOS=64003326;//kernel.BodyActor:3326
+      //$LASTPOS=66003326;//kernel.BodyActor:3326
       _this.initBody();
-      //$LASTPOS=64003343;//kernel.BodyActor:3343
+      //$LASTPOS=66003343;//kernel.BodyActor:3343
       res = [];
       
-      //$LASTPOS=64003360;//kernel.BodyActor:3360
-      //$LASTPOS=64003365;//kernel.BodyActor:3365
+      //$LASTPOS=66003360;//kernel.BodyActor:3360
+      //$LASTPOS=66003365;//kernel.BodyActor:3365
       c = _this.world.GetContactList();
       for (; c ; c=c.GetNext()) {
         {
-          //$LASTPOS=64003422;//kernel.BodyActor:3422
+          //$LASTPOS=66003422;//kernel.BodyActor:3422
           if (c.IsTouching()) {
-            //$LASTPOS=64003457;//kernel.BodyActor:3457
+            //$LASTPOS=66003457;//kernel.BodyActor:3457
             a = c.GetFixtureA().GetBody().GetUserData();
             
-            //$LASTPOS=64003517;//kernel.BodyActor:3517
+            //$LASTPOS=66003517;//kernel.BodyActor:3517
             b = c.GetFixtureB().GetBody().GetUserData();
             
-            //$LASTPOS=64003577;//kernel.BodyActor:3577
+            //$LASTPOS=66003577;//kernel.BodyActor:3577
             if (a===_this) {
-              //$LASTPOS=64003610;//kernel.BodyActor:3610
+              //$LASTPOS=66003610;//kernel.BodyActor:3610
               if (! klass||b===klass||b instanceof klass) {
-                //$LASTPOS=64003680;//kernel.BodyActor:3680
+                //$LASTPOS=66003680;//kernel.BodyActor:3680
                 res.push(b);
                 
               }
               
             } else {
-              //$LASTPOS=64003732;//kernel.BodyActor:3732
+              //$LASTPOS=66003732;//kernel.BodyActor:3732
               if (b===_this) {
-                //$LASTPOS=64003765;//kernel.BodyActor:3765
+                //$LASTPOS=66003765;//kernel.BodyActor:3765
                 if (! klass||a===klass||a instanceof klass) {
-                  //$LASTPOS=64003835;//kernel.BodyActor:3835
+                  //$LASTPOS=66003835;//kernel.BodyActor:3835
                   res.push(a);
                   
                 }
@@ -21706,42 +21866,42 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=64003326;//kernel.BodyActor:3326
+            //$LASTPOS=66003326;//kernel.BodyActor:3326
             _this.fiber$initBody(_thread);
             __pc=1;return;
           case 1:
             
-            //$LASTPOS=64003343;//kernel.BodyActor:3343
+            //$LASTPOS=66003343;//kernel.BodyActor:3343
             res = [];
             
-            //$LASTPOS=64003360;//kernel.BodyActor:3360
-            //$LASTPOS=64003365;//kernel.BodyActor:3365
+            //$LASTPOS=66003360;//kernel.BodyActor:3360
+            //$LASTPOS=66003365;//kernel.BodyActor:3365
             c = _this.world.GetContactList();
             for (; c ; c=c.GetNext()) {
               {
-                //$LASTPOS=64003422;//kernel.BodyActor:3422
+                //$LASTPOS=66003422;//kernel.BodyActor:3422
                 if (c.IsTouching()) {
-                  //$LASTPOS=64003457;//kernel.BodyActor:3457
+                  //$LASTPOS=66003457;//kernel.BodyActor:3457
                   a = c.GetFixtureA().GetBody().GetUserData();
                   
-                  //$LASTPOS=64003517;//kernel.BodyActor:3517
+                  //$LASTPOS=66003517;//kernel.BodyActor:3517
                   b = c.GetFixtureB().GetBody().GetUserData();
                   
-                  //$LASTPOS=64003577;//kernel.BodyActor:3577
+                  //$LASTPOS=66003577;//kernel.BodyActor:3577
                   if (a===_this) {
-                    //$LASTPOS=64003610;//kernel.BodyActor:3610
+                    //$LASTPOS=66003610;//kernel.BodyActor:3610
                     if (! klass||b===klass||b instanceof klass) {
-                      //$LASTPOS=64003680;//kernel.BodyActor:3680
+                      //$LASTPOS=66003680;//kernel.BodyActor:3680
                       res.push(b);
                       
                     }
                     
                   } else {
-                    //$LASTPOS=64003732;//kernel.BodyActor:3732
+                    //$LASTPOS=66003732;//kernel.BodyActor:3732
                     if (b===_this) {
-                      //$LASTPOS=64003765;//kernel.BodyActor:3765
+                      //$LASTPOS=66003765;//kernel.BodyActor:3765
                       if (! klass||a===klass||a instanceof klass) {
-                        //$LASTPOS=64003835;//kernel.BodyActor:3835
+                        //$LASTPOS=66003835;//kernel.BodyActor:3835
                         res.push(a);
                         
                       }
@@ -21765,18 +21925,18 @@ Tonyu.klass.define({
       var scale;
       var fps;
       
-      //$LASTPOS=64003953;//kernel.BodyActor:3953
+      //$LASTPOS=66003953;//kernel.BodyActor:3953
       _this.initBody();
-      //$LASTPOS=64003970;//kernel.BodyActor:3970
+      //$LASTPOS=66003970;//kernel.BodyActor:3970
       b2Vec2 = Box2D.Common.Math.b2Vec2;
       
-      //$LASTPOS=64004014;//kernel.BodyActor:4014
+      //$LASTPOS=66004014;//kernel.BodyActor:4014
       scale = _this.getWorld().scale;
       
-      //$LASTPOS=64004047;//kernel.BodyActor:4047
+      //$LASTPOS=66004047;//kernel.BodyActor:4047
       fps = 60;
       
-      //$LASTPOS=64004064;//kernel.BodyActor:4064
+      //$LASTPOS=66004064;//kernel.BodyActor:4064
       _this.body.ApplyForce(new b2Vec2(fx,fy),_this.body.GetPosition());
     },
     fiber$applyForce :function _trc_BodyActor_f_applyForce(_thread,fx,fy,px,py) {
@@ -21794,21 +21954,21 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=64003953;//kernel.BodyActor:3953
+            //$LASTPOS=66003953;//kernel.BodyActor:3953
             _this.fiber$initBody(_thread);
             __pc=1;return;
           case 1:
             
-            //$LASTPOS=64003970;//kernel.BodyActor:3970
+            //$LASTPOS=66003970;//kernel.BodyActor:3970
             b2Vec2 = Box2D.Common.Math.b2Vec2;
             
-            //$LASTPOS=64004014;//kernel.BodyActor:4014
+            //$LASTPOS=66004014;//kernel.BodyActor:4014
             scale = _this.getWorld().scale;
             
-            //$LASTPOS=64004047;//kernel.BodyActor:4047
+            //$LASTPOS=66004047;//kernel.BodyActor:4047
             fps = 60;
             
-            //$LASTPOS=64004064;//kernel.BodyActor:4064
+            //$LASTPOS=66004064;//kernel.BodyActor:4064
             _this.body.ApplyForce(new b2Vec2(fx,fy),_this.body.GetPosition());
             _thread.exit(_this);return;
           }
@@ -21822,18 +21982,18 @@ Tonyu.klass.define({
       var scale;
       var fps;
       
-      //$LASTPOS=64004158;//kernel.BodyActor:4158
+      //$LASTPOS=66004158;//kernel.BodyActor:4158
       _this.initBody();
-      //$LASTPOS=64004175;//kernel.BodyActor:4175
+      //$LASTPOS=66004175;//kernel.BodyActor:4175
       b2Vec2 = Box2D.Common.Math.b2Vec2;
       
-      //$LASTPOS=64004219;//kernel.BodyActor:4219
+      //$LASTPOS=66004219;//kernel.BodyActor:4219
       scale = _this.getWorld().scale;
       
-      //$LASTPOS=64004252;//kernel.BodyActor:4252
+      //$LASTPOS=66004252;//kernel.BodyActor:4252
       fps = 60;
       
-      //$LASTPOS=64004269;//kernel.BodyActor:4269
+      //$LASTPOS=66004269;//kernel.BodyActor:4269
       _this.body.ApplyImpulse(new b2Vec2(fx,fy),_this.body.GetPosition());
     },
     fiber$applyImpulse :function _trc_BodyActor_f_applyImpulse(_thread,fx,fy,px,py) {
@@ -21851,21 +22011,21 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=64004158;//kernel.BodyActor:4158
+            //$LASTPOS=66004158;//kernel.BodyActor:4158
             _this.fiber$initBody(_thread);
             __pc=1;return;
           case 1:
             
-            //$LASTPOS=64004175;//kernel.BodyActor:4175
+            //$LASTPOS=66004175;//kernel.BodyActor:4175
             b2Vec2 = Box2D.Common.Math.b2Vec2;
             
-            //$LASTPOS=64004219;//kernel.BodyActor:4219
+            //$LASTPOS=66004219;//kernel.BodyActor:4219
             scale = _this.getWorld().scale;
             
-            //$LASTPOS=64004252;//kernel.BodyActor:4252
+            //$LASTPOS=66004252;//kernel.BodyActor:4252
             fps = 60;
             
-            //$LASTPOS=64004269;//kernel.BodyActor:4269
+            //$LASTPOS=66004269;//kernel.BodyActor:4269
             _this.body.ApplyImpulse(new b2Vec2(fx,fy),_this.body.GetPosition());
             _thread.exit(_this);return;
           }
@@ -21876,9 +22036,9 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=64004356;//kernel.BodyActor:4356
+      //$LASTPOS=66004356;//kernel.BodyActor:4356
       _this.initBody();
-      //$LASTPOS=64004373;//kernel.BodyActor:4373
+      //$LASTPOS=66004373;//kernel.BodyActor:4373
       _this.body.ApplyTorque(a);
     },
     fiber$applyTorque :function _trc_BodyActor_f_applyTorque(_thread,a) {
@@ -21893,12 +22053,12 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=64004356;//kernel.BodyActor:4356
+            //$LASTPOS=66004356;//kernel.BodyActor:4356
             _this.fiber$initBody(_thread);
             __pc=1;return;
           case 1:
             
-            //$LASTPOS=64004373;//kernel.BodyActor:4373
+            //$LASTPOS=66004373;//kernel.BodyActor:4373
             _this.body.ApplyTorque(a);
             _thread.exit(_this);return;
           }
@@ -21910,16 +22070,16 @@ Tonyu.klass.define({
       var _this=this;
       var pos;
       
-      //$LASTPOS=64004420;//kernel.BodyActor:4420
+      //$LASTPOS=66004420;//kernel.BodyActor:4420
       _this.initBody();
-      //$LASTPOS=64004437;//kernel.BodyActor:4437
+      //$LASTPOS=66004437;//kernel.BodyActor:4437
       pos = _this.body.GetPosition();
       
-      //$LASTPOS=64004470;//kernel.BodyActor:4470
+      //$LASTPOS=66004470;//kernel.BodyActor:4470
       pos.x+=dx/_this.scale;
-      //$LASTPOS=64004492;//kernel.BodyActor:4492
+      //$LASTPOS=66004492;//kernel.BodyActor:4492
       pos.y+=dy/_this.scale;
-      //$LASTPOS=64004514;//kernel.BodyActor:4514
+      //$LASTPOS=66004514;//kernel.BodyActor:4514
       _this.body.SetPosition(pos);
     },
     fiber$moveBy :function _trc_BodyActor_f_moveBy(_thread,dx,dy) {
@@ -21935,19 +22095,19 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=64004420;//kernel.BodyActor:4420
+            //$LASTPOS=66004420;//kernel.BodyActor:4420
             _this.fiber$initBody(_thread);
             __pc=1;return;
           case 1:
             
-            //$LASTPOS=64004437;//kernel.BodyActor:4437
+            //$LASTPOS=66004437;//kernel.BodyActor:4437
             pos = _this.body.GetPosition();
             
-            //$LASTPOS=64004470;//kernel.BodyActor:4470
+            //$LASTPOS=66004470;//kernel.BodyActor:4470
             pos.x+=dx/_this.scale;
-            //$LASTPOS=64004492;//kernel.BodyActor:4492
+            //$LASTPOS=66004492;//kernel.BodyActor:4492
             pos.y+=dy/_this.scale;
-            //$LASTPOS=64004514;//kernel.BodyActor:4514
+            //$LASTPOS=66004514;//kernel.BodyActor:4514
             _this.body.SetPosition(pos);
             _thread.exit(_this);return;
           }
@@ -21975,11 +22135,11 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=64004605;//kernel.BodyActor:4605
+      //$LASTPOS=66004605;//kernel.BodyActor:4605
       Tonyu.classes.kernel.Actor.prototype.die.apply( _this, []);
-      //$LASTPOS=64004623;//kernel.BodyActor:4623
+      //$LASTPOS=66004623;//kernel.BodyActor:4623
       if (_this.world) {
-        //$LASTPOS=64004634;//kernel.BodyActor:4634
+        //$LASTPOS=66004634;//kernel.BodyActor:4634
         _this.world.DestroyBody(_this.body);
       }
     },
@@ -21999,75 +22159,75 @@ Tonyu.klass.define({
       var bodyDef;
       var b2Vec2;
       
-      //$LASTPOS=64004696;//kernel.BodyActor:4696
+      //$LASTPOS=66004696;//kernel.BodyActor:4696
       _this.initBody();
-      //$LASTPOS=64004743;//kernel.BodyActor:4743
+      //$LASTPOS=66004743;//kernel.BodyActor:4743
       params=params||{};
-      //$LASTPOS=64004767;//kernel.BodyActor:4767
+      //$LASTPOS=66004767;//kernel.BodyActor:4767
       px = params.x||_this.x;
       
-      //$LASTPOS=64004792;//kernel.BodyActor:4792
+      //$LASTPOS=66004792;//kernel.BodyActor:4792
       py = params.y||_this.y;
       
-      //$LASTPOS=64004817;//kernel.BodyActor:4817
+      //$LASTPOS=66004817;//kernel.BodyActor:4817
       wworld = _this.getWorld();
       
-      //$LASTPOS=64004859;//kernel.BodyActor:4859
+      //$LASTPOS=66004859;//kernel.BodyActor:4859
       scale = wworld.scale;
       
-      //$LASTPOS=64004888;//kernel.BodyActor:4888
+      //$LASTPOS=66004888;//kernel.BodyActor:4888
       world = wworld.world;
       
-      //$LASTPOS=64004917;//kernel.BodyActor:4917
+      //$LASTPOS=66004917;//kernel.BodyActor:4917
       b2BodyDef = Box2D.Dynamics.b2BodyDef;
       
-      //$LASTPOS=64004964;//kernel.BodyActor:4964
+      //$LASTPOS=66004964;//kernel.BodyActor:4964
       b2Body = Box2D.Dynamics.b2Body;
       
-      //$LASTPOS=64005005;//kernel.BodyActor:5005
+      //$LASTPOS=66005005;//kernel.BodyActor:5005
       JDC = Box2D.Dynamics.Joints.b2RevoluteJointDef;
       
-      //$LASTPOS=64005060;//kernel.BodyActor:5060
+      //$LASTPOS=66005060;//kernel.BodyActor:5060
       jd = new JDC;
       
       
-      //$LASTPOS=64005097;//kernel.BodyActor:5097
+      //$LASTPOS=66005097;//kernel.BodyActor:5097
       if (params.other&&params.other instanceof Tonyu.classes.kernel.BodyActor) {
-        //$LASTPOS=64005155;//kernel.BodyActor:5155
+        //$LASTPOS=66005155;//kernel.BodyActor:5155
         params.other.initBody();
-        //$LASTPOS=64005189;//kernel.BodyActor:5189
+        //$LASTPOS=66005189;//kernel.BodyActor:5189
         bodyB=params.other.body;
         
       } else {
-        //$LASTPOS=64005237;//kernel.BodyActor:5237
+        //$LASTPOS=66005237;//kernel.BodyActor:5237
         bodyDef = new b2BodyDef;
         
-        //$LASTPOS=64005275;//kernel.BodyActor:5275
+        //$LASTPOS=66005275;//kernel.BodyActor:5275
         bodyDef.type=b2Body.b2_staticBody;
-        //$LASTPOS=64005321;//kernel.BodyActor:5321
+        //$LASTPOS=66005321;//kernel.BodyActor:5321
         bodyDef.position.x=px/scale;
-        //$LASTPOS=64005362;//kernel.BodyActor:5362
+        //$LASTPOS=66005362;//kernel.BodyActor:5362
         bodyDef.position.y=py/scale;
-        //$LASTPOS=64005403;//kernel.BodyActor:5403
+        //$LASTPOS=66005403;//kernel.BodyActor:5403
         bodyB=world.CreateBody(bodyDef);
         
       }
-      //$LASTPOS=64005448;//kernel.BodyActor:5448
+      //$LASTPOS=66005448;//kernel.BodyActor:5448
       b2Vec2 = Box2D.Common.Math.b2Vec2;
       
-      //$LASTPOS=64005492;//kernel.BodyActor:5492
+      //$LASTPOS=66005492;//kernel.BodyActor:5492
       jd.Initialize(_this.body,bodyB,new b2Vec2(px/scale,py/scale));
-      //$LASTPOS=64005555;//kernel.BodyActor:5555
+      //$LASTPOS=66005555;//kernel.BodyActor:5555
       if (params.lowerAngle&&params.upperAngle) {
-        //$LASTPOS=64005609;//kernel.BodyActor:5609
+        //$LASTPOS=66005609;//kernel.BodyActor:5609
         jd.lowerAngle=_this.rad(params.lowerAngle);
-        //$LASTPOS=64005657;//kernel.BodyActor:5657
+        //$LASTPOS=66005657;//kernel.BodyActor:5657
         jd.upperAngle=_this.rad(params.upperAngle);
-        //$LASTPOS=64005705;//kernel.BodyActor:5705
+        //$LASTPOS=66005705;//kernel.BodyActor:5705
         jd.enableLimit=true;
         
       }
-      //$LASTPOS=64005740;//kernel.BodyActor:5740
+      //$LASTPOS=66005740;//kernel.BodyActor:5740
       world.CreateJoint(jd);
     },
     fiber$addRevoluteJoint :function _trc_BodyActor_f_addRevoluteJoint(_thread,params) {
@@ -22094,81 +22254,81 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=64004696;//kernel.BodyActor:4696
+            //$LASTPOS=66004696;//kernel.BodyActor:4696
             _this.fiber$initBody(_thread);
             __pc=1;return;
           case 1:
             
-            //$LASTPOS=64004743;//kernel.BodyActor:4743
+            //$LASTPOS=66004743;//kernel.BodyActor:4743
             params=params||{};
-            //$LASTPOS=64004767;//kernel.BodyActor:4767
+            //$LASTPOS=66004767;//kernel.BodyActor:4767
             px = params.x||_this.x;
             
-            //$LASTPOS=64004792;//kernel.BodyActor:4792
+            //$LASTPOS=66004792;//kernel.BodyActor:4792
             py = params.y||_this.y;
             
-            //$LASTPOS=64004817;//kernel.BodyActor:4817
+            //$LASTPOS=66004817;//kernel.BodyActor:4817
             _this.fiber$getWorld(_thread);
             __pc=2;return;
           case 2:
             wworld=_thread.retVal;
             
-            //$LASTPOS=64004859;//kernel.BodyActor:4859
+            //$LASTPOS=66004859;//kernel.BodyActor:4859
             scale = wworld.scale;
             
-            //$LASTPOS=64004888;//kernel.BodyActor:4888
+            //$LASTPOS=66004888;//kernel.BodyActor:4888
             world = wworld.world;
             
-            //$LASTPOS=64004917;//kernel.BodyActor:4917
+            //$LASTPOS=66004917;//kernel.BodyActor:4917
             b2BodyDef = Box2D.Dynamics.b2BodyDef;
             
-            //$LASTPOS=64004964;//kernel.BodyActor:4964
+            //$LASTPOS=66004964;//kernel.BodyActor:4964
             b2Body = Box2D.Dynamics.b2Body;
             
-            //$LASTPOS=64005005;//kernel.BodyActor:5005
+            //$LASTPOS=66005005;//kernel.BodyActor:5005
             JDC = Box2D.Dynamics.Joints.b2RevoluteJointDef;
             
-            //$LASTPOS=64005060;//kernel.BodyActor:5060
+            //$LASTPOS=66005060;//kernel.BodyActor:5060
             jd = new JDC;
             
             
-            //$LASTPOS=64005097;//kernel.BodyActor:5097
+            //$LASTPOS=66005097;//kernel.BodyActor:5097
             if (params.other&&params.other instanceof Tonyu.classes.kernel.BodyActor) {
-              //$LASTPOS=64005155;//kernel.BodyActor:5155
+              //$LASTPOS=66005155;//kernel.BodyActor:5155
               params.other.initBody();
-              //$LASTPOS=64005189;//kernel.BodyActor:5189
+              //$LASTPOS=66005189;//kernel.BodyActor:5189
               bodyB=params.other.body;
               
             } else {
-              //$LASTPOS=64005237;//kernel.BodyActor:5237
+              //$LASTPOS=66005237;//kernel.BodyActor:5237
               bodyDef = new b2BodyDef;
               
-              //$LASTPOS=64005275;//kernel.BodyActor:5275
+              //$LASTPOS=66005275;//kernel.BodyActor:5275
               bodyDef.type=b2Body.b2_staticBody;
-              //$LASTPOS=64005321;//kernel.BodyActor:5321
+              //$LASTPOS=66005321;//kernel.BodyActor:5321
               bodyDef.position.x=px/scale;
-              //$LASTPOS=64005362;//kernel.BodyActor:5362
+              //$LASTPOS=66005362;//kernel.BodyActor:5362
               bodyDef.position.y=py/scale;
-              //$LASTPOS=64005403;//kernel.BodyActor:5403
+              //$LASTPOS=66005403;//kernel.BodyActor:5403
               bodyB=world.CreateBody(bodyDef);
               
             }
-            //$LASTPOS=64005448;//kernel.BodyActor:5448
+            //$LASTPOS=66005448;//kernel.BodyActor:5448
             b2Vec2 = Box2D.Common.Math.b2Vec2;
             
-            //$LASTPOS=64005492;//kernel.BodyActor:5492
+            //$LASTPOS=66005492;//kernel.BodyActor:5492
             jd.Initialize(_this.body,bodyB,new b2Vec2(px/scale,py/scale));
-            //$LASTPOS=64005555;//kernel.BodyActor:5555
+            //$LASTPOS=66005555;//kernel.BodyActor:5555
             if (params.lowerAngle&&params.upperAngle) {
-              //$LASTPOS=64005609;//kernel.BodyActor:5609
+              //$LASTPOS=66005609;//kernel.BodyActor:5609
               jd.lowerAngle=_this.rad(params.lowerAngle);
-              //$LASTPOS=64005657;//kernel.BodyActor:5657
+              //$LASTPOS=66005657;//kernel.BodyActor:5657
               jd.upperAngle=_this.rad(params.upperAngle);
-              //$LASTPOS=64005705;//kernel.BodyActor:5705
+              //$LASTPOS=66005705;//kernel.BodyActor:5705
               jd.enableLimit=true;
               
             }
-            //$LASTPOS=64005740;//kernel.BodyActor:5740
+            //$LASTPOS=66005740;//kernel.BodyActor:5740
             world.CreateJoint(jd);
             _thread.exit(_this);return;
           }
@@ -22179,7 +22339,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=64005784;//kernel.BodyActor:5784
+      //$LASTPOS=66005784;//kernel.BodyActor:5784
       if (! _this.body||_this.manualRotation) {
         return _this._rotation;
       }
@@ -22189,13 +22349,13 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=64005888;//kernel.BodyActor:5888
+      //$LASTPOS=66005888;//kernel.BodyActor:5888
       r=r||0;
-      //$LASTPOS=64005901;//kernel.BodyActor:5901
+      //$LASTPOS=66005901;//kernel.BodyActor:5901
       if (! _this.body||_this.manualRotation) {
         return _this._rotation=r;
       }
-      //$LASTPOS=64005955;//kernel.BodyActor:5955
+      //$LASTPOS=66005955;//kernel.BodyActor:5955
       _this.body.SetAngle(_this.rad(r));
     },
     __getter__x :function _trc_BodyActor___getter__x() {
@@ -22203,11 +22363,11 @@ Tonyu.klass.define({
       var _this=this;
       var pos;
       
-      //$LASTPOS=64005994;//kernel.BodyActor:5994
+      //$LASTPOS=66005994;//kernel.BodyActor:5994
       if (! _this.body) {
         return _this._x;
       }
-      //$LASTPOS=64006021;//kernel.BodyActor:6021
+      //$LASTPOS=66006021;//kernel.BodyActor:6021
       pos = _this.body.GetPosition();
       
       return pos.x*_this.scale;
@@ -22217,18 +22377,18 @@ Tonyu.klass.define({
       var _this=this;
       var pos;
       
-      //$LASTPOS=64006090;//kernel.BodyActor:6090
+      //$LASTPOS=66006090;//kernel.BodyActor:6090
       if (! _this.body) {
         return _this._x=v;
       }
-      //$LASTPOS=64006119;//kernel.BodyActor:6119
+      //$LASTPOS=66006119;//kernel.BodyActor:6119
       v=v||0;
-      //$LASTPOS=64006132;//kernel.BodyActor:6132
+      //$LASTPOS=66006132;//kernel.BodyActor:6132
       pos = _this.body.GetPosition();
       
-      //$LASTPOS=64006165;//kernel.BodyActor:6165
+      //$LASTPOS=66006165;//kernel.BodyActor:6165
       pos.x=v/_this.scale;
-      //$LASTPOS=64006185;//kernel.BodyActor:6185
+      //$LASTPOS=66006185;//kernel.BodyActor:6185
       _this.body.SetPosition(pos);
     },
     __getter__y :function _trc_BodyActor___getter__y() {
@@ -22236,11 +22396,11 @@ Tonyu.klass.define({
       var _this=this;
       var pos;
       
-      //$LASTPOS=64006222;//kernel.BodyActor:6222
+      //$LASTPOS=66006222;//kernel.BodyActor:6222
       if (! _this.body) {
         return _this._y;
       }
-      //$LASTPOS=64006249;//kernel.BodyActor:6249
+      //$LASTPOS=66006249;//kernel.BodyActor:6249
       pos = _this.body.GetPosition();
       
       return pos.y*_this.scale;
@@ -22250,18 +22410,18 @@ Tonyu.klass.define({
       var _this=this;
       var pos;
       
-      //$LASTPOS=64006318;//kernel.BodyActor:6318
+      //$LASTPOS=66006318;//kernel.BodyActor:6318
       if (! _this.body) {
         return _this._y=v;
       }
-      //$LASTPOS=64006347;//kernel.BodyActor:6347
+      //$LASTPOS=66006347;//kernel.BodyActor:6347
       v=v||0;
-      //$LASTPOS=64006360;//kernel.BodyActor:6360
+      //$LASTPOS=66006360;//kernel.BodyActor:6360
       pos = _this.body.GetPosition();
       
-      //$LASTPOS=64006393;//kernel.BodyActor:6393
+      //$LASTPOS=66006393;//kernel.BodyActor:6393
       pos.y=v/_this.scale;
-      //$LASTPOS=64006413;//kernel.BodyActor:6413
+      //$LASTPOS=66006413;//kernel.BodyActor:6413
       _this.body.SetPosition(pos);
     },
     __getter__vx :function _trc_BodyActor___getter__vx() {
@@ -22269,11 +22429,11 @@ Tonyu.klass.define({
       var _this=this;
       var v;
       
-      //$LASTPOS=64006453;//kernel.BodyActor:6453
+      //$LASTPOS=66006453;//kernel.BodyActor:6453
       if (! _this.body) {
         return _this._vx;
       }
-      //$LASTPOS=64006481;//kernel.BodyActor:6481
+      //$LASTPOS=66006481;//kernel.BodyActor:6481
       v = _this.body.GetLinearVelocity();
       
       return v.x*_this.scale/_this.getWorld().fps;
@@ -22283,23 +22443,23 @@ Tonyu.klass.define({
       var _this=this;
       var ve;
       
-      //$LASTPOS=64006568;//kernel.BodyActor:6568
+      //$LASTPOS=66006568;//kernel.BodyActor:6568
       if (! _this.body) {
         return _this._vx=v;
       }
-      //$LASTPOS=64006598;//kernel.BodyActor:6598
+      //$LASTPOS=66006598;//kernel.BodyActor:6598
       v=v||0;
-      //$LASTPOS=64006611;//kernel.BodyActor:6611
+      //$LASTPOS=66006611;//kernel.BodyActor:6611
       ve = _this.body.GetLinearVelocity();
       
-      //$LASTPOS=64006649;//kernel.BodyActor:6649
+      //$LASTPOS=66006649;//kernel.BodyActor:6649
       ve.x=v/_this.scale*_this.getWorld().fps;
-      //$LASTPOS=64006683;//kernel.BodyActor:6683
+      //$LASTPOS=66006683;//kernel.BodyActor:6683
       if (v) {
-        //$LASTPOS=64006690;//kernel.BodyActor:6690
+        //$LASTPOS=66006690;//kernel.BodyActor:6690
         _this.body.SetAwake(true);
       }
-      //$LASTPOS=64006716;//kernel.BodyActor:6716
+      //$LASTPOS=66006716;//kernel.BodyActor:6716
       _this.body.SetLinearVelocity(ve);
     },
     __getter__vy :function _trc_BodyActor___getter__vy() {
@@ -22307,11 +22467,11 @@ Tonyu.klass.define({
       var _this=this;
       var v;
       
-      //$LASTPOS=64006761;//kernel.BodyActor:6761
+      //$LASTPOS=66006761;//kernel.BodyActor:6761
       if (! _this.body) {
         return _this._vy;
       }
-      //$LASTPOS=64006789;//kernel.BodyActor:6789
+      //$LASTPOS=66006789;//kernel.BodyActor:6789
       v = _this.body.GetLinearVelocity();
       
       return v.y*_this.scale/_this.getWorld().fps;
@@ -22321,28 +22481,28 @@ Tonyu.klass.define({
       var _this=this;
       var ve;
       
-      //$LASTPOS=64006876;//kernel.BodyActor:6876
+      //$LASTPOS=66006876;//kernel.BodyActor:6876
       if (! _this.body) {
         return _this._vy=v;
       }
-      //$LASTPOS=64006906;//kernel.BodyActor:6906
+      //$LASTPOS=66006906;//kernel.BodyActor:6906
       ve = _this.body.GetLinearVelocity();
       
-      //$LASTPOS=64006944;//kernel.BodyActor:6944
+      //$LASTPOS=66006944;//kernel.BodyActor:6944
       ve.y=v/_this.scale*_this.getWorld().fps;
-      //$LASTPOS=64006978;//kernel.BodyActor:6978
+      //$LASTPOS=66006978;//kernel.BodyActor:6978
       if (v) {
-        //$LASTPOS=64006985;//kernel.BodyActor:6985
+        //$LASTPOS=66006985;//kernel.BodyActor:6985
         _this.body.SetAwake(true);
       }
-      //$LASTPOS=64007011;//kernel.BodyActor:7011
+      //$LASTPOS=66007011;//kernel.BodyActor:7011
       _this.body.SetLinearVelocity(ve);
     },
     __getter__vrotation :function _trc_BodyActor___getter__vrotation() {
       "use strict";
       var _this=this;
       
-      //$LASTPOS=64007061;//kernel.BodyActor:7061
+      //$LASTPOS=66007061;//kernel.BodyActor:7061
       if (! _this.body) {
         return _this._vr;
       }
@@ -22352,18 +22512,18 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=64007167;//kernel.BodyActor:7167
+      //$LASTPOS=66007167;//kernel.BodyActor:7167
       if (! _this.body) {
         return _this._vr=v;
       }
-      //$LASTPOS=64007197;//kernel.BodyActor:7197
+      //$LASTPOS=66007197;//kernel.BodyActor:7197
       v=v||0;
-      //$LASTPOS=64007210;//kernel.BodyActor:7210
+      //$LASTPOS=66007210;//kernel.BodyActor:7210
       if (v) {
-        //$LASTPOS=64007217;//kernel.BodyActor:7217
+        //$LASTPOS=66007217;//kernel.BodyActor:7217
         _this.body.SetAwake(true);
       }
-      //$LASTPOS=64007243;//kernel.BodyActor:7243
+      //$LASTPOS=66007243;//kernel.BodyActor:7243
       _this.body.SetAngularVelocity(_this.rad(v*_this.getWorld().fps));
     },
     __dummy: false
@@ -22406,7 +22566,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=65000150;//kernel.T2World:150
+      //$LASTPOS=67000150;//kernel.T2World:150
       _this.loop();
     },
     fiber$main :function _trc_T2World_f_main(_thread) {
@@ -22421,7 +22581,7 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=65000150;//kernel.T2World:150
+            //$LASTPOS=67000150;//kernel.T2World:150
             _this.fiber$loop(_thread);
             __pc=1;return;
           case 1:
@@ -22435,9 +22595,9 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=65000086;//kernel.T2World:86
+      //$LASTPOS=67000086;//kernel.T2World:86
       Tonyu.globals.$currentProject.requestPlugin("box2d");
-      //$LASTPOS=65000133;//kernel.T2World:133
+      //$LASTPOS=67000133;//kernel.T2World:133
       _this.initWorld();
     },
     fiber$onAppear :function _trc_T2World_f_onAppear(_thread) {
@@ -22446,7 +22606,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=65000086;//kernel.T2World:86
+      //$LASTPOS=67000086;//kernel.T2World:86
       Tonyu.globals.$currentProject.requestPlugin("box2d");
       
       _thread.enter(function _trc_T2World_ent_onAppear(_thread) {
@@ -22454,7 +22614,7 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=65000133;//kernel.T2World:133
+            //$LASTPOS=67000133;//kernel.T2World:133
             _this.fiber$initWorld(_thread);
             __pc=1;return;
           case 1:
@@ -22470,27 +22630,27 @@ Tonyu.klass.define({
       var b2World;
       var b2Vec2;
       
-      //$LASTPOS=65000183;//kernel.T2World:183
+      //$LASTPOS=67000183;//kernel.T2World:183
       _this.gravity=_this.defv(_this.gravity,9.8);
-      //$LASTPOS=65000216;//kernel.T2World:216
+      //$LASTPOS=67000216;//kernel.T2World:216
       _this.gravityX=_this.defv(_this.gravityX,0);
-      //$LASTPOS=65000249;//kernel.T2World:249
+      //$LASTPOS=67000249;//kernel.T2World:249
       _this.fps=Tonyu.globals.$Boot.getFrameRate();
-      //$LASTPOS=65000280;//kernel.T2World:280
+      //$LASTPOS=67000280;//kernel.T2World:280
       b2World = Box2D.Dynamics.b2World;
       
-      //$LASTPOS=65000323;//kernel.T2World:323
+      //$LASTPOS=67000323;//kernel.T2World:323
       b2Vec2 = Box2D.Common.Math.b2Vec2;
       
-      //$LASTPOS=65000367;//kernel.T2World:367
+      //$LASTPOS=67000367;//kernel.T2World:367
       _this.scale=_this.scale||32;
-      //$LASTPOS=65000391;//kernel.T2World:391
+      //$LASTPOS=67000391;//kernel.T2World:391
       _this.world=new b2World(new b2Vec2(_this.gravityX,_this.gravity),true);
-      //$LASTPOS=65000516;//kernel.T2World:516
+      //$LASTPOS=67000516;//kernel.T2World:516
       Tonyu.globals.$t2World=_this;
-      //$LASTPOS=65000536;//kernel.T2World:536
+      //$LASTPOS=67000536;//kernel.T2World:536
       Tonyu.globals.$Boot.on("stop",Tonyu.bindFunc(_this,_this.releaseWorld));
-      //$LASTPOS=65000572;//kernel.T2World:572
+      //$LASTPOS=67000572;//kernel.T2World:572
       _this.on("die",Tonyu.bindFunc(_this,_this.releaseWorld));
     },
     fiber$initWorld :function _trc_T2World_f_initWorld(_thread) {
@@ -22507,35 +22667,35 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=65000183;//kernel.T2World:183
+            //$LASTPOS=67000183;//kernel.T2World:183
             _this.fiber$defv(_thread, _this.gravity, 9.8);
             __pc=1;return;
           case 1:
             _this.gravity=_thread.retVal;
             
-            //$LASTPOS=65000216;//kernel.T2World:216
+            //$LASTPOS=67000216;//kernel.T2World:216
             _this.fiber$defv(_thread, _this.gravityX, 0);
             __pc=2;return;
           case 2:
             _this.gravityX=_thread.retVal;
             
-            //$LASTPOS=65000249;//kernel.T2World:249
+            //$LASTPOS=67000249;//kernel.T2World:249
             _this.fps=Tonyu.globals.$Boot.getFrameRate();
-            //$LASTPOS=65000280;//kernel.T2World:280
+            //$LASTPOS=67000280;//kernel.T2World:280
             b2World = Box2D.Dynamics.b2World;
             
-            //$LASTPOS=65000323;//kernel.T2World:323
+            //$LASTPOS=67000323;//kernel.T2World:323
             b2Vec2 = Box2D.Common.Math.b2Vec2;
             
-            //$LASTPOS=65000367;//kernel.T2World:367
+            //$LASTPOS=67000367;//kernel.T2World:367
             _this.scale=_this.scale||32;
-            //$LASTPOS=65000391;//kernel.T2World:391
+            //$LASTPOS=67000391;//kernel.T2World:391
             _this.world=new b2World(new b2Vec2(_this.gravityX,_this.gravity),true);
-            //$LASTPOS=65000516;//kernel.T2World:516
+            //$LASTPOS=67000516;//kernel.T2World:516
             Tonyu.globals.$t2World=_this;
-            //$LASTPOS=65000536;//kernel.T2World:536
+            //$LASTPOS=67000536;//kernel.T2World:536
             Tonyu.globals.$Boot.on("stop",Tonyu.bindFunc(_this,_this.releaseWorld));
-            //$LASTPOS=65000572;//kernel.T2World:572
+            //$LASTPOS=67000572;//kernel.T2World:572
             _this.on("die",Tonyu.bindFunc(_this,_this.releaseWorld));
             _thread.exit(_this);return;
           }
@@ -22546,9 +22706,9 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=65000623;//kernel.T2World:623
+      //$LASTPOS=67000623;//kernel.T2World:623
       if (Tonyu.globals.$t2World===_this) {
-        //$LASTPOS=65000644;//kernel.T2World:644
+        //$LASTPOS=67000644;//kernel.T2World:644
         Tonyu.globals.$t2World=null;
       }
     },
@@ -22558,9 +22718,9 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=65000623;//kernel.T2World:623
+      //$LASTPOS=67000623;//kernel.T2World:623
       if (Tonyu.globals.$t2World===_this) {
-        //$LASTPOS=65000644;//kernel.T2World:644
+        //$LASTPOS=67000644;//kernel.T2World:644
         Tonyu.globals.$t2World=null;
       }
       
@@ -22570,15 +22730,15 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=65000680;//kernel.T2World:680
+      //$LASTPOS=67000680;//kernel.T2World:680
       while (true) {
-        //$LASTPOS=65000703;//kernel.T2World:703
+        //$LASTPOS=67000703;//kernel.T2World:703
         _this.fps=Tonyu.globals.$Boot.getFrameRate();
-        //$LASTPOS=65000738;//kernel.T2World:738
+        //$LASTPOS=67000738;//kernel.T2World:738
         _this.world.Step(1/_this.fps,10,10);
-        //$LASTPOS=65000922;//kernel.T2World:922
+        //$LASTPOS=67000922;//kernel.T2World:922
         _this.world.ClearForces();
-        //$LASTPOS=65000976;//kernel.T2World:976
+        //$LASTPOS=67000976;//kernel.T2World:976
         _this.update();
         
       }
@@ -22595,15 +22755,15 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=65000680;//kernel.T2World:680
+            //$LASTPOS=67000680;//kernel.T2World:680
           case 1:
-            //$LASTPOS=65000703;//kernel.T2World:703
+            //$LASTPOS=67000703;//kernel.T2World:703
             _this.fps=Tonyu.globals.$Boot.getFrameRate();
-            //$LASTPOS=65000738;//kernel.T2World:738
+            //$LASTPOS=67000738;//kernel.T2World:738
             _this.world.Step(1/_this.fps,10,10);
-            //$LASTPOS=65000922;//kernel.T2World:922
+            //$LASTPOS=67000922;//kernel.T2World:922
             _this.world.ClearForces();
-            //$LASTPOS=65000976;//kernel.T2World:976
+            //$LASTPOS=67000976;//kernel.T2World:976
             _this.fiber$update(_thread);
             __pc=2;return;
           case 2:
@@ -22622,17 +22782,17 @@ Tonyu.klass.define({
       var b;
       var d;
       
-      //$LASTPOS=65001017;//kernel.T2World:1017
-      //$LASTPOS=65001022;//kernel.T2World:1022
+      //$LASTPOS=67001017;//kernel.T2World:1017
+      //$LASTPOS=67001022;//kernel.T2World:1022
       b = _this.world.GetBodyList();
       for (; b ; b=b.GetNext()) {
         {
-          //$LASTPOS=65001076;//kernel.T2World:1076
+          //$LASTPOS=67001076;//kernel.T2World:1076
           d = b.GetUserData();
           
-          //$LASTPOS=65001108;//kernel.T2World:1108
+          //$LASTPOS=67001108;//kernel.T2World:1108
           if (d) {
-            //$LASTPOS=65001114;//kernel.T2World:1114
+            //$LASTPOS=67001114;//kernel.T2World:1114
             d.updatePos();
           }
         }
@@ -22646,17 +22806,17 @@ Tonyu.klass.define({
       var b;
       var d;
       
-      //$LASTPOS=65001017;//kernel.T2World:1017
-      //$LASTPOS=65001022;//kernel.T2World:1022
+      //$LASTPOS=67001017;//kernel.T2World:1017
+      //$LASTPOS=67001022;//kernel.T2World:1022
       b = _this.world.GetBodyList();
       for (; b ; b=b.GetNext()) {
         {
-          //$LASTPOS=65001076;//kernel.T2World:1076
+          //$LASTPOS=67001076;//kernel.T2World:1076
           d = b.GetUserData();
           
-          //$LASTPOS=65001108;//kernel.T2World:1108
+          //$LASTPOS=67001108;//kernel.T2World:1108
           if (d) {
-            //$LASTPOS=65001114;//kernel.T2World:1114
+            //$LASTPOS=67001114;//kernel.T2World:1114
             d.updatePos();
           }
         }
@@ -22693,20 +22853,20 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=66000086;//kernel.T2MediaPlayer:86
+      //$LASTPOS=68000086;//kernel.T2MediaPlayer:86
       _this.initT2MediaPlayer();
     },
     initT2MediaPlayer :function _trc_T2MediaPlayer_initT2MediaPlayer() {
       "use strict";
       var _this=this;
       
-      //$LASTPOS=66000141;//kernel.T2MediaPlayer:141
+      //$LASTPOS=68000141;//kernel.T2MediaPlayer:141
       if (! Tonyu.globals.$t2MediaLib) {
-        //$LASTPOS=66000170;//kernel.T2MediaPlayer:170
+        //$LASTPOS=68000170;//kernel.T2MediaPlayer:170
         Tonyu.globals.$t2MediaLib=new T2MediaLib();
         
       }
-      //$LASTPOS=66000214;//kernel.T2MediaPlayer:214
+      //$LASTPOS=68000214;//kernel.T2MediaPlayer:214
       _this.bgmPlayerMax=Tonyu.globals.$t2MediaLib.bgmPlayerMax;
     },
     fiber$initT2MediaPlayer :function _trc_T2MediaPlayer_f_initT2MediaPlayer(_thread) {
@@ -22715,13 +22875,13 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=66000141;//kernel.T2MediaPlayer:141
+      //$LASTPOS=68000141;//kernel.T2MediaPlayer:141
       if (! Tonyu.globals.$t2MediaLib) {
-        //$LASTPOS=66000170;//kernel.T2MediaPlayer:170
+        //$LASTPOS=68000170;//kernel.T2MediaPlayer:170
         Tonyu.globals.$t2MediaLib=new T2MediaLib();
         
       }
-      //$LASTPOS=66000214;//kernel.T2MediaPlayer:214
+      //$LASTPOS=68000214;//kernel.T2MediaPlayer:214
       _this.bgmPlayerMax=Tonyu.globals.$t2MediaLib.bgmPlayerMax;
       
       _thread.retVal=_this;return;
@@ -22730,9 +22890,9 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=66000289;//kernel.T2MediaPlayer:289
+      //$LASTPOS=68000289;//kernel.T2MediaPlayer:289
       Tonyu.globals.$t2MediaLib.allResetBGM();
-      //$LASTPOS=66000321;//kernel.T2MediaPlayer:321
+      //$LASTPOS=68000321;//kernel.T2MediaPlayer:321
       Tonyu.globals.$t2MediaLib.allClearSoundData();
     },
     fiber$allClearSoundData :function _trc_T2MediaPlayer_f_allClearSoundData(_thread) {
@@ -22741,9 +22901,9 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=66000289;//kernel.T2MediaPlayer:289
+      //$LASTPOS=68000289;//kernel.T2MediaPlayer:289
       Tonyu.globals.$t2MediaLib.allResetBGM();
-      //$LASTPOS=66000321;//kernel.T2MediaPlayer:321
+      //$LASTPOS=68000321;//kernel.T2MediaPlayer:321
       Tonyu.globals.$t2MediaLib.allClearSoundData();
       
       _thread.retVal=_this;return;
@@ -22752,7 +22912,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=66000388;//kernel.T2MediaPlayer:388
+      //$LASTPOS=68000388;//kernel.T2MediaPlayer:388
       Tonyu.globals.$t2MediaLib.clearSoundData(idx);
     },
     fiber$clearSoundData :function _trc_T2MediaPlayer_f_clearSoundData(_thread,idx) {
@@ -22761,7 +22921,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=66000388;//kernel.T2MediaPlayer:388
+      //$LASTPOS=68000388;//kernel.T2MediaPlayer:388
       Tonyu.globals.$t2MediaLib.clearSoundData(idx);
       
       _thread.retVal=_this;return;
@@ -22770,7 +22930,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=66000463;//kernel.T2MediaPlayer:463
+      //$LASTPOS=68000463;//kernel.T2MediaPlayer:463
       Tonyu.globals.$t2MediaLib.allRemoveDecodedSoundData();
     },
     fiber$allRemoveDecodedSoundData :function _trc_T2MediaPlayer_f_allRemoveDecodedSoundData(_thread) {
@@ -22779,7 +22939,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=66000463;//kernel.T2MediaPlayer:463
+      //$LASTPOS=68000463;//kernel.T2MediaPlayer:463
       Tonyu.globals.$t2MediaLib.allRemoveDecodedSoundData();
       
       _thread.retVal=_this;return;
@@ -22788,7 +22948,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=66000546;//kernel.T2MediaPlayer:546
+      //$LASTPOS=68000546;//kernel.T2MediaPlayer:546
       Tonyu.globals.$t2MediaLib.removeDecodedSoundData(idx);
     },
     fiber$removeDecodedSoundData :function _trc_T2MediaPlayer_f_removeDecodedSoundData(_thread,idx) {
@@ -22797,7 +22957,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=66000546;//kernel.T2MediaPlayer:546
+      //$LASTPOS=68000546;//kernel.T2MediaPlayer:546
       Tonyu.globals.$t2MediaLib.removeDecodedSoundData(idx);
       
       _thread.retVal=_this;return;
@@ -22823,13 +22983,13 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=66000698;//kernel.T2MediaPlayer:698
+      //$LASTPOS=68000698;//kernel.T2MediaPlayer:698
       if (typeof  vol==="number") {
-        //$LASTPOS=66000738;//kernel.T2MediaPlayer:738
+        //$LASTPOS=68000738;//kernel.T2MediaPlayer:738
         vol/=128;
-        //$LASTPOS=66000759;//kernel.T2MediaPlayer:759
+        //$LASTPOS=68000759;//kernel.T2MediaPlayer:759
         if (vol<0) {
-          //$LASTPOS=66000774;//kernel.T2MediaPlayer:774
+          //$LASTPOS=68000774;//kernel.T2MediaPlayer:774
           vol=0;
         }
         
@@ -22845,13 +23005,13 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=66000698;//kernel.T2MediaPlayer:698
+      //$LASTPOS=68000698;//kernel.T2MediaPlayer:698
       if (typeof  vol==="number") {
-        //$LASTPOS=66000738;//kernel.T2MediaPlayer:738
+        //$LASTPOS=68000738;//kernel.T2MediaPlayer:738
         vol/=128;
-        //$LASTPOS=66000759;//kernel.T2MediaPlayer:759
+        //$LASTPOS=68000759;//kernel.T2MediaPlayer:759
         if (vol<0) {
-          //$LASTPOS=66000774;//kernel.T2MediaPlayer:774
+          //$LASTPOS=68000774;//kernel.T2MediaPlayer:774
           vol=0;
         }
         
@@ -22869,7 +23029,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=66000983;//kernel.T2MediaPlayer:983
+      //$LASTPOS=68000983;//kernel.T2MediaPlayer:983
       Tonyu.globals.$t2MediaLib.loadSound(idx,src,callbacks);
     },
     fiber$loadSound :function _trc_T2MediaPlayer_f_loadSound(_thread,idx,src,callbacks) {
@@ -22878,7 +23038,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=66000983;//kernel.T2MediaPlayer:983
+      //$LASTPOS=68000983;//kernel.T2MediaPlayer:983
       Tonyu.globals.$t2MediaLib.loadSound(idx,src,callbacks);
       
       _thread.retVal=_this;return;
@@ -22902,99 +23062,99 @@ Tonyu.klass.define({
       var func;
       var i;
       
-      //$LASTPOS=66001126;//kernel.T2MediaPlayer:1126
+      //$LASTPOS=68001126;//kernel.T2MediaPlayer:1126
       if (! _this.available) {
         return _this;
       }
-      //$LASTPOS=66001155;//kernel.T2MediaPlayer:1155
+      //$LASTPOS=68001155;//kernel.T2MediaPlayer:1155
       r = prj.getResource();
       
-      //$LASTPOS=66001185;//kernel.T2MediaPlayer:1185
+      //$LASTPOS=68001185;//kernel.T2MediaPlayer:1185
       if (! r||! r.sounds) {
         return _this;
       }
-      //$LASTPOS=66001219;//kernel.T2MediaPlayer:1219
+      //$LASTPOS=68001219;//kernel.T2MediaPlayer:1219
       if (r.sounds<=0) {
         return _this;
       }
-      //$LASTPOS=66001253;//kernel.T2MediaPlayer:1253
+      //$LASTPOS=68001253;//kernel.T2MediaPlayer:1253
       _this.progressNoLog("Loading sounds...[0/"+r.sounds.length+"]");
-      //$LASTPOS=66001334;//kernel.T2MediaPlayer:1334
+      //$LASTPOS=68001334;//kernel.T2MediaPlayer:1334
       jobs = 6;
       
-      //$LASTPOS=66001351;//kernel.T2MediaPlayer:1351
+      //$LASTPOS=68001351;//kernel.T2MediaPlayer:1351
       cnt = 0;
       
-      //$LASTPOS=66001367;//kernel.T2MediaPlayer:1367
+      //$LASTPOS=68001367;//kernel.T2MediaPlayer:1367
       callbacks = {};
       
       
-      //$LASTPOS=66001413;//kernel.T2MediaPlayer:1413
+      //$LASTPOS=68001413;//kernel.T2MediaPlayer:1413
       func = (function anonymous_1424(idx,errorID) {
         var s;
         var name;
         var url;
         
-        //$LASTPOS=66001457;//kernel.T2MediaPlayer:1457
+        //$LASTPOS=68001457;//kernel.T2MediaPlayer:1457
         if (errorID) {
-          //$LASTPOS=66001485;//kernel.T2MediaPlayer:1485
+          //$LASTPOS=68001485;//kernel.T2MediaPlayer:1485
           console.log(errorID);
-          //$LASTPOS=66001564;//kernel.T2MediaPlayer:1564
+          //$LASTPOS=68001564;//kernel.T2MediaPlayer:1564
           Tonyu.setGlobal(idx,"ERROR");
           
         } else {
-          //$LASTPOS=66001672;//kernel.T2MediaPlayer:1672
+          //$LASTPOS=68001672;//kernel.T2MediaPlayer:1672
           Tonyu.setGlobal(idx,idx);
           
         }
-        //$LASTPOS=66001721;//kernel.T2MediaPlayer:1721
+        //$LASTPOS=68001721;//kernel.T2MediaPlayer:1721
         cnt++;
-        //$LASTPOS=66001738;//kernel.T2MediaPlayer:1738
+        //$LASTPOS=68001738;//kernel.T2MediaPlayer:1738
         if (cnt>=r.sounds.length) {
           return _this;
         }
-        //$LASTPOS=66001783;//kernel.T2MediaPlayer:1783
+        //$LASTPOS=68001783;//kernel.T2MediaPlayer:1783
         _this.progressNoLog("Loading sounds...["+(cnt+1)+"/"+r.sounds.length+"]");
-        //$LASTPOS=66001861;//kernel.T2MediaPlayer:1861
+        //$LASTPOS=68001861;//kernel.T2MediaPlayer:1861
         s = r.sounds[cnt];
         
-        //$LASTPOS=66001893;//kernel.T2MediaPlayer:1893
+        //$LASTPOS=68001893;//kernel.T2MediaPlayer:1893
         name = s.name;
         
-        //$LASTPOS=66001919;//kernel.T2MediaPlayer:1919
+        //$LASTPOS=68001919;//kernel.T2MediaPlayer:1919
         url = Tonyu.Assets.resolve(s.url,prj);
         
-        //$LASTPOS=66001970;//kernel.T2MediaPlayer:1970
+        //$LASTPOS=68001970;//kernel.T2MediaPlayer:1970
         _this.loadSound(name,url,callbacks);
       });
       
-      //$LASTPOS=66002016;//kernel.T2MediaPlayer:2016
+      //$LASTPOS=68002016;//kernel.T2MediaPlayer:2016
       callbacks.succ=func;
-      //$LASTPOS=66002042;//kernel.T2MediaPlayer:2042
+      //$LASTPOS=68002042;//kernel.T2MediaPlayer:2042
       callbacks.err=func;
-      //$LASTPOS=66002067;//kernel.T2MediaPlayer:2067
-      //$LASTPOS=66002072;//kernel.T2MediaPlayer:2072
+      //$LASTPOS=68002067;//kernel.T2MediaPlayer:2067
+      //$LASTPOS=68002072;//kernel.T2MediaPlayer:2072
       i = 0;
       for (; i<jobs ; i++) {
         {
-          //$LASTPOS=66002105;//kernel.T2MediaPlayer:2105
+          //$LASTPOS=68002105;//kernel.T2MediaPlayer:2105
           if (i>=r.sounds.length) {
             break;
             
           }
-          //$LASTPOS=66002147;//kernel.T2MediaPlayer:2147
+          //$LASTPOS=68002147;//kernel.T2MediaPlayer:2147
           s=r.sounds[i];
-          //$LASTPOS=66002173;//kernel.T2MediaPlayer:2173
+          //$LASTPOS=68002173;//kernel.T2MediaPlayer:2173
           name=s.name;
-          //$LASTPOS=66002195;//kernel.T2MediaPlayer:2195
+          //$LASTPOS=68002195;//kernel.T2MediaPlayer:2195
           url=Tonyu.Assets.resolve(s.url,prj);
-          //$LASTPOS=66002242;//kernel.T2MediaPlayer:2242
+          //$LASTPOS=68002242;//kernel.T2MediaPlayer:2242
           _this.loadSound(name,url,callbacks);
         }
       }
-      //$LASTPOS=66002287;//kernel.T2MediaPlayer:2287
+      //$LASTPOS=68002287;//kernel.T2MediaPlayer:2287
       while (cnt<r.sounds.length) {
-        //$LASTPOS=66002328;//kernel.T2MediaPlayer:2328
+        //$LASTPOS=68002328;//kernel.T2MediaPlayer:2328
         _this.update();
         
       }
@@ -23014,33 +23174,33 @@ Tonyu.klass.define({
       var func;
       var i;
       
-      //$LASTPOS=66001126;//kernel.T2MediaPlayer:1126
+      //$LASTPOS=68001126;//kernel.T2MediaPlayer:1126
       if (! _this.available) {
         _thread.retVal=_this;return;
         
       }
-      //$LASTPOS=66001155;//kernel.T2MediaPlayer:1155
+      //$LASTPOS=68001155;//kernel.T2MediaPlayer:1155
       r = prj.getResource();
       
-      //$LASTPOS=66001185;//kernel.T2MediaPlayer:1185
+      //$LASTPOS=68001185;//kernel.T2MediaPlayer:1185
       if (! r||! r.sounds) {
         _thread.retVal=_this;return;
         
       }
-      //$LASTPOS=66001219;//kernel.T2MediaPlayer:1219
+      //$LASTPOS=68001219;//kernel.T2MediaPlayer:1219
       if (r.sounds<=0) {
         _thread.retVal=_this;return;
         
       }
-      //$LASTPOS=66001253;//kernel.T2MediaPlayer:1253
+      //$LASTPOS=68001253;//kernel.T2MediaPlayer:1253
       _this.progressNoLog("Loading sounds...[0/"+r.sounds.length+"]");
-      //$LASTPOS=66001334;//kernel.T2MediaPlayer:1334
+      //$LASTPOS=68001334;//kernel.T2MediaPlayer:1334
       jobs = 6;
       
-      //$LASTPOS=66001351;//kernel.T2MediaPlayer:1351
+      //$LASTPOS=68001351;//kernel.T2MediaPlayer:1351
       cnt = 0;
       
-      //$LASTPOS=66001367;//kernel.T2MediaPlayer:1367
+      //$LASTPOS=68001367;//kernel.T2MediaPlayer:1367
       callbacks = {};
       
       
@@ -23050,68 +23210,68 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=66001413;//kernel.T2MediaPlayer:1413
+            //$LASTPOS=68001413;//kernel.T2MediaPlayer:1413
             func = (function anonymous_1424(idx,errorID) {
               var s;
               var name;
               var url;
               
-              //$LASTPOS=66001457;//kernel.T2MediaPlayer:1457
+              //$LASTPOS=68001457;//kernel.T2MediaPlayer:1457
               if (errorID) {
-                //$LASTPOS=66001485;//kernel.T2MediaPlayer:1485
+                //$LASTPOS=68001485;//kernel.T2MediaPlayer:1485
                 console.log(errorID);
-                //$LASTPOS=66001564;//kernel.T2MediaPlayer:1564
+                //$LASTPOS=68001564;//kernel.T2MediaPlayer:1564
                 Tonyu.setGlobal(idx,"ERROR");
                 
               } else {
-                //$LASTPOS=66001672;//kernel.T2MediaPlayer:1672
+                //$LASTPOS=68001672;//kernel.T2MediaPlayer:1672
                 Tonyu.setGlobal(idx,idx);
                 
               }
-              //$LASTPOS=66001721;//kernel.T2MediaPlayer:1721
+              //$LASTPOS=68001721;//kernel.T2MediaPlayer:1721
               cnt++;
-              //$LASTPOS=66001738;//kernel.T2MediaPlayer:1738
+              //$LASTPOS=68001738;//kernel.T2MediaPlayer:1738
               if (cnt>=r.sounds.length) {
                 return _this;
               }
-              //$LASTPOS=66001783;//kernel.T2MediaPlayer:1783
+              //$LASTPOS=68001783;//kernel.T2MediaPlayer:1783
               _this.progressNoLog("Loading sounds...["+(cnt+1)+"/"+r.sounds.length+"]");
-              //$LASTPOS=66001861;//kernel.T2MediaPlayer:1861
+              //$LASTPOS=68001861;//kernel.T2MediaPlayer:1861
               s = r.sounds[cnt];
               
-              //$LASTPOS=66001893;//kernel.T2MediaPlayer:1893
+              //$LASTPOS=68001893;//kernel.T2MediaPlayer:1893
               name = s.name;
               
-              //$LASTPOS=66001919;//kernel.T2MediaPlayer:1919
+              //$LASTPOS=68001919;//kernel.T2MediaPlayer:1919
               url = Tonyu.Assets.resolve(s.url,prj);
               
-              //$LASTPOS=66001970;//kernel.T2MediaPlayer:1970
+              //$LASTPOS=68001970;//kernel.T2MediaPlayer:1970
               _this.loadSound(name,url,callbacks);
             });
             
-            //$LASTPOS=66002016;//kernel.T2MediaPlayer:2016
+            //$LASTPOS=68002016;//kernel.T2MediaPlayer:2016
             callbacks.succ=func;
-            //$LASTPOS=66002042;//kernel.T2MediaPlayer:2042
+            //$LASTPOS=68002042;//kernel.T2MediaPlayer:2042
             callbacks.err=func;
-            //$LASTPOS=66002067;//kernel.T2MediaPlayer:2067
-            //$LASTPOS=66002072;//kernel.T2MediaPlayer:2072
+            //$LASTPOS=68002067;//kernel.T2MediaPlayer:2067
+            //$LASTPOS=68002072;//kernel.T2MediaPlayer:2072
             i = 0;
             
           case 1:
             if (!(i<jobs)) { __pc=5     ; break; }
-            //$LASTPOS=66002105;//kernel.T2MediaPlayer:2105
+            //$LASTPOS=68002105;//kernel.T2MediaPlayer:2105
             if (!(i>=r.sounds.length)) { __pc=2     ; break; }
             __pc=5     ; break;
             
           case 2     :
             
-            //$LASTPOS=66002147;//kernel.T2MediaPlayer:2147
+            //$LASTPOS=68002147;//kernel.T2MediaPlayer:2147
             s=r.sounds[i];
-            //$LASTPOS=66002173;//kernel.T2MediaPlayer:2173
+            //$LASTPOS=68002173;//kernel.T2MediaPlayer:2173
             name=s.name;
-            //$LASTPOS=66002195;//kernel.T2MediaPlayer:2195
+            //$LASTPOS=68002195;//kernel.T2MediaPlayer:2195
             url=Tonyu.Assets.resolve(s.url,prj);
-            //$LASTPOS=66002242;//kernel.T2MediaPlayer:2242
+            //$LASTPOS=68002242;//kernel.T2MediaPlayer:2242
             _this.fiber$loadSound(_thread, name, url, callbacks);
             __pc=3;return;
           case 3:
@@ -23121,10 +23281,10 @@ Tonyu.klass.define({
             __pc=1;break;
           case 5     :
             
-            //$LASTPOS=66002287;//kernel.T2MediaPlayer:2287
+            //$LASTPOS=68002287;//kernel.T2MediaPlayer:2287
           case 6:
             if (!(cnt<r.sounds.length)) { __pc=8     ; break; }
-            //$LASTPOS=66002328;//kernel.T2MediaPlayer:2328
+            //$LASTPOS=68002328;//kernel.T2MediaPlayer:2328
             _this.fiber$update(_thread);
             __pc=7;return;
           case 7:
@@ -23141,7 +23301,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=66002412;//kernel.T2MediaPlayer:2412
+      //$LASTPOS=68002412;//kernel.T2MediaPlayer:2412
       Tonyu.globals.$t2MediaLib.decodeSound(idx,callbacks);
     },
     fiber$decodeSound :function _trc_T2MediaPlayer_f_decodeSound(_thread,idx,callbacks) {
@@ -23150,7 +23310,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=66002412;//kernel.T2MediaPlayer:2412
+      //$LASTPOS=68002412;//kernel.T2MediaPlayer:2412
       Tonyu.globals.$t2MediaLib.decodeSound(idx,callbacks);
       
       _thread.retVal=_this;return;
@@ -23228,52 +23388,52 @@ Tonyu.klass.define({
       var _this=this;
       var o;
       
-      //$LASTPOS=66002908;//kernel.T2MediaPlayer:2908
+      //$LASTPOS=68002908;//kernel.T2MediaPlayer:2908
       if (_this.mute) {
         return _this;
       }
-      //$LASTPOS=66002931;//kernel.T2MediaPlayer:2931
+      //$LASTPOS=68002931;//kernel.T2MediaPlayer:2931
       if (vol&&typeof  vol==="object") {
-        //$LASTPOS=66002986;//kernel.T2MediaPlayer:2986
+        //$LASTPOS=68002986;//kernel.T2MediaPlayer:2986
         o = vol;
         
-        //$LASTPOS=66003006;//kernel.T2MediaPlayer:3006
+        //$LASTPOS=68003006;//kernel.T2MediaPlayer:3006
         vol=o.vol;
-        //$LASTPOS=66003026;//kernel.T2MediaPlayer:3026
+        //$LASTPOS=68003026;//kernel.T2MediaPlayer:3026
         pan=o.pan;
-        //$LASTPOS=66003046;//kernel.T2MediaPlayer:3046
+        //$LASTPOS=68003046;//kernel.T2MediaPlayer:3046
         rate=o.rate;
-        //$LASTPOS=66003068;//kernel.T2MediaPlayer:3068
+        //$LASTPOS=68003068;//kernel.T2MediaPlayer:3068
         offset=o.offset;
-        //$LASTPOS=66003094;//kernel.T2MediaPlayer:3094
+        //$LASTPOS=68003094;//kernel.T2MediaPlayer:3094
         loop=o.loop;
-        //$LASTPOS=66003116;//kernel.T2MediaPlayer:3116
+        //$LASTPOS=68003116;//kernel.T2MediaPlayer:3116
         loopStart=o.loopStart;
-        //$LASTPOS=66003148;//kernel.T2MediaPlayer:3148
+        //$LASTPOS=68003148;//kernel.T2MediaPlayer:3148
         loopEnd=o.loopEnd;
-        //$LASTPOS=66003176;//kernel.T2MediaPlayer:3176
+        //$LASTPOS=68003176;//kernel.T2MediaPlayer:3176
         start=o.start;
-        //$LASTPOS=66003200;//kernel.T2MediaPlayer:3200
+        //$LASTPOS=68003200;//kernel.T2MediaPlayer:3200
         duration=o.duration;
         
       }
-      //$LASTPOS=66003368;//kernel.T2MediaPlayer:3368
+      //$LASTPOS=68003368;//kernel.T2MediaPlayer:3368
       if (vol==null) {
-        //$LASTPOS=66003385;//kernel.T2MediaPlayer:3385
+        //$LASTPOS=68003385;//kernel.T2MediaPlayer:3385
         vol=128;
       }
-      //$LASTPOS=66003401;//kernel.T2MediaPlayer:3401
+      //$LASTPOS=68003401;//kernel.T2MediaPlayer:3401
       if (typeof  vol==="number") {
-        //$LASTPOS=66003441;//kernel.T2MediaPlayer:3441
+        //$LASTPOS=68003441;//kernel.T2MediaPlayer:3441
         vol/=128;
-        //$LASTPOS=66003462;//kernel.T2MediaPlayer:3462
+        //$LASTPOS=68003462;//kernel.T2MediaPlayer:3462
         if (vol<0) {
-          //$LASTPOS=66003477;//kernel.T2MediaPlayer:3477
+          //$LASTPOS=68003477;//kernel.T2MediaPlayer:3477
           vol=0;
         }
         
       } else {
-        //$LASTPOS=66003511;//kernel.T2MediaPlayer:3511
+        //$LASTPOS=68003511;//kernel.T2MediaPlayer:3511
         vol=1;
         
       }
@@ -23334,13 +23494,13 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=66003884;//kernel.T2MediaPlayer:3884
+      //$LASTPOS=68003884;//kernel.T2MediaPlayer:3884
       if (typeof  vol==="number") {
-        //$LASTPOS=66003924;//kernel.T2MediaPlayer:3924
+        //$LASTPOS=68003924;//kernel.T2MediaPlayer:3924
         vol/=128;
-        //$LASTPOS=66003945;//kernel.T2MediaPlayer:3945
+        //$LASTPOS=68003945;//kernel.T2MediaPlayer:3945
         if (vol<0) {
-          //$LASTPOS=66003960;//kernel.T2MediaPlayer:3960
+          //$LASTPOS=68003960;//kernel.T2MediaPlayer:3960
           vol=0;
         }
         
@@ -23356,13 +23516,13 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=66003884;//kernel.T2MediaPlayer:3884
+      //$LASTPOS=68003884;//kernel.T2MediaPlayer:3884
       if (typeof  vol==="number") {
-        //$LASTPOS=66003924;//kernel.T2MediaPlayer:3924
+        //$LASTPOS=68003924;//kernel.T2MediaPlayer:3924
         vol/=128;
-        //$LASTPOS=66003945;//kernel.T2MediaPlayer:3945
+        //$LASTPOS=68003945;//kernel.T2MediaPlayer:3945
         if (vol<0) {
-          //$LASTPOS=66003960;//kernel.T2MediaPlayer:3960
+          //$LASTPOS=68003960;//kernel.T2MediaPlayer:3960
           vol=0;
         }
         
@@ -23381,7 +23541,7 @@ Tonyu.klass.define({
       var _this=this;
       var vol;
       
-      //$LASTPOS=66004194;//kernel.T2MediaPlayer:4194
+      //$LASTPOS=68004194;//kernel.T2MediaPlayer:4194
       vol = Tonyu.globals.$t2MediaLib.getSEVolume(sourceObj);
       
       return typeof  vol==="number"?vol*128:vol;
@@ -23393,7 +23553,7 @@ Tonyu.klass.define({
       var __pc=0;
       var vol;
       
-      //$LASTPOS=66004194;//kernel.T2MediaPlayer:4194
+      //$LASTPOS=68004194;//kernel.T2MediaPlayer:4194
       vol = Tonyu.globals.$t2MediaLib.getSEVolume(sourceObj);
       
       _thread.retVal=typeof  vol==="number"?vol*128:vol;return;
@@ -23405,13 +23565,13 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=66004337;//kernel.T2MediaPlayer:4337
+      //$LASTPOS=68004337;//kernel.T2MediaPlayer:4337
       if (typeof  vol==="number") {
-        //$LASTPOS=66004377;//kernel.T2MediaPlayer:4377
+        //$LASTPOS=68004377;//kernel.T2MediaPlayer:4377
         vol/=128;
-        //$LASTPOS=66004398;//kernel.T2MediaPlayer:4398
+        //$LASTPOS=68004398;//kernel.T2MediaPlayer:4398
         if (vol<0) {
-          //$LASTPOS=66004413;//kernel.T2MediaPlayer:4413
+          //$LASTPOS=68004413;//kernel.T2MediaPlayer:4413
           vol=0;
         }
         
@@ -23427,13 +23587,13 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=66004337;//kernel.T2MediaPlayer:4337
+      //$LASTPOS=68004337;//kernel.T2MediaPlayer:4337
       if (typeof  vol==="number") {
-        //$LASTPOS=66004377;//kernel.T2MediaPlayer:4377
+        //$LASTPOS=68004377;//kernel.T2MediaPlayer:4377
         vol/=128;
-        //$LASTPOS=66004398;//kernel.T2MediaPlayer:4398
+        //$LASTPOS=68004398;//kernel.T2MediaPlayer:4398
         if (vol<0) {
-          //$LASTPOS=66004413;//kernel.T2MediaPlayer:4413
+          //$LASTPOS=68004413;//kernel.T2MediaPlayer:4413
           vol=0;
         }
         
@@ -23621,18 +23781,18 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=66005609;//kernel.T2MediaPlayer:5609
+      //$LASTPOS=68005609;//kernel.T2MediaPlayer:5609
       if (_this.mute) {
         return _this;
       }
-      //$LASTPOS=66005632;//kernel.T2MediaPlayer:5632
+      //$LASTPOS=68005632;//kernel.T2MediaPlayer:5632
       if (loop==null) {
-        //$LASTPOS=66005650;//kernel.T2MediaPlayer:5650
+        //$LASTPOS=68005650;//kernel.T2MediaPlayer:5650
         loop=false;
       }
-      //$LASTPOS=66005669;//kernel.T2MediaPlayer:5669
+      //$LASTPOS=68005669;//kernel.T2MediaPlayer:5669
       if (offset==null) {
-        //$LASTPOS=66005689;//kernel.T2MediaPlayer:5689
+        //$LASTPOS=68005689;//kernel.T2MediaPlayer:5689
         offset=0;
       }
       return Tonyu.globals.$t2MediaLib.playBGM(0,idx,loop,offset,loopStart,loopEnd);
@@ -23643,19 +23803,19 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=66005609;//kernel.T2MediaPlayer:5609
+      //$LASTPOS=68005609;//kernel.T2MediaPlayer:5609
       if (_this.mute) {
         _thread.retVal=_this;return;
         
       }
-      //$LASTPOS=66005632;//kernel.T2MediaPlayer:5632
+      //$LASTPOS=68005632;//kernel.T2MediaPlayer:5632
       if (loop==null) {
-        //$LASTPOS=66005650;//kernel.T2MediaPlayer:5650
+        //$LASTPOS=68005650;//kernel.T2MediaPlayer:5650
         loop=false;
       }
-      //$LASTPOS=66005669;//kernel.T2MediaPlayer:5669
+      //$LASTPOS=68005669;//kernel.T2MediaPlayer:5669
       if (offset==null) {
-        //$LASTPOS=66005689;//kernel.T2MediaPlayer:5689
+        //$LASTPOS=68005689;//kernel.T2MediaPlayer:5689
         offset=0;
       }
       _thread.retVal=Tonyu.globals.$t2MediaLib.playBGM(0,idx,loop,offset,loopStart,loopEnd);return;
@@ -23701,7 +23861,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=66005914;//kernel.T2MediaPlayer:5914
+      //$LASTPOS=68005914;//kernel.T2MediaPlayer:5914
       if (_this.mute) {
         return _this;
       }
@@ -23713,7 +23873,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=66005914;//kernel.T2MediaPlayer:5914
+      //$LASTPOS=68005914;//kernel.T2MediaPlayer:5914
       if (_this.mute) {
         _thread.retVal=_this;return;
         
@@ -23744,13 +23904,13 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=66006090;//kernel.T2MediaPlayer:6090
+      //$LASTPOS=68006090;//kernel.T2MediaPlayer:6090
       if (typeof  vol==="number") {
-        //$LASTPOS=66006130;//kernel.T2MediaPlayer:6130
+        //$LASTPOS=68006130;//kernel.T2MediaPlayer:6130
         vol/=128;
-        //$LASTPOS=66006151;//kernel.T2MediaPlayer:6151
+        //$LASTPOS=68006151;//kernel.T2MediaPlayer:6151
         if (vol<0) {
-          //$LASTPOS=66006166;//kernel.T2MediaPlayer:6166
+          //$LASTPOS=68006166;//kernel.T2MediaPlayer:6166
           vol=0;
         }
         
@@ -23766,13 +23926,13 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=66006090;//kernel.T2MediaPlayer:6090
+      //$LASTPOS=68006090;//kernel.T2MediaPlayer:6090
       if (typeof  vol==="number") {
-        //$LASTPOS=66006130;//kernel.T2MediaPlayer:6130
+        //$LASTPOS=68006130;//kernel.T2MediaPlayer:6130
         vol/=128;
-        //$LASTPOS=66006151;//kernel.T2MediaPlayer:6151
+        //$LASTPOS=68006151;//kernel.T2MediaPlayer:6151
         if (vol<0) {
-          //$LASTPOS=66006166;//kernel.T2MediaPlayer:6166
+          //$LASTPOS=68006166;//kernel.T2MediaPlayer:6166
           vol=0;
         }
         
@@ -23791,7 +23951,7 @@ Tonyu.klass.define({
       var _this=this;
       var vol;
       
-      //$LASTPOS=66006395;//kernel.T2MediaPlayer:6395
+      //$LASTPOS=68006395;//kernel.T2MediaPlayer:6395
       vol = Tonyu.globals.$t2MediaLib.getBGMVolume(0);
       
       return typeof  vol==="number"?vol*128:vol;
@@ -23803,7 +23963,7 @@ Tonyu.klass.define({
       var __pc=0;
       var vol;
       
-      //$LASTPOS=66006395;//kernel.T2MediaPlayer:6395
+      //$LASTPOS=68006395;//kernel.T2MediaPlayer:6395
       vol = Tonyu.globals.$t2MediaLib.getBGMVolume(0);
       
       _thread.retVal=typeof  vol==="number"?vol*128:vol;return;
@@ -23815,13 +23975,13 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=66006617;//kernel.T2MediaPlayer:6617
+      //$LASTPOS=68006617;//kernel.T2MediaPlayer:6617
       if (typeof  vol==="number") {
-        //$LASTPOS=66006657;//kernel.T2MediaPlayer:6657
+        //$LASTPOS=68006657;//kernel.T2MediaPlayer:6657
         vol/=128;
-        //$LASTPOS=66006678;//kernel.T2MediaPlayer:6678
+        //$LASTPOS=68006678;//kernel.T2MediaPlayer:6678
         if (vol<0) {
-          //$LASTPOS=66006693;//kernel.T2MediaPlayer:6693
+          //$LASTPOS=68006693;//kernel.T2MediaPlayer:6693
           vol=0;
         }
         
@@ -23837,13 +23997,13 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=66006617;//kernel.T2MediaPlayer:6617
+      //$LASTPOS=68006617;//kernel.T2MediaPlayer:6617
       if (typeof  vol==="number") {
-        //$LASTPOS=66006657;//kernel.T2MediaPlayer:6657
+        //$LASTPOS=68006657;//kernel.T2MediaPlayer:6657
         vol/=128;
-        //$LASTPOS=66006678;//kernel.T2MediaPlayer:6678
+        //$LASTPOS=68006678;//kernel.T2MediaPlayer:6678
         if (vol<0) {
-          //$LASTPOS=66006693;//kernel.T2MediaPlayer:6693
+          //$LASTPOS=68006693;//kernel.T2MediaPlayer:6693
           vol=0;
         }
         
@@ -24150,7 +24310,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=66008159;//kernel.T2MediaPlayer:8159
+      //$LASTPOS=68008159;//kernel.T2MediaPlayer:8159
       Tonyu.globals.$t2MediaLib.allStopBGM();
     },
     fiber$allStopBGM :function _trc_T2MediaPlayer_f_allStopBGM(_thread) {
@@ -24159,7 +24319,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=66008159;//kernel.T2MediaPlayer:8159
+      //$LASTPOS=68008159;//kernel.T2MediaPlayer:8159
       Tonyu.globals.$t2MediaLib.allStopBGM();
       
       _thread.retVal=_this;return;
@@ -24168,7 +24328,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=66008213;//kernel.T2MediaPlayer:8213
+      //$LASTPOS=68008213;//kernel.T2MediaPlayer:8213
       Tonyu.globals.$t2MediaLib.allResetBGM();
     },
     fiber$allResetBGM :function _trc_T2MediaPlayer_f_allResetBGM(_thread) {
@@ -24177,7 +24337,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=66008213;//kernel.T2MediaPlayer:8213
+      //$LASTPOS=68008213;//kernel.T2MediaPlayer:8213
       Tonyu.globals.$t2MediaLib.allResetBGM();
       
       _thread.retVal=_this;return;
@@ -24186,18 +24346,18 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=66008323;//kernel.T2MediaPlayer:8323
+      //$LASTPOS=68008323;//kernel.T2MediaPlayer:8323
       if (_this.mute) {
         return _this;
       }
-      //$LASTPOS=66008346;//kernel.T2MediaPlayer:8346
+      //$LASTPOS=68008346;//kernel.T2MediaPlayer:8346
       if (loop==null) {
-        //$LASTPOS=66008364;//kernel.T2MediaPlayer:8364
+        //$LASTPOS=68008364;//kernel.T2MediaPlayer:8364
         loop=false;
       }
-      //$LASTPOS=66008383;//kernel.T2MediaPlayer:8383
+      //$LASTPOS=68008383;//kernel.T2MediaPlayer:8383
       if (offset==null) {
-        //$LASTPOS=66008403;//kernel.T2MediaPlayer:8403
+        //$LASTPOS=68008403;//kernel.T2MediaPlayer:8403
         offset=0;
       }
       return Tonyu.globals.$t2MediaLib.playBGM(id,idx,loop,offset,loopStart,loopEnd);
@@ -24208,19 +24368,19 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=66008323;//kernel.T2MediaPlayer:8323
+      //$LASTPOS=68008323;//kernel.T2MediaPlayer:8323
       if (_this.mute) {
         _thread.retVal=_this;return;
         
       }
-      //$LASTPOS=66008346;//kernel.T2MediaPlayer:8346
+      //$LASTPOS=68008346;//kernel.T2MediaPlayer:8346
       if (loop==null) {
-        //$LASTPOS=66008364;//kernel.T2MediaPlayer:8364
+        //$LASTPOS=68008364;//kernel.T2MediaPlayer:8364
         loop=false;
       }
-      //$LASTPOS=66008383;//kernel.T2MediaPlayer:8383
+      //$LASTPOS=68008383;//kernel.T2MediaPlayer:8383
       if (offset==null) {
-        //$LASTPOS=66008403;//kernel.T2MediaPlayer:8403
+        //$LASTPOS=68008403;//kernel.T2MediaPlayer:8403
         offset=0;
       }
       _thread.retVal=Tonyu.globals.$t2MediaLib.playBGM(id,idx,loop,offset,loopStart,loopEnd);return;
@@ -24266,7 +24426,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=66008643;//kernel.T2MediaPlayer:8643
+      //$LASTPOS=68008643;//kernel.T2MediaPlayer:8643
       if (_this.mute) {
         return _this;
       }
@@ -24278,7 +24438,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=66008643;//kernel.T2MediaPlayer:8643
+      //$LASTPOS=68008643;//kernel.T2MediaPlayer:8643
       if (_this.mute) {
         _thread.retVal=_this;return;
         
@@ -24293,7 +24453,7 @@ Tonyu.klass.define({
       var _this=this;
       var vol;
       
-      //$LASTPOS=66008733;//kernel.T2MediaPlayer:8733
+      //$LASTPOS=68008733;//kernel.T2MediaPlayer:8733
       vol = Tonyu.globals.$t2MediaLib.getBGMVolume(id);
       
       return typeof  vol==="number"?vol*128:vol;
@@ -24305,7 +24465,7 @@ Tonyu.klass.define({
       var __pc=0;
       var vol;
       
-      //$LASTPOS=66008733;//kernel.T2MediaPlayer:8733
+      //$LASTPOS=68008733;//kernel.T2MediaPlayer:8733
       vol = Tonyu.globals.$t2MediaLib.getBGMVolume(id);
       
       _thread.retVal=typeof  vol==="number"?vol*128:vol;return;
@@ -24317,13 +24477,13 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=66008962;//kernel.T2MediaPlayer:8962
+      //$LASTPOS=68008962;//kernel.T2MediaPlayer:8962
       if (typeof  vol==="number") {
-        //$LASTPOS=66009002;//kernel.T2MediaPlayer:9002
+        //$LASTPOS=68009002;//kernel.T2MediaPlayer:9002
         vol/=128;
-        //$LASTPOS=66009023;//kernel.T2MediaPlayer:9023
+        //$LASTPOS=68009023;//kernel.T2MediaPlayer:9023
         if (vol<0) {
-          //$LASTPOS=66009038;//kernel.T2MediaPlayer:9038
+          //$LASTPOS=68009038;//kernel.T2MediaPlayer:9038
           vol=0;
         }
         
@@ -24339,13 +24499,13 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=66008962;//kernel.T2MediaPlayer:8962
+      //$LASTPOS=68008962;//kernel.T2MediaPlayer:8962
       if (typeof  vol==="number") {
-        //$LASTPOS=66009002;//kernel.T2MediaPlayer:9002
+        //$LASTPOS=68009002;//kernel.T2MediaPlayer:9002
         vol/=128;
-        //$LASTPOS=66009023;//kernel.T2MediaPlayer:9023
+        //$LASTPOS=68009023;//kernel.T2MediaPlayer:9023
         if (vol<0) {
-          //$LASTPOS=66009038;//kernel.T2MediaPlayer:9038
+          //$LASTPOS=68009038;//kernel.T2MediaPlayer:9038
           vol=0;
         }
         
@@ -24601,11 +24761,11 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=66010565;//kernel.T2MediaPlayer:10565
+      //$LASTPOS=68010565;//kernel.T2MediaPlayer:10565
       Tonyu.globals.$t2MediaLib.loadAudio(idx,src);
-      //$LASTPOS=66010628;//kernel.T2MediaPlayer:10628
+      //$LASTPOS=68010628;//kernel.T2MediaPlayer:10628
       while (Tonyu.globals.$t2MediaLib.getAudioData(idx)==null) {
-        //$LASTPOS=66010674;//kernel.T2MediaPlayer:10674
+        //$LASTPOS=68010674;//kernel.T2MediaPlayer:10674
         _this.update();
       }
     },
@@ -24615,7 +24775,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=66010565;//kernel.T2MediaPlayer:10565
+      //$LASTPOS=68010565;//kernel.T2MediaPlayer:10565
       Tonyu.globals.$t2MediaLib.loadAudio(idx,src);
       
       _thread.enter(function _trc_T2MediaPlayer_ent_loadAudio(_thread) {
@@ -24623,10 +24783,10 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=66010628;//kernel.T2MediaPlayer:10628
+            //$LASTPOS=68010628;//kernel.T2MediaPlayer:10628
           case 1:
             if (!(Tonyu.globals.$t2MediaLib.getAudioData(idx)==null)) { __pc=3     ; break; }
-            //$LASTPOS=66010674;//kernel.T2MediaPlayer:10674
+            //$LASTPOS=68010674;//kernel.T2MediaPlayer:10674
             _this.fiber$update(_thread);
             __pc=2;return;
           case 2:
@@ -24643,18 +24803,18 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=66010730;//kernel.T2MediaPlayer:10730
+      //$LASTPOS=68010730;//kernel.T2MediaPlayer:10730
       if (_this.mute) {
         return _this;
       }
-      //$LASTPOS=66010753;//kernel.T2MediaPlayer:10753
+      //$LASTPOS=68010753;//kernel.T2MediaPlayer:10753
       if (loop==null) {
-        //$LASTPOS=66010771;//kernel.T2MediaPlayer:10771
+        //$LASTPOS=68010771;//kernel.T2MediaPlayer:10771
         loop=false;
       }
-      //$LASTPOS=66010790;//kernel.T2MediaPlayer:10790
+      //$LASTPOS=68010790;//kernel.T2MediaPlayer:10790
       if (startTime==null) {
-        //$LASTPOS=66010813;//kernel.T2MediaPlayer:10813
+        //$LASTPOS=68010813;//kernel.T2MediaPlayer:10813
         startTime=0;
       }
       return Tonyu.globals.$t2MediaLib.playAudio(idx,loop,startTime);
@@ -24665,19 +24825,19 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=66010730;//kernel.T2MediaPlayer:10730
+      //$LASTPOS=68010730;//kernel.T2MediaPlayer:10730
       if (_this.mute) {
         _thread.retVal=_this;return;
         
       }
-      //$LASTPOS=66010753;//kernel.T2MediaPlayer:10753
+      //$LASTPOS=68010753;//kernel.T2MediaPlayer:10753
       if (loop==null) {
-        //$LASTPOS=66010771;//kernel.T2MediaPlayer:10771
+        //$LASTPOS=68010771;//kernel.T2MediaPlayer:10771
         loop=false;
       }
-      //$LASTPOS=66010790;//kernel.T2MediaPlayer:10790
+      //$LASTPOS=68010790;//kernel.T2MediaPlayer:10790
       if (startTime==null) {
-        //$LASTPOS=66010813;//kernel.T2MediaPlayer:10813
+        //$LASTPOS=68010813;//kernel.T2MediaPlayer:10813
         startTime=0;
       }
       _thread.retVal=Tonyu.globals.$t2MediaLib.playAudio(idx,loop,startTime);return;
@@ -24723,7 +24883,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=66011031;//kernel.T2MediaPlayer:11031
+      //$LASTPOS=68011031;//kernel.T2MediaPlayer:11031
       if (_this.mute) {
         return _this;
       }
@@ -24735,7 +24895,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=66011031;//kernel.T2MediaPlayer:11031
+      //$LASTPOS=68011031;//kernel.T2MediaPlayer:11031
       if (_this.mute) {
         _thread.retVal=_this;return;
         
@@ -24749,16 +24909,16 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=66011122;//kernel.T2MediaPlayer:11122
+      //$LASTPOS=68011122;//kernel.T2MediaPlayer:11122
       vol=vol/128;
-      //$LASTPOS=66011144;//kernel.T2MediaPlayer:11144
+      //$LASTPOS=68011144;//kernel.T2MediaPlayer:11144
       if (vol>1) {
-        //$LASTPOS=66011164;//kernel.T2MediaPlayer:11164
+        //$LASTPOS=68011164;//kernel.T2MediaPlayer:11164
         vol=1;
       } else {
-        //$LASTPOS=66011185;//kernel.T2MediaPlayer:11185
+        //$LASTPOS=68011185;//kernel.T2MediaPlayer:11185
         if (vol<0) {
-          //$LASTPOS=66011200;//kernel.T2MediaPlayer:11200
+          //$LASTPOS=68011200;//kernel.T2MediaPlayer:11200
           vol=0;
         }
       }
@@ -24770,16 +24930,16 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=66011122;//kernel.T2MediaPlayer:11122
+      //$LASTPOS=68011122;//kernel.T2MediaPlayer:11122
       vol=vol/128;
-      //$LASTPOS=66011144;//kernel.T2MediaPlayer:11144
+      //$LASTPOS=68011144;//kernel.T2MediaPlayer:11144
       if (vol>1) {
-        //$LASTPOS=66011164;//kernel.T2MediaPlayer:11164
+        //$LASTPOS=68011164;//kernel.T2MediaPlayer:11164
         vol=1;
       } else {
-        //$LASTPOS=66011185;//kernel.T2MediaPlayer:11185
+        //$LASTPOS=68011185;//kernel.T2MediaPlayer:11185
         if (vol<0) {
-          //$LASTPOS=66011200;//kernel.T2MediaPlayer:11200
+          //$LASTPOS=68011200;//kernel.T2MediaPlayer:11200
           vol=0;
         }
       }
@@ -24792,14 +24952,14 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=66011291;//kernel.T2MediaPlayer:11291
+      //$LASTPOS=68011291;//kernel.T2MediaPlayer:11291
       if (tempo>4) {
-        //$LASTPOS=66011313;//kernel.T2MediaPlayer:11313
+        //$LASTPOS=68011313;//kernel.T2MediaPlayer:11313
         tempo=4;
       } else {
-        //$LASTPOS=66011336;//kernel.T2MediaPlayer:11336
+        //$LASTPOS=68011336;//kernel.T2MediaPlayer:11336
         if (tempo<0.5) {
-          //$LASTPOS=66011353;//kernel.T2MediaPlayer:11353
+          //$LASTPOS=68011353;//kernel.T2MediaPlayer:11353
           tempo=0.5;
         }
       }
@@ -24811,14 +24971,14 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=66011291;//kernel.T2MediaPlayer:11291
+      //$LASTPOS=68011291;//kernel.T2MediaPlayer:11291
       if (tempo>4) {
-        //$LASTPOS=66011313;//kernel.T2MediaPlayer:11313
+        //$LASTPOS=68011313;//kernel.T2MediaPlayer:11313
         tempo=4;
       } else {
-        //$LASTPOS=66011336;//kernel.T2MediaPlayer:11336
+        //$LASTPOS=68011336;//kernel.T2MediaPlayer:11336
         if (tempo<0.5) {
-          //$LASTPOS=66011353;//kernel.T2MediaPlayer:11353
+          //$LASTPOS=68011353;//kernel.T2MediaPlayer:11353
           tempo=0.5;
         }
       }
@@ -24924,32 +25084,32 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=67000066;//kernel.PlainChar:66
+      //$LASTPOS=69000066;//kernel.PlainChar:66
       _this.layer=_this.layer||Tonyu.globals.$mainLayer;
-      //$LASTPOS=67000096;//kernel.PlainChar:96
+      //$LASTPOS=69000096;//kernel.PlainChar:96
       if (Tonyu.runMode) {
-        //$LASTPOS=67000126;//kernel.PlainChar:126
+        //$LASTPOS=69000126;//kernel.PlainChar:126
         _this._th=Tonyu.globals.$Boot.schedule(_this,"tMain",[]);
-        //$LASTPOS=67000172;//kernel.PlainChar:172
+        //$LASTPOS=69000172;//kernel.PlainChar:172
         _this.addToLayer();
         
       }
-      //$LASTPOS=67000198;//kernel.PlainChar:198
+      //$LASTPOS=69000198;//kernel.PlainChar:198
       _this._scheduler=_this._scheduler||Tonyu.globals.$Scheduler;
-      //$LASTPOS=67000238;//kernel.PlainChar:238
+      //$LASTPOS=69000238;//kernel.PlainChar:238
       _this.crashScale=1;
-      //$LASTPOS=67000257;//kernel.PlainChar:257
+      //$LASTPOS=69000257;//kernel.PlainChar:257
       if (typeof  x=="object") {
-        //$LASTPOS=67000281;//kernel.PlainChar:281
+        //$LASTPOS=69000281;//kernel.PlainChar:281
         Tonyu.extend(_this,x);
       } else {
-        //$LASTPOS=67000313;//kernel.PlainChar:313
+        //$LASTPOS=69000313;//kernel.PlainChar:313
         if (typeof  x=="number") {
-          //$LASTPOS=67000348;//kernel.PlainChar:348
+          //$LASTPOS=69000348;//kernel.PlainChar:348
           _this.x=x;
-          //$LASTPOS=67000367;//kernel.PlainChar:367
+          //$LASTPOS=69000367;//kernel.PlainChar:367
           _this.y=y;
-          //$LASTPOS=67000386;//kernel.PlainChar:386
+          //$LASTPOS=69000386;//kernel.PlainChar:386
           _this.p=p;
           
         }
@@ -24959,9 +25119,9 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=67000423;//kernel.PlainChar:423
+      //$LASTPOS=69000423;//kernel.PlainChar:423
       _this.onDraw();
-      //$LASTPOS=67000438;//kernel.PlainChar:438
+      //$LASTPOS=69000438;//kernel.PlainChar:438
       if (_this._isInvisible) {
         return _this;
       }
@@ -24970,7 +25130,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=67000512;//kernel.PlainChar:512
+      //$LASTPOS=69000512;//kernel.PlainChar:512
       _this._isInvisible=! v;
     },
     fiber$setVisible :function _trc_PlainChar_f_setVisible(_thread,v) {
@@ -24979,7 +25139,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=67000512;//kernel.PlainChar:512
+      //$LASTPOS=69000512;//kernel.PlainChar:512
       _this._isInvisible=! v;
       
       _thread.retVal=_this;return;
@@ -25002,9 +25162,9 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=67000568;//kernel.PlainChar:568
+      //$LASTPOS=69000568;//kernel.PlainChar:568
       _this.onUpdate();
-      //$LASTPOS=67000585;//kernel.PlainChar:585
+      //$LASTPOS=69000585;//kernel.PlainChar:585
       Tonyu.classes.kernel.Actor.prototype.update.apply( _this, []);
     },
     fiber$update :function _trc_PlainChar_f_update(_thread) {
@@ -25013,7 +25173,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=67000568;//kernel.PlainChar:568
+      //$LASTPOS=69000568;//kernel.PlainChar:568
       _this.onUpdate();
       
       _thread.enter(function _trc_PlainChar_ent_update(_thread) {
@@ -25021,7 +25181,7 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=67000585;//kernel.PlainChar:585
+            //$LASTPOS=69000585;//kernel.PlainChar:585
             Tonyu.classes.kernel.Actor.prototype.fiber$update.apply( _this, [_thread]);
             __pc=1;return;
           case 1:
@@ -25040,9 +25200,9 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=67000641;//kernel.PlainChar:641
+      //$LASTPOS=69000641;//kernel.PlainChar:641
       _this.main();
-      //$LASTPOS=67000654;//kernel.PlainChar:654
+      //$LASTPOS=69000654;//kernel.PlainChar:654
       _this.die();
     },
     fiber$tMain :function _trc_PlainChar_f_tMain(_thread) {
@@ -25057,12 +25217,12 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=67000641;//kernel.PlainChar:641
+            //$LASTPOS=69000641;//kernel.PlainChar:641
             _this.fiber$main(_thread);
             __pc=1;return;
           case 1:
             
-            //$LASTPOS=67000654;//kernel.PlainChar:654
+            //$LASTPOS=69000654;//kernel.PlainChar:654
             _this.die();
             _thread.exit(_this);return;
           }
@@ -25098,7 +25258,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=68000038;//kernel.SecretChar:38
+      //$LASTPOS=70000038;//kernel.SecretChar:38
       _this.onDraw();
     },
     __dummy: false
@@ -25130,28 +25290,28 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=69000043;//kernel.SpriteChar:43
+      //$LASTPOS=71000043;//kernel.SpriteChar:43
       Tonyu.classes.kernel.PlainChar.apply( _this, [x,y,p]);
-      //$LASTPOS=69000062;//kernel.SpriteChar:62
+      //$LASTPOS=71000062;//kernel.SpriteChar:62
       _this.f=f;
-      //$LASTPOS=69000077;//kernel.SpriteChar:77
+      //$LASTPOS=71000077;//kernel.SpriteChar:77
       if (! _this.x) {
-        //$LASTPOS=69000090;//kernel.SpriteChar:90
+        //$LASTPOS=71000090;//kernel.SpriteChar:90
         _this.x=0;
       }
-      //$LASTPOS=69000105;//kernel.SpriteChar:105
+      //$LASTPOS=71000105;//kernel.SpriteChar:105
       if (! _this.y) {
-        //$LASTPOS=69000118;//kernel.SpriteChar:118
+        //$LASTPOS=71000118;//kernel.SpriteChar:118
         _this.y=0;
       }
-      //$LASTPOS=69000133;//kernel.SpriteChar:133
+      //$LASTPOS=71000133;//kernel.SpriteChar:133
       if (! _this.p) {
-        //$LASTPOS=69000146;//kernel.SpriteChar:146
+        //$LASTPOS=71000146;//kernel.SpriteChar:146
         _this.p=0;
       }
-      //$LASTPOS=69000161;//kernel.SpriteChar:161
+      //$LASTPOS=71000161;//kernel.SpriteChar:161
       if (typeof  _this.scaleX!="number") {
-        //$LASTPOS=69000190;//kernel.SpriteChar:190
+        //$LASTPOS=71000190;//kernel.SpriteChar:190
         _this.scaleX=1;
       }
     },
@@ -25159,15 +25319,15 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=69000220;//kernel.SpriteChar:220
+      //$LASTPOS=71000220;//kernel.SpriteChar:220
       if (_this._isInvisible) {
         return _this;
       }
-      //$LASTPOS=69000251;//kernel.SpriteChar:251
+      //$LASTPOS=71000251;//kernel.SpriteChar:251
       _this.onDraw();
-      //$LASTPOS=69000266;//kernel.SpriteChar:266
+      //$LASTPOS=71000266;//kernel.SpriteChar:266
       _this.detectShape();
-      //$LASTPOS=69000286;//kernel.SpriteChar:286
+      //$LASTPOS=71000286;//kernel.SpriteChar:286
       _this.drawSprite(_this.x,_this.y,_this.p,_this.f,_this.zOrder);
     },
     __dummy: false
@@ -25199,7 +25359,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=70000064;//kernel.T1Map:64
+      //$LASTPOS=72000064;//kernel.T1Map:64
       Tonyu.globals.$Screen.setBGColor(c);
     },
     fiber$setBGColor :function _trc_T1Map_f_setBGColor(_thread,c) {
@@ -25208,7 +25368,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=70000064;//kernel.T1Map:64
+      //$LASTPOS=72000064;//kernel.T1Map:64
       Tonyu.globals.$Screen.setBGColor(c);
       
       _thread.retVal=_this;return;
@@ -25219,33 +25379,33 @@ Tonyu.klass.define({
       var f;
       var o;
       
-      //$LASTPOS=70000469;//kernel.T1Map:469
+      //$LASTPOS=72000469;//kernel.T1Map:469
       f = _this.file("../maps/").rel(fileName);
       
-      //$LASTPOS=70000512;//kernel.T1Map:512
+      //$LASTPOS=72000512;//kernel.T1Map:512
       o = f.obj();
       
-      //$LASTPOS=70000532;//kernel.T1Map:532
+      //$LASTPOS=72000532;//kernel.T1Map:532
       _this.chipWidth=o.chipWidth;
-      //$LASTPOS=70000560;//kernel.T1Map:560
+      //$LASTPOS=72000560;//kernel.T1Map:560
       _this.chipHeight=o.chipHeight;
-      //$LASTPOS=70000590;//kernel.T1Map:590
+      //$LASTPOS=72000590;//kernel.T1Map:590
       _this.baseData=o.baseData;
-      //$LASTPOS=70000616;//kernel.T1Map:616
+      //$LASTPOS=72000616;//kernel.T1Map:616
       _this.mapTable=_this.conv(_this.baseData[0],o.pTable);
-      //$LASTPOS=70000658;//kernel.T1Map:658
+      //$LASTPOS=72000658;//kernel.T1Map:658
       _this.mapData=_this.mapTable;
-      //$LASTPOS=70000681;//kernel.T1Map:681
+      //$LASTPOS=72000681;//kernel.T1Map:681
       _this.row=_this.mapTable.length;
-      //$LASTPOS=70000707;//kernel.T1Map:707
+      //$LASTPOS=72000707;//kernel.T1Map:707
       _this.col=_this.mapTable[0].length;
-      //$LASTPOS=70000736;//kernel.T1Map:736
+      //$LASTPOS=72000736;//kernel.T1Map:736
       _this.mapOnTable=_this.conv(_this.baseData[1],o.pTable);
-      //$LASTPOS=70000780;//kernel.T1Map:780
+      //$LASTPOS=72000780;//kernel.T1Map:780
       _this.mapOnData=_this.mapOnTable;
-      //$LASTPOS=70000813;//kernel.T1Map:813
+      //$LASTPOS=72000813;//kernel.T1Map:813
       _this.buf=$("<canvas>").attr({width: _this.col*_this.chipWidth,height: _this.row*_this.chipHeight});
-      //$LASTPOS=70000885;//kernel.T1Map:885
+      //$LASTPOS=72000885;//kernel.T1Map:885
       _this.initMap();
     },
     fiber$load :function _trc_T1Map_f_load(_thread,fileName) {
@@ -25256,17 +25416,17 @@ Tonyu.klass.define({
       var f;
       var o;
       
-      //$LASTPOS=70000469;//kernel.T1Map:469
+      //$LASTPOS=72000469;//kernel.T1Map:469
       f = _this.file("../maps/").rel(fileName);
       
-      //$LASTPOS=70000512;//kernel.T1Map:512
+      //$LASTPOS=72000512;//kernel.T1Map:512
       o = f.obj();
       
-      //$LASTPOS=70000532;//kernel.T1Map:532
+      //$LASTPOS=72000532;//kernel.T1Map:532
       _this.chipWidth=o.chipWidth;
-      //$LASTPOS=70000560;//kernel.T1Map:560
+      //$LASTPOS=72000560;//kernel.T1Map:560
       _this.chipHeight=o.chipHeight;
-      //$LASTPOS=70000590;//kernel.T1Map:590
+      //$LASTPOS=72000590;//kernel.T1Map:590
       _this.baseData=o.baseData;
       
       _thread.enter(function _trc_T1Map_ent_load(_thread) {
@@ -25274,29 +25434,29 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=70000616;//kernel.T1Map:616
+            //$LASTPOS=72000616;//kernel.T1Map:616
             _this.fiber$conv(_thread, _this.baseData[0], o.pTable);
             __pc=1;return;
           case 1:
             _this.mapTable=_thread.retVal;
             
-            //$LASTPOS=70000658;//kernel.T1Map:658
+            //$LASTPOS=72000658;//kernel.T1Map:658
             _this.mapData=_this.mapTable;
-            //$LASTPOS=70000681;//kernel.T1Map:681
+            //$LASTPOS=72000681;//kernel.T1Map:681
             _this.row=_this.mapTable.length;
-            //$LASTPOS=70000707;//kernel.T1Map:707
+            //$LASTPOS=72000707;//kernel.T1Map:707
             _this.col=_this.mapTable[0].length;
-            //$LASTPOS=70000736;//kernel.T1Map:736
+            //$LASTPOS=72000736;//kernel.T1Map:736
             _this.fiber$conv(_thread, _this.baseData[1], o.pTable);
             __pc=2;return;
           case 2:
             _this.mapOnTable=_thread.retVal;
             
-            //$LASTPOS=70000780;//kernel.T1Map:780
+            //$LASTPOS=72000780;//kernel.T1Map:780
             _this.mapOnData=_this.mapOnTable;
-            //$LASTPOS=70000813;//kernel.T1Map:813
+            //$LASTPOS=72000813;//kernel.T1Map:813
             _this.buf=$("<canvas>").attr({width: _this.col*_this.chipWidth,height: _this.row*_this.chipHeight});
-            //$LASTPOS=70000885;//kernel.T1Map:885
+            //$LASTPOS=72000885;//kernel.T1Map:885
             _this.fiber$initMap(_thread);
             __pc=3;return;
           case 3:
@@ -25311,31 +25471,31 @@ Tonyu.klass.define({
       var _this=this;
       var res;
       
-      //$LASTPOS=70000926;//kernel.T1Map:926
+      //$LASTPOS=72000926;//kernel.T1Map:926
       res = [];
       
-      //$LASTPOS=70000943;//kernel.T1Map:943
+      //$LASTPOS=72000943;//kernel.T1Map:943
       mat.forEach((function anonymous_955(row) {
         var rrow;
         
-        //$LASTPOS=70000973;//kernel.T1Map:973
+        //$LASTPOS=72000973;//kernel.T1Map:973
         rrow = [];
         
-        //$LASTPOS=70000995;//kernel.T1Map:995
+        //$LASTPOS=72000995;//kernel.T1Map:995
         res.push(rrow);
-        //$LASTPOS=70001020;//kernel.T1Map:1020
+        //$LASTPOS=72001020;//kernel.T1Map:1020
         row.forEach((function anonymous_1032(dat) {
           var t;
           
-          //$LASTPOS=70001067;//kernel.T1Map:1067
+          //$LASTPOS=72001067;//kernel.T1Map:1067
           t = tbl[dat[0]];
           
-          //$LASTPOS=70001099;//kernel.T1Map:1099
+          //$LASTPOS=72001099;//kernel.T1Map:1099
           if (t) {
-            //$LASTPOS=70001106;//kernel.T1Map:1106
+            //$LASTPOS=72001106;//kernel.T1Map:1106
             rrow.push(Tonyu.globals[t.name]+dat[1]);
           } else {
-            //$LASTPOS=70001165;//kernel.T1Map:1165
+            //$LASTPOS=72001165;//kernel.T1Map:1165
             rrow.push(dat[1]);
           }
         }));
@@ -25349,31 +25509,31 @@ Tonyu.klass.define({
       var __pc=0;
       var res;
       
-      //$LASTPOS=70000926;//kernel.T1Map:926
+      //$LASTPOS=72000926;//kernel.T1Map:926
       res = [];
       
-      //$LASTPOS=70000943;//kernel.T1Map:943
+      //$LASTPOS=72000943;//kernel.T1Map:943
       mat.forEach((function anonymous_955(row) {
         var rrow;
         
-        //$LASTPOS=70000973;//kernel.T1Map:973
+        //$LASTPOS=72000973;//kernel.T1Map:973
         rrow = [];
         
-        //$LASTPOS=70000995;//kernel.T1Map:995
+        //$LASTPOS=72000995;//kernel.T1Map:995
         res.push(rrow);
-        //$LASTPOS=70001020;//kernel.T1Map:1020
+        //$LASTPOS=72001020;//kernel.T1Map:1020
         row.forEach((function anonymous_1032(dat) {
           var t;
           
-          //$LASTPOS=70001067;//kernel.T1Map:1067
+          //$LASTPOS=72001067;//kernel.T1Map:1067
           t = tbl[dat[0]];
           
-          //$LASTPOS=70001099;//kernel.T1Map:1099
+          //$LASTPOS=72001099;//kernel.T1Map:1099
           if (t) {
-            //$LASTPOS=70001106;//kernel.T1Map:1106
+            //$LASTPOS=72001106;//kernel.T1Map:1106
             rrow.push(Tonyu.globals[t.name]+dat[1]);
           } else {
-            //$LASTPOS=70001165;//kernel.T1Map:1165
+            //$LASTPOS=72001165;//kernel.T1Map:1165
             rrow.push(dat[1]);
           }
         }));
@@ -25412,27 +25572,27 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=71000044;//kernel.T1Page:44
+      //$LASTPOS=73000044;//kernel.T1Page:44
       Tonyu.globals.$chars=Tonyu.globals.$Sprites.sprites;
-      //$LASTPOS=71000074;//kernel.T1Page:74
+      //$LASTPOS=73000074;//kernel.T1Page:74
       Tonyu.globals.$Boot.setFrameRate(60);
-      //$LASTPOS=71000103;//kernel.T1Page:103
+      //$LASTPOS=73000103;//kernel.T1Page:103
       Tonyu.globals.$clBlack=_this.color(0,0,0);
-      //$LASTPOS=71000131;//kernel.T1Page:131
+      //$LASTPOS=73000131;//kernel.T1Page:131
       Tonyu.globals.$clRed=_this.color(255,0,0);
-      //$LASTPOS=71000159;//kernel.T1Page:159
+      //$LASTPOS=73000159;//kernel.T1Page:159
       Tonyu.globals.$clGreen=_this.color(0,255,0);
-      //$LASTPOS=71000189;//kernel.T1Page:189
+      //$LASTPOS=73000189;//kernel.T1Page:189
       Tonyu.globals.$clYellow=_this.color(255,255,0);
-      //$LASTPOS=71000222;//kernel.T1Page:222
+      //$LASTPOS=73000222;//kernel.T1Page:222
       Tonyu.globals.$clBlue=_this.color(0,0,255);
-      //$LASTPOS=71000251;//kernel.T1Page:251
+      //$LASTPOS=73000251;//kernel.T1Page:251
       Tonyu.globals.$clPink=_this.color(255,0,255);
-      //$LASTPOS=71000282;//kernel.T1Page:282
+      //$LASTPOS=73000282;//kernel.T1Page:282
       Tonyu.globals.$clAqua=_this.color(0,255,255);
-      //$LASTPOS=71000313;//kernel.T1Page:313
+      //$LASTPOS=73000313;//kernel.T1Page:313
       Tonyu.globals.$clWhite=_this.color(255,255,255);
-      //$LASTPOS=71000347;//kernel.T1Page:347
+      //$LASTPOS=73000347;//kernel.T1Page:347
       Tonyu.globals.$mplayer=new Tonyu.classes.kernel.MediaPlayer;
     },
     fiber$initGlobals :function _trc_T1Page_f_initGlobals(_thread) {
@@ -25441,27 +25601,27 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=71000044;//kernel.T1Page:44
+      //$LASTPOS=73000044;//kernel.T1Page:44
       Tonyu.globals.$chars=Tonyu.globals.$Sprites.sprites;
-      //$LASTPOS=71000074;//kernel.T1Page:74
+      //$LASTPOS=73000074;//kernel.T1Page:74
       Tonyu.globals.$Boot.setFrameRate(60);
-      //$LASTPOS=71000103;//kernel.T1Page:103
+      //$LASTPOS=73000103;//kernel.T1Page:103
       Tonyu.globals.$clBlack=_this.color(0,0,0);
-      //$LASTPOS=71000131;//kernel.T1Page:131
+      //$LASTPOS=73000131;//kernel.T1Page:131
       Tonyu.globals.$clRed=_this.color(255,0,0);
-      //$LASTPOS=71000159;//kernel.T1Page:159
+      //$LASTPOS=73000159;//kernel.T1Page:159
       Tonyu.globals.$clGreen=_this.color(0,255,0);
-      //$LASTPOS=71000189;//kernel.T1Page:189
+      //$LASTPOS=73000189;//kernel.T1Page:189
       Tonyu.globals.$clYellow=_this.color(255,255,0);
-      //$LASTPOS=71000222;//kernel.T1Page:222
+      //$LASTPOS=73000222;//kernel.T1Page:222
       Tonyu.globals.$clBlue=_this.color(0,0,255);
-      //$LASTPOS=71000251;//kernel.T1Page:251
+      //$LASTPOS=73000251;//kernel.T1Page:251
       Tonyu.globals.$clPink=_this.color(255,0,255);
-      //$LASTPOS=71000282;//kernel.T1Page:282
+      //$LASTPOS=73000282;//kernel.T1Page:282
       Tonyu.globals.$clAqua=_this.color(0,255,255);
-      //$LASTPOS=71000313;//kernel.T1Page:313
+      //$LASTPOS=73000313;//kernel.T1Page:313
       Tonyu.globals.$clWhite=_this.color(255,255,255);
-      //$LASTPOS=71000347;//kernel.T1Page:347
+      //$LASTPOS=73000347;//kernel.T1Page:347
       Tonyu.globals.$mplayer=new Tonyu.classes.kernel.MediaPlayer;
       
       _thread.retVal=_this;return;
@@ -25495,37 +25655,37 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=72000072;//kernel.TextChar:72
+      //$LASTPOS=74000072;//kernel.TextChar:72
       Tonyu.classes.kernel.PlainChar.apply( _this, [xx,yy]);
-      //$LASTPOS=72000091;//kernel.TextChar:91
+      //$LASTPOS=74000091;//kernel.TextChar:91
       _this.text=_this.text||"";
-      //$LASTPOS=72000111;//kernel.TextChar:111
+      //$LASTPOS=74000111;//kernel.TextChar:111
       _this.col=Tonyu.globals.$clWhite;
-      //$LASTPOS=72000130;//kernel.TextChar:130
+      //$LASTPOS=74000130;//kernel.TextChar:130
       _this.size=20;
-      //$LASTPOS=72000144;//kernel.TextChar:144
+      //$LASTPOS=74000144;//kernel.TextChar:144
       if (! _this.x) {
-        //$LASTPOS=72000157;//kernel.TextChar:157
+        //$LASTPOS=74000157;//kernel.TextChar:157
         _this.x=0;
       }
-      //$LASTPOS=72000172;//kernel.TextChar:172
+      //$LASTPOS=74000172;//kernel.TextChar:172
       if (! _this.y) {
-        //$LASTPOS=72000185;//kernel.TextChar:185
+        //$LASTPOS=74000185;//kernel.TextChar:185
         _this.y=0;
       }
-      //$LASTPOS=72000200;//kernel.TextChar:200
+      //$LASTPOS=74000200;//kernel.TextChar:200
       if (t) {
-        //$LASTPOS=72000207;//kernel.TextChar:207
+        //$LASTPOS=74000207;//kernel.TextChar:207
         _this.text=t;
       }
-      //$LASTPOS=72000220;//kernel.TextChar:220
+      //$LASTPOS=74000220;//kernel.TextChar:220
       if (c) {
-        //$LASTPOS=72000227;//kernel.TextChar:227
+        //$LASTPOS=74000227;//kernel.TextChar:227
         _this.fillStyle=c;
       }
-      //$LASTPOS=72000245;//kernel.TextChar:245
+      //$LASTPOS=74000245;//kernel.TextChar:245
       if (s) {
-        //$LASTPOS=72000252;//kernel.TextChar:252
+        //$LASTPOS=74000252;//kernel.TextChar:252
         _this.size=s;
       }
     },
@@ -25533,13 +25693,13 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=72000282;//kernel.TextChar:282
+      //$LASTPOS=74000282;//kernel.TextChar:282
       if (_this._isInvisible) {
         return _this;
       }
-      //$LASTPOS=72000313;//kernel.TextChar:313
+      //$LASTPOS=74000313;//kernel.TextChar:313
       _this.onDraw();
-      //$LASTPOS=72000328;//kernel.TextChar:328
+      //$LASTPOS=74000328;//kernel.TextChar:328
       _this.drawText(_this.x,_this.y,_this.text,_this.col,_this.size);
     },
     __dummy: false
@@ -25557,9 +25717,9 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=73000862;//kernel.APad:862
+      //$LASTPOS=75000862;//kernel.APad:862
       if (! _this.auto) {
-        //$LASTPOS=73000873;//kernel.APad:873
+        //$LASTPOS=75000873;//kernel.APad:873
         _this.loop();
       }
     },
@@ -25575,9 +25735,9 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=73000862;//kernel.APad:862
+            //$LASTPOS=75000862;//kernel.APad:862
             if (!(! _this.auto)) { __pc=2     ; break; }
-            //$LASTPOS=73000873;//kernel.APad:873
+            //$LASTPOS=75000873;//kernel.APad:873
             _this.fiber$loop(_thread);
             __pc=1;return;
           case 1:
@@ -25593,68 +25753,68 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=73000033;//kernel.APad:33
+      //$LASTPOS=75000033;//kernel.APad:33
       p=p||{};
-      //$LASTPOS=73000047;//kernel.APad:47
+      //$LASTPOS=75000047;//kernel.APad:47
       if (! p.alpha) {
-        //$LASTPOS=73000061;//kernel.APad:61
+        //$LASTPOS=75000061;//kernel.APad:61
         p.alpha=128;
       }
-      //$LASTPOS=73000079;//kernel.APad:79
+      //$LASTPOS=75000079;//kernel.APad:79
       Tonyu.classes.kernel.Actor.apply( _this, [p]);
-      //$LASTPOS=73000094;//kernel.APad:94
+      //$LASTPOS=75000094;//kernel.APad:94
       _this.vx=0;
-      //$LASTPOS=73000099;//kernel.APad:99
+      //$LASTPOS=75000099;//kernel.APad:99
       _this.vy=0;
-      //$LASTPOS=73000110;//kernel.APad:110
+      //$LASTPOS=75000110;//kernel.APad:110
       _this.outerRadius=_this.outerRadius||50;
-      //$LASTPOS=73000144;//kernel.APad:144
+      //$LASTPOS=75000144;//kernel.APad:144
       _this.fillStyle=_this.fillStyle||"white";
-      //$LASTPOS=73000179;//kernel.APad:179
+      //$LASTPOS=75000179;//kernel.APad:179
       _this.strokeStyle=_this.strokeStyle||"white";
-      //$LASTPOS=73000218;//kernel.APad:218
+      //$LASTPOS=75000218;//kernel.APad:218
       _this.innerRadius=_this.innerRadius||10;
-      //$LASTPOS=73000252;//kernel.APad:252
+      //$LASTPOS=75000252;//kernel.APad:252
       if (typeof  _this.keys==="object") {
-        //$LASTPOS=73000291;//kernel.APad:291
+        //$LASTPOS=75000291;//kernel.APad:291
         _this.leftKey=_this.keys.left;
-        //$LASTPOS=73000319;//kernel.APad:319
+        //$LASTPOS=75000319;//kernel.APad:319
         _this.rightKey=_this.keys.right;
-        //$LASTPOS=73000349;//kernel.APad:349
+        //$LASTPOS=75000349;//kernel.APad:349
         _this.upKey=_this.keys.up;
-        //$LASTPOS=73000373;//kernel.APad:373
+        //$LASTPOS=75000373;//kernel.APad:373
         _this.downKey=_this.keys.down;
         
       }
-      //$LASTPOS=73000404;//kernel.APad:404
+      //$LASTPOS=75000404;//kernel.APad:404
       _this.keySpeed=_this.keySpeed||15/50;
-      //$LASTPOS=73000435;//kernel.APad:435
+      //$LASTPOS=75000435;//kernel.APad:435
       _this.leftKey=_this.leftKey||"left";
-      //$LASTPOS=73000465;//kernel.APad:465
+      //$LASTPOS=75000465;//kernel.APad:465
       _this.rightKey=_this.rightKey||"right";
-      //$LASTPOS=73000498;//kernel.APad:498
+      //$LASTPOS=75000498;//kernel.APad:498
       _this.upKey=_this.upKey||"up";
-      //$LASTPOS=73000522;//kernel.APad:522
+      //$LASTPOS=75000522;//kernel.APad:522
       _this.downKey=_this.downKey||"down";
-      //$LASTPOS=73000552;//kernel.APad:552
+      //$LASTPOS=75000552;//kernel.APad:552
       _this.decay=_this.decay||0.8;
-      //$LASTPOS=73000575;//kernel.APad:575
+      //$LASTPOS=75000575;//kernel.APad:575
       _this.velocity=new Tonyu.classes.kernel.Vec3View(_this,{x: "vx",y: "vy",z: "vz"});
-      //$LASTPOS=73000632;//kernel.APad:632
+      //$LASTPOS=75000632;//kernel.APad:632
       if ((typeof  _this.x!=="number")||_this.x!==_this.x) {
-        //$LASTPOS=73000679;//kernel.APad:679
+        //$LASTPOS=75000679;//kernel.APad:679
         _this.x=Tonyu.globals.$screenWidth/2;
         
       }
-      //$LASTPOS=73000709;//kernel.APad:709
+      //$LASTPOS=75000709;//kernel.APad:709
       if ((typeof  _this.y!=="number")||_this.y!==_this.y) {
-        //$LASTPOS=73000756;//kernel.APad:756
+        //$LASTPOS=75000756;//kernel.APad:756
         _this.y=Tonyu.globals.$screenHeight-_this.outerRadius-_this.innerRadius;
         
       }
-      //$LASTPOS=73000847;//kernel.APad:847
+      //$LASTPOS=75000847;//kernel.APad:847
       _this.ix=_this.x;
-      //$LASTPOS=73000852;//kernel.APad:852
+      //$LASTPOS=75000852;//kernel.APad:852
       _this.iy=_this.y;
     },
     __getter__defaultLayer :function _trc_APad___getter__defaultLayer() {
@@ -25667,49 +25827,49 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=73000968;//kernel.APad:968
+      //$LASTPOS=75000968;//kernel.APad:968
       if (_this.auto) {
-        //$LASTPOS=73000989;//kernel.APad:989
+        //$LASTPOS=75000989;//kernel.APad:989
         _this.ix=_this.x+_this.vx*_this.outerRadius;
-        //$LASTPOS=73001019;//kernel.APad:1019
+        //$LASTPOS=75001019;//kernel.APad:1019
         _this.iy=_this.y+_this.vy*_this.outerRadius;
         
       }
-      //$LASTPOS=73001052;//kernel.APad:1052
+      //$LASTPOS=75001052;//kernel.APad:1052
       ctx.globalAlpha=_this.alpha/255;
-      //$LASTPOS=73001084;//kernel.APad:1084
+      //$LASTPOS=75001084;//kernel.APad:1084
       ctx.fillStyle=_this.fillStyle+"";
-      //$LASTPOS=73001117;//kernel.APad:1117
+      //$LASTPOS=75001117;//kernel.APad:1117
       ctx.beginPath();
-      //$LASTPOS=73001139;//kernel.APad:1139
+      //$LASTPOS=75001139;//kernel.APad:1139
       ctx.arc(_this.ix,_this.iy,_this.innerRadius,0,Tonyu.globals.$Math.PI*2);
-      //$LASTPOS=73001185;//kernel.APad:1185
+      //$LASTPOS=75001185;//kernel.APad:1185
       ctx.closePath();
-      //$LASTPOS=73001207;//kernel.APad:1207
+      //$LASTPOS=75001207;//kernel.APad:1207
       ctx.fill();
-      //$LASTPOS=73001224;//kernel.APad:1224
+      //$LASTPOS=75001224;//kernel.APad:1224
       ctx.strokeStyle=_this.strokeStyle;
-      //$LASTPOS=73001258;//kernel.APad:1258
+      //$LASTPOS=75001258;//kernel.APad:1258
       ctx.beginPath();
-      //$LASTPOS=73001280;//kernel.APad:1280
+      //$LASTPOS=75001280;//kernel.APad:1280
       ctx.arc(_this.x,_this.y,_this.outerRadius,0,Tonyu.globals.$Math.PI*2);
-      //$LASTPOS=73001324;//kernel.APad:1324
+      //$LASTPOS=75001324;//kernel.APad:1324
       ctx.closePath();
-      //$LASTPOS=73001346;//kernel.APad:1346
+      //$LASTPOS=75001346;//kernel.APad:1346
       ctx.stroke();
     },
     findTouch :function _trc_APad_findTouch() {
       "use strict";
       var _this=this;
       var t;
-      var _it_707;
+      var _it_710;
       
-      //$LASTPOS=73001384;//kernel.APad:1384
-      _it_707=Tonyu.iterator(Tonyu.globals.$touches,1);
-      while(_it_707.next()) {
-        t=_it_707[0];
+      //$LASTPOS=75001384;//kernel.APad:1384
+      _it_710=Tonyu.iterator(Tonyu.globals.$touches,1);
+      while(_it_710.next()) {
+        t=_it_710[0];
         
-        //$LASTPOS=73001419;//kernel.APad:1419
+        //$LASTPOS=75001419;//kernel.APad:1419
         if ((! _this.touchRadius||_this.dist(t)<_this.touchRadius)&&t.touched==1) {
           return t;
           
@@ -25723,70 +25883,70 @@ Tonyu.klass.define({
       var vx;
       var vy;
       
-      //$LASTPOS=73001544;//kernel.APad:1544
+      //$LASTPOS=75001544;//kernel.APad:1544
       vx = 0;
       vy = 0;
       
-      //$LASTPOS=73001564;//kernel.APad:1564
+      //$LASTPOS=75001564;//kernel.APad:1564
       while (true) {
-        //$LASTPOS=73001587;//kernel.APad:1587
+        //$LASTPOS=75001587;//kernel.APad:1587
         if (! _this.t||_this.t.ended) {
-          //$LASTPOS=73001606;//kernel.APad:1606
+          //$LASTPOS=75001606;//kernel.APad:1606
           _this.t=_this.findTouch();
         }
-        //$LASTPOS=73001630;//kernel.APad:1630
+        //$LASTPOS=75001630;//kernel.APad:1630
         if (_this.t) {
-          //$LASTPOS=73001652;//kernel.APad:1652
+          //$LASTPOS=75001652;//kernel.APad:1652
           vx+=_this.t.vx;
-          //$LASTPOS=73001675;//kernel.APad:1675
+          //$LASTPOS=75001675;//kernel.APad:1675
           vy+=_this.t.vy;
           
         } else {
-          //$LASTPOS=73001716;//kernel.APad:1716
+          //$LASTPOS=75001716;//kernel.APad:1716
           vx*=_this.decay;
-          //$LASTPOS=73001740;//kernel.APad:1740
+          //$LASTPOS=75001740;//kernel.APad:1740
           vy*=_this.decay;
           
         }
-        //$LASTPOS=73001835;//kernel.APad:1835
+        //$LASTPOS=75001835;//kernel.APad:1835
         if (_this.getkey(_this.leftKey)) {
-          //$LASTPOS=73001856;//kernel.APad:1856
+          //$LASTPOS=75001856;//kernel.APad:1856
           vx-=_this.keySpeed*_this.outerRadius;
         }
-        //$LASTPOS=73001891;//kernel.APad:1891
+        //$LASTPOS=75001891;//kernel.APad:1891
         if (_this.getkey(_this.rightKey)) {
-          //$LASTPOS=73001913;//kernel.APad:1913
+          //$LASTPOS=75001913;//kernel.APad:1913
           vx+=_this.keySpeed*_this.outerRadius;
         }
-        //$LASTPOS=73001948;//kernel.APad:1948
+        //$LASTPOS=75001948;//kernel.APad:1948
         if (_this.getkey(_this.upKey)) {
-          //$LASTPOS=73001967;//kernel.APad:1967
+          //$LASTPOS=75001967;//kernel.APad:1967
           vy-=_this.keySpeed*_this.outerRadius;
         }
-        //$LASTPOS=73002002;//kernel.APad:2002
+        //$LASTPOS=75002002;//kernel.APad:2002
         if (_this.getkey(_this.downKey)) {
-          //$LASTPOS=73002023;//kernel.APad:2023
+          //$LASTPOS=75002023;//kernel.APad:2023
           vy+=_this.keySpeed*_this.outerRadius;
         }
-        //$LASTPOS=73002058;//kernel.APad:2058
+        //$LASTPOS=75002058;//kernel.APad:2058
         _this.d=_this.dist(vx,vy);
-        //$LASTPOS=73002082;//kernel.APad:2082
+        //$LASTPOS=75002082;//kernel.APad:2082
         if (_this.d>_this.outerRadius) {
-          //$LASTPOS=73002116;//kernel.APad:2116
+          //$LASTPOS=75002116;//kernel.APad:2116
           vx=vx/_this.d*_this.outerRadius;
-          //$LASTPOS=73002150;//kernel.APad:2150
+          //$LASTPOS=75002150;//kernel.APad:2150
           vy=vy/_this.d*_this.outerRadius;
           
         }
-        //$LASTPOS=73002191;//kernel.APad:2191
+        //$LASTPOS=75002191;//kernel.APad:2191
         _this.ix=_this.x+vx;
-        //$LASTPOS=73002209;//kernel.APad:2209
+        //$LASTPOS=75002209;//kernel.APad:2209
         _this.iy=_this.y+vy;
-        //$LASTPOS=73002227;//kernel.APad:2227
+        //$LASTPOS=75002227;//kernel.APad:2227
         _this.vx=_this.clamp(vx/_this.outerRadius,- 1,1);
-        //$LASTPOS=73002272;//kernel.APad:2272
+        //$LASTPOS=75002272;//kernel.APad:2272
         _this.vy=_this.clamp(vy/_this.outerRadius,- 1,1);
-        //$LASTPOS=73002317;//kernel.APad:2317
+        //$LASTPOS=75002317;//kernel.APad:2317
         _this.update();
         
       }
@@ -25799,7 +25959,7 @@ Tonyu.klass.define({
       var vx;
       var vy;
       
-      //$LASTPOS=73001544;//kernel.APad:1544
+      //$LASTPOS=75001544;//kernel.APad:1544
       vx = 0;
       vy = 0;
       
@@ -25809,66 +25969,66 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=73001564;//kernel.APad:1564
+            //$LASTPOS=75001564;//kernel.APad:1564
           case 1:
-            //$LASTPOS=73001587;//kernel.APad:1587
+            //$LASTPOS=75001587;//kernel.APad:1587
             if (! _this.t||_this.t.ended) {
-              //$LASTPOS=73001606;//kernel.APad:1606
+              //$LASTPOS=75001606;//kernel.APad:1606
               _this.t=_this.findTouch();
             }
-            //$LASTPOS=73001630;//kernel.APad:1630
+            //$LASTPOS=75001630;//kernel.APad:1630
             if (_this.t) {
-              //$LASTPOS=73001652;//kernel.APad:1652
+              //$LASTPOS=75001652;//kernel.APad:1652
               vx+=_this.t.vx;
-              //$LASTPOS=73001675;//kernel.APad:1675
+              //$LASTPOS=75001675;//kernel.APad:1675
               vy+=_this.t.vy;
               
             } else {
-              //$LASTPOS=73001716;//kernel.APad:1716
+              //$LASTPOS=75001716;//kernel.APad:1716
               vx*=_this.decay;
-              //$LASTPOS=73001740;//kernel.APad:1740
+              //$LASTPOS=75001740;//kernel.APad:1740
               vy*=_this.decay;
               
             }
-            //$LASTPOS=73001835;//kernel.APad:1835
+            //$LASTPOS=75001835;//kernel.APad:1835
             if (_this.getkey(_this.leftKey)) {
-              //$LASTPOS=73001856;//kernel.APad:1856
+              //$LASTPOS=75001856;//kernel.APad:1856
               vx-=_this.keySpeed*_this.outerRadius;
             }
-            //$LASTPOS=73001891;//kernel.APad:1891
+            //$LASTPOS=75001891;//kernel.APad:1891
             if (_this.getkey(_this.rightKey)) {
-              //$LASTPOS=73001913;//kernel.APad:1913
+              //$LASTPOS=75001913;//kernel.APad:1913
               vx+=_this.keySpeed*_this.outerRadius;
             }
-            //$LASTPOS=73001948;//kernel.APad:1948
+            //$LASTPOS=75001948;//kernel.APad:1948
             if (_this.getkey(_this.upKey)) {
-              //$LASTPOS=73001967;//kernel.APad:1967
+              //$LASTPOS=75001967;//kernel.APad:1967
               vy-=_this.keySpeed*_this.outerRadius;
             }
-            //$LASTPOS=73002002;//kernel.APad:2002
+            //$LASTPOS=75002002;//kernel.APad:2002
             if (_this.getkey(_this.downKey)) {
-              //$LASTPOS=73002023;//kernel.APad:2023
+              //$LASTPOS=75002023;//kernel.APad:2023
               vy+=_this.keySpeed*_this.outerRadius;
             }
-            //$LASTPOS=73002058;//kernel.APad:2058
+            //$LASTPOS=75002058;//kernel.APad:2058
             _this.d=_this.dist(vx,vy);
-            //$LASTPOS=73002082;//kernel.APad:2082
+            //$LASTPOS=75002082;//kernel.APad:2082
             if (_this.d>_this.outerRadius) {
-              //$LASTPOS=73002116;//kernel.APad:2116
+              //$LASTPOS=75002116;//kernel.APad:2116
               vx=vx/_this.d*_this.outerRadius;
-              //$LASTPOS=73002150;//kernel.APad:2150
+              //$LASTPOS=75002150;//kernel.APad:2150
               vy=vy/_this.d*_this.outerRadius;
               
             }
-            //$LASTPOS=73002191;//kernel.APad:2191
+            //$LASTPOS=75002191;//kernel.APad:2191
             _this.ix=_this.x+vx;
-            //$LASTPOS=73002209;//kernel.APad:2209
+            //$LASTPOS=75002209;//kernel.APad:2209
             _this.iy=_this.y+vy;
-            //$LASTPOS=73002227;//kernel.APad:2227
+            //$LASTPOS=75002227;//kernel.APad:2227
             _this.vx=_this.clamp(vx/_this.outerRadius,- 1,1);
-            //$LASTPOS=73002272;//kernel.APad:2272
+            //$LASTPOS=75002272;//kernel.APad:2272
             _this.vy=_this.clamp(vy/_this.outerRadius,- 1,1);
-            //$LASTPOS=73002317;//kernel.APad:2317
+            //$LASTPOS=75002317;//kernel.APad:2317
             _this.fiber$update(_thread);
             __pc=2;return;
           case 2:
@@ -25908,30 +26068,30 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=74000575;//kernel.Button:575
+      //$LASTPOS=76000575;//kernel.Button:575
       while (true) {
-        //$LASTPOS=74000594;//kernel.Button:594
+        //$LASTPOS=76000594;//kernel.Button:594
         if (! _this.disabled) {
-          //$LASTPOS=74000620;//kernel.Button:620
+          //$LASTPOS=76000620;//kernel.Button:620
           _this.clicked=_this.checkTouch();
-          //$LASTPOS=74000651;//kernel.Button:651
+          //$LASTPOS=76000651;//kernel.Button:651
           if (_this.clicked==1) {
-            //$LASTPOS=74000682;//kernel.Button:682
+            //$LASTPOS=76000682;//kernel.Button:682
             Tonyu.classes.kernel.Button.last=_this;
-            //$LASTPOS=74000713;//kernel.Button:713
+            //$LASTPOS=76000713;//kernel.Button:713
             if (_this.onClick) {
-              //$LASTPOS=74000726;//kernel.Button:726
+              //$LASTPOS=76000726;//kernel.Button:726
               _this.onClick(_this);
             }
             
           }
           
         } else {
-          //$LASTPOS=74000775;//kernel.Button:775
+          //$LASTPOS=76000775;//kernel.Button:775
           _this.clicked=0;
           
         }
-        //$LASTPOS=74000798;//kernel.Button:798
+        //$LASTPOS=76000798;//kernel.Button:798
         _this.update();
         
       }
@@ -25948,23 +26108,23 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=74000575;//kernel.Button:575
+            //$LASTPOS=76000575;//kernel.Button:575
           case 1:
-            //$LASTPOS=74000594;//kernel.Button:594
+            //$LASTPOS=76000594;//kernel.Button:594
             if (!(! _this.disabled)) { __pc=3     ; break; }
-            //$LASTPOS=74000620;//kernel.Button:620
+            //$LASTPOS=76000620;//kernel.Button:620
             _this.fiber$checkTouch(_thread);
             __pc=2;return;
           case 2:
             _this.clicked=_thread.retVal;
             
-            //$LASTPOS=74000651;//kernel.Button:651
+            //$LASTPOS=76000651;//kernel.Button:651
             if (_this.clicked==1) {
-              //$LASTPOS=74000682;//kernel.Button:682
+              //$LASTPOS=76000682;//kernel.Button:682
               Tonyu.classes.kernel.Button.last=_this;
-              //$LASTPOS=74000713;//kernel.Button:713
+              //$LASTPOS=76000713;//kernel.Button:713
               if (_this.onClick) {
-                //$LASTPOS=74000726;//kernel.Button:726
+                //$LASTPOS=76000726;//kernel.Button:726
                 _this.onClick(_this);
               }
               
@@ -25972,12 +26132,12 @@ Tonyu.klass.define({
             __pc=4     ;break;
           case 3     :
             {
-              //$LASTPOS=74000775;//kernel.Button:775
+              //$LASTPOS=76000775;//kernel.Button:775
               _this.clicked=0;
             }
           case 4     :
             
-            //$LASTPOS=74000798;//kernel.Button:798
+            //$LASTPOS=76000798;//kernel.Button:798
             _this.fiber$update(_thread);
             __pc=5;return;
           case 5:
@@ -25994,45 +26154,45 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=74000121;//kernel.Button:121
+      //$LASTPOS=76000121;//kernel.Button:121
       options.layer=options.layer||Tonyu.globals.$frontLayer;
-      //$LASTPOS=74000168;//kernel.Button:168
+      //$LASTPOS=76000168;//kernel.Button:168
       Tonyu.classes.kernel.Actor.apply( _this, [options]);
-      //$LASTPOS=74000189;//kernel.Button:189
+      //$LASTPOS=76000189;//kernel.Button:189
       _this.fillStyle=_this.fillStyle||"rgb(179,255,142)";
-      //$LASTPOS=74000235;//kernel.Button:235
+      //$LASTPOS=76000235;//kernel.Button:235
       _this.strokeStyle=_this.strokeStyle||"black";
-      //$LASTPOS=74000274;//kernel.Button:274
+      //$LASTPOS=76000274;//kernel.Button:274
       _this.clickedStyle=_this.clickedStyle||"white";
-      //$LASTPOS=74000315;//kernel.Button:315
+      //$LASTPOS=76000315;//kernel.Button:315
       _this.disabledStrokeStyle=_this.disabledStrokeStyle||"#ddd";
-      //$LASTPOS=74000369;//kernel.Button:369
+      //$LASTPOS=76000369;//kernel.Button:369
       _this.alpha=typeof  (_this.alpha)=="number"?_this.alpha:255;
-      //$LASTPOS=74000415;//kernel.Button:415
+      //$LASTPOS=76000415;//kernel.Button:415
       _this.padding=typeof  (_this.padding)=="number"?_this.padding:5;
-      //$LASTPOS=74000466;//kernel.Button:466
+      //$LASTPOS=76000466;//kernel.Button:466
       _this.width=_this.width||Tonyu.globals.$screenWidth-100;
-      //$LASTPOS=74000506;//kernel.Button:506
+      //$LASTPOS=76000506;//kernel.Button:506
       _this.height=_this.height||50;
-      //$LASTPOS=74000534;//kernel.Button:534
+      //$LASTPOS=76000534;//kernel.Button:534
       _this.left=typeof  (_this.left)=="number"?_this.left:50;
     },
     checkTouch :function _trc_Button_checkTouch() {
       "use strict";
       var _this=this;
       
-      //$LASTPOS=74000833;//kernel.Button:833
-      //$LASTPOS=74000838;//kernel.Button:838
+      //$LASTPOS=76000833;//kernel.Button:833
+      //$LASTPOS=76000838;//kernel.Button:838
       _this.i=0;for (; _this.i<2 ; _this.i++) {
         {
-          //$LASTPOS=74000865;//kernel.Button:865
+          //$LASTPOS=76000865;//kernel.Button:865
           if (Tonyu.globals.$touches[_this.i].touched>0&&_this.inRect(Tonyu.globals.$touches[_this.i])) {
             return Tonyu.globals.$touches[_this.i].touched;
             
           }
         }
       }
-      //$LASTPOS=74000981;//kernel.Button:981
+      //$LASTPOS=76000981;//kernel.Button:981
       if (_this.key) {
         return _this.getkey(_this.key);
       }
@@ -26044,11 +26204,11 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=74000833;//kernel.Button:833
-      //$LASTPOS=74000838;//kernel.Button:838
+      //$LASTPOS=76000833;//kernel.Button:833
+      //$LASTPOS=76000838;//kernel.Button:838
       _this.i=0;for (; _this.i<2 ; _this.i++) {
         {
-          //$LASTPOS=74000865;//kernel.Button:865
+          //$LASTPOS=76000865;//kernel.Button:865
           if (Tonyu.globals.$touches[_this.i].touched>0&&_this.inRect(Tonyu.globals.$touches[_this.i])) {
             _thread.retVal=Tonyu.globals.$touches[_this.i].touched;return;
             
@@ -26056,7 +26216,7 @@ Tonyu.klass.define({
           }
         }
       }
-      //$LASTPOS=74000981;//kernel.Button:981
+      //$LASTPOS=76000981;//kernel.Button:981
       if (_this.key) {
         _thread.retVal=_this.getkey(_this.key);return;
         
@@ -26070,7 +26230,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=74001047;//kernel.Button:1047
+      //$LASTPOS=76001047;//kernel.Button:1047
       p=Tonyu.globals.$Screen.convert(p,_this.layer);
       return p.x>=_this.left&&p.x<=_this.left+_this.width&&p.y>=_this.top&&p.y<=_this.top+_this.height;
     },
@@ -26080,7 +26240,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=74001047;//kernel.Button:1047
+      //$LASTPOS=76001047;//kernel.Button:1047
       p=Tonyu.globals.$Screen.convert(p,_this.layer);
       _thread.retVal=p.x>=_this.left&&p.x<=_this.left+_this.width&&p.y>=_this.top&&p.y<=_this.top+_this.height;return;
       
@@ -26094,37 +26254,37 @@ Tonyu.klass.define({
       var f;
       var r;
       
-      //$LASTPOS=74001168;//kernel.Button:1168
+      //$LASTPOS=76001168;//kernel.Button:1168
       c.globalAlpha=_this.alpha/255;
-      //$LASTPOS=74001198;//kernel.Button:1198
+      //$LASTPOS=76001198;//kernel.Button:1198
       c.fillStyle=_this.fillStyle?_this.fillStyle+"":"gray";
-      //$LASTPOS=74001250;//kernel.Button:1250
+      //$LASTPOS=76001250;//kernel.Button:1250
       c.strokeStyle=_this.strokeStyle?_this.strokeStyle+"":"black";
-      //$LASTPOS=74001309;//kernel.Button:1309
+      //$LASTPOS=76001309;//kernel.Button:1309
       if (_this.disabled) {
-        //$LASTPOS=74001323;//kernel.Button:1323
+        //$LASTPOS=76001323;//kernel.Button:1323
         c.strokeStyle=_this.disabledStrokeStyle+"";
       }
-      //$LASTPOS=74001366;//kernel.Button:1366
+      //$LASTPOS=76001366;//kernel.Button:1366
       c.fillRect(_this.left,_this.top,_this.width,_this.height);
-      //$LASTPOS=74001409;//kernel.Button:1409
+      //$LASTPOS=76001409;//kernel.Button:1409
       c.strokeRect(_this.left,_this.top,_this.width,_this.height);
-      //$LASTPOS=74001454;//kernel.Button:1454
+      //$LASTPOS=76001454;//kernel.Button:1454
       size = _this.height-_this.padding*2;
       
-      //$LASTPOS=74001486;//kernel.Button:1486
+      //$LASTPOS=76001486;//kernel.Button:1486
       f = c.font.replace(/^[0-9]+px /,"");
       
-      //$LASTPOS=74001530;//kernel.Button:1530
+      //$LASTPOS=76001530;//kernel.Button:1530
       c.font=size+"px "+f;
-      //$LASTPOS=74001569;//kernel.Button:1569
+      //$LASTPOS=76001569;//kernel.Button:1569
       c.textBaseline="top";
-      //$LASTPOS=74001596;//kernel.Button:1596
+      //$LASTPOS=76001596;//kernel.Button:1596
       c.fillStyle=_this.clicked?_this.clickedStyle+"":_this.disabled?_this.disabledStrokeStyle+"":_this.strokeStyle+"";
-      //$LASTPOS=74001691;//kernel.Button:1691
+      //$LASTPOS=76001691;//kernel.Button:1691
       r = c.measureText(_this.text);
       
-      //$LASTPOS=74001723;//kernel.Button:1723
+      //$LASTPOS=76001723;//kernel.Button:1723
       c.fillText(_this.text,_this.left+_this.width/2-r.width/2,_this.top+_this.padding);
     },
     __dummy: false
@@ -26156,21 +26316,21 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=75000084;//kernel.GameConsole:84
+      //$LASTPOS=77000084;//kernel.GameConsole:84
       _this.extend(opt);
-      //$LASTPOS=75000102;//kernel.GameConsole:102
+      //$LASTPOS=77000102;//kernel.GameConsole:102
       _this.cw=_this.canvas.width();
-      //$LASTPOS=75000126;//kernel.GameConsole:126
+      //$LASTPOS=77000126;//kernel.GameConsole:126
       _this.ch=_this.canvas.height();
-      //$LASTPOS=75000151;//kernel.GameConsole:151
+      //$LASTPOS=77000151;//kernel.GameConsole:151
       Tonyu.globals.$Sprites=new Tonyu.classes.kernel.Sprites;
-      //$LASTPOS=75000178;//kernel.GameConsole:178
+      //$LASTPOS=77000178;//kernel.GameConsole:178
       Tonyu.globals.$Screen=_this.gameScreen=new Tonyu.classes.kernel.GameScreen({width: 465,height: 465,sprites: Tonyu.globals.$Sprites});
-      //$LASTPOS=75000259;//kernel.GameConsole:259
+      //$LASTPOS=77000259;//kernel.GameConsole:259
       Tonyu.globals.$FrontSprites=_this.sprites=new Tonyu.classes.kernel.Sprites;
-      //$LASTPOS=75000299;//kernel.GameConsole:299
+      //$LASTPOS=77000299;//kernel.GameConsole:299
       _this.sprites.add(_this.gameScreen);
-      //$LASTPOS=75000329;//kernel.GameConsole:329
+      //$LASTPOS=77000329;//kernel.GameConsole:329
       _this.cctx=_this.canvas[0].getContext("2d");
     },
     shouldDraw1x1 :function _trc_GameConsole_shouldDraw1x1(srcw,srch,dstw,dsth) {
@@ -26179,10 +26339,10 @@ Tonyu.klass.define({
       var larger;
       var smaller;
       
-      //$LASTPOS=75000448;//kernel.GameConsole:448
+      //$LASTPOS=77000448;//kernel.GameConsole:448
       larger = 200;
       
-      //$LASTPOS=75000469;//kernel.GameConsole:469
+      //$LASTPOS=77000469;//kernel.GameConsole:469
       smaller = 5;
       
       return srcw-smaller<=dstw&&dstw<=srcw+larger&&srch-smaller<=dsth&&dsth<=srch+larger;
@@ -26195,10 +26355,10 @@ Tonyu.klass.define({
       var larger;
       var smaller;
       
-      //$LASTPOS=75000448;//kernel.GameConsole:448
+      //$LASTPOS=77000448;//kernel.GameConsole:448
       larger = 200;
       
-      //$LASTPOS=75000469;//kernel.GameConsole:469
+      //$LASTPOS=77000469;//kernel.GameConsole:469
       smaller = 5;
       
       _thread.retVal=srcw-smaller<=dstw&&dstw<=srcw+larger&&srch-smaller<=dsth&&dsth<=srch+larger;return;
@@ -26216,47 +26376,47 @@ Tonyu.klass.define({
       var marginw;
       var marginh;
       
-      //$LASTPOS=75000606;//kernel.GameConsole:606
+      //$LASTPOS=77000606;//kernel.GameConsole:606
       _this.cw=_this.canvas.width();
-      //$LASTPOS=75000630;//kernel.GameConsole:630
+      //$LASTPOS=77000630;//kernel.GameConsole:630
       _this.ch=_this.canvas.height();
-      //$LASTPOS=75000655;//kernel.GameConsole:655
+      //$LASTPOS=77000655;//kernel.GameConsole:655
       width = _this.gameScreen.width;
       
-      //$LASTPOS=75000688;//kernel.GameConsole:688
+      //$LASTPOS=77000688;//kernel.GameConsole:688
       height = _this.gameScreen.height;
       
-      //$LASTPOS=75000723;//kernel.GameConsole:723
+      //$LASTPOS=77000723;//kernel.GameConsole:723
       calcw = _this.ch/height*width;
       
-      //$LASTPOS=75000767;//kernel.GameConsole:767
+      //$LASTPOS=77000767;//kernel.GameConsole:767
       calch = _this.cw/width*height;
       
-      //$LASTPOS=75000811;//kernel.GameConsole:811
+      //$LASTPOS=77000811;//kernel.GameConsole:811
       if (calch>_this.ch) {
-        //$LASTPOS=75000825;//kernel.GameConsole:825
+        //$LASTPOS=77000825;//kernel.GameConsole:825
         calch=_this.ch;
       }
-      //$LASTPOS=75000840;//kernel.GameConsole:840
+      //$LASTPOS=77000840;//kernel.GameConsole:840
       if (calcw>_this.cw) {
-        //$LASTPOS=75000854;//kernel.GameConsole:854
+        //$LASTPOS=77000854;//kernel.GameConsole:854
         calcw=_this.cw;
       }
-      //$LASTPOS=75000869;//kernel.GameConsole:869
+      //$LASTPOS=77000869;//kernel.GameConsole:869
       if (_this.shouldDraw1x1(width,height,calcw,calch)) {
-        //$LASTPOS=75000925;//kernel.GameConsole:925
+        //$LASTPOS=77000925;//kernel.GameConsole:925
         calcw=width;
-        //$LASTPOS=75000937;//kernel.GameConsole:937
+        //$LASTPOS=77000937;//kernel.GameConsole:937
         calch=height;
         
       }
-      //$LASTPOS=75000963;//kernel.GameConsole:963
+      //$LASTPOS=77000963;//kernel.GameConsole:963
       marginw = Math.floor((_this.cw-calcw)/2);
       
-      //$LASTPOS=75001006;//kernel.GameConsole:1006
+      //$LASTPOS=77001006;//kernel.GameConsole:1006
       marginh = Math.floor((_this.ch-calch)/2);
       
-      //$LASTPOS=75001049;//kernel.GameConsole:1049
+      //$LASTPOS=77001049;//kernel.GameConsole:1049
       _this.gameScreen.setBounds({left: marginw,top: marginh,width: calcw,height: calch});
     },
     fiber$layout :function _trc_GameConsole_f_layout(_thread) {
@@ -26271,47 +26431,47 @@ Tonyu.klass.define({
       var marginw;
       var marginh;
       
-      //$LASTPOS=75000606;//kernel.GameConsole:606
+      //$LASTPOS=77000606;//kernel.GameConsole:606
       _this.cw=_this.canvas.width();
-      //$LASTPOS=75000630;//kernel.GameConsole:630
+      //$LASTPOS=77000630;//kernel.GameConsole:630
       _this.ch=_this.canvas.height();
-      //$LASTPOS=75000655;//kernel.GameConsole:655
+      //$LASTPOS=77000655;//kernel.GameConsole:655
       width = _this.gameScreen.width;
       
-      //$LASTPOS=75000688;//kernel.GameConsole:688
+      //$LASTPOS=77000688;//kernel.GameConsole:688
       height = _this.gameScreen.height;
       
-      //$LASTPOS=75000723;//kernel.GameConsole:723
+      //$LASTPOS=77000723;//kernel.GameConsole:723
       calcw = _this.ch/height*width;
       
-      //$LASTPOS=75000767;//kernel.GameConsole:767
+      //$LASTPOS=77000767;//kernel.GameConsole:767
       calch = _this.cw/width*height;
       
-      //$LASTPOS=75000811;//kernel.GameConsole:811
+      //$LASTPOS=77000811;//kernel.GameConsole:811
       if (calch>_this.ch) {
-        //$LASTPOS=75000825;//kernel.GameConsole:825
+        //$LASTPOS=77000825;//kernel.GameConsole:825
         calch=_this.ch;
       }
-      //$LASTPOS=75000840;//kernel.GameConsole:840
+      //$LASTPOS=77000840;//kernel.GameConsole:840
       if (calcw>_this.cw) {
-        //$LASTPOS=75000854;//kernel.GameConsole:854
+        //$LASTPOS=77000854;//kernel.GameConsole:854
         calcw=_this.cw;
       }
-      //$LASTPOS=75000869;//kernel.GameConsole:869
+      //$LASTPOS=77000869;//kernel.GameConsole:869
       if (_this.shouldDraw1x1(width,height,calcw,calch)) {
-        //$LASTPOS=75000925;//kernel.GameConsole:925
+        //$LASTPOS=77000925;//kernel.GameConsole:925
         calcw=width;
-        //$LASTPOS=75000937;//kernel.GameConsole:937
+        //$LASTPOS=77000937;//kernel.GameConsole:937
         calch=height;
         
       }
-      //$LASTPOS=75000963;//kernel.GameConsole:963
+      //$LASTPOS=77000963;//kernel.GameConsole:963
       marginw = Math.floor((_this.cw-calcw)/2);
       
-      //$LASTPOS=75001006;//kernel.GameConsole:1006
+      //$LASTPOS=77001006;//kernel.GameConsole:1006
       marginh = Math.floor((_this.ch-calch)/2);
       
-      //$LASTPOS=75001049;//kernel.GameConsole:1049
+      //$LASTPOS=77001049;//kernel.GameConsole:1049
       _this.gameScreen.setBounds({left: marginw,top: marginh,width: calcw,height: calch});
       
       _thread.retVal=_this;return;
@@ -26320,9 +26480,9 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=75001144;//kernel.GameConsole:1144
+      //$LASTPOS=77001144;//kernel.GameConsole:1144
       _this.layout();
-      //$LASTPOS=75001159;//kernel.GameConsole:1159
+      //$LASTPOS=77001159;//kernel.GameConsole:1159
       _this.sprites.draw(_this.canvas[0]);
     },
     __dummy: false
@@ -26354,27 +26514,27 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=76000049;//kernel.Label:49
+      //$LASTPOS=78000049;//kernel.Label:49
       if (typeof  x=="object") {
-        //$LASTPOS=76000084;//kernel.Label:84
+        //$LASTPOS=78000084;//kernel.Label:84
         x.layer=x.layer||Tonyu.globals.$frontLayer;
         
       }
-      //$LASTPOS=76000126;//kernel.Label:126
+      //$LASTPOS=78000126;//kernel.Label:126
       Tonyu.classes.kernel.Actor.apply( _this, [x,y,- 1]);
-      //$LASTPOS=76000146;//kernel.Label:146
+      //$LASTPOS=78000146;//kernel.Label:146
       if (x==null) {
-        //$LASTPOS=76000159;//kernel.Label:159
+        //$LASTPOS=78000159;//kernel.Label:159
         x=50;
       }
-      //$LASTPOS=76000170;//kernel.Label:170
+      //$LASTPOS=78000170;//kernel.Label:170
       if (y==null) {
-        //$LASTPOS=76000183;//kernel.Label:183
+        //$LASTPOS=78000183;//kernel.Label:183
         y=50;
       }
-      //$LASTPOS=76000194;//kernel.Label:194
+      //$LASTPOS=78000194;//kernel.Label:194
       if (typeof  _this.template!=="string"&&_this._text==null) {
-        //$LASTPOS=76000252;//kernel.Label:252
+        //$LASTPOS=78000252;//kernel.Label:252
         _this.text="text";
         
       }
@@ -26383,19 +26543,19 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=76000289;//kernel.Label:289
+      //$LASTPOS=78000289;//kernel.Label:289
       if (typeof  _this.template!=="string") {
         return _this._text;
       }
       return _this.template.replace(/[\$\@][A-Za-z0-9\.]* ?/g,(function anonymous_391(v) {
         
-        //$LASTPOS=76000407;//kernel.Label:407
+        //$LASTPOS=78000407;//kernel.Label:407
         v=v.replace(/ $/,"");
-        //$LASTPOS=76000438;//kernel.Label:438
+        //$LASTPOS=78000438;//kernel.Label:438
         if (v=="") {
           return "$";
         }
-        //$LASTPOS=76000470;//kernel.Label:470
+        //$LASTPOS=78000470;//kernel.Label:470
         if (v.match(/^@/)) {
           return _this.exapndVal(_this.target,v.substring(1).split("."));
           
@@ -26409,13 +26569,13 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=76000685;//kernel.Label:685
+      //$LASTPOS=78000685;//kernel.Label:685
       while (flds.length>0) {
-        //$LASTPOS=76000718;//kernel.Label:718
+        //$LASTPOS=78000718;//kernel.Label:718
         if (! obj) {
           return "";
         }
-        //$LASTPOS=76000748;//kernel.Label:748
+        //$LASTPOS=78000748;//kernel.Label:748
         obj=obj[flds.shift()];
         
       }
@@ -26433,15 +26593,15 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=76000685;//kernel.Label:685
+            //$LASTPOS=78000685;//kernel.Label:685
           case 1:
             if (!(flds.length>0)) { __pc=3     ; break; }
-            //$LASTPOS=76000718;//kernel.Label:718
+            //$LASTPOS=78000718;//kernel.Label:718
             if (!(! obj)) { __pc=2     ; break; }
             _thread.exit("");return;
           case 2     :
             
-            //$LASTPOS=76000748;//kernel.Label:748
+            //$LASTPOS=78000748;//kernel.Label:748
             obj=obj[flds.shift()];
             __pc=1;break;
           case 3     :
@@ -26456,9 +26616,9 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=76000814;//kernel.Label:814
+      //$LASTPOS=78000814;//kernel.Label:814
       delete _this.template;
-      //$LASTPOS=76000836;//kernel.Label:836
+      //$LASTPOS=78000836;//kernel.Label:836
       _this._text=v;
     },
     __dummy: false
@@ -26476,117 +26636,117 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=77000049;//kernel.MapEditor:49
+      //$LASTPOS=79000049;//kernel.MapEditor:49
       Tonyu.globals.$Screen.resize(480,640);
-      //$LASTPOS=77000075;//kernel.MapEditor:75
+      //$LASTPOS=79000075;//kernel.MapEditor:75
       _this.loadMode=false;
-      //$LASTPOS=77000092;//kernel.MapEditor:92
+      //$LASTPOS=79000092;//kernel.MapEditor:92
       _this.fileExist=false;
-      //$LASTPOS=77000110;//kernel.MapEditor:110
+      //$LASTPOS=79000110;//kernel.MapEditor:110
       Tonyu.globals.$Boot.on("stop",(function anonymous_127(e) {
         
-        //$LASTPOS=77000179;//kernel.MapEditor:179
+        //$LASTPOS=79000179;//kernel.MapEditor:179
         if (_this.modified) {
-          //$LASTPOS=77000204;//kernel.MapEditor:204
+          //$LASTPOS=79000204;//kernel.MapEditor:204
           e.preventDefault();
-          //$LASTPOS=77000233;//kernel.MapEditor:233
+          //$LASTPOS=79000233;//kernel.MapEditor:233
           _this.parallel(Tonyu.bindFunc(_this,_this.st),e);
           
         }
       }));
-      //$LASTPOS=77000646;//kernel.MapEditor:646
+      //$LASTPOS=79000646;//kernel.MapEditor:646
       _this.print("map file(s)");
-      //$LASTPOS=77000694;//kernel.MapEditor:694
+      //$LASTPOS=79000694;//kernel.MapEditor:694
       _this.fileList=_this.file("../maps/");
-      //$LASTPOS=77000722;//kernel.MapEditor:722
+      //$LASTPOS=79000722;//kernel.MapEditor:722
       if (_this.fileList.exists()) {
-        //$LASTPOS=77000750;//kernel.MapEditor:750
+        //$LASTPOS=79000750;//kernel.MapEditor:750
         _this.fileList.recursive((function a(f) {
           
-          //$LASTPOS=77000844;//kernel.MapEditor:844
+          //$LASTPOS=79000844;//kernel.MapEditor:844
           _this.print(f.name());
-          //$LASTPOS=77000900;//kernel.MapEditor:900
+          //$LASTPOS=79000900;//kernel.MapEditor:900
           _this.fileExist=true;
         }));
         
       }
-      //$LASTPOS=77000943;//kernel.MapEditor:943
+      //$LASTPOS=79000943;//kernel.MapEditor:943
       if (_this.fileExist) {
-        //$LASTPOS=77000963;//kernel.MapEditor:963
+        //$LASTPOS=79000963;//kernel.MapEditor:963
         _this.print("Load Data?: Y or N");
-        //$LASTPOS=77000997;//kernel.MapEditor:997
+        //$LASTPOS=79000997;//kernel.MapEditor:997
         while (true) {
-          //$LASTPOS=77001019;//kernel.MapEditor:1019
+          //$LASTPOS=79001019;//kernel.MapEditor:1019
           if (_this.getkey("y")>0) {
-            //$LASTPOS=77001051;//kernel.MapEditor:1051
+            //$LASTPOS=79001051;//kernel.MapEditor:1051
             _this.loadMode=true;
             break;
             
             
           }
-          //$LASTPOS=77001106;//kernel.MapEditor:1106
+          //$LASTPOS=79001106;//kernel.MapEditor:1106
           if (_this.getkey("n")>0) {
-            //$LASTPOS=77001138;//kernel.MapEditor:1138
+            //$LASTPOS=79001138;//kernel.MapEditor:1138
             _this.loadMode=false;
             break;
             
             
           }
-          //$LASTPOS=77001194;//kernel.MapEditor:1194
+          //$LASTPOS=79001194;//kernel.MapEditor:1194
           _this.update();
           
         }
-        //$LASTPOS=77001216;//kernel.MapEditor:1216
+        //$LASTPOS=79001216;//kernel.MapEditor:1216
         if (_this.loadMode) {
-          //$LASTPOS=77001239;//kernel.MapEditor:1239
+          //$LASTPOS=79001239;//kernel.MapEditor:1239
           _this.fileName=_this.prompt("Input json file (*.json)","map.json");
-          //$LASTPOS=77001304;//kernel.MapEditor:1304
+          //$LASTPOS=79001304;//kernel.MapEditor:1304
           if (_this.fileName) {
-            //$LASTPOS=77001331;//kernel.MapEditor:1331
+            //$LASTPOS=79001331;//kernel.MapEditor:1331
             _this.mapDataFile=_this.file("../maps/").rel(_this.fileName);
             
           }
-          //$LASTPOS=77001395;//kernel.MapEditor:1395
+          //$LASTPOS=79001395;//kernel.MapEditor:1395
           if (_this.mapDataFile.obj()) {
-            //$LASTPOS=77001431;//kernel.MapEditor:1431
+            //$LASTPOS=79001431;//kernel.MapEditor:1431
             _this.baseData=_this.mapDataFile.obj();
-            //$LASTPOS=77001472;//kernel.MapEditor:1472
+            //$LASTPOS=79001472;//kernel.MapEditor:1472
             _this.loadedFile=_this.fileName;
             
           } else {
-            //$LASTPOS=77001522;//kernel.MapEditor:1522
+            //$LASTPOS=79001522;//kernel.MapEditor:1522
             _this.mapDataFile=_this.file(_this.fileName);
-            //$LASTPOS=77001563;//kernel.MapEditor:1563
+            //$LASTPOS=79001563;//kernel.MapEditor:1563
             if (_this.mapDataFile.obj()) {
-              //$LASTPOS=77001603;//kernel.MapEditor:1603
+              //$LASTPOS=79001603;//kernel.MapEditor:1603
               _this.baseData=_this.mapDataFile.obj();
-              //$LASTPOS=77001648;//kernel.MapEditor:1648
+              //$LASTPOS=79001648;//kernel.MapEditor:1648
               _this.loadedFile=_this.fileName;
               
             }
             
           }
-          //$LASTPOS=77001704;//kernel.MapEditor:1704
+          //$LASTPOS=79001704;//kernel.MapEditor:1704
           if (_this.baseData==undefined) {
-            //$LASTPOS=77001742;//kernel.MapEditor:1742
+            //$LASTPOS=79001742;//kernel.MapEditor:1742
             _this.print("Load failed");
-            //$LASTPOS=77001777;//kernel.MapEditor:1777
+            //$LASTPOS=79001777;//kernel.MapEditor:1777
             _this.loadMode=false;
             
           } else {
-            //$LASTPOS=77001808;//kernel.MapEditor:1808
+            //$LASTPOS=79001808;//kernel.MapEditor:1808
             if (_this.baseData[0]&&_this.baseData[1]) {
-              //$LASTPOS=77001853;//kernel.MapEditor:1853
+              //$LASTPOS=79001853;//kernel.MapEditor:1853
               _this.modified=false;
-              //$LASTPOS=77001882;//kernel.MapEditor:1882
+              //$LASTPOS=79001882;//kernel.MapEditor:1882
               _this.mapData=_this.baseData[0];
-              //$LASTPOS=77001916;//kernel.MapEditor:1916
+              //$LASTPOS=79001916;//kernel.MapEditor:1916
               _this.mapOnData=_this.baseData[1];
-              //$LASTPOS=77001952;//kernel.MapEditor:1952
+              //$LASTPOS=79001952;//kernel.MapEditor:1952
               if (_this.baseData.length>2) {
-                //$LASTPOS=77001992;//kernel.MapEditor:1992
+                //$LASTPOS=79001992;//kernel.MapEditor:1992
                 _this.chipWidth=_this.baseData[_this.baseData.length-2];
-                //$LASTPOS=77002048;//kernel.MapEditor:2048
+                //$LASTPOS=79002048;//kernel.MapEditor:2048
                 _this.chipHeight=_this.baseData[_this.baseData.length-1];
                 
               }
@@ -26597,426 +26757,426 @@ Tonyu.klass.define({
         }
         
       }
-      //$LASTPOS=77002125;//kernel.MapEditor:2125
+      //$LASTPOS=79002125;//kernel.MapEditor:2125
       _this.update();
-      //$LASTPOS=77002170;//kernel.MapEditor:2170
+      //$LASTPOS=79002170;//kernel.MapEditor:2170
       if (! _this.loadMode) {
-        //$LASTPOS=77002190;//kernel.MapEditor:2190
+        //$LASTPOS=79002190;//kernel.MapEditor:2190
         _this.row=_this.prompt("input row");
-        //$LASTPOS=77002220;//kernel.MapEditor:2220
+        //$LASTPOS=79002220;//kernel.MapEditor:2220
         _this.col=_this.prompt("input col");
-        //$LASTPOS=77002250;//kernel.MapEditor:2250
+        //$LASTPOS=79002250;//kernel.MapEditor:2250
         _this.chipWidth=_this.prompt("input chipWidth");
-        //$LASTPOS=77002292;//kernel.MapEditor:2292
+        //$LASTPOS=79002292;//kernel.MapEditor:2292
         _this.chipHeight=_this.prompt("input chipHeight");
-        //$LASTPOS=77002336;//kernel.MapEditor:2336
+        //$LASTPOS=79002336;//kernel.MapEditor:2336
         _this.panel=new Tonyu.classes.kernel.Panel({width: _this.col*_this.chipWidth,height: _this.row*_this.chipHeight});
-        //$LASTPOS=77002401;//kernel.MapEditor:2401
+        //$LASTPOS=79002401;//kernel.MapEditor:2401
         _this.panel.x=_this.panel.width/2+40;
-        //$LASTPOS=77002432;//kernel.MapEditor:2432
+        //$LASTPOS=79002432;//kernel.MapEditor:2432
         _this.panel.y=_this.panel.height/2+40;
-        //$LASTPOS=77002464;//kernel.MapEditor:2464
+        //$LASTPOS=79002464;//kernel.MapEditor:2464
         _this.panel.setFillStyle("cyan");
-        //$LASTPOS=77002497;//kernel.MapEditor:2497
+        //$LASTPOS=79002497;//kernel.MapEditor:2497
         _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
-        //$LASTPOS=77002548;//kernel.MapEditor:2548
+        //$LASTPOS=79002548;//kernel.MapEditor:2548
         Tonyu.globals.$map=new Tonyu.classes.kernel.Map({row: _this.row,col: _this.col,chipWidth: _this.chipWidth,chipHeight: _this.chipHeight});
         
       } else {
-        //$LASTPOS=77002859;//kernel.MapEditor:2859
+        //$LASTPOS=79002859;//kernel.MapEditor:2859
         Tonyu.globals.$map=new Tonyu.classes.kernel.Map({chipWidth: 32,chipHeight: 32});
-        //$LASTPOS=77002906;//kernel.MapEditor:2906
+        //$LASTPOS=79002906;//kernel.MapEditor:2906
         Tonyu.globals.$map.load(_this.fileName);
-        //$LASTPOS=77002932;//kernel.MapEditor:2932
+        //$LASTPOS=79002932;//kernel.MapEditor:2932
         _this.panel=new Tonyu.classes.kernel.Panel({width: Tonyu.globals.$map.col*Tonyu.globals.$map.chipWidth,height: Tonyu.globals.$map.row*Tonyu.globals.$map.chipHeight,zOrder: 100});
-        //$LASTPOS=77003028;//kernel.MapEditor:3028
+        //$LASTPOS=79003028;//kernel.MapEditor:3028
         _this.panel.x=_this.panel.width/2+40;
-        //$LASTPOS=77003059;//kernel.MapEditor:3059
+        //$LASTPOS=79003059;//kernel.MapEditor:3059
         _this.panel.y=_this.panel.height/2+40;
-        //$LASTPOS=77003091;//kernel.MapEditor:3091
+        //$LASTPOS=79003091;//kernel.MapEditor:3091
         _this.panel.setFillStyle("cyan");
-        //$LASTPOS=77003124;//kernel.MapEditor:3124
+        //$LASTPOS=79003124;//kernel.MapEditor:3124
         _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
         
       }
-      //$LASTPOS=77003191;//kernel.MapEditor:3191
+      //$LASTPOS=79003191;//kernel.MapEditor:3191
       _this.mIW=Tonyu.globals.$imageList[Tonyu.globals.$pat_mapchip].image.width;
-      //$LASTPOS=77003234;//kernel.MapEditor:3234
+      //$LASTPOS=79003234;//kernel.MapEditor:3234
       _this.mIH=Tonyu.globals.$imageList[Tonyu.globals.$pat_mapchip].image.height;
-      //$LASTPOS=77003278;//kernel.MapEditor:3278
+      //$LASTPOS=79003278;//kernel.MapEditor:3278
       _this.mCW=Tonyu.globals.$imageList[Tonyu.globals.$pat_mapchip+0].width;
-      //$LASTPOS=77003317;//kernel.MapEditor:3317
+      //$LASTPOS=79003317;//kernel.MapEditor:3317
       _this.mCH=Tonyu.globals.$imageList[Tonyu.globals.$pat_mapchip+0].height;
-      //$LASTPOS=77003357;//kernel.MapEditor:3357
+      //$LASTPOS=79003357;//kernel.MapEditor:3357
       Tonyu.globals.$mp=new Tonyu.classes.kernel.Map({row: _this.floor(_this.mIH/_this.mCH),col: _this.floor(_this.mIW/_this.mCW),chipWidth: _this.mCW,chipHeight: _this.mCH});
-      //$LASTPOS=77003439;//kernel.MapEditor:3439
+      //$LASTPOS=79003439;//kernel.MapEditor:3439
       _this.counter=0;
-      //$LASTPOS=77003451;//kernel.MapEditor:3451
-      //$LASTPOS=77003455;//kernel.MapEditor:3455
+      //$LASTPOS=79003451;//kernel.MapEditor:3451
+      //$LASTPOS=79003455;//kernel.MapEditor:3455
       _this.i = 0;
       for (; _this.i<Tonyu.globals.$mp.row ; _this.i++) {
         {
-          //$LASTPOS=77003484;//kernel.MapEditor:3484
-          //$LASTPOS=77003488;//kernel.MapEditor:3488
+          //$LASTPOS=79003484;//kernel.MapEditor:3484
+          //$LASTPOS=79003488;//kernel.MapEditor:3488
           _this.j = 0;
           for (; _this.j<Tonyu.globals.$mp.col ; _this.j++) {
             {
-              //$LASTPOS=77003521;//kernel.MapEditor:3521
+              //$LASTPOS=79003521;//kernel.MapEditor:3521
               Tonyu.globals.$mp.set(_this.j,_this.i,Tonyu.globals.$pat_mapchip+_this.counter);
-              //$LASTPOS=77003565;//kernel.MapEditor:3565
+              //$LASTPOS=79003565;//kernel.MapEditor:3565
               _this.counter++;
             }
           }
         }
       }
-      //$LASTPOS=77003589;//kernel.MapEditor:3589
+      //$LASTPOS=79003589;//kernel.MapEditor:3589
       Tonyu.globals.$consolePanel.clearRect(0,0,Tonyu.globals.$screenWidth,Tonyu.globals.$screenHeight);
-      //$LASTPOS=77003669;//kernel.MapEditor:3669
+      //$LASTPOS=79003669;//kernel.MapEditor:3669
       _this.mode="get";
-      //$LASTPOS=77003682;//kernel.MapEditor:3682
+      //$LASTPOS=79003682;//kernel.MapEditor:3682
       _this.prevMode="set";
-      //$LASTPOS=77003699;//kernel.MapEditor:3699
+      //$LASTPOS=79003699;//kernel.MapEditor:3699
       _this.mapp=0;
-      //$LASTPOS=77003708;//kernel.MapEditor:3708
+      //$LASTPOS=79003708;//kernel.MapEditor:3708
       _this.maponp=- 1;
-      //$LASTPOS=77003720;//kernel.MapEditor:3720
+      //$LASTPOS=79003720;//kernel.MapEditor:3720
       _this.mx=- 40;
-      //$LASTPOS=77003729;//kernel.MapEditor:3729
+      //$LASTPOS=79003729;//kernel.MapEditor:3729
       _this.my=- 40;
-      //$LASTPOS=77003738;//kernel.MapEditor:3738
+      //$LASTPOS=79003738;//kernel.MapEditor:3738
       _this.chipX=- 40;
-      //$LASTPOS=77003750;//kernel.MapEditor:3750
+      //$LASTPOS=79003750;//kernel.MapEditor:3750
       _this.chipY=- 40;
-      //$LASTPOS=77003762;//kernel.MapEditor:3762
+      //$LASTPOS=79003762;//kernel.MapEditor:3762
       _this.x=Tonyu.globals.$screenWidth-_this.chipWidth/2;
-      //$LASTPOS=77003791;//kernel.MapEditor:3791
+      //$LASTPOS=79003791;//kernel.MapEditor:3791
       _this.y=Tonyu.globals.$screenHeight-_this.chipHeight/2;
-      //$LASTPOS=77003822;//kernel.MapEditor:3822
+      //$LASTPOS=79003822;//kernel.MapEditor:3822
       Tonyu.globals.$map.scrollTo(_this.mx,_this.my);
-      //$LASTPOS=77003847;//kernel.MapEditor:3847
+      //$LASTPOS=79003847;//kernel.MapEditor:3847
       _this.initialWidth=Tonyu.globals.$map.chipWidth;
-      //$LASTPOS=77003877;//kernel.MapEditor:3877
+      //$LASTPOS=79003877;//kernel.MapEditor:3877
       _this.initialHeight=Tonyu.globals.$map.chipHeight;
-      //$LASTPOS=77003909;//kernel.MapEditor:3909
+      //$LASTPOS=79003909;//kernel.MapEditor:3909
       _this.layers=["base","on","all"];
-      //$LASTPOS=77003938;//kernel.MapEditor:3938
+      //$LASTPOS=79003938;//kernel.MapEditor:3938
       _this.lc=0;
-      //$LASTPOS=77003945;//kernel.MapEditor:3945
+      //$LASTPOS=79003945;//kernel.MapEditor:3945
       _this.selectedLayer=_this.layers[_this.lc];
-      //$LASTPOS=77003972;//kernel.MapEditor:3972
+      //$LASTPOS=79003972;//kernel.MapEditor:3972
       _this.drawPanel();
-      //$LASTPOS=77003986;//kernel.MapEditor:3986
+      //$LASTPOS=79003986;//kernel.MapEditor:3986
       _this.drawLetter(_this.mode);
-      //$LASTPOS=77004007;//kernel.MapEditor:4007
+      //$LASTPOS=79004007;//kernel.MapEditor:4007
       while (true) {
-        //$LASTPOS=77004025;//kernel.MapEditor:4025
+        //$LASTPOS=79004025;//kernel.MapEditor:4025
         _this.p=_this.mapp;
-        //$LASTPOS=77004038;//kernel.MapEditor:4038
+        //$LASTPOS=79004038;//kernel.MapEditor:4038
         if (Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<120&&Tonyu.globals.$touches[0].y>560&&Tonyu.globals.$touches[0].y<640) {
-          //$LASTPOS=77004157;//kernel.MapEditor:4157
+          //$LASTPOS=79004157;//kernel.MapEditor:4157
           Tonyu.globals.$mp.scrollTo(1000,1000);
-          //$LASTPOS=77004191;//kernel.MapEditor:4191
+          //$LASTPOS=79004191;//kernel.MapEditor:4191
           _this.mode="erase";
-          //$LASTPOS=77004246;//kernel.MapEditor:4246
+          //$LASTPOS=79004246;//kernel.MapEditor:4246
           _this.drawLetter(_this.mode);
           
         }
-        //$LASTPOS=77004276;//kernel.MapEditor:4276
+        //$LASTPOS=79004276;//kernel.MapEditor:4276
         if (Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<120&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560) {
-          //$LASTPOS=77004395;//kernel.MapEditor:4395
+          //$LASTPOS=79004395;//kernel.MapEditor:4395
           Tonyu.globals.$mp.scrollTo(1000,1000);
-          //$LASTPOS=77004429;//kernel.MapEditor:4429
+          //$LASTPOS=79004429;//kernel.MapEditor:4429
           _this.mode="set";
-          //$LASTPOS=77004450;//kernel.MapEditor:4450
+          //$LASTPOS=79004450;//kernel.MapEditor:4450
           _this.drawLetter(_this.mode);
           
         }
-        //$LASTPOS=77004480;//kernel.MapEditor:4480
+        //$LASTPOS=79004480;//kernel.MapEditor:4480
         if (Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>120&&Tonyu.globals.$touches[0].x<240&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560) {
-          //$LASTPOS=77004601;//kernel.MapEditor:4601
+          //$LASTPOS=79004601;//kernel.MapEditor:4601
           _this.lc++;
-          //$LASTPOS=77004616;//kernel.MapEditor:4616
+          //$LASTPOS=79004616;//kernel.MapEditor:4616
           _this.selectedLayer=_this.layers[_this.lc%3];
-          //$LASTPOS=77004653;//kernel.MapEditor:4653
+          //$LASTPOS=79004653;//kernel.MapEditor:4653
           _this.drawPanel();
-          //$LASTPOS=77004707;//kernel.MapEditor:4707
+          //$LASTPOS=79004707;//kernel.MapEditor:4707
           _this.drawLetter(_this.mode);
           
         }
-        //$LASTPOS=77004830;//kernel.MapEditor:4830
+        //$LASTPOS=79004830;//kernel.MapEditor:4830
         if (Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>240&&Tonyu.globals.$touches[0].x<360&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560) {
-          //$LASTPOS=77004951;//kernel.MapEditor:4951
+          //$LASTPOS=79004951;//kernel.MapEditor:4951
           if (_this.mode!="get") {
-            //$LASTPOS=77004981;//kernel.MapEditor:4981
+            //$LASTPOS=79004981;//kernel.MapEditor:4981
             _this.prevMode=_this.mode;
-            //$LASTPOS=77005009;//kernel.MapEditor:5009
+            //$LASTPOS=79005009;//kernel.MapEditor:5009
             Tonyu.globals.$mp.scrollTo(- 40,- 40);
-            //$LASTPOS=77005045;//kernel.MapEditor:5045
+            //$LASTPOS=79005045;//kernel.MapEditor:5045
             _this.mode="get";
-            //$LASTPOS=77005070;//kernel.MapEditor:5070
+            //$LASTPOS=79005070;//kernel.MapEditor:5070
             _this.chipX=- 40;
-            //$LASTPOS=77005094;//kernel.MapEditor:5094
+            //$LASTPOS=79005094;//kernel.MapEditor:5094
             _this.chipY=- 40;
             
           } else {
-            //$LASTPOS=77005134;//kernel.MapEditor:5134
+            //$LASTPOS=79005134;//kernel.MapEditor:5134
             Tonyu.globals.$mp.scrollTo(1000,1000);
-            //$LASTPOS=77005172;//kernel.MapEditor:5172
+            //$LASTPOS=79005172;//kernel.MapEditor:5172
             _this.mode=_this.prevMode;
             
           }
-          //$LASTPOS=77005239;//kernel.MapEditor:5239
+          //$LASTPOS=79005239;//kernel.MapEditor:5239
           _this.drawLetter(_this.mode);
           
         }
-        //$LASTPOS=77005269;//kernel.MapEditor:5269
+        //$LASTPOS=79005269;//kernel.MapEditor:5269
         if (Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>360&&Tonyu.globals.$touches[0].x<480&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560) {
-          //$LASTPOS=77005405;//kernel.MapEditor:5405
+          //$LASTPOS=79005405;//kernel.MapEditor:5405
           if (_this.loadedFile) {
-            //$LASTPOS=77005434;//kernel.MapEditor:5434
+            //$LASTPOS=79005434;//kernel.MapEditor:5434
             _this.saveFileName=_this.prompt("input json file(*.json)",_this.loadedFile);
             
           } else {
-            //$LASTPOS=77005522;//kernel.MapEditor:5522
+            //$LASTPOS=79005522;//kernel.MapEditor:5522
             _this.saveFileName=_this.prompt("input json file(*.json)","map.json");
             
           }
-          //$LASTPOS=77005616;//kernel.MapEditor:5616
+          //$LASTPOS=79005616;//kernel.MapEditor:5616
           if (_this.saveFileName) {
-            //$LASTPOS=77005647;//kernel.MapEditor:5647
+            //$LASTPOS=79005647;//kernel.MapEditor:5647
             _this.save(_this.saveFileName);
             
           }
           
         }
-        //$LASTPOS=77005947;//kernel.MapEditor:5947
+        //$LASTPOS=79005947;//kernel.MapEditor:5947
         if (Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>120&&Tonyu.globals.$touches[0].x<240&&Tonyu.globals.$touches[0].y>560&&Tonyu.globals.$touches[0].y<640) {
-          //$LASTPOS=77006068;//kernel.MapEditor:6068
+          //$LASTPOS=79006068;//kernel.MapEditor:6068
           Tonyu.globals.$mp.scrollTo(1000,1000);
-          //$LASTPOS=77006102;//kernel.MapEditor:6102
+          //$LASTPOS=79006102;//kernel.MapEditor:6102
           _this.mode="copy";
-          //$LASTPOS=77006156;//kernel.MapEditor:6156
+          //$LASTPOS=79006156;//kernel.MapEditor:6156
           _this.drawLetter(_this.mode);
           
         }
-        //$LASTPOS=77006186;//kernel.MapEditor:6186
+        //$LASTPOS=79006186;//kernel.MapEditor:6186
         if (_this.mode!="get") {
-          //$LASTPOS=77006212;//kernel.MapEditor:6212
+          //$LASTPOS=79006212;//kernel.MapEditor:6212
           if (_this.getkey("left")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<40&&Tonyu.globals.$touches[0].y<480)) {
-            //$LASTPOS=77006318;//kernel.MapEditor:6318
+            //$LASTPOS=79006318;//kernel.MapEditor:6318
             _this.mx=_this.mx-8;
           }
-          //$LASTPOS=77006336;//kernel.MapEditor:6336
+          //$LASTPOS=79006336;//kernel.MapEditor:6336
           if (_this.getkey("right")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>Tonyu.globals.$screenWidth-40&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<480)) {
-            //$LASTPOS=77006467;//kernel.MapEditor:6467
+            //$LASTPOS=79006467;//kernel.MapEditor:6467
             _this.mx=_this.mx+8;
           }
-          //$LASTPOS=77006485;//kernel.MapEditor:6485
+          //$LASTPOS=79006485;//kernel.MapEditor:6485
           if (_this.getkey("up")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<40)) {
-            //$LASTPOS=77006598;//kernel.MapEditor:6598
+            //$LASTPOS=79006598;//kernel.MapEditor:6598
             _this.my=_this.my-8;
           }
-          //$LASTPOS=77006616;//kernel.MapEditor:6616
+          //$LASTPOS=79006616;//kernel.MapEditor:6616
           if (_this.getkey("down")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<480&&Tonyu.globals.$touches[0].y>440)) {
-            //$LASTPOS=77006751;//kernel.MapEditor:6751
+            //$LASTPOS=79006751;//kernel.MapEditor:6751
             _this.my=_this.my+8;
           }
-          //$LASTPOS=77006769;//kernel.MapEditor:6769
+          //$LASTPOS=79006769;//kernel.MapEditor:6769
           Tonyu.globals.$map.scrollTo(_this.mx,_this.my);
           
         } else {
-          //$LASTPOS=77006812;//kernel.MapEditor:6812
+          //$LASTPOS=79006812;//kernel.MapEditor:6812
           if (_this.getkey("left")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<40&&Tonyu.globals.$touches[0].y<480)) {
-            //$LASTPOS=77006918;//kernel.MapEditor:6918
+            //$LASTPOS=79006918;//kernel.MapEditor:6918
             _this.chipX=_this.chipX-8;
           }
-          //$LASTPOS=77006942;//kernel.MapEditor:6942
+          //$LASTPOS=79006942;//kernel.MapEditor:6942
           if (_this.getkey("right")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>Tonyu.globals.$screenWidth-40&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<480)) {
-            //$LASTPOS=77007073;//kernel.MapEditor:7073
+            //$LASTPOS=79007073;//kernel.MapEditor:7073
             _this.chipX=_this.chipX+8;
           }
-          //$LASTPOS=77007097;//kernel.MapEditor:7097
+          //$LASTPOS=79007097;//kernel.MapEditor:7097
           if (_this.getkey("up")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<40)) {
-            //$LASTPOS=77007210;//kernel.MapEditor:7210
+            //$LASTPOS=79007210;//kernel.MapEditor:7210
             _this.chipY=_this.chipY-8;
           }
-          //$LASTPOS=77007234;//kernel.MapEditor:7234
+          //$LASTPOS=79007234;//kernel.MapEditor:7234
           if (_this.getkey("down")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<480&&Tonyu.globals.$touches[0].y>440)) {
-            //$LASTPOS=77007369;//kernel.MapEditor:7369
+            //$LASTPOS=79007369;//kernel.MapEditor:7369
             _this.chipY=_this.chipY+8;
           }
-          //$LASTPOS=77007393;//kernel.MapEditor:7393
+          //$LASTPOS=79007393;//kernel.MapEditor:7393
           Tonyu.globals.$mp.scrollTo(_this.chipX,_this.chipY);
           
         }
-        //$LASTPOS=77007462;//kernel.MapEditor:7462
+        //$LASTPOS=79007462;//kernel.MapEditor:7462
         if (_this.getkey("i")==1) {
-          //$LASTPOS=77007491;//kernel.MapEditor:7491
+          //$LASTPOS=79007491;//kernel.MapEditor:7491
           if (Tonyu.globals.$map.chipWidth<_this.initialWidth) {
-            //$LASTPOS=77007523;//kernel.MapEditor:7523
+            //$LASTPOS=79007523;//kernel.MapEditor:7523
             Tonyu.globals.$map.chipWidth+=4;
           }
-          //$LASTPOS=77007551;//kernel.MapEditor:7551
+          //$LASTPOS=79007551;//kernel.MapEditor:7551
           if (Tonyu.globals.$map.chipHeight<_this.initialHeight) {
-            //$LASTPOS=77007585;//kernel.MapEditor:7585
+            //$LASTPOS=79007585;//kernel.MapEditor:7585
             Tonyu.globals.$map.chipHeight+=4;
           }
-          //$LASTPOS=77007614;//kernel.MapEditor:7614
+          //$LASTPOS=79007614;//kernel.MapEditor:7614
           Tonyu.globals.$map.redrawMap();
-          //$LASTPOS=77007641;//kernel.MapEditor:7641
+          //$LASTPOS=79007641;//kernel.MapEditor:7641
           _this.panel.die();
-          //$LASTPOS=77007663;//kernel.MapEditor:7663
+          //$LASTPOS=79007663;//kernel.MapEditor:7663
           _this.panel=new Tonyu.classes.kernel.Panel({width: Tonyu.globals.$map.col*Tonyu.globals.$map.chipWidth,height: Tonyu.globals.$map.row*Tonyu.globals.$map.chipHeight,zOrder: 100});
-          //$LASTPOS=77007763;//kernel.MapEditor:7763
+          //$LASTPOS=79007763;//kernel.MapEditor:7763
           _this.panel.x=_this.panel.width/2+40;
-          //$LASTPOS=77007798;//kernel.MapEditor:7798
+          //$LASTPOS=79007798;//kernel.MapEditor:7798
           _this.panel.y=_this.panel.height/2+40;
-          //$LASTPOS=77007834;//kernel.MapEditor:7834
+          //$LASTPOS=79007834;//kernel.MapEditor:7834
           _this.panel.setFillStyle("cyan");
-          //$LASTPOS=77007871;//kernel.MapEditor:7871
+          //$LASTPOS=79007871;//kernel.MapEditor:7871
           _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
           
         }
-        //$LASTPOS=77007929;//kernel.MapEditor:7929
+        //$LASTPOS=79007929;//kernel.MapEditor:7929
         if (_this.getkey("o")==1) {
-          //$LASTPOS=77007958;//kernel.MapEditor:7958
+          //$LASTPOS=79007958;//kernel.MapEditor:7958
           if (Tonyu.globals.$map.chipWidth>4) {
-            //$LASTPOS=77007979;//kernel.MapEditor:7979
+            //$LASTPOS=79007979;//kernel.MapEditor:7979
             Tonyu.globals.$map.chipWidth-=4;
           }
-          //$LASTPOS=77008007;//kernel.MapEditor:8007
+          //$LASTPOS=79008007;//kernel.MapEditor:8007
           if (Tonyu.globals.$map.chipHeight>4) {
-            //$LASTPOS=77008029;//kernel.MapEditor:8029
+            //$LASTPOS=79008029;//kernel.MapEditor:8029
             Tonyu.globals.$map.chipHeight-=4;
           }
-          //$LASTPOS=77008058;//kernel.MapEditor:8058
+          //$LASTPOS=79008058;//kernel.MapEditor:8058
           Tonyu.globals.$map.redrawMap();
-          //$LASTPOS=77008085;//kernel.MapEditor:8085
+          //$LASTPOS=79008085;//kernel.MapEditor:8085
           _this.panel.die();
-          //$LASTPOS=77008107;//kernel.MapEditor:8107
+          //$LASTPOS=79008107;//kernel.MapEditor:8107
           _this.panel=new Tonyu.classes.kernel.Panel({width: Tonyu.globals.$map.col*Tonyu.globals.$map.chipWidth,height: Tonyu.globals.$map.row*Tonyu.globals.$map.chipHeight,zOrder: 100});
-          //$LASTPOS=77008207;//kernel.MapEditor:8207
+          //$LASTPOS=79008207;//kernel.MapEditor:8207
           _this.panel.x=_this.panel.width/2+40;
-          //$LASTPOS=77008242;//kernel.MapEditor:8242
+          //$LASTPOS=79008242;//kernel.MapEditor:8242
           _this.panel.y=_this.panel.height/2+40;
-          //$LASTPOS=77008278;//kernel.MapEditor:8278
+          //$LASTPOS=79008278;//kernel.MapEditor:8278
           _this.panel.setFillStyle("cyan");
-          //$LASTPOS=77008315;//kernel.MapEditor:8315
+          //$LASTPOS=79008315;//kernel.MapEditor:8315
           _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
           
         }
-        //$LASTPOS=77008399;//kernel.MapEditor:8399
+        //$LASTPOS=79008399;//kernel.MapEditor:8399
         _this.panel.x=_this.panel.width/2-_this.mx;
-        //$LASTPOS=77008430;//kernel.MapEditor:8430
+        //$LASTPOS=79008430;//kernel.MapEditor:8430
         _this.panel.y=_this.panel.height/2-_this.my;
-        //$LASTPOS=77008462;//kernel.MapEditor:8462
+        //$LASTPOS=79008462;//kernel.MapEditor:8462
         if (_this.mode=="set"&&_this.getkey(1)>0&&_this.inRect()) {
-          //$LASTPOS=77008515;//kernel.MapEditor:8515
+          //$LASTPOS=79008515;//kernel.MapEditor:8515
           if (_this.selectedLayer=="base") {
-            //$LASTPOS=77008555;//kernel.MapEditor:8555
+            //$LASTPOS=79008555;//kernel.MapEditor:8555
             _this.tmpon=Tonyu.globals.$map.getOnAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY);
-            //$LASTPOS=77008605;//kernel.MapEditor:8605
+            //$LASTPOS=79008605;//kernel.MapEditor:8605
             Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY,_this.mapp);
-            //$LASTPOS=77008652;//kernel.MapEditor:8652
+            //$LASTPOS=79008652;//kernel.MapEditor:8652
             Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY,_this.tmpon);
             
           } else {
-            //$LASTPOS=77008704;//kernel.MapEditor:8704
+            //$LASTPOS=79008704;//kernel.MapEditor:8704
             if (_this.selectedLayer=="on") {
-              //$LASTPOS=77008742;//kernel.MapEditor:8742
+              //$LASTPOS=79008742;//kernel.MapEditor:8742
               Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY,_this.mapp);
               
             } else {
-              //$LASTPOS=77008807;//kernel.MapEditor:8807
+              //$LASTPOS=79008807;//kernel.MapEditor:8807
               Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY,_this.mapp);
-              //$LASTPOS=77008854;//kernel.MapEditor:8854
+              //$LASTPOS=79008854;//kernel.MapEditor:8854
               Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY,_this.maponp);
               
             }
           }
-          //$LASTPOS=77008912;//kernel.MapEditor:8912
+          //$LASTPOS=79008912;//kernel.MapEditor:8912
           _this.modified=true;
           
         } else {
-          //$LASTPOS=77008938;//kernel.MapEditor:8938
+          //$LASTPOS=79008938;//kernel.MapEditor:8938
           if (_this.mode=="erase"&&_this.getkey(1)>0&&_this.inRect()) {
-            //$LASTPOS=77008993;//kernel.MapEditor:8993
+            //$LASTPOS=79008993;//kernel.MapEditor:8993
             if (_this.selectedLayer=="base") {
-              //$LASTPOS=77009033;//kernel.MapEditor:9033
+              //$LASTPOS=79009033;//kernel.MapEditor:9033
               _this.tmpon=Tonyu.globals.$map.getOnAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY);
-              //$LASTPOS=77009083;//kernel.MapEditor:9083
+              //$LASTPOS=79009083;//kernel.MapEditor:9083
               Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY,- 1);
-              //$LASTPOS=77009128;//kernel.MapEditor:9128
+              //$LASTPOS=79009128;//kernel.MapEditor:9128
               Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY,_this.tmpon);
               
             } else {
-              //$LASTPOS=77009180;//kernel.MapEditor:9180
+              //$LASTPOS=79009180;//kernel.MapEditor:9180
               if (_this.selectedLayer=="on") {
-                //$LASTPOS=77009218;//kernel.MapEditor:9218
+                //$LASTPOS=79009218;//kernel.MapEditor:9218
                 Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY,- 1);
                 
               } else {
-                //$LASTPOS=77009281;//kernel.MapEditor:9281
+                //$LASTPOS=79009281;//kernel.MapEditor:9281
                 Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY,- 1);
-                //$LASTPOS=77009326;//kernel.MapEditor:9326
+                //$LASTPOS=79009326;//kernel.MapEditor:9326
                 Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY,- 1);
                 
               }
             }
-            //$LASTPOS=77009380;//kernel.MapEditor:9380
+            //$LASTPOS=79009380;//kernel.MapEditor:9380
             _this.modified=true;
             
           } else {
-            //$LASTPOS=77009406;//kernel.MapEditor:9406
+            //$LASTPOS=79009406;//kernel.MapEditor:9406
             if (_this.mode=="get"&&_this.getkey(1)>0&&_this.inRect()) {
-              //$LASTPOS=77009459;//kernel.MapEditor:9459
+              //$LASTPOS=79009459;//kernel.MapEditor:9459
               _this.mapp=Tonyu.globals.$mp.getAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY);
-              //$LASTPOS=77009527;//kernel.MapEditor:9527
+              //$LASTPOS=79009527;//kernel.MapEditor:9527
               _this.mode="set";
-              //$LASTPOS=77009548;//kernel.MapEditor:9548
+              //$LASTPOS=79009548;//kernel.MapEditor:9548
               Tonyu.globals.$mp.scrollTo(1000,1000);
-              //$LASTPOS=77009614;//kernel.MapEditor:9614
+              //$LASTPOS=79009614;//kernel.MapEditor:9614
               _this.drawLetter(_this.mode);
-              //$LASTPOS=77009641;//kernel.MapEditor:9641
+              //$LASTPOS=79009641;//kernel.MapEditor:9641
               _this.updateEx(10);
               
             } else {
-              //$LASTPOS=77009666;//kernel.MapEditor:9666
+              //$LASTPOS=79009666;//kernel.MapEditor:9666
               if (_this.mode=="setOn"&&_this.getkey(1)>0&&_this.inRect()) {
-                //$LASTPOS=77009721;//kernel.MapEditor:9721
+                //$LASTPOS=79009721;//kernel.MapEditor:9721
                 Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY,_this.mapp);
-                //$LASTPOS=77009766;//kernel.MapEditor:9766
+                //$LASTPOS=79009766;//kernel.MapEditor:9766
                 _this.modified=true;
                 
               } else {
-                //$LASTPOS=77009792;//kernel.MapEditor:9792
+                //$LASTPOS=79009792;//kernel.MapEditor:9792
                 if (_this.mode=="copy"&&_this.getkey(1)>0&&_this.inRect()) {
-                  //$LASTPOS=77009846;//kernel.MapEditor:9846
+                  //$LASTPOS=79009846;//kernel.MapEditor:9846
                   if (_this.selectedLayer=="base") {
-                    //$LASTPOS=77009886;//kernel.MapEditor:9886
+                    //$LASTPOS=79009886;//kernel.MapEditor:9886
                     _this.mapp=Tonyu.globals.$map.getAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY);
-                    //$LASTPOS=77009933;//kernel.MapEditor:9933
+                    //$LASTPOS=79009933;//kernel.MapEditor:9933
                     _this.maponp=- 1;
                     
                   } else {
-                    //$LASTPOS=77009959;//kernel.MapEditor:9959
+                    //$LASTPOS=79009959;//kernel.MapEditor:9959
                     if (_this.selectedLayer=="on") {
-                      //$LASTPOS=77009997;//kernel.MapEditor:9997
+                      //$LASTPOS=79009997;//kernel.MapEditor:9997
                       _this.mapp=Tonyu.globals.$map.getOnAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY);
                       
                     } else {
-                      //$LASTPOS=77010062;//kernel.MapEditor:10062
+                      //$LASTPOS=79010062;//kernel.MapEditor:10062
                       _this.mapp=Tonyu.globals.$map.getAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY);
-                      //$LASTPOS=77010109;//kernel.MapEditor:10109
+                      //$LASTPOS=79010109;//kernel.MapEditor:10109
                       _this.maponp=Tonyu.globals.$map.getOnAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY);
                       
                     }
                   }
-                  //$LASTPOS=77010214;//kernel.MapEditor:10214
+                  //$LASTPOS=79010214;//kernel.MapEditor:10214
                   _this.mode="set";
-                  //$LASTPOS=77010267;//kernel.MapEditor:10267
+                  //$LASTPOS=79010267;//kernel.MapEditor:10267
                   _this.drawLetter(_this.mode);
-                  //$LASTPOS=77010294;//kernel.MapEditor:10294
+                  //$LASTPOS=79010294;//kernel.MapEditor:10294
                   _this.updateEx(10);
                   
                 }
@@ -27024,7 +27184,7 @@ Tonyu.klass.define({
             }
           }
         }
-        //$LASTPOS=77010320;//kernel.MapEditor:10320
+        //$LASTPOS=79010320;//kernel.MapEditor:10320
         _this.update();
         
       }
@@ -27035,25 +27195,25 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=77000049;//kernel.MapEditor:49
+      //$LASTPOS=79000049;//kernel.MapEditor:49
       Tonyu.globals.$Screen.resize(480,640);
-      //$LASTPOS=77000075;//kernel.MapEditor:75
+      //$LASTPOS=79000075;//kernel.MapEditor:75
       _this.loadMode=false;
-      //$LASTPOS=77000092;//kernel.MapEditor:92
+      //$LASTPOS=79000092;//kernel.MapEditor:92
       _this.fileExist=false;
-      //$LASTPOS=77000110;//kernel.MapEditor:110
+      //$LASTPOS=79000110;//kernel.MapEditor:110
       Tonyu.globals.$Boot.on("stop",(function anonymous_127(e) {
         
-        //$LASTPOS=77000179;//kernel.MapEditor:179
+        //$LASTPOS=79000179;//kernel.MapEditor:179
         if (_this.modified) {
-          //$LASTPOS=77000204;//kernel.MapEditor:204
+          //$LASTPOS=79000204;//kernel.MapEditor:204
           e.preventDefault();
-          //$LASTPOS=77000233;//kernel.MapEditor:233
+          //$LASTPOS=79000233;//kernel.MapEditor:233
           _this.parallel(Tonyu.bindFunc(_this,_this.st),e);
           
         }
       }));
-      //$LASTPOS=77000646;//kernel.MapEditor:646
+      //$LASTPOS=79000646;//kernel.MapEditor:646
       _this.print("map file(s)");
       
       _thread.enter(function _trc_MapEditor_ent_main(_thread) {
@@ -27061,47 +27221,47 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=77000694;//kernel.MapEditor:694
+            //$LASTPOS=79000694;//kernel.MapEditor:694
             _this.fiber$file(_thread, "../maps/");
             __pc=1;return;
           case 1:
             _this.fileList=_thread.retVal;
             
-            //$LASTPOS=77000722;//kernel.MapEditor:722
+            //$LASTPOS=79000722;//kernel.MapEditor:722
             if (_this.fileList.exists()) {
-              //$LASTPOS=77000750;//kernel.MapEditor:750
+              //$LASTPOS=79000750;//kernel.MapEditor:750
               _this.fileList.recursive((function a(f) {
                 
-                //$LASTPOS=77000844;//kernel.MapEditor:844
+                //$LASTPOS=79000844;//kernel.MapEditor:844
                 _this.print(f.name());
-                //$LASTPOS=77000900;//kernel.MapEditor:900
+                //$LASTPOS=79000900;//kernel.MapEditor:900
                 _this.fileExist=true;
               }));
               
             }
-            //$LASTPOS=77000943;//kernel.MapEditor:943
+            //$LASTPOS=79000943;//kernel.MapEditor:943
             if (!(_this.fileExist)) { __pc=12    ; break; }
-            //$LASTPOS=77000963;//kernel.MapEditor:963
+            //$LASTPOS=79000963;//kernel.MapEditor:963
             _this.print("Load Data?: Y or N");
-            //$LASTPOS=77000997;//kernel.MapEditor:997
+            //$LASTPOS=79000997;//kernel.MapEditor:997
           case 2:
-            //$LASTPOS=77001019;//kernel.MapEditor:1019
+            //$LASTPOS=79001019;//kernel.MapEditor:1019
             if (!(_this.getkey("y")>0)) { __pc=3     ; break; }
-            //$LASTPOS=77001051;//kernel.MapEditor:1051
+            //$LASTPOS=79001051;//kernel.MapEditor:1051
             _this.loadMode=true;
             __pc=6     ; break;
             
           case 3     :
             
-            //$LASTPOS=77001106;//kernel.MapEditor:1106
+            //$LASTPOS=79001106;//kernel.MapEditor:1106
             if (!(_this.getkey("n")>0)) { __pc=4     ; break; }
-            //$LASTPOS=77001138;//kernel.MapEditor:1138
+            //$LASTPOS=79001138;//kernel.MapEditor:1138
             _this.loadMode=false;
             __pc=6     ; break;
             
           case 4     :
             
-            //$LASTPOS=77001194;//kernel.MapEditor:1194
+            //$LASTPOS=79001194;//kernel.MapEditor:1194
             _this.fiber$update(_thread);
             __pc=5;return;
           case 5:
@@ -27109,67 +27269,67 @@ Tonyu.klass.define({
             __pc=2;break;
           case 6     :
             
-            //$LASTPOS=77001216;//kernel.MapEditor:1216
+            //$LASTPOS=79001216;//kernel.MapEditor:1216
             if (!(_this.loadMode)) { __pc=11    ; break; }
-            //$LASTPOS=77001239;//kernel.MapEditor:1239
+            //$LASTPOS=79001239;//kernel.MapEditor:1239
             _this.fiber$prompt(_thread, "Input json file (*.json)", "map.json");
             __pc=7;return;
           case 7:
             _this.fileName=_thread.retVal;
             
-            //$LASTPOS=77001304;//kernel.MapEditor:1304
+            //$LASTPOS=79001304;//kernel.MapEditor:1304
             if (_this.fileName) {
-              //$LASTPOS=77001331;//kernel.MapEditor:1331
+              //$LASTPOS=79001331;//kernel.MapEditor:1331
               _this.mapDataFile=_this.file("../maps/").rel(_this.fileName);
               
             }
-            //$LASTPOS=77001395;//kernel.MapEditor:1395
+            //$LASTPOS=79001395;//kernel.MapEditor:1395
             if (!(_this.mapDataFile.obj())) { __pc=8     ; break; }
             {
-              //$LASTPOS=77001431;//kernel.MapEditor:1431
+              //$LASTPOS=79001431;//kernel.MapEditor:1431
               _this.baseData=_this.mapDataFile.obj();
-              //$LASTPOS=77001472;//kernel.MapEditor:1472
+              //$LASTPOS=79001472;//kernel.MapEditor:1472
               _this.loadedFile=_this.fileName;
             }
             __pc=10    ;break;
           case 8     :
-            //$LASTPOS=77001522;//kernel.MapEditor:1522
+            //$LASTPOS=79001522;//kernel.MapEditor:1522
             _this.fiber$file(_thread, _this.fileName);
             __pc=9;return;
           case 9:
             _this.mapDataFile=_thread.retVal;
             
-            //$LASTPOS=77001563;//kernel.MapEditor:1563
+            //$LASTPOS=79001563;//kernel.MapEditor:1563
             if (_this.mapDataFile.obj()) {
-              //$LASTPOS=77001603;//kernel.MapEditor:1603
+              //$LASTPOS=79001603;//kernel.MapEditor:1603
               _this.baseData=_this.mapDataFile.obj();
-              //$LASTPOS=77001648;//kernel.MapEditor:1648
+              //$LASTPOS=79001648;//kernel.MapEditor:1648
               _this.loadedFile=_this.fileName;
               
             }
           case 10    :
             
-            //$LASTPOS=77001704;//kernel.MapEditor:1704
+            //$LASTPOS=79001704;//kernel.MapEditor:1704
             if (_this.baseData==undefined) {
-              //$LASTPOS=77001742;//kernel.MapEditor:1742
+              //$LASTPOS=79001742;//kernel.MapEditor:1742
               _this.print("Load failed");
-              //$LASTPOS=77001777;//kernel.MapEditor:1777
+              //$LASTPOS=79001777;//kernel.MapEditor:1777
               _this.loadMode=false;
               
             } else {
-              //$LASTPOS=77001808;//kernel.MapEditor:1808
+              //$LASTPOS=79001808;//kernel.MapEditor:1808
               if (_this.baseData[0]&&_this.baseData[1]) {
-                //$LASTPOS=77001853;//kernel.MapEditor:1853
+                //$LASTPOS=79001853;//kernel.MapEditor:1853
                 _this.modified=false;
-                //$LASTPOS=77001882;//kernel.MapEditor:1882
+                //$LASTPOS=79001882;//kernel.MapEditor:1882
                 _this.mapData=_this.baseData[0];
-                //$LASTPOS=77001916;//kernel.MapEditor:1916
+                //$LASTPOS=79001916;//kernel.MapEditor:1916
                 _this.mapOnData=_this.baseData[1];
-                //$LASTPOS=77001952;//kernel.MapEditor:1952
+                //$LASTPOS=79001952;//kernel.MapEditor:1952
                 if (_this.baseData.length>2) {
-                  //$LASTPOS=77001992;//kernel.MapEditor:1992
+                  //$LASTPOS=79001992;//kernel.MapEditor:1992
                   _this.chipWidth=_this.baseData[_this.baseData.length-2];
-                  //$LASTPOS=77002048;//kernel.MapEditor:2048
+                  //$LASTPOS=79002048;//kernel.MapEditor:2048
                   _this.chipHeight=_this.baseData[_this.baseData.length-1];
                   
                 }
@@ -27180,225 +27340,225 @@ Tonyu.klass.define({
             
           case 12    :
             
-            //$LASTPOS=77002125;//kernel.MapEditor:2125
+            //$LASTPOS=79002125;//kernel.MapEditor:2125
             _this.fiber$update(_thread);
             __pc=13;return;
           case 13:
             
-            //$LASTPOS=77002170;//kernel.MapEditor:2170
+            //$LASTPOS=79002170;//kernel.MapEditor:2170
             if (!(! _this.loadMode)) { __pc=18    ; break; }
-            //$LASTPOS=77002190;//kernel.MapEditor:2190
+            //$LASTPOS=79002190;//kernel.MapEditor:2190
             _this.fiber$prompt(_thread, "input row");
             __pc=14;return;
           case 14:
             _this.row=_thread.retVal;
             
-            //$LASTPOS=77002220;//kernel.MapEditor:2220
+            //$LASTPOS=79002220;//kernel.MapEditor:2220
             _this.fiber$prompt(_thread, "input col");
             __pc=15;return;
           case 15:
             _this.col=_thread.retVal;
             
-            //$LASTPOS=77002250;//kernel.MapEditor:2250
+            //$LASTPOS=79002250;//kernel.MapEditor:2250
             _this.fiber$prompt(_thread, "input chipWidth");
             __pc=16;return;
           case 16:
             _this.chipWidth=_thread.retVal;
             
-            //$LASTPOS=77002292;//kernel.MapEditor:2292
+            //$LASTPOS=79002292;//kernel.MapEditor:2292
             _this.fiber$prompt(_thread, "input chipHeight");
             __pc=17;return;
           case 17:
             _this.chipHeight=_thread.retVal;
             
-            //$LASTPOS=77002336;//kernel.MapEditor:2336
+            //$LASTPOS=79002336;//kernel.MapEditor:2336
             _this.panel=new Tonyu.classes.kernel.Panel({width: _this.col*_this.chipWidth,height: _this.row*_this.chipHeight});
-            //$LASTPOS=77002401;//kernel.MapEditor:2401
+            //$LASTPOS=79002401;//kernel.MapEditor:2401
             _this.panel.x=_this.panel.width/2+40;
-            //$LASTPOS=77002432;//kernel.MapEditor:2432
+            //$LASTPOS=79002432;//kernel.MapEditor:2432
             _this.panel.y=_this.panel.height/2+40;
-            //$LASTPOS=77002464;//kernel.MapEditor:2464
+            //$LASTPOS=79002464;//kernel.MapEditor:2464
             _this.panel.setFillStyle("cyan");
-            //$LASTPOS=77002497;//kernel.MapEditor:2497
+            //$LASTPOS=79002497;//kernel.MapEditor:2497
             _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
-            //$LASTPOS=77002548;//kernel.MapEditor:2548
+            //$LASTPOS=79002548;//kernel.MapEditor:2548
             Tonyu.globals.$map=new Tonyu.classes.kernel.Map({row: _this.row,col: _this.col,chipWidth: _this.chipWidth,chipHeight: _this.chipHeight});
             __pc=19    ;break;
           case 18    :
             {
-              //$LASTPOS=77002859;//kernel.MapEditor:2859
+              //$LASTPOS=79002859;//kernel.MapEditor:2859
               Tonyu.globals.$map=new Tonyu.classes.kernel.Map({chipWidth: 32,chipHeight: 32});
-              //$LASTPOS=77002906;//kernel.MapEditor:2906
+              //$LASTPOS=79002906;//kernel.MapEditor:2906
               Tonyu.globals.$map.load(_this.fileName);
-              //$LASTPOS=77002932;//kernel.MapEditor:2932
+              //$LASTPOS=79002932;//kernel.MapEditor:2932
               _this.panel=new Tonyu.classes.kernel.Panel({width: Tonyu.globals.$map.col*Tonyu.globals.$map.chipWidth,height: Tonyu.globals.$map.row*Tonyu.globals.$map.chipHeight,zOrder: 100});
-              //$LASTPOS=77003028;//kernel.MapEditor:3028
+              //$LASTPOS=79003028;//kernel.MapEditor:3028
               _this.panel.x=_this.panel.width/2+40;
-              //$LASTPOS=77003059;//kernel.MapEditor:3059
+              //$LASTPOS=79003059;//kernel.MapEditor:3059
               _this.panel.y=_this.panel.height/2+40;
-              //$LASTPOS=77003091;//kernel.MapEditor:3091
+              //$LASTPOS=79003091;//kernel.MapEditor:3091
               _this.panel.setFillStyle("cyan");
-              //$LASTPOS=77003124;//kernel.MapEditor:3124
+              //$LASTPOS=79003124;//kernel.MapEditor:3124
               _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
             }
           case 19    :
             
-            //$LASTPOS=77003191;//kernel.MapEditor:3191
+            //$LASTPOS=79003191;//kernel.MapEditor:3191
             _this.mIW=Tonyu.globals.$imageList[Tonyu.globals.$pat_mapchip].image.width;
-            //$LASTPOS=77003234;//kernel.MapEditor:3234
+            //$LASTPOS=79003234;//kernel.MapEditor:3234
             _this.mIH=Tonyu.globals.$imageList[Tonyu.globals.$pat_mapchip].image.height;
-            //$LASTPOS=77003278;//kernel.MapEditor:3278
+            //$LASTPOS=79003278;//kernel.MapEditor:3278
             _this.mCW=Tonyu.globals.$imageList[Tonyu.globals.$pat_mapchip+0].width;
-            //$LASTPOS=77003317;//kernel.MapEditor:3317
+            //$LASTPOS=79003317;//kernel.MapEditor:3317
             _this.mCH=Tonyu.globals.$imageList[Tonyu.globals.$pat_mapchip+0].height;
-            //$LASTPOS=77003357;//kernel.MapEditor:3357
+            //$LASTPOS=79003357;//kernel.MapEditor:3357
             Tonyu.globals.$mp=new Tonyu.classes.kernel.Map({row: _this.floor(_this.mIH/_this.mCH),col: _this.floor(_this.mIW/_this.mCW),chipWidth: _this.mCW,chipHeight: _this.mCH});
-            //$LASTPOS=77003439;//kernel.MapEditor:3439
+            //$LASTPOS=79003439;//kernel.MapEditor:3439
             _this.counter=0;
-            //$LASTPOS=77003451;//kernel.MapEditor:3451
-            //$LASTPOS=77003455;//kernel.MapEditor:3455
+            //$LASTPOS=79003451;//kernel.MapEditor:3451
+            //$LASTPOS=79003455;//kernel.MapEditor:3455
             _this.i = 0;
             for (; _this.i<Tonyu.globals.$mp.row ; _this.i++) {
               {
-                //$LASTPOS=77003484;//kernel.MapEditor:3484
-                //$LASTPOS=77003488;//kernel.MapEditor:3488
+                //$LASTPOS=79003484;//kernel.MapEditor:3484
+                //$LASTPOS=79003488;//kernel.MapEditor:3488
                 _this.j = 0;
                 for (; _this.j<Tonyu.globals.$mp.col ; _this.j++) {
                   {
-                    //$LASTPOS=77003521;//kernel.MapEditor:3521
+                    //$LASTPOS=79003521;//kernel.MapEditor:3521
                     Tonyu.globals.$mp.set(_this.j,_this.i,Tonyu.globals.$pat_mapchip+_this.counter);
-                    //$LASTPOS=77003565;//kernel.MapEditor:3565
+                    //$LASTPOS=79003565;//kernel.MapEditor:3565
                     _this.counter++;
                   }
                 }
               }
             }
-            //$LASTPOS=77003589;//kernel.MapEditor:3589
+            //$LASTPOS=79003589;//kernel.MapEditor:3589
             Tonyu.globals.$consolePanel.clearRect(0,0,Tonyu.globals.$screenWidth,Tonyu.globals.$screenHeight);
-            //$LASTPOS=77003669;//kernel.MapEditor:3669
+            //$LASTPOS=79003669;//kernel.MapEditor:3669
             _this.mode="get";
-            //$LASTPOS=77003682;//kernel.MapEditor:3682
+            //$LASTPOS=79003682;//kernel.MapEditor:3682
             _this.prevMode="set";
-            //$LASTPOS=77003699;//kernel.MapEditor:3699
+            //$LASTPOS=79003699;//kernel.MapEditor:3699
             _this.mapp=0;
-            //$LASTPOS=77003708;//kernel.MapEditor:3708
+            //$LASTPOS=79003708;//kernel.MapEditor:3708
             _this.maponp=- 1;
-            //$LASTPOS=77003720;//kernel.MapEditor:3720
+            //$LASTPOS=79003720;//kernel.MapEditor:3720
             _this.mx=- 40;
-            //$LASTPOS=77003729;//kernel.MapEditor:3729
+            //$LASTPOS=79003729;//kernel.MapEditor:3729
             _this.my=- 40;
-            //$LASTPOS=77003738;//kernel.MapEditor:3738
+            //$LASTPOS=79003738;//kernel.MapEditor:3738
             _this.chipX=- 40;
-            //$LASTPOS=77003750;//kernel.MapEditor:3750
+            //$LASTPOS=79003750;//kernel.MapEditor:3750
             _this.chipY=- 40;
-            //$LASTPOS=77003762;//kernel.MapEditor:3762
+            //$LASTPOS=79003762;//kernel.MapEditor:3762
             _this.x=Tonyu.globals.$screenWidth-_this.chipWidth/2;
-            //$LASTPOS=77003791;//kernel.MapEditor:3791
+            //$LASTPOS=79003791;//kernel.MapEditor:3791
             _this.y=Tonyu.globals.$screenHeight-_this.chipHeight/2;
-            //$LASTPOS=77003822;//kernel.MapEditor:3822
+            //$LASTPOS=79003822;//kernel.MapEditor:3822
             Tonyu.globals.$map.scrollTo(_this.mx,_this.my);
-            //$LASTPOS=77003847;//kernel.MapEditor:3847
+            //$LASTPOS=79003847;//kernel.MapEditor:3847
             _this.initialWidth=Tonyu.globals.$map.chipWidth;
-            //$LASTPOS=77003877;//kernel.MapEditor:3877
+            //$LASTPOS=79003877;//kernel.MapEditor:3877
             _this.initialHeight=Tonyu.globals.$map.chipHeight;
-            //$LASTPOS=77003909;//kernel.MapEditor:3909
+            //$LASTPOS=79003909;//kernel.MapEditor:3909
             _this.layers=["base","on","all"];
-            //$LASTPOS=77003938;//kernel.MapEditor:3938
+            //$LASTPOS=79003938;//kernel.MapEditor:3938
             _this.lc=0;
-            //$LASTPOS=77003945;//kernel.MapEditor:3945
+            //$LASTPOS=79003945;//kernel.MapEditor:3945
             _this.selectedLayer=_this.layers[_this.lc];
-            //$LASTPOS=77003972;//kernel.MapEditor:3972
+            //$LASTPOS=79003972;//kernel.MapEditor:3972
             _this.fiber$drawPanel(_thread);
             __pc=20;return;
           case 20:
             
-            //$LASTPOS=77003986;//kernel.MapEditor:3986
+            //$LASTPOS=79003986;//kernel.MapEditor:3986
             _this.fiber$drawLetter(_thread, _this.mode);
             __pc=21;return;
           case 21:
             
-            //$LASTPOS=77004007;//kernel.MapEditor:4007
+            //$LASTPOS=79004007;//kernel.MapEditor:4007
           case 22:
-            //$LASTPOS=77004025;//kernel.MapEditor:4025
+            //$LASTPOS=79004025;//kernel.MapEditor:4025
             _this.p=_this.mapp;
-            //$LASTPOS=77004038;//kernel.MapEditor:4038
+            //$LASTPOS=79004038;//kernel.MapEditor:4038
             if (!(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<120&&Tonyu.globals.$touches[0].y>560&&Tonyu.globals.$touches[0].y<640)) { __pc=24    ; break; }
-            //$LASTPOS=77004157;//kernel.MapEditor:4157
+            //$LASTPOS=79004157;//kernel.MapEditor:4157
             Tonyu.globals.$mp.scrollTo(1000,1000);
-            //$LASTPOS=77004191;//kernel.MapEditor:4191
+            //$LASTPOS=79004191;//kernel.MapEditor:4191
             _this.mode="erase";
-            //$LASTPOS=77004246;//kernel.MapEditor:4246
+            //$LASTPOS=79004246;//kernel.MapEditor:4246
             _this.fiber$drawLetter(_thread, _this.mode);
             __pc=23;return;
           case 23:
             
           case 24    :
             
-            //$LASTPOS=77004276;//kernel.MapEditor:4276
+            //$LASTPOS=79004276;//kernel.MapEditor:4276
             if (!(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<120&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560)) { __pc=26    ; break; }
-            //$LASTPOS=77004395;//kernel.MapEditor:4395
+            //$LASTPOS=79004395;//kernel.MapEditor:4395
             Tonyu.globals.$mp.scrollTo(1000,1000);
-            //$LASTPOS=77004429;//kernel.MapEditor:4429
+            //$LASTPOS=79004429;//kernel.MapEditor:4429
             _this.mode="set";
-            //$LASTPOS=77004450;//kernel.MapEditor:4450
+            //$LASTPOS=79004450;//kernel.MapEditor:4450
             _this.fiber$drawLetter(_thread, _this.mode);
             __pc=25;return;
           case 25:
             
           case 26    :
             
-            //$LASTPOS=77004480;//kernel.MapEditor:4480
+            //$LASTPOS=79004480;//kernel.MapEditor:4480
             if (!(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>120&&Tonyu.globals.$touches[0].x<240&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560)) { __pc=29    ; break; }
-            //$LASTPOS=77004601;//kernel.MapEditor:4601
+            //$LASTPOS=79004601;//kernel.MapEditor:4601
             _this.lc++;
-            //$LASTPOS=77004616;//kernel.MapEditor:4616
+            //$LASTPOS=79004616;//kernel.MapEditor:4616
             _this.selectedLayer=_this.layers[_this.lc%3];
-            //$LASTPOS=77004653;//kernel.MapEditor:4653
+            //$LASTPOS=79004653;//kernel.MapEditor:4653
             _this.fiber$drawPanel(_thread);
             __pc=27;return;
           case 27:
             
-            //$LASTPOS=77004707;//kernel.MapEditor:4707
+            //$LASTPOS=79004707;//kernel.MapEditor:4707
             _this.fiber$drawLetter(_thread, _this.mode);
             __pc=28;return;
           case 28:
             
           case 29    :
             
-            //$LASTPOS=77004830;//kernel.MapEditor:4830
+            //$LASTPOS=79004830;//kernel.MapEditor:4830
             if (!(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>240&&Tonyu.globals.$touches[0].x<360&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560)) { __pc=31    ; break; }
-            //$LASTPOS=77004951;//kernel.MapEditor:4951
+            //$LASTPOS=79004951;//kernel.MapEditor:4951
             if (_this.mode!="get") {
-              //$LASTPOS=77004981;//kernel.MapEditor:4981
+              //$LASTPOS=79004981;//kernel.MapEditor:4981
               _this.prevMode=_this.mode;
-              //$LASTPOS=77005009;//kernel.MapEditor:5009
+              //$LASTPOS=79005009;//kernel.MapEditor:5009
               Tonyu.globals.$mp.scrollTo(- 40,- 40);
-              //$LASTPOS=77005045;//kernel.MapEditor:5045
+              //$LASTPOS=79005045;//kernel.MapEditor:5045
               _this.mode="get";
-              //$LASTPOS=77005070;//kernel.MapEditor:5070
+              //$LASTPOS=79005070;//kernel.MapEditor:5070
               _this.chipX=- 40;
-              //$LASTPOS=77005094;//kernel.MapEditor:5094
+              //$LASTPOS=79005094;//kernel.MapEditor:5094
               _this.chipY=- 40;
               
             } else {
-              //$LASTPOS=77005134;//kernel.MapEditor:5134
+              //$LASTPOS=79005134;//kernel.MapEditor:5134
               Tonyu.globals.$mp.scrollTo(1000,1000);
-              //$LASTPOS=77005172;//kernel.MapEditor:5172
+              //$LASTPOS=79005172;//kernel.MapEditor:5172
               _this.mode=_this.prevMode;
               
             }
-            //$LASTPOS=77005239;//kernel.MapEditor:5239
+            //$LASTPOS=79005239;//kernel.MapEditor:5239
             _this.fiber$drawLetter(_thread, _this.mode);
             __pc=30;return;
           case 30:
             
           case 31    :
             
-            //$LASTPOS=77005269;//kernel.MapEditor:5269
+            //$LASTPOS=79005269;//kernel.MapEditor:5269
             if (!(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>360&&Tonyu.globals.$touches[0].x<480&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560)) { __pc=38    ; break; }
-            //$LASTPOS=77005405;//kernel.MapEditor:5405
+            //$LASTPOS=79005405;//kernel.MapEditor:5405
             if (!(_this.loadedFile)) { __pc=33    ; break; }
-            //$LASTPOS=77005434;//kernel.MapEditor:5434
+            //$LASTPOS=79005434;//kernel.MapEditor:5434
             _this.fiber$prompt(_thread, "input json file(*.json)", _this.loadedFile);
             __pc=32;return;
           case 32:
@@ -27406,7 +27566,7 @@ Tonyu.klass.define({
             
             __pc=35    ;break;
           case 33    :
-            //$LASTPOS=77005522;//kernel.MapEditor:5522
+            //$LASTPOS=79005522;//kernel.MapEditor:5522
             _this.fiber$prompt(_thread, "input json file(*.json)", "map.json");
             __pc=34;return;
           case 34:
@@ -27414,9 +27574,9 @@ Tonyu.klass.define({
             
           case 35    :
             
-            //$LASTPOS=77005616;//kernel.MapEditor:5616
+            //$LASTPOS=79005616;//kernel.MapEditor:5616
             if (!(_this.saveFileName)) { __pc=37    ; break; }
-            //$LASTPOS=77005647;//kernel.MapEditor:5647
+            //$LASTPOS=79005647;//kernel.MapEditor:5647
             _this.fiber$save(_thread, _this.saveFileName);
             __pc=36;return;
           case 36:
@@ -27425,252 +27585,252 @@ Tonyu.klass.define({
             
           case 38    :
             
-            //$LASTPOS=77005947;//kernel.MapEditor:5947
+            //$LASTPOS=79005947;//kernel.MapEditor:5947
             if (!(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>120&&Tonyu.globals.$touches[0].x<240&&Tonyu.globals.$touches[0].y>560&&Tonyu.globals.$touches[0].y<640)) { __pc=40    ; break; }
-            //$LASTPOS=77006068;//kernel.MapEditor:6068
+            //$LASTPOS=79006068;//kernel.MapEditor:6068
             Tonyu.globals.$mp.scrollTo(1000,1000);
-            //$LASTPOS=77006102;//kernel.MapEditor:6102
+            //$LASTPOS=79006102;//kernel.MapEditor:6102
             _this.mode="copy";
-            //$LASTPOS=77006156;//kernel.MapEditor:6156
+            //$LASTPOS=79006156;//kernel.MapEditor:6156
             _this.fiber$drawLetter(_thread, _this.mode);
             __pc=39;return;
           case 39:
             
           case 40    :
             
-            //$LASTPOS=77006186;//kernel.MapEditor:6186
+            //$LASTPOS=79006186;//kernel.MapEditor:6186
             if (_this.mode!="get") {
-              //$LASTPOS=77006212;//kernel.MapEditor:6212
+              //$LASTPOS=79006212;//kernel.MapEditor:6212
               if (_this.getkey("left")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<40&&Tonyu.globals.$touches[0].y<480)) {
-                //$LASTPOS=77006318;//kernel.MapEditor:6318
+                //$LASTPOS=79006318;//kernel.MapEditor:6318
                 _this.mx=_this.mx-8;
               }
-              //$LASTPOS=77006336;//kernel.MapEditor:6336
+              //$LASTPOS=79006336;//kernel.MapEditor:6336
               if (_this.getkey("right")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>Tonyu.globals.$screenWidth-40&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<480)) {
-                //$LASTPOS=77006467;//kernel.MapEditor:6467
+                //$LASTPOS=79006467;//kernel.MapEditor:6467
                 _this.mx=_this.mx+8;
               }
-              //$LASTPOS=77006485;//kernel.MapEditor:6485
+              //$LASTPOS=79006485;//kernel.MapEditor:6485
               if (_this.getkey("up")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<40)) {
-                //$LASTPOS=77006598;//kernel.MapEditor:6598
+                //$LASTPOS=79006598;//kernel.MapEditor:6598
                 _this.my=_this.my-8;
               }
-              //$LASTPOS=77006616;//kernel.MapEditor:6616
+              //$LASTPOS=79006616;//kernel.MapEditor:6616
               if (_this.getkey("down")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<480&&Tonyu.globals.$touches[0].y>440)) {
-                //$LASTPOS=77006751;//kernel.MapEditor:6751
+                //$LASTPOS=79006751;//kernel.MapEditor:6751
                 _this.my=_this.my+8;
               }
-              //$LASTPOS=77006769;//kernel.MapEditor:6769
+              //$LASTPOS=79006769;//kernel.MapEditor:6769
               Tonyu.globals.$map.scrollTo(_this.mx,_this.my);
               
             } else {
-              //$LASTPOS=77006812;//kernel.MapEditor:6812
+              //$LASTPOS=79006812;//kernel.MapEditor:6812
               if (_this.getkey("left")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<40&&Tonyu.globals.$touches[0].y<480)) {
-                //$LASTPOS=77006918;//kernel.MapEditor:6918
+                //$LASTPOS=79006918;//kernel.MapEditor:6918
                 _this.chipX=_this.chipX-8;
               }
-              //$LASTPOS=77006942;//kernel.MapEditor:6942
+              //$LASTPOS=79006942;//kernel.MapEditor:6942
               if (_this.getkey("right")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>Tonyu.globals.$screenWidth-40&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<480)) {
-                //$LASTPOS=77007073;//kernel.MapEditor:7073
+                //$LASTPOS=79007073;//kernel.MapEditor:7073
                 _this.chipX=_this.chipX+8;
               }
-              //$LASTPOS=77007097;//kernel.MapEditor:7097
+              //$LASTPOS=79007097;//kernel.MapEditor:7097
               if (_this.getkey("up")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<40)) {
-                //$LASTPOS=77007210;//kernel.MapEditor:7210
+                //$LASTPOS=79007210;//kernel.MapEditor:7210
                 _this.chipY=_this.chipY-8;
               }
-              //$LASTPOS=77007234;//kernel.MapEditor:7234
+              //$LASTPOS=79007234;//kernel.MapEditor:7234
               if (_this.getkey("down")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<480&&Tonyu.globals.$touches[0].y>440)) {
-                //$LASTPOS=77007369;//kernel.MapEditor:7369
+                //$LASTPOS=79007369;//kernel.MapEditor:7369
                 _this.chipY=_this.chipY+8;
               }
-              //$LASTPOS=77007393;//kernel.MapEditor:7393
+              //$LASTPOS=79007393;//kernel.MapEditor:7393
               Tonyu.globals.$mp.scrollTo(_this.chipX,_this.chipY);
               
             }
-            //$LASTPOS=77007462;//kernel.MapEditor:7462
+            //$LASTPOS=79007462;//kernel.MapEditor:7462
             if (_this.getkey("i")==1) {
-              //$LASTPOS=77007491;//kernel.MapEditor:7491
+              //$LASTPOS=79007491;//kernel.MapEditor:7491
               if (Tonyu.globals.$map.chipWidth<_this.initialWidth) {
-                //$LASTPOS=77007523;//kernel.MapEditor:7523
+                //$LASTPOS=79007523;//kernel.MapEditor:7523
                 Tonyu.globals.$map.chipWidth+=4;
               }
-              //$LASTPOS=77007551;//kernel.MapEditor:7551
+              //$LASTPOS=79007551;//kernel.MapEditor:7551
               if (Tonyu.globals.$map.chipHeight<_this.initialHeight) {
-                //$LASTPOS=77007585;//kernel.MapEditor:7585
+                //$LASTPOS=79007585;//kernel.MapEditor:7585
                 Tonyu.globals.$map.chipHeight+=4;
               }
-              //$LASTPOS=77007614;//kernel.MapEditor:7614
+              //$LASTPOS=79007614;//kernel.MapEditor:7614
               Tonyu.globals.$map.redrawMap();
-              //$LASTPOS=77007641;//kernel.MapEditor:7641
+              //$LASTPOS=79007641;//kernel.MapEditor:7641
               _this.panel.die();
-              //$LASTPOS=77007663;//kernel.MapEditor:7663
+              //$LASTPOS=79007663;//kernel.MapEditor:7663
               _this.panel=new Tonyu.classes.kernel.Panel({width: Tonyu.globals.$map.col*Tonyu.globals.$map.chipWidth,height: Tonyu.globals.$map.row*Tonyu.globals.$map.chipHeight,zOrder: 100});
-              //$LASTPOS=77007763;//kernel.MapEditor:7763
+              //$LASTPOS=79007763;//kernel.MapEditor:7763
               _this.panel.x=_this.panel.width/2+40;
-              //$LASTPOS=77007798;//kernel.MapEditor:7798
+              //$LASTPOS=79007798;//kernel.MapEditor:7798
               _this.panel.y=_this.panel.height/2+40;
-              //$LASTPOS=77007834;//kernel.MapEditor:7834
+              //$LASTPOS=79007834;//kernel.MapEditor:7834
               _this.panel.setFillStyle("cyan");
-              //$LASTPOS=77007871;//kernel.MapEditor:7871
+              //$LASTPOS=79007871;//kernel.MapEditor:7871
               _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
               
             }
-            //$LASTPOS=77007929;//kernel.MapEditor:7929
+            //$LASTPOS=79007929;//kernel.MapEditor:7929
             if (_this.getkey("o")==1) {
-              //$LASTPOS=77007958;//kernel.MapEditor:7958
+              //$LASTPOS=79007958;//kernel.MapEditor:7958
               if (Tonyu.globals.$map.chipWidth>4) {
-                //$LASTPOS=77007979;//kernel.MapEditor:7979
+                //$LASTPOS=79007979;//kernel.MapEditor:7979
                 Tonyu.globals.$map.chipWidth-=4;
               }
-              //$LASTPOS=77008007;//kernel.MapEditor:8007
+              //$LASTPOS=79008007;//kernel.MapEditor:8007
               if (Tonyu.globals.$map.chipHeight>4) {
-                //$LASTPOS=77008029;//kernel.MapEditor:8029
+                //$LASTPOS=79008029;//kernel.MapEditor:8029
                 Tonyu.globals.$map.chipHeight-=4;
               }
-              //$LASTPOS=77008058;//kernel.MapEditor:8058
+              //$LASTPOS=79008058;//kernel.MapEditor:8058
               Tonyu.globals.$map.redrawMap();
-              //$LASTPOS=77008085;//kernel.MapEditor:8085
+              //$LASTPOS=79008085;//kernel.MapEditor:8085
               _this.panel.die();
-              //$LASTPOS=77008107;//kernel.MapEditor:8107
+              //$LASTPOS=79008107;//kernel.MapEditor:8107
               _this.panel=new Tonyu.classes.kernel.Panel({width: Tonyu.globals.$map.col*Tonyu.globals.$map.chipWidth,height: Tonyu.globals.$map.row*Tonyu.globals.$map.chipHeight,zOrder: 100});
-              //$LASTPOS=77008207;//kernel.MapEditor:8207
+              //$LASTPOS=79008207;//kernel.MapEditor:8207
               _this.panel.x=_this.panel.width/2+40;
-              //$LASTPOS=77008242;//kernel.MapEditor:8242
+              //$LASTPOS=79008242;//kernel.MapEditor:8242
               _this.panel.y=_this.panel.height/2+40;
-              //$LASTPOS=77008278;//kernel.MapEditor:8278
+              //$LASTPOS=79008278;//kernel.MapEditor:8278
               _this.panel.setFillStyle("cyan");
-              //$LASTPOS=77008315;//kernel.MapEditor:8315
+              //$LASTPOS=79008315;//kernel.MapEditor:8315
               _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
               
             }
-            //$LASTPOS=77008399;//kernel.MapEditor:8399
+            //$LASTPOS=79008399;//kernel.MapEditor:8399
             _this.panel.x=_this.panel.width/2-_this.mx;
-            //$LASTPOS=77008430;//kernel.MapEditor:8430
+            //$LASTPOS=79008430;//kernel.MapEditor:8430
             _this.panel.y=_this.panel.height/2-_this.my;
-            //$LASTPOS=77008462;//kernel.MapEditor:8462
+            //$LASTPOS=79008462;//kernel.MapEditor:8462
             if (!(_this.mode=="set"&&_this.getkey(1)>0&&_this.inRect())) { __pc=41    ; break; }
             {
-              //$LASTPOS=77008515;//kernel.MapEditor:8515
+              //$LASTPOS=79008515;//kernel.MapEditor:8515
               if (_this.selectedLayer=="base") {
-                //$LASTPOS=77008555;//kernel.MapEditor:8555
+                //$LASTPOS=79008555;//kernel.MapEditor:8555
                 _this.tmpon=Tonyu.globals.$map.getOnAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY);
-                //$LASTPOS=77008605;//kernel.MapEditor:8605
+                //$LASTPOS=79008605;//kernel.MapEditor:8605
                 Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY,_this.mapp);
-                //$LASTPOS=77008652;//kernel.MapEditor:8652
+                //$LASTPOS=79008652;//kernel.MapEditor:8652
                 Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY,_this.tmpon);
                 
               } else {
-                //$LASTPOS=77008704;//kernel.MapEditor:8704
+                //$LASTPOS=79008704;//kernel.MapEditor:8704
                 if (_this.selectedLayer=="on") {
-                  //$LASTPOS=77008742;//kernel.MapEditor:8742
+                  //$LASTPOS=79008742;//kernel.MapEditor:8742
                   Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY,_this.mapp);
                   
                 } else {
-                  //$LASTPOS=77008807;//kernel.MapEditor:8807
+                  //$LASTPOS=79008807;//kernel.MapEditor:8807
                   Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY,_this.mapp);
-                  //$LASTPOS=77008854;//kernel.MapEditor:8854
+                  //$LASTPOS=79008854;//kernel.MapEditor:8854
                   Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY,_this.maponp);
                   
                 }
               }
-              //$LASTPOS=77008912;//kernel.MapEditor:8912
+              //$LASTPOS=79008912;//kernel.MapEditor:8912
               _this.modified=true;
             }
             __pc=53    ;break;
           case 41    :
-            //$LASTPOS=77008938;//kernel.MapEditor:8938
+            //$LASTPOS=79008938;//kernel.MapEditor:8938
             if (!(_this.mode=="erase"&&_this.getkey(1)>0&&_this.inRect())) { __pc=42    ; break; }
             {
-              //$LASTPOS=77008993;//kernel.MapEditor:8993
+              //$LASTPOS=79008993;//kernel.MapEditor:8993
               if (_this.selectedLayer=="base") {
-                //$LASTPOS=77009033;//kernel.MapEditor:9033
+                //$LASTPOS=79009033;//kernel.MapEditor:9033
                 _this.tmpon=Tonyu.globals.$map.getOnAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY);
-                //$LASTPOS=77009083;//kernel.MapEditor:9083
+                //$LASTPOS=79009083;//kernel.MapEditor:9083
                 Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY,- 1);
-                //$LASTPOS=77009128;//kernel.MapEditor:9128
+                //$LASTPOS=79009128;//kernel.MapEditor:9128
                 Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY,_this.tmpon);
                 
               } else {
-                //$LASTPOS=77009180;//kernel.MapEditor:9180
+                //$LASTPOS=79009180;//kernel.MapEditor:9180
                 if (_this.selectedLayer=="on") {
-                  //$LASTPOS=77009218;//kernel.MapEditor:9218
+                  //$LASTPOS=79009218;//kernel.MapEditor:9218
                   Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY,- 1);
                   
                 } else {
-                  //$LASTPOS=77009281;//kernel.MapEditor:9281
+                  //$LASTPOS=79009281;//kernel.MapEditor:9281
                   Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY,- 1);
-                  //$LASTPOS=77009326;//kernel.MapEditor:9326
+                  //$LASTPOS=79009326;//kernel.MapEditor:9326
                   Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY,- 1);
                   
                 }
               }
-              //$LASTPOS=77009380;//kernel.MapEditor:9380
+              //$LASTPOS=79009380;//kernel.MapEditor:9380
               _this.modified=true;
             }
             __pc=52    ;break;
           case 42    :
-            //$LASTPOS=77009406;//kernel.MapEditor:9406
+            //$LASTPOS=79009406;//kernel.MapEditor:9406
             if (!(_this.mode=="get"&&_this.getkey(1)>0&&_this.inRect())) { __pc=45    ; break; }
-            //$LASTPOS=77009459;//kernel.MapEditor:9459
+            //$LASTPOS=79009459;//kernel.MapEditor:9459
             _this.mapp=Tonyu.globals.$mp.getAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY);
-            //$LASTPOS=77009527;//kernel.MapEditor:9527
+            //$LASTPOS=79009527;//kernel.MapEditor:9527
             _this.mode="set";
-            //$LASTPOS=77009548;//kernel.MapEditor:9548
+            //$LASTPOS=79009548;//kernel.MapEditor:9548
             Tonyu.globals.$mp.scrollTo(1000,1000);
-            //$LASTPOS=77009614;//kernel.MapEditor:9614
+            //$LASTPOS=79009614;//kernel.MapEditor:9614
             _this.fiber$drawLetter(_thread, _this.mode);
             __pc=43;return;
           case 43:
             
-            //$LASTPOS=77009641;//kernel.MapEditor:9641
+            //$LASTPOS=79009641;//kernel.MapEditor:9641
             _this.fiber$updateEx(_thread, 10);
             __pc=44;return;
           case 44:
             
             __pc=51    ;break;
           case 45    :
-            //$LASTPOS=77009666;//kernel.MapEditor:9666
+            //$LASTPOS=79009666;//kernel.MapEditor:9666
             if (!(_this.mode=="setOn"&&_this.getkey(1)>0&&_this.inRect())) { __pc=46    ; break; }
             {
-              //$LASTPOS=77009721;//kernel.MapEditor:9721
+              //$LASTPOS=79009721;//kernel.MapEditor:9721
               Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY,_this.mapp);
-              //$LASTPOS=77009766;//kernel.MapEditor:9766
+              //$LASTPOS=79009766;//kernel.MapEditor:9766
               _this.modified=true;
             }
             __pc=50    ;break;
           case 46    :
-            //$LASTPOS=77009792;//kernel.MapEditor:9792
+            //$LASTPOS=79009792;//kernel.MapEditor:9792
             if (!(_this.mode=="copy"&&_this.getkey(1)>0&&_this.inRect())) { __pc=49    ; break; }
-            //$LASTPOS=77009846;//kernel.MapEditor:9846
+            //$LASTPOS=79009846;//kernel.MapEditor:9846
             if (_this.selectedLayer=="base") {
-              //$LASTPOS=77009886;//kernel.MapEditor:9886
+              //$LASTPOS=79009886;//kernel.MapEditor:9886
               _this.mapp=Tonyu.globals.$map.getAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY);
-              //$LASTPOS=77009933;//kernel.MapEditor:9933
+              //$LASTPOS=79009933;//kernel.MapEditor:9933
               _this.maponp=- 1;
               
             } else {
-              //$LASTPOS=77009959;//kernel.MapEditor:9959
+              //$LASTPOS=79009959;//kernel.MapEditor:9959
               if (_this.selectedLayer=="on") {
-                //$LASTPOS=77009997;//kernel.MapEditor:9997
+                //$LASTPOS=79009997;//kernel.MapEditor:9997
                 _this.mapp=Tonyu.globals.$map.getOnAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY);
                 
               } else {
-                //$LASTPOS=77010062;//kernel.MapEditor:10062
+                //$LASTPOS=79010062;//kernel.MapEditor:10062
                 _this.mapp=Tonyu.globals.$map.getAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY);
-                //$LASTPOS=77010109;//kernel.MapEditor:10109
+                //$LASTPOS=79010109;//kernel.MapEditor:10109
                 _this.maponp=Tonyu.globals.$map.getOnAt(Tonyu.globals.$mouseX,Tonyu.globals.$mouseY);
                 
               }
             }
-            //$LASTPOS=77010214;//kernel.MapEditor:10214
+            //$LASTPOS=79010214;//kernel.MapEditor:10214
             _this.mode="set";
-            //$LASTPOS=77010267;//kernel.MapEditor:10267
+            //$LASTPOS=79010267;//kernel.MapEditor:10267
             _this.fiber$drawLetter(_thread, _this.mode);
             __pc=47;return;
           case 47:
             
-            //$LASTPOS=77010294;//kernel.MapEditor:10294
+            //$LASTPOS=79010294;//kernel.MapEditor:10294
             _this.fiber$updateEx(_thread, 10);
             __pc=48;return;
           case 48:
@@ -27685,7 +27845,7 @@ Tonyu.klass.define({
             
           case 53    :
             
-            //$LASTPOS=77010320;//kernel.MapEditor:10320
+            //$LASTPOS=79010320;//kernel.MapEditor:10320
             _this.fiber$update(_thread);
             __pc=54;return;
           case 54:
@@ -27721,29 +27881,29 @@ Tonyu.klass.define({
       var curFileName;
       var r;
       
-      //$LASTPOS=77000337;//kernel.MapEditor:337
+      //$LASTPOS=79000337;//kernel.MapEditor:337
       curFileName = _this.getCurFileName()||"map.json";
       
-      //$LASTPOS=77000388;//kernel.MapEditor:388
+      //$LASTPOS=79000388;//kernel.MapEditor:388
       r = _this.confirm("Save "+curFileName+"?");
       
-      //$LASTPOS=77000433;//kernel.MapEditor:433
+      //$LASTPOS=79000433;//kernel.MapEditor:433
       if (r) {
-        //$LASTPOS=77000451;//kernel.MapEditor:451
+        //$LASTPOS=79000451;//kernel.MapEditor:451
         _this.save(curFileName);
-        //$LASTPOS=77000479;//kernel.MapEditor:479
+        //$LASTPOS=79000479;//kernel.MapEditor:479
         _this.update();
-        //$LASTPOS=77000498;//kernel.MapEditor:498
+        //$LASTPOS=79000498;//kernel.MapEditor:498
         e.die();
         
       } else {
-        //$LASTPOS=77000530;//kernel.MapEditor:530
+        //$LASTPOS=79000530;//kernel.MapEditor:530
         r=_this.confirm("Discard changes?");
-        //$LASTPOS=77000570;//kernel.MapEditor:570
+        //$LASTPOS=79000570;//kernel.MapEditor:570
         if (r) {
-          //$LASTPOS=77000592;//kernel.MapEditor:592
+          //$LASTPOS=79000592;//kernel.MapEditor:592
           _this.update();
-          //$LASTPOS=77000615;//kernel.MapEditor:615
+          //$LASTPOS=79000615;//kernel.MapEditor:615
           e.die();
           
         }
@@ -27758,7 +27918,7 @@ Tonyu.klass.define({
       var curFileName;
       var r;
       
-      //$LASTPOS=77000337;//kernel.MapEditor:337
+      //$LASTPOS=79000337;//kernel.MapEditor:337
       curFileName = _this.getCurFileName()||"map.json";
       
       
@@ -27767,42 +27927,42 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=77000388;//kernel.MapEditor:388
+            //$LASTPOS=79000388;//kernel.MapEditor:388
             _this.fiber$confirm(_thread, "Save "+curFileName+"?");
             __pc=1;return;
           case 1:
             r=_thread.retVal;
             
-            //$LASTPOS=77000433;//kernel.MapEditor:433
+            //$LASTPOS=79000433;//kernel.MapEditor:433
             if (!(r)) { __pc=4     ; break; }
-            //$LASTPOS=77000451;//kernel.MapEditor:451
+            //$LASTPOS=79000451;//kernel.MapEditor:451
             _this.fiber$save(_thread, curFileName);
             __pc=2;return;
           case 2:
             
-            //$LASTPOS=77000479;//kernel.MapEditor:479
+            //$LASTPOS=79000479;//kernel.MapEditor:479
             _this.fiber$update(_thread);
             __pc=3;return;
           case 3:
             
-            //$LASTPOS=77000498;//kernel.MapEditor:498
+            //$LASTPOS=79000498;//kernel.MapEditor:498
             e.die();
             __pc=8     ;break;
           case 4     :
-            //$LASTPOS=77000530;//kernel.MapEditor:530
+            //$LASTPOS=79000530;//kernel.MapEditor:530
             _this.fiber$confirm(_thread, "Discard changes?");
             __pc=5;return;
           case 5:
             r=_thread.retVal;
             
-            //$LASTPOS=77000570;//kernel.MapEditor:570
+            //$LASTPOS=79000570;//kernel.MapEditor:570
             if (!(r)) { __pc=7     ; break; }
-            //$LASTPOS=77000592;//kernel.MapEditor:592
+            //$LASTPOS=79000592;//kernel.MapEditor:592
             _this.fiber$update(_thread);
             __pc=6;return;
           case 6:
             
-            //$LASTPOS=77000615;//kernel.MapEditor:615
+            //$LASTPOS=79000615;//kernel.MapEditor:615
             e.die();
           case 7     :
             
@@ -27817,15 +27977,15 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=77010357;//kernel.MapEditor:10357
+      //$LASTPOS=79010357;//kernel.MapEditor:10357
       _this.saveDataFile=_this.file("../maps/").rel(fileName);
-      //$LASTPOS=77010407;//kernel.MapEditor:10407
+      //$LASTPOS=79010407;//kernel.MapEditor:10407
       _this.data=[Tonyu.globals.$map.mapTable,Tonyu.globals.$map.mapOnTable,Tonyu.globals.$map.chipWidth,Tonyu.globals.$map.chipHeight];
-      //$LASTPOS=77010481;//kernel.MapEditor:10481
+      //$LASTPOS=79010481;//kernel.MapEditor:10481
       _this.saveDataFile.obj(_this.data);
-      //$LASTPOS=77010510;//kernel.MapEditor:10510
+      //$LASTPOS=79010510;//kernel.MapEditor:10510
       _this.modified=false;
-      //$LASTPOS=77010531;//kernel.MapEditor:10531
+      //$LASTPOS=79010531;//kernel.MapEditor:10531
       _this.print(fileName+" Saved");
     },
     fiber$save :function _trc_MapEditor_f_save(_thread,fileName) {
@@ -27834,15 +27994,15 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=77010357;//kernel.MapEditor:10357
+      //$LASTPOS=79010357;//kernel.MapEditor:10357
       _this.saveDataFile=_this.file("../maps/").rel(fileName);
-      //$LASTPOS=77010407;//kernel.MapEditor:10407
+      //$LASTPOS=79010407;//kernel.MapEditor:10407
       _this.data=[Tonyu.globals.$map.mapTable,Tonyu.globals.$map.mapOnTable,Tonyu.globals.$map.chipWidth,Tonyu.globals.$map.chipHeight];
-      //$LASTPOS=77010481;//kernel.MapEditor:10481
+      //$LASTPOS=79010481;//kernel.MapEditor:10481
       _this.saveDataFile.obj(_this.data);
-      //$LASTPOS=77010510;//kernel.MapEditor:10510
+      //$LASTPOS=79010510;//kernel.MapEditor:10510
       _this.modified=false;
-      //$LASTPOS=77010531;//kernel.MapEditor:10531
+      //$LASTPOS=79010531;//kernel.MapEditor:10531
       _this.print(fileName+" Saved");
       
       _thread.retVal=_this;return;
@@ -27868,69 +28028,69 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=77010718;//kernel.MapEditor:10718
+      //$LASTPOS=79010718;//kernel.MapEditor:10718
       Tonyu.globals.$panel.setFillStyle("gray");
-      //$LASTPOS=77010752;//kernel.MapEditor:10752
+      //$LASTPOS=79010752;//kernel.MapEditor:10752
       Tonyu.globals.$panel.alpha=128;
-      //$LASTPOS=77010775;//kernel.MapEditor:10775
+      //$LASTPOS=79010775;//kernel.MapEditor:10775
       Tonyu.globals.$panel.fillRect(0,0,Tonyu.globals.$screenWidth,40);
-      //$LASTPOS=77010818;//kernel.MapEditor:10818
+      //$LASTPOS=79010818;//kernel.MapEditor:10818
       Tonyu.globals.$panel.fillRect(0,0,40,Tonyu.globals.$screenHeight-160);
-      //$LASTPOS=77010866;//kernel.MapEditor:10866
+      //$LASTPOS=79010866;//kernel.MapEditor:10866
       Tonyu.globals.$panel.fillRect(Tonyu.globals.$screenWidth-40,0,40,Tonyu.globals.$screenHeight-160);
-      //$LASTPOS=77010928;//kernel.MapEditor:10928
+      //$LASTPOS=79010928;//kernel.MapEditor:10928
       Tonyu.globals.$panel.fillRect(0,Tonyu.globals.$screenHeight-200,Tonyu.globals.$screenWidth,40);
-      //$LASTPOS=77010987;//kernel.MapEditor:10987
+      //$LASTPOS=79010987;//kernel.MapEditor:10987
       Tonyu.globals.$panel.alpha=255;
-      //$LASTPOS=77011010;//kernel.MapEditor:11010
+      //$LASTPOS=79011010;//kernel.MapEditor:11010
       Tonyu.globals.$panel.setFillStyle("black");
-      //$LASTPOS=77011064;//kernel.MapEditor:11064
+      //$LASTPOS=79011064;//kernel.MapEditor:11064
       Tonyu.globals.$panel.fillRect(0,Tonyu.globals.$screenHeight-160,120,80);
-      //$LASTPOS=77011114;//kernel.MapEditor:11114
+      //$LASTPOS=79011114;//kernel.MapEditor:11114
       Tonyu.globals.$panel.fillRect(120,Tonyu.globals.$screenHeight-160,120,80);
-      //$LASTPOS=77011166;//kernel.MapEditor:11166
+      //$LASTPOS=79011166;//kernel.MapEditor:11166
       Tonyu.globals.$panel.fillRect(240,Tonyu.globals.$screenHeight-160,120,80);
-      //$LASTPOS=77011218;//kernel.MapEditor:11218
+      //$LASTPOS=79011218;//kernel.MapEditor:11218
       Tonyu.globals.$panel.fillRect(360,Tonyu.globals.$screenHeight-160,120,80);
-      //$LASTPOS=77011270;//kernel.MapEditor:11270
+      //$LASTPOS=79011270;//kernel.MapEditor:11270
       Tonyu.globals.$panel.fillRect(0,Tonyu.globals.$screenHeight-80,120,80);
-      //$LASTPOS=77011319;//kernel.MapEditor:11319
+      //$LASTPOS=79011319;//kernel.MapEditor:11319
       Tonyu.globals.$panel.fillRect(120,Tonyu.globals.$screenHeight-80,120,80);
-      //$LASTPOS=77011370;//kernel.MapEditor:11370
+      //$LASTPOS=79011370;//kernel.MapEditor:11370
       Tonyu.globals.$panel.setFillStyle("white");
-      //$LASTPOS=77011405;//kernel.MapEditor:11405
+      //$LASTPOS=79011405;//kernel.MapEditor:11405
       Tonyu.globals.$panel.fillRect(10,Tonyu.globals.$screenHeight-150,100,60);
-      //$LASTPOS=77011456;//kernel.MapEditor:11456
+      //$LASTPOS=79011456;//kernel.MapEditor:11456
       Tonyu.globals.$panel.fillRect(130,Tonyu.globals.$screenHeight-150,100,60);
-      //$LASTPOS=77011508;//kernel.MapEditor:11508
+      //$LASTPOS=79011508;//kernel.MapEditor:11508
       Tonyu.globals.$panel.fillRect(250,Tonyu.globals.$screenHeight-150,100,60);
-      //$LASTPOS=77011560;//kernel.MapEditor:11560
+      //$LASTPOS=79011560;//kernel.MapEditor:11560
       Tonyu.globals.$panel.fillRect(370,Tonyu.globals.$screenHeight-150,100,60);
-      //$LASTPOS=77011612;//kernel.MapEditor:11612
+      //$LASTPOS=79011612;//kernel.MapEditor:11612
       Tonyu.globals.$panel.fillRect(10,Tonyu.globals.$screenHeight-70,100,60);
-      //$LASTPOS=77011662;//kernel.MapEditor:11662
+      //$LASTPOS=79011662;//kernel.MapEditor:11662
       Tonyu.globals.$panel.fillRect(130,Tonyu.globals.$screenHeight-70,100,60);
-      //$LASTPOS=77011713;//kernel.MapEditor:11713
+      //$LASTPOS=79011713;//kernel.MapEditor:11713
       Tonyu.globals.$panel.setFillStyle("black");
-      //$LASTPOS=77011759;//kernel.MapEditor:11759
+      //$LASTPOS=79011759;//kernel.MapEditor:11759
       Tonyu.globals.$panel.fillText("↑",Tonyu.globals.$screenWidth/2,30,40,"center");
-      //$LASTPOS=77011816;//kernel.MapEditor:11816
+      //$LASTPOS=79011816;//kernel.MapEditor:11816
       Tonyu.globals.$panel.fillText("←",20,(Tonyu.globals.$screenHeight-200)/2,40,"center");
-      //$LASTPOS=77011880;//kernel.MapEditor:11880
+      //$LASTPOS=79011880;//kernel.MapEditor:11880
       Tonyu.globals.$panel.fillText("↓",Tonyu.globals.$screenWidth/2,Tonyu.globals.$screenHeight-160-10,40,"center");
-      //$LASTPOS=77011955;//kernel.MapEditor:11955
+      //$LASTPOS=79011955;//kernel.MapEditor:11955
       Tonyu.globals.$panel.fillText("→",Tonyu.globals.$screenWidth-20,(Tonyu.globals.$screenHeight-200)/2,40,"center");
-      //$LASTPOS=77012060;//kernel.MapEditor:12060
+      //$LASTPOS=79012060;//kernel.MapEditor:12060
       Tonyu.globals.$panel.fillText("set",Tonyu.globals.$screenWidth/4-60,Tonyu.globals.$screenHeight-110,40,"center");
-      //$LASTPOS=77012137;//kernel.MapEditor:12137
+      //$LASTPOS=79012137;//kernel.MapEditor:12137
       Tonyu.globals.$panel.fillText(_this.selectedLayer,Tonyu.globals.$screenWidth/4+60,Tonyu.globals.$screenHeight-110,35,"center");
-      //$LASTPOS=77012222;//kernel.MapEditor:12222
+      //$LASTPOS=79012222;//kernel.MapEditor:12222
       Tonyu.globals.$panel.fillText("get",Tonyu.globals.$screenWidth/2+60,Tonyu.globals.$screenHeight-110,40,"center");
-      //$LASTPOS=77012299;//kernel.MapEditor:12299
+      //$LASTPOS=79012299;//kernel.MapEditor:12299
       Tonyu.globals.$panel.fillText("save",Tonyu.globals.$screenWidth-60,Tonyu.globals.$screenHeight-110,40,"center");
-      //$LASTPOS=77012375;//kernel.MapEditor:12375
+      //$LASTPOS=79012375;//kernel.MapEditor:12375
       Tonyu.globals.$panel.fillText("erase",Tonyu.globals.$screenWidth/4-60,Tonyu.globals.$screenHeight-30,35,"center");
-      //$LASTPOS=77012453;//kernel.MapEditor:12453
+      //$LASTPOS=79012453;//kernel.MapEditor:12453
       Tonyu.globals.$panel.fillText("copy",Tonyu.globals.$screenWidth/4+60,Tonyu.globals.$screenHeight-30,35,"center");
     },
     fiber$drawPanel :function _trc_MapEditor_f_drawPanel(_thread) {
@@ -27939,69 +28099,69 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=77010718;//kernel.MapEditor:10718
+      //$LASTPOS=79010718;//kernel.MapEditor:10718
       Tonyu.globals.$panel.setFillStyle("gray");
-      //$LASTPOS=77010752;//kernel.MapEditor:10752
+      //$LASTPOS=79010752;//kernel.MapEditor:10752
       Tonyu.globals.$panel.alpha=128;
-      //$LASTPOS=77010775;//kernel.MapEditor:10775
+      //$LASTPOS=79010775;//kernel.MapEditor:10775
       Tonyu.globals.$panel.fillRect(0,0,Tonyu.globals.$screenWidth,40);
-      //$LASTPOS=77010818;//kernel.MapEditor:10818
+      //$LASTPOS=79010818;//kernel.MapEditor:10818
       Tonyu.globals.$panel.fillRect(0,0,40,Tonyu.globals.$screenHeight-160);
-      //$LASTPOS=77010866;//kernel.MapEditor:10866
+      //$LASTPOS=79010866;//kernel.MapEditor:10866
       Tonyu.globals.$panel.fillRect(Tonyu.globals.$screenWidth-40,0,40,Tonyu.globals.$screenHeight-160);
-      //$LASTPOS=77010928;//kernel.MapEditor:10928
+      //$LASTPOS=79010928;//kernel.MapEditor:10928
       Tonyu.globals.$panel.fillRect(0,Tonyu.globals.$screenHeight-200,Tonyu.globals.$screenWidth,40);
-      //$LASTPOS=77010987;//kernel.MapEditor:10987
+      //$LASTPOS=79010987;//kernel.MapEditor:10987
       Tonyu.globals.$panel.alpha=255;
-      //$LASTPOS=77011010;//kernel.MapEditor:11010
+      //$LASTPOS=79011010;//kernel.MapEditor:11010
       Tonyu.globals.$panel.setFillStyle("black");
-      //$LASTPOS=77011064;//kernel.MapEditor:11064
+      //$LASTPOS=79011064;//kernel.MapEditor:11064
       Tonyu.globals.$panel.fillRect(0,Tonyu.globals.$screenHeight-160,120,80);
-      //$LASTPOS=77011114;//kernel.MapEditor:11114
+      //$LASTPOS=79011114;//kernel.MapEditor:11114
       Tonyu.globals.$panel.fillRect(120,Tonyu.globals.$screenHeight-160,120,80);
-      //$LASTPOS=77011166;//kernel.MapEditor:11166
+      //$LASTPOS=79011166;//kernel.MapEditor:11166
       Tonyu.globals.$panel.fillRect(240,Tonyu.globals.$screenHeight-160,120,80);
-      //$LASTPOS=77011218;//kernel.MapEditor:11218
+      //$LASTPOS=79011218;//kernel.MapEditor:11218
       Tonyu.globals.$panel.fillRect(360,Tonyu.globals.$screenHeight-160,120,80);
-      //$LASTPOS=77011270;//kernel.MapEditor:11270
+      //$LASTPOS=79011270;//kernel.MapEditor:11270
       Tonyu.globals.$panel.fillRect(0,Tonyu.globals.$screenHeight-80,120,80);
-      //$LASTPOS=77011319;//kernel.MapEditor:11319
+      //$LASTPOS=79011319;//kernel.MapEditor:11319
       Tonyu.globals.$panel.fillRect(120,Tonyu.globals.$screenHeight-80,120,80);
-      //$LASTPOS=77011370;//kernel.MapEditor:11370
+      //$LASTPOS=79011370;//kernel.MapEditor:11370
       Tonyu.globals.$panel.setFillStyle("white");
-      //$LASTPOS=77011405;//kernel.MapEditor:11405
+      //$LASTPOS=79011405;//kernel.MapEditor:11405
       Tonyu.globals.$panel.fillRect(10,Tonyu.globals.$screenHeight-150,100,60);
-      //$LASTPOS=77011456;//kernel.MapEditor:11456
+      //$LASTPOS=79011456;//kernel.MapEditor:11456
       Tonyu.globals.$panel.fillRect(130,Tonyu.globals.$screenHeight-150,100,60);
-      //$LASTPOS=77011508;//kernel.MapEditor:11508
+      //$LASTPOS=79011508;//kernel.MapEditor:11508
       Tonyu.globals.$panel.fillRect(250,Tonyu.globals.$screenHeight-150,100,60);
-      //$LASTPOS=77011560;//kernel.MapEditor:11560
+      //$LASTPOS=79011560;//kernel.MapEditor:11560
       Tonyu.globals.$panel.fillRect(370,Tonyu.globals.$screenHeight-150,100,60);
-      //$LASTPOS=77011612;//kernel.MapEditor:11612
+      //$LASTPOS=79011612;//kernel.MapEditor:11612
       Tonyu.globals.$panel.fillRect(10,Tonyu.globals.$screenHeight-70,100,60);
-      //$LASTPOS=77011662;//kernel.MapEditor:11662
+      //$LASTPOS=79011662;//kernel.MapEditor:11662
       Tonyu.globals.$panel.fillRect(130,Tonyu.globals.$screenHeight-70,100,60);
-      //$LASTPOS=77011713;//kernel.MapEditor:11713
+      //$LASTPOS=79011713;//kernel.MapEditor:11713
       Tonyu.globals.$panel.setFillStyle("black");
-      //$LASTPOS=77011759;//kernel.MapEditor:11759
+      //$LASTPOS=79011759;//kernel.MapEditor:11759
       Tonyu.globals.$panel.fillText("↑",Tonyu.globals.$screenWidth/2,30,40,"center");
-      //$LASTPOS=77011816;//kernel.MapEditor:11816
+      //$LASTPOS=79011816;//kernel.MapEditor:11816
       Tonyu.globals.$panel.fillText("←",20,(Tonyu.globals.$screenHeight-200)/2,40,"center");
-      //$LASTPOS=77011880;//kernel.MapEditor:11880
+      //$LASTPOS=79011880;//kernel.MapEditor:11880
       Tonyu.globals.$panel.fillText("↓",Tonyu.globals.$screenWidth/2,Tonyu.globals.$screenHeight-160-10,40,"center");
-      //$LASTPOS=77011955;//kernel.MapEditor:11955
+      //$LASTPOS=79011955;//kernel.MapEditor:11955
       Tonyu.globals.$panel.fillText("→",Tonyu.globals.$screenWidth-20,(Tonyu.globals.$screenHeight-200)/2,40,"center");
-      //$LASTPOS=77012060;//kernel.MapEditor:12060
+      //$LASTPOS=79012060;//kernel.MapEditor:12060
       Tonyu.globals.$panel.fillText("set",Tonyu.globals.$screenWidth/4-60,Tonyu.globals.$screenHeight-110,40,"center");
-      //$LASTPOS=77012137;//kernel.MapEditor:12137
+      //$LASTPOS=79012137;//kernel.MapEditor:12137
       Tonyu.globals.$panel.fillText(_this.selectedLayer,Tonyu.globals.$screenWidth/4+60,Tonyu.globals.$screenHeight-110,35,"center");
-      //$LASTPOS=77012222;//kernel.MapEditor:12222
+      //$LASTPOS=79012222;//kernel.MapEditor:12222
       Tonyu.globals.$panel.fillText("get",Tonyu.globals.$screenWidth/2+60,Tonyu.globals.$screenHeight-110,40,"center");
-      //$LASTPOS=77012299;//kernel.MapEditor:12299
+      //$LASTPOS=79012299;//kernel.MapEditor:12299
       Tonyu.globals.$panel.fillText("save",Tonyu.globals.$screenWidth-60,Tonyu.globals.$screenHeight-110,40,"center");
-      //$LASTPOS=77012375;//kernel.MapEditor:12375
+      //$LASTPOS=79012375;//kernel.MapEditor:12375
       Tonyu.globals.$panel.fillText("erase",Tonyu.globals.$screenWidth/4-60,Tonyu.globals.$screenHeight-30,35,"center");
-      //$LASTPOS=77012453;//kernel.MapEditor:12453
+      //$LASTPOS=79012453;//kernel.MapEditor:12453
       Tonyu.globals.$panel.fillText("copy",Tonyu.globals.$screenWidth/4+60,Tonyu.globals.$screenHeight-30,35,"center");
       
       _thread.retVal=_this;return;
@@ -28010,51 +28170,51 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=77012561;//kernel.MapEditor:12561
+      //$LASTPOS=79012561;//kernel.MapEditor:12561
       if (mode=="set") {
-        //$LASTPOS=77012577;//kernel.MapEditor:12577
+        //$LASTPOS=79012577;//kernel.MapEditor:12577
         Tonyu.globals.$panel.setFillStyle("red");
       } else {
-        //$LASTPOS=77012615;//kernel.MapEditor:12615
+        //$LASTPOS=79012615;//kernel.MapEditor:12615
         Tonyu.globals.$panel.setFillStyle("black");
       }
-      //$LASTPOS=77012650;//kernel.MapEditor:12650
+      //$LASTPOS=79012650;//kernel.MapEditor:12650
       Tonyu.globals.$panel.fillText("set",Tonyu.globals.$screenWidth/4-60,Tonyu.globals.$screenHeight-110,40,"center");
-      //$LASTPOS=77012727;//kernel.MapEditor:12727
+      //$LASTPOS=79012727;//kernel.MapEditor:12727
       if (mode=="get") {
-        //$LASTPOS=77012743;//kernel.MapEditor:12743
+        //$LASTPOS=79012743;//kernel.MapEditor:12743
         Tonyu.globals.$panel.setFillStyle("red");
       } else {
-        //$LASTPOS=77012781;//kernel.MapEditor:12781
+        //$LASTPOS=79012781;//kernel.MapEditor:12781
         Tonyu.globals.$panel.setFillStyle("black");
       }
-      //$LASTPOS=77012816;//kernel.MapEditor:12816
+      //$LASTPOS=79012816;//kernel.MapEditor:12816
       Tonyu.globals.$panel.fillText("get",Tonyu.globals.$screenWidth/2+60,Tonyu.globals.$screenHeight-110,40,"center");
-      //$LASTPOS=77012893;//kernel.MapEditor:12893
+      //$LASTPOS=79012893;//kernel.MapEditor:12893
       if (mode=="erase") {
-        //$LASTPOS=77012911;//kernel.MapEditor:12911
+        //$LASTPOS=79012911;//kernel.MapEditor:12911
         Tonyu.globals.$panel.setFillStyle("red");
       } else {
-        //$LASTPOS=77012949;//kernel.MapEditor:12949
+        //$LASTPOS=79012949;//kernel.MapEditor:12949
         Tonyu.globals.$panel.setFillStyle("black");
       }
-      //$LASTPOS=77012984;//kernel.MapEditor:12984
+      //$LASTPOS=79012984;//kernel.MapEditor:12984
       Tonyu.globals.$panel.fillText("erase",Tonyu.globals.$screenWidth/4-60,Tonyu.globals.$screenHeight-30,35,"center");
-      //$LASTPOS=77013062;//kernel.MapEditor:13062
+      //$LASTPOS=79013062;//kernel.MapEditor:13062
       if (mode=="copy") {
-        //$LASTPOS=77013079;//kernel.MapEditor:13079
+        //$LASTPOS=79013079;//kernel.MapEditor:13079
         Tonyu.globals.$panel.setFillStyle("red");
       } else {
-        //$LASTPOS=77013117;//kernel.MapEditor:13117
+        //$LASTPOS=79013117;//kernel.MapEditor:13117
         Tonyu.globals.$panel.setFillStyle("black");
       }
-      //$LASTPOS=77013152;//kernel.MapEditor:13152
+      //$LASTPOS=79013152;//kernel.MapEditor:13152
       Tonyu.globals.$panel.fillText("copy",Tonyu.globals.$screenWidth/4+60,Tonyu.globals.$screenHeight-30,35,"center");
-      //$LASTPOS=77013229;//kernel.MapEditor:13229
+      //$LASTPOS=79013229;//kernel.MapEditor:13229
       Tonyu.globals.$panel.setFillStyle("black");
-      //$LASTPOS=77013264;//kernel.MapEditor:13264
+      //$LASTPOS=79013264;//kernel.MapEditor:13264
       Tonyu.globals.$panel.fillText(_this.selectedLayer,Tonyu.globals.$screenWidth/4+60,Tonyu.globals.$screenHeight-110,35,"center");
-      //$LASTPOS=77013349;//kernel.MapEditor:13349
+      //$LASTPOS=79013349;//kernel.MapEditor:13349
       Tonyu.globals.$panel.fillText("save",Tonyu.globals.$screenWidth-60,Tonyu.globals.$screenHeight-110,40,"center");
     },
     fiber$drawLetter :function _trc_MapEditor_f_drawLetter(_thread,mode) {
@@ -28063,51 +28223,51 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=77012561;//kernel.MapEditor:12561
+      //$LASTPOS=79012561;//kernel.MapEditor:12561
       if (mode=="set") {
-        //$LASTPOS=77012577;//kernel.MapEditor:12577
+        //$LASTPOS=79012577;//kernel.MapEditor:12577
         Tonyu.globals.$panel.setFillStyle("red");
       } else {
-        //$LASTPOS=77012615;//kernel.MapEditor:12615
+        //$LASTPOS=79012615;//kernel.MapEditor:12615
         Tonyu.globals.$panel.setFillStyle("black");
       }
-      //$LASTPOS=77012650;//kernel.MapEditor:12650
+      //$LASTPOS=79012650;//kernel.MapEditor:12650
       Tonyu.globals.$panel.fillText("set",Tonyu.globals.$screenWidth/4-60,Tonyu.globals.$screenHeight-110,40,"center");
-      //$LASTPOS=77012727;//kernel.MapEditor:12727
+      //$LASTPOS=79012727;//kernel.MapEditor:12727
       if (mode=="get") {
-        //$LASTPOS=77012743;//kernel.MapEditor:12743
+        //$LASTPOS=79012743;//kernel.MapEditor:12743
         Tonyu.globals.$panel.setFillStyle("red");
       } else {
-        //$LASTPOS=77012781;//kernel.MapEditor:12781
+        //$LASTPOS=79012781;//kernel.MapEditor:12781
         Tonyu.globals.$panel.setFillStyle("black");
       }
-      //$LASTPOS=77012816;//kernel.MapEditor:12816
+      //$LASTPOS=79012816;//kernel.MapEditor:12816
       Tonyu.globals.$panel.fillText("get",Tonyu.globals.$screenWidth/2+60,Tonyu.globals.$screenHeight-110,40,"center");
-      //$LASTPOS=77012893;//kernel.MapEditor:12893
+      //$LASTPOS=79012893;//kernel.MapEditor:12893
       if (mode=="erase") {
-        //$LASTPOS=77012911;//kernel.MapEditor:12911
+        //$LASTPOS=79012911;//kernel.MapEditor:12911
         Tonyu.globals.$panel.setFillStyle("red");
       } else {
-        //$LASTPOS=77012949;//kernel.MapEditor:12949
+        //$LASTPOS=79012949;//kernel.MapEditor:12949
         Tonyu.globals.$panel.setFillStyle("black");
       }
-      //$LASTPOS=77012984;//kernel.MapEditor:12984
+      //$LASTPOS=79012984;//kernel.MapEditor:12984
       Tonyu.globals.$panel.fillText("erase",Tonyu.globals.$screenWidth/4-60,Tonyu.globals.$screenHeight-30,35,"center");
-      //$LASTPOS=77013062;//kernel.MapEditor:13062
+      //$LASTPOS=79013062;//kernel.MapEditor:13062
       if (mode=="copy") {
-        //$LASTPOS=77013079;//kernel.MapEditor:13079
+        //$LASTPOS=79013079;//kernel.MapEditor:13079
         Tonyu.globals.$panel.setFillStyle("red");
       } else {
-        //$LASTPOS=77013117;//kernel.MapEditor:13117
+        //$LASTPOS=79013117;//kernel.MapEditor:13117
         Tonyu.globals.$panel.setFillStyle("black");
       }
-      //$LASTPOS=77013152;//kernel.MapEditor:13152
+      //$LASTPOS=79013152;//kernel.MapEditor:13152
       Tonyu.globals.$panel.fillText("copy",Tonyu.globals.$screenWidth/4+60,Tonyu.globals.$screenHeight-30,35,"center");
-      //$LASTPOS=77013229;//kernel.MapEditor:13229
+      //$LASTPOS=79013229;//kernel.MapEditor:13229
       Tonyu.globals.$panel.setFillStyle("black");
-      //$LASTPOS=77013264;//kernel.MapEditor:13264
+      //$LASTPOS=79013264;//kernel.MapEditor:13264
       Tonyu.globals.$panel.fillText(_this.selectedLayer,Tonyu.globals.$screenWidth/4+60,Tonyu.globals.$screenHeight-110,35,"center");
-      //$LASTPOS=77013349;//kernel.MapEditor:13349
+      //$LASTPOS=79013349;//kernel.MapEditor:13349
       Tonyu.globals.$panel.fillText("save",Tonyu.globals.$screenWidth-60,Tonyu.globals.$screenHeight-110,40,"center");
       
       _thread.retVal=_this;return;
@@ -28127,350 +28287,350 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=78000032;//kernel.MapEditorOLD:32
+      //$LASTPOS=80000032;//kernel.MapEditorOLD:32
       _this.loadMode=false;
-      //$LASTPOS=78000049;//kernel.MapEditorOLD:49
+      //$LASTPOS=80000049;//kernel.MapEditorOLD:49
       _this.print("Load Data?: Y or N");
-      //$LASTPOS=78000079;//kernel.MapEditorOLD:79
+      //$LASTPOS=80000079;//kernel.MapEditorOLD:79
       while (true) {
-        //$LASTPOS=78000097;//kernel.MapEditorOLD:97
+        //$LASTPOS=80000097;//kernel.MapEditorOLD:97
         if (_this.getkey("y")>0) {
-          //$LASTPOS=78000125;//kernel.MapEditorOLD:125
+          //$LASTPOS=80000125;//kernel.MapEditorOLD:125
           _this.loadMode=true;
           break;
           
           
         }
-        //$LASTPOS=78000168;//kernel.MapEditorOLD:168
+        //$LASTPOS=80000168;//kernel.MapEditorOLD:168
         if (_this.getkey("n")>0) {
-          //$LASTPOS=78000196;//kernel.MapEditorOLD:196
+          //$LASTPOS=80000196;//kernel.MapEditorOLD:196
           _this.loadMode=false;
           break;
           
           
         }
-        //$LASTPOS=78000240;//kernel.MapEditorOLD:240
+        //$LASTPOS=80000240;//kernel.MapEditorOLD:240
         _this.update();
         
       }
-      //$LASTPOS=78000254;//kernel.MapEditorOLD:254
+      //$LASTPOS=80000254;//kernel.MapEditorOLD:254
       if (_this.loadMode) {
-        //$LASTPOS=78000273;//kernel.MapEditorOLD:273
+        //$LASTPOS=80000273;//kernel.MapEditorOLD:273
         _this.fileName=prompt("Input json file (*.json)","map.json");
-        //$LASTPOS=78000334;//kernel.MapEditorOLD:334
+        //$LASTPOS=80000334;//kernel.MapEditorOLD:334
         if (_this.fileName) {
-          //$LASTPOS=78000357;//kernel.MapEditorOLD:357
+          //$LASTPOS=80000357;//kernel.MapEditorOLD:357
           _this.mapDataFile=_this.file("../maps/").rel(_this.fileName);
           
         }
-        //$LASTPOS=78000413;//kernel.MapEditorOLD:413
+        //$LASTPOS=80000413;//kernel.MapEditorOLD:413
         if (_this.mapDataFile.obj()) {
-          //$LASTPOS=78000445;//kernel.MapEditorOLD:445
+          //$LASTPOS=80000445;//kernel.MapEditorOLD:445
           _this.baseData=_this.mapDataFile.obj();
           
         } else {
-          //$LASTPOS=78000494;//kernel.MapEditorOLD:494
+          //$LASTPOS=80000494;//kernel.MapEditorOLD:494
           _this.mapDataFile=_this.file(_this.fileName);
-          //$LASTPOS=78000531;//kernel.MapEditorOLD:531
+          //$LASTPOS=80000531;//kernel.MapEditorOLD:531
           if (_this.mapDataFile.obj()) {
-            //$LASTPOS=78000567;//kernel.MapEditorOLD:567
+            //$LASTPOS=80000567;//kernel.MapEditorOLD:567
             _this.baseData=_this.mapDataFile.obj();
             
           }
           
         }
-        //$LASTPOS=78000618;//kernel.MapEditorOLD:618
+        //$LASTPOS=80000618;//kernel.MapEditorOLD:618
         if (_this.baseData==undefined) {
-          //$LASTPOS=78000652;//kernel.MapEditorOLD:652
+          //$LASTPOS=80000652;//kernel.MapEditorOLD:652
           _this.print("Load failed");
-          //$LASTPOS=78000683;//kernel.MapEditorOLD:683
+          //$LASTPOS=80000683;//kernel.MapEditorOLD:683
           _this.loadMode=false;
           
         } else {
-          //$LASTPOS=78000710;//kernel.MapEditorOLD:710
+          //$LASTPOS=80000710;//kernel.MapEditorOLD:710
           if (_this.baseData[0]&&_this.baseData[1]) {
-            //$LASTPOS=78000751;//kernel.MapEditorOLD:751
+            //$LASTPOS=80000751;//kernel.MapEditorOLD:751
             _this.mapData=_this.baseData[0];
-            //$LASTPOS=78000781;//kernel.MapEditorOLD:781
+            //$LASTPOS=80000781;//kernel.MapEditorOLD:781
             _this.mapOnData=_this.baseData[1];
             
           }
         }
         
       }
-      //$LASTPOS=78000815;//kernel.MapEditorOLD:815
+      //$LASTPOS=80000815;//kernel.MapEditorOLD:815
       _this.update();
-      //$LASTPOS=78001093;//kernel.MapEditorOLD:1093
+      //$LASTPOS=80001093;//kernel.MapEditorOLD:1093
       if (! _this.loadMode) {
-        //$LASTPOS=78001113;//kernel.MapEditorOLD:1113
+        //$LASTPOS=80001113;//kernel.MapEditorOLD:1113
         _this.row=prompt("input row");
-        //$LASTPOS=78001143;//kernel.MapEditorOLD:1143
+        //$LASTPOS=80001143;//kernel.MapEditorOLD:1143
         _this.update();
-        //$LASTPOS=78001158;//kernel.MapEditorOLD:1158
+        //$LASTPOS=80001158;//kernel.MapEditorOLD:1158
         _this.col=prompt("input col");
-        //$LASTPOS=78001188;//kernel.MapEditorOLD:1188
+        //$LASTPOS=80001188;//kernel.MapEditorOLD:1188
         _this.panel=new Tonyu.classes.kernel.Panel({width: _this.col*32,height: _this.row*32});
-        //$LASTPOS=78001238;//kernel.MapEditorOLD:1238
+        //$LASTPOS=80001238;//kernel.MapEditorOLD:1238
         _this.panel.x=_this.panel.width/2+10;
-        //$LASTPOS=78001269;//kernel.MapEditorOLD:1269
+        //$LASTPOS=80001269;//kernel.MapEditorOLD:1269
         _this.panel.y=_this.panel.height/2;
-        //$LASTPOS=78001298;//kernel.MapEditorOLD:1298
+        //$LASTPOS=80001298;//kernel.MapEditorOLD:1298
         _this.panel.setFillStyle("cyan");
-        //$LASTPOS=78001331;//kernel.MapEditorOLD:1331
+        //$LASTPOS=80001331;//kernel.MapEditorOLD:1331
         _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
-        //$LASTPOS=78001382;//kernel.MapEditorOLD:1382
+        //$LASTPOS=80001382;//kernel.MapEditorOLD:1382
         Tonyu.globals.$map=new Tonyu.classes.kernel.Map({row: _this.row,col: _this.col,chipWidth: 32,chipHeight: 32});
         
       } else {
-        //$LASTPOS=78001445;//kernel.MapEditorOLD:1445
+        //$LASTPOS=80001445;//kernel.MapEditorOLD:1445
         if (! _this.mapOnData) {
-          //$LASTPOS=78001470;//kernel.MapEditorOLD:1470
+          //$LASTPOS=80001470;//kernel.MapEditorOLD:1470
           Tonyu.globals.$map=new Tonyu.classes.kernel.Map({row: _this.mapData.length,col: _this.mapData[0].length,chipWidth: 32,chipHeight: 32,mapData: _this.mapData});
           
         } else {
-          //$LASTPOS=78001582;//kernel.MapEditorOLD:1582
+          //$LASTPOS=80001582;//kernel.MapEditorOLD:1582
           Tonyu.globals.$map=new Tonyu.classes.kernel.Map({row: _this.mapData.length,col: _this.mapData[0].length,chipWidth: 32,chipHeight: 32,mapData: _this.mapData,mapOnData: _this.mapOnData});
           
         }
-        //$LASTPOS=78001695;//kernel.MapEditorOLD:1695
+        //$LASTPOS=80001695;//kernel.MapEditorOLD:1695
         _this.panel=new Tonyu.classes.kernel.Panel({width: Tonyu.globals.$map.col*32,height: Tonyu.globals.$map.row*32,zOrder: 100});
-        //$LASTPOS=78001766;//kernel.MapEditorOLD:1766
+        //$LASTPOS=80001766;//kernel.MapEditorOLD:1766
         _this.panel.x=_this.panel.width/2;
-        //$LASTPOS=78001794;//kernel.MapEditorOLD:1794
+        //$LASTPOS=80001794;//kernel.MapEditorOLD:1794
         _this.panel.y=_this.panel.height/2;
-        //$LASTPOS=78001823;//kernel.MapEditorOLD:1823
+        //$LASTPOS=80001823;//kernel.MapEditorOLD:1823
         _this.panel.setFillStyle("cyan");
-        //$LASTPOS=78001856;//kernel.MapEditorOLD:1856
+        //$LASTPOS=80001856;//kernel.MapEditorOLD:1856
         _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
         
       }
-      //$LASTPOS=78001906;//kernel.MapEditorOLD:1906
+      //$LASTPOS=80001906;//kernel.MapEditorOLD:1906
       Tonyu.globals.$mp=new Tonyu.classes.kernel.Map({row: 16,col: 8,chipWidth: 32,chipHeight: 32});
-      //$LASTPOS=78001961;//kernel.MapEditorOLD:1961
+      //$LASTPOS=80001961;//kernel.MapEditorOLD:1961
       _this.counter=0;
-      //$LASTPOS=78001973;//kernel.MapEditorOLD:1973
-      //$LASTPOS=78001977;//kernel.MapEditorOLD:1977
+      //$LASTPOS=80001973;//kernel.MapEditorOLD:1973
+      //$LASTPOS=80001977;//kernel.MapEditorOLD:1977
       _this.i = 0;
       for (; _this.i<16 ; _this.i++) {
         {
-          //$LASTPOS=78002001;//kernel.MapEditorOLD:2001
-          //$LASTPOS=78002005;//kernel.MapEditorOLD:2005
+          //$LASTPOS=80002001;//kernel.MapEditorOLD:2001
+          //$LASTPOS=80002005;//kernel.MapEditorOLD:2005
           _this.j = 0;
           for (; _this.j<8 ; _this.j++) {
             {
-              //$LASTPOS=78002032;//kernel.MapEditorOLD:2032
+              //$LASTPOS=80002032;//kernel.MapEditorOLD:2032
               Tonyu.globals.$mp.set(_this.j,_this.i,Tonyu.globals.$pat_mapchip+_this.counter);
-              //$LASTPOS=78002076;//kernel.MapEditorOLD:2076
+              //$LASTPOS=80002076;//kernel.MapEditorOLD:2076
               _this.counter++;
             }
           }
         }
       }
-      //$LASTPOS=78002098;//kernel.MapEditorOLD:2098
+      //$LASTPOS=80002098;//kernel.MapEditorOLD:2098
       _this.mode="get";
-      //$LASTPOS=78002111;//kernel.MapEditorOLD:2111
+      //$LASTPOS=80002111;//kernel.MapEditorOLD:2111
       _this.prevMode="set";
-      //$LASTPOS=78002128;//kernel.MapEditorOLD:2128
+      //$LASTPOS=80002128;//kernel.MapEditorOLD:2128
       _this.mapp=0;
-      //$LASTPOS=78002137;//kernel.MapEditorOLD:2137
+      //$LASTPOS=80002137;//kernel.MapEditorOLD:2137
       _this.mx=0;
-      //$LASTPOS=78002144;//kernel.MapEditorOLD:2144
+      //$LASTPOS=80002144;//kernel.MapEditorOLD:2144
       _this.my=0;
-      //$LASTPOS=78002151;//kernel.MapEditorOLD:2151
+      //$LASTPOS=80002151;//kernel.MapEditorOLD:2151
       _this.chipX=0;
-      //$LASTPOS=78002161;//kernel.MapEditorOLD:2161
+      //$LASTPOS=80002161;//kernel.MapEditorOLD:2161
       _this.chipY=0;
-      //$LASTPOS=78002171;//kernel.MapEditorOLD:2171
+      //$LASTPOS=80002171;//kernel.MapEditorOLD:2171
       _this.x=Tonyu.globals.$screenWidth-16;
-      //$LASTPOS=78002191;//kernel.MapEditorOLD:2191
+      //$LASTPOS=80002191;//kernel.MapEditorOLD:2191
       _this.y=Tonyu.globals.$screenHeight-16;
-      //$LASTPOS=78002212;//kernel.MapEditorOLD:2212
+      //$LASTPOS=80002212;//kernel.MapEditorOLD:2212
       while (true) {
-        //$LASTPOS=78002230;//kernel.MapEditorOLD:2230
+        //$LASTPOS=80002230;//kernel.MapEditorOLD:2230
         _this.p=_this.mapp;
-        //$LASTPOS=78002243;//kernel.MapEditorOLD:2243
+        //$LASTPOS=80002243;//kernel.MapEditorOLD:2243
         if (_this.getkey("e")==1) {
-          //$LASTPOS=78002272;//kernel.MapEditorOLD:2272
+          //$LASTPOS=80002272;//kernel.MapEditorOLD:2272
           Tonyu.globals.$mp.scrollTo(1000,1000);
-          //$LASTPOS=78002306;//kernel.MapEditorOLD:2306
+          //$LASTPOS=80002306;//kernel.MapEditorOLD:2306
           _this.mode="erase";
-          //$LASTPOS=78002329;//kernel.MapEditorOLD:2329
+          //$LASTPOS=80002329;//kernel.MapEditorOLD:2329
           _this.print(_this.mode+" mode");
           
         }
-        //$LASTPOS=78002362;//kernel.MapEditorOLD:2362
+        //$LASTPOS=80002362;//kernel.MapEditorOLD:2362
         if (_this.getkey("s")==1) {
-          //$LASTPOS=78002391;//kernel.MapEditorOLD:2391
+          //$LASTPOS=80002391;//kernel.MapEditorOLD:2391
           Tonyu.globals.$mp.scrollTo(1000,1000);
-          //$LASTPOS=78002425;//kernel.MapEditorOLD:2425
+          //$LASTPOS=80002425;//kernel.MapEditorOLD:2425
           if (_this.mode=="set") {
-            //$LASTPOS=78002455;//kernel.MapEditorOLD:2455
+            //$LASTPOS=80002455;//kernel.MapEditorOLD:2455
             _this.mode="setOn";
             
           } else {
-            //$LASTPOS=78002498;//kernel.MapEditorOLD:2498
+            //$LASTPOS=80002498;//kernel.MapEditorOLD:2498
             _this.mode="set";
             
           }
-          //$LASTPOS=78002530;//kernel.MapEditorOLD:2530
+          //$LASTPOS=80002530;//kernel.MapEditorOLD:2530
           _this.print(_this.mode+" mode");
           
         }
-        //$LASTPOS=78002563;//kernel.MapEditorOLD:2563
+        //$LASTPOS=80002563;//kernel.MapEditorOLD:2563
         if (_this.getkey("o")==1) {
-          //$LASTPOS=78002592;//kernel.MapEditorOLD:2592
+          //$LASTPOS=80002592;//kernel.MapEditorOLD:2592
           Tonyu.globals.$mp.scrollTo(1000,1000);
-          //$LASTPOS=78002626;//kernel.MapEditorOLD:2626
+          //$LASTPOS=80002626;//kernel.MapEditorOLD:2626
           _this.mode="setOn";
           
         }
-        //$LASTPOS=78002652;//kernel.MapEditorOLD:2652
+        //$LASTPOS=80002652;//kernel.MapEditorOLD:2652
         if (_this.getkey("g")==1) {
-          //$LASTPOS=78002681;//kernel.MapEditorOLD:2681
+          //$LASTPOS=80002681;//kernel.MapEditorOLD:2681
           if (_this.mode!="get") {
-            //$LASTPOS=78002711;//kernel.MapEditorOLD:2711
+            //$LASTPOS=80002711;//kernel.MapEditorOLD:2711
             _this.prevMode=_this.mode;
-            //$LASTPOS=78002739;//kernel.MapEditorOLD:2739
+            //$LASTPOS=80002739;//kernel.MapEditorOLD:2739
             Tonyu.globals.$mp.scrollTo(0,0);
-            //$LASTPOS=78002771;//kernel.MapEditorOLD:2771
+            //$LASTPOS=80002771;//kernel.MapEditorOLD:2771
             _this.mode="get";
-            //$LASTPOS=78002796;//kernel.MapEditorOLD:2796
+            //$LASTPOS=80002796;//kernel.MapEditorOLD:2796
             _this.chipX=0;
-            //$LASTPOS=78002818;//kernel.MapEditorOLD:2818
+            //$LASTPOS=80002818;//kernel.MapEditorOLD:2818
             _this.chipY=0;
             
           } else {
-            //$LASTPOS=78002856;//kernel.MapEditorOLD:2856
+            //$LASTPOS=80002856;//kernel.MapEditorOLD:2856
             Tonyu.globals.$mp.scrollTo(1000,1000);
-            //$LASTPOS=78002894;//kernel.MapEditorOLD:2894
+            //$LASTPOS=80002894;//kernel.MapEditorOLD:2894
             _this.mode=_this.prevMode;
             
           }
-          //$LASTPOS=78002929;//kernel.MapEditorOLD:2929
+          //$LASTPOS=80002929;//kernel.MapEditorOLD:2929
           _this.print(_this.mode+" mode");
           
         }
-        //$LASTPOS=78002962;//kernel.MapEditorOLD:2962
+        //$LASTPOS=80002962;//kernel.MapEditorOLD:2962
         if (_this.getkey("p")==1) {
-          //$LASTPOS=78003006;//kernel.MapEditorOLD:3006
+          //$LASTPOS=80003006;//kernel.MapEditorOLD:3006
           _this.saveFileName=prompt("input json file(*.json)","map.json");
-          //$LASTPOS=78003495;//kernel.MapEditorOLD:3495
+          //$LASTPOS=80003495;//kernel.MapEditorOLD:3495
           _this.saveDataFile=_this.file("../maps/").rel(_this.saveFileName);
-          //$LASTPOS=78003553;//kernel.MapEditorOLD:3553
+          //$LASTPOS=80003553;//kernel.MapEditorOLD:3553
           _this.data=[Tonyu.globals.$map.mapTable,Tonyu.globals.$map.mapOnTable];
-          //$LASTPOS=78003668;//kernel.MapEditorOLD:3668
+          //$LASTPOS=80003668;//kernel.MapEditorOLD:3668
           _this.saveDataFile.obj(_this.data);
-          //$LASTPOS=78003701;//kernel.MapEditorOLD:3701
+          //$LASTPOS=80003701;//kernel.MapEditorOLD:3701
           _this.print(_this.saveFileName+" Saved");
           
         }
-        //$LASTPOS=78003793;//kernel.MapEditorOLD:3793
+        //$LASTPOS=80003793;//kernel.MapEditorOLD:3793
         if (_this.getkey("c")==1) {
-          //$LASTPOS=78003822;//kernel.MapEditorOLD:3822
+          //$LASTPOS=80003822;//kernel.MapEditorOLD:3822
           Tonyu.globals.$mp.scrollTo(1000,1000);
-          //$LASTPOS=78003856;//kernel.MapEditorOLD:3856
+          //$LASTPOS=80003856;//kernel.MapEditorOLD:3856
           _this.mode="spuit";
-          //$LASTPOS=78003879;//kernel.MapEditorOLD:3879
+          //$LASTPOS=80003879;//kernel.MapEditorOLD:3879
           _this.print(_this.mode+" mode");
           
         }
-        //$LASTPOS=78003912;//kernel.MapEditorOLD:3912
+        //$LASTPOS=80003912;//kernel.MapEditorOLD:3912
         if (_this.mode!="get") {
-          //$LASTPOS=78003938;//kernel.MapEditorOLD:3938
+          //$LASTPOS=80003938;//kernel.MapEditorOLD:3938
           if (_this.getkey("left")>0) {
-            //$LASTPOS=78003959;//kernel.MapEditorOLD:3959
+            //$LASTPOS=80003959;//kernel.MapEditorOLD:3959
             _this.mx=_this.mx+8;
           }
-          //$LASTPOS=78003977;//kernel.MapEditorOLD:3977
+          //$LASTPOS=80003977;//kernel.MapEditorOLD:3977
           if (_this.getkey("right")>0) {
-            //$LASTPOS=78003999;//kernel.MapEditorOLD:3999
+            //$LASTPOS=80003999;//kernel.MapEditorOLD:3999
             _this.mx=_this.mx-8;
           }
-          //$LASTPOS=78004017;//kernel.MapEditorOLD:4017
+          //$LASTPOS=80004017;//kernel.MapEditorOLD:4017
           if (_this.getkey("up")>0) {
-            //$LASTPOS=78004036;//kernel.MapEditorOLD:4036
+            //$LASTPOS=80004036;//kernel.MapEditorOLD:4036
             _this.my=_this.my+8;
           }
-          //$LASTPOS=78004054;//kernel.MapEditorOLD:4054
+          //$LASTPOS=80004054;//kernel.MapEditorOLD:4054
           if (_this.getkey("down")>0) {
-            //$LASTPOS=78004075;//kernel.MapEditorOLD:4075
+            //$LASTPOS=80004075;//kernel.MapEditorOLD:4075
             _this.my=_this.my-8;
           }
-          //$LASTPOS=78004093;//kernel.MapEditorOLD:4093
+          //$LASTPOS=80004093;//kernel.MapEditorOLD:4093
           Tonyu.globals.$map.scrollTo(_this.mx,_this.my);
           
         } else {
-          //$LASTPOS=78004136;//kernel.MapEditorOLD:4136
+          //$LASTPOS=80004136;//kernel.MapEditorOLD:4136
           if (_this.getkey("left")>0) {
-            //$LASTPOS=78004157;//kernel.MapEditorOLD:4157
+            //$LASTPOS=80004157;//kernel.MapEditorOLD:4157
             _this.chipX=_this.chipX+8;
           }
-          //$LASTPOS=78004181;//kernel.MapEditorOLD:4181
+          //$LASTPOS=80004181;//kernel.MapEditorOLD:4181
           if (_this.getkey("right")>0) {
-            //$LASTPOS=78004203;//kernel.MapEditorOLD:4203
+            //$LASTPOS=80004203;//kernel.MapEditorOLD:4203
             _this.chipX=_this.chipX-8;
           }
-          //$LASTPOS=78004227;//kernel.MapEditorOLD:4227
+          //$LASTPOS=80004227;//kernel.MapEditorOLD:4227
           if (_this.getkey("up")>0) {
-            //$LASTPOS=78004246;//kernel.MapEditorOLD:4246
+            //$LASTPOS=80004246;//kernel.MapEditorOLD:4246
             _this.chipY=_this.chipY+8;
           }
-          //$LASTPOS=78004270;//kernel.MapEditorOLD:4270
+          //$LASTPOS=80004270;//kernel.MapEditorOLD:4270
           if (_this.getkey("down")>0) {
-            //$LASTPOS=78004291;//kernel.MapEditorOLD:4291
+            //$LASTPOS=80004291;//kernel.MapEditorOLD:4291
             _this.chipY=_this.chipY-8;
           }
-          //$LASTPOS=78004315;//kernel.MapEditorOLD:4315
+          //$LASTPOS=80004315;//kernel.MapEditorOLD:4315
           Tonyu.globals.$mp.scrollTo(_this.chipX,_this.chipY);
           
         }
-        //$LASTPOS=78004354;//kernel.MapEditorOLD:4354
+        //$LASTPOS=80004354;//kernel.MapEditorOLD:4354
         _this.panel.x=_this.panel.width/2-_this.mx;
-        //$LASTPOS=78004385;//kernel.MapEditorOLD:4385
+        //$LASTPOS=80004385;//kernel.MapEditorOLD:4385
         _this.panel.y=_this.panel.height/2-_this.my;
-        //$LASTPOS=78004417;//kernel.MapEditorOLD:4417
+        //$LASTPOS=80004417;//kernel.MapEditorOLD:4417
         if (_this.mode=="set"&&_this.getkey(1)>0) {
-          //$LASTPOS=78004458;//kernel.MapEditorOLD:4458
+          //$LASTPOS=80004458;//kernel.MapEditorOLD:4458
           Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,_this.mapp);
-          //$LASTPOS=78004507;//kernel.MapEditorOLD:4507
+          //$LASTPOS=80004507;//kernel.MapEditorOLD:4507
           Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,- 1);
           
         } else {
-          //$LASTPOS=78004558;//kernel.MapEditorOLD:4558
+          //$LASTPOS=80004558;//kernel.MapEditorOLD:4558
           if (_this.mode=="erase"&&_this.getkey(1)>0) {
-            //$LASTPOS=78004601;//kernel.MapEditorOLD:4601
+            //$LASTPOS=80004601;//kernel.MapEditorOLD:4601
             Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,- 1);
             
           } else {
-            //$LASTPOS=78004650;//kernel.MapEditorOLD:4650
+            //$LASTPOS=80004650;//kernel.MapEditorOLD:4650
             if (_this.mode=="get"&&_this.getkey(1)>0) {
-              //$LASTPOS=78004691;//kernel.MapEditorOLD:4691
+              //$LASTPOS=80004691;//kernel.MapEditorOLD:4691
               _this.mapp=Tonyu.globals.$mp.getAt(Tonyu.globals.$mouseX+_this.chipX,Tonyu.globals.$mouseY+_this.chipY);
-              //$LASTPOS=78004745;//kernel.MapEditorOLD:4745
+              //$LASTPOS=80004745;//kernel.MapEditorOLD:4745
               _this.mode=_this.prevMode;
-              //$LASTPOS=78004769;//kernel.MapEditorOLD:4769
+              //$LASTPOS=80004769;//kernel.MapEditorOLD:4769
               Tonyu.globals.$mp.scrollTo(1000,1000);
-              //$LASTPOS=78004803;//kernel.MapEditorOLD:4803
+              //$LASTPOS=80004803;//kernel.MapEditorOLD:4803
               _this.print(_this.mode+" mode");
-              //$LASTPOS=78004833;//kernel.MapEditorOLD:4833
+              //$LASTPOS=80004833;//kernel.MapEditorOLD:4833
               _this.updateEx(10);
               
             } else {
-              //$LASTPOS=78004858;//kernel.MapEditorOLD:4858
+              //$LASTPOS=80004858;//kernel.MapEditorOLD:4858
               if (_this.mode=="setOn"&&_this.getkey(1)>0) {
-                //$LASTPOS=78004901;//kernel.MapEditorOLD:4901
+                //$LASTPOS=80004901;//kernel.MapEditorOLD:4901
                 Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,_this.mapp);
                 
               } else {
-                //$LASTPOS=78004954;//kernel.MapEditorOLD:4954
+                //$LASTPOS=80004954;//kernel.MapEditorOLD:4954
                 if (_this.mode=="spuit"&&_this.getkey(1)>0) {
-                  //$LASTPOS=78004997;//kernel.MapEditorOLD:4997
+                  //$LASTPOS=80004997;//kernel.MapEditorOLD:4997
                   _this.mapp=Tonyu.globals.$map.getAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my);
-                  //$LASTPOS=78005046;//kernel.MapEditorOLD:5046
+                  //$LASTPOS=80005046;//kernel.MapEditorOLD:5046
                   _this.mode="set";
-                  //$LASTPOS=78005067;//kernel.MapEditorOLD:5067
+                  //$LASTPOS=80005067;//kernel.MapEditorOLD:5067
                   _this.print(_this.mode+" mode");
-                  //$LASTPOS=78005097;//kernel.MapEditorOLD:5097
+                  //$LASTPOS=80005097;//kernel.MapEditorOLD:5097
                   _this.updateEx(10);
                   
                 }
@@ -28478,7 +28638,7 @@ Tonyu.klass.define({
             }
           }
         }
-        //$LASTPOS=78005123;//kernel.MapEditorOLD:5123
+        //$LASTPOS=80005123;//kernel.MapEditorOLD:5123
         _this.update();
         
       }
@@ -28489,9 +28649,9 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=78000032;//kernel.MapEditorOLD:32
+      //$LASTPOS=80000032;//kernel.MapEditorOLD:32
       _this.loadMode=false;
-      //$LASTPOS=78000049;//kernel.MapEditorOLD:49
+      //$LASTPOS=80000049;//kernel.MapEditorOLD:49
       _this.print("Load Data?: Y or N");
       
       _thread.enter(function _trc_MapEditorOLD_ent_main(_thread) {
@@ -28499,25 +28659,25 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=78000079;//kernel.MapEditorOLD:79
+            //$LASTPOS=80000079;//kernel.MapEditorOLD:79
           case 1:
-            //$LASTPOS=78000097;//kernel.MapEditorOLD:97
+            //$LASTPOS=80000097;//kernel.MapEditorOLD:97
             if (!(_this.getkey("y")>0)) { __pc=2     ; break; }
-            //$LASTPOS=78000125;//kernel.MapEditorOLD:125
+            //$LASTPOS=80000125;//kernel.MapEditorOLD:125
             _this.loadMode=true;
             __pc=5     ; break;
             
           case 2     :
             
-            //$LASTPOS=78000168;//kernel.MapEditorOLD:168
+            //$LASTPOS=80000168;//kernel.MapEditorOLD:168
             if (!(_this.getkey("n")>0)) { __pc=3     ; break; }
-            //$LASTPOS=78000196;//kernel.MapEditorOLD:196
+            //$LASTPOS=80000196;//kernel.MapEditorOLD:196
             _this.loadMode=false;
             __pc=5     ; break;
             
           case 3     :
             
-            //$LASTPOS=78000240;//kernel.MapEditorOLD:240
+            //$LASTPOS=80000240;//kernel.MapEditorOLD:240
             _this.fiber$update(_thread);
             __pc=4;return;
           case 4:
@@ -28525,347 +28685,347 @@ Tonyu.klass.define({
             __pc=1;break;
           case 5     :
             
-            //$LASTPOS=78000254;//kernel.MapEditorOLD:254
+            //$LASTPOS=80000254;//kernel.MapEditorOLD:254
             if (!(_this.loadMode)) { __pc=9     ; break; }
-            //$LASTPOS=78000273;//kernel.MapEditorOLD:273
+            //$LASTPOS=80000273;//kernel.MapEditorOLD:273
             _this.fileName=prompt("Input json file (*.json)","map.json");
-            //$LASTPOS=78000334;//kernel.MapEditorOLD:334
+            //$LASTPOS=80000334;//kernel.MapEditorOLD:334
             if (_this.fileName) {
-              //$LASTPOS=78000357;//kernel.MapEditorOLD:357
+              //$LASTPOS=80000357;//kernel.MapEditorOLD:357
               _this.mapDataFile=_this.file("../maps/").rel(_this.fileName);
               
             }
-            //$LASTPOS=78000413;//kernel.MapEditorOLD:413
+            //$LASTPOS=80000413;//kernel.MapEditorOLD:413
             if (!(_this.mapDataFile.obj())) { __pc=6     ; break; }
             {
-              //$LASTPOS=78000445;//kernel.MapEditorOLD:445
+              //$LASTPOS=80000445;//kernel.MapEditorOLD:445
               _this.baseData=_this.mapDataFile.obj();
             }
             __pc=8     ;break;
           case 6     :
-            //$LASTPOS=78000494;//kernel.MapEditorOLD:494
+            //$LASTPOS=80000494;//kernel.MapEditorOLD:494
             _this.fiber$file(_thread, _this.fileName);
             __pc=7;return;
           case 7:
             _this.mapDataFile=_thread.retVal;
             
-            //$LASTPOS=78000531;//kernel.MapEditorOLD:531
+            //$LASTPOS=80000531;//kernel.MapEditorOLD:531
             if (_this.mapDataFile.obj()) {
-              //$LASTPOS=78000567;//kernel.MapEditorOLD:567
+              //$LASTPOS=80000567;//kernel.MapEditorOLD:567
               _this.baseData=_this.mapDataFile.obj();
               
             }
           case 8     :
             
-            //$LASTPOS=78000618;//kernel.MapEditorOLD:618
+            //$LASTPOS=80000618;//kernel.MapEditorOLD:618
             if (_this.baseData==undefined) {
-              //$LASTPOS=78000652;//kernel.MapEditorOLD:652
+              //$LASTPOS=80000652;//kernel.MapEditorOLD:652
               _this.print("Load failed");
-              //$LASTPOS=78000683;//kernel.MapEditorOLD:683
+              //$LASTPOS=80000683;//kernel.MapEditorOLD:683
               _this.loadMode=false;
               
             } else {
-              //$LASTPOS=78000710;//kernel.MapEditorOLD:710
+              //$LASTPOS=80000710;//kernel.MapEditorOLD:710
               if (_this.baseData[0]&&_this.baseData[1]) {
-                //$LASTPOS=78000751;//kernel.MapEditorOLD:751
+                //$LASTPOS=80000751;//kernel.MapEditorOLD:751
                 _this.mapData=_this.baseData[0];
-                //$LASTPOS=78000781;//kernel.MapEditorOLD:781
+                //$LASTPOS=80000781;//kernel.MapEditorOLD:781
                 _this.mapOnData=_this.baseData[1];
                 
               }
             }
           case 9     :
             
-            //$LASTPOS=78000815;//kernel.MapEditorOLD:815
+            //$LASTPOS=80000815;//kernel.MapEditorOLD:815
             _this.fiber$update(_thread);
             __pc=10;return;
           case 10:
             
-            //$LASTPOS=78001093;//kernel.MapEditorOLD:1093
+            //$LASTPOS=80001093;//kernel.MapEditorOLD:1093
             if (!(! _this.loadMode)) { __pc=12    ; break; }
-            //$LASTPOS=78001113;//kernel.MapEditorOLD:1113
+            //$LASTPOS=80001113;//kernel.MapEditorOLD:1113
             _this.row=prompt("input row");
-            //$LASTPOS=78001143;//kernel.MapEditorOLD:1143
+            //$LASTPOS=80001143;//kernel.MapEditorOLD:1143
             _this.fiber$update(_thread);
             __pc=11;return;
           case 11:
             
-            //$LASTPOS=78001158;//kernel.MapEditorOLD:1158
+            //$LASTPOS=80001158;//kernel.MapEditorOLD:1158
             _this.col=prompt("input col");
-            //$LASTPOS=78001188;//kernel.MapEditorOLD:1188
+            //$LASTPOS=80001188;//kernel.MapEditorOLD:1188
             _this.panel=new Tonyu.classes.kernel.Panel({width: _this.col*32,height: _this.row*32});
-            //$LASTPOS=78001238;//kernel.MapEditorOLD:1238
+            //$LASTPOS=80001238;//kernel.MapEditorOLD:1238
             _this.panel.x=_this.panel.width/2+10;
-            //$LASTPOS=78001269;//kernel.MapEditorOLD:1269
+            //$LASTPOS=80001269;//kernel.MapEditorOLD:1269
             _this.panel.y=_this.panel.height/2;
-            //$LASTPOS=78001298;//kernel.MapEditorOLD:1298
+            //$LASTPOS=80001298;//kernel.MapEditorOLD:1298
             _this.panel.setFillStyle("cyan");
-            //$LASTPOS=78001331;//kernel.MapEditorOLD:1331
+            //$LASTPOS=80001331;//kernel.MapEditorOLD:1331
             _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
-            //$LASTPOS=78001382;//kernel.MapEditorOLD:1382
+            //$LASTPOS=80001382;//kernel.MapEditorOLD:1382
             Tonyu.globals.$map=new Tonyu.classes.kernel.Map({row: _this.row,col: _this.col,chipWidth: 32,chipHeight: 32});
             __pc=13    ;break;
           case 12    :
             {
-              //$LASTPOS=78001445;//kernel.MapEditorOLD:1445
+              //$LASTPOS=80001445;//kernel.MapEditorOLD:1445
               if (! _this.mapOnData) {
-                //$LASTPOS=78001470;//kernel.MapEditorOLD:1470
+                //$LASTPOS=80001470;//kernel.MapEditorOLD:1470
                 Tonyu.globals.$map=new Tonyu.classes.kernel.Map({row: _this.mapData.length,col: _this.mapData[0].length,chipWidth: 32,chipHeight: 32,mapData: _this.mapData});
                 
               } else {
-                //$LASTPOS=78001582;//kernel.MapEditorOLD:1582
+                //$LASTPOS=80001582;//kernel.MapEditorOLD:1582
                 Tonyu.globals.$map=new Tonyu.classes.kernel.Map({row: _this.mapData.length,col: _this.mapData[0].length,chipWidth: 32,chipHeight: 32,mapData: _this.mapData,mapOnData: _this.mapOnData});
                 
               }
-              //$LASTPOS=78001695;//kernel.MapEditorOLD:1695
+              //$LASTPOS=80001695;//kernel.MapEditorOLD:1695
               _this.panel=new Tonyu.classes.kernel.Panel({width: Tonyu.globals.$map.col*32,height: Tonyu.globals.$map.row*32,zOrder: 100});
-              //$LASTPOS=78001766;//kernel.MapEditorOLD:1766
+              //$LASTPOS=80001766;//kernel.MapEditorOLD:1766
               _this.panel.x=_this.panel.width/2;
-              //$LASTPOS=78001794;//kernel.MapEditorOLD:1794
+              //$LASTPOS=80001794;//kernel.MapEditorOLD:1794
               _this.panel.y=_this.panel.height/2;
-              //$LASTPOS=78001823;//kernel.MapEditorOLD:1823
+              //$LASTPOS=80001823;//kernel.MapEditorOLD:1823
               _this.panel.setFillStyle("cyan");
-              //$LASTPOS=78001856;//kernel.MapEditorOLD:1856
+              //$LASTPOS=80001856;//kernel.MapEditorOLD:1856
               _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
             }
           case 13    :
             
-            //$LASTPOS=78001906;//kernel.MapEditorOLD:1906
+            //$LASTPOS=80001906;//kernel.MapEditorOLD:1906
             Tonyu.globals.$mp=new Tonyu.classes.kernel.Map({row: 16,col: 8,chipWidth: 32,chipHeight: 32});
-            //$LASTPOS=78001961;//kernel.MapEditorOLD:1961
+            //$LASTPOS=80001961;//kernel.MapEditorOLD:1961
             _this.counter=0;
-            //$LASTPOS=78001973;//kernel.MapEditorOLD:1973
-            //$LASTPOS=78001977;//kernel.MapEditorOLD:1977
+            //$LASTPOS=80001973;//kernel.MapEditorOLD:1973
+            //$LASTPOS=80001977;//kernel.MapEditorOLD:1977
             _this.i = 0;
             for (; _this.i<16 ; _this.i++) {
               {
-                //$LASTPOS=78002001;//kernel.MapEditorOLD:2001
-                //$LASTPOS=78002005;//kernel.MapEditorOLD:2005
+                //$LASTPOS=80002001;//kernel.MapEditorOLD:2001
+                //$LASTPOS=80002005;//kernel.MapEditorOLD:2005
                 _this.j = 0;
                 for (; _this.j<8 ; _this.j++) {
                   {
-                    //$LASTPOS=78002032;//kernel.MapEditorOLD:2032
+                    //$LASTPOS=80002032;//kernel.MapEditorOLD:2032
                     Tonyu.globals.$mp.set(_this.j,_this.i,Tonyu.globals.$pat_mapchip+_this.counter);
-                    //$LASTPOS=78002076;//kernel.MapEditorOLD:2076
+                    //$LASTPOS=80002076;//kernel.MapEditorOLD:2076
                     _this.counter++;
                   }
                 }
               }
             }
-            //$LASTPOS=78002098;//kernel.MapEditorOLD:2098
+            //$LASTPOS=80002098;//kernel.MapEditorOLD:2098
             _this.mode="get";
-            //$LASTPOS=78002111;//kernel.MapEditorOLD:2111
+            //$LASTPOS=80002111;//kernel.MapEditorOLD:2111
             _this.prevMode="set";
-            //$LASTPOS=78002128;//kernel.MapEditorOLD:2128
+            //$LASTPOS=80002128;//kernel.MapEditorOLD:2128
             _this.mapp=0;
-            //$LASTPOS=78002137;//kernel.MapEditorOLD:2137
+            //$LASTPOS=80002137;//kernel.MapEditorOLD:2137
             _this.mx=0;
-            //$LASTPOS=78002144;//kernel.MapEditorOLD:2144
+            //$LASTPOS=80002144;//kernel.MapEditorOLD:2144
             _this.my=0;
-            //$LASTPOS=78002151;//kernel.MapEditorOLD:2151
+            //$LASTPOS=80002151;//kernel.MapEditorOLD:2151
             _this.chipX=0;
-            //$LASTPOS=78002161;//kernel.MapEditorOLD:2161
+            //$LASTPOS=80002161;//kernel.MapEditorOLD:2161
             _this.chipY=0;
-            //$LASTPOS=78002171;//kernel.MapEditorOLD:2171
+            //$LASTPOS=80002171;//kernel.MapEditorOLD:2171
             _this.x=Tonyu.globals.$screenWidth-16;
-            //$LASTPOS=78002191;//kernel.MapEditorOLD:2191
+            //$LASTPOS=80002191;//kernel.MapEditorOLD:2191
             _this.y=Tonyu.globals.$screenHeight-16;
-            //$LASTPOS=78002212;//kernel.MapEditorOLD:2212
+            //$LASTPOS=80002212;//kernel.MapEditorOLD:2212
           case 14:
-            //$LASTPOS=78002230;//kernel.MapEditorOLD:2230
+            //$LASTPOS=80002230;//kernel.MapEditorOLD:2230
             _this.p=_this.mapp;
-            //$LASTPOS=78002243;//kernel.MapEditorOLD:2243
+            //$LASTPOS=80002243;//kernel.MapEditorOLD:2243
             if (_this.getkey("e")==1) {
-              //$LASTPOS=78002272;//kernel.MapEditorOLD:2272
+              //$LASTPOS=80002272;//kernel.MapEditorOLD:2272
               Tonyu.globals.$mp.scrollTo(1000,1000);
-              //$LASTPOS=78002306;//kernel.MapEditorOLD:2306
+              //$LASTPOS=80002306;//kernel.MapEditorOLD:2306
               _this.mode="erase";
-              //$LASTPOS=78002329;//kernel.MapEditorOLD:2329
+              //$LASTPOS=80002329;//kernel.MapEditorOLD:2329
               _this.print(_this.mode+" mode");
               
             }
-            //$LASTPOS=78002362;//kernel.MapEditorOLD:2362
+            //$LASTPOS=80002362;//kernel.MapEditorOLD:2362
             if (_this.getkey("s")==1) {
-              //$LASTPOS=78002391;//kernel.MapEditorOLD:2391
+              //$LASTPOS=80002391;//kernel.MapEditorOLD:2391
               Tonyu.globals.$mp.scrollTo(1000,1000);
-              //$LASTPOS=78002425;//kernel.MapEditorOLD:2425
+              //$LASTPOS=80002425;//kernel.MapEditorOLD:2425
               if (_this.mode=="set") {
-                //$LASTPOS=78002455;//kernel.MapEditorOLD:2455
+                //$LASTPOS=80002455;//kernel.MapEditorOLD:2455
                 _this.mode="setOn";
                 
               } else {
-                //$LASTPOS=78002498;//kernel.MapEditorOLD:2498
+                //$LASTPOS=80002498;//kernel.MapEditorOLD:2498
                 _this.mode="set";
                 
               }
-              //$LASTPOS=78002530;//kernel.MapEditorOLD:2530
+              //$LASTPOS=80002530;//kernel.MapEditorOLD:2530
               _this.print(_this.mode+" mode");
               
             }
-            //$LASTPOS=78002563;//kernel.MapEditorOLD:2563
+            //$LASTPOS=80002563;//kernel.MapEditorOLD:2563
             if (_this.getkey("o")==1) {
-              //$LASTPOS=78002592;//kernel.MapEditorOLD:2592
+              //$LASTPOS=80002592;//kernel.MapEditorOLD:2592
               Tonyu.globals.$mp.scrollTo(1000,1000);
-              //$LASTPOS=78002626;//kernel.MapEditorOLD:2626
+              //$LASTPOS=80002626;//kernel.MapEditorOLD:2626
               _this.mode="setOn";
               
             }
-            //$LASTPOS=78002652;//kernel.MapEditorOLD:2652
+            //$LASTPOS=80002652;//kernel.MapEditorOLD:2652
             if (_this.getkey("g")==1) {
-              //$LASTPOS=78002681;//kernel.MapEditorOLD:2681
+              //$LASTPOS=80002681;//kernel.MapEditorOLD:2681
               if (_this.mode!="get") {
-                //$LASTPOS=78002711;//kernel.MapEditorOLD:2711
+                //$LASTPOS=80002711;//kernel.MapEditorOLD:2711
                 _this.prevMode=_this.mode;
-                //$LASTPOS=78002739;//kernel.MapEditorOLD:2739
+                //$LASTPOS=80002739;//kernel.MapEditorOLD:2739
                 Tonyu.globals.$mp.scrollTo(0,0);
-                //$LASTPOS=78002771;//kernel.MapEditorOLD:2771
+                //$LASTPOS=80002771;//kernel.MapEditorOLD:2771
                 _this.mode="get";
-                //$LASTPOS=78002796;//kernel.MapEditorOLD:2796
+                //$LASTPOS=80002796;//kernel.MapEditorOLD:2796
                 _this.chipX=0;
-                //$LASTPOS=78002818;//kernel.MapEditorOLD:2818
+                //$LASTPOS=80002818;//kernel.MapEditorOLD:2818
                 _this.chipY=0;
                 
               } else {
-                //$LASTPOS=78002856;//kernel.MapEditorOLD:2856
+                //$LASTPOS=80002856;//kernel.MapEditorOLD:2856
                 Tonyu.globals.$mp.scrollTo(1000,1000);
-                //$LASTPOS=78002894;//kernel.MapEditorOLD:2894
+                //$LASTPOS=80002894;//kernel.MapEditorOLD:2894
                 _this.mode=_this.prevMode;
                 
               }
-              //$LASTPOS=78002929;//kernel.MapEditorOLD:2929
+              //$LASTPOS=80002929;//kernel.MapEditorOLD:2929
               _this.print(_this.mode+" mode");
               
             }
-            //$LASTPOS=78002962;//kernel.MapEditorOLD:2962
+            //$LASTPOS=80002962;//kernel.MapEditorOLD:2962
             if (_this.getkey("p")==1) {
-              //$LASTPOS=78003006;//kernel.MapEditorOLD:3006
+              //$LASTPOS=80003006;//kernel.MapEditorOLD:3006
               _this.saveFileName=prompt("input json file(*.json)","map.json");
-              //$LASTPOS=78003495;//kernel.MapEditorOLD:3495
+              //$LASTPOS=80003495;//kernel.MapEditorOLD:3495
               _this.saveDataFile=_this.file("../maps/").rel(_this.saveFileName);
-              //$LASTPOS=78003553;//kernel.MapEditorOLD:3553
+              //$LASTPOS=80003553;//kernel.MapEditorOLD:3553
               _this.data=[Tonyu.globals.$map.mapTable,Tonyu.globals.$map.mapOnTable];
-              //$LASTPOS=78003668;//kernel.MapEditorOLD:3668
+              //$LASTPOS=80003668;//kernel.MapEditorOLD:3668
               _this.saveDataFile.obj(_this.data);
-              //$LASTPOS=78003701;//kernel.MapEditorOLD:3701
+              //$LASTPOS=80003701;//kernel.MapEditorOLD:3701
               _this.print(_this.saveFileName+" Saved");
               
             }
-            //$LASTPOS=78003793;//kernel.MapEditorOLD:3793
+            //$LASTPOS=80003793;//kernel.MapEditorOLD:3793
             if (_this.getkey("c")==1) {
-              //$LASTPOS=78003822;//kernel.MapEditorOLD:3822
+              //$LASTPOS=80003822;//kernel.MapEditorOLD:3822
               Tonyu.globals.$mp.scrollTo(1000,1000);
-              //$LASTPOS=78003856;//kernel.MapEditorOLD:3856
+              //$LASTPOS=80003856;//kernel.MapEditorOLD:3856
               _this.mode="spuit";
-              //$LASTPOS=78003879;//kernel.MapEditorOLD:3879
+              //$LASTPOS=80003879;//kernel.MapEditorOLD:3879
               _this.print(_this.mode+" mode");
               
             }
-            //$LASTPOS=78003912;//kernel.MapEditorOLD:3912
+            //$LASTPOS=80003912;//kernel.MapEditorOLD:3912
             if (_this.mode!="get") {
-              //$LASTPOS=78003938;//kernel.MapEditorOLD:3938
+              //$LASTPOS=80003938;//kernel.MapEditorOLD:3938
               if (_this.getkey("left")>0) {
-                //$LASTPOS=78003959;//kernel.MapEditorOLD:3959
+                //$LASTPOS=80003959;//kernel.MapEditorOLD:3959
                 _this.mx=_this.mx+8;
               }
-              //$LASTPOS=78003977;//kernel.MapEditorOLD:3977
+              //$LASTPOS=80003977;//kernel.MapEditorOLD:3977
               if (_this.getkey("right")>0) {
-                //$LASTPOS=78003999;//kernel.MapEditorOLD:3999
+                //$LASTPOS=80003999;//kernel.MapEditorOLD:3999
                 _this.mx=_this.mx-8;
               }
-              //$LASTPOS=78004017;//kernel.MapEditorOLD:4017
+              //$LASTPOS=80004017;//kernel.MapEditorOLD:4017
               if (_this.getkey("up")>0) {
-                //$LASTPOS=78004036;//kernel.MapEditorOLD:4036
+                //$LASTPOS=80004036;//kernel.MapEditorOLD:4036
                 _this.my=_this.my+8;
               }
-              //$LASTPOS=78004054;//kernel.MapEditorOLD:4054
+              //$LASTPOS=80004054;//kernel.MapEditorOLD:4054
               if (_this.getkey("down")>0) {
-                //$LASTPOS=78004075;//kernel.MapEditorOLD:4075
+                //$LASTPOS=80004075;//kernel.MapEditorOLD:4075
                 _this.my=_this.my-8;
               }
-              //$LASTPOS=78004093;//kernel.MapEditorOLD:4093
+              //$LASTPOS=80004093;//kernel.MapEditorOLD:4093
               Tonyu.globals.$map.scrollTo(_this.mx,_this.my);
               
             } else {
-              //$LASTPOS=78004136;//kernel.MapEditorOLD:4136
+              //$LASTPOS=80004136;//kernel.MapEditorOLD:4136
               if (_this.getkey("left")>0) {
-                //$LASTPOS=78004157;//kernel.MapEditorOLD:4157
+                //$LASTPOS=80004157;//kernel.MapEditorOLD:4157
                 _this.chipX=_this.chipX+8;
               }
-              //$LASTPOS=78004181;//kernel.MapEditorOLD:4181
+              //$LASTPOS=80004181;//kernel.MapEditorOLD:4181
               if (_this.getkey("right")>0) {
-                //$LASTPOS=78004203;//kernel.MapEditorOLD:4203
+                //$LASTPOS=80004203;//kernel.MapEditorOLD:4203
                 _this.chipX=_this.chipX-8;
               }
-              //$LASTPOS=78004227;//kernel.MapEditorOLD:4227
+              //$LASTPOS=80004227;//kernel.MapEditorOLD:4227
               if (_this.getkey("up")>0) {
-                //$LASTPOS=78004246;//kernel.MapEditorOLD:4246
+                //$LASTPOS=80004246;//kernel.MapEditorOLD:4246
                 _this.chipY=_this.chipY+8;
               }
-              //$LASTPOS=78004270;//kernel.MapEditorOLD:4270
+              //$LASTPOS=80004270;//kernel.MapEditorOLD:4270
               if (_this.getkey("down")>0) {
-                //$LASTPOS=78004291;//kernel.MapEditorOLD:4291
+                //$LASTPOS=80004291;//kernel.MapEditorOLD:4291
                 _this.chipY=_this.chipY-8;
               }
-              //$LASTPOS=78004315;//kernel.MapEditorOLD:4315
+              //$LASTPOS=80004315;//kernel.MapEditorOLD:4315
               Tonyu.globals.$mp.scrollTo(_this.chipX,_this.chipY);
               
             }
-            //$LASTPOS=78004354;//kernel.MapEditorOLD:4354
+            //$LASTPOS=80004354;//kernel.MapEditorOLD:4354
             _this.panel.x=_this.panel.width/2-_this.mx;
-            //$LASTPOS=78004385;//kernel.MapEditorOLD:4385
+            //$LASTPOS=80004385;//kernel.MapEditorOLD:4385
             _this.panel.y=_this.panel.height/2-_this.my;
-            //$LASTPOS=78004417;//kernel.MapEditorOLD:4417
+            //$LASTPOS=80004417;//kernel.MapEditorOLD:4417
             if (!(_this.mode=="set"&&_this.getkey(1)>0)) { __pc=15    ; break; }
             {
-              //$LASTPOS=78004458;//kernel.MapEditorOLD:4458
+              //$LASTPOS=80004458;//kernel.MapEditorOLD:4458
               Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,_this.mapp);
-              //$LASTPOS=78004507;//kernel.MapEditorOLD:4507
+              //$LASTPOS=80004507;//kernel.MapEditorOLD:4507
               Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,- 1);
             }
             __pc=25    ;break;
           case 15    :
-            //$LASTPOS=78004558;//kernel.MapEditorOLD:4558
+            //$LASTPOS=80004558;//kernel.MapEditorOLD:4558
             if (!(_this.mode=="erase"&&_this.getkey(1)>0)) { __pc=16    ; break; }
             {
-              //$LASTPOS=78004601;//kernel.MapEditorOLD:4601
+              //$LASTPOS=80004601;//kernel.MapEditorOLD:4601
               Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,- 1);
             }
             __pc=24    ;break;
           case 16    :
-            //$LASTPOS=78004650;//kernel.MapEditorOLD:4650
+            //$LASTPOS=80004650;//kernel.MapEditorOLD:4650
             if (!(_this.mode=="get"&&_this.getkey(1)>0)) { __pc=18    ; break; }
-            //$LASTPOS=78004691;//kernel.MapEditorOLD:4691
+            //$LASTPOS=80004691;//kernel.MapEditorOLD:4691
             _this.mapp=Tonyu.globals.$mp.getAt(Tonyu.globals.$mouseX+_this.chipX,Tonyu.globals.$mouseY+_this.chipY);
-            //$LASTPOS=78004745;//kernel.MapEditorOLD:4745
+            //$LASTPOS=80004745;//kernel.MapEditorOLD:4745
             _this.mode=_this.prevMode;
-            //$LASTPOS=78004769;//kernel.MapEditorOLD:4769
+            //$LASTPOS=80004769;//kernel.MapEditorOLD:4769
             Tonyu.globals.$mp.scrollTo(1000,1000);
-            //$LASTPOS=78004803;//kernel.MapEditorOLD:4803
+            //$LASTPOS=80004803;//kernel.MapEditorOLD:4803
             _this.print(_this.mode+" mode");
-            //$LASTPOS=78004833;//kernel.MapEditorOLD:4833
+            //$LASTPOS=80004833;//kernel.MapEditorOLD:4833
             _this.fiber$updateEx(_thread, 10);
             __pc=17;return;
           case 17:
             
             __pc=23    ;break;
           case 18    :
-            //$LASTPOS=78004858;//kernel.MapEditorOLD:4858
+            //$LASTPOS=80004858;//kernel.MapEditorOLD:4858
             if (!(_this.mode=="setOn"&&_this.getkey(1)>0)) { __pc=19    ; break; }
             {
-              //$LASTPOS=78004901;//kernel.MapEditorOLD:4901
+              //$LASTPOS=80004901;//kernel.MapEditorOLD:4901
               Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,_this.mapp);
             }
             __pc=22    ;break;
           case 19    :
-            //$LASTPOS=78004954;//kernel.MapEditorOLD:4954
+            //$LASTPOS=80004954;//kernel.MapEditorOLD:4954
             if (!(_this.mode=="spuit"&&_this.getkey(1)>0)) { __pc=21    ; break; }
-            //$LASTPOS=78004997;//kernel.MapEditorOLD:4997
+            //$LASTPOS=80004997;//kernel.MapEditorOLD:4997
             _this.mapp=Tonyu.globals.$map.getAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my);
-            //$LASTPOS=78005046;//kernel.MapEditorOLD:5046
+            //$LASTPOS=80005046;//kernel.MapEditorOLD:5046
             _this.mode="set";
-            //$LASTPOS=78005067;//kernel.MapEditorOLD:5067
+            //$LASTPOS=80005067;//kernel.MapEditorOLD:5067
             _this.print(_this.mode+" mode");
-            //$LASTPOS=78005097;//kernel.MapEditorOLD:5097
+            //$LASTPOS=80005097;//kernel.MapEditorOLD:5097
             _this.fiber$updateEx(_thread, 10);
             __pc=20;return;
           case 20:
@@ -28880,7 +29040,7 @@ Tonyu.klass.define({
             
           case 25    :
             
-            //$LASTPOS=78005123;//kernel.MapEditorOLD:5123
+            //$LASTPOS=80005123;//kernel.MapEditorOLD:5123
             _this.fiber$update(_thread);
             __pc=26;return;
           case 26:
@@ -28908,107 +29068,107 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=79000032;//kernel.MapEditorOLD2:32
+      //$LASTPOS=81000032;//kernel.MapEditorOLD2:32
       Tonyu.globals.$Screen.resize(480,640);
-      //$LASTPOS=79000058;//kernel.MapEditorOLD2:58
+      //$LASTPOS=81000058;//kernel.MapEditorOLD2:58
       _this.loadMode=false;
-      //$LASTPOS=79000075;//kernel.MapEditorOLD2:75
+      //$LASTPOS=81000075;//kernel.MapEditorOLD2:75
       _this.fileExist=false;
-      //$LASTPOS=79000093;//kernel.MapEditorOLD2:93
+      //$LASTPOS=81000093;//kernel.MapEditorOLD2:93
       _this.print("map file(s)");
-      //$LASTPOS=79000116;//kernel.MapEditorOLD2:116
+      //$LASTPOS=81000116;//kernel.MapEditorOLD2:116
       _this.fileList=_this.file("../maps/");
-      //$LASTPOS=79000144;//kernel.MapEditorOLD2:144
+      //$LASTPOS=81000144;//kernel.MapEditorOLD2:144
       if (_this.fileList.exists()) {
-        //$LASTPOS=79000168;//kernel.MapEditorOLD2:168
+        //$LASTPOS=81000168;//kernel.MapEditorOLD2:168
         _this.fileList.recursive((function a(f) {
           
-          //$LASTPOS=79000207;//kernel.MapEditorOLD2:207
+          //$LASTPOS=81000207;//kernel.MapEditorOLD2:207
           f=f+"";
-          //$LASTPOS=79000220;//kernel.MapEditorOLD2:220
+          //$LASTPOS=81000220;//kernel.MapEditorOLD2:220
           _this.fNames=f.split("/");
-          //$LASTPOS=79000246;//kernel.MapEditorOLD2:246
+          //$LASTPOS=81000246;//kernel.MapEditorOLD2:246
           _this.print(_this.fNames[_this.fNames.length-1]);
-          //$LASTPOS=79000283;//kernel.MapEditorOLD2:283
+          //$LASTPOS=81000283;//kernel.MapEditorOLD2:283
           _this.fileExist=true;
         }));
         
       }
-      //$LASTPOS=79000308;//kernel.MapEditorOLD2:308
+      //$LASTPOS=81000308;//kernel.MapEditorOLD2:308
       if (_this.fileExist) {
-        //$LASTPOS=79000328;//kernel.MapEditorOLD2:328
+        //$LASTPOS=81000328;//kernel.MapEditorOLD2:328
         _this.print("Load Data?: Y or N");
-        //$LASTPOS=79000362;//kernel.MapEditorOLD2:362
+        //$LASTPOS=81000362;//kernel.MapEditorOLD2:362
         while (true) {
-          //$LASTPOS=79000384;//kernel.MapEditorOLD2:384
+          //$LASTPOS=81000384;//kernel.MapEditorOLD2:384
           if (_this.getkey("y")>0) {
-            //$LASTPOS=79000416;//kernel.MapEditorOLD2:416
+            //$LASTPOS=81000416;//kernel.MapEditorOLD2:416
             _this.loadMode=true;
             break;
             
             
           }
-          //$LASTPOS=79000471;//kernel.MapEditorOLD2:471
+          //$LASTPOS=81000471;//kernel.MapEditorOLD2:471
           if (_this.getkey("n")>0) {
-            //$LASTPOS=79000503;//kernel.MapEditorOLD2:503
+            //$LASTPOS=81000503;//kernel.MapEditorOLD2:503
             _this.loadMode=false;
             break;
             
             
           }
-          //$LASTPOS=79000559;//kernel.MapEditorOLD2:559
+          //$LASTPOS=81000559;//kernel.MapEditorOLD2:559
           _this.update();
           
         }
-        //$LASTPOS=79000581;//kernel.MapEditorOLD2:581
+        //$LASTPOS=81000581;//kernel.MapEditorOLD2:581
         if (_this.loadMode) {
-          //$LASTPOS=79000604;//kernel.MapEditorOLD2:604
+          //$LASTPOS=81000604;//kernel.MapEditorOLD2:604
           _this.fileName=prompt("Input json file (*.json)","map.json");
-          //$LASTPOS=79000669;//kernel.MapEditorOLD2:669
+          //$LASTPOS=81000669;//kernel.MapEditorOLD2:669
           if (_this.fileName) {
-            //$LASTPOS=79000696;//kernel.MapEditorOLD2:696
+            //$LASTPOS=81000696;//kernel.MapEditorOLD2:696
             _this.mapDataFile=_this.file("../maps/").rel(_this.fileName);
             
           }
-          //$LASTPOS=79000760;//kernel.MapEditorOLD2:760
+          //$LASTPOS=81000760;//kernel.MapEditorOLD2:760
           if (_this.mapDataFile.obj()) {
-            //$LASTPOS=79000796;//kernel.MapEditorOLD2:796
+            //$LASTPOS=81000796;//kernel.MapEditorOLD2:796
             _this.baseData=_this.mapDataFile.obj();
-            //$LASTPOS=79000837;//kernel.MapEditorOLD2:837
+            //$LASTPOS=81000837;//kernel.MapEditorOLD2:837
             _this.loadedFile=_this.fileName;
             
           } else {
-            //$LASTPOS=79000887;//kernel.MapEditorOLD2:887
+            //$LASTPOS=81000887;//kernel.MapEditorOLD2:887
             _this.mapDataFile=_this.file(_this.fileName);
-            //$LASTPOS=79000928;//kernel.MapEditorOLD2:928
+            //$LASTPOS=81000928;//kernel.MapEditorOLD2:928
             if (_this.mapDataFile.obj()) {
-              //$LASTPOS=79000968;//kernel.MapEditorOLD2:968
+              //$LASTPOS=81000968;//kernel.MapEditorOLD2:968
               _this.baseData=_this.mapDataFile.obj();
-              //$LASTPOS=79001013;//kernel.MapEditorOLD2:1013
+              //$LASTPOS=81001013;//kernel.MapEditorOLD2:1013
               _this.loadedFile=_this.fileName;
               
             }
             
           }
-          //$LASTPOS=79001069;//kernel.MapEditorOLD2:1069
+          //$LASTPOS=81001069;//kernel.MapEditorOLD2:1069
           if (_this.baseData==undefined) {
-            //$LASTPOS=79001107;//kernel.MapEditorOLD2:1107
+            //$LASTPOS=81001107;//kernel.MapEditorOLD2:1107
             _this.print("Load failed");
-            //$LASTPOS=79001142;//kernel.MapEditorOLD2:1142
+            //$LASTPOS=81001142;//kernel.MapEditorOLD2:1142
             _this.loadMode=false;
             
           } else {
-            //$LASTPOS=79001173;//kernel.MapEditorOLD2:1173
+            //$LASTPOS=81001173;//kernel.MapEditorOLD2:1173
             if (_this.baseData[0]&&_this.baseData[1]) {
-              //$LASTPOS=79001218;//kernel.MapEditorOLD2:1218
+              //$LASTPOS=81001218;//kernel.MapEditorOLD2:1218
               _this.mapData=_this.baseData[0];
-              //$LASTPOS=79001252;//kernel.MapEditorOLD2:1252
+              //$LASTPOS=81001252;//kernel.MapEditorOLD2:1252
               _this.mapOnData=_this.baseData[1];
-              //$LASTPOS=79001288;//kernel.MapEditorOLD2:1288
+              //$LASTPOS=81001288;//kernel.MapEditorOLD2:1288
               if (_this.baseData.length>2) {
-                //$LASTPOS=79001328;//kernel.MapEditorOLD2:1328
+                //$LASTPOS=81001328;//kernel.MapEditorOLD2:1328
                 _this.chipWidth=_this.baseData[_this.baseData.length-2];
-                //$LASTPOS=79001384;//kernel.MapEditorOLD2:1384
+                //$LASTPOS=81001384;//kernel.MapEditorOLD2:1384
                 _this.chipHeight=_this.baseData[_this.baseData.length-1];
                 
               }
@@ -29019,355 +29179,355 @@ Tonyu.klass.define({
         }
         
       }
-      //$LASTPOS=79001461;//kernel.MapEditorOLD2:1461
+      //$LASTPOS=81001461;//kernel.MapEditorOLD2:1461
       _this.update();
-      //$LASTPOS=79001739;//kernel.MapEditorOLD2:1739
+      //$LASTPOS=81001739;//kernel.MapEditorOLD2:1739
       if (! _this.loadMode) {
-        //$LASTPOS=79001759;//kernel.MapEditorOLD2:1759
+        //$LASTPOS=81001759;//kernel.MapEditorOLD2:1759
         _this.row=prompt("input row");
-        //$LASTPOS=79001789;//kernel.MapEditorOLD2:1789
+        //$LASTPOS=81001789;//kernel.MapEditorOLD2:1789
         _this.col=prompt("input col");
-        //$LASTPOS=79001819;//kernel.MapEditorOLD2:1819
+        //$LASTPOS=81001819;//kernel.MapEditorOLD2:1819
         _this.chipWidth=prompt("input chipWidth");
-        //$LASTPOS=79001861;//kernel.MapEditorOLD2:1861
+        //$LASTPOS=81001861;//kernel.MapEditorOLD2:1861
         _this.chipHeight=prompt("input chipHeight");
-        //$LASTPOS=79001905;//kernel.MapEditorOLD2:1905
+        //$LASTPOS=81001905;//kernel.MapEditorOLD2:1905
         _this.panel=new Tonyu.classes.kernel.Panel({width: _this.col*_this.chipWidth,height: _this.row*_this.chipHeight});
-        //$LASTPOS=79001970;//kernel.MapEditorOLD2:1970
+        //$LASTPOS=81001970;//kernel.MapEditorOLD2:1970
         _this.panel.x=_this.panel.width/2+40;
-        //$LASTPOS=79002001;//kernel.MapEditorOLD2:2001
+        //$LASTPOS=81002001;//kernel.MapEditorOLD2:2001
         _this.panel.y=_this.panel.height/2+40;
-        //$LASTPOS=79002033;//kernel.MapEditorOLD2:2033
+        //$LASTPOS=81002033;//kernel.MapEditorOLD2:2033
         _this.panel.setFillStyle("cyan");
-        //$LASTPOS=79002066;//kernel.MapEditorOLD2:2066
+        //$LASTPOS=81002066;//kernel.MapEditorOLD2:2066
         _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
-        //$LASTPOS=79002117;//kernel.MapEditorOLD2:2117
+        //$LASTPOS=81002117;//kernel.MapEditorOLD2:2117
         Tonyu.globals.$map=new Tonyu.classes.kernel.Map({row: _this.row,col: _this.col,chipWidth: _this.chipWidth,chipHeight: _this.chipHeight});
         
       } else {
-        //$LASTPOS=79002428;//kernel.MapEditorOLD2:2428
+        //$LASTPOS=81002428;//kernel.MapEditorOLD2:2428
         Tonyu.globals.$map=new Tonyu.classes.kernel.Map({chipWidth: 32,chipHeight: 32});
-        //$LASTPOS=79002475;//kernel.MapEditorOLD2:2475
+        //$LASTPOS=81002475;//kernel.MapEditorOLD2:2475
         Tonyu.globals.$map.load(_this.fileName);
-        //$LASTPOS=79002501;//kernel.MapEditorOLD2:2501
+        //$LASTPOS=81002501;//kernel.MapEditorOLD2:2501
         _this.panel=new Tonyu.classes.kernel.Panel({width: Tonyu.globals.$map.col*Tonyu.globals.$map.chipWidth,height: Tonyu.globals.$map.row*Tonyu.globals.$map.chipHeight,zOrder: 100});
-        //$LASTPOS=79002597;//kernel.MapEditorOLD2:2597
+        //$LASTPOS=81002597;//kernel.MapEditorOLD2:2597
         _this.panel.x=_this.panel.width/2+40;
-        //$LASTPOS=79002628;//kernel.MapEditorOLD2:2628
+        //$LASTPOS=81002628;//kernel.MapEditorOLD2:2628
         _this.panel.y=_this.panel.height/2+40;
-        //$LASTPOS=79002660;//kernel.MapEditorOLD2:2660
+        //$LASTPOS=81002660;//kernel.MapEditorOLD2:2660
         _this.panel.setFillStyle("cyan");
-        //$LASTPOS=79002693;//kernel.MapEditorOLD2:2693
+        //$LASTPOS=81002693;//kernel.MapEditorOLD2:2693
         _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
         
       }
-      //$LASTPOS=79002743;//kernel.MapEditorOLD2:2743
+      //$LASTPOS=81002743;//kernel.MapEditorOLD2:2743
       _this.mIW=Tonyu.globals.$Sprites.getImageList()[Tonyu.globals.$pat_mapchip].image.width;
-      //$LASTPOS=79002799;//kernel.MapEditorOLD2:2799
+      //$LASTPOS=81002799;//kernel.MapEditorOLD2:2799
       _this.mIH=Tonyu.globals.$Sprites.getImageList()[Tonyu.globals.$pat_mapchip].image.height;
-      //$LASTPOS=79002856;//kernel.MapEditorOLD2:2856
+      //$LASTPOS=81002856;//kernel.MapEditorOLD2:2856
       _this.mCW=Tonyu.globals.$Sprites.getImageList()[Tonyu.globals.$pat_mapchip+0].width;
-      //$LASTPOS=79002908;//kernel.MapEditorOLD2:2908
+      //$LASTPOS=81002908;//kernel.MapEditorOLD2:2908
       _this.mCH=Tonyu.globals.$Sprites.getImageList()[Tonyu.globals.$pat_mapchip+0].height;
-      //$LASTPOS=79002961;//kernel.MapEditorOLD2:2961
+      //$LASTPOS=81002961;//kernel.MapEditorOLD2:2961
       Tonyu.globals.$mp=new Tonyu.classes.kernel.Map({row: _this.floor(_this.mIH/_this.mCH),col: _this.floor(_this.mIW/_this.mCW),chipWidth: _this.mCW,chipHeight: _this.mCH});
-      //$LASTPOS=79003043;//kernel.MapEditorOLD2:3043
+      //$LASTPOS=81003043;//kernel.MapEditorOLD2:3043
       _this.counter=0;
-      //$LASTPOS=79003055;//kernel.MapEditorOLD2:3055
-      //$LASTPOS=79003059;//kernel.MapEditorOLD2:3059
+      //$LASTPOS=81003055;//kernel.MapEditorOLD2:3055
+      //$LASTPOS=81003059;//kernel.MapEditorOLD2:3059
       _this.i = 0;
       for (; _this.i<Tonyu.globals.$mp.row ; _this.i++) {
         {
-          //$LASTPOS=79003088;//kernel.MapEditorOLD2:3088
-          //$LASTPOS=79003092;//kernel.MapEditorOLD2:3092
+          //$LASTPOS=81003088;//kernel.MapEditorOLD2:3088
+          //$LASTPOS=81003092;//kernel.MapEditorOLD2:3092
           _this.j = 0;
           for (; _this.j<Tonyu.globals.$mp.col ; _this.j++) {
             {
-              //$LASTPOS=79003125;//kernel.MapEditorOLD2:3125
+              //$LASTPOS=81003125;//kernel.MapEditorOLD2:3125
               Tonyu.globals.$mp.set(_this.j,_this.i,Tonyu.globals.$pat_mapchip+_this.counter);
-              //$LASTPOS=79003169;//kernel.MapEditorOLD2:3169
+              //$LASTPOS=81003169;//kernel.MapEditorOLD2:3169
               _this.counter++;
             }
           }
         }
       }
-      //$LASTPOS=79003191;//kernel.MapEditorOLD2:3191
+      //$LASTPOS=81003191;//kernel.MapEditorOLD2:3191
       _this.drawPanel();
-      //$LASTPOS=79003205;//kernel.MapEditorOLD2:3205
+      //$LASTPOS=81003205;//kernel.MapEditorOLD2:3205
       _this.mode="get";
-      //$LASTPOS=79003218;//kernel.MapEditorOLD2:3218
+      //$LASTPOS=81003218;//kernel.MapEditorOLD2:3218
       _this.prevMode="set";
-      //$LASTPOS=79003235;//kernel.MapEditorOLD2:3235
+      //$LASTPOS=81003235;//kernel.MapEditorOLD2:3235
       _this.mapp=0;
-      //$LASTPOS=79003244;//kernel.MapEditorOLD2:3244
+      //$LASTPOS=81003244;//kernel.MapEditorOLD2:3244
       _this.mx=- 40;
-      //$LASTPOS=79003253;//kernel.MapEditorOLD2:3253
+      //$LASTPOS=81003253;//kernel.MapEditorOLD2:3253
       _this.my=- 40;
-      //$LASTPOS=79003262;//kernel.MapEditorOLD2:3262
+      //$LASTPOS=81003262;//kernel.MapEditorOLD2:3262
       _this.chipX=- 40;
-      //$LASTPOS=79003274;//kernel.MapEditorOLD2:3274
+      //$LASTPOS=81003274;//kernel.MapEditorOLD2:3274
       _this.chipY=- 40;
-      //$LASTPOS=79003286;//kernel.MapEditorOLD2:3286
+      //$LASTPOS=81003286;//kernel.MapEditorOLD2:3286
       _this.x=Tonyu.globals.$screenWidth-_this.chipWidth/2;
-      //$LASTPOS=79003315;//kernel.MapEditorOLD2:3315
+      //$LASTPOS=81003315;//kernel.MapEditorOLD2:3315
       _this.y=Tonyu.globals.$screenHeight-_this.chipHeight/2;
-      //$LASTPOS=79003346;//kernel.MapEditorOLD2:3346
+      //$LASTPOS=81003346;//kernel.MapEditorOLD2:3346
       Tonyu.globals.$map.scrollTo(_this.mx,_this.my);
-      //$LASTPOS=79003369;//kernel.MapEditorOLD2:3369
+      //$LASTPOS=81003369;//kernel.MapEditorOLD2:3369
       while (true) {
-        //$LASTPOS=79003387;//kernel.MapEditorOLD2:3387
+        //$LASTPOS=81003387;//kernel.MapEditorOLD2:3387
         _this.p=_this.mapp;
-        //$LASTPOS=79003400;//kernel.MapEditorOLD2:3400
+        //$LASTPOS=81003400;//kernel.MapEditorOLD2:3400
         if (_this.getkey("e")==1||(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<120&&Tonyu.globals.$touches[0].y>560&&Tonyu.globals.$touches[0].y<640)) {
-          //$LASTPOS=79003539;//kernel.MapEditorOLD2:3539
+          //$LASTPOS=81003539;//kernel.MapEditorOLD2:3539
           Tonyu.globals.$mp.scrollTo(1000,1000);
-          //$LASTPOS=79003573;//kernel.MapEditorOLD2:3573
+          //$LASTPOS=81003573;//kernel.MapEditorOLD2:3573
           _this.mode="erase";
-          //$LASTPOS=79003596;//kernel.MapEditorOLD2:3596
+          //$LASTPOS=81003596;//kernel.MapEditorOLD2:3596
           _this.print(_this.mode+" mode");
           
         }
-        //$LASTPOS=79003629;//kernel.MapEditorOLD2:3629
+        //$LASTPOS=81003629;//kernel.MapEditorOLD2:3629
         if (_this.getkey("s")==1) {
-          //$LASTPOS=79003658;//kernel.MapEditorOLD2:3658
+          //$LASTPOS=81003658;//kernel.MapEditorOLD2:3658
           Tonyu.globals.$mp.scrollTo(1000,1000);
-          //$LASTPOS=79003692;//kernel.MapEditorOLD2:3692
+          //$LASTPOS=81003692;//kernel.MapEditorOLD2:3692
           if (_this.mode=="set") {
-            //$LASTPOS=79003722;//kernel.MapEditorOLD2:3722
+            //$LASTPOS=81003722;//kernel.MapEditorOLD2:3722
             _this.mode="setOn";
             
           } else {
-            //$LASTPOS=79003765;//kernel.MapEditorOLD2:3765
+            //$LASTPOS=81003765;//kernel.MapEditorOLD2:3765
             _this.mode="set";
             
           }
-          //$LASTPOS=79003797;//kernel.MapEditorOLD2:3797
+          //$LASTPOS=81003797;//kernel.MapEditorOLD2:3797
           _this.print(_this.mode+" mode");
           
         }
-        //$LASTPOS=79003830;//kernel.MapEditorOLD2:3830
+        //$LASTPOS=81003830;//kernel.MapEditorOLD2:3830
         if (Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<120&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560) {
-          //$LASTPOS=79003949;//kernel.MapEditorOLD2:3949
+          //$LASTPOS=81003949;//kernel.MapEditorOLD2:3949
           Tonyu.globals.$mp.scrollTo(1000,1000);
-          //$LASTPOS=79003983;//kernel.MapEditorOLD2:3983
+          //$LASTPOS=81003983;//kernel.MapEditorOLD2:3983
           _this.mode="set";
-          //$LASTPOS=79004004;//kernel.MapEditorOLD2:4004
+          //$LASTPOS=81004004;//kernel.MapEditorOLD2:4004
           _this.print(_this.mode+" mode");
           
         }
-        //$LASTPOS=79004037;//kernel.MapEditorOLD2:4037
+        //$LASTPOS=81004037;//kernel.MapEditorOLD2:4037
         if (Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>120&&Tonyu.globals.$touches[0].x<240&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560) {
-          //$LASTPOS=79004158;//kernel.MapEditorOLD2:4158
+          //$LASTPOS=81004158;//kernel.MapEditorOLD2:4158
           Tonyu.globals.$mp.scrollTo(1000,1000);
-          //$LASTPOS=79004192;//kernel.MapEditorOLD2:4192
+          //$LASTPOS=81004192;//kernel.MapEditorOLD2:4192
           _this.mode="setOn";
-          //$LASTPOS=79004215;//kernel.MapEditorOLD2:4215
+          //$LASTPOS=81004215;//kernel.MapEditorOLD2:4215
           _this.print(_this.mode+" mode");
           
         }
-        //$LASTPOS=79004341;//kernel.MapEditorOLD2:4341
+        //$LASTPOS=81004341;//kernel.MapEditorOLD2:4341
         if (_this.getkey("g")==1||(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>240&&Tonyu.globals.$touches[0].x<360&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560)) {
-          //$LASTPOS=79004482;//kernel.MapEditorOLD2:4482
+          //$LASTPOS=81004482;//kernel.MapEditorOLD2:4482
           if (_this.mode!="get") {
-            //$LASTPOS=79004512;//kernel.MapEditorOLD2:4512
+            //$LASTPOS=81004512;//kernel.MapEditorOLD2:4512
             _this.prevMode=_this.mode;
-            //$LASTPOS=79004540;//kernel.MapEditorOLD2:4540
+            //$LASTPOS=81004540;//kernel.MapEditorOLD2:4540
             Tonyu.globals.$mp.scrollTo(- 40,- 40);
-            //$LASTPOS=79004576;//kernel.MapEditorOLD2:4576
+            //$LASTPOS=81004576;//kernel.MapEditorOLD2:4576
             _this.mode="get";
-            //$LASTPOS=79004601;//kernel.MapEditorOLD2:4601
+            //$LASTPOS=81004601;//kernel.MapEditorOLD2:4601
             _this.chipX=- 40;
-            //$LASTPOS=79004625;//kernel.MapEditorOLD2:4625
+            //$LASTPOS=81004625;//kernel.MapEditorOLD2:4625
             _this.chipY=- 40;
             
           } else {
-            //$LASTPOS=79004665;//kernel.MapEditorOLD2:4665
+            //$LASTPOS=81004665;//kernel.MapEditorOLD2:4665
             Tonyu.globals.$mp.scrollTo(1000,1000);
-            //$LASTPOS=79004703;//kernel.MapEditorOLD2:4703
+            //$LASTPOS=81004703;//kernel.MapEditorOLD2:4703
             _this.mode=_this.prevMode;
             
           }
-          //$LASTPOS=79004738;//kernel.MapEditorOLD2:4738
+          //$LASTPOS=81004738;//kernel.MapEditorOLD2:4738
           _this.print(_this.mode+" mode");
           
         }
-        //$LASTPOS=79004771;//kernel.MapEditorOLD2:4771
+        //$LASTPOS=81004771;//kernel.MapEditorOLD2:4771
         if (_this.getkey("p")==1||(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>360&&Tonyu.globals.$touches[0].x<480&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560)) {
-          //$LASTPOS=79004927;//kernel.MapEditorOLD2:4927
+          //$LASTPOS=81004927;//kernel.MapEditorOLD2:4927
           if (_this.loadedFile) {
-            //$LASTPOS=79004956;//kernel.MapEditorOLD2:4956
+            //$LASTPOS=81004956;//kernel.MapEditorOLD2:4956
             _this.saveFileName=prompt("input json file(*.json)",_this.loadedFile);
             
           } else {
-            //$LASTPOS=79005044;//kernel.MapEditorOLD2:5044
+            //$LASTPOS=81005044;//kernel.MapEditorOLD2:5044
             _this.saveFileName=prompt("input json file(*.json)","map.json");
             
           }
-          //$LASTPOS=79005544;//kernel.MapEditorOLD2:5544
+          //$LASTPOS=81005544;//kernel.MapEditorOLD2:5544
           if (_this.saveFileName) {
-            //$LASTPOS=79005575;//kernel.MapEditorOLD2:5575
+            //$LASTPOS=81005575;//kernel.MapEditorOLD2:5575
             _this.saveDataFile=_this.file("../maps/").rel(_this.saveFileName);
-            //$LASTPOS=79005637;//kernel.MapEditorOLD2:5637
+            //$LASTPOS=81005637;//kernel.MapEditorOLD2:5637
             _this.data=[Tonyu.globals.$map.mapTable,Tonyu.globals.$map.mapOnTable,Tonyu.globals.$map.chipWidth,Tonyu.globals.$map.chipHeight];
-            //$LASTPOS=79005799;//kernel.MapEditorOLD2:5799
+            //$LASTPOS=81005799;//kernel.MapEditorOLD2:5799
             _this.saveDataFile.obj(_this.data);
-            //$LASTPOS=79005836;//kernel.MapEditorOLD2:5836
+            //$LASTPOS=81005836;//kernel.MapEditorOLD2:5836
             _this.print(_this.saveFileName+" Saved");
             
           }
           
         }
-        //$LASTPOS=79005943;//kernel.MapEditorOLD2:5943
+        //$LASTPOS=81005943;//kernel.MapEditorOLD2:5943
         if (_this.getkey("c")==1||(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>120&&Tonyu.globals.$touches[0].x<240&&Tonyu.globals.$touches[0].y>560&&Tonyu.globals.$touches[0].y<640)) {
-          //$LASTPOS=79006084;//kernel.MapEditorOLD2:6084
+          //$LASTPOS=81006084;//kernel.MapEditorOLD2:6084
           Tonyu.globals.$mp.scrollTo(1000,1000);
-          //$LASTPOS=79006118;//kernel.MapEditorOLD2:6118
+          //$LASTPOS=81006118;//kernel.MapEditorOLD2:6118
           _this.mode="copy";
-          //$LASTPOS=79006140;//kernel.MapEditorOLD2:6140
+          //$LASTPOS=81006140;//kernel.MapEditorOLD2:6140
           _this.print(_this.mode+" mode");
           
         }
-        //$LASTPOS=79006173;//kernel.MapEditorOLD2:6173
+        //$LASTPOS=81006173;//kernel.MapEditorOLD2:6173
         if (_this.mode!="get") {
-          //$LASTPOS=79006199;//kernel.MapEditorOLD2:6199
+          //$LASTPOS=81006199;//kernel.MapEditorOLD2:6199
           if (_this.getkey("left")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<40&&Tonyu.globals.$touches[0].y<480)) {
-            //$LASTPOS=79006305;//kernel.MapEditorOLD2:6305
+            //$LASTPOS=81006305;//kernel.MapEditorOLD2:6305
             _this.mx=_this.mx+8;
           }
-          //$LASTPOS=79006323;//kernel.MapEditorOLD2:6323
+          //$LASTPOS=81006323;//kernel.MapEditorOLD2:6323
           if (_this.getkey("right")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>Tonyu.globals.$screenWidth-40&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<480)) {
-            //$LASTPOS=79006454;//kernel.MapEditorOLD2:6454
+            //$LASTPOS=81006454;//kernel.MapEditorOLD2:6454
             _this.mx=_this.mx-8;
           }
-          //$LASTPOS=79006472;//kernel.MapEditorOLD2:6472
+          //$LASTPOS=81006472;//kernel.MapEditorOLD2:6472
           if (_this.getkey("up")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<40)) {
-            //$LASTPOS=79006585;//kernel.MapEditorOLD2:6585
+            //$LASTPOS=81006585;//kernel.MapEditorOLD2:6585
             _this.my=_this.my+8;
           }
-          //$LASTPOS=79006603;//kernel.MapEditorOLD2:6603
+          //$LASTPOS=81006603;//kernel.MapEditorOLD2:6603
           if (_this.getkey("down")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<480&&Tonyu.globals.$touches[0].y>440)) {
-            //$LASTPOS=79006738;//kernel.MapEditorOLD2:6738
+            //$LASTPOS=81006738;//kernel.MapEditorOLD2:6738
             _this.my=_this.my-8;
           }
-          //$LASTPOS=79006756;//kernel.MapEditorOLD2:6756
+          //$LASTPOS=81006756;//kernel.MapEditorOLD2:6756
           Tonyu.globals.$map.scrollTo(_this.mx,_this.my);
           
         } else {
-          //$LASTPOS=79006799;//kernel.MapEditorOLD2:6799
+          //$LASTPOS=81006799;//kernel.MapEditorOLD2:6799
           if (_this.getkey("left")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<40&&Tonyu.globals.$touches[0].y<480)) {
-            //$LASTPOS=79006905;//kernel.MapEditorOLD2:6905
+            //$LASTPOS=81006905;//kernel.MapEditorOLD2:6905
             _this.chipX=_this.chipX+8;
           }
-          //$LASTPOS=79006929;//kernel.MapEditorOLD2:6929
+          //$LASTPOS=81006929;//kernel.MapEditorOLD2:6929
           if (_this.getkey("right")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>Tonyu.globals.$screenWidth-40&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<480)) {
-            //$LASTPOS=79007060;//kernel.MapEditorOLD2:7060
+            //$LASTPOS=81007060;//kernel.MapEditorOLD2:7060
             _this.chipX=_this.chipX-8;
           }
-          //$LASTPOS=79007084;//kernel.MapEditorOLD2:7084
+          //$LASTPOS=81007084;//kernel.MapEditorOLD2:7084
           if (_this.getkey("up")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<40)) {
-            //$LASTPOS=79007197;//kernel.MapEditorOLD2:7197
+            //$LASTPOS=81007197;//kernel.MapEditorOLD2:7197
             _this.chipY=_this.chipY+8;
           }
-          //$LASTPOS=79007221;//kernel.MapEditorOLD2:7221
+          //$LASTPOS=81007221;//kernel.MapEditorOLD2:7221
           if (_this.getkey("down")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<480&&Tonyu.globals.$touches[0].y>440)) {
-            //$LASTPOS=79007356;//kernel.MapEditorOLD2:7356
+            //$LASTPOS=81007356;//kernel.MapEditorOLD2:7356
             _this.chipY=_this.chipY-8;
           }
-          //$LASTPOS=79007380;//kernel.MapEditorOLD2:7380
+          //$LASTPOS=81007380;//kernel.MapEditorOLD2:7380
           Tonyu.globals.$mp.scrollTo(_this.chipX,_this.chipY);
           
         }
-        //$LASTPOS=79007453;//kernel.MapEditorOLD2:7453
+        //$LASTPOS=81007453;//kernel.MapEditorOLD2:7453
         if (_this.getkey("i")==1) {
-          //$LASTPOS=79007482;//kernel.MapEditorOLD2:7482
+          //$LASTPOS=81007482;//kernel.MapEditorOLD2:7482
           Tonyu.globals.$map.chipWidth+=4;
-          //$LASTPOS=79007510;//kernel.MapEditorOLD2:7510
+          //$LASTPOS=81007510;//kernel.MapEditorOLD2:7510
           Tonyu.globals.$map.chipHeight+=4;
-          //$LASTPOS=79007539;//kernel.MapEditorOLD2:7539
+          //$LASTPOS=81007539;//kernel.MapEditorOLD2:7539
           Tonyu.globals.$map.redrawMap();
-          //$LASTPOS=79007566;//kernel.MapEditorOLD2:7566
+          //$LASTPOS=81007566;//kernel.MapEditorOLD2:7566
           _this.panel.die();
-          //$LASTPOS=79007588;//kernel.MapEditorOLD2:7588
+          //$LASTPOS=81007588;//kernel.MapEditorOLD2:7588
           _this.panel=new Tonyu.classes.kernel.Panel({width: Tonyu.globals.$map.col*Tonyu.globals.$map.chipWidth,height: Tonyu.globals.$map.row*Tonyu.globals.$map.chipHeight,zOrder: 100});
-          //$LASTPOS=79007688;//kernel.MapEditorOLD2:7688
+          //$LASTPOS=81007688;//kernel.MapEditorOLD2:7688
           _this.panel.x=_this.panel.width/2+40;
-          //$LASTPOS=79007723;//kernel.MapEditorOLD2:7723
+          //$LASTPOS=81007723;//kernel.MapEditorOLD2:7723
           _this.panel.y=_this.panel.height/2+40;
-          //$LASTPOS=79007759;//kernel.MapEditorOLD2:7759
+          //$LASTPOS=81007759;//kernel.MapEditorOLD2:7759
           _this.panel.setFillStyle("cyan");
-          //$LASTPOS=79007796;//kernel.MapEditorOLD2:7796
+          //$LASTPOS=81007796;//kernel.MapEditorOLD2:7796
           _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
           
         }
-        //$LASTPOS=79007854;//kernel.MapEditorOLD2:7854
+        //$LASTPOS=81007854;//kernel.MapEditorOLD2:7854
         if (_this.getkey("o")==1) {
-          //$LASTPOS=79007883;//kernel.MapEditorOLD2:7883
+          //$LASTPOS=81007883;//kernel.MapEditorOLD2:7883
           Tonyu.globals.$map.chipWidth-=4;
-          //$LASTPOS=79007911;//kernel.MapEditorOLD2:7911
+          //$LASTPOS=81007911;//kernel.MapEditorOLD2:7911
           Tonyu.globals.$map.chipHeight-=4;
-          //$LASTPOS=79007940;//kernel.MapEditorOLD2:7940
+          //$LASTPOS=81007940;//kernel.MapEditorOLD2:7940
           Tonyu.globals.$map.redrawMap();
-          //$LASTPOS=79007967;//kernel.MapEditorOLD2:7967
+          //$LASTPOS=81007967;//kernel.MapEditorOLD2:7967
           _this.panel.die();
-          //$LASTPOS=79007989;//kernel.MapEditorOLD2:7989
+          //$LASTPOS=81007989;//kernel.MapEditorOLD2:7989
           _this.panel=new Tonyu.classes.kernel.Panel({width: Tonyu.globals.$map.col*Tonyu.globals.$map.chipWidth,height: Tonyu.globals.$map.row*Tonyu.globals.$map.chipHeight,zOrder: 100});
-          //$LASTPOS=79008089;//kernel.MapEditorOLD2:8089
+          //$LASTPOS=81008089;//kernel.MapEditorOLD2:8089
           _this.panel.x=_this.panel.width/2+40;
-          //$LASTPOS=79008124;//kernel.MapEditorOLD2:8124
+          //$LASTPOS=81008124;//kernel.MapEditorOLD2:8124
           _this.panel.y=_this.panel.height/2+40;
-          //$LASTPOS=79008160;//kernel.MapEditorOLD2:8160
+          //$LASTPOS=81008160;//kernel.MapEditorOLD2:8160
           _this.panel.setFillStyle("cyan");
-          //$LASTPOS=79008197;//kernel.MapEditorOLD2:8197
+          //$LASTPOS=81008197;//kernel.MapEditorOLD2:8197
           _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
           
         }
-        //$LASTPOS=79008289;//kernel.MapEditorOLD2:8289
+        //$LASTPOS=81008289;//kernel.MapEditorOLD2:8289
         _this.panel.x=_this.panel.width/2-_this.mx;
-        //$LASTPOS=79008320;//kernel.MapEditorOLD2:8320
+        //$LASTPOS=81008320;//kernel.MapEditorOLD2:8320
         _this.panel.y=_this.panel.height/2-_this.my;
-        //$LASTPOS=79008352;//kernel.MapEditorOLD2:8352
+        //$LASTPOS=81008352;//kernel.MapEditorOLD2:8352
         if (_this.mode=="set"&&_this.getkey(1)>0&&_this.inRect()) {
-          //$LASTPOS=79008405;//kernel.MapEditorOLD2:8405
+          //$LASTPOS=81008405;//kernel.MapEditorOLD2:8405
           Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,_this.mapp);
-          //$LASTPOS=79008454;//kernel.MapEditorOLD2:8454
+          //$LASTPOS=81008454;//kernel.MapEditorOLD2:8454
           Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,- 1);
           
         } else {
-          //$LASTPOS=79008505;//kernel.MapEditorOLD2:8505
+          //$LASTPOS=81008505;//kernel.MapEditorOLD2:8505
           if (_this.mode=="erase"&&_this.getkey(1)>0&&_this.inRect()) {
-            //$LASTPOS=79008560;//kernel.MapEditorOLD2:8560
+            //$LASTPOS=81008560;//kernel.MapEditorOLD2:8560
             Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,- 1);
             
           } else {
-            //$LASTPOS=79008609;//kernel.MapEditorOLD2:8609
+            //$LASTPOS=81008609;//kernel.MapEditorOLD2:8609
             if (_this.mode=="get"&&_this.getkey(1)>0&&_this.inRect()) {
-              //$LASTPOS=79008662;//kernel.MapEditorOLD2:8662
+              //$LASTPOS=81008662;//kernel.MapEditorOLD2:8662
               _this.mapp=Tonyu.globals.$mp.getAt(Tonyu.globals.$mouseX+_this.chipX,Tonyu.globals.$mouseY+_this.chipY);
-              //$LASTPOS=79008716;//kernel.MapEditorOLD2:8716
+              //$LASTPOS=81008716;//kernel.MapEditorOLD2:8716
               _this.mode=_this.prevMode;
-              //$LASTPOS=79008740;//kernel.MapEditorOLD2:8740
+              //$LASTPOS=81008740;//kernel.MapEditorOLD2:8740
               Tonyu.globals.$mp.scrollTo(1000,1000);
-              //$LASTPOS=79008774;//kernel.MapEditorOLD2:8774
+              //$LASTPOS=81008774;//kernel.MapEditorOLD2:8774
               _this.print(_this.mode+" mode");
-              //$LASTPOS=79008804;//kernel.MapEditorOLD2:8804
+              //$LASTPOS=81008804;//kernel.MapEditorOLD2:8804
               _this.updateEx(10);
               
             } else {
-              //$LASTPOS=79008829;//kernel.MapEditorOLD2:8829
+              //$LASTPOS=81008829;//kernel.MapEditorOLD2:8829
               if (_this.mode=="setOn"&&_this.getkey(1)>0&&_this.inRect()) {
-                //$LASTPOS=79008884;//kernel.MapEditorOLD2:8884
+                //$LASTPOS=81008884;//kernel.MapEditorOLD2:8884
                 Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,_this.mapp);
                 
               } else {
-                //$LASTPOS=79008937;//kernel.MapEditorOLD2:8937
+                //$LASTPOS=81008937;//kernel.MapEditorOLD2:8937
                 if (_this.mode=="copy"&&_this.getkey(1)>0&&_this.inRect()) {
-                  //$LASTPOS=79008991;//kernel.MapEditorOLD2:8991
+                  //$LASTPOS=81008991;//kernel.MapEditorOLD2:8991
                   _this.mapp=Tonyu.globals.$map.getAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my);
-                  //$LASTPOS=79009040;//kernel.MapEditorOLD2:9040
+                  //$LASTPOS=81009040;//kernel.MapEditorOLD2:9040
                   _this.mode="set";
-                  //$LASTPOS=79009061;//kernel.MapEditorOLD2:9061
+                  //$LASTPOS=81009061;//kernel.MapEditorOLD2:9061
                   _this.print(_this.mode+" mode");
-                  //$LASTPOS=79009091;//kernel.MapEditorOLD2:9091
+                  //$LASTPOS=81009091;//kernel.MapEditorOLD2:9091
                   _this.updateEx(10);
                   
                 }
@@ -29375,7 +29535,7 @@ Tonyu.klass.define({
             }
           }
         }
-        //$LASTPOS=79009117;//kernel.MapEditorOLD2:9117
+        //$LASTPOS=81009117;//kernel.MapEditorOLD2:9117
         _this.update();
         
       }
@@ -29386,13 +29546,13 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=79000032;//kernel.MapEditorOLD2:32
+      //$LASTPOS=81000032;//kernel.MapEditorOLD2:32
       Tonyu.globals.$Screen.resize(480,640);
-      //$LASTPOS=79000058;//kernel.MapEditorOLD2:58
+      //$LASTPOS=81000058;//kernel.MapEditorOLD2:58
       _this.loadMode=false;
-      //$LASTPOS=79000075;//kernel.MapEditorOLD2:75
+      //$LASTPOS=81000075;//kernel.MapEditorOLD2:75
       _this.fileExist=false;
-      //$LASTPOS=79000093;//kernel.MapEditorOLD2:93
+      //$LASTPOS=81000093;//kernel.MapEditorOLD2:93
       _this.print("map file(s)");
       
       _thread.enter(function _trc_MapEditorOLD2_ent_main(_thread) {
@@ -29400,51 +29560,51 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=79000116;//kernel.MapEditorOLD2:116
+            //$LASTPOS=81000116;//kernel.MapEditorOLD2:116
             _this.fiber$file(_thread, "../maps/");
             __pc=1;return;
           case 1:
             _this.fileList=_thread.retVal;
             
-            //$LASTPOS=79000144;//kernel.MapEditorOLD2:144
+            //$LASTPOS=81000144;//kernel.MapEditorOLD2:144
             if (_this.fileList.exists()) {
-              //$LASTPOS=79000168;//kernel.MapEditorOLD2:168
+              //$LASTPOS=81000168;//kernel.MapEditorOLD2:168
               _this.fileList.recursive((function a(f) {
                 
-                //$LASTPOS=79000207;//kernel.MapEditorOLD2:207
+                //$LASTPOS=81000207;//kernel.MapEditorOLD2:207
                 f=f+"";
-                //$LASTPOS=79000220;//kernel.MapEditorOLD2:220
+                //$LASTPOS=81000220;//kernel.MapEditorOLD2:220
                 _this.fNames=f.split("/");
-                //$LASTPOS=79000246;//kernel.MapEditorOLD2:246
+                //$LASTPOS=81000246;//kernel.MapEditorOLD2:246
                 _this.print(_this.fNames[_this.fNames.length-1]);
-                //$LASTPOS=79000283;//kernel.MapEditorOLD2:283
+                //$LASTPOS=81000283;//kernel.MapEditorOLD2:283
                 _this.fileExist=true;
               }));
               
             }
-            //$LASTPOS=79000308;//kernel.MapEditorOLD2:308
+            //$LASTPOS=81000308;//kernel.MapEditorOLD2:308
             if (!(_this.fileExist)) { __pc=11    ; break; }
-            //$LASTPOS=79000328;//kernel.MapEditorOLD2:328
+            //$LASTPOS=81000328;//kernel.MapEditorOLD2:328
             _this.print("Load Data?: Y or N");
-            //$LASTPOS=79000362;//kernel.MapEditorOLD2:362
+            //$LASTPOS=81000362;//kernel.MapEditorOLD2:362
           case 2:
-            //$LASTPOS=79000384;//kernel.MapEditorOLD2:384
+            //$LASTPOS=81000384;//kernel.MapEditorOLD2:384
             if (!(_this.getkey("y")>0)) { __pc=3     ; break; }
-            //$LASTPOS=79000416;//kernel.MapEditorOLD2:416
+            //$LASTPOS=81000416;//kernel.MapEditorOLD2:416
             _this.loadMode=true;
             __pc=6     ; break;
             
           case 3     :
             
-            //$LASTPOS=79000471;//kernel.MapEditorOLD2:471
+            //$LASTPOS=81000471;//kernel.MapEditorOLD2:471
             if (!(_this.getkey("n")>0)) { __pc=4     ; break; }
-            //$LASTPOS=79000503;//kernel.MapEditorOLD2:503
+            //$LASTPOS=81000503;//kernel.MapEditorOLD2:503
             _this.loadMode=false;
             __pc=6     ; break;
             
           case 4     :
             
-            //$LASTPOS=79000559;//kernel.MapEditorOLD2:559
+            //$LASTPOS=81000559;//kernel.MapEditorOLD2:559
             _this.fiber$update(_thread);
             __pc=5;return;
           case 5:
@@ -29452,61 +29612,61 @@ Tonyu.klass.define({
             __pc=2;break;
           case 6     :
             
-            //$LASTPOS=79000581;//kernel.MapEditorOLD2:581
+            //$LASTPOS=81000581;//kernel.MapEditorOLD2:581
             if (!(_this.loadMode)) { __pc=10    ; break; }
-            //$LASTPOS=79000604;//kernel.MapEditorOLD2:604
+            //$LASTPOS=81000604;//kernel.MapEditorOLD2:604
             _this.fileName=prompt("Input json file (*.json)","map.json");
-            //$LASTPOS=79000669;//kernel.MapEditorOLD2:669
+            //$LASTPOS=81000669;//kernel.MapEditorOLD2:669
             if (_this.fileName) {
-              //$LASTPOS=79000696;//kernel.MapEditorOLD2:696
+              //$LASTPOS=81000696;//kernel.MapEditorOLD2:696
               _this.mapDataFile=_this.file("../maps/").rel(_this.fileName);
               
             }
-            //$LASTPOS=79000760;//kernel.MapEditorOLD2:760
+            //$LASTPOS=81000760;//kernel.MapEditorOLD2:760
             if (!(_this.mapDataFile.obj())) { __pc=7     ; break; }
             {
-              //$LASTPOS=79000796;//kernel.MapEditorOLD2:796
+              //$LASTPOS=81000796;//kernel.MapEditorOLD2:796
               _this.baseData=_this.mapDataFile.obj();
-              //$LASTPOS=79000837;//kernel.MapEditorOLD2:837
+              //$LASTPOS=81000837;//kernel.MapEditorOLD2:837
               _this.loadedFile=_this.fileName;
             }
             __pc=9     ;break;
           case 7     :
-            //$LASTPOS=79000887;//kernel.MapEditorOLD2:887
+            //$LASTPOS=81000887;//kernel.MapEditorOLD2:887
             _this.fiber$file(_thread, _this.fileName);
             __pc=8;return;
           case 8:
             _this.mapDataFile=_thread.retVal;
             
-            //$LASTPOS=79000928;//kernel.MapEditorOLD2:928
+            //$LASTPOS=81000928;//kernel.MapEditorOLD2:928
             if (_this.mapDataFile.obj()) {
-              //$LASTPOS=79000968;//kernel.MapEditorOLD2:968
+              //$LASTPOS=81000968;//kernel.MapEditorOLD2:968
               _this.baseData=_this.mapDataFile.obj();
-              //$LASTPOS=79001013;//kernel.MapEditorOLD2:1013
+              //$LASTPOS=81001013;//kernel.MapEditorOLD2:1013
               _this.loadedFile=_this.fileName;
               
             }
           case 9     :
             
-            //$LASTPOS=79001069;//kernel.MapEditorOLD2:1069
+            //$LASTPOS=81001069;//kernel.MapEditorOLD2:1069
             if (_this.baseData==undefined) {
-              //$LASTPOS=79001107;//kernel.MapEditorOLD2:1107
+              //$LASTPOS=81001107;//kernel.MapEditorOLD2:1107
               _this.print("Load failed");
-              //$LASTPOS=79001142;//kernel.MapEditorOLD2:1142
+              //$LASTPOS=81001142;//kernel.MapEditorOLD2:1142
               _this.loadMode=false;
               
             } else {
-              //$LASTPOS=79001173;//kernel.MapEditorOLD2:1173
+              //$LASTPOS=81001173;//kernel.MapEditorOLD2:1173
               if (_this.baseData[0]&&_this.baseData[1]) {
-                //$LASTPOS=79001218;//kernel.MapEditorOLD2:1218
+                //$LASTPOS=81001218;//kernel.MapEditorOLD2:1218
                 _this.mapData=_this.baseData[0];
-                //$LASTPOS=79001252;//kernel.MapEditorOLD2:1252
+                //$LASTPOS=81001252;//kernel.MapEditorOLD2:1252
                 _this.mapOnData=_this.baseData[1];
-                //$LASTPOS=79001288;//kernel.MapEditorOLD2:1288
+                //$LASTPOS=81001288;//kernel.MapEditorOLD2:1288
                 if (_this.baseData.length>2) {
-                  //$LASTPOS=79001328;//kernel.MapEditorOLD2:1328
+                  //$LASTPOS=81001328;//kernel.MapEditorOLD2:1328
                   _this.chipWidth=_this.baseData[_this.baseData.length-2];
-                  //$LASTPOS=79001384;//kernel.MapEditorOLD2:1384
+                  //$LASTPOS=81001384;//kernel.MapEditorOLD2:1384
                   _this.chipHeight=_this.baseData[_this.baseData.length-1];
                   
                 }
@@ -29517,370 +29677,370 @@ Tonyu.klass.define({
             
           case 11    :
             
-            //$LASTPOS=79001461;//kernel.MapEditorOLD2:1461
+            //$LASTPOS=81001461;//kernel.MapEditorOLD2:1461
             _this.fiber$update(_thread);
             __pc=12;return;
           case 12:
             
-            //$LASTPOS=79001739;//kernel.MapEditorOLD2:1739
+            //$LASTPOS=81001739;//kernel.MapEditorOLD2:1739
             if (! _this.loadMode) {
-              //$LASTPOS=79001759;//kernel.MapEditorOLD2:1759
+              //$LASTPOS=81001759;//kernel.MapEditorOLD2:1759
               _this.row=prompt("input row");
-              //$LASTPOS=79001789;//kernel.MapEditorOLD2:1789
+              //$LASTPOS=81001789;//kernel.MapEditorOLD2:1789
               _this.col=prompt("input col");
-              //$LASTPOS=79001819;//kernel.MapEditorOLD2:1819
+              //$LASTPOS=81001819;//kernel.MapEditorOLD2:1819
               _this.chipWidth=prompt("input chipWidth");
-              //$LASTPOS=79001861;//kernel.MapEditorOLD2:1861
+              //$LASTPOS=81001861;//kernel.MapEditorOLD2:1861
               _this.chipHeight=prompt("input chipHeight");
-              //$LASTPOS=79001905;//kernel.MapEditorOLD2:1905
+              //$LASTPOS=81001905;//kernel.MapEditorOLD2:1905
               _this.panel=new Tonyu.classes.kernel.Panel({width: _this.col*_this.chipWidth,height: _this.row*_this.chipHeight});
-              //$LASTPOS=79001970;//kernel.MapEditorOLD2:1970
+              //$LASTPOS=81001970;//kernel.MapEditorOLD2:1970
               _this.panel.x=_this.panel.width/2+40;
-              //$LASTPOS=79002001;//kernel.MapEditorOLD2:2001
+              //$LASTPOS=81002001;//kernel.MapEditorOLD2:2001
               _this.panel.y=_this.panel.height/2+40;
-              //$LASTPOS=79002033;//kernel.MapEditorOLD2:2033
+              //$LASTPOS=81002033;//kernel.MapEditorOLD2:2033
               _this.panel.setFillStyle("cyan");
-              //$LASTPOS=79002066;//kernel.MapEditorOLD2:2066
+              //$LASTPOS=81002066;//kernel.MapEditorOLD2:2066
               _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
-              //$LASTPOS=79002117;//kernel.MapEditorOLD2:2117
+              //$LASTPOS=81002117;//kernel.MapEditorOLD2:2117
               Tonyu.globals.$map=new Tonyu.classes.kernel.Map({row: _this.row,col: _this.col,chipWidth: _this.chipWidth,chipHeight: _this.chipHeight});
               
             } else {
-              //$LASTPOS=79002428;//kernel.MapEditorOLD2:2428
+              //$LASTPOS=81002428;//kernel.MapEditorOLD2:2428
               Tonyu.globals.$map=new Tonyu.classes.kernel.Map({chipWidth: 32,chipHeight: 32});
-              //$LASTPOS=79002475;//kernel.MapEditorOLD2:2475
+              //$LASTPOS=81002475;//kernel.MapEditorOLD2:2475
               Tonyu.globals.$map.load(_this.fileName);
-              //$LASTPOS=79002501;//kernel.MapEditorOLD2:2501
+              //$LASTPOS=81002501;//kernel.MapEditorOLD2:2501
               _this.panel=new Tonyu.classes.kernel.Panel({width: Tonyu.globals.$map.col*Tonyu.globals.$map.chipWidth,height: Tonyu.globals.$map.row*Tonyu.globals.$map.chipHeight,zOrder: 100});
-              //$LASTPOS=79002597;//kernel.MapEditorOLD2:2597
+              //$LASTPOS=81002597;//kernel.MapEditorOLD2:2597
               _this.panel.x=_this.panel.width/2+40;
-              //$LASTPOS=79002628;//kernel.MapEditorOLD2:2628
+              //$LASTPOS=81002628;//kernel.MapEditorOLD2:2628
               _this.panel.y=_this.panel.height/2+40;
-              //$LASTPOS=79002660;//kernel.MapEditorOLD2:2660
+              //$LASTPOS=81002660;//kernel.MapEditorOLD2:2660
               _this.panel.setFillStyle("cyan");
-              //$LASTPOS=79002693;//kernel.MapEditorOLD2:2693
+              //$LASTPOS=81002693;//kernel.MapEditorOLD2:2693
               _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
               
             }
-            //$LASTPOS=79002743;//kernel.MapEditorOLD2:2743
+            //$LASTPOS=81002743;//kernel.MapEditorOLD2:2743
             _this.mIW=Tonyu.globals.$Sprites.getImageList()[Tonyu.globals.$pat_mapchip].image.width;
-            //$LASTPOS=79002799;//kernel.MapEditorOLD2:2799
+            //$LASTPOS=81002799;//kernel.MapEditorOLD2:2799
             _this.mIH=Tonyu.globals.$Sprites.getImageList()[Tonyu.globals.$pat_mapchip].image.height;
-            //$LASTPOS=79002856;//kernel.MapEditorOLD2:2856
+            //$LASTPOS=81002856;//kernel.MapEditorOLD2:2856
             _this.mCW=Tonyu.globals.$Sprites.getImageList()[Tonyu.globals.$pat_mapchip+0].width;
-            //$LASTPOS=79002908;//kernel.MapEditorOLD2:2908
+            //$LASTPOS=81002908;//kernel.MapEditorOLD2:2908
             _this.mCH=Tonyu.globals.$Sprites.getImageList()[Tonyu.globals.$pat_mapchip+0].height;
-            //$LASTPOS=79002961;//kernel.MapEditorOLD2:2961
+            //$LASTPOS=81002961;//kernel.MapEditorOLD2:2961
             Tonyu.globals.$mp=new Tonyu.classes.kernel.Map({row: _this.floor(_this.mIH/_this.mCH),col: _this.floor(_this.mIW/_this.mCW),chipWidth: _this.mCW,chipHeight: _this.mCH});
-            //$LASTPOS=79003043;//kernel.MapEditorOLD2:3043
+            //$LASTPOS=81003043;//kernel.MapEditorOLD2:3043
             _this.counter=0;
-            //$LASTPOS=79003055;//kernel.MapEditorOLD2:3055
-            //$LASTPOS=79003059;//kernel.MapEditorOLD2:3059
+            //$LASTPOS=81003055;//kernel.MapEditorOLD2:3055
+            //$LASTPOS=81003059;//kernel.MapEditorOLD2:3059
             _this.i = 0;
             for (; _this.i<Tonyu.globals.$mp.row ; _this.i++) {
               {
-                //$LASTPOS=79003088;//kernel.MapEditorOLD2:3088
-                //$LASTPOS=79003092;//kernel.MapEditorOLD2:3092
+                //$LASTPOS=81003088;//kernel.MapEditorOLD2:3088
+                //$LASTPOS=81003092;//kernel.MapEditorOLD2:3092
                 _this.j = 0;
                 for (; _this.j<Tonyu.globals.$mp.col ; _this.j++) {
                   {
-                    //$LASTPOS=79003125;//kernel.MapEditorOLD2:3125
+                    //$LASTPOS=81003125;//kernel.MapEditorOLD2:3125
                     Tonyu.globals.$mp.set(_this.j,_this.i,Tonyu.globals.$pat_mapchip+_this.counter);
-                    //$LASTPOS=79003169;//kernel.MapEditorOLD2:3169
+                    //$LASTPOS=81003169;//kernel.MapEditorOLD2:3169
                     _this.counter++;
                   }
                 }
               }
             }
-            //$LASTPOS=79003191;//kernel.MapEditorOLD2:3191
+            //$LASTPOS=81003191;//kernel.MapEditorOLD2:3191
             _this.fiber$drawPanel(_thread);
             __pc=13;return;
           case 13:
             
-            //$LASTPOS=79003205;//kernel.MapEditorOLD2:3205
+            //$LASTPOS=81003205;//kernel.MapEditorOLD2:3205
             _this.mode="get";
-            //$LASTPOS=79003218;//kernel.MapEditorOLD2:3218
+            //$LASTPOS=81003218;//kernel.MapEditorOLD2:3218
             _this.prevMode="set";
-            //$LASTPOS=79003235;//kernel.MapEditorOLD2:3235
+            //$LASTPOS=81003235;//kernel.MapEditorOLD2:3235
             _this.mapp=0;
-            //$LASTPOS=79003244;//kernel.MapEditorOLD2:3244
+            //$LASTPOS=81003244;//kernel.MapEditorOLD2:3244
             _this.mx=- 40;
-            //$LASTPOS=79003253;//kernel.MapEditorOLD2:3253
+            //$LASTPOS=81003253;//kernel.MapEditorOLD2:3253
             _this.my=- 40;
-            //$LASTPOS=79003262;//kernel.MapEditorOLD2:3262
+            //$LASTPOS=81003262;//kernel.MapEditorOLD2:3262
             _this.chipX=- 40;
-            //$LASTPOS=79003274;//kernel.MapEditorOLD2:3274
+            //$LASTPOS=81003274;//kernel.MapEditorOLD2:3274
             _this.chipY=- 40;
-            //$LASTPOS=79003286;//kernel.MapEditorOLD2:3286
+            //$LASTPOS=81003286;//kernel.MapEditorOLD2:3286
             _this.x=Tonyu.globals.$screenWidth-_this.chipWidth/2;
-            //$LASTPOS=79003315;//kernel.MapEditorOLD2:3315
+            //$LASTPOS=81003315;//kernel.MapEditorOLD2:3315
             _this.y=Tonyu.globals.$screenHeight-_this.chipHeight/2;
-            //$LASTPOS=79003346;//kernel.MapEditorOLD2:3346
+            //$LASTPOS=81003346;//kernel.MapEditorOLD2:3346
             Tonyu.globals.$map.scrollTo(_this.mx,_this.my);
-            //$LASTPOS=79003369;//kernel.MapEditorOLD2:3369
+            //$LASTPOS=81003369;//kernel.MapEditorOLD2:3369
           case 14:
-            //$LASTPOS=79003387;//kernel.MapEditorOLD2:3387
+            //$LASTPOS=81003387;//kernel.MapEditorOLD2:3387
             _this.p=_this.mapp;
-            //$LASTPOS=79003400;//kernel.MapEditorOLD2:3400
+            //$LASTPOS=81003400;//kernel.MapEditorOLD2:3400
             if (_this.getkey("e")==1||(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<120&&Tonyu.globals.$touches[0].y>560&&Tonyu.globals.$touches[0].y<640)) {
-              //$LASTPOS=79003539;//kernel.MapEditorOLD2:3539
+              //$LASTPOS=81003539;//kernel.MapEditorOLD2:3539
               Tonyu.globals.$mp.scrollTo(1000,1000);
-              //$LASTPOS=79003573;//kernel.MapEditorOLD2:3573
+              //$LASTPOS=81003573;//kernel.MapEditorOLD2:3573
               _this.mode="erase";
-              //$LASTPOS=79003596;//kernel.MapEditorOLD2:3596
+              //$LASTPOS=81003596;//kernel.MapEditorOLD2:3596
               _this.print(_this.mode+" mode");
               
             }
-            //$LASTPOS=79003629;//kernel.MapEditorOLD2:3629
+            //$LASTPOS=81003629;//kernel.MapEditorOLD2:3629
             if (_this.getkey("s")==1) {
-              //$LASTPOS=79003658;//kernel.MapEditorOLD2:3658
+              //$LASTPOS=81003658;//kernel.MapEditorOLD2:3658
               Tonyu.globals.$mp.scrollTo(1000,1000);
-              //$LASTPOS=79003692;//kernel.MapEditorOLD2:3692
+              //$LASTPOS=81003692;//kernel.MapEditorOLD2:3692
               if (_this.mode=="set") {
-                //$LASTPOS=79003722;//kernel.MapEditorOLD2:3722
+                //$LASTPOS=81003722;//kernel.MapEditorOLD2:3722
                 _this.mode="setOn";
                 
               } else {
-                //$LASTPOS=79003765;//kernel.MapEditorOLD2:3765
+                //$LASTPOS=81003765;//kernel.MapEditorOLD2:3765
                 _this.mode="set";
                 
               }
-              //$LASTPOS=79003797;//kernel.MapEditorOLD2:3797
+              //$LASTPOS=81003797;//kernel.MapEditorOLD2:3797
               _this.print(_this.mode+" mode");
               
             }
-            //$LASTPOS=79003830;//kernel.MapEditorOLD2:3830
+            //$LASTPOS=81003830;//kernel.MapEditorOLD2:3830
             if (Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<120&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560) {
-              //$LASTPOS=79003949;//kernel.MapEditorOLD2:3949
+              //$LASTPOS=81003949;//kernel.MapEditorOLD2:3949
               Tonyu.globals.$mp.scrollTo(1000,1000);
-              //$LASTPOS=79003983;//kernel.MapEditorOLD2:3983
+              //$LASTPOS=81003983;//kernel.MapEditorOLD2:3983
               _this.mode="set";
-              //$LASTPOS=79004004;//kernel.MapEditorOLD2:4004
+              //$LASTPOS=81004004;//kernel.MapEditorOLD2:4004
               _this.print(_this.mode+" mode");
               
             }
-            //$LASTPOS=79004037;//kernel.MapEditorOLD2:4037
+            //$LASTPOS=81004037;//kernel.MapEditorOLD2:4037
             if (Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>120&&Tonyu.globals.$touches[0].x<240&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560) {
-              //$LASTPOS=79004158;//kernel.MapEditorOLD2:4158
+              //$LASTPOS=81004158;//kernel.MapEditorOLD2:4158
               Tonyu.globals.$mp.scrollTo(1000,1000);
-              //$LASTPOS=79004192;//kernel.MapEditorOLD2:4192
+              //$LASTPOS=81004192;//kernel.MapEditorOLD2:4192
               _this.mode="setOn";
-              //$LASTPOS=79004215;//kernel.MapEditorOLD2:4215
+              //$LASTPOS=81004215;//kernel.MapEditorOLD2:4215
               _this.print(_this.mode+" mode");
               
             }
-            //$LASTPOS=79004341;//kernel.MapEditorOLD2:4341
+            //$LASTPOS=81004341;//kernel.MapEditorOLD2:4341
             if (_this.getkey("g")==1||(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>240&&Tonyu.globals.$touches[0].x<360&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560)) {
-              //$LASTPOS=79004482;//kernel.MapEditorOLD2:4482
+              //$LASTPOS=81004482;//kernel.MapEditorOLD2:4482
               if (_this.mode!="get") {
-                //$LASTPOS=79004512;//kernel.MapEditorOLD2:4512
+                //$LASTPOS=81004512;//kernel.MapEditorOLD2:4512
                 _this.prevMode=_this.mode;
-                //$LASTPOS=79004540;//kernel.MapEditorOLD2:4540
+                //$LASTPOS=81004540;//kernel.MapEditorOLD2:4540
                 Tonyu.globals.$mp.scrollTo(- 40,- 40);
-                //$LASTPOS=79004576;//kernel.MapEditorOLD2:4576
+                //$LASTPOS=81004576;//kernel.MapEditorOLD2:4576
                 _this.mode="get";
-                //$LASTPOS=79004601;//kernel.MapEditorOLD2:4601
+                //$LASTPOS=81004601;//kernel.MapEditorOLD2:4601
                 _this.chipX=- 40;
-                //$LASTPOS=79004625;//kernel.MapEditorOLD2:4625
+                //$LASTPOS=81004625;//kernel.MapEditorOLD2:4625
                 _this.chipY=- 40;
                 
               } else {
-                //$LASTPOS=79004665;//kernel.MapEditorOLD2:4665
+                //$LASTPOS=81004665;//kernel.MapEditorOLD2:4665
                 Tonyu.globals.$mp.scrollTo(1000,1000);
-                //$LASTPOS=79004703;//kernel.MapEditorOLD2:4703
+                //$LASTPOS=81004703;//kernel.MapEditorOLD2:4703
                 _this.mode=_this.prevMode;
                 
               }
-              //$LASTPOS=79004738;//kernel.MapEditorOLD2:4738
+              //$LASTPOS=81004738;//kernel.MapEditorOLD2:4738
               _this.print(_this.mode+" mode");
               
             }
-            //$LASTPOS=79004771;//kernel.MapEditorOLD2:4771
+            //$LASTPOS=81004771;//kernel.MapEditorOLD2:4771
             if (_this.getkey("p")==1||(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>360&&Tonyu.globals.$touches[0].x<480&&Tonyu.globals.$touches[0].y>480&&Tonyu.globals.$touches[0].y<560)) {
-              //$LASTPOS=79004927;//kernel.MapEditorOLD2:4927
+              //$LASTPOS=81004927;//kernel.MapEditorOLD2:4927
               if (_this.loadedFile) {
-                //$LASTPOS=79004956;//kernel.MapEditorOLD2:4956
+                //$LASTPOS=81004956;//kernel.MapEditorOLD2:4956
                 _this.saveFileName=prompt("input json file(*.json)",_this.loadedFile);
                 
               } else {
-                //$LASTPOS=79005044;//kernel.MapEditorOLD2:5044
+                //$LASTPOS=81005044;//kernel.MapEditorOLD2:5044
                 _this.saveFileName=prompt("input json file(*.json)","map.json");
                 
               }
-              //$LASTPOS=79005544;//kernel.MapEditorOLD2:5544
+              //$LASTPOS=81005544;//kernel.MapEditorOLD2:5544
               if (_this.saveFileName) {
-                //$LASTPOS=79005575;//kernel.MapEditorOLD2:5575
+                //$LASTPOS=81005575;//kernel.MapEditorOLD2:5575
                 _this.saveDataFile=_this.file("../maps/").rel(_this.saveFileName);
-                //$LASTPOS=79005637;//kernel.MapEditorOLD2:5637
+                //$LASTPOS=81005637;//kernel.MapEditorOLD2:5637
                 _this.data=[Tonyu.globals.$map.mapTable,Tonyu.globals.$map.mapOnTable,Tonyu.globals.$map.chipWidth,Tonyu.globals.$map.chipHeight];
-                //$LASTPOS=79005799;//kernel.MapEditorOLD2:5799
+                //$LASTPOS=81005799;//kernel.MapEditorOLD2:5799
                 _this.saveDataFile.obj(_this.data);
-                //$LASTPOS=79005836;//kernel.MapEditorOLD2:5836
+                //$LASTPOS=81005836;//kernel.MapEditorOLD2:5836
                 _this.print(_this.saveFileName+" Saved");
                 
               }
               
             }
-            //$LASTPOS=79005943;//kernel.MapEditorOLD2:5943
+            //$LASTPOS=81005943;//kernel.MapEditorOLD2:5943
             if (_this.getkey("c")==1||(Tonyu.globals.$touches[0].touched==1&&Tonyu.globals.$touches[0].x>120&&Tonyu.globals.$touches[0].x<240&&Tonyu.globals.$touches[0].y>560&&Tonyu.globals.$touches[0].y<640)) {
-              //$LASTPOS=79006084;//kernel.MapEditorOLD2:6084
+              //$LASTPOS=81006084;//kernel.MapEditorOLD2:6084
               Tonyu.globals.$mp.scrollTo(1000,1000);
-              //$LASTPOS=79006118;//kernel.MapEditorOLD2:6118
+              //$LASTPOS=81006118;//kernel.MapEditorOLD2:6118
               _this.mode="copy";
-              //$LASTPOS=79006140;//kernel.MapEditorOLD2:6140
+              //$LASTPOS=81006140;//kernel.MapEditorOLD2:6140
               _this.print(_this.mode+" mode");
               
             }
-            //$LASTPOS=79006173;//kernel.MapEditorOLD2:6173
+            //$LASTPOS=81006173;//kernel.MapEditorOLD2:6173
             if (_this.mode!="get") {
-              //$LASTPOS=79006199;//kernel.MapEditorOLD2:6199
+              //$LASTPOS=81006199;//kernel.MapEditorOLD2:6199
               if (_this.getkey("left")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<40&&Tonyu.globals.$touches[0].y<480)) {
-                //$LASTPOS=79006305;//kernel.MapEditorOLD2:6305
+                //$LASTPOS=81006305;//kernel.MapEditorOLD2:6305
                 _this.mx=_this.mx+8;
               }
-              //$LASTPOS=79006323;//kernel.MapEditorOLD2:6323
+              //$LASTPOS=81006323;//kernel.MapEditorOLD2:6323
               if (_this.getkey("right")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>Tonyu.globals.$screenWidth-40&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<480)) {
-                //$LASTPOS=79006454;//kernel.MapEditorOLD2:6454
+                //$LASTPOS=81006454;//kernel.MapEditorOLD2:6454
                 _this.mx=_this.mx-8;
               }
-              //$LASTPOS=79006472;//kernel.MapEditorOLD2:6472
+              //$LASTPOS=81006472;//kernel.MapEditorOLD2:6472
               if (_this.getkey("up")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<40)) {
-                //$LASTPOS=79006585;//kernel.MapEditorOLD2:6585
+                //$LASTPOS=81006585;//kernel.MapEditorOLD2:6585
                 _this.my=_this.my+8;
               }
-              //$LASTPOS=79006603;//kernel.MapEditorOLD2:6603
+              //$LASTPOS=81006603;//kernel.MapEditorOLD2:6603
               if (_this.getkey("down")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<480&&Tonyu.globals.$touches[0].y>440)) {
-                //$LASTPOS=79006738;//kernel.MapEditorOLD2:6738
+                //$LASTPOS=81006738;//kernel.MapEditorOLD2:6738
                 _this.my=_this.my-8;
               }
-              //$LASTPOS=79006756;//kernel.MapEditorOLD2:6756
+              //$LASTPOS=81006756;//kernel.MapEditorOLD2:6756
               Tonyu.globals.$map.scrollTo(_this.mx,_this.my);
               
             } else {
-              //$LASTPOS=79006799;//kernel.MapEditorOLD2:6799
+              //$LASTPOS=81006799;//kernel.MapEditorOLD2:6799
               if (_this.getkey("left")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<40&&Tonyu.globals.$touches[0].y<480)) {
-                //$LASTPOS=79006905;//kernel.MapEditorOLD2:6905
+                //$LASTPOS=81006905;//kernel.MapEditorOLD2:6905
                 _this.chipX=_this.chipX+8;
               }
-              //$LASTPOS=79006929;//kernel.MapEditorOLD2:6929
+              //$LASTPOS=81006929;//kernel.MapEditorOLD2:6929
               if (_this.getkey("right")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>Tonyu.globals.$screenWidth-40&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<480)) {
-                //$LASTPOS=79007060;//kernel.MapEditorOLD2:7060
+                //$LASTPOS=81007060;//kernel.MapEditorOLD2:7060
                 _this.chipX=_this.chipX-8;
               }
-              //$LASTPOS=79007084;//kernel.MapEditorOLD2:7084
+              //$LASTPOS=81007084;//kernel.MapEditorOLD2:7084
               if (_this.getkey("up")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<40)) {
-                //$LASTPOS=79007197;//kernel.MapEditorOLD2:7197
+                //$LASTPOS=81007197;//kernel.MapEditorOLD2:7197
                 _this.chipY=_this.chipY+8;
               }
-              //$LASTPOS=79007221;//kernel.MapEditorOLD2:7221
+              //$LASTPOS=81007221;//kernel.MapEditorOLD2:7221
               if (_this.getkey("down")>0||(Tonyu.globals.$touches[0].touched&&Tonyu.globals.$touches[0].x>0&&Tonyu.globals.$touches[0].x<Tonyu.globals.$screenWidth&&Tonyu.globals.$touches[0].y<480&&Tonyu.globals.$touches[0].y>440)) {
-                //$LASTPOS=79007356;//kernel.MapEditorOLD2:7356
+                //$LASTPOS=81007356;//kernel.MapEditorOLD2:7356
                 _this.chipY=_this.chipY-8;
               }
-              //$LASTPOS=79007380;//kernel.MapEditorOLD2:7380
+              //$LASTPOS=81007380;//kernel.MapEditorOLD2:7380
               Tonyu.globals.$mp.scrollTo(_this.chipX,_this.chipY);
               
             }
-            //$LASTPOS=79007453;//kernel.MapEditorOLD2:7453
+            //$LASTPOS=81007453;//kernel.MapEditorOLD2:7453
             if (_this.getkey("i")==1) {
-              //$LASTPOS=79007482;//kernel.MapEditorOLD2:7482
+              //$LASTPOS=81007482;//kernel.MapEditorOLD2:7482
               Tonyu.globals.$map.chipWidth+=4;
-              //$LASTPOS=79007510;//kernel.MapEditorOLD2:7510
+              //$LASTPOS=81007510;//kernel.MapEditorOLD2:7510
               Tonyu.globals.$map.chipHeight+=4;
-              //$LASTPOS=79007539;//kernel.MapEditorOLD2:7539
+              //$LASTPOS=81007539;//kernel.MapEditorOLD2:7539
               Tonyu.globals.$map.redrawMap();
-              //$LASTPOS=79007566;//kernel.MapEditorOLD2:7566
+              //$LASTPOS=81007566;//kernel.MapEditorOLD2:7566
               _this.panel.die();
-              //$LASTPOS=79007588;//kernel.MapEditorOLD2:7588
+              //$LASTPOS=81007588;//kernel.MapEditorOLD2:7588
               _this.panel=new Tonyu.classes.kernel.Panel({width: Tonyu.globals.$map.col*Tonyu.globals.$map.chipWidth,height: Tonyu.globals.$map.row*Tonyu.globals.$map.chipHeight,zOrder: 100});
-              //$LASTPOS=79007688;//kernel.MapEditorOLD2:7688
+              //$LASTPOS=81007688;//kernel.MapEditorOLD2:7688
               _this.panel.x=_this.panel.width/2+40;
-              //$LASTPOS=79007723;//kernel.MapEditorOLD2:7723
+              //$LASTPOS=81007723;//kernel.MapEditorOLD2:7723
               _this.panel.y=_this.panel.height/2+40;
-              //$LASTPOS=79007759;//kernel.MapEditorOLD2:7759
+              //$LASTPOS=81007759;//kernel.MapEditorOLD2:7759
               _this.panel.setFillStyle("cyan");
-              //$LASTPOS=79007796;//kernel.MapEditorOLD2:7796
+              //$LASTPOS=81007796;//kernel.MapEditorOLD2:7796
               _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
               
             }
-            //$LASTPOS=79007854;//kernel.MapEditorOLD2:7854
+            //$LASTPOS=81007854;//kernel.MapEditorOLD2:7854
             if (_this.getkey("o")==1) {
-              //$LASTPOS=79007883;//kernel.MapEditorOLD2:7883
+              //$LASTPOS=81007883;//kernel.MapEditorOLD2:7883
               Tonyu.globals.$map.chipWidth-=4;
-              //$LASTPOS=79007911;//kernel.MapEditorOLD2:7911
+              //$LASTPOS=81007911;//kernel.MapEditorOLD2:7911
               Tonyu.globals.$map.chipHeight-=4;
-              //$LASTPOS=79007940;//kernel.MapEditorOLD2:7940
+              //$LASTPOS=81007940;//kernel.MapEditorOLD2:7940
               Tonyu.globals.$map.redrawMap();
-              //$LASTPOS=79007967;//kernel.MapEditorOLD2:7967
+              //$LASTPOS=81007967;//kernel.MapEditorOLD2:7967
               _this.panel.die();
-              //$LASTPOS=79007989;//kernel.MapEditorOLD2:7989
+              //$LASTPOS=81007989;//kernel.MapEditorOLD2:7989
               _this.panel=new Tonyu.classes.kernel.Panel({width: Tonyu.globals.$map.col*Tonyu.globals.$map.chipWidth,height: Tonyu.globals.$map.row*Tonyu.globals.$map.chipHeight,zOrder: 100});
-              //$LASTPOS=79008089;//kernel.MapEditorOLD2:8089
+              //$LASTPOS=81008089;//kernel.MapEditorOLD2:8089
               _this.panel.x=_this.panel.width/2+40;
-              //$LASTPOS=79008124;//kernel.MapEditorOLD2:8124
+              //$LASTPOS=81008124;//kernel.MapEditorOLD2:8124
               _this.panel.y=_this.panel.height/2+40;
-              //$LASTPOS=79008160;//kernel.MapEditorOLD2:8160
+              //$LASTPOS=81008160;//kernel.MapEditorOLD2:8160
               _this.panel.setFillStyle("cyan");
-              //$LASTPOS=79008197;//kernel.MapEditorOLD2:8197
+              //$LASTPOS=81008197;//kernel.MapEditorOLD2:8197
               _this.panel.fillRect(0,0,_this.panel.width,_this.panel.height);
               
             }
-            //$LASTPOS=79008289;//kernel.MapEditorOLD2:8289
+            //$LASTPOS=81008289;//kernel.MapEditorOLD2:8289
             _this.panel.x=_this.panel.width/2-_this.mx;
-            //$LASTPOS=79008320;//kernel.MapEditorOLD2:8320
+            //$LASTPOS=81008320;//kernel.MapEditorOLD2:8320
             _this.panel.y=_this.panel.height/2-_this.my;
-            //$LASTPOS=79008352;//kernel.MapEditorOLD2:8352
+            //$LASTPOS=81008352;//kernel.MapEditorOLD2:8352
             if (!(_this.mode=="set"&&_this.getkey(1)>0&&_this.inRect())) { __pc=15    ; break; }
             {
-              //$LASTPOS=79008405;//kernel.MapEditorOLD2:8405
+              //$LASTPOS=81008405;//kernel.MapEditorOLD2:8405
               Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,_this.mapp);
-              //$LASTPOS=79008454;//kernel.MapEditorOLD2:8454
+              //$LASTPOS=81008454;//kernel.MapEditorOLD2:8454
               Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,- 1);
             }
             __pc=25    ;break;
           case 15    :
-            //$LASTPOS=79008505;//kernel.MapEditorOLD2:8505
+            //$LASTPOS=81008505;//kernel.MapEditorOLD2:8505
             if (!(_this.mode=="erase"&&_this.getkey(1)>0&&_this.inRect())) { __pc=16    ; break; }
             {
-              //$LASTPOS=79008560;//kernel.MapEditorOLD2:8560
+              //$LASTPOS=81008560;//kernel.MapEditorOLD2:8560
               Tonyu.globals.$map.setAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,- 1);
             }
             __pc=24    ;break;
           case 16    :
-            //$LASTPOS=79008609;//kernel.MapEditorOLD2:8609
+            //$LASTPOS=81008609;//kernel.MapEditorOLD2:8609
             if (!(_this.mode=="get"&&_this.getkey(1)>0&&_this.inRect())) { __pc=18    ; break; }
-            //$LASTPOS=79008662;//kernel.MapEditorOLD2:8662
+            //$LASTPOS=81008662;//kernel.MapEditorOLD2:8662
             _this.mapp=Tonyu.globals.$mp.getAt(Tonyu.globals.$mouseX+_this.chipX,Tonyu.globals.$mouseY+_this.chipY);
-            //$LASTPOS=79008716;//kernel.MapEditorOLD2:8716
+            //$LASTPOS=81008716;//kernel.MapEditorOLD2:8716
             _this.mode=_this.prevMode;
-            //$LASTPOS=79008740;//kernel.MapEditorOLD2:8740
+            //$LASTPOS=81008740;//kernel.MapEditorOLD2:8740
             Tonyu.globals.$mp.scrollTo(1000,1000);
-            //$LASTPOS=79008774;//kernel.MapEditorOLD2:8774
+            //$LASTPOS=81008774;//kernel.MapEditorOLD2:8774
             _this.print(_this.mode+" mode");
-            //$LASTPOS=79008804;//kernel.MapEditorOLD2:8804
+            //$LASTPOS=81008804;//kernel.MapEditorOLD2:8804
             _this.fiber$updateEx(_thread, 10);
             __pc=17;return;
           case 17:
             
             __pc=23    ;break;
           case 18    :
-            //$LASTPOS=79008829;//kernel.MapEditorOLD2:8829
+            //$LASTPOS=81008829;//kernel.MapEditorOLD2:8829
             if (!(_this.mode=="setOn"&&_this.getkey(1)>0&&_this.inRect())) { __pc=19    ; break; }
             {
-              //$LASTPOS=79008884;//kernel.MapEditorOLD2:8884
+              //$LASTPOS=81008884;//kernel.MapEditorOLD2:8884
               Tonyu.globals.$map.setOnAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my,_this.mapp);
             }
             __pc=22    ;break;
           case 19    :
-            //$LASTPOS=79008937;//kernel.MapEditorOLD2:8937
+            //$LASTPOS=81008937;//kernel.MapEditorOLD2:8937
             if (!(_this.mode=="copy"&&_this.getkey(1)>0&&_this.inRect())) { __pc=21    ; break; }
-            //$LASTPOS=79008991;//kernel.MapEditorOLD2:8991
+            //$LASTPOS=81008991;//kernel.MapEditorOLD2:8991
             _this.mapp=Tonyu.globals.$map.getAt(Tonyu.globals.$mouseX+_this.mx,Tonyu.globals.$mouseY+_this.my);
-            //$LASTPOS=79009040;//kernel.MapEditorOLD2:9040
+            //$LASTPOS=81009040;//kernel.MapEditorOLD2:9040
             _this.mode="set";
-            //$LASTPOS=79009061;//kernel.MapEditorOLD2:9061
+            //$LASTPOS=81009061;//kernel.MapEditorOLD2:9061
             _this.print(_this.mode+" mode");
-            //$LASTPOS=79009091;//kernel.MapEditorOLD2:9091
+            //$LASTPOS=81009091;//kernel.MapEditorOLD2:9091
             _this.fiber$updateEx(_thread, 10);
             __pc=20;return;
           case 20:
@@ -29895,7 +30055,7 @@ Tonyu.klass.define({
             
           case 25    :
             
-            //$LASTPOS=79009117;//kernel.MapEditorOLD2:9117
+            //$LASTPOS=81009117;//kernel.MapEditorOLD2:9117
             _this.fiber$update(_thread);
             __pc=26;return;
           case 26:
@@ -29929,69 +30089,69 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=79009289;//kernel.MapEditorOLD2:9289
+      //$LASTPOS=81009289;//kernel.MapEditorOLD2:9289
       Tonyu.globals.$panel.setFillStyle("gray");
-      //$LASTPOS=79009323;//kernel.MapEditorOLD2:9323
+      //$LASTPOS=81009323;//kernel.MapEditorOLD2:9323
       Tonyu.globals.$panel.alpha=128;
-      //$LASTPOS=79009346;//kernel.MapEditorOLD2:9346
+      //$LASTPOS=81009346;//kernel.MapEditorOLD2:9346
       Tonyu.globals.$panel.fillRect(0,0,Tonyu.globals.$screenWidth,40);
-      //$LASTPOS=79009389;//kernel.MapEditorOLD2:9389
+      //$LASTPOS=81009389;//kernel.MapEditorOLD2:9389
       Tonyu.globals.$panel.fillRect(0,0,40,Tonyu.globals.$screenHeight-160);
-      //$LASTPOS=79009437;//kernel.MapEditorOLD2:9437
+      //$LASTPOS=81009437;//kernel.MapEditorOLD2:9437
       Tonyu.globals.$panel.fillRect(Tonyu.globals.$screenWidth-40,0,40,Tonyu.globals.$screenHeight-160);
-      //$LASTPOS=79009499;//kernel.MapEditorOLD2:9499
+      //$LASTPOS=81009499;//kernel.MapEditorOLD2:9499
       Tonyu.globals.$panel.fillRect(0,Tonyu.globals.$screenHeight-200,Tonyu.globals.$screenWidth,40);
-      //$LASTPOS=79009558;//kernel.MapEditorOLD2:9558
+      //$LASTPOS=81009558;//kernel.MapEditorOLD2:9558
       Tonyu.globals.$panel.alpha=255;
-      //$LASTPOS=79009581;//kernel.MapEditorOLD2:9581
+      //$LASTPOS=81009581;//kernel.MapEditorOLD2:9581
       Tonyu.globals.$panel.setFillStyle("black");
-      //$LASTPOS=79009635;//kernel.MapEditorOLD2:9635
+      //$LASTPOS=81009635;//kernel.MapEditorOLD2:9635
       Tonyu.globals.$panel.fillRect(0,Tonyu.globals.$screenHeight-160,120,80);
-      //$LASTPOS=79009685;//kernel.MapEditorOLD2:9685
+      //$LASTPOS=81009685;//kernel.MapEditorOLD2:9685
       Tonyu.globals.$panel.fillRect(120,Tonyu.globals.$screenHeight-160,120,80);
-      //$LASTPOS=79009737;//kernel.MapEditorOLD2:9737
+      //$LASTPOS=81009737;//kernel.MapEditorOLD2:9737
       Tonyu.globals.$panel.fillRect(240,Tonyu.globals.$screenHeight-160,120,80);
-      //$LASTPOS=79009789;//kernel.MapEditorOLD2:9789
+      //$LASTPOS=81009789;//kernel.MapEditorOLD2:9789
       Tonyu.globals.$panel.fillRect(360,Tonyu.globals.$screenHeight-160,120,80);
-      //$LASTPOS=79009841;//kernel.MapEditorOLD2:9841
+      //$LASTPOS=81009841;//kernel.MapEditorOLD2:9841
       Tonyu.globals.$panel.fillRect(0,Tonyu.globals.$screenHeight-80,120,80);
-      //$LASTPOS=79009890;//kernel.MapEditorOLD2:9890
+      //$LASTPOS=81009890;//kernel.MapEditorOLD2:9890
       Tonyu.globals.$panel.fillRect(120,Tonyu.globals.$screenHeight-80,120,80);
-      //$LASTPOS=79009941;//kernel.MapEditorOLD2:9941
+      //$LASTPOS=81009941;//kernel.MapEditorOLD2:9941
       Tonyu.globals.$panel.setFillStyle("white");
-      //$LASTPOS=79009976;//kernel.MapEditorOLD2:9976
+      //$LASTPOS=81009976;//kernel.MapEditorOLD2:9976
       Tonyu.globals.$panel.fillRect(10,Tonyu.globals.$screenHeight-150,100,60);
-      //$LASTPOS=79010027;//kernel.MapEditorOLD2:10027
+      //$LASTPOS=81010027;//kernel.MapEditorOLD2:10027
       Tonyu.globals.$panel.fillRect(130,Tonyu.globals.$screenHeight-150,100,60);
-      //$LASTPOS=79010079;//kernel.MapEditorOLD2:10079
+      //$LASTPOS=81010079;//kernel.MapEditorOLD2:10079
       Tonyu.globals.$panel.fillRect(250,Tonyu.globals.$screenHeight-150,100,60);
-      //$LASTPOS=79010131;//kernel.MapEditorOLD2:10131
+      //$LASTPOS=81010131;//kernel.MapEditorOLD2:10131
       Tonyu.globals.$panel.fillRect(370,Tonyu.globals.$screenHeight-150,100,60);
-      //$LASTPOS=79010183;//kernel.MapEditorOLD2:10183
+      //$LASTPOS=81010183;//kernel.MapEditorOLD2:10183
       Tonyu.globals.$panel.fillRect(10,Tonyu.globals.$screenHeight-70,100,60);
-      //$LASTPOS=79010233;//kernel.MapEditorOLD2:10233
+      //$LASTPOS=81010233;//kernel.MapEditorOLD2:10233
       Tonyu.globals.$panel.fillRect(130,Tonyu.globals.$screenHeight-70,100,60);
-      //$LASTPOS=79010284;//kernel.MapEditorOLD2:10284
+      //$LASTPOS=81010284;//kernel.MapEditorOLD2:10284
       Tonyu.globals.$panel.setFillStyle("black");
-      //$LASTPOS=79010330;//kernel.MapEditorOLD2:10330
+      //$LASTPOS=81010330;//kernel.MapEditorOLD2:10330
       Tonyu.globals.$panel.fillText("↑",Tonyu.globals.$screenWidth/2,30,40,"center");
-      //$LASTPOS=79010387;//kernel.MapEditorOLD2:10387
+      //$LASTPOS=81010387;//kernel.MapEditorOLD2:10387
       Tonyu.globals.$panel.fillText("←",20,(Tonyu.globals.$screenHeight-200)/2,40,"center");
-      //$LASTPOS=79010451;//kernel.MapEditorOLD2:10451
+      //$LASTPOS=81010451;//kernel.MapEditorOLD2:10451
       Tonyu.globals.$panel.fillText("↓",Tonyu.globals.$screenWidth/2,Tonyu.globals.$screenHeight-160-10,40,"center");
-      //$LASTPOS=79010526;//kernel.MapEditorOLD2:10526
+      //$LASTPOS=81010526;//kernel.MapEditorOLD2:10526
       Tonyu.globals.$panel.fillText("→",Tonyu.globals.$screenWidth-20,(Tonyu.globals.$screenHeight-200)/2,40,"center");
-      //$LASTPOS=79010631;//kernel.MapEditorOLD2:10631
+      //$LASTPOS=81010631;//kernel.MapEditorOLD2:10631
       Tonyu.globals.$panel.fillText("set",Tonyu.globals.$screenWidth/4-60,Tonyu.globals.$screenHeight-110,40,"center");
-      //$LASTPOS=79010708;//kernel.MapEditorOLD2:10708
+      //$LASTPOS=81010708;//kernel.MapEditorOLD2:10708
       Tonyu.globals.$panel.fillText("setOn",Tonyu.globals.$screenWidth/4+60,Tonyu.globals.$screenHeight-110,35,"center");
-      //$LASTPOS=79010787;//kernel.MapEditorOLD2:10787
+      //$LASTPOS=81010787;//kernel.MapEditorOLD2:10787
       Tonyu.globals.$panel.fillText("get",Tonyu.globals.$screenWidth/2+60,Tonyu.globals.$screenHeight-110,40,"center");
-      //$LASTPOS=79010864;//kernel.MapEditorOLD2:10864
+      //$LASTPOS=81010864;//kernel.MapEditorOLD2:10864
       Tonyu.globals.$panel.fillText("save",Tonyu.globals.$screenWidth-60,Tonyu.globals.$screenHeight-110,40,"center");
-      //$LASTPOS=79010940;//kernel.MapEditorOLD2:10940
+      //$LASTPOS=81010940;//kernel.MapEditorOLD2:10940
       Tonyu.globals.$panel.fillText("erase",Tonyu.globals.$screenWidth/4-60,Tonyu.globals.$screenHeight-30,35,"center");
-      //$LASTPOS=79011018;//kernel.MapEditorOLD2:11018
+      //$LASTPOS=81011018;//kernel.MapEditorOLD2:11018
       Tonyu.globals.$panel.fillText("copy",Tonyu.globals.$screenWidth/4+60,Tonyu.globals.$screenHeight-30,35,"center");
     },
     fiber$drawPanel :function _trc_MapEditorOLD2_f_drawPanel(_thread) {
@@ -30000,69 +30160,69 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=79009289;//kernel.MapEditorOLD2:9289
+      //$LASTPOS=81009289;//kernel.MapEditorOLD2:9289
       Tonyu.globals.$panel.setFillStyle("gray");
-      //$LASTPOS=79009323;//kernel.MapEditorOLD2:9323
+      //$LASTPOS=81009323;//kernel.MapEditorOLD2:9323
       Tonyu.globals.$panel.alpha=128;
-      //$LASTPOS=79009346;//kernel.MapEditorOLD2:9346
+      //$LASTPOS=81009346;//kernel.MapEditorOLD2:9346
       Tonyu.globals.$panel.fillRect(0,0,Tonyu.globals.$screenWidth,40);
-      //$LASTPOS=79009389;//kernel.MapEditorOLD2:9389
+      //$LASTPOS=81009389;//kernel.MapEditorOLD2:9389
       Tonyu.globals.$panel.fillRect(0,0,40,Tonyu.globals.$screenHeight-160);
-      //$LASTPOS=79009437;//kernel.MapEditorOLD2:9437
+      //$LASTPOS=81009437;//kernel.MapEditorOLD2:9437
       Tonyu.globals.$panel.fillRect(Tonyu.globals.$screenWidth-40,0,40,Tonyu.globals.$screenHeight-160);
-      //$LASTPOS=79009499;//kernel.MapEditorOLD2:9499
+      //$LASTPOS=81009499;//kernel.MapEditorOLD2:9499
       Tonyu.globals.$panel.fillRect(0,Tonyu.globals.$screenHeight-200,Tonyu.globals.$screenWidth,40);
-      //$LASTPOS=79009558;//kernel.MapEditorOLD2:9558
+      //$LASTPOS=81009558;//kernel.MapEditorOLD2:9558
       Tonyu.globals.$panel.alpha=255;
-      //$LASTPOS=79009581;//kernel.MapEditorOLD2:9581
+      //$LASTPOS=81009581;//kernel.MapEditorOLD2:9581
       Tonyu.globals.$panel.setFillStyle("black");
-      //$LASTPOS=79009635;//kernel.MapEditorOLD2:9635
+      //$LASTPOS=81009635;//kernel.MapEditorOLD2:9635
       Tonyu.globals.$panel.fillRect(0,Tonyu.globals.$screenHeight-160,120,80);
-      //$LASTPOS=79009685;//kernel.MapEditorOLD2:9685
+      //$LASTPOS=81009685;//kernel.MapEditorOLD2:9685
       Tonyu.globals.$panel.fillRect(120,Tonyu.globals.$screenHeight-160,120,80);
-      //$LASTPOS=79009737;//kernel.MapEditorOLD2:9737
+      //$LASTPOS=81009737;//kernel.MapEditorOLD2:9737
       Tonyu.globals.$panel.fillRect(240,Tonyu.globals.$screenHeight-160,120,80);
-      //$LASTPOS=79009789;//kernel.MapEditorOLD2:9789
+      //$LASTPOS=81009789;//kernel.MapEditorOLD2:9789
       Tonyu.globals.$panel.fillRect(360,Tonyu.globals.$screenHeight-160,120,80);
-      //$LASTPOS=79009841;//kernel.MapEditorOLD2:9841
+      //$LASTPOS=81009841;//kernel.MapEditorOLD2:9841
       Tonyu.globals.$panel.fillRect(0,Tonyu.globals.$screenHeight-80,120,80);
-      //$LASTPOS=79009890;//kernel.MapEditorOLD2:9890
+      //$LASTPOS=81009890;//kernel.MapEditorOLD2:9890
       Tonyu.globals.$panel.fillRect(120,Tonyu.globals.$screenHeight-80,120,80);
-      //$LASTPOS=79009941;//kernel.MapEditorOLD2:9941
+      //$LASTPOS=81009941;//kernel.MapEditorOLD2:9941
       Tonyu.globals.$panel.setFillStyle("white");
-      //$LASTPOS=79009976;//kernel.MapEditorOLD2:9976
+      //$LASTPOS=81009976;//kernel.MapEditorOLD2:9976
       Tonyu.globals.$panel.fillRect(10,Tonyu.globals.$screenHeight-150,100,60);
-      //$LASTPOS=79010027;//kernel.MapEditorOLD2:10027
+      //$LASTPOS=81010027;//kernel.MapEditorOLD2:10027
       Tonyu.globals.$panel.fillRect(130,Tonyu.globals.$screenHeight-150,100,60);
-      //$LASTPOS=79010079;//kernel.MapEditorOLD2:10079
+      //$LASTPOS=81010079;//kernel.MapEditorOLD2:10079
       Tonyu.globals.$panel.fillRect(250,Tonyu.globals.$screenHeight-150,100,60);
-      //$LASTPOS=79010131;//kernel.MapEditorOLD2:10131
+      //$LASTPOS=81010131;//kernel.MapEditorOLD2:10131
       Tonyu.globals.$panel.fillRect(370,Tonyu.globals.$screenHeight-150,100,60);
-      //$LASTPOS=79010183;//kernel.MapEditorOLD2:10183
+      //$LASTPOS=81010183;//kernel.MapEditorOLD2:10183
       Tonyu.globals.$panel.fillRect(10,Tonyu.globals.$screenHeight-70,100,60);
-      //$LASTPOS=79010233;//kernel.MapEditorOLD2:10233
+      //$LASTPOS=81010233;//kernel.MapEditorOLD2:10233
       Tonyu.globals.$panel.fillRect(130,Tonyu.globals.$screenHeight-70,100,60);
-      //$LASTPOS=79010284;//kernel.MapEditorOLD2:10284
+      //$LASTPOS=81010284;//kernel.MapEditorOLD2:10284
       Tonyu.globals.$panel.setFillStyle("black");
-      //$LASTPOS=79010330;//kernel.MapEditorOLD2:10330
+      //$LASTPOS=81010330;//kernel.MapEditorOLD2:10330
       Tonyu.globals.$panel.fillText("↑",Tonyu.globals.$screenWidth/2,30,40,"center");
-      //$LASTPOS=79010387;//kernel.MapEditorOLD2:10387
+      //$LASTPOS=81010387;//kernel.MapEditorOLD2:10387
       Tonyu.globals.$panel.fillText("←",20,(Tonyu.globals.$screenHeight-200)/2,40,"center");
-      //$LASTPOS=79010451;//kernel.MapEditorOLD2:10451
+      //$LASTPOS=81010451;//kernel.MapEditorOLD2:10451
       Tonyu.globals.$panel.fillText("↓",Tonyu.globals.$screenWidth/2,Tonyu.globals.$screenHeight-160-10,40,"center");
-      //$LASTPOS=79010526;//kernel.MapEditorOLD2:10526
+      //$LASTPOS=81010526;//kernel.MapEditorOLD2:10526
       Tonyu.globals.$panel.fillText("→",Tonyu.globals.$screenWidth-20,(Tonyu.globals.$screenHeight-200)/2,40,"center");
-      //$LASTPOS=79010631;//kernel.MapEditorOLD2:10631
+      //$LASTPOS=81010631;//kernel.MapEditorOLD2:10631
       Tonyu.globals.$panel.fillText("set",Tonyu.globals.$screenWidth/4-60,Tonyu.globals.$screenHeight-110,40,"center");
-      //$LASTPOS=79010708;//kernel.MapEditorOLD2:10708
+      //$LASTPOS=81010708;//kernel.MapEditorOLD2:10708
       Tonyu.globals.$panel.fillText("setOn",Tonyu.globals.$screenWidth/4+60,Tonyu.globals.$screenHeight-110,35,"center");
-      //$LASTPOS=79010787;//kernel.MapEditorOLD2:10787
+      //$LASTPOS=81010787;//kernel.MapEditorOLD2:10787
       Tonyu.globals.$panel.fillText("get",Tonyu.globals.$screenWidth/2+60,Tonyu.globals.$screenHeight-110,40,"center");
-      //$LASTPOS=79010864;//kernel.MapEditorOLD2:10864
+      //$LASTPOS=81010864;//kernel.MapEditorOLD2:10864
       Tonyu.globals.$panel.fillText("save",Tonyu.globals.$screenWidth-60,Tonyu.globals.$screenHeight-110,40,"center");
-      //$LASTPOS=79010940;//kernel.MapEditorOLD2:10940
+      //$LASTPOS=81010940;//kernel.MapEditorOLD2:10940
       Tonyu.globals.$panel.fillText("erase",Tonyu.globals.$screenWidth/4-60,Tonyu.globals.$screenHeight-30,35,"center");
-      //$LASTPOS=79011018;//kernel.MapEditorOLD2:11018
+      //$LASTPOS=81011018;//kernel.MapEditorOLD2:11018
       Tonyu.globals.$panel.fillText("copy",Tonyu.globals.$screenWidth/4+60,Tonyu.globals.$screenHeight-30,35,"center");
       
       _thread.retVal=_this;return;
@@ -30082,13 +30242,13 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=80001202;//kernel.Pad:1202
+      //$LASTPOS=82001202;//kernel.Pad:1202
       _this.APAD_DIAG_SIZE=96;
-      //$LASTPOS=80003465;//kernel.Pad:3465
+      //$LASTPOS=82003465;//kernel.Pad:3465
       while (true) {
-        //$LASTPOS=80003484;//kernel.Pad:3484
+        //$LASTPOS=82003484;//kernel.Pad:3484
         _this.padUpdate();
-        //$LASTPOS=80003502;//kernel.Pad:3502
+        //$LASTPOS=82003502;//kernel.Pad:3502
         _this.update();
         
       }
@@ -30099,7 +30259,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=80001202;//kernel.Pad:1202
+      //$LASTPOS=82001202;//kernel.Pad:1202
       _this.APAD_DIAG_SIZE=96;
       
       _thread.enter(function _trc_Pad_ent_main(_thread) {
@@ -30107,14 +30267,14 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=80003465;//kernel.Pad:3465
+            //$LASTPOS=82003465;//kernel.Pad:3465
           case 1:
-            //$LASTPOS=80003484;//kernel.Pad:3484
+            //$LASTPOS=82003484;//kernel.Pad:3484
             _this.fiber$padUpdate(_thread);
             __pc=2;return;
           case 2:
             
-            //$LASTPOS=80003502;//kernel.Pad:3502
+            //$LASTPOS=82003502;//kernel.Pad:3502
             _this.fiber$update(_thread);
             __pc=3;return;
           case 3:
@@ -30131,58 +30291,58 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=80000033;//kernel.Pad:33
+      //$LASTPOS=82000033;//kernel.Pad:33
       Tonyu.classes.kernel.Actor.apply( _this, [opt]);
-      //$LASTPOS=80000050;//kernel.Pad:50
+      //$LASTPOS=82000050;//kernel.Pad:50
       _this.padImageP=Tonyu.globals.$pat_inputPad;
-      //$LASTPOS=80000082;//kernel.Pad:82
+      //$LASTPOS=82000082;//kernel.Pad:82
       _this.jujiKey=new Tonyu.classes.kernel.Actor({x: 96+1,y: Tonyu.globals.$screenHeight-96-1,p: _this.padImageP+0,zOrder: - 9,layer: Tonyu.globals.$FrontSprites});
-      //$LASTPOS=80000183;//kernel.Pad:183
+      //$LASTPOS=82000183;//kernel.Pad:183
       _this.no1Key=new Tonyu.classes.kernel.Actor({x: Tonyu.globals.$screenWidth-96,y: Tonyu.globals.$screenHeight-96,p: _this.padImageP+1,zOrder: - 9,layer: Tonyu.globals.$FrontSprites});
-      //$LASTPOS=80000292;//kernel.Pad:292
+      //$LASTPOS=82000292;//kernel.Pad:292
       _this.jujiKey.show();
-      //$LASTPOS=80000313;//kernel.Pad:313
+      //$LASTPOS=82000313;//kernel.Pad:313
       _this.no1Key.show();
-      //$LASTPOS=80000339;//kernel.Pad:339
+      //$LASTPOS=82000339;//kernel.Pad:339
       _this.jujiKeyPushU=new Tonyu.classes.kernel.Actor({x: _this.jujiKey.x,y: _this.jujiKey.y-60,p: _this.padImageP+2,zOrder: - 10,layer: Tonyu.globals.$FrontSprites});
-      //$LASTPOS=80000446;//kernel.Pad:446
+      //$LASTPOS=82000446;//kernel.Pad:446
       _this.jujiKeyPushL=new Tonyu.classes.kernel.Actor({x: _this.jujiKey.x-60,y: _this.jujiKey.y,p: _this.padImageP+2,zOrder: - 10,layer: Tonyu.globals.$FrontSprites});
-      //$LASTPOS=80000553;//kernel.Pad:553
+      //$LASTPOS=82000553;//kernel.Pad:553
       _this.jujiKeyPushR=new Tonyu.classes.kernel.Actor({x: _this.jujiKey.x+60,y: _this.jujiKey.y,p: _this.padImageP+2,zOrder: - 10,layer: Tonyu.globals.$FrontSprites});
-      //$LASTPOS=80000660;//kernel.Pad:660
+      //$LASTPOS=82000660;//kernel.Pad:660
       _this.jujiKeyPushD=new Tonyu.classes.kernel.Actor({x: _this.jujiKey.x,y: _this.jujiKey.y+60,p: _this.padImageP+2,zOrder: - 10,layer: Tonyu.globals.$FrontSprites});
-      //$LASTPOS=80000767;//kernel.Pad:767
+      //$LASTPOS=82000767;//kernel.Pad:767
       _this.jujiKeyPush1=new Tonyu.classes.kernel.Actor({x: _this.no1Key.x,y: _this.no1Key.y,p: _this.padImageP+2,scaleX: 2,zOrder: - 10,layer: Tonyu.globals.$FrontSprites});
-      //$LASTPOS=80000879;//kernel.Pad:879
+      //$LASTPOS=82000879;//kernel.Pad:879
       _this.jujiKeyPushU.hide();
-      //$LASTPOS=80000905;//kernel.Pad:905
+      //$LASTPOS=82000905;//kernel.Pad:905
       _this.jujiKeyPushL.hide();
-      //$LASTPOS=80000931;//kernel.Pad:931
+      //$LASTPOS=82000931;//kernel.Pad:931
       _this.jujiKeyPushR.hide();
-      //$LASTPOS=80000957;//kernel.Pad:957
+      //$LASTPOS=82000957;//kernel.Pad:957
       _this.jujiKeyPushD.hide();
-      //$LASTPOS=80000983;//kernel.Pad:983
+      //$LASTPOS=82000983;//kernel.Pad:983
       _this.jujiKeyPush1.hide();
     },
     die :function _trc_Pad_die() {
       "use strict";
       var _this=this;
       
-      //$LASTPOS=80001021;//kernel.Pad:1021
+      //$LASTPOS=82001021;//kernel.Pad:1021
       _this.jujiKey.die();
-      //$LASTPOS=80001041;//kernel.Pad:1041
+      //$LASTPOS=82001041;//kernel.Pad:1041
       _this.no1Key.die();
-      //$LASTPOS=80001060;//kernel.Pad:1060
+      //$LASTPOS=82001060;//kernel.Pad:1060
       _this.jujiKeyPushU.die();
-      //$LASTPOS=80001085;//kernel.Pad:1085
+      //$LASTPOS=82001085;//kernel.Pad:1085
       _this.jujiKeyPushL.die();
-      //$LASTPOS=80001110;//kernel.Pad:1110
+      //$LASTPOS=82001110;//kernel.Pad:1110
       _this.jujiKeyPushR.die();
-      //$LASTPOS=80001135;//kernel.Pad:1135
+      //$LASTPOS=82001135;//kernel.Pad:1135
       _this.jujiKeyPushD.die();
-      //$LASTPOS=80001160;//kernel.Pad:1160
+      //$LASTPOS=82001160;//kernel.Pad:1160
       _this.jujiKeyPush1.die();
-      //$LASTPOS=80001185;//kernel.Pad:1185
+      //$LASTPOS=82001185;//kernel.Pad:1185
       Tonyu.classes.kernel.Actor.prototype.die.apply( _this, []);
     },
     padUpdate :function _trc_Pad_padUpdate() {
@@ -30191,139 +30351,139 @@ Tonyu.klass.define({
       var i;
       var t;
       
-      //$LASTPOS=80001258;//kernel.Pad:1258
+      //$LASTPOS=82001258;//kernel.Pad:1258
       _this.keyPushL=0;
-      //$LASTPOS=80001277;//kernel.Pad:1277
+      //$LASTPOS=82001277;//kernel.Pad:1277
       _this.keyPushR=0;
-      //$LASTPOS=80001296;//kernel.Pad:1296
+      //$LASTPOS=82001296;//kernel.Pad:1296
       _this.keyPushU=0;
-      //$LASTPOS=80001315;//kernel.Pad:1315
+      //$LASTPOS=82001315;//kernel.Pad:1315
       _this.keyPushD=0;
-      //$LASTPOS=80001334;//kernel.Pad:1334
+      //$LASTPOS=82001334;//kernel.Pad:1334
       _this.keyPush1=0;
-      //$LASTPOS=80001359;//kernel.Pad:1359
+      //$LASTPOS=82001359;//kernel.Pad:1359
       _this.padKeyNotapCnt++;
-      //$LASTPOS=80001383;//kernel.Pad:1383
-      //$LASTPOS=80001388;//kernel.Pad:1388
+      //$LASTPOS=82001383;//kernel.Pad:1383
+      //$LASTPOS=82001388;//kernel.Pad:1388
       i = 0;
       for (; i<5 ; i++) {
         {
-          //$LASTPOS=80001436;//kernel.Pad:1436
+          //$LASTPOS=82001436;//kernel.Pad:1436
           t = Tonyu.globals.$touches[i];
           
-          //$LASTPOS=80001466;//kernel.Pad:1466
+          //$LASTPOS=82001466;//kernel.Pad:1466
           if (t.touched) {
-            //$LASTPOS=80001496;//kernel.Pad:1496
+            //$LASTPOS=82001496;//kernel.Pad:1496
             if (_this.isOnRectWH(t.x,t.y,_this.jujiKey.x-32-_this.APAD_DIAG_SIZE/2,_this.jujiKey.y-32-64,64+_this.APAD_DIAG_SIZE,64)) {
-              //$LASTPOS=80001593;//kernel.Pad:1593
+              //$LASTPOS=82001593;//kernel.Pad:1593
               _this.keyPushU=1;
             }
-            //$LASTPOS=80001620;//kernel.Pad:1620
+            //$LASTPOS=82001620;//kernel.Pad:1620
             if (_this.isOnRectWH(t.x,t.y,_this.jujiKey.x-32-_this.APAD_DIAG_SIZE/2,_this.jujiKey.y-32+64,64+_this.APAD_DIAG_SIZE,64)) {
-              //$LASTPOS=80001717;//kernel.Pad:1717
+              //$LASTPOS=82001717;//kernel.Pad:1717
               _this.keyPushD=1;
             }
-            //$LASTPOS=80001744;//kernel.Pad:1744
+            //$LASTPOS=82001744;//kernel.Pad:1744
             if (_this.isOnRectWH(t.x,t.y,_this.jujiKey.x-32-64,_this.jujiKey.y-32-_this.APAD_DIAG_SIZE/2,64,64+_this.APAD_DIAG_SIZE)) {
-              //$LASTPOS=80001841;//kernel.Pad:1841
+              //$LASTPOS=82001841;//kernel.Pad:1841
               _this.keyPushL=1;
             }
-            //$LASTPOS=80001868;//kernel.Pad:1868
+            //$LASTPOS=82001868;//kernel.Pad:1868
             if (_this.isOnRectWH(t.x,t.y,_this.jujiKey.x-32+64,_this.jujiKey.y-32-_this.APAD_DIAG_SIZE/2,64,64+_this.APAD_DIAG_SIZE)) {
-              //$LASTPOS=80001965;//kernel.Pad:1965
+              //$LASTPOS=82001965;//kernel.Pad:1965
               _this.keyPushR=1;
             }
-            //$LASTPOS=80001992;//kernel.Pad:1992
+            //$LASTPOS=82001992;//kernel.Pad:1992
             if (_this.isOnRectWH(t.x,t.y,_this.no1Key.x-64,_this.no1Key.y-64,128,128)) {
-              //$LASTPOS=80002054;//kernel.Pad:2054
+              //$LASTPOS=82002054;//kernel.Pad:2054
               _this.keyPush1=1;
             }
-            //$LASTPOS=80002081;//kernel.Pad:2081
+            //$LASTPOS=82002081;//kernel.Pad:2081
             _this.padKeySW=1;
-            //$LASTPOS=80002108;//kernel.Pad:2108
+            //$LASTPOS=82002108;//kernel.Pad:2108
             _this.padKeyNotapCnt=0;
             
           }
         }
       }
-      //$LASTPOS=80002173;//kernel.Pad:2173
+      //$LASTPOS=82002173;//kernel.Pad:2173
       if (_this.keyPushL) {
-        //$LASTPOS=80002187;//kernel.Pad:2187
+        //$LASTPOS=82002187;//kernel.Pad:2187
         _this.keyCntL++;
       } else {
-        //$LASTPOS=80002204;//kernel.Pad:2204
+        //$LASTPOS=82002204;//kernel.Pad:2204
         _this.keyCntL=0;
       }
-      //$LASTPOS=80002222;//kernel.Pad:2222
+      //$LASTPOS=82002222;//kernel.Pad:2222
       if (_this.keyPushR) {
-        //$LASTPOS=80002236;//kernel.Pad:2236
+        //$LASTPOS=82002236;//kernel.Pad:2236
         _this.keyCntR++;
       } else {
-        //$LASTPOS=80002253;//kernel.Pad:2253
+        //$LASTPOS=82002253;//kernel.Pad:2253
         _this.keyCntR=0;
       }
-      //$LASTPOS=80002271;//kernel.Pad:2271
+      //$LASTPOS=82002271;//kernel.Pad:2271
       if (_this.keyPushU) {
-        //$LASTPOS=80002285;//kernel.Pad:2285
+        //$LASTPOS=82002285;//kernel.Pad:2285
         _this.keyCntU++;
       } else {
-        //$LASTPOS=80002302;//kernel.Pad:2302
+        //$LASTPOS=82002302;//kernel.Pad:2302
         _this.keyCntU=0;
       }
-      //$LASTPOS=80002320;//kernel.Pad:2320
+      //$LASTPOS=82002320;//kernel.Pad:2320
       if (_this.keyPushD) {
-        //$LASTPOS=80002334;//kernel.Pad:2334
+        //$LASTPOS=82002334;//kernel.Pad:2334
         _this.keyCntD++;
       } else {
-        //$LASTPOS=80002351;//kernel.Pad:2351
+        //$LASTPOS=82002351;//kernel.Pad:2351
         _this.keyCntD=0;
       }
-      //$LASTPOS=80002369;//kernel.Pad:2369
+      //$LASTPOS=82002369;//kernel.Pad:2369
       if (_this.keyPush1) {
-        //$LASTPOS=80002383;//kernel.Pad:2383
+        //$LASTPOS=82002383;//kernel.Pad:2383
         _this.keyCnt1++;
       } else {
-        //$LASTPOS=80002400;//kernel.Pad:2400
+        //$LASTPOS=82002400;//kernel.Pad:2400
         _this.keyCnt1=0;
       }
-      //$LASTPOS=80002435;//kernel.Pad:2435
+      //$LASTPOS=82002435;//kernel.Pad:2435
       if (_this.keyPushL) {
-        //$LASTPOS=80002449;//kernel.Pad:2449
+        //$LASTPOS=82002449;//kernel.Pad:2449
         _this.jujiKeyPushL.show();
       } else {
-        //$LASTPOS=80002475;//kernel.Pad:2475
+        //$LASTPOS=82002475;//kernel.Pad:2475
         _this.jujiKeyPushL.hide();
       }
-      //$LASTPOS=80002501;//kernel.Pad:2501
+      //$LASTPOS=82002501;//kernel.Pad:2501
       if (_this.keyPushR) {
-        //$LASTPOS=80002515;//kernel.Pad:2515
+        //$LASTPOS=82002515;//kernel.Pad:2515
         _this.jujiKeyPushR.show();
       } else {
-        //$LASTPOS=80002541;//kernel.Pad:2541
+        //$LASTPOS=82002541;//kernel.Pad:2541
         _this.jujiKeyPushR.hide();
       }
-      //$LASTPOS=80002567;//kernel.Pad:2567
+      //$LASTPOS=82002567;//kernel.Pad:2567
       if (_this.keyPushU) {
-        //$LASTPOS=80002581;//kernel.Pad:2581
+        //$LASTPOS=82002581;//kernel.Pad:2581
         _this.jujiKeyPushU.show();
       } else {
-        //$LASTPOS=80002607;//kernel.Pad:2607
+        //$LASTPOS=82002607;//kernel.Pad:2607
         _this.jujiKeyPushU.hide();
       }
-      //$LASTPOS=80002633;//kernel.Pad:2633
+      //$LASTPOS=82002633;//kernel.Pad:2633
       if (_this.keyPushD) {
-        //$LASTPOS=80002647;//kernel.Pad:2647
+        //$LASTPOS=82002647;//kernel.Pad:2647
         _this.jujiKeyPushD.show();
       } else {
-        //$LASTPOS=80002673;//kernel.Pad:2673
+        //$LASTPOS=82002673;//kernel.Pad:2673
         _this.jujiKeyPushD.hide();
       }
-      //$LASTPOS=80002699;//kernel.Pad:2699
+      //$LASTPOS=82002699;//kernel.Pad:2699
       if (_this.keyPush1) {
-        //$LASTPOS=80002713;//kernel.Pad:2713
+        //$LASTPOS=82002713;//kernel.Pad:2713
         _this.jujiKeyPush1.show();
       } else {
-        //$LASTPOS=80002739;//kernel.Pad:2739
+        //$LASTPOS=82002739;//kernel.Pad:2739
         _this.jujiKeyPush1.hide();
       }
     },
@@ -30335,139 +30495,139 @@ Tonyu.klass.define({
       var i;
       var t;
       
-      //$LASTPOS=80001258;//kernel.Pad:1258
+      //$LASTPOS=82001258;//kernel.Pad:1258
       _this.keyPushL=0;
-      //$LASTPOS=80001277;//kernel.Pad:1277
+      //$LASTPOS=82001277;//kernel.Pad:1277
       _this.keyPushR=0;
-      //$LASTPOS=80001296;//kernel.Pad:1296
+      //$LASTPOS=82001296;//kernel.Pad:1296
       _this.keyPushU=0;
-      //$LASTPOS=80001315;//kernel.Pad:1315
+      //$LASTPOS=82001315;//kernel.Pad:1315
       _this.keyPushD=0;
-      //$LASTPOS=80001334;//kernel.Pad:1334
+      //$LASTPOS=82001334;//kernel.Pad:1334
       _this.keyPush1=0;
-      //$LASTPOS=80001359;//kernel.Pad:1359
+      //$LASTPOS=82001359;//kernel.Pad:1359
       _this.padKeyNotapCnt++;
-      //$LASTPOS=80001383;//kernel.Pad:1383
-      //$LASTPOS=80001388;//kernel.Pad:1388
+      //$LASTPOS=82001383;//kernel.Pad:1383
+      //$LASTPOS=82001388;//kernel.Pad:1388
       i = 0;
       for (; i<5 ; i++) {
         {
-          //$LASTPOS=80001436;//kernel.Pad:1436
+          //$LASTPOS=82001436;//kernel.Pad:1436
           t = Tonyu.globals.$touches[i];
           
-          //$LASTPOS=80001466;//kernel.Pad:1466
+          //$LASTPOS=82001466;//kernel.Pad:1466
           if (t.touched) {
-            //$LASTPOS=80001496;//kernel.Pad:1496
+            //$LASTPOS=82001496;//kernel.Pad:1496
             if (_this.isOnRectWH(t.x,t.y,_this.jujiKey.x-32-_this.APAD_DIAG_SIZE/2,_this.jujiKey.y-32-64,64+_this.APAD_DIAG_SIZE,64)) {
-              //$LASTPOS=80001593;//kernel.Pad:1593
+              //$LASTPOS=82001593;//kernel.Pad:1593
               _this.keyPushU=1;
             }
-            //$LASTPOS=80001620;//kernel.Pad:1620
+            //$LASTPOS=82001620;//kernel.Pad:1620
             if (_this.isOnRectWH(t.x,t.y,_this.jujiKey.x-32-_this.APAD_DIAG_SIZE/2,_this.jujiKey.y-32+64,64+_this.APAD_DIAG_SIZE,64)) {
-              //$LASTPOS=80001717;//kernel.Pad:1717
+              //$LASTPOS=82001717;//kernel.Pad:1717
               _this.keyPushD=1;
             }
-            //$LASTPOS=80001744;//kernel.Pad:1744
+            //$LASTPOS=82001744;//kernel.Pad:1744
             if (_this.isOnRectWH(t.x,t.y,_this.jujiKey.x-32-64,_this.jujiKey.y-32-_this.APAD_DIAG_SIZE/2,64,64+_this.APAD_DIAG_SIZE)) {
-              //$LASTPOS=80001841;//kernel.Pad:1841
+              //$LASTPOS=82001841;//kernel.Pad:1841
               _this.keyPushL=1;
             }
-            //$LASTPOS=80001868;//kernel.Pad:1868
+            //$LASTPOS=82001868;//kernel.Pad:1868
             if (_this.isOnRectWH(t.x,t.y,_this.jujiKey.x-32+64,_this.jujiKey.y-32-_this.APAD_DIAG_SIZE/2,64,64+_this.APAD_DIAG_SIZE)) {
-              //$LASTPOS=80001965;//kernel.Pad:1965
+              //$LASTPOS=82001965;//kernel.Pad:1965
               _this.keyPushR=1;
             }
-            //$LASTPOS=80001992;//kernel.Pad:1992
+            //$LASTPOS=82001992;//kernel.Pad:1992
             if (_this.isOnRectWH(t.x,t.y,_this.no1Key.x-64,_this.no1Key.y-64,128,128)) {
-              //$LASTPOS=80002054;//kernel.Pad:2054
+              //$LASTPOS=82002054;//kernel.Pad:2054
               _this.keyPush1=1;
             }
-            //$LASTPOS=80002081;//kernel.Pad:2081
+            //$LASTPOS=82002081;//kernel.Pad:2081
             _this.padKeySW=1;
-            //$LASTPOS=80002108;//kernel.Pad:2108
+            //$LASTPOS=82002108;//kernel.Pad:2108
             _this.padKeyNotapCnt=0;
             
           }
         }
       }
-      //$LASTPOS=80002173;//kernel.Pad:2173
+      //$LASTPOS=82002173;//kernel.Pad:2173
       if (_this.keyPushL) {
-        //$LASTPOS=80002187;//kernel.Pad:2187
+        //$LASTPOS=82002187;//kernel.Pad:2187
         _this.keyCntL++;
       } else {
-        //$LASTPOS=80002204;//kernel.Pad:2204
+        //$LASTPOS=82002204;//kernel.Pad:2204
         _this.keyCntL=0;
       }
-      //$LASTPOS=80002222;//kernel.Pad:2222
+      //$LASTPOS=82002222;//kernel.Pad:2222
       if (_this.keyPushR) {
-        //$LASTPOS=80002236;//kernel.Pad:2236
+        //$LASTPOS=82002236;//kernel.Pad:2236
         _this.keyCntR++;
       } else {
-        //$LASTPOS=80002253;//kernel.Pad:2253
+        //$LASTPOS=82002253;//kernel.Pad:2253
         _this.keyCntR=0;
       }
-      //$LASTPOS=80002271;//kernel.Pad:2271
+      //$LASTPOS=82002271;//kernel.Pad:2271
       if (_this.keyPushU) {
-        //$LASTPOS=80002285;//kernel.Pad:2285
+        //$LASTPOS=82002285;//kernel.Pad:2285
         _this.keyCntU++;
       } else {
-        //$LASTPOS=80002302;//kernel.Pad:2302
+        //$LASTPOS=82002302;//kernel.Pad:2302
         _this.keyCntU=0;
       }
-      //$LASTPOS=80002320;//kernel.Pad:2320
+      //$LASTPOS=82002320;//kernel.Pad:2320
       if (_this.keyPushD) {
-        //$LASTPOS=80002334;//kernel.Pad:2334
+        //$LASTPOS=82002334;//kernel.Pad:2334
         _this.keyCntD++;
       } else {
-        //$LASTPOS=80002351;//kernel.Pad:2351
+        //$LASTPOS=82002351;//kernel.Pad:2351
         _this.keyCntD=0;
       }
-      //$LASTPOS=80002369;//kernel.Pad:2369
+      //$LASTPOS=82002369;//kernel.Pad:2369
       if (_this.keyPush1) {
-        //$LASTPOS=80002383;//kernel.Pad:2383
+        //$LASTPOS=82002383;//kernel.Pad:2383
         _this.keyCnt1++;
       } else {
-        //$LASTPOS=80002400;//kernel.Pad:2400
+        //$LASTPOS=82002400;//kernel.Pad:2400
         _this.keyCnt1=0;
       }
-      //$LASTPOS=80002435;//kernel.Pad:2435
+      //$LASTPOS=82002435;//kernel.Pad:2435
       if (_this.keyPushL) {
-        //$LASTPOS=80002449;//kernel.Pad:2449
+        //$LASTPOS=82002449;//kernel.Pad:2449
         _this.jujiKeyPushL.show();
       } else {
-        //$LASTPOS=80002475;//kernel.Pad:2475
+        //$LASTPOS=82002475;//kernel.Pad:2475
         _this.jujiKeyPushL.hide();
       }
-      //$LASTPOS=80002501;//kernel.Pad:2501
+      //$LASTPOS=82002501;//kernel.Pad:2501
       if (_this.keyPushR) {
-        //$LASTPOS=80002515;//kernel.Pad:2515
+        //$LASTPOS=82002515;//kernel.Pad:2515
         _this.jujiKeyPushR.show();
       } else {
-        //$LASTPOS=80002541;//kernel.Pad:2541
+        //$LASTPOS=82002541;//kernel.Pad:2541
         _this.jujiKeyPushR.hide();
       }
-      //$LASTPOS=80002567;//kernel.Pad:2567
+      //$LASTPOS=82002567;//kernel.Pad:2567
       if (_this.keyPushU) {
-        //$LASTPOS=80002581;//kernel.Pad:2581
+        //$LASTPOS=82002581;//kernel.Pad:2581
         _this.jujiKeyPushU.show();
       } else {
-        //$LASTPOS=80002607;//kernel.Pad:2607
+        //$LASTPOS=82002607;//kernel.Pad:2607
         _this.jujiKeyPushU.hide();
       }
-      //$LASTPOS=80002633;//kernel.Pad:2633
+      //$LASTPOS=82002633;//kernel.Pad:2633
       if (_this.keyPushD) {
-        //$LASTPOS=80002647;//kernel.Pad:2647
+        //$LASTPOS=82002647;//kernel.Pad:2647
         _this.jujiKeyPushD.show();
       } else {
-        //$LASTPOS=80002673;//kernel.Pad:2673
+        //$LASTPOS=82002673;//kernel.Pad:2673
         _this.jujiKeyPushD.hide();
       }
-      //$LASTPOS=80002699;//kernel.Pad:2699
+      //$LASTPOS=82002699;//kernel.Pad:2699
       if (_this.keyPush1) {
-        //$LASTPOS=80002713;//kernel.Pad:2713
+        //$LASTPOS=82002713;//kernel.Pad:2713
         _this.jujiKeyPush1.show();
       } else {
-        //$LASTPOS=80002739;//kernel.Pad:2739
+        //$LASTPOS=82002739;//kernel.Pad:2739
         _this.jujiKeyPush1.hide();
       }
       
@@ -30547,9 +30707,9 @@ Tonyu.klass.define({
       var value;
       
       
-      //$LASTPOS=80002956;//kernel.Pad:2956
+      //$LASTPOS=82002956;//kernel.Pad:2956
       if (i==0) {
-        //$LASTPOS=80002968;//kernel.Pad:2968
+        //$LASTPOS=82002968;//kernel.Pad:2968
         value=_this.keyCnt1;
       }
       return value;
@@ -30562,9 +30722,9 @@ Tonyu.klass.define({
       var value;
       
       
-      //$LASTPOS=80002956;//kernel.Pad:2956
+      //$LASTPOS=82002956;//kernel.Pad:2956
       if (i==0) {
-        //$LASTPOS=80002968;//kernel.Pad:2968
+        //$LASTPOS=82002968;//kernel.Pad:2968
         value=_this.keyCnt1;
       }
       _thread.retVal=value;return;
@@ -30646,9 +30806,9 @@ Tonyu.klass.define({
       var value;
       
       
-      //$LASTPOS=80003179;//kernel.Pad:3179
+      //$LASTPOS=82003179;//kernel.Pad:3179
       if (i==0) {
-        //$LASTPOS=80003191;//kernel.Pad:3191
+        //$LASTPOS=82003191;//kernel.Pad:3191
         value=_this.keyCnt1;
       }
       return value;
@@ -30661,9 +30821,9 @@ Tonyu.klass.define({
       var value;
       
       
-      //$LASTPOS=80003179;//kernel.Pad:3179
+      //$LASTPOS=82003179;//kernel.Pad:3179
       if (i==0) {
-        //$LASTPOS=80003191;//kernel.Pad:3191
+        //$LASTPOS=82003191;//kernel.Pad:3191
         value=_this.keyCnt1;
       }
       _thread.retVal=value;return;
@@ -30720,11 +30880,11 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=81000018;//kernel.UILayout:18
+      //$LASTPOS=83000018;//kernel.UILayout:18
       _this.doLayout();
-      //$LASTPOS=81000031;//kernel.UILayout:31
+      //$LASTPOS=83000031;//kernel.UILayout:31
       Tonyu.globals.$Screen.on("resize",Tonyu.bindFunc(_this,_this.doLayout));
-      //$LASTPOS=81000063;//kernel.UILayout:63
+      //$LASTPOS=83000063;//kernel.UILayout:63
       Tonyu.globals.$uiScreen.on("resize",Tonyu.bindFunc(_this,_this.doLayout));
     },
     fiber$main :function _trc_UILayout_f_main(_thread) {
@@ -30739,14 +30899,14 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=81000018;//kernel.UILayout:18
+            //$LASTPOS=83000018;//kernel.UILayout:18
             _this.fiber$doLayout(_thread);
             __pc=1;return;
           case 1:
             
-            //$LASTPOS=81000031;//kernel.UILayout:31
+            //$LASTPOS=83000031;//kernel.UILayout:31
             Tonyu.globals.$Screen.on("resize",Tonyu.bindFunc(_this,_this.doLayout));
-            //$LASTPOS=81000063;//kernel.UILayout:63
+            //$LASTPOS=83000063;//kernel.UILayout:63
             Tonyu.globals.$uiScreen.on("resize",Tonyu.bindFunc(_this,_this.doLayout));
             _thread.exit(_this);return;
           }
@@ -30765,57 +30925,57 @@ Tonyu.klass.define({
       var scl;
       var isPC;
       
-      //$LASTPOS=81000116;//kernel.UILayout:116
+      //$LASTPOS=83000116;//kernel.UILayout:116
       cw = Tonyu.globals.$uiScreen.width;
       
-      //$LASTPOS=81000145;//kernel.UILayout:145
+      //$LASTPOS=83000145;//kernel.UILayout:145
       ch = Tonyu.globals.$uiScreen.height;
       
-      //$LASTPOS=81000175;//kernel.UILayout:175
+      //$LASTPOS=83000175;//kernel.UILayout:175
       width = Tonyu.globals.$Screen.width;
       
-      //$LASTPOS=81000205;//kernel.UILayout:205
+      //$LASTPOS=83000205;//kernel.UILayout:205
       height = Tonyu.globals.$Screen.height;
       
-      //$LASTPOS=81000243;//kernel.UILayout:243
+      //$LASTPOS=83000243;//kernel.UILayout:243
       calcw = ch/height*width;
       
-      //$LASTPOS=81000295;//kernel.UILayout:295
+      //$LASTPOS=83000295;//kernel.UILayout:295
       calch = cw/width*height;
       
-      //$LASTPOS=81000347;//kernel.UILayout:347
+      //$LASTPOS=83000347;//kernel.UILayout:347
       if (calch>ch) {
-        //$LASTPOS=81000361;//kernel.UILayout:361
+        //$LASTPOS=83000361;//kernel.UILayout:361
         calch=ch;
       }
-      //$LASTPOS=81000376;//kernel.UILayout:376
+      //$LASTPOS=83000376;//kernel.UILayout:376
       if (calcw>cw) {
-        //$LASTPOS=81000390;//kernel.UILayout:390
+        //$LASTPOS=83000390;//kernel.UILayout:390
         calcw=cw;
       }
-      //$LASTPOS=81000405;//kernel.UILayout:405
+      //$LASTPOS=83000405;//kernel.UILayout:405
       scl = 1;
       
-      //$LASTPOS=81000421;//kernel.UILayout:421
+      //$LASTPOS=83000421;//kernel.UILayout:421
       isPC = ! (Tonyu.globals.$Navigator.isTablet()||Tonyu.globals.$Navigator.isMobile());
       
-      //$LASTPOS=81000486;//kernel.UILayout:486
+      //$LASTPOS=83000486;//kernel.UILayout:486
       if (isPC&&_this.shouldDraw1x1(width,height,calcw,calch)) {
-        //$LASTPOS=81000548;//kernel.UILayout:548
+        //$LASTPOS=83000548;//kernel.UILayout:548
         calcw=width;
-        //$LASTPOS=81000560;//kernel.UILayout:560
+        //$LASTPOS=83000560;//kernel.UILayout:560
         calch=height;
-        //$LASTPOS=81000583;//kernel.UILayout:583
+        //$LASTPOS=83000583;//kernel.UILayout:583
         Tonyu.globals.$Screen.scaleX=1;
         
       } else {
-        //$LASTPOS=81000624;//kernel.UILayout:624
+        //$LASTPOS=83000624;//kernel.UILayout:624
         Tonyu.globals.$Screen.scaleX=calcw/width;
         
       }
-      //$LASTPOS=81000668;//kernel.UILayout:668
+      //$LASTPOS=83000668;//kernel.UILayout:668
       Tonyu.globals.$Screen.x=_this.trunc(cw/2)+width/2%1;
-      //$LASTPOS=81000706;//kernel.UILayout:706
+      //$LASTPOS=83000706;//kernel.UILayout:706
       Tonyu.globals.$Screen.y=_this.trunc(ch/2)+height/2%1;
     },
     fiber$doLayout :function _trc_UILayout_f_doLayout(_thread) {
@@ -30832,57 +30992,57 @@ Tonyu.klass.define({
       var scl;
       var isPC;
       
-      //$LASTPOS=81000116;//kernel.UILayout:116
+      //$LASTPOS=83000116;//kernel.UILayout:116
       cw = Tonyu.globals.$uiScreen.width;
       
-      //$LASTPOS=81000145;//kernel.UILayout:145
+      //$LASTPOS=83000145;//kernel.UILayout:145
       ch = Tonyu.globals.$uiScreen.height;
       
-      //$LASTPOS=81000175;//kernel.UILayout:175
+      //$LASTPOS=83000175;//kernel.UILayout:175
       width = Tonyu.globals.$Screen.width;
       
-      //$LASTPOS=81000205;//kernel.UILayout:205
+      //$LASTPOS=83000205;//kernel.UILayout:205
       height = Tonyu.globals.$Screen.height;
       
-      //$LASTPOS=81000243;//kernel.UILayout:243
+      //$LASTPOS=83000243;//kernel.UILayout:243
       calcw = ch/height*width;
       
-      //$LASTPOS=81000295;//kernel.UILayout:295
+      //$LASTPOS=83000295;//kernel.UILayout:295
       calch = cw/width*height;
       
-      //$LASTPOS=81000347;//kernel.UILayout:347
+      //$LASTPOS=83000347;//kernel.UILayout:347
       if (calch>ch) {
-        //$LASTPOS=81000361;//kernel.UILayout:361
+        //$LASTPOS=83000361;//kernel.UILayout:361
         calch=ch;
       }
-      //$LASTPOS=81000376;//kernel.UILayout:376
+      //$LASTPOS=83000376;//kernel.UILayout:376
       if (calcw>cw) {
-        //$LASTPOS=81000390;//kernel.UILayout:390
+        //$LASTPOS=83000390;//kernel.UILayout:390
         calcw=cw;
       }
-      //$LASTPOS=81000405;//kernel.UILayout:405
+      //$LASTPOS=83000405;//kernel.UILayout:405
       scl = 1;
       
-      //$LASTPOS=81000421;//kernel.UILayout:421
+      //$LASTPOS=83000421;//kernel.UILayout:421
       isPC = ! (Tonyu.globals.$Navigator.isTablet()||Tonyu.globals.$Navigator.isMobile());
       
-      //$LASTPOS=81000486;//kernel.UILayout:486
+      //$LASTPOS=83000486;//kernel.UILayout:486
       if (isPC&&_this.shouldDraw1x1(width,height,calcw,calch)) {
-        //$LASTPOS=81000548;//kernel.UILayout:548
+        //$LASTPOS=83000548;//kernel.UILayout:548
         calcw=width;
-        //$LASTPOS=81000560;//kernel.UILayout:560
+        //$LASTPOS=83000560;//kernel.UILayout:560
         calch=height;
-        //$LASTPOS=81000583;//kernel.UILayout:583
+        //$LASTPOS=83000583;//kernel.UILayout:583
         Tonyu.globals.$Screen.scaleX=1;
         
       } else {
-        //$LASTPOS=81000624;//kernel.UILayout:624
+        //$LASTPOS=83000624;//kernel.UILayout:624
         Tonyu.globals.$Screen.scaleX=calcw/width;
         
       }
-      //$LASTPOS=81000668;//kernel.UILayout:668
+      //$LASTPOS=83000668;//kernel.UILayout:668
       Tonyu.globals.$Screen.x=_this.trunc(cw/2)+width/2%1;
-      //$LASTPOS=81000706;//kernel.UILayout:706
+      //$LASTPOS=83000706;//kernel.UILayout:706
       Tonyu.globals.$Screen.y=_this.trunc(ch/2)+height/2%1;
       
       _thread.retVal=_this;return;
@@ -30893,10 +31053,10 @@ Tonyu.klass.define({
       var larger;
       var smaller;
       
-      //$LASTPOS=81000832;//kernel.UILayout:832
+      //$LASTPOS=83000832;//kernel.UILayout:832
       larger = 100;
       
-      //$LASTPOS=81000853;//kernel.UILayout:853
+      //$LASTPOS=83000853;//kernel.UILayout:853
       smaller = 0;
       
       return srcw-smaller<=dstw&&dstw<=srcw+larger&&srch-smaller<=dsth&&dsth<=srch+larger;
@@ -30909,10 +31069,10 @@ Tonyu.klass.define({
       var larger;
       var smaller;
       
-      //$LASTPOS=81000832;//kernel.UILayout:832
+      //$LASTPOS=83000832;//kernel.UILayout:832
       larger = 100;
       
-      //$LASTPOS=81000853;//kernel.UILayout:853
+      //$LASTPOS=83000853;//kernel.UILayout:853
       smaller = 0;
       
       _thread.retVal=srcw-smaller<=dstw&&dstw<=srcw+larger&&srch-smaller<=dsth&&dsth<=srch+larger;return;
@@ -30935,28 +31095,28 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=82000080;//kernel.WebPage:80
+      //$LASTPOS=84000080;//kernel.WebPage:80
       _this.eventWindowOpen=(function anonymous_98(e) {
         
-        //$LASTPOS=82000161;//kernel.WebPage:161
+        //$LASTPOS=84000161;//kernel.WebPage:161
         window.open(_this.postUrl);
-        //$LASTPOS=82000188;//kernel.WebPage:188
+        //$LASTPOS=84000188;//kernel.WebPage:188
         if (_this.canvas.removeEventListener) {
-          //$LASTPOS=82000231;//kernel.WebPage:231
+          //$LASTPOS=84000231;//kernel.WebPage:231
           _this.canvas.removeEventListener("click",_this.eventWindowOpen,false);
-          //$LASTPOS=82000301;//kernel.WebPage:301
+          //$LASTPOS=84000301;//kernel.WebPage:301
           _this.canvas.removeEventListener("touchend",_this.eventWindowOpen,false);
-          //$LASTPOS=82000374;//kernel.WebPage:374
+          //$LASTPOS=84000374;//kernel.WebPage:374
           _this.listenerExists=false;
           
         } else {
-          //$LASTPOS=82000410;//kernel.WebPage:410
+          //$LASTPOS=84000410;//kernel.WebPage:410
           if (_this.canvas.detachEvent) {
-            //$LASTPOS=82000444;//kernel.WebPage:444
+            //$LASTPOS=84000444;//kernel.WebPage:444
             _this.canvas.detachEvent("onclick",_this.eventWindowOpen);
-            //$LASTPOS=82000501;//kernel.WebPage:501
+            //$LASTPOS=84000501;//kernel.WebPage:501
             _this.canvas.detachEvent("touchend",_this.eventWindowOpen);
-            //$LASTPOS=82000559;//kernel.WebPage:559
+            //$LASTPOS=84000559;//kernel.WebPage:559
             _this.listenerExists=false;
             
           }
@@ -30969,28 +31129,28 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=82000080;//kernel.WebPage:80
+      //$LASTPOS=84000080;//kernel.WebPage:80
       _this.eventWindowOpen=(function anonymous_98(e) {
         
-        //$LASTPOS=82000161;//kernel.WebPage:161
+        //$LASTPOS=84000161;//kernel.WebPage:161
         window.open(_this.postUrl);
-        //$LASTPOS=82000188;//kernel.WebPage:188
+        //$LASTPOS=84000188;//kernel.WebPage:188
         if (_this.canvas.removeEventListener) {
-          //$LASTPOS=82000231;//kernel.WebPage:231
+          //$LASTPOS=84000231;//kernel.WebPage:231
           _this.canvas.removeEventListener("click",_this.eventWindowOpen,false);
-          //$LASTPOS=82000301;//kernel.WebPage:301
+          //$LASTPOS=84000301;//kernel.WebPage:301
           _this.canvas.removeEventListener("touchend",_this.eventWindowOpen,false);
-          //$LASTPOS=82000374;//kernel.WebPage:374
+          //$LASTPOS=84000374;//kernel.WebPage:374
           _this.listenerExists=false;
           
         } else {
-          //$LASTPOS=82000410;//kernel.WebPage:410
+          //$LASTPOS=84000410;//kernel.WebPage:410
           if (_this.canvas.detachEvent) {
-            //$LASTPOS=82000444;//kernel.WebPage:444
+            //$LASTPOS=84000444;//kernel.WebPage:444
             _this.canvas.detachEvent("onclick",_this.eventWindowOpen);
-            //$LASTPOS=82000501;//kernel.WebPage:501
+            //$LASTPOS=84000501;//kernel.WebPage:501
             _this.canvas.detachEvent("touchend",_this.eventWindowOpen);
-            //$LASTPOS=82000559;//kernel.WebPage:559
+            //$LASTPOS=84000559;//kernel.WebPage:559
             _this.listenerExists=false;
             
           }
@@ -31003,29 +31163,29 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=82000624;//kernel.WebPage:624
+      //$LASTPOS=84000624;//kernel.WebPage:624
       _this.postUrl=url;
-      //$LASTPOS=82000704;//kernel.WebPage:704
+      //$LASTPOS=84000704;//kernel.WebPage:704
       _this.canvas=document.getElementsByTagName("canvas")[0];
-      //$LASTPOS=82000760;//kernel.WebPage:760
+      //$LASTPOS=84000760;//kernel.WebPage:760
       if (! _this.listenerExists) {
-        //$LASTPOS=82000792;//kernel.WebPage:792
+        //$LASTPOS=84000792;//kernel.WebPage:792
         if (_this.canvas.addEventListener) {
-          //$LASTPOS=82000836;//kernel.WebPage:836
+          //$LASTPOS=84000836;//kernel.WebPage:836
           _this.canvas.addEventListener("click",_this.eventWindowOpen,false);
-          //$LASTPOS=82000907;//kernel.WebPage:907
+          //$LASTPOS=84000907;//kernel.WebPage:907
           _this.canvas.addEventListener("touchend",_this.eventWindowOpen,false);
-          //$LASTPOS=82001050;//kernel.WebPage:1050
+          //$LASTPOS=84001050;//kernel.WebPage:1050
           _this.listenerExists=true;
           
         } else {
-          //$LASTPOS=82001089;//kernel.WebPage:1089
+          //$LASTPOS=84001089;//kernel.WebPage:1089
           if (_this.canvas.attachEvent) {
-            //$LASTPOS=82001127;//kernel.WebPage:1127
+            //$LASTPOS=84001127;//kernel.WebPage:1127
             _this.canvas.attachEvent("onclick",_this.eventWindowOpen);
-            //$LASTPOS=82001188;//kernel.WebPage:1188
+            //$LASTPOS=84001188;//kernel.WebPage:1188
             _this.canvas.attachEvent("touchend",_this.eventWindowOpen);
-            //$LASTPOS=82001250;//kernel.WebPage:1250
+            //$LASTPOS=84001250;//kernel.WebPage:1250
             _this.listenerExists=true;
             
           }
@@ -31039,29 +31199,29 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=82000624;//kernel.WebPage:624
+      //$LASTPOS=84000624;//kernel.WebPage:624
       _this.postUrl=url;
-      //$LASTPOS=82000704;//kernel.WebPage:704
+      //$LASTPOS=84000704;//kernel.WebPage:704
       _this.canvas=document.getElementsByTagName("canvas")[0];
-      //$LASTPOS=82000760;//kernel.WebPage:760
+      //$LASTPOS=84000760;//kernel.WebPage:760
       if (! _this.listenerExists) {
-        //$LASTPOS=82000792;//kernel.WebPage:792
+        //$LASTPOS=84000792;//kernel.WebPage:792
         if (_this.canvas.addEventListener) {
-          //$LASTPOS=82000836;//kernel.WebPage:836
+          //$LASTPOS=84000836;//kernel.WebPage:836
           _this.canvas.addEventListener("click",_this.eventWindowOpen,false);
-          //$LASTPOS=82000907;//kernel.WebPage:907
+          //$LASTPOS=84000907;//kernel.WebPage:907
           _this.canvas.addEventListener("touchend",_this.eventWindowOpen,false);
-          //$LASTPOS=82001050;//kernel.WebPage:1050
+          //$LASTPOS=84001050;//kernel.WebPage:1050
           _this.listenerExists=true;
           
         } else {
-          //$LASTPOS=82001089;//kernel.WebPage:1089
+          //$LASTPOS=84001089;//kernel.WebPage:1089
           if (_this.canvas.attachEvent) {
-            //$LASTPOS=82001127;//kernel.WebPage:1127
+            //$LASTPOS=84001127;//kernel.WebPage:1127
             _this.canvas.attachEvent("onclick",_this.eventWindowOpen);
-            //$LASTPOS=82001188;//kernel.WebPage:1188
+            //$LASTPOS=84001188;//kernel.WebPage:1188
             _this.canvas.attachEvent("touchend",_this.eventWindowOpen);
-            //$LASTPOS=82001250;//kernel.WebPage:1250
+            //$LASTPOS=84001250;//kernel.WebPage:1250
             _this.listenerExists=true;
             
           }
@@ -31075,7 +31235,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=82001319;//kernel.WebPage:1319
+      //$LASTPOS=84001319;//kernel.WebPage:1319
       window.location.href=url;
     },
     fiber$openPage :function _trc_WebPage_f_openPage(_thread,url) {
@@ -31084,7 +31244,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=82001319;//kernel.WebPage:1319
+      //$LASTPOS=84001319;//kernel.WebPage:1319
       window.location.href=url;
       
       _thread.retVal=_this;return;
@@ -31094,52 +31254,52 @@ Tonyu.klass.define({
       var _this=this;
       var sendUrl;
       
-      //$LASTPOS=82001902;//kernel.WebPage:1902
+      //$LASTPOS=84001902;//kernel.WebPage:1902
       sendUrl = "https://twitter.com/intent/tweet?";
       
-      //$LASTPOS=82001958;//kernel.WebPage:1958
+      //$LASTPOS=84001958;//kernel.WebPage:1958
       sendUrl+="text="+encodeURIComponent(text);
-      //$LASTPOS=82002010;//kernel.WebPage:2010
+      //$LASTPOS=84002010;//kernel.WebPage:2010
       if (url!=null) {
-        //$LASTPOS=82002038;//kernel.WebPage:2038
+        //$LASTPOS=84002038;//kernel.WebPage:2038
         sendUrl+="&";
-        //$LASTPOS=82002063;//kernel.WebPage:2063
+        //$LASTPOS=84002063;//kernel.WebPage:2063
         sendUrl+="url="+encodeURIComponent(url);
         
       }
-      //$LASTPOS=82002120;//kernel.WebPage:2120
+      //$LASTPOS=84002120;//kernel.WebPage:2120
       if (hashtags!=null) {
-        //$LASTPOS=82002153;//kernel.WebPage:2153
+        //$LASTPOS=84002153;//kernel.WebPage:2153
         sendUrl+="&";
-        //$LASTPOS=82002178;//kernel.WebPage:2178
+        //$LASTPOS=84002178;//kernel.WebPage:2178
         sendUrl+="hashtags="+encodeURIComponent(hashtags);
         
       }
-      //$LASTPOS=82002245;//kernel.WebPage:2245
+      //$LASTPOS=84002245;//kernel.WebPage:2245
       if (via!=null) {
-        //$LASTPOS=82002273;//kernel.WebPage:2273
+        //$LASTPOS=84002273;//kernel.WebPage:2273
         sendUrl+="&";
-        //$LASTPOS=82002298;//kernel.WebPage:2298
+        //$LASTPOS=84002298;//kernel.WebPage:2298
         sendUrl+="via="+encodeURIComponent(via);
         
       }
-      //$LASTPOS=82002355;//kernel.WebPage:2355
+      //$LASTPOS=84002355;//kernel.WebPage:2355
       if (related!=null) {
-        //$LASTPOS=82002387;//kernel.WebPage:2387
+        //$LASTPOS=84002387;//kernel.WebPage:2387
         sendUrl+="&";
-        //$LASTPOS=82002412;//kernel.WebPage:2412
+        //$LASTPOS=84002412;//kernel.WebPage:2412
         sendUrl+="related="+encodeURIComponent(related);
         
       }
-      //$LASTPOS=82002477;//kernel.WebPage:2477
+      //$LASTPOS=84002477;//kernel.WebPage:2477
       if (tl) {
-        //$LASTPOS=82002496;//kernel.WebPage:2496
+        //$LASTPOS=84002496;//kernel.WebPage:2496
         sendUrl+="&";
-        //$LASTPOS=82002521;//kernel.WebPage:2521
+        //$LASTPOS=84002521;//kernel.WebPage:2521
         sendUrl+="source=webclient";
         
       }
-      //$LASTPOS=82002564;//kernel.WebPage:2564
+      //$LASTPOS=84002564;//kernel.WebPage:2564
       _this.openNewWindow(sendUrl);
     },
     fiber$openTweet :function _trc_WebPage_f_openTweet(_thread,text,url,hashtags,via,related,tl) {
@@ -31149,48 +31309,48 @@ Tonyu.klass.define({
       var __pc=0;
       var sendUrl;
       
-      //$LASTPOS=82001902;//kernel.WebPage:1902
+      //$LASTPOS=84001902;//kernel.WebPage:1902
       sendUrl = "https://twitter.com/intent/tweet?";
       
-      //$LASTPOS=82001958;//kernel.WebPage:1958
+      //$LASTPOS=84001958;//kernel.WebPage:1958
       sendUrl+="text="+encodeURIComponent(text);
-      //$LASTPOS=82002010;//kernel.WebPage:2010
+      //$LASTPOS=84002010;//kernel.WebPage:2010
       if (url!=null) {
-        //$LASTPOS=82002038;//kernel.WebPage:2038
+        //$LASTPOS=84002038;//kernel.WebPage:2038
         sendUrl+="&";
-        //$LASTPOS=82002063;//kernel.WebPage:2063
+        //$LASTPOS=84002063;//kernel.WebPage:2063
         sendUrl+="url="+encodeURIComponent(url);
         
       }
-      //$LASTPOS=82002120;//kernel.WebPage:2120
+      //$LASTPOS=84002120;//kernel.WebPage:2120
       if (hashtags!=null) {
-        //$LASTPOS=82002153;//kernel.WebPage:2153
+        //$LASTPOS=84002153;//kernel.WebPage:2153
         sendUrl+="&";
-        //$LASTPOS=82002178;//kernel.WebPage:2178
+        //$LASTPOS=84002178;//kernel.WebPage:2178
         sendUrl+="hashtags="+encodeURIComponent(hashtags);
         
       }
-      //$LASTPOS=82002245;//kernel.WebPage:2245
+      //$LASTPOS=84002245;//kernel.WebPage:2245
       if (via!=null) {
-        //$LASTPOS=82002273;//kernel.WebPage:2273
+        //$LASTPOS=84002273;//kernel.WebPage:2273
         sendUrl+="&";
-        //$LASTPOS=82002298;//kernel.WebPage:2298
+        //$LASTPOS=84002298;//kernel.WebPage:2298
         sendUrl+="via="+encodeURIComponent(via);
         
       }
-      //$LASTPOS=82002355;//kernel.WebPage:2355
+      //$LASTPOS=84002355;//kernel.WebPage:2355
       if (related!=null) {
-        //$LASTPOS=82002387;//kernel.WebPage:2387
+        //$LASTPOS=84002387;//kernel.WebPage:2387
         sendUrl+="&";
-        //$LASTPOS=82002412;//kernel.WebPage:2412
+        //$LASTPOS=84002412;//kernel.WebPage:2412
         sendUrl+="related="+encodeURIComponent(related);
         
       }
-      //$LASTPOS=82002477;//kernel.WebPage:2477
+      //$LASTPOS=84002477;//kernel.WebPage:2477
       if (tl) {
-        //$LASTPOS=82002496;//kernel.WebPage:2496
+        //$LASTPOS=84002496;//kernel.WebPage:2496
         sendUrl+="&";
-        //$LASTPOS=82002521;//kernel.WebPage:2521
+        //$LASTPOS=84002521;//kernel.WebPage:2521
         sendUrl+="source=webclient";
         
       }
@@ -31200,7 +31360,7 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=82002564;//kernel.WebPage:2564
+            //$LASTPOS=84002564;//kernel.WebPage:2564
             _this.fiber$openNewWindow(_thread, sendUrl);
             __pc=1;return;
           case 1:
@@ -31216,71 +31376,71 @@ Tonyu.klass.define({
       var sendUrl;
       var tempText;
       
-      //$LASTPOS=82003505;//kernel.WebPage:3505
+      //$LASTPOS=84003505;//kernel.WebPage:3505
       sendUrl = "https://twitter.com/intent/tweet?";
       
-      //$LASTPOS=82003620;//kernel.WebPage:3620
+      //$LASTPOS=84003620;//kernel.WebPage:3620
       if (arguments.length==2) {
-        //$LASTPOS=82003656;//kernel.WebPage:3656
+        //$LASTPOS=84003656;//kernel.WebPage:3656
         if (text==null||text.match(/^http/)) {
-          //$LASTPOS=82003710;//kernel.WebPage:3710
+          //$LASTPOS=84003710;//kernel.WebPage:3710
           tempText = text;
           
-          //$LASTPOS=82003742;//kernel.WebPage:3742
+          //$LASTPOS=84003742;//kernel.WebPage:3742
           text=url;
-          //$LASTPOS=82003751;//kernel.WebPage:3751
+          //$LASTPOS=84003751;//kernel.WebPage:3751
           url=tempText;
           
         }
         
       }
-      //$LASTPOS=82003788;//kernel.WebPage:3788
+      //$LASTPOS=84003788;//kernel.WebPage:3788
       sendUrl+="text="+encodeURIComponent(text);
-      //$LASTPOS=82003840;//kernel.WebPage:3840
+      //$LASTPOS=84003840;//kernel.WebPage:3840
       sendUrl+="&";
-      //$LASTPOS=82003861;//kernel.WebPage:3861
+      //$LASTPOS=84003861;//kernel.WebPage:3861
       if (url==null) {
-        //$LASTPOS=82003889;//kernel.WebPage:3889
+        //$LASTPOS=84003889;//kernel.WebPage:3889
         sendUrl+="url="+window.location.href;
         
       } else {
-        //$LASTPOS=82003954;//kernel.WebPage:3954
+        //$LASTPOS=84003954;//kernel.WebPage:3954
         sendUrl+="url="+encodeURIComponent(url);
         
       }
-      //$LASTPOS=82004011;//kernel.WebPage:4011
+      //$LASTPOS=84004011;//kernel.WebPage:4011
       if (hashtags!=null) {
-        //$LASTPOS=82004044;//kernel.WebPage:4044
+        //$LASTPOS=84004044;//kernel.WebPage:4044
         sendUrl+="&";
-        //$LASTPOS=82004069;//kernel.WebPage:4069
+        //$LASTPOS=84004069;//kernel.WebPage:4069
         sendUrl+="hashtags="+encodeURIComponent(hashtags);
         
       }
-      //$LASTPOS=82004136;//kernel.WebPage:4136
+      //$LASTPOS=84004136;//kernel.WebPage:4136
       if (via!=null) {
-        //$LASTPOS=82004164;//kernel.WebPage:4164
+        //$LASTPOS=84004164;//kernel.WebPage:4164
         sendUrl+="&";
-        //$LASTPOS=82004189;//kernel.WebPage:4189
+        //$LASTPOS=84004189;//kernel.WebPage:4189
         sendUrl+="via="+encodeURIComponent(via);
         
       }
-      //$LASTPOS=82004246;//kernel.WebPage:4246
+      //$LASTPOS=84004246;//kernel.WebPage:4246
       if (related!=null) {
-        //$LASTPOS=82004278;//kernel.WebPage:4278
+        //$LASTPOS=84004278;//kernel.WebPage:4278
         sendUrl+="&";
-        //$LASTPOS=82004303;//kernel.WebPage:4303
+        //$LASTPOS=84004303;//kernel.WebPage:4303
         sendUrl+="related="+encodeURIComponent(related);
         
       }
-      //$LASTPOS=82004368;//kernel.WebPage:4368
+      //$LASTPOS=84004368;//kernel.WebPage:4368
       if (tl) {
-        //$LASTPOS=82004387;//kernel.WebPage:4387
+        //$LASTPOS=84004387;//kernel.WebPage:4387
         sendUrl+="&";
-        //$LASTPOS=82004412;//kernel.WebPage:4412
+        //$LASTPOS=84004412;//kernel.WebPage:4412
         sendUrl+="source=webclient";
         
       }
-      //$LASTPOS=82004455;//kernel.WebPage:4455
+      //$LASTPOS=84004455;//kernel.WebPage:4455
       _this.openNewWindow(sendUrl);
     },
     fiber$openShareTweet :function _trc_WebPage_f_openShareTweet(_thread,text,url,hashtags,via,related,tl) {
@@ -31291,67 +31451,67 @@ Tonyu.klass.define({
       var sendUrl;
       var tempText;
       
-      //$LASTPOS=82003505;//kernel.WebPage:3505
+      //$LASTPOS=84003505;//kernel.WebPage:3505
       sendUrl = "https://twitter.com/intent/tweet?";
       
-      //$LASTPOS=82003620;//kernel.WebPage:3620
+      //$LASTPOS=84003620;//kernel.WebPage:3620
       if (_arguments.length==2) {
-        //$LASTPOS=82003656;//kernel.WebPage:3656
+        //$LASTPOS=84003656;//kernel.WebPage:3656
         if (text==null||text.match(/^http/)) {
-          //$LASTPOS=82003710;//kernel.WebPage:3710
+          //$LASTPOS=84003710;//kernel.WebPage:3710
           tempText = text;
           
-          //$LASTPOS=82003742;//kernel.WebPage:3742
+          //$LASTPOS=84003742;//kernel.WebPage:3742
           text=url;
-          //$LASTPOS=82003751;//kernel.WebPage:3751
+          //$LASTPOS=84003751;//kernel.WebPage:3751
           url=tempText;
           
         }
         
       }
-      //$LASTPOS=82003788;//kernel.WebPage:3788
+      //$LASTPOS=84003788;//kernel.WebPage:3788
       sendUrl+="text="+encodeURIComponent(text);
-      //$LASTPOS=82003840;//kernel.WebPage:3840
+      //$LASTPOS=84003840;//kernel.WebPage:3840
       sendUrl+="&";
-      //$LASTPOS=82003861;//kernel.WebPage:3861
+      //$LASTPOS=84003861;//kernel.WebPage:3861
       if (url==null) {
-        //$LASTPOS=82003889;//kernel.WebPage:3889
+        //$LASTPOS=84003889;//kernel.WebPage:3889
         sendUrl+="url="+window.location.href;
         
       } else {
-        //$LASTPOS=82003954;//kernel.WebPage:3954
+        //$LASTPOS=84003954;//kernel.WebPage:3954
         sendUrl+="url="+encodeURIComponent(url);
         
       }
-      //$LASTPOS=82004011;//kernel.WebPage:4011
+      //$LASTPOS=84004011;//kernel.WebPage:4011
       if (hashtags!=null) {
-        //$LASTPOS=82004044;//kernel.WebPage:4044
+        //$LASTPOS=84004044;//kernel.WebPage:4044
         sendUrl+="&";
-        //$LASTPOS=82004069;//kernel.WebPage:4069
+        //$LASTPOS=84004069;//kernel.WebPage:4069
         sendUrl+="hashtags="+encodeURIComponent(hashtags);
         
       }
-      //$LASTPOS=82004136;//kernel.WebPage:4136
+      //$LASTPOS=84004136;//kernel.WebPage:4136
       if (via!=null) {
-        //$LASTPOS=82004164;//kernel.WebPage:4164
+        //$LASTPOS=84004164;//kernel.WebPage:4164
         sendUrl+="&";
-        //$LASTPOS=82004189;//kernel.WebPage:4189
+        //$LASTPOS=84004189;//kernel.WebPage:4189
         sendUrl+="via="+encodeURIComponent(via);
         
       }
-      //$LASTPOS=82004246;//kernel.WebPage:4246
+      //$LASTPOS=84004246;//kernel.WebPage:4246
       if (related!=null) {
-        //$LASTPOS=82004278;//kernel.WebPage:4278
+        //$LASTPOS=84004278;//kernel.WebPage:4278
         sendUrl+="&";
-        //$LASTPOS=82004303;//kernel.WebPage:4303
+        //$LASTPOS=84004303;//kernel.WebPage:4303
         sendUrl+="related="+encodeURIComponent(related);
         
       }
-      //$LASTPOS=82004368;//kernel.WebPage:4368
+      //$LASTPOS=84004368;//kernel.WebPage:4368
       if (tl) {
-        //$LASTPOS=82004387;//kernel.WebPage:4387
+        //$LASTPOS=84004387;//kernel.WebPage:4387
         sendUrl+="&";
-        //$LASTPOS=82004412;//kernel.WebPage:4412
+        //$LASTPOS=84004412;//kernel.WebPage:4412
         sendUrl+="source=webclient";
         
       }
@@ -31361,7 +31521,7 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=82004455;//kernel.WebPage:4455
+            //$LASTPOS=84004455;//kernel.WebPage:4455
             _this.fiber$openNewWindow(_thread, sendUrl);
             __pc=1;return;
           case 1:
@@ -31386,31 +31546,31 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=83000234;//kernel.Boot:234
+      //$LASTPOS=85000234;//kernel.Boot:234
       Tonyu.resetLoopCheck(10000);
-      //$LASTPOS=83000264;//kernel.Boot:264
+      //$LASTPOS=85000264;//kernel.Boot:264
       Tonyu.globals.$Boot=_this;
-      //$LASTPOS=83000277;//kernel.Boot:277
+      //$LASTPOS=85000277;//kernel.Boot:277
       _this._scheduler=Tonyu.globals.$Scheduler=new Tonyu.classes.kernel.Scheduler;
-      //$LASTPOS=83000315;//kernel.Boot:315
+      //$LASTPOS=85000315;//kernel.Boot:315
       _this.initGlobals();
-      //$LASTPOS=83000331;//kernel.Boot:331
+      //$LASTPOS=85000331;//kernel.Boot:331
       _this.initEvents();
-      //$LASTPOS=83000346;//kernel.Boot:346
+      //$LASTPOS=85000346;//kernel.Boot:346
       _this.initLayers();
-      //$LASTPOS=83000361;//kernel.Boot:361
+      //$LASTPOS=85000361;//kernel.Boot:361
       _this.initPeripherals();
-      //$LASTPOS=83000381;//kernel.Boot:381
+      //$LASTPOS=85000381;//kernel.Boot:381
       _this.loadPlugins();
-      //$LASTPOS=83000397;//kernel.Boot:397
+      //$LASTPOS=85000397;//kernel.Boot:397
       _this.loadImages();
-      //$LASTPOS=83000412;//kernel.Boot:412
+      //$LASTPOS=85000412;//kernel.Boot:412
       _this.loadSounds();
-      //$LASTPOS=83000427;//kernel.Boot:427
+      //$LASTPOS=85000427;//kernel.Boot:427
       _this.createMainObject();
-      //$LASTPOS=83000448;//kernel.Boot:448
+      //$LASTPOS=85000448;//kernel.Boot:448
       _this.progress();
-      //$LASTPOS=83000461;//kernel.Boot:461
+      //$LASTPOS=85000461;//kernel.Boot:461
       _this.mainLoop();
     },
     fiber$main :function _trc_Boot_f_main(_thread) {
@@ -31419,11 +31579,11 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=83000234;//kernel.Boot:234
+      //$LASTPOS=85000234;//kernel.Boot:234
       Tonyu.resetLoopCheck(10000);
-      //$LASTPOS=83000264;//kernel.Boot:264
+      //$LASTPOS=85000264;//kernel.Boot:264
       Tonyu.globals.$Boot=_this;
-      //$LASTPOS=83000277;//kernel.Boot:277
+      //$LASTPOS=85000277;//kernel.Boot:277
       _this._scheduler=Tonyu.globals.$Scheduler=new Tonyu.classes.kernel.Scheduler;
       
       _thread.enter(function _trc_Boot_ent_main(_thread) {
@@ -31431,52 +31591,52 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=83000315;//kernel.Boot:315
+            //$LASTPOS=85000315;//kernel.Boot:315
             _this.fiber$initGlobals(_thread);
             __pc=1;return;
           case 1:
             
-            //$LASTPOS=83000331;//kernel.Boot:331
+            //$LASTPOS=85000331;//kernel.Boot:331
             _this.fiber$initEvents(_thread);
             __pc=2;return;
           case 2:
             
-            //$LASTPOS=83000346;//kernel.Boot:346
+            //$LASTPOS=85000346;//kernel.Boot:346
             _this.fiber$initLayers(_thread);
             __pc=3;return;
           case 3:
             
-            //$LASTPOS=83000361;//kernel.Boot:361
+            //$LASTPOS=85000361;//kernel.Boot:361
             _this.fiber$initPeripherals(_thread);
             __pc=4;return;
           case 4:
             
-            //$LASTPOS=83000381;//kernel.Boot:381
+            //$LASTPOS=85000381;//kernel.Boot:381
             _this.fiber$loadPlugins(_thread);
             __pc=5;return;
           case 5:
             
-            //$LASTPOS=83000397;//kernel.Boot:397
+            //$LASTPOS=85000397;//kernel.Boot:397
             _this.fiber$loadImages(_thread);
             __pc=6;return;
           case 6:
             
-            //$LASTPOS=83000412;//kernel.Boot:412
+            //$LASTPOS=85000412;//kernel.Boot:412
             _this.fiber$loadSounds(_thread);
             __pc=7;return;
           case 7:
             
-            //$LASTPOS=83000427;//kernel.Boot:427
+            //$LASTPOS=85000427;//kernel.Boot:427
             _this.fiber$createMainObject(_thread);
             __pc=8;return;
           case 8:
             
-            //$LASTPOS=83000448;//kernel.Boot:448
+            //$LASTPOS=85000448;//kernel.Boot:448
             _this.fiber$progress(_thread);
             __pc=9;return;
           case 9:
             
-            //$LASTPOS=83000461;//kernel.Boot:461
+            //$LASTPOS=85000461;//kernel.Boot:461
             _this.fiber$mainLoop(_thread);
             __pc=10;return;
           case 10:
@@ -31490,20 +31650,20 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=83000495;//kernel.Boot:495
+      //$LASTPOS=85000495;//kernel.Boot:495
       _this.extend(param);
-      //$LASTPOS=83000515;//kernel.Boot:515
+      //$LASTPOS=85000515;//kernel.Boot:515
       _this._th=Tonyu.thread();
-      //$LASTPOS=83000540;//kernel.Boot:540
+      //$LASTPOS=85000540;//kernel.Boot:540
       _this._th.apply(_this,"main");
-      //$LASTPOS=83000569;//kernel.Boot:569
+      //$LASTPOS=85000569;//kernel.Boot:569
       _this._th.stepsLoop();
-      //$LASTPOS=83000591;//kernel.Boot:591
+      //$LASTPOS=85000591;//kernel.Boot:591
       _this.on("die",(function anonymous_602() {
         
-        //$LASTPOS=83000614;//kernel.Boot:614
+        //$LASTPOS=85000614;//kernel.Boot:614
         if (_this._th) {
-          //$LASTPOS=83000623;//kernel.Boot:623
+          //$LASTPOS=85000623;//kernel.Boot:623
           _this._th.kill();
         }
       }));
@@ -31515,51 +31675,51 @@ Tonyu.klass.define({
       var newS;
       var res;
       
-      //$LASTPOS=83000672;//kernel.Boot:672
+      //$LASTPOS=85000672;//kernel.Boot:672
       oldS = _this._scheduler;
       
-      //$LASTPOS=83000698;//kernel.Boot:698
+      //$LASTPOS=85000698;//kernel.Boot:698
       _this._scheduler=Tonyu.globals.$Scheduler=new Tonyu.classes.kernel.Scheduler;
-      //$LASTPOS=83000740;//kernel.Boot:740
+      //$LASTPOS=85000740;//kernel.Boot:740
       newS = _this._scheduler;
       
-      //$LASTPOS=83000766;//kernel.Boot:766
+      //$LASTPOS=85000766;//kernel.Boot:766
       res = {release: (function anonymous_794(a) {
         
-        //$LASTPOS=83000814;//kernel.Boot:814
+        //$LASTPOS=85000814;//kernel.Boot:814
         a._scheduler=newS;
-        //$LASTPOS=83000846;//kernel.Boot:846
+        //$LASTPOS=85000846;//kernel.Boot:846
         oldS.findByThreadGroup(a).forEach((function anonymous_880(th) {
           
-          //$LASTPOS=83000905;//kernel.Boot:905
+          //$LASTPOS=85000905;//kernel.Boot:905
           if (th.scheduled===newS) {
             return _this;
           }
-          //$LASTPOS=83000955;//kernel.Boot:955
+          //$LASTPOS=85000955;//kernel.Boot:955
           th.scheduled=null;
-          //$LASTPOS=83000991;//kernel.Boot:991
+          //$LASTPOS=85000991;//kernel.Boot:991
           newS.addToNext(th);
         }));
       }),releaseAll: (function anonymous_1060() {
         var a;
         var e;
-        var _it_752;
+        var _it_755;
         
-        //$LASTPOS=83001076;//kernel.Boot:1076
+        //$LASTPOS=85001076;//kernel.Boot:1076
         a = Tonyu.globals.$Screen.all();
         
-        //$LASTPOS=83001110;//kernel.Boot:1110
-        _it_752=Tonyu.iterator(a,1);
-        while(_it_752.next()) {
-          e=_it_752[0];
+        //$LASTPOS=85001110;//kernel.Boot:1110
+        _it_755=Tonyu.iterator(a,1);
+        while(_it_755.next()) {
+          e=_it_755[0];
           
-          //$LASTPOS=83001146;//kernel.Boot:1146
+          //$LASTPOS=85001146;//kernel.Boot:1146
           res.release(e);
           
         }
       })};
       
-      //$LASTPOS=83001201;//kernel.Boot:1201
+      //$LASTPOS=85001201;//kernel.Boot:1201
       res.release(except);
       return res;
     },
@@ -31572,51 +31732,51 @@ Tonyu.klass.define({
       var newS;
       var res;
       
-      //$LASTPOS=83000672;//kernel.Boot:672
+      //$LASTPOS=85000672;//kernel.Boot:672
       oldS = _this._scheduler;
       
-      //$LASTPOS=83000698;//kernel.Boot:698
+      //$LASTPOS=85000698;//kernel.Boot:698
       _this._scheduler=Tonyu.globals.$Scheduler=new Tonyu.classes.kernel.Scheduler;
-      //$LASTPOS=83000740;//kernel.Boot:740
+      //$LASTPOS=85000740;//kernel.Boot:740
       newS = _this._scheduler;
       
-      //$LASTPOS=83000766;//kernel.Boot:766
+      //$LASTPOS=85000766;//kernel.Boot:766
       res = {release: (function anonymous_794(a) {
         
-        //$LASTPOS=83000814;//kernel.Boot:814
+        //$LASTPOS=85000814;//kernel.Boot:814
         a._scheduler=newS;
-        //$LASTPOS=83000846;//kernel.Boot:846
+        //$LASTPOS=85000846;//kernel.Boot:846
         oldS.findByThreadGroup(a).forEach((function anonymous_880(th) {
           
-          //$LASTPOS=83000905;//kernel.Boot:905
+          //$LASTPOS=85000905;//kernel.Boot:905
           if (th.scheduled===newS) {
             return _this;
           }
-          //$LASTPOS=83000955;//kernel.Boot:955
+          //$LASTPOS=85000955;//kernel.Boot:955
           th.scheduled=null;
-          //$LASTPOS=83000991;//kernel.Boot:991
+          //$LASTPOS=85000991;//kernel.Boot:991
           newS.addToNext(th);
         }));
       }),releaseAll: (function anonymous_1060() {
         var a;
         var e;
-        var _it_752;
+        var _it_755;
         
-        //$LASTPOS=83001076;//kernel.Boot:1076
+        //$LASTPOS=85001076;//kernel.Boot:1076
         a = Tonyu.globals.$Screen.all();
         
-        //$LASTPOS=83001110;//kernel.Boot:1110
-        _it_752=Tonyu.iterator(a,1);
-        while(_it_752.next()) {
-          e=_it_752[0];
+        //$LASTPOS=85001110;//kernel.Boot:1110
+        _it_755=Tonyu.iterator(a,1);
+        while(_it_755.next()) {
+          e=_it_755[0];
           
-          //$LASTPOS=83001146;//kernel.Boot:1146
+          //$LASTPOS=85001146;//kernel.Boot:1146
           res.release(e);
           
         }
       })};
       
-      //$LASTPOS=83001201;//kernel.Boot:1201
+      //$LASTPOS=85001201;//kernel.Boot:1201
       res.release(except);
       _thread.retVal=res;return;
       
@@ -31627,7 +31787,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=83001260;//kernel.Boot:1260
+      //$LASTPOS=85001260;//kernel.Boot:1260
       _this.waitFor(Tonyu.timeout(50));
     },
     fiber$update :function _trc_Boot_f_update(_thread) {
@@ -31642,7 +31802,7 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=83001260;//kernel.Boot:1260
+            //$LASTPOS=85001260;//kernel.Boot:1260
             _this.fiber$waitFor(_thread, Tonyu.timeout(50));
             __pc=1;return;
           case 1:
@@ -31658,22 +31818,22 @@ Tonyu.klass.define({
       var opt;
       var g;
       var name;
-      var _it_756;
+      var _it_759;
       
-      //$LASTPOS=83001339;//kernel.Boot:1339
+      //$LASTPOS=85001339;//kernel.Boot:1339
       opt = Tonyu.currentProject.getOptions();
       
-      //$LASTPOS=83001385;//kernel.Boot:1385
+      //$LASTPOS=85001385;//kernel.Boot:1385
       if (opt.run&&opt.run.globals) {
-        //$LASTPOS=83001424;//kernel.Boot:1424
+        //$LASTPOS=85001424;//kernel.Boot:1424
         g = opt.run.globals;
         
-        //$LASTPOS=83001452;//kernel.Boot:1452
-        _it_756=Tonyu.iterator(g,1);
-        while(_it_756.next()) {
-          name=_it_756[0];
+        //$LASTPOS=85001452;//kernel.Boot:1452
+        _it_759=Tonyu.iterator(g,1);
+        while(_it_759.next()) {
+          name=_it_759[0];
           
-          //$LASTPOS=83001481;//kernel.Boot:1481
+          //$LASTPOS=85001481;//kernel.Boot:1481
           Tonyu.setGlobal(name,g[name]);
           
         }
@@ -31688,22 +31848,22 @@ Tonyu.klass.define({
       var opt;
       var g;
       var name;
-      var _it_756;
+      var _it_759;
       
-      //$LASTPOS=83001339;//kernel.Boot:1339
+      //$LASTPOS=85001339;//kernel.Boot:1339
       opt = Tonyu.currentProject.getOptions();
       
-      //$LASTPOS=83001385;//kernel.Boot:1385
+      //$LASTPOS=85001385;//kernel.Boot:1385
       if (opt.run&&opt.run.globals) {
-        //$LASTPOS=83001424;//kernel.Boot:1424
+        //$LASTPOS=85001424;//kernel.Boot:1424
         g = opt.run.globals;
         
-        //$LASTPOS=83001452;//kernel.Boot:1452
-        _it_756=Tonyu.iterator(g,1);
-        while(_it_756.next()) {
-          name=_it_756[0];
+        //$LASTPOS=85001452;//kernel.Boot:1452
+        _it_759=Tonyu.iterator(g,1);
+        while(_it_759.next()) {
+          name=_it_759[0];
           
-          //$LASTPOS=83001481;//kernel.Boot:1481
+          //$LASTPOS=85001481;//kernel.Boot:1481
           Tonyu.setGlobal(name,g[name]);
           
         }
@@ -31716,7 +31876,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=83001575;//kernel.Boot:1575
+      //$LASTPOS=85001575;//kernel.Boot:1575
       _this.eventTypes={"screenOut": Tonyu.classes.kernel.ScreenOutHandler,"crashTo": Tonyu.classes.kernel.CrashToHandler,"within": Tonyu.classes.kernel.WithinHandler};
     },
     fiber$initEvents :function _trc_Boot_f_initEvents(_thread) {
@@ -31725,7 +31885,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=83001575;//kernel.Boot:1575
+      //$LASTPOS=85001575;//kernel.Boot:1575
       _this.eventTypes={"screenOut": Tonyu.classes.kernel.ScreenOutHandler,"crashTo": Tonyu.classes.kernel.CrashToHandler,"within": Tonyu.classes.kernel.WithinHandler};
       
       _thread.retVal=_this;return;
@@ -31734,39 +31894,39 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=83001732;//kernel.Boot:1732
+      //$LASTPOS=85001732;//kernel.Boot:1732
       Tonyu.globals.$InputDevice=new Tonyu.classes.kernel.InputDevice;
-      //$LASTPOS=83001767;//kernel.Boot:1767
+      //$LASTPOS=85001767;//kernel.Boot:1767
       Tonyu.globals.$InputDevice.initCanvasEvents(_this.cvj);
-      //$LASTPOS=83001808;//kernel.Boot:1808
+      //$LASTPOS=85001808;//kernel.Boot:1808
       Tonyu.globals.$ObjectPool=new Tonyu.classes.kernel.ObjectPool;
-      //$LASTPOS=83001841;//kernel.Boot:1841
+      //$LASTPOS=85001841;//kernel.Boot:1841
       Tonyu.globals.$pat_fruits=30;
-      //$LASTPOS=83001862;//kernel.Boot:1862
+      //$LASTPOS=85001862;//kernel.Boot:1862
       Tonyu.globals.$Keys=new Tonyu.classes.kernel.Keys;
-      //$LASTPOS=83001883;//kernel.Boot:1883
+      //$LASTPOS=85001883;//kernel.Boot:1883
       Tonyu.globals.$Math=Math;
-      //$LASTPOS=83001900;//kernel.Boot:1900
+      //$LASTPOS=85001900;//kernel.Boot:1900
       Tonyu.globals.$consolePanel=new Tonyu.classes.kernel.Panel({align: "center",x: 465/2,y: 465/2,width: 465,height: 465,zOrder: - 10,layer: Tonyu.globals.$FrontSprites});
-      //$LASTPOS=83002014;//kernel.Boot:2014
+      //$LASTPOS=85002014;//kernel.Boot:2014
       Tonyu.globals.$consolePrintY=465-15;
-      //$LASTPOS=83002042;//kernel.Boot:2042
+      //$LASTPOS=85002042;//kernel.Boot:2042
       Tonyu.globals.$panel=new Tonyu.classes.kernel.Panel({align: "center",x: Tonyu.globals.$screenWidth/2,y: Tonyu.globals.$screenHeight/2,width: Tonyu.globals.$screenWidth,height: Tonyu.globals.$screenHeight,zOrder: - 1,layer: Tonyu.globals.$FrontSprites});
-      //$LASTPOS=83002186;//kernel.Boot:2186
+      //$LASTPOS=85002186;//kernel.Boot:2186
       _this.initFPSParams();
-      //$LASTPOS=83002208;//kernel.Boot:2208
+      //$LASTPOS=85002208;//kernel.Boot:2208
       Tonyu.globals.$WebPage=new Tonyu.classes.kernel.WebPage;
-      //$LASTPOS=83002235;//kernel.Boot:2235
+      //$LASTPOS=85002235;//kernel.Boot:2235
       Tonyu.globals.$Navigator=new Tonyu.classes.kernel.Navigator;
-      //$LASTPOS=83002266;//kernel.Boot:2266
+      //$LASTPOS=85002266;//kernel.Boot:2266
       Tonyu.globals.$mouseX=Tonyu.globals.$mouseX||0;
-      //$LASTPOS=83002291;//kernel.Boot:2291
+      //$LASTPOS=85002291;//kernel.Boot:2291
       Tonyu.globals.$mouseY=Tonyu.globals.$mouseY||0;
-      //$LASTPOS=83002316;//kernel.Boot:2316
+      //$LASTPOS=85002316;//kernel.Boot:2316
       _this.debugCnt=50;
-      //$LASTPOS=83002334;//kernel.Boot:2334
+      //$LASTPOS=85002334;//kernel.Boot:2334
       _this.newLimit=1000;
-      //$LASTPOS=83002354;//kernel.Boot:2354
+      //$LASTPOS=85002354;//kernel.Boot:2354
       Tonyu.globals.$printLimit=100;
     },
     fiber$initPeripherals :function _trc_Boot_f_initPeripherals(_thread) {
@@ -31775,39 +31935,39 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=83001732;//kernel.Boot:1732
+      //$LASTPOS=85001732;//kernel.Boot:1732
       Tonyu.globals.$InputDevice=new Tonyu.classes.kernel.InputDevice;
-      //$LASTPOS=83001767;//kernel.Boot:1767
+      //$LASTPOS=85001767;//kernel.Boot:1767
       Tonyu.globals.$InputDevice.initCanvasEvents(_this.cvj);
-      //$LASTPOS=83001808;//kernel.Boot:1808
+      //$LASTPOS=85001808;//kernel.Boot:1808
       Tonyu.globals.$ObjectPool=new Tonyu.classes.kernel.ObjectPool;
-      //$LASTPOS=83001841;//kernel.Boot:1841
+      //$LASTPOS=85001841;//kernel.Boot:1841
       Tonyu.globals.$pat_fruits=30;
-      //$LASTPOS=83001862;//kernel.Boot:1862
+      //$LASTPOS=85001862;//kernel.Boot:1862
       Tonyu.globals.$Keys=new Tonyu.classes.kernel.Keys;
-      //$LASTPOS=83001883;//kernel.Boot:1883
+      //$LASTPOS=85001883;//kernel.Boot:1883
       Tonyu.globals.$Math=Math;
-      //$LASTPOS=83001900;//kernel.Boot:1900
+      //$LASTPOS=85001900;//kernel.Boot:1900
       Tonyu.globals.$consolePanel=new Tonyu.classes.kernel.Panel({align: "center",x: 465/2,y: 465/2,width: 465,height: 465,zOrder: - 10,layer: Tonyu.globals.$FrontSprites});
-      //$LASTPOS=83002014;//kernel.Boot:2014
+      //$LASTPOS=85002014;//kernel.Boot:2014
       Tonyu.globals.$consolePrintY=465-15;
-      //$LASTPOS=83002042;//kernel.Boot:2042
+      //$LASTPOS=85002042;//kernel.Boot:2042
       Tonyu.globals.$panel=new Tonyu.classes.kernel.Panel({align: "center",x: Tonyu.globals.$screenWidth/2,y: Tonyu.globals.$screenHeight/2,width: Tonyu.globals.$screenWidth,height: Tonyu.globals.$screenHeight,zOrder: - 1,layer: Tonyu.globals.$FrontSprites});
-      //$LASTPOS=83002186;//kernel.Boot:2186
+      //$LASTPOS=85002186;//kernel.Boot:2186
       _this.initFPSParams();
-      //$LASTPOS=83002208;//kernel.Boot:2208
+      //$LASTPOS=85002208;//kernel.Boot:2208
       Tonyu.globals.$WebPage=new Tonyu.classes.kernel.WebPage;
-      //$LASTPOS=83002235;//kernel.Boot:2235
+      //$LASTPOS=85002235;//kernel.Boot:2235
       Tonyu.globals.$Navigator=new Tonyu.classes.kernel.Navigator;
-      //$LASTPOS=83002266;//kernel.Boot:2266
+      //$LASTPOS=85002266;//kernel.Boot:2266
       Tonyu.globals.$mouseX=Tonyu.globals.$mouseX||0;
-      //$LASTPOS=83002291;//kernel.Boot:2291
+      //$LASTPOS=85002291;//kernel.Boot:2291
       Tonyu.globals.$mouseY=Tonyu.globals.$mouseY||0;
-      //$LASTPOS=83002316;//kernel.Boot:2316
+      //$LASTPOS=85002316;//kernel.Boot:2316
       _this.debugCnt=50;
-      //$LASTPOS=83002334;//kernel.Boot:2334
+      //$LASTPOS=85002334;//kernel.Boot:2334
       _this.newLimit=1000;
-      //$LASTPOS=83002354;//kernel.Boot:2354
+      //$LASTPOS=85002354;//kernel.Boot:2354
       Tonyu.globals.$printLimit=100;
       
       _thread.retVal=_this;return;
@@ -31816,75 +31976,75 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=83002396;//kernel.Boot:2396
+      //$LASTPOS=85002396;//kernel.Boot:2396
       Tonyu.globals.$screenWidth=465;
-      //$LASTPOS=83002419;//kernel.Boot:2419
+      //$LASTPOS=85002419;//kernel.Boot:2419
       Tonyu.globals.$screenHeight=465;
-      //$LASTPOS=83002443;//kernel.Boot:2443
+      //$LASTPOS=85002443;//kernel.Boot:2443
       Tonyu.globals.$mainLayer=Tonyu.globals.$Sprites=new Tonyu.classes.kernel.Sprites();
-      //$LASTPOS=83002483;//kernel.Boot:2483
+      //$LASTPOS=85002483;//kernel.Boot:2483
       Tonyu.globals.$frontLayer=Tonyu.globals.$FrontSprites=new Tonyu.classes.kernel.Sprites();
-      //$LASTPOS=83002529;//kernel.Boot:2529
+      //$LASTPOS=85002529;//kernel.Boot:2529
       Tonyu.globals.$backLayer=new Tonyu.classes.kernel.Sprites();
-      //$LASTPOS=83002560;//kernel.Boot:2560
+      //$LASTPOS=85002560;//kernel.Boot:2560
       Tonyu.globals.$uiLayer=new Tonyu.classes.kernel.Sprites();
-      //$LASTPOS=83002589;//kernel.Boot:2589
+      //$LASTPOS=85002589;//kernel.Boot:2589
       Tonyu.globals.$mainLayer3D=new Tonyu.classes.kernel.Sprites3D();
-      //$LASTPOS=83002624;//kernel.Boot:2624
+      //$LASTPOS=85002624;//kernel.Boot:2624
       _this.cvj=Tonyu.globals.$mainCanvas||$("canvas");
-      //$LASTPOS=83002659;//kernel.Boot:2659
+      //$LASTPOS=85002659;//kernel.Boot:2659
       Tonyu.globals.$Screen=new Tonyu.classes.kernel.Screen({width: Tonyu.globals.$screenWidth,height: Tonyu.globals.$screenHeight,layer: Tonyu.globals.$uiLayer});
-      //$LASTPOS=83002742;//kernel.Boot:2742
+      //$LASTPOS=85002742;//kernel.Boot:2742
       Tonyu.globals.$Screen.on("resize",(function anonymous_2763() {
         
-        //$LASTPOS=83002775;//kernel.Boot:2775
+        //$LASTPOS=85002775;//kernel.Boot:2775
         Tonyu.globals.$screenWidth=Tonyu.globals.$Screen.width;
-        //$LASTPOS=83002812;//kernel.Boot:2812
+        //$LASTPOS=85002812;//kernel.Boot:2812
         Tonyu.globals.$screenHeight=Tonyu.globals.$Screen.height;
-        //$LASTPOS=83002851;//kernel.Boot:2851
+        //$LASTPOS=85002851;//kernel.Boot:2851
         if (Tonyu.globals.$panel) {
-          //$LASTPOS=83002876;//kernel.Boot:2876
+          //$LASTPOS=85002876;//kernel.Boot:2876
           Tonyu.globals.$panel.setPanel(Tonyu.globals.$screenWidth,Tonyu.globals.$screenHeight);
-          //$LASTPOS=83002934;//kernel.Boot:2934
+          //$LASTPOS=85002934;//kernel.Boot:2934
           Tonyu.globals.$panel.x=Tonyu.globals.$screenWidth/2;
-          //$LASTPOS=83002972;//kernel.Boot:2972
+          //$LASTPOS=85002972;//kernel.Boot:2972
           Tonyu.globals.$panel.y=Tonyu.globals.$screenHeight/2;
           
         }
-        //$LASTPOS=83003018;//kernel.Boot:3018
+        //$LASTPOS=85003018;//kernel.Boot:3018
         if (Tonyu.globals.$consolePanel) {
-          //$LASTPOS=83003050;//kernel.Boot:3050
+          //$LASTPOS=85003050;//kernel.Boot:3050
           Tonyu.globals.$consolePanel.setPanel(Tonyu.globals.$screenWidth,Tonyu.globals.$screenHeight);
-          //$LASTPOS=83003115;//kernel.Boot:3115
+          //$LASTPOS=85003115;//kernel.Boot:3115
           Tonyu.globals.$consolePanel.x=Tonyu.globals.$screenWidth/2;
-          //$LASTPOS=83003160;//kernel.Boot:3160
+          //$LASTPOS=85003160;//kernel.Boot:3160
           Tonyu.globals.$consolePanel.y=Tonyu.globals.$screenHeight/2;
-          //$LASTPOS=83003206;//kernel.Boot:3206
+          //$LASTPOS=85003206;//kernel.Boot:3206
           Tonyu.globals.$consolePrintY=Tonyu.globals.$screenHeight-15;
           
         }
       }));
-      //$LASTPOS=83003263;//kernel.Boot:3263
+      //$LASTPOS=85003263;//kernel.Boot:3263
       Tonyu.globals.$Screen.addLayer(Tonyu.globals.$frontLayer);
-      //$LASTPOS=83003299;//kernel.Boot:3299
+      //$LASTPOS=85003299;//kernel.Boot:3299
       Tonyu.globals.$camera2D=Tonyu.globals.$Screen.addLayer(Tonyu.globals.$mainLayer);
-      //$LASTPOS=83003344;//kernel.Boot:3344
+      //$LASTPOS=85003344;//kernel.Boot:3344
       Tonyu.globals.$camera3D=Tonyu.globals.$Screen.addLayer(Tonyu.globals.$mainLayer3D);
-      //$LASTPOS=83003391;//kernel.Boot:3391
+      //$LASTPOS=85003391;//kernel.Boot:3391
       Tonyu.globals.$Screen.addLayer(Tonyu.globals.$backLayer);
-      //$LASTPOS=83003426;//kernel.Boot:3426
+      //$LASTPOS=85003426;//kernel.Boot:3426
       Tonyu.globals.$Screen.setBGColor("rgb(20,80,180)");
-      //$LASTPOS=83003469;//kernel.Boot:3469
+      //$LASTPOS=85003469;//kernel.Boot:3469
       Tonyu.globals.$Screen.selectLayer(Tonyu.globals.$mainLayer);
-      //$LASTPOS=83003507;//kernel.Boot:3507
+      //$LASTPOS=85003507;//kernel.Boot:3507
       Tonyu.globals.$rootLayer=new Tonyu.classes.kernel.Sprites();
-      //$LASTPOS=83003538;//kernel.Boot:3538
+      //$LASTPOS=85003538;//kernel.Boot:3538
       Tonyu.globals.$uiScreen=new Tonyu.classes.kernel.Screen({canvas: _this.cvj[0],layer: Tonyu.globals.$rootLayer});
-      //$LASTPOS=83003597;//kernel.Boot:3597
+      //$LASTPOS=85003597;//kernel.Boot:3597
       Tonyu.globals.$uiScreen.setBGColor("#888");
-      //$LASTPOS=83003632;//kernel.Boot:3632
+      //$LASTPOS=85003632;//kernel.Boot:3632
       Tonyu.globals.$uiScreen.addLayer(Tonyu.globals.$uiLayer);
-      //$LASTPOS=83003667;//kernel.Boot:3667
+      //$LASTPOS=85003667;//kernel.Boot:3667
       Tonyu.globals.$layoutManager=new Tonyu.classes.kernel.UILayout({layer: Tonyu.globals.$uiLayer});
     },
     fiber$initLayers :function _trc_Boot_f_initLayers(_thread) {
@@ -31893,75 +32053,75 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=83002396;//kernel.Boot:2396
+      //$LASTPOS=85002396;//kernel.Boot:2396
       Tonyu.globals.$screenWidth=465;
-      //$LASTPOS=83002419;//kernel.Boot:2419
+      //$LASTPOS=85002419;//kernel.Boot:2419
       Tonyu.globals.$screenHeight=465;
-      //$LASTPOS=83002443;//kernel.Boot:2443
+      //$LASTPOS=85002443;//kernel.Boot:2443
       Tonyu.globals.$mainLayer=Tonyu.globals.$Sprites=new Tonyu.classes.kernel.Sprites();
-      //$LASTPOS=83002483;//kernel.Boot:2483
+      //$LASTPOS=85002483;//kernel.Boot:2483
       Tonyu.globals.$frontLayer=Tonyu.globals.$FrontSprites=new Tonyu.classes.kernel.Sprites();
-      //$LASTPOS=83002529;//kernel.Boot:2529
+      //$LASTPOS=85002529;//kernel.Boot:2529
       Tonyu.globals.$backLayer=new Tonyu.classes.kernel.Sprites();
-      //$LASTPOS=83002560;//kernel.Boot:2560
+      //$LASTPOS=85002560;//kernel.Boot:2560
       Tonyu.globals.$uiLayer=new Tonyu.classes.kernel.Sprites();
-      //$LASTPOS=83002589;//kernel.Boot:2589
+      //$LASTPOS=85002589;//kernel.Boot:2589
       Tonyu.globals.$mainLayer3D=new Tonyu.classes.kernel.Sprites3D();
-      //$LASTPOS=83002624;//kernel.Boot:2624
+      //$LASTPOS=85002624;//kernel.Boot:2624
       _this.cvj=Tonyu.globals.$mainCanvas||$("canvas");
-      //$LASTPOS=83002659;//kernel.Boot:2659
+      //$LASTPOS=85002659;//kernel.Boot:2659
       Tonyu.globals.$Screen=new Tonyu.classes.kernel.Screen({width: Tonyu.globals.$screenWidth,height: Tonyu.globals.$screenHeight,layer: Tonyu.globals.$uiLayer});
-      //$LASTPOS=83002742;//kernel.Boot:2742
+      //$LASTPOS=85002742;//kernel.Boot:2742
       Tonyu.globals.$Screen.on("resize",(function anonymous_2763() {
         
-        //$LASTPOS=83002775;//kernel.Boot:2775
+        //$LASTPOS=85002775;//kernel.Boot:2775
         Tonyu.globals.$screenWidth=Tonyu.globals.$Screen.width;
-        //$LASTPOS=83002812;//kernel.Boot:2812
+        //$LASTPOS=85002812;//kernel.Boot:2812
         Tonyu.globals.$screenHeight=Tonyu.globals.$Screen.height;
-        //$LASTPOS=83002851;//kernel.Boot:2851
+        //$LASTPOS=85002851;//kernel.Boot:2851
         if (Tonyu.globals.$panel) {
-          //$LASTPOS=83002876;//kernel.Boot:2876
+          //$LASTPOS=85002876;//kernel.Boot:2876
           Tonyu.globals.$panel.setPanel(Tonyu.globals.$screenWidth,Tonyu.globals.$screenHeight);
-          //$LASTPOS=83002934;//kernel.Boot:2934
+          //$LASTPOS=85002934;//kernel.Boot:2934
           Tonyu.globals.$panel.x=Tonyu.globals.$screenWidth/2;
-          //$LASTPOS=83002972;//kernel.Boot:2972
+          //$LASTPOS=85002972;//kernel.Boot:2972
           Tonyu.globals.$panel.y=Tonyu.globals.$screenHeight/2;
           
         }
-        //$LASTPOS=83003018;//kernel.Boot:3018
+        //$LASTPOS=85003018;//kernel.Boot:3018
         if (Tonyu.globals.$consolePanel) {
-          //$LASTPOS=83003050;//kernel.Boot:3050
+          //$LASTPOS=85003050;//kernel.Boot:3050
           Tonyu.globals.$consolePanel.setPanel(Tonyu.globals.$screenWidth,Tonyu.globals.$screenHeight);
-          //$LASTPOS=83003115;//kernel.Boot:3115
+          //$LASTPOS=85003115;//kernel.Boot:3115
           Tonyu.globals.$consolePanel.x=Tonyu.globals.$screenWidth/2;
-          //$LASTPOS=83003160;//kernel.Boot:3160
+          //$LASTPOS=85003160;//kernel.Boot:3160
           Tonyu.globals.$consolePanel.y=Tonyu.globals.$screenHeight/2;
-          //$LASTPOS=83003206;//kernel.Boot:3206
+          //$LASTPOS=85003206;//kernel.Boot:3206
           Tonyu.globals.$consolePrintY=Tonyu.globals.$screenHeight-15;
           
         }
       }));
-      //$LASTPOS=83003263;//kernel.Boot:3263
+      //$LASTPOS=85003263;//kernel.Boot:3263
       Tonyu.globals.$Screen.addLayer(Tonyu.globals.$frontLayer);
-      //$LASTPOS=83003299;//kernel.Boot:3299
+      //$LASTPOS=85003299;//kernel.Boot:3299
       Tonyu.globals.$camera2D=Tonyu.globals.$Screen.addLayer(Tonyu.globals.$mainLayer);
-      //$LASTPOS=83003344;//kernel.Boot:3344
+      //$LASTPOS=85003344;//kernel.Boot:3344
       Tonyu.globals.$camera3D=Tonyu.globals.$Screen.addLayer(Tonyu.globals.$mainLayer3D);
-      //$LASTPOS=83003391;//kernel.Boot:3391
+      //$LASTPOS=85003391;//kernel.Boot:3391
       Tonyu.globals.$Screen.addLayer(Tonyu.globals.$backLayer);
-      //$LASTPOS=83003426;//kernel.Boot:3426
+      //$LASTPOS=85003426;//kernel.Boot:3426
       Tonyu.globals.$Screen.setBGColor("rgb(20,80,180)");
-      //$LASTPOS=83003469;//kernel.Boot:3469
+      //$LASTPOS=85003469;//kernel.Boot:3469
       Tonyu.globals.$Screen.selectLayer(Tonyu.globals.$mainLayer);
-      //$LASTPOS=83003507;//kernel.Boot:3507
+      //$LASTPOS=85003507;//kernel.Boot:3507
       Tonyu.globals.$rootLayer=new Tonyu.classes.kernel.Sprites();
-      //$LASTPOS=83003538;//kernel.Boot:3538
+      //$LASTPOS=85003538;//kernel.Boot:3538
       Tonyu.globals.$uiScreen=new Tonyu.classes.kernel.Screen({canvas: _this.cvj[0],layer: Tonyu.globals.$rootLayer});
-      //$LASTPOS=83003597;//kernel.Boot:3597
+      //$LASTPOS=85003597;//kernel.Boot:3597
       Tonyu.globals.$uiScreen.setBGColor("#888");
-      //$LASTPOS=83003632;//kernel.Boot:3632
+      //$LASTPOS=85003632;//kernel.Boot:3632
       Tonyu.globals.$uiScreen.addLayer(Tonyu.globals.$uiLayer);
-      //$LASTPOS=83003667;//kernel.Boot:3667
+      //$LASTPOS=85003667;//kernel.Boot:3667
       Tonyu.globals.$layoutManager=new Tonyu.classes.kernel.UILayout({layer: Tonyu.globals.$uiLayer});
       
       _thread.retVal=_this;return;
@@ -31971,20 +32131,20 @@ Tonyu.klass.define({
       var _this=this;
       var a;
       
-      //$LASTPOS=83003752;//kernel.Boot:3752
+      //$LASTPOS=85003752;//kernel.Boot:3752
       if (! _this.debugCnt) {
         return _this;
       }
-      //$LASTPOS=83003780;//kernel.Boot:3780
+      //$LASTPOS=85003780;//kernel.Boot:3780
       _this.debugCnt--;
-      //$LASTPOS=83003797;//kernel.Boot:3797
+      //$LASTPOS=85003797;//kernel.Boot:3797
       a = Array.prototype.slice.call(arguments);
       
-      //$LASTPOS=83003847;//kernel.Boot:3847
+      //$LASTPOS=85003847;//kernel.Boot:3847
       a.unshift(_this.debugCnt);
-      //$LASTPOS=83003873;//kernel.Boot:3873
+      //$LASTPOS=85003873;//kernel.Boot:3873
       a.unshift("DEBUG");
-      //$LASTPOS=83003898;//kernel.Boot:3898
+      //$LASTPOS=85003898;//kernel.Boot:3898
       console.log.apply(console,a);
     },
     fiber$debug :function _trc_Boot_f_debug(_thread) {
@@ -31994,21 +32154,21 @@ Tonyu.klass.define({
       var __pc=0;
       var a;
       
-      //$LASTPOS=83003752;//kernel.Boot:3752
+      //$LASTPOS=85003752;//kernel.Boot:3752
       if (! _this.debugCnt) {
         _thread.retVal=_this;return;
         
       }
-      //$LASTPOS=83003780;//kernel.Boot:3780
+      //$LASTPOS=85003780;//kernel.Boot:3780
       _this.debugCnt--;
-      //$LASTPOS=83003797;//kernel.Boot:3797
+      //$LASTPOS=85003797;//kernel.Boot:3797
       a = Array.prototype.slice.call(_arguments);
       
-      //$LASTPOS=83003847;//kernel.Boot:3847
+      //$LASTPOS=85003847;//kernel.Boot:3847
       a.unshift(_this.debugCnt);
-      //$LASTPOS=83003873;//kernel.Boot:3873
+      //$LASTPOS=85003873;//kernel.Boot:3873
       a.unshift("DEBUG");
-      //$LASTPOS=83003898;//kernel.Boot:3898
+      //$LASTPOS=85003898;//kernel.Boot:3898
       console.log.apply(console,a);
       
       _thread.retVal=_this;return;
@@ -32017,15 +32177,15 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=83004239;//kernel.Boot:4239
+      //$LASTPOS=85004239;//kernel.Boot:4239
       _this.progress("Loading plugins..");
-      //$LASTPOS=83004275;//kernel.Boot:4275
+      //$LASTPOS=85004275;//kernel.Boot:4275
       _this.runAsync((function anonymous_4284(r) {
         
-        //$LASTPOS=83004300;//kernel.Boot:4300
+        //$LASTPOS=85004300;//kernel.Boot:4300
         Tonyu.globals.$currentProject.loadPlugins(r);
       }));
-      //$LASTPOS=83004345;//kernel.Boot:4345
+      //$LASTPOS=85004345;//kernel.Boot:4345
       _this.progress("Loading plugins done");
     },
     fiber$loadPlugins :function _trc_Boot_f_loadPlugins(_thread) {
@@ -32040,21 +32200,21 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=83004239;//kernel.Boot:4239
+            //$LASTPOS=85004239;//kernel.Boot:4239
             _this.fiber$progress(_thread, "Loading plugins..");
             __pc=1;return;
           case 1:
             
-            //$LASTPOS=83004275;//kernel.Boot:4275
+            //$LASTPOS=85004275;//kernel.Boot:4275
             _this.fiber$runAsync(_thread, (function anonymous_4284(r) {
               
-              //$LASTPOS=83004300;//kernel.Boot:4300
+              //$LASTPOS=85004300;//kernel.Boot:4300
               Tonyu.globals.$currentProject.loadPlugins(r);
             }));
             __pc=2;return;
           case 2:
             
-            //$LASTPOS=83004345;//kernel.Boot:4345
+            //$LASTPOS=85004345;//kernel.Boot:4345
             _this.fiber$progress(_thread, "Loading plugins done");
             __pc=3;return;
           case 3:
@@ -32071,33 +32231,33 @@ Tonyu.klass.define({
       var r;
       var name;
       var val;
-      var _it_763;
+      var _it_766;
       
-      //$LASTPOS=83004404;//kernel.Boot:4404
+      //$LASTPOS=85004404;//kernel.Boot:4404
       _this.progress("Loading pats..");
-      //$LASTPOS=83004437;//kernel.Boot:4437
+      //$LASTPOS=85004437;//kernel.Boot:4437
       rs = Tonyu.globals.$currentProject.getResource();
       
       
-      //$LASTPOS=83004492;//kernel.Boot:4492
+      //$LASTPOS=85004492;//kernel.Boot:4492
       r=_this.runAsync((function anonymous_4503(succ) {
         
-        //$LASTPOS=83004522;//kernel.Boot:4522
+        //$LASTPOS=85004522;//kernel.Boot:4522
         ImageList.load(rs.images,succ,{baseDir: Tonyu.globals.$currentProject.getDir(),prj: Tonyu.globals.$currentProject});
       }));
-      //$LASTPOS=83004681;//kernel.Boot:4681
+      //$LASTPOS=85004681;//kernel.Boot:4681
       Tonyu.globals.$imageList=r[0];
-      //$LASTPOS=83004739;//kernel.Boot:4739
-      _it_763=Tonyu.iterator(r[0].names,2);
-      while(_it_763.next()) {
-        name=_it_763[0];
-        val=_it_763[1];
+      //$LASTPOS=85004739;//kernel.Boot:4739
+      _it_766=Tonyu.iterator(r[0].names,2);
+      while(_it_766.next()) {
+        name=_it_766[0];
+        val=_it_766[1];
         
-        //$LASTPOS=83004783;//kernel.Boot:4783
+        //$LASTPOS=85004783;//kernel.Boot:4783
         Tonyu.setGlobal(name,val);
         
       }
-      //$LASTPOS=83004823;//kernel.Boot:4823
+      //$LASTPOS=85004823;//kernel.Boot:4823
       _this.progress("Loading pats done.");
     },
     fiber$loadImages :function _trc_Boot_f_loadImages(_thread) {
@@ -32109,7 +32269,7 @@ Tonyu.klass.define({
       var r;
       var name;
       var val;
-      var _it_763;
+      var _it_766;
       
       
       _thread.enter(function _trc_Boot_ent_loadImages(_thread) {
@@ -32117,38 +32277,38 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=83004404;//kernel.Boot:4404
+            //$LASTPOS=85004404;//kernel.Boot:4404
             _this.fiber$progress(_thread, "Loading pats..");
             __pc=1;return;
           case 1:
             
-            //$LASTPOS=83004437;//kernel.Boot:4437
+            //$LASTPOS=85004437;//kernel.Boot:4437
             rs = Tonyu.globals.$currentProject.getResource();
             
             
-            //$LASTPOS=83004492;//kernel.Boot:4492
+            //$LASTPOS=85004492;//kernel.Boot:4492
             _this.fiber$runAsync(_thread, (function anonymous_4503(succ) {
               
-              //$LASTPOS=83004522;//kernel.Boot:4522
+              //$LASTPOS=85004522;//kernel.Boot:4522
               ImageList.load(rs.images,succ,{baseDir: Tonyu.globals.$currentProject.getDir(),prj: Tonyu.globals.$currentProject});
             }));
             __pc=2;return;
           case 2:
             r=_thread.retVal;
             
-            //$LASTPOS=83004681;//kernel.Boot:4681
+            //$LASTPOS=85004681;//kernel.Boot:4681
             Tonyu.globals.$imageList=r[0];
-            //$LASTPOS=83004739;//kernel.Boot:4739
-            _it_763=Tonyu.iterator(r[0].names,2);
-            while(_it_763.next()) {
-              name=_it_763[0];
-              val=_it_763[1];
+            //$LASTPOS=85004739;//kernel.Boot:4739
+            _it_766=Tonyu.iterator(r[0].names,2);
+            while(_it_766.next()) {
+              name=_it_766[0];
+              val=_it_766[1];
               
-              //$LASTPOS=83004783;//kernel.Boot:4783
+              //$LASTPOS=85004783;//kernel.Boot:4783
               Tonyu.setGlobal(name,val);
               
             }
-            //$LASTPOS=83004823;//kernel.Boot:4823
+            //$LASTPOS=85004823;//kernel.Boot:4823
             _this.fiber$progress(_thread, "Loading pats done.");
             __pc=3;return;
           case 3:
@@ -32162,21 +32322,21 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=83004880;//kernel.Boot:4880
+      //$LASTPOS=85004880;//kernel.Boot:4880
       _this.progress("Loading sounds...");
-      //$LASTPOS=83004916;//kernel.Boot:4916
+      //$LASTPOS=85004916;//kernel.Boot:4916
       _this.initT2MediaPlayer();
-      //$LASTPOS=83004942;//kernel.Boot:4942
+      //$LASTPOS=85004942;//kernel.Boot:4942
       _this.loadFromProject(Tonyu.globals.$currentProject);
-      //$LASTPOS=83004981;//kernel.Boot:4981
+      //$LASTPOS=85004981;//kernel.Boot:4981
       _this.progress("Loading sounds done.");
-      //$LASTPOS=83005020;//kernel.Boot:5020
+      //$LASTPOS=85005020;//kernel.Boot:5020
       _this.on("stop",(function anonymous_5030() {
         
-        //$LASTPOS=83005042;//kernel.Boot:5042
+        //$LASTPOS=85005042;//kernel.Boot:5042
         _this.allClearSoundData();
       }));
-      //$LASTPOS=83005076;//kernel.Boot:5076
+      //$LASTPOS=85005076;//kernel.Boot:5076
       Tonyu.globals.$sound=_this;
     },
     fiber$loadSounds :function _trc_Boot_f_loadSounds(_thread) {
@@ -32191,33 +32351,33 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=83004880;//kernel.Boot:4880
+            //$LASTPOS=85004880;//kernel.Boot:4880
             _this.fiber$progress(_thread, "Loading sounds...");
             __pc=1;return;
           case 1:
             
-            //$LASTPOS=83004916;//kernel.Boot:4916
+            //$LASTPOS=85004916;//kernel.Boot:4916
             _this.fiber$initT2MediaPlayer(_thread);
             __pc=2;return;
           case 2:
             
-            //$LASTPOS=83004942;//kernel.Boot:4942
+            //$LASTPOS=85004942;//kernel.Boot:4942
             _this.fiber$loadFromProject(_thread, Tonyu.globals.$currentProject);
             __pc=3;return;
           case 3:
             
-            //$LASTPOS=83004981;//kernel.Boot:4981
+            //$LASTPOS=85004981;//kernel.Boot:4981
             _this.fiber$progress(_thread, "Loading sounds done.");
             __pc=4;return;
           case 4:
             
-            //$LASTPOS=83005020;//kernel.Boot:5020
+            //$LASTPOS=85005020;//kernel.Boot:5020
             _this.on("stop",(function anonymous_5030() {
               
-              //$LASTPOS=83005042;//kernel.Boot:5042
+              //$LASTPOS=85005042;//kernel.Boot:5042
               _this.allClearSoundData();
             }));
-            //$LASTPOS=83005076;//kernel.Boot:5076
+            //$LASTPOS=85005076;//kernel.Boot:5076
             Tonyu.globals.$sound=_this;
             _thread.exit(_this);return;
           }
@@ -32230,25 +32390,25 @@ Tonyu.klass.define({
       var o;
       var mainClassName;
       
-      //$LASTPOS=83005122;//kernel.Boot:5122
+      //$LASTPOS=85005122;//kernel.Boot:5122
       o = Tonyu.currentProject.getOptions();
       
-      //$LASTPOS=83005168;//kernel.Boot:5168
+      //$LASTPOS=85005168;//kernel.Boot:5168
       mainClassName = o.run.mainClass;
       
-      //$LASTPOS=83005208;//kernel.Boot:5208
+      //$LASTPOS=85005208;//kernel.Boot:5208
       _this.progress("MainClass= "+mainClassName);
-      //$LASTPOS=83005252;//kernel.Boot:5252
+      //$LASTPOS=85005252;//kernel.Boot:5252
       _this.mainClass=Tonyu.getClass(mainClassName);
-      //$LASTPOS=83005298;//kernel.Boot:5298
+      //$LASTPOS=85005298;//kernel.Boot:5298
       if (! _this.mainClass) {
         throw new Error(mainClassName+" というクラスはありません");
         
         
       }
-      //$LASTPOS=83005386;//kernel.Boot:5386
+      //$LASTPOS=85005386;//kernel.Boot:5386
       Tonyu.globals.$excludeFromAll=Tonyu.globals.$Screen.all();
-      //$LASTPOS=83005422;//kernel.Boot:5422
+      //$LASTPOS=85005422;//kernel.Boot:5422
       new _this.mainClass();
     },
     fiber$createMainObject :function _trc_Boot_f_createMainObject(_thread) {
@@ -32259,10 +32419,10 @@ Tonyu.klass.define({
       var o;
       var mainClassName;
       
-      //$LASTPOS=83005122;//kernel.Boot:5122
+      //$LASTPOS=85005122;//kernel.Boot:5122
       o = Tonyu.currentProject.getOptions();
       
-      //$LASTPOS=83005168;//kernel.Boot:5168
+      //$LASTPOS=85005168;//kernel.Boot:5168
       mainClassName = o.run.mainClass;
       
       
@@ -32271,22 +32431,22 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=83005208;//kernel.Boot:5208
+            //$LASTPOS=85005208;//kernel.Boot:5208
             _this.fiber$progress(_thread, "MainClass= "+mainClassName);
             __pc=1;return;
           case 1:
             
-            //$LASTPOS=83005252;//kernel.Boot:5252
+            //$LASTPOS=85005252;//kernel.Boot:5252
             _this.mainClass=Tonyu.getClass(mainClassName);
-            //$LASTPOS=83005298;//kernel.Boot:5298
+            //$LASTPOS=85005298;//kernel.Boot:5298
             if (! _this.mainClass) {
               throw new Error(mainClassName+" というクラスはありません");
               
               
             }
-            //$LASTPOS=83005386;//kernel.Boot:5386
+            //$LASTPOS=85005386;//kernel.Boot:5386
             Tonyu.globals.$excludeFromAll=Tonyu.globals.$Screen.all();
-            //$LASTPOS=83005422;//kernel.Boot:5422
+            //$LASTPOS=85005422;//kernel.Boot:5422
             new _this.mainClass();
             _thread.exit(_this);return;
           }
@@ -32298,17 +32458,17 @@ Tonyu.klass.define({
       var _this=this;
       var a;
       
-      //$LASTPOS=83005470;//kernel.Boot:5470
+      //$LASTPOS=85005470;//kernel.Boot:5470
       a = Tonyu.globals.$Screen.all();
       
-      //$LASTPOS=83005496;//kernel.Boot:5496
+      //$LASTPOS=85005496;//kernel.Boot:5496
       a=a.find((function anonymous_5505(e) {
         
         return ! Tonyu.globals.$excludeFromAll.contains(e);
       }));
-      //$LASTPOS=83005557;//kernel.Boot:5557
+      //$LASTPOS=85005557;//kernel.Boot:5557
       a.die();
-      //$LASTPOS=83005571;//kernel.Boot:5571
+      //$LASTPOS=85005571;//kernel.Boot:5571
       new page(arg);
     },
     stop :function _trc_Boot_stop() {
@@ -32319,39 +32479,39 @@ Tonyu.klass.define({
       var e;
       var r;
       
-      //$LASTPOS=83005605;//kernel.Boot:5605
+      //$LASTPOS=85005605;//kernel.Boot:5605
       res = new $.Deferred();
       
-      //$LASTPOS=83005636;//kernel.Boot:5636
+      //$LASTPOS=85005636;//kernel.Boot:5636
       evt = {die: (function anonymous_5660() {
         
-        //$LASTPOS=83005676;//kernel.Boot:5676
+        //$LASTPOS=85005676;//kernel.Boot:5676
         _this.die();
-        //$LASTPOS=83005696;//kernel.Boot:5696
+        //$LASTPOS=85005696;//kernel.Boot:5696
         res.resolve();
       }),preventDefault: (function anonymous_5748() {
         
-        //$LASTPOS=83005750;//kernel.Boot:5750
+        //$LASTPOS=85005750;//kernel.Boot:5750
         evt.defaultPrevented=true;
       })};
       
       try {
-        //$LASTPOS=83005806;//kernel.Boot:5806
+        //$LASTPOS=85005806;//kernel.Boot:5806
         Tonyu.globals.$sound.stopAllSE();
         
       } catch (e) {
-        //$LASTPOS=83005853;//kernel.Boot:5853
+        //$LASTPOS=85005853;//kernel.Boot:5853
         console.error(e.stack);
         
       }
-      //$LASTPOS=83005889;//kernel.Boot:5889
+      //$LASTPOS=85005889;//kernel.Boot:5889
       r = _this.fireEvent("stop",evt);
       
-      //$LASTPOS=83005923;//kernel.Boot:5923
+      //$LASTPOS=85005923;//kernel.Boot:5923
       if (! evt.defaultPrevented) {
-        //$LASTPOS=83005960;//kernel.Boot:5960
+        //$LASTPOS=85005960;//kernel.Boot:5960
         evt.die();
-        //$LASTPOS=83005980;//kernel.Boot:5980
+        //$LASTPOS=85005980;//kernel.Boot:5980
         res.resolve();
         
       }
@@ -32367,39 +32527,39 @@ Tonyu.klass.define({
       var e;
       var r;
       
-      //$LASTPOS=83005605;//kernel.Boot:5605
+      //$LASTPOS=85005605;//kernel.Boot:5605
       res = new $.Deferred();
       
-      //$LASTPOS=83005636;//kernel.Boot:5636
+      //$LASTPOS=85005636;//kernel.Boot:5636
       evt = {die: (function anonymous_5660() {
         
-        //$LASTPOS=83005676;//kernel.Boot:5676
+        //$LASTPOS=85005676;//kernel.Boot:5676
         _this.die();
-        //$LASTPOS=83005696;//kernel.Boot:5696
+        //$LASTPOS=85005696;//kernel.Boot:5696
         res.resolve();
       }),preventDefault: (function anonymous_5748() {
         
-        //$LASTPOS=83005750;//kernel.Boot:5750
+        //$LASTPOS=85005750;//kernel.Boot:5750
         evt.defaultPrevented=true;
       })};
       
       try {
-        //$LASTPOS=83005806;//kernel.Boot:5806
+        //$LASTPOS=85005806;//kernel.Boot:5806
         Tonyu.globals.$sound.stopAllSE();
         
       } catch (e) {
-        //$LASTPOS=83005853;//kernel.Boot:5853
+        //$LASTPOS=85005853;//kernel.Boot:5853
         console.error(e.stack);
         
       }
-      //$LASTPOS=83005889;//kernel.Boot:5889
+      //$LASTPOS=85005889;//kernel.Boot:5889
       r = _this.fireEvent("stop",evt);
       
-      //$LASTPOS=83005923;//kernel.Boot:5923
+      //$LASTPOS=85005923;//kernel.Boot:5923
       if (! evt.defaultPrevented) {
-        //$LASTPOS=83005960;//kernel.Boot:5960
+        //$LASTPOS=85005960;//kernel.Boot:5960
         evt.die();
-        //$LASTPOS=83005980;//kernel.Boot:5980
+        //$LASTPOS=85005980;//kernel.Boot:5980
         res.resolve();
         
       }
@@ -32419,22 +32579,22 @@ Tonyu.klass.define({
       var s;
       var th;
       
-      //$LASTPOS=83006071;//kernel.Boot:6071
+      //$LASTPOS=85006071;//kernel.Boot:6071
       if (! method) {
         throw new Error("指定されたメソッドは定義されていません:"+method);
         
       }
-      //$LASTPOS=83006137;//kernel.Boot:6137
+      //$LASTPOS=85006137;//kernel.Boot:6137
       args=args||[];
-      //$LASTPOS=83006157;//kernel.Boot:6157
+      //$LASTPOS=85006157;//kernel.Boot:6157
       s = obj._scheduler||_this._scheduler;
       
-      //$LASTPOS=83006196;//kernel.Boot:6196
+      //$LASTPOS=85006196;//kernel.Boot:6196
       th = s.newThread(obj,method,args);
       
-      //$LASTPOS=83006240;//kernel.Boot:6240
+      //$LASTPOS=85006240;//kernel.Boot:6240
       obj.setThreadGroup(_this);
-      //$LASTPOS=83006271;//kernel.Boot:6271
+      //$LASTPOS=85006271;//kernel.Boot:6271
       th.setThreadGroup(obj);
       return th;
     },
@@ -32446,22 +32606,22 @@ Tonyu.klass.define({
       var s;
       var th;
       
-      //$LASTPOS=83006071;//kernel.Boot:6071
+      //$LASTPOS=85006071;//kernel.Boot:6071
       if (! method) {
         throw new Error("指定されたメソッドは定義されていません:"+method);
         
       }
-      //$LASTPOS=83006137;//kernel.Boot:6137
+      //$LASTPOS=85006137;//kernel.Boot:6137
       args=args||[];
-      //$LASTPOS=83006157;//kernel.Boot:6157
+      //$LASTPOS=85006157;//kernel.Boot:6157
       s = obj._scheduler||_this._scheduler;
       
-      //$LASTPOS=83006196;//kernel.Boot:6196
+      //$LASTPOS=85006196;//kernel.Boot:6196
       th = s.newThread(obj,method,args);
       
-      //$LASTPOS=83006240;//kernel.Boot:6240
+      //$LASTPOS=85006240;//kernel.Boot:6240
       obj.setThreadGroup(_this);
-      //$LASTPOS=83006271;//kernel.Boot:6271
+      //$LASTPOS=85006271;//kernel.Boot:6271
       th.setThreadGroup(obj);
       _thread.retVal=th;return;
       
@@ -32472,19 +32632,19 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=83006335;//kernel.Boot:6335
+      //$LASTPOS=85006335;//kernel.Boot:6335
       if (typeof  SplashScreen=="undefined") {
         return _this;
       }
-      //$LASTPOS=83006386;//kernel.Boot:6386
+      //$LASTPOS=85006386;//kernel.Boot:6386
       if (m) {
-        //$LASTPOS=83006404;//kernel.Boot:6404
+        //$LASTPOS=85006404;//kernel.Boot:6404
         console.log.apply(console,arguments);
-        //$LASTPOS=83006451;//kernel.Boot:6451
+        //$LASTPOS=85006451;//kernel.Boot:6451
         SplashScreen.progress(m);
         
       } else {
-        //$LASTPOS=83006489;//kernel.Boot:6489
+        //$LASTPOS=85006489;//kernel.Boot:6489
         SplashScreen.hide();
       }
     },
@@ -32494,20 +32654,20 @@ Tonyu.klass.define({
       var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=83006335;//kernel.Boot:6335
+      //$LASTPOS=85006335;//kernel.Boot:6335
       if (typeof  SplashScreen=="undefined") {
         _thread.retVal=_this;return;
         
       }
-      //$LASTPOS=83006386;//kernel.Boot:6386
+      //$LASTPOS=85006386;//kernel.Boot:6386
       if (m) {
-        //$LASTPOS=83006404;//kernel.Boot:6404
+        //$LASTPOS=85006404;//kernel.Boot:6404
         console.log.apply(console,_arguments);
-        //$LASTPOS=83006451;//kernel.Boot:6451
+        //$LASTPOS=85006451;//kernel.Boot:6451
         SplashScreen.progress(m);
         
       } else {
-        //$LASTPOS=83006489;//kernel.Boot:6489
+        //$LASTPOS=85006489;//kernel.Boot:6489
         SplashScreen.hide();
       }
       
@@ -32517,17 +32677,17 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=83006539;//kernel.Boot:6539
+      //$LASTPOS=85006539;//kernel.Boot:6539
       if (typeof  SplashScreen=="undefined") {
         return _this;
       }
-      //$LASTPOS=83006590;//kernel.Boot:6590
+      //$LASTPOS=85006590;//kernel.Boot:6590
       if (m) {
-        //$LASTPOS=83006608;//kernel.Boot:6608
+        //$LASTPOS=85006608;//kernel.Boot:6608
         SplashScreen.progress(m);
         
       } else {
-        //$LASTPOS=83006646;//kernel.Boot:6646
+        //$LASTPOS=85006646;//kernel.Boot:6646
         SplashScreen.hide();
       }
     },
@@ -32537,18 +32697,18 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=83006539;//kernel.Boot:6539
+      //$LASTPOS=85006539;//kernel.Boot:6539
       if (typeof  SplashScreen=="undefined") {
         _thread.retVal=_this;return;
         
       }
-      //$LASTPOS=83006590;//kernel.Boot:6590
+      //$LASTPOS=85006590;//kernel.Boot:6590
       if (m) {
-        //$LASTPOS=83006608;//kernel.Boot:6608
+        //$LASTPOS=85006608;//kernel.Boot:6608
         SplashScreen.progress(m);
         
       } else {
-        //$LASTPOS=83006646;//kernel.Boot:6646
+        //$LASTPOS=85006646;//kernel.Boot:6646
         SplashScreen.hide();
       }
       
@@ -32558,25 +32718,25 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=83006692;//kernel.Boot:6692
+      //$LASTPOS=85006692;//kernel.Boot:6692
       Tonyu.globals.$frameCount=0;
-      //$LASTPOS=83006712;//kernel.Boot:6712
+      //$LASTPOS=85006712;//kernel.Boot:6712
       Tonyu.globals.$drawnFrameCount=0;
-      //$LASTPOS=83006737;//kernel.Boot:6737
+      //$LASTPOS=85006737;//kernel.Boot:6737
       while (true) {
-        //$LASTPOS=83006758;//kernel.Boot:6758
+        //$LASTPOS=85006758;//kernel.Boot:6758
         if (_this._useRAF) {
-          //$LASTPOS=83006771;//kernel.Boot:6771
+          //$LASTPOS=85006771;//kernel.Boot:6771
           _this.loopRAF();
         } else {
-          //$LASTPOS=83006793;//kernel.Boot:6793
+          //$LASTPOS=85006793;//kernel.Boot:6793
           _this.loopTimer();
         }
-        //$LASTPOS=83006815;//kernel.Boot:6815
+        //$LASTPOS=85006815;//kernel.Boot:6815
         _this.measureFps();
-        //$LASTPOS=83006835;//kernel.Boot:6835
+        //$LASTPOS=85006835;//kernel.Boot:6835
         _this.handlePause();
-        //$LASTPOS=83006859;//kernel.Boot:6859
+        //$LASTPOS=85006859;//kernel.Boot:6859
         Tonyu.globals.$drawnFrameCount++;
         
       }
@@ -32587,9 +32747,9 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=83006692;//kernel.Boot:6692
+      //$LASTPOS=85006692;//kernel.Boot:6692
       Tonyu.globals.$frameCount=0;
-      //$LASTPOS=83006712;//kernel.Boot:6712
+      //$LASTPOS=85006712;//kernel.Boot:6712
       Tonyu.globals.$drawnFrameCount=0;
       
       _thread.enter(function _trc_Boot_ent_mainLoop(_thread) {
@@ -32597,32 +32757,32 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=83006737;//kernel.Boot:6737
+            //$LASTPOS=85006737;//kernel.Boot:6737
           case 1:
-            //$LASTPOS=83006758;//kernel.Boot:6758
+            //$LASTPOS=85006758;//kernel.Boot:6758
             if (!(_this._useRAF)) { __pc=3     ; break; }
-            //$LASTPOS=83006771;//kernel.Boot:6771
+            //$LASTPOS=85006771;//kernel.Boot:6771
             _this.fiber$loopRAF(_thread);
             __pc=2;return;
           case 2:
             
             __pc=5     ;break;
           case 3     :
-            //$LASTPOS=83006793;//kernel.Boot:6793
+            //$LASTPOS=85006793;//kernel.Boot:6793
             _this.fiber$loopTimer(_thread);
             __pc=4;return;
           case 4:
             
           case 5     :
             
-            //$LASTPOS=83006815;//kernel.Boot:6815
+            //$LASTPOS=85006815;//kernel.Boot:6815
             _this.measureFps();
-            //$LASTPOS=83006835;//kernel.Boot:6835
+            //$LASTPOS=85006835;//kernel.Boot:6835
             _this.fiber$handlePause(_thread);
             __pc=6;return;
           case 6:
             
-            //$LASTPOS=83006859;//kernel.Boot:6859
+            //$LASTPOS=85006859;//kernel.Boot:6859
             Tonyu.globals.$drawnFrameCount++;
             __pc=1;break;
           case 7     :
@@ -32640,63 +32800,63 @@ Tonyu.klass.define({
       var moves;
       var bufferTime;
       
-      //$LASTPOS=83006908;//kernel.Boot:6908
+      //$LASTPOS=85006908;//kernel.Boot:6908
       nowTime = _this.now();
       
-      //$LASTPOS=83006949;//kernel.Boot:6949
+      //$LASTPOS=85006949;//kernel.Boot:6949
       frameTime = 1000/_this._fps;
       
-      //$LASTPOS=83006993;//kernel.Boot:6993
+      //$LASTPOS=85006993;//kernel.Boot:6993
       moves = 0;
       
       
-      //$LASTPOS=83007072;//kernel.Boot:7072
+      //$LASTPOS=85007072;//kernel.Boot:7072
       _this.subTime=_this.trunc(nowTime-_this.rafProcNowTime);
-      //$LASTPOS=83007120;//kernel.Boot:7120
+      //$LASTPOS=85007120;//kernel.Boot:7120
       _this.procCnt=_this.subTime/frameTime;
-      //$LASTPOS=83007172;//kernel.Boot:7172
+      //$LASTPOS=85007172;//kernel.Boot:7172
       bufferTime=(0.5*_this._fps/60);
-      //$LASTPOS=83007265;//kernel.Boot:7265
+      //$LASTPOS=85007265;//kernel.Boot:7265
       if (_this.procCnt>=1-bufferTime&&_this.procCnt<=1+bufferTime) {
-        //$LASTPOS=83007325;//kernel.Boot:7325
+        //$LASTPOS=85007325;//kernel.Boot:7325
         _this.procCnt=1;
       }
-      //$LASTPOS=83007345;//kernel.Boot:7345
+      //$LASTPOS=85007345;//kernel.Boot:7345
       _this.procCnt=_this.floor(_this.procCnt);
-      //$LASTPOS=83007376;//kernel.Boot:7376
+      //$LASTPOS=85007376;//kernel.Boot:7376
       if (_this.procCnt>_this.maxFrameSkip) {
-        //$LASTPOS=83007415;//kernel.Boot:7415
+        //$LASTPOS=85007415;//kernel.Boot:7415
         _this.procCnt=_this.maxFrameSkip;
-        //$LASTPOS=83007448;//kernel.Boot:7448
+        //$LASTPOS=85007448;//kernel.Boot:7448
         _this.rafProcNowTime=nowTime;
         
       } else {
-        //$LASTPOS=83007497;//kernel.Boot:7497
+        //$LASTPOS=85007497;//kernel.Boot:7497
         _this.rafProcNowTime+=_this.procCnt*frameTime;
         
       }
-      //$LASTPOS=83007594;//kernel.Boot:7594
+      //$LASTPOS=85007594;//kernel.Boot:7594
       while (moves<_this.procCnt) {
-        //$LASTPOS=83007620;//kernel.Boot:7620
+        //$LASTPOS=85007620;//kernel.Boot:7620
         _this.moveFrame();
-        //$LASTPOS=83007636;//kernel.Boot:7636
+        //$LASTPOS=85007636;//kernel.Boot:7636
         moves++;
-        //$LASTPOS=83007651;//kernel.Boot:7651
+        //$LASTPOS=85007651;//kernel.Boot:7651
         if (moves<_this.procCnt) {
-          //$LASTPOS=83007670;//kernel.Boot:7670
+          //$LASTPOS=85007670;//kernel.Boot:7670
           _this.afterDraw({drawn: false});
         }
         
       }
-      //$LASTPOS=83007729;//kernel.Boot:7729
+      //$LASTPOS=85007729;//kernel.Boot:7729
       if (moves>0) {
-        //$LASTPOS=83007755;//kernel.Boot:7755
+        //$LASTPOS=85007755;//kernel.Boot:7755
         _this.drawFrame();
-        //$LASTPOS=83007777;//kernel.Boot:7777
+        //$LASTPOS=85007777;//kernel.Boot:7777
         _this.afterDraw({drawn: false});
         
       }
-      //$LASTPOS=83007841;//kernel.Boot:7841
+      //$LASTPOS=85007841;//kernel.Boot:7841
       _this.waitRAF();
     },
     fiber$loopRAF :function _trc_Boot_f_loopRAF(_thread) {
@@ -32709,38 +32869,38 @@ Tonyu.klass.define({
       var moves;
       var bufferTime;
       
-      //$LASTPOS=83006908;//kernel.Boot:6908
+      //$LASTPOS=85006908;//kernel.Boot:6908
       nowTime = _this.now();
       
-      //$LASTPOS=83006949;//kernel.Boot:6949
+      //$LASTPOS=85006949;//kernel.Boot:6949
       frameTime = 1000/_this._fps;
       
-      //$LASTPOS=83006993;//kernel.Boot:6993
+      //$LASTPOS=85006993;//kernel.Boot:6993
       moves = 0;
       
       
-      //$LASTPOS=83007072;//kernel.Boot:7072
+      //$LASTPOS=85007072;//kernel.Boot:7072
       _this.subTime=_this.trunc(nowTime-_this.rafProcNowTime);
-      //$LASTPOS=83007120;//kernel.Boot:7120
+      //$LASTPOS=85007120;//kernel.Boot:7120
       _this.procCnt=_this.subTime/frameTime;
-      //$LASTPOS=83007172;//kernel.Boot:7172
+      //$LASTPOS=85007172;//kernel.Boot:7172
       bufferTime=(0.5*_this._fps/60);
-      //$LASTPOS=83007265;//kernel.Boot:7265
+      //$LASTPOS=85007265;//kernel.Boot:7265
       if (_this.procCnt>=1-bufferTime&&_this.procCnt<=1+bufferTime) {
-        //$LASTPOS=83007325;//kernel.Boot:7325
+        //$LASTPOS=85007325;//kernel.Boot:7325
         _this.procCnt=1;
       }
-      //$LASTPOS=83007345;//kernel.Boot:7345
+      //$LASTPOS=85007345;//kernel.Boot:7345
       _this.procCnt=_this.floor(_this.procCnt);
-      //$LASTPOS=83007376;//kernel.Boot:7376
+      //$LASTPOS=85007376;//kernel.Boot:7376
       if (_this.procCnt>_this.maxFrameSkip) {
-        //$LASTPOS=83007415;//kernel.Boot:7415
+        //$LASTPOS=85007415;//kernel.Boot:7415
         _this.procCnt=_this.maxFrameSkip;
-        //$LASTPOS=83007448;//kernel.Boot:7448
+        //$LASTPOS=85007448;//kernel.Boot:7448
         _this.rafProcNowTime=nowTime;
         
       } else {
-        //$LASTPOS=83007497;//kernel.Boot:7497
+        //$LASTPOS=85007497;//kernel.Boot:7497
         _this.rafProcNowTime+=_this.procCnt*frameTime;
         
       }
@@ -32750,32 +32910,32 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=83007594;//kernel.Boot:7594
+            //$LASTPOS=85007594;//kernel.Boot:7594
           case 1:
             if (!(moves<_this.procCnt)) { __pc=2     ; break; }
             {
-              //$LASTPOS=83007620;//kernel.Boot:7620
+              //$LASTPOS=85007620;//kernel.Boot:7620
               _this.moveFrame();
-              //$LASTPOS=83007636;//kernel.Boot:7636
+              //$LASTPOS=85007636;//kernel.Boot:7636
               moves++;
-              //$LASTPOS=83007651;//kernel.Boot:7651
+              //$LASTPOS=85007651;//kernel.Boot:7651
               if (moves<_this.procCnt) {
-                //$LASTPOS=83007670;//kernel.Boot:7670
+                //$LASTPOS=85007670;//kernel.Boot:7670
                 _this.afterDraw({drawn: false});
               }
             }
             __pc=1;break;
           case 2     :
             
-            //$LASTPOS=83007729;//kernel.Boot:7729
+            //$LASTPOS=85007729;//kernel.Boot:7729
             if (moves>0) {
-              //$LASTPOS=83007755;//kernel.Boot:7755
+              //$LASTPOS=85007755;//kernel.Boot:7755
               _this.drawFrame();
-              //$LASTPOS=83007777;//kernel.Boot:7777
+              //$LASTPOS=85007777;//kernel.Boot:7777
               _this.afterDraw({drawn: false});
               
             }
-            //$LASTPOS=83007841;//kernel.Boot:7841
+            //$LASTPOS=85007841;//kernel.Boot:7841
             _this.fiber$waitRAF(_thread);
             __pc=3;return;
           case 3:
@@ -32789,7 +32949,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=83008280;//kernel.Boot:8280
+      //$LASTPOS=85008280;//kernel.Boot:8280
       _this.waitFor(Tonyu.animationFrame());
     },
     fiber$waitRAF :function _trc_Boot_f_waitRAF(_thread) {
@@ -32804,7 +32964,7 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=83008280;//kernel.Boot:8280
+            //$LASTPOS=85008280;//kernel.Boot:8280
             _this.fiber$waitFor(_thread, Tonyu.animationFrame());
             __pc=1;return;
           case 1:
@@ -32818,33 +32978,33 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=83009226;//kernel.Boot:9226
+      //$LASTPOS=85009226;//kernel.Boot:9226
       _this.moveFrame();
-      //$LASTPOS=83009244;//kernel.Boot:9244
+      //$LASTPOS=85009244;//kernel.Boot:9244
       _this.doDraw=_this.now()<_this.deadLine;
-      //$LASTPOS=83009272;//kernel.Boot:9272
+      //$LASTPOS=85009272;//kernel.Boot:9272
       if (! _this.doDraw&&_this.frameSkipped>=_this.maxFrameSkip) {
-        //$LASTPOS=83009326;//kernel.Boot:9326
+        //$LASTPOS=85009326;//kernel.Boot:9326
         _this.doDraw=true;
-        //$LASTPOS=83009348;//kernel.Boot:9348
+        //$LASTPOS=85009348;//kernel.Boot:9348
         _this.resetDeadLine();
         
       }
-      //$LASTPOS=83009377;//kernel.Boot:9377
+      //$LASTPOS=85009377;//kernel.Boot:9377
       if (_this.doDraw) {
-        //$LASTPOS=83009414;//kernel.Boot:9414
+        //$LASTPOS=85009414;//kernel.Boot:9414
         _this.drawFrame();
-        //$LASTPOS=83009436;//kernel.Boot:9436
+        //$LASTPOS=85009436;//kernel.Boot:9436
         _this.frameSkipped=0;
         
       } else {
-        //$LASTPOS=83009475;//kernel.Boot:9475
+        //$LASTPOS=85009475;//kernel.Boot:9475
         _this.frameSkipped++;
         
       }
-      //$LASTPOS=83009503;//kernel.Boot:9503
+      //$LASTPOS=85009503;//kernel.Boot:9503
       _this.afterDraw({drawn: _this.doDraw});
-      //$LASTPOS=83009533;//kernel.Boot:9533
+      //$LASTPOS=85009533;//kernel.Boot:9533
       _this.waitFrame();
     },
     fiber$loopTimer :function _trc_Boot_f_loopTimer(_thread) {
@@ -32853,31 +33013,31 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=83009226;//kernel.Boot:9226
+      //$LASTPOS=85009226;//kernel.Boot:9226
       _this.moveFrame();
-      //$LASTPOS=83009244;//kernel.Boot:9244
+      //$LASTPOS=85009244;//kernel.Boot:9244
       _this.doDraw=_this.now()<_this.deadLine;
-      //$LASTPOS=83009272;//kernel.Boot:9272
+      //$LASTPOS=85009272;//kernel.Boot:9272
       if (! _this.doDraw&&_this.frameSkipped>=_this.maxFrameSkip) {
-        //$LASTPOS=83009326;//kernel.Boot:9326
+        //$LASTPOS=85009326;//kernel.Boot:9326
         _this.doDraw=true;
-        //$LASTPOS=83009348;//kernel.Boot:9348
+        //$LASTPOS=85009348;//kernel.Boot:9348
         _this.resetDeadLine();
         
       }
-      //$LASTPOS=83009377;//kernel.Boot:9377
+      //$LASTPOS=85009377;//kernel.Boot:9377
       if (_this.doDraw) {
-        //$LASTPOS=83009414;//kernel.Boot:9414
+        //$LASTPOS=85009414;//kernel.Boot:9414
         _this.drawFrame();
-        //$LASTPOS=83009436;//kernel.Boot:9436
+        //$LASTPOS=85009436;//kernel.Boot:9436
         _this.frameSkipped=0;
         
       } else {
-        //$LASTPOS=83009475;//kernel.Boot:9475
+        //$LASTPOS=85009475;//kernel.Boot:9475
         _this.frameSkipped++;
         
       }
-      //$LASTPOS=83009503;//kernel.Boot:9503
+      //$LASTPOS=85009503;//kernel.Boot:9503
       _this.afterDraw({drawn: _this.doDraw});
       
       _thread.enter(function _trc_Boot_ent_loopTimer(_thread) {
@@ -32885,7 +33045,7 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=83009533;//kernel.Boot:9533
+            //$LASTPOS=85009533;//kernel.Boot:9533
             _this.fiber$waitFrame(_thread);
             __pc=1;return;
           case 1:
@@ -32899,13 +33059,13 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=83009581;//kernel.Boot:9581
+      //$LASTPOS=85009581;//kernel.Boot:9581
       while (_this.paused) {
-        //$LASTPOS=83009606;//kernel.Boot:9606
+        //$LASTPOS=85009606;//kernel.Boot:9606
         _this.waitFor(Tonyu.timeout(1));
-        //$LASTPOS=83009642;//kernel.Boot:9642
+        //$LASTPOS=85009642;//kernel.Boot:9642
         if (! _this.paused) {
-          //$LASTPOS=83009655;//kernel.Boot:9655
+          //$LASTPOS=85009655;//kernel.Boot:9655
           _this.resetDeadLine();
         }
         
@@ -32923,17 +33083,17 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=83009581;//kernel.Boot:9581
+            //$LASTPOS=85009581;//kernel.Boot:9581
           case 1:
             if (!(_this.paused)) { __pc=3     ; break; }
-            //$LASTPOS=83009606;//kernel.Boot:9606
+            //$LASTPOS=85009606;//kernel.Boot:9606
             _this.fiber$waitFor(_thread, Tonyu.timeout(1));
             __pc=2;return;
           case 2:
             
-            //$LASTPOS=83009642;//kernel.Boot:9642
+            //$LASTPOS=85009642;//kernel.Boot:9642
             if (! _this.paused) {
-              //$LASTPOS=83009655;//kernel.Boot:9655
+              //$LASTPOS=85009655;//kernel.Boot:9655
               _this.resetDeadLine();
             }
             __pc=1;break;
@@ -32949,14 +33109,14 @@ Tonyu.klass.define({
       var _this=this;
       var s;
       
-      //$LASTPOS=83009710;//kernel.Boot:9710
+      //$LASTPOS=85009710;//kernel.Boot:9710
       s = _this.now();
       
-      //$LASTPOS=83009728;//kernel.Boot:9728
+      //$LASTPOS=85009728;//kernel.Boot:9728
       Tonyu.globals.$uiScreen.drawLayers();
-      //$LASTPOS=83009757;//kernel.Boot:9757
+      //$LASTPOS=85009757;//kernel.Boot:9757
       _this.drawTime=_this.now()-s;
-      //$LASTPOS=83009780;//kernel.Boot:9780
+      //$LASTPOS=85009780;//kernel.Boot:9780
       _this.fps_fpsCnt++;
     },
     moveFrame :function _trc_Boot_moveFrame() {
@@ -32964,71 +33124,71 @@ Tonyu.klass.define({
       var _this=this;
       var s;
       
-      //$LASTPOS=83010109;//kernel.Boot:10109
+      //$LASTPOS=85010109;//kernel.Boot:10109
       s = _this.now();
       
-      //$LASTPOS=83010127;//kernel.Boot:10127
+      //$LASTPOS=85010127;//kernel.Boot:10127
       Tonyu.globals.$_printCount=0;
-      //$LASTPOS=83010148;//kernel.Boot:10148
+      //$LASTPOS=85010148;//kernel.Boot:10148
       Tonyu.resetLoopCheck();
-      //$LASTPOS=83010177;//kernel.Boot:10177
+      //$LASTPOS=85010177;//kernel.Boot:10177
       if (_this.newLimit) {
-        //$LASTPOS=83010191;//kernel.Boot:10191
+        //$LASTPOS=85010191;//kernel.Boot:10191
         _this.newLimitCount=_this.newLimit;
       }
-      //$LASTPOS=83010249;//kernel.Boot:10249
+      //$LASTPOS=85010249;//kernel.Boot:10249
       _this._scheduler.stepsAll();
-      //$LASTPOS=83010306;//kernel.Boot:10306
+      //$LASTPOS=85010306;//kernel.Boot:10306
       Tonyu.globals.$Keys.update();
-      //$LASTPOS=83010356;//kernel.Boot:10356
+      //$LASTPOS=85010356;//kernel.Boot:10356
       Tonyu.globals.$InputDevice.update();
-      //$LASTPOS=83010413;//kernel.Boot:10413
+      //$LASTPOS=85010413;//kernel.Boot:10413
       Tonyu.globals.$screenWidth=Tonyu.globals.$Screen.width;
-      //$LASTPOS=83010446;//kernel.Boot:10446
+      //$LASTPOS=85010446;//kernel.Boot:10446
       Tonyu.globals.$screenHeight=Tonyu.globals.$Screen.height;
-      //$LASTPOS=83010481;//kernel.Boot:10481
+      //$LASTPOS=85010481;//kernel.Boot:10481
       _this.moveTime=_this.now()-s;
-      //$LASTPOS=83010504;//kernel.Boot:10504
+      //$LASTPOS=85010504;//kernel.Boot:10504
       _this.fps_rpsCnt++;
-      //$LASTPOS=83010524;//kernel.Boot:10524
+      //$LASTPOS=85010524;//kernel.Boot:10524
       Tonyu.globals.$frameCount++;
     },
     afterDraw :function _trc_Boot_afterDraw(e) {
       "use strict";
       var _this=this;
       
-      //$LASTPOS=83010697;//kernel.Boot:10697
+      //$LASTPOS=85010697;//kernel.Boot:10697
       Tonyu.globals.$Sprites.checkHit();
-      //$LASTPOS=83010752;//kernel.Boot:10752
+      //$LASTPOS=85010752;//kernel.Boot:10752
       Tonyu.globals.$Sprites.removeOneframes(e.drawn);
-      //$LASTPOS=83010792;//kernel.Boot:10792
+      //$LASTPOS=85010792;//kernel.Boot:10792
       _this.sendEvent("afterDraw",e);
     },
     initFPSParams :function _trc_Boot_initFPSParams() {
       "use strict";
       var _this=this;
       
-      //$LASTPOS=83010901;//kernel.Boot:10901
+      //$LASTPOS=85010901;//kernel.Boot:10901
       _this._fps=Tonyu.globals.$defaultFPS||30;
-      //$LASTPOS=83010932;//kernel.Boot:10932
+      //$LASTPOS=85010932;//kernel.Boot:10932
       _this.maxFrameSkip=5;
-      //$LASTPOS=83010955;//kernel.Boot:10955
+      //$LASTPOS=85010955;//kernel.Boot:10955
       _this.minFrameSkip=1;
-      //$LASTPOS=83011005;//kernel.Boot:11005
+      //$LASTPOS=85011005;//kernel.Boot:11005
       _this.frameCnt=0;
-      //$LASTPOS=83011024;//kernel.Boot:11024
+      //$LASTPOS=85011024;//kernel.Boot:11024
       _this.resetDeadLine();
-      //$LASTPOS=83011046;//kernel.Boot:11046
+      //$LASTPOS=85011046;//kernel.Boot:11046
       _this.lastMeasured=_this.now();
-      //$LASTPOS=83011071;//kernel.Boot:11071
+      //$LASTPOS=85011071;//kernel.Boot:11071
       _this.fps_fps=_this.fps_rps=_this.fps_fpsCnt=_this.fps_rpsCnt=0;
-      //$LASTPOS=83011117;//kernel.Boot:11117
+      //$LASTPOS=85011117;//kernel.Boot:11117
       _this.drawTime=5;
-      //$LASTPOS=83011128;//kernel.Boot:11128
+      //$LASTPOS=85011128;//kernel.Boot:11128
       _this.moveTime=5;
-      //$LASTPOS=83011186;//kernel.Boot:11186
+      //$LASTPOS=85011186;//kernel.Boot:11186
       _this._useRAF=true;
-      //$LASTPOS=83011240;//kernel.Boot:11240
+      //$LASTPOS=85011240;//kernel.Boot:11240
       _this.rafProcNowTime=_this.now();
     },
     now :function _trc_Boot_now() {
@@ -33041,9 +33201,9 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=83011351;//kernel.Boot:11351
+      //$LASTPOS=85011351;//kernel.Boot:11351
       _this.deadLine=_this.now()+1000/_this._fps;
-      //$LASTPOS=83011382;//kernel.Boot:11382
+      //$LASTPOS=85011382;//kernel.Boot:11382
       _this.frameSkipped=0;
     },
     waitFrame :function _trc_Boot_waitFrame() {
@@ -33051,25 +33211,25 @@ Tonyu.klass.define({
       var _this=this;
       var wt;
       
-      //$LASTPOS=83011426;//kernel.Boot:11426
+      //$LASTPOS=85011426;//kernel.Boot:11426
       wt = _this.deadLine-_this.now();
       
-      //$LASTPOS=83011454;//kernel.Boot:11454
+      //$LASTPOS=85011454;//kernel.Boot:11454
       if (wt<1) {
-        //$LASTPOS=83011475;//kernel.Boot:11475
+        //$LASTPOS=85011475;//kernel.Boot:11475
         if (wt<- 1000) {
-          //$LASTPOS=83011489;//kernel.Boot:11489
+          //$LASTPOS=85011489;//kernel.Boot:11489
           _this.resetDeadLine();
         }
-        //$LASTPOS=83011515;//kernel.Boot:11515
+        //$LASTPOS=85011515;//kernel.Boot:11515
         wt=1;
         
       }
-      //$LASTPOS=83011533;//kernel.Boot:11533
+      //$LASTPOS=85011533;//kernel.Boot:11533
       wt=_this.floor(wt);
-      //$LASTPOS=83011552;//kernel.Boot:11552
+      //$LASTPOS=85011552;//kernel.Boot:11552
       _this.waitFor(Tonyu.timeout(wt));
-      //$LASTPOS=83011585;//kernel.Boot:11585
+      //$LASTPOS=85011585;//kernel.Boot:11585
       _this.deadLine+=1000/_this._fps;
     },
     fiber$waitFrame :function _trc_Boot_f_waitFrame(_thread) {
@@ -33079,21 +33239,21 @@ Tonyu.klass.define({
       var __pc=0;
       var wt;
       
-      //$LASTPOS=83011426;//kernel.Boot:11426
+      //$LASTPOS=85011426;//kernel.Boot:11426
       wt = _this.deadLine-_this.now();
       
-      //$LASTPOS=83011454;//kernel.Boot:11454
+      //$LASTPOS=85011454;//kernel.Boot:11454
       if (wt<1) {
-        //$LASTPOS=83011475;//kernel.Boot:11475
+        //$LASTPOS=85011475;//kernel.Boot:11475
         if (wt<- 1000) {
-          //$LASTPOS=83011489;//kernel.Boot:11489
+          //$LASTPOS=85011489;//kernel.Boot:11489
           _this.resetDeadLine();
         }
-        //$LASTPOS=83011515;//kernel.Boot:11515
+        //$LASTPOS=85011515;//kernel.Boot:11515
         wt=1;
         
       }
-      //$LASTPOS=83011533;//kernel.Boot:11533
+      //$LASTPOS=85011533;//kernel.Boot:11533
       wt=_this.floor(wt);
       
       _thread.enter(function _trc_Boot_ent_waitFrame(_thread) {
@@ -33101,12 +33261,12 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=83011552;//kernel.Boot:11552
+            //$LASTPOS=85011552;//kernel.Boot:11552
             _this.fiber$waitFor(_thread, Tonyu.timeout(wt));
             __pc=1;return;
           case 1:
             
-            //$LASTPOS=83011585;//kernel.Boot:11585
+            //$LASTPOS=85011585;//kernel.Boot:11585
             _this.deadLine+=1000/_this._fps;
             _thread.exit(_this);return;
           }
@@ -33123,21 +33283,21 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=83011869;//kernel.Boot:11869
+      //$LASTPOS=85011869;//kernel.Boot:11869
       _this._fps=fps;
-      //$LASTPOS=83011886;//kernel.Boot:11886
+      //$LASTPOS=85011886;//kernel.Boot:11886
       if (typeof  maxFrameSkip!="number") {
-        //$LASTPOS=83011921;//kernel.Boot:11921
+        //$LASTPOS=85011921;//kernel.Boot:11921
         maxFrameSkip=5;
       }
-      //$LASTPOS=83011942;//kernel.Boot:11942
+      //$LASTPOS=85011942;//kernel.Boot:11942
       if (maxFrameSkip<=0) {
-        //$LASTPOS=83011963;//kernel.Boot:11963
+        //$LASTPOS=85011963;//kernel.Boot:11963
         maxFrameSkip=1;
       }
-      //$LASTPOS=83011984;//kernel.Boot:11984
+      //$LASTPOS=85011984;//kernel.Boot:11984
       _this.maxFrameSkip=maxFrameSkip;
-      //$LASTPOS=83012023;//kernel.Boot:12023
+      //$LASTPOS=85012023;//kernel.Boot:12023
       _this.resetDeadLine();
     },
     __getter__useRAF :function _trc_Boot___getter__useRAF() {
@@ -33150,13 +33310,13 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=83012127;//kernel.Boot:12127
+      //$LASTPOS=85012127;//kernel.Boot:12127
       if (v) {
-        //$LASTPOS=83012145;//kernel.Boot:12145
+        //$LASTPOS=85012145;//kernel.Boot:12145
         _this.rafProcNowTime=_this.now();
         
       } else {
-        //$LASTPOS=83012190;//kernel.Boot:12190
+        //$LASTPOS=85012190;//kernel.Boot:12190
         _this.resetDeadLine();
         
       }
@@ -33179,20 +33339,20 @@ Tonyu.klass.define({
       var _this=this;
       var nowTime;
       
-      //$LASTPOS=83012428;//kernel.Boot:12428
+      //$LASTPOS=85012428;//kernel.Boot:12428
       nowTime = _this.now();
       
-      //$LASTPOS=83012454;//kernel.Boot:12454
+      //$LASTPOS=85012454;//kernel.Boot:12454
       if (nowTime>=_this.lastMeasured+1000) {
-        //$LASTPOS=83012497;//kernel.Boot:12497
+        //$LASTPOS=85012497;//kernel.Boot:12497
         _this.fps_fps=_this.fps_fpsCnt;
-        //$LASTPOS=83012526;//kernel.Boot:12526
+        //$LASTPOS=85012526;//kernel.Boot:12526
         _this.fps_rps=_this.fps_rpsCnt;
-        //$LASTPOS=83012555;//kernel.Boot:12555
+        //$LASTPOS=85012555;//kernel.Boot:12555
         _this.fps_fpsCnt=0;
-        //$LASTPOS=83012578;//kernel.Boot:12578
+        //$LASTPOS=85012578;//kernel.Boot:12578
         _this.fps_rpsCnt=0;
-        //$LASTPOS=83012601;//kernel.Boot:12601
+        //$LASTPOS=85012601;//kernel.Boot:12601
         _this.lastMeasured=nowTime;
         
       }
@@ -33215,51 +33375,51 @@ Tonyu.klass.define({
       
       
       
-      //$LASTPOS=84000070;//kernel.FadeEffect:70
+      //$LASTPOS=86000070;//kernel.FadeEffect:70
       _this.fillStyle = _this.fillStyle||"black";
       
       
       
-      //$LASTPOS=84000159;//kernel.FadeEffect:159
+      //$LASTPOS=86000159;//kernel.FadeEffect:159
       _this.duration = _this.duration||30;
       
       switch (_this.type) {
       case "in":
-        //$LASTPOS=84000228;//kernel.FadeEffect:228
+        //$LASTPOS=86000228;//kernel.FadeEffect:228
         _this.alpha=255;
-        //$LASTPOS=84000238;//kernel.FadeEffect:238
+        //$LASTPOS=86000238;//kernel.FadeEffect:238
         _this.alphaTo=0;
         break;
         
       case "out":
-        //$LASTPOS=84000275;//kernel.FadeEffect:275
+        //$LASTPOS=86000275;//kernel.FadeEffect:275
         _this.alpha=0;
-        //$LASTPOS=84000283;//kernel.FadeEffect:283
+        //$LASTPOS=86000283;//kernel.FadeEffect:283
         _this.alphaTo=255;
         break;
         
       }
-      //$LASTPOS=84000304;//kernel.FadeEffect:304
+      //$LASTPOS=86000304;//kernel.FadeEffect:304
       _this.fillRect(0,0,Tonyu.globals.$screenWidth,Tonyu.globals.$screenHeight);
-      //$LASTPOS=84000346;//kernel.FadeEffect:346
+      //$LASTPOS=86000346;//kernel.FadeEffect:346
       _this.sa=_this.alpha;
-      //$LASTPOS=84000356;//kernel.FadeEffect:356
-      //$LASTPOS=84000361;//kernel.FadeEffect:361
+      //$LASTPOS=86000356;//kernel.FadeEffect:356
+      //$LASTPOS=86000361;//kernel.FadeEffect:361
       _this.i=0;for (; _this.i<_this.duration ; _this.i++) {
         {
-          //$LASTPOS=84000387;//kernel.FadeEffect:387
+          //$LASTPOS=86000387;//kernel.FadeEffect:387
           _this.progress=_this.i/(_this.duration-1);
-          //$LASTPOS=84000416;//kernel.FadeEffect:416
+          //$LASTPOS=86000416;//kernel.FadeEffect:416
           _this.alpha=_this.alphaTo*_this.progress+_this.sa*(1-_this.progress);
-          //$LASTPOS=84000460;//kernel.FadeEffect:460
+          //$LASTPOS=86000460;//kernel.FadeEffect:460
           _this.update();
         }
       }
-      //$LASTPOS=84000472;//kernel.FadeEffect:472
+      //$LASTPOS=86000472;//kernel.FadeEffect:472
       _this.sendEvent("complete");
-      //$LASTPOS=84000495;//kernel.FadeEffect:495
+      //$LASTPOS=86000495;//kernel.FadeEffect:495
       if (_this.page) {
-        //$LASTPOS=84000511;//kernel.FadeEffect:511
+        //$LASTPOS=86000511;//kernel.FadeEffect:511
         _this.loadPage(_this.page,_this.params||{});
         
       }
@@ -33273,33 +33433,33 @@ Tonyu.klass.define({
       
       
       
-      //$LASTPOS=84000070;//kernel.FadeEffect:70
+      //$LASTPOS=86000070;//kernel.FadeEffect:70
       _this.fillStyle = _this.fillStyle||"black";
       
       
       
-      //$LASTPOS=84000159;//kernel.FadeEffect:159
+      //$LASTPOS=86000159;//kernel.FadeEffect:159
       _this.duration = _this.duration||30;
       
       switch (_this.type) {
       case "in":
-        //$LASTPOS=84000228;//kernel.FadeEffect:228
+        //$LASTPOS=86000228;//kernel.FadeEffect:228
         _this.alpha=255;
-        //$LASTPOS=84000238;//kernel.FadeEffect:238
+        //$LASTPOS=86000238;//kernel.FadeEffect:238
         _this.alphaTo=0;
         break;
         
       case "out":
-        //$LASTPOS=84000275;//kernel.FadeEffect:275
+        //$LASTPOS=86000275;//kernel.FadeEffect:275
         _this.alpha=0;
-        //$LASTPOS=84000283;//kernel.FadeEffect:283
+        //$LASTPOS=86000283;//kernel.FadeEffect:283
         _this.alphaTo=255;
         break;
         
       }
-      //$LASTPOS=84000304;//kernel.FadeEffect:304
+      //$LASTPOS=86000304;//kernel.FadeEffect:304
       _this.fillRect(0,0,Tonyu.globals.$screenWidth,Tonyu.globals.$screenHeight);
-      //$LASTPOS=84000346;//kernel.FadeEffect:346
+      //$LASTPOS=86000346;//kernel.FadeEffect:346
       _this.sa=_this.alpha;
       
       _thread.enter(function _trc_FadeEffect_ent_main(_thread) {
@@ -33307,16 +33467,16 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=84000356;//kernel.FadeEffect:356
-            //$LASTPOS=84000361;//kernel.FadeEffect:361
+            //$LASTPOS=86000356;//kernel.FadeEffect:356
+            //$LASTPOS=86000361;//kernel.FadeEffect:361
             _this.i=0;
           case 1:
             if (!(_this.i<_this.duration)) { __pc=4     ; break; }
-            //$LASTPOS=84000387;//kernel.FadeEffect:387
+            //$LASTPOS=86000387;//kernel.FadeEffect:387
             _this.progress=_this.i/(_this.duration-1);
-            //$LASTPOS=84000416;//kernel.FadeEffect:416
+            //$LASTPOS=86000416;//kernel.FadeEffect:416
             _this.alpha=_this.alphaTo*_this.progress+_this.sa*(1-_this.progress);
-            //$LASTPOS=84000460;//kernel.FadeEffect:460
+            //$LASTPOS=86000460;//kernel.FadeEffect:460
             _this.fiber$update(_thread);
             __pc=2;return;
           case 2:
@@ -33326,11 +33486,11 @@ Tonyu.klass.define({
             __pc=1;break;
           case 4     :
             
-            //$LASTPOS=84000472;//kernel.FadeEffect:472
+            //$LASTPOS=86000472;//kernel.FadeEffect:472
             _this.sendEvent("complete");
-            //$LASTPOS=84000495;//kernel.FadeEffect:495
+            //$LASTPOS=86000495;//kernel.FadeEffect:495
             if (_this.page) {
-              //$LASTPOS=84000511;//kernel.FadeEffect:511
+              //$LASTPOS=86000511;//kernel.FadeEffect:511
               _this.loadPage(_this.page,_this.params||{});
               
             }
@@ -33374,27 +33534,27 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=85000057;//kernel.DxChar:57
+      //$LASTPOS=87000057;//kernel.DxChar:57
       Tonyu.classes.kernel.SpriteChar.apply( _this, [xx,yy,pp,ff]);
-      //$LASTPOS=85000082;//kernel.DxChar:82
+      //$LASTPOS=87000082;//kernel.DxChar:82
       _this.scaleX=1;
-      //$LASTPOS=85000097;//kernel.DxChar:97
+      //$LASTPOS=87000097;//kernel.DxChar:97
       if (sz) {
-        //$LASTPOS=85000105;//kernel.DxChar:105
+        //$LASTPOS=87000105;//kernel.DxChar:105
         _this.scaleX=sz;
       }
-      //$LASTPOS=85000121;//kernel.DxChar:121
+      //$LASTPOS=87000121;//kernel.DxChar:121
       _this.angle=0;
-      //$LASTPOS=85000135;//kernel.DxChar:135
+      //$LASTPOS=87000135;//kernel.DxChar:135
       if (rt) {
-        //$LASTPOS=85000143;//kernel.DxChar:143
+        //$LASTPOS=87000143;//kernel.DxChar:143
         _this.angle=rt;
       }
-      //$LASTPOS=85000158;//kernel.DxChar:158
+      //$LASTPOS=87000158;//kernel.DxChar:158
       _this.alpha=255;
-      //$LASTPOS=85000174;//kernel.DxChar:174
+      //$LASTPOS=87000174;//kernel.DxChar:174
       if (al) {
-        //$LASTPOS=85000182;//kernel.DxChar:182
+        //$LASTPOS=87000182;//kernel.DxChar:182
         _this.alpha=al;
       }
     },
@@ -33402,15 +33562,15 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=85000212;//kernel.DxChar:212
+      //$LASTPOS=87000212;//kernel.DxChar:212
       if (_this._isInvisible) {
         return _this;
       }
-      //$LASTPOS=85000243;//kernel.DxChar:243
+      //$LASTPOS=87000243;//kernel.DxChar:243
       _this.onDraw();
-      //$LASTPOS=85000258;//kernel.DxChar:258
+      //$LASTPOS=87000258;//kernel.DxChar:258
       _this.detectShape();
-      //$LASTPOS=85000278;//kernel.DxChar:278
+      //$LASTPOS=87000278;//kernel.DxChar:278
       _this.drawDxSprite(_this.x,_this.y,_this.p,_this.f,_this.zOrder,_this.angle,_this.alpha,_this.scaleX,_this.scaleY);
     },
     __dummy: false

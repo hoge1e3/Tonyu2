@@ -1,0 +1,28 @@
+extends null;
+includes QueryMod,SpriteMod3D;
+native Math;
+"field strict";
+\getCrashShape() {// 3D
+    var actWidth=(width||radius*2)*scaleX*crashScale, actHeight;
+    if(typeof scaleY==="undefined"){
+        actHeight=(height||radius*2)*scaleX*crashScale;
+    }else{
+        actHeight=(height||radius*2)*scaleY*crashScale;
+    }
+    return typeof x=="number" &&
+    typeof y=="number" &&
+    typeof actWidth=="number" &&
+    typeof actHeight=="number" &&
+    new CubeShape{
+        x,y,z,
+        width:Math.abs(actWidth),height:Math.abs(actHeight),
+        depth:(Math.abs(actWidth)+Math.abs(actHeight))/2
+    };
+}
+\screenOut(a) {//3D
+    if (!a) a=0;
+    return false;// TODO
+    var cp=$Screen.convert(this,$Screen);
+    return abs(clamped(cp.x,-a,$screenWidth+a))+
+        abs(clamped(cp.y,-a,$screenHeight+a));
+}

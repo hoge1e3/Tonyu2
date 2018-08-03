@@ -1,7 +1,9 @@
 extends null;
 includes SpriteMod;
 "field strict";
+var x,y,z;
 
 \draw3D(camera) {
+    detectShape();
     camera.addSprite3D(this);
 }

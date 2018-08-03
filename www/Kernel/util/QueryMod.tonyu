@@ -27,10 +27,10 @@ nowait \all(c) {//23D
     };
     return res;
 }
-nowait \allCrash(t) {//2D  (//23D if use getCrashShape)
+nowait \allCrash(t) {//23D
     var res=new TQuery(this);
     var sp=this;
-    var t1=getCrashShape();
+    var t1=this.getCrashShape();// TODO abstract method
     if (!t1) return res;
     layer.sprites.forEach(\(s) {
         var t2;
@@ -43,6 +43,11 @@ nowait \allCrash(t) {//2D  (//23D if use getCrashShape)
     });
     return res;
 }
+//abstract nowait \getCrashShape();
+// why {empty} method is not OK?
+//          BaseActor->QM  <|--  Actor->QM2  ,
+//          Actor cannot override QM2:getCrashShape
+//          since BaseActor already defines QM:getCrashShape{empty}
 nowait \crashTo(t) {//23D
     if (!t) return false;
     if (typeof t=="function") {
@@ -50,9 +55,9 @@ nowait \crashTo(t) {//23D
     }
     return crashTo1(t);
 }
-nowait \crashTo1(t) {//2D (//23D if use getCrashShape)
+nowait \crashTo1(t) {//23D
     if (!t || t._isDead) return false;
-    var t1=getCrashShape();
+    var t1=this.getCrashShape();//TODO abstract method
     var t2=t.getCrashShape();
     return t1 && t1.intersects(t2);
 }
@@ -69,23 +74,6 @@ nowait \crashTo1(t) {//2D (//23D if use getCrashShape)
     }
 }
 
-\getCrashShape() {
-    //return new CubeShape(...);// if 3D
-    return new RectShape(getCrashRect());
-}
-nowait \getCrashRect() {//2D
-    var actWidth=(width||radius*2)*scaleX*crashScale, actHeight;
-    if(typeof scaleY==="undefined"){
-        actHeight=(height||radius*2)*scaleX*crashScale;
-    }else{
-        actHeight=(height||radius*2)*scaleY*crashScale;
-    }
-    return typeof x=="number" &&
-    typeof y=="number" &&
-    typeof actWidth=="number" &&
-    typeof actHeight=="number" &&
-    {x,y,width:Math.abs(actWidth),height:Math.abs(actHeight)};
-}
 nowait \allWithin(t,distance) {//23D (use dist with 3d)
     var res=new TQuery(this);
     var sp=this;
@@ -131,24 +119,18 @@ nowait \watchHit(typeA,typeB,onHit) {//23D
         onHit.apply(this,[a,b]);
     });
 }
-\screenOut(a) {//2D
-    if (!a) a=0;
-    var cp=$Screen.convert(this,$Screen);
-    return abs(clamped(cp.x,-a,$screenWidth+a))+
-        abs(clamped(cp.y,-a,$screenHeight+a));
-}
 
 \screenOutChecker(d,f){//23D
     while(true){
         while(true){
-            if(screenOut()>d){
+            if(this.screenOut()>d){//TODO abstract method
                 f();
                 break;
             }
             update();
         }
         while(true){
-            if(screenOut()<=d){
+            if(this.screenOut()<=d){//TODO abstract method
                 break;
             }
             update();

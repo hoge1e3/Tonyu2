@@ -25,7 +25,7 @@ nowait \findTouch(params) {
         r={x,y,width=params.width, height=params.height};
     } else {
         params.scale=params.scale||2;
-        r=getCrashRect();
+        r=this.getCrashShape(); //TODO abstract
         if (!r) return null;
         r={
             x,y,

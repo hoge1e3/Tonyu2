@@ -1,6 +1,6 @@
 extends null;
 "field strict";
-var x,y,p,pImg,text,size,font,align,fillStyle,
+var p,pImg,text,size,font,align,fillStyle,
 scaleX,scaleY,width,height,radius,rotation,alpha,
 position,zOrder,_isInvisible;
 native Tonyu;
