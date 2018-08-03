@@ -1,0 +1,7 @@
+extends null;
+includes SpriteMod;
+"field strict";
+
+\draw3D(camera) {
+    camera.addSprite3D(this);
+}

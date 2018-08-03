@@ -1,4 +1,5 @@
 extends BaseActor;
+includes SpriteMod3D;
 "field strict";
 var z,direction;
 native Tonyu;
@@ -43,16 +44,6 @@ native Tonyu;
 
 \defaultLayer{
     return $mainLayer3D;
-}
-\draw3D(camera) {
-    camera.addSprite3D(this);
-    /*var p=camera.to2D(position);
-    if (p) {
-        camera.addSprite2D(new ActorSprite{
-            x=p.x, y=p.y, scaleX=p.scale, p=this.p,
-            rotation, alpha, zOrder=p.z
-        });
-    }*/
 }
 nowait \dist(dx,dy,dz) {
     if (typeof dx=="object") {

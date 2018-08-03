@@ -1,2 +1,3 @@
 extends BaseActor;
+includes SpriteMod2D,OneframeSpriteMod;
 "field strict";

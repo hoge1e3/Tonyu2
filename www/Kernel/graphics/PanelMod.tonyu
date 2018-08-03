@@ -1,5 +1,5 @@
 extends TObject;
-includes FileMod,MathMod,SpriteMod,EventMod;
+includes FileMod,MathMod,SpriteMod2D,EventMod;
 "field strict";
 native $;
 native Math;

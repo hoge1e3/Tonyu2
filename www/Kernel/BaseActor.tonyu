@@ -1,5 +1,5 @@
 extends null;
-includes MathMod,EventMod,OneframeSpriteMod,
+includes MathMod,EventMod,
 ThreadGroupMod,EventHandlerCaller,DialogMod,FileMod,AnimMod,SchedulerMod,
 QueryMod,InputMod,LifeCycleMod,SpriteMod,ParallelMod,
 PlayMod, ParallelMod;
