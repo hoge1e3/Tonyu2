@@ -1,9 +1,12 @@
-extends Actor;
+extends TObject;
+includes FileMod,MathMod,SpriteMod,EventMod;
+"field strict";
 native $;
 native Math;
 native isNaN;
 native Tonyu;
 native Image;
+var canvas,_drawn,_fillStyle,px,py;
 \new(opt){
     super(opt);
     //this.width=width;
@@ -11,7 +14,6 @@ native Image;
     if (canvas) {
         width=canvas.width;
         height=canvas.height;
-        parallel("watchResize");
     } else {
         setPanel(width||$screenWidth||465,height||$screenHeight||465);
         //buf=$("<canvas>").attr{width,height};
@@ -23,20 +25,11 @@ native Image;
     if(alpha==null) alpha=255;
     if(_drawn==null) _drawn=false;
 }
-\watchResize() {
-    while(true) {
-        if (width!=canvas.width || height!=canvas.height) {
-            width=canvas.width;height=canvas.height;
-            fireEvent("resize",{width,height});
-        }
-        update();
-    }
-}
 //\setPanel({width,height})
 \setPanel(width,height){
     this.width=trunc(width);
     this.height=trunc(height);
-    buf=$("<canvas>").attr{width,height};
+    var buf=$("<canvas>").attr{width,height};
     canvas=buf[0];
     imageSmoothingEnabled=!$imageSmoothingDisabled;
     _drawn=false;
@@ -115,7 +108,7 @@ native Image;
     if (arguments.length==0) _drawn=false;
 }
 \getPixel(getX,getY){
-    var ctx;
+    var ctx,imagedata,colordata;
     if(typeof getX=="number" && !isNaN(getX) &&
     typeof getY=="number" && !isNaN(getY)){
         ctx=getContext();
@@ -130,7 +123,7 @@ native Image;
 \scroll(scrollX,scrollY){
     var ctx=getContext();
     ctx.save();
-    imagedata=ctx.getImageData(0,0,this.width,this.height);
+    var imagedata=ctx.getImageData(0,0,this.width,this.height);
     clearRect(0,0,width,height);
     ctx.putImageData(imagedata,-scrollX,-scrollY);
     ctx.restore();
@@ -221,66 +214,6 @@ nowait \copy() {
         }
     }
 }
-// DO NOT move to PanelMod! (layer is field)
-\convert(obj, toLayer) {
-    // Only supports this <-> this.layer
-    // Why?  other layers (i.e. $mainLayer) are depends on screen(When Multi screen)
-    // ({x,y})   -> from==this to==layer
-    // ({x,y},layer) -> from==this to==layer
-    // ({x,y,this})  -> from==this to==layer
-    // ({x,y},this)  -> from==layer to==this
-    // ({x,y,layer}) -> from==layer to==this
-    var fromLayer=obj.layer;
-    if (fromLayer==null && toLayer==null) {
-        fromLayer=this;toLayer=layer;
-    } else if (fromLayer==null && toLayer===layer) {
-        fromLayer=this;
-    } else if (fromLayer===this && toLayer==null) {
-        toLayer=layer;
-    } else if (fromLayer==null && toLayer===this) {
-        fromLayer=layer;
-    } else if (fromLayer===layer && toLayer==null) {
-        toLayer=this;
-    }
-    if (fromLayer===toLayer) return obj;
-    var scaleY=this.scaleY||scaleX;
-    if (fromLayer==null || toLayer==null) throw new Error("layer not set");
-    if (fromLayer===this && toLayer===layer) {
-        // panelXY to world
-        var dx=obj.x-width/2;
-        var dy=obj.y-height/2;
-        var rt=rotation;
-        // (x,y)= l.sp + R(rt)*(obj-l.wp)/l.scale;
-        // (x)= l.spx + (cos(rt) cos(rt+90))*(dx)/l.scale;
-        // (y)= l.spy + (sin(rt) sin(rt+90))*(dy)/l.scale;
-        var x=this.x+(cos(rt)*dx+cos(rt+90)*dy)*scaleX;
-        var y=this.y+(sin(rt)*dx+sin(rt+90)*dy)*scaleY;
-        return {x,y,
-            rotation:obj.rotation,
-            scale:obj.scale,
-            layer:toLayer
-        };
-    } else if (fromLayer===layer && toLayer===this) {
-        // world to panelXY
-        var rt=-rotation;
-        var dx=obj.x-(this.x);
-        var dy=obj.y-(this.y);
-        //   print(width,height,rt,scaleX,scaleY);
-        // (x,y)= l.sp + R(rt)*(obj-l.wp)/l.scale;
-        // (x)= l.spx + (cos(rt) cos(rt+90))*(dx)/l.scale;
-        // (y)= l.spy + (sin(rt) sin(rt+90))*(dy)/l.scale;
-        var x=width/2 + (cos(rt)*dx+cos(rt+90)*dy)/scaleX;
-        var y=height/2 + (sin(rt)*dx+sin(rt+90)*dy)/scaleY;
-        return {x,y,
-            rotation:rt,
-            scale:1/scaleX,
-            layer:toLayer
-        };
-    } else {
-        print("no support",obj.layer, toLayer);
-        throw new Error("not support");
-    }
-}
 \drawLine(x,y,dx,dy) {
     if (dx==null && dy==null) {
         if (x==null && y==null) {
@@ -310,11 +243,8 @@ nowait \copy() {
     return context.putImageData(data,x,y);
 }
 
-\replace(x,y,width,height,replacement) {
-
-}
 \save(fn) {
-    var url=buf[0].toDataURL();
+    var url=canvas.toDataURL();
     if (typeof fn==="string") fn=file(fn);
     return fn.text( url );
 }
