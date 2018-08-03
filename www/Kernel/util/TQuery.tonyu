@@ -5,6 +5,7 @@ includes MathMod;
     if (context is BaseActor) context={actor:context};
     if (context is Screen) context={screen:context};
     context=context||{};
+    context.is3D=(context.actor is Actor3D);
     context.screen=context.screen||$Screen;
     this.context=context;
 }
@@ -122,8 +123,14 @@ includes MathMod;
     if (x==null) {
         if (!parent) throw new Error("nearests: 座標を指定してください");
         x=parent.x;y=parent.y;
+        if (context.is3D) z=parent.z;
     }
     if (typeof x=="object") {y=x.y;x=x.x;}
+    if (context.is3D) {
+        return mins \(o) {
+                return context.actor.dist(o);
+        };
+    }
     return mins \(o) {
         return dist(o.x-x,o.y-y);
     };
@@ -132,18 +139,24 @@ includes MathMod;
     return nearests(x,y)[0];
 }
 \withins(xo,yd,d) {
-    var x,y;
+    var x,y,z;
     if (arguments.length==1) {
         if (!parent) throw new Error("withins: 座標を指定してください");
         x=parent.x;
         y=parent.y;
+        if (context.is3D) z=parent.z;
         d=xo;
     } else if (typeof xo=="object") {
         x=xo.x;y=xo.y;d=yd;
     } else {
         x=xo;y=yd;
     }
-    return find \(o) {
+    if (context.is3D) {
+        return find \(o) {//3D
+            return context.actor.dist(o)<=d;
+        };
+    }
+    return find \(o) {//2D
         return dist(o.x-x,o.y-y)<=d;
     };
 }

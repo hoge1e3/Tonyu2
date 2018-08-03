@@ -73,7 +73,7 @@ nowait \draw(ctx) {//2D
             ctx.fillRect(-width/2,-height/2,width,height);
         }
         ctx.restore();
-    } else if (typeof p.draw==="function") {
+    } else if (p && typeof p.draw==="function") {
         ctx.save();
         performTransform(ctx);
         p.draw(ctx);

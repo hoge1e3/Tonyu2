@@ -30,16 +30,14 @@ nowait \all(c) {//23D
 nowait \allCrash(t) {//2D  (//23D if use getCrashShape)
     var res=new TQuery(this);
     var sp=this;
-    var t1=getCrashRect();
+    var t1=getCrashShape();
     if (!t1) return res;
     layer.sprites.forEach(\(s) {
         var t2;
         if (s!==this &&
         !s.excludeFromAll &&
         s instanceof t &&
-        (t2=s.getCrashRect()) &&
-        Math.abs(t1.x-t2.x)*2<t1.width+t2.width &&
-        Math.abs(t1.y-t2.y)*2<t1.height+t2.height) {
+        (t2=s.getCrashShape()) && t1.intersects(t2)) {
             res.push(s);
         }
     });
@@ -54,12 +52,9 @@ nowait \crashTo(t) {//23D
 }
 nowait \crashTo1(t) {//2D (//23D if use getCrashShape)
     if (!t || t._isDead) return false;
-    var t1=getCrashRect();
-    var t2=t.getCrashRect();
-    return
-    t1 && t2 &&
-    Math.abs(t1.x-t2.x)*2<t1.width+t2.width &&
-    Math.abs(t1.y-t2.y)*2<t1.height+t2.height;
+    var t1=getCrashShape();
+    var t2=t.getCrashShape();
+    return t1 && t1.intersects(t2);
 }
 \crashToChecker(d,f){//23D
     while(true){
@@ -73,11 +68,11 @@ nowait \crashTo1(t) {//2D (//23D if use getCrashShape)
         update();
     }
 }
-/*
-\getCrashShape() {// TODO
-    //return new CubeShape(...);
-    //return new RectShape(getCrashRect());
-}*/
+
+\getCrashShape() {
+    //return new CubeShape(...);// if 3D
+    return new RectShape(getCrashRect());
+}
 nowait \getCrashRect() {//2D
     var actWidth=(width||radius*2)*scaleX*crashScale, actHeight;
     if(typeof scaleY==="undefined"){
@@ -94,14 +89,12 @@ nowait \getCrashRect() {//2D
 nowait \allWithin(t,distance) {//23D (use dist with 3d)
     var res=new TQuery(this);
     var sp=this;
-    var t1=getCrashRect();
-    if (!t1) return res;
+    if (typeof t !=="function") throw new Error("allWithinの第一引数はクラスにしてください");
     layer.sprites.forEach(\(s) {
-        var t2;
         if (s!==this &&
         !s.excludeFromAll &&
         s instanceof t &&
-        Math.sqrt(Math.abs(x-s.x)*Math.abs(x-s.x)+ Math.abs(y-s.y)*Math.abs(y-s.y))<distance) {
+        dist(s)<distance) {
             res.push(s);
         }
     });
