@@ -99,13 +99,14 @@ mainLoop();
     $printLimit=100;
 }
 \initLayers() {
+    $screenWidth=465;
+    $screenHeight=465;
     $mainLayer=$Sprites=new Sprites();
     $frontLayer=$FrontSprites=new Sprites();
     $backLayer=new Sprites();
     $uiLayer=new Sprites();
+    $mainLayer3D=new Sprites3D();
     cvj=$mainCanvas||$("canvas");
-    $screenWidth=465;
-    $screenHeight=465;
     $Screen=new Screen{width:$screenWidth, height:$screenHeight, layer:$uiLayer};
     $Screen.on("resize") \{
         $screenWidth=$Screen.width;
@@ -123,7 +124,8 @@ mainLoop();
         }
     };
     $Screen.addLayer($frontLayer);
-    $Screen.addLayer($mainLayer);
+    $camera2D=$Screen.addLayer($mainLayer);
+    $camera3D=$Screen.addLayer($mainLayer3D);
     $Screen.addLayer($backLayer);
     $Screen.setBGColor("rgb(20,80,180)");
     $Screen.selectLayer($mainLayer);

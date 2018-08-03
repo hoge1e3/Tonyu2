@@ -1,19 +1,46 @@
 extends TObject;
+native console;
 "field strict";
-var sprites;
+var sprites:Array;//of Actor3D
 \new(p) {
     super(p);
     sprites=[];
 }
+\add(a:Actor3D) {
+    sprites.push(a);
+}
 \draw(ctx,camera) {
-    camera.sprites=[];
+    var s2ds=[];
+    camera.sprites2D=s2ds;
     for (var s of sprites) {
         s.draw3D(camera);
     }
-    var s2ds=sprites.sort \(a,b) {
+    s2ds=s2ds.sort \(a,b) {
         return b.zOrder-a.zOrder;
     };
     for (var s2d of s2ds) {
-        s2d.draw(ctx);
+        s2d.draw(ctx,camera);
     }
+}
+//--- TODO : unify to Sprites
+nowait \remove(s) {
+    var idx=sprites.indexOf(s);
+    //console.log("RM",idx);
+    if (idx<0) return;
+    sprites.splice(idx,1);
+    delete s.__addedToSprites;
+    //console.log("RM",idx,sprites);
+}
+nowait \all(c) {
+    var res=new TQuery;
+    if (arguments.length>0 && typeof c!="function") {
+        return res;
+    }
+    sprites.forEach \(s) {
+        if (s===this) return;
+        if (!c || s instanceof c) {
+            res.push(s);
+        }
+    };
+    return res;
 }

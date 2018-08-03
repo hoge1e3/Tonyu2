@@ -1,20 +1,60 @@
 extends Actor3D;
 "field strict";
-var sprites;
+var group:Sprites3D;
+var sprites2D:Array;// of ActorSprite
 var z1:Number;// z where scale==1
+var spx,spy;
+/*
+     C
+   z1|  S
+   \ | /|
+ p  \|/ |
+    /|\ |r
+   / | \|
+      z1
+
+p.z:z1 = p.x:r.x
+r.x= p.x*z1/p.z
+
+*/
 \addSprite2D(s) {// called during draw3D
-    sprites.push(s);
+    sprites2D.push(s);
+}
+\addSprite3D(s) {
+    var p=to2D(s.position || new Vec3(s.x,s.y,s.z));
+    if (p) {
+        if (s is ActorSprite) {
+            s.x=p.x; s.y=p.y;
+            s.zOrder=p.z;
+            s.scaleX*=p.scale;
+        } else {
+            s=new ActorSprite{
+                x=p.x, y=p.y, scaleX=p.scale, p=s.p,
+                rotation:s.rotation||0, alpha:s.alpha||255,
+                zOrder=p.z
+            };
+        }
+        addSprite2D(s);
+    }
 }
 \new(p) {
     super(p);
-    rotation={x:0,y:0,z:0,order:"yxz"};
+    spx=spx||$screenWidth/2;
+    spy=spy||$screenHeight/2;
+    z1=z1||$screenWidth/2;
+    z=-z1;
+    //rotation={x:0,y:0,z:0,order:"yxz"};
 }
 \to2D(pos:Vec3) {
     var p=pos.sub(position);
-
-
+    var x=p.innerProduct(direction.right);
+    var y=p.innerProduct(direction.down);
+    var z=p.innerProduct(direction.forward);
+    if (z<=0) return null;
+    x=x*z1/z+spx;
+    y=y*z1/z+spy;
+    return {x,y,z,scale:z1/z};
 }
-\unitVectors {
-    var v={x=new Vec3(1,0,0),y=new Vec(0,1,0),z=new Vec(0,0,1)};
-
+\draw(ctx) {
+    group.draw(ctx,this);
 }
