@@ -1,0 +1,9 @@
+extends TObject;
+"field strict";
+native Math;
+var x,y,width,height;// (x,y): center
+
+\crashTo(s:RectShape) {
+    return Math.abs(x-s.x)*2<width+s.width &&
+    Math.abs(y-s.y)*2<height+s.height;
+}

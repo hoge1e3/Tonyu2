@@ -7,8 +7,8 @@ native isNaN;
 native Tonyu;
 native Image;
 var canvas,_drawn,_fillStyle,px,py;
-\new(opt){
-    super(opt);
+\initPanelMod(){
+throw "Check overrides in spritesmod /oneframeSpritemod";
     //this.width=width;
     //this.height=height;
     if (canvas) {
