@@ -112,6 +112,19 @@ return Tonyu=function () {
 						console.log("WHY2!",prot[n],prot,n);
 						throw new Error("WHY2!"+n);
 					}
+				} else {
+					if (prot[n]!==m.methods[n] && n!=="main" && n!=="fiber$main") {
+						/*
+						Override of including module
+						MOD  TQuery::min kernel.MathMod
+						MOD  TQuery::max kernel.MathMod
+						MOD  Vec3::dist kernel.MathMod
+						MOD  any_class::main any_module
+						*/
+						// Why cannot override super-class methods?
+						// because super.hoge() in module cannot detect super class
+						//console.log("MOD ",shortName+"::"+n,(m&&m.meta&&m.meta.fullName));
+					}
 				}
 			}
 		});

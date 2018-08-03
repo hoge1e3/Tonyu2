@@ -139,6 +139,7 @@ nowait \watchHit(typeA,typeB,onHit) {
     return abs(clamped(cp.x,-a,$screenWidth+a))+
         abs(clamped(cp.y,-a,$screenHeight+a));
 }
+
 \screenOutChecker(d,f){
     while(true){
         while(true){
