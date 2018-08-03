@@ -8,14 +8,14 @@ native Tonyu;
 native Math;
 native console;
 
-\initSpriteMod() {
+\initSpriteMod() {//23D
     position=new Vec3View(this);
     if (scaleX==null) scaleX=1;
     if (rotation==null) rotation=0;
     if (alpha==null) alpha=255;
     if (zOrder==null) zOrder=0;
 }
-nowait \detectShape() {
+nowait \detectShape() {//23D
     if (typeof p!="number") {
         p=0;
     }
@@ -25,7 +25,7 @@ nowait \detectShape() {
     width=pImg.width;
     height=pImg.height;
 }
-nowait \performTransform(ctx) {
+nowait \performTransform(ctx) {//2D
     if (x!==x || y!==y || x==null || y==null) {
         //console.log("警告：",getClassInfo().shortName,"で座標の指定に誤りがあります");
     }
@@ -42,7 +42,7 @@ nowait \performTransform(ctx) {
     }
     ctx.globalAlpha=(alpha<0?0:alpha>255?255:alpha)/255;
 }
-nowait \draw(ctx) {
+nowait \draw(ctx) {//2D
     var drawY;
     if (x==null || y==null || _isInvisible) return;
     if (text!=null) {
@@ -73,6 +73,15 @@ nowait \draw(ctx) {
             ctx.fillRect(-width/2,-height/2,width,height);
         }
         ctx.restore();
+    } else if (typeof p.draw==="function") {
+        ctx.save();
+        performTransform(ctx);
+        p.draw(ctx);
+        ctx.restore();
+        if (p.width*p.height>0) {
+            width=p.width;
+            height=p.height;
+        }
     } else {
         detectShape();
         if (pImg) {
@@ -87,9 +96,9 @@ nowait \draw(ctx) {
     }
 }
 // from PlainChar
-nowait \color(r,g,b) {
+nowait \color(r,g,b) {//23D
     return "rgb("+[r,g,b].join(",")+")";
 }
-\setVisible(v) {
+\setVisible(v) {//23D
     _isInvisible=!v;
 }

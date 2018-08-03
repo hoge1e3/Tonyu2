@@ -10,10 +10,10 @@ native Math;
 native FS;
 native Array;
 
-nowait \hitTo(t) {
+nowait \hitTo(t) {//23D
     return crashTo(t);
 }
-nowait \all(c) {
+nowait \all(c) {//23D
     //return layer.all.apply(layer,arguments); <- includes myself!
     var res=new TQuery(this);
     if (arguments.length>0 && typeof c!="function") {
@@ -27,7 +27,7 @@ nowait \all(c) {
     };
     return res;
 }
-nowait \allCrash(t) {
+nowait \allCrash(t) {//2D  (//23D if use getCrashShape)
     var res=new TQuery(this);
     var sp=this;
     var t1=getCrashRect();
@@ -45,14 +45,14 @@ nowait \allCrash(t) {
     });
     return res;
 }
-nowait \crashTo(t) {
+nowait \crashTo(t) {//23D
     if (!t) return false;
     if (typeof t=="function") {
         return allCrash(t)[0];
     }
     return crashTo1(t);
 }
-nowait \crashTo1(t) {
+nowait \crashTo1(t) {//2D (//23D if use getCrashShape)
     if (!t || t._isDead) return false;
     var t1=getCrashRect();
     var t2=t.getCrashRect();
@@ -61,7 +61,7 @@ nowait \crashTo1(t) {
     Math.abs(t1.x-t2.x)*2<t1.width+t2.width &&
     Math.abs(t1.y-t2.y)*2<t1.height+t2.height;
 }
-\crashToChecker(d,f){
+\crashToChecker(d,f){//23D
     while(true){
         if(typeof d=="function"){
             for(var obj in allCrash(d)){
@@ -73,7 +73,12 @@ nowait \crashTo1(t) {
         update();
     }
 }
-nowait \getCrashRect() {
+/*
+\getCrashShape() {// TODO
+    //return new CubeShape(...);
+    //return new RectShape(getCrashRect());
+}*/
+nowait \getCrashRect() {//2D
     var actWidth=(width||radius*2)*scaleX*crashScale, actHeight;
     if(typeof scaleY==="undefined"){
         actHeight=(height||radius*2)*scaleX*crashScale;
@@ -86,7 +91,7 @@ nowait \getCrashRect() {
     typeof actHeight=="number" &&
     {x,y,width:Math.abs(actWidth),height:Math.abs(actHeight)};
 }
-nowait \allWithin(t,distance) {
+nowait \allWithin(t,distance) {//23D (use dist with 3d)
     var res=new TQuery(this);
     var sp=this;
     var t1=getCrashRect();
@@ -102,21 +107,21 @@ nowait \allWithin(t,distance) {
     });
     return res;
 }
-nowait \within(t,distance){
+nowait \within(t,distance){//23D
     if(!t) return false;
     if(typeof t=="function"){
         return allWithin(t,distance)[0];
     }
     return within1(t,distance);
 }
-nowait \within1(t,distance){
+nowait \within1(t,distance){//23D (use dist with 3d)
     if(!t || t._isDead) return false;
     if(Math.sqrt(Math.abs(x-t.x)*Math.abs(x-t.x)+ Math.abs(y-t.y)*Math.abs(y-t.y))<distance){
         return true;
     }
     return false;
 }
-\withinChecker(d,r,f){
+\withinChecker(d,r,f){//23D
     while(true){
         if(typeof d=="function"){
             for(var obj in allWithin(d,r)){
@@ -128,19 +133,19 @@ nowait \within1(t,distance){
         update();
     }
 }
-nowait \watchHit(typeA,typeB,onHit) {
+nowait \watchHit(typeA,typeB,onHit) {//23D
     layer.watchHit(typeA , typeB, \(a,b) {
         onHit.apply(this,[a,b]);
     });
 }
-\screenOut(a) {
+\screenOut(a) {//2D
     if (!a) a=0;
     var cp=$Screen.convert(this,$Screen);
     return abs(clamped(cp.x,-a,$screenWidth+a))+
         abs(clamped(cp.y,-a,$screenHeight+a));
 }
 
-\screenOutChecker(d,f){
+\screenOutChecker(d,f){//23D
     while(true){
         while(true){
             if(screenOut()>d){

@@ -54,3 +54,11 @@ native Tonyu;
         });
     }*/
 }
+nowait \dist(dx,dy,dz) {
+    if (typeof dx=="object") {
+        var t=dx;
+        dx=t.x-x;dy=t.y-y;dz=t.z-z;
+    }
+    dz=dz||0;
+    return sqrt(dx*dx+dy*dy+dz*dz);
+}
