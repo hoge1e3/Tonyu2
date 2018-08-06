@@ -1,4 +1,4 @@
-extends TObject;
+extends SpriteGroup;
 native console;
 "field strict";
 var sprites:Array;//of Actor3D
@@ -20,6 +20,11 @@ var sprites:Array;//of Actor3D
     };
     for (var s2d of s2ds) {
         s2d.draw(ctx,camera);
+    }
+}
+\draw3D(camera) {
+    for (var s of sprites) {
+
     }
 }
 //--- TODO : unify to Sprites

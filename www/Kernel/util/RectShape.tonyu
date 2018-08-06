@@ -7,3 +7,10 @@ var x,y,width,height;// (x,y): center
     return s && Math.abs(x-s.x)*2<width+s.width &&
     Math.abs(y-s.y)*2<height+s.height;
 }
+\contains(p:Object/*{x,y}*/) {
+    return p.x>=xmin && p.x<=xmax && p.y>=ymin && p.y<=ymax;
+}
+\xmin {return x-width/2;}
+\xmax {return x+width/2;}
+\ymin {return y-height/2;}
+\ymax {return y+height/2;}

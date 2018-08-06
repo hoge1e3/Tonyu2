@@ -11,34 +11,10 @@ native Tonyu;
     initSpriteMod();
     if (Tonyu.runMode) addToLayer();
     initAnimMod();*/
-    direction={
-        forward=new Vec3(0,0,1),
-        down=new Vec3(0,1,0),
-        right=new Vec3(1,0,0)
-    };
+    direction=new Angle3D;
 }
 \rotate(mode,angle,unit) {
-    // mode="roll","pitch","yaw"
-    // unit="left deg", "up rad"
-    var x,y,nx,ny,xk,yk;
-    switch(mode) {
-    case "roll":
-        xk="right";yk="down";break;
-    case "pitch":
-        xk="down";yk="forward";break;
-    case "yaw":
-        xk="forward";yk="right";break;
-    default:
-    direction.forward.set(0,0,1);
-    direction.down.set(0,1,0);
-    direction.right.set(1,0,0);
-    return;
-    }
-    x=direction[xk];y=direction[yk];
-    nx=x.mul(cos(angle)).add(y.mul(sin(angle)));
-    ny=x.mul(cos(angle+90)).add(y.mul(sin(angle+90)));
-    direction[xk].set(nx);
-    direction[yk].set(ny);
+    direction.rotate(mode,angle,unit);
     return this;
 }
 

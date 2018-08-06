@@ -29,11 +29,17 @@ mainLoop();
 
 \new(param) {
     extend(param);
+    initSymbol();
     _th=Tonyu.thread();
     _th.apply(this,"main");
     _th.stepsLoop();
     on ("die") \{
         if (_th) _th.kill();
+    };
+}
+\initSymbol() {
+    $Symbol={
+        subActors:"__SUBACTOR"
     };
 }
 \timeStop(except) {

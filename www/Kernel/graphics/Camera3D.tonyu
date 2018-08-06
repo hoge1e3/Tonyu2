@@ -47,9 +47,13 @@ r.x= p.x*z1/p.z
 }
 \to2D(pos:Vec3) {
     var p=pos.sub(position);
-    var x=p.innerProduct(direction.right);
+    var c=direction.worldToLocal(p);
+    /*var x=p.innerProduct(direction.right);
     var y=p.innerProduct(direction.down);
-    var z=p.innerProduct(direction.forward);
+    var z=p.innerProduct(direction.forward);*/
+    var x=c.x;
+    var y=c.y;
+    var z=c.z;
     if (z<=0) return null;
     x=x*z1/z+spx;
     y=y*z1/z+spy;

@@ -1,13 +1,19 @@
-extends Actor;
+extends SpriteGroup;
+"field strict";
 native Tonyu;
+var sprites,imageList, hitWatchers,objId,t1Sprites,drawing;
+var sx,sy;
 \new() {
     sprites=[];
     imageList=[];
     hitWatchers=[];
-    isDrawGrid=Tonyu.noviceMode;
+    //isDrawGrid=Tonyu.noviceMode;
     sx=0;
     sy=0;
     objId=0;
+}
+function addSubactor(s) {
+    return add(s);
 }
 function add(s) {
     if ($Boot.newLimit) {

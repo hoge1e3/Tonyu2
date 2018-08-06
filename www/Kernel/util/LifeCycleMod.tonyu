@@ -72,9 +72,11 @@ nowait \isDead() {
 }
 
 \addToLayer() {
-    if(layer && typeof layer.add=="function"){
+    if(layer && typeof layer.addSubactor==="function"){
+        layer.addSubactor(this);
+    } else if(layer is SpriteGroup){
         layer.add(this);
-    }else{
+    } else {
         $Sprites.add(this);
     }
     onAppear();
