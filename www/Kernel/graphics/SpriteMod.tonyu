@@ -13,7 +13,6 @@ native console;
     if (rotation==null) rotation=0;
     if (alpha==null) alpha=255;
     if (zOrder==null) zOrder=0;
-    this[$Symbol.subActors]=[];
 }
 nowait \detectShape() {//23D
     if (typeof p!="number") {

@@ -3,12 +3,14 @@ includes SpriteMod;
 "field strict";
 var x,y,z,direction,transform;
 
+
 \draw3D(camera) {
-    detectShape();// Just for calculate size
-    if (p && typeof p.draw3D==="function") {
+    if (typeof p==="number") detectShape();// Just for calculate size
+    camera.addSprite3D(this);
+    /*if (p && typeof p.draw3D==="function") {
         var transformed=camera.transform(transform);
         p.draw3D(transformed);
     } else {
         camera.addSprite3D(this);
-    }
+    }*/
 }

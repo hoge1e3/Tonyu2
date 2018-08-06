@@ -1,7 +1,7 @@
 extends BaseActor;
 includes SpriteMod3D,QueryMod3D;
 "field strict";
-var z,direction;
+var z,direction,_prescale;
 native Tonyu;
 \new(params) {
     super(params);
@@ -12,7 +12,7 @@ native Tonyu;
     if (Tonyu.runMode) addToLayer();
     initAnimMod();*/
     direction=new Direction;
-    transform=new Transform{direction,position};
+    transform=new Transform{direction,position,scale:(_prescale||1)};
 }
 \rotate(mode,angle,unit) {
     direction.rotate(mode,angle,unit);
@@ -29,4 +29,11 @@ nowait \dist(dx,dy,dz) {
     }
     dz=dz||0;
     return sqrt(dx*dx+dy*dy+dz*dz);
+}
+\scale {
+    return transform.scale;
+}
+\scale=s {
+    if (!transform) return _prescale=s;
+    transform.scale=s;
 }

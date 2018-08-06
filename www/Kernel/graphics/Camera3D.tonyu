@@ -21,15 +21,34 @@ r.x= p.x*z1/p.z
     sprites2D.push(s);
 }
 \addSprite3D(s) {
+    // scale: 3D logical size    scaleX/Y: scale for 2D Sprite rendering
+    var scl=((typeof s.scale==="number") ? s.scale : 1);
+    if (s.p is Sprites3D && s.transform) {
+        for (var e of s.p.sprites) {
+            var w=s.transform.localToWorld(e.position);
+            addSprite3D{
+                x:w.x,y:w.y,z:w.z,
+                p:e.p,
+                scale:e.scale*scl,scaleX:e.scaleX,scaleY:e.scaleY,
+                rotation:s.rotation||0, alpha:s.alpha||255
+            };
+        }
+        return;
+    }
     var p=to2D(s.position || new Vec3(s.x,s.y,s.z));
     if (p) {
+        scl*=p.scale;
         if (s is ActorSprite) {
             s.x=p.x; s.y=p.y;
             s.zOrder=p.z;
-            s.scaleX*=p.scale;
+            s.scaleX*=scl;
+            if (typeof s.scaleY==="number") s.scaleY*=scl;
         } else {
             s=new ActorSprite{
-                x=p.x, y=p.y, scaleX=p.scale, p=s.p,
+                x=p.x, y=p.y,
+                scaleX=(s.scaleX||1)*scl,
+                scaleY=(s.scaleY||s.scaleX||1)*scl,
+                p=s.p,
                 rotation:s.rotation||0, alpha:s.alpha||255,
                 zOrder=p.z
             };
@@ -46,11 +65,7 @@ r.x= p.x*z1/p.z
     //rotation={x:0,y:0,z:0,order:"yxz"};
 }
 \to2D(pos:Vec3) {
-    //var p=pos.sub(position);
     var c=transform.worldToLocal(pos);
-    /*var x=p.innerProduct(direction.right);
-    var y=p.innerProduct(direction.down);
-    var z=p.innerProduct(direction.forward);*/
     var x=c.x;
     var y=c.y;
     var z=c.z;
