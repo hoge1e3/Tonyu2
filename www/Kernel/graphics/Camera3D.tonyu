@@ -46,8 +46,8 @@ r.x= p.x*z1/p.z
     //rotation={x:0,y:0,z:0,order:"yxz"};
 }
 \to2D(pos:Vec3) {
-    var p=pos.sub(position);
-    var c=direction.worldToLocal(p);
+    //var p=pos.sub(position);
+    var c=transform.worldToLocal(pos);
     /*var x=p.innerProduct(direction.right);
     var y=p.innerProduct(direction.down);
     var z=p.innerProduct(direction.forward);*/

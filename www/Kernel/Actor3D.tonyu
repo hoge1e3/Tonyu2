@@ -11,7 +11,8 @@ native Tonyu;
     initSpriteMod();
     if (Tonyu.runMode) addToLayer();
     initAnimMod();*/
-    direction=new Angle3D;
+    direction=new Direction;
+    transform=new Transform{direction,position};
 }
 \rotate(mode,angle,unit) {
     direction.rotate(mode,angle,unit);

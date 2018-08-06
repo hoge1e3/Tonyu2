@@ -24,7 +24,7 @@ var sprites:Array;//of Actor3D
 }
 \draw3D(camera) {
     for (var s of sprites) {
-
+        s.draw3D(camera);
     }
 }
 //--- TODO : unify to Sprites

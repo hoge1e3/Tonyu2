@@ -1,0 +1,10 @@
+extends TObject;
+"field strict";
+var direction, position;
+
+\localToWorld(local) {
+    return direction.localToWorld(local).add(position);
+}
+\worldToLocal(world) {
+    return direction.worldToLocal(world.sub(position));
+}
