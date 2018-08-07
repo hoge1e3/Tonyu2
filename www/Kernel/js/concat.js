@@ -17759,6 +17759,7 @@ Tonyu.klass.define({
       
       
       
+      
     },
     fiber$main :function _trc_Camera3D_f_main(_thread) {
       "use strict";
@@ -17773,13 +17774,14 @@ Tonyu.klass.define({
       
       
       
+      
       _thread.retVal=_this;return;
     },
     addSprite2D :function _trc_Camera3D_addSprite2D(s) {
       "use strict";
       var _this=this;
       
-      //$LASTPOS=63000312;//kernel.Camera3D:312
+      //$LASTPOS=63000343;//kernel.Camera3D:343
       _this.sprites2D.push(s);
     },
     fiber$addSprite2D :function _trc_Camera3D_f_addSprite2D(_thread,s) {
@@ -17788,7 +17790,7 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=63000312;//kernel.Camera3D:312
+      //$LASTPOS=63000343;//kernel.Camera3D:343
       _this.sprites2D.push(s);
       
       _thread.retVal=_this;return;
@@ -17797,67 +17799,71 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       var scl;
+      var svb;
       var e;
       var _it_538;
-      var w;
       var p;
       
-      //$LASTPOS=63000455;//kernel.Camera3D:455
+      //$LASTPOS=63000486;//kernel.Camera3D:486
       scl = ((typeof  s.scale==="number")?s.scale:1);
       
-      //$LASTPOS=63000513;//kernel.Camera3D:513
+      //$LASTPOS=63000544;//kernel.Camera3D:544
       if (s.p instanceof Tonyu.classes.kernel.Sprites3D&&s.transform) {
-        //$LASTPOS=63000561;//kernel.Camera3D:561
+        //$LASTPOS=63000592;//kernel.Camera3D:592
+        svb = _this.base;
+        
+        //$LASTPOS=63000615;//kernel.Camera3D:615
+        _this.base=_this.base?_this.base.localToWorld(s.transform):s.transform;
+        //$LASTPOS=63000678;//kernel.Camera3D:678
         _it_538=Tonyu.iterator(s.p.sprites,1);
         while(_it_538.next()) {
           e=_it_538[0];
           
-          //$LASTPOS=63000603;//kernel.Camera3D:603
-          w = s.transform.localToWorld(e.position);
-          
-          //$LASTPOS=63000660;//kernel.Camera3D:660
-          _this.addSprite3D({x: w.x,y: w.y,z: w.z,p: e.p,transform: e.transform,scale: e.scale*scl,scaleX: e.scaleX,scaleY: e.scaleY,rotation: s.rotation||0,alpha: s.alpha||255});
+          //$LASTPOS=63000720;//kernel.Camera3D:720
+          _this.addSprite3D(e);
           
         }
+        //$LASTPOS=63001087;//kernel.Camera3D:1087
+        _this.base=svb;
         return _this;
         
       }
-      //$LASTPOS=63000957;//kernel.Camera3D:957
+      //$LASTPOS=63001126;//kernel.Camera3D:1126
       if (s.p instanceof Tonyu.classes.kernel.Sprites3D&&! s.transform) {
         return _this;
         throw new Error("No transform");
         
         
       }
-      //$LASTPOS=63001068;//kernel.Camera3D:1068
+      //$LASTPOS=63001237;//kernel.Camera3D:1237
       p = _this.to2D(s.position||new Tonyu.classes.kernel.Vec3(s.x,s.y,s.z));
       
-      //$LASTPOS=63001122;//kernel.Camera3D:1122
+      //$LASTPOS=63001291;//kernel.Camera3D:1291
       if (p) {
-        //$LASTPOS=63001140;//kernel.Camera3D:1140
+        //$LASTPOS=63001309;//kernel.Camera3D:1309
         scl*=p.scale;
-        //$LASTPOS=63001163;//kernel.Camera3D:1163
+        //$LASTPOS=63001332;//kernel.Camera3D:1332
         if (s instanceof Tonyu.classes.kernel.ActorSprite) {
-          //$LASTPOS=63001200;//kernel.Camera3D:1200
+          //$LASTPOS=63001369;//kernel.Camera3D:1369
           s.x=p.x;
-          //$LASTPOS=63001209;//kernel.Camera3D:1209
+          //$LASTPOS=63001378;//kernel.Camera3D:1378
           s.y=p.y;
-          //$LASTPOS=63001231;//kernel.Camera3D:1231
+          //$LASTPOS=63001400;//kernel.Camera3D:1400
           s.zOrder=p.z;
-          //$LASTPOS=63001258;//kernel.Camera3D:1258
+          //$LASTPOS=63001427;//kernel.Camera3D:1427
           s.scaleX*=scl;
-          //$LASTPOS=63001286;//kernel.Camera3D:1286
+          //$LASTPOS=63001455;//kernel.Camera3D:1455
           if (typeof  s.scaleY==="number") {
-            //$LASTPOS=63001318;//kernel.Camera3D:1318
+            //$LASTPOS=63001487;//kernel.Camera3D:1487
             s.scaleY*=scl;
           }
           
         } else {
-          //$LASTPOS=63001364;//kernel.Camera3D:1364
+          //$LASTPOS=63001533;//kernel.Camera3D:1533
           s=new Tonyu.classes.kernel.ActorSprite({x: p.x,y: p.y,scaleX: (s.scaleX||1)*scl,scaleY: (s.scaleY||s.scaleX||1)*scl,p: s.p,rotation: s.rotation||0,alpha: s.alpha||255,zOrder: p.z});
           
         }
-        //$LASTPOS=63001659;//kernel.Camera3D:1659
+        //$LASTPOS=63001828;//kernel.Camera3D:1828
         _this.addSprite2D(s);
         
       }
@@ -17868,12 +17874,12 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       var scl;
+      var svb;
       var e;
       var _it_538;
-      var w;
       var p;
       
-      //$LASTPOS=63000455;//kernel.Camera3D:455
+      //$LASTPOS=63000486;//kernel.Camera3D:486
       scl = ((typeof  s.scale==="number")?s.scale:1);
       
       
@@ -17882,67 +17888,71 @@ Tonyu.klass.define({
         for(var __cnt=100 ; __cnt--;) {
           switch (__pc) {
           case 0:
-            //$LASTPOS=63000513;//kernel.Camera3D:513
+            //$LASTPOS=63000544;//kernel.Camera3D:544
             if (!(s.p instanceof Tonyu.classes.kernel.Sprites3D&&s.transform)) { __pc=4     ; break; }
-            //$LASTPOS=63000561;//kernel.Camera3D:561
+            //$LASTPOS=63000592;//kernel.Camera3D:592
+            svb = _this.base;
+            
+            //$LASTPOS=63000615;//kernel.Camera3D:615
+            _this.base=_this.base?_this.base.localToWorld(s.transform):s.transform;
+            //$LASTPOS=63000678;//kernel.Camera3D:678
             _it_538=Tonyu.iterator(s.p.sprites,1);
           case 1:
             if (!(_it_538.next())) { __pc=3     ; break; }
             e=_it_538[0];
             
-            //$LASTPOS=63000603;//kernel.Camera3D:603
-            w = s.transform.localToWorld(e.position);
-            
-            //$LASTPOS=63000660;//kernel.Camera3D:660
-            _this.fiber$addSprite3D(_thread, {x: w.x,y: w.y,z: w.z,p: e.p,transform: e.transform,scale: e.scale*scl,scaleX: e.scaleX,scaleY: e.scaleY,rotation: s.rotation||0,alpha: s.alpha||255});
+            //$LASTPOS=63000720;//kernel.Camera3D:720
+            _this.fiber$addSprite3D(_thread, e);
             __pc=2;return;
           case 2:
             
             __pc=1;break;
           case 3     :
             
+            //$LASTPOS=63001087;//kernel.Camera3D:1087
+            _this.base=svb;
             _thread.exit(_this);return;
           case 4     :
             
-            //$LASTPOS=63000957;//kernel.Camera3D:957
+            //$LASTPOS=63001126;//kernel.Camera3D:1126
             if (!(s.p instanceof Tonyu.classes.kernel.Sprites3D&&! s.transform)) { __pc=5     ; break; }
             _thread.exit(_this);return;
             throw new Error("No transform");
             
           case 5     :
             
-            //$LASTPOS=63001068;//kernel.Camera3D:1068
+            //$LASTPOS=63001237;//kernel.Camera3D:1237
             _this.fiber$to2D(_thread, s.position||new Tonyu.classes.kernel.Vec3(s.x,s.y,s.z));
             __pc=6;return;
           case 6:
             p=_thread.retVal;
             
-            //$LASTPOS=63001122;//kernel.Camera3D:1122
+            //$LASTPOS=63001291;//kernel.Camera3D:1291
             if (!(p)) { __pc=8     ; break; }
-            //$LASTPOS=63001140;//kernel.Camera3D:1140
+            //$LASTPOS=63001309;//kernel.Camera3D:1309
             scl*=p.scale;
-            //$LASTPOS=63001163;//kernel.Camera3D:1163
+            //$LASTPOS=63001332;//kernel.Camera3D:1332
             if (s instanceof Tonyu.classes.kernel.ActorSprite) {
-              //$LASTPOS=63001200;//kernel.Camera3D:1200
+              //$LASTPOS=63001369;//kernel.Camera3D:1369
               s.x=p.x;
-              //$LASTPOS=63001209;//kernel.Camera3D:1209
+              //$LASTPOS=63001378;//kernel.Camera3D:1378
               s.y=p.y;
-              //$LASTPOS=63001231;//kernel.Camera3D:1231
+              //$LASTPOS=63001400;//kernel.Camera3D:1400
               s.zOrder=p.z;
-              //$LASTPOS=63001258;//kernel.Camera3D:1258
+              //$LASTPOS=63001427;//kernel.Camera3D:1427
               s.scaleX*=scl;
-              //$LASTPOS=63001286;//kernel.Camera3D:1286
+              //$LASTPOS=63001455;//kernel.Camera3D:1455
               if (typeof  s.scaleY==="number") {
-                //$LASTPOS=63001318;//kernel.Camera3D:1318
+                //$LASTPOS=63001487;//kernel.Camera3D:1487
                 s.scaleY*=scl;
               }
               
             } else {
-              //$LASTPOS=63001364;//kernel.Camera3D:1364
+              //$LASTPOS=63001533;//kernel.Camera3D:1533
               s=new Tonyu.classes.kernel.ActorSprite({x: p.x,y: p.y,scaleX: (s.scaleX||1)*scl,scaleY: (s.scaleY||s.scaleX||1)*scl,p: s.p,rotation: s.rotation||0,alpha: s.alpha||255,zOrder: p.z});
               
             }
-            //$LASTPOS=63001659;//kernel.Camera3D:1659
+            //$LASTPOS=63001828;//kernel.Camera3D:1828
             _this.fiber$addSprite2D(_thread, s);
             __pc=7;return;
           case 7:
@@ -17958,15 +17968,15 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=63001701;//kernel.Camera3D:1701
+      //$LASTPOS=63001870;//kernel.Camera3D:1870
       Tonyu.classes.kernel.Actor3D.apply( _this, [p]);
-      //$LASTPOS=63001716;//kernel.Camera3D:1716
+      //$LASTPOS=63001885;//kernel.Camera3D:1885
       _this.spx=_this.spx||Tonyu.globals.$screenWidth/2;
-      //$LASTPOS=63001746;//kernel.Camera3D:1746
+      //$LASTPOS=63001915;//kernel.Camera3D:1915
       _this.spy=_this.spy||Tonyu.globals.$screenHeight/2;
-      //$LASTPOS=63001777;//kernel.Camera3D:1777
+      //$LASTPOS=63001946;//kernel.Camera3D:1946
       _this.z1=_this.z1||Tonyu.globals.$screenWidth/2;
-      //$LASTPOS=63001805;//kernel.Camera3D:1805
+      //$LASTPOS=63001974;//kernel.Camera3D:1974
       _this.z=- _this.z1;
     },
     to2D :function _trc_Camera3D_to2D(pos) {
@@ -17977,25 +17987,30 @@ Tonyu.klass.define({
       var y;
       var z;
       
-      //$LASTPOS=63001882;//kernel.Camera3D:1882
+      //$LASTPOS=63002051;//kernel.Camera3D:2051
+      if (_this.base) {
+        //$LASTPOS=63002061;//kernel.Camera3D:2061
+        pos=_this.base.localToWorld(pos);
+      }
+      //$LASTPOS=63002094;//kernel.Camera3D:2094
       c = _this.transform.worldToLocal(pos);
       
-      //$LASTPOS=63001922;//kernel.Camera3D:1922
+      //$LASTPOS=63002134;//kernel.Camera3D:2134
       x = c.x;
       
-      //$LASTPOS=63001938;//kernel.Camera3D:1938
+      //$LASTPOS=63002150;//kernel.Camera3D:2150
       y = c.y;
       
-      //$LASTPOS=63001954;//kernel.Camera3D:1954
+      //$LASTPOS=63002166;//kernel.Camera3D:2166
       z = c.z;
       
-      //$LASTPOS=63001970;//kernel.Camera3D:1970
+      //$LASTPOS=63002182;//kernel.Camera3D:2182
       if (z<=0) {
         return null;
       }
-      //$LASTPOS=63001998;//kernel.Camera3D:1998
+      //$LASTPOS=63002210;//kernel.Camera3D:2210
       x=x*_this.z1/z+_this.spx;
-      //$LASTPOS=63002017;//kernel.Camera3D:2017
+      //$LASTPOS=63002229;//kernel.Camera3D:2229
       y=y*_this.z1/z+_this.spy;
       return {x: x,y: y,z: z,scale: _this.z1/z};
     },
@@ -18009,26 +18024,31 @@ Tonyu.klass.define({
       var y;
       var z;
       
-      //$LASTPOS=63001882;//kernel.Camera3D:1882
+      //$LASTPOS=63002051;//kernel.Camera3D:2051
+      if (_this.base) {
+        //$LASTPOS=63002061;//kernel.Camera3D:2061
+        pos=_this.base.localToWorld(pos);
+      }
+      //$LASTPOS=63002094;//kernel.Camera3D:2094
       c = _this.transform.worldToLocal(pos);
       
-      //$LASTPOS=63001922;//kernel.Camera3D:1922
+      //$LASTPOS=63002134;//kernel.Camera3D:2134
       x = c.x;
       
-      //$LASTPOS=63001938;//kernel.Camera3D:1938
+      //$LASTPOS=63002150;//kernel.Camera3D:2150
       y = c.y;
       
-      //$LASTPOS=63001954;//kernel.Camera3D:1954
+      //$LASTPOS=63002166;//kernel.Camera3D:2166
       z = c.z;
       
-      //$LASTPOS=63001970;//kernel.Camera3D:1970
+      //$LASTPOS=63002182;//kernel.Camera3D:2182
       if (z<=0) {
         _thread.retVal=null;return;
         
       }
-      //$LASTPOS=63001998;//kernel.Camera3D:1998
+      //$LASTPOS=63002210;//kernel.Camera3D:2210
       x=x*_this.z1/z+_this.spx;
-      //$LASTPOS=63002017;//kernel.Camera3D:2017
+      //$LASTPOS=63002229;//kernel.Camera3D:2229
       y=y*_this.z1/z+_this.spy;
       _thread.retVal={x: x,y: y,z: z,scale: _this.z1/z};return;
       
@@ -18039,7 +18059,7 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=63002085;//kernel.Camera3D:2085
+      //$LASTPOS=63002297;//kernel.Camera3D:2297
       _this.group.draw(ctx,_this);
     },
     fiber$draw :function _trc_Camera3D_f_draw(_thread,ctx) {
@@ -18048,14 +18068,14 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=63002085;//kernel.Camera3D:2085
+      //$LASTPOS=63002297;//kernel.Camera3D:2297
       _this.group.draw(ctx,_this);
       
       _thread.retVal=_this;return;
     },
     __dummy: false
   },
-  decls: {"methods":{"main":{"nowait":false},"addSprite2D":{"nowait":false},"addSprite3D":{"nowait":false},"new":{"nowait":false},"to2D":{"nowait":false},"draw":{"nowait":false}},"fields":{"group":{},"sprites2D":{},"z1":{},"spx":{},"spy":{}}}
+  decls: {"methods":{"main":{"nowait":false},"addSprite2D":{"nowait":false},"addSprite3D":{"nowait":false},"new":{"nowait":false},"to2D":{"nowait":false},"draw":{"nowait":false}},"fields":{"group":{},"sprites2D":{},"z1":{},"spx":{},"spy":{},"base":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.GameScreen',
