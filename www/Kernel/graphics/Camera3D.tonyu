@@ -20,7 +20,7 @@ r.x= p.x*z1/p.z
 \addSprite2D(s) {// called during draw3D
     sprites2D.push(s);
 }
-\addSprite3D(s) {
+\addSprite3D(s) {// called during draw3D
     // scale: 3D logical size    scaleX/Y: scale for 2D Sprite rendering
     var scl=((typeof s.scale==="number") ? s.scale : 1);
     if (s.p is Sprites3D && s.transform) {
@@ -29,11 +29,16 @@ r.x= p.x*z1/p.z
             addSprite3D{
                 x:w.x,y:w.y,z:w.z,
                 p:e.p,
+                transform:e.transform,
                 scale:e.scale*scl,scaleX:e.scaleX,scaleY:e.scaleY,
                 rotation:s.rotation||0, alpha:s.alpha||255
             };
         }
         return;
+    }
+    if (s.p is Sprites3D && !s.transform) {
+        return;
+        throw new Error("No transform");
     }
     var p=to2D(s.position || new Vec3(s.x,s.y,s.z));
     if (p) {

@@ -1,1 +1,6 @@
 extends TObject;
+
+var sprites:Array;//of Actor/Actor3D
+\get(i) {
+    return sprites[i];
+}

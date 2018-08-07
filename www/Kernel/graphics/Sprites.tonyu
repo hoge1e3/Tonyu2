@@ -1,7 +1,7 @@
 extends SpriteGroup;
 "field strict";
 native Tonyu;
-var sprites,imageList, hitWatchers,objId,t1Sprites,drawing;
+var imageList, hitWatchers,objId,t1Sprites,drawing;
 var sx,sy;
 \new() {
     sprites=[];

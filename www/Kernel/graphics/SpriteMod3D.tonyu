@@ -5,7 +5,7 @@ var x,y,z,direction,transform;
 
 
 \draw3D(camera) {
-    if (typeof p==="number") detectShape();// Just for calculate size
+    if (p==null || typeof p==="number") detectShape();// Just for calculate size
     camera.addSprite3D(this);
     /*if (p && typeof p.draw3D==="function") {
         var transformed=camera.transform(transform);

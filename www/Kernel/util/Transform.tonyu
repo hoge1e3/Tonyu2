@@ -2,15 +2,54 @@ extends TObject;
 "field strict";
 var direction, position;
 var scale;//scale is Number or {right,down,forward}TODO
+/*
++-------
+|
+|   +-->
+|   |
+|   v
 
+*/
 \new(param) {
     super(param);
     scale=scale||1;
 }
 \localToWorld(local) {
+    if (local is Transform) {
+        var org=localToWorld(local.position);
+        var fw=localToWorld(local.position.add(local.direction.forward)).sub(org);
+        var dw=localToWorld(local.position.add(local.direction.down)).sub(org);
+        var rg=localToWorld(local.position.add(local.direction.right)).sub(org);
+        var sc=fw.length;
+        return new Transform{
+            direction:new Direction{
+                forward:fw.normalizeX(),
+                down:dw.normalizeX(),
+                right:rg.normalizeX()
+            },
+            position:org,
+            scale:sc
+        };
+    }
     return changeScale(direction.localToWorld(local),scale).add(position);
 }
 \worldToLocal(world) {
+    if (world is Transform) {
+        var org=worldToLocal(world.position);
+        var fw=worldToLocal(world.position.add(world.direction.forward)).sub(org);
+        var dw=worldToLocal(world.position.add(world.direction.down)).sub(org);
+        var rg=worldToLocal(world.position.add(world.direction.right)).sub(org);
+        var sc=fw.length;
+        return new Transform{
+            direction:new Direction{
+                forward:fw.normalizeX(),
+                down:dw.normalizeX(),
+                right:rg.normalizeX()
+            },
+            position:org,
+            scale:sc
+        };
+    }
     return direction.worldToLocal(changeScale(world.sub(position),1/scale));
 }
 \changeScale(vec,by) {

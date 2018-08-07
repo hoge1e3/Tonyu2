@@ -5,14 +5,8 @@ var z,direction,_prescale;
 native Tonyu;
 \new(params) {
     super(params);
-    /*initSchedulerMod();
-    layer=layer||defaultLayer;
-    crashScale=1;
-    initSpriteMod();
-    if (Tonyu.runMode) addToLayer();
-    initAnimMod();*/
     direction=new Direction;
-    transform=new Transform{direction,position,scale:(_prescale||1)};
+    transform=new Transform{direction,position,scale:(_prescale||1),actor:this};
 }
 \rotate(mode,angle,unit) {
     direction.rotate(mode,angle,unit);
@@ -36,4 +30,16 @@ nowait \dist(dx,dy,dz) {
 \scale=s {
     if (!transform) return _prescale=s;
     transform.scale=s;
+}
+\addSubactor(s) {
+    if (p is Sprites3D) {
+        p.add(s);
+    } else {
+        var pp=p;
+        p=new Sprites3D{layer:this,transform};
+        if (pp!=null) {
+            new Actor3D{x:0,y:0,p:pp,scale,scaleX,scaleY,alpha,layer:p};
+        }
+        p.add(s);
+    }
 }

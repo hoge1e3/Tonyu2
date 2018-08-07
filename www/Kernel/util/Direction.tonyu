@@ -4,9 +4,9 @@ includes MathMod;
 var forward,down,right;
 \new(p) {
     super(p);
-    forward=new Vec3(0,0,1);
-    down=new Vec3(0,1,0);
-    right=new Vec3(1,0,0);
+    forward=forward||new Vec3(0,0,1);
+    down=down||new Vec3(0,1,0);
+    right=right||new Vec3(1,0,0);
 }
 \rotate(mode,angle,unit) {
     // mode="roll","pitch","yaw"

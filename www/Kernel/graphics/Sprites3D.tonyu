@@ -1,12 +1,13 @@
 extends SpriteGroup;
 native console;
 "field strict";
-var sprites:Array;//of Actor3D
 \new(p) {
     super(p);
     sprites=[];
 }
 \add(a:Actor3D) {
+    if (a.transform && this.transform) a.transform.parent=this.transform;
+    a.layer=this;
     sprites.push(a);
 }
 \draw(ctx,camera) {
