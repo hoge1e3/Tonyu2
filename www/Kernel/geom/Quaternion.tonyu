@@ -1,0 +1,78 @@
+extends TObject;
+includes MathMod;
+"field strict";
+
+// q=(v.x, v.y, v.z, w)
+var v:Vec3;// |v|==sin(r)
+var w:Number;
+
+// optional
+var axis:Vec3, r:Number, theta:Number;
+
+\new(p) {
+    super(p);
+    if (axis && typeof r==="number") {
+        theta=r/2;
+        //  q=(axis*sin(theta),cos(theta))
+        v=axis.normalize(sin(theta));// v.length=sin(theta)
+        w=cos(theta);
+    }
+    v=v||new Vec3(0,0,0);
+    if (w==null) w=1;
+}
+\length {
+    return sqrt(lengthSQ);
+}
+\lengthSQ {
+    var l=v.length;
+    return l*l+w*w;
+}
+\add(q:Quaternion) {
+    /*
+    From: https://qiita.com/kenjihiranabe/items/945232fbde58fab45681
+    q=(x,y,z,w)=xi+yj+zk+w=((x,y,z),w)=(v,w)
+    和:q1+q2=(v1+v2,w1+w2)
+    */
+    return new Quaternion{v:v.add(q.v),w:w+q.w};
+}
+\mul(k:Number) {
+    //スカラー倍:kq=(kv,kw)
+    return new Quaternion{v:v.mul(k), w:k*w};
+}
+\product(q:Quaternion,dst:Quaternion/*opt*/) {
+    //積:q1q2=(v1*v2+w2v1+w1v2,w1w2−v1.v2)
+    // v1=v  v2=q.v   w1=w  w2=q.w
+    var nv=v.product(q.v).add(v.mul(q.w)).add(q.v.mul(w)), nw=w*q.w - v.innerProduct(q.v);
+    if (dst) {
+        dst.v.set(nv);
+        dst.w=nw;
+        delete dst.theta;
+        return dst;
+    }
+    return new Quaternion{v:nv,w:nw};
+}
+\inverse {
+    return conjugate.mul(1/lengthSQ);
+}
+\conjugate {
+    return new Quaternion{
+        v:v.mul(-1),w
+    };
+}
+\rotate(p:Vec3,dst:Vec3/*opt*/) {
+    p=new Quaternion{v:p,w:1};
+    var res=product(p).product(inverse).v;
+    if (dst) {
+        dst.set(res);
+        return dst;
+    }
+    return res;
+}
+\calcTheta() {
+    // q=(axis*sin(theta),cos(theta))
+    var y=v.length;
+    var x=w;
+    theta=atanxy(x,y);
+    r=theta*2;
+    return theta;
+}

@@ -76,6 +76,7 @@ mainLoop();
       Tonyu.setGlobal(name, g[name]);
     }
   }
+  $fixProductOrder=true;
 }
 \initEvents() {
     // used in EventMod

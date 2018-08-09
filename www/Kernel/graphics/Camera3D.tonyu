@@ -58,7 +58,7 @@ r.x= p.x*z1/p.z
                 x=p.x, y=p.y,
                 scaleX=(s.scaleX||1)*scl,
                 scaleY=(s.scaleY||s.scaleX||1)*scl,
-                p=s.p,
+                p=s.p,text=s.text,fillStyle:s.fillStyle,
                 rotation:s.rotation||0, alpha:s.alpha||255,
                 zOrder=p.z
             };

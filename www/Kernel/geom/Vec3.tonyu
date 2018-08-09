@@ -97,6 +97,9 @@ function set() {
 \length=l {
     return normalizeX().mulX(l);
 }
+\slerp(to,t) {
+    return mul(1-t).addX(to.mul(t));
+}
 \normalizeX(len) {
     var l=length;
 	if (l==0) return this;
@@ -110,15 +113,17 @@ function set() {
     return clone().normalizeX(len);
 }
 \productX() {
-    var a=parsePointArgs(arguments);
-    var b=this;
+    // IMPORTANT CHANGE!
+    var a=this;
+    var b=parsePointArgs(arguments);
     var i=a.y*b.z-a.z*b.y;
     var j=a.z*b.x-a.x*b.z;
     var k=a.x*b.y-a.y*b.x;
-    b.x=i;
-    b.y=j;
-    b.z=k;
-    return b;
+    a.x=i;
+    a.y=j;
+    a.z=k;
+    if ($fixProductOrder) return a;
+    return a.mul(-1);
 }
 \product(x,y,z) {
     return clone().productX(x,y,z);
@@ -138,7 +143,7 @@ function set() {
 }
 
 \rotate(angle, axis) {
-    if (!axis) axis=new Vec3(0,0,1);
+    if (!axis) axis=new Vec3(0,0,$fixProductOrder?-1:1);
     var v90=product(axis);
     v90.length=length;
     return mul(cos(angle)).add(v90.mul(sin(angle)));

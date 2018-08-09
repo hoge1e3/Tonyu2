@@ -30,21 +30,28 @@ extends Panel;
     drawLayers();
     super.draw(ctx);
 }
-\addLayer(group) {
+\addLayer(group,at) {
+    var layer;
     if (group is Sprites3D) {
-        var camera=new Camera3D{group};
-        layers.push(camera);
-        return camera;
+        layer=new Camera3D{group};
+    } else {
+        group=group||new Sprites;
+        // spx,spy  Screen pivot x,y
+        // wpx,wpy  World pivot x,y
+        layer=new Layer2D{
+            spx:0,spy:0,
+            wpx:0,wpy:0,rotation:0,scale:1,
+            group,screen:this,index:layers.length
+        };
     }
-    group=group||new Sprites;
-    // spx,spy  Screen pivot x,y
-    // wpx,wpy  World pivot x,y
-    var layer=new Layer2D{
-        spx:0,spy:0,
-        wpx:0,wpy:0,rotation:0,scale:1,
-        group,screen:this,index:layers.length
-    };
-    layers.push(layer);
+    if (at==null) layers.push(layer);
+    else {
+        if (at<0) at=layers.length-at;
+        layers.splice(at,0,layer);
+    }
+    if (layers.length==1 && index==null) {
+        selectLayer(layer);
+    }
     return layer;
 }
 \selectLayer(i) {
