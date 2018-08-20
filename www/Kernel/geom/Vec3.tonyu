@@ -88,7 +88,8 @@ function set() {
     t.y+=y;
     t.z+=z;
 }
-\dist() {
+\dist(vec) {
+    if (vec) return sub(vec).dist();
     return sqrt(x*x+y*y+z*z);
 }
 \length {

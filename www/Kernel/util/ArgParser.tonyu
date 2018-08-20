@@ -15,7 +15,7 @@
     }
 }
 \peek(i) {
-    return a[i];
+    return a[i||0];
 }
 \shift(type) {
     if (typeof type=="number") {

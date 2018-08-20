@@ -1,0 +1,35 @@
+extends Vec3;
+includes MathMod;
+\new(func) {
+    computer=func;
+}
+\requestCompute() {
+    computed=null;
+}
+\compute() {
+    if (computed) return computed;
+    var c=computer(this);
+    return computed||c;
+}
+\keep(c) {
+    computed=c;
+    return c;
+}
+\x {
+    return compute().x;
+}
+\y {
+    return compute().y;
+}
+\z {
+    return compute().z;
+}
+\x=v {
+    throw new Error("ComputedVec3: read only");
+}
+\y=v {
+    throw new Error("ComputedVec3: read only");
+}
+\z=v {
+    throw new Error("ComputedVec3: read only");
+}
