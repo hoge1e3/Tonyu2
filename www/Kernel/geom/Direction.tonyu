@@ -1,45 +1,63 @@
 extends TObject;
 includes MathMod;
 "field strict";
-var forward,down,right;
+var forward,down,right,back,up,left;
+var quaternion:Quaternion;
+\initAxis() {
+    if (!Direction.axis) {
+        Direction.axis={
+            roll:new Vec3(0,0,1),
+            pitch:new Vec3(1,0,0),
+            yaw:new Vec3(0,1,0),
+        };
+    }
+}
+\set(d:Direction) {
+    quaternion.set(d.quaternion);
+    return this;
+}
 \new(p) {
+    initAxis();
     super(p);
-    forward=forward||new Vec3(0,0,1);
-    down=down||new Vec3(0,1,0);
-    right=right||new Vec3(1,0,0);
+    quaternion=new Quaternion;
+    forward=new ComputedVec3 \(t) {
+        var r=quaternion.rotate(Direction.axis.roll);
+        return t.keep(r);
+    };
+    down=new ComputedVec3 \(t) {
+        var r=quaternion.rotate(Direction.axis.yaw);
+        return t.keep(r);
+    };
+    right=new ComputedVec3 \(t) {
+        var r=quaternion.rotate(Direction.axis.pitch);
+        return t.keep(r);
+    };
 }
 \rotate(mode,angle,unit) {
     // mode="roll","pitch","yaw"
     // unit="left deg", "up rad"  TODO
-    var x,y,nx,ny,xk,yk;
-    switch(mode) {
-    case "roll":
-        xk="right";yk="down";break;
-    case "pitch":
-        xk="down";yk="forward";break;
-    case "yaw":
-        xk="forward";yk="right";break;
-    default:
-    forward.set(0,0,1);
-    down.set(0,1,0);
-    right.set(1,0,0);
-    return;
+    var x,y,nx,ny,axis;
+    axis=Direction.axis[mode];
+    if (!axis) {
+        quaternion.set(new Quaternion);
+    } else {
+        quaternion.product(new Quaternion{axis,r:angle},quaternion);
     }
-    var direction=this;
-    x=direction[xk];y=direction[yk];
-    nx=x.mul(cos(angle)).add(y.mul(sin(angle)));
-    ny=x.mul(cos(angle+90)).add(y.mul(sin(angle+90)));
-    direction[xk].set(nx);
-    direction[yk].set(ny);
+    forward.requestCompute();
+    down.requestCompute();
+    right.requestCompute();
     return this;
 }
-\localToWorld(local) {
-    return forward.mul(local.z).add(down.mul(local.y)).add(right.mul(local.x));
+\localToWorld(local,dst) {
+    //local:{x,y,z}
+    return quaternion.rotate(local,dst);
+    //return forward.mul(local.z).add(down.mul(local.y)).add(right.mul(local.x));
 }
-\worldToLocal(world) {
-    return new Vec3(
-        world.innerProduct(right),
-        world.innerProduct(down),
-        world.innerProduct(forward)
-    );
+\worldToLocal(world,dst) {
+    return quaternion.inverse.rotate(world,dst);
+    /*return new Vec3(
+    world.innerProduct(right),
+    world.innerProduct(down),
+    world.innerProduct(forward)
+    );*/
 }

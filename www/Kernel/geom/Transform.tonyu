@@ -10,31 +10,90 @@ var scale;//scale is Number or {right,down,forward}TODO
 |   v
 
 */
+/* the matrix
+Q*s p
+000 1
+
+*/
+\quaternion {
+    return direction.quaternion;
+}
 \new(param) {
     super(param);
     scale=scale||1;
+    direction=direction||new Direction;
+    position=position||new Vec3(0,0,0);
 }
-\localToWorld(local) {
-    if (local is Transform) {
-        var org=localToWorld(local.position);
-        var fw=localToWorld(local.position.add(local.direction.forward)).sub(org);
-        var dw=localToWorld(local.position.add(local.direction.down)).sub(org);
-        var rg=localToWorld(local.position.add(local.direction.right)).sub(org);
-        var sc=fw.length;
-        return new Transform{
-            direction:new Direction{
-                forward:fw.normalizeX(),
-                down:dw.normalizeX(),
-                right:rg.normalizeX()
-            },
-            position:org,
-            scale:sc
-        };
+\set(t:Transform) {
+    direction.set(t.direction);
+    scale=t.scale;
+}
+\product(t:Transform, dst:Transform/*opt*/) {
+    // this x t
+    /*
+    Q*s p x t.Q*t.s  t.p = (Qxt.Q)*(s*t.s) lcltw(t.p)
+    000 1   0  0  0  1     0  0   0            1
+    */
+    var writeToThis;
+    if (dst===this) {
+        writeToThis=true;
+        dst=false;
     }
-    return changeScale(direction.localToWorld(local),scale).add(position);
+    if (!dst) dst=new Transform;
+    quaternion.product(t.quaternion,dst.quaternion);
+    dst.scale=scale*t.scale;
+    localToWorld(t.position,dst.position);
+    if (writeToThis) {
+        set(dst);
+        return this;
+    }
+    return dst;
 }
-\worldToLocal(world) {
+\localToWorld(local,dst) {
+    if (local is Transform) {
+        return product(local,dst);
+    }
+    // local:Vec3
+    dst=direction.localToWorld(local,dst);
+    dst.mulX(scale);
+    dst.addX(position);
+    return dst;
+}
+\worldToLocal(world,dst) {
+    var copyToWorld;
     if (world is Transform) {
+        /*
+        ~(T R S) wT wR wS
+        ~S ~R ~T wT wR wS
+        */
+        if (dst===world) {
+            copyToWorld=true;
+            dst=null;
+        }
+        if (!dst) dst=new Transform;
+        worldToLocal(world.position,dst.position);
+        quaternion.inverse.product(world.quaternion,dst.quaternion);
+        dst.scale=world.scale/scale;
+        if (copyToWorld) {
+            world.set(dst);
+            return world;
+        }
+        return dst;
+        //direction.quaternion.
+    }
+    //world:Vec3
+    /*
+    T R S l   =  w
+    l =  ~S ~R ~T  w
+
+    */
+    if (!dst) dst=new Vec3(0,0,0);
+    dst.set(world);
+    dst.subX(position);
+    direction.worldToLocal(dst,dst);
+    dst.divX(scale);
+    return dst;
+    /*if (world is Transform) {
         var org=worldToLocal(world.position);
         var fw=worldToLocal(world.position.add(world.direction.forward)).sub(org);
         var dw=worldToLocal(world.position.add(world.direction.down)).sub(org);
@@ -50,7 +109,7 @@ var scale;//scale is Number or {right,down,forward}TODO
             scale:sc
         };
     }
-    return direction.worldToLocal(changeScale(world.sub(position),1/scale));
+    return direction.worldToLocal(changeScale(world.sub(position),1/scale));*/
 }
 \changeScale(vec,by) {
     // only by:Number TODO

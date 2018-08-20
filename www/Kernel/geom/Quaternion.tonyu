@@ -20,6 +20,11 @@ var axis:Vec3, r:Number, theta:Number;
     v=v||new Vec3(0,0,0);
     if (w==null) w=1;
 }
+\set(q:Quaternion) {
+    v.set(q.v);
+    w=q.w;
+    return this;
+}
 \length {
     return sqrt(lengthSQ);
 }
@@ -35,6 +40,10 @@ var axis:Vec3, r:Number, theta:Number;
     */
     return new Quaternion{v:v.add(q.v),w:w+q.w};
 }
+\sub(q:Quaternion) {
+    return new Quaternion{v:v.sub(q.v),w:w-q.w};
+}
+
 \mul(k:Number) {
     //スカラー倍:kq=(kv,kw)
     return new Quaternion{v:v.mul(k), w:k*w};
