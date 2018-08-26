@@ -4,9 +4,18 @@ includes SpriteMod3D,QueryMod3D;
 var z,direction,_prescale;
 native Tonyu;
 \new(params) {
-    super(params);
+    Tonyu.extend(this,params);
+    initSchedulerMod();
+    layer=layer||defaultLayer;
+    if (layer.group instanceof SpriteGroup) layer=layer.group;
+    crashScale=1;
+    initSpriteMod();
+    //---Inserted from BaseActor(It should be inited before addToLayer)
     direction=new Direction;
     transform=new Transform{direction,position,scale:(_prescale||1),actor:this};
+    //---
+    if (Tonyu.runMode) addToLayer();
+    initAnimMod();
 }
 \rotate(mode,angle,unit) {
     direction.rotate(mode,angle,unit);
@@ -34,12 +43,14 @@ nowait \dist(dx,dy,dz) {
 \addSubactor(s) {
     if (p is Sprites3D) {
         p.add(s);
+        if (s.transform) s.transform.parent=p.transform;
+        if (!s.lifeKeeper) s.lifeKeeper=this;
     } else {
         var pp=p;
         p=new Sprites3D{layer:this,transform};
         if (pp!=null) {
             new Actor3D{x:0,y:0,p:pp,scale,scaleX,scaleY,alpha,layer:p};
         }
-        p.add(s);
+        addSubactor(s);
     }
 }
