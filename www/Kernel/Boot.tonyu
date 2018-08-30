@@ -107,7 +107,6 @@ mainLoop();
     $ObjectPool=new ObjectPool;
     $pat_fruits=30;
     $Keys=new Keys;
-    $Pad=new Pad{active:false,layer:$FrontSprites};
     $Math=Math;
     $consolePanel=new Panel{align:"center",x:465/2,y:465/2,width:465,height:465,zOrder:-10,layer:$FrontSprites};
     $consolePrintY=465-15;
