@@ -339,9 +339,10 @@ var T2MediaLib = (function(){
             if      (offset > audioBuffer.duration) offset = audioBuffer.duration;
             else if (offset < 0.0) offset = 0.0;
         }
+        durationStart = duration;
         if (!duration) {
             //duration=undefined; // iOS9でduration==undefinedだとsource.start(start, offset, duration);でエラー発生する
-            duration=86400; // Number.MAX_SAFE_INTEGERを入れてもiOS9ではエラー起きないけど、昔なんかの環境で数値大き過ぎるとエラーになって86400(24時間)に設定した気がする
+            durationStart = 86400; // Number.MAX_SAFE_INTEGERを入れてもiOS9ではエラー起きないけど、昔なんかの環境で数値大き過ぎるとエラーになって86400(24時間)に設定した気がする
         }
         if (!loop) loop = false;
         if (!loopStart) {
@@ -412,8 +413,10 @@ var T2MediaLib = (function(){
         // 再生
         source.start = source.start || source.noteOn;
         source.stop  = source.stop  || source.noteOff;
-        source.start(start, offset, duration);
-        if (loop && duration != null) source.stop(start + duration); // iOS, Firefoxではloopがtrueのときdurationを指定しても止まらない
+        source.start(start, offset, durationStart);
+        // iOS, Firefoxではloopがtrueのときdurationを指定しても止まらない
+        // iOSではstopを２回以上呼ぶと、InvalidStateErrorが発生するので注意
+        if (loop && duration != null) source.stop(start + duration);
         var t=this;
         t.seSources.push(source);
         source.onended = function(event) {
@@ -428,7 +431,15 @@ var T2MediaLib = (function(){
     };
     T2MediaLib.prototype.stopSE = function(sourceObj) {
         if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
-        sourceObj.stop(0);
+        try {
+            sourceObj.stop(0);
+        } catch(e) { // iOS対策
+            // iOSではstopを２回以上呼ぶと、InvalidStateErrorが発生する
+            if (sourceObj.gainNode) {
+                sourceObj.gainNode.gain.cancelScheduledValues(this.context.currentTime);
+                sourceObj.gainNode.gain.linearRampToValueAtTime(0, this.context.currentTime);
+            }
+        }
         return sourceObj;
     };
     T2MediaLib.prototype.stopAllSE = function(sourceObj) {
@@ -844,7 +855,15 @@ var T2MediaLib_BGMPlayer = (function(){
             this.picoAudio.stop();
         } else if (bgm instanceof AudioBufferSourceNode) {
             // MP3, Ogg, AAC, WAV
-            bgm.stop(0);
+            try {
+                bgm.stop(0);
+            } catch(e) { // iOS対策
+                // iOSではstopを２回以上呼ぶと、InvalidStateErrorが発生する
+                if (bgm.gainNode) {
+                    bgm.gainNode.gain.cancelScheduledValues(this.context.currentTime);
+                    bgm.gainNode.gain.linearRampToValueAtTime(0, this.context.currentTime);
+                }
+            }
         }
         this.playingBGM = null;
         this.playingBGMName = null;
@@ -871,7 +890,15 @@ var T2MediaLib_BGMPlayer = (function(){
                 this.bgmPauseLoop = this.t2MediaLib.isSELoop(bgm);
                 this.bgmPauseCurrentTime = bgm.context.currentTime;
                 this.bgmPauseTempo = this.bgmTempo;
-                bgm.stop(0);
+                try {
+                    bgm.stop(0);
+                } catch(e) { // iOS対策
+                    // iOSではstopを２回以上呼ぶと、InvalidStateErrorが発生する
+                    if (bgm.gainNode) {
+                        bgm.gainNode.gain.cancelScheduledValues(this.context.currentTime);
+                        bgm.gainNode.gain.linearRampToValueAtTime(0, this.context.currentTime);
+                    }
+                }
                 this.bgmPause = 1;
             }
         }
