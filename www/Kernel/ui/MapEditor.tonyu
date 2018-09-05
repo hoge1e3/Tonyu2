@@ -87,7 +87,9 @@ update();
 // initialize (or load) map data
 if(!loadMode){
     row=prompt("input row");
+    row=(row-0)||50;
     col=prompt("input col");
+    col=(col-0)||50;
     chipWidth=prompt("input chipWidth");
     chipHeight=prompt("input chipHeight");
     panel=new Panel{width:col*chipWidth,height:row*chipHeight};

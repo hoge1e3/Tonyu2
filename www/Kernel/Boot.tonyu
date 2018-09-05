@@ -12,6 +12,7 @@ native Math;
 native requestAnimationFrame;
 native console;
 native Array;
+native UIDiag;
 
 Tonyu.resetLoopCheck(10000);
 $Boot=this;
@@ -88,6 +89,7 @@ mainLoop();
 }
 \initPeripherals() {
     $InputDevice=new InputDevice;
+    $InputBox=UIDiag;
     $InputDevice.initCanvasEvents(cvj);
     $ObjectPool=new ObjectPool;
     $pat_fruits=30;

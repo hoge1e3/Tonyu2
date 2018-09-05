@@ -1,9 +1,12 @@
 includes EventMod,MathMod;
-native UIDiag;
-\prompt(mesg,val) {
+
+\prompt(mesg,val,geom) {
     var r;
-	r=waitFor(UIDiag.prompt(mesg,val));
+	r=waitFor($InputBox.prompt(mesg,val,geom));
 	return r;
+}
+\waitInput(title,mesg,val,geom) {
+    return prompt({title,body:mesg},val,geom);
 }
 \promptNumber(mesg,val) {
     var r;
@@ -12,13 +15,11 @@ native UIDiag;
 }
 \confirm(mesg) {
     var r;
-	r=waitFor(UIDiag.confirm(mesg));
+	r=waitFor($InputBox.confirm(mesg));
 	return r;
 }
 \alert(mesg) {
     var r;
-	r=waitFor(UIDiag.alert(mesg));
+	r=waitFor($InputBox.alert(mesg));
 	return r;
 }
-
-

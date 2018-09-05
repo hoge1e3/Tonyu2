@@ -1,6 +1,7 @@
 extends SpriteGroup;
 "field strict";
 native Tonyu;
+native console;
 var imageList, hitWatchers,objId,t1Sprites,drawing;
 var sx,sy;
 \new() {
@@ -80,10 +81,14 @@ function draw(ctx, camera) {
         sprites.forEach \(s) {
             if (s instanceof PlainChar) {
                 s.draw();
+            }
+        };
+        sprites.forEach \(s) {
+            if (s instanceof PlainChar) {
             } else orderArray.push(s);
         };
     } else {
-        orderArray=orderArray.concat(sprites);
+        orderArray=sprites.slice();
     }
     orderArray.sort(compOrder);
     ctx.translate(-sx,-sy);
