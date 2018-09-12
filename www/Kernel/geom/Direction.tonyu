@@ -4,7 +4,7 @@ includes MathMod;
 var forward,down,right,back,up,left;
 var quaternion:Quaternion;
 \initAxis() {
-    if (!Direction.axis) {
+    if (!Direction.axis) {// TODO:static
         Direction.axis={
             roll:new Vec3(0,0,1),
             pitch:new Vec3(1,0,0),

@@ -4,6 +4,7 @@ var actor:Actor3D;
 var _parent:Transform/*opt*/;
 var direction, position;
 var scale;//scale is Number or {right,down,forward}TODO
+var id;
 /*
 +-------
 |
@@ -17,21 +18,37 @@ Q*s p
 000 1
 
 */
-\parent=p {
-    if (direction && position) {
-        parentChanged(p,this);
+
+\_static() {//TODO
+    if (!Transform._static) {
+        Transform._static=true;
+        Transform.IDSEQ=1;
+        Transform.root=new Transform;
     }
-    _parent=p;
+}
+\parent=p {
+    if (_parent===p) return;
+    if (_parent) {
+        parentChanged(p,this);
+    } else {
+        _parent=p;
+    }
 }
 \parent {return _parent;}
 \quaternion {
     return direction.quaternion;
 }
 \new(param) {
+    _static();
     super(param);
+    id=Transform.IDSEQ++;
     scale=scale||1;
     direction=direction||new Direction;
     position=position||new Vec3(0,0,0);
+    _parent=_parent||Transform.root;
+}
+\isRoot {
+    return this===Transform.root;
 }
 \set(t:Transform) {
     position.set(t.position);
@@ -60,58 +77,10 @@ Q*s p
     }
     return dst;
 }
-\pathTo(to:Transform) {
-    var asc=[],desc=[],t;
-    for (t=this;t ;t=t._parent) {
-        asc.push(t);
-    }
-    // asc=[this,....  sib1... (t0 where t0.parent==null)]
-    for (t=to;t;t=t._parent) {
-        var i=asc.indexOf(t);
-        if (i>=0) {
-            // asc=[this,....  sib1 pa...t0 ]
-            // desc=[sib2.... to], t=pa
-            asc.splice(i);
-            break;
-        }
-        desc.unshift(t);
-    }
-    asc.shift();// drop this
-    // OK even pa=null ?
-    // asc=[parent,....  sib1]  desc=[sib2, .... to]
-    return {asc,desc};
-}
+
 \parentChanged(to:Transform,dst:Transform) {
-    var p;
-    if (to&&to.asc&&to.desc) {
-        p=to;
-        if (_parent!==p.asc[0] || (p.asc.length==0 && _parent)) {
-            p=pathTo(p.desc[p.desc.length-1]);
-        }
-    } else {
-        p=pathTo(to);
-    }
-    var asc=p.asc,desc=p.desc;
-    /*if (dst===this) {
-        copyToThis=true;
-        dst=null;
-    }*/
-    var res=dst||new Transform;
-    res.set(this);
-    while(asc.length) {
-        var t=asc.shift();
-        t.childToSibling(res,res);
-    }
-    // res.parent=sib1.parent
-    while(desc.length) {
-        var t=desc.shift();
-        t.siblingToChild(res,res);
-    }
-    /*if (copyToThis) {
-        set(res);
-        return this;
-    }*/
-    return res;
+    var p=new ParentChanger(to);
+    return p.change(this,dst);
 }
 \localToWorld(local,dst) {
     return childToSibling(local,dst);
@@ -176,4 +145,13 @@ Q*s p
 \changeScale(vec,by) {
     // only by:Number TODO
     return vec.mulX(by);
+}
+\isSibling(sib) {
+    return sib.parent===parent;
+}
+\isParentOf(child) {
+    return child.parent===this;
+}
+\isChildOf(parent) {
+    return this.parent===parent;
 }

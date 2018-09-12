@@ -1,0 +1,109 @@
+extends TObject;
+"field strict";
+var dstParent:Transform;
+var nodes:Object;
+
+//var maxParent:Object; // dstParent<- .... <- maxParent <- null
+\new(dstParent:Transform) {
+    var cnode;
+    nodes={};
+    dstParent=dstParent || Transform.root;
+    this.dstParent=dstParent;
+    nodes[dstParent.id]=cnode=cn({transform:dstParent,isDst:true});
+    for (var t=dstParent.parent; t ; t=t.parent) {
+        cnode=cn({transform:t,next:cnode, relation:"child"});
+        nodes[t.id]=cnode;
+    }
+    //maxParent=cnode;
+    //if (maxParent.transform.parent) throw new Error("ParentChanger::new maxParent has parent!");
+}
+\cn(n) {
+    switch(n.relation) {
+        case "parent":
+        chk(n.next.transform.isParentOf(n.transform),"cn::parent not match");
+        break;
+        case "child":
+        chk(n.next.transform.isChildOf(n.transform),"cn::child not match");
+        break;
+        case "sibling":
+        chk(n.next.transform.isSibling(n.transform),"cn::sibling not match");
+        break;
+        default:
+        chk(n.isDst,"cn::relation not set");
+    }
+    return n;
+}
+\chk(b,mesg) {
+    if (!b) throw new Error("ParentChanger::"+mesg);
+}
+\getNode(tt:Transform) {
+    if (nodes[tt.id]) return nodes[tt.id];
+    var cnode,prev;
+    var path=[];// c ... tt  (c.parent alreay in nodes)
+    //  parent ---->  child
+    // path[i] == path[i+1].parent
+    var t=tt;
+    while (true) {
+        chk(t,"t reached to root(null)");
+        cnode=nodes[t.id];
+        if (cnode) {
+            break;
+        }
+        path.unshift(t);
+        t=t.parent;
+    }
+    if (cnode.relation==="child") {
+        t=path.shift();
+        cnode=nodes[t.id]=cn({
+            next:cnode.next,relation:"sibling",transform:t
+        });
+    }
+    while(t=path.shift()) {
+        // parent ---->  child
+        chk(t.parent===cnode.transform, "getNode cnode parent not match");
+        cnode=nodes[t.id]=cn({
+            next:cnode,relation:"parent",transform:t
+        });
+    }
+    chk(cnode.transform===tt,"getNode cnode not match");
+    return cnode;
+}
+\change(t:Transform,res:Transform) {
+    res=res||new Transform;
+    res.set(t);
+    if (res.parent===dstParent) return res;
+    var n=getNode(res.parent);
+    var dstNode=getNode(dstParent);
+    while(n!==dstNode) {
+        chk(res.parent===n.transform,"convert not match ");
+        switch (n.relation) {
+            case "parent":
+            n.transform.childToSibling(res,res);
+            // res.parent=n.transform.parent = n.next.transform
+            break;
+            case "child":
+            // n.next.transform.parent=n.transform = res.parent
+            // n.next.transform  <= sib =>           res
+            chk(n.next.transform.isSibling(res),"convert::child not match");
+            n.next.transform.siblingToChild(res,res);
+            // res.parent = n.next.transform
+            break;
+            case "sibling":
+            n.transform.childToSibling(res,res);
+            // n.transform <=sib=> n.next.transform <=sib=> res
+            chk(n.next.transform.isSibling(res), "convert::sibling not match");
+            n.next.transform.siblingToChild(res,res);
+            // res.parent=n.next.transform
+            break;
+            default:
+            chk(false,"Unknown relation:"+n.relation+"/"+n.transform.id+"/"+dstParent.id);
+        }
+        // res.parent=n.next.transform
+        n=n.next;
+        // res.parent=n.transform
+    }
+    // res.parent=n.transform && n===dstNode
+    // res.parent=dstNode.transform=dstParent
+    chk(res.parent===dstParent,"change::fail");
+    return res;
+}

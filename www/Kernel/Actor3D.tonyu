@@ -12,7 +12,10 @@ native Tonyu;
     initSpriteMod();
     //---Inserted from BaseActor(It should be inited before addToLayer)
     direction=new Direction;
-    transform=new Transform{direction,position,scale:(_prescale||1),actor:this};
+    transform=new Transform{
+        direction,position,scale:(_prescale||1),actor:this,
+        parent:layer.transform||Transform.root
+    };
     //---
     if (Tonyu.runMode) addToLayer();
     initAnimMod();
