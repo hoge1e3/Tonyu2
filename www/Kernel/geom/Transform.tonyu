@@ -28,11 +28,11 @@ Q*s p
 }
 \parent=p {
     if (_parent===p) return;
-    if (_parent) {
+    _parent=p;
+    /*if (_parent) {
         parentChanged(p,this);
     } else {
-        _parent=p;
-    }
+    }*/
 }
 \parent {return _parent;}
 \quaternion {
@@ -46,6 +46,10 @@ Q*s p
     direction=direction||new Direction;
     position=position||new Vec3(0,0,0);
     _parent=_parent||Transform.root;
+}
+\child(param) {
+    param.parent=this;
+    return new Transform(param);
 }
 \isRoot {
     return this===Transform.root;

@@ -12,9 +12,8 @@ native Tonyu;
     initSpriteMod();
     //---Inserted from BaseActor(It should be inited before addToLayer)
     direction=new Direction;
-    transform=new Transform{
+    transform=layer.transform.child{
         direction,position,scale:(_prescale||1),actor:this,
-        parent:layer.transform||Transform.root
     };
     //---
     if (Tonyu.runMode) addToLayer();
@@ -43,10 +42,10 @@ nowait \dist(dx,dy,dz) {
     if (!transform) return _prescale=s;
     transform.scale=s;
 }
-\addSubactor(s) {
+\addSubsprite(s) {
     if (p is Sprites3D) {
         p.add(s);
-        if (s.transform) s.transform.parent=p.transform;
+        //if (s.transform) s.transform.parent=p.transform;
         if (!s.lifeKeeper) s.lifeKeeper=this;
     } else {
         var pp=p;
@@ -54,6 +53,6 @@ nowait \dist(dx,dy,dz) {
         if (pp!=null) {
             new Actor3D{x:0,y:0,p:pp,scale,scaleX,scaleY,alpha,layer:p};
         }
-        addSubactor(s);
+        addSubsprite(s);
     }
 }

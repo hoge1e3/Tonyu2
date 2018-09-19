@@ -32,8 +32,8 @@ extends Panel;
 }
 \addLayer(group,at) {
     var layer;
-    if (group is Sprites3D) {
-        layer=new Camera3D{group};
+    if (group is ScreenLayer) {
+        layer=group;
     } else {
         group=group||new Sprites;
         // spx,spy  Screen pivot x,y

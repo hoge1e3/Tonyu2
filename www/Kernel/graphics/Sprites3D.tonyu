@@ -4,28 +4,21 @@ native console;
 \new(p) {
     super(p);
     sprites=[];
+    transform=transform||new Transform;
 }
 \add(a:Actor3D) {
-    if (a.transform && this.transform) a.transform.parent=this.transform;
-    a.layer=this;
+    //if (a.transform && this.transform)
+    //a.transform.parent=this.transform;
+    //a.layer=this;
+    if (a.transform.parent!==transform) throw new Error("Sprite3D::Transform not match");
+    if (a.layer!==this && a.layer.p!==this) throw new Error("Spreite3D::layer not match");
     sprites.push(a);
+    a.__addedToSprites=this;
+    //if (sprites.length>5) throw new Error("Wow!");
 }
-\draw(ctx,camera) {
-    var s2ds=[];
-    camera.sprites2D=s2ds;
+\draw3D(ctx:Context3D) {
     for (var s of sprites) {
-        s.draw3D(camera);
-    }
-    s2ds=s2ds.sort \(a,b) {
-        return b.zOrder-a.zOrder;
-    };
-    for (var s2d of s2ds) {
-        s2d.draw(ctx,camera);
-    }
-}
-\draw3D(camera) {
-    for (var s of sprites) {
-        s.draw3D(camera);
+        s.draw3D(ctx);
     }
 }
 //--- TODO : unify to Sprites

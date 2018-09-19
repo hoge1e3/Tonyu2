@@ -1,5 +1,5 @@
 {
-  "name": "Tonyu2",
+  "name": "Tonyu2-dev",
   "main": "www/index.html",
   "single-instance": false,
   "window": {
@@ -9,6 +9,8 @@
 	"toolbar"	: true
   },
   "config": {
-     "prjDirs": ["Projects","Samples","fs/Tonyu/Projects"]
+     "prjDirs": [
+     "Projects","Samples","fs/Tonyu/Projects"
+     ]
   }
 }

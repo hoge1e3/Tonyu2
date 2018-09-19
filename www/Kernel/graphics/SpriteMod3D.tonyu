@@ -4,13 +4,7 @@ includes SpriteMod;
 var x,y,z,direction,transform;
 
 
-\draw3D(camera) {
+\draw3D(ctx3d) {
     if (p==null || typeof p==="number") detectShape();// Just for calculate size
-    camera.addSprite3D(this);
-    /*if (p && typeof p.draw3D==="function") {
-        var transformed=camera.transform(transform);
-        p.draw3D(transformed);
-    } else {
-        camera.addSprite3D(this);
-    }*/
+    ctx3d.addSprite3D(this);
 }

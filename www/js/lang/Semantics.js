@@ -569,6 +569,9 @@ function annotateSource2(klass, env) {//B
 		},
 		exprstmt: function (node) {
 			var t,m;
+			if (node.expr.type==="objlit") {
+				throw TError( "オブジェクトリテラル単独の式文は書けません．" , srcFile, node.pos);
+			}
 			if (!ctx.noWait &&
 					(t=OM.match(node,noRetFiberCallTmpl)) &&
 					isFiberMethod(t.N)) {

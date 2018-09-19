@@ -1,10 +1,7 @@
 extends Actor3D;
+native console;
 "field strict";
-var group:Sprites3D;
-var sprites2D:Array;// of ActorSprite
 var z1:Number;// z where scale==1
-var spx,spy;
-var base:Transform;//optional
 /*
      C
    z1|  S
@@ -18,73 +15,25 @@ p.z:z1 = p.x:r.x
 r.x= p.x*z1/p.z
 
 */
-\addSprite2D(s) {// called during draw3D
-    sprites2D.push(s);
-}
-\addSprite3D(s) {// called during draw3D
-    // scale: 3D logical size    scaleX/Y: scale for 2D Sprite rendering
-    var scl=((typeof s.scale==="number") ? s.scale : 1);
-    if (s.p is Sprites3D && s.transform) {
-        var svb=base;
-        base=base?base.localToWorld(s.transform):s.transform;
-        for (var e of s.p.sprites) {
-            addSprite3D(e);
-            /*var w=s.transform.localToWorld(e.position);
-            addSprite3D{
-                x:w.x,y:w.y,z:w.z,
-                p:e.p,
-                transform:e.transform,
-                scale:e.scale*scl,scaleX:e.scaleX,scaleY:e.scaleY,
-                rotation:s.rotation||0, alpha:s.alpha||255
-            };*/
-        }
-        base=svb;
-        return;
-    }
-    if (s.p is Sprites3D && !s.transform) {
-        return;
-        throw new Error("No transform");
-    }
-    var p=to2D(s.position || new Vec3(s.x,s.y,s.z));
-    if (p) {
-        scl*=p.scale;
-        if (s is ActorSprite) {
-            s.x=p.x; s.y=p.y;
-            s.zOrder=p.z;
-            s.scaleX*=scl;
-            if (typeof s.scaleY==="number") s.scaleY*=scl;
-        } else {
-            s=new ActorSprite{
-                x=p.x, y=p.y,
-                scaleX=(s.scaleX||1)*scl,
-                scaleY=(s.scaleY||s.scaleX||1)*scl,
-                p=s.p,text=s.text,fillStyle:s.fillStyle,
-                rotation:s.rotation||0, alpha:s.alpha||255,
-                zOrder=p.z
-            };
-        }
-        addSprite2D(s);
-    }
-}
 \new(p) {
     super(p);
-    spx=spx||$screenWidth/2;
-    spy=spy||$screenHeight/2;
+    //spx=spx||$screenWidth/2;
+    //spy=spy||$screenHeight/2;
     z1=z1||$screenWidth/2;
     z=-z1;
-    //rotation={x:0,y:0,z:0,order:"yxz"};
 }
 \to2D(pos:Vec3) {
-    if (base) pos=base.localToWorld(pos);
-    var c=transform.worldToLocal(pos);
+    var c=pos;
     var x=c.x;
     var y=c.y;
     var z=c.z;
     if (z<=0) return null;
-    x=x*z1/z+spx;
-    y=y*z1/z+spy;
+    x=x*z1/z;//+spx;
+    y=y*z1/z;//+spy;
     return {x,y,z,scale:z1/z};
 }
-\draw(ctx) {
-    group.draw(ctx,this);
+\draw3D(ctx3d) {
+    if (ctx3d.camera===this) return;
+    //console.log("diffcam",ctx3d.camera, this);
+    super.draw3D(ctx3d);
 }

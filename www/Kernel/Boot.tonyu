@@ -114,7 +114,12 @@ mainLoop();
     $frontLayer=$FrontSprites=new Sprites();
     $backLayer=new Sprites();
     $uiLayer=new Sprites();
-    $mainLayer3D=new Sprites3D();
+    $sprites3D=new Sprites3D;
+    $camera3D=new Camera3D{layer:$sprites3D,x:0,y:0,z:-100};
+    $mainLayer3D=new Layer3D{
+        group:$sprites3D,
+        camera:$camera3D,
+    };
     cvj=$mainCanvas||$("canvas");
     $Screen=new Screen{width:$screenWidth, height:$screenHeight, layer:$uiLayer};
     $Screen.on("resize") \{
@@ -134,7 +139,7 @@ mainLoop();
     };
     $Screen.addLayer($frontLayer);
     $camera2D=$Screen.addLayer($mainLayer);
-    $camera3D=$Screen.addLayer($mainLayer3D);
+    $Screen.addLayer($mainLayer3D);
     $Screen.addLayer($backLayer);
     $Screen.setBGColor("rgb(20,80,180)");
     $Screen.selectLayer($mainLayer);

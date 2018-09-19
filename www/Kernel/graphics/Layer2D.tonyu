@@ -1,4 +1,4 @@
-extends TObject;
+extends ScreenLayer;
 includes MathMod;
 "field strict";
 var spx,spy,wpx,wpy,rotation,scale,group,screen;

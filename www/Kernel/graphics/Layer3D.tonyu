@@ -1,0 +1,29 @@
+extends ScreenLayer;
+includes MathMod;
+native console;
+"field strict";
+var spx,spy,group,camera,screen;
+
+\new(p) {
+    super(p);
+    spx=spx||$screenWidth/2;
+    spy=spy||$screenHeight/2;
+}
+\draw(c2) {
+    var c3=new Context3D{camera};
+    group.draw3D(c3);
+    var s2ds=c3.sprites2D.sort \(a,b) {
+        return b.zOrder-a.zOrder;
+    };
+    c2.save();
+    c2.translate(spx,spy);
+    //console.log("Layer3D::draw",group.sprites.length, c3.sprites2D.length);
+    for (var s2d of c3.sprites2D) {
+        s2d.draw(c2);
+    }
+    c2.restore();
+}
+\world2screen(obj) {// world<=>group
+}
+\screen2world(obj) {
+}

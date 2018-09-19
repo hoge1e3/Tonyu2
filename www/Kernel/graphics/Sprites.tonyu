@@ -13,7 +13,7 @@ var sx,sy;
     sy=0;
     objId=0;
 }
-function addSubactor(s) {
+function addSubsprite(s) {
     return add(s);
 }
 function add(s) {

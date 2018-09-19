@@ -11,7 +11,13 @@ native Array;
 
 
 nowait \hide() {
-    layer.remove(this);
+    if(layer is SpriteGroup) {
+        layer.remove(this);
+    } else if (this.__addedToSprites is SpriteGroup) {
+        this.__addedToSprites.remove(this);
+    } else {
+        throw new Error("LifeCycleMod::hide invalid layer");
+    }
 }
 nowait \show(x,y,p) {
     layer.add(this);
@@ -72,8 +78,8 @@ nowait \isDead() {
 }
 
 \addToLayer() {
-    if(layer && typeof layer.addSubactor==="function"){
-        layer.addSubactor(this);
+    if(layer && typeof layer.addSubsprite==="function"){
+        layer.addSubsprite(this);
     } else if(layer is SpriteGroup){
         layer.add(this);
     } else {

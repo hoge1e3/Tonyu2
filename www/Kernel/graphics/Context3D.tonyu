@@ -1,0 +1,55 @@
+extends TObject;
+"field strict";
+var camera:Camera3D;
+var sprites2D:Array;// of ActorSprite
+var parentChanger:ParentChanger;
+var defaultTransform;
+\addSprite2D(s) {// called during draw3D
+    sprites2D.push(s);
+}
+\addSprite3D(s) {// called during draw3D
+    // scale: 3D logical size    scaleX/Y: scale for 2D Sprite rendering
+    var scl=((typeof s.scale==="number") ? s.scale : 1);
+    if (s.p is Sprites3D) {
+        //var svb=base;
+        //base=base?base.localToWorld(s.transform):s.transform;
+        for (var e of s.p.sprites) {
+            addSprite3D(e);
+        }
+        //base=svb;
+        return;
+    }
+    if (!s.transform) {
+        s.transform=defaultTransform.child{
+            position:new Vec3(s.x,s.y,s.z)
+        };
+    }
+    var changed=parentChanger.change(s.transform);
+    //changed.position.subX(camera.transform.position);
+    var p=camera.to2D(changed.position);
+    if (p) {
+        scl*=p.scale;
+        if (s is ActorSprite) {
+            s.x=p.x; s.y=p.y;
+            s.zOrder=p.z;
+            s.scaleX*=scl;
+            if (typeof s.scaleY==="number") s.scaleY*=scl;
+        } else {
+            s=new ActorSprite{
+                x=p.x, y=p.y,
+                scaleX=(s.scaleX||1)*scl,
+                scaleY=(s.scaleY||s.scaleX||1)*scl,
+                p=s.p,text=s.text,fillStyle:s.fillStyle,
+                rotation:s.rotation||0, alpha:s.alpha||255,
+                zOrder=p.z
+            };
+        }
+        addSprite2D(s);
+    }
+}
+\new(p) {
+    super(p);
+    sprites2D=[];
+    parentChanger=new ParentChanger(camera.transform);
+    defaultTransform=camera.transform.parent;
+}
