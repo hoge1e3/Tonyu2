@@ -32,6 +32,15 @@ var quaternion:Quaternion;
         var r=quaternion.rotate(Direction.axis.pitch);
         return t.keep(r);
     };
+    back=new ComputedVec3 \(t) {
+        return forward.mul(-1);
+    };
+    up=new ComputedVec3 \(t) {
+        return down.mul(-1);
+    };
+    left=new ComputedVec3 \(t) {
+        return right.mul(-1);
+    };
 }
 \rotate(mode,angle,unit) {
     // mode="roll","pitch","yaw"

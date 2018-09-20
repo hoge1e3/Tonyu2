@@ -56,3 +56,22 @@ nowait \dist(dx,dy,dz) {
         addSubsprite(s);
     }
 }
+\localToWorld(fru) {
+    var res=position.clone();
+    for (var name,k in fru) {
+        var vec=direction[name];
+        if (vec && vec.mul) res.addX(vec.mul(k));
+    }
+    return res;
+}
+\moveBy(by) {
+    if (typeof by==="number") return moveBy{forward:by};
+    position.set(localToWorld(by));
+}
+\rotate(axis,angle) {
+    return direction.rotate(axis,angle);
+}
+// moveBy(1);
+// moveBy{forward:1,left:1};
+// rotate("roll",1);
+// $camra3D.chase(this) {backward:100, smoothing:0.1};

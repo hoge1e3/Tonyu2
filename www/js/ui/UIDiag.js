@@ -1,7 +1,7 @@
 define(["UI"],function (UI) {
     var UIDiag={};
     function parseMesg(mesg,defTitle) {
-        if (typeof mesg==="string") return {
+        if (typeof mesg==="string" || ( (typeof $!=="undefined") && mesg instanceof $)) return {
             title:mesg.title||defTitle,
             body:mesg
         };

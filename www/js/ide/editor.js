@@ -614,9 +614,21 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         }
     }*/
     $("#mkrun").click(F(function () {
+        var dest;
         if (WebSite.isNW) {
+            if (desktopEnv && desktopEnv.runtimeConfig) {
+                dest=desktopEnv.runtimeConfig.dest;
+            } else {
+                dest=FS.get(WebSite.cwd).rel("Runtimes/").rel( curProjectDir.name());
+            }
             mkrunDiag.show(curPrj,{
-                dest: FS.get(WebSite.cwd).rel("Runtimes/").rel( curProjectDir.name())
+                dest: dest,
+                onComplete: function (e) {
+                    if (e.type==="dir" && desktopEnv) {
+                        desktopEnv.runtimeConfig=e.config;
+                        saveDesktopEnv();
+                    }
+                }
             });
         } else {
             /*var mkram=FS.get("/mkram/");

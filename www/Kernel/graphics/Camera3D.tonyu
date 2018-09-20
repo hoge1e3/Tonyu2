@@ -37,3 +37,8 @@ r.x= p.x*z1/p.z
     //console.log("diffcam",ctx3d.camera, this);
     super.draw3D(ctx3d);
 }
+\goBehind(target, dist) {
+    if (!dist) dist=z1;
+    position.set(target.position.sub(target.direction.forward.mul(dist)));
+    direction.set(target.direction);
+}

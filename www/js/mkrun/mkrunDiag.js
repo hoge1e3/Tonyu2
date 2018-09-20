@@ -8,6 +8,7 @@ function (UI,extLink,mkrun,Tonyu,zip,DU) {
     res.embed=function (prj,/*dest,*/options) {
         options=options||{};
         var dest=options.dest;
+        var onComplete=options.onComplete||(function(){});
         var ote={
             click: function () {
                 if (outtype.value==="dir") {
@@ -58,7 +59,7 @@ function (UI,extLink,mkrun,Tonyu,zip,DU) {
         } else {
             vars.folder.show();
         }
-        var model={dest:dest?dest.path():"", src:true, zip:true};
+        var model={dest:(dest && dest.path)?dest.path():(dest||""), src:true, zip:true};
         var form=vars.form[0];
         var outtype=form.outtype;
         vars.dest.prop("disabled",true);
@@ -141,6 +142,7 @@ function (UI,extLink,mkrun,Tonyu,zip,DU) {
                 diag.dialog();
                 break;
                 }
+                onComplete({type:type,config:model});
                 res.d.$vars.OKButton.prop("disabled", false);
                 if (res.d.dialog) res.d.dialog("close");
                 if (options.onEnd) options.onEnd();
