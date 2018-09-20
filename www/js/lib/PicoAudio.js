@@ -1,7 +1,5 @@
 var PicoAudio = (function(){
 	function PicoAudio(_audioContext, _picoAudio){
-		var AudioContext = window.AudioContext || window.webkitAudioContext;
-		this.context = _audioContext ? _audioContext : new AudioContext();
 		this.settings = {
 			masterVolume: 1,
 			generateVolume: 0.15,
@@ -32,8 +30,19 @@ var PicoAudio = (function(){
 		this.channels = [];
 		this.tempoTrack = [{ timing:0, value:120 },{ timing:0, value:120 }];
 		this.cc111Time = -1;
+		this.onSongEndListener = null;
+
 		for(var i=0; i<17; i++)
 			this.channels.push([0,0,1]);
+		// AudioContextがある場合はそのまま初期化、なければAudioContextを用いる初期化をinit()で
+		if(_audioContext){
+			this.init(_audioContext, _picoAudio);
+		}
+	}
+
+	PicoAudio.prototype.init = function(_audioContext, _picoAudio){
+		var AudioContext = window.AudioContext || window.webkitAudioContext;
+		this.context = _audioContext ? _audioContext : new AudioContext();
 		if(_picoAudio && _picoAudio.whitenoise){ // 使いまわし
 			this.whitenoise = _picoAudio.whitenoise;
 		} else {
@@ -68,40 +77,31 @@ var PicoAudio = (function(){
 				}
 			}
 		}
-		// リバーブ用（convolverは重いので１つだけ作成）
-		if(false && _picoAudio && _picoAudio.convolver){ // 使いまわし→リバーブの音量をミュートにできないので使いまわししない
-			this.convolver = _picoAudio.convolver;
-		} else {
-			this.convolver = this.context.createConvolver();
-			this.convolver.buffer = this.impulseResponse;
-			this.convolver.normalize = false;
-			this.convolverGainNode = this.context.createGain();
-			this.convolverGainNode.gain.value = this.settings.reverbVolume;
-			this.convolver.connect(this.convolverGainNode);
-			this.convolverGainNode.connect(this.masterGainNode);
-			this.masterGainNode.connect(this.context.destination);
-		}
+		// リバーブ用
+		this.convolver = this.context.createConvolver();
+		this.convolver.buffer = this.impulseResponse;
+		this.convolver.normalize = false;
+		this.convolverGainNode = this.context.createGain();
+		this.convolverGainNode.gain.value = this.settings.reverbVolume;
+		this.convolver.connect(this.convolverGainNode);
+		this.convolverGainNode.connect(this.masterGainNode);
+		this.masterGainNode.connect(this.context.destination);
 
-		if(false && _picoAudio && _picoAudio.chorusDelayNode){ // 使いまわし→コーラスの音量をミュートにできないので使いまわししない
-			this.chorusDelayNode = _picoAudio.chorusDelayNode;
-		} else {
-			this.chorusDelayNode = this.context.createDelay();
-			this.chorusGainNode = this.context.createGain();
-			this.chorusOscillator = this.context.createOscillator();
-			this.chorusLfoGainNode = this.context.createGain();
-			this.chorusDelayNode.delayTime.value = 0.025;
-			this.chorusLfoGainNode.gain.value = 0.010;
-			this.chorusOscillator.frequency.value = 0.05;
-			this.chorusGainNode.gain.value = this.settings.chorusVolume;
-			this.chorusOscillator.connect(this.chorusLfoGainNode);
-			this.chorusLfoGainNode.connect(this.chorusDelayNode.delayTime);
-			this.chorusDelayNode.connect(this.chorusGainNode);
-			this.chorusGainNode.connect(this.masterGainNode);
-			this.masterGainNode.connect(this.context.destination);
-			this.chorusOscillator.start(0);
-		}
-
-		this.onSongEndListener = null;
+		// コーラス用
+		this.chorusDelayNode = this.context.createDelay();
+		this.chorusGainNode = this.context.createGain();
+		this.chorusOscillator = this.context.createOscillator();
+		this.chorusLfoGainNode = this.context.createGain();
+		this.chorusDelayNode.delayTime.value = 0.025;
+		this.chorusLfoGainNode.gain.value = 0.010;
+		this.chorusOscillator.frequency.value = 0.05;
+		this.chorusGainNode.gain.value = this.settings.chorusVolume;
+		this.chorusOscillator.connect(this.chorusLfoGainNode);
+		this.chorusLfoGainNode.connect(this.chorusDelayNode.delayTime);
+		this.chorusDelayNode.connect(this.chorusGainNode);
+		this.chorusGainNode.connect(this.masterGainNode);
+		this.masterGainNode.connect(this.context.destination);
+		this.chorusOscillator.start(0);
 	}
 
 	PicoAudio.prototype.createNote = function(option){
@@ -727,10 +727,10 @@ var PicoAudio = (function(){
 					this.settings.WebMIDIPortOutput.send([0xB0+t, 6, 2]); //pitchbend
 					this.settings.WebMIDIPortOutput.send([0xB0+t, 100, 1]);
 					this.settings.WebMIDIPortOutput.send([0xB0+t, 96, 0]);
-					this.settings.WebMIDIPortOutput.send([0xB0+t, 97, 64]);//tuning?
-					this.settings.WebMIDIPortOutput.send([0xB0+t, 7, 100]);// volume
-					this.settings.WebMIDIPortOutput.send([0xB0+t, 10, 64]);// pan
-					this.settings.WebMIDIPortOutput.send([0xB0+t, 11, 127]);// expression
+					this.settings.WebMIDIPortOutput.send([0xB0+t, 97, 64]);　//tuning?
+					this.settings.WebMIDIPortOutput.send([0xB0+t, 7, 100]); // volume
+					this.settings.WebMIDIPortOutput.send([0xB0+t, 10, 64]); // pan
+					this.settings.WebMIDIPortOutput.send([0xB0+t, 11, 127]); // expression
 					//this.settings.WebMIDIPortOutput.send([0xB0+t, 91, 40]); // リバーブ以外のエフェクトに設定される場合がありそうなのでコメントアウト
 					//this.settings.WebMIDIPortOutput.send([0xB0+t, 93, 0]); // コーラス以外のエフェクトに設定されるのか音が出なくなる場合があるのでコメントアウト
 					this.settings.WebMIDIPortOutput.send([0xB0+t, 98, 0]);
