@@ -94,7 +94,7 @@
 	};
 	R.real=real;
 	var requireSimulator=R;
-	// Created at Thu Jul 05 2018 13:39:54 GMT+0900 (東京 (標準時))
+	// Created at Thu Sep 20 2018 15:44:51 GMT+0900 (東京 (標準時))
 requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...

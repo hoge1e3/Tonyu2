@@ -19383,7 +19383,9 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      return _this.direction.rotate(axis,angle);
+      //$LASTPOS=67001794;//kernel.Actor3D:1794
+      _this.direction.rotate(axis,angle);
+      return _this;
     },
     fiber$rotate :function _trc_Actor3D_f_rotate(_thread,axis,angle) {
       "use strict";
@@ -19391,7 +19393,9 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      _thread.retVal=_this.direction.rotate(axis,angle);return;
+      //$LASTPOS=67001794;//kernel.Actor3D:1794
+      _this.direction.rotate(axis,angle);
+      _thread.retVal=_this;return;
       
       
       _thread.retVal=_this;return;
@@ -19597,6 +19601,7 @@ Tonyu.klass.define({
       }
       //$LASTPOS=67001713;//kernel.Actor3D:1713
       _this.position.set(_this.localToWorld(by));
+      return _this;
     },
     fiber$moveBy :function _trc_Actor3D_f_moveBy(_thread,by) {
       "use strict";
@@ -19621,6 +19626,7 @@ Tonyu.klass.define({
             
             //$LASTPOS=67001713;//kernel.Actor3D:1713
             _this.position.set(_this.localToWorld(by));
+            _thread.exit(_this);return;
             _thread.exit(_this);return;
           }
         }

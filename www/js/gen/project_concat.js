@@ -94,7 +94,7 @@
 	};
 	R.real=real;
 	var requireSimulator=R;
-	// Created at Thu Jul 05 2018 13:39:57 GMT+0900 (東京 (標準時))
+	// Created at Thu Sep 20 2018 15:44:57 GMT+0900 (東京 (標準時))
 requireSimulator.setName('Util');
 Util=(function () {
 
@@ -4070,6 +4070,19 @@ return Tonyu=function () {
 						console.log("WHY2!",prot[n],prot,n);
 						throw new Error("WHY2!"+n);
 					}
+				} else {
+					if (prot[n]!==m.methods[n] && n!=="main" && n!=="fiber$main") {
+						/*
+						Override of including module
+						MOD  TQuery::min kernel.MathMod
+						MOD  TQuery::max kernel.MathMod
+						MOD  Vec3::dist kernel.MathMod
+						MOD  any_class::main any_module
+						*/
+						// Why cannot override super-class methods?
+						// because super.hoge() in module cannot detect super class
+						//console.log("MOD ",shortName+"::"+n,(m&&m.meta&&m.meta.fullName));
+					}
 				}
 			}
 		});
@@ -4268,7 +4281,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,DeferredUtil:DU,
-			VERSION:1530765594073,//EMBED_VERSION
+			VERSION:1537425889131,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -13245,6 +13258,9 @@ function annotateSource2(klass, env) {//B
 		},
 		exprstmt: function (node) {
 			var t,m;
+			if (node.expr.type==="objlit") {
+				throw TError( "オブジェクトリテラル単独の式文は書けません．" , srcFile, node.pos);
+			}
 			if (!ctx.noWait &&
 					(t=OM.match(node,noRetFiberCallTmpl)) &&
 					isFiberMethod(t.N)) {
@@ -15657,8 +15673,6 @@ define([], function () {
 requireSimulator.setName('PicoAudio');
 var PicoAudio = (function(){
 	function PicoAudio(_audioContext, _picoAudio){
-		var AudioContext = window.AudioContext || window.webkitAudioContext;
-		this.context = _audioContext ? _audioContext : new AudioContext();
 		this.settings = {
 			masterVolume: 1,
 			generateVolume: 0.15,
@@ -15689,8 +15703,19 @@ var PicoAudio = (function(){
 		this.channels = [];
 		this.tempoTrack = [{ timing:0, value:120 },{ timing:0, value:120 }];
 		this.cc111Time = -1;
+		this.onSongEndListener = null;
+
 		for(var i=0; i<17; i++)
 			this.channels.push([0,0,1]);
+		// AudioContextがある場合はそのまま初期化、なければAudioContextを用いる初期化をinit()で
+		if(_audioContext){
+			this.init(_audioContext, _picoAudio);
+		}
+	}
+
+	PicoAudio.prototype.init = function(_audioContext, _picoAudio){
+		var AudioContext = window.AudioContext || window.webkitAudioContext;
+		this.context = _audioContext ? _audioContext : new AudioContext();
 		if(_picoAudio && _picoAudio.whitenoise){ // 使いまわし
 			this.whitenoise = _picoAudio.whitenoise;
 		} else {
@@ -15725,40 +15750,31 @@ var PicoAudio = (function(){
 				}
 			}
 		}
-		// リバーブ用（convolverは重いので１つだけ作成）
-		if(false && _picoAudio && _picoAudio.convolver){ // 使いまわし→リバーブの音量をミュートにできないので使いまわししない
-			this.convolver = _picoAudio.convolver;
-		} else {
-			this.convolver = this.context.createConvolver();
-			this.convolver.buffer = this.impulseResponse;
-			this.convolver.normalize = false;
-			this.convolverGainNode = this.context.createGain();
-			this.convolverGainNode.gain.value = this.settings.reverbVolume;
-			this.convolver.connect(this.convolverGainNode);
-			this.convolverGainNode.connect(this.masterGainNode);
-			this.masterGainNode.connect(this.context.destination);
-		}
+		// リバーブ用
+		this.convolver = this.context.createConvolver();
+		this.convolver.buffer = this.impulseResponse;
+		this.convolver.normalize = false;
+		this.convolverGainNode = this.context.createGain();
+		this.convolverGainNode.gain.value = this.settings.reverbVolume;
+		this.convolver.connect(this.convolverGainNode);
+		this.convolverGainNode.connect(this.masterGainNode);
+		this.masterGainNode.connect(this.context.destination);
 
-		if(false && _picoAudio && _picoAudio.chorusDelayNode){ // 使いまわし→コーラスの音量をミュートにできないので使いまわししない
-			this.chorusDelayNode = _picoAudio.chorusDelayNode;
-		} else {
-			this.chorusDelayNode = this.context.createDelay();
-			this.chorusGainNode = this.context.createGain();
-			this.chorusOscillator = this.context.createOscillator();
-			this.chorusLfoGainNode = this.context.createGain();
-			this.chorusDelayNode.delayTime.value = 0.025;
-			this.chorusLfoGainNode.gain.value = 0.010;
-			this.chorusOscillator.frequency.value = 0.05;
-			this.chorusGainNode.gain.value = this.settings.chorusVolume;
-			this.chorusOscillator.connect(this.chorusLfoGainNode);
-			this.chorusLfoGainNode.connect(this.chorusDelayNode.delayTime);
-			this.chorusDelayNode.connect(this.chorusGainNode);
-			this.chorusGainNode.connect(this.masterGainNode);
-			this.masterGainNode.connect(this.context.destination);
-			this.chorusOscillator.start(0);
-		}
-
-		this.onSongEndListener = null;
+		// コーラス用
+		this.chorusDelayNode = this.context.createDelay();
+		this.chorusGainNode = this.context.createGain();
+		this.chorusOscillator = this.context.createOscillator();
+		this.chorusLfoGainNode = this.context.createGain();
+		this.chorusDelayNode.delayTime.value = 0.025;
+		this.chorusLfoGainNode.gain.value = 0.010;
+		this.chorusOscillator.frequency.value = 0.05;
+		this.chorusGainNode.gain.value = this.settings.chorusVolume;
+		this.chorusOscillator.connect(this.chorusLfoGainNode);
+		this.chorusLfoGainNode.connect(this.chorusDelayNode.delayTime);
+		this.chorusDelayNode.connect(this.chorusGainNode);
+		this.chorusGainNode.connect(this.masterGainNode);
+		this.masterGainNode.connect(this.context.destination);
+		this.chorusOscillator.start(0);
 	}
 
 	PicoAudio.prototype.createNote = function(option){
@@ -16384,10 +16400,10 @@ var PicoAudio = (function(){
 					this.settings.WebMIDIPortOutput.send([0xB0+t, 6, 2]); //pitchbend
 					this.settings.WebMIDIPortOutput.send([0xB0+t, 100, 1]);
 					this.settings.WebMIDIPortOutput.send([0xB0+t, 96, 0]);
-					this.settings.WebMIDIPortOutput.send([0xB0+t, 97, 64]);//tuning?
-					this.settings.WebMIDIPortOutput.send([0xB0+t, 7, 100]);// volume
-					this.settings.WebMIDIPortOutput.send([0xB0+t, 10, 64]);// pan
-					this.settings.WebMIDIPortOutput.send([0xB0+t, 11, 127]);// expression
+					this.settings.WebMIDIPortOutput.send([0xB0+t, 97, 64]);　//tuning?
+					this.settings.WebMIDIPortOutput.send([0xB0+t, 7, 100]); // volume
+					this.settings.WebMIDIPortOutput.send([0xB0+t, 10, 64]); // pan
+					this.settings.WebMIDIPortOutput.send([0xB0+t, 11, 127]); // expression
 					//this.settings.WebMIDIPortOutput.send([0xB0+t, 91, 40]); // リバーブ以外のエフェクトに設定される場合がありそうなのでコメントアウト
 					//this.settings.WebMIDIPortOutput.send([0xB0+t, 93, 0]); // コーラス以外のエフェクトに設定されるのか音が出なくなる場合があるのでコメントアウト
 					this.settings.WebMIDIPortOutput.send([0xB0+t, 98, 0]);
@@ -17563,9 +17579,10 @@ var T2MediaLib = (function(){
             if      (offset > audioBuffer.duration) offset = audioBuffer.duration;
             else if (offset < 0.0) offset = 0.0;
         }
+        durationStart = duration;
         if (!duration) {
             //duration=undefined; // iOS9でduration==undefinedだとsource.start(start, offset, duration);でエラー発生する
-            duration=86400; // Number.MAX_SAFE_INTEGERを入れてもiOS9ではエラー起きないけど、昔なんかの環境で数値大き過ぎるとエラーになって86400(24時間)に設定した気がする
+            durationStart = 86400; // Number.MAX_SAFE_INTEGERを入れてもiOS9ではエラー起きないけど、昔なんかの環境で数値大き過ぎるとエラーになって86400(24時間)に設定した気がする
         }
         if (!loop) loop = false;
         if (!loopStart) {
@@ -17636,8 +17653,10 @@ var T2MediaLib = (function(){
         // 再生
         source.start = source.start || source.noteOn;
         source.stop  = source.stop  || source.noteOff;
-        source.start(start, offset, duration);
-        if (loop && duration != null) source.stop(start + duration); // iOS, Firefoxではloopがtrueのときdurationを指定しても止まらない
+        source.start(start, offset, durationStart);
+        // iOS, Firefoxではloopがtrueのときdurationを指定しても止まらない
+        // iOSではstopを２回以上呼ぶと、InvalidStateErrorが発生するので注意
+        if (loop && duration != null) source.stop(start + duration);
         var t=this;
         t.seSources.push(source);
         source.onended = function(event) {
@@ -17652,7 +17671,15 @@ var T2MediaLib = (function(){
     };
     T2MediaLib.prototype.stopSE = function(sourceObj) {
         if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
-        sourceObj.stop(0);
+        try {
+            sourceObj.stop(0);
+        } catch(e) { // iOS対策
+            // iOSではstopを２回以上呼ぶと、InvalidStateErrorが発生する
+            if (sourceObj.gainNode) {
+                sourceObj.gainNode.gain.cancelScheduledValues(this.context.currentTime);
+                sourceObj.gainNode.gain.linearRampToValueAtTime(0, this.context.currentTime);
+            }
+        }
         return sourceObj;
     };
     T2MediaLib.prototype.stopAllSE = function(sourceObj) {
@@ -18068,7 +18095,15 @@ var T2MediaLib_BGMPlayer = (function(){
             this.picoAudio.stop();
         } else if (bgm instanceof AudioBufferSourceNode) {
             // MP3, Ogg, AAC, WAV
-            bgm.stop(0);
+            try {
+                bgm.stop(0);
+            } catch(e) { // iOS対策
+                // iOSではstopを２回以上呼ぶと、InvalidStateErrorが発生する
+                if (bgm.gainNode) {
+                    bgm.gainNode.gain.cancelScheduledValues(this.context.currentTime);
+                    bgm.gainNode.gain.linearRampToValueAtTime(0, this.context.currentTime);
+                }
+            }
         }
         this.playingBGM = null;
         this.playingBGMName = null;
@@ -18095,7 +18130,15 @@ var T2MediaLib_BGMPlayer = (function(){
                 this.bgmPauseLoop = this.t2MediaLib.isSELoop(bgm);
                 this.bgmPauseCurrentTime = bgm.context.currentTime;
                 this.bgmPauseTempo = this.bgmTempo;
-                bgm.stop(0);
+                try {
+                    bgm.stop(0);
+                } catch(e) { // iOS対策
+                    // iOSではstopを２回以上呼ぶと、InvalidStateErrorが発生する
+                    if (bgm.gainNode) {
+                        bgm.gainNode.gain.cancelScheduledValues(this.context.currentTime);
+                        bgm.gainNode.gain.linearRampToValueAtTime(0, this.context.currentTime);
+                    }
+                }
                 this.bgmPause = 1;
             }
         }
@@ -18446,8 +18489,16 @@ define('T2MediaLib',[],function (){ return T2MediaLib; });
 requireSimulator.setName('UIDiag');
 define(["UI"],function (UI) {
     var UIDiag={};
+    function parseMesg(mesg,defTitle) {
+        if (typeof mesg==="string" || ( (typeof $!=="undefined") && mesg instanceof $)) return {
+            title:mesg.title||defTitle,
+            body:mesg
+        };
+        return mesg;
+    }
     UIDiag.confirm=function (mesg) {
-        var di=UI("div",{title:"確認"},["div",mesg],
+        mesg=parseMesg(mesg,"確認");
+        var di=UI("div",{title:mesg.title},["div",mesg.body],
                 ["button",{on:{click:sendF(true)}},"OK"],
                 ["button",{on:{click:sendF(false)}},"キャンセル"]).dialog({width:"auto",close:sendF(false)});
         var d=$.Deferred();
@@ -18457,7 +18508,8 @@ define(["UI"],function (UI) {
         return d.promise();
     };
     UIDiag.alert=function (mesg) {
-        var di=UI("div",{title:"確認"},["div",mesg],
+        mesg=parseMesg(mesg,"確認");
+        var di=UI("div",{title:mesg.title},["div",mesg.body],
                 ["button",{on:{click:sendF(true)}},"OK"]).dialog({width:"auto",close:sendF(false)});
         var d=$.Deferred();
         function sendF(r) {
@@ -18465,27 +18517,51 @@ define(["UI"],function (UI) {
         }
         return d.promise();
     };
-
-    UIDiag.prompt=function (mesg,value) {
-        var di=UI("div",{title:"入力"},["div",mesg],
+    // Compat with $InputBox
+    UIDiag.open=function(title,prompt,_default, left, top, width, height) {
+        return UIDiag.prompt({title:title,body:prompt},_default,{
+            left:left, top:top, width:width, height:height
+        });
+    };
+    UIDiag.getStatus=function () {return UIDiag.status;};
+    UIDiag.getText=function () {return UIDiag.resultValue;};
+    //---
+    UIDiag.prompt=function (mesg,value,geom) {
+        mesg=parseMesg(mesg,"入力");
+        geom=geom||{};
+        if (typeof geom.left==="number" && typeof geom.top==="number") {
+            position={my:"left top",at:"left+"+geom.left+" top+"+geom.top, of:"body"};
+        } else {
+            position={of:"body",at:"center",my:"center"};
+        }
+        var di=UI("div",{title:mesg.title},["div",mesg.body],
                 ["input",{on:{enterkey:ok},$var:"val", value:value}],["br"],
                 ["button",{on:{click:ok}},"OK"],
-                ["button",{on:{click:cancel}},"キャンセル"]).dialog({width:"auto",close:function (){
-                    di.dialog("close");
-                    d.resolve();
-                }});
+                ["button",{on:{click:cancel}},"キャンセル"]).dialog({
+                    width:geom.width||"auto",
+                    height:geom.height||"auto",
+                    position:position,
+                    close:function (){
+                        di.dialog("close");
+                        d.resolve();
+                    }
+                });
         setTimeout(function () {
             di.$vars.val.focus();
             //console.log("FOcus");
         },10);
+        UIDiag.status=0;
         var d=$.Deferred();
         function ok() {
+            UIDiag.status=1;
             var r=di.$vars.val.val();
+            UIDiag.resultValue=r;
             d.resolve(r);
             di.dialog("close");
             di.remove();
         }
         function cancel() {
+            UIDiag.status=2;
             di.dialog("close");
             di.remove();
             d.resolve();
@@ -18496,6 +18572,7 @@ define(["UI"],function (UI) {
     if (typeof window!="undefined") window.UIDiag=UIDiag;
     return UIDiag;
 });
+
 requireSimulator.setName('runtime');
 requirejs(["ImageList","PicoAudio","T2MediaLib","Tonyu","UIDiag"],
 function (i,p,t,tn,u) {
@@ -20487,6 +20564,12 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu"],
                     addFileToLoadFiles( mf.relPath(prjDir), mf.obj());
                 });
             }
+            var staticd=prjDir.rel("static/");
+            if (staticd.exists()) {
+                staticd.recursive(function (mf) {
+                    addFileToLoadFiles( mf.relPath(prjDir));
+                });
+            }
             dest.rel("js/files.js").text(loadFilesBuf+"}");
         }
         function copyIndexHtml() {
@@ -20529,7 +20612,23 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu"],
             );
         }
         function addFileToLoadFiles(name, data) {
-            dest.rel(name).obj(data);
+            if (data==null) {
+                var file=prjDir.rel(name);
+                if (file.ext()===".json") {
+                    data=file.obj();
+                } else if (file.isText()) {
+                    //file.copyTo(dest.rel(name));
+                    data=file.text();
+                    loadFilesBuf+="\tdir.rel('"+name+"').text("+JSON.stringify(data)+");\n";
+                    return;
+                } else {
+                    //file.copyTo(dest.rel(name));
+                    data=file.dataURL();
+                    loadFilesBuf+="\tdir.rel('"+name+"').dataURL("+JSON.stringify(data)+");\n";
+                    return;
+                }
+            }
+            //dest.rel(name).obj(data);
             loadFilesBuf+="\tdir.rel('"+name+"').obj("+JSON.stringify(data)+");\n";
         }
         function convertLSURL(r) {
@@ -20593,6 +20692,7 @@ function (UI,extLink,mkrun,Tonyu,zip,DU) {
     res.embed=function (prj,/*dest,*/options) {
         options=options||{};
         var dest=options.dest;
+        var onComplete=options.onComplete||(function(){});
         var ote={
             click: function () {
                 if (outtype.value==="dir") {
@@ -20643,7 +20743,7 @@ function (UI,extLink,mkrun,Tonyu,zip,DU) {
         } else {
             vars.folder.show();
         }
-        var model={dest:dest?dest.path():"", src:true, zip:true};
+        var model={dest:(dest && dest.path)?dest.path():(dest||""), src:true, zip:true};
         var form=vars.form[0];
         var outtype=form.outtype;
         vars.dest.prop("disabled",true);
@@ -20726,6 +20826,7 @@ function (UI,extLink,mkrun,Tonyu,zip,DU) {
                 diag.dialog();
                 break;
                 }
+                onComplete({type:type,config:model});
                 res.d.$vars.OKButton.prop("disabled", false);
                 if (res.d.dialog) res.d.dialog("close");
                 if (options.onEnd) options.onEnd();
@@ -21610,9 +21711,21 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         }
     }*/
     $("#mkrun").click(F(function () {
+        var dest;
         if (WebSite.isNW) {
+            if (desktopEnv && desktopEnv.runtimeConfig) {
+                dest=desktopEnv.runtimeConfig.dest;
+            } else {
+                dest=FS.get(WebSite.cwd).rel("Runtimes/").rel( curProjectDir.name());
+            }
             mkrunDiag.show(curPrj,{
-                dest: FS.get(WebSite.cwd).rel("Runtimes/").rel( curProjectDir.name())
+                dest: dest,
+                onComplete: function (e) {
+                    if (e.type==="dir" && desktopEnv) {
+                        desktopEnv.runtimeConfig=e.config;
+                        saveDesktopEnv();
+                    }
+                }
             });
         } else {
             /*var mkram=FS.get("/mkram/");

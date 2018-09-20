@@ -67,9 +67,11 @@ nowait \dist(dx,dy,dz) {
 \moveBy(by) {
     if (typeof by==="number") return moveBy{forward:by};
     position.set(localToWorld(by));
+    return this;
 }
 \rotate(axis,angle) {
-    return direction.rotate(axis,angle);
+    direction.rotate(axis,angle);
+    return this;
 }
 // moveBy(1);
 // moveBy{forward:1,left:1};
