@@ -1,3 +1,12 @@
+Why?
+   why do not inherit superclass of module?
+   why die()  does not kill thread (killThreadGroup seems to affect nothing)
+   why transform init have to be done before addToLayer? (Currently LifeCycleMod and SpriteMod has no dependencies each other)
+
+_actualGroup ( __addedToSprites ?)
+   layer is Actor  -> layer.p
+   layer is Layer  -> layer.group
+
 Bug
 onRunTimeError:stackTrace1 Error: undefined is not array. cannot join fmt:(%j) {%{"use strict";%nvar %s=%s;%n%f%n%f%}},%n
     at $ (chrome-extension://jcgkikdhjbnogcmjkijniaengnagcbpe/www/js/lang/IndentBuffer.js:122:12)
@@ -25,7 +34,7 @@ onRunTimeError:stackTrace1 Error: undefined is not array. cannot join fmt:(%j) {
    function genFunc(func) {//G  func.name==="main" のときに起きる  func.param==undefined
 		var fname= isConstructor(func) ? "initialize" : func.name;
 		printf("%s :function %s(%j) {%{"+
- OK Compile error
+OK Compile error
      DBall  $mat.get -> $mat is null
      Add getSBall to PzScreen with undef variable (field strict)
      Fix DBall $mat.get -> scr.getSBall

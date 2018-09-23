@@ -11,12 +11,9 @@ var defaultTransform;
     // scale: 3D logical size    scaleX/Y: scale for 2D Sprite rendering
     var scl=((typeof s.scale==="number") ? s.scale : 1);
     if (s.p is Sprites3D) {
-        //var svb=base;
-        //base=base?base.localToWorld(s.transform):s.transform;
         for (var e of s.p.sprites) {
             addSprite3D(e);
         }
-        //base=svb;
         return;
     }
     if (!s.transform) {
@@ -25,7 +22,6 @@ var defaultTransform;
         };
     }
     var changed=parentChanger.change(s.transform);
-    //changed.position.subX(camera.transform.position);
     var p=camera.to2D(changed.position);
     if (p) {
         scl*=p.scale;

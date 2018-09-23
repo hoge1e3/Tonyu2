@@ -7,14 +7,10 @@ native console;
     transform=transform||new Transform;
 }
 \add(a:Actor3D) {
-    //if (a.transform && this.transform)
-    //a.transform.parent=this.transform;
-    //a.layer=this;
     if (a.transform.parent!==transform) throw new Error("Sprite3D::Transform not match");
     if (a.layer!==this && a.layer.p!==this) throw new Error("Spreite3D::layer not match");
     sprites.push(a);
     a.__addedToSprites=this;
-    //if (sprites.length>5) throw new Error("Wow!");
 }
 \draw3D(ctx:Context3D) {
     for (var s of sprites) {
