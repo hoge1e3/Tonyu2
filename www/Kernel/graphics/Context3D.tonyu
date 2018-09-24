@@ -13,15 +13,15 @@ var stack;
     // scale: 3D logical size    scaleX/Y: scale for 2D Sprite rendering
     var scl=((typeof s.scale==="number") ? s.scale : 1);
     if (s.p is Sprites3D) {
+        save();
+        transform(s.transform);
         for (var e of s.p.sprites) {
-            save();
-            transform(e.transform);
             addSprite3D(e);
-            restore();
         }
+        restore();
         return;
     }
-    var p=to2D();
+    var p=to2D(s.position|| new Vec3(s.x||0,s.y||0,s.z||0));
     if (p) {
         scl*=p.scale;
         if (s is ActorSprite) {
@@ -50,8 +50,11 @@ var stack;
     //defaultTransform=camera.transform.parent;
     stack=[];
 }
-\to2D() {
-    return camera.to2D(curTransform.position);
+\to2D(pos) {
+    if (!pos) {
+        return camera.to2D(curTransform.position);
+    }
+    return camera.to2D(curTransform.childToSibling(pos));
 }
 \setTransform(t) {
     curTransform=t;
