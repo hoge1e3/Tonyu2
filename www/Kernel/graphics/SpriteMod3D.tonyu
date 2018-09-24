@@ -6,5 +6,8 @@ var x,y,z,direction,transform;
 
 \draw3D(ctx3d) {
     if (p==null || typeof p==="number") detectShape();// Just for calculate size
+    ctx3d.save();
+    ctx3d.transform(transform);
     ctx3d.addSprite3D(this);
+    ctx3d.restore();
 }

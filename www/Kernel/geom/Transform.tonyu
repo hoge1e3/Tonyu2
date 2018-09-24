@@ -159,3 +159,6 @@ Q*s p
 \isChildOf(parent) {
     return this.parent===parent;
 }
+\inverse {
+    return siblingToChild(new Transform());
+}
