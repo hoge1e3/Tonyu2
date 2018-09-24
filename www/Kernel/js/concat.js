@@ -9528,56 +9528,56 @@ Tonyu.klass.define({
       
       //$LASTPOS=34000400;//kernel.Context3D:400
       if (s.p instanceof Tonyu.classes.kernel.Sprites3D) {
-        //$LASTPOS=34000523;//kernel.Context3D:523
+        //$LASTPOS=34000433;//kernel.Context3D:433
         _it_268=Tonyu.iterator(s.p.sprites,1);
         while(_it_268.next()) {
           e=_it_268[0];
           
-          //$LASTPOS=34000565;//kernel.Context3D:565
+          //$LASTPOS=34000475;//kernel.Context3D:475
           _this.addSprite3D(e);
           
         }
         return _this;
         
       }
-      //$LASTPOS=34000642;//kernel.Context3D:642
+      //$LASTPOS=34000531;//kernel.Context3D:531
       if (! s.transform) {
-        //$LASTPOS=34000671;//kernel.Context3D:671
+        //$LASTPOS=34000560;//kernel.Context3D:560
         s.transform=_this.defaultTransform.child({position: new Tonyu.classes.kernel.Vec3(s.x,s.y,s.z)});
         
       }
-      //$LASTPOS=34000775;//kernel.Context3D:775
+      //$LASTPOS=34000664;//kernel.Context3D:664
       changed = _this.parentChanger.change(s.transform);
       
-      //$LASTPOS=34000884;//kernel.Context3D:884
+      //$LASTPOS=34000716;//kernel.Context3D:716
       p = _this.camera.to2D(changed.position);
       
-      //$LASTPOS=34000926;//kernel.Context3D:926
+      //$LASTPOS=34000758;//kernel.Context3D:758
       if (p) {
-        //$LASTPOS=34000944;//kernel.Context3D:944
+        //$LASTPOS=34000776;//kernel.Context3D:776
         scl*=p.scale;
-        //$LASTPOS=34000967;//kernel.Context3D:967
+        //$LASTPOS=34000799;//kernel.Context3D:799
         if (s instanceof Tonyu.classes.kernel.ActorSprite) {
-          //$LASTPOS=34001004;//kernel.Context3D:1004
+          //$LASTPOS=34000836;//kernel.Context3D:836
           s.x=p.x;
-          //$LASTPOS=34001013;//kernel.Context3D:1013
+          //$LASTPOS=34000845;//kernel.Context3D:845
           s.y=p.y;
-          //$LASTPOS=34001035;//kernel.Context3D:1035
+          //$LASTPOS=34000867;//kernel.Context3D:867
           s.zOrder=p.z;
-          //$LASTPOS=34001062;//kernel.Context3D:1062
+          //$LASTPOS=34000894;//kernel.Context3D:894
           s.scaleX*=scl;
-          //$LASTPOS=34001090;//kernel.Context3D:1090
+          //$LASTPOS=34000922;//kernel.Context3D:922
           if (typeof  s.scaleY==="number") {
-            //$LASTPOS=34001122;//kernel.Context3D:1122
+            //$LASTPOS=34000954;//kernel.Context3D:954
             s.scaleY*=scl;
           }
           
         } else {
-          //$LASTPOS=34001168;//kernel.Context3D:1168
+          //$LASTPOS=34001000;//kernel.Context3D:1000
           s=new Tonyu.classes.kernel.ActorSprite({x: p.x,y: p.y,scaleX: (s.scaleX||1)*scl,scaleY: (s.scaleY||s.scaleX||1)*scl,p: s.p,text: s.text,fillStyle: s.fillStyle,rotation: s.rotation||0,alpha: s.alpha||255,zOrder: p.z});
           
         }
-        //$LASTPOS=34001497;//kernel.Context3D:1497
+        //$LASTPOS=34001329;//kernel.Context3D:1329
         _this.addSprite2D(s);
         
       }
@@ -9604,13 +9604,13 @@ Tonyu.klass.define({
           case 0:
             //$LASTPOS=34000400;//kernel.Context3D:400
             if (!(s.p instanceof Tonyu.classes.kernel.Sprites3D)) { __pc=4     ; break; }
-            //$LASTPOS=34000523;//kernel.Context3D:523
+            //$LASTPOS=34000433;//kernel.Context3D:433
             _it_268=Tonyu.iterator(s.p.sprites,1);
           case 1:
             if (!(_it_268.next())) { __pc=3     ; break; }
             e=_it_268[0];
             
-            //$LASTPOS=34000565;//kernel.Context3D:565
+            //$LASTPOS=34000475;//kernel.Context3D:475
             _this.fiber$addSprite3D(_thread, e);
             __pc=2;return;
           case 2:
@@ -9621,44 +9621,44 @@ Tonyu.klass.define({
             _thread.exit(_this);return;
           case 4     :
             
-            //$LASTPOS=34000642;//kernel.Context3D:642
+            //$LASTPOS=34000531;//kernel.Context3D:531
             if (! s.transform) {
-              //$LASTPOS=34000671;//kernel.Context3D:671
+              //$LASTPOS=34000560;//kernel.Context3D:560
               s.transform=_this.defaultTransform.child({position: new Tonyu.classes.kernel.Vec3(s.x,s.y,s.z)});
               
             }
-            //$LASTPOS=34000775;//kernel.Context3D:775
+            //$LASTPOS=34000664;//kernel.Context3D:664
             changed = _this.parentChanger.change(s.transform);
             
-            //$LASTPOS=34000884;//kernel.Context3D:884
+            //$LASTPOS=34000716;//kernel.Context3D:716
             p = _this.camera.to2D(changed.position);
             
-            //$LASTPOS=34000926;//kernel.Context3D:926
+            //$LASTPOS=34000758;//kernel.Context3D:758
             if (!(p)) { __pc=6     ; break; }
-            //$LASTPOS=34000944;//kernel.Context3D:944
+            //$LASTPOS=34000776;//kernel.Context3D:776
             scl*=p.scale;
-            //$LASTPOS=34000967;//kernel.Context3D:967
+            //$LASTPOS=34000799;//kernel.Context3D:799
             if (s instanceof Tonyu.classes.kernel.ActorSprite) {
-              //$LASTPOS=34001004;//kernel.Context3D:1004
+              //$LASTPOS=34000836;//kernel.Context3D:836
               s.x=p.x;
-              //$LASTPOS=34001013;//kernel.Context3D:1013
+              //$LASTPOS=34000845;//kernel.Context3D:845
               s.y=p.y;
-              //$LASTPOS=34001035;//kernel.Context3D:1035
+              //$LASTPOS=34000867;//kernel.Context3D:867
               s.zOrder=p.z;
-              //$LASTPOS=34001062;//kernel.Context3D:1062
+              //$LASTPOS=34000894;//kernel.Context3D:894
               s.scaleX*=scl;
-              //$LASTPOS=34001090;//kernel.Context3D:1090
+              //$LASTPOS=34000922;//kernel.Context3D:922
               if (typeof  s.scaleY==="number") {
-                //$LASTPOS=34001122;//kernel.Context3D:1122
+                //$LASTPOS=34000954;//kernel.Context3D:954
                 s.scaleY*=scl;
               }
               
             } else {
-              //$LASTPOS=34001168;//kernel.Context3D:1168
+              //$LASTPOS=34001000;//kernel.Context3D:1000
               s=new Tonyu.classes.kernel.ActorSprite({x: p.x,y: p.y,scaleX: (s.scaleX||1)*scl,scaleY: (s.scaleY||s.scaleX||1)*scl,p: s.p,text: s.text,fillStyle: s.fillStyle,rotation: s.rotation||0,alpha: s.alpha||255,zOrder: p.z});
               
             }
-            //$LASTPOS=34001497;//kernel.Context3D:1497
+            //$LASTPOS=34001329;//kernel.Context3D:1329
             _this.fiber$addSprite2D(_thread, s);
             __pc=5;return;
           case 5:
@@ -9674,13 +9674,13 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=34001539;//kernel.Context3D:1539
+      //$LASTPOS=34001371;//kernel.Context3D:1371
       Tonyu.classes.kernel.TObject.apply( _this, [p]);
-      //$LASTPOS=34001554;//kernel.Context3D:1554
+      //$LASTPOS=34001386;//kernel.Context3D:1386
       _this.sprites2D=[];
-      //$LASTPOS=34001573;//kernel.Context3D:1573
+      //$LASTPOS=34001405;//kernel.Context3D:1405
       _this.parentChanger=new Tonyu.classes.kernel.ParentChanger(_this.camera.transform);
-      //$LASTPOS=34001629;//kernel.Context3D:1629
+      //$LASTPOS=34001461;//kernel.Context3D:1461
       _this.defaultTransform=_this.camera.transform.parent;
     },
     __dummy: false
@@ -11345,19 +11345,19 @@ Tonyu.klass.define({
       "use strict";
       var _this=this;
       
-      //$LASTPOS=39000271;//kernel.Sprites3D:271
+      //$LASTPOS=39000166;//kernel.Sprites3D:166
       if (a.transform.parent!==_this.transform) {
         throw new Error("Sprite3D::Transform not match");
         
       }
-      //$LASTPOS=39000362;//kernel.Sprites3D:362
+      //$LASTPOS=39000257;//kernel.Sprites3D:257
       if (a.layer!==_this&&a.layer.p!==_this) {
         throw new Error("Spreite3D::layer not match");
         
       }
-      //$LASTPOS=39000454;//kernel.Sprites3D:454
+      //$LASTPOS=39000349;//kernel.Sprites3D:349
       _this.sprites.push(a);
-      //$LASTPOS=39000476;//kernel.Sprites3D:476
+      //$LASTPOS=39000371;//kernel.Sprites3D:371
       a.__addedToSprites=_this;
     },
     fiber$add :function _trc_Sprites3D_f_add(_thread,a) {
@@ -11366,19 +11366,19 @@ Tonyu.klass.define({
       //var _arguments=Tonyu.A(arguments);
       var __pc=0;
       
-      //$LASTPOS=39000271;//kernel.Sprites3D:271
+      //$LASTPOS=39000166;//kernel.Sprites3D:166
       if (a.transform.parent!==_this.transform) {
         throw new Error("Sprite3D::Transform not match");
         
       }
-      //$LASTPOS=39000362;//kernel.Sprites3D:362
+      //$LASTPOS=39000257;//kernel.Sprites3D:257
       if (a.layer!==_this&&a.layer.p!==_this) {
         throw new Error("Spreite3D::layer not match");
         
       }
-      //$LASTPOS=39000454;//kernel.Sprites3D:454
+      //$LASTPOS=39000349;//kernel.Sprites3D:349
       _this.sprites.push(a);
-      //$LASTPOS=39000476;//kernel.Sprites3D:476
+      //$LASTPOS=39000371;//kernel.Sprites3D:371
       a.__addedToSprites=_this;
       
       _thread.retVal=_this;return;
@@ -11389,12 +11389,12 @@ Tonyu.klass.define({
       var s;
       var _it_314;
       
-      //$LASTPOS=39000589;//kernel.Sprites3D:589
+      //$LASTPOS=39000430;//kernel.Sprites3D:430
       _it_314=Tonyu.iterator(_this.sprites,1);
       while(_it_314.next()) {
         s=_it_314[0];
         
-        //$LASTPOS=39000623;//kernel.Sprites3D:623
+        //$LASTPOS=39000464;//kernel.Sprites3D:464
         s.draw3D(ctx);
         
       }
@@ -11407,12 +11407,12 @@ Tonyu.klass.define({
       var s;
       var _it_314;
       
-      //$LASTPOS=39000589;//kernel.Sprites3D:589
+      //$LASTPOS=39000430;//kernel.Sprites3D:430
       _it_314=Tonyu.iterator(_this.sprites,1);
       while(_it_314.next()) {
         s=_it_314[0];
         
-        //$LASTPOS=39000623;//kernel.Sprites3D:623
+        //$LASTPOS=39000464;//kernel.Sprites3D:464
         s.draw3D(ctx);
         
       }
@@ -11424,16 +11424,16 @@ Tonyu.klass.define({
       var _this=this;
       var idx;
       
-      //$LASTPOS=39000705;//kernel.Sprites3D:705
+      //$LASTPOS=39000546;//kernel.Sprites3D:546
       idx = _this.sprites.indexOf(s);
       
-      //$LASTPOS=39000768;//kernel.Sprites3D:768
+      //$LASTPOS=39000609;//kernel.Sprites3D:609
       if (idx<0) {
         return _this;
       }
-      //$LASTPOS=39000792;//kernel.Sprites3D:792
+      //$LASTPOS=39000633;//kernel.Sprites3D:633
       _this.sprites.splice(idx,1);
-      //$LASTPOS=39000820;//kernel.Sprites3D:820
+      //$LASTPOS=39000661;//kernel.Sprites3D:661
       delete s.__addedToSprites;
     },
     all :function _trc_Sprites3D_all(c) {
@@ -11441,24 +11441,24 @@ Tonyu.klass.define({
       var _this=this;
       var res;
       
-      //$LASTPOS=39000911;//kernel.Sprites3D:911
+      //$LASTPOS=39000752;//kernel.Sprites3D:752
       res = new Tonyu.classes.kernel.TQuery;
       
-      //$LASTPOS=39000936;//kernel.Sprites3D:936
+      //$LASTPOS=39000777;//kernel.Sprites3D:777
       if (arguments.length>0&&typeof  c!="function") {
         return res;
         
       }
-      //$LASTPOS=39001019;//kernel.Sprites3D:1019
-      _this.sprites.forEach((function anonymous_1035(s) {
+      //$LASTPOS=39000860;//kernel.Sprites3D:860
+      _this.sprites.forEach((function anonymous_876(s) {
         
-        //$LASTPOS=39001051;//kernel.Sprites3D:1051
+        //$LASTPOS=39000892;//kernel.Sprites3D:892
         if (s===_this) {
           return _this;
         }
-        //$LASTPOS=39001082;//kernel.Sprites3D:1082
+        //$LASTPOS=39000923;//kernel.Sprites3D:923
         if (! c||s instanceof c) {
-          //$LASTPOS=39001123;//kernel.Sprites3D:1123
+          //$LASTPOS=39000964;//kernel.Sprites3D:964
           res.push(s);
           
         }
