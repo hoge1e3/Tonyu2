@@ -17,7 +17,7 @@ native console;
         s.draw3D(ctx);
     }
 }
-//--- TODO : unify to Sprites
+//--- TODO : unify to Sprites(2D)
 nowait \remove(s) {
     var idx=sprites.indexOf(s);
     //console.log("RM",idx);

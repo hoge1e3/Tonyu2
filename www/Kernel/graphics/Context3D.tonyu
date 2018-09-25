@@ -7,6 +7,7 @@ var sprites2D:Array;// of ActorSprite
 var curTransform;
 var stack;
 \addSprite2D(s) {// called during draw3D
+    if (!(s is ActorSprite)) s=new ActorSprite(s);
     sprites2D.push(s);
 }
 \addSprite3D(s) {// called during draw3D
@@ -35,6 +36,7 @@ var stack;
                 scaleX=(s.scaleX||1)*scl,
                 scaleY=(s.scaleY||s.scaleX||1)*scl,
                 p=s.p,text=s.text,fillStyle:s.fillStyle,
+                width=s.width,height=s.height,radius=s.radius,
                 rotation:s.rotation||0, alpha:s.alpha||255,
                 zOrder=p.z
             };

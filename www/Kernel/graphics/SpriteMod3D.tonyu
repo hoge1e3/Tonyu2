@@ -6,8 +6,26 @@ var x,y,z,direction,transform;
 
 \draw3D(ctx3d) {
     if (p==null || typeof p==="number") detectShape();// Just for calculate size
-    //ctx3d.save();
-    //ctx3d.transform(transform);
-    ctx3d.addSprite3D(this);
-    //ctx3d.restore();
+    //ctx3d.addSprite3D(this);
+    //return;
+    ctx3d.save();
+    ctx3d.transform(transform);
+    if (p && p.draw3D) {
+        p.draw3D(ctx3d);
+    } else {
+        var pt=ctx3d.to2D();
+        if (pt) {
+            var scl=(transform.scale||1)*pt.scale;
+            ctx3d.addSprite2D{
+                x=pt.x,y=pt.y,
+                scaleX=(scaleX||1)*scl,
+                scaleY=(scaleY||scaleX||1)*scl,
+                p,text,fillStyle,
+                width,height,radius,
+                rotation:rotation||0, alpha:alpha||255,
+                zOrder=pt.z
+            };
+        }
+    }
+    ctx3d.restore();
 }
