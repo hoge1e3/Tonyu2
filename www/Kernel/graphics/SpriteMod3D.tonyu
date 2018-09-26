@@ -5,13 +5,14 @@ var x,y,z,direction,transform;
 
 
 \draw3D(ctx3d) {
-    if (p==null || typeof p==="number") detectShape();// Just for calculate size
+    if ( (p==null || typeof p==="number") && (!text && !fillStyle) ) detectShape();// Just for calculate size
     //ctx3d.addSprite3D(this);
     //return;
-    ctx3d.save();
-    ctx3d.transform(transform);
     if (p && p.draw3D) {
+        ctx3d.save();
+        ctx3d.transform(transform);
         p.draw3D(ctx3d);
+        ctx3d.restore();
     } else {
         ctx3d.addSprite3D(this);
         /*var pt=ctx3d.to2D();
@@ -28,5 +29,4 @@ var x,y,z,direction,transform;
             };
         }*/
     }
-    ctx3d.restore();
 }
