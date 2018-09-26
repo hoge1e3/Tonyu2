@@ -10,18 +10,26 @@ var stack;
     if (!(s is ActorSprite)) s=new ActorSprite(s);
     sprites2D.push(s);
 }
+\addSprite3D(s,pos3d) {
+    // s.x, s.y, s.z , s.transform etc ... is ignored
+    // pos3d is position, if omitted, use curTransform
+    var pt=to2D(pos3d);
+    if (pt) {
+        var scl=(s.transform? s.transform.scale : (s.scale||1) )*pt.scale;
+        addSprite2D{
+            x=pt.x,y=pt.y, zOrder=pt.z,
+            scaleX=(s.scaleX||1)*scl,
+            scaleY=(s.scaleY||s.scaleX||1)*scl,
+            p:s.p,text:s.text,fillStyle:s.fillStyle,
+            width:s.width,height:s.height,radius:s.radius,
+            rotation:s.rotation||0, alpha:s.alpha||255,
+        };
+    }
+}
+/*
 \addSprite3D(s) {// called during draw3D
     // scale: 3D logical size    scaleX/Y: scale for 2D Sprite rendering
     var scl=((typeof s.scale==="number") ? s.scale : 1);
-    if (s.p is Sprites3D) {
-        save();
-        transform(s.transform);
-        for (var e of s.p.sprites) {
-            addSprite3D(e);
-        }
-        restore();
-        return;
-    }
     var p=to2D(s.position|| new Vec3(s.x||0,s.y||0,s.z||0));
     if (p) {
         scl*=p.scale;
@@ -43,7 +51,7 @@ var stack;
         }
         addSprite2D(s);
     }
-}
+}*/
 \new(p) {
     super(p);
     sprites2D=[];

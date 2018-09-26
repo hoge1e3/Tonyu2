@@ -13,7 +13,8 @@ var x,y,z,direction,transform;
     if (p && p.draw3D) {
         p.draw3D(ctx3d);
     } else {
-        var pt=ctx3d.to2D();
+        ctx3d.addSprite3D(this);
+        /*var pt=ctx3d.to2D();
         if (pt) {
             var scl=(transform.scale||1)*pt.scale;
             ctx3d.addSprite2D{
@@ -25,7 +26,7 @@ var x,y,z,direction,transform;
                 rotation:rotation||0, alpha:alpha||255,
                 zOrder=pt.z
             };
-        }
+        }*/
     }
     ctx3d.restore();
 }
