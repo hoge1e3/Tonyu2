@@ -7,6 +7,7 @@ native Tonyu;
     Tonyu.extend(this,params);
     initSchedulerMod();
     layer=layer||defaultLayer;
+    // TODO use forward, right ...   in param when layer is Actor3D
     if (layer.group instanceof SpriteGroup) layer=layer.group;
     crashScale=1;
     initSpriteMod();
