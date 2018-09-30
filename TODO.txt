@@ -2,7 +2,17 @@ Why?
    why do not inherit superclass of module?
    why die()  does not kill thread (killThreadGroup seems to affect nothing)
    why transform init have to be done before addToLayer? (Currently LifeCycleMod and SpriteMod has no dependencies each other)
-
+   -						/*
+   -						Override of including module
+   -						MOD  TQuery::min kernel.MathMod
+   -						MOD  TQuery::max kernel.MathMod
+   -						MOD  Vec3::dist kernel.MathMod
+   -						MOD  any_class::main any_module
+   -						*/
+   -						// Why cannot override super-class methods?
+   -						// because super.hoge() in module cannot detect super class
+   -						//console.log("MOD ",shortName+"::"+n,(m&&m.meta&&m.meta.fullName));
+ 
 _actualGroup ( __addedToSprites ?)
    layer is Actor  -> layer.p
    layer is Layer  -> layer.group

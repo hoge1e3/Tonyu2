@@ -74,22 +74,16 @@ return Tonyu=function () {
 		var fullName=params.fullName;
 		var shortName=params.shortName;
 		var namespace=params.namespace;
-		var methods=params.methods;
+		var methodsF=params.methods;
 		var decls=params.decls;
 		var nso=klass.ensureNamespace(Tonyu.classes, namespace);
+		function extender(parent) {
+		var methods=typeof methodsF==="function"? methodsF(parent):methodsF;
 		var prot=methods;
 		var init=prot.initialize;
 		delete prot.initialize;
 		var res;
 		res=(init?
-			/*(parent? function () {
-				if (!(this instanceof res)) useNew(fullName);
-				if (Tonyu.runMode) init.apply(this,arguments);
-				else parent.apply(this,arguments);
-			}:function () {
-				if (!(this instanceof res)) useNew(fullName);
-				if (Tonyu.runMode) init.apply(this,arguments);
-			})*/
 			function () {
 				if (!(this instanceof res)) useNew(fullName);
 				init.apply(this,arguments);
@@ -101,7 +95,6 @@ return Tonyu=function () {
 				if (!(this instanceof res)) useNew(fullName);
 			})
 		);
-		nso[shortName]=res;
 		res.methods=prot;
 		includes.forEach(function (m) {
 			if (!m.methods) throw m+" Does not have methods";
@@ -114,16 +107,6 @@ return Tonyu=function () {
 					}
 				} else {
 					if (prot[n]!==m.methods[n] && n!=="main" && n!=="fiber$main") {
-						/*
-						Override of including module
-						MOD  TQuery::min kernel.MathMod
-						MOD  TQuery::max kernel.MathMod
-						MOD  Vec3::dist kernel.MathMod
-						MOD  any_class::main any_module
-						*/
-						// Why cannot override super-class methods?
-						// because super.hoge() in module cannot detect super class
-						//console.log("MOD ",shortName+"::"+n,(m&&m.meta&&m.meta.fullName));
 					}
 				}
 			}
@@ -161,6 +144,11 @@ return Tonyu=function () {
 		res.prototype.getClassInfo=function () {
 			return m;
 		};
+		return res;
+		}
+		var res=extender(parent);
+		res.extendFrom=extender;
+		nso[shortName]=res;
 		return res;
 	};
 	klass.isSourceChanged=function (k) {
