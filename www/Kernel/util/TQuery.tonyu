@@ -27,19 +27,19 @@ includes MathMod;
     if (arity==1) {
         res.next=function () {
             if (res.i<this.length) {
-            res[0]=this[res.i];
-            res.i++;
-            return true;
+                res[0]=this[res.i];
+                res.i++;
+                return true;
             }
             return false;
         };
     } else {
         res.next=function () {
             if (res.i<this.length) {
-            res[0]=res.i;
-            res[1]=this[res.i];
-            res.i++;
-            return true;
+                res[0]=res.i;
+                res[1]=this[res.i];
+                res.i++;
+                return true;
             }
             return false;
         };

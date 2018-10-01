@@ -78,73 +78,73 @@ return Tonyu=function () {
 		var decls=params.decls;
 		var nso=klass.ensureNamespace(Tonyu.classes, namespace);
 		function extender(parent) {
-		var methods=typeof methodsF==="function"? methodsF(parent):methodsF;
-		var prot=methods;
-		var init=prot.initialize;
-		delete prot.initialize;
-		var res;
-		res=(init?
-			function () {
-				if (!(this instanceof res)) useNew(fullName);
-				init.apply(this,arguments);
-			}:
-			(parent? function () {
-				if (!(this instanceof res)) useNew(fullName);
-				parent.apply(this,arguments);
-			}:function (){
-				if (!(this instanceof res)) useNew(fullName);
-			})
-		);
-		res.methods=prot;
-		includes.forEach(function (m) {
-			if (!m.methods) throw m+" Does not have methods";
-			for (var n in m.methods) {
-				if (!(n in prot)) {
-					prot[n]=m.methods[n];
-					if (n!=="__dummy" && !prot[n]) {
-						console.log("WHY2!",prot[n],prot,n);
-						throw new Error("WHY2!"+n);
-					}
-				} else {
-					if (prot[n]!==m.methods[n] && n!=="main" && n!=="fiber$main") {
+			var methods=typeof methodsF==="function"? methodsF(parent):methodsF;
+			var prot=methods;
+			var init=prot.initialize;
+			delete prot.initialize;
+			var res;
+			res=(init?
+				function () {
+					if (!(this instanceof res)) useNew(fullName);
+					init.apply(this,arguments);
+				}:
+				(parent? function () {
+					if (!(this instanceof res)) useNew(fullName);
+					parent.apply(this,arguments);
+				}:function (){
+					if (!(this instanceof res)) useNew(fullName);
+				})
+			);
+			res.methods=prot;
+			includes.forEach(function (m) {
+				if (!m.methods) throw m+" Does not have methods";
+				for (var n in m.methods) {
+					if (!(n in prot)) {
+						prot[n]=m.methods[n];
+						if (n!=="__dummy" && !prot[n]) {
+							console.log("WHY2!",prot[n],prot,n);
+							throw new Error("WHY2!"+n);
+						}
+					} else {
+						if (prot[n]!==m.methods[n] && n!=="main" && n!=="fiber$main") {
+						}
 					}
 				}
+			});
+			var props={};
+			var propReg=klass.propReg;//^__([gs]et)ter__(.*)$/;
+			for (var k in prot) {
+				if (k.match(/^fiber\$/)) continue;
+				if (prot["fiber$"+k]) {
+					prot[k].fiber=prot["fiber$"+k];
+					prot[k].fiber.methodInfo=prot[k].fiber.methodInfo||{name:k,klass:res,fiber:true};
+				}
+				if (k!=="__dummy" && !prot[k]) {
+					console.log("WHY!",prot[k],prot,k);
+					throw new Error("WHY!"+k);
+				}
+				prot[k].methodInfo=prot[k].methodInfo||{name:k,klass:res};
+				var r=propReg.exec(k);
+				if (r) {
+					props[r[2]]=props[r[2]]||{};
+					props[r[2]][r[1]]=prot[k];
+				}
 			}
-		});
-		var props={};
-		var propReg=klass.propReg;//^__([gs]et)ter__(.*)$/;
-		for (var k in prot) {
-			if (k.match(/^fiber\$/)) continue;
-			if (prot["fiber$"+k]) {
-				prot[k].fiber=prot["fiber$"+k];
-				prot[k].fiber.methodInfo=prot[k].fiber.methodInfo||{name:k,klass:res,fiber:true};
+			res.prototype=bless(parent, prot);
+			res.prototype.isTonyuObject=true;
+			for (var k in props) {
+				Object.defineProperty(res.prototype, k , props[k]);
 			}
-			if (k!=="__dummy" && !prot[k]) {
-				console.log("WHY!",prot[k],prot,k);
-				throw new Error("WHY!"+k);
-			}
-			prot[k].methodInfo=prot[k].methodInfo||{name:k,klass:res};
-			var r=propReg.exec(k);
-			if (r) {
-				props[r[2]]=props[r[2]]||{};
-				props[r[2]][r[1]]=prot[k];
-			}
-		}
-		res.prototype=bless(parent, prot);
-		res.prototype.isTonyuObject=true;
-		for (var k in props) {
-			Object.defineProperty(res.prototype, k , props[k]);
-		}
-		res.meta=addMeta(fullName,{
-			fullName:fullName,shortName:shortName,namespace:namespace,decls:decls,
-			superclass:parent ? parent.meta : null,func:res,
-			includes:includes.map(function(c){return c.meta;})
-		});
-		var m=klass.getMeta(res);
-		res.prototype.getClassInfo=function () {
-			return m;
-		};
-		return res;
+			res.meta=addMeta(fullName,{
+				fullName:fullName,shortName:shortName,namespace:namespace,decls:decls,
+				superclass:parent ? parent.meta : null,func:res,
+				includes:includes.map(function(c){return c.meta;})
+			});
+			var m=klass.getMeta(res);
+			res.prototype.getClassInfo=function () {
+				return m;
+			};
+			return res;
 		}
 		var res=extender(parent);
 		res.extendFrom=extender;
