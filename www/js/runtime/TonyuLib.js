@@ -117,13 +117,13 @@ return Tonyu=function () {
 			if (k.match(/^fiber\$/)) continue;
 			if (prot["fiber$"+k]) {
 				prot[k].fiber=prot["fiber$"+k];
-				prot[k].fiber.methodInfo={name:k,klass:res,fiber:true};
+				prot[k].fiber.methodInfo=prot[k].fiber.methodInfo||{name:k,klass:res,fiber:true};
 			}
 			if (k!=="__dummy" && !prot[k]) {
 				console.log("WHY!",prot[k],prot,k);
 				throw new Error("WHY!"+k);
 			}
-			prot[k].methodInfo={name:k,klass:res};
+			prot[k].methodInfo=prot[k].methodInfo||{name:k,klass:res};
 			var r=propReg.exec(k);
 			if (r) {
 				props[r[2]]=props[r[2]]||{};

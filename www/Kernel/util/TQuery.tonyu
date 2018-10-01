@@ -26,18 +26,22 @@ includes MathMod;
     res.i=0;
     if (arity==1) {
         res.next=function () {
-            if (res.i>=this.length) return false;
+            if (res.i<this.length) {
             res[0]=this[res.i];
             res.i++;
             return true;
+            }
+            return false;
         };
     } else {
         res.next=function () {
-            if (res.i>=this.length) return false;
+            if (res.i<this.length) {
             res[0]=res.i;
             res[1]=this[res.i];
             res.i++;
             return true;
+            }
+            return false;
         };
     }
     return res;

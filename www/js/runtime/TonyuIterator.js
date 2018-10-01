@@ -60,6 +60,7 @@ define(["Klass"], function (Klass) {
 	function IT(set, arity) {
 		//var res={};
 		if (set.tonyuIterator) {
+			// TODO: the prototype of class having tonyuIterator will iterate infinitively
 			return set.tonyuIterator(arity);
 		} else if (set instanceof Array) {
 			//res.i=0;
