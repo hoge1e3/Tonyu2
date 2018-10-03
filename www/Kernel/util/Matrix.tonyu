@@ -124,12 +124,14 @@ includes MathMod,EventMod,FileMod;
                 res.x=xmin;
                 res.y++;
             }
-            if (res.y>ymax) return false;
+            if (res.y<=ymax) {
             res[0]=res.x;
             res[1]=res.y;
             res[2]=get(res.x,res.y);
             res.x++;
             return true;
+            }
+            return false;
         };
         break;
         default:
@@ -142,8 +144,8 @@ includes MathMod,EventMod,FileMod;
     return {x:r[0]-0,y:r[1]-0};
 }
 \key(x,y,updateRange) {
-    x=floor(x);
-    y=floor(y);
+    x=floor(x)||0;
+    y=floor(y)||0;
     if (updateRange) {
         if (xmin==null || x<xmin) xmin=x;
         if (xmax==null || x>xmax) xmax=x;
