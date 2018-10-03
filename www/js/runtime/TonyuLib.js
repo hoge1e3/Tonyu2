@@ -37,6 +37,9 @@ return Tonyu=function () {
 	};
 	klass.addMeta=addMeta;
 	function addMeta(fn,m) {
+		// why use addMeta?
+		// because when compiled from source, additional info(src file) is contained.
+		// k.meta={...} erases these info
 		assert.is(arguments,[String,Object]);
 		return extend(klass.getMeta(fn), m);
 	}
@@ -77,11 +80,48 @@ return Tonyu=function () {
 		var methodsF=params.methods;
 		var decls=params.decls;
 		var nso=klass.ensureNamespace(Tonyu.classes, namespace);
-		function extender(parent) {
+		var outerRes;
+		function chkmeta(m,ctx) {
+			ctx=ctx||{};
+			if (ctx.isShim) return m;
+			ctx.path=ctx.path||[];
+			ctx.path.push(m);
+			if (m.isShim) {
+				console.log("chkmeta::ctx",ctx);
+				throw new Error("Shim found "+m.extenderFullName);
+			}
+			if (m.superclass) chkmeta(m.superclass,ctx);
+			if (!m.includes) {
+				console.log("chkmeta::ctx",ctx);
+				throw new Error("includes not found");
+			}
+			m.includes.forEach(function (mod) {
+				chkmeta(mod,ctx);
+			});
+			ctx.path.pop();
+			return m;
+		}
+		function chkclass(c,ctx) {
+			if (!c.prototype.hasOwnProperty("getClassInfo")) throw new Error("NO");
+			if (!c.meta) {
+				console.log("metanotfound",c);
+				throw new Error("meta not found");
+			}
+			chkmeta(c.meta,ctx);
+			return c;
+		}
+		function extender(parent,ctx) {
+			var isShim=!ctx.init;
+			var includesRec=ctx.includesRec;
+			if (includesRec[fullName]) return parent;
+			includesRec[fullName]=true;
+			//console.log(ctx.initFullName, fullName);//,  includesRec[fullName],JSON.stringify(ctx));
+			includes.forEach(function (m) {
+				parent=m.extendFrom(parent,extend(ctx,{init:false}));
+			});
 			var methods=typeof methodsF==="function"? methodsF(parent):methodsF;
-			var prot=methods;
-			var init=prot.initialize;
-			delete prot.initialize;
+			var init=methods.initialize;
+			delete methods.initialize;
 			var res;
 			res=(init?
 				function () {
@@ -95,8 +135,22 @@ return Tonyu=function () {
 					if (!(this instanceof res)) useNew(fullName);
 				})
 			);
-			res.methods=prot;
-			includes.forEach(function (m) {
+			res.prototype=bless(parent,{});
+			if (isShim) {
+				res.meta={isShim:true,extenderFullName:fullName};
+			} else {
+				res.meta=addMeta(fullName,{
+					fullName:fullName,shortName:shortName,namespace:namespace,decls:decls,
+					superclass:ctx.nonShimParent ? ctx.nonShimParent.meta : null,
+					includesRec:includesRec,
+					includes:includes.map(function(c){return c.meta;})
+				});
+			}
+			res.meta.func=res;
+			// methods: res's own methods(no superclass/modules)
+			res.methods=methods;
+			var prot=res.prototype;
+			/*includes.forEach(function (m) {
 				if (!m.methods) throw m+" Does not have methods";
 				for (var n in m.methods) {
 					if (!(n in prot)) {
@@ -110,14 +164,17 @@ return Tonyu=function () {
 						}
 					}
 				}
-			});
+			});*/
 			var props={};
 			var propReg=klass.propReg;//^__([gs]et)ter__(.*)$/;
-			for (var k in prot) {
+			for (var k in methods) {
 				if (k.match(/^fiber\$/)) continue;
-				if (prot["fiber$"+k]) {
-					prot[k].fiber=prot["fiber$"+k];
-					prot[k].fiber.methodInfo=prot[k].fiber.methodInfo||{name:k,klass:res,fiber:true};
+				prot[k]=methods[k];
+				var fbk="fiber$"+k;
+				if (methods[fbk]) {
+					prot[fbk]=methods[fbk];
+					prot[fbk].methodInfo=prot[fbk].methodInfo||{name:k,klass:res,fiber:true};
+					prot[k].fiber=prot[fbk];
 				}
 				if (k!=="__dummy" && !prot[k]) {
 					console.log("WHY!",prot[k],prot,k);
@@ -126,30 +183,31 @@ return Tonyu=function () {
 				prot[k].methodInfo=prot[k].methodInfo||{name:k,klass:res};
 				var r=propReg.exec(k);
 				if (r) {
+					// __(r[1]g/setter)__r[2]
 					props[r[2]]=props[r[2]]||{};
 					props[r[2]][r[1]]=prot[k];
 				}
 			}
-			res.prototype=bless(parent, prot);
-			res.prototype.isTonyuObject=true;
+			prot.isTonyuObject=true;
 			for (var k in props) {
-				Object.defineProperty(res.prototype, k , props[k]);
+				Object.defineProperty(prot, k , props[k]);
 			}
-			res.meta=addMeta(fullName,{
-				fullName:fullName,shortName:shortName,namespace:namespace,decls:decls,
-				superclass:parent ? parent.meta : null,func:res,
-				includes:includes.map(function(c){return c.meta;})
-			});
-			var m=klass.getMeta(res);
-			res.prototype.getClassInfo=function () {
-				return m;
+			prot.getClassInfo=function () {
+				return res.meta;
 			};
-			return res;
+			return chkclass(res,{isShim:isShim});
 		}
-		var res=extender(parent);
+		var res=extender(parent,{
+			init:true,
+			initFullName:fullName,
+			includesRec:(parent?extend({},parent.meta.includesRec):{}),
+			nonShimParent:parent
+		});
 		res.extendFrom=extender;
+		//addMeta(fullName, res.meta);
 		nso[shortName]=res;
-		return res;
+		outerRes=res;
+		return chkclass(res,{isShim:false});
 	};
 	klass.isSourceChanged=function (k) {
 		k=k.meta||k;

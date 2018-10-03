@@ -91,6 +91,10 @@ define(["Tonyu","ObjectMatcher", "TError"],
 		function loop(k) {
 			if (visited[k.fullName]) return;
 			visited[k.fullName]=true;
+			if (k.isShim) {
+				console.log(klass,"contains shim ",k);
+				throw new Error("Contains shim");
+			}
 			res.push(k);
 			if (k.superclass) loop(k.superclass);
 			if (k.includes) k.includes.forEach(loop);

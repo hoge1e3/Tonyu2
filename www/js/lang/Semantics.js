@@ -274,6 +274,9 @@ function annotateSource2(klass, env) {//B
 		if (klass.builtin) return;
 		var s=topLevelScope;
 		var decls=klass.decls;
+		if (!decls) {
+			console.log("DECLNUL",klass);
+		}
 		var i;
 		for (i in decls.fields) {
 			var info=decls.fields[i];
