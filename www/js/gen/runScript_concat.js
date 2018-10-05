@@ -94,7 +94,7 @@
 	};
 	R.real=real;
 	var requireSimulator=R;
-	// Created at Thu Sep 20 2018 15:45:12 GMT+0900 (東京 (標準時))
+	// Created at Thu Oct 04 2018 15:44:04 GMT+0900 (東京 (標準時))
 requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
@@ -3694,6 +3694,7 @@ define(["Klass"], function (Klass) {
 	function IT(set, arity) {
 		//var res={};
 		if (set.tonyuIterator) {
+			// TODO: the prototype of class having tonyuIterator will iterate infinitively
 			return set.tonyuIterator(arity);
 		} else if (set instanceof Array) {
 			//res.i=0;
@@ -3793,6 +3794,9 @@ return Tonyu=function () {
 	};
 	klass.addMeta=addMeta;
 	function addMeta(fn,m) {
+		// why use addMeta?
+		// because when compiled from source, additional info(src file) is contained.
+		// k.meta={...} erases these info
 		assert.is(arguments,[String,Object]);
 		return extend(klass.getMeta(fn), m);
 	}
@@ -3830,94 +3834,137 @@ return Tonyu=function () {
 		var fullName=params.fullName;
 		var shortName=params.shortName;
 		var namespace=params.namespace;
-		var methods=params.methods;
+		var methodsF=params.methods;
 		var decls=params.decls;
 		var nso=klass.ensureNamespace(Tonyu.classes, namespace);
-		var prot=methods;
-		var init=prot.initialize;
-		delete prot.initialize;
-		var res;
-		res=(init?
-			/*(parent? function () {
-				if (!(this instanceof res)) useNew(fullName);
-				if (Tonyu.runMode) init.apply(this,arguments);
-				else parent.apply(this,arguments);
-			}:function () {
-				if (!(this instanceof res)) useNew(fullName);
-				if (Tonyu.runMode) init.apply(this,arguments);
-			})*/
-			function () {
-				if (!(this instanceof res)) useNew(fullName);
-				init.apply(this,arguments);
-			}:
-			(parent? function () {
-				if (!(this instanceof res)) useNew(fullName);
-				parent.apply(this,arguments);
-			}:function (){
-				if (!(this instanceof res)) useNew(fullName);
-			})
-		);
-		nso[shortName]=res;
-		res.methods=prot;
-		includes.forEach(function (m) {
-			if (!m.methods) throw m+" Does not have methods";
-			for (var n in m.methods) {
-				if (!(n in prot)) {
-					prot[n]=m.methods[n];
-					if (n!=="__dummy" && !prot[n]) {
-						console.log("WHY2!",prot[n],prot,n);
-						throw new Error("WHY2!"+n);
-					}
-				} else {
-					if (prot[n]!==m.methods[n] && n!=="main" && n!=="fiber$main") {
-						/*
-						Override of including module
-						MOD  TQuery::min kernel.MathMod
-						MOD  TQuery::max kernel.MathMod
-						MOD  Vec3::dist kernel.MathMod
-						MOD  any_class::main any_module
-						*/
-						// Why cannot override super-class methods?
-						// because super.hoge() in module cannot detect super class
-						//console.log("MOD ",shortName+"::"+n,(m&&m.meta&&m.meta.fullName));
+		var outerRes;
+		function chkmeta(m,ctx) {
+			ctx=ctx||{};
+			if (ctx.isShim) return m;
+			ctx.path=ctx.path||[];
+			ctx.path.push(m);
+			if (m.isShim) {
+				console.log("chkmeta::ctx",ctx);
+				throw new Error("Shim found "+m.extenderFullName);
+			}
+			if (m.superclass) chkmeta(m.superclass,ctx);
+			if (!m.includes) {
+				console.log("chkmeta::ctx",ctx);
+				throw new Error("includes not found");
+			}
+			m.includes.forEach(function (mod) {
+				chkmeta(mod,ctx);
+			});
+			ctx.path.pop();
+			return m;
+		}
+		function chkclass(c,ctx) {
+			if (!c.prototype.hasOwnProperty("getClassInfo")) throw new Error("NO");
+			if (!c.meta) {
+				console.log("metanotfound",c);
+				throw new Error("meta not found");
+			}
+			chkmeta(c.meta,ctx);
+			return c;
+		}
+		function extender(parent,ctx) {
+			var isShim=!ctx.init;
+			var includesRec=ctx.includesRec;
+			if (includesRec[fullName]) return parent;
+			includesRec[fullName]=true;
+			//console.log(ctx.initFullName, fullName);//,  includesRec[fullName],JSON.stringify(ctx));
+			includes.forEach(function (m) {
+				parent=m.extendFrom(parent,extend(ctx,{init:false}));
+			});
+			var methods=typeof methodsF==="function"? methodsF(parent):methodsF;
+			var init=methods.initialize;
+			delete methods.initialize;
+			var res;
+			res=(init?
+				function () {
+					if (!(this instanceof res)) useNew(fullName);
+					init.apply(this,arguments);
+				}:
+				(parent? function () {
+					if (!(this instanceof res)) useNew(fullName);
+					parent.apply(this,arguments);
+				}:function (){
+					if (!(this instanceof res)) useNew(fullName);
+				})
+			);
+			res.prototype=bless(parent,{});
+			if (isShim) {
+				res.meta={isShim:true,extenderFullName:fullName};
+			} else {
+				res.meta=addMeta(fullName,{
+					fullName:fullName,shortName:shortName,namespace:namespace,decls:decls,
+					superclass:ctx.nonShimParent ? ctx.nonShimParent.meta : null,
+					includesRec:includesRec,
+					includes:includes.map(function(c){return c.meta;})
+				});
+			}
+			res.meta.func=res;
+			// methods: res's own methods(no superclass/modules)
+			res.methods=methods;
+			var prot=res.prototype;
+			/*includes.forEach(function (m) {
+				if (!m.methods) throw m+" Does not have methods";
+				for (var n in m.methods) {
+					if (!(n in prot)) {
+						prot[n]=m.methods[n];
+						if (n!=="__dummy" && !prot[n]) {
+							console.log("WHY2!",prot[n],prot,n);
+							throw new Error("WHY2!"+n);
+						}
+					} else {
+						if (prot[n]!==m.methods[n] && n!=="main" && n!=="fiber$main") {
+						}
 					}
 				}
+			});*/
+			var props={};
+			var propReg=klass.propReg;//^__([gs]et)ter__(.*)$/;
+			for (var k in methods) {
+				if (k.match(/^fiber\$/)) continue;
+				prot[k]=methods[k];
+				var fbk="fiber$"+k;
+				if (methods[fbk]) {
+					prot[fbk]=methods[fbk];
+					prot[fbk].methodInfo=prot[fbk].methodInfo||{name:k,klass:res,fiber:true};
+					prot[k].fiber=prot[fbk];
+				}
+				if (k!=="__dummy" && !prot[k]) {
+					console.log("WHY!",prot[k],prot,k);
+					throw new Error("WHY!"+k);
+				}
+				prot[k].methodInfo=prot[k].methodInfo||{name:k,klass:res};
+				var r=propReg.exec(k);
+				if (r) {
+					// __(r[1]g/setter)__r[2]
+					props[r[2]]=props[r[2]]||{};
+					props[r[2]][r[1]]=prot[k];
+				}
 			}
-		});
-		var props={};
-		var propReg=klass.propReg;//^__([gs]et)ter__(.*)$/;
-		for (var k in prot) {
-			if (k.match(/^fiber\$/)) continue;
-			if (prot["fiber$"+k]) {
-				prot[k].fiber=prot["fiber$"+k];
-				prot[k].fiber.methodInfo={name:k,klass:res,fiber:true};
+			prot.isTonyuObject=true;
+			for (var k in props) {
+				Object.defineProperty(prot, k , props[k]);
 			}
-			if (k!=="__dummy" && !prot[k]) {
-				console.log("WHY!",prot[k],prot,k);
-				throw new Error("WHY!"+k);
-			}
-			prot[k].methodInfo={name:k,klass:res};
-			var r=propReg.exec(k);
-			if (r) {
-				props[r[2]]=props[r[2]]||{};
-				props[r[2]][r[1]]=prot[k];
-			}
+			prot.getClassInfo=function () {
+				return res.meta;
+			};
+			return chkclass(res,{isShim:isShim});
 		}
-		res.prototype=bless(parent, prot);
-		res.prototype.isTonyuObject=true;
-		for (var k in props) {
-			Object.defineProperty(res.prototype, k , props[k]);
-		}
-		res.meta=addMeta(fullName,{
-			fullName:fullName,shortName:shortName,namespace:namespace,decls:decls,
-			superclass:parent ? parent.meta : null,func:res,
-			includes:includes.map(function(c){return c.meta;})
+		var res=extender(parent,{
+			init:true,
+			initFullName:fullName,
+			includesRec:(parent?extend({},parent.meta.includesRec):{}),
+			nonShimParent:parent
 		});
-		var m=klass.getMeta(res);
-		res.prototype.getClassInfo=function () {
-			return m;
-		};
-		return res;
+		res.extendFrom=extender;
+		//addMeta(fullName, res.meta);
+		nso[shortName]=res;
+		outerRes=res;
+		return chkclass(res,{isShim:false});
 	};
 	klass.isSourceChanged=function (k) {
 		k=k.meta||k;
@@ -4061,25 +4108,21 @@ return Tonyu=function () {
 		lastLoopCheck=new Date().getTime()+(disableTime||0);
 	}
 	function is(obj,klass) {
-		if (klass===Number) {
-			return typeof obj==="number";
+		if (!obj) return false;
+		if (obj instanceof klass) return true;
+		if (typeof obj.getClassInfo==="function" && klass.meta) {
+			return obj.getClassInfo().includesRec[klass.meta.fullName];
 		}
-		if (klass===String) {
-			return typeof obj==="string";
-		}
-		if (klass===Boolean) {
-			return typeof obj==="boolean";
-		}
-		//Functi.... never mind.
+		return false;
 	}
 	setInterval(resetLoopCheck,16);
 	return Tonyu={thread:thread, /*threadGroup:threadGroup,*/ klass:klass, bless:bless, extend:extend,
 			globals:globals, classes:classes, classMetas:classMetas, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
 			timeout:timeout,animationFrame:animationFrame, /*asyncResult:asyncResult,*/
-			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
+			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,is:is,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,DeferredUtil:DU,
-			VERSION:1537425889131,//EMBED_VERSION
+			VERSION:1538635409433,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -9423,6 +9466,10 @@ define(["Tonyu","ObjectMatcher", "TError"],
 		function loop(k) {
 			if (visited[k.fullName]) return;
 			visited[k.fullName]=true;
+			if (k.isShim) {
+				console.log(klass,"contains shim ",k);
+				throw new Error("Contains shim");
+			}
 			res.push(k);
 			if (k.superclass) loop(k.superclass);
 			if (k.includes) k.includes.forEach(loop);
@@ -9464,6 +9511,7 @@ var CLASS_HEAD="Tonyu.classes.", GLOBAL_HEAD="Tonyu.globals.";
 var GET_THIS="this";//"this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this)";
 var USE_STRICT='"use strict";%n';
 var ITER="Tonyu.iterator";
+var SUPER="__superClass";
 /*var ScopeTypes={FIELD:"field", METHOD:"method", NATIVE:"native",//B
 		LOCAL:"local", THVAR:"threadvar", PARAM:"param", GLOBAL:"global", CLASS:"class"};*/
 var ScopeTypes=cu.ScopeTypes;
@@ -9735,8 +9783,8 @@ function genJS(klass, env) {//B
 							t.L, t.O, TH
 				);
 			} else if (t.type=="noRetSuper") {
-				var p=getClassName(klass.superclass);
-					buf.printf(
+				var p=SUPER;//getClassName(klass.superclass);
+				buf.printf(
 							"%s.prototype.%s%s.apply( %s, [%j]);%n" +//FIBERCALL
 							"%s=%s;return;%n" +/*B*/
 							"%}case %d:%{",
@@ -9745,7 +9793,8 @@ function genJS(klass, env) {//B
 								ctx.pc++
 					);
 			} else if (t.type=="retSuper") {
-					buf.printf(
+				var p=SUPER;//getClassName(klass.superclass);
+				buf.printf(
 							"%s.prototype.%s%s.apply( %s, [%j]);%n" +//FIBERCALL
 							"%s=%s;return;%n" +/*B*/
 							"%}case %d:%{"+
@@ -9776,7 +9825,11 @@ function genJS(klass, env) {//B
 					return;
 				}
 			}
-			buf.printf("%v%v%v", node.left, node.op, node.right);
+			if (node.op.type==="is") {
+				buf.printf("Tonyu.is(%v,%v)",node.left, node.right);
+			} else {
+				buf.printf("%v%v%v", node.left, node.op, node.right);
+			}
 		},
 		trifixr:function (node) {
 			buf.printf("%v%v%v%v%v", node.left, node.op1, node.mid, node.op2, node.right);
@@ -10206,14 +10259,14 @@ function genJS(klass, env) {//B
 		},
 		superExpr: function (node) {
 			var name;
-			if (!klass.superclass) throw new Error(klass.fullName+"には親クラスがありません");
+			//if (!klass.superclass) throw new Error(klass.fullName+"には親クラスがありません");
 			if (node.name) {
 				name=node.name.text;
 				buf.printf("%s.prototype.%s.apply( %s, %v)",
-						getClassName(klass.superclass),  name, THIZ, node.params);
+						SUPER/*getClassName(klass.superclass)*/,  name, THIZ, node.params);
 			} else {
 				buf.printf("%s.apply( %s, %v)",
-						getClassName(klass.superclass), THIZ, node.params);
+						SUPER/*getClassName(klass.superclass)*/, THIZ, node.params);
 			}
 		},
 		arrayElem: function (node) {
@@ -10304,7 +10357,8 @@ function genJS(klass, env) {//B
 			printf("namespace: %l,%n", klass.namespace);
 			if (klass.superclass) printf("superclass: %s,%n", getClassName(klass.superclass));
 			printf("includes: [%s],%n", getClassNames(klass.includes).join(","));
-			printf("methods: {%{");
+			printf("methods: function (%s) {%{",SUPER);
+			printf("return {%{");
 			for (var name in methods) {
 				if (debug) console.log("method1", name);
 				var method=methods[name];
@@ -10320,6 +10374,7 @@ function genJS(klass, env) {//B
 				if (debug) console.log("method3", name);
 			}
 			printf("__dummy: false%n");
+			printf("%}};%n");
 			printf("%}},%n");
 			printf("decls: %s%n", JSON.stringify(digestDecls(klass)));
 			printf("%}});");
@@ -10818,6 +10873,9 @@ function annotateSource2(klass, env) {//B
 		if (klass.builtin) return;
 		var s=topLevelScope;
 		var decls=klass.decls;
+		if (!decls) {
+			console.log("DECLNUL",klass);
+		}
 		var i;
 		for (i in decls.fields) {
 			var info=decls.fields[i];

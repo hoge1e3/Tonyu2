@@ -351,25 +351,21 @@ return Tonyu=function () {
 		lastLoopCheck=new Date().getTime()+(disableTime||0);
 	}
 	function is(obj,klass) {
-		if (klass===Number) {
-			return typeof obj==="number";
+		if (!obj) return false;
+		if (obj instanceof klass) return true;
+		if (typeof obj.getClassInfo==="function" && klass.meta) {
+			return obj.getClassInfo().includesRec[klass.meta.fullName];
 		}
-		if (klass===String) {
-			return typeof obj==="string";
-		}
-		if (klass===Boolean) {
-			return typeof obj==="boolean";
-		}
-		//Functi.... never mind.
+		return false;
 	}
 	setInterval(resetLoopCheck,16);
 	return Tonyu={thread:thread, /*threadGroup:threadGroup,*/ klass:klass, bless:bless, extend:extend,
 			globals:globals, classes:classes, classMetas:classMetas, setGlobal:setGlobal, getGlobal:getGlobal, getClass:getClass,
 			timeout:timeout,animationFrame:animationFrame, /*asyncResult:asyncResult,*/
-			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,
+			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,is:is,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,DeferredUtil:DU,
-			VERSION:1537425889131,//EMBED_VERSION
+			VERSION:1538635409433,//EMBED_VERSION
 			A:A};
 }();
 });

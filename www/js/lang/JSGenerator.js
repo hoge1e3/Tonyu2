@@ -16,6 +16,7 @@ var CLASS_HEAD="Tonyu.classes.", GLOBAL_HEAD="Tonyu.globals.";
 var GET_THIS="this";//"this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this)";
 var USE_STRICT='"use strict";%n';
 var ITER="Tonyu.iterator";
+var SUPER="__superClass";
 /*var ScopeTypes={FIELD:"field", METHOD:"method", NATIVE:"native",//B
 		LOCAL:"local", THVAR:"threadvar", PARAM:"param", GLOBAL:"global", CLASS:"class"};*/
 var ScopeTypes=cu.ScopeTypes;
@@ -287,8 +288,8 @@ function genJS(klass, env) {//B
 							t.L, t.O, TH
 				);
 			} else if (t.type=="noRetSuper") {
-				var p=getClassName(klass.superclass);
-					buf.printf(
+				var p=SUPER;//getClassName(klass.superclass);
+				buf.printf(
 							"%s.prototype.%s%s.apply( %s, [%j]);%n" +//FIBERCALL
 							"%s=%s;return;%n" +/*B*/
 							"%}case %d:%{",
@@ -297,7 +298,8 @@ function genJS(klass, env) {//B
 								ctx.pc++
 					);
 			} else if (t.type=="retSuper") {
-					buf.printf(
+				var p=SUPER;//getClassName(klass.superclass);
+				buf.printf(
 							"%s.prototype.%s%s.apply( %s, [%j]);%n" +//FIBERCALL
 							"%s=%s;return;%n" +/*B*/
 							"%}case %d:%{"+
@@ -328,7 +330,11 @@ function genJS(klass, env) {//B
 					return;
 				}
 			}
-			buf.printf("%v%v%v", node.left, node.op, node.right);
+			if (node.op.type==="is") {
+				buf.printf("Tonyu.is(%v,%v)",node.left, node.right);
+			} else {
+				buf.printf("%v%v%v", node.left, node.op, node.right);
+			}
 		},
 		trifixr:function (node) {
 			buf.printf("%v%v%v%v%v", node.left, node.op1, node.mid, node.op2, node.right);
@@ -758,14 +764,14 @@ function genJS(klass, env) {//B
 		},
 		superExpr: function (node) {
 			var name;
-			if (!klass.superclass) throw new Error(klass.fullName+"には親クラスがありません");
+			//if (!klass.superclass) throw new Error(klass.fullName+"には親クラスがありません");
 			if (node.name) {
 				name=node.name.text;
 				buf.printf("%s.prototype.%s.apply( %s, %v)",
-						getClassName(klass.superclass),  name, THIZ, node.params);
+						SUPER/*getClassName(klass.superclass)*/,  name, THIZ, node.params);
 			} else {
 				buf.printf("%s.apply( %s, %v)",
-						getClassName(klass.superclass), THIZ, node.params);
+						SUPER/*getClassName(klass.superclass)*/, THIZ, node.params);
 			}
 		},
 		arrayElem: function (node) {
@@ -856,7 +862,8 @@ function genJS(klass, env) {//B
 			printf("namespace: %l,%n", klass.namespace);
 			if (klass.superclass) printf("superclass: %s,%n", getClassName(klass.superclass));
 			printf("includes: [%s],%n", getClassNames(klass.includes).join(","));
-			printf("methods: {%{");
+			printf("methods: function (%s) {%{",SUPER);
+			printf("return {%{");
 			for (var name in methods) {
 				if (debug) console.log("method1", name);
 				var method=methods[name];
@@ -872,6 +879,7 @@ function genJS(klass, env) {//B
 				if (debug) console.log("method3", name);
 			}
 			printf("__dummy: false%n");
+			printf("%}};%n");
 			printf("%}},%n");
 			printf("decls: %s%n", JSON.stringify(digestDecls(klass)));
 			printf("%}});");
