@@ -2,7 +2,7 @@ extends null;
 "field strict";
 var p,pImg,text,size,font,align,fillStyle,
 scaleX,scaleY,width,height,radius,rotation,alpha,
-position,zOrder,_isInvisible;
+position,zOrder,_isInvisible,subsprites;
 native Tonyu;
 native Math;
 native console;

@@ -16,7 +16,12 @@ nowait \hide() {
     } else if (this.__addedToSprites is SpriteGroup) {
         this.__addedToSprites.remove(this);
     } else {
-        throw new Error("LifeCycleMod::hide invalid layer");
+        // Double kill ocurres when:
+        //   child=new {layer:parent};
+        //   child.die();
+        //   parent.die();
+        // console.log("hide::invalid layer" ,this);
+        //throw new Error("LifeCycleMod::hide invalid layer");
     }
 }
 nowait \show(x,y,p) {

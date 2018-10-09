@@ -46,7 +46,8 @@ var quaternion:Quaternion;
     // mode="roll","pitch","yaw"
     // unit="left deg", "up rad"  TODO
     var x,y,nx,ny,axis;
-    axis=Direction.axis[mode];
+    if (mode is Vec3) axis=mode;
+    else axis=Direction.axis[mode];
     if (!axis) {
         quaternion.set(new Quaternion);
     } else {

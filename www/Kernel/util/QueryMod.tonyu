@@ -19,7 +19,7 @@ nowait \all(c) {//23D
     if (arguments.length>0 && typeof c!="function") {
         return res;
     }
-    layer.sprites.forEach \(s) {
+    (this.__addedToSprites||layer).sprites.forEach \(s) {
         if (s===this) return;
         if (!c || s instanceof c) {
             res.push(s);
