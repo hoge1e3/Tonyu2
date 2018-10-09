@@ -8,7 +8,7 @@ native console;
 }
 \add(a:Actor3D) {
     if (a.transform.parent!==transform) throw new Error("Sprite3D::Transform not match");
-    if (a.layer!==this && a.layer.p!==this) throw new Error("Spreite3D::layer not match");
+    if (a.layer!==this && a.layer.p!==this && a.layer.subsprites!==this) throw new Error("Spreite3D::layer not match");
     sprites.push(a);
     a.__addedToSprites=this;
 }

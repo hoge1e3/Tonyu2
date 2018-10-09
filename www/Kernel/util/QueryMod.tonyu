@@ -30,7 +30,7 @@ nowait \all(c) {//23D
 nowait \allCrash(t) {//23D
     var res=new TQuery(this);
     var sp=this;
-    var t1=this.getCrashShape();// TODO abstract method
+    var t1=getCrashShape();
     if (!t1) return res;
     layer.sprites.forEach(\(s) {
         var t2;
@@ -43,11 +43,9 @@ nowait \allCrash(t) {//23D
     });
     return res;
 }
-//abstract nowait \getCrashShape();
-// why {empty} method is not OK?
-//          BaseActor->QM  <|--  Actor->QM2  ,
-//          Actor cannot override QM2:getCrashShape
-//          since BaseActor already defines QM:getCrashShape{empty}
+\getCrashShape(){
+    throw new Error("getCrashShape::abstract");
+}
 nowait \crashTo(t) {//23D
     if (!t) return false;
     if (typeof t=="function") {
@@ -57,7 +55,7 @@ nowait \crashTo(t) {//23D
 }
 nowait \crashTo1(t) {//23D
     if (!t || t._isDead) return false;
-    var t1=this.getCrashShape();//TODO abstract method
+    var t1=getCrashShape();
     var t2=t.getCrashShape();
     return t1 && t1.intersects(t2);
 }
@@ -123,18 +121,21 @@ nowait \watchHit(typeA,typeB,onHit) {//23D
 \screenOutChecker(d,f){//23D
     while(true){
         while(true){
-            if(this.screenOut()>d){//TODO abstract method
+            if(screenOut()>d){
                 f();
                 break;
             }
             update();
         }
         while(true){
-            if(this.screenOut()<=d){//TODO abstract method
+            if(screenOut()<=d){
                 break;
             }
             update();
         }
         update();
     }
+}
+\screenOut(){
+    throw new Error("screenOut::abstract");
 }

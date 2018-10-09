@@ -44,6 +44,10 @@ nowait \dist(dx,dy,dz) {
     transform.scale=s;
 }
 \addSubsprite(s) {
+    subsprites=subsprites||new Sprites3D{layer:this,transform};
+    subsprites.add(s);
+    if (!s.lifeKeeper) s.lifeKeeper=this;
+    /*
     if (p is Sprites3D) {
         p.add(s);
         //if (s.transform) s.transform.parent=p.transform;
@@ -55,7 +59,7 @@ nowait \dist(dx,dy,dz) {
             new Actor3D{x:0,y:0,p:pp,scale,scaleX,scaleY,alpha,layer:p};
         }
         addSubsprite(s);
-    }
+    }*/
 }
 \localToWorld(fru) {
     var res=position.clone();
