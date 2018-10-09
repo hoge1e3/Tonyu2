@@ -42,7 +42,7 @@ native Box2D;
     shape=shape || (radius ? "circle" : "box");
     var w=width,h=height;
     if (!w) {
-        detectShape();
+        prepareImage();
         w=width*(scaleX||1);
         h=height*(scaleY||scaleX||1);
     }

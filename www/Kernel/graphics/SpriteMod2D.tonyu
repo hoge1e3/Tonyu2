@@ -62,7 +62,7 @@ nowait \draw(ctx) {//2D
             height=p.height;
         }
     } else {
-        detectShape();
+        prepareImage();
         if (pImg) {
             //_animation();
             ctx.save();

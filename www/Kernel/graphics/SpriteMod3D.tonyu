@@ -5,7 +5,7 @@ var x,y,z,direction,transform;
 
 
 \draw3D(ctx3d) {
-    if ( (p==null || typeof p==="number") && (!text && !fillStyle) ) detectShape();// Just for calculate size TODO
+    if ( (p==null || typeof p==="number") && (!text && !fillStyle) ) prepareImage();// Just for calculate size TODO
     //ctx3d.addSprite3D(this);
     //return;
     if (p && p.draw3D) {

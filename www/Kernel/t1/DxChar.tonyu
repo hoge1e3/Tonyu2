@@ -12,7 +12,7 @@ extends SpriteChar;
 \draw(c) {
     if (_isInvisible) return;
     onDraw();
-    detectShape();
+    prepareImage();
     drawDxSprite(x,y,p,f,zOrder,angle,alpha,scaleX,scaleY);
     /*
     rotation=angle;

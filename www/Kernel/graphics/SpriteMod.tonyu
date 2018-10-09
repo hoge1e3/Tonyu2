@@ -14,7 +14,7 @@ native console;
     if (alpha==null) alpha=255;
     if (zOrder==null) zOrder=0;
 }
-nowait \detectShape() {//23D
+nowait \prepareImage() {//23D
     if (typeof p!="number") {
         p=0;
     }
@@ -24,81 +24,10 @@ nowait \detectShape() {//23D
     width=pImg.width;
     height=pImg.height;
 }
-/*----moved to SpriteMod2D
-nowait \performTransform(ctx) {//2D
-    if (x!==x || y!==y || x==null || y==null) {
-        //console.log("警告：",getClassInfo().shortName,"で座標の指定に誤りがあります");
-    }
-    ctx.translate(x,y);
-    if(this.rotation!=0){
-        ctx.rotate(this.rotation/180*Math.PI);
-    }else{
-        ctx.rotate(this.rotate/180*Math.PI);
-    }
-    if(typeof this.scaleY==="undefined") {
-        ctx.scale(this.scaleX,this.scaleX);
-    }else{
-        ctx.scale(this.scaleX,this.scaleY);
-    }
-    ctx.globalAlpha=(alpha<0?0:alpha>255?255:alpha)/255;
-}
-nowait \draw(ctx) {//2D
-    var drawY;
-    if (x==null || y==null || _isInvisible) return;
-    if (text!=null) {
-        var splitsText=(text+"").split("\n");
-        drawY=y;
-        if (!size) size=15;
-        if (!align) align="center";
-        if (!fillStyle) fillStyle="white";
-        if (font) ctx.font=size+"px "+font;
-        ctx.fillStyle=fillStyle+"";
-        ctx.globalAlpha=this.alpha/255;
-        height=0;width=0;
-        for(var textCount=0;textCount<splitsText.length;textCount++){
-            var rect=drawTextRect(ctx, splitsText[textCount], x, drawY, size, align , "fill");
-            if(width<rect.w) width=rect.w;
-            height+=rect.h;
-            drawY+=size;
-        }
-    } else if (fillStyle!=null) {
-        ctx.save();
-        performTransform(ctx);
-        ctx.fillStyle=fillStyle+"";
-        if (radius) {
-            ctx.beginPath();
-            ctx.arc(0,0,radius,0,2*Math.PI);
-            ctx.fill();
-        } else {
-            ctx.fillRect(-width/2,-height/2,width,height);
-        }
-        ctx.restore();
-    } else if (p && typeof p.draw==="function") {
-        ctx.save();
-        performTransform(ctx);
-        p.draw(ctx);
-        ctx.restore();
-        if (p.width*p.height>0) {
-            width=p.width;
-            height=p.height;
-        }
-    } else {
-        detectShape();
-        if (pImg) {
-            //_animation();
-            ctx.save();
-            performTransform(ctx);
-            ctx.drawImage(
-            pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,
-            -width/2, -height/2, width, height);
-            ctx.restore();
-        }
-    }
-}
-----moved to SpriteMod2D */
 
 // from PlainChar
 nowait \color(r,g,b) {//23D
+    //TODO new Color?
     return "rgb("+[r,g,b].join(",")+")";
 }
 \setVisible(v) {//23D

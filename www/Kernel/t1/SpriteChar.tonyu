@@ -11,7 +11,7 @@ extends PlainChar;
 \draw(c) {
     if (_isInvisible) return;
     onDraw();
-    detectShape();
+    prepareImage();
     drawSprite(x,y,p,f,zOrder);
     /*if (f) {
         if (!scaleY) scaleY=scaleX;
