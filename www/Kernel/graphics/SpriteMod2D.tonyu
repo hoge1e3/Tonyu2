@@ -22,11 +22,14 @@ nowait \performTransform(ctx) {//2D
     ctx.globalAlpha=(alpha<0?0:alpha>255?255:alpha)/255;
 }
 nowait \draw(ctx) {//2D
-    var drawY;
+    //var drawY;
     if (x==null || y==null || _isInvisible) return;
-    if (text!=null) {
+    var t=detectSpriteType();
+    return this["drawAs"+t](ctx);
+}
+nowait \drawAsText(ctx) {
         var splitsText=(text+"").split("\n");
-        drawY=y;
+        var drawY=y;
         if (!size) size=15;
         if (!align) align="center";
         if (!fillStyle) fillStyle="white";
@@ -40,7 +43,9 @@ nowait \draw(ctx) {//2D
             height+=rect.h;
             drawY+=size;
         }
-    } else if (fillStyle!=null) {
+        // else if (fillStyle!=null) {
+}
+\drawAsShape(ctx) {
         ctx.save();
         performTransform(ctx);
         ctx.fillStyle=fillStyle+"";
@@ -52,7 +57,9 @@ nowait \draw(ctx) {//2D
             ctx.fillRect(-width/2,-height/2,width,height);
         }
         ctx.restore();
-    } else if (p && typeof p.draw==="function") {
+//    } else if (p && typeof p.draw==="function") {
+}
+\drawAsCustom(ctx) {
         ctx.save();
         performTransform(ctx);
         p.draw(ctx);
@@ -61,7 +68,9 @@ nowait \draw(ctx) {//2D
             width=p.width;
             height=p.height;
         }
-    } else {
+//    } else {
+}
+\drawAsImage(ctx) {
         prepareImage();
         if (pImg) {
             //_animation();
@@ -72,5 +81,5 @@ nowait \draw(ctx) {//2D
             -width/2, -height/2, width, height);
             ctx.restore();
         }
-    }
+    //}
 }

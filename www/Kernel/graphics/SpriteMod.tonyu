@@ -33,3 +33,14 @@ nowait \color(r,g,b) {//23D
 \setVisible(v) {//23D
     _isInvisible=!v;
 }
+\detectSpriteType() {
+    if (text!=null) {
+        return "Text";
+    } else if (fillStyle!=null) {
+        return "Shape";
+    } else if (p && typeof p.draw==="function") {
+        return "Custom";
+    } else {
+        return "Image";
+    }
+}
