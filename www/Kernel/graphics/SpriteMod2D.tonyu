@@ -22,64 +22,59 @@ nowait \performTransform(ctx) {//2D
     ctx.globalAlpha=(alpha<0?0:alpha>255?255:alpha)/255;
 }
 nowait \draw(ctx) {//2D
-    //var drawY;
     if (x==null || y==null || _isInvisible) return;
     var t=detectSpriteType();
     return this["drawAs"+t](ctx);
 }
 nowait \drawAsText(ctx) {
-        var splitsText=(text+"").split("\n");
-        var drawY=y;
-        if (!size) size=15;
-        if (!align) align="center";
-        if (!fillStyle) fillStyle="white";
-        if (font) ctx.font=size+"px "+font;
-        ctx.fillStyle=fillStyle+"";
-        ctx.globalAlpha=this.alpha/255;
-        height=0;width=0;
-        for(var textCount=0;textCount<splitsText.length;textCount++){
-            var rect=drawTextRect(ctx, splitsText[textCount], x, drawY, size, align , "fill");
-            if(width<rect.w) width=rect.w;
-            height+=rect.h;
-            drawY+=size;
-        }
-        // else if (fillStyle!=null) {
+    var splitsText=(text+"").split("\n");
+    var drawY=y;
+    if (!size) size=15;
+    if (!align) align="center";
+    if (!fillStyle) fillStyle="white";
+    if (font) ctx.font=size+"px "+font;
+    ctx.fillStyle=fillStyle+"";
+    ctx.globalAlpha=this.alpha/255;
+    height=0;width=0;
+    for(var textCount=0;textCount<splitsText.length;textCount++){
+        var rect=drawTextRect(ctx, splitsText[textCount], x, drawY, size, align , "fill");
+        if(width<rect.w) width=rect.w;
+        height+=rect.h;
+        drawY+=size;
+    }
 }
 \drawAsShape(ctx) {
-        ctx.save();
-        performTransform(ctx);
-        ctx.fillStyle=fillStyle+"";
-        if (radius) {
-            ctx.beginPath();
-            ctx.arc(0,0,radius,0,2*Math.PI);
-            ctx.fill();
-        } else {
-            ctx.fillRect(-width/2,-height/2,width,height);
-        }
-        ctx.restore();
-//    } else if (p && typeof p.draw==="function") {
+    ctx.save();
+    performTransform(ctx);
+    ctx.fillStyle=fillStyle+"";
+    if (radius) {
+        ctx.beginPath();
+        ctx.arc(0,0,radius,0,2*Math.PI);
+        ctx.fill();
+    } else {
+        ctx.fillRect(-width/2,-height/2,width,height);
+    }
+    ctx.restore();
 }
 \drawAsCustom(ctx) {
-        ctx.save();
-        performTransform(ctx);
-        p.draw(ctx);
-        ctx.restore();
-        if (p.width*p.height>0) {
-            width=p.width;
-            height=p.height;
-        }
-//    } else {
+    ctx.save();
+    performTransform(ctx);
+    p.draw(ctx);
+    ctx.restore();
+    if (p.width*p.height>0) {
+        width=p.width;
+        height=p.height;
+    }
 }
 \drawAsImage(ctx) {
-        prepareImage();
-        if (pImg) {
-            //_animation();
-            ctx.save();
-            performTransform(ctx);
-            ctx.drawImage(
-            pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,
-            -width/2, -height/2, width, height);
-            ctx.restore();
-        }
-    //}
+    prepareImage();
+    if (pImg) {
+        //_animation();
+        ctx.save();
+        performTransform(ctx);
+        ctx.drawImage(
+        pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,
+        -width/2, -height/2, width, height);
+        ctx.restore();
+    }
 }

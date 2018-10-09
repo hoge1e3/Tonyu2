@@ -3,9 +3,15 @@ includes SpriteMod;
 "field strict";
 var x,y,z,direction,transform;
 
-
+\detectSpriteType() {
+    var t=super.detectSpriteType();
+    if (t==="Image" && p && p.draw3D) return "Custom";
+    return t;
+}
 \draw3D(ctx3d) {
-    if ( (p==null || typeof p==="number") && (!text && !fillStyle) ) prepareImage();// Just for calculate size TODO
+    var t=detectSpriteType();
+    if ( t==="Image" ) prepareImage();// Just for calculate size TODO
+    //if ( (p==null || typeof p==="number") && (!text && !fillStyle) ) prepareImage();// Just for calculate size TODO
     //ctx3d.addSprite3D(this);
     //return;
     if (p && p.draw3D) {
