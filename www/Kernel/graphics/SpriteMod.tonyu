@@ -9,6 +9,7 @@ native console;
 
 \initSpriteMod() {//23D
     position=new Vec3View(this);
+    // TODO: transform should be initialized... ? NO, it should be initialized by LifeCycleMod...?
     if (scaleX==null) scaleX=1;
     if (rotation==null) rotation=0;
     if (alpha==null) alpha=255;

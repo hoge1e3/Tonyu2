@@ -1,21 +1,33 @@
+initialize order
+  [win?] init transform(with parent==null) -> add to group(set parent)
+  vs
+  init transform when add to group(using group.transform.child )
+
+  should change   SpriteMod <-deps-- LifeCycleMod
+  single SpriteMod is used when rendering (to improve performance)
+  single LifeCycleMod is some kind of SecretChar... (it is not so many, if dont want to multiply many, use parallel, or use layer:nullLayer)
+  should SpriteMod have transform? ..yes
+
 Why?
    why do not inherit superclass of module?
    why die()  does not kill thread (killThreadGroup seems to affect nothing)
    why transform init have to be done before addToLayer? (Currently LifeCycleMod and SpriteMod has no dependencies each other)
-   -						/*
-   -						Override of including module
-   -						MOD  TQuery::min kernel.MathMod
-   -						MOD  TQuery::max kernel.MathMod
-   -						MOD  Vec3::dist kernel.MathMod
-   -						MOD  any_class::main any_module
-   -						*/
-   -						// Why cannot override super-class methods?
-   -						// because super.hoge() in module cannot detect super class
-   -						//console.log("MOD ",shortName+"::"+n,(m&&m.meta&&m.meta.fullName));
- 
+
 _actualGroup ( __addedToSprites ?)
    layer is Actor  -> layer.p
    layer is Layer  -> layer.group
+
+-THis is resolved by newmod	:
+-						Override of including module
+-						MOD  TQuery::min kernel.MathMod
+-						MOD  TQuery::max kernel.MathMod
+-						MOD  Vec3::dist kernel.MathMod
+-						MOD  any_class::main any_module
+-						*/
+-						// Why cannot override super-class methods?
+-						// because super.hoge() in module cannot detect super class
+-						//console.log("MOD ",shortName+"::"+n,(m&&m.meta&&m.meta.fullName));
+
 
 Bug
 onRunTimeError:stackTrace1 Error: undefined is not array. cannot join fmt:(%j) {%{"use strict";%nvar %s=%s;%n%f%n%f%}},%n

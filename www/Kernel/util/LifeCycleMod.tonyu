@@ -81,13 +81,23 @@ nowait \isDead() {
 	    return o;
 	}
 }
-
+\getSpriteGroup() {
+    if (this.__addedToSprites is SpriteGroup) {
+        return this.__addedToSprites;
+    }
+    if (layer is SpriteGroup) {
+        // TODO may not be used  
+        return layer;
+    }
+    return null;
+}
 \addToLayer() {
     if(layer && typeof layer.addSubsprite==="function"){
         layer.addSubsprite(this);
     } else if(layer is SpriteGroup){
         layer.add(this);
     } else {
+        //TODO : may not be used
         $Sprites.add(this);
     }
     onAppear();
