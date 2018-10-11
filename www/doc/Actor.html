@@ -12,19 +12,26 @@
 <p>※ほとんどのメソッドはBaseActorに宣言されています．</p>
 <h2 id="-">コンストラクタ</h2>
 <pre><code>\new(x,y,p)
-</code></pre><p>引数の仕様は<a href="BaseActor">BaseActor</a>の処理と同じです．<br>BaseActorと同様，mainメソッドの動作を行うよう<a href="thread">スレッド</a>を作成します．</p>
+</code></pre><p>引数の仕様は<a href="BaseActor">BaseActor</a>を参照してください．<br>オブジェクトが生成されると，mainメソッドの動作を<a href="waitmode">待機可能モード</a>で行うような<a href="thread">スレッド</a>を自動的に作成します．</p>
 <p>また，コンストラクタが呼ばれた時点で自分自身を画面に表示します．</p>
 <h2 id="-">メソッド</h2>
 <ul>
-<li><p>initSprite</p>
-<ul>
-<li>自分自身を画面に表示します．<br>コンストラクタから自動的に呼ばれるので，通常は呼び出す必要はありません．</li>
-</ul>
-</li>
-<li><p><a href="onAppear">onAppear</a></p>
-<ul>
+<li><a href="onAppear">onAppear</a><ul>
 <li>オブジェクトが画面に現れるときに呼び出されます。このメソッドをオーバーライドして初期化の処理をすることができます。</li>
 </ul>
 </li>
+</ul>
+<h1 id="backlink">Backlink</h1>
+<ul>
+<li><a href="文字に動きをつける">文字に動きをつける</a></li>
+<li><a href="座標系とレイヤー">座標系とレイヤー</a></li>
+<li><a href="options">プロジェクト オプション</a></li>
+<li><a href="diffTonyu1">Tonyu1 と Tonyu2 の違い</a></li>
+<li><a href="TQuery">TQuery</a></li>
+<li><a href="Button">Buttonクラス</a></li>
+<li><a href="convert">convertメソッド</a></li>
+<li><a href="classDef">クラス定義</a></li>
+<li><a href="Label">Labelクラス</a></li>
+<li><a href="BodyActor">BodyActor</a></li>
 </ul>
 </body></html>
