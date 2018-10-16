@@ -86,7 +86,7 @@ nowait \isDead() {
         return this.__addedToSprites;
     }
     if (layer is SpriteGroup) {
-        // TODO may not be used  
+        // TODO may not be used
         return layer;
     }
     return null;
@@ -96,6 +96,8 @@ nowait \isDead() {
         layer.addSubsprite(this);
     } else if(layer is SpriteGroup){
         layer.add(this);
+    } else if(layer is ScreenLayer){
+        layer.group.add(this);
     } else {
         //TODO : may not be used
         $Sprites.add(this);

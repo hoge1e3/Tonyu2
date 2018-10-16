@@ -7,8 +7,15 @@ native console;
     transform=transform||new Transform;
 }
 \add(a:Actor3D) {
-    if (a.transform.parent!==transform) throw new Error("Sprite3D::Transform not match");
-    if (a.layer!==this && a.layer.p!==this && a.layer.subsprites!==this) throw new Error("Spreite3D::layer not match");
+    var curLayer=a.getSpriteGroup();
+    if (curLayer && curLayer!==this) {
+        curLayer.remove(a);
+    }
+    if (!a.transform.parent) {
+        a.transform.parent=transform;
+    } else {
+        a.transform=a.transform.parentChanged(transform);
+    }
     sprites.push(a);
     a.__addedToSprites=this;
 }

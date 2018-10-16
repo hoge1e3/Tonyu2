@@ -45,7 +45,7 @@ Q*s p
     scale=scale||1;
     direction=direction||new Direction;
     position=position||new Vec3(0,0,0);
-    _parent=_parent||Transform.root;
+    //_parent=_parent||Transform.root;
 }
 \child(param) {
     param.parent=this;

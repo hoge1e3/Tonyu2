@@ -2,7 +2,7 @@ extends ScreenLayer;
 includes MathMod;
 native console;
 "field strict";
-var spx,spy,group,camera,screen;
+var spx,spy,camera,screen;
 
 \new(p) {
     super(p);

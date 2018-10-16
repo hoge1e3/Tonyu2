@@ -1,1 +1,10 @@
 extends TObject;
+
+var group;
+\addSubsprite() {
+    return group.addSubsprite.apply(group,arguments);
+}
+
+\all() {
+    return group.all.apply(group,arguments);
+}

@@ -13,9 +13,6 @@ var sx,sy;
     sy=0;
     objId=0;
 }
-function addSubsprite(s) {
-    return add(s);
-}
 function add(s) {
     if ($Boot.newLimit) {
         $Boot.newLimitCount--;

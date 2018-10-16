@@ -6,3 +6,9 @@ var transform:Transform;
 \get(i) {
     return sprites[i];
 }
+\addSubsprite() {
+    return add.apply(this,arguments);
+}
+\add(){
+    throw new Error("SpriteGroup::add abstract");
+}

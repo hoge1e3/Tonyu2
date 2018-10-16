@@ -1,22 +1,23 @@
 extends BaseActor;
 includes SpriteMod3D,QueryMod3D;
 "field strict";
-var z,direction,_prescale;
+var z,direction;
 native Tonyu;
 \new(params) {
     Tonyu.extend(this,params);
     initSchedulerMod();
     layer=layer||defaultLayer;
     // TODO use forward, right ...   in param when layer is Actor3D
-    if (layer.group instanceof SpriteGroup) layer=layer.group;
+    //if (layer.group instanceof SpriteGroup) layer=layer.group;
     crashScale=1;
     initSpriteMod();
-    //---Inserted from BaseActor(It should be inited before addToLayer)
+    /*---Inserted from BaseActor(It should be inited before addToLayer)
+     -- moved to initSpriteMod->initTransform
     direction=new Direction;
     transform=layer.transform.child{
         direction,position,scale:(_prescale||1),actor:this,
     };
-    //---
+    */
     if (Tonyu.runMode) addToLayer();
     initAnimMod();
 }
@@ -36,13 +37,7 @@ nowait \dist(dx,dy,dz) {
     dz=dz||0;
     return sqrt(dx*dx+dy*dy+dz*dz);
 }
-\scale {
-    return transform.scale;
-}
-\scale=s {
-    if (!transform) return _prescale=s;
-    transform.scale=s;
-}
+
 \addSubsprite(s) {
     subsprites=subsprites||new Sprites3D{layer:this,transform};
     subsprites.add(s);

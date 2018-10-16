@@ -1,12 +1,26 @@
 extends null;
 includes SpriteMod;
 "field strict";
-var x,y,z,direction,transform;
+var x,y,z,direction,transform,_prescale;
 
 \detectSpriteType() {
     var t=super.detectSpriteType();
     if (t==="Image" && p && p.draw3D) return "Custom";
     return t;
+}
+\initTransform() {//called from initModule
+    direction=new Direction;
+    transform=new Transform{
+        direction,position,scale:(_prescale||1),actor:this,
+    };
+}
+\scale {
+    if (!transform) return _prescale;
+    return transform.scale;
+}
+\scale=s {
+    if (!transform) return _prescale=s;
+    transform.scale=s;
 }
 \draw3D(ctx3d) {
     var t=detectSpriteType();
