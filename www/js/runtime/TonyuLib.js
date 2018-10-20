@@ -337,10 +337,10 @@ return Tonyu=function () {
 		$LASTPOS=0;
 		//th.steps();
 	}
-	var lastLoopCheck=new Date().getTime();
+	var lastLoopCheck=performance.now();
 	var prevCheckLoopCalled;
 	function checkLoop() {
-		var now=new Date().getTime();
+		var now=performance.now();
 		if (now-lastLoopCheck>1000) {
 			resetLoopCheck(10000);
 			throw new Error("無限ループをストップしました"+(now-prevCheckLoopCalled));
@@ -348,7 +348,7 @@ return Tonyu=function () {
 		prevCheckLoopCalled=now;
 	}
 	function resetLoopCheck(disableTime) {
-		lastLoopCheck=new Date().getTime()+(disableTime||0);
+		lastLoopCheck=performance.now()+(disableTime||0);
 	}
 	function is(obj,klass) {
 		if (!obj) return false;

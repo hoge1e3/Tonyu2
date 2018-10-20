@@ -4,7 +4,6 @@ includes T2MediaPlayer;
 native $;
 native $LASTPOS;
 native Key;
-native Date;
 native ImageList;
 native Tonyu;
 native SplashScreen;
@@ -13,6 +12,7 @@ native requestAnimationFrame;
 native console;
 native Array;
 native UIDiag;
+native performance;
 
 Tonyu.resetLoopCheck(10000);
 $Boot=this;
@@ -290,6 +290,7 @@ mainLoop();
     procCnt = subTime / frameTime;
     // 誤差丸めの範囲
     bufferTime = (0.5*_fps/60);
+    if (_fps < 60) bufferTime = 0; // 30FPS時は丸めない方が滑らかそう
     // 60FPS時、procCntが0,2,0,2,…となり実質30FPSになることがあるため、誤差を丸める
     if (procCnt >= 1.0-bufferTime && procCnt <= 1.0+bufferTime) procCnt = 1.0;
     procCnt = floor(procCnt);
@@ -446,7 +447,7 @@ nowait \initFPSParams() {
     rafProcNowTime=now();
 }
 nowait \now() {
-    return new Date().getTime();
+    return performance.now();
 }
 nowait \resetDeadLine() {
     deadLine=now()+1000/_fps;
