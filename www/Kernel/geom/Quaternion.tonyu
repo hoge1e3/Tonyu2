@@ -2,9 +2,8 @@ extends TObject;
 includes MathMod;
 "field strict";
 
-// q=(v.x, v.y, v.z, w)
-var v:Vec3;// |v|==sin(r)
-var w:Number;
+// q=(x, y, z, w)
+var x:Number,y:Number,z:Number,w:Number;
 
 // optional
 var axis:Vec3, r:Number, theta:Number;
@@ -14,14 +13,20 @@ var axis:Vec3, r:Number, theta:Number;
     if (axis && typeof r==="number") {
         theta=r/2;
         //  q=(axis*sin(theta),cos(theta))
-        v=axis.normalize(sin(theta));// v.length=sin(theta)
+        var v=axis.normalize(sin(theta));
+        x=v.x;y=v.y;z=v.z;
         w=cos(theta);
+    } else {
+        x=x||0;
+        y=y||0;
+        z=z||0;
+        if (w==null) w=1;
     }
-    v=v||new Vec3(0,0,0);
-    if (w==null) w=1;
 }
 \set(q:Quaternion) {
-    v.set(q.v);
+    x=q.x;
+    y=q.y;
+    z=q.z;
     w=q.w;
     return this;
 }
@@ -29,65 +34,92 @@ var axis:Vec3, r:Number, theta:Number;
     return sqrt(lengthSQ);
 }
 \lengthSQ {
-    var l=v.length;
-    return l*l+w*w;
+    return x*x+y*y+z*z+w*w;
+}
+\clone() {
+    return new Quaternion{x,y,z,w};
+}
+\addX(q:Quaternion) {
+    x+=q.x;
+    y+=q.y;
+    z+=q.z;
+    w+=q.w;
+    return this;
 }
 \add(q:Quaternion) {
-    /*
-    From: https://qiita.com/kenjihiranabe/items/945232fbde58fab45681
-    q=(x,y,z,w)=xi+yj+zk+w=((x,y,z),w)=(v,w)
-    和:q1+q2=(v1+v2,w1+w2)
-    */
-    return new Quaternion{v:v.add(q.v),w:w+q.w};
+    return clone().addX(q);
+}
+\subX(q:Quaternion) {
+    x-=q.x;
+    y-=q.y;
+    z-=q.z;
+    w-=q.w;
+    return this;
 }
 \sub(q:Quaternion) {
-    return new Quaternion{v:v.sub(q.v),w:w-q.w};
+    return clone().subX(q);
+}
+
+\mulX(k:Number) {
+    x*=k;
+    y*=k;
+    z*=k;
+    w*=k;
+    return this;
 }
 
 \mul(k:Number) {
-    //スカラー倍:kq=(kv,kw)
-    return new Quaternion{v:v.mul(k), w:k*w};
+    return clone().mulX(k);
 }
-\product(q:Quaternion,dst:Quaternion/*opt*/) {
-    //積:q1q2=(v1*v2+w2v1+w1v2,w1w2−v1.v2)
-    // v1=v  v2=q.v   w1=w  w2=q.w
-    var nv=v.product(q.v).add(v.mul(q.w)).add(q.v.mul(w)), nw=w*q.w - v.innerProduct(q.v);
-    if (dst) {
-        dst.v.set(nv);
-        dst.w=nw;
-        delete dst.theta;
-        return dst;
-    }
-    return new Quaternion{v:nv,w:nw};
+\product(b:Quaternion,dst:Quaternion/*opt*/) {
+    // from three.js Quaterion
+    var a=this;
+
+    var qax = a.x, qay = a.y, qaz = a.z, qaw = a.w;
+    var qbx = b.x, qby = b.y, qbz = b.z, qbw = b.w;
+
+    if (!dst) dst=new Quaternion;
+    dst.x = qax * qbw + qaw * qbx + qay * qbz - qaz * qby;
+    dst.y = qay * qbw + qaw * qby + qaz * qbx - qax * qbz;
+    dst.z = qaz * qbw + qaw * qbz + qax * qby - qay * qbx;
+    dst.w = qaw * qbw - qax * qbx - qay * qby - qaz * qbz;
+    return dst;
 }
 \inverse {
-    return conjugate.mul(1/lengthSQ);
+    return conjugate.mulX(1/lengthSQ);
 }
 \conjugate {
     return new Quaternion{
-        v:v.mul(-1),w
+        x:-x,y:-y,z:-z,w
     };
 }
 \rotate(p:Vec3,dst:Vec3/*opt*/) {
-    p=new Quaternion{v:p,w:1};
-    var res=product(p).product(inverse).v;
-    if (dst) {
-        dst.set(res);
-        return dst;
+    // from three.js Vector3
+
+    var x = p.x, y = p.y, z = p.z;
+    var q=this;
+    var qx = q.x, qy = q.y, qz = q.z, qw = q.w;
+
+    // calculate quat * vector
+
+    var ix = qw * x + qy * z - qz * y;
+    var iy = qw * y + qz * x - qx * z;
+    var iz = qw * z + qx * y - qy * x;
+    var iw = - qx * x - qy * y - qz * z;
+
+    // calculate result * inverse quat
+    if (!dst) {
+        dst=new Vec3;
     }
-    return res;
+    dst.x = ix * qw + iw * - qx + iy * - qz - iz * - qy;
+    dst.y = iy * qw + iw * - qy + iz * - qx - ix * - qz;
+    dst.z = iz * qw + iw * - qz + ix * - qy - iy * - qx;
+
+    return dst;
 }
 \calcTheta() {
     // q=(axis*sin(theta),cos(theta))
-    var y=v.length;
-    var x=w;
-    theta=atanxy(x,y);
+    theta=atanxy(w,sqrt(x*x+y*y+z*z));
     r=theta*2;
     return theta;
 }
-\x {return v.x;}
-\y {return v.y;}
-\z {return v.z;}
-\x=r {return v.x=r;}
-\y=r {return v.y=r;}
-\z=r {return v.z=r;}
