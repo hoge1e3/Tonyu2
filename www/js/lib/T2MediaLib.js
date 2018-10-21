@@ -834,7 +834,7 @@ var T2MediaLib_BGMPlayer = (function(){
             if (!offset) {
                 offset = 0;
             } else {
-                var bgmLengthTime = this.picoAudio.getTime(this.picoAudio.getTiming(Number.MAX_SAFE_INTEGER));
+                var bgmLengthTime = this.picoAudio.getTime(Number.MAX_SAFE_INTEGER);
                 if      (offset > bgmLengthTime) offset = bgmLengthTime;
                 else if (offset < 0.0) offset = 0.0;
             }
@@ -1075,7 +1075,7 @@ var T2MediaLib_BGMPlayer = (function(){
             // Midi
             var time;
             if (this.bgmPause === 0) {
-                time = this.picoAudio.getTime(this.picoAudio.getTiming(this.picoAudio.context.currentTime - this.picoAudio.states.startTime));
+                time = this.picoAudio.context.currentTime - this.picoAudio.states.startTime;
             } else {
                 time = this.bgmPauseTime;
             }
@@ -1127,7 +1127,7 @@ var T2MediaLib_BGMPlayer = (function(){
         var bgm = this.playingBGM;
         if (bgm instanceof PicoAudio) {
             // Midi
-            return this.picoAudio.getTime(this.picoAudio.getTiming(Number.MAX_SAFE_INTEGER));
+            return this.picoAudio.getTime(Number.MAX_SAFE_INTEGER);
         } else if (bgm instanceof AudioBufferSourceNode) {
             // MP3, Ogg, AAC, WAV
             return bgm.buffer.duration;
