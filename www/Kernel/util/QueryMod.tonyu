@@ -19,7 +19,7 @@ nowait \all(c) {//23D
     if (arguments.length>0 && typeof c!="function") {
         return res;
     }
-    (this.__addedToSprites||layer).sprites.forEach \(s) {
+    getSpriteGroup().sprites.forEach \(s) {
         if (s===this) return;
         if (!c || s instanceof c) {
             res.push(s);
@@ -32,7 +32,7 @@ nowait \allCrash(t) {//23D
     var sp=this;
     var t1=getCrashShape();
     if (!t1) return res;
-    layer.sprites.forEach(\(s) {
+    getSpriteGroup().sprites.forEach(\(s) {
         var t2;
         if (s!==this &&
         !s.excludeFromAll &&
@@ -76,7 +76,7 @@ nowait \allWithin(t,distance) {//23D (use dist with 3d)
     var res=new TQuery(this);
     var sp=this;
     if (typeof t !=="function") throw new Error("allWithinの第一引数はクラスにしてください");
-    layer.sprites.forEach(\(s) {
+    getSpriteGroup().forEach(\(s) {
         if (s!==this &&
         !s.excludeFromAll &&
         s instanceof t &&
@@ -113,7 +113,7 @@ nowait \within1(t,distance){//23D (use dist with 3d)
     }
 }
 nowait \watchHit(typeA,typeB,onHit) {//23D
-    layer.watchHit(typeA , typeB, \(a,b) {
+    getSpriteGroup().watchHit(typeA , typeB, \(a,b) {
         onHit.apply(this,[a,b]);
     });
 }
