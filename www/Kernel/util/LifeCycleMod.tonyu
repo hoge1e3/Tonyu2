@@ -105,9 +105,13 @@ nowait \isDead() {
     onAppear();
 }
 \changeLayer(l) {
-    if (typeof l.add!=="function") return;
-    if (layer) layer.remove(this);
-    l.add(this);
+    if (!l || typeof l.addSubsprite!=="function") return;
+    var curLayer=getSpriteGroup();
+    if (curLayer) {
+        curLayer.remove(this);
+    }
+    //if (layer) layer.remove(this);
+    l.addSubsprite(this);
     layer=l;
 }
 \onAppear() {

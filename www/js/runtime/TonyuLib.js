@@ -120,6 +120,9 @@ return Tonyu=function () {
 				parent=m.extendFrom(parent,extend(ctx,{init:false}));
 			});
 			var methods=typeof methodsF==="function"? methodsF(parent):methodsF;
+			if (typeof Profiler!=="undefined") {
+				Profiler.profile(methods, fullName);
+			}
 			var init=methods.initialize;
 			delete methods.initialize;
 			var res;
@@ -181,6 +184,7 @@ return Tonyu=function () {
 					throw new Error("WHY!"+k);
 				}
 				prot[k].methodInfo=prot[k].methodInfo||{name:k,klass:res};
+				// if profile...
 				var r=propReg.exec(k);
 				if (r) {
 					// __(r[1]g/setter)__r[2]

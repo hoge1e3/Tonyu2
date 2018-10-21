@@ -12,6 +12,9 @@ var quaternion:Quaternion;
         };
     }
 }
+\clone() {
+    return new Direction().set(this);
+}
 \set(d:Direction) {
     quaternion.set(d.quaternion);
     return this;

@@ -85,3 +85,9 @@ var axis:Vec3, r:Number, theta:Number;
     r=theta*2;
     return theta;
 }
+\x {return v.x;}
+\y {return v.y;}
+\z {return v.z;}
+\x=r {return v.x=r;}
+\y=r {return v.y=r;}
+\z=r {return v.z=r;}

@@ -8,13 +8,17 @@ native console;
 }
 \add(a:Actor3D) {
     var curLayer=a.getSpriteGroup();
-    if (curLayer && curLayer!==this) {
+    if (curLayer) {
         curLayer.remove(a);
     }
     if (!a.transform.parent) {
         a.transform.parent=transform;
     } else {
-        a.transform=a.transform.parentChanged(transform);
+        a.transform.changeParent(transform);
+        /*a.transform=a.transform.parentChanged(transform);
+        a.position.set(a.transform.position);
+        a.transform.position=a.position;
+        a.direction=a.transform.direction;     */
     }
     sprites.push(a);
     a.__addedToSprites=this;

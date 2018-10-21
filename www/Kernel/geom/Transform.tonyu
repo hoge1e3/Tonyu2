@@ -54,11 +54,16 @@ Q*s p
 \isRoot {
     return this===Transform.root;
 }
+\clone() {
+    return new Transform().set(this);
+}
+
 \set(t:Transform) {
     position.set(t.position);
     direction.set(t.direction);
     scale=t.scale;
     _parent=t.parent;
+    return this;
 }
 \product(t:Transform, dst:Transform/*opt*/) {
     // this x t
@@ -85,6 +90,10 @@ Q*s p
 \parentChanged(to:Transform,dst:Transform) {
     var p=new ParentChanger(to);
     return p.change(this,dst);
+}
+\changeParent(to:Transform) {
+    var c=parentChanged(to);
+    return set(c);//parentChanged(to,this);
 }
 \localToWorld(local,dst) {
     return childToSibling(local,dst);

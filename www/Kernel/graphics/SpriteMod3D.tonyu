@@ -9,10 +9,24 @@ var x,y,z,direction,transform,_prescale;
     return t;
 }
 \initTransform() {//called from initModule
-    direction=new Direction;
+    // position is already initialized
+
+    if (direction) direction=direction.clone();
+    else direction=new Direction;
+
+    var givenTransform=transform;
     transform=new Transform{
         direction,position,scale:(_prescale||1),actor:this,
     };
+    if (givenTransform) transform.set(givenTransform);
+    /*
+    if (transform.position!==position) {// this will be fail unless use givenTransform
+        throw new Error("transform.position not match");
+    }
+    if (transform.direction!==direction) {
+        throw new Error("transform.direction not match");
+    }*/
+    // after that, addToLayer called
 }
 \scale {
     if (!transform) return _prescale;
