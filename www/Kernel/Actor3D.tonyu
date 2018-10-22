@@ -60,7 +60,7 @@ nowait \dist(dx,dy,dz) {
     var res=position.clone();
     for (var name,k in fru) {
         var vec=direction[name];
-        if (vec && vec.mul) res.addX(vec.mul(k));
+        if (vec && vec.mul) res.addX_v(vec.mul(k));
     }
     return res;
 }

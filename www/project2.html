@@ -42,7 +42,9 @@ requirejs.config(reqConf);
 var isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
 if (isNW || localStorage.noconcat) {
 	requirejs(
-		["ide/editor","buildAll"],
+		(localStorage.doProfile?["Profiler"]:[]).concat(
+			["ide/editor","buildAll"]
+		),
 	function (){});
 } else {
 	requirejs(

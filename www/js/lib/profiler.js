@@ -54,3 +54,4 @@ Function.prototype.profileClass=function (prefix) {
 	if (!prefix) prefix=this.name;
 	Profiler.profile(this.prototype, prefix);
 };
+console.log("Profiler enabled");

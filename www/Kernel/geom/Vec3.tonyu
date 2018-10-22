@@ -34,8 +34,20 @@ function addX() {
     z+=p.z;
     return this;
 }
+function addX_v(p:Vector) {
+    x+=p.x;
+    y+=p.y;
+    z+=p.z;
+    return this;
+}
 function subX() {
     var p=parsePointArgs(arguments);
+    x-=p.x;
+    y-=p.y;
+    z-=p.z;
+    return this;
+}
+function subX_v(p) {
     x-=p.x;
     y-=p.y;
     z-=p.z;
@@ -99,7 +111,7 @@ function set() {
     return normalizeX().mulX(l);
 }
 \slerp(to,t) {
-    return mul(1-t).addX(to.mul(t));
+    return mul(1-t).addX_v(to.mul(t));
 }
 \normalizeX(len) {
     var l=length;
