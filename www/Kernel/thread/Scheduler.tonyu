@@ -1,7 +1,7 @@
 extends TObject;
 native Tonyu;
 native console;
-native Date;
+native performance;
 cur=[];
 next=[];
 \addObj(obj,name,args) {
@@ -44,13 +44,13 @@ next=[];
     }
 }
 \checkTimeout() {
-    var now=new Date().getTime();
+    var now=performance.now();
     if (now-lastSteps>1000) {
         throw new Error("待機不能モードでupdateが呼ばれています．ブラウザが固まるのを防ぐために停止します．");
     }
 }
 \stepsAll() {
-    lastSteps=new Date().getTime();
+    lastSteps=performance.now();
     for (var t in cur) {
     	delete t.scheduled;
     	if (t.waitCount) {
