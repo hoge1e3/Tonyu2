@@ -183,7 +183,8 @@ function initClassDecls(klass, env ) {//S
 		});
 	}
 	initMethods(node);        // node=program
-	delete klass.hasSemanticError;
+	//delete klass.hasSemanticError;
+	// Why delete deleted? because decls.methods.params is still undef
 }// of initClassDecls
 function annotateSource2(klass, env) {//B
 	// annotateSource2 is call after orderByInheritance

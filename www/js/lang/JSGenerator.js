@@ -867,6 +867,9 @@ function genJS(klass, env) {//B
 			for (var name in methods) {
 				if (debug) console.log("method1", name);
 				var method=methods[name];
+				if (!method.params) {
+					console.log("MYSTERY2", method.params, methods, klass, env);
+				}
 				ctx.enter({noWait:true, threadAvail:false}, function () {
 					genFunc(method);
 				});
@@ -998,6 +1001,9 @@ function genJS(klass, env) {//B
 	}
 	function genFunc(func) {//G
 		var fname= isConstructor(func) ? "initialize" : func.name;
+		if (!func.params) {//TODO
+			console.log("MYSTERY",func.params);
+		}
 		printf("%s :function %s(%j) {%{"+
 					USE_STRICT+
 					"var %s=%s;%n"+

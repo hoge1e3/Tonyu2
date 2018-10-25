@@ -24,7 +24,13 @@ nowait \performTransform(ctx) {//2D
 nowait \draw(ctx) {//2D
     if (x==null || y==null || _isInvisible) return;
     var t=detectSpriteType();
-    return this["drawAs"+t](ctx);
+    this["drawAs"+t](ctx);
+    if (subsprites && subsprites.draw) {
+        ctx.save();
+        performTransform(ctx);
+        subsprites.draw(ctx);
+        ctx.restore();
+    }
 }
 nowait \drawAsText(ctx) {
     var splitsText=(text+"").split("\n");

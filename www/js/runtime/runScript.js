@@ -35,7 +35,7 @@ requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS",
 		var w=$(window).width();
 		var h=$(window).height();
 		$("body").css({overflow:"hidden", margin:"0px"});
-		var cv=$("<canvas>").attr({width: w-margin, height: h-margin}).appendTo("body");
+		var cv=$("<canvas>").attr({width: w-margin, height: h-margin,class:"tonyu-canvas"}).appendTo("body");
 		$(window).resize(onResize);
 		function onResize() {
 			var margin = getMargin();

@@ -1,3 +1,9 @@
 extends BaseActor;
 includes SpriteMod2D,QueryMod2D,OneframeSpriteMod;
 "field strict";
+
+\addSubsprite(s) {
+    subsprites=subsprites||new Sprites{layer:this};//TODO ,transform};
+    subsprites.add(s);
+    if (!s.lifeKeeper) s.lifeKeeper=this;
+}

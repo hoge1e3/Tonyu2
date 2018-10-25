@@ -21,7 +21,9 @@ eventWindowOpen = \(e) {
 \openNewWindow(url) {
     postUrl = url;
     //window.console.log("opennw",postUrl,listenerExists);
-    canvas=document.getElementsByTagName("canvas")[0];
+    canvas=
+    document.querySelector("canvas.tonyu-canvas") ||
+    document.getElementsByTagName("canvas")[0];
     if (!listenerExists) {
         if (canvas.addEventListener) {
             canvas.addEventListener("click", eventWindowOpen, false);

@@ -11,6 +11,7 @@ return RunDialog=Klass.define({
             },
             ["canvas",{
                 $var:"cv",id:"cv",width:465,height:465,
+                class:"tonyu-canvas",
                 style:" margin-left : auto ; margin-right : auto ;"
             }]
         );

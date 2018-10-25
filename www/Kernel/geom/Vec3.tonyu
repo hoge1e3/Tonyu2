@@ -101,14 +101,19 @@ function set() {
     t.z+=z;
 }
 \dist(vec) {
-    if (vec) return sub(vec).dist();
+    if (vec) {
+        var dx=vec.x-x;
+        var dy=vec.y-y;
+        var dz=vec.z-z;
+        return sqrt(dx*dx+dy*dy+dz*dz);
+    }
     return sqrt(x*x+y*y+z*z);
 }
 \length {
     return sqrt(x*x+y*y+z*z);
 }
 \length=l {
-    return normalizeX().mulX(l);
+    return normalizeX(l);
 }
 \slerp(to,t) {
     return mul(1-t).addX_v(to.mul(t));

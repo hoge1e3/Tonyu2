@@ -23,7 +23,7 @@ requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu
 		var w=$(window).width();
 		var h=$(window).height();
 		$("body").css({overflow:"hidden", margin:"0px"});
-		var cv=$("<canvas>").attr({width: w-margin, height:h-margin}).appendTo("body");
+		var cv=$("<canvas>").attr({width: w-margin, height:h-margin, class:"tonyu-canvas"}).appendTo("body");
 		Tonyu.globals.$mainCanvas=cv;
 		$(window).resize(onResize);
 		function onResize() {
