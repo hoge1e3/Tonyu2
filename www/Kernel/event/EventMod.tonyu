@@ -1,6 +1,8 @@
 extends null;
 native console;
 native Tonyu;
+"field strict";
+var _eventHandlers;
 nowait \initEventMod() {
    if (_eventHandlers) return;
    //console.log("initEventMod" , getClassInfo().fullName);
@@ -12,7 +14,7 @@ nowait \releaseEventMod() {
        v.release();
    }
 }
-nowait \parseArgs(a) {
+nowait \parseEventArgs(a) {
    var res={type:a[0], args:[]};
    for (var i=1 ; i<a.length ; i++) {
        res.args.push(a[i]);
@@ -51,7 +53,7 @@ nowait \getOrRegisterEventHandler(type) {
 }
 
 nowait \on() {
-    var a=parseArgs(arguments);
+    var a=parseEventArgs(arguments);
     var h=getOrRegisterEventHandler(a.type);
     //print("on", a.type, getClassInfo().fullName, h.id);
     return h.addListener.apply(h,a.args);

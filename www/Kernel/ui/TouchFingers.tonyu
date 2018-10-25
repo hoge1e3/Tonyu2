@@ -22,7 +22,7 @@ native console;
             }
         }
     };
-    for (var i=0;i<5;i++) fingerArray.push(new TouchFinger(inputDevice.defaultLayer, $Screen) );
+    for (var i=0;i<5;i++) fingerArray.push(new TouchFinger(inputDevice.defaultLayer, $Screen,i) );
 }
 \handleStart(e) {
     Tonyu.resetLoopCheck();
@@ -48,7 +48,9 @@ native console;
     }
     $mouseX=fingerArray[0].x;
     $mouseY=fingerArray[0].y;
-    inputDevice.handleListeners();
+    inputDevice.handleListeners("touchstart") {
+        finger:dst, index: dst.bound && dst.bound.index
+    };
 }
 \handleMove(e) {
     Tonyu.resetLoopCheck();
@@ -65,11 +67,13 @@ native console;
             //mp=$Screen.convert(mp,dst.layer||inputDevice.defaultLayer);
             dst.doMove(mp);
             //console.log(dst.show(),dst.bound.show());
+            inputDevice.handleListeners("touchmove") {
+                finger:dst, index: dst.bound && dst.bound.index
+            };
         }
     }
     $mouseX=fingerArray[0].x;
     $mouseY=fingerArray[0].y;
-    inputDevice.handleListeners();
 }
 \handleEnd(e) {
     Tonyu.resetLoopCheck();
@@ -81,9 +85,11 @@ native console;
         if (dst) {
             delete fingerSet[src.identifier];
             dst.doEnd();
+            inputDevice.handleListeners("touchend") {
+                finger:dst, index: dst.bound && dst.bound.index
+            };
         }
     }
-    inputDevice.handleListeners();
 }
 \unsetEmu(ID_MOUSE) {
     for (var t of fingerArray) {

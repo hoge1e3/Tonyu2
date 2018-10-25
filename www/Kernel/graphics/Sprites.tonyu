@@ -46,7 +46,7 @@ function remove(s) {
     for (var i=sprites.length-1 ; i>=0 ; i--) {
         s=sprites[i];
         if (s is OneframeSprite && (!drawn || s.drawn) ) {
-            //Q: What kind of s make   the expression  ^false?
+            //Q: What kind of s make   the expression  ^false?   (drawn && !s.drawn)
             //A: What appeared while onDraw
             $ObjectPool.poolList( s.getClassInfo().fullName ).push(s);
             sprites.splice(i,1);

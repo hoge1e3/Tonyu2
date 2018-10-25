@@ -51,7 +51,7 @@ next=[];
 }
 \stepsAll() {
     lastSteps=performance.now();
-    for (var t in cur) {
+    for (var t of cur) {
     	delete t.scheduled;
     	if (t.waitCount) {
     	    t.waitCount--;
@@ -68,6 +68,7 @@ next=[];
     }
     cur=next;
     next=[];
+    return cur.length;
 }
 \allThreads {
     return cur.concat(next);
@@ -76,4 +77,7 @@ next=[];
     return allThreads.filter \(t) {
         return t._threadGroup===o;
     };
+}
+\isEmpty {
+    return allThreads.length==0;
 }

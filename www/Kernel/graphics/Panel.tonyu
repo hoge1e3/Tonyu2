@@ -86,6 +86,7 @@ native Math;
 native isNaN;
 native Tonyu;
 native Image;
+native requestAnimationFrame;
 \new(opt){
     super(opt);
     //this.width=width;
@@ -111,7 +112,8 @@ native Image;
             width=canvas.width;height=canvas.height;
             fireEvent("resize",{width,height});
         }
-        update();
+        runPromise(requestAnimationFrame);
+        //update();
     }
 }
 //\setPanel({width,height})

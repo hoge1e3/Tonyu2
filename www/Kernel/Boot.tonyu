@@ -309,7 +309,7 @@ mainLoop();
     //debug("endWhile");
     if (moves > 0) {
         drawFrame();
-        afterDraw{drawn:false};
+        afterDraw{drawn:true};// was false ... why?
     }
     //debug("beforeWaitRAF");
 	waitRAF();
@@ -377,10 +377,17 @@ nowait \detectRAFResolution(t) {
     waitFrame(); // FPS制御
 }
 \handlePause() {
+    if (pauseOnSchedulerEmpty && _scheduler.isEmpty) {
+        while(_scheduler.isEmpty) {
+            waitFor(Tonyu.timeout(1));
+        }
+        resetDeadLine();
+    }
     while(paused) {
         waitFor(Tonyu.timeout(1));
         if (!paused) resetDeadLine();
     }
+    // why not resetDeadLine?  if not paused do nonthing...
 }
 nowait \drawFrame() {
     var s=now();

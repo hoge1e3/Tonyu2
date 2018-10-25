@@ -35,6 +35,10 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu"],
                     });
                 }).then(function (r) {
                     console.log(r);
+                    if (!r.match(/^[\w\d\.]+\.zip$/)) {
+                        //alert("アップロード失敗: "+r);
+                        throw new Error("アップロード失敗: "+r);
+                    }
                     //alert(r);
                     return {tmpFileName:r};
                 }).finally(function (r) {

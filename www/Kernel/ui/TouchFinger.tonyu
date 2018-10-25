@@ -1,12 +1,18 @@
 extends TObject;
 includes MathMod;
+"field strict";
 native console;
-\new(layer, screen) {
+var identifier,index,oid,bound;
+var px,py,x,y,vx,vy,touched,ended;
+var screen,_layer;
+
+\new(layer, screen,index) {
     reset();
     _layer=layer;
     TouchFinger.seq=TouchFinger.seq||0;
     oid=TouchFinger.seq++;
     this.screen=screen||$Screen;
+    this.index=index;
 }
 \reset() {
     identifier=-1;
