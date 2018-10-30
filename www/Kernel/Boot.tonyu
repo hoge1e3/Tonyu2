@@ -158,16 +158,6 @@ mainLoop();
     a.unshift("DEBUG");
     console.log.apply(console,a);
 }
-/*----OLD
-\initLayers() {
-    $mainLayer=$Sprites=new Sprites();
-    $frontLayer=$FrontSprites=new Sprites();
-    $backLayer=new Sprites();
-    $UILayer=new Sprites();
-    cvj=$("canvas");
-    $Screen=new ScaledCanvas{canvas:cvj, width:465, height:465};
-    drawFrame();
-}*/
 \loadPlugins() {
     progress("Loading plugins..");
     runAsync \(r) {
@@ -329,37 +319,6 @@ mainLoop();
     //if (pRafStart) detectRAFResolution(rafStart-pRafStart);
     //pRafStart=rafStart;
 }
-/*
-nowait \detectRAFResolution(t) {
-	if (rafResolution) return;
-// RAFの分解能（1フレーム時間をRAFの回数に換算したもの）を求める。tはRAFとRAFの間隔ms
-	var time=1000/_fps;
-	var reso=time/t;  // t=15 time=30  reso=2
-	// reso は、nを整数として n あるいは 1/n  と表現できると期待
-	if (reso>1) reso=floor(reso+0.5); // 1.8 -> 2
-	else reso=1/floor(1/reso+0.5);  // 0.6 -> 1/2
-	// resoの値を投票して最初に10票集めたものをresoとする
-	rafRess=rafRess||{};
-	if (  (rafRess[reso+""]=(rafRess[reso+""]||0)+1 ) > 10 ) {
-		rafResolution=reso;
-		if (reso<1) {
-			frameSkip=floor(1/reso+0.5);
-			rafCount=1;
-		} else {
-			rafCount=reso;
-			frameSkip=1;
-		}
-	}
-}*/
-/*
-\measureRAFInterval() {
-	if ($RAFInterval) return;
-	var s=now();
-	for (var i=0;i<20;i++) {
-	    waitFor(Tonyu.animationFrame());
-	}
-	$RAFInterval=(now()-s)/20;
-}*/
 \loopTimer() {
     moveFrame();
     doDraw=now()<deadLine;
@@ -399,19 +358,6 @@ nowait \drawFrame() {
     drawTime=now()-s;
     fps_fpsCnt ++;
 }
-/*----OLD
-nowait \drawFrame() {
-	var s=now();
-	var ctx=$Screen.buf[0].getContext("2d");
-    $Screen.fillCanvas($Screen.buf[0]);
-    $backLayer.draw(ctx);
-    $Sprites.draw(ctx);
-    $FrontSprites.draw(ctx);
-    $Screen.draw();
-    drawTime=now()-s;
-    fps_fpsCnt ++;
-}
-*/
 nowait \moveFrame() {
 	var s=now();
     $_printCount=0;
@@ -482,12 +428,6 @@ nowait \getFrameRate() {
 
 // Tonyu1の$System.setFrameRate() //
 nowait \setFrameRate(fps, maxFrameSkip) {
-//    if (_fps!=fps) {
-//		rafRess={};
-//		rafResolution=null;
-//		frameSkip=1;
-//		rafCnt=floor(60/fps+0.5);
-//    }
     _fps = fps;
     if (typeof maxFrameSkip!="number") maxFrameSkip=5;
     if (maxFrameSkip<=0) maxFrameSkip=1;
