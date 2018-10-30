@@ -2,82 +2,10 @@
 extends BaseActor;//important change!
 includes PanelMod;
 "field strict";
-\new(opt){
-    super(opt);
-    initPanelMod();
-    if (opt.canvas) {
-        parallel("watchResize");
-    }
-}
-\watchResize() {
-    while(true) {
-        if (width!=canvas.width || height!=canvas.height) {
-            width=canvas.width;height=canvas.height;
-            fireEvent("resize",{width,height});
-        }
-        update();
-    }
-}
+\new(opt)
+\watchResize()
 // DO NOT move to PanelMod! (layer is field)
-\convert(obj, toLayer) {
-    // Only supports this <-> this.layer
-    // Why?  other layers (i.e. $mainLayer) are depends on screen(When Multi screen)
-    // ({x,y})   -> from==this to==layer
-    // ({x,y},layer) -> from==this to==layer
-    // ({x,y,this})  -> from==this to==layer
-    // ({x,y},this)  -> from==layer to==this
-    // ({x,y,layer}) -> from==layer to==this
-    var fromLayer=obj.layer;
-    if (fromLayer==null && toLayer==null) {
-        fromLayer=this;toLayer=layer;
-    } else if (fromLayer==null && toLayer===layer) {
-        fromLayer=this;
-    } else if (fromLayer===this && toLayer==null) {
-        toLayer=layer;
-    } else if (fromLayer==null && toLayer===this) {
-        fromLayer=layer;
-    } else if (fromLayer===layer && toLayer==null) {
-        toLayer=this;
-    }
-    if (fromLayer===toLayer) return obj;
-    var scaleY=this.scaleY||scaleX;
-    if (fromLayer==null || toLayer==null) throw new Error("layer not set");
-    if (fromLayer===this && toLayer===layer) {
-        // panelXY to world
-        var dx=obj.x-width/2;
-        var dy=obj.y-height/2;
-        var rt=rotation;
-        // (x,y)= l.sp + R(rt)*(obj-l.wp)/l.scale;
-        // (x)= l.spx + (cos(rt) cos(rt+90))*(dx)/l.scale;
-        // (y)= l.spy + (sin(rt) sin(rt+90))*(dy)/l.scale;
-        var x=this.x+(cos(rt)*dx+cos(rt+90)*dy)*scaleX;
-        var y=this.y+(sin(rt)*dx+sin(rt+90)*dy)*scaleY;
-        return {x,y,
-            rotation:obj.rotation,
-            scale:obj.scale,
-            layer:toLayer
-        };
-    } else if (fromLayer===layer && toLayer===this) {
-        // world to panelXY
-        var rt=-rotation;
-        var dx=obj.x-(this.x);
-        var dy=obj.y-(this.y);
-        //   print(width,height,rt,scaleX,scaleY);
-        // (x,y)= l.sp + R(rt)*(obj-l.wp)/l.scale;
-        // (x)= l.spx + (cos(rt) cos(rt+90))*(dx)/l.scale;
-        // (y)= l.spy + (sin(rt) sin(rt+90))*(dy)/l.scale;
-        var x=width/2 + (cos(rt)*dx+cos(rt+90)*dy)/scaleX;
-        var y=height/2 + (sin(rt)*dx+sin(rt+90)*dy)/scaleY;
-        return {x,y,
-            rotation:rt,
-            scale:1/scaleX,
-            layer:toLayer
-        };
-    } else {
-        print("no support",obj.layer, toLayer);
-        throw new Error("not support");
-    }
-}
+\convert(obj, toLayer)
 */
 
 extends Actor;
@@ -100,8 +28,8 @@ native requestAnimationFrame;
         //buf=$("<canvas>").attr{width,height};
     }
     if (_fillStyle && canvas) canvas.getContext("2d").fillStyle=_fillStyle+"";
-    x=x||width/2;
-    y=y||height/2;
+    x=typeof x==="number"? x : width/2;
+    y=typeof y==="number"? y : height/2;
     if(align==null) align="center";
     if(alpha==null) alpha=255;
     if(_drawn==null) _drawn=false;
@@ -118,6 +46,9 @@ native requestAnimationFrame;
 }
 //\setPanel({width,height})
 \setPanel(width,height){
+    if (!(width*height>0)) {
+        throw new Error("Invalid Panel size: "+width+"x"+height);
+    }
     this.width=trunc(width);
     this.height=trunc(height);
     buf=$("<canvas>").attr{width,height};

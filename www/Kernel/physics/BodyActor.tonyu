@@ -1,6 +1,7 @@
 extends Actor;
 includes T2Mod;
 native Box2D;
+native console;
 
 \new(p) {
     super(p);
@@ -42,11 +43,22 @@ native Box2D;
     shape=shape || (radius ? "circle" : "box");
     var w=width,h=height;
     if (!w) {
-        prepareImage();
+        var t=detectSpriteType();
+        if (t==="Image") prepareImage();
+        else if (t==="Custom") {
+            if (p.width*p.height>0) {// TODO same as SpriteMod2D::drawAsCustom
+                width=p.width;
+                height=p.height;
+            }
+        }
         w=width*(scaleX||1);
         h=height*(scaleY||scaleX||1);
     }
     if (shape=="box") {
+        if (!w) {
+            console.log(this);
+            throw new Error("BodyActor::width is not set");
+        }
         if (!h) h=w;
         fixDef.shape = new b2PolygonShape;
         fixDef.shape.SetAsOrientedBox(w/2/scale, h/2/scale,

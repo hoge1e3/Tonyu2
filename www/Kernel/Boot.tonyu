@@ -376,17 +376,21 @@ nowait \detectRAFResolution(t) {
     afterDraw{drawn:doDraw};
     waitFrame(); // FPS制御
 }
+// isIdle := paused || schedulerEmpty
 \handlePause() {
     if (pauseOnSchedulerEmpty && _scheduler.isEmpty) {
+        isIdle=true;
         while(_scheduler.isEmpty) {
-            waitFor(Tonyu.timeout(1));
+            runPromise(requestAnimationFrame);
         }
         resetDeadLine();
     }
     while(paused) {
-        waitFor(Tonyu.timeout(1));
+        isIdle=true;
+        runPromise(requestAnimationFrame);
         if (!paused) resetDeadLine();
     }
+    isIdle=false;
     // why not resetDeadLine?  if not paused do nonthing...
 }
 nowait \drawFrame() {
@@ -414,7 +418,7 @@ nowait \moveFrame() {
     Tonyu.resetLoopCheck();
     if (newLimit) newLimitCount=newLimit;
     //debug("MoveFrame",1);
-    _scheduler.stepsAll();
+    var sc=_scheduler.stepsAll();
     //debug("MoveFrame",2);
     $Keys.update();
     //debug("MoveFrame",3);
@@ -522,4 +526,13 @@ nowait \measureFps() {
         fps_rpsCnt=0;
         lastMeasured=nowTime;
     }
+}
+\requestDrawFrame() {
+    if (!isIdle) return;
+    if (_drawFrameRequested) return;
+    _drawFrameRequested=true;
+    requestAnimationFrame \{
+        drawFrame();
+        _drawFrameRequested=false;
+    };
 }
