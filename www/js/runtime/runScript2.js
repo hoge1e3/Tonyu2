@@ -9,13 +9,6 @@ requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu
 		};
 
 		function getMargin() {
-			var u = navigator.userAgent.toLowerCase();
-			if ((u.indexOf("iphone") != -1
-				|| u.indexOf("ipad") != -1
-				|| u.indexOf("ipod") != -1
-				) && window != window.parent) {
-				return 40;
-			}
 			return 0;
 		}
 
@@ -25,12 +18,19 @@ requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu
 		$("body").css({overflow:"hidden", margin:"0px"});
 		var cv=$("<canvas>").attr({width: w-margin, height:h-margin, class:"tonyu-canvas"}).appendTo("body");
 		Tonyu.globals.$mainCanvas=cv;
-		$(window).resize(onResize);
-		function onResize() {
-			var margin = getMargin();
-			w=$(window).width();
-			h=$(window).height();
-			cv.attr({width: w-margin, height: h-margin});
+		
+		var u = navigator.userAgent.toLowerCase();
+		if ((u.indexOf("iphone") == -1
+			&& u.indexOf("ipad") == -1
+			&& u.indexOf("ipod") == -1
+			) && window != window.parent) {
+			$(window).resize(onResize);
+			function onResize() {
+				var margin = getMargin();
+				w=$(window).width();
+				h=$(window).height();
+				cv.attr({width: w-margin, height: h-margin});
+			}
 		}
 
 		var curProjectDir;
