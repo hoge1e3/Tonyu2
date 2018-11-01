@@ -189,7 +189,8 @@ mainLoop();
     loadFromProject($currentProject);
     progress("Loading sounds done.");
     on("stop")\{
-        allClearSoundData();
+        allResetBGM();
+        //allClearSoundData();
     };
     $sound=this;
 }
