@@ -70,12 +70,8 @@ nowait \sendEvent(type, arg) {
 \waitEvent() {
     if (_thread) {
         var args=new ArgParser(arguments);
-        var act=args.shift(BaseActor) || this;
+        var act=args.shift(EventMod) || this;
         args.trimUndefs();
-        /*for (var i=0;i<arguments.length;i++) {
-            if (arguments[i]===undefined) break;
-            args.push(arguments[i]);
-        }*/
         _thread.waitEvent(act, args.toArray());
     }
 }

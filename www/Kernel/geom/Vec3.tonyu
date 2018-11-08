@@ -115,7 +115,11 @@ function set() {
 \length=l {
     return normalizeX(l);
 }
+\lerp(to,t) {
+    return mul(1-t).addX_v(to.mul(t));
+}
 \slerp(to,t) {
+    // TODO: this is lerp.
     return mul(1-t).addX_v(to.mul(t));
 }
 \normalizeX(len) {

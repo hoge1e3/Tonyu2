@@ -338,7 +338,7 @@ mainLoop();
 }
 // isIdle := paused || schedulerEmpty
 \handlePause() {
-    if (pauseOnSchedulerEmpty && _scheduler.isEmpty) {
+    if (economyMode && _scheduler.isEmpty) {
         isIdle=true;
         while(_scheduler.isEmpty) {
             runPromise(requestAnimationFrame);
@@ -476,4 +476,8 @@ nowait \measureFps() {
         drawFrame();
         _drawFrameRequested=false;
     };
+}
+\setEconomyMode(options) {
+    // options:: {manualDraw}
+    economyMode=options;
 }

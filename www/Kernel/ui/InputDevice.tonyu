@@ -18,6 +18,9 @@ native T2MediaLib;
         evt.type=type;
         fireEvent(type,evt);
     }
+    if ($Boot.economyMode && !$Boot.economyMode.manualDraw) {
+        $Boot.requestDrawFrame();
+    }
 }
 \addOnetimeListener(l){
     listeners.push(l);

@@ -177,6 +177,14 @@ native $;
 \clearName() {
 	delete value.name;
 }
+\lerpRGBA(c,t) {
+	t=t||0;
+	return new Color(
+	r*(1-t)+c.r*t,
+	g*(1-t)+c.g*t,
+	b*(1-t)+c.b*t,
+	a*(1-t)+c.a*t );
+}
 \distRGBA(other) {
 	if (other is Color) {}
 	else { other = new Color(other+""); }
