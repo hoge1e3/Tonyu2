@@ -91,7 +91,7 @@ define([],function () {
 //----------
 define('extend',[],function (){
    return function extend(d,s) {
-      for (var i in s) {d[i]=s[i];} 
+      for (var i in s) {d[i]=s[i];}
    };
 });
 
@@ -493,6 +493,7 @@ define('MIMETypes',[], function () {
       ".ogg":"audio/ogg",
       ".midi":"audio/midi",
       ".mid":"audio/midi",
+      ".mzo":"audio/mzo",
       ".txt":"text/plain",
       ".html":"text/html",
       ".htm":"text/html",
@@ -1182,7 +1183,7 @@ function privatize(o){
     return res;
 }
 function extend(d,s) {
-    for (var i in (s||{})) {d[i]=s[i];} 
+    for (var i in (s||{})) {d[i]=s[i];}
     return d;
 }
 return {
@@ -2845,7 +2846,7 @@ define('RootFS',["assert","FSClass","PathUtil","SFile"], function (assert,FS,P,S
             get: function (path) {
                 assert.is(path,P.Absolute);
                 return new SFile(this.resolveFS(path), path);
-            },   
+            },
             addObserver: function () {
                 this.observers=this.observers||[];
                 var path,f;

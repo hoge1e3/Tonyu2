@@ -222,6 +222,42 @@ var T2MediaLib = (function(){
                 });
                 soundData.decodedCallbacksAry = null;
             }
+        } else if (soundData.url.match(/\.mzo$/) || soundData.url.match(/^data:audio\/mzo/)) {
+            console.log("Loading mzo");
+            // MZO
+            var that = this;
+            var m=new Mezonet(this.context);
+            var a=Array.prototype.slice.call( new Uint8Array(arrayBuffer) );
+            m.load(a);
+            m.toAudioBuffer().then(function (data) {
+                // デコード中にremoveDecodeSoundData()したらデータを捨てる
+                console.log("MZO loaded",data);
+                if (that.soundDataAry[idx].isDecoding()) {
+                    that.soundDataAry[idx].onDecodeComplete(data.decodedData);
+                    that.soundDataAry[idx].loopStart=data.loopStart;
+                    //if (callbacks && callbacks.succ) callbacks.succ(idx);//@hoge1e3
+                    soundData.decodedCallbacksAry.forEach(function(callbacks) {
+                        if (typeof callbacks.succ == "function") {
+                            callbacks.succ(idx);
+                        }
+                    });
+                    soundData.decodedCallbacksAry = null;
+                }
+            },function (error) {
+                if (error instanceof Error) {
+                    console.log('T2MediaLib: '+error.message, soundData.url);//@hoge1e3
+                } else {
+                    console.log('T2MediaLib: Error decodeMZO()', soundData.url);//@hoge1e3
+                }
+                that.soundDataAry[idx].onError("DECODE_ERROR");
+                //if (callbacks && callbacks.err) callbacks.err(idx, that.soundDataAry[idx].errorID);
+                soundData.decodedCallbacksAry.forEach(function(callbacks) {
+                    if (typeof callbacks.err == "function") {
+                        callbacks.err(idx, that.soundDataAry[idx].errorID);
+                    }
+                });
+                soundData.decodedCallbacksAry = null;
+            });
         } else {
             // MP3, Ogg, AAC, WAV
             var that = this;
@@ -346,7 +382,7 @@ var T2MediaLib = (function(){
         }
         if (!loop) loop = false;
         if (!loopStart) {
-            loopStart = 0.0;
+            loopStart = soundData.loopStart||0.0;
         } else {
             if      (loopStart < 0.0) loopStart = 0.0;
             else if (loopStart > audioBuffer.duration) loopStart = audioBuffer.duration;

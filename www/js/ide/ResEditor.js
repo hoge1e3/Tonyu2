@@ -12,8 +12,8 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                         return r;
                     }
                 },
-                sound:{name:"音声",exts:["mp3","ogg","mp4","m4a","mid","wav"],path:"sounds/",key:"sounds",
-                    extPattern:/\.(mp3|ogg|mp4|m4a|midi?|wav)$/i,contentType:/((audio\/(mp3|ogg|x-m4a|midi?|wav))|(video\/mp4))/,
+                sound:{name:"音声",exts:["mp3","ogg","mp4","m4a","mid","wav","mzo"],path:"sounds/",key:"sounds",
+                    extPattern:/\.(mp3|ogg|mp4|m4a|midi?|wav|mzo)$/i,contentType:/((audio\/(mp3|ogg|x-m4a|midi?|wav|mzo))|(video\/mp4))/,
                     newItem:function (name) {
                         var r={};
                         if (name) r.name="$se_"+name;
@@ -82,8 +82,10 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                 var existsFiles = [];
                 for (var i=0; i<files.length; i++) {
                     var file = files[i];
+                    var filetype= file.type;
+                    if (file.name.match(/\.mzo$/)) filetype="audio/mzo";
                     var useBlob=WebSite.serverType=="GAE" && (file.size>1000*300);
-                    if(!file.type.match(mediaInfo.contentType)) {
+                    if(!filetype.match(mediaInfo.contentType)) {
                         readFileSum--;
                         notReadFiles.push(file);
                         continue;

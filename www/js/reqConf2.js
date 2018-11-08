@@ -232,6 +232,8 @@ var reqConf={
                 "KeyEventChecker": 1,
                 "Klass": 1,
                 "PicoAudio": 1,
+                "SEnv": 1,
+                "Tones.wdt": 1,
                 "T2MediaLib": 1,
                 "TextUtil": 1,
                 "ace-noconflict": {
