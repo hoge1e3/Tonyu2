@@ -117,7 +117,7 @@ define("SEnv", ["Klass", "assert"], function(Klass, assert) {
     var defs;
     var TEnveloper = Klass.define(defs={ //class (TSoundGenerator)
         $this: "t",
-        $fields2: {
+        $fields: {
             //BSize: Integer,
             Pos: Integer,
             PrevPos: Integer,
@@ -1060,7 +1060,7 @@ define("SEnv", ["Klass", "assert"], function(Klass, assert) {
 
         }// of refreshPSG
     }); // of Klass.define
-    /*var undefs={};
+    var undefs={};
     for(var k in defs) {
         var fldreg=/\bt\s*\.\s*([a-zA-Z0-9]+)\b/g;
         if (typeof defs[k]==="function") {
@@ -1075,7 +1075,7 @@ define("SEnv", ["Klass", "assert"], function(Klass, assert) {
             undefs[k]=0;
         }
     }
-    console.log(undefs);*/
+    console.log(undefs);
     return TEnveloper;
 }); // of requirejs.define
 
