@@ -37,6 +37,8 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                     u=cvs("images/sound_ogg.png");
                 } else if (Util.endsWith(u,".mp3")) {
                     u=cvs("images/sound_mp3.png");
+                } else if (Util.endsWith(u,".mzo")) {
+                    u=cvs("images/sound_mzo.png");
                 } else if (Util.endsWith(u,".mp4")) {
                     u=cvs("images/sound_mp4.png");
                 } else if (Util.endsWith(u,".m4a")) {
