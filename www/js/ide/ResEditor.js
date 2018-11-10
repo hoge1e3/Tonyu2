@@ -25,6 +25,8 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
         var d=UI("div", {title:mediaInfo.name+"リスト"});
         d.css({height:200+"px", "overflow-v":"scroll"});
         var rsrc=prj.getResource();
+        var items=rsrc[mediaInfo.key];
+        var tempFiles = items.slice();
         var rsrcDir=prj.getDir().rel(mediaInfo.path);
         var itemUIs=[];
         if (!rsrc) prj.setResource({images:[],sounds:[]});
@@ -53,26 +55,43 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                 return WebSite.urlAliases["images/ecl.png"];
             }
         }
-        function reload() {
-            d.empty();
-            var dragMsg="ここに"+mediaInfo.name+"ファイル("+mediaInfo.exts.join("/")+")をドラッグ＆ドロップして追加";
-            var dragPoint=UI("div", {style:"margin:10px; padding:10px; border:solid blue 2px;",
-                on:{dragover: s, dragenter: s, drop:dropAdd}},dragMsg
-            ).appendTo(d);
-            rsrc=prj.getResource();
-            var items=rsrc[mediaInfo.key];
-            var tempFiles = items.slice();
-            itemUIs=[];
-            var itemTbl=UI("div").appendTo(d);
-            items.forEach(function (item){
-                var itemUI=genItemUI(item);
-                itemUIs.push(itemUI);
-                itemUI.appendTo(itemTbl);
-            });
-            d.append(UI("div",{style:"clear:left;"},
-                         ["button", {on:{click:function (){ add();}}}, "追加"],
-                         ["button", {on:{click:function (){ d.dialog("close"); }}}, "完了"]
-            ));
+        function reload(action, args) {
+            if (action=="del") { // 削除時（リスト数が多いとhtml生成に時間がかかるためremoveで消す）
+                var delItem = $("#"+args);
+                rsrc=prj.getResource();
+                items=rsrc[mediaInfo.key];
+                tempFiles = items.slice();
+                itemUIs.some(function (itemUI, idx){
+                    if (itemUI[0].id==args) {
+                        itemUIs.splice(idx, 1); 
+                        return true;
+                    }
+                });
+                delItem.removeAttr("id");
+                delItem.remove();
+            } else { // 通常reload（全更新。htmlを１から作成）
+                d.empty();
+                rsrc=prj.getResource();
+                items=rsrc[mediaInfo.key];
+                tempFiles = items.slice();
+                itemUIs=[];
+                if (action!="close") { // ウィンドウ閉じるとき（画面更新は要らない）
+                    var dragMsg="ここに"+mediaInfo.name+"ファイル("+mediaInfo.exts.join("/")+")をドラッグ＆ドロップして追加";
+                    var dragPoint=UI("div", {style:"margin:10px; padding:10px; border:solid blue 2px;",
+                        on:{dragover: s, dragenter: s, drop:dropAdd}},dragMsg
+                    ).appendTo(d);
+                    var itemTbl=UI("div").appendTo(d);
+                    items.forEach(function (item){
+                        var itemUI=genItemUI(item, items);
+                        itemUIs.push(itemUI);
+                        itemUI.appendTo(itemTbl);
+                    });
+                    d.append(UI("div",{style:"clear:left;"},
+                                ["button", {on:{click:function (){ add();}}}, "追加"],
+                                ["button", {on:{click:function (){ d.dialog("close"); }}}, "完了"]
+                    ));
+                }
+            }
             function dropAdd(e) {
                 e.stopPropagation();
                 e.preventDefault();
@@ -202,7 +221,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                 }
                 function del() {
                     for (var i=items.length-1; i>=0 ; i--) {
-                        if (items[i]===item) {
+                        if (items[i].name==item.name) { // リソース削除時、itemsが更新されてobjectが変わり条件がtrueにならないので、item.nameで比較する
                             try {
                                 var r=Assets.resolve( items[i].url, prj,{asFile:1});
                                 if (FS.isFile(r) && rsrcDir.contains(r)) {
@@ -214,7 +233,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                             break;
                         }
                     }
-                    update();
+                    update("del", item.name.substring(1));
                 }
                 function up() {
                     for (var i=items.length-1; i>=1 ; i--) {
@@ -237,7 +256,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                     update();
                 }
 
-                var res=UI("div",{style:"float:left;"},
+                var res=UI("div",{style:"float:left;", id:item.name.substring(1)}, // $se_bgmの$を除く
                         ["canvas",{$var:"c",width:100,height:100,"class":"clickable",on:{click: detail}}],
                         ["div",{style:"float:right;"},
                         ["button",{on:{click:del}}, "×"],["br"],
@@ -278,7 +297,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                 v.name=rename;
             }
         }
-        function update() {
+        function update(action, args) {
             itemUIs.forEach(function (itemUI) {
                 var v=itemUI.$vars;
                 var item=v.data;
@@ -286,7 +305,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
             });
             console.log(rsrc);
             prj.setResource(rsrc);
-            reload();
+            reload(action, args);
         }
         function cleanFiles() {
             var items=rsrc[mediaInfo.key];
@@ -342,7 +361,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
             width: 800,
             height: 500,
             close: function () {
-                update();
+                update("close");
                 cleanFiles();
                 if (mediaType=="sound" && rsrcDir.exists()) {
                     OggConverter.convert(rsrcDir);
