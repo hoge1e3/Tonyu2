@@ -396,6 +396,7 @@ define("SEnv", ["Klass", "assert"], function(Klass, assert) {
             t.WriteMaxLen = 20000;
             t.WavOutMode = False;
             t.label2Time=[];
+            t.PC2Time=[];// only ch:0
             t.WFilename = '';
             /* {$ifdef ForM2}
             t.WavOutObj=nil;
@@ -639,6 +640,7 @@ define("SEnv", ["Klass", "assert"], function(Klass, assert) {
             t.WavOutMode=true;
             t.label2Time=[];
             t.loopStart=null;
+            t.PC2Time=[];// only ch:0
             var sec=-1;
             var efficiency=t.wavOutSpeed||10;
             return new Promise(function (succ) {
@@ -783,6 +785,7 @@ define("SEnv", ["Klass", "assert"], function(Klass, assert) {
                     //if (lpchk++>1000) throw new Error("Mugen2");
                     //MCount[ch]=0;
                     var pc = t.MPointC[ch];
+                    if (ch==0) t.PC2Time[pc]=t.writtenSamples;
                     LParam = t.MPoint[ch][pc + 1];
                     HParam = t.MPoint[ch][pc + 2];
                     var code = t.MPoint[ch][pc];
@@ -872,11 +875,11 @@ define("SEnv", ["Klass", "assert"], function(Klass, assert) {
                                 if (t.WavOutMode) {
                                     if (ch==0) {
                                         var dstLabelPos=t.MPointC[ch] + array2Int(t.MPoint[ch], pc+1);
-                                        var dstLabelNum=t.MPoint[ch][dstLabelPos+1];
-                                        var dstTime=t.label2Time[dstLabelNum-0];
-                                        if (dstTime && dstTime[0]<t.writtenSamples) {
-                                            t.loopStart=dstTime;
-                                            console.log("@jump", dstLabelNum, "ofs=",t.loopStart );
+                                        //var dstLabelNum=t.MPoint[ch][dstLabelPos+1];
+                                        var dstTime=t.PC2Time[dstLabelPos];// t.label2Time[dstLabelNum-0];
+                                        if (typeof dstTime=="number" && dstTime<t.writtenSamples) {
+                                            t.loopStart=[dstTime, t.sampleRate];
+                                            console.log("@jump", "ofs=",t.loopStart );
                                         }
                                     }
                                     t.MPointC[ch] += 5;
