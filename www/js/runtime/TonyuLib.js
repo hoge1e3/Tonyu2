@@ -4,6 +4,16 @@ if (typeof define!=="function") {
 define(["assert","Tonyu.Thread","Tonyu.Iterator","DeferredUtil"],
 		function (assert,TT,IT,DU) {
 return Tonyu=function () {
+	// old browser support
+	if (typeof performance==="undefined") {
+		performance = {};
+	}
+	if (!performance.now) {
+		performance.now = function now() {
+			return Date.now();
+		};
+	}
+
 	var preemptionTime=60;
 	function thread() {
 		var t=new TT;
