@@ -57,6 +57,7 @@ mainLoop();
     var oldS=_scheduler;
     _scheduler=$Scheduler=new Scheduler;
     var newS=_scheduler;
+    oldS.doTimeStop();
     var res={
         release: \(a) {
             if (!a) return res.releaseAll();

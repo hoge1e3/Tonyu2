@@ -75,6 +75,11 @@ next=[];
         dupc[t.id]="next";
     }
 }
+\doTimeStop() {
+    next=allThreads;
+    cur=[];
+    return next;
+}
 \stepsAll() {
     lastSteps=performance.now();
     var dupc={};
