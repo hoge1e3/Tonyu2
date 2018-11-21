@@ -1,0 +1,26 @@
+extends TObject;
+includes MathMod;
+native console;
+\new(seed) {
+    x = 123456789;
+    y = 362436069;
+    z = 521288629;
+    MAX=0x80000000;
+    MIN=-MAX;
+    w = seed || new Date().getTime();
+}
+
+nowait \next() {
+    var t = x ^ (x << 11);
+    x = y; y = z; z = w;
+    return w = (w ^ (w >>> 19)) ^ (t ^ (t >>> 8));
+}
+
+nowait \nextInt(min, max) {
+    var res= floor(min + next01()*(max-min));
+    return res;
+}
+
+nowait \next01() {
+    return (next()-MIN)/(MAX-MIN);
+}

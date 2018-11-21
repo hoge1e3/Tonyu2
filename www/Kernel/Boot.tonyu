@@ -49,11 +49,13 @@ mainLoop();
     var newS=_scheduler;
     var res={
         release: \(a) {
+            if (!a) return res.releaseAll();
             a._scheduler=newS;
             oldS.findByThreadGroup(a).forEach \(th) {
                 if (th.scheduled===newS) return;
                 th.scheduled=null;
                 newS.addToNext(th);
+                newS.checkDuplicate();
             };
         },
         releaseAll: \{

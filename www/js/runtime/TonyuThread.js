@@ -1,5 +1,6 @@
 define(["DeferredUtil","Klass"],function (DU,Klass) {
 	var cnts={enterC:{},exitC:0};
+	var idSeq=1;
 	try {window.cnts=cnts;}catch(e){}
 	var TonyuThread=Klass.define({
 		$: function TonyuThread() {
@@ -13,6 +14,7 @@ define(["DeferredUtil","Klass"],function (DU,Klass) {
 			this.preemptionTime=60;
 			this.onEndHandlers=[];
 			this.onTerminateHandlers=[];
+			this.id=idSeq++;
 			this.age=0; // inc if object pooled
 		},
 		isAlive:function isAlive() {

@@ -45,8 +45,9 @@ nowait \print(pt) {
     }
 }
 
-nowait \loadPage(){
+\loadPage(){// was nowait, why?
     $Boot.loadPage.apply($Boot,arguments);
+    update();// I want this!
 }
 \defaultLayer {
     return $mainLayer;

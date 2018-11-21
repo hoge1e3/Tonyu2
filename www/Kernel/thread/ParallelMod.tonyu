@@ -13,6 +13,7 @@ nowait \parallel() {
      return th;
 }
 \call() {
+    if (!_thread) throw new Error("callは待機可能モードで呼び出してください");
     var a=new ArgParser(arguments);
     var t=a.shift();
     var n=a.shift();

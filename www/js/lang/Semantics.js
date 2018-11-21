@@ -633,7 +633,7 @@ function annotateSource2(klass, env) {//B
 		var name=node.name+"";
 		var si=getScopeInfo(node.name);
 		var t=stype(si);
-		console.log("TExpr",name,si,t);
+		//console.log("TExpr",name,si,t);
 		if (t===ST.NATIVE) {
 			annotation(node, {resolvedType: si.value});
 		} else if (t===ST.CLASS){
@@ -663,7 +663,7 @@ function annotateSource2(klass, env) {//B
 	function resolveTypesOfParams(params) {
 		params.forEach(function (param) {
 			if (param.typeDecl) {
-			console.log("restype",param);
+			//console.log("restype",param);
 			resolveType(param.typeDecl.vtype);
 			}
 		});

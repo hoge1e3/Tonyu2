@@ -49,9 +49,31 @@ next=[];
         throw new Error("待機不能モードでupdateが呼ばれています．ブラウザが固まるのを防ぐために停止します．");
     }
 }
+\checkDuplicate() {
+    var dupc={};
+    for (var t of cur) {
+        if (dupc[t.id]) {
+            console.log("WARNING","Scheduler: duplicate thread detected in cur",t);
+        }
+        dupc[t.id]="cur";
+    }
+    for (var t of next) {
+        if (dupc[t.id]) {
+            console.log("WARNING","Scheduler: duplicate thread detected in next and "+dupc[t.id],t);
+        }
+        dupc[t.id]="next";
+    }
+}
 \stepsAll() {
     lastSteps=performance.now();
-    for (var t of cur) {
+    var dupc={};
+    while(cur.length) {
+        var t=cur.shift();
+        if (dupc[t.id]) {
+            console.log("WARNING","Scheduler: duplicate thread detected",t);
+            continue;
+        }
+        dupc[t.id]=t;
     	delete t.scheduled;
     	if (t.waitCount) {
     	    t.waitCount--;

@@ -27,7 +27,7 @@ define(["UI","Shell"], function (UI,sh) {
             d.$vars.searchRes.empty();
             var sres=sh.grep(model.word, prjDir);
             sres.forEach(function (l) {
-                if (l.file.name()=="concat.js") {
+                if (l.file.name().match(/^concat\.js/)) {
                     return;
                 }
                 d.$vars.searchRes.append(
