@@ -159,8 +159,12 @@ var T2MediaLib = (function(){
             xhr.onload();
         } else {
             xhr.open('GET', url, true);
-            xhr.responseType = 'arraybuffer';  // XMLHttpRequest Level 2
-            xhr.send(null);
+            xhr.responseType = 'arraybuffer';
+            try {
+                xhr.send(null);
+            } catch(e) {
+                this.soundDataAry[idx].onError("FILE_NOT_FOUND");
+            }
         }
         //setTimeout(this.activate.bind(this),0);
     };
@@ -168,6 +172,8 @@ var T2MediaLib = (function(){
     T2MediaLib.prototype.decodeSound = function(idx, callbacks) {
         var soundData = this.soundDataAry[idx];
         if (soundData == null) return;
+        if (soundData.fileData == null) return;
+        if (!soundData.isLoadComplete()) return;
         if (soundData.isDecodeComplete()) return;
 
         // Adding Callback

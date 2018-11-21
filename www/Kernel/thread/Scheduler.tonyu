@@ -2,6 +2,17 @@ extends TObject;
 native Tonyu;
 native console;
 native performance;
+
+// old browser support
+if (typeof performance==="undefined") {
+    performance = {};
+}
+if (!performance.now) {
+    performance.now = function now() {
+        return Date.now();
+    };
+}
+
 cur=[];
 next=[];
 \addObj(obj,name,args) {
