@@ -78,7 +78,7 @@ next=[];
 \stepsAll() {
     lastSteps=performance.now();
     var dupc={};
-    while(cur.length) {
+    while(!timeStopped && cur.length) {
         var t=cur.shift();
         if (dupc[t.id]) {
             console.log("WARNING","Scheduler: duplicate thread detected",t);
