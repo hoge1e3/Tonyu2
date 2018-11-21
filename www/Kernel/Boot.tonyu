@@ -57,8 +57,6 @@ mainLoop();
     var oldS=_scheduler;
     _scheduler=$Scheduler=new Scheduler;
     var newS=_scheduler;
-    //oldS.timeStopped=true;
-    //var stopped=oldS.allThreads;
     var res={
         release: \(a) {
             if (!a) return res.releaseAll();
@@ -75,7 +73,6 @@ mainLoop();
             for (var e in a) {
                 res.release(e);
             }
-            //oldS.timeStopped=false;
         }
     };
     res.release(except);
