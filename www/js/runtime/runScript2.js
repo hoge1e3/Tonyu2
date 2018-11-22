@@ -18,12 +18,12 @@ requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu
 		$("body").css({overflow:"hidden", margin:"0px"});
 		var cv=$("<canvas>").attr({width: w-margin, height:h-margin, class:"tonyu-canvas"}).appendTo("body");
 		Tonyu.globals.$mainCanvas=cv;
-		
+
 		var u = navigator.userAgent.toLowerCase();
 		if ((u.indexOf("iphone") == -1
 			&& u.indexOf("ipad") == -1
 			&& u.indexOf("ipod") == -1
-			) && window != window.parent) {
+			) && (!window.parent || window === window.parent)) {
 			$(window).resize(onResize);
 			function onResize() {
 				var margin = getMargin();

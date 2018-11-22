@@ -94,7 +94,7 @@
 	};
 	R.real=real;
 	var requireSimulator=R;
-	// Created at Thu Nov 22 2018 17:07:03 GMT+0900 (東京 (標準時))
+	// Created at Thu Nov 22 2018 22:12:43 GMT+0900 (東京 (標準時))
 requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
@@ -4177,7 +4177,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,is:is,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,DeferredUtil:DU,
-			VERSION:1542874011972,//EMBED_VERSION
+			VERSION:1542892351128,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -19174,12 +19174,12 @@ requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS",
 		var h=$(window).height();
 		$("body").css({overflow:"hidden", margin:"0px"});
 		var cv=$("<canvas>").attr({width: w-margin, height: h-margin,class:"tonyu-canvas"}).appendTo("body");
-		
+
 		var u = navigator.userAgent.toLowerCase();
 		if ((u.indexOf("iphone") == -1
 			&& u.indexOf("ipad") == -1
 			&& u.indexOf("ipod") == -1
-			) && window != window.parent) {
+		) && (!window.parent || window === window.parent) ) {
 			$(window).resize(onResize);
 			function onResize() {
 				var margin = getMargin();
