@@ -94,7 +94,7 @@
 	};
 	R.real=real;
 	var requireSimulator=R;
-	// Created at Wed Nov 21 2018 18:28:49 GMT+0900 (東京 (標準時))
+	// Created at Thu Nov 22 2018 17:07:03 GMT+0900 (東京 (標準時))
 requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
@@ -4177,7 +4177,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,is:is,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,DeferredUtil:DU,
-			VERSION:1542792485217,//EMBED_VERSION
+			VERSION:1542874011972,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -18025,7 +18025,7 @@ define("SEnv", ["Klass", "assert"], function(Klass, assert) {
             0x35, 0x32, 0x30, 0x2d, 0x2a, 0x28, 0x26, 0x24, 0x22, 0x20, 0x1e, 0x1c,
             0x1b, 0x19, 0x18, 0x16, 0x15, 0x14, 0x13, 0x12, 0x11, 0x10, 0xf, 0xe
         ],
-        Trunc = Math.trunc.bind(),
+        //Trunc = Math.trunc.bind(),
         stEmpty = -1,
         stFreq = 1,
         stVol = 2,
