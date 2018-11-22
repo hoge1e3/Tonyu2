@@ -94,7 +94,7 @@
 	};
 	R.real=real;
 	var requireSimulator=R;
-	// Created at Thu Oct 04 2018 15:43:29 GMT+0900 (東京 (標準時))
+	// Created at Wed Nov 21 2018 18:28:13 GMT+0900 (東京 (標準時))
 requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
@@ -210,7 +210,7 @@ define('assert',[],function () {
             var a=$a(arguments);
             var value=a.shift();
             a=flatten(a);
-            a=this.failMesg.concat(value).concat(a).concat(["mode",this._mode]);
+            a=this.failMesg.concat(value).concat(a);//.concat(["(mode:",this._mode,")"]);
             console.log.apply(console,a);
             if (this.isDefensive()) return value;
             if (this.isBool()) return false;
@@ -268,6 +268,10 @@ define('assert',[],function () {
             }
             if (t===Number || t=="number") {
                 this.assert(typeof(v)=="number",[v,"should be a number"]);
+                return this.isBool()?true:value;
+            }
+            if (t===Boolean || t=="boolean") {
+                this.assert(typeof(v)=="boolean",[v,"should be a boolean"]);
                 return this.isBool()?true:value;
             }
             if (t instanceof RegExp || (typeof global=="object" && typeof global.RegExp=="function" && t instanceof global.RegExp)) {
@@ -591,6 +595,7 @@ define('MIMETypes',[], function () {
       ".ogg":"audio/ogg",
       ".midi":"audio/midi",
       ".mid":"audio/midi",
+      ".mzo":"audio/mzo",
       ".txt":"text/plain",
       ".html":"text/html",
       ".htm":"text/html",
@@ -2651,7 +2656,14 @@ SFile.prototype={
     getURL: function () {
         return this.act.fs.getURL(this.act.path);
     },
-    lines:function () {
+    lines:function (lines) {
+        if (lines instanceof Array) {//WRITE
+            return this.text(lines.join("\n"));
+        } else if (typeof lines==="function") {//READ async
+            return this.text(function (r) {
+                return lines(r.replace(/\r/g,"").split("\n"));
+            });
+        }
         return this.text().replace(/\r/g,"").split("\n");
     },
     obj: function () {
@@ -2750,8 +2762,9 @@ SFile.prototype={
     },
     recursive:function (fun,options) {
         var dir=this.assertDir();
+        options=dir.convertOptions(options);
         return dir.each(function (f) {
-            if (f.isDir()) return f.recursive(fun);
+            if (f.isDir()) return f.recursive(fun,options);
             else return fun(f);
         },options);
     },
@@ -2768,8 +2781,9 @@ SFile.prototype={
             for (var i=0;i<di.length; i++) {
                 var name=di[i];
                 //if (!options.includeTrashed && dinfo[i].trashed) continue;
-                if (options.excludes[path+name] ) continue;
-                res.push(dir.rel(name));
+                var f=dir.rel(name);
+                if (options.excludesF(f) ) continue;
+                res.push(f);
             }
             if (typeof ord=="function" && res.sort) res.sort(ord);
             return res;
@@ -2778,28 +2792,6 @@ SFile.prototype={
     listFiles:function (options) {
         var args=Array.prototype.slice.call(arguments);
         return DU.assertResolved(this.listFilesAsync.apply(this,args));
-        //----------ABOLISHED
-        if (typeof args[0]==="function") {
-            var f=args.shift();
-            return this.listFilesAsync.apply(this,args).then(f);
-        }
-        A(options==null || typeof options=="object");
-        var dir=this.assertDir();
-        var path=this.path();
-        var ord;
-        if (typeof options=="function") ord=options;
-        options=dir.convertOptions(options);
-        if (!ord) ord=options.order;
-        var di=this.act.fs.opendir(this.act.path, options);
-        var res=[];
-        for (var i=0;i<di.length; i++) {
-            var name=di[i];
-            //if (!options.includeTrashed && dinfo[i].trashed) continue;
-            if (options.excludes[path+name] ) continue;
-            res.push(dir.rel(name));
-        }
-        if (typeof ord=="function" && res.sort) res.sort(ord);
-        return res;
     },
     ls:function (options) {
         A(options==null || typeof options=="object");
@@ -2816,19 +2808,26 @@ SFile.prototype={
         var options=Util.extend({},o);
         var dir=this.assertDir();
         var pathR=this.path();
-        if (!options.excludes) options.excludes={};
-        if (options.excludes instanceof Array) {
-            var excludes={};
-            options.excludes.forEach(function (e) {
-                if (P.startsWith(e,"/")) {
-                    excludes[e]=1;
-                } else {
-                    excludes[pathR+e]=1;
-                }
-            });
-            options.excludes=excludes;
+        var excludes=options.excludes || {};
+        if (typeof excludes==="function") {
+            options.excludesF=excludes;
+        } else if (typeof excludes==="object") {
+            if (excludes instanceof Array) {
+                var nex={};
+                excludes.forEach(function (e) {
+                    if (P.startsWith(e,"/")) {
+                        nex[e]=1;
+                    } else {
+                        nex[pathR+e]=1;
+                    }
+                });
+                excludes=nex;
+            }
+            options.excludesF=function (f) {
+                return excludes[f.path()];
+            };
         }
-        return A.is(options,{excludes:{}});
+        return A.is(options,{excludesF:Function});
     },
     mkdir: function () {
         return this.touch();
@@ -2874,6 +2873,22 @@ SFile.prototype={
         var a=Array.prototype.slice.call(arguments);
         console.log.apply(console,a);
         throw new Error(a.join(""));
+    },
+    exportAsObject: function (options) {
+        var base=this;
+        var data={};
+        this.recursive(function (f) {
+            data[f.relPath(base)]=f.text();
+        },options);
+        var req={base:base.path(),data:data};
+        return req;
+    },
+    importFromObject: function (data, options) {
+        if (typeof data==="string") data=JSON.parse(data);
+        var data=data.data;
+        for (var k in data) {
+            this.rel(k).text(data[k]);
+        }
     }
 };
 Object.defineProperty(SFile.prototype,"act",{
@@ -3145,8 +3160,32 @@ define('FS',["FSClass","NativeFS","LSFS", "WebFS", "PathUtil","Env","assert","SF
         if (!fs) {
             if (typeof process=="object") {
                 fs=new NativeFS();
-            } else {
+            } else if (typeof localStorage==="object") {
                 fs=new LSFS(localStorage);
+            } else if (typeof importScripts==="function") {
+                // Worker
+                self.addEventListener("message", function (e) {
+                    var data=e.data;
+                    if (typeof data==="string") {
+                        data=JSON.parse(data);
+                    }
+                    switch(data.type) {
+                    case "upload":
+                        FS.get(data.base).importFromObject(data.data);
+                        break;
+                    case "observe":
+                        rootFS.observe(data.path, function (path,meta) {
+                            self.postMessage(JSON.stringify({
+                                type: "changed",
+                                path: path,
+                                content: FS.get(path).text(),
+                                meta: meta
+                            }));
+                        });
+                        break;
+                    }
+                });
+                fs=LSFS.ramDisk();
             }
         }
         rootFS=new RootFS(fs);
@@ -5578,7 +5617,7 @@ define(["assert"],function (A) {
         return klass;
     };
     function getArgs(f) {
-        var fpat=/function[^\(]+\(([^\)]*)\)/;
+        var fpat=/function[^\(]*\(([^\)]*)\)/;
         var r=fpat.exec(f+"");
         if (r) {
             return r[1].replace(/\s/g,"").split(",");
