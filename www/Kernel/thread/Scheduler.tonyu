@@ -5,7 +5,7 @@ native performance;
 
 // old browser support
 if (typeof performance==="undefined") {
-    performance = {};
+    window.performance = {};
 }
 if (!performance.now) {
     performance.now = function now() {

@@ -6,7 +6,7 @@ define(["assert","Tonyu.Thread","Tonyu.Iterator","DeferredUtil"],
 return Tonyu=function () {
 	// old browser support
 	if (typeof performance==="undefined") {
-		performance = {};
+		window.performance = {};
 	}
 	if (!performance.now) {
 		performance.now = function now() {
