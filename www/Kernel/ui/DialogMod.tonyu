@@ -1,6 +1,7 @@
 includes EventMod,MathMod;
 
 \prompt(mesg,val,geom) {
+    $currentProject.requestPlugin("jquery_ui");
     var r;
 	r=waitFor($InputBox.prompt(mesg,val,geom));
 	return r;
@@ -15,11 +16,13 @@ includes EventMod,MathMod;
 }
 \confirm(mesg) {
     var r;
+    $currentProject.requestPlugin("jquery_ui");
 	r=waitFor($InputBox.confirm(mesg));
 	return r;
 }
 \alert(mesg) {
     var r;
+    $currentProject.requestPlugin("jquery_ui");
 	r=waitFor($InputBox.alert(mesg));
 	return r;
 }
