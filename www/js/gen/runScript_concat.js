@@ -94,7 +94,7 @@
 	};
 	R.real=real;
 	var requireSimulator=R;
-	// Created at Thu Nov 22 2018 22:12:43 GMT+0900 (東京 (標準時))
+	// Created at Wed Dec 19 2018 12:12:13 GMT+0900 (東京 (標準時))
 requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
@@ -3804,7 +3804,7 @@ define(["assert","Tonyu.Thread","Tonyu.Iterator","DeferredUtil"],
 return Tonyu=function () {
 	// old browser support
 	if (typeof performance==="undefined") {
-		performance = {};
+		window.performance = {};
 	}
 	if (!performance.now) {
 		performance.now = function now() {
@@ -4177,7 +4177,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,is:is,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,DeferredUtil:DU,
-			VERSION:1542892351128,//EMBED_VERSION
+			VERSION:1545189116214,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -13373,7 +13373,8 @@ define(["WebSite"],function (WebSite){
     var installed= {
         box2d:{src: "Box2dWeb-2.1.a.3.min.js",detection:/BodyActor/,symbol:"Box2D" },
         timbre: {src:"timbre.js",detection:/\bplay(SE)?\b/,symbol:"T" },
-        gif: {src:"gif-concat.js",detection:/GIFWriter/,symbol:"GIF"}
+        gif: {src:"gif-concat.js",detection:/GIFWriter/,symbol:"GIF"},
+        jquery_ui: {src:"jquery-ui.js", detection:/\$InputBox/,symbol:"JQUI"}
     };
     plugins.installed=installed;
     plugins.detectNeeded=function (src,res) {
@@ -14114,9 +14115,12 @@ define(["Content"],function (Content) {
 });
 
 requireSimulator.setName('PicoAudio');
+'use strict';
 var PicoAudio = (function(){
 	function PicoAudio(_audioContext, _picoAudio){
 		this.debug = false;
+		this.isStarted = false;
+		this.isPlayed = false;
 		this.isTonyu2 = true;
 		this.settings = {
 			masterVolume: 1,
@@ -14134,14 +14138,14 @@ var PicoAudio = (function(){
 			isChorus: true,
 			chorusVolume: 0.5,
 			isCC111: true,
-			dramMaxPlayLength: 2, // ドラムで一番長い音の秒数
 			loop: false,
 			isSkipBeginning: this.isTonyu2, // 冒頭の余白をスキップ(Tonyu2はtrue)
 			isSkipEnding: true, // 末尾の空白をスキップ
 			holdOnValue: 64,
 			maxPoly: -1, // 同時発音数 -1:infinity
 			maxPercPoly: -1, // 同時発音数(パーカッション) -1:infinity
-			isOfflineRendering: false // TODO 演奏データを作成してから演奏する
+			isOfflineRendering: false, // TODO 演奏データを作成してから演奏する
+			isSameDrumSoundOverlap: false // 同じドラムの音が重なることを許容するか
 		};
 		this.trigger = { isNoteTrigger: true, noteOn: function(){}, noteOff: function(){}, songEnd: function(){} };
 		this.states = { isPlaying: false, startTime:0, stopTime:0, stopFuncs:[], webMIDIWaitState:null, webMIDIStopTime:0
@@ -14165,7 +14169,7 @@ var PicoAudio = (function(){
 		// Fallback
 		// Unsupport performance.now()
 		if (typeof performance==="undefined") {
-			performance = {};
+			window.performance = {};
 		}
 		if (!performance.now) {
 			performance.now = function now() {
@@ -14179,15 +14183,26 @@ var PicoAudio = (function(){
 	}
 
 	PicoAudio.prototype.init = function(_audioContext, _picoAudio){
+		this.isStarted = true;
 		var AudioContext = window.AudioContext || window.webkitAudioContext;
 		this.context = _audioContext ? _audioContext : new AudioContext();
 		if(_picoAudio && _picoAudio.whitenoise){ // 使いまわし
 			this.whitenoise = _picoAudio.whitenoise;
 		} else {
 			this.whitenoise = this.context.createBuffer(2, this.context.sampleRate, this.context.sampleRate);
+			// 乱数パターンを固定にする（Math.random()を使わない）
+			// Xorshiftアルゴリズム
+			var x = 123456789;
+			var y = 362436069;
+			var z = 521288629;
+			var w = 8867512;
 			for (var ch=0; ch<2; ch++){
 				for (var i=0; i<this.context.sampleRate; i++){
-					this.whitenoise.getChannelData(ch)[i] = Math.random() * 2 - 1;
+					var t = x ^ (x << 11);
+					x = y; y = z; z = w;
+					var r = w = (this.w ^ (this.w >>> 19)) ^ (t ^ (t >>> 8));
+					r = Math.abs(r) / 2147483648 % 2;
+					this.whitenoise.getChannelData(ch)[i] = r * 2 - 1;
 				}
 			}
 		}
@@ -14218,7 +14233,7 @@ var PicoAudio = (function(){
 		// リバーブ用
 		this.convolver = this.context.createConvolver();
 		this.convolver.buffer = this.impulseResponse;
-		this.convolver.normalize = false;
+		this.convolver.normalize = true;
 		this.convolverGainNode = this.context.createGain();
 		this.convolverGainNode.gain.value = this.settings.reverbVolume;
 		this.convolver.connect(this.convolverGainNode);
@@ -14242,15 +14257,17 @@ var PicoAudio = (function(){
 		this.chorusOscillator.start(0);
 		
 		// リバーブON設定を引き継ぐ。未設定ならパフォーマンス計測する(Tonyu2用)
-		if(_picoAudio){
-			this.settings.isReverb = _picoAudio.settings.isReverb;
-		} else {
-			this.settings.isReverb = this.measurePerformanceReverb();
+		if(this.isTonyu2){
+			if(_picoAudio){
+				this.settings.isReverb = _picoAudio.settings.isReverb;
+			} else {
+				this.settings.isReverb = this.measurePerformanceReverb();
+			}
 		}
 	}
 
 	PicoAudio.prototype.createNote = function(option){
-		var note = this.createBaseNote(option, true, false, true); // oscillatorのstopはこちらで実行するよう指定
+		var note = this.createBaseNote(option, false, true, false, true); // oscillatorのstopはこちらで実行するよう指定
 		if(note.isGainValueZero) return null;
 
 		var oscillator = note.oscillator;
@@ -14359,11 +14376,17 @@ var PicoAudio = (function(){
 				that.stopAudioNode(oscillator, note.stop, stopGainNode, isNoiseCut);
 				break;
 			}
-			// 再生しない系
-			case 119:
+			case 119: // Reverse Cymbal
 			{
 				gainNode.gain.value = 0;
-				that.stopAudioNode(oscillator, 0, stopGainNode);
+				that.stopAudioNode(oscillator, note.stop, stopGainNode, isNoiseCut);
+				var note2 = this.createBaseNote(option, true, true);
+				if(note2.isGainValueZero) break;
+				note2.oscillator.playbackRate.setValueAtTime((option.pitch+1)/128, note.start);
+				note2.gainNode.gain.setValueAtTime(0, note.start);
+				note2.gainNode.gain.linearRampToValueAtTime(1.3, note.start+2);
+				that.stopAudioNode(note2.oscillator, note.stop, note2.stopGainNode);
+				break;
 			}
 			default:{
 				gainNode.gain.value *= 1.1;
@@ -14374,91 +14397,97 @@ var PicoAudio = (function(){
 
 		return function(){
 			that.stopAudioNode(oscillator, 0, stopGainNode, true);
+			if (note2 && note2.oscillator) that.stopAudioNode(note2.oscillator, 0, note2.stopGainNode, true);
 		};
 	};
 
 	PicoAudio.prototype.createPercussionNote = function(option){
-		var note = this.createBaseNote(option, false);
+		var note = this.createBaseNote(option, true, false);
 		if(note.isGainValueZero) return null;
 
 		var source = note.oscillator;
 		var gainNode = note.gainNode;
 		var stopGainNode = note.stopGainNode;
 		var start = note.start;
-		var velocity = 1;//0.9;
-		var note2 = this.createBaseNote(option, false, true);
+		var velocity = 1; // ドラム全体の音量調整用
+		var note2 = this.createBaseNote(option, false, false, true);
 		var oscillator = note2.oscillator;
 		var gainNode2 = note2.gainNode;
 		var stopGainNode2 = note2.stopGainNode;
+		var nextSameNoteOnInterval = option.nextSameNoteOnInterval;
 		var that = this;
 
+		// oscillator.frequency.setValueAtTime()がcurrentTimeより遅れると周波数設定がされないので対策
+		if (start < this.context.currentTime) start = this.context.currentTime;
+		var stopAudioTime = 0;
+		var stopAudioTime2 = 0;
 		switch(option.pitch){
 			// Bass Drum
 			case 35: // Acoustic Bass Drum
 			case 36: // Bass Drum
 				// w
+				source.playbackRate.value = 0.25;
 				gainNode.gain.setValueAtTime(0, start);
 				gainNode.gain.linearRampToValueAtTime(velocity*0.7, start+0.004);
 				gainNode.gain.linearRampToValueAtTime(0, start+0.008);
-				source.playbackRate.value = 0.25;
-				that.stopAudioNode(source, start+0.008, stopGainNode);
+				stopAudioTime = 0.008;
 				// s
+				oscillator.frequency.setValueAtTime(option.pitch==35 ? 90 : 160, start);
+				oscillator.frequency.linearRampToValueAtTime(40, start+0.08);
 				gainNode2.gain.setValueAtTime(0, start);
 				gainNode2.gain.linearRampToValueAtTime(velocity*3, start+0.02);
 				gainNode2.gain.linearRampToValueAtTime(0, start+0.08);
-				oscillator.frequency.setValueAtTime(option.pitch==35 ? 90 : 160, start);
-				oscillator.frequency.linearRampToValueAtTime(40, start+0.08);
-				that.stopAudioNode(oscillator, start+0.08, stopGainNode2);
+				stopAudioTime2 = 0.08;
 				break;
 			// Snare Drum
 			case 37: // Side Stick
 				// w
+				source.playbackRate.value = 0.26;
 				gainNode.gain.setValueAtTime(velocity*1.5, start);
 				gainNode.gain.linearRampToValueAtTime(0, start+0.041);
-				source.playbackRate.value = 0.26;
-				that.stopAudioNode(source, start+0.041, stopGainNode);
+				stopAudioTime = 0.041;
 				// s
-				gainNode2.gain.setValueAtTime(velocity, start);
-				gainNode2.gain.linearRampToValueAtTime(0, start+0.02);
 				oscillator.frequency.setValueAtTime(330, start);
 				oscillator.frequency.linearRampToValueAtTime(120, start+0.02);
-				that.stopAudioNode(oscillator, start+0.02, stopGainNode2);
+				gainNode2.gain.setValueAtTime(velocity, start);
+				gainNode2.gain.linearRampToValueAtTime(0, start+0.02);
+				stopAudioTime2 = 0.02;
 				break;
 			case 38: // Acoustic Snare
 			case 40: // Electric Snare
 				var len = option.pitch==38 ? 0.25 : 0.2;
 				// w
+				source.playbackRate.value = 0.7;
 				gainNode.gain.setValueAtTime(velocity, start);
 				gainNode.gain.linearRampToValueAtTime(0, start+len);
-				source.playbackRate.value = 0.7;
-				that.stopAudioNode(source, start+len, stopGainNode);
+				stopAudioTime = len;
 				// s
-				gainNode2.gain.setValueAtTime(velocity*2, start);
-				gainNode2.gain.linearRampToValueAtTime(0, start+0.1);
 				oscillator.frequency.setValueAtTime(option.pitch==38 ? 140 : 200, start);
 				oscillator.frequency.linearRampToValueAtTime(option.pitch==38 ? 100 : 160, start+0.1);
-				that.stopAudioNode(oscillator, start+0.1, stopGainNode2);
+				gainNode2.gain.setValueAtTime(velocity*2, start);
+				gainNode2.gain.linearRampToValueAtTime(0, start+0.1);
+				stopAudioTime2 = 0.1;
 				break;
 			case 39: // Hand Clap
 				// w
+				source.playbackRate.value = 0.5;
 				gainNode.gain.setValueAtTime(velocity*1.3, start);
 				gainNode.gain.linearRampToValueAtTime(0, start+0.010);
 				gainNode.gain.setValueAtTime(velocity*1.3, start+0.0101);
 				gainNode.gain.linearRampToValueAtTime(0, start+0.020);
 				gainNode.gain.setValueAtTime(velocity*1.3, start+0.0201);
 				gainNode.gain.linearRampToValueAtTime(0, start+0.09);
-				source.playbackRate.value = 0.5;
-				that.stopAudioNode(source, start+0.09, stopGainNode);
+				stopAudioTime = 0.09;
 				// s
 				oscillator.type = "triangle";
+				oscillator.frequency.setValueAtTime(180, start);
 				gainNode2.gain.setValueAtTime(velocity*0.8, start);
 				gainNode2.gain.linearRampToValueAtTime(0, start+0.010);
 				gainNode2.gain.setValueAtTime(velocity*0.8, start+0.0101);
 				gainNode2.gain.linearRampToValueAtTime(0, start+0.020);
 				gainNode2.gain.setValueAtTime(velocity*0.8, start+0.0201);
 				gainNode2.gain.linearRampToValueAtTime(0, start+0.030);
-				oscillator.frequency.setValueAtTime(180, start);
-				that.stopAudioNode(oscillator, start+0.11, stopGainNode2);
+				stopAudioTime2 = 0.11;
 				break;
 			// Toms
 			case 41: // Low Floor Tom
@@ -14472,18 +14501,19 @@ var PicoAudio = (function(){
 				source.playbackRate.value = 0.3+len/45;
 				gainNode.gain.setValueAtTime(velocity*1.5, start);
 				gainNode.gain.linearRampToValueAtTime(0, start+0.02);
-				that.stopAudioNode(source, start+0.02, stopGainNode);
+				stopAudioTime = 0.02;
 				// s
-				gainNode2.gain.setValueAtTime(velocity*1.5, start);
-				gainNode2.gain.linearRampToValueAtTime(0, start+0.5-len/35);
 				oscillator.frequency.setValueAtTime(90+15*len, start);
 				oscillator.frequency.linearRampToValueAtTime(30+7.5*len, start+0.5-len/35);
-				that.stopAudioNode(oscillator, start+0.5-len/35, stopGainNode2);
+				gainNode2.gain.setValueAtTime(velocity*1.5, start);
+				gainNode2.gain.linearRampToValueAtTime(0, start+0.5-len/35);
+				stopAudioTime2 = 0.5-len/35;
 				break;
 			// Hi-hat
 			case 42: // Closed High-Hat
 			case 44: // Pedal High-Hat
 				// w
+				source.playbackRate.value = 1;
 				if(option.pitch==42){
 					gainNode.gain.setValueAtTime(velocity*0.8, start);
 				}else{
@@ -14491,127 +14521,117 @@ var PicoAudio = (function(){
 					gainNode.gain.linearRampToValueAtTime(velocity*0.8, start+0.014);
 				}
 				gainNode.gain.linearRampToValueAtTime(0, start+0.08);
-				source.playbackRate.value = 1;
-				that.stopAudioNode(source, start+0.08, stopGainNode);
+				stopAudioTime = 0.08;
 				// s
 				gainNode2.gain.value = 0;
-				that.stopAudioNode(oscillator, 0, stopGainNode2);
+				stopAudioTime2 = 0;
 				break;
 			case 46: // Open Hihat
 				// w
-				gainNode.gain.setValueAtTime(velocity*0.9, start);
-				gainNode.gain.setTargetAtTime(0, start, 0.3);
-				source.playbackRate.value = 0.35;
 				source.playbackRate.setValueAtTime(0.35, start);
 				source.playbackRate.linearRampToValueAtTime(0.6, start+0.1);
 				source.playbackRate.linearRampToValueAtTime(1, start+0.3);
-				that.stopAudioNode(source, start+1.5, stopGainNode);
+				gainNode.gain.setValueAtTime(velocity*1.1, start);
+				gainNode.gain.setTargetAtTime(0, start, 0.3);
+				stopAudioTime = 1.5;
 				// s
 				gainNode2.gain.value = 0;
-				that.stopAudioNode(oscillator, 0, stopGainNode2);
+				stopAudioTime2 = 0;
 				break;
 			// Cymbal
 			case 49: // Crash Cymbal 1
 			case 57: // Crash Cymbal 2
 				// w
-				gainNode.gain.setValueAtTime(velocity*1.3, start);
-				gainNode.gain.setTargetAtTime(0, start, 0.35);
 				var r = option.pitch==49 ? 0.3 : 0.5;
 				var r2 = option.pitch==49 ? 0.4 : 0.7;
-				source.playbackRate.value = r;
 				source.playbackRate.setValueAtTime(r, start);
 				source.playbackRate.linearRampToValueAtTime(r2, start+0.15);
 				source.playbackRate.linearRampToValueAtTime(0.9, start+0.4);
-				that.stopAudioNode(source, start+2, stopGainNode);
+				gainNode.gain.setValueAtTime(velocity*1.3, start);
+				gainNode.gain.setTargetAtTime(0, start, 0.35);
+				stopAudioTime = 2;
 				// s
-				gainNode2.gain.value = 0
-				that.stopAudioNode(oscillator, 0, stopGainNode2);
+				gainNode2.gain.value = 0;
+				stopAudioTime2 = 0;
 				break;
 			case 51: // Ride Cymbal 1
 			case 59: // Ride Cymbal 2
 				// w
+				source.playbackRate.value = 1;
 				gainNode.gain.setValueAtTime(velocity*0.9, start);
 				gainNode.gain.setTargetAtTime(0, start, 0.35);
-				source.playbackRate.value = 1;
-				that.stopAudioNode(source, start+2, stopGainNode);
+				stopAudioTime = 2;
 				// s
 				oscillator.type = "triangle";
-				gainNode2.gain.value = velocity*0.4;
-				gainNode2.gain.setValueAtTime(velocity*0.4, start);
-				gainNode2.gain.setTargetAtTime(0, start, 0.35);
 				var f = option.pitch==51 ? 372 : 400;
 				oscillator.frequency.setValueAtTime(f, start);
-				that.stopAudioNode(oscillator, start+2, stopGainNode2);
+				gainNode2.gain.setValueAtTime(velocity*0.4, start);
+				gainNode2.gain.setTargetAtTime(0, start, 0.35);
+				stopAudioTime2 = 2;
 				break;
 			case 52: // Chinese Cymbal
 				// w
-				gainNode.gain.setValueAtTime(velocity*1.3, start);
-				gainNode.gain.setTargetAtTime(0, start, 0.35);
-				source.playbackRate.value = 0.17;
 				source.playbackRate.setValueAtTime(0.17, start);
 				source.playbackRate.linearRampToValueAtTime(0.25, start+0.1);
 				source.playbackRate.linearRampToValueAtTime(0.5, start+0.6);
-				that.stopAudioNode(source, start+2, stopGainNode);
+				gainNode.gain.setValueAtTime(velocity*1.3, start);
+				gainNode.gain.setTargetAtTime(0, start, 0.35);
+				stopAudioTime = 2;
 				// s
 				oscillator.type = "triangle";
-				gainNode2.gain.value = velocity*0.2;
+				oscillator.frequency.setValueAtTime(382, start);
 				gainNode2.gain.setValueAtTime(velocity*0.2, start);
 				gainNode2.gain.setTargetAtTime(0, start, 0.35);
-				oscillator.frequency.setValueAtTime(382, start);
-				that.stopAudioNode(oscillator, start+2, stopGainNode2);
+				stopAudioTime2 = 2;
 				break;
 			case 53: // Ride Bell
 				// w
+				source.playbackRate.setValueAtTime(0.6, start);
 				gainNode.gain.setValueAtTime(velocity, start);
 				gainNode.gain.setTargetAtTime(0, start, 0.3);
-				source.playbackRate.value = 0.6;
-				source.playbackRate.setValueAtTime(0.6, start);
-				that.stopAudioNode(source, start+2, stopGainNode);
+				stopAudioTime = 2;
 				// s
 				oscillator.type = "triangle";
-				gainNode2.gain.value = velocity*0.5;
+				oscillator.frequency.setValueAtTime(377, start);
 				gainNode2.gain.setValueAtTime(velocity*0.5, start);
 				gainNode2.gain.setTargetAtTime(0, start, 0.35);
-				oscillator.frequency.setValueAtTime(377, start);
-				that.stopAudioNode(oscillator, start+2, stopGainNode2);
+				stopAudioTime2 = 2;
 				break;
 			case 55: // Splash Cymbal
 				// w
-				gainNode.gain.setValueAtTime(velocity*1.5, start);
-				gainNode.gain.setTargetAtTime(0, start, 0.3);
-				source.playbackRate.value = 0.5;
 				source.playbackRate.setValueAtTime(0.5, start);
 				source.playbackRate.linearRampToValueAtTime(0.8, start+0.1);
 				source.playbackRate.linearRampToValueAtTime(1, start+0.6);
-				that.stopAudioNode(source, start+1.75, stopGainNode);
+				gainNode.gain.setValueAtTime(velocity*1.5, start);
+				gainNode.gain.setTargetAtTime(0, start, 0.3);
+				stopAudioTime = 1.75;
 				// s
-				gainNode2.gain.value = 0
-				that.stopAudioNode(oscillator, 0, stopGainNode2);
+				gainNode2.gain.value = 0;
+				stopAudioTime2 = 0;
 				break;
 			// Bell
 			case 54: // Tambourine
 			case 56: // Cowbell
 				// w
+				source.playbackRate.setValueAtTime(1, start);
 				var v = option.pitch==54 ? 1 : 0.4;
 				var len = option.pitch==54 ? 0.01 : 0;
-				gainNode.gain.value = velocity*v;
 				gainNode.gain.setValueAtTime(velocity*v/2, start);
 				gainNode.gain.linearRampToValueAtTime(velocity*v, start+len);
 				gainNode.gain.setTargetAtTime(0, start+len, 0.05);
-				source.playbackRate.value = 1;
-				source.playbackRate.setValueAtTime(1, start);
-				that.stopAudioNode(source, start+0.3, stopGainNode);
+				stopAudioTime = 0.3;
 				// s
+				oscillator.frequency.setValueAtTime(option.pitch==54 ? 6000 : 495, start);
 				var v = option.pitch==54 ? 1 : 2;
-				gainNode2.gain.value = velocity*v;
 				gainNode2.gain.setValueAtTime(velocity*v/2, start);
 				gainNode2.gain.linearRampToValueAtTime(velocity*v, start+len);
 				gainNode2.gain.setTargetAtTime(0, start+len, 0.05);
-				oscillator.frequency.setValueAtTime(option.pitch==54 ? 6000 : 495, start);
-				that.stopAudioNode(oscillator, start+0.3, stopGainNode2);
+				stopAudioTime2 = 0.3;
 				break;
 			case 58: // Vibraslap
 				// w s
+				source.playbackRate.setValueAtTime(0.6, start);
+				source.playbackRate.linearRampToValueAtTime(1, start+0.8);
 				var len = 40;
 				gainNode.gain.setValueAtTime(velocity*1.5, start);
 				gainNode2.gain.setValueAtTime(velocity*0.5, start);
@@ -14623,40 +14643,37 @@ var PicoAudio = (function(){
 				}
 				gainNode.gain.linearRampToValueAtTime(0, start+0.8);
 				gainNode2.gain.linearRampToValueAtTime(0, start+0.8);
-				source.playbackRate.value = 0.6;
-				source.playbackRate.setValueAtTime(0.6, start);
-				source.playbackRate.linearRampToValueAtTime(1, start+0.8);
-				that.stopAudioNode(source, start+0.8, stopGainNode);
+				stopAudioTime = 0.8;
 				// s
 				oscillator.type = "triangle";
 				oscillator.frequency.setValueAtTime(1000, start);
-				that.stopAudioNode(oscillator, start+0.8, stopGainNode2);
+				stopAudioTime2 = 0.8;
 				break;
 			case 80: // Mute Triangle
 				// w
 				source.playbackRate.value = 1;
 				gainNode.gain.setValueAtTime(velocity*0.5, start);
 				gainNode.gain.setTargetAtTime(0, start, 0.015);
-				that.stopAudioNode(source, start+0.2, stopGainNode);
+				stopAudioTime = 0.2;
 				// s
 				oscillator.type = "triangle";
+				oscillator.frequency.setValueAtTime(6000, start);
 				gainNode2.gain.setValueAtTime(velocity*2.5, start);
 				gainNode2.gain.setTargetAtTime(0, start, 0.02);
-				oscillator.frequency.setValueAtTime(6000, start);
-				that.stopAudioNode(oscillator, start+0.3, stopGainNode2);
+				stopAudioTime2 = 0.3;
 				break;
 			case 81: // Open Triangle
 				// w
 				source.playbackRate.value = 5;
 				gainNode.gain.setValueAtTime(velocity*0.5, start);
 				gainNode.gain.setTargetAtTime(0, start, 0.08);
-				that.stopAudioNode(source, start+0.75, stopGainNode);
+				stopAudioTime = 0.75;
 				// s
 				oscillator.type = "triangle";
+				oscillator.frequency.setValueAtTime(6000, start);
 				gainNode2.gain.setValueAtTime(velocity*2.5, start);
 				gainNode2.gain.setTargetAtTime(0, start, 0.18);
-				oscillator.frequency.setValueAtTime(6000, start);
-				that.stopAudioNode(oscillator, start+1, stopGainNode2);
+				stopAudioTime2 = 1;
 				break;
 			// Other Percussion
 			case 60: // High Bongo
@@ -14670,37 +14687,354 @@ var PicoAudio = (function(){
 				// w
 				source.playbackRate.value = 0.03;
 				gainNode.gain.setValueAtTime(velocity*1.2, start);
-				that.stopAudioNode(source, start+0.03, stopGainNode);
+				stopAudioTime = 0.03;
 				// s
-				gainNode2.gain.setValueAtTime(velocity*1.8, start);
-				gainNode2.gain.linearRampToValueAtTime(0, start+len);
 				oscillator.frequency.setValueAtTime(r*0.97, start);
 				oscillator.frequency.linearRampToValueAtTime(r, start+len);
-				that.stopAudioNode(oscillator, start+len, stopGainNode2);
+				gainNode2.gain.setValueAtTime(velocity*1.8, start);
+				gainNode2.gain.linearRampToValueAtTime(0, start+len);
+				stopAudioTime2 = len;
 				break;
-			// Cowbell, Claves
-			case 75:
+			case 65: // High Timbale
+			case 66: // Low Timbale
+				var len = option.pitch==65 ? 0.22 : 0.25;
 				// w
-				source.playbackRate.value = 0.01;
-				that.stopAudioNode(source, start+0.1, stopGainNode);
+				source.playbackRate.setValueAtTime(option.pitch==65 ? 0.25 : 0.22, start);
+				source.playbackRate.linearRampToValueAtTime(option.pitch==65 ? 0.2 : 0.18, start+len);
+				gainNode.gain.setValueAtTime(velocity*1.3, start);
+				gainNode.gain.linearRampToValueAtTime(velocity*0.2, start+len/3.5);
+				gainNode.gain.linearRampToValueAtTime(0, start+len);
+				stopAudioTime = len;
 				// s
-				gainNode2.gain.setValueAtTime(velocity, start);
-				gainNode2.gain.linearRampToValueAtTime(0.0, start+0.1);
-				oscillator.frequency.setValueAtTime(1000+48*(option.pitch-56), start);
-				that.stopAudioNode(oscillator, start+0.1, stopGainNode2);
+				oscillator.type = "triangle";
+				oscillator.frequency.setValueAtTime(option.pitch==65 ? 190*1.07 : 136*1.07, start);
+				oscillator.frequency.linearRampToValueAtTime(option.pitch==65 ? 190 : 136, start+0.1);
+				gainNode2.gain.setValueAtTime(velocity*3.2, start);
+				gainNode2.gain.setTargetAtTime(0, start, 0.08);
+				stopAudioTime2 = 1;
 				break;
-			default:
+			case 67: // High Agogo
+			case 68: // Low Agogo
+				// w
+				source.playbackRate.value = 1;
+				gainNode.gain.setValueAtTime(velocity*0.5, start);
+				gainNode.gain.linearRampToValueAtTime(velocity*0.1, start+0.02);
+				gainNode.gain.linearRampToValueAtTime(0, start+0.08);
+				stopAudioTime = 0.08;
+				// s
+				oscillator.type = "triangle";
+				oscillator.frequency.setValueAtTime(option.pitch==67 ? 1430 : 1055, start);
+				gainNode2.gain.setValueAtTime(velocity*2, start);
+				gainNode2.gain.setTargetAtTime(0, start, 0.06);
+				stopAudioTime2 = 0.75;
+				break;
+			case 69: // Cabasa
+				// w
+				source.playbackRate.value = 1;
+				gainNode.gain.setValueAtTime(velocity*0.3, start);
+				gainNode.gain.linearRampToValueAtTime(velocity*0.8, start+0.03);
+				gainNode.gain.linearRampToValueAtTime(0, start+0.08);
+				stopAudioTime = 0.08;
+				// s
+				gainNode2.gain.value = 0;
+				stopAudioTime2 = 0;
+				break;
+			case 70: // Maracas
+				// w
+				source.playbackRate.value = 1;
+				gainNode.gain.setValueAtTime(velocity*1.2, start);
+				gainNode.gain.linearRampToValueAtTime(0, start+0.06);
+				stopAudioTime = 0.06;
+				// s
+				gainNode2.gain.value = 0;
+				stopAudioTime2 = 0;
+				break;
+			case 71: // Short Whistle
+			case 72: // Long Whistle
+				// w
+				gainNode.gain.value = 0;
+				stopAudioTime = 0;
+				// s
+				var len = option.pitch==71 ? 0.07 : 0.4;
+				oscillator.type = "triangle";
+				oscillator.frequency.setValueAtTime(option.pitch==71 ? 2408 : 2105, start);
+				gainNode2.gain.setValueAtTime(0, start);
+				for(var i=0; i<len*74; i++){
+					gainNode2.gain.linearRampToValueAtTime(velocity*2.5, start+(i+0.2)/75);
+					gainNode2.gain.linearRampToValueAtTime(velocity*0.5, start+(i+0.9)/75);
+				}
+				gainNode2.gain.linearRampToValueAtTime(0, start+len);
+				stopAudioTime2 = len;
+				break;
+			case 73: // Short Guiro
+			case 74: // Long Guiro
+				// w
+				var len = option.pitch==73 ? 0.05 : 0.35;
+				source.playbackRate.setValueAtTime(option.pitch==73 ? 0.2 : 0.2, start);
+				source.playbackRate.linearRampToValueAtTime(option.pitch==73 ? 0.7 : 0.5, start+len);
+				gainNode.gain.value = velocity*0.2;
+				for(var i=0; i<len*100; i++){
+					gainNode.gain.setValueAtTime(velocity*0.4, start+i/100);
+					gainNode.gain.setValueAtTime(velocity*0.9, start+(i+0.7)/100);
+				}
+				stopAudioTime = len;
+				// s
+				gainNode2.gain.value = 0;
+				stopAudioTime2 = 0;
+				break;
+			case 75: // Claves
+				// w
+				gainNode.gain.value = 0;
+				stopAudioTime = 0;
+				// s
+				oscillator.frequency.setValueAtTime(2181, start);
+				gainNode2.gain.setValueAtTime(0, start);
+				gainNode2.gain.setValueAtTime(velocity*2, start+0.005);
+				gainNode2.gain.linearRampToValueAtTime(velocity*1, start+0.015);
+				gainNode2.gain.linearRampToValueAtTime(velocity*1.5, start+0.025);
+				gainNode2.gain.linearRampToValueAtTime(0, start+0.08);
+				stopAudioTime2 = 0.1;
+				break;
+			case 76: // High Wood Block
+			case 77: // Low Wood Block
+				// w
+				source.playbackRate.value = 0.1;
+				gainNode.gain.setValueAtTime(velocity*1.2, start);
+				gainNode.gain.linearRampToValueAtTime(0, start+0.015);
+				stopAudioTime = 0.015;
+				// s
+				oscillator.frequency.setValueAtTime(option.pitch==76 ? 800 : 600, start);
+				gainNode2.gain.setValueAtTime(0, start);
+				gainNode2.gain.linearRampToValueAtTime(velocity*3, start+0.005);
+				gainNode2.gain.setTargetAtTime(0, start+0.005, 0.02);
+				stopAudioTime2 = 0.2;
+				break;
+			case 78: // Close Cuica
+			case 79: // Open Cuica
+				// w
+				gainNode.gain.value = 0;
+				stopAudioTime = 0;
+				// s
+				var len = 0.18;
+				var f = option.pitch==78 ? 750 : 270;
+				oscillator.frequency.setValueAtTime(f, start);
+				oscillator.frequency.linearRampToValueAtTime(f, start+len/3);
+				if (option.pitch==78) oscillator.frequency.linearRampToValueAtTime(f*0.9, start+len);
+				gainNode2.gain.setValueAtTime(0, start);
+				gainNode2.gain.linearRampToValueAtTime(velocity*1.5, start+0.005);
+				gainNode2.gain.linearRampToValueAtTime(velocity*0.5, start+0.02);
+				gainNode2.gain.linearRampToValueAtTime(velocity*3, start+0.04);
+				gainNode2.gain.linearRampToValueAtTime(velocity*2, start+len/4*3);
+				gainNode2.gain.linearRampToValueAtTime(0, start+len);
+				stopAudioTime2 = len;
+				break;
+			// GS, GM2
+			case 27: // High Q
+				// w
+				source.playbackRate.value = 1;
+				gainNode.gain.setValueAtTime(velocity*1, start);
+				gainNode.gain.linearRampToValueAtTime(0, start+0.002);
+				stopAudioTime = 0.002;
+				// s
+				oscillator.frequency.setValueAtTime(1500, start);
+				oscillator.frequency.linearRampToValueAtTime(280, start+0.015);
+				oscillator.frequency.linearRampToValueAtTime(0, start+0.07);
+				gainNode2.gain.setValueAtTime(velocity*1.9, start);
+				gainNode2.gain.linearRampToValueAtTime(0, start+0.07);
+				stopAudioTime2 = 0.07;
+				break;
+			case 28: // Slap
+				// w
+				source.playbackRate.value = 1;
+				gainNode.gain.setValueAtTime(velocity*1.3, start);
+				gainNode.gain.linearRampToValueAtTime(0, start+0.010);
+				gainNode.gain.setValueAtTime(velocity*1.1, start+0.0101);
+				gainNode.gain.linearRampToValueAtTime(0, start+0.020);
+				gainNode.gain.setValueAtTime(velocity*0.9, start+0.0201);
+				gainNode.gain.setTargetAtTime(0, start+0.0201, 0.03);
+				stopAudioTime = 0.2;
+				// s
+				gainNode2.gain.value = 0;
+				stopAudioTime2 = 0;
+				break;
+			case 29: // Scratch Push
+			case 30: // Scratch Pull
+				var t1 = option.pitch==29 ? 0.05 : 0.07;
+				var t2 = option.pitch==29 ? 0.06 : 0.09;
+				var t3 = option.pitch==29 ? 0.07 : 0.11;
+				var t4 = option.pitch==29 ? 0.1 : 0.15;
+				var t5 = option.pitch==29 ? 0.25 : 0.4;
+				// w
+				var r1 = option.pitch==29 ? 0.1 : 0.06;
+				var r2 = option.pitch==29 ? 0.3 : 0.2;
+				var r3 = option.pitch==29 ? 0.18 : 0.12;
+				source.playbackRate.setValueAtTime(r1, start);
+				source.playbackRate.linearRampToValueAtTime(r2, start+t1);
+				source.playbackRate.linearRampToValueAtTime(0, start+t2);
+				source.playbackRate.linearRampToValueAtTime(r2, start+t3);
+				source.playbackRate.linearRampToValueAtTime(r3, start+t4);
+				source.playbackRate.linearRampToValueAtTime(0, start+t5);
+				gainNode.gain.setValueAtTime(0, start);
+				gainNode.gain.linearRampToValueAtTime(velocity*0.4, start+t1);
+				gainNode.gain.linearRampToValueAtTime(velocity*0.1, start+t3);
+				gainNode.gain.linearRampToValueAtTime(velocity*0.3, start+t4);
+				gainNode.gain.linearRampToValueAtTime(0, start+t5);
+				stopAudioTime = t5;
+				// s
+				var r4 = option.pitch==29 ? 500 : 400;
+				var r5 = option.pitch==29 ? 1950 : 1200;
+				var r6 = option.pitch==29 ? 430 : 250;
+				oscillator.frequency.setValueAtTime(r4, start);
+				oscillator.frequency.linearRampToValueAtTime(r5, start+t1);
+				oscillator.frequency.linearRampToValueAtTime(0, start+t2);
+				oscillator.frequency.linearRampToValueAtTime(r5, start+t3);
+				oscillator.frequency.linearRampToValueAtTime(r6, start+t4);
+				oscillator.frequency.linearRampToValueAtTime(0, start+t5);
+				gainNode2.gain.setValueAtTime(0, start);
+				gainNode2.gain.linearRampToValueAtTime(velocity*0.7, start+t1);
+				gainNode2.gain.linearRampToValueAtTime(velocity*0.2, start+t3);
+				gainNode2.gain.linearRampToValueAtTime(velocity*0.6, start+t4);
+				gainNode2.gain.linearRampToValueAtTime(0, start+t5);
+				stopAudioTime2 = t5;
+				break;
+			case 31: // Sticks
+				// w
+				source.playbackRate.setValueAtTime(0.4, start);
+				source.playbackRate.linearRampToValueAtTime(0.5, start+0.015);
+				gainNode.gain.setValueAtTime(velocity*1.2, start);
+				gainNode.gain.setTargetAtTime(0, start, 0.035);
+				stopAudioTime = 0.3;
+				// s
+				oscillator.frequency.setValueAtTime(3140, start);
+				gainNode2.gain.setValueAtTime(velocity*1.2, start);
+				gainNode2.gain.setTargetAtTime(0, start, 0.012);
+				stopAudioTime2 = 0.3;
+				break;
+			case 32: // Square Click
+				// w
+				gainNode.gain.value = 0;
+				stopAudioTime = 0;
+				// s
+				oscillator.type = "square";
+				oscillator.frequency.setValueAtTime(333, start);
+				gainNode2.gain.setValueAtTime(0, start);
+				gainNode2.gain.linearRampToValueAtTime(velocity*4, start+0.0016);
+				gainNode2.gain.linearRampToValueAtTime(0, start+0.0032);
+				stopAudioTime2 = 0.0032;
+				break;
+			case 33: // Metronome Click
+			case 34: // Metronome Bell
+				// w
+				source.playbackRate.setValueAtTime(0.17, start);
+				source.playbackRate.linearRampToValueAtTime(0.22, start+0.01);
+				gainNode.gain.setValueAtTime(velocity*1.5, start);
+				gainNode.gain.setTargetAtTime(0, start, 0.015);
+				stopAudioTime = 0.3;
+				// s
+				if (option.pitch==34) {
+					oscillator.frequency.setValueAtTime(2040, start);
+					gainNode2.gain.setValueAtTime(velocity*1, start);
+					gainNode2.gain.setTargetAtTime(0, start, 0.12);
+					stopAudioTime2 = 1.1;
+				} else {
+					gainNode2.gain.value = 0;
+					stopAudioTime2 = 0;
+				}
+				break;
+			case 82: // Shaker
+				// w
+				source.playbackRate.value = 1;
+				gainNode.gain.setValueAtTime(velocity*0.5, start);
+				gainNode.gain.linearRampToValueAtTime(velocity, start+0.02);
+				gainNode.gain.linearRampToValueAtTime(0, start+0.07);
+				stopAudioTime = 0.07;
+				// s
+				gainNode2.gain.value = 0;
+				stopAudioTime2 = 0;
+				break;
+			case 83: // Jingle Bell
+				// w
+				source.playbackRate.value = 1;
+				gainNode.gain.setValueAtTime(0, start);
+				gainNode.gain.linearRampToValueAtTime(velocity*1.2, start+0.015);
+				gainNode.gain.setTargetAtTime(0, start+0.015, 0.06);
+				stopAudioTime = 0.5;
+				// s
+				oscillator.type = "triangle";
+				oscillator.frequency.setValueAtTime(2709, start);
+				oscillator.frequency.linearRampToValueAtTime(2657, start+0.3);
+				gainNode2.gain.setValueAtTime(0, start);
+				gainNode2.gain.linearRampToValueAtTime(velocity*0.7, start+0.025);
+				gainNode2.gain.setTargetAtTime(0, start+0.025, 0.07);
+				stopAudioTime2 = 0.5;
+				break;
+			case 84: // Bell Tree
+				// w s
+				var invert = false;
+				source.playbackRate.value = 1;
+				for(var i=0; i<28; i++){
+					gainNode.gain.setValueAtTime(velocity*0.1, start+i/24*0.45);
+					gainNode.gain.setTargetAtTime(0, start+i/24*0.45, 0.01);
+					oscillator.frequency.setValueAtTime(1380*(1+(invert ? (24-i)/24 : i/24)), start+i/24*0.45);
+					gainNode2.gain.setValueAtTime(velocity*(0.2+i/24), start+i/24*0.45);
+					gainNode2.gain.setTargetAtTime(0, start+i/24*0.45, i==27 ? 0.2 : 0.01);
+				}
+				stopAudioTime = 0.5;
+				stopAudioTime2 = 1.5;
+				break;
+			case 85: // Castanets
+				// w
+				source.playbackRate.setValueAtTime(0.35, start);
+				gainNode.gain.setValueAtTime(velocity*1.3, start);
+				gainNode.gain.setTargetAtTime(0, start, 0.01);
+				stopAudioTime = 0.1;
+				// s
+				oscillator.frequency.setValueAtTime(1730, start);
+				gainNode2.gain.setValueAtTime(velocity*0.5, start);
+				gainNode2.gain.setTargetAtTime(0, start, 0.01);
+				stopAudioTime2 = 0.1;
+				break;
+			case 86: // Mute Surdo
+			case 87: // Open Surdo
+				// w
+				source.playbackRate.setValueAtTime(0.020, start);
+				source.playbackRate.linearRampToValueAtTime(0.015, start+0.5);
+				gainNode.gain.setValueAtTime(0, start);
+				gainNode.gain.linearRampToValueAtTime(velocity*2, start+0.005);
+				gainNode.gain.setTargetAtTime(0, start+0.005, option.pitch==86 ? 0.03 : 0.06);
+				stopAudioTime = 0.5;
+				// s
+				oscillator.frequency.setValueAtTime(88, start);
+				oscillator.frequency.linearRampToValueAtTime(86, start+0.3);
+				gainNode2.gain.setValueAtTime(velocity*2.5, start);
+				gainNode2.gain.setTargetAtTime(0, start, option.pitch==86 ? 0.1 : 0.3);
+				stopAudioTime2 = option.pitch==86 ? 0.5 : 1.5;
+				break;
+			default: 
 				source.playbackRate.value = option.pitch/69*2;
-				that.stopAudioNode(source, start+0.05, stopGainNode);
-				that.stopAudioNode(oscillator, 0, stopGainNode2);
+				stopAudioTime = 0.05;
+				stopAudioTime2 = 0;
+				break;
 		}
+		// 同じドラムの音が重ならないようにする機能
+		// 同じドラムが次すぐ鳴る場合、次が鳴る前に止めて音が重ならないようにする（同時発音数の増加を軽減する）
+		if (!this.settings.isSameDrumSoundOverlap && nextSameNoteOnInterval != -1) {
+			if (stopAudioTime > nextSameNoteOnInterval) {stopAudioTime = nextSameNoteOnInterval;}
+			if (stopAudioTime2 > nextSameNoteOnInterval) {stopAudioTime2 = nextSameNoteOnInterval;}
+		}
+		// ドラム音停止時間を設定
+		that.stopAudioNode(source, start+stopAudioTime, stopGainNode);
+		that.stopAudioNode(oscillator, start+stopAudioTime2, stopGainNode2);
+		// ドラム停止時間を設定
+		option.drumStopTime = option.startTime + (stopAudioTime >= stopAudioTime2 ? stopAudioTime : stopAudioTime2);
+		// 途中で曲停止する場合の処理を返す
 		return function(){
 			that.stopAudioNode(source, 0, stopGainNode, true);
 			that.stopAudioNode(oscillator, 0, stopGainNode2, true);
 		};
 	};
 
-	PicoAudio.prototype.createBaseNote = function(option, isExpression, nonChannel, nonStop){
+	PicoAudio.prototype.createBaseNote = function(option, isDrum, isExpression, nonChannel, nonStop){
 		var settings = this.settings;
 		var context = this.context;
 		var songStartTime = this.states.startTime;
@@ -14734,7 +15068,7 @@ var PicoAudio = (function(){
 		var start = option.startTime + songStartTime;
 		var stop = option.stopTime + songStartTime;
 		var pitch = settings.basePitch * Math.pow(Math.pow(2, 1/12), (option.pitch || 69) - 69);
-		var oscillator = channel!=9 ? context.createOscillator() : context.createBufferSource();
+		var oscillator = !isDrum ? context.createOscillator() : context.createBufferSource();
 		var panNode = context.createStereoPanner ? context.createStereoPanner() :
 				context.createPanner ? context.createPanner() : { pan: { setValueAtTime: function(){} } };
 		var gainNode = context.createGain();
@@ -14755,7 +15089,7 @@ var PicoAudio = (function(){
 			panNode.pan.value = panValue;
 		}
 
-		if(channel!=9){
+		if(!isDrum){
 			oscillator.type = option.type || "sine";
 			oscillator.detune.value = 0;
 			oscillator.frequency.value = pitch;
@@ -14811,7 +15145,7 @@ var PicoAudio = (function(){
 							return;
 						}
 						var reservePan = setTimeout(function(){
-							that.clearFunc("pan", reservePan)
+							that.clearFunc("pan", reservePan);
 							var v = p.value == 64 ? 0 : (p.value / 127) * 2 - 1;
 							if(v > 1.0) v = 1.0;
 							var a = v * 90;
@@ -14836,7 +15170,7 @@ var PicoAudio = (function(){
 		stopGainNode.connect(this.masterGainNode);
 		this.masterGainNode.connect(context.destination);
 
-		if(channel!=9 && option.modulation && (option.modulation.length >= 2 || option.modulation[0].value > 0)){
+		if(!isDrum && option.modulation && (option.modulation.length >= 2 || option.modulation[0].value > 0)){
 			var modulationOscillator = context.createOscillator();
 			var modulationGainNode = context.createGain();
 			firstPan = true;
@@ -14914,7 +15248,7 @@ var PicoAudio = (function(){
 		}
 
 		oscillator.start(start);
-		if(channel!=9 && !nonChannel && !nonStop){
+		if(!isDrum && !nonChannel && !nonStop){
 			this.stopAudioNode(oscillator, stop, stopGainNode);
 		}
 
@@ -15084,6 +15418,7 @@ var PicoAudio = (function(){
 			}
 		}
 		var currentTime = this.context.currentTime;
+		this.isPlayed = true;
 		states.isPlaying = true;
 		states.startTime = !states.startTime && !states.stopTime ? currentTime : (states.startTime + currentTime - states.stopTime);
 		states.stopFuncs = [];
@@ -15188,7 +15523,7 @@ var PicoAudio = (function(){
 			// サウンドが重すぎる
 			if(that.states.latencyLimitTime > 200){
 				cTimeSum = pTimeSum;
-				that.states.latencyLimitTime -= 30;
+				that.states.latencyLimitTime -= 5;
 				if(that.states.latencyLimitTime > 1000) that.states.latencyLimitTime = 1000;
 				// ノート先読みをかなり小さくする（フリーズ対策）
 				that.states.updateBufMaxTime = 1;
@@ -15270,7 +15605,7 @@ var PicoAudio = (function(){
 				var tempNote = noteOffAry[i];
 				var nowTime = context.currentTime - states.startTime;
 				if((tempNote.channel!=9 && tempNote.stopTime - nowTime <= 0)
-					|| (tempNote.channel==9 && tempNote.startTime + that.settings.dramMaxPlayLength - nowTime <= 0)){
+					|| (tempNote.channel==9 && tempNote.drumStopTime - nowTime <= 0)){
 					// noteOffAry.splice(i, 1); の高速化
 					if(i == 0) noteOffAry.shift();
 					else if(i == noteOffAry.length-1) noteOffAry.pop();
@@ -15340,8 +15675,6 @@ var PicoAudio = (function(){
 				})(reserve);
 			}
 			cnt++;
-			preTime = performance.now();
-			preTimeC = context.currentTime;
 			return updateNowTime;
 		})(updateNowTime);
 	};
@@ -15363,7 +15696,7 @@ var PicoAudio = (function(){
 		this.initStatus();
 		if (this.debug) {
 			var syoriTimeE = performance.now();
-			console.log("setData time", syoriTimeE - syoriTimeS)
+			console.log("setData time", syoriTimeE - syoriTimeS);
 		}
 		return this;
 	};
@@ -15472,7 +15805,7 @@ var PicoAudio = (function(){
 
 	PicoAudio.prototype.measurePerformanceReverb = function(){
 		// 0.5秒パフォーマンス計測して、リバーブONにするか判断する
-		var max = 150000; // 0.5秒以内にここまで計算できればリバーブON
+		var max = 500000; // 0.5秒以内にここまで計算できればリバーブON
 		var startTime = performance.now();
 		for (var i=0;i<max;i++) {
 			if (performance.now()-startTime>=500) break;
@@ -15792,6 +16125,7 @@ var PicoAudio = (function(){
 			var nowNoteOnIdxAry = [];
 			var indIdx = channel.indicesHead;
 			var indices = channel.indices;
+			var nextNoteOnAry = new Array(128);
 			while(indIdx!=-1){
 				var tick = indices[indIdx];
 				var p = indices[indIdx+2];
@@ -15846,8 +16180,16 @@ var PicoAudio = (function(){
 								reverb: [{timing:tick,time:time,value:reverb}],
 								chorus: [{timing:tick,time:time,value:chorus}],
 								instrument: instrument,
-								channel: ch
+								channel: ch,
+								nextSameNoteOnInterval: -1,
+								drumStopTime: 2 // 再生時に使う
 							};
+							// 前回鳴っていた同音ノートに次のノートオン時間を入れる
+							var prevNote = nextNoteOnAry[smf[p+1]];
+							if(prevNote){
+								prevNote.nextSameNoteOnInterval = time - prevNote.startTime;
+							}
+							nextNoteOnAry[smf[p+1]] = note;
 							// If this note is NoteOn, change to NoteOFF.
 							nowNoteOnIdxAry.some(function(idx,i){
 								var note = channel.notes[idx];
