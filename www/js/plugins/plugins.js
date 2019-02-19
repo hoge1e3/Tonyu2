@@ -4,7 +4,8 @@ define(["WebSite"],function (WebSite){
         box2d:{src: "Box2dWeb-2.1.a.3.min.js",detection:/BodyActor/,symbol:"Box2D" },
         timbre: {src:"timbre.js",detection:/\bplay(SE)?\b/,symbol:"T" },
         gif: {src:"gif-concat.js",detection:/GIFWriter/,symbol:"GIF"},
-        jquery_ui: {src:"jquery-ui/", detection:/\$InputBox/}
+        // single js is required for runScript1.js
+        jquery_ui: {src:"jquery-ui.js", detection:/\$InputBox/,symbol:"$.ui"}
     };
     plugins.installed=installed;
     plugins.detectNeeded=function (src,res) {
@@ -17,8 +18,17 @@ define(["WebSite"],function (WebSite){
     plugins.loaded=function (name) {
         var i=installed[name];
         if (!i) throw new Error("plugin not found: "+name);
-        return window[i.symbol];
+        return hasInGlobal(i.symbol);
     };
+    function hasInGlobal(name) {
+        // name: dot ok
+        var g=window;
+        name.split(".").forEach(function (e) {
+            if (!g) return;
+            g=g[e];
+        });
+        return g;
+    }
     plugins.loadAll=function (names,options) {
         options=convOpt(options);
         var namea=[];

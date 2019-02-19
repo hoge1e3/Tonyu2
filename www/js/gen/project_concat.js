@@ -94,7 +94,7 @@
 	};
 	R.real=real;
 	var requireSimulator=R;
-	// Created at Wed Dec 19 2018 12:12:01 GMT+0900 (東京 (標準時))
+	// Created at Tue Feb 19 2019 14:29:07 GMT+0900 (東京 (標準時))
 requireSimulator.setName('Util');
 Util=(function () {
 
@@ -4148,7 +4148,7 @@ return Tonyu=function () {
 					if (!(this instanceof res)) useNew(fullName);
 				})
 			);
-			res.prototype=bless(parent,{});
+			res.prototype=bless(parent,{constructor:res});
 			if (isShim) {
 				res.meta={isShim:true,extenderFullName:fullName};
 			} else {
@@ -4379,7 +4379,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,is:is,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,DeferredUtil:DU,
-			VERSION:1545189116214,//EMBED_VERSION
+			VERSION:1550554142697,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -14962,7 +14962,8 @@ define(["WebSite"],function (WebSite){
         box2d:{src: "Box2dWeb-2.1.a.3.min.js",detection:/BodyActor/,symbol:"Box2D" },
         timbre: {src:"timbre.js",detection:/\bplay(SE)?\b/,symbol:"T" },
         gif: {src:"gif-concat.js",detection:/GIFWriter/,symbol:"GIF"},
-        jquery_ui: {src:"jquery-ui.js", detection:/\$InputBox/,symbol:"JQUI"}
+        // single js is required for runScript1.js
+        jquery_ui: {src:"jquery-ui.js", detection:/\$InputBox/,symbol:"$.ui"}
     };
     plugins.installed=installed;
     plugins.detectNeeded=function (src,res) {
@@ -14975,8 +14976,17 @@ define(["WebSite"],function (WebSite){
     plugins.loaded=function (name) {
         var i=installed[name];
         if (!i) throw new Error("plugin not found: "+name);
-        return window[i.symbol];
+        return hasInGlobal(i.symbol);
     };
+    function hasInGlobal(name) {
+        // name: dot ok
+        var g=window;
+        name.split(".").forEach(function (e) {
+            if (!g) return;
+            g=g[e];
+        });
+        return g;
+    }
     plugins.loadAll=function (names,options) {
         options=convOpt(options);
         var namea=[];
@@ -19619,7 +19629,10 @@ requireSimulator.setName('UIDiag');
 define(["UI"],function (UI) {
     var UIDiag={};
     function parseMesg(mesg,defTitle) {
-        if (typeof mesg==="string" || ( (typeof $!=="undefined") && mesg instanceof $)) return {
+        if (typeof mesg==="string" ||
+        typeof mesg==="number" ||
+        typeof mesg==="boolean" ||
+        ( (typeof $!=="undefined") && mesg instanceof $)) return {
             title:mesg.title||defTitle,
             body:mesg
         };
@@ -23110,7 +23123,7 @@ function (UI,extLink,mkrun,Tonyu,zip,DU) {
                 vars.progress.text(f.name());
                 return DU.timeout(0);
             };
-            if (type==="dir") opt.dest=FS.get(model.dest);
+            if (type==="dir") opt.dest=FS.get(FS.PathUtil.directorify(model.dest));
             return mkrun.run2(prj,type, opt ).then(function (r) {
                 /*if (outtype.value==="zip") {
                     zip.zip(FS.get(model.dest)).then(function () {
