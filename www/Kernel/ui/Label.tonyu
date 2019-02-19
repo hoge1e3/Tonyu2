@@ -1,15 +1,18 @@
 extends Actor;
 native Tonyu;
 \new(x,y,f){
-    if (typeof x=="object") {
+    /*if (typeof x=="object") {
         x.layer=x.layer||$frontLayer;
-    }
+    }*/
     super(x,y,-1);
     if (x==null) x=50;
     if (y==null) y=50;
     if (typeof template!=="string" && _text==null) {
         text="text";
     }
+}
+\defaultLayer{
+    return $frontLayer;
 }
 \text {
     if (typeof template!=="string") return _text;

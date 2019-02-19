@@ -1,7 +1,10 @@
 define(["UI"],function (UI) {
     var UIDiag={};
     function parseMesg(mesg,defTitle) {
-        if (typeof mesg==="string" || ( (typeof $!=="undefined") && mesg instanceof $)) return {
+        if (typeof mesg==="string" ||
+        typeof mesg==="number" ||
+        typeof mesg==="boolean" ||
+        ( (typeof $!=="undefined") && mesg instanceof $)) return {
             title:mesg.title||defTitle,
             body:mesg
         };

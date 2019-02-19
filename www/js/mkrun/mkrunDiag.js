@@ -73,7 +73,7 @@ function (UI,extLink,mkrun,Tonyu,zip,DU) {
                 vars.progress.text(f.name());
                 return DU.timeout(0);
             };
-            if (type==="dir") opt.dest=FS.get(model.dest);
+            if (type==="dir") opt.dest=FS.get(FS.PathUtil.directorify(model.dest));
             return mkrun.run2(prj,type, opt ).then(function (r) {
                 /*if (outtype.value==="zip") {
                     zip.zip(FS.get(model.dest)).then(function () {

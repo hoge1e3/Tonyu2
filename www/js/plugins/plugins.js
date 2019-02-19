@@ -4,7 +4,7 @@ define(["WebSite"],function (WebSite){
         box2d:{src: "Box2dWeb-2.1.a.3.min.js",detection:/BodyActor/,symbol:"Box2D" },
         timbre: {src:"timbre.js",detection:/\bplay(SE)?\b/,symbol:"T" },
         gif: {src:"gif-concat.js",detection:/GIFWriter/,symbol:"GIF"},
-        jquery_ui: {src:"jquery-ui.js", detection:/\$InputBox/,symbol:"JQUI"}
+        jquery_ui: {src:"jquery-ui/", detection:/\$InputBox/}
     };
     plugins.installed=installed;
     plugins.detectNeeded=function (src,res) {

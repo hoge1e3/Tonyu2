@@ -30592,48 +30592,48 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         
-        //$LASTPOS=87000049;//kernel.Label:49
-        if (typeof  x=="object") {
-          //$LASTPOS=87000084;//kernel.Label:84
-          x.layer=x.layer||Tonyu.globals.$frontLayer;
-          
-        }
-        //$LASTPOS=87000126;//kernel.Label:126
+        //$LASTPOS=87000130;//kernel.Label:130
         __superClass.apply( _this, [x,y,- 1]);
-        //$LASTPOS=87000146;//kernel.Label:146
+        //$LASTPOS=87000150;//kernel.Label:150
         if (x==null) {
-          //$LASTPOS=87000159;//kernel.Label:159
+          //$LASTPOS=87000163;//kernel.Label:163
           x=50;
         }
-        //$LASTPOS=87000170;//kernel.Label:170
+        //$LASTPOS=87000174;//kernel.Label:174
         if (y==null) {
-          //$LASTPOS=87000183;//kernel.Label:183
+          //$LASTPOS=87000187;//kernel.Label:187
           y=50;
         }
-        //$LASTPOS=87000194;//kernel.Label:194
+        //$LASTPOS=87000198;//kernel.Label:198
         if (typeof  _this.template!=="string"&&_this._text==null) {
-          //$LASTPOS=87000252;//kernel.Label:252
+          //$LASTPOS=87000256;//kernel.Label:256
           _this.text="text";
           
         }
+      },
+      __getter__defaultLayer :function _trc_Label___getter__defaultLayer() {
+        "use strict";
+        var _this=this;
+        
+        return Tonyu.globals.$frontLayer;
       },
       __getter__text :function _trc_Label___getter__text() {
         "use strict";
         var _this=this;
         
-        //$LASTPOS=87000289;//kernel.Label:289
+        //$LASTPOS=87000337;//kernel.Label:337
         if (typeof  _this.template!=="string") {
           return _this._text;
         }
-        return _this.template.replace(/[\$\@][A-Za-z0-9\.]* ?/g,(function anonymous_391(v) {
+        return _this.template.replace(/[\$\@][A-Za-z0-9\.]* ?/g,(function anonymous_439(v) {
           
-          //$LASTPOS=87000407;//kernel.Label:407
+          //$LASTPOS=87000455;//kernel.Label:455
           v=v.replace(/ $/,"");
-          //$LASTPOS=87000438;//kernel.Label:438
+          //$LASTPOS=87000486;//kernel.Label:486
           if (v=="") {
             return "$";
           }
-          //$LASTPOS=87000470;//kernel.Label:470
+          //$LASTPOS=87000518;//kernel.Label:518
           if (v.match(/^@/)) {
             return _this.exapndVal(_this.target,v.substring(1).split("."));
             
@@ -30647,13 +30647,13 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         
-        //$LASTPOS=87000685;//kernel.Label:685
+        //$LASTPOS=87000733;//kernel.Label:733
         while (flds.length>0) {
-          //$LASTPOS=87000718;//kernel.Label:718
+          //$LASTPOS=87000766;//kernel.Label:766
           if (! obj) {
             return "";
           }
-          //$LASTPOS=87000748;//kernel.Label:748
+          //$LASTPOS=87000796;//kernel.Label:796
           obj=obj[flds.shift()];
           
         }
@@ -30671,15 +30671,15 @@ Tonyu.klass.define({
           for(var __cnt=100 ; __cnt--;) {
             switch (__pc) {
             case 0:
-              //$LASTPOS=87000685;//kernel.Label:685
+              //$LASTPOS=87000733;//kernel.Label:733
             case 1:
               if (!(flds.length>0)) { __pc=3     ; break; }
-              //$LASTPOS=87000718;//kernel.Label:718
+              //$LASTPOS=87000766;//kernel.Label:766
               if (!(! obj)) { __pc=2     ; break; }
               _thread.exit("");return;
             case 2     :
               
-              //$LASTPOS=87000748;//kernel.Label:748
+              //$LASTPOS=87000796;//kernel.Label:796
               obj=obj[flds.shift()];
               __pc=1;break;
             case 3     :
@@ -30694,15 +30694,15 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         
-        //$LASTPOS=87000814;//kernel.Label:814
+        //$LASTPOS=87000862;//kernel.Label:862
         delete _this.template;
-        //$LASTPOS=87000836;//kernel.Label:836
+        //$LASTPOS=87000884;//kernel.Label:884
         _this._text=v;
       },
       __dummy: false
     };
   },
-  decls: {"methods":{"main":{"nowait":false},"new":{"nowait":false},"__getter__text":{"nowait":true},"expandVal":{"nowait":false},"__setter__text":{"nowait":true}},"fields":{"template":{},"_text":{},"exapndVal":{}}}
+  decls: {"methods":{"main":{"nowait":false},"new":{"nowait":false},"__getter__defaultLayer":{"nowait":true},"__getter__text":{"nowait":true},"expandVal":{"nowait":false},"__setter__text":{"nowait":true}},"fields":{"template":{},"_text":{},"exapndVal":{}}}
 });
 Tonyu.klass.define({
   fullName: 'kernel.MapEditor',

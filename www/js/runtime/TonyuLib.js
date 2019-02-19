@@ -148,7 +148,7 @@ return Tonyu=function () {
 					if (!(this instanceof res)) useNew(fullName);
 				})
 			);
-			res.prototype=bless(parent,{});
+			res.prototype=bless(parent,{constructor:res});
 			if (isShim) {
 				res.meta={isShim:true,extenderFullName:fullName};
 			} else {
