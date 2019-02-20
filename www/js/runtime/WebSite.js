@@ -98,7 +98,11 @@ define(["FS","Platform"], function (FS,Platform) {
 		if (loc.match(/localhost\/tonyu2/)) {
 			WebSite.scriptServer="http://localhost/tonyu2/";
 		} else {
-			WebSite.scriptServer="https://edit.tonyu.jp/";
+			if (loc.match(/edit\.tonyu\.jp\/n\//)) {
+				WebSite.scriptServer="https://edit.tonyu.jp/n/";				
+			} else {
+				WebSite.scriptServer="https://edit.tonyu.jp/";
+			}
 		}
 		WebSite.pluginTop=WebSite.scriptServer+"js/plugins";
 		WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
