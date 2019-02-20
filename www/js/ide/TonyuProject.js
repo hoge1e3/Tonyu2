@@ -187,10 +187,12 @@ return Tonyu.Project=function (dir, kernelDir) {
         }
     };
     TPR.requestPlugin=function (name) {
-        if (plugins.loaded(name)) return;
         var opt=TPR.getOptions();
-        opt.plugins[name]=1;
-        TPR.setOptions(opt);
+        if (!opt.plugins[name]) {
+            opt.plugins[name]=1;
+            TPR.setOptions(opt);            
+        }
+        if (plugins.loaded(name)) return;
         var req=new Error("必要なプラグイン"+name+"を追加しました。もう一度実行してください");
         req.pluginName=name;
         throw req;

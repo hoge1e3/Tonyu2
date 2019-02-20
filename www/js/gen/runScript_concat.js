@@ -94,7 +94,7 @@
 	};
 	R.real=real;
 	var requireSimulator=R;
-	// Created at Tue Feb 19 2019 22:19:20 GMT+0900 (東京 (標準時))
+	// Created at Wed Feb 20 2019 11:57:46 GMT+0900 (東京 (標準時))
 requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
@@ -4177,7 +4177,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,is:is,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,DeferredUtil:DU,
-			VERSION:1550582327120,//EMBED_VERSION
+			VERSION:1550631426871,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -13648,10 +13648,12 @@ return Tonyu.Project=function (dir, kernelDir) {
         }
     };
     TPR.requestPlugin=function (name) {
-        if (plugins.loaded(name)) return;
         var opt=TPR.getOptions();
-        opt.plugins[name]=1;
-        TPR.setOptions(opt);
+        if (!opt.plugins[name]) {
+            opt.plugins[name]=1;
+            TPR.setOptions(opt);            
+        }
+        if (plugins.loaded(name)) return;
         var req=new Error("必要なプラグイン"+name+"を追加しました。もう一度実行してください");
         req.pluginName=name;
         throw req;
