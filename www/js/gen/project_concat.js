@@ -94,7 +94,7 @@
 	};
 	R.real=real;
 	var requireSimulator=R;
-	// Created at Wed Feb 20 2019 11:57:20 GMT+0900 (東京 (標準時))
+	// Created at Wed Feb 20 2019 12:31:13 GMT+0900 (東京 (標準時))
 requireSimulator.setName('Util');
 Util=(function () {
 
@@ -4379,7 +4379,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,is:is,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,DeferredUtil:DU,
-			VERSION:1550631426871,//EMBED_VERSION
+			VERSION:1550633461643,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -5051,7 +5051,11 @@ define(["FS","Platform"], function (FS,Platform) {
 		if (loc.match(/localhost\/tonyu2/)) {
 			WebSite.scriptServer="http://localhost/tonyu2/";
 		} else {
-			WebSite.scriptServer="https://edit.tonyu.jp/";
+			if (loc.match(/edit\.tonyu\.jp\/n\//)) {
+				WebSite.scriptServer="https://edit.tonyu.jp/n/";				
+			} else {
+				WebSite.scriptServer="https://edit.tonyu.jp/";
+			}
 		}
 		WebSite.pluginTop=WebSite.scriptServer+"js/plugins";
 		WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
