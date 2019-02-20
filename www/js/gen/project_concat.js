@@ -94,7 +94,7 @@
 	};
 	R.real=real;
 	var requireSimulator=R;
-	// Created at Wed Feb 20 2019 12:31:13 GMT+0900 (東京 (標準時))
+	// Created at Wed Feb 20 2019 12:47:13 GMT+0900 (東京 (標準時))
 requireSimulator.setName('Util');
 Util=(function () {
 
@@ -4379,7 +4379,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,is:is,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,DeferredUtil:DU,
-			VERSION:1550633461643,//EMBED_VERSION
+			VERSION:1550634424863,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -5011,7 +5011,12 @@ define(["FS","Platform"], function (FS,Platform) {
 			}
 			WebSite.kernelDir=P.rel(WebSite.wwwDir,"Kernel/");
 		} else {
-			WebSite.wwwDir=prot+"//"+location.host+"/";
+			if (loc.match(/edit\.tonyu\.jp\/n\//)) {
+				WebSite.wwwDir=prot+"//"+location.host+"/n/";
+			} else {
+				// Why?
+				WebSite.wwwDir=prot+"//"+location.host+"/";
+			}
 			WebSite.projects=[P.rel(WebSite.tonyuHome,"Projects/")];
 		}
 		//WebSite.kernelDir=WebSite.top+"/Kernel/";
@@ -5051,11 +5056,7 @@ define(["FS","Platform"], function (FS,Platform) {
 		if (loc.match(/localhost\/tonyu2/)) {
 			WebSite.scriptServer="http://localhost/tonyu2/";
 		} else {
-			if (loc.match(/edit\.tonyu\.jp\/n\//)) {
-				WebSite.scriptServer="https://edit.tonyu.jp/n/";				
-			} else {
-				WebSite.scriptServer="https://edit.tonyu.jp/";
-			}
+			WebSite.scriptServer="https://edit.tonyu.jp/";
 		}
 		WebSite.pluginTop=WebSite.scriptServer+"js/plugins";
 		WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
