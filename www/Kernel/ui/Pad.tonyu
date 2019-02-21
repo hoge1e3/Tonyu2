@@ -194,7 +194,7 @@ extends Actor;
         if (buttonCnt == 1) {
             tempPadWidth = 160 * padScaleX;
             tempPadHeight = 160 * padScaleX;
-            tempPadBorder = 4 * padScaleX;
+            tempPadBorder = 1 * padScaleX;
             tempPadTextSize = 120 * screenSize / DEFALT_SCREEN_WIDTH;
         } else if (buttonCnt >= 2) {
             if (i < 4) {
@@ -206,7 +206,7 @@ extends Actor;
                         tempPadWidth = 96 * padScaleX;
                     }
                     tempPadHeight = 96 * padScaleX;
-                    tempPadBorder = 4 * padScaleX;
+                    tempPadBorder = 1 * padScaleX;
                     tempPadTextSize = 72 * screenSize / DEFALT_SCREEN_WIDTH;
                 }
             }
@@ -288,12 +288,12 @@ extends Actor;
         if ($screenWidth > $screenHeight) screenSize = $screenHeight;
         jujiPads[0].width = trunc(72 * screenSize / DEFALT_SCREEN_WIDTH) * 3;
         jujiPads[0].height = trunc(72 * screenSize / DEFALT_SCREEN_WIDTH) * 3;
-        jujiPads[0].padBorder = 4 * padScaleX;
+        jujiPads[0].padBorder = 1 * padScaleX;
 
         if (buttonCnt == 1) {
             buttons[0].width = 160 * padScaleX;
             buttons[0].height = 160 * padScaleX;
-            buttons[0].padBorder = 4 * padScaleX;
+            buttons[0].padBorder = 1 * padScaleX;
             buttons[0].padTextSize = 120 * screenSize / DEFALT_SCREEN_WIDTH;
         } else if (buttonCnt >= 2) {
             for (var i=0; i<buttons.length; i++) {
@@ -306,7 +306,7 @@ extends Actor;
                         obj.width = 96 * padScaleX;
                     }
                     obj.height = 96 * padScaleX;
-                    obj.padBorder = 4 * padScaleX;
+                    obj.padBorder = 1 * padScaleX;
                     obj.padTextSize = 72 * screenSize / DEFALT_SCREEN_WIDTH;
                 }
             }
