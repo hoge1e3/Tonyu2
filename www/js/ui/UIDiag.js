@@ -1,14 +1,30 @@
 define(["UI"],function (UI) {
     var UIDiag={};
-    function parseMesg(mesg,defTitle) {
-        if (typeof mesg==="string" ||
+    function isPrimitive(mesg) {
+        return (typeof mesg==="string" ||
         typeof mesg==="number" ||
-        typeof mesg==="boolean" ||
-        ( (typeof $!=="undefined") && mesg instanceof $)) return {
-            title:mesg.title||defTitle,
-            body:mesg
-        };
-        return mesg;
+        typeof mesg==="boolean");
+    }
+    function parseMesg(mesg,defTitle) {
+        if (mesg==null) mesg="";
+        if (isPrimitive(mesg)) {
+            return {title:defTitle,body:multiLine(mesg)};
+        } else if ( (typeof $!=="undefined") && mesg instanceof $) {
+            return {
+                title:mesg.title||defTitle,
+                body:mesg
+            };
+        } else {
+            if (isPrimitive(mesg.body)) mesg.body=multiLine(mesg.body);
+            return mesg;
+        }
+    }
+    function multiLine(mesg) {
+        var lines=(mesg+"").split("\n");
+        if (lines.length==1) return lines[0];
+        return UI.apply(this,["div"].concat(lines.map(function (e) {
+            return ["div",e];
+        })));
     }
     UIDiag.confirm=function (mesg) {
         mesg=parseMesg(mesg,"確認");
@@ -38,7 +54,7 @@ define(["UI"],function (UI) {
         });
     };
     UIDiag.getStatus=function () {return UIDiag.status;};
-    UIDiag.getText=function () {return UIDiag.resultValue;};
+    UIDiag.getText=function () {return UIDiag.val? UIDiag.val.val():"";};
     //---
     UIDiag.prompt=function (mesg,value,geom) {
         mesg=parseMesg(mesg,"入力");
@@ -65,6 +81,7 @@ define(["UI"],function (UI) {
             //console.log("FOcus");
         },10);
         UIDiag.status=0;
+        UIDiag.val=di.$vars.val;
         var d=$.Deferred();
         function ok() {
             UIDiag.status=1;

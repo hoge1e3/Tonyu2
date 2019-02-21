@@ -9,10 +9,10 @@ includes EventMod,MathMod;
 \waitInput(title,mesg,val,geom) {
     return prompt({title,body:mesg},val,geom);
 }
-\promptNumber(mesg,val) {
+\promptNumber(mesg,val,geom) {
     var r;
-    r=prompt(mesg,val);
-    return parseFloat(r);
+    r=prompt(mesg,val,geom);
+    return r-0;
 }
 \confirm(mesg) {
     var r;

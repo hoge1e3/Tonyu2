@@ -13999,17 +13999,17 @@ Tonyu.klass.define({
           }
         });
       },
-      promptNumber :function _trc_DialogMod_promptNumber(mesg,val) {
+      promptNumber :function _trc_DialogMod_promptNumber(mesg,val,geom) {
         "use strict";
         var _this=this;
         var r;
         
         
-        //$LASTPOS=47000307;//kernel.DialogMod:307
-        r=_this.prompt(mesg,val);
-        return _this.parseFloat(r);
+        //$LASTPOS=47000312;//kernel.DialogMod:312
+        r=_this.prompt(mesg,val,geom);
+        return r-0;
       },
-      fiber$promptNumber :function _trc_DialogMod_f_promptNumber(_thread,mesg,val) {
+      fiber$promptNumber :function _trc_DialogMod_f_promptNumber(_thread,mesg,val,geom) {
         "use strict";
         var _this=this;
         //var _arguments=Tonyu.A(arguments);
@@ -14023,13 +14023,13 @@ Tonyu.klass.define({
           for(var __cnt=100 ; __cnt--;) {
             switch (__pc) {
             case 0:
-              //$LASTPOS=47000307;//kernel.DialogMod:307
-              _this.fiber$prompt(_thread, mesg, val);
+              //$LASTPOS=47000312;//kernel.DialogMod:312
+              _this.fiber$prompt(_thread, mesg, val, geom);
               __pc=1;return;
             case 1:
               r=_thread.retVal;
               
-              _thread.exit(_this.parseFloat(r));return;
+              _thread.exit(r-0);return;
               _thread.exit(_this);return;
             }
           }
