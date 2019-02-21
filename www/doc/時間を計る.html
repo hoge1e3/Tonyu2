@@ -8,8 +8,31 @@
 <p><a href="用途別リファレンス">用途別リファレンス</a></p>
 <h1 id="-">時間を計る</h1>
 <ul>
-<li><a href="フレーム数を計り、そこから時間を計算する">フレーム数を計り、そこから時間を計算する</a></li>
-<li><a href="テキストオブジェクトとして時間を表示する">テキストオブジェクトとして時間を表示する</a></li>
+<li>Tonyu System2のfpsはデフォルトでは60です．<ul>
+<li>fpsは<a href="setFrameRate">$Boot.setFramRate</a> で変更可能です．</li>
+</ul>
+</li>
+<li>変数を毎フレーム1ずつ増加させ，60で割ることで経過時間を秒数で計ることができます．<ul>
+<li>60で割った数値の整数部分を得るにはfloor関数を用います．</li>
+</ul>
+</li>
+</ul>
+<pre><code class="lang-Main">$timeFrame=0;//経過時間（フレーム数）
+$timeSecond=0;//経過時間（秒数）
+//ラベルの表示
+new Label{x=100,y=100,template:&quot;経過時間： $timeSecond&quot;};
+while (true ){
+    // 1フレームごとに増やす
+    $timeFrame++;
+    // FPS=60(1秒あたり60フレーム）の場合，60で割って秒を求める
+    $timeSecond=floor($timeFrame/60);     
+    update();
+}
+</code></pre>
+<h1 id="backlink">Backlink</h1>
+<ul>
 <li><a href="オブジェクトに連続でぶつからないようにする">オブジェクトに連続でぶつからないようにする</a></li>
+<li><a href="テキストオブジェクトとして時間を表示する">時間を表示する</a></li>
+<li><a href="フレーム数を計り、そこから時間を計算する">フレーム数から経過時間を計算する</a></li>
 </ul>
 </body></html>

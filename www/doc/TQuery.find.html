@@ -8,8 +8,16 @@
 <p><a href="TQuery">TQuery</a></p>
 <h1 id="tquery-find">TQuery.find</h1>
 <p>このTQueryオブジェクトが格納しているActorのうち，指定された条件に合うものだけを格納した新しいTQueryオブジェクトを返します．</p>
-<h2 id="-">書式</h2>
+<h2 id="-1">書式1</h2>
 <pre><code class="lang-JS">t.find(f)
 </code></pre>
-<p>このTQueryオブジェクトが格納しているActorそれぞれについて，<br>第1引数にそのActorを渡して関数<em>f</em> を呼び出し，<br><code>true</code>相当の値が返されたActorだけを格納した新しいTQueryオブジェクト</p>
+<p>このTQueryオブジェクトが格納しているActorそれぞれについて，<br>第1引数にそのActorを渡して関数<em>f</em> を呼び出し，<br><code>true</code>相当の値が返されたActorだけを格納した新しいTQueryオブジェクト<br>を返します．</p>
+<h2 id="-2">書式2</h2>
+<pre><code class="lang-JS">t.find{key1:value1, key2:value2...}
+</code></pre>
+<p>このTQueryオブジェクトが格納しているActorそれぞれについて，<br>key<em>n</em>がvalue<em>n</em>に等しいようなActorだけを格納した新しいTQueryオブジェクト<br>を返します．</p>
+<h1 id="backlink">Backlink</h1>
+<ul>
+<li><a href="TQuery.find1">TQuery.find1</a></li>
+</ul>
 </body></html>

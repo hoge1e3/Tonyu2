@@ -1,0 +1,43 @@
+<html><body class="markdown-body">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><a href="$InputDevice">$InputDevice</a></p>
+<h1 id="-inputdevice-on-">$InputDevice.onメソッド</h1>
+<p>タッチパネル（マウス）上関連のイベントを受け取ります</p>
+<h2 id="-">書式</h2>
+<pre><code>$InputDevice.on(type) \(e) {
+    // 処理
+};
+</code></pre><ul>
+<li><code>type</code> には<code>&quot;touchstart&quot;</code>、<code>&quot;touchmove&quot;</code>、<code>&quot;touchend&quot;</code> のいずれかを指定します。</li>
+<li><code>e</code> にはイベントオブジェクトが渡されます。<ul>
+<li><code>e.finger</code> に タッチした・移動した・離れた指の<a href="TouchFinger">TouchFinger</a>オブジェクトが格納されます。</li>
+</ul>
+</li>
+</ul>
+<p>例：</p>
+<pre><code>$Boot.setEconomyMode(true);
+x=100;
+y=100;
+$InputDevice.on(&quot;touchstart&quot;) \(e) {
+    var f=e.finger;
+    print(&quot;start&quot;,f.x,f.y);
+};
+$InputDevice.on(&quot;touchmove&quot;) \(e) {
+    var f=e.finger;
+    //print(&quot;move&quot;,f.x,f.y);
+    f.update();
+    x+=f.vx;
+    y+=f.vy;
+};
+$InputDevice.on(&quot;touchend&quot;) \(e) {
+    var f=e.finger;
+    print(&quot;end&quot;,f.x,f.y);
+};
+</code></pre><h1 id="backlink">Backlink</h1>
+<ul>
+<li><a href="setEconomyMode">Boot.setEconomyMode メソッド</a></li>
+</ul>
+</body></html>

@@ -1,0 +1,25 @@
+<html><body class="markdown-body">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><a href="Boot">Boot</a></p>
+<h1 id="boot-seteconomymode-">Boot.setEconomyMode メソッド</h1>
+<p>エコノミーモードの設定を行います．</p>
+<p>エコノミーモードにすると，次の条件を満たしたときにフレームの描画を停止し，CPUの使用を抑制します．</p>
+<ul>
+<li><a href="update">update</a> / <a href="updateEx">updateEx</a> メソッドによる待機状態になっているスレッドが１つもない</li>
+<li>入力デバイス（マウス・タッチパネル）からの入力がない(TODO:キーボードからの入力)</li>
+</ul>
+<h2 id="-">書式</h2>
+<pre><code>$Boot.setEconomyMode(options)
+</code></pre><ul>
+<li>options に<code>false</code> 相当の値を設定するとエコノミーモードはOFFになります．</li>
+<li><code>true</code> 相当の値を設定するとエコノミーモードがONになります．オブジェクトを指定した場合，次のキーが意味をもちます．<ul>
+<li>manualDraw - trueにすると，入力デバイスからの入力があった場合に描画を自動的に行いません．描画するには<a href="requestDrawFrame">requestDrawFrame</a>を呼び出してください．</li>
+</ul>
+</li>
+</ul>
+<h2 id="-">例</h2>
+<p><a href="$InputDevice.on">$InputDevice.on</a> 参照</p>
+</body></html>

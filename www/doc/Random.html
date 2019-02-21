@@ -1,0 +1,23 @@
+<html><body class="markdown-body">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><a href="api">api</a></p>
+<h1 id="random-">Randomクラス</h1>
+<p>種（乱数系列）を設定して乱数を生成します。生成アルゴリズムにXorshiftを利用しています。</p>
+<h2 id="-">コンストラクタ</h2>
+<pre><code>new Random(seed)
+</code></pre><p><code>seed</code>には種をあらわす整数を指定します。省略すると現在時刻をもとに種を指定します。</p>
+<h2 id="-">メソッド</h2>
+<ul>
+<li><code>next01()</code>  <ul>
+<li>0から1までの実数乱数を返します。</li>
+</ul>
+</li>
+<li><code>nextInt(min,max)</code><ul>
+<li><code>min</code>以上<code>max</code>未満の整数乱数を返します。</li>
+</ul>
+</li>
+</ul>
+</body></html>

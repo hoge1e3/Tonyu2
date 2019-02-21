@@ -1,0 +1,49 @@
+<html><body class="markdown-body">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><a href="BaseActor">BaseActor</a></p>
+<h1 id="timestop-">timeStopメソッド</h1>
+<p>すべてのオブジェクトの動作を停止します。ただし、このメソッドを呼び出したオブジェクトだけ停止しません．</p>
+<h2 id="-">書式</h2>
+<pre><code>timeStop()
+</code></pre><h2 id="-">戻り値</h2>
+<p>新規作成されたTimeStopperオブジェクト。</p>
+<p>TimeStopperオブジェクトは、止めた時間をふたたび動かす時に使います。</p>
+<p>時間を動かすにはTimeStopperオブジェクトに対して、 releaseメソッドや releaseAllメソッドを呼び出します。</p>
+<h2 id="-">例</h2>
+<p>Ball.tonyu</p>
+<pre><code>while (x&lt;$screenWidth){
+    x+=2;
+    update();
+}
+die();
+</code></pre><p>Stop.tonyu</p>
+<pre><code>x=20;y=30;
+while (true) {
+    if (t==null) {// まだ時間をとめていなければ
+        if (rnd(10)==0) new Ball(0,rnd($screenHeight),19); // 玉を出現させる
+        if (getkey(32)==1) { //スペースキーが押されたら時間をとめる
+            t=timeStop();
+        }          
+    } else {
+        // すでに時間をとめていたら
+        if (getkey(32)==1) { //スペースキーが押されたら時間を動かす
+            t.releaseAll();//t.release();でも可
+            t=null;
+        }
+        // 玉にふれるとその玉は動き出す
+        a=crashTo(Ball);
+        if (a) t.release(a);
+    }
+    if (getkey(&quot;z&quot;)==1){
+        new Ball{x:x+30,y,p:19};   
+    }
+    if (getkey(39)&gt;0) x+=3;
+    if (getkey(37)&gt;0) x-=3;
+    if (getkey(40)&gt;0) y+=3;
+    if (getkey(38)&gt;0) y-=3;
+    update();
+}
+</code></pre></body></html>

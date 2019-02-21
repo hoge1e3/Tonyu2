@@ -21,7 +21,7 @@
 <h1 id="-">オブジェクトを配置するレイヤーの指定</h1>
 <p>オブジェクト(<a href="Actor">Actor</a>)を生成すると、通常は$mainLayerに配置されますが、生成時に<a href="layer">layer</a>フィールドを設定すると、他のレイヤーに配置できます。</p>
 <p>例：</p>
-<pre><code class="lang-JS">new ScoreLabel{x:100, y:400, text:&quot;Score: 0&quot;, layer:$frontLayer};
+<pre><code class="lang-JS">new ScoreLabel{x=100, y=400, text=&quot;Score: 0&quot;, layer=$frontLayer};
 </code></pre>
 <h1 id="-">デフォルトのレイヤー</h1>
 <p>あるクラスにおいて，layerフィールドを省略した場合に配置されるレイヤーは defaultLayer プロパティを定義すると変更できます．</p>
@@ -48,5 +48,7 @@
 <ul>
 <li><a href="input_defaultLayer">スクロールしたときのマウスやタッチの座標について</a></li>
 <li><a href="文字に動きをつける">文字に動きをつける</a></li>
+<li><a href="BaseActor">BaseActor</a></li>
+<li><a href="TouchFinger">TouchFingerオブジェクト</a></li>
 </ul>
 </body></html>

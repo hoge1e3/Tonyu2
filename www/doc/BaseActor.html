@@ -26,11 +26,15 @@ a=new MyActor{x:50,y:30, power:20, hp:50};
 <ul>
 <li>textに値がセットされている場合，表示モードは「文字」です</li>
 <li>textに値がセットされておらず，fillStyleに値がセットされている場合，表示モードは「図形」です</li>
+<li>pにdrawメソッドをもつオブジェクトを指定した場合，表示モードは「カスタム」です</li>
 <li>textにもfillStyleにも値がセットされていない場合，表示モードは「画像」です</li>
 </ul>
 <h2 id="-">「画像」におけるフィールド</h2>
 <ul>
-<li>p : 表示する<a href="cpats">画像の番号</a>をあらわします。 <a href="オブジェクトのグラフィックを変える">使用例</a></li>
+<li>p : 表示する<a href="cpats">画像の番号</a>をあらわします。 <a href="オブジェクトのグラフィックを変える">使用例</a><ul>
+<li>pにdrawメソッドをもつオブジェクト(Panelなど)を代入すると、そのオブジェクトのdrawメソッドを用いて描画します。</li>
+</ul>
+</li>
 </ul>
 <h2 id="-">「文字」におけるフィールド</h2>
 <ul>
@@ -44,6 +48,10 @@ a=new MyActor{x:50,y:30, power:20, hp:50};
 <li>radius: 値をセットすると円を表示し，その半径を表します</li>
 <li>width: radiusがセットされていない場合，四角形を表示し，その幅を表します</li>
 <li>height: radiusがセットされていない場合，四角形を表示し，その高さを表します</li>
+</ul>
+<h2 id="-">「カスタム」におけるフィールド</h2>
+<ul>
+<li>p : 「すべてのモードで共通のフィールド」で指定された変換操作（移動・伸縮・回転）を施した後，p.drawメソッドを用いて描画します．</li>
 </ul>
 <h2 id="-">すべてのモードで共通のフィールド</h2>
 <ul>
@@ -59,6 +67,10 @@ a=new MyActor{x:50,y:30, power:20, hp:50};
 <li>lifeKeeper: この値に他のActorを設定すると，そのActorが<a href="die">dieメソッド</a>で消滅したときに，このオブジェクトも自動的に消滅します．</li>
 <li>position: x,y を操作可能な<a href="Vec3">Vec3View</a>オブジェクトです．<ul>
 <li>position に他の値を代入すると，それ以降はx,y を操作できません</li>
+</ul>
+</li>
+<li>layer: このオブジェクトを配置する<a href="座標系とレイヤー">レイヤー</a> を指定します．<ul>
+<li>layer に他のActorを指定すると，そのActorからの相対座標を用いて表示を行います．また，layerに指定した他のActorが消滅するとこのオブジェクトも消滅します．</li>
 </ul>
 </li>
 </ul>
@@ -82,6 +94,7 @@ a=new MyActor{x:50,y:30, power:20, hp:50};
 <li><a href="runAsync">runAsync</a></li>
 <li><a href="runPromise">runPromise</a></li>
 <li><a href="waitFor">waitFor</a></li>
+<li><a href="timeStop">timeStop</a></li>
 </ul>
 </li>
 <li>衝突判定<ul>

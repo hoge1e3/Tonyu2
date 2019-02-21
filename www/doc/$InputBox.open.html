@@ -1,0 +1,38 @@
+<html><body class="markdown-body">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><a href="$InputBox">$InputBox</a></p>
+<h1 id="-inputbox-open">$InputBox.open</h1>
+<p>文字入力用のウィンドウを開きます。</p>
+<h2 id="-">書式</h2>
+<pre><code> open(title,prompt,default, left, top, width, height)
+</code></pre><ul>
+<li>title 文字入力用のウィンドウのタイトルバーに表示する文字列</li>
+<li>prompt プロンプト部分（入力部分のすぐ上）に表示する文字列。改行文字を使うと複数行表示できます。</li>
+<li>default 入力部分にあらかじめ入っている文字列</li>
+<li>left  ウィンドウの横位置（省略可）</li>
+<li>top  ウィンドウの縦位置（省略可）</li>
+<li>width  ウィンドウの幅（省略可）</li>
+<li>height  ウィンドウの高さ（省略可）</li>
+</ul>
+<p><a href="DialogMod">waitInput</a>と異なり、ユーザがボタン（「Ok」 または「キャンセル」）を押すまで処理を中断しません。</p>
+<p>ユーザがボタン（「Ok」 または「キャンセル」）を押したかは<a href="$InputBox.getStatus">$InputBox.getStatus</a> で調べることができます。入力された文字の内容は <a href="$InputBox.getStatus">$InputBox.getText</a> で調べることができます。</p>
+<h2 id="-">例</h2>
+<pre><code>x=200;y=10;
+$InputBox.open(&quot;名前の入力&quot;,&quot;あなたは\nだあれ&quot;,&quot;ななしの　ごんべ&quot;);
+while ($InputBox.getStatus()==0) {
+    text=&quot;名前を入力しています...&quot;+$InputBox.getText();
+    update();
+}
+if ($InputBox.getStatus()==1) {
+    text=$InputBox.getText()+&quot;さん、よろしく！&quot;;
+} else {
+    text=&quot;キャンセルしました&quot;;
+}
+</code></pre><h1 id="backlink">Backlink</h1>
+<ul>
+<li><a href="$InputBox.getText">$InputBox.getText</a></li>
+</ul>
+</body></html>

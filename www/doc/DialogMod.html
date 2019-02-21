@@ -1,0 +1,38 @@
+<html><body class="markdown-body">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><a href="api">api</a></p>
+<h1 id="dialogmod-">DialogMod モジュール</h1>
+<p>キーボードから文字列の入力を行うためのメソッドを提供します。これらのメソッドは<a href="waitMode">待機可能モード</a>で呼び出すと、入力が終わるまで処理を中断します。</p>
+<ul>
+<li><code>alert(mesg)</code><ul>
+<li>メッセージダイアログに<code>mesg</code>を表示します．</li>
+</ul>
+</li>
+<li><code>confirm(mesg)</code><ul>
+<li>OK または キャンセル を選択するダイアログを表示します．OKが押されたらtrueを返します．</li>
+</ul>
+</li>
+<li><code>prompt(mesg,val,geom)</code><ul>
+<li>文字列を入力するダイアログを表示します．</li>
+<li><code>mesg</code>に入力を促すメッセージ，<code>val</code>に入力欄に最初から入っている値，<code>geom</code>に<code>{left: ,top: ,width: height:}</code>を指定し，位置やサイズを指定します．（いずれも省略可能）</li>
+</ul>
+</li>
+<li><code>promptNumber(mesg,val,geom)</code><ul>
+<li>数値を入力するダイアログを表示します．使い方はpromptと同じです</li>
+</ul>
+</li>
+<li><code>waitInput(title,mesg,val,geom)</code><ul>
+<li>文字列を入力するダイアログを表示します．Tonyu1の同命令と同じ働きがあります．</li>
+<li><code>title</code>にダイアログのタイトル，<code>mesg</code>に入力を促すメッセージ，<code>val</code>に入力欄に最初から入っている値，<code>geom</code>に<code>{left: ,top: ,width: height:}</code>を指定し，位置やサイズを指定します．（いずれも省略可能）</li>
+</ul>
+</li>
+</ul>
+<h1 id="backlink">Backlink</h1>
+<ul>
+<li><a href="$InputBox">$InputBoxオブジェクト</a></li>
+<li><a href="$InputBox.open">$InputBox.open</a></li>
+</ul>
+</body></html>
