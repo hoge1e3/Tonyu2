@@ -187,10 +187,10 @@ extends Actor;
         // padFillColor   : ボタン背景色
         // padBorder      : ボタン枠幅
         // padBorderColor : ボタン枠色
-        // padPushLColor  : 左ボタン押下色
-        // padPushRColor  : 右ボタン押下色
-        // padPushUColor  : 上ボタン押下色
-        // padPushDColor  : 下ボタン押下色
+        // padLPushColor  : 左ボタン押下色
+        // padRPushColor  : 右ボタン押下色
+        // padUPushColor  : 上ボタン押下色
+        // padDPushColor  : 下ボタン押下色
         // padLColor      : 左ボタン矢印色
         // padRColor      : 右ボタン矢印色
         // padUColor      : 上ボタン矢印色
@@ -203,10 +203,10 @@ extends Actor;
         if (padFillColor == null) padFillColor = "rgba(0,0,0,0.125)";
         if (padBorder == null) padBorder = 4;
         if (padBorderColor == null) padBorderColor = "rgba(255,255,255,0.5)";
-        if (padPushLColor == null) padPushLColor = "rgba(255,255,255,0.25)";
-        if (padPushRColor == null) padPushRColor = "rgba(255,255,255,0.25)";
-        if (padPushUColor == null) padPushUColor = "rgba(255,255,255,0.25)";
-        if (padPushDColor == null) padPushDColor = "rgba(255,255,255,0.25)";
+        if (padLPushColor == null) padLPushColor = "rgba(255,255,255,0.25)";
+        if (padRPushColor == null) padRPushColor = "rgba(255,255,255,0.25)";
+        if (padUPushColor == null) padUPushColor = "rgba(255,255,255,0.25)";
+        if (padDPushColor == null) padDPushColor = "rgba(255,255,255,0.25)";
         if (padLColor == null) padLColor = "rgba(255,255,255,0.625)";
         if (padRColor == null) padRColor = "rgba(255,255,255,0.625)";
         if (padUColor == null) padUColor = "rgba(255,255,255,0.625)";
@@ -314,22 +314,22 @@ extends Actor;
 
     panelPushL.setPanel(cw+bw, ch);
     panelPushL.clearRect(0, 0, cw+bw+2, ch+2);
-    panelPushL.setFillStyle(padPushLColor);
+    panelPushL.setFillStyle(padLPushColor);
     panelPushL.fillRect(0, 0, cw+bw, ch);
 
     panelPushR.setPanel(cw+bw, ch);
     panelPushR.clearRect(0, 0, cw+bw+2, ch+2);
-    panelPushR.setFillStyle(padPushRColor);
+    panelPushR.setFillStyle(padRPushColor);
     panelPushR.fillRect(0, 0, cw+bw, ch);
 
     panelPushU.setPanel(cw, ch+bh);
     panelPushU.clearRect(0, 0, cw+2, ch+bh+2);
-    panelPushU.setFillStyle(padPushUColor);
+    panelPushU.setFillStyle(padUPushColor);
     panelPushU.fillRect(0, 0, cw, ch+bh);
 
     panelPushD.setPanel(cw, ch+bh);
     panelPushD.clearRect(0, 0, cw+2, ch+bh+2);
-    panelPushD.setFillStyle(padPushDColor);
+    panelPushD.setFillStyle(padDPushColor);
     panelPushD.fillRect(0, 0, cw, ch+bh);
 
 }

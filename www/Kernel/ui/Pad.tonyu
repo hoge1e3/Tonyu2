@@ -149,21 +149,29 @@ extends Actor;
     oldPadScaleX = padScaleX;
     oldButtonCnt = buttonCnt;
 
+    var tempJujiPadWidth = trunc(72 * screenSize / DEFALT_SCREEN_WIDTH) * 3;
+    var tempJujiPadHeight = trunc(72 * screenSize / DEFALT_SCREEN_WIDTH) * 3;
+    var tempJujiPadBorder = 4 * padScaleX;
+
+    if (jujiPadWidth != null) tempJujiPadWidth = jujiPadWidth;
+    if (jujiPadHeight != null) tempJujiPadHeight = jujiPadHeight;
+    if (jujiPadBorder != null) tempJujiPadBorder = jujiPadBorder;
+
     jujiPads[0] = new PadButton{
         mode:10001,
         x:101,
         y:$screenHeight-101,
         alpha,
         layer,
-        width:jujiPadWidth,
-        height:jujiPadHeight,
+        width:tempJujiPadWidth,
+        height:tempJujiPadHeight,
         padFillColor:jujiPadFillColor,
-        padBorder:jujiPadBorder,
+        padBorder:tempJujiPadBorder,
         padBorderColor:jujiPadBorderColor,
-        padPushLColor:(jujiPadPushLColor == null ? jujiPadPushColor : jujiPadPushLColor),
-        padPushRColor:(jujiPadPushRColor == null ? jujiPadPushColor : jujiPadPushRColor),
-        padPushUColor:(jujiPadPushUColor == null ? jujiPadPushColor : jujiPadPushUColor),
-        padPushDColor:(jujiPadPushDColor == null ? jujiPadPushColor : jujiPadPushDColor),
+        padLPushColor:(jujiPadLPushColor == null ? jujiPadPushColor : jujiPadLPushColor),
+        padRPushColor:(jujiPadRPushColor == null ? jujiPadPushColor : jujiPadRPushColor),
+        padUPushColor:(jujiPadUPushColor == null ? jujiPadPushColor : jujiPadUPushColor),
+        padDPushColor:(jujiPadDPushColor == null ? jujiPadPushColor : jujiPadDPushColor),
         padLColor:(jujiPadLColor == null ? jujiPadColor : jujiPadLColor),
         padRColor:(jujiPadRColor == null ? jujiPadColor : jujiPadRColor),
         padUColor:(jujiPadUColor == null ? jujiPadColor : jujiPadUColor),
@@ -171,15 +179,6 @@ extends Actor;
         diagonalEnable:jujiPadDiagonalEnable,
         active,
     };
-
-    jujiPads[0].width = trunc(72 * screenSize / DEFALT_SCREEN_WIDTH) * 3;
-    jujiPads[0].height = trunc(72 * screenSize / DEFALT_SCREEN_WIDTH) * 3;
-    jujiPads[0].padBorder = 4 * padScaleX;
-
-    if (jujiPadWidth != null) jujiPads[0].width = jujiPadWidth;
-    if (jujiPadHeight != null) jujiPads[0].height = jujiPadHeight;
-    if (jujiPadBorder != null) jujiPads[0].padBorder = jujiPadBorder;
-    jujiPads[0].drawPanel();
 
     for (var i=0; i<4; i++) {
         var tempPadWidth       = buttonWidth;
@@ -191,6 +190,33 @@ extends Actor;
         var tempPadText        = buttonText;
         var tempPadTextSize    = buttonTextSize;
         var tempPadTextColor   = buttonTextColor;
+
+        if (buttonCnt == 1) {
+            tempPadWidth = 160 * padScaleX;
+            tempPadHeight = 160 * padScaleX;
+            tempPadBorder = 4 * padScaleX;
+            tempPadTextSize = 120 * screenSize / DEFALT_SCREEN_WIDTH;
+        } else if (buttonCnt >= 2) {
+            if (i < 4) {
+                var obj = buttons[i];
+                if (obj) {
+                    if (buttonCnt == 3 && i == 2) {
+                        tempPadWidth = 194 * padScaleX;
+                    } else {
+                        tempPadWidth = 96 * padScaleX;
+                    }
+                    tempPadHeight = 96 * padScaleX;
+                    tempPadBorder = 4 * padScaleX;
+                    tempPadTextSize = 72 * screenSize / DEFALT_SCREEN_WIDTH;
+                }
+            }
+        }
+
+        if (buttonWidth     != null) tempPadWidth    = buttonWidth;
+        if (buttonHeight    != null) tempPadHeight   = buttonHeight;
+        if (buttonBorder    != null) tempPadBorder   = buttonBorder;
+        if (tempPadTextSize != null) tempPadTextSize = tempPadTextSize;
+
         if (i == 0) {
             if (button1Width       != null) tempPadWidth       = button1Width;
             if (button1Height      != null) tempPadHeight      = button1Height;
@@ -232,6 +258,7 @@ extends Actor;
             if (button4TextSize    != null) tempPadTextSize    = button4TextSize;
             if (button4TextColor   != null) tempPadTextColor   = button4TextColor;
         }
+
         buttons[i] = new PadButton{
             mode:10000,
             x:50+(i-4)%4*100,
@@ -249,38 +276,6 @@ extends Actor;
             padTextColor:tempPadTextColor,
             active
         };
-
-        if (buttonCnt == 1) {
-            buttons[0].width = 160 * padScaleX;
-            buttons[0].height = 160 * padScaleX;
-            buttons[0].padBorder = 4 * padScaleX;
-            buttons[0].padTextSize = 120 * screenSize / DEFALT_SCREEN_WIDTH;
-
-            if (tempPadWidth != null) buttons[0].width = tempPadWidth;
-            if (tempPadHeight != null) buttons[0].height = tempPadHeight;
-            if (tempPadBorder != null) buttons[0].padBorder = tempPadBorder;
-            if (tempPadTextSize != null) buttons[0].padTextSize = tempPadTextSize;
-
-        } else if (buttonCnt >= 2) {
-            if (i < 4) {
-                var obj = buttons[i];
-                if (obj) {
-                    if (buttonCnt == 3 && i == 2) {
-                        obj.width = 194 * padScaleX;
-                    } else {
-                        obj.width = 96 * padScaleX;
-                    }
-                    obj.height = 96 * padScaleX;
-                    obj.padBorder = 4 * padScaleX;
-                    obj.padTextSize = 72 * screenSize / DEFALT_SCREEN_WIDTH;
-
-                    if (tempPadWidth != null) obj.width = tempPadWidth;
-                    if (tempPadHeight != null) obj.height = tempPadHeight;
-                    if (tempPadBorder != null) obj.padBorder = tempPadBorder;
-                    if (tempPadTextSize != null) obj.padTextSize = tempPadTextSize;
-                }
-            }
-        }
         buttons[i].drawPanel();
     }
 
