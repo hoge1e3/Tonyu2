@@ -1,0 +1,70 @@
+// Pad(version2)クラスのサンプル
+
+// パッド
+//pad = new Pad; // 1ボタンPad
+//pad = new Pad{version:2}; // Pad v1になる場合強制的にv2にする(画像リストに$pat_inputPadがある場合v1になる)
+//pad = new Pad{buttonCnt:2}; // 2ボタンPad
+//pad = new Pad{buttonCnt:3}; // 3ボタンPad
+pad = new Pad{buttonCnt:4}; // 4ボタンPad
+//pad = new Pad{buttonCnt:4, jujiPadDiagonalEnable:false}; // 十字パッド斜め入力禁止
+
+// 色のカスタマイズ
+/*
+pad = new Pad{buttonCnt:4, // 4ボタンPad
+    buttonFillColor:"rgba(0, 255, 0, 0.2)", // ボタン中身の色
+    buttonBorderColor:"rgba(255, 255, 0, 0.7)", // ボタン枠の色
+    buttonPushColor:"rgba(0, 128, 255, 0.7)", // ボタン押下の色
+    buttonTextColor:"rgba(0, 255, 0, 1.0)", // ボタン文字の色
+    button1Text:"A", // ボタン1の文字
+    button2Text:"B", // ボタン2の文字
+    button3Text:"X", // ボタン3の文字
+    button4Text:"Y", // ボタン4の文字
+    button1FillColor:"rgba(255, 0, 255, 0.5)", // ボタン1中身の色
+    button1BorderColor:"rgba(255, 128, 0, 0.7)", // ボタン1枠の色
+    button1TextColor:"rgba(255, 128, 255, 1.0)", // ボタン1文字の色
+    button4TextColor:"rgba(255, 128, 128, 1.0)", // ボタン4文字の色
+    button1PushColor:"rgba(255, 128, 255, 0.7)", // ボタン1押下の色
+    button4PushColor:"rgba(255, 128, 0, 0.7)", // ボタン4押下の色
+    jujiPadFillColor:"rgba(255, 255, 255, 0.4)", // 十字パッド中身の色
+    jujiPadBorderColor:"rgba(0, 255, 255, 0.7)", // 十字パッド枠の色
+    //jujiPadPushColor:"rgba(255, 0, 0, 0.7)", // 十字パッド押下の色
+    jujiPadLPushColor:"rgba(255, 0, 0, 0.7)", // 十字パッド左押下の色
+    jujiPadRPushColor:"rgba(255, 255, 0, 0.7)", // 十字パッド右押下の色
+    jujiPadUPushColor:"rgba(0, 255, 0, 0.7)", // 十字パッド上押下の色
+    jujiPadDPushColor:"rgba(0, 128, 255, 0.7)", // 十字パッド下押下の色
+    //jujiPadColor:"rgba(0, 0, 0, 0.3)", // 十字パッド矢印の色
+    jujiPadLColor:"rgba(255, 0, 0, 0.7)", // 十字パッド左矢印の色
+    jujiPadRColor:"rgba(255, 255, 0, 0.7)", // 十字パッド右矢印の色
+    jujiPadUColor:"rgba(0, 255, 0, 0.7)", // 十字パッド上矢印の色
+    jujiPadDColor:"rgba(0, 128, 255, 0.7)" // 十字パッド下矢印の色
+};
+*/
+
+x=240;y=150;
+
+while(true) {
+    // パッドの押下判定
+    if (pad.getButton(0)) { // 1ボタン
+        p=$pat_base+4;
+        spd=5;
+        pad.alpha -= 50;
+    } else {
+        p=$pat_base;
+        spd=3;
+    }
+    if (pad.getButton(1)) rotation=20; else rotation=0; // 2ボタン
+    if (pad.getButton(2)) alpha=128; else alpha=255; // 3ボタン
+    if (pad.getButton(3)) scaleX=2; else scaleX=1; // 4ボタン
+    if (pad.getRight()) x+=spd; // 右キー
+    if (pad.getLeft()) x-=spd; // 左キー
+    if (pad.getUp()) y-=spd; // 上キー
+    if (pad.getDown()) y+=spd; // 下キー
+    
+    // 移動制限
+    if (x < 16) x = 16;
+    if (x > $screenWidth - 16) x = $screenWidth - 16;
+    if (y < 16) y = 16;
+    if (y > $screenHeight - 16) y = $screenHeight - 16;
+    
+    update();
+}
