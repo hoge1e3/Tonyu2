@@ -12,7 +12,37 @@
 <p>例：</p>
 <pre><code class="lang-JS">pad=new Pad();
 </code></pre>
-<h1 id="-">メソッド</h1>
+<h1 id="-">コンストラクタ</h1>
+<p>次のパラメータを指定できます（いずれも省略可能）</p>
+<pre><code>pad = new Pad{buttonCnt:4, // ボタンの数（１から４,デフォルトは1）
+    buttonFillColor:&quot;rgba(0, 255, 0, 0.2)&quot;, // ボタン中身の色
+    buttonBorderColor:&quot;rgba(255, 255, 0, 0.7)&quot;, // ボタン枠の色
+    buttonPushColor:&quot;rgba(0, 128, 255, 0.7)&quot;, // ボタン押下の色
+    buttonTextColor:&quot;rgba(0, 255, 0, 1.0)&quot;, // ボタン文字の色
+    button1Text:&quot;1&quot;, // ボタン1の文字
+    button2Text:&quot;2&quot;, // ボタン2の文字
+    button3Text:&quot;3&quot;, // ボタン3の文字
+    button4Text:&quot;4&quot;, // ボタン4の文字
+    button1FillColor:&quot;rgba(255, 0, 255, 0.5)&quot;, // ボタン1中身の色
+    button1BorderColor:&quot;rgba(255, 128, 0, 0.7)&quot;, // ボタン1枠の色
+    button1TextColor:&quot;rgba(255, 128, 255, 1.0)&quot;, // ボタン1文字の色
+    button4TextColor:&quot;rgba(255, 128, 128, 1.0)&quot;, // ボタン4文字の色
+    button1PushColor:&quot;rgba(255, 128, 255, 0.7)&quot;, // ボタン1押下の色
+    button4PushColor:&quot;rgba(255, 128, 0, 0.7)&quot;, // ボタン4押下の色
+    jujiPadFillColor:&quot;rgba(255, 255, 255, 0.4)&quot;, // 十字パッド中身の色
+    jujiPadBorderColor:&quot;rgba(0, 255, 255, 0.7)&quot;, // 十字パッド枠の色
+    //jujiPadPushColor:&quot;rgba(255, 0, 0, 0.7)&quot;, // 十字パッド押下の色
+    jujiPadLPushColor:&quot;rgba(255, 0, 0, 0.7)&quot;, // 十字パッド左押下の色
+    jujiPadRPushColor:&quot;rgba(255, 255, 0, 0.7)&quot;, // 十字パッド右押下の色
+    jujiPadUPushColor:&quot;rgba(0, 255, 0, 0.7)&quot;, // 十字パッド上押下の色
+    jujiPadDPushColor:&quot;rgba(0, 128, 255, 0.7)&quot;, // 十字パッド下押下の色
+    //jujiPadColor:&quot;rgba(0, 0, 0, 0.3)&quot;, // 十字パッド矢印の色
+    jujiPadLColor:&quot;rgba(255, 0, 0, 0.7)&quot;, // 十字パッド左矢印の色
+    jujiPadRColor:&quot;rgba(255, 255, 0, 0.7)&quot;, // 十字パッド右矢印の色
+    jujiPadUColor:&quot;rgba(0, 255, 0, 0.7)&quot;, // 十字パッド上矢印の色
+    jujiPadDColor:&quot;rgba(0, 128, 255, 0.7)&quot; // 十字パッド下矢印の色
+};
+</code></pre><h1 id="-">メソッド</h1>
 <ul>
 <li><a href="getUp">getUp</a></li>
 <li><a href="getDown">getDown</a></li>

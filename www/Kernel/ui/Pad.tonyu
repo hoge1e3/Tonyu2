@@ -7,7 +7,7 @@ extends Actor;
 \new(opt) {
     super(opt);
 
-    if ((version == null || version == 1) && $pat_inputPad != undefined) {
+    if (!buttonCnt && (version == null || version == 1) && $pat_inputPad != undefined) {
         // Pad ver 1.0 を使う(後方互換)
         version = 1;
     } else {
@@ -520,7 +520,8 @@ extends Actor;
     if (buttons == null) { // v1.0
         if (i == 0) value = keyCnt1;
     } else { // v2.0
-        if (i == null) i = 0;
+        if (!i) i = 1;
+        i--;
         if (i >= 0 && i < buttons.length) value = buttons[i].padCnt;
     }
     return value;

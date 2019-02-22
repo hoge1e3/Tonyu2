@@ -61,10 +61,13 @@ while(true) {
     if (pad.getDown()) y+=spd; // 下キー
     
     // 移動制限
-    if (x < 16) x = 16;
+    x=clamp(x,16,$screenWidth-16);
+    y=clamp(y,16,$screenHeight-16);
+    
+    /*if (x < 16) x = 16;
     if (x > $screenWidth - 16) x = $screenWidth - 16;
     if (y < 16) y = 16;
     if (y > $screenHeight - 16) y = $screenHeight - 16;
-    
+    */
     update();
 }
