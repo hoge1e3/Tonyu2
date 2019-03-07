@@ -60,42 +60,12 @@ extends Actor;
     if (panel != null) {
         panel.hide();
     }
-    if (panelPush != null) {
-        panelPush.hide();
-    }
-    if (panelPushL != null) {
-        panelPushL.hide();
-    }
-    if (panelPushR != null) {
-        panelPushR.hide();
-    }
-    if (panelPushU != null) {
-        panelPushU.hide();
-    }
-    if (panelPushD != null) {
-        panelPushD.hide();
-    }
     //super.hide();
 }
 
 \show() {
     if (panel != null) {
         panel.show();
-    }
-    if (panelPush != null) {
-        panelPush.show();
-    }
-    if (panelPushL != null) {
-        panelPushL.show();
-    }
-    if (panelPushR != null) {
-        panelPushR.show();
-    }
-    if (panelPushU != null) {
-        panelPushU.show();
-    }
-    if (panelPushD != null) {
-        panelPushD.show();
     }
     //super.show();
 }
@@ -260,20 +230,19 @@ extends Actor;
     if (bh < 0) bh = 0;
     if (w < 4) w = 4;
     if (h < 4) h = 4;
-
     panel.setPanel(w+2, h+2);
     panel.clearRect(0, 0, w+2, h+2);
     panel.setFillStyle(padBorderColor);
-    panel.fillRect(0, 0, w, h);
-    panel.clearRect(bw, bh, w-bw*2, h-bh*2);
+    panel.fillRect(1, 1, w, h);
+    panel.clearRect(1+bw, 1+bh, w-bw*2, h-bh*2);
     panel.setFillStyle(padFillColor);
-    panel.fillRect(bw, bh, w-bw*2, h-bh*2);
+    panel.fillRect(1+bw, 1+bh, w-bw*2, h-bh*2);
     panel.fillText(padText, w/2, h/2, padTextColor, ts, "center", "middle");
 
-    panelPush.setPanel(w+1, h+1);
+    panelPush.setPanel(w+2, h+2);
     panelPush.clearRect(0, 0, w+2, h+2);
     panelPush.setFillStyle(padPushColor);
-    panelPush.fillRect(0, 0, w, h);
+    panelPush.fillRect(1, 1, w, h);
 }
 
 \drawPanelMode10001() {
@@ -382,11 +351,6 @@ extends Actor;
     panel.zOrder = zOrder;
     panel.alpha = alpha;
     panel.layer = layer;
-    panelPush.x = x;
-    panelPush.y = y;
-    panelPush.zOrder = zOrder;
-    panelPush.alpha = alpha;
-    panelPush.layer = layer;
     // ボタン範囲内でtouchDownした場合、touchUpするまで解除しない(複数指対応)
     var allNoTouche = true;
     for (var i=0; i<TOUCHES_MAX; i++) {
@@ -404,11 +368,16 @@ extends Actor;
         }
     }
     if (allNoTouche) {
-        padPush = false;
+        padPush = 0;
     }
     if (padPush) {
         padCnt ++;
         padNotapCnt = 0;
+        panelPush.x = x;
+        panelPush.y = y;
+        panelPush.zOrder = zOrder;
+        panelPush.alpha = alpha;
+        panelPush.layer = layer;
         panelPush.show();
     } else {
         padCnt = 0;
@@ -562,8 +531,7 @@ extends Actor;
     var w, h;
     w = width  + 2;
     h = height + 2;
-
-    return (mx >= x-w/2 && mx < x+w/2 && my >= y-h/2 && my < y+h/2);
+    return (mx >= x-w/2-1 && mx < x+w/2-1 && my >= y-h/2-1 && my < y+h/2-1);
 }
 
 while (loop) {
