@@ -178,10 +178,21 @@ includes MathMod,EventMod,FileMod;
     return data[key(x,y)]!==undefined;
 }
 \set(x,y,v) {
+    var k;
     if (v===undefined) {
-        delete data[key(x,y)];
+        k=key(x,y);
+        if (!data[k]) return v;
+        fireEvent("set") {
+            x,y,value:v
+        };
+        delete data[k];
     } else {
-        return data[key(x,y,true)]=v;
+        k=key(x,y,true);
+        if (data[k]===v) return v;
+        fireEvent("set") {
+            x,y,value:v
+        };
+        return data[k]=v;
     }
 }
 \neighbors(x,y,options) {

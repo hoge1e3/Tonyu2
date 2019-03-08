@@ -60,6 +60,7 @@ nowait \on() {
 }
 
 nowait \fireEvent(type, arg) {
+    if (!_eventHandlers) return;
     var h=getEventHandler(type);
     if (h) h.fire([arg]);
 }

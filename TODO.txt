@@ -1,5 +1,23 @@
+ネットランキング
+  gameID
+  Timestamp
+  summary  =  {score:500, name:"hoge"}
+  Data: bigtext(65535+)
+リアルタイム対戦
+
+QRコードで一時実行
+
+VR
+  画面を２つに分割 → WebGLのシェーダでゆがむ
+  センサーで向き検知
+
+
 MZO
  link to mezonetJS
+Picotune
+  $sound.playBGM();
+  $sound.setProgram(0, $se_piano );
+  $se_generated = $sound.createSound(array);
 worker compile
 minify libs
 economyMode
@@ -90,7 +108,7 @@ IDE
  フォルダ
 
 Project board
- 全プロジェクト一覧
+ OK 全プロジェクト一覧
 
 UI
   OK ダイアログがデフォルト
