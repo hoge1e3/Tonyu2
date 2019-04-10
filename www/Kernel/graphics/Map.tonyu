@@ -77,8 +77,8 @@ native console;
     col=mapTable[0].length;
     mapOnTable=baseData[1];
     mapOnData=mapOnTable;
-    if (typeof Number(baseData[2])=="number") chipWidth=Number(baseData[2]);
-    if (typeof Number(baseData[3])=="number") chipHeight=Number(baseData[3]);
+    if (typeof baseData[2]=="number") chipWidth=baseData[2];
+    if (typeof baseData[3]=="number") chipHeight=baseData[3];
     buf=$("<canvas>").attr{width:col*chipWidth,height:row*chipHeight};
     initMap();
 }

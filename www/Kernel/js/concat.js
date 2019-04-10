@@ -21940,18 +21940,18 @@ Tonyu.klass.define({
         //$LASTPOS=71001887;//kernel.Map:1887
         _this.mapOnData=_this.mapOnTable;
         //$LASTPOS=71001914;//kernel.Map:1914
-        if (typeof  Number(_this.baseData[2])=="number") {
-          //$LASTPOS=71001956;//kernel.Map:1956
-          _this.chipWidth=Number(_this.baseData[2]);
+        if (typeof  _this.baseData[2]=="number") {
+          //$LASTPOS=71001948;//kernel.Map:1948
+          _this.chipWidth=_this.baseData[2];
         }
-        //$LASTPOS=71001992;//kernel.Map:1992
-        if (typeof  Number(_this.baseData[3])=="number") {
-          //$LASTPOS=71002034;//kernel.Map:2034
-          _this.chipHeight=Number(_this.baseData[3]);
+        //$LASTPOS=71001976;//kernel.Map:1976
+        if (typeof  _this.baseData[3]=="number") {
+          //$LASTPOS=71002010;//kernel.Map:2010
+          _this.chipHeight=_this.baseData[3];
         }
-        //$LASTPOS=71002071;//kernel.Map:2071
+        //$LASTPOS=71002039;//kernel.Map:2039
         _this.buf=$("<canvas>").attr({width: _this.col*_this.chipWidth,height: _this.row*_this.chipHeight});
-        //$LASTPOS=71002143;//kernel.Map:2143
+        //$LASTPOS=71002111;//kernel.Map:2111
         _this.initMap();
       },
       fiber$load :function _trc_Map_f_load(_thread,dataFile) {
@@ -21980,16 +21980,16 @@ Tonyu.klass.define({
         //$LASTPOS=71001887;//kernel.Map:1887
         _this.mapOnData=_this.mapOnTable;
         //$LASTPOS=71001914;//kernel.Map:1914
-        if (typeof  Number(_this.baseData[2])=="number") {
-          //$LASTPOS=71001956;//kernel.Map:1956
-          _this.chipWidth=Number(_this.baseData[2]);
+        if (typeof  _this.baseData[2]=="number") {
+          //$LASTPOS=71001948;//kernel.Map:1948
+          _this.chipWidth=_this.baseData[2];
         }
-        //$LASTPOS=71001992;//kernel.Map:1992
-        if (typeof  Number(_this.baseData[3])=="number") {
-          //$LASTPOS=71002034;//kernel.Map:2034
-          _this.chipHeight=Number(_this.baseData[3]);
+        //$LASTPOS=71001976;//kernel.Map:1976
+        if (typeof  _this.baseData[3]=="number") {
+          //$LASTPOS=71002010;//kernel.Map:2010
+          _this.chipHeight=_this.baseData[3];
         }
-        //$LASTPOS=71002071;//kernel.Map:2071
+        //$LASTPOS=71002039;//kernel.Map:2039
         _this.buf=$("<canvas>").attr({width: _this.col*_this.chipWidth,height: _this.row*_this.chipHeight});
         
         _thread.enter(function _trc_Map_ent_load(_thread) {
@@ -21997,7 +21997,7 @@ Tonyu.klass.define({
           for(var __cnt=100 ; __cnt--;) {
             switch (__pc) {
             case 0:
-              //$LASTPOS=71002143;//kernel.Map:2143
+              //$LASTPOS=71002111;//kernel.Map:2111
               _this.fiber$initMap(_thread);
               __pc=1;return;
             case 1:
@@ -22013,13 +22013,13 @@ Tonyu.klass.define({
         var saveDataFile;
         var data;
         
-        //$LASTPOS=71002185;//kernel.Map:2185
+        //$LASTPOS=71002153;//kernel.Map:2153
         saveDataFile = _this.file("../maps/").rel(saveFileName);
         
-        //$LASTPOS=71002243;//kernel.Map:2243
+        //$LASTPOS=71002211;//kernel.Map:2211
         data = [_this.mapTable,_this.mapOnTable,_this.chipWidth,_this.chipHeight];
         
-        //$LASTPOS=71002301;//kernel.Map:2301
+        //$LASTPOS=71002269;//kernel.Map:2269
         saveDataFile.obj(data);
       },
       fiber$save :function _trc_Map_f_save(_thread,saveFileName) {
@@ -22030,13 +22030,13 @@ Tonyu.klass.define({
         var saveDataFile;
         var data;
         
-        //$LASTPOS=71002185;//kernel.Map:2185
+        //$LASTPOS=71002153;//kernel.Map:2153
         saveDataFile = _this.file("../maps/").rel(saveFileName);
         
-        //$LASTPOS=71002243;//kernel.Map:2243
+        //$LASTPOS=71002211;//kernel.Map:2211
         data = [_this.mapTable,_this.mapOnTable,_this.chipWidth,_this.chipHeight];
         
-        //$LASTPOS=71002301;//kernel.Map:2301
+        //$LASTPOS=71002269;//kernel.Map:2269
         saveDataFile.obj(data);
         
         _thread.retVal=_this;return;
@@ -22045,32 +22045,32 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         
-        //$LASTPOS=71002357;//kernel.Map:2357
+        //$LASTPOS=71002325;//kernel.Map:2325
         if (setCol>=_this.col||setRow>=_this.row||setCol<0||setRow<0) {
           return _this;
         }
-        //$LASTPOS=71002425;//kernel.Map:2425
+        //$LASTPOS=71002393;//kernel.Map:2393
         _this.mapTable[setRow][setCol]=p;
-        //$LASTPOS=71002496;//kernel.Map:2496
+        //$LASTPOS=71002464;//kernel.Map:2464
         _this.ctx=_this.buf[0].getContext("2d");
-        //$LASTPOS=71002530;//kernel.Map:2530
+        //$LASTPOS=71002498;//kernel.Map:2498
         p=Math.floor(p);
-        //$LASTPOS=71002552;//kernel.Map:2552
+        //$LASTPOS=71002520;//kernel.Map:2520
         _this.pImg=Tonyu.globals.$imageList[p];
-        //$LASTPOS=71002577;//kernel.Map:2577
+        //$LASTPOS=71002545;//kernel.Map:2545
         if (! _this.pImg) {
-          //$LASTPOS=71002599;//kernel.Map:2599
+          //$LASTPOS=71002567;//kernel.Map:2567
           _this.ctx.clearRect(setCol*_this.chipWidth,setRow*_this.chipHeight,_this.chipWidth,_this.chipHeight);
           return _this;
           
         }
-        //$LASTPOS=71002700;//kernel.Map:2700
+        //$LASTPOS=71002668;//kernel.Map:2668
         _this.ctx.clearRect(setCol*_this.chipWidth,setRow*_this.chipHeight,_this.chipWidth,_this.chipHeight);
-        //$LASTPOS=71002777;//kernel.Map:2777
+        //$LASTPOS=71002745;//kernel.Map:2745
         _this.ctx.save();
-        //$LASTPOS=71002948;//kernel.Map:2948
+        //$LASTPOS=71002916;//kernel.Map:2916
         _this.ctx.drawImage(_this.pImg.image,_this.pImg.x,_this.pImg.y,_this.pImg.width,_this.pImg.height,setCol*_this.chipWidth,setRow*_this.chipHeight,_this.chipWidth,_this.chipHeight);
-        //$LASTPOS=71003092;//kernel.Map:3092
+        //$LASTPOS=71003060;//kernel.Map:3060
         _this.ctx.restore();
       },
       fiber$set :function _trc_Map_f_set(_thread,setCol,setRow,p) {
@@ -22079,34 +22079,34 @@ Tonyu.klass.define({
         //var _arguments=Tonyu.A(arguments);
         var __pc=0;
         
-        //$LASTPOS=71002357;//kernel.Map:2357
+        //$LASTPOS=71002325;//kernel.Map:2325
         if (setCol>=_this.col||setRow>=_this.row||setCol<0||setRow<0) {
           _thread.retVal=_this;return;
           
         }
-        //$LASTPOS=71002425;//kernel.Map:2425
+        //$LASTPOS=71002393;//kernel.Map:2393
         _this.mapTable[setRow][setCol]=p;
-        //$LASTPOS=71002496;//kernel.Map:2496
+        //$LASTPOS=71002464;//kernel.Map:2464
         _this.ctx=_this.buf[0].getContext("2d");
-        //$LASTPOS=71002530;//kernel.Map:2530
+        //$LASTPOS=71002498;//kernel.Map:2498
         p=Math.floor(p);
-        //$LASTPOS=71002552;//kernel.Map:2552
+        //$LASTPOS=71002520;//kernel.Map:2520
         _this.pImg=Tonyu.globals.$imageList[p];
-        //$LASTPOS=71002577;//kernel.Map:2577
+        //$LASTPOS=71002545;//kernel.Map:2545
         if (! _this.pImg) {
-          //$LASTPOS=71002599;//kernel.Map:2599
+          //$LASTPOS=71002567;//kernel.Map:2567
           _this.ctx.clearRect(setCol*_this.chipWidth,setRow*_this.chipHeight,_this.chipWidth,_this.chipHeight);
           _thread.retVal=_this;return;
           
           
         }
-        //$LASTPOS=71002700;//kernel.Map:2700
+        //$LASTPOS=71002668;//kernel.Map:2668
         _this.ctx.clearRect(setCol*_this.chipWidth,setRow*_this.chipHeight,_this.chipWidth,_this.chipHeight);
-        //$LASTPOS=71002777;//kernel.Map:2777
+        //$LASTPOS=71002745;//kernel.Map:2745
         _this.ctx.save();
-        //$LASTPOS=71002948;//kernel.Map:2948
+        //$LASTPOS=71002916;//kernel.Map:2916
         _this.ctx.drawImage(_this.pImg.image,_this.pImg.x,_this.pImg.y,_this.pImg.width,_this.pImg.height,setCol*_this.chipWidth,setRow*_this.chipHeight,_this.chipWidth,_this.chipHeight);
-        //$LASTPOS=71003092;//kernel.Map:3092
+        //$LASTPOS=71003060;//kernel.Map:3060
         _this.ctx.restore();
         
         _thread.retVal=_this;return;
@@ -22115,29 +22115,29 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         
-        //$LASTPOS=71003141;//kernel.Map:3141
+        //$LASTPOS=71003109;//kernel.Map:3109
         if (setCol>=_this.col||setRow>=_this.row||setCol<0||setRow<0) {
           return _this;
         }
-        //$LASTPOS=71003209;//kernel.Map:3209
+        //$LASTPOS=71003177;//kernel.Map:3177
         _this.set(setCol,setRow,_this.mapTable[setRow][setCol]);
-        //$LASTPOS=71003259;//kernel.Map:3259
+        //$LASTPOS=71003227;//kernel.Map:3227
         _this.mapOnTable[setRow][setCol]=p;
-        //$LASTPOS=71003294;//kernel.Map:3294
+        //$LASTPOS=71003262;//kernel.Map:3262
         _this.ctx=_this.buf[0].getContext("2d");
-        //$LASTPOS=71003328;//kernel.Map:3328
+        //$LASTPOS=71003296;//kernel.Map:3296
         p=Math.floor(p);
-        //$LASTPOS=71003350;//kernel.Map:3350
+        //$LASTPOS=71003318;//kernel.Map:3318
         _this.pImg=Tonyu.globals.$imageList[p];
-        //$LASTPOS=71003375;//kernel.Map:3375
+        //$LASTPOS=71003343;//kernel.Map:3343
         if (! _this.pImg) {
           return _this;
         }
-        //$LASTPOS=71003399;//kernel.Map:3399
+        //$LASTPOS=71003367;//kernel.Map:3367
         _this.ctx.save();
-        //$LASTPOS=71003416;//kernel.Map:3416
+        //$LASTPOS=71003384;//kernel.Map:3384
         _this.ctx.drawImage(_this.pImg.image,_this.pImg.x,_this.pImg.y,_this.pImg.width,_this.pImg.height,setCol*_this.chipWidth,setRow*_this.chipHeight,_this.chipWidth,_this.chipHeight);
-        //$LASTPOS=71003560;//kernel.Map:3560
+        //$LASTPOS=71003528;//kernel.Map:3528
         _this.ctx.restore();
       },
       fiber$setOn :function _trc_Map_f_setOn(_thread,setCol,setRow,p) {
@@ -22146,7 +22146,7 @@ Tonyu.klass.define({
         //var _arguments=Tonyu.A(arguments);
         var __pc=0;
         
-        //$LASTPOS=71003141;//kernel.Map:3141
+        //$LASTPOS=71003109;//kernel.Map:3109
         if (setCol>=_this.col||setRow>=_this.row||setCol<0||setRow<0) {
           _thread.retVal=_this;return;
           
@@ -22157,29 +22157,29 @@ Tonyu.klass.define({
           for(var __cnt=100 ; __cnt--;) {
             switch (__pc) {
             case 0:
-              //$LASTPOS=71003209;//kernel.Map:3209
+              //$LASTPOS=71003177;//kernel.Map:3177
               _this.fiber$set(_thread, setCol, setRow, _this.mapTable[setRow][setCol]);
               __pc=1;return;
             case 1:
               
-              //$LASTPOS=71003259;//kernel.Map:3259
+              //$LASTPOS=71003227;//kernel.Map:3227
               _this.mapOnTable[setRow][setCol]=p;
-              //$LASTPOS=71003294;//kernel.Map:3294
+              //$LASTPOS=71003262;//kernel.Map:3262
               _this.ctx=_this.buf[0].getContext("2d");
-              //$LASTPOS=71003328;//kernel.Map:3328
+              //$LASTPOS=71003296;//kernel.Map:3296
               p=Math.floor(p);
-              //$LASTPOS=71003350;//kernel.Map:3350
+              //$LASTPOS=71003318;//kernel.Map:3318
               _this.pImg=Tonyu.globals.$imageList[p];
-              //$LASTPOS=71003375;//kernel.Map:3375
+              //$LASTPOS=71003343;//kernel.Map:3343
               if (!(! _this.pImg)) { __pc=2     ; break; }
               _thread.exit(_this);return;
             case 2     :
               
-              //$LASTPOS=71003399;//kernel.Map:3399
+              //$LASTPOS=71003367;//kernel.Map:3367
               _this.ctx.save();
-              //$LASTPOS=71003416;//kernel.Map:3416
+              //$LASTPOS=71003384;//kernel.Map:3384
               _this.ctx.drawImage(_this.pImg.image,_this.pImg.x,_this.pImg.y,_this.pImg.width,_this.pImg.height,setCol*_this.chipWidth,setRow*_this.chipHeight,_this.chipWidth,_this.chipHeight);
-              //$LASTPOS=71003560;//kernel.Map:3560
+              //$LASTPOS=71003528;//kernel.Map:3528
               _this.ctx.restore();
               _thread.exit(_this);return;
             }
@@ -22190,7 +22190,7 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         
-        //$LASTPOS=71003607;//kernel.Map:3607
+        //$LASTPOS=71003575;//kernel.Map:3575
         _this.setOn(Math.floor((setX-_this.sx)/_this.chipWidth),Math.floor((setY-_this.sy)/_this.chipHeight),p);
       },
       fiber$setOnAt :function _trc_Map_f_setOnAt(_thread,setX,setY,p) {
@@ -22205,7 +22205,7 @@ Tonyu.klass.define({
           for(var __cnt=100 ; __cnt--;) {
             switch (__pc) {
             case 0:
-              //$LASTPOS=71003607;//kernel.Map:3607
+              //$LASTPOS=71003575;//kernel.Map:3575
               _this.fiber$setOn(_thread, Math.floor((setX-_this.sx)/_this.chipWidth), Math.floor((setY-_this.sy)/_this.chipHeight), p);
               __pc=1;return;
             case 1:
@@ -22219,7 +22219,7 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         
-        //$LASTPOS=71003712;//kernel.Map:3712
+        //$LASTPOS=71003680;//kernel.Map:3680
         _this.set(Math.floor((setX-_this.sx)/_this.chipWidth),Math.floor((setY-_this.sy)/_this.chipHeight),p);
       },
       fiber$setAt :function _trc_Map_f_setAt(_thread,setX,setY,p) {
@@ -22234,7 +22234,7 @@ Tonyu.klass.define({
           for(var __cnt=100 ; __cnt--;) {
             switch (__pc) {
             case 0:
-              //$LASTPOS=71003712;//kernel.Map:3712
+              //$LASTPOS=71003680;//kernel.Map:3680
               _this.fiber$set(_thread, Math.floor((setX-_this.sx)/_this.chipWidth), Math.floor((setY-_this.sy)/_this.chipHeight), p);
               __pc=1;return;
             case 1:
@@ -22248,7 +22248,7 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         
-        //$LASTPOS=71003815;//kernel.Map:3815
+        //$LASTPOS=71003783;//kernel.Map:3783
         if (getCol<_this.col&&getRow<_this.row&&getCol>=0&&getRow>=0) {
           return _this.mapTable[getRow][getCol];
         }
@@ -22260,7 +22260,7 @@ Tonyu.klass.define({
         //var _arguments=Tonyu.A(arguments);
         var __pc=0;
         
-        //$LASTPOS=71003815;//kernel.Map:3815
+        //$LASTPOS=71003783;//kernel.Map:3783
         if (getCol<_this.col&&getRow<_this.row&&getCol>=0&&getRow>=0) {
           _thread.retVal=_this.mapTable[getRow][getCol];return;
           
@@ -22302,7 +22302,7 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         
-        //$LASTPOS=71004057;//kernel.Map:4057
+        //$LASTPOS=71004025;//kernel.Map:4025
         if (getCol<_this.col&&getRow<_this.row&&getCol>=0&&getRow>=0) {
           return _this.mapOnTable[getRow][getCol];
         }
@@ -22314,7 +22314,7 @@ Tonyu.klass.define({
         //var _arguments=Tonyu.A(arguments);
         var __pc=0;
         
-        //$LASTPOS=71004057;//kernel.Map:4057
+        //$LASTPOS=71004025;//kernel.Map:4025
         if (getCol<_this.col&&getRow<_this.row&&getCol>=0&&getRow>=0) {
           _thread.retVal=_this.mapOnTable[getRow][getCol];return;
           
@@ -22356,9 +22356,9 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         
-        //$LASTPOS=71004310;//kernel.Map:4310
+        //$LASTPOS=71004278;//kernel.Map:4278
         _this.sx=- scrollX;
-        //$LASTPOS=71004328;//kernel.Map:4328
+        //$LASTPOS=71004296;//kernel.Map:4296
         _this.sy=- scrollY;
       },
       fiber$scrollTo :function _trc_Map_f_scrollTo(_thread,scrollX,scrollY) {
@@ -22367,9 +22367,9 @@ Tonyu.klass.define({
         //var _arguments=Tonyu.A(arguments);
         var __pc=0;
         
-        //$LASTPOS=71004310;//kernel.Map:4310
+        //$LASTPOS=71004278;//kernel.Map:4278
         _this.sx=- scrollX;
-        //$LASTPOS=71004328;//kernel.Map:4328
+        //$LASTPOS=71004296;//kernel.Map:4296
         _this.sy=- scrollY;
         
         _thread.retVal=_this;return;
@@ -22378,15 +22378,15 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         
-        //$LASTPOS=71004363;//kernel.Map:4363
+        //$LASTPOS=71004331;//kernel.Map:4331
         _this.pImg=_this.buf[0];
-        //$LASTPOS=71004381;//kernel.Map:4381
+        //$LASTPOS=71004349;//kernel.Map:4349
         ctx.save();
-        //$LASTPOS=71004398;//kernel.Map:4398
+        //$LASTPOS=71004366;//kernel.Map:4366
         ctx.globalAlpha=_this.alpha/255;
-        //$LASTPOS=71004430;//kernel.Map:4430
+        //$LASTPOS=71004398;//kernel.Map:4398
         ctx.drawImage(_this.pImg,0,0,_this.col*_this.chipWidth,_this.row*_this.chipHeight,_this.sx,_this.sy,_this.col*_this.chipWidth,_this.row*_this.chipHeight);
-        //$LASTPOS=71004542;//kernel.Map:4542
+        //$LASTPOS=71004510;//kernel.Map:4510
         ctx.restore();
       },
       __dummy: false
