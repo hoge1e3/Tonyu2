@@ -44,7 +44,7 @@ x=240;y=150;
 
 while(true) {
     // パッドの押下判定
-    if (pad.getButton(0)) { // 1ボタン
+    if (pad.getButton(1)) { // 1ボタン
         p=$pat_base+4;
         spd=5;
         pad.alpha -= 50;
@@ -52,9 +52,9 @@ while(true) {
         p=$pat_base;
         spd=3;
     }
-    if (pad.getButton(1)) rotation=20; else rotation=0; // 2ボタン
-    if (pad.getButton(2)) alpha=128; else alpha=255; // 3ボタン
-    if (pad.getButton(3)) scaleX=2; else scaleX=1; // 4ボタン
+    if (pad.getButton(2)) rotation=20; else rotation=0; // 2ボタン
+    if (pad.getButton(3)) alpha=128; else alpha=255; // 3ボタン
+    if (pad.getButton(4)) scaleX=2; else scaleX=1; // 4ボタン
     if (pad.getRight()) x+=spd; // 右キー
     if (pad.getLeft()) x-=spd; // 左キー
     if (pad.getUp()) y-=spd; // 上キー
