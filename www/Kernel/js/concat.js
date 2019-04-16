@@ -37588,11 +37588,11 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         
-        //$LASTPOS=92015728;//kernel.PadButton:15728
+        //$LASTPOS=92015100;//kernel.PadButton:15100
         while (_this.loop) {
-          //$LASTPOS=92015748;//kernel.PadButton:15748
+          //$LASTPOS=92015120;//kernel.PadButton:15120
           _this.padUpdate();
-          //$LASTPOS=92015766;//kernel.PadButton:15766
+          //$LASTPOS=92015138;//kernel.PadButton:15138
           _this.update();
           
         }
@@ -37609,15 +37609,15 @@ Tonyu.klass.define({
           for(var __cnt=100 ; __cnt--;) {
             switch (__pc) {
             case 0:
-              //$LASTPOS=92015728;//kernel.PadButton:15728
+              //$LASTPOS=92015100;//kernel.PadButton:15100
             case 1:
               if (!(_this.loop)) { __pc=4     ; break; }
-              //$LASTPOS=92015748;//kernel.PadButton:15748
+              //$LASTPOS=92015120;//kernel.PadButton:15120
               _this.fiber$padUpdate(_thread);
               __pc=2;return;
             case 2:
               
-              //$LASTPOS=92015766;//kernel.PadButton:15766
+              //$LASTPOS=92015138;//kernel.PadButton:15138
               _this.fiber$update(_thread);
               __pc=3;return;
             case 3:
@@ -37720,75 +37720,15 @@ Tonyu.klass.define({
           _this.panel.hide();
           
         }
-        //$LASTPOS=92001285;//kernel.PadButton:1285
-        if (_this.panelPush!=null) {
-          //$LASTPOS=92001319;//kernel.PadButton:1319
-          _this.panelPush.hide();
-          
-        }
-        //$LASTPOS=92001349;//kernel.PadButton:1349
-        if (_this.panelPushL!=null) {
-          //$LASTPOS=92001384;//kernel.PadButton:1384
-          _this.panelPushL.hide();
-          
-        }
-        //$LASTPOS=92001415;//kernel.PadButton:1415
-        if (_this.panelPushR!=null) {
-          //$LASTPOS=92001450;//kernel.PadButton:1450
-          _this.panelPushR.hide();
-          
-        }
-        //$LASTPOS=92001481;//kernel.PadButton:1481
-        if (_this.panelPushU!=null) {
-          //$LASTPOS=92001516;//kernel.PadButton:1516
-          _this.panelPushU.hide();
-          
-        }
-        //$LASTPOS=92001547;//kernel.PadButton:1547
-        if (_this.panelPushD!=null) {
-          //$LASTPOS=92001582;//kernel.PadButton:1582
-          _this.panelPushD.hide();
-          
-        }
       },
       show :function _trc_PadButton_show() {
         "use strict";
         var _this=this;
         
-        //$LASTPOS=92001650;//kernel.PadButton:1650
+        //$LASTPOS=92001322;//kernel.PadButton:1322
         if (_this.panel!=null) {
-          //$LASTPOS=92001680;//kernel.PadButton:1680
+          //$LASTPOS=92001352;//kernel.PadButton:1352
           _this.panel.show();
-          
-        }
-        //$LASTPOS=92001706;//kernel.PadButton:1706
-        if (_this.panelPush!=null) {
-          //$LASTPOS=92001740;//kernel.PadButton:1740
-          _this.panelPush.show();
-          
-        }
-        //$LASTPOS=92001770;//kernel.PadButton:1770
-        if (_this.panelPushL!=null) {
-          //$LASTPOS=92001805;//kernel.PadButton:1805
-          _this.panelPushL.show();
-          
-        }
-        //$LASTPOS=92001836;//kernel.PadButton:1836
-        if (_this.panelPushR!=null) {
-          //$LASTPOS=92001871;//kernel.PadButton:1871
-          _this.panelPushR.show();
-          
-        }
-        //$LASTPOS=92001902;//kernel.PadButton:1902
-        if (_this.panelPushU!=null) {
-          //$LASTPOS=92001937;//kernel.PadButton:1937
-          _this.panelPushU.show();
-          
-        }
-        //$LASTPOS=92001968;//kernel.PadButton:1968
-        if (_this.panelPushD!=null) {
-          //$LASTPOS=92002003;//kernel.PadButton:2003
-          _this.panelPushD.show();
           
         }
       },
@@ -37797,263 +37737,263 @@ Tonyu.klass.define({
         var _this=this;
         var i;
         
-        //$LASTPOS=92002071;//kernel.PadButton:2071
+        //$LASTPOS=92001415;//kernel.PadButton:1415
         _this.TOUCHES_MAX=5;
-        //$LASTPOS=92002104;//kernel.PadButton:2104
+        //$LASTPOS=92001448;//kernel.PadButton:1448
         _this.loop=true;
-        //$LASTPOS=92002134;//kernel.PadButton:2134
+        //$LASTPOS=92001478;//kernel.PadButton:1478
         _this.padCnt=0;
-        //$LASTPOS=92002151;//kernel.PadButton:2151
+        //$LASTPOS=92001495;//kernel.PadButton:1495
         _this.padCntL=0;
-        //$LASTPOS=92002169;//kernel.PadButton:2169
+        //$LASTPOS=92001513;//kernel.PadButton:1513
         _this.padCntR=0;
-        //$LASTPOS=92002187;//kernel.PadButton:2187
+        //$LASTPOS=92001531;//kernel.PadButton:1531
         _this.padCntU=0;
-        //$LASTPOS=92002205;//kernel.PadButton:2205
+        //$LASTPOS=92001549;//kernel.PadButton:1549
         _this.padCntD=0;
-        //$LASTPOS=92002223;//kernel.PadButton:2223
+        //$LASTPOS=92001567;//kernel.PadButton:1567
         _this.padNotapCnt=0;
-        //$LASTPOS=92002245;//kernel.PadButton:2245
+        //$LASTPOS=92001589;//kernel.PadButton:1589
         _this.padUpdateFrame=- 1;
-        //$LASTPOS=92002273;//kernel.PadButton:2273
+        //$LASTPOS=92001617;//kernel.PadButton:1617
         if (_this.mode==0) {
-          //$LASTPOS=92002486;//kernel.PadButton:2486
+          //$LASTPOS=92001830;//kernel.PadButton:1830
           if (_this.p==null) {
-            //$LASTPOS=92002501;//kernel.PadButton:2501
+            //$LASTPOS=92001845;//kernel.PadButton:1845
             _this.p=0;
           }
-          //$LASTPOS=92002517;//kernel.PadButton:2517
+          //$LASTPOS=92001861;//kernel.PadButton:1861
           if (_this.pushP==null) {
-            //$LASTPOS=92002536;//kernel.PadButton:2536
+            //$LASTPOS=92001880;//kernel.PadButton:1880
             _this.pushP=1;
           }
-          //$LASTPOS=92002556;//kernel.PadButton:2556
+          //$LASTPOS=92001900;//kernel.PadButton:1900
           if (_this.drawMode==null) {
-            //$LASTPOS=92002578;//kernel.PadButton:2578
+            //$LASTPOS=92001922;//kernel.PadButton:1922
             _this.drawMode=0;
           }
           
         } else {
-          //$LASTPOS=92002606;//kernel.PadButton:2606
+          //$LASTPOS=92001950;//kernel.PadButton:1950
           if (_this.mode==1) {
-            //$LASTPOS=92003016;//kernel.PadButton:3016
+            //$LASTPOS=92002360;//kernel.PadButton:2360
             if (_this.p==null) {
-              //$LASTPOS=92003036;//kernel.PadButton:3036
+              //$LASTPOS=92002380;//kernel.PadButton:2380
               _this.p=0;
             }
-            //$LASTPOS=92003057;//kernel.PadButton:3057
+            //$LASTPOS=92002401;//kernel.PadButton:2401
             if (_this.pushLP==null) {
-              //$LASTPOS=92003077;//kernel.PadButton:3077
+              //$LASTPOS=92002421;//kernel.PadButton:2421
               _this.pushLP=1;
             }
-            //$LASTPOS=92003098;//kernel.PadButton:3098
+            //$LASTPOS=92002442;//kernel.PadButton:2442
             if (_this.pushRP==null) {
-              //$LASTPOS=92003118;//kernel.PadButton:3118
+              //$LASTPOS=92002462;//kernel.PadButton:2462
               _this.pushRP=1;
             }
-            //$LASTPOS=92003139;//kernel.PadButton:3139
+            //$LASTPOS=92002483;//kernel.PadButton:2483
             if (_this.pushUP==null) {
-              //$LASTPOS=92003159;//kernel.PadButton:3159
+              //$LASTPOS=92002503;//kernel.PadButton:2503
               _this.pushUP=1;
             }
-            //$LASTPOS=92003180;//kernel.PadButton:3180
+            //$LASTPOS=92002524;//kernel.PadButton:2524
             if (_this.pushDP==null) {
-              //$LASTPOS=92003200;//kernel.PadButton:3200
+              //$LASTPOS=92002544;//kernel.PadButton:2544
               _this.pushDP=1;
             }
-            //$LASTPOS=92003221;//kernel.PadButton:3221
+            //$LASTPOS=92002565;//kernel.PadButton:2565
             if (_this.drawMode==null) {
-              //$LASTPOS=92003243;//kernel.PadButton:3243
+              //$LASTPOS=92002587;//kernel.PadButton:2587
               _this.drawMode=0;
             }
-            //$LASTPOS=92003266;//kernel.PadButton:3266
+            //$LASTPOS=92002610;//kernel.PadButton:2610
             if (_this.diagonalEnable==null) {
-              //$LASTPOS=92003294;//kernel.PadButton:3294
+              //$LASTPOS=92002638;//kernel.PadButton:2638
               _this.diagonalEnable=true;
             }
             
           } else {
-            //$LASTPOS=92003331;//kernel.PadButton:3331
+            //$LASTPOS=92002675;//kernel.PadButton:2675
             if (_this.mode==2) {
-              //$LASTPOS=92003376;//kernel.PadButton:3376
+              //$LASTPOS=92002720;//kernel.PadButton:2720
               if (_this.p==null) {
-                //$LASTPOS=92003391;//kernel.PadButton:3391
+                //$LASTPOS=92002735;//kernel.PadButton:2735
                 _this.p=0;
               }
-              //$LASTPOS=92003407;//kernel.PadButton:3407
+              //$LASTPOS=92002751;//kernel.PadButton:2751
               if (_this.pushP==null) {
-                //$LASTPOS=92003426;//kernel.PadButton:3426
+                //$LASTPOS=92002770;//kernel.PadButton:2770
                 _this.pushP=1;
               }
               
             } else {
-              //$LASTPOS=92003451;//kernel.PadButton:3451
+              //$LASTPOS=92002795;//kernel.PadButton:2795
               if (_this.mode==10000) {
-                //$LASTPOS=92003853;//kernel.PadButton:3853
+                //$LASTPOS=92003197;//kernel.PadButton:3197
                 _this.p=- 1;
-                //$LASTPOS=92003870;//kernel.PadButton:3870
+                //$LASTPOS=92003214;//kernel.PadButton:3214
                 if (_this.width==null) {
-                  //$LASTPOS=92003889;//kernel.PadButton:3889
+                  //$LASTPOS=92003233;//kernel.PadButton:3233
                   _this.width=96;
                 }
-                //$LASTPOS=92003910;//kernel.PadButton:3910
+                //$LASTPOS=92003254;//kernel.PadButton:3254
                 if (_this.height==null) {
-                  //$LASTPOS=92003930;//kernel.PadButton:3930
+                  //$LASTPOS=92003274;//kernel.PadButton:3274
                   _this.height=96;
                 }
-                //$LASTPOS=92003952;//kernel.PadButton:3952
+                //$LASTPOS=92003296;//kernel.PadButton:3296
                 if (_this.padFillColor==null) {
-                  //$LASTPOS=92003978;//kernel.PadButton:3978
+                  //$LASTPOS=92003322;//kernel.PadButton:3322
                   _this.padFillColor="rgba(0,0,0,0.125)";
                 }
-                //$LASTPOS=92004023;//kernel.PadButton:4023
+                //$LASTPOS=92003367;//kernel.PadButton:3367
                 if (_this.padBorder==null) {
-                  //$LASTPOS=92004046;//kernel.PadButton:4046
+                  //$LASTPOS=92003390;//kernel.PadButton:3390
                   _this.padBorder=1;
                 }
-                //$LASTPOS=92004070;//kernel.PadButton:4070
+                //$LASTPOS=92003414;//kernel.PadButton:3414
                 if (_this.padBorderColor==null) {
-                  //$LASTPOS=92004098;//kernel.PadButton:4098
+                  //$LASTPOS=92003442;//kernel.PadButton:3442
                   _this.padBorderColor="rgba(255,255,255,0.5)";
                 }
-                //$LASTPOS=92004149;//kernel.PadButton:4149
+                //$LASTPOS=92003493;//kernel.PadButton:3493
                 if (_this.padPushColor==null) {
-                  //$LASTPOS=92004175;//kernel.PadButton:4175
+                  //$LASTPOS=92003519;//kernel.PadButton:3519
                   _this.padPushColor="rgba(255,255,255,0.25)";
                 }
-                //$LASTPOS=92004225;//kernel.PadButton:4225
+                //$LASTPOS=92003569;//kernel.PadButton:3569
                 if (_this.padText==null) {
-                  //$LASTPOS=92004246;//kernel.PadButton:4246
+                  //$LASTPOS=92003590;//kernel.PadButton:3590
                   _this.padText="";
                 }
-                //$LASTPOS=92004269;//kernel.PadButton:4269
+                //$LASTPOS=92003613;//kernel.PadButton:3613
                 if (_this.padTextSize==null) {
-                  //$LASTPOS=92004294;//kernel.PadButton:4294
+                  //$LASTPOS=92003638;//kernel.PadButton:3638
                   _this.padTextSize=72;
                 }
-                //$LASTPOS=92004321;//kernel.PadButton:4321
+                //$LASTPOS=92003665;//kernel.PadButton:3665
                 if (_this.padTextColor==null) {
-                  //$LASTPOS=92004347;//kernel.PadButton:4347
+                  //$LASTPOS=92003691;//kernel.PadButton:3691
                   _this.padTextColor="rgba(255,255,255,0.625)";
                 }
-                //$LASTPOS=92004400;//kernel.PadButton:4400
+                //$LASTPOS=92003744;//kernel.PadButton:3744
                 _this.panel=new Tonyu.classes.kernel.PadPanel({layer: _this.layer});
-                //$LASTPOS=92004438;//kernel.PadButton:4438
+                //$LASTPOS=92003782;//kernel.PadButton:3782
                 _this.panelPush=new Tonyu.classes.kernel.PadPanel({layer: _this.layer});
-                //$LASTPOS=92004480;//kernel.PadButton:4480
+                //$LASTPOS=92003824;//kernel.PadButton:3824
                 _this.drawPanel();
-                //$LASTPOS=92004529;//kernel.PadButton:4529
+                //$LASTPOS=92003873;//kernel.PadButton:3873
                 _this.padPush=0;
-                //$LASTPOS=92004551;//kernel.PadButton:4551
+                //$LASTPOS=92003895;//kernel.PadButton:3895
                 _this.padPushList=[];
-                //$LASTPOS=92004578;//kernel.PadButton:4578
-                //$LASTPOS=92004583;//kernel.PadButton:4583
+                //$LASTPOS=92003922;//kernel.PadButton:3922
+                //$LASTPOS=92003927;//kernel.PadButton:3927
                 i = 0;
                 for (; i<_this.TOUCHES_MAX ; i++) {
                   {
-                    //$LASTPOS=92004627;//kernel.PadButton:4627
+                    //$LASTPOS=92003971;//kernel.PadButton:3971
                     _this.padPushList[i]=false;
                   }
                 }
                 
               } else {
-                //$LASTPOS=92004676;//kernel.PadButton:4676
+                //$LASTPOS=92004020;//kernel.PadButton:4020
                 if (_this.mode==10001) {
-                  //$LASTPOS=92005290;//kernel.PadButton:5290
+                  //$LASTPOS=92004634;//kernel.PadButton:4634
                   _this.p=- 1;
-                  //$LASTPOS=92005307;//kernel.PadButton:5307
+                  //$LASTPOS=92004651;//kernel.PadButton:4651
                   if (_this.width==null) {
-                    //$LASTPOS=92005326;//kernel.PadButton:5326
+                    //$LASTPOS=92004670;//kernel.PadButton:4670
                     _this.width=216;
                   }
-                  //$LASTPOS=92005348;//kernel.PadButton:5348
+                  //$LASTPOS=92004692;//kernel.PadButton:4692
                   if (_this.height==null) {
-                    //$LASTPOS=92005368;//kernel.PadButton:5368
+                    //$LASTPOS=92004712;//kernel.PadButton:4712
                     _this.height=216;
                   }
-                  //$LASTPOS=92005391;//kernel.PadButton:5391
+                  //$LASTPOS=92004735;//kernel.PadButton:4735
                   if (_this.padFillColor==null) {
-                    //$LASTPOS=92005417;//kernel.PadButton:5417
+                    //$LASTPOS=92004761;//kernel.PadButton:4761
                     _this.padFillColor="rgba(0,0,0,0.125)";
                   }
-                  //$LASTPOS=92005462;//kernel.PadButton:5462
+                  //$LASTPOS=92004806;//kernel.PadButton:4806
                   if (_this.padBorder==null) {
-                    //$LASTPOS=92005485;//kernel.PadButton:5485
+                    //$LASTPOS=92004829;//kernel.PadButton:4829
                     _this.padBorder=1;
                   }
-                  //$LASTPOS=92005509;//kernel.PadButton:5509
+                  //$LASTPOS=92004853;//kernel.PadButton:4853
                   if (_this.padBorderColor==null) {
-                    //$LASTPOS=92005537;//kernel.PadButton:5537
+                    //$LASTPOS=92004881;//kernel.PadButton:4881
                     _this.padBorderColor="rgba(255,255,255,0.5)";
                   }
-                  //$LASTPOS=92005588;//kernel.PadButton:5588
+                  //$LASTPOS=92004932;//kernel.PadButton:4932
                   if (_this.padLPushColor==null) {
-                    //$LASTPOS=92005615;//kernel.PadButton:5615
+                    //$LASTPOS=92004959;//kernel.PadButton:4959
                     _this.padLPushColor="rgba(255,255,255,0.25)";
                   }
-                  //$LASTPOS=92005666;//kernel.PadButton:5666
+                  //$LASTPOS=92005010;//kernel.PadButton:5010
                   if (_this.padRPushColor==null) {
-                    //$LASTPOS=92005693;//kernel.PadButton:5693
+                    //$LASTPOS=92005037;//kernel.PadButton:5037
                     _this.padRPushColor="rgba(255,255,255,0.25)";
                   }
-                  //$LASTPOS=92005744;//kernel.PadButton:5744
+                  //$LASTPOS=92005088;//kernel.PadButton:5088
                   if (_this.padUPushColor==null) {
-                    //$LASTPOS=92005771;//kernel.PadButton:5771
+                    //$LASTPOS=92005115;//kernel.PadButton:5115
                     _this.padUPushColor="rgba(255,255,255,0.25)";
                   }
-                  //$LASTPOS=92005822;//kernel.PadButton:5822
+                  //$LASTPOS=92005166;//kernel.PadButton:5166
                   if (_this.padDPushColor==null) {
-                    //$LASTPOS=92005849;//kernel.PadButton:5849
+                    //$LASTPOS=92005193;//kernel.PadButton:5193
                     _this.padDPushColor="rgba(255,255,255,0.25)";
                   }
-                  //$LASTPOS=92005900;//kernel.PadButton:5900
+                  //$LASTPOS=92005244;//kernel.PadButton:5244
                   if (_this.padLColor==null) {
-                    //$LASTPOS=92005923;//kernel.PadButton:5923
+                    //$LASTPOS=92005267;//kernel.PadButton:5267
                     _this.padLColor="rgba(255,255,255,0.625)";
                   }
-                  //$LASTPOS=92005971;//kernel.PadButton:5971
+                  //$LASTPOS=92005315;//kernel.PadButton:5315
                   if (_this.padRColor==null) {
-                    //$LASTPOS=92005994;//kernel.PadButton:5994
+                    //$LASTPOS=92005338;//kernel.PadButton:5338
                     _this.padRColor="rgba(255,255,255,0.625)";
                   }
-                  //$LASTPOS=92006042;//kernel.PadButton:6042
+                  //$LASTPOS=92005386;//kernel.PadButton:5386
                   if (_this.padUColor==null) {
-                    //$LASTPOS=92006065;//kernel.PadButton:6065
+                    //$LASTPOS=92005409;//kernel.PadButton:5409
                     _this.padUColor="rgba(255,255,255,0.625)";
                   }
-                  //$LASTPOS=92006113;//kernel.PadButton:6113
+                  //$LASTPOS=92005457;//kernel.PadButton:5457
                   if (_this.padDColor==null) {
-                    //$LASTPOS=92006136;//kernel.PadButton:6136
+                    //$LASTPOS=92005480;//kernel.PadButton:5480
                     _this.padDColor="rgba(255,255,255,0.625)";
                   }
-                  //$LASTPOS=92006184;//kernel.PadButton:6184
+                  //$LASTPOS=92005528;//kernel.PadButton:5528
                   if (_this.diagonalEnable==null) {
-                    //$LASTPOS=92006212;//kernel.PadButton:6212
+                    //$LASTPOS=92005556;//kernel.PadButton:5556
                     _this.diagonalEnable=true;
                   }
-                  //$LASTPOS=92006246;//kernel.PadButton:6246
+                  //$LASTPOS=92005590;//kernel.PadButton:5590
                   _this.panel=new Tonyu.classes.kernel.PadPanel({layer: _this.layer});
-                  //$LASTPOS=92006284;//kernel.PadButton:6284
+                  //$LASTPOS=92005628;//kernel.PadButton:5628
                   _this.panelPushL=new Tonyu.classes.kernel.PadPanel({layer: _this.layer});
-                  //$LASTPOS=92006327;//kernel.PadButton:6327
+                  //$LASTPOS=92005671;//kernel.PadButton:5671
                   _this.panelPushR=new Tonyu.classes.kernel.PadPanel({layer: _this.layer});
-                  //$LASTPOS=92006370;//kernel.PadButton:6370
+                  //$LASTPOS=92005714;//kernel.PadButton:5714
                   _this.panelPushU=new Tonyu.classes.kernel.PadPanel({layer: _this.layer});
-                  //$LASTPOS=92006413;//kernel.PadButton:6413
+                  //$LASTPOS=92005757;//kernel.PadButton:5757
                   _this.panelPushD=new Tonyu.classes.kernel.PadPanel({layer: _this.layer});
-                  //$LASTPOS=92006456;//kernel.PadButton:6456
+                  //$LASTPOS=92005800;//kernel.PadButton:5800
                   _this.drawPanel();
-                  //$LASTPOS=92006505;//kernel.PadButton:6505
+                  //$LASTPOS=92005849;//kernel.PadButton:5849
                   _this.padPushTouchNo=- 1;
                   
                 } else {
-                  //$LASTPOS=92006540;//kernel.PadButton:6540
+                  //$LASTPOS=92005884;//kernel.PadButton:5884
                   if (_this.mode==10002) {
-                    //$LASTPOS=92006606;//kernel.PadButton:6606
+                    //$LASTPOS=92005950;//kernel.PadButton:5950
                     _this.p=- 1;
-                    //$LASTPOS=92006625;//kernel.PadButton:6625
+                    //$LASTPOS=92005969;//kernel.PadButton:5969
                     _this.panel=new Tonyu.classes.kernel.PadPanel;
-                    //$LASTPOS=92006656;//kernel.PadButton:6656
+                    //$LASTPOS=92006000;//kernel.PadButton:6000
                     _this.drawPanel();
                     
                   }
@@ -38070,23 +38010,23 @@ Tonyu.klass.define({
         var __pc=0;
         var i;
         
-        //$LASTPOS=92002071;//kernel.PadButton:2071
+        //$LASTPOS=92001415;//kernel.PadButton:1415
         _this.TOUCHES_MAX=5;
-        //$LASTPOS=92002104;//kernel.PadButton:2104
+        //$LASTPOS=92001448;//kernel.PadButton:1448
         _this.loop=true;
-        //$LASTPOS=92002134;//kernel.PadButton:2134
+        //$LASTPOS=92001478;//kernel.PadButton:1478
         _this.padCnt=0;
-        //$LASTPOS=92002151;//kernel.PadButton:2151
+        //$LASTPOS=92001495;//kernel.PadButton:1495
         _this.padCntL=0;
-        //$LASTPOS=92002169;//kernel.PadButton:2169
+        //$LASTPOS=92001513;//kernel.PadButton:1513
         _this.padCntR=0;
-        //$LASTPOS=92002187;//kernel.PadButton:2187
+        //$LASTPOS=92001531;//kernel.PadButton:1531
         _this.padCntU=0;
-        //$LASTPOS=92002205;//kernel.PadButton:2205
+        //$LASTPOS=92001549;//kernel.PadButton:1549
         _this.padCntD=0;
-        //$LASTPOS=92002223;//kernel.PadButton:2223
+        //$LASTPOS=92001567;//kernel.PadButton:1567
         _this.padNotapCnt=0;
-        //$LASTPOS=92002245;//kernel.PadButton:2245
+        //$LASTPOS=92001589;//kernel.PadButton:1589
         _this.padUpdateFrame=- 1;
         
         _thread.enter(function _trc_PadButton_ent_init(_thread) {
@@ -38094,257 +38034,257 @@ Tonyu.klass.define({
           for(var __cnt=100 ; __cnt--;) {
             switch (__pc) {
             case 0:
-              //$LASTPOS=92002273;//kernel.PadButton:2273
+              //$LASTPOS=92001617;//kernel.PadButton:1617
               if (!(_this.mode==0)) { __pc=1     ; break; }
               {
-                //$LASTPOS=92002486;//kernel.PadButton:2486
+                //$LASTPOS=92001830;//kernel.PadButton:1830
                 if (_this.p==null) {
-                  //$LASTPOS=92002501;//kernel.PadButton:2501
+                  //$LASTPOS=92001845;//kernel.PadButton:1845
                   _this.p=0;
                 }
-                //$LASTPOS=92002517;//kernel.PadButton:2517
+                //$LASTPOS=92001861;//kernel.PadButton:1861
                 if (_this.pushP==null) {
-                  //$LASTPOS=92002536;//kernel.PadButton:2536
+                  //$LASTPOS=92001880;//kernel.PadButton:1880
                   _this.pushP=1;
                 }
-                //$LASTPOS=92002556;//kernel.PadButton:2556
+                //$LASTPOS=92001900;//kernel.PadButton:1900
                 if (_this.drawMode==null) {
-                  //$LASTPOS=92002578;//kernel.PadButton:2578
+                  //$LASTPOS=92001922;//kernel.PadButton:1922
                   _this.drawMode=0;
                 }
               }
               __pc=14    ;break;
             case 1     :
-              //$LASTPOS=92002606;//kernel.PadButton:2606
+              //$LASTPOS=92001950;//kernel.PadButton:1950
               if (!(_this.mode==1)) { __pc=2     ; break; }
               {
-                //$LASTPOS=92003016;//kernel.PadButton:3016
+                //$LASTPOS=92002360;//kernel.PadButton:2360
                 if (_this.p==null) {
-                  //$LASTPOS=92003036;//kernel.PadButton:3036
+                  //$LASTPOS=92002380;//kernel.PadButton:2380
                   _this.p=0;
                 }
-                //$LASTPOS=92003057;//kernel.PadButton:3057
+                //$LASTPOS=92002401;//kernel.PadButton:2401
                 if (_this.pushLP==null) {
-                  //$LASTPOS=92003077;//kernel.PadButton:3077
+                  //$LASTPOS=92002421;//kernel.PadButton:2421
                   _this.pushLP=1;
                 }
-                //$LASTPOS=92003098;//kernel.PadButton:3098
+                //$LASTPOS=92002442;//kernel.PadButton:2442
                 if (_this.pushRP==null) {
-                  //$LASTPOS=92003118;//kernel.PadButton:3118
+                  //$LASTPOS=92002462;//kernel.PadButton:2462
                   _this.pushRP=1;
                 }
-                //$LASTPOS=92003139;//kernel.PadButton:3139
+                //$LASTPOS=92002483;//kernel.PadButton:2483
                 if (_this.pushUP==null) {
-                  //$LASTPOS=92003159;//kernel.PadButton:3159
+                  //$LASTPOS=92002503;//kernel.PadButton:2503
                   _this.pushUP=1;
                 }
-                //$LASTPOS=92003180;//kernel.PadButton:3180
+                //$LASTPOS=92002524;//kernel.PadButton:2524
                 if (_this.pushDP==null) {
-                  //$LASTPOS=92003200;//kernel.PadButton:3200
+                  //$LASTPOS=92002544;//kernel.PadButton:2544
                   _this.pushDP=1;
                 }
-                //$LASTPOS=92003221;//kernel.PadButton:3221
+                //$LASTPOS=92002565;//kernel.PadButton:2565
                 if (_this.drawMode==null) {
-                  //$LASTPOS=92003243;//kernel.PadButton:3243
+                  //$LASTPOS=92002587;//kernel.PadButton:2587
                   _this.drawMode=0;
                 }
-                //$LASTPOS=92003266;//kernel.PadButton:3266
+                //$LASTPOS=92002610;//kernel.PadButton:2610
                 if (_this.diagonalEnable==null) {
-                  //$LASTPOS=92003294;//kernel.PadButton:3294
+                  //$LASTPOS=92002638;//kernel.PadButton:2638
                   _this.diagonalEnable=true;
                 }
               }
               __pc=13    ;break;
             case 2     :
-              //$LASTPOS=92003331;//kernel.PadButton:3331
+              //$LASTPOS=92002675;//kernel.PadButton:2675
               if (!(_this.mode==2)) { __pc=3     ; break; }
               {
-                //$LASTPOS=92003376;//kernel.PadButton:3376
+                //$LASTPOS=92002720;//kernel.PadButton:2720
                 if (_this.p==null) {
-                  //$LASTPOS=92003391;//kernel.PadButton:3391
+                  //$LASTPOS=92002735;//kernel.PadButton:2735
                   _this.p=0;
                 }
-                //$LASTPOS=92003407;//kernel.PadButton:3407
+                //$LASTPOS=92002751;//kernel.PadButton:2751
                 if (_this.pushP==null) {
-                  //$LASTPOS=92003426;//kernel.PadButton:3426
+                  //$LASTPOS=92002770;//kernel.PadButton:2770
                   _this.pushP=1;
                 }
               }
               __pc=12    ;break;
             case 3     :
-              //$LASTPOS=92003451;//kernel.PadButton:3451
+              //$LASTPOS=92002795;//kernel.PadButton:2795
               if (!(_this.mode==10000)) { __pc=5     ; break; }
-              //$LASTPOS=92003853;//kernel.PadButton:3853
+              //$LASTPOS=92003197;//kernel.PadButton:3197
               _this.p=- 1;
-              //$LASTPOS=92003870;//kernel.PadButton:3870
+              //$LASTPOS=92003214;//kernel.PadButton:3214
               if (_this.width==null) {
-                //$LASTPOS=92003889;//kernel.PadButton:3889
+                //$LASTPOS=92003233;//kernel.PadButton:3233
                 _this.width=96;
               }
-              //$LASTPOS=92003910;//kernel.PadButton:3910
+              //$LASTPOS=92003254;//kernel.PadButton:3254
               if (_this.height==null) {
-                //$LASTPOS=92003930;//kernel.PadButton:3930
+                //$LASTPOS=92003274;//kernel.PadButton:3274
                 _this.height=96;
               }
-              //$LASTPOS=92003952;//kernel.PadButton:3952
+              //$LASTPOS=92003296;//kernel.PadButton:3296
               if (_this.padFillColor==null) {
-                //$LASTPOS=92003978;//kernel.PadButton:3978
+                //$LASTPOS=92003322;//kernel.PadButton:3322
                 _this.padFillColor="rgba(0,0,0,0.125)";
               }
-              //$LASTPOS=92004023;//kernel.PadButton:4023
+              //$LASTPOS=92003367;//kernel.PadButton:3367
               if (_this.padBorder==null) {
-                //$LASTPOS=92004046;//kernel.PadButton:4046
+                //$LASTPOS=92003390;//kernel.PadButton:3390
                 _this.padBorder=1;
               }
-              //$LASTPOS=92004070;//kernel.PadButton:4070
+              //$LASTPOS=92003414;//kernel.PadButton:3414
               if (_this.padBorderColor==null) {
-                //$LASTPOS=92004098;//kernel.PadButton:4098
+                //$LASTPOS=92003442;//kernel.PadButton:3442
                 _this.padBorderColor="rgba(255,255,255,0.5)";
               }
-              //$LASTPOS=92004149;//kernel.PadButton:4149
+              //$LASTPOS=92003493;//kernel.PadButton:3493
               if (_this.padPushColor==null) {
-                //$LASTPOS=92004175;//kernel.PadButton:4175
+                //$LASTPOS=92003519;//kernel.PadButton:3519
                 _this.padPushColor="rgba(255,255,255,0.25)";
               }
-              //$LASTPOS=92004225;//kernel.PadButton:4225
+              //$LASTPOS=92003569;//kernel.PadButton:3569
               if (_this.padText==null) {
-                //$LASTPOS=92004246;//kernel.PadButton:4246
+                //$LASTPOS=92003590;//kernel.PadButton:3590
                 _this.padText="";
               }
-              //$LASTPOS=92004269;//kernel.PadButton:4269
+              //$LASTPOS=92003613;//kernel.PadButton:3613
               if (_this.padTextSize==null) {
-                //$LASTPOS=92004294;//kernel.PadButton:4294
+                //$LASTPOS=92003638;//kernel.PadButton:3638
                 _this.padTextSize=72;
               }
-              //$LASTPOS=92004321;//kernel.PadButton:4321
+              //$LASTPOS=92003665;//kernel.PadButton:3665
               if (_this.padTextColor==null) {
-                //$LASTPOS=92004347;//kernel.PadButton:4347
+                //$LASTPOS=92003691;//kernel.PadButton:3691
                 _this.padTextColor="rgba(255,255,255,0.625)";
               }
-              //$LASTPOS=92004400;//kernel.PadButton:4400
+              //$LASTPOS=92003744;//kernel.PadButton:3744
               _this.panel=new Tonyu.classes.kernel.PadPanel({layer: _this.layer});
-              //$LASTPOS=92004438;//kernel.PadButton:4438
+              //$LASTPOS=92003782;//kernel.PadButton:3782
               _this.panelPush=new Tonyu.classes.kernel.PadPanel({layer: _this.layer});
-              //$LASTPOS=92004480;//kernel.PadButton:4480
+              //$LASTPOS=92003824;//kernel.PadButton:3824
               _this.fiber$drawPanel(_thread);
               __pc=4;return;
             case 4:
               
-              //$LASTPOS=92004529;//kernel.PadButton:4529
+              //$LASTPOS=92003873;//kernel.PadButton:3873
               _this.padPush=0;
-              //$LASTPOS=92004551;//kernel.PadButton:4551
+              //$LASTPOS=92003895;//kernel.PadButton:3895
               _this.padPushList=[];
-              //$LASTPOS=92004578;//kernel.PadButton:4578
-              //$LASTPOS=92004583;//kernel.PadButton:4583
+              //$LASTPOS=92003922;//kernel.PadButton:3922
+              //$LASTPOS=92003927;//kernel.PadButton:3927
               i = 0;
               for (; i<_this.TOUCHES_MAX ; i++) {
                 {
-                  //$LASTPOS=92004627;//kernel.PadButton:4627
+                  //$LASTPOS=92003971;//kernel.PadButton:3971
                   _this.padPushList[i]=false;
                 }
               }
               __pc=11    ;break;
             case 5     :
-              //$LASTPOS=92004676;//kernel.PadButton:4676
+              //$LASTPOS=92004020;//kernel.PadButton:4020
               if (!(_this.mode==10001)) { __pc=7     ; break; }
-              //$LASTPOS=92005290;//kernel.PadButton:5290
+              //$LASTPOS=92004634;//kernel.PadButton:4634
               _this.p=- 1;
-              //$LASTPOS=92005307;//kernel.PadButton:5307
+              //$LASTPOS=92004651;//kernel.PadButton:4651
               if (_this.width==null) {
-                //$LASTPOS=92005326;//kernel.PadButton:5326
+                //$LASTPOS=92004670;//kernel.PadButton:4670
                 _this.width=216;
               }
-              //$LASTPOS=92005348;//kernel.PadButton:5348
+              //$LASTPOS=92004692;//kernel.PadButton:4692
               if (_this.height==null) {
-                //$LASTPOS=92005368;//kernel.PadButton:5368
+                //$LASTPOS=92004712;//kernel.PadButton:4712
                 _this.height=216;
               }
-              //$LASTPOS=92005391;//kernel.PadButton:5391
+              //$LASTPOS=92004735;//kernel.PadButton:4735
               if (_this.padFillColor==null) {
-                //$LASTPOS=92005417;//kernel.PadButton:5417
+                //$LASTPOS=92004761;//kernel.PadButton:4761
                 _this.padFillColor="rgba(0,0,0,0.125)";
               }
-              //$LASTPOS=92005462;//kernel.PadButton:5462
+              //$LASTPOS=92004806;//kernel.PadButton:4806
               if (_this.padBorder==null) {
-                //$LASTPOS=92005485;//kernel.PadButton:5485
+                //$LASTPOS=92004829;//kernel.PadButton:4829
                 _this.padBorder=1;
               }
-              //$LASTPOS=92005509;//kernel.PadButton:5509
+              //$LASTPOS=92004853;//kernel.PadButton:4853
               if (_this.padBorderColor==null) {
-                //$LASTPOS=92005537;//kernel.PadButton:5537
+                //$LASTPOS=92004881;//kernel.PadButton:4881
                 _this.padBorderColor="rgba(255,255,255,0.5)";
               }
-              //$LASTPOS=92005588;//kernel.PadButton:5588
+              //$LASTPOS=92004932;//kernel.PadButton:4932
               if (_this.padLPushColor==null) {
-                //$LASTPOS=92005615;//kernel.PadButton:5615
+                //$LASTPOS=92004959;//kernel.PadButton:4959
                 _this.padLPushColor="rgba(255,255,255,0.25)";
               }
-              //$LASTPOS=92005666;//kernel.PadButton:5666
+              //$LASTPOS=92005010;//kernel.PadButton:5010
               if (_this.padRPushColor==null) {
-                //$LASTPOS=92005693;//kernel.PadButton:5693
+                //$LASTPOS=92005037;//kernel.PadButton:5037
                 _this.padRPushColor="rgba(255,255,255,0.25)";
               }
-              //$LASTPOS=92005744;//kernel.PadButton:5744
+              //$LASTPOS=92005088;//kernel.PadButton:5088
               if (_this.padUPushColor==null) {
-                //$LASTPOS=92005771;//kernel.PadButton:5771
+                //$LASTPOS=92005115;//kernel.PadButton:5115
                 _this.padUPushColor="rgba(255,255,255,0.25)";
               }
-              //$LASTPOS=92005822;//kernel.PadButton:5822
+              //$LASTPOS=92005166;//kernel.PadButton:5166
               if (_this.padDPushColor==null) {
-                //$LASTPOS=92005849;//kernel.PadButton:5849
+                //$LASTPOS=92005193;//kernel.PadButton:5193
                 _this.padDPushColor="rgba(255,255,255,0.25)";
               }
-              //$LASTPOS=92005900;//kernel.PadButton:5900
+              //$LASTPOS=92005244;//kernel.PadButton:5244
               if (_this.padLColor==null) {
-                //$LASTPOS=92005923;//kernel.PadButton:5923
+                //$LASTPOS=92005267;//kernel.PadButton:5267
                 _this.padLColor="rgba(255,255,255,0.625)";
               }
-              //$LASTPOS=92005971;//kernel.PadButton:5971
+              //$LASTPOS=92005315;//kernel.PadButton:5315
               if (_this.padRColor==null) {
-                //$LASTPOS=92005994;//kernel.PadButton:5994
+                //$LASTPOS=92005338;//kernel.PadButton:5338
                 _this.padRColor="rgba(255,255,255,0.625)";
               }
-              //$LASTPOS=92006042;//kernel.PadButton:6042
+              //$LASTPOS=92005386;//kernel.PadButton:5386
               if (_this.padUColor==null) {
-                //$LASTPOS=92006065;//kernel.PadButton:6065
+                //$LASTPOS=92005409;//kernel.PadButton:5409
                 _this.padUColor="rgba(255,255,255,0.625)";
               }
-              //$LASTPOS=92006113;//kernel.PadButton:6113
+              //$LASTPOS=92005457;//kernel.PadButton:5457
               if (_this.padDColor==null) {
-                //$LASTPOS=92006136;//kernel.PadButton:6136
+                //$LASTPOS=92005480;//kernel.PadButton:5480
                 _this.padDColor="rgba(255,255,255,0.625)";
               }
-              //$LASTPOS=92006184;//kernel.PadButton:6184
+              //$LASTPOS=92005528;//kernel.PadButton:5528
               if (_this.diagonalEnable==null) {
-                //$LASTPOS=92006212;//kernel.PadButton:6212
+                //$LASTPOS=92005556;//kernel.PadButton:5556
                 _this.diagonalEnable=true;
               }
-              //$LASTPOS=92006246;//kernel.PadButton:6246
+              //$LASTPOS=92005590;//kernel.PadButton:5590
               _this.panel=new Tonyu.classes.kernel.PadPanel({layer: _this.layer});
-              //$LASTPOS=92006284;//kernel.PadButton:6284
+              //$LASTPOS=92005628;//kernel.PadButton:5628
               _this.panelPushL=new Tonyu.classes.kernel.PadPanel({layer: _this.layer});
-              //$LASTPOS=92006327;//kernel.PadButton:6327
+              //$LASTPOS=92005671;//kernel.PadButton:5671
               _this.panelPushR=new Tonyu.classes.kernel.PadPanel({layer: _this.layer});
-              //$LASTPOS=92006370;//kernel.PadButton:6370
+              //$LASTPOS=92005714;//kernel.PadButton:5714
               _this.panelPushU=new Tonyu.classes.kernel.PadPanel({layer: _this.layer});
-              //$LASTPOS=92006413;//kernel.PadButton:6413
+              //$LASTPOS=92005757;//kernel.PadButton:5757
               _this.panelPushD=new Tonyu.classes.kernel.PadPanel({layer: _this.layer});
-              //$LASTPOS=92006456;//kernel.PadButton:6456
+              //$LASTPOS=92005800;//kernel.PadButton:5800
               _this.fiber$drawPanel(_thread);
               __pc=6;return;
             case 6:
               
-              //$LASTPOS=92006505;//kernel.PadButton:6505
+              //$LASTPOS=92005849;//kernel.PadButton:5849
               _this.padPushTouchNo=- 1;
               __pc=10    ;break;
             case 7     :
-              //$LASTPOS=92006540;//kernel.PadButton:6540
+              //$LASTPOS=92005884;//kernel.PadButton:5884
               if (!(_this.mode==10002)) { __pc=9     ; break; }
-              //$LASTPOS=92006606;//kernel.PadButton:6606
+              //$LASTPOS=92005950;//kernel.PadButton:5950
               _this.p=- 1;
-              //$LASTPOS=92006625;//kernel.PadButton:6625
+              //$LASTPOS=92005969;//kernel.PadButton:5969
               _this.panel=new Tonyu.classes.kernel.PadPanel;
-              //$LASTPOS=92006656;//kernel.PadButton:6656
+              //$LASTPOS=92006000;//kernel.PadButton:6000
               _this.fiber$drawPanel(_thread);
               __pc=8;return;
             case 8:
@@ -38370,21 +38310,21 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         
-        //$LASTPOS=92006748;//kernel.PadButton:6748
+        //$LASTPOS=92006092;//kernel.PadButton:6092
         if (_this.mode==10000) {
-          //$LASTPOS=92006778;//kernel.PadButton:6778
+          //$LASTPOS=92006122;//kernel.PadButton:6122
           _this.drawPanelMode10000();
           
         } else {
-          //$LASTPOS=92006812;//kernel.PadButton:6812
+          //$LASTPOS=92006156;//kernel.PadButton:6156
           if (_this.mode==10001) {
-            //$LASTPOS=92006842;//kernel.PadButton:6842
+            //$LASTPOS=92006186;//kernel.PadButton:6186
             _this.drawPanelMode10001();
             
           } else {
-            //$LASTPOS=92006876;//kernel.PadButton:6876
+            //$LASTPOS=92006220;//kernel.PadButton:6220
             if (_this.mode==10002) {
-              //$LASTPOS=92006906;//kernel.PadButton:6906
+              //$LASTPOS=92006250;//kernel.PadButton:6250
               _this.drawPanelMode10002();
               
             }
@@ -38403,27 +38343,27 @@ Tonyu.klass.define({
           for(var __cnt=100 ; __cnt--;) {
             switch (__pc) {
             case 0:
-              //$LASTPOS=92006748;//kernel.PadButton:6748
+              //$LASTPOS=92006092;//kernel.PadButton:6092
               if (!(_this.mode==10000)) { __pc=2     ; break; }
-              //$LASTPOS=92006778;//kernel.PadButton:6778
+              //$LASTPOS=92006122;//kernel.PadButton:6122
               _this.fiber$drawPanelMode10000(_thread);
               __pc=1;return;
             case 1:
               
               __pc=8     ;break;
             case 2     :
-              //$LASTPOS=92006812;//kernel.PadButton:6812
+              //$LASTPOS=92006156;//kernel.PadButton:6156
               if (!(_this.mode==10001)) { __pc=4     ; break; }
-              //$LASTPOS=92006842;//kernel.PadButton:6842
+              //$LASTPOS=92006186;//kernel.PadButton:6186
               _this.fiber$drawPanelMode10001(_thread);
               __pc=3;return;
             case 3:
               
               __pc=7     ;break;
             case 4     :
-              //$LASTPOS=92006876;//kernel.PadButton:6876
+              //$LASTPOS=92006220;//kernel.PadButton:6220
               if (!(_this.mode==10002)) { __pc=6     ; break; }
-              //$LASTPOS=92006906;//kernel.PadButton:6906
+              //$LASTPOS=92006250;//kernel.PadButton:6250
               _this.fiber$drawPanelMode10002(_thread);
               __pc=5;return;
             case 5:
@@ -38451,60 +38391,60 @@ Tonyu.klass.define({
         
         
         
-        //$LASTPOS=92007017;//kernel.PadButton:7017
+        //$LASTPOS=92006361;//kernel.PadButton:6361
         w=_this.width;
-        //$LASTPOS=92007033;//kernel.PadButton:7033
+        //$LASTPOS=92006377;//kernel.PadButton:6377
         h=_this.height;
-        //$LASTPOS=92007050;//kernel.PadButton:7050
+        //$LASTPOS=92006394;//kernel.PadButton:6394
         bw=_this.padBorder;
-        //$LASTPOS=92007071;//kernel.PadButton:7071
+        //$LASTPOS=92006415;//kernel.PadButton:6415
         bh=_this.padBorder;
-        //$LASTPOS=92007092;//kernel.PadButton:7092
+        //$LASTPOS=92006436;//kernel.PadButton:6436
         ts=_this.padTextSize;
-        //$LASTPOS=92007115;//kernel.PadButton:7115
+        //$LASTPOS=92006459;//kernel.PadButton:6459
         if (bw<0) {
-          //$LASTPOS=92007127;//kernel.PadButton:7127
+          //$LASTPOS=92006471;//kernel.PadButton:6471
           bw=0;
         }
-        //$LASTPOS=92007140;//kernel.PadButton:7140
+        //$LASTPOS=92006484;//kernel.PadButton:6484
         if (bh<0) {
-          //$LASTPOS=92007152;//kernel.PadButton:7152
+          //$LASTPOS=92006496;//kernel.PadButton:6496
           bh=0;
         }
-        //$LASTPOS=92007165;//kernel.PadButton:7165
+        //$LASTPOS=92006509;//kernel.PadButton:6509
         if (w<4) {
-          //$LASTPOS=92007176;//kernel.PadButton:7176
+          //$LASTPOS=92006520;//kernel.PadButton:6520
           w=4;
         }
-        //$LASTPOS=92007188;//kernel.PadButton:7188
+        //$LASTPOS=92006532;//kernel.PadButton:6532
         if (h<4) {
-          //$LASTPOS=92007199;//kernel.PadButton:7199
+          //$LASTPOS=92006543;//kernel.PadButton:6543
           h=4;
         }
-        //$LASTPOS=92007213;//kernel.PadButton:7213
+        //$LASTPOS=92006555;//kernel.PadButton:6555
         _this.panel.setPanel(w+2,h+2);
-        //$LASTPOS=92007244;//kernel.PadButton:7244
+        //$LASTPOS=92006586;//kernel.PadButton:6586
         _this.panel.clearRect(0,0,w+2,h+2);
-        //$LASTPOS=92007282;//kernel.PadButton:7282
+        //$LASTPOS=92006624;//kernel.PadButton:6624
         _this.panel.setFillStyle(_this.padBorderColor);
-        //$LASTPOS=92007323;//kernel.PadButton:7323
-        _this.panel.fillRect(0,0,w,h);
-        //$LASTPOS=92007356;//kernel.PadButton:7356
-        _this.panel.clearRect(bw,bh,w-bw*2,h-bh*2);
-        //$LASTPOS=92007402;//kernel.PadButton:7402
+        //$LASTPOS=92006665;//kernel.PadButton:6665
+        _this.panel.fillRect(1,1,w,h);
+        //$LASTPOS=92006698;//kernel.PadButton:6698
+        _this.panel.clearRect(1+bw,1+bh,w-bw*2,h-bh*2);
+        //$LASTPOS=92006748;//kernel.PadButton:6748
         _this.panel.setFillStyle(_this.padFillColor);
-        //$LASTPOS=92007441;//kernel.PadButton:7441
-        _this.panel.fillRect(bw,bh,w-bw*2,h-bh*2);
-        //$LASTPOS=92007486;//kernel.PadButton:7486
+        //$LASTPOS=92006787;//kernel.PadButton:6787
+        _this.panel.fillRect(1+bw,1+bh,w-bw*2,h-bh*2);
+        //$LASTPOS=92006836;//kernel.PadButton:6836
         _this.panel.fillText(_this.padText,w/2,h/2,_this.padTextColor,ts,"center","middle");
-        //$LASTPOS=92007566;//kernel.PadButton:7566
-        _this.panelPush.setPanel(w+1,h+1);
-        //$LASTPOS=92007601;//kernel.PadButton:7601
+        //$LASTPOS=92006916;//kernel.PadButton:6916
+        _this.panelPush.setPanel(w+2,h+2);
+        //$LASTPOS=92006951;//kernel.PadButton:6951
         _this.panelPush.clearRect(0,0,w+2,h+2);
-        //$LASTPOS=92007643;//kernel.PadButton:7643
+        //$LASTPOS=92006993;//kernel.PadButton:6993
         _this.panelPush.setFillStyle(_this.padPushColor);
-        //$LASTPOS=92007686;//kernel.PadButton:7686
-        _this.panelPush.fillRect(0,0,w,h);
+        //$LASTPOS=92007036;//kernel.PadButton:7036
+        _this.panelPush.fillRect(1,1,w,h);
       },
       fiber$drawPanelMode10000 :function _trc_PadButton_f_drawPanelMode10000(_thread) {
         "use strict";
@@ -38520,60 +38460,60 @@ Tonyu.klass.define({
         
         
         
-        //$LASTPOS=92007017;//kernel.PadButton:7017
+        //$LASTPOS=92006361;//kernel.PadButton:6361
         w=_this.width;
-        //$LASTPOS=92007033;//kernel.PadButton:7033
+        //$LASTPOS=92006377;//kernel.PadButton:6377
         h=_this.height;
-        //$LASTPOS=92007050;//kernel.PadButton:7050
+        //$LASTPOS=92006394;//kernel.PadButton:6394
         bw=_this.padBorder;
-        //$LASTPOS=92007071;//kernel.PadButton:7071
+        //$LASTPOS=92006415;//kernel.PadButton:6415
         bh=_this.padBorder;
-        //$LASTPOS=92007092;//kernel.PadButton:7092
+        //$LASTPOS=92006436;//kernel.PadButton:6436
         ts=_this.padTextSize;
-        //$LASTPOS=92007115;//kernel.PadButton:7115
+        //$LASTPOS=92006459;//kernel.PadButton:6459
         if (bw<0) {
-          //$LASTPOS=92007127;//kernel.PadButton:7127
+          //$LASTPOS=92006471;//kernel.PadButton:6471
           bw=0;
         }
-        //$LASTPOS=92007140;//kernel.PadButton:7140
+        //$LASTPOS=92006484;//kernel.PadButton:6484
         if (bh<0) {
-          //$LASTPOS=92007152;//kernel.PadButton:7152
+          //$LASTPOS=92006496;//kernel.PadButton:6496
           bh=0;
         }
-        //$LASTPOS=92007165;//kernel.PadButton:7165
+        //$LASTPOS=92006509;//kernel.PadButton:6509
         if (w<4) {
-          //$LASTPOS=92007176;//kernel.PadButton:7176
+          //$LASTPOS=92006520;//kernel.PadButton:6520
           w=4;
         }
-        //$LASTPOS=92007188;//kernel.PadButton:7188
+        //$LASTPOS=92006532;//kernel.PadButton:6532
         if (h<4) {
-          //$LASTPOS=92007199;//kernel.PadButton:7199
+          //$LASTPOS=92006543;//kernel.PadButton:6543
           h=4;
         }
-        //$LASTPOS=92007213;//kernel.PadButton:7213
+        //$LASTPOS=92006555;//kernel.PadButton:6555
         _this.panel.setPanel(w+2,h+2);
-        //$LASTPOS=92007244;//kernel.PadButton:7244
+        //$LASTPOS=92006586;//kernel.PadButton:6586
         _this.panel.clearRect(0,0,w+2,h+2);
-        //$LASTPOS=92007282;//kernel.PadButton:7282
+        //$LASTPOS=92006624;//kernel.PadButton:6624
         _this.panel.setFillStyle(_this.padBorderColor);
-        //$LASTPOS=92007323;//kernel.PadButton:7323
-        _this.panel.fillRect(0,0,w,h);
-        //$LASTPOS=92007356;//kernel.PadButton:7356
-        _this.panel.clearRect(bw,bh,w-bw*2,h-bh*2);
-        //$LASTPOS=92007402;//kernel.PadButton:7402
+        //$LASTPOS=92006665;//kernel.PadButton:6665
+        _this.panel.fillRect(1,1,w,h);
+        //$LASTPOS=92006698;//kernel.PadButton:6698
+        _this.panel.clearRect(1+bw,1+bh,w-bw*2,h-bh*2);
+        //$LASTPOS=92006748;//kernel.PadButton:6748
         _this.panel.setFillStyle(_this.padFillColor);
-        //$LASTPOS=92007441;//kernel.PadButton:7441
-        _this.panel.fillRect(bw,bh,w-bw*2,h-bh*2);
-        //$LASTPOS=92007486;//kernel.PadButton:7486
+        //$LASTPOS=92006787;//kernel.PadButton:6787
+        _this.panel.fillRect(1+bw,1+bh,w-bw*2,h-bh*2);
+        //$LASTPOS=92006836;//kernel.PadButton:6836
         _this.panel.fillText(_this.padText,w/2,h/2,_this.padTextColor,ts,"center","middle");
-        //$LASTPOS=92007566;//kernel.PadButton:7566
-        _this.panelPush.setPanel(w+1,h+1);
-        //$LASTPOS=92007601;//kernel.PadButton:7601
+        //$LASTPOS=92006916;//kernel.PadButton:6916
+        _this.panelPush.setPanel(w+2,h+2);
+        //$LASTPOS=92006951;//kernel.PadButton:6951
         _this.panelPush.clearRect(0,0,w+2,h+2);
-        //$LASTPOS=92007643;//kernel.PadButton:7643
+        //$LASTPOS=92006993;//kernel.PadButton:6993
         _this.panelPush.setFillStyle(_this.padPushColor);
-        //$LASTPOS=92007686;//kernel.PadButton:7686
-        _this.panelPush.fillRect(0,0,w,h);
+        //$LASTPOS=92007036;//kernel.PadButton:7036
+        _this.panelPush.fillRect(1,1,w,h);
         
         _thread.retVal=_this;return;
       },
@@ -38598,109 +38538,109 @@ Tonyu.klass.define({
         
         
         
-        //$LASTPOS=92007863;//kernel.PadButton:7863
+        //$LASTPOS=92007213;//kernel.PadButton:7213
         w=_this.width;
-        //$LASTPOS=92007879;//kernel.PadButton:7879
+        //$LASTPOS=92007229;//kernel.PadButton:7229
         h=_this.height;
-        //$LASTPOS=92007896;//kernel.PadButton:7896
+        //$LASTPOS=92007246;//kernel.PadButton:7246
         if (w<4) {
-          //$LASTPOS=92007907;//kernel.PadButton:7907
+          //$LASTPOS=92007257;//kernel.PadButton:7257
           w=4;
         }
-        //$LASTPOS=92007919;//kernel.PadButton:7919
+        //$LASTPOS=92007269;//kernel.PadButton:7269
         if (h<4) {
-          //$LASTPOS=92007930;//kernel.PadButton:7930
+          //$LASTPOS=92007280;//kernel.PadButton:7280
           h=4;
         }
-        //$LASTPOS=92007942;//kernel.PadButton:7942
+        //$LASTPOS=92007292;//kernel.PadButton:7292
         cw=w/3;
-        //$LASTPOS=92007959;//kernel.PadButton:7959
+        //$LASTPOS=92007309;//kernel.PadButton:7309
         ch=h/3;
-        //$LASTPOS=92007976;//kernel.PadButton:7976
+        //$LASTPOS=92007326;//kernel.PadButton:7326
         cw2=w*2/3;
-        //$LASTPOS=92007998;//kernel.PadButton:7998
+        //$LASTPOS=92007348;//kernel.PadButton:7348
         ch2=h*2/3;
-        //$LASTPOS=92008020;//kernel.PadButton:8020
+        //$LASTPOS=92007370;//kernel.PadButton:7370
         tsx=w/(64*3);
-        //$LASTPOS=92008045;//kernel.PadButton:8045
+        //$LASTPOS=92007395;//kernel.PadButton:7395
         tsy=h/(64*3);
-        //$LASTPOS=92008070;//kernel.PadButton:8070
+        //$LASTPOS=92007420;//kernel.PadButton:7420
         bw=_this.padBorder;
-        //$LASTPOS=92008091;//kernel.PadButton:8091
+        //$LASTPOS=92007441;//kernel.PadButton:7441
         bh=_this.padBorder;
-        //$LASTPOS=92008112;//kernel.PadButton:8112
+        //$LASTPOS=92007462;//kernel.PadButton:7462
         if (bw<0) {
-          //$LASTPOS=92008124;//kernel.PadButton:8124
+          //$LASTPOS=92007474;//kernel.PadButton:7474
           bw=0;
         }
-        //$LASTPOS=92008137;//kernel.PadButton:8137
+        //$LASTPOS=92007487;//kernel.PadButton:7487
         if (bh<0) {
-          //$LASTPOS=92008149;//kernel.PadButton:8149
+          //$LASTPOS=92007499;//kernel.PadButton:7499
           bh=0;
         }
-        //$LASTPOS=92008164;//kernel.PadButton:8164
+        //$LASTPOS=92007514;//kernel.PadButton:7514
         _this.panel.setPanel(w,h);
-        //$LASTPOS=92008191;//kernel.PadButton:8191
+        //$LASTPOS=92007541;//kernel.PadButton:7541
         _this.panel.clearRect(0,0,w+2,h+2);
-        //$LASTPOS=92008229;//kernel.PadButton:8229
+        //$LASTPOS=92007579;//kernel.PadButton:7579
         _this.panel.setFillStyle(_this.padBorderColor);
-        //$LASTPOS=92008270;//kernel.PadButton:8270
+        //$LASTPOS=92007620;//kernel.PadButton:7620
         _this.panel.fillRect(cw,0,cw,ch);
-        //$LASTPOS=92008306;//kernel.PadButton:8306
+        //$LASTPOS=92007656;//kernel.PadButton:7656
         _this.panel.fillRect(0,ch,w,ch);
-        //$LASTPOS=92008341;//kernel.PadButton:8341
+        //$LASTPOS=92007691;//kernel.PadButton:7691
         _this.panel.fillRect(cw,ch2,cw,ch);
-        //$LASTPOS=92008379;//kernel.PadButton:8379
+        //$LASTPOS=92007729;//kernel.PadButton:7729
         _this.panel.clearRect(cw+bw,bh,cw-bw*2,h-bh*2);
-        //$LASTPOS=92008429;//kernel.PadButton:8429
+        //$LASTPOS=92007779;//kernel.PadButton:7779
         _this.panel.clearRect(bw,ch+bh,w-bw*2,ch-bh*2);
-        //$LASTPOS=92008479;//kernel.PadButton:8479
+        //$LASTPOS=92007829;//kernel.PadButton:7829
         _this.panel.setFillStyle(_this.padFillColor);
-        //$LASTPOS=92008518;//kernel.PadButton:8518
+        //$LASTPOS=92007868;//kernel.PadButton:7868
         _this.panel.fillRect(cw+bw,bh,cw-bw*2,ch);
-        //$LASTPOS=92008563;//kernel.PadButton:8563
+        //$LASTPOS=92007913;//kernel.PadButton:7913
         _this.panel.fillRect(bw,ch+bh,w-bw*2,ch-bh*2);
-        //$LASTPOS=92008612;//kernel.PadButton:8612
+        //$LASTPOS=92007962;//kernel.PadButton:7962
         _this.panel.fillRect(cw+bw,ch2-bh,cw-bw*2,ch);
-        //$LASTPOS=92008661;//kernel.PadButton:8661
+        //$LASTPOS=92008011;//kernel.PadButton:8011
         _this.panel.fillPolygon3(96*tsx,14.5*tsy,113*tsx,48*tsy,79*tsx,48*tsy,_this.padUColor);
-        //$LASTPOS=92008748;//kernel.PadButton:8748
+        //$LASTPOS=92008098;//kernel.PadButton:8098
         _this.panel.fillPolygon3(14.5*tsx,96*tsy,48*tsx,79*tsy,48*tsx,113*tsy,_this.padLColor);
-        //$LASTPOS=92008835;//kernel.PadButton:8835
+        //$LASTPOS=92008185;//kernel.PadButton:8185
         _this.panel.fillPolygon3(96*tsx,177.5*tsy,79*tsx,144*tsy,113*tsx,144*tsy,_this.padDColor);
-        //$LASTPOS=92008925;//kernel.PadButton:8925
+        //$LASTPOS=92008275;//kernel.PadButton:8275
         _this.panel.fillPolygon3(177.5*tsx,96*tsy,144*tsx,113*tsy,144*tsx,79*tsy,_this.padRColor);
-        //$LASTPOS=92009017;//kernel.PadButton:9017
+        //$LASTPOS=92008367;//kernel.PadButton:8367
         _this.panelPushL.setPanel(cw+bw,ch);
-        //$LASTPOS=92009054;//kernel.PadButton:9054
+        //$LASTPOS=92008404;//kernel.PadButton:8404
         _this.panelPushL.clearRect(0,0,cw+bw+2,ch+2);
-        //$LASTPOS=92009102;//kernel.PadButton:9102
+        //$LASTPOS=92008452;//kernel.PadButton:8452
         _this.panelPushL.setFillStyle(_this.padLPushColor);
-        //$LASTPOS=92009147;//kernel.PadButton:9147
+        //$LASTPOS=92008497;//kernel.PadButton:8497
         _this.panelPushL.fillRect(0,0,cw+bw,ch);
-        //$LASTPOS=92009192;//kernel.PadButton:9192
+        //$LASTPOS=92008542;//kernel.PadButton:8542
         _this.panelPushR.setPanel(cw+bw,ch);
-        //$LASTPOS=92009229;//kernel.PadButton:9229
+        //$LASTPOS=92008579;//kernel.PadButton:8579
         _this.panelPushR.clearRect(0,0,cw+bw+2,ch+2);
-        //$LASTPOS=92009277;//kernel.PadButton:9277
+        //$LASTPOS=92008627;//kernel.PadButton:8627
         _this.panelPushR.setFillStyle(_this.padRPushColor);
-        //$LASTPOS=92009322;//kernel.PadButton:9322
+        //$LASTPOS=92008672;//kernel.PadButton:8672
         _this.panelPushR.fillRect(0,0,cw+bw,ch);
-        //$LASTPOS=92009367;//kernel.PadButton:9367
+        //$LASTPOS=92008717;//kernel.PadButton:8717
         _this.panelPushU.setPanel(cw,ch+bh);
-        //$LASTPOS=92009404;//kernel.PadButton:9404
+        //$LASTPOS=92008754;//kernel.PadButton:8754
         _this.panelPushU.clearRect(0,0,cw+2,ch+bh+2);
-        //$LASTPOS=92009452;//kernel.PadButton:9452
+        //$LASTPOS=92008802;//kernel.PadButton:8802
         _this.panelPushU.setFillStyle(_this.padUPushColor);
-        //$LASTPOS=92009497;//kernel.PadButton:9497
+        //$LASTPOS=92008847;//kernel.PadButton:8847
         _this.panelPushU.fillRect(0,0,cw,ch+bh);
-        //$LASTPOS=92009542;//kernel.PadButton:9542
+        //$LASTPOS=92008892;//kernel.PadButton:8892
         _this.panelPushD.setPanel(cw,ch+bh);
-        //$LASTPOS=92009579;//kernel.PadButton:9579
+        //$LASTPOS=92008929;//kernel.PadButton:8929
         _this.panelPushD.clearRect(0,0,cw+2,ch+bh+2);
-        //$LASTPOS=92009627;//kernel.PadButton:9627
+        //$LASTPOS=92008977;//kernel.PadButton:8977
         _this.panelPushD.setFillStyle(_this.padDPushColor);
-        //$LASTPOS=92009672;//kernel.PadButton:9672
+        //$LASTPOS=92009022;//kernel.PadButton:9022
         _this.panelPushD.fillRect(0,0,cw,ch+bh);
       },
       fiber$drawPanelMode10001 :function _trc_PadButton_f_drawPanelMode10001(_thread) {
@@ -38726,109 +38666,109 @@ Tonyu.klass.define({
         
         
         
-        //$LASTPOS=92007863;//kernel.PadButton:7863
+        //$LASTPOS=92007213;//kernel.PadButton:7213
         w=_this.width;
-        //$LASTPOS=92007879;//kernel.PadButton:7879
+        //$LASTPOS=92007229;//kernel.PadButton:7229
         h=_this.height;
-        //$LASTPOS=92007896;//kernel.PadButton:7896
+        //$LASTPOS=92007246;//kernel.PadButton:7246
         if (w<4) {
-          //$LASTPOS=92007907;//kernel.PadButton:7907
+          //$LASTPOS=92007257;//kernel.PadButton:7257
           w=4;
         }
-        //$LASTPOS=92007919;//kernel.PadButton:7919
+        //$LASTPOS=92007269;//kernel.PadButton:7269
         if (h<4) {
-          //$LASTPOS=92007930;//kernel.PadButton:7930
+          //$LASTPOS=92007280;//kernel.PadButton:7280
           h=4;
         }
-        //$LASTPOS=92007942;//kernel.PadButton:7942
+        //$LASTPOS=92007292;//kernel.PadButton:7292
         cw=w/3;
-        //$LASTPOS=92007959;//kernel.PadButton:7959
+        //$LASTPOS=92007309;//kernel.PadButton:7309
         ch=h/3;
-        //$LASTPOS=92007976;//kernel.PadButton:7976
+        //$LASTPOS=92007326;//kernel.PadButton:7326
         cw2=w*2/3;
-        //$LASTPOS=92007998;//kernel.PadButton:7998
+        //$LASTPOS=92007348;//kernel.PadButton:7348
         ch2=h*2/3;
-        //$LASTPOS=92008020;//kernel.PadButton:8020
+        //$LASTPOS=92007370;//kernel.PadButton:7370
         tsx=w/(64*3);
-        //$LASTPOS=92008045;//kernel.PadButton:8045
+        //$LASTPOS=92007395;//kernel.PadButton:7395
         tsy=h/(64*3);
-        //$LASTPOS=92008070;//kernel.PadButton:8070
+        //$LASTPOS=92007420;//kernel.PadButton:7420
         bw=_this.padBorder;
-        //$LASTPOS=92008091;//kernel.PadButton:8091
+        //$LASTPOS=92007441;//kernel.PadButton:7441
         bh=_this.padBorder;
-        //$LASTPOS=92008112;//kernel.PadButton:8112
+        //$LASTPOS=92007462;//kernel.PadButton:7462
         if (bw<0) {
-          //$LASTPOS=92008124;//kernel.PadButton:8124
+          //$LASTPOS=92007474;//kernel.PadButton:7474
           bw=0;
         }
-        //$LASTPOS=92008137;//kernel.PadButton:8137
+        //$LASTPOS=92007487;//kernel.PadButton:7487
         if (bh<0) {
-          //$LASTPOS=92008149;//kernel.PadButton:8149
+          //$LASTPOS=92007499;//kernel.PadButton:7499
           bh=0;
         }
-        //$LASTPOS=92008164;//kernel.PadButton:8164
+        //$LASTPOS=92007514;//kernel.PadButton:7514
         _this.panel.setPanel(w,h);
-        //$LASTPOS=92008191;//kernel.PadButton:8191
+        //$LASTPOS=92007541;//kernel.PadButton:7541
         _this.panel.clearRect(0,0,w+2,h+2);
-        //$LASTPOS=92008229;//kernel.PadButton:8229
+        //$LASTPOS=92007579;//kernel.PadButton:7579
         _this.panel.setFillStyle(_this.padBorderColor);
-        //$LASTPOS=92008270;//kernel.PadButton:8270
+        //$LASTPOS=92007620;//kernel.PadButton:7620
         _this.panel.fillRect(cw,0,cw,ch);
-        //$LASTPOS=92008306;//kernel.PadButton:8306
+        //$LASTPOS=92007656;//kernel.PadButton:7656
         _this.panel.fillRect(0,ch,w,ch);
-        //$LASTPOS=92008341;//kernel.PadButton:8341
+        //$LASTPOS=92007691;//kernel.PadButton:7691
         _this.panel.fillRect(cw,ch2,cw,ch);
-        //$LASTPOS=92008379;//kernel.PadButton:8379
+        //$LASTPOS=92007729;//kernel.PadButton:7729
         _this.panel.clearRect(cw+bw,bh,cw-bw*2,h-bh*2);
-        //$LASTPOS=92008429;//kernel.PadButton:8429
+        //$LASTPOS=92007779;//kernel.PadButton:7779
         _this.panel.clearRect(bw,ch+bh,w-bw*2,ch-bh*2);
-        //$LASTPOS=92008479;//kernel.PadButton:8479
+        //$LASTPOS=92007829;//kernel.PadButton:7829
         _this.panel.setFillStyle(_this.padFillColor);
-        //$LASTPOS=92008518;//kernel.PadButton:8518
+        //$LASTPOS=92007868;//kernel.PadButton:7868
         _this.panel.fillRect(cw+bw,bh,cw-bw*2,ch);
-        //$LASTPOS=92008563;//kernel.PadButton:8563
+        //$LASTPOS=92007913;//kernel.PadButton:7913
         _this.panel.fillRect(bw,ch+bh,w-bw*2,ch-bh*2);
-        //$LASTPOS=92008612;//kernel.PadButton:8612
+        //$LASTPOS=92007962;//kernel.PadButton:7962
         _this.panel.fillRect(cw+bw,ch2-bh,cw-bw*2,ch);
-        //$LASTPOS=92008661;//kernel.PadButton:8661
+        //$LASTPOS=92008011;//kernel.PadButton:8011
         _this.panel.fillPolygon3(96*tsx,14.5*tsy,113*tsx,48*tsy,79*tsx,48*tsy,_this.padUColor);
-        //$LASTPOS=92008748;//kernel.PadButton:8748
+        //$LASTPOS=92008098;//kernel.PadButton:8098
         _this.panel.fillPolygon3(14.5*tsx,96*tsy,48*tsx,79*tsy,48*tsx,113*tsy,_this.padLColor);
-        //$LASTPOS=92008835;//kernel.PadButton:8835
+        //$LASTPOS=92008185;//kernel.PadButton:8185
         _this.panel.fillPolygon3(96*tsx,177.5*tsy,79*tsx,144*tsy,113*tsx,144*tsy,_this.padDColor);
-        //$LASTPOS=92008925;//kernel.PadButton:8925
+        //$LASTPOS=92008275;//kernel.PadButton:8275
         _this.panel.fillPolygon3(177.5*tsx,96*tsy,144*tsx,113*tsy,144*tsx,79*tsy,_this.padRColor);
-        //$LASTPOS=92009017;//kernel.PadButton:9017
+        //$LASTPOS=92008367;//kernel.PadButton:8367
         _this.panelPushL.setPanel(cw+bw,ch);
-        //$LASTPOS=92009054;//kernel.PadButton:9054
+        //$LASTPOS=92008404;//kernel.PadButton:8404
         _this.panelPushL.clearRect(0,0,cw+bw+2,ch+2);
-        //$LASTPOS=92009102;//kernel.PadButton:9102
+        //$LASTPOS=92008452;//kernel.PadButton:8452
         _this.panelPushL.setFillStyle(_this.padLPushColor);
-        //$LASTPOS=92009147;//kernel.PadButton:9147
+        //$LASTPOS=92008497;//kernel.PadButton:8497
         _this.panelPushL.fillRect(0,0,cw+bw,ch);
-        //$LASTPOS=92009192;//kernel.PadButton:9192
+        //$LASTPOS=92008542;//kernel.PadButton:8542
         _this.panelPushR.setPanel(cw+bw,ch);
-        //$LASTPOS=92009229;//kernel.PadButton:9229
+        //$LASTPOS=92008579;//kernel.PadButton:8579
         _this.panelPushR.clearRect(0,0,cw+bw+2,ch+2);
-        //$LASTPOS=92009277;//kernel.PadButton:9277
+        //$LASTPOS=92008627;//kernel.PadButton:8627
         _this.panelPushR.setFillStyle(_this.padRPushColor);
-        //$LASTPOS=92009322;//kernel.PadButton:9322
+        //$LASTPOS=92008672;//kernel.PadButton:8672
         _this.panelPushR.fillRect(0,0,cw+bw,ch);
-        //$LASTPOS=92009367;//kernel.PadButton:9367
+        //$LASTPOS=92008717;//kernel.PadButton:8717
         _this.panelPushU.setPanel(cw,ch+bh);
-        //$LASTPOS=92009404;//kernel.PadButton:9404
+        //$LASTPOS=92008754;//kernel.PadButton:8754
         _this.panelPushU.clearRect(0,0,cw+2,ch+bh+2);
-        //$LASTPOS=92009452;//kernel.PadButton:9452
+        //$LASTPOS=92008802;//kernel.PadButton:8802
         _this.panelPushU.setFillStyle(_this.padUPushColor);
-        //$LASTPOS=92009497;//kernel.PadButton:9497
+        //$LASTPOS=92008847;//kernel.PadButton:8847
         _this.panelPushU.fillRect(0,0,cw,ch+bh);
-        //$LASTPOS=92009542;//kernel.PadButton:9542
+        //$LASTPOS=92008892;//kernel.PadButton:8892
         _this.panelPushD.setPanel(cw,ch+bh);
-        //$LASTPOS=92009579;//kernel.PadButton:9579
+        //$LASTPOS=92008929;//kernel.PadButton:8929
         _this.panelPushD.clearRect(0,0,cw+2,ch+bh+2);
-        //$LASTPOS=92009627;//kernel.PadButton:9627
+        //$LASTPOS=92008977;//kernel.PadButton:8977
         _this.panelPushD.setFillStyle(_this.padDPushColor);
-        //$LASTPOS=92009672;//kernel.PadButton:9672
+        //$LASTPOS=92009022;//kernel.PadButton:9022
         _this.panelPushD.fillRect(0,0,cw,ch+bh);
         
         _thread.retVal=_this;return;
@@ -38851,45 +38791,45 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         
-        //$LASTPOS=92009806;//kernel.PadButton:9806
+        //$LASTPOS=92009156;//kernel.PadButton:9156
         if (_this.padUpdateFrame==Tonyu.globals.$frameCount) {
           return _this;
         }
-        //$LASTPOS=92009854;//kernel.PadButton:9854
+        //$LASTPOS=92009204;//kernel.PadButton:9204
         _this.padUpdateFrame=Tonyu.globals.$frameCount;
-        //$LASTPOS=92009889;//kernel.PadButton:9889
+        //$LASTPOS=92009239;//kernel.PadButton:9239
         if (_this.mode==0) {
-          //$LASTPOS=92009915;//kernel.PadButton:9915
+          //$LASTPOS=92009265;//kernel.PadButton:9265
           _this.padUpdateMode0();
           
         } else {
-          //$LASTPOS=92009945;//kernel.PadButton:9945
+          //$LASTPOS=92009295;//kernel.PadButton:9295
           if (_this.mode==1) {
-            //$LASTPOS=92009971;//kernel.PadButton:9971
+            //$LASTPOS=92009321;//kernel.PadButton:9321
             _this.padUpdateMode1();
             
           } else {
-            //$LASTPOS=92010001;//kernel.PadButton:10001
+            //$LASTPOS=92009351;//kernel.PadButton:9351
             if (_this.mode==2) {
-              //$LASTPOS=92010027;//kernel.PadButton:10027
+              //$LASTPOS=92009377;//kernel.PadButton:9377
               _this.padUpdateMode2();
               
             } else {
-              //$LASTPOS=92010057;//kernel.PadButton:10057
+              //$LASTPOS=92009407;//kernel.PadButton:9407
               if (_this.mode==10000) {
-                //$LASTPOS=92010087;//kernel.PadButton:10087
+                //$LASTPOS=92009437;//kernel.PadButton:9437
                 _this.padUpdateMode10000();
                 
               } else {
-                //$LASTPOS=92010121;//kernel.PadButton:10121
+                //$LASTPOS=92009471;//kernel.PadButton:9471
                 if (_this.mode==10001) {
-                  //$LASTPOS=92010151;//kernel.PadButton:10151
+                  //$LASTPOS=92009501;//kernel.PadButton:9501
                   _this.padUpdateMode10001();
                   
                 } else {
-                  //$LASTPOS=92010185;//kernel.PadButton:10185
+                  //$LASTPOS=92009535;//kernel.PadButton:9535
                   if (_this.mode==10002) {
-                    //$LASTPOS=92010215;//kernel.PadButton:10215
+                    //$LASTPOS=92009565;//kernel.PadButton:9565
                     _this.padUpdateMode10002();
                     
                   }
@@ -38905,12 +38845,12 @@ Tonyu.klass.define({
         //var _arguments=Tonyu.A(arguments);
         var __pc=0;
         
-        //$LASTPOS=92009806;//kernel.PadButton:9806
+        //$LASTPOS=92009156;//kernel.PadButton:9156
         if (_this.padUpdateFrame==Tonyu.globals.$frameCount) {
           _thread.retVal=_this;return;
           
         }
-        //$LASTPOS=92009854;//kernel.PadButton:9854
+        //$LASTPOS=92009204;//kernel.PadButton:9204
         _this.padUpdateFrame=Tonyu.globals.$frameCount;
         
         _thread.enter(function _trc_PadButton_ent_padUpdate(_thread) {
@@ -38918,54 +38858,54 @@ Tonyu.klass.define({
           for(var __cnt=100 ; __cnt--;) {
             switch (__pc) {
             case 0:
-              //$LASTPOS=92009889;//kernel.PadButton:9889
+              //$LASTPOS=92009239;//kernel.PadButton:9239
               if (!(_this.mode==0)) { __pc=2     ; break; }
-              //$LASTPOS=92009915;//kernel.PadButton:9915
+              //$LASTPOS=92009265;//kernel.PadButton:9265
               _this.fiber$padUpdateMode0(_thread);
               __pc=1;return;
             case 1:
               
               __pc=17    ;break;
             case 2     :
-              //$LASTPOS=92009945;//kernel.PadButton:9945
+              //$LASTPOS=92009295;//kernel.PadButton:9295
               if (!(_this.mode==1)) { __pc=4     ; break; }
-              //$LASTPOS=92009971;//kernel.PadButton:9971
+              //$LASTPOS=92009321;//kernel.PadButton:9321
               _this.fiber$padUpdateMode1(_thread);
               __pc=3;return;
             case 3:
               
               __pc=16    ;break;
             case 4     :
-              //$LASTPOS=92010001;//kernel.PadButton:10001
+              //$LASTPOS=92009351;//kernel.PadButton:9351
               if (!(_this.mode==2)) { __pc=6     ; break; }
-              //$LASTPOS=92010027;//kernel.PadButton:10027
+              //$LASTPOS=92009377;//kernel.PadButton:9377
               _this.fiber$padUpdateMode2(_thread);
               __pc=5;return;
             case 5:
               
               __pc=15    ;break;
             case 6     :
-              //$LASTPOS=92010057;//kernel.PadButton:10057
+              //$LASTPOS=92009407;//kernel.PadButton:9407
               if (!(_this.mode==10000)) { __pc=8     ; break; }
-              //$LASTPOS=92010087;//kernel.PadButton:10087
+              //$LASTPOS=92009437;//kernel.PadButton:9437
               _this.fiber$padUpdateMode10000(_thread);
               __pc=7;return;
             case 7:
               
               __pc=14    ;break;
             case 8     :
-              //$LASTPOS=92010121;//kernel.PadButton:10121
+              //$LASTPOS=92009471;//kernel.PadButton:9471
               if (!(_this.mode==10001)) { __pc=10    ; break; }
-              //$LASTPOS=92010151;//kernel.PadButton:10151
+              //$LASTPOS=92009501;//kernel.PadButton:9501
               _this.fiber$padUpdateMode10001(_thread);
               __pc=9;return;
             case 9:
               
               __pc=13    ;break;
             case 10    :
-              //$LASTPOS=92010185;//kernel.PadButton:10185
+              //$LASTPOS=92009535;//kernel.PadButton:9535
               if (!(_this.mode==10002)) { __pc=12    ; break; }
-              //$LASTPOS=92010215;//kernel.PadButton:10215
+              //$LASTPOS=92009565;//kernel.PadButton:9565
               _this.fiber$padUpdateMode10002(_thread);
               __pc=11;return;
             case 11:
@@ -39036,89 +38976,89 @@ Tonyu.klass.define({
         var i;
         var t;
         
-        //$LASTPOS=92010363;//kernel.PadButton:10363
+        //$LASTPOS=92009713;//kernel.PadButton:9713
         if (_this.died) {
           return _this;
         }
-        //$LASTPOS=92010388;//kernel.PadButton:10388
+        //$LASTPOS=92009738;//kernel.PadButton:9738
         _this.panel.x=_this.x;
-        //$LASTPOS=92010406;//kernel.PadButton:10406
+        //$LASTPOS=92009756;//kernel.PadButton:9756
         _this.panel.y=_this.y;
-        //$LASTPOS=92010424;//kernel.PadButton:10424
+        //$LASTPOS=92009774;//kernel.PadButton:9774
         _this.panel.zOrder=_this.zOrder;
-        //$LASTPOS=92010452;//kernel.PadButton:10452
+        //$LASTPOS=92009802;//kernel.PadButton:9802
         _this.panel.alpha=_this.alpha;
-        //$LASTPOS=92010478;//kernel.PadButton:10478
+        //$LASTPOS=92009828;//kernel.PadButton:9828
         _this.panel.layer=_this.layer;
-        //$LASTPOS=92010504;//kernel.PadButton:10504
-        _this.panelPush.x=_this.x;
-        //$LASTPOS=92010526;//kernel.PadButton:10526
-        _this.panelPush.y=_this.y;
-        //$LASTPOS=92010548;//kernel.PadButton:10548
-        _this.panelPush.zOrder=_this.zOrder;
-        //$LASTPOS=92010580;//kernel.PadButton:10580
-        _this.panelPush.alpha=_this.alpha;
-        //$LASTPOS=92010610;//kernel.PadButton:10610
-        _this.panelPush.layer=_this.layer;
-        //$LASTPOS=92010693;//kernel.PadButton:10693
+        //$LASTPOS=92009907;//kernel.PadButton:9907
         allNoTouche = true;
         
-        //$LASTPOS=92010722;//kernel.PadButton:10722
-        //$LASTPOS=92010727;//kernel.PadButton:10727
+        //$LASTPOS=92009936;//kernel.PadButton:9936
+        //$LASTPOS=92009941;//kernel.PadButton:9941
         i = 0;
         for (; i<_this.TOUCHES_MAX ; i++) {
           {
-            //$LASTPOS=92010767;//kernel.PadButton:10767
+            //$LASTPOS=92009981;//kernel.PadButton:9981
             t = Tonyu.globals.$touches[i];
             
-            //$LASTPOS=92010797;//kernel.PadButton:10797
+            //$LASTPOS=92010011;//kernel.PadButton:10011
             if (t.touched==1) {
-              //$LASTPOS=92010832;//kernel.PadButton:10832
+              //$LASTPOS=92010046;//kernel.PadButton:10046
               if (_this.crashXY10000(t.x,t.y)) {
-                //$LASTPOS=92010879;//kernel.PadButton:10879
+                //$LASTPOS=92010093;//kernel.PadButton:10093
                 _this.padPush=1;
-                //$LASTPOS=92010909;//kernel.PadButton:10909
+                //$LASTPOS=92010123;//kernel.PadButton:10123
                 _this.padPushList[i]=true;
                 
               }
               
             } else {
-              //$LASTPOS=92010963;//kernel.PadButton:10963
+              //$LASTPOS=92010177;//kernel.PadButton:10177
               if (t.touched==0) {
-                //$LASTPOS=92010998;//kernel.PadButton:10998
+                //$LASTPOS=92010212;//kernel.PadButton:10212
                 _this.padPushList[i]=false;
                 
               }
             }
-            //$LASTPOS=92011042;//kernel.PadButton:11042
+            //$LASTPOS=92010256;//kernel.PadButton:10256
             if (_this.padPushList[i]) {
-              //$LASTPOS=92011077;//kernel.PadButton:11077
+              //$LASTPOS=92010291;//kernel.PadButton:10291
               allNoTouche=false;
               
             }
           }
         }
-        //$LASTPOS=92011121;//kernel.PadButton:11121
+        //$LASTPOS=92010335;//kernel.PadButton:10335
         if (allNoTouche) {
-          //$LASTPOS=92011149;//kernel.PadButton:11149
-          _this.padPush=false;
+          //$LASTPOS=92010363;//kernel.PadButton:10363
+          _this.padPush=0;
           
         }
-        //$LASTPOS=92011178;//kernel.PadButton:11178
+        //$LASTPOS=92010388;//kernel.PadButton:10388
         if (_this.padPush) {
-          //$LASTPOS=92011202;//kernel.PadButton:11202
+          //$LASTPOS=92010412;//kernel.PadButton:10412
           _this.padCnt++;
-          //$LASTPOS=92011222;//kernel.PadButton:11222
+          //$LASTPOS=92010432;//kernel.PadButton:10432
           _this.padNotapCnt=0;
-          //$LASTPOS=92011248;//kernel.PadButton:11248
+          //$LASTPOS=92010458;//kernel.PadButton:10458
+          _this.panelPush.x=_this.x;
+          //$LASTPOS=92010484;//kernel.PadButton:10484
+          _this.panelPush.y=_this.y;
+          //$LASTPOS=92010510;//kernel.PadButton:10510
+          _this.panelPush.zOrder=_this.zOrder;
+          //$LASTPOS=92010546;//kernel.PadButton:10546
+          _this.panelPush.alpha=_this.alpha;
+          //$LASTPOS=92010580;//kernel.PadButton:10580
+          _this.panelPush.layer=_this.layer;
+          //$LASTPOS=92010614;//kernel.PadButton:10614
           _this.panelPush.show();
           
         } else {
-          //$LASTPOS=92011289;//kernel.PadButton:11289
+          //$LASTPOS=92010655;//kernel.PadButton:10655
           _this.padCnt=0;
-          //$LASTPOS=92011310;//kernel.PadButton:11310
+          //$LASTPOS=92010676;//kernel.PadButton:10676
           _this.padNotapCnt++;
-          //$LASTPOS=92011335;//kernel.PadButton:11335
+          //$LASTPOS=92010701;//kernel.PadButton:10701
           _this.panelPush.hide();
           
         }
@@ -39132,90 +39072,90 @@ Tonyu.klass.define({
         var i;
         var t;
         
-        //$LASTPOS=92010363;//kernel.PadButton:10363
+        //$LASTPOS=92009713;//kernel.PadButton:9713
         if (_this.died) {
           _thread.retVal=_this;return;
           
         }
-        //$LASTPOS=92010388;//kernel.PadButton:10388
+        //$LASTPOS=92009738;//kernel.PadButton:9738
         _this.panel.x=_this.x;
-        //$LASTPOS=92010406;//kernel.PadButton:10406
+        //$LASTPOS=92009756;//kernel.PadButton:9756
         _this.panel.y=_this.y;
-        //$LASTPOS=92010424;//kernel.PadButton:10424
+        //$LASTPOS=92009774;//kernel.PadButton:9774
         _this.panel.zOrder=_this.zOrder;
-        //$LASTPOS=92010452;//kernel.PadButton:10452
+        //$LASTPOS=92009802;//kernel.PadButton:9802
         _this.panel.alpha=_this.alpha;
-        //$LASTPOS=92010478;//kernel.PadButton:10478
+        //$LASTPOS=92009828;//kernel.PadButton:9828
         _this.panel.layer=_this.layer;
-        //$LASTPOS=92010504;//kernel.PadButton:10504
-        _this.panelPush.x=_this.x;
-        //$LASTPOS=92010526;//kernel.PadButton:10526
-        _this.panelPush.y=_this.y;
-        //$LASTPOS=92010548;//kernel.PadButton:10548
-        _this.panelPush.zOrder=_this.zOrder;
-        //$LASTPOS=92010580;//kernel.PadButton:10580
-        _this.panelPush.alpha=_this.alpha;
-        //$LASTPOS=92010610;//kernel.PadButton:10610
-        _this.panelPush.layer=_this.layer;
-        //$LASTPOS=92010693;//kernel.PadButton:10693
+        //$LASTPOS=92009907;//kernel.PadButton:9907
         allNoTouche = true;
         
-        //$LASTPOS=92010722;//kernel.PadButton:10722
-        //$LASTPOS=92010727;//kernel.PadButton:10727
+        //$LASTPOS=92009936;//kernel.PadButton:9936
+        //$LASTPOS=92009941;//kernel.PadButton:9941
         i = 0;
         for (; i<_this.TOUCHES_MAX ; i++) {
           {
-            //$LASTPOS=92010767;//kernel.PadButton:10767
+            //$LASTPOS=92009981;//kernel.PadButton:9981
             t = Tonyu.globals.$touches[i];
             
-            //$LASTPOS=92010797;//kernel.PadButton:10797
+            //$LASTPOS=92010011;//kernel.PadButton:10011
             if (t.touched==1) {
-              //$LASTPOS=92010832;//kernel.PadButton:10832
+              //$LASTPOS=92010046;//kernel.PadButton:10046
               if (_this.crashXY10000(t.x,t.y)) {
-                //$LASTPOS=92010879;//kernel.PadButton:10879
+                //$LASTPOS=92010093;//kernel.PadButton:10093
                 _this.padPush=1;
-                //$LASTPOS=92010909;//kernel.PadButton:10909
+                //$LASTPOS=92010123;//kernel.PadButton:10123
                 _this.padPushList[i]=true;
                 
               }
               
             } else {
-              //$LASTPOS=92010963;//kernel.PadButton:10963
+              //$LASTPOS=92010177;//kernel.PadButton:10177
               if (t.touched==0) {
-                //$LASTPOS=92010998;//kernel.PadButton:10998
+                //$LASTPOS=92010212;//kernel.PadButton:10212
                 _this.padPushList[i]=false;
                 
               }
             }
-            //$LASTPOS=92011042;//kernel.PadButton:11042
+            //$LASTPOS=92010256;//kernel.PadButton:10256
             if (_this.padPushList[i]) {
-              //$LASTPOS=92011077;//kernel.PadButton:11077
+              //$LASTPOS=92010291;//kernel.PadButton:10291
               allNoTouche=false;
               
             }
           }
         }
-        //$LASTPOS=92011121;//kernel.PadButton:11121
+        //$LASTPOS=92010335;//kernel.PadButton:10335
         if (allNoTouche) {
-          //$LASTPOS=92011149;//kernel.PadButton:11149
-          _this.padPush=false;
+          //$LASTPOS=92010363;//kernel.PadButton:10363
+          _this.padPush=0;
           
         }
-        //$LASTPOS=92011178;//kernel.PadButton:11178
+        //$LASTPOS=92010388;//kernel.PadButton:10388
         if (_this.padPush) {
-          //$LASTPOS=92011202;//kernel.PadButton:11202
+          //$LASTPOS=92010412;//kernel.PadButton:10412
           _this.padCnt++;
-          //$LASTPOS=92011222;//kernel.PadButton:11222
+          //$LASTPOS=92010432;//kernel.PadButton:10432
           _this.padNotapCnt=0;
-          //$LASTPOS=92011248;//kernel.PadButton:11248
+          //$LASTPOS=92010458;//kernel.PadButton:10458
+          _this.panelPush.x=_this.x;
+          //$LASTPOS=92010484;//kernel.PadButton:10484
+          _this.panelPush.y=_this.y;
+          //$LASTPOS=92010510;//kernel.PadButton:10510
+          _this.panelPush.zOrder=_this.zOrder;
+          //$LASTPOS=92010546;//kernel.PadButton:10546
+          _this.panelPush.alpha=_this.alpha;
+          //$LASTPOS=92010580;//kernel.PadButton:10580
+          _this.panelPush.layer=_this.layer;
+          //$LASTPOS=92010614;//kernel.PadButton:10614
           _this.panelPush.show();
           
         } else {
-          //$LASTPOS=92011289;//kernel.PadButton:11289
+          //$LASTPOS=92010655;//kernel.PadButton:10655
           _this.padCnt=0;
-          //$LASTPOS=92011310;//kernel.PadButton:11310
+          //$LASTPOS=92010676;//kernel.PadButton:10676
           _this.padNotapCnt++;
-          //$LASTPOS=92011335;//kernel.PadButton:11335
+          //$LASTPOS=92010701;//kernel.PadButton:10701
           _this.panelPush.hide();
           
         }
@@ -39240,7 +39180,7 @@ Tonyu.klass.define({
         var subX;
         var subY;
         
-        //$LASTPOS=92011395;//kernel.PadButton:11395
+        //$LASTPOS=92010761;//kernel.PadButton:10761
         if (_this.died) {
           return _this;
         }
@@ -39249,64 +39189,64 @@ Tonyu.klass.define({
         
         
         
-        //$LASTPOS=92011509;//kernel.PadButton:11509
+        //$LASTPOS=92010875;//kernel.PadButton:10875
         cw=_this.width/3;
-        //$LASTPOS=92011530;//kernel.PadButton:11530
+        //$LASTPOS=92010896;//kernel.PadButton:10896
         ch=_this.height/3;
-        //$LASTPOS=92011552;//kernel.PadButton:11552
+        //$LASTPOS=92010918;//kernel.PadButton:10918
         cw2=_this.width*2/3;
-        //$LASTPOS=92011578;//kernel.PadButton:11578
+        //$LASTPOS=92010944;//kernel.PadButton:10944
         ch2=_this.height*2/3;
-        //$LASTPOS=92011605;//kernel.PadButton:11605
+        //$LASTPOS=92010971;//kernel.PadButton:10971
         cwh=_this.trunc(cw/2);
-        //$LASTPOS=92011631;//kernel.PadButton:11631
+        //$LASTPOS=92010997;//kernel.PadButton:10997
         chh=_this.trunc(ch/2);
-        //$LASTPOS=92011657;//kernel.PadButton:11657
+        //$LASTPOS=92011023;//kernel.PadButton:11023
         w=_this.width;
-        //$LASTPOS=92011673;//kernel.PadButton:11673
+        //$LASTPOS=92011039;//kernel.PadButton:11039
         h=_this.height;
-        //$LASTPOS=92011690;//kernel.PadButton:11690
+        //$LASTPOS=92011056;//kernel.PadButton:11056
         bw=_this.padBorder;
-        //$LASTPOS=92011711;//kernel.PadButton:11711
+        //$LASTPOS=92011077;//kernel.PadButton:11077
         bh=_this.padBorder;
-        //$LASTPOS=92011734;//kernel.PadButton:11734
+        //$LASTPOS=92011100;//kernel.PadButton:11100
         _this.panel.x=_this.x;
-        //$LASTPOS=92011752;//kernel.PadButton:11752
+        //$LASTPOS=92011118;//kernel.PadButton:11118
         _this.panel.y=_this.y;
-        //$LASTPOS=92011770;//kernel.PadButton:11770
+        //$LASTPOS=92011136;//kernel.PadButton:11136
         _this.panel.zOrder=_this.zOrder;
-        //$LASTPOS=92011798;//kernel.PadButton:11798
+        //$LASTPOS=92011164;//kernel.PadButton:11164
         _this.panel.alpha=_this.alpha;
-        //$LASTPOS=92011824;//kernel.PadButton:11824
+        //$LASTPOS=92011190;//kernel.PadButton:11190
         _this.panel.layer=_this.layer;
-        //$LASTPOS=92011850;//kernel.PadButton:11850
+        //$LASTPOS=92011216;//kernel.PadButton:11216
         _this.padPushL=0;
-        //$LASTPOS=92011869;//kernel.PadButton:11869
+        //$LASTPOS=92011235;//kernel.PadButton:11235
         _this.padPushR=0;
-        //$LASTPOS=92011888;//kernel.PadButton:11888
+        //$LASTPOS=92011254;//kernel.PadButton:11254
         _this.padPushU=0;
-        //$LASTPOS=92011907;//kernel.PadButton:11907
+        //$LASTPOS=92011273;//kernel.PadButton:11273
         _this.padPushD=0;
-        //$LASTPOS=92011926;//kernel.PadButton:11926
+        //$LASTPOS=92011292;//kernel.PadButton:11292
         if (_this.padPushTouchNo==- 1) {
-          //$LASTPOS=92011971;//kernel.PadButton:11971
+          //$LASTPOS=92011337;//kernel.PadButton:11337
           _this.padNotapCnt++;
-          //$LASTPOS=92011996;//kernel.PadButton:11996
-          //$LASTPOS=92012001;//kernel.PadButton:12001
+          //$LASTPOS=92011362;//kernel.PadButton:11362
+          //$LASTPOS=92011367;//kernel.PadButton:11367
           i = 0;
           for (; i<_this.TOUCHES_MAX ; i++) {
             {
-              //$LASTPOS=92012063;//kernel.PadButton:12063
+              //$LASTPOS=92011429;//kernel.PadButton:11429
               t = Tonyu.globals.$touches[i];
               
-              //$LASTPOS=92012097;//kernel.PadButton:12097
+              //$LASTPOS=92011463;//kernel.PadButton:11463
               if (t.touched==1) {
-                //$LASTPOS=92012149;//kernel.PadButton:12149
+                //$LASTPOS=92011515;//kernel.PadButton:11515
                 if (_this.isOnRectWH(t.x,t.y,_this.x-cwh-cw,_this.y-chh-ch,w,h)) {
-                  //$LASTPOS=92012201;//kernel.PadButton:12201
+                  //$LASTPOS=92011567;//kernel.PadButton:11567
                   _this.padPushTouchNo=i;
                 }
-                //$LASTPOS=92012238;//kernel.PadButton:12238
+                //$LASTPOS=92011604;//kernel.PadButton:11604
                 _this.padNotapCnt=0;
                 break;
                 
@@ -39316,99 +39256,99 @@ Tonyu.klass.define({
           }
           
         }
-        //$LASTPOS=92012317;//kernel.PadButton:12317
+        //$LASTPOS=92011683;//kernel.PadButton:11683
         if (_this.padPushTouchNo!=- 1) {
-          //$LASTPOS=92012362;//kernel.PadButton:12362
+          //$LASTPOS=92011728;//kernel.PadButton:11728
           t = Tonyu.globals.$touches[_this.padPushTouchNo];
           
-          //$LASTPOS=92012405;//kernel.PadButton:12405
+          //$LASTPOS=92011771;//kernel.PadButton:11771
           if (t.touched==0) {
-            //$LASTPOS=92012451;//kernel.PadButton:12451
+            //$LASTPOS=92011817;//kernel.PadButton:11817
             _this.padPushTouchNo=- 1;
             
           } else {
-            //$LASTPOS=92012516;//kernel.PadButton:12516
+            //$LASTPOS=92011882;//kernel.PadButton:11882
             if (_this.diagonalEnable) {
-              //$LASTPOS=92012555;//kernel.PadButton:12555
+              //$LASTPOS=92011921;//kernel.PadButton:11921
               if (_this.isOnRectWH(t.x,t.y,_this.x-cwh-cw,_this.y-chh-ch,w,h)) {
-                //$LASTPOS=92012641;//kernel.PadButton:12641
+                //$LASTPOS=92012007;//kernel.PadButton:12007
                 if (_this.isOnRectWH(t.x,t.y,_this.x-cwh-cw,_this.y-chh-ch,cw,h)) {
-                  //$LASTPOS=92012694;//kernel.PadButton:12694
+                  //$LASTPOS=92012060;//kernel.PadButton:12060
                   _this.padPushL=1;
                 }
-                //$LASTPOS=92012729;//kernel.PadButton:12729
+                //$LASTPOS=92012095;//kernel.PadButton:12095
                 if (_this.isOnRectWH(t.x,t.y,_this.x-cwh+cw,_this.y-chh-ch,cw,h)) {
-                  //$LASTPOS=92012782;//kernel.PadButton:12782
+                  //$LASTPOS=92012148;//kernel.PadButton:12148
                   _this.padPushR=1;
                 }
-                //$LASTPOS=92012817;//kernel.PadButton:12817
+                //$LASTPOS=92012183;//kernel.PadButton:12183
                 if (_this.isOnRectWH(t.x,t.y,_this.x-cwh-cw,_this.y-chh-ch,w,ch)) {
-                  //$LASTPOS=92012870;//kernel.PadButton:12870
+                  //$LASTPOS=92012236;//kernel.PadButton:12236
                   _this.padPushU=1;
                 }
-                //$LASTPOS=92012905;//kernel.PadButton:12905
+                //$LASTPOS=92012271;//kernel.PadButton:12271
                 if (_this.isOnRectWH(t.x,t.y,_this.x-cwh-cw,_this.y-chh+ch,w,ch)) {
-                  //$LASTPOS=92012958;//kernel.PadButton:12958
+                  //$LASTPOS=92012324;//kernel.PadButton:12324
                   _this.padPushD=1;
                 }
                 
               } else {
-                //$LASTPOS=92013030;//kernel.PadButton:13030
+                //$LASTPOS=92012396;//kernel.PadButton:12396
                 subX = t.x-_this.x;
                 
-                //$LASTPOS=92013071;//kernel.PadButton:13071
+                //$LASTPOS=92012437;//kernel.PadButton:12437
                 subY = t.y-_this.y;
                 
-                //$LASTPOS=92013112;//kernel.PadButton:13112
+                //$LASTPOS=92012478;//kernel.PadButton:12478
                 if (subX<- cwh-(_this.abs(subY)-chh-ch)/2) {
-                  //$LASTPOS=92013150;//kernel.PadButton:13150
+                  //$LASTPOS=92012516;//kernel.PadButton:12516
                   _this.padPushL=1;
                 }
-                //$LASTPOS=92013185;//kernel.PadButton:13185
+                //$LASTPOS=92012551;//kernel.PadButton:12551
                 if (subX>cwh+(_this.abs(subY)-chh-ch)/2) {
-                  //$LASTPOS=92013223;//kernel.PadButton:13223
+                  //$LASTPOS=92012589;//kernel.PadButton:12589
                   _this.padPushR=1;
                 }
-                //$LASTPOS=92013258;//kernel.PadButton:13258
+                //$LASTPOS=92012624;//kernel.PadButton:12624
                 if (subY<- chh-(_this.abs(subX)-cwh-cw)/2) {
-                  //$LASTPOS=92013296;//kernel.PadButton:13296
+                  //$LASTPOS=92012662;//kernel.PadButton:12662
                   _this.padPushU=1;
                 }
-                //$LASTPOS=92013331;//kernel.PadButton:13331
+                //$LASTPOS=92012697;//kernel.PadButton:12697
                 if (subY>chh+(_this.abs(subX)-cwh-cw)/2) {
-                  //$LASTPOS=92013369;//kernel.PadButton:13369
+                  //$LASTPOS=92012735;//kernel.PadButton:12735
                   _this.padPushD=1;
                 }
                 
               }
               
             } else {
-              //$LASTPOS=92013441;//kernel.PadButton:13441
+              //$LASTPOS=92012807;//kernel.PadButton:12807
               if (! _this.isOnRectWH(t.x,t.y,_this.x-cwh,_this.y-chh,cw,ch)) {
-                //$LASTPOS=92013527;//kernel.PadButton:13527
+                //$LASTPOS=92012893;//kernel.PadButton:12893
                 subX = t.x-_this.x;
                 
-                //$LASTPOS=92013568;//kernel.PadButton:13568
+                //$LASTPOS=92012934;//kernel.PadButton:12934
                 subY = t.y-_this.y;
                 
-                //$LASTPOS=92013609;//kernel.PadButton:13609
+                //$LASTPOS=92012975;//kernel.PadButton:12975
                 if (subX<=- _this.abs(subY)) {
-                  //$LASTPOS=92013633;//kernel.PadButton:13633
+                  //$LASTPOS=92012999;//kernel.PadButton:12999
                   _this.padPushL=1;
                 } else {
-                  //$LASTPOS=92013673;//kernel.PadButton:13673
+                  //$LASTPOS=92013039;//kernel.PadButton:13039
                   if (subY<=- _this.abs(subX)) {
-                    //$LASTPOS=92013697;//kernel.PadButton:13697
+                    //$LASTPOS=92013063;//kernel.PadButton:13063
                     _this.padPushU=1;
                   } else {
-                    //$LASTPOS=92013737;//kernel.PadButton:13737
+                    //$LASTPOS=92013103;//kernel.PadButton:13103
                     if (subX>=_this.abs(subY)) {
-                      //$LASTPOS=92013761;//kernel.PadButton:13761
+                      //$LASTPOS=92013127;//kernel.PadButton:13127
                       _this.padPushR=1;
                     } else {
-                      //$LASTPOS=92013801;//kernel.PadButton:13801
+                      //$LASTPOS=92013167;//kernel.PadButton:13167
                       if (subY>=_this.abs(subX)) {
-                        //$LASTPOS=92013825;//kernel.PadButton:13825
+                        //$LASTPOS=92013191;//kernel.PadButton:13191
                         _this.padPushD=1;
                       }
                     }
@@ -39422,99 +39362,99 @@ Tonyu.klass.define({
           }
           
         }
-        //$LASTPOS=92013896;//kernel.PadButton:13896
+        //$LASTPOS=92013262;//kernel.PadButton:13262
         if (_this.padPushL) {
-          //$LASTPOS=92013921;//kernel.PadButton:13921
+          //$LASTPOS=92013287;//kernel.PadButton:13287
           _this.padCntL++;
-          //$LASTPOS=92013942;//kernel.PadButton:13942
+          //$LASTPOS=92013308;//kernel.PadButton:13308
           _this.panelPushL.x=_this.x-cw+bw/2;
-          //$LASTPOS=92013981;//kernel.PadButton:13981
+          //$LASTPOS=92013347;//kernel.PadButton:13347
           _this.panelPushL.y=_this.y;
-          //$LASTPOS=92014008;//kernel.PadButton:14008
+          //$LASTPOS=92013374;//kernel.PadButton:13374
           _this.panelPushL.zOrder=_this.zOrder;
-          //$LASTPOS=92014045;//kernel.PadButton:14045
+          //$LASTPOS=92013411;//kernel.PadButton:13411
           _this.panelPushL.alpha=_this.alpha;
-          //$LASTPOS=92014080;//kernel.PadButton:14080
+          //$LASTPOS=92013446;//kernel.PadButton:13446
           _this.panelPushL.layer=_this.layer;
-          //$LASTPOS=92014115;//kernel.PadButton:14115
+          //$LASTPOS=92013481;//kernel.PadButton:13481
           _this.panelPushL.show();
           
         } else {
-          //$LASTPOS=92014157;//kernel.PadButton:14157
+          //$LASTPOS=92013523;//kernel.PadButton:13523
           _this.padCntL=0;
-          //$LASTPOS=92014179;//kernel.PadButton:14179
+          //$LASTPOS=92013545;//kernel.PadButton:13545
           _this.panelPushL.hide();
           
         }
-        //$LASTPOS=92014210;//kernel.PadButton:14210
+        //$LASTPOS=92013576;//kernel.PadButton:13576
         if (_this.padPushR) {
-          //$LASTPOS=92014235;//kernel.PadButton:14235
+          //$LASTPOS=92013601;//kernel.PadButton:13601
           _this.padCntR++;
-          //$LASTPOS=92014256;//kernel.PadButton:14256
+          //$LASTPOS=92013622;//kernel.PadButton:13622
           _this.panelPushR.x=_this.x+cw-bw/2;
-          //$LASTPOS=92014295;//kernel.PadButton:14295
+          //$LASTPOS=92013661;//kernel.PadButton:13661
           _this.panelPushR.y=_this.y;
-          //$LASTPOS=92014322;//kernel.PadButton:14322
+          //$LASTPOS=92013688;//kernel.PadButton:13688
           _this.panelPushR.zOrder=_this.zOrder;
-          //$LASTPOS=92014359;//kernel.PadButton:14359
+          //$LASTPOS=92013725;//kernel.PadButton:13725
           _this.panelPushR.alpha=_this.alpha;
-          //$LASTPOS=92014394;//kernel.PadButton:14394
+          //$LASTPOS=92013760;//kernel.PadButton:13760
           _this.panelPushR.layer=_this.layer;
-          //$LASTPOS=92014429;//kernel.PadButton:14429
+          //$LASTPOS=92013795;//kernel.PadButton:13795
           _this.panelPushR.show();
           
         } else {
-          //$LASTPOS=92014471;//kernel.PadButton:14471
+          //$LASTPOS=92013837;//kernel.PadButton:13837
           _this.padCntR=0;
-          //$LASTPOS=92014493;//kernel.PadButton:14493
+          //$LASTPOS=92013859;//kernel.PadButton:13859
           _this.panelPushR.hide();
           
         }
-        //$LASTPOS=92014524;//kernel.PadButton:14524
+        //$LASTPOS=92013890;//kernel.PadButton:13890
         if (_this.padPushU) {
-          //$LASTPOS=92014549;//kernel.PadButton:14549
+          //$LASTPOS=92013915;//kernel.PadButton:13915
           _this.padCntU++;
-          //$LASTPOS=92014570;//kernel.PadButton:14570
+          //$LASTPOS=92013936;//kernel.PadButton:13936
           _this.panelPushU.x=_this.x;
-          //$LASTPOS=92014597;//kernel.PadButton:14597
+          //$LASTPOS=92013963;//kernel.PadButton:13963
           _this.panelPushU.y=_this.y-ch+bh/2;
-          //$LASTPOS=92014636;//kernel.PadButton:14636
+          //$LASTPOS=92014002;//kernel.PadButton:14002
           _this.panelPushU.zOrder=_this.zOrder;
-          //$LASTPOS=92014673;//kernel.PadButton:14673
+          //$LASTPOS=92014039;//kernel.PadButton:14039
           _this.panelPushU.alpha=_this.alpha;
-          //$LASTPOS=92014708;//kernel.PadButton:14708
+          //$LASTPOS=92014074;//kernel.PadButton:14074
           _this.panelPushU.layer=_this.layer;
-          //$LASTPOS=92014743;//kernel.PadButton:14743
+          //$LASTPOS=92014109;//kernel.PadButton:14109
           _this.panelPushU.show();
           
         } else {
-          //$LASTPOS=92014785;//kernel.PadButton:14785
+          //$LASTPOS=92014151;//kernel.PadButton:14151
           _this.padCntU=0;
-          //$LASTPOS=92014807;//kernel.PadButton:14807
+          //$LASTPOS=92014173;//kernel.PadButton:14173
           _this.panelPushU.hide();
           
         }
-        //$LASTPOS=92014838;//kernel.PadButton:14838
+        //$LASTPOS=92014204;//kernel.PadButton:14204
         if (_this.padPushD) {
-          //$LASTPOS=92014863;//kernel.PadButton:14863
+          //$LASTPOS=92014229;//kernel.PadButton:14229
           _this.padCntD++;
-          //$LASTPOS=92014884;//kernel.PadButton:14884
+          //$LASTPOS=92014250;//kernel.PadButton:14250
           _this.panelPushD.x=_this.x;
-          //$LASTPOS=92014911;//kernel.PadButton:14911
+          //$LASTPOS=92014277;//kernel.PadButton:14277
           _this.panelPushD.y=_this.y+ch-bh/2;
-          //$LASTPOS=92014950;//kernel.PadButton:14950
+          //$LASTPOS=92014316;//kernel.PadButton:14316
           _this.panelPushD.zOrder=_this.zOrder;
-          //$LASTPOS=92014987;//kernel.PadButton:14987
+          //$LASTPOS=92014353;//kernel.PadButton:14353
           _this.panelPushD.alpha=_this.alpha;
-          //$LASTPOS=92015022;//kernel.PadButton:15022
+          //$LASTPOS=92014388;//kernel.PadButton:14388
           _this.panelPushD.layer=_this.layer;
-          //$LASTPOS=92015057;//kernel.PadButton:15057
+          //$LASTPOS=92014423;//kernel.PadButton:14423
           _this.panelPushD.show();
           
         } else {
-          //$LASTPOS=92015099;//kernel.PadButton:15099
+          //$LASTPOS=92014465;//kernel.PadButton:14465
           _this.padCntD=0;
-          //$LASTPOS=92015121;//kernel.PadButton:15121
+          //$LASTPOS=92014487;//kernel.PadButton:14487
           _this.panelPushD.hide();
           
         }
@@ -39539,7 +39479,7 @@ Tonyu.klass.define({
         var subX;
         var subY;
         
-        //$LASTPOS=92011395;//kernel.PadButton:11395
+        //$LASTPOS=92010761;//kernel.PadButton:10761
         if (_this.died) {
           _thread.retVal=_this;return;
           
@@ -39549,64 +39489,64 @@ Tonyu.klass.define({
         
         
         
-        //$LASTPOS=92011509;//kernel.PadButton:11509
+        //$LASTPOS=92010875;//kernel.PadButton:10875
         cw=_this.width/3;
-        //$LASTPOS=92011530;//kernel.PadButton:11530
+        //$LASTPOS=92010896;//kernel.PadButton:10896
         ch=_this.height/3;
-        //$LASTPOS=92011552;//kernel.PadButton:11552
+        //$LASTPOS=92010918;//kernel.PadButton:10918
         cw2=_this.width*2/3;
-        //$LASTPOS=92011578;//kernel.PadButton:11578
+        //$LASTPOS=92010944;//kernel.PadButton:10944
         ch2=_this.height*2/3;
-        //$LASTPOS=92011605;//kernel.PadButton:11605
+        //$LASTPOS=92010971;//kernel.PadButton:10971
         cwh=_this.trunc(cw/2);
-        //$LASTPOS=92011631;//kernel.PadButton:11631
+        //$LASTPOS=92010997;//kernel.PadButton:10997
         chh=_this.trunc(ch/2);
-        //$LASTPOS=92011657;//kernel.PadButton:11657
+        //$LASTPOS=92011023;//kernel.PadButton:11023
         w=_this.width;
-        //$LASTPOS=92011673;//kernel.PadButton:11673
+        //$LASTPOS=92011039;//kernel.PadButton:11039
         h=_this.height;
-        //$LASTPOS=92011690;//kernel.PadButton:11690
+        //$LASTPOS=92011056;//kernel.PadButton:11056
         bw=_this.padBorder;
-        //$LASTPOS=92011711;//kernel.PadButton:11711
+        //$LASTPOS=92011077;//kernel.PadButton:11077
         bh=_this.padBorder;
-        //$LASTPOS=92011734;//kernel.PadButton:11734
+        //$LASTPOS=92011100;//kernel.PadButton:11100
         _this.panel.x=_this.x;
-        //$LASTPOS=92011752;//kernel.PadButton:11752
+        //$LASTPOS=92011118;//kernel.PadButton:11118
         _this.panel.y=_this.y;
-        //$LASTPOS=92011770;//kernel.PadButton:11770
+        //$LASTPOS=92011136;//kernel.PadButton:11136
         _this.panel.zOrder=_this.zOrder;
-        //$LASTPOS=92011798;//kernel.PadButton:11798
+        //$LASTPOS=92011164;//kernel.PadButton:11164
         _this.panel.alpha=_this.alpha;
-        //$LASTPOS=92011824;//kernel.PadButton:11824
+        //$LASTPOS=92011190;//kernel.PadButton:11190
         _this.panel.layer=_this.layer;
-        //$LASTPOS=92011850;//kernel.PadButton:11850
+        //$LASTPOS=92011216;//kernel.PadButton:11216
         _this.padPushL=0;
-        //$LASTPOS=92011869;//kernel.PadButton:11869
+        //$LASTPOS=92011235;//kernel.PadButton:11235
         _this.padPushR=0;
-        //$LASTPOS=92011888;//kernel.PadButton:11888
+        //$LASTPOS=92011254;//kernel.PadButton:11254
         _this.padPushU=0;
-        //$LASTPOS=92011907;//kernel.PadButton:11907
+        //$LASTPOS=92011273;//kernel.PadButton:11273
         _this.padPushD=0;
-        //$LASTPOS=92011926;//kernel.PadButton:11926
+        //$LASTPOS=92011292;//kernel.PadButton:11292
         if (_this.padPushTouchNo==- 1) {
-          //$LASTPOS=92011971;//kernel.PadButton:11971
+          //$LASTPOS=92011337;//kernel.PadButton:11337
           _this.padNotapCnt++;
-          //$LASTPOS=92011996;//kernel.PadButton:11996
-          //$LASTPOS=92012001;//kernel.PadButton:12001
+          //$LASTPOS=92011362;//kernel.PadButton:11362
+          //$LASTPOS=92011367;//kernel.PadButton:11367
           i = 0;
           for (; i<_this.TOUCHES_MAX ; i++) {
             {
-              //$LASTPOS=92012063;//kernel.PadButton:12063
+              //$LASTPOS=92011429;//kernel.PadButton:11429
               t = Tonyu.globals.$touches[i];
               
-              //$LASTPOS=92012097;//kernel.PadButton:12097
+              //$LASTPOS=92011463;//kernel.PadButton:11463
               if (t.touched==1) {
-                //$LASTPOS=92012149;//kernel.PadButton:12149
+                //$LASTPOS=92011515;//kernel.PadButton:11515
                 if (_this.isOnRectWH(t.x,t.y,_this.x-cwh-cw,_this.y-chh-ch,w,h)) {
-                  //$LASTPOS=92012201;//kernel.PadButton:12201
+                  //$LASTPOS=92011567;//kernel.PadButton:11567
                   _this.padPushTouchNo=i;
                 }
-                //$LASTPOS=92012238;//kernel.PadButton:12238
+                //$LASTPOS=92011604;//kernel.PadButton:11604
                 _this.padNotapCnt=0;
                 break;
                 
@@ -39616,99 +39556,99 @@ Tonyu.klass.define({
           }
           
         }
-        //$LASTPOS=92012317;//kernel.PadButton:12317
+        //$LASTPOS=92011683;//kernel.PadButton:11683
         if (_this.padPushTouchNo!=- 1) {
-          //$LASTPOS=92012362;//kernel.PadButton:12362
+          //$LASTPOS=92011728;//kernel.PadButton:11728
           t = Tonyu.globals.$touches[_this.padPushTouchNo];
           
-          //$LASTPOS=92012405;//kernel.PadButton:12405
+          //$LASTPOS=92011771;//kernel.PadButton:11771
           if (t.touched==0) {
-            //$LASTPOS=92012451;//kernel.PadButton:12451
+            //$LASTPOS=92011817;//kernel.PadButton:11817
             _this.padPushTouchNo=- 1;
             
           } else {
-            //$LASTPOS=92012516;//kernel.PadButton:12516
+            //$LASTPOS=92011882;//kernel.PadButton:11882
             if (_this.diagonalEnable) {
-              //$LASTPOS=92012555;//kernel.PadButton:12555
+              //$LASTPOS=92011921;//kernel.PadButton:11921
               if (_this.isOnRectWH(t.x,t.y,_this.x-cwh-cw,_this.y-chh-ch,w,h)) {
-                //$LASTPOS=92012641;//kernel.PadButton:12641
+                //$LASTPOS=92012007;//kernel.PadButton:12007
                 if (_this.isOnRectWH(t.x,t.y,_this.x-cwh-cw,_this.y-chh-ch,cw,h)) {
-                  //$LASTPOS=92012694;//kernel.PadButton:12694
+                  //$LASTPOS=92012060;//kernel.PadButton:12060
                   _this.padPushL=1;
                 }
-                //$LASTPOS=92012729;//kernel.PadButton:12729
+                //$LASTPOS=92012095;//kernel.PadButton:12095
                 if (_this.isOnRectWH(t.x,t.y,_this.x-cwh+cw,_this.y-chh-ch,cw,h)) {
-                  //$LASTPOS=92012782;//kernel.PadButton:12782
+                  //$LASTPOS=92012148;//kernel.PadButton:12148
                   _this.padPushR=1;
                 }
-                //$LASTPOS=92012817;//kernel.PadButton:12817
+                //$LASTPOS=92012183;//kernel.PadButton:12183
                 if (_this.isOnRectWH(t.x,t.y,_this.x-cwh-cw,_this.y-chh-ch,w,ch)) {
-                  //$LASTPOS=92012870;//kernel.PadButton:12870
+                  //$LASTPOS=92012236;//kernel.PadButton:12236
                   _this.padPushU=1;
                 }
-                //$LASTPOS=92012905;//kernel.PadButton:12905
+                //$LASTPOS=92012271;//kernel.PadButton:12271
                 if (_this.isOnRectWH(t.x,t.y,_this.x-cwh-cw,_this.y-chh+ch,w,ch)) {
-                  //$LASTPOS=92012958;//kernel.PadButton:12958
+                  //$LASTPOS=92012324;//kernel.PadButton:12324
                   _this.padPushD=1;
                 }
                 
               } else {
-                //$LASTPOS=92013030;//kernel.PadButton:13030
+                //$LASTPOS=92012396;//kernel.PadButton:12396
                 subX = t.x-_this.x;
                 
-                //$LASTPOS=92013071;//kernel.PadButton:13071
+                //$LASTPOS=92012437;//kernel.PadButton:12437
                 subY = t.y-_this.y;
                 
-                //$LASTPOS=92013112;//kernel.PadButton:13112
+                //$LASTPOS=92012478;//kernel.PadButton:12478
                 if (subX<- cwh-(_this.abs(subY)-chh-ch)/2) {
-                  //$LASTPOS=92013150;//kernel.PadButton:13150
+                  //$LASTPOS=92012516;//kernel.PadButton:12516
                   _this.padPushL=1;
                 }
-                //$LASTPOS=92013185;//kernel.PadButton:13185
+                //$LASTPOS=92012551;//kernel.PadButton:12551
                 if (subX>cwh+(_this.abs(subY)-chh-ch)/2) {
-                  //$LASTPOS=92013223;//kernel.PadButton:13223
+                  //$LASTPOS=92012589;//kernel.PadButton:12589
                   _this.padPushR=1;
                 }
-                //$LASTPOS=92013258;//kernel.PadButton:13258
+                //$LASTPOS=92012624;//kernel.PadButton:12624
                 if (subY<- chh-(_this.abs(subX)-cwh-cw)/2) {
-                  //$LASTPOS=92013296;//kernel.PadButton:13296
+                  //$LASTPOS=92012662;//kernel.PadButton:12662
                   _this.padPushU=1;
                 }
-                //$LASTPOS=92013331;//kernel.PadButton:13331
+                //$LASTPOS=92012697;//kernel.PadButton:12697
                 if (subY>chh+(_this.abs(subX)-cwh-cw)/2) {
-                  //$LASTPOS=92013369;//kernel.PadButton:13369
+                  //$LASTPOS=92012735;//kernel.PadButton:12735
                   _this.padPushD=1;
                 }
                 
               }
               
             } else {
-              //$LASTPOS=92013441;//kernel.PadButton:13441
+              //$LASTPOS=92012807;//kernel.PadButton:12807
               if (! _this.isOnRectWH(t.x,t.y,_this.x-cwh,_this.y-chh,cw,ch)) {
-                //$LASTPOS=92013527;//kernel.PadButton:13527
+                //$LASTPOS=92012893;//kernel.PadButton:12893
                 subX = t.x-_this.x;
                 
-                //$LASTPOS=92013568;//kernel.PadButton:13568
+                //$LASTPOS=92012934;//kernel.PadButton:12934
                 subY = t.y-_this.y;
                 
-                //$LASTPOS=92013609;//kernel.PadButton:13609
+                //$LASTPOS=92012975;//kernel.PadButton:12975
                 if (subX<=- _this.abs(subY)) {
-                  //$LASTPOS=92013633;//kernel.PadButton:13633
+                  //$LASTPOS=92012999;//kernel.PadButton:12999
                   _this.padPushL=1;
                 } else {
-                  //$LASTPOS=92013673;//kernel.PadButton:13673
+                  //$LASTPOS=92013039;//kernel.PadButton:13039
                   if (subY<=- _this.abs(subX)) {
-                    //$LASTPOS=92013697;//kernel.PadButton:13697
+                    //$LASTPOS=92013063;//kernel.PadButton:13063
                     _this.padPushU=1;
                   } else {
-                    //$LASTPOS=92013737;//kernel.PadButton:13737
+                    //$LASTPOS=92013103;//kernel.PadButton:13103
                     if (subX>=_this.abs(subY)) {
-                      //$LASTPOS=92013761;//kernel.PadButton:13761
+                      //$LASTPOS=92013127;//kernel.PadButton:13127
                       _this.padPushR=1;
                     } else {
-                      //$LASTPOS=92013801;//kernel.PadButton:13801
+                      //$LASTPOS=92013167;//kernel.PadButton:13167
                       if (subY>=_this.abs(subX)) {
-                        //$LASTPOS=92013825;//kernel.PadButton:13825
+                        //$LASTPOS=92013191;//kernel.PadButton:13191
                         _this.padPushD=1;
                       }
                     }
@@ -39722,99 +39662,99 @@ Tonyu.klass.define({
           }
           
         }
-        //$LASTPOS=92013896;//kernel.PadButton:13896
+        //$LASTPOS=92013262;//kernel.PadButton:13262
         if (_this.padPushL) {
-          //$LASTPOS=92013921;//kernel.PadButton:13921
+          //$LASTPOS=92013287;//kernel.PadButton:13287
           _this.padCntL++;
-          //$LASTPOS=92013942;//kernel.PadButton:13942
+          //$LASTPOS=92013308;//kernel.PadButton:13308
           _this.panelPushL.x=_this.x-cw+bw/2;
-          //$LASTPOS=92013981;//kernel.PadButton:13981
+          //$LASTPOS=92013347;//kernel.PadButton:13347
           _this.panelPushL.y=_this.y;
-          //$LASTPOS=92014008;//kernel.PadButton:14008
+          //$LASTPOS=92013374;//kernel.PadButton:13374
           _this.panelPushL.zOrder=_this.zOrder;
-          //$LASTPOS=92014045;//kernel.PadButton:14045
+          //$LASTPOS=92013411;//kernel.PadButton:13411
           _this.panelPushL.alpha=_this.alpha;
-          //$LASTPOS=92014080;//kernel.PadButton:14080
+          //$LASTPOS=92013446;//kernel.PadButton:13446
           _this.panelPushL.layer=_this.layer;
-          //$LASTPOS=92014115;//kernel.PadButton:14115
+          //$LASTPOS=92013481;//kernel.PadButton:13481
           _this.panelPushL.show();
           
         } else {
-          //$LASTPOS=92014157;//kernel.PadButton:14157
+          //$LASTPOS=92013523;//kernel.PadButton:13523
           _this.padCntL=0;
-          //$LASTPOS=92014179;//kernel.PadButton:14179
+          //$LASTPOS=92013545;//kernel.PadButton:13545
           _this.panelPushL.hide();
           
         }
-        //$LASTPOS=92014210;//kernel.PadButton:14210
+        //$LASTPOS=92013576;//kernel.PadButton:13576
         if (_this.padPushR) {
-          //$LASTPOS=92014235;//kernel.PadButton:14235
+          //$LASTPOS=92013601;//kernel.PadButton:13601
           _this.padCntR++;
-          //$LASTPOS=92014256;//kernel.PadButton:14256
+          //$LASTPOS=92013622;//kernel.PadButton:13622
           _this.panelPushR.x=_this.x+cw-bw/2;
-          //$LASTPOS=92014295;//kernel.PadButton:14295
+          //$LASTPOS=92013661;//kernel.PadButton:13661
           _this.panelPushR.y=_this.y;
-          //$LASTPOS=92014322;//kernel.PadButton:14322
+          //$LASTPOS=92013688;//kernel.PadButton:13688
           _this.panelPushR.zOrder=_this.zOrder;
-          //$LASTPOS=92014359;//kernel.PadButton:14359
+          //$LASTPOS=92013725;//kernel.PadButton:13725
           _this.panelPushR.alpha=_this.alpha;
-          //$LASTPOS=92014394;//kernel.PadButton:14394
+          //$LASTPOS=92013760;//kernel.PadButton:13760
           _this.panelPushR.layer=_this.layer;
-          //$LASTPOS=92014429;//kernel.PadButton:14429
+          //$LASTPOS=92013795;//kernel.PadButton:13795
           _this.panelPushR.show();
           
         } else {
-          //$LASTPOS=92014471;//kernel.PadButton:14471
+          //$LASTPOS=92013837;//kernel.PadButton:13837
           _this.padCntR=0;
-          //$LASTPOS=92014493;//kernel.PadButton:14493
+          //$LASTPOS=92013859;//kernel.PadButton:13859
           _this.panelPushR.hide();
           
         }
-        //$LASTPOS=92014524;//kernel.PadButton:14524
+        //$LASTPOS=92013890;//kernel.PadButton:13890
         if (_this.padPushU) {
-          //$LASTPOS=92014549;//kernel.PadButton:14549
+          //$LASTPOS=92013915;//kernel.PadButton:13915
           _this.padCntU++;
-          //$LASTPOS=92014570;//kernel.PadButton:14570
+          //$LASTPOS=92013936;//kernel.PadButton:13936
           _this.panelPushU.x=_this.x;
-          //$LASTPOS=92014597;//kernel.PadButton:14597
+          //$LASTPOS=92013963;//kernel.PadButton:13963
           _this.panelPushU.y=_this.y-ch+bh/2;
-          //$LASTPOS=92014636;//kernel.PadButton:14636
+          //$LASTPOS=92014002;//kernel.PadButton:14002
           _this.panelPushU.zOrder=_this.zOrder;
-          //$LASTPOS=92014673;//kernel.PadButton:14673
+          //$LASTPOS=92014039;//kernel.PadButton:14039
           _this.panelPushU.alpha=_this.alpha;
-          //$LASTPOS=92014708;//kernel.PadButton:14708
+          //$LASTPOS=92014074;//kernel.PadButton:14074
           _this.panelPushU.layer=_this.layer;
-          //$LASTPOS=92014743;//kernel.PadButton:14743
+          //$LASTPOS=92014109;//kernel.PadButton:14109
           _this.panelPushU.show();
           
         } else {
-          //$LASTPOS=92014785;//kernel.PadButton:14785
+          //$LASTPOS=92014151;//kernel.PadButton:14151
           _this.padCntU=0;
-          //$LASTPOS=92014807;//kernel.PadButton:14807
+          //$LASTPOS=92014173;//kernel.PadButton:14173
           _this.panelPushU.hide();
           
         }
-        //$LASTPOS=92014838;//kernel.PadButton:14838
+        //$LASTPOS=92014204;//kernel.PadButton:14204
         if (_this.padPushD) {
-          //$LASTPOS=92014863;//kernel.PadButton:14863
+          //$LASTPOS=92014229;//kernel.PadButton:14229
           _this.padCntD++;
-          //$LASTPOS=92014884;//kernel.PadButton:14884
+          //$LASTPOS=92014250;//kernel.PadButton:14250
           _this.panelPushD.x=_this.x;
-          //$LASTPOS=92014911;//kernel.PadButton:14911
+          //$LASTPOS=92014277;//kernel.PadButton:14277
           _this.panelPushD.y=_this.y+ch-bh/2;
-          //$LASTPOS=92014950;//kernel.PadButton:14950
+          //$LASTPOS=92014316;//kernel.PadButton:14316
           _this.panelPushD.zOrder=_this.zOrder;
-          //$LASTPOS=92014987;//kernel.PadButton:14987
+          //$LASTPOS=92014353;//kernel.PadButton:14353
           _this.panelPushD.alpha=_this.alpha;
-          //$LASTPOS=92015022;//kernel.PadButton:15022
+          //$LASTPOS=92014388;//kernel.PadButton:14388
           _this.panelPushD.layer=_this.layer;
-          //$LASTPOS=92015057;//kernel.PadButton:15057
+          //$LASTPOS=92014423;//kernel.PadButton:14423
           _this.panelPushD.show();
           
         } else {
-          //$LASTPOS=92015099;//kernel.PadButton:15099
+          //$LASTPOS=92014465;//kernel.PadButton:14465
           _this.padCntD=0;
-          //$LASTPOS=92015121;//kernel.PadButton:15121
+          //$LASTPOS=92014487;//kernel.PadButton:14487
           _this.panelPushD.hide();
           
         }
@@ -39893,11 +39833,11 @@ Tonyu.klass.define({
         var h;
         
         
-        //$LASTPOS=92015613;//kernel.PadButton:15613
+        //$LASTPOS=92014979;//kernel.PadButton:14979
         w=_this.width+2;
-        //$LASTPOS=92015634;//kernel.PadButton:15634
+        //$LASTPOS=92015000;//kernel.PadButton:15000
         h=_this.height+2;
-        return (mx>=_this.x-w/2&&mx<_this.x+w/2&&my>=_this.y-h/2&&my<_this.y+h/2);
+        return (mx>=_this.x-w/2-1&&mx<_this.x+w/2-1&&my>=_this.y-h/2-1&&my<_this.y+h/2-1);
       },
       fiber$crashXY10000 :function _trc_PadButton_f_crashXY10000(_thread,mx,my) {
         "use strict";
@@ -39908,11 +39848,11 @@ Tonyu.klass.define({
         var h;
         
         
-        //$LASTPOS=92015613;//kernel.PadButton:15613
+        //$LASTPOS=92014979;//kernel.PadButton:14979
         w=_this.width+2;
-        //$LASTPOS=92015634;//kernel.PadButton:15634
+        //$LASTPOS=92015000;//kernel.PadButton:15000
         h=_this.height+2;
-        _thread.retVal=(mx>=_this.x-w/2&&mx<_this.x+w/2&&my>=_this.y-h/2&&my<_this.y+h/2);return;
+        _thread.retVal=(mx>=_this.x-w/2-1&&mx<_this.x+w/2-1&&my>=_this.y-h/2-1&&my<_this.y+h/2-1);return;
         
         
         _thread.retVal=_this;return;

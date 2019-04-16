@@ -1,5 +1,5 @@
-define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
-        ,"ImageDetailEditor","Util","OggConverter","Assets"],
+define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
+"ImageDetailEditor","Util","OggConverter","Assets"],
         function (FS, Tonyu, UI,IL,Blob,Auth,WebSite,
                 ImageDetailEditor,Util,OggConverter,Assets) {
     var ResEditor=function (prj, mediaType) {
@@ -31,10 +31,10 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
         var itemUIs=[];
         if (!rsrc) prj.setResource({images:[],sounds:[]});
         function convURL(u) {
+            function cvs(u) {
+                return WebSite.urlAliases[u] || u;
+            }
             try {
-                function cvs(u) {
-                    return WebSite.urlAliases[u] || u;
-                }
                 if (Util.endsWith(u,".ogg")) {
                     u=cvs("images/sound_ogg.png");
                 } else if (Util.endsWith(u,".mp3")) {
@@ -63,7 +63,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                 tempFiles = items.slice();
                 itemUIs.some(function (itemUI, idx){
                     if (itemUI[0].id==args) {
-                        itemUIs.splice(idx, 1); 
+                        itemUIs.splice(idx, 1);
                         return true;
                     }
                 });
@@ -101,7 +101,8 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                 var readFileSum = files.length;
                 var notReadFiles = [];
                 var existsFiles = [];
-                for (var i=0; i<files.length; i++) {
+                for (var i=0; i<files.length; i++) loop(i);
+                function loop(i){
                     var file = files[i];
                     var filetype= file.type;
                     if (file.name.match(/\.mzo$/)) filetype="audio/mzo";
@@ -109,7 +110,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                     if(!filetype.match(mediaInfo.contentType)) {
                         readFileSum--;
                         notReadFiles.push(file);
-                        continue;
+                        return;//continue;
                     }
                     var itemName=file.name.replace(mediaInfo.extPattern,"").replace(/\W/g,"_");
                     var itemExt="";
@@ -129,7 +130,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                         readFileSum--;
                         file.existsFile=existsFile;
                         existsFiles.push(file);
-                        continue;
+                        return;//continue;
                     }
 
                     var v=mediaInfo.newItem(itemName);
@@ -182,16 +183,16 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                         reader.readAsArrayBuffer(file);
                     }
                 }
-
+                var mes;
                 if (notReadFiles.length>0) {
-                    var mes="このファイルは追加できません：\n";
+                    mes="このファイルは追加できません：\n";
                     notReadFiles.forEach(function(f){
                         if (f) mes+=f.name+"\n";
                     });
                     alert(mes);
                 }
                 if (existsFiles.length>0) {
-                    var mes="同じ名前のファイルが既に登録されています：\n";
+                    mes="同じ名前のファイルが既に登録されています：\n";
                     existsFiles.forEach(function(f){
                         if (f) {
                             var fNameTemp=f.existsFile.url;
@@ -313,8 +314,8 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                 if (!u) return;
                 var rtf=[];
                 items.forEach(function (item) {
-                    var a,ogg;
-                    if (a=Blob.isBlobURL(item.url)) {
+                    var a=Blob.isBlobURL(item.url),ogg;
+                    if (a) {
                         rtf.push(a.fileName);
                         ogg=a.fileName.replace(/\.(mp3|mp4|m4a)$/,".ogg");
                         if (ogg!=a.fileName) rtf.push(ogg);
