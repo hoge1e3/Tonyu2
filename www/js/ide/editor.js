@@ -2,7 +2,7 @@ requirejs(["Util", "Tonyu", "FS", "PathUtil","FileList", "FileMenu",
            "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project",
            /*"copySample",*/"Shell","Shell2","ProjectOptionsEditor","copyToKernel","KeyEventChecker",
            "IFrameDialog",/*"WikiDialog",*/"runtime", "KernelDiffDialog","Sync","searchDialog","StackTrace","syncWithKernel",
-           "UI","ResEditor","WebSite","exceptionCatcher","Tonyu.TraceTbl",
+           "UI","ResEditors","WebSite","exceptionCatcher","Tonyu.TraceTbl",
            "Log","MainClassDialog","DeferredUtil","NWMenu",
            "ProjectCompiler","compiledProject","mkrunDiag","zip","LSFS","WebFS",
            "extLink","DiagAdjuster","ExportHTMLDialog","RunDialog","GlobalDialog"
@@ -11,7 +11,7 @@ function (Util, Tonyu, FS, PathUtil, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,
           /*copySample,*/sh,sh2, ProjectOptionsEditor, ctk, KeyEventChecker,
           IFrameDialog,/*WikiDialog,*/ rt , KDD,Sync,searchDialog,StackTrace,swk,
-          UI,ResEditor,WebSite,EC,TTB,
+          UI,ResEditors,WebSite,EC,TTB,
           Log,MainClassDialog,DU,NWMenu,
           TPRC,CPPRJ,mkrunDiag,zip,LSFS,WebFS,
           extLink,DiagAdjuster,ExportHTMLDialog,RunDialog,GlobalDialog
@@ -58,6 +58,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     var dir=Util.getQueryString("dir", "/Tonyu/Projects/SandBox/");
     var curPrjDir=curProjectDir=FS.get(dir);
     var curPrj=Tonyu_Project(curProjectDir);//, kernelDir);
+    var resEditors=new ResEditors(curPrj);
     Tonyu.globals.$currentProject=curPrj;
     Tonyu.currentProject=curPrj;
     var EXT=curPrj.EXT;
@@ -642,17 +643,18 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         }
     }));
     $("#imgResEditor").click(F(function () {
-        //ImgResEdit(curPrj);
-        if (window.curResEditor) {
+        resEditors.open("image");
+        /*if (window.curResEditor) {
             window.curResEditor.dialog("close");
         }
-        window.curResEditor=ResEditor(curPrj,"image");
+        window.curResEditor=ResEditor(curPrj,"image");*/
     }));
     $("#soundResEditor").click(F(function () {
-        if (window.curResEditor) {
+        resEditors.open("sound");
+        /*if (window.curResEditor) {
             window.curResEditor.dialog("close");
         }
-        window.curResEditor=ResEditor(curPrj,"sound");
+        window.curResEditor=ResEditor(curPrj,"sound");*/
     }));
     $("#prjOptEditor").click(F(function () {
         ProjectOptionsEditor(curPrj);

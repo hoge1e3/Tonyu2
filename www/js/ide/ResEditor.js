@@ -2,26 +2,26 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
 "ImageDetailEditor","Util","OggConverter","Assets"],
         function (FS, Tonyu, UI,IL,Blob,Auth,WebSite,
                 ImageDetailEditor,Util,OggConverter,Assets) {
-    var ResEditor=function (prj, mediaType) {
-        var mediaInfos={
-                image:{name:"画像",exts:["png","gif","jpg"],path:"images/",key:"images",
-                    extPattern:/\.(png|gif|jpe?g)$/i,contentType:/image\/(png|gif|jpe?g)/,
-                    newItem:function (name) {
-                        var r={type:"single"};//pwidth:32,pheight:32};
-                        if (name) r.name="$pat_"+name;
-                        return r;
-                    }
-                },
-                sound:{name:"音声",exts:["mp3","ogg","mp4","m4a","mid","wav","mzo"],path:"sounds/",key:"sounds",
-                    extPattern:/\.(mp3|ogg|mp4|m4a|midi?|wav|mzo)$/i,contentType:/((audio\/(mp3|ogg|x-m4a|midi?|wav|mzo))|(video\/mp4))/,
-                    newItem:function (name) {
-                        var r={};
-                        if (name) r.name="$se_"+name;
-                        return r;
-                    }
-                }
-        };
-        var mediaInfo=mediaInfos[mediaType||"image"];
+    /*var mediaInfos={
+        image:{name:"画像",exts:["png","gif","jpg"],path:"images/",key:"images",
+            extPattern:/\.(png|gif|jpe?g)$/i,contentType:/image\/(png|gif|jpe?g)/,
+            newItem:function (name) {
+                var r={type:"single"};//pwidth:32,pheight:32};
+                if (name) r.name="$pat_"+name;
+                return r;
+            }
+        },
+        sound:{name:"音声",exts:["mp3","ogg","mp4","m4a","mid","wav","mzo"],path:"sounds/",key:"sounds",
+            extPattern:/\.(mp3|ogg|mp4|m4a|midi?|wav|mzo)$/i,contentType:/((audio\/(mp3|ogg|x-m4a|midi?|wav|mzo))|(video\/mp4))/,
+            newItem:function (name) {
+                var r={};
+                if (name) r.name="$se_"+name;
+                return r;
+            }
+        }
+    };*/
+    var ResEditor=function (prj, mediaInfo) {
+        //var mediaInfo=mediaInfos[mediaType||"image"];
         var d=UI("div", {title:mediaInfo.name+"リスト"});
         d.css({height:200+"px", "overflow-v":"scroll"});
         var rsrc=prj.getResource();
@@ -29,6 +29,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
         var tempFiles = items.slice();
         var rsrcDir=prj.getDir().rel(mediaInfo.path);
         var itemUIs=[];
+        var _dropAdd;
         if (!rsrc) prj.setResource({images:[],sounds:[]});
         function convURL(u) {
             function cvs(u) {
@@ -92,6 +93,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
                     ));
                 }
             }
+            _dropAdd=dropAdd;
             function dropAdd(e) {
                 e.stopPropagation();
                 e.preventDefault();
@@ -212,7 +214,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
             }
             function genItemUI(item) {
                 function detail() {
-                    if (mediaType=="sound") return;
+                    if (mediaInfo.key=="sounds") return;
                     ImageDetailEditor.show(item, prj, item.name, {
                         onclose: function () {
                             prj.setResource(rsrc);
@@ -308,7 +310,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
             prj.setResource(rsrc);
             reload(action, args);
         }
-        function cleanFiles() {
+        /*function cleanFiles() {
             var items=rsrc[mediaInfo.key];
             Auth.currentUser(function (u,ct) {
                 if (!u) return;
@@ -346,29 +348,34 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
                 delete cleanFile[item.url.replace(/\.(mp3|mp4|m4a)$/,".ogg")];
             });
             console.log(cleanFile);
-            /*for (var ci in cleanFile) {
-                var cf=cleanFile[ci];
-                console.log(cf+" is removed");
-                cf.rm();
-            }*/
-        }
+        }*/
         function toi(s) {
             if (!s || s=="") return undefined;
             return parseInt(s);
         }
-        reload();
-        return d.dialog({
-            modal:true,
-            width: 800,
-            height: 500,
+        return {
+            dropAdd:function (e) {
+                _dropAdd(e);
+            },
+            open: function () {
+                reload();
+                d.dialog({
+                    modal:true,
+                    width: 800,
+                    height: 500,
+                    close: function () {
+                        update("close");
+                        //cleanFiles();
+                        if (mediaInfo.key=="sounds" && rsrcDir.exists()) {
+                            OggConverter.convert(rsrcDir);
+                        }
+                    }
+                });
+            },
             close: function () {
-                update("close");
-                cleanFiles();
-                if (mediaType=="sound" && rsrcDir.exists()) {
-                    OggConverter.convert(rsrcDir);
-                }
+                d.dialog("close");
             }
-        });
+        };
     };
     function draw(img, canvas) {
         if (typeof img=="string") {

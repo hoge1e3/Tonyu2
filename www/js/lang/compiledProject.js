@@ -56,7 +56,7 @@ define(["DeferredUtil","WebSite","assert"], function (DU,WebSite,A) {
 			},
 			loadClassesOLD: function (ctx) {
 				console.log("Load compiled classes ns=",ns,"url=",url);
-				var d=new $.Deferred;
+				var d=new $.Deferred();
 				var head = document.getElementsByTagName("head")[0] || document.documentElement;
 				var script = document.createElement("script");
 				script.src = url+(WebSite.serverType==="BA"?"?"+Math.random():"");
@@ -93,7 +93,7 @@ define(["DeferredUtil","WebSite","assert"], function (DU,WebSite,A) {
 				});
 				return d.promise();
 			}
-		}
+		};
 	};
 	return CPR;
 });

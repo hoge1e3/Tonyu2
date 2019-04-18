@@ -192,6 +192,7 @@ var reqConf={
                 "OggConverter": 1,
                 "ProjectOptionsEditor": 1,
                 "ResEditor": 1,
+                "ResEditors": 1,
                 "TextEditor": 1,
                 "TonyuProject": "Tonyu.Project",
                 "compiledTonyuProject": 1,

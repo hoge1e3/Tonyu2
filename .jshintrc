@@ -1,0 +1,4 @@
+{"esversion":8,"undef": true,"unused": false,
+    "jquery":true,"browser": true,"devel" : true,
+    "predef": ["define"]
+}
