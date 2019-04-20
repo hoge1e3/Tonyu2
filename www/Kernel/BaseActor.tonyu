@@ -29,7 +29,10 @@ nowait \extend(obj) {
 }
 
 nowait \print(pt) {
-    $_printCount++; if ($_printCount>$printLimit) throw new Error("printをしすぎています.");
+    $_printCount++; if ($_printCount>$printLimit) throw new Error("printをしすぎています.\n"
+        +"       $printLimitの値を変更すると、1フレーム間にできるprint回数を変更できます\n"
+        +"       $printLimit="+$printLimit+"; // 現在のprint回数の限度\n"
+        +"       [参考] https://edit.tonyu.jp/doc/limitations.html\n");
     console.log.apply(console,arguments);
     var mergedArg="";
     if($consolePanel){
