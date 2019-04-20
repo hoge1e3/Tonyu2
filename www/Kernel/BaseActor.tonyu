@@ -34,20 +34,8 @@ nowait \print(pt) {
         +"       $printLimit="+$printLimit+"; // 現在のprint回数の限度\n"
         +"       [参考] https://edit.tonyu.jp/doc/limitations.html\n");
     console.log.apply(console,arguments);
-    var mergedArg="";
     if($consolePanel){
-        for(var argCount=0;argCount<arguments.length;argCount++){
-            mergedArg=mergedArg+arguments[argCount]+" ";
-        }
-        var printColor=
-            $printColor!=null ? $printColor :
-            new Color($Screen._color).l<=0.5 ? "white" : "black";
-        var splits=mergedArg.split("\n");
-        for(var printCount=0;printCount<splits.length;printCount++){
-            $consolePanel.scroll(0,$printSize);
-            $consolePanel.setFillStyle(printColor);
-            $consolePanel.fillText(splits[printCount],0,$consolePrintY,$printSize,"left","bottom");
-        }
+        $consolePanel.print(pt);
     }
 }
 

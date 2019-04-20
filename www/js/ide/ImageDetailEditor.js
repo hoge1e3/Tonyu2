@@ -68,11 +68,11 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite","Assets"],
         d.dialog({width:600,height:520});
         v.url.val(item.url);
         var url=Assets.resolve(item.url,prj);
-        
+
         if (WebSite.isNW) {
             var path;
             // NW.jsでWebSite.urlAliasesが空っぽ！
-            // どうすればいいかわからず、とりあえず適当に実装
+            // とりあえずテキトウに実装
             var urlAliases = {
                 "images/Ball.png":"www/images/Ball.png",
                 "images/base.png":"www/images/base.png",

@@ -108,7 +108,7 @@ mainLoop();
     $pat_fruits=30;
     $Keys=new Keys;
     $Math=Math;
-    $consolePanel=new Panel{align:"center",x:465/2,y:465/2,width:465,height:465,zOrder:-10,layer:$FrontSprites};
+    $consolePanel=new ConsolePanel{align:"center",x:465/2,y:465/2,width:465,height:465,zOrder:-10,layer:$FrontSprites};
     $printColor=null;
     $printSize=20;
     $consolePrintY=465;
