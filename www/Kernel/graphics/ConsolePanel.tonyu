@@ -1,0 +1,65 @@
+extends Panel;
+native console;
+
+\new (opt) {
+    printAry=[];
+    printStart=0;
+    printCnt=0;
+    screenCol=null;
+    defaultCol="white";
+    super(opt);
+}
+
+\print(pt) {
+    var mergedArg="";
+    for(var argCount=0;argCount<arguments.length;argCount++){
+        mergedArg=mergedArg+arguments[argCount]+" ";
+    }
+    if($printColor==null && $Screen){
+        if ($Screen._color != screenCol) {
+            screenCol=$Screen._color;
+            defaultCol=new Color($Screen._color).l<=0.5 ? "white" : "black";
+        }
+    }
+    var printColor=$printColor!=null ? $printColor : defaultCol;
+    var printSize=!$printSize ? 20 : $printSize;
+    var splits=mergedArg.split("\n");
+    for(var printCount=0;printCount<splits.length;printCount++){
+        // $consolePanel.scroll(0,$printSize);
+        // $consolePanel.setFillStyle(printColor);
+        // $consolePanel.fillText(splits[printCount],0,$consolePrintY,printSize,"left","bottom");
+        printAry.push({text:splits[printCount], color:printColor, size:printSize});
+        printCnt++;
+    }
+}
+
+\draw(ctx){
+    var scrollY=0;
+    for(var i=printStart; i<printStart+printCnt; i++){
+        var p=printAry[i];
+        if(!p)continue;
+        scrollY += p.size;
+        if(scrollY>$screenHeight)break;
+    }
+    if(scrollY>0){
+        $consolePanel.scroll(0,scrollY);
+        var drawY=$consolePrintY;
+        var a=0;
+        for(var i=printStart+printCnt-1; i>=printStart; i--){
+            var p=printAry[i];
+            if(!p)continue;
+            $consolePanel.setFillStyle(p.color);
+            $consolePanel.fillText(p.text,0,drawY,p.size,"left","bottom");
+            drawY-=p.size;
+            a++;
+            if(drawY<0){
+                printCnt-=i;
+                printAry.splice(0,i);
+                break;
+            }
+        }
+        printStart=printCnt;
+        console.log("printDrawCnt",a);
+    }
+    super.draw(ctx);
+}

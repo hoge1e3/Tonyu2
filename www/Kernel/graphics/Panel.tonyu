@@ -105,13 +105,14 @@ native requestAnimationFrame;
     ctx.fillRect(x,y,w,h);
     //ctx.restore();
 }
-\fillText(text,x,y,size,align){
+\fillText(text,x,y,size,align,baseline){
     var ctx=getContext();
     ctx.save();
     text=text+"";
     var splits = text.split("\n");
     //ctx.clearRect(0,0,this.width,this.height);
     ctx.textAlign = align ||"center";
+    ctx.textBaseline = baseline ||"alphabetic";
     size=size||15;
     ctx.fillStyle=fillStyle+"";
     var f=ctx.font.replace(/^[0-9\.]+/,"");

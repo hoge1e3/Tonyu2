@@ -3,7 +3,7 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite","Assets"],
     var d=UI("div",{title:"画像詳細"},
             ["div",
              ["div","URL:",["input",{$var:"url",size:40,on:{change:setURL}}],
-               ["a",{$var:"openImg",target:"img"},"画像を確認..."]],
+               ["a",{$var:"openImg",target:"_blank"},"画像を確認..."]],
              ["canvas",{$edit:"cv",width:500,height:250,on:{mousemove:cvMouse,mousedown:cvClick}}] ],
              ["form",{$var:"theForm"},
                ["div",radio("single"),"１枚絵"],
@@ -60,7 +60,7 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite","Assets"],
     function selSingle() {
         v.theForm[0].type.value="single";
     }
-    IMD.show=function (_item,prj, itemName, options) {
+    IMD.show=function (_item, prj, itemName, options) {
         if (!options) options={};
         onclose=options.onclose;
         item=_item;
@@ -68,7 +68,38 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite","Assets"],
         d.dialog({width:600,height:520});
         v.url.val(item.url);
         var url=Assets.resolve(item.url,prj);
-        v.openImg.attr("href",url);
+
+        if (WebSite.isNW) {
+            var path;
+            // NW.jsでWebSite.urlAliasesが空っぽ！
+            // とりあえずテキトウに実装
+            var urlAliases = {
+                "images/Ball.png":"www/images/Ball.png",
+                "images/base.png":"www/images/base.png",
+                "images/Sample.png":"www/images/Sample.png",
+                "images/neko.png":"www/images/neko.png",
+                "images/mapchip.png":"www/images/mapchip.png",
+                "images/sound.png":"www/images/sound.png",
+                "images/sound_ogg.png":"www/images/sound_ogg.png",
+                "images/sound_mp3.png":"www/images/sound_mp3.png",
+                "images/sound_mp4.png":"www/images/sound_mp4.png",
+                "images/sound_m4a.png":"www/images/sound_m4a.png",
+                "images/sound_mid.png":"www/images/sound_mid.png",
+                "images/sound_wav.png":"www/images/sound_wav.png",
+                "images/ecl.png":"www/images/ecl.png"
+            }
+            try {
+                path=urlAliases[item.url];
+                if(!path)path=url;
+            }catch(e) {
+                path=url;
+            }
+            var urlScript = "javascript:nw.Window.open('"+path+"', {}, function(w) {w.y=20;w.width=700;w.height=600;})";
+            v.openImg.attr("href",urlScript);
+        } else {
+            v.openImg.attr("href",url);
+        }
+        
         ImageRect(url, v.cv[0])(function (res) {
             canvasRect=res;
             console.log(res);

@@ -31,7 +31,7 @@ native Math;
         $consolePanel.setPanel($screenWidth,$screenHeight);
         $consolePanel.x=$screenWidth/2;
         $consolePanel.y=$screenHeight/2;
-        $consolePrintY=$screenHeight-15;
+        $consolePrintY=$screenHeight;
     }
 }
 \shouldDraw1x1(srcw,srch,dstw,dsth) {
