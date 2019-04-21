@@ -95,7 +95,6 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite","Assets"],
                 path=url;
             }
             var urlScript = "javascript:nw.Window.open('"+path+"', {}, function(w) {w.y=20;w.width=700;w.height=600;})";
-            console.log(urlScript);
             v.openImg.attr("href",urlScript);
         } else {
             v.openImg.attr("href",url);

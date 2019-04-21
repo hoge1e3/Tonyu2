@@ -120,7 +120,7 @@ mainLoop();
     $mouseY=$mouseY||0;
     debugCnt=50;
     newLimit=1000;
-    $printLimit=100;
+    $printLimit=500;
 }
 \initLayers() {
     $screenWidth=465;

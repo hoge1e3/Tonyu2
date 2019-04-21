@@ -357,7 +357,9 @@ return Tonyu=function () {
 		var now=performance.now();
 		if (now-lastLoopCheck>1000) {
 			resetLoopCheck(10000);
-			throw new Error("無限ループをストップしました"+(now-prevCheckLoopCalled));
+			throw new Error("無限ループをストップしました。\n"
+				+"   プロジェクト オプションで無限ループチェックの有無を設定できます。\n"
+				+"   [参考]https://edit.tonyu.jp/doc/options.html\n");
 		}
 		prevCheckLoopCalled=now;
 	}
