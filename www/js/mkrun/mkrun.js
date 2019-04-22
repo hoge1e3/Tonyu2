@@ -7,7 +7,7 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu"],
     MkRun.run2=function (prj,type,options) {
         // type: zip , prj, dir
         // when type=="dir" , options.dest is required
-        var destZip;
+        var dest,destZip;
         switch(type) {
             case "prj":
             destZip=this.tmpDir().rel("prj.zip");
@@ -150,8 +150,10 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu"],
             );
         }
         function addFileToLoadFiles(name, data) {
+            var file=prjDir.rel(name);
+            file.copyTo(dest.rel(name)); // needs on nwjs runtime
             if (data==null) {
-                var file=prjDir.rel(name);
+                // in "static" folder
                 if (file.ext()===".json") {
                     data=file.obj();
                 } else if (file.isText()) {
@@ -184,6 +186,7 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu"],
                 "images/base.png":1,
                 "images/Sample.png":"../../images/Sample.png",
                 "images/neko.png":"../../images/neko.png",
+                "images/inputPad.png":"../../images/inputPad.png",
                 "images/mapchip.png":"../../images/mapchip.png",
                 "images/sound.png":"../../images/sound.png",
                 "images/sound_ogg.png":"../../images/sound_ogg.png",
