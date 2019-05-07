@@ -209,7 +209,7 @@ var reqConf={
             "JSONCol": "lib/JSONCol",
             "KeyEventChecker": "lib/KeyEventChecker",
             "Klass": "lib/Klass",
-            "PicoAudio": "lib/PicoAudio",
+            "PicoAudio": "lib/PicoAudio.min",
             "T2MediaLib": "lib/T2MediaLib",
             "TextUtil": "lib/TextUtil",
             "ace": "lib/ace-noconflict/ace",

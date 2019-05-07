@@ -232,7 +232,7 @@ var reqConf={
                 "JSONCol": 1,
                 "KeyEventChecker": 1,
                 "Klass": 1,
-                "PicoAudio": 1,
+                "PicoAudio.min": "PicoAudio",
                 "SEnv": 1,
                 "Tones.wdt": 1,
                 "T2MediaLib": 1,
