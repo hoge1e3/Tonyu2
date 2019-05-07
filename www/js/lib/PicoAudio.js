@@ -138,7 +138,7 @@ var PicoAudio = (function(){
 		this.chorusGainNode.connect(this.masterGainNode);
 		this.masterGainNode.connect(this.context.destination);
 		this.chorusOscillator.start(0);
-		
+
 		// リバーブON設定を引き継ぐ。未設定ならパフォーマンス計測する(Tonyu2用)
 		if(this.isTonyu2){
 			if(_picoAudio){
@@ -565,7 +565,7 @@ var PicoAudio = (function(){
 			case 63: // Open High Conga
 			case 64: // Low Conga
 				var p = option.pitch;
-				var r = p==60 ? 700　: p==61 ? 282 : p==62 ? 385 : p==63 ? 295 : 210;
+				var r = p==60 ? 700 : p==61 ? 282 : p==62 ? 385 : p==63 ? 295 : 210;
 				var len = p==60 ? 0.08 : p==61 ? 0.1 : p==62 ? 0.03 : p==63 ? 0.12 : 0.15;
 				// w
 				source.playbackRate.value = 0.03;
@@ -893,7 +893,7 @@ var PicoAudio = (function(){
 				gainNode2.gain.setTargetAtTime(0, start, option.pitch==86 ? 0.1 : 0.3);
 				stopAudioTime2 = option.pitch==86 ? 0.5 : 1.5;
 				break;
-			default: 
+			default:
 				source.playbackRate.value = option.pitch/69*2;
 				stopAudioTime = 0.05;
 				stopAudioTime2 = 0;
@@ -1428,7 +1428,7 @@ var PicoAudio = (function(){
 					if(curTime + note.startTime < 0) continue;
 					// 演奏開始時間 - 先読み時間(ノート予約) になると演奏予約or演奏開始
 					if(curTime < note.startTime - that.states.updateBufTime/1000) break;
-					if(!settings.isWebMIDI){ 
+					if(!settings.isWebMIDI){
 						// 予約ノート数が急激に増えそうな時、先読み量を小さくしておく
 						if(that.states.stopFuncs.length>=350 && that.states.updateBufTime<1000){
 							that.states.updateBufTime = (that.isFirefox() && !that.isAndroid() ? 12 : 8);
