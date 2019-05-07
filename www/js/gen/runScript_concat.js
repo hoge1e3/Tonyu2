@@ -94,7 +94,7 @@
 	};
 	R.real=real;
 	var requireSimulator=R;
-	// Created at Wed Feb 20 2019 12:47:37 GMT+0900 (東京 (標準時))
+	// Created at Tue May 07 2019 18:21:38 GMT+0900 (東京 (標準時))
 requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
@@ -4155,7 +4155,9 @@ return Tonyu=function () {
 		var now=performance.now();
 		if (now-lastLoopCheck>1000) {
 			resetLoopCheck(10000);
-			throw new Error("無限ループをストップしました"+(now-prevCheckLoopCalled));
+			throw new Error("無限ループをストップしました。\n"
+				+"   プロジェクト オプションで無限ループチェックの有無を設定できます。\n"
+				+"   [参考]https://edit.tonyu.jp/doc/options.html\n");
 		}
 		prevCheckLoopCalled=now;
 	}
@@ -4177,7 +4179,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,is:is,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,DeferredUtil:DU,
-			VERSION:1550634424863,//EMBED_VERSION
+			VERSION:1557220892170,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -11610,8 +11612,7 @@ define(["FS","Platform"], function (FS,Platform) {
 			"images/base.png":1,
 			"images/Sample.png":1,
 			"images/neko.png":1,
-			"images/mapchip.png":1,
-			"images/inputPad.png":1
+			"images/mapchip.png":1
 		};
 		if (!WebSite.pluginTop) {
 			WebSite.pluginTop=WebSite.top+"/js/plugins";
@@ -11734,8 +11735,7 @@ define(["FS","Platform"], function (FS,Platform) {
 				"images/base.png":"http:"+"//jsrun.it/assets/6/F/y/3/6Fy3B.png",
 				"images/Sample.png":"http:"+"//jsrun.it/assets/s/V/S/l/sVSlZ.png",
 				"images/neko.png":"http:"+"//jsrun.it/assets/f/D/z/z/fDzze.png",
-				"images/mapchip.png":"http:"+"//jsrun.it/assets/f/u/N/v/fuNvz.png",
-				"images/inputPad.png":"http:"+"//jsrun.it/assets/r/K/T/Y/rKTY9.png"
+				"images/mapchip.png":"http:"+"//jsrun.it/assets/f/u/N/v/fuNvz.png"
 			},top:"",devMode:devMode,
 			pluginTop: "https://edit.tonyu.jp/js/plugins",
 			removeJSOutput:true
@@ -11758,7 +11758,6 @@ define(["FS","Platform"], function (FS,Platform) {
 				"images/base.png":"../../images/base.png",
 				"images/Sample.png":"../../images/Sample.png",
 				"images/neko.png":"../../images/neko.png",
-				"images/inputPad.png":"../../images/inputPad.png",
 				"images/mapchip.png":"../../images/mapchip.png",
 				"images/sound.png":"../../images/sound.png",
 				"images/sound_ogg.png":"../../images/sound_ogg.png",
@@ -11781,7 +11780,6 @@ define(["FS","Platform"], function (FS,Platform) {
 				"images/base.png":WS.runtime+"images/base.png",
 				"images/Sample.png":WS.runtime+"images/Sample.png",
 				"images/neko.png":WS.runtime+"images/neko.png",
-				"images/inputPad.png":WS.runtime+"images/inputPad.png",
 				"images/mapchip.png":WS.runtime+"images/mapchip.png",
 				"images/sound.png":WS.runtime+"images/sound.png",
 				"images/sound_ogg.png":WS.runtime+"images/sound_ogg.png",
@@ -11807,8 +11805,7 @@ define(["FS","Platform"], function (FS,Platform) {
 		"images/base.png":1,
 		"images/Sample.png":1,
 		"images/neko.png":1,
-		"images/mapchip.png":1,
-		"images/inputPad.png":1
+		"images/mapchip.png":1
 	};
 	// from https://w3g.jp/blog/js_browser_sniffing2015
 	var u=window.navigator.userAgent.toLowerCase();
@@ -11988,7 +11985,7 @@ define(["DeferredUtil","WebSite","assert"], function (DU,WebSite,A) {
 			},
 			loadClassesOLD: function (ctx) {
 				console.log("Load compiled classes ns=",ns,"url=",url);
-				var d=new $.Deferred;
+				var d=new $.Deferred();
 				var head = document.getElementsByTagName("head")[0] || document.documentElement;
 				var script = document.createElement("script");
 				script.src = url+(WebSite.serverType==="BA"?"?"+Math.random():"");
@@ -12025,7 +12022,7 @@ define(["DeferredUtil","WebSite","assert"], function (DU,WebSite,A) {
 				});
 				return d.promise();
 			}
-		}
+		};
 	};
 	return CPR;
 });
@@ -14272,7 +14269,7 @@ var PicoAudio = (function(){
 		this.chorusGainNode.connect(this.masterGainNode);
 		this.masterGainNode.connect(this.context.destination);
 		this.chorusOscillator.start(0);
-		
+
 		// リバーブON設定を引き継ぐ。未設定ならパフォーマンス計測する(Tonyu2用)
 		if(this.isTonyu2){
 			if(_picoAudio){
@@ -14699,7 +14696,7 @@ var PicoAudio = (function(){
 			case 63: // Open High Conga
 			case 64: // Low Conga
 				var p = option.pitch;
-				var r = p==60 ? 700　: p==61 ? 282 : p==62 ? 385 : p==63 ? 295 : 210;
+				var r = p==60 ? 700 : p==61 ? 282 : p==62 ? 385 : p==63 ? 295 : 210;
 				var len = p==60 ? 0.08 : p==61 ? 0.1 : p==62 ? 0.03 : p==63 ? 0.12 : 0.15;
 				// w
 				source.playbackRate.value = 0.03;
@@ -15027,7 +15024,7 @@ var PicoAudio = (function(){
 				gainNode2.gain.setTargetAtTime(0, start, option.pitch==86 ? 0.1 : 0.3);
 				stopAudioTime2 = option.pitch==86 ? 0.5 : 1.5;
 				break;
-			default: 
+			default:
 				source.playbackRate.value = option.pitch/69*2;
 				stopAudioTime = 0.05;
 				stopAudioTime2 = 0;
@@ -15562,7 +15559,7 @@ var PicoAudio = (function(){
 					if(curTime + note.startTime < 0) continue;
 					// 演奏開始時間 - 先読み時間(ノート予約) になると演奏予約or演奏開始
 					if(curTime < note.startTime - that.states.updateBufTime/1000) break;
-					if(!settings.isWebMIDI){ 
+					if(!settings.isWebMIDI){
 						// 予約ノート数が急激に増えそうな時、先読み量を小さくしておく
 						if(that.states.stopFuncs.length>=350 && that.states.updateBufTime<1000){
 							that.states.updateBufTime = (that.isFirefox() && !that.isAndroid() ? 12 : 8);
@@ -18209,15 +18206,31 @@ define(["Util","exceptionCatcher"],function (Util, EC) {
 requireSimulator.setName('UIDiag');
 define(["UI"],function (UI) {
     var UIDiag={};
-    function parseMesg(mesg,defTitle) {
-        if (typeof mesg==="string" ||
+    function isPrimitive(mesg) {
+        return (typeof mesg==="string" ||
         typeof mesg==="number" ||
-        typeof mesg==="boolean" ||
-        ( (typeof $!=="undefined") && mesg instanceof $)) return {
-            title:mesg.title||defTitle,
-            body:mesg
-        };
-        return mesg;
+        typeof mesg==="boolean");
+    }
+    function parseMesg(mesg,defTitle) {
+        if (mesg==null) mesg="";
+        if (isPrimitive(mesg)) {
+            return {title:defTitle,body:multiLine(mesg)};
+        } else if ( (typeof $!=="undefined") && mesg instanceof $) {
+            return {
+                title:mesg.title||defTitle,
+                body:mesg
+            };
+        } else {
+            if (isPrimitive(mesg.body)) mesg.body=multiLine(mesg.body);
+            return mesg;
+        }
+    }
+    function multiLine(mesg) {
+        var lines=(mesg+"").split("\n");
+        if (lines.length==1) return lines[0];
+        return UI.apply(this,["div"].concat(lines.map(function (e) {
+            return ["div",e];
+        })));
     }
     UIDiag.confirm=function (mesg) {
         mesg=parseMesg(mesg,"確認");
@@ -18247,7 +18260,7 @@ define(["UI"],function (UI) {
         });
     };
     UIDiag.getStatus=function () {return UIDiag.status;};
-    UIDiag.getText=function () {return UIDiag.resultValue;};
+    UIDiag.getText=function () {return UIDiag.val? UIDiag.val.val():"";};
     //---
     UIDiag.prompt=function (mesg,value,geom) {
         mesg=parseMesg(mesg,"入力");
@@ -18274,6 +18287,7 @@ define(["UI"],function (UI) {
             //console.log("FOcus");
         },10);
         UIDiag.status=0;
+        UIDiag.val=di.$vars.val;
         var d=$.Deferred();
         function ok() {
             UIDiag.status=1;

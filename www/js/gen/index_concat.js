@@ -94,7 +94,7 @@
 	};
 	R.real=real;
 	var requireSimulator=R;
-	// Created at Wed Feb 20 2019 12:47:07 GMT+0900 (東京 (標準時))
+	// Created at Tue May 07 2019 18:21:32 GMT+0900 (東京 (標準時))
 requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
@@ -3581,8 +3581,7 @@ define(["FS","Platform"], function (FS,Platform) {
 			"images/base.png":1,
 			"images/Sample.png":1,
 			"images/neko.png":1,
-			"images/mapchip.png":1,
-			"images/inputPad.png":1
+			"images/mapchip.png":1
 		};
 		if (!WebSite.pluginTop) {
 			WebSite.pluginTop=WebSite.top+"/js/plugins";
@@ -3705,8 +3704,7 @@ define(["FS","Platform"], function (FS,Platform) {
 				"images/base.png":"http:"+"//jsrun.it/assets/6/F/y/3/6Fy3B.png",
 				"images/Sample.png":"http:"+"//jsrun.it/assets/s/V/S/l/sVSlZ.png",
 				"images/neko.png":"http:"+"//jsrun.it/assets/f/D/z/z/fDzze.png",
-				"images/mapchip.png":"http:"+"//jsrun.it/assets/f/u/N/v/fuNvz.png",
-				"images/inputPad.png":"http:"+"//jsrun.it/assets/r/K/T/Y/rKTY9.png"
+				"images/mapchip.png":"http:"+"//jsrun.it/assets/f/u/N/v/fuNvz.png"
 			},top:"",devMode:devMode,
 			pluginTop: "https://edit.tonyu.jp/js/plugins",
 			removeJSOutput:true
@@ -3729,7 +3727,6 @@ define(["FS","Platform"], function (FS,Platform) {
 				"images/base.png":"../../images/base.png",
 				"images/Sample.png":"../../images/Sample.png",
 				"images/neko.png":"../../images/neko.png",
-				"images/inputPad.png":"../../images/inputPad.png",
 				"images/mapchip.png":"../../images/mapchip.png",
 				"images/sound.png":"../../images/sound.png",
 				"images/sound_ogg.png":"../../images/sound_ogg.png",
@@ -3752,7 +3749,6 @@ define(["FS","Platform"], function (FS,Platform) {
 				"images/base.png":WS.runtime+"images/base.png",
 				"images/Sample.png":WS.runtime+"images/Sample.png",
 				"images/neko.png":WS.runtime+"images/neko.png",
-				"images/inputPad.png":WS.runtime+"images/inputPad.png",
 				"images/mapchip.png":WS.runtime+"images/mapchip.png",
 				"images/sound.png":WS.runtime+"images/sound.png",
 				"images/sound_ogg.png":WS.runtime+"images/sound_ogg.png",
@@ -3778,8 +3774,7 @@ define(["FS","Platform"], function (FS,Platform) {
 		"images/base.png":1,
 		"images/Sample.png":1,
 		"images/neko.png":1,
-		"images/mapchip.png":1,
-		"images/inputPad.png":1
+		"images/mapchip.png":1
 	};
 	// from https://w3g.jp/blog/js_browser_sniffing2015
 	var u=window.navigator.userAgent.toLowerCase();

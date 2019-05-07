@@ -94,7 +94,7 @@
 	};
 	R.real=real;
 	var requireSimulator=R;
-	// Created at Wed Feb 20 2019 12:47:13 GMT+0900 (東京 (標準時))
+	// Created at Tue May 07 2019 18:21:34 GMT+0900 (東京 (標準時))
 requireSimulator.setName('Util');
 Util=(function () {
 
@@ -4357,7 +4357,9 @@ return Tonyu=function () {
 		var now=performance.now();
 		if (now-lastLoopCheck>1000) {
 			resetLoopCheck(10000);
-			throw new Error("無限ループをストップしました"+(now-prevCheckLoopCalled));
+			throw new Error("無限ループをストップしました。\n"
+				+"   プロジェクト オプションで無限ループチェックの有無を設定できます。\n"
+				+"   [参考]https://edit.tonyu.jp/doc/options.html\n");
 		}
 		prevCheckLoopCalled=now;
 	}
@@ -4379,7 +4381,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,is:is,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,DeferredUtil:DU,
-			VERSION:1550634424863,//EMBED_VERSION
+			VERSION:1557220892170,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -4970,8 +4972,7 @@ define(["FS","Platform"], function (FS,Platform) {
 			"images/base.png":1,
 			"images/Sample.png":1,
 			"images/neko.png":1,
-			"images/mapchip.png":1,
-			"images/inputPad.png":1
+			"images/mapchip.png":1
 		};
 		if (!WebSite.pluginTop) {
 			WebSite.pluginTop=WebSite.top+"/js/plugins";
@@ -5094,8 +5095,7 @@ define(["FS","Platform"], function (FS,Platform) {
 				"images/base.png":"http:"+"//jsrun.it/assets/6/F/y/3/6Fy3B.png",
 				"images/Sample.png":"http:"+"//jsrun.it/assets/s/V/S/l/sVSlZ.png",
 				"images/neko.png":"http:"+"//jsrun.it/assets/f/D/z/z/fDzze.png",
-				"images/mapchip.png":"http:"+"//jsrun.it/assets/f/u/N/v/fuNvz.png",
-				"images/inputPad.png":"http:"+"//jsrun.it/assets/r/K/T/Y/rKTY9.png"
+				"images/mapchip.png":"http:"+"//jsrun.it/assets/f/u/N/v/fuNvz.png"
 			},top:"",devMode:devMode,
 			pluginTop: "https://edit.tonyu.jp/js/plugins",
 			removeJSOutput:true
@@ -5118,7 +5118,6 @@ define(["FS","Platform"], function (FS,Platform) {
 				"images/base.png":"../../images/base.png",
 				"images/Sample.png":"../../images/Sample.png",
 				"images/neko.png":"../../images/neko.png",
-				"images/inputPad.png":"../../images/inputPad.png",
 				"images/mapchip.png":"../../images/mapchip.png",
 				"images/sound.png":"../../images/sound.png",
 				"images/sound_ogg.png":"../../images/sound_ogg.png",
@@ -5141,7 +5140,6 @@ define(["FS","Platform"], function (FS,Platform) {
 				"images/base.png":WS.runtime+"images/base.png",
 				"images/Sample.png":WS.runtime+"images/Sample.png",
 				"images/neko.png":WS.runtime+"images/neko.png",
-				"images/inputPad.png":WS.runtime+"images/inputPad.png",
 				"images/mapchip.png":WS.runtime+"images/mapchip.png",
 				"images/sound.png":WS.runtime+"images/sound.png",
 				"images/sound_ogg.png":WS.runtime+"images/sound_ogg.png",
@@ -5167,8 +5165,7 @@ define(["FS","Platform"], function (FS,Platform) {
 		"images/base.png":1,
 		"images/Sample.png":1,
 		"images/neko.png":1,
-		"images/mapchip.png":1,
-		"images/inputPad.png":1
+		"images/mapchip.png":1
 	};
 	// from https://w3g.jp/blog/js_browser_sniffing2015
 	var u=window.navigator.userAgent.toLowerCase();
@@ -13778,7 +13775,7 @@ define(["DeferredUtil","WebSite","assert"], function (DU,WebSite,A) {
 			},
 			loadClassesOLD: function (ctx) {
 				console.log("Load compiled classes ns=",ns,"url=",url);
-				var d=new $.Deferred;
+				var d=new $.Deferred();
 				var head = document.getElementsByTagName("head")[0] || document.documentElement;
 				var script = document.createElement("script");
 				script.src = url+(WebSite.serverType==="BA"?"?"+Math.random():"");
@@ -13815,7 +13812,7 @@ define(["DeferredUtil","WebSite","assert"], function (DU,WebSite,A) {
 				});
 				return d.promise();
 			}
-		}
+		};
 	};
 	return CPR;
 });
@@ -15950,7 +15947,7 @@ var PicoAudio = (function(){
 		this.chorusGainNode.connect(this.masterGainNode);
 		this.masterGainNode.connect(this.context.destination);
 		this.chorusOscillator.start(0);
-		
+
 		// リバーブON設定を引き継ぐ。未設定ならパフォーマンス計測する(Tonyu2用)
 		if(this.isTonyu2){
 			if(_picoAudio){
@@ -16377,7 +16374,7 @@ var PicoAudio = (function(){
 			case 63: // Open High Conga
 			case 64: // Low Conga
 				var p = option.pitch;
-				var r = p==60 ? 700　: p==61 ? 282 : p==62 ? 385 : p==63 ? 295 : 210;
+				var r = p==60 ? 700 : p==61 ? 282 : p==62 ? 385 : p==63 ? 295 : 210;
 				var len = p==60 ? 0.08 : p==61 ? 0.1 : p==62 ? 0.03 : p==63 ? 0.12 : 0.15;
 				// w
 				source.playbackRate.value = 0.03;
@@ -16705,7 +16702,7 @@ var PicoAudio = (function(){
 				gainNode2.gain.setTargetAtTime(0, start, option.pitch==86 ? 0.1 : 0.3);
 				stopAudioTime2 = option.pitch==86 ? 0.5 : 1.5;
 				break;
-			default: 
+			default:
 				source.playbackRate.value = option.pitch/69*2;
 				stopAudioTime = 0.05;
 				stopAudioTime2 = 0;
@@ -17240,7 +17237,7 @@ var PicoAudio = (function(){
 					if(curTime + note.startTime < 0) continue;
 					// 演奏開始時間 - 先読み時間(ノート予約) になると演奏予約or演奏開始
 					if(curTime < note.startTime - that.states.updateBufTime/1000) break;
-					if(!settings.isWebMIDI){ 
+					if(!settings.isWebMIDI){
 						// 予約ノート数が急激に増えそうな時、先読み量を小さくしておく
 						if(that.states.stopFuncs.length>=350 && that.states.updateBufTime<1000){
 							that.states.updateBufTime = (that.isFirefox() && !that.isAndroid() ? 12 : 8);
@@ -19635,15 +19632,31 @@ define('T2MediaLib',[],function (){ return T2MediaLib; });
 requireSimulator.setName('UIDiag');
 define(["UI"],function (UI) {
     var UIDiag={};
-    function parseMesg(mesg,defTitle) {
-        if (typeof mesg==="string" ||
+    function isPrimitive(mesg) {
+        return (typeof mesg==="string" ||
         typeof mesg==="number" ||
-        typeof mesg==="boolean" ||
-        ( (typeof $!=="undefined") && mesg instanceof $)) return {
-            title:mesg.title||defTitle,
-            body:mesg
-        };
-        return mesg;
+        typeof mesg==="boolean");
+    }
+    function parseMesg(mesg,defTitle) {
+        if (mesg==null) mesg="";
+        if (isPrimitive(mesg)) {
+            return {title:defTitle,body:multiLine(mesg)};
+        } else if ( (typeof $!=="undefined") && mesg instanceof $) {
+            return {
+                title:mesg.title||defTitle,
+                body:mesg
+            };
+        } else {
+            if (isPrimitive(mesg.body)) mesg.body=multiLine(mesg.body);
+            return mesg;
+        }
+    }
+    function multiLine(mesg) {
+        var lines=(mesg+"").split("\n");
+        if (lines.length==1) return lines[0];
+        return UI.apply(this,["div"].concat(lines.map(function (e) {
+            return ["div",e];
+        })));
     }
     UIDiag.confirm=function (mesg) {
         mesg=parseMesg(mesg,"確認");
@@ -19673,7 +19686,7 @@ define(["UI"],function (UI) {
         });
     };
     UIDiag.getStatus=function () {return UIDiag.status;};
-    UIDiag.getText=function () {return UIDiag.resultValue;};
+    UIDiag.getText=function () {return UIDiag.val? UIDiag.val.val():"";};
     //---
     UIDiag.prompt=function (mesg,value,geom) {
         mesg=parseMesg(mesg,"入力");
@@ -19700,6 +19713,7 @@ define(["UI"],function (UI) {
             //console.log("FOcus");
         },10);
         UIDiag.status=0;
+        UIDiag.val=di.$vars.val;
         var d=$.Deferred();
         function ok() {
             UIDiag.status=1;
@@ -22009,7 +22023,7 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite","Assets"],
     var d=UI("div",{title:"画像詳細"},
             ["div",
              ["div","URL:",["input",{$var:"url",size:40,on:{change:setURL}}],
-               ["a",{$var:"openImg",target:"img"},"画像を確認..."]],
+               ["a",{$var:"openImg",target:"_blank"},"画像を確認..."]],
              ["canvas",{$edit:"cv",width:500,height:250,on:{mousemove:cvMouse,mousedown:cvClick}}] ],
              ["form",{$var:"theForm"},
                ["div",radio("single"),"１枚絵"],
@@ -22066,7 +22080,7 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite","Assets"],
     function selSingle() {
         v.theForm[0].type.value="single";
     }
-    IMD.show=function (_item,prj, itemName, options) {
+    IMD.show=function (_item, prj, itemName, options) {
         if (!options) options={};
         onclose=options.onclose;
         item=_item;
@@ -22074,7 +22088,38 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite","Assets"],
         d.dialog({width:600,height:520});
         v.url.val(item.url);
         var url=Assets.resolve(item.url,prj);
-        v.openImg.attr("href",url);
+
+        if (WebSite.isNW) {
+            var path;
+            // NW.jsでWebSite.urlAliasesが空っぽ！
+            // とりあえずテキトウに実装
+            var urlAliases = {
+                "images/Ball.png":"www/images/Ball.png",
+                "images/base.png":"www/images/base.png",
+                "images/Sample.png":"www/images/Sample.png",
+                "images/neko.png":"www/images/neko.png",
+                "images/mapchip.png":"www/images/mapchip.png",
+                "images/sound.png":"www/images/sound.png",
+                "images/sound_ogg.png":"www/images/sound_ogg.png",
+                "images/sound_mp3.png":"www/images/sound_mp3.png",
+                "images/sound_mp4.png":"www/images/sound_mp4.png",
+                "images/sound_m4a.png":"www/images/sound_m4a.png",
+                "images/sound_mid.png":"www/images/sound_mid.png",
+                "images/sound_wav.png":"www/images/sound_wav.png",
+                "images/ecl.png":"www/images/ecl.png"
+            }
+            try {
+                path=urlAliases[item.url];
+                if(!path)path=url;
+            }catch(e) {
+                path=url;
+            }
+            var urlScript = "javascript:nw.Window.open('"+path+"', {}, function(w) {w.y=20;w.width=700;w.height=600;})";
+            v.openImg.attr("href",urlScript);
+        } else {
+            v.openImg.attr("href",url);
+        }
+        
         ImageRect(url, v.cv[0])(function (res) {
             canvasRect=res;
             console.log(res);
@@ -22267,30 +22312,30 @@ define(["FS","WebSite"], function (FS,WebSite) {
 });
 
 requireSimulator.setName('ResEditor');
-define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
-        ,"ImageDetailEditor","Util","OggConverter","Assets"],
+define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
+"ImageDetailEditor","Util","OggConverter","Assets"],
         function (FS, Tonyu, UI,IL,Blob,Auth,WebSite,
                 ImageDetailEditor,Util,OggConverter,Assets) {
-    var ResEditor=function (prj, mediaType) {
-        var mediaInfos={
-                image:{name:"画像",exts:["png","gif","jpg"],path:"images/",key:"images",
-                    extPattern:/\.(png|gif|jpe?g)$/i,contentType:/image\/(png|gif|jpe?g)/,
-                    newItem:function (name) {
-                        var r={type:"single"};//pwidth:32,pheight:32};
-                        if (name) r.name="$pat_"+name;
-                        return r;
-                    }
-                },
-                sound:{name:"音声",exts:["mp3","ogg","mp4","m4a","mid","wav","mzo"],path:"sounds/",key:"sounds",
-                    extPattern:/\.(mp3|ogg|mp4|m4a|midi?|wav|mzo)$/i,contentType:/((audio\/(mp3|ogg|x-m4a|midi?|wav|mzo))|(video\/mp4))/,
-                    newItem:function (name) {
-                        var r={};
-                        if (name) r.name="$se_"+name;
-                        return r;
-                    }
-                }
-        };
-        var mediaInfo=mediaInfos[mediaType||"image"];
+    /*var mediaInfos={
+        image:{name:"画像",exts:["png","gif","jpg"],path:"images/",key:"images",
+            extPattern:/\.(png|gif|jpe?g)$/i,contentType:/image\/(png|gif|jpe?g)/,
+            newItem:function (name) {
+                var r={type:"single"};//pwidth:32,pheight:32};
+                if (name) r.name="$pat_"+name;
+                return r;
+            }
+        },
+        sound:{name:"音声",exts:["mp3","ogg","mp4","m4a","mid","wav","mzo"],path:"sounds/",key:"sounds",
+            extPattern:/\.(mp3|ogg|mp4|m4a|midi?|wav|mzo)$/i,contentType:/((audio\/(mp3|ogg|x-m4a|midi?|wav|mzo))|(video\/mp4))/,
+            newItem:function (name) {
+                var r={};
+                if (name) r.name="$se_"+name;
+                return r;
+            }
+        }
+    };*/
+    var ResEditor=function (prj, mediaInfo) {
+        //var mediaInfo=mediaInfos[mediaType||"image"];
         var d=UI("div", {title:mediaInfo.name+"リスト"});
         d.css({height:200+"px", "overflow-v":"scroll"});
         var rsrc=prj.getResource();
@@ -22298,12 +22343,13 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
         var tempFiles = items.slice();
         var rsrcDir=prj.getDir().rel(mediaInfo.path);
         var itemUIs=[];
+        var _dropAdd;
         if (!rsrc) prj.setResource({images:[],sounds:[]});
         function convURL(u) {
+            function cvs(u) {
+                return WebSite.urlAliases[u] || u;
+            }
             try {
-                function cvs(u) {
-                    return WebSite.urlAliases[u] || u;
-                }
                 if (Util.endsWith(u,".ogg")) {
                     u=cvs("images/sound_ogg.png");
                 } else if (Util.endsWith(u,".mp3")) {
@@ -22332,7 +22378,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                 tempFiles = items.slice();
                 itemUIs.some(function (itemUI, idx){
                     if (itemUI[0].id==args) {
-                        itemUIs.splice(idx, 1); 
+                        itemUIs.splice(idx, 1);
                         return true;
                     }
                 });
@@ -22361,6 +22407,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                     ));
                 }
             }
+            _dropAdd=dropAdd;
             function dropAdd(e) {
                 e.stopPropagation();
                 e.preventDefault();
@@ -22370,7 +22417,8 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                 var readFileSum = files.length;
                 var notReadFiles = [];
                 var existsFiles = [];
-                for (var i=0; i<files.length; i++) {
+                for (var i=0; i<files.length; i++) loop(i);
+                function loop(i){
                     var file = files[i];
                     var filetype= file.type;
                     if (file.name.match(/\.mzo$/)) filetype="audio/mzo";
@@ -22378,7 +22426,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                     if(!filetype.match(mediaInfo.contentType)) {
                         readFileSum--;
                         notReadFiles.push(file);
-                        continue;
+                        return;//continue;
                     }
                     var itemName=file.name.replace(mediaInfo.extPattern,"").replace(/\W/g,"_");
                     var itemExt="";
@@ -22398,7 +22446,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                         readFileSum--;
                         file.existsFile=existsFile;
                         existsFiles.push(file);
-                        continue;
+                        return;//continue;
                     }
 
                     var v=mediaInfo.newItem(itemName);
@@ -22451,16 +22499,16 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                         reader.readAsArrayBuffer(file);
                     }
                 }
-
+                var mes;
                 if (notReadFiles.length>0) {
-                    var mes="このファイルは追加できません：\n";
+                    mes="このファイルは追加できません：\n";
                     notReadFiles.forEach(function(f){
                         if (f) mes+=f.name+"\n";
                     });
                     alert(mes);
                 }
                 if (existsFiles.length>0) {
-                    var mes="同じ名前のファイルが既に登録されています：\n";
+                    mes="同じ名前のファイルが既に登録されています：\n";
                     existsFiles.forEach(function(f){
                         if (f) {
                             var fNameTemp=f.existsFile.url;
@@ -22480,7 +22528,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
             }
             function genItemUI(item) {
                 function detail() {
-                    if (mediaType=="sound") return;
+                    if (mediaInfo.key=="sounds") return;
                     ImageDetailEditor.show(item, prj, item.name, {
                         onclose: function () {
                             prj.setResource(rsrc);
@@ -22576,14 +22624,14 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
             prj.setResource(rsrc);
             reload(action, args);
         }
-        function cleanFiles() {
+        /*function cleanFiles() {
             var items=rsrc[mediaInfo.key];
             Auth.currentUser(function (u,ct) {
                 if (!u) return;
                 var rtf=[];
                 items.forEach(function (item) {
-                    var a,ogg;
-                    if (a=Blob.isBlobURL(item.url)) {
+                    var a=Blob.isBlobURL(item.url),ogg;
+                    if (a) {
                         rtf.push(a.fileName);
                         ogg=a.fileName.replace(/\.(mp3|mp4|m4a)$/,".ogg");
                         if (ogg!=a.fileName) rtf.push(ogg);
@@ -22614,29 +22662,34 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
                 delete cleanFile[item.url.replace(/\.(mp3|mp4|m4a)$/,".ogg")];
             });
             console.log(cleanFile);
-            /*for (var ci in cleanFile) {
-                var cf=cleanFile[ci];
-                console.log(cf+" is removed");
-                cf.rm();
-            }*/
-        }
+        }*/
         function toi(s) {
             if (!s || s=="") return undefined;
             return parseInt(s);
         }
-        reload();
-        return d.dialog({
-            modal:true,
-            width: 800,
-            height: 500,
+        return {
+            dropAdd:function (e) {
+                _dropAdd(e);
+            },
+            open: function () {
+                reload();
+                d.dialog({
+                    modal:true,
+                    width: 800,
+                    height: 500,
+                    close: function () {
+                        update("close");
+                        //cleanFiles();
+                        if (mediaInfo.key=="sounds" && rsrcDir.exists()) {
+                            OggConverter.convert(rsrcDir);
+                        }
+                    }
+                });
+            },
             close: function () {
-                update("close");
-                cleanFiles();
-                if (mediaType=="sound" && rsrcDir.exists()) {
-                    OggConverter.convert(rsrcDir);
-                }
+                d.dialog("close");
             }
-        });
+        };
     };
     function draw(img, canvas) {
         if (typeof img=="string") {
@@ -22664,6 +22717,60 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
         marginw,marginh,calcw, calch );
     }
     return ResEditor;
+});
+
+requireSimulator.setName('ResEditors');
+define(["ResEditor","Klass"], function (ResEditor,Klass) {
+    var mediaInfos={
+        image:{name:"画像",exts:["png","gif","jpg"],path:"images/",key:"images",
+            extPattern:/\.(png|gif|jpe?g)$/i,contentType:/image\/(png|gif|jpe?g)/,
+            newItem:function (name) {
+                var r={type:"single"};//pwidth:32,pheight:32};
+                if (name) r.name="$pat_"+name;
+                return r;
+            }
+        },
+        sound:{name:"音声",exts:["mp3","ogg","mp4","m4a","mid","wav","mzo"],path:"sounds/",key:"sounds",
+            extPattern:/\.(mp3|ogg|mp4|m4a|midi?|wav|mzo)$/i,contentType:/((audio\/(mp3|ogg|x-m4a|midi?|wav|mzo))|(video\/mp4))/,
+            newItem:function (name) {
+                var r={};
+                if (name) r.name="$se_"+name;
+                return r;
+            }
+        }
+    };
+    return Klass.define({
+        $: function (prj) {
+            this.prj=prj;
+            this.editors={};
+            $("body").on("dragover",s).on("dragenter",s).on("drop",this.dropAndOpen.bind(this));
+            function s(e) {
+                e.stopPropagation();
+                e.preventDefault();
+            }
+        },
+        dropAndOpen: function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            var eo=e.originalEvent;
+            var files = Array.prototype.slice.call(eo.dataTransfer.files);
+            if (files.length==0) return;
+            for (var k in mediaInfos) {
+                if (mediaInfos[k].contentType.exec(files[0].type)) {
+                    this.open(k);
+                    this.curResEditor.dropAdd(e);
+                }
+            }
+        },
+        open: function (type) {// type "image" / "sound"
+            this.editors[type]=this.editors[type]||ResEditor(this.prj,mediaInfos[type]);
+            if (this.curResEditor && this.curResEditor!==this.editors[type]) {
+                this.curResEditor.close();
+            }
+            this.curResEditor=this.editors[type];
+            this.curResEditor.open();
+        }
+    });
 });
 
 requireSimulator.setName('MainClassDialog');
@@ -22842,7 +22949,7 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu"],
     MkRun.run2=function (prj,type,options) {
         // type: zip , prj, dir
         // when type=="dir" , options.dest is required
-        var destZip;
+        var dest,destZip;
         switch(type) {
             case "prj":
             destZip=this.tmpDir().rel("prj.zip");
@@ -22985,8 +23092,10 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu"],
             );
         }
         function addFileToLoadFiles(name, data) {
+            var file=prjDir.rel(name);
+            file.copyTo(dest.rel(name)); // needs on nwjs runtime
             if (data==null) {
-                var file=prjDir.rel(name);
+                // in "static" folder
                 if (file.ext()===".json") {
                     data=file.obj();
                 } else if (file.isText()) {
@@ -23473,7 +23582,7 @@ requirejs(["Util", "Tonyu", "FS", "PathUtil","FileList", "FileMenu",
            "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project",
            /*"copySample",*/"Shell","Shell2","ProjectOptionsEditor","copyToKernel","KeyEventChecker",
            "IFrameDialog",/*"WikiDialog",*/"runtime", "KernelDiffDialog","Sync","searchDialog","StackTrace","syncWithKernel",
-           "UI","ResEditor","WebSite","exceptionCatcher","Tonyu.TraceTbl",
+           "UI","ResEditors","WebSite","exceptionCatcher","Tonyu.TraceTbl",
            "Log","MainClassDialog","DeferredUtil","NWMenu",
            "ProjectCompiler","compiledProject","mkrunDiag","zip","LSFS","WebFS",
            "extLink","DiagAdjuster","ExportHTMLDialog","RunDialog","GlobalDialog"
@@ -23482,7 +23591,7 @@ function (Util, Tonyu, FS, PathUtil, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,
           /*copySample,*/sh,sh2, ProjectOptionsEditor, ctk, KeyEventChecker,
           IFrameDialog,/*WikiDialog,*/ rt , KDD,Sync,searchDialog,StackTrace,swk,
-          UI,ResEditor,WebSite,EC,TTB,
+          UI,ResEditors,WebSite,EC,TTB,
           Log,MainClassDialog,DU,NWMenu,
           TPRC,CPPRJ,mkrunDiag,zip,LSFS,WebFS,
           extLink,DiagAdjuster,ExportHTMLDialog,RunDialog,GlobalDialog
@@ -23529,6 +23638,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     var dir=Util.getQueryString("dir", "/Tonyu/Projects/SandBox/");
     var curPrjDir=curProjectDir=FS.get(dir);
     var curPrj=Tonyu_Project(curProjectDir);//, kernelDir);
+    var resEditors=new ResEditors(curPrj);
     Tonyu.globals.$currentProject=curPrj;
     Tonyu.currentProject=curPrj;
     var EXT=curPrj.EXT;
@@ -23547,8 +23657,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
           {name:"$pat_base", url: "images/base.png", pwidth:32, pheight:32},
           {name:"$pat_sample", url: "images/Sample.png"},
           {name:"$pat_neko", url: "images/neko.png", pwidth:32, pheight:32},
-          {name:"$pat_mapchip", url: "images/mapchip.png", pwidth:32, pheight:32},
-          {name:"$pat_inputPad", url: "images/inputPad.png"}
+          {name:"$pat_mapchip", url: "images/mapchip.png", pwidth:32, pheight:32}
        ],
        sounds:[]
     };
@@ -24114,17 +24223,18 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         }
     }));
     $("#imgResEditor").click(F(function () {
-        //ImgResEdit(curPrj);
-        if (window.curResEditor) {
+        resEditors.open("image");
+        /*if (window.curResEditor) {
             window.curResEditor.dialog("close");
         }
-        window.curResEditor=ResEditor(curPrj,"image");
+        window.curResEditor=ResEditor(curPrj,"image");*/
     }));
     $("#soundResEditor").click(F(function () {
-        if (window.curResEditor) {
+        resEditors.open("sound");
+        /*if (window.curResEditor) {
             window.curResEditor.dialog("close");
         }
-        window.curResEditor=ResEditor(curPrj,"sound");
+        window.curResEditor=ResEditor(curPrj,"sound");*/
     }));
     $("#prjOptEditor").click(F(function () {
         ProjectOptionsEditor(curPrj);
