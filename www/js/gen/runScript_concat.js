@@ -94,7 +94,7 @@
 	};
 	R.real=real;
 	var requireSimulator=R;
-	// Created at Tue May 07 2019 18:21:38 GMT+0900 (東京 (標準時))
+	// Created at Wed May 08 2019 11:25:29 GMT+0900 (東京 (標準時))
 requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
@@ -4179,7 +4179,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,is:is,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,DeferredUtil:DU,
-			VERSION:1557220892170,//EMBED_VERSION
+			VERSION:1557282279041,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -14343,7 +14343,7 @@ var PicoAudio = (function(){
 			isNoiseCut = true;
 		}
 
-		// 音色別の減衰　書き方ミスったなあ
+		// 音色別の減衰  書き方ミスったなあ
 		switch(this.channels[note.channel][1]/10 || option.instrument){
 			// ピッチカート系減衰
 			case 0.2:
@@ -15355,13 +15355,13 @@ var PicoAudio = (function(){
 				for(var t=0; t<16; t++){
 					this.settings.WebMIDIPortOutput.send([0xC0+t, 0]);
 					this.settings.WebMIDIPortOutput.send([0xE0+t, 0, 64]);
-					// ピッチあたりのずれがひどくなる場合がある　よくわからない
+					// ピッチあたりのずれがひどくなる場合がある  よくわからない
 					this.settings.WebMIDIPortOutput.send([0xB0+t, 100, 0]);
 					this.settings.WebMIDIPortOutput.send([0xB0+t, 101, 0]);
 					this.settings.WebMIDIPortOutput.send([0xB0+t, 6, 2]); //pitchbend
 					this.settings.WebMIDIPortOutput.send([0xB0+t, 100, 1]);
 					this.settings.WebMIDIPortOutput.send([0xB0+t, 96, 0]);
-					this.settings.WebMIDIPortOutput.send([0xB0+t, 97, 64]);　//tuning?
+					this.settings.WebMIDIPortOutput.send([0xB0+t, 97, 64]);  //tuning?
 					this.settings.WebMIDIPortOutput.send([0xB0+t, 7, 100]); // volume
 					this.settings.WebMIDIPortOutput.send([0xB0+t, 10, 64]); // pan
 					this.settings.WebMIDIPortOutput.send([0xB0+t, 11, 127]); // expression

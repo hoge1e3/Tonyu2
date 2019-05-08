@@ -3,7 +3,7 @@ define(["FS","Util","WebSite"], function (FS,Util,WebSite) {
         options=options||{};
         var excludes=options.excludes||{};
         var includeJSScript=options.includeJSScript;
-        var buf="";
+        var buf="<!DOCTYPE html>\n<html><head>\n";
         buf+="<script>WebSite_runType='singleHTML';</script>\n";
         if (includeJSScript) {
             var resFile=dir.rel("res.json");
@@ -62,6 +62,7 @@ define(["FS","Util","WebSite"], function (FS,Util,WebSite) {
             buf+=wrap(f.text(),80);
             buf+="</script>\n\n";
         });
+        buf+="</head><body></body></html>";
         return buf;
         function wrap(str, cols) {
             var lines=str.split("\n");
