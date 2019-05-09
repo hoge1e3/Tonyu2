@@ -94,7 +94,7 @@
 	};
 	R.real=real;
 	var requireSimulator=R;
-	// Created at Wed May 08 2019 11:24:41 GMT+0900 (東京 (標準時))
+	// Created at Thu May 09 2019 10:30:15 GMT+0900 (東京 (標準時))
 requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
@@ -3580,6 +3580,7 @@ define(["FS","Platform"], function (FS,Platform) {
 			"images/Ball.png":1,
 			"images/base.png":1,
 			"images/Sample.png":1,
+			"images/inputPad.png":1,
 			"images/neko.png":1,
 			"images/mapchip.png":1
 		};
@@ -6142,7 +6143,7 @@ define(["FS","Util","WebSite"], function (FS,Util,WebSite) {
             buf+='<script src="'+scriptServer+'js/lib/jquery-1.10.1.js" type="text/javascript"></script>\n';
             buf+='<script src="'+scriptServer+'js/gen/runScript_concat.min.js" type="text/javascript"></script>\n';
         }
-        buf+="<div id='splash' style='position:relative'>\n";
+        buf+="<div id='splash' style='position:relative; height: 100%;'>\n";
         buf+="<!--ここに，ロード中に表示する内容を記述できます。-->\n";
         buf+="<!--You can write here what you want to show while loading. -->\n";
         buf+="<div class='progress'>\n";
