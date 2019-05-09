@@ -17,7 +17,7 @@ define(["FS","Util","WebSite"], function (FS,Util,WebSite) {
             buf+='<script src="'+scriptServer+'js/lib/jquery-1.10.1.js" type="text/javascript"></script>\n';
             buf+='<script src="'+scriptServer+'js/gen/runScript_concat.min.js" type="text/javascript"></script>\n';
         }
-        buf+="<div id='splash' style='position:relative'>\n";
+        buf+="<div id='splash' style='position:relative; height: 100%;'>\n";
         buf+="<!--ここに，ロード中に表示する内容を記述できます。-->\n";
         buf+="<!--You can write here what you want to show while loading. -->\n";
         buf+="<div class='progress'>\n";

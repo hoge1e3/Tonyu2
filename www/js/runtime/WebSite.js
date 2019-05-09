@@ -16,6 +16,7 @@ define(["FS","Platform"], function (FS,Platform) {
 			"images/Ball.png":1,
 			"images/base.png":1,
 			"images/Sample.png":1,
+			"images/inputPad.png":1,
 			"images/neko.png":1,
 			"images/mapchip.png":1
 		};
