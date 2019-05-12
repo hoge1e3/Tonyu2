@@ -172,10 +172,10 @@ var TPRC=function (dir) {
 		return ctx;
 	}
 	TPR.compile=function (ctx/*or options(For external call)*/) {
-		Tonyu.runMode=false;
+		ctx=initCtx(ctx);
+		if (!ctx.options || !ctx.options.hot) Tonyu.runMode=false;
 		TPR.showProgress("Compile: "+dir.name());
 		console.log("Compile: "+dir.path());
-		ctx=initCtx(ctx);
 		var myNsp=TPR.getNamespace();
 		var baseClasses,ctxOpt,env,myClasses,fileAddedOrRemoved,sf,ord;
 		var compilingClasses;
@@ -272,6 +272,9 @@ var TPRC=function (dir) {
 			//return TPR.showProgress("concat");
 		})).then(F(function () {
 			var copt=TPR.getOptions().compiler;
+			if (ctx.options.hot) {
+				return TPR.hotEval(ord, compilingClasses);
+			}
 			if (!copt.genAMD) {
 				return TPR.concatJS(ord);
 			}
@@ -315,6 +318,27 @@ var TPRC=function (dir) {
 		outf.text(gc.code+"\n//# sourceMappingURL="+mapFile.name());
 		mapFile.text(gc.map+"");
 		return evalFile(outf);
+	};
+	TPR.hotEval=function (ord,compilingClasses) {
+		//var cbuf="";
+		ord.forEach(function (c) {
+			if (!compilingClasses[c.fullName]) return;
+			var cbuf2,fn=null;
+			if (typeof (c.src.js)=="string") {
+				cbuf2=c.src.js+"\n";
+			} else if (FS.isFile(c.src.js)) {
+				fn=c.src.js.path();
+				cbuf2=c.src.js.text()+"\n";
+			} else {
+				throw new Error("Src for "+c.fullName+" not generated ");
+			}
+			console.log("hotEval ",c);//, cbuf2);
+			new Function(cbuf2)();
+		});
+	};
+	TPR.hotCompile=function () {
+		var options={hot:true};
+		TPR.compile(options);
 	};
 	TPR.getDependingProjects=function () {
 		var opt=TPR.getOptions();
