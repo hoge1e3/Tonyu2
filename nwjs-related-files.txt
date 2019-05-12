@@ -4,7 +4,7 @@ ffmpeg.dll
 icudtl.dat
 libEGL.dll
 libGLESv2.dll
-locales
+locales/
 natives_blob.bin
 node.dll
 node_modules  ?
@@ -17,6 +17,21 @@ snapshot_blob.bin  XX(deleted at v30)
 v8_context_snapshot.bin  (added at v30) 
 swiftshader/libGLESv2.dll  (added at v30)
 swiftshader/libEGL.dll  (added at v30)
+Runtimes/Player2.exe
+Runtimes/d3dcompiler_47.dll
+Runtimes/ffmpeg.dll
+Runtimes/icudtl.dat
+Runtimes/libEGL.dll
+Runtimes/libGLESv2.dll
+Runtimes/natives_blob.bin
+Runtimes/node.dll
+Runtimes/nw.dll
+Runtimes/nw_100_percent.pak
+Runtimes/nw_200_percent.pak
+Runtimes/nw_elf.dll
+Runtimes/package.json
+Runtimes/resources.pak
+Runtimes/v8_context_snapshot.bin
 
 ---------(Not-related)
 LICENSE.txt
