@@ -11,3 +11,13 @@ Runtimes/SeeSaw/
 ~$semantics.pptx
 debug.log
 www/html/singleTest.html
+Tonyu2.exe
+Player2.exe
+locales/*
+Runtimes/locales/*
+icudtl.dat
+v8_context_snapshot*
+swiftshader
+natives_blob*
+*.dll
+*.pak
