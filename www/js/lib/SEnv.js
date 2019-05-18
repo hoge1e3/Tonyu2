@@ -312,6 +312,7 @@ define("SEnv", ["Klass", "assert"], function(Klass, assert) {
             t.useScriptProcessor=options.useScriptProcessor;
             t.useFast=options.useFast;
             t.resolution=options.resolution||120;
+            t.wavOutSpeed=options.wavOutSpeed||10;
             t.context=context;
             t.sampleRate = t.context.sampleRate;
             //t.initNode({});

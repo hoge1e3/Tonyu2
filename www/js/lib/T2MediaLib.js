@@ -232,7 +232,7 @@ var T2MediaLib = (function(){
             console.log("Loading mzo");
             // MZO
             var that = this;
-            var m=new Mezonet(this.context);
+            var m=new Mezonet(this.context,{wavOutSpeed:50});
             var a=Array.prototype.slice.call( new Uint8Array(arrayBuffer) );
             m.load(a);
             m.toAudioBuffer().then(function (data) {
