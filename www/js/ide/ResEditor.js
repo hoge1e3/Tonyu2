@@ -103,6 +103,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
                 var readFileSum = files.length;
                 var notReadFiles = [];
                 var existsFiles = [];
+                var readCnt = 0;
                 for (var i=0; i<files.length; i++) loop(i);
                 function loop(i){
                     var file = files[i];
@@ -157,7 +158,6 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
                             }
                         });
                     } else {
-                        var readCnt = 0;
                         var reader = new FileReader();
                         reader.temp_file=file;
                         reader.temp_itemName=itemName;

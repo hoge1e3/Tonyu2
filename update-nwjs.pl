@@ -1,3 +1,4 @@
+# perl update-nwjs.pl d:/extractTest/nwjs-sdk-v0.38.2-win-x64 d:/extractTest/nwjs-v0.38.2-win-x64 | sh
 
 # debugDir: hack icon of nw.exe and save as Tonyu2.exe
 $debugDir=$ARGV[0];
