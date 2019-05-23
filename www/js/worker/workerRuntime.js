@@ -11,3 +11,6 @@ requirejs(["WorkerLib","GIFWorker"],function (WL,G) {
     });
     WL.ready();
 });
+//workerRuntime -> workerLib,GIFWorker
+//workerLoader -> WorkerLib, workerRuntime
+// workerLoader is not used
