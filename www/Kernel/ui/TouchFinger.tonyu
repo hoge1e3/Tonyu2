@@ -1,5 +1,5 @@
 extends TObject;
-includes MathMod;
+includes MathMod,EventMod;
 "field strict";
 native console;
 var identifier,index,oid,bound;
@@ -88,11 +88,16 @@ var screen,_layer;
 }
 \doMove(point) {
     var p=screen.convert(point,layer);
+    var px=x,py=y;
     x=p.x;
     y=p.y;
+    // vx,vy updates in \update()
     if (bound) {
         bound.doMove(p);
     }
+    // not always e.vx===vx, e.vy===vy
+    var e={px,py,x,y,vx:x-px,vy:y-py,finger:this};
+    fireEvent("move",e);
 }
 \doEnd(){
     vx=vy=touched=0;
@@ -101,4 +106,5 @@ var screen,_layer;
         bound.doEnd();
         delete this.bound;
     }
+    fireEvent("end") {finger:this,x,y};
 }

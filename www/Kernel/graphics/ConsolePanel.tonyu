@@ -10,7 +10,7 @@ native console;
     super(opt);
 }
 
-\print(pt) {
+\print() {
     var mergedArg="";
     for(var argCount=0;argCount<arguments.length;argCount++){
         mergedArg=mergedArg+arguments[argCount]+" ";
@@ -59,7 +59,7 @@ native console;
             }
         }
         printStart=printCnt;
-        console.log("printDrawCnt",a);
+        //console.log("printDrawCnt",a);
     }
     super.draw(ctx);
 }

@@ -3,8 +3,8 @@ native Tonyu;
 native console;
 \new(dev) {
     inputDevice=dev;
-    fingerSet={};
-    fingerArray=[];
+    fingerSet={};// generated on every touches
+    fingerArray=[];// elements of $touches
     fingerArray.findById=\(id) {
         return fingerSet[id];
     };

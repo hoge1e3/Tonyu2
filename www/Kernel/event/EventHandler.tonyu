@@ -1,43 +1,64 @@
 extends TObject;
 includes EventHandlerCaller;
 native Tonyu;
-
-
-if (Tonyu.runMode) listeners=[];
+"field strict";
+// listeners is private (maybe)
+var listeners,target,released;
+\new(param) {
+    super(param);
+    if (Tonyu.runMode) listeners=[];
+}
 
 nowait \toListener(f) {
     if (target && (typeof f)=="string") {
         f=target[f];
     }
     if (typeof f!="function") throw new Error("Not a event listener: "+target+" / "+f);
-    return f;    
+    return f;
 }
-nowait \addListener(f) {
-    listeners.push(toListener(f));
-    return {
-        remove: \{
-           removeListener(f);
-        }
+nowait \newListener(f) {
+    var listener={
+        action: f
     };
+    return listener;
 }
-nowait \removeListener(f) {
-    var i=listeners.indexOf(f);
-    listeners.splice(i,1);
+nowait \addListener() {
+    var a=new ArgParser(arguments).toArray();
+    var f=a.pop();
+    f=toListener(f);
+    a.push(f);
+    var listener=newListener.apply(this,a);
+    listener.remove=\{
+       removeListener(listener);
+    };
+    listeners.push(listener);
+    return listener;
+}
+nowait \doDispose(listener) {
+    if (typeof listener.dispose==="function") {
+        listener.dispose{last:listeners.length==0,listener};
+    }
+}
+nowait \removeListener(listener) {
+    var i=listeners.indexOf(listener);
+    if (i>=0) {
+        listeners.splice(i,1);
+        doDispose(listener);
+    }
+}
+nowait \removeAllListeners() {
+    var listener;
+    while(listener=listeners.shift()) {
+        doDispose(listener);
+    }
 }
 \fire(args) {
     if (released) return;
-    var t;
-    for (var h in listeners) {
-        /*if (h["fiber"]) {
-            t=Tonyu.thread();
-            h["fiber"].apply(target, [t].concat(args) );
-            t.steps();
-        } else {
-            h.apply(target,args);
-        }*/
-        callEventHandler(h, args);
+    for (var listener of listeners) {
+        if (listener.action) callEventHandler(listener.action, args);
     }
 }
 nowait \release() {
     released=true;
+    removeAllListeners();
 }
