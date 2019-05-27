@@ -25,7 +25,7 @@ define(["FS","Platform"], function (FS,Platform) {
 		}
 		WebSite.sampleImg=WebSite.top+"/images";
 		WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
-		WebSite.mp3Disabled=WebSite.isNW;
+		//WebSite.mp3Disabled=WebSite.isNW;
 		WebSite.tonyuHome="/Tonyu/";
 		WebSite.PathSep="/";
 		if (WebSite.isNW) {

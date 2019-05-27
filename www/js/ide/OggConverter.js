@@ -6,9 +6,9 @@ define(["FS","WebSite"], function (FS,WebSite) {
         if (!WebSite.isNW) return;
         var ffmpeg=FS.get(WebSite.ffmpeg);
         if (!ffmpeg.exists()) return;
-        console.log("Convert ogg->mp3 ",dir.path());
+        console.log("Convert mpx->ogg ",dir.path());
         dir.each(function (src) {
-            if (src.endsWith(".mp3") || src.endsWith(".mp4") || src.endsWith(".m4a")) {
+            if (/*src.endsWith(".mp3") ||*/ src.endsWith(".mp4") || src.endsWith(".m4a")) {
                 var ext;
                 if (src.endsWith(".mp3")) ext=".mp3";
                 if (src.endsWith(".mp4")) ext=".mp4";

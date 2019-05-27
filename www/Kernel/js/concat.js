@@ -5444,6 +5444,10 @@ Tonyu.klass.define({
           _this.removeListener(listener);
         });
         //$LASTPOS=21000769;//kernel.EventHandler:769
+        listener.action=listener.action||(function anonymous_802() {
+          
+        });
+        //$LASTPOS=21000812;//kernel.EventHandler:812
         _this.listeners.push(listener);
         return listener;
       },
@@ -5451,9 +5455,9 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         
-        //$LASTPOS=21000856;//kernel.EventHandler:856
+        //$LASTPOS=21000899;//kernel.EventHandler:899
         if (typeof  listener.dispose==="function") {
-          //$LASTPOS=21000909;//kernel.EventHandler:909
+          //$LASTPOS=21000952;//kernel.EventHandler:952
           listener.dispose({last: _this.listeners.length==0,listener: listener});
           
         }
@@ -5463,14 +5467,14 @@ Tonyu.klass.define({
         var _this=this;
         var i;
         
-        //$LASTPOS=21001013;//kernel.EventHandler:1013
+        //$LASTPOS=21001056;//kernel.EventHandler:1056
         i = _this.listeners.indexOf(listener);
         
-        //$LASTPOS=21001053;//kernel.EventHandler:1053
+        //$LASTPOS=21001096;//kernel.EventHandler:1096
         if (i>=0) {
-          //$LASTPOS=21001074;//kernel.EventHandler:1074
+          //$LASTPOS=21001117;//kernel.EventHandler:1117
           _this.listeners.splice(i,1);
-          //$LASTPOS=21001106;//kernel.EventHandler:1106
+          //$LASTPOS=21001149;//kernel.EventHandler:1149
           _this.doDispose(listener);
           
         }
@@ -5481,9 +5485,9 @@ Tonyu.klass.define({
         var listener;
         
         
-        //$LASTPOS=21001193;//kernel.EventHandler:1193
+        //$LASTPOS=21001236;//kernel.EventHandler:1236
         while (listener=_this.listeners.shift()) {
-          //$LASTPOS=21001238;//kernel.EventHandler:1238
+          //$LASTPOS=21001281;//kernel.EventHandler:1281
           _this.doDispose(listener);
           
         }
@@ -5494,20 +5498,17 @@ Tonyu.klass.define({
         var listener;
         var _it_178;
         
-        //$LASTPOS=21001289;//kernel.EventHandler:1289
+        //$LASTPOS=21001332;//kernel.EventHandler:1332
         if (_this.released) {
           return _this;
         }
-        //$LASTPOS=21001316;//kernel.EventHandler:1316
+        //$LASTPOS=21001359;//kernel.EventHandler:1359
         _it_178=Tonyu.iterator(_this.listeners,1);
         while(_it_178.next()) {
           listener=_it_178[0];
           
-          //$LASTPOS=21001359;//kernel.EventHandler:1359
-          if (listener.action) {
-            //$LASTPOS=21001380;//kernel.EventHandler:1380
-            _this.callEventHandler(listener.action,args);
-          }
+          //$LASTPOS=21001402;//kernel.EventHandler:1402
+          _this.callEventHandler(listener.action,args);
           
         }
       },
@@ -5519,7 +5520,7 @@ Tonyu.klass.define({
         var listener;
         var _it_178;
         
-        //$LASTPOS=21001289;//kernel.EventHandler:1289
+        //$LASTPOS=21001332;//kernel.EventHandler:1332
         if (_this.released) {
           _thread.retVal=_this;return;
           
@@ -5530,23 +5531,19 @@ Tonyu.klass.define({
           for(var __cnt=100 ; __cnt--;) {
             switch (__pc) {
             case 0:
-              //$LASTPOS=21001316;//kernel.EventHandler:1316
+              //$LASTPOS=21001359;//kernel.EventHandler:1359
               _it_178=Tonyu.iterator(_this.listeners,1);
             case 1:
-              if (!(_it_178.next())) { __pc=4     ; break; }
+              if (!(_it_178.next())) { __pc=3     ; break; }
               listener=_it_178[0];
               
-              //$LASTPOS=21001359;//kernel.EventHandler:1359
-              if (!(listener.action)) { __pc=3     ; break; }
-              //$LASTPOS=21001380;//kernel.EventHandler:1380
+              //$LASTPOS=21001402;//kernel.EventHandler:1402
               _this.fiber$callEventHandler(_thread, listener.action, args);
               __pc=2;return;
             case 2:
               
-            case 3     :
-              
               __pc=1;break;
-            case 4     :
+            case 3     :
               
               _thread.exit(_this);return;
             }
@@ -5557,9 +5554,9 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         
-        //$LASTPOS=21001457;//kernel.EventHandler:1457
+        //$LASTPOS=21001479;//kernel.EventHandler:1479
         _this.released=true;
-        //$LASTPOS=21001477;//kernel.EventHandler:1477
+        //$LASTPOS=21001499;//kernel.EventHandler:1499
         _this.removeAllListeners();
       },
       __dummy: false

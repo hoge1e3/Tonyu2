@@ -31,6 +31,8 @@ nowait \addListener() {
     listener.remove=\{
        removeListener(listener);
     };
+    listener.dispose=listener.dispose||\{};
+    listener.action=listener.action||f;
     listeners.push(listener);
     return listener;
 }
@@ -55,7 +57,7 @@ nowait \removeAllListeners() {
 \fire(args) {
     if (released) return;
     for (var listener of listeners) {
-        if (listener.action) callEventHandler(listener.action, args);
+        callEventHandler(listener.action, args);
     }
 }
 nowait \release() {
