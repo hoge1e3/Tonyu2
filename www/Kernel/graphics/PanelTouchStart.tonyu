@@ -4,7 +4,9 @@ extends EventHandler;
 // target:Panel
 \newListener(f) {
     var h=$InputDevice.on("touchstart") \(e) {
-        e.finger.layer=target.layer;
+        //e.finger.layer=target.layer;
+        //target.convert(e.finger, target);
+        e.finger.layer=target;
         
         //$consolePanel.print("Convert! ",e.finger.x, e.finger.y);
         return f(e);

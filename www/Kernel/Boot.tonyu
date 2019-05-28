@@ -28,7 +28,7 @@ Tonyu.resetLoopCheck(10000);
 $Boot=this;
 _scheduler=$Scheduler=new Scheduler;
 initGlobals();
-initEvents();
+//initEvents();
 initLayers();
 initPeripherals();
 loadPlugins();
@@ -92,6 +92,7 @@ mainLoop();
   }
   $fixProductOrder=true;
 }
+/*
 \initEvents() {
     // used in EventMod
     eventTypes={
@@ -100,6 +101,7 @@ mainLoop();
         "within":WithinHandler
     };
 }
+*/
 \initPeripherals() {
     $InputDevice=new InputDevice;
     $InputBox=UIDiag;

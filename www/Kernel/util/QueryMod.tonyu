@@ -139,3 +139,12 @@ nowait \watchHit(typeA,typeB,onHit) {//23D
 \screenOut(){
     throw new Error("screenOut::abstract");
 }
+nowait \findEventHandlerClass(type) {
+    var eventTypes={
+        "screenOut":ScreenOutHandler,
+        "crashTo":CrashToHandler,
+        "within":WithinHandler
+    };
+    if (eventTypes[type]) return eventTypes[type];
+    return super.findEventHandlerClass(type);
+}

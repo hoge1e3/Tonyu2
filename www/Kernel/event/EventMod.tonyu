@@ -21,7 +21,9 @@ nowait \parseEventArgs(a) {
    }
    return res;
 }
-
+nowait \findEventHandlerClass(type) {
+    return EventHandler;
+}
 nowait \registerEventHandler(type, obj) {
    // obj:{ attach, fire }
    initEventMod();
@@ -30,7 +32,7 @@ nowait \registerEventHandler(type, obj) {
        type=obj.getClassInfo().fullName;
    } else {
        if (!obj) {
-           var cl=$Boot.eventTypes[type] || EventHandler;
+           var cl=findEventHandlerClass(type); //$Boot.eventTypes[type] || EventHandler;
            obj=new cl{target:this};
        }
        //obj.target=this;

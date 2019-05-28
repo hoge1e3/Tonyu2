@@ -20,7 +20,8 @@ var screen;
 }
 \findActor(p) {
     for (var layer of screen.layers) {
-        var pp=screen.convert(p, layer);
+        p.layer=layer;
+        var pp=p;//screen.convert(p, layer);
         var ts=getTouchables(layer);
         if (!ts) continue;
         ts=ts.sort\(a,b) {return a.zOrder-b.zOrder;};

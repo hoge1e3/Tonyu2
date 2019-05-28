@@ -5,6 +5,17 @@ extends Panel;
     _color="black";
     camera={screen=this};
     super(opt);
+
+    /*
+    multiLayerTouches=new MultiLayerTouches{screen:this};
+    // TODO: this.on("touchstart")  -> move to MultiLayerTouches
+    $InputDevice.on("touchstart") \(e) {
+        var a=multiLayerTouches.findActor(e.finger);
+        if (a) {
+            a.fireEvent("touchstart",e);
+        }
+    };
+    */
 }
 
 \drawLayers() {
@@ -108,6 +119,7 @@ extends Panel;
         if (l!=null) {
             return l.world2screen(obj);
         } else {
+            // fail unless obj.layer===layer(parent of this)
             return super.convert(obj,this);
         }
     } else if (obj.layer===this && toLayer!==this) {
@@ -115,6 +127,7 @@ extends Panel;
         if (l!=null) {
             return l.screen2world(obj);
         } else {
+            // fail unless toLayer===layer(parent of this)
             return super.convert(obj,toLayer);
         }
     } else return obj;
