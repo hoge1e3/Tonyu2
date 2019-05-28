@@ -1,0 +1,33 @@
+
+"field strict";
+var screen;
+\add(a:Actor) {
+    var layer=screen.findLayer( a.getSpriteGroup() );
+    var ts=getOrNewTouchables(layer);
+    if (ts.indexOf(a)<0) ts.push(a);
+}
+\remove(a:Actor) {
+    var layer=screen.findLayer( a.getSpriteGroup() );
+    var ts=getOrNewTouchables(layer);
+    var idx=ts.indexOf(a);
+    if (idx>=0) ts.splice(idx,1);
+}
+\getOrNewTouchables(layer) {
+    return layer.__touchables=layer.__touchables||[];
+}
+\getTouchables(layer) {
+    return layer.__touchables;
+}
+\findActor(p) {
+    for (var layer of screen.layers) {
+        var pp=screen.convert(p, layer);
+        var ts=getTouchables(layer);
+        if (!ts) continue;
+        ts=ts.sort\(a,b) {return a.zOrder-b.zOrder;};
+        for (var t of ts) {
+            var c=t.getTouchShape();
+            if (c.contains(pp)) return t;
+        }
+    }
+    return null;
+}

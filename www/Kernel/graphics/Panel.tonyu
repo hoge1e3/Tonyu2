@@ -1,5 +1,5 @@
 /*---NEXT
-extends BaseActor;//important change!
+extends BaseActor;//important change!<- why old style module cannot override \draw, Actor already overrided \draw.(But now extends Actor OK?)
 includes PanelMod;
 "field strict";
 \new(opt)
@@ -33,6 +33,8 @@ native requestAnimationFrame;
     if(align==null) align="center";
     if(alpha==null) alpha=255;
     if(_drawn==null) _drawn=false;
+
+    registerEventHandler("touchstart", new PanelTouchStart{target:this});
 }
 \watchResize() {
     while(true) {

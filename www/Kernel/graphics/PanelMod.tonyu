@@ -1,4 +1,5 @@
 extends TObject;
+// Pending: old style module cannot override \draw
 includes FileMod,MathMod,SpriteMod2D,EventMod;
 "field strict";
 native $;

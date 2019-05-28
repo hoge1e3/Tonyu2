@@ -1,0 +1,18 @@
+extends EventHandler;
+
+"field strict";
+// target:Panel
+\newListener(f) {
+    var h=$InputDevice.on("touchstart") \(e) {
+        e.finger.layer=target.layer;
+        
+        //$consolePanel.print("Convert! ",e.finger.x, e.finger.y);
+        return f(e);
+    };
+    return {
+        dispose: \(e){
+            h.remove();
+        },
+        action: \{}
+    };
+}

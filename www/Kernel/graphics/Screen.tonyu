@@ -55,10 +55,10 @@ extends Panel;
     return layer;
 }
 \selectLayer(i) {
-    var r=findLayer(i);
+    var r=findLayerIndex(i);
     if (r!=null) index=r;
 }
-\findLayer(i) {
+\findLayerIndex(i) {
     if (typeof i=="number") {
         if (layers[i]) return i;
     } else {
@@ -68,6 +68,12 @@ extends Panel;
             }
         }
     }
+    return -1;
+}
+\findLayer(key) {
+    var idx=findLayerIndex(key);
+    if (idx>=0) return layers[idx];
+    return null;
 }
 \setPivot(x,y) {
     layers[index].spx=x;
@@ -100,44 +106,14 @@ extends Panel;
     } else if (obj.layer!==this && toLayer===this) {
         var l=findLayer(obj.layer);
         if (l!=null) {
-            // world to screen
-            l=layers[l];
             return l.world2screen(obj);
-            var dx=obj.x-l.wpx;
-            var dy=obj.y-l.wpy;
-            var rt=l.rotation;
-            // (x,y)= l.sp + R(rt)*(obj-l.wp)/l.scale;
-            // (x)= l.spx + (cos(rt) cos(rt+90))*(dx)/l.scale;
-            // (y)= l.spy + (sin(rt) sin(rt+90))*(dy)/l.scale;
-            var x=l.spx + (cos(rt)*dx+cos(rt+90)*dy)*l.scale;
-            var y=l.spy + (sin(rt)*dx+sin(rt+90)*dy)*l.scale;
-            return {x,y,
-                rotation:obj.rotation,
-                scale:obj.scale,
-                layer:this
-            };
         } else {
             return super.convert(obj,this);
         }
     } else if (obj.layer===this && toLayer!==this) {
         var l=findLayer(toLayer);
         if (l!=null) {
-            // screen to world
-            l=layers[l];
             return l.screen2world(obj);
-            var rt=-l.rotation;
-            var dx=obj.x-l.spx;
-            var dy=obj.y-l.spy;
-            // (x,y)= l.sp + R(rt)*(obj-l.wp)/l.scale;
-            // (x)= l.spx + (cos(rt) cos(rt+90))*(dx)/l.scale;
-            // (y)= l.spy + (sin(rt) sin(rt+90))*(dy)/l.scale;
-            var x=l.wpx + (cos(rt)*dx+cos(rt+90)*dy)/l.scale;
-            var y=l.wpy + (sin(rt)*dx+sin(rt+90)*dy)/l.scale;
-            return {x,y,
-                rotation:rt,
-                scale:1/l.scale,
-                layer:toLayer
-            };
         } else {
             return super.convert(obj,toLayer);
         }
