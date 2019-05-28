@@ -367,6 +367,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         if (!setCmdStat("stop")) return;
         return $.when(curPrj.stop()).then(function () {
             displayMode("edit");
+            console.log("Boot stopped");
         }).finally(function () {
             setCmdStat();
         });

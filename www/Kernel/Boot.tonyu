@@ -396,6 +396,7 @@ nowait \moveFrame() {
     $Keys.update();
     //debug("MoveFrame",3);
     $InputDevice.update();
+    //console.log("running");
     //debug("MoveFrame",4);
     $screenWidth=$Screen.width;
     $screenHeight=$Screen.height;
