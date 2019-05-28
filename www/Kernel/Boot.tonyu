@@ -104,6 +104,15 @@ mainLoop();
 */
 \initPeripherals() {
     $InputDevice=new InputDevice;
+    $Screen.multiLayerTouches=new MultiLayerTouches{screen:$Screen};
+    // TODO: $Screen.on("touchstart")  -> move to MultiLayerTouches
+    $InputDevice.on("touchstart") \(e) {
+        var a=$Screen.multiLayerTouches.findActor(e.finger);
+        if (a) {
+            e.actor=a;
+            a.fireEvent("touchstart",e);
+        }
+    };
     $InputBox=UIDiag;
     $InputDevice.initCanvasEvents(cvj);
     $ObjectPool=new ObjectPool;

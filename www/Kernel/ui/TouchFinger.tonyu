@@ -26,6 +26,10 @@ var screen,_layer;
 \layer=toLayer {
     if (_layer===toLayer) return;
     var p=screen.convert(this,toLayer);
+    if (!p) {
+        console.log("Screen convert failed",screen,this,toLayer,p);
+        throw new Error("Screen convert failed");
+    }
     x=p.x;
     y=p.y;
     px=x;

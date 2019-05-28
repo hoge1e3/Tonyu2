@@ -5,17 +5,6 @@ extends Panel;
     _color="black";
     camera={screen=this};
     super(opt);
-
-    /*
-    multiLayerTouches=new MultiLayerTouches{screen:this};
-    // TODO: this.on("touchstart")  -> move to MultiLayerTouches
-    $InputDevice.on("touchstart") \(e) {
-        var a=multiLayerTouches.findActor(e.finger);
-        if (a) {
-            a.fireEvent("touchstart",e);
-        }
-    };
-    */
 }
 
 \drawLayers() {

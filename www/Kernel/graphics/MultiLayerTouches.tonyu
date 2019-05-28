@@ -1,3 +1,4 @@
+extends TObject;
 
 "field strict";
 var screen;
@@ -13,6 +14,9 @@ var screen;
     if (idx>=0) ts.splice(idx,1);
 }
 \getOrNewTouchables(layer) {
+    /*if (layer ===$mainLayer3D || layer.group===$mainLayer3D) {
+        throw new Error("Why 3d?");
+    }*/
     return layer.__touchables=layer.__touchables||[];
 }
 \getTouchables(layer) {
@@ -20,10 +24,10 @@ var screen;
 }
 \findActor(p) {
     for (var layer of screen.layers) {
-        p.layer=layer;
         var pp=p;//screen.convert(p, layer);
         var ts=getTouchables(layer);
         if (!ts) continue;
+        p.layer=layer;
         ts=ts.sort\(a,b) {return a.zOrder-b.zOrder;};
         for (var t of ts) {
             var c=t.getTouchShape();

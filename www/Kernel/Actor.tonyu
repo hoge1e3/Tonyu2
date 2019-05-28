@@ -7,3 +7,7 @@ includes SpriteMod2D,QueryMod2D,OneframeSpriteMod;
     subsprites.add(s);
     if (!s.lifeKeeper) s.lifeKeeper=this;
 }
+\findEventHandlerClass(type) {
+    if (type==="touchstart") return ActorTouchStart;
+    return super.findEventHandlerClass(type);
+}
