@@ -8,6 +8,6 @@ includes SpriteMod2D,QueryMod2D,OneframeSpriteMod;
     if (!s.lifeKeeper) s.lifeKeeper=this;
 }
 \findEventHandlerClass(type) {
-    if (type==="touchstart") return ActorTouchStart;
+    if (type==="touch") return ActorTouch;
     return super.findEventHandlerClass(type);
 }

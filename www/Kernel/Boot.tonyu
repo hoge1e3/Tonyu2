@@ -110,7 +110,7 @@ mainLoop();
         var a=$Screen.multiLayerTouches.findActor(e.finger, e.byMouse?1:2);
         if (a) {
             e.actor=a;
-            a.fireEvent("touchstart",e);
+            a.fireEvent("touch",e);
         }
     };
     $InputBox=UIDiag;

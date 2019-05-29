@@ -5,7 +5,7 @@ includes T2Mod;
 native Box2D;
 native Tonyu;
 \onAppear() {
-    $currentProject.requestPlugin("box2d");  
+    $currentProject.requestPlugin("box2d");
     initWorld();
 }
 loop();
