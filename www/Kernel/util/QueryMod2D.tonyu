@@ -19,11 +19,15 @@ nowait \getCrashRect() {//2D
     typeof actHeight=="number" &&
     {x,y,width:Math.abs(actWidth),height:Math.abs(actHeight)};
 }
-\getTouchShape() {
-    return new RectShape(getTouchRect());
+\getTouchShape(scale) {
+    return new RectShape(getTouchRect(scale));
 }
-\getTouchRect(){
-    return getCrashRect();
+\getTouchRect(scale){
+    var r=getCrashRect();
+    scale=scale||1;
+    r.width*=scale;
+    r.height*=scale;
+    return r;
 }
 \screenOut(a) {//2D
     if (!a) a=0;

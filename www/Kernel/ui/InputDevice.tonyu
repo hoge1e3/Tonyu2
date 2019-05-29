@@ -54,7 +54,8 @@ native T2MediaLib;
                originalEvent: {
                     changedTouches: [
                         {identifier:ID_MOUSE, pageX:e.clientX,pageY:e.clientY}
-                    ]
+                    ],
+                    byMouse: true
                }
             });
         }
@@ -74,7 +75,8 @@ native T2MediaLib;
                originalEvent: {
                     changedTouches: [
                         {identifier:ID_MOUSE, pageX:e.clientX,pageY:e.clientY}
-                    ]
+                    ],
+                    byMouse: true
                }
             });
         }
@@ -93,7 +95,8 @@ native T2MediaLib;
                originalEvent: {
                     changedTouches: [
                         {identifier:ID_MOUSE, pageX:e.clientX,pageY:e.clientY}
-                    ]
+                    ],
+                    byMouse: true
                }
             });
         }

@@ -22,7 +22,7 @@ var screen;
 \getTouchables(layer) {
     return layer.__touchables;
 }
-\findActor(p) {
+\findActor(p,scale) {
     for (var layer of screen.layers) {
         var pp=p;//screen.convert(p, layer);
         var ts=getTouchables(layer);
@@ -30,7 +30,7 @@ var screen;
         p.layer=layer;
         ts=ts.sort\(a,b) {return a.zOrder-b.zOrder;};
         for (var t of ts) {
-            var c=t.getTouchShape();
+            var c=t.getTouchShape(scale);
             if (c.contains(pp)) return t;
         }
     }
