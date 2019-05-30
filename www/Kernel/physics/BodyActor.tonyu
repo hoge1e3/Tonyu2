@@ -3,6 +3,12 @@ includes T2Mod;
 native Box2D;
 native console;
 
+"field strict";
+var body,wscale,world;
+var isStatic,shape,manualRotation;
+var density,friction,restitution;
+var radius,width,height;
+var _x,_y,_vx,_vy,_rotation,_vr;
 \new(p) {
     super(p);
     _th.on("end", initBody);
@@ -20,7 +26,7 @@ native console;
     if (body) return;
     var wworld=getWorld();
     world=wworld.world;
-    scale=wworld.scale;
+    wscale=wworld.scale;
     var b2Vec2 = Box2D.Common.Math.b2Vec2;
     var b2BodyDef = Box2D.Dynamics.b2BodyDef;
     var b2Body = Box2D.Dynamics.b2Body;
@@ -38,8 +44,8 @@ native console;
     bodyDef.type = isStatic ? b2Body.b2_staticBody :
     b2Body.b2_dynamicBody;
 
-    bodyDef.position.x = x /scale;
-    bodyDef.position.y = y /scale;
+    bodyDef.position.x = x /wscale;
+    bodyDef.position.y = y /wscale;
     shape=shape || (radius ? "circle" : "box");
     var w=width,h=height;
     if (!w) {
@@ -61,12 +67,12 @@ native console;
         }
         if (!h) h=w;
         fixDef.shape = new b2PolygonShape;
-        fixDef.shape.SetAsOrientedBox(w/2/scale, h/2/scale,
+        fixDef.shape.SetAsOrientedBox(w/2/wscale, h/2/wscale,
         new b2Vec2(0,0),0);
     } else {
         radius=radius || w/2 || 16;
         fixDef.shape = new b2CircleShape(
-        radius/scale
+        radius/wscale
         );
         width=height=radius*2;
     }
@@ -159,8 +165,8 @@ native console;
 \moveBy(dx,dy) {
     initBody();
     var pos=body.GetPosition();
-    pos.x+=dx/scale;
-    pos.y+=dy/scale;
+    pos.x+=dx/wscale;
+    pos.y+=dy/wscale;
     body.SetPosition(pos);
 }
 \contactTo(t) {
@@ -216,38 +222,38 @@ native console;
 \x {
     if (!body) return _x;
     var pos=body.GetPosition();
-    return pos.x*scale;
+    return pos.x*wscale;
 }
 \x=v {
     if (!body) return _x=v;
     v=v||0;
     var pos=body.GetPosition();
-    pos.x=v/scale;
+    pos.x=v/wscale;
     body.SetPosition(pos);
 }
 \y {
     if (!body) return _y;
     var pos=body.GetPosition();
-    return pos.y*scale;
+    return pos.y*wscale;
 }
 \y=v {
     if (!body) return _y=v;
     v=v||0;
     var pos=body.GetPosition();
-    pos.y=v/scale;
+    pos.y=v/wscale;
     body.SetPosition(pos);
 }
 
 \vx {
     if (!body) return _vx;
     var v=body.GetLinearVelocity();
-    return v.x*scale/getWorld().fps;
+    return v.x*wscale/getWorld().fps;
 }
 \vx=v {
     if (!body) return _vx=v;
     v=v||0;
     var ve=body.GetLinearVelocity();
-    ve.x=v/scale*getWorld().fps;
+    ve.x=v/wscale*getWorld().fps;
     if (v) body.SetAwake(true);
     body.SetLinearVelocity(ve);
 }
@@ -255,12 +261,12 @@ native console;
 \vy {
     if (!body) return _vy;
     var v=body.GetLinearVelocity();
-    return v.y*scale/getWorld().fps;
+    return v.y*wscale/getWorld().fps;
 }
 \vy=v {
     if (!body) return _vy=v;
     var ve=body.GetLinearVelocity();
-    ve.y=v/scale*getWorld().fps;
+    ve.y=v/wscale*getWorld().fps;
     if (v) body.SetAwake(true);
     body.SetLinearVelocity(ve);
 }
