@@ -182,14 +182,14 @@ includes MathMod,EventMod,FileMod;
     if (v===undefined) {
         k=key(x,y);
         if (!data[k]) return v;
-        fireEvent("set") {
+        fireEvent("change") {
             x,y,value:v
         };
         delete data[k];
     } else {
         k=key(x,y,true);
         if (data[k]===v) return v;
-        fireEvent("set") {
+        fireEvent("change") {
             x,y,value:v
         };
         return data[k]=v;

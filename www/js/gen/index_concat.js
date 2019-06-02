@@ -94,7 +94,7 @@
 	};
 	R.real=real;
 	var requireSimulator=R;
-	// Created at Fri May 10 2019 11:12:16 GMT+0900 (東京 (標準時))
+	// Created at Sun Jun 02 2019 11:10:15 GMT+0900 (日本標準時)
 requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
@@ -3589,7 +3589,7 @@ define(["FS","Platform"], function (FS,Platform) {
 		}
 		WebSite.sampleImg=WebSite.top+"/images";
 		WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
-		WebSite.mp3Disabled=WebSite.isNW;
+		WebSite.mp4Disabled=WebSite.isNW;
 		WebSite.tonyuHome="/Tonyu/";
 		WebSite.PathSep="/";
 		if (WebSite.isNW) {
@@ -3685,7 +3685,7 @@ define(["FS","Platform"], function (FS,Platform) {
 		WebSite.pluginTop=WebSite.top+"/js/plugins";
 		WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
 		WebSite.PathSep="/";
-		WebSite.mp3Disabled=WebSite.isNW;
+		WebSite.mp4Disabled=WebSite.isNW;
 		if (WebSite.isNW) {
 			WebSite.PathSep=require("path").sep;
 			WebSite.cwd=P.directorify(process.cwd().replace(/\\/g,"/"));
@@ -3815,7 +3815,7 @@ define(["FS","Platform"], function (FS,Platform) {
 	WebSite.sampleImg=WebSite.top+"/images";
 	WebSite.blobPath=WebSite.serverTop+"/serveBlob";        //TODO: urlchange!
 	WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
-	WebSite.mp3Disabled=WebSite.isNW;
+	WebSite.mp4Disabled=WebSite.isNW;
 	WebSite.tonyuHome="/Tonyu/";
 	WebSite.url={
 		getDirInfo:WebSite.serverTop+"/getDirInfo",

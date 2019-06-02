@@ -17372,19 +17372,19 @@ Tonyu.klass.define({
             return v;
           }
           //$LASTPOS=56004224;//kernel.Matrix:4224
-          _this.fireEvent("set",{x: x,y: y,value: v});
-          //$LASTPOS=56004289;//kernel.Matrix:4289
+          _this.fireEvent("change",{x: x,y: y,value: v});
+          //$LASTPOS=56004292;//kernel.Matrix:4292
           delete _this.data[k];
           
         } else {
-          //$LASTPOS=56004328;//kernel.Matrix:4328
+          //$LASTPOS=56004331;//kernel.Matrix:4331
           k=_this.key(x,y,true);
-          //$LASTPOS=56004354;//kernel.Matrix:4354
+          //$LASTPOS=56004357;//kernel.Matrix:4357
           if (_this.data[k]===v) {
             return v;
           }
-          //$LASTPOS=56004390;//kernel.Matrix:4390
-          _this.fireEvent("set",{x: x,y: y,value: v});
+          //$LASTPOS=56004393;//kernel.Matrix:4393
+          _this.fireEvent("change",{x: x,y: y,value: v});
           return _this.data[k]=v;
           
         }
@@ -17417,24 +17417,24 @@ Tonyu.klass.define({
             case 2     :
               
               //$LASTPOS=56004224;//kernel.Matrix:4224
-              _this.fireEvent("set",{x: x,y: y,value: v});
-              //$LASTPOS=56004289;//kernel.Matrix:4289
+              _this.fireEvent("change",{x: x,y: y,value: v});
+              //$LASTPOS=56004292;//kernel.Matrix:4292
               delete _this.data[k];
               __pc=6     ;break;
             case 3     :
-              //$LASTPOS=56004328;//kernel.Matrix:4328
+              //$LASTPOS=56004331;//kernel.Matrix:4331
               _this.fiber$key(_thread, x, y, true);
               __pc=4;return;
             case 4:
               k=_thread.retVal;
               
-              //$LASTPOS=56004354;//kernel.Matrix:4354
+              //$LASTPOS=56004357;//kernel.Matrix:4357
               if (!(_this.data[k]===v)) { __pc=5     ; break; }
               _thread.exit(v);return;
             case 5     :
               
-              //$LASTPOS=56004390;//kernel.Matrix:4390
-              _this.fireEvent("set",{x: x,y: y,value: v});
+              //$LASTPOS=56004393;//kernel.Matrix:4393
+              _this.fireEvent("change",{x: x,y: y,value: v});
               _thread.exit(_this.data[k]=v);return;
             case 6     :
               
@@ -17454,33 +17454,33 @@ Tonyu.klass.define({
         var j;
         var r;
         
-        //$LASTPOS=56004596;//kernel.Matrix:4596
+        //$LASTPOS=56004602;//kernel.Matrix:4602
         options=options||{dirs: _this.neighborDirs};
-        //$LASTPOS=56004639;//kernel.Matrix:4639
+        //$LASTPOS=56004645;//kernel.Matrix:4645
         options.dirs=options.dirs||_this.neighborDirs||4;
-        //$LASTPOS=56004688;//kernel.Matrix:4688
+        //$LASTPOS=56004694;//kernel.Matrix:4694
         dirs = [[0,- 1],[1,- 1],[1,0],[1,1],[0,1],[- 1,1],[- 1,0],[- 1,- 1]];
         
-        //$LASTPOS=56004773;//kernel.Matrix:4773
+        //$LASTPOS=56004779;//kernel.Matrix:4779
         res = [];
         
-        //$LASTPOS=56004790;//kernel.Matrix:4790
+        //$LASTPOS=56004796;//kernel.Matrix:4796
         _it_488=Tonyu.iterator(dirs,1);
         while(_it_488.next()) {
           dir=_it_488[0];
           
-          //$LASTPOS=56004822;//kernel.Matrix:4822
+          //$LASTPOS=56004828;//kernel.Matrix:4828
           i = dir[1];
           j = dir[0];
           
-          //$LASTPOS=56004854;//kernel.Matrix:4854
+          //$LASTPOS=56004860;//kernel.Matrix:4860
           if (i==0&&j==0) {
             continue;
             
           }
-          //$LASTPOS=56004889;//kernel.Matrix:4889
+          //$LASTPOS=56004895;//kernel.Matrix:4895
           if (options.dirs==4) {
-            //$LASTPOS=56004925;//kernel.Matrix:4925
+            //$LASTPOS=56004931;//kernel.Matrix:4931
             if (i*j!=0) {
               continue;
               
@@ -17488,17 +17488,17 @@ Tonyu.klass.define({
             
           }
           
-          //$LASTPOS=56004983;//kernel.Matrix:4983
+          //$LASTPOS=56004989;//kernel.Matrix:4989
           if (_this.exists(x+j,y+i)) {
-            //$LASTPOS=56005019;//kernel.Matrix:5019
+            //$LASTPOS=56005025;//kernel.Matrix:5025
             r=_this.get(x+j,y+i);
-            //$LASTPOS=56005048;//kernel.Matrix:5048
+            //$LASTPOS=56005054;//kernel.Matrix:5054
             res.push({x: x+j,y: y+i,ox: j,oy: i,value: r});
             
           } else {
-            //$LASTPOS=56005105;//kernel.Matrix:5105
+            //$LASTPOS=56005111;//kernel.Matrix:5111
             if (options.includeEmpty) {
-              //$LASTPOS=56005146;//kernel.Matrix:5146
+              //$LASTPOS=56005152;//kernel.Matrix:5152
               res.push({x: x+j,y: y+i,ox: j,oy: i});
               
             }
@@ -17520,14 +17520,14 @@ Tonyu.klass.define({
         var j;
         var r;
         
-        //$LASTPOS=56004596;//kernel.Matrix:4596
+        //$LASTPOS=56004602;//kernel.Matrix:4602
         options=options||{dirs: _this.neighborDirs};
-        //$LASTPOS=56004639;//kernel.Matrix:4639
+        //$LASTPOS=56004645;//kernel.Matrix:4645
         options.dirs=options.dirs||_this.neighborDirs||4;
-        //$LASTPOS=56004688;//kernel.Matrix:4688
+        //$LASTPOS=56004694;//kernel.Matrix:4694
         dirs = [[0,- 1],[1,- 1],[1,0],[1,1],[0,1],[- 1,1],[- 1,0],[- 1,- 1]];
         
-        //$LASTPOS=56004773;//kernel.Matrix:4773
+        //$LASTPOS=56004779;//kernel.Matrix:4779
         res = [];
         
         
@@ -17536,25 +17536,25 @@ Tonyu.klass.define({
           for(var __cnt=100 ; __cnt--;) {
             switch (__pc) {
             case 0:
-              //$LASTPOS=56004790;//kernel.Matrix:4790
+              //$LASTPOS=56004796;//kernel.Matrix:4796
               _it_488=Tonyu.iterator(dirs,1);
             case 1:
               if (!(_it_488.next())) { __pc=8     ; break; }
               dir=_it_488[0];
               
-              //$LASTPOS=56004822;//kernel.Matrix:4822
+              //$LASTPOS=56004828;//kernel.Matrix:4828
               i = dir[1];
               j = dir[0];
               
-              //$LASTPOS=56004854;//kernel.Matrix:4854
+              //$LASTPOS=56004860;//kernel.Matrix:4860
               if (!(i==0&&j==0)) { __pc=2     ; break; }
               __pc=1; break;
               
             case 2     :
               
-              //$LASTPOS=56004889;//kernel.Matrix:4889
+              //$LASTPOS=56004895;//kernel.Matrix:4895
               if (!(options.dirs==4)) { __pc=4     ; break; }
-              //$LASTPOS=56004925;//kernel.Matrix:4925
+              //$LASTPOS=56004931;//kernel.Matrix:4931
               if (!(i*j!=0)) { __pc=3     ; break; }
               __pc=1; break;
               
@@ -17563,21 +17563,21 @@ Tonyu.klass.define({
             case 4     :
               
               
-              //$LASTPOS=56004983;//kernel.Matrix:4983
+              //$LASTPOS=56004989;//kernel.Matrix:4989
               if (!(_this.exists(x+j,y+i))) { __pc=6     ; break; }
-              //$LASTPOS=56005019;//kernel.Matrix:5019
+              //$LASTPOS=56005025;//kernel.Matrix:5025
               _this.fiber$get(_thread, x+j, y+i);
               __pc=5;return;
             case 5:
               r=_thread.retVal;
               
-              //$LASTPOS=56005048;//kernel.Matrix:5048
+              //$LASTPOS=56005054;//kernel.Matrix:5054
               res.push({x: x+j,y: y+i,ox: j,oy: i,value: r});
               __pc=7     ;break;
             case 6     :
-              //$LASTPOS=56005105;//kernel.Matrix:5105
+              //$LASTPOS=56005111;//kernel.Matrix:5111
               if (options.includeEmpty) {
-                //$LASTPOS=56005146;//kernel.Matrix:5146
+                //$LASTPOS=56005152;//kernel.Matrix:5152
                 res.push({x: x+j,y: y+i,ox: j,oy: i});
                 
               }
@@ -17599,35 +17599,35 @@ Tonyu.klass.define({
         var j;
         var d;
         
-        //$LASTPOS=56005256;//kernel.Matrix:5256
+        //$LASTPOS=56005262;//kernel.Matrix:5262
         data=data||{};
-        //$LASTPOS=56005276;//kernel.Matrix:5276
-        //$LASTPOS=56005281;//kernel.Matrix:5281
+        //$LASTPOS=56005282;//kernel.Matrix:5282
+        //$LASTPOS=56005287;//kernel.Matrix:5287
         i = top;
         for (; i<top+rows ; i++) {
           {
-            //$LASTPOS=56005318;//kernel.Matrix:5318
-            //$LASTPOS=56005323;//kernel.Matrix:5323
+            //$LASTPOS=56005324;//kernel.Matrix:5324
+            //$LASTPOS=56005329;//kernel.Matrix:5329
             j = left;
             for (; j<left+cols ; j++) {
               {
-                //$LASTPOS=56005366;//kernel.Matrix:5366
+                //$LASTPOS=56005372;//kernel.Matrix:5372
                 d = data;
                 
-                //$LASTPOS=56005391;//kernel.Matrix:5391
+                //$LASTPOS=56005397;//kernel.Matrix:5397
                 if (typeof  data==="object") {
-                  //$LASTPOS=56005438;//kernel.Matrix:5438
+                  //$LASTPOS=56005444;//kernel.Matrix:5444
                   d=Object.create(data);
                   
                 } else {
-                  //$LASTPOS=56005481;//kernel.Matrix:5481
+                  //$LASTPOS=56005487;//kernel.Matrix:5487
                   if (typeof  data==="function") {
-                    //$LASTPOS=56005530;//kernel.Matrix:5530
+                    //$LASTPOS=56005536;//kernel.Matrix:5536
                     d=data(j,i);
                     
                   }
                 }
-                //$LASTPOS=56005571;//kernel.Matrix:5571
+                //$LASTPOS=56005577;//kernel.Matrix:5577
                 _this.set(j,i,d);
               }
             }
@@ -17643,7 +17643,7 @@ Tonyu.klass.define({
         var j;
         var d;
         
-        //$LASTPOS=56005256;//kernel.Matrix:5256
+        //$LASTPOS=56005262;//kernel.Matrix:5262
         data=data||{};
         
         _thread.enter(function _trc_Matrix_ent_fill(_thread) {
@@ -17651,35 +17651,35 @@ Tonyu.klass.define({
           for(var __cnt=100 ; __cnt--;) {
             switch (__pc) {
             case 0:
-              //$LASTPOS=56005276;//kernel.Matrix:5276
-              //$LASTPOS=56005281;//kernel.Matrix:5281
+              //$LASTPOS=56005282;//kernel.Matrix:5282
+              //$LASTPOS=56005287;//kernel.Matrix:5287
               i = top;
               
             case 1:
               if (!(i<top+rows)) { __pc=7     ; break; }
-              //$LASTPOS=56005318;//kernel.Matrix:5318
-              //$LASTPOS=56005323;//kernel.Matrix:5323
+              //$LASTPOS=56005324;//kernel.Matrix:5324
+              //$LASTPOS=56005329;//kernel.Matrix:5329
               j = left;
               
             case 2:
               if (!(j<left+cols)) { __pc=5     ; break; }
-              //$LASTPOS=56005366;//kernel.Matrix:5366
+              //$LASTPOS=56005372;//kernel.Matrix:5372
               d = data;
               
-              //$LASTPOS=56005391;//kernel.Matrix:5391
+              //$LASTPOS=56005397;//kernel.Matrix:5397
               if (typeof  data==="object") {
-                //$LASTPOS=56005438;//kernel.Matrix:5438
+                //$LASTPOS=56005444;//kernel.Matrix:5444
                 d=Object.create(data);
                 
               } else {
-                //$LASTPOS=56005481;//kernel.Matrix:5481
+                //$LASTPOS=56005487;//kernel.Matrix:5487
                 if (typeof  data==="function") {
-                  //$LASTPOS=56005530;//kernel.Matrix:5530
+                  //$LASTPOS=56005536;//kernel.Matrix:5536
                   d=data(j,i);
                   
                 }
               }
-              //$LASTPOS=56005571;//kernel.Matrix:5571
+              //$LASTPOS=56005577;//kernel.Matrix:5577
               _this.fiber$set(_thread, j, i, d);
               __pc=3;return;
             case 3:
