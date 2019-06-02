@@ -36,7 +36,7 @@ while(true){
     }
     if (getkey("z")==1) sc=1.5-sc;
     $Screen.scrollTo(x,y,sc);
-
+    
     update();
 }
 \animate(){

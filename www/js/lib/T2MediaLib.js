@@ -126,7 +126,10 @@ var T2MediaLib = (function(){
             }
         }
         if (typeof WebSite=="object" && WebSite.mp3Disabled) {
-            url=url.replace(/\.(mp3|mp4|m4a)$/,".ogg");
+            url=url.replace(/\.(mp3)$/,".ogg");
+        }
+        if (typeof WebSite=="object" && WebSite.mp4Disabled) {
+            url=url.replace(/\.(mp4|m4a)$/,".ogg");
         }
         var that = this;
         var xhr = new XMLHttpRequest();
