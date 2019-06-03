@@ -46,8 +46,6 @@ var T2MediaLib = (function(){
             for (var i=0; i<this.bgmPlayerMax; i++) {
                 this.bgmPlayerAry[i] = new T2MediaLib_BGMPlayer(this, i);
             }
-            // MIDIデコード用PicoAudio生成
-            //this.picoAudio = new PicoAudio(this.context); // 作成が少し重いので必要なときのみ作成する
         }
     };
 
@@ -94,7 +92,10 @@ var T2MediaLib = (function(){
 
     // 配列データからサウンドを作成・登録
     T2MediaLib.prototype.createSoundFromArray = function(idx, array1, array2) {
-        this.soundDataAry[idx] = new T2MediaLib_SoundData();
+        if (!this.context || this.disabled) {
+            return null;
+        }
+        this.soundDataAry[idx] = new T2MediaLib_SoundData(idx);
 
         var ctx = this.context;
         var numOfChannels = array1 != null && array2 != null ? 2 : 1;
@@ -112,13 +113,13 @@ var T2MediaLib = (function(){
         this.soundDataAry[idx].onDecodeComplete(audioBuffer);
     };
     // サウンドの読み込み・登録
-    T2MediaLib.prototype.loadSound = function(idx, url, callbacks) { //@hoge1e3
-        this.soundDataAry[idx] = new T2MediaLib_SoundData();
-
+    T2MediaLib.prototype.loadSound = function(idx, url, callbacks, isLoadAndDecode) { //@hoge1e3
         if (!this.context || this.disabled) {
-            this.soundDataAry[idx].onError("FUNC_DISABLED_ERROR");
             return null;
         }
+
+        this.soundDataAry[idx] = new T2MediaLib_SoundData(idx);
+
         // midiがあったらpicoAudioを準備しておく
         if (url.match(/\.(midi?)$/) || url.match(/^data:audio\/mid/)) {
             if (this.picoAudio == null) {
@@ -138,7 +139,11 @@ var T2MediaLib = (function(){
                 var arrayBuffer = xhr.response;
                 if (arrayBuffer instanceof ArrayBuffer) {
                     that.soundDataAry[idx].onLoadComplete(arrayBuffer);
-                    if (callbacks && callbacks.succ) callbacks.succ(idx);
+                    if (isLoadAndDecode) { // ロードとデコードをする
+                        that.decodeSound(idx, callbacks);
+                    } else { // ロードのみ
+                        if (callbacks && callbacks.succ) callbacks.succ(idx);
+                    }
                 } else {
                     that.soundDataAry[idx].onError("XHR_RESPONSE_ERROR");
                     if (callbacks && callbacks.err) callbacks.err(idx,that.soundDataAry[idx].errorID);
@@ -167,9 +172,9 @@ var T2MediaLib = (function(){
                 xhr.send(null);
             } catch(e) {
                 this.soundDataAry[idx].onError("FILE_NOT_FOUND");
+                if (callbacks && callbacks.err) callbacks.err(idx,that.soundDataAry[idx].errorID);
             }
         }
-        //setTimeout(this.activate.bind(this),0);
     };
     // サウンドのデコード
     T2MediaLib.prototype.decodeSound = function(idx, callbacks) {
@@ -214,7 +219,6 @@ var T2MediaLib = (function(){
             if (typeof data == "string") { // parseSMF Error
                 console.log('T2MediaLib: Error parseSMF()', data);
                 this.soundDataAry[idx].onError("DECODE_ERROR");
-                //if (callbacks && callbacks.err) callbacks.err(idx, this.soundDataAry[idx].errorID);
                 soundData.decodedCallbacksAry.forEach(function(callbacks) {
                     if (typeof callbacks.err == "function") {
                         callbacks.err(idx, this.soundDataAry[idx].errorID);
@@ -223,7 +227,6 @@ var T2MediaLib = (function(){
                 soundData.decodedCallbacksAry = null;
             } else {
                 this.soundDataAry[idx].onDecodeComplete(data);
-                //if (callbacks && callbacks.succ) callbacks.succ(idx);
                 soundData.decodedCallbacksAry.forEach(function(callbacks) {
                     if (typeof callbacks.succ == "function") {
                         callbacks.succ(idx);
@@ -244,7 +247,6 @@ var T2MediaLib = (function(){
                 if (that.soundDataAry[idx].isDecoding()) {
                     that.soundDataAry[idx].onDecodeComplete(data.decodedData);
                     that.soundDataAry[idx].loopStart=data.loopStart;
-                    //if (callbacks && callbacks.succ) callbacks.succ(idx);//@hoge1e3
                     soundData.decodedCallbacksAry.forEach(function(callbacks) {
                         if (typeof callbacks.succ == "function") {
                             callbacks.succ(idx);
@@ -259,7 +261,6 @@ var T2MediaLib = (function(){
                     console.log('T2MediaLib: Error decodeMZO()', soundData.url);//@hoge1e3
                 }
                 that.soundDataAry[idx].onError("DECODE_ERROR");
-                //if (callbacks && callbacks.err) callbacks.err(idx, that.soundDataAry[idx].errorID);
                 soundData.decodedCallbacksAry.forEach(function(callbacks) {
                     if (typeof callbacks.err == "function") {
                         callbacks.err(idx, that.soundDataAry[idx].errorID);
@@ -274,7 +275,6 @@ var T2MediaLib = (function(){
                 // デコード中にremoveDecodeSoundData()したらデータを捨てる
                 if (that.soundDataAry[idx].isDecoding()) {
                     that.soundDataAry[idx].onDecodeComplete(audioBuffer);
-                    //if (callbacks && callbacks.succ) callbacks.succ(idx);//@hoge1e3
                     soundData.decodedCallbacksAry.forEach(function(callbacks) {
                         if (typeof callbacks.succ == "function") {
                             callbacks.succ(idx);
@@ -290,7 +290,6 @@ var T2MediaLib = (function(){
                     console.log('T2MediaLib: Error decodeAudioData()', soundData.url);//@hoge1e3
                 }
                 that.soundDataAry[idx].onError("DECODE_ERROR");
-                //if (callbacks && callbacks.err) callbacks.err(idx, that.soundDataAry[idx].errorID);
                 soundData.decodedCallbacksAry.forEach(function(callbacks) {
                     if (typeof callbacks.err == "function") {
                         callbacks.err(idx, that.soundDataAry[idx].errorID);
@@ -465,12 +464,9 @@ var T2MediaLib = (function(){
         var t=this;
         t.seSources.push(source);
         source.onended = function(event) {
-            //source.disconnect();
             source.onended = null;
             var idx=t.seSources.indexOf(source);
             if (idx>=0) t.seSources.splice(idx,1);
-            //delete source.gainNode;
-            //delete source.panNode;
         };
         return source;
     };
@@ -1232,6 +1228,7 @@ var T2MediaLib_SoundData = (function(){
         // "decoding":デコード中
         // "decoded" :デコード完了
         // "error"   :エラー
+        this.idx = idx;
         this.state = "none";
         this.errorID = null;
         this.url = null;
@@ -1262,6 +1259,10 @@ var T2MediaLib_SoundData = (function(){
     T2MediaLib_SoundData.prototype.onError = function(errorID) {
         this.state = "error";
         this.errorID = errorID;
+    };
+
+    T2MediaLib_SoundData.prototype.isNone = function() {
+        return this.state == "none";
     };
 
     T2MediaLib_SoundData.prototype.isLoadComplete = function() {

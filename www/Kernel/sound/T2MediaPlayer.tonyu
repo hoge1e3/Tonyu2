@@ -47,7 +47,8 @@ native console;
 }
 
 \loadSound(idx, src, callbacks) {//@hoge1e3
-    $t2MediaLib.loadSound(idx, src, callbacks);
+    var isLoadAndDecode = $soundLoadAndDecode || false; // ロードと同時にデコードもするか（グローバル変数で設定できる）
+    $t2MediaLib.loadSound(idx, src, callbacks, isLoadAndDecode);
 }
 
 \available {
@@ -60,37 +61,37 @@ native console;
     if (!r || !r.sounds) return;
     if (r.sounds <= 0) return;
 
-    progressNoLog("Loading sounds...[0/"+r.sounds.length+"]");
-    // 6つ同時読み込み
-    var jobs=6;
+    progressNoLog("Loading sounds...[0/"+r.sounds.length+"]"); 
+    var jobs=6; // 6つ同時読み込み（NW.jsでは54以上同時読み込みするとフリーズしてしまう）
     var cnt=0;
-    var callbacks={};
     var s, name, url;
-    var func = function(idx, errorID){
+    var func = function(seName, errorID){ // seName=="$se_xxx"
         if (errorID) {
-            console.log(errorID);
-            //print("Failed to load",idx);
-            Tonyu.setGlobal(idx, "ERROR");
+            console.log(seName, errorID);
+            Tonyu.setGlobal(seName, "ERROR");
         } else {
-            //print("Loading Sound2: "+idx);
-            Tonyu.setGlobal(idx, idx);
+            Tonyu.setGlobal(seName, seName);
         }
 
+        var nextIdx = cnt + jobs;
         cnt ++;
-        if (cnt >= r.sounds.length) return;
-        progressNoLog("Loading sounds...["+(cnt+1)+"/"+r.sounds.length+"]");
-        var s = r.sounds[cnt];
+        progressNoLog("Loading sounds...["+(cnt)+"/"+r.sounds.length+"]");
+        console.log("func", cnt, nextIdx, r.sounds.length, seName, errorID);
+        if (nextIdx >= r.sounds.length) return;
+        var s = r.sounds[nextIdx];
         var name=s.name;
         var url=Tonyu.Assets.resolve(s.url, prj);
         loadSound(name, url, callbacks);
     };
+    var callbacks={};
     callbacks.succ=func;
-    callbacks.err=func;
+    callbacks.err=func; 
     for (var i=0; i<jobs; i++) {
         if (i >= r.sounds.length) break;
         s = r.sounds[i];
         name=s.name;
         url=Tonyu.Assets.resolve(s.url, prj);
+        //console.log("jobs", i, r.sounds.length, jobs, name, url);
         loadSound(name, url, callbacks);
     }
     while (cnt < r.sounds.length) {

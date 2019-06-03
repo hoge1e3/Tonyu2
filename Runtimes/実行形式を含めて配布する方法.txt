@@ -1,11 +1,51 @@
-1. ���̃t�H���_��package.json���e�L�X�g�G�f�B�^�ŊJ��
+■Windows版の場合■
+1. このフォルダのpackage.jsonをテキストエディタで開き
 
 "main": "Demo/index.html",
-�̕�����
+の部分と
 "icon": "Demo/images/icon_thumbnail.png",
-�̕�����z�z�������Q�[���̃t�H���_�ɕύX���Ă��������B
+の部分を配布したいゲームのフォルダに変更してください。
 
-2. Player2.exe�Ŏ��s�ł��邱�Ƃ��m�F���Ă��������B
+2. Player2.exeで実行できることを確認してください。
 
-3. ���̃t�H���_�̑S�t�@�C���ƁA�z�z�������Q�[���̃t�H���_��zip�ň��k���Ă��������B
+3. このフォルダの全ファイルと、配布したいゲームのフォルダをzipで圧縮してください。
 
+4. zipファイルをWebサイト等で配布します。
+
+
+■Mac版の場合■
+
+※ Mac版は通常のやり方でzip圧縮してWebで配布すると、
+   ダウンロードして解凍した際、NW.jsの画面が表示されたり、起動しなかったりなど
+   ゲームが開始できない可能性が高いです。
+   以下の方法で上手くいくことを確認しています。
+   （簡単に言うと、NW.jsのzipファイルにゲームフォルダとpackage.jsonを加えるという方法です）
+   （zipファイル内のnwjs.appを再圧縮しないようにするのがコツのようです）
+
+以下の手順はWindowsのPCで作業します。
+7-Zipという圧縮・解凍ソフトを使った場合の方法です。
+
+1. このフォルダのpackage.jsonをテキストエディタで開き
+
+"main": "Demo/index.html",
+の部分と
+"icon": "Demo/images/icon_thumbnail.png",
+の部分を配布したいゲームのフォルダに変更してください。
+
+2. NW.js公式サイトから「Mac OS X 64-bit NORMAL」をダウンロードします。
+   https://nwjs.io/downloads/
+
+3. 7-Zip(File Manager)を起動して、でダウンロードしたzipファイルを開き、
+   nwjs.appとcredits.htmlがある場所を表示しておきます。
+
+4. ゲームフォルダと、手順1で変更したpackage.jsonを
+   7-Zip画面にドラッグ＆ドロップして、zipファイル内に追加します。
+
+5. zipファイルをMacへコピーして解凍し、nwjs.appを起動してゲームが実行できることを確認します。
+
+6. 問題無ければ、zipファイルをWebサイト等で配布します。
+
+（手順4で、credits.htmlを消してもかまいません。
+  また、zipファイル名やzipファイル内の「nwjs-v0.38.3-osx-x64」の名前をゲーム名などに変えても問題ありません）
+（nwjs.app/Contents/Resources/ のapp.icnsとdocument.icnsのアイコンの画像を差し替えると、
+  Finderで表示されるアイコンを変えることができます。icnsの作成方法はWebなどで調べてください）
