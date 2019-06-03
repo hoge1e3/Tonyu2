@@ -76,7 +76,6 @@ native console;
         var nextIdx = cnt + jobs;
         cnt ++;
         progressNoLog("Loading sounds...["+(cnt)+"/"+r.sounds.length+"]");
-        console.log("func", cnt, nextIdx, r.sounds.length, seName, errorID);
         if (nextIdx >= r.sounds.length) return;
         var s = r.sounds[nextIdx];
         var name=s.name;
@@ -91,7 +90,6 @@ native console;
         s = r.sounds[i];
         name=s.name;
         url=Tonyu.Assets.resolve(s.url, prj);
-        //console.log("jobs", i, r.sounds.length, jobs, name, url);
         loadSound(name, url, callbacks);
     }
     while (cnt < r.sounds.length) {
