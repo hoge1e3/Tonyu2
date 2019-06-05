@@ -32,8 +32,13 @@ initGlobals();
 initLayers();
 initPeripherals();
 loadPlugins();
-loadImages();
-loadSounds();
+if ($customLoading) {
+    var tt=Tonyu.thread();
+    tt.apply(this,"loadAssets",[true]);
+    tt.steps();
+} else {
+    loadAssets();
+}
 createMainObject();
 progress();
 mainLoop();
@@ -80,7 +85,7 @@ mainLoop();
     return res;
 }
 \update() {
-    waitFor(Tonyu.timeout(50)); // waitFor calls update...
+    waitFor(Tonyu.timeout(50));
 }
 \initGlobals() {
   var opt=Tonyu.currentProject.getOptions();
@@ -219,6 +224,12 @@ mainLoop();
         //allClearSoundData();
     };
     $sound=this;
+}
+\loadAssets(para) {
+    loadImages();
+    loadSounds();
+    loadedAll=true;
+    if (para) progress();
 }
 
 \createMainObject() {
