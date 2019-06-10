@@ -57,8 +57,8 @@ var _x,_y,_vx,_vy,_rotation,_vr;
                 height=p.height;
             }
         }
-        w=width*(scaleX||1);
-        h=height*(scaleY||scaleX||1);
+        w=width*abs(scaleX||1);
+        h=height*abs(scaleY||scaleX||1);
     }
     if (shape=="box") {
         if (!w) {
