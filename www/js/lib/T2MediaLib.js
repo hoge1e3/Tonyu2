@@ -238,10 +238,10 @@ var T2MediaLib = (function(){
             console.log("Loading mzo");
             // MZO
             var that = this;
-            var m=new Mezonet(this.context,{wavOutSpeed:50});
+            var m=new Mezonet(this.context);//,{wavOutSpeed:50});
             var a=Array.prototype.slice.call( new Uint8Array(arrayBuffer) );
-            m.load(a);
-            m.toAudioBuffer().then(function (data) {
+            //m.load(a);
+            m.toAudioBuffer(a).then(function (data) {
                 // デコード中にremoveDecodeSoundData()したらデータを捨てる
                 console.log("MZO loaded",data);
                 if (that.soundDataAry[idx].isDecoding()) {
