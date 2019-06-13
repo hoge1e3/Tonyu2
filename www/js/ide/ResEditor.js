@@ -1,7 +1,7 @@
 define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
-"ImageDetailEditor","Util","OggConverter","Assets"],
+"ImageDetailEditor","Util","Assets"],
         function (FS, Tonyu, UI,IL,Blob,Auth,WebSite,
-                ImageDetailEditor,Util,OggConverter,Assets) {
+                ImageDetailEditor,Util,Assets) {
     /*var mediaInfos={
         image:{name:"画像",exts:["png","gif","jpg"],path:"images/",key:"images",
             extPattern:/\.(png|gif|jpe?g)$/i,contentType:/image\/(png|gif|jpe?g)/,
@@ -366,8 +366,12 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
                     close: function () {
                         update("close");
                         //cleanFiles();
-                        if (mediaInfo.key=="sounds" && rsrcDir.exists()) {
-                            OggConverter.convert(rsrcDir);
+                        if (typeof mediaInfo.close==="function") {
+                            mediaInfo.close({
+                                items:items,
+                                resourceDir:rsrcDir,
+                                project:prj
+                            });
                         }
                     }
                 });

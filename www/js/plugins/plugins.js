@@ -4,6 +4,7 @@ define(["WebSite"],function (WebSite){
         box2d:{src: "Box2dWeb-2.1.a.3.min.js",detection:/BodyActor/,symbol:"Box2D" },
         timbre: {src:"timbre.js",detection:/\bplay(SE)?\b/,symbol:"T" },
         gif: {src:"gif-concat.js",detection:/GIFWriter/,symbol:"GIF"},
+        Mezonet: {src:"Mezonet.js", symbol: "Mezonet"},
         // single js is required for runScript1.js
         jquery_ui: {src:"jquery-ui.js", detection:/\$InputBox/,symbol:"$.ui"}
     };

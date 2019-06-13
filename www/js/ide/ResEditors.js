@@ -1,4 +1,5 @@
-define(["ResEditor","Klass"], function (ResEditor,Klass) {
+define(["ResEditor","Klass","OggConverter"],
+function (ResEditor,Klass,OggConverter) {
     var mediaInfos={
         image:{name:"画像",exts:["png","gif","jpg"],path:"images/",key:"images",
             extPattern:/\.(png|gif|jpe?g)$/i,contentType:/image\/(png|gif|jpe?g)/,
@@ -14,6 +15,24 @@ define(["ResEditor","Klass"], function (ResEditor,Klass) {
                 var r={};
                 if (name) r.name="$se_"+name;
                 return r;
+            },
+            close: function (context) {
+                var prj=context.project;
+                console.log(context);
+                var hasMZO=false,hasMIDI=false;
+                context.items.forEach(function (item) {
+                    if (item.url.match(/\.mzo/)) hasMZO=true;
+                    if (item.url.match(/\.midi?/)) hasMIDI=true;
+                });
+                if (hasMZO) prj.addPlugin("Mezonet");
+                else prj.removePlugin("Mezonet");
+                //if (hasMIDI) prj.addPlugin("PicoAudio");
+                //else prj.removePlugin("PicoAudio");
+
+                var rsrcDir=context.resourceDir;
+                if (rsrcDir.exists()) {
+                    OggConverter.convert(rsrcDir);
+                }
             }
         }
     };

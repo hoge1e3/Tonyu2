@@ -186,12 +186,22 @@ return Tonyu.Project=function (dir, kernelDir) {
             });
         }
     };
-    TPR.requestPlugin=function (name) {
+    TPR.addPlugin=function (name) {
         var opt=TPR.getOptions();
         if (!opt.plugins[name]) {
             opt.plugins[name]=1;
-            TPR.setOptions(opt);            
+            TPR.setOptions(opt);
         }
+    };
+    TPR.removePlugin=function (name) {
+        var opt=TPR.getOptions();
+        if (opt.plugins[name]) {
+            delete opt.plugins[name];
+            TPR.setOptions(opt);
+        }
+    };
+    TPR.requestPlugin=function (name) {
+        TPR.addPlugin(name);
         if (plugins.loaded(name)) return;
         var req=new Error("必要なプラグイン"+name+"を追加しました。もう一度実行してください");
         req.pluginName=name;
