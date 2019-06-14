@@ -26,8 +26,8 @@ function (ResEditor,Klass,OggConverter) {
                 });
                 if (hasMZO) prj.addPlugin("Mezonet");
                 else prj.removePlugin("Mezonet");
-                //if (hasMIDI) prj.addPlugin("PicoAudio");
-                //else prj.removePlugin("PicoAudio");
+                if (hasMIDI) prj.addPlugin("PicoAudio");
+                else prj.removePlugin("PicoAudio");
 
                 var rsrcDir=context.resourceDir;
                 if (rsrcDir.exists()) {

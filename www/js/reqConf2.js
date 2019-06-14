@@ -64,7 +64,7 @@ var reqConf={
             deps: ["Shell","FS"]
         },
         T2MediaLib: {
-            deps: ["PicoAudio"],
+            //deps: ["PicoAudio"],
             exports: "T2MediaLib"
         },
         PicoAudio: {
@@ -232,7 +232,7 @@ var reqConf={
                 "JSONCol": 1,
                 "KeyEventChecker": 1,
                 "Klass": 1,
-                "PicoAudio.min": "PicoAudio",
+                //"PicoAudio.min": "PicoAudio",
                 "SEnv": 1,
                 "Tones.wdt": 1,
                 "T2MediaLib": 1,

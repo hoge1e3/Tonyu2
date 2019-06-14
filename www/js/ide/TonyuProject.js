@@ -190,7 +190,7 @@ return Tonyu.Project=function (dir, kernelDir) {
     TPR.detectPlugins=function () {
         var opt=TPR.getOptions();
         var plugins=opt.plugins=opt.plugins||{};
-        if (!plugins.Mezonet /*|| !plugins.PicoAudio*/) {
+        if (!plugins.Mezonet || !plugins.PicoAudio) {
             var res=TPR.getResource();
             var hasMZO=false,hasMIDI=false;
             if (res.sounds) res.sounds.forEach(function (item) {
@@ -199,8 +199,8 @@ return Tonyu.Project=function (dir, kernelDir) {
             });
             if (hasMZO) TPR.addPlugin("Mezonet");
             else TPR.removePlugin("Mezonet");
-            //if (hasMIDI) prj.addPlugin("PicoAudio");
-            //else prj.removePlugin("PicoAudio");
+            if (hasMIDI) TPR.addPlugin("PicoAudio");
+            else TPR.removePlugin("PicoAudio");
         }
     };
     TPR.addPlugin=function (name) {
