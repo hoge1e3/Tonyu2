@@ -73,6 +73,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         }
         return TPR.loadClasses().then(DU.throwF(function () {
             //TPR.compile();
+            TPR.detectPlugins();
             TPR.fixBootRunClasses();
             if (!TPR.runScriptMode) thumbnail.set(TPR, 2000);
             TPR.rawBoot(bootClassName);
@@ -179,11 +180,27 @@ return Tonyu.Project=function (dir, kernelDir) {
         opt.compiler.commentLastPos=TPR.runScriptMode || StackTrace.isAvailable();
         if (!opt.plugins) {
             opt.plugins={};
-            dir.each(function (f) {
+            /*dir.each(function (f) {
                 if (f.endsWith(TPR.EXT)) {
                     plugins.detectNeeded(  f.text(), opt.plugins);
                 }
+            });*/
+        }
+    };
+    TPR.detectPlugins=function () {
+        var opt=TPR.getOptions();
+        var plugins=opt.plugins=opt.plugins||{};
+        if (!plugins.Mezonet /*|| !plugins.PicoAudio*/) {
+            var res=TPR.getResource();
+            var hasMZO=false,hasMIDI=false;
+            if (res.sounds) res.sounds.forEach(function (item) {
+                if (item.url.match(/\.mzo/)) hasMZO=true;
+                if (item.url.match(/\.midi?/)) hasMIDI=true;
             });
+            if (hasMZO) TPR.addPlugin("Mezonet");
+            else TPR.removePlugin("Mezonet");
+            //if (hasMIDI) prj.addPlugin("PicoAudio");
+            //else prj.removePlugin("PicoAudio");
         }
     };
     TPR.addPlugin=function (name) {
@@ -211,6 +228,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         var opt=TPR.getOptions();
         return plugins.loadAll(opt.plugins,onload);
     };
+
     TPR.fixBootRunClasses=function () {
         var opt=TPR.getOptions();
         if (opt.run) {

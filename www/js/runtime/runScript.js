@@ -75,6 +75,7 @@ requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS",
 		start();
 		function start() {
 			Tonyu.currentProject=Tonyu.globals.$currentProject=curPrj;
+			curPrj.detectPlugins();
 			var o=curPrj.getOptions();
 			if (o.compiler && o.compiler.diagnose) {
 				o.compiler.diagnose=false;

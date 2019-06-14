@@ -94,7 +94,7 @@
 	};
 	R.real=real;
 	var requireSimulator=R;
-	// Created at Thu Jun 13 2019 22:02:21 GMT+0900 (日本標準時)
+	// Created at Fri Jun 14 2019 11:46:48 GMT+0900 (日本標準時)
 requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
@@ -3596,7 +3596,7 @@ define(["WebSite"],function (WebSite){
     var plugins={};
     var installed= {
         box2d:{src: "Box2dWeb-2.1.a.3.min.js",detection:/BodyActor/,symbol:"Box2D" },
-        timbre: {src:"timbre.js",detection:/\bplay(SE)?\b/,symbol:"T" },
+        timbre: {src:"timbre.js",symbol:"T" },
         gif: {src:"gif-concat.js",detection:/GIFWriter/,symbol:"GIF"},
         Mezonet: {src:"Mezonet.js", symbol: "Mezonet"},
         // single js is required for runScript1.js
@@ -3605,8 +3605,11 @@ define(["WebSite"],function (WebSite){
     plugins.installed=installed;
     plugins.detectNeeded=function (src,res) {
         for (var name in installed) {
-            var r=installed[name].detection.exec(src);
-            if (r) res[name]=1;
+            var d=installed[name].detection;
+            if (d) {
+                var r=d.exec(src);
+                if (r) res[name]=1;
+            }
         }
         return res;
     };
@@ -4995,7 +4998,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,is:is,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,DeferredUtil:DU,
-			VERSION:1560430854732,//EMBED_VERSION
+			VERSION:1560480380954,//EMBED_VERSION
 			A:A};
 }();
 });

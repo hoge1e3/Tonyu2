@@ -94,7 +94,7 @@
 	};
 	R.real=real;
 	var requireSimulator=R;
-	// Created at Thu Jun 13 2019 22:01:14 GMT+0900 (日本標準時)
+	// Created at Fri Jun 14 2019 11:46:25 GMT+0900 (日本標準時)
 requireSimulator.setName('Util');
 Util=(function () {
 
@@ -4381,7 +4381,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,is:is,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,DeferredUtil:DU,
-			VERSION:1560430854732,//EMBED_VERSION
+			VERSION:1560480380954,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -14990,7 +14990,7 @@ define(["WebSite"],function (WebSite){
     var plugins={};
     var installed= {
         box2d:{src: "Box2dWeb-2.1.a.3.min.js",detection:/BodyActor/,symbol:"Box2D" },
-        timbre: {src:"timbre.js",detection:/\bplay(SE)?\b/,symbol:"T" },
+        timbre: {src:"timbre.js",symbol:"T" },
         gif: {src:"gif-concat.js",detection:/GIFWriter/,symbol:"GIF"},
         Mezonet: {src:"Mezonet.js", symbol: "Mezonet"},
         // single js is required for runScript1.js
@@ -14999,8 +14999,11 @@ define(["WebSite"],function (WebSite){
     plugins.installed=installed;
     plugins.detectNeeded=function (src,res) {
         for (var name in installed) {
-            var r=installed[name].detection.exec(src);
-            if (r) res[name]=1;
+            var d=installed[name].detection;
+            if (d) {
+                var r=d.exec(src);
+                if (r) res[name]=1;
+            }
         }
         return res;
     };
@@ -15153,6 +15156,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         }
         return TPR.loadClasses().then(DU.throwF(function () {
             //TPR.compile();
+            TPR.detectPlugins();
             TPR.fixBootRunClasses();
             if (!TPR.runScriptMode) thumbnail.set(TPR, 2000);
             TPR.rawBoot(bootClassName);
@@ -15259,11 +15263,27 @@ return Tonyu.Project=function (dir, kernelDir) {
         opt.compiler.commentLastPos=TPR.runScriptMode || StackTrace.isAvailable();
         if (!opt.plugins) {
             opt.plugins={};
-            dir.each(function (f) {
+            /*dir.each(function (f) {
                 if (f.endsWith(TPR.EXT)) {
                     plugins.detectNeeded(  f.text(), opt.plugins);
                 }
+            });*/
+        }
+    };
+    TPR.detectPlugins=function () {
+        var opt=TPR.getOptions();
+        var plugins=opt.plugins=opt.plugins||{};
+        if (!plugins.Mezonet /*|| !plugins.PicoAudio*/) {
+            var res=TPR.getResource();
+            var hasMZO=false,hasMIDI=false;
+            if (res.sounds) res.sounds.forEach(function (item) {
+                if (item.url.match(/\.mzo/)) hasMZO=true;
+                if (item.url.match(/\.midi?/)) hasMIDI=true;
             });
+            if (hasMZO) TPR.addPlugin("Mezonet");
+            else TPR.removePlugin("Mezonet");
+            //if (hasMIDI) prj.addPlugin("PicoAudio");
+            //else prj.removePlugin("PicoAudio");
         }
     };
     TPR.addPlugin=function (name) {
@@ -15291,6 +15311,7 @@ return Tonyu.Project=function (dir, kernelDir) {
         var opt=TPR.getOptions();
         return plugins.loadAll(opt.plugins,onload);
     };
+
     TPR.fixBootRunClasses=function () {
         var opt=TPR.getOptions();
         if (opt.run) {
