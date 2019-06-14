@@ -51,9 +51,10 @@ function (ResEditor,Klass,OggConverter) {
             e.preventDefault();
             var eo=e.originalEvent;
             var files = Array.prototype.slice.call(eo.dataTransfer.files);
+            console.log("DROP",e,files);
             if (files.length==0) return;
             for (var k in mediaInfos) {
-                if (mediaInfos[k].contentType.exec(files[0].type)) {
+                if (mediaInfos[k].extPattern.exec(files[0].name)) {
                     this.open(k);
                     this.curResEditor.dropAdd(e);
                 }
