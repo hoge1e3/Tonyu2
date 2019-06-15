@@ -94,7 +94,7 @@
 	};
 	R.real=real;
 	var requireSimulator=R;
-	// Created at Fri Jun 14 2019 11:46:21 GMT+0900 (日本標準時)
+	// Created at Sat Jun 15 2019 15:39:39 GMT+0900 (日本標準時)
 requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
@@ -6130,6 +6130,7 @@ define(["FS","Util","WebSite"], function (FS,Util,WebSite) {
         var excludes=options.excludes||{};
         var includeJSScript=options.includeJSScript;
         var buf="<!DOCTYPE html>\n<html><head>\n";
+        buf+='<meta http-equiv="Content-type" content="text/html; charset=utf8"/>\n';
         buf+="<script>WebSite_runType='singleHTML';</script>\n";
         if (includeJSScript) {
             var resFile=dir.rel("res.json");
