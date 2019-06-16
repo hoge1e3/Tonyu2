@@ -270,6 +270,8 @@ var T2MediaLib = (function(){
                     }
                 });
                 soundData.decodedCallbacksAry = null;
+            }).finally(function () {
+                m.terminate();
             });
         } else {
             // MP3, Ogg, AAC, WAV
