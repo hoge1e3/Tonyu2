@@ -1,6 +1,9 @@
 // forked from makkii_bcr's "T2MediaLib" http://jsdo.it/makkii_bcr/3ioQ
 
 var T2MediaLib = (function(){
+    function isPicoAudio(bgm) {
+        return typeof PicoAudio!=="undefined" && bgm instanceof PicoAudio;
+    }
     var T2MediaLib = function(_context) {
         this.context = null;
         this.picoAudio = null;
@@ -803,6 +806,9 @@ var T2MediaLib = (function(){
 
 
 var T2MediaLib_BGMPlayer = (function(){
+    function isPicoAudio(bgm) {
+        return typeof PicoAudio!=="undefined" && bgm instanceof PicoAudio;
+    }
     var T2MediaLib_BGMPlayer = function(t2MediaLib, arg_id) {
         this.t2MediaLib = t2MediaLib;
         this.id = arg_id;
@@ -891,7 +897,7 @@ var T2MediaLib_BGMPlayer = (function(){
 
     T2MediaLib_BGMPlayer.prototype.stopBGM = function() {
         var bgm = this.playingBGM;
-        if (bgm instanceof PicoAudio) {
+        if (isPicoAudio(bgm)) {
             // Midi
             this.picoAudio.stop();
         } else if (bgm instanceof AudioBufferSourceNode) {
@@ -914,7 +920,7 @@ var T2MediaLib_BGMPlayer = (function(){
 
     T2MediaLib_BGMPlayer.prototype.pauseBGM = function() {
         var bgm = this.playingBGM;
-        if (bgm instanceof PicoAudio) {
+        if (isPicoAudio(bgm)) {
             // Midi
             if (this.bgmPause === 0) {
                 this.bgmPauseTime = this.getBGMCurrentTime();
@@ -951,7 +957,7 @@ var T2MediaLib_BGMPlayer = (function(){
 
     T2MediaLib_BGMPlayer.prototype.resumeBGM = function() {
         var bgm = this.playingBGM;
-        if (bgm instanceof PicoAudio) {
+        if (isPicoAudio(bgm)) {
             // Midi
             if (this.bgmPause === 1) {
                 bgm.play();
@@ -977,7 +983,7 @@ var T2MediaLib_BGMPlayer = (function(){
     T2MediaLib_BGMPlayer.prototype.setBGMVolume = function(vol) {
         var bgm = this.playingBGM;
         this.bgmVolume = vol;
-        if (bgm instanceof PicoAudio) {
+        if (isPicoAudio(bgm)) {
             // Midi
             this.picoAudio.setMasterVolume(this.PICO_AUDIO_VOLUME_COEF * vol * this.t2MediaLib.bgmMasterVolume * this.t2MediaLib.masterVolume);
         } else if (bgm instanceof AudioBufferSourceNode) {
@@ -1022,7 +1028,7 @@ var T2MediaLib_BGMPlayer = (function(){
 
     T2MediaLib_BGMPlayer.prototype.isBGMLoop = function() {
         var bgm = this.playingBGM;
-        if (bgm instanceof PicoAudio) {
+        if (isPicoAudio(bgm)) {
             // Midi
             return this.picoAudio.isLoop();
         } else if (bgm instanceof AudioBufferSourceNode) {
@@ -1038,7 +1044,7 @@ var T2MediaLib_BGMPlayer = (function(){
 
     T2MediaLib_BGMPlayer.prototype.setBGMLoop = function(loop) {
         var bgm = this.playingBGM;
-        if (bgm instanceof PicoAudio) {
+        if (isPicoAudio(bgm)) {
             // Midi
             this.picoAudio.setLoop(loop);
         } else if (bgm instanceof AudioBufferSourceNode) {
@@ -1054,7 +1060,7 @@ var T2MediaLib_BGMPlayer = (function(){
 
     T2MediaLib_BGMPlayer.prototype.getBGMLoopStartTime = function() {
         var bgm = this.playingBGM;
-        if (bgm instanceof PicoAudio) {
+        if (isPicoAudio(bgm)) {
             // Midi
             return 0;
         } else if (bgm instanceof AudioBufferSourceNode) {
@@ -1083,7 +1089,7 @@ var T2MediaLib_BGMPlayer = (function(){
 
     T2MediaLib_BGMPlayer.prototype.getBGMLoopEndTime = function() {
         var bgm = this.playingBGM;
-        if (bgm instanceof PicoAudio) {
+        if (isPicoAudio(bgm)) {
             // Midi
             return this.getBGMLength();
         } else if (bgm instanceof AudioBufferSourceNode) {
@@ -1112,7 +1118,7 @@ var T2MediaLib_BGMPlayer = (function(){
 
     T2MediaLib_BGMPlayer.prototype.getBGMCurrentTime = function() {
         var bgm = this.playingBGM;
-        if (bgm instanceof PicoAudio) {
+        if (isPicoAudio(bgm)) {
             // Midi
             var time;
             if (this.bgmPause === 0) {
@@ -1166,7 +1172,7 @@ var T2MediaLib_BGMPlayer = (function(){
 
     T2MediaLib_BGMPlayer.prototype.getBGMLength = function() {
         var bgm = this.playingBGM;
-        if (bgm instanceof PicoAudio) {
+        if (isPicoAudio(bgm)) {
             // Midi
             return this.picoAudio.getTime(Number.MAX_SAFE_INTEGER);
         } else if (bgm instanceof AudioBufferSourceNode) {

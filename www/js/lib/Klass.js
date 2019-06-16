@@ -28,7 +28,8 @@ define(["assert"],function (A) {
             }
         };
         var fldinit;
-        var check;
+        var warn,wrapped,wrapCancelled;
+        //var check;
         if (init instanceof Array) {
             fldinit=init;
             init=function () {
@@ -99,8 +100,15 @@ define(["assert"],function (A) {
                 return m;
             }
             if (typeof m!=="function") return m;
-            var args=getArgs(m);
-            if (args[0]!==thisName) return m;
+            if (thisName!==true) {
+                var args=getArgs(m);
+                if (args[0]!==thisName) {
+                    wrapCancelled=true;
+                    return m;
+                }
+                warn=true;
+            }
+            wrapped=true;
             return (function () {
                 var a=Array.prototype.slice.call(arguments);
                 a.unshift(this);
@@ -116,6 +124,15 @@ define(["assert"],function (A) {
                 return this.__bounded;
             }
         });
+        if (false && warn) {
+            console.warn("This declaration style may malfunction when minified");
+            if (!wrapCancelled) {
+                console.warn("Use $this:true instead");
+            } else {
+                console.warn("Use python style in all methods and Use $this:true instead");
+            }
+            console.warn(pd);
+        }
         return klass;
     };
     function getArgs(f) {
@@ -137,12 +154,12 @@ define(["assert"],function (A) {
         }
         return c;
     }
-    Klass.Function=function () {throw new Exception("Abstract");}
+    Klass.Function=function () {throw new Error("Abstract");};
     Klass.opt=A.opt;
     Klass.Binder=Klass.define({
         $this:"t",
         $:function (t,target) {
-            for (var k in target) (function (k){
+            function addMethod(k){
                 if (typeof target[k]!=="function") return;
                 t[k]=function () {
                     var a=Array.prototype.slice.call(arguments);
@@ -150,7 +167,8 @@ define(["assert"],function (A) {
                     //A(this.__target,"target is not set");
                     return target[k].apply(target,a);
                 };
-            })(k);
+            }
+            for (var k in target) addMethod(k);
         }
     });
     return Klass;

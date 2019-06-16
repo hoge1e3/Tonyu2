@@ -94,7 +94,7 @@
 	};
 	R.real=real;
 	var requireSimulator=R;
-	// Created at Sat Jun 15 2019 15:40:37 GMT+0900 (日本標準時)
+	// Created at Sun Jun 16 2019 11:37:35 GMT+0900 (日本標準時)
 requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
@@ -4092,7 +4092,8 @@ define(["assert"],function (A) {
             }
         };
         var fldinit;
-        var check;
+        var warn,wrapped,wrapCancelled;
+        //var check;
         if (init instanceof Array) {
             fldinit=init;
             init=function () {
@@ -4163,8 +4164,15 @@ define(["assert"],function (A) {
                 return m;
             }
             if (typeof m!=="function") return m;
-            var args=getArgs(m);
-            if (args[0]!==thisName) return m;
+            if (thisName!==true) {
+                var args=getArgs(m);
+                if (args[0]!==thisName) {
+                    wrapCancelled=true;
+                    return m;
+                }
+                warn=true;
+            }
+            wrapped=true;
             return (function () {
                 var a=Array.prototype.slice.call(arguments);
                 a.unshift(this);
@@ -4180,6 +4188,15 @@ define(["assert"],function (A) {
                 return this.__bounded;
             }
         });
+        if (false && warn) {
+            console.warn("This declaration style may malfunction when minified");
+            if (!wrapCancelled) {
+                console.warn("Use $this:true instead");
+            } else {
+                console.warn("Use python style in all methods and Use $this:true instead");
+            }
+            console.warn(pd);
+        }
         return klass;
     };
     function getArgs(f) {
@@ -4201,12 +4218,12 @@ define(["assert"],function (A) {
         }
         return c;
     }
-    Klass.Function=function () {throw new Exception("Abstract");}
+    Klass.Function=function () {throw new Error("Abstract");};
     Klass.opt=A.opt;
     Klass.Binder=Klass.define({
         $this:"t",
         $:function (t,target) {
-            for (var k in target) (function (k){
+            function addMethod(k){
                 if (typeof target[k]!=="function") return;
                 t[k]=function () {
                     var a=Array.prototype.slice.call(arguments);
@@ -4214,7 +4231,8 @@ define(["assert"],function (A) {
                     //A(this.__target,"target is not set");
                     return target[k].apply(target,a);
                 };
-            })(k);
+            }
+            for (var k in target) addMethod(k);
         }
     });
     return Klass;
@@ -4999,7 +5017,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,is:is,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,DeferredUtil:DU,
-			VERSION:1560580777832,//EMBED_VERSION
+			VERSION:1560652587887,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -5484,6 +5502,9 @@ requireSimulator.setName('T2MediaLib');
 // forked from makkii_bcr's "T2MediaLib" http://jsdo.it/makkii_bcr/3ioQ
 
 var T2MediaLib = (function(){
+    function isPicoAudio(bgm) {
+        return typeof PicoAudio!=="undefined" && bgm instanceof PicoAudio;
+    }
     var T2MediaLib = function(_context) {
         this.context = null;
         this.picoAudio = null;
@@ -6286,6 +6307,9 @@ var T2MediaLib = (function(){
 
 
 var T2MediaLib_BGMPlayer = (function(){
+    function isPicoAudio(bgm) {
+        return typeof PicoAudio!=="undefined" && bgm instanceof PicoAudio;
+    }
     var T2MediaLib_BGMPlayer = function(t2MediaLib, arg_id) {
         this.t2MediaLib = t2MediaLib;
         this.id = arg_id;
@@ -6374,7 +6398,7 @@ var T2MediaLib_BGMPlayer = (function(){
 
     T2MediaLib_BGMPlayer.prototype.stopBGM = function() {
         var bgm = this.playingBGM;
-        if (bgm instanceof PicoAudio) {
+        if (isPicoAudio(bgm)) {
             // Midi
             this.picoAudio.stop();
         } else if (bgm instanceof AudioBufferSourceNode) {
@@ -6397,7 +6421,7 @@ var T2MediaLib_BGMPlayer = (function(){
 
     T2MediaLib_BGMPlayer.prototype.pauseBGM = function() {
         var bgm = this.playingBGM;
-        if (bgm instanceof PicoAudio) {
+        if (isPicoAudio(bgm)) {
             // Midi
             if (this.bgmPause === 0) {
                 this.bgmPauseTime = this.getBGMCurrentTime();
@@ -6434,7 +6458,7 @@ var T2MediaLib_BGMPlayer = (function(){
 
     T2MediaLib_BGMPlayer.prototype.resumeBGM = function() {
         var bgm = this.playingBGM;
-        if (bgm instanceof PicoAudio) {
+        if (isPicoAudio(bgm)) {
             // Midi
             if (this.bgmPause === 1) {
                 bgm.play();
@@ -6460,7 +6484,7 @@ var T2MediaLib_BGMPlayer = (function(){
     T2MediaLib_BGMPlayer.prototype.setBGMVolume = function(vol) {
         var bgm = this.playingBGM;
         this.bgmVolume = vol;
-        if (bgm instanceof PicoAudio) {
+        if (isPicoAudio(bgm)) {
             // Midi
             this.picoAudio.setMasterVolume(this.PICO_AUDIO_VOLUME_COEF * vol * this.t2MediaLib.bgmMasterVolume * this.t2MediaLib.masterVolume);
         } else if (bgm instanceof AudioBufferSourceNode) {
@@ -6505,7 +6529,7 @@ var T2MediaLib_BGMPlayer = (function(){
 
     T2MediaLib_BGMPlayer.prototype.isBGMLoop = function() {
         var bgm = this.playingBGM;
-        if (bgm instanceof PicoAudio) {
+        if (isPicoAudio(bgm)) {
             // Midi
             return this.picoAudio.isLoop();
         } else if (bgm instanceof AudioBufferSourceNode) {
@@ -6521,7 +6545,7 @@ var T2MediaLib_BGMPlayer = (function(){
 
     T2MediaLib_BGMPlayer.prototype.setBGMLoop = function(loop) {
         var bgm = this.playingBGM;
-        if (bgm instanceof PicoAudio) {
+        if (isPicoAudio(bgm)) {
             // Midi
             this.picoAudio.setLoop(loop);
         } else if (bgm instanceof AudioBufferSourceNode) {
@@ -6537,7 +6561,7 @@ var T2MediaLib_BGMPlayer = (function(){
 
     T2MediaLib_BGMPlayer.prototype.getBGMLoopStartTime = function() {
         var bgm = this.playingBGM;
-        if (bgm instanceof PicoAudio) {
+        if (isPicoAudio(bgm)) {
             // Midi
             return 0;
         } else if (bgm instanceof AudioBufferSourceNode) {
@@ -6566,7 +6590,7 @@ var T2MediaLib_BGMPlayer = (function(){
 
     T2MediaLib_BGMPlayer.prototype.getBGMLoopEndTime = function() {
         var bgm = this.playingBGM;
-        if (bgm instanceof PicoAudio) {
+        if (isPicoAudio(bgm)) {
             // Midi
             return this.getBGMLength();
         } else if (bgm instanceof AudioBufferSourceNode) {
@@ -6595,7 +6619,7 @@ var T2MediaLib_BGMPlayer = (function(){
 
     T2MediaLib_BGMPlayer.prototype.getBGMCurrentTime = function() {
         var bgm = this.playingBGM;
-        if (bgm instanceof PicoAudio) {
+        if (isPicoAudio(bgm)) {
             // Midi
             var time;
             if (this.bgmPause === 0) {
@@ -6649,7 +6673,7 @@ var T2MediaLib_BGMPlayer = (function(){
 
     T2MediaLib_BGMPlayer.prototype.getBGMLength = function() {
         var bgm = this.playingBGM;
-        if (bgm instanceof PicoAudio) {
+        if (isPicoAudio(bgm)) {
             // Midi
             return this.picoAudio.getTime(Number.MAX_SAFE_INTEGER);
         } else if (bgm instanceof AudioBufferSourceNode) {
