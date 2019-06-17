@@ -1,0 +1,29 @@
+<html><body class="markdown-body">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><a href="api">api</a></p>
+<h1 id="-customloading">$customLoading</h1>
+<p>「ウィンドウ」→「プロジェクトオプション」→「グローバル変数」にて$customLoading をtrueにすると，<br>画像・音声の読み込み完了前にプログラムを開始することができます．主にローディング画面を<br>作成するのに使います．</p>
+<ul>
+<li>読み込みが完了すると<code>$Boot.loadedAll</code> が<code>true</code>になります．</li>
+<li>読み込みが完了するまでは，次のことは行えません<ul>
+<li><a href="cpats">キャラクタパターン</a>を利用した表示</li>
+<li><a href="T2MediaPlayer">$sound</a>の利用</li>
+</ul>
+</li>
+</ul>
+<h2 id="-">例</h2>
+<pre><code>//ロード中
+x=$screenHeight/2;
+y=200;
+size=30;
+text=&quot;Loading...&quot;;
+while(!$Boot.loadedAll) {
+    y=200-sin($frameCount*5)*20;
+    update();
+}
+//ロード完了（これ以降，キャラクタパターンや$soundが利用可能）
+text=&quot;&quot;;
+</code></pre></body></html>

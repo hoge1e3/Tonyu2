@@ -1,0 +1,18 @@
+<html><body class="markdown-body">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<h1 id="-new-">「new ～～」のところにエラーがでる場合</h1>
+<p>例えば次のような，Mainというクラス（ファイル）しかないプロジェクトがある場合，実行すると</p>
+<p><code>TypeError: _this.Chara1 is not a constructor</code></p>
+<p>というエラーメッセージが表示されます。</p>
+<p>Main</p>
+<pre><code class="lang-JS">//Chara1クラスのオブジェクトの生成
+new Chara1{x:100, y:100};
+</code></pre>
+<p>これは、Chara1という存在しないクラスのオブジェクトを生成しようとしたために発生したものです．<br>該当するクラスを作成するか，クラス名に間違いないかを確認してください（大文字小文字は区別されます）．</p>
+</body></html>

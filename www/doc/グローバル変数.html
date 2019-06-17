@@ -1,0 +1,18 @@
+<html><body class="markdown-body">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<h1 id="-">グローバル変数とオブジェクト変数</h1>
+<p><code>$a</code>や<code>$b</code>など，変数名の先頭に$をつけた変数は，すべてのプログラムから参照可能になります．これらを「グローバル変数」と呼びます</p>
+<p><code>x</code>のように，$がついていない変数は，そのプログラムだけから参照できます(※)．これを「オブジェクト変数」と呼びます．オブジェクトごとに異なる値をもたせたい場合はオブジェクト変数を用います．</p>
+<p>※ただし，<code>$a.x</code>のように，「オブジェクトの名前 . オブジェクト変数名 」を用いると，他のプログラムのオブジェクト変数を参照できます．</p>
+<p><a href="スコアを表示する">スコア</a>など，ゲーム中に1つしかない値を保存したり，<a href="プレイヤーを追いかける">プレイヤー</a>など，1体しかいないキャラクターを保持したりするのに使います．</p>
+<h2 id="-">標準ライブラリ/開発環境で用意されるグローバル変数一覧</h2>
+<ul>
+<li><a href="cpats">画像リスト</a> で追加した画像のキャラクタ番号 <code>$pat_XXX</code></li>
+<li><a href="sndres">音声リスト</a> で追加した音声のオブジェクト <code>$se_XXX</code></li>
+<li><a href="api#グローバル変数">標準ライブラリ</a> で使用する変数</li>
+</ul>
+<p>.</p>
+</body></html>

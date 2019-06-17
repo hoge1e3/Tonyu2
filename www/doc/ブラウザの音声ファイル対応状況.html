@@ -1,0 +1,161 @@
+<html><body class="markdown-body">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<h1 id="-">各ブラウザ・デバイスで再生可能な音声ファイル形式</h1>
+<p>ブラウザ・デバイスの種類によっては、再生できない音声ファイル種別があります。</p>
+<ul>
+<li>○：再生できます</li>
+<li>△：再生できる場合とできない場合があります</li>
+<li>×：再生できません</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th style="text-align:center"></th>
+<th style="text-align:center">Chrome, Firefox, Edge</th>
+<th style="text-align:center">Chromium</th>
+<th style="text-align:center">iOS</th>
+<th style="text-align:center">Linux</th>
+<th style="text-align:center">DL版Tonyu2（NW.js）</th>
+<th>Internet Explorer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td style="text-align:center">MP3</td>
+<td style="text-align:center">○</td>
+<td style="text-align:center">○</td>
+<td style="text-align:center">○</td>
+<td style="text-align:center">△</td>
+<td style="text-align:center">○※1</td>
+<td>×</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td style="text-align:center">AAC</td>
+<td style="text-align:center">○</td>
+<td style="text-align:center">×</td>
+<td style="text-align:center">○</td>
+<td style="text-align:center">△</td>
+<td style="text-align:center">×</td>
+<td>×</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td style="text-align:center">Ogg Vorbis</td>
+<td style="text-align:center">○</td>
+<td style="text-align:center">○</td>
+<td style="text-align:center">×</td>
+<td style="text-align:center">○</td>
+<td style="text-align:center">○</td>
+<td>×</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td style="text-align:center">WAV</td>
+<td style="text-align:center">○</td>
+<td style="text-align:center">○</td>
+<td style="text-align:center">○</td>
+<td style="text-align:center">○</td>
+<td style="text-align:center">○</td>
+<td>×</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td style="text-align:center">MIDI</td>
+<td style="text-align:center">○</td>
+<td style="text-align:center">○</td>
+<td style="text-align:center">○</td>
+<td style="text-align:center">○</td>
+<td style="text-align:center">○</td>
+<td>×</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td style="text-align:center">mzo</td>
+<td style="text-align:center">○</td>
+<td style="text-align:center">○</td>
+<td style="text-align:center">○</td>
+<td style="text-align:center">○</td>
+<td style="text-align:center">○</td>
+<td>×</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>MP3、AAC、Ogg Vorbis、WAVは、ブラウザのデコード機能に頼っているため、再生できるかはブラウザ・デバイスが対応しているか次第です。</li>
+<li>MIDI、mzoはTonyu2自身でデコードしているため、Web Audio APIに対応しているブラウザなら再生可能です。</li>
+<li>Internet ExplorerはWeb Audio APIに対応していないため、サウンドは再生できません。</li>
+<li>※1 2019-0603以降、MP3が再生できます。(2019-0602以前のバージョンでは<a href="https://www.tonyu.jp/tonyu2/ffmpeg.html">ffmpeg</a>の追加インストールが必要です)</li>
+</ul>
+<h2 id="-">対応している音声ファイル形式について</h2>
+<ul>
+<li>MP3 (.mp3)<ul>
+<li>古くからある音声ファイルです。再生できる環境が多いです。</li>
+<li>Linuxの一部ブラウザでは再生できない場合があります。</li>
+</ul>
+</li>
+<li>AAC (.mp4 .m4a)<ul>
+<li>MP3より新しい音声ファイルです。MP3より音質が良いです。</li>
+<li>Chromiumベースのブラウザ、Linuxでは再生できない場合があります。</li>
+<li>ダウンロード版Tonyu2では再生できません。(<a href="https://www.tonyu.jp/tonyu2/ffmpeg.html">ffmpeg</a>の追加インストールが必要です)</li>
+</ul>
+</li>
+<li>Ogg Vorbis (.ogg)<ul>
+<li>MP3より音質が良いです。</li>
+<li>iOS(iPhone, iPad, iPod)の全ブラウザや、MacのSafari等では再生できません。</li>
+</ul>
+</li>
+<li>WAV (.wav)<ul>
+<li>通常未圧縮のため音質劣化はありませんが、ファイルサイズが大きいです。</li>
+<li>ほとんどの環境で再生可能です。</li>
+</ul>
+</li>
+<li>MIDIファイル (.mid .midi)<ul>
+<li>音の鳴らし方などの情報が入った楽譜のようなファイルです。Tonyu2では<a href="https://github.com/cagpie/PicoAudio.js">PicoAudio.js</a>というライブラリを用いてピコピコ音で再生します。</li>
+<li>ほとんどの環境で再生可能です。</li>
+</ul>
+</li>
+<li>mzoファイル (.mzo)<ul>
+<li><a href="https://www.vector.co.jp/soft/win95/art/se065452.html?_ga=2.72529939.1075928444.1541730217-1742912908.1529549881">M-Two</a> という音楽作成ソフトで作成されたオブジェクトファイルです．</li>
+<li><a href="http://www.tonyu.jp/MezonetJS/">オンライン版</a>もあります．<a href="Mezonet">使い方...</a></li>
+</ul>
+</li>
+</ul>
+<p>※()内は対応している拡張子</p>
+<h2 id="-">どの音声ファイル形式を使うか</h2>
+<p>通常の音声ファイル(MP3、AAC、Ogg Vorbis、WAV)についての１つの判断方法(おすすめ)です。</p>
+<ul>
+<li>多くの環境で再生したいならMP3<ul>
+<li>とりあえずMP3にしておけば、ほとんどの環境で再生できます（再生できないのはごく一部）</li>
+<li>WAVはMP3よりもさらに多くの環境で再生できますが、ファイルサイズが大きいのでWebサイトからの実行だとダウンロードに時間がかかります<ul>
+<li>効果音など短い音声なら、WAVでもそこまで問題無いかもしれません</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>MP3より高音質にしたい場合<ul>
+<li>ダウンロード版(ランタイム実行)に限定するならOgg VorbisやWAV</li>
+<li>Webサイトからの実行に限定するならMP4<ul>
+<li>ただしChromium製ブラウザで再生不可な場合があります</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>MIDIやmzoについては、ほとんどの環境で再生できること、ファイルサイズが小さいことから特に問題はありません。</p>
+<h1 id="backlink">Backlink</h1>
+<ul>
+<li><a href="T2MediaPlayer">T2MediaPlayerクラス</a></li>
+</ul>
+</body></html>

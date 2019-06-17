@@ -1,0 +1,56 @@
+<html><body class="markdown-body">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><!-- Konbaatiddo from Tonyu2 non-md document -->
+</p>
+<p><a href="用途別リファレンス">用途別リファレンス</a></p>
+<p>※この方法より<a href="オブジェクトをドラッグする">オブジェクトをドラッグする</a> のほうが仕組みは簡単です．<br>次のような場合にはここで示したものを使ってください．</p>
+<ul>
+<li>オブジェクトが多いときなど効率を重視する場合</li>
+<li>複数のオブジェクトが重なっている箇所をタッチしたとき，手前のものだけを動かしたい場合</li>
+</ul>
+<h1 id="-2">オブジェクトをドラッグする2</h1>
+<ul>
+<li><a href="on">on</a>メソッドを用いて，&quot;touch&quot;イベントを検知し，オブジェクトがタッチされたかを判定します．</li>
+<li>&quot;touch&quot;イベントの処理の中で，移動中や指が離れたときの処理を記述します．<ul>
+<li>イベントオブジェクトのfinger フィールドに<a href="TouchFinger">TouchFinger</a>オブジェクトが渡されます．</li>
+</ul>
+</li>
+</ul>
+<pre><code class="lang-JS">x=100;y=200;
+touching=false;//タッチ＆ドラッグ中はtrueになる
+on(&quot;touch&quot;,drag);
+
+\drag(touchEvent) {
+    //タッチされた指オブジェクトをfに取得
+    var f=touchEvent.finger;
+    touching=true;
+    f.on(&quot;move&quot;) \(moveEvent) {
+        //指が動いたときに実行する処理
+        //指の移動量に応じて移動
+        x+=moveEvent.vx;
+        y+=moveEvent.vy;
+    };
+    f.on(&quot;end&quot;) \(endEvent) {
+        //指が離れたときに実行する処理
+        touching=false;
+    };
+}
+</code></pre>
+<h1 id="-">参考</h1>
+<ul>
+<li><a href="特定の位置をクリックした時に動作をする">特定の位置をクリックした時に動作をする</a></li>
+<li><a href="オブジェクトをドラッグする">オブジェクトをドラッグする</a></li>
+<li><a href="ドラッグやスワイプした量に応じてオブジェクトを動かす">ドラッグやスワイプした量に応じてオブジェクトを動かす</a></li>
+<li><a href="タッチした位置にオブジェクトを表示する">タッチした位置にオブジェクトを移動させる</a></li>
+<li><a href="findTouch">findTouch</a></li>
+<li><a href="$touches">$touches</a></li>
+</ul>
+<p>.</p>
+<h1 id="backlink">Backlink</h1>
+<ul>
+<li><a href="eventTypes">Actorが処理できるイベントの種類一覧</a></li>
+</ul>
+</body></html>

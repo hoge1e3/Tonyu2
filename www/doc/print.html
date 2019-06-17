@@ -12,8 +12,22 @@
 <pre><code class="lang-JS">print(value1,value2...);
 </code></pre>
 <p>value（複数指定可）の値をコンソールに表示します．</p>
+<h1 id="-printcolor-printsize">$printColor/$printSize</h1>
+<ul>
+<li>$printColor: コンソールに表示する文字色を指定します．<ul>
+<li>文字色をあらわす文字列（HTMLの色指定方法に準ずる）を指定します．</li>
+<li>初期値はnullです．nullの場合、<a href="ScaledCanvas">$Screen</a>の背景色によって自動的に文字色を白色または黒色にします.</li>
+</ul>
+</li>
+<li>$printSize: コンソールに表示する際の文字サイズを指定します. 初期値は20です</li>
+</ul>
+<pre><code class="lang-JS">$printColor=&quot;#0f0&quot;;
+$printSize=30;
+print(&quot;文字色：緑、文字サイズ：30&quot;);
+</code></pre>
 <h1 id="backlink">Backlink</h1>
 <ul>
 <li><a href="文字を画面下部に表示する">文字をコンソールに表示する</a></li>
+<li><a href="api">標準クラス</a></li>
 </ul>
 </body></html>

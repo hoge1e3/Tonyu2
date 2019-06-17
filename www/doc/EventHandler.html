@@ -17,19 +17,31 @@
 </li>
 </ul>
 <h2 id="-">メソッド</h2>
-<p>以下のメソッドをオーバーライドしてください。</p>
-<p>ここで登場する、<code>eventType</code>は<a href="registerEventHandler">registerEventHandler</a>でこのイベントハンドラを登録したときの第一引数を指します</p>
+<p>継承したクラスは，newListenerメソッドをオーバーライドしてください．</p>
+<h2 id="newlistener-">newListenerメソッドの仕様</h2>
 <ul>
-<li>addListenerメソッド<ul>
-<li><code>target</code>で示さるオブジェクトに <a href="on">on</a>(<code>eventType</code>,...) または <a href="waitEvent">waitEvent</a>(<code>eventType</code>,...)が呼び出された時に呼び出されます。</li>
-<li>onが呼び出された場合、onに渡された引数の第２引数以降が引数に渡されます</li>
-<li>waitEventが呼び出された場合、waitEventに渡された引数の第２引数以降に、関数オブジェクトを１つ加えたものが引数に渡されます。この関数オブジェクトは、waitEventを呼び出した側に処理を再開させる際に呼び出してください。この呼出の第1引数がwaitEventの戻り値になります。</li>
-<li>戻り値には、removeという名前の関数オブジェクトを含むオブジェクトを返してください。この関数オブジェクトには、この<a href="on">on</a>の呼出によって設定されたイベント処理を無効にする処理を記述します。</li>
+<li><code>target</code>で示さるオブジェクトに <a href="on">on</a>(<code>eventType</code>,...) または <a href="waitEvent">waitEvent</a>(<code>eventType</code>,...)が呼び出された時に呼び出されます。<ul>
+<li>ここで登場する、<code>eventType</code>は<a href="registerEventHandler">registerEventHandler</a>でこのイベントハンドラを登録したときの第一引数を指します</li>
 </ul>
 </li>
-<li>fireメソッド<ul>
-<li><code>target</code>で示さるオブジェクトに <a href="sendEvent">sendEvent</a>(<code>eventType</code>,...)が呼び出された時に呼び出されます。<a href="sendEvent">sendEvent</a>の第２引数以降が渡されます。</li>
-<li>sendEvent(<code>eventType</code>,...)が呼ばれないようなイベントの場合、オーバーライドの必要はありません。（下の例参照）</li>
+<li>onが呼び出された場合、onに渡された引数の第２引数以降が引数に渡されます</li>
+<li>waitEventが呼び出された場合、waitEventに渡された引数の第２引数以降に、関数オブジェクトを１つ加えたものが引数に渡されます。この関数オブジェクトは、waitEventを呼び出した側に処理を再開させる際に呼び出してください。この呼出の第1引数がwaitEventの戻り値になります。</li>
+<li>戻り値には、オブジェクトを返してください。これをlistenerオブジェクトと呼びます．</li>
+</ul>
+<h2 id="listener-">listenerオブジェクトの仕様</h2>
+<p>次の属性に関数を指定できます．</p>
+<ul>
+<li>action<ul>
+<li>sentEvent/ fireEvent によってイベントが発生したときの処理を記述します．省略した場合は，newListenerの最後の引数が指定されます．</li>
+</ul>
+</li>
+<li>dispose<ul>
+<li>このonの呼出によって設定されたイベント処理を無効にする処理を記述します。</li>
+<li>１つのオブジェクトを引数に渡して呼ばれます．オブジェクトには次の属性を含みます<ul>
+<li><code>listener</code> listenerオブジェクト</li>
+<li><code>last</code> このdisposeの呼び出しをもってすべてのイベント処理が削除される場合はtrue</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -39,10 +51,10 @@
 native setInterval;
 native clearInterval;
 
-\addListener(d, f) {
+\newListener(d, f) {
     var t=setInterval(f, d);
     return {
-        remove: \{
+        dispose: \{
             clearInterval(t);
         }
     };
@@ -58,5 +70,6 @@ on(&quot;intervalMsec&quot;,500) \{
 <h1 id="backlink">Backlink</h1>
 <ul>
 <li><a href="api">標準クラス</a></li>
+<li><a href="sendEvent">sendEventメソッド</a></li>
 </ul>
 </body></html>

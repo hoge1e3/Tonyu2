@@ -96,6 +96,17 @@ print(m.get(4,6).name);// tonyu
 </ul>
 </li>
 </ul>
+<h2 id="-">イベント</h2>
+<ul>
+<li>&quot;change&quot;<ul>
+<li>値が書き込まれたときに呼び出されます．<ul>
+<li>※すでに書き込まれているものと同じ値が書き込まれた場合は呼び出されません</li>
+</ul>
+</li>
+<li>呼び出されるときに<code>{x: 横位置, y: 縦位置, value:書き込まれた値 }</code>を<br>オブジェクトにして渡します．</li>
+</ul>
+</li>
+</ul>
 <h2 id="for-in">for ... in</h2>
 <p>次のようにすると，データが格納されている領域を囲う四角形の領域を繰り返します．</p>
 <pre><code class="lang-JS">// mはMatrixクラスのオブジェクト

@@ -1,0 +1,20 @@
+<html><body class="markdown-body">
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.10.1.js"></script>
+<script src="js/doc.js"></script>
+<p><a href="api">api</a></p>
+<h1 id="-soundloadanddecode">$soundLoadAndDecode</h1>
+<p>ゲーム開始前(ローディング中)に、音声ファイルをデコードしておくか設定できます</p>
+<ul>
+<li><code>false</code>にすると、ゲーム開始前にデコードはしません。(デフォルトはfalse)<ul>
+<li>ゲーム開始までの待ち時間が短くなります</li>
+<li>デコードしていない音声ファイルは、サウンド再生時にデコードするため、初回再生は遅れて再生されます</li>
+</ul>
+</li>
+<li><code>true</code>にすると、ゲーム開始前に全ての音声ファイルをデコードしておきます。<ul>
+<li>ゲーム開始まで時間がかかりますが、サウンド再生が遅れることなく即再生できます</li>
+</ul>
+</li>
+</ul>
+</body></html>
