@@ -94,7 +94,7 @@
 	};
 	R.real=real;
 	var requireSimulator=R;
-	// Created at Sun Jun 16 2019 12:34:56 GMT+0900 (日本標準時)
+	// Created at Mon Jun 17 2019 10:21:24 GMT+0900 (日本標準時)
 requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
@@ -3368,14 +3368,15 @@ define(["assert"],function (A) {
                 return this.__bounded;
             }
         });
-        if (false && warn) {
-            console.warn("This declaration style may malfunction when minified");
+        if (warn) {
+            //console.warn("This declaration style may malfunction when minified");
             if (!wrapCancelled) {
                 console.warn("Use $this:true instead");
             } else {
                 console.warn("Use python style in all methods and Use $this:true instead");
             }
-            console.warn(pd);
+            try{throw new Error("Trace");}
+            catch(e) {console.log(e.stack);}
         }
         return klass;
     };
@@ -3401,7 +3402,7 @@ define(["assert"],function (A) {
     Klass.Function=function () {throw new Error("Abstract");};
     Klass.opt=A.opt;
     Klass.Binder=Klass.define({
-        $this:"t",
+        $this:true,
         $:function (t,target) {
             function addMethod(k){
                 if (typeof target[k]!=="function") return;
@@ -4197,7 +4198,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,is:is,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,DeferredUtil:DU,
-			VERSION:1560656034131,//EMBED_VERSION
+			VERSION:1560734448658,//EMBED_VERSION
 			A:A};
 }();
 });

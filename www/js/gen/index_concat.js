@@ -94,7 +94,7 @@
 	};
 	R.real=real;
 	var requireSimulator=R;
-	// Created at Sun Jun 16 2019 12:33:55 GMT+0900 (日本標準時)
+	// Created at Mon Jun 17 2019 10:20:50 GMT+0900 (日本標準時)
 requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
@@ -5623,14 +5623,15 @@ define(["assert"],function (A) {
                 return this.__bounded;
             }
         });
-        if (false && warn) {
-            console.warn("This declaration style may malfunction when minified");
+        if (warn) {
+            //console.warn("This declaration style may malfunction when minified");
             if (!wrapCancelled) {
                 console.warn("Use $this:true instead");
             } else {
                 console.warn("Use python style in all methods and Use $this:true instead");
             }
-            console.warn(pd);
+            try{throw new Error("Trace");}
+            catch(e) {console.log(e.stack);}
         }
         return klass;
     };
@@ -5656,7 +5657,7 @@ define(["assert"],function (A) {
     Klass.Function=function () {throw new Error("Abstract");};
     Klass.opt=A.opt;
     Klass.Binder=Klass.define({
-        $this:"t",
+        $this:true,
         $:function (t,target) {
             function addMethod(k){
                 if (typeof target[k]!=="function") return;
@@ -5991,7 +5992,7 @@ function (Klass,UI,FS,DU,WebSite) {
     var S;
     ProjectItem=S=Klass.define({
 //----METHODS
-$this:"t",
+$this:true,
 $:function (t,projectDir,prjList) {
     var f=projectDir;
     var name=FS.PathUtil.truncSEP(f.name());
@@ -6314,7 +6315,7 @@ requireSimulator.setName('ImportHTMLDialog');
 define(["exportAsScriptTags","UI","Klass","NewProjectDialog","ScriptTagFS"],
 function (east,UI,Klass,NPD,STF) {
     ImportHTMLDialog=Klass.define({
-        $this:"t",
+        $this:true,
         show: function (t,options) {
             t.createDOM();
             t.dom.dialog({width:800,height:600});
