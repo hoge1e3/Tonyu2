@@ -4,7 +4,7 @@ function (Klass,UI,FS,DU,WebSite) {
     var S;
     ProjectItem=S=Klass.define({
 //----METHODS
-$this:"t",
+$this:true,
 $:function (t,projectDir,prjList) {
     var f=projectDir;
     var name=FS.PathUtil.truncSEP(f.name());

@@ -1,6 +1,6 @@
 define(["Klass","UI"],function (Klass,UI) {
 return RunDialog=Klass.define({
-    $this:"t",
+    $this:true,
     $:function (t,param) {
         // desktopEnv,  screenH, onClose
         t.param=param;

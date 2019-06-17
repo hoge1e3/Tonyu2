@@ -1,7 +1,7 @@
 define(["exportAsScriptTags","UI","Klass","NewProjectDialog","ScriptTagFS"],
 function (east,UI,Klass,NPD,STF) {
     ImportHTMLDialog=Klass.define({
-        $this:"t",
+        $this:true,
         show: function (t,options) {
             t.createDOM();
             t.dom.dialog({width:800,height:600});

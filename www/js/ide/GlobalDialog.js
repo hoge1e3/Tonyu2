@@ -1,6 +1,6 @@
 define(["UI","Klass"], function (UI,Klass) {
     GlobalDialog=Klass.define({
-        $this:"t",
+        $this:true,
         $:["prj"],
         show: function (t,options) {
             t.opt=t.prj.getOptions();

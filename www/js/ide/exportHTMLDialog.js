@@ -1,6 +1,6 @@
 define(["exportAsScriptTags","UI","Klass"], function (east,UI,Klass) {
     ExportHTMLDialog=Klass.define({
-        $this:"t",
+        $this:true,
         $:["prj"],
         show: function (t,options) {
             var dir=t.prj.getDir();
