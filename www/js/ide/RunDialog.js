@@ -18,6 +18,9 @@ return RunDialog=Klass.define({
         t.dom=d;
         t.canvas=d.$vars.cv;
     },
+    close: function (t) {
+        t.dom.dialog("close");
+    },
     show: function (t,reset) {
         var d=t.dom;
         var param=t.param;

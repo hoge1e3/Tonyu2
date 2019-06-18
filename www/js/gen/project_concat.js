@@ -94,7 +94,7 @@
 	};
 	R.real=real;
 	var requireSimulator=R;
-	// Created at Mon Jun 17 2019 10:20:59 GMT+0900 (日本標準時)
+	// Created at Tue Jun 18 2019 12:21:59 GMT+0900 (日本標準時)
 requireSimulator.setName('Util');
 Util=(function () {
 
@@ -4400,7 +4400,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,is:is,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,DeferredUtil:DU,
-			VERSION:1560734448658,//EMBED_VERSION
+			VERSION:1560828115159,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -19905,6 +19905,9 @@ return RunDialog=Klass.define({
         t.dom=d;
         t.canvas=d.$vars.cv;
     },
+    close: function (t) {
+        t.dom.dialog("close");
+    },
     show: function (t,reset) {
         var d=t.dom;
         var param=t.param;
@@ -20400,10 +20403,19 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             },50);
         }
     }
+    var pluginAdded={};
     window.onerror=EC.handleException=Tonyu.onRuntimeError=function (e) {
         Tonyu.globals.$lastError=e;
         var t=curPrj.env.traceTbl;
         var te;
+        if (e.pluginName && !pluginAdded[e.pluginName]) {
+            //alert("再実行");
+            pluginAdded[e.pluginName]=true;
+            stop();
+            runDialog.close();
+            setTimeout(run,100);
+            return;
+        }
         var tid = t.find(e) || t.decode($LASTPOS); // user.Main:234
         if (tid) {
             te=curPrj.decodeTrace(tid);

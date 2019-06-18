@@ -431,10 +431,19 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             },50);
         }
     }
+    var pluginAdded={};
     window.onerror=EC.handleException=Tonyu.onRuntimeError=function (e) {
         Tonyu.globals.$lastError=e;
         var t=curPrj.env.traceTbl;
         var te;
+        if (e.pluginName && !pluginAdded[e.pluginName]) {
+            //alert("再実行");
+            pluginAdded[e.pluginName]=true;
+            stop();
+            runDialog.close();
+            setTimeout(run,100);
+            return;
+        }
         var tid = t.find(e) || t.decode($LASTPOS); // user.Main:234
         if (tid) {
             te=curPrj.decodeTrace(tid);
