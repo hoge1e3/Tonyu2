@@ -276,6 +276,14 @@ var T2MediaLib = (function(){
         } else {
             // MP3, Ogg, AAC, WAV
             var that = this;
+
+            // Oggループタグ(LOOPSTART, LOOPLENGTH)をファイルから探す
+            if (soundData.url.match(/\.(ogg?)$/) || soundData.url.match(/^data:audio\/ogg/)) {
+                var retAry = this.searchOggLoop(arrayBuffer);
+                soundData.tagLoopStart = retAry[0];
+                soundData.tagLoopEnd = retAry[1];
+            }
+
             var successCallback = function(audioBuffer) {
                 // デコード中にremoveDecodeSoundData()したらデータを捨てる
                 if (that.soundDataAry[idx].isDecoding()) {
@@ -689,6 +697,16 @@ var T2MediaLib = (function(){
         if (!bgmPlayer) return null;
         return bgmPlayer.getBGMPicoAudio();
     };
+    T2MediaLib.prototype.isTagLoop = function(id) {
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
+        return bgmPlayer.isTagLoop();
+    };
+    T2MediaLib.prototype.setTagLoop = function(id, isTagLoop) {
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
+        return bgmPlayer.setTagLoop(isTagLoop);
+    }
     T2MediaLib.prototype.getBGMPlayerMax = function() {
         return this.bgmPlayerMax;
     };
@@ -800,6 +818,39 @@ var T2MediaLib = (function(){
     T2MediaLib.prototype.getAudioLength = function() {
         if (!(this.playingAudio instanceof Audio)) return null;
         return this.playingAudio.duration;
+    };
+
+    // Oggループタグ探す //
+    T2MediaLib.prototype.searchOggLoop = function(arrayBuffer) {
+        var buf = new Uint8Array(arrayBuffer.slice(0, 3000));
+        var str = String.fromCharCode.apply(null, buf);
+        var isVorbis = str.lastIndexOf("vorbis", 0x22);
+        if (isVorbis == -1) return [0, 0]; // Vorbisではない場合、解析しない
+        var startIdx = str.indexOf("LOOPSTART=");
+        var lengthIdx = str.indexOf("LOOPLENGTH=");
+        var loopStart = 0;
+        var loopLength = 0;
+        var sampleRate = buf[40] + (buf[41]<<8) + (buf[42]<<16) + (buf[43]<<24);
+        if (startIdx != -1) {
+            var tagSize = buf[startIdx] + (buf[startIdx+1]<<8) + (buf[startIdx+2]<<16) + (buf[startIdx+3]<<24);
+            for (var i=startIdx+10; i<startIdx+tagSize; i++) {
+                var c = str[i];
+                if (c < '0' || c > '9') break;
+                loopStart = loopStart*10 + (c - '0');
+            }
+        }
+        if (lengthIdx != -1) {
+            var tagSize = buf[lengthIdx] + (buf[lengthIdx+1]<<8) + (buf[lengthIdx+2]<<16) + (buf[lengthIdx+3]<<24);
+            for (var i=lengthIdx+11; i<lengthIdx+tagSize; i++) {
+                var c = str[i];
+                if (c < '0' || c > '9') break;
+                loopLength = loopLength*10 + (c - '0');
+            }
+        }
+        // 秒に変換
+        var loopEnd = (loopStart + loopLength) / sampleRate;
+        loopStart /= sampleRate;
+        return [loopStart, loopEnd];
     }
 
     return T2MediaLib;
@@ -831,6 +882,7 @@ var T2MediaLib_BGMPlayer = (function(){
         this.picoAudio = null;//new PicoAudio(this.context);
         this.picoAudioSetDataBGMName = null; // 前回のsetDataした曲を再び使う場合は、setDataを省略して軽量化する
         this.PICO_AUDIO_VOLUME_COEF = 1;//0.2;
+        this.isTagLoop = true; // Ogg VorbisファイルにLOOPSTART,LOOPLENGTHのタグが入っている場合、再生時にそれを適用するか
     };
 
     // BGM関数郡 //
@@ -845,13 +897,23 @@ var T2MediaLib_BGMPlayer = (function(){
             var callbacks = {};
             callbacks.bgmPlayerId = this.id;
             callbacks.succ = function() {
-                var pending = that.playingBGMStatePending; // 途中で値が変わるため保存
-                that._setPlayingBGMState("stop", true);
-                if (pending != "stop" && that.playingBGMName == idx) {
-                    that.playBGM(idx, loop, offset, loopStart, loopEnd);
-                }
-                if (pending == "pause") {
-                    that.pauseBGM();
+                var succFunc = function() {
+                    var pending = that.playingBGMStatePending; // 途中で値が変わるため保存
+                    that._setPlayingBGMState("stop", true);
+                    if (pending != "stop" && that.playingBGMName == idx) {
+                        that.playBGM(idx, loop, offset, loopStart, loopEnd);
+                    }
+                    if (pending == "pause") {
+                        that.pauseBGM();
+                    }
+                };
+                var decodedData = soundData.decodedData;
+                if (decodedData instanceof Object) { // MIDI
+                    // MIDIの場合、デコード後はAudioContext.currenTimeの時間がとんで
+                    // 再生直後、瞬間的に早送り再生みたいになるので、playBGMを一旦処理を後回しにする
+                    setTimeout(function(){succFunc();}, 0);
+                } else { // MP3, Ogg, AAC, WAV
+                    succFunc();
                 }
             };
             callbacks.err = function() {
@@ -867,6 +929,10 @@ var T2MediaLib_BGMPlayer = (function(){
         var decodedData = soundData.decodedData;
         if (decodedData instanceof AudioBuffer) {
             // MP3, Ogg, AAC, WAV
+            if (this.isTagLoop) {
+                loopStart = loopStart||soundData.tagLoopStart;
+                loopEnd = loopEnd||soundData.tagLoopEnd;
+            }
             this.playingBGM = this.t2MediaLib.playSE(idx, this.bgmVolume, this.bgmPan, this.bgmTempo, offset, loop, loopStart, loopEnd);
         } else if (decodedData instanceof Object) {
             // Midi
@@ -909,8 +975,8 @@ var T2MediaLib_BGMPlayer = (function(){
             } catch(e) { // iOS対策
                 // iOSではstopを２回以上呼ぶと、InvalidStateErrorが発生する
                 if (bgm.gainNode) {
-                    bgm.gainNode.gain.cancelScheduledValues(this.context.currentTime);
-                    bgm.gainNode.gain.linearRampToValueAtTime(0, this.context.currentTime);
+                    bgm.gainNode.gain.cancelScheduledValues(this.t2MediaLib.context.currentTime);
+                    bgm.gainNode.gain.linearRampToValueAtTime(0, this.t2MediaLib.context.currentTime);
                 }
             }
         }
@@ -944,8 +1010,8 @@ var T2MediaLib_BGMPlayer = (function(){
                 } catch(e) { // iOS対策
                     // iOSではstopを２回以上呼ぶと、InvalidStateErrorが発生する
                     if (bgm.gainNode) {
-                        bgm.gainNode.gain.cancelScheduledValues(this.context.currentTime);
-                        bgm.gainNode.gain.linearRampToValueAtTime(0, this.context.currentTime);
+                        bgm.gainNode.gain.cancelScheduledValues(this.t2MediaLib.context.currentTime);
+                        bgm.gainNode.gain.linearRampToValueAtTime(0, this.t2MediaLib.context.currentTime);
                     }
                 }
                 this.bgmPause = 1;
@@ -1203,6 +1269,14 @@ var T2MediaLib_BGMPlayer = (function(){
         return this.picoAudio;
     };
 
+    T2MediaLib_BGMPlayer.prototype.isTagLoop = function() {
+        return this.isTagLoop;
+    };
+
+    T2MediaLib_BGMPlayer.prototype.setTagLoop = function(isTagLoop) {
+        this.isTagLoop = isTagLoop;
+    };
+
     T2MediaLib_BGMPlayer.prototype._setPlayingBGMState = function(state, force) {
         if (force || this.playingBGMState != "decoding") {
             this.playingBGMState = state;
@@ -1243,6 +1317,8 @@ var T2MediaLib_SoundData = (function(){
         this.fileData = null;
         this.decodedData = null;
         this.decodedCallbacksAry = null;
+        this.tagLoopStart = 0;
+        this.tagLoopEnd = 0;
     };
 
     T2MediaLib_SoundData.prototype.onLoad = function(url) {
