@@ -92,6 +92,7 @@ native console;
     mapTable[setRow][setCol]=p;
     //mapOnTable[setRow][setCol]=-1;
     ctx=buf[0].getContext("2d");
+    if (!ctx) return;
     p=Math.floor(p);
     pImg=$imageList[p];
     if (!pImg) {

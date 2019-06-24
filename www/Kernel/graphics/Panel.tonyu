@@ -355,6 +355,8 @@ nowait \copy() {
     return d.promise();
 }
 \imageSmoothingEnabled=v {
+    var context=this.context;
+    if (!context) return;
     if (typeof context.msImageSmoothingEnabled==="boolean") {
         context.msImageSmoothingEnabled=v;
     } else {
@@ -362,6 +364,8 @@ nowait \copy() {
     }
 }
 \imageSmoothingEnabled {
+    var context=this.context;
+    if (!context) return;
     if (typeof context.msImageSmoothingEnabled==="boolean") {
         return context.msImageSmoothingEnabled;
     } else {

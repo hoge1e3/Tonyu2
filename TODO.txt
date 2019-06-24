@@ -75,6 +75,15 @@ OK Compile error
        Fix B //break;
        Run A again
        get 1, kowareta!
+    (Add: 2019-0620)
+       if A depends B..?
+       create A and B
+       A:extends B;print(1);
+       run A -> get 1
+       compile and get semantics error on B
+       Fix B //break;
+       Run A again
+
 
  The AudioContext was not allowed to start. It must be resume (or created) after a user gesture on the page. https://goo.gl/7K7WLu
  Zipファイル解凍後，dataurlのでコードでエラー
