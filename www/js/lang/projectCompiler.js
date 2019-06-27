@@ -338,7 +338,9 @@ var TPRC=function (dir) {
 	};
 	TPR.hotCompile=function () {
 		var options={hot:true};
-		TPR.compile(options);
+		return TPR.compile(options).then(function () {
+			if (typeof SplashScreen!=="undefined") SplashScreen.hide();
+		});
 	};
 	TPR.getDependingProjects=function () {
 		var opt=TPR.getOptions();
