@@ -1,4 +1,5 @@
 google*.html
+nwjs-trashed/
 .dropbox
 desktop.ini
 ffmpeg/
@@ -15,6 +16,7 @@ Tonyu2.exe
 Player2.exe
 locales/*
 Runtimes/locales/*
+Runtimes/u/
 icudtl.dat
 v8_context_snapshot*
 swiftshader

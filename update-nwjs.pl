@@ -1,4 +1,4 @@
-# perl update-nwjs.pl d:/extractTest/nwjs-sdk-v0.38.2-win-x64 d:/extractTest/nwjs-v0.38.2-win-x64 | sh
+# perl update-nwjs.pl d:/workspace/node_tonyu/nwjs-sdk-v0.39.1-win-x64 d:/workspace/node_tonyu/nwjs-v0.39.1-win-x64 | sh
 
 # debugDir: hack icon of nw.exe and save as Tonyu2.exe
 $debugDir=$ARGV[0];
@@ -21,9 +21,10 @@ nw_200_percent.pak
 nw_elf.dll
 resources.pak
 v8_context_snapshot.bin 
-swiftshader/libGLESv2.dll
-swiftshader/libEGL.dll
 );
+#swiftshader/libGLESv2.dll
+#swiftshader/libEGL.dll
+
 &copyDebug;
 &copyNonDebug;
 
@@ -36,6 +37,9 @@ sub copyDebug {
       my @path=split "/", $f;
       pop @path;
       $path=join "/", @path;
+      unless (-e "$src/$f") {
+         print "Not found: $src/$f\n";
+      }
       &system2( "cp $src/$f $dst/$path ");
    }
 }
@@ -48,6 +52,9 @@ sub copyNonDebug {
       my @path=split "/", $f;
       pop @path;
       $path=join "/", @path;
+      unless (-e "$src/$f") {
+         print "Not found: $src/$f\n";
+      }
       &system2( "cp $src/$f $dst/$path ");
    }
 }

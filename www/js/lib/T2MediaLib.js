@@ -250,6 +250,9 @@ var T2MediaLib = (function(){
                 if (that.soundDataAry[idx].isDecoding()) {
                     that.soundDataAry[idx].onDecodeComplete(data.decodedData);
                     that.soundDataAry[idx].loopStart=data.loopStart;
+                    // もしデコードに時間がかかった or ループするmzo だったら，mezonetに演奏してもらう
+                    // (短時間の効果音などはT2MediaLibが担当)
+                    that.soundDataAry[idx].mezonet=data.mezonet;
                     soundData.decodedCallbacksAry.forEach(function(callbacks) {
                         if (typeof callbacks.succ == "function") {
                             callbacks.succ(idx);
