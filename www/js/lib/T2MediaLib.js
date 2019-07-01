@@ -241,14 +241,14 @@ var T2MediaLib = (function(){
             console.log("Loading mzo");
             // MZO
             var that = this;
-            var m=new Mezonet(this.context);//,{wavOutSpeed:50});
             var a=Array.prototype.slice.call( new Uint8Array(arrayBuffer) );
+            var m=new Mezonet(this.context,a);//,{wavOutSpeed:50});
             //m.load(a);
             m.toAudioBuffer(a).then(function (data) {
                 // デコード中にremoveDecodeSoundData()したらデータを捨てる
                 console.log("MZO loaded",data);
                 if (that.soundDataAry[idx].isDecoding()) {
-                    that.soundDataAry[idx].onDecodeComplete(data.decodedData);
+                    that.soundDataAry[idx].onDecodeComplete(data.decodedData);//data.mezonet の場合空？
                     that.soundDataAry[idx].loopStart=data.loopStart;
                     // もしデコードに時間がかかった or ループするmzo だったら，mezonetに演奏してもらう
                     // (短時間の効果音などはT2MediaLibが担当)
