@@ -1,3 +1,4 @@
+/*global webkitAudioContext, AudioContext, AudioBuffer, AudioBufferSourceNode, PicoAudio, Mezonet, WebSite, Util*/
 // forked from makkii_bcr's "T2MediaLib" http://jsdo.it/makkii_bcr/3ioQ
 
 var T2MediaLib = (function(){
@@ -66,7 +67,7 @@ var T2MediaLib = (function(){
     T2MediaLib.prototype.allRemoveDecodedSoundData = function() {
         var dataAry = this.soundDataAry;
         for (var idx in dataAry) {
-            var soundData = dataAry[idx]
+            var soundData = dataAry[idx];
             if (soundData == null) continue;
             if (!soundData.isDecodeComplete() && !soundData.isDecoding()) continue;
             soundData.removeDecodedData();
@@ -102,14 +103,15 @@ var T2MediaLib = (function(){
 
         var ctx = this.context;
         var numOfChannels = array1 != null && array2 != null ? 2 : 1;
-        var audioBuffer = ctx.createBuffer(numOfChannels, array.length, ctx.sampleRate);
+        var audioBuffer = ctx.createBuffer(numOfChannels, array1.length, ctx.sampleRate);
         var buffer1 = audioBuffer.getChannelData(0);
         var buffer2 = array2 != null ? audioBuffer.getChannelData(1) : null;
-        for (var i = 0; i < array.length ; i++) {
+        var i;
+        for (i = 0; i < array1.length ; i++) {
              buffer1[i] = array1[i];
         }
         if (buffer2) {
-            for (var i = 0; i < array.length ; i++) {
+            for (i = 0; i < array2.length ; i++) {
                  buffer2[i] = array2[i];
             }
         }
@@ -163,7 +165,7 @@ var T2MediaLib = (function(){
         };
 
         this.soundDataAry[idx].onLoad(url);
-        if (url.match(/^data:/) && Util && Util.Base64_To_ArrayBuffer) {//@hoge1e3
+        if (url.match(/^data:/) && typeof Util!=="undefined" && Util.Base64_To_ArrayBuffer) {//@hoge1e3
             xhr={onload:xhr.onload};
             xhr.response=Util.Base64_To_ArrayBuffer( url.replace(/^data:audio\/[a-zA-Z0-9\-]+;base64,/i,""));
             xhr.status=200;
@@ -211,6 +213,7 @@ var T2MediaLib = (function(){
         if (soundData.isDecoding()) return;
         soundData.onDecode();
         var arrayBuffer = soundData.fileData.slice(0);
+        var that = this;
         if (soundData.url.match(/\.(midi?)$/) || soundData.url.match(/^data:audio\/mid/)) {
             // Midi
             // PicoAudio.jsにデコードしてもらう
@@ -240,7 +243,6 @@ var T2MediaLib = (function(){
         } else if (soundData.url.match(/\.mzo$/) || soundData.url.match(/^data:audio\/mzo/)) {
             console.log("Loading mzo");
             // MZO
-            var that = this;
             var a=Array.prototype.slice.call( new Uint8Array(arrayBuffer) );
             var m=new Mezonet(this.context,a);//,{wavOutSpeed:50});
             //m.load(a);
@@ -278,7 +280,6 @@ var T2MediaLib = (function(){
             });
         } else {
             // MP3, Ogg, AAC, WAV
-            var that = this;
 
             // Oggループタグ(LOOPSTART, LOOPLENGTH)をファイルから探す
             if (soundData.url.match(/\.(ogg?)$/) || soundData.url.match(/^data:audio\/ogg/)) {
@@ -399,7 +400,7 @@ var T2MediaLib = (function(){
             if      (offset > audioBuffer.duration) offset = audioBuffer.duration;
             else if (offset < 0.0) offset = 0.0;
         }
-        durationStart = duration;
+        var durationStart = duration;
         if (!duration) {
             //duration=undefined; // iOS9でduration==undefinedだとsource.start(start, offset, duration);でエラー発生する
             durationStart = 86400; // Number.MAX_SAFE_INTEGERを入れてもiOS9ではエラー起きないけど、昔なんかの環境で数値大き過ぎるとエラーになって86400(24時間)に設定した気がする
@@ -513,12 +514,12 @@ var T2MediaLib = (function(){
     };
     T2MediaLib.prototype.getSEVolume = function(sourceObj) {
         if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
-        return source.volumeValue;
+        return sourceObj.volumeValue;
     };
     T2MediaLib.prototype.setSEVolume = function(sourceObj, vol) {
         if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
         sourceObj.gainNode.gain.value = vol * this.seMasterVolume * this.masterVolume;
-        source.volumeValue = vol;
+        sourceObj.volumeValue = vol;
         return sourceObj;
     };
     T2MediaLib.prototype.getSERate = function(sourceObj) {
@@ -709,7 +710,7 @@ var T2MediaLib = (function(){
         var bgmPlayer = this._getBgmPlayer(id);
         if (!bgmPlayer) return null;
         return bgmPlayer.setTagLoop(isTagLoop);
-    }
+    };
     T2MediaLib.prototype.getBGMPlayerMax = function() {
         return this.bgmPlayerMax;
     };
@@ -834,18 +835,19 @@ var T2MediaLib = (function(){
         var loopStart = 0;
         var loopLength = 0;
         var sampleRate = buf[40] + (buf[41]<<8) + (buf[42]<<16) + (buf[43]<<24);
+        var tagSize,i,c;
         if (startIdx != -1) {
-            var tagSize = buf[startIdx] + (buf[startIdx+1]<<8) + (buf[startIdx+2]<<16) + (buf[startIdx+3]<<24);
-            for (var i=startIdx+10; i<startIdx+tagSize; i++) {
-                var c = str[i];
+            tagSize = buf[startIdx] + (buf[startIdx+1]<<8) + (buf[startIdx+2]<<16) + (buf[startIdx+3]<<24);
+            for (i=startIdx+10; i<startIdx+tagSize; i++) {
+                c = str[i];
                 if (c < '0' || c > '9') break;
                 loopStart = loopStart*10 + (c - '0');
             }
         }
         if (lengthIdx != -1) {
-            var tagSize = buf[lengthIdx] + (buf[lengthIdx+1]<<8) + (buf[lengthIdx+2]<<16) + (buf[lengthIdx+3]<<24);
-            for (var i=lengthIdx+11; i<lengthIdx+tagSize; i++) {
-                var c = str[i];
+            tagSize = buf[lengthIdx] + (buf[lengthIdx+1]<<8) + (buf[lengthIdx+2]<<16) + (buf[lengthIdx+3]<<24);
+            for (i=lengthIdx+11; i<lengthIdx+tagSize; i++) {
+                c = str[i];
                 if (c < '0' || c > '9') break;
                 loopLength = loopLength*10 + (c - '0');
             }
@@ -854,7 +856,7 @@ var T2MediaLib = (function(){
         var loopEnd = (loopStart + loopLength) / sampleRate;
         loopStart /= sampleRate;
         return [loopStart, loopEnd];
-    }
+    };
 
     return T2MediaLib;
 })();
@@ -947,8 +949,8 @@ var T2MediaLib_BGMPlayer = (function(){
                 this.picoAudio.initStatus();
             }
             this.picoAudio.setLoop(loop);
-            this.picoAudio.setMasterVolume(this.PICO_AUDIO_VOLUME_COEF * this.bgmVolume
-                * this.t2MediaLib.bgmMasterVolume * this.t2MediaLib.masterVolume);
+            this.picoAudio.setMasterVolume(this.PICO_AUDIO_VOLUME_COEF * this.bgmVolume *
+                 this.t2MediaLib.bgmMasterVolume * this.t2MediaLib.masterVolume);
             if (!offset) {
                 offset = 0;
             } else {
@@ -1189,9 +1191,9 @@ var T2MediaLib_BGMPlayer = (function(){
 
     T2MediaLib_BGMPlayer.prototype.getBGMCurrentTime = function() {
         var bgm = this.playingBGM;
+        var time;
         if (isPicoAudio(bgm)) {
             // Midi
-            var time;
             if (this.bgmPause === 0) {
                 time = this.picoAudio.context.currentTime - this.picoAudio.states.startTime;
             } else {
@@ -1200,7 +1202,7 @@ var T2MediaLib_BGMPlayer = (function(){
             return time;
         } else if (bgm instanceof AudioBufferSourceNode) {
             // MP3, Ogg, AAC, WAV
-            var time, time2, currenTime, tempo, plusTime, minusTime, mod;
+            var time2, currenTime, tempo, plusTime, minusTime, mod;
 
             if (this.bgmPause === 0) {
                 currenTime = this.t2MediaLib.context.currentTime;
