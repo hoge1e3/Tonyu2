@@ -94,7 +94,7 @@
 	};
 	R.real=real;
 	var requireSimulator=R;
-	// Created at Tue Jun 18 2019 12:22:15 GMT+0900 (日本標準時)
+	// Created at Mon Jul 01 2019 12:39:52 GMT+0900 (日本標準時)
 requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
@@ -189,7 +189,8 @@ define([],function () {
 //----------
 define('extend',[],function (){
    return function extend(d,s) {
-      for (var i in s) {d[i]=s[i];} 
+      for (var i in s) {d[i]=s[i];}
+      return d;
    };
 });
 
@@ -639,8 +640,10 @@ define('DeferredUtil',[], function () {
     );
     //  promise.then(S,F)  and promise.then(S).fail(F) is not same!
     //  ->  when fail on S,  F is executed?
+    //   same is promise.then(S).then(same,F)
     var DU;
     var DUBRK=function(r){this.res=r;};
+    function same(e){return e;}
     DU={
         isNativePromise: function (p) {
             return p && (typeof p.then==="function") &&
@@ -714,7 +717,6 @@ define('DeferredUtil',[], function () {
                 resolved=true;
             });
             if (!resolved) {
-                console.log(r);
                 throw new Error("Promise not resolved");
             }
             return res;
@@ -742,7 +744,7 @@ define('DeferredUtil',[], function () {
                     } else {
                         resolve(r);
                     }
-                }).fail(function (r) {
+                }).then(same,function (r) {
                     if (!isDeferred) {
                         setTimeout(function () {
                             reject(r);
@@ -855,7 +857,7 @@ define('DeferredUtil',[], function () {
                         deff1=false;
                         if (r instanceof DUBRK) return r.res;
                         if (deff2) return DU.loop(f,r); //☆
-                    }).fail(function (e) {
+                    }).then(same,function (e) {
                         deff1=false;
                         err=e;
                     });
@@ -1067,6 +1069,8 @@ function (extend, P, M,assert,DU){
         },
         getURL: function (path) {
             stub("");
+        },
+        onAddObserver: function (path) {
         }
     });
     //res=[]; for (var k in a) { res.push(k); } res;
@@ -1295,14 +1299,174 @@ return {
 };
 });
 
-/*! @source http://purl.eligrey.com/github/FileSaver.js/blob/master/FileSaver.js */
-var saveAs=saveAs||"undefined"!==typeof navigator&&navigator.msSaveOrOpenBlob&&navigator.msSaveOrOpenBlob.bind(navigator)||function(a){"use strict";if("undefined"===typeof navigator||!/MSIE [1-9]\./.test(navigator.userAgent)){var k=a.document,n=k.createElementNS("http://www.w3.org/1999/xhtml","a"),w="download"in n,x=function(c){var e=k.createEvent("MouseEvents");e.initMouseEvent("click",!0,!1,a,0,0,0,0,0,!1,!1,!1,!1,0,null);c.dispatchEvent(e)},q=a.webkitRequestFileSystem,u=a.requestFileSystem||q||a.mozRequestFileSystem,
-y=function(c){(a.setImmediate||a.setTimeout)(function(){throw c;},0)},r=0,s=function(c){var e=function(){"string"===typeof c?(a.URL||a.webkitURL||a).revokeObjectURL(c):c.remove()};a.chrome?e():setTimeout(e,10)},t=function(c,a,d){a=[].concat(a);for(var b=a.length;b--;){var l=c["on"+a[b]];if("function"===typeof l)try{l.call(c,d||c)}catch(f){y(f)}}},m=function(c,e){var d=this,b=c.type,l=!1,f,p,k=function(){t(d,["writestart","progress","write","writeend"])},g=function(){if(l||!f)f=(a.URL||a.webkitURL||
-a).createObjectURL(c);p?p.location.href=f:void 0==a.open(f,"_blank")&&"undefined"!==typeof safari&&(a.location.href=f);d.readyState=d.DONE;k();s(f)},h=function(a){return function(){if(d.readyState!==d.DONE)return a.apply(this,arguments)}},m={create:!0,exclusive:!1},v;d.readyState=d.INIT;e||(e="download");if(w)f=(a.URL||a.webkitURL||a).createObjectURL(c),n.href=f,n.download=e,x(n),d.readyState=d.DONE,k(),s(f);else{a.chrome&&b&&"application/octet-stream"!==b&&(v=c.slice||c.webkitSlice,c=v.call(c,0,
-c.size,"application/octet-stream"),l=!0);q&&"download"!==e&&(e+=".download");if("application/octet-stream"===b||q)p=a;u?(r+=c.size,u(a.TEMPORARY,r,h(function(a){a.root.getDirectory("saved",m,h(function(a){var b=function(){a.getFile(e,m,h(function(a){a.createWriter(h(function(b){b.onwriteend=function(b){p.location.href=a.toURL();d.readyState=d.DONE;t(d,"writeend",b);s(a)};b.onerror=function(){var a=b.error;a.code!==a.ABORT_ERR&&g()};["writestart","progress","write","abort"].forEach(function(a){b["on"+
-a]=d["on"+a]});b.write(c);d.abort=function(){b.abort();d.readyState=d.DONE};d.readyState=d.WRITING}),g)}),g)};a.getFile(e,{create:!1},h(function(a){a.remove();b()}),h(function(a){a.code===a.NOT_FOUND_ERR?b():g()}))}),g)}),g)):g()}},b=m.prototype;b.abort=function(){this.readyState=this.DONE;t(this,"abort")};b.readyState=b.INIT=0;b.WRITING=1;b.DONE=2;b.error=b.onwritestart=b.onprogress=b.onwrite=b.onabort=b.onerror=b.onwriteend=null;return function(a,b){return new m(a,b)}}}("undefined"!==typeof self&&
-self||"undefined"!==typeof window&&window||this.content);"undefined"!==typeof module&&null!==module?module.exports=saveAs:"undefined"!==typeof define&&null!==define&&null!=define.amd&&define('FileSaver.min',[],function(){return saveAs});
-define('Content',["assert","Util","FileSaver.min"],function (assert,Util,saveAs) {
+/*
+* FileSaver.js
+* A saveAs() FileSaver implementation.
+*
+* By Eli Grey, http://eligrey.com
+*
+* License : https://github.com/eligrey/FileSaver.js/blob/master/LICENSE.md (MIT)
+* source  : http://purl.eligrey.com/github/FileSaver.js
+*/
+define('FileSaver',[],function (){
+
+// The one and only way of getting global scope in all environments
+// https://stackoverflow.com/q/3277182/1008999
+var _global = typeof window === 'object' && window.window === window
+  ? window : typeof self === 'object' && self.self === self
+  ? self : typeof global === 'object' && global.global === global
+  ? global
+  : this
+
+function bom (blob, opts) {
+  if (typeof opts === 'undefined') opts = { autoBom: false }
+  else if (typeof opts !== 'object') {
+    console.warn('Depricated: Expected third argument to be a object')
+    opts = { autoBom: !opts }
+  }
+
+  // prepend BOM for UTF-8 XML and text/* types (including HTML)
+  // note: your browser will automatically convert UTF-16 U+FEFF to EF BB BF
+  if (opts.autoBom && /^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(blob.type)) {
+    return new Blob([String.fromCharCode(0xFEFF), blob], { type: blob.type })
+  }
+  return blob
+}
+
+function download (url, name, opts) {
+  var xhr = new XMLHttpRequest()
+  xhr.open('GET', url)
+  xhr.responseType = 'blob'
+  xhr.onload = function () {
+    saveAs(xhr.response, name, opts)
+  }
+  xhr.onerror = function () {
+    console.error('could not download file')
+  }
+  xhr.send()
+}
+
+function corsEnabled (url) {
+  var xhr = new XMLHttpRequest()
+  // use sync to avoid popup blocker
+  xhr.open('HEAD', url, false)
+  xhr.send()
+  return xhr.status >= 200 && xhr.status <= 299
+}
+
+// `a.click()` doesn't work for all browsers (#465)
+function click(node) {
+  try {
+    node.dispatchEvent(new MouseEvent('click'))
+  } catch (e) {
+    var evt = document.createEvent('MouseEvents')
+    evt.initMouseEvent('click', true, true, window, 0, 0, 0, 80,
+                          20, false, false, false, false, 0, null)
+    node.dispatchEvent(evt)
+  }
+}
+
+var saveAs = _global.saveAs ||
+// probably in some web worker
+(typeof window !== 'object' || window !== _global)
+  ? function saveAs () { /* noop */ }
+
+// Use download attribute first if possible (#193 Lumia mobile)
+: 'download' in HTMLAnchorElement.prototype
+? function saveAs (blob, name, opts) {
+  var URL = _global.URL || _global.webkitURL
+  var a = document.createElement('a')
+  name = name || blob.name || 'download'
+
+  a.download = name
+  a.rel = 'noopener' // tabnabbing
+
+  // TODO: detect chrome extensions & packaged apps
+  // a.target = '_blank'
+
+  if (typeof blob === 'string') {
+    // Support regular links
+    a.href = blob
+    if (a.origin !== location.origin) {
+      corsEnabled(a.href)
+        ? download(blob, name, opts)
+        : click(a, a.target = '_blank')
+    } else {
+      click(a)
+    }
+  } else {
+    // Support blobs
+    a.href = URL.createObjectURL(blob)
+    setTimeout(function () { URL.revokeObjectURL(a.href) }, 4E4) // 40s
+    setTimeout(function () { click(a) }, 0)
+  }
+}
+
+// Use msSaveOrOpenBlob as a second approach
+: 'msSaveOrOpenBlob' in navigator
+? function saveAs (blob, name, opts) {
+  name = name || blob.name || 'download'
+
+  if (typeof blob === 'string') {
+    if (corsEnabled(blob)) {
+      download(blob, name, opts)
+    } else {
+      var a = document.createElement('a')
+      a.href = blob
+      a.target = '_blank'
+      setTimeout(function () { click(a) })
+    }
+  } else {
+    navigator.msSaveOrOpenBlob(bom(blob, opts), name)
+  }
+}
+
+// Fallback to using FileReader and a popup
+: function saveAs (blob, name, opts, popup) {
+  // Open a popup immediately do go around popup blocker
+  // Mostly only avalible on user interaction and the fileReader is async so...
+  popup = popup || open('', '_blank')
+  if (popup) {
+    popup.document.title =
+    popup.document.body.innerText = 'downloading...'
+  }
+
+  if (typeof blob === 'string') return download(blob, name, opts)
+
+  var force = blob.type === 'application/octet-stream'
+  var isSafari = /constructor/i.test(_global.HTMLElement) || _global.safari
+  var isChromeIOS = /CriOS\/[\d]+/.test(navigator.userAgent)
+
+  if ((isChromeIOS || (force && isSafari)) && typeof FileReader === 'object') {
+    // Safari doesn't allow downloading of blob urls
+    var reader = new FileReader()
+    reader.onloadend = function () {
+      var url = reader.result
+      url = isChromeIOS ? url : url.replace(/^data:[^;]*;/, 'data:attachment/file;')
+      if (popup) popup.location.href = url
+      else location = url
+      popup = null // reverse-tabnabbing #460
+    }
+    reader.readAsDataURL(blob)
+  } else {
+    var URL = _global.URL || _global.webkitURL
+    var url = URL.createObjectURL(blob)
+    if (popup) popup.location = url
+    else location.href = url
+    popup = null // reverse-tabnabbing #460
+    setTimeout(function () { URL.revokeObjectURL(url) }, 4E4) // 40s
+  }
+}
+
+_global.saveAs = saveAs.saveAs = saveAs
+
+if (typeof module !== 'undefined') {
+  module.exports = saveAs;
+}
+return saveAs;
+});
+
+define('Content',["assert","Util","FileSaver"],function (assert,Util,saveAs) {
     var Content=function () {};
     var extend=Util.extend;
     // ------ constructor
@@ -1338,12 +1502,18 @@ define('Content',["assert","Util","FileSaver.min"],function (assert,Util,saveAs)
     Content.bin=function (bin, contentType) {
         assert(contentType, "contentType should be set");
         var b=new Content;
-        if (bin && Content.isBuffer(bin.buffer)) {
-            b.arrayBuffer=bin.buffer;
-        } else if (Content.isNodeBuffer(bin)) {
+        if (Content.isNodeBuffer(bin)) {
+            b.bufType="node";
             b.nodeBuffer=bin;
         } else if (bin instanceof ArrayBuffer) {
+            b.bufType="array2";
             b.arrayBuffer=bin;
+        } else if (bin && Content.isBuffer(bin.buffer)) {
+            // in node.js v8.9.1 ,
+            ///  bin is Buffer, bin.buffer is ArrayBuffer
+            //   and bin.buffer is content of different file(memory leak?) 
+            b.bufType="array1";
+            b.arrayBuffer=bin.buffer;
         } else {
             throw new Error(bin+" is not a bin");
         }
@@ -1636,6 +1806,7 @@ define('Content',["assert","Util","FileSaver.min"],function (assert,Util,saveAs)
     return Content;
 });
 
+/*global require, requirejs, process, Buffer*/
 define('NativeFS',["FSClass","assert","PathUtil","extend","Content"],
         function (FS,A,P,extend,Content) {
     var available=(typeof process=="object"/* && process.__node_webkit*/);
@@ -1646,6 +1817,9 @@ define('NativeFS',["FSClass","assert","PathUtil","extend","Content"],
     }
     var assert=A;
     var fs=require("fs");
+    if (!fs) {
+        fs=requirejs.nodeRequire("fs");
+    }
     var NativeFS=function (rootPoint) {
         if (rootPoint) {
             A.is(rootPoint, P.AbsDir);
@@ -1655,8 +1829,8 @@ define('NativeFS',["FSClass","assert","PathUtil","extend","Content"],
     var hasDriveLetter=P.hasDriveLetter(process.cwd());
     NativeFS.available=true;
     var SEP=P.SEP;
-    var json=JSON; // JSON changes when page changes, if this is node module, JSON is original JSON
-    var Pro=NativeFS.prototype=new FS;
+    //var json=JSON; // JSON changes when page changes, if this is node module, JSON is original JSON
+    var Pro=NativeFS.prototype=new FS();
     Pro.toNativePath = function (path) {
         // rootPoint: on NativePath   C:/jail/
         // mountPoint: on VirtualFS   /mnt/natfs/
@@ -1683,14 +1857,16 @@ define('NativeFS',["FSClass","assert","PathUtil","extend","Content"],
     NativeFS.prototype.inMyFS=function (path) {
         //console.log("inmyfs",path);
         if (this.mountPoint) {
-            return P.startsWith(path, this.mountPoint)
+            return P.startsWith(path, this.mountPoint);
         } else {
 //            console.log(path, hasDriveLetter , P.hasDriveLetter(path));
             return !( !!hasDriveLetter ^ !!P.hasDriveLetter(path));
         }
     };
+    function E(r){return r;}
     FS.delegateMethods(NativeFS.prototype, {
         getReturnTypes: function(path, options) {
+            E(path,options);
             assert.is(arguments,[String]);
             return {
                 getContent: ArrayBuffer, opendir:[String]
@@ -1738,12 +1914,13 @@ define('NativeFS',["FSClass","assert","PathUtil","extend","Content"],
             return s;
         },
         setMetaInfo: function(path, info, options) {
-
+            E(path, info, options);
             //options.lastUpdate
 
             //TODO:
         },
         isReadOnly: function (path) {
+            E(path);
             // TODO:
             return false;
         },
@@ -1753,6 +1930,7 @@ define('NativeFS',["FSClass","assert","PathUtil","extend","Content"],
             return fs.statSync(np);
         },
         mkdir: function(path, options) {
+            options=options||{};
             assert.is(arguments,[P.Absolute]);
             if (this.exists(path)){
                 if (this.isDir(path)) {
@@ -1798,6 +1976,7 @@ define('NativeFS',["FSClass","assert","PathUtil","extend","Content"],
         // mv: is Difficult, should check dst.fs==src.fs
         //     and both have not subFileSystems
         exists: function (path, options) {
+            options=options||{};
             var np=this.toNativePath(path);
             return fs.existsSync(np);
         },
@@ -1821,6 +2000,29 @@ define('NativeFS',["FSClass","assert","PathUtil","extend","Content"],
         },
         getURL:function (path) {
             return "file:///"+path.replace(/\\/g,"/");
+        },
+        onAddObserver: function (apath,options) {
+            var t=this;
+            var rfs=t.getRootFS();
+            options=options||{};
+            var isDir=this.isDir(apath);
+            //console.log("Invoke oao",options);
+            var w=fs.watch(apath, options, function (evt,rpath) {
+                //console.log(path);
+                var fpath=isDir ? P.rel(apath,rpath) : apath;
+                var meta;
+                if (t.exists(fpath)) {
+                    meta=extend({eventType:evt},t.getMetaInfo(fpath));
+                } else {
+                    meta={eventType:evt};
+                }
+                rfs.notifyChanged(fpath,meta);
+            });
+            return {
+                remove: function () {
+                    w.close();
+                }
+            };
         }
     });
     return NativeFS;
@@ -1838,7 +2040,7 @@ define('LSFS',["FSClass","PathUtil","extend","assert","Util","Content"],
     var up = P.up.bind(P);
     var endsWith= P.endsWith.bind(P);
     //var getName = P.name.bind(P);
-    var Path=P.Path;
+    //var Path=P.Path;
     var Absolute=P.Absolute;
     var SEP= P.SEP;
     function now(){
@@ -1859,7 +2061,7 @@ define('LSFS',["FSClass","PathUtil","extend","assert","Util","Content"],
     });
 
     LSFS.now=now;
-    LSFS.prototype=new FS;
+    LSFS.prototype=new FS();
     //private methods
     LSFS.prototype.resolveKey=function (path) {
         assert.is(path,P.Absolute);
@@ -1904,9 +2106,9 @@ define('LSFS',["FSClass","PathUtil","extend","assert","Util","Content"],
         if (!endsWith(path, SEP)) path += SEP;
         assert(this.inMyFS(path));
         if (this.dirCache && this.dirCache[path]) return this.dirCache[path];
-        var dinfo =  {};
+        var dinfo =  {},dinfos;
         try {
-            var dinfos = this.getItem(path);
+            dinfos = this.getItem(path);
             if (dinfos) {
                 dinfo = JSON.parse(dinfos);
             }
@@ -1937,13 +2139,16 @@ define('LSFS',["FSClass","PathUtil","extend","assert","Util","Content"],
         // trashed: this touch is caused by trashing the file/dir.
         assert.is(arguments,[Object, String, String]);
         assert(this.inMyFS(path));
+        var eventType="change";
         if (!dinfo[name]) {
+            eventType="create";
             dinfo[name] = {};
             if (trashed) dinfo[name].trashed = true;
         }
         if (!trashed) delete dinfo[name].trashed;
         dinfo[name].lastUpdate = now();
-        this.getRootFS().notifyChanged(P.rel(path,name), dinfo[name]);
+        var meta=extend({eventType:eventType},dinfo[name]);
+        this.getRootFS().notifyChanged(P.rel(path,name), meta);
         this.putDirInfo(path, dinfo, trashed);
     };
     LSFS.prototype.removeEntry=function removeEntry(dinfo, path, name) { // path:path of dinfo
@@ -1953,6 +2158,7 @@ define('LSFS',["FSClass","PathUtil","extend","assert","Util","Content"],
                 lastUpdate: now(),
                 trashed: true
             };
+            this.getRootFS().notifyChanged(P.rel(path,name), {eventType:"trash"});
             this.putDirInfo(path, dinfo, true);
         }
     };
@@ -1960,6 +2166,7 @@ define('LSFS',["FSClass","PathUtil","extend","assert","Util","Content"],
         assert.is(arguments,[Object, String, String]);
         if (dinfo[name]) {
             delete dinfo[name];
+            this.getRootFS().notifyChanged(P.rel(path,name), {eventType:"delete"});
             this.putDirInfo(path, dinfo, true);
         }
     };
@@ -2242,6 +2449,7 @@ define('LSFS',["FSClass","PathUtil","extend","assert","Util","Content"],
  */
 
 // use this transport for "binary" data type
+if (typeof $!=="undefined")
 $.ajaxTransport("+binary", function(options, originalOptions, jqXHR){
     // check for conditions and support for blob / arraybuffer response type
     if (window.FormData && ((options.dataType && (options.dataType == 'binary')) || (options.data && ((window.ArrayBuffer && options.data instanceof ArrayBuffer) || (window.Blob && options.data instanceof Blob)))))
@@ -2283,6 +2491,7 @@ $.ajaxTransport("+binary", function(options, originalOptions, jqXHR){
         };
     }
 });
+
 define("jquery.binarytransport", function(){});
 
 define('WebFS',["FSClass","jquery.binarytransport","DeferredUtil","Content","PathUtil"],
@@ -2351,7 +2560,7 @@ define('Env',["assert","PathUtil"],function (A,P) {
     };
     return Env;
 });
-define('SFile',["extend","assert","PathUtil","Util","Content","FSClass","FileSaver.min","DeferredUtil"],
+define('SFile',["extend","assert","PathUtil","Util","Content","FSClass","FileSaver","DeferredUtil"],
 function (extend,A,P,Util,Content,FSClass,saveAs,DU) {
 
 var SFile=function (rootFS, path) {
@@ -2597,6 +2806,8 @@ SFile.prototype={
         if (this.isDir()) {
             throw new Error("Cannot write to directory: "+this.path());
         }
+        // why setContentAsync? AsyncでもDU.resolveはsyncをサポートしていればsyncでやってくれる...はず，Promiseだと遅延するからだめ．今までJQばっかりだったから問題が起きていなかった．
+        // なので，fs2/promise.jsを追加．
         return this.act.fs.setContentAsync(this.act.path,c);
     },
 
@@ -2768,7 +2979,35 @@ SFile.prototype={
             else return fun(f);
         },options);
     },
+    _listFiles:function (options,async) {
+        A(options==null || typeof options=="object");
+        var dir=this.assertDir();
+        var path=this.path();
+        var ord;
+        options=dir.convertOptions(options);
+        if (!ord) ord=options.order;
+        if (async) {
+            return this.act.fs.opendirAsync(this.act.path, options).
+            then(cvt);
+        } else {
+            return cvt( this.act.fs.opendir(this.act.path, options));
+        }
+        function cvt(di) {
+            var res=[];
+            for (var i=0;i<di.length; i++) {
+                var name=di[i];
+                //if (!options.includeTrashed && dinfo[i].trashed) continue;
+                var f=dir.rel(name);
+                if (options.excludesF(f) ) continue;
+                res.push(f);
+            }
+            if (typeof ord=="function" && res.sort) res.sort(ord);
+            return res;
+        }
+    },
     listFilesAsync:function (options) {
+        return this._listFiles(options,true);
+        /*
         A(options==null || typeof options=="object");
         var dir=this.assertDir();
         var path=this.path();
@@ -2787,11 +3026,12 @@ SFile.prototype={
             }
             if (typeof ord=="function" && res.sort) res.sort(ord);
             return res;
-        });
+        });*/
     },
     listFiles:function (options) {
-        var args=Array.prototype.slice.call(arguments);
-        return DU.assertResolved(this.listFilesAsync.apply(this,args));
+        return this._listFiles(options,false);
+        /*var args=Array.prototype.slice.call(arguments);
+        return DU.assertResolved(this.listFilesAsync.apply(this,args));*/
     },
     ls:function (options) {
         A(options==null || typeof options=="object");
@@ -2865,6 +3105,21 @@ SFile.prototype={
             reader.readAsArrayBuffer(blob);
         });
     },
+    size: function (f) {
+        if (!f) {
+            if (!this.isDir()) {
+                return this.getBytes().byteLength;
+            } else {
+                var sum=0;
+                this.each(function (f) {
+                    sum+=f.size();
+                });
+                return sum;
+            }
+        } else {
+            //TODO: async
+        }
+    },
     download: function () {
         if (this.isDir()) throw new Error(this+": Download dir is not support yet. Use 'zip' instead.");
         saveAs(this.getBlob(),this.name());;
@@ -2889,6 +3144,18 @@ SFile.prototype={
         for (var k in data) {
             this.rel(k).text(data[k]);
         }
+    },
+    watch: function (_1,_2) {
+        var options={},handler=function(){};
+        if (typeof _1==="object") options=_1;
+        if (typeof _2==="object") options=_2;
+        if (typeof _1==="function") handler=_1;
+        if (typeof _2==="function") handler=_2;
+        var rfs=this.getFS().getRootFS();
+        //var t=this;
+        rfs.addObserver(this.path(),function (path, meta) {
+            handler(meta.eventType, rfs.get(path),meta );
+        });
     }
 };
 Object.defineProperty(SFile.prototype,"act",{
@@ -2958,21 +3225,23 @@ define('RootFS',["assert","FSClass","PathUtil","SFile"], function (assert,FS,P,S
             get: function (path) {
                 assert.is(path,P.Absolute);
                 return new SFile(this.resolveFS(path), path);
-            },   
-            addObserver: function () {
+            },
+            addObserver: function (_1,_2,_3) {
                 this.observers=this.observers||[];
-                var path,f;
-                if (arguments.length==2) {
-                    path=arguments[0];
-                    f=arguments[1];
-                } else if (arguments.length==1) {
-                    path="";
-                    f=arguments[0];
-                } else {
-                    throw new Error("Invalid argument spec");
-                }
+                var options={},path,f;
+                if (typeof _1==="string") path=_1;
+                if (typeof _2==="string") path=_2;
+                if (typeof _3==="string") path=_3;
+                if (typeof _1==="object") options=_1;
+                if (typeof _2==="object") options=_2;
+                if (typeof _3==="object") options=_3;
+                if (typeof _1==="function") f=_1;
+                if (typeof _2==="function") f=_2;
+                if (typeof _3==="function") f=_3;
                 assert.is(path,String);
                 assert.is(f,Function);
+                var fs=this.resolveFS(path);
+                var remover=fs.onAddObserver(path,options);
                 var observers=this.observers;
                 var observer={
                     path:path,
@@ -2980,6 +3249,7 @@ define('RootFS',["assert","FSClass","PathUtil","SFile"], function (assert,FS,P,S
                     remove: function () {
                         var i=observers.indexOf(this);
                         observers.splice(i,1);
+                        if (remover) remover.remove();
                     }
                 };
                 this.observers.push(observer);
@@ -3002,7 +3272,8 @@ define('RootFS',["assert","FSClass","PathUtil","SFile"], function (assert,FS,P,S
     }
     return RootFS;
 });
-define('zip',["SFile",/*"jszip",*/"FileSaver.min","Util","DeferredUtil"],
+
+define('zip',["SFile",/*"jszip",*/"FileSaver","Util","DeferredUtil"],
 function (SFile,/*JSZip,*/fsv,Util,DU) {
     var zip={};
     zip.setJSZip=function (JSZip) {
@@ -3111,13 +3382,323 @@ function (SFile,/*JSZip,*/fsv,Util,DU) {
     return zip;
 });
 
-define('FS',["FSClass","NativeFS","LSFS", "WebFS", "PathUtil","Env","assert","SFile","RootFS","Content","zip","DeferredUtil"],
-        function (FSClass,NativeFS,LSFS,WebFS, P,Env,A,SFile,RootFS,Content,zip,DU) {
+/*(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory() :
+	typeof define === 'function' && define.amd ? define(factory) :
+	(factory());
+}(this, (function () { 'use strict';*/
+// modified from https://github.com/taylorhakes/promise-polyfill/blob/master/dist/polyfill.js
+// if promise resolved immediately, it will run f of then(f)
+// P.resolve(5).then(e=>console.log(e)); console.log(3)  ->  show 5 3, while original is 3 5
+define('promise',[], function() {
+
+/**
+ * @this {Promise}
+ */
+function finallyConstructor(callback) {
+  var constructor = this.constructor;
+  return this.then(
+    function(value) {
+      // @ts-ignore
+      return constructor.resolve(callback()).then(function() {
+        return value;
+      });
+    },
+    function(reason) {
+      // @ts-ignore
+      return constructor.resolve(callback()).then(function() {
+        // @ts-ignore
+        return constructor.reject(reason);
+      });
+    }
+  );
+}
+
+// Store setTimeout reference so promise-polyfill will be unaffected by
+// other code modifying setTimeout (like sinon.useFakeTimers())
+var setTimeoutFunc = setTimeout;
+
+function isArray(x) {
+  return Boolean(x && typeof x.length !== 'undefined');
+}
+
+function noop() {}
+
+// Polyfill for Function.prototype.bind
+function bind(fn, thisArg) {
+  return function() {
+    fn.apply(thisArg, arguments);
+  };
+}
+
+/**
+ * @constructor
+ * @param {Function} fn
+ */
+function Promise(fn) {
+  if (!(this instanceof Promise))
+    throw new TypeError('Promises must be constructed via new');
+  if (typeof fn !== 'function') throw new TypeError('not a function');
+  /** @type {!number} */
+  this._state = 0;
+  /** @type {!boolean} */
+  this._handled = false;
+  /** @type {Promise|undefined} */
+  this._value = undefined;
+  /** @type {!Array<!Function>} */
+  this._deferreds = [];
+
+  doResolve(fn, this);
+}
+
+function handle(self, deferred) {
+  while (self._state === 3) {
+    self = self._value;
+  }
+  if (self._state === 0) {
+    self._deferreds.push(deferred);
+    return;
+  }
+  self._handled = true;
+  Promise._immediateFn(function() {
+    var cb = self._state === 1 ? deferred.onFulfilled : deferred.onRejected;
+    if (cb === null) {
+      (self._state === 1 ? resolve : reject)(deferred.promise, self._value);
+      return;
+    }
+    var ret;
+    try {
+      ret = cb(self._value);
+    } catch (e) {
+      reject(deferred.promise, e);
+      return;
+    }
+    resolve(deferred.promise, ret);
+  });
+}
+
+function resolve(self, newValue) {
+  try {
+    // Promise Resolution Procedure: https://github.com/promises-aplus/promises-spec#the-promise-resolution-procedure
+    if (newValue === self)
+      throw new TypeError('A promise cannot be resolved with itself.');
+    if (
+      newValue &&
+      (typeof newValue === 'object' || typeof newValue === 'function')
+    ) {
+      var then = newValue.then;
+      if (newValue instanceof Promise) {
+        self._state = 3;
+        self._value = newValue;
+        finale(self);
+        return;
+      } else if (typeof then === 'function') {
+        doResolve(bind(then, newValue), self);
+        return;
+      }
+    }
+    self._state = 1;
+    self._value = newValue;
+    finale(self);
+  } catch (e) {
+    reject(self, e);
+  }
+}
+
+function reject(self, newValue) {
+  self._state = 2;
+  self._value = newValue;
+  finale(self);
+}
+
+function finale(self) {
+  if (self._state === 2 && self._deferreds.length === 0) {
+    Promise._immediateFn(function() {
+      if (!self._handled) {
+        Promise._unhandledRejectionFn(self._value);
+      }
+    });
+  }
+
+  for (var i = 0, len = self._deferreds.length; i < len; i++) {
+    handle(self, self._deferreds[i]);
+  }
+  self._deferreds = null;
+}
+
+/**
+ * @constructor
+ */
+function Handler(onFulfilled, onRejected, promise) {
+  this.onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : null;
+  this.onRejected = typeof onRejected === 'function' ? onRejected : null;
+  this.promise = promise;
+}
+
+/**
+ * Take a potentially misbehaving resolver function and make sure
+ * onFulfilled and onRejected are only called once.
+ *
+ * Makes no guarantees about asynchrony.
+ */
+function doResolve(fn, self) {
+  var done = false;
+  try {
+    fn(
+      function(value) {
+        if (done) return;
+        done = true;
+        resolve(self, value);
+      },
+      function(reason) {
+        if (done) return;
+        done = true;
+        reject(self, reason);
+      }
+    );
+  } catch (ex) {
+    if (done) return;
+    done = true;
+    reject(self, ex);
+  }
+}
+
+Promise.prototype['catch'] = function(onRejected) {
+  return this.then(null, onRejected);
+};
+
+Promise.prototype.then = function(onFulfilled, onRejected) {
+  // @ts-ignore
+  var prom = new this.constructor(noop);
+
+  handle(this, new Handler(onFulfilled, onRejected, prom));
+  return prom;
+};
+
+Promise.prototype['finally'] = finallyConstructor;
+
+Promise.all = function(arr) {
+  return new Promise(function(resolve, reject) {
+    if (!isArray(arr)) {
+      return reject(new TypeError('Promise.all accepts an array'));
+    }
+
+    var args = Array.prototype.slice.call(arr);
+    if (args.length === 0) return resolve([]);
+    var remaining = args.length;
+
+    function res(i, val) {
+      try {
+        if (val && (typeof val === 'object' || typeof val === 'function')) {
+          var then = val.then;
+          if (typeof then === 'function') {
+            then.call(
+              val,
+              function(val) {
+                res(i, val);
+              },
+              reject
+            );
+            return;
+          }
+        }
+        args[i] = val;
+        if (--remaining === 0) {
+          resolve(args);
+        }
+      } catch (ex) {
+        reject(ex);
+      }
+    }
+
+    for (var i = 0; i < args.length; i++) {
+      res(i, args[i]);
+    }
+  });
+};
+
+Promise.resolve = function(value) {
+  if (value && typeof value === 'object' && value.constructor === Promise) {
+    return value;
+  }
+
+  return new Promise(function(resolve) {
+    resolve(value);
+  });
+};
+
+Promise.reject = function(value) {
+  return new Promise(function(resolve, reject) {
+    reject(value);
+  });
+};
+
+Promise.race = function(arr) {
+  return new Promise(function(resolve, reject) {
+    if (!isArray(arr)) {
+      return reject(new TypeError('Promise.race accepts an array'));
+    }
+
+    for (var i = 0, len = arr.length; i < len; i++) {
+      Promise.resolve(arr[i]).then(resolve, reject);
+    }
+  });
+};
+
+// Use polyfill for setImmediate for performance gains
+Promise._immediateFn = function (fn) {fn();};/*
+  // @ts-ignore
+  (typeof setImmediate === 'function' &&
+    function(fn) {
+      // @ts-ignore
+      setImmediate(fn);
+    }) ||
+  function(fn) {
+    setTimeoutFunc(fn, 0);
+  };
+*/
+
+Promise._unhandledRejectionFn = function _unhandledRejectionFn(/*err*/) {
+  if (typeof console !== 'undefined' && console) {
+    //console.warn('Possible Unhandled Promise Rejection:', err); // eslint-disable-line no-console
+  }
+};
+/** @suppress {undefinedVars} */
+/*
+var globalNS = (function() {
+  // the only reliable means to get the global object is
+  // `Function('return this')()`
+  // However, this causes CSP violations in Chrome apps.
+  if (typeof self !== 'undefined') {
+    return self;
+  }
+  if (typeof window !== 'undefined') {
+    return window;
+  }
+  if (typeof global !== 'undefined') {
+    return global;
+  }
+  throw new Error('unable to locate global object');
+})();
+
+if (!('Promise' in globalNS)) {
+  globalNS['Promise'] = Promise;
+} else if (!globalNS.Promise.prototype['finally']) {
+  globalNS.Promise.prototype['finally'] = finallyConstructor;
+}*/
+return Promise;
+});
+
+define('FS',["FSClass","NativeFS","LSFS", "WebFS", "PathUtil","Env","assert","SFile","RootFS","Content","zip","DeferredUtil","promise"],
+        function (FSClass,NativeFS,LSFS,WebFS, P,Env,A,SFile,RootFS,Content,zip,DU,PR) {
     var FS={};
     FS.assert=A;
     FS.Content=Content;
     FS.Class=FSClass;
     FS.DeferredUtil=DU;
+    if (!DU.config.useJQ) {
+        DU.external.Promise=PR;
+    }
     FS.Env=Env;
     FS.LSFS=LSFS;
     FS.NativeFS=NativeFS;
@@ -3230,7 +3811,8 @@ define('FS',["FSClass","NativeFS","LSFS", "WebFS", "PathUtil","Env","assert","SF
 	requirejs(["FS"], function (r) {
 	  resMod=r;
 	});
-	if (window.FS===undefined) window.FS=resMod;
+	if (typeof window!=="undefined" && window.FS===undefined) window.FS=resMod;
+	if (typeof module!=="undefined") module=resMod;
 	return resMod;
 });
 //})(window);
@@ -5018,7 +5600,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,is:is,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,DeferredUtil:DU,
-			VERSION:1560828115159,//EMBED_VERSION
+			VERSION:1561952367866,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -5743,15 +6325,18 @@ var T2MediaLib = (function(){
             console.log("Loading mzo");
             // MZO
             var that = this;
-            var m=new Mezonet(this.context);//,{wavOutSpeed:50});
             var a=Array.prototype.slice.call( new Uint8Array(arrayBuffer) );
+            var m=new Mezonet(this.context,a);//,{wavOutSpeed:50});
             //m.load(a);
             m.toAudioBuffer(a).then(function (data) {
                 // デコード中にremoveDecodeSoundData()したらデータを捨てる
                 console.log("MZO loaded",data);
                 if (that.soundDataAry[idx].isDecoding()) {
-                    that.soundDataAry[idx].onDecodeComplete(data.decodedData);
+                    that.soundDataAry[idx].onDecodeComplete(data.decodedData);//data.mezonet の場合空？
                     that.soundDataAry[idx].loopStart=data.loopStart;
+                    // もしデコードに時間がかかった or ループするmzo だったら，mezonetに演奏してもらう
+                    // (短時間の効果音などはT2MediaLibが担当)
+                    that.soundDataAry[idx].mezonet=data.mezonet;
                     soundData.decodedCallbacksAry.forEach(function(callbacks) {
                         if (typeof callbacks.succ == "function") {
                             callbacks.succ(idx);
@@ -5778,6 +6363,14 @@ var T2MediaLib = (function(){
         } else {
             // MP3, Ogg, AAC, WAV
             var that = this;
+
+            // Oggループタグ(LOOPSTART, LOOPLENGTH)をファイルから探す
+            if (soundData.url.match(/\.(ogg?)$/) || soundData.url.match(/^data:audio\/ogg/)) {
+                var retAry = this.searchOggLoop(arrayBuffer);
+                soundData.tagLoopStart = retAry[0];
+                soundData.tagLoopEnd = retAry[1];
+            }
+
             var successCallback = function(audioBuffer) {
                 // デコード中にremoveDecodeSoundData()したらデータを捨てる
                 if (that.soundDataAry[idx].isDecoding()) {
@@ -6191,6 +6784,16 @@ var T2MediaLib = (function(){
         if (!bgmPlayer) return null;
         return bgmPlayer.getBGMPicoAudio();
     };
+    T2MediaLib.prototype.isTagLoop = function(id) {
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
+        return bgmPlayer.isTagLoop();
+    };
+    T2MediaLib.prototype.setTagLoop = function(id, isTagLoop) {
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
+        return bgmPlayer.setTagLoop(isTagLoop);
+    }
     T2MediaLib.prototype.getBGMPlayerMax = function() {
         return this.bgmPlayerMax;
     };
@@ -6302,6 +6905,39 @@ var T2MediaLib = (function(){
     T2MediaLib.prototype.getAudioLength = function() {
         if (!(this.playingAudio instanceof Audio)) return null;
         return this.playingAudio.duration;
+    };
+
+    // Oggループタグ探す //
+    T2MediaLib.prototype.searchOggLoop = function(arrayBuffer) {
+        var buf = new Uint8Array(arrayBuffer.slice(0, 3000));
+        var str = String.fromCharCode.apply(null, buf);
+        var isVorbis = str.lastIndexOf("vorbis", 0x22);
+        if (isVorbis == -1) return [0, 0]; // Vorbisではない場合、解析しない
+        var startIdx = str.indexOf("LOOPSTART=");
+        var lengthIdx = str.indexOf("LOOPLENGTH=");
+        var loopStart = 0;
+        var loopLength = 0;
+        var sampleRate = buf[40] + (buf[41]<<8) + (buf[42]<<16) + (buf[43]<<24);
+        if (startIdx != -1) {
+            var tagSize = buf[startIdx] + (buf[startIdx+1]<<8) + (buf[startIdx+2]<<16) + (buf[startIdx+3]<<24);
+            for (var i=startIdx+10; i<startIdx+tagSize; i++) {
+                var c = str[i];
+                if (c < '0' || c > '9') break;
+                loopStart = loopStart*10 + (c - '0');
+            }
+        }
+        if (lengthIdx != -1) {
+            var tagSize = buf[lengthIdx] + (buf[lengthIdx+1]<<8) + (buf[lengthIdx+2]<<16) + (buf[lengthIdx+3]<<24);
+            for (var i=lengthIdx+11; i<lengthIdx+tagSize; i++) {
+                var c = str[i];
+                if (c < '0' || c > '9') break;
+                loopLength = loopLength*10 + (c - '0');
+            }
+        }
+        // 秒に変換
+        var loopEnd = (loopStart + loopLength) / sampleRate;
+        loopStart /= sampleRate;
+        return [loopStart, loopEnd];
     }
 
     return T2MediaLib;
@@ -6333,6 +6969,7 @@ var T2MediaLib_BGMPlayer = (function(){
         this.picoAudio = null;//new PicoAudio(this.context);
         this.picoAudioSetDataBGMName = null; // 前回のsetDataした曲を再び使う場合は、setDataを省略して軽量化する
         this.PICO_AUDIO_VOLUME_COEF = 1;//0.2;
+        this.isTagLoop = true; // Ogg VorbisファイルにLOOPSTART,LOOPLENGTHのタグが入っている場合、再生時にそれを適用するか
     };
 
     // BGM関数郡 //
@@ -6347,13 +6984,23 @@ var T2MediaLib_BGMPlayer = (function(){
             var callbacks = {};
             callbacks.bgmPlayerId = this.id;
             callbacks.succ = function() {
-                var pending = that.playingBGMStatePending; // 途中で値が変わるため保存
-                that._setPlayingBGMState("stop", true);
-                if (pending != "stop" && that.playingBGMName == idx) {
-                    that.playBGM(idx, loop, offset, loopStart, loopEnd);
-                }
-                if (pending == "pause") {
-                    that.pauseBGM();
+                var succFunc = function() {
+                    var pending = that.playingBGMStatePending; // 途中で値が変わるため保存
+                    that._setPlayingBGMState("stop", true);
+                    if (pending != "stop" && that.playingBGMName == idx) {
+                        that.playBGM(idx, loop, offset, loopStart, loopEnd);
+                    }
+                    if (pending == "pause") {
+                        that.pauseBGM();
+                    }
+                };
+                var decodedData = soundData.decodedData;
+                if (decodedData instanceof Object) { // MIDI
+                    // MIDIの場合、デコード後はAudioContext.currenTimeの時間がとんで
+                    // 再生直後、瞬間的に早送り再生みたいになるので、playBGMを一旦処理を後回しにする
+                    setTimeout(function(){succFunc();}, 0);
+                } else { // MP3, Ogg, AAC, WAV
+                    succFunc();
                 }
             };
             callbacks.err = function() {
@@ -6369,6 +7016,10 @@ var T2MediaLib_BGMPlayer = (function(){
         var decodedData = soundData.decodedData;
         if (decodedData instanceof AudioBuffer) {
             // MP3, Ogg, AAC, WAV
+            if (this.isTagLoop) {
+                loopStart = loopStart||soundData.tagLoopStart;
+                loopEnd = loopEnd||soundData.tagLoopEnd;
+            }
             this.playingBGM = this.t2MediaLib.playSE(idx, this.bgmVolume, this.bgmPan, this.bgmTempo, offset, loop, loopStart, loopEnd);
         } else if (decodedData instanceof Object) {
             // Midi
@@ -6411,8 +7062,8 @@ var T2MediaLib_BGMPlayer = (function(){
             } catch(e) { // iOS対策
                 // iOSではstopを２回以上呼ぶと、InvalidStateErrorが発生する
                 if (bgm.gainNode) {
-                    bgm.gainNode.gain.cancelScheduledValues(this.context.currentTime);
-                    bgm.gainNode.gain.linearRampToValueAtTime(0, this.context.currentTime);
+                    bgm.gainNode.gain.cancelScheduledValues(this.t2MediaLib.context.currentTime);
+                    bgm.gainNode.gain.linearRampToValueAtTime(0, this.t2MediaLib.context.currentTime);
                 }
             }
         }
@@ -6446,8 +7097,8 @@ var T2MediaLib_BGMPlayer = (function(){
                 } catch(e) { // iOS対策
                     // iOSではstopを２回以上呼ぶと、InvalidStateErrorが発生する
                     if (bgm.gainNode) {
-                        bgm.gainNode.gain.cancelScheduledValues(this.context.currentTime);
-                        bgm.gainNode.gain.linearRampToValueAtTime(0, this.context.currentTime);
+                        bgm.gainNode.gain.cancelScheduledValues(this.t2MediaLib.context.currentTime);
+                        bgm.gainNode.gain.linearRampToValueAtTime(0, this.t2MediaLib.context.currentTime);
                     }
                 }
                 this.bgmPause = 1;
@@ -6705,6 +7356,14 @@ var T2MediaLib_BGMPlayer = (function(){
         return this.picoAudio;
     };
 
+    T2MediaLib_BGMPlayer.prototype.isTagLoop = function() {
+        return this.isTagLoop;
+    };
+
+    T2MediaLib_BGMPlayer.prototype.setTagLoop = function(isTagLoop) {
+        this.isTagLoop = isTagLoop;
+    };
+
     T2MediaLib_BGMPlayer.prototype._setPlayingBGMState = function(state, force) {
         if (force || this.playingBGMState != "decoding") {
             this.playingBGMState = state;
@@ -6745,6 +7404,8 @@ var T2MediaLib_SoundData = (function(){
         this.fileData = null;
         this.decodedData = null;
         this.decodedCallbacksAry = null;
+        this.tagLoopStart = 0;
+        this.tagLoopEnd = 0;
     };
 
     T2MediaLib_SoundData.prototype.onLoad = function(url) {
