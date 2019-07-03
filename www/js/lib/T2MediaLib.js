@@ -5,6 +5,9 @@ var T2MediaLib = (function(){
     function isPicoAudio(bgm) {
         return typeof PicoAudio!=="undefined" && bgm instanceof PicoAudio;
     }
+    function isMezonetSource(bgm) {
+        return typeof Mezonet!=="undefined" && bgm instanceof Mezonet;
+    }
     var T2MediaLib = function(_context) {
         this.context = null;
         this.picoAudio = null;
@@ -246,22 +249,15 @@ var T2MediaLib = (function(){
             var a=Array.prototype.slice.call( new Uint8Array(arrayBuffer) );
             var m=new Mezonet(this.context,a);//,{wavOutSpeed:50});
             //m.load(a);
-            m.toAudioBuffer(a).then(function (data) {
+            m.init().then(function () {
                 // デコード中にremoveDecodeSoundData()したらデータを捨てる
-                console.log("MZO loaded",data);
-                if (that.soundDataAry[idx].isDecoding()) {
-                    that.soundDataAry[idx].onDecodeComplete(data.decodedData);//data.mezonet の場合空？
-                    that.soundDataAry[idx].loopStart=data.loopStart;
-                    // もしデコードに時間がかかった or ループするmzo だったら，mezonetに演奏してもらう
-                    // (短時間の効果音などはT2MediaLibが担当)
-                    that.soundDataAry[idx].mezonet=data.mezonet;
-                    soundData.decodedCallbacksAry.forEach(function(callbacks) {
-                        if (typeof callbacks.succ == "function") {
-                            callbacks.succ(idx);
-                        }
-                    });
-                    soundData.decodedCallbacksAry = null;
-                }
+                that.soundDataAry[idx].onDecodeComplete(m);
+                soundData.decodedCallbacksAry.forEach(function(callbacks) {
+                    if (typeof callbacks.succ == "function") {
+                        callbacks.succ(idx);
+                    }
+                });
+                soundData.decodedCallbacksAry = null;
             },function (error) {
                 if (error instanceof Error) {
                     console.log('T2MediaLib: '+error.message, soundData.url);//@hoge1e3
@@ -381,6 +377,11 @@ var T2MediaLib = (function(){
             };
             this.decodeSound(idx, callbacks);
             return null;
+        }
+        if (isMezonetSource(soundData.decodedData)) {
+            var playback=soundData.decodedData.playAsMezonet();
+            playback.start({rate:rate, start:start,volume: vol});
+            return playback;
         }
 
         var audioBuffer = soundData.decodedData;
@@ -867,6 +868,12 @@ var T2MediaLib_BGMPlayer = (function(){
     function isPicoAudio(bgm) {
         return typeof PicoAudio!=="undefined" && bgm instanceof PicoAudio;
     }
+    function isMezonetSource(bgm) {
+        return typeof Mezonet!=="undefined" && bgm instanceof Mezonet;
+    }
+    function isMezonetPlayback(bgm) {
+        return typeof Mezonet!=="undefined" && bgm instanceof Mezonet.Playback;
+    }
     var T2MediaLib_BGMPlayer = function(t2MediaLib, arg_id) {
         this.t2MediaLib = t2MediaLib;
         this.id = arg_id;
@@ -932,7 +939,10 @@ var T2MediaLib_BGMPlayer = (function(){
         }
 
         var decodedData = soundData.decodedData;
-        if (decodedData instanceof AudioBuffer) {
+        if (isMezonetSource(decodedData)) {
+            this.playingBGM = decodedData.playAsMezonet();
+            this.playingBGM.start();
+        } else if (decodedData instanceof AudioBuffer) {
             // MP3, Ogg, AAC, WAV
             if (this.isTagLoop) {
                 loopStart = loopStart||soundData.tagLoopStart;
@@ -970,7 +980,9 @@ var T2MediaLib_BGMPlayer = (function(){
 
     T2MediaLib_BGMPlayer.prototype.stopBGM = function() {
         var bgm = this.playingBGM;
-        if (isPicoAudio(bgm)) {
+        if (isMezonetPlayback(bgm)){
+            bgm.stop();
+        } else if (isPicoAudio(bgm)) {
             // Midi
             this.picoAudio.stop();
         } else if (bgm instanceof AudioBufferSourceNode) {
@@ -993,7 +1005,9 @@ var T2MediaLib_BGMPlayer = (function(){
 
     T2MediaLib_BGMPlayer.prototype.pauseBGM = function() {
         var bgm = this.playingBGM;
-        if (isPicoAudio(bgm)) {
+        if (isMezonetPlayback(bgm)){
+            bgm.pause();
+        } else if (isPicoAudio(bgm)) {
             // Midi
             if (this.bgmPause === 0) {
                 this.bgmPauseTime = this.getBGMCurrentTime();
@@ -1030,7 +1044,9 @@ var T2MediaLib_BGMPlayer = (function(){
 
     T2MediaLib_BGMPlayer.prototype.resumeBGM = function() {
         var bgm = this.playingBGM;
-        if (isPicoAudio(bgm)) {
+        if (isMezonetPlayback(bgm)){
+            bgm.resume();
+        } else if (isPicoAudio(bgm)) {
             // Midi
             if (this.bgmPause === 1) {
                 bgm.play();
@@ -1056,7 +1072,9 @@ var T2MediaLib_BGMPlayer = (function(){
     T2MediaLib_BGMPlayer.prototype.setBGMVolume = function(vol) {
         var bgm = this.playingBGM;
         this.bgmVolume = vol;
-        if (isPicoAudio(bgm)) {
+        if (isMezonetPlayback(bgm)){
+            bgm.setVolume(vol);
+        } else if (isPicoAudio(bgm)) {
             // Midi
             this.picoAudio.setMasterVolume(this.PICO_AUDIO_VOLUME_COEF * vol * this.t2MediaLib.bgmMasterVolume * this.t2MediaLib.masterVolume);
         } else if (bgm instanceof AudioBufferSourceNode) {
@@ -1077,7 +1095,10 @@ var T2MediaLib_BGMPlayer = (function(){
         var bgm = this.playingBGM;
 
         if (tempo <= 0 || isNaN(tempo)) tempo = 1;
-        if ((bgm instanceof AudioBufferSourceNode) && this.bgmPause === 0) {
+        if (isMezonetPlayback(bgm)){
+            bgm.setRate(tempo);
+            return this;
+        } else if ((bgm instanceof AudioBufferSourceNode) && this.bgmPause === 0) {
             bgm.plusTime -= (this.t2MediaLib.context.currentTime - bgm.playStartTime) * (tempo - this.bgmTempo);
         }
         this.bgmTempo = tempo;
@@ -1192,7 +1213,9 @@ var T2MediaLib_BGMPlayer = (function(){
     T2MediaLib_BGMPlayer.prototype.getBGMCurrentTime = function() {
         var bgm = this.playingBGM;
         var time;
-        if (isPicoAudio(bgm)) {
+        if (isMezonetPlayback(bgm)){
+            return bgm.getCurrentTime();
+        } else if (isPicoAudio(bgm)) {
             // Midi
             if (this.bgmPause === 0) {
                 time = this.picoAudio.context.currentTime - this.picoAudio.states.startTime;
