@@ -1,4 +1,4 @@
-# Tonyu Systen 2
+# Tonyu System 2
 
 Language and IDE for action game development using html5+js.
 
