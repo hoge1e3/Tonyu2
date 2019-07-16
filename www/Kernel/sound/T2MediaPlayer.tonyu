@@ -12,6 +12,7 @@ native console;
     if (!$t2MediaLib) {
         $t2MediaLib = new T2MediaLib();
     }
+    resetSEFrame();
     bgmPlayerMax = $t2MediaLib.bgmPlayerMax;
 }
 
@@ -50,7 +51,7 @@ native console;
     if (!r || !r.sounds) return;
     if (r.sounds <= 0) return;
 
-    progressNoLog("Loading sounds...[0/"+r.sounds.length+"]"); 
+    progressNoLog("Loading sounds...[0/"+r.sounds.length+"]");
     var jobs=6; // 6つ同時読み込み（NW.jsでは54以上同時読み込みするとフリーズしてしまう）
     var cnt=0;
     var s, name, url;
@@ -73,7 +74,7 @@ native console;
     };
     var callbacks={};
     callbacks.succ=func;
-    callbacks.err=func; 
+    callbacks.err=func;
     for (var i=0; i<jobs; i++) {
         if (i >= r.sounds.length) break;
         s = r.sounds[i];
@@ -126,6 +127,8 @@ native console;
     } else {
         vol = 1.0;
     }
+    if (!start && seStaredAtThisFrame[idx]) return;
+    seStaredAtThisFrame[idx]=true;
     return $t2MediaLib.playSE(idx, vol, pan, rate, offset, loop, loopStart, loopEnd,start,duration);//@hoge1e3
 }
 
@@ -332,3 +335,4 @@ native console;
 \getAudioCurrentTime()  { return $t2MediaLib.getAudioCurrentTime(); }
 \getAudioLength()       { return $t2MediaLib.getAudioLength(); }
 \getAudioData(idx)      { return $t2MediaLib.getAudioData(idx); }
+\resetSEFrame() {seStaredAtThisFrame={};}

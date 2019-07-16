@@ -407,6 +407,7 @@ nowait \moveFrame() {
     $Keys.update();
     //debug("MoveFrame",3);
     $InputDevice.update();
+    if ($sound )$sound.resetSEFrame();
     //console.log("running");
     //debug("MoveFrame",4);
     $screenWidth=$Screen.width;
