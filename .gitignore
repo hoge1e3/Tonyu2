@@ -17,6 +17,7 @@ Player2.exe
 locales/*
 Runtimes/locales/*
 Runtimes/u/
+Runtimes/SearchDad/
 icudtl.dat
 v8_context_snapshot*
 swiftshader
