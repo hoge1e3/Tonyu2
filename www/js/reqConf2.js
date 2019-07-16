@@ -252,6 +252,7 @@ var reqConf={
                 "promise": 1,
                 "WorkerLib": 1,
                 "timbre": 1,
+                "root": 1,
                 "util": "Util"
             },
             "mkrun": {

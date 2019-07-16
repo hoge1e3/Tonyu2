@@ -1,3 +1,4 @@
+/*global requirejs, require*/
 requirejs(["Util", "Tonyu", "FS", "PathUtil","FileList", "FileMenu",
            "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project",
            /*"copySample",*/"Shell","Shell2","ProjectOptionsEditor","copyToKernel","KeyEventChecker",
@@ -5,7 +6,8 @@ requirejs(["Util", "Tonyu", "FS", "PathUtil","FileList", "FileMenu",
            "UI","ResEditors","WebSite","exceptionCatcher","Tonyu.TraceTbl",
            "Log","MainClassDialog","DeferredUtil","NWMenu",
            "ProjectCompiler","compiledProject","mkrunDiag","zip","LSFS","WebFS",
-           "extLink","DiagAdjuster","ExportHTMLDialog","RunDialog","GlobalDialog"
+           "extLink","DiagAdjuster","ExportHTMLDialog","RunDialog","GlobalDialog",
+           "root"
           ],
 function (Util, Tonyu, FS, PathUtil, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,
@@ -14,7 +16,8 @@ function (Util, Tonyu, FS, PathUtil, FileList, FileMenu,
           UI,ResEditors,WebSite,EC,TTB,
           Log,MainClassDialog,DU,NWMenu,
           TPRC,CPPRJ,mkrunDiag,zip,LSFS,WebFS,
-          extLink,DiagAdjuster,ExportHTMLDialog,RunDialog,GlobalDialog
+          extLink,DiagAdjuster,ExportHTMLDialog,RunDialog,GlobalDialog,
+          root
           ) {
 $(function () {
     if (!WebSite.isNW) {
@@ -34,7 +37,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     */
 
     var F=EC.f;
-    $LASTPOS=0;
+    root.$LASTPOS=0;
     //copySample();
     var mobile=WebSite.mobile || FS.get(WebSite.tonyuHome).rel("mobile.txt").exists();
     if (mobile) {
@@ -56,7 +59,8 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         }
     }
     var dir=Util.getQueryString("dir", "/Tonyu/Projects/SandBox/");
-    var curPrjDir=curProjectDir=FS.get(dir);
+    var curPrjDir=FS.get(dir);
+    var curProjectDir=curPrjDir;
     var curPrj=Tonyu_Project(curProjectDir);//, kernelDir);
     var resEditors=new ResEditors(curPrj);
     Tonyu.globals.$currentProject=curPrj;
@@ -188,7 +192,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             console.log(e);
             return false;
         }).finally(function () {
-            if (typeof SplashScreen==="object") SplashScreen.hide();
+            if (root.SplashScreen) root.SplashScreen.hide();
         });
         //close(old);  does in FileMenu
     };
@@ -260,7 +264,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
                         }))));
 
         //saveDesktopEnv();
-        $("#exportToJsdoit").attr("href", "javascript:;").click(function () {
+        $("#exportToJsdoit").attr("href", "javascriptoo".replace("oo",":;")).click(function () {
             exportHTMLDialog.show({
                 excludes:{"js/concat.js":1,"js/concat.js.map":1},
                 includeJSScript:true
@@ -332,11 +336,11 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             break;
         case "compile_error":
             //$("#errorPos").show();// slideDown(1000, next);
-            if (typeof SplashScreen!="undefined") SplashScreen.hide();
+            if (root.SplashScreen) root.SplashScreen.hide();
             break;
         case "runtime_error":
             //$("#errorPos").slideDown(1000, next);
-            if (typeof SplashScreen!="undefined") SplashScreen.hide();
+            if (root.SplashScreen) root.SplashScreen.hide();
             break;
         case "edit":
             if (runDialog.modified) {
@@ -396,7 +400,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             Tonyu.globals.$mainCanvas=runDialog.canvas;
         };
         Log.dumpProject(curProjectDir);
-        if (typeof SplashScreen!="undefined") SplashScreen.show();
+        if (root.SplashScreen) root.SplashScreen.show();
         var o=curPrj.getOptions();
         if (o.run.mainClass!=name) {
             o.run.mainClass=name;
@@ -412,7 +416,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
                 Tonyu.onRuntimeError(e);
             }
         }).finally(function () {
-            if (typeof SplashScreen!="undefined") SplashScreen.hide();
+            if (root.SplashScreen) root.SplashScreen.hide();
         });
     }
     var alertOnce;
@@ -444,11 +448,11 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             setTimeout(run,100);
             return;
         }
-        var tid = t.find(e) || t.decode($LASTPOS); // user.Main:234
+        var tid = t.find(e) || t.decode(root.$LASTPOS); // user.Main:234
         if (tid) {
             te=curPrj.decodeTrace(tid);
         }
-        console.log("onRunTimeError:stackTrace1",e.stack,te,$LASTPOS);
+        console.log("onRunTimeError:stackTrace1",e.stack,te,root.$LASTPOS);
         if (te) {
             te.mesg=e;
             if (e.pluginName) {
@@ -561,7 +565,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         var inf=editors[f.path()];
         if (!inf) {
             var progDOM=$("<pre>").css("height", runDialogParam.screenH+"px").text(f.text()).appendTo("#progs");
-            var prog=ace.edit(progDOM[0]);
+            var prog=root.ace.edit(progDOM[0]);
             window.lastEditor=prog;
             if (typeof desktopEnv.editorFontSize=="number") prog.setFontSize(desktopEnv.editorFontSize);
             else prog.setFontSize(16);
@@ -592,9 +596,6 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         }
         inf.lastTimeStamp=inf.file.lastUpdate();
     }
-    d=function () {
-        Tonyu.currentProject.dumpJS.apply(this,arguments);
-    };
 
     function loadDesktopEnv() {
         var d=curProjectDir.rel(".desktop");
@@ -605,7 +606,8 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             res={};
         }
         if (!res.runMenuOrd) res.runMenuOrd=[];
-        return desktopEnv=res;
+        desktopEnv=res;
+        return res;
     }
     function saveDesktopEnv() {
         var d=curProjectDir.rel(".desktop");
@@ -679,7 +681,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         if (!helpd) helpd=IFrameDialog.create(WebSite.top+"/doc/tutorial.html");
     	helpd.show();
     });
-    if (typeof progBar=="object") {progBar.clear();}
+    //if (typeof progBar=="object") {progBar.clear();}
     $("#rmPRJ").click(F(function () {
         if (prompt(curProjectDir+"内のファイルをすべて削除しますか？削除する場合はDELETE と入力してください．","")!="DELETE") {
             return;
@@ -718,8 +720,8 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     FM.onMenuStart=save;
     //curPrj.compileKernel();
     //showRunDialog(true);
-    SplashScreen.hide();
-    if (curPrj.getBlobInfos().length>0) {
+    if (root.SplashScreen) root.SplashScreen.hide();
+    /*if (curPrj.getBlobInfos().length>0) {
         var ld=UI("div",{title:"ログイン"},["div","このプロジェクトを正常に動作させるにはログインが必要です"]);
         Auth.assertLogin({
             showLoginLink:function (u) {
@@ -730,7 +732,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             }
         });
         ld.dialog({modal:true});
-    }
+    }*/
     extLink.all();
 });
 });
