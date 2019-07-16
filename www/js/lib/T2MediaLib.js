@@ -249,9 +249,17 @@ var T2MediaLib = (function(){
             var a=Array.prototype.slice.call( new Uint8Array(arrayBuffer) );
             var m=new Mezonet(this.context,a);//,{wavOutSpeed:50});
             //m.load(a);
-            m.init().then(function () {
+            m.init().then(function (res) {
                 // デコード中にremoveDecodeSoundData()したらデータを捨てる
+                switch(res.playbackMode.type) {
+                case "Mezonet":
                 that.soundDataAry[idx].onDecodeComplete(m);
+                break;
+                case "AudioBuffer":
+                //console.log(idx, res.decodedData);
+                that.soundDataAry[idx].onDecodeComplete(res.decodedData);
+                break;
+                }
                 soundData.decodedCallbacksAry.forEach(function(callbacks) {
                     if (typeof callbacks.succ == "function") {
                         callbacks.succ(idx);

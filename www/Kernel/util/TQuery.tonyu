@@ -245,3 +245,6 @@ includes MathMod;
 \klass(k) {
     return find \(o) { return o instanceof k; };
 }
+\sendEvent() {
+    return apply.apply(this, ["sendEvent",arguments]);
+}
