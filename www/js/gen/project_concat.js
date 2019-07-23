@@ -94,7 +94,7 @@
 	};
 	R.real=real;
 	var requireSimulator=R;
-	// Created at Tue Jul 02 2019 11:23:38 GMT+0900 (日本標準時)
+	// Created at Tue Jul 23 2019 10:40:35 GMT+0900 (日本標準時)
 requireSimulator.setName('Util');
 Util=(function () {
 
@@ -4982,7 +4982,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,is:is,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,DeferredUtil:DU,
-			VERSION:1562034214188,//EMBED_VERSION
+			VERSION:1563846031833,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -16479,7 +16479,7 @@ var T2MediaLib = (function(){
         return typeof PicoAudio!=="undefined" && bgm instanceof PicoAudio;
     }
     function isMezonetSource(bgm) {
-        return typeof Mezonet!=="undefined" && bgm instanceof Mezonet;
+        return typeof Mezonet!=="undefined" && bgm instanceof Mezonet.Source;
     }
     var T2MediaLib = function(_context) {
         this.context = null;
@@ -16717,14 +16717,44 @@ var T2MediaLib = (function(){
                 soundData.decodedCallbacksAry = null;
             }
         } else if (soundData.url.match(/\.mzo$/) || soundData.url.match(/^data:audio\/mzo/)) {
-            console.log("Loading mzo");
+            //console.log("Loading mzo");
             // MZO
-            var a=Array.prototype.slice.call( new Uint8Array(arrayBuffer) );
-            var m=new Mezonet(this.context,a);//,{wavOutSpeed:50});
+            Mezonet.init().then(function () {
+                var a=Array.prototype.slice.call( new Uint8Array(arrayBuffer) );
+                that.soundDataAry[idx].onDecodeComplete(new Mezonet.Source(a));
+                soundData.decodedCallbacksAry.forEach(function(callbacks) {
+                    if (typeof callbacks.succ == "function") {
+                        callbacks.succ(idx);
+                    }
+                });
+                soundData.decodedCallbacksAry = null;
+            },function (error) {
+                if (error instanceof Error) {
+                    console.log('T2MediaLib: '+error.message, soundData.url);//@hoge1e3
+                } else {
+                    console.log('T2MediaLib: Error decodeMZO()', soundData.url);//@hoge1e3
+                }
+                that.soundDataAry[idx].onError("DECODE_ERROR");
+                soundData.decodedCallbacksAry.forEach(function(callbacks) {
+                    if (typeof callbacks.err == "function") {
+                        callbacks.err(idx, that.soundDataAry[idx].errorID);
+                    }
+                });
+                soundData.decodedCallbacksAry = null;
+            });
+            /*var m=new Mezonet(this.context,a);//,{wavOutSpeed:50});
             //m.load(a);
-            m.init().then(function () {
+            m.init().then(function (res) {
                 // デコード中にremoveDecodeSoundData()したらデータを捨てる
+                switch(res.playbackMode.type) {
+                case "Mezonet":
                 that.soundDataAry[idx].onDecodeComplete(m);
+                break;
+                case "AudioBuffer":
+                //console.log(idx, res.decodedData);
+                that.soundDataAry[idx].onDecodeComplete(res.decodedData);
+                break;
+                }
                 soundData.decodedCallbacksAry.forEach(function(callbacks) {
                     if (typeof callbacks.succ == "function") {
                         callbacks.succ(idx);
@@ -16746,7 +16776,7 @@ var T2MediaLib = (function(){
                 soundData.decodedCallbacksAry = null;
             }).finally(function () {
                 m.terminate();
-            });
+            });*/
         } else {
             // MP3, Ogg, AAC, WAV
 
@@ -16852,8 +16882,8 @@ var T2MediaLib = (function(){
             return null;
         }
         if (isMezonetSource(soundData.decodedData)) {
-            var playback=soundData.decodedData.playAsMezonet();
-            playback.start();
+            var playback=soundData.decodedData.playback(this.context);
+            playback.Start();
             return playback;
         }
 
@@ -17342,7 +17372,7 @@ var T2MediaLib_BGMPlayer = (function(){
         return typeof PicoAudio!=="undefined" && bgm instanceof PicoAudio;
     }
     function isMezonetSource(bgm) {
-        return typeof Mezonet!=="undefined" && bgm instanceof Mezonet;
+        return typeof Mezonet!=="undefined" && bgm instanceof Mezonet.Source;
     }
     function isMezonetPlayback(bgm) {
         return typeof Mezonet!=="undefined" && bgm instanceof Mezonet.Playback;
@@ -17413,8 +17443,9 @@ var T2MediaLib_BGMPlayer = (function(){
 
         var decodedData = soundData.decodedData;
         if (isMezonetSource(decodedData)) {
-            this.playingBGM = decodedData.playAsMezonet();
-            this.playingBGM.start();
+            var m=decodedData.playback(this.t2MediaLib.context);
+            this.playingBGM = m;
+            m.Start();
         } else if (decodedData instanceof AudioBuffer) {
             // MP3, Ogg, AAC, WAV
             if (this.isTagLoop) {
@@ -17454,7 +17485,7 @@ var T2MediaLib_BGMPlayer = (function(){
     T2MediaLib_BGMPlayer.prototype.stopBGM = function() {
         var bgm = this.playingBGM;
         if (isMezonetPlayback(bgm)){
-            bgm.stop();
+            bgm.Stop();
         } else if (isPicoAudio(bgm)) {
             // Midi
             this.picoAudio.stop();
@@ -20657,7 +20688,17 @@ return RunDialog=Klass.define({
 });
 });
 
+requireSimulator.setName('root');
+/*global window,self,global*/
+define([],function (){
+    if (typeof window!=="undefined") return window;
+    if (typeof self!=="undefined") return self;
+    if (typeof global!=="undefined") return global;
+    return (function (){return this;})();
+});
+
 requireSimulator.setName('ide/editor');
+/*global requirejs, require*/
 requirejs(["Util", "Tonyu", "FS", "PathUtil","FileList", "FileMenu",
            "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project",
            /*"copySample",*/"Shell","Shell2","ProjectOptionsEditor","copyToKernel","KeyEventChecker",
@@ -20665,7 +20706,8 @@ requirejs(["Util", "Tonyu", "FS", "PathUtil","FileList", "FileMenu",
            "UI","ResEditors","WebSite","exceptionCatcher","Tonyu.TraceTbl",
            "Log","MainClassDialog","DeferredUtil","NWMenu",
            "ProjectCompiler","compiledProject","mkrunDiag","zip","LSFS","WebFS",
-           "extLink","DiagAdjuster","ExportHTMLDialog","RunDialog","GlobalDialog"
+           "extLink","DiagAdjuster","ExportHTMLDialog","RunDialog","GlobalDialog",
+           "root"
           ],
 function (Util, Tonyu, FS, PathUtil, FileList, FileMenu,
           showErrorPos, fixIndent, Wiki, Tonyu_Project,
@@ -20674,7 +20716,8 @@ function (Util, Tonyu, FS, PathUtil, FileList, FileMenu,
           UI,ResEditors,WebSite,EC,TTB,
           Log,MainClassDialog,DU,NWMenu,
           TPRC,CPPRJ,mkrunDiag,zip,LSFS,WebFS,
-          extLink,DiagAdjuster,ExportHTMLDialog,RunDialog,GlobalDialog
+          extLink,DiagAdjuster,ExportHTMLDialog,RunDialog,GlobalDialog,
+          root
           ) {
 $(function () {
     if (!WebSite.isNW) {
@@ -20694,7 +20737,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     */
 
     var F=EC.f;
-    $LASTPOS=0;
+    root.$LASTPOS=0;
     //copySample();
     var mobile=WebSite.mobile || FS.get(WebSite.tonyuHome).rel("mobile.txt").exists();
     if (mobile) {
@@ -20716,8 +20759,9 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         }
     }
     var dir=Util.getQueryString("dir", "/Tonyu/Projects/SandBox/");
-    var curPrjDir=curProjectDir=FS.get(dir);
-    var curPrj=Tonyu_Project(curProjectDir);//, kernelDir);
+    var curPrjDir=FS.get(dir);
+    //var curProjectDir=curPrjDir;
+    var curPrj=Tonyu_Project(curPrjDir);//, kernelDir);
     var resEditors=new ResEditors(curPrj);
     Tonyu.globals.$currentProject=curPrj;
     Tonyu.currentProject=curPrj;
@@ -20783,10 +20827,10 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     }));
     $(window).resize(F(onResize));
     $("body")[0].spellcheck=false;
-    sh.cd(curProjectDir);
+    sh.cd(curPrjDir);
 
     var fl=FileList($(mobile?"#fileSel":"#fileItemList"),{
-        topDir: curProjectDir,
+        topDir: curPrjDir,
         on:{
             select: F(open),
             displayName: dispName
@@ -20848,19 +20892,19 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             console.log(e);
             return false;
         }).finally(function () {
-            if (typeof SplashScreen==="object") SplashScreen.hide();
+            if (root.SplashScreen) root.SplashScreen.hide();
         });
         //close(old);  does in FileMenu
     };
     F(FM.on);
-    fl.ls(curProjectDir);
+    fl.ls(curPrjDir);
     refreshRunMenu();
     function ls(){
-        fl.ls(curProjectDir);
+        fl.ls(curPrjDir);
         refreshRunMenu();
     }
     function refreshRunMenu() {
-        curProjectDir.each(function (f) {
+        curPrjDir.each(function (f) {
             if (f.endsWith(EXT)) {
                 var n=f.truncExt(EXT);
                 if (runMenuOrd.indexOf(n)<0) {
@@ -20870,7 +20914,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         });
         var i;
         for (i=runMenuOrd.length-1; i>=0 ; i--) {
-            var f=curProjectDir.rel(runMenuOrd[i]+EXT);
+            var f=curPrjDir.rel(runMenuOrd[i]+EXT);
             if (!f.exists()) {
                 runMenuOrd.splice(i,1);
             }
@@ -20920,14 +20964,14 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
                         }))));
 
         //saveDesktopEnv();
-        $("#exportToJsdoit").attr("href", "javascript:;").click(function () {
+        $("#exportToJsdoit").attr("href", "javascriptoo".replace("oo",":;")).click(function () {
             exportHTMLDialog.show({
                 excludes:{"js/concat.js":1,"js/concat.js.map":1},
                 includeJSScript:true
             });
         });
-        //$("#exportToJsdoit").attr("href", "exportToJsdoit.html?dir="+curProjectDir.path());//+"&main="+runMenuOrd[0]);
-        $("#exportToExe").attr("href", "exportToExe.html?dir="+curProjectDir.path());//+"&main="+runMenuOrd[0]);
+        //$("#exportToJsdoit").attr("href", "exportToJsdoit.html?dir="+curPrjDir.path());//+"&main="+runMenuOrd[0]);
+        $("#exportToExe").attr("href", "exportToExe.html?dir="+curPrjDir.path());//+"&main="+runMenuOrd[0]);
     }
     function dispName(f) {
         var name=f.name();
@@ -20943,9 +20987,14 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             upcased=true;
         }
         if (name.match(/^[A-Z_][a-zA-Z0-9_]*$/)) {
+            var dir=fl.curDir();
+            var sysdir={files:1, static:1 ,maps:1};
+            if (sysdir[dir.relPath(curPrjDir).replace(/\/*/,"")]) {
+                return {ok:false, reason:dir.name()+"はシステムで利用されているフォルダなので使用できません"};
+            }
             if (curPrj.isKernel(name)) {
                 if (curPrj.getOptions().kernelEditable) {
-                    return {ok:true, file: curProjectDir.rel(name+EXT),
+                    return {ok:true, file: dir.rel(name+EXT),
                         note: options.action=="create"? "Kernelから"+name+"をコピーします" :""};
                 } else {
                     return {ok:false, reason:name+"はシステムで利用されている名前なので使用できません"};
@@ -20953,9 +21002,9 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             }
             if (upcased) {
                 //name= name.substring(0,1).toUpperCase()+name.substring(1);
-                return {ok:true, file: curProjectDir.rel(name+EXT), note: "先頭を大文字("+name+") にして作成します．"};
+                return {ok:true, file: dir.rel(name+EXT), note: "先頭を大文字("+name+") にして作成します．"};
             }
-            return {ok:true, file: curProjectDir.rel(name+EXT)};
+            return {ok:true, file: dir.rel(name+EXT)};
         } else {
             return {ok:false, reason:"名前は，半角英数字とアンダースコア(_)のみが使えます．先頭は英大文字にしてください．"};
         }
@@ -20992,11 +21041,11 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             break;
         case "compile_error":
             //$("#errorPos").show();// slideDown(1000, next);
-            if (typeof SplashScreen!="undefined") SplashScreen.hide();
+            if (root.SplashScreen) root.SplashScreen.hide();
             break;
         case "runtime_error":
             //$("#errorPos").slideDown(1000, next);
-            if (typeof SplashScreen!="undefined") SplashScreen.hide();
+            if (root.SplashScreen) root.SplashScreen.hide();
             break;
         case "edit":
             if (runDialog.modified) {
@@ -21055,8 +21104,8 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             displayMode("run");
             Tonyu.globals.$mainCanvas=runDialog.canvas;
         };
-        Log.dumpProject(curProjectDir);
-        if (typeof SplashScreen!="undefined") SplashScreen.show();
+        Log.dumpProject(curPrjDir);
+        if (root.SplashScreen) root.SplashScreen.show();
         var o=curPrj.getOptions();
         if (o.run.mainClass!=name) {
             o.run.mainClass=name;
@@ -21072,7 +21121,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
                 Tonyu.onRuntimeError(e);
             }
         }).finally(function () {
-            if (typeof SplashScreen!="undefined") SplashScreen.hide();
+            if (root.SplashScreen) root.SplashScreen.hide();
         });
     }
     var alertOnce;
@@ -21104,11 +21153,11 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             setTimeout(run,100);
             return;
         }
-        var tid = t.find(e) || t.decode($LASTPOS); // user.Main:234
+        var tid = t.find(e) || t.decode(root.$LASTPOS); // user.Main:234
         if (tid) {
             te=curPrj.decodeTrace(tid);
         }
-        console.log("onRunTimeError:stackTrace1",e.stack,te,$LASTPOS);
+        console.log("onRunTimeError:stackTrace1",e.stack,te,root.$LASTPOS);
         if (te) {
             te.mesg=e;
             if (e.pluginName) {
@@ -21141,7 +21190,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     }));
     $("#search").click(F(function () {
         console.log("src diag");
-        searchDialog.show(curProjectDir,function (info){
+        searchDialog.show(curPrjDir,function (info){
             fl.select(info.file);
             setTimeout(function () {
                 var prog=getCurrentEditor();
@@ -21221,7 +21270,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         var inf=editors[f.path()];
         if (!inf) {
             var progDOM=$("<pre>").css("height", runDialogParam.screenH+"px").text(f.text()).appendTo("#progs");
-            var prog=ace.edit(progDOM[0]);
+            var prog=root.ace.edit(progDOM[0]);
             window.lastEditor=prog;
             if (typeof desktopEnv.editorFontSize=="number") prog.setFontSize(desktopEnv.editorFontSize);
             else prog.setFontSize(16);
@@ -21252,12 +21301,9 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         }
         inf.lastTimeStamp=inf.file.lastUpdate();
     }
-    d=function () {
-        Tonyu.currentProject.dumpJS.apply(this,arguments);
-    };
 
     function loadDesktopEnv() {
-        var d=curProjectDir.rel(".desktop");
+        var d=curPrjDir.rel(".desktop");
         var res;
         if (d.exists()) {
             res=d.obj();
@@ -21265,20 +21311,21 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             res={};
         }
         if (!res.runMenuOrd) res.runMenuOrd=[];
-        return desktopEnv=res;
+        desktopEnv=res;
+        return res;
     }
     function saveDesktopEnv() {
-        var d=curProjectDir.rel(".desktop");
+        var d=curPrjDir.rel(".desktop");
         d.obj(desktopEnv);
     }
     /*$("#restore").click(F(restore));
     function restore() {
-        var n=curProjectDir.name();
-        if (!copySample.available(curProjectDir)) {
+        var n=curPrjDir.name();
+        if (!copySample.available(curPrjDir)) {
             return alert("このプロジェクトは初期状態に戻せません");
         };
-        if (confirm(curProjectDir+" を初期状態に戻しますか？")) {
-            sh.rm(curProjectDir,{r:1});
+        if (confirm(curPrjDir+" を初期状態に戻しますか？")) {
+            sh.rm(curPrjDir,{r:1});
             copySample(n);
             ls();
         }
@@ -21289,7 +21336,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             if (desktopEnv && desktopEnv.runtimeConfig) {
                 dest=desktopEnv.runtimeConfig.dest;
             } else {
-                dest=FS.get(WebSite.cwd).rel("Runtimes/").rel( curProjectDir.name());
+                dest=FS.get(WebSite.cwd).rel("Runtimes/").rel( curPrjDir.name());
             }
             mkrunDiag.show(curPrj,{
                 dest: dest,
@@ -21304,7 +21351,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             /*var mkram=FS.get("/mkram/");
             if (mkram.exists()) mkram.rm({r:1});
             FS.mount(mkram.path(), LSFS.ramDisk() );*/
-            mkrunDiag.show(curPrj, /*mkram.rel(curProjectDir.name()),*/ {
+            mkrunDiag.show(curPrj, /*mkram.rel(curPrjDir.name()),*/ {
                 hiddenFolder:true,
                 onEnd:function () {
                     //FS.unmount(mkram.path());
@@ -21339,25 +21386,25 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         if (!helpd) helpd=IFrameDialog.create(WebSite.top+"/doc/tutorial.html");
     	helpd.show();
     });
-    if (typeof progBar=="object") {progBar.clear();}
+    //if (typeof progBar=="object") {progBar.clear();}
     $("#rmPRJ").click(F(function () {
-        if (prompt(curProjectDir+"内のファイルをすべて削除しますか？削除する場合はDELETE と入力してください．","")!="DELETE") {
+        if (prompt(curPrjDir+"内のファイルをすべて削除しますか？削除する場合はDELETE と入力してください．","")!="DELETE") {
             return;
         }
-        sh.rm(curProjectDir,{r:1});
+        sh.rm(curPrjDir,{r:1});
         document.location.href="index.html";
     }));
     $("#mvPRJ").click(F(function () {
-        var np=prompt("新しいプロジェクトの名前を入れてください", curProjectDir.name().replace(/\//g,""));
+        var np=prompt("新しいプロジェクトの名前を入れてください", curPrjDir.name().replace(/\//g,""));
         if (!np || np=="") return;
         if (!np.match(/\/$/)) np+="/";
-        var npd=curProjectDir.up().rel(np);
+        var npd=curPrjDir.up().rel(np);
         if (npd.exists()) {
             alert(npd+" はすでに存在します");
             return;
         }
-        sh.cp(curProjectDir,npd);
-        sh.rm(curProjectDir,{r:1});
+        sh.cp(curPrjDir,npd);
+        sh.rm(curPrjDir,{r:1});
         document.location.href="project.html?dir="+npd;
     }));
     $("#editorEditor").click(F(function () {
@@ -21378,8 +21425,8 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     FM.onMenuStart=save;
     //curPrj.compileKernel();
     //showRunDialog(true);
-    SplashScreen.hide();
-    if (curPrj.getBlobInfos().length>0) {
+    if (root.SplashScreen) root.SplashScreen.hide();
+    /*if (curPrj.getBlobInfos().length>0) {
         var ld=UI("div",{title:"ログイン"},["div","このプロジェクトを正常に動作させるにはログインが必要です"]);
         Auth.assertLogin({
             showLoginLink:function (u) {
@@ -21390,7 +21437,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             }
         });
         ld.dialog({modal:true});
-    }
+    }*/
     extLink.all();
 });
 });

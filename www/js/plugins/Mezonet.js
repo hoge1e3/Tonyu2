@@ -1,1 +1,1899 @@
-!function(e,t){e.Mezonet=function(){var e,t,n;!function(r){function o(e,t){return S.call(e,t)}function i(e,t){var n,r,o,i,s,u,a,f,c,l,p,h,d=t&&t.split("/"),y=g.map,v=y&&y["*"]||{};if(e){for(e=e.split("/"),s=e.length-1,g.nodeIdCompat&&E.test(e[s])&&(e[s]=e[s].replace(E,"")),"."===e[0].charAt(0)&&d&&(h=d.slice(0,d.length-1),e=h.concat(e)),c=0;c<e.length;c++)if("."===(p=e[c]))e.splice(c,1),c-=1;else if(".."===p){if(0===c||1===c&&".."===e[2]||".."===e[c-1])continue;c>0&&(e.splice(c-1,2),c-=2)}e=e.join("/")}if((d||v)&&y){for(n=e.split("/"),c=n.length;c>0;c-=1){if(r=n.slice(0,c).join("/"),d)for(l=d.length;l>0;l-=1)if((o=y[d.slice(0,l).join("/")])&&(o=o[r])){i=o,u=c;break}if(i)break;!a&&v&&v[r]&&(a=v[r],f=c)}!i&&a&&(i=a,u=f),i&&(n.splice(0,u,i),e=n.join("/"))}return e}function s(e,t){return function(){var n=x.call(arguments,0);return"string"!=typeof n[0]&&1===n.length&&n.push(null),d.apply(r,n.concat([e,t]))}}function u(e){return function(t){return i(t,e)}}function a(e){return function(t){m[e]=t}}function f(e){if(o(w,e)){var t=w[e];delete w[e],b[e]=!0,h.apply(r,t)}if(!o(m,e)&&!o(b,e))throw new Error("No "+e);return m[e]}function c(e){var t,n=e?e.indexOf("!"):-1;return n>-1&&(t=e.substring(0,n),e=e.substring(n+1,e.length)),[t,e]}function l(e){return e?c(e):[]}function p(e){return function(){return g&&g.config&&g.config[e]||{}}}var h,d,y,v,m={},w={},g={},b={},S=Object.prototype.hasOwnProperty,x=[].slice,E=/\.js$/;y=function(e,t){var n,r=c(e),o=r[0],s=t[1];return e=r[1],o&&(o=i(o,s),n=f(o)),o?e=n&&n.normalize?n.normalize(e,u(s)):i(e,s):(e=i(e,s),r=c(e),o=r[0],e=r[1],o&&(n=f(o))),{f:o?o+"!"+e:e,n:e,pr:o,p:n}},v={require:function(e){return s(e)},exports:function(e){var t=m[e];return void 0!==t?t:m[e]={}},module:function(e){return{id:e,uri:"",exports:m[e],config:p(e)}}},h=function(e,t,n,i){var u,c,p,h,d,g,S,x=[],E=typeof n;if(i=i||e,g=l(i),"undefined"===E||"function"===E){for(t=!t.length&&n.length?["require","exports","module"]:t,d=0;d<t.length;d+=1)if(h=y(t[d],g),"require"===(c=h.f))x[d]=v.require(e);else if("exports"===c)x[d]=v.exports(e),S=!0;else if("module"===c)u=x[d]=v.module(e);else if(o(m,c)||o(w,c)||o(b,c))x[d]=f(c);else{if(!h.p)throw new Error(e+" missing "+c);h.p.load(h.n,s(i,!0),a(c),{}),x[d]=m[c]}p=n?n.apply(m[e],x):void 0,e&&(u&&u.exports!==r&&u.exports!==m[e]?m[e]=u.exports:p===r&&S||(m[e]=p))}else e&&(m[e]=n)},e=t=d=function(e,t,n,o,i){if("string"==typeof e)return v[e]?v[e](t):f(y(e,l(t)).f);if(!e.splice){if(g=e,g.deps&&d(g.deps,g.callback),!t)return;t.splice?(e=t,t=n,n=null):e=r}return t=t||function(){},"function"==typeof n&&(n=o,o=i),o?h(r,e,t,n):setTimeout(function(){h(r,e,t,n)},4),d},d.config=function(e){return d(e)},e._defined=m,n=function(e,t,n){if("string"!=typeof e)throw new Error("See almond README: incorrect module build, no module name");t.splice||(n=t,t=[]),o(m,e)||o(w,e)||(w[e]=[e,t,n])},n.amd={jQuery:!0}}(),n("almond",function(){}),n("WorkerFactory",[],function(){return{extractSrcFromFunction:function(e,t,n){return t=t||/(.|\s)*WORKER[_]SRC[_]BEGIN\*\//,n=n||/\/\*WORKER[_]SRC[_]END(.|\s)*/,(""+e).replace(t,"").replace(n,"")},createFromFunction:function(e,t,n){var r=this.extractSrcFromFunction(e,t,n);return this.createFromString(r)},urlFromString:function(e){return URL.createObjectURL(new Blob([e],{type:"text/javascript"}))},createFromString:function(e){var t=this.urlFromString(e);return new Worker(t)},requireUrl:function(e){return"worker.js?main="+e},require:function(e){return new Worker(this.requireUrl(e))},create:function(e){if("string"==typeof e)return this.require(e);if("function"==typeof e)return this.createFromFunction(e);throw new Error("Invaluid src type "+e)}}}),function e(n,r,o){function i(u,a){if(!r[u]){if(!n[u]){var f="function"==typeof t&&t;if(!a&&f)return f(u,!0);if(s)return s(u,!0);var c=new Error("Cannot find module '"+u+"'");throw c.code="MODULE_NOT_FOUND",c}var l=r[u]={exports:{}};n[u][0].call(l.exports,function(e){var t=n[u][1][e];return i(t||e)},l,l.exports,e,n,r,o)}return r[u].exports}for(var s="function"==typeof t&&t,u=0;u<o.length;u++)i(o[u]);return i}({1:[function(e,t,n){function r(){}var o=t.exports={};o.nextTick=function(){var e="undefined"!=typeof window&&window.setImmediate,t="undefined"!=typeof window&&window.postMessage&&window.addEventListener;if(e)return function(e){return window.setImmediate(e)};if(t){var n=[];return window.addEventListener("message",function(e){var t=e.source;if((t===window||null===t)&&"process-tick"===e.data&&(e.stopPropagation(),n.length>0)){n.shift()()}},!0),function(e){n.push(e),window.postMessage("process-tick","*")}}return function(e){setTimeout(e,0)}}(),o.title="browser",o.browser=!0,o.env={},o.argv=[],o.on=r,o.addListener=r,o.once=r,o.off=r,o.removeListener=r,o.removeAllListeners=r,o.emit=r,o.binding=function(e){throw new Error("process.binding is not supported")},o.cwd=function(){return"/"},o.chdir=function(e){throw new Error("process.chdir is not supported")}},{}],2:[function(e,t,n){"use strict";function r(e){function t(e){if(null===a)return void c.push(e);s(function(){var t=a?e.onFulfilled:e.onRejected;if(null===t)return void(a?e.resolve:e.reject)(f);var n;try{n=t(f)}catch(t){return void e.reject(t)}e.resolve(n)})}function n(e){try{if(e===l)throw new TypeError("A promise cannot be resolved with itself.");if(e&&("object"==typeof e||"function"==typeof e)){var t=e.then;if("function"==typeof t)return void i(t.bind(e),n,r)}a=!0,f=e,u()}catch(e){r(e)}}function r(e){a=!1,f=e,u()}function u(){for(var e=0,n=c.length;e<n;e++)t(c[e]);c=null}if("object"!=typeof this)throw new TypeError("Promises must be constructed via new");if("function"!=typeof e)throw new TypeError("not a function");var a=null,f=null,c=[],l=this;this.then=function(e,n){return new l.constructor(function(r,i){t(new o(e,n,r,i))})},i(e,n,r)}function o(e,t,n,r){this.onFulfilled="function"==typeof e?e:null,this.onRejected="function"==typeof t?t:null,this.resolve=n,this.reject=r}function i(e,t,n){var r=!1;try{e(function(e){r||(r=!0,t(e))},function(e){r||(r=!0,n(e))})}catch(e){if(r)return;r=!0,n(e)}}var s=e("asap");t.exports=r},{asap:4}],3:[function(e,t,n){"use strict";function r(e){this.then=function(t){return"function"!=typeof t?this:new o(function(n,r){i(function(){try{n(t(e))}catch(e){r(e)}})})}}var o=e("./core.js"),i=e("asap");t.exports=o,r.prototype=o.prototype;var s=new r(!0),u=new r(!1),a=new r(null),f=new r(void 0),c=new r(0),l=new r("");o.resolve=function(e){if(e instanceof o)return e;if(null===e)return a;if(void 0===e)return f;if(!0===e)return s;if(!1===e)return u;if(0===e)return c;if(""===e)return l;if("object"==typeof e||"function"==typeof e)try{var t=e.then;if("function"==typeof t)return new o(t.bind(e))}catch(e){return new o(function(t,n){n(e)})}return new r(e)},o.all=function(e){var t=Array.prototype.slice.call(e);return new o(function(e,n){function r(i,s){try{if(s&&("object"==typeof s||"function"==typeof s)){var u=s.then;if("function"==typeof u)return void u.call(s,function(e){r(i,e)},n)}t[i]=s,0==--o&&e(t)}catch(e){n(e)}}if(0===t.length)return e([]);for(var o=t.length,i=0;i<t.length;i++)r(i,t[i])})},o.reject=function(e){return new o(function(t,n){n(e)})},o.race=function(e){return new o(function(t,n){e.forEach(function(e){o.resolve(e).then(t,n)})})},o.prototype.catch=function(e){return this.then(null,e)}},{"./core.js":2,asap:4}],4:[function(e,t,n){(function(e){function n(){for(;o.next;){o=o.next;var e=o.task;o.task=void 0;var t=o.domain;t&&(o.domain=void 0,t.enter());try{e()}catch(e){if(a)throw t&&t.exit(),setTimeout(n,0),t&&t.enter(),e;setTimeout(function(){throw e},0)}t&&t.exit()}s=!1}function r(t){i=i.next={task:t,domain:a&&e.domain,next:null},s||(s=!0,u())}var o={task:void 0,next:null},i=o,s=!1,u=void 0,a=!1;if(void 0!==e&&e.nextTick)a=!0,u=function(){e.nextTick(n)};else if("function"==typeof setImmediate)u="undefined"!=typeof window?setImmediate.bind(window,n):function(){setImmediate(n)};else if("undefined"!=typeof MessageChannel){var f=new MessageChannel;f.port1.onmessage=n,u=function(){f.port2.postMessage(0)}}else u=function(){setTimeout(n,0)};t.exports=r}).call(this,e("_process"))},{_process:1}],5:[function(e,t,n){"function"!=typeof Promise.prototype.done&&(Promise.prototype.done=function(e,t){(arguments.length?this.then.apply(this,arguments):this).then(null,function(e){setTimeout(function(){throw e},0)})})},{}],6:[function(e,t,n){e("asap");"undefined"==typeof Promise&&(Promise=e("./lib/core.js"),e("./lib/es6-extensions.js")),e("./polyfill-done.js")},{"./lib/core.js":2,"./lib/es6-extensions.js":3,"./polyfill-done.js":5,asap:4}]},{},[6]),n("promise",function(){}),n("assert",[],function(){function e(t){if(t instanceof Array){var n=[];return t.forEach(function(t){n=n.concat(e(t))}),n}return[t]}var t,n=function(t){this.failMesg=e(t||"Assertion failed: ")};n.prototype={_regedType:{},registerType:function(e,t){this._regedType[e]=t},MODE_STRICT:"strict",MODE_DEFENSIVE:"defensive",MODE_BOOL:"bool",fail:function(){var n=t(arguments),r=n.shift();if(n=e(n),n=this.failMesg.concat(r).concat(n),console.log.apply(console,n),this.isDefensive())return r;if(this.isBool())return!1;throw new Error(n.join(" "))},subAssertion:function(){var r=t(arguments);return r=e(r),new n(this.failMesg.concat(r))},assert:function(e,t){return e||this.fail(e,t)},eq:function(e,t){return e!==t?this.fail(e,"!==",t):!!this.isBool()||e},ne:function(e,t){return e===t?this.fail(e,"===",t):!!this.isBool()||e},isset:function(e,t){return null==e?this.fail(e,(t||"")+" is null/undef"):!!this.isBool()||e},is:function(e,t){var n=t,r=e;if(null==n)return this.fail(e,"assert.is: type must be set");if(n._assert_func)return n._assert_func.apply(this,[r]),!!this.isBool()||e;if(this.assert(null!=e,[e,"should be ",n]),n instanceof Array||"object"==typeof global&&"function"==typeof global.Array&&n instanceof global.Array){if(!e||"number"!=typeof e.length)return this.fail(e,"should be array:");for(var o=this,i=0;i<n.length;i++){var s=o.subAssertion("failed at ",e,"[",i,"]: ");null==n[i]&&console.log("WOW!7",r[i],n[i]),s.is(r[i],n[i])}return!!this.isBool()||e}if(n===String||"string"==n)return this.assert("string"==typeof r,[r,"should be a string "]),!!this.isBool()||e;if(n===Number||"number"==n)return this.assert("number"==typeof r,[r,"should be a number"]),!!this.isBool()||e;if(n===Boolean||"boolean"==n)return this.assert("boolean"==typeof r,[r,"should be a boolean"]),!!this.isBool()||e;if(n instanceof RegExp||"object"==typeof global&&"function"==typeof global.RegExp&&n instanceof global.RegExp)return this.is(r,String),this.assert(n.exec(r),[r,"does not match to",n]),!!this.isBool()||e;if(n===Function)return this.assert("function"==typeof r,[r,"should be a function"]),!!this.isBool()||e;if("function"==typeof n)return this.assert(r instanceof n,[r,"should be ",n]),!!this.isBool()||e;if(n&&"object"==typeof n){for(var u in n){var s=this.subAssertion("failed at ",e,".",u,":");s.is(e[u],n[u])}return!!this.isBool()||e}if("string"==typeof n){var a=this._regedType[n];return a?this.is(e,a):!!this.isBool()||e}return this.fail(e,"Invaild type: ",n)},ensureError:function(e,t){try{e()}catch(n){return"string"==typeof t&&o(n+""===t,e+" thrown an error "+n+" but expected:"+t),void console.log("Error thrown successfully: ",n.message)}this.fail(e,"should throw an error",t)},setMode:function(e){this._mode=e},isDefensive:function(){return this._mode===this.MODE_DEFENSIVE},isBool:function(){return this._mode===this.MODE_BOOL},isStrict:function(){return!this.isDefensive()&&!this.isBool()}},t=function(e){for(var t=[],n=0;n<e.length;n++)t.push(e[n]);return t};var r=new n,o=function(){try{return r.assert.apply(r,arguments)}catch(e){throw new Error(e.stack)}};return["setMode","isDefensive","is","isset","ne","eq","ensureError"].forEach(function(e){o[e]=function(){try{return r[e].apply(r,arguments)}catch(e){throw console.log(e.stack),new Error(e.message)}}}),o.fail=r.fail.bind(r),o.MODE_STRICT=r.MODE_STRICT,o.MODE_DEFENSIVE=r.MODE_DEFENSIVE,o.MODE_BOOL=r.MODE_BOOL,o.f=function(e){return{_assert_func:e}},o.opt=function(e){return o.f(function(t){return null==t||t instanceof e})},o.and=function(){var e=t(arguments);return o(e instanceof Array),o.f(function(t){for(var n=this,r=0;r<e.length;r++)n.is(t,e[r])})},o}),n("Klass",["assert"],function(e){function t(e){var t=/function[^\(]*\(([^\)]*)\)/,n=t.exec(e+"");return n?n[1].replace(/\s/g,"").split(","):[]}function n(e){if("object"!=typeof e)return!1;if(!e)return!1;var t={configurable:1,enumerable:1,value:1,writable:1,get:1,set:1},n=0;for(var r in e){if(!t[r])return!1;n+=t[r]}return n}var r={};return r.define=function(o){function i(t){o.$fields&&e.is(t,o.$fields)}function s(e,r){if(!f)return e;if(n(e)){for(var o in e)e[o]=s(e[o]);return e}if("function"!=typeof e)return e;if(!0!==f){if(t(e)[0]!==f)return d=d||[],d.push(r),e;p=!0}return h=!0,function(){var t=Array.prototype.slice.call(arguments);return t.unshift(this),e.apply(this,t)}}var u,a;o.$parent?(a=o.$parent,u=Object.create(a.prototype),u.super=function(){var e=Array.prototype.slice.call(arguments),t=e.shift();return a.prototype[t].apply(this,e)}):u={};var f,c;o.$this&&(f=o.$this),o.$singleton&&(c=o.$singleton);var l,p,h,d,y=s(o.$)||function(e){if(e&&"object"==typeof e)for(var t in e)this[t]=e[t]};y instanceof Array&&(l=y,y=function(){for(var e=Array.prototype.slice.call(arguments),t=0;t<l.length;t++)e.length>0&&(this[l[t]]=e.shift())});var v;v=function(){if(!(this instanceof v)){var e=Object.create(u);return y.apply(e,arguments),i(e),e}y.apply(this,arguments),i(this)},a&&(v.super=function(){var e=Array.prototype.slice.call(arguments),t=e.shift(),n=e.shift();return a.prototype[n].apply(t,e)}),v.inherit=function(e){return e.$parent=v,r.define(e)},v.prototype=u;for(var m in o)"$"!=m[0]&&("static$"==m.substring(0,7)?v[m.substring(7)]=function(e){return c?t(e)[0]!==c?e:function(){var t=Array.prototype.slice.call(arguments);return t.unshift(v),e.apply(v,t)}:e}(o[m]):n(o[m])?Object.defineProperty(u,m,s(o[m],m)):u[m]=s(o[m],m));if(u.$=y,Object.defineProperty(u,"$bind",{get:function(){return this.__bounded||(this.__bounded=new r.Binder(this)),this.__bounded}}),p){d?console.warn("Use python style in all methods and Use $this:true instead",d):console.warn("Use $this:true instead");try{throw new Error("Stakku")}catch(e){console.log(e.stack)}}return v},r.Function=function(){throw new Error("Abstract")},r.opt=e.opt,r.Binder=r.define({$this:!0,$:function(e,t){for(var n in t)!function(n){"function"==typeof t[n]&&(e[n]=function(){var e=Array.prototype.slice.call(arguments);return t[n].apply(t,e)})}(n)}}),r}),n("root",[],function(){return"undefined"!=typeof window?window:"undefined"!=typeof self?self:"undefined"!=typeof global?global:function(){return this}()});return n("WorkerServiceB",["promise","Klass","root"],function(e,t,n){var r=t.define({$this:!0,$:function(e,t){e.idseq=1,e.queue={},e.worker=t,e.readyQueue=[],t.addEventListener("message",function(t){var n=t.data;n.reverse?e.procReverse(t):n.ready?e.ready():n.id&&(e.queue[n.id](n),delete e.queue[n.id])}),e.run("WorkerService/isReady").then(function(t){t&&e.ready()})},procReverse:function(e,t){function n(t){e.worker.postMessage({reverse:!0,id:i,error:t?t.stack||t+"":"unknown",status:"error"})}var r=t.data,i=r.id,s=r.path,u=r.params;try{Promise.resolve(o[s](u)).then(function(t){e.worker.postMessage({reverse:!0,status:"ok",id:i,result:t})},n)}catch(e){n(e)}},ready:function(e){e.isReady||(e.isReady=!0,console.log("Worker is ready!"),e.readyQueue.forEach(function(e){e()}))},readyPromise:function(e){return new Promise(function(t){if(e.isReady)return t();e.readyQueue.push(t)})},run:function(e,t,n){return e.readyPromise().then(function(){return new Promise(function(r,o){var i=e.idseq++;e.queue[i]=function(e){"ok"==e.status?r(e.result):o(e.error)},e.worker.postMessage({id:i,path:t,params:n})})})},terminate:function(e){e.worker.terminate()}}),o={};return n.WorkerService={Wrapper:r,load:function(e){var t=new Worker(e);return new r(t)},install:function(e,t){o[e]=t},serv:function(e,t){this.install(e,t)}},n.WorkerService.serv("console/log",function(e){console.log.apply(console,e)}),n.WorkerService}),n("MezonetClient",["WorkerFactory","WorkerServiceB","Klass"],function(e,t,n){function r(e,t,n){for(var r=e.createBuffer(1,t.length,n),o=r.getChannelData(0),i=0;i<o.length;i++)o[i]=t[i];return r}function o(e){return new Promise(function(t){setTimeout(t,e)})}function i(){return(new Date).getTime()}Promise.prototype.finally=Promise.prototype.finally||function(e){function t(t){return Promise.resolve(e()).then(t)}return this.then(function(e){return t(function(){return e})},function(e){return t(function(){return Promise.reject(e)})})};var s=e.urlFromString("var requirejs,require,define;!function(n){function e(n,e){return g.call(n,e)}function t(n,e){var t,r,o,i,a,s,u,f,c,l,d,m,p=e&&e.split(\"/\"),Z=h.map,v=Z&&Z[\"*\"]||{};if(n){for(n=n.split(\"/\"),a=n.length-1,h.nodeIdCompat&&y.test(n[a])&&(n[a]=n[a].replace(y,\"\")),\".\"===n[0].charAt(0)&&p&&(m=p.slice(0,p.length-1),n=m.concat(n)),c=0;c<n.length;c++)if(\".\"===(d=n[c]))n.splice(c,1),c-=1;else if(\"..\"===d){if(0===c||1===c&&\"..\"===n[2]||\"..\"===n[c-1])continue;c>0&&(n.splice(c-1,2),c-=2)}n=n.join(\"/\")}if((p||v)&&Z){for(t=n.split(\"/\"),c=t.length;c>0;c-=1){if(r=t.slice(0,c).join(\"/\"),p)for(l=p.length;l>0;l-=1)if((o=Z[p.slice(0,l).join(\"/\")])&&(o=o[r])){i=o,s=c;break}if(i)break;!u&&v&&v[r]&&(u=v[r],f=c)}!i&&u&&(i=u,s=f),i&&(t.splice(0,s,i),n=t.join(\"/\"))}return n}function r(e,t){return function(){var r=w.call(arguments,0);return\"string\"!=typeof r[0]&&1===r.length&&r.push(null),l.apply(n,r.concat([e,t]))}}function o(n){return function(e){return t(e,n)}}function i(n){return function(e){p[n]=e}}function a(t){if(e(Z,t)){var r=Z[t];delete Z[t],v[t]=!0,c.apply(n,r)}if(!e(p,t)&&!e(v,t))throw new Error(\"No \"+t);return p[t]}function s(n){var e,t=n?n.indexOf(\"!\"):-1;return t>-1&&(e=n.substring(0,t),n=n.substring(t+1,n.length)),[e,n]}function u(n){return n?s(n):[]}function f(n){return function(){return h&&h.config&&h.config[n]||{}}}var c,l,d,m,p={},Z={},h={},v={},g=Object.prototype.hasOwnProperty,w=[].slice,y=/\\.js$/;d=function(n,e){var r,i=s(n),u=i[0],f=e[1];return n=i[1],u&&(u=t(u,f),r=a(u)),u?n=r&&r.normalize?r.normalize(n,o(f)):t(n,f):(n=t(n,f),i=s(n),u=i[0],n=i[1],u&&(r=a(u))),{f:u?u+\"!\"+n:n,n:n,pr:u,p:r}},m={require:function(n){return r(n)},exports:function(n){var e=p[n];return void 0!==e?e:p[n]={}},module:function(n){return{id:n,uri:\"\",exports:p[n],config:f(n)}}},c=function(t,o,s,f){var c,l,h,g,w,y,S,M=[],C=typeof s;if(f=f||t,y=u(f),\"undefined\"===C||\"function\"===C){for(o=!o.length&&s.length?[\"require\",\"exports\",\"module\"]:o,w=0;w<o.length;w+=1)if(g=d(o[w],y),\"require\"===(l=g.f))M[w]=m.require(t);else if(\"exports\"===l)M[w]=m.exports(t),S=!0;else if(\"module\"===l)c=M[w]=m.module(t);else if(e(p,l)||e(Z,l)||e(v,l))M[w]=a(l);else{if(!g.p)throw new Error(t+\" missing \"+l);g.p.load(g.n,r(f,!0),i(l),{}),M[w]=p[l]}h=s?s.apply(p[t],M):void 0,t&&(c&&c.exports!==n&&c.exports!==p[t]?p[t]=c.exports:h===n&&S||(p[t]=h))}else t&&(p[t]=s)},requirejs=require=l=function(e,t,r,o,i){if(\"string\"==typeof e)return m[e]?m[e](t):a(d(e,u(t)).f);if(!e.splice){if(h=e,h.deps&&l(h.deps,h.callback),!t)return;t.splice?(e=t,t=r,r=null):e=n}return t=t||function(){},\"function\"==typeof r&&(r=o,o=i),o?c(n,e,t,r):setTimeout(function(){c(n,e,t,r)},4),l},l.config=function(n){return l(n)},requirejs._defined=p,define=function(n,t,r){if(\"string\"!=typeof n)throw new Error(\"See almond README: incorrect module build, no module name\");t.splice||(r=t,t=[]),e(p,n)||e(Z,n)||(Z[n]=[n,t,r])},define.amd={jQuery:!0}}(),define(\"almond\",function(){}),define(\"assert\",[],function(){function n(e){if(e instanceof Array){var t=[];return e.forEach(function(e){t=t.concat(n(e))}),t}return[e]}var e,t=function(e){this.failMesg=n(e||\"Assertion failed: \")};t.prototype={_regedType:{},registerType:function(n,e){this._regedType[n]=e},MODE_STRICT:\"strict\",MODE_DEFENSIVE:\"defensive\",MODE_BOOL:\"bool\",fail:function(){var t=e(arguments),r=t.shift();if(t=n(t),t=this.failMesg.concat(r).concat(t),console.log.apply(console,t),this.isDefensive())return r;if(this.isBool())return!1;throw new Error(t.join(\" \"))},subAssertion:function(){var r=e(arguments);return r=n(r),new t(this.failMesg.concat(r))},assert:function(n,e){return n||this.fail(n,e)},eq:function(n,e){return n!==e?this.fail(n,\"!==\",e):!!this.isBool()||n},ne:function(n,e){return n===e?this.fail(n,\"===\",e):!!this.isBool()||n},isset:function(n,e){return null==n?this.fail(n,(e||\"\")+\" is null/undef\"):!!this.isBool()||n},is:function(n,e){var t=e,r=n;if(null==t)return this.fail(n,\"assert.is: type must be set\");if(t._assert_func)return t._assert_func.apply(this,[r]),!!this.isBool()||n;if(this.assert(null!=n,[n,\"should be \",t]),t instanceof Array||\"object\"==typeof global&&\"function\"==typeof global.Array&&t instanceof global.Array){if(!n||\"number\"!=typeof n.length)return this.fail(n,\"should be array:\");for(var o=this,i=0;i<t.length;i++){var a=o.subAssertion(\"failed at \",n,\"[\",i,\"]: \");null==t[i]&&console.log(\"WOW!7\",r[i],t[i]),a.is(r[i],t[i])}return!!this.isBool()||n}if(t===String||\"string\"==t)return this.assert(\"string\"==typeof r,[r,\"should be a string \"]),!!this.isBool()||n;if(t===Number||\"number\"==t)return this.assert(\"number\"==typeof r,[r,\"should be a number\"]),!!this.isBool()||n;if(t===Boolean||\"boolean\"==t)return this.assert(\"boolean\"==typeof r,[r,\"should be a boolean\"]),!!this.isBool()||n;if(t instanceof RegExp||\"object\"==typeof global&&\"function\"==typeof global.RegExp&&t instanceof global.RegExp)return this.is(r,String),this.assert(t.exec(r),[r,\"does not match to\",t]),!!this.isBool()||n;if(t===Function)return this.assert(\"function\"==typeof r,[r,\"should be a function\"]),!!this.isBool()||n;if(\"function\"==typeof t)return this.assert(r instanceof t,[r,\"should be \",t]),!!this.isBool()||n;if(t&&\"object\"==typeof t){for(var s in t){var a=this.subAssertion(\"failed at \",n,\".\",s,\":\");a.is(n[s],t[s])}return!!this.isBool()||n}if(\"string\"==typeof t){var u=this._regedType[t];return u?this.is(n,u):!!this.isBool()||n}return this.fail(n,\"Invaild type: \",t)},ensureError:function(n,e){try{n()}catch(t){return\"string\"==typeof e&&o(t+\"\"===e,n+\" thrown an error \"+t+\" but expected:\"+e),void console.log(\"Error thrown successfully: \",t.message)}this.fail(n,\"should throw an error\",e)},setMode:function(n){this._mode=n},isDefensive:function(){return this._mode===this.MODE_DEFENSIVE},isBool:function(){return this._mode===this.MODE_BOOL},isStrict:function(){return!this.isDefensive()&&!this.isBool()}},e=function(n){for(var e=[],t=0;t<n.length;t++)e.push(n[t]);return e};var r=new t,o=function(){try{return r.assert.apply(r,arguments)}catch(n){throw new Error(n.stack)}};return[\"setMode\",\"isDefensive\",\"is\",\"isset\",\"ne\",\"eq\",\"ensureError\"].forEach(function(n){o[n]=function(){try{return r[n].apply(r,arguments)}catch(n){throw console.log(n.stack),new Error(n.message)}}}),o.fail=r.fail.bind(r),o.MODE_STRICT=r.MODE_STRICT,o.MODE_DEFENSIVE=r.MODE_DEFENSIVE,o.MODE_BOOL=r.MODE_BOOL,o.f=function(n){return{_assert_func:n}},o.opt=function(n){return o.f(function(e){return null==e||e instanceof n})},o.and=function(){var n=e(arguments);return o(n instanceof Array),o.f(function(e){for(var t=this,r=0;r<n.length;r++)t.is(e,n[r])})},o}),define(\"Klass\",[\"assert\"],function(n){function e(n){var e=/function[^\\(]*\\(([^\\)]*)\\)/,t=e.exec(n+\"\");return t?t[1].replace(/\\s/g,\"\").split(\",\"):[]}function t(n){if(\"object\"!=typeof n)return!1;if(!n)return!1;var e={configurable:1,enumerable:1,value:1,writable:1,get:1,set:1},t=0;for(var r in n){if(!e[r])return!1;t+=e[r]}return t}var r={};return r.define=function(o){function i(e){o.$fields&&n.is(e,o.$fields)}function a(n,r){if(!f)return n;if(t(n)){for(var o in n)n[o]=a(n[o]);return n}if(\"function\"!=typeof n)return n;if(!0!==f){if(e(n)[0]!==f)return p=p||[],p.push(r),n;d=!0}return m=!0,function(){var e=Array.prototype.slice.call(arguments);return e.unshift(this),n.apply(this,e)}}var s,u;o.$parent?(u=o.$parent,s=Object.create(u.prototype),s.super=function(){var n=Array.prototype.slice.call(arguments),e=n.shift();return u.prototype[e].apply(this,n)}):s={};var f,c;o.$this&&(f=o.$this),o.$singleton&&(c=o.$singleton);var l,d,m,p,Z=a(o.$)||function(n){if(n&&\"object\"==typeof n)for(var e in n)this[e]=n[e]};Z instanceof Array&&(l=Z,Z=function(){for(var n=Array.prototype.slice.call(arguments),e=0;e<l.length;e++)n.length>0&&(this[l[e]]=n.shift())});var h;h=function(){if(!(this instanceof h)){var n=Object.create(s);return Z.apply(n,arguments),i(n),n}Z.apply(this,arguments),i(this)},u&&(h.super=function(){var n=Array.prototype.slice.call(arguments),e=n.shift(),t=n.shift();return u.prototype[t].apply(e,n)}),h.inherit=function(n){return n.$parent=h,r.define(n)},h.prototype=s;for(var v in o)\"$\"!=v[0]&&(\"static$\"==v.substring(0,7)?h[v.substring(7)]=function(n){return c?e(n)[0]!==c?n:function(){var e=Array.prototype.slice.call(arguments);return e.unshift(h),n.apply(h,e)}:n}(o[v]):t(o[v])?Object.defineProperty(s,v,a(o[v],v)):s[v]=a(o[v],v));if(s.$=Z,Object.defineProperty(s,\"$bind\",{get:function(){return this.__bounded||(this.__bounded=new r.Binder(this)),this.__bounded}}),d){p?console.warn(\"Use python style in all methods and Use $this:true instead\",p):console.warn(\"Use $this:true instead\");try{throw new Error(\"Stakku\")}catch(n){console.log(n.stack)}}return h},r.Function=function(){throw new Error(\"Abstract\")},r.opt=n.opt,r.Binder=r.define({$this:!0,$:function(n,e){for(var t in e)!function(t){\"function\"==typeof e[t]&&(n[t]=function(){var n=Array.prototype.slice.call(arguments);return e[t].apply(e,n)})}(t)}}),r}),function n(e,t,r){function o(a,s){if(!t[a]){if(!e[a]){var u=\"function\"==typeof require&&require;if(!s&&u)return u(a,!0);if(i)return i(a,!0);var f=new Error(\"Cannot find module '\"+a+\"'\");throw f.code=\"MODULE_NOT_FOUND\",f}var c=t[a]={exports:{}};e[a][0].call(c.exports,function(n){var t=e[a][1][n];return o(t||n)},c,c.exports,n,e,t,r)}return t[a].exports}for(var i=\"function\"==typeof require&&require,a=0;a<r.length;a++)o(r[a]);return o}({1:[function(n,e,t){function r(){}var o=e.exports={};o.nextTick=function(){var n=\"undefined\"!=typeof window&&window.setImmediate,e=\"undefined\"!=typeof window&&window.postMessage&&window.addEventListener;if(n)return function(n){return window.setImmediate(n)};if(e){var t=[];return window.addEventListener(\"message\",function(n){var e=n.source;if((e===window||null===e)&&\"process-tick\"===n.data&&(n.stopPropagation(),t.length>0)){t.shift()()}},!0),function(n){t.push(n),window.postMessage(\"process-tick\",\"*\")}}return function(n){setTimeout(n,0)}}(),o.title=\"browser\",o.browser=!0,o.env={},o.argv=[],o.on=r,o.addListener=r,o.once=r,o.off=r,o.removeListener=r,o.removeAllListeners=r,o.emit=r,o.binding=function(n){throw new Error(\"process.binding is not supported\")},o.cwd=function(){return\"/\"},o.chdir=function(n){throw new Error(\"process.chdir is not supported\")}},{}],2:[function(n,e,t){\"use strict\";function r(n){function e(n){if(null===u)return void c.push(n);a(function(){var e=u?n.onFulfilled:n.onRejected;if(null===e)return void(u?n.resolve:n.reject)(f);var t;try{t=e(f)}catch(e){return void n.reject(e)}n.resolve(t)})}function t(n){try{if(n===l)throw new TypeError(\"A promise cannot be resolved with itself.\");if(n&&(\"object\"==typeof n||\"function\"==typeof n)){var e=n.then;if(\"function\"==typeof e)return void i(e.bind(n),t,r)}u=!0,f=n,s()}catch(n){r(n)}}function r(n){u=!1,f=n,s()}function s(){for(var n=0,t=c.length;n<t;n++)e(c[n]);c=null}if(\"object\"!=typeof this)throw new TypeError(\"Promises must be constructed via new\");if(\"function\"!=typeof n)throw new TypeError(\"not a function\");var u=null,f=null,c=[],l=this;this.then=function(n,t){return new l.constructor(function(r,i){e(new o(n,t,r,i))})},i(n,t,r)}function o(n,e,t,r){this.onFulfilled=\"function\"==typeof n?n:null,this.onRejected=\"function\"==typeof e?e:null,this.resolve=t,this.reject=r}function i(n,e,t){var r=!1;try{n(function(n){r||(r=!0,e(n))},function(n){r||(r=!0,t(n))})}catch(n){if(r)return;r=!0,t(n)}}var a=n(\"asap\");e.exports=r},{asap:4}],3:[function(n,e,t){\"use strict\";function r(n){this.then=function(e){return\"function\"!=typeof e?this:new o(function(t,r){i(function(){try{t(e(n))}catch(n){r(n)}})})}}var o=n(\"./core.js\"),i=n(\"asap\");e.exports=o,r.prototype=o.prototype;var a=new r(!0),s=new r(!1),u=new r(null),f=new r(void 0),c=new r(0),l=new r(\"\");o.resolve=function(n){if(n instanceof o)return n;if(null===n)return u;if(void 0===n)return f;if(!0===n)return a;if(!1===n)return s;if(0===n)return c;if(\"\"===n)return l;if(\"object\"==typeof n||\"function\"==typeof n)try{var e=n.then;if(\"function\"==typeof e)return new o(e.bind(n))}catch(n){return new o(function(e,t){t(n)})}return new r(n)},o.all=function(n){var e=Array.prototype.slice.call(n);return new o(function(n,t){function r(i,a){try{if(a&&(\"object\"==typeof a||\"function\"==typeof a)){var s=a.then;if(\"function\"==typeof s)return void s.call(a,function(n){r(i,n)},t)}e[i]=a,0==--o&&n(e)}catch(n){t(n)}}if(0===e.length)return n([]);for(var o=e.length,i=0;i<e.length;i++)r(i,e[i])})},o.reject=function(n){return new o(function(e,t){t(n)})},o.race=function(n){return new o(function(e,t){n.forEach(function(n){o.resolve(n).then(e,t)})})},o.prototype.catch=function(n){return this.then(null,n)}},{\"./core.js\":2,asap:4}],4:[function(n,e,t){(function(n){function t(){for(;o.next;){o=o.next;var n=o.task;o.task=void 0;var e=o.domain;e&&(o.domain=void 0,e.enter());try{n()}catch(n){if(u)throw e&&e.exit(),setTimeout(t,0),e&&e.enter(),n;setTimeout(function(){throw n},0)}e&&e.exit()}a=!1}function r(e){i=i.next={task:e,domain:u&&n.domain,next:null},a||(a=!0,s())}var o={task:void 0,next:null},i=o,a=!1,s=void 0,u=!1;if(void 0!==n&&n.nextTick)u=!0,s=function(){n.nextTick(t)};else if(\"function\"==typeof setImmediate)s=\"undefined\"!=typeof window?setImmediate.bind(window,t):function(){setImmediate(t)};else if(\"undefined\"!=typeof MessageChannel){var f=new MessageChannel;f.port1.onmessage=t,s=function(){f.port2.postMessage(0)}}else s=function(){setTimeout(t,0)};e.exports=r}).call(this,n(\"_process\"))},{_process:1}],5:[function(n,e,t){\"function\"!=typeof Promise.prototype.done&&(Promise.prototype.done=function(n,e){(arguments.length?this.then.apply(this,arguments):this).then(null,function(n){setTimeout(function(){throw n},0)})})},{}],6:[function(n,e,t){n(\"asap\");\"undefined\"==typeof Promise&&(Promise=n(\"./lib/core.js\"),n(\"./lib/es6-extensions.js\")),n(\"./polyfill-done.js\")},{\"./lib/core.js\":2,\"./lib/es6-extensions.js\":3,\"./polyfill-done.js\":5,asap:4}]},{},[6]),define(\"promise\",function(){}),define(\"SEnv\",[\"Klass\",\"assert\",\"promise\"],function(n,e,t){function r(){return(new Date).getTime()}function o(n){return n/128-1}var i=function(n,e){return Math.trunc(n/e)},a=function(n,e){if(n!==n)throw new Error(e+\": Not a number!\");if(\"number\"!=typeof n)throw console.error(n),new Error(e+\": Not a not a number but not a number!\");return n},s=(Math.abs.bind(Math),function(n){return n>=128?n-256:n}),u=function(n,e){for(var t=[],r=e;n[r];r++)t.push(n[r]);return t},f=function(n,e){var t=n[e];return t+=256*n[e+1],t+=65536*n[e+2],t+=16777216*n[e+3],t>=2147483648&&(t-=4294967296),t},c=Number,l=[3421,3228,3047,2876,2715,2562,2419,2283,2155,2034,1920,1812,1711,1614,1524,1438,1358,1281,1210,1142,1078,1017,960,906,855,807,762,719,679,641,605,571,539,509,480,453,428,404,381,360,339,320,302,285,269,254,240,227,214,202,190,180,170,160,151,143,135,127,120,113,107,101,95,90,85,80,76,71,67,64,60,57,53,50,48,45,42,40,38,36,34,32,30,28,27,25,24,22,21,20,19,18,17,16,15,14],d=(Math.trunc.bind(),[]),m=[],p=0;return n.define({$this:!0,$fields:{Pos:c,PrevPos:c,RPos:c,WaveDat:Array,wdata2:Array,BeginPlay:Boolean,SeqTime:c,SeqTime120:c,wavoutContext:Boolean,Fading:c,PCMW:Array,Delay:c,Tempo:c,ComStr:String,WFilename:String,EnvDat:Array,WriteMaxLen:c},load:function(n,e){function t(n){if(0==n.length)throw new Error(\"Out of data\");return n.shift()}function r(n){if(n.length<4)throw new Error(\"Out of data\");var e=n.shift(),t=1;return t<<=8,e+=n.shift()*t,t<<=8,e+=n.shift()*t,t<<=8,e+=n.shift()*t}for(var o=(r(e),t(e)),i=0;i<o;i++){for(var a=[],s=r(e),u=0;u<s;u++)a.push(t(e));n.channels[i].MPoint=a}},setNoiseWDT:function(n){for(var e=0;e<1024;e++)n.WaveDat[95][e]=o(Math.floor(78*Math.random()+90))},loadWDT:function(n,e){return new Promise(function(t,r){try{e||requirejs([\"Tones.wdt\"],function(e){n.loadWDT(e).then(t,r)});var i=new XMLHttpRequest;i.open(\"GET\",e,!0),i.responseType=\"arraybuffer\",i.onload=function(e){var r,a,s=i.response;if(s){var u=new Uint8Array(s);console.log(\"Loading wdt\",u.length);var f=0;for(r=0;r<96;r++)for(a=0;a<32;a++)n.WaveDat[r][a]=o(u[f++]);for(n.setNoiseWDT(),r=0;r<16;r++)for(a=0;a<32;a++)n.EnvDat[r][a]=u[f++];console.log(\"Loading wdt done\"),t()}},i.send(null)}catch(n){r(n)}})},setSound:function(n,e,t,r){var o=n.channels[e];switch(o.soundMode=!0,t){case 1:o.Steps=r;break;case 2:o.EVol=r}},InitSin:function(n){var e;for(e=0;e<2048;e++)m[e]=Math.trunc(127*Math.sin(6.2831852*e/2048))},InitEnv:function(n){var e,t;for(n.EnvDat=[],e=0;e<16;e++)for(n.EnvDat[e]=[],t=0;t<32;t++)n.EnvDat[e][t]=Math.floor((31-t)/2)},ConvM2T:function(n){var e;for(d=[],e=0;e<96;e++)d[e]=Math.trunc(7330908160/l[e]*65536/n.sampleRate)},InitWave:function(n){var e,t;for(n.WaveDat=[],e=0;e<96;e++)for(n.WaveDat[e]=[],t=0;t<16;t++)n.WaveDat[e][t]=o(103),n.WaveDat[e][t+i(32,2)]=o(153)},$:function(n,e,t){var r;for(t=t||{},n.useScriptProcessor=t.useScriptProcessor,n.useFast=t.useFast,n.resolution=t.resolution||120,n.wavOutSpeed=t.wavOutSpeed||10,n.context=e,n.sampleRate=a(n.context.sampleRate,\"t.context.sampleRate\"),n.Delay=2e3,n.Pos=n.PrevPos=n.RPos=n.SeqTime=n.SeqTime120=0,n.BeginPlay=!1,n.InitWave(),n.InitEnv(),n.InitSin(),n.ConvM2T(),n.wdata2=[],n.PCMW=[],r=0;r<16;r++)n.PCMW[r]=null;for(n.channels=[],r=0;r<10;r++)n.channels.push({});n.resetChannelStates(),n.Fading=256,n.timeLag=2e3,n.WriteMaxLen=2e4,n.wavoutContext=!1,n.WFilename=\"\",n.ComStr=\"\",n.performance={timeForChProc:0,timeForWrtSmpl:0}},resetChannelStates:function(n){for(var e=0;e<10;e++){var t=n.channels[e];t.LfoV=0,t.LfoA=0,t.LfoC=0,t.LfoD=0,t.LfoDC=0,t.LfoSync=0,t.Slur=t.Sync=0,t.PorStart=t.PorEnd=t.PorLen=0,t.ECount=0,t.MCount=0,t.Resting=0,t.Steps=0,t.SccWave=n.WaveDat[0],t.SccCount=0,t.EShape=n.EnvDat[0],t.EVol=0,t.EBaseVol=128,t.MPointC=0,t.ESpeed=5,t.PlayState=\"psStop\",t.Detune=0,t.LfoV=0,n.SelWav(e,0),t.LfoD=0,t.LfoDC=0,t.Oct=4,t.soundMode=!1}n.Tempo=120,n.rate=1},Play1Sound:function(n,e,t,r){var o=n.channels[e];if(!o.soundMode)return 99==t?void(o.Resting=!0):void(e<0||e>=10||t<0||t>95||(o.Resting=!1,r||(o.ECount=0,o.Sync&&(o.SccCount=0),0!=o.LfoSync&&(o.LfoC=0)),o.CurWav<96?(o.Steps=d[t]+o.Detune*i(d[t],2048),95===o.CurWav&&(o.Steps>>>=5)):o.L2WL>=2&&(o.Steps=i(1073741824>>>o.L2WL-2,i(d[36],65536))*i(d[t],65536)),o.PorLen=-1))},Play1Por:function(n,e,t,r,o){var a=n.channels[e];e<0||e>=10||r<0||r>95||t<0||t>95||(a.Resting=!1,a.PorStart=d[t]+a.Detune*i(d[t],2048),a.PorEnd=d[r]+a.Detune*i(d[r],2048),95===a.CurWav&&(a.PorStart>>>=5,a.PorEnd>>>=5),o||(a.ECount=0))},StopMML:function(n,e){e<0||e>=10||(n.WaitMML(e),n.channels[e].PlayState=\"psStop\",n.channels[e].MCount=n.SeqTime+1)},allWaiting:function(n){for(var e=0;e<10;e++)if(\"psPlay\"==n.channels[e].PlayState)return!1;return!0},handleAllState:function(n){var e,t=!0,r=!0;for(e=0;e<10;e++)switch(n.channels[e].PlayState){case\"psPlay\":t=!1,r=!1;break;case\"psWait\":r=!1}if(t&&!r)for(e=0;e<10;e++)n.RestartMML(e);return r},allStopped:function(n){for(var e=0;e<10;e++)if(\"psStop\"!=n.channels[e].PlayState)return!1;return!0},RestartMML:function(n,e){if(!(e<0||e>=10)){var t=n.channels[e];\"psWait\"==t.PlayState&&(t.PlayState=\"psPlay\",t.MCount=n.SeqTime+1)}},restartIfAllWaiting:function(n){if(n.allWaiting())for(var e=0;e<10;e++)n.RestartMML(e)},WaitMML:function(n,e){if(!(e<0||e>=10)){var t=n.channels[e];t.PlayState=\"psWait\",t.MCount=n.SeqTime+1}},Rewind:function(n){var e;for(n.resetChannelStates(),n.SeqTime=0,n.trackTime=0,e=0;e<10;e++){n.channels[e].PlayState=\"psPlay\"}},resetWavOut:function(n){n.wavoutContext=!1},wavOut:function(n,e){e=e||{};var t=n.resolution,r=[],o=e.maxSamples;n.wavoutContext||(n.Rewind(),n.wavoutContext={label2Time:[],PC2Time:[],writtenSamples:0,loopStartFrac:null});var i=n.wavoutContext;i.arysrc=r,i.maxSamples=o,\"number\"==typeof e.rate&&(n.rate=e.rate);var a=(n.wavOutSpeed,0);return new Promise(function(e){for(;;){var s=o&&a>=o-t;if(!s){for(var u=0;u<t;u++)r.push(0);n.refreshPSG(r,r.length-t,t),a+=t}if(n.allStopped()||s)return i.hasNext=s,s||(n.wavoutContext=!1),void e(i)}})},SelWav:function(n,e,t){var r=n.channels[e];r.CurWav=t,t<96?(r.SccWave=n.WaveDat[t],r.L2WL=5,95===t&&(r.L2WL=10),r.Sync=!1):null!=n.PCMW[t-96]&&(r.SccWave=n.PCMW[t-96].Start,r.L2WL=n.PCMW[t-96].Log2Len,r.Sync=!0)},RegPCM:function(n,e,t){console.log(\"[STUB]regpcm\",e.map(function(n){return String.fromCharCode(n)}),t)},refreshPSG:function(n,e,t,r){n.procChannels(r),n.writeSamples(e,t,r)},procChannels:function(n,e){var t,i,a,c,l,d;p++;var m=(n.sampleRate,44100/n.sampleRate);(new Date).getTime();if(!n.allStopped()){var Z,h=n.SeqTime,v=r(),g=n.wavoutContext;for(i=0;i<10;i++)if(Z=n.channels[i],null==Z.MPoint[Z.MPointC]&&n.StopMML(i),\"psPlay\"==Z.PlayState)for(d=0;Z.MCount<=h;){var w=Z.MPointC;g&&!g.maxSamples&&0==i&&(g.PC2Time[w]=g.writtenSamples),c=Z.MPoint[w+1],l=Z.MPoint[w+2];var y=Z.MPoint[w];if(y>=0&&y<96||99===y)n.Play1Sound(i,y,Z.Slur),Z.Slur||(Z.LfoDC=Z.LfoD),Z.Slur=!1,Z.MCount+=2*(c+256*l),Z.MPointC+=3;else switch(y){case 106:n.Play1Por(i,c,l,Z.Slur),Z.Slur=!1,Z.MCount+=2*(Z.MPoint[w+3]+256*Z.MPoint[w+4]),Z.PorLen=Z.MCount-h,Z.MPointC+=5;break;case 103:n.Tempo=c+256*l,Z.MPointC+=3;break;case 100:Z.EVol=c,Z.MPointC+=2;break;case 119:Z.EBaseVol=c,Z.MPointC+=2;break;case 101:Z.ESpeed=c,Z.MPointC+=2;break;case 102:n.SelWav(i,c),Z.MPointC+=2;break;case 113:for(Z.MPointC+=34,t=0;t<32;t++)n.WaveDat[c][t]=o(Z.MPoint[w+2+t]);break;case 107:Z.EShape=n.EnvDat[c],Z.MPointC+=2;break;case 114:for(Z.MPointC+=34,t=0;t<32;t++)a=Z.MPoint[w+2+t],a>15&&(a=15),n.EnvDat[c][t]=a;break;case 104:if(g&&!g.maxSamples){if(0==i){var S=Z.MPointC+f(Z.MPoint,w+1),M=g.PC2Time[S];\"number\"==typeof M&&M<g.writtenSamples&&(g.loopStartFrac=[M,n.sampleRate],console.log(\"@jump\",\"ofs=\",g.loopStartFrac))}Z.MPointC+=5}else Z.MPointC+=f(Z.MPoint,w+1);d++,d>1&&(console.log(\"Jumpsafe!\"),n.StopMML(i),Z.MCount=h+1);break;case 120:Z.MPointC+=2;break;case 105:Z.Slur=!0,Z.MPointC+=1;break;case 108:n.WaitMML(i),Z.MPointC+=1;break;case 109:n.ComStr=u(Z.MPoint,w+1),Z.MPointC+=n.ComStr.length+2;break;case 111:n.WFilename=u(Z.MPoint,w+1),Z.MPointC+=n.WFilename.length+2;break;case 112:Z.MPointC+=1;break;case 110:Z.Detune=s(c),Z.MPointC+=2;break;case 115:Z.LfoSync=c,Z.LfoV=65536*l,Z.LfoA=Z.MPoint[w+3],Z.LfoD=0,Z.MPointC+=4;break;case 118:Z.LfoD=c*n.sampleRate,Z.MPointC+=2;break;case 116:Z.Sync=1==c,Z.MPointC+=2;break;case 117:var C=u(Z.MPoint,w+1);n.RegPCM(C,Z.MPoint[w+1+C.length+1]),Z.MPointC+=C.length+3;break;case 255:n.StopMML(i);break;default:throw n.StopMML(i),new Error(\"Invalid opcode\"+y)}}n.handleAllState(),n.SeqTime+=Math.floor(n.Tempo*(e/120)*m*n.rate),n.trackTime+=e/n.sampleRate*n.rate,g&&(g.writtenSamples+=e,g.trackTime=n.trackTime),n.performance.timeForChProc+=r()-v}},writeSamples:function(n,e,t,o){var a,s,u,f=0,c=0,l=t+o;for(u=t;u<l;u++)e[u]=0;if(!n.allStopped()){var d=r();for(a=0;a<10;a++)if(s=n.channels[a],\"psPlay\"==s.PlayState&&(s.PorLen>0&&(c=s.MCount-n.SeqTime,s.Steps=i(s.PorStart,s.PorLen)*c+i(s.PorEnd,s.PorLen*(s.PorLen-c))),f=s.soundMode?s.EVol:s.Resting?0:s.EShape[s.ECount>>>11]*s.EVol*s.EBaseVol,n.Fading<256&&(f*=i(n.Fading,256)),s.ECount+s.ESpeed*(o/2)<65536&&(s.ECount+=s.ESpeed*(o/2)),!((f/=524288)<=0))){var p=s.SccCount,Z=s.Steps,h=s.SccWave,v=32-s.L2WL;for(0!=s.LfoV&&(s.LfoDC>0?s.LfoDC-=n.Tempo*o:(Z+=m[s.LfoC>>>21]*(Z>>9)*s.LfoA>>8,s.LfoC+=s.LfoV/2*o)),u=t;u<l;u++)e[u]+=f*h[p>>>v],p+=Z;s.SccCount=p>>>0}n.setNoiseWDT(),n.performance.timeForWrtSmpl+=r()-d}}})}),define(\"root\",[],function(){return\"undefined\"!=typeof window?window:\"undefined\"!=typeof self?self:\"undefined\"!=typeof global?global:function(){return this}()}),define(\"WorkerServiceW\",[\"promise\",\"root\"],function(n,e){var t=1,r={},o={},i=e;return e.WorkerService={install:function(n,e){r[n]=e},serv:function(n,e){this.install(n,e)},ready:function(){e.WorkerService.isReady=!0,i.postMessage({ready:!0})},reverse:function(n,e){var r=t++;return new Promise(function(t,a){o[r]=function(n){\"ok\"==n.status?t(n.result):a(n.error)},i.postMessage({reverse:!0,id:r,path:n,params:e})})}},i.addEventListener(\"message\",function(n){function e(n){i.postMessage({id:a,error:n?n.stack||n+\"\":\"unknown\",status:\"error\"})}var t=n.data,a=t.id,s={id:a};if(t.reverse)return o[t.id](t),void delete o[t.id];try{Promise.resolve(r[t.path](t.params,s)).then(function(n){i.postMessage({id:a,result:n,status:\"ok\"})},e)}catch(n){e(n)}}),e.WorkerService.install(\"WorkerService/isReady\",function(){return e.WorkerService.isReady}),e.console||(e.console={log:function(){e.WorkerService.reverse(\"console/log\",Array.prototype.slice.call(arguments))}}),e.WorkerService}),define(\"Tones.wdt\",[],function(){return\"data:application/octet-stream;base64,UFBQUFBQUFBQUFBQUFBQULm5ubm5ubm5ubm5ubm5ublnZ2dnZ6einUdETExBTHyao6OZnpNASWqZmJqZMENshm1LOjA6UFZOMys4RVBfZ3iHmKCvwMfUzLGpr8XPxbSSoGdnVUpBQD9BSUpKTlJjfK7BxL+xoHxiVkpPaIGToK1oYVZORkA5NDQ0NjpBSVZgbHuKlaOrrq6tq6Sfk4d8dopORUtVYGJobGdQRTw7RmF4jLO6uK+cmZmZmZqalY6MTkxOS0tLS0tLS0tLS0tLTH2uxc7SzruegVFQUE9PT05GSUdHRkZGRkZGz8/MzMzOz87Oz3dERUVFRUXOztDQSSdPa2xsa2tra2ttbW1ta4yx29rb3MGkim5WQSUlJScnR0lJSUlJSkpKSUlJSUlJSUlKvLy8u7y8u75GRkdHR0fs7OwPSqmfUEtJRTg4ODY2LysrKSkoKh4eHh4eHh4eH05OT09PT09PT09PT09PUFBQUFBQUFBQUFBPT0+4tra2Z2dbOTg7R2eIpK2kmIlsVUxHSlhwhJ+xq6OZmZmZjYiVioFsUS0iICo2TmCClaCzsaVrTEpccZGuurazsK+pop9cY1eRfGtfVUc/dZKecWhtomFjX3aBgXFgVUlAUYeY1ipFVWNseIKMkpmiqK2wubu+wMTFxcbGy8vQ0tHR0tR3iGBXbElAqKuOUk9Yk5OvuLm5ubSgcFZLTGpukpRma2dnZ2dnfpeZl4dwalBOZ2egtbOZeGVmcYKdrbWwrZmZZ2dnZ0c5MzMxMTEzNTk8Z5mZmZmZmcnJx8fGxsXDv7NKQUBUZW1tZV1dY3eUoKqrq5+cnai6xMXAtaWdk4p3YDA8TFZhZ3J8hI6fqrW/z9fs1rypnY2AcWFSRz80LSkgPEFGTlBWV1xdYmhscHN3eHyChoqRlZmeoKKlrbC1usHGv7WupaOak4+IiIR+eXhzbmtnYF1bxsZUUU5JQzs4NmBgYGBhwMC/v7/Dw8PExMPDw2NiZWVlZWVlZWVlYWFlV1dWVlRRVFJSUlTFxcXExMPDw8PDxFBQVFRUVldTVFfHx8fGxcS/v7u5tLCtp6Cal5KOhIB7cm5oYFdOPjgqxauxqZoXipOUZ2eTQ0GIlW2up6+VztDWSXKrpVCoTIOkyz5AQUFBQ0NBP0BGS1FdaHF3goePmaCps7u/xMXFxccjIChdZWBcRx8cGh0rRF11jaW80uBzs6ez29zOqY1qPmxmVjNBPmegtLy1u7iajYyUo6uqpJ+XkY2NjYyKiISZZ2dohIRYW4SEVleUq7q6sI1EREtlkZFbXJOrvr68sZeZmJhnZ2dnZ7a4QUNDP8vR0c/Oy8tFR0eZmZmZmZmZmShmg6q4qYqTpbq7uLWzq6igoJ6Xko2BdmNROC01SkMqAOH3/v/73wDh+v//+eoA6Pj+//nqAOj4///46gDk9vxnZ2dnqKqtgHl1gJSdnZV3cHOCjZyjoJyYl5SUmZmZmUNBRUdLVFhicHt+fn5+fn5+fn5+fn2BiJSns7/ExsbFcHBwcHBtbW1sbGxsbW1sbG1ubXzBw3M1HyApamxtbWzPz8/Oz8nBs5R7Zl1FOTw4RFJgc4mgvsXLy1dSUltix3FwcHBwc3V1dXV1dXNxcXFy1tYgIiJ2dnZ2dnZ1cXFxXDooNVowKDBcMCk1Q1BdeI2kvt3q4Ljd5tyx3+jcqH1mX19mZ2eZmYQ8PkZHSldddYKPlJmZmZmZmZmZmZmTjGdnZ3l4eHl5bFVMSklUgKSxsbawmqqzy76Yk7O+tLCtUTowLVKPsMHS1dHOzMfDtauZgWBFPDEzMTE+XICTjoFnZ2dnW09LXU5FVmNzhJOerrqnj4S/uJmZmZmZmZmZmb5RUElMTrXQ3N3cyYZwbHWOo8HV3dvBnZWOj5mgq7G4fX18gMG/e3h4eXl5fHx8gcG8gjAvLi4uLi4xMTAwL31HxMXGxsbFxcXFxURBPz8/QMPDxMTDw0ZDQ0FGRkdHR5q50OPcv62YhHV2j6u1qo5xVUpUcImKe2dSQCMcL0ZleGtcPDEuJygzYGNjZWZmZ567w8XAqaCOj4+SlJWUlIxlZWVHNjAkJTFQX2BgYGBfYp2qsbGwqJmRjoN8dXJubGdnZ2dUTEtQVFhfZWhxfI2vwMbJyb6qZ1pSRUaZmZmZgIePoLvQ29GwdrDQ3NS+nmFBKyMvT5JPLiQvRF9weH+uvsTEuqBYo7nAwL6vd2FQR0dHandqSklJSUlJSldshv8SfP8NaP7/DAz/B/0DA8T/yw/r++4PbfcSEvX4FBpaUWfJe7Cfqatnq2erqZ9KO5N952qZW4d2c3WGxlCZmdJnZ2dnZ2dnZ2dnZ2dnZ2dnmZmZmZmZmZmZmZmZmZmZmWdnZ2dnZ2dnZ2dnZ2dnZ2eZmZmZmZmZmZmZmZmZmZmZZ2dnZ2dnZ2dnZ2dnZ2dnZ5mZmZmZmZmZmZmZmZmZmZmenJR5d4KSlYRmVlBRUVJnr8fHwbSrpaKelHllZWVugWdnZ2dnZ2dnZ2dnZ2dnZ2eZmZmZmZmZmZmZmZmZmZmZZ2dnZ2dnZ2dnZ2dnZ2dnZ5mZmZmZmZmZmZmZmZmZmZlnZ2dnbmBfYmuOvsC5qJKHhIB+fXx8fXFnVVaan5mZmWdnZ2dnZ2dnZ2dnZ2dnZ2eZmZmZmZmZmZmZmZmZmZmZZ2dnZ2dnZ2dnZ2dnZ2dnZ5mZmZmZmZmZmZmZmZmZmZlnZ2dnZ2dnZ2dnZ2dnZ2dnmZmZmZmZmZmZmZmZmZmZmWdnZ2dhWoGRhltYZXyap6mfc3FmYXycqa6kj4J9fYGMZ2dnZ2dnZ2dnZ2dnZ2dnZ5mZmZmZmZmZmZmZmZmZmZlzdTw6Oz8/Pz9FR0pPV2Fqc36JjZqgqrC2vL+/vnd3c5pROjQxKycrKysuMDAxNj44ODtKk7zL0NS/jK/A0Mm4Z2dnZ2dnZ2dnZ2dnZ2dnZ5KtwdDMwamNZmdnZ2dnZ2eKg2dfaGt5eYS4mnBmY2VnZ2dna4+rq6t+bnZ2oKOnmLCwZ0k8Ozs7PEBLUltsj6q0ury6mX1RSpi5uFBKh6u5S05Ma2trampqTE5OTk5OecnJysvLra+urq60yc7OzspwcHJy1NbX2NjY1tR1cnV1c3Nzubm2tkNBQUNxcHJycaurq2dnZ2dmY2NqxsbExV9fX2HGycbGxkVEPkA8Ozs7Ii5L/+sAGi9FYXecvtXh7PX5/v7+/v7++/Dr3LAoDRMjIiUCIy8rPDRHUU9GHhMZIDUKCkQqGhoKCQwREy88PoSMnIynoLuoz7i8l6eCcnxXZjlOGE9BbmGCopfGp7iZQUNFTHagya6TcEVDQUFBW2iBmai5xc/Gua2VfWtWTkc7Ozs8tLS0trS0Ojo4ODk5uLi4tra2tbW2tra4tbW1tT5WaHFzbF1QODlLbp21w8/Rz8/Pz9DR0dHR0c65h1Y+coOgu8TDuZ13YEA0MDM/VG2Hmaq1wMXGxsO1p5SAc206c3NzlaeooIhYQzpAZnZ1dsPBwMDBwcHBwHV3dnM7O09wlMXav5d2XUs1IjtGXHWPorDF2MOtmYFxW0s6LygkZ2doMzMzMTNlZWhnlZWVlZWV0NDS0NDQ0NDPmJmZmWeYXC8tLS0tLispKTxlfJGcnaq1uriulJK4trWYlbq4qGdnZ2dnZ2dnZ2dnZ2dnZ2eZqL7Hyb+xnJSEfTEpQJyaZ2dnZ2evsLS5Tjw8RU5PZ5mZmZmZmWhdXF+ZmZmZmZlnZ2eAl56VaFJFQ0VKZ2dnmZmZmZmZmZmZmZmZmZmZmWJnZ2dnZ2dnZ2dnZ2dnZ2eZtb6+saOVh3x5cVQ/QUxfNEFOXWVrc36Hj5yjpaijeJejtsDFys/V1tfX1tXV1SuaUTpYVlZ5WlxdXDAwMWA+ODg7SpO5xtDOz6TQ0Mq8rspnUVFMS1ZztsbHvq+djU9PUGF2iZior7i+wMHDxsnKP1BmZWA4NCozO1eInrPBxYaGg7+/moJRQDAkIyMkKTNbWldXV2d2dmc4ODg5OnmvxcTExMSxV1hYWFiImZmZilqCipRyj5uHomxkmX19hY2giWeHZmSMg5RnmIGZpYFmDw4LCgoJCAcHBgYFBQQEAwMDAgICAgICAgICAgICAgAPDgsKCQkJCAgIBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwEODg4ODg4ODg0MDAwMDAwMDAwLCwsLCwsLCwoKCgoKAgUICgsNDg8PDw8PDw8ODg0NDAwLCwsKCgoJCQgICAcPDgwLCgkIBwcGBgYGBQUFBQUEBAMDAgICAgEBAQ8PDw8ODg4ODg4ODg4ODg4ODg0NDAwLCgoJCAgGBQQCAQAAAAUHCQoLCwwMDA0NDQ0ODg4ODg0NDQ0NDAwMDAwMDAwBAQECAgIDAwMDBAQFBAQFBQYHBwgJCQoLCwwNDg4ODg8ODAsKCQgHBwYGBgYFBQUFBQQEAwMCAgICAQEBAQAADw4MCwoJCAcHBgYGBgUFBQUFBAQDAwICAgIBAQEBAAAPDgwLCgkIBwcGBgYGBQUFBQUEBAMDAgICAgEBAQEAAA8ODAsKCQgHBwYGBgYFBQUFBQQEAwMCAgICAQEBAQAADw4MCwoJCAcHBgYGBgUFBQUFBAQDAwICAgIBAQEBAAAPDgwLCgkIBwcGBgYGBQUFBQUEBAMDAgICAgEBAQEAAA8ODAsKCQgHBwYGBgYFBQUFBQQEAwMCAgICAQEBAQAADw4MCwoJCAcHBgcGBgYGBQUFBQYHCAgHCAgBAQEBAAA=\"}),define(\"SEnvWorker\",[\"SEnv\",\"WorkerServiceW\",\"Tones.wdt\",\"promise\"],function(n,e,t,r){function o(e){var r=Promise.resolve();if(!i){var o={sampleRate:e.sampleRate};i=new n(o,{wavOutSpeed:1e4}),r=i.loadWDT(t)}return r.then(function(){i.load(e.mzo)})}var i;e.serv(\"MezonetJS/load\",o),e.serv(\"MezonetJS/wavOut\",function(n){var e=Promise.resolve();return n.mzo&&(e=o(n)),e.then(function(){return i.wavOut({maxSamples:n.maxSamples,rate:n.rate})}).then(function(n){return delete n.PC2Time,n})}),e.serv(\"test\",function(){return console.log(\"TEST!!\"),\"OK\"}),e.ready()}),require([\"SEnvWorker\"]);"),u=n.define({$this:!0,$:function(e,n,r){e.w=new t.Wrapper(new Worker(s)),e.context=n.context,e.mzo=n.mzo,e.src=n,e.sampleRate=e.context.sampleRate,e.curRate=1,e.plusTime=0,e.writtenSamples=0,e.scriptProcessorSize=r.scriptProcessorSize||0,e.wdataSize=Math.floor(e.sampleRate/2),e.processDuration=[],e.lastProcessed=i()},playNode:function(e,t){if(!e.isStopped&&!this.isSrcPlaying){t=t||{};for(var n=e.context.createBufferSource(),o=[],s=0;s<e.sampleRate;s++)o[s]=0;var u=r(e.context,o,e.sampleRate);n.buffer=u;var a=this.context.createScriptProcessor(e.scriptProcessorSize,1,1);a.onaudioprocess=e.refresh.bind(e),this.context.createGain=this.context.createGain||this.context.createGainNode;var f=this.context.createGain();a.connect(f),f.connect(this.context.destination),e.gainNode=f,this.bufSrc=n,n.loop=!0,n.connect(f),n.start=n.start||n.noteOn,n.start(),e.lastProcessed=i(),this.isSrcPlaying=!0,e.bufSrc=n,e.scriptProcessor=a;var c=t.volume||1;f.gain.value=c,e.rate=1,e.trackTime=0}},start:function(e,t){return e.isStopped?Promise.resolve():e.prepareBuffer().then(function(){e.playNode(t),e.startRefreshLoop()})},getCurrentTime:function(e){return e.trackTime},setRate:function(e,t){(t<=0||isNaN(t))&&(t=1),e.rate=t},refresh:function(e,t){var n,r=t.outputBuffer.getChannelData(0);if(e.isPaused)for(n=0;n<r.length;n++)r[n]=0;else{var o=Math.min(r.length,e.buffer.length);for(n=0;n<o;n++)r[n]=e.buffer[n];e.buffer.splice(0,o),e.hitToLast&&0===e.buffer.length&&e.stop()}},prepareBuffer:function(e){return e.buffer?Promise.resolve(e.buffer):e.w.run("MezonetJS/wavOut",{mzo:e.mzo,sampleRate:e.sampleRate,maxSamples:e.wdataSize}).then(function(t){return e.buffer=t.arysrc,e.writtenSamples+=t.arysrc.length,e.buffer})},startRefreshLoop:function(e){function t(){return o(0).then(function(){if(!e.isSrcPlaying)return e.w&&e.w.terminate(),"stopped";var n=e.wdataSize-e.buffer.length;return n<=0?o(10).then(t):e.w.run("MezonetJS/wavOut",{maxSamples:n,rate:e.rate}).then(function(n){var r=n.arysrc;if(e.buffer=e.buffer.concat(r),e.trackTime=n.trackTime,n.hasNext)return t();e.hitToLast=!0})})}return t()},setVolume:function(e,t){t="number"==typeof t?t:1,e.gainNode&&(e.gainNode.gain.value=t)},pause:function(e){e.isStopped||e.isSrcPlaying&&(e.isPaused||(e.isPaused=!0))},resume:function(e){e.isStopped||e.isSrcPlaying&&e.isPaused&&(e.isPaused=!1)},stop:function(e){return e.bufSrc&&e.bufSrc.stop(),e.scriptProcessor&&e.scriptProcessor.disconnect(),e.gainNode&&e.gainNode.disconnect(),e.isSrcPlaying=!1,e.isStopped=!0,"stopped"}}),a=n.define({$this:!0,$:function(e,n,r){e.w=new t.Wrapper(new Worker(s)),e.context=n,e.sampleRate=e.context.sampleRate,e.mzo=r},playAsMezonet:function(e){return new u(this,e)},init:function(e,t){return t=t||{},e.maxSamples=t.maxSamples||4*e.context.sampleRate,e.w.run("MezonetJS/wavOut",{mzo:e.mzo,sampleRate:e.sampleRate,maxSamples:e.maxSamples}).then(function(t){t.loopStartFrac&&(t.loopStart=t.loopStartFrac[0]/t.loopStartFrac[1]);var n=r(e.context,t.arysrc,e.sampleRate);return t.mezonet=e,t.decodedData=n,t.hasNext?e.playbackMode={type:"Mezonet"}:e.playbackMode={type:"AudioBuffer",buffer:n},e.w.terminate(),t.playbackMode=e.playbackMode,t})},terminate:function(e){e.w.terminate()}});return a.Playback=u,a}),t("MezonetClient")}()}(this);
+(function (root, factory) {
+    root.Mezonet = factory();
+}(this, function () {
+var requirejs,require,define;(function(undef){var main,req,makeMap,handlers,defined={},waiting={},config={},defining={},hasOwn=Object.prototype.hasOwnProperty,aps=[].slice,jsSuffixRegExp=/\.js$/;function hasProp(obj,prop){return hasOwn.call(obj,prop)}function normalize(name,baseName){var nameParts,nameSegment,mapValue,foundMap,lastIndex,foundI,foundStarMap,starI,i,j,part,normalizedBaseParts,baseParts=baseName&&baseName.split("/"),map=config.map,starMap=map&&map["*"]||{};if(name){name=name.split("/");lastIndex=name.length-1;if(config.nodeIdCompat&&jsSuffixRegExp.test(name[lastIndex])){name[lastIndex]=name[lastIndex].replace(jsSuffixRegExp,"")}if(name[0].charAt(0)==="."&&baseParts){normalizedBaseParts=baseParts.slice(0,baseParts.length-1);name=normalizedBaseParts.concat(name)}for(i=0;i<name.length;i++){part=name[i];if(part==="."){name.splice(i,1);i-=1}else if(part===".."){if(i===0||i===1&&name[2]===".."||name[i-1]===".."){continue}else if(i>0){name.splice(i-1,2);i-=2}}}name=name.join("/")}if((baseParts||starMap)&&map){nameParts=name.split("/");for(i=nameParts.length;i>0;i-=1){nameSegment=nameParts.slice(0,i).join("/");if(baseParts){for(j=baseParts.length;j>0;j-=1){mapValue=map[baseParts.slice(0,j).join("/")];if(mapValue){mapValue=mapValue[nameSegment];if(mapValue){foundMap=mapValue;foundI=i;break}}}}if(foundMap){break}if(!foundStarMap&&starMap&&starMap[nameSegment]){foundStarMap=starMap[nameSegment];starI=i}}if(!foundMap&&foundStarMap){foundMap=foundStarMap;foundI=starI}if(foundMap){nameParts.splice(0,foundI,foundMap);name=nameParts.join("/")}}return name}function makeRequire(relName,forceSync){return function(){var args=aps.call(arguments,0);if(typeof args[0]!=="string"&&args.length===1){args.push(null)}return req.apply(undef,args.concat([relName,forceSync]))}}function makeNormalize(relName){return function(name){return normalize(name,relName)}}function makeLoad(depName){return function(value){defined[depName]=value}}function callDep(name){if(hasProp(waiting,name)){var args=waiting[name];delete waiting[name];defining[name]=true;main.apply(undef,args)}if(!hasProp(defined,name)&&!hasProp(defining,name)){throw new Error("No "+name)}return defined[name]}function splitPrefix(name){var prefix,index=name?name.indexOf("!"):-1;if(index>-1){prefix=name.substring(0,index);name=name.substring(index+1,name.length)}return[prefix,name]}function makeRelParts(relName){return relName?splitPrefix(relName):[]}makeMap=function(name,relParts){var plugin,parts=splitPrefix(name),prefix=parts[0],relResourceName=relParts[1];name=parts[1];if(prefix){prefix=normalize(prefix,relResourceName);plugin=callDep(prefix)}if(prefix){if(plugin&&plugin.normalize){name=plugin.normalize(name,makeNormalize(relResourceName))}else{name=normalize(name,relResourceName)}}else{name=normalize(name,relResourceName);parts=splitPrefix(name);prefix=parts[0];name=parts[1];if(prefix){plugin=callDep(prefix)}}return{f:prefix?prefix+"!"+name:name,n:name,pr:prefix,p:plugin}};function makeConfig(name){return function(){return config&&config.config&&config.config[name]||{}}}handlers={require:function(name){return makeRequire(name)},exports:function(name){var e=defined[name];if(typeof e!=="undefined"){return e}else{return defined[name]={}}},module:function(name){return{id:name,uri:"",exports:defined[name],config:makeConfig(name)}}};main=function(name,deps,callback,relName){var cjsModule,depName,ret,map,i,relParts,args=[],callbackType=typeof callback,usingExports;relName=relName||name;relParts=makeRelParts(relName);if(callbackType==="undefined"||callbackType==="function"){deps=!deps.length&&callback.length?["require","exports","module"]:deps;for(i=0;i<deps.length;i+=1){map=makeMap(deps[i],relParts);depName=map.f;if(depName==="require"){args[i]=handlers.require(name)}else if(depName==="exports"){args[i]=handlers.exports(name);usingExports=true}else if(depName==="module"){cjsModule=args[i]=handlers.module(name)}else if(hasProp(defined,depName)||hasProp(waiting,depName)||hasProp(defining,depName)){args[i]=callDep(depName)}else if(map.p){map.p.load(map.n,makeRequire(relName,true),makeLoad(depName),{});args[i]=defined[depName]}else{throw new Error(name+" missing "+depName)}}ret=callback?callback.apply(defined[name],args):undefined;if(name){if(cjsModule&&cjsModule.exports!==undef&&cjsModule.exports!==defined[name]){defined[name]=cjsModule.exports}else if(ret!==undef||!usingExports){defined[name]=ret}}}else if(name){defined[name]=callback}};requirejs=require=req=function(deps,callback,relName,forceSync,alt){if(typeof deps==="string"){if(handlers[deps]){return handlers[deps](callback)}return callDep(makeMap(deps,makeRelParts(callback)).f)}else if(!deps.splice){config=deps;if(config.deps){req(config.deps,config.callback)}if(!callback){return}if(callback.splice){deps=callback;callback=relName;relName=null}else{deps=undef}}callback=callback||function(){};if(typeof relName==="function"){relName=forceSync;forceSync=alt}if(forceSync){main(undef,deps,callback,relName)}else{setTimeout(function(){main(undef,deps,callback,relName)},4)}return req};req.config=function(cfg){return req(cfg)};requirejs._defined=defined;define=function(name,deps,callback){if(typeof name!=="string"){throw new Error("See almond README: incorrect module build, no module name")}if(!deps.splice){callback=deps;deps=[]}if(!hasProp(defined,name)&&!hasProp(waiting,name)){waiting[name]=[name,deps,callback]}};define.amd={jQuery:true}})();
+
+define("almond", function(){});
+
+define('assert',[],function () {
+    var Assertion=function(failMesg) {
+        this.failMesg=flatten(failMesg || "Assertion failed: ");
+    };
+    var $a;
+    Assertion.prototype={
+        _regedType:{},
+        registerType: function (name,t) {
+            this._regedType[name]=t;
+        },
+        MODE_STRICT:"strict",
+        MODE_DEFENSIVE:"defensive",
+        MODE_BOOL:"bool",
+        fail:function () {
+            var a=$a(arguments);
+            var value=a.shift();
+            a=flatten(a);
+            a=this.failMesg.concat(value).concat(a);//.concat(["(mode:",this._mode,")"]);
+            console.log.apply(console,a);
+            if (this.isDefensive()) return value;
+            if (this.isBool()) return false;
+            throw new Error(a.join(" "));
+        },
+        subAssertion: function () {
+            var a=$a(arguments);
+            a=flatten(a);
+            return new Assertion(this.failMesg.concat(a));
+        },
+        assert: function (t,failMesg) {
+            if (!t) return this.fail(t,failMesg);
+            return t;
+        },
+        eq: function (a,b) {
+            if (a!==b) return this.fail(a,"!==",b);
+            return this.isBool()?true:a;
+        },
+        ne: function (a,b) {
+            if (a===b) return this.fail(a,"===",b);
+            return this.isBool()?true:a;
+        },
+        isset: function (a, n) {
+            if (a==null) return this.fail(a, (n||"")+" is null/undef");
+            return this.isBool()?true:a;
+        },
+        is: function (value,type) {
+            var t=type,v=value;
+            if (t==null) {
+                return this.fail(value, "assert.is: type must be set");
+                // return t; Why!!!!???? because is(args,[String,Number])
+            }
+            if (t._assert_func) {
+                t._assert_func.apply(this,[v]);
+                return this.isBool()?true:value;
+            }
+            this.assert(value!=null,[value, "should be ",t]);
+            if (t instanceof Array || (typeof global=="object" && typeof global.Array=="function" && t instanceof global.Array) ) {
+                if (!value || typeof value.length!="number") {
+                    return this.fail(value, "should be array:");
+                }
+                var self=this;
+                for (var i=0 ;i<t.length; i++) {
+                    var na=self.subAssertion("failed at ",value,"[",i,"]: ");
+                    if (t[i]==null) {
+                        console.log("WOW!7", v[i],t[i]);
+                    }
+                    na.is(v[i],t[i]);
+                }
+                return this.isBool()?true:value;
+            }
+            if (t===String || t=="string") {
+                this.assert(typeof(v)=="string",[v,"should be a string "]);
+                return this.isBool()?true:value;
+            }
+            if (t===Number || t=="number") {
+                this.assert(typeof(v)=="number",[v,"should be a number"]);
+                return this.isBool()?true:value;
+            }
+            if (t===Boolean || t=="boolean") {
+                this.assert(typeof(v)=="boolean",[v,"should be a boolean"]);
+                return this.isBool()?true:value;
+            }
+            if (t instanceof RegExp || (typeof global=="object" && typeof global.RegExp=="function" && t instanceof global.RegExp)) {
+                this.is(v,String);
+                this.assert(t.exec(v),[v,"does not match to",t]);
+                return this.isBool()?true:value;
+            }
+            if (t===Function) {
+                this.assert(typeof v=="function",[v,"should be a function"]);
+                return this.isBool()?true:value;
+            }
+            if (typeof t=="function") {
+                this.assert((v instanceof t),[v, "should be ",t]);
+                return this.isBool()?true:value;
+            }
+            if (t && typeof t=="object") {
+                for (var k in t) {
+                    var na=this.subAssertion("failed at ",value,".",k,":");
+                    na.is(value[k],t[k]);
+                }
+                return this.isBool()?true:value;
+            }
+            if (typeof t=="string") {
+                var ty=this._regedType[t];
+                if (ty) return this.is(value,ty);
+                //console.log("assertion Warning:","unregistered type:", t, "value:",value);
+                return this.isBool()?true:value;
+            }
+            return this.fail(value, "Invaild type: ",t);
+        },
+        ensureError: function (action, err) {
+            try {
+                action();
+            } catch(e) {
+                if(typeof err=="string") {
+                    assert(e+""===err,action+" thrown an error "+e+" but expected:"+err);
+                }
+                console.log("Error thrown successfully: ",e.message);
+                return;
+            }
+            this.fail(action,"should throw an error",err);
+        },
+        setMode:function (mode) {
+            this._mode=mode;
+        },
+        isDefensive:function () {
+            return this._mode===this.MODE_DEFENSIVE;
+        },
+        isBool:function () {
+            return this._mode===this.MODE_BOOL;
+        },
+        isStrict:function () {
+            return !this.isDefensive() && !this.isBool();
+        }
+    };
+    $a=function (args) {
+        var a=[];
+        for (var i=0; i<args.length ;i++) a.push(args[i]);
+        return a;
+    };
+    var top=new Assertion();
+    var assert=function () {
+        try {
+            return top.assert.apply(top,arguments);
+        } catch(e) {
+            throw new Error(e.stack);
+        }
+    };
+    ["setMode","isDefensive","is","isset","ne","eq","ensureError"].forEach(function (m) {
+        assert[m]=function () {
+            try {
+                return top[m].apply(top,arguments);
+            } catch(e) {
+                console.log(e.stack);
+                //if (top.isDefensive()) return arguments[0];
+                //if (top.isBool()) return false;
+                throw new Error(e.message);
+            }
+        };
+    });
+    assert.fail=top.fail.bind(top);
+    assert.MODE_STRICT=top.MODE_STRICT;
+    assert.MODE_DEFENSIVE=top.MODE_DEFENSIVE;
+    assert.MODE_BOOL=top.MODE_BOOL;
+    assert.f=function (f) {
+        return {
+            _assert_func: f
+        };
+    };
+    assert.opt=function (t) {
+        return assert.f(function (v) {
+            return v==null || v instanceof t;
+        });
+    };
+    assert.and=function () {
+        var types=$a(arguments);
+        assert(types instanceof Array);
+        return assert.f(function (value) {
+            var t=this;
+            for (var i=0; i<types.length; i++) {
+                t.is(value,types[i]);
+            }
+        });
+    };
+    function flatten(a) {
+        if (a instanceof Array) {
+            var res=[];
+            a.forEach(function (e) {
+                res=res.concat(flatten(e));
+            });
+            return res;
+        }
+        return [a];
+    }
+    function isArg(a) {
+        return "length" in a && "caller" in a && "callee" in a;
+    };
+    return assert;
+});
+
+define('Klass',["assert"],function (A) {
+    var Klass={};
+    Klass.define=function (pd) {
+        var p,parent;
+        if (pd.$parent) {
+            parent=pd.$parent;
+            p=Object.create(parent.prototype);
+            p.super=function () {
+                var a=Array.prototype.slice.call(arguments);
+                var n=a.shift();
+                return parent.prototype[n].apply(this,a);
+            };
+        } else {
+            p={};
+        }
+        var thisName,singletonName;
+        if (pd.$this) {
+            thisName=pd.$this;
+        }
+        if (pd.$singleton) {
+            singletonName=pd.$singleton;
+        }
+        var init=wrap(pd.$) || function (e) {
+            if (e && typeof e=="object") {
+                for (var k in e) {
+                    this[k]=e[k];
+                }
+            }
+        };
+        var fldinit;
+        var warn,wrapped,wrapCancelled;
+        //var check;
+        if (init instanceof Array) {
+            fldinit=init;
+            init=function () {
+                var a=Array.prototype.slice.call(arguments);
+                for (var i=0;i<fldinit.length;i++) {
+                    if (a.length>0) this[fldinit[i]]=a.shift();
+                }
+            };
+        }
+        var klass;
+        function checkSchema(self) {
+            if (pd.$fields) {
+                //console.log("Checking schema",self,pd.$fields);
+                A.is(self,pd.$fields);
+            }
+        }
+        klass=function () {
+            if (! (this instanceof klass)) {
+                var res=Object.create(p);
+                init.apply(res,arguments);
+                checkSchema(res);
+                return res;
+            }
+            init.apply(this,arguments);
+            checkSchema(this);
+        };
+        if (parent) {
+            klass.super=function () {
+                var a=Array.prototype.slice.call(arguments);
+                var t=a.shift();
+                var n=a.shift();
+                return parent.prototype[n].apply(t,a);
+            };
+        }
+        klass.inherit=function (pd) {
+            pd.$parent=klass;
+            return Klass.define(pd);
+        };
+        klass.prototype=p;
+        for (var name in pd) {
+            if (name[0]=="$") continue;
+            if (name.substring(0,7)=="static$") {
+                klass[name.substring(7)]=wrapStatic(pd[name]);
+            } else {
+                if (isPropDesc(pd[name])) {
+                    Object.defineProperty(p,name,wrap(pd[name], name));
+                } else {
+                    p[name]=wrap(pd[name], name);
+                }
+            }
+        }
+        function wrapStatic(m) {
+            if (!singletonName) return m;
+            var args=getArgs(m);
+            if (args[0]!==singletonName) return m;
+            return (function () {
+                var a=Array.prototype.slice.call(arguments);
+                a.unshift(klass);
+                return m.apply(klass,a);
+            });
+        }
+        function wrap(m,mname) {
+            if (!thisName) return m;
+            if (isPropDesc(m)) {
+                for (var k in m) {
+                    m[k]=wrap(m[k]);
+                }
+                return m;
+            }
+            if (typeof m!=="function") return m;
+            if (thisName!==true) {
+                var args=getArgs(m);
+                if (args[0]!==thisName) {
+                    wrapCancelled=wrapCancelled||[];
+                    wrapCancelled.push(mname);
+                    return m;
+                }
+                warn=true;
+            }
+            wrapped=true;
+            return (function () {
+                var a=Array.prototype.slice.call(arguments);
+                a.unshift(this);
+                return m.apply(this,a);
+            });
+        }
+        p.$=init;
+        Object.defineProperty(p,"$bind",{
+            get: function () {
+                if (!this.__bounded) {
+                    this.__bounded=new Klass.Binder(this);
+                }
+                return this.__bounded;
+            }
+        });
+        if (warn) {
+            //console.warn("This declaration style may malfunction when minified");
+            if (!wrapCancelled) {
+                console.warn("Use $this:true instead");
+            } else {
+                console.warn("Use python style in all methods and Use $this:true instead",wrapCancelled);
+            }
+            try {
+                throw new Error("Stakku");
+            } catch (e) {
+                console.log(e.stack);
+            }
+            //console.warn(pd);
+        }
+        return klass;
+    };
+    function getArgs(f) {
+        var fpat=/function[^\(]*\(([^\)]*)\)/;
+        var r=fpat.exec(f+"");
+        if (r) {
+            return r[1].replace(/\s/g,"").split(",");
+        }
+        return [];
+    }
+    function isPropDesc(o) {
+        if (typeof o!=="object") return false;
+        if (!o) return false;
+        var pk={configurable:1,enumerable:1,value:1,writable:1,get:1,set:1};
+        var c=0;
+        for (var k in o) {
+            if (!pk[k]) return false;
+            c+=pk[k];
+        }
+        return c;
+    }
+    Klass.Function=function () {throw new Error("Abstract");};
+    Klass.opt=A.opt;
+    Klass.Binder=Klass.define({
+        $this:true,
+        $:function (t,target) {
+            function addMethod(k){
+                if (typeof target[k]!=="function") return;
+                t[k]=function () {
+                    var a=Array.prototype.slice.call(arguments);
+                    //console.log(this, this.__target);
+                    //A(this.__target,"target is not set");
+                    return target[k].apply(target,a);
+                };
+            }
+            for (var k in target) addMethod(k);
+        }
+    });
+    return Klass;
+});
+/*
+requirejs(["Klass"],function (k) {
+  P=k.define ({
+     $:["x","y"]
+  });
+  p=P(2,3);
+  console.log(p.x,p.y);
+});
+*/
+;
+(function e(t, n, r) {
+  function s(o, u) {
+    if (!n[o]) {
+      if (!t[o]) {
+        var a = typeof require == "function" && require;
+        if (!u && a) return a(o, !0);
+        if (i) return i(o, !0);
+        var f = new Error("Cannot find module '" + o + "'");
+        throw f.code = "MODULE_NOT_FOUND", f;
+      }
+      var l = n[o] = {
+        exports: {}
+      };
+      t[o][0].call(l.exports, function(e) {
+        var n = t[o][1][e];
+        return s(n ? n : e);
+      }, l, l.exports, e, t, n, r);
+    }
+    return n[o].exports;
+  }
+  var i = typeof require == "function" && require;
+  for (var o = 0; o < r.length; o++) s(r[o]);
+  return s;
+})({
+  1: [ function(require, module, exports) {
+    var process = module.exports = {};
+    process.nextTick = function() {
+      var canSetImmediate = typeof window !== "undefined" && window.setImmediate;
+      var canPost = typeof window !== "undefined" && window.postMessage && window.addEventListener;
+      if (canSetImmediate) {
+        return function(f) {
+          return window.setImmediate(f);
+        };
+      }
+      if (canPost) {
+        var queue = [];
+        window.addEventListener("message", function(ev) {
+          var source = ev.source;
+          if ((source === window || source === null) && ev.data === "process-tick") {
+            ev.stopPropagation();
+            if (queue.length > 0) {
+              var fn = queue.shift();
+              fn();
+            }
+          }
+        }, true);
+        return function nextTick(fn) {
+          queue.push(fn);
+          window.postMessage("process-tick", "*");
+        };
+      }
+      return function nextTick(fn) {
+        setTimeout(fn, 0);
+      };
+    }();
+    process.title = "browser";
+    process.browser = true;
+    process.env = {};
+    process.argv = [];
+    function noop() {}
+    process.on = noop;
+    process.addListener = noop;
+    process.once = noop;
+    process.off = noop;
+    process.removeListener = noop;
+    process.removeAllListeners = noop;
+    process.emit = noop;
+    process.binding = function(name) {
+      throw new Error("process.binding is not supported");
+    };
+    process.cwd = function() {
+      return "/";
+    };
+    process.chdir = function(dir) {
+      throw new Error("process.chdir is not supported");
+    };
+  }, {} ],
+  2: [ function(require, module, exports) {
+    "use strict";
+    var asap = require("asap");
+    module.exports = Promise;
+    function Promise(fn) {
+      if (typeof this !== "object") throw new TypeError("Promises must be constructed via new");
+      if (typeof fn !== "function") throw new TypeError("not a function");
+      var state = null;
+      var value = null;
+      var deferreds = [];
+      var self = this;
+      this.then = function(onFulfilled, onRejected) {
+        return new self.constructor(function(resolve, reject) {
+          handle(new Handler(onFulfilled, onRejected, resolve, reject));
+        });
+      };
+      function handle(deferred) {
+        if (state === null) {
+          deferreds.push(deferred);
+          return;
+        }
+        asap(function() {
+          var cb = state ? deferred.onFulfilled : deferred.onRejected;
+          if (cb === null) {
+            (state ? deferred.resolve : deferred.reject)(value);
+            return;
+          }
+          var ret;
+          try {
+            ret = cb(value);
+          } catch (e) {
+            deferred.reject(e);
+            return;
+          }
+          deferred.resolve(ret);
+        });
+      }
+      function resolve(newValue) {
+        try {
+          if (newValue === self) throw new TypeError("A promise cannot be resolved with itself.");
+          if (newValue && (typeof newValue === "object" || typeof newValue === "function")) {
+            var then = newValue.then;
+            if (typeof then === "function") {
+              doResolve(then.bind(newValue), resolve, reject);
+              return;
+            }
+          }
+          state = true;
+          value = newValue;
+          finale();
+        } catch (e) {
+          reject(e);
+        }
+      }
+      function reject(newValue) {
+        state = false;
+        value = newValue;
+        finale();
+      }
+      function finale() {
+        for (var i = 0, len = deferreds.length; i < len; i++) handle(deferreds[i]);
+        deferreds = null;
+      }
+      doResolve(fn, resolve, reject);
+    }
+    function Handler(onFulfilled, onRejected, resolve, reject) {
+      this.onFulfilled = typeof onFulfilled === "function" ? onFulfilled : null;
+      this.onRejected = typeof onRejected === "function" ? onRejected : null;
+      this.resolve = resolve;
+      this.reject = reject;
+    }
+    function doResolve(fn, onFulfilled, onRejected) {
+      var done = false;
+      try {
+        fn(function(value) {
+          if (done) return;
+          done = true;
+          onFulfilled(value);
+        }, function(reason) {
+          if (done) return;
+          done = true;
+          onRejected(reason);
+        });
+      } catch (ex) {
+        if (done) return;
+        done = true;
+        onRejected(ex);
+      }
+    }
+  }, {
+    asap: 4
+  } ],
+  3: [ function(require, module, exports) {
+    "use strict";
+    var Promise = require("./core.js");
+    var asap = require("asap");
+    module.exports = Promise;
+    function ValuePromise(value) {
+      this.then = function(onFulfilled) {
+        if (typeof onFulfilled !== "function") return this;
+        return new Promise(function(resolve, reject) {
+          asap(function() {
+            try {
+              resolve(onFulfilled(value));
+            } catch (ex) {
+              reject(ex);
+            }
+          });
+        });
+      };
+    }
+    ValuePromise.prototype = Promise.prototype;
+    var TRUE = new ValuePromise(true);
+    var FALSE = new ValuePromise(false);
+    var NULL = new ValuePromise(null);
+    var UNDEFINED = new ValuePromise(undefined);
+    var ZERO = new ValuePromise(0);
+    var EMPTYSTRING = new ValuePromise("");
+    Promise.resolve = function(value) {
+      if (value instanceof Promise) return value;
+      if (value === null) return NULL;
+      if (value === undefined) return UNDEFINED;
+      if (value === true) return TRUE;
+      if (value === false) return FALSE;
+      if (value === 0) return ZERO;
+      if (value === "") return EMPTYSTRING;
+      if (typeof value === "object" || typeof value === "function") {
+        try {
+          var then = value.then;
+          if (typeof then === "function") {
+            return new Promise(then.bind(value));
+          }
+        } catch (ex) {
+          return new Promise(function(resolve, reject) {
+            reject(ex);
+          });
+        }
+      }
+      return new ValuePromise(value);
+    };
+    Promise.all = function(arr) {
+      var args = Array.prototype.slice.call(arr);
+      return new Promise(function(resolve, reject) {
+        if (args.length === 0) return resolve([]);
+        var remaining = args.length;
+        function res(i, val) {
+          try {
+            if (val && (typeof val === "object" || typeof val === "function")) {
+              var then = val.then;
+              if (typeof then === "function") {
+                then.call(val, function(val) {
+                  res(i, val);
+                }, reject);
+                return;
+              }
+            }
+            args[i] = val;
+            if (--remaining === 0) {
+              resolve(args);
+            }
+          } catch (ex) {
+            reject(ex);
+          }
+        }
+        for (var i = 0; i < args.length; i++) {
+          res(i, args[i]);
+        }
+      });
+    };
+    Promise.reject = function(value) {
+      return new Promise(function(resolve, reject) {
+        reject(value);
+      });
+    };
+    Promise.race = function(values) {
+      return new Promise(function(resolve, reject) {
+        values.forEach(function(value) {
+          Promise.resolve(value).then(resolve, reject);
+        });
+      });
+    };
+    Promise.prototype["catch"] = function(onRejected) {
+      return this.then(null, onRejected);
+    };
+  }, {
+    "./core.js": 2,
+    asap: 4
+  } ],
+  4: [ function(require, module, exports) {
+    (function(process) {
+      var head = {
+        task: void 0,
+        next: null
+      };
+      var tail = head;
+      var flushing = false;
+      var requestFlush = void 0;
+      var isNodeJS = false;
+      function flush() {
+        while (head.next) {
+          head = head.next;
+          var task = head.task;
+          head.task = void 0;
+          var domain = head.domain;
+          if (domain) {
+            head.domain = void 0;
+            domain.enter();
+          }
+          try {
+            task();
+          } catch (e) {
+            if (isNodeJS) {
+              if (domain) {
+                domain.exit();
+              }
+              setTimeout(flush, 0);
+              if (domain) {
+                domain.enter();
+              }
+              throw e;
+            } else {
+              setTimeout(function() {
+                throw e;
+              }, 0);
+            }
+          }
+          if (domain) {
+            domain.exit();
+          }
+        }
+        flushing = false;
+      }
+      if (typeof process !== "undefined" && process.nextTick) {
+        isNodeJS = true;
+        requestFlush = function() {
+          process.nextTick(flush);
+        };
+      } else if (typeof setImmediate === "function") {
+        if (typeof window !== "undefined") {
+          requestFlush = setImmediate.bind(window, flush);
+        } else {
+          requestFlush = function() {
+            setImmediate(flush);
+          };
+        }
+      } else if (typeof MessageChannel !== "undefined") {
+        var channel = new MessageChannel();
+        channel.port1.onmessage = flush;
+        requestFlush = function() {
+          channel.port2.postMessage(0);
+        };
+      } else {
+        requestFlush = function() {
+          setTimeout(flush, 0);
+        };
+      }
+      function asap(task) {
+        tail = tail.next = {
+          task: task,
+          domain: isNodeJS && process.domain,
+          next: null
+        };
+        if (!flushing) {
+          flushing = true;
+          requestFlush();
+        }
+      }
+      module.exports = asap;
+    }).call(this, require("_process"));
+  }, {
+    _process: 1
+  } ],
+  5: [ function(require, module, exports) {
+    if (typeof Promise.prototype.done !== "function") {
+      Promise.prototype.done = function(onFulfilled, onRejected) {
+        var self = arguments.length ? this.then.apply(this, arguments) : this;
+        self.then(null, function(err) {
+          setTimeout(function() {
+            throw err;
+          }, 0);
+        });
+      };
+    }
+  }, {} ],
+  6: [ function(require, module, exports) {
+    var asap = require("asap");
+    if (typeof Promise === "undefined") {
+      Promise = require("./lib/core.js");
+      require("./lib/es6-extensions.js");
+    }
+    require("./polyfill-done.js");
+  }, {
+    "./lib/core.js": 2,
+    "./lib/es6-extensions.js": 3,
+    "./polyfill-done.js": 5,
+    asap: 4
+  } ]
+}, {}, [ 6 ]);
+//# sourceMappingURL=/polyfills/promise-6.1.0.js.map
+;
+define("promise", function(){});
+
+define('Tones.wdt',[],function () {
+    return "data:application/octet-stream;base64,UFBQUFBQUFBQUFBQUFBQULm5ubm5ubm5ubm5ubm5ublnZ2dnZ6einUdETExBTHyao6OZnpNASWqZmJqZMENshm1LOjA6UFZOMys4RVBfZ3iHmKCvwMfUzLGpr8XPxbSSoGdnVUpBQD9BSUpKTlJjfK7BxL+xoHxiVkpPaIGToK1oYVZORkA5NDQ0NjpBSVZgbHuKlaOrrq6tq6Sfk4d8dopORUtVYGJobGdQRTw7RmF4jLO6uK+cmZmZmZqalY6MTkxOS0tLS0tLS0tLS0tLTH2uxc7SzruegVFQUE9PT05GSUdHRkZGRkZGz8/MzMzOz87Oz3dERUVFRUXOztDQSSdPa2xsa2tra2ttbW1ta4yx29rb3MGkim5WQSUlJScnR0lJSUlJSkpKSUlJSUlJSUlKvLy8u7y8u75GRkdHR0fs7OwPSqmfUEtJRTg4ODY2LysrKSkoKh4eHh4eHh4eH05OT09PT09PT09PT09PUFBQUFBQUFBQUFBPT0+4tra2Z2dbOTg7R2eIpK2kmIlsVUxHSlhwhJ+xq6OZmZmZjYiVioFsUS0iICo2TmCClaCzsaVrTEpccZGuurazsK+pop9cY1eRfGtfVUc/dZKecWhtomFjX3aBgXFgVUlAUYeY1ipFVWNseIKMkpmiqK2wubu+wMTFxcbGy8vQ0tHR0tR3iGBXbElAqKuOUk9Yk5OvuLm5ubSgcFZLTGpukpRma2dnZ2dnfpeZl4dwalBOZ2egtbOZeGVmcYKdrbWwrZmZZ2dnZ0c5MzMxMTEzNTk8Z5mZmZmZmcnJx8fGxsXDv7NKQUBUZW1tZV1dY3eUoKqrq5+cnai6xMXAtaWdk4p3YDA8TFZhZ3J8hI6fqrW/z9fs1rypnY2AcWFSRz80LSkgPEFGTlBWV1xdYmhscHN3eHyChoqRlZmeoKKlrbC1usHGv7WupaOak4+IiIR+eXhzbmtnYF1bxsZUUU5JQzs4NmBgYGBhwMC/v7/Dw8PExMPDw2NiZWVlZWVlZWVlYWFlV1dWVlRRVFJSUlTFxcXExMPDw8PDxFBQVFRUVldTVFfHx8fGxcS/v7u5tLCtp6Cal5KOhIB7cm5oYFdOPjgqxauxqZoXipOUZ2eTQ0GIlW2up6+VztDWSXKrpVCoTIOkyz5AQUFBQ0NBP0BGS1FdaHF3goePmaCps7u/xMXFxccjIChdZWBcRx8cGh0rRF11jaW80uBzs6ez29zOqY1qPmxmVjNBPmegtLy1u7iajYyUo6uqpJ+XkY2NjYyKiISZZ2dohIRYW4SEVleUq7q6sI1EREtlkZFbXJOrvr68sZeZmJhnZ2dnZ7a4QUNDP8vR0c/Oy8tFR0eZmZmZmZmZmShmg6q4qYqTpbq7uLWzq6igoJ6Xko2BdmNROC01SkMqAOH3/v/73wDh+v//+eoA6Pj+//nqAOj4///46gDk9vxnZ2dnqKqtgHl1gJSdnZV3cHOCjZyjoJyYl5SUmZmZmUNBRUdLVFhicHt+fn5+fn5+fn5+fn2BiJSns7/ExsbFcHBwcHBtbW1sbGxsbW1sbG1ubXzBw3M1HyApamxtbWzPz8/Oz8nBs5R7Zl1FOTw4RFJgc4mgvsXLy1dSUltix3FwcHBwc3V1dXV1dXNxcXFy1tYgIiJ2dnZ2dnZ1cXFxXDooNVowKDBcMCk1Q1BdeI2kvt3q4Ljd5tyx3+jcqH1mX19mZ2eZmYQ8PkZHSldddYKPlJmZmZmZmZmZmZmTjGdnZ3l4eHl5bFVMSklUgKSxsbawmqqzy76Yk7O+tLCtUTowLVKPsMHS1dHOzMfDtauZgWBFPDEzMTE+XICTjoFnZ2dnW09LXU5FVmNzhJOerrqnj4S/uJmZmZmZmZmZmb5RUElMTrXQ3N3cyYZwbHWOo8HV3dvBnZWOj5mgq7G4fX18gMG/e3h4eXl5fHx8gcG8gjAvLi4uLi4xMTAwL31HxMXGxsbFxcXFxURBPz8/QMPDxMTDw0ZDQ0FGRkdHR5q50OPcv62YhHV2j6u1qo5xVUpUcImKe2dSQCMcL0ZleGtcPDEuJygzYGNjZWZmZ567w8XAqaCOj4+SlJWUlIxlZWVHNjAkJTFQX2BgYGBfYp2qsbGwqJmRjoN8dXJubGdnZ2dUTEtQVFhfZWhxfI2vwMbJyb6qZ1pSRUaZmZmZgIePoLvQ29GwdrDQ3NS+nmFBKyMvT5JPLiQvRF9weH+uvsTEuqBYo7nAwL6vd2FQR0dHandqSklJSUlJSldshv8SfP8NaP7/DAz/B/0DA8T/yw/r++4PbfcSEvX4FBpaUWfJe7Cfqatnq2erqZ9KO5N952qZW4d2c3WGxlCZmdJnZ2dnZ2dnZ2dnZ2dnZ2dnmZmZmZmZmZmZmZmZmZmZmWdnZ2dnZ2dnZ2dnZ2dnZ2eZmZmZmZmZmZmZmZmZmZmZZ2dnZ2dnZ2dnZ2dnZ2dnZ5mZmZmZmZmZmZmZmZmZmZmenJR5d4KSlYRmVlBRUVJnr8fHwbSrpaKelHllZWVugWdnZ2dnZ2dnZ2dnZ2dnZ2eZmZmZmZmZmZmZmZmZmZmZZ2dnZ2dnZ2dnZ2dnZ2dnZ5mZmZmZmZmZmZmZmZmZmZlnZ2dnbmBfYmuOvsC5qJKHhIB+fXx8fXFnVVaan5mZmWdnZ2dnZ2dnZ2dnZ2dnZ2eZmZmZmZmZmZmZmZmZmZmZZ2dnZ2dnZ2dnZ2dnZ2dnZ5mZmZmZmZmZmZmZmZmZmZlnZ2dnZ2dnZ2dnZ2dnZ2dnmZmZmZmZmZmZmZmZmZmZmWdnZ2dhWoGRhltYZXyap6mfc3FmYXycqa6kj4J9fYGMZ2dnZ2dnZ2dnZ2dnZ2dnZ5mZmZmZmZmZmZmZmZmZmZlzdTw6Oz8/Pz9FR0pPV2Fqc36JjZqgqrC2vL+/vnd3c5pROjQxKycrKysuMDAxNj44ODtKk7zL0NS/jK/A0Mm4Z2dnZ2dnZ2dnZ2dnZ2dnZ5KtwdDMwamNZmdnZ2dnZ2eKg2dfaGt5eYS4mnBmY2VnZ2dna4+rq6t+bnZ2oKOnmLCwZ0k8Ozs7PEBLUltsj6q0ury6mX1RSpi5uFBKh6u5S05Ma2trampqTE5OTk5OecnJysvLra+urq60yc7OzspwcHJy1NbX2NjY1tR1cnV1c3Nzubm2tkNBQUNxcHJycaurq2dnZ2dmY2NqxsbExV9fX2HGycbGxkVEPkA8Ozs7Ii5L/+sAGi9FYXecvtXh7PX5/v7+/v7++/Dr3LAoDRMjIiUCIy8rPDRHUU9GHhMZIDUKCkQqGhoKCQwREy88PoSMnIynoLuoz7i8l6eCcnxXZjlOGE9BbmGCopfGp7iZQUNFTHagya6TcEVDQUFBW2iBmai5xc/Gua2VfWtWTkc7Ozs8tLS0trS0Ojo4ODk5uLi4tra2tbW2tra4tbW1tT5WaHFzbF1QODlLbp21w8/Rz8/Pz9DR0dHR0c65h1Y+coOgu8TDuZ13YEA0MDM/VG2Hmaq1wMXGxsO1p5SAc206c3NzlaeooIhYQzpAZnZ1dsPBwMDBwcHBwHV3dnM7O09wlMXav5d2XUs1IjtGXHWPorDF2MOtmYFxW0s6LygkZ2doMzMzMTNlZWhnlZWVlZWV0NDS0NDQ0NDPmJmZmWeYXC8tLS0tLispKTxlfJGcnaq1uriulJK4trWYlbq4qGdnZ2dnZ2dnZ2dnZ2dnZ2eZqL7Hyb+xnJSEfTEpQJyaZ2dnZ2evsLS5Tjw8RU5PZ5mZmZmZmWhdXF+ZmZmZmZlnZ2eAl56VaFJFQ0VKZ2dnmZmZmZmZmZmZmZmZmZmZmWJnZ2dnZ2dnZ2dnZ2dnZ2eZtb6+saOVh3x5cVQ/QUxfNEFOXWVrc36Hj5yjpaijeJejtsDFys/V1tfX1tXV1SuaUTpYVlZ5WlxdXDAwMWA+ODg7SpO5xtDOz6TQ0Mq8rspnUVFMS1ZztsbHvq+djU9PUGF2iZior7i+wMHDxsnKP1BmZWA4NCozO1eInrPBxYaGg7+/moJRQDAkIyMkKTNbWldXV2d2dmc4ODg5OnmvxcTExMSxV1hYWFiImZmZilqCipRyj5uHomxkmX19hY2giWeHZmSMg5RnmIGZpYFmDw4LCgoJCAcHBgYFBQQEAwMDAgICAgICAgICAgICAgAPDgsKCQkJCAgIBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwEODg4ODg4ODg0MDAwMDAwMDAwLCwsLCwsLCwoKCgoKAgUICgsNDg8PDw8PDw8ODg0NDAwLCwsKCgoJCQgICAcPDgwLCgkIBwcGBgYGBQUFBQUEBAMDAgICAgEBAQ8PDw8ODg4ODg4ODg4ODg4ODg0NDAwLCgoJCAgGBQQCAQAAAAUHCQoLCwwMDA0NDQ0ODg4ODg0NDQ0NDAwMDAwMDAwBAQECAgIDAwMDBAQFBAQFBQYHBwgJCQoLCwwNDg4ODg8ODAsKCQgHBwYGBgYFBQUFBQQEAwMCAgICAQEBAQAADw4MCwoJCAcHBgYGBgUFBQUFBAQDAwICAgIBAQEBAAAPDgwLCgkIBwcGBgYGBQUFBQUEBAMDAgICAgEBAQEAAA8ODAsKCQgHBwYGBgYFBQUFBQQEAwMCAgICAQEBAQAADw4MCwoJCAcHBgYGBgUFBQUFBAQDAwICAgIBAQEBAAAPDgwLCgkIBwcGBgYGBQUFBQUEBAMDAgICAgEBAQEAAA8ODAsKCQgHBwYGBgYFBQUFBQQEAwMCAgICAQEBAQAADw4MCwoJCAcHBgcGBgYGBQUFBQYHCAgHCAgBAQEBAAA=";
+});
+
+/* global requirejs,OfflineAudioContext */
+define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert,_,WDT) {
+    function now(){return new Date().getTime();}
+    function WDT2Float(w) {return w/128-1;}
+    //--- Also in M2Parser
+    var Ses = 10,
+        Chs = 10,
+        Regs = Chs * 3,
+        WvElC = 32,
+        EnvElC = 32,
+        WvC = 96,
+        wdataSize = 48000,  // should be dividable by 120
+        //   99=r 100=vol 101=ps (x*128)  255=end
+        MRest = 99,
+        MVol = 100,
+        Mps = 101,
+        MSelWav = 102,
+        MTempo = 103,
+        MJmp = 104,
+        MSlur = 105,
+        MPor = 106,
+        MSelEnv = 107,
+        MWait = 108,
+        MCom = 109,
+        MDet = 110,
+        MWOut = 111,
+        MWEnd = 112,
+        MWrtWav = 113,
+        MWrtEnv = 114,
+        MLfo = 115,
+        MSync = 116,
+        MPCMReg = 117,
+        MLfoD = 118,
+        MBaseVol = 119,
+        MLabel = 120,
+
+        Mend = 255,
+
+        //sync=0:非同期、1:同期、2:ワンショット 3:鋸波形
+        LASync = 0,
+        LSync = 1,
+        LOneShot = 2,
+        LSaw = 3,
+
+        Envs = 16,
+        PCMWavs = 16, // 96-111
+        FadeMax = 256,
+
+        div = function(x, y) {
+            return Math.trunc(x/y);
+            //return Math.trunc(chkn(x,"x") / chkn(y,"y") );
+        },
+        chkn = function (x,mesg) {
+            if (x!==x) throw new Error(mesg+": Not a number!");
+            if (typeof x!=="number") {console.error(x);throw new Error(mesg+": Not a not a number but not a number!");}
+            return x;
+        },
+        abs = Math.abs.bind(Math),
+        ShortInt = function(b) {
+            return b >= 128 ? b - 256 : b;
+        },
+        StrPas=function (ary,idx) {
+            var a=[];
+            for (var i=idx;ary[i];i++) {
+                a.push(ary[i]);
+            }
+            return a;
+        },
+        array2Int= function (ary,idx) {
+            var r=ary[idx];
+            r+=ary[idx+1]*0x100;
+            r+=ary[idx+2]*0x10000;
+            r+=ary[idx+3]*0x1000000;
+            if (r>=0x80000000) r-=0x100000000;
+            return r;
+        },
+        Integer = Number,
+        sinMax_s = 5,
+        sinMax = 65536 >> sinMax_s, //2048,
+        SPS = 44100,
+        SPS96 = 22080,
+        SPS_60 = div(44100, 60),
+        DU_SEQ="DU_SEQ", DU_TRK="DU_TRK", DU_CTX="DU_CTX",// time delta units
+        DivClock = 111860.78125,// See [1]
+        Loops = 163840,
+//---------End include
+        m2t = [0xd5d, 0xc9c, 0xbe7, 0xb3c, 0xa9b, 0xa02, 0x973, 0x8eb, 0x86b, 0x7f2, 0x780, 0x714,
+            0x6af, 0x64e, 0x5f4, 0x59e, 0x54e, 0x501, 0x4ba, 0x476, 0x436, 0x3f9, 0x3c0, 0x38a,
+            0x357, 0x327, 0x2fa, 0x2cf, 0x2a7, 0x281, 0x25d, 0x23b, 0x21b, 0x1fd, 0x1e0, 0x1c5,
+            0x1ac, 0x194, 0x17d, 0x168, 0x153, 0x140, 0x12e, 0x11d, 0x10d, 0xfe, 0xf0, 0xe3,
+            0xd6, 0xca, 0xbe, 0xb4, 0xaa, 0xa0, 0x97, 0x8f, 0x87, 0x7f, 0x78, 0x71,
+            0x6b, 0x65, 0x5f, 0x5a, 0x55, 0x50, 0x4c, 0x47, 0x43, 0x40, 0x3c, 0x39,
+            0x35, 0x32, 0x30, 0x2d, 0x2a, 0x28, 0x26, 0x24, 0x22, 0x20, 0x1e, 0x1c,
+            0x1b, 0x19, 0x18, 0x16, 0x15, 0x14, 0x13, 0x12, 0x11, 0x10, 0xf, 0xe
+        ],//  From: Tbl5-1 of [1]
+        //[1]  http://ngs.no.coocan.jp/doc/wiki.cgi/TechHan?page=1%BE%CF+PSG%A4%C8%B2%BB%C0%BC%BD%D0%CE%CF
+        Trunc = Math.trunc.bind(),
+        stEmpty = -1,
+        stFreq = 1,
+        stVol = 2,
+        stWave = 3,
+        sndElemCount = 64,
+        //type
+        /*TSoundElem = Klass.define({
+            $fields: {
+                time: Integer,
+                typ: Integer,
+                val: Integer
+            }
+        }),*/
+        nil = null,
+        False = false,
+        True = true,
+        //TPlayState = (psPlay,psStop,psWait,psPause);
+        psPlay = "psPlay",
+        psStop = "psStop",
+        psWait = "psWait",
+        psPause = "psPause",
+        m2tInt=[], //:array[0..95] of Integer;
+        sinT = [], //:array [0..sinMAX-1] of ShortInt;
+        TTL, //:Integer;
+        cnt=0; //:Integer;// debug
+    var defs;
+    var TEnveloper = Klass.define(defs={ //class (TSoundGenerator)
+        $this: true,
+        $fields: {
+            //BSize: Integer,
+            Pos: Integer,
+            PrevPos: Integer,
+            RPos: Integer,
+            WaveDat: Array, // [0..WvC-1,0..WvElC-1] of Byte;
+            wdata2: Array,//array[0..wdataSize-1] of SmallInt;
+
+            BeginPlay: Boolean,
+            SeqTime: Integer,
+            SeqTime120: Integer,
+
+            wavoutContext: Boolean,
+            //LFOsync=0:非同期、1:同期、2:ワンショット 3:鋸波形
+            Fading: Integer,
+
+            //L2WL: log 2 WaveLength
+            PCMW: Array, // [0..PCMWavs-1] of TWavLoader,
+
+            Delay: Integer,
+
+            Tempo: Integer,
+            ComStr: String,
+            WFilename: String,
+
+            EnvDat: Array, // [0..Envs-1,0..EnvElC-1] of Byte,
+
+            WriteMaxLen: Integer,
+            //soundMode: Array // [0..chs-1] of Boolean,
+        },
+        load:function (t,d) {
+            var ver=readLong(d);
+            var chs=readByte(d);
+            //var chdatas;
+            //t.MPoint=chdatas=[];
+            for (var i=0;i<chs;i++) {
+                var chdata=[];
+                //chdatas.push(chdata);
+                var len=readLong(d);
+                //console.log(len);
+                //if(len>999999) throw new Error("LONG");
+                for (var j=0;j<len;j++) {
+                    chdata.push(readByte(d));
+                }
+                t.channels[i].MPoint=chdata;
+            }
+            function readByte(a) {
+                if (a.length==0) throw new Error("Out of data");
+                return a.shift();
+            }
+            function readLong(a) {
+                if (a.length<4) throw new Error("Out of data");
+                var r=a.shift(),e=1;
+                e<<=8;
+                r+=a.shift()*e;
+                e<<=8;
+                r+=a.shift()*e;
+                e<<=8;
+                r+=a.shift()*e;
+                return r;
+            }
+        },
+        setNoiseWDT: function (t) {
+            // Noise
+            for (var j=0;j<1024;j++) {
+                t.WaveDat[WvC-1][j]=WDT2Float( Math.floor(Math.random() * 78 + 90) );
+            }
+            t.WaveDat[WvC-1].lambda=32;
+        },
+        loadWDT: function (t,url) {
+            return new Promise(function (succ,fail) {
+            try{
+                //console.log("LOading wdt...?");
+                if (!url) {
+                    /*requirejs(["Tones.wdt"],function (u) {
+                        t.loadWDT(u).then(succ,fail);
+                    });*/
+                    url=WDT;
+                }
+                var oReq = new XMLHttpRequest();
+                oReq.open("GET", url, true);
+                oReq.responseType = "arraybuffer";
+                oReq.onload = function (oEvent) {
+                    var arrayBuffer = oReq.response,i,j;
+                    if (arrayBuffer) {
+                        var b = new Uint8Array(arrayBuffer);
+                        //console.log("Loading wdt",b.length);
+                        //WaveDat
+                        var idx=0;
+                        for (i = 0; i < WvC; i++) {
+                            for (j=0;j<32;j++) {
+                                t.WaveDat[i][j]=WDT2Float( b[idx++] );
+                            }
+                        }
+                        t.setNoiseWDT();
+                        //EnvDat
+                        for (i=0 ;i<16;i++) {//Envs
+                            for (j=0;j<32;j++) {
+                                t.EnvDat[i][j]=b[idx++];
+                            }
+                        }
+                        //console.log("Loading wdt done");
+                        succ();
+                    }
+                };
+                oReq.send(null);
+            } catch(e) {fail(e);}
+            });
+        },
+        /*getPlayPos: function (t) {
+            var ti=this.context.currentTime- this. playStartTime;
+            var tiSamples=Math.floor(ti*this.sampleRate);
+            return tiSamples % wdataSize;
+        },*/
+        setSound: function(t, ch /*:Integer;*/ , typ /*:Integer;*/ , val /*:Integer*/ ) {
+            var chn=t.channels[ch];
+            chn.soundMode = True;
+            switch (typ) {
+                case stFreq:
+                    chn.Steps = val;
+                    break;
+                case stVol:
+                    chn.EVol = val;
+                    break;
+            }
+        },
+        InitSin: function(t) {
+            var i; //:Integer;
+            for (i = 0; i < sinMax; i++) {
+                sinT[i] = Math.trunc(Math.sin(3.1415926 * 2 * i / sinMax) * 127);
+            }
+        },
+        InitEnv: function(t) {
+            var i, j; //:Integer;
+            t.EnvDat=[];
+            for (i = 0; i < Envs; i++) {
+                t.EnvDat[i]=[];
+                for (j = 0; j < EnvElC; j++) {
+                    t.EnvDat[i][j] = Math.floor((EnvElC - 1 - j) / 2);
+                }
+            }
+        },
+        ConvM2T: function(t) {
+            var i; //:Integer;
+            m2tInt=[];
+            for (i = 0; i < 96; i++) {
+                m2tInt[i] = Math.trunc(DivClock * 65536 / m2t[i] * 65536 / t.sampleRate);
+            }
+        },
+        InitWave: function(t) {
+            var i, j;
+            t.WaveDat=[];
+            for (i = 0; i < WvC; i++) {
+                t.WaveDat[i]=[];
+                for (j = 0; j < WvElC / 2; j++) {
+                    t.WaveDat[i][j] = WDT2Float(103);
+                    t.WaveDat[i][j + div(WvElC, 2)] = WDT2Float(153);
+                }
+            }
+        },
+
+        $: function(t,context,options) {
+            var i, j; //:Integer;
+            options=options||{};
+            t.useScriptProcessor=options.useScriptProcessor;
+            t.useFast=options.useFast;
+            t.resolution=options.resolution||120;
+            t.wavOutSpeed=options.wavOutSpeed||10;
+            t.context=context;
+            t.sampleRate = chkn(t.context.sampleRate,"t.context.sampleRate");
+            //t.initNode({});
+            //t.WavPlaying=false;
+            // inherited Create (Handle);
+            t.Delay = 2000;
+            t.Pos = t.PrevPos = t.RPos = /*t.WriteAd =*/ t.SeqTime =
+            t.SeqTime120 = 0;
+            t.BeginPlay=false;
+            t.InitWave();
+            t.waveBuffers={};
+            t.InitEnv();
+            t.InitSin();
+            t.ConvM2T();
+            t.wdata2=[];
+            t.PCMW=[];
+            for (i = 0; i < PCMWavs; i++) {
+                t.PCMW[i] = nil;
+            }
+            t.channels=[];
+            for (i = 0; i < Chs; i++) {
+                t.channels.push({});
+            }
+            t.resetChannelStates();
+            t.Fading = FadeMax;
+            t.timeLag = 2000;
+
+            t.WriteMaxLen = 20000;
+            t.wavoutContext = False;
+            t.WFilename = '';
+            /* {$ifdef ForM2}
+            t.WavOutObj=nil;
+             {$endif}*/
+            t.ComStr = '';
+            t.bufferTime=1/30;
+            t.performance={timeForChProc:0, timeForWrtSmpl:0};
+            if (options.chdata) {
+                for (i=0;i<Chs;i++) {
+                    t.channels[i].MPoint=options.chdata[i];
+                }
+            }
+            if (options.WaveDat) t.WaveDat=options.WaveDat;
+            if (options.EnvDat) t.EnvDat=options.EnvDat;
+
+            //t.loadWDT();
+        },
+        resetChannelStates: function (t) {
+            for (var i = 0; i < Chs; i++) {
+                var chn=t.channels[i];
+                chn.LfoV=0;chn.LfoA=0;chn.LfoC=0;chn.LfoD=0;chn.LfoDC=0;chn.LfoSync=0;
+                chn.Slur=chn.Sync=0;
+                chn.PorStart=chn.PorEnd=chn.PorLen=0;
+                chn.ECount=0;
+                chn.MCount=0;
+                chn.Resting=0;
+                chn.Steps = 0;
+                chn.CurWav=0;
+                chn.SccWave = t.WaveDat[chn.CurWav];
+                chn.SccCount = 0;
+                chn.CurEnv=0;
+                chn.EShape = t.EnvDat[chn.CurEnv];
+                chn.EVol = 0;
+                chn.EBaseVol = 128;
+                chn.MPointC = 0;
+                chn.ESpeed = 5;
+                chn.PlayState = psStop;
+                chn.Detune = 0;
+                chn.LfoV = 0;
+                t.SelWav(i, 0);
+                chn.LfoD = 0;
+                chn.LfoDC = 0;
+                chn.Oct = 4;
+                chn.soundMode = False;
+            }
+            t.Tempo = 120;// changed by MML t***
+            t.rate = 1; // changed by setRate
+        },
+        /*
+        getBuffer: function (t) {
+            var channel=1;
+            if (this.buf) return this.buf;
+            this.buf = this.context.createBuffer(channel, wdataSize, this.sampleRate);
+            return this.buf;
+        },*/
+        playNode: function (t) {
+            if (this.isSrcPlaying) return;
+            for (var i=0;i<Chs;i++) {
+                var chn=t.channels[i];
+                chn.gainNode=t.context.createGain();
+                chn.gainNode.connect(t.context.destination);
+            }
+            this.isSrcPlaying = true;
+        },
+        startRefreshLoop: function (t) {
+            if (t.refreshTimer!=null) return;
+            t.refreshTimer=setInterval(t.refreshPSG.bind(t),5);
+            /*var grid=t.resolution;
+            var data=t.getBuffer().getChannelData(0);
+            var WriteAd=0;
+            for (var i=0;i<wdataSize;i+=grid) {
+                t.refreshPSG(data,i,grid);
+            }
+            function refresh() {
+                if (!t.isSrcPlaying) return;
+                var cnt=0;
+                var playPosZone=Math.floor(t.getPlayPos()/grid);
+                while (true) {
+                    if (cnt++>wdataSize/grid) throw new Error("Mugen "+playPosZone);
+                    var writeAdZone=Math.floor(WriteAd/grid);
+                    if (playPosZone===writeAdZone) break;
+                    t.refreshPSG(data,WriteAd,grid);
+                    WriteAd=(WriteAd+grid)%wdataSize;
+                }
+            }
+            t.refreshTimer=setInterval(refresh,16);*/
+        },
+        stopRefreshLoop: function (t) {
+            if (t.refreshTimer==null) return;
+            clearInterval(t.refreshTimer);
+            delete t.refreshTimer;
+        },
+        stopNode : function (t) {
+            if (!this.isSrcPlaying) return;
+            //this.bufSrc.stop();
+            for (var i=0;i<Chs;i++) {
+                var chn=t.channels[i];
+                if (chn.gainNode) chn.gainNode.disconnect();
+            }
+            this.isSrcPlaying = false;
+        },
+        getWaveBuffer: function (t,n) {
+            if (t.waveBuffers[n]) return t.waveBuffers[n];
+            var dat=t.WaveDat[n];
+            var mult=3;
+            var buflen=dat.length << mult ;
+            var res=t.context.createBuffer(1,buflen, t.sampleRate);
+            var chd=res.getChannelData(0);
+            for (var i=0;i<buflen;i++) {
+                chd[i]=dat[i >> mult];
+            }
+            t.waveBuffers[n]=res;
+            if (dat.lambda) res.lambda=dat.lambda << mult;
+            return res;
+        },
+        Play1Sound: function(t, c, n, iss, noteOnInCtx,noteOffInCtx) {
+            // ESpeed == psX
+            // ESpeed / 65536*SPS
+            var TP; //:Integer;
+            var chn=t.channels[c];
+            //if (chn.soundMode) return; // ) return;
+            if (n == MRest) {
+                chn.Resting = True;
+                return;
+            }
+            if ((c < 0) || (c >= Chs) || (n < 0) || (n > 95)) return; // ) return;
+            chn.Resting = False;
+            var buf=t.getWaveBuffer(chn.CurWav);
+            var buflen=buf.getChannelData(0).length;
+            var lambda=buf.lambda||buflen;
+            var steps=m2tInt[n] + chn.Detune * div(m2tInt[n], 2048);
+            var SccCount_MAX=0x100000000;
+            var source=t.context.createBufferSource();
+            source.buffer=buf;
+            source.loop=true;
+            source.start = source.start || source.noteOn;
+            source.stop = source.stop || source.noteOff;
+            source.playbackRate.value=(steps/SccCount_MAX)*lambda;
+            //console.log(source.playbackRate.value, noteOnInCtx, noteOffInCtx);
+            //source.playbackRate.value=freq*lambda/sampleRate;  in test.html
+            //                         =freq/sampleRate*lambda
+            //                         =steps/SccCount_MAX*lambda
+            //  steps*sampleRate= SccCount_MAX*freq
+            //  steps/SccCount_MAX= freq/sampleRate
+            //   ^v^v^v^.....v^
+            //    x100          in sampleRate
+            source.connect(chn.gainNode);
+            source.start(noteOnInCtx);
+            source.stop(noteOffInCtx);
+            var envLenInCtx=1/ (chn.ESpeed / 65536*SPS/2) ;
+            var env=t.EnvDat[chn.CurEnv];
+            //console.log(env.length);
+            var envSetTime=noteOnInCtx;
+            for (var i=0;i<env.length;i++) {
+                //if (i==0) console.log(env[i]/128, noteOnInCtx+i/env.length*envLenInCtx);
+                if (envSetTime>=noteOffInCtx) break;
+                var value=env[i]/16*chn.EVol/128*chn.EBaseVol/128;
+                if (value>=0 && value<=1) {
+                    chn.gainNode.gain.setValueAtTime(value, envSetTime);
+                } else {
+                    console.error(env.length, chn.EVol, chn.EBaseVol, envSetTime);//chn.EVol/128*chn.EBaseVol/128);
+                }
+                envSetTime+=envLenInCtx/env.length;
+            }
+
+            /*
+            if (!iss) {
+                chn.ECount = 0;
+                if (chn.Sync) chn.SccCount = 0;
+                if (chn.LfoSync != LASync) chn.LfoC = 0;
+            }
+            if (chn.CurWav < WvC) {
+                chn.Steps = m2tInt[n] + chn.Detune * div(m2tInt[n], 2048);
+                if (chn.CurWav===WvC-1) {// Noise
+                    chn.Steps >>>= 5;//  32->1024
+                }
+                // m2tInt*(1+Detune/xx)    (1+256/xx )^12 =2  1+256/xx=1.05946
+                //    256/xx=0.05946   xx=256/0.05946  = 4096?
+            } else {
+                if (chn.L2WL >= 2) {
+                    //Steps[c]:=($40000000 shr (L2WL[c]-2)) div (m2tInt[36] div 65536) * (m2tInt[n] div 65536);
+                    chn.Steps = div(0x40000000 >>> (chn.L2WL - 2), div(m2tInt[36], 65536)) * div(m2tInt[n], 65536);
+                }
+            }
+            chn.PorLen = -1;*/
+        },
+        //    procedure TEnveloper.Play1Por (c,f,t:Word;iss:Boolean);
+        Play1Por: function (t,c,from,to,iss) {
+             var TP=0;
+             var chn=t.channels[c];
+             if ((c<0)  ||  (c>=Chs)  ||  (to<0)  ||  (to>95) ||
+                (from<0)  ||  (from>95) ) return;
+             chn.Resting=False;
+
+             //TP=m2t[f];
+             chn.PorStart=m2tInt[from]+chn.Detune*div(m2tInt[from] , 2048);//Trunc (DivClock/TP*65536/t.sampleRate)+Detune[c];
+             //TP=m2t[to];
+             chn.PorEnd=m2tInt[to]+chn.Detune*div(m2tInt[to] , 2048);//Trunc (DivClock/TP*65536/t.sampleRate)+Detune[c];
+             // Noise
+             if (chn.CurWav===WvC-1) {
+                 chn.PorStart >>>= 5;//  32->1024
+                 chn.PorEnd >>>= 5;//  32->1024
+             }
+             if  (!iss) chn.ECount=0;
+
+        },
+        StopMML: function(t, c) {
+            if ((c < 0) || (c >= Chs)) return; // ) return;
+            //MPoint[c]=nil;
+            t.WaitMML(c);
+            t.channels[c].PlayState = psStop;
+            t.channels[c].MCount = t.SeqTime + 1;
+        },
+        allWaiting: function (t) {
+            for(var i=0;i<Chs;i++) {
+                if (t.channels[i].PlayState == psPlay) {
+                    return false;
+                }
+            }
+            return true;
+        },
+        handleAllState: function (t) {
+            var allWait=true,allStop=true,i;
+            for(i=0;i<Chs;i++) {
+                switch (t.channels[i].PlayState) {
+                case psPlay:
+                    allWait=false;
+                    allStop=false;
+                    break;
+                case psWait:
+                    allStop=false;
+                    break;
+                }
+            }
+            //          alw     als
+            // P        F       F
+            // W        T       F
+            // S        T       T
+            // P,W      F       F
+            // W,S      T       F
+            // S,P      F       F
+            // P,W,S    F       F
+            if (allWait && !allStop) {
+                for(i=0;i<Chs;i++) {
+                    t.RestartMML(i);
+                }
+            }
+            return allStop;
+        },
+        allStopped: function (t) {
+            for(var i=0;i<Chs;i++) {
+                if (t.channels[i].PlayState != psStop) {
+                    return false;
+                }
+            }
+            return true;
+        },
+        RestartMML: function(t, c) {
+            if ((c < 0) || (c >= Chs)) return;
+            var chn=t.channels[c];
+            if (chn.PlayState == psWait) {
+                chn.PlayState = psPlay;
+                chn.MCount = t.SeqTime + 1;
+            }
+        },
+        restartIfAllWaiting: function (t) {
+            if (t.allWaiting()) {
+                for(var i=0;i<Chs;i++) {
+                    t.RestartMML(i);
+                }
+            }
+        },
+        //procedure TEnveloper.WaitMML (c:Integer);
+        WaitMML: function(t, c) {
+            var i; //:Integer;
+            if ((c < 0) || (c >= Chs)) return;
+            //MPoint[c]=nil;
+            var chn=t.channels[c];
+            chn.PlayState = psWait;
+            chn.MCount = t.SeqTime + 1;
+        },
+        //procedure TEnveloper.Start;
+        Start: function(t) {
+            t.Stop();
+            t.Rewind();
+            t.BeginPlay = True;
+            t.playNode();
+            t.contextTime=t.context.currentTime+t.bufferTime;
+            t.startRefreshLoop();
+        },
+        start: function (t) {return t.Start();},
+        Rewind: function (t) {
+            var ch; //:Integer;
+            t.resetChannelStates();
+            t.SeqTime=0;
+            t.trackTime=0;
+            for (ch = 0; ch < Chs; ch++) {
+                var chn=t.channels[ch];
+                //chn.soundMode = False;
+                //chn.MPointC = 0;
+                chn.PlayState = psPlay;
+                //chn.MCount = t.SeqTime;
+            }
+        },
+        Stop: function (t) {
+            if (!t.BeginPlay) return;
+            t.stopNode();
+            t.stopRefreshLoop();
+            t.BeginPlay=false;
+            //console.log("STOP");
+        },
+        stop: function (t) {return t.Stop();},
+        resetWavOut: function (t) {
+            t.wavoutContext=false;
+        },
+        wavOut: function (t,options) {
+            var l=t.measureLength();
+            var onLine=t.context;
+            t.context=new OfflineAudioContext(1,SPS*l,SPS);
+            t.Start();
+
+        },
+        convertDeltaTime: function(t,delta, inputUnit, outputUnit) {
+            // SeqTime     楽譜上の位置． 1/2小節 = SPS
+            // trackTime   rate=1 で演奏したときの演奏開始からの経過時間
+            //                      SeqTime*(120/t)/SPS
+            //              t=60 のとき，SeqTime*2/SPS
+            //              t=120 のとき，SeqTime/SPS
+            //              t=240 のとき，SeqTime/2/SPS
+            // contextTime     演奏開始時刻+trackTime/rate (rateが一定の場合)
+            //              rate=1 のとき ， 演奏開始時刻+trackTime
+            //              rate=2 のとき ， 演奏開始時刻+trackTime/2
+            //dSeq    = dTrack*SPS*(Tempo/120)
+            //dTrack  = dSeq*(120/Tempo)/SPS
+            //dCtx    = dTrack/rate = dSeq*(120/Tempo)/SPS/rate
+            if (inputUnit===outputUnit) return delta;
+            switch(inputUnit+2+outputUnit) {
+                case DU_SEQ+2+DU_TRK:
+                return delta*(120/t.Tempo)/SPS;
+                case DU_SEQ+2+DU_CTX:
+                return delta*(120/t.Tempo)/SPS/t.rate;
+                case DU_TRK+2+DU_CTX:
+                return delta/t.rate;
+                case DU_TRK+2+DU_SEQ:
+                return delta*SPS*(t.Tempo/120);
+                case DU_CTX+2+DU_SEQ:
+                return delta*(t.Tempo/120)*SPS*t.rate;
+                case DU_CTX+2+DU_TRK:
+                return delta*t.rate;
+                default:
+                new Error("Invalid unit conversion:"+(inputUnit+2+outputUnit));
+            }
+        },
+        /*toAudioBuffer: function (t) {
+            return t.wavOut().then(function (arysrc) {
+                var buffer = t.context.createBuffer(1, arysrc.length, t.sampleRate);
+                var ary = buffer.getChannelData(0);
+                for (var i = 0; i < ary.length; i++) {
+                     ary[i] = arysrc[i];
+                }
+                var res={decodedData: buffer};
+                if (t.loopStartFrac) res.loopStart=t.loopStartFrac[0]/t.loopStartFrac[1];
+                return res;
+            });
+        },*/
+        SelWav: function(t, ch, n) {
+            var chn=t.channels[ch];
+            chn.CurWav = n;
+            if (n < WvC) {
+                chn.SccWave = t.WaveDat[n];
+                chn.L2WL = 5;
+                // Noise
+                if (n===WvC-1) chn.L2WL=10;
+                chn.Sync = False;
+            } else {
+                if (t.PCMW[n - WvC] != nil) {
+                    chn.SccWave = t.PCMW[n - WvC].Start;
+                    chn.L2WL = t.PCMW[n - WvC].Log2Len;
+                    chn.Sync = True;
+                }
+            }
+        },
+        RegPCM: function (t,fn, n) {
+            console.log("[STUB]regpcm",fn.map(function (e) {return String.fromCharCode(e);}),n);
+        },
+        /*
+        procedure TEnveloper.RegPCM (fn:string;n:Integer);
+        var i:Integer;
+            wl,wl2:TWavLoader;
+        {
+             if ( ! FileExists(fn) ) {
+                fn=ExtractFilePath (ParamStr(0))+'\\'+fn;
+                if ( ! FileExists(fn) ) return;
+             }
+             for ( i=0 to Chs-1 )
+                 if ( CurWav[i]==n ) SelWav(i,0);
+             wl=TWavLoader.Create (fn);IncGar;
+             if ( ! wl.isError ) {
+                if ( PCMW[n-WvC]!=nil ) {
+                   PCMW[n-WvC].Free; DecGar;
+                }
+                wl2=TWavLoader.Clone (TObject(wl));  IncGar;
+                PCMW[n-WvC]=wl2;
+             }
+             wl.Free;   DecGar;
+
+        }
+        */
+        refreshPSG: function(t) {
+            var lengthInCtx= t.context.currentTime+t.bufferTime-t.contextTime;
+            //console.log(lengthInCtx);
+            t.procChannels(lengthInCtx);
+            //t.writeSamples(data,WriteAd,length);
+        },
+        procChannels: function(t,lengthInCtx) {
+            var i, ch, wdtmp,LParam, HParam, WParam, JmpSafe;
+            cnt++;
+            //var tempoK=SPS / t.sampleRate ;
+            var startTime=new Date().getTime();
+            if (t.allStopped()) {
+                return;
+            }
+            var SeqTime=t.SeqTime,lpchk=0,chn;
+            var nextSeqTime=SeqTime+t.convertDeltaTime(lengthInCtx, DU_CTX, DU_SEQ);
+            var chPT=now();
+            var wctx=t.wavoutContext;
+            for (ch = 0; ch < Chs; ch++) {
+                chn=t.channels[ch];
+                if (chn.MPoint[chn.MPointC] == nil) t.StopMML(ch);
+                if (chn.PlayState != psPlay) continue;
+
+
+                JmpSafe = 0;
+                while (chn.MCount <= nextSeqTime) {
+                    if (chn.PlayState != psPlay) break;
+                    var pc = chn.MPointC;
+                    if (wctx && !wctx.maxSamples && ch==0) wctx.PC2Time[pc]=wctx.writtenSamples;
+                    LParam = chn.MPoint[pc + 1];
+                    HParam = chn.MPoint[pc + 2];
+                    var code = chn.MPoint[pc];
+                    if (code >= 0 && code < 96 || code === MRest) {
+                        var noteOnInCtx=t.contextTime+
+                            t.convertDeltaTime(chn.MCount-SeqTime, DU_SEQ, DU_CTX);
+                        var lenInSeq=(LParam + HParam * 256) * 2;
+                        var noteOffInCtx=noteOnInCtx+
+                            t.convertDeltaTime(lenInSeq, DU_SEQ,DU_CTX) ;
+
+                        t.Play1Sound(ch, code, chn.Slur, noteOnInCtx, noteOffInCtx);
+                        if (!chn.Slur) chn.LfoDC = chn.LfoD;
+                        chn.Slur = False;
+                        chn.MCount +=lenInSeq ;
+                        // SPS=22050の場合 *2 を *1 に。
+                        // SPS=x の場合   * (x/22050)
+                        chn.MPointC += 3;
+                    } else switch (code) {
+                        case MPor:
+                             t.Play1Por (ch,
+                               LParam,
+                               HParam,
+                               chn.Slur
+                             );
+                             chn.Slur=False;
+                             chn.MCount+=
+                             ( chn.MPoint[pc + 3]+chn.MPoint[pc + 4]*256 )*2;
+                            // SPS=22050の場合 *2 を *1 に。
+                             chn.PorLen=chn.MCount-SeqTime;
+                             chn.MPointC+=5;
+                        break;
+                        case MTempo:
+                            t.Tempo = LParam + HParam * 256;
+                            chn.MPointC += 3;
+                            break;
+                        case MVol:
+                            chn.EVol = LParam;
+                            chn.MPointC += 2;
+                            break;
+                        case MBaseVol:
+                            chn.EBaseVol = LParam;
+                            chn.MPointC += 2;
+                            break;
+                        case Mps:
+                            chn.ESpeed = LParam;
+                            chn.MPointC += 2;
+                            break;
+                        case MSelWav:
+                            t.SelWav(ch, LParam);
+                            chn.MPointC += 2;
+                            break;
+                        case MWrtWav:
+                            chn.MPointC += 34; // MWrtWav wavno data*32
+                            for (i = 0; i < 32; i++) {
+                                t.WaveDat[LParam][i] = WDT2Float( chn.MPoint[pc + 2 + i] );
+                            }
+                            break;
+                        case MSelEnv:
+                            chn.EShape = t.EnvDat[LParam];
+                            chn.CurEnv=LParam;
+                            chn.MPointC += 2;
+                            break;
+                        case MWrtEnv:
+                            // MWrtEnv envno data*32
+                            chn.MPointC += 34;
+                            for (i = 0; i < 32; i++) {
+                                wdtmp = chn.MPoint[pc + 2 + i];
+                                if (wdtmp > 15) wdtmp = 15;
+                                t.EnvDat[LParam][i] = wdtmp;
+                            }
+                            break;
+                        case MJmp:
+                            if (wctx && !wctx.maxSamples) {
+                                if (ch==0) {
+                                    var dstLabelPos=chn.MPointC + array2Int(chn.MPoint, pc+1);
+                                    var dstTime=wctx.PC2Time[dstLabelPos];
+                                    if (typeof dstTime=="number" && dstTime<wctx.writtenSamples) {
+                                        wctx.loopStartFrac=[dstTime, t.sampleRate];
+                                        console.log("@jump", "ofs=",wctx.loopStartFrac );
+                                    }
+                                }
+                                chn.MPointC += 5;
+                            } else {
+                                chn.MPointC += array2Int(chn.MPoint, pc+1);
+                            }
+                            JmpSafe++;
+                            if (JmpSafe > 1) {
+                                console.log("Jumpsafe!");
+                                t.StopMML(ch);
+                                chn.MCount = SeqTime + 1;
+                            }
+                            break;
+                        case MLabel:
+                            /*if (wctx && ch==0) {
+                                wctx.label2Time[LParam]=[wctx.writtenSamples,t.sampleRate];
+                                console.log("@label", LParam , chn.MPointC , wctx.writtenSamples+"/"+t.sampleRate );
+                            }*/
+                            chn.MPointC+=2;
+                            break;
+                        case MSlur:
+                            chn.Slur = True;
+                            chn.MPointC += 1;
+                            break;
+                        case MWait:
+                            t.WaitMML(ch);
+                            chn.MPointC += 1;
+                            break;
+                        case MCom:
+                            t.ComStr = StrPas(chn.MPoint, pc + 1);
+                            chn.MPointC += t.ComStr.length + 2; // opcode str \0
+                            break;
+                        case MWOut:
+                            t.WFilename = StrPas(chn.MPoint, pc + 1);
+                            chn.MPointC += t.WFilename.length + 2; // opcode str \0
+                            break;
+                        case MWEnd:
+                            chn.MPointC += 1;
+                            break;
+                        case MDet:
+                            chn.Detune = ShortInt(LParam);
+                            chn.MPointC += 2;
+                            break;
+                        case MLfo:
+                            chn.LfoSync = (LParam);
+                            chn.LfoV = (HParam) * 65536;
+                            chn.LfoA = (chn.MPoint[pc + 3]);
+                            chn.LfoD = 0;
+                            chn.MPointC += 4;
+                            break;
+                        case MLfoD:
+                            chn.LfoD = LParam * t.sampleRate;
+                            chn.MPointC += 2;
+                            break;
+                        case MSync:
+                            chn.Sync = (LParam == 1);
+                            chn.MPointC += 2;
+                            break;
+                        case MPCMReg:
+                            var fn=StrPas(chn.MPoint, pc+1);
+                            t.RegPCM (fn,chn.MPoint[pc+1+fn.length+1]);
+                            chn.MPointC+=fn.length +3;
+                            break;
+                        case Mend:
+                            t.StopMML(ch); //MPoint[ch]=nil;
+                            break;
+                        default:
+                            t.StopMML(ch);
+                            throw new Error("Invalid opcode" + code);
+                            //chn.MPointC += 1;
+                    }
+                }
+                // End Of MMLProc
+            }
+            if (t.handleAllState()) t.Stop();
+            t.SeqTime= nextSeqTime;// Math.floor( t.Tempo * (length/120) * tempoK*t.rate );
+            t.trackTime += t.convertDeltaTime(lengthInCtx  , DU_CTX, DU_TRK);// length/t.sampleRate*t.rate;
+            t.contextTime+= lengthInCtx;
+            /*if (wctx) {
+                wctx.writtenSamples+=length;
+                wctx.trackTime=t.trackTime;
+            }*/
+            t.performance.timeForChProc+=now()-chPT;
+        },
+        getTrackTime: function (t) {return t.trackTime;},
+        writeSamples: function (t,data,WriteAd,length) {
+            var i, ch, v=0, Tmporc=0,chn,ad;
+            var WrtEnd=WriteAd+length;
+            for (ad=WriteAd; ad<WrtEnd; ad++) {
+                data[ad]=0;
+            }
+            if (t.allStopped()) {
+                return;
+            }
+            var wrtsT=now();
+            for (ch = 0; ch < Chs; ch++) {
+                chn=t.channels[ch];
+                if (chn.PlayState != psPlay) continue;
+
+                if (chn.PorLen > 0) {
+                    Tmporc = chn.MCount - t.SeqTime;
+                    chn.Steps = (
+                        div(chn.PorStart, chn.PorLen) * Tmporc +
+                        div(chn.PorEnd, chn.PorLen * (chn.PorLen - Tmporc))
+                    );
+                }
+                if ((chn.soundMode))
+                    v = chn.EVol;
+                else if ((chn.Resting))
+                    v = 0;
+                else
+                    v = chn.EShape[chn.ECount >>> 11] * chn.EVol * chn.EBaseVol; // 16bit
+                if (t.Fading < FadeMax) {
+                    v = v * div(t.Fading, FadeMax); // 16bit
+                }
+                //vv[ch]=v;
+                if (chn.ECount + chn.ESpeed*(length/2) < 65536 ) chn.ECount += chn.ESpeed*(length/2);
+
+                //v=vv[ch]/ 0x80000;
+                v/=0x80000;
+                if (v<=0) continue;
+                var SccCount=chn.SccCount,Steps=chn.Steps,SccWave=chn.SccWave,sh=(32-chn.L2WL);
+                // Proc LFO here!
+                if (chn.LfoV != 0) {
+                    if (chn.LfoDC > 0) {
+                        chn.LfoDC -= t.Tempo*length;
+                    } else {
+                        Steps += (sinT[chn.LfoC >>> (16 + sinMax_s)] *
+                                (Steps >> 9 ) * chn.LfoA)  >> 8;
+                        chn.LfoC += chn.LfoV/2*length;
+                    }
+                }
+                // Sync(for PCM playback) is separeted?
+                for (ad=WriteAd; ad<WrtEnd; ad++) {
+                    data[ad] += v*SccWave[SccCount >>> sh];
+                    SccCount += Steps;
+                }
+                chn.SccCount=SccCount >>> 0;
+            }// of ch loop
+            t.setNoiseWDT();// Longer?
+            t.performance.timeForWrtSmpl+=now()-wrtsT;
+            //t.performance.elapsedTime+=new Date().getTime()-startTime;
+            //t.performance.writtenSamples+=length;
+            //t.performance.writeRate=t.performance.writtenSamples/(t.performance.elapsedTime/1000*t.sampleRate);
+            //--------------|---------------------------
+            //             playpos  LS            LE
+            //                       +-------------+
+
+        }// of writeToArray
+    }); // of Klass.define
+    /*var undefs={};
+    function replf(_,name) {
+        //console.log(name);
+        if (!defs.$fields[name]) {
+            if (undefs[name]==null) undefs[name]=1;
+            //console.error("Undefined ",name);
+        }
+    }
+    for(var k in defs) {
+        var fldreg=/\bt\s*\.\s*([a-zA-Z0-9]+)\b/g;
+        if (typeof defs[k]==="function") {
+            var src=defs[k]+"";
+            var r=src.replace(fldreg, replf);
+            undefs[k]=0;
+        }
+    }
+    console.log(undefs);*/
+    return TEnveloper;
+}); // of requirejs.define
+;
+define('Mezonet',["Klass","SEnv","Tones.wdt","promise"],
+function (Klass,SEnv,WDT,_) {
+    var Mezonet={};
+    Mezonet.Source=Klass.define({
+        $this:true,
+        $:function (t,array) {
+            t.chdata=[];
+            t.load(array);
+        },
+        playback: function (t,context) {
+            return new Mezonet.Playback(context, {
+                chdata:t.chdata,
+                WaveDat:Mezonet.WDT.WaveDat,
+                EnvDat: Mezonet.WDT.EnvDat
+            });
+        },
+        load:function (t,d) {
+            var ver=readLong(d);
+            var chs=readByte(d);
+            //var chdatas;
+            //t.MPoint=chdatas=[];
+            for (var i=0;i<chs;i++) {
+                var chdata=[];
+                //chdatas.push(chdata);
+                var len=readLong(d);
+                //console.log(len);
+                //if(len>999999) throw new Error("LONG");
+                for (var j=0;j<len;j++) {
+                    chdata.push(readByte(d));
+                }
+                t.chdata[i]=chdata;
+            }
+            function readByte(a) {
+                if (a.length==0) throw new Error("Out of data");
+                return a.shift();
+            }
+            function readLong(a) {
+                if (a.length<4) throw new Error("Out of data");
+                var r=a.shift(),e=1;
+                e<<=8;
+                r+=a.shift()*e;
+                e<<=8;
+                r+=a.shift()*e;
+                e<<=8;
+                r+=a.shift()*e;
+                return r;
+            }
+        }
+    });
+    Mezonet.Playback=SEnv;
+    function WDT2Float(w) {return w/128-1;}
+    var WvC=96;
+    Mezonet.WDT={
+        WaveDat:[],
+        EnvDat:[],
+        setNoiseWDT: function () {
+            var t=this;
+            // Noise
+            for (var j=0;j<1024;j++) {
+                t.WaveDat[WvC-1][j]=WDT2Float( Math.floor(Math.random() * 78 + 90) );
+            }
+            t.WaveDat[WvC-1].lambda=32;
+        },
+        load: function(){
+            var t=this;
+            if (t.loaded) return Promise.resolve();
+            return new Promise(function (succ,fail) {
+            try{
+                var url=WDT;
+                var oReq = new XMLHttpRequest();
+                oReq.open("GET", url, true);
+                oReq.responseType = "arraybuffer";
+                oReq.onload = function (oEvent) {
+                    var arrayBuffer = oReq.response,i,j;
+                    if (arrayBuffer) {
+                        var b = new Uint8Array(arrayBuffer);
+                        //console.log("Loading wdt",b.length);
+                        //WaveDat
+                        var idx=0;
+                        for (i = 0; i < WvC; i++) {
+                            t.WaveDat[i]=[];
+                            for (j=0;j<32;j++) {
+                                t.WaveDat[i][j]=WDT2Float( b[idx++] );
+                            }
+                        }
+                        t.setNoiseWDT();
+                        //EnvDat
+                        for (i=0 ;i<16;i++) {//Envs
+                            t.EnvDat[i]=[];
+                            for (j=0;j<32;j++) {
+                                t.EnvDat[i][j]=b[idx++];
+                            }
+                        }
+                        //console.log("Loading wdt done");
+                        t.loaded=true;
+                        succ();
+                    }
+                };
+                oReq.send(null);
+            } catch(e) {fail(e);}
+            });
+        }
+    };
+    Mezonet.init=function () {
+        return Mezonet.WDT.load();
+    };
+    return Mezonet;
+});
+
+    return require("Mezonet");
+}));

@@ -6,7 +6,7 @@ var T2MediaLib = (function(){
         return typeof PicoAudio!=="undefined" && bgm instanceof PicoAudio;
     }
     function isMezonetSource(bgm) {
-        return typeof Mezonet!=="undefined" && bgm instanceof Mezonet;
+        return typeof Mezonet!=="undefined" && bgm instanceof Mezonet.Source;
     }
     var T2MediaLib = function(_context) {
         this.context = null;
@@ -244,10 +244,32 @@ var T2MediaLib = (function(){
                 soundData.decodedCallbacksAry = null;
             }
         } else if (soundData.url.match(/\.mzo$/) || soundData.url.match(/^data:audio\/mzo/)) {
-            console.log("Loading mzo");
+            //console.log("Loading mzo");
             // MZO
-            var a=Array.prototype.slice.call( new Uint8Array(arrayBuffer) );
-            var m=new Mezonet(this.context,a);//,{wavOutSpeed:50});
+            Mezonet.init().then(function () {
+                var a=Array.prototype.slice.call( new Uint8Array(arrayBuffer) );
+                that.soundDataAry[idx].onDecodeComplete(new Mezonet.Source(a));
+                soundData.decodedCallbacksAry.forEach(function(callbacks) {
+                    if (typeof callbacks.succ == "function") {
+                        callbacks.succ(idx);
+                    }
+                });
+                soundData.decodedCallbacksAry = null;
+            },function (error) {
+                if (error instanceof Error) {
+                    console.log('T2MediaLib: '+error.message, soundData.url);//@hoge1e3
+                } else {
+                    console.log('T2MediaLib: Error decodeMZO()', soundData.url);//@hoge1e3
+                }
+                that.soundDataAry[idx].onError("DECODE_ERROR");
+                soundData.decodedCallbacksAry.forEach(function(callbacks) {
+                    if (typeof callbacks.err == "function") {
+                        callbacks.err(idx, that.soundDataAry[idx].errorID);
+                    }
+                });
+                soundData.decodedCallbacksAry = null;
+            });
+            /*var m=new Mezonet(this.context,a);//,{wavOutSpeed:50});
             //m.load(a);
             m.init().then(function (res) {
                 // デコード中にremoveDecodeSoundData()したらデータを捨てる
@@ -281,7 +303,7 @@ var T2MediaLib = (function(){
                 soundData.decodedCallbacksAry = null;
             }).finally(function () {
                 m.terminate();
-            });
+            });*/
         } else {
             // MP3, Ogg, AAC, WAV
 
@@ -387,8 +409,8 @@ var T2MediaLib = (function(){
             return null;
         }
         if (isMezonetSource(soundData.decodedData)) {
-            var playback=soundData.decodedData.playAsMezonet();
-            playback.start({rate:rate, start:start,volume: vol});
+            var playback=soundData.decodedData.playback(this.context);
+            playback.Start();
             return playback;
         }
 
@@ -877,7 +899,7 @@ var T2MediaLib_BGMPlayer = (function(){
         return typeof PicoAudio!=="undefined" && bgm instanceof PicoAudio;
     }
     function isMezonetSource(bgm) {
-        return typeof Mezonet!=="undefined" && bgm instanceof Mezonet;
+        return typeof Mezonet!=="undefined" && bgm instanceof Mezonet.Source;
     }
     function isMezonetPlayback(bgm) {
         return typeof Mezonet!=="undefined" && bgm instanceof Mezonet.Playback;
@@ -948,8 +970,9 @@ var T2MediaLib_BGMPlayer = (function(){
 
         var decodedData = soundData.decodedData;
         if (isMezonetSource(decodedData)) {
-            this.playingBGM = decodedData.playAsMezonet();
-            this.playingBGM.start();
+            var m=decodedData.playback(this.t2MediaLib.context);
+            this.playingBGM = m;
+            m.Start();
         } else if (decodedData instanceof AudioBuffer) {
             // MP3, Ogg, AAC, WAV
             if (this.isTagLoop) {
@@ -989,7 +1012,7 @@ var T2MediaLib_BGMPlayer = (function(){
     T2MediaLib_BGMPlayer.prototype.stopBGM = function() {
         var bgm = this.playingBGM;
         if (isMezonetPlayback(bgm)){
-            bgm.stop();
+            bgm.Stop();
         } else if (isPicoAudio(bgm)) {
             // Midi
             this.picoAudio.stop();
