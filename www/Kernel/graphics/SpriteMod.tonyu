@@ -19,7 +19,7 @@ native console;
 \initTransform() {}
 nowait \prepareImage() {//23D
     if (typeof p!="number") {
-        p=0;
+        p=(p-0)||0;
     }
     p=Math.floor(p);
     pImg=$imageList[p];

@@ -1107,9 +1107,9 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
             t.ComStr = '';
             t.bufferTime=1/30;
             t.performance={timeForChProc:0, timeForWrtSmpl:0};
-            if (options.chdata) {
+            if (options.source) {
                 for (i=0;i<Chs;i++) {
-                    t.channels[i].MPoint=options.chdata[i];
+                    t.channels[i].MPoint=options.source.chdata[i];
                 }
             }
             if (options.WaveDat) t.WaveDat=options.WaveDat;
@@ -1148,6 +1148,12 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
             t.Tempo = 120;// changed by MML t***
             t.rate = 1; // changed by setRate
         },
+        setRate:function(t,r) {
+            t.rate=r;
+        },
+        setVolume: function (t,v) {
+            if (t.masterGain) t.masterGain.gain.value=v;
+        },
         /*
         getBuffer: function (t) {
             var channel=1;
@@ -1157,15 +1163,18 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
         },*/
         playNode: function (t) {
             if (this.isSrcPlaying) return;
+            t.masterGain=t.context.createGain();
+            t.masterGain.connect(t.context.destination);
             for (var i=0;i<Chs;i++) {
                 var chn=t.channels[i];
                 chn.gainNode=t.context.createGain();
-                chn.gainNode.connect(t.context.destination);
+                chn.gainNode.connect(t.masterGain);
             }
             this.isSrcPlaying = true;
         },
         startRefreshLoop: function (t) {
             if (t.refreshTimer!=null) return;
+            t.refreshPSG();
             t.refreshTimer=setInterval(t.refreshPSG.bind(t),5);
             /*var grid=t.resolution;
             var data=t.getBuffer().getChannelData(0);
@@ -1199,6 +1208,7 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
                 var chn=t.channels[i];
                 if (chn.gainNode) chn.gainNode.disconnect();
             }
+            t.masterGain.disconnect();
             this.isSrcPlaying = false;
         },
         getWaveBuffer: function (t,n) {
@@ -1218,6 +1228,7 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
         Play1Sound: function(t, c, n, iss, noteOnInCtx,noteOffInCtx) {
             // ESpeed == psX
             // ESpeed / 65536*SPS
+            if (t.wavoutContext) return;
             var TP; //:Integer;
             var chn=t.channels[c];
             //if (chn.soundMode) return; // ) return;
@@ -1232,12 +1243,19 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
             var lambda=buf.lambda||buflen;
             var steps=m2tInt[n] + chn.Detune * div(m2tInt[n], 2048);
             var SccCount_MAX=0x100000000;
-            var source=t.context.createBufferSource();
-            source.buffer=buf;
-            source.loop=true;
-            source.start = source.start || source.noteOn;
-            source.stop = source.stop || source.noteOff;
-            source.playbackRate.value=(steps/SccCount_MAX)*lambda;
+            var source=chn.sourceNode;
+            if (!iss|| !source) {
+                source=t.context.createBufferSource();
+                source.buffer=buf;
+                source.loop=true;
+                source.start = source.start || source.noteOn;
+                source.stop = source.stop || source.noteOff;
+                source.playbackRate.value=(steps/SccCount_MAX)*lambda;
+                source.connect(chn.gainNode);
+                source.start(noteOnInCtx);
+                source.stop(noteOffInCtx);
+                chn.sourceNode=source;
+            }
             //console.log(source.playbackRate.value, noteOnInCtx, noteOffInCtx);
             //source.playbackRate.value=freq*lambda/sampleRate;  in test.html
             //                         =freq/sampleRate*lambda
@@ -1246,23 +1264,27 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
             //  steps/SccCount_MAX= freq/sampleRate
             //   ^v^v^v^.....v^
             //    x100          in sampleRate
-            source.connect(chn.gainNode);
-            source.start(noteOnInCtx);
-            source.stop(noteOffInCtx);
-            var envLenInCtx=1/ (chn.ESpeed / 65536*SPS/2) ;
-            var env=t.EnvDat[chn.CurEnv];
-            //console.log(env.length);
-            var envSetTime=noteOnInCtx;
-            for (var i=0;i<env.length;i++) {
+            if (!iss || !chn.envelopeState) {
+                chn.envelopeState={
+                    lengthInCtx:1/ (chn.ESpeed / 65536*SPS/2) ,
+                    Shape:t.EnvDat[chn.CurEnv],
+                    //console.log(env.length);
+                    setTimeInCtx:noteOnInCtx,
+                    idx:0
+                };
+            }
+            var es=chn.envelopeState;
+            for (;es.idx<es.Shape.length;es.idx++) {
+                var i=es.idx;
                 //if (i==0) console.log(env[i]/128, noteOnInCtx+i/env.length*envLenInCtx);
-                if (envSetTime>=noteOffInCtx) break;
-                var value=env[i]/16*chn.EVol/128*chn.EBaseVol/128;
-                if (value>=0 && value<=1) {
-                    chn.gainNode.gain.setValueAtTime(value, envSetTime);
+                if (es.setTimeInCtx>=noteOffInCtx) break;
+                var value=es.Shape[i]/16*chn.EVol/128*chn.EBaseVol/128;
+                if (value>=0 && value<=1 ) {
+                    chn.gainNode.gain.setValueAtTime(value, es.setTimeInCtx);
                 } else {
-                    console.error(env.length, chn.EVol, chn.EBaseVol, envSetTime);//chn.EVol/128*chn.EBaseVol/128);
+                    console.error(es, value, chn.EVol, chn.EBaseVol);//chn.EVol/128*chn.EBaseVol/128);
                 }
-                envSetTime+=envLenInCtx/env.length;
+                es.setTimeInCtx+=es.lengthInCtx/es.Shape.length;
             }
 
             /*
@@ -1288,6 +1310,7 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
         },
         //    procedure TEnveloper.Play1Por (c,f,t:Word;iss:Boolean);
         Play1Por: function (t,c,from,to,iss) {
+            if (t.wavoutContext) return;
              var TP=0;
              var chn=t.channels[c];
              if ((c<0)  ||  (c>=Chs)  ||  (to<0)  ||  (to>95) ||
@@ -1415,12 +1438,48 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
         resetWavOut: function (t) {
             t.wavoutContext=false;
         },
+        measureLength: function (t) {
+            var wctx={channels:[]};
+            t.wavoutContext=wctx;
+            for (var i=0;i<Chs;i++) {
+                wctx.channels.push({PC2CtxTime:[], endCtxTime:-1, loopLengthInCtx:0} );
+            }
+            t.Rewind();
+            t.contextTime=0;
+            while(true) {
+                t.procChannels(1/60);
+                if (t.allStopped()) {
+                    break;
+                }
+            }
+            var endTime=0,loopLength=0;
+            for (i=0;i<Chs;i++) {
+                var wc=wctx.channels[i];
+                if (wc.endCtxTime>endTime) endTime=wc.endCtxTime;
+                if (wc.loopLengthInCtx>loopLength) loopLength=wc.loopLengthInCtx;
+            }
+            delete t.wavoutContext;
+            //console.log(wctx);
+            return {endTime:endTime, loopLength:loopLength};
+        },
         wavOut: function (t,options) {
             var l=t.measureLength();
+            console.log(l);
             var onLine=t.context;
-            t.context=new OfflineAudioContext(1,SPS*l,SPS);
-            t.Start();
-
+            t.context=new OfflineAudioContext(1,Math.floor(SPS*l.endTime),SPS);
+            t.Rewind();
+            t.playNode();
+            t.contextTime=0;
+            while(true) {
+                t.procChannels(1/60);
+                if (t.contextTime>=l.endTime) {
+                    break;
+                }
+            }
+            console.log(t.context);
+            return t.context.startRendering().then(function(renderedBuffer) {
+                return {decodedData:renderedBuffer, endTime:l.endTime,  loopLength: l.loopLength};
+            });
         },
         convertDeltaTime: function(t,delta, inputUnit, outputUnit) {
             // SeqTime     楽譜上の位置． 1/2小節 = SPS
@@ -1536,17 +1595,19 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
                 while (chn.MCount <= nextSeqTime) {
                     if (chn.PlayState != psPlay) break;
                     var pc = chn.MPointC;
-                    if (wctx && !wctx.maxSamples && ch==0) wctx.PC2Time[pc]=wctx.writtenSamples;
+                    var curCtxTime=t.contextTime+
+                        t.convertDeltaTime(chn.MCount-SeqTime, DU_SEQ, DU_CTX);
+                    if (wctx) wctx.channels[ch].PC2CtxTime[pc]=curCtxTime;
                     LParam = chn.MPoint[pc + 1];
                     HParam = chn.MPoint[pc + 2];
                     var code = chn.MPoint[pc];
                     if (code >= 0 && code < 96 || code === MRest) {
-                        var noteOnInCtx=t.contextTime+
-                            t.convertDeltaTime(chn.MCount-SeqTime, DU_SEQ, DU_CTX);
+                        var noteOnInCtx=curCtxTime;
                         var lenInSeq=(LParam + HParam * 256) * 2;
+                        var slen=t.foresightSlurs(chn);
                         var noteOffInCtx=noteOnInCtx+
-                            t.convertDeltaTime(lenInSeq, DU_SEQ,DU_CTX) ;
-
+                            t.convertDeltaTime(lenInSeq+slen, DU_SEQ,DU_CTX) ;
+                        //if (slen>0) console.log("SL",slen);
                         t.Play1Sound(ch, code, chn.Slur, noteOnInCtx, noteOffInCtx);
                         if (!chn.Slur) chn.LfoDC = chn.LfoD;
                         chn.Slur = False;
@@ -1609,14 +1670,15 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
                             }
                             break;
                         case MJmp:
-                            if (wctx && !wctx.maxSamples) {
-                                if (ch==0) {
-                                    var dstLabelPos=chn.MPointC + array2Int(chn.MPoint, pc+1);
-                                    var dstTime=wctx.PC2Time[dstLabelPos];
-                                    if (typeof dstTime=="number" && dstTime<wctx.writtenSamples) {
-                                        wctx.loopStartFrac=[dstTime, t.sampleRate];
-                                        console.log("@jump", "ofs=",wctx.loopStartFrac );
-                                    }
+                            if (wctx) {
+                                var wc=wctx.channels[ch];
+                                var dstLabelPos=chn.MPointC + array2Int(chn.MPoint, pc+1);
+                                var dstCtxTime=wc.PC2CtxTime[dstLabelPos];
+                                //console.log("@jump", "ofs=",dstCtxTime,curCtxTime );
+                                if (typeof dstCtxTime=="number" && dstCtxTime<curCtxTime) {
+                                    wc.endCtxTime=curCtxTime;
+                                    wc.loopLengthInCtx=(curCtxTime-dstCtxTime);
+                                    t.StopMML(ch);
                                 }
                                 chn.MPointC += 5;
                             } else {
@@ -1680,6 +1742,9 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
                             chn.MPointC+=fn.length +3;
                             break;
                         case Mend:
+                            if (wctx) {
+                                wctx.channels[ch].endCtxTime=curCtxTime;
+                            }
                             t.StopMML(ch); //MPoint[ch]=nil;
                             break;
                         default:
@@ -1699,6 +1764,25 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
                 wctx.trackTime=t.trackTime;
             }*/
             t.performance.timeForChProc+=now()-chPT;
+        },
+        foresightSlurs:function (t,chn) {
+            // 0-95 l l  MSlur  0-95 l l  MSlur  ...
+            //           ^pc
+            var pc=chn.MPointC+3;
+            var res=0; // sum of l l
+            var LParam,HParam,lenInSeq;
+            while(true) {
+                if (chn.MPoint[pc]!==MSlur) break;
+                pc++;
+                var code = chn.MPoint[pc];
+                if (!(code >= 0 && code < 96)) break;
+                LParam = chn.MPoint[pc + 1];
+                HParam = chn.MPoint[pc + 2];
+                lenInSeq=(LParam + HParam * 256) * 2;
+                res+=lenInSeq;
+                pc+=3;
+            }
+            return res;
         },
         getTrackTime: function (t) {return t.trackTime;},
         writeSamples: function (t,data,WriteAd,length) {
@@ -1786,18 +1870,24 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
     return TEnveloper;
 }); // of requirejs.define
 ;
-define('Mezonet',["Klass","SEnv","Tones.wdt","promise"],
-function (Klass,SEnv,WDT,_) {
+define('Tones2',[],function () {
+    return (function dec(e) { var z=/^[0-9]+/; var pm=/^[0-9]+|([A-Za-z])([#$%&]?)/; var t,i,r=[],s; var A=function(s){return s.charCodeAt(0);}; while(e.length) { t=pm.exec(e); if (t[1]) { s=A(t[1])>=96?-1:1; r.push(s* ( A(t[1])-(80-16*s)+(t[2]?(A(t[2])-34)*26:0) )); } else for(i=t[0]-0;i>=0;i--)r.push(0); e=e.substring(t[0].length); } var rr=new Uint8Array(r.length+1); rr[0]=80; for (i=1;i<rr.length;i++) rr[i]=rr[i-1]+r[i-1]; return rr; })("14A&14d%3L$eeh%cH0kKV#D#I0jEke%IG#U#aBaa&SO#Zyh#qjJVFha#hMMKOHQOQHOQGMha#hFVJjqh#Ne$0rkiaaBHA0DDQYX#SCenqj#zllEYYRMMq$gkhhfge1BDGHMJLOOKNHC0abgellkfTh$iFJKBFDewkiaKA#WTM#Gbisc2A0egbj$bBc10AW#W#WIDdsc#c#v#a0a1ahCb0a4o&0c1BAa0Aj%y#A3o&0B0Q&h#N#B#A0a3B2bG#K#P#aAAa#c#zb#xub#1B0F#B3A1a6AJ&1aA0aCp&0A2m%1I#G$Q%ja%ebdm1b0gd0b0aBl6AU#0A10A9a1A&b1a%0lh#aCLF#G#B#Iiloc#wieCNXTA#Rfhj2leMkiua#j#kbJLXRH#SKSblf$e#bRUF#C#Ldccafgco$GlF$uqljnhB$C#Ls#iEA$m$BdWK0pqkliQB$QJ$F%A#PNILJJFGIFECIBCBDA0A0E0EBa0ABo%Qn#iUi#iZ%Cc#h$cIG$0B#IA1etv#zkAD#DJ#Bt#Ed3WYBbpwfzbY0E$Ubzg#sAKQA#PHect0x#2f#nf0b1BBDCQ#X#4V#0b0a0abdla&iaTQH0hh0FTC#LJA0lcAKRJAekphjiswv#LPJKFKJHJQKKJPHUvzslpmopokhkgdiB#EEHBFAEAEFDDCDADFDDGDDEBBCHCEEGEgjgibigdg0dfeaeecdgcbC&0j&ccefhcbP#2AQ%0a1D1A0a1r%aC7d0Dn0a0bcCb1BI&1a0a3Al&0D1BAdACH&1aaae0dbedcfgfcedjdeidfhiipfnw%zFhoU&K&IAs#0R#b%bS$Mn#M$gHzE$BFK&O#E$fg%J%n%C$G#M#K&BA1B0bbAFEFLKIFKEHJGIJHDEA1BN%cHA$Hedun#cbCNYYXXXWVNe&L$lLN#Ank#b#i#r#T#fpi#NcO#E$THgFcd#maHOHafehfd1abbdUx#0AB#0r#CO#0t#AI$WO0ji#u$0GZR#0b$AC$XS0bkzBa0w#3A%Bo&B0dl&F0bac0R&B0D%6i&J$C#M#Noe#IRUAccbhch0bgeelksrykHUgyp#e#VGAdb#G#e#YE0foVxPFAfoVxPG0gnVb#RFC&2M$BCs#gdKTI0hd#gCOKOGcddac0E2h%bDBDIDJNKC9aDGLSLLEB0ag%3c1a2A0a0AAaOQ$Bb%j$vAIM$BA0aU%1aAfhne#yuixlCdLNNSVWD#GF0l&e0IGW%h%a2CB4bb1AV%0V$B0F%4ad1uh#rMK#p#hHR#r#gLNMMA#UWZE#Mjn#K#Ijq#T#Ilz#q#wg0GA0X#0ut$BHACMFXMMEE8fgk#1Ra0A0mwibaKR#J#M0EfvPIXml#eF#Kjdcn%wjcK#I$G#QQCdcbednjrxg#a#ikBb0MD#J#Semz2lldRoiQMPQOKPLsxkG$ge#7K#e&agCBY%A#LAaso$vdIYUD#THbzj#hgAJGKFGg$0aDM$bp$c0A1C1EL$ef$d%aa3C0a0aZ$b$U&AA1a3W&cb1Au&0A0a0u&c0bE0A1E%E#WSgc#rutoAYB#Jkb#c#b#kJB#YAoturc#gSWE#Smof#kcgAKS#C0BA0AC$C#HBewirA0CBAa0hm#1d#qflALE#OA2aCG$MG0ahohckggcdbe2shaEDDGFCIKQH#QFC0kto$mhmAE%2yGHQA#UKjg#f$F$F#Lhvf#i$f#vhLF#O$o$g#jKUA#QHGU#PF0jzt$W$VG0bod$vqi1I#Mmf#a3AMUZQ&SB&u&NM%b&AM0mHjF0k$G$z#P$j#PmG#P%n&A#0c#CB#FL$iVT%z$A$qJBp$P$p$P$bjg%oJ%vB&u&U#j$R#qcBQL$n&U$0E$c&14X#14x#14X#14x#14X#14Ebha#bKPCqd#pfA0AUT$X0fmifcdja#t1ISz14X#14x#14X#14x#2GnaCII#V#Bgqvkcdbaa0AljrAP$Ef1x#14X#14x#14X#14x#14X#14x#2fgM#Pkq#cMWD#MBjr#bkeA#F#MEjume0DKk#14X#14l#Be$bAD2FBCEHJIIKKDMFJFFFC0as$0dM#u$wfcfdD1CB0AEHf0COU$O#OEDuy#I#QPgqc%14Q#A#TOdkxb#m#A5I#gb#hICN0KZ#d#p#jcBB2DJ#B#1s#pH0P#CDoX0u$d#ma1ADKGIQI#A#JFBbg#b#r#gZ$G#az%fI$J#Nf&CbE#1a1d#B3Q#B%0AA0d#Ba1FUE1dl%0B0T%BAA1bbq%cC0b1R$0c0k&b0BT#aB0aF$1p$2ac0GN%0bAx%1BW%Cc1W&afBda1yLC#x$tUZUVB#VK#H#WLKIDE4ckeor#P&a#FPaCi#G#LdQhSJbin#kFGUq#0F$zp0paCEBB#MBR$HPpA#gA#sM#wDk#Pk#pJk#Os#Ub$C$nS#mG#F#kU#e#Qe#j%BBGP#P#O#a#a#i#q#bb1ZMYXOQLJimlxxruhgl1AP&1Bb0r&0b0A0W&1b1a0A1Bc2o&XRIBgomxARI#U#XNLBb2AA3cux#w#xZ#QC#A#Iajb#l#wf#ldCLUYZRQKKEA0cnnstmfy#E$1H#RAhxv#uiFL#PaAY$ba0A2aw$Bacd$0TG#J#W#Ua#n#g#yrvsYKVYZSNUSuvtxpvpqkgdO$0Aa$1bBX#0CaT#4G$0Bb3ac$A1x#W#h$s#b2Acb0SO#WUKAMKEbjzbL#bac#cK#bpm$14X#OVIBjnuhpgx$hWN%by#3T$ADEc&r0IIAXX#4w#kaCF$4x#1YWGis#vmbBEC#1X#14c$E13X#B#I0mnnnkchc#uBKSq#MMOHFHKIHMGBCeq#E#LSJEEEFAA0aa1H%G&u$wD#b0I#e#BAar#0AU#h#f0COU$L#MJbAq#R#0fnnB#u%v0eaKC#O$PAiorpj$0AQUSOPGIFBABCCAM&QVaen#djIHB#W#VUNDk$0cH$0k#xw#qpla0AEJN#ac1PO0ou#1AAK$B$Va2sl%A2V#Q1ov#N#HJh#C#LtA#b$hA$b#0HHSwh#F#g#bN#iQs#W#wXLj#a#i%aca0aaa0a0a0a0a1a11bOacaa1a1a20fM6aa7a6a3hCCBABAA5a0a0a0a1a1a0a1aHabaaaaa0a2a3a0a0a2a1N2a12a0a0aa0aa0baabaa1EBBAA0A1A2A3a3a6k1A1A2A0Aa0A0AA0AA0AA0AAA2Aabaaaaa0a2a3a0a0a2a2a0Oabaaaaa0a2a3a0a0a2a2a0Oabaaaaa0a2a3a0a0a2a2a0Oabaaaaa0a2a3a0a0a2a2a0Oabaaaaa0a2a3a0a0a2a2a0Oabaaaaa0a2a3a0a0a2a2a0Oabaaaaa0a2a3a0a0a2a2a0Oabaaaaa0aAa2a2AAA0aA0g2a0");
+});
+
+define('Mezonet',["Klass","SEnv","Tones2","promise"],
+function (Klass,SEnv,WDT2,_) {
     var Mezonet={};
     Mezonet.Source=Klass.define({
         $this:true,
         $:function (t,array) {
             t.chdata=[];
+            t.Mezonet=Mezonet;
             t.load(array);
         },
         playback: function (t,context) {
             return new Mezonet.Playback(context, {
-                chdata:t.chdata,
+                source:t,
+                //chdata:t.chdata,
                 WaveDat:Mezonet.WDT.WaveDat,
                 EnvDat: Mezonet.WDT.EnvDat
             });
@@ -1853,18 +1943,18 @@ function (Klass,SEnv,WDT,_) {
             var t=this;
             if (t.loaded) return Promise.resolve();
             return new Promise(function (succ,fail) {
-            try{
+/*            try{
                 var url=WDT;
                 var oReq = new XMLHttpRequest();
                 oReq.open("GET", url, true);
                 oReq.responseType = "arraybuffer";
                 oReq.onload = function (oEvent) {
                     var arrayBuffer = oReq.response,i,j;
-                    if (arrayBuffer) {
-                        var b = new Uint8Array(arrayBuffer);
+                    if (arrayBuffer) {*/
+                        var b = WDT2;//new Uint8Array(arrayBuffer);
                         //console.log("Loading wdt",b.length);
                         //WaveDat
-                        var idx=0;
+                        var idx=0,i,j;
                         for (i = 0; i < WvC; i++) {
                             t.WaveDat[i]=[];
                             for (j=0;j<32;j++) {
@@ -1882,11 +1972,11 @@ function (Klass,SEnv,WDT,_) {
                         //console.log("Loading wdt done");
                         t.loaded=true;
                         succ();
-                    }
+/*                    }
                 };
                 oReq.send(null);
-            } catch(e) {fail(e);}
-            });
+            } catch(e) {fail(e);}*/
+        });
         }
     };
     Mezonet.init=function () {

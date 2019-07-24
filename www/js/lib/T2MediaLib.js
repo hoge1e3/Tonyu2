@@ -1245,7 +1245,7 @@ var T2MediaLib_BGMPlayer = (function(){
         var bgm = this.playingBGM;
         var time;
         if (isMezonetPlayback(bgm)){
-            return bgm.getCurrentTime();
+            return bgm.getTrackTime();
         } else if (isPicoAudio(bgm)) {
             // Midi
             if (this.bgmPause === 0) {
