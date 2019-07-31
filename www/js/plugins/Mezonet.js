@@ -1214,6 +1214,7 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
         getWaveBuffer: function (t,n) {
             if (t.waveBuffers[n]) return t.waveBuffers[n];
             var dat=t.WaveDat[n];
+            if (!dat) return;
             var mult=3;
             var buflen=dat.length << mult ;
             var res=t.context.createBuffer(1,buflen, t.sampleRate);
@@ -1225,7 +1226,7 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
             if (dat.lambda) res.lambda=dat.lambda << mult;
             return res;
         },
-        Play1Sound: function(t, c, n, iss, noteOnInCtx,noteOffInCtx) {
+        Play1Sound: function(t, c, n, iss, noteOnInCtx,noteOffInCtx,por) {
             // ESpeed == psX
             // ESpeed / 65536*SPS
             if (t.wavoutContext) return;
@@ -1239,6 +1240,7 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
             if ((c < 0) || (c >= Chs) || (n < 0) || (n > 95)) return; // ) return;
             chn.Resting = False;
             var buf=t.getWaveBuffer(chn.CurWav);
+            if (!buf) return;
             var buflen=buf.getChannelData(0).length;
             var lambda=buf.lambda||buflen;
             var steps=m2tInt[n] + chn.Detune * div(m2tInt[n], 2048);
@@ -1285,6 +1287,33 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
                     console.error(es, value, chn.EVol, chn.EBaseVol);//chn.EVol/128*chn.EBaseVol/128);
                 }
                 es.setTimeInCtx+=es.lengthInCtx/es.Shape.length;
+            }
+            var pitch=1/60;
+            if (por) {
+                var PorEnd=m2tInt[por]+chn.Detune*div(m2tInt[por] , 2048);
+                var rateEnd=(PorEnd/SccCount_MAX)*lambda;
+                var rateStart=source.playbackRate.value;
+                for (var porTime=noteOnInCtx+pitch;porTime<noteOffInCtx;porTime+=pitch) {
+                    var tt=(porTime-noteOnInCtx)/(noteOffInCtx-noteOnInCtx);
+                    //console.log(rateStart,rateEnd, tt, rateStart*(1-tt)+rateEnd*tt, porTime);
+                    source.playbackRate.setValueAtTime(
+                        rateStart*(1-tt)+rateEnd*tt ,porTime);
+                }
+            } else if (!iss && chn.LfoV != 0) {
+                var lfoTime=noteOnInCtx+chn.LfoD/t.Tempo;
+                //console.log(lfoTime, chn.LfoA, chn.LfoV);
+                var LfoC=0;
+                var base=source.playbackRate.value;
+                for (;lfoTime<noteOffInCtx;lfoTime+=pitch) {
+                    /*console.log(LfoC,chn.LfoV,chn.LfoA,
+                    1 + sinT[LfoC >>> (16 + sinMax_s)]/512*chn.LfoA/256);*/
+                    source.playbackRate.setValueAtTime(
+                        base*(1 + sinT[LfoC >>> (16 + sinMax_s)]/512*chn.LfoA/256),
+                        lfoTime);
+                    /*Steps += (sinT[chn.LfoC >>> (16 + sinMax_s)] *
+                            (Steps >> 9 ) * chn.LfoA)  >> 8;*/
+                    LfoC += chn.LfoV/2*pitch*SPS;
+                }
             }
 
             /*
@@ -1410,7 +1439,8 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
             t.Rewind();
             t.BeginPlay = True;
             t.playNode();
-            t.contextTime=t.context.currentTime+t.bufferTime;
+            t.playStartTime=t.context.currentTime;
+            t.contextTime=t.playStartTime;
             t.startRefreshLoop();
         },
         start: function (t) {return t.Start();},
@@ -1570,8 +1600,19 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
         refreshPSG: function(t) {
             var lengthInCtx= t.context.currentTime+t.bufferTime-t.contextTime;
             //console.log(lengthInCtx);
-            t.procChannels(lengthInCtx);
+            if (lengthInCtx>0) t.procChannels(lengthInCtx);
             //t.writeSamples(data,WriteAd,length);
+        },
+        pause: function (t) {
+            if (t.isPaused) return;
+            t.isPaused=true;
+            t.stopRefreshLoop();
+        },
+        resume: function (t) {
+            if (!t.isPaused) return;
+            t.isPaused=false;
+            t.contextTime=t.context.currentTime;
+            t.startRefreshLoop();
         },
         procChannels: function(t,lengthInCtx) {
             var i, ch, wdtmp,LParam, HParam, WParam, JmpSafe;
@@ -1600,12 +1641,12 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
                     if (wctx) wctx.channels[ch].PC2CtxTime[pc]=curCtxTime;
                     LParam = chn.MPoint[pc + 1];
                     HParam = chn.MPoint[pc + 2];
-                    var code = chn.MPoint[pc];
+                    var code = chn.MPoint[pc], lenInSeq,noteOnInCtx,noteOffInCtx;
                     if (code >= 0 && code < 96 || code === MRest) {
-                        var noteOnInCtx=curCtxTime;
-                        var lenInSeq=(LParam + HParam * 256) * 2;
+                        noteOnInCtx=curCtxTime;
+                        lenInSeq=(LParam + HParam * 256) * 2;
                         var slen=t.foresightSlurs(chn);
-                        var noteOffInCtx=noteOnInCtx+
+                        noteOffInCtx=noteOnInCtx+
                             t.convertDeltaTime(lenInSeq+slen, DU_SEQ,DU_CTX) ;
                         //if (slen>0) console.log("SL",slen);
                         t.Play1Sound(ch, code, chn.Slur, noteOnInCtx, noteOffInCtx);
@@ -1617,18 +1658,26 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
                         chn.MPointC += 3;
                     } else switch (code) {
                         case MPor:
-                             t.Play1Por (ch,
+                            noteOnInCtx=curCtxTime;
+                            lenInSeq=(chn.MPoint[pc + 3]+chn.MPoint[pc + 4]*256) * 2;
+                            noteOffInCtx=noteOnInCtx+
+                                t.convertDeltaTime(lenInSeq, DU_SEQ,DU_CTX) ;
+                            //if (slen>0) console.log("SL",slen);
+                            //console.log(ch, LParam, chn.Slur, noteOnInCtx, noteOffInCtx,HParam);
+                            t.Play1Sound(ch, LParam, chn.Slur, noteOnInCtx, noteOffInCtx,HParam);
+                            chn.MCount +=lenInSeq ;
+                            /* t.Play1Por (ch,
                                LParam,
                                HParam,
                                chn.Slur
-                             );
-                             chn.Slur=False;
-                             chn.MCount+=
-                             ( chn.MPoint[pc + 3]+chn.MPoint[pc + 4]*256 )*2;
+                            );*/
+                            chn.Slur=False;
+                            /* chn.MCount+=
+                            ( chn.MPoint[pc + 3]+chn.MPoint[pc + 4]*256 )*2;
                             // SPS=22050の場合 *2 を *1 に。
-                             chn.PorLen=chn.MCount-SeqTime;
-                             chn.MPointC+=5;
-                        break;
+                            chn.PorLen=chn.MCount-SeqTime;*/
+                            chn.MPointC+=5;
+                            break;
                         case MTempo:
                             t.Tempo = LParam + HParam * 256;
                             chn.MPointC += 3;
@@ -1729,7 +1778,7 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
                             chn.MPointC += 4;
                             break;
                         case MLfoD:
-                            chn.LfoD = LParam * t.sampleRate;
+                            chn.LfoD = LParam;// * t.sampleRate;
                             chn.MPointC += 2;
                             break;
                         case MSync:
