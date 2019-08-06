@@ -1175,7 +1175,7 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
         startRefreshLoop: function (t) {
             if (t.refreshTimer!=null) return;
             t.refreshPSG();
-            t.refreshTimer=setInterval(t.refreshPSG.bind(t),5);
+            t.refreshTimer=t.Mezonet.setInterval(t.refreshPSG.bind(t),5);
             /*var grid=t.resolution;
             var data=t.getBuffer().getChannelData(0);
             var WriteAd=0;
@@ -1198,7 +1198,7 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
         },
         stopRefreshLoop: function (t) {
             if (t.refreshTimer==null) return;
-            clearInterval(t.refreshTimer);
+            t.Mezonet.clearInterval(t.refreshTimer);
             delete t.refreshTimer;
         },
         stopNode : function (t) {
@@ -1975,6 +1975,7 @@ function (Klass,SEnv,WDT2,_) {
         }
     });
     Mezonet.Playback=SEnv;
+    Mezonet.Playback.prototype.Mezonet=Mezonet;
     function WDT2Float(w) {return w/128-1;}
     var WvC=96;
     Mezonet.WDT={
@@ -2030,6 +2031,25 @@ function (Klass,SEnv,WDT2,_) {
     };
     Mezonet.init=function () {
         return Mezonet.WDT.load();
+    };
+    var timer=null, handles=[];
+    Mezonet.setInterval=function (f) {
+        if (timer==null) timer=setInterval(Mezonet.doRefresh,5);
+        var handle={f:f};
+        handles.push(handle);
+        return handle;
+    };
+    Mezonet.clearInterval= function(h) {
+        var idx=handles.indexOf(h);
+        if (idx>=0) handles.splice(idx,1);
+        if (handles.length==0) {
+            clearInterval(timer);
+            timer=null;
+            //console.log("Timer off");
+        }
+    };
+    Mezonet.doRefresh=function() {
+        handles.forEach(function (h) {h.f();});
     };
     return Mezonet;
 });
