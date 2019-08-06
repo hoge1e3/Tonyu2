@@ -94,7 +94,7 @@
 	};
 	R.real=real;
 	var requireSimulator=R;
-	// Created at Tue Aug 06 2019 17:08:11 GMT+0900 (日本標準時)
+	// Created at Tue Aug 06 2019 17:14:55 GMT+0900 (日本標準時)
 requireSimulator.setName('Util');
 Util=(function () {
 
@@ -4982,7 +4982,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,is:is,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,DeferredUtil:DU,
-			VERSION:1565078887445,//EMBED_VERSION
+			VERSION:1565079290356,//EMBED_VERSION
 			A:A};
 }();
 });
