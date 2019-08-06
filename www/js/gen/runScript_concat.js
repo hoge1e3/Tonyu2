@@ -94,7 +94,7 @@
 	};
 	R.real=real;
 	var requireSimulator=R;
-	// Created at Tue Jul 23 2019 10:40:40 GMT+0900 (日本標準時)
+	// Created at Tue Aug 06 2019 17:08:18 GMT+0900 (日本標準時)
 requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
@@ -4780,7 +4780,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,is:is,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,DeferredUtil:DU,
-			VERSION:1563846031833,//EMBED_VERSION
+			VERSION:1565078887445,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -16040,7 +16040,7 @@ var T2MediaLib_BGMPlayer = (function(){
         var bgm = this.playingBGM;
         var time;
         if (isMezonetPlayback(bgm)){
-            return bgm.getCurrentTime();
+            return bgm.getTrackTime();
         } else if (isPicoAudio(bgm)) {
             // Midi
             if (this.bgmPause === 0) {

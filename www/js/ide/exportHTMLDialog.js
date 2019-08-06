@@ -14,7 +14,7 @@ define(["exportAsScriptTags","UI","Klass"], function (east,UI,Klass) {
         createDOM:function (t) {
             if (t.dom) return t.dom;
             t.dom=UI("div",{title:"HTML生成"},
-                ["div","このHTMLをjsdo.itやcodepenなどのJS共有サイトに張り付けて実行できます．"],
+                ["div","このHTMLをcodepenなどのJS共有サイトに張り付けて実行できます．"],
                 ["textarea",{$var:"prog",rows:20,cols:60,placeholder:"Please wait..."}]
             );
             t.prog=t.dom.$vars.prog;
