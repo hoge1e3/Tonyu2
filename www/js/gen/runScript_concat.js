@@ -94,7 +94,7 @@
 	};
 	R.real=real;
 	var requireSimulator=R;
-	// Created at Mon Jul 01 2019 12:39:45 GMT+0900 (日本標準時)
+	// Created at Tue Jul 23 2019 10:40:40 GMT+0900 (日本標準時)
 requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
@@ -4780,7 +4780,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,is:is,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,DeferredUtil:DU,
-			VERSION:1561952367866,//EMBED_VERSION
+			VERSION:1563846031833,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -14793,11 +14793,15 @@ define(["Content"],function (Content) {
 });
 
 requireSimulator.setName('T2MediaLib');
+/*global webkitAudioContext, AudioContext, AudioBuffer, AudioBufferSourceNode, PicoAudio, Mezonet, WebSite, Util*/
 // forked from makkii_bcr's "T2MediaLib" http://jsdo.it/makkii_bcr/3ioQ
 
 var T2MediaLib = (function(){
     function isPicoAudio(bgm) {
         return typeof PicoAudio!=="undefined" && bgm instanceof PicoAudio;
+    }
+    function isMezonetSource(bgm) {
+        return typeof Mezonet!=="undefined" && bgm instanceof Mezonet.Source;
     }
     var T2MediaLib = function(_context) {
         this.context = null;
@@ -14861,7 +14865,7 @@ var T2MediaLib = (function(){
     T2MediaLib.prototype.allRemoveDecodedSoundData = function() {
         var dataAry = this.soundDataAry;
         for (var idx in dataAry) {
-            var soundData = dataAry[idx]
+            var soundData = dataAry[idx];
             if (soundData == null) continue;
             if (!soundData.isDecodeComplete() && !soundData.isDecoding()) continue;
             soundData.removeDecodedData();
@@ -14897,14 +14901,15 @@ var T2MediaLib = (function(){
 
         var ctx = this.context;
         var numOfChannels = array1 != null && array2 != null ? 2 : 1;
-        var audioBuffer = ctx.createBuffer(numOfChannels, array.length, ctx.sampleRate);
+        var audioBuffer = ctx.createBuffer(numOfChannels, array1.length, ctx.sampleRate);
         var buffer1 = audioBuffer.getChannelData(0);
         var buffer2 = array2 != null ? audioBuffer.getChannelData(1) : null;
-        for (var i = 0; i < array.length ; i++) {
+        var i;
+        for (i = 0; i < array1.length ; i++) {
              buffer1[i] = array1[i];
         }
         if (buffer2) {
-            for (var i = 0; i < array.length ; i++) {
+            for (i = 0; i < array2.length ; i++) {
                  buffer2[i] = array2[i];
             }
         }
@@ -14958,7 +14963,7 @@ var T2MediaLib = (function(){
         };
 
         this.soundDataAry[idx].onLoad(url);
-        if (url.match(/^data:/) && Util && Util.Base64_To_ArrayBuffer) {//@hoge1e3
+        if (url.match(/^data:/) && typeof Util!=="undefined" && Util.Base64_To_ArrayBuffer) {//@hoge1e3
             xhr={onload:xhr.onload};
             xhr.response=Util.Base64_To_ArrayBuffer( url.replace(/^data:audio\/[a-zA-Z0-9\-]+;base64,/i,""));
             xhr.status=200;
@@ -15006,6 +15011,7 @@ var T2MediaLib = (function(){
         if (soundData.isDecoding()) return;
         soundData.onDecode();
         var arrayBuffer = soundData.fileData.slice(0);
+        var that = this;
         if (soundData.url.match(/\.(midi?)$/) || soundData.url.match(/^data:audio\/mid/)) {
             // Midi
             // PicoAudio.jsにデコードしてもらう
@@ -15033,28 +15039,50 @@ var T2MediaLib = (function(){
                 soundData.decodedCallbacksAry = null;
             }
         } else if (soundData.url.match(/\.mzo$/) || soundData.url.match(/^data:audio\/mzo/)) {
-            console.log("Loading mzo");
+            //console.log("Loading mzo");
             // MZO
-            var that = this;
-            var a=Array.prototype.slice.call( new Uint8Array(arrayBuffer) );
-            var m=new Mezonet(this.context,a);//,{wavOutSpeed:50});
-            //m.load(a);
-            m.toAudioBuffer(a).then(function (data) {
-                // デコード中にremoveDecodeSoundData()したらデータを捨てる
-                console.log("MZO loaded",data);
-                if (that.soundDataAry[idx].isDecoding()) {
-                    that.soundDataAry[idx].onDecodeComplete(data.decodedData);//data.mezonet の場合空？
-                    that.soundDataAry[idx].loopStart=data.loopStart;
-                    // もしデコードに時間がかかった or ループするmzo だったら，mezonetに演奏してもらう
-                    // (短時間の効果音などはT2MediaLibが担当)
-                    that.soundDataAry[idx].mezonet=data.mezonet;
-                    soundData.decodedCallbacksAry.forEach(function(callbacks) {
-                        if (typeof callbacks.succ == "function") {
-                            callbacks.succ(idx);
-                        }
-                    });
-                    soundData.decodedCallbacksAry = null;
+            Mezonet.init().then(function () {
+                var a=Array.prototype.slice.call( new Uint8Array(arrayBuffer) );
+                that.soundDataAry[idx].onDecodeComplete(new Mezonet.Source(a));
+                soundData.decodedCallbacksAry.forEach(function(callbacks) {
+                    if (typeof callbacks.succ == "function") {
+                        callbacks.succ(idx);
+                    }
+                });
+                soundData.decodedCallbacksAry = null;
+            },function (error) {
+                if (error instanceof Error) {
+                    console.log('T2MediaLib: '+error.message, soundData.url);//@hoge1e3
+                } else {
+                    console.log('T2MediaLib: Error decodeMZO()', soundData.url);//@hoge1e3
                 }
+                that.soundDataAry[idx].onError("DECODE_ERROR");
+                soundData.decodedCallbacksAry.forEach(function(callbacks) {
+                    if (typeof callbacks.err == "function") {
+                        callbacks.err(idx, that.soundDataAry[idx].errorID);
+                    }
+                });
+                soundData.decodedCallbacksAry = null;
+            });
+            /*var m=new Mezonet(this.context,a);//,{wavOutSpeed:50});
+            //m.load(a);
+            m.init().then(function (res) {
+                // デコード中にremoveDecodeSoundData()したらデータを捨てる
+                switch(res.playbackMode.type) {
+                case "Mezonet":
+                that.soundDataAry[idx].onDecodeComplete(m);
+                break;
+                case "AudioBuffer":
+                //console.log(idx, res.decodedData);
+                that.soundDataAry[idx].onDecodeComplete(res.decodedData);
+                break;
+                }
+                soundData.decodedCallbacksAry.forEach(function(callbacks) {
+                    if (typeof callbacks.succ == "function") {
+                        callbacks.succ(idx);
+                    }
+                });
+                soundData.decodedCallbacksAry = null;
             },function (error) {
                 if (error instanceof Error) {
                     console.log('T2MediaLib: '+error.message, soundData.url);//@hoge1e3
@@ -15070,10 +15098,9 @@ var T2MediaLib = (function(){
                 soundData.decodedCallbacksAry = null;
             }).finally(function () {
                 m.terminate();
-            });
+            });*/
         } else {
             // MP3, Ogg, AAC, WAV
-            var that = this;
 
             // Oggループタグ(LOOPSTART, LOOPLENGTH)をファイルから探す
             if (soundData.url.match(/\.(ogg?)$/) || soundData.url.match(/^data:audio\/ogg/)) {
@@ -15176,6 +15203,11 @@ var T2MediaLib = (function(){
             this.decodeSound(idx, callbacks);
             return null;
         }
+        if (isMezonetSource(soundData.decodedData)) {
+            var playback=soundData.decodedData.playback(this.context);
+            playback.Start();
+            return playback;
+        }
 
         var audioBuffer = soundData.decodedData;
         if (!(audioBuffer instanceof AudioBuffer)) return null;
@@ -15194,7 +15226,7 @@ var T2MediaLib = (function(){
             if      (offset > audioBuffer.duration) offset = audioBuffer.duration;
             else if (offset < 0.0) offset = 0.0;
         }
-        durationStart = duration;
+        var durationStart = duration;
         if (!duration) {
             //duration=undefined; // iOS9でduration==undefinedだとsource.start(start, offset, duration);でエラー発生する
             durationStart = 86400; // Number.MAX_SAFE_INTEGERを入れてもiOS9ではエラー起きないけど、昔なんかの環境で数値大き過ぎるとエラーになって86400(24時間)に設定した気がする
@@ -15308,12 +15340,12 @@ var T2MediaLib = (function(){
     };
     T2MediaLib.prototype.getSEVolume = function(sourceObj) {
         if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
-        return source.volumeValue;
+        return sourceObj.volumeValue;
     };
     T2MediaLib.prototype.setSEVolume = function(sourceObj, vol) {
         if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
         sourceObj.gainNode.gain.value = vol * this.seMasterVolume * this.masterVolume;
-        source.volumeValue = vol;
+        sourceObj.volumeValue = vol;
         return sourceObj;
     };
     T2MediaLib.prototype.getSERate = function(sourceObj) {
@@ -15504,7 +15536,7 @@ var T2MediaLib = (function(){
         var bgmPlayer = this._getBgmPlayer(id);
         if (!bgmPlayer) return null;
         return bgmPlayer.setTagLoop(isTagLoop);
-    }
+    };
     T2MediaLib.prototype.getBGMPlayerMax = function() {
         return this.bgmPlayerMax;
     };
@@ -15629,18 +15661,19 @@ var T2MediaLib = (function(){
         var loopStart = 0;
         var loopLength = 0;
         var sampleRate = buf[40] + (buf[41]<<8) + (buf[42]<<16) + (buf[43]<<24);
+        var tagSize,i,c;
         if (startIdx != -1) {
-            var tagSize = buf[startIdx] + (buf[startIdx+1]<<8) + (buf[startIdx+2]<<16) + (buf[startIdx+3]<<24);
-            for (var i=startIdx+10; i<startIdx+tagSize; i++) {
-                var c = str[i];
+            tagSize = buf[startIdx] + (buf[startIdx+1]<<8) + (buf[startIdx+2]<<16) + (buf[startIdx+3]<<24);
+            for (i=startIdx+10; i<startIdx+tagSize; i++) {
+                c = str[i];
                 if (c < '0' || c > '9') break;
                 loopStart = loopStart*10 + (c - '0');
             }
         }
         if (lengthIdx != -1) {
-            var tagSize = buf[lengthIdx] + (buf[lengthIdx+1]<<8) + (buf[lengthIdx+2]<<16) + (buf[lengthIdx+3]<<24);
-            for (var i=lengthIdx+11; i<lengthIdx+tagSize; i++) {
-                var c = str[i];
+            tagSize = buf[lengthIdx] + (buf[lengthIdx+1]<<8) + (buf[lengthIdx+2]<<16) + (buf[lengthIdx+3]<<24);
+            for (i=lengthIdx+11; i<lengthIdx+tagSize; i++) {
+                c = str[i];
                 if (c < '0' || c > '9') break;
                 loopLength = loopLength*10 + (c - '0');
             }
@@ -15649,7 +15682,7 @@ var T2MediaLib = (function(){
         var loopEnd = (loopStart + loopLength) / sampleRate;
         loopStart /= sampleRate;
         return [loopStart, loopEnd];
-    }
+    };
 
     return T2MediaLib;
 })();
@@ -15659,6 +15692,12 @@ var T2MediaLib = (function(){
 var T2MediaLib_BGMPlayer = (function(){
     function isPicoAudio(bgm) {
         return typeof PicoAudio!=="undefined" && bgm instanceof PicoAudio;
+    }
+    function isMezonetSource(bgm) {
+        return typeof Mezonet!=="undefined" && bgm instanceof Mezonet.Source;
+    }
+    function isMezonetPlayback(bgm) {
+        return typeof Mezonet!=="undefined" && bgm instanceof Mezonet.Playback;
     }
     var T2MediaLib_BGMPlayer = function(t2MediaLib, arg_id) {
         this.t2MediaLib = t2MediaLib;
@@ -15725,7 +15764,11 @@ var T2MediaLib_BGMPlayer = (function(){
         }
 
         var decodedData = soundData.decodedData;
-        if (decodedData instanceof AudioBuffer) {
+        if (isMezonetSource(decodedData)) {
+            var m=decodedData.playback(this.t2MediaLib.context);
+            this.playingBGM = m;
+            m.Start();
+        } else if (decodedData instanceof AudioBuffer) {
             // MP3, Ogg, AAC, WAV
             if (this.isTagLoop) {
                 loopStart = loopStart||soundData.tagLoopStart;
@@ -15742,8 +15785,8 @@ var T2MediaLib_BGMPlayer = (function(){
                 this.picoAudio.initStatus();
             }
             this.picoAudio.setLoop(loop);
-            this.picoAudio.setMasterVolume(this.PICO_AUDIO_VOLUME_COEF * this.bgmVolume
-                * this.t2MediaLib.bgmMasterVolume * this.t2MediaLib.masterVolume);
+            this.picoAudio.setMasterVolume(this.PICO_AUDIO_VOLUME_COEF * this.bgmVolume *
+                 this.t2MediaLib.bgmMasterVolume * this.t2MediaLib.masterVolume);
             if (!offset) {
                 offset = 0;
             } else {
@@ -15763,7 +15806,9 @@ var T2MediaLib_BGMPlayer = (function(){
 
     T2MediaLib_BGMPlayer.prototype.stopBGM = function() {
         var bgm = this.playingBGM;
-        if (isPicoAudio(bgm)) {
+        if (isMezonetPlayback(bgm)){
+            bgm.Stop();
+        } else if (isPicoAudio(bgm)) {
             // Midi
             this.picoAudio.stop();
         } else if (bgm instanceof AudioBufferSourceNode) {
@@ -15786,7 +15831,9 @@ var T2MediaLib_BGMPlayer = (function(){
 
     T2MediaLib_BGMPlayer.prototype.pauseBGM = function() {
         var bgm = this.playingBGM;
-        if (isPicoAudio(bgm)) {
+        if (isMezonetPlayback(bgm)){
+            bgm.pause();
+        } else if (isPicoAudio(bgm)) {
             // Midi
             if (this.bgmPause === 0) {
                 this.bgmPauseTime = this.getBGMCurrentTime();
@@ -15823,7 +15870,9 @@ var T2MediaLib_BGMPlayer = (function(){
 
     T2MediaLib_BGMPlayer.prototype.resumeBGM = function() {
         var bgm = this.playingBGM;
-        if (isPicoAudio(bgm)) {
+        if (isMezonetPlayback(bgm)){
+            bgm.resume();
+        } else if (isPicoAudio(bgm)) {
             // Midi
             if (this.bgmPause === 1) {
                 bgm.play();
@@ -15849,7 +15898,9 @@ var T2MediaLib_BGMPlayer = (function(){
     T2MediaLib_BGMPlayer.prototype.setBGMVolume = function(vol) {
         var bgm = this.playingBGM;
         this.bgmVolume = vol;
-        if (isPicoAudio(bgm)) {
+        if (isMezonetPlayback(bgm)){
+            bgm.setVolume(vol);
+        } else if (isPicoAudio(bgm)) {
             // Midi
             this.picoAudio.setMasterVolume(this.PICO_AUDIO_VOLUME_COEF * vol * this.t2MediaLib.bgmMasterVolume * this.t2MediaLib.masterVolume);
         } else if (bgm instanceof AudioBufferSourceNode) {
@@ -15870,7 +15921,10 @@ var T2MediaLib_BGMPlayer = (function(){
         var bgm = this.playingBGM;
 
         if (tempo <= 0 || isNaN(tempo)) tempo = 1;
-        if ((bgm instanceof AudioBufferSourceNode) && this.bgmPause === 0) {
+        if (isMezonetPlayback(bgm)){
+            bgm.setRate(tempo);
+            return this;
+        } else if ((bgm instanceof AudioBufferSourceNode) && this.bgmPause === 0) {
             bgm.plusTime -= (this.t2MediaLib.context.currentTime - bgm.playStartTime) * (tempo - this.bgmTempo);
         }
         this.bgmTempo = tempo;
@@ -15984,9 +16038,11 @@ var T2MediaLib_BGMPlayer = (function(){
 
     T2MediaLib_BGMPlayer.prototype.getBGMCurrentTime = function() {
         var bgm = this.playingBGM;
-        if (isPicoAudio(bgm)) {
+        var time;
+        if (isMezonetPlayback(bgm)){
+            return bgm.getCurrentTime();
+        } else if (isPicoAudio(bgm)) {
             // Midi
-            var time;
             if (this.bgmPause === 0) {
                 time = this.picoAudio.context.currentTime - this.picoAudio.states.startTime;
             } else {
@@ -15995,7 +16051,7 @@ var T2MediaLib_BGMPlayer = (function(){
             return time;
         } else if (bgm instanceof AudioBufferSourceNode) {
             // MP3, Ogg, AAC, WAV
-            var time, time2, currenTime, tempo, plusTime, minusTime, mod;
+            var time2, currenTime, tempo, plusTime, minusTime, mod;
 
             if (this.bgmPause === 0) {
                 currenTime = this.t2MediaLib.context.currentTime;

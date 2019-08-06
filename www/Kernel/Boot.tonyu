@@ -14,6 +14,7 @@ native console;
 native Array;
 native UIDiag;
 native performance;
+native Mezonet;
 
 // old browser support
 if (typeof performance==="undefined") {
@@ -305,6 +306,7 @@ mainLoop();
     	else loopTimer();
         measureFps();
     	handlePause();
+        if (typeof Mezonet!=="undefined" && typeof Mezonet.doRefresh==="function") Mezonet.doRefresh();
         $drawnFrameCount++;
     }
 }

@@ -60,8 +60,8 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     }
     var dir=Util.getQueryString("dir", "/Tonyu/Projects/SandBox/");
     var curPrjDir=FS.get(dir);
-    var curProjectDir=curPrjDir;
-    var curPrj=Tonyu_Project(curProjectDir);//, kernelDir);
+    //var curProjectDir=curPrjDir;
+    var curPrj=Tonyu_Project(curPrjDir);//, kernelDir);
     var resEditors=new ResEditors(curPrj);
     Tonyu.globals.$currentProject=curPrj;
     Tonyu.currentProject=curPrj;
@@ -127,10 +127,10 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     }));
     $(window).resize(F(onResize));
     $("body")[0].spellcheck=false;
-    sh.cd(curProjectDir);
+    sh.cd(curPrjDir);
 
     var fl=FileList($(mobile?"#fileSel":"#fileItemList"),{
-        topDir: curProjectDir,
+        topDir: curPrjDir,
         on:{
             select: F(open),
             displayName: dispName
@@ -197,14 +197,14 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         //close(old);  does in FileMenu
     };
     F(FM.on);
-    fl.ls(curProjectDir);
+    fl.ls(curPrjDir);
     refreshRunMenu();
     function ls(){
-        fl.ls(curProjectDir);
+        fl.ls(curPrjDir);
         refreshRunMenu();
     }
     function refreshRunMenu() {
-        curProjectDir.each(function (f) {
+        curPrjDir.each(function (f) {
             if (f.endsWith(EXT)) {
                 var n=f.truncExt(EXT);
                 if (runMenuOrd.indexOf(n)<0) {
@@ -214,7 +214,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         });
         var i;
         for (i=runMenuOrd.length-1; i>=0 ; i--) {
-            var f=curProjectDir.rel(runMenuOrd[i]+EXT);
+            var f=curPrjDir.rel(runMenuOrd[i]+EXT);
             if (!f.exists()) {
                 runMenuOrd.splice(i,1);
             }
@@ -270,8 +270,8 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
                 includeJSScript:true
             });
         });
-        //$("#exportToJsdoit").attr("href", "exportToJsdoit.html?dir="+curProjectDir.path());//+"&main="+runMenuOrd[0]);
-        $("#exportToExe").attr("href", "exportToExe.html?dir="+curProjectDir.path());//+"&main="+runMenuOrd[0]);
+        //$("#exportToJsdoit").attr("href", "exportToJsdoit.html?dir="+curPrjDir.path());//+"&main="+runMenuOrd[0]);
+        $("#exportToExe").attr("href", "exportToExe.html?dir="+curPrjDir.path());//+"&main="+runMenuOrd[0]);
     }
     function dispName(f) {
         var name=f.name();
@@ -287,9 +287,14 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             upcased=true;
         }
         if (name.match(/^[A-Z_][a-zA-Z0-9_]*$/)) {
+            var dir=fl.curDir();
+            var sysdir={files:1, static:1 ,maps:1};
+            if (sysdir[dir.relPath(curPrjDir).replace(/\/*/,"")]) {
+                return {ok:false, reason:dir.name()+"はシステムで利用されているフォルダなので使用できません"};
+            }
             if (curPrj.isKernel(name)) {
                 if (curPrj.getOptions().kernelEditable) {
-                    return {ok:true, file: curProjectDir.rel(name+EXT),
+                    return {ok:true, file: dir.rel(name+EXT),
                         note: options.action=="create"? "Kernelから"+name+"をコピーします" :""};
                 } else {
                     return {ok:false, reason:name+"はシステムで利用されている名前なので使用できません"};
@@ -297,9 +302,9 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             }
             if (upcased) {
                 //name= name.substring(0,1).toUpperCase()+name.substring(1);
-                return {ok:true, file: curProjectDir.rel(name+EXT), note: "先頭を大文字("+name+") にして作成します．"};
+                return {ok:true, file: dir.rel(name+EXT), note: "先頭を大文字("+name+") にして作成します．"};
             }
-            return {ok:true, file: curProjectDir.rel(name+EXT)};
+            return {ok:true, file: dir.rel(name+EXT)};
         } else {
             return {ok:false, reason:"名前は，半角英数字とアンダースコア(_)のみが使えます．先頭は英大文字にしてください．"};
         }
@@ -399,7 +404,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             displayMode("run");
             Tonyu.globals.$mainCanvas=runDialog.canvas;
         };
-        Log.dumpProject(curProjectDir);
+        Log.dumpProject(curPrjDir);
         if (root.SplashScreen) root.SplashScreen.show();
         var o=curPrj.getOptions();
         if (o.run.mainClass!=name) {
@@ -485,7 +490,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     }));
     $("#search").click(F(function () {
         console.log("src diag");
-        searchDialog.show(curProjectDir,function (info){
+        searchDialog.show(curPrjDir,function (info){
             fl.select(info.file);
             setTimeout(function () {
                 var prog=getCurrentEditor();
@@ -598,7 +603,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     }
 
     function loadDesktopEnv() {
-        var d=curProjectDir.rel(".desktop");
+        var d=curPrjDir.rel(".desktop");
         var res;
         if (d.exists()) {
             res=d.obj();
@@ -610,17 +615,17 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         return res;
     }
     function saveDesktopEnv() {
-        var d=curProjectDir.rel(".desktop");
+        var d=curPrjDir.rel(".desktop");
         d.obj(desktopEnv);
     }
     /*$("#restore").click(F(restore));
     function restore() {
-        var n=curProjectDir.name();
-        if (!copySample.available(curProjectDir)) {
+        var n=curPrjDir.name();
+        if (!copySample.available(curPrjDir)) {
             return alert("このプロジェクトは初期状態に戻せません");
         };
-        if (confirm(curProjectDir+" を初期状態に戻しますか？")) {
-            sh.rm(curProjectDir,{r:1});
+        if (confirm(curPrjDir+" を初期状態に戻しますか？")) {
+            sh.rm(curPrjDir,{r:1});
             copySample(n);
             ls();
         }
@@ -631,7 +636,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             if (desktopEnv && desktopEnv.runtimeConfig) {
                 dest=desktopEnv.runtimeConfig.dest;
             } else {
-                dest=FS.get(WebSite.cwd).rel("Runtimes/").rel( curProjectDir.name());
+                dest=FS.get(WebSite.cwd).rel("Runtimes/").rel( curPrjDir.name());
             }
             mkrunDiag.show(curPrj,{
                 dest: dest,
@@ -646,7 +651,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             /*var mkram=FS.get("/mkram/");
             if (mkram.exists()) mkram.rm({r:1});
             FS.mount(mkram.path(), LSFS.ramDisk() );*/
-            mkrunDiag.show(curPrj, /*mkram.rel(curProjectDir.name()),*/ {
+            mkrunDiag.show(curPrj, /*mkram.rel(curPrjDir.name()),*/ {
                 hiddenFolder:true,
                 onEnd:function () {
                     //FS.unmount(mkram.path());
@@ -683,23 +688,23 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     });
     //if (typeof progBar=="object") {progBar.clear();}
     $("#rmPRJ").click(F(function () {
-        if (prompt(curProjectDir+"内のファイルをすべて削除しますか？削除する場合はDELETE と入力してください．","")!="DELETE") {
+        if (prompt(curPrjDir+"内のファイルをすべて削除しますか？削除する場合はDELETE と入力してください．","")!="DELETE") {
             return;
         }
-        sh.rm(curProjectDir,{r:1});
+        sh.rm(curPrjDir,{r:1});
         document.location.href="index.html";
     }));
     $("#mvPRJ").click(F(function () {
-        var np=prompt("新しいプロジェクトの名前を入れてください", curProjectDir.name().replace(/\//g,""));
+        var np=prompt("新しいプロジェクトの名前を入れてください", curPrjDir.name().replace(/\//g,""));
         if (!np || np=="") return;
         if (!np.match(/\/$/)) np+="/";
-        var npd=curProjectDir.up().rel(np);
+        var npd=curPrjDir.up().rel(np);
         if (npd.exists()) {
             alert(npd+" はすでに存在します");
             return;
         }
-        sh.cp(curProjectDir,npd);
-        sh.rm(curProjectDir,{r:1});
+        sh.cp(curPrjDir,npd);
+        sh.rm(curPrjDir,{r:1});
         document.location.href="project.html?dir="+npd;
     }));
     $("#editorEditor").click(F(function () {
