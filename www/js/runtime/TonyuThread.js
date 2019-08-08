@@ -109,8 +109,8 @@ define(["DeferredUtil","Klass"],function (DU,Klass) {
 			});
 		},
 		then: function (succ,err) {
-			if (err) return this.proimse().then(succ,err);
-			else return this.proimse().then(succ);
+			if (err) return this.promise().then(succ,err);
+			else return this.promise().then(succ);
 		},
 		fail: function (err) {
 			return this.promise().fail(err);
