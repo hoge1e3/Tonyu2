@@ -1,8 +1,8 @@
 /*global requirejs*/
 requirejs(["FS","Tonyu","Tonyu.Project","Shell","ScriptTagFS",
-			"runtime","WebSite","root"],
+			"runtime","WebSite","root","runScript_common"],
 		function (FS,  Tonyu, Tonyu_Project, sh, ScriptTagFS,
-				rt,WebSite,root) {
+				rt,WebSite,root,com) {
 	$(function () {
 		var home=FS.get(WebSite.tonyuHome);
 		var ramHome=FS.get("/ram/");
@@ -21,7 +21,8 @@ requirejs(["FS","Tonyu","Tonyu.Project","Shell","ScriptTagFS",
 			progress:function(t) {$("#splash .progress").text(t);}
 		};
 
-		function getMargin() {
+		var cv=com.initCanvas();
+		/*function getMargin() {
 			return 0;
 		}
 
@@ -43,7 +44,7 @@ requirejs(["FS","Tonyu","Tonyu.Project","Shell","ScriptTagFS",
 			w=$(window).width();
 			h=$(window).height();
 			cv.attr({width: w-margin, height: h-margin});
-		}
+		}*/
 
 		var locs=location.href.replace(/\?.*/,"").split(/\//);
 		var prj=locs.pop() || "runscript";

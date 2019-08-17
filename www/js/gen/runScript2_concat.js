@@ -94,7 +94,7 @@
 	};
 	R.real=real;
 	var requireSimulator=R;
-	// Created at Sat Aug 17 2019 10:59:29 GMT+0900 (日本標準時)
+	// Created at Sat Aug 17 2019 11:18:49 GMT+0900 (日本標準時)
 requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
@@ -5600,7 +5600,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,is:is,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,DeferredUtil:DU,
-			VERSION:1566007142241,//EMBED_VERSION
+			VERSION:1566008307889,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -7898,10 +7898,42 @@ define([],function (){
     return (function (){return this;})();
 });
 
+requireSimulator.setName('runScript_common');
+define([], function () {
+    return {
+        initCanvas: function () {
+            function getMargin() {
+                return 0;
+            }
+
+            var margin = getMargin();
+            var w=$(window).width();
+            var h=$(window).height();
+            $("body").css({overflow:"hidden", margin:"0px"});
+            var cv=$("<canvas>").attr({width: w-margin, height:h-margin, class:"tonyu-canvas"}).appendTo("body");
+
+            var u = navigator.userAgent.toLowerCase();
+            if ((u.indexOf("iphone") == -1 &&
+                u.indexOf("ipad") == -1 &&
+                u.indexOf("ipod") == -1
+                ) && (!window.parent || window === window.parent)) {
+                $(window).resize(onResize);
+            }
+            function onResize() {
+                var margin = getMargin();
+                w=$(window).width();
+                h=$(window).height();
+                cv.attr({width: w-margin, height: h-margin});
+            }
+            return cv;
+        }
+    };
+});
+
 requireSimulator.setName('runScript2');
 /*global requirejs, process*/
-requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu","root"],
-		function (FS,  CPTR, sh,  rt,WebSite,LSFS,Tonyu,root) {
+requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu","root","runScript_common"],
+		function (FS,  CPTR, sh,  rt,WebSite,LSFS,Tonyu,root,com) {
 	$(function () {
 		root.SplashScreen={
 			hide: function () {$("#splash").hide();},
@@ -7909,7 +7941,8 @@ requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu
 			progress:function(t) {$("#splash").text(t);}
 		};
 
-		function getMargin() {
+		var cv=com.initCanvas();
+		/*function getMargin() {
 			return 0;
 		}
 
@@ -7918,7 +7951,6 @@ requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu
 		var h=$(window).height();
 		$("body").css({overflow:"hidden", margin:"0px"});
 		var cv=$("<canvas>").attr({width: w-margin, height:h-margin, class:"tonyu-canvas"}).appendTo("body");
-		Tonyu.globals.$mainCanvas=cv;
 
 		var u = navigator.userAgent.toLowerCase();
 		if ((u.indexOf("iphone") == -1 &&
@@ -7932,7 +7964,7 @@ requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu
 			w=$(window).width();
 			h=$(window).height();
 			cv.attr({width: w-margin, height: h-margin});
-		}
+		}*/
 
 		var curProjectDir, home, prj;
 		if (WebSite.isNW) {
@@ -7960,6 +7992,7 @@ requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu
 			WebSite.compiledKernel=window.runtimePath+"lib/tonyu/kernel.js";
 		}
 		var curPrj=CPTR("user", "js/concat.js",curProjectDir);
+		Tonyu.globals.$mainCanvas=cv;
 		start();
 		function start() {
 			Tonyu.currentProject=Tonyu.globals.$currentProject=curPrj;

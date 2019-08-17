@@ -1,6 +1,6 @@
 /*global requirejs, process*/
-requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu","root"],
-		function (FS,  CPTR, sh,  rt,WebSite,LSFS,Tonyu,root) {
+requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu","root","runScript_common"],
+		function (FS,  CPTR, sh,  rt,WebSite,LSFS,Tonyu,root,com) {
 	$(function () {
 		root.SplashScreen={
 			hide: function () {$("#splash").hide();},
@@ -8,7 +8,8 @@ requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu
 			progress:function(t) {$("#splash").text(t);}
 		};
 
-		function getMargin() {
+		var cv=com.initCanvas();
+		/*function getMargin() {
 			return 0;
 		}
 
@@ -17,7 +18,6 @@ requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu
 		var h=$(window).height();
 		$("body").css({overflow:"hidden", margin:"0px"});
 		var cv=$("<canvas>").attr({width: w-margin, height:h-margin, class:"tonyu-canvas"}).appendTo("body");
-		Tonyu.globals.$mainCanvas=cv;
 
 		var u = navigator.userAgent.toLowerCase();
 		if ((u.indexOf("iphone") == -1 &&
@@ -31,7 +31,7 @@ requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu
 			w=$(window).width();
 			h=$(window).height();
 			cv.attr({width: w-margin, height: h-margin});
-		}
+		}*/
 
 		var curProjectDir, home, prj;
 		if (WebSite.isNW) {
@@ -59,6 +59,7 @@ requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu
 			WebSite.compiledKernel=window.runtimePath+"lib/tonyu/kernel.js";
 		}
 		var curPrj=CPTR("user", "js/concat.js",curProjectDir);
+		Tonyu.globals.$mainCanvas=cv;
 		start();
 		function start() {
 			Tonyu.currentProject=Tonyu.globals.$currentProject=curPrj;

@@ -94,7 +94,7 @@
 	};
 	R.real=real;
 	var requireSimulator=R;
-	// Created at Sat Aug 17 2019 10:59:18 GMT+0900 (日本標準時)
+	// Created at Sat Aug 17 2019 11:18:44 GMT+0900 (日本標準時)
 requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
@@ -4780,7 +4780,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,is:is,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,DeferredUtil:DU,
-			VERSION:1566007142241,//EMBED_VERSION
+			VERSION:1566008307889,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -16571,12 +16571,44 @@ define([],function (){
     return (function (){return this;})();
 });
 
+requireSimulator.setName('runScript_common');
+define([], function () {
+    return {
+        initCanvas: function () {
+            function getMargin() {
+                return 0;
+            }
+
+            var margin = getMargin();
+            var w=$(window).width();
+            var h=$(window).height();
+            $("body").css({overflow:"hidden", margin:"0px"});
+            var cv=$("<canvas>").attr({width: w-margin, height:h-margin, class:"tonyu-canvas"}).appendTo("body");
+
+            var u = navigator.userAgent.toLowerCase();
+            if ((u.indexOf("iphone") == -1 &&
+                u.indexOf("ipad") == -1 &&
+                u.indexOf("ipod") == -1
+                ) && (!window.parent || window === window.parent)) {
+                $(window).resize(onResize);
+            }
+            function onResize() {
+                var margin = getMargin();
+                w=$(window).width();
+                h=$(window).height();
+                cv.attr({width: w-margin, height: h-margin});
+            }
+            return cv;
+        }
+    };
+});
+
 requireSimulator.setName('runScript');
 /*global requirejs*/
 requirejs(["FS","Tonyu","Tonyu.Project","Shell","ScriptTagFS",
-			"runtime","WebSite","root"],
+			"runtime","WebSite","root","runScript_common"],
 		function (FS,  Tonyu, Tonyu_Project, sh, ScriptTagFS,
-				rt,WebSite,root) {
+				rt,WebSite,root,com) {
 	$(function () {
 		var home=FS.get(WebSite.tonyuHome);
 		var ramHome=FS.get("/ram/");
@@ -16595,7 +16627,8 @@ requirejs(["FS","Tonyu","Tonyu.Project","Shell","ScriptTagFS",
 			progress:function(t) {$("#splash .progress").text(t);}
 		};
 
-		function getMargin() {
+		var cv=com.initCanvas();
+		/*function getMargin() {
 			return 0;
 		}
 
@@ -16617,7 +16650,7 @@ requirejs(["FS","Tonyu","Tonyu.Project","Shell","ScriptTagFS",
 			w=$(window).width();
 			h=$(window).height();
 			cv.attr({width: w-margin, height: h-margin});
-		}
+		}*/
 
 		var locs=location.href.replace(/\?.*/,"").split(/\//);
 		var prj=locs.pop() || "runscript";

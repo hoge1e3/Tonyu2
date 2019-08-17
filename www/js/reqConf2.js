@@ -275,6 +275,8 @@ var reqConf={
                 "Platform": 1,
                 "runScript": 1,
                 "runScript2": 1,
+                "runScript3": 1,
+                "runScript_common": 1,
                 "runtime": 1,
                 "soundDiag": "SoundDiag",
                 "workerLoader": 1
