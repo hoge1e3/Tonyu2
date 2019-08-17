@@ -22,6 +22,7 @@ define(["genROM","Util","FS","Sync","Shell","WebSite"],
             ds.concat({names:["ide/editor"], outFile:"project",reqConf:reqConf});
             ds.concat({names:["runScript"], outFile:"runScript",reqConf:reqConf});
             ds.concat({names:["runScript2"], outFile:"runScript2",reqConf:reqConf});
+            ds.concat({names:["runScript3"], outFile:"runScript3",reqConf:reqConf});
         }
         sh.echo("To compile documents, type:");
         sh.echo("wiki2serv ../fs/Tonyu/doc/ ../www/doc/");
