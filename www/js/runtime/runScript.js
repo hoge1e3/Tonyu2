@@ -1,11 +1,12 @@
-requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS",
-			"runtime","WebSite","LSFS"],
-		function (FS,  Tonyu_Project, sh,      KeyEventChecker, ScriptTagFS,
-				rt,WebSite,LSFS) {
+/*global requirejs*/
+requirejs(["FS","Tonyu","Tonyu.Project","Shell","ScriptTagFS",
+			"runtime","WebSite","root"],
+		function (FS,  Tonyu, Tonyu_Project, sh, ScriptTagFS,
+				rt,WebSite,root) {
 	$(function () {
 		var home=FS.get(WebSite.tonyuHome);
 		var ramHome=FS.get("/ram/");
-		FS.mount(ramHome.path(), LSFS.ramDisk() );
+		FS.mount(ramHome.path(), FS.LSFS.ramDisk() );
 		Tonyu.defaultResource={
 				images:[
 						{name:"$pat_base", url: "images/base.png", pwidth:32, pheight:32},
@@ -14,7 +15,7 @@ requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS",
 						],
 						sounds:[]
 		};
-		SplashScreen={
+		root.SplashScreen={
 			hide: function () {$("#splash").hide();},
 			show:function(){},
 			progress:function(t) {$("#splash .progress").text(t);}
@@ -31,17 +32,17 @@ requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS",
 		var cv=$("<canvas>").attr({width: w-margin, height: h-margin,class:"tonyu-canvas"}).appendTo("body");
 
 		var u = navigator.userAgent.toLowerCase();
-		if ((u.indexOf("iphone") == -1
-			&& u.indexOf("ipad") == -1
-			&& u.indexOf("ipod") == -1
+		if ((u.indexOf("iphone") == -1 &&
+			u.indexOf("ipad") == -1 &&
+			u.indexOf("ipod") == -1
 		) && (!window.parent || window === window.parent) ) {
 			$(window).resize(onResize);
-			function onResize() {
-				var margin = getMargin();
-				w=$(window).width();
-				h=$(window).height();
-				cv.attr({width: w-margin, height: h-margin});
-			}
+		}
+		function onResize() {
+			var margin = getMargin();
+			w=$(window).width();
+			h=$(window).height();
+			cv.attr({width: w-margin, height: h-margin});
 		}
 
 		var locs=location.href.replace(/\?.*/,"").split(/\//);

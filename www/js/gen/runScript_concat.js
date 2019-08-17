@@ -94,7 +94,7 @@
 	};
 	R.real=real;
 	var requireSimulator=R;
-	// Created at Tue Aug 06 2019 17:15:08 GMT+0900 (日本標準時)
+	// Created at Sat Aug 17 2019 10:59:18 GMT+0900 (日本標準時)
 requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
@@ -4122,8 +4122,8 @@ define(["DeferredUtil","Klass"],function (DU,Klass) {
 			});
 		},
 		then: function (succ,err) {
-			if (err) return this.proimse().then(succ,err);
-			else return this.proimse().then(succ);
+			if (err) return this.promise().then(succ,err);
+			else return this.promise().then(succ);
 		},
 		fail: function (err) {
 			return this.promise().fail(err);
@@ -4780,7 +4780,7 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,is:is,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,DeferredUtil:DU,
-			VERSION:1565079290356,//EMBED_VERSION
+			VERSION:1566007142241,//EMBED_VERSION
 			A:A};
 }();
 });
@@ -14697,41 +14697,6 @@ define(["FS","assert"],
     return Shell;
 });
 
-requireSimulator.setName('KeyEventChecker');
-define([],function () {
-	var KEC={};
-	KEC.down=function (elem, name, handler) {
-		if (!(elem instanceof $)) elem=$(elem);
-		elem.bind("keydown", function (e) {
-			if (KEC.is(e, name)) {
-				return handler.call(elem[0],e);
-			}
-		});
-	};
-	KEC.is=function (e,name) {
-		name=name.toLowerCase();
-		e = e.originalEvent || e;
-		var s="";
-		if (e.altKey) {
-			s+="alt+";
-		}
-		if (e.ctrlKey) {
-			s+="ctrl+";
-		}
-		if (e.shiftKey) {
-			s+="shift+";
-		}
-		if (e.keyCode>=112 && e.keyCode<=123) {
-			s+="f"+(e.keyCode-111);
-		} else {
-			s+=String.fromCharCode(e.keyCode);
-		}
-		s=s.toLowerCase();
-		//console.log(s);
-		return name==s;
-	};
-	return KEC;
-});
 requireSimulator.setName('ScriptTagFS');
 define(["Content"],function (Content) {
 	var STF={};
@@ -16597,18 +16562,25 @@ function (i,t,tn,u) {
     if (!window.T2MediaLib) window.T2MediaLib=t;
 });
 
-requireSimulator.setName('LSFS');
-define(["FS"],function (FS){return FS.LSFS;});
+requireSimulator.setName('root');
+/*global window,self,global*/
+define([],function (){
+    if (typeof window!=="undefined") return window;
+    if (typeof self!=="undefined") return self;
+    if (typeof global!=="undefined") return global;
+    return (function (){return this;})();
+});
 
 requireSimulator.setName('runScript');
-requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS",
-			"runtime","WebSite","LSFS"],
-		function (FS,  Tonyu_Project, sh,      KeyEventChecker, ScriptTagFS,
-				rt,WebSite,LSFS) {
+/*global requirejs*/
+requirejs(["FS","Tonyu","Tonyu.Project","Shell","ScriptTagFS",
+			"runtime","WebSite","root"],
+		function (FS,  Tonyu, Tonyu_Project, sh, ScriptTagFS,
+				rt,WebSite,root) {
 	$(function () {
 		var home=FS.get(WebSite.tonyuHome);
 		var ramHome=FS.get("/ram/");
-		FS.mount(ramHome.path(), LSFS.ramDisk() );
+		FS.mount(ramHome.path(), FS.LSFS.ramDisk() );
 		Tonyu.defaultResource={
 				images:[
 						{name:"$pat_base", url: "images/base.png", pwidth:32, pheight:32},
@@ -16617,7 +16589,7 @@ requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS",
 						],
 						sounds:[]
 		};
-		SplashScreen={
+		root.SplashScreen={
 			hide: function () {$("#splash").hide();},
 			show:function(){},
 			progress:function(t) {$("#splash .progress").text(t);}
@@ -16634,17 +16606,17 @@ requirejs(["FS","Tonyu.Project","Shell","KeyEventChecker","ScriptTagFS",
 		var cv=$("<canvas>").attr({width: w-margin, height: h-margin,class:"tonyu-canvas"}).appendTo("body");
 
 		var u = navigator.userAgent.toLowerCase();
-		if ((u.indexOf("iphone") == -1
-			&& u.indexOf("ipad") == -1
-			&& u.indexOf("ipod") == -1
+		if ((u.indexOf("iphone") == -1 &&
+			u.indexOf("ipad") == -1 &&
+			u.indexOf("ipod") == -1
 		) && (!window.parent || window === window.parent) ) {
 			$(window).resize(onResize);
-			function onResize() {
-				var margin = getMargin();
-				w=$(window).width();
-				h=$(window).height();
-				cv.attr({width: w-margin, height: h-margin});
-			}
+		}
+		function onResize() {
+			var margin = getMargin();
+			w=$(window).width();
+			h=$(window).height();
+			cv.attr({width: w-margin, height: h-margin});
 		}
 
 		var locs=location.href.replace(/\?.*/,"").split(/\//);

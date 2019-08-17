@@ -1,8 +1,8 @@
-requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu","NativeFS"],
-		function (FS,  CPTR, sh,  rt,WebSite,LSFS,Tonyu) {
+/*global requirejs, process*/
+requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu","root"],
+		function (FS,  CPTR, sh,  rt,WebSite,LSFS,Tonyu,root) {
 	$(function () {
-
-		SplashScreen={
+		root.SplashScreen={
 			hide: function () {$("#splash").hide();},
 			show:function(){},
 			progress:function(t) {$("#splash").text(t);}
@@ -20,31 +20,31 @@ requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu
 		Tonyu.globals.$mainCanvas=cv;
 
 		var u = navigator.userAgent.toLowerCase();
-		if ((u.indexOf("iphone") == -1
-			&& u.indexOf("ipad") == -1
-			&& u.indexOf("ipod") == -1
+		if ((u.indexOf("iphone") == -1 &&
+			u.indexOf("ipad") == -1 &&
+			u.indexOf("ipod") == -1
 			) && (!window.parent || window === window.parent)) {
 			$(window).resize(onResize);
-			function onResize() {
-				var margin = getMargin();
-				w=$(window).width();
-				h=$(window).height();
-				cv.attr({width: w-margin, height: h-margin});
-			}
+		}
+		function onResize() {
+			var margin = getMargin();
+			w=$(window).width();
+			h=$(window).height();
+			cv.attr({width: w-margin, height: h-margin});
 		}
 
-		var curProjectDir;
+		var curProjectDir, home, prj;
 		if (WebSite.isNW) {
 			var cur=process.cwd().replace(/\\/g,"/");
-			var prj=location.href.replace(/^chrome-extension:\/\/\w*/,"");
+			prj=location.href.replace(/^chrome-extension:\/\/\w*/,"");
 			home=FS.get(cur+prj);
 			if (!home.isDir()) home=home.up();
 			curProjectDir=home;
 		} else {
 			var locs=location.href.replace(/\?.*/,"").split(/\//);
-			var prj=locs.pop() || "runscript";
+			prj=locs.pop() || "runscript";
 			var user=locs.pop() || "nobody";
-			var home=FS.get(WebSite.tonyuHome);
+			home=FS.get(WebSite.tonyuHome);
 			var ramHome=FS.get("/ram/");
 			FS.mount(ramHome.path(), LSFS.ramDisk() );
 			curProjectDir=ramHome;
@@ -52,7 +52,7 @@ requirejs(["FS","compiledTonyuProject","Shell","runtime","WebSite","LSFS","Tonyu
 			ramHome.rel("files/").link(actualFilesDir);
 		}
 
-		loadFiles(curProjectDir);
+		root.loadFiles(curProjectDir);
 		sh.cd(curProjectDir);
 		WebSite.compiledKernel="js/kernel.js";
 		if (WebSite.serverType==="BA" && window.runtimePath) {//ADDBA
