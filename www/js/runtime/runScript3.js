@@ -1,14 +1,14 @@
 /*global requirejs*/
-requirejs(["FS","Tonyu","Tonyu.Project","Shell","ScriptTagFS",
+requirejs(["FS","Tonyu","Tonyu.Project",
 			"runtime","WebSite","root","runScript_common","Util"],
-		function (FS,  Tonyu, Tonyu_Project, sh, ScriptTagFS,
+		function (FS,  Tonyu, Tonyu_Project, 
 				rt,WebSite,root,com,Util) {
 	$(function () {
 		var prjPath=Util.getQueryString("prj");
 		var cv=com.initCanvas();
 
 		var curProjectDir=FS.resolve(prjPath);
-		sh.cd(curProjectDir);
+		//sh.cd(curProjectDir);
 		Tonyu.defaultOptions={
 				compiler: { defaultSuperClass: "Actor"},
 				run: {mainClass: "Main", bootClass: "Boot"},
