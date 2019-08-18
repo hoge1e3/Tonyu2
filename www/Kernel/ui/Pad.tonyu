@@ -16,14 +16,14 @@ extends Actor;
     }
 
     if (version == 1) {
-        newPadV1();
+        newPadV1(opt);
     } else {
-        newPadV2();
+        newPadV2(opt);
     }
 
     if (active == null) active = true;
     if (active) {
-        activate();
+        activate(opt);
     }
 }
 
@@ -41,7 +41,7 @@ extends Actor;
     }
 }
 
-\newPadV2() {
+\newPadV2(opt) {
     died = false;
     // パッドレイアウト
     // 0 : ボタン作成なし(自分で作る)(v2.0未実装)
@@ -53,17 +53,17 @@ extends Actor;
     // ボタン自動再配置
     if (autoMove == null) autoMove = true; // 自動再配置
     // レイヤー
-    if (layer == null) layer = $frontLayer;
+    if (opt.layer == null) layer = $frontLayer;
 
     initButton();
 }
 
-\newPadV1() {
+\newPadV1(opt) {
     APAD_DIAG_SIZE = 96;
     died = false;
     padImageP = $pat_inputPad;
     padUpdateFrame = -1;
-    if (layer == null) layer = $frontLayer;
+    if (opt.layer == null) layer = $frontLayer;
     jujiKey = new Actor{x:96+1, y:$screenHeight-96-1, p:padImageP+0,zOrder:-9, layer};
     no1Key = new Actor{x:$screenWidth-96, y:$screenHeight-96, p:padImageP+1,zOrder:-9, layer};
     jujiKey.show();
