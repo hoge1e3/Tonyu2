@@ -1,7 +1,7 @@
 /*global requirejs*/
-requirejs(["FS","Tonyu","Tonyu.Project",
+requirejs(["FS","Tonyu","Run3Project",
 			"runtime","WebSite","root","runScript_common","Util"],
-		function (FS,  Tonyu, Tonyu_Project, 
+		function (FS,  Tonyu, Run3Project,
 				rt,WebSite,root,com,Util) {
 	$(function () {
 		var prjPath=Util.getQueryString("prj");
@@ -14,7 +14,7 @@ requirejs(["FS","Tonyu","Tonyu.Project",
 				run: {mainClass: "Main", bootClass: "Boot"},
 				kernelEditable: false
 		};
-		var curPrj=Tonyu_Project(curProjectDir);//, kernelDir);
+		var curPrj=Run3Project.create({dir:curProjectDir});//, kernelDir);
 		curPrj.initCanvas=function () {
 			Tonyu.globals.$mainCanvas=cv;
 		};

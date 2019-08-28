@@ -1,10 +1,10 @@
 define(["Tonyu", "ProjectCompiler", "TError", "FS", "Tonyu.TraceTbl","ImageList","StackTrace",
-        "Blob","thumbnail","WebSite","plugins", "Tonyu.Compiler.Semantics", "Tonyu.Compiler.JSGenerator",
+        "Blob","thumbnail","WebSite","plugins", //"Tonyu.Compiler.Semantics", "Tonyu.Compiler.JSGenerator",
         "DeferredUtil","compiledProject"],
         function (Tonyu, ProjectCompiler, TError, FS, Tonyu_TraceTbl, ImageList,StackTrace,
-                Blob,thumbnail,WebSite,plugins, Semantics, JSGenerator,
+                Blob,thumbnail,WebSite,plugins,// Semantics, JSGenerator,
                 DU,CPRJ) {
-return Tonyu.Project=function (dir, kernelDir) {
+Tonyu.Project=function (dir, kernelDir) {
   // Difference from projectCompiler:
   //   TonyuProject Defines Tonyu 'System' (the game engine) specific projects
   //   such as resource management, booting.
@@ -21,35 +21,6 @@ return Tonyu.Project=function (dir, kernelDir) {
     }
     var traceTbl=Tonyu.TraceTbl;//();
     var env={classes:Tonyu.classMetas, traceTbl:traceTbl, options:{compiler:{}} };
-    /*function orderByInheritance(classes) {//ENVC
-        var added={};
-        var res=[];
-        var ccnt=0;
-        for (var n in classes) {//ENVC
-            added[n]=false;
-            ccnt++;
-        }
-        while (res.length<ccnt) {
-            var p=res.length;
-            for (var n in classes) {//ENVC
-                if (added[n]) continue;
-                var c=classes[n];//ENVC
-                var spc=c.superclass;
-                var deps=[spc];
-                var ready=true;
-                if (c.includes) deps=deps.concat(c.includes);
-                deps.forEach(function (cl) {
-                    ready=ready && (!cl || cl.builtin || added[cl.fullName]);//CFN cl.name -> cl.fullName
-                });
-                if (ready) {
-                    res.push(c);
-                    added[n]=true;
-                }
-            }
-            if (res.length==p) throw TError( "クラスの循環参照があります", "不明" ,0);
-        }
-        return res;
-    }*/
     TPR.env=env;
     TPR.dumpJS=function (n) {
         function dumpn(n) {
@@ -365,4 +336,5 @@ return Tonyu.Project=function (dir, kernelDir) {
     return TPR;
 };
 if (typeof getReq=="function") getReq.exports("Tonyu.Project");
+return Tonyu.Project;
 });

@@ -1,23 +1,23 @@
 /*global requirejs, require*/
 requirejs(["Util", "Tonyu", "FS", "PathUtil","FileList", "FileMenu",
-           "showErrorPos", "fixIndent", "Wiki", "Tonyu.Project",
+           "showErrorPos", "fixIndent", "Wiki", //"Tonyu.Project",
            /*"copySample",*/"Shell","Shell2","ProjectOptionsEditor","copyToKernel","KeyEventChecker",
            "IFrameDialog",/*"WikiDialog",*/"runtime", "KernelDiffDialog","Sync","searchDialog","StackTrace","syncWithKernel",
            "UI","ResEditors","WebSite","exceptionCatcher","Tonyu.TraceTbl",
            "Log","MainClassDialog","DeferredUtil","NWMenu",
-           "ProjectCompiler","compiledProject","mkrunDiag","zip","LSFS","WebFS",
-           "extLink","DiagAdjuster","ExportHTMLDialog","RunDialog","GlobalDialog",
-           "root"
+           /*"ProjectCompiler","compiledProject",*/"mkrunDiag","zip","LSFS","WebFS",
+           "extLink","DiagAdjuster","ExportHTMLDialog","RunDialog3","GlobalDialog",
+           "root","IDEProject","optionFixer","SourceFiles"
           ],
 function (Util, Tonyu, FS, PathUtil, FileList, FileMenu,
-          showErrorPos, fixIndent, Wiki, Tonyu_Project,
+          showErrorPos, fixIndent, Wiki, //Tonyu_Project,
           /*copySample,*/sh,sh2, ProjectOptionsEditor, ctk, KeyEventChecker,
           IFrameDialog,/*WikiDialog,*/ rt , KDD,Sync,searchDialog,StackTrace,swk,
           UI,ResEditors,WebSite,EC,TTB,
           Log,MainClassDialog,DU,NWMenu,
-          TPRC,CPPRJ,mkrunDiag,zip,LSFS,WebFS,
-          extLink,DiagAdjuster,ExportHTMLDialog,RunDialog,GlobalDialog,
-          root
+          /*TPRC,CPPRJ,*/mkrunDiag,zip,LSFS,WebFS,
+          extLink,DiagAdjuster,ExportHTMLDialog,RunDialog3,GlobalDialog,
+          root,IDEProject,optionFixer,SourceFiles
           ) {
 $(function () {
     if (!WebSite.isNW) {
@@ -49,7 +49,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     var home=FS.get(WebSite.tonyuHome);
     //if (!Tonyu.ide)  Tonyu.ide={};
     var kernelDir;
-    if (WebSite.kernelDir && !PathUtil.isURL(WebSite.kernelDir)){
+    /*if (WebSite.kernelDir && !PathUtil.isURL(WebSite.kernelDir)){
         kernelDir=FS.get(WebSite.kernelDir);//home.rel("Kernel/");
         if (kernelDir.exists()) {
             TPRC(kernelDir).loadClasses().fail(function (e) {
@@ -57,15 +57,18 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
                 alert("Kernel compile error!");
             });
         }
-    }
+    }*/
     var dir=Util.getQueryString("dir", "/Tonyu/Projects/SandBox/");
     var curPrjDir=FS.get(dir);
+    optionFixer.fixFile(curPrjDir.rel("options.json"));
     //var curProjectDir=curPrjDir;
-    var curPrj=Tonyu_Project(curPrjDir);//, kernelDir);
+    //console.log("F",F,root);
+    var curPrj=IDEProject.create({dir:curPrjDir});//, kernelDir);
+    root.curPrj=curPrj;
     var resEditors=new ResEditors(curPrj);
     Tonyu.globals.$currentProject=curPrj;
     Tonyu.currentProject=curPrj;
-    var EXT=curPrj.EXT;
+    var EXT=curPrj.getEXT();
     var desktopEnv=loadDesktopEnv();
     var runMenuOrd=desktopEnv.runMenuOrd;
     var exportHTMLDialog=new ExportHTMLDialog(curPrj);
@@ -104,7 +107,8 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     var runDialogParam={
         screenH:200,
         onClose: stop,
-        desktopEnv: desktopEnv
+        desktopEnv: desktopEnv,
+        prj: curPrjDir.path()
     };
     function onResize() {
         //console.log($(window).height(), $("#navBar").height());
@@ -155,12 +159,12 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     FM.on.ls=ls;
     FM.on.validateName=fixName;
     FM.on.createContent=function (f) {
-        var k=curPrj.isKernel(f.truncExt(EXT));
+        /*var k=curPrj.isKernel(f.truncExt(EXT));
         if (k) {
             f.text(k.text());
-        } else {
+        } else {*/
             f.text("");
-        }
+        //}
     };
     FM.on.displayName=function (f) {
         var r=dispName(f);
@@ -279,6 +283,9 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         if (f.endsWith(EXT)) return f.truncExt(EXT);
         return null;
     }
+    function isKernel() {
+        return false;//TODO
+    }
     function fixName(name, options) {
         var upcased=false;
         //if (name=="aaaa") throw new Error("iikagen name error "+EC.enter);
@@ -292,13 +299,13 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             if (sysdir[dir.relPath(curPrjDir).replace(/\/*/,"")]) {
                 return {ok:false, reason:dir.name()+"はシステムで利用されているフォルダなので使用できません"};
             }
-            if (curPrj.isKernel(name)) {
-                if (curPrj.getOptions().kernelEditable) {
+            if (isKernel(name)) {
+                /*if (curPrj.getOptions().kernelEditable) {
                     return {ok:true, file: dir.rel(name+EXT),
                         note: options.action=="create"? "Kernelから"+name+"をコピーします" :""};
-                } else {
+                } else {*/
                     return {ok:false, reason:name+"はシステムで利用されている名前なので使用できません"};
-                }
+                //}
             }
             if (upcased) {
                 //name= name.substring(0,1).toUpperCase()+name.substring(1);
@@ -319,7 +326,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         if (i) return i.editor;
         return null;
     }
-    var runDialog=new RunDialog(runDialogParam);
+    var runDialog=new RunDialog3(runDialogParam);
     function displayMode(mode, next) {
         // mode == run     compile_error     runtime_error    edit
         var prog=getCurrentEditor();
@@ -386,7 +393,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         if (!setCmdStat("run")) return;
         return $.when(curPrj.stop()).then(function () {
             return run2(name);
-        }).finally(function () {
+        }).catch(Tonyu.onRuntimeError).finally(function () {
             setCmdStat();
         });
     }
@@ -409,10 +416,16 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         var o=curPrj.getOptions();
         if (o.run.mainClass!=name) {
             o.run.mainClass=name;
-            curPrj.setOptions();
+            curPrj.setOptions(o);
         }
         curPrjDir.touch();
-        return curPrj.rawRun(o.run.bootClass).catch(function (e) {
+        return curPrj.fullCompile().then(async r=>{
+            await SourceFiles.add(r).saveAs(curPrj.getOutputFile());
+            runDialog.show();
+        }).finally(function () {
+            if (root.SplashScreen) root.SplashScreen.hide();
+        });
+        /*return curPrj.rawRun(o.run.bootClass).catch(function (e) {
             if (e.isTError) {
                 console.log("showErr: run");
                 showErrorPos($("#errorPos"),e,{jump:jump});
@@ -422,7 +435,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             }
         }).finally(function () {
             if (root.SplashScreen) root.SplashScreen.hide();
-        });
+        });*/
     }
     var alertOnce;
     alertOnce=function (e) {
@@ -442,6 +455,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     }
     var pluginAdded={};
     window.onerror=EC.handleException=Tonyu.onRuntimeError=function (e) {
+        console.error(e);
         Tonyu.globals.$lastError=e;
         var t=curPrj.env.traceTbl;
         var te;

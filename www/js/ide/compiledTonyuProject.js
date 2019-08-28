@@ -1,10 +1,13 @@
-define(["plugins","compiledProject"], function (plugins,CPR) {
-    var CPTR=function (ns, url, dir) {
-        var cpr=CPR(ns,url);
-        var kernelProject=CPR("kernel", WebSite.compiledKernel);
-
+define(["root","plugins"], function (root, plugins) {
+    // used by runScript2
+    return function (factory, cpr) {
+        const Tonyu=root.Tonyu;
+        var kernelProject=factory.create("compiled",{
+            namespace:"kernel",
+            url: root.WebSite.compiledKernel
+        });
         var m={
-                getDir: function () {return dir;},
+                getDir: function () {return this.dir;},
                 getDependingProjects:function () {//override
                     return [kernelProject];
                 },
@@ -31,5 +34,4 @@ define(["plugins","compiledProject"], function (plugins,CPR) {
         for (var k in m) cpr[k]=m[k];
         return cpr;
     };
-    return CPTR;
 });
