@@ -11,13 +11,13 @@ module.exports=class {
                 class:"runArea"
             },
             ["iframe",{
-                $var:"cv",id:"iframe",src:"run.html?prj="+param.prj,width:465,height:465,
+                $var:"iframe",id:"iframe",src:"about:blank",width:465,height:465,
                 class:"tonyu-canvas",
                 style:" margin-left : auto ; margin-right : auto ;"
             }]
         );
         t.dom=d;
-        t.cv=d.$vars.cv;
+        t.iframe=d.$vars.iframe;
     }
     close() {
         this.dom.dialog("close");
@@ -30,7 +30,7 @@ module.exports=class {
         if (reset) desktopEnv.runDialog={};
         t.size=desktopEnv.runDialog||(desktopEnv.runDialog={});
         var size=t.size;
-        t.cv=d.$vars.cv;
+        t.iframe=d.$vars.iframe;
         size.width=size.width||($(window).width()-100)/2-20;
         size.height=size.height||param.screenH-20;
         if (!t.shownOnce || reset) {
@@ -66,12 +66,14 @@ module.exports=class {
                 close:function () {
                     t.opened=false;
                     t.param.onClose();
+                    t.iframe.attr("src","about:blank");
                 }
             });
             t.shownOnce=true;
         } else {
             d.dialog();
         }
+        t.iframe.attr("src","run.html?prj="+param.prj);
         t.opened=true;
         $(".ui-dialog-titlebar-close").blur();
         t.resizeCanvas(d.width(),d.height());
@@ -79,7 +81,7 @@ module.exports=class {
     }
     resizeCanvas(w,h) {
         console.log("canvas size",w,h);
-        this.cv.attr("height", h).attr("width",w);
+        this.iframe.attr("height", h).attr("width",w);
     }
 };
 });

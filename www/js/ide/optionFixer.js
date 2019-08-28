@@ -1,7 +1,32 @@
 define(["Tonyu"],function (Tonyu) {
     const NSP_USR="user",NSP_KER="kernel";
+    const defaultOptions={
+        compiler: {
+            namespace:NSP_USR,
+            defaultSuperClass: `${NSP_KER}.Actor`,
+            outputFile: "js/concat.js",
+            dependingProjects: [{namespace:NSP_KER}],
+        },
+        run: {
+            mainClass: `${NSP_USR}.Main`,
+            bootClass: `${NSP_KER}.Boot`,
+            globals:{
+                $defaultFPS:60,
+                $imageSmoothingDisabled:true,
+                $soundLoadAndDecode:false
+            }
+        },
+        kernelEditable: false,
+        language:"tonyu",
+        version: Tonyu.VERSION
+    };
+    Tonyu.defaultOptions=defaultOptions;
     return {
         fixFile: function (f) {
+            if (!f.exists()) {
+                f.obj(defaultOptions);
+                return;
+            }
             const t=f.text();
             const o=JSON.parse(t);
             const fo=this.fixObject(o);
@@ -27,6 +52,7 @@ define(["Tonyu"],function (Tonyu) {
             opt.compiler.dependingProjects=opt.compiler.dependingProjects||[{namespace:"kernel"}];
             opt.compiler.namespace=opt.compiler.namespace||"user";
             opt.compiler.outputFile=opt.compiler.outputFile||"js/concat.js";
+            opt.run=opt.run||{};
             opt.language="tonyu";
         },
         fixBootRunClasses: function (opt) {

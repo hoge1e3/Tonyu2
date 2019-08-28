@@ -39,8 +39,11 @@ return {
             this.rawBoot(bootClassName);
         });
     },
+    getResourceFile: function () {
+        return this.getDir().rel("res.json");
+    },
     getResource: function () {
-        var resFile=this.getDir().rel("res.json");
+        var resFile=this.getResourceFile();
         if (resFile.exists()) {
             var res=resFile.obj();
             var chg=false;
@@ -63,7 +66,7 @@ return {
         return res && res.sounds && res.sounds.length>0;
     },
     setResource: function (rsrc) {
-        var resFile=this.getDir().rel("res.json");
+        var resFile=this.getResourceFile();
         resFile.obj(rsrc);
     },
     getThumbnail: function () {

@@ -34,6 +34,7 @@ class Compiler {
         await this.init();
         const compres=await this.w.run("compiler/postChange",{files});
         console.log(compres);
+        if (this.onCompiled) this.onCompiled(compres);
         return compres;
     }
     async run() {
@@ -43,7 +44,7 @@ class Compiler {
             console.log(e,f.path());
             if (f.ext()===".tonyu") {
                 const nsraw=await this.partialCompile(f);
-                if (this.onCompiled) this.onCompiled(nsraw);
+                //if (this.onCompiled) this.onCompiled(nsraw);
 
                 //if (root.Tonyu.globals.$restart) root.Tonyu.globals.$restart();
             }

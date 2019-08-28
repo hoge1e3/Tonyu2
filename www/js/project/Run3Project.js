@@ -23,9 +23,10 @@ define(function (require,exports,module) {
                 const c=SourceFiles.add(this.getOutputFile().text());
                 await c.exec();
             },
-            async exec(src) {
-                console.log("Recving src",src);
+            async exec(srcraw) {
+                console.log("Recving src",srcraw);
                 await this.loadDependingClasses();
+                const src=SourceFiles.add(srcraw);
                 await src.exec();
             }
         }).include(langMod).include(sysMod);

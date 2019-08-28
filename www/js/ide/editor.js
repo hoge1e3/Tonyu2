@@ -60,10 +60,13 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     }*/
     var dir=Util.getQueryString("dir", "/Tonyu/Projects/SandBox/");
     var curPrjDir=FS.get(dir);
-    optionFixer.fixFile(curPrjDir.rel("options.json"));
+    const optionFile=curPrjDir.rel("options.json");
+    optionFixer.fixFile(optionFile);
     //var curProjectDir=curPrjDir;
     //console.log("F",F,root);
     var curPrj=IDEProject.create({dir:curPrjDir});//, kernelDir);
+    const NSP_USR=curPrj.getNamespace();
+
     root.curPrj=curPrj;
     var resEditors=new ResEditors(curPrj);
     Tonyu.globals.$currentProject=curPrj;
@@ -88,17 +91,12 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
        ],
        sounds:[]
     };
+    const resf=curPrj.getResourceFile();
+    if (!resf.exists()) resf.obj(Tonyu.defaultResource);
     if (location.href.match(/^file/)) {
        Tonyu.defaultResource.images.splice(1,1);
     }
-    Tonyu.defaultOptions={
-        compiler: { defaultSuperClass: "Actor"},
-        run: {mainClass: "Main", bootClass: "Boot", globals:{
-            $defaultFPS:60,$imageSmoothingDisabled:true,$soundLoadAndDecode:false
-        }},
-        kernelEditable: false,
-        version: Tonyu.VERSION
-    };
+
     setDiagMode(false);
     //ImageList(Tonyu.defaultResource.images, Sprites.setImageList);
 
@@ -233,7 +231,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
                     $("<li>").append(
                             $("<a>").attr("href","#").text(n+"を実行"+(i==0?"(F9)":"")).click(F(function () {
                                 if (typeof n!="string") {console.log(n); alert("not a string2: "+n);}
-                                run(n);
+                                run(`${NSP_USR}.${n}`);
                                 if (ii>0) {
                                     runMenuOrd.splice(ii, 1);
                                     runMenuOrd.unshift(n);
@@ -397,15 +395,14 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             setCmdStat();
         });
     }
-    function run2(name) {
-        if (typeof name!="string") {
+    function run2(fullName) {
+        if (typeof fullName!="string") {
             if (runMenuOrd.length==0) {
                 alert("ファイルを作成してください");
                 return;
             }
-            name=runMenuOrd[0];// curFile.name().replace(/\.tonyu$/,"");
+            fullName=`${NSP_USR}.${runMenuOrd[0]}`;// curFile.name().replace(/\.tonyu$/,"");
         }
-        if (typeof name!="string") {console.log(name); alert("not a string3: "+name);}
         save();
         curPrj.initCanvas=function () {
             displayMode("run");
@@ -414,8 +411,8 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         Log.dumpProject(curPrjDir);
         if (root.SplashScreen) root.SplashScreen.show();
         var o=curPrj.getOptions();
-        if (o.run.mainClass!=name) {
-            o.run.mainClass=name;
+        if (o.run.mainClass!=fullName) {
+            o.run.mainClass=fullName;
             curPrj.setOptions(o);
         }
         curPrjDir.touch();
@@ -500,7 +497,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     };
     $("#mapEditor").click(F(function () {
         console.log("run map");
-        run("MapEditor");
+        run("kernel.MapEditor");
     }));
     $("#search").click(F(function () {
         console.log("src diag");
@@ -555,6 +552,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             var nw=prog.getValue();
             if (old!=nw) {
                 curFile.text(nw);
+                curPrj.partialCompile(curFile).catch(Tonyu.onRunTimeError);
                 inf.lastTimeStamp=curFile.lastUpdate();
             }
         }
