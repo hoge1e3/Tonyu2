@@ -1,446 +1,107 @@
-(function (){
-/**
- * @license almond 0.3.3 Copyright jQuery Foundation and other contributors.
- * Released under MIT license, http://github.com/requirejs/almond/LICENSE
- */
-//Going sloppy to avoid 'use strict' string cost, but strict practices should
-//be followed.
-/*global setTimeout: false */
-
-var requirejs, require, define;
-(function (undef) {
-    var main, req, makeMap, handlers,
-        defined = {},
-        waiting = {},
-        config = {},
-        defining = {},
-        hasOwn = Object.prototype.hasOwnProperty,
-        aps = [].slice,
-        jsSuffixRegExp = /\.js$/;
-
-    function hasProp(obj, prop) {
-        return hasOwn.call(obj, prop);
-    }
-
-    /**
-     * Given a relative module name, like ./something, normalize it to
-     * a real name that can be mapped to a path.
-     * @param {String} name the relative name
-     * @param {String} baseName a real name that the name arg is relative
-     * to.
-     * @returns {String} normalized name
-     */
-    function normalize(name, baseName) {
-        var nameParts, nameSegment, mapValue, foundMap, lastIndex,
-            foundI, foundStarMap, starI, i, j, part, normalizedBaseParts,
-            baseParts = baseName && baseName.split("/"),
-            map = config.map,
-            starMap = (map && map['*']) || {};
-
-        //Adjust any relative paths.
-        if (name) {
-            name = name.split('/');
-            lastIndex = name.length - 1;
-
-            // If wanting node ID compatibility, strip .js from end
-            // of IDs. Have to do this here, and not in nameToUrl
-            // because node allows either .js or non .js to map
-            // to same file.
-            if (config.nodeIdCompat && jsSuffixRegExp.test(name[lastIndex])) {
-                name[lastIndex] = name[lastIndex].replace(jsSuffixRegExp, '');
-            }
-
-            // Starts with a '.' so need the baseName
-            if (name[0].charAt(0) === '.' && baseParts) {
-                //Convert baseName to array, and lop off the last part,
-                //so that . matches that 'directory' and not name of the baseName's
-                //module. For instance, baseName of 'one/two/three', maps to
-                //'one/two/three.js', but we want the directory, 'one/two' for
-                //this normalization.
-                normalizedBaseParts = baseParts.slice(0, baseParts.length - 1);
-                name = normalizedBaseParts.concat(name);
-            }
-
-            //start trimDots
-            for (i = 0; i < name.length; i++) {
-                part = name[i];
-                if (part === '.') {
-                    name.splice(i, 1);
-                    i -= 1;
-                } else if (part === '..') {
-                    // If at the start, or previous value is still ..,
-                    // keep them so that when converted to a path it may
-                    // still work when converted to a path, even though
-                    // as an ID it is less than ideal. In larger point
-                    // releases, may be better to just kick out an error.
-                    if (i === 0 || (i === 1 && name[2] === '..') || name[i - 1] === '..') {
-                        continue;
-                    } else if (i > 0) {
-                        name.splice(i - 1, 2);
-                        i -= 2;
-                    }
-                }
-            }
-            //end trimDots
-
-            name = name.join('/');
-        }
-
-        //Apply map config if available.
-        if ((baseParts || starMap) && map) {
-            nameParts = name.split('/');
-
-            for (i = nameParts.length; i > 0; i -= 1) {
-                nameSegment = nameParts.slice(0, i).join("/");
-
-                if (baseParts) {
-                    //Find the longest baseName segment match in the config.
-                    //So, do joins on the biggest to smallest lengths of baseParts.
-                    for (j = baseParts.length; j > 0; j -= 1) {
-                        mapValue = map[baseParts.slice(0, j).join('/')];
-
-                        //baseName segment has  config, find if it has one for
-                        //this name.
-                        if (mapValue) {
-                            mapValue = mapValue[nameSegment];
-                            if (mapValue) {
-                                //Match, update name to the new value.
-                                foundMap = mapValue;
-                                foundI = i;
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                if (foundMap) {
-                    break;
-                }
-
-                //Check for a star map match, but just hold on to it,
-                //if there is a shorter segment match later in a matching
-                //config, then favor over this star map.
-                if (!foundStarMap && starMap && starMap[nameSegment]) {
-                    foundStarMap = starMap[nameSegment];
-                    starI = i;
-                }
-            }
-
-            if (!foundMap && foundStarMap) {
-                foundMap = foundStarMap;
-                foundI = starI;
-            }
-
-            if (foundMap) {
-                nameParts.splice(0, foundI, foundMap);
-                name = nameParts.join('/');
-            }
-        }
-
-        return name;
-    }
-
-    function makeRequire(relName, forceSync) {
-        return function () {
-            //A version of a require function that passes a moduleName
-            //value for items that may need to
-            //look up paths relative to the moduleName
-            var args = aps.call(arguments, 0);
-
-            //If first arg is not require('string'), and there is only
-            //one arg, it is the array form without a callback. Insert
-            //a null so that the following concat is correct.
-            if (typeof args[0] !== 'string' && args.length === 1) {
-                args.push(null);
-            }
-            return req.apply(undef, args.concat([relName, forceSync]));
-        };
-    }
-
-    function makeNormalize(relName) {
-        return function (name) {
-            return normalize(name, relName);
-        };
-    }
-
-    function makeLoad(depName) {
-        return function (value) {
-            defined[depName] = value;
-        };
-    }
-
-    function callDep(name) {
-        if (hasProp(waiting, name)) {
-            var args = waiting[name];
-            delete waiting[name];
-            defining[name] = true;
-            main.apply(undef, args);
-        }
-
-        if (!hasProp(defined, name) && !hasProp(defining, name)) {
-            throw new Error('No ' + name);
-        }
-        return defined[name];
-    }
-
-    //Turns a plugin!resource to [plugin, resource]
-    //with the plugin being undefined if the name
-    //did not have a plugin prefix.
-    function splitPrefix(name) {
-        var prefix,
-            index = name ? name.indexOf('!') : -1;
-        if (index > -1) {
-            prefix = name.substring(0, index);
-            name = name.substring(index + 1, name.length);
-        }
-        return [prefix, name];
-    }
-
-    //Creates a parts array for a relName where first part is plugin ID,
-    //second part is resource ID. Assumes relName has already been normalized.
-    function makeRelParts(relName) {
-        return relName ? splitPrefix(relName) : [];
-    }
-
-    /**
-     * Makes a name map, normalizing the name, and using a plugin
-     * for normalization if necessary. Grabs a ref to plugin
-     * too, as an optimization.
-     */
-    makeMap = function (name, relParts) {
-        var plugin,
-            parts = splitPrefix(name),
-            prefix = parts[0],
-            relResourceName = relParts[1];
-
-        name = parts[1];
-
-        if (prefix) {
-            prefix = normalize(prefix, relResourceName);
-            plugin = callDep(prefix);
-        }
-
-        //Normalize according
-        if (prefix) {
-            if (plugin && plugin.normalize) {
-                name = plugin.normalize(name, makeNormalize(relResourceName));
-            } else {
-                name = normalize(name, relResourceName);
-            }
-        } else {
-            name = normalize(name, relResourceName);
-            parts = splitPrefix(name);
-            prefix = parts[0];
-            name = parts[1];
-            if (prefix) {
-                plugin = callDep(prefix);
-            }
-        }
-
-        //Using ridiculous property names for space reasons
-        return {
-            f: prefix ? prefix + '!' + name : name, //fullName
-            n: name,
-            pr: prefix,
-            p: plugin
-        };
-    };
-
-    function makeConfig(name) {
-        return function () {
-            return (config && config.config && config.config[name]) || {};
-        };
-    }
-
-    handlers = {
-        require: function (name) {
-            return makeRequire(name);
-        },
-        exports: function (name) {
-            var e = defined[name];
-            if (typeof e !== 'undefined') {
-                return e;
-            } else {
-                return (defined[name] = {});
-            }
-        },
-        module: function (name) {
-            return {
-                id: name,
-                uri: '',
-                exports: defined[name],
-                config: makeConfig(name)
-            };
-        }
-    };
-
-    main = function (name, deps, callback, relName) {
-        var cjsModule, depName, ret, map, i, relParts,
-            args = [],
-            callbackType = typeof callback,
-            usingExports;
-
-        //Use name if no relName
-        relName = relName || name;
-        relParts = makeRelParts(relName);
-
-        //Call the callback to define the module, if necessary.
-        if (callbackType === 'undefined' || callbackType === 'function') {
-            //Pull out the defined dependencies and pass the ordered
-            //values to the callback.
-            //Default to [require, exports, module] if no deps
-            deps = !deps.length && callback.length ? ['require', 'exports', 'module'] : deps;
-            for (i = 0; i < deps.length; i += 1) {
-                map = makeMap(deps[i], relParts);
-                depName = map.f;
-
-                //Fast path CommonJS standard dependencies.
-                if (depName === "require") {
-                    args[i] = handlers.require(name);
-                } else if (depName === "exports") {
-                    //CommonJS module spec 1.1
-                    args[i] = handlers.exports(name);
-                    usingExports = true;
-                } else if (depName === "module") {
-                    //CommonJS module spec 1.1
-                    cjsModule = args[i] = handlers.module(name);
-                } else if (hasProp(defined, depName) ||
-                           hasProp(waiting, depName) ||
-                           hasProp(defining, depName)) {
-                    args[i] = callDep(depName);
-                } else if (map.p) {
-                    map.p.load(map.n, makeRequire(relName, true), makeLoad(depName), {});
-                    args[i] = defined[depName];
-                } else {
-                    throw new Error(name + ' missing ' + depName);
-                }
-            }
-
-            ret = callback ? callback.apply(defined[name], args) : undefined;
-
-            if (name) {
-                //If setting exports via "module" is in play,
-                //favor that over return value and exports. After that,
-                //favor a non-undefined return value over exports use.
-                if (cjsModule && cjsModule.exports !== undef &&
-                        cjsModule.exports !== defined[name]) {
-                    defined[name] = cjsModule.exports;
-                } else if (ret !== undef || !usingExports) {
-                    //Use the return value from the function.
-                    defined[name] = ret;
-                }
-            }
-        } else if (name) {
-            //May just be an object definition for the module. Only
-            //worry about defining if have a module name.
-            defined[name] = callback;
-        }
-    };
-
-    requirejs = require = req = function (deps, callback, relName, forceSync, alt) {
-        if (typeof deps === "string") {
-            if (handlers[deps]) {
-                //callback in this case is really relName
-                return handlers[deps](callback);
-            }
-            //Just return the module wanted. In this scenario, the
-            //deps arg is the module name, and second arg (if passed)
-            //is just the relName.
-            //Normalize module name, if it contains . or ..
-            return callDep(makeMap(deps, makeRelParts(callback)).f);
-        } else if (!deps.splice) {
-            //deps is a config object, not an array.
-            config = deps;
-            if (config.deps) {
-                req(config.deps, config.callback);
-            }
-            if (!callback) {
-                return;
-            }
-
-            if (callback.splice) {
-                //callback is an array, which means it is a dependency list.
-                //Adjust args if there are dependencies
-                deps = callback;
-                callback = relName;
-                relName = null;
-            } else {
-                deps = undef;
-            }
-        }
-
-        //Support require(['a'])
-        callback = callback || function () {};
-
-        //If relName is a function, it is an errback handler,
-        //so remove it.
-        if (typeof relName === 'function') {
-            relName = forceSync;
-            forceSync = alt;
-        }
-
-        //Simulate async callback;
-        if (forceSync) {
-            main(undef, deps, callback, relName);
-        } else {
-            //Using a non-zero value because of concern for what old browsers
-            //do, and latest browsers "upgrade" to 4 if lower value is used:
-            //http://www.whatwg.org/specs/web-apps/current-work/multipage/timers.html#dom-windowtimers-settimeout:
-            //If want a value immediately, use require('id') instead -- something
-            //that works in almond on the global level, but not guaranteed and
-            //unlikely to work in other AMD implementations.
-            setTimeout(function () {
-                main(undef, deps, callback, relName);
-            }, 4);
-        }
-
-        return req;
-    };
-
-    /**
-     * Just drops the config on the floor, but returns req in case
-     * the config return value is used.
-     */
-    req.config = function (cfg) {
-        return req(cfg);
-    };
-
-    /**
-     * Expose module registry for debugging and tooling
-     */
-    requirejs._defined = defined;
-
-    define = function (name, deps, callback) {
-        if (typeof name !== 'string') {
-            throw new Error('See almond README: incorrect module build, no module name');
-        }
-
-        //This module may not have dependencies
-        if (!deps.splice) {
-            //deps is not an array, so probably means
-            //an object literal or factory function for
-            //the value. Adjust args.
-            callback = deps;
-            deps = [];
-        }
-
-        if (!hasProp(defined, name) && !hasProp(waiting, name)) {
-            waiting[name] = [name, deps, callback];
-        }
-    };
-
-    define.amd = {
-        jQuery: true
-    };
-}());
-define("js/almond", function(){});
-
+(function (f) {
+	if (typeof define==="function" && define.amd &&
+		typeof requirejs==="function") {
+		f({requirejs:requirejs,define:define});
+	} else f({});
+})(function (real) {
+	var R={};
+	R.def=function (reqs,func,type) {
+		var m=R.getModuleInfo(R.curName);
+		m.type=type;
+		R.setReqs( m, reqs);
+		m.func=function () {
+			//console.log("reqjs ",m.name);
+			return func.apply(this, R.getObjs(reqs));
+		};
+		R.loadIfAvailable(m);
+	};
+	var define=function () {
+		var a=Array.prototype.slice.call(arguments);
+		if (typeof a[0]==="string") R.curName=a.shift();
+		var reqs=a.shift();
+		var func=a.shift();
+		R.def(reqs,func,"define");
+	};
+	define.amd={jQuery:true};
+	var /*require=*/requirejs=function (reqs,func) {
+		R.def(reqs,func,"require");
+	};
+	requirejs.isRequireSimulator=true;
+	R.setReqs=function (m, reqs) {
+		reqs.forEach(function (req) {
+			var reqm=R.getModuleInfo(req);
+			if (!reqm.loaded) {
+				m.reqs[req]=reqm;
+				reqm.revReqs[m.name]=m;
+			}
+		});
+	};
+	R.getModuleInfo=function (name) {
+		var ms=R.modules;
+		if (!ms[name]) ms[name]={name:name,reqs:{},revReqs:{}};
+		return ms[name];
+	};
+	R.doLoad=function (name) {
+		var m=R.getModuleInfo(name);
+		//console.log("doLoad ",name, m.loaded, m.func);
+		if (m.loaded) return m.obj;
+		m.loaded=true;
+		var res=null;
+		if (m.func) res=m.func();
+		else {
+			var names=name.split(/\./);
+			res=(function () {return this;})();
+			names.forEach(function (name) {
+				if (res) res=res[name];
+			});
+			if ( res==null) console.log("Warning: No obj for "+name);
+		}
+		if ( m.type=="define" && res==null) throw("No obj for "+name);
+		m.obj=res;
+		for (var i in m.revReqs) {
+			R.notifyLoaded(m.revReqs[i], m.name);
+		}
+		return res;
+	};
+	R.notifyLoaded=function (revReq, loadedModuleName) {
+		delete revReq.reqs[loadedModuleName];
+		R.loadIfAvailable(revReq);
+	};
+	R.loadIfAvailable=function (m) {
+		for (var i in m.reqs) {
+			return;
+		}
+		R.doLoad(m.name);
+	};
+	R.getObjs=function (ary) {
+		var res=[];
+		ary.forEach(function (n) {
+			var cur=R.doLoad(n);
+			res.push(cur);
+		});
+		return res;
+	};
+	R.modules={};
+	R.setName=function (n) {
+		if (R.curName) {
+			if (!R.getModuleInfo(R.curName).func) {
+				R.doLoad(R.curName);
+			}
+		}
+		if (n) {
+			R.curName=n;
+		}
+	};
+	R.real=real;
+	var requireSimulator=R;
+	// Created at Sat Aug 17 2019 13:55:53 GMT+0900 (日本標準時)
+requireSimulator.setName('FS');
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
 //(function (global) {
 //var useGlobal=(typeof global.define!="function");
 //var define=(useGlobal ? define=function(_,f){f();} : global.define);
-define('FS',[],function () {
+define([],function () {
     var define,requirejs;
 	var R={};
 	var REQJS="REQJS_";
@@ -4156,11 +3817,14 @@ define('FS',["FSClass","NativeFS","LSFS", "WebFS", "PathUtil","Env","assert","SF
 });
 //})(window);
 
-define('assert',["FS"],function (FS){return FS.assert;});
+requireSimulator.setName('assert');
+define(["FS"],function (FS){return FS.assert;});
 
-define('DeferredUtil',["FS"],function (FS){return FS.DeferredUtil;});
+requireSimulator.setName('DeferredUtil');
+define(["FS"],function (FS){return FS.DeferredUtil;});
 
-define('Klass',["assert"],function (A) {
+requireSimulator.setName('Klass');
+define(["assert"],function (A) {
     var Klass={};
     Klass.define=function (pd) {
         var p,parent;
@@ -4345,8 +4009,9 @@ requirejs(["Klass"],function (k) {
   console.log(p.x,p.y);
 });
 */
-;
-define('Tonyu.Thread',["DeferredUtil","Klass"],function (DU,Klass) {
+
+requireSimulator.setName('Tonyu.Thread');
+define(["DeferredUtil","Klass"],function (DU,Klass) {
 	var cnts={enterC:{},exitC:0};
 	var idSeq=1;
 	try {window.cnts=cnts;}catch(e){}
@@ -4608,7 +4273,8 @@ define('Tonyu.Thread',["DeferredUtil","Klass"],function (DU,Klass) {
 	return TonyuThread;
 });
 
-define('Tonyu.Iterator',["Klass"], function (Klass) {
+requireSimulator.setName('Tonyu.Iterator');
+define(["Klass"], function (Klass) {
 	var ArrayValueIterator=Klass.define({
 		$: function ArrayValueIterator(set) {
 			this.set=set;
@@ -4730,10 +4396,11 @@ define('Tonyu.Iterator',["Klass"], function (Klass) {
 	return IT;
 });
 
+requireSimulator.setName('Tonyu');
 if (typeof define!=="function") {
 	define=require("requirejs").define;
 }
-define('Tonyu',["assert","Tonyu.Thread","Tonyu.Iterator","DeferredUtil"],
+define(["assert","Tonyu.Thread","Tonyu.Iterator","DeferredUtil"],
 		function (assert,TT,IT,DU) {
 return Tonyu=function () {
 	// old browser support
@@ -5113,3759 +4780,12 @@ return Tonyu=function () {
 			bindFunc:bindFunc,not_a_tonyu_object:not_a_tonyu_object,is:is,
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			run:run,iterator:IT,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,DeferredUtil:DU,
-			VERSION:1567135785304,//EMBED_VERSION
+			VERSION:1566017719851,//EMBED_VERSION
 			A:A};
 }();
 });
 
-define('ProjectFactory',['require','exports','module','assert','FS'],function (require,exports,module) {
-    const A=require("assert");
-    const FS=require("FS");
-    // This factory will be widely used, even BitArrow.
-
-
-    let Compiler, SourceFiles,sysMod,run2Mod;
-    const  resolvers=[],types={};
-    exports.addDependencyResolver=(f)=>{
-        //f: (prj, spec) => prj
-        resolvers.push(f);
-    };
-    exports.addType=(n,f)=>{
-        types[n]=f;
-    };
-    exports.fromDependencySpec=function (prj,spec) {
-        if (typeof spec=="string") {
-            var prjDir=prj.resolve(spec);
-            return this.fromDir(prjDir);
-        }
-        for (let f of resolvers) {
-            const res=f(prj,spec);
-            if (res) return res;
-        }
-        console.error("Invalid dep spec", spec);
-        throw new Error("Invalid dep spec", spec);
-        /* else if (typeof dprj=="object") {
-            return this.create("compiled", {
-                namespace:dprj.namespace,
-                url: FS.expandPath(dprj.compiledURL)
-            });
-        }*/
-    };
-    exports.create=function (type,params) {
-        if (!types[type]) throw new Error(`Invalid type ${type}`);
-        return types[type](params);
-        /*for (let f of types) {
-            res=f()
-        }
-        const res=new ProjectCore();
-        switch(type){
-            case "IDE":
-            if (!Compiler || !sysMod) fail();
-            const c=new Compiler(params.dir);
-            Object.assign(res,c);
-            Object.assign(res,sysMod);
-            return res;
-            case "run3":
-            break;
-            case "compiled":
-            break;
-            case "run2":
-            case "CPTR":
-            break;
-            case "plugin":
-            break;
-        }
-        function fail() {
-            throw new Error(`Cannot create ${type}`);
-        }*/
-    };
-    class ProjectCore {
-        getPublishedURL(){}//TODO
-        getOptions(opt) {
-            return this.getOptionsFile().obj();
-        }
-        getName() {
-            return this.dir.name().replace(/\/$/,"");
-        }
-        getDependingProjects() {
-            var opt=this.getOptions();
-            var dp=opt.compiler.dependingProjects || [];
-            return dp.map(dprj=>
-                ProjectCore.factory.fromDependencySpec(this,dprj)
-            );
-        }
-        include(mod) {
-            for (let k of Object.getOwnPropertyNames(mod)) {
-                if (typeof mod[k]==="function") this[k]=mod[k];
-            }
-            return this;
-        }
-        delegate(obj) {
-            if (obj.constructor.prototype) {
-                const add=k=>{
-                    if (typeof obj[k]==="function") this[k]=(...args)=>obj[k](...args);
-                };
-                for (let k of Object.getOwnPropertyNames(obj.constructor.prototype)) add(k);
-            }
-            return this;
-        }
-    }
-    ProjectCore.factory=exports;
-    exports.createCore=()=>new ProjectCore();
-    const dirBasedMod={
-        getDir() {return this.dir;},
-        resolve(rdir){// not in compiledProject
-            if (rdir instanceof Array) {
-                var res=[];
-                rdir.forEach(function (e) {
-                    res.push(this.resolve(e));
-                });
-                return res;
-            }
-            if (typeof rdir=="string") {
-                return FS.resolve(rdir, this.dir.path());
-            }
-            if (!rdir || !rdir.isDir) throw new Error("Cannot TPR.resolve: "+rdir);
-            return rdir;
-        },
-        getOptionsFile() {// not in compiledProject
-            var resFile=this.dir.rel("options.json");
-            return resFile;
-        },
-        setOptions(opt) {// not in compiledProject
-            return this.getOptionsFile().obj(opt);
-        },
-        getOutputFile(lang) {// not in compiledProject
-            var opt=this.getOptions();
-            var outF=this.resolve(A(opt.compiler.outputFile,"outputFile should be specified in options"));
-            if (outF.isDir()) {
-                throw new Error("out: directory style not supported");
-            }
-            return outF;
-        },
-        removeOutputFile() {// not in compiledProject
-            this.getOutputFile().rm();
-        },
-        path(){return this.dir.path();},// not in compiledProject
-        getEXT() {throw new Error("getEXT must be overriden.");},//stub
-        sourceFiles() {
-            const res={};
-            const ext=this.getEXT();
-    		this.dir.recursive(collect);
-    		function collect(f) {
-    			if (f.endsWith(ext)) {
-    				var nb=f.truncExt(ext);
-    				res[nb]=f;
-    			}
-    		}
-    		return res;
-        },
-        sourceDir() {return this.getDir();}
-    };
-    exports.createDirBasedCore=function (params) {
-        const res=this.createCore();
-        res.dir=params.dir;
-        return res.include(dirBasedMod);
-    };
-});
-
-/*global window,self,global*/
-define('root',[],function (){
-    if (typeof window!=="undefined") return window;
-    if (typeof self!=="undefined") return self;
-    if (typeof global!=="undefined") return global;
-    return (function (){return this;})();
-});
-
-define('Platform',[],function () {
-    var WebSite={};
-    // from https://w3g.jp/blog/js_browser_sniffing2015
-    var u=window.navigator.userAgent.toLowerCase();
-    WebSite.tablet=(u.indexOf("windows") != -1 && u.indexOf("touch") != -1)
-    || u.indexOf("ipad") != -1
-    || (u.indexOf("android") != -1 && u.indexOf("mobile") == -1)
-    || (u.indexOf("firefox") != -1 && u.indexOf("tablet") != -1)
-    || u.indexOf("kindle") != -1
-    || u.indexOf("silk") != -1
-    || u.indexOf("playbook") != -1;
-    WebSite.mobile=(u.indexOf("windows") != -1 && u.indexOf("phone") != -1)
-    || u.indexOf("iphone") != -1
-    || u.indexOf("ipod") != -1
-    || (u.indexOf("android") != -1 && u.indexOf("mobile") != -1)
-    || (u.indexOf("firefox") != -1 && u.indexOf("mobile") != -1)
-    || u.indexOf("blackberry") != -1;
-    return WebSite;
-});
-
-define('WebSite',["FS","Platform"], function (FS,Platform) {
-	var P=FS.PathUtil;
-	var loc=document.location.href;
-	var devMode=!!loc.match(/html\/dev\//) && !!loc.match(/localhost:3/);
-	var WebSite;
-	var prot=location.protocol;
-	if (!prot.match(/^http/)) prot="https:";
-	switch(window.WebSite_runType) {
-	case "IDE":
-		WebSite={
-			urlAliases: {}, top: ".",
-			tablet:Platform.tablet,
-			mobile:Platform.mobile
-		};
-		WebSite.builtinAssetNames={
-			"images/Ball.png":1,
-			"images/base.png":1,
-			"images/Sample.png":1,
-			"images/inputPad.png":1,
-			"images/neko.png":1,
-			"images/mapchip.png":1
-		};
-		if (!WebSite.pluginTop) {
-			WebSite.pluginTop=WebSite.top+"/js/plugins";
-		}
-		WebSite.sampleImg=WebSite.top+"/images";
-		WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
-		WebSite.mp4Disabled=WebSite.isNW;
-		WebSite.tonyuHome="/Tonyu/";
-		WebSite.PathSep="/";
-		if (WebSite.isNW) {
-			WebSite.noconcat=true;
-			WebSite.PathSep=require("path").sep;
-			WebSite.cwd=P.directorify(process.cwd().replace(/\\/g,"/"));
-			//WebSite.exeDir=WebSite.execDir=P.up(P.fixSep(process.execPath)); not suitable when mac
-			if (process.env.TONYU_HOME) {
-				WebSite.tonyuHome=P.directorify(process.env.TONYU_HOME);
-			} else {
-				WebSite.tonyuHome=P.rel(WebSite.cwd,"fs/Tonyu/");
-			}
-			WebSite.logdir=process.env.TONYU_LOGDIR;//"C:/var/log/Tonyu/";
-			WebSite.wwwDir=P.rel(WebSite.cwd,"www/");
-			WebSite.platform=process.platform;
-			WebSite.ffmpeg=P.rel(WebSite.cwd,(WebSite.platform=="win32"?
-					"ffmpeg/bin/ffmpeg.exe":"ffmpeg/bin/ffmpeg"));
-			WebSite.pkgInfo=require(P.rel(WebSite.cwd, "package.json"));
-			if (process.env.TONYU_PROJECTS) {
-				WebSite.projects=process.env.TONYU_PROJECTS.replace(/\\/g,"/").split(require('path').delimiter);
-			} else if ( WebSite.pkgInfo && WebSite.pkgInfo.config && WebSite.pkgInfo.config.prjDirs ){
-				WebSite.projects=WebSite.pkgInfo.config.prjDirs.map(function (d) {
-					d=P.directorify(d);
-					if (P.isAbsolute(d)) return d;
-					return P.rel(WebSite.cwd,d);
-				});
-			} else {
-				WebSite.projects=[P.rel(WebSite.cwd,"Projects/"),
-					P.rel(WebSite.tonyuHome,"Projects/")];
-			}
-			WebSite.kernelDir=P.rel(WebSite.wwwDir,"Kernel/");
-		} else {
-			if (loc.match(/edit\.tonyu\.jp\/n\//)) {
-				WebSite.wwwDir=prot+"//"+location.host+"/n/";
-			} else {
-				// Why?
-				WebSite.wwwDir=prot+"//"+location.host+"/";
-			}
-			WebSite.projects=[P.rel(WebSite.tonyuHome,"Projects/")];
-		}
-		//WebSite.kernelDir=WebSite.top+"/Kernel/";
-		// kernelDir must be absolute
-		WebSite.kernelDir=P.rel(WebSite.wwwDir,"Kernel/");
-		// compiledKernel is URL , not file path.
-		// It is correct as long as the html pages in www/ (not html/build|dev )
-		WebSite.compiledKernel="Kernel/js/concat.js";   //P.rel(WebSite.kernelDir,"js/concat.js");
-		if (loc.match(/localhost\/tonyu2/)) {
-			WebSite.wwwDir=prot+"//"+location.host+"/tonyu2/";
-			WebSite.kernelDir=WebSite.wwwDir+"Kernel/";
-			WebSite.compiledKernel=WebSite.kernelDir+"js/concat.js";
-			WebSite.uploadTmpUrl=prot+"//localhost/tsite/tonyu/e/cgi-bin/uploadTmp.cgi";
-			WebSite.newVersionUrl=prot+"//localhost/tsite/tonyu/project/newVersion.cgi";
-		} else {
-			WebSite.uploadTmpUrl=prot+"//edit.tonyu.jp/cgi-bin/uploadTmp.cgi";
-			WebSite.newVersionUrl=prot+"//www.tonyu.jp/project/newVersion.cgi";
-		}
-		WebSite.version=2;
-		WebSite.hoge="fuga";
-		FS.setEnvProvider(new FS.Env(WebSite));
-		return window.WebSite=WebSite;
-	case "singleHTML":
-		WebSite={
-			urlAliases: {}, top: ".",
-			tablet:Platform.tablet,
-			mobile:Platform.mobile
-		};
-		if (typeof BuiltinAssets==="object") {
-			for (var k in BuiltinAssets) {
-				WebSite.urlAliases[k]=BuiltinAssets[k];
-			}
-		}
-
-		WebSite.tonyuHome="/Tonyu/";
-		WebSite.projects=[P.rel(WebSite.tonyuHome,"Projects/")];
-		if (loc.match(/localhost\/tonyu2/)) {
-			WebSite.scriptServer="http://localhost/tonyu2/";
-		} else {
-			WebSite.scriptServer="https://edit.tonyu.jp/";
-		}
-		WebSite.pluginTop=WebSite.scriptServer+"js/plugins";
-		WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
-		WebSite.PathSep="/";
-		WebSite.compiledKernel=WebSite.scriptServer+"Kernel/js/concat.js";
-		FS.setEnvProvider(new FS.Env(WebSite));
-		return window.WebSite=WebSite;
-	case "multiHTML":
-		WebSite={
-			urlAliases: {}, top: ".",
-			tablet:Platform.tablet,
-			mobile:Platform.mobile
-		};
-		WebSite.tonyuHome="/Tonyu/";
-		WebSite.pluginTop=WebSite.top+"/js/plugins";
-		WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
-		WebSite.PathSep="/";
-		WebSite.mp4Disabled=WebSite.isNW;
-		if (WebSite.isNW) {
-			WebSite.PathSep=require("path").sep;
-			WebSite.cwd=P.directorify(process.cwd().replace(/\\/g,"/"));
-			WebSite.platform=process.platform;
-		}
-		// this sets at runScript2.js
-		//WebSite.compiledKernel=WebSite.top+"/js/kernel.js";
-		//-------------
-		FS.setEnvProvider(new FS.Env(WebSite));
-		return window.WebSite=WebSite;
-	}
-
-	if (loc.match(/jsrun\.it/)) {
-		WebSite={
-			urlAliases: {
-				"images/Ball.png":"http:"+"//jsrun.it/assets/9/X/T/b/9XTbt.png",
-				"images/base.png":"http:"+"//jsrun.it/assets/6/F/y/3/6Fy3B.png",
-				"images/Sample.png":"http:"+"//jsrun.it/assets/s/V/S/l/sVSlZ.png",
-				"images/neko.png":"http:"+"//jsrun.it/assets/f/D/z/z/fDzze.png",
-				"images/mapchip.png":"http:"+"//jsrun.it/assets/f/u/N/v/fuNvz.png"
-			},top:"",devMode:devMode,
-			pluginTop: "https://edit.tonyu.jp/js/plugins",
-			removeJSOutput:true
-		};
-	} else if (
-		loc.match(/tonyuexe\.appspot\.com/) ||
-		loc.match(/localhost:8887/) ||
-		(
-		/*(
-			loc.match(/^chrome-extension:/) ||
-			loc.match(/localhost/) ||
-			loc.match(/tonyuedit\.appspot\.com/)
-		) &&*/
-		loc.match(/\/html\/((dev)|(build))\//)
-		)
-	) {
-		WebSite={
-			urlAliases: {
-				"images/Ball.png":"../../images/Ball.png",
-				"images/base.png":"../../images/base.png",
-				"images/Sample.png":"../../images/Sample.png",
-				"images/neko.png":"../../images/neko.png",
-				"images/mapchip.png":"../../images/mapchip.png",
-				"images/sound.png":"../../images/sound.png",
-				"images/sound_ogg.png":"../../images/sound_ogg.png",
-				"images/sound_mp3.png":"../../images/sound_mp3.png",
-				"images/sound_mp4.png":"../../images/sound_mp4.png",
-				"images/sound_m4a.png":"../../images/sound_m4a.png",
-				"images/sound_mid.png":"../../images/sound_mid.png",
-				"images/sound_wav.png":"../../images/sound_wav.png",
-					"images/ecl.png":"../../images/ecl.png"
-			},top:"../..",devMode:devMode
-		};
-	} else if (
-		loc.match(/bitarrow/) ||
-		loc.match(/localhost.*pub/))  {
-		WebSite={};
-		var WS=WebSite;
-		WebSite.serverType="BA";
-		WS.runtime="../../../runtime/";
-		WS.urlAliases= {
-				"images/base.png":WS.runtime+"images/base.png",
-				"images/Sample.png":WS.runtime+"images/Sample.png",
-				"images/neko.png":WS.runtime+"images/neko.png",
-				"images/mapchip.png":WS.runtime+"images/mapchip.png",
-				"images/sound.png":WS.runtime+"images/sound.png",
-				"images/sound_ogg.png":WS.runtime+"images/sound_ogg.png",
-				"images/sound_mp3.png":WS.runtime+"images/sound_mp3.png",
-				"images/sound_mp4.png":WS.runtime+"images/sound_mp4.png",
-				"images/sound_m4a.png":WS.runtime+"images/sound_m4a.png",
-				"images/sound_mid.png":WS.runtime+"images/sound_mid.png",
-				"images/sound_wav.png":WS.runtime+"images/sound_wav.png",
-				"images/ecl.png":WS.runtime+"images/ecl.png"
-		};
-	} else {
-		WebSite={
-			urlAliases: {}, top: ".",devMode:devMode
-		};
-	}
-	if (typeof BuiltinAssets==="object") {
-		for (var k in BuiltinAssets) {
-			WebSite.urlAliases[k]=BuiltinAssets[k];
-		}
-	}
-	WebSite.builtinAssetNames={
-		"images/Ball.png":1,
-		"images/base.png":1,
-		"images/Sample.png":1,
-		"images/neko.png":1,
-		"images/mapchip.png":1
-	};
-	// from https://w3g.jp/blog/js_browser_sniffing2015
-	var u=window.navigator.userAgent.toLowerCase();
-	WebSite.tablet=(u.indexOf("windows") != -1 && u.indexOf("touch") != -1)
-	|| u.indexOf("ipad") != -1
-	|| (u.indexOf("android") != -1 && u.indexOf("mobile") == -1)
-	|| (u.indexOf("firefox") != -1 && u.indexOf("tablet") != -1)
-	|| u.indexOf("kindle") != -1
-	|| u.indexOf("silk") != -1
-	|| u.indexOf("playbook") != -1;
-	WebSite.mobile=(u.indexOf("windows") != -1 && u.indexOf("phone") != -1)
-	|| u.indexOf("iphone") != -1
-	|| u.indexOf("ipod") != -1
-	|| (u.indexOf("android") != -1 && u.indexOf("mobile") != -1)
-	|| (u.indexOf("firefox") != -1 && u.indexOf("mobile") != -1)
-	|| u.indexOf("blackberry") != -1;
-
-	if (!WebSite.pluginTop) {
-		WebSite.pluginTop=WebSite.top+"/js/plugins";
-	}
-	WebSite.disableROM={};
-	/*if (loc.match(/tonyuedit\.appspot\.com/) || loc.match(/localhost:8888/) ) {
-		//WebSite.disableROM={"ROM_d.js":true};
-	}*/
-	if (loc.match(/\.appspot\.com/) ||  loc.match(/localhost:888[87]/)) {
-		WebSite.serverType="GAE";
-	}
-	if (loc.match(/localhost:3000/) ) {
-		WebSite.serverType="Node";
-	}
-	if (loc.match(/tonyuexe\.appspot\.com/) ||
-		loc.match(/localhost:8887/)) {
-		WebSite.serverTop=WebSite.top+"/exe"; // Fix NetModule.tonyu!!
-	} else {
-		WebSite.serverTop=WebSite.top+"/edit";// Fix NetModule.tonyu!!
-	}
-	WebSite.sampleImg=WebSite.top+"/images";
-	WebSite.blobPath=WebSite.serverTop+"/serveBlob";        //TODO: urlchange!
-	WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
-	WebSite.mp4Disabled=WebSite.isNW;
-	WebSite.tonyuHome="/Tonyu/";
-	WebSite.url={
-		getDirInfo:WebSite.serverTop+"/getDirInfo",
-		getFiles:WebSite.serverTop+"/File2LSSync",
-		putFiles:WebSite.serverTop+"/LS2FileSync"
-	};
-	WebSite.PathSep="/";
-	if (WebSite.isNW) {
-		WebSite.PathSep=require("path").sep;
-		WebSite.cwd=P.directorify(process.cwd().replace(/\\/g,"/"));
-		//WebSite.exeDir=WebSite.execDir=P.up(P.fixSep(process.execPath)); not suitable when mac
-		if (process.env.TONYU_HOME) {
-			WebSite.tonyuHome=P.directorify(process.env.TONYU_HOME);
-		} else {
-			WebSite.tonyuHome=P.rel(WebSite.cwd,"fs/Tonyu/");
-		}
-		WebSite.logdir=process.env.TONYU_LOGDIR;//"C:/var/log/Tonyu/";
-		WebSite.wwwDir=P.rel(WebSite.cwd,"www/");
-		WebSite.platform=process.platform;
-		WebSite.ffmpeg=P.rel(WebSite.cwd,(WebSite.platform=="win32"?
-				"ffmpeg/bin/ffmpeg.exe":"ffmpeg/bin/ffmpeg"));
-		WebSite.pkgInfo=require(P.rel(WebSite.cwd, "package.json"));
-		if (process.env.TONYU_PROJECTS) {
-			WebSite.projects=process.env.TONYU_PROJECTS.replace(/\\/g,"/").split(require('path').delimiter);
-		} else if ( WebSite.pkgInfo && WebSite.pkgInfo.config && WebSite.pkgInfo.config.prjDirs ){
-			WebSite.projects=WebSite.pkgInfo.config.prjDirs.map(function (d) {
-				d=P.directorify(d);
-				if (P.isAbsolute(d)) return d;
-				return P.rel(WebSite.cwd,d);
-			});
-		} else {
-			WebSite.projects=[P.rel(WebSite.cwd,"Projects/"),
-								P.rel(WebSite.tonyuHome,"Projects/")];
-		}
-		WebSite.kernelDir=P.rel(WebSite.wwwDir,"Kernel/");
-	} else {
-		WebSite.wwwDir=prot+"//"+location.host+"/";
-		WebSite.projects=[P.rel(WebSite.tonyuHome,"Projects/")];
-	}
-	if (loc.match(/edit\.tonyu\.jp/) ||
-		loc.match(/tonyuedit\.appspot\.com/) ||
-		loc.match(/localhost:888/)) {
-		//WebSite.kernelDir=WebSite.top+"/Kernel/";
-		// kernelDir must be absolute
-		WebSite.kernelDir=prot+"//"+location.host+"/Kernel/";
-	}
-	if (loc.match(/edit\.tonyu\.jp/) ||
-		loc.match(/tonyuedit\.appspot\.com/) ||
-		loc.match(/localhost:888/) ||
-		WebSite.isNW) {
-		WebSite.compiledKernel=WebSite.kernelDir+"js/concat.js";
-	} else if (WebSite.serverType==="BA") {
-		WebSite.compiledKernel=WebSite.runtime+"lib/tonyu/kernel.js";
-	} else {
-		WebSite.compiledKernel="https://edit.tonyu.jp/Kernel/js/concat.js";
-		//WebSite.compiledKernel=prot+"//tonyuexe.appspot.com/Kernel/js/concat.js";
-	}
-	if (loc.match(/localhost\/tonyu2/)) {
-		WebSite.wwwDir=prot+"//"+location.host+"/tonyu2/";
-		WebSite.kernelDir=WebSite.wwwDir+"Kernel/";
-		WebSite.compiledKernel=WebSite.kernelDir+"js/concat.js";
-		WebSite.uploadTmpUrl=prot+"//localhost/tsite/tonyu/e/cgi-bin/uploadTmp.cgi";
-		WebSite.newVersionUrl=prot+"//localhost/tsite/tonyu/project/newVersion.cgi";
-	} else {
-		WebSite.uploadTmpUrl=prot+"//edit.tonyu.jp/cgi-bin/uploadTmp.cgi";
-		WebSite.newVersionUrl=prot+"//www.tonyu.jp/project/newVersion.cgi";
-	}
-
-	if (loc.match(/((index)|(project))2/)) {
-		WebSite.version=2;
-		if (WebSite.isNW) {
-			WebSite.devMode=true;
-		} else {
-			WebSite.devMode=false;
-		}
-	}
-	FS.setEnvProvider(new FS.Env(WebSite));
-	return window.WebSite=WebSite;
-});
-
-if (typeof define!=="function") {
-	define=require("requirejs").define;
-}
-define('TError',[],function () {
-TError=function (mesg, src, pos) {
-	if (typeof src=="string") {
-		return {
-			isTError:true,
-			mesg:mesg,
-			src:{
-				name:function () { return src;},
-				text:function () { return src;}
-			},
-			pos:pos,
-			toString:function (){
-				return this.mesg+" at "+src+":"+this.pos;
-			},
-			raise: function () {
-				throw this;
-			}
-		};
-	}
-	var klass=null;
-	if (src && src.src) {
-		klass=src;
-		src=klass.src.tonyu;
-	}
-	if (typeof src.name!=="function") {
-		throw "src="+src+" should be file object";
-	}
-	var rc;
-	if ( (typeof (src.text))=="function") {
-		var s=src.text();
-		if (typeof s=="string") {
-			rc=TError.calcRowCol(s,pos);
-		}
-	}
-	return {
-		isTError:true,
-		mesg:mesg,src:src,pos:pos,row:rc.row, col:rc.col, klass:klass,
-		toString:function (){
-			return this.mesg+" at "+this.src.name()+":"+this.row+":"+this.col;
-		},
-		raise: function () {
-			throw this;
-		}
-	};
-};
-TError.calcRowCol=function (text,pos) {
-	var lines=text.split("\n");
-	var pp=0,row,col;
-	for (row=0;row<lines.length ; row++) {
-		pp+=lines[row].length+1;
-		if (pp>pos) {
-			col=pos-(pp-lines[row].length);
-			break;
-		}
-	}
-	return {row:row,col:col};
-};
-return TError;
-});
-define('StackTrace',[],function (){
-	var trc={};
-	var pat=/(_trc_[A-Za-z0-9_]*).*[^0-9]([0-9]+):([0-9]+)[\s\)]*\r?$/;
-	trc.isAvailable=function () {
-		var scr=
-			"({\n"+
-			"    main :function _trc_func_17000000_0() {\n"+
-			"      var a=(this.t.x);\n"+
-			"    }\n"+
-			"}).main();\n";
-		var s;
-		try {
-			eval(scr);
-		} catch (e) {
-			s=e.stack;
-			if (typeof s!="string") return false;
-			var lines=s.split(/\n/);
-			for (var i=0 ; i<lines.length; i++) {
-				var p=pat.exec(lines[i]);
-				if (p) return true;
-			}
-		}
-		return false;
-	};
-	trc.get=function (e) {
-		var s=e.stack;
-		if (typeof s!="string") return false;
-		var lines=s.split(/\n/);
-		var res=[];
-		for (var i=0 ; i<lines.length; i++) {
-			var p=pat.exec(lines[i]);
-			if (!p) continue;
-			//var id=p[1];
-			var fname=p[1];
-			var row=p[2];
-			var col=p[3];
-			res.push({fname:fname, row:row,col:col});
-			//var tri=ttb.decode(id);
-			/*if (tri && tri.klass) {
-				var str=tri.klass.src.js;
-				var slines=str.split(/\n/);
-				var sid=null;
-				for (var j=0 ; j<slines.length && j+1<row ; j++) {
-					var lp=/\$LASTPOS=([0-9]+)/.exec(slines[j]);
-					if (lp) sid=parseInt(lp[1]);
-				}
-				//console.log("slines,row,sid",slines,row,sid);
-				if (sid) {
-					var stri=ttb.decode(sid);
-					if (stri) res.push(stri);
-				}
-			}*/
-		}
-		/*$lastStackTrace=res;
-		$showLastStackTrace=function () {
-			console.log("StackTrace.get",res);
-			//console.log("StackTrace.get",lines,res);
-		};*/
-		console.log("StackTrace.get",res);
-		return res;
-	};
-
-
-	return trc;
-});
-define('Tonyu.TraceTbl',["Tonyu", "FS", "TError","StackTrace"],
-function(Tonyu, FS, TError,trc) {
-return Tonyu.TraceTbl=(function () {
-	var TTB={};
-	var POSMAX=1000000;
-	var pathIdSeq=1;
-	var PATHIDMAX=10000;
-	var path2Id={}, id2Path=[];
-	var path2Class={};
-	TTB.add=function (klass, pos){
-		var file=klass.src.tonyu;
-		var path=file.path();
-		var pathId=path2Id[path];
-		if (pathId==undefined) {
-			pathId=pathIdSeq++;
-			if (pathIdSeq>PATHIDMAX) pathIdSeq=0;
-			path2Id[path]=pathId;
-			id2Path[pathId]=path;
-		}
-		path2Class[path]=klass;
-		if (pos>=POSMAX) pos=POSMAX-1;
-		var id=pathId*POSMAX+pos;
-		return id;
-	};
-	var srcMap={};
-	TTB.decodeOLD=function (id) {
-		var pos=id%POSMAX;
-		var pathId=(id-pos)/POSMAX;
-		var path=id2Path[pathId];
-		if (path) {
-			var f=FS.get(path);
-			var klass=path2Class[path];
-			return TError("Trace info", klass || f, pos);
-		} else {
-			return null;
-			//return TError("Trace info", "unknown src id="+id, pos);
-		}
-	};
-	TTB.srcMap=srcMap;
-	TTB.decode=function (id) {
-		var pat=new RegExp("LASTPOS="+id+";//(.*)\r?\n");
-		console.log("pat=",pat);
-		for (var k in srcMap) {
-			var r=pat.exec( srcMap[k] );
-			if (r) {
-				// user.Main:335
-				//alert(r[1]);
-				return r[1];
-			} else {
-				console.log("pat=",pat,"Not found in ",k);
-
-			}
-		}
-	};
-	TTB.find=function (e) {
-		var trcs=trc.get(e);
-		var trc1=trcs[0];
-		if (!trc1) return null;
-		var pat=new RegExp("LASTPOS=[0-9]+;//(.*)\r?");
-		for (var k in srcMap) {
-			console.log("Finding ", trc1.fname, " in ",k);
-			var r=srcMap[k].indexOf(trc1.fname);
-			if (r>=0) {
-				console.log("fname found at ",r);
-				var slines=srcMap[k].split(/\n/);
-				var sid=null;
-				var row=trc1.row-1;
-				console.log("Scan from row=",row);
-				for (var j=row ; j>=0 ; j--) {
-					console.log("row ",j, slines[j]);
-					if (slines[j]==null) break;
-					var lp=pat.exec(slines[j]);
-					if (lp) return lp[1];
-				}
-				console.log("Not found LASTPOS pat");
-			} else {
-				console.log("Not found in ",k);
-			}
-		}
-	};
-
-	TTB.addSource=function (key,src) {
-		srcMap[key]=src;
-	};
-	return TTB;
-})();
-//if (typeof getReq=="function") getReq.exports("Tonyu.TraceTbl");
-});
-define('PatternParser',["Tonyu"], function (Tonyu) {
-    var PP=function (img, options) {
-        this.options=options || {};
-        this.img=img;
-        this.height = img.height;
-        this.width = img.width;
-        var cv=this.newImage(img.width, img.height);
-        var ctx=cv.getContext("2d");
-        ctx.drawImage(img, 0,0);
-        this.ctx=ctx;
-        this.pixels=this.ctx.getImageData(0, 0, img.width, img.height).data;
-        this.base=this.getPixel(0,0);
-    };
-    Tonyu.extend(PP.prototype,{
-        newImage: function (w,h) {
-            var cv=document.createElement("canvas");
-            cv.width=w;
-            cv.height=h;
-            return cv;
-        },
-        getPixel: function (x,y) {
-            var imagePixelData = this.pixels;
-            var ofs=(x+y*this.width)*4;
-            var R = imagePixelData[0+ofs];
-            var G = imagePixelData[1+ofs];
-            var B = imagePixelData[2+ofs];
-            var A = imagePixelData[3+ofs];
-            return ((((A*256)+B)*256)+G)*256+R;
-        },
-        setPixel: function (x,y,p) {
-            var ofs=(x+y*this.width)*4;
-            this.pixels[0+ofs]=p & 255;
-            p=(p-(p&255))/256;
-            this.pixels[1+ofs]=p & 255;
-            p=(p-(p&255))/256;
-            this.pixels[2+ofs]=p & 255;
-            p=(p-(p&255))/256;
-            this.pixels[3+ofs]=p & 255;
-        },
-        parse: function () {
-            try {
-                //console.log("parse()");
-                var res=[];// List of charpattern
-                for (var y=0; y<this.height ;y++) {
-                    for (var x=0; x<this.width ;x++) {
-                        var c=this.getPixel(x, y);
-                        if (c!=this.base) {
-                            res.push(this.parse1Pattern(x,y));
-                        }
-                    }
-                }
-                //console.log("parsed:"+res.lenth);
-                return res;
-            } catch (p) {
-                if (p.isParseError) {
-                    console.log("parse error! "+p);
-                    return [{image: this.img, x:0, y:0, width:this.width, height:this.height}];
-                }
-                throw p;
-            }
-        },
-        parse1Pattern:function (x,y) {
-            function hex(s){return s;}
-            var trans=this.getPixel(x, y);
-            var dx=x,dy=y;
-            var base=this.base;
-            var width=this.width, height=this.height;
-            while (dx<width) {
-                var pixel = this.getPixel(dx,dy);
-                if (pixel!=trans) break;
-                dx++;
-            }
-            if (dx>=width || this.getPixel(dx,dy)!=base) {
-                throw PatterParseError(dx,dy,hex(this.getPixel(dx,dy))+"!="+hex(base));
-            }
-            dx--;
-            while (dy<height) {
-                if (this.getPixel(dx,dy)!=trans) break;
-                dy++;
-            }
-            if (dy>=height || this.getPixel(dx,dy)!=base) {
-                throw PatterParseError(dx,dy,hex(this.getPixel(dx,dy))+"!="+hex(base));
-            }
-            dy--;
-            var sx=x+1,sy=y+1,w=dx-sx,h=dy-sy;
-            //console.log("PP",sx,sy,w,h,dx,dy);
-            if (w*h==0) throw PatterParseError(dx, dy,"w*h==0");
-            var newim=this.newImage(w,h);
-            var nc=newim.getContext("2d");
-            var newImD=nc.getImageData(0,0,w,h);
-            var newD=newImD.data;
-            var di=0;
-            for (var ey=sy ; ey<dy ; ey++) {
-                for (var ex=sx ; ex<dx ; ex++) {
-                    var p=this.getPixel(ex, ey);
-                    if (p==trans) {
-                        newD[di++]=0;
-                        newD[di++]=(0);
-                        newD[di++]=(0);
-                        newD[di++]=(0);
-                    } else {
-                        newD[di++]=(p&255);
-                        p=(p-(p&255))/256;
-                        newD[di++]=(p&255);
-                        p=(p-(p&255))/256;
-                        newD[di++]=(p&255);
-                        p=(p-(p&255))/256;
-                        newD[di++]=(p&255);
-                    }
-                }
-            }
-            nc.putImageData(newImD,0,0);
-            for (var yy=sy-1; yy<=dy; yy++) {
-                for (var xx=sx-1; xx<=dx; xx++) {
-                    this.setPixel(xx,yy, base);
-                }
-            }
-            if (this.options.boundsInSrc) {
-                return {x:sx,y:sy,width:w,height:h};
-            }
-            return {image:newim, x:0, y:0, width:w, height:h};
-            function PatterParseError(x,y,msg) {
-                return {toString: function () {
-                    return "at ("+x+","+y+") :"+msg;
-                }, isParseError:true};
-            }
-        }
-
-    });
-    return PP;
-});
-
-Util=(function () {
-
-function getQueryString(key, default_)
-{
-   if (default_==null) default_="";
-   key = key.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-   var regex = new RegExp("[\\?&]"+key+"=([^&#]*)");
-   var qs = regex.exec(window.location.href);
-   if(qs == null)
-    return default_;
-   else
-    return decodeURLComponentEx(qs[1]);
-}
-function decodeURLComponentEx(s){
-    return decodeURIComponent(s.replace(/\+/g, '%20'));
-}
-function endsWith(str,postfix) {
-    return str.substring(str.length-postfix.length)===postfix;
-}
-function startsWith(str,prefix) {
-    return str.substring(0, prefix.length)===prefix;
-}
-// From http://hakuhin.jp/js/base64.html#BASE64_DECODE_ARRAY_BUFFER
-function Base64_To_ArrayBuffer(base64){
-    base64=base64.replace(/[\n=]/g,"");
-    var dic = new Object();
-    dic[0x41]= 0; dic[0x42]= 1; dic[0x43]= 2; dic[0x44]= 3; dic[0x45]= 4; dic[0x46]= 5; dic[0x47]= 6; dic[0x48]= 7; dic[0x49]= 8; dic[0x4a]= 9; dic[0x4b]=10; dic[0x4c]=11; dic[0x4d]=12; dic[0x4e]=13; dic[0x4f]=14; dic[0x50]=15;
-    dic[0x51]=16; dic[0x52]=17; dic[0x53]=18; dic[0x54]=19; dic[0x55]=20; dic[0x56]=21; dic[0x57]=22; dic[0x58]=23; dic[0x59]=24; dic[0x5a]=25; dic[0x61]=26; dic[0x62]=27; dic[0x63]=28; dic[0x64]=29; dic[0x65]=30; dic[0x66]=31;
-    dic[0x67]=32; dic[0x68]=33; dic[0x69]=34; dic[0x6a]=35; dic[0x6b]=36; dic[0x6c]=37; dic[0x6d]=38; dic[0x6e]=39; dic[0x6f]=40; dic[0x70]=41; dic[0x71]=42; dic[0x72]=43; dic[0x73]=44; dic[0x74]=45; dic[0x75]=46; dic[0x76]=47;
-    dic[0x77]=48; dic[0x78]=49; dic[0x79]=50; dic[0x7a]=51; dic[0x30]=52; dic[0x31]=53; dic[0x32]=54; dic[0x33]=55; dic[0x34]=56; dic[0x35]=57; dic[0x36]=58; dic[0x37]=59; dic[0x38]=60; dic[0x39]=61; dic[0x2b]=62; dic[0x2f]=63;
-    var num = base64.length;
-    var n = 0;
-    var b = 0;
-    var e;
-
-    if(!num) return (new ArrayBuffer(0));
-    //if(num < 4) return null;
-    //if(num % 4) return null;
-
-    // AA     12    1
-    // AAA    18    2
-    // AAAA   24    3
-    // AAAAA  30    3
-    // AAAAAA 36    4
-    // num*6/8
-    e = Math.floor(num / 4 * 3);
-    if(base64.charAt(num - 1) == '=') e -= 1;
-    if(base64.charAt(num - 2) == '=') e -= 1;
-
-    var ary_buffer = new ArrayBuffer( e );
-    var ary_u8 = new Uint8Array( ary_buffer );
-    var i = 0;
-    var p = 0;
-    while(p < e){
-        b = dic[base64.charCodeAt(i)];
-        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i));//return null;
-        n = (b << 2);
-        i ++;
-
-        b = dic[base64.charCodeAt(i)];
-        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i))
-        ary_u8[p] = n | ((b >> 4) & 0x3);
-        n = (b & 0x0f) << 4;
-        i ++;
-        p ++;
-        if(p >= e) break;
-
-        b = dic[base64.charCodeAt(i)];
-        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i))
-        ary_u8[p] = n | ((b >> 2) & 0xf);
-        n = (b & 0x03) << 6;
-        i ++;
-        p ++;
-        if(p >= e) break;
-
-        b = dic[base64.charCodeAt(i)];
-        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i))
-        ary_u8[p] = n | b;
-        i ++;
-        p ++;
-    }
-    function fail(m) {
-        console.log(m);
-        console.log(base64,i);
-        throw new Error(m);
-    }
-    return ary_buffer;
-}
-
-function Base64_From_ArrayBuffer(ary_buffer){
-    var dic = [
-        'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P',
-        'Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f',
-        'g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v',
-        'w','x','y','z','0','1','2','3','4','5','6','7','8','9','+','/'
-    ];
-    var base64 = "";
-    var ary_u8 = new Uint8Array( ary_buffer );
-    var num = ary_u8.length;
-    var n = 0;
-    var b = 0;
-
-    var i = 0;
-    while(i < num){
-        b = ary_u8[i];
-        base64 += dic[(b >> 2)];
-        n = (b & 0x03) << 4;
-        i ++;
-        if(i >= num) break;
-
-        b = ary_u8[i];
-        base64 += dic[n | (b >> 4)];
-        n = (b & 0x0f) << 2;
-        i ++;
-        if(i >= num) break;
-
-        b = ary_u8[i];
-        base64 += dic[n | (b >> 6)];
-        base64 += dic[(b & 0x3f)];
-        i ++;
-    }
-
-    var m = num % 3;
-    if(m){
-        base64 += dic[n];
-    }
-    if(m == 1){
-        base64 += "==";
-    }else if(m == 2){
-        base64 += "=";
-    }
-    return base64;
-}
-
-function privatize(o){
-    if (o.__privatized) return o;
-    var res={__privatized:true};
-    for (var n in o) {
-        (function (n) {
-            var m=o[n];
-            if (n.match(/^_/)) return;
-            if (typeof m!="function") return;
-            res[n]=function () {
-                var r=m.apply(o,arguments);
-                return r;
-            };
-        })(n);
-    }
-    return res;
-}
-function hasNodeBuffer() {
-    return typeof Buffer!="undefined";
-}
-function isNodeBuffer(data) {
-    return (hasNodeBuffer() && data instanceof Buffer);
-}
-function isBuffer(data) {
-    return data instanceof ArrayBuffer || isNodeBuffer(data);
-}
-function utf8bytes2str(bytes) {
-    var e=[];
-    for (var i=0 ; i<bytes.length ; i++) {
-         e.push("%"+("0"+bytes[i].toString(16)).slice(-2));
-    }
-    try {
-        return decodeURIComponent(e.join(""));
-    } catch (er) {
-        console.log(e.join(""));
-        throw er;
-    }
-}
-function str2utf8bytes(str, binType) {
-    var e=encodeURIComponent(str);
-    var r=/^%(..)/;
-    var a=[];
-    var ad=0;
-    for (var i=0 ; i<e.length; i++) {
-        var m=r.exec( e.substring(i));
-        if (m) {
-            a.push(parseInt("0x"+m[1]));
-            i+=m[0].length-1;
-        } else a.push(e.charCodeAt(i));
-    }
-    return (typeof Buffer!="undefined" && binType===Buffer ? new Buffer(a) : new Uint8Array(a).buffer);
-}
-
-return {
-    getQueryString:getQueryString,
-    endsWith: endsWith, startsWith: startsWith,
-    Base64_To_ArrayBuffer:Base64_To_ArrayBuffer,
-    Base64_From_ArrayBuffer:Base64_From_ArrayBuffer,
-    utf8bytes2str: utf8bytes2str,
-    str2utf8bytes: str2utf8bytes,
-    privatize: privatize,
-    hasNodeBuffer:hasNodeBuffer,
-    isNodeBuffer: isNodeBuffer,
-    isBuffer: isBuffer
-};
-})();
-
-define("Util", (function (global) {
-    return function () {
-        var ret, fn;
-        return ret || global.Util;
-    };
-}(this)));
-
-define('Assets',["WebSite","Util","Tonyu","FS"],function (WebSite,Util,Tonyu,FS) {
-    var Assets={};
-    Assets.resolve=function (url, prj, options) {
-        options=options||{};
-        var baseDir=FS.isFile(prj)?prj:prj.getDir();
-        if (url==null) url="";
-        url=url.replace(/\$\{([a-zA-Z0-9_]+)\}/g, function (t,name) {
-            return WebSite[name];
-        });
-        if (WebSite.urlAliases[url]) url=WebSite.urlAliases[url];
-        if (Util.startsWith(url,"ls:")) {
-            var rel=url.substring("ls:".length);
-            if (!baseDir) throw new Error("Basedir not specified");
-            var f=baseDir.rel(rel);
-            if (!f.exists()) throw new Error("Resource file not found: "+f);
-            if (
-                (WebSite.mp3Disabled && rel.match(/\.(mp3)$/)) ||
-                (WebSite.mp4Disabled && rel.match(/\.(mp4|m4a)$/))
-            ) {
-                var oggf=baseDir.rel(rel.replace(/\.(mp3|mp4|m4a)$/,".ogg"));
-                if (oggf.exists()) {
-                    f=oggf;
-                }
-            }
-            url=f.getURL();
-            if (options.asFile) return f;
-        }
-        return url;
-    };
-    Tonyu.Assets=Assets;
-    return Assets;
-});
-
-define('ImageList',["PatternParser","Util","Assets","assert"], function (PP,Util,Assets,assert) {
-    var cache={};
-    function excludeEmpty(resImgs) {
-        var r=[];
-        resImgs.forEach(function (resImg,i) {
-            if (!resImg || resImg.url=="") return;
-            r.push(resImg);
-        });
-        return r;
-    }
-    var IL;
-    IL=function (resImgs, onLoad,options) {
-        //  resImgs:[{url: , [pwidth: , pheight:]?  }]
-	    if (!options) options={};
-        resImgs=excludeEmpty(resImgs);
-        var resa=[];
-        var cnt=resImgs.length;
-        if (cnt==0) setTimeout(function () {
-            var res=[];
-            res.names={};
-            onLoad(res);
-        },0);
-        resImgs.forEach(function (resImg,i) {
-            console.log("loading", resImg,i);
-            var url=resImg.url;
-            var urlKey=url;
-            if (cache[urlKey]) {
-            	proc.apply(cache[urlKey],[]);
-            	return;
-            }
-            url=Assets.resolve(url,options.prj||options.baseDir);
-            //if (!Util.startsWith(url,"data:")) url+="?" + new Date().getTime();
-            var im=$("<img>");
-            im.load(function () {
-            	cache[urlKey]=this;
-            	proc.apply(this,[]);
-            });
-            im.attr("src",url);
-            function proc() {
-                var pw,ph;
-                if (resImg.type=="single") {
-                    resa[i]=[{image:this, x:0,y:0, width:this.width, height:this.height}];
-                } else if ((pw=resImg.pwidth) && (ph=resImg.pheight)) {
-                    var x=0, y=0, w=this.width, h=this.height;
-                    var r=[];
-                    while (true) {
-                        var rw=pw,rh=ph;
-                        if (x+pw>w) rw=w-x;
-                        if (y+ph>h) rh=h-y;
-                        r.push({image:this, x:x,y:y, width:rw, height:rh});
-                        x+=pw;
-                        if (x+pw>w) {
-                            x=0;
-                            y+=ph;
-                            if (y+ph>h) break;
-                        }
-                    }
-                    resa[i]=r;
-                } else {
-                    var p=new PP(this);
-                    resa[i]=p.parse();
-                }
-                resa[i].name=resImg.name;
-                assert.is(resa[i],Array);
-                cnt--;
-                if (cnt==0) {
-                    var res=[];
-                    var names={};
-                    resa.forEach(function (a) {
-                        names[a.name]=res.length;
-                        res=res.concat(a);
-                    });
-                    res.names=names;
-                    onLoad(res);
-                }
-            }
-        });
-    };
-    IL.load=IL;
-    IL.parse1=function (resImg, imgDOM, options) {
-        var pw,ph;
-        var res;
-        if ((pw=resImg.pwidth) && (ph=resImg.pheight)) {
-            var x=0, y=0, w=imgDOM.width, h=imgDOM.height;
-            var r=[];
-            while (true) {
-                r.push({image:this, x:x,y:y, width:pw, height:ph});
-                x+=pw;
-                if (x+pw>w) {
-                    x=0;
-                    y+=ph;
-                    if (y+ph>h) break;
-                }
-            }
-            res=r;
-        } else {
-            var p=new PP(imgDOM,options);
-            res=p.parse();
-        }
-        res.name=resImg.name;
-        return assert.is(res,Array);
-    };
-	window.ImageList=IL;
-    return IL;
-});
-
-define('Auth',["WebSite"],function (WebSite) {
-    var auth={};
-    auth.currentUser=function (onend) {
-        //TODO: urlchange!
-        $.ajax({type:"get",url:WebSite.serverTop+"/currentUser",data:{withCsrfToken:true},
-            success:function (res) {
-                console.log("auth.currentUser",res);
-                res=JSON.parse(res);
-                var u=res.user;
-                if (u=="null") u=null;
-                console.log("user", u, "csrfToken",res.csrfToken);
-                onend(u,res.csrfToken);
-            }
-        });
-    };
-    auth.assertLogin=function (options) {
-        /*if (typeof options=="function") options={complete:options};
-        if (!options.confirm) options.confirm="この操作を行なうためにはログインが必要です．ログインしますか？";
-        if (typeof options.confirm=="string") {
-            var mesg=options.confirm;
-            options.confirm=function () {
-                return confirm(mesg);
-            };
-        }*/
-        auth.currentUser(function (user,csrfToken) {
-            if (user) {
-                return options.success(user,csrfToken);
-            }
-            window.onLoggedIn=options.success;
-            //TODO: urlchange!
-            options.showLoginLink(WebSite.serverTop+"/login");
-        });
-    };
-    window.Auth=auth;
-    return auth;
-});
-define('Blob',["Auth","WebSite","Util"],function (a,WebSite,Util) {
-    var Blob={};
-    var BLOB_PATH_EXPR="${blobPath}";
-    Blob.BLOB_PATH_EXPR=BLOB_PATH_EXPR;
-    Blob.upload=function(user, project, file, options) {
-        var fd = new FormData(document.getElementById("fileinfo"));
-        if (options.error) {
-            options.error=function (r) {alert(r);};
-        }
-        fd.append("theFile", file);
-        fd.append("user",user);
-        fd.append("project",project);
-        fd.append("fileName",file.name);
-      //TODO: urlchange!
-        $.ajax({
-            type : "get",
-            url : WebSite.serverTop+"/blobURL",
-            success : function(url) {
-                $.ajax({
-                    url : url,
-                    type : "POST",
-                    data : fd,
-                    processData : false, // jQuery がデータを処理しないよう指定
-                    contentType : false, // jQuery が contentType を設定しないよう指定
-                    success : function(res) {
-                        console.log("Res = " + res);
-                        options.success.apply({},arguments);// $("#drag").append(res);
-                    },
-                    error: options.error
-                });
-            }
-        });
-    };
-    Blob.isBlobURL=function (url) {
-        if (Util.startsWith(url,BLOB_PATH_EXPR)) {
-            var a=url.split("/");
-            return {user:a[1], project:a[2], fileName:a[3]};
-        }
-    };
-    // actualURL;
-    Blob.url=function(user,project,fileName) {
-        return WebSite.blobPath+user+"/"+project+"/"+fileName;
-    };
-    Blob.uploadToExe=function (prj, options) {
-        var bis=prj.getBlobInfos();
-        var cnt=bis.length;
-        console.log("uploadBlobToExe cnt=",cnt);
-        if (cnt==0) return options.success();
-        if (!options.progress) options.progress=function (cnt) {
-            console.log("uploadBlobToExe cnt=",cnt);
-        };
-        bis.forEach(function (bi) {
-            var data={csrfToken:options.csrfToken};
-            for (var i in bi) data[i]=bi[i];
-            $.ajax({
-                type:"get",
-                url: WebSite.serverTop+"/uploadBlobToExe",   //TODO: urlchange!
-                data:data,
-                success: function () {
-                     cnt--;
-                     if (cnt==0) return options.success();
-                     else options.progress(cnt);
-                },
-                error:options.error
-             });
-        });
-    };
-    return Blob;
-});
-define('ImageRect',[],function () {
-    function draw(img, canvas) {
-        if (typeof img=="string") {
-            var i=new Image();
-            var res=null;
-            var callback=null;
-            var onld=function (clb) {
-                if (clb) callback=clb;
-                if (callback && res) {
-                    callback(res);
-                }
-            };
-            i.onload=function () {
-                res=draw(i,canvas);
-                onld();
-            };
-            i.src=img;
-            return onld;
-        }
-        var cw=canvas.width;
-        var ch=canvas.height;
-        var cctx=canvas.getContext("2d");
-        var width=img.width;
-        var height=img.height;
-        var calcw=ch/height*width; // calch=ch
-        var calch=cw/width*height; // calcw=cw
-        if (calch>ch) calch=ch;
-        if (calcw>cw) calcw=cw;
-        cctx.clearRect(0,0,cw,ch);
-        var marginw=Math.floor((cw-calcw)/2);
-        var marginh=Math.floor((ch-calch)/2);
-        cctx.drawImage(img,
-                0,0,width, height,
-                marginw,marginh,calcw, calch );
-        return {left: marginw, top:marginh, width:calcw, height:calch,src:img};
-    }
-    return draw;
-});
-define('Content',["FS"],function (FS){return FS.Content;});
-
-define('thumbnail',["ImageRect","Content"],function (IR,Content) {
-    var TN={};
-    var createThumbnail;
-    var NAME="$icon_thumbnail";
-    var WIDTH=200;HEIGHT=200;
-    TN.set=function (prj,delay) {
-        setTimeout(function () { crt(prj);} ,delay);
-    };
-    TN.get=function (prj) {
-        var f=TN.file(prj);
-        if (!f.exists()) return null;
-        return f.text();
-    };
-    TN.file=function (prj) {
-        var prjdir=prj.getDir();
-        var imfile= prjdir.rel("images/").rel("icon_thumbnail.png");
-        //console.log("Thumb file=",imfile.path(),imfile.exists());
-        return imfile;
-    };
-    function crt(prj) {
-        try {
-            var img=Tonyu.globals.$Screen.buf[0];
-            var cv=$("<canvas>").attr({width:WIDTH,height:HEIGHT});
-            IR(img, cv[0]);
-            var url=cv[0].toDataURL();
-            var rsrc=prj.getResource();
-            var prjdir=prj.getDir();
-            var imfile=TN.file(prj);
-            imfile.text( url );
-            var item={
-                name:NAME,
-                pwidth:WIDTH,pheight:HEIGHT,
-                url:"ls:"+imfile.relPath(prjdir)
-            };
-            var imgs=rsrc.images;
-            var add=false;
-            for (var i=0 ; i<imgs.length ; i++) {
-                if (imgs[i].name==NAME) {
-                    imgs[i]=item;
-                    add=true;
-                }
-            }
-            if (!add) imgs.push(item);
-
-            prj.setResource(rsrc);
-            console.log("setRSRC",rsrc);
-        } catch (e) {
-            console.log("Create thumbnail failed",e);
-            console.log(e.stack);
-        }
-    };
-    return TN;
-});
-
-define('plugins',["WebSite"],function (WebSite){
-    var plugins={};
-    var installed= {
-        box2d:{src: "Box2dWeb-2.1.a.3.min.js",detection:/BodyActor/,symbol:"Box2D" },
-        timbre: {src:"timbre.js",symbol:"T" },
-        gif: {src:"gif-concat.js",detection:/GIFWriter/,symbol:"GIF"},
-        Mezonet: {src:"Mezonet.js", symbol: "Mezonet"},
-        PicoAudio: {src:"PicoAudio.min.js", symbol:"PicoAudio"},
-        // single js is required for runScript1.js
-        jquery_ui: {src:"jquery-ui.js", detection:/\$InputBox/,symbol:"$.ui"}
-    };
-    plugins.installed=installed;
-    plugins.detectNeeded=function (src,res) {
-        for (var name in installed) {
-            var d=installed[name].detection;
-            if (d) {
-                var r=d.exec(src);
-                if (r) res[name]=1;
-            }
-        }
-        return res;
-    };
-    plugins.loaded=function (name) {
-        var i=installed[name];
-        if (!i) throw new Error("plugin not found: "+name);
-        return hasInGlobal(i.symbol);
-    };
-    function hasInGlobal(name) {
-        // name: dot ok
-        var g=window;
-        name.split(".").forEach(function (e) {
-            if (!g) return;
-            g=g[e];
-        });
-        return g;
-    }
-    plugins.loadAll=function (names,options) {
-        options=convOpt(options);
-        var namea=[];
-        for (var name in names) {
-            if (installed[name] && !plugins.loaded(name)) {
-                namea.push(name);
-            }
-        }
-        var i=0;
-        console.log("loading plugins",namea);
-        setTimeout(loadNext,0);
-        function loadNext() {
-            if (i>=namea.length) options.onload();
-            else plugins.load(namea[i++],loadNext);
-        }
-    };
-    function convOpt(options) {
-        if (typeof options=="function") options={onload:options};
-        if (!options) options={};
-        if (!options.onload) options.onload=function (){};
-        return options;
-    }
-    plugins.load=function (name,options) {
-        var i=installed[name];
-        if (!i) throw new Error("plugin not found: "+name);
-        options=convOpt(options);
-        var src=WebSite.pluginTop+"/"+i.src;
-        var reqj;
-        if (typeof requireSimulator==="undefined") {
-            if (typeof requirejs==="function") reqj=requirejs;
-        } else {
-            if (requireSimulator.real) reqj=requireSimulator.real.requirejs;
-        }
-        if (reqj) {
-            src=src.replace(/\.js$/,"");
-            console.log("Loading plugin via requirejs",src);
-            reqj([src], function (res) {
-                if (!window[i.symbol] && res) window[i.symbol]=res;
-                options.onload(res);
-            });
-        } else {
-            console.log("Loading plugin via <script>",src);
-            var s=document.createElement("script");
-            s.src=src;
-            s.onload=options.onload;
-            document.body.appendChild(s);
-            //$("<script>").on("load",options.onload).attr("src",src).appendTo("body");
-        }
-        //setTimeout(options.onload,500);
-
-    };
-    plugins.request=function (name) {
-        if (plugins.loaded(name)) return;
-        var req=new Error("Plugin "+name+" required");
-        req.pluginName=name;
-    };
-    return plugins;
-});
-
-define('sysMod',["Tonyu", /*"ProjectCompiler",*/ "TError", "FS", "Tonyu.TraceTbl","ImageList","StackTrace",
-        "Blob","thumbnail","WebSite","plugins", //"Tonyu.Compiler.Semantics", "Tonyu.Compiler.JSGenerator",
-        "DeferredUtil"/*,"compiledProject"*/],
-        function (Tonyu, /*ProjectCompiler,*/ TError, FS, Tonyu_TraceTbl, ImageList,StackTrace,
-                Blob,thumbnail,WebSite,plugins,// Semantics, JSGenerator,
-                DU) {
-// (was TonyuProject)
-return {
-    /*var TPR=ProjectCompiler(dir);
-    var _super=Tonyu.extend({},TPR);
-    TPR.EXT=".tonyu";
-    TPR.NSP_KER="kernel";
-    TPR.NSP_USR="user";
-    var kernelProject;
-    if (!kernelDir) {
-        kernelProject=CPRJ(TPR.NSP_KER, WebSite.compiledKernel);
-    } else {
-        kernelProject=ProjectCompiler(kernelDir);
-    }
-    var traceTbl=Tonyu.TraceTbl;//();
-    var env={classes:Tonyu.classMetas, traceTbl:traceTbl, options:{compiler:{}} };
-    TPR.env=env;*/
-    stop:function () {
-        var cur=this.runningThread; // Tonyu.getGlobal("$currentThreadGroup");
-        if (cur) cur.kill();
-        var main=this.runningObj;
-        if (main && main.stop) return main.stop();
-    },
-    rawRun:function (bootClassName) {
-        if (WebSite.removeJSOutput) {
-            var o=this.getOutputFile();
-            if (o.exists()) o.rm();
-        }
-        return this.loadClasses().then(()=>{
-            //TPR.compile();
-            this.detectPlugins();
-            this.fixBootRunClasses();
-            if (!this.runScriptMode) thumbnail.set(this, 2000);
-            this.rawBoot(bootClassName);
-        });
-    },
-    getResourceFile: function () {
-        return this.getDir().rel("res.json");
-    },
-    getResource: function () {
-        var resFile=this.getResourceFile();
-        if (resFile.exists()) {
-            var res=resFile.obj();
-            var chg=false;
-            for (var imgSnd in res) {
-                var ary=res[imgSnd];
-                for (var i=ary.length-1; i>=0 ;i--) {
-                    if (!ary[i].url) {
-                        ary.splice(i,1);
-                        chg=true;
-                    }
-                }
-            }
-            if (chg) this.setResource(res);
-            return res;
-        }
-        return Tonyu.defaultResource;
-    },
-    hasSoundResource: function () {
-        var res=this.getResource();
-        return res && res.sounds && res.sounds.length>0;
-    },
-    setResource: function (rsrc) {
-        var resFile=this.getResourceFile();
-        resFile.obj(rsrc);
-    },
-    getThumbnail: function () {
-        return thumbnail.get(this);
-    },
-    convertBlobInfos: function (user) {
-        var rsrc=this.getResource();
-        var name=this.getName();
-        function loop(o) {
-            if (typeof o!="object") return;
-            for (var k in o) {
-                if (!o.hasOwnProperty(k)) continue;
-                var v=o[k];
-                if (k=="url") {
-                    var a=Blob.isBlobURL(v);
-                    if (a) {
-                        o[k]=[Blob.BLOB_PATH_EXPR,user,name,a.fileName].join("/");
-                    }
-                }
-                loop(v);
-            }
-        }
-        loop(rsrc);
-        this.setResource(rsrc);
-    },
-    getBlobInfos: function () {
-        var rsrc=this.getResource();
-        var res=[];
-        function loop(o) {
-            if (typeof o!="object") return;
-            for (var k in o) {
-                if (!o.hasOwnProperty(k)) continue;
-                var v=o[k];
-                if (k=="url") {
-                    var a=Blob.isBlobURL(v);
-                    if (a) {
-                        res.push(a);
-                    }
-                }
-                loop(v);
-            }
-        }
-        loop(rsrc);
-        return res;
-    },
-    loadResource: function (next) {
-        var r=this.getResource();
-        ImageList( r.images, function (r) {
-            var sp=Tonyu.getGlobal("$Sprites");
-            if (sp) {
-                //console.log("$Sprites set!");
-                sp.setImageList(r);
-            }
-            //Sprites.setImageList(r);
-            for (var i in r.names) {
-                Tonyu.setGlobal(i, r.names[i]);
-            }
-            if (next) next();
-        });
-    },
-    detectPlugins: function () {
-        var opt=this.getOptions();
-        var plugins=opt.plugins=opt.plugins||{};
-        if (!plugins.Mezonet || !plugins.PicoAudio) {
-            var res=this.getResource();
-            var hasMZO=false,hasMIDI=false;
-            if (res.sounds) res.sounds.forEach(function (item) {
-                if (item.url.match(/\.mzo/)) hasMZO=true;
-                if (item.url.match(/\.midi?/)) hasMIDI=true;
-            });
-            if (hasMZO) this.addPlugin("Mezonet");
-            else this.removePlugin("Mezonet");
-            if (hasMIDI) this.addPlugin("PicoAudio");
-            else this.removePlugin("PicoAudio");
-        }
-    },
-    addPlugin: function (name) {
-        var opt=this.getOptions();
-        if (!opt.plugins[name]) {
-            opt.plugins[name]=1;
-            this.setOptions(opt);
-        }
-    },
-    removePlugin: function (name) {
-        var opt=this.getOptions();
-        if (opt.plugins[name]) {
-            delete opt.plugins[name];
-            this.setOptions(opt);
-        }
-    },
-    requestPlugin: function (name) {
-        this.addPlugin(name);
-        if (plugins.loaded(name)) return;
-        var req=new Error("必要なプラグイン"+name+"を追加しました。もう一度実行してください");
-        req.pluginName=name;
-        throw req;
-    },
-    loadPlugins: function (onload) {
-        var opt=this.getOptions();
-        return plugins.loadAll(opt.plugins,onload);
-    },
-    fixBootRunClasses: function () {
-        var opt=this.getOptions();
-        if (opt.run) {
-            var mc=this.fixClassName(opt.run.mainClass);
-            var bc=this.fixClassName(opt.run.bootClass);
-            if (mc!=opt.run.mainClass  ||  bc!=opt.run.bootClass) {
-                opt.run.mainClass=mc;
-                opt.run.bootClass=bc;
-                this.setOptions(opt);
-            }
-        }
-    },
-    fixClassName: function (className) {
-        if (Tonyu.classMetas[className]) return className;
-        const ns=this.getNamespace();
-        console.log("NS", ns);
-        let res=Tonyu.classes[ns][className];
-        if (res) return `${ns}.${className}`;
-        for (var k in Tonyu.classes) {
-            res=Tonyu.classes[k][className];
-            if (res) return `${k}.${className}`;
-        }
-        throw new Error(`Cannot fix className ${className}`);
-    },
-    rawBoot: function (bootClassName) {
-        this.showProgress("Running "+bootClassName);
-        this.initCanvas();
-        Tonyu.run(bootClassName);
-    },
-    initCanvas: function () {
-        Tonyu.globals.$mainCanvas=$("canvas");
-    },
-    /*isKernelEditable: function () {
-    	return env.options.kernelEditable;
-    },*/
-    //TPR.getDir=function () {return dir;};
-    //TPR.getName=function () { return dir.name().replace(/\/$/,""); };
-
-    showProgress: function (m) {
-        console.log("PROGRESS",m);
-        /*global SplashScreen*/
-        if (typeof SplashScreen!="undefined") {
-            SplashScreen.progress(m);
-        }
-        return DU.promise(function (succ) {
-            setTimeout(succ,0);
-        });
-    }
-};
-});
-
-define('langMod',['require','exports','module'],function (require,exports,module) {
-    module.exports={
-        getNamespace: function () {//override
-            var opt=this.getOptions();
-            if (opt.compiler && opt.compiler.namespace) return opt.compiler.namespace;
-            throw new Error("Namespace is not set");
-        },
-        //TODO
-        renameClassName: function (o,n) {// o: key of aliases
-            throw new Error("Rename todo");
-        },
-        async loadDependingClasses() {
-            const myNsp=this.getNamespace();
-            for (let p of this.getDependingProjects()) {
-                if (p.getNamespace()===myNsp) continue;
-                await p.loadClasses();
-            }
-        },
-        getEXT() {return ".tonyu";}
-        // loadClasses: stub
-    };
-});
-
-define('SourceFiles',['require','exports','module','root'],function (require, exports, module) {
-//const S=require("source-map");
-const root=require("root");
-//const fs=require("fs").promises;
-function timeout(t) {
-    return new Promise(s=>setTimeout(s,t));
-}
-let vm;
-/*if (root.process) {
-    vm=require("vm");
-}*/
-class SourceFile {
-    // var text, sourceMap:S.Sourcemap, functions;
-    constructor(text, sourceMap, functions) {
-        if (typeof text==="object") {
-            const params=text;
-            sourceMap=params.sourceMap;
-            functions=params.functions;
-            text=params.text;
-            if (params.url) {
-                this.url=params.url;
-            }
-        }
-        this.text=text;
-        this.sourceMap=sourceMap && sourceMap.toString();
-        this.functions=functions;
-    }
-    async saveAs(outf) {
-        const mapFile=outf.sibling(outf.name()+".map");
-        let text=this.text;
-        //text+="\n//# traceFunctions="+JSON.stringify(this.functions);
-        if (this.sourceMap) {
-            await mapFile.text(this.sourceMap);
-            text+="\n//# sourceMappingURL="+mapFile.name();
-        }
-        await outf.text(text);
-        //return Promise.resolve();
-    }
-    exec(options) {
-        return new Promise((resolve, reject)=>{
-            if (root.window) {
-                const document=root.document;
-                let u;
-                if (this.url) {
-                    u=this.url;
-                } else {
-                    const b=new root.Blob([this.text], {type: 'text/plain'});
-                    u=root.URL.createObjectURL(b);
-                }
-                const s=document.createElement("script");
-                console.log("load script",u);
-                s.setAttribute("src",u);
-                s.addEventListener("load",e=>{
-                    resolve(e);
-                });
-                document.body.appendChild(s);
-            } else if (options && options.tmpdir){
-                const tmpdir=options.tmpdir;
-                const uniqFile=tmpdir.rel(Math.random()+".js");
-                const mapFile=uniqFile.sibling(uniqFile.name()+".map");
-                let text=this.text;
-                text+="\n//# sourceMappingURL="+mapFile.name();
-                uniqFile.text(text);
-                mapFile.text(this.sourceMap);
-                //console.log("EX",uniqFile.exists());
-                require(uniqFile.path());
-                uniqFile.rm();
-                mapFile.rm();
-                resolve();
-
-            } else {
-                const F=Function;
-                const f=(vm? vm.compileFunction(this.text) : new F(this.text));
-                resolve(f());
-            }
-        });
-    }
-    export() {
-        return {text:this.text, sourceMap:this.sourceMap, functions:this.functions};
-    }
-}
-class SourceFiles {
-    constructor() {
-        this.functions={};
-    }
-    add(text, sourceMap, functions) {
-        const sourceFile=new SourceFile(text, sourceMap, functions);
-        if (sourceFile.functions) for (let k in sourceFile.functions) {
-            this.functions[k]=sourceFile;
-        }
-        return sourceFile;
-    }
-
-}
-module.exports=new SourceFiles();
-});
-
-define('CompiledProject',['require','exports','module','ProjectFactory','root','SourceFiles','assert','langMod'],function (require,exports,module) {
-    const F=require("ProjectFactory");
-    const root=require("root");
-    const SourceFiles=require("SourceFiles");
-    const A=require("assert");
-    const langMod=require("langMod");
-    F.addType("compiled",params=> {
-        const ns=A.is(params.namespace,String,"ns");
-        const url=A.is(params.url,String,"url");
-        //A.is([ns,url],[String,String]);
-        const res=F.createCore();
-        return res.include(langMod).include({
-			getNamespace:function () {return ns;},
-			sourceDir: function () {return null;},
-			getDependingProjects: function () {return [];},// virtual
-			loadClasses: async function (ctx) {
-				console.log("Loading compiled classes ns=",ns,"url=",url);
-				var src = url+(root.WebSite && root.WebSite.serverType==="BA"?"?"+Math.random():"");
-				//var u=window.navigator.userAgent.toLowerCase();
-                const s=SourceFiles.add({url:src});
-                await s.exec();
-			},
-        });
-    });
-    exports.create=params=>F.create("compiled",params);
-});
-
-define('Run3Project',['require','exports','module','ProjectFactory','root','WebSite','sysMod','langMod','SourceFiles','CompiledProject'],function (require,exports,module) {
-    const F=require("ProjectFactory");
-    //const Compiler=require("CompilerClient");
-    const root=require("root");
-    const WebSite=require("WebSite");
-    const sysMod=require("sysMod");
-    const langMod=require("langMod");
-    const SourceFiles=require("SourceFiles");
-    const CompiledProject=require("CompiledProject");
-    F.addDependencyResolver((prj, spec)=>{
-        if (spec.namespace==="kernel") {
-            return CompiledProject.create({
-                namespace:spec.namespace,
-                url:WebSite.compiledKernel
-            });
-        }
-    });
-    F.addType("run3",params=> {
-        const res=F.createDirBasedCore(params);
-        res.include({
-            async loadClasses () {
-                await this.loadDependingClasses();
-                const c=SourceFiles.add(this.getOutputFile().text());
-                await c.exec();
-            },
-            async exec(srcraw) {
-                console.log("Recving src",srcraw);
-                await this.loadDependingClasses();
-                const src=SourceFiles.add(srcraw);
-                await src.exec();
-            }
-        }).include(langMod).include(sysMod);
-        root.Project=res;
-        return res;
-    });
-    exports.create=params=>F.create("run3",params);
-});
-
-/*global webkitAudioContext, AudioContext, AudioBuffer, AudioBufferSourceNode, PicoAudio, Mezonet, WebSite, Util*/
-// forked from makkii_bcr's "T2MediaLib" http://jsdo.it/makkii_bcr/3ioQ
-
-var T2MediaLib = (function(){
-    function isPicoAudio(bgm) {
-        return typeof PicoAudio!=="undefined" && bgm instanceof PicoAudio;
-    }
-    function isMezonetSource(bgm) {
-        return typeof Mezonet!=="undefined" && bgm instanceof Mezonet.Source;
-    }
-    var T2MediaLib = function(_context) {
-        this.context = null;
-        this.picoAudio = null;
-        this.soundDataAry = []; // T2MediaLib_SoundData
-        this.bgmPlayerMax = 16;
-        this.bgmPlayerAry = []; // T2MediaLib_BGMPlayer
-
-        this.masterVolume = 1.0;
-        this.seMasterVolume = 1.0;
-        this.bgmMasterVolume = 1.0;
-
-        this.playingAudio = null;
-        this.audioVolume = 1.0;
-        this.audioTempo = 1.0;
-        this.audioDataAry = {
-            data : []
-        };
-        this.seSources=[];
-        this.init(_context);
-    };
-
-    // 初期化 //
-    T2MediaLib.prototype.init = function(_context) {
-        if (this.inited) return;
-        this.inited=true;
-        if (this.disabled) return;
-        if (!_context) {
-            if (window.AudioContext) {
-                this.context = new AudioContext();
-            } else if (window.webkitAudioContext) {
-                this.context = new webkitAudioContext();
-            } else {
-                this.context = null;
-                console.log('Your browser does not support yet Web Audio API');
-            }
-        } else {
-            this.context = _context;
-        }
-
-        // Web Audio API 起動成功
-        if (this.context) {
-            // BGMPlayer初期化 (16個生成)
-            for (var i=0; i<this.bgmPlayerMax; i++) {
-                this.bgmPlayerAry[i] = new T2MediaLib_BGMPlayer(this, i);
-            }
-        }
-    };
-
-    // CLEAR系関数 //
-    T2MediaLib.prototype.allClearSoundData = function() {
-        var dataAry = this.soundDataAry;
-        for (var idx in dataAry) {
-            delete dataAry[idx];
-        }
-    };
-    T2MediaLib.prototype.clearSoundData = function(idx) {
-        var dataAry = this.soundDataAry;
-        delete dataAry[idx];
-    };
-    T2MediaLib.prototype.allRemoveDecodedSoundData = function() {
-        var dataAry = this.soundDataAry;
-        for (var idx in dataAry) {
-            var soundData = dataAry[idx];
-            if (soundData == null) continue;
-            if (!soundData.isDecodeComplete() && !soundData.isDecoding()) continue;
-            soundData.removeDecodedData();
-        }
-    };
-    T2MediaLib.prototype.removeDecodedSoundData = function(idx) {
-        var soundData = this.soundDataAry[idx];
-        if (soundData == null) return;
-        if (!soundData.isDecodeComplete() && !soundData.isDecoding()) return;
-        soundData.removeDecodedData();
-    };
-
-
-    // SE&BGMの音量 //
-    T2MediaLib.prototype.getMasterVolume = function() {
-        return this.masterVolume;
-    };
-    T2MediaLib.prototype.setMasterVolume = function(vol) {
-        this.masterVolume = vol;
-        for (var i=0; i<this.bgmPlayerMax; i++) {
-            var bgmPlayer = this.bgmPlayerAry[i];
-            if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) continue;
-            bgmPlayer.onChangeBGMMasterVolume();
-        }
-    };
-
-    // 配列データからサウンドを作成・登録
-    T2MediaLib.prototype.createSoundFromArray = function(idx, array1, array2) {
-        if (!this.context || this.disabled) {
-            return null;
-        }
-        this.soundDataAry[idx] = new T2MediaLib_SoundData(idx);
-
-        var ctx = this.context;
-        var numOfChannels = array1 != null && array2 != null ? 2 : 1;
-        var audioBuffer = ctx.createBuffer(numOfChannels, array1.length, ctx.sampleRate);
-        var buffer1 = audioBuffer.getChannelData(0);
-        var buffer2 = array2 != null ? audioBuffer.getChannelData(1) : null;
-        var i;
-        for (i = 0; i < array1.length ; i++) {
-             buffer1[i] = array1[i];
-        }
-        if (buffer2) {
-            for (i = 0; i < array2.length ; i++) {
-                 buffer2[i] = array2[i];
-            }
-        }
-        this.soundDataAry[idx].onDecodeComplete(audioBuffer);
-    };
-    // サウンドの読み込み・登録
-    T2MediaLib.prototype.loadSound = function(idx, url, callbacks, isLoadAndDecode) { //@hoge1e3
-        if (!this.context || this.disabled) {
-            return null;
-        }
-
-        this.soundDataAry[idx] = new T2MediaLib_SoundData(idx);
-
-        // midiがあったらpicoAudioを準備しておく
-        if (url.match(/\.(midi?)$/) || url.match(/^data:audio\/mid/)) {
-            if (this.picoAudio == null) {
-                this.picoAudio = new PicoAudio(this.context);
-            }
-        }
-        if (typeof WebSite=="object" && WebSite.mp3Disabled) {
-            url=url.replace(/\.(mp3)$/,".ogg");
-        }
-        if (typeof WebSite=="object" && WebSite.mp4Disabled) {
-            url=url.replace(/\.(mp4|m4a)$/,".ogg");
-        }
-        var that = this;
-        var xhr = new XMLHttpRequest();
-        xhr.onload = function() {
-            if (xhr.status === 200 || xhr.status === 0 /*@hoge1e3 for node-webkit base64url */) {
-                var arrayBuffer = xhr.response;
-                if (arrayBuffer instanceof ArrayBuffer) {
-                    that.soundDataAry[idx].onLoadComplete(arrayBuffer);
-                    if (isLoadAndDecode) { // ロードとデコードをする
-                        that.decodeSound(idx, callbacks);
-                    } else { // ロードのみ
-                        if (callbacks && callbacks.succ) callbacks.succ(idx);
-                    }
-                } else {
-                    that.soundDataAry[idx].onError("XHR_RESPONSE_ERROR");
-                    if (callbacks && callbacks.err) callbacks.err(idx,that.soundDataAry[idx].errorID);
-                }
-            } else {
-                that.soundDataAry[idx].onError("XHR_STATUS_ERROR");
-                if (callbacks && callbacks.err) callbacks.err(idx,that.soundDataAry[idx].errorID);
-            }
-        };
-        xhr.onerror=function (e) {
-            console.log(e+"");
-            that.soundDataAry[idx].onError("XHR_ERROR");
-            if (callbacks && callbacks.err) callbacks.err(idx,that.soundDataAry[idx].errorID);
-        };
-
-        this.soundDataAry[idx].onLoad(url);
-        if (url.match(/^data:/) && typeof Util!=="undefined" && Util.Base64_To_ArrayBuffer) {//@hoge1e3
-            xhr={onload:xhr.onload};
-            xhr.response=Util.Base64_To_ArrayBuffer( url.replace(/^data:audio\/[a-zA-Z0-9\-]+;base64,/i,""));
-            xhr.status=200;
-            xhr.onload();
-        } else {
-            xhr.open('GET', url, true);
-            xhr.responseType = 'arraybuffer';
-            try {
-                xhr.send(null);
-            } catch(e) {
-                this.soundDataAry[idx].onError("FILE_NOT_FOUND");
-                if (callbacks && callbacks.err) callbacks.err(idx,that.soundDataAry[idx].errorID);
-            }
-        }
-    };
-    // サウンドのデコード
-    T2MediaLib.prototype.decodeSound = function(idx, callbacks) {
-        var soundData = this.soundDataAry[idx];
-        if (soundData == null) return;
-        if (soundData.fileData == null) return;
-        if (!soundData.isLoadComplete()) return;
-        if (soundData.isDecodeComplete()) return;
-
-        // Adding Callback
-        if (soundData.decodedCallbacksAry == null) {
-            soundData.decodedCallbacksAry = []; // 複数コールバックを呼べるようにする
-        }
-        if (callbacks) {
-            if (callbacks.bgmPlayerId != null) { // 同じbgmPlayerIdのcallbacksがあれば上書きする(処理軽量化)
-                var exists = soundData.decodedCallbacksAry.some(function(c, i) {
-                    if (callbacks.bgmPlayerId == c.bgmPlayerId) {
-                        soundData.decodedCallbacksAry[i] = callbacks;
-                        return true;
-                    }
-                    return false;
-                });
-                if (!exists) {
-                    soundData.decodedCallbacksAry.push(callbacks);
-                }
-            } else {
-                soundData.decodedCallbacksAry.push(callbacks);
-            }
-        }
-
-        if (soundData.isDecoding()) return;
-        soundData.onDecode();
-        var arrayBuffer = soundData.fileData.slice(0);
-        var that = this;
-        if (soundData.url.match(/\.(midi?)$/) || soundData.url.match(/^data:audio\/mid/)) {
-            // Midi
-            // PicoAudio.jsにデコードしてもらう
-            if (this.picoAudio == null) {
-                this.picoAudio = new PicoAudio(this.context);
-            }
-            var smf = new Uint8Array(arrayBuffer);
-            var data = this.picoAudio.parseSMF(smf);
-            if (typeof data == "string") { // parseSMF Error
-                console.log('T2MediaLib: Error parseSMF()', data);
-                this.soundDataAry[idx].onError("DECODE_ERROR");
-                soundData.decodedCallbacksAry.forEach(function(callbacks) {
-                    if (typeof callbacks.err == "function") {
-                        callbacks.err(idx, this.soundDataAry[idx].errorID);
-                    }
-                });
-                soundData.decodedCallbacksAry = null;
-            } else {
-                this.soundDataAry[idx].onDecodeComplete(data);
-                soundData.decodedCallbacksAry.forEach(function(callbacks) {
-                    if (typeof callbacks.succ == "function") {
-                        callbacks.succ(idx);
-                    }
-                });
-                soundData.decodedCallbacksAry = null;
-            }
-        } else if (soundData.url.match(/\.mzo$/) || soundData.url.match(/^data:audio\/mzo/)) {
-            //console.log("Loading mzo");
-            // MZO
-            Mezonet.init().then(function () {
-                var a=Array.prototype.slice.call( new Uint8Array(arrayBuffer) );
-                that.soundDataAry[idx].onDecodeComplete(new Mezonet.Source(a));
-                soundData.decodedCallbacksAry.forEach(function(callbacks) {
-                    if (typeof callbacks.succ == "function") {
-                        callbacks.succ(idx);
-                    }
-                });
-                soundData.decodedCallbacksAry = null;
-            },function (error) {
-                if (error instanceof Error) {
-                    console.log('T2MediaLib: '+error.message, soundData.url);//@hoge1e3
-                } else {
-                    console.log('T2MediaLib: Error decodeMZO()', soundData.url);//@hoge1e3
-                }
-                that.soundDataAry[idx].onError("DECODE_ERROR");
-                soundData.decodedCallbacksAry.forEach(function(callbacks) {
-                    if (typeof callbacks.err == "function") {
-                        callbacks.err(idx, that.soundDataAry[idx].errorID);
-                    }
-                });
-                soundData.decodedCallbacksAry = null;
-            });
-            /*var m=new Mezonet(this.context,a);//,{wavOutSpeed:50});
-            //m.load(a);
-            m.init().then(function (res) {
-                // デコード中にremoveDecodeSoundData()したらデータを捨てる
-                switch(res.playbackMode.type) {
-                case "Mezonet":
-                that.soundDataAry[idx].onDecodeComplete(m);
-                break;
-                case "AudioBuffer":
-                //console.log(idx, res.decodedData);
-                that.soundDataAry[idx].onDecodeComplete(res.decodedData);
-                break;
-                }
-                soundData.decodedCallbacksAry.forEach(function(callbacks) {
-                    if (typeof callbacks.succ == "function") {
-                        callbacks.succ(idx);
-                    }
-                });
-                soundData.decodedCallbacksAry = null;
-            },function (error) {
-                if (error instanceof Error) {
-                    console.log('T2MediaLib: '+error.message, soundData.url);//@hoge1e3
-                } else {
-                    console.log('T2MediaLib: Error decodeMZO()', soundData.url);//@hoge1e3
-                }
-                that.soundDataAry[idx].onError("DECODE_ERROR");
-                soundData.decodedCallbacksAry.forEach(function(callbacks) {
-                    if (typeof callbacks.err == "function") {
-                        callbacks.err(idx, that.soundDataAry[idx].errorID);
-                    }
-                });
-                soundData.decodedCallbacksAry = null;
-            }).finally(function () {
-                m.terminate();
-            });*/
-        } else {
-            // MP3, Ogg, AAC, WAV
-
-            // Oggループタグ(LOOPSTART, LOOPLENGTH)をファイルから探す
-            if (soundData.url.match(/\.(ogg?)$/) || soundData.url.match(/^data:audio\/ogg/)) {
-                var retAry = this.searchOggLoop(arrayBuffer);
-                soundData.tagLoopStart = retAry[0];
-                soundData.tagLoopEnd = retAry[1];
-            }
-
-            var successCallback = function(audioBuffer) {
-                // デコード中にremoveDecodeSoundData()したらデータを捨てる
-                if (that.soundDataAry[idx].isDecoding()) {
-                    that.soundDataAry[idx].onDecodeComplete(audioBuffer);
-                    soundData.decodedCallbacksAry.forEach(function(callbacks) {
-                        if (typeof callbacks.succ == "function") {
-                            callbacks.succ(idx);
-                        }
-                    });
-                    soundData.decodedCallbacksAry = null;
-                }
-            };
-            var errorCallback = function(error) {
-                if (error instanceof Error) {
-                    console.log('T2MediaLib: '+error.message, soundData.url);//@hoge1e3
-                } else {
-                    console.log('T2MediaLib: Error decodeAudioData()', soundData.url);//@hoge1e3
-                }
-                that.soundDataAry[idx].onError("DECODE_ERROR");
-                soundData.decodedCallbacksAry.forEach(function(callbacks) {
-                    if (typeof callbacks.err == "function") {
-                        callbacks.err(idx, that.soundDataAry[idx].errorID);
-                    }
-                });
-                soundData.decodedCallbacksAry = null;
-            };
-            this.context.decodeAudioData(arrayBuffer, successCallback, errorCallback);
-        }
-    };
-    // 無音サウンドを鳴らしWeb Audio APIを使えるようにする(iOS対策)
-    // Chrome Autoplay Policy 対策
-    T2MediaLib.prototype.activate = function () {
-        this.init();
-        if (!this.context) return;
-        if (!this.isContextResumed && this.context.resume) { // fix Autoplay Policy in Chrome
-            var that = this;
-            this.context.resume().then(function () {
-                that.isContextResumed = true;
-            });
-        }
-        if (this.isActivated) return;
-        this.isActivated=true;
-        var buffer = this.context.createBuffer(1, Math.floor(this.context.sampleRate/32), this.context.sampleRate);
-        var ary = buffer.getChannelData(0);
-        for (var i = 0; i < ary.length; i++) {
-             ary[i] = 0; // 無音化
-        }
-        var source = this.context.createBufferSource();
-        source.buffer = buffer;
-        source.connect(this.context.destination);
-        source.start = source.start || source.noteOn;
-        source.start(0);
-    };
-    // 指定したサウンドのファイルデータを返す
-    T2MediaLib.prototype.getSoundFileData = function(idx) {
-        var soundDataObj = this.soundDataAry[idx];
-        if (soundDataObj) {
-            return soundDataObj.fileData;
-        } else {
-            return null;
-        }
-    };
-    // 指定したサウンドのデコード済みデータを返す
-    T2MediaLib.prototype.getSoundDecodedData = function(idx) {
-        var soundDataObj = this.soundDataAry[idx];
-        if (soundDataObj) {
-            return soundDataObj.decodedData;
-        } else {
-            return null;
-        }
-    };
-    // AudioContextのcurrentTimeを返す
-    T2MediaLib.prototype.getCurrentTime = function () {//@hoge1e3
-        if (!this.context) return null;
-        return this.context.currentTime;
-    };
-
-    // SEメソッド郡 //
-
-    T2MediaLib.prototype.playSE = function(idx, vol, pan, rate, offset, loop, loopStart, loopEnd,start,duration) {//add start,duration by @hoge1e3
-        if (!this.context) return null;
-        var soundData = this.soundDataAry[idx];
-        if (soundData == null) return null;
-        if (!soundData.isDecodeComplete()) {
-            var that = this;
-            var callbacks = {};
-            callbacks.succ = function(idx) {
-                that.playSE(idx, vol, pan, rate, offset, loop, loopStart, loopEnd,start,duration);//@hoge1e3
-            };
-            callbacks.err = function() {
-            };
-            this.decodeSound(idx, callbacks);
-            return null;
-        }
-        if (isMezonetSource(soundData.decodedData)) {
-            var playback=soundData.decodedData.playback(this.context);
-            playback.Start();
-            return playback;
-        }
-
-        var audioBuffer = soundData.decodedData;
-        if (!(audioBuffer instanceof AudioBuffer)) return null;
-
-        // 引数チェック
-        if (vol == null) {
-            vol = 1.0;
-        }
-        if (pan == null) {
-            pan = 0.0;
-        }
-        if (!rate) rate = 1.0;
-        if (!offset) {
-            offset = 0;
-        } else {
-            if      (offset > audioBuffer.duration) offset = audioBuffer.duration;
-            else if (offset < 0.0) offset = 0.0;
-        }
-        var durationStart = duration;
-        if (!duration) {
-            //duration=undefined; // iOS9でduration==undefinedだとsource.start(start, offset, duration);でエラー発生する
-            durationStart = 86400; // Number.MAX_SAFE_INTEGERを入れてもiOS9ではエラー起きないけど、昔なんかの環境で数値大き過ぎるとエラーになって86400(24時間)に設定した気がする
-        }
-        if (!loop) loop = false;
-        if (!loopStart) {
-            loopStart = soundData.loopStart||0.0;
-        } else {
-            if      (loopStart < 0.0) loopStart = 0.0;
-            else if (loopStart > audioBuffer.duration) loopStart = audioBuffer.duration;
-        }
-        if (!loopEnd) {
-            loopEnd = audioBuffer.duration;
-        } else {
-            if      (loopEnd < 0.0) loopEnd = 0.0;
-            else if (loopEnd > audioBuffer.duration) loopEnd = audioBuffer.duration;
-        }
-        start=start||0;//@hoge1e3
-
-        var source = this.context.createBufferSource();
-        this.context.createGain = this.context.createGain || this.context.createGainNode;
-        var gainNode = this.context.createGain();
-        var panNode = this.context.createPanner();
-
-        source.buffer = audioBuffer;
-        source.loop = loop;
-        source.loopStart = loopStart;
-        source.loopEnd = loopEnd;//audioBuffer.duration;
-        source.playbackRate.value = rate;
-
-        // 音量＆パン設定
-        source.connect(gainNode);
-        gainNode.connect(panNode);
-        panNode.connect(this.context.destination);
-        panNode.panningModel = "equalpower";
-        if      (pan < -1.0) pan = -1.0;
-        else if (pan >  1.0) pan =  1.0;
-        var panAngle = pan * 90;
-        var panX = Math.sin(panAngle * (Math.PI / 180));
-        var panZ = -Math.cos(panAngle * (Math.PI / 180));
-        if (pan === -1.0 || pan === 1.0) panZ = 0; // 6.123233995736766e-17となるので0にしておく
-        if (panNode.positionX) {
-            panNode.positionX.value = panX;
-            panNode.positionY.value = 0;
-            panNode.positionZ.value = panZ;
-        } else {
-            panNode.setPosition(panX, 0, panZ);
-        }
-        // 左右どちらかにパンがよると、音量が大きくなるので半減する
-        //gainNode.gain.value = vol / (1 + Math.abs(pan));
-        // ↑パンはそいうものらしいので、音量はそのままにする
-        gainNode.gain.value = vol * this.seMasterVolume * this.masterVolume;
-
-        // ループ開始位置修正
-        var offset_adj;
-        if (loop && loopEnd - loopStart > 0 && offset > loopEnd) {
-            offset_adj = loopEnd;
-        } else {
-            offset_adj = offset;
-        }
-
-        // 変数追加
-        source.gainNode = gainNode;
-        source.volumeValue = vol;
-        source.panNode = panNode;
-        source.panValue = pan;
-        source.playStartTime = this.context.currentTime+start;//@hoge1e3
-        source.playOffset = offset_adj;
-        source.plusTime = offset_adj;
-
-        // 再生
-        source.start = source.start || source.noteOn;
-        source.stop  = source.stop  || source.noteOff;
-        source.start(start, offset, durationStart);
-        // iOS, Firefoxではloopがtrueのときdurationを指定しても止まらない
-        // iOSではstopを２回以上呼ぶと、InvalidStateErrorが発生するので注意
-        if (loop && duration != null) source.stop(start + duration);
-        var t=this;
-        t.seSources.push(source);
-        source.onended = function(event) {
-            source.onended = null;
-            var idx=t.seSources.indexOf(source);
-            if (idx>=0) t.seSources.splice(idx,1);
-        };
-        return source;
-    };
-    T2MediaLib.prototype.stopSE = function(sourceObj) {
-        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
-        try {
-            sourceObj.stop(0);
-        } catch(e) { // iOS対策
-            // iOSではstopを２回以上呼ぶと、InvalidStateErrorが発生する
-            if (sourceObj.gainNode) {
-                sourceObj.gainNode.gain.cancelScheduledValues(this.context.currentTime);
-                sourceObj.gainNode.gain.linearRampToValueAtTime(0, this.context.currentTime);
-            }
-        }
-        return sourceObj;
-    };
-    T2MediaLib.prototype.stopAllSE = function(sourceObj) {
-        var t=this;
-        this.seSources.forEach(function (s) {
-            t.stopSE(s);
-        });
-    };
-    T2MediaLib.prototype.getSEMasterVolume = function() {
-        return this.seMasterVolume;
-    };
-    T2MediaLib.prototype.setSEMasterVolume = function(vol) {
-        this.seMasterVolume = vol;
-    };
-    T2MediaLib.prototype.getSEVolume = function(sourceObj) {
-        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
-        return sourceObj.volumeValue;
-    };
-    T2MediaLib.prototype.setSEVolume = function(sourceObj, vol) {
-        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
-        sourceObj.gainNode.gain.value = vol * this.seMasterVolume * this.masterVolume;
-        sourceObj.volumeValue = vol;
-        return sourceObj;
-    };
-    T2MediaLib.prototype.getSERate = function(sourceObj) {
-        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
-        return sourceObj.playbackRate.value;
-    };
-    T2MediaLib.prototype.setSERate = function(sourceObj, rate) {
-        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
-        sourceObj.playbackRate.value = rate;
-    };
-    T2MediaLib.prototype.getSEPan = function(sourceObj) {
-        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
-        return sourceObj.panValue;
-    };
-    T2MediaLib.prototype.setSEPan = function(sourceObj, pan) {
-        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
-        var panNode = sourceObj.panNode;
-        if      (pan < -1.0) pan = -1.0;
-        else if (pan >  1.0) pan =  1.0;
-        var panAngle = pan * 90;
-        var panX = Math.sin(panAngle * (Math.PI / 180));
-        var panZ = Math.cos(panAngle * (Math.PI / 180));
-        if (pan === -1.0 || pan === 1.0) panZ = 0; // 6.123233995736766e-17となるので0にしておく
-        if (panNode.positionX) {
-            panNode.positionX.value = panX;
-            panNode.positionY.value = 0;
-            panNode.positionZ.value = panZ;
-        } else {
-            panNode.setPosition(panX, 0, panZ);
-        }
-        sourceObj.panValue = pan;
-    };
-    T2MediaLib.prototype.isSELoop = function(sourceObj) {
-        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
-        return sourceObj.loop;
-    };
-    T2MediaLib.prototype.setSELoop = function(sourceObj, loop) {
-        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
-        sourceObj.loop = loop;
-    };
-    T2MediaLib.prototype.getSELoopStartTime = function(sourceObj) {
-        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
-        return sourceObj.loopStart;
-    };
-    T2MediaLib.prototype.setSELoopStartTime = function(sourceObj, loopStart) {
-        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
-        sourceObj.loopStart = loopStart;
-    };
-    T2MediaLib.prototype.getSELoopEndTime = function(sourceObj) {
-        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
-        return sourceObj.loopEnd;
-    };
-    T2MediaLib.prototype.setSELoopEndTime = function(sourceObj, loopEnd) {
-        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
-        sourceObj.loopEnd = loopEnd;
-    };
-
-    // BGMメソッド郡 //
-
-    T2MediaLib.prototype.playBGM = function(id, idx, loop, offset, loopStart, loopEnd) {
-        if (!this.context) return null;
-        var bgmPlayer = this._getBgmPlayer(id);
-        if (!bgmPlayer) return null;
-        return bgmPlayer.playBGM(idx, loop, offset, loopStart, loopEnd);
-    };
-    T2MediaLib.prototype.stopBGM = function(id) {
-        var bgmPlayer = this._getBgmPlayer(id);
-        if (!bgmPlayer) return null;
-        return bgmPlayer.stopBGM();
-    };
-    T2MediaLib.prototype.pauseBGM = function(id) {
-        var bgmPlayer = this._getBgmPlayer(id);
-        if (!bgmPlayer) return null;
-        return bgmPlayer.pauseBGM();
-    };
-    T2MediaLib.prototype.resumeBGM = function(id) {
-        var bgmPlayer = this._getBgmPlayer(id);
-        if (!bgmPlayer) return null;
-        return bgmPlayer.resumeBGM();
-    };
-    T2MediaLib.prototype.getBGMMasterVolume = function() {
-        return this.bgmMasterVolume;
-    };
-    T2MediaLib.prototype.setBGMMasterVolume = function(vol) {
-        this.bgmMasterVolume = vol;
-        for (var i=0; i<this.bgmPlayerMax; i++) {
-            var bgmPlayer = this.bgmPlayerAry[i];
-            if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) continue;
-            bgmPlayer.onChangeBGMMasterVolume();
-        }
-    };
-    T2MediaLib.prototype.getBGMVolume = function(id) {
-        var bgmPlayer = this._getBgmPlayer(id);
-        if (!bgmPlayer) return null;
-        return bgmPlayer.getBGMVolume();
-    };
-    T2MediaLib.prototype.setBGMVolume = function(id, vol) {
-        var bgmPlayer = this._getBgmPlayer(id);
-        if (!bgmPlayer) return null;
-        return bgmPlayer.setBGMVolume(vol);
-    };
-    T2MediaLib.prototype.getBGMTempo = function(id) {
-        var bgmPlayer = this._getBgmPlayer(id);
-        if (!bgmPlayer) return null;
-        return bgmPlayer.getBGMTempo();
-    };
-    T2MediaLib.prototype.setBGMTempo = function(id, tempo) {
-        var bgmPlayer = this._getBgmPlayer(id);
-        if (!bgmPlayer) return null;
-        return bgmPlayer.setBGMTempo(tempo);
-    };
-    T2MediaLib.prototype.getBGMPan = function(id) {
-        var bgmPlayer = this._getBgmPlayer(id);
-        if (!bgmPlayer) return null;
-        return bgmPlayer.getBGMPan();
-    };
-    T2MediaLib.prototype.setBGMPan = function(id, pan) {
-        var bgmPlayer = this._getBgmPlayer(id);
-        if (!bgmPlayer) return null;
-        return bgmPlayer.setBGMPan(pan);
-    };
-    T2MediaLib.prototype.isBGMLoop = function(id) {
-        var bgmPlayer = this._getBgmPlayer(id);
-        if (!bgmPlayer) return null;
-        return bgmPlayer.isBGMLoop();
-    };
-    T2MediaLib.prototype.setBGMLoop = function(id, loop) {
-        var bgmPlayer = this._getBgmPlayer(id);
-        if (!bgmPlayer) return null;
-        return bgmPlayer.setBGMLoop(loop);
-    };
-    T2MediaLib.prototype.getBGMLoopStartTime = function(id) {
-        var bgmPlayer = this._getBgmPlayer(id);
-        if (!bgmPlayer) return null;
-        return bgmPlayer.getBGMLoopStartTime();
-    };
-    T2MediaLib.prototype.setBGMLoopStartTime = function(id, loopStart) {
-        var bgmPlayer = this._getBgmPlayer(id);
-        if (!bgmPlayer) return null;
-        return bgmPlayer.setBGMLoopStartTime(loopStart);
-    };
-    T2MediaLib.prototype.getBGMLoopEndTime = function(id) {
-        var bgmPlayer = this._getBgmPlayer(id);
-        if (!bgmPlayer) return null;
-        return bgmPlayer.getBGMLoopEndTime();
-    };
-    T2MediaLib.prototype.setBGMLoopEndTime = function(id, loopEnd) {
-        var bgmPlayer = this._getBgmPlayer(id);
-        if (!bgmPlayer) return null;
-        return bgmPlayer.setBGMLoopEndTime(loopEnd);
-    };
-    T2MediaLib.prototype.getBGMCurrentTime = function(id) {
-        var bgmPlayer = this._getBgmPlayer(id);
-        if (!bgmPlayer) return null;
-        return bgmPlayer.getBGMCurrentTime();
-    };
-    T2MediaLib.prototype.getBGMLength = function(id) {
-        var bgmPlayer = this._getBgmPlayer(id);
-        if (!bgmPlayer) return null;
-        return bgmPlayer.getBGMLength();
-    };
-    T2MediaLib.prototype.getPlayingBGMName = function(id) {
-        var bgmPlayer = this._getBgmPlayer(id);
-        if (!bgmPlayer) return null;
-        return bgmPlayer.getPlayingBGMName();
-    };
-    T2MediaLib.prototype.setOnBGMEndListener = function(id, listener) {
-        var bgmPlayer = this._getBgmPlayer(id);
-        if (!bgmPlayer) return null;
-        return bgmPlayer.setOnBGMEndListener(listener);
-    };
-    T2MediaLib.prototype.getPlayingBGMState = function(id) {
-        var bgmPlayer = this._getBgmPlayer(id);
-        if (!bgmPlayer) return null;
-        return bgmPlayer.getPlayingBGMState();
-    };
-    T2MediaLib.prototype.getBGMPicoAudio = function(id) {
-        var bgmPlayer = this._getBgmPlayer(id);
-        if (!bgmPlayer) return null;
-        return bgmPlayer.getBGMPicoAudio();
-    };
-    T2MediaLib.prototype.isTagLoop = function(id) {
-        var bgmPlayer = this._getBgmPlayer(id);
-        if (!bgmPlayer) return null;
-        return bgmPlayer.isTagLoop();
-    };
-    T2MediaLib.prototype.setTagLoop = function(id, isTagLoop) {
-        var bgmPlayer = this._getBgmPlayer(id);
-        if (!bgmPlayer) return null;
-        return bgmPlayer.setTagLoop(isTagLoop);
-    };
-    T2MediaLib.prototype.getBGMPlayerMax = function() {
-        return this.bgmPlayerMax;
-    };
-    T2MediaLib.prototype.allStopBGM = function() {
-        for (var i=0; i<this.bgmPlayerMax; i++) {
-            this.stopBGM(i);
-        }
-    };
-    T2MediaLib.prototype.allResetBGM = function() {
-        for (var i=0; i<this.bgmPlayerMax; i++) {
-            this.stopBGM(i);
-            this.setBGMVolume(i, 1.0);
-            this.setBGMTempo(i, 1.0);
-            this.setBGMPan(i, 0.0);
-        }
-        this.setMasterVolume(1.0);
-        this.setSEMasterVolume(1.0);
-        this.setBGMMasterVolume(1.0);
-    };
-    T2MediaLib.prototype._getBgmPlayer = function(id) {
-        if (id < 0 || this.bgmPlayerMax <= id) return null;
-        var bgmPlayer = this.bgmPlayerAry[id];
-        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
-        return bgmPlayer;
-    };
-
-    // Audioメソッド郡 //
-
-    T2MediaLib.prototype.loadAudio = function(idx, url) {
-        var audio = new Audio(url);
-        audio.play();
-
-        this.audioDataAry.data[idx] = null;
-
-        var that = this;
-        audio.addEventListener('loadstart', function() {
-            if (!that.context) return null;
-            var source = that.context.createMediaElementSource(audio);
-            source.connect(that.context.destination);
-        }, false);
-
-        audio.addEventListener('canplay', function() {
-            this.audioDataAry.data[idx] = audio;
-        }, false);
-
-        audio.load();
-
-    };
-    T2MediaLib.prototype.playAudio = function(idx, loop, startTime) {
-        var audio = this.audioDataAry.data[idx];
-        if (!audio) return null;
-        if (!startTime) startTime = 0;
-
-        if (this.playingAudio instanceof Audio) {
-            this.playingAudio.pause();
-            this.playingAudio.currentTime = 0;
-        }
-        this.playingAudio = audio;
-        audio.loop = loop;
-        audio.volume = this.audioVolume;
-        audio.currentTime = startTime;
-        audio.play();
-        return audio;
-    };
-    T2MediaLib.prototype.stopAudio = function() {
-        var audio = this.playingAudio;
-        if (!(audio instanceof Audio)) return null;
-        audio.pause();
-        audio.currentTime = 0;
-        this.playingAudio = null;
-        return audio;
-    };
-    T2MediaLib.prototype.pauseAudio = function() {
-        var audio = this.playingAudio;
-        if (!audio) return null;
-        audio.pause();
-        return audio;
-    };
-    T2MediaLib.prototype.resumeAudio = function() {
-        var audio = this.playingAudio;
-        if (!audio) return null;
-        audio.play();
-        return audio;
-    };
-    T2MediaLib.prototype.setAudioVolume = function(vol) {
-        this.audioVolume = vol;
-        if (this.playingAudio instanceof Audio) {
-            this.playingAudio.volume = vol;
-        }
-    };
-    T2MediaLib.prototype.setAudioTempo = function(tempo) {
-        this.audioTempo = tempo;
-        if (this.playingAudio instanceof Audio) {
-            this.playingAudio.playbackRate = tempo;
-        }
-    };
-    T2MediaLib.prototype.setAudioPosition = function(time) {
-        if (this.playingAudio instanceof Audio) {
-            this.playingAudio.currentTime = time;
-        }
-    };
-    T2MediaLib.prototype.getAudioData = function(idx) {
-        return this.audioDataAry.data[idx];
-    };
-    T2MediaLib.prototype.getAudioCurrentTime = function() {
-        if (!(this.playingAudio instanceof Audio)) return null;
-        return this.playingAudio.currentTime;
-    };
-    T2MediaLib.prototype.getAudioLength = function() {
-        if (!(this.playingAudio instanceof Audio)) return null;
-        return this.playingAudio.duration;
-    };
-
-    // Oggループタグ探す //
-    T2MediaLib.prototype.searchOggLoop = function(arrayBuffer) {
-        var buf = new Uint8Array(arrayBuffer.slice(0, 3000));
-        var str = String.fromCharCode.apply(null, buf);
-        var isVorbis = str.lastIndexOf("vorbis", 0x22);
-        if (isVorbis == -1) return [0, 0]; // Vorbisではない場合、解析しない
-        var startIdx = str.indexOf("LOOPSTART=");
-        var lengthIdx = str.indexOf("LOOPLENGTH=");
-        var loopStart = 0;
-        var loopLength = 0;
-        var sampleRate = buf[40] + (buf[41]<<8) + (buf[42]<<16) + (buf[43]<<24);
-        var tagSize,i,c;
-        if (startIdx != -1) {
-            tagSize = buf[startIdx] + (buf[startIdx+1]<<8) + (buf[startIdx+2]<<16) + (buf[startIdx+3]<<24);
-            for (i=startIdx+10; i<startIdx+tagSize; i++) {
-                c = str[i];
-                if (c < '0' || c > '9') break;
-                loopStart = loopStart*10 + (c - '0');
-            }
-        }
-        if (lengthIdx != -1) {
-            tagSize = buf[lengthIdx] + (buf[lengthIdx+1]<<8) + (buf[lengthIdx+2]<<16) + (buf[lengthIdx+3]<<24);
-            for (i=lengthIdx+11; i<lengthIdx+tagSize; i++) {
-                c = str[i];
-                if (c < '0' || c > '9') break;
-                loopLength = loopLength*10 + (c - '0');
-            }
-        }
-        // 秒に変換
-        var loopEnd = (loopStart + loopLength) / sampleRate;
-        loopStart /= sampleRate;
-        return [loopStart, loopEnd];
-    };
-
-    return T2MediaLib;
-})();
-
-
-
-var T2MediaLib_BGMPlayer = (function(){
-    function isPicoAudio(bgm) {
-        return typeof PicoAudio!=="undefined" && bgm instanceof PicoAudio;
-    }
-    function isMezonetSource(bgm) {
-        return typeof Mezonet!=="undefined" && bgm instanceof Mezonet.Source;
-    }
-    function isMezonetPlayback(bgm) {
-        return typeof Mezonet!=="undefined" && bgm instanceof Mezonet.Playback;
-    }
-    var T2MediaLib_BGMPlayer = function(t2MediaLib, arg_id) {
-        this.t2MediaLib = t2MediaLib;
-        this.id = arg_id;
-        this.playingBGMState = "stop";
-        this.playingBGMStatePending = null;
-        this.playingBGM = null;
-        this.playingBGMName = null;
-        this.bgmPause = 0;
-        this.bgmPauseTime = 0;
-        this.bgmPauseCurrentTime = 0;
-        this.bgmPauseTempo = 0;
-        this.bgmPauseLoop = false;
-        this.bgmPauseLoopStart = 0;
-        this.bgmPauseLoopEnd = 0;
-        this.bgmVolume = 1.0;
-        this.bgmTempo = 1.0;
-        this.bgmPan = 0.0;
-        this.picoAudio = null;//new PicoAudio(this.context);
-        this.picoAudioSetDataBGMName = null; // 前回のsetDataした曲を再び使う場合は、setDataを省略して軽量化する
-        this.PICO_AUDIO_VOLUME_COEF = 1;//0.2;
-        this.isTagLoop = true; // Ogg VorbisファイルにLOOPSTART,LOOPLENGTHのタグが入っている場合、再生時にそれを適用するか
-    };
-
-    // BGM関数郡 //
-
-    T2MediaLib_BGMPlayer.prototype.playBGM = function(idx, loop, offset, loopStart, loopEnd) {
-        this.stopBGM();
-
-        var soundData = this.t2MediaLib.soundDataAry[idx];
-        if (soundData == null) return null;
-        if (!soundData.isDecodeComplete()) {
-            var that = this;
-            var callbacks = {};
-            callbacks.bgmPlayerId = this.id;
-            callbacks.succ = function() {
-                var succFunc = function() {
-                    var pending = that.playingBGMStatePending; // 途中で値が変わるため保存
-                    that._setPlayingBGMState("stop", true);
-                    if (pending != "stop" && that.playingBGMName == idx) {
-                        that.playBGM(idx, loop, offset, loopStart, loopEnd);
-                    }
-                    if (pending == "pause") {
-                        that.pauseBGM();
-                    }
-                };
-                var decodedData = soundData.decodedData;
-                if (decodedData instanceof Object) { // MIDI
-                    // MIDIの場合、デコード後はAudioContext.currenTimeの時間がとんで
-                    // 再生直後、瞬間的に早送り再生みたいになるので、playBGMを一旦処理を後回しにする
-                    setTimeout(function(){succFunc();}, 0);
-                } else { // MP3, Ogg, AAC, WAV
-                    succFunc();
-                }
-            };
-            callbacks.err = function() {
-                that._setPlayingBGMState("stop", true);
-            };
-            this.playingBGMName = idx;
-            this._setPlayingBGMState("decoding", true);
-            this._setPlayingBGMState("play");
-            this.t2MediaLib.decodeSound(idx, callbacks);
-            return this;
-        }
-
-        var decodedData = soundData.decodedData;
-        if (isMezonetSource(decodedData)) {
-            var m=decodedData.playback(this.t2MediaLib.context);
-            this.playingBGM = m;
-            m.Start();
-        } else if (decodedData instanceof AudioBuffer) {
-            // MP3, Ogg, AAC, WAV
-            if (this.isTagLoop) {
-                loopStart = loopStart||soundData.tagLoopStart;
-                loopEnd = loopEnd||soundData.tagLoopEnd;
-            }
-            this.playingBGM = this.t2MediaLib.playSE(idx, this.bgmVolume, this.bgmPan, this.bgmTempo, offset, loop, loopStart, loopEnd);
-        } else if (decodedData instanceof Object) {
-            // Midi
-            this._initPicoAudio();
-            if (idx != this.picoAudioSetDataBGMName) {
-                this.picoAudio.setData(decodedData);
-                this.picoAudioSetDataBGMName = idx;
-            } else {
-                this.picoAudio.initStatus();
-            }
-            this.picoAudio.setLoop(loop);
-            this.picoAudio.setMasterVolume(this.PICO_AUDIO_VOLUME_COEF * this.bgmVolume *
-                 this.t2MediaLib.bgmMasterVolume * this.t2MediaLib.masterVolume);
-            if (!offset) {
-                offset = 0;
-            } else {
-                var bgmLengthTime = this.picoAudio.getTime(Number.MAX_SAFE_INTEGER);
-                if      (offset > bgmLengthTime) offset = bgmLengthTime;
-                else if (offset < 0.0) offset = 0.0;
-            }
-            this.picoAudio.setStartTime(offset);
-            this.picoAudio.play();
-            this.playingBGM = this.picoAudio;
-        }
-        this.playingBGMName = idx;
-        this.bgmPause = 0;
-        this._setPlayingBGMState("play");
-        return this;
-    };
-
-    T2MediaLib_BGMPlayer.prototype.stopBGM = function() {
-        var bgm = this.playingBGM;
-        if (isMezonetPlayback(bgm)){
-            bgm.Stop();
-        } else if (isPicoAudio(bgm)) {
-            // Midi
-            this.picoAudio.stop();
-        } else if (bgm instanceof AudioBufferSourceNode) {
-            // MP3, Ogg, AAC, WAV
-            try {
-                bgm.stop(0);
-            } catch(e) { // iOS対策
-                // iOSではstopを２回以上呼ぶと、InvalidStateErrorが発生する
-                if (bgm.gainNode) {
-                    bgm.gainNode.gain.cancelScheduledValues(this.t2MediaLib.context.currentTime);
-                    bgm.gainNode.gain.linearRampToValueAtTime(0, this.t2MediaLib.context.currentTime);
-                }
-            }
-        }
-        this.playingBGM = null;
-        this.playingBGMName = null;
-        this._setPlayingBGMState("stop");
-        return this;
-    };
-
-    T2MediaLib_BGMPlayer.prototype.pauseBGM = function() {
-        var bgm = this.playingBGM;
-        if (isMezonetPlayback(bgm)){
-            bgm.pause();
-        } else if (isPicoAudio(bgm)) {
-            // Midi
-            if (this.bgmPause === 0) {
-                this.bgmPauseTime = this.getBGMCurrentTime();
-                this.bgmPauseCurrentTime = bgm.context.currentTime;
-                bgm.stop();
-                this.bgmPause = 1;
-            }
-        } else if (bgm instanceof AudioBufferSourceNode) {
-            // MP3, Ogg, AAC, WAV
-            if (this.bgmPause === 0) {
-                this.bgmPauseTime = this.getBGMCurrentTime();
-                this.bgmPauseLoopStart = this.t2MediaLib.getSELoopStartTime(bgm);
-                this.bgmPauseLoopEnd = this.t2MediaLib.getSELoopEndTime(bgm);
-                this.bgmPauseLoop = this.t2MediaLib.isSELoop(bgm);
-                this.bgmPauseCurrentTime = bgm.context.currentTime;
-                this.bgmPauseTempo = this.bgmTempo;
-                try {
-                    bgm.stop(0);
-                } catch(e) { // iOS対策
-                    // iOSではstopを２回以上呼ぶと、InvalidStateErrorが発生する
-                    if (bgm.gainNode) {
-                        bgm.gainNode.gain.cancelScheduledValues(this.t2MediaLib.context.currentTime);
-                        bgm.gainNode.gain.linearRampToValueAtTime(0, this.t2MediaLib.context.currentTime);
-                    }
-                }
-                this.bgmPause = 1;
-            }
-        }
-        if (this.playingBGMState != "stop") {
-            this._setPlayingBGMState("pause");
-        }
-        return this;
-    };
-
-    T2MediaLib_BGMPlayer.prototype.resumeBGM = function() {
-        var bgm = this.playingBGM;
-        if (isMezonetPlayback(bgm)){
-            bgm.resume();
-        } else if (isPicoAudio(bgm)) {
-            // Midi
-            if (this.bgmPause === 1) {
-                bgm.play();
-                this.bgmPause = 0;
-            }
-        } else if (bgm instanceof AudioBufferSourceNode) {
-            // MP3, Ogg, AAC, WAV
-            if (this.bgmPause === 1) {
-                bgm = this.playBGM(this.playingBGMName, this.bgmPauseLoop, this.bgmPauseTime, this.bgmPauseLoopStart, this.bgmPauseLoopEnd);
-            }
-        }
-        return this;
-    };
-
-    T2MediaLib_BGMPlayer.prototype.onChangeBGMMasterVolume = function() {
-        this.setBGMVolume(this.getBGMVolume());
-    };
-
-    T2MediaLib_BGMPlayer.prototype.getBGMVolume = function() {
-        return this.bgmVolume;
-    };
-
-    T2MediaLib_BGMPlayer.prototype.setBGMVolume = function(vol) {
-        var bgm = this.playingBGM;
-        this.bgmVolume = vol;
-        if (isMezonetPlayback(bgm)){
-            bgm.setVolume(vol);
-        } else if (isPicoAudio(bgm)) {
-            // Midi
-            this.picoAudio.setMasterVolume(this.PICO_AUDIO_VOLUME_COEF * vol * this.t2MediaLib.bgmMasterVolume * this.t2MediaLib.masterVolume);
-        } else if (bgm instanceof AudioBufferSourceNode) {
-            // MP3, Ogg, AAC, WAV
-            bgm.gainNode.gain.value = vol * this.t2MediaLib.bgmMasterVolume * this.t2MediaLib.masterVolume;
-            //↓seMasterVolumeが音量に乗算されてしまう
-            //this.t2MediaLib.setSEVolume(bgm, vol);
-        }
-        return this;
-    };
-
-    T2MediaLib_BGMPlayer.prototype.getBGMTempo = function() {
-        return this.bgmTempo;
-    };
-
-    T2MediaLib_BGMPlayer.prototype.setBGMTempo = function(tempo) {
-        // MP3, Ogg, AAC, WAV
-        var bgm = this.playingBGM;
-
-        if (tempo <= 0 || isNaN(tempo)) tempo = 1;
-        if (isMezonetPlayback(bgm)){
-            bgm.setRate(tempo);
-            return this;
-        } else if ((bgm instanceof AudioBufferSourceNode) && this.bgmPause === 0) {
-            bgm.plusTime -= (this.t2MediaLib.context.currentTime - bgm.playStartTime) * (tempo - this.bgmTempo);
-        }
-        this.bgmTempo = tempo;
-        this.t2MediaLib.setSERate(bgm, tempo);
-        return this;
-    };
-
-    T2MediaLib_BGMPlayer.prototype.getBGMPan = function() {
-        return this.bgmPan;
-    };
-
-    T2MediaLib_BGMPlayer.prototype.setBGMPan = function(pan) {
-        var bgm = this.playingBGM;
-        this.bgmPan = pan;
-        if (bgm instanceof AudioBufferSourceNode) {
-            // MP3, Ogg, AAC, WAV
-            this.t2MediaLib.setSEPan(bgm, pan);
-        }
-        return this;
-    };
-
-    T2MediaLib_BGMPlayer.prototype.isBGMLoop = function() {
-        var bgm = this.playingBGM;
-        if (isPicoAudio(bgm)) {
-            // Midi
-            return this.picoAudio.isLoop();
-        } else if (bgm instanceof AudioBufferSourceNode) {
-            // MP3, Ogg, AAC, WAV
-            if (this.bgmPause === 1) {
-                return this.bgmPauseLoop;
-            } else {
-                return this.t2MediaLib.isSELoop(bgm);
-            }
-        }
-        return null;
-    };
-
-    T2MediaLib_BGMPlayer.prototype.setBGMLoop = function(loop) {
-        var bgm = this.playingBGM;
-        if (isPicoAudio(bgm)) {
-            // Midi
-            this.picoAudio.setLoop(loop);
-        } else if (bgm instanceof AudioBufferSourceNode) {
-            // MP3, Ogg, AAC, WAV
-            if (this.bgmPause === 1) {
-                this.bgmPauseLoop = loop;
-            } else {
-                this.t2MediaLib.setSELoop(bgm, loop);
-            }
-        }
-        return this;
-    };
-
-    T2MediaLib_BGMPlayer.prototype.getBGMLoopStartTime = function() {
-        var bgm = this.playingBGM;
-        if (isPicoAudio(bgm)) {
-            // Midi
-            return 0;
-        } else if (bgm instanceof AudioBufferSourceNode) {
-            // MP3, Ogg, AAC, WAV
-            if (this.bgmPause === 1) {
-                return this.bgmPauseLoopStart;
-            } else {
-                return this.t2MediaLib.getSELoopStartTime(bgm);
-            }
-        }
-        return null;
-    };
-
-    T2MediaLib_BGMPlayer.prototype.setBGMLoopStartTime = function(loopStart) {
-        var bgm = this.playingBGM;
-        if (bgm instanceof AudioBufferSourceNode) {
-            // MP3, Ogg, AAC, WAV
-            if (this.bgmPause === 1) {
-                this.bgmPauseLoopStart = loopStart;
-            } else {
-                return this.t2MediaLib.setSELoopStartTime(bgm, loopStart);
-            }
-        }
-        return this;
-    };
-
-    T2MediaLib_BGMPlayer.prototype.getBGMLoopEndTime = function() {
-        var bgm = this.playingBGM;
-        if (isPicoAudio(bgm)) {
-            // Midi
-            return this.getBGMLength();
-        } else if (bgm instanceof AudioBufferSourceNode) {
-            // MP3, Ogg, AAC, WAV
-            if (this.bgmPause === 1) {
-                return this.bgmPauseLoopEnd;
-            } else {
-                return this.t2MediaLib.getSELoopEndTime(bgm);
-            }
-        }
-        return null;
-    };
-
-    T2MediaLib_BGMPlayer.prototype.setBGMLoopEndTime = function(loopEnd) {
-        var bgm = this.playingBGM;
-        if (bgm instanceof AudioBufferSourceNode) {
-            // MP3, Ogg, AAC, WAV
-            if (this.bgmPause === 1) {
-                this.bgmPauseLoopEnd = loopEnd;
-            } else {
-                return this.t2MediaLib.setSELoopEndTime(bgm, loopEnd);
-            }
-        }
-        return this;
-    };
-
-    T2MediaLib_BGMPlayer.prototype.getBGMCurrentTime = function() {
-        var bgm = this.playingBGM;
-        var time;
-        if (isMezonetPlayback(bgm)){
-            return bgm.getTrackTime();
-        } else if (isPicoAudio(bgm)) {
-            // Midi
-            if (this.bgmPause === 0) {
-                time = this.picoAudio.context.currentTime - this.picoAudio.states.startTime;
-            } else {
-                time = this.bgmPauseTime;
-            }
-            return time;
-        } else if (bgm instanceof AudioBufferSourceNode) {
-            // MP3, Ogg, AAC, WAV
-            var time2, currenTime, tempo, plusTime, minusTime, mod;
-
-            if (this.bgmPause === 0) {
-                currenTime = this.t2MediaLib.context.currentTime;
-                tempo = this.bgmTempo;
-            } else {
-                currenTime = this.bgmPauseCurrentTime;
-                tempo = this.bgmPauseTempo;
-            }
-
-            time2 = (currenTime - bgm.playStartTime) * tempo + bgm.plusTime;
-            if (bgm.loop) {
-                if (bgm.loopEnd - bgm.loopStart > 0) { // ループ範囲正常
-
-                    if (time2 < bgm.loopStart) { // ループ範囲前
-                        plusTime  = 0;
-                        minusTime = 0;
-                        mod = bgm.buffer.duration;
-                    } else { // ループ範囲内
-                        plusTime  = bgm.loopStart;
-                        minusTime = bgm.loopStart;
-                        mod = bgm.loopEnd - bgm.loopStart;
-                    }
-                } else { // ループ範囲マイナス（ループ無効）
-                    mod = bgm.buffer.duration;
-                    plusTime = 0;
-                    minusTime = 0;
-                }
-            }
-
-            if (bgm.loop) {
-                time = ((time2 - minusTime) % mod) + plusTime;
-            } else {
-                time = time2;
-                if (time > bgm.buffer.duration) time = bgm.buffer.duration;
-            }
-            return time;
-        }
-        return null;
-    };
-
-    T2MediaLib_BGMPlayer.prototype.getBGMLength = function() {
-        var bgm = this.playingBGM;
-        if (isPicoAudio(bgm)) {
-            // Midi
-            return this.picoAudio.getTime(Number.MAX_SAFE_INTEGER);
-        } else if (bgm instanceof AudioBufferSourceNode) {
-            // MP3, Ogg, AAC, WAV
-            return bgm.buffer.duration;
-        }
-        return null;
-    };
-
-    T2MediaLib_BGMPlayer.prototype.getPlayingBGMName = function() {
-        return this.playingBGMName;
-    };
-
-    T2MediaLib_BGMPlayer.prototype.setOnBGMEndListener = function(listener) {
-        if (this.picoAudio != null) {
-            this.picoAudio.setOnSongEndListener(listener);
-        }
-    };
-
-    T2MediaLib_BGMPlayer.prototype.getPlayingBGMState = function() {
-        return this.playingBGMState;
-    };
-
-    T2MediaLib_BGMPlayer.prototype.getBGMPicoAudio = function() {
-        this._initPicoAudio();
-        return this.picoAudio;
-    };
-
-    T2MediaLib_BGMPlayer.prototype.isTagLoop = function() {
-        return this.isTagLoop;
-    };
-
-    T2MediaLib_BGMPlayer.prototype.setTagLoop = function(isTagLoop) {
-        this.isTagLoop = isTagLoop;
-    };
-
-    T2MediaLib_BGMPlayer.prototype._setPlayingBGMState = function(state, force) {
-        if (force || this.playingBGMState != "decoding") {
-            this.playingBGMState = state;
-            this.playingBGMStatePending = null;
-        } else {
-            this.playingBGMStatePending = state;
-        }
-    };
-
-    T2MediaLib_BGMPlayer.prototype._initPicoAudio = function() {
-        if (this.picoAudio == null) {
-            if (this.id == 0) {
-                this.picoAudio = this.t2MediaLib.picoAudio; // 0番目はT2MediaLib.picoAudioを使いまわす（初期化に時間がかかるため）
-            }
-            if (this.picoAudio == null) {
-                this.picoAudio = new PicoAudio(this.t2MediaLib.context, this.t2MediaLib.picoAudio); // AudioContextオブジェクトがmax6つまで？なので使いまわす
-            }
-        }
-    };
-
-    return T2MediaLib_BGMPlayer;
-})();
-
-
-
-var T2MediaLib_SoundData = (function(){
-    var T2MediaLib_SoundData = function(idx, url) {
-        // "none"    :データなし
-        // "loading" :読み込み中
-        // "loaded"  :読み込み完了
-        // "decoding":デコード中
-        // "decoded" :デコード完了
-        // "error"   :エラー
-        this.idx = idx;
-        this.state = "none";
-        this.errorID = null;
-        this.url = null;
-        this.fileData = null;
-        this.decodedData = null;
-        this.decodedCallbacksAry = null;
-        this.tagLoopStart = 0;
-        this.tagLoopEnd = 0;
-    };
-
-    T2MediaLib_SoundData.prototype.onLoad = function(url) {
-        this.state = "loading";
-        this.url = url;
-    };
-
-    T2MediaLib_SoundData.prototype.onLoadComplete = function(data) {
-        this.state = "loaded";
-        this.fileData = data;
-    };
-
-    T2MediaLib_SoundData.prototype.onDecode = function() {
-        this.state = "decoding";
-    };
-
-    T2MediaLib_SoundData.prototype.onDecodeComplete = function(data) {
-        this.state = "decoded";
-        this.decodedData = data;
-    };
-
-    T2MediaLib_SoundData.prototype.onError = function(errorID) {
-        this.state = "error";
-        this.errorID = errorID;
-    };
-
-    T2MediaLib_SoundData.prototype.isNone = function() {
-        return this.state == "none";
-    };
-
-    T2MediaLib_SoundData.prototype.isLoadComplete = function() {
-        switch(this.state) {
-            case "loaded":
-            case "decoding":
-            case "decoded":
-                return true;
-        }
-        return false;
-    };
-
-    T2MediaLib_SoundData.prototype.isDecoding = function() {
-        return this.state == "decoding";
-    };
-
-    T2MediaLib_SoundData.prototype.isDecodeComplete = function() {
-        return this.state == "decoded";
-    };
-
-    T2MediaLib_SoundData.prototype.removeDecodedData = function() {
-        this.state = "loaded";
-        this.decodedData = null;
-    };
-
-    return T2MediaLib_SoundData;
-})();
-window.T2MediaLib=T2MediaLib;
-window.T2MediaLib_BGMPlayer=T2MediaLib_BGMPlayer;
-window.T2MediaLib_SoundData=T2MediaLib_SoundData;
-
-define("T2MediaLib", (function (global) {
-    return function () {
-        var ret, fn;
-        return ret || global.T2MediaLib;
-    };
-}(this)));
-
-define('exceptionCatcher',[], function () {
-    var res={};
-    res.f=function (f) {
-        if (typeof f=="function") {
-            if (f.isTrcf) return f;
-            var r=function () {
-                if (res.handleException && !res.enter) {
-                    try {
-                        res.enter=true;
-                        return f.apply(this,arguments);
-                    } catch (e) {
-                        res.handleException(e);
-                    } finally {
-                        res.enter=false;
-                    }
-                } else {
-                    return f.apply(this,arguments);
-                }
-            };
-            r.isTrcf=true;
-            return r;
-        } else if(typeof f=="object") {
-            for (var k in f) {
-                f[k]=res.f(f[k]);
-            }
-            return f;
-        }
-    };
-    //res.handleException=function (){};
-    return res;
-});
-define('UI',["Util","exceptionCatcher"],function (Util, EC) {
-    var UI={};
-    var F=EC.f;
-    UI=function () {
-        var expr=[];
-        for (var i=0 ; i<arguments.length ; i++) {
-            expr[i]=arguments[i];
-        }
-        var listeners=[];
-        var $vars={};
-        var $edits=[];
-        var res=parse(expr);
-        res.$edits=$edits;
-        res.$vars=$vars;
-        $.data(res,"edits",$edits);
-        $.data(res,"vars",$vars);
-        $edits.load=function (model) {
-            $edits.model=model;
-            $edits.forEach(function (edit) {
-                $edits.writeToJq(edit.params.$edit, edit.jq);
-            });
-            $edits.validator.on.validate.call($edits.validator, $edits.model);
-        };
-        $edits.writeToJq=function ($edit, jq) {
-        	var m=$edits.model;
-            if (!m) return;
-            var name = $edit.name;
-            var a=name.split(".");
-            for (var i=0 ; i<a.length ;i++) {
-                m=m[a[i]];
-            }
-            m=$edit.type.toVal(m);
-            if (jq.attr("type")=="checkbox") {
-                jq.prop("checked",!!m);
-            } else {
-                jq.val(m);
-            }
-        };
-        $edits.validator={
-       		errors:{},
-       		show: function () {
-       			if ($vars.validationMessage) {
-       				$vars.validationMessage.empty();
-       				for (var name in this.errors) {
-       					$vars.validationMessage.append(UI("div", this.errors[name].mesg));
-       				}
-       			}
-       			if ($vars.OKButton) {
-       				var ok=true;
-       				for (var name in this.errors) {
-       					ok=false;
-       				}
-       				$vars.OKButton.attr("disabled", !ok);
-       			}
-       		},
-       		on: {
-       			validate: function () {}
-       		},
-       		addError: function (name, mesg, jq) {
-       			this.errors[name]={mesg:mesg, jq:jq};
-       			this.show();
-       		},
-       		removeError: function (name) {
-       			delete this.errors[name];
-       			this.show();
-       		},
-       		allOK: function () {
-       			for (var i in this.errors) {
-       				delete this.errors[i];
-       			}
-       			this.show();
-       		},
-       		isValid: function () {
-       		    var res=true;
-       		    for (var i in this.errors) res=false;
-       		    return res;
-       		}
-        };
-        $edits.writeToModel=function ($edit, val ,jq) {
-            var m=$edits.model;
-        	//console.log($edit, m);
-            if (!m) return;
-            var name = $edit.name;
-            try {
-                val=$edit.type.fromVal(val);
-            } catch (e) {
-            	$edits.validator.addError(name, e, jq);
-            	//$edits.validator.errors[name]={mesg:e, jq:jq};
-                //$edits.validator.change(name, e, jq);
-                return;
-            }
-            $edits.validator.removeError(name);
-            /*
-            if ($edits.validator.errors[name]) {
-                delete $edits.validator.errors[name];
-                $edits.validator.change(name, null, jq);
-            }*/
-            var a=name.split(".");
-            for (var i=0 ; i<a.length ;i++) {
-                if (i==a.length-1) {
-                    if ($edits.on.writeToModel(name,val)) {
-
-                    } else {
-                        m[a[i]]=val;
-                    }
-                } else {
-                    m=m[a[i]];
-                }
-            }
-            $edits.validator.on.validate.call($edits.validator, $edits.model);
-        };
-        $edits.on={};
-        $edits.on.writeToModel= function (name, val) {};
-
-        if (listeners.length>0) {
-            setTimeout(F(l),50);
-        }
-        function l() {
-            listeners.forEach(function (li) {
-                li();
-            });
-            setTimeout(F(l),50);
-        }
-        return res;
-        function parse(expr) {
-            if (expr instanceof Array) return parseArray(expr);
-            else if (typeof expr=="string") return parseString(expr);
-            else return expr;
-        }
-        function parseArray(a) {
-            var tag=a[0];
-            var i=1;
-            var res=$("<"+tag+">");
-            if (typeof a[i]=="object" && !(a[i] instanceof Array) && !(a[i] instanceof $) ) {
-                parseAttr(res, a[i],tag);
-                i++;
-            }
-            while (i<a.length) {
-                res.append(parse(a[i]));
-                i++;
-            }
-            return res;
-        }
-        function parseAttr(jq, o, tag) {
-            if (o.$var) {
-                $vars[o.$var]=jq;
-            }
-            if (o.$edit) {
-                if (typeof o.$edit=="string") {
-                    o.$edit={name: o.$edit, type: UI.types.String};
-                }
-                if (!o.on) o.on={};
-                o.on.realtimechange=F(function (val) {
-                    $edits.writeToModel(o.$edit, val, jq);
-                });
-                if (!$vars[o.$edit.name]) $vars[o.$edit.name]=jq;
-                $edits.push({jq:jq,params:o});
-            }
-            for (var k in o) {
-                if (k=="on") {
-                    for (var e in o.on) on(e, o.on[e]);
-                } else if (k=="css" && o[k]!=null) {//ADDJSL
-                    jq.css(o[k]);
-                } else if (!Util.startsWith(k,"$") && o[k]!=null) {//ADDJSL
-                    jq.attr(k,o[k]);
-                }
-            }
-            function on(eType, li) {
-                if (!li) return; //ADDJSL
-                if (eType=="enterkey") {
-                    jq.on("keypress",F(function (ev) {
-                        if (ev.which==13) li.apply(jq,arguments);
-                    }));
-                } else if (eType=="realtimechange") {
-                    var first=true, prev;
-                    listeners.push(function () {
-                        var cur;
-                        if (o.type=="checkbox") {
-                            cur=!!jq.prop("checked");
-                        } else {
-                            cur=jq.val();
-                        }
-                        if (first || prev!=cur) {
-                            li.apply(jq,[cur,prev]);
-                            prev=cur;
-                        }
-                        first=false;
-                    });
-                } else {
-                    jq.on(eType, F(li));
-                }
-            }
-        }
-        function parseString(str) {
-            return $(document.createTextNode(str));
-            //return $("<span>").text(str);
-        }
-    };
-    UI.types={
-       String: {
-           toVal: function (val) {
-               return val;
-           },
-           fromVal: function (val) {
-               return val;
-           }
-       },
-       Number: {
-           toVal: function (val) {
-               return val+"";
-           },
-           fromVal: function (val) {
-               return parseFloat(val);
-           }
-       }
-   };
-    return UI;
-});
-
-define('UIDiag',["UI"],function (UI) {
-    var UIDiag={};
-    function isPrimitive(mesg) {
-        return (typeof mesg==="string" ||
-        typeof mesg==="number" ||
-        typeof mesg==="boolean");
-    }
-    function parseMesg(mesg,defTitle) {
-        if (mesg==null) mesg="";
-        if (isPrimitive(mesg)) {
-            return {title:defTitle,body:multiLine(mesg)};
-        } else if ( (typeof $!=="undefined") && mesg instanceof $) {
-            return {
-                title:mesg.title||defTitle,
-                body:mesg
-            };
-        } else {
-            if (isPrimitive(mesg.body)) mesg.body=multiLine(mesg.body);
-            return mesg;
-        }
-    }
-    function multiLine(mesg) {
-        var lines=(mesg+"").split("\n");
-        if (lines.length==1) return lines[0];
-        return UI.apply(this,["div"].concat(lines.map(function (e) {
-            return ["div",e];
-        })));
-    }
-    UIDiag.confirm=function (mesg) {
-        mesg=parseMesg(mesg,"確認");
-        var di=UI("div",{title:mesg.title},["div",mesg.body],
-                ["button",{on:{click:sendF(true)}},"OK"],
-                ["button",{on:{click:sendF(false)}},"キャンセル"]).dialog({width:"auto",close:sendF(false)});
-        var d=$.Deferred();
-        function sendF(r) {
-            return function () { d.resolve(r); di.dialog("close"); di.remove(); };
-        }
-        return d.promise();
-    };
-    UIDiag.alert=function (mesg) {
-        mesg=parseMesg(mesg,"確認");
-        var di=UI("div",{title:mesg.title},["div",mesg.body],
-                ["button",{on:{click:sendF(true)}},"OK"]).dialog({width:"auto",close:sendF(false)});
-        var d=$.Deferred();
-        function sendF(r) {
-            return function () { d.resolve(r); di.dialog("close"); di.remove(); };
-        }
-        return d.promise();
-    };
-    // Compat with $InputBox
-    UIDiag.open=function(title,prompt,_default, left, top, width, height) {
-        return UIDiag.prompt({title:title,body:prompt},_default,{
-            left:left, top:top, width:width, height:height
-        });
-    };
-    UIDiag.getStatus=function () {return UIDiag.status;};
-    UIDiag.getText=function () {return UIDiag.val? UIDiag.val.val():"";};
-    //---
-    UIDiag.prompt=function (mesg,value,geom) {
-        mesg=parseMesg(mesg,"入力");
-        geom=geom||{};
-        if (typeof geom.left==="number" && typeof geom.top==="number") {
-            position={my:"left top",at:"left+"+geom.left+" top+"+geom.top, of:"body"};
-        } else {
-            position={of:"body",at:"center",my:"center"};
-        }
-        var di=UI("div",{title:mesg.title},["div",mesg.body],
-                ["input",{on:{enterkey:ok},$var:"val", value:value}],["br"],
-                ["button",{on:{click:ok}},"OK"],
-                ["button",{on:{click:cancel}},"キャンセル"]).dialog({
-                    width:geom.width||"auto",
-                    height:geom.height||"auto",
-                    position:position,
-                    close:function (){
-                        di.dialog("close");
-                        d.resolve();
-                    }
-                });
-        setTimeout(function () {
-            di.$vars.val.focus();
-            //console.log("FOcus");
-        },10);
-        UIDiag.status=0;
-        UIDiag.val=di.$vars.val;
-        var d=$.Deferred();
-        function ok() {
-            UIDiag.status=1;
-            var r=di.$vars.val.val();
-            UIDiag.resultValue=r;
-            d.resolve(r);
-            di.dialog("close");
-            di.remove();
-        }
-        function cancel() {
-            UIDiag.status=2;
-            di.dialog("close");
-            di.remove();
-            d.resolve();
-        }
-        return d.promise();
-
-    };
-    if (typeof window!="undefined") window.UIDiag=UIDiag;
-    return UIDiag;
-});
-
-/*global requirejs*/
-requirejs(["ImageList","T2MediaLib","Tonyu","UIDiag"],
-function (i,t,tn,u) {
-    console.log("runtimes loaded",arguments);
-    if (!window.T2MediaLib) window.T2MediaLib=t;
-});
-
-define("runtime", function(){});
-
-define('runScript_common',[], function () {
-    return {
-        initCanvas: function () {
-            function getMargin() {
-                return 0;
-            }
-
-            var margin = getMargin();
-            var w=$(window).width();
-            var h=$(window).height();
-            $("body").css({overflow:"hidden", margin:"0px"});
-            var cv=$("<canvas>").attr({width: w-margin, height:h-margin, class:"tonyu-canvas"}).appendTo("body");
-
-            var u = navigator.userAgent.toLowerCase();
-            if ((u.indexOf("iphone") == -1 &&
-                u.indexOf("ipad") == -1 &&
-                u.indexOf("ipod") == -1
-                ) && (!window.parent || window === window.parent)) {
-                $(window).resize(onResize);
-            }
-            function onResize() {
-                var margin = getMargin();
-                w=$(window).width();
-                h=$(window).height();
-                cv.attr({width: w-margin, height: h-margin});
-            }
-            return cv;
-        }
-    };
-});
-
+requireSimulator.setName('source-map');
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
@@ -11921,75 +7841,8788 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ ])
 });
 ;
-!function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define('stacktrace',[],e);else{var n;n="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof self?self:this,n.StackTrace=e()}}(function(){var e;return function n(e,r,t){function o(a,s){if(!r[a]){if(!e[a]){var u="function"==typeof require&&require;if(!s&&u)return u(a,!0);if(i)return i(a,!0);var c=new Error("Cannot find module '"+a+"'");throw c.code="MODULE_NOT_FOUND",c}var l=r[a]={exports:{}};e[a][0].call(l.exports,function(n){var r=e[a][1][n];return o(r?r:n)},l,l.exports,n,e,r,t)}return r[a].exports}for(var i="function"==typeof require&&require,a=0;a<t.length;a++)o(t[a]);return o}({1:[function(n,r,t){!function(o,i){"use strict";"function"==typeof e&&e.amd?e("error-stack-parser",["stackframe"],i):"object"==typeof t?r.exports=i(n("stackframe")):o.ErrorStackParser=i(o.StackFrame)}(this,function(e){"use strict";var n=/(^|@)\S+\:\d+/,r=/^\s*at .*(\S+\:\d+|\(native\))/m,t=/^(eval@)?(\[native code\])?$/;return{parse:function(e){if("undefined"!=typeof e.stacktrace||"undefined"!=typeof e["opera#sourceloc"])return this.parseOpera(e);if(e.stack&&e.stack.match(r))return this.parseV8OrIE(e);if(e.stack)return this.parseFFOrSafari(e);throw new Error("Cannot parse given Error object")},extractLocation:function(e){if(e.indexOf(":")===-1)return[e];var n=/(.+?)(?:\:(\d+))?(?:\:(\d+))?$/,r=n.exec(e.replace(/[\(\)]/g,""));return[r[1],r[2]||void 0,r[3]||void 0]},parseV8OrIE:function(n){var t=n.stack.split("\n").filter(function(e){return!!e.match(r)},this);return t.map(function(n){n.indexOf("(eval ")>-1&&(n=n.replace(/eval code/g,"eval").replace(/(\(eval at [^\()]*)|(\)\,.*$)/g,""));var r=n.replace(/^\s+/,"").replace(/\(eval code/g,"(").split(/\s+/).slice(1),t=this.extractLocation(r.pop()),o=r.join(" ")||void 0,i=["eval","<anonymous>"].indexOf(t[0])>-1?void 0:t[0];return new e({functionName:o,fileName:i,lineNumber:t[1],columnNumber:t[2],source:n})},this)},parseFFOrSafari:function(n){var r=n.stack.split("\n").filter(function(e){return!e.match(t)},this);return r.map(function(n){if(n.indexOf(" > eval")>-1&&(n=n.replace(/ line (\d+)(?: > eval line \d+)* > eval\:\d+\:\d+/g,":$1")),n.indexOf("@")===-1&&n.indexOf(":")===-1)return new e({functionName:n});var r=/((.*".+"[^@]*)?[^@]*)(?:@)/,t=n.match(r),o=t&&t[1]?t[1]:void 0,i=this.extractLocation(n.replace(r,""));return new e({functionName:o,fileName:i[0],lineNumber:i[1],columnNumber:i[2],source:n})},this)},parseOpera:function(e){return!e.stacktrace||e.message.indexOf("\n")>-1&&e.message.split("\n").length>e.stacktrace.split("\n").length?this.parseOpera9(e):e.stack?this.parseOpera11(e):this.parseOpera10(e)},parseOpera9:function(n){for(var r=/Line (\d+).*script (?:in )?(\S+)/i,t=n.message.split("\n"),o=[],i=2,a=t.length;i<a;i+=2){var s=r.exec(t[i]);s&&o.push(new e({fileName:s[2],lineNumber:s[1],source:t[i]}))}return o},parseOpera10:function(n){for(var r=/Line (\d+).*script (?:in )?(\S+)(?:: In function (\S+))?$/i,t=n.stacktrace.split("\n"),o=[],i=0,a=t.length;i<a;i+=2){var s=r.exec(t[i]);s&&o.push(new e({functionName:s[3]||void 0,fileName:s[2],lineNumber:s[1],source:t[i]}))}return o},parseOpera11:function(r){var t=r.stack.split("\n").filter(function(e){return!!e.match(n)&&!e.match(/^Error created at/)},this);return t.map(function(n){var r,t=n.split("@"),o=this.extractLocation(t.pop()),i=t.shift()||"",a=i.replace(/<anonymous function(: (\w+))?>/,"$2").replace(/\([^\)]*\)/g,"")||void 0;i.match(/\(([^\)]*)\)/)&&(r=i.replace(/^[^\(]+\(([^\)]*)\)$/,"$1"));var s=void 0===r||"[arguments not available]"===r?void 0:r.split(",");return new e({functionName:a,args:s,fileName:o[0],lineNumber:o[1],columnNumber:o[2],source:n})},this)}}})},{stackframe:3}],2:[function(n,r,t){!function(o,i){"use strict";"function"==typeof e&&e.amd?e("stack-generator",["stackframe"],i):"object"==typeof t?r.exports=i(n("stackframe")):o.StackGenerator=i(o.StackFrame)}(this,function(e){return{backtrace:function(n){var r=[],t=10;"object"==typeof n&&"number"==typeof n.maxStackSize&&(t=n.maxStackSize);for(var o=arguments.callee;o&&r.length<t&&o.arguments;){for(var i=new Array(o.arguments.length),a=0;a<i.length;++a)i[a]=o.arguments[a];/function(?:\s+([\w$]+))+\s*\(/.test(o.toString())?r.push(new e({functionName:RegExp.$1||void 0,args:i})):r.push(new e({args:i}));try{o=o.caller}catch(s){break}}return r}}})},{stackframe:3}],3:[function(n,r,t){!function(n,o){"use strict";"function"==typeof e&&e.amd?e("stackframe",[],o):"object"==typeof t?r.exports=o():n.StackFrame=o()}(this,function(){"use strict";function e(e){return!isNaN(parseFloat(e))&&isFinite(e)}function n(e){return e.charAt(0).toUpperCase()+e.substring(1)}function r(e){return function(){return this[e]}}function t(e){if(e instanceof Object)for(var r=0;r<u.length;r++)e.hasOwnProperty(u[r])&&void 0!==e[u[r]]&&this["set"+n(u[r])](e[u[r]])}var o=["isConstructor","isEval","isNative","isToplevel"],i=["columnNumber","lineNumber"],a=["fileName","functionName","source"],s=["args"],u=o.concat(i,a,s);t.prototype={getArgs:function(){return this.args},setArgs:function(e){if("[object Array]"!==Object.prototype.toString.call(e))throw new TypeError("Args must be an Array");this.args=e},getEvalOrigin:function(){return this.evalOrigin},setEvalOrigin:function(e){if(e instanceof t)this.evalOrigin=e;else{if(!(e instanceof Object))throw new TypeError("Eval Origin must be an Object or StackFrame");this.evalOrigin=new t(e)}},toString:function(){var n=this.getFunctionName()||"{anonymous}",r="("+(this.getArgs()||[]).join(",")+")",t=this.getFileName()?"@"+this.getFileName():"",o=e(this.getLineNumber())?":"+this.getLineNumber():"",i=e(this.getColumnNumber())?":"+this.getColumnNumber():"";return n+r+t+o+i}};for(var c=0;c<o.length;c++)t.prototype["get"+n(o[c])]=r(o[c]),t.prototype["set"+n(o[c])]=function(e){return function(n){this[e]=Boolean(n)}}(o[c]);for(var l=0;l<i.length;l++)t.prototype["get"+n(i[l])]=r(i[l]),t.prototype["set"+n(i[l])]=function(n){return function(r){if(!e(r))throw new TypeError(n+" must be a Number");this[n]=Number(r)}}(i[l]);for(var f=0;f<a.length;f++)t.prototype["get"+n(a[f])]=r(a[f]),t.prototype["set"+n(a[f])]=function(e){return function(n){this[e]=String(n)}}(a[f]);return t})},{}],4:[function(e,n,r){function t(){this._array=[],this._set=Object.create(null)}var o=e("./util"),i=Object.prototype.hasOwnProperty;t.fromArray=function(e,n){for(var r=new t,o=0,i=e.length;o<i;o++)r.add(e[o],n);return r},t.prototype.size=function(){return Object.getOwnPropertyNames(this._set).length},t.prototype.add=function(e,n){var r=o.toSetString(e),t=i.call(this._set,r),a=this._array.length;t&&!n||this._array.push(e),t||(this._set[r]=a)},t.prototype.has=function(e){var n=o.toSetString(e);return i.call(this._set,n)},t.prototype.indexOf=function(e){var n=o.toSetString(e);if(i.call(this._set,n))return this._set[n];throw new Error('"'+e+'" is not in the set.')},t.prototype.at=function(e){if(e>=0&&e<this._array.length)return this._array[e];throw new Error("No element indexed by "+e)},t.prototype.toArray=function(){return this._array.slice()},r.ArraySet=t},{"./util":10}],5:[function(e,n,r){function t(e){return e<0?(-e<<1)+1:(e<<1)+0}function o(e){var n=1===(1&e),r=e>>1;return n?-r:r}var i=e("./base64"),a=5,s=1<<a,u=s-1,c=s;r.encode=function(e){var n,r="",o=t(e);do n=o&u,o>>>=a,o>0&&(n|=c),r+=i.encode(n);while(o>0);return r},r.decode=function(e,n,r){var t,s,l=e.length,f=0,p=0;do{if(n>=l)throw new Error("Expected more digits in base 64 VLQ value.");if(s=i.decode(e.charCodeAt(n++)),s===-1)throw new Error("Invalid base64 digit: "+e.charAt(n-1));t=!!(s&c),s&=u,f+=s<<p,p+=a}while(t);r.value=o(f),r.rest=n}},{"./base64":6}],6:[function(e,n,r){var t="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".split("");r.encode=function(e){if(0<=e&&e<t.length)return t[e];throw new TypeError("Must be between 0 and 63: "+e)},r.decode=function(e){var n=65,r=90,t=97,o=122,i=48,a=57,s=43,u=47,c=26,l=52;return n<=e&&e<=r?e-n:t<=e&&e<=o?e-t+c:i<=e&&e<=a?e-i+l:e==s?62:e==u?63:-1}},{}],7:[function(e,n,r){function t(e,n,o,i,a,s){var u=Math.floor((n-e)/2)+e,c=a(o,i[u],!0);return 0===c?u:c>0?n-u>1?t(u,n,o,i,a,s):s==r.LEAST_UPPER_BOUND?n<i.length?n:-1:u:u-e>1?t(e,u,o,i,a,s):s==r.LEAST_UPPER_BOUND?u:e<0?-1:e}r.GREATEST_LOWER_BOUND=1,r.LEAST_UPPER_BOUND=2,r.search=function(e,n,o,i){if(0===n.length)return-1;var a=t(-1,n.length,e,n,o,i||r.GREATEST_LOWER_BOUND);if(a<0)return-1;for(;a-1>=0&&0===o(n[a],n[a-1],!0);)--a;return a}},{}],8:[function(e,n,r){function t(e,n,r){var t=e[n];e[n]=e[r],e[r]=t}function o(e,n){return Math.round(e+Math.random()*(n-e))}function i(e,n,r,a){if(r<a){var s=o(r,a),u=r-1;t(e,s,a);for(var c=e[a],l=r;l<a;l++)n(e[l],c)<=0&&(u+=1,t(e,u,l));t(e,u+1,l);var f=u+1;i(e,n,r,f-1),i(e,n,f+1,a)}}r.quickSort=function(e,n){i(e,n,0,e.length-1)}},{}],9:[function(e,n,r){function t(e){var n=e;return"string"==typeof e&&(n=JSON.parse(e.replace(/^\)\]\}'/,""))),null!=n.sections?new a(n):new o(n)}function o(e){var n=e;"string"==typeof e&&(n=JSON.parse(e.replace(/^\)\]\}'/,"")));var r=s.getArg(n,"version"),t=s.getArg(n,"sources"),o=s.getArg(n,"names",[]),i=s.getArg(n,"sourceRoot",null),a=s.getArg(n,"sourcesContent",null),u=s.getArg(n,"mappings"),l=s.getArg(n,"file",null);if(r!=this._version)throw new Error("Unsupported version: "+r);t=t.map(String).map(s.normalize).map(function(e){return i&&s.isAbsolute(i)&&s.isAbsolute(e)?s.relative(i,e):e}),this._names=c.fromArray(o.map(String),!0),this._sources=c.fromArray(t,!0),this.sourceRoot=i,this.sourcesContent=a,this._mappings=u,this.file=l}function i(){this.generatedLine=0,this.generatedColumn=0,this.source=null,this.originalLine=null,this.originalColumn=null,this.name=null}function a(e){var n=e;"string"==typeof e&&(n=JSON.parse(e.replace(/^\)\]\}'/,"")));var r=s.getArg(n,"version"),o=s.getArg(n,"sections");if(r!=this._version)throw new Error("Unsupported version: "+r);this._sources=new c,this._names=new c;var i={line:-1,column:0};this._sections=o.map(function(e){if(e.url)throw new Error("Support for url field in sections not implemented.");var n=s.getArg(e,"offset"),r=s.getArg(n,"line"),o=s.getArg(n,"column");if(r<i.line||r===i.line&&o<i.column)throw new Error("Section offsets must be ordered and non-overlapping.");return i=n,{generatedOffset:{generatedLine:r+1,generatedColumn:o+1},consumer:new t(s.getArg(e,"map"))}})}var s=e("./util"),u=e("./binary-search"),c=e("./array-set").ArraySet,l=e("./base64-vlq"),f=e("./quick-sort").quickSort;t.fromSourceMap=function(e){return o.fromSourceMap(e)},t.prototype._version=3,t.prototype.__generatedMappings=null,Object.defineProperty(t.prototype,"_generatedMappings",{get:function(){return this.__generatedMappings||this._parseMappings(this._mappings,this.sourceRoot),this.__generatedMappings}}),t.prototype.__originalMappings=null,Object.defineProperty(t.prototype,"_originalMappings",{get:function(){return this.__originalMappings||this._parseMappings(this._mappings,this.sourceRoot),this.__originalMappings}}),t.prototype._charIsMappingSeparator=function(e,n){var r=e.charAt(n);return";"===r||","===r},t.prototype._parseMappings=function(e,n){throw new Error("Subclasses must implement _parseMappings")},t.GENERATED_ORDER=1,t.ORIGINAL_ORDER=2,t.GREATEST_LOWER_BOUND=1,t.LEAST_UPPER_BOUND=2,t.prototype.eachMapping=function(e,n,r){var o,i=n||null,a=r||t.GENERATED_ORDER;switch(a){case t.GENERATED_ORDER:o=this._generatedMappings;break;case t.ORIGINAL_ORDER:o=this._originalMappings;break;default:throw new Error("Unknown order of iteration.")}var u=this.sourceRoot;o.map(function(e){var n=null===e.source?null:this._sources.at(e.source);return null!=n&&null!=u&&(n=s.join(u,n)),{source:n,generatedLine:e.generatedLine,generatedColumn:e.generatedColumn,originalLine:e.originalLine,originalColumn:e.originalColumn,name:null===e.name?null:this._names.at(e.name)}},this).forEach(e,i)},t.prototype.allGeneratedPositionsFor=function(e){var n=s.getArg(e,"line"),r={source:s.getArg(e,"source"),originalLine:n,originalColumn:s.getArg(e,"column",0)};if(null!=this.sourceRoot&&(r.source=s.relative(this.sourceRoot,r.source)),!this._sources.has(r.source))return[];r.source=this._sources.indexOf(r.source);var t=[],o=this._findMapping(r,this._originalMappings,"originalLine","originalColumn",s.compareByOriginalPositions,u.LEAST_UPPER_BOUND);if(o>=0){var i=this._originalMappings[o];if(void 0===e.column)for(var a=i.originalLine;i&&i.originalLine===a;)t.push({line:s.getArg(i,"generatedLine",null),column:s.getArg(i,"generatedColumn",null),lastColumn:s.getArg(i,"lastGeneratedColumn",null)}),i=this._originalMappings[++o];else for(var c=i.originalColumn;i&&i.originalLine===n&&i.originalColumn==c;)t.push({line:s.getArg(i,"generatedLine",null),column:s.getArg(i,"generatedColumn",null),lastColumn:s.getArg(i,"lastGeneratedColumn",null)}),i=this._originalMappings[++o]}return t},r.SourceMapConsumer=t,o.prototype=Object.create(t.prototype),o.prototype.consumer=t,o.fromSourceMap=function(e){var n=Object.create(o.prototype),r=n._names=c.fromArray(e._names.toArray(),!0),t=n._sources=c.fromArray(e._sources.toArray(),!0);n.sourceRoot=e._sourceRoot,n.sourcesContent=e._generateSourcesContent(n._sources.toArray(),n.sourceRoot),n.file=e._file;for(var a=e._mappings.toArray().slice(),u=n.__generatedMappings=[],l=n.__originalMappings=[],p=0,g=a.length;p<g;p++){var h=a[p],m=new i;m.generatedLine=h.generatedLine,m.generatedColumn=h.generatedColumn,h.source&&(m.source=t.indexOf(h.source),m.originalLine=h.originalLine,m.originalColumn=h.originalColumn,h.name&&(m.name=r.indexOf(h.name)),l.push(m)),u.push(m)}return f(n.__originalMappings,s.compareByOriginalPositions),n},o.prototype._version=3,Object.defineProperty(o.prototype,"sources",{get:function(){return this._sources.toArray().map(function(e){return null!=this.sourceRoot?s.join(this.sourceRoot,e):e},this)}}),o.prototype._parseMappings=function(e,n){for(var r,t,o,a,u,c=1,p=0,g=0,h=0,m=0,d=0,v=e.length,_=0,y={},w={},b=[],C=[];_<v;)if(";"===e.charAt(_))c++,_++,p=0;else if(","===e.charAt(_))_++;else{for(r=new i,r.generatedLine=c,a=_;a<v&&!this._charIsMappingSeparator(e,a);a++);if(t=e.slice(_,a),o=y[t])_+=t.length;else{for(o=[];_<a;)l.decode(e,_,w),u=w.value,_=w.rest,o.push(u);if(2===o.length)throw new Error("Found a source, but no line and column");if(3===o.length)throw new Error("Found a source and line, but no column");y[t]=o}r.generatedColumn=p+o[0],p=r.generatedColumn,o.length>1&&(r.source=m+o[1],m+=o[1],r.originalLine=g+o[2],g=r.originalLine,r.originalLine+=1,r.originalColumn=h+o[3],h=r.originalColumn,o.length>4&&(r.name=d+o[4],d+=o[4])),C.push(r),"number"==typeof r.originalLine&&b.push(r)}f(C,s.compareByGeneratedPositionsDeflated),this.__generatedMappings=C,f(b,s.compareByOriginalPositions),this.__originalMappings=b},o.prototype._findMapping=function(e,n,r,t,o,i){if(e[r]<=0)throw new TypeError("Line must be greater than or equal to 1, got "+e[r]);if(e[t]<0)throw new TypeError("Column must be greater than or equal to 0, got "+e[t]);return u.search(e,n,o,i)},o.prototype.computeColumnSpans=function(){for(var e=0;e<this._generatedMappings.length;++e){var n=this._generatedMappings[e];if(e+1<this._generatedMappings.length){var r=this._generatedMappings[e+1];if(n.generatedLine===r.generatedLine){n.lastGeneratedColumn=r.generatedColumn-1;continue}}n.lastGeneratedColumn=1/0}},o.prototype.originalPositionFor=function(e){var n={generatedLine:s.getArg(e,"line"),generatedColumn:s.getArg(e,"column")},r=this._findMapping(n,this._generatedMappings,"generatedLine","generatedColumn",s.compareByGeneratedPositionsDeflated,s.getArg(e,"bias",t.GREATEST_LOWER_BOUND));if(r>=0){var o=this._generatedMappings[r];if(o.generatedLine===n.generatedLine){var i=s.getArg(o,"source",null);null!==i&&(i=this._sources.at(i),null!=this.sourceRoot&&(i=s.join(this.sourceRoot,i)));var a=s.getArg(o,"name",null);return null!==a&&(a=this._names.at(a)),{source:i,line:s.getArg(o,"originalLine",null),column:s.getArg(o,"originalColumn",null),name:a}}}return{source:null,line:null,column:null,name:null}},o.prototype.hasContentsOfAllSources=function(){return!!this.sourcesContent&&(this.sourcesContent.length>=this._sources.size()&&!this.sourcesContent.some(function(e){return null==e}))},o.prototype.sourceContentFor=function(e,n){if(!this.sourcesContent)return null;if(null!=this.sourceRoot&&(e=s.relative(this.sourceRoot,e)),this._sources.has(e))return this.sourcesContent[this._sources.indexOf(e)];var r;if(null!=this.sourceRoot&&(r=s.urlParse(this.sourceRoot))){var t=e.replace(/^file:\/\//,"");if("file"==r.scheme&&this._sources.has(t))return this.sourcesContent[this._sources.indexOf(t)];if((!r.path||"/"==r.path)&&this._sources.has("/"+e))return this.sourcesContent[this._sources.indexOf("/"+e)]}if(n)return null;throw new Error('"'+e+'" is not in the SourceMap.')},o.prototype.generatedPositionFor=function(e){var n=s.getArg(e,"source");if(null!=this.sourceRoot&&(n=s.relative(this.sourceRoot,n)),!this._sources.has(n))return{line:null,column:null,lastColumn:null};n=this._sources.indexOf(n);var r={source:n,originalLine:s.getArg(e,"line"),originalColumn:s.getArg(e,"column")},o=this._findMapping(r,this._originalMappings,"originalLine","originalColumn",s.compareByOriginalPositions,s.getArg(e,"bias",t.GREATEST_LOWER_BOUND));if(o>=0){var i=this._originalMappings[o];if(i.source===r.source)return{line:s.getArg(i,"generatedLine",null),column:s.getArg(i,"generatedColumn",null),lastColumn:s.getArg(i,"lastGeneratedColumn",null)}}return{line:null,column:null,lastColumn:null}},r.BasicSourceMapConsumer=o,a.prototype=Object.create(t.prototype),a.prototype.constructor=t,a.prototype._version=3,Object.defineProperty(a.prototype,"sources",{get:function(){for(var e=[],n=0;n<this._sections.length;n++)for(var r=0;r<this._sections[n].consumer.sources.length;r++)e.push(this._sections[n].consumer.sources[r]);return e}}),a.prototype.originalPositionFor=function(e){var n={generatedLine:s.getArg(e,"line"),generatedColumn:s.getArg(e,"column")},r=u.search(n,this._sections,function(e,n){var r=e.generatedLine-n.generatedOffset.generatedLine;return r?r:e.generatedColumn-n.generatedOffset.generatedColumn}),t=this._sections[r];return t?t.consumer.originalPositionFor({line:n.generatedLine-(t.generatedOffset.generatedLine-1),column:n.generatedColumn-(t.generatedOffset.generatedLine===n.generatedLine?t.generatedOffset.generatedColumn-1:0),bias:e.bias}):{source:null,line:null,column:null,name:null}},a.prototype.hasContentsOfAllSources=function(){return this._sections.every(function(e){return e.consumer.hasContentsOfAllSources()})},a.prototype.sourceContentFor=function(e,n){for(var r=0;r<this._sections.length;r++){var t=this._sections[r],o=t.consumer.sourceContentFor(e,!0);if(o)return o}if(n)return null;throw new Error('"'+e+'" is not in the SourceMap.')},a.prototype.generatedPositionFor=function(e){for(var n=0;n<this._sections.length;n++){var r=this._sections[n];if(r.consumer.sources.indexOf(s.getArg(e,"source"))!==-1){var t=r.consumer.generatedPositionFor(e);if(t){var o={line:t.line+(r.generatedOffset.generatedLine-1),column:t.column+(r.generatedOffset.generatedLine===t.line?r.generatedOffset.generatedColumn-1:0)};return o}}}return{line:null,column:null}},a.prototype._parseMappings=function(e,n){this.__generatedMappings=[],this.__originalMappings=[];for(var r=0;r<this._sections.length;r++)for(var t=this._sections[r],o=t.consumer._generatedMappings,i=0;i<o.length;i++){var a=o[i],u=t.consumer._sources.at(a.source);null!==t.consumer.sourceRoot&&(u=s.join(t.consumer.sourceRoot,u)),this._sources.add(u),u=this._sources.indexOf(u);var c=t.consumer._names.at(a.name);this._names.add(c),c=this._names.indexOf(c);var l={source:u,generatedLine:a.generatedLine+(t.generatedOffset.generatedLine-1),generatedColumn:a.generatedColumn+(t.generatedOffset.generatedLine===a.generatedLine?t.generatedOffset.generatedColumn-1:0),originalLine:a.originalLine,originalColumn:a.originalColumn,name:c};this.__generatedMappings.push(l),"number"==typeof l.originalLine&&this.__originalMappings.push(l)}f(this.__generatedMappings,s.compareByGeneratedPositionsDeflated),f(this.__originalMappings,s.compareByOriginalPositions)},r.IndexedSourceMapConsumer=a},{"./array-set":4,"./base64-vlq":5,"./binary-search":7,"./quick-sort":8,"./util":10}],10:[function(e,n,r){function t(e,n,r){if(n in e)return e[n];if(3===arguments.length)return r;throw new Error('"'+n+'" is a required argument.')}function o(e){var n=e.match(v);return n?{scheme:n[1],auth:n[2],host:n[3],port:n[4],path:n[5]}:null}function i(e){var n="";return e.scheme&&(n+=e.scheme+":"),n+="//",e.auth&&(n+=e.auth+"@"),e.host&&(n+=e.host),e.port&&(n+=":"+e.port),e.path&&(n+=e.path),n}function a(e){var n=e,t=o(e);if(t){if(!t.path)return e;n=t.path}for(var a,s=r.isAbsolute(n),u=n.split(/\/+/),c=0,l=u.length-1;l>=0;l--)a=u[l],"."===a?u.splice(l,1):".."===a?c++:c>0&&(""===a?(u.splice(l+1,c),c=0):(u.splice(l,2),c--));return n=u.join("/"),""===n&&(n=s?"/":"."),t?(t.path=n,i(t)):n}function s(e,n){""===e&&(e="."),""===n&&(n=".");var r=o(n),t=o(e);if(t&&(e=t.path||"/"),r&&!r.scheme)return t&&(r.scheme=t.scheme),i(r);if(r||n.match(_))return n;if(t&&!t.host&&!t.path)return t.host=n,i(t);var s="/"===n.charAt(0)?n:a(e.replace(/\/+$/,"")+"/"+n);return t?(t.path=s,i(t)):s}function u(e,n){""===e&&(e="."),e=e.replace(/\/$/,"");for(var r=0;0!==n.indexOf(e+"/");){var t=e.lastIndexOf("/");if(t<0)return n;if(e=e.slice(0,t),e.match(/^([^\/]+:\/)?\/*$/))return n;++r}return Array(r+1).join("../")+n.substr(e.length+1)}function c(e){return e}function l(e){return p(e)?"$"+e:e}function f(e){return p(e)?e.slice(1):e}function p(e){if(!e)return!1;var n=e.length;if(n<9)return!1;if(95!==e.charCodeAt(n-1)||95!==e.charCodeAt(n-2)||111!==e.charCodeAt(n-3)||116!==e.charCodeAt(n-4)||111!==e.charCodeAt(n-5)||114!==e.charCodeAt(n-6)||112!==e.charCodeAt(n-7)||95!==e.charCodeAt(n-8)||95!==e.charCodeAt(n-9))return!1;for(var r=n-10;r>=0;r--)if(36!==e.charCodeAt(r))return!1;return!0}function g(e,n,r){var t=e.source-n.source;return 0!==t?t:(t=e.originalLine-n.originalLine,0!==t?t:(t=e.originalColumn-n.originalColumn,0!==t||r?t:(t=e.generatedColumn-n.generatedColumn,0!==t?t:(t=e.generatedLine-n.generatedLine,0!==t?t:e.name-n.name))))}function h(e,n,r){var t=e.generatedLine-n.generatedLine;return 0!==t?t:(t=e.generatedColumn-n.generatedColumn,0!==t||r?t:(t=e.source-n.source,0!==t?t:(t=e.originalLine-n.originalLine,0!==t?t:(t=e.originalColumn-n.originalColumn,0!==t?t:e.name-n.name))))}function m(e,n){return e===n?0:e>n?1:-1}function d(e,n){var r=e.generatedLine-n.generatedLine;return 0!==r?r:(r=e.generatedColumn-n.generatedColumn,0!==r?r:(r=m(e.source,n.source),0!==r?r:(r=e.originalLine-n.originalLine,0!==r?r:(r=e.originalColumn-n.originalColumn,0!==r?r:m(e.name,n.name)))))}r.getArg=t;var v=/^(?:([\w+\-.]+):)?\/\/(?:(\w+:\w+)@)?([\w.]*)(?::(\d+))?(\S*)$/,_=/^data:.+\,.+$/;r.urlParse=o,r.urlGenerate=i,r.normalize=a,r.join=s,r.isAbsolute=function(e){return"/"===e.charAt(0)||!!e.match(v)},r.relative=u;var y=function(){var e=Object.create(null);return!("__proto__"in e)}();r.toSetString=y?c:l,r.fromSetString=y?c:f,r.compareByOriginalPositions=g,r.compareByGeneratedPositionsDeflated=h,r.compareByGeneratedPositionsInflated=d},{}],11:[function(n,r,t){!function(o,i){"use strict";"function"==typeof e&&e.amd?e("stacktrace-gps",["source-map","stackframe"],i):"object"==typeof t?r.exports=i(n("source-map/lib/source-map-consumer"),n("stackframe")):o.StackTraceGPS=i(o.SourceMap||o.sourceMap,o.StackFrame)}(this,function(e,n){"use strict";function r(e){return new Promise(function(n,r){var t=new XMLHttpRequest;t.open("get",e),t.onerror=r,t.onreadystatechange=function(){4===t.readyState&&(t.status>=200&&t.status<300||"file://"===e.substr(0,7)&&t.responseText?n(t.responseText):r(new Error("HTTP status: "+t.status+" retrieving "+e)))},t.send()})}function t(e){if("undefined"!=typeof window&&window.atob)return window.atob(e);throw new Error("You must supply a polyfill for window.atob in this environment")}function o(e){if("undefined"!=typeof JSON&&JSON.parse)return JSON.parse(e);throw new Error("You must supply a polyfill for JSON.parse in this environment")}function i(e,n){for(var r=[/['"]?([$_A-Za-z][$_A-Za-z0-9]*)['"]?\s*[:=]\s*function\b/,/function\s+([^('"`]*?)\s*\(([^)]*)\)/,/['"]?([$_A-Za-z][$_A-Za-z0-9]*)['"]?\s*[:=]\s*(?:eval|new Function)\b/,/\b(?!(?:if|for|switch|while|with|catch)\b)(?:(?:static)\s+)?(\S+)\s*\(.*?\)\s*\{/,/['"]?([$_A-Za-z][$_A-Za-z0-9]*)['"]?\s*[:=]\s*\(.*?\)\s*=>/],t=e.split("\n"),o="",i=Math.min(n,20),a=0;a<i;++a){var s=t[n-a-1],u=s.indexOf("//");if(u>=0&&(s=s.substr(0,u)),s){o=s+o;for(var c=r.length,l=0;l<c;l++){var f=r[l].exec(o);if(f&&f[1])return f[1]}}}}function a(){if("function"!=typeof Object.defineProperty||"function"!=typeof Object.create)throw new Error("Unable to consume source maps in older browsers")}function s(e){if("object"!=typeof e)throw new TypeError("Given StackFrame is not an object");if("string"!=typeof e.fileName)throw new TypeError("Given file name is not a String");if("number"!=typeof e.lineNumber||e.lineNumber%1!==0||e.lineNumber<1)throw new TypeError("Given line number must be a positive integer");if("number"!=typeof e.columnNumber||e.columnNumber%1!==0||e.columnNumber<0)throw new TypeError("Given column number must be a non-negative integer");return!0}function u(e){for(var n,r,t=/\/\/[#@] ?sourceMappingURL=([^\s'"]+)\s*$/gm;r=t.exec(e);)n=r[1];if(n)return n;throw new Error("sourceMappingURL not found")}function c(e,r,t){return new Promise(function(o,i){var a=r.originalPositionFor({line:e.lineNumber,column:e.columnNumber});if(a.source){var s=r.sourceContentFor(a.source);s&&(t[a.source]=s),o(new n({functionName:a.name||e.functionName,args:e.args,fileName:a.source,lineNumber:a.line,columnNumber:a.column}))}else i(new Error("Could not get original source for given stackframe and source map"))})}return function l(f){return this instanceof l?(f=f||{},this.sourceCache=f.sourceCache||{},this.sourceMapConsumerCache=f.sourceMapConsumerCache||{},this.ajax=f.ajax||r,this._atob=f.atob||t,this._get=function(e){return new Promise(function(n,r){var t="data:"===e.substr(0,5);if(this.sourceCache[e])n(this.sourceCache[e]);else if(f.offline&&!t)r(new Error("Cannot make network requests in offline mode"));else if(t){var o=/^data:application\/json;([\w=:"-]+;)*base64,/,i=e.match(o);if(i){var a=i[0].length,s=e.substr(a),u=this._atob(s);this.sourceCache[e]=u,n(u)}else r(new Error("The encoding of the inline sourcemap is not supported"))}else{var c=this.ajax(e,{method:"get"});this.sourceCache[e]=c,c.then(n,r)}}.bind(this))},this._getSourceMapConsumer=function(n,r){return new Promise(function(t,i){if(this.sourceMapConsumerCache[n])t(this.sourceMapConsumerCache[n]);else{var a=new Promise(function(t,i){return this._get(n).then(function(n){"string"==typeof n&&(n=o(n.replace(/^\)\]\}'/,""))),"undefined"==typeof n.sourceRoot&&(n.sourceRoot=r),t(new e.SourceMapConsumer(n))},i)}.bind(this));this.sourceMapConsumerCache[n]=a,t(a)}}.bind(this))},this.pinpoint=function(e){return new Promise(function(n,r){this.getMappedLocation(e).then(function(e){function r(){n(e)}this.findFunctionName(e).then(n,r)["catch"](r)}.bind(this),r)}.bind(this))},this.findFunctionName=function(e){return new Promise(function(r,t){s(e),this._get(e.fileName).then(function(t){var o=e.lineNumber,a=e.columnNumber,s=i(t,o,a);r(s?new n({functionName:s,args:e.args,fileName:e.fileName,lineNumber:o,columnNumber:a}):e)},t)["catch"](t)}.bind(this))},void(this.getMappedLocation=function(e){return new Promise(function(n,r){a(),s(e);var t=this.sourceCache,o=e.fileName;this._get(o).then(function(r){var i=u(r),a="data:"===i.substr(0,5),s=o.substring(0,o.lastIndexOf("/")+1);return"/"===i[0]||a||/^https?:\/\/|^\/\//i.test(i)||(i=s+i),this._getSourceMapConsumer(i,s).then(function(r){return c(e,r,t).then(n)["catch"](function(){n(e)})})}.bind(this),r)["catch"](r)}.bind(this))})):new l(f)}})},{"source-map/lib/source-map-consumer":9,stackframe:3}],12:[function(n,r,t){!function(o,i){"use strict";"function"==typeof e&&e.amd?e("stacktrace",["error-stack-parser","stack-generator","stacktrace-gps"],i):"object"==typeof t?r.exports=i(n("error-stack-parser"),n("stack-generator"),n("stacktrace-gps")):o.StackTrace=i(o.ErrorStackParser,o.StackGenerator,o.StackTraceGPS)}(this,function(e,n,r){function t(e,n){var r={};return[e,n].forEach(function(e){for(var n in e)e.hasOwnProperty(n)&&(r[n]=e[n]);return r}),r}function o(e){return e.stack||e["opera#sourceloc"]}function i(e,n){return"function"==typeof n?e.filter(n):e}var a={filter:function(e){return(e.functionName||"").indexOf("StackTrace$$")===-1&&(e.functionName||"").indexOf("ErrorStackParser$$")===-1&&(e.functionName||"").indexOf("StackTraceGPS$$")===-1&&(e.functionName||"").indexOf("StackGenerator$$")===-1},sourceCache:{}},s=function(){try{throw new Error}catch(e){return e}};return{get:function(e){var n=s();return o(n)?this.fromError(n,e):this.generateArtificially(e)},getSync:function(r){r=t(a,r);var u=s(),c=o(u)?e.parse(u):n.backtrace(r);return i(c,r.filter)},fromError:function(n,o){o=t(a,o);var s=new r(o);return new Promise(function(r){var t=i(e.parse(n),o.filter);r(Promise.all(t.map(function(e){return new Promise(function(n){function r(){n(e)}s.pinpoint(e).then(n,r)["catch"](r)})})))}.bind(this))},generateArtificially:function(e){e=t(a,e);var r=n.backtrace(e);return"function"==typeof e.filter&&(r=r.filter(e.filter)),Promise.resolve(r)},instrument:function(e,n,r,t){if("function"!=typeof e)throw new Error("Cannot instrument non-function object");if("function"==typeof e.__stacktraceOriginalFn)return e;var i=function(){try{return this.get().then(n,r)["catch"](r),e.apply(t||this,arguments)}catch(i){throw o(i)&&this.fromError(i).then(n,r)["catch"](r),i}}.bind(this);return i.__stacktraceOriginalFn=e,i},deinstrument:function(e){if("function"!=typeof e)throw new Error("Cannot de-instrument non-function object");return"function"==typeof e.__stacktraceOriginalFn?e.__stacktraceOriginalFn:e},report:function(e,n,r,t){return new Promise(function(o,i){var a=new XMLHttpRequest;if(a.onerror=i,a.onreadystatechange=function(){4===a.readyState&&(a.status>=200&&a.status<400?o(a.responseText):i(new Error("POST to "+n+" failed with status: "+a.status)))},a.open("post",n),a.setRequestHeader("Content-Type","application/json"),t&&"object"==typeof t.headers){var s=t.headers;for(var u in s)s.hasOwnProperty(u)&&a.setRequestHeader(u,s[u])}var c={stack:e};void 0!==r&&null!==r&&(c.message=r),a.send(JSON.stringify(c))})}}})},{"error-stack-parser":1,"stack-generator":2,"stacktrace-gps":11}]},{},[12])(12)});
-//# sourceMappingURL=stacktrace.min.js.map
-;
-define('StackDecoder',['require','exports','module','source-map','stacktrace','SourceFiles'],function (require, exports, module) {
-const S=require("source-map");
-const StackTrace=require("stacktrace");
-const SourceFiles=require("SourceFiles");
-module.exports={
-    decode(e) {
-        StackTrace.fromError(e).then(tr=>{
-            tr.forEach(t=>{
-                //console.log(t);
-                if (typeof t.functionName!=="string") return;
-                if (!S) return;
-                /*columnNumber: 17,
-                lineNumber: 21,*/
-                t.functionName.replace(/[\$_a-zA-Z0-9]+/g, s=> {
-                    //console.log("!",s,this.functions[s]);
-                    if (SourceFiles.functions[s]) {
-                        const sf=SourceFiles.functions[s];
-                        const opt={
-                            line: t.lineNumber, column:t.columnNumber,
-                            bias:S.SourceMapConsumer.GREATEST_LOWER_BOUND
-                        };
-                        const pos=this.originalPositionFor(sf,opt);
-                        console.log("pos",opt,pos);
-                    }
-                });
-            });
-            //console.log("functions",this.functions);
-        });
-        //console.log(st);
-    },
-    originalPositionFor(sf,opt) {
-        const s=sf.getSourceMapConsumer();
-        if (!s) return opt;
-        return s.originalPositionFor(opt);
-    },
-    getSourceMapConsumer(sf) {
-        if (sf.sourceMapConsumer) return sf.sourceMapConsumer;
-        sf.sourceMapConsumer=new S.SourceMapConsumer(JSON.parse(sf.sourceMap));
-        //console.log(this.sourceMapConsumer);
-        return sf.sourceMapConsumer;
-    }
+requireSimulator.setName('IndentBuffer');
+if (typeof define!=="function") {
+	define=require("requirejs").define;
+}
+define(["assert","source-map"],function (A, S) {
+var Pos2RC=function (src) {
+	var $={};
+	var map=[];
+	var pos=0;
+	var lastRow=0;
+	src.split("\n").forEach(function (line) {
+		map.push(pos);
+		pos+=line.length+1;
+	});
+	map.push(pos);
+	$.getRC=function (pos) {
+		while(true) {
+			if (lastRow<0) {
+				return {row:1, col:1};
+			}
+			if (lastRow+1>=map.length) {
+				return {row:map.length, col:1};
+			}
+			//A(!( pos<map[lastRow]  &&  map[lastRow]<=pos ));
+			//A(!( map[lastRow+1]<=pos  &&  pos<map[lastRow+1] ));
+			if (pos<map[lastRow]) {
+				lastRow--;
+			} else if (map[lastRow+1]<=pos) {
+				lastRow++;
+			} else {
+				return {row:lastRow+1, col:pos-map[lastRow]+1};
+			}
+		}
+	};
+	return $;
+};
+return IndentBuffer=function (options) {
+	options=options||{};
+	var $=function () {
+		var args=arguments;
+		var fmt=args[0];
+		//console.log(fmt+ " -- "+arguments[0]+" --- "+arguments.length);
+		var ai=0;
+		function shiftArg(nullable) {
+			ai++;
+			var res=args[ai];
+			if (res==null && !nullable) {
+				console.log(args);
+				throw new Error(ai+"th null param: fmt="+fmt);
+			}
+			return res;
+		}
+		function nc(val, msg) {
+			if(val==null) throw msg;
+			return val;
+		}
+		while (true) {
+			var i=fmt.indexOf("%");
+			if (i<0) {$.print(fmt); break;}
+			$.print(fmt.substring(0,i));
+			i++;
+			var fstr=fmt.charAt(i);
+			if (fstr=="s") {
+				var str=shiftArg();
+				if (typeof str == "string" || typeof str =="number") {}
+				else if (str==null) str="null";
+				else if (str.text) {
+					$.addMapping(str);
+					str=str.text;
+				}
+				$.print(str);
+				i++;
+			} else if (fstr=="d") {
+				var n=shiftArg();
+				if (typeof n!="number") throw new Error (n+" is not a number: fmt="+fmt);
+				$.print(n);
+				i++;
+			} else if (fstr=="n") {
+				$.ln();
+				i++;
+			} else if (fstr=="{") {
+				$.indent();
+				i++;
+			} else if (fstr=="}") {
+				$.dedent();
+				i++;
+			} else if (fstr=="%") {
+				$.print("%");
+				i++;
+			} else if (fstr=="f") {
+				shiftArg()($);
+				i++;
+			} else if (fstr=="l") {
+				var lit=shiftArg();
+				$.print($.toLiteral(lit));
+				i++;
+			} else if (fstr=="v") {
+				var a=shiftArg();
+				if (!a) throw new Error ("Null %v");
+				if (typeof a!="object") throw new Error("nonobject %v:"+a);
+				$.addMapping(a);
+				$.visitor.visit(a);
+				i++;
+			} else if (fstr=="z") {
+				var place=shiftArg();
+				if ("val" in place) {
+					$.print(place.val);
+					return;
+				}
+				if (!place.inited) {
+					$.lazy(place);
+				}
+				place.print();
+				//$.print(place.gen);
+				i++;
+			} else if (fstr=="j") {
+				var sp_node=shiftArg();
+				var sp=sp_node[0];
+				var node=sp_node[1];
+				var sep=false;
+				if (!node || !node.forEach) {
+					console.log(node);
+					throw new Error (node+" is not array. cannot join fmt:"+fmt);
+				}
+				node.forEach(function (n) {
+					if (sep) $.printf(sp);
+					sep=true;
+					$.visitor.visit(n);
+				});
+				i++;
+			} else if (fstr=="D"){
+				shiftArg(true);
+				i++;
+			} else {
+				i+=2;
+			}
+			fmt=fmt.substring(i);
+		}
+	};
+	$.addMapping=function (token) {
+		//console.log("Token",token,$.srcFile+"");
+		if (!$.srcFile) return ;
+		// token:extend({text:String},{pos:Number}|{row:Number,col:Number})
+		var rc;
+		if (typeof token.row=="number" && typeof token.col=="number") {
+			rc={row:token.row, col:token.col};
+		} else if (typeof token.pos=="number") {
+			rc=$.srcRCM.getRC(token.pos);
+		}
+		if (rc) {
+			//console.log("Map",{src:{file:$.srcFile+"",row:rc.row,col:rc.col},
+			//dst:{row:$.bufRow,col:$.bufCol}  });
+			$.srcmap.addMapping({
+				generated: {
+					line: $.bufRow,
+					column: $.bufCol
+				},
+				source: $.srcFile+"",
+				original: {
+					line: rc.row,
+					column: rc.col
+				}
+				//name: "christopher"
+			});
+		}
+	};
+	$.setSrcFile=function (f) {
+		$.srcFile=f;
+		$.srcRCM=Pos2RC(f.text());
+		$.srcmap.setSourceContent(f.path(),f.text());
+	};
+	$.print=function (v) {
+		$.buf+=v;
+		var a=(v+"").split("\n");
+		a.forEach(function (line,i) {
+			if (i<a.length-1) {// has \n
+				$.bufCol+=line.length+1;
+				$.bufRow++;
+				$.bufCol=1;
+			} else {
+				$.bufCol+=line.length;
+			}
+		});
+	};
+	$.dstFile=options.dstFile;
+	$.mapFile=options.mapFile;
+	$.printf=$;
+	$.buf="";
+	$.bufRow=1;
+	$.bufCol=1;
+	$.srcmap=new S.SourceMapGenerator();
+	$.lazy=function (place) {
+		if (!place) place={};
+		if (options.fixLazyLength) {
+			place.length=place.length||options.fixLazyLength;
+			place.pad=place.pad||" ";
+			place.gen=(function () {
+				var r="";
+				for(var i=0;i<place.length;i++) r+=place.pad;
+				return r;
+			})();
+			place.puts=[];
+			$.useLengthPlace=true;
+		} else {
+			//cannot use with sourcemap
+			place.gen=("GENERETID"+Math.random()+"DITERENEG").replace(/\W/g,"");
+			place.reg=new RegExp(place.gen,"g");
+			A(!$.useLengthPlace,"GENERETID cannot be used");
+		}
+		place.inited=true;
+		//place.src=place.gen;
+		place.put=function (val) {
+			this.val=val+"";
+			if (this.puts) {
+				if (this.val.length>this.length) {
+					$.lazyOverflow=true;
+				}
+				while (this.val.length<this.length) {
+					this.val+=this.pad;
+				}
+				var place=this;
+				this.puts.forEach(function (i) {
+					var pl=$.buf.length;
+					$.buf=$.buf.substring(0,i)+place.val+$.buf.substring(i+place.length);
+					A.eq(pl,$.buf.length);
+				});
+			}
+			if (this.reg) {
+				$.buf=$.buf.replace(this.reg, val);
+			}
+			return this.val;
+		};
+		place.print=function () {
+			if (this.puts) this.puts.push($.buf.length);
+			$.print(this.gen);
+		};
+		return place;
+		//return {put: function () {} };
+	};
+	$.ln=function () {
+		$.print("\n"+$.indentBuf);
+	};
+	$.indent=function () {
+		$.indentBuf+=$.indentStr;
+		$.print("\n"+$.indentBuf);
+	};
+	$.dedent = function () {
+		var len=$.indentStr.length;
+		if (!$.buf.substring($.buf.length-len).match(/^\s*$/)) {
+			console.log($.buf);
+			throw new Error ("Non-space truncated ");
+		}
+		$.buf=$.buf.substring(0,$.buf.length-len);
+		$.indentBuf=$.indentBuf.substring(0 , $.indentBuf.length-len);
+	};
+	$.toLiteral= function (s, quote) {
+		if (!quote) quote="'";
+	if (typeof s!=="string") {
+		console.log("no literal ",s);
+		throw new Error("toLiteral:"+s+" is not a literal");
+	}
+		s = s.replace(/\\/g, "\\\\");
+		s = s.replace(/\r/g, "\\r");
+		s = s.replace(/\n/g, "\\n");
+		if (quote=="'") s = s.replace(/'/g, "\\'");
+		else s = s.replace(/"/g, '\\"');
+		return quote + s + quote;
+	};
+	$.indentBuf="";
+	$.indentStr="  ";
+	$.close=function () {
+		$.mapStr=$.srcmap.toString();
+		if ($.mapFile && $.dstFile) {
+			$.mapFile.text($.mapStr);
+			$.printf("%n//# sourceMappingURL=%s%n",$.mapFile.relPath($.dstFile.up()));
+		}
+		if ($.dstFile) {
+			$.dstFile.text($.buf);
+		}
+		return $.buf;
+	};
+	return $;
 };
 });
 
+requireSimulator.setName('disp');
+if (typeof define!=="function") {
+   define=require("requirejs").define;
+}
+define(["IndentBuffer"], function(IndentBuffer) {
+// オブジェクトの内容を表示する． デバッグ用
+return disp=function (a) {
+	var p=IndentBuffer();
+	function disp2(a) {
+		if (a==null) return p("null%n");
+		if (typeof a == "string" )
+			return p("'%s'%n",a);
+		if (typeof a =="number")
+			return p("%s%n",a);
+		if (typeof a=="function") return p("func%n");
+		if (a instanceof Array) p("[%{");
+		else p("{%{");
+		var c = "";
+		for (var i in a) {
+			p(c + i+":");
+			disp2(a[i]);
+		}
+		if (a instanceof Array) p("%}]%n");
+		else  p("%}}%n");
+	}
+	disp2(a);
+	return p.buf;
+};
+});
+requireSimulator.setName('Parser');
+if (typeof define!=="function") {
+	define=require("requirejs").define;
+}
+define(["disp"],function(disp) {
+return Parser=function () {
+	function extend(dst, src) {
+		var i;
+		for(i in src){
+			dst[i]=src[i];
+		}
+		return dst;
+	}
+	var $={
+		consoleBuffer:"",
+		options: {traceTap:false, optimizeFirst: true, profile: false ,
+		verboseFirst: false,traceFirstTbl:false},
+		Parser: Parser,
+		StringParser: StringParser,
+		nc: nc
+	};
+	$.dispTbl=function (tbl) {
+		var buf="";
+		var h={};
+		if (!tbl) return buf;
+		for (var i in tbl) {// tbl:{char:Parser}   i:char
+			var n=tbl[i].name;
+			if (!h[n]) h[n]="";
+			h[n]+=i;
+		}
+		for (var n in h) {
+			buf+=h[n]+"->"+n+",";
+		}
+		return buf;
+	}
+	//var console={log:function (s) { $.consoleBuffer+=s; }};
+	function _debug(s) {console.log(s);}
+	function Parser(parseFunc){
+		if ($.options.traceTap) {
+			this.parse=function(s){
+				console.log("tap: name="+this.name+"  pos="+(s?s.pos:"?"));
+				var r=parseFunc.apply(this,[s]);
+				var img="NOIMG";
+				if (r.src && r.src.str) {
+					img=r.src.str.substring(r.pos-3,r.pos)+"^"+r.src.str.substring(r.pos,r.pos+3);
+				}
+				if (r.src && r.src.tokens) {
+					img=r.src.tokens[r.pos-1]+"["+r.src.tokens[r.pos]+"]"+r.src.tokens[r.pos+1];
+				}
+
+				console.log("/tap: name="+this.name+
+						" pos="+(s?s.pos:"?")+"->"+(r?r.pos:"?")+" "+img+" res="+(r?r.success:"?"));
+				return r;
+			};
+		} else {
+			this.parse=parseFunc;
+		}
+	};
+	Parser.create=function(parseFunc) { // (State->State)->Parser
+		return new Parser(parseFunc);
+	};
+	$.create=Parser.create;
+	function nc(v,name) {
+		if (v==null) throw name+" is null!";
+		return v;
+	}
+	extend(Parser.prototype, {// class Parser
+		// Parser.parse:: State->State
+		except: function (f) {
+			var t=this;
+			return this.ret(Parser.create(function (res) {
+				//var res=t.parse(s);
+				//if (!res.success) return res;
+				if (f.apply({}, res.result)) {
+					res.success=false;
+				}
+				return res;
+			}).setName("(except "+t.name+")"));
+		},
+		noFollow: function (p) {
+			var t=this;
+			nc(p,"p");
+			return this.ret(Parser.create(function (res) {
+				//var res=t.parse(s);
+				//if (!res.success) return res;
+				var res2=p.parse(res);
+				res.success=!res2.success;
+				return res;
+			}).setName("("+t.name+" noFollow "+p.name+")"));
+		},
+		andNoUnify: function(next) {// Parser.and:: (Function|Parser)  -> Parser
+			nc(next,"next"); // next==next
+			var t=this; // Parser
+			var res=Parser.create(function(s){ //s:State
+				var r1=t.parse(s); // r1:State
+				if (!r1.success) return r1;
+				var r2=next.parse(r1); //r2:State
+				if (r2.success) {
+					r2.result=r1.result.concat(r2.result); // concat===append built in func in Array
+				}
+				return r2;
+			});
+			return res.setName("("+this.name+" "+next.name+")");
+		},
+		and: function(next) {// Parser.and:: Parser  -> Parser
+			var res=this.andNoUnify(next);
+			//if (!$.options.optimizeFirst) return res;
+			if (!this._first) return res;
+			var tbl=this._first.tbl;
+			var ntbl={};
+			//  tbl           ALL:a1  b:b1     c:c1
+			//  next.tbl      ALL:a2           c:c2     d:d2
+			//           ALL:a1>>next   b:b1>>next c:c1>>next
+			for (var c in tbl) {
+				ntbl[c]=tbl[c].andNoUnify(next);
+			}
+			res=Parser.fromFirst(this._first.space, ntbl);
+			res.setName("("+this.name+" >> "+next.name+")");
+			if ($.options.verboseFirst) {
+				console.log("Created aunify name=" +res.name+" tbl="+$.dispTbl(ntbl));
+			}
+			return res;
+		},
+		retNoUnify: function (f) {
+			var t=this;
+			var p;
+			if (typeof f=="function") {
+				p=Parser.create(function (r1) {
+					var r2=r1.clone();
+					r2.result=[ f.apply({}, r1.result) ];
+					return r2;
+				}).setName("retfunc");
+			} else p=f;
+			var res=Parser.create(function(s){ //s:State
+				var r1=t.parse(s); // r1:State
+				if (!r1.success) return r1;
+				return p.parse(r1);
+				/*var r2=r1.clone();
+				r2.result=[ f.apply({}, r1.result) ];
+				return r2;*/
+			}).setName("("+this.name+" >= "+p.name+")");
+			return res;
+		},
+		ret: function(next) {// Parser.ret:: (Function|Parser)  -> Parser
+			if (!this._first) return this.retNoUnify(next);
+			var tbl=this._first.tbl;
+			var ntbl={};
+			for (var c in tbl) {
+				ntbl[c]=tbl[c].retNoUnify(next);
+			}
+			res=Parser.fromFirst(this._first.space, ntbl);
+			res.setName("("+this.name+" >>= "+next.name+")");
+			if ($.options.verboseFirst) {
+				console.log("Created runify name=" +res.name+" tbl="+$.dispTbl(ntbl));
+			}
+			return res;
+		},
+
+		/*
+		this._first={space: space, chars:String};
+		this._first={space: space, tbl:{char:Parser}};
+	*/
+		first: function (space, ct) {
+			if (!$.options.optimizeFirst) return this;
+			if (space==null) throw "Space is null2!";
+			if (typeof ct=="string") {
+					var tbl={};
+					for (var i=0; i<ct.length ; i++) {
+						tbl[ct.substring(i,i+1)]=this;
+					}
+				//this._first={space: space, tbl:tbl};
+				return Parser.fromFirst(space,tbl).setName("(fst "+this.name+")");
+//        		this._first={space: space, chars:ct};
+			} else if (ct==null) {
+				return Parser.fromFirst(space,{ALL:this}).setName("(fst "+this.name+")");
+				//this._first={space:space, tbl:{ALL:this}};
+			} else if (typeof ct=="object") {
+				throw "this._first={space: space, tbl:ct}";
+			}
+			return this;
+		},
+		firstTokens: function (tokens) {
+			if (!$.options.optimizeFirst) return this;
+			if (typeof tokens=="string") tokens=[tokens];
+			var tbl={};
+				if (tokens) {
+					var t=this;
+					tokens.forEach(function (token) {
+					tbl[token]=t;
+				});
+			} else {
+				tbl.ALL=this;
+			}
+			return Parser.fromFirstTokens(tbl).setName("(fstT "+this.name+")");
+		},
+		unifyFirst: function (other) {
+			var thiz=this;
+			function or(a,b) {
+				if (!a) return b;
+				if (!b) return a;
+				return a.orNoUnify(b).checkTbl();
+			}
+			var tbl={}; // tbl.* includes tbl.ALL
+			this.checkTbl();
+			other.checkTbl();
+			function mergeTbl() {
+			//   {except_ALL: contains_ALL}
+				var t2=other._first.tbl;
+				//before tbl={ALL:a1, b:b1, c:c1}   t2={ALL:a2,c:c2,d:d2}
+				//       b1 conts a1  c1 conts a1     c2 conts a2   d2 conts a2
+				//after  tbl={ALL:a1|a2 , b:b1|a2    c:c1|c2    d:a1|d2 }
+				var keys={};
+				for (var k in tbl) { /*if (d) console.log("tbl.k="+k);*/ keys[k]=1;}
+				for (var k in t2)  { /*if (d) console.log("t2.k="+k);*/ keys[k]=1;}
+				delete keys.ALL;
+				if (tbl.ALL || t2.ALL) {
+					tbl.ALL=or(tbl.ALL, t2.ALL);
+				}
+				for (var k in keys ) {
+					//if (d) console.log("k="+k);
+					//if (tbl[k] && !tbl[k].parse) throw "tbl["+k+"] = "+tbl[k];
+					//if (t2[k] && !t2[k].parse) throw "t2["+k+"] = "+tbl[k];
+					if (tbl[k] && t2[k]) {
+						tbl[k]=or(tbl[k],t2[k]);
+					} else if (tbl[k] && !t2[k]) {
+						tbl[k]=or(tbl[k],t2.ALL);
+					} else if (!tbl[k] && t2[k]) {
+						tbl[k]=or(tbl.ALL, t2[k]);
+					}
+				}
+			}
+			extend(tbl, this._first.tbl);
+			mergeTbl();
+			var res=Parser.fromFirst(this._first.space, tbl).setName("("+this.name+")U("+other.name+")");
+			if ($.options.verboseFirst) console.log("Created unify name=" +res.name+" tbl="+$.dispTbl(tbl));
+			return res;
+		},
+		or: function(other) { // Parser->Parser
+			nc(other,"other");
+				if (this._first && other._first &&
+						this._first.space && this._first.space===other._first.space) {
+				return this.unifyFirst(other);
+				} else {
+					if ($.options.verboseFirst) {
+						console.log("Cannot unify"+this.name+" || "+other.name+" "+this._first+" - "+other._first);
+					}
+					return this.orNoUnify(other);
+				}
+		},
+		orNoUnify: function (other) {
+				var t=this;  // t:Parser
+			var res=Parser.create(function(s){
+				var r1=t.parse(s); // r1:State
+				if (!r1.success){
+					var r2=other.parse(s); // r2:State
+					return r2;
+				} else {
+					return r1;
+				}
+			});
+			res.name="("+this.name+")|("+other.name+")";
+			return res;
+		},
+		setName: function (n) {
+			this.name=n;
+			if (this._first) {
+				/*var tbl=this._first.tbl;
+				for (var i in tbl) {
+					tbl[i].setName("(elm "+i+" of "+n+")");
+				}*/
+			}
+			return this;
+		},
+		profile: function (name) {
+			if ($.options.profile) {
+				this.parse=this.parse.profile(name || this.name);
+			}
+			return this;
+		},
+		repN: function(min){
+			var p=this;
+			if (!min) min=0;
+			var res=Parser.create(function(s) {
+				var current=s;
+				var result=[];
+				while(true){
+					var next=p.parse(current);
+					if(!next.success) {
+						var res;
+						if (result.length>=min) {
+							res=current.clone();
+							res.result=[result];
+							res.success=true;
+							//console.log("rep0 res="+disp(res.result));
+							return res;
+						} else {
+							res=s.clone();
+							res.success=false;
+							return res;
+						}
+					} else {
+						result.push(next.result[0]);
+						current=next;
+					}
+				}
+			});
+			//if (min>0) res._first=p._first;
+			return res.setName("("+p.name+" * "+min+")");
+		},
+		rep0: function () { return this.repN(0); },
+		rep1: function () { return this.repN(1); },
+		opt: function () {
+			var t=this;
+			return Parser.create(function (s) {
+				var r=t.parse(s);
+				if (r.success) {
+					return r;
+				} else {
+					s=s.clone();
+					s.success=true;
+					s.result=[null];
+					return s;
+				}
+			}).setName("("+t.name+")?");
+		},
+		sep1: function(sep, valuesToArray) {
+			var value=this;
+			nc(value,"value");nc(sep,"sep");
+			var tail=sep.and(value).ret(function(r1, r2) {
+				if(valuesToArray) return r2;
+				return {sep:r1, value:r2};
+			});
+			return value.and(tail.rep0()).ret(function(r1, r2){
+				var i;
+				if (valuesToArray) {
+					var r=[r1];
+						for (i in r2) {
+							r.push(r2[i]);
+						}
+					return r;
+				} else {
+					return {head:r1,tails:r2};
+				}
+			}).setName("(sep1 "+value.name+"~~"+sep.name+")");
+		},
+		sep0: function(s){
+			return this.sep1(s,true).opt().ret(function (r) {
+				if (!r) return [];
+				return r;
+			});
+		},
+		tap: function (msg) {
+			return this;
+			if (!$.options.traceTap) return this;
+			if (!msg) msg="";
+			var t=this;
+			var res=Parser.create(function(s){
+				console.log("tap:"+msg+" name:"+t.name+"  pos="+(s?s.pos:"?"));
+				var r=t.parse(s);
+				var img=r.src.str.substring(r.pos-3,r.pos)+"^"+r.src.str.substring(r.pos,r.pos+3);
+				console.log("/tap:"+msg+" name:"+t.name+" pos="+(s?s.pos:"?")+"->"+(r?r.pos:"?")+" "+img+" res="+(r?r.success:"?"));
+				return r;
+			});
+			/*if (this._first) {
+				var ntbl={},tbl=this._first.tbl;
+				for (var c in tbl) {
+					ntbl=tbl[c].
+				}
+			}*/
+			return res.setName("(Tap "+t.name+")");
+		},
+		retN: function (i) {
+			return this.ret(function () {
+				return arguments[i];
+			})
+		},
+		parseStr: function (str,global) {
+			var st=new State(str,global);
+			return this.parse(st);
+		},
+		checkTbl: function () {
+			if (!this._first) return this;
+			var tbl=this._first.tbl;
+			for (var k in tbl) {
+				if (!tbl[k].parse) throw this.name+": tbl."+k+" is not a parser :"+tbl[k];
+			}
+			return this;
+		}
+	});
+	function State(strOrTokens, global) { // class State
+		if (strOrTokens!=null) {
+			this.src={maxPos:0, global:global};// maxPos is shared by all state
+			if (typeof strOrTokens=="string") {
+				this.src.str=strOrTokens;
+			}
+			if (strOrTokens instanceof Array) {
+				this.src.tokens=strOrTokens;
+			}
+			this.pos=0;
+			this.result=[]
+			this.success=true;
+		}
+	};
+	extend(State.prototype, {
+		clone: function() {
+			var s=new State();
+			s.src=this.src;
+			s.pos=this.pos;
+			s.result=this.result.slice();
+			s.success=this.success;
+			return s;
+		},
+		updateMaxPos:function (npos) {
+			if (npos > this.src.maxPos) {
+				this.src.maxPos=npos;
+			}
+		},
+		isSuccess: function () {
+			return this.success;
+		},
+		getGlobal: function () {
+				if (!this.src.global) this.src.global={};
+				return this.src.global;
+		}
+	});
+	Parser.fromFirst=function (space, tbl) {
+		if (space=="TOKEN") {
+			return Parser.fromFirstTokens(tbl);
+		}
+		var res=Parser.create(function (s0) {
+			var s=space.parse(s0);
+			var f=s.src.str.substring(s.pos,s.pos+1);
+			if ($.options.traceFirstTbl) {
+				console.log(this.name+": first="+f+" tbl="+( tbl[f]?tbl[f].name:"-") );
+			}
+			if (tbl[f]) {
+				return tbl[f].parse(s);
+			}
+			if (tbl.ALL) return tbl.ALL.parse(s);
+			s.success=false;
+			return s;
+		});
+		res._first={space:space,tbl:tbl};
+		res.checkTbl();
+		return res;
+	};
+	Parser.fromFirstTokens=function (tbl) {
+		var res=Parser.create(function (s) {
+			var t=s.src.tokens[s.pos];
+			var f=t?t.type:null;
+			if ($.options.traceFirstTbl) {
+				console.log(this.name+": firstT="+f+" tbl="+( tbl[f]?tbl[f].name:"-") );
+			}
+			if (f!=null && tbl[f]) {
+				return tbl[f].parse(s);
+			}
+			if (tbl.ALL) return tbl.ALL.parse(s);
+			s.success=false;
+			return s;
+		});
+		res._first={space:"TOKEN",tbl:tbl};
+		res.checkTbl();
+		return res;
+	};
+
+	var StringParser={
+		empty: Parser.create(function(state) {
+			var res=state.clone();
+			res.success=true;
+			res.result=[null]; //{length:0, isEmpty:true}];
+			return res;
+		}).setName("E"),
+		fail: Parser.create(function(s){
+			s.success=false;
+			return s;
+		}).setName("F"),
+		str: function (st) { // st:String
+			return this.strLike(function (str,pos) {
+				if (str.substring(pos, pos+st.length)===st) return {len:st.length};
+				return null;
+			}).setName(st);
+		},
+		reg: function (r) {//r: regex (must have ^ at the head)
+			if (!(r+"").match(/^\/\^/)) console.log("Waring regex should have ^ at the head:"+(r+""));
+			return this.strLike(function (str,pos) {
+				var res=r.exec( str.substring(pos) );
+				if (res) {
+					res.len=res[0].length;
+					return res;
+				}
+				return null;
+			}).setName(r+"");
+		},
+		strLike: function (func) {
+			// func :: str,pos, state? -> {len:int, other...}  (null for no match )
+			return Parser.create(function(state){
+				var str= state.src.str;
+				if (str==null) throw "strLike: str is null!";
+				var spos=state.pos;
+				//console.log(" strlike: "+str+" pos:"+spos);
+				var r1=func(str, spos, state);
+				if ($.options.traceToken) console.log("pos="+spos+" r="+r1);
+				if(r1) {
+					if ($.options.traceToken) console.log("str:succ");
+					r1.pos=spos;
+					r1.src=state.src; // insert 2013/05/01
+					var ns=state.clone();
+					extend(ns, {pos:spos+r1.len, success:true, result:[r1]});
+					state.updateMaxPos(ns.pos);
+					return ns;
+				}else{
+					if ($.options.traceToken) console.log("str:fail");
+					state.success=false;
+					return state;
+				}
+			}).setName("STRLIKE");
+		},
+		parse: function (parser, str,global) {
+			var st=new State(str,global);
+			return parser.parse(st);
+		}
+	};
+	//  why not eof: ? because StringParser.strLike
+	StringParser.eof=StringParser.strLike(function (str,pos) {
+		if (pos==str.length) return {len:0};
+		return null;
+	}).setName("EOF");
+	$.StringParser=StringParser;
+	var TokensParser={
+		token: function (type) {
+			return Parser.create(function (s) {
+				var t=s.src.tokens[s.pos];
+				s.success=false;
+				if (!t) return s;
+				if (t.type==type) {
+					s=s.clone();
+					s.updateMaxPos(s.pos);
+				s.pos++;
+					s.success=true;
+					s.result=[t];
+				}
+				return s;
+			}).setName(type).firstTokens(type);
+		},
+		parse:function (parser, tokens, global) {
+			var st=new State(tokens,global);
+			return parser.parse(st);
+		},
+		eof: Parser.create(function (s) {
+			var suc=(s.pos>=s.src.tokens.length);
+			s.success=suc;
+			if (suc) {
+				s=s.clone();
+				s.result=[{type:"EOF"}];
+			}
+			return s;
+		}).setName("EOT")
+	};
+	$.TokensParser=TokensParser;
+	$.lazy=function (pf) { //   ( ()->Parser ) ->Parser
+		var p=null;
+		return Parser.create(function (st) {
+			if (!p) p=pf();
+			if (!p) throw pf+" returned null!";
+			this.name=pf.name;
+			return p.parse(st);
+		}).setName("LZ");
+	};
+	$.addRange=function(res, newr) {
+		if (newr==null) return res;
+		if (typeof (res.pos)!="number") {
+			res.pos=newr.pos;
+			res.len=newr.len;
+			return res;
+		}
+		var newEnd=newr.pos+newr.len;
+		var curEnd=res.pos+res.len;
+		if (newr.pos<res.pos) res.pos=newr.pos;
+		if (newEnd>curEnd) res.len= newEnd-res.pos;
+		return res;
+	};
+	$.setRange=function (res) {
+		if (res==null || typeof res=="string" || typeof res=="number" || typeof res=="boolean") return;
+		var exRange=$.getRange(res);
+		if (exRange!=null) return res;
+		for (var i in res) {
+			if (!res.hasOwnProperty(i)) continue;
+			var range=$.setRange(res[i]);
+			$.addRange(res,range);
+		}
+		return res;
+	};
+
+	$.getRange=function(e) {
+		if (e==null) return null;
+		if (typeof e.pos!="number") return null;
+		if (typeof e.len=="number") return e;
+		return null;
+	};
+	return $;
+}();
+
+});
+requireSimulator.setName('Grammar');
+if (typeof define!=="function") {
+	define=require("requirejs").define;
+}
+
+define(["Parser"], function (Parser) {
+Grammar=function () {
+	var p=Parser;
+
+	var $=null;
+	function trans(name) {
+		if (typeof name=="string") return $.get(name);
+		return name;
+	}
+	function tap(name) {
+		return p.Parser.create(function (st) {
+			console.log("Parsing "+name+" at "+st.pos+"  "+st.src.str.substring(st.pos, st.pos+20).replace(/[\r\n]/g,"\\n"));
+			return st;
+		});
+	}
+	$=function (name){
+		var $$={};
+		$$.ands=function() {
+			var p=trans(arguments[0]);  //  ;
+			for (var i=1 ; i<arguments.length ;i++) {
+				p=p.and( trans(arguments[i]) );
+			}
+			p=p.tap(name);
+			$.defs[name]=p;
+			var $$$={};
+			$$$.autoNode=function () {
+				var res=p.ret(function () {
+					var res={type:name};
+					for (var i=0 ; i<arguments.length ;i++) {
+						var e=arguments[i];
+						var rg=Parser.setRange(e);
+						Parser.addRange(res, rg);
+						res["-element"+i]=e;
+					}
+					res.toString=function () {
+						return "("+this.type+")";
+					};
+				}).setName(name);
+				return $.defs[name]=res;
+			};
+			$$$.ret=function (f) {
+				if (arguments.length==0) return p;
+				if (typeof f=="function") {
+					return $.defs[name]=p.ret(f);
+				}
+				var names=[];
+				var fn=function(e){return e;};
+				for (var i=0 ; i<arguments.length ;i++) {
+					if (typeof arguments[i]=="function") {
+						fn=arguments[i];
+						break;
+					}
+					names[i]=arguments[i];
+				}
+				var res=p.ret(function () {
+					var res={type:name};
+					res[Grammar.SUBELEMENTS]=[];
+					for (var i=0 ; i<arguments.length ;i++) {
+						var e=arguments[i];
+						var rg=Parser.setRange(e);
+						Parser.addRange(res, rg);
+						if (names[i]) {
+							res[names[i]]=e;
+						}
+						res[Grammar.SUBELEMENTS].push(e);
+					}
+					res.toString=function () {
+						return "("+this.type+")";
+					};
+					return fn(res);
+				}).setName(name);
+				return  $.defs[name]=res;
+			};
+			return $$$;
+		};
+		$$.ors= function () {
+			var p=trans(arguments[0]);
+			for (var i=1 ; i<arguments.length ;i++) {
+				p=p.or( trans(arguments[i]) );
+			}
+			return $.defs[name]=p.setName(name);
+		};
+		return $$;
+	};
+
+	$.defs={};
+	$.get=function (name) {
+		if ($.defs[name]) return $.defs[name];
+		return p.lazy(function () {
+			var r=$.defs[name];
+			if (!r) throw "grammar named '"+name +"' is undefined";
+			return r;
+		}).setName("(Lazy of "+name+")");
+	};
+	return $;
+};
+Grammar.SUBELEMENTS="[SUBELEMENTS]";
+return Grammar;
+});
+requireSimulator.setName('XMLBuffer');
+// var b=XMLBuffer(src);
+// b(node);
+// console.log(b.buf);
+if (typeof define!=="function") {
+	define=require("requirejs").define;
+}
+define(["Parser"],
+function(Parser) {
+XMLBuffer=function (src) {
+	var $;
+	$=function (node, attrName){
+		//console.log("genX: "+node+ " typeof = "+typeof node+"  pos="+node.pos+" attrName="+attrName+" ary?="+(node instanceof Array));
+		if (node==null || typeof node=="string" || typeof node=="number") return;
+		var r=Parser.getRange(node);
+		if (r) {
+			while ($.srcLen < r.pos) {
+				$.src(src.substring($.srcLen, r.pos));
+			}
+		}
+		if (node==null) return;
+		if (attrName) $.startTag("attr_"+attrName+"");
+		if (node.type) {
+			if (node.isToken) $.startTag("token_"+node.type+"");
+			else $.startTag(node.type+"");
+		}
+		if (node.text) $.src(r.text);
+		else {
+			var n=$.orderByPos(node);
+			n.forEach(function (subnode) {
+				if (subnode.name && subnode.name.match(/^-/)) {
+					$(subnode.value);
+				} else {
+					$(subnode.value, subnode.name);
+				}
+			});
+		}
+		if (r) {
+			while ($.srcLen < r.pos+r.len) {
+				$.src(src.substring($.srcLen, r.pos+r.len));
+			}
+		}
+		if (node.type) {
+			if (node.isToken) $.endTag("token_"+node.type+"");
+			else $.endTag(""+node.type+"");
+		}
+		if (attrName) $.endTag("attr_"+attrName);
+	};
+	$.orderByPos=XMLBuffer.orderByPos;
+	$.src=function (str) {
+		$.buf+=str.replace(/&/g,"&amp;").replace(/>/g,"&gt;").replace(/</g,"&lt;");
+		$.srcLen+=str.length;
+	};
+	$.tag=function (str) {
+		$.buf+=str;
+	};
+	$.startTag=function (tagName) {
+		if (tagName.match(/^[a-zA-Z_0-9]+$/)) {
+			$.tag("<"+tagName+">");
+		} else {
+			$.tag("<token>");
+			//$.tag("<operator name=\""+tagName+"\">");
+		}
+	};
+	$.endTag=function (tagName) {
+		if (tagName.match(/^[a-zA-Z_0-9]+$/)) {
+			$.tag("</"+tagName+">");
+		} else {
+			$.tag("</token>");
+			//$.tag("</operator>");
+		}
+	};
+
+	$.buf="";
+	$.srcLen=0;
+	return $;
+};
+XMLBuffer.orderByPos=function (node) {
+	var res=[];
+	/*if (node[XMLBuffer.SUBELEMENTS]) {
+		//console.log("subele",node);
+		node[XMLBuffer.SUBELEMENTS].forEach(function (e,i) {
+			if (e) {
+				res.push({value:e});
+			}
+		});
+	} else {*/
+		for (var i in node) {
+			if (!node.hasOwnProperty(i)) continue;
+			if (node[i]==null || typeof node[i]=="string" || typeof node[i]=="number") continue;
+			if (typeof(node[i].pos)!="number") continue;
+			if (isNaN(parseInt(i)) && !(i+"").match(/^-/)) {
+				res.push({name: i, value: node[i]}); 
+			} else {
+				res.push({value: node[i]}); 
+			}
+		}
+	//}
+	res=res.sort(function (a,b) {
+		return a.value.pos-b.value.pos;
+	});
+	return res;
+};
+XMLBuffer.SUBELEMENTS="[SUBELEMENTS]";
+return XMLBuffer;
+});
+requireSimulator.setName('TError');
+if (typeof define!=="function") {
+	define=require("requirejs").define;
+}
+define([],function () {
+TError=function (mesg, src, pos) {
+	if (typeof src=="string") {
+		return {
+			isTError:true,
+			mesg:mesg,
+			src:{
+				name:function () { return src;},
+				text:function () { return src;}
+			},
+			pos:pos,
+			toString:function (){
+				return this.mesg+" at "+src+":"+this.pos;
+			},
+			raise: function () {
+				throw this;
+			}
+		};
+	}
+	var klass=null;
+	if (src && src.src) {
+		klass=src;
+		src=klass.src.tonyu;
+	}
+	if (typeof src.name!=="function") {
+		throw "src="+src+" should be file object";
+	}
+	var rc;
+	if ( (typeof (src.text))=="function") {
+		var s=src.text();
+		if (typeof s=="string") {
+			rc=TError.calcRowCol(s,pos);
+		}
+	}
+	return {
+		isTError:true,
+		mesg:mesg,src:src,pos:pos,row:rc.row, col:rc.col, klass:klass,
+		toString:function (){
+			return this.mesg+" at "+this.src.name()+":"+this.row+":"+this.col;
+		},
+		raise: function () {
+			throw this;
+		}
+	};
+};
+TError.calcRowCol=function (text,pos) {
+	var lines=text.split("\n");
+	var pp=0,row,col;
+	for (row=0;row<lines.length ; row++) {
+		pp+=lines[row].length+1;
+		if (pp>pos) {
+			col=pos-(pp-lines[row].length);
+			break;
+		}
+	}
+	return {row:row,col:col};
+};
+return TError;
+});
+requireSimulator.setName('TT');
+define(["Grammar", "XMLBuffer", "IndentBuffer","disp", "Parser","TError"],
+function (Grammar, XMLBuffer, IndentBuffer, disp, Parser,TError) {
+return TT=function () {
+	function profileTbl(parser, name) {
+		var tbl=parser._first.tbl;
+		for (var c in tbl) {
+			tbl[c].profile();//(c+" of "+tbl[name);
+		}
+	}
+
+	var sp=Parser.StringParser;
+	var SAMENAME="SAMENAME";
+	var DIV=1,REG=2;
+	var space=sp.reg(/^(\s*(\/\*\/?([^\/]|[^*]\/|\r|\n)*\*\/)*(\/\/.*\r?\n)*)*/).setName("space");
+	function tk(r, name) {
+		var pat;
+		var fst;
+		if (typeof r=="string") {
+			pat=sp.str(r);
+			if (r.length>0) fst=r.substring(0,1);
+			if (!name) name=r;
+		} else {
+			pat=sp.reg(r);
+			if (!name) name=r+"";
+		}
+		var res=space.and(pat).ret(function(a, b) {
+			var res={};
+			res.pos=b.pos;
+			if (typeof res.pos!="number") throw "no pos for "+name+" "+disp(b);
+			res.len=b.len;
+			res.text=b.src.str.substring(res.pos, res.pos+res.len);
+			if (typeof res.text!="string") throw "no text("+res.text+") for "+name+" "+disp(b);
+			res.toString=function (){
+				return this.text;
+			};
+			res.isToken=true;
+			return res;
+		});
+		if (fst) res=res.first(space, fst);
+		return res.setName(name);//.profile();
+	}
+	var parsers={},posts={};
+	function dtk2(prev, name, parser, post) {
+		//console.log("2reg="+prev+" name="+name);
+		if (typeof parser=="string") parser=tk(parser);
+		parsers[prev]=or(parsers[prev], parser.ret(function (res) {
+			res.type=name;
+			return res;
+		}).setName(name) );
+	}
+	function dtk(prev, name, parser, post) {
+		if(name==SAMENAME) name=parser;
+		for (var m=1; m<=prev; m*=2) {
+			//prev=1  -> m=1
+			//prev=2  -> m=1x,2
+			//XXprev=3  -> m=1,2,3
+			if ((prev&m)!=0) dtk2(prev&m, name,parser,post);
+		}
+		posts[name]=post;
+	}
+	function or(a,b){
+		if (!a) return b;
+		return a.or(b);
+	}
+
+	var all=Parser.create(function (st) {
+		var mode=REG;
+		var res=[];
+		while (true) {
+			st=parsers[mode].parse(st);
+			if (!st.success) break;
+			var e=st.result[0];
+			mode=posts[e.type];
+			res.push(e);
+		}
+		st=space.parse(st);
+		//console.log(st.src.maxPos+"=="+st.src.str.length)
+		st.success=st.src.maxPos==st.src.str.length;
+		st.result[0]=res;
+		return st;
+	});
+	var reserved={"function":true, "var":true , "return":true, "typeof": true, "if":true,
+			"__typeof": true,
+			"for":true,
+			"else": true,
+			"super": true,
+			"while":true,
+			"continue":true,
+			"break":true,
+			"do":true,
+			"switch":true,
+			"case":true,
+			"default":true,
+			"try": true,
+			"catch": true,
+			"finally": true,
+			"throw": true,
+			"of": true,
+			"in": true,
+			fiber:true,
+			"native": true,
+			"instanceof":true,
+			"new": true,
+			"is": true,
+			"true": true,
+			"false": true,
+			"null":true,
+			"this":true,
+			"undefined": true,
+			"usethread": true,
+			"constructor": true,
+			ifwait:true,
+			nowait:true,
+			_thread:true,
+			arguments:true,
+			"delete": true,
+			"extends":true,
+			"includes":true
+	};
+
+	var num=tk(/^[0-9][xb]?[0-9a-f\.]*/i).ret(function (n) {
+		n.type="number";
+		n.value=n.text-0;//parseInt(n.text);
+		return n;
+	}).first(space,"0123456789");
+	var literal=tk({exec: function (s) {
+		var head=s.substring(0,1);
+		if (head!=='"' && head!=="'") return false;
+		for (var i=1 ;i<s.length ; i++) {
+			var c=s.substring(i,i+1);
+			if (c===head) {
+				return [s.substring(0,i+1)];
+			} else if (c==="\\") {
+				i++;
+			}
+		}
+		return false;
+	},toString:function(){return"literal";}
+	}).first(space,"\"'");
+	var regex=tk({exec: function (s) {
+		if (s.substring(0,1)!=='/') return false;
+		for (var i=1 ;i<s.length ; i++) {
+			var c=s.substring(i,i+1);
+			if (c==='/') {
+				var r=/^[ig]*/.exec( s.substring(i+1) );
+				return [s.substring(0,i+1+r[0].length)];
+			} else if (c=="\n") {
+				return false;
+			} else if (c==="\\") {
+				i++;
+			}
+		}
+		return false;
+	},toString:function(){return"regex";}
+	}).first(space,"/");
+
+	dtk(REG|DIV, "number", num,DIV );
+	dtk(REG,  "regex" ,regex,DIV );
+	dtk(REG|DIV,  "literal" ,literal,DIV );
+
+	dtk(REG|DIV,SAMENAME ,"++",DIV );
+	dtk(REG|DIV,SAMENAME ,"--",DIV );
+
+	dtk(REG|DIV,SAMENAME ,"!==",REG );
+	dtk(REG|DIV,SAMENAME ,"===",REG );
+	dtk(REG|DIV,SAMENAME ,">>>",REG );
+	dtk(REG|DIV,SAMENAME ,"+=",REG );
+	dtk(REG|DIV,SAMENAME ,"-=",REG );
+	dtk(REG|DIV,SAMENAME ,"*=",REG );
+	dtk(REG|DIV,SAMENAME ,"/=",REG );
+	dtk(REG|DIV,SAMENAME ,"%=",REG );
+	dtk(REG|DIV,SAMENAME ,">=",REG );
+	dtk(REG|DIV,SAMENAME ,"<=",REG );
+	dtk(REG|DIV,SAMENAME ,"!=",REG );
+	dtk(REG|DIV,SAMENAME ,"==",REG );
+	dtk(REG|DIV,SAMENAME ,">>",REG );
+	dtk(REG|DIV,SAMENAME ,"<<",REG );
+
+	dtk(REG|DIV,SAMENAME ,"&&",REG );
+	dtk(REG|DIV,SAMENAME ,"||",REG );
+
+
+	dtk(REG|DIV,SAMENAME ,"(",REG );
+	dtk(REG|DIV,SAMENAME ,")",DIV );
+
+
+	dtk(REG|DIV,SAMENAME ,"[",REG );
+	dtk(REG|DIV,SAMENAME ,"]",DIV );  // a[i]/3
+
+	dtk(REG|DIV,SAMENAME ,"{",REG );
+	//dtk(REG|DIV,SAMENAME ,"}",REG );  // if () { .. }  /[a-z]/.exec()
+	dtk(REG|DIV,SAMENAME ,"}",DIV ); //in tonyu:  a{x:5}/3
+
+	dtk(REG|DIV,SAMENAME ,">",REG );
+	dtk(REG|DIV,SAMENAME ,"<",REG );
+	dtk(REG|DIV,SAMENAME ,"^",REG );
+	dtk(REG|DIV,SAMENAME ,"+",REG );
+	dtk(REG|DIV,SAMENAME ,"-",REG );
+	dtk(REG|DIV, SAMENAME ,".",REG );
+	dtk(REG|DIV,SAMENAME ,"?",REG );
+
+	dtk(REG|DIV, SAMENAME ,"=",REG );
+	dtk(REG|DIV, SAMENAME ,"*",REG );
+	dtk(REG|DIV, SAMENAME ,"%",REG );
+	dtk(DIV, SAMENAME ,"/",REG );
+
+	dtk(DIV|REG, SAMENAME ,"^",REG );
+	dtk(DIV|REG, SAMENAME ,"~",REG );
+
+	dtk(DIV|REG, SAMENAME ,"\\",REG );
+	dtk(DIV|REG, SAMENAME ,":",REG );
+	dtk(DIV|REG, SAMENAME ,";",REG );
+	dtk(DIV|REG, SAMENAME ,",",REG );
+	dtk(REG|DIV,SAMENAME ,"!",REG );
+	dtk(REG|DIV,SAMENAME ,"&",REG );
+	dtk(REG|DIV,SAMENAME ,"|",REG );
+
+	var symresv=tk(/^[a-zA-Z_$][a-zA-Z0-9_$]*/,"symresv_reg").ret(function (s) {
+	s.type=(s.text=="constructor" ? "tk_constructor" :
+		reserved.hasOwnProperty(s.text) ? s.text : "symbol");
+	return s;
+	}).first(space);
+	for (var n in reserved) {
+		posts[n]=REG;
+	}
+	posts.tk_constructor=REG;
+	posts.symbol=DIV;
+	parsers[REG]=or(parsers[REG],symresv);
+	parsers[DIV]=or(parsers[DIV],symresv);
+
+	function parse(str) {
+		var res=Parser.StringParser.parse(all, str);
+		if (res.success) {
+		} else {
+			console.log("Stopped at "+str.substring( res.src.maxPos-5, res.src.maxPos+5));
+		}
+		return res;
+	}
+	return {parse:parse, extension:"js",reserved:reserved};
+}();
+
+});
+
+requireSimulator.setName('ExpressionParser');
+if (typeof define!=="function") {
+	define=require("requirejs").define;
+}
+
+define(["Parser"], function (Parser) {
+// parser.js の補助ライブラリ．式の解析を担当する
+return ExpressionParser=function () {
+	var $={};
+	var EXPSTAT="EXPSTAT";
+	//  first 10     *  +  <>  &&  ||  =     0  later
+	function opType(type, prio) {
+		var $={};
+		$.eq=function (o) {return type==o.type() && prio==o.prio(); };
+		$.type=function (t) { if (!t) return type; else return t==type;};
+		$.prio=function () {return prio;};
+		$.toString=function () {return "["+type+":"+prio+"]"; }
+		return $;
+	}
+	function composite(a) {
+		var $={};
+		var e=a;
+		$.add=function (a) {
+			if (!e) {
+				e=a;
+			} else {
+				e=e.or(a);
+			}
+		};
+		$.get=function () {
+			return e;
+		};
+		return $;
+	}
+	function typeComposite() {
+		var built=composite();
+		//var lastOP , isBuilt;
+		var $={};
+		$.reg=function (type, prio, a) {
+			var opt=opType(type, prio);
+			built.add(a.ret(Parser.create(function (r) {
+				r.opType=opt;
+				return r;
+			})).setName("(opType "+opt+" "+a.name+")") );
+		};
+		$.get=function () {return built.get();};
+		$.parse=function (st) {
+			return $.get().parse(st);
+		};
+		return $;
+	}
+	var prefixOrElement=typeComposite(), postfixOrInfix=typeComposite();
+	var element=composite();
+	var trifixes=[];
+	$.element=function (e) {
+		prefixOrElement.reg("element", -1, e);
+		element.add(e);
+	};
+	$.getElement=function () {return element.get();};
+	$.prefix=function (prio, pre) {
+		prefixOrElement.reg("prefix", prio, pre);
+	};
+	$.postfix=function (prio, post) {
+		postfixOrInfix.reg("postfix", prio, post);
+	};
+	$.infixl =function (prio, inf) {
+		postfixOrInfix.reg("infixl", prio, inf);
+	};
+	$.infixr =function (prio, inf) {
+		postfixOrInfix.reg("infixr", prio, inf);
+	};
+	$.infix =function (prio, inf) {
+		postfixOrInfix.reg("infix", prio, inf);
+	};
+	$.trifixr = function (prio, tf1, tf2) {
+		postfixOrInfix.reg("trifixr", prio, tf1);
+		//postfixOrInfix.reg("trifixr2", prio, tf2);
+		trifixes[prio]=tf2;
+	};
+	$.custom = function (prio, func) {
+		// func :: Elem(of next higher) -> Parser
+	};
+	$.mkInfix=function (f) {
+		$.mkInfix.def=f;
+	};
+	$.mkInfix.def=function (left,op,right) {
+		return Parser.setRange({type:"infix", op:op, left: left, right: right});
+	}
+	$.mkInfixl=function (f) {
+		$.mkInfixl.def=f;
+	};
+	$.mkInfixl.def=function (left, op , right) {
+		return Parser.setRange({type:"infixl",op:op ,left:left, right:right});
+	};
+	$.mkInfixr=function (f) {
+		$.mkInfixr.def=f;
+	};
+	$.mkInfixr.def=function (left, op , right) {
+		return Parser.setRange({type:"infixr",op:op ,left:left, right:right});
+	};
+	$.mkPrefix=function (f) {
+		$.mkPrefix.def=f;
+	};
+	$.mkPrefix.def=function (op , right) {
+		return Parser.setRange({type:"prefix", op:op, right:right});
+	};
+	$.mkPostfix=function (f) {
+		$.mkPostfix.def=f;
+	};
+	$.mkPostfix.def=function (left, op) {
+		return Parser.setRange({type:"postfix", left:left, op:op});
+	};
+	$.mkTrifixr=function(f) {
+		$.mkTrifixr.def=f;
+	};
+	$.mkTrifixr.def=function (left, op1, mid, op2, right) {
+		return Parser.setRange({type:"trifixr", left:left, op1:op1, mid:mid, op2:op2, right:right});
+	};
+	$.build= function () {
+		//postfixOrInfix.build();
+		//prefixOrElement.build();
+		$.built= Parser.create(function (st) {
+			return parse(0,st);
+		}).setName("ExpBuilt");
+		return $.built;
+	};
+	function dump(st, lbl) {
+		return ;
+		var s=st.src.str;
+		console.log("["+lbl+"] "+s.substring(0,st.pos)+"^"+s.substring(st.pos)+
+				" opType="+ st.opType+"  Succ = "+st.isSuccess()+" res="+st.result[0]);
+	}
+	function parse(minPrio, st) {
+		var stat=0, res=st ,  opt;
+		dump(st," start minprio= "+minPrio);
+		st=prefixOrElement.parse(st);
+		dump(st," prefixorelem "+minPrio);
+		if (!st.isSuccess()) {
+			return st;
+		}
+		//p2=st.result[0];
+		opt=st.opType;
+		if (opt.type("prefix") ) {
+			// st = -^elem
+			var pre=st.result[0];
+			st=parse(opt.prio(), st);
+			if (!st.isSuccess()) {
+				return st;
+			}
+				// st: Expr    st.pos = -elem^
+			var pex=$.mkPrefix.def(pre, st.result[0]);
+			res=st.clone();  //  res:Expr
+			res.result=[pex]; // res:prefixExpr  res.pos= -elem^
+			if (!st.nextPostfixOrInfix) {
+				return res;
+			}
+			// st.next =  -elem+^elem
+			st=st.nextPostfixOrInfix;  // st: postfixOrInfix
+		} else { //elem
+			//p=p2;
+			res=st.clone(); // res:elemExpr   res =  elem^
+			st=postfixOrInfix.parse(st);
+			if (!st.isSuccess()) {
+				return res;
+			}
+		}
+		// assert st:postfixOrInfix  res:Expr
+		while (true) {
+			dump(st,"st:pi"); dump(res,"res:ex");
+			opt=st.opType;
+			if (opt.prio()<minPrio) {
+				res.nextPostfixOrInfix=st;
+				return res;
+			}
+			// assert st:postfixOrInfix  res:Expr
+			if (opt.type("postfix")) {
+				// st:postfix
+				var pex=$.mkPostfix.def(res.result[0],st.result[0]);
+				res=st.clone();
+				res.result=[pex]; // res.pos= expr++^
+				dump(st, "185");
+				st=postfixOrInfix.parse(st); // st. pos= expr++--^
+				if (!st.isSuccess()) {
+					return res;
+				}
+			} else if (opt.type("infixl")){  //x+y+z
+				// st: infixl
+				var inf=st.result[0];
+				st=parse(opt.prio()+1, st);
+				if (!st.isSuccess()) {
+					return res;
+				}
+				// st: expr   st.pos=  expr+expr^
+				var pex=$.mkInfixl.def(res.result[0], inf , st.result[0]);
+				res=st.clone();
+				res.result=[pex]; //res:infixlExpr
+				if (!st.nextPostfixOrInfix) {
+					return res;
+				}
+				st=st.nextPostfixOrInfix;
+			} else if (opt.type("infixr")) { //a=^b=c
+				// st: infixr
+				var inf=st.result[0];
+				st=parse(opt.prio() ,st);
+				if (!st.isSuccess()) {
+					return res;
+				}
+				// st: expr   st.pos=  a=b=c^
+				var pex=$.mkInfixr.def(res.result[0], inf , st.result[0]);
+				res=st.clone();
+				res.result=[pex]; //res:infixrExpr
+				if (!st.nextPostfixOrInfix) {
+					return res;
+				}
+				st=st.nextPostfixOrInfix;
+			} else if (opt.type("trifixr")) { //left?^mid:right
+				// st: trifixr
+				var left=res.result[0];
+				var inf1=st.result[0];  // inf1 =  ?
+				st=parse(opt.prio()+1 ,st);
+				if (!st.isSuccess()) {
+					return res;
+				}
+				// st= expr   st.pos=  left?mid^:right
+				var mid=st.result[0];
+				var st=trifixes[opt.prio()].parse(st);
+				// st= :      st.pos= left?mid:^right;
+				if (!st.isSuccess()) {
+					return res;
+				}
+				var inf2= st.result[0];
+				st=parse(opt.prio() ,st);
+				if (!st.isSuccess()) {
+					return res;
+				}
+				var right=st.result[0];
+				// st=right      st.pos= left?mid:right^;
+				var pex=$.mkTrifixr.def(left, inf1 , mid, inf2, right);
+				res=st.clone();
+				res.result=[pex]; //res:infixrExpr
+				if (!st.nextPostfixOrInfix) {
+					return res;
+				}
+				st=st.nextPostfixOrInfix;
+			} else { // infix
+				// st: infixl
+				var inf=st.result[0];
+				st=parse(opt.prio()+1 ,st);
+				if (!st.isSuccess()) {
+					return res;
+				}
+				// st: expr   st.pos=  expr+expr^
+				var pex=$.mkInfix.def(res.result[0], inf , st.result[0]);
+				res=st.clone();
+				res.result=[pex]; //res:infixExpr
+				if (!st.nextPostfixOrInfix) {
+					return res;
+				}
+				st=st.nextPostfixOrInfix;
+				if (opt.prio()==st.opType.prio()) {
+					res.success=false;
+					return res;
+				}
+			}
+			// assert st:postfixOrInfix  res:Expr
+		}
+	}
+	$.lazy = function () {
+		return Parser.create(function (st) {
+			return $.built.parse(st);
+		});
+	};
+	return $;
+};
+
+});
+
+requireSimulator.setName('TonyuLang');
+if (typeof define!=="function") {
+	define=require("requirejs").define;
+}
+
+/*
+* Tonyu2 の構文解析を行う．
+* TonyuLang.parse(src);
+*   - srcを解析して構文木を返す．構文エラーがあれば例外を投げる．
+*/
+define(["Grammar", "XMLBuffer", "IndentBuffer", "TT",
+		"disp", "Parser", "ExpressionParser", "TError"],
+function (Grammar, XMLBuffer, IndentBuffer, TT,
+		disp, Parser, ExpressionParser, TError) {
+return TonyuLang=function () {
+	var p=Parser;
+	var $={};
+	var g=Grammar();
+	var G=g.get;
+
+	var sp=p.StringParser;//(str);
+	var tk=p.TokensParser.token;
+	var num=tk("number").ret(function (n) {
+		n.type="number";
+		if (typeof n.text!="string") throw "No text for "+disp(n);
+		n.value=(n.text-0);
+		if (isNaN(n.value)) throw "No value for "+disp(n);
+		return n;
+	});
+	var symbol=tk("symbol");
+	var symresv=tk("symbol");
+	for (var resvk in TT.reserved) {
+		var resvp=tk(resvk);
+		//console.log(resvk,resvp, resvp instanceof Parser.Parser);
+		if (resvp instanceof Parser.Parser && resvk!=="constructor") {
+			/*if (resvk==="constructor") {
+				console.log("c");
+			}*/
+			symresv=symresv.or(resvp);
+		}
+	}
+	var eqq=tk("===");
+	var nee=tk("!==");
+	var eq=tk("==");
+	var ne=tk("!=");
+	var ge=tk(">=");
+	var le=tk("<=");
+	var gt=tk(">");
+	var lt=tk("<");
+	var andand=tk("&&");
+	var oror=tk("||");
+	var bitand=tk("&");
+	var bitor=tk("|");
+	var bitxor=tk("^");
+	var shr=tk(">>");
+	var shl=tk("<<");
+	var ushr=tk(">>>");
+
+	var minus=tk("-");//.first(space,"-");
+	var plus=tk("+");//.first(space,"+");
+	var mul=tk("*");
+	var div=tk("/");
+	var mod=tk("%");
+	var assign=tk("=");
+	var literal=tk("literal");
+	var regex=tk("regex");
+	function retF(n) {
+		return function () {
+			return arguments[n];
+		};
+	}
+	function comLastOpt(p) {
+		return p.sep0(tk(","),true).and(tk(",").opt()).ret(function (list,opt) {
+			return list;
+		});
+	};
+	var e=ExpressionParser() ;
+	var arrayElem=g("arrayElem").ands(tk("["), e.lazy() , tk("]")).ret(null,"subscript");
+	var argList=g("argList").ands(tk("("), comLastOpt(e.lazy()) , tk(")")).ret(null,"args");
+	var member=g("member").ands(tk(".") , symresv ).ret(null,     "name" );
+	var parenExpr = g("parenExpr").ands(tk("("), e.lazy() , tk(")")).ret(null,"expr");
+	var varAccess = g("varAccess").ands(symbol).ret("name");
+	var funcExpr_l=G("funcExpr").firstTokens(["function","\\"]);
+	var funcExprArg=g("funcExprArg").ands(funcExpr_l).ret("obj");
+	var objlit_l=G("objlit").firstTokens("{");
+	var objlitArg=g("objlitArg").ands(objlit_l).ret("obj");
+	var objOrFuncArg=objlitArg.or(funcExprArg);
+	function genCallBody(argList, oof) {
+		var res=[];
+		if (argList && !argList.args) {
+			throw disp(argList);
+		}
+		if (argList) {
+			var rg=Parser.getRange(argList);
+			Parser.addRange(res,rg);
+			argList.args.forEach(function (arg) {
+				res.push(arg);
+			});
+		}
+		oof.forEach(function (o) {
+			var rg=Parser.getRange(o);
+			Parser.addRange(res,rg);
+			res.push(o.obj);
+		});
+		return res;
+	}
+	var callBody=argList.and(objOrFuncArg.rep0()).ret(function(a,oof) {
+		return genCallBody(a,oof);
+	}).or(objOrFuncArg.rep1().ret(function (oof) {
+		return genCallBody(null,oof);
+	}));
+	var callBodyOld=argList.or(objlitArg);
+	var call=g("call").ands( callBody ).ret("args");
+	var scall=g("scall").ands( callBody ).ret("args");//supercall
+	var newExpr = g("newExpr").ands(tk("new"),varAccess, call.opt()).ret(null, "klass","params");
+	var superExpr =g("superExpr").ands(
+			tk("super"), tk(".").and(symbol).ret(retF(1)).opt() , scall).ret(
+			null,                 "name",                       "params");
+	var reservedConst = tk("true").or(tk("false")).
+	or(tk("null")).
+	or(tk("undefined")).
+	or(tk("_thread")).
+	or(tk("this")).
+	or(tk("arguments")).ret(function (t) {
+		t.type="reservedConst";
+		return t;
+	});
+	e.element(num);
+	e.element(reservedConst);
+	e.element(regex);
+	e.element(literal);
+	e.element(parenExpr);
+	e.element(newExpr);
+	e.element(superExpr);
+	e.element(funcExpr_l);
+	e.element(objlit_l);
+	e.element(G("arylit").firstTokens("["));
+	e.element(varAccess);
+	var prio=0;
+	e.infixr(prio,assign);
+	e.infixr(prio,tk("+="));
+	e.infixr(prio,tk("-="));
+	e.infixr(prio,tk("*="));
+	e.infixr(prio,tk("/="));
+	e.infixr(prio,tk("%="));
+	e.infixr(prio,tk("|="));
+	e.infixr(prio,tk("&="));
+	prio++;
+	e.trifixr(prio,tk("?"), tk(":"));
+	prio++;
+	e.infixl(prio,oror);
+	prio++;
+	e.infixl(prio,andand);
+	prio++;
+	e.infixl(prio,bitor);
+	prio++;
+	e.infixl(prio,bitxor);
+	prio++;
+	e.infixl(prio,bitand);
+	prio++;
+	e.infix(prio,tk("instanceof"));
+	e.infix(prio,tk("is"));
+	//e.infix(prio,tk("in"));
+	e.infix(prio,eqq);
+	e.infix(prio,nee);
+	e.infix(prio,eq);
+	e.infix(prio,ne);
+	e.infix(prio,ge);
+	e.infix(prio,le);
+	e.infix(prio,gt);
+	e.infix(prio,lt);
+	prio++;
+	e.infixl(prio,ushr);
+	e.infixl(prio,shl);
+	e.infixl(prio,shr);
+	prio++;
+	e.postfix(prio+3,tk("++"));
+	e.postfix(prio+3,tk("--"));
+	e.infixl(prio,minus);
+	e.infixl(prio,plus);
+	prio++;
+	e.infixl(prio,mul);
+	e.infixl(prio,div);
+	e.infixl(prio,mod);
+	prio++;
+	e.prefix(prio,tk("typeof"));
+	e.prefix(prio,tk("__typeof"));
+	e.prefix(prio,tk("delete"));
+	e.prefix(prio,tk("++"));
+	e.prefix(prio,tk("--"));
+	e.prefix(prio,tk("+"));
+	e.prefix(prio,tk("-"));
+	e.prefix(prio,tk("!"));
+	e.prefix(prio,tk("~"));
+	prio++;
+//    e.postfix(prio,tk("++"));
+//    e.postfix(prio,tk("--"));
+
+	prio++;
+	e.postfix(prio,call);
+	e.postfix(prio,member);
+	e.postfix(prio,arrayElem);
+	function mki(left, op ,right) {
+		var res={type:"infix",left:left,op:op,right:right};
+		Parser.setRange(res);
+		res.toString=function () {
+			return "("+left+op+right+")";
+		};
+		return res;
+	}
+	e.mkInfixl(mki);
+	e.mkInfixr(mki);
+	/*e.mkPostfix(function (p) {
+		return {type:"postfix", expr:p};
+	});*/
+	var expr=e.build().setName("expr").profile();
+	var retF=function (i) { return function (){ return arguments[i];}; };
+
+	var stmt=G("stmt").firstTokens();
+	var exprstmt=g("exprstmt").ands(expr,tk(";")).ret("expr");
+	g("compound").ands(tk("{"), stmt.rep0(),tk("}")).ret(null,"stmts") ;
+	var elseP=tk("else").and(stmt).ret(retF(1));
+	var returns=g("return").ands(tk("return"),expr.opt(),tk(";") ).ret(null,"value");
+	var ifs=g("if").ands(tk("if"), tk("("), expr, tk(")"), stmt, elseP.opt() ).ret(null, null,"cond",null,"then","_else");
+	/*var trailFor=tk(";").and(expr.opt()).and(tk(";")).and(expr.opt()).ret(function (s, cond, s2, next) {
+		return {cond: cond, next:next  };
+	});*/
+	var forin=g("forin").ands(tk("var").opt(), symbol.sep1(tk(","),true), tk("in").or(tk("of")), expr).ret(
+										"isVar", "vars","inof", "set" );
+	var normalFor=g("normalFor").ands(stmt, expr.opt() , tk(";") , expr.opt()).ret(
+									"init", "cond",     null, "next");
+	/*var infor=expr.and(trailFor.opt()).ret(function (a,b) {
+		if (b==null) return {type:"forin", expr: a};
+		return {type:"normalFor", init:a, cond: b.cond, next:b.next  };
+	});*/
+	var infor=normalFor.or(forin);
+	var fors=g("for").ands(tk("for"),tk("("), infor , tk(")"),"stmt" ).ret(
+								null,null,    "inFor", null   ,"loop");
+	//var fors=g("for").ands(tk("for"),tk("("), tk("var").opt() , infor , tk(")"),"stmt" ).ret(null,null,"isVar", "inFor",null, "loop");
+	var whiles=g("while").ands(tk("while"), tk("("), expr, tk(")"), "stmt").ret(null,null,"cond",null,"loop");
+	var dos=g("do").ands(tk("do"), "stmt" , tk("while"), tk("("), expr, tk(")"), tk(";")).ret(null,"loop",null,null,"cond",null,null);
+	var cases=g("case").ands(tk("case"),expr,tk(":"), stmt.rep0() ).ret(null, "value", null,"stmts");
+	var defaults=g("default").ands(tk("default"),tk(":"), stmt.rep0() ).ret(null, null,"stmts");
+	var switchs=g("switch").ands(tk("switch"), tk("("), expr, tk(")"),tk("{"), cases.rep1(), defaults.opt(), tk("}")).ret(null,null,"value",null,null,"cases","defs");
+	var breaks=g("break").ands(tk("break"), tk(";")).ret("brk");
+	var continues=g("continue").ands(tk("continue"), tk(";")).ret("cont");
+	var fins=g("finally").ands(tk("finally"), "stmt" ).ret(null, "stmt");
+	var catchs=g("catch").ands(tk("catch"), tk("("), symbol, tk(")"), "stmt" ).ret(null,null,"name",null, "stmt");
+	var catches=g("catches").ors("catch","finally");
+	var trys=g("try").ands(tk("try"),"stmt",catches.rep1() ).ret(null, "stmt","catches");
+	var throwSt=g("throw").ands(tk("throw"),expr,tk(";")).ret(null,"ex");
+	var typeExpr=g("typeExpr").ands(symbol).ret("name");
+	var typeDecl=g("typeDecl").ands(tk(":"),typeExpr).ret(null,"vtype");
+	var varDecl=g("varDecl").ands(symbol, typeDecl.opt(), tk("=").and(expr).ret(retF(1)).opt() ).ret("name","typeDecl","value");
+	var varsDecl= g("varsDecl").ands(tk("var"), varDecl.sep1(tk(","),true), tk(";") ).ret(null ,"decls");
+	var paramDecl= g("paramDecl").ands(symbol,typeDecl.opt() ).ret("name","typeDecl");
+	var paramDecls=g("paramDecls").ands(tk("("), comLastOpt(paramDecl), tk(")")  ).ret(null, "params");
+	var setterDecl= g("setterDecl").ands(tk("="), paramDecl).ret(null,"value");
+	g("funcDeclHead").ands(
+			tk("nowait").opt(),
+			tk("function").or(tk("fiber")).or(tk("tk_constructor")).or(tk("\\")).opt(),
+			symbol.or(tk("new")) , setterDecl.opt(), paramDecls.opt(),typeDecl.opt()   // if opt this it is getter
+	).ret("nowait","ftype","name","setter", "params","rtype");
+	var funcDecl=g("funcDecl").ands("funcDeclHead","compound").ret("head","body");
+	var nativeDecl=g("nativeDecl").ands(tk("native"),symbol,tk(";")).ret(null, "name");
+	var ifwait=g("ifWait").ands(tk("ifwait"),"stmt",elseP.opt()).ret(null, "then","_else");
+	//var useThread=g("useThread").ands(tk("usethread"),symbol,"stmt").ret(null, "threadVarName","stmt");
+	var empty=g("empty").ands(tk(";")).ret(null);
+	stmt=g("stmt").ors("return", "if", "for", "while", "do","break", "continue", "switch","ifWait","try", "throw","nativeDecl", "funcDecl", "compound", "exprstmt", "varsDecl","empty");
+	// ------- end of stmts
+	g("funcExprHead").ands(tk("function").or(tk("\\")), symbol.opt() ,paramDecls.opt() ).ret(null,"name","params");
+	var funcExpr=g("funcExpr").ands("funcExprHead","compound").ret("head","body");
+	var jsonElem=g("jsonElem").ands(
+			symbol.or(literal),
+			tk(":").or(tk("=")).and(expr).ret(function (c,v) {return v;}).opt()
+	).ret("key","value");
+	var objlit=g("objlit").ands(tk("{"), comLastOpt( jsonElem ), tk("}")).ret(null, "elems");
+	var arylit=g("arylit").ands(tk("["), comLastOpt( expr ),  tk("]")).ret(null, "elems");
+	var ext=g("extends").ands(tk("extends"),symbol.or(tk("null")), tk(";")).
+	ret(null, "superclassName");
+	var incl=g("includes").ands(tk("includes"), symbol.sep1(tk(","),true),tk(";")).
+	ret(null, "includeClassNames");
+	var program=g("program").
+	ands(ext.opt(),incl.opt(),stmt.rep0(), Parser.TokensParser.eof).
+	ret("ext","incl","stmts");
+
+	for (var i in g.defs) {
+		g.defs[i].profile();
+	}
+	$.parse = function (file) {
+		if (typeof file=="string") {
+			str=file;
+		} else {
+			str=file.text();
+		}
+		str+="\n"; // For end with // comment with no \n
+		var tokenRes=TT.parse(str);
+		if (!tokenRes.isSuccess() ) {
+			//return "ERROR\nToken error at "+tokenRes.src.maxPos+"\n"+
+			//	str.substring(0,tokenRes.src.maxPos)+"!!HERE!!"+str.substring(tokenRes.src.maxPos);
+			throw TError("文法エラー(Token)", file ,  tokenRes.src.maxPos);
+		}
+		var tokens=tokenRes.result[0];
+		//console.log("Tokens: "+tokens.join(","));
+		var res=p.TokensParser.parse(program, tokens);
+		//console.log("POS="+res.src.maxPos);
+		if (res.isSuccess() ) {
+			var node=res.result[0];
+			//console.log(disp(node));
+			return node;
+			//var xmlsrc=$.genXML(str, node);
+			//return "<program>"+xmlsrc+"</program>";
+
+		}
+		var lt=tokens[res.src.maxPos];
+		var mp=(lt?lt.pos+lt.len: str.length);
+		throw TError("文法エラー", file ,  mp );
+		/*return "ERROR\nSyntax error at "+mp+"\n"+
+		str.substring(0,mp)+"!!HERE!!"+str.substring(mp);*/
+	};
+	$.genXML= function (src, node) {
+		var x=XMLBuffer(src) ;
+		x(node);
+		return x.buf;
+	};
+	$.extension="tonyu";
+	return $;
+}();
+
+});
+
+requireSimulator.setName('ObjectMatcher');
+if (typeof define!=="function") {
+	define=require("requirejs").define;
+}
+define([],function () {
+return ObjectMatcher=function () {
+	var OM={};
+	var VAR="$var",THIZ="$this";
+	OM.v=v;
+	function v(name, cond) {
+		var res={};
+		res[VAR]=name;
+		if (cond) res[THIZ]=cond;
+		return res;
+	}
+	OM.isVar=isVar;
+	var names="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	for (var i =0 ; i<names.length ; i++) {
+		var c=names.substring(i,i+1);
+		OM[c]=v(c);
+	}
+	function isVar(o) {
+		return o && o[VAR];
+	}
+	OM.match=function (obj, tmpl) {
+		var res={};
+		if (m(obj,tmpl,res)) return res;
+		return null;
+	};
+	function m(obj, tmpl, res) {
+		if (obj===tmpl) return true;
+		if (obj==null) return false;
+		if (typeof obj=="string" && tmpl instanceof RegExp) {
+			return obj.match(tmpl);
+		}
+		if (typeof tmpl=="function") {
+			return tmpl(obj,res);
+		}
+		if (typeof tmpl=="object") {
+			//if (typeof obj!="object") obj={$this:obj};
+			for (var i in tmpl) {
+				if (i==VAR) continue;
+				var oe=(i==THIZ? obj :  obj[i] );
+				var te=tmpl[i];
+				if (!m(oe, te, res)) return false;
+			}
+			if (tmpl[VAR]) {
+				res[tmpl[VAR]]=obj;
+			}
+			return true;
+		}
+		return false;
+	}
+	return OM;
+}();
+});
+requireSimulator.setName('context');
+/*
+コード生成中に使う補助ライブラリ．自分の処理しているクラス，メソッド，変数などの情報を保持する
+使い方:
+	c=context();
+	c.enter({a:3, b:5}, function (c) {
+		// この中では，c.a==3 ,  c.b==5
+		console.log("a="+c.a+" b="+c.b);
+		c.enter({b:6}, function (c) {
+			// この中では，c.a==3 ,  c.b==6
+			console.log("a="+c.a+" b="+c.b);
+		});
+		// c.a==3 ,  c.b==5  に戻る
+		console.log("a="+c.a+" b="+c.b);
+
+	});
+*/
+if (typeof define!=="function") {
+	define=require("requirejs").define;
+}
+define([],function () {
+return context=function () {
+	var c={};
+	c.ovrFunc=function (from , to) {
+		to.parent=from;
+		return to;
+	};
+	c.enter=enter;
+	var builtins={};
+	c.clear=function () {
+		for (var k in c) {
+			if (!builtins[k]) delete c[k];
+		}
+	};
+	for (var k in c) { builtins[k]=true; }
+	return c;
+	function enter(val, act) {
+		var sv={};
+		for (var k in val) {
+			if (k.match(/^\$/)) {
+				k=RegExp.rightContext;
+				sv[k]=c[k];
+				c[k]=c.ovrFunc(c[k], val[k]);
+			} else {
+				sv[k]=c[k];
+				c[k]=val[k];
+			}
+		}
+		var res=act(c);
+		for (var k in sv) {
+			c[k]=sv[k];
+		}
+		return res;
+	}
+};
+});
+requireSimulator.setName('Visitor');
+if (typeof define!=="function") {
+	define=require("requirejs").define;
+}
+define([],function (){
+return Visitor = function (funcs) {
+	var $={funcs:funcs, path:[]};
+	$.visit=function (node) {
+		try {
+			$.path.push(node);
+			if ($.debug) console.log("visit ",node.type, node.pos);
+			var v=(node ? funcs[node.type] :null);
+			if (v) return v.call($, node);
+			else if ($.def) return $.def.call($,node);
+		} finally {
+			$.path.pop();
+		}
+	};
+	$.replace=function (node) {
+		if (!$.def) {
+			$.def=function (node) {
+				if (typeof node=="object"){
+					for (var i in node) {
+						if (node[i] && typeof node[i]=="object") {
+							node[i]=$.visit(node[i]);
+						}
+					}
+				}
+				return node;
+			};
+		}
+		return $.visit(node);
+	};
+	return $;
+};
+});
+requireSimulator.setName('Tonyu.Compiler');
+define(["Tonyu","ObjectMatcher", "TError"],
+		function(Tonyu,ObjectMatcher, TError) {
+	var cu={};
+	Tonyu.Compiler=cu;
+	var ScopeTypes={
+			FIELD:"field", METHOD:"method", NATIVE:"native",//B
+			LOCAL:"local", THVAR:"threadvar",PROP:"property",
+			PARAM:"param", GLOBAL:"global",
+			CLASS:"class", MODULE:"module"
+	};
+	cu.ScopeTypes=ScopeTypes;
+	var nodeIdSeq=1;
+	var symSeq=1;//B
+	function genSt(st, options) {//B
+		var res={type:st};
+		if (options) {
+			for (var k in options) res[k]=options[k];
+		}
+		if (!res.name) res.name=genSym("_"+st+"_");
+		return res;
+	}
+	cu.newScopeType=genSt;
+	function stype(st) {//B
+		return st ? st.type : null;
+	}
+	cu.getScopeType=stype;
+	function newScope(s) {//B
+		var f=function (){};
+		f.prototype=s;
+		return new f();
+	}
+	cu.newScope=newScope;
+	function nc(o, mesg) {//B
+		if (!o) throw mesg+" is null";
+		return o;
+	}
+	cu.nullCheck=nc;
+	function genSym(prefix) {//B
+		return prefix+((symSeq++)+"").replace(/\./g,"");
+	}
+	cu.genSym=genSym;
+	function annotation3(aobjs, node, aobj) {//B
+		if (!node._id) {
+			//if (!aobjs._idseq) aobjs._idseq=0;
+			node._id=++nodeIdSeq;
+		}
+		var res=aobjs[node._id];
+		if (!res) res=aobjs[node._id]={node:node};
+		if (res.node!==node) {
+			console.log("NOMATCH",res.node,node);
+			throw new Error("annotation node not match!");
+		}
+		if (aobj) {
+			for (var i in aobj) res[i]=aobj[i];
+		}
+		return res;
+	}
+	cu.extend=function (res,aobj) {
+		for (var i in aobj) res[i]=aobj[i];
+		return res;
+	};
+	cu.annotation=annotation3;
+	function getSource(srcCont,node) {//B
+		return srcCont.substring(node.pos,node.pos+node.len);
+	}
+	cu.getSource=getSource;
+	cu.getField=function(klass,name){
+		if (klass instanceof Function) return null;
+		var res=null;
+		getDependingClasses(klass).forEach(function (k) {
+			if (res) return;
+			res=k.decls.fields[name];
+		});
+		if (typeof (res.vtype)==="string") {
+			res.vtype=Tonyu.classMetas[res.vtype] || window[res.vtype];
+		}
+		return res;
+	};
+	function getMethod2(klass,name) {//B
+		var res=null;
+		getDependingClasses(klass).forEach(function (k) {
+			if (res) return;
+			res=k.decls.methods[name];
+		});
+		return res;
+	}
+	cu.getMethod=getMethod2;
+	function getDependingClasses(klass) {//B
+		var visited={};
+		var res=[];
+		function loop(k) {
+			if (visited[k.fullName]) return;
+			visited[k.fullName]=true;
+			if (k.isShim) {
+				console.log(klass,"contains shim ",k);
+				throw new Error("Contains shim");
+			}
+			res.push(k);
+			if (k.superclass) loop(k.superclass);
+			if (k.includes) k.includes.forEach(loop);
+		}
+		loop(klass);
+		return res;
+	}
+	cu.getDependingClasses=getDependingClasses;
+	function getParams(method) {//B
+		var res=[];
+		if (!method.head) return res;
+		if (method.head.setter) res.push(method.head.setter.value);
+		var ps=method.head.params ? method.head.params.params : null;
+		if (ps && !ps.forEach) throw new Error(method+" is not array ");
+		if (ps) res=res.concat(ps);
+		return res;
+	}
+	cu.getParams=getParams;
+	return cu;
+
+});
+
+requireSimulator.setName('Tonyu.Compiler.JSGenerator');
+if (typeof define!=="function") {//B
+	define=require("requirejs").define;
+}
+define(["Tonyu", "Tonyu.Iterator", "TonyuLang", "ObjectMatcher", "TError", "IndentBuffer",
+		"context", "Visitor","Tonyu.Compiler","assert"],
+function(Tonyu, Tonyu_iterator, TonyuLang, ObjectMatcher, TError, IndentBuffer,
+		context, Visitor,cu,A) {
+return cu.JSGenerator=(function () {
+// TonyuソースファイルをJavascriptに変換する
+var TH="_thread",THIZ="_this", ARGS="_arguments",FIBPRE="fiber$", FRMPC="__pc", LASTPOS="$LASTPOS",CNTV="__cnt",CNTC=100;//G
+var BINDF="Tonyu.bindFunc";
+var INVOKE_FUNC="Tonyu.invokeMethod";
+var CALL_FUNC="Tonyu.callFunc";
+var CHK_NN="Tonyu.checkNonNull";
+var CLASS_HEAD="Tonyu.classes.", GLOBAL_HEAD="Tonyu.globals.";
+var GET_THIS="this";//"this.isTonyuObject?this:Tonyu.not_a_tonyu_object(this)";
+var USE_STRICT='"use strict";%n';
+var ITER="Tonyu.iterator";
+var SUPER="__superClass";
+/*var ScopeTypes={FIELD:"field", METHOD:"method", NATIVE:"native",//B
+		LOCAL:"local", THVAR:"threadvar", PARAM:"param", GLOBAL:"global", CLASS:"class"};*/
+var ScopeTypes=cu.ScopeTypes;
+//var genSt=cu.newScopeType;
+var stype=cu.getScopeType;
+//var newScope=cu.newScope;
+//var nc=cu.nullCheck;
+//var genSym=cu.genSym;
+var annotation3=cu.annotation;
+var getMethod2=cu.getMethod;
+var getDependingClasses=cu.getDependingClasses;
+var getParams=cu.getParams;
+
+//-----------
+function genJS(klass, env) {//B
+	var srcFile=klass.src.tonyu; //file object  //S
+	var srcCont=srcFile.text();
+	function getSource(node) {
+		return cu.getSource(srcCont,node);
+	}
+	var buf=env.codeBuffer || IndentBuffer({fixLazyLength:6});
+	buf.setSrcFile(srcFile);
+	var printf=buf.printf;
+	var ctx=context();
+	var debug=false;
+	var OM=ObjectMatcher;
+	var traceTbl=env.traceTbl;
+	// method := fiber | function
+	var decls=klass.decls;
+	var fields=decls.fields,
+		methods=decls.methods,
+		natives=decls.natives;
+	// ↑ このクラスが持つフィールド，ファイバ，関数，ネイティブ変数の集まり．親クラスの宣言は含まない
+	var ST=ScopeTypes;
+	var fnSeq=0;
+	var diagnose=env.options.compiler.diagnose;
+	var genMod=env.options.compiler.genAMD;
+	var doLoopCheck=!env.options.compiler.noLoopCheck;
+
+	function annotation(node, aobj) {//B
+		return annotation3(klass.annotation,node,aobj);
+	}
+	function getMethod(name) {//B
+		return getMethod2(klass,name);
+	}
+	function getClassName(klass){// should be object or short name //G
+		if (typeof klass=="string") return CLASS_HEAD+(env.aliases[klass] || klass);//CFN  CLASS_HEAD+env.aliases[klass](null check)
+		if (klass.builtin) return klass.fullName;// CFN klass.fullName
+		return CLASS_HEAD+klass.fullName;// CFN  klass.fullName
+	}
+	function getClassNames(cs){//G
+		var res=[];
+		cs.forEach(function (c) { res.push(getClassName(c)); });
+		return res;
+	}
+	function enterV(obj, node) {//G
+		return function (buf) {
+			ctx.enter(obj,function () {
+				v.visit(node);
+			});
+		};
+	}
+	function varAccess(n, si, an) {//G
+		var t=stype(si);
+		if (t==ST.THVAR) {
+			buf.printf("%s",TH);
+		} else if (t==ST.FIELD || t==ST.PROP) {
+			buf.printf("%s.%s",THIZ, n);
+		} else if (t==ST.METHOD) {
+			if (an && an.noBind) {
+				buf.printf("%s.%s",THIZ, n);
+			} else {
+				buf.printf("%s(%s,%s.%s)",BINDF, THIZ, THIZ, n);
+			}
+		} else if (t==ST.CLASS) {
+			buf.printf("%s",getClassName(n));
+		} else if (t==ST.GLOBAL) {
+			buf.printf("%s%s",GLOBAL_HEAD, n);
+		} else if (t==ST.PARAM || t==ST.LOCAL || t==ST.NATIVE || t==ST.MODULE) {
+			buf.printf("%s",n);
+		} else {
+			console.log("Unknown scope type: ",t);
+			throw new Error("Unknown scope type: "+t);
+		}
+		return si;
+	}
+	function noSurroundCompoundF(node) {//G
+		return function () {
+			noSurroundCompound.apply(this, [node]);
+		};
+	}
+	function noSurroundCompound(node) {//G
+		if (node.type=="compound") {
+			ctx.enter({noWait:true},function () {
+				buf.printf("%j%n", ["%n",node.stmts]);
+				// buf.printf("%{%j%n%}", ["%n",node.stmts]);
+			});
+		} else {
+			v.visit(node);
+		}
+	}
+	function lastPosF(node) {//G
+		return function () {
+			if (ctx.noLastPos) return;
+			buf.printf("%s%s=%s;//%s%n", (env.options.compiler.commentLastPos?"//":""),
+					LASTPOS, traceTbl.add(klass/*.src.tonyu*/,node.pos ), klass.fullName+":"+node.pos);
+		};
+	}
+	var THNode={type:"THNode"};//G
+	v=buf.visitor=Visitor({//G
+		THNode: function (node) {
+			buf.printf(TH);
+		},
+		dummy: function (node) {
+			buf.printf("",node);
+		},
+		literal: function (node) {
+			buf.printf("%s",node.text);
+		},
+		paramDecl: function (node) {
+			buf.printf("%v",node.name);
+		},
+		paramDecls: function (node) {
+			buf.printf("(%j)",[", ",node.params]);
+		},
+		funcDeclHead: function (node) {
+			buf.printf("function %v %v",node.name, node.params);
+		},
+		funcDecl: function (node) {
+		},
+		"return": function (node) {
+			if (ctx.inTry) throw TError("現実装では、tryの中にreturnは書けません",srcFile,node.pos);
+			if (!ctx.noWait) {
+				if (node.value) {
+					var t=annotation(node.value).fiberCall;
+					if (t) {
+						buf.printf(//VDC
+							"%s.%s%s(%j);%n" +//FIBERCALL
+							"%s=%s;return;%n" +
+							"%}case %d:%{"+
+							"%s.exit(%s.retVal);return;%n",
+								THIZ, FIBPRE, t.N, [", ",[THNode].concat(t.A)],
+								FRMPC, ctx.pc,
+								ctx.pc++,
+								TH,TH
+						);
+					} else {
+						buf.printf("%s.exit(%v);return;",TH,node.value);
+					}
+				} else {
+					buf.printf("%s.exit(%s);return;",TH,THIZ);
+				}
+			} else {
+				if (ctx.threadAvail) {
+					if (node.value) {
+						buf.printf("%s.retVal=%v;return;%n",TH, node.value);
+					} else {
+						buf.printf("%s.retVal=%s;return;%n",TH, THIZ);
+					}
+				} else {
+					if (node.value) {
+						buf.printf("return %v;",node.value);
+					} else {
+						buf.printf("return %s;",THIZ);
+					}
+
+				}
+			}
+		},
+		program: function (node) {
+			genClass(node.stmts);
+		},
+		number: function (node) {
+			buf.printf("%s", node.value );
+		},
+		reservedConst: function (node) {
+			if (node.text=="this") {
+				buf.printf("%s",THIZ);
+			} else if (node.text=="arguments" && ctx.threadAvail) {
+				buf.printf("%s",ARGS);
+			} else if (node.text==TH) {
+				buf.printf("%s", (ctx.threadAvail)?TH:"null");
+			} else {
+				buf.printf("%s", node.text);
+			}
+		},
+		varDecl: function (node) {
+			var a=annotation(node);
+			var thisForVIM=a.varInMain? THIZ+"." :"";
+			if (node.value) {
+				var t=(!ctx.noWait) && annotation(node).fiberCall;
+				if (t) {
+					A.is(ctx.pc,Number);
+					buf.printf(//VDC
+						"%s.%s%s(%j);%n" +//FIBERCALL
+						"%s=%s;return;%n" +/*B*/
+						"%}case %d:%{"+
+						"%s%v=%s.retVal;%n",
+							THIZ, FIBPRE, t.N, [", ",[THNode].concat(t.A)],
+							FRMPC, ctx.pc,
+							ctx.pc++,
+							thisForVIM, node.name, TH
+					);
+				} else {
+					buf.printf("%s%v = %v;%n", thisForVIM, node.name, node.value);
+				}
+			} else {
+				//buf.printf("%v", node.name);
+			}
+		},
+		varsDecl: function (node) {
+			var decls=node.decls.filter(function (n) { return n.value; });
+			if (decls.length>0) {
+				lastPosF(node)();
+				decls.forEach(function (decl) {
+					buf.printf("%v",decl);
+				});
+			}
+		},
+		jsonElem: function (node) {
+			if (node.value) {
+				buf.printf("%v: %v", node.key, node.value);
+			} else {
+				buf.printf("%v: %f", node.key, function () {
+					var si=varAccess( node.key.text, annotation(node).scopeInfo, annotation(node));
+				});
+			}
+		},
+		objlit: function (node) {
+			buf.printf("{%j}", [",", node.elems]);
+		},
+		arylit: function (node) {
+			buf.printf("[%j]", [",", node.elems]);
+		},
+		funcExpr: function (node) {
+			genFuncExpr(node);
+		},
+		parenExpr: function (node) {
+			buf.printf("(%v)",node.expr);
+		},
+		varAccess: function (node) {
+			var n=node.name.text;
+			var si=varAccess(n,annotation(node).scopeInfo, annotation(node));
+		},
+		exprstmt: function (node) {//exprStmt
+			var t={};
+			lastPosF(node)();
+			if (!ctx.noWait) {
+				t=annotation(node).fiberCall || {};
+			}
+			if (t.type=="noRet") {
+				buf.printf(
+						"%s.%s%s(%j);%n" +//FIBERCALL
+						"%s=%s;return;%n" +/*B*/
+						"%}case %d:%{",
+							THIZ, FIBPRE, t.N,  [", ",[THNode].concat(t.A)],
+							FRMPC, ctx.pc,
+							ctx.pc++
+				);
+			} else if (t.type=="ret") {
+				buf.printf(//VDC
+						"%s.%s%s(%j);%n" +//FIBERCALL
+						"%s=%s;return;%n" +/*B*/
+						"%}case %d:%{"+
+						"%v%v%s.retVal;%n",
+							THIZ, FIBPRE, t.N, [", ",[THNode].concat(t.A)],
+							FRMPC, ctx.pc,
+							ctx.pc++,
+							t.L, t.O, TH
+				);
+			} else if (t.type=="noRetSuper") {
+				var p=SUPER;//getClassName(klass.superclass);
+				buf.printf(
+							"%s.prototype.%s%s.apply( %s, [%j]);%n" +//FIBERCALL
+							"%s=%s;return;%n" +/*B*/
+							"%}case %d:%{",
+							p,  FIBPRE, t.S.name.text,  THIZ,  [", ",[THNode].concat(t.A)],
+								FRMPC, ctx.pc,
+								ctx.pc++
+					);
+			} else if (t.type=="retSuper") {
+				var p=SUPER;//getClassName(klass.superclass);
+				buf.printf(
+							"%s.prototype.%s%s.apply( %s, [%j]);%n" +//FIBERCALL
+							"%s=%s;return;%n" +/*B*/
+							"%}case %d:%{"+
+							"%v%v%s.retVal;%n",
+								p,  FIBPRE, t.S.name.text,  THIZ, [", ",[THNode].concat(t.A)],
+								FRMPC, ctx.pc,
+								ctx.pc++,
+								t.L, t.O, TH
+					);
+			} else {
+				buf.printf("%v;", node.expr );
+			}
+		},
+		infix: function (node) {
+			var opn=node.op.text;
+			/*if (opn=="=" || opn=="+=" || opn=="-=" || opn=="*=" ||  opn=="/=" || opn=="%=" ) {
+				checkLVal(node.left);
+			}*/
+			if (diagnose) {
+				if (opn=="+" || opn=="-" || opn=="*" ||  opn=="/" || opn=="%" ) {
+					buf.printf("%s(%v,%l)%v%s(%v,%l)", CHK_NN, node.left, getSource(node.left), node.op,
+							CHK_NN, node.right, getSource(node.right));
+					return;
+				}
+				if (opn=="+=" || opn=="-=" || opn=="*=" ||  opn=="/=" || opn=="%=" ) {
+					buf.printf("%v%v%s(%v,%l)", node.left, node.op,
+							CHK_NN, node.right, getSource(node.right));
+					return;
+				}
+			}
+			if (node.op.type==="is") {
+				buf.printf("Tonyu.is(%v,%v)",node.left, node.right);
+			} else {
+				buf.printf("%v%v%v", node.left, node.op, node.right);
+			}
+		},
+		trifixr:function (node) {
+			buf.printf("%v%v%v%v%v", node.left, node.op1, node.mid, node.op2, node.right);
+		},
+		prefix: function (node) {
+			if (node.op.text==="__typeof") {
+				var a=annotation(node.right);
+				if (a.vtype) {
+					buf.printf("%l",a.vtype.name||a.vtype.fullName||"No type name?");
+				} else {
+					buf.printf("%l","Any");
+				}
+				return;
+			}
+			buf.printf("%v %v", node.op, node.right);
+		},
+		postfix: function (node) {
+			var a=annotation(node);
+			if (diagnose) {
+				if (a.myMethodCall) {
+					var mc=a.myMethodCall;
+					var si=mc.scopeInfo;
+					var st=stype(si);
+					if (st==ST.FIELD || st==ST.PROP || st==ST.METHOD) {
+						buf.printf("%s(%s, %l, [%j], %l )", INVOKE_FUNC,THIZ, mc.name, [",",mc.args],"this");
+					} else {
+						buf.printf("%s(%v, [%j], %l)", CALL_FUNC, node.left, [",",mc.args], getSource(node.left));
+					}
+					return;
+				} else if (a.othersMethodCall) {
+					var oc=a.othersMethodCall;
+					buf.printf("%s(%v, %l, [%j], %l )", INVOKE_FUNC, oc.target, oc.name, [",",oc.args],getSource(oc.target));
+					return;
+				} else if (a.memberAccess) {
+					var ma=a.memberAccess;
+					buf.printf("%s(%v,%l).%s", CHK_NN, ma.target, getSource(ma.target), ma.name );
+					return;
+				}
+			} else if (a.myMethodCall) {
+				var mc=a.myMethodCall;
+				var si=mc.scopeInfo;
+				var st=stype(si);
+				if (st==ST.METHOD) {
+					buf.printf("%s.%s(%j)",THIZ, mc.name, [",",mc.args]);
+					return;
+				}
+			}
+			buf.printf("%v%v", node.left, node.op);
+		},
+		"break": function (node) {
+			if (!ctx.noWait) {
+				if (ctx.inTry && ctx.exitTryOnJump) throw TError("現実装では、tryの中にbreak;は書けません",srcFile,node.pos);
+				if (ctx.closestBrk) {
+					buf.printf("%s=%z; break;%n", FRMPC, ctx.closestBrk);
+				} else {
+					throw TError( "break； は繰り返しの中で使います" , srcFile, node.pos);
+				}
+			} else {
+				buf.printf("break;%n");
+			}
+		},
+		"continue": function (node) {
+			if (!ctx.noWait) {
+				if (ctx.inTry && ctx.exitTryOnJump) throw TError("現実装では、tryの中にcontinue;は書けません",srcFile,node.pos);
+				if ( typeof (ctx.closestCnt)=="number" ) {
+					buf.printf("%s=%s; break;%n", FRMPC, ctx.closestCnt);
+				} else if (ctx.closestCnt) {
+					buf.printf("%s=%z; break;%n", FRMPC, ctx.closestCnt);
+				} else {
+					throw TError( "continue； は繰り返しの中で使います" , srcFile, node.pos);
+				}
+			} else {
+				buf.printf("continue;%n");
+			}
+		},
+		"try": function (node) {
+			var an=annotation(node);
+			if (!ctx.noWait &&
+					(an.fiberCallRequired || an.hasJump || an.hasReturn)) {
+				//buf.printf("/*try catch in wait mode is not yet supported*/%n");
+				if (node.catches.length!=1 || node.catches[0].type!="catch") {
+					throw TError("現実装では、catch節1個のみをサポートしています",srcFile,node.pos);
+				}
+				var ct=node.catches[0];
+				var catchPos={},finPos={};
+				buf.printf("%s.enterTry(%z);%n",TH,catchPos);
+				buf.printf("%f", enterV({inTry:true, exitTryOnJump:true},node.stmt) );
+				buf.printf("%s.exitTry();%n",TH);
+				buf.printf("%s=%z;break;%n",FRMPC,finPos);
+				buf.printf("%}case %f:%{",function (){
+						buf.print(catchPos.put(ctx.pc++));
+				});
+				buf.printf("%s=%s.startCatch();%n",ct.name.text, TH);
+				//buf.printf("%s.exitTry();%n",TH);
+				buf.printf("%v%n", ct.stmt);
+				buf.printf("%}case %f:%{",function (){
+					buf.print(finPos.put(ctx.pc++));
+				});
+			} else {
+				ctx.enter({noWait:true}, function () {
+					buf.printf("try {%{%f%n%}} ",
+							noSurroundCompoundF(node.stmt));
+					node.catches.forEach(v.visit);
+				});
+			}
+		},
+		"catch": function (node) {
+			buf.printf("catch (%s) {%{%f%n%}}",node.name.text, noSurroundCompoundF(node.stmt));
+		},
+		"throw": function (node) {
+			buf.printf("throw %v;%n",node.ex);
+		},
+		"switch": function (node) {
+			if (!ctx.noWait) {
+				var labels=node.cases.map(function (c) {
+					return buf.lazy();
+				});
+				if (node.defs) labels.push(buf.lazy());
+				var brkpos=buf.lazy();
+				buf.printf(
+						"switch (%v) {%{"+
+						"%f"+
+						"%n%}}%n"+
+						"break;%n"
+						,
+						node.value,
+						function setpc() {
+							var i=0;
+							node.cases.forEach(function (c) {
+								buf.printf("%}case %v:%{%s=%z;break;%n", c.value, FRMPC,labels[i]);
+								i++;
+							});
+							if (node.defs) {
+								buf.printf("%}default:%{%s=%z;break;%n", FRMPC, labels[i]);
+							} else {
+								buf.printf("%}default:%{%s=%z;break;%n", FRMPC, brkpos);
+							}
+						});
+				ctx.enter({closestBrk:brkpos}, function () {
+					var i=0;
+					node.cases.forEach(function (c) {
+						buf.printf(
+								"%}case %f:%{"+
+								"%j%n"
+								,
+								function () { buf.print(labels[i].put(ctx.pc++)); },
+								["%n",c.stmts]);
+						i++;
+					});
+					if (node.defs) {
+						buf.printf(
+								"%}case %f:%{"+
+								"%j%n"
+								,
+								function () { buf.print(labels[i].put(ctx.pc++)); },
+								["%n",node.defs.stmts]);
+					}
+					buf.printf("case %f:%n",
+					function () { buf.print(brkpos.put(ctx.pc++)); });
+				});
+			} else {
+				buf.printf(
+						"switch (%v) {%{"+
+						"%j"+
+						(node.defs?"%n%v":"%D")+
+						"%n%}}"
+						,
+						node.value,
+						["%n",node.cases],
+						node.defs
+						);
+			}
+		},
+		"case": function (node) {
+			buf.printf("%}case %v:%{%j",node.value, ["%n",node.stmts]);
+		},
+		"default": function (node) {
+			buf.printf("%}default:%{%j", ["%n",node.stmts]);
+		},
+		"while": function (node) {
+			lastPosF(node)();
+			var an=annotation(node);
+			if (!ctx.noWait &&
+					(an.fiberCallRequired || an.hasReturn)) {
+				var brkpos=buf.lazy();
+				var pc=ctx.pc++;
+				var isTrue= node.cond.type=="reservedConst" && node.cond.text=="true";
+				buf.printf(
+						/*B*/
+						"%}case %d:%{" +
+						(isTrue?"%D%D%D":"if (!(%v)) { %s=%z; break; }%n") +
+						"%f%n" +
+						"%s=%s;break;%n" +
+						"%}case %f:%{",
+							pc,
+							node.cond, FRMPC, brkpos,
+							enterV({closestBrk:brkpos, closestCnt:pc, exitTryOnJump:false}, node.loop),
+							FRMPC, pc,
+							function () { buf.print(brkpos.put(ctx.pc++)); }
+				);
+			} else {
+				ctx.enter({noWait:true},function () {
+					buf.printf("while (%v) {%{"+
+						(doLoopCheck?"Tonyu.checkLoop();%n":"")+
+						"%f%n"+
+					"%}}", node.cond, noSurroundCompoundF(node.loop));
+				});
+			}
+		},
+		"do": function (node) {
+			lastPosF(node)();
+			var an=annotation(node);
+			if (!ctx.noWait &&
+					(an.fiberCallRequired || an.hasReturn)) {
+				var brkpos=buf.lazy();
+				var cntpos=buf.lazy();
+				var pc=ctx.pc++;
+				buf.printf(
+						"%}case %d:%{" +
+						"%f%n" +
+						"%}case %f:%{" +
+						"if (%v) { %s=%s; break; }%n"+
+						"%}case %f:%{",
+							pc,
+							enterV({closestBrk:brkpos, closestCnt:cntpos, exitTryOnJump:false}, node.loop),
+							function () { buf.print(cntpos.put(ctx.pc++)); },
+							node.cond, FRMPC, pc,
+							function () { buf.print(brkpos.put(ctx.pc++)); }
+				);
+			} else {
+				ctx.enter({noWait:true},function () {
+					buf.printf("do {%{"+
+						(doLoopCheck?"Tonyu.checkLoop();%n":"")+
+						"%f%n"+
+					"%}} while (%v);%n",
+						noSurroundCompoundF(node.loop), node.cond );
+				});
+			}
+		},
+		"for": function (node) {
+			lastPosF(node)();
+			var an=annotation(node);
+			if (node.inFor.type=="forin") {
+				var itn=annotation(node.inFor).iterName;
+				if (!ctx.noWait &&
+						(an.fiberCallRequired || an.hasReturn)) {
+					var brkpos=buf.lazy();
+					var pc=ctx.pc++;
+					buf.printf(
+							"%s=%s(%v,%s);%n"+
+							"%}case %d:%{" +
+							"if (!(%s.next())) { %s=%z; break; }%n" +
+							"%f%n" +
+							"%f%n" +
+							"%s=%s;break;%n" +
+							"%}case %f:%{",
+								itn, ITER, node.inFor.set, node.inFor.vars.length,
+								pc,
+								itn, FRMPC, brkpos,
+								getElemF(itn, node.inFor.isVar, node.inFor.vars),
+								enterV({closestBrk:brkpos, closestCnt: pc, exitTryOnJump:false}, node.loop),//node.loop,
+								FRMPC, pc,
+								function (buf) { buf.print(brkpos.put(ctx.pc++)); }
+					);
+				} else {
+					ctx.enter({noWait:true},function() {
+						buf.printf(
+							"%s=%s(%v,%s);%n"+
+							"while(%s.next()) {%{" +
+							"%f%n"+
+							"%f%n" +
+							"%}}",
+							itn, ITER, node.inFor.set, node.inFor.vars.length,
+							itn,
+							getElemF(itn, node.inFor.isVar, node.inFor.vars),
+							noSurroundCompoundF(node.loop)
+						);
+					});
+				}
+			} else {
+				if (!ctx.noWait&&
+						(an.fiberCallRequired || an.hasReturn)) {
+					var brkpos=buf.lazy();
+					var cntpos=buf.lazy();
+					var pc=ctx.pc++;
+					buf.printf(
+							"%v%n"+
+							"%}case %d:%{" +
+							"if (!(%v)) { %s=%z; break; }%n" +
+							"%f%n" +
+							"%}case %f:%{"+
+							"%v;%n" +
+							"%s=%s;break;%n" +
+							"%}case %f:%{",
+								node.inFor.init ,
+								pc,
+								node.inFor.cond, FRMPC, brkpos,
+								enterV({closestBrk:brkpos,closestCnt:cntpos,exitTryOnJump:false}, node.loop),//node.loop,
+								function (buf) { buf.print(cntpos.put(ctx.pc++)); },
+								node.inFor.next,
+								FRMPC, pc,
+								function (buf) { buf.print(brkpos.put(ctx.pc++)); }
+					);
+				} else {
+					ctx.enter({noWait:true},function() {
+						if (node.inFor.init.type=="varsDecl" || node.inFor.init.type=="exprstmt") {
+							buf.printf(
+									"%v"+
+									"for (; %v ; %v) {%{"+
+										(doLoopCheck?"Tonyu.checkLoop();%n":"")+
+										"%v%n" +
+									"%}}"
+										,
+									/*enterV({noLastPos:true},*/ node.inFor.init,
+									node.inFor.cond, node.inFor.next,
+									node.loop
+								);
+						} else {
+							buf.printf(
+									"%v%n"+
+									"while(%v) {%{" +
+										(doLoopCheck?"Tonyu.checkLoop();%n":"")+
+										"%v%n" +
+										"%v;%n" +
+									"%}}",
+									node.inFor.init ,
+									node.inFor.cond,
+										node.loop,
+										node.inFor.next
+								);
+						}
+					});
+				}
+			}
+			function getElemF(itn, isVar, vars) {
+				return function () {
+					vars.forEach(function (v,i) {
+						var an=annotation(v);
+						varAccess(v.text, an.scopeInfo,an);
+						buf.printf("=%s[%s];%n", itn, i);
+						//buf.printf("%s=%s[%s];%n", v.text, itn, i);
+					});
+				};
+			}
+		},
+		"if": function (node) {
+			lastPosF(node)();
+			//buf.printf("/*FBR=%s*/",!!annotation(node).fiberCallRequired);
+			var an=annotation(node);
+			if (!ctx.noWait &&
+					(an.fiberCallRequired || an.hasJump || an.hasReturn)) {
+				var fipos=buf.lazy(), elpos=buf.lazy();
+				if (node._else) {
+					buf.printf(
+							"if (!(%v)) { %s=%z; break; }%n" +
+							"%v%n" +
+							"%s=%z;break;%n" +
+							"%}case %f:%{" +
+							"%v%n" +
+							/*B*/
+							"%}case %f:%{"   ,
+								node.cond, FRMPC, elpos,
+								node.then,
+								FRMPC, fipos,
+								function () { buf.print(elpos.put(ctx.pc++)); },
+								node._else,
+
+								function () { buf.print(fipos.put(ctx.pc++)); }
+					);
+
+				} else {
+					buf.printf(
+							"if (!(%v)) { %s=%z; break; }%n" +
+							"%v%n" +
+							/*B*/
+							"%}case %f:%{",
+								node.cond, FRMPC, fipos,
+								node.then,
+
+								function () { buf.print(fipos.put(ctx.pc++)); }
+					);
+				}
+			} else {
+				ctx.enter({noWait:true}, function () {
+					if (node._else) {
+						buf.printf("if (%v) {%{%f%n%}} else {%{%f%n%}}", node.cond,
+								noSurroundCompoundF(node.then),
+								noSurroundCompoundF(node._else));
+					} else {
+						buf.printf("if (%v) {%{%f%n%}}", node.cond,
+								noSurroundCompoundF(node.then));
+					}
+				});
+			}
+		},
+		ifWait: function (node) {
+			if (!ctx.noWait) {
+				buf.printf("%v",node.then);
+			} else {
+				if (node._else) {
+					buf.printf("%v",node._else);
+				}
+			}
+		},
+		empty: function (node) {
+			buf.printf(";%n");
+		},
+		call: function (node) {
+			buf.printf("(%j)", [",",node.args]);
+		},
+		objlitArg: function (node) {
+			buf.printf("%v",node.obj);
+		},
+		argList: function (node) {
+			buf.printf("%j",[",",node.args]);
+		},
+		newExpr: function (node) {
+			var p=node.params;
+			if (p) {
+				buf.printf("new %v%v",node.klass,p);
+			} else {
+				buf.printf("new %v",node.klass);
+			}
+		},
+		scall: function (node) {
+			buf.printf("[%j]", [",",node.args]);
+		},
+		superExpr: function (node) {
+			var name;
+			//if (!klass.superclass) throw new Error(klass.fullName+"には親クラスがありません");
+			if (node.name) {
+				name=node.name.text;
+				buf.printf("%s.prototype.%s.apply( %s, %v)",
+						SUPER/*getClassName(klass.superclass)*/,  name, THIZ, node.params);
+			} else {
+				buf.printf("%s.apply( %s, %v)",
+						SUPER/*getClassName(klass.superclass)*/, THIZ, node.params);
+			}
+		},
+		arrayElem: function (node) {
+			buf.printf("[%v]",node.subscript);
+		},
+		member: function (node) {
+			buf.printf(".%s",node.name);
+		},
+		symbol: function (node) {
+			buf.print(node.text);
+		},
+		"normalFor": function (node) {
+			buf.printf("%v; %v; %v", node.init, node.cond, node.next);
+		},
+		compound: function (node) {
+			var an=annotation(node);
+			if (!ctx.noWait &&
+					(an.fiberCallRequired || an.hasJump || an.hasReturn) ) {
+				buf.printf("%j", ["%n",node.stmts]);
+			} else {
+				/*if (ctx.noSurroundBrace) {
+					ctx.enter({noSurroundBrace:false,noWait:true},function () {
+						buf.printf("%{%j%n%}", ["%n",node.stmts]);
+					});
+				} else {*/
+					ctx.enter({noWait:true},function () {
+						buf.printf("{%{%j%n%}}", ["%n",node.stmts]);
+					});
+				//}
+			}
+		},
+	"typeof": function (node) {
+		buf.printf("typeof ");
+	},
+	"instanceof": function (node) {
+		buf.printf(" instanceof ");
+	},
+	"is": function (node) {
+		buf.printf(" instanceof ");
+	},
+	regex: function (node) {
+		buf.printf("%s",node.text);
+	}
+	});
+	var opTokens=["++", "--", "!==", "===", "+=", "-=", "*=", "/=",
+			"%=", ">=", "<=",
+	"!=", "==", ">>>",">>", "<<", "&&", "||", ">", "<", "+", "?", "=", "*",
+	"%", "/", "^", "~", "\\", ":", ";", ",", "!", "&", "|", "-"
+	,"delete"	 ];
+	opTokens.forEach(function (opt) {
+	v.funcs[opt]=function (node) {
+		buf.printf("%s",opt);
+	};
+	});
+	//v.debug=debug;
+	v.def=function (node) {
+		console.log("Err node=");
+		console.log(node);
+		throw new Error(node.type+" is not defined in visitor:compiler2");
+	};
+	v.cnt=0;
+	function genSource() {//G
+		ctx.enter({}, function () {
+			if (genMod) {
+				printf("define(function (require) {%{");
+				var reqs={Tonyu:1};
+				for (var mod in klass.decls.amds) {
+					reqs[mod]=1;
+				}
+				if (klass.superclass) {
+					var mod=klass.superclass.shortName;
+					reqs[mod]=1;
+				}
+				(klass.includes||[]).forEach(function (klass) {
+					var mod=klass.shortName;
+					reqs[mod]=1;
+				});
+				for (var mod in klass.decls.softRefClasses) {
+					reqs[mod]=1;
+				}
+				for (var mod in reqs) {
+					printf("var %s=require('%s');%n",mod,mod);
+				}
+			}
+			printf((genMod?"return ":"")+"Tonyu.klass.define({%{");
+			printf("fullName: %l,%n", klass.fullName);
+			printf("shortName: %l,%n", klass.shortName);
+			printf("namespace: %l,%n", klass.namespace);
+			if (klass.superclass) printf("superclass: %s,%n", getClassName(klass.superclass));
+			printf("includes: [%s],%n", getClassNames(klass.includes).join(","));
+			printf("methods: function (%s) {%{",SUPER);
+			printf("return {%{");
+			for (var name in methods) {
+				if (debug) console.log("method1", name);
+				var method=methods[name];
+				if (!method.params) {
+					console.log("MYSTERY2", method.params, methods, klass, env);
+				}
+				ctx.enter({noWait:true, threadAvail:false}, function () {
+					genFunc(method);
+				});
+				if (debug) console.log("method2", name);
+				if (!method.nowait ) {
+					ctx.enter({noWait:false,threadAvail:true}, function () {
+						genFiber(method);
+					});
+				}
+				if (debug) console.log("method3", name);
+			}
+			printf("__dummy: false%n");
+			printf("%}};%n");
+			printf("%}},%n");
+			printf("decls: %s%n", JSON.stringify(digestDecls(klass)));
+			printf("%}});");
+			if (genMod) printf("%n%}});");
+			//printf("%}});%n");
+		});
+		//printf("Tonyu.klass.addMeta(%s,%s);%n",
+		//        getClassName(klass),JSON.stringify(digestMeta(klass)));
+		//if (env.options.compiler.asModule) {
+		//    printf("//%}});");
+		//}
+	}
+	function digestDecls(klass) {
+		var res={methods:{},fields:{}};
+		for (var i in klass.decls.methods) {
+			res.methods[i]=
+			{nowait:!!klass.decls.methods[i].nowait};
+		}
+		for (var i in klass.decls.fields) {
+			var src=klass.decls.fields[i];
+			var dst={};
+			//console.log("digestDecls",src);
+			if (src.vtype) {
+			if (typeof (src.vtype)==="string") {
+				dst.vtype=src.vtype;
+			} else {
+				dst.vtype=src.vtype.fullName || src.vtype.name;
+			}
+			}
+			res.fields[i]=dst;
+		}
+		return res;
+	}
+	function digestMeta(klass) {//G
+		var res={
+				fullName: klass.fullName,
+				namespace: klass.namespace,
+				shortName: klass.shortName,
+				decls:{methods:{}}
+		};
+		for (var i in klass.decls.methods) {
+			res.decls.methods[i]=
+			{nowait:!!klass.decls.methods[i].nowait};
+		}
+		return res;
+	}
+	function genFiber(fiber) {//G
+		if (isConstructor(fiber)) return;
+		var stmts=fiber.stmts;
+		var noWaitStmts=[], waitStmts=[], curStmts=noWaitStmts;
+		var opt=true;
+		if (opt) {
+			stmts.forEach(function (s) {
+				if (annotation(s).fiberCallRequired) {
+					curStmts=waitStmts;
+				}
+				curStmts.push(s);
+			});
+		} else {
+			waitStmts=stmts;
+		}
+		printf(
+				"%s%s :function %s(%j) {%{"+
+				USE_STRICT+
+				"var %s=%s;%n"+
+				"%svar %s=%s;%n"+
+				"var %s=0;%n"+
+				"%f%n"+
+				"%f%n",
+				FIBPRE, fiber.name, genFn(fiber.pos,"f_"+fiber.name), [",",[THNode].concat(fiber.params)],
+				THIZ, GET_THIS,
+				(fiber.useArgs?"":"//"), ARGS, "Tonyu.A(arguments)",
+				FRMPC,
+				genLocalsF(fiber),
+				nfbody
+		);
+		if (waitStmts.length>0) {
+			printf(
+				"%s.enter(function %s(%s) {%{"+
+					"if (%s.lastEx) %s=%s.catchPC;%n"+
+					"for(var %s=%d ; %s--;) {%{"+
+						"switch (%s) {%{"+
+						"%}case 0:%{"+
+						"%f" +
+						"%s.exit(%s);return;%n"+
+						"%}}%n"+
+					"%}}%n"+
+				"%}});%n",
+				TH,genFn(fiber.pos,"ent_"+fiber.name),TH,
+					TH,FRMPC,TH,
+					CNTV, CNTC, CNTV,
+						FRMPC,
+						// case 0:
+						fbody,
+						TH,THIZ
+			);
+		} else {
+			printf("%s.retVal=%s;return;%n",TH,THIZ);
+		}
+		printf("%}},%n");
+		function nfbody() {
+			ctx.enter({method:fiber, /*scope: fiber.scope,*/ noWait:true, threadAvail:true }, function () {
+				noWaitStmts.forEach(function (stmt) {
+					printf("%v%n", stmt);
+				});
+			});
+		}
+		function fbody() {
+			ctx.enter({method:fiber, /*scope: fiber.scope,*/
+				finfo:fiber, pc:1}, function () {
+				waitStmts.forEach(function (stmt) {
+					printf("%v%n", stmt);
+				});
+			});
+		}
+	}
+	function genFunc(func) {//G
+		var fname= isConstructor(func) ? "initialize" : func.name;
+		if (!func.params) {//TODO
+			console.log("MYSTERY",func.params);
+		}
+		printf("%s :function %s(%j) {%{"+
+					USE_STRICT+
+					"var %s=%s;%n"+
+					"%f%n" +
+					"%f" +
+				"%}},%n",
+				fname, genFn(func.pos,fname), [",",func.params],
+				THIZ, GET_THIS,
+						genLocalsF(func),
+						fbody
+		);
+		function fbody() {
+			ctx.enter({method:func, finfo:func,
+				/*scope: func.scope*/ }, function () {
+				func.stmts.forEach(function (stmt) {
+					printf("%v%n", stmt);
+				});
+			});
+		}
+	}
+	function genFuncExpr(node) {//G
+		var finfo=annotation(node).info;// annotateSubFuncExpr(node);
+
+		buf.printf("(function %s(%j) {%{"+
+						"%f%n"+
+						"%f"+
+					"%}})"
+				,
+					finfo.name, [",", finfo.params],
+					genLocalsF(finfo),
+						fbody
+		);
+		function fbody() {
+			ctx.enter({noWait: true, threadAvail:false,
+				finfo:finfo, /*scope: finfo.scope*/ }, function () {
+				node.body.stmts.forEach(function (stmt) {
+					printf("%v%n", stmt);
+				});
+			});
+		}
+	}
+	function genFn(pos,name) {//G
+		if (!name) name=(fnSeq++)+"";
+		return ("_trc_"+klass.shortName+"_"+name)
+//        return ("_trc_func_"+traceTbl.add(klass,pos )+"_"+(fnSeq++));//  Math.random()).replace(/\./g,"");
+	}
+	function genSubFunc(node) {//G
+		var finfo=annotation(node).info;// annotateSubFuncExpr(node);
+		buf.printf("function %s(%j) {%{"+
+						"%f%n"+
+						"%f"+
+					"%}}"
+				,
+					finfo.name,[",", finfo.params],
+						genLocalsF(finfo),
+						fbody
+		);
+		function fbody() {
+			ctx.enter({noWait: true, threadAvail:false,
+				finfo:finfo, /*scope: finfo.scope*/ }, function () {
+				node.body.stmts.forEach(function (stmt) {
+					printf("%v%n", stmt);
+				});
+			});
+		}
+	}
+	function genLocalsF(finfo) {//G
+		return f;
+		function f() {
+			ctx.enter({/*scope:finfo.scope*/}, function (){
+				for (var i in finfo.locals.varDecls) {
+					buf.printf("var %s;%n",i);
+				}
+				for (var i in finfo.locals.subFuncDecls) {
+					genSubFunc(finfo.locals.subFuncDecls[i]);
+				}
+			});
+		};
+	}
+	function isConstructor(f) {//G
+		return OM.match(f, {ftype:"constructor"}) || OM.match(f, {name:"new"});
+	}
+	genSource();//G
+	if (genMod) {
+		klass.src.js=klass.src.tonyu.up().rel(klass.src.tonyu.truncExt()+".js");
+		klass.src.js.text(buf.buf);
+	} else {
+		klass.src.js=buf.buf;//G
+	}
+	delete klass.jsNotUpToDate;
+	if (debug) {
+		console.log("method4", buf.buf);
+		//throw "ERR";
+	}
+	var bufres=buf.close();
+	klass.src.map=buf.mapStr;
+	return bufres;
+}//B
+return {genJS:genJS};
+})();
+//if (typeof getReq=="function") getReq.exports("Tonyu.Compiler");
+});
+
+requireSimulator.setName('Tonyu.Compiler.Semantics');
+if (typeof define!=="function") {//B
+	define=require("requirejs").define;
+}
+define(["Tonyu", "Tonyu.Iterator", "TonyuLang", "ObjectMatcher", "TError", "IndentBuffer",
+		"context", "Visitor","Tonyu.Compiler"],
+function(Tonyu, Tonyu_iterator, TonyuLang, ObjectMatcher, TError, IndentBuffer,
+		context, Visitor,cu) {
+return cu.Semantics=(function () {
+/*var ScopeTypes={FIELD:"field", METHOD:"method", NATIVE:"native",//B
+		LOCAL:"local", THVAR:"threadvar", PARAM:"param", GLOBAL:"global", CLASS:"class"};*/
+var ScopeTypes=cu.ScopeTypes;
+var genSt=cu.newScopeType;
+var stype=cu.getScopeType;
+var newScope=cu.newScope;
+//var nc=cu.nullCheck;
+var genSym=cu.genSym;
+var annotation3=cu.annotation;
+var getMethod2=cu.getMethod;
+var getDependingClasses=cu.getDependingClasses;
+var getParams=cu.getParams;
+var JSNATIVES={Array:1, String:1, Boolean:1, Number:1, Void:1, Object:1,RegExp:1,Error:1,Date:1};
+function visitSub(node) {//S
+	var t=this;
+	if (!node || typeof node!="object") return;
+	var es;
+	if (node instanceof Array) es=node;
+	else es=node[Grammar.SUBELEMENTS];
+	if (!es) {
+		es=[];
+		for (var i in node) {
+			es.push(node[i]);
+		}
+	}
+	es.forEach(function (e) {
+		t.visit(e);
+	});
+}
+//-----------
+function initClassDecls(klass, env ) {//S
+	// The main task of initClassDecls is resolve 'dependency', it calls before orderByInheritance
+	var s=klass.src.tonyu; //file object
+	var node;
+	klass.hasSemanticError=true;
+	if (klass.src && klass.src.js) {
+		// falsify on generateJS. if some class hasSemanticError, it remains true
+		klass.jsNotUpToDate=true;
+	}
+	if (klass.node && klass.nodeTimestamp==s.lastUpdate()) {
+		node=klass.node;
+	}
+	if (!node) {
+		console.log("Parse "+s);
+		node=TonyuLang.parse(s);
+		klass.nodeTimestamp=s.lastUpdate();
+	}
+	//console.log(s+"",  !!klass.node, klass.nodeTimestamp, s.lastUpdate());
+	//if (!klass.testid) klass.testid=Math.random();
+	//console.log(klass.testid);
+	var MAIN={name:"main",stmts:[],pos:0, isMain:true};
+	// method := fiber | function
+	var fields={}, methods={main: MAIN}, natives={}, amds={},softRefClasses={};
+	klass.decls={fields:fields, methods:methods, natives: natives, amds:amds,
+	softRefClasses:softRefClasses};
+	// ↑ このクラスが持つフィールド，ファイバ，関数，ネイティブ変数，AMDモジュール変数
+	//   extends/includes以外から参照してれるクラス の集まり．親クラスの宣言は含まない
+	klass.node=node;
+	/*function nc(o, mesg) {
+		if (!o) throw mesg+" is null";
+		return o;
+	}*/
+	var OM=ObjectMatcher;
+	function initMethods(program) {
+		var spcn=env.options.compiler.defaultSuperClass;
+		var pos=0;
+		var t;
+		if (t=OM.match( program , {ext:{superclassName:{text:OM.N, pos:OM.P}}})) {
+			spcn=t.N;
+			pos=t.P;
+			if (spcn=="null") spcn=null;
+		}
+		klass.includes=[];
+		if (t=OM.match( program , {incl:{includeClassNames:OM.C}})) {
+			t.C.forEach(function (i) {
+				var n=i.text;/*ENVC*/
+				var p=i.pos;
+				var incc=env.classes[env.aliases[n] || n];/*ENVC*/ //CFN env.classes[env.aliases[n]]
+				if (!incc) throw TError ( "クラス "+n+"は定義されていません", s, p);
+				klass.includes.push(incc);
+			});
+		}
+		if (spcn=="Array") {
+			klass.superclass={name:"Array",fullName:"Array",builtin:true};
+		} else if (spcn) {
+			var spc=env.classes[env.aliases[spcn] || spcn];/*ENVC*/  //CFN env.classes[env.aliases[spcn]]
+			if (!spc) {
+				throw TError ( "親クラス "+spcn+"は定義されていません", s, pos);
+			}
+			klass.superclass=spc;
+		} else {
+			delete klass.superclass;
+		}
+		klass.directives={};
+		//--
+		function addField(name,node) {// name should be node
+			node=node||name;
+			fields[name+""]={
+				node:node,
+				klass:klass.fullName,
+				name:name+"",
+				pos:node.pos
+			};
+		}
+		var fieldsCollector=Visitor({
+			varDecl: function (node) {
+				addField(node.name, node);
+			},
+			nativeDecl: function (node) {//-- Unify later
+			},
+			funcDecl: function (node) {//-- Unify later
+			},
+			funcExpr: function (node) {
+			},
+			"catch": function (node) {
+			},
+			exprstmt: function (node) {
+				if (node.expr.type==="literal"
+					&& node.expr.text.match(/^.field strict.$/)) {
+					klass.directives.field_strict=true;
+				}
+			},
+			"forin": function (node) {
+				var isVar=node.isVar;
+				if (isVar) {
+					node.vars.forEach(function (v) {
+						addField(v);
+					});
+				}
+			}
+		});
+		fieldsCollector.def=visitSub;
+		fieldsCollector.visit(program.stmts);
+		//-- end of fieldsCollector
+		program.stmts.forEach(function (stmt) {
+			if (stmt.type=="funcDecl") {
+				var head=stmt.head;
+				var ftype="function";
+				if (head.ftype) {
+					ftype=head.ftype.text;
+					//console.log("head.ftype:",stmt);
+				}
+				var name=head.name.text;
+				var propHead=(head.params ? "" : head.setter ? "__setter__" : "__getter__");
+				name=propHead+name;
+				methods[name]={
+						nowait: (!!head.nowait || propHead!==""),
+						ftype:  ftype,
+						name:  name,
+						klass: klass.fullName,
+						head:  head,
+						pos: head.pos,
+						stmts: stmt.body.stmts,
+						node: stmt
+				};
+				//annotation(stmt,methods[name]);
+				//annotation(stmt,{finfo:methods[name]});
+			} else if (stmt.type=="nativeDecl") {
+				natives[stmt.name.text]=stmt;
+			} else {
+				/*if (stmt.type=="varsDecl") {
+					stmt.decls.forEach(function (d) {
+						//console.log("varDecl", d.name.text);
+						//fields[d.name.text]=d;
+						fields[d.name.text]={
+							node:d,
+							klass:klass.fullName,
+							name:d.name.text,
+							pos:d.pos
+						};
+					});
+				}*/
+				MAIN.stmts.push(stmt);
+			}
+		});
+	}
+	initMethods(node);        // node=program
+	//delete klass.hasSemanticError;
+	// Why delete deleted? because decls.methods.params is still undef
+}// of initClassDecls
+function annotateSource2(klass, env) {//B
+	// annotateSource2 is call after orderByInheritance
+	klass.hasSemanticError=true;
+	var srcFile=klass.src.tonyu; //file object  //S
+	var srcCont=srcFile.text();
+	function getSource(node) {
+		return cu.getSource(srcCont,node);
+	}
+	var OM=ObjectMatcher;
+	var traceTbl=env.traceTbl;
+	// method := fiber | function
+	var decls=klass.decls;
+	var fields=decls.fields,
+		methods=decls.methods,
+		natives=decls.natives,
+		amds=decls.amds;
+	// ↑ このクラスが持つフィールド，ファイバ，関数，ネイティブ変数，モジュール変数の集まり．親クラスの宣言は含まない
+	var ST=ScopeTypes;
+	var topLevelScope={};
+	// ↑ このソースコードのトップレベル変数の種類 ，親クラスの宣言を含む
+	//  キー： 変数名   値： ScopeTypesのいずれか
+	var v=null;
+	var ctx=context();
+	var debug=false;
+	var othersMethodCallTmpl={
+			type:"postfix",
+			left:{
+				type:"postfix",
+				left:OM.T,
+				op:{type:"member",name:{text:OM.N}}
+			},
+			op:{type:"call", args:OM.A }
+	};
+	var memberAccessTmpl={
+			type:"postfix",
+			left: OM.T,
+			op:{type:"member",name:{text:OM.N}}
+	};
+	// These has same value but different purposes:
+	//  myMethodCallTmpl: avoid using bounded field for normal method(); call
+	//  fiberCallTmpl: detect fiber call
+	var myMethodCallTmpl=fiberCallTmpl={
+			type:"postfix",
+			left:{type:"varAccess", name: {text:OM.N}},
+			op:{type:"call", args:OM.A }
+	};
+	var noRetFiberCallTmpl={
+		expr: fiberCallTmpl
+	};
+	var retFiberCallTmpl={
+		expr: {
+			type: "infix",
+			op: OM.O,
+			left: OM.L,
+			right: fiberCallTmpl
+		}
+	};
+	var noRetSuperFiberCallTmpl={
+		expr: {type:"superExpr", params:{args:OM.A}, $var:"S"}
+	};
+	var retSuperFiberCallTmpl={
+			expr: {
+				type: "infix",
+				op: OM.O,
+				left: OM.L,
+				right: {type:"superExpr", params:{args:OM.A}, $var:"S"}
+			}
+		};
+	klass.annotation={};
+	function annotation(node, aobj) {//B
+		return annotation3(klass.annotation,node,aobj);
+	}
+	/*function assertAnnotated(node, si) {//B
+		var a=annotation(node);
+		if (!a.scopeInfo) {
+			console.log(srcCont.substring(node.pos-5,node.pos+20));
+			console.log(node, si);
+			throw "Scope info not set";
+		}
+		if (si.type!=a.scopeInfo.type){
+			console.log(srcCont.substring(node.pos-5,node.pos+20));
+			console.log(node, si , a.scopeInfo);
+			throw "Scope info not match";
+		}
+	}*/
+	function initTopLevelScope2(klass) {//S
+		if (klass.builtin) return;
+		var s=topLevelScope;
+		var decls=klass.decls;
+		if (!decls) {
+			console.log("DECLNUL",klass);
+		}
+		var i;
+		for (i in decls.fields) {
+			var info=decls.fields[i];
+			s[i]=genSt(ST.FIELD,{klass:klass.fullName,name:i,info:info});
+			if (info.node) {
+				annotation(info.node,{info:info});
+			}
+		}
+		for (i in decls.methods) {
+			var info=decls.methods[i];
+			var r=Tonyu.klass.propReg.exec(i);
+			if (r) {
+				s[r[2]]=genSt(ST.PROP,{klass:klass.fullName,name:r[2],info:info});
+			} else {
+				s[i]=genSt(ST.METHOD,{klass:klass.fullName,name:i,info:info});
+			}
+			if (info.node) {
+				annotation(info.node,{info:info});
+			}
+		}
+	}
+	function initTopLevelScope() {//S
+		var s=topLevelScope;
+		getDependingClasses(klass).forEach(initTopLevelScope2);
+		var decls=klass.decls;// Do not inherit parents' natives
+		for (var i in decls.natives) {
+			s[i]=genSt(ST.NATIVE,{name:"native::"+i,value:window[i]});
+		}
+		for (var i in JSNATIVES) {
+			s[i]=genSt(ST.NATIVE,{name:"native::"+i,value:window[i]});
+		}
+		for (var i in env.aliases) {/*ENVC*/ //CFN  env.classes->env.aliases
+			var fullName=env.aliases[i];
+			s[i]=genSt(ST.CLASS,{name:i,fullName:fullName,info:env.classes[fullName]});
+		}
+	}
+	function inheritSuperMethod() {//S
+		var d=getDependingClasses(klass);
+		for (var n in klass.decls.methods) {
+			var m2=klass.decls.methods[n];
+			d.forEach(function (k) {
+				var m=k.decls.methods[n];
+				if (m && m.nowait) {
+					m2.nowait=true;
+				}
+			});
+		}
+	}
+	function getMethod(name) {//B
+		return getMethod2(klass,name);
+	}
+	function isFiberMethod(name) {
+		return stype(ctx.scope[name])==ST.METHOD &&
+		!getMethod(name).nowait ;
+	}
+	function checkLVal(node) {//S
+		if (node.type=="varAccess" ||
+				node.type=="postfix" && (node.op.type=="member" || node.op.type=="arrayElem") ) {
+			if (node.type=="varAccess") {
+				annotation(node,{noBind:true});
+			}
+			return true;
+		}
+		console.log("LVal",node);
+		throw TError( "'"+getSource(node)+"'は左辺には書けません．" , srcFile, node.pos);
+	}
+	function getScopeInfo(n) {//S
+		var node=n;
+		n=n+"";
+		var si=ctx.scope[n];
+		var t=stype(si);
+		if (!t) {
+			if (env.amdPaths && env.amdPaths[n]) {
+				t=ST.MODULE;
+				klass.decls.amds[n]=env.amdPaths[n];
+				//console.log(n,"is module");
+			} else {
+				var isg=n.match(/^\$/);
+				if (env.options.compiler.field_strict || klass.directives.field_strict) {
+					if (!isg) throw new TError(n+"は宣言されていません（フィールドの場合，明示的に宣言してください）．",srcFile,node.pos);
+				}
+				t=isg?ST.GLOBAL:ST.FIELD;
+			}
+			var opt={name:n};
+			if (t==ST.FIELD) {
+				opt.klass=klass.name;
+				klass.decls.fields[n]=klass.decls.fields[n]||{};
+				cu.extend(klass.decls.fields[n],{
+					klass:klass.fullName,
+					name:n
+				});//si;
+			}
+			si=topLevelScope[n]=genSt(t,opt);
+		}
+		if (t==ST.CLASS) {
+			klass.decls.softRefClasses[n]=si;
+		}
+		return si;
+	}
+	var localsCollector=Visitor({
+		varDecl: function (node) {
+			if (ctx.isMain) {
+				annotation(node,{varInMain:true});
+				annotation(node,{declaringClass:klass});
+				//console.log("var in main",node.name.text);
+			} else {
+				ctx.locals.varDecls[node.name.text]=node;
+				//console.log("DeclaringFunc of ",node.name.text,ctx.finfo);
+				annotation(node,{declaringFunc:ctx.finfo});
+			}
+		},
+		funcDecl: function (node) {/*FDITSELFIGNORE*/
+			ctx.locals.subFuncDecls[node.head.name.text]=node;
+			//initParamsLocals(node);??
+		},
+		funcExpr: function (node) {/*FEIGNORE*/
+			//initParamsLocals(node);??
+		},
+		"catch": function (node) {
+			ctx.locals.varDecls[node.name.text]=node;
+		},
+		exprstmt: function (node) {
+		},
+		"forin": function (node) {
+			var isVar=node.isVar;
+			node.vars.forEach(function (v) {
+				if (isVar) {
+					if (ctx.isMain) {
+						annotation(v,{varInMain:true});
+						annotation(v,{declaringClass:klass});
+					} else {
+						ctx.locals.varDecls[v.text]=v;//node??;
+						annotation(v,{declaringFunc:ctx.finfo});
+					}
+				}
+			});
+			var n=genSym("_it_");
+			annotation(node, {iterName:n});
+			ctx.locals.varDecls[n]=node;// ??
+		}
+	});
+	localsCollector.def=visitSub;//S
+
+	function collectLocals(node) {//S
+		var locals={varDecls:{}, subFuncDecls:{}};
+		ctx.enter({locals:locals},function () {
+			localsCollector.visit(node);
+		});
+		return locals;
+	}
+	function annotateParents(path, data) {//S
+		path.forEach(function (n) {
+			annotation(n,data);
+		});
+	}
+	function fiberCallRequired(path) {//S
+		if (ctx.method) ctx.method.fiberCallRequired=true;
+		annotateParents(path, {fiberCallRequired:true} );
+	}
+	var varAccessesAnnotator=Visitor({//S
+		varAccess: function (node) {
+			var si=getScopeInfo(node.name);
+			var t=stype(si);
+			annotation(node,{scopeInfo:si});
+		},
+		funcDecl: function (node) {/*FDITSELFIGNORE*/
+		},
+		funcExpr: function (node) {/*FEIGNORE*/
+			annotateSubFuncExpr(node);
+		},
+		objlit:function (node) {
+			var t=this;
+			var dup={};
+			node.elems.forEach(function (e) {
+				var kn;
+				if (e.key.type=="literal") {
+					kn=e.key.text.substring(1,e.key.text.length-1);
+				} else {
+					kn=e.key.text;
+				}
+				if (dup[kn]) {
+					throw TError( "オブジェクトリテラルのキー名'"+kn+"'が重複しています" , srcFile, e.pos);
+				}
+				dup[kn]=1;
+				//console.log("objlit",e.key.text);
+				t.visit(e);
+			});
+		},
+		jsonElem: function (node) {
+			if (node.value) {
+				this.visit(node.value);
+			} else {
+				if (node.key.type=="literal") {
+					throw TError( "オブジェクトリテラルのパラメタに単独の文字列は使えません" , srcFile, node.pos);
+				}
+				var si=getScopeInfo(node.key);
+				annotation(node,{scopeInfo:si});
+			}
+		},
+		"do": function (node) {
+			var t=this;
+			ctx.enter({brkable:true,contable:true}, function () {
+				t.def(node);
+			});
+		},
+		"switch": function (node) {
+			var t=this;
+			ctx.enter({brkable:true}, function () {
+				t.def(node);
+			});
+		},
+		"while": function (node) {
+			var t=this;
+			ctx.enter({brkable:true,contable:true}, function () {
+				t.def(node);
+			});
+			fiberCallRequired(this.path);//option
+		},
+		"for": function (node) {
+			var t=this;
+			ctx.enter({brkable:true,contable:true}, function () {
+				t.def(node);
+			});
+		},
+		"forin": function (node) {
+			node.vars.forEach(function (v) {
+				var si=getScopeInfo(v);
+				annotation(v,{scopeInfo:si});
+			});
+			this.visit(node.set);
+		},
+		ifWait: function (node) {
+			var TH="_thread";
+			var t=this;
+			var ns=newScope(ctx.scope);
+			ns[TH]=genSt(ST.THVAR);
+			ctx.enter({scope:ns}, function () {
+				t.visit(node.then);
+			});
+			if (node._else) {
+				t.visit(node._else);
+			}
+			fiberCallRequired(this.path);
+		},
+		"try": function (node) {
+			ctx.finfo.useTry=true;
+			this.def(node);
+		},
+		"return": function (node) {
+			var t;
+			if (!ctx.noWait) {
+				if ( (t=OM.match(node.value, fiberCallTmpl)) &&
+				isFiberMethod(t.N)) {
+					annotation(node.value, {fiberCall:t});
+					fiberCallRequired(this.path);
+				}
+				annotateParents(this.path,{hasReturn:true});
+			}
+			this.visit(node.value);
+		},
+		"break": function (node) {
+			if (!ctx.brkable) throw TError( "break； は繰り返しまたはswitch文の中で使います." , srcFile, node.pos);
+			if (!ctx.noWait) annotateParents(this.path,{hasJump:true});
+		},
+		"continue": function (node) {
+			if (!ctx.contable) throw TError( "continue； は繰り返しの中で使います." , srcFile, node.pos);
+			if (!ctx.noWait) annotateParents(this.path,{hasJump:true});
+		},
+		"reservedConst": function (node) {
+			if (node.text=="arguments") {
+				ctx.finfo.useArgs=true;
+			}
+		},
+		postfix: function (node) {
+			var t;
+			this.visit(node.left);
+			this.visit(node.op);
+			if (t=OM.match(node, myMethodCallTmpl)) {
+				var si=annotation(node.left).scopeInfo;
+				annotation(node, {myMethodCall:{name:t.N,args:t.A,scopeInfo:si}});
+			} else if (t=OM.match(node, othersMethodCallTmpl)) {
+				annotation(node, {othersMethodCall:{target:t.T,name:t.N,args:t.A} });
+			} else if (t=OM.match(node, memberAccessTmpl)) {
+				annotation(node, {memberAccess:{target:t.T,name:t.N} });
+			}
+		},
+		infix: function (node) {
+			var opn=node.op.text;
+			if (opn=="=" || opn=="+=" || opn=="-=" || opn=="*=" ||  opn=="/=" || opn=="%=" ) {
+				checkLVal(node.left);
+			}
+			this.def(node);
+		},
+		exprstmt: function (node) {
+			var t,m;
+			if (node.expr.type==="objlit") {
+				throw TError( "オブジェクトリテラル単独の式文は書けません．" , srcFile, node.pos);
+			}
+			if (!ctx.noWait &&
+					(t=OM.match(node,noRetFiberCallTmpl)) &&
+					isFiberMethod(t.N)) {
+				t.type="noRet";
+				annotation(node, {fiberCall:t});
+				fiberCallRequired(this.path);
+			} else if (!ctx.noWait &&
+					(t=OM.match(node,retFiberCallTmpl)) &&
+					isFiberMethod(t.N)) {
+				t.type="ret";
+				annotation(node, {fiberCall:t});
+				fiberCallRequired(this.path);
+			} else if (!ctx.noWait &&
+					(t=OM.match(node,noRetSuperFiberCallTmpl)) &&
+					t.S.name) {
+				m=getMethod(t.S.name.text);
+				if (!m) throw new Error("メソッド"+t.S.name.text+" はありません。");
+				if (!m.nowait) {
+					t.type="noRetSuper";
+					t.superclass=klass.superclass;
+					annotation(node, {fiberCall:t});
+					fiberCallRequired(this.path);
+				}
+			} else if (!ctx.noWait &&
+					(t=OM.match(node,retSuperFiberCallTmpl)) &&
+					t.S.name) {
+				m=getMethod(t.S.name.text);
+				if (!m) throw new Error("メソッド"+t.S.name.text+" はありません。");
+				if (!m.nowait) {
+					t.type="retSuper";
+					t.superclass=klass.superclass;
+					annotation(node, {fiberCall:t});
+					fiberCallRequired(this.path);
+				}
+			}
+			this.visit(node.expr);
+		},
+		varDecl: function (node) {
+			var t;
+			if (!ctx.noWait &&
+					(t=OM.match(node.value,fiberCallTmpl)) &&
+					isFiberMethod(t.N)) {
+				t.type="varDecl";
+				annotation(node, {fiberCall:t});
+				fiberCallRequired(this.path);
+			}
+			this.visit(node.value);
+			this.visit(node.typeDecl);
+		},
+		typeExpr: function (node) {
+			resolveType(node);
+		}
+	});
+	function resolveType(node) {//node:typeExpr
+		var name=node.name+"";
+		var si=getScopeInfo(node.name);
+		var t=stype(si);
+		//console.log("TExpr",name,si,t);
+		if (t===ST.NATIVE) {
+			annotation(node, {resolvedType: si.value});
+		} else if (t===ST.CLASS){
+			annotation(node, {resolvedType: si.info});
+		}
+	}
+	varAccessesAnnotator.def=visitSub;//S
+	function annotateVarAccesses(node,scope) {//S
+		ctx.enter({scope:scope}, function () {
+			varAccessesAnnotator.visit(node);
+		});
+	}
+	function copyLocals(finfo, scope) {//S
+		var locals=finfo.locals;
+		for (var i in locals.varDecls) {
+			//console.log("LocalVar ",i,"declared by ",finfo);
+			var si=genSt(ST.LOCAL,{declaringFunc:finfo});
+			scope[i]=si;
+			annotation(locals.varDecls[i],{scopeInfo:si});
+		}
+		for (var i in locals.subFuncDecls) {
+			var si=genSt(ST.LOCAL,{declaringFunc:finfo});
+			scope[i]=si;
+			annotation(locals.subFuncDecls[i],{scopeInfo:si});
+		}
+	}
+	function resolveTypesOfParams(params) {
+		params.forEach(function (param) {
+			if (param.typeDecl) {
+			//console.log("restype",param);
+			resolveType(param.typeDecl.vtype);
+			}
+		});
+	}
+	function initParamsLocals(f) {//S
+		//console.log("IS_MAIN", f.name, f.isMain);
+		ctx.enter({isMain:f.isMain,finfo:f}, function () {
+			f.locals=collectLocals(f.stmts);
+			f.params=getParams(f);
+		});
+		resolveTypesOfParams(f.params);
+	}
+	function annotateSubFuncExpr(node) {// annotateSubFunc or FuncExpr
+		var m,ps;
+		var body=node.body;
+		var name=(node.head.name ? node.head.name.text : "anonymous_"+node.pos );
+		if (m=OM.match( node, {head:{params:{params:OM.P}}})) {
+			ps=m.P;
+		} else {
+			ps=[];
+		}
+		var finfo={};
+		var ns=newScope(ctx.scope);
+		//var locals;
+		ctx.enter({finfo: finfo}, function () {
+			ps.forEach(function (p) {
+				var si=genSt(ST.PARAM,{declaringFunc:finfo});
+				annotation(p,{scopeInfo:si});
+				ns[p.name.text]=si;
+			});
+			finfo.locals=collectLocals(body);
+			copyLocals(finfo, ns);
+			annotateVarAccesses(body,ns);
+		});
+		finfo.scope=ns;
+		finfo.name=name;
+		finfo.params=ps;
+		//var res={scope:ns, locals:finfo.locals, name:name, params:ps};
+		resolveTypesOfParams(finfo.params);
+		//annotation(node,res);
+		annotation(node,{info:finfo});
+		annotateSubFuncExprs(finfo.locals, ns);
+		return finfo;
+	}
+	function annotateSubFuncExprs(locals, scope) {//S
+		ctx.enter({scope:scope}, function () {
+			for (var n in locals.subFuncDecls) {
+				annotateSubFuncExpr(locals.subFuncDecls[n]);
+			}
+		});
+	}
+	function annotateMethodFiber(f) {//S
+		//f:info  (of method)
+		var ns=newScope(ctx.scope);
+		f.params.forEach(function (p,cnt) {
+			var si=genSt(ST.PARAM,{
+				klass:klass.name, name:f.name, no:cnt, declaringFunc:f
+			});
+			ns[p.name.text]=si;
+			annotation(p,{scopeInfo:si,declaringFunc:f});
+		});
+		copyLocals(f, ns);
+		ctx.enter({method:f,finfo:f, noWait:false}, function () {
+			annotateVarAccesses(f.stmts, ns);
+		});
+		f.scope=ns;
+		annotateSubFuncExprs(f.locals, ns);
+		return ns;
+	}
+	function annotateSource() {//S
+		ctx.enter({scope:topLevelScope}, function () {
+			for (var name in methods) {
+				if (debug) console.log("anon method1", name);
+				var method=methods[name];
+				initParamsLocals(method);//MAINVAR
+				annotateMethodFiber(method);
+			}
+		});
+	}
+	initTopLevelScope();//S
+	inheritSuperMethod();//S
+	annotateSource();
+	delete klass.hasSemanticError;
+}//B  end of annotateSource2
+return {initClassDecls:initClassDecls, annotate:annotateSource2};
+})();
+//if (typeof getReq=="function") getReq.exports("Tonyu.Compiler");
+});
+
+requireSimulator.setName('StackTrace');
+define([],function (){
+	var trc={};
+	var pat=/(_trc_[A-Za-z0-9_]*).*[^0-9]([0-9]+):([0-9]+)[\s\)]*\r?$/;
+	trc.isAvailable=function () {
+		var scr=
+			"({\n"+
+			"    main :function _trc_func_17000000_0() {\n"+
+			"      var a=(this.t.x);\n"+
+			"    }\n"+
+			"}).main();\n";
+		var s;
+		try {
+			eval(scr);
+		} catch (e) {
+			s=e.stack;
+			if (typeof s!="string") return false;
+			var lines=s.split(/\n/);
+			for (var i=0 ; i<lines.length; i++) {
+				var p=pat.exec(lines[i]);
+				if (p) return true;
+			}
+		}
+		return false;
+	};
+	trc.get=function (e) {
+		var s=e.stack;
+		if (typeof s!="string") return false;
+		var lines=s.split(/\n/);
+		var res=[];
+		for (var i=0 ; i<lines.length; i++) {
+			var p=pat.exec(lines[i]);
+			if (!p) continue;
+			//var id=p[1];
+			var fname=p[1];
+			var row=p[2];
+			var col=p[3];
+			res.push({fname:fname, row:row,col:col});
+			//var tri=ttb.decode(id);
+			/*if (tri && tri.klass) {
+				var str=tri.klass.src.js;
+				var slines=str.split(/\n/);
+				var sid=null;
+				for (var j=0 ; j<slines.length && j+1<row ; j++) {
+					var lp=/\$LASTPOS=([0-9]+)/.exec(slines[j]);
+					if (lp) sid=parseInt(lp[1]);
+				}
+				//console.log("slines,row,sid",slines,row,sid);
+				if (sid) {
+					var stri=ttb.decode(sid);
+					if (stri) res.push(stri);
+				}
+			}*/
+		}
+		/*$lastStackTrace=res;
+		$showLastStackTrace=function () {
+			console.log("StackTrace.get",res);
+			//console.log("StackTrace.get",lines,res);
+		};*/
+		console.log("StackTrace.get",res);
+		return res;
+	};
+
+
+	return trc;
+});
+requireSimulator.setName('Tonyu.TraceTbl');
+define(["Tonyu", "FS", "TError","StackTrace"],
+function(Tonyu, FS, TError,trc) {
+return Tonyu.TraceTbl=(function () {
+	var TTB={};
+	var POSMAX=1000000;
+	var pathIdSeq=1;
+	var PATHIDMAX=10000;
+	var path2Id={}, id2Path=[];
+	var path2Class={};
+	TTB.add=function (klass, pos){
+		var file=klass.src.tonyu;
+		var path=file.path();
+		var pathId=path2Id[path];
+		if (pathId==undefined) {
+			pathId=pathIdSeq++;
+			if (pathIdSeq>PATHIDMAX) pathIdSeq=0;
+			path2Id[path]=pathId;
+			id2Path[pathId]=path;
+		}
+		path2Class[path]=klass;
+		if (pos>=POSMAX) pos=POSMAX-1;
+		var id=pathId*POSMAX+pos;
+		return id;
+	};
+	var srcMap={};
+	TTB.decodeOLD=function (id) {
+		var pos=id%POSMAX;
+		var pathId=(id-pos)/POSMAX;
+		var path=id2Path[pathId];
+		if (path) {
+			var f=FS.get(path);
+			var klass=path2Class[path];
+			return TError("Trace info", klass || f, pos);
+		} else {
+			return null;
+			//return TError("Trace info", "unknown src id="+id, pos);
+		}
+	};
+	TTB.srcMap=srcMap;
+	TTB.decode=function (id) {
+		var pat=new RegExp("LASTPOS="+id+";//(.*)\r?\n");
+		console.log("pat=",pat);
+		for (var k in srcMap) {
+			var r=pat.exec( srcMap[k] );
+			if (r) {
+				// user.Main:335
+				//alert(r[1]);
+				return r[1];
+			} else {
+				console.log("pat=",pat,"Not found in ",k);
+
+			}
+		}
+	};
+	TTB.find=function (e) {
+		var trcs=trc.get(e);
+		var trc1=trcs[0];
+		if (!trc1) return null;
+		var pat=new RegExp("LASTPOS=[0-9]+;//(.*)\r?");
+		for (var k in srcMap) {
+			console.log("Finding ", trc1.fname, " in ",k);
+			var r=srcMap[k].indexOf(trc1.fname);
+			if (r>=0) {
+				console.log("fname found at ",r);
+				var slines=srcMap[k].split(/\n/);
+				var sid=null;
+				var row=trc1.row-1;
+				console.log("Scan from row=",row);
+				for (var j=row ; j>=0 ; j--) {
+					console.log("row ",j, slines[j]);
+					if (slines[j]==null) break;
+					var lp=pat.exec(slines[j]);
+					if (lp) return lp[1];
+				}
+				console.log("Not found LASTPOS pat");
+			} else {
+				console.log("Not found in ",k);
+			}
+		}
+	};
+
+	TTB.addSource=function (key,src) {
+		srcMap[key]=src;
+	};
+	return TTB;
+})();
+//if (typeof getReq=="function") getReq.exports("Tonyu.TraceTbl");
+});
+requireSimulator.setName('Platform');
+define([],function () {
+    var WebSite={};
+    // from https://w3g.jp/blog/js_browser_sniffing2015
+    var u=window.navigator.userAgent.toLowerCase();
+    WebSite.tablet=(u.indexOf("windows") != -1 && u.indexOf("touch") != -1)
+    || u.indexOf("ipad") != -1
+    || (u.indexOf("android") != -1 && u.indexOf("mobile") == -1)
+    || (u.indexOf("firefox") != -1 && u.indexOf("tablet") != -1)
+    || u.indexOf("kindle") != -1
+    || u.indexOf("silk") != -1
+    || u.indexOf("playbook") != -1;
+    WebSite.mobile=(u.indexOf("windows") != -1 && u.indexOf("phone") != -1)
+    || u.indexOf("iphone") != -1
+    || u.indexOf("ipod") != -1
+    || (u.indexOf("android") != -1 && u.indexOf("mobile") != -1)
+    || (u.indexOf("firefox") != -1 && u.indexOf("mobile") != -1)
+    || u.indexOf("blackberry") != -1;
+    return WebSite;
+});
+
+requireSimulator.setName('WebSite');
+define(["FS","Platform"], function (FS,Platform) {
+	var P=FS.PathUtil;
+	var loc=document.location.href;
+	var devMode=!!loc.match(/html\/dev\//) && !!loc.match(/localhost:3/);
+	var WebSite;
+	var prot=location.protocol;
+	if (!prot.match(/^http/)) prot="https:";
+	switch(window.WebSite_runType) {
+	case "IDE":
+		WebSite={
+			urlAliases: {}, top: ".",
+			tablet:Platform.tablet,
+			mobile:Platform.mobile
+		};
+		WebSite.builtinAssetNames={
+			"images/Ball.png":1,
+			"images/base.png":1,
+			"images/Sample.png":1,
+			"images/inputPad.png":1,
+			"images/neko.png":1,
+			"images/mapchip.png":1
+		};
+		if (!WebSite.pluginTop) {
+			WebSite.pluginTop=WebSite.top+"/js/plugins";
+		}
+		WebSite.sampleImg=WebSite.top+"/images";
+		WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
+		WebSite.mp4Disabled=WebSite.isNW;
+		WebSite.tonyuHome="/Tonyu/";
+		WebSite.PathSep="/";
+		if (WebSite.isNW) {
+			WebSite.noconcat=true;
+			WebSite.PathSep=require("path").sep;
+			WebSite.cwd=P.directorify(process.cwd().replace(/\\/g,"/"));
+			//WebSite.exeDir=WebSite.execDir=P.up(P.fixSep(process.execPath)); not suitable when mac
+			if (process.env.TONYU_HOME) {
+				WebSite.tonyuHome=P.directorify(process.env.TONYU_HOME);
+			} else {
+				WebSite.tonyuHome=P.rel(WebSite.cwd,"fs/Tonyu/");
+			}
+			WebSite.logdir=process.env.TONYU_LOGDIR;//"C:/var/log/Tonyu/";
+			WebSite.wwwDir=P.rel(WebSite.cwd,"www/");
+			WebSite.platform=process.platform;
+			WebSite.ffmpeg=P.rel(WebSite.cwd,(WebSite.platform=="win32"?
+					"ffmpeg/bin/ffmpeg.exe":"ffmpeg/bin/ffmpeg"));
+			WebSite.pkgInfo=require(P.rel(WebSite.cwd, "package.json"));
+			if (process.env.TONYU_PROJECTS) {
+				WebSite.projects=process.env.TONYU_PROJECTS.replace(/\\/g,"/").split(require('path').delimiter);
+			} else if ( WebSite.pkgInfo && WebSite.pkgInfo.config && WebSite.pkgInfo.config.prjDirs ){
+				WebSite.projects=WebSite.pkgInfo.config.prjDirs.map(function (d) {
+					d=P.directorify(d);
+					if (P.isAbsolute(d)) return d;
+					return P.rel(WebSite.cwd,d);
+				});
+			} else {
+				WebSite.projects=[P.rel(WebSite.cwd,"Projects/"),
+					P.rel(WebSite.tonyuHome,"Projects/")];
+			}
+			WebSite.kernelDir=P.rel(WebSite.wwwDir,"Kernel/");
+		} else {
+			if (loc.match(/edit\.tonyu\.jp\/n\//)) {
+				WebSite.wwwDir=prot+"//"+location.host+"/n/";
+			} else {
+				// Why?
+				WebSite.wwwDir=prot+"//"+location.host+"/";
+			}
+			WebSite.projects=[P.rel(WebSite.tonyuHome,"Projects/")];
+		}
+		//WebSite.kernelDir=WebSite.top+"/Kernel/";
+		// kernelDir must be absolute
+		WebSite.kernelDir=P.rel(WebSite.wwwDir,"Kernel/");
+		// compiledKernel is URL , not file path.
+		// It is correct as long as the html pages in www/ (not html/build|dev )
+		WebSite.compiledKernel="Kernel/js/concat.js";   //P.rel(WebSite.kernelDir,"js/concat.js");
+		if (loc.match(/localhost\/tonyu2/)) {
+			WebSite.wwwDir=prot+"//"+location.host+"/tonyu2/";
+			WebSite.kernelDir=WebSite.wwwDir+"Kernel/";
+			WebSite.compiledKernel=WebSite.kernelDir+"js/concat.js";
+			WebSite.uploadTmpUrl=prot+"//localhost/tsite/tonyu/e/cgi-bin/uploadTmp.cgi";
+			WebSite.newVersionUrl=prot+"//localhost/tsite/tonyu/project/newVersion.cgi";
+		} else {
+			WebSite.uploadTmpUrl=prot+"//edit.tonyu.jp/cgi-bin/uploadTmp.cgi";
+			WebSite.newVersionUrl=prot+"//www.tonyu.jp/project/newVersion.cgi";
+		}
+		WebSite.version=2;
+		WebSite.hoge="fuga";
+		FS.setEnvProvider(new FS.Env(WebSite));
+		return window.WebSite=WebSite;
+	case "singleHTML":
+		WebSite={
+			urlAliases: {}, top: ".",
+			tablet:Platform.tablet,
+			mobile:Platform.mobile
+		};
+		if (typeof BuiltinAssets==="object") {
+			for (var k in BuiltinAssets) {
+				WebSite.urlAliases[k]=BuiltinAssets[k];
+			}
+		}
+
+		WebSite.tonyuHome="/Tonyu/";
+		WebSite.projects=[P.rel(WebSite.tonyuHome,"Projects/")];
+		if (loc.match(/localhost\/tonyu2/)) {
+			WebSite.scriptServer="http://localhost/tonyu2/";
+		} else {
+			WebSite.scriptServer="https://edit.tonyu.jp/";
+		}
+		WebSite.pluginTop=WebSite.scriptServer+"js/plugins";
+		WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
+		WebSite.PathSep="/";
+		WebSite.compiledKernel=WebSite.scriptServer+"Kernel/js/concat.js";
+		FS.setEnvProvider(new FS.Env(WebSite));
+		return window.WebSite=WebSite;
+	case "multiHTML":
+		WebSite={
+			urlAliases: {}, top: ".",
+			tablet:Platform.tablet,
+			mobile:Platform.mobile
+		};
+		WebSite.tonyuHome="/Tonyu/";
+		WebSite.pluginTop=WebSite.top+"/js/plugins";
+		WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
+		WebSite.PathSep="/";
+		WebSite.mp4Disabled=WebSite.isNW;
+		if (WebSite.isNW) {
+			WebSite.PathSep=require("path").sep;
+			WebSite.cwd=P.directorify(process.cwd().replace(/\\/g,"/"));
+			WebSite.platform=process.platform;
+		}
+		// this sets at runScript2.js
+		//WebSite.compiledKernel=WebSite.top+"/js/kernel.js";
+		//-------------
+		FS.setEnvProvider(new FS.Env(WebSite));
+		return window.WebSite=WebSite;
+	}
+
+	if (loc.match(/jsrun\.it/)) {
+		WebSite={
+			urlAliases: {
+				"images/Ball.png":"http:"+"//jsrun.it/assets/9/X/T/b/9XTbt.png",
+				"images/base.png":"http:"+"//jsrun.it/assets/6/F/y/3/6Fy3B.png",
+				"images/Sample.png":"http:"+"//jsrun.it/assets/s/V/S/l/sVSlZ.png",
+				"images/neko.png":"http:"+"//jsrun.it/assets/f/D/z/z/fDzze.png",
+				"images/mapchip.png":"http:"+"//jsrun.it/assets/f/u/N/v/fuNvz.png"
+			},top:"",devMode:devMode,
+			pluginTop: "https://edit.tonyu.jp/js/plugins",
+			removeJSOutput:true
+		};
+	} else if (
+		loc.match(/tonyuexe\.appspot\.com/) ||
+		loc.match(/localhost:8887/) ||
+		(
+		/*(
+			loc.match(/^chrome-extension:/) ||
+			loc.match(/localhost/) ||
+			loc.match(/tonyuedit\.appspot\.com/)
+		) &&*/
+		loc.match(/\/html\/((dev)|(build))\//)
+		)
+	) {
+		WebSite={
+			urlAliases: {
+				"images/Ball.png":"../../images/Ball.png",
+				"images/base.png":"../../images/base.png",
+				"images/Sample.png":"../../images/Sample.png",
+				"images/neko.png":"../../images/neko.png",
+				"images/mapchip.png":"../../images/mapchip.png",
+				"images/sound.png":"../../images/sound.png",
+				"images/sound_ogg.png":"../../images/sound_ogg.png",
+				"images/sound_mp3.png":"../../images/sound_mp3.png",
+				"images/sound_mp4.png":"../../images/sound_mp4.png",
+				"images/sound_m4a.png":"../../images/sound_m4a.png",
+				"images/sound_mid.png":"../../images/sound_mid.png",
+				"images/sound_wav.png":"../../images/sound_wav.png",
+					"images/ecl.png":"../../images/ecl.png"
+			},top:"../..",devMode:devMode
+		};
+	} else if (
+		loc.match(/bitarrow/) ||
+		loc.match(/localhost.*pub/))  {
+		WebSite={};
+		var WS=WebSite;
+		WebSite.serverType="BA";
+		WS.runtime="../../../runtime/";
+		WS.urlAliases= {
+				"images/base.png":WS.runtime+"images/base.png",
+				"images/Sample.png":WS.runtime+"images/Sample.png",
+				"images/neko.png":WS.runtime+"images/neko.png",
+				"images/mapchip.png":WS.runtime+"images/mapchip.png",
+				"images/sound.png":WS.runtime+"images/sound.png",
+				"images/sound_ogg.png":WS.runtime+"images/sound_ogg.png",
+				"images/sound_mp3.png":WS.runtime+"images/sound_mp3.png",
+				"images/sound_mp4.png":WS.runtime+"images/sound_mp4.png",
+				"images/sound_m4a.png":WS.runtime+"images/sound_m4a.png",
+				"images/sound_mid.png":WS.runtime+"images/sound_mid.png",
+				"images/sound_wav.png":WS.runtime+"images/sound_wav.png",
+				"images/ecl.png":WS.runtime+"images/ecl.png"
+		};
+	} else {
+		WebSite={
+			urlAliases: {}, top: ".",devMode:devMode
+		};
+	}
+	if (typeof BuiltinAssets==="object") {
+		for (var k in BuiltinAssets) {
+			WebSite.urlAliases[k]=BuiltinAssets[k];
+		}
+	}
+	WebSite.builtinAssetNames={
+		"images/Ball.png":1,
+		"images/base.png":1,
+		"images/Sample.png":1,
+		"images/neko.png":1,
+		"images/mapchip.png":1
+	};
+	// from https://w3g.jp/blog/js_browser_sniffing2015
+	var u=window.navigator.userAgent.toLowerCase();
+	WebSite.tablet=(u.indexOf("windows") != -1 && u.indexOf("touch") != -1)
+	|| u.indexOf("ipad") != -1
+	|| (u.indexOf("android") != -1 && u.indexOf("mobile") == -1)
+	|| (u.indexOf("firefox") != -1 && u.indexOf("tablet") != -1)
+	|| u.indexOf("kindle") != -1
+	|| u.indexOf("silk") != -1
+	|| u.indexOf("playbook") != -1;
+	WebSite.mobile=(u.indexOf("windows") != -1 && u.indexOf("phone") != -1)
+	|| u.indexOf("iphone") != -1
+	|| u.indexOf("ipod") != -1
+	|| (u.indexOf("android") != -1 && u.indexOf("mobile") != -1)
+	|| (u.indexOf("firefox") != -1 && u.indexOf("mobile") != -1)
+	|| u.indexOf("blackberry") != -1;
+
+	if (!WebSite.pluginTop) {
+		WebSite.pluginTop=WebSite.top+"/js/plugins";
+	}
+	WebSite.disableROM={};
+	/*if (loc.match(/tonyuedit\.appspot\.com/) || loc.match(/localhost:8888/) ) {
+		//WebSite.disableROM={"ROM_d.js":true};
+	}*/
+	if (loc.match(/\.appspot\.com/) ||  loc.match(/localhost:888[87]/)) {
+		WebSite.serverType="GAE";
+	}
+	if (loc.match(/localhost:3000/) ) {
+		WebSite.serverType="Node";
+	}
+	if (loc.match(/tonyuexe\.appspot\.com/) ||
+		loc.match(/localhost:8887/)) {
+		WebSite.serverTop=WebSite.top+"/exe"; // Fix NetModule.tonyu!!
+	} else {
+		WebSite.serverTop=WebSite.top+"/edit";// Fix NetModule.tonyu!!
+	}
+	WebSite.sampleImg=WebSite.top+"/images";
+	WebSite.blobPath=WebSite.serverTop+"/serveBlob";        //TODO: urlchange!
+	WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
+	WebSite.mp4Disabled=WebSite.isNW;
+	WebSite.tonyuHome="/Tonyu/";
+	WebSite.url={
+		getDirInfo:WebSite.serverTop+"/getDirInfo",
+		getFiles:WebSite.serverTop+"/File2LSSync",
+		putFiles:WebSite.serverTop+"/LS2FileSync"
+	};
+	WebSite.PathSep="/";
+	if (WebSite.isNW) {
+		WebSite.PathSep=require("path").sep;
+		WebSite.cwd=P.directorify(process.cwd().replace(/\\/g,"/"));
+		//WebSite.exeDir=WebSite.execDir=P.up(P.fixSep(process.execPath)); not suitable when mac
+		if (process.env.TONYU_HOME) {
+			WebSite.tonyuHome=P.directorify(process.env.TONYU_HOME);
+		} else {
+			WebSite.tonyuHome=P.rel(WebSite.cwd,"fs/Tonyu/");
+		}
+		WebSite.logdir=process.env.TONYU_LOGDIR;//"C:/var/log/Tonyu/";
+		WebSite.wwwDir=P.rel(WebSite.cwd,"www/");
+		WebSite.platform=process.platform;
+		WebSite.ffmpeg=P.rel(WebSite.cwd,(WebSite.platform=="win32"?
+				"ffmpeg/bin/ffmpeg.exe":"ffmpeg/bin/ffmpeg"));
+		WebSite.pkgInfo=require(P.rel(WebSite.cwd, "package.json"));
+		if (process.env.TONYU_PROJECTS) {
+			WebSite.projects=process.env.TONYU_PROJECTS.replace(/\\/g,"/").split(require('path').delimiter);
+		} else if ( WebSite.pkgInfo && WebSite.pkgInfo.config && WebSite.pkgInfo.config.prjDirs ){
+			WebSite.projects=WebSite.pkgInfo.config.prjDirs.map(function (d) {
+				d=P.directorify(d);
+				if (P.isAbsolute(d)) return d;
+				return P.rel(WebSite.cwd,d);
+			});
+		} else {
+			WebSite.projects=[P.rel(WebSite.cwd,"Projects/"),
+								P.rel(WebSite.tonyuHome,"Projects/")];
+		}
+		WebSite.kernelDir=P.rel(WebSite.wwwDir,"Kernel/");
+	} else {
+		WebSite.wwwDir=prot+"//"+location.host+"/";
+		WebSite.projects=[P.rel(WebSite.tonyuHome,"Projects/")];
+	}
+	if (loc.match(/edit\.tonyu\.jp/) ||
+		loc.match(/tonyuedit\.appspot\.com/) ||
+		loc.match(/localhost:888/)) {
+		//WebSite.kernelDir=WebSite.top+"/Kernel/";
+		// kernelDir must be absolute
+		WebSite.kernelDir=prot+"//"+location.host+"/Kernel/";
+	}
+	if (loc.match(/edit\.tonyu\.jp/) ||
+		loc.match(/tonyuedit\.appspot\.com/) ||
+		loc.match(/localhost:888/) ||
+		WebSite.isNW) {
+		WebSite.compiledKernel=WebSite.kernelDir+"js/concat.js";
+	} else if (WebSite.serverType==="BA") {
+		WebSite.compiledKernel=WebSite.runtime+"lib/tonyu/kernel.js";
+	} else {
+		WebSite.compiledKernel="https://edit.tonyu.jp/Kernel/js/concat.js";
+		//WebSite.compiledKernel=prot+"//tonyuexe.appspot.com/Kernel/js/concat.js";
+	}
+	if (loc.match(/localhost\/tonyu2/)) {
+		WebSite.wwwDir=prot+"//"+location.host+"/tonyu2/";
+		WebSite.kernelDir=WebSite.wwwDir+"Kernel/";
+		WebSite.compiledKernel=WebSite.kernelDir+"js/concat.js";
+		WebSite.uploadTmpUrl=prot+"//localhost/tsite/tonyu/e/cgi-bin/uploadTmp.cgi";
+		WebSite.newVersionUrl=prot+"//localhost/tsite/tonyu/project/newVersion.cgi";
+	} else {
+		WebSite.uploadTmpUrl=prot+"//edit.tonyu.jp/cgi-bin/uploadTmp.cgi";
+		WebSite.newVersionUrl=prot+"//www.tonyu.jp/project/newVersion.cgi";
+	}
+
+	if (loc.match(/((index)|(project))2/)) {
+		WebSite.version=2;
+		if (WebSite.isNW) {
+			WebSite.devMode=true;
+		} else {
+			WebSite.devMode=false;
+		}
+	}
+	FS.setEnvProvider(new FS.Env(WebSite));
+	return window.WebSite=WebSite;
+});
+
+requireSimulator.setName('compiledProject');
+define(["DeferredUtil","WebSite","assert"], function (DU,WebSite,A) {
+	var CPR=function (ns, url) {
+		A.is(arguments,[String,String]);
+		return {
+			getNamespace:function () {return ns;},
+			sourceDir: function () {return null;},
+			getDependingProjects: function () {return [];},// virtual
+			loadDependingClasses: function (ctx) {
+				//Same as projectCompiler /TPR/this/ (XXXX)
+				var task=DU.directPromise();
+				var myNsp=this.getNamespace();
+				this.getDependingProjects().forEach(function (p) {
+					if (p.getNamespace()==myNsp) return;
+					task=task.then(function () {
+						return p.loadClasses(ctx);
+					});
+				});
+				return task;
+			},
+			loadClasses: function (ctx) {
+				console.log("Loading compiled classes ns=",ns,"url=",url);
+				var src = url+(WebSite.serverType==="BA"?"?"+Math.random():"");
+				var u=window.navigator.userAgent.toLowerCase();
+				/*if (WebSite.isNW && u.indexOf("mac")!=-1) {
+					//Resolved in WebSite
+					src = "/www/Kernel/js/concat.js";
+				}*/
+				var t=this;
+				return this.loadDependingClasses(ctx).then(function () {
+					return t.requirejs(src);
+				}).then(function () {
+					console.log("Done Loading compiled classes ns=",ns,"url=",src,Tonyu.classes);
+				});
+			},
+			requirejs: function (src) {
+				return DU.promise(function (s) {
+					var head = document.getElementsByTagName("head")[0] || document.documentElement;
+					var script = document.createElement("script");
+					if (typeof tonyu_app_version==="string") src+="?"+tonyu_app_version;
+					script.src = src;
+					var done = false;
+					script.onload = script.onreadystatechange = function() {
+						if ( !done && (!this.readyState ||
+								this.readyState === "loaded" || this.readyState === "complete") ) {
+							done = true;
+							console.log("Done load ",src);
+							script.onload = script.onreadystatechange = null;
+							if ( head && script.parentNode ) {
+								head.removeChild( script );
+							}
+							s();
+						}
+					};
+					head.insertBefore( script, head.firstChild );
+				});
+			},
+			loadClassesOLD: function (ctx) {
+				console.log("Load compiled classes ns=",ns,"url=",url);
+				var d=new $.Deferred();
+				var head = document.getElementsByTagName("head")[0] || document.documentElement;
+				var script = document.createElement("script");
+				script.src = url+(WebSite.serverType==="BA"?"?"+Math.random():"");
+				var done = false;
+				script.onload = script.onreadystatechange = function() {
+					if ( !done && (!this.readyState ||
+							this.readyState === "loaded" || this.readyState === "complete") ) {
+						done = true;
+						script.onload = script.onreadystatechange = null;
+						if ( head && script.parentNode ) {
+							head.removeChild( script );
+						}
+						console.log("Done Load compiled classes ns=",ns,"url=",url,Tonyu.classes);
+						//same as projectCompiler (XXXX)
+						/*var cls=Tonyu.classes;
+						ns.split(".").forEach(function (c) {
+							if (cls) cls=cls[c];
+							// comment out : when empty concat.js
+							//if (!cls) throw new Error("namespace Not found :"+ns);
+						});
+						if (cls) {
+							for (var cln in cls) {
+								var cl=cls[cln];
+								var m=Tonyu.klass.getMeta(cl);
+								ctx.classes[m.fullName]=m;
+							}
+						}*/
+						//------------------XXXX
+						d.resolve();
+					}
+				};
+				this.loadDependingClasses(ctx).then(function () {
+					head.insertBefore( script, head.firstChild );
+				});
+				return d.promise();
+			}
+		};
+	};
+	return CPR;
+});
+
+requireSimulator.setName('TypeChecker');
+if (typeof define!=="function") {
+	define=require("requirejs").define;
+}
+define(["Visitor","Tonyu.Compiler","context"],function (Visitor,cu,context) {
+	var ex={"[SUBELEMENTS]":1,pos:1,len:1};
+	var ScopeTypes=cu.ScopeTypes;
+	var genSt=cu.newScopeType;
+	var stype=cu.getScopeType;
+	var newScope=cu.newScope;
+	//var nc=cu.nullCheck;
+	var genSym=cu.genSym;
+	var annotation3=cu.annotation;
+	var getMethod2=cu.getMethod;
+	var getDependingClasses=cu.getDependingClasses;
+	var getParams=cu.getParams;
+	var JSNATIVES={Array:1, String:1, Boolean:1, Number:1, Void:1, Object:1,RegExp:1,Error:1};
+var TypeChecker={};
+function visitSub(node) {//S
+	var t=this;
+	if (!node || typeof node!="object") return;
+	//console.log("TCV",node.type,node);
+	var es;
+	if (node instanceof Array) es=node;
+	else es=node[Grammar.SUBELEMENTS];
+	if (!es) {
+		es=[];
+		for (var i in node) {
+			es.push(node[i]);
+		}
+	}
+	es.forEach(function (e) {
+		t.visit(e);
+	});
+}
+
+TypeChecker.checkTypeDecl=function (klass,env) {
+	function annotation(node, aobj) {//B
+		return annotation3(klass.annotation,node,aobj);
+	}
+	var typeDeclVisitor=Visitor({
+		varDecl: function (node) {
+			//console.log("TCV","varDecl",node);
+			if (node.value) this.visit(node.value);
+			if (node.name && node.typeDecl) {
+				var va=annotation(node.typeDecl.vtype);
+				console.log("var typeis",node.name+"", node.typeDecl.vtype, va.resolvedType);
+				var a=annotation(node);
+				var si=a.scopeInfo;// for local
+				var info=a.info;// for field
+				if (si) {
+					console.log("set var type",node.name+"", va.resolvedType );
+					si.vtype=va.resolvedType;
+				} else if (info) {
+					console.log("set fld type",node.name+"", va.resolvedType );
+					info.vtype=va.resolvedType;
+				}
+				/*} else if (a.declaringClass) {
+					//console.log("set fld type",a.declaringClass,a.declaringClass.decls.fields[node.name+""],node.name+"", node.typeDecl.vtype+"");
+					a.declaringClass.decls.fields[node.name+""].vtype=node.typeDecl.vtype;
+				}*/
+			}
+		},
+		paramDecl: function (node) {
+			if (node.name && node.typeDecl) {
+				console.log("param typeis",node.name+"", node.typeDecl.vtype+"");
+				var va=annotation(node.typeDecl.vtype);
+				var a=annotation(node);
+				var si=a.scopeInfo;
+				if (si && va.resolvedType) {
+					console.log("set param type",node.name+"", node.typeDecl.vtype+"");
+					si.vtype=va.resolvedType;
+				}
+			}
+		},
+		funcDecl: function (node) {
+			//console.log("Visit funcDecl",node);
+			var head=node.head;
+			var finfo=annotation(node).info;
+			if (head.rtype) {
+				console.log("ret typeis",head.name+"", head.rtype.vtype+"");
+				finfo.rtype=head.rtype.vtype;
+			}
+			this.visit(head);
+			this.visit(node.body);
+		}
+	});
+	typeDeclVisitor.def=visitSub;//S
+	typeDeclVisitor.visit(klass.node);
+};
+TypeChecker.checkExpr=function (klass,env) {
+		function annotation(node, aobj) {//B
+			return annotation3(klass.annotation,node,aobj);
+		}
+		var typeAnnotationVisitor=Visitor({
+			number: function (node) {
+				annotation(node,{vtype:Number});
+			},
+			literal: function (node) {
+				annotation(node,{vtype:String});
+			},
+			postfix:function (node) {
+				var a=annotation(node);
+				if (a.memberAccess) {
+					var m=a.memberAccess;
+					var vtype=visitExpr(m.target);
+					if (vtype) {
+					var f=cu.getField(vtype,m.name);
+					console.log("GETF",vtype,m.name,f);
+					if (f && f.vtype) {
+						annotation(node,{vtype:f.vtype});
+					}
+					}
+				} else {
+					this.visit(node.left);
+					this.visit(node.op);
+				}
+			},
+			varAccess: function (node) {
+				var a=annotation(node);
+				var si=a.scopeInfo;
+				if (si) {
+					if (si.vtype) {
+						console.log("VA typeof",node.name+":",si.vtype);
+						annotation(node,{vtype:si.vtype});
+					} else if (si.type===ScopeTypes.FIELD) {
+						var fld;
+						fld=klass.decls.fields[node.name+""];
+						if (!fld) {
+							// because parent field does not contain...
+							console.log("TC Warning: fld not found",klass,node.name+"");
+							return;
+						}
+						var vtype=fld.vtype;
+						if (!vtype) {
+							console.log("VA vtype not found",node.name+":",fld);
+						} else {
+							annotation(node,{vtype:vtype});
+							console.log("VA typeof",node.name+":",vtype);
+						}
+					} else if (si.type===ScopeTypes.PROP) {
+						//TODO
+					}
+				}
+			}
+		});
+
+	var ctx=context();
+	typeAnnotationVisitor.def=visitSub;
+	typeAnnotationVisitor.visit(klass.node);
+	function visitExpr(node) {
+		typeAnnotationVisitor.visit(node);
+		var va=annotation(node);
+		return va.vtype;
+	}
+};
+return TypeChecker;
+});
+
+requireSimulator.setName('ProjectCompiler');
+define(["Tonyu","Tonyu.Compiler.JSGenerator","Tonyu.Compiler.Semantics",
+		"Tonyu.TraceTbl","FS","assert","DeferredUtil","compiledProject",
+		"source-map","TypeChecker"],
+		function (Tonyu,JSGenerator,Semantics,
+				ttb,FS,A,DU,CPR,
+				S,TypeChecker) {
+var TPRC=function (dir) {
+	// Difference from TonyuProject
+	//    projectCompiler defines projects of Tonyu 'Language'.
+	//    Responsible for transpilation.
+	A(FS.isFile(dir) && dir.isDir(), "projectCompiler: "+dir+" is not dir obj");
+	var TPR={env:{}};
+	var traceTbl=Tonyu.TraceTbl;//();
+	var F=DU.throwF;
+	TPR.env.traceTbl=traceTbl;
+	TPR.EXT=".tonyu";
+	TPR.getDir=function () {return dir;};
+	TPR.getOptionsFile=function () {
+		var resFile=dir.rel("options.json");
+		return resFile;
+	};
+	TPR.getOptions=function () {
+		var env=TPR.env;
+		env.options={};
+		var resFile=TPR.getOptionsFile();
+		if (resFile.exists()) env.options=resFile.obj();
+		TPR.fixOptions(env.options);
+		return env.options;
+	};
+	TPR.fixOptions=function (opt) {
+		if (!opt.compiler) opt.compiler={};
+	};
+	TPR.setOptions=function (opt) {
+		TPR.getOptionsFile().obj(opt);
+	}; // ADDJSL
+	TPR.getEXT=function(){
+		var opt=TPR.getOptions();
+		if(!opt.language || opt.language=="js") TPR.EXT=".tonyu";
+		else TPR.EXT="."+opt.language;
+		return TPR.EXT;
+	};
+	TPR.resolve=function (rdir){
+		if (rdir instanceof Array) {
+			var res=[];
+			rdir.forEach(function (e) {
+				res.push(TPR.resolve(e));
+			});
+			return res;
+		}
+		if (typeof rdir=="string") {
+			return FS.resolve(rdir, dir.path());
+		}
+		if (!rdir || !rdir.isDir) throw new Error("Cannot TPR.resolve: "+rdir);
+		return rdir;
+	};
+	TPR.shouldCompile=function () {
+		var outF=TPR.getOutputFile();
+		if (!outF.exists()) {
+			console.log("Should compile: ", outF.name()+" does not exist.");
+			return true;
+		}
+		if (outF.isReadOnly()) return false;
+		var outLast=outF.lastUpdate();
+		if (outLast<Tonyu.VERSION) {
+			console.log("Should compile: ", outF.name()+" last="+new Date(outLast)+" < Tonyu.ver="+new Date(Tonyu.VERSION));
+			return true;
+		}
+		//console.log("Outf last="+new Date(outLast));
+		var sf=TPR.sourceFiles(TPR.getNamespace());
+		for (var i in sf) {
+			var f=sf[i];
+			var l=f.lastUpdate();
+			if (l>outLast) {
+				console.log("Should compile: ", f.name()+" last="+new Date(l));
+				return true;
+			}
+		}
+		var resFile=TPR.getOptionsFile();
+		if (resFile.exists() && resFile.lastUpdate()>outLast) {
+			console.log("Should compile: ", resFile.name()+" last="+new Date(resFile.lastUpdate()));
+			return true;
+		}
+		return false;
+	};
+	TPR.getClassName=function (file) {//ADDJSL
+		A(FS.isFile(file));
+		if (dir.contains(file)) {
+			return TPR.getNamespace()+"."+file.truncExt(TPR.EXT);
+		}
+		var res;
+		TPR.getDependingProjects().forEach(function (dp) {
+			if (!res) res=dp.getClassName(file);
+		});
+		return res;
+	};
+	TPR.getName=function () { return dir.name().replace(/\/$/,""); };
+	TPR.getNamespace=function () {
+		var opt=TPR.getOptions();
+		return A(opt.compiler.namespace,"namespace not specified opt="+JSON.stringify(opt));
+	};
+	TPR.getPublishedURL=function () {//ADDBA
+		if (TPR._publishedURL) return TPR._publishedURL;
+		return DU.requirejs(["Auth"]).then(function (Auth) {
+			return Auth.publishedURL(TPR.getName()+"/");
+		}).then(function (r) {
+			TPR._publishedURL=r;
+			return r;
+		});
+	};
+	TPR.getOutputFile=function (lang) {
+		var opt=TPR.getOptions();
+		var outF=TPR.resolve(A(opt.compiler.outputFile,"outputFile should be specified in options"));
+		if (outF.isDir()) {
+			throw new Error("out: directory style not supported");
+		}
+		return outF;
+	};
+	TPR.requestRebuild=function () {
+		var env=this.env;
+		var ns=this.getNamespace();
+		for (var kn in env.classes) {
+			var k=env.classes[kn];
+			if (k.namespace==ns) {
+				console.log("REQRB","remove env.classes.",kn);
+				delete env.classes[kn];
+			}
+		}
+	};
+	TPR.removeOutputFile=function () {
+		this.getOutputFile().rm();
+	};
+	TPR.loadDependingClasses=function (ctx) {
+		var task=DU.directPromise();
+		var myNsp=TPR.getNamespace();
+		TPR.getDependingProjects().forEach(function (p) {
+			if (p.getNamespace()==myNsp) return;
+			task=task.then(function () {
+				return p.loadClasses(ctx);
+			});
+		});
+		return task;
+	};
+	// Difference of ctx and env:  env is of THIS project. ctx is of cross-project
+	TPR.loadClasses=function (ctx/*or options(For external call)*/) {
+		Tonyu.runMode=false;
+		TPR.showProgress("LoadClasses: "+dir.name());
+		console.log("LoadClasses: "+dir.path());
+		ctx=initCtx(ctx);
+		var visited=ctx.visited||{};
+		if (visited[TPR.path()]) return DU.directPromise();
+		visited[TPR.path()]=true;
+		return TPR.loadDependingClasses(ctx).then(function () {
+			return TPR.shouldCompile();
+		}).then(function (sc) {
+			if (sc) {
+				return TPR.compile(ctx);
+			} else {
+				var outF=TPR.getOutputFile("js");
+				TPR.showProgress("Eval "+outF.name());
+				return evalFile(outF);//.then(F(copyToClasses));
+			}
+		});
+	};
+	function initCtx(ctx) {
+		//どうしてclassMetasとclassesをわけるのか？
+		// metaはFunctionより先に作られるから
+		var env=TPR.env;
+		if (!ctx) ctx={};
+		if (!ctx.visited) {
+			ctx={visited:{}, classes:(env.classes=env.classes||Tonyu.classMetas),options:ctx};
+		}
+		return ctx;
+	}
+	TPR.compile=function (ctx/*or options(For external call)*/) {
+		ctx=initCtx(ctx);
+		if (!ctx.options || !ctx.options.hot) Tonyu.runMode=false;
+		TPR.showProgress("Compile: "+dir.name());
+		console.log("Compile: "+dir.path());
+		var myNsp=TPR.getNamespace();
+		var baseClasses,ctxOpt,env,myClasses,fileAddedOrRemoved,sf,ord;
+		var compilingClasses;
+		return TPR.loadDependingClasses(ctx).then(F(function () {
+			baseClasses=ctx.classes;
+			ctxOpt=ctx.options;
+			env=TPR.env;
+			env.aliases={};
+			env.parsedNode=env.parsedNode||{};
+			env.classes=baseClasses;
+			for (var n in baseClasses) {
+				var cl=baseClasses[n];
+				env.aliases[ cl.shortName] = cl.fullName;
+			}
+			return TPR.showProgress("scan sources");
+		})).then(F(function () {
+			myClasses={};
+			fileAddedOrRemoved=!!ctxOpt.noIncremental;
+			sf=TPR.sourceFiles(myNsp);
+			for (var shortCn in sf) {
+				var f=sf[shortCn];
+				var fullCn=myNsp+"."+shortCn;
+				if (!baseClasses[fullCn]) {
+					console.log("Class",fullCn,"is added.");
+					fileAddedOrRemoved=true;
+				}
+				var m=Tonyu.klass.getMeta(fullCn);
+				myClasses[fullCn]=baseClasses[fullCn]=m;
+				Tonyu.extend(m,{
+					fullName:  fullCn,
+					shortName: shortCn,
+					namespace: myNsp
+				});
+				m.src=m.src||{};
+				m.src.tonyu=f;
+				env.aliases[shortCn]=fullCn;
+			}
+			return TPR.showProgress("update check");
+		})).then(F(function () {
+			for (var n in baseClasses) {
+				if (myClasses[n] && myClasses[n].src && !myClasses[n].src.js) {
+					//前回コンパイルエラーだとここにくるかも
+					console.log("Class",n,"has no js src");
+					fileAddedOrRemoved=true;
+				}
+				if (!myClasses[n] && baseClasses[n].namespace==myNsp) {
+					console.log("Class",n,"is removed");
+					Tonyu.klass.removeMeta(n);
+					fileAddedOrRemoved=true;
+				}
+			}
+			if (!fileAddedOrRemoved) {
+				compilingClasses={};
+				for (var n in myClasses) {
+					if (Tonyu.klass.shouldCompile(myClasses[n])) {
+						compilingClasses[n]=myClasses[n];
+					}
+				}
+			} else {
+				compilingClasses=myClasses;
+			}
+			console.log("compilingClasses",compilingClasses);
+			return TPR.showProgress("initClassDecl");
+		})).then(F(function () {
+			for (var n in compilingClasses) {
+				console.log("initClassDecl: "+n);
+				Semantics.initClassDecls(compilingClasses[n], env);/*ENVC*/
+			}
+			return TPR.showProgress("order");
+		})).then(F(function () {
+			ord=orderByInheritance(myClasses);/*ENVC*/
+			ord.forEach(function (c) {
+				if (compilingClasses[c.fullName]) {
+					console.log("annotate :"+c.fullName);
+					Semantics.annotate(c, env);
+				}
+			});
+			try {
+				/*for (var n in compilingClasses) {
+					TypeChecker.checkTypeDecl(compilingClasses[n],env);
+				}
+				for (var n in compilingClasses) {
+					TypeChecker.checkExpr(compilingClasses[n],env);
+				}*/
+			} catch(e) {
+				console.log("Error in Typecheck(It doesnt matter because Experimental)",e.stack);
+			}
+			return TPR.showProgress("genJS");
+		})).then(F(function () {
+			//throw "test break";
+			return TPR.genJS(ord.filter(function (c) {
+				return compilingClasses[c.fullName] || c.jsNotUpToDate;
+			}));
+			//return TPR.showProgress("concat");
+		})).then(F(function () {
+			var copt=TPR.getOptions().compiler;
+			if (ctx.options.hot) {
+				return TPR.hotEval(ord, compilingClasses);
+			}
+			if (!copt.genAMD) {
+				return TPR.concatJS(ord);
+			}
+		}));
+	};
+	TPR.genJS=function (ord) {
+		// 途中でコンパイルエラーを起こすと。。。
+		var env=TPR.env;
+		return DU.each(ord,function (c) {
+			console.log("genJS :"+c.fullName);
+			JSGenerator.genJS(c, env);
+			return TPR.showProgress("genJS :"+c.fullName);
+		});
+	};
+	TPR.concatJS=function (ord) {
+		//var cbuf="";
+		var outf=TPR.getOutputFile();
+		TPR.showProgress("generate :"+outf.name());
+		console.log("generate :"+outf);
+		var mapNode=new S.SourceNode(null,null,outf.path());
+		ord.forEach(function (c) {
+			var cbuf2,fn=null;
+			if (typeof (c.src.js)=="string") {
+				cbuf2=c.src.js+"\n";
+			} else if (FS.isFile(c.src.js)) {
+				fn=c.src.js.path();
+				cbuf2=c.src.js.text()+"\n";
+			} else {
+				throw new Error("Src for "+c.fullName+" not generated ");
+			}
+			var snd;
+			if (c.src.map) {
+				snd=S.SourceNode.fromStringWithSourceMap(cbuf2,new S.SourceMapConsumer(c.src.map));
+			} else {
+				snd=new S.SourceNode(null,null,fn,cbuf2);
+			}
+			mapNode.add(snd);
+		});
+		var mapFile=outf.sibling(outf.name()+".map");
+		var gc=mapNode.toStringWithSourceMap();
+		outf.text(gc.code+"\n//# sourceMappingURL="+mapFile.name());
+		mapFile.text(gc.map+"");
+		return evalFile(outf);
+	};
+	TPR.hotEval=function (ord,compilingClasses) {
+		//var cbuf="";
+		ord.forEach(function (c) {
+			if (!compilingClasses[c.fullName]) return;
+			var cbuf2,fn=null;
+			if (typeof (c.src.js)=="string") {
+				cbuf2=c.src.js+"\n";
+			} else if (FS.isFile(c.src.js)) {
+				fn=c.src.js.path();
+				cbuf2=c.src.js.text()+"\n";
+			} else {
+				throw new Error("Src for "+c.fullName+" not generated ");
+			}
+			console.log("hotEval ",c);//, cbuf2);
+			new Function(cbuf2)();
+		});
+	};
+	TPR.hotCompile=function () {
+		var options={hot:true};
+		return TPR.compile(options).then(function () {
+			if (typeof SplashScreen!=="undefined") SplashScreen.hide();
+		});
+	};
+	TPR.getDependingProjects=function () {
+		var opt=TPR.getOptions();
+		var dp=opt.compiler.dependingProjects || [];
+		return dp.map(function (dprj) {
+			if (typeof dprj=="string") {
+				var prjDir=TPR.resolve(dprj);
+				return TPRC(prjDir);
+			} else if (typeof dprj=="object") {
+				return CPR(dprj.namespace, FS.expandPath(dprj.compiledURL) );
+			}
+		});
+	};
+	TPR.dir=dir;
+	TPR.path=function () {return dir.path();};
+	TPR.sourceFiles=function (nsp) {// nsp==null => all
+		//nsp=nsp || TPR.getNamespace();//DELJSL
+		var dirs=TPR.sourceDirs(nsp);// ADDJSL
+		var res={};
+		for (var i=dirs.length-1; i>=0 ; i--) {
+			dirs[i].recursive(collect);
+		}
+		function collect(f) {
+			if (f.endsWith(TPR.EXT)) {
+				var nb=f.truncExt(TPR.EXT);
+				res[nb]=f;
+			}
+		}
+		return res;
+	};
+	TPR.sourceDir=function () {
+		return dir;
+	};
+	TPR.sourceDirs=function (myNsp) {//ADDJSL  myNsp==null => All
+		var dp=TPR.getDependingProjects();
+		//var myNsp||TPR.getNamespace();//DELJSL
+		var dirs=[dir];
+		dp.forEach(function (dprj) {
+			var nsp=dprj.getNamespace();
+			if (!myNsp || nsp==myNsp) {
+				var d=dprj.sourceDir();
+				if (d) dirs.push(d);
+			}
+		});
+		return dirs;
+	};
+	function orderByInheritance(classes) {/*ENVC*/
+		var added={};
+		var res=[];
+		var crumbs={};
+		var ccnt=0;
+		for (var n in classes) {/*ENVC*/
+			added[n]=false;
+			ccnt++;
+		}
+		while (res.length<ccnt) {
+			var p=res.length;
+			for (var n in classes) {/*ENVC*/
+				if (added[n]) continue;
+				var c=classes[n];/*ENVC*/
+				var deps=dep1(c);
+				if (deps.length==0) {
+					res.push(c);
+					added[n]=true;
+				}
+			}
+			if (res.length==p) {
+				var loop=[];
+				for (var n in classes) {
+					if (!added[n]) {
+						loop=detectLoop(classes[n]) || [];
+						break;
+					}
+				}
+				throw TError( "次のクラス間に循環参照があります: "+loop.join("->"), "不明" ,0);
+			}
+		}
+		function dep1(c) {
+			var spc=c.superclass;
+			var deps=spc ? [spc]:[] ;
+			if (c.includes) deps=deps.concat(c.includes);
+			deps=deps.filter(function (cl) {
+				return cl && classes[cl.fullName] && !cl.builtin && !added[cl.fullName];
+			});
+			return deps;
+		}
+		function detectLoop(c) {
+			var path=[];
+			var visited={};
+			function pushPath(c) {
+				path.push(c.fullName);
+				if (visited[c.fullName]) {
+					throw TError( "次のクラス間に循環参照があります: "+path.join("->"), "不明" ,0);
+				}
+				visited[c.fullName]=true;
+ 			}
+			function popPath() {
+				var p=path.pop();
+				delete visited[p];
+			}
+			function loop(c) {
+				//console.log("detectLoop2",c.fullName,JSON.stringify(visited));
+				pushPath(c);
+				var dep=dep1(c);
+				dep.forEach(loop);
+				popPath();
+			}
+			loop(c);
+		}
+		function detectLoopOLD(c, prev){
+			//  A->B->C->A
+			// c[B]=A  c[C]=B   c[A]=C
+			console.log("detectloop",c.fullName);
+			if (crumbs[c.fullName]) {   // c[A]
+				console.log("Detected: ",c.fullName, crumbs, crumbs[c.fullName]);
+				var n=c.fullName;
+				var loop=[];
+				var cnt=0;
+				do {
+					loop.unshift(n);    // A      C       B
+					n=crumbs[n];        // C      B       A
+					if (!n || cnt++>100) {
+						console.log(n,crumbs, loop);
+						throw new Error("detectLoop entered infty loop. Now THAT's scary!");
+					}
+				} while(n!=c.fullName);
+				loop.unshift(c.fullName);
+				return loop;
+			}
+			if (prev) crumbs[c.fullName]=prev.fullName;
+			var deps=dep1(c),res;
+			deps.forEach(function (d) {
+				if (res) return;
+				var r=detectLoop(d,c);
+				if (r) res=r;
+			});
+			delete crumbs[c.fullName];
+			return res;
+		}
+		return res;
+	}
+	function evalFile(f) {
+		console.log("evalFile: "+f.path());
+		var lastEvaled=new Function(f.text());
+		traceTbl.addSource(f.path(),lastEvaled+"");
+		return DU.directPromise( lastEvaled() );
+	}
+	TPR.decodeTrace=function (desc) { // user.Test:123
+		var a=desc.split(":");
+		var cl=a[0],pos=parseInt(a[1]);
+		var cls=cl.split(".");
+		var sn=cls.pop();
+		var nsp=cls.join(".");
+		if (nsp==TPR.getNamespace()) {
+			var sf=TPR.sourceFiles(nsp);
+			for (var i in sf) {
+				if (sn==i) {
+					return TError("Trace info", sf[i], pos);
+				}
+			}
+		}
+	};
+	TPR.showProgress=function (m) {
+	};
+	TPR.setAMDPaths=function (paths) {
+		TPR.env.amdPaths=paths;
+	};
+	TPR.genXML=function (cname) {//"user.Main"
+		requirejs(["XMLBuffer"],function (x) {
+			var c=TPR.env.classes[cname];
+			if (!c) throw new Error("Class "+cname+" not found");
+			if (!c.node) throw new Error("Node not found compile it");
+			var b=x(c.src.tonyu.text());
+			b(c.node);
+			console.log(b.buf);
+		});
+	};
+	return TPR;
+}
+if (typeof sh=="object") {
+	sh.tonyuc=function (dir) {
+		var pr=TPRC(sh.resolve(dir));
+		return pr.compile();
+	};
+}
+return TPRC;
+});
+
+requireSimulator.setName('PatternParser');
+define(["Tonyu"], function (Tonyu) {
+    var PP=function (img, options) {
+        this.options=options || {};
+        this.img=img;
+        this.height = img.height;
+        this.width = img.width;
+        var cv=this.newImage(img.width, img.height);
+        var ctx=cv.getContext("2d");
+        ctx.drawImage(img, 0,0);
+        this.ctx=ctx;
+        this.pixels=this.ctx.getImageData(0, 0, img.width, img.height).data;
+        this.base=this.getPixel(0,0);
+    };
+    Tonyu.extend(PP.prototype,{
+        newImage: function (w,h) {
+            var cv=document.createElement("canvas");
+            cv.width=w;
+            cv.height=h;
+            return cv;
+        },
+        getPixel: function (x,y) {
+            var imagePixelData = this.pixels;
+            var ofs=(x+y*this.width)*4;
+            var R = imagePixelData[0+ofs];
+            var G = imagePixelData[1+ofs];
+            var B = imagePixelData[2+ofs];
+            var A = imagePixelData[3+ofs];
+            return ((((A*256)+B)*256)+G)*256+R;
+        },
+        setPixel: function (x,y,p) {
+            var ofs=(x+y*this.width)*4;
+            this.pixels[0+ofs]=p & 255;
+            p=(p-(p&255))/256;
+            this.pixels[1+ofs]=p & 255;
+            p=(p-(p&255))/256;
+            this.pixels[2+ofs]=p & 255;
+            p=(p-(p&255))/256;
+            this.pixels[3+ofs]=p & 255;
+        },
+        parse: function () {
+            try {
+                //console.log("parse()");
+                var res=[];// List of charpattern
+                for (var y=0; y<this.height ;y++) {
+                    for (var x=0; x<this.width ;x++) {
+                        var c=this.getPixel(x, y);
+                        if (c!=this.base) {
+                            res.push(this.parse1Pattern(x,y));
+                        }
+                    }
+                }
+                //console.log("parsed:"+res.lenth);
+                return res;
+            } catch (p) {
+                if (p.isParseError) {
+                    console.log("parse error! "+p);
+                    return [{image: this.img, x:0, y:0, width:this.width, height:this.height}];
+                }
+                throw p;
+            }
+        },
+        parse1Pattern:function (x,y) {
+            function hex(s){return s;}
+            var trans=this.getPixel(x, y);
+            var dx=x,dy=y;
+            var base=this.base;
+            var width=this.width, height=this.height;
+            while (dx<width) {
+                var pixel = this.getPixel(dx,dy);
+                if (pixel!=trans) break;
+                dx++;
+            }
+            if (dx>=width || this.getPixel(dx,dy)!=base) {
+                throw PatterParseError(dx,dy,hex(this.getPixel(dx,dy))+"!="+hex(base));
+            }
+            dx--;
+            while (dy<height) {
+                if (this.getPixel(dx,dy)!=trans) break;
+                dy++;
+            }
+            if (dy>=height || this.getPixel(dx,dy)!=base) {
+                throw PatterParseError(dx,dy,hex(this.getPixel(dx,dy))+"!="+hex(base));
+            }
+            dy--;
+            var sx=x+1,sy=y+1,w=dx-sx,h=dy-sy;
+            //console.log("PP",sx,sy,w,h,dx,dy);
+            if (w*h==0) throw PatterParseError(dx, dy,"w*h==0");
+            var newim=this.newImage(w,h);
+            var nc=newim.getContext("2d");
+            var newImD=nc.getImageData(0,0,w,h);
+            var newD=newImD.data;
+            var di=0;
+            for (var ey=sy ; ey<dy ; ey++) {
+                for (var ex=sx ; ex<dx ; ex++) {
+                    var p=this.getPixel(ex, ey);
+                    if (p==trans) {
+                        newD[di++]=0;
+                        newD[di++]=(0);
+                        newD[di++]=(0);
+                        newD[di++]=(0);
+                    } else {
+                        newD[di++]=(p&255);
+                        p=(p-(p&255))/256;
+                        newD[di++]=(p&255);
+                        p=(p-(p&255))/256;
+                        newD[di++]=(p&255);
+                        p=(p-(p&255))/256;
+                        newD[di++]=(p&255);
+                    }
+                }
+            }
+            nc.putImageData(newImD,0,0);
+            for (var yy=sy-1; yy<=dy; yy++) {
+                for (var xx=sx-1; xx<=dx; xx++) {
+                    this.setPixel(xx,yy, base);
+                }
+            }
+            if (this.options.boundsInSrc) {
+                return {x:sx,y:sy,width:w,height:h};
+            }
+            return {image:newim, x:0, y:0, width:w, height:h};
+            function PatterParseError(x,y,msg) {
+                return {toString: function () {
+                    return "at ("+x+","+y+") :"+msg;
+                }, isParseError:true};
+            }
+        }
+
+    });
+    return PP;
+});
+
+requireSimulator.setName('Util');
+Util=(function () {
+
+function getQueryString(key, default_)
+{
+   if (default_==null) default_="";
+   key = key.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+   var regex = new RegExp("[\\?&]"+key+"=([^&#]*)");
+   var qs = regex.exec(window.location.href);
+   if(qs == null)
+    return default_;
+   else
+    return decodeURLComponentEx(qs[1]);
+}
+function decodeURLComponentEx(s){
+    return decodeURIComponent(s.replace(/\+/g, '%20'));
+}
+function endsWith(str,postfix) {
+    return str.substring(str.length-postfix.length)===postfix;
+}
+function startsWith(str,prefix) {
+    return str.substring(0, prefix.length)===prefix;
+}
+// From http://hakuhin.jp/js/base64.html#BASE64_DECODE_ARRAY_BUFFER
+function Base64_To_ArrayBuffer(base64){
+    base64=base64.replace(/[\n=]/g,"");
+    var dic = new Object();
+    dic[0x41]= 0; dic[0x42]= 1; dic[0x43]= 2; dic[0x44]= 3; dic[0x45]= 4; dic[0x46]= 5; dic[0x47]= 6; dic[0x48]= 7; dic[0x49]= 8; dic[0x4a]= 9; dic[0x4b]=10; dic[0x4c]=11; dic[0x4d]=12; dic[0x4e]=13; dic[0x4f]=14; dic[0x50]=15;
+    dic[0x51]=16; dic[0x52]=17; dic[0x53]=18; dic[0x54]=19; dic[0x55]=20; dic[0x56]=21; dic[0x57]=22; dic[0x58]=23; dic[0x59]=24; dic[0x5a]=25; dic[0x61]=26; dic[0x62]=27; dic[0x63]=28; dic[0x64]=29; dic[0x65]=30; dic[0x66]=31;
+    dic[0x67]=32; dic[0x68]=33; dic[0x69]=34; dic[0x6a]=35; dic[0x6b]=36; dic[0x6c]=37; dic[0x6d]=38; dic[0x6e]=39; dic[0x6f]=40; dic[0x70]=41; dic[0x71]=42; dic[0x72]=43; dic[0x73]=44; dic[0x74]=45; dic[0x75]=46; dic[0x76]=47;
+    dic[0x77]=48; dic[0x78]=49; dic[0x79]=50; dic[0x7a]=51; dic[0x30]=52; dic[0x31]=53; dic[0x32]=54; dic[0x33]=55; dic[0x34]=56; dic[0x35]=57; dic[0x36]=58; dic[0x37]=59; dic[0x38]=60; dic[0x39]=61; dic[0x2b]=62; dic[0x2f]=63;
+    var num = base64.length;
+    var n = 0;
+    var b = 0;
+    var e;
+
+    if(!num) return (new ArrayBuffer(0));
+    //if(num < 4) return null;
+    //if(num % 4) return null;
+
+    // AA     12    1
+    // AAA    18    2
+    // AAAA   24    3
+    // AAAAA  30    3
+    // AAAAAA 36    4
+    // num*6/8
+    e = Math.floor(num / 4 * 3);
+    if(base64.charAt(num - 1) == '=') e -= 1;
+    if(base64.charAt(num - 2) == '=') e -= 1;
+
+    var ary_buffer = new ArrayBuffer( e );
+    var ary_u8 = new Uint8Array( ary_buffer );
+    var i = 0;
+    var p = 0;
+    while(p < e){
+        b = dic[base64.charCodeAt(i)];
+        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i));//return null;
+        n = (b << 2);
+        i ++;
+
+        b = dic[base64.charCodeAt(i)];
+        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i))
+        ary_u8[p] = n | ((b >> 4) & 0x3);
+        n = (b & 0x0f) << 4;
+        i ++;
+        p ++;
+        if(p >= e) break;
+
+        b = dic[base64.charCodeAt(i)];
+        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i))
+        ary_u8[p] = n | ((b >> 2) & 0xf);
+        n = (b & 0x03) << 6;
+        i ++;
+        p ++;
+        if(p >= e) break;
+
+        b = dic[base64.charCodeAt(i)];
+        if(b === undefined) fail("Invalid letter: "+base64.charCodeAt(i))
+        ary_u8[p] = n | b;
+        i ++;
+        p ++;
+    }
+    function fail(m) {
+        console.log(m);
+        console.log(base64,i);
+        throw new Error(m);
+    }
+    return ary_buffer;
+}
+
+function Base64_From_ArrayBuffer(ary_buffer){
+    var dic = [
+        'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P',
+        'Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f',
+        'g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v',
+        'w','x','y','z','0','1','2','3','4','5','6','7','8','9','+','/'
+    ];
+    var base64 = "";
+    var ary_u8 = new Uint8Array( ary_buffer );
+    var num = ary_u8.length;
+    var n = 0;
+    var b = 0;
+
+    var i = 0;
+    while(i < num){
+        b = ary_u8[i];
+        base64 += dic[(b >> 2)];
+        n = (b & 0x03) << 4;
+        i ++;
+        if(i >= num) break;
+
+        b = ary_u8[i];
+        base64 += dic[n | (b >> 4)];
+        n = (b & 0x0f) << 2;
+        i ++;
+        if(i >= num) break;
+
+        b = ary_u8[i];
+        base64 += dic[n | (b >> 6)];
+        base64 += dic[(b & 0x3f)];
+        i ++;
+    }
+
+    var m = num % 3;
+    if(m){
+        base64 += dic[n];
+    }
+    if(m == 1){
+        base64 += "==";
+    }else if(m == 2){
+        base64 += "=";
+    }
+    return base64;
+}
+
+function privatize(o){
+    if (o.__privatized) return o;
+    var res={__privatized:true};
+    for (var n in o) {
+        (function (n) {
+            var m=o[n];
+            if (n.match(/^_/)) return;
+            if (typeof m!="function") return;
+            res[n]=function () {
+                var r=m.apply(o,arguments);
+                return r;
+            };
+        })(n);
+    }
+    return res;
+}
+function hasNodeBuffer() {
+    return typeof Buffer!="undefined";
+}
+function isNodeBuffer(data) {
+    return (hasNodeBuffer() && data instanceof Buffer);
+}
+function isBuffer(data) {
+    return data instanceof ArrayBuffer || isNodeBuffer(data);
+}
+function utf8bytes2str(bytes) {
+    var e=[];
+    for (var i=0 ; i<bytes.length ; i++) {
+         e.push("%"+("0"+bytes[i].toString(16)).slice(-2));
+    }
+    try {
+        return decodeURIComponent(e.join(""));
+    } catch (er) {
+        console.log(e.join(""));
+        throw er;
+    }
+}
+function str2utf8bytes(str, binType) {
+    var e=encodeURIComponent(str);
+    var r=/^%(..)/;
+    var a=[];
+    var ad=0;
+    for (var i=0 ; i<e.length; i++) {
+        var m=r.exec( e.substring(i));
+        if (m) {
+            a.push(parseInt("0x"+m[1]));
+            i+=m[0].length-1;
+        } else a.push(e.charCodeAt(i));
+    }
+    return (typeof Buffer!="undefined" && binType===Buffer ? new Buffer(a) : new Uint8Array(a).buffer);
+}
+
+return {
+    getQueryString:getQueryString,
+    endsWith: endsWith, startsWith: startsWith,
+    Base64_To_ArrayBuffer:Base64_To_ArrayBuffer,
+    Base64_From_ArrayBuffer:Base64_From_ArrayBuffer,
+    utf8bytes2str: utf8bytes2str,
+    str2utf8bytes: str2utf8bytes,
+    privatize: privatize,
+    hasNodeBuffer:hasNodeBuffer,
+    isNodeBuffer: isNodeBuffer,
+    isBuffer: isBuffer
+};
+})();
+
+define('Util',[],function (){ return Util; });
+requireSimulator.setName('Assets');
+define(["WebSite","Util","Tonyu","FS"],function (WebSite,Util,Tonyu,FS) {
+    var Assets={};
+    Assets.resolve=function (url, prj, options) {
+        options=options||{};
+        var baseDir=FS.isFile(prj)?prj:prj.getDir();
+        if (url==null) url="";
+        url=url.replace(/\$\{([a-zA-Z0-9_]+)\}/g, function (t,name) {
+            return WebSite[name];
+        });
+        if (WebSite.urlAliases[url]) url=WebSite.urlAliases[url];
+        if (Util.startsWith(url,"ls:")) {
+            var rel=url.substring("ls:".length);
+            if (!baseDir) throw new Error("Basedir not specified");
+            var f=baseDir.rel(rel);
+            if (!f.exists()) throw new Error("Resource file not found: "+f);
+            if (
+                (WebSite.mp3Disabled && rel.match(/\.(mp3)$/)) ||
+                (WebSite.mp4Disabled && rel.match(/\.(mp4|m4a)$/))
+            ) {
+                var oggf=baseDir.rel(rel.replace(/\.(mp3|mp4|m4a)$/,".ogg"));
+                if (oggf.exists()) {
+                    f=oggf;
+                }
+            }
+            url=f.getURL();
+            if (options.asFile) return f;
+        }
+        return url;
+    };
+    Tonyu.Assets=Assets;
+    return Assets;
+});
+
+requireSimulator.setName('ImageList');
+define(["PatternParser","Util","Assets","assert"], function (PP,Util,Assets,assert) {
+    var cache={};
+    function excludeEmpty(resImgs) {
+        var r=[];
+        resImgs.forEach(function (resImg,i) {
+            if (!resImg || resImg.url=="") return;
+            r.push(resImg);
+        });
+        return r;
+    }
+    var IL;
+    IL=function (resImgs, onLoad,options) {
+        //  resImgs:[{url: , [pwidth: , pheight:]?  }]
+	    if (!options) options={};
+        resImgs=excludeEmpty(resImgs);
+        var resa=[];
+        var cnt=resImgs.length;
+        if (cnt==0) setTimeout(function () {
+            var res=[];
+            res.names={};
+            onLoad(res);
+        },0);
+        resImgs.forEach(function (resImg,i) {
+            console.log("loading", resImg,i);
+            var url=resImg.url;
+            var urlKey=url;
+            if (cache[urlKey]) {
+            	proc.apply(cache[urlKey],[]);
+            	return;
+            }
+            url=Assets.resolve(url,options.prj||options.baseDir);
+            //if (!Util.startsWith(url,"data:")) url+="?" + new Date().getTime();
+            var im=$("<img>");
+            im.load(function () {
+            	cache[urlKey]=this;
+            	proc.apply(this,[]);
+            });
+            im.attr("src",url);
+            function proc() {
+                var pw,ph;
+                if (resImg.type=="single") {
+                    resa[i]=[{image:this, x:0,y:0, width:this.width, height:this.height}];
+                } else if ((pw=resImg.pwidth) && (ph=resImg.pheight)) {
+                    var x=0, y=0, w=this.width, h=this.height;
+                    var r=[];
+                    while (true) {
+                        var rw=pw,rh=ph;
+                        if (x+pw>w) rw=w-x;
+                        if (y+ph>h) rh=h-y;
+                        r.push({image:this, x:x,y:y, width:rw, height:rh});
+                        x+=pw;
+                        if (x+pw>w) {
+                            x=0;
+                            y+=ph;
+                            if (y+ph>h) break;
+                        }
+                    }
+                    resa[i]=r;
+                } else {
+                    var p=new PP(this);
+                    resa[i]=p.parse();
+                }
+                resa[i].name=resImg.name;
+                assert.is(resa[i],Array);
+                cnt--;
+                if (cnt==0) {
+                    var res=[];
+                    var names={};
+                    resa.forEach(function (a) {
+                        names[a.name]=res.length;
+                        res=res.concat(a);
+                    });
+                    res.names=names;
+                    onLoad(res);
+                }
+            }
+        });
+    };
+    IL.load=IL;
+    IL.parse1=function (resImg, imgDOM, options) {
+        var pw,ph;
+        var res;
+        if ((pw=resImg.pwidth) && (ph=resImg.pheight)) {
+            var x=0, y=0, w=imgDOM.width, h=imgDOM.height;
+            var r=[];
+            while (true) {
+                r.push({image:this, x:x,y:y, width:pw, height:ph});
+                x+=pw;
+                if (x+pw>w) {
+                    x=0;
+                    y+=ph;
+                    if (y+ph>h) break;
+                }
+            }
+            res=r;
+        } else {
+            var p=new PP(imgDOM,options);
+            res=p.parse();
+        }
+        res.name=resImg.name;
+        return assert.is(res,Array);
+    };
+	window.ImageList=IL;
+    return IL;
+});
+
+requireSimulator.setName('Auth');
+define(["WebSite"],function (WebSite) {
+    var auth={};
+    auth.currentUser=function (onend) {
+        //TODO: urlchange!
+        $.ajax({type:"get",url:WebSite.serverTop+"/currentUser",data:{withCsrfToken:true},
+            success:function (res) {
+                console.log("auth.currentUser",res);
+                res=JSON.parse(res);
+                var u=res.user;
+                if (u=="null") u=null;
+                console.log("user", u, "csrfToken",res.csrfToken);
+                onend(u,res.csrfToken);
+            }
+        });
+    };
+    auth.assertLogin=function (options) {
+        /*if (typeof options=="function") options={complete:options};
+        if (!options.confirm) options.confirm="この操作を行なうためにはログインが必要です．ログインしますか？";
+        if (typeof options.confirm=="string") {
+            var mesg=options.confirm;
+            options.confirm=function () {
+                return confirm(mesg);
+            };
+        }*/
+        auth.currentUser(function (user,csrfToken) {
+            if (user) {
+                return options.success(user,csrfToken);
+            }
+            window.onLoggedIn=options.success;
+            //TODO: urlchange!
+            options.showLoginLink(WebSite.serverTop+"/login");
+        });
+    };
+    window.Auth=auth;
+    return auth;
+});
+requireSimulator.setName('Blob');
+define(["Auth","WebSite","Util"],function (a,WebSite,Util) {
+    var Blob={};
+    var BLOB_PATH_EXPR="${blobPath}";
+    Blob.BLOB_PATH_EXPR=BLOB_PATH_EXPR;
+    Blob.upload=function(user, project, file, options) {
+        var fd = new FormData(document.getElementById("fileinfo"));
+        if (options.error) {
+            options.error=function (r) {alert(r);};
+        }
+        fd.append("theFile", file);
+        fd.append("user",user);
+        fd.append("project",project);
+        fd.append("fileName",file.name);
+      //TODO: urlchange!
+        $.ajax({
+            type : "get",
+            url : WebSite.serverTop+"/blobURL",
+            success : function(url) {
+                $.ajax({
+                    url : url,
+                    type : "POST",
+                    data : fd,
+                    processData : false, // jQuery がデータを処理しないよう指定
+                    contentType : false, // jQuery が contentType を設定しないよう指定
+                    success : function(res) {
+                        console.log("Res = " + res);
+                        options.success.apply({},arguments);// $("#drag").append(res);
+                    },
+                    error: options.error
+                });
+            }
+        });
+    };
+    Blob.isBlobURL=function (url) {
+        if (Util.startsWith(url,BLOB_PATH_EXPR)) {
+            var a=url.split("/");
+            return {user:a[1], project:a[2], fileName:a[3]};
+        }
+    };
+    // actualURL;
+    Blob.url=function(user,project,fileName) {
+        return WebSite.blobPath+user+"/"+project+"/"+fileName;
+    };
+    Blob.uploadToExe=function (prj, options) {
+        var bis=prj.getBlobInfos();
+        var cnt=bis.length;
+        console.log("uploadBlobToExe cnt=",cnt);
+        if (cnt==0) return options.success();
+        if (!options.progress) options.progress=function (cnt) {
+            console.log("uploadBlobToExe cnt=",cnt);
+        };
+        bis.forEach(function (bi) {
+            var data={csrfToken:options.csrfToken};
+            for (var i in bi) data[i]=bi[i];
+            $.ajax({
+                type:"get",
+                url: WebSite.serverTop+"/uploadBlobToExe",   //TODO: urlchange!
+                data:data,
+                success: function () {
+                     cnt--;
+                     if (cnt==0) return options.success();
+                     else options.progress(cnt);
+                },
+                error:options.error
+             });
+        });
+    };
+    return Blob;
+});
+requireSimulator.setName('ImageRect');
+define([],function () {
+    function draw(img, canvas) {
+        if (typeof img=="string") {
+            var i=new Image();
+            var res=null;
+            var callback=null;
+            var onld=function (clb) {
+                if (clb) callback=clb;
+                if (callback && res) {
+                    callback(res);
+                }
+            };
+            i.onload=function () {
+                res=draw(i,canvas);
+                onld();
+            };
+            i.src=img;
+            return onld;
+        }
+        var cw=canvas.width;
+        var ch=canvas.height;
+        var cctx=canvas.getContext("2d");
+        var width=img.width;
+        var height=img.height;
+        var calcw=ch/height*width; // calch=ch
+        var calch=cw/width*height; // calcw=cw
+        if (calch>ch) calch=ch;
+        if (calcw>cw) calcw=cw;
+        cctx.clearRect(0,0,cw,ch);
+        var marginw=Math.floor((cw-calcw)/2);
+        var marginh=Math.floor((ch-calch)/2);
+        cctx.drawImage(img,
+                0,0,width, height,
+                marginw,marginh,calcw, calch );
+        return {left: marginw, top:marginh, width:calcw, height:calch,src:img};
+    }
+    return draw;
+});
+requireSimulator.setName('Content');
+define(["FS"],function (FS){return FS.Content;});
+
+requireSimulator.setName('thumbnail');
+define(["ImageRect","Content"],function (IR,Content) {
+    var TN={};
+    var createThumbnail;
+    var NAME="$icon_thumbnail";
+    var WIDTH=200;HEIGHT=200;
+    TN.set=function (prj,delay) {
+        setTimeout(function () { crt(prj);} ,delay);
+    };
+    TN.get=function (prj) {
+        var f=TN.file(prj);
+        if (!f.exists()) return null;
+        return f.text();
+    };
+    TN.file=function (prj) {
+        var prjdir=prj.getDir();
+        var imfile= prjdir.rel("images/").rel("icon_thumbnail.png");
+        //console.log("Thumb file=",imfile.path(),imfile.exists());
+        return imfile;
+    };
+    function crt(prj) {
+        try {
+            var img=Tonyu.globals.$Screen.buf[0];
+            var cv=$("<canvas>").attr({width:WIDTH,height:HEIGHT});
+            IR(img, cv[0]);
+            var url=cv[0].toDataURL();
+            var rsrc=prj.getResource();
+            var prjdir=prj.getDir();
+            var imfile=TN.file(prj);
+            imfile.text( url );
+            var item={
+                name:NAME,
+                pwidth:WIDTH,pheight:HEIGHT,
+                url:"ls:"+imfile.relPath(prjdir)
+            };
+            var imgs=rsrc.images;
+            var add=false;
+            for (var i=0 ; i<imgs.length ; i++) {
+                if (imgs[i].name==NAME) {
+                    imgs[i]=item;
+                    add=true;
+                }
+            }
+            if (!add) imgs.push(item);
+
+            prj.setResource(rsrc);
+            console.log("setRSRC",rsrc);
+        } catch (e) {
+            console.log("Create thumbnail failed",e);
+            console.log(e.stack);
+        }
+    };
+    return TN;
+});
+
+requireSimulator.setName('plugins');
+define(["WebSite"],function (WebSite){
+    var plugins={};
+    var installed= {
+        box2d:{src: "Box2dWeb-2.1.a.3.min.js",detection:/BodyActor/,symbol:"Box2D" },
+        timbre: {src:"timbre.js",symbol:"T" },
+        gif: {src:"gif-concat.js",detection:/GIFWriter/,symbol:"GIF"},
+        Mezonet: {src:"Mezonet.js", symbol: "Mezonet"},
+        PicoAudio: {src:"PicoAudio.min.js", symbol:"PicoAudio"},
+        // single js is required for runScript1.js
+        jquery_ui: {src:"jquery-ui.js", detection:/\$InputBox/,symbol:"$.ui"}
+    };
+    plugins.installed=installed;
+    plugins.detectNeeded=function (src,res) {
+        for (var name in installed) {
+            var d=installed[name].detection;
+            if (d) {
+                var r=d.exec(src);
+                if (r) res[name]=1;
+            }
+        }
+        return res;
+    };
+    plugins.loaded=function (name) {
+        var i=installed[name];
+        if (!i) throw new Error("plugin not found: "+name);
+        return hasInGlobal(i.symbol);
+    };
+    function hasInGlobal(name) {
+        // name: dot ok
+        var g=window;
+        name.split(".").forEach(function (e) {
+            if (!g) return;
+            g=g[e];
+        });
+        return g;
+    }
+    plugins.loadAll=function (names,options) {
+        options=convOpt(options);
+        var namea=[];
+        for (var name in names) {
+            if (installed[name] && !plugins.loaded(name)) {
+                namea.push(name);
+            }
+        }
+        var i=0;
+        console.log("loading plugins",namea);
+        setTimeout(loadNext,0);
+        function loadNext() {
+            if (i>=namea.length) options.onload();
+            else plugins.load(namea[i++],loadNext);
+        }
+    };
+    function convOpt(options) {
+        if (typeof options=="function") options={onload:options};
+        if (!options) options={};
+        if (!options.onload) options.onload=function (){};
+        return options;
+    }
+    plugins.load=function (name,options) {
+        var i=installed[name];
+        if (!i) throw new Error("plugin not found: "+name);
+        options=convOpt(options);
+        var src=WebSite.pluginTop+"/"+i.src;
+        var reqj;
+        if (typeof requireSimulator==="undefined") {
+            if (typeof requirejs==="function") reqj=requirejs;
+        } else {
+            if (requireSimulator.real) reqj=requireSimulator.real.requirejs;
+        }
+        if (reqj) {
+            src=src.replace(/\.js$/,"");
+            console.log("Loading plugin via requirejs",src);
+            reqj([src], function (res) {
+                if (!window[i.symbol] && res) window[i.symbol]=res;
+                options.onload(res);
+            });
+        } else {
+            console.log("Loading plugin via <script>",src);
+            var s=document.createElement("script");
+            s.src=src;
+            s.onload=options.onload;
+            document.body.appendChild(s);
+            //$("<script>").on("load",options.onload).attr("src",src).appendTo("body");
+        }
+        //setTimeout(options.onload,500);
+
+    };
+    plugins.request=function (name) {
+        if (plugins.loaded(name)) return;
+        var req=new Error("Plugin "+name+" required");
+        req.pluginName=name;
+    };
+    return plugins;
+});
+
+requireSimulator.setName('Tonyu.Project');
+define(["Tonyu", "ProjectCompiler", "TError", "FS", "Tonyu.TraceTbl","ImageList","StackTrace",
+        "Blob","thumbnail","WebSite","plugins", "Tonyu.Compiler.Semantics", "Tonyu.Compiler.JSGenerator",
+        "DeferredUtil","compiledProject"],
+        function (Tonyu, ProjectCompiler, TError, FS, Tonyu_TraceTbl, ImageList,StackTrace,
+                Blob,thumbnail,WebSite,plugins, Semantics, JSGenerator,
+                DU,CPRJ) {
+return Tonyu.Project=function (dir, kernelDir) {
+  // Difference from projectCompiler:
+  //   TonyuProject Defines Tonyu 'System' (the game engine) specific projects
+  //   such as resource management, booting.
+    var TPR=ProjectCompiler(dir);
+    var _super=Tonyu.extend({},TPR);
+    TPR.EXT=".tonyu";
+    TPR.NSP_KER="kernel";
+    TPR.NSP_USR="user";
+    var kernelProject;
+    if (!kernelDir) {
+        kernelProject=CPRJ(TPR.NSP_KER, WebSite.compiledKernel);
+    } else {
+        kernelProject=ProjectCompiler(kernelDir);
+    }
+    var traceTbl=Tonyu.TraceTbl;//();
+    var env={classes:Tonyu.classMetas, traceTbl:traceTbl, options:{compiler:{}} };
+    /*function orderByInheritance(classes) {//ENVC
+        var added={};
+        var res=[];
+        var ccnt=0;
+        for (var n in classes) {//ENVC
+            added[n]=false;
+            ccnt++;
+        }
+        while (res.length<ccnt) {
+            var p=res.length;
+            for (var n in classes) {//ENVC
+                if (added[n]) continue;
+                var c=classes[n];//ENVC
+                var spc=c.superclass;
+                var deps=[spc];
+                var ready=true;
+                if (c.includes) deps=deps.concat(c.includes);
+                deps.forEach(function (cl) {
+                    ready=ready && (!cl || cl.builtin || added[cl.fullName]);//CFN cl.name -> cl.fullName
+                });
+                if (ready) {
+                    res.push(c);
+                    added[n]=true;
+                }
+            }
+            if (res.length==p) throw TError( "クラスの循環参照があります", "不明" ,0);
+        }
+        return res;
+    }*/
+    TPR.env=env;
+    TPR.dumpJS=function (n) {
+        function dumpn(n) {
+            console.log("Class "+n+":\n"+env.classes[n].src.js);
+        }
+        if (n) dumpn(n);
+        else {
+            for (var n in env.classes) dumpn(n);
+        }
+    };
+    TPR.stop=function () {
+        var cur=TPR.runningThread; // Tonyu.getGlobal("$currentThreadGroup");
+        if (cur) cur.kill();
+        var main=TPR.runningObj;
+        if (main && main.stop) return main.stop();
+    };
+    TPR.rawRun=function (bootClassName) {
+        if (WebSite.removeJSOutput) {
+            var o=TPR.getOutputFile();
+            if (o.exists()) o.rm();
+        }
+        return TPR.loadClasses().then(DU.throwF(function () {
+            //TPR.compile();
+            TPR.detectPlugins();
+            TPR.fixBootRunClasses();
+            if (!TPR.runScriptMode) thumbnail.set(TPR, 2000);
+            TPR.rawBoot(bootClassName);
+        }));
+    };
+    TPR.getResource=function () {
+        var resFile=dir.rel("res.json");
+        if (resFile.exists()) {
+            var res=resFile.obj();
+            var chg=false;
+            for (var imgSnd in res) {
+                var ary=res[imgSnd];
+                for (var i=ary.length-1; i>=0 ;i--) {
+                    if (!ary[i].url) {
+                        ary.splice(i,1);
+                        chg=true;
+                    }
+                }
+            }
+            if (chg) TPR.setResource(res);
+            return res;
+        }
+        return Tonyu.defaultResource;
+    };
+    TPR.hasSoundResource=function () {
+        var res=TPR.getResource();
+        return res && res.sounds && res.sounds.length>0;
+    };
+    TPR.setResource=function (rsrc) {
+        var resFile=dir.rel("res.json");
+        resFile.obj(rsrc);
+    };
+    TPR.getThumbnail=function () {
+        return thumbnail.get(TPR);
+    };
+    TPR.convertBlobInfos=function (user) {
+        var rsrc=TPR.getResource();
+        var name=TPR.getName();
+        function loop(o) {
+            if (typeof o!="object") return;
+            for (var k in o) {
+                if (!o.hasOwnProperty(k)) continue;
+                var v=o[k];
+                if (k=="url") {
+                    var a;
+                    if (a=Blob.isBlobURL(v)) {
+                        o[k]=[Blob.BLOB_PATH_EXPR,user,name,a.fileName].join("/");
+                    }
+                }
+                loop(v);
+            }
+        }
+        loop(rsrc);
+        TPR.setResource(rsrc);
+    };
+    TPR.getBlobInfos=function () {
+        var rsrc=TPR.getResource();
+        var res=[];
+        function loop(o) {
+            if (typeof o!="object") return;
+            for (var k in o) {
+                if (!o.hasOwnProperty(k)) continue;
+                var v=o[k];
+                if (k=="url") {
+                    var a;
+                    if (a=Blob.isBlobURL(v)) {
+                        res.push(a);
+                    }
+                }
+                loop(v);
+            }
+        }
+        loop(rsrc);
+        return res;
+    };
+    TPR.loadResource=function (next) {
+        var r=TPR.getResource();
+        ImageList( r.images, function (r) {
+            var sp=Tonyu.getGlobal("$Sprites");
+            if (sp) {
+                //console.log("$Sprites set!");
+                sp.setImageList(r);
+            }
+            //Sprites.setImageList(r);
+            for (var i in r.names) {
+                Tonyu.setGlobal(i, r.names[i]);
+            }
+            if (next) next();
+        });
+    };
+    TPR.getOptions=function () {//override
+        env.options=null;
+        var resFile=dir.rel("options.json");
+        if (resFile.exists()) env.options=resFile.obj();
+        if (env.options && !env.options.run) env.options=null;
+        if (!env.options) {
+            env.options=Tonyu.defaultOptions;
+        }
+        TPR.fixOptions(env.options);
+        return env.options;
+    };
+    TPR.fixOptions=function (opt) {//override
+        if (!opt.compiler) opt.compiler={};
+        opt.compiler.commentLastPos=TPR.runScriptMode || StackTrace.isAvailable();
+        if (!opt.plugins) {
+            opt.plugins={};
+            /*dir.each(function (f) {
+                if (f.endsWith(TPR.EXT)) {
+                    plugins.detectNeeded(  f.text(), opt.plugins);
+                }
+            });*/
+        }
+    };
+    TPR.detectPlugins=function () {
+        var opt=TPR.getOptions();
+        var plugins=opt.plugins=opt.plugins||{};
+        if (!plugins.Mezonet || !plugins.PicoAudio) {
+            var res=TPR.getResource();
+            var hasMZO=false,hasMIDI=false;
+            if (res.sounds) res.sounds.forEach(function (item) {
+                if (item.url.match(/\.mzo/)) hasMZO=true;
+                if (item.url.match(/\.midi?/)) hasMIDI=true;
+            });
+            if (hasMZO) TPR.addPlugin("Mezonet");
+            else TPR.removePlugin("Mezonet");
+            if (hasMIDI) TPR.addPlugin("PicoAudio");
+            else TPR.removePlugin("PicoAudio");
+        }
+    };
+    TPR.addPlugin=function (name) {
+        var opt=TPR.getOptions();
+        if (!opt.plugins[name]) {
+            opt.plugins[name]=1;
+            TPR.setOptions(opt);
+        }
+    };
+    TPR.removePlugin=function (name) {
+        var opt=TPR.getOptions();
+        if (opt.plugins[name]) {
+            delete opt.plugins[name];
+            TPR.setOptions(opt);
+        }
+    };
+    TPR.requestPlugin=function (name) {
+        TPR.addPlugin(name);
+        if (plugins.loaded(name)) return;
+        var req=new Error("必要なプラグイン"+name+"を追加しました。もう一度実行してください");
+        req.pluginName=name;
+        throw req;
+    };
+    TPR.loadPlugins=function (onload) {
+        var opt=TPR.getOptions();
+        return plugins.loadAll(opt.plugins,onload);
+    };
+
+    TPR.fixBootRunClasses=function () {
+        var opt=TPR.getOptions();
+        if (opt.run) {
+            var mc=TPR.fixClassName(opt.run.mainClass);
+            var bc=TPR.fixClassName(opt.run.bootClass);
+            if (mc!=opt.run.mainClass  ||  bc!=opt.run.bootClass) {
+                opt.run.mainClass=mc;
+                opt.run.bootClass=bc;
+                TPR.setOptions(opt);
+            }
+        }
+    };
+    TPR.fixClassName=function (cn) {
+        //if (TPR.classExists(cn)) return cn;
+        if (Tonyu.getClass(cn)) return cn;
+        var cna=cn.split(".");
+        var sn=cna.pop();
+        var res;
+        res=TPR.NSP_USR+"."+sn;
+        if (Tonyu.getClass(res)) return res;
+        //if (TPR.classExists(res)) return res;
+        res=TPR.NSP_KER+"."+sn;
+        if (Tonyu.getClass(res)) return res;
+        //if (TPR.classExists(res)) return res;
+        return cn;
+    };
+    TPR.getNamespace=function () {//override
+        var opt=TPR.getOptions();
+        if (opt.compiler && opt.compiler.namespace) return opt.compiler.namespace;
+        if (TPR.isKernelEditable()) return TPR.NSP_KER;
+        return TPR.NSP_USR;
+    };
+    TPR.getDependingProjects=function () {//override
+        return [kernelProject];
+    };
+    TPR.getOutputFile=function () {//override
+        var opt=TPR.getOptions();
+        if (opt.compiler.outputFile) return FS.resolve(opt.compiler.outputFile);
+        return dir.rel("js/concat.js");
+    };
+    TPR.setOptions=function (r) {
+        if (r) env.options=r;
+        var resFile=dir.rel("options.json");
+        var old=resFile.exists() ? resFile.text() : "";
+        var nw=JSON.stringify(env.options);
+        if (old!=nw) {
+            console.log("update option",old,nw);
+            resFile.text(nw);
+        }
+    };
+    TPR.rawBoot=function (bootClassName) {
+        TPR.showProgress("Running "+bootClassName);
+        TPR.initCanvas();
+        Tonyu.run(bootClassName);
+    };
+    TPR.initCanvas=function () {
+        Tonyu.globals.$mainCanvas=$("canvas");
+    };
+    TPR.srcExists=function (className, dir) {
+        var r=null;
+        dir.recursive(function (e) {
+            if (e.truncExt(TPR.EXT)===className) {
+                r=e;
+            }
+        });
+        return r;
+    };
+    TPR.isKernel=function (className) {
+        if (kernelDir) return TPR.srcExists(className, kernelDir);
+        return env.classes[TPR.NSP_KER+"."+className] ||
+            Tonyu.getClass(TPR.NSP_KER+"."+className);
+    };
+    TPR.isKernelEditable=function () {
+    	return env.options.kernelEditable;
+    };
+    //TPR.getDir=function () {return dir;};
+    //TPR.getName=function () { return dir.name().replace(/\/$/,""); };
+    TPR.renameClassName=function (o,n) {// o: key of aliases
+        return TPR.compile({noIncremental:true}).then(function () {
+            var cls=TPR.env.classes;/*ENVC*/
+            for (var cln in cls) {/*ENVC*/
+                var klass=cls[cln];/*ENVC*/
+                var f=klass.src ? klass.src.tonyu : null;
+                var a=klass.annotation;
+                var changes=[];
+                if (a && f) {
+                    console.log("Check", cln);
+                    for (var id in a) {
+                        try {
+                            var an=a[id];
+                            var si=an.scopeInfo;
+                            if (si && si.type=="class") {
+                                //console.log("si.type==class",an,si);
+                                if (si.name==o) {
+                                    var pos=an.node.pos;
+                                    var len=an.node.len;
+                                    var sub=f.text().substring(pos,pos+len);
+                                    if (sub==o) {
+                                        changes.push({pos:pos,len:len});
+                                        console.log(f.path(), pos, len, f.text().substring(pos-5,pos+len+5) ,"->",n);
+                                    }
+                                }
+                            }
+                        } catch(e) {
+                            console.log(e);
+                        }
+                    }
+                    changes=changes.sort(function (a,b) {return b.pos-a.pos;});
+                    console.log(f.path(),changes);
+                    var src=f.text();
+                    var ssrc=src;
+                    changes.forEach(function (ch) {
+                        src=src.substring(0,ch.pos)+n+src.substring(ch.pos+ch.len);
+                    });
+                    if (ssrc!=src && !f.isReadOnly()) {
+                        console.log("Refact:",f.path(),src);
+                        f.text(src);
+                    }
+                } else {
+                    console.log("No Check", cln);
+                }
+            }
+        });
+    };
+    TPR.showProgress=function (m) {
+        console.log("PROGRESS",m);
+        if (typeof SplashScreen!="undefined") {
+            SplashScreen.progress(m);
+        }
+        return DU.promise(function (succ) {
+            setTimeout(succ,0);
+        });
+    };
+    return TPR;
+};
+if (typeof getReq=="function") getReq.exports("Tonyu.Project");
+});
+
+requireSimulator.setName('Shell');
+define(["FS","assert"],
+        function (FS,assert) {
+    var Shell={};
+    var PathUtil=assert(FS.PathUtil);
+    Shell.newCommand=function (name,func) {
+        this[name]=func;
+    };
+    Shell.cd=function (dir) {
+        Shell.cwd=resolve(dir,true);
+        return Shell.pwd();
+    };
+    Shell.vars=Object.create(FS.getEnv());
+    Shell.mount=function (options, path) {
+        //var r=resolve(path);
+        if (!options || !options.t) {
+            var fst=[];
+            for (var k in FS.getRootFS().availFSTypes()) {
+                fst.push(k);
+            }
+            sh.err("-t=("+fst.join("|")+") should be specified.");
+            return;
+        }
+        FS.mount(path,options.t, options);
+    };
+    Shell.unmount=function (path) {
+        FS.unmount(path);
+    };
+    Shell.fstab=function () {
+        var rfs=FS.getRootFS();
+        var t=rfs.fstab();
+        var sh=this;
+        //sh.echo(rfs.fstype()+"\t"+"<Root>");
+        t.forEach(function (fs) {
+            sh.echo(fs.fstype()+"\t"+(fs.mountPoint||"<Default>"));
+        });
+    }
+    Shell.resolve=resolve;
+    function resolve(v, mustExist) {
+        var r=resolve2(v);
+        if (!FS.SFile.is(r)) {console.log(r," is not file");}
+        if (mustExist && !r.exists()) throw new Error(r+": no such file or directory");
+        return r;
+    }
+    function resolve2(v) {
+        if (typeof v!="string") return v;
+        var c=Shell.cwd;
+        if (PathUtil.isAbsolutePath(v)) return FS.resolve(v,c);
+        return c.rel(v);
+    }
+    Shell.pwd=function () {
+        return Shell.cwd+"";
+    };
+    Shell.ls=function (dir){
+    	if (!dir) dir=Shell.cwd;
+    	else dir=resolve(dir, true);
+        return dir.ls();
+    };
+    Shell.cp=function (from ,to ,options) {
+        if (!options) options={};
+        if (options.v) {
+            Shell.echo("cp", from ,to);
+            options.echo=Shell.echo.bind(Shell);
+        }
+        var f=resolve(from, true);
+        var t=resolve(to);
+        return f.copyTo(t,options);
+    };
+    Shell.ln=function (to , from ,options) {
+        var f=resolve(from);
+        var t=resolve(to, true);
+        if (f.isDir() && f.exists()) {
+            f=f.rel(t.name());
+        }
+        if (f.exists()) {
+            throw new Error(f+" exists");
+        }
+        return f.link(t,options);
+    };
+    Shell.rm=function (file, options) {
+        if (!options) options={};
+        if (options.notrash) {
+            file=resolve(file, false);
+            file.removeWithoutTrash();
+            return 1;
+        }
+        file=resolve(file, true);
+        if (file.isDir() && options.r) {
+            var dir=file;
+            var sum=0;
+            dir.each(function (f) {
+                if (f.exists()) {
+                    sum+=Shell.rm(f, options);
+                }
+            });
+            dir.rm();
+            return sum+1;
+        } else {
+            file.rm();
+            return 1;
+        }
+    };
+    Shell.mkdir=function (file,options) {
+        file=resolve(file, false);
+        if (file.exists()) throw new Error(file+" : exists");
+        return file.mkdir();
+
+    };
+    Shell.cat=function (file,options) {
+        file=resolve(file, true);
+        return Shell.echo(file.getContent(function (c) {
+            if (file.isText()) {
+                return c.toPlainText();
+            } else {
+                return c.toURL();
+            }
+        }));
+    };
+    Shell.resolve=function (file) {
+        if (!file) file=".";
+        file=resolve(file);
+        return file;
+    };
+    Shell.grep=function (pattern, file, options) {
+        file=resolve(file, true);
+        if (!options) options={};
+        if (!options.res) options.res=[];
+        if (file.isDir()) {
+            file.each(function (e) {
+                Shell.grep(pattern, e, options);
+            });
+        } else {
+            if (typeof pattern=="string") {
+                file.lines().forEach(function (line, i) {
+                    if (line.indexOf(pattern)>=0) {
+                        report(file, i+1, line);
+                    }
+                });
+            }
+        }
+        return options.res;
+        function report(file, lineNo, line) {
+            if (options.res) {
+                options.res.push({file:file, lineNo:lineNo,line:line});
+            }
+            Shell.echo(file+"("+lineNo+"): "+line);
+
+        }
+    };
+    Shell.touch=function (f) {
+    	f=resolve(f);
+    	f.text(f.exists() ? f.text() : "");
+    	return 1;
+    };
+    Shell.setout=function (ui) {
+        Shell.outUI=ui;
+    };
+    Shell.echo=function () {
+        return $.when.apply($,arguments).then(function () {
+            console.log.apply(console,arguments);
+            if (Shell.outUI && Shell.outUI.log) Shell.outUI.log.apply(Shell.outUI,arguments);
+        });
+    };
+    Shell.err=function (e) {
+        console.log.apply(console,arguments);
+        if (e && e.stack) console.log(e.stack);
+        if (Shell.outUI && Shell.outUI.err) Shell.outUI.err.apply(Shell.outUI,arguments);
+    };
+    Shell.clone= function () {
+        var r=Object.create(this);
+        r.vars=Object.create(this.vars);
+        return r;
+    };
+    Shell.getvar=function (k) {
+        return this.vars[k] || (process && process.env[k]);
+    };
+    Shell.get=Shell.getvar;
+    Shell.set=function (k,v) {
+        return this.vars[k]=v;
+    };
+    Shell.strcat=function () {
+        if (arguments.length==1) return arguments[0];
+        var s="";
+        for (var i=0;i<arguments.length;i++) s+=arguments[i];
+        return s;
+    };
+    Shell.exists=function (f) {
+        f=this.resolve(f);
+        return f.exists();
+    };
+    Shell.dl=function (f) {
+        f=this.resolve(f||".");
+        return f.download();
+    };
+    Shell.zip=function () {
+        var t=this;
+        var a=Array.prototype.slice.call(arguments).map(function (e) {
+            if (typeof e==="string") return t.resolve(e);
+            return e;
+        });
+        return FS.zip.zip.apply(FS.zip,a);
+    };
+    Shell.unzip=function () {
+        var t=this;
+        var a=Array.prototype.slice.call(arguments).map(function (e) {
+            if (typeof e==="string") return t.resolve(e);
+            return e;
+        });
+        return FS.zip.unzip.apply(FS.zip,a);
+    };
+
+    Shell.prompt=function () {};
+    Shell.ASYNC={r:"SH_ASYNC"};
+    Shell.help=function () {
+        for (var k in Shell) {
+            var c=Shell[k];
+            if (typeof c=="function") {
+                Shell.echo(k+(c.description?" - "+c.description:""));
+            }
+        }
+    };
+    if (!window.sh) window.sh=Shell;
+    if (typeof process=="object") {
+        sh.devtool=function () { require('nw.gui').Window.get().showDevTools();}
+        sh.cd(process.cwd().replace(/\\/g,"/"));
+    } else {
+        sh.cd("/");
+    }
+    return Shell;
+});
+
+requireSimulator.setName('ScriptTagFS');
+define(["Content"],function (Content) {
+	var STF={};
+	STF.toObj=function () {
+	    var scrs=$("script");
+	    var res={};
+	    scrs.each(function (){
+	        var s=this;
+	        if (s.type=="text/tonyu") {
+	            var fn=$(s).data("filename");
+	            if (fn) {
+	                var l=parseInt($(s).data("lastupdate"));
+	                var w=$(s).data("wrap");
+					var src=unescapeHTML(s.innerHTML);
+	                if (w) {
+	                    w=parseInt(w);
+	                    res[fn]={lastUpdate:l, text:unwrap(src, w)};
+	                } else {
+	                    res[fn]={lastUpdate:l, text:src};
+	                }
+	            }
+	        }
+	    });
+	    return res;
+	    function unwrap(str, cols) {
+	        var lines=str.split("\n");
+	        var buf="";
+	        lines.forEach(function (line) {
+	            if (line.length>cols) {
+	                buf+=line.substring(0,cols);
+	            } else {
+	                buf+=line+"\n";
+	            }
+	        });
+	        return buf;
+	    }
+	};
+	STF.copyTo=function (dir) {
+	    var o=STF.toObj();
+	    for (var fn in o) {
+            var f=dir.rel(fn);
+            if (f.isText()) {
+                f.text(o[fn].text);
+            } else {
+                f.setBytes(Content.url(o[fn].text).toByteArray() );
+            }
+        }
+	};
+	function unescapeHTML(str) {
+		var div = document.createElement("div");
+		div.innerHTML = str.replace(/</g,"&lt;")
+							 .replace(/>/g,"&gt;")
+							 .replace(/ /g, "&#32;")
+							 .replace(/\r/g, "&#13;")
+							 .replace(/\n/g, "&#10;");
+		return div.textContent || div.innerText;
+	}
+	return STF;
+});
+
+requireSimulator.setName('T2MediaLib');
+/*global webkitAudioContext, AudioContext, AudioBuffer, AudioBufferSourceNode, PicoAudio, Mezonet, WebSite, Util*/
+// forked from makkii_bcr's "T2MediaLib" http://jsdo.it/makkii_bcr/3ioQ
+
+var T2MediaLib = (function(){
+    function isPicoAudio(bgm) {
+        return typeof PicoAudio!=="undefined" && bgm instanceof PicoAudio;
+    }
+    function isMezonetSource(bgm) {
+        return typeof Mezonet!=="undefined" && bgm instanceof Mezonet.Source;
+    }
+    var T2MediaLib = function(_context) {
+        this.context = null;
+        this.picoAudio = null;
+        this.soundDataAry = []; // T2MediaLib_SoundData
+        this.bgmPlayerMax = 16;
+        this.bgmPlayerAry = []; // T2MediaLib_BGMPlayer
+
+        this.masterVolume = 1.0;
+        this.seMasterVolume = 1.0;
+        this.bgmMasterVolume = 1.0;
+
+        this.playingAudio = null;
+        this.audioVolume = 1.0;
+        this.audioTempo = 1.0;
+        this.audioDataAry = {
+            data : []
+        };
+        this.seSources=[];
+        this.init(_context);
+    };
+
+    // 初期化 //
+    T2MediaLib.prototype.init = function(_context) {
+        if (this.inited) return;
+        this.inited=true;
+        if (this.disabled) return;
+        if (!_context) {
+            if (window.AudioContext) {
+                this.context = new AudioContext();
+            } else if (window.webkitAudioContext) {
+                this.context = new webkitAudioContext();
+            } else {
+                this.context = null;
+                console.log('Your browser does not support yet Web Audio API');
+            }
+        } else {
+            this.context = _context;
+        }
+
+        // Web Audio API 起動成功
+        if (this.context) {
+            // BGMPlayer初期化 (16個生成)
+            for (var i=0; i<this.bgmPlayerMax; i++) {
+                this.bgmPlayerAry[i] = new T2MediaLib_BGMPlayer(this, i);
+            }
+        }
+    };
+
+    // CLEAR系関数 //
+    T2MediaLib.prototype.allClearSoundData = function() {
+        var dataAry = this.soundDataAry;
+        for (var idx in dataAry) {
+            delete dataAry[idx];
+        }
+    };
+    T2MediaLib.prototype.clearSoundData = function(idx) {
+        var dataAry = this.soundDataAry;
+        delete dataAry[idx];
+    };
+    T2MediaLib.prototype.allRemoveDecodedSoundData = function() {
+        var dataAry = this.soundDataAry;
+        for (var idx in dataAry) {
+            var soundData = dataAry[idx];
+            if (soundData == null) continue;
+            if (!soundData.isDecodeComplete() && !soundData.isDecoding()) continue;
+            soundData.removeDecodedData();
+        }
+    };
+    T2MediaLib.prototype.removeDecodedSoundData = function(idx) {
+        var soundData = this.soundDataAry[idx];
+        if (soundData == null) return;
+        if (!soundData.isDecodeComplete() && !soundData.isDecoding()) return;
+        soundData.removeDecodedData();
+    };
+
+
+    // SE&BGMの音量 //
+    T2MediaLib.prototype.getMasterVolume = function() {
+        return this.masterVolume;
+    };
+    T2MediaLib.prototype.setMasterVolume = function(vol) {
+        this.masterVolume = vol;
+        for (var i=0; i<this.bgmPlayerMax; i++) {
+            var bgmPlayer = this.bgmPlayerAry[i];
+            if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) continue;
+            bgmPlayer.onChangeBGMMasterVolume();
+        }
+    };
+
+    // 配列データからサウンドを作成・登録
+    T2MediaLib.prototype.createSoundFromArray = function(idx, array1, array2) {
+        if (!this.context || this.disabled) {
+            return null;
+        }
+        this.soundDataAry[idx] = new T2MediaLib_SoundData(idx);
+
+        var ctx = this.context;
+        var numOfChannels = array1 != null && array2 != null ? 2 : 1;
+        var audioBuffer = ctx.createBuffer(numOfChannels, array1.length, ctx.sampleRate);
+        var buffer1 = audioBuffer.getChannelData(0);
+        var buffer2 = array2 != null ? audioBuffer.getChannelData(1) : null;
+        var i;
+        for (i = 0; i < array1.length ; i++) {
+             buffer1[i] = array1[i];
+        }
+        if (buffer2) {
+            for (i = 0; i < array2.length ; i++) {
+                 buffer2[i] = array2[i];
+            }
+        }
+        this.soundDataAry[idx].onDecodeComplete(audioBuffer);
+    };
+    // サウンドの読み込み・登録
+    T2MediaLib.prototype.loadSound = function(idx, url, callbacks, isLoadAndDecode) { //@hoge1e3
+        if (!this.context || this.disabled) {
+            return null;
+        }
+
+        this.soundDataAry[idx] = new T2MediaLib_SoundData(idx);
+
+        // midiがあったらpicoAudioを準備しておく
+        if (url.match(/\.(midi?)$/) || url.match(/^data:audio\/mid/)) {
+            if (this.picoAudio == null) {
+                this.picoAudio = new PicoAudio(this.context);
+            }
+        }
+        if (typeof WebSite=="object" && WebSite.mp3Disabled) {
+            url=url.replace(/\.(mp3)$/,".ogg");
+        }
+        if (typeof WebSite=="object" && WebSite.mp4Disabled) {
+            url=url.replace(/\.(mp4|m4a)$/,".ogg");
+        }
+        var that = this;
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function() {
+            if (xhr.status === 200 || xhr.status === 0 /*@hoge1e3 for node-webkit base64url */) {
+                var arrayBuffer = xhr.response;
+                if (arrayBuffer instanceof ArrayBuffer) {
+                    that.soundDataAry[idx].onLoadComplete(arrayBuffer);
+                    if (isLoadAndDecode) { // ロードとデコードをする
+                        that.decodeSound(idx, callbacks);
+                    } else { // ロードのみ
+                        if (callbacks && callbacks.succ) callbacks.succ(idx);
+                    }
+                } else {
+                    that.soundDataAry[idx].onError("XHR_RESPONSE_ERROR");
+                    if (callbacks && callbacks.err) callbacks.err(idx,that.soundDataAry[idx].errorID);
+                }
+            } else {
+                that.soundDataAry[idx].onError("XHR_STATUS_ERROR");
+                if (callbacks && callbacks.err) callbacks.err(idx,that.soundDataAry[idx].errorID);
+            }
+        };
+        xhr.onerror=function (e) {
+            console.log(e+"");
+            that.soundDataAry[idx].onError("XHR_ERROR");
+            if (callbacks && callbacks.err) callbacks.err(idx,that.soundDataAry[idx].errorID);
+        };
+
+        this.soundDataAry[idx].onLoad(url);
+        if (url.match(/^data:/) && typeof Util!=="undefined" && Util.Base64_To_ArrayBuffer) {//@hoge1e3
+            xhr={onload:xhr.onload};
+            xhr.response=Util.Base64_To_ArrayBuffer( url.replace(/^data:audio\/[a-zA-Z0-9\-]+;base64,/i,""));
+            xhr.status=200;
+            xhr.onload();
+        } else {
+            xhr.open('GET', url, true);
+            xhr.responseType = 'arraybuffer';
+            try {
+                xhr.send(null);
+            } catch(e) {
+                this.soundDataAry[idx].onError("FILE_NOT_FOUND");
+                if (callbacks && callbacks.err) callbacks.err(idx,that.soundDataAry[idx].errorID);
+            }
+        }
+    };
+    // サウンドのデコード
+    T2MediaLib.prototype.decodeSound = function(idx, callbacks) {
+        var soundData = this.soundDataAry[idx];
+        if (soundData == null) return;
+        if (soundData.fileData == null) return;
+        if (!soundData.isLoadComplete()) return;
+        if (soundData.isDecodeComplete()) return;
+
+        // Adding Callback
+        if (soundData.decodedCallbacksAry == null) {
+            soundData.decodedCallbacksAry = []; // 複数コールバックを呼べるようにする
+        }
+        if (callbacks) {
+            if (callbacks.bgmPlayerId != null) { // 同じbgmPlayerIdのcallbacksがあれば上書きする(処理軽量化)
+                var exists = soundData.decodedCallbacksAry.some(function(c, i) {
+                    if (callbacks.bgmPlayerId == c.bgmPlayerId) {
+                        soundData.decodedCallbacksAry[i] = callbacks;
+                        return true;
+                    }
+                    return false;
+                });
+                if (!exists) {
+                    soundData.decodedCallbacksAry.push(callbacks);
+                }
+            } else {
+                soundData.decodedCallbacksAry.push(callbacks);
+            }
+        }
+
+        if (soundData.isDecoding()) return;
+        soundData.onDecode();
+        var arrayBuffer = soundData.fileData.slice(0);
+        var that = this;
+        if (soundData.url.match(/\.(midi?)$/) || soundData.url.match(/^data:audio\/mid/)) {
+            // Midi
+            // PicoAudio.jsにデコードしてもらう
+            if (this.picoAudio == null) {
+                this.picoAudio = new PicoAudio(this.context);
+            }
+            var smf = new Uint8Array(arrayBuffer);
+            var data = this.picoAudio.parseSMF(smf);
+            if (typeof data == "string") { // parseSMF Error
+                console.log('T2MediaLib: Error parseSMF()', data);
+                this.soundDataAry[idx].onError("DECODE_ERROR");
+                soundData.decodedCallbacksAry.forEach(function(callbacks) {
+                    if (typeof callbacks.err == "function") {
+                        callbacks.err(idx, this.soundDataAry[idx].errorID);
+                    }
+                });
+                soundData.decodedCallbacksAry = null;
+            } else {
+                this.soundDataAry[idx].onDecodeComplete(data);
+                soundData.decodedCallbacksAry.forEach(function(callbacks) {
+                    if (typeof callbacks.succ == "function") {
+                        callbacks.succ(idx);
+                    }
+                });
+                soundData.decodedCallbacksAry = null;
+            }
+        } else if (soundData.url.match(/\.mzo$/) || soundData.url.match(/^data:audio\/mzo/)) {
+            //console.log("Loading mzo");
+            // MZO
+            Mezonet.init().then(function () {
+                var a=Array.prototype.slice.call( new Uint8Array(arrayBuffer) );
+                that.soundDataAry[idx].onDecodeComplete(new Mezonet.Source(a));
+                soundData.decodedCallbacksAry.forEach(function(callbacks) {
+                    if (typeof callbacks.succ == "function") {
+                        callbacks.succ(idx);
+                    }
+                });
+                soundData.decodedCallbacksAry = null;
+            },function (error) {
+                if (error instanceof Error) {
+                    console.log('T2MediaLib: '+error.message, soundData.url);//@hoge1e3
+                } else {
+                    console.log('T2MediaLib: Error decodeMZO()', soundData.url);//@hoge1e3
+                }
+                that.soundDataAry[idx].onError("DECODE_ERROR");
+                soundData.decodedCallbacksAry.forEach(function(callbacks) {
+                    if (typeof callbacks.err == "function") {
+                        callbacks.err(idx, that.soundDataAry[idx].errorID);
+                    }
+                });
+                soundData.decodedCallbacksAry = null;
+            });
+            /*var m=new Mezonet(this.context,a);//,{wavOutSpeed:50});
+            //m.load(a);
+            m.init().then(function (res) {
+                // デコード中にremoveDecodeSoundData()したらデータを捨てる
+                switch(res.playbackMode.type) {
+                case "Mezonet":
+                that.soundDataAry[idx].onDecodeComplete(m);
+                break;
+                case "AudioBuffer":
+                //console.log(idx, res.decodedData);
+                that.soundDataAry[idx].onDecodeComplete(res.decodedData);
+                break;
+                }
+                soundData.decodedCallbacksAry.forEach(function(callbacks) {
+                    if (typeof callbacks.succ == "function") {
+                        callbacks.succ(idx);
+                    }
+                });
+                soundData.decodedCallbacksAry = null;
+            },function (error) {
+                if (error instanceof Error) {
+                    console.log('T2MediaLib: '+error.message, soundData.url);//@hoge1e3
+                } else {
+                    console.log('T2MediaLib: Error decodeMZO()', soundData.url);//@hoge1e3
+                }
+                that.soundDataAry[idx].onError("DECODE_ERROR");
+                soundData.decodedCallbacksAry.forEach(function(callbacks) {
+                    if (typeof callbacks.err == "function") {
+                        callbacks.err(idx, that.soundDataAry[idx].errorID);
+                    }
+                });
+                soundData.decodedCallbacksAry = null;
+            }).finally(function () {
+                m.terminate();
+            });*/
+        } else {
+            // MP3, Ogg, AAC, WAV
+
+            // Oggループタグ(LOOPSTART, LOOPLENGTH)をファイルから探す
+            if (soundData.url.match(/\.(ogg?)$/) || soundData.url.match(/^data:audio\/ogg/)) {
+                var retAry = this.searchOggLoop(arrayBuffer);
+                soundData.tagLoopStart = retAry[0];
+                soundData.tagLoopEnd = retAry[1];
+            }
+
+            var successCallback = function(audioBuffer) {
+                // デコード中にremoveDecodeSoundData()したらデータを捨てる
+                if (that.soundDataAry[idx].isDecoding()) {
+                    that.soundDataAry[idx].onDecodeComplete(audioBuffer);
+                    soundData.decodedCallbacksAry.forEach(function(callbacks) {
+                        if (typeof callbacks.succ == "function") {
+                            callbacks.succ(idx);
+                        }
+                    });
+                    soundData.decodedCallbacksAry = null;
+                }
+            };
+            var errorCallback = function(error) {
+                if (error instanceof Error) {
+                    console.log('T2MediaLib: '+error.message, soundData.url);//@hoge1e3
+                } else {
+                    console.log('T2MediaLib: Error decodeAudioData()', soundData.url);//@hoge1e3
+                }
+                that.soundDataAry[idx].onError("DECODE_ERROR");
+                soundData.decodedCallbacksAry.forEach(function(callbacks) {
+                    if (typeof callbacks.err == "function") {
+                        callbacks.err(idx, that.soundDataAry[idx].errorID);
+                    }
+                });
+                soundData.decodedCallbacksAry = null;
+            };
+            this.context.decodeAudioData(arrayBuffer, successCallback, errorCallback);
+        }
+    };
+    // 無音サウンドを鳴らしWeb Audio APIを使えるようにする(iOS対策)
+    // Chrome Autoplay Policy 対策
+    T2MediaLib.prototype.activate = function () {
+        this.init();
+        if (!this.context) return;
+        if (!this.isContextResumed && this.context.resume) { // fix Autoplay Policy in Chrome
+            var that = this;
+            this.context.resume().then(function () {
+                that.isContextResumed = true;
+            });
+        }
+        if (this.isActivated) return;
+        this.isActivated=true;
+        var buffer = this.context.createBuffer(1, Math.floor(this.context.sampleRate/32), this.context.sampleRate);
+        var ary = buffer.getChannelData(0);
+        for (var i = 0; i < ary.length; i++) {
+             ary[i] = 0; // 無音化
+        }
+        var source = this.context.createBufferSource();
+        source.buffer = buffer;
+        source.connect(this.context.destination);
+        source.start = source.start || source.noteOn;
+        source.start(0);
+    };
+    // 指定したサウンドのファイルデータを返す
+    T2MediaLib.prototype.getSoundFileData = function(idx) {
+        var soundDataObj = this.soundDataAry[idx];
+        if (soundDataObj) {
+            return soundDataObj.fileData;
+        } else {
+            return null;
+        }
+    };
+    // 指定したサウンドのデコード済みデータを返す
+    T2MediaLib.prototype.getSoundDecodedData = function(idx) {
+        var soundDataObj = this.soundDataAry[idx];
+        if (soundDataObj) {
+            return soundDataObj.decodedData;
+        } else {
+            return null;
+        }
+    };
+    // AudioContextのcurrentTimeを返す
+    T2MediaLib.prototype.getCurrentTime = function () {//@hoge1e3
+        if (!this.context) return null;
+        return this.context.currentTime;
+    };
+
+    // SEメソッド郡 //
+
+    T2MediaLib.prototype.playSE = function(idx, vol, pan, rate, offset, loop, loopStart, loopEnd,start,duration) {//add start,duration by @hoge1e3
+        if (!this.context) return null;
+        var soundData = this.soundDataAry[idx];
+        if (soundData == null) return null;
+        if (!soundData.isDecodeComplete()) {
+            var that = this;
+            var callbacks = {};
+            callbacks.succ = function(idx) {
+                that.playSE(idx, vol, pan, rate, offset, loop, loopStart, loopEnd,start,duration);//@hoge1e3
+            };
+            callbacks.err = function() {
+            };
+            this.decodeSound(idx, callbacks);
+            return null;
+        }
+        if (isMezonetSource(soundData.decodedData)) {
+            var playback=soundData.decodedData.playback(this.context);
+            playback.Start();
+            return playback;
+        }
+
+        var audioBuffer = soundData.decodedData;
+        if (!(audioBuffer instanceof AudioBuffer)) return null;
+
+        // 引数チェック
+        if (vol == null) {
+            vol = 1.0;
+        }
+        if (pan == null) {
+            pan = 0.0;
+        }
+        if (!rate) rate = 1.0;
+        if (!offset) {
+            offset = 0;
+        } else {
+            if      (offset > audioBuffer.duration) offset = audioBuffer.duration;
+            else if (offset < 0.0) offset = 0.0;
+        }
+        var durationStart = duration;
+        if (!duration) {
+            //duration=undefined; // iOS9でduration==undefinedだとsource.start(start, offset, duration);でエラー発生する
+            durationStart = 86400; // Number.MAX_SAFE_INTEGERを入れてもiOS9ではエラー起きないけど、昔なんかの環境で数値大き過ぎるとエラーになって86400(24時間)に設定した気がする
+        }
+        if (!loop) loop = false;
+        if (!loopStart) {
+            loopStart = soundData.loopStart||0.0;
+        } else {
+            if      (loopStart < 0.0) loopStart = 0.0;
+            else if (loopStart > audioBuffer.duration) loopStart = audioBuffer.duration;
+        }
+        if (!loopEnd) {
+            loopEnd = audioBuffer.duration;
+        } else {
+            if      (loopEnd < 0.0) loopEnd = 0.0;
+            else if (loopEnd > audioBuffer.duration) loopEnd = audioBuffer.duration;
+        }
+        start=start||0;//@hoge1e3
+
+        var source = this.context.createBufferSource();
+        this.context.createGain = this.context.createGain || this.context.createGainNode;
+        var gainNode = this.context.createGain();
+        var panNode = this.context.createPanner();
+
+        source.buffer = audioBuffer;
+        source.loop = loop;
+        source.loopStart = loopStart;
+        source.loopEnd = loopEnd;//audioBuffer.duration;
+        source.playbackRate.value = rate;
+
+        // 音量＆パン設定
+        source.connect(gainNode);
+        gainNode.connect(panNode);
+        panNode.connect(this.context.destination);
+        panNode.panningModel = "equalpower";
+        if      (pan < -1.0) pan = -1.0;
+        else if (pan >  1.0) pan =  1.0;
+        var panAngle = pan * 90;
+        var panX = Math.sin(panAngle * (Math.PI / 180));
+        var panZ = -Math.cos(panAngle * (Math.PI / 180));
+        if (pan === -1.0 || pan === 1.0) panZ = 0; // 6.123233995736766e-17となるので0にしておく
+        if (panNode.positionX) {
+            panNode.positionX.value = panX;
+            panNode.positionY.value = 0;
+            panNode.positionZ.value = panZ;
+        } else {
+            panNode.setPosition(panX, 0, panZ);
+        }
+        // 左右どちらかにパンがよると、音量が大きくなるので半減する
+        //gainNode.gain.value = vol / (1 + Math.abs(pan));
+        // ↑パンはそいうものらしいので、音量はそのままにする
+        gainNode.gain.value = vol * this.seMasterVolume * this.masterVolume;
+
+        // ループ開始位置修正
+        var offset_adj;
+        if (loop && loopEnd - loopStart > 0 && offset > loopEnd) {
+            offset_adj = loopEnd;
+        } else {
+            offset_adj = offset;
+        }
+
+        // 変数追加
+        source.gainNode = gainNode;
+        source.volumeValue = vol;
+        source.panNode = panNode;
+        source.panValue = pan;
+        source.playStartTime = this.context.currentTime+start;//@hoge1e3
+        source.playOffset = offset_adj;
+        source.plusTime = offset_adj;
+
+        // 再生
+        source.start = source.start || source.noteOn;
+        source.stop  = source.stop  || source.noteOff;
+        source.start(start, offset, durationStart);
+        // iOS, Firefoxではloopがtrueのときdurationを指定しても止まらない
+        // iOSではstopを２回以上呼ぶと、InvalidStateErrorが発生するので注意
+        if (loop && duration != null) source.stop(start + duration);
+        var t=this;
+        t.seSources.push(source);
+        source.onended = function(event) {
+            source.onended = null;
+            var idx=t.seSources.indexOf(source);
+            if (idx>=0) t.seSources.splice(idx,1);
+        };
+        return source;
+    };
+    T2MediaLib.prototype.stopSE = function(sourceObj) {
+        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        try {
+            sourceObj.stop(0);
+        } catch(e) { // iOS対策
+            // iOSではstopを２回以上呼ぶと、InvalidStateErrorが発生する
+            if (sourceObj.gainNode) {
+                sourceObj.gainNode.gain.cancelScheduledValues(this.context.currentTime);
+                sourceObj.gainNode.gain.linearRampToValueAtTime(0, this.context.currentTime);
+            }
+        }
+        return sourceObj;
+    };
+    T2MediaLib.prototype.stopAllSE = function(sourceObj) {
+        var t=this;
+        this.seSources.forEach(function (s) {
+            t.stopSE(s);
+        });
+    };
+    T2MediaLib.prototype.getSEMasterVolume = function() {
+        return this.seMasterVolume;
+    };
+    T2MediaLib.prototype.setSEMasterVolume = function(vol) {
+        this.seMasterVolume = vol;
+    };
+    T2MediaLib.prototype.getSEVolume = function(sourceObj) {
+        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        return sourceObj.volumeValue;
+    };
+    T2MediaLib.prototype.setSEVolume = function(sourceObj, vol) {
+        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        sourceObj.gainNode.gain.value = vol * this.seMasterVolume * this.masterVolume;
+        sourceObj.volumeValue = vol;
+        return sourceObj;
+    };
+    T2MediaLib.prototype.getSERate = function(sourceObj) {
+        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        return sourceObj.playbackRate.value;
+    };
+    T2MediaLib.prototype.setSERate = function(sourceObj, rate) {
+        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        sourceObj.playbackRate.value = rate;
+    };
+    T2MediaLib.prototype.getSEPan = function(sourceObj) {
+        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        return sourceObj.panValue;
+    };
+    T2MediaLib.prototype.setSEPan = function(sourceObj, pan) {
+        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        var panNode = sourceObj.panNode;
+        if      (pan < -1.0) pan = -1.0;
+        else if (pan >  1.0) pan =  1.0;
+        var panAngle = pan * 90;
+        var panX = Math.sin(panAngle * (Math.PI / 180));
+        var panZ = Math.cos(panAngle * (Math.PI / 180));
+        if (pan === -1.0 || pan === 1.0) panZ = 0; // 6.123233995736766e-17となるので0にしておく
+        if (panNode.positionX) {
+            panNode.positionX.value = panX;
+            panNode.positionY.value = 0;
+            panNode.positionZ.value = panZ;
+        } else {
+            panNode.setPosition(panX, 0, panZ);
+        }
+        sourceObj.panValue = pan;
+    };
+    T2MediaLib.prototype.isSELoop = function(sourceObj) {
+        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        return sourceObj.loop;
+    };
+    T2MediaLib.prototype.setSELoop = function(sourceObj, loop) {
+        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        sourceObj.loop = loop;
+    };
+    T2MediaLib.prototype.getSELoopStartTime = function(sourceObj) {
+        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        return sourceObj.loopStart;
+    };
+    T2MediaLib.prototype.setSELoopStartTime = function(sourceObj, loopStart) {
+        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        sourceObj.loopStart = loopStart;
+    };
+    T2MediaLib.prototype.getSELoopEndTime = function(sourceObj) {
+        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        return sourceObj.loopEnd;
+    };
+    T2MediaLib.prototype.setSELoopEndTime = function(sourceObj, loopEnd) {
+        if (!(sourceObj instanceof AudioBufferSourceNode)) return null;
+        sourceObj.loopEnd = loopEnd;
+    };
+
+    // BGMメソッド郡 //
+
+    T2MediaLib.prototype.playBGM = function(id, idx, loop, offset, loopStart, loopEnd) {
+        if (!this.context) return null;
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
+        return bgmPlayer.playBGM(idx, loop, offset, loopStart, loopEnd);
+    };
+    T2MediaLib.prototype.stopBGM = function(id) {
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
+        return bgmPlayer.stopBGM();
+    };
+    T2MediaLib.prototype.pauseBGM = function(id) {
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
+        return bgmPlayer.pauseBGM();
+    };
+    T2MediaLib.prototype.resumeBGM = function(id) {
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
+        return bgmPlayer.resumeBGM();
+    };
+    T2MediaLib.prototype.getBGMMasterVolume = function() {
+        return this.bgmMasterVolume;
+    };
+    T2MediaLib.prototype.setBGMMasterVolume = function(vol) {
+        this.bgmMasterVolume = vol;
+        for (var i=0; i<this.bgmPlayerMax; i++) {
+            var bgmPlayer = this.bgmPlayerAry[i];
+            if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) continue;
+            bgmPlayer.onChangeBGMMasterVolume();
+        }
+    };
+    T2MediaLib.prototype.getBGMVolume = function(id) {
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
+        return bgmPlayer.getBGMVolume();
+    };
+    T2MediaLib.prototype.setBGMVolume = function(id, vol) {
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
+        return bgmPlayer.setBGMVolume(vol);
+    };
+    T2MediaLib.prototype.getBGMTempo = function(id) {
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
+        return bgmPlayer.getBGMTempo();
+    };
+    T2MediaLib.prototype.setBGMTempo = function(id, tempo) {
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
+        return bgmPlayer.setBGMTempo(tempo);
+    };
+    T2MediaLib.prototype.getBGMPan = function(id) {
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
+        return bgmPlayer.getBGMPan();
+    };
+    T2MediaLib.prototype.setBGMPan = function(id, pan) {
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
+        return bgmPlayer.setBGMPan(pan);
+    };
+    T2MediaLib.prototype.isBGMLoop = function(id) {
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
+        return bgmPlayer.isBGMLoop();
+    };
+    T2MediaLib.prototype.setBGMLoop = function(id, loop) {
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
+        return bgmPlayer.setBGMLoop(loop);
+    };
+    T2MediaLib.prototype.getBGMLoopStartTime = function(id) {
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
+        return bgmPlayer.getBGMLoopStartTime();
+    };
+    T2MediaLib.prototype.setBGMLoopStartTime = function(id, loopStart) {
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
+        return bgmPlayer.setBGMLoopStartTime(loopStart);
+    };
+    T2MediaLib.prototype.getBGMLoopEndTime = function(id) {
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
+        return bgmPlayer.getBGMLoopEndTime();
+    };
+    T2MediaLib.prototype.setBGMLoopEndTime = function(id, loopEnd) {
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
+        return bgmPlayer.setBGMLoopEndTime(loopEnd);
+    };
+    T2MediaLib.prototype.getBGMCurrentTime = function(id) {
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
+        return bgmPlayer.getBGMCurrentTime();
+    };
+    T2MediaLib.prototype.getBGMLength = function(id) {
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
+        return bgmPlayer.getBGMLength();
+    };
+    T2MediaLib.prototype.getPlayingBGMName = function(id) {
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
+        return bgmPlayer.getPlayingBGMName();
+    };
+    T2MediaLib.prototype.setOnBGMEndListener = function(id, listener) {
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
+        return bgmPlayer.setOnBGMEndListener(listener);
+    };
+    T2MediaLib.prototype.getPlayingBGMState = function(id) {
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
+        return bgmPlayer.getPlayingBGMState();
+    };
+    T2MediaLib.prototype.getBGMPicoAudio = function(id) {
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
+        return bgmPlayer.getBGMPicoAudio();
+    };
+    T2MediaLib.prototype.isTagLoop = function(id) {
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
+        return bgmPlayer.isTagLoop();
+    };
+    T2MediaLib.prototype.setTagLoop = function(id, isTagLoop) {
+        var bgmPlayer = this._getBgmPlayer(id);
+        if (!bgmPlayer) return null;
+        return bgmPlayer.setTagLoop(isTagLoop);
+    };
+    T2MediaLib.prototype.getBGMPlayerMax = function() {
+        return this.bgmPlayerMax;
+    };
+    T2MediaLib.prototype.allStopBGM = function() {
+        for (var i=0; i<this.bgmPlayerMax; i++) {
+            this.stopBGM(i);
+        }
+    };
+    T2MediaLib.prototype.allResetBGM = function() {
+        for (var i=0; i<this.bgmPlayerMax; i++) {
+            this.stopBGM(i);
+            this.setBGMVolume(i, 1.0);
+            this.setBGMTempo(i, 1.0);
+            this.setBGMPan(i, 0.0);
+        }
+        this.setMasterVolume(1.0);
+        this.setSEMasterVolume(1.0);
+        this.setBGMMasterVolume(1.0);
+    };
+    T2MediaLib.prototype._getBgmPlayer = function(id) {
+        if (id < 0 || this.bgmPlayerMax <= id) return null;
+        var bgmPlayer = this.bgmPlayerAry[id];
+        if (!(bgmPlayer instanceof T2MediaLib_BGMPlayer)) return null;
+        return bgmPlayer;
+    };
+
+    // Audioメソッド郡 //
+
+    T2MediaLib.prototype.loadAudio = function(idx, url) {
+        var audio = new Audio(url);
+        audio.play();
+
+        this.audioDataAry.data[idx] = null;
+
+        var that = this;
+        audio.addEventListener('loadstart', function() {
+            if (!that.context) return null;
+            var source = that.context.createMediaElementSource(audio);
+            source.connect(that.context.destination);
+        }, false);
+
+        audio.addEventListener('canplay', function() {
+            this.audioDataAry.data[idx] = audio;
+        }, false);
+
+        audio.load();
+
+    };
+    T2MediaLib.prototype.playAudio = function(idx, loop, startTime) {
+        var audio = this.audioDataAry.data[idx];
+        if (!audio) return null;
+        if (!startTime) startTime = 0;
+
+        if (this.playingAudio instanceof Audio) {
+            this.playingAudio.pause();
+            this.playingAudio.currentTime = 0;
+        }
+        this.playingAudio = audio;
+        audio.loop = loop;
+        audio.volume = this.audioVolume;
+        audio.currentTime = startTime;
+        audio.play();
+        return audio;
+    };
+    T2MediaLib.prototype.stopAudio = function() {
+        var audio = this.playingAudio;
+        if (!(audio instanceof Audio)) return null;
+        audio.pause();
+        audio.currentTime = 0;
+        this.playingAudio = null;
+        return audio;
+    };
+    T2MediaLib.prototype.pauseAudio = function() {
+        var audio = this.playingAudio;
+        if (!audio) return null;
+        audio.pause();
+        return audio;
+    };
+    T2MediaLib.prototype.resumeAudio = function() {
+        var audio = this.playingAudio;
+        if (!audio) return null;
+        audio.play();
+        return audio;
+    };
+    T2MediaLib.prototype.setAudioVolume = function(vol) {
+        this.audioVolume = vol;
+        if (this.playingAudio instanceof Audio) {
+            this.playingAudio.volume = vol;
+        }
+    };
+    T2MediaLib.prototype.setAudioTempo = function(tempo) {
+        this.audioTempo = tempo;
+        if (this.playingAudio instanceof Audio) {
+            this.playingAudio.playbackRate = tempo;
+        }
+    };
+    T2MediaLib.prototype.setAudioPosition = function(time) {
+        if (this.playingAudio instanceof Audio) {
+            this.playingAudio.currentTime = time;
+        }
+    };
+    T2MediaLib.prototype.getAudioData = function(idx) {
+        return this.audioDataAry.data[idx];
+    };
+    T2MediaLib.prototype.getAudioCurrentTime = function() {
+        if (!(this.playingAudio instanceof Audio)) return null;
+        return this.playingAudio.currentTime;
+    };
+    T2MediaLib.prototype.getAudioLength = function() {
+        if (!(this.playingAudio instanceof Audio)) return null;
+        return this.playingAudio.duration;
+    };
+
+    // Oggループタグ探す //
+    T2MediaLib.prototype.searchOggLoop = function(arrayBuffer) {
+        var buf = new Uint8Array(arrayBuffer.slice(0, 3000));
+        var str = String.fromCharCode.apply(null, buf);
+        var isVorbis = str.lastIndexOf("vorbis", 0x22);
+        if (isVorbis == -1) return [0, 0]; // Vorbisではない場合、解析しない
+        var startIdx = str.indexOf("LOOPSTART=");
+        var lengthIdx = str.indexOf("LOOPLENGTH=");
+        var loopStart = 0;
+        var loopLength = 0;
+        var sampleRate = buf[40] + (buf[41]<<8) + (buf[42]<<16) + (buf[43]<<24);
+        var tagSize,i,c;
+        if (startIdx != -1) {
+            tagSize = buf[startIdx] + (buf[startIdx+1]<<8) + (buf[startIdx+2]<<16) + (buf[startIdx+3]<<24);
+            for (i=startIdx+10; i<startIdx+tagSize; i++) {
+                c = str[i];
+                if (c < '0' || c > '9') break;
+                loopStart = loopStart*10 + (c - '0');
+            }
+        }
+        if (lengthIdx != -1) {
+            tagSize = buf[lengthIdx] + (buf[lengthIdx+1]<<8) + (buf[lengthIdx+2]<<16) + (buf[lengthIdx+3]<<24);
+            for (i=lengthIdx+11; i<lengthIdx+tagSize; i++) {
+                c = str[i];
+                if (c < '0' || c > '9') break;
+                loopLength = loopLength*10 + (c - '0');
+            }
+        }
+        // 秒に変換
+        var loopEnd = (loopStart + loopLength) / sampleRate;
+        loopStart /= sampleRate;
+        return [loopStart, loopEnd];
+    };
+
+    return T2MediaLib;
+})();
+
+
+
+var T2MediaLib_BGMPlayer = (function(){
+    function isPicoAudio(bgm) {
+        return typeof PicoAudio!=="undefined" && bgm instanceof PicoAudio;
+    }
+    function isMezonetSource(bgm) {
+        return typeof Mezonet!=="undefined" && bgm instanceof Mezonet.Source;
+    }
+    function isMezonetPlayback(bgm) {
+        return typeof Mezonet!=="undefined" && bgm instanceof Mezonet.Playback;
+    }
+    var T2MediaLib_BGMPlayer = function(t2MediaLib, arg_id) {
+        this.t2MediaLib = t2MediaLib;
+        this.id = arg_id;
+        this.playingBGMState = "stop";
+        this.playingBGMStatePending = null;
+        this.playingBGM = null;
+        this.playingBGMName = null;
+        this.bgmPause = 0;
+        this.bgmPauseTime = 0;
+        this.bgmPauseCurrentTime = 0;
+        this.bgmPauseTempo = 0;
+        this.bgmPauseLoop = false;
+        this.bgmPauseLoopStart = 0;
+        this.bgmPauseLoopEnd = 0;
+        this.bgmVolume = 1.0;
+        this.bgmTempo = 1.0;
+        this.bgmPan = 0.0;
+        this.picoAudio = null;//new PicoAudio(this.context);
+        this.picoAudioSetDataBGMName = null; // 前回のsetDataした曲を再び使う場合は、setDataを省略して軽量化する
+        this.PICO_AUDIO_VOLUME_COEF = 1;//0.2;
+        this.isTagLoop = true; // Ogg VorbisファイルにLOOPSTART,LOOPLENGTHのタグが入っている場合、再生時にそれを適用するか
+    };
+
+    // BGM関数郡 //
+
+    T2MediaLib_BGMPlayer.prototype.playBGM = function(idx, loop, offset, loopStart, loopEnd) {
+        this.stopBGM();
+
+        var soundData = this.t2MediaLib.soundDataAry[idx];
+        if (soundData == null) return null;
+        if (!soundData.isDecodeComplete()) {
+            var that = this;
+            var callbacks = {};
+            callbacks.bgmPlayerId = this.id;
+            callbacks.succ = function() {
+                var succFunc = function() {
+                    var pending = that.playingBGMStatePending; // 途中で値が変わるため保存
+                    that._setPlayingBGMState("stop", true);
+                    if (pending != "stop" && that.playingBGMName == idx) {
+                        that.playBGM(idx, loop, offset, loopStart, loopEnd);
+                    }
+                    if (pending == "pause") {
+                        that.pauseBGM();
+                    }
+                };
+                var decodedData = soundData.decodedData;
+                if (decodedData instanceof Object) { // MIDI
+                    // MIDIの場合、デコード後はAudioContext.currenTimeの時間がとんで
+                    // 再生直後、瞬間的に早送り再生みたいになるので、playBGMを一旦処理を後回しにする
+                    setTimeout(function(){succFunc();}, 0);
+                } else { // MP3, Ogg, AAC, WAV
+                    succFunc();
+                }
+            };
+            callbacks.err = function() {
+                that._setPlayingBGMState("stop", true);
+            };
+            this.playingBGMName = idx;
+            this._setPlayingBGMState("decoding", true);
+            this._setPlayingBGMState("play");
+            this.t2MediaLib.decodeSound(idx, callbacks);
+            return this;
+        }
+
+        var decodedData = soundData.decodedData;
+        if (isMezonetSource(decodedData)) {
+            var m=decodedData.playback(this.t2MediaLib.context);
+            this.playingBGM = m;
+            m.Start();
+        } else if (decodedData instanceof AudioBuffer) {
+            // MP3, Ogg, AAC, WAV
+            if (this.isTagLoop) {
+                loopStart = loopStart||soundData.tagLoopStart;
+                loopEnd = loopEnd||soundData.tagLoopEnd;
+            }
+            this.playingBGM = this.t2MediaLib.playSE(idx, this.bgmVolume, this.bgmPan, this.bgmTempo, offset, loop, loopStart, loopEnd);
+        } else if (decodedData instanceof Object) {
+            // Midi
+            this._initPicoAudio();
+            if (idx != this.picoAudioSetDataBGMName) {
+                this.picoAudio.setData(decodedData);
+                this.picoAudioSetDataBGMName = idx;
+            } else {
+                this.picoAudio.initStatus();
+            }
+            this.picoAudio.setLoop(loop);
+            this.picoAudio.setMasterVolume(this.PICO_AUDIO_VOLUME_COEF * this.bgmVolume *
+                 this.t2MediaLib.bgmMasterVolume * this.t2MediaLib.masterVolume);
+            if (!offset) {
+                offset = 0;
+            } else {
+                var bgmLengthTime = this.picoAudio.getTime(Number.MAX_SAFE_INTEGER);
+                if      (offset > bgmLengthTime) offset = bgmLengthTime;
+                else if (offset < 0.0) offset = 0.0;
+            }
+            this.picoAudio.setStartTime(offset);
+            this.picoAudio.play();
+            this.playingBGM = this.picoAudio;
+        }
+        this.playingBGMName = idx;
+        this.bgmPause = 0;
+        this._setPlayingBGMState("play");
+        return this;
+    };
+
+    T2MediaLib_BGMPlayer.prototype.stopBGM = function() {
+        var bgm = this.playingBGM;
+        if (isMezonetPlayback(bgm)){
+            bgm.Stop();
+        } else if (isPicoAudio(bgm)) {
+            // Midi
+            this.picoAudio.stop();
+        } else if (bgm instanceof AudioBufferSourceNode) {
+            // MP3, Ogg, AAC, WAV
+            try {
+                bgm.stop(0);
+            } catch(e) { // iOS対策
+                // iOSではstopを２回以上呼ぶと、InvalidStateErrorが発生する
+                if (bgm.gainNode) {
+                    bgm.gainNode.gain.cancelScheduledValues(this.t2MediaLib.context.currentTime);
+                    bgm.gainNode.gain.linearRampToValueAtTime(0, this.t2MediaLib.context.currentTime);
+                }
+            }
+        }
+        this.playingBGM = null;
+        this.playingBGMName = null;
+        this._setPlayingBGMState("stop");
+        return this;
+    };
+
+    T2MediaLib_BGMPlayer.prototype.pauseBGM = function() {
+        var bgm = this.playingBGM;
+        if (isMezonetPlayback(bgm)){
+            bgm.pause();
+        } else if (isPicoAudio(bgm)) {
+            // Midi
+            if (this.bgmPause === 0) {
+                this.bgmPauseTime = this.getBGMCurrentTime();
+                this.bgmPauseCurrentTime = bgm.context.currentTime;
+                bgm.stop();
+                this.bgmPause = 1;
+            }
+        } else if (bgm instanceof AudioBufferSourceNode) {
+            // MP3, Ogg, AAC, WAV
+            if (this.bgmPause === 0) {
+                this.bgmPauseTime = this.getBGMCurrentTime();
+                this.bgmPauseLoopStart = this.t2MediaLib.getSELoopStartTime(bgm);
+                this.bgmPauseLoopEnd = this.t2MediaLib.getSELoopEndTime(bgm);
+                this.bgmPauseLoop = this.t2MediaLib.isSELoop(bgm);
+                this.bgmPauseCurrentTime = bgm.context.currentTime;
+                this.bgmPauseTempo = this.bgmTempo;
+                try {
+                    bgm.stop(0);
+                } catch(e) { // iOS対策
+                    // iOSではstopを２回以上呼ぶと、InvalidStateErrorが発生する
+                    if (bgm.gainNode) {
+                        bgm.gainNode.gain.cancelScheduledValues(this.t2MediaLib.context.currentTime);
+                        bgm.gainNode.gain.linearRampToValueAtTime(0, this.t2MediaLib.context.currentTime);
+                    }
+                }
+                this.bgmPause = 1;
+            }
+        }
+        if (this.playingBGMState != "stop") {
+            this._setPlayingBGMState("pause");
+        }
+        return this;
+    };
+
+    T2MediaLib_BGMPlayer.prototype.resumeBGM = function() {
+        var bgm = this.playingBGM;
+        if (isMezonetPlayback(bgm)){
+            bgm.resume();
+        } else if (isPicoAudio(bgm)) {
+            // Midi
+            if (this.bgmPause === 1) {
+                bgm.play();
+                this.bgmPause = 0;
+            }
+        } else if (bgm instanceof AudioBufferSourceNode) {
+            // MP3, Ogg, AAC, WAV
+            if (this.bgmPause === 1) {
+                bgm = this.playBGM(this.playingBGMName, this.bgmPauseLoop, this.bgmPauseTime, this.bgmPauseLoopStart, this.bgmPauseLoopEnd);
+            }
+        }
+        return this;
+    };
+
+    T2MediaLib_BGMPlayer.prototype.onChangeBGMMasterVolume = function() {
+        this.setBGMVolume(this.getBGMVolume());
+    };
+
+    T2MediaLib_BGMPlayer.prototype.getBGMVolume = function() {
+        return this.bgmVolume;
+    };
+
+    T2MediaLib_BGMPlayer.prototype.setBGMVolume = function(vol) {
+        var bgm = this.playingBGM;
+        this.bgmVolume = vol;
+        if (isMezonetPlayback(bgm)){
+            bgm.setVolume(vol);
+        } else if (isPicoAudio(bgm)) {
+            // Midi
+            this.picoAudio.setMasterVolume(this.PICO_AUDIO_VOLUME_COEF * vol * this.t2MediaLib.bgmMasterVolume * this.t2MediaLib.masterVolume);
+        } else if (bgm instanceof AudioBufferSourceNode) {
+            // MP3, Ogg, AAC, WAV
+            bgm.gainNode.gain.value = vol * this.t2MediaLib.bgmMasterVolume * this.t2MediaLib.masterVolume;
+            //↓seMasterVolumeが音量に乗算されてしまう
+            //this.t2MediaLib.setSEVolume(bgm, vol);
+        }
+        return this;
+    };
+
+    T2MediaLib_BGMPlayer.prototype.getBGMTempo = function() {
+        return this.bgmTempo;
+    };
+
+    T2MediaLib_BGMPlayer.prototype.setBGMTempo = function(tempo) {
+        // MP3, Ogg, AAC, WAV
+        var bgm = this.playingBGM;
+
+        if (tempo <= 0 || isNaN(tempo)) tempo = 1;
+        if (isMezonetPlayback(bgm)){
+            bgm.setRate(tempo);
+            return this;
+        } else if ((bgm instanceof AudioBufferSourceNode) && this.bgmPause === 0) {
+            bgm.plusTime -= (this.t2MediaLib.context.currentTime - bgm.playStartTime) * (tempo - this.bgmTempo);
+        }
+        this.bgmTempo = tempo;
+        this.t2MediaLib.setSERate(bgm, tempo);
+        return this;
+    };
+
+    T2MediaLib_BGMPlayer.prototype.getBGMPan = function() {
+        return this.bgmPan;
+    };
+
+    T2MediaLib_BGMPlayer.prototype.setBGMPan = function(pan) {
+        var bgm = this.playingBGM;
+        this.bgmPan = pan;
+        if (bgm instanceof AudioBufferSourceNode) {
+            // MP3, Ogg, AAC, WAV
+            this.t2MediaLib.setSEPan(bgm, pan);
+        }
+        return this;
+    };
+
+    T2MediaLib_BGMPlayer.prototype.isBGMLoop = function() {
+        var bgm = this.playingBGM;
+        if (isPicoAudio(bgm)) {
+            // Midi
+            return this.picoAudio.isLoop();
+        } else if (bgm instanceof AudioBufferSourceNode) {
+            // MP3, Ogg, AAC, WAV
+            if (this.bgmPause === 1) {
+                return this.bgmPauseLoop;
+            } else {
+                return this.t2MediaLib.isSELoop(bgm);
+            }
+        }
+        return null;
+    };
+
+    T2MediaLib_BGMPlayer.prototype.setBGMLoop = function(loop) {
+        var bgm = this.playingBGM;
+        if (isPicoAudio(bgm)) {
+            // Midi
+            this.picoAudio.setLoop(loop);
+        } else if (bgm instanceof AudioBufferSourceNode) {
+            // MP3, Ogg, AAC, WAV
+            if (this.bgmPause === 1) {
+                this.bgmPauseLoop = loop;
+            } else {
+                this.t2MediaLib.setSELoop(bgm, loop);
+            }
+        }
+        return this;
+    };
+
+    T2MediaLib_BGMPlayer.prototype.getBGMLoopStartTime = function() {
+        var bgm = this.playingBGM;
+        if (isPicoAudio(bgm)) {
+            // Midi
+            return 0;
+        } else if (bgm instanceof AudioBufferSourceNode) {
+            // MP3, Ogg, AAC, WAV
+            if (this.bgmPause === 1) {
+                return this.bgmPauseLoopStart;
+            } else {
+                return this.t2MediaLib.getSELoopStartTime(bgm);
+            }
+        }
+        return null;
+    };
+
+    T2MediaLib_BGMPlayer.prototype.setBGMLoopStartTime = function(loopStart) {
+        var bgm = this.playingBGM;
+        if (bgm instanceof AudioBufferSourceNode) {
+            // MP3, Ogg, AAC, WAV
+            if (this.bgmPause === 1) {
+                this.bgmPauseLoopStart = loopStart;
+            } else {
+                return this.t2MediaLib.setSELoopStartTime(bgm, loopStart);
+            }
+        }
+        return this;
+    };
+
+    T2MediaLib_BGMPlayer.prototype.getBGMLoopEndTime = function() {
+        var bgm = this.playingBGM;
+        if (isPicoAudio(bgm)) {
+            // Midi
+            return this.getBGMLength();
+        } else if (bgm instanceof AudioBufferSourceNode) {
+            // MP3, Ogg, AAC, WAV
+            if (this.bgmPause === 1) {
+                return this.bgmPauseLoopEnd;
+            } else {
+                return this.t2MediaLib.getSELoopEndTime(bgm);
+            }
+        }
+        return null;
+    };
+
+    T2MediaLib_BGMPlayer.prototype.setBGMLoopEndTime = function(loopEnd) {
+        var bgm = this.playingBGM;
+        if (bgm instanceof AudioBufferSourceNode) {
+            // MP3, Ogg, AAC, WAV
+            if (this.bgmPause === 1) {
+                this.bgmPauseLoopEnd = loopEnd;
+            } else {
+                return this.t2MediaLib.setSELoopEndTime(bgm, loopEnd);
+            }
+        }
+        return this;
+    };
+
+    T2MediaLib_BGMPlayer.prototype.getBGMCurrentTime = function() {
+        var bgm = this.playingBGM;
+        var time;
+        if (isMezonetPlayback(bgm)){
+            return bgm.getTrackTime();
+        } else if (isPicoAudio(bgm)) {
+            // Midi
+            if (this.bgmPause === 0) {
+                time = this.picoAudio.context.currentTime - this.picoAudio.states.startTime;
+            } else {
+                time = this.bgmPauseTime;
+            }
+            return time;
+        } else if (bgm instanceof AudioBufferSourceNode) {
+            // MP3, Ogg, AAC, WAV
+            var time2, currenTime, tempo, plusTime, minusTime, mod;
+
+            if (this.bgmPause === 0) {
+                currenTime = this.t2MediaLib.context.currentTime;
+                tempo = this.bgmTempo;
+            } else {
+                currenTime = this.bgmPauseCurrentTime;
+                tempo = this.bgmPauseTempo;
+            }
+
+            time2 = (currenTime - bgm.playStartTime) * tempo + bgm.plusTime;
+            if (bgm.loop) {
+                if (bgm.loopEnd - bgm.loopStart > 0) { // ループ範囲正常
+
+                    if (time2 < bgm.loopStart) { // ループ範囲前
+                        plusTime  = 0;
+                        minusTime = 0;
+                        mod = bgm.buffer.duration;
+                    } else { // ループ範囲内
+                        plusTime  = bgm.loopStart;
+                        minusTime = bgm.loopStart;
+                        mod = bgm.loopEnd - bgm.loopStart;
+                    }
+                } else { // ループ範囲マイナス（ループ無効）
+                    mod = bgm.buffer.duration;
+                    plusTime = 0;
+                    minusTime = 0;
+                }
+            }
+
+            if (bgm.loop) {
+                time = ((time2 - minusTime) % mod) + plusTime;
+            } else {
+                time = time2;
+                if (time > bgm.buffer.duration) time = bgm.buffer.duration;
+            }
+            return time;
+        }
+        return null;
+    };
+
+    T2MediaLib_BGMPlayer.prototype.getBGMLength = function() {
+        var bgm = this.playingBGM;
+        if (isPicoAudio(bgm)) {
+            // Midi
+            return this.picoAudio.getTime(Number.MAX_SAFE_INTEGER);
+        } else if (bgm instanceof AudioBufferSourceNode) {
+            // MP3, Ogg, AAC, WAV
+            return bgm.buffer.duration;
+        }
+        return null;
+    };
+
+    T2MediaLib_BGMPlayer.prototype.getPlayingBGMName = function() {
+        return this.playingBGMName;
+    };
+
+    T2MediaLib_BGMPlayer.prototype.setOnBGMEndListener = function(listener) {
+        if (this.picoAudio != null) {
+            this.picoAudio.setOnSongEndListener(listener);
+        }
+    };
+
+    T2MediaLib_BGMPlayer.prototype.getPlayingBGMState = function() {
+        return this.playingBGMState;
+    };
+
+    T2MediaLib_BGMPlayer.prototype.getBGMPicoAudio = function() {
+        this._initPicoAudio();
+        return this.picoAudio;
+    };
+
+    T2MediaLib_BGMPlayer.prototype.isTagLoop = function() {
+        return this.isTagLoop;
+    };
+
+    T2MediaLib_BGMPlayer.prototype.setTagLoop = function(isTagLoop) {
+        this.isTagLoop = isTagLoop;
+    };
+
+    T2MediaLib_BGMPlayer.prototype._setPlayingBGMState = function(state, force) {
+        if (force || this.playingBGMState != "decoding") {
+            this.playingBGMState = state;
+            this.playingBGMStatePending = null;
+        } else {
+            this.playingBGMStatePending = state;
+        }
+    };
+
+    T2MediaLib_BGMPlayer.prototype._initPicoAudio = function() {
+        if (this.picoAudio == null) {
+            if (this.id == 0) {
+                this.picoAudio = this.t2MediaLib.picoAudio; // 0番目はT2MediaLib.picoAudioを使いまわす（初期化に時間がかかるため）
+            }
+            if (this.picoAudio == null) {
+                this.picoAudio = new PicoAudio(this.t2MediaLib.context, this.t2MediaLib.picoAudio); // AudioContextオブジェクトがmax6つまで？なので使いまわす
+            }
+        }
+    };
+
+    return T2MediaLib_BGMPlayer;
+})();
+
+
+
+var T2MediaLib_SoundData = (function(){
+    var T2MediaLib_SoundData = function(idx, url) {
+        // "none"    :データなし
+        // "loading" :読み込み中
+        // "loaded"  :読み込み完了
+        // "decoding":デコード中
+        // "decoded" :デコード完了
+        // "error"   :エラー
+        this.idx = idx;
+        this.state = "none";
+        this.errorID = null;
+        this.url = null;
+        this.fileData = null;
+        this.decodedData = null;
+        this.decodedCallbacksAry = null;
+        this.tagLoopStart = 0;
+        this.tagLoopEnd = 0;
+    };
+
+    T2MediaLib_SoundData.prototype.onLoad = function(url) {
+        this.state = "loading";
+        this.url = url;
+    };
+
+    T2MediaLib_SoundData.prototype.onLoadComplete = function(data) {
+        this.state = "loaded";
+        this.fileData = data;
+    };
+
+    T2MediaLib_SoundData.prototype.onDecode = function() {
+        this.state = "decoding";
+    };
+
+    T2MediaLib_SoundData.prototype.onDecodeComplete = function(data) {
+        this.state = "decoded";
+        this.decodedData = data;
+    };
+
+    T2MediaLib_SoundData.prototype.onError = function(errorID) {
+        this.state = "error";
+        this.errorID = errorID;
+    };
+
+    T2MediaLib_SoundData.prototype.isNone = function() {
+        return this.state == "none";
+    };
+
+    T2MediaLib_SoundData.prototype.isLoadComplete = function() {
+        switch(this.state) {
+            case "loaded":
+            case "decoding":
+            case "decoded":
+                return true;
+        }
+        return false;
+    };
+
+    T2MediaLib_SoundData.prototype.isDecoding = function() {
+        return this.state == "decoding";
+    };
+
+    T2MediaLib_SoundData.prototype.isDecodeComplete = function() {
+        return this.state == "decoded";
+    };
+
+    T2MediaLib_SoundData.prototype.removeDecodedData = function() {
+        this.state = "loaded";
+        this.decodedData = null;
+    };
+
+    return T2MediaLib_SoundData;
+})();
+
+define('T2MediaLib',[],function (){ return T2MediaLib; });
+requireSimulator.setName('exceptionCatcher');
+define([], function () {
+    var res={};
+    res.f=function (f) {
+        if (typeof f=="function") {
+            if (f.isTrcf) return f;
+            var r=function () {
+                if (res.handleException && !res.enter) {
+                    try {
+                        res.enter=true;
+                        return f.apply(this,arguments);
+                    } catch (e) {
+                        res.handleException(e);
+                    } finally {
+                        res.enter=false;
+                    }
+                } else {
+                    return f.apply(this,arguments);
+                }
+            };
+            r.isTrcf=true;
+            return r;
+        } else if(typeof f=="object") {
+            for (var k in f) {
+                f[k]=res.f(f[k]);
+            }
+            return f;
+        }
+    };
+    //res.handleException=function (){};
+    return res;
+});
+requireSimulator.setName('UI');
+define(["Util","exceptionCatcher"],function (Util, EC) {
+    var UI={};
+    var F=EC.f;
+    UI=function () {
+        var expr=[];
+        for (var i=0 ; i<arguments.length ; i++) {
+            expr[i]=arguments[i];
+        }
+        var listeners=[];
+        var $vars={};
+        var $edits=[];
+        var res=parse(expr);
+        res.$edits=$edits;
+        res.$vars=$vars;
+        $.data(res,"edits",$edits);
+        $.data(res,"vars",$vars);
+        $edits.load=function (model) {
+            $edits.model=model;
+            $edits.forEach(function (edit) {
+                $edits.writeToJq(edit.params.$edit, edit.jq);
+            });
+            $edits.validator.on.validate.call($edits.validator, $edits.model);
+        };
+        $edits.writeToJq=function ($edit, jq) {
+        	var m=$edits.model;
+            if (!m) return;
+            var name = $edit.name;
+            var a=name.split(".");
+            for (var i=0 ; i<a.length ;i++) {
+                m=m[a[i]];
+            }
+            m=$edit.type.toVal(m);
+            if (jq.attr("type")=="checkbox") {
+                jq.prop("checked",!!m);
+            } else {
+                jq.val(m);
+            }
+        };
+        $edits.validator={
+       		errors:{},
+       		show: function () {
+       			if ($vars.validationMessage) {
+       				$vars.validationMessage.empty();
+       				for (var name in this.errors) {
+       					$vars.validationMessage.append(UI("div", this.errors[name].mesg));
+       				}
+       			}
+       			if ($vars.OKButton) {
+       				var ok=true;
+       				for (var name in this.errors) {
+       					ok=false;
+       				}
+       				$vars.OKButton.attr("disabled", !ok);
+       			}
+       		},
+       		on: {
+       			validate: function () {}
+       		},
+       		addError: function (name, mesg, jq) {
+       			this.errors[name]={mesg:mesg, jq:jq};
+       			this.show();
+       		},
+       		removeError: function (name) {
+       			delete this.errors[name];
+       			this.show();
+       		},
+       		allOK: function () {
+       			for (var i in this.errors) {
+       				delete this.errors[i];
+       			}
+       			this.show();
+       		},
+       		isValid: function () {
+       		    var res=true;
+       		    for (var i in this.errors) res=false;
+       		    return res;
+       		}
+        };
+        $edits.writeToModel=function ($edit, val ,jq) {
+            var m=$edits.model;
+        	//console.log($edit, m);
+            if (!m) return;
+            var name = $edit.name;
+            try {
+                val=$edit.type.fromVal(val);
+            } catch (e) {
+            	$edits.validator.addError(name, e, jq);
+            	//$edits.validator.errors[name]={mesg:e, jq:jq};
+                //$edits.validator.change(name, e, jq);
+                return;
+            }
+            $edits.validator.removeError(name);
+            /*
+            if ($edits.validator.errors[name]) {
+                delete $edits.validator.errors[name];
+                $edits.validator.change(name, null, jq);
+            }*/
+            var a=name.split(".");
+            for (var i=0 ; i<a.length ;i++) {
+                if (i==a.length-1) {
+                    if ($edits.on.writeToModel(name,val)) {
+
+                    } else {
+                        m[a[i]]=val;
+                    }
+                } else {
+                    m=m[a[i]];
+                }
+            }
+            $edits.validator.on.validate.call($edits.validator, $edits.model);
+        };
+        $edits.on={};
+        $edits.on.writeToModel= function (name, val) {};
+
+        if (listeners.length>0) {
+            setTimeout(F(l),50);
+        }
+        function l() {
+            listeners.forEach(function (li) {
+                li();
+            });
+            setTimeout(F(l),50);
+        }
+        return res;
+        function parse(expr) {
+            if (expr instanceof Array) return parseArray(expr);
+            else if (typeof expr=="string") return parseString(expr);
+            else return expr;
+        }
+        function parseArray(a) {
+            var tag=a[0];
+            var i=1;
+            var res=$("<"+tag+">");
+            if (typeof a[i]=="object" && !(a[i] instanceof Array) && !(a[i] instanceof $) ) {
+                parseAttr(res, a[i],tag);
+                i++;
+            }
+            while (i<a.length) {
+                res.append(parse(a[i]));
+                i++;
+            }
+            return res;
+        }
+        function parseAttr(jq, o, tag) {
+            if (o.$var) {
+                $vars[o.$var]=jq;
+            }
+            if (o.$edit) {
+                if (typeof o.$edit=="string") {
+                    o.$edit={name: o.$edit, type: UI.types.String};
+                }
+                if (!o.on) o.on={};
+                o.on.realtimechange=F(function (val) {
+                    $edits.writeToModel(o.$edit, val, jq);
+                });
+                if (!$vars[o.$edit.name]) $vars[o.$edit.name]=jq;
+                $edits.push({jq:jq,params:o});
+            }
+            for (var k in o) {
+                if (k=="on") {
+                    for (var e in o.on) on(e, o.on[e]);
+                } else if (k=="css" && o[k]!=null) {//ADDJSL
+                    jq.css(o[k]);
+                } else if (!Util.startsWith(k,"$") && o[k]!=null) {//ADDJSL
+                    jq.attr(k,o[k]);
+                }
+            }
+            function on(eType, li) {
+                if (!li) return; //ADDJSL
+                if (eType=="enterkey") {
+                    jq.on("keypress",F(function (ev) {
+                        if (ev.which==13) li.apply(jq,arguments);
+                    }));
+                } else if (eType=="realtimechange") {
+                    var first=true, prev;
+                    listeners.push(function () {
+                        var cur;
+                        if (o.type=="checkbox") {
+                            cur=!!jq.prop("checked");
+                        } else {
+                            cur=jq.val();
+                        }
+                        if (first || prev!=cur) {
+                            li.apply(jq,[cur,prev]);
+                            prev=cur;
+                        }
+                        first=false;
+                    });
+                } else {
+                    jq.on(eType, F(li));
+                }
+            }
+        }
+        function parseString(str) {
+            return $(document.createTextNode(str));
+            //return $("<span>").text(str);
+        }
+    };
+    UI.types={
+       String: {
+           toVal: function (val) {
+               return val;
+           },
+           fromVal: function (val) {
+               return val;
+           }
+       },
+       Number: {
+           toVal: function (val) {
+               return val+"";
+           },
+           fromVal: function (val) {
+               return parseFloat(val);
+           }
+       }
+   };
+    return UI;
+});
+
+requireSimulator.setName('UIDiag');
+define(["UI"],function (UI) {
+    var UIDiag={};
+    function isPrimitive(mesg) {
+        return (typeof mesg==="string" ||
+        typeof mesg==="number" ||
+        typeof mesg==="boolean");
+    }
+    function parseMesg(mesg,defTitle) {
+        if (mesg==null) mesg="";
+        if (isPrimitive(mesg)) {
+            return {title:defTitle,body:multiLine(mesg)};
+        } else if ( (typeof $!=="undefined") && mesg instanceof $) {
+            return {
+                title:mesg.title||defTitle,
+                body:mesg
+            };
+        } else {
+            if (isPrimitive(mesg.body)) mesg.body=multiLine(mesg.body);
+            return mesg;
+        }
+    }
+    function multiLine(mesg) {
+        var lines=(mesg+"").split("\n");
+        if (lines.length==1) return lines[0];
+        return UI.apply(this,["div"].concat(lines.map(function (e) {
+            return ["div",e];
+        })));
+    }
+    UIDiag.confirm=function (mesg) {
+        mesg=parseMesg(mesg,"確認");
+        var di=UI("div",{title:mesg.title},["div",mesg.body],
+                ["button",{on:{click:sendF(true)}},"OK"],
+                ["button",{on:{click:sendF(false)}},"キャンセル"]).dialog({width:"auto",close:sendF(false)});
+        var d=$.Deferred();
+        function sendF(r) {
+            return function () { d.resolve(r); di.dialog("close"); di.remove(); };
+        }
+        return d.promise();
+    };
+    UIDiag.alert=function (mesg) {
+        mesg=parseMesg(mesg,"確認");
+        var di=UI("div",{title:mesg.title},["div",mesg.body],
+                ["button",{on:{click:sendF(true)}},"OK"]).dialog({width:"auto",close:sendF(false)});
+        var d=$.Deferred();
+        function sendF(r) {
+            return function () { d.resolve(r); di.dialog("close"); di.remove(); };
+        }
+        return d.promise();
+    };
+    // Compat with $InputBox
+    UIDiag.open=function(title,prompt,_default, left, top, width, height) {
+        return UIDiag.prompt({title:title,body:prompt},_default,{
+            left:left, top:top, width:width, height:height
+        });
+    };
+    UIDiag.getStatus=function () {return UIDiag.status;};
+    UIDiag.getText=function () {return UIDiag.val? UIDiag.val.val():"";};
+    //---
+    UIDiag.prompt=function (mesg,value,geom) {
+        mesg=parseMesg(mesg,"入力");
+        geom=geom||{};
+        if (typeof geom.left==="number" && typeof geom.top==="number") {
+            position={my:"left top",at:"left+"+geom.left+" top+"+geom.top, of:"body"};
+        } else {
+            position={of:"body",at:"center",my:"center"};
+        }
+        var di=UI("div",{title:mesg.title},["div",mesg.body],
+                ["input",{on:{enterkey:ok},$var:"val", value:value}],["br"],
+                ["button",{on:{click:ok}},"OK"],
+                ["button",{on:{click:cancel}},"キャンセル"]).dialog({
+                    width:geom.width||"auto",
+                    height:geom.height||"auto",
+                    position:position,
+                    close:function (){
+                        di.dialog("close");
+                        d.resolve();
+                    }
+                });
+        setTimeout(function () {
+            di.$vars.val.focus();
+            //console.log("FOcus");
+        },10);
+        UIDiag.status=0;
+        UIDiag.val=di.$vars.val;
+        var d=$.Deferred();
+        function ok() {
+            UIDiag.status=1;
+            var r=di.$vars.val.val();
+            UIDiag.resultValue=r;
+            d.resolve(r);
+            di.dialog("close");
+            di.remove();
+        }
+        function cancel() {
+            UIDiag.status=2;
+            di.dialog("close");
+            di.remove();
+            d.resolve();
+        }
+        return d.promise();
+
+    };
+    if (typeof window!="undefined") window.UIDiag=UIDiag;
+    return UIDiag;
+});
+
+requireSimulator.setName('runtime');
 /*global requirejs*/
-requirejs(["FS","Tonyu","Run3Project",
-			"runtime","WebSite","root","runScript_common","Util","StackDecoder"],
-		function (FS,  Tonyu, Run3Project,
-				rt,WebSite,root,com,Util,StackDecoder) {
+requirejs(["ImageList","T2MediaLib","Tonyu","UIDiag"],
+function (i,t,tn,u) {
+    console.log("runtimes loaded",arguments);
+    if (!window.T2MediaLib) window.T2MediaLib=t;
+});
+
+requireSimulator.setName('root');
+/*global window,self,global*/
+define([],function (){
+    if (typeof window!=="undefined") return window;
+    if (typeof self!=="undefined") return self;
+    if (typeof global!=="undefined") return global;
+    return (function (){return this;})();
+});
+
+requireSimulator.setName('runScript_common');
+define([], function () {
+    return {
+        initCanvas: function () {
+            function getMargin() {
+                return 0;
+            }
+
+            var margin = getMargin();
+            var w=$(window).width();
+            var h=$(window).height();
+            $("body").css({overflow:"hidden", margin:"0px"});
+            var cv=$("<canvas>").attr({width: w-margin, height:h-margin, class:"tonyu-canvas"}).appendTo("body");
+
+            var u = navigator.userAgent.toLowerCase();
+            if ((u.indexOf("iphone") == -1 &&
+                u.indexOf("ipad") == -1 &&
+                u.indexOf("ipod") == -1
+                ) && (!window.parent || window === window.parent)) {
+                $(window).resize(onResize);
+            }
+            function onResize() {
+                var margin = getMargin();
+                w=$(window).width();
+                h=$(window).height();
+                cv.attr({width: w-margin, height: h-margin});
+            }
+            return cv;
+        }
+    };
+});
+
+requireSimulator.setName('runScript3');
+/*global requirejs*/
+requirejs(["FS","Tonyu","Tonyu.Project","Shell","ScriptTagFS",
+			"runtime","WebSite","root","runScript_common","Util"],
+		function (FS,  Tonyu, Tonyu_Project, sh, ScriptTagFS,
+				rt,WebSite,root,com,Util) {
 	$(function () {
 		var prjPath=Util.getQueryString("prj");
 		var cv=com.initCanvas();
 
 		var curProjectDir=FS.resolve(prjPath);
-		//sh.cd(curProjectDir);
+		sh.cd(curProjectDir);
 		Tonyu.defaultOptions={
 				compiler: { defaultSuperClass: "Actor"},
 				run: {mainClass: "Main", bootClass: "Boot"},
 				kernelEditable: false
 		};
-		var curPrj=Run3Project.create({dir:curProjectDir});//, kernelDir);
+		var curPrj=Tonyu_Project(curProjectDir);//, kernelDir);
 		curPrj.initCanvas=function () {
 			Tonyu.globals.$mainCanvas=cv;
-		};
-		Tonyu.onRunTimeError=e=>{
-			StackDecoder.decode(e);
 		};
 		start();
 		function start() {
@@ -12006,6 +16639,6 @@ requirejs(["FS","Tonyu","Run3Project",
 	});
 });
 
-define("runScript3", function(){});
+requireSimulator.setName();
 
-})();
+});
