@@ -1,5 +1,5 @@
-define([],function () {
-    return {
+define(function (require,exports,module) {
+    module.exports={
         getNamespace: function () {//override
             var opt=this.getOptions();
             if (opt.compiler && opt.compiler.namespace) return opt.compiler.namespace;

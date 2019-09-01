@@ -1433,3 +1433,7 @@ var T2MediaLib_SoundData = (function(){
 
     return T2MediaLib_SoundData;
 })();
+// r.jsで連結されたファイル全体がfunction(){...var T2Media...}() で閉じられている場合，グローバルに展開．
+window.T2MediaLib=T2MediaLib;
+window.T2MediaLib_BGMPlayer=T2MediaLib_BGMPlayer;
+window.T2MediaLib_SoundData=T2MediaLib_SoundData;

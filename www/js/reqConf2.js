@@ -231,7 +231,7 @@ var reqConf={
                 "langMod": 1,
                 "CompilerClient":1,
                 "SourceFiles":1,
-                "stacktrace":"stacktrace.min",
+                "stacktrace.min":"stacktrace",
                 "StackDecoder":1,
             },
             "lib": {

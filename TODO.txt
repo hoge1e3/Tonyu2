@@ -1,3 +1,7 @@
+Worker
+ focus
+ mkrun2 -> babel
+ rename class
 ネットランキング
   gameID
   Timestamp

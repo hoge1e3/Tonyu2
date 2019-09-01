@@ -1,6 +1,6 @@
 define(function (require,exports,module) {
     const F=require("ProjectFactory");
-    const Compiler=require("CompilerClient");
+    //const Compiler=require("CompilerClient");
     const root=require("root");
     const WebSite=require("WebSite");
     const sysMod=require("sysMod");

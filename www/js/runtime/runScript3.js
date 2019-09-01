@@ -1,8 +1,8 @@
 /*global requirejs*/
 requirejs(["FS","Tonyu","Run3Project",
-			"runtime","WebSite","root","runScript_common","Util"],
+			"runtime","WebSite","root","runScript_common","Util","StackDecoder"],
 		function (FS,  Tonyu, Run3Project,
-				rt,WebSite,root,com,Util) {
+				rt,WebSite,root,com,Util,StackDecoder) {
 	$(function () {
 		var prjPath=Util.getQueryString("prj");
 		var cv=com.initCanvas();
@@ -17,6 +17,9 @@ requirejs(["FS","Tonyu","Run3Project",
 		var curPrj=Run3Project.create({dir:curProjectDir});//, kernelDir);
 		curPrj.initCanvas=function () {
 			Tonyu.globals.$mainCanvas=cv;
+		};
+		Tonyu.onRunTimeError=e=>{
+			StackDecoder.decode(e);
 		};
 		start();
 		function start() {

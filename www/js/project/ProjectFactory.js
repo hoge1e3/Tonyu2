@@ -139,7 +139,8 @@ define(function (require,exports,module) {
     			}
     		}
     		return res;
-        }
+        },
+        sourceDir() {return this.getDir();}
     };
     exports.createDirBasedCore=function (params) {
         const res=this.createCore();
