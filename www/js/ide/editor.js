@@ -93,9 +93,9 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     };
     const resf=curPrj.getResourceFile();
     if (!resf.exists()) resf.obj(Tonyu.defaultResource);
-    if (location.href.match(/^file/)) {
+    /*if (location.href.match(/^file/)) {
        Tonyu.defaultResource.images.splice(1,1);
-    }
+   }*/
 
     setDiagMode(false);
     //ImageList(Tonyu.defaultResource.images, Sprites.setImageList);

@@ -1,7 +1,9 @@
 Worker
+ isKernel
  focus
  mkrun2 -> babel
  rename class
+ resetLoopCheck
 ネットランキング
   gameID
   Timestamp

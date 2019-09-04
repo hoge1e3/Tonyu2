@@ -18,7 +18,7 @@ requirejs(["FS","Tonyu","Run3Project",
 		curPrj.initCanvas=function () {
 			Tonyu.globals.$mainCanvas=cv;
 		};
-		Tonyu.onRunTimeError=e=>{
+		Tonyu.onRuntimeError=e=>{
 			StackDecoder.decode(e);
 		};
 		start();
