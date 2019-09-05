@@ -1,6 +1,6 @@
 /*global requirejs, require*/
 requirejs(["Util", "Tonyu", "FS", "PathUtil","FileList", "FileMenu",
-           "showErrorPos", /*"fixIndent",*/ "Wiki", //"Tonyu.Project",
+           "showErrorPos", "fixIndent", "Wiki", //"Tonyu.Project",
            /*"copySample",*/"Shell","Shell2","ProjectOptionsEditor","copyToKernel","KeyEventChecker",
            "IFrameDialog",/*"WikiDialog",*/"runtime", "KernelDiffDialog","Sync","searchDialog","StackTrace","syncWithKernel",
            "UI","ResEditors","WebSite","exceptionCatcher","Tonyu.TraceTbl",
@@ -10,7 +10,7 @@ requirejs(["Util", "Tonyu", "FS", "PathUtil","FileList", "FileMenu",
            "root","IDEProject","optionFixer","SourceFiles"
           ],
 function (Util, Tonyu, FS, PathUtil, FileList, FileMenu,
-          showErrorPos, /*fixIndent,*/ Wiki, //Tonyu_Project,
+          showErrorPos, fixIndent, Wiki, //Tonyu_Project,
           /*copySample,*/sh,sh2, ProjectOptionsEditor, ctk, KeyEventChecker,
           IFrameDialog,/*WikiDialog,*/ rt , KDD,Sync,searchDialog,StackTrace,swk,
           UI,ResEditors,WebSite,EC,TTB,
@@ -520,7 +520,6 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             if (!remains) $("#welcome").show();
         }
     }
-    function fixIndent(e){return e;}// stub
     function fixEditorIndent(prog) {
         var cur=prog.getCursorPosition();
         var orig=prog.getValue();

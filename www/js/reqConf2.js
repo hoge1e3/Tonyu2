@@ -28,10 +28,6 @@ var reqConf={
         "Arrow": {
             "exports": "Arrow"
         },
-        "fixIndent": {
-            "deps": ["TonyuLang", "Visitor", "Grammar"],
-            "exports": "fixIndent"
-        },
         "Key": {
             "exports": "Key"
         },
@@ -222,12 +218,12 @@ var reqConf={
                 //"compiledProject": 1,
                 //"compiler": "Tonyu.Compiler",
                 "context": 1,
-                "indent": "fixIndent",
+                "fixIndent": 1,
                 "parse_tonyu2": "TonyuLang",
-                "parser": "Parser",
+                "parser": 1,
                 //"projectCompiler": "ProjectCompiler",
                 "source-map": 1,
-                "tonyu2_token": "TT",
+                "tonyu2_token": 1,
                 "langMod": 1,
                 "CompilerClient":1,
                 "SourceFiles":1,
