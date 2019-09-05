@@ -1,25 +1,11 @@
-define(["Tonyu", /*"ProjectCompiler",*/ "TError", "FS", "Tonyu.TraceTbl","ImageList","StackTrace",
-        "Blob","thumbnail","WebSite","plugins", //"Tonyu.Compiler.Semantics", "Tonyu.Compiler.JSGenerator",
-        "DeferredUtil"/*,"compiledProject"*/],
-        function (Tonyu, /*ProjectCompiler,*/ TError, FS, Tonyu_TraceTbl, ImageList,StackTrace,
-                Blob,thumbnail,WebSite,plugins,// Semantics, JSGenerator,
+define(["Tonyu", "TError", "FS", "ImageList",
+        "Blob","thumbnail","WebSite","plugins",
+        "DeferredUtil"],
+        function (Tonyu, TError, FS, ImageList,
+                Blob,thumbnail,WebSite,plugins,
                 DU) {
 // (was TonyuProject)
 return {
-    /*var TPR=ProjectCompiler(dir);
-    var _super=Tonyu.extend({},TPR);
-    TPR.EXT=".tonyu";
-    TPR.NSP_KER="kernel";
-    TPR.NSP_USR="user";
-    var kernelProject;
-    if (!kernelDir) {
-        kernelProject=CPRJ(TPR.NSP_KER, WebSite.compiledKernel);
-    } else {
-        kernelProject=ProjectCompiler(kernelDir);
-    }
-    var traceTbl=Tonyu.TraceTbl;//();
-    var env={classes:Tonyu.classMetas, traceTbl:traceTbl, options:{compiler:{}} };
-    TPR.env=env;*/
     stop:function () {
         var cur=this.runningThread; // Tonyu.getGlobal("$currentThreadGroup");
         if (cur) cur.kill();

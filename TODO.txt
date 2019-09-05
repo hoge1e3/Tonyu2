@@ -5,6 +5,7 @@ Worker
  mkrun2 -> babel
  rename class
  resetLoopCheck
+ f2 stop
 ネットランキング
   gameID
   Timestamp

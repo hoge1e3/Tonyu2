@@ -59,6 +59,9 @@ var reqConf={
         "fs/export": {
             deps: ["Shell","FS"]
         },
+        Tonyu:{
+            exports:"Tonyu"
+        },
         T2MediaLib: {
             //deps: ["PicoAudio"],
             exports: "T2MediaLib"
