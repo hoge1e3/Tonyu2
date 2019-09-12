@@ -5,7 +5,12 @@ Worker
  mkrun2 -> babel
  rename class
  resetLoopCheck
- f2 stop
+ F2 stop
+ check syntax
+ abolish Tonyu.runMode, Tonyu.currentProject
+ Tonyu.DeferredUtil.promise -> Tonyu.promise
+
+loadPage(undef_page)
 ネットランキング
   gameID
   Timestamp

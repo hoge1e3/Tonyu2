@@ -19,8 +19,16 @@ requirejs(["FS","Tonyu","Run3Project",
 			Tonyu.globals.$mainCanvas=cv;
 		};
 		Tonyu.onRuntimeError=e=>{
+			console.error(e);
 			StackDecoder.decode(e);
 		};
+		//--todo abolish
+		Tonyu.animationFrame=function () {
+			return new Promise( function (f) {
+				requestAnimationFrame(f);
+			});
+		};
+		//----
 		start();
 		function start() {
 			Tonyu.currentProject=Tonyu.globals.$currentProject=curPrj;

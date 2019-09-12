@@ -282,7 +282,7 @@ var reqConf={
                 "StackTrace": 1,
                 "TError": 1,
                 "TonyuIterator": "Tonyu.Iterator",
-                "TonyuLib": "Tonyu",
+                "TonyuRuntime": "Tonyu",
                 "TonyuThread": "Tonyu.Thread",
                 "TraceTbl": "Tonyu.TraceTbl",
                 "WebSite": 1,
