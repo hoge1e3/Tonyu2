@@ -5,12 +5,13 @@ module.exports=function fixIndent(str, indentStr) {
 	var incdec={"{":1, "}":-1};
 	var linfo=[];
 	try {
+		throw "koware";
 		var tokenRes=TT.parse(str);
 		var tokens=tokenRes.result[0];
 		tokens.forEach(function (token) {
 			if (incdec[token.type]) {
-				if (!linfo[r.row]) linfo[r.row]="";
-				linfo[r.row]+=token.type;
+				if (!linfo[token.row]) linfo[token.row]="";
+				linfo[token.row]+=token.type;
 			}
 		});
 	}catch(e) {

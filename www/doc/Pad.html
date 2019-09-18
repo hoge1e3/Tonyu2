@@ -12,31 +12,55 @@
 <p>例：</p>
 <pre><code class="lang-JS">pad=new Pad();
 </code></pre>
+<h1 id="-">サンプル</h1>
+<p>ダウンロード版Tonyu2のSamples欄「Pad2」に、Padの実際の使い方が載っています。</p>
+<p>Samples欄「Pad」は旧バージョン(v1)のPadです。画像リストに$pad_inputPadがあるとv1になりますが、旧プロジェクトへの互換性のためです。<br>今後はPad2を使用してください。</p>
 <h1 id="-">コンストラクタ</h1>
 <p>次のパラメータを指定できます（いずれも省略可能）</p>
-<pre><code>pad = new Pad{buttonCnt:4, // ボタンの数（１から４,デフォルトは1）
-    buttonFillColor:&quot;rgba(0, 255, 0, 0.2)&quot;, // ボタン中身の色
-    buttonBorderColor:&quot;rgba(255, 255, 0, 0.7)&quot;, // ボタン枠の色
-    buttonPushColor:&quot;rgba(0, 128, 255, 0.7)&quot;, // ボタン押下の色
-    buttonTextColor:&quot;rgba(0, 255, 0, 1.0)&quot;, // ボタン文字の色
+<pre><code>pad = new Pad{
+    buttonCnt:4, // ボタンの数（１から４,デフォルトは1）
+    version:2, // 最新バージョン(v2)にする場合は2を指定。旧バージョン(v1)は1。(画像リストに$pat_inputPadがある場合、省略するとv1になる)
+    jujiPadDiagonalEnable:true, // false:十字パッド斜め入力無効、true:十字パッド斜め入力有効
+
     button1Text:&quot;1&quot;, // ボタン1の文字
     button2Text:&quot;2&quot;, // ボタン2の文字
     button3Text:&quot;3&quot;, // ボタン3の文字
     button4Text:&quot;4&quot;, // ボタン4の文字
+
+    buttonFillColor:&quot;rgba(0, 255, 0, 0.2)&quot;, // ボタン中身の色（ボタン1～4全体指定）
     button1FillColor:&quot;rgba(255, 0, 255, 0.5)&quot;, // ボタン1中身の色
+    button2FillColor:&quot;rgba(96, 64, 255, 0.5)&quot;, // ボタン2中身の色
+    button3FillColor:&quot;rgba(192, 128, 32, 0.5)&quot;, // ボタン3中身の色
+    button4FillColor:&quot;rgba(128, 198, 64, 0.5)&quot;, // ボタン4中身の色
+
+    buttonBorderColor:&quot;rgba(255, 255, 0, 0.7)&quot;, // ボタン枠の色（ボタン1～4全体指定）
     button1BorderColor:&quot;rgba(255, 128, 0, 0.7)&quot;, // ボタン1枠の色
-    button1TextColor:&quot;rgba(255, 128, 255, 1.0)&quot;, // ボタン1文字の色
-    button4TextColor:&quot;rgba(255, 128, 128, 1.0)&quot;, // ボタン4文字の色
-    button1PushColor:&quot;rgba(255, 128, 255, 0.7)&quot;, // ボタン1押下の色
+    button2BorderColor:&quot;rgba(255, 255, 255, 0.7)&quot;, // ボタン2枠の色
+    button3BorderColor:&quot;rgba(255, 128, 128, 0.7)&quot;, // ボタン3枠の色
+    button4BorderColor:&quot;rgba(0, 255, 255, 0.7)&quot;, // ボタン4枠の色
+
+    buttonTextColor:&quot;rgba(0, 255, 0, 1.0)&quot;, // ボタン文字の色（ボタン1～4全体指定）
+    button1TextColor:&quot;rgba(255, 128, 128, 1.0)&quot;, // ボタン1文字の色
+    button2TextColor:&quot;rgba(255, 255, 128, 1.0)&quot;, // ボタン2文字の色
+    button3TextColor:&quot;rgba(128, 255, 128, 1.0)&quot;, // ボタン3文字の色
+    button4TextColor:&quot;rgba(128, 255, 255, 1.0)&quot;, // ボタン4文字の色
+
+    buttonPushColor:&quot;rgba(0, 128, 255, 0.7)&quot;, // ボタン押下の色（ボタン1～4全体指定）
+    button1PushColor:&quot;rgba(255, 255, 255, 0.7)&quot;, // ボタン1押下の色
+    button2PushColor:&quot;rgba(255, 128, 255, 0.7)&quot;, // ボタン2押下の色
+    button3PushColor:&quot;rgba(0, 128, 255, 0.7)&quot;, // ボタン3押下の色
     button4PushColor:&quot;rgba(255, 128, 0, 0.7)&quot;, // ボタン4押下の色
+
     jujiPadFillColor:&quot;rgba(255, 255, 255, 0.4)&quot;, // 十字パッド中身の色
     jujiPadBorderColor:&quot;rgba(0, 255, 255, 0.7)&quot;, // 十字パッド枠の色
-    //jujiPadPushColor:&quot;rgba(255, 0, 0, 0.7)&quot;, // 十字パッド押下の色
+
+    jujiPadPushColor:&quot;rgba(255, 0, 0, 0.7)&quot;, // 十字パッド押下の色（十字パッド全体指定）
     jujiPadLPushColor:&quot;rgba(255, 0, 0, 0.7)&quot;, // 十字パッド左押下の色
     jujiPadRPushColor:&quot;rgba(255, 255, 0, 0.7)&quot;, // 十字パッド右押下の色
     jujiPadUPushColor:&quot;rgba(0, 255, 0, 0.7)&quot;, // 十字パッド上押下の色
     jujiPadDPushColor:&quot;rgba(0, 128, 255, 0.7)&quot;, // 十字パッド下押下の色
-    //jujiPadColor:&quot;rgba(0, 0, 0, 0.3)&quot;, // 十字パッド矢印の色
+
+    jujiPadColor:&quot;rgba(0, 0, 0, 0.3)&quot;, // 十字パッド矢印の色（十字パッド全体指定）
     jujiPadLColor:&quot;rgba(255, 0, 0, 0.7)&quot;, // 十字パッド左矢印の色
     jujiPadRColor:&quot;rgba(255, 255, 0, 0.7)&quot;, // 十字パッド右矢印の色
     jujiPadUColor:&quot;rgba(0, 255, 0, 0.7)&quot;, // 十字パッド上矢印の色
