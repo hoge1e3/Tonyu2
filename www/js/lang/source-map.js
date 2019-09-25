@@ -1,4 +1,4 @@
-// MARK_AS_DELETE
+// Used by IndentBuffer
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
