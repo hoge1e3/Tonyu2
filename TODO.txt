@@ -1,17 +1,18 @@
 Worker
- OK fixIndent
- isKernel
+ resize
  focus
+ show stackTrace -> stop
+ rename class
+ runScript1/2
+ isKernel
+ F2 stop
  mkrun2 -> babel
    https://polyfill.io/v3/polyfill.min.js?features=es6
- rename class
  resetLoopCheck
- F2 stop
  check syntax
  abolish Tonyu.runMode, Tonyu.currentProject, Tonyu.animationFrame
  Tonyu.DeferredUtil.promise -> Tonyu.promise
- runScript1/2
- show stackTrace 
+ OK fixIndent
 
 loadPage(undef_page)
 ネットランキング
