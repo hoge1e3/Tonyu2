@@ -1,8 +1,9 @@
 Worker
- fixIndent
+ OK fixIndent
  isKernel
  focus
  mkrun2 -> babel
+   https://polyfill.io/v3/polyfill.min.js?features=es6
  rename class
  resetLoopCheck
  F2 stop

@@ -4,7 +4,8 @@ define(["Tonyu"],function (Tonyu) {
         compiler: {
             namespace:NSP_USR,
             defaultSuperClass: `${NSP_KER}.Actor`,
-            outputFile: "js/concat.js",
+            // relative path in outputFile will fail old version
+            //outputFile: "js/concat.js",
             dependingProjects: [{namespace:NSP_KER}],
         },
         run: {
@@ -51,7 +52,8 @@ define(["Tonyu"],function (Tonyu) {
             }
             opt.compiler.dependingProjects=opt.compiler.dependingProjects||[{namespace:"kernel"}];
             opt.compiler.namespace=opt.compiler.namespace||"user";
-            opt.compiler.outputFile=opt.compiler.outputFile||"js/concat.js";
+            // relative path in outputFile will fail old version
+            //opt.compiler.outputFile=opt.compiler.outputFile||"js/concat.js";
             opt.run=opt.run||{};
             opt.language="tonyu";
         },

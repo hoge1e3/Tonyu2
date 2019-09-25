@@ -337,6 +337,12 @@ PathUtil={
     AbsDir:AbsDir,
     SEP: SEP,
     endsWith: endsWith, startsWith:startsWith,
+    isChildOf: function(child, parent) {
+        return this.startsWith( this.normalize(child), this.normalize(parent));
+    },
+    normalize: function (path) {
+        return this.fixSep(path,"/").replace(/\/+$/,"/");
+    },
     hasDriveLetter: function (path) {
         return driveLetter.exec(path);
     },
@@ -877,6 +883,11 @@ function (extend, P, M,assert,DU){
             // options:{type:String|DataURL|ArrayBuffer|OutputStream|Writer}
             // succ : [type],
             stub("getContent");
+        },
+        size: function (path) {
+            var c=this.getContent(path,{type:ArrayBuffer});
+            var l=c.toBin().byteLength;
+            return l;
         },
         getContentAsync: function (path, options) {
             if (!this.supportsSync()) stub("getContentAsync");
@@ -1708,19 +1719,17 @@ define('Content',["assert","Util","FileSaver"],function (assert,Util,saveAs) {
     return Content;
 });
 
-/*global require, requirejs, process, Buffer*/
+/*global process, global, Buffer*/
 define('NativeFS',["FSClass","assert","PathUtil","extend","Content"],
         function (FS,A,P,extend,Content) {
-    var available=(typeof process=="object"/* && process.__node_webkit*/);
-    if (!available) {
+    var assert=A,fs;
+    try {
+        fs=global.require("fs");
+        fs.existsSync('test.txt');
+    }catch(e){
         return function () {
             throw new Error("This system not support native FS");
         };
-    }
-    var assert=A;
-    var fs=require("fs");
-    if (!fs) {
-        fs=requirejs.nodeRequire("fs");
     }
     var NativeFS=function (rootPoint) {
         if (rootPoint) {
@@ -1784,6 +1793,11 @@ define('NativeFS',["FSClass","assert","PathUtil","extend","Content"],
             } else {*/
                 return Content.bin( fs.readFileSync(np) , this.getContentType(path));
             //}
+        },
+        size: function(path) {
+            var np=this.toNativePath(path);
+            var st=fs.statSync(np);
+            return st.size;
         },
         setContent: function (path,content) {
             A.is(arguments,[P.Absolute,Content]);
@@ -3010,7 +3024,8 @@ SFile.prototype={
     size: function (f) {
         if (!f) {
             if (!this.isDir()) {
-                return this.getBytes().byteLength;
+                return this.act.fs.size(this.act.path);
+                //return this.getBytes().byteLength;
             } else {
                 var sum=0;
                 this.each(function (f) {
@@ -3160,7 +3175,7 @@ define('RootFS',["assert","FSClass","PathUtil","SFile"], function (assert,FS,P,S
             notifyChanged: function (path,metaInfo) {
                 if (!this.observers) return;
                 this.observers.forEach(function (ob) {
-                    if (P.startsWith(path,ob.path)) {
+                    if (P.isChildOf(path,ob.path)) {
                         ob.handler(path,metaInfo);
                     }
                 });
@@ -3641,12 +3656,13 @@ define('FS',["FSClass","NativeFS","LSFS", "WebFS", "PathUtil","Env","assert","SF
     FS.init=function (fs) {
         if (rootFS) return;
         if (!fs) {
-            if (typeof process=="object") {
+            if (NativeFS.available) {
                 fs=new NativeFS();
             } else if (typeof localStorage==="object") {
                 fs=new LSFS(localStorage);
             } else if (typeof importScripts==="function") {
                 // Worker
+                /* global self*/
                 self.addEventListener("message", function (e) {
                     var data=e.data;
                     if (typeof data==="string") {

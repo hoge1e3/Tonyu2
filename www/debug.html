@@ -1,10 +1,15 @@
+<html>
+<body>
 <script src="js/lib/jquery-1.12.1.js" type="text/javascript"></script>
 <script src="js/lib/jquery-ui.js" type="text/javascript"></script>
 <script src="js/lib/require.js"></script>
 <script src="js/reqConf2.js"></script>
 <script>
     requirejs.config(reqConf);
-    requirejs(["runScript3"],function () {
+    console.log(typeof process!=="undefined" && process.cwd());
+    requirejs(["SysDebugger"],function () {
     });
 </script>
-<!--script src="js/gen/runScript3_concat.js"></script-->
+<canvas id="cv"></canvas>
+</body>
+</html>

@@ -1,5 +1,4 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
-(function (global){
     const Assertion=function(failMesg) {
         this.failMesg=flatten(failMesg || "Assertion failed: ");
     };
@@ -193,9 +192,7 @@
     }
     module.exports=assert;
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],2:[function(require,module,exports){
-(function (global){
 /*global window,self,global*/
 (function (deps, factory) {
     module.exports=factory();
@@ -206,14 +203,13 @@
     return (function (){return this;})();
 });
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],3:[function(require,module,exports){
 //		function (assert,TT,IT,DU) {
 var assert=require("../lib/assert");
 var root=require("../lib/root");
 var TonyuThreadF=require("./TonyuThread");
 var IT=require("./tonyuIterator");
-module.exports=root.Tonyu=function () {
+module.exports=function () {
 	// old browser support
 	if (!root.performance) {
 		root.performance = {};
@@ -414,6 +410,7 @@ module.exports=root.Tonyu=function () {
 		//addMeta(fullName, res.meta);
 		nso[shortName]=res;
 		outerRes=res;
+		//console.log("defined", fullName, Tonyu.classes,Tonyu.ID);
 		return chkclass(res,{isShim:false});
 	};
 	klass.isSourceChanged=function (k) {
@@ -576,8 +573,12 @@ module.exports=root.Tonyu=function () {
 			hasKey:hasKey,invokeMethod:invokeMethod, callFunc:callFunc,checkNonNull:checkNonNull,
 			iterator:IT,run:run,checkLoop:checkLoop,resetLoopCheck:resetLoopCheck,//DeferredUtil:DU,
 			VERSION:1560828115159,//EMBED_VERSION
-			A:A};
+			A:A,ID:Math.random()};
 	TT=TonyuThreadF(Tonyu);
+	if (root.Tonyu) {
+		console.error("Tonyu called twice!");
+		throw new Error("Tonyu called twice!");
+	}
 	root.Tonyu=Tonyu;
 	return Tonyu;
 }();
@@ -781,7 +782,7 @@ module.exports=function (Tonyu) {
 			fb._isWaiting=true;
 			fb.suspend();
 			if (j instanceof TonyuThread) j=j.promise();
-            return Promise.resolve(j).then(function (r) {
+			return Promise.resolve(j).then(function (r) {
 				fb.retVal=r;
 				fb.stepsLoop();
 			}).then(e=>e,function (e) {

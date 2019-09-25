@@ -90,6 +90,12 @@ var reqConf={
         },
         FileSaver: {
             exports:"saveAs"
+        },
+        BuilderClient4Sys: {
+            exports:"TonyuBuidlerClient"
+        },
+        Debugger: {
+            exports: "Debugger"
         }
     },
     // filepath - modulename(1 for same as filename)
@@ -218,6 +224,7 @@ var reqConf={
                 "TypeChecker": 1,
                 "Visitor": 1,
                 "XMLBuffer": 1,
+                "IndentFixer": 1,
                 //"compiledProject": 1,
                 //"compiler": "Tonyu.Compiler",
                 "context": 1,
@@ -228,7 +235,8 @@ var reqConf={
                 "source-map": 1,
                 "tonyu2_token": 1,
                 "langMod": 1,
-                "CompilerClient":1,
+                "BuilderClient":1,
+                "BuilderClient4Sys":1,
                 "SourceFiles":1,
                 "stacktrace.min":"stacktrace",
                 "StackDecoder":1,
@@ -278,6 +286,8 @@ var reqConf={
             },
             "reqConf": 1,
             "runtime": {
+                "Debugger": 1,
+                "SysDebugger": 1,
                 "Key": 1,
                 "StackTrace": 1,
                 "TError": 1,

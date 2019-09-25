@@ -380,6 +380,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     function stop() {
         if (!setCmdStat("stop")) return;
         return $.when(curPrj.stop()).then(function () {
+            curPrj.disconnectDebugger();
             displayMode("edit");
             console.log("Boot stopped");
         }).finally(function () {

@@ -73,7 +73,7 @@ module.exports=class {
         } else {
             d.dialog();
         }
-        t.iframe.attr("src","run.html?prj="+param.prj);
+        t.iframe.attr("src","debug.html?prj="+param.prj);
         t.opened=true;
         $(".ui-dialog-titlebar-close").blur();
         t.resizeCanvas(d.width(),d.height());
