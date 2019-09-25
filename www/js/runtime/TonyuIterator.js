@@ -1,3 +1,4 @@
+// MARK_AS_DELETE
 define(["Klass"], function (Klass) {
 	var ArrayValueIterator=Klass.define({
 		$: function ArrayValueIterator(set) {

@@ -1,3 +1,4 @@
+// MARK_AS_DELETE
 define(function (require, exports, module) {
 const S=require("source-map");
 const StackTrace=require("stacktrace");

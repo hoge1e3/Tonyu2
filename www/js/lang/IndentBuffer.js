@@ -1,6 +1,4 @@
-if (typeof define!=="function") {
-	define=require("requirejs").define;
-}
+//used by JSONCol(used by exportHTML), disp
 define(["assert","source-map"],function (A, S) {
 var Pos2RC=function (src) {
 	var $={};

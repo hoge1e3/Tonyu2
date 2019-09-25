@@ -1,3 +1,4 @@
+// MARK_AS_DELETE
 define(function (require,exports,module) {
     const F=require("ProjectFactory");
     //const Compiler=require("CompilerClient");

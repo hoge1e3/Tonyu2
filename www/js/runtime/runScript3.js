@@ -1,3 +1,4 @@
+// MARK_AS_DELETE
 /*global requirejs*/
 requirejs(["FS","Tonyu","Run3Project",
 			"runtime","WebSite","root","runScript_common","Util","StackDecoder"],

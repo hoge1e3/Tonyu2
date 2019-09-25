@@ -8,8 +8,10 @@ Worker
  resetLoopCheck
  F2 stop
  check syntax
- abolish Tonyu.runMode, Tonyu.currentProject
+ abolish Tonyu.runMode, Tonyu.currentProject, Tonyu.animationFrame
  Tonyu.DeferredUtil.promise -> Tonyu.promise
+ runScript1/2
+ show stackTrace 
 
 loadPage(undef_page)
 ネットランキング
