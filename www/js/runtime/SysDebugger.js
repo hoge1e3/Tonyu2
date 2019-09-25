@@ -18,8 +18,8 @@ define(function (require,exports,module) {
     Debugger.on("runtimeError",evt=>{
         console.log(evt.stack.map(s=>s+"").join("\n"));
     });
-    runScript_common.initCanvas(true);
-    Tonyu.globals.$mainCanvas=$(".tonyu-canvas");
+    const cv=runScript_common.initCanvas();
+    Tonyu.globals.$mainCanvas=cv;
     Tonyu.runMode=true;
     Tonyu.animationFrame=()=>new Promise(requestAnimationFrame);
     start();

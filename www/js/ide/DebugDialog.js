@@ -80,8 +80,13 @@ module.exports=class {
         console.log("Diag",size);
     }
     resizeCanvas(w,h) {
-        console.log("canvas size",w,h);
+        //console.log("canvas size",w,h);
         this.iframe.attr("height", h).attr("width",w);
+        try {
+            this.iframe[0].contentWindow.Tonyu.globals.$mainCanvas.attr("height", h).attr("width",w);
+        }catch(e) {
+            console.log(e);
+        }
     }
 };
 });
