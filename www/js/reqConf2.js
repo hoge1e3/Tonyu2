@@ -212,7 +212,7 @@ var reqConf={
                 "wikiEditor": "ide/wikiEditor",
                 sysMod:1,
                 optionFixer:1,
-                RunDialog3: 1,
+                DebugDialog: 1,
             },
             "lang": {
                 "ExpressionParser2": "ExpressionParser",

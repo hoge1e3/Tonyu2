@@ -6,7 +6,7 @@ requirejs(["Util", "Tonyu", "FS", "PathUtil","FileList", "FileMenu",
            "UI","ResEditors","WebSite","exceptionCatcher",
            "Log","MainClassDialog","DeferredUtil","NWMenu",
            "mkrunDiag","zip","LSFS","WebFS",
-           "extLink","DiagAdjuster","ExportHTMLDialog","RunDialog3","GlobalDialog",
+           "extLink","DiagAdjuster","ExportHTMLDialog","DebugDialog","GlobalDialog",
            "root","IDEProject","optionFixer","SourceFiles"
           ],
 function (Util, Tonyu, FS, PathUtil, FileList, FileMenu,
@@ -16,7 +16,7 @@ function (Util, Tonyu, FS, PathUtil, FileList, FileMenu,
           UI,ResEditors,WebSite,EC,
           Log,MainClassDialog,DU,NWMenu,
           mkrunDiag,zip,LSFS,WebFS,
-          extLink,DiagAdjuster,ExportHTMLDialog,RunDialog3,GlobalDialog,
+          extLink,DiagAdjuster,ExportHTMLDialog,DebugDialog,GlobalDialog,
           root,IDEProject,optionFixer,SourceFiles
           ) {
 $(function () {
@@ -324,7 +324,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         if (i) return i.editor;
         return null;
     }
-    var runDialog=new RunDialog3(runDialogParam);
+    var runDialog=new DebugDialog(runDialogParam);
     function displayMode(mode, next) {
         // mode == run     compile_error     runtime_error    edit
         var prog=getCurrentEditor();
