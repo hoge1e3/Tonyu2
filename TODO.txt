@@ -1,5 +1,5 @@
 Worker
- resize
+ OK resize
  focus
  show stackTrace -> stop
  rename class

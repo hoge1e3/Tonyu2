@@ -9,6 +9,7 @@ define(function (require,exports,module) {
     const F=Debugger.ProjectFactory;
     const WebSite=require("WebSite");
     const sysMod=require("sysMod");
+    const runScript_common=require("runScript_common");
     F.addDependencyResolver((prj,spec)=>{
         if (spec.namespace==="kernel") {
             return F.create("compiled",{namespace:"kernel",url:WebSite.compiledKernel});
@@ -17,7 +18,8 @@ define(function (require,exports,module) {
     Debugger.on("runtimeError",evt=>{
         console.log(evt.stack.map(s=>s+"").join("\n"));
     });
-    Tonyu.globals.$mainCanvas=$("#cv");
+    runScript_common.initCanvas(true);
+    Tonyu.globals.$mainCanvas=$(".tonyu-canvas");
     Tonyu.runMode=true;
     Tonyu.animationFrame=()=>new Promise(requestAnimationFrame);
     start();

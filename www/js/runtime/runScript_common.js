@@ -1,6 +1,6 @@
 define([], function () {
     return {
-        initCanvas: function () {
+        initCanvas: function (doResize) {
             function getMargin() {
                 return 0;
             }
@@ -12,10 +12,13 @@ define([], function () {
             var cv=$("<canvas>").attr({width: w-margin, height:h-margin, class:"tonyu-canvas"}).appendTo("body");
 
             var u = navigator.userAgent.toLowerCase();
-            if ((u.indexOf("iphone") == -1 &&
-                u.indexOf("ipad") == -1 &&
-                u.indexOf("ipod") == -1
-                ) && (!window.parent || window === window.parent)) {
+            if (doResize==null) {
+                doResize=(u.indexOf("iphone") == -1 &&
+                    u.indexOf("ipad") == -1 &&
+                    u.indexOf("ipod") == -1
+                ) && (!window.parent || window === window.parent);
+            }
+            if (doResize) {
                 $(window).resize(onResize);
             }
             function onResize() {
