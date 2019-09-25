@@ -76,6 +76,7 @@ module.exports=class {
         t.iframe.attr("src","debug.html?prj="+param.prj);
         t.opened=true;
         $(".ui-dialog-titlebar-close").blur();
+        t.iframe.focus();
         t.resizeCanvas(d.width(),d.height());
         console.log("Diag",size);
     }

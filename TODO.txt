@@ -1,6 +1,6 @@
 Worker
  OK resize
- focus
+ OK focus
  show stackTrace -> stop
  rename class
  runScript1/2
