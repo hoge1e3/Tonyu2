@@ -28,6 +28,7 @@ WS.serv("compiler/init", params=>{
     //console.log(ram.rel("options.json").text());
     prj=CompiledProject.create({dir:prjDir});
     builder=new Builder(prj);
+    return {prjDir:prjDir.path()};
 });
 WS.serv("compiler/addDependingProject", params=>{
     // params: namespace, files
@@ -38,19 +39,34 @@ WS.serv("compiler/addDependingProject", params=>{
     ns2depspec[params.namespace]={
         dir: prjDir.path()
     };
+    return {prjDir:prjDir.path()};
 });
 WS.serv("compiler/fullCompile", async params=>{
-    const res=await builder.fullCompile({destinations:{memory:1}});
-    return res.export();
+    try {
+        const res=await builder.fullCompile({destinations:{memory:1}});
+        return res.export();
+    } catch(e) {
+        throw convertTError(e);
+    }
 });
 WS.serv("compiler/postChange", async params=>{
-    const fs=params.files;// "relpath"=>"content"
-    let relPath;for(let n in fs) {relPath=n;break;}
-    const f=prj.getDir().rel(relPath);
-    f.text(fs[relPath]);
-    const ns=await builder.postChange(f);
-    return ns.export();
+    try {
+        const fs=params.files;// "relpath"=>"content"
+        let relPath;for(let n in fs) {relPath=n;break;}
+        const f=prj.getDir().rel(relPath);
+        f.text(fs[relPath]);
+        const ns=await builder.postChange(f);
+        return ns.export();
+    } catch(e) {
+        throw convertTError(e);
+    }
 });
+function convertTError(e) {
+    if (e.isTError) {
+        e.src=e.src.path();
+    }
+    return e;
+}
 WS.ready();
 
 },{"../lang/Builder":2,"../lang/langMod":14,"../lib/FS":19,"../lib/WorkerServiceW":20,"../lib/root":22,"../project/CompiledProject":23,"../project/ProjectFactory":24,"../runtime/TonyuRuntime":26}],2:[function(require,module,exports){
@@ -11527,8 +11543,16 @@ define('FS',["FSClass","NativeFS","LSFS", "WebFS", "PathUtil","Env","assert","SF
             sendError(ex);
         }
         function sendError(e) {
+            e=Object.assign({name:e.name, message:e.message, stack:e.stack},e||{});
+            try {
+                const j=JSON.stringify(e);
+                e=JSON.parse(j);
+            } catch(je) {
+                e=e ? e.message || e+"" : "unknown";
+                console.log("WorkerServiceW", je, e);
+            }
             self.postMessage({
-                id:id, error:e?(e.stack||e+""):"unknown", status:"error"
+                id:id, error:e, status:"error"
             });
         }
     });
@@ -11942,11 +11966,12 @@ define('FS',["FSClass","NativeFS","LSFS", "WebFS", "PathUtil","Env","assert","SF
 },{}],25:[function(require,module,exports){
 var TError=function (mesg, src, pos) {
 	if (typeof src=="string") {
-		return {
+		return extend(new Error(mesg),{
 			isTError:true,
 			mesg:mesg,
 			src:{
-				name:function () { return src;},
+				path:function () {return "/";},
+				name:function () { return "unknown";},
 				text:function () { return src;}
 			},
 			pos:pos,
@@ -11956,7 +11981,7 @@ var TError=function (mesg, src, pos) {
 			raise: function () {
 				throw this;
 			}
-		};
+		});
 	}
 	var klass=null;
 	if (src && src.src) {
@@ -11964,7 +11989,7 @@ var TError=function (mesg, src, pos) {
 		src=klass.src.tonyu;
 	}
 	if (typeof src.name!=="function") {
-		throw "src="+src+" should be file object";
+		throw new Error("src="+src+" should be file object");
 	}
 	var rc;
 	if ( (typeof (src.text))=="function") {

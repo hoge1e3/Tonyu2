@@ -13,6 +13,7 @@ define(function (require,exports,module) {
         }
     });*/
     F.addType("IDE",params=>{
+        const ide=params.ide;
         const res=F.createDirBasedCore(params);
         const ns2depspec= {
             kernel: {namespace:"kernel", url: WebSite.compiledKernel}
@@ -30,7 +31,15 @@ define(function (require,exports,module) {
             const rp=res.getIframeProject();
             if (rp) rp.exec(src).catch(e=>console.error(e));
         };
-        root.onTonyuDebuggerReady=d=>c.setDebugger(d);
+        let curDebugger;
+        root.onTonyuDebuggerReady=d=>{
+            d.on("runtimeError",e=>{
+                console.log("runt",e.stack.map(s=>s+"").join("\n"));
+                ide.showError(e);
+            });
+            curDebugger=d;
+            c.setDebugger(d);
+        };
         res.compiler=c;
         res.getIframeProject=()=>{
             const ifrm=root.document.querySelector("iframe");
@@ -40,6 +49,7 @@ define(function (require,exports,module) {
         res.fullCompile=c.fullCompile.bind(c);
         res.partialCompile=c.partialCompile.bind(c);
         res.include(sysMod).include(langMod);
+        res.stop=()=>curDebugger && curDebugger.stop();
         /*res.getOutputFile=function () {
             // relative path in outputFile will fail old version
             var opt=this.getOptions();

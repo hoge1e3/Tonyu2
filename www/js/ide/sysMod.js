@@ -6,12 +6,12 @@ define(["Tonyu", "TError", "FS", "ImageList",
                 DU) {
 // (was TonyuProject)
 return {
-    stop:function () {
+    /*stop:function () {
         var cur=this.runningThread; // Tonyu.getGlobal("$currentThreadGroup");
         if (cur) cur.kill();
         var main=this.runningObj;
         if (main && main.stop) return main.stop();
-    },
+    },*/
     rawRun:function (bootClassName) {
         if (WebSite.removeJSOutput) {
             var o=this.getOutputFile();

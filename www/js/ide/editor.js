@@ -1,6 +1,6 @@
 /*global requirejs, require*/
 requirejs(["Util", "Tonyu", "FS", "PathUtil","FileList", "FileMenu",
-           "showErrorPos", "fixIndent", "Wiki",
+           "ErrorDialog", "fixIndent", "Wiki",
            "Shell","Shell2","ProjectOptionsEditor","copyToKernel","KeyEventChecker",
            "IFrameDialog","runtime", "KernelDiffDialog","Sync","searchDialog","syncWithKernel",
            "UI","ResEditors","WebSite","exceptionCatcher",
@@ -10,7 +10,7 @@ requirejs(["Util", "Tonyu", "FS", "PathUtil","FileList", "FileMenu",
            "root","IDEProject","optionFixer","SourceFiles"
           ],
 function (Util, Tonyu, FS, PathUtil, FileList, FileMenu,
-          showErrorPos, fixIndent, Wiki,
+          ErrorDialog, fixIndent, Wiki,
           sh,sh2, ProjectOptionsEditor, ctk, KeyEventChecker,
           IFrameDialog, rt , KDD,Sync,searchDialog,swk,
           UI,ResEditors,WebSite,EC,
@@ -64,7 +64,9 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     optionFixer.fixFile(optionFile);
     //var curProjectDir=curPrjDir;
     //console.log("F",F,root);
-    var curPrj=IDEProject.create({dir:curPrjDir});//, kernelDir);
+    const ide={restart,stop,displayMode,jump};
+    const curPrj=IDEProject.create({dir:curPrjDir,ide});//, kernelDir);
+    ide.project=curPrj;
     const NSP_USR=curPrj.getNamespace();
 
     root.curPrj=curPrj;
@@ -98,8 +100,6 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
    }*/
 
     setDiagMode(false);
-    //ImageList(Tonyu.defaultResource.images, Sprites.setImageList);
-
     //var screenH;
     //var runDialogMode,dialogClosed;
     var runDialogParam={
@@ -331,7 +331,8 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         switch(mode) {
         case "run":
             if (prog) prog.blur();
-            showErrorPos($("#errorPos"));
+            errorDialog.close();
+            //showErrorPos($("#errorPos"));
             //$("#errorPos").hide();// (1000,next);
             //$("#runArea").slideDown(1000, next);
             if (mobile) {
@@ -420,7 +421,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         return curPrj.fullCompile().then(async r=>{
             await SourceFiles.add(r).saveAs(curPrj.getOutputFile());
             runDialog.show();
-        }).finally(function () {
+        },showError).finally(function () {
             if (root.SplashScreen) root.SplashScreen.hide();
         });
         /*return curPrj.rawRun(o.run.bootClass).catch(function (e) {
@@ -451,8 +452,23 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             },50);
         }
     }
-    var pluginAdded={};
-    window.onerror=EC.handleException=Tonyu.onRuntimeError=function (e) {
+    function restart(){
+        stop();
+        runDialog.close();
+        setTimeout(run,100);
+    }
+    //var pluginAdded={};
+    const errorDialog=new ErrorDialog(ide);
+    function showError(e) {
+        try{
+            errorDialog.show(e);
+        } catch(ee) {
+            console.log(ee);
+            stop();
+            //alert(ee);
+        }
+    }
+    window.onerror=EC.handleException=Tonyu.onRuntimeError=ide.showError=showError;/*function (e) {
         console.error(e);
         Tonyu.globals.$lastError=e;
         var t=curPrj.env.traceTbl;
@@ -495,7 +511,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             UI("div",{title:"Error"},e+"",["pre",e.stack]).dialog({width:800});
             stop();
         }
-    };
+    };*/
     $("#mapEditor").click(F(function () {
         console.log("run map");
         run("kernel.MapEditor");
@@ -631,18 +647,6 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         var d=curPrjDir.rel(".desktop");
         d.obj(desktopEnv);
     }
-    /*$("#restore").click(F(restore));
-    function restore() {
-        var n=curPrjDir.name();
-        if (!copySample.available(curPrjDir)) {
-            return alert("このプロジェクトは初期状態に戻せません");
-        };
-        if (confirm(curPrjDir+" を初期状態に戻しますか？")) {
-            sh.rm(curPrjDir,{r:1});
-            copySample(n);
-            ls();
-        }
-    }*/
     $("#mkrun").click(F(function () {
         var dest;
         if (WebSite.isNW) {
@@ -661,30 +665,17 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
                 }
             });
         } else {
-            /*var mkram=FS.get("/mkram/");
-            if (mkram.exists()) mkram.rm({r:1});
-            FS.mount(mkram.path(), LSFS.ramDisk() );*/
-            mkrunDiag.show(curPrj, /*mkram.rel(curPrjDir.name()),*/ {
+            mkrunDiag.show(curPrj, {
                 hiddenFolder:true,
-                onEnd:function () {
-                    //FS.unmount(mkram.path());
-                }
+                onEnd:function () {}
             });
         }
     }));
     $("#imgResEditor").click(F(function () {
         resEditors.open("image");
-        /*if (window.curResEditor) {
-            window.curResEditor.dialog("close");
-        }
-        window.curResEditor=ResEditor(curPrj,"image");*/
     }));
     $("#soundResEditor").click(F(function () {
         resEditors.open("sound");
-        /*if (window.curResEditor) {
-            window.curResEditor.dialog("close");
-        }
-        window.curResEditor=ResEditor(curPrj,"sound");*/
     }));
     $("#prjOptEditor").click(F(function () {
         ProjectOptionsEditor(curPrj);
@@ -736,21 +727,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         return fl.curFile();
     };
     FM.onMenuStart=save;
-    //curPrj.compileKernel();
-    //showRunDialog(true);
     if (root.SplashScreen) root.SplashScreen.hide();
-    /*if (curPrj.getBlobInfos().length>0) {
-        var ld=UI("div",{title:"ログイン"},["div","このプロジェクトを正常に動作させるにはログインが必要です"]);
-        Auth.assertLogin({
-            showLoginLink:function (u) {
-                ld.append(UI("a",{href:u,target:"login",style:"font-size: 20px;"},"ログインする"));
-            },
-            success:function () {
-                ld.dialog("close");
-            }
-        });
-        ld.dialog({modal:true});
-    }*/
     extLink.all();
 });
 });

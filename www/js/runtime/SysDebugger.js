@@ -15,9 +15,9 @@ define(function (require,exports,module) {
             return F.create("compiled",{namespace:"kernel",url:WebSite.compiledKernel});
         }
     });
-    Debugger.on("runtimeError",evt=>{
+    /*Debugger.on("runtimeError",evt=>{
         console.log(evt.stack.map(s=>s+"").join("\n"));
-    });
+    });*/
     const cv=runScript_common.initCanvas();
     Tonyu.globals.$mainCanvas=cv;
     Tonyu.runMode=true;
@@ -33,7 +33,10 @@ define(function (require,exports,module) {
         //await prj.loadClasses();
         const boot=opt.run.bootClass|| getQueryString("boot");
         console.log("boot",boot);
-        if (boot) Debugger.create(boot);
+        if (boot) {
+            Tonyu.runningObj=Debugger.create(boot);
+            Debugger.stop=()=>Tonyu.runningObj.stop();
+        }
     }
     function getQueryString(key, default_)
     {

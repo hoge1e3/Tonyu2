@@ -181,6 +181,7 @@ var reqConf={
                 "wikiFullScreen": 1
             },
             "ide": {
+                "ErrorDialog":1,
                 "RunDialog": 1,
                 "DiffDialog": 1,
                 "ProjectItem": 1,

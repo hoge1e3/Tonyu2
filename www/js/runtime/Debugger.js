@@ -76,7 +76,7 @@ root.Debugger={
     create: function (className) {
         try {
             const klass=Tonyu.getClass(className);
-            new klass();
+            return new klass();
         }catch(e) {
             Tonyu.onRuntimeError(e);
             //console.error(e);

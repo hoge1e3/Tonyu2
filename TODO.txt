@@ -5,7 +5,7 @@ Worker
  rename class
  runScript1/2
  isKernel
- F2 stop
+ F2 stop when focused in iframe
  mkrun2 -> babel
    https://polyfill.io/v3/polyfill.min.js?features=es6
  resetLoopCheck
