@@ -1,7 +1,7 @@
 /*global requirejs*/
-requirejs(["FS","Tonyu","Tonyu.Project","Shell","ScriptTagFS",
+requirejs(["FS","Tonyu","IDEProject","Shell","ScriptTagFS",
 			"runtime","WebSite","root","runScript_common"],
-		function (FS,  Tonyu, Tonyu_Project, sh, ScriptTagFS,
+		function (FS,  Tonyu, IDEProject, sh, ScriptTagFS,
 				rt,WebSite,root,com) {
 	$(function () {
 		var home=FS.get(WebSite.tonyuHome);
@@ -22,29 +22,7 @@ requirejs(["FS","Tonyu","Tonyu.Project","Shell","ScriptTagFS",
 		};
 
 		var cv=com.initCanvas();
-		/*function getMargin() {
-			return 0;
-		}
 
-		var margin = getMargin();
-		var w=$(window).width();
-		var h=$(window).height();
-		$("body").css({overflow:"hidden", margin:"0px"});
-		var cv=$("<canvas>").attr({width: w-margin, height: h-margin,class:"tonyu-canvas"}).appendTo("body");
-
-		var u = navigator.userAgent.toLowerCase();
-		if ((u.indexOf("iphone") == -1 &&
-			u.indexOf("ipad") == -1 &&
-			u.indexOf("ipod") == -1
-		) && (!window.parent || window === window.parent) ) {
-			$(window).resize(onResize);
-		}
-		function onResize() {
-			var margin = getMargin();
-			w=$(window).width();
-			h=$(window).height();
-			cv.attr({width: w-margin, height: h-margin});
-		}*/
 
 		var locs=location.href.replace(/\?.*/,"").split(/\//);
 		var prj=locs.pop() || "runscript";
@@ -70,7 +48,9 @@ requirejs(["FS","Tonyu","Tonyu.Project","Shell","ScriptTagFS",
 				run: {mainClass: "Main", bootClass: "Boot"},
 				kernelEditable: false
 		};
-		var curPrj=Tonyu_Project(curProjectDir);//, kernelDir);
+		const NOP=e=>e;
+		const ide={restart:NOP,stop:NOP,displayMode:NOP,jump:NOP};
+		var curPrj=IDEProject.create({dir:curProjectDir,ide});//, kernelDir);
 		curPrj.initCanvas=function () {
 			Tonyu.globals.$mainCanvas=cv;
 		};

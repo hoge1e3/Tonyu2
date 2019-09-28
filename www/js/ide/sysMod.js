@@ -1,7 +1,7 @@
-define(["Tonyu", "TError", "FS", "ImageList",
+define(["Tonyu", "FS", "ImageList",
         "Blob","thumbnail","WebSite","plugins",
         "DeferredUtil"],
-        function (Tonyu, TError, FS, ImageList,
+        function (Tonyu, FS, ImageList,
                 Blob,thumbnail,WebSite,plugins,
                 DU) {
 // (was TonyuProject)
