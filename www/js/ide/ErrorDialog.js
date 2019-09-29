@@ -19,21 +19,19 @@ class ErrorDialog {
         }
         const ide=this.ide;
         //options=options||{};
-        let mesg, src, pos, row, col;
+        let message=err.message, src, pos, row, col;
         if (!err) {
             close();
             return;
         }
         if (err.isTError) {
-            mesg=err.mesg;
             src=err.src;
             pos=err.pos;
-            row=err.row+1;
-            col=err.col+1;
+            row=err.row;
+            col=err.col;
         } else {
             src={name:function (){return "不明";},text:()=>null};
             pos=0;
-            mesg=err.message;
         }
         if (err.stack && err.stack.length>0 && err.stack[0].fileName) {
             const compiler=ide.project.compiler;
@@ -51,7 +49,7 @@ class ErrorDialog {
         }
         if(typeof pos=="object") {row=pos.row; col=pos.col;}
         elem.empty();
-        const mesgd=$("<div>").text(mesg+" 場所："+src.name()+(typeof row=="number"?":"+row+":"+col:""));
+        const mesgd=$("<div>").text(message+" 場所："+src.name()+(typeof row=="number"?":"+row+":"+col:""));
         if(typeof row==="number" && typeof col==="number") {
             mesgd.append($("<button>").text("エラー箇所に移動").click(jump));
         }
@@ -77,11 +75,9 @@ class ErrorDialog {
             srcd.append($("<span>").text(str.substring(pos)));
             elem.append(srcd);
         }
-        //elem.attr("title",mesg+" 場所："+src.name());
         elem.attr("title","エラー");
         elem.dialog({width:600,height:400});
         $.data(elem,"opened",true);
-        //Log.d("error", mesg+"\nat "+src+":"+err.pos+"\n"+str.substring(0,err.pos)+"##HERE##"+str.substring(err.pos));
         return elem;
     }
     show(e) {

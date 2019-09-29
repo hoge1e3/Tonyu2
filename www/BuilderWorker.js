@@ -1,4 +1,6 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+
+},{}],2:[function(require,module,exports){
 const Tonyu=require("../runtime/TonyuRuntime");
 const Builder=require("../lang/Builder");//require("../lang/projectCompiler2");
 const root=require("../lib/root");
@@ -69,7 +71,7 @@ function convertTError(e) {
 }
 WS.ready();
 
-},{"../lang/Builder":2,"../lang/langMod":14,"../lib/FS":19,"../lib/WorkerServiceW":20,"../lib/root":22,"../project/CompiledProject":23,"../project/ProjectFactory":24,"../runtime/TonyuRuntime":26}],2:[function(require,module,exports){
+},{"../lang/Builder":3,"../lang/langMod":15,"../lib/FS":20,"../lib/WorkerServiceW":21,"../lib/root":23,"../project/CompiledProject":24,"../project/ProjectFactory":25,"../runtime/TonyuRuntime":27}],3:[function(require,module,exports){
 const Tonyu=require("../runtime/TonyuRuntime");
 const JSGenerator=require("./JSGenerator");
 const Semantics=require("./Semantics");
@@ -450,7 +452,7 @@ module.exports=class {
 
 };
 
-},{"../lib/FS":19,"../lib/assert":21,"../runtime/TError":25,"../runtime/TonyuRuntime":26,"./IndentBuffer":5,"./JSGenerator":6,"./Semantics":8,"./SourceFiles":9,"./TypeChecker":10,"./source-map":17}],3:[function(require,module,exports){
+},{"../lib/FS":20,"../lib/assert":22,"../runtime/TError":26,"../runtime/TonyuRuntime":27,"./IndentBuffer":6,"./JSGenerator":7,"./Semantics":9,"./SourceFiles":10,"./TypeChecker":11,"./source-map":18}],4:[function(require,module,exports){
 // parser.js の補助ライブラリ．式の解析を担当する
 module.exports=function () {
 	const Parser=require("./parser");
@@ -720,7 +722,7 @@ module.exports=function () {
 	return $;
 };
 
-},{"./parser":16}],4:[function(require,module,exports){
+},{"./parser":17}],5:[function(require,module,exports){
 const Grammar=function () {
 	const Parser=require("./parser");
 	var p=Parser;
@@ -824,7 +826,7 @@ const Grammar=function () {
 Grammar.SUBELEMENTS=Symbol("[SUBELEMENTS]");
 module.exports=Grammar;
 
-},{"./parser":16}],5:[function(require,module,exports){
+},{"./parser":17}],6:[function(require,module,exports){
 const A=require("../lib/assert");
 const S=require("./source-map");
 
@@ -1111,7 +1113,7 @@ module.exports=function (options) {
 	return $;
 };
 
-},{"../lib/assert":21,"./source-map":17}],6:[function(require,module,exports){
+},{"../lib/assert":22,"./source-map":18}],7:[function(require,module,exports){
 /*define(["Tonyu", "Tonyu.Iterator", "TonyuLang", "ObjectMatcher", "TError", "IndentBuffer",
 		"context", "Visitor","Tonyu.Compiler","assert"],
 function(Tonyu, Tonyu_iterator, TonyuLang, ObjectMatcher, TError, IndentBuffer,
@@ -2223,7 +2225,7 @@ function genJS(klass, env, genOptions) {//B
 return {genJS:genJS};
 })();
 
-},{"../lib/assert":21,"../runtime/TError":25,"../runtime/TonyuRuntime":26,"./IndentBuffer":5,"./ObjectMatcher":7,"./Visitor":11,"./compiler":12,"./context":13}],7:[function(require,module,exports){
+},{"../lib/assert":22,"../runtime/TError":26,"../runtime/TonyuRuntime":27,"./IndentBuffer":6,"./ObjectMatcher":8,"./Visitor":12,"./compiler":13,"./context":14}],8:[function(require,module,exports){
 module.exports=(function () {
 	var OM={};
 	var VAR="$var",THIZ="$this";
@@ -2275,7 +2277,7 @@ module.exports=(function () {
 	return OM;
 })();
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 /*if (typeof define!=="function") {//B
 	define=require("requirejs").define;
 }
@@ -3048,7 +3050,7 @@ function annotateSource2(klass, env) {//B
 return {initClassDecls:initClassDecls, annotate:annotateSource2};
 })();
 
-},{"../lib/assert":21,"../lib/root":22,"../runtime/TError":25,"../runtime/TonyuRuntime":26,"./Grammar":4,"./IndentBuffer":5,"./ObjectMatcher":7,"./Visitor":11,"./compiler":12,"./context":13,"./parse_tonyu2":15}],9:[function(require,module,exports){
+},{"../lib/assert":22,"../lib/root":23,"../runtime/TError":26,"../runtime/TonyuRuntime":27,"./Grammar":5,"./IndentBuffer":6,"./ObjectMatcher":8,"./Visitor":12,"./compiler":13,"./context":14,"./parse_tonyu2":16}],10:[function(require,module,exports){
 //define(function (require,exports,module) {
 /*const root=require("root");*/
 const root=require("../lib/root");
@@ -3150,7 +3152,7 @@ class SourceFiles {
 module.exports=new SourceFiles();
 //});/*--end of define--*/
 
-},{"../lib/root":22}],10:[function(require,module,exports){
+},{"../lib/root":23}],11:[function(require,module,exports){
 /*if (typeof define!=="function") {
 	define=require("requirejs").define;
 }
@@ -3313,7 +3315,7 @@ TypeChecker.checkExpr=function (klass,env) {
 };
 module.exports=TypeChecker;
 
-},{"./Grammar":4,"./Visitor":11,"./compiler":12,"./context":13}],11:[function(require,module,exports){
+},{"./Grammar":5,"./Visitor":12,"./compiler":13,"./context":14}],12:[function(require,module,exports){
 const Visitor = function (funcs) {
 	var $={funcs:funcs, path:[]};
 	$.visit=function (node) {
@@ -3346,7 +3348,7 @@ const Visitor = function (funcs) {
 };
 module.exports=Visitor;
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 	const Tonyu=require("../runtime/TonyuRuntime");
 	const ObjectMatcher=require("./ObjectMatcher");
 	//const TError=require("TError");
@@ -3466,7 +3468,7 @@ module.exports=Visitor;
 	cu.getParams=getParams;
 	module.exports=cu;
 
-},{"../lib/root":22,"../runtime/TonyuRuntime":26,"./ObjectMatcher":7}],13:[function(require,module,exports){
+},{"../lib/root":23,"../runtime/TonyuRuntime":27,"./ObjectMatcher":8}],14:[function(require,module,exports){
 module.exports=function () {
 	var c={};
 	c.ovrFunc=function (from , to) {
@@ -3502,7 +3504,7 @@ module.exports=function () {
 	}
 };
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
     module.exports={
         getNamespace: function () {//override
             var opt=this.getOptions();
@@ -3524,7 +3526,7 @@ module.exports=function () {
         // loadClasses: stub
     };
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 /*
 * Tonyu2 の構文解析を行う．
 * TonyuLang.parse(src);
@@ -3857,7 +3859,7 @@ module.exports=function () {
 	return $;
 }();
 
-},{"../runtime/TError":25,"./ExpressionParser2":3,"./Grammar":4,"./IndentBuffer":5,"./parser":16,"./tonyu2_token":18}],16:[function(require,module,exports){
+},{"../runtime/TError":26,"./ExpressionParser2":4,"./Grammar":5,"./IndentBuffer":6,"./parser":17,"./tonyu2_token":19}],17:[function(require,module,exports){
 module.exports=function () {
 	function extend(dst, src) {
 		var i;
@@ -4450,7 +4452,7 @@ module.exports=function () {
 	return $;
 }();
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
@@ -7506,7 +7508,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ ])
 });
 ;
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 /*define(["Grammar", "XMLBuffer", "IndentBuffer","disp", "Parser","TError"],
 function (Grammar, XMLBuffer, IndentBuffer, disp, Parser,TError) {
 */
@@ -7751,7 +7753,7 @@ module.exports=function () {
 	return {parse:parse, extension:"js",reserved:reserved};
 }();
 
-},{"./parser":16}],19:[function(require,module,exports){
+},{"./parser":17}],20:[function(require,module,exports){
 // This is kowareta! because r.js does not generate module name:
 //   define("FSLib",[], function () { ...
 (function (d,f) {
@@ -9472,14 +9474,23 @@ define('Content',["assert","Util","FileSaver"],function (assert,Util,saveAs) {
     return Content;
 });
 
-/*global process, global, Buffer*/
+/*global process, global, Buffer, requirejs, require*/
 define('NativeFS',["FSClass","assert","PathUtil","extend","Content"],
         function (FS,A,P,extend,Content) {
     var assert=A,fs;
-    try {
-        fs=global.require("fs");
-        fs.existsSync('test.txt');
-    }catch(e){
+    const requireTries=[
+        ()=>require("fs"),()=>requirejs.nodeRequire("fs"),()=>global.require("fs")
+    ];
+    for (let fsf of requireTries) {
+        try {
+            fs=fsf();
+            fs.existsSync('test.txt');
+            process.cwd();
+
+            break;
+        } catch(e){fs=null;}
+    }
+    if (!fs) {
         return function () {
             throw new Error("This system not support native FS");
         };
@@ -11488,7 +11499,7 @@ define('FS',["FSClass","NativeFS","LSFS", "WebFS", "PathUtil","Env","assert","SF
 });
 //})(window);
 
-},{}],20:[function(require,module,exports){
+},{"fs":1}],21:[function(require,module,exports){
 /*global self*/
 // Worker Side
     var idseq=1;
@@ -11568,7 +11579,7 @@ define('FS',["FSClass","NativeFS","LSFS", "WebFS", "PathUtil","Env","assert","SF
     }
     module.exports=self.WorkerService;
 
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
     const Assertion=function(failMesg) {
         this.failMesg=flatten(failMesg || "Assertion failed: ");
     };
@@ -11762,7 +11773,7 @@ define('FS',["FSClass","NativeFS","LSFS", "WebFS", "PathUtil","Env","assert","SF
     }
     module.exports=assert;
 
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 /*global window,self,global*/
 (function (deps, factory) {
     module.exports=factory();
@@ -11773,7 +11784,7 @@ define('FS',["FSClass","NativeFS","LSFS", "WebFS", "PathUtil","Env","assert","SF
     return (function (){return this;})();
 });
 
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 /*define(function (require,exports,module) {
     const F=require("ProjectFactory");
     const root=require("root");
@@ -11832,7 +11843,7 @@ define('FS',["FSClass","NativeFS","LSFS", "WebFS", "PathUtil","Env","assert","SF
     });
 //});/*--end of define--*/
 
-},{"../lang/SourceFiles":9,"../lang/langMod":14,"../lib/root":22,"./ProjectFactory":24}],24:[function(require,module,exports){
+},{"../lang/SourceFiles":10,"../lang/langMod":15,"../lib/root":23,"./ProjectFactory":25}],25:[function(require,module,exports){
 //define(function (require,exports,module) {
     // This factory will be widely used, even BitArrow.
 
@@ -11963,21 +11974,21 @@ define('FS',["FSClass","NativeFS","LSFS", "WebFS", "PathUtil","Env","assert","SF
     };
 //});/*--end of define--*/
 
-},{}],25:[function(require,module,exports){
-var TError=function (mesg, src, pos) {
+},{}],26:[function(require,module,exports){
+var TError=function (message, src, pos) {
+	let rc;
 	if (typeof src=="string") {
-		return extend(new Error(mesg),{
+		rc=TError.calcRowCol(src,pos);
+		message+=" at "+(rc.row)+":"+(rc.col);
+		return extend(new Error(message),{
 			isTError:true,
-			mesg:mesg,
+			//message:message,
 			src:{
 				path:function () {return "/";},
 				name:function () { return "unknown";},
 				text:function () { return src;}
 			},
-			pos:pos,
-			toString:function (){
-				return this.mesg+" at "+src+":"+this.pos;
-			},
+			pos:pos,row:rc.row, col:rc.col,
 			raise: function () {
 				throw this;
 			}
@@ -11988,29 +11999,23 @@ var TError=function (mesg, src, pos) {
 		klass=src;
 		src=klass.src.tonyu;
 	}
-	if (typeof src.name!=="function") {
+	if (typeof src.name!=="function" || typeof src.text!=="function") {
 		throw new Error("src="+src+" should be file object");
 	}
-	var rc;
-	if ( (typeof (src.text))=="function") {
-		var s=src.text();
-		if (typeof s=="string") {
-			rc=TError.calcRowCol(s,pos);
-		}
-	}
+	const s=src.text();
+	rc=TError.calcRowCol(s,pos);
 	function extend(dst,src) {for (var k in src) dst[k]=src[k];return dst;}
-	return extend(new Error(mesg),{
+	message+=" at "+src.name()+":"+rc.row+":"+rc.col;
+	return extend(new Error(message),{
 		isTError:true,
-		mesg:mesg,src:src,pos:pos,row:rc.row, col:rc.col, klass:klass,
-		toString:function (){
-			return this.mesg+" at "+this.src.name()+":"+this.row+":"+this.col;
-		},
+		//message:message,
+		src:src,pos:pos,row:rc.row, col:rc.col, klass:klass,
 		raise: function () {
 			throw this;
 		}
 	});
 };
-TError.calcRowCol=function (text,pos) {
+TError.calcRowCol=function (text,pos) {// returns 1 origin row,col
 	var lines=text.split("\n");
 	var pp=0,row,col;
 	for (row=0;row<lines.length ; row++) {
@@ -12020,11 +12025,11 @@ TError.calcRowCol=function (text,pos) {
 			break;
 		}
 	}
-	return {row:row,col:col};
+	return {row:row+1,col:col+1};
 };
 module.exports=TError;
 
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 //		function (assert,TT,IT,DU) {
 var assert=require("../lib/assert");
 var root=require("../lib/root");
@@ -12404,7 +12409,7 @@ module.exports=function () {
 	return Tonyu;
 }();
 
-},{"../lib/assert":21,"../lib/root":22,"./TonyuThread":27,"./tonyuIterator":28}],27:[function(require,module,exports){
+},{"../lib/assert":22,"../lib/root":23,"./TonyuThread":28,"./tonyuIterator":29}],28:[function(require,module,exports){
 //	var Klass=require("../lib/Klass");
 module.exports=function (Tonyu) {
 	var cnts={enterC:{},exitC:0};
@@ -12669,7 +12674,7 @@ module.exports=function (Tonyu) {
 	return TonyuThread;
 };
 
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 //define(["Klass"], function (Klass) {
 	//var Klass=require("../lib/Klass");
 	class ArrayValueIterator {
@@ -12756,4 +12761,4 @@ module.exports=function (Tonyu) {
 //	return IT;
 //});
 
-},{}]},{},[1]);
+},{}]},{},[2]);
