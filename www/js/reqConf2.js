@@ -243,6 +243,7 @@ var reqConf={
                 "StackDecoder":1,
             },
             "lib": {
+                "miniJSLoader":1,
                 "Class": 1,
                 "FileSaver.min": "FileSaver",
                 "JSONCol": 1,

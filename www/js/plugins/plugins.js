@@ -1,4 +1,4 @@
-define(["WebSite"],function (WebSite){
+define(["WebSite","root"],function (WebSite,root){
     var plugins={};
     var installed= {
         box2d:{src: "Box2dWeb-2.1.a.3.min.js",detection:/BodyActor/,symbol:"Box2D" },
@@ -61,12 +61,12 @@ define(["WebSite"],function (WebSite){
         if (!i) throw new Error("plugin not found: "+name);
         options=convOpt(options);
         var src=WebSite.pluginTop+"/"+i.src;
-        var reqj;
-        if (typeof requireSimulator==="undefined") {
+        var reqj=root.requirejs;
+        /*if (typeof requireSimulator==="undefined") {
             if (typeof requirejs==="function") reqj=requirejs;
         } else {
             if (requireSimulator.real) reqj=requireSimulator.real.requirejs;
-        }
+        }*/
         if (reqj) {
             src=src.replace(/\.js$/,"");
             console.log("Loading plugin via requirejs",src);

@@ -1,10 +1,11 @@
 :begin
 
 cd /d %~dp0
-cd ..\www\js
+rem cd ..\www\js
 
-del gen\runScript3_concat.js
-call r_js -o build_senv.js
+rem del ..\g2\runScript2_concat.js
+rem -o is option, not output
+call r_js -o run2_build.js
 
 pause
 goto begin

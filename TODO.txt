@@ -1,17 +1,19 @@
 Worker
- OK resize
- OK focus
- show stackTrace -> stop
- rename class
  runScript1/2
+ rename class
  isKernel
  F2 stop when focused in iframe
  mkrun2 -> babel
    https://polyfill.io/v3/polyfill.min.js?features=es6
  resetLoopCheck
- check syntax
+ thumbnail
  abolish Tonyu.runMode, Tonyu.currentProject, Tonyu.animationFrame
  Tonyu.DeferredUtil.promise -> Tonyu.promise
+ check syntax(in ace)
+ $Boot.on("classChanged") -> 堆積しないように
+ OK resize
+ OK focus
+ OK show stackTrace -> stop
  OK fixIndent
 
 loadPage(undef_page)
