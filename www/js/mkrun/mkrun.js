@@ -123,7 +123,7 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu"],
             //TODO async...
             //dest.rel("js/concat.js").text(usrjs.text()+"\n//# sourceMappingURL=concat.js.map");// js/ is needed??
             var kerjs=FS.get(WebSite.kernelDir).rel("js/concat.js");
-            var runScr2=jsDir.rel("gen/runScript2_concat.js");
+            var runScr2=jsDir.rel("g2/runScript2_concat.js");
             return $.when(
                 usrjsmap.exists() && usrjsmap.copyTo(dest.rel("js/concat.js.map")),
                 usrjs.copyTo(dest.rel("js/concat.js")),

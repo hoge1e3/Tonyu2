@@ -1,37 +1,25 @@
-define(["root","plugins"], function (root, plugins) {
+define(["root","plugins","ProjectFactory","sysMod","miniJSLoader","WebSite"],
+function (root, plugins,F,sysMod,JS,WebSite) {
     // used by runScript2
-    return function (factory, cpr) {
-        const Tonyu=root.Tonyu;
-        var kernelProject=factory.create("compiled",{
-            namespace:"kernel",
-            url: root.WebSite.compiledKernel
-        });
-        var m={
-                getDir: function () {return this.dir;},
-                getDependingProjects:function () {//override
-                    return [kernelProject];
-                },
-                getOptions: function () {
-                    var resFile=this.getDir().rel("options.json");
-                    return resFile.obj();
-                },
-                getResource: function () {
-                    var resFile=this.getDir().rel("res.json");
-                    return resFile.obj();
-                },
-                loadPlugins: function (onload) {
-                    var opt=this.getOptions();
-                    return plugins.loadAll(opt.plugins,onload);
-                },
-                requestPlugin:function(){},
-                run: function (bootClassName) {
-                    var ctx={classes:Tonyu.classMetas};
-                    this.loadClasses(ctx).then(function () {
-                        Tonyu.run(bootClassName);
-                    });
-                }
-        };
-        for (var k in m) cpr[k]=m[k];
-        return cpr;
+    return function (dir) {
+        const res=F.createDirBasedCore({dir});
+		res.include(sysMod).include({
+			getDependingProjects: ()=>[],
+			async loadClasses() {
+				await JS.load(WebSite.compiledKernel);
+				await JS.load("js/concat.js");
+			},
+			loadPlugins(onload) {
+				var opt=this.getOptions();
+				return plugins.loadAll(opt.plugins,onload);
+			},
+			getNamespace() {
+				var opt=this.getOptions();
+				if (opt.compiler && opt.compiler.namespace) return opt.compiler.namespace;
+				return "user";
+			},
+			requestPlugin:e=>e
+		});
+        return res;
     };
 });

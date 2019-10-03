@@ -1,6 +1,6 @@
 /*global requirejs, process*/
-requirejs(["FS","ProjectFactory","sysMod", "Shell","runtime","WebSite","LSFS","Tonyu","root","runScript_common","miniJSLoader","plugins"],
-		function (FS,  F, sysMod, sh,  rt,WebSite,LSFS,Tonyu,root,com,JS,plugins) {
+requirejs(["FS","compiledTonyuProject", "Shell","runtime","WebSite","LSFS","Tonyu","root","runScript_common"],
+		function (FS, CPTR,  sh,  rt,WebSite,LSFS,Tonyu,root,com) {
 	$(function () {
 		root.SplashScreen={
 			hide: function () {$("#splash").hide();},
@@ -33,19 +33,7 @@ requirejs(["FS","ProjectFactory","sysMod", "Shell","runtime","WebSite","LSFS","T
 			WebSite.compiledKernel=window.runtimePath+"lib/tonyu/kernel.js";
 		}
 		root.loadFiles(curProjectDir);
-		const curPrj=F.createDirBasedCore({dir:curProjectDir});
-		curPrj.include(sysMod).include({
-			getDependingProjects: ()=>[],
-			async loadClasses() {
-				await JS.load(WebSite.compiledKernel);
-				await JS.load("js/concat.js");
-			},
-			loadPlugins(onload) {
-				var opt=this.getOptions();
-				return plugins.loadAll(opt.plugins,onload);
-			},
-			requestPlugin:e=>e
-		});
+		const curPrj=CPTR(curProjectDir);
 
 		sh.cd(curProjectDir);
 		/*var curPrj=CPTR("user", "js/concat.js",curProjectDir);*/

@@ -4172,6 +4172,463 @@ define('FS',["FSClass","NativeFS","LSFS", "WebFS", "PathUtil","Env","assert","SF
 });
 //})(window);
 
+/*global window,self,global*/
+define('root',[],function (){
+    if (typeof window!=="undefined") return window;
+    if (typeof self!=="undefined") return self;
+    if (typeof global!=="undefined") return global;
+    return (function (){return this;})();
+});
+
+define('Platform',[],function () {
+    var WebSite={};
+    // from https://w3g.jp/blog/js_browser_sniffing2015
+    var u=window.navigator.userAgent.toLowerCase();
+    WebSite.tablet=(u.indexOf("windows") != -1 && u.indexOf("touch") != -1)
+    || u.indexOf("ipad") != -1
+    || (u.indexOf("android") != -1 && u.indexOf("mobile") == -1)
+    || (u.indexOf("firefox") != -1 && u.indexOf("tablet") != -1)
+    || u.indexOf("kindle") != -1
+    || u.indexOf("silk") != -1
+    || u.indexOf("playbook") != -1;
+    WebSite.mobile=(u.indexOf("windows") != -1 && u.indexOf("phone") != -1)
+    || u.indexOf("iphone") != -1
+    || u.indexOf("ipod") != -1
+    || (u.indexOf("android") != -1 && u.indexOf("mobile") != -1)
+    || (u.indexOf("firefox") != -1 && u.indexOf("mobile") != -1)
+    || u.indexOf("blackberry") != -1;
+    return WebSite;
+});
+
+define('WebSite',["FS","Platform"], function (FS,Platform) {
+	var P=FS.PathUtil;
+	var loc=document.location.href;
+	var devMode=!!loc.match(/html\/dev\//) && !!loc.match(/localhost:3/);
+	var WebSite;
+	var prot=location.protocol;
+	if (!prot.match(/^http/)) prot="https:";
+	switch(window.WebSite_runType) {
+	case "IDE":
+		WebSite={
+			urlAliases: {}, top: ".",
+			tablet:Platform.tablet,
+			mobile:Platform.mobile
+		};
+		WebSite.builtinAssetNames={
+			"images/Ball.png":1,
+			"images/base.png":1,
+			"images/Sample.png":1,
+			"images/inputPad.png":1,
+			"images/neko.png":1,
+			"images/mapchip.png":1
+		};
+		if (!WebSite.pluginTop) {
+			WebSite.pluginTop=WebSite.top+"/js/plugins";
+		}
+		WebSite.sampleImg=WebSite.top+"/images";
+		WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
+		WebSite.mp4Disabled=WebSite.isNW;
+		WebSite.tonyuHome="/Tonyu/";
+		WebSite.PathSep="/";
+		if (WebSite.isNW) {
+			WebSite.noconcat=true;
+			WebSite.PathSep=require("path").sep;
+			WebSite.cwd=P.directorify(process.cwd().replace(/\\/g,"/"));
+			//WebSite.exeDir=WebSite.execDir=P.up(P.fixSep(process.execPath)); not suitable when mac
+			if (process.env.TONYU_HOME) {
+				WebSite.tonyuHome=P.directorify(process.env.TONYU_HOME);
+			} else {
+				WebSite.tonyuHome=P.rel(WebSite.cwd,"fs/Tonyu/");
+			}
+			WebSite.logdir=process.env.TONYU_LOGDIR;//"C:/var/log/Tonyu/";
+			WebSite.wwwDir=P.rel(WebSite.cwd,"www/");
+			WebSite.platform=process.platform;
+			WebSite.ffmpeg=P.rel(WebSite.cwd,(WebSite.platform=="win32"?
+					"ffmpeg/bin/ffmpeg.exe":"ffmpeg/bin/ffmpeg"));
+			WebSite.pkgInfo=require(P.rel(WebSite.cwd, "package.json"));
+			if (process.env.TONYU_PROJECTS) {
+				WebSite.projects=process.env.TONYU_PROJECTS.replace(/\\/g,"/").split(require('path').delimiter);
+			} else if ( WebSite.pkgInfo && WebSite.pkgInfo.config && WebSite.pkgInfo.config.prjDirs ){
+				WebSite.projects=WebSite.pkgInfo.config.prjDirs.map(function (d) {
+					d=P.directorify(d);
+					if (P.isAbsolute(d)) return d;
+					return P.rel(WebSite.cwd,d);
+				});
+			} else {
+				WebSite.projects=[P.rel(WebSite.cwd,"Projects/"),
+					P.rel(WebSite.tonyuHome,"Projects/")];
+			}
+			WebSite.kernelDir=P.rel(WebSite.wwwDir,"Kernel/");
+		} else {
+			if (loc.match(/edit\.tonyu\.jp\/n\//)) {
+				WebSite.wwwDir=prot+"//"+location.host+"/n/";
+			} else {
+				// Why?
+				WebSite.wwwDir=prot+"//"+location.host+"/";
+			}
+			WebSite.projects=[P.rel(WebSite.tonyuHome,"Projects/")];
+		}
+		//WebSite.kernelDir=WebSite.top+"/Kernel/";
+		// kernelDir must be absolute
+		WebSite.kernelDir=P.rel(WebSite.wwwDir,"Kernel/");
+		// compiledKernel is URL , not file path.
+		// It is correct as long as the html pages in www/ (not html/build|dev )
+		WebSite.compiledKernel="Kernel/js/concat.js";   //P.rel(WebSite.kernelDir,"js/concat.js");
+		if (loc.match(/localhost\/tonyu2/)) {
+			WebSite.wwwDir=prot+"//"+location.host+"/tonyu2/";
+			WebSite.kernelDir=WebSite.wwwDir+"Kernel/";
+			WebSite.compiledKernel=WebSite.kernelDir+"js/concat.js";
+			WebSite.uploadTmpUrl=prot+"//localhost/tsite/tonyu/e/cgi-bin/uploadTmp.cgi";
+			WebSite.newVersionUrl=prot+"//localhost/tsite/tonyu/project/newVersion.cgi";
+		} else {
+			WebSite.uploadTmpUrl=prot+"//edit.tonyu.jp/cgi-bin/uploadTmp.cgi";
+			WebSite.newVersionUrl=prot+"//www.tonyu.jp/project/newVersion.cgi";
+		}
+		WebSite.version=2;
+		WebSite.hoge="fuga";
+		FS.setEnvProvider(new FS.Env(WebSite));
+		return window.WebSite=WebSite;
+	case "singleHTML":
+		WebSite={
+			urlAliases: {}, top: ".",
+			tablet:Platform.tablet,
+			mobile:Platform.mobile
+		};
+		if (typeof BuiltinAssets==="object") {
+			for (var k in BuiltinAssets) {
+				WebSite.urlAliases[k]=BuiltinAssets[k];
+			}
+		}
+
+		WebSite.tonyuHome="/Tonyu/";
+		WebSite.projects=[P.rel(WebSite.tonyuHome,"Projects/")];
+		if (loc.match(/localhost\/tonyu2/)) {
+			WebSite.scriptServer="http://localhost/tonyu2/";
+		} else {
+			WebSite.scriptServer="https://edit.tonyu.jp/";
+		}
+		WebSite.pluginTop=WebSite.scriptServer+"js/plugins";
+		WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
+		WebSite.PathSep="/";
+		WebSite.compiledKernel=WebSite.scriptServer+"Kernel/js/concat.js";
+		FS.setEnvProvider(new FS.Env(WebSite));
+		return window.WebSite=WebSite;
+	case "multiHTML":
+		WebSite={
+			urlAliases: {}, top: ".",
+			tablet:Platform.tablet,
+			mobile:Platform.mobile
+		};
+		WebSite.tonyuHome="/Tonyu/";
+		WebSite.pluginTop=WebSite.top+"/js/plugins";
+		WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
+		WebSite.PathSep="/";
+		WebSite.mp4Disabled=WebSite.isNW;
+		if (WebSite.isNW) {
+			WebSite.PathSep=require("path").sep;
+			WebSite.cwd=P.directorify(process.cwd().replace(/\\/g,"/"));
+			WebSite.platform=process.platform;
+		}
+		// this sets at runScript2.js
+		//WebSite.compiledKernel=WebSite.top+"/js/kernel.js";
+		//-------------
+		FS.setEnvProvider(new FS.Env(WebSite));
+		return window.WebSite=WebSite;
+	}
+
+	if (loc.match(/jsrun\.it/)) {
+		WebSite={
+			urlAliases: {
+				"images/Ball.png":"http:"+"//jsrun.it/assets/9/X/T/b/9XTbt.png",
+				"images/base.png":"http:"+"//jsrun.it/assets/6/F/y/3/6Fy3B.png",
+				"images/Sample.png":"http:"+"//jsrun.it/assets/s/V/S/l/sVSlZ.png",
+				"images/neko.png":"http:"+"//jsrun.it/assets/f/D/z/z/fDzze.png",
+				"images/mapchip.png":"http:"+"//jsrun.it/assets/f/u/N/v/fuNvz.png"
+			},top:"",devMode:devMode,
+			pluginTop: "https://edit.tonyu.jp/js/plugins",
+			removeJSOutput:true
+		};
+	} else if (
+		loc.match(/tonyuexe\.appspot\.com/) ||
+		loc.match(/localhost:8887/) ||
+		(
+		/*(
+			loc.match(/^chrome-extension:/) ||
+			loc.match(/localhost/) ||
+			loc.match(/tonyuedit\.appspot\.com/)
+		) &&*/
+		loc.match(/\/html\/((dev)|(build))\//)
+		)
+	) {
+		WebSite={
+			urlAliases: {
+				"images/Ball.png":"../../images/Ball.png",
+				"images/base.png":"../../images/base.png",
+				"images/Sample.png":"../../images/Sample.png",
+				"images/neko.png":"../../images/neko.png",
+				"images/mapchip.png":"../../images/mapchip.png",
+				"images/sound.png":"../../images/sound.png",
+				"images/sound_ogg.png":"../../images/sound_ogg.png",
+				"images/sound_mp3.png":"../../images/sound_mp3.png",
+				"images/sound_mp4.png":"../../images/sound_mp4.png",
+				"images/sound_m4a.png":"../../images/sound_m4a.png",
+				"images/sound_mid.png":"../../images/sound_mid.png",
+				"images/sound_wav.png":"../../images/sound_wav.png",
+					"images/ecl.png":"../../images/ecl.png"
+			},top:"../..",devMode:devMode
+		};
+	} else if (
+		loc.match(/bitarrow/) ||
+		loc.match(/localhost.*pub/))  {
+		WebSite={};
+		var WS=WebSite;
+		WebSite.serverType="BA";
+		WS.runtime="../../../runtime/";
+		WS.urlAliases= {
+				"images/base.png":WS.runtime+"images/base.png",
+				"images/Sample.png":WS.runtime+"images/Sample.png",
+				"images/neko.png":WS.runtime+"images/neko.png",
+				"images/mapchip.png":WS.runtime+"images/mapchip.png",
+				"images/sound.png":WS.runtime+"images/sound.png",
+				"images/sound_ogg.png":WS.runtime+"images/sound_ogg.png",
+				"images/sound_mp3.png":WS.runtime+"images/sound_mp3.png",
+				"images/sound_mp4.png":WS.runtime+"images/sound_mp4.png",
+				"images/sound_m4a.png":WS.runtime+"images/sound_m4a.png",
+				"images/sound_mid.png":WS.runtime+"images/sound_mid.png",
+				"images/sound_wav.png":WS.runtime+"images/sound_wav.png",
+				"images/ecl.png":WS.runtime+"images/ecl.png"
+		};
+	} else {
+		WebSite={
+			urlAliases: {}, top: ".",devMode:devMode
+		};
+	}
+	if (typeof BuiltinAssets==="object") {
+		for (var k in BuiltinAssets) {
+			WebSite.urlAliases[k]=BuiltinAssets[k];
+		}
+	}
+	WebSite.builtinAssetNames={
+		"images/Ball.png":1,
+		"images/base.png":1,
+		"images/Sample.png":1,
+		"images/neko.png":1,
+		"images/mapchip.png":1
+	};
+	// from https://w3g.jp/blog/js_browser_sniffing2015
+	var u=window.navigator.userAgent.toLowerCase();
+	WebSite.tablet=(u.indexOf("windows") != -1 && u.indexOf("touch") != -1)
+	|| u.indexOf("ipad") != -1
+	|| (u.indexOf("android") != -1 && u.indexOf("mobile") == -1)
+	|| (u.indexOf("firefox") != -1 && u.indexOf("tablet") != -1)
+	|| u.indexOf("kindle") != -1
+	|| u.indexOf("silk") != -1
+	|| u.indexOf("playbook") != -1;
+	WebSite.mobile=(u.indexOf("windows") != -1 && u.indexOf("phone") != -1)
+	|| u.indexOf("iphone") != -1
+	|| u.indexOf("ipod") != -1
+	|| (u.indexOf("android") != -1 && u.indexOf("mobile") != -1)
+	|| (u.indexOf("firefox") != -1 && u.indexOf("mobile") != -1)
+	|| u.indexOf("blackberry") != -1;
+
+	if (!WebSite.pluginTop) {
+		WebSite.pluginTop=WebSite.top+"/js/plugins";
+	}
+	WebSite.disableROM={};
+	/*if (loc.match(/tonyuedit\.appspot\.com/) || loc.match(/localhost:8888/) ) {
+		//WebSite.disableROM={"ROM_d.js":true};
+	}*/
+	if (loc.match(/\.appspot\.com/) ||  loc.match(/localhost:888[87]/)) {
+		WebSite.serverType="GAE";
+	}
+	if (loc.match(/localhost:3000/) ) {
+		WebSite.serverType="Node";
+	}
+	if (loc.match(/tonyuexe\.appspot\.com/) ||
+		loc.match(/localhost:8887/)) {
+		WebSite.serverTop=WebSite.top+"/exe"; // Fix NetModule.tonyu!!
+	} else {
+		WebSite.serverTop=WebSite.top+"/edit";// Fix NetModule.tonyu!!
+	}
+	WebSite.sampleImg=WebSite.top+"/images";
+	WebSite.blobPath=WebSite.serverTop+"/serveBlob";        //TODO: urlchange!
+	WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
+	WebSite.mp4Disabled=WebSite.isNW;
+	WebSite.tonyuHome="/Tonyu/";
+	WebSite.url={
+		getDirInfo:WebSite.serverTop+"/getDirInfo",
+		getFiles:WebSite.serverTop+"/File2LSSync",
+		putFiles:WebSite.serverTop+"/LS2FileSync"
+	};
+	WebSite.PathSep="/";
+	if (WebSite.isNW) {
+		WebSite.PathSep=require("path").sep;
+		WebSite.cwd=P.directorify(process.cwd().replace(/\\/g,"/"));
+		//WebSite.exeDir=WebSite.execDir=P.up(P.fixSep(process.execPath)); not suitable when mac
+		if (process.env.TONYU_HOME) {
+			WebSite.tonyuHome=P.directorify(process.env.TONYU_HOME);
+		} else {
+			WebSite.tonyuHome=P.rel(WebSite.cwd,"fs/Tonyu/");
+		}
+		WebSite.logdir=process.env.TONYU_LOGDIR;//"C:/var/log/Tonyu/";
+		WebSite.wwwDir=P.rel(WebSite.cwd,"www/");
+		WebSite.platform=process.platform;
+		WebSite.ffmpeg=P.rel(WebSite.cwd,(WebSite.platform=="win32"?
+				"ffmpeg/bin/ffmpeg.exe":"ffmpeg/bin/ffmpeg"));
+		WebSite.pkgInfo=require(P.rel(WebSite.cwd, "package.json"));
+		if (process.env.TONYU_PROJECTS) {
+			WebSite.projects=process.env.TONYU_PROJECTS.replace(/\\/g,"/").split(require('path').delimiter);
+		} else if ( WebSite.pkgInfo && WebSite.pkgInfo.config && WebSite.pkgInfo.config.prjDirs ){
+			WebSite.projects=WebSite.pkgInfo.config.prjDirs.map(function (d) {
+				d=P.directorify(d);
+				if (P.isAbsolute(d)) return d;
+				return P.rel(WebSite.cwd,d);
+			});
+		} else {
+			WebSite.projects=[P.rel(WebSite.cwd,"Projects/"),
+								P.rel(WebSite.tonyuHome,"Projects/")];
+		}
+		WebSite.kernelDir=P.rel(WebSite.wwwDir,"Kernel/");
+	} else {
+		WebSite.wwwDir=prot+"//"+location.host+"/";
+		WebSite.projects=[P.rel(WebSite.tonyuHome,"Projects/")];
+	}
+	if (loc.match(/edit\.tonyu\.jp/) ||
+		loc.match(/tonyuedit\.appspot\.com/) ||
+		loc.match(/localhost:888/)) {
+		//WebSite.kernelDir=WebSite.top+"/Kernel/";
+		// kernelDir must be absolute
+		WebSite.kernelDir=prot+"//"+location.host+"/Kernel/";
+	}
+	if (loc.match(/edit\.tonyu\.jp/) ||
+		loc.match(/tonyuedit\.appspot\.com/) ||
+		loc.match(/localhost:888/) ||
+		WebSite.isNW) {
+		WebSite.compiledKernel=WebSite.kernelDir+"js/concat.js";
+	} else if (WebSite.serverType==="BA") {
+		WebSite.compiledKernel=WebSite.runtime+"lib/tonyu/kernel.js";
+	} else {
+		WebSite.compiledKernel="https://edit.tonyu.jp/Kernel/js/concat.js";
+		//WebSite.compiledKernel=prot+"//tonyuexe.appspot.com/Kernel/js/concat.js";
+	}
+	if (loc.match(/localhost\/tonyu2/)) {
+		WebSite.wwwDir=prot+"//"+location.host+"/tonyu2/";
+		WebSite.kernelDir=WebSite.wwwDir+"Kernel/";
+		WebSite.compiledKernel=WebSite.kernelDir+"js/concat.js";
+		WebSite.uploadTmpUrl=prot+"//localhost/tsite/tonyu/e/cgi-bin/uploadTmp.cgi";
+		WebSite.newVersionUrl=prot+"//localhost/tsite/tonyu/project/newVersion.cgi";
+	} else {
+		WebSite.uploadTmpUrl=prot+"//edit.tonyu.jp/cgi-bin/uploadTmp.cgi";
+		WebSite.newVersionUrl=prot+"//www.tonyu.jp/project/newVersion.cgi";
+	}
+
+	if (loc.match(/((index)|(project))2/)) {
+		WebSite.version=2;
+		if (WebSite.isNW) {
+			WebSite.devMode=true;
+		} else {
+			WebSite.devMode=false;
+		}
+	}
+	FS.setEnvProvider(new FS.Env(WebSite));
+	return window.WebSite=WebSite;
+});
+
+define('plugins',["WebSite","root"],function (WebSite,root){
+    var plugins={};
+    var installed= {
+        box2d:{src: "Box2dWeb-2.1.a.3.min.js",detection:/BodyActor/,symbol:"Box2D" },
+        timbre: {src:"timbre.js",symbol:"T" },
+        gif: {src:"gif-concat.js",detection:/GIFWriter/,symbol:"GIF"},
+        Mezonet: {src:"Mezonet.js", symbol: "Mezonet"},
+        PicoAudio: {src:"PicoAudio.min.js", symbol:"PicoAudio"},
+        // single js is required for runScript1.js
+        jquery_ui: {src:"jquery-ui.js", detection:/\$InputBox/,symbol:"$.ui"}
+    };
+    plugins.installed=installed;
+    plugins.detectNeeded=function (src,res) {
+        for (var name in installed) {
+            var d=installed[name].detection;
+            if (d) {
+                var r=d.exec(src);
+                if (r) res[name]=1;
+            }
+        }
+        return res;
+    };
+    plugins.loaded=function (name) {
+        var i=installed[name];
+        if (!i) throw new Error("plugin not found: "+name);
+        return hasInGlobal(i.symbol);
+    };
+    function hasInGlobal(name) {
+        // name: dot ok
+        var g=window;
+        name.split(".").forEach(function (e) {
+            if (!g) return;
+            g=g[e];
+        });
+        return g;
+    }
+    plugins.loadAll=function (names,options) {
+        options=convOpt(options);
+        var namea=[];
+        for (var name in names) {
+            if (installed[name] && !plugins.loaded(name)) {
+                namea.push(name);
+            }
+        }
+        var i=0;
+        console.log("loading plugins",namea);
+        setTimeout(loadNext,0);
+        function loadNext() {
+            if (i>=namea.length) options.onload();
+            else plugins.load(namea[i++],loadNext);
+        }
+    };
+    function convOpt(options) {
+        if (typeof options=="function") options={onload:options};
+        if (!options) options={};
+        if (!options.onload) options.onload=function (){};
+        return options;
+    }
+    plugins.load=function (name,options) {
+        var i=installed[name];
+        if (!i) throw new Error("plugin not found: "+name);
+        options=convOpt(options);
+        var src=WebSite.pluginTop+"/"+i.src;
+        var reqj=root.requirejs;
+        /*if (typeof requireSimulator==="undefined") {
+            if (typeof requirejs==="function") reqj=requirejs;
+        } else {
+            if (requireSimulator.real) reqj=requireSimulator.real.requirejs;
+        }*/
+        if (reqj) {
+            src=src.replace(/\.js$/,"");
+            console.log("Loading plugin via requirejs",src);
+            reqj([src], function (res) {
+                if (!window[i.symbol] && res) window[i.symbol]=res;
+                options.onload(res);
+            });
+        } else {
+            console.log("Loading plugin via <script>",src);
+            var s=document.createElement("script");
+            s.src=src;
+            s.onload=options.onload;
+            document.body.appendChild(s);
+            //$("<script>").on("load",options.onload).attr("src",src).appendTo("body");
+        }
+        //setTimeout(options.onload,500);
+
+    };
+    plugins.request=function (name) {
+        if (plugins.loaded(name)) return;
+        var req=new Error("Plugin "+name+" required");
+        req.pluginName=name;
+    };
+    return plugins;
+});
+
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 const root=require("../lib/root");
 const Worker=root.Worker;
@@ -6048,360 +6505,6 @@ define("Util", (function (global) {
     };
 }(this)));
 
-define('Platform',[],function () {
-    var WebSite={};
-    // from https://w3g.jp/blog/js_browser_sniffing2015
-    var u=window.navigator.userAgent.toLowerCase();
-    WebSite.tablet=(u.indexOf("windows") != -1 && u.indexOf("touch") != -1)
-    || u.indexOf("ipad") != -1
-    || (u.indexOf("android") != -1 && u.indexOf("mobile") == -1)
-    || (u.indexOf("firefox") != -1 && u.indexOf("tablet") != -1)
-    || u.indexOf("kindle") != -1
-    || u.indexOf("silk") != -1
-    || u.indexOf("playbook") != -1;
-    WebSite.mobile=(u.indexOf("windows") != -1 && u.indexOf("phone") != -1)
-    || u.indexOf("iphone") != -1
-    || u.indexOf("ipod") != -1
-    || (u.indexOf("android") != -1 && u.indexOf("mobile") != -1)
-    || (u.indexOf("firefox") != -1 && u.indexOf("mobile") != -1)
-    || u.indexOf("blackberry") != -1;
-    return WebSite;
-});
-
-define('WebSite',["FS","Platform"], function (FS,Platform) {
-	var P=FS.PathUtil;
-	var loc=document.location.href;
-	var devMode=!!loc.match(/html\/dev\//) && !!loc.match(/localhost:3/);
-	var WebSite;
-	var prot=location.protocol;
-	if (!prot.match(/^http/)) prot="https:";
-	switch(window.WebSite_runType) {
-	case "IDE":
-		WebSite={
-			urlAliases: {}, top: ".",
-			tablet:Platform.tablet,
-			mobile:Platform.mobile
-		};
-		WebSite.builtinAssetNames={
-			"images/Ball.png":1,
-			"images/base.png":1,
-			"images/Sample.png":1,
-			"images/inputPad.png":1,
-			"images/neko.png":1,
-			"images/mapchip.png":1
-		};
-		if (!WebSite.pluginTop) {
-			WebSite.pluginTop=WebSite.top+"/js/plugins";
-		}
-		WebSite.sampleImg=WebSite.top+"/images";
-		WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
-		WebSite.mp4Disabled=WebSite.isNW;
-		WebSite.tonyuHome="/Tonyu/";
-		WebSite.PathSep="/";
-		if (WebSite.isNW) {
-			WebSite.noconcat=true;
-			WebSite.PathSep=require("path").sep;
-			WebSite.cwd=P.directorify(process.cwd().replace(/\\/g,"/"));
-			//WebSite.exeDir=WebSite.execDir=P.up(P.fixSep(process.execPath)); not suitable when mac
-			if (process.env.TONYU_HOME) {
-				WebSite.tonyuHome=P.directorify(process.env.TONYU_HOME);
-			} else {
-				WebSite.tonyuHome=P.rel(WebSite.cwd,"fs/Tonyu/");
-			}
-			WebSite.logdir=process.env.TONYU_LOGDIR;//"C:/var/log/Tonyu/";
-			WebSite.wwwDir=P.rel(WebSite.cwd,"www/");
-			WebSite.platform=process.platform;
-			WebSite.ffmpeg=P.rel(WebSite.cwd,(WebSite.platform=="win32"?
-					"ffmpeg/bin/ffmpeg.exe":"ffmpeg/bin/ffmpeg"));
-			WebSite.pkgInfo=require(P.rel(WebSite.cwd, "package.json"));
-			if (process.env.TONYU_PROJECTS) {
-				WebSite.projects=process.env.TONYU_PROJECTS.replace(/\\/g,"/").split(require('path').delimiter);
-			} else if ( WebSite.pkgInfo && WebSite.pkgInfo.config && WebSite.pkgInfo.config.prjDirs ){
-				WebSite.projects=WebSite.pkgInfo.config.prjDirs.map(function (d) {
-					d=P.directorify(d);
-					if (P.isAbsolute(d)) return d;
-					return P.rel(WebSite.cwd,d);
-				});
-			} else {
-				WebSite.projects=[P.rel(WebSite.cwd,"Projects/"),
-					P.rel(WebSite.tonyuHome,"Projects/")];
-			}
-			WebSite.kernelDir=P.rel(WebSite.wwwDir,"Kernel/");
-		} else {
-			if (loc.match(/edit\.tonyu\.jp\/n\//)) {
-				WebSite.wwwDir=prot+"//"+location.host+"/n/";
-			} else {
-				// Why?
-				WebSite.wwwDir=prot+"//"+location.host+"/";
-			}
-			WebSite.projects=[P.rel(WebSite.tonyuHome,"Projects/")];
-		}
-		//WebSite.kernelDir=WebSite.top+"/Kernel/";
-		// kernelDir must be absolute
-		WebSite.kernelDir=P.rel(WebSite.wwwDir,"Kernel/");
-		// compiledKernel is URL , not file path.
-		// It is correct as long as the html pages in www/ (not html/build|dev )
-		WebSite.compiledKernel="Kernel/js/concat.js";   //P.rel(WebSite.kernelDir,"js/concat.js");
-		if (loc.match(/localhost\/tonyu2/)) {
-			WebSite.wwwDir=prot+"//"+location.host+"/tonyu2/";
-			WebSite.kernelDir=WebSite.wwwDir+"Kernel/";
-			WebSite.compiledKernel=WebSite.kernelDir+"js/concat.js";
-			WebSite.uploadTmpUrl=prot+"//localhost/tsite/tonyu/e/cgi-bin/uploadTmp.cgi";
-			WebSite.newVersionUrl=prot+"//localhost/tsite/tonyu/project/newVersion.cgi";
-		} else {
-			WebSite.uploadTmpUrl=prot+"//edit.tonyu.jp/cgi-bin/uploadTmp.cgi";
-			WebSite.newVersionUrl=prot+"//www.tonyu.jp/project/newVersion.cgi";
-		}
-		WebSite.version=2;
-		WebSite.hoge="fuga";
-		FS.setEnvProvider(new FS.Env(WebSite));
-		return window.WebSite=WebSite;
-	case "singleHTML":
-		WebSite={
-			urlAliases: {}, top: ".",
-			tablet:Platform.tablet,
-			mobile:Platform.mobile
-		};
-		if (typeof BuiltinAssets==="object") {
-			for (var k in BuiltinAssets) {
-				WebSite.urlAliases[k]=BuiltinAssets[k];
-			}
-		}
-
-		WebSite.tonyuHome="/Tonyu/";
-		WebSite.projects=[P.rel(WebSite.tonyuHome,"Projects/")];
-		if (loc.match(/localhost\/tonyu2/)) {
-			WebSite.scriptServer="http://localhost/tonyu2/";
-		} else {
-			WebSite.scriptServer="https://edit.tonyu.jp/";
-		}
-		WebSite.pluginTop=WebSite.scriptServer+"js/plugins";
-		WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
-		WebSite.PathSep="/";
-		WebSite.compiledKernel=WebSite.scriptServer+"Kernel/js/concat.js";
-		FS.setEnvProvider(new FS.Env(WebSite));
-		return window.WebSite=WebSite;
-	case "multiHTML":
-		WebSite={
-			urlAliases: {}, top: ".",
-			tablet:Platform.tablet,
-			mobile:Platform.mobile
-		};
-		WebSite.tonyuHome="/Tonyu/";
-		WebSite.pluginTop=WebSite.top+"/js/plugins";
-		WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
-		WebSite.PathSep="/";
-		WebSite.mp4Disabled=WebSite.isNW;
-		if (WebSite.isNW) {
-			WebSite.PathSep=require("path").sep;
-			WebSite.cwd=P.directorify(process.cwd().replace(/\\/g,"/"));
-			WebSite.platform=process.platform;
-		}
-		// this sets at runScript2.js
-		//WebSite.compiledKernel=WebSite.top+"/js/kernel.js";
-		//-------------
-		FS.setEnvProvider(new FS.Env(WebSite));
-		return window.WebSite=WebSite;
-	}
-
-	if (loc.match(/jsrun\.it/)) {
-		WebSite={
-			urlAliases: {
-				"images/Ball.png":"http:"+"//jsrun.it/assets/9/X/T/b/9XTbt.png",
-				"images/base.png":"http:"+"//jsrun.it/assets/6/F/y/3/6Fy3B.png",
-				"images/Sample.png":"http:"+"//jsrun.it/assets/s/V/S/l/sVSlZ.png",
-				"images/neko.png":"http:"+"//jsrun.it/assets/f/D/z/z/fDzze.png",
-				"images/mapchip.png":"http:"+"//jsrun.it/assets/f/u/N/v/fuNvz.png"
-			},top:"",devMode:devMode,
-			pluginTop: "https://edit.tonyu.jp/js/plugins",
-			removeJSOutput:true
-		};
-	} else if (
-		loc.match(/tonyuexe\.appspot\.com/) ||
-		loc.match(/localhost:8887/) ||
-		(
-		/*(
-			loc.match(/^chrome-extension:/) ||
-			loc.match(/localhost/) ||
-			loc.match(/tonyuedit\.appspot\.com/)
-		) &&*/
-		loc.match(/\/html\/((dev)|(build))\//)
-		)
-	) {
-		WebSite={
-			urlAliases: {
-				"images/Ball.png":"../../images/Ball.png",
-				"images/base.png":"../../images/base.png",
-				"images/Sample.png":"../../images/Sample.png",
-				"images/neko.png":"../../images/neko.png",
-				"images/mapchip.png":"../../images/mapchip.png",
-				"images/sound.png":"../../images/sound.png",
-				"images/sound_ogg.png":"../../images/sound_ogg.png",
-				"images/sound_mp3.png":"../../images/sound_mp3.png",
-				"images/sound_mp4.png":"../../images/sound_mp4.png",
-				"images/sound_m4a.png":"../../images/sound_m4a.png",
-				"images/sound_mid.png":"../../images/sound_mid.png",
-				"images/sound_wav.png":"../../images/sound_wav.png",
-					"images/ecl.png":"../../images/ecl.png"
-			},top:"../..",devMode:devMode
-		};
-	} else if (
-		loc.match(/bitarrow/) ||
-		loc.match(/localhost.*pub/))  {
-		WebSite={};
-		var WS=WebSite;
-		WebSite.serverType="BA";
-		WS.runtime="../../../runtime/";
-		WS.urlAliases= {
-				"images/base.png":WS.runtime+"images/base.png",
-				"images/Sample.png":WS.runtime+"images/Sample.png",
-				"images/neko.png":WS.runtime+"images/neko.png",
-				"images/mapchip.png":WS.runtime+"images/mapchip.png",
-				"images/sound.png":WS.runtime+"images/sound.png",
-				"images/sound_ogg.png":WS.runtime+"images/sound_ogg.png",
-				"images/sound_mp3.png":WS.runtime+"images/sound_mp3.png",
-				"images/sound_mp4.png":WS.runtime+"images/sound_mp4.png",
-				"images/sound_m4a.png":WS.runtime+"images/sound_m4a.png",
-				"images/sound_mid.png":WS.runtime+"images/sound_mid.png",
-				"images/sound_wav.png":WS.runtime+"images/sound_wav.png",
-				"images/ecl.png":WS.runtime+"images/ecl.png"
-		};
-	} else {
-		WebSite={
-			urlAliases: {}, top: ".",devMode:devMode
-		};
-	}
-	if (typeof BuiltinAssets==="object") {
-		for (var k in BuiltinAssets) {
-			WebSite.urlAliases[k]=BuiltinAssets[k];
-		}
-	}
-	WebSite.builtinAssetNames={
-		"images/Ball.png":1,
-		"images/base.png":1,
-		"images/Sample.png":1,
-		"images/neko.png":1,
-		"images/mapchip.png":1
-	};
-	// from https://w3g.jp/blog/js_browser_sniffing2015
-	var u=window.navigator.userAgent.toLowerCase();
-	WebSite.tablet=(u.indexOf("windows") != -1 && u.indexOf("touch") != -1)
-	|| u.indexOf("ipad") != -1
-	|| (u.indexOf("android") != -1 && u.indexOf("mobile") == -1)
-	|| (u.indexOf("firefox") != -1 && u.indexOf("tablet") != -1)
-	|| u.indexOf("kindle") != -1
-	|| u.indexOf("silk") != -1
-	|| u.indexOf("playbook") != -1;
-	WebSite.mobile=(u.indexOf("windows") != -1 && u.indexOf("phone") != -1)
-	|| u.indexOf("iphone") != -1
-	|| u.indexOf("ipod") != -1
-	|| (u.indexOf("android") != -1 && u.indexOf("mobile") != -1)
-	|| (u.indexOf("firefox") != -1 && u.indexOf("mobile") != -1)
-	|| u.indexOf("blackberry") != -1;
-
-	if (!WebSite.pluginTop) {
-		WebSite.pluginTop=WebSite.top+"/js/plugins";
-	}
-	WebSite.disableROM={};
-	/*if (loc.match(/tonyuedit\.appspot\.com/) || loc.match(/localhost:8888/) ) {
-		//WebSite.disableROM={"ROM_d.js":true};
-	}*/
-	if (loc.match(/\.appspot\.com/) ||  loc.match(/localhost:888[87]/)) {
-		WebSite.serverType="GAE";
-	}
-	if (loc.match(/localhost:3000/) ) {
-		WebSite.serverType="Node";
-	}
-	if (loc.match(/tonyuexe\.appspot\.com/) ||
-		loc.match(/localhost:8887/)) {
-		WebSite.serverTop=WebSite.top+"/exe"; // Fix NetModule.tonyu!!
-	} else {
-		WebSite.serverTop=WebSite.top+"/edit";// Fix NetModule.tonyu!!
-	}
-	WebSite.sampleImg=WebSite.top+"/images";
-	WebSite.blobPath=WebSite.serverTop+"/serveBlob";        //TODO: urlchange!
-	WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
-	WebSite.mp4Disabled=WebSite.isNW;
-	WebSite.tonyuHome="/Tonyu/";
-	WebSite.url={
-		getDirInfo:WebSite.serverTop+"/getDirInfo",
-		getFiles:WebSite.serverTop+"/File2LSSync",
-		putFiles:WebSite.serverTop+"/LS2FileSync"
-	};
-	WebSite.PathSep="/";
-	if (WebSite.isNW) {
-		WebSite.PathSep=require("path").sep;
-		WebSite.cwd=P.directorify(process.cwd().replace(/\\/g,"/"));
-		//WebSite.exeDir=WebSite.execDir=P.up(P.fixSep(process.execPath)); not suitable when mac
-		if (process.env.TONYU_HOME) {
-			WebSite.tonyuHome=P.directorify(process.env.TONYU_HOME);
-		} else {
-			WebSite.tonyuHome=P.rel(WebSite.cwd,"fs/Tonyu/");
-		}
-		WebSite.logdir=process.env.TONYU_LOGDIR;//"C:/var/log/Tonyu/";
-		WebSite.wwwDir=P.rel(WebSite.cwd,"www/");
-		WebSite.platform=process.platform;
-		WebSite.ffmpeg=P.rel(WebSite.cwd,(WebSite.platform=="win32"?
-				"ffmpeg/bin/ffmpeg.exe":"ffmpeg/bin/ffmpeg"));
-		WebSite.pkgInfo=require(P.rel(WebSite.cwd, "package.json"));
-		if (process.env.TONYU_PROJECTS) {
-			WebSite.projects=process.env.TONYU_PROJECTS.replace(/\\/g,"/").split(require('path').delimiter);
-		} else if ( WebSite.pkgInfo && WebSite.pkgInfo.config && WebSite.pkgInfo.config.prjDirs ){
-			WebSite.projects=WebSite.pkgInfo.config.prjDirs.map(function (d) {
-				d=P.directorify(d);
-				if (P.isAbsolute(d)) return d;
-				return P.rel(WebSite.cwd,d);
-			});
-		} else {
-			WebSite.projects=[P.rel(WebSite.cwd,"Projects/"),
-								P.rel(WebSite.tonyuHome,"Projects/")];
-		}
-		WebSite.kernelDir=P.rel(WebSite.wwwDir,"Kernel/");
-	} else {
-		WebSite.wwwDir=prot+"//"+location.host+"/";
-		WebSite.projects=[P.rel(WebSite.tonyuHome,"Projects/")];
-	}
-	if (loc.match(/edit\.tonyu\.jp/) ||
-		loc.match(/tonyuedit\.appspot\.com/) ||
-		loc.match(/localhost:888/)) {
-		//WebSite.kernelDir=WebSite.top+"/Kernel/";
-		// kernelDir must be absolute
-		WebSite.kernelDir=prot+"//"+location.host+"/Kernel/";
-	}
-	if (loc.match(/edit\.tonyu\.jp/) ||
-		loc.match(/tonyuedit\.appspot\.com/) ||
-		loc.match(/localhost:888/) ||
-		WebSite.isNW) {
-		WebSite.compiledKernel=WebSite.kernelDir+"js/concat.js";
-	} else if (WebSite.serverType==="BA") {
-		WebSite.compiledKernel=WebSite.runtime+"lib/tonyu/kernel.js";
-	} else {
-		WebSite.compiledKernel="https://edit.tonyu.jp/Kernel/js/concat.js";
-		//WebSite.compiledKernel=prot+"//tonyuexe.appspot.com/Kernel/js/concat.js";
-	}
-	if (loc.match(/localhost\/tonyu2/)) {
-		WebSite.wwwDir=prot+"//"+location.host+"/tonyu2/";
-		WebSite.kernelDir=WebSite.wwwDir+"Kernel/";
-		WebSite.compiledKernel=WebSite.kernelDir+"js/concat.js";
-		WebSite.uploadTmpUrl=prot+"//localhost/tsite/tonyu/e/cgi-bin/uploadTmp.cgi";
-		WebSite.newVersionUrl=prot+"//localhost/tsite/tonyu/project/newVersion.cgi";
-	} else {
-		WebSite.uploadTmpUrl=prot+"//edit.tonyu.jp/cgi-bin/uploadTmp.cgi";
-		WebSite.newVersionUrl=prot+"//www.tonyu.jp/project/newVersion.cgi";
-	}
-
-	if (loc.match(/((index)|(project))2/)) {
-		WebSite.version=2;
-		if (WebSite.isNW) {
-			WebSite.devMode=true;
-		} else {
-			WebSite.devMode=false;
-		}
-	}
-	FS.setEnvProvider(new FS.Env(WebSite));
-	return window.WebSite=WebSite;
-});
-
 define('Assets',["WebSite","Util","Tonyu","FS"],function (WebSite,Util,Tonyu,FS) {
     var Assets={};
     Assets.resolve=function (url, prj, options) {
@@ -6742,109 +6845,6 @@ define('thumbnail',["ImageRect","Content"],function (IR,Content) {
     return TN;
 });
 
-/*global window,self,global*/
-define('root',[],function (){
-    if (typeof window!=="undefined") return window;
-    if (typeof self!=="undefined") return self;
-    if (typeof global!=="undefined") return global;
-    return (function (){return this;})();
-});
-
-define('plugins',["WebSite","root"],function (WebSite,root){
-    var plugins={};
-    var installed= {
-        box2d:{src: "Box2dWeb-2.1.a.3.min.js",detection:/BodyActor/,symbol:"Box2D" },
-        timbre: {src:"timbre.js",symbol:"T" },
-        gif: {src:"gif-concat.js",detection:/GIFWriter/,symbol:"GIF"},
-        Mezonet: {src:"Mezonet.js", symbol: "Mezonet"},
-        PicoAudio: {src:"PicoAudio.min.js", symbol:"PicoAudio"},
-        // single js is required for runScript1.js
-        jquery_ui: {src:"jquery-ui.js", detection:/\$InputBox/,symbol:"$.ui"}
-    };
-    plugins.installed=installed;
-    plugins.detectNeeded=function (src,res) {
-        for (var name in installed) {
-            var d=installed[name].detection;
-            if (d) {
-                var r=d.exec(src);
-                if (r) res[name]=1;
-            }
-        }
-        return res;
-    };
-    plugins.loaded=function (name) {
-        var i=installed[name];
-        if (!i) throw new Error("plugin not found: "+name);
-        return hasInGlobal(i.symbol);
-    };
-    function hasInGlobal(name) {
-        // name: dot ok
-        var g=window;
-        name.split(".").forEach(function (e) {
-            if (!g) return;
-            g=g[e];
-        });
-        return g;
-    }
-    plugins.loadAll=function (names,options) {
-        options=convOpt(options);
-        var namea=[];
-        for (var name in names) {
-            if (installed[name] && !plugins.loaded(name)) {
-                namea.push(name);
-            }
-        }
-        var i=0;
-        console.log("loading plugins",namea);
-        setTimeout(loadNext,0);
-        function loadNext() {
-            if (i>=namea.length) options.onload();
-            else plugins.load(namea[i++],loadNext);
-        }
-    };
-    function convOpt(options) {
-        if (typeof options=="function") options={onload:options};
-        if (!options) options={};
-        if (!options.onload) options.onload=function (){};
-        return options;
-    }
-    plugins.load=function (name,options) {
-        var i=installed[name];
-        if (!i) throw new Error("plugin not found: "+name);
-        options=convOpt(options);
-        var src=WebSite.pluginTop+"/"+i.src;
-        var reqj=root.requirejs;
-        /*if (typeof requireSimulator==="undefined") {
-            if (typeof root.requirejs==="function") reqj=root.requirejs;
-        } else {
-            if (requireSimulator.real) reqj=requireSimulator.real.requirejs;
-        }*/
-        if (reqj) {
-            src=src.replace(/\.js$/,"");
-            console.log("Loading plugin via requirejs",src);
-            reqj([src], function (res) {
-                if (!window[i.symbol] && res) window[i.symbol]=res;
-                options.onload(res);
-            });
-        } else {
-            console.log("Loading plugin via <script>",src);
-            var s=document.createElement("script");
-            s.src=src;
-            s.onload=options.onload;
-            document.body.appendChild(s);
-            //$("<script>").on("load",options.onload).attr("src",src).appendTo("body");
-        }
-        //setTimeout(options.onload,500);
-
-    };
-    plugins.request=function (name) {
-        if (plugins.loaded(name)) return;
-        var req=new Error("Plugin "+name+" required");
-        req.pluginName=name;
-    };
-    return plugins;
-});
-
 define('DeferredUtil',["FS"],function (FS){return FS.DeferredUtil;});
 
 define('sysMod',["Tonyu", "FS", "ImageList",
@@ -7052,6 +7052,43 @@ return {
         });
     }
 };
+});
+
+define('miniJSLoader',['require','exports','module'],function (require, exports, module) {
+    exports.load=url=>new Promise(succ=>{
+        const s=document.createElement("script");
+        s.setAttribute("src",url);
+        s.addEventListener("load",succ);
+        document.body.appendChild(s);
+        // JQuery does not work
+        //$("<script>").attr({src:url}).on("load",succ).appendTo("body");
+    });
+});//-----
+;
+define('compiledTonyuProject',["root","plugins","ProjectFactory","sysMod","miniJSLoader","WebSite"],
+function (root, plugins,F,sysMod,JS,WebSite) {
+    // used by runScript2
+    return function (dir) {
+        const res=F.createDirBasedCore({dir});
+		res.include(sysMod).include({
+			getDependingProjects: ()=>[],
+			async loadClasses() {
+				await JS.load(WebSite.compiledKernel);
+				await JS.load("js/concat.js");
+			},
+			loadPlugins(onload) {
+				var opt=this.getOptions();
+				return plugins.loadAll(opt.plugins,onload);
+			},
+			getNamespace() {
+				var opt=this.getOptions();
+				if (opt.compiler && opt.compiler.namespace) return opt.compiler.namespace;
+				return "user";
+			},
+			requestPlugin:e=>e
+		});
+        return res;
+    };
 });
 
 define('Shell',["FS","assert"],
@@ -9132,20 +9169,9 @@ define('runScript_common',[], function () {
     };
 });
 
-define('miniJSLoader',['require','exports','module'],function (require, exports, module) {
-    exports.load=url=>new Promise(succ=>{
-        const s=document.createElement("script");
-        s.setAttribute("src",url);
-        s.addEventListener("load",succ);
-        document.body.appendChild(s);
-        // JQuery does not work
-        //$("<script>").attr({src:url}).on("load",succ).appendTo("body");
-    });
-});//-----
-;
 /*global requirejs, process*/
-requirejs(["FS","ProjectFactory","sysMod", "Shell","runtime","WebSite","LSFS","Tonyu","root","runScript_common","miniJSLoader","plugins"],
-		function (FS,  F, sysMod, sh,  rt,WebSite,LSFS,Tonyu,root,com,JS,plugins) {
+requirejs(["FS","compiledTonyuProject", "Shell","runtime","WebSite","LSFS","Tonyu","root","runScript_common"],
+		function (FS, CPTR,  sh,  rt,WebSite,LSFS,Tonyu,root,com) {
 	$(function () {
 		root.SplashScreen={
 			hide: function () {$("#splash").hide();},
@@ -9178,19 +9204,7 @@ requirejs(["FS","ProjectFactory","sysMod", "Shell","runtime","WebSite","LSFS","T
 			WebSite.compiledKernel=window.runtimePath+"lib/tonyu/kernel.js";
 		}
 		root.loadFiles(curProjectDir);
-		const curPrj=F.createDirBasedCore({dir:curProjectDir});
-		curPrj.include(sysMod).include({
-			getDependingProjects: ()=>[],
-			async loadClasses() {
-				await JS.load(WebSite.compiledKernel);
-				await JS.load("js/concat.js");
-			},
-			loadPlugins(onload) {
-				var opt=this.getOptions();
-				return plugins.loadAll(opt.plugins,onload);
-			},
-			requestPlugin:e=>e
-		});
+		const curPrj=CPTR(curProjectDir);
 
 		sh.cd(curProjectDir);
 		/*var curPrj=CPTR("user", "js/concat.js",curProjectDir);*/

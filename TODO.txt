@@ -1,5 +1,6 @@
 Worker
- runScript1/2
+ "Picoaudio is missing" is not reported on old projects
+ runScript1
  rename class
  isKernel
  F2 stop when focused in iframe
@@ -11,6 +12,7 @@ Worker
  Tonyu.DeferredUtil.promise -> Tonyu.promise
  check syntax(in ace)
  $Boot.on("classChanged") -> 堆積しないように
+ OK runScript2
  OK resize
  OK focus
  OK show stackTrace -> stop
