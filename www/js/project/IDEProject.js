@@ -50,7 +50,14 @@ define(function (require,exports,module) {
         res.partialCompile=c.partialCompile.bind(c);
         res.renameClassName=c.renameClassName.bind(c);
         res.include(sysMod).include(langMod);
-        res.stop=()=>curDebugger && curDebugger.stop();
+        res.stop=()=>{
+            try {
+                if (curDebugger) curDebugger.stop();
+            }catch(e) {
+                //Edge: Can't execute code from a freed script
+                console.error(e);
+            }
+        };
         /*res.getOutputFile=function () {
             // relative path in outputFile will fail old version
             var opt=this.getOptions();

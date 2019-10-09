@@ -22,7 +22,7 @@ module.exports=class IndentFixer {
     	}catch(e) {
     		console.log("ERR",e);
     	}
-    	console.log(linfo);
+    	//console.log(linfo);//Edge fails with error 'Could not complete the operation due to error 80020101.'
     	const lines=str.split("\n");
     	let curDepth=0;
     	let row=0;

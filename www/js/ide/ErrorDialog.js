@@ -37,7 +37,11 @@ class ErrorDialog {
             const compiler=ide.project.compiler;
             for (let {columnNumber, lineNumber, fileName} of err.stack) {
                 console.log(columnNumber, lineNumber, fileName);
+                if (!fileName) continue;
+                if (typeof columnNumber!=="number") continue;
+                if (typeof lineNumber!=="number") continue;
                 fileName=compiler.convertFromWorkerPath(fileName);
+                if (fileName.match(/^http/)) continue; // for concat.js 
                 try {
                     src=FS.get(fileName);
                     pos={row:lineNumber, col:columnNumber};
@@ -57,7 +61,7 @@ class ErrorDialog {
         elem.append(mesgd);
         elem.append($("<div>").attr("class","quickFix"));
         //console.log("src=",src,err.stack, err.stack instanceof Array);
-
+        console.log("src.name",src.name());
         const str=src.text();
         if (str && typeof pos=="object") {
             let npos=0;
@@ -93,7 +97,7 @@ class ErrorDialog {
         }
         window.shownError=e;
         console.log("ErrorDialog","show",e);
-        //console.error(e);
+        console.error(e);
         const ide=this.ide;
         const pluginAdded=this.pluginAdded;
         if (e.pluginName && !pluginAdded[e.pluginName]) {
