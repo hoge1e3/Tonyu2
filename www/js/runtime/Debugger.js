@@ -198,8 +198,9 @@ const S=require("./source-map");
 const StackTrace=require("./stacktrace");
 const SourceFiles=require("./SourceFiles");
 module.exports={
-    decode(e) {
-        return StackTrace.fromError(e,{offline:true}).then(tr=>{
+    async decode(e) {
+        try{
+            const tr=await StackTrace.fromError(e,{offline:true});
             tr.forEach(t=>{
                 const sf=SourceFiles.url2SourceFile[t.fileName];
                 //console.log("sf", t.fileName, sf, SourceFiles.url2SourceFile);
@@ -217,7 +218,13 @@ module.exports={
             });
             //console.log("Converted: ",tr);
             return tr;
-        });
+        } catch(ex) {
+            if (!e || !e.stack) {
+                console.log("HennaError",e);
+                return [];
+            }
+            return e.stack.split("\n");
+        }
     },
     originalPositionFor(sf,opt) {
         const s=this.getSourceMapConsumer(sf);
@@ -238,10 +245,6 @@ module.exports={
             var opt=this.getOptions();
             if (opt.compiler && opt.compiler.namespace) return opt.compiler.namespace;
             throw new Error("Namespace is not set");
-        },
-        //TODO
-        renameClassName: function (o,n) {// o: key of aliases
-            throw new Error("Rename todo");
         },
         async loadDependingClasses() {
             const myNsp=this.getNamespace();
@@ -4518,7 +4521,7 @@ function privatize(o){
     return res;
 }
 function extend(d,s) {
-    for (var i in (s||{})) {d[i]=s[i];} 
+    for (var i in (s||{})) {d[i]=s[i];}
     return d;
 }
 return {
@@ -4740,7 +4743,7 @@ define('Content',["assert","Util","FileSaver"],function (assert,Util,saveAs) {
         } else if (bin && Content.isBuffer(bin.buffer)) {
             // in node.js v8.9.1 ,
             ///  bin is Buffer, bin.buffer is ArrayBuffer
-            //   and bin.buffer is content of different file(memory leak?) 
+            //   and bin.buffer is content of different file(memory leak?)
             b.bufType="array1";
             b.arrayBuffer=bin.buffer;
         } else {
@@ -5046,8 +5049,9 @@ define('NativeFS',["FSClass","assert","PathUtil","extend","Content"],
         try {
             fs=fsf();
             fs.existsSync('test.txt');
+            process.cwd();
             break;
-        } catch(e){}
+        } catch(e){fs=null;}
     }
     if (!fs) {
         return function () {

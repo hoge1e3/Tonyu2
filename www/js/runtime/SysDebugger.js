@@ -28,6 +28,10 @@ define(function (require,exports,module) {
         const prj=Debugger.ProjectFactory.create("compiled",{dir:prjDir});
         prj.include(sysMod);
         await Debugger.init(prj,Tonyu);
+        window.onerror=function (a,b,c,d,e) {
+            //console.log(...arguments);
+            if (e && e.stack) Tonyu.onRuntimeError(e);
+        };
         const opt=prj.getOptions();
         console.log("opt",opt);
         //await prj.loadClasses();

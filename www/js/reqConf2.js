@@ -235,7 +235,7 @@ var reqConf={
                 //"projectCompiler": "ProjectCompiler",
                 "source-map": 1,
                 "tonyu2_token": 1,
-                "langMod": 1,
+                //"langMod": 1,
                 "BuilderClient":1,
                 "BuilderClient4Sys":1,
                 "SourceFiles":1,

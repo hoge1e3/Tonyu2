@@ -176,27 +176,30 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         refactorUI=UI("div",["input",{type:"checkbox",$var:"chk",checked:"true",value:"chked"}],"プログラム中のクラス名も変更する");
         d.append(refactorUI);
     };
-    FM.on.mv=function (old,_new) {
+    FM.on.mv=async function (old,_new) {
         if (!refactorUI) return;
-
-        //alert(oldCN+"=>"+newCN);
-        return $.when(save()).then(function () {
-            if (refactorUI.$vars.chk.prop("checked")) {
-                var oldCN=old.truncExt(EXT);
-                var newCN=_new.truncExt(EXT);
-                return curPrj.renameClassName(oldCN,newCN);
+        const refactor=refactorUI.$vars.chk.prop("checked");
+        await save();
+        if (refactor) {
+            var oldCN=old.truncExt(EXT);
+            var newCN=_new.truncExt(EXT);
+            try {
+                const ren=await curPrj.renameClassName(oldCN,newCN);
+                console.log("REN",ren);
+                FM.on.ls();
+                FM.on.open(_new);
+            } catch(e) {
+                alert("プログラム内にエラーがあります．エラーを修正するか，「プログラム中のクラス名も変更する」のチェックを外してもう一度やり直してください．");
+                console.error(e);
+                console.log(e);
             }
-        }).then(function () {
-            refactorUI=null;
-            return reloadFromFiles();
-        }).catch(function (e) {
-            alert("プログラム内にエラーがあります．エラーを修正するか，「プログラム中のクラス名も変更する」のチェックを外してもう一度やり直してください．");
-            console.log(e);
-            return false;
-        }).finally(function () {
-            if (root.SplashScreen) root.SplashScreen.hide();
-        });
-        //close(old);  does in FileMenu
+        } else {
+            reloadFromFiles();
+        }
+        refactorUI=null;
+        if (root.SplashScreen) root.SplashScreen.hide();
+        console.log("REN2",!refactor);
+        return !refactor;
     };
     F(FM.on);
     fl.ls(curPrjDir);

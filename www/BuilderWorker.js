@@ -63,6 +63,22 @@ WS.serv("compiler/postChange", async params=>{
         throw convertTError(e);
     }
 });
+WS.serv("compiler/renameClassName", async params=>{
+    try {
+        const ns=await builder.renameClassName(params.from, params.to);
+        const res={};
+        for (let n of ns) {
+            if (n.exists()) {
+                res[n.path()]=n.text();
+            } else {
+                res[n.path()]=null;
+            }
+        }
+        return res;
+    } catch(e) {
+        throw convertTError(e);
+    }
+});
 function convertTError(e) {
     if (e.isTError) {
         e.src=e.src.path();
@@ -396,21 +412,39 @@ module.exports=class {
 	}
     renameClassName (o,n) {// o: key of aliases
         return this.fullCompile().then(()=>{
+            const EXT=".tonyu";
             const env=this.getEnv();
+            const changed=[];
+            let renamingFile;
             var cls=env.classes;/*ENVC*/
             for (var cln in cls) {/*ENVC*/
                 var klass=cls[cln];/*ENVC*/
                 var f=klass.src ? klass.src.tonyu : null;
                 var a=klass.annotation;
                 var changes=[];
-                if (klass.node.ext) {
-                    console.log("SPCl",klass.node.ext.superclassName);
-                }
-                if (klass.node.incl) {
-                    console.log("incl",klass.node.incl.includeClassNames);
-                }
-                //console.log("klass.node",klass.node.ext, klass.node.incl );
-                if (a && f) {
+                if (a && f && f.exists()) {
+                    if (klass.node) {// not exist when loaded from compiledProject
+                        if (klass.node.ext) {
+                            const spcl=klass.node.ext.superclassName;// {pos, len, text}
+                            console.log("SPCl",spcl);
+                            if (spcl.text===o) {
+                                changes.push({pos:spcl.pos,len:spcl.len});
+                            }
+                        }
+                        if (klass.node.incl) {
+                            const incl=klass.node.incl.includeClassNames;// [{pos, len, text}]
+                            console.log("incl",incl);
+                            for (let e of incl) {
+                                if (e.text===o) {
+                                    changes.push({pos:e.pos,len:e.len});
+                                }
+                            }
+                        }
+                    }
+                    //console.log("klass.node",klass.node.ext, klass.node.incl );
+                    if (f.truncExt(EXT)===o) {
+                        renamingFile=f;
+                    }
                     console.log("Check", cln);
                     for (var id in a) {
                         try {
@@ -442,11 +476,20 @@ module.exports=class {
                     if (ssrc!=src && !f.isReadOnly()) {
                         console.log("Refact:",f.path(),src);
                         f.text(src);
+                        changed.push(f);
                     }
                 } else {
                     console.log("No Check", cln);
                 }
+
             }
+            if (renamingFile) {
+                const renamedFile=renamingFile.sibling(n+EXT);
+                renamingFile.moveTo(renamedFile);
+                changed.push(renamingFile);
+                changed.push(renamedFile);
+            }
+            return changed;
         });
     }
 
@@ -3510,10 +3553,6 @@ module.exports=function () {
             var opt=this.getOptions();
             if (opt.compiler && opt.compiler.namespace) return opt.compiler.namespace;
             throw new Error("Namespace is not set");
-        },
-        //TODO
-        renameClassName: function (o,n) {// o: key of aliases
-            throw new Error("Rename todo");
         },
         async loadDependingClasses() {
             const myNsp=this.getNamespace();
@@ -9486,7 +9525,6 @@ define('NativeFS',["FSClass","assert","PathUtil","extend","Content"],
             fs=fsf();
             fs.existsSync('test.txt');
             process.cwd();
-
             break;
         } catch(e){fs=null;}
     }

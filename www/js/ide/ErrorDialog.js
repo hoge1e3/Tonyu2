@@ -56,7 +56,7 @@ class ErrorDialog {
         //mesgd.append($("<button>").text("閉じる").click(close));
         elem.append(mesgd);
         elem.append($("<div>").attr("class","quickFix"));
-        console.log("src=",src,err.stack, err.stack instanceof Array);
+        //console.log("src=",src,err.stack, err.stack instanceof Array);
 
         const str=src.text();
         if (str && typeof pos=="object") {
@@ -82,7 +82,9 @@ class ErrorDialog {
     }
     show(e) {
         function showTrace() {
-            const trcpre=UI("pre",e.stack);
+            const st=(typeof e.stack==="string" ? e.stack :
+            typeof e.stack.join==="function" ? e.stack.join("\n") : e+"");
+            const trcpre=UI("pre",st);
             const html=trcpre.html().replace(/_trc_([\w]*)/g,function (n) {
                 return "<strong>"+n+"</strong>";
             });

@@ -4,9 +4,9 @@ define(function (require,exports,module) {
     const BuilderClient=require("BuilderClient");
     const root=require("root");
     const sysMod=require("sysMod");
-    const langMod=require("langMod");
     const CP=require("CompiledProject");
     const WebSite=require("WebSite");
+    const langMod=BuilderClient.langMod;
     /*F.addDependencyResolver((prj,spec)=> {
         if (spec.namespace) {
 
@@ -48,6 +48,7 @@ define(function (require,exports,module) {
         res.disconnectDebugger=()=>c.setDebugger();
         res.fullCompile=c.fullCompile.bind(c);
         res.partialCompile=c.partialCompile.bind(c);
+        res.renameClassName=c.renameClassName.bind(c);
         res.include(sysMod).include(langMod);
         res.stop=()=>curDebugger && curDebugger.stop();
         /*res.getOutputFile=function () {

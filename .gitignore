@@ -24,3 +24,5 @@ swiftshader
 natives_blob*
 *.dll
 *.pak
+autoexec.js
+git_find_big.sh

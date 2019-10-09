@@ -1,17 +1,20 @@
 Worker
- "Picoaudio is missing" is not reported on old projects
  runScript1
- rename class
  isKernel
  F2 stop when focused in iframe
  mkrun2 -> babel
    https://polyfill.io/v3/polyfill.min.js?features=es6
+   NO, it can be done by gen/runScript2_concat.js (ie-final)
+   checkbox for IE
  resetLoopCheck
  thumbnail
  abolish Tonyu.runMode, Tonyu.currentProject, Tonyu.animationFrame
  Tonyu.DeferredUtil.promise -> Tonyu.promise
  check syntax(in ace)
  $Boot.on("classChanged") -> 堆積しないように
+ request Picoaudio plugin in old(when Picoaudio was not a plugin) project.
+ OK "Picoaudio is missing" is not reported on old projects
+ OK rename class
  OK runScript2
  OK resize
  OK focus

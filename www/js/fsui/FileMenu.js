@@ -115,25 +115,20 @@ var FileMenu=function () {
         /*var oldName,  mode;
         if (typeof oldNameD=="string") oldName=oldNameD;
         else { oldName=oldNameD.name; mode=oldNameD.mode;}*/
-        FM.dialogOpt({title:"名前変更", name:oldName, action:"mv", extraUI:FM.on.mvExtraUI, onend:function (nf) {
+        FM.dialogOpt({title:"名前変更", name:oldName, action:"mv", extraUI:FM.on.mvExtraUI, onend:async function (nf) {
             if (!nf) return;
-            return DU.then(function () {
-                /*if (FM.on.mv && FM.on.mv(curFile,nf)===false) {
-                    return;
-                }*/
-                if (FM.on.mv) {
-                    return FM.on.mv(curFile,nf);
-                }
-            }).then(function (r) {
-                if (r===false) return;
-                var t=curFile.text();
-                curFile.rm();
-                FM.on.close(curFile);
-                curFile=nf;
-                nf.text(t);
-                FM.on.ls();
-                FM.on.open(curFile);
-            });
+            let r;
+            if (FM.on.mv) {
+                r=await FM.on.mv(curFile,nf);
+            }
+            if (r===false) return;
+            var t=curFile.text();
+            curFile.rm();
+            FM.on.close(curFile);
+            curFile=nf;
+            nf.text(t);
+            FM.on.ls();
+            FM.on.open(curFile);
         }});
     };
     FM.rm=function (){
