@@ -90,6 +90,7 @@ root.Debugger={
 if (root.parent && root.parent.onTonyuDebuggerReady) {
     root.parent.onTonyuDebuggerReady(root.Debugger);
 }
+module.exports=root.Debugger;// whoever comment it, leave reason!
 
 },{"../lang/SourceFiles":3,"../lang/StackDecoder":4,"../lang/langMod":5,"../lib/FS":8,"../lib/root":9,"../project/CompiledProject":10,"../project/ProjectFactory":11}],3:[function(require,module,exports){
 //define(function (require,exports,module) {

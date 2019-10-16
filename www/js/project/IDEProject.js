@@ -19,7 +19,7 @@ define(function (require,exports,module) {
             kernel: {namespace:"kernel", url: WebSite.compiledKernel}
         };
         const c=new BuilderClient(res ,{
-            worker: {ns2depspec, url: "BuilderWorker.js"}
+            worker: {ns2depspec, url: "BuilderWorker.js"/*WORKER_URL*/}
         });
         F.addDependencyResolver((prj,spec)=>{
             if (ns2depspec[spec.namespace]) {
