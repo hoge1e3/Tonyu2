@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-type" content="text/html; charset=utf8"/>
+<script>WebSite_runType='singleHTML';</script>
+<script src="http://localhost/tonyu2/images/base.png.js"></script>
+<script src="http://localhost/tonyu2/images/Sample.png.js"></script>
+<script src="http://localhost/tonyu2/images/neko.png.js"></script>
+<script src="http://localhost/tonyu2/images/mapchip.png.js"></script>
+<script src="http://localhost/tonyu2/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
+<!-- final
+<script src="http://localhost/tonyu2/js/g2/runScript_concat.js" type="text/javascript"></script>
+-->
+<!--old
+<script src="http://localhost/tonyu2/js/gen/runScript_concat.min.js" type="text/javascript"></script>
+-->
+<!-- test-->
+<script src="http://localhost/tonyu2/js/lib/require.js" type="text/javascript"></script>
+<script src="http://localhost/tonyu2/js/reqConf2.js" type="text/javascript"></script>
+<script>
+requirejs.config(reqConf);
+requirejs(["runScript"],function () {
+
+});
+</script>
+<div id='splash' style='position:relative; height: 100%;'>
+<!--ここに，ロード中に表示する内容を記述できます。-->
+<!--You can write here what you want to show while loading. -->
+<div class='progress'>
+<!-- ここにロード中の進捗が表示されます．表示したくない場合はこのdiv要素を削除してください。 -->
+<!-- This shows progress. If you don't want to shot, remove this element -->
+</div>
+</div>
+<!--
+Open this site when editing this game:
+https://edit.tonyu.jp/index.html?importFromHTML=1
+-->
+<script language='text/tonyu' type='text/tonyu' data-filename='Chara.tonyu' data-lastupdate='1570587860000' >vx=5;vy=0.2;
+
+p=$pat_neko+rnd(3)*10+9;
+vr=1;//rnd(40)+1;
+scaleX=rndFloat(0.8,1.2);
+//a.b.c;
+//break;
+while(!screenOut()){
+    x+=vx;
+    if (getkey("a")==1) vr=10;
+    vr*=0.98;
+    rotation+=vr;
+    y+=vy+cos($frameCount*2)*3;
+
+    //if (getkey("r")) rotation++;
+    update();
+}
+die();</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu' data-lastupdate='1570587860000' >
+if ($debugger) {
+    $debugger.on("classChanged") \{
+    //print("Changed!");
+        loadPage(Main);
+    };
+}
+while(true) {
+    if($frameCount%10==0) new Chara{x:100,y:200};
+    if (getkey("z")==1) new Chara{x:100,y:300};
+
+    update();
+}</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='options.json' data-lastupdate='1570599268484' >
+{
+    "compiler": {
+        "namespace": "user",
+        "defaultSuperClass": "kernel.Actor",
+        "dependingProjects": [
+            {
+                "namespace": "kernel"
+            }
+        ],
+        "diagnose": false
+    },
+    "run": {
+        "mainClass": "user.Main",
+        "bootClass": "kernel.Boot",
+        "globals": {
+            "$defaultFPS": 60,
+            "$imageSmoothingDisabled": true,
+            "$soundLoadAndDecode": false
+        }
+    },
+    "kernelEditable": false,
+    "language": "tonyu",
+    "version": 1566181559095,
+    "plugins": {}
+}</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='res.json' data-lastupdate='1566996500003' >
+{
+    "images": [
+        {
+            "name": "$pat_base",
+            "url": "images/base.png",
+            "pwidth": 32,
+            "pheight": 32
+        },
+        {
+            "name": "$pat_sample",
+            "url": "images/Sample.png"
+        },
+        {
+            "name": "$pat_neko",
+            "url": "images/neko.png",
+            "pwidth": 32,
+            "pheight": 32
+        },
+        {
+            "name": "$pat_mapchip",
+            "url": "images/mapchip.png",
+            "pwidth": 32,
+            "pheight": 32
+        }
+    ],
+    "sounds": []
+}</script>
+</head><body></body></html>

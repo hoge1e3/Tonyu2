@@ -23,6 +23,7 @@ module.exports=class IndentFixer {
     		console.log("ERR",e);
     	}
     	//console.log(linfo);//Edge fails with error 'Could not complete the operation due to error 80020101.'
+        //Issue: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/23660690/
     	const lines=str.split("\n");
     	let curDepth=0;
     	let row=0;

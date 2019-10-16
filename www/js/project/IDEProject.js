@@ -40,6 +40,7 @@ define(function (require,exports,module) {
             curDebugger=d;
             c.setDebugger(d);
         };
+        res.setDebugger=d=>c.setDebugger(d);
         res.compiler=c;
         res.getIframeProject=()=>{
             const ifrm=root.document.querySelector("iframe");

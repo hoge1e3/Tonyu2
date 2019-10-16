@@ -1,8 +1,6 @@
 define(function (require,exports,module) {
     const Debugger=require("Debugger");
-    require("ImageList");
-    require("T2MediaLib");
-    require("UIDiag");
+    const runtime=require("runtime");
     const root=require("root");
     const Tonyu=require("Tonyu");
     const FS=Debugger.FS;
