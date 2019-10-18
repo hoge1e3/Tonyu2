@@ -9,6 +9,17 @@
 	   const fs=nodeRequire("fs");
 	   //console.log(fs.existsSync(`${js}/reqConf2.js`));
 	   const conf=nodeRequire(`${js}/reqConf2`).conf;
+	   function uglify(str) {
+	       try {
+	           var UglifyJS = nodeRequire("uglify-es");
+	           var r=UglifyJS.minify(str);
+			   if (r.error) return str;
+			   return r.code;
+	       }catch(e) {
+	           console.log("Uglify fail "+e);
+			   return str;
+	       }
+	   }
 	return {
 	    name: 'js/almond',
 	    include: ['runScript'],
@@ -22,7 +33,7 @@
 	    out: (r)=> {
 			//console.log("Writing", r);
 			r=r.replace(/"[^"]*"\/\*WORKER_URL\*\//,"WORKER_URL");
-			const content=JSON.stringify(fs.readFileSync(`${www}/BuilderWorker.js`,'utf8'));
+			const content=JSON.stringify(uglify(fs.readFileSync(`${www}/BuilderWorker.js`,'utf8')));
 			const urlFunc=`()=>{
 				const b=new Blob([${content}],{type:"text/javscript"});
 				return URL.createObjectURL(b);

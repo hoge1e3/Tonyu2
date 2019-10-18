@@ -91,12 +91,12 @@ var reqConf={
         FileSaver: {
             exports:"saveAs"
         },
-        BuilderClient4Sys: {
-            exports:"TonyuBuidlerClient"
-        },
-        Debugger: {
+        /*BuilderClient4Sys: {
+            exports:"TonyuBuilderClient"
+        },*/
+        /*Debugger: {
             exports: "Debugger"
-        }
+        }*/
     },
     // filepath - modulename(1 for same as filename)
     "revpaths": {
@@ -288,6 +288,7 @@ var reqConf={
             },
             "reqConf": 1,
             "runtime": {
+                "DebuggerCore": 1,
                 "Debugger": 1,
                 "SysDebugger": 1,
                 "Key": 1,

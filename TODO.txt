@@ -1,5 +1,5 @@
 Worker
- runScript1
+ OK runScript1
  concat index/project
  isKernel
  F2 stop when focused in iframe
