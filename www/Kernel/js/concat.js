@@ -25983,141 +25983,146 @@ Tonyu.klass.define({
         var vr;
         
         //$LASTPOS=79000474;//kernel.BodyActor:474
-        if (_this.body) {
-          return _this;
+        if (_this.isDead()) {
+          return false;
         }
-        //$LASTPOS=79000497;//kernel.BodyActor:497
+        //$LASTPOS=79000507;//kernel.BodyActor:507
+        if (_this.body) {
+          return _this.body;
+        }
+        //$LASTPOS=79000535;//kernel.BodyActor:535
         wworld = _this.getWorld();
         
-        //$LASTPOS=79000525;//kernel.BodyActor:525
+        //$LASTPOS=79000563;//kernel.BodyActor:563
         _this.world=wworld.world;
-        //$LASTPOS=79000550;//kernel.BodyActor:550
+        //$LASTPOS=79000588;//kernel.BodyActor:588
         _this.wscale=wworld.scale;
-        //$LASTPOS=79000576;//kernel.BodyActor:576
+        //$LASTPOS=79000614;//kernel.BodyActor:614
         b2Vec2 = Box2D.Common.Math.b2Vec2;
         
-        //$LASTPOS=79000620;//kernel.BodyActor:620
+        //$LASTPOS=79000658;//kernel.BodyActor:658
         b2BodyDef = Box2D.Dynamics.b2BodyDef;
         
-        //$LASTPOS=79000667;//kernel.BodyActor:667
+        //$LASTPOS=79000705;//kernel.BodyActor:705
         b2Body = Box2D.Dynamics.b2Body;
         
-        //$LASTPOS=79000708;//kernel.BodyActor:708
+        //$LASTPOS=79000746;//kernel.BodyActor:746
         b2FixtureDef = Box2D.Dynamics.b2FixtureDef;
         
-        //$LASTPOS=79000761;//kernel.BodyActor:761
+        //$LASTPOS=79000799;//kernel.BodyActor:799
         b2Fixture = Box2D.Dynamics.b2Fixture;
         
-        //$LASTPOS=79000808;//kernel.BodyActor:808
+        //$LASTPOS=79000846;//kernel.BodyActor:846
         b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;
         
-        //$LASTPOS=79000873;//kernel.BodyActor:873
+        //$LASTPOS=79000911;//kernel.BodyActor:911
         b2CircleShape = Box2D.Collision.Shapes.b2CircleShape;
         
-        //$LASTPOS=79000938;//kernel.BodyActor:938
+        //$LASTPOS=79000976;//kernel.BodyActor:976
         fixDef = new b2FixtureDef;
         
-        //$LASTPOS=79000974;//kernel.BodyActor:974
+        //$LASTPOS=79001012;//kernel.BodyActor:1012
         fixDef.density=_this.defv(_this.density,1);
-        //$LASTPOS=79001016;//kernel.BodyActor:1016
+        //$LASTPOS=79001054;//kernel.BodyActor:1054
         fixDef.friction=_this.defv(_this.friction,0.5);
-        //$LASTPOS=79001060;//kernel.BodyActor:1060
+        //$LASTPOS=79001098;//kernel.BodyActor:1098
         fixDef.restitution=_this.defv(_this.restitution,0.2);
-        //$LASTPOS=79001112;//kernel.BodyActor:1112
+        //$LASTPOS=79001150;//kernel.BodyActor:1150
         bodyDef = new b2BodyDef;
         
-        //$LASTPOS=79001146;//kernel.BodyActor:1146
+        //$LASTPOS=79001184;//kernel.BodyActor:1184
         bodyDef.type=_this.isStatic?b2Body.b2_staticBody:b2Body.b2_dynamicBody;
-        //$LASTPOS=79001230;//kernel.BodyActor:1230
+        //$LASTPOS=79001268;//kernel.BodyActor:1268
         bodyDef.position.x=_this.x/_this.wscale;
-        //$LASTPOS=79001267;//kernel.BodyActor:1267
+        //$LASTPOS=79001305;//kernel.BodyActor:1305
         bodyDef.position.y=_this.y/_this.wscale;
-        //$LASTPOS=79001304;//kernel.BodyActor:1304
+        //$LASTPOS=79001342;//kernel.BodyActor:1342
         _this.shape=_this.shape||(_this.radius?"circle":"box");
-        //$LASTPOS=79001353;//kernel.BodyActor:1353
+        //$LASTPOS=79001391;//kernel.BodyActor:1391
         w = _this.width;
         h = _this.height;
         
-        //$LASTPOS=79001380;//kernel.BodyActor:1380
+        //$LASTPOS=79001418;//kernel.BodyActor:1418
         if (! w) {
-          //$LASTPOS=79001399;//kernel.BodyActor:1399
+          //$LASTPOS=79001437;//kernel.BodyActor:1437
           t = _this.detectSpriteType();
           
-          //$LASTPOS=79001434;//kernel.BodyActor:1434
+          //$LASTPOS=79001472;//kernel.BodyActor:1472
           if (t==="Image") {
-            //$LASTPOS=79001451;//kernel.BodyActor:1451
+            //$LASTPOS=79001489;//kernel.BodyActor:1489
             _this.prepareImage();
           } else {
-            //$LASTPOS=79001481;//kernel.BodyActor:1481
+            //$LASTPOS=79001519;//kernel.BodyActor:1519
             if (t==="Custom") {
-              //$LASTPOS=79001514;//kernel.BodyActor:1514
+              //$LASTPOS=79001552;//kernel.BodyActor:1552
               if (_this.p.width*_this.p.height>0) {
-                //$LASTPOS=79001598;//kernel.BodyActor:1598
+                //$LASTPOS=79001636;//kernel.BodyActor:1636
                 _this.width=_this.p.width;
-                //$LASTPOS=79001630;//kernel.BodyActor:1630
+                //$LASTPOS=79001668;//kernel.BodyActor:1668
                 _this.height=_this.p.height;
                 
               }
               
             }
           }
-          //$LASTPOS=79001682;//kernel.BodyActor:1682
+          //$LASTPOS=79001720;//kernel.BodyActor:1720
           w=_this.width*_this.abs(_this.scaleX||1);
-          //$LASTPOS=79001715;//kernel.BodyActor:1715
+          //$LASTPOS=79001753;//kernel.BodyActor:1753
           h=_this.height*_this.abs(_this.scaleY||_this.scaleX||1);
           
         }
-        //$LASTPOS=79001760;//kernel.BodyActor:1760
+        //$LASTPOS=79001798;//kernel.BodyActor:1798
         if (_this.shape=="box") {
-          //$LASTPOS=79001789;//kernel.BodyActor:1789
+          //$LASTPOS=79001827;//kernel.BodyActor:1827
           if (! w) {
-            //$LASTPOS=79001812;//kernel.BodyActor:1812
+            //$LASTPOS=79001850;//kernel.BodyActor:1850
             console.log(_this);
             throw new Error("BodyActor::width is not set");
             
             
           }
-          //$LASTPOS=79001912;//kernel.BodyActor:1912
+          //$LASTPOS=79001950;//kernel.BodyActor:1950
           if (! h) {
-            //$LASTPOS=79001920;//kernel.BodyActor:1920
+            //$LASTPOS=79001958;//kernel.BodyActor:1958
             h=w;
           }
-          //$LASTPOS=79001934;//kernel.BodyActor:1934
+          //$LASTPOS=79001972;//kernel.BodyActor:1972
           fixDef.shape=new b2PolygonShape;
-          //$LASTPOS=79001978;//kernel.BodyActor:1978
+          //$LASTPOS=79002016;//kernel.BodyActor:2016
           fixDef.shape.SetAsOrientedBox(w/2/_this.wscale,h/2/_this.wscale,new b2Vec2(0,0),0);
           
         } else {
-          //$LASTPOS=79002084;//kernel.BodyActor:2084
+          //$LASTPOS=79002122;//kernel.BodyActor:2122
           _this.radius=_this.radius||w/2||16;
-          //$LASTPOS=79002121;//kernel.BodyActor:2121
+          //$LASTPOS=79002159;//kernel.BodyActor:2159
           fixDef.shape=new b2CircleShape(_this.radius/_this.wscale);
-          //$LASTPOS=79002199;//kernel.BodyActor:2199
+          //$LASTPOS=79002237;//kernel.BodyActor:2237
           _this.width=_this.height=_this.radius*2;
           
         }
-        //$LASTPOS=79002234;//kernel.BodyActor:2234
+        //$LASTPOS=79002272;//kernel.BodyActor:2272
         fps = wworld.fps;
         
-        //$LASTPOS=79002259;//kernel.BodyActor:2259
+        //$LASTPOS=79002297;//kernel.BodyActor:2297
         r = _this.rotation;
         ve = _this.bvec(_this.defv(_this.vx*fps,0),_this.defv(_this.vy*fps,0));
         vr = _this.defv(_this.vrotation,0);
         
-        //$LASTPOS=79002341;//kernel.BodyActor:2341
+        //$LASTPOS=79002379;//kernel.BodyActor:2379
         _this.body=_this.world.CreateBody(bodyDef);
-        //$LASTPOS=79002378;//kernel.BodyActor:2378
+        //$LASTPOS=79002416;//kernel.BodyActor:2416
         _this.body.CreateFixture(fixDef);
-        //$LASTPOS=79002411;//kernel.BodyActor:2411
+        //$LASTPOS=79002449;//kernel.BodyActor:2449
         _this.body.SetUserData(_this);
-        //$LASTPOS=79002440;//kernel.BodyActor:2440
+        //$LASTPOS=79002478;//kernel.BodyActor:2478
         _this.body.SetLinearVelocity(ve);
-        //$LASTPOS=79002473;//kernel.BodyActor:2473
+        //$LASTPOS=79002511;//kernel.BodyActor:2511
         _this.rotation=r;
-        //$LASTPOS=79002490;//kernel.BodyActor:2490
+        //$LASTPOS=79002528;//kernel.BodyActor:2528
         _this.vrotation=vr;
-        //$LASTPOS=79002509;//kernel.BodyActor:2509
+        //$LASTPOS=79002547;//kernel.BodyActor:2547
         _this.fireEvent("createBody");
+        return _this.body;
       },
       fiber$initBody :function _trc_BodyActor_f_initBody(_thread) {
         "use strict";
@@ -26143,8 +26148,13 @@ Tonyu.klass.define({
         var vr;
         
         //$LASTPOS=79000474;//kernel.BodyActor:474
+        if (_this.isDead()) {
+          _thread.retVal=false;return;
+          
+        }
+        //$LASTPOS=79000507;//kernel.BodyActor:507
         if (_this.body) {
-          _thread.retVal=_this;return;
+          _thread.retVal=_this.body;return;
           
         }
         
@@ -26153,138 +26163,138 @@ Tonyu.klass.define({
           for(var __cnt=100 ; __cnt--;) {
             switch (__pc) {
             case 0:
-              //$LASTPOS=79000497;//kernel.BodyActor:497
+              //$LASTPOS=79000535;//kernel.BodyActor:535
               _this.fiber$getWorld(_thread);
               __pc=1;return;
             case 1:
               wworld=_thread.retVal;
               
-              //$LASTPOS=79000525;//kernel.BodyActor:525
+              //$LASTPOS=79000563;//kernel.BodyActor:563
               _this.world=wworld.world;
-              //$LASTPOS=79000550;//kernel.BodyActor:550
+              //$LASTPOS=79000588;//kernel.BodyActor:588
               _this.wscale=wworld.scale;
-              //$LASTPOS=79000576;//kernel.BodyActor:576
+              //$LASTPOS=79000614;//kernel.BodyActor:614
               b2Vec2 = Box2D.Common.Math.b2Vec2;
               
-              //$LASTPOS=79000620;//kernel.BodyActor:620
+              //$LASTPOS=79000658;//kernel.BodyActor:658
               b2BodyDef = Box2D.Dynamics.b2BodyDef;
               
-              //$LASTPOS=79000667;//kernel.BodyActor:667
+              //$LASTPOS=79000705;//kernel.BodyActor:705
               b2Body = Box2D.Dynamics.b2Body;
               
-              //$LASTPOS=79000708;//kernel.BodyActor:708
+              //$LASTPOS=79000746;//kernel.BodyActor:746
               b2FixtureDef = Box2D.Dynamics.b2FixtureDef;
               
-              //$LASTPOS=79000761;//kernel.BodyActor:761
+              //$LASTPOS=79000799;//kernel.BodyActor:799
               b2Fixture = Box2D.Dynamics.b2Fixture;
               
-              //$LASTPOS=79000808;//kernel.BodyActor:808
+              //$LASTPOS=79000846;//kernel.BodyActor:846
               b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;
               
-              //$LASTPOS=79000873;//kernel.BodyActor:873
+              //$LASTPOS=79000911;//kernel.BodyActor:911
               b2CircleShape = Box2D.Collision.Shapes.b2CircleShape;
               
-              //$LASTPOS=79000938;//kernel.BodyActor:938
+              //$LASTPOS=79000976;//kernel.BodyActor:976
               fixDef = new b2FixtureDef;
               
-              //$LASTPOS=79000974;//kernel.BodyActor:974
+              //$LASTPOS=79001012;//kernel.BodyActor:1012
               _this.fiber$defv(_thread, _this.density, 1);
               __pc=2;return;
             case 2:
               fixDef.density=_thread.retVal;
               
-              //$LASTPOS=79001016;//kernel.BodyActor:1016
+              //$LASTPOS=79001054;//kernel.BodyActor:1054
               _this.fiber$defv(_thread, _this.friction, 0.5);
               __pc=3;return;
             case 3:
               fixDef.friction=_thread.retVal;
               
-              //$LASTPOS=79001060;//kernel.BodyActor:1060
+              //$LASTPOS=79001098;//kernel.BodyActor:1098
               _this.fiber$defv(_thread, _this.restitution, 0.2);
               __pc=4;return;
             case 4:
               fixDef.restitution=_thread.retVal;
               
-              //$LASTPOS=79001112;//kernel.BodyActor:1112
+              //$LASTPOS=79001150;//kernel.BodyActor:1150
               bodyDef = new b2BodyDef;
               
-              //$LASTPOS=79001146;//kernel.BodyActor:1146
+              //$LASTPOS=79001184;//kernel.BodyActor:1184
               bodyDef.type=_this.isStatic?b2Body.b2_staticBody:b2Body.b2_dynamicBody;
-              //$LASTPOS=79001230;//kernel.BodyActor:1230
+              //$LASTPOS=79001268;//kernel.BodyActor:1268
               bodyDef.position.x=_this.x/_this.wscale;
-              //$LASTPOS=79001267;//kernel.BodyActor:1267
+              //$LASTPOS=79001305;//kernel.BodyActor:1305
               bodyDef.position.y=_this.y/_this.wscale;
-              //$LASTPOS=79001304;//kernel.BodyActor:1304
+              //$LASTPOS=79001342;//kernel.BodyActor:1342
               _this.shape=_this.shape||(_this.radius?"circle":"box");
-              //$LASTPOS=79001353;//kernel.BodyActor:1353
+              //$LASTPOS=79001391;//kernel.BodyActor:1391
               w = _this.width;
               h = _this.height;
               
-              //$LASTPOS=79001380;//kernel.BodyActor:1380
+              //$LASTPOS=79001418;//kernel.BodyActor:1418
               if (!(! w)) { __pc=6     ; break; }
-              //$LASTPOS=79001399;//kernel.BodyActor:1399
+              //$LASTPOS=79001437;//kernel.BodyActor:1437
               _this.fiber$detectSpriteType(_thread);
               __pc=5;return;
             case 5:
               t=_thread.retVal;
               
-              //$LASTPOS=79001434;//kernel.BodyActor:1434
+              //$LASTPOS=79001472;//kernel.BodyActor:1472
               if (t==="Image") {
-                //$LASTPOS=79001451;//kernel.BodyActor:1451
+                //$LASTPOS=79001489;//kernel.BodyActor:1489
                 _this.prepareImage();
               } else {
-                //$LASTPOS=79001481;//kernel.BodyActor:1481
+                //$LASTPOS=79001519;//kernel.BodyActor:1519
                 if (t==="Custom") {
-                  //$LASTPOS=79001514;//kernel.BodyActor:1514
+                  //$LASTPOS=79001552;//kernel.BodyActor:1552
                   if (_this.p.width*_this.p.height>0) {
-                    //$LASTPOS=79001598;//kernel.BodyActor:1598
+                    //$LASTPOS=79001636;//kernel.BodyActor:1636
                     _this.width=_this.p.width;
-                    //$LASTPOS=79001630;//kernel.BodyActor:1630
+                    //$LASTPOS=79001668;//kernel.BodyActor:1668
                     _this.height=_this.p.height;
                     
                   }
                   
                 }
               }
-              //$LASTPOS=79001682;//kernel.BodyActor:1682
+              //$LASTPOS=79001720;//kernel.BodyActor:1720
               w=_this.width*_this.abs(_this.scaleX||1);
-              //$LASTPOS=79001715;//kernel.BodyActor:1715
+              //$LASTPOS=79001753;//kernel.BodyActor:1753
               h=_this.height*_this.abs(_this.scaleY||_this.scaleX||1);
             case 6     :
               
-              //$LASTPOS=79001760;//kernel.BodyActor:1760
+              //$LASTPOS=79001798;//kernel.BodyActor:1798
               if (_this.shape=="box") {
-                //$LASTPOS=79001789;//kernel.BodyActor:1789
+                //$LASTPOS=79001827;//kernel.BodyActor:1827
                 if (! w) {
-                  //$LASTPOS=79001812;//kernel.BodyActor:1812
+                  //$LASTPOS=79001850;//kernel.BodyActor:1850
                   console.log(_this);
                   throw new Error("BodyActor::width is not set");
                   
                   
                 }
-                //$LASTPOS=79001912;//kernel.BodyActor:1912
+                //$LASTPOS=79001950;//kernel.BodyActor:1950
                 if (! h) {
-                  //$LASTPOS=79001920;//kernel.BodyActor:1920
+                  //$LASTPOS=79001958;//kernel.BodyActor:1958
                   h=w;
                 }
-                //$LASTPOS=79001934;//kernel.BodyActor:1934
+                //$LASTPOS=79001972;//kernel.BodyActor:1972
                 fixDef.shape=new b2PolygonShape;
-                //$LASTPOS=79001978;//kernel.BodyActor:1978
+                //$LASTPOS=79002016;//kernel.BodyActor:2016
                 fixDef.shape.SetAsOrientedBox(w/2/_this.wscale,h/2/_this.wscale,new b2Vec2(0,0),0);
                 
               } else {
-                //$LASTPOS=79002084;//kernel.BodyActor:2084
+                //$LASTPOS=79002122;//kernel.BodyActor:2122
                 _this.radius=_this.radius||w/2||16;
-                //$LASTPOS=79002121;//kernel.BodyActor:2121
+                //$LASTPOS=79002159;//kernel.BodyActor:2159
                 fixDef.shape=new b2CircleShape(_this.radius/_this.wscale);
-                //$LASTPOS=79002199;//kernel.BodyActor:2199
+                //$LASTPOS=79002237;//kernel.BodyActor:2237
                 _this.width=_this.height=_this.radius*2;
                 
               }
-              //$LASTPOS=79002234;//kernel.BodyActor:2234
+              //$LASTPOS=79002272;//kernel.BodyActor:2272
               fps = wworld.fps;
               
-              //$LASTPOS=79002259;//kernel.BodyActor:2259
+              //$LASTPOS=79002297;//kernel.BodyActor:2297
               r = _this.rotation;
               _this.fiber$bvec(_thread, _this.defv(_this.vx*fps,0), _this.defv(_this.vy*fps,0));
               __pc=7;return;
@@ -26295,20 +26305,21 @@ Tonyu.klass.define({
             case 8:
               vr=_thread.retVal;
               
-              //$LASTPOS=79002341;//kernel.BodyActor:2341
+              //$LASTPOS=79002379;//kernel.BodyActor:2379
               _this.body=_this.world.CreateBody(bodyDef);
-              //$LASTPOS=79002378;//kernel.BodyActor:2378
+              //$LASTPOS=79002416;//kernel.BodyActor:2416
               _this.body.CreateFixture(fixDef);
-              //$LASTPOS=79002411;//kernel.BodyActor:2411
+              //$LASTPOS=79002449;//kernel.BodyActor:2449
               _this.body.SetUserData(_this);
-              //$LASTPOS=79002440;//kernel.BodyActor:2440
+              //$LASTPOS=79002478;//kernel.BodyActor:2478
               _this.body.SetLinearVelocity(ve);
-              //$LASTPOS=79002473;//kernel.BodyActor:2473
+              //$LASTPOS=79002511;//kernel.BodyActor:2511
               _this.rotation=r;
-              //$LASTPOS=79002490;//kernel.BodyActor:2490
+              //$LASTPOS=79002528;//kernel.BodyActor:2528
               _this.vrotation=vr;
-              //$LASTPOS=79002509;//kernel.BodyActor:2509
+              //$LASTPOS=79002547;//kernel.BodyActor:2547
               _this.fireEvent("createBody");
+              _thread.exit(_this.body);return;
               _thread.exit(_this);return;
             }
           }
@@ -26325,61 +26336,63 @@ Tonyu.klass.define({
         var a;
         var b;
         
-        //$LASTPOS=79002570;//kernel.BodyActor:2570
-        _this.initBody();
-        //$LASTPOS=79002587;//kernel.BodyActor:2587
+        //$LASTPOS=79002626;//kernel.BodyActor:2626
+        if (! _this.initBody()) {
+          return [];
+        }
+        //$LASTPOS=79002659;//kernel.BodyActor:2659
         res = [];
         
-        //$LASTPOS=79002612;//kernel.BodyActor:2612
+        //$LASTPOS=79002684;//kernel.BodyActor:2684
         w = _this.getWorld();
         
-        //$LASTPOS=79002635;//kernel.BodyActor:2635
-        //$LASTPOS=79002640;//kernel.BodyActor:2640
+        //$LASTPOS=79002707;//kernel.BodyActor:2707
+        //$LASTPOS=79002712;//kernel.BodyActor:2712
         c = _this.world.GetContactList();
         for (; c ; c=c.GetNext()) {
           {
-            //$LASTPOS=79002697;//kernel.BodyActor:2697
+            //$LASTPOS=79002769;//kernel.BodyActor:2769
             if (c.IsTouching()) {
-              //$LASTPOS=79002729;//kernel.BodyActor:2729
-              c.GetWorldManifold(m=new Box2D.Collision.b2WorldManifold);
               //$LASTPOS=79002801;//kernel.BodyActor:2801
+              c.GetWorldManifold(m=new Box2D.Collision.b2WorldManifold);
+              //$LASTPOS=79002873;//kernel.BodyActor:2873
               if (m.m_points[0]) {
-                //$LASTPOS=79002839;//kernel.BodyActor:2839
+                //$LASTPOS=79002911;//kernel.BodyActor:2911
                 if (m.m_points[1]&&m.m_points[1].x&&m.m_points[1].y) {
-                  //$LASTPOS=79002913;//kernel.BodyActor:2913
+                  //$LASTPOS=79002985;//kernel.BodyActor:2985
                   point={x: (m.m_points[0].x+m.m_points[1].x)/2*w.scale,y: (m.m_points[0].y+m.m_points[1].y)/2*w.scale};
                   
                 } else {
-                  //$LASTPOS=79003087;//kernel.BodyActor:3087
+                  //$LASTPOS=79003159;//kernel.BodyActor:3159
                   point={x: m.m_points[0].x*w.scale,y: m.m_points[0].y*w.scale};
                   
                 }
                 
               } else {
-                //$LASTPOS=79003188;//kernel.BodyActor:3188
+                //$LASTPOS=79003260;//kernel.BodyActor:3260
                 point={x: _this.x,y: _this.y};
               }
-              //$LASTPOS=79003214;//kernel.BodyActor:3214
+              //$LASTPOS=79003286;//kernel.BodyActor:3286
               a = c.GetFixtureA().GetBody().GetUserData();
               
-              //$LASTPOS=79003274;//kernel.BodyActor:3274
+              //$LASTPOS=79003346;//kernel.BodyActor:3346
               b = c.GetFixtureB().GetBody().GetUserData();
               
-              //$LASTPOS=79003334;//kernel.BodyActor:3334
+              //$LASTPOS=79003406;//kernel.BodyActor:3406
               if (a===_this) {
-                //$LASTPOS=79003367;//kernel.BodyActor:3367
+                //$LASTPOS=79003439;//kernel.BodyActor:3439
                 if (! klass||b===klass||b instanceof klass) {
-                  //$LASTPOS=79003437;//kernel.BodyActor:3437
+                  //$LASTPOS=79003509;//kernel.BodyActor:3509
                   res.push({target: b,manifold: m,x: point.x,y: point.y});
                   
                 }
                 
               } else {
-                //$LASTPOS=79003530;//kernel.BodyActor:3530
+                //$LASTPOS=79003602;//kernel.BodyActor:3602
                 if (b===_this) {
-                  //$LASTPOS=79003563;//kernel.BodyActor:3563
+                  //$LASTPOS=79003635;//kernel.BodyActor:3635
                   if (! klass||a===klass||a instanceof klass) {
-                    //$LASTPOS=79003633;//kernel.BodyActor:3633
+                    //$LASTPOS=79003705;//kernel.BodyActor:3705
                     res.push({target: a,manifold: m,x: point.x,y: point.y});
                     
                   }
@@ -26405,73 +26418,73 @@ Tonyu.klass.define({
         var a;
         var b;
         
+        //$LASTPOS=79002626;//kernel.BodyActor:2626
+        if (! _this.initBody()) {
+          _thread.retVal=[];return;
+          
+        }
+        //$LASTPOS=79002659;//kernel.BodyActor:2659
+        res = [];
+        
         
         _thread.enter(function _trc_BodyActor_ent_allContactPoints(_thread) {
           if (_thread.lastEx) __pc=_thread.catchPC;
           for(var __cnt=100 ; __cnt--;) {
             switch (__pc) {
             case 0:
-              //$LASTPOS=79002570;//kernel.BodyActor:2570
-              _this.fiber$initBody(_thread);
+              //$LASTPOS=79002684;//kernel.BodyActor:2684
+              _this.fiber$getWorld(_thread);
               __pc=1;return;
             case 1:
-              
-              //$LASTPOS=79002587;//kernel.BodyActor:2587
-              res = [];
-              
-              //$LASTPOS=79002612;//kernel.BodyActor:2612
-              _this.fiber$getWorld(_thread);
-              __pc=2;return;
-            case 2:
               w=_thread.retVal;
               
-              //$LASTPOS=79002635;//kernel.BodyActor:2635
-              //$LASTPOS=79002640;//kernel.BodyActor:2640
+              //$LASTPOS=79002707;//kernel.BodyActor:2707
+              //$LASTPOS=79002712;//kernel.BodyActor:2712
               c = _this.world.GetContactList();
               for (; c ; c=c.GetNext()) {
                 {
-                  //$LASTPOS=79002697;//kernel.BodyActor:2697
+                  //$LASTPOS=79002769;//kernel.BodyActor:2769
                   if (c.IsTouching()) {
-                    //$LASTPOS=79002729;//kernel.BodyActor:2729
-                    c.GetWorldManifold(m=new Box2D.Collision.b2WorldManifold);
                     //$LASTPOS=79002801;//kernel.BodyActor:2801
+                    c.GetWorldManifold(m=new Box2D.Collision.b2WorldManifold);
+                    //$LASTPOS=79002873;//kernel.BodyActor:2873
                     if (m.m_points[0]) {
-                      //$LASTPOS=79002839;//kernel.BodyActor:2839
+                      //$LASTPOS=79002911;//kernel.BodyActor:2911
                       if (m.m_points[1]&&m.m_points[1].x&&m.m_points[1].y) {
-                        //$LASTPOS=79002913;//kernel.BodyActor:2913
+                        //$LASTPOS=79002985;//kernel.BodyActor:2985
                         point={x: (m.m_points[0].x+m.m_points[1].x)/2*w.scale,y: (m.m_points[0].y+m.m_points[1].y)/2*w.scale};
                         
                       } else {
-                        //$LASTPOS=79003087;//kernel.BodyActor:3087
+                        //$LASTPOS=79003159;//kernel.BodyActor:3159
                         point={x: m.m_points[0].x*w.scale,y: m.m_points[0].y*w.scale};
                         
                       }
                       
                     } else {
-                      //$LASTPOS=79003188;//kernel.BodyActor:3188
+                      //$LASTPOS=79003260;//kernel.BodyActor:3260
                       point={x: _this.x,y: _this.y};
                     }
-                    //$LASTPOS=79003214;//kernel.BodyActor:3214
+                    //$LASTPOS=79003286;//kernel.BodyActor:3286
                     a = c.GetFixtureA().GetBody().GetUserData();
                     
-                    //$LASTPOS=79003274;//kernel.BodyActor:3274
+                    //$LASTPOS=79003346;//kernel.BodyActor:3346
                     b = c.GetFixtureB().GetBody().GetUserData();
                     
-                    //$LASTPOS=79003334;//kernel.BodyActor:3334
+                    //$LASTPOS=79003406;//kernel.BodyActor:3406
                     if (a===_this) {
-                      //$LASTPOS=79003367;//kernel.BodyActor:3367
+                      //$LASTPOS=79003439;//kernel.BodyActor:3439
                       if (! klass||b===klass||b instanceof klass) {
-                        //$LASTPOS=79003437;//kernel.BodyActor:3437
+                        //$LASTPOS=79003509;//kernel.BodyActor:3509
                         res.push({target: b,manifold: m,x: point.x,y: point.y});
                         
                       }
                       
                     } else {
-                      //$LASTPOS=79003530;//kernel.BodyActor:3530
+                      //$LASTPOS=79003602;//kernel.BodyActor:3602
                       if (b===_this) {
-                        //$LASTPOS=79003563;//kernel.BodyActor:3563
+                        //$LASTPOS=79003635;//kernel.BodyActor:3635
                         if (! klass||a===klass||a instanceof klass) {
-                          //$LASTPOS=79003633;//kernel.BodyActor:3633
+                          //$LASTPOS=79003705;//kernel.BodyActor:3705
                           res.push({target: a,manifold: m,x: point.x,y: point.y});
                           
                         }
@@ -26541,39 +26554,41 @@ Tonyu.klass.define({
         var a;
         var b;
         
-        //$LASTPOS=79003909;//kernel.BodyActor:3909
-        _this.initBody();
-        //$LASTPOS=79003926;//kernel.BodyActor:3926
+        //$LASTPOS=79003981;//kernel.BodyActor:3981
+        if (! _this.initBody()) {
+          return [];
+        }
+        //$LASTPOS=79004014;//kernel.BodyActor:4014
         res = [];
         
-        //$LASTPOS=79003943;//kernel.BodyActor:3943
-        //$LASTPOS=79003948;//kernel.BodyActor:3948
+        //$LASTPOS=79004031;//kernel.BodyActor:4031
+        //$LASTPOS=79004036;//kernel.BodyActor:4036
         c = _this.world.GetContactList();
         for (; c ; c=c.GetNext()) {
           {
-            //$LASTPOS=79004005;//kernel.BodyActor:4005
+            //$LASTPOS=79004093;//kernel.BodyActor:4093
             if (c.IsTouching()) {
-              //$LASTPOS=79004040;//kernel.BodyActor:4040
+              //$LASTPOS=79004128;//kernel.BodyActor:4128
               a = c.GetFixtureA().GetBody().GetUserData();
               
-              //$LASTPOS=79004100;//kernel.BodyActor:4100
+              //$LASTPOS=79004188;//kernel.BodyActor:4188
               b = c.GetFixtureB().GetBody().GetUserData();
               
-              //$LASTPOS=79004160;//kernel.BodyActor:4160
+              //$LASTPOS=79004248;//kernel.BodyActor:4248
               if (a===_this) {
-                //$LASTPOS=79004193;//kernel.BodyActor:4193
+                //$LASTPOS=79004281;//kernel.BodyActor:4281
                 if (! klass||b===klass||b instanceof klass) {
-                  //$LASTPOS=79004263;//kernel.BodyActor:4263
+                  //$LASTPOS=79004351;//kernel.BodyActor:4351
                   res.push(b);
                   
                 }
                 
               } else {
-                //$LASTPOS=79004315;//kernel.BodyActor:4315
+                //$LASTPOS=79004403;//kernel.BodyActor:4403
                 if (b===_this) {
-                  //$LASTPOS=79004348;//kernel.BodyActor:4348
+                  //$LASTPOS=79004436;//kernel.BodyActor:4436
                   if (! klass||a===klass||a instanceof klass) {
-                    //$LASTPOS=79004418;//kernel.BodyActor:4418
+                    //$LASTPOS=79004506;//kernel.BodyActor:4506
                     res.push(a);
                     
                   }
@@ -26596,63 +26611,56 @@ Tonyu.klass.define({
         var a;
         var b;
         
+        //$LASTPOS=79003981;//kernel.BodyActor:3981
+        if (! _this.initBody()) {
+          _thread.retVal=[];return;
+          
+        }
+        //$LASTPOS=79004014;//kernel.BodyActor:4014
+        res = [];
         
-        _thread.enter(function _trc_BodyActor_ent_allContacts(_thread) {
-          if (_thread.lastEx) __pc=_thread.catchPC;
-          for(var __cnt=100 ; __cnt--;) {
-            switch (__pc) {
-            case 0:
-              //$LASTPOS=79003909;//kernel.BodyActor:3909
-              _this.fiber$initBody(_thread);
-              __pc=1;return;
-            case 1:
+        //$LASTPOS=79004031;//kernel.BodyActor:4031
+        //$LASTPOS=79004036;//kernel.BodyActor:4036
+        c = _this.world.GetContactList();
+        for (; c ; c=c.GetNext()) {
+          {
+            //$LASTPOS=79004093;//kernel.BodyActor:4093
+            if (c.IsTouching()) {
+              //$LASTPOS=79004128;//kernel.BodyActor:4128
+              a = c.GetFixtureA().GetBody().GetUserData();
               
-              //$LASTPOS=79003926;//kernel.BodyActor:3926
-              res = [];
+              //$LASTPOS=79004188;//kernel.BodyActor:4188
+              b = c.GetFixtureB().GetBody().GetUserData();
               
-              //$LASTPOS=79003943;//kernel.BodyActor:3943
-              //$LASTPOS=79003948;//kernel.BodyActor:3948
-              c = _this.world.GetContactList();
-              for (; c ; c=c.GetNext()) {
-                {
-                  //$LASTPOS=79004005;//kernel.BodyActor:4005
-                  if (c.IsTouching()) {
-                    //$LASTPOS=79004040;//kernel.BodyActor:4040
-                    a = c.GetFixtureA().GetBody().GetUserData();
-                    
-                    //$LASTPOS=79004100;//kernel.BodyActor:4100
-                    b = c.GetFixtureB().GetBody().GetUserData();
-                    
-                    //$LASTPOS=79004160;//kernel.BodyActor:4160
-                    if (a===_this) {
-                      //$LASTPOS=79004193;//kernel.BodyActor:4193
-                      if (! klass||b===klass||b instanceof klass) {
-                        //$LASTPOS=79004263;//kernel.BodyActor:4263
-                        res.push(b);
-                        
-                      }
-                      
-                    } else {
-                      //$LASTPOS=79004315;//kernel.BodyActor:4315
-                      if (b===_this) {
-                        //$LASTPOS=79004348;//kernel.BodyActor:4348
-                        if (! klass||a===klass||a instanceof klass) {
-                          //$LASTPOS=79004418;//kernel.BodyActor:4418
-                          res.push(a);
-                          
-                        }
-                        
-                      }
-                    }
+              //$LASTPOS=79004248;//kernel.BodyActor:4248
+              if (a===_this) {
+                //$LASTPOS=79004281;//kernel.BodyActor:4281
+                if (! klass||b===klass||b instanceof klass) {
+                  //$LASTPOS=79004351;//kernel.BodyActor:4351
+                  res.push(b);
+                  
+                }
+                
+              } else {
+                //$LASTPOS=79004403;//kernel.BodyActor:4403
+                if (b===_this) {
+                  //$LASTPOS=79004436;//kernel.BodyActor:4436
+                  if (! klass||a===klass||a instanceof klass) {
+                    //$LASTPOS=79004506;//kernel.BodyActor:4506
+                    res.push(a);
                     
                   }
+                  
                 }
               }
-              _thread.exit(res);return;
-              _thread.exit(_this);return;
+              
             }
           }
-        });
+        }
+        _thread.retVal=res;return;
+        
+        
+        _thread.retVal=_this;return;
       },
       applyForce :function _trc_BodyActor_applyForce(fx,fy,px,py) {
         "use strict";
@@ -26661,18 +26669,20 @@ Tonyu.klass.define({
         var scale;
         var fps;
         
-        //$LASTPOS=79004536;//kernel.BodyActor:4536
-        _this.initBody();
-        //$LASTPOS=79004553;//kernel.BodyActor:4553
+        //$LASTPOS=79004624;//kernel.BodyActor:4624
+        if (! _this.initBody()) {
+          return _this;
+        }
+        //$LASTPOS=79004654;//kernel.BodyActor:4654
         b2Vec2 = Box2D.Common.Math.b2Vec2;
         
-        //$LASTPOS=79004597;//kernel.BodyActor:4597
+        //$LASTPOS=79004698;//kernel.BodyActor:4698
         scale = _this.getWorld().scale;
         
-        //$LASTPOS=79004630;//kernel.BodyActor:4630
+        //$LASTPOS=79004731;//kernel.BodyActor:4731
         fps = 60;
         
-        //$LASTPOS=79004647;//kernel.BodyActor:4647
+        //$LASTPOS=79004748;//kernel.BodyActor:4748
         _this.body.ApplyForce(new b2Vec2(fx,fy),_this.body.GetPosition());
       },
       fiber$applyForce :function _trc_BodyActor_f_applyForce(_thread,fx,fy,px,py) {
@@ -26684,32 +26694,24 @@ Tonyu.klass.define({
         var scale;
         var fps;
         
+        //$LASTPOS=79004624;//kernel.BodyActor:4624
+        if (! _this.initBody()) {
+          _thread.retVal=_this;return;
+          
+        }
+        //$LASTPOS=79004654;//kernel.BodyActor:4654
+        b2Vec2 = Box2D.Common.Math.b2Vec2;
         
-        _thread.enter(function _trc_BodyActor_ent_applyForce(_thread) {
-          if (_thread.lastEx) __pc=_thread.catchPC;
-          for(var __cnt=100 ; __cnt--;) {
-            switch (__pc) {
-            case 0:
-              //$LASTPOS=79004536;//kernel.BodyActor:4536
-              _this.fiber$initBody(_thread);
-              __pc=1;return;
-            case 1:
-              
-              //$LASTPOS=79004553;//kernel.BodyActor:4553
-              b2Vec2 = Box2D.Common.Math.b2Vec2;
-              
-              //$LASTPOS=79004597;//kernel.BodyActor:4597
-              scale = _this.getWorld().scale;
-              
-              //$LASTPOS=79004630;//kernel.BodyActor:4630
-              fps = 60;
-              
-              //$LASTPOS=79004647;//kernel.BodyActor:4647
-              _this.body.ApplyForce(new b2Vec2(fx,fy),_this.body.GetPosition());
-              _thread.exit(_this);return;
-            }
-          }
-        });
+        //$LASTPOS=79004698;//kernel.BodyActor:4698
+        scale = _this.getWorld().scale;
+        
+        //$LASTPOS=79004731;//kernel.BodyActor:4731
+        fps = 60;
+        
+        //$LASTPOS=79004748;//kernel.BodyActor:4748
+        _this.body.ApplyForce(new b2Vec2(fx,fy),_this.body.GetPosition());
+        
+        _thread.retVal=_this;return;
       },
       applyImpulse :function _trc_BodyActor_applyImpulse(fx,fy,px,py) {
         "use strict";
@@ -26718,18 +26720,20 @@ Tonyu.klass.define({
         var scale;
         var fps;
         
-        //$LASTPOS=79004741;//kernel.BodyActor:4741
-        _this.initBody();
-        //$LASTPOS=79004758;//kernel.BodyActor:4758
+        //$LASTPOS=79004842;//kernel.BodyActor:4842
+        if (! _this.initBody()) {
+          return _this;
+        }
+        //$LASTPOS=79004872;//kernel.BodyActor:4872
         b2Vec2 = Box2D.Common.Math.b2Vec2;
         
-        //$LASTPOS=79004802;//kernel.BodyActor:4802
+        //$LASTPOS=79004916;//kernel.BodyActor:4916
         scale = _this.getWorld().scale;
         
-        //$LASTPOS=79004835;//kernel.BodyActor:4835
+        //$LASTPOS=79004949;//kernel.BodyActor:4949
         fps = 60;
         
-        //$LASTPOS=79004852;//kernel.BodyActor:4852
+        //$LASTPOS=79004966;//kernel.BodyActor:4966
         _this.body.ApplyImpulse(new b2Vec2(fx,fy),_this.body.GetPosition());
       },
       fiber$applyImpulse :function _trc_BodyActor_f_applyImpulse(_thread,fx,fy,px,py) {
@@ -26741,40 +26745,34 @@ Tonyu.klass.define({
         var scale;
         var fps;
         
+        //$LASTPOS=79004842;//kernel.BodyActor:4842
+        if (! _this.initBody()) {
+          _thread.retVal=_this;return;
+          
+        }
+        //$LASTPOS=79004872;//kernel.BodyActor:4872
+        b2Vec2 = Box2D.Common.Math.b2Vec2;
         
-        _thread.enter(function _trc_BodyActor_ent_applyImpulse(_thread) {
-          if (_thread.lastEx) __pc=_thread.catchPC;
-          for(var __cnt=100 ; __cnt--;) {
-            switch (__pc) {
-            case 0:
-              //$LASTPOS=79004741;//kernel.BodyActor:4741
-              _this.fiber$initBody(_thread);
-              __pc=1;return;
-            case 1:
-              
-              //$LASTPOS=79004758;//kernel.BodyActor:4758
-              b2Vec2 = Box2D.Common.Math.b2Vec2;
-              
-              //$LASTPOS=79004802;//kernel.BodyActor:4802
-              scale = _this.getWorld().scale;
-              
-              //$LASTPOS=79004835;//kernel.BodyActor:4835
-              fps = 60;
-              
-              //$LASTPOS=79004852;//kernel.BodyActor:4852
-              _this.body.ApplyImpulse(new b2Vec2(fx,fy),_this.body.GetPosition());
-              _thread.exit(_this);return;
-            }
-          }
-        });
+        //$LASTPOS=79004916;//kernel.BodyActor:4916
+        scale = _this.getWorld().scale;
+        
+        //$LASTPOS=79004949;//kernel.BodyActor:4949
+        fps = 60;
+        
+        //$LASTPOS=79004966;//kernel.BodyActor:4966
+        _this.body.ApplyImpulse(new b2Vec2(fx,fy),_this.body.GetPosition());
+        
+        _thread.retVal=_this;return;
       },
       applyTorque :function _trc_BodyActor_applyTorque(a) {
         "use strict";
         var _this=this;
         
-        //$LASTPOS=79004939;//kernel.BodyActor:4939
-        _this.initBody();
-        //$LASTPOS=79004956;//kernel.BodyActor:4956
+        //$LASTPOS=79005053;//kernel.BodyActor:5053
+        if (! _this.initBody()) {
+          return _this;
+        }
+        //$LASTPOS=79005083;//kernel.BodyActor:5083
         _this.body.ApplyTorque(a);
       },
       fiber$applyTorque :function _trc_BodyActor_f_applyTorque(_thread,a) {
@@ -26783,39 +26781,33 @@ Tonyu.klass.define({
         //var _arguments=Tonyu.A(arguments);
         var __pc=0;
         
+        //$LASTPOS=79005053;//kernel.BodyActor:5053
+        if (! _this.initBody()) {
+          _thread.retVal=_this;return;
+          
+        }
+        //$LASTPOS=79005083;//kernel.BodyActor:5083
+        _this.body.ApplyTorque(a);
         
-        _thread.enter(function _trc_BodyActor_ent_applyTorque(_thread) {
-          if (_thread.lastEx) __pc=_thread.catchPC;
-          for(var __cnt=100 ; __cnt--;) {
-            switch (__pc) {
-            case 0:
-              //$LASTPOS=79004939;//kernel.BodyActor:4939
-              _this.fiber$initBody(_thread);
-              __pc=1;return;
-            case 1:
-              
-              //$LASTPOS=79004956;//kernel.BodyActor:4956
-              _this.body.ApplyTorque(a);
-              _thread.exit(_this);return;
-            }
-          }
-        });
+        _thread.retVal=_this;return;
       },
       moveBy :function _trc_BodyActor_moveBy(dx,dy) {
         "use strict";
         var _this=this;
         var pos;
         
-        //$LASTPOS=79005003;//kernel.BodyActor:5003
-        _this.initBody();
-        //$LASTPOS=79005020;//kernel.BodyActor:5020
+        //$LASTPOS=79005130;//kernel.BodyActor:5130
+        if (! _this.initBody()) {
+          return _this;
+        }
+        //$LASTPOS=79005160;//kernel.BodyActor:5160
         pos = _this.body.GetPosition();
         
-        //$LASTPOS=79005053;//kernel.BodyActor:5053
+        //$LASTPOS=79005193;//kernel.BodyActor:5193
         pos.x+=dx/_this.wscale;
-        //$LASTPOS=79005076;//kernel.BodyActor:5076
+        //$LASTPOS=79005216;//kernel.BodyActor:5216
         pos.y+=dy/_this.wscale;
-        //$LASTPOS=79005099;//kernel.BodyActor:5099
+        //$LASTPOS=79005239;//kernel.BodyActor:5239
         _this.body.SetPosition(pos);
       },
       fiber$moveBy :function _trc_BodyActor_f_moveBy(_thread,dx,dy) {
@@ -26825,30 +26817,22 @@ Tonyu.klass.define({
         var __pc=0;
         var pos;
         
+        //$LASTPOS=79005130;//kernel.BodyActor:5130
+        if (! _this.initBody()) {
+          _thread.retVal=_this;return;
+          
+        }
+        //$LASTPOS=79005160;//kernel.BodyActor:5160
+        pos = _this.body.GetPosition();
         
-        _thread.enter(function _trc_BodyActor_ent_moveBy(_thread) {
-          if (_thread.lastEx) __pc=_thread.catchPC;
-          for(var __cnt=100 ; __cnt--;) {
-            switch (__pc) {
-            case 0:
-              //$LASTPOS=79005003;//kernel.BodyActor:5003
-              _this.fiber$initBody(_thread);
-              __pc=1;return;
-            case 1:
-              
-              //$LASTPOS=79005020;//kernel.BodyActor:5020
-              pos = _this.body.GetPosition();
-              
-              //$LASTPOS=79005053;//kernel.BodyActor:5053
-              pos.x+=dx/_this.wscale;
-              //$LASTPOS=79005076;//kernel.BodyActor:5076
-              pos.y+=dy/_this.wscale;
-              //$LASTPOS=79005099;//kernel.BodyActor:5099
-              _this.body.SetPosition(pos);
-              _thread.exit(_this);return;
-            }
-          }
-        });
+        //$LASTPOS=79005193;//kernel.BodyActor:5193
+        pos.x+=dx/_this.wscale;
+        //$LASTPOS=79005216;//kernel.BodyActor:5216
+        pos.y+=dy/_this.wscale;
+        //$LASTPOS=79005239;//kernel.BodyActor:5239
+        _this.body.SetPosition(pos);
+        
+        _thread.retVal=_this;return;
       },
       contactTo :function _trc_BodyActor_contactTo(t) {
         "use strict";
@@ -26871,11 +26855,11 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         
-        //$LASTPOS=79005190;//kernel.BodyActor:5190
+        //$LASTPOS=79005330;//kernel.BodyActor:5330
         __superClass.prototype.die.apply( _this, []);
-        //$LASTPOS=79005208;//kernel.BodyActor:5208
+        //$LASTPOS=79005348;//kernel.BodyActor:5348
         if (_this.world) {
-          //$LASTPOS=79005219;//kernel.BodyActor:5219
+          //$LASTPOS=79005359;//kernel.BodyActor:5359
           _this.world.DestroyBody(_this.body);
         }
       },
@@ -26895,75 +26879,77 @@ Tonyu.klass.define({
         var bodyDef;
         var b2Vec2;
         
-        //$LASTPOS=79005281;//kernel.BodyActor:5281
-        _this.initBody();
-        //$LASTPOS=79005328;//kernel.BodyActor:5328
+        //$LASTPOS=79005421;//kernel.BodyActor:5421
+        if (! _this.initBody()) {
+          return _this;
+        }
+        //$LASTPOS=79005481;//kernel.BodyActor:5481
         params=params||{};
-        //$LASTPOS=79005352;//kernel.BodyActor:5352
+        //$LASTPOS=79005505;//kernel.BodyActor:5505
         px = params.x||_this.x;
         
-        //$LASTPOS=79005377;//kernel.BodyActor:5377
+        //$LASTPOS=79005530;//kernel.BodyActor:5530
         py = params.y||_this.y;
         
-        //$LASTPOS=79005402;//kernel.BodyActor:5402
+        //$LASTPOS=79005555;//kernel.BodyActor:5555
         wworld = _this.getWorld();
         
-        //$LASTPOS=79005444;//kernel.BodyActor:5444
+        //$LASTPOS=79005597;//kernel.BodyActor:5597
         scale = wworld.scale;
         
-        //$LASTPOS=79005473;//kernel.BodyActor:5473
+        //$LASTPOS=79005626;//kernel.BodyActor:5626
         world = wworld.world;
         
-        //$LASTPOS=79005502;//kernel.BodyActor:5502
+        //$LASTPOS=79005655;//kernel.BodyActor:5655
         b2BodyDef = Box2D.Dynamics.b2BodyDef;
         
-        //$LASTPOS=79005549;//kernel.BodyActor:5549
+        //$LASTPOS=79005702;//kernel.BodyActor:5702
         b2Body = Box2D.Dynamics.b2Body;
         
-        //$LASTPOS=79005590;//kernel.BodyActor:5590
+        //$LASTPOS=79005743;//kernel.BodyActor:5743
         JDC = Box2D.Dynamics.Joints.b2RevoluteJointDef;
         
-        //$LASTPOS=79005645;//kernel.BodyActor:5645
+        //$LASTPOS=79005798;//kernel.BodyActor:5798
         jd = new JDC;
         
         
-        //$LASTPOS=79005682;//kernel.BodyActor:5682
+        //$LASTPOS=79005835;//kernel.BodyActor:5835
         if (params.other&&Tonyu.is(params.other,Tonyu.classes.kernel.BodyActor)) {
-          //$LASTPOS=79005740;//kernel.BodyActor:5740
+          //$LASTPOS=79005893;//kernel.BodyActor:5893
           params.other.initBody();
-          //$LASTPOS=79005774;//kernel.BodyActor:5774
+          //$LASTPOS=79005927;//kernel.BodyActor:5927
           bodyB=params.other.body;
           
         } else {
-          //$LASTPOS=79005822;//kernel.BodyActor:5822
+          //$LASTPOS=79005975;//kernel.BodyActor:5975
           bodyDef = new b2BodyDef;
           
-          //$LASTPOS=79005860;//kernel.BodyActor:5860
+          //$LASTPOS=79006013;//kernel.BodyActor:6013
           bodyDef.type=b2Body.b2_staticBody;
-          //$LASTPOS=79005906;//kernel.BodyActor:5906
+          //$LASTPOS=79006059;//kernel.BodyActor:6059
           bodyDef.position.x=px/scale;
-          //$LASTPOS=79005947;//kernel.BodyActor:5947
+          //$LASTPOS=79006100;//kernel.BodyActor:6100
           bodyDef.position.y=py/scale;
-          //$LASTPOS=79005988;//kernel.BodyActor:5988
+          //$LASTPOS=79006141;//kernel.BodyActor:6141
           bodyB=world.CreateBody(bodyDef);
           
         }
-        //$LASTPOS=79006033;//kernel.BodyActor:6033
+        //$LASTPOS=79006186;//kernel.BodyActor:6186
         b2Vec2 = Box2D.Common.Math.b2Vec2;
         
-        //$LASTPOS=79006077;//kernel.BodyActor:6077
+        //$LASTPOS=79006230;//kernel.BodyActor:6230
         jd.Initialize(_this.body,bodyB,new b2Vec2(px/scale,py/scale));
-        //$LASTPOS=79006140;//kernel.BodyActor:6140
+        //$LASTPOS=79006293;//kernel.BodyActor:6293
         if (params.lowerAngle&&params.upperAngle) {
-          //$LASTPOS=79006194;//kernel.BodyActor:6194
+          //$LASTPOS=79006347;//kernel.BodyActor:6347
           jd.lowerAngle=_this.rad(params.lowerAngle);
-          //$LASTPOS=79006242;//kernel.BodyActor:6242
+          //$LASTPOS=79006395;//kernel.BodyActor:6395
           jd.upperAngle=_this.rad(params.upperAngle);
-          //$LASTPOS=79006290;//kernel.BodyActor:6290
+          //$LASTPOS=79006443;//kernel.BodyActor:6443
           jd.enableLimit=true;
           
         }
-        //$LASTPOS=79006325;//kernel.BodyActor:6325
+        //$LASTPOS=79006478;//kernel.BodyActor:6478
         world.CreateJoint(jd);
       },
       fiber$addRevoluteJoint :function _trc_BodyActor_f_addRevoluteJoint(_thread,params) {
@@ -26984,87 +26970,87 @@ Tonyu.klass.define({
         var bodyDef;
         var b2Vec2;
         
+        //$LASTPOS=79005421;//kernel.BodyActor:5421
+        if (! _this.initBody()) {
+          _thread.retVal=_this;return;
+          
+        }
+        //$LASTPOS=79005481;//kernel.BodyActor:5481
+        params=params||{};
+        //$LASTPOS=79005505;//kernel.BodyActor:5505
+        px = params.x||_this.x;
+        
+        //$LASTPOS=79005530;//kernel.BodyActor:5530
+        py = params.y||_this.y;
+        
         
         _thread.enter(function _trc_BodyActor_ent_addRevoluteJoint(_thread) {
           if (_thread.lastEx) __pc=_thread.catchPC;
           for(var __cnt=100 ; __cnt--;) {
             switch (__pc) {
             case 0:
-              //$LASTPOS=79005281;//kernel.BodyActor:5281
-              _this.fiber$initBody(_thread);
+              //$LASTPOS=79005555;//kernel.BodyActor:5555
+              _this.fiber$getWorld(_thread);
               __pc=1;return;
             case 1:
-              
-              //$LASTPOS=79005328;//kernel.BodyActor:5328
-              params=params||{};
-              //$LASTPOS=79005352;//kernel.BodyActor:5352
-              px = params.x||_this.x;
-              
-              //$LASTPOS=79005377;//kernel.BodyActor:5377
-              py = params.y||_this.y;
-              
-              //$LASTPOS=79005402;//kernel.BodyActor:5402
-              _this.fiber$getWorld(_thread);
-              __pc=2;return;
-            case 2:
               wworld=_thread.retVal;
               
-              //$LASTPOS=79005444;//kernel.BodyActor:5444
+              //$LASTPOS=79005597;//kernel.BodyActor:5597
               scale = wworld.scale;
               
-              //$LASTPOS=79005473;//kernel.BodyActor:5473
+              //$LASTPOS=79005626;//kernel.BodyActor:5626
               world = wworld.world;
               
-              //$LASTPOS=79005502;//kernel.BodyActor:5502
+              //$LASTPOS=79005655;//kernel.BodyActor:5655
               b2BodyDef = Box2D.Dynamics.b2BodyDef;
               
-              //$LASTPOS=79005549;//kernel.BodyActor:5549
+              //$LASTPOS=79005702;//kernel.BodyActor:5702
               b2Body = Box2D.Dynamics.b2Body;
               
-              //$LASTPOS=79005590;//kernel.BodyActor:5590
+              //$LASTPOS=79005743;//kernel.BodyActor:5743
               JDC = Box2D.Dynamics.Joints.b2RevoluteJointDef;
               
-              //$LASTPOS=79005645;//kernel.BodyActor:5645
+              //$LASTPOS=79005798;//kernel.BodyActor:5798
               jd = new JDC;
               
               
-              //$LASTPOS=79005682;//kernel.BodyActor:5682
+              //$LASTPOS=79005835;//kernel.BodyActor:5835
               if (params.other&&Tonyu.is(params.other,Tonyu.classes.kernel.BodyActor)) {
-                //$LASTPOS=79005740;//kernel.BodyActor:5740
+                //$LASTPOS=79005893;//kernel.BodyActor:5893
                 params.other.initBody();
-                //$LASTPOS=79005774;//kernel.BodyActor:5774
+                //$LASTPOS=79005927;//kernel.BodyActor:5927
                 bodyB=params.other.body;
                 
               } else {
-                //$LASTPOS=79005822;//kernel.BodyActor:5822
+                //$LASTPOS=79005975;//kernel.BodyActor:5975
                 bodyDef = new b2BodyDef;
                 
-                //$LASTPOS=79005860;//kernel.BodyActor:5860
+                //$LASTPOS=79006013;//kernel.BodyActor:6013
                 bodyDef.type=b2Body.b2_staticBody;
-                //$LASTPOS=79005906;//kernel.BodyActor:5906
+                //$LASTPOS=79006059;//kernel.BodyActor:6059
                 bodyDef.position.x=px/scale;
-                //$LASTPOS=79005947;//kernel.BodyActor:5947
+                //$LASTPOS=79006100;//kernel.BodyActor:6100
                 bodyDef.position.y=py/scale;
-                //$LASTPOS=79005988;//kernel.BodyActor:5988
+                //$LASTPOS=79006141;//kernel.BodyActor:6141
                 bodyB=world.CreateBody(bodyDef);
                 
               }
-              //$LASTPOS=79006033;//kernel.BodyActor:6033
+              //$LASTPOS=79006186;//kernel.BodyActor:6186
               b2Vec2 = Box2D.Common.Math.b2Vec2;
               
-              //$LASTPOS=79006077;//kernel.BodyActor:6077
+              //$LASTPOS=79006230;//kernel.BodyActor:6230
               jd.Initialize(_this.body,bodyB,new b2Vec2(px/scale,py/scale));
-              //$LASTPOS=79006140;//kernel.BodyActor:6140
+              //$LASTPOS=79006293;//kernel.BodyActor:6293
               if (params.lowerAngle&&params.upperAngle) {
-                //$LASTPOS=79006194;//kernel.BodyActor:6194
+                //$LASTPOS=79006347;//kernel.BodyActor:6347
                 jd.lowerAngle=_this.rad(params.lowerAngle);
-                //$LASTPOS=79006242;//kernel.BodyActor:6242
+                //$LASTPOS=79006395;//kernel.BodyActor:6395
                 jd.upperAngle=_this.rad(params.upperAngle);
-                //$LASTPOS=79006290;//kernel.BodyActor:6290
+                //$LASTPOS=79006443;//kernel.BodyActor:6443
                 jd.enableLimit=true;
                 
               }
-              //$LASTPOS=79006325;//kernel.BodyActor:6325
+              //$LASTPOS=79006478;//kernel.BodyActor:6478
               world.CreateJoint(jd);
               _thread.exit(_this);return;
             }
@@ -27075,7 +27061,7 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         
-        //$LASTPOS=79006369;//kernel.BodyActor:6369
+        //$LASTPOS=79006522;//kernel.BodyActor:6522
         if (! _this.body||_this.manualRotation) {
           return _this._rotation;
         }
@@ -27085,13 +27071,13 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         
-        //$LASTPOS=79006473;//kernel.BodyActor:6473
+        //$LASTPOS=79006626;//kernel.BodyActor:6626
         r=r||0;
-        //$LASTPOS=79006486;//kernel.BodyActor:6486
+        //$LASTPOS=79006639;//kernel.BodyActor:6639
         if (! _this.body||_this.manualRotation) {
           return _this._rotation=r;
         }
-        //$LASTPOS=79006540;//kernel.BodyActor:6540
+        //$LASTPOS=79006693;//kernel.BodyActor:6693
         _this.body.SetAngle(_this.rad(r));
       },
       __getter__x :function _trc_BodyActor___getter__x() {
@@ -27099,11 +27085,11 @@ Tonyu.klass.define({
         var _this=this;
         var pos;
         
-        //$LASTPOS=79006579;//kernel.BodyActor:6579
+        //$LASTPOS=79006732;//kernel.BodyActor:6732
         if (! _this.body) {
           return _this._x;
         }
-        //$LASTPOS=79006606;//kernel.BodyActor:6606
+        //$LASTPOS=79006759;//kernel.BodyActor:6759
         pos = _this.body.GetPosition();
         
         return pos.x*_this.wscale;
@@ -27113,18 +27099,18 @@ Tonyu.klass.define({
         var _this=this;
         var pos;
         
-        //$LASTPOS=79006676;//kernel.BodyActor:6676
+        //$LASTPOS=79006829;//kernel.BodyActor:6829
         if (! _this.body) {
           return _this._x=v;
         }
-        //$LASTPOS=79006705;//kernel.BodyActor:6705
+        //$LASTPOS=79006858;//kernel.BodyActor:6858
         v=v||0;
-        //$LASTPOS=79006718;//kernel.BodyActor:6718
+        //$LASTPOS=79006871;//kernel.BodyActor:6871
         pos = _this.body.GetPosition();
         
-        //$LASTPOS=79006751;//kernel.BodyActor:6751
+        //$LASTPOS=79006904;//kernel.BodyActor:6904
         pos.x=v/_this.wscale;
-        //$LASTPOS=79006772;//kernel.BodyActor:6772
+        //$LASTPOS=79006925;//kernel.BodyActor:6925
         _this.body.SetPosition(pos);
       },
       __getter__y :function _trc_BodyActor___getter__y() {
@@ -27132,11 +27118,11 @@ Tonyu.klass.define({
         var _this=this;
         var pos;
         
-        //$LASTPOS=79006809;//kernel.BodyActor:6809
+        //$LASTPOS=79006962;//kernel.BodyActor:6962
         if (! _this.body) {
           return _this._y;
         }
-        //$LASTPOS=79006836;//kernel.BodyActor:6836
+        //$LASTPOS=79006989;//kernel.BodyActor:6989
         pos = _this.body.GetPosition();
         
         return pos.y*_this.wscale;
@@ -27146,18 +27132,18 @@ Tonyu.klass.define({
         var _this=this;
         var pos;
         
-        //$LASTPOS=79006906;//kernel.BodyActor:6906
+        //$LASTPOS=79007059;//kernel.BodyActor:7059
         if (! _this.body) {
           return _this._y=v;
         }
-        //$LASTPOS=79006935;//kernel.BodyActor:6935
+        //$LASTPOS=79007088;//kernel.BodyActor:7088
         v=v||0;
-        //$LASTPOS=79006948;//kernel.BodyActor:6948
+        //$LASTPOS=79007101;//kernel.BodyActor:7101
         pos = _this.body.GetPosition();
         
-        //$LASTPOS=79006981;//kernel.BodyActor:6981
+        //$LASTPOS=79007134;//kernel.BodyActor:7134
         pos.y=v/_this.wscale;
-        //$LASTPOS=79007002;//kernel.BodyActor:7002
+        //$LASTPOS=79007155;//kernel.BodyActor:7155
         _this.body.SetPosition(pos);
       },
       __getter__vx :function _trc_BodyActor___getter__vx() {
@@ -27165,11 +27151,11 @@ Tonyu.klass.define({
         var _this=this;
         var v;
         
-        //$LASTPOS=79007042;//kernel.BodyActor:7042
+        //$LASTPOS=79007195;//kernel.BodyActor:7195
         if (! _this.body) {
           return _this._vx;
         }
-        //$LASTPOS=79007070;//kernel.BodyActor:7070
+        //$LASTPOS=79007223;//kernel.BodyActor:7223
         v = _this.body.GetLinearVelocity();
         
         return v.x*_this.wscale/_this.getWorld().fps;
@@ -27179,23 +27165,23 @@ Tonyu.klass.define({
         var _this=this;
         var ve;
         
-        //$LASTPOS=79007158;//kernel.BodyActor:7158
+        //$LASTPOS=79007311;//kernel.BodyActor:7311
         if (! _this.body) {
           return _this._vx=v;
         }
-        //$LASTPOS=79007188;//kernel.BodyActor:7188
+        //$LASTPOS=79007341;//kernel.BodyActor:7341
         v=v||0;
-        //$LASTPOS=79007201;//kernel.BodyActor:7201
+        //$LASTPOS=79007354;//kernel.BodyActor:7354
         ve = _this.body.GetLinearVelocity();
         
-        //$LASTPOS=79007239;//kernel.BodyActor:7239
+        //$LASTPOS=79007392;//kernel.BodyActor:7392
         ve.x=v/_this.wscale*_this.getWorld().fps;
-        //$LASTPOS=79007274;//kernel.BodyActor:7274
+        //$LASTPOS=79007427;//kernel.BodyActor:7427
         if (v) {
-          //$LASTPOS=79007281;//kernel.BodyActor:7281
+          //$LASTPOS=79007434;//kernel.BodyActor:7434
           _this.body.SetAwake(true);
         }
-        //$LASTPOS=79007307;//kernel.BodyActor:7307
+        //$LASTPOS=79007460;//kernel.BodyActor:7460
         _this.body.SetLinearVelocity(ve);
       },
       __getter__vy :function _trc_BodyActor___getter__vy() {
@@ -27203,11 +27189,11 @@ Tonyu.klass.define({
         var _this=this;
         var v;
         
-        //$LASTPOS=79007352;//kernel.BodyActor:7352
+        //$LASTPOS=79007505;//kernel.BodyActor:7505
         if (! _this.body) {
           return _this._vy;
         }
-        //$LASTPOS=79007380;//kernel.BodyActor:7380
+        //$LASTPOS=79007533;//kernel.BodyActor:7533
         v = _this.body.GetLinearVelocity();
         
         return v.y*_this.wscale/_this.getWorld().fps;
@@ -27217,28 +27203,28 @@ Tonyu.klass.define({
         var _this=this;
         var ve;
         
-        //$LASTPOS=79007468;//kernel.BodyActor:7468
+        //$LASTPOS=79007621;//kernel.BodyActor:7621
         if (! _this.body) {
           return _this._vy=v;
         }
-        //$LASTPOS=79007498;//kernel.BodyActor:7498
+        //$LASTPOS=79007651;//kernel.BodyActor:7651
         ve = _this.body.GetLinearVelocity();
         
-        //$LASTPOS=79007536;//kernel.BodyActor:7536
+        //$LASTPOS=79007689;//kernel.BodyActor:7689
         ve.y=v/_this.wscale*_this.getWorld().fps;
-        //$LASTPOS=79007571;//kernel.BodyActor:7571
+        //$LASTPOS=79007724;//kernel.BodyActor:7724
         if (v) {
-          //$LASTPOS=79007578;//kernel.BodyActor:7578
+          //$LASTPOS=79007731;//kernel.BodyActor:7731
           _this.body.SetAwake(true);
         }
-        //$LASTPOS=79007604;//kernel.BodyActor:7604
+        //$LASTPOS=79007757;//kernel.BodyActor:7757
         _this.body.SetLinearVelocity(ve);
       },
       __getter__vrotation :function _trc_BodyActor___getter__vrotation() {
         "use strict";
         var _this=this;
         
-        //$LASTPOS=79007654;//kernel.BodyActor:7654
+        //$LASTPOS=79007807;//kernel.BodyActor:7807
         if (! _this.body) {
           return _this._vr;
         }
@@ -27248,18 +27234,18 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         
-        //$LASTPOS=79007760;//kernel.BodyActor:7760
+        //$LASTPOS=79007913;//kernel.BodyActor:7913
         if (! _this.body) {
           return _this._vr=v;
         }
-        //$LASTPOS=79007790;//kernel.BodyActor:7790
+        //$LASTPOS=79007943;//kernel.BodyActor:7943
         v=v||0;
-        //$LASTPOS=79007803;//kernel.BodyActor:7803
+        //$LASTPOS=79007956;//kernel.BodyActor:7956
         if (v) {
-          //$LASTPOS=79007810;//kernel.BodyActor:7810
+          //$LASTPOS=79007963;//kernel.BodyActor:7963
           _this.body.SetAwake(true);
         }
-        //$LASTPOS=79007836;//kernel.BodyActor:7836
+        //$LASTPOS=79007989;//kernel.BodyActor:7989
         _this.body.SetAngularVelocity(_this.rad(v*_this.getWorld().fps));
       },
       __dummy: false

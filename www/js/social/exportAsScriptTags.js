@@ -10,7 +10,7 @@ define(["FS","Util","WebSite"], function (FS,Util,WebSite) {
             var resFile=dir.rel("res.json");
             var resObj=resFile.obj();
             var scriptServer=WebSite.scriptServer||"https://edit.tonyu.jp/";
-            const genPath=scriptServer+"js/g2/";
+            const genPath=scriptServer+"js/gen/";
             resObj.images.forEach(function (im) {
                 if (WebSite.builtinAssetNames[im.url]) {
                     buf+='<script src="'+scriptServer+im.url+'.js"></script>\n';
