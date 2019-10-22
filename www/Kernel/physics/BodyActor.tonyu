@@ -23,7 +23,8 @@ var _x,_y,_vx,_vy,_rotation,_vr;
     super.update();
 }
 \initBody() {
-    if (body) return;
+    if (isDead()) return false;
+    if (body) return body;
     var wworld=getWorld();
     world=wworld.world;
     wscale=wworld.scale;
@@ -85,9 +86,10 @@ var _x,_y,_vx,_vy,_rotation,_vr;
     rotation=r;
     vrotation=vr;
     fireEvent("createBody");
+    return body;
 }
 \allContactPoints(klass) {
-    initBody();
+    if (!initBody()) return [];
     var res=[],m,point;
     var w=getWorld();
     for (var c=world.GetContactList();c;c=c.GetNext()) {
@@ -124,7 +126,7 @@ var _x,_y,_vx,_vy,_rotation,_vr;
    return allContacts(klass);
 }
 \allContacts(klass) {
-    initBody();
+    if (!initBody()) return [];
     var res=[];
     for (var c=world.GetContactList();c;c=c.GetNext()) {
         if (c.IsTouching()) {
@@ -144,14 +146,14 @@ var _x,_y,_vx,_vy,_rotation,_vr;
     return res;
 }
 \applyForce(fx,fy,px,py) {
-    initBody();
+    if (!initBody()) return;
     var b2Vec2 = Box2D.Common.Math.b2Vec2;
     var scale=getWorld().scale;
     var fps=60;
     body.ApplyForce(new b2Vec2(fx ,fy),body.GetPosition());
 }
 \applyImpulse(fx,fy,px,py) {
-    initBody();
+    if (!initBody()) return;
     var b2Vec2 = Box2D.Common.Math.b2Vec2;
     var scale=getWorld().scale;
     var fps=60;
@@ -159,11 +161,11 @@ var _x,_y,_vx,_vy,_rotation,_vr;
 }
 
 \applyTorque(a) {
-    initBody();
+    if (!initBody()) return;
     body.ApplyTorque(a);
 }
 \moveBy(dx,dy) {
-    initBody();
+    if (!initBody()) return;
     var pos=body.GetPosition();
     pos.x+=dx/wscale;
     pos.y+=dy/wscale;
@@ -177,7 +179,7 @@ var _x,_y,_vx,_vy,_rotation,_vr;
     if (world) world.DestroyBody(body);
 }
 \addRevoluteJoint(params) {
-    initBody();
+    if (!initBody()) return;
     // params:{x?,y?,other?}
     params=params||{};
     var px=params.x||x;
