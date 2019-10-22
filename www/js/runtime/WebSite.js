@@ -1,9 +1,11 @@
+/*global process, require, BuiltinAssets */
 define(["FS","Platform"], function (FS,Platform) {
 	var P=FS.PathUtil;
 	var loc=document.location.href;
 	var devMode=!!loc.match(/html\/dev\//) && !!loc.match(/localhost:3/);
 	var WebSite;
 	var prot=location.protocol;
+	var k;
 	if (!prot.match(/^http/)) prot="https:";
 	switch(window.WebSite_runType) {
 	case "IDE":
@@ -78,14 +80,17 @@ define(["FS","Platform"], function (FS,Platform) {
 			WebSite.compiledKernel=WebSite.kernelDir+"js/concat.js";
 			WebSite.uploadTmpUrl=prot+"//localhost/tsite/tonyu/e/cgi-bin/uploadTmp.cgi";
 			WebSite.newVersionUrl=prot+"//localhost/tsite/tonyu/project/newVersion.cgi";
+			WebSite.scriptServer="https://localhost/tonyu2/";
 		} else {
 			WebSite.uploadTmpUrl=prot+"//edit.tonyu.jp/cgi-bin/uploadTmp.cgi";
 			WebSite.newVersionUrl=prot+"//www.tonyu.jp/project/newVersion.cgi";
+			WebSite.scriptServer="https://edit.tonyu.jp/";
 		}
 		WebSite.version=2;
 		WebSite.hoge="fuga";
 		FS.setEnvProvider(new FS.Env(WebSite));
-		return window.WebSite=WebSite;
+		window.WebSite=WebSite;
+		return WebSite;
 	case "singleHTML":
 		WebSite={
 			urlAliases: {}, top: ".",
@@ -93,7 +98,7 @@ define(["FS","Platform"], function (FS,Platform) {
 			mobile:Platform.mobile
 		};
 		if (typeof BuiltinAssets==="object") {
-			for (var k in BuiltinAssets) {
+			for (k in BuiltinAssets) {
 				WebSite.urlAliases[k]=BuiltinAssets[k];
 			}
 		}
@@ -110,7 +115,8 @@ define(["FS","Platform"], function (FS,Platform) {
 		WebSite.PathSep="/";
 		WebSite.compiledKernel=WebSite.scriptServer+"Kernel/js/concat.js";
 		FS.setEnvProvider(new FS.Env(WebSite));
-		return window.WebSite=WebSite;
+		window.WebSite=WebSite;
+		return WebSite;
 	case "multiHTML":
 		WebSite={
 			urlAliases: {}, top: ".",
@@ -131,7 +137,8 @@ define(["FS","Platform"], function (FS,Platform) {
 		//WebSite.compiledKernel=WebSite.top+"/js/kernel.js";
 		//-------------
 		FS.setEnvProvider(new FS.Env(WebSite));
-		return window.WebSite=WebSite;
+		window.WebSite=WebSite;
+		return WebSite;
 	}
 
 	if (loc.match(/jsrun\.it/)) {
@@ -202,7 +209,7 @@ define(["FS","Platform"], function (FS,Platform) {
 		};
 	}
 	if (typeof BuiltinAssets==="object") {
-		for (var k in BuiltinAssets) {
+		for (k in BuiltinAssets) {
 			WebSite.urlAliases[k]=BuiltinAssets[k];
 		}
 	}
@@ -215,19 +222,19 @@ define(["FS","Platform"], function (FS,Platform) {
 	};
 	// from https://w3g.jp/blog/js_browser_sniffing2015
 	var u=window.navigator.userAgent.toLowerCase();
-	WebSite.tablet=(u.indexOf("windows") != -1 && u.indexOf("touch") != -1)
-	|| u.indexOf("ipad") != -1
-	|| (u.indexOf("android") != -1 && u.indexOf("mobile") == -1)
-	|| (u.indexOf("firefox") != -1 && u.indexOf("tablet") != -1)
-	|| u.indexOf("kindle") != -1
-	|| u.indexOf("silk") != -1
-	|| u.indexOf("playbook") != -1;
-	WebSite.mobile=(u.indexOf("windows") != -1 && u.indexOf("phone") != -1)
-	|| u.indexOf("iphone") != -1
-	|| u.indexOf("ipod") != -1
-	|| (u.indexOf("android") != -1 && u.indexOf("mobile") != -1)
-	|| (u.indexOf("firefox") != -1 && u.indexOf("mobile") != -1)
-	|| u.indexOf("blackberry") != -1;
+	WebSite.tablet=(u.indexOf("windows") != -1 && u.indexOf("touch") != -1) ||
+	u.indexOf("ipad") != -1 ||
+	(u.indexOf("android") != -1 && u.indexOf("mobile") == -1) ||
+	(u.indexOf("firefox") != -1 && u.indexOf("tablet") != -1) ||
+	u.indexOf("kindle") != -1 ||
+	u.indexOf("silk") != -1 ||
+	u.indexOf("playbook") != -1;
+	WebSite.mobile=(u.indexOf("windows") != -1 && u.indexOf("phone") != -1) ||
+	u.indexOf("iphone") != -1 ||
+	u.indexOf("ipod") != -1 ||
+	(u.indexOf("android") != -1 && u.indexOf("mobile") != -1) ||
+	(u.indexOf("firefox") != -1 && u.indexOf("mobile") != -1) ||
+	u.indexOf("blackberry") != -1;
 
 	if (!WebSite.pluginTop) {
 		WebSite.pluginTop=WebSite.top+"/js/plugins";
@@ -329,5 +336,6 @@ define(["FS","Platform"], function (FS,Platform) {
 		}
 	}
 	FS.setEnvProvider(new FS.Env(WebSite));
-	return window.WebSite=WebSite;
+	window.WebSite=WebSite;
+	return WebSite;
 });

@@ -9,14 +9,15 @@ define(["FS","Util","WebSite"], function (FS,Util,WebSite) {
         if (includeJSScript) {
             var resFile=dir.rel("res.json");
             var resObj=resFile.obj();
-            var scriptServer="https://edit.tonyu.jp/";
+            var scriptServer=WebSite.scriptServer||"https://edit.tonyu.jp/";
+            const genPath=scriptServer+"js/g2/";
             resObj.images.forEach(function (im) {
                 if (WebSite.builtinAssetNames[im.url]) {
                     buf+='<script src="'+scriptServer+im.url+'.js"></script>\n';
                 }
             });
             buf+='<script src="'+scriptServer+'js/lib/jquery-1.10.1.js" type="text/javascript"></script>\n';
-            buf+='<script src="'+scriptServer+'js/gen/runScript_concat.min.js" type="text/javascript"></script>\n';
+            buf+='<script src="'+genPath+'runScript_concat.min.js" type="text/javascript"></script>\n';
         }
         buf+="<div id='splash' style='position:relative; height: 100%;'>\n";
         buf+="<!--ここに，ロード中に表示する内容を記述できます。-->\n";
@@ -37,6 +38,12 @@ define(["FS","Util","WebSite"], function (FS,Util,WebSite) {
             if (excludes[rel]) return;
             if (f.endsWith(".json") && rel.indexOf("maps/")<0) {
                 json.push(f);
+                return;
+            } else if (f.endsWith(".desktop")) {
+                return;
+            } else if (f.endsWith(".js.map")) {
+                return;
+            } else if (f.endsWith(".js")) {
                 return;
             } else if (!f.endsWith(".tonyu")) {
                 binary.push(f);
