@@ -6,9 +6,28 @@
 	   const js=`${www}/js`;
 	   const gen=`${js}/g2`;
 	   //console.log(`${js}/reqConf2.js`);
-	   //const fs=require("fs");
+	   const fs=nodeRequire("fs");
 	   //console.log(fs.existsSync(`${js}/reqConf2.js`));
 	   const conf=nodeRequire(`${js}/reqConf2`).conf;
+	   const filename="runScript2_concat";
+	   const urlPrefix="js";
+	   function uglifyWithSourceMap(str,url) {
+		   try {
+			var UglifyJS = nodeRequire("uglify-es");
+			var r=UglifyJS.minify({[`${filename}.js`]:str},{
+				sourceMap: {
+					url,includeSources:true,
+				}
+			});
+			if (r.error) return {code:str};
+			//console.log(r);
+			return r;
+		   }catch(e) {
+			console.log("Uglify fail "+e);
+			return {code:str};
+		   }
+	   }
+
 	return {
 	    name: 'js/almond',
 	    include: ['runScript2'],
@@ -19,7 +38,11 @@
 	        endFile: `${build}/run2_tail.txt`
 	    },
 	    paths: conf.paths,
-	    out: `${gen}/runScript2_concat.js`,
+	    out: r=>{
+			const u=uglifyWithSourceMap(r,`${filename}.min.js.map`);
+			if (u.map) fs.writeFileSync( `${gen}/${filename}.min.js.map`,u.map);
+			fs.writeFileSync( `${gen}/${filename}.min.js`,u.code);
+		},
 	    shim: conf.shim
 
 	};

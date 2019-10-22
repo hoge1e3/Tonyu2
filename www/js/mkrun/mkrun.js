@@ -66,6 +66,8 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu"],
         "   if (WebSite.isNW) return;\n";
         var wwwDir=FS.get(WebSite.wwwDir);
         var jsDir=wwwDir.rel("js/");
+        const runScrFileName="runScript2_concat.min.js";
+
         console.log("jsDir",jsDir);
         //var sampleImgDir=wwwDir.rel("images/");
         if (options.copySrc) copySrc();
@@ -123,12 +125,17 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu"],
             //TODO async...
             //dest.rel("js/concat.js").text(usrjs.text()+"\n//# sourceMappingURL=concat.js.map");// js/ is needed??
             var kerjs=FS.get(WebSite.kernelDir).rel("js/concat.js");
-            var runScr2=jsDir.rel("g2/runScript2_concat.js");
+            var runScr2=jsDir.rel(`g2/${runScrFileName}`);
+            var runScr2Map=jsDir.rel(`g2/${runScrFileName}.map`);
             return $.when(
                 usrjsmap.exists() && usrjsmap.copyTo(dest.rel("js/concat.js.map")),
                 usrjs.copyTo(dest.rel("js/concat.js")),
                 kerjs.copyTo(dest.rel("js/kernel.js")),
-                runScr2.copyTo(dest.rel("js/runScript2_concat.js"))
+                runScr2.copyTo(dest.rel(`js/${runScrFileName}`)),
+                (runScr2Map.exists() ?
+                    runScr2Map.copyTo(dest.rel(`js/${runScrFileName}.map`)) :
+                    Promise.resolve()
+                )
             );
         }
         function copyPlugins() {

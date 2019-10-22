@@ -345,6 +345,6 @@ var reqConf={
     }
     genPaths(reqConf.revpaths,"");
     delete reqConf.revpaths;
-    console.log(reqConf);
+    //console.log(reqConf);
     if (typeof exports!=="undefined") exports.conf=reqConf;
 })();

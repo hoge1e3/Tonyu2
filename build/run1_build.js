@@ -9,6 +9,8 @@
 	   const fs=nodeRequire("fs");
 	   //console.log(fs.existsSync(`${js}/reqConf2.js`));
 	   const conf=nodeRequire(`${js}/reqConf2`).conf;
+	   const urlPrefix="http://localhost/tonyu2/js/g2";
+	   const filename="runScript_concat";
 	   function uglify(str) {
 	       try {
 	           var UglifyJS = nodeRequire("uglify-es");
@@ -19,6 +21,23 @@
 	           console.log("Uglify fail "+e);
 			   return str;
 	       }
+	   }
+	   function uglifyWithSourceMap(str,url) {
+		   try {
+		   	var UglifyJS = nodeRequire("uglify-es");
+			var r=UglifyJS.minify({[`${filename}.js`]:str},{
+				sourceMap: {
+					url,includeSources:true,
+					//filename: "${filename}.js"
+				}
+			});
+		   	if (r.error) return {code:str};
+			//console.log(r);
+		   	return r;
+		   }catch(e) {
+		   	console.log("Uglify fail "+e);
+		   	return {code:str};
+		   }
 	   }
 	return {
 	    name: 'js/almond',
@@ -42,8 +61,10 @@
 			r=`(function (WORKER_URL) {
 				${r}
 			})(${urlVal});`;
-
-			fs.writeFileSync( `${gen}/runScript_concat.js`,r);
+			const u=uglifyWithSourceMap(r,`${filename}.min.js.map`);
+			for (var k in u) console.log(k);
+			if (u.map) fs.writeFileSync( `${gen}/${filename}.min.js.map`,u.map);
+			fs.writeFileSync( `${gen}/${filename}.min.js`,u.code);
 		},
 	    shim: conf.shim
 
