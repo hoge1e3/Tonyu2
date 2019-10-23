@@ -42,8 +42,6 @@ if (isNW || localStorage.noconcat) {
 	requirejs(
 		["selProject_concat"],
 	function (){
-		var capacity=FS.LSFS.getCapacity();
-		$("#ls").text(Math.floor(capacity.max/1024)+"KB中"+Math.floor(capacity.using/1024)+"KB使用中。");
 	});
 }
 </script>

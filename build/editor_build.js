@@ -9,7 +9,7 @@
 	   const fs=nodeRequire("fs");
 	   //console.log(fs.existsSync(`${js}/reqConf2.js`));
 	   const conf=nodeRequire(`${js}/reqConf2`).conf;
-	   const entry="runScript2";
+	   const entry="editor";
 	   const filename=`${entry}_concat`;
 	   const urlPrefix="js";
 	   function uglifyWithSourceMap(str,url) {
@@ -31,7 +31,7 @@
 
 	return {
 	    name: 'js/almond',
-	    include: [entry],
+	    include: [`ide/${entry}`],
 	    optimize:"none",
 	    baseUrl: www,
 	    wrap: {

@@ -1,4 +1,6 @@
-function FileList(elem, options) {
+define(function(require,exports,module) {
+const FS=require("FS");
+module.exports=function FileList(elem, options) {
     var _curDir=null;
     var _curFile=null;
     var _mod=false;
@@ -125,4 +127,5 @@ function FileList(elem, options) {
         return _curDir;
     }
     return FL;
-}
+};
+});

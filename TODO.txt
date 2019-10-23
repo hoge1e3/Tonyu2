@@ -1,6 +1,4 @@
 Worker
- OK runScript1
- concat index/project
  isKernel
  F2 stop when focused in iframe
  mkrun2 -> babel
@@ -9,14 +7,17 @@ Worker
    checkbox for IE
  resetLoopCheck
  thumbnail
- abolish Tonyu.runMode, Tonyu.currentProject, Tonyu.animationFrame
- Tonyu.DeferredUtil.promise -> Tonyu.promise
- edge cannot drag inside iframe
-   https://codepen.io/hoge1e3/pen/XWWbMzX
+ change Kernel
+  abolish Tonyu.runMode, Tonyu.currentProject, Tonyu.animationFrame
+  Tonyu.DeferredUtil.promise -> Tonyu.promise
+  edge cannot drag inside iframe
+    https://codepen.io/hoge1e3/pen/XWWbMzX
+  $Boot.autoReload=true -> 堆積しないように
+  request Picoaudio plugin in old(when Picoaudio was not a plugin) project.
  check syntax(in ace)
- $Boot.on("classChanged") -> 堆積しないように
- request Picoaudio plugin in old(when Picoaudio was not a plugin) project.
- BodyActor: 死んだあとにbodyが作られていて，透明なものに当たっている感じ...(ahgtmpl11)
+ OK runScript1
+ OK concat index/project
+ OK BodyActor: 死んだあとにbodyが作られていて，透明なものに当たっている感じ...(ahgtmpl11)
  OK "Picoaudio is missing" is not reported on old projects
  OK rename class
  OK runScript2

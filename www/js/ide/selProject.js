@@ -1,3 +1,4 @@
+/*global requirejs*/
 requirejs(["FS","Wiki","Shell","Shell2",
            /*"copySample",*/"NewProjectDialog","UI","Sync","Auth",
            "zip","requestFragment","WebSite","extLink","DeferredUtil",
@@ -7,10 +8,15 @@ requirejs(["FS","Wiki","Shell","Shell2",
             zip,requestFragment,WebSite,extLink,DU,
         ZipImporter,ProjectItem,ImportHTMLDialog) {
 $(function () {
-    var HNOP="javascript:;";
+    var HNOP="javascript_:;".replace(/_/,"");
     //copySample();
     //var home=FS.get(WebSite.tonyuHome);
     //var projects=FS.get(WebSite.projects[0]);//home.rel("Projects/");
+    if (!FS.NativeFS.available) {
+        var capacity=FS.LSFS.getCapacity();
+        $("#ls").text(Math.floor(capacity.max/1024)+"KB中"+Math.floor(capacity.using/1024)+"KB使用中。");
+    }
+
     $.get("https://edit.tonyu.jp/doc/welcome_sel.html").then(function (t) {
         $("#welcome").append(t);
     });

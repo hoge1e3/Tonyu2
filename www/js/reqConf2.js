@@ -43,10 +43,6 @@ var reqConf={
         "fs/ROMs": {
             "deps": ["FS","WebSite"]
         },
-        "FileList": {
-            "deps": ["FS"],
-            "exports": "FileList"
-        },
         "HttpHelper": {
             "exports": "HttpHelper"
         },
@@ -146,12 +142,9 @@ var reqConf={
                 "FileMenu": 1,
                 "Shell2": 1
             },
-            "gen": {
-                "ROM_d": "fs/ROMd",
-                "ROM_k": "fs/ROMk",
-                "ROM_s": "fs/ROMs",
-                "index_concat": "selProject_concat",
-                "project_concat": "editor_concat"
+            "g2": {
+                "selProject_concat.min": "selProject_concat",
+                "editor_concat.min": "editor_concat"
             },
             "graphics": {
                 "ImageList": 1,
