@@ -7,6 +7,7 @@ define(function (require,exports,module) {
     const F=Debugger.ProjectFactory;
     const WebSite=require("WebSite");
     const sysMod=require("sysMod");
+    const KeyEventChecker=require("KeyEventChecker");
     const runScript_common=require("runScript_common");
     F.addDependencyResolver((prj,spec)=>{
         if (spec.namespace==="kernel") {
@@ -16,6 +17,7 @@ define(function (require,exports,module) {
     /*Debugger.on("runtimeError",evt=>{
         console.log(evt.stack.map(s=>s+"").join("\n"));
     });*/
+
     const cv=runScript_common.initCanvas();
     Tonyu.globals.$mainCanvas=cv;
     Tonyu.runMode=true;
@@ -38,6 +40,7 @@ define(function (require,exports,module) {
         if (boot) {
             Tonyu.runningObj=Debugger.create(boot);
             Debugger.stop=()=>Tonyu.runningObj.stop();
+            KeyEventChecker.down(document,"F2",Debugger.stop);
         }
     }
     function getQueryString(key, default_)

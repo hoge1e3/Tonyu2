@@ -7,7 +7,7 @@ requirejs(["Util", "Tonyu", "FS", "PathUtil","FileList", "FileMenu",
            "Log","MainClassDialog","DeferredUtil","NWMenu",
            "mkrunDiag","zip","LSFS","WebFS",
            "extLink","DiagAdjuster","ExportHTMLDialog","DebugDialog","GlobalDialog",
-           "root","IDEProject","optionFixer","SourceFiles"
+           "root","IDEProject","optionFixer","SourceFiles","kernelChecker"
           ],
 function (Util, Tonyu, FS, PathUtil, FileList, FileMenu,
           ErrorDialog, fixIndent, Wiki,
@@ -17,7 +17,7 @@ function (Util, Tonyu, FS, PathUtil, FileList, FileMenu,
           Log,MainClassDialog,DU,NWMenu,
           mkrunDiag,zip,LSFS,WebFS,
           extLink,DiagAdjuster,ExportHTMLDialog,DebugDialog,GlobalDialog,
-          root,IDEProject,optionFixer,SourceFiles
+          root,IDEProject,optionFixer,SourceFiles,kernelChecker
           ) {
 $(function () {
     if (!WebSite.isNW) {
@@ -157,12 +157,12 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     FM.on.ls=ls;
     FM.on.validateName=fixName;
     FM.on.createContent=function (f) {
-        /*var k=curPrj.isKernel(f.truncExt(EXT));
+        var k=isKernel(f.truncExt(EXT));
         if (k) {
             f.text(k.text());
-        } else {*/
+        } else {
             f.text("");
-        //}
+        }
     };
     FM.on.displayName=function (f) {
         var r=dispName(f);
@@ -284,8 +284,8 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         if (f.endsWith(EXT)) return f.truncExt(EXT);
         return null;
     }
-    function isKernel() {
-        return false;//TODO
+    function isKernel(n) {
+        return kernelChecker.isKernel(n);
     }
     function fixName(name, options) {
         var upcased=false;

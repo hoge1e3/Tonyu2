@@ -174,6 +174,7 @@ var reqConf={
                 "wikiFullScreen": 1
             },
             "ide": {
+                kernelChecker:1,
                 "ErrorDialog":1,
                 "RunDialog": 1,
                 "DiffDialog": 1,

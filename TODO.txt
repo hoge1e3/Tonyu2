@@ -1,6 +1,6 @@
 Worker
- isKernel
- F2 stop when focused in iframe
+ OK isKernel
+ OK F2 stop when focused in iframe
  mkrun2 -> babel
    https://polyfill.io/v3/polyfill.min.js?features=es6
    NO, it can be done by gen/runScript2_concat.js (ie-final)
