@@ -1,4 +1,4 @@
-define(["FS","Util","WebSite"], function (FS,Util,WebSite) {
+define(["FS","Util","WebSite","splashElement"], function (FS,Util,WebSite,splashElement) {
     var east=function (dir,options) {
         options=options||{};
         var excludes=options.excludes||{};
@@ -10,7 +10,7 @@ define(["FS","Util","WebSite"], function (FS,Util,WebSite) {
             var resFile=dir.rel("res.json");
             var resObj=resFile.obj();
             var scriptServer=WebSite.scriptServer||"https://edit.tonyu.jp/";
-            const genPath=scriptServer+"js/g2/";
+            const genPath=scriptServer+"js/"+(options.IE?"gen":"g2")+"/";
             resObj.images.forEach(function (im) {
                 if (WebSite.builtinAssetNames[im.url]) {
                     buf+='<script src="'+scriptServer+im.url+'.js"></script>\n';
@@ -18,19 +18,10 @@ define(["FS","Util","WebSite"], function (FS,Util,WebSite) {
             });
             buf+='<script src="'+scriptServer+'js/lib/jquery-1.10.1.js" type="text/javascript"></script>\n';
             buf+='<script src="'+genPath+'runScript_concat.min.js" type="text/javascript"></script>\n';
+            if (!options.IE) {
+                buf+=`<script src="${scriptServer}js/runtime/detectUnsupported.js"></script>`;
+            }
         }
-        buf+="<div id='splash' style='position:relative; height: 100%;'>\n";
-        buf+="<!--ここに，ロード中に表示する内容を記述できます。-->\n";
-        buf+="<!--You can write here what you want to show while loading. -->\n";
-        buf+="<div class='progress'>\n";
-        buf+="<!-- ここにロード中の進捗が表示されます．表示したくない場合はこのdiv要素を削除してください。 -->\n";
-        buf+="<!-- This shows progress. If you don't want to shot, remove this element -->\n";
-        buf+="</div>\n";
-        buf+="</div>\n";
-        buf+="<!--\n";
-        buf+="Open this site when editing this game:\n";
-        buf+="https://edit.tonyu.jp/index.html?importFromHTML=1\n";
-        buf+="-->\n";
         var binary=[],json=[];
         //dir=FS.get(dir);
         dir.recursive(function (f) {
@@ -70,7 +61,7 @@ define(["FS","Util","WebSite"], function (FS,Util,WebSite) {
             buf+=wrap(f.text(),80);
             buf+="</script>\n\n";
         });
-        buf+="</head><body></body></html>";
+        buf+="</head><body>"+(options.splashElement||splashElement)+"</body></html>";
         return buf;
         function wrap(str, cols) {
             var lines=str.split("\n");

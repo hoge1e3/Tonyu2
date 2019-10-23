@@ -1,5 +1,5 @@
-define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu"],
-        function (FS,Util,assert,WebSite,plugins,sh,Tonyu) {
+define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu","splashElement"],
+        function (FS,Util,assert,WebSite,plugins,sh,Tonyu,splashElement) {
     var MkRun={};
     sh.mkrun=function (dest) {
         return MkRun.run( Tonyu.currentProject, FS.get(dest));
@@ -11,11 +11,14 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu"],
         switch(type) {
             case "prj":
             destZip=this.tmpDir().rel("prj.zip");
+            dest=this.tmpDir().rel(prj.getDir().name());
+            break;
             case "zip":
             dest=this.tmpDir().rel(prj.getDir().name());
             break;
             case "dir":
             dest=options.dest;
+            break;
         }
         assert(dest,"dest is not set");
         console.log("mkrun2",dest,destZip);
@@ -67,6 +70,8 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu"],
         var wwwDir=FS.get(WebSite.wwwDir);
         var jsDir=wwwDir.rel("js/");
         const runScrFileName="runScript2_concat.min.js";
+        const genDir=options.IE?"gen":"g2";
+        const scriptServer=WebSite.scriptServer||"https://edit.tonyu.jp/";
 
         console.log("jsDir",jsDir);
         //var sampleImgDir=wwwDir.rel("images/");
@@ -115,6 +120,11 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu"],
         function copyIndexHtml() {
             var htmlfile=wwwDir.rel("html/runtimes/index.html");
             return htmlfile.text(function (htmlcont) {
+                htmlcont=htmlcont.replace(/<!--SPLASH-->/,splashElement);
+                if (!options.IE) {
+                    htmlcont=htmlcont.replace(/<!--UNSUP-->/,
+                        `<script src="${scriptServer}js/runtime/detectUnsupported.js"></script>`);
+                }
                 htmlcont=htmlcont.replace(/TONYU_APP_VERSION/g,Math.floor(Math.random()*100000));
                 return dest.rel(htmlfile.name()).text(htmlcont);
             });
@@ -125,8 +135,8 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu"],
             //TODO async...
             //dest.rel("js/concat.js").text(usrjs.text()+"\n//# sourceMappingURL=concat.js.map");// js/ is needed??
             var kerjs=FS.get(WebSite.kernelDir).rel("js/concat.js");
-            var runScr2=jsDir.rel(`g2/${runScrFileName}`);
-            var runScr2Map=jsDir.rel(`g2/${runScrFileName}.map`);
+            var runScr2=jsDir.rel(`${genDir}/${runScrFileName}`);
+            var runScr2Map=jsDir.rel(`${genDir}/${runScrFileName}.map`);
             return $.when(
                 usrjsmap.exists() && usrjsmap.copyTo(dest.rel("js/concat.js.map")),
                 usrjs.copyTo(dest.rel("js/concat.js")),

@@ -2,12 +2,6 @@
 requirejs(["FS","compiledTonyuProject", "Shell","runtime","WebSite","LSFS","Tonyu","root","runScript_common"],
 		function (FS, CPTR,  sh,  rt,WebSite,LSFS,Tonyu,root,com) {
 	$(function () {
-		root.SplashScreen={
-			hide: function () {$("#splash").hide();},
-			show:function(){},
-			progress:function(t) {$("#splash").text(t);}
-		};
-
 		const cv=com.initCanvas();
 
 		let curProjectDir, home, prj;

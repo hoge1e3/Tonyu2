@@ -1,4 +1,9 @@
-define([], function () {
+define(["root"], function (root) {
+    root.SplashScreen={
+        hide: function () {$("#splash").hide();},
+        show:function(){},
+        progress:function(t) {$("#splash .progress").text(t);}
+    };
     return {
         initCanvas: function (doResize) {
             function getMargin() {

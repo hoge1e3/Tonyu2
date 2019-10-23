@@ -17,12 +17,7 @@ requirejs(["FS","Tonyu","IDEProject","Shell","ScriptTagFS",
 						],
 						sounds:[]
 		};
-		root.SplashScreen={
-			hide: function () {$("#splash").hide();},
-			show:function(){},
-			progress:function(t) {$("#splash .progress").text(t);}
-		};
-
+		
 		var cv=com.initCanvas();
 
 

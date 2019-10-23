@@ -1,5 +1,5 @@
-define(["UI","extLink","mkrun","Tonyu","zip","DeferredUtil"],
-function (UI,extLink,mkrun,Tonyu,zip,DU) {
+define(["UI","extLink","mkrun","Tonyu","zip","DeferredUtil","FS"],
+function (UI,extLink,mkrun,Tonyu,zip,DU,FS) {
     var res={};
     res.show=function (prj,dest,options) {
         var d=res.embed(prj,dest,options);
@@ -38,6 +38,10 @@ function (UI,extLink,mkrun,Tonyu,zip,DU) {
                     ],
                 ["h1","オプション"],
                     ["div",
+                        ["input", {id:"ie",$edit:"IE",type:"checkbox"}],
+                        ["label",{"for":"ie"},"Internet Explorer 11でも動作させる（一部機能が使えない可能性があります）"],
+                    ],
+                    ["div",
                         ["input", {id:"src",$edit:"src",type:"checkbox"}],
                         ["label",{"for":"src"},"ソースを添付する"],
                         ["div",
@@ -59,7 +63,7 @@ function (UI,extLink,mkrun,Tonyu,zip,DU) {
         } else {
             vars.folder.show();
         }
-        var model={dest:(dest && dest.path)?dest.path():(dest||""), src:true, zip:true};
+        var model={dest:(dest && dest.path)?dest.path():(dest||""), src:true, zip:true,IE:false};
         var form=vars.form[0];
         var outtype=form.outtype;
         vars.dest.prop("disabled",true);
@@ -73,6 +77,7 @@ function (UI,extLink,mkrun,Tonyu,zip,DU) {
                 vars.progress.text(f.name());
                 return DU.timeout(0);
             };
+            opt.IE=model.IE;
             if (type==="dir") opt.dest=FS.get(FS.PathUtil.directorify(model.dest));
             return mkrun.run2(prj,type, opt ).then(function (r) {
                 /*if (outtype.value==="zip") {

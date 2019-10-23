@@ -1,4 +1,4 @@
-SplashScreen=function () {
+window.SplashScreen=(function () {
     var s=$("<span>").css({position:"absolute",
             left: 100, top:100, fontSize: 30, background: "white"
         });
@@ -30,4 +30,4 @@ SplashScreen=function () {
     	SS.showing=false;
     };
     return SS;
-}();
+})();

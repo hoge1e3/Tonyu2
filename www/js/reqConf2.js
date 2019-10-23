@@ -303,6 +303,7 @@ var reqConf={
                 "workerLoader": 1
             },
             "social": {
+                splashElement:1,
                 "exportAsScriptTags": 1,
                 "exportToExe": 1,
                 "exportToJsdoit": 1,
