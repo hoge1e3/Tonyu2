@@ -30,7 +30,7 @@ class BuilderClient {
         const fileMap=this.fileMap;
         const localPrjDir=this.getDir();
         const files=localPrjDir.exportAsObject({
-            excludesF: f=>f.ext()!==".tonyu" && f.name()!=="options.json"
+            excludes: f=>f.ext()!==".tonyu" && f.name()!=="options.json"
         });
         const ns2depspec=this.config.worker.ns2depspec;
         const {prjDir:remotePrjDir}=await this.w.run("compiler/init",{

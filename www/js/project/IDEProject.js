@@ -7,11 +7,6 @@ define(function (require,exports,module) {
     const CP=require("CompiledProject");
     const WebSite=require("WebSite");
     const langMod=BuilderClient.langMod;
-    /*F.addDependencyResolver((prj,spec)=> {
-        if (spec.namespace) {
-
-        }
-    });*/
     F.addType("IDE",params=>{
         const ide=params.ide;
         const res=F.createDirBasedCore(params);
@@ -59,20 +54,7 @@ define(function (require,exports,module) {
                 console.error(e);
             }
         };
-        /*res.getOutputFile=function () {
-            // relative path in outputFile will fail old version
-            var opt=this.getOptions();
-            var o=opt.compiler.outputFile||"js/concat.js";
-            var outF=this.resolve(opt.compiler.outputFile);
-            return outF;
-        };*/
         console.log("res.loadClasses", res.loadClasses) ;
-        /*Object.assign(res,{
-            async loadClasses() {
-                await this.loadDependingClasses();
-
-            }
-        });*/
         return res;
     });
     exports.create=params=>F.create("IDE",params);

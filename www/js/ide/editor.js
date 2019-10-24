@@ -427,17 +427,6 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
         },showError).finally(function () {
             if (root.SplashScreen) root.SplashScreen.hide();
         });
-        /*return curPrj.rawRun(o.run.bootClass).catch(function (e) {
-            if (e.isTError) {
-                console.log("showErr: run");
-                showErrorPos($("#errorPos"),e,{jump:jump});
-                displayMode("compile_error");
-            }else{
-                Tonyu.onRuntimeError(e);
-            }
-        }).finally(function () {
-            if (root.SplashScreen) root.SplashScreen.hide();
-        });*/
     }
     var alertOnce;
     alertOnce=function (e) {
@@ -471,50 +460,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             //alert(ee);
         }
     }
-    window.onerror=EC.handleException=Tonyu.onRuntimeError=ide.showError=showError;/*function (e) {
-        console.error(e);
-        Tonyu.globals.$lastError=e;
-        var t=curPrj.env.traceTbl;
-        var te;
-        if (e.pluginName && !pluginAdded[e.pluginName]) {
-            //alert("再実行");
-            pluginAdded[e.pluginName]=true;
-            stop();
-            runDialog.close();
-            setTimeout(run,100);
-            return;
-        }
-        var tid = t.find(e) || t.decode(root.$LASTPOS); // user.Main:234
-        if (tid) {
-            te=curPrj.decodeTrace(tid);
-        }
-        console.log("onRunTimeError:stackTrace1",e.stack,te,root.$LASTPOS);
-        if (te) {
-            te.mesg=e;
-            if (e.pluginName) {
-                alert(e.message);
-            } else {
-                var diag=showErrorPos($("#errorPos"),te,{jump:jump});
-                displayMode("runtime_error");
-                $("#errorPos").find(".quickFix").append(
-                        UI("button",{on:{click: function () {
-                            //setDiagMode(true);
-                            //diag.dialog("close");
-                            //run();
-                            var trcpre=UI("pre",e.stack);
-                            var html=trcpre.html().replace(/_trc_([\w]*)/g,function (n) {
-                                return "<strong>"+n+"</strong>";
-                            });
-                            trcpre.html(html);
-                            $("#errorPos").find(".quickFix").append(trcpre);
-                        }}},"トレース表示"));
-            }
-            stop();
-        } else {
-            UI("div",{title:"Error"},e+"",["pre",e.stack]).dialog({width:800});
-            stop();
-        }
-    };*/
+    window.onerror=EC.handleException=Tonyu.onRuntimeError=ide.showError=showError;
     $("#mapEditor").click(F(function () {
         console.log("run map");
         run("kernel.MapEditor");
