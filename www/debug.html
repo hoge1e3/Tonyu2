@@ -7,9 +7,15 @@
 <script src="js/reqConf2.js"></script>
 <script>
     requirejs.config(reqConf);
-    console.log(typeof process!=="undefined" && process.cwd());
-    requirejs(["SysDebugger"],function () {
-    });
+    const nw=typeof process!=="undefined" && process.cwd();
+    console.log(nw);
+    if (nw) {
+        requirejs(["SysDebugger"],function () {
+        });
+    } else {
+        requirejs(["SysDebugger_concat"],function () {
+        });
+    }
 </script></head>
 <body><div id='splash' style='position:relative; height: 100%;'><div class='progress'></div></div></body>
 </html>

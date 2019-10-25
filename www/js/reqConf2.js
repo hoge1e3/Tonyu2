@@ -144,7 +144,8 @@ var reqConf={
             },
             "g2": {
                 "selProject_concat.min": "selProject_concat",
-                "editor_concat.min": "editor_concat"
+                "editor_concat.min": "editor_concat",
+                "SysDebugger_concat.min": "SysDebugger_concat"
             },
             "graphics": {
                 "ImageList": 1,
