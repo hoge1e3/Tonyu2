@@ -29,13 +29,22 @@ class BuilderClient {
         if (this.inited) return;
         const fileMap=this.fileMap;
         const localPrjDir=this.getDir();
-        const files=localPrjDir.exportAsObject({
+        const n2files=this.prj.sourceFiles();
+        const exported={base:localPrjDir.path(),data:{}};
+        for (var k in n2files) {
+            const f=n2files[k];
+            exported.data[f.relPath(localPrjDir)]=f.text();
+        }
+        const opt=this.prj.getOptionsFile();
+        exported.data[opt.relPath(localPrjDir)]=opt.text();
+        /*const files=localPrjDir.exportAsObject({
             excludes: f=>f.ext()!==".tonyu" && f.name()!=="options.json"
-        });
+        });*/
+        console.log("exported",exported);
         const ns2depspec=this.config.worker.ns2depspec;
         const {prjDir:remotePrjDir}=await this.w.run("compiler/init",{
             namespace:this.prj.getNamespace(),
-            files, ns2depspec
+            files:exported, ns2depspec
         });
         fileMap.add({local:localPrjDir, remote: remotePrjDir});
         const deps=this.prj.getDependingProjects();//TODO recursive

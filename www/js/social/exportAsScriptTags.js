@@ -4,7 +4,7 @@ define(["FS","Util","WebSite","splashElement"], function (FS,Util,WebSite,splash
         var excludes=options.excludes||{};
         var includeJSScript=options.includeJSScript;
         var buf="<!DOCTYPE html>\n<html><head>\n";
-        buf+='<meta http-equiv="Content-type" content="text/html; charset=utf8"/>\n';
+        buf+='<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>\n';
         buf+="<script>WebSite_runType='singleHTML';</script>\n";
         if (includeJSScript) {
             var resFile=dir.rel("res.json");
