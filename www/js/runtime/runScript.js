@@ -1,10 +1,10 @@
 /*global requirejs*/
 requirejs(["FS","Tonyu","IDEProject","Shell","ScriptTagFS",
 			"runtime","WebSite","root","runScript_common",
-			"Debugger","SourceFiles","sysMod"],
+			"Debugger","SourceFiles","sysMod","ProjectFactory","CompiledProject"],
 		function (FS,  Tonyu, IDEProject, sh, ScriptTagFS,
 				rt,WebSite,root,com,
-				Debugger,SourceFiles,sysMod) {
+				Debugger,SourceFiles,sysMod,F,CompiledProject) {
 	$(function () {
 		var home=FS.get(WebSite.tonyuHome);
 		var ramHome=FS.get("/ram/");
@@ -17,7 +17,7 @@ requirejs(["FS","Tonyu","IDEProject","Shell","ScriptTagFS",
 						],
 						sounds:[]
 		};
-		
+
 		var cv=com.initCanvas();
 
 
@@ -46,14 +46,14 @@ requirejs(["FS","Tonyu","IDEProject","Shell","ScriptTagFS",
 				kernelEditable: false
 		};
 		const NOP=e=>e;
-		const debuggerPrj=Debugger.ProjectFactory.create("compiled",{dir:prjDir});
+		const debuggerPrj=CompiledProject.create({dir:prjDir});
 		debuggerPrj.include(sysMod);
 		debuggerPrj.initCanvas=function () {
 			Tonyu.globals.$mainCanvas=cv;
 		};
-		Debugger.ProjectFactory.addDependencyResolver((prj,spec)=>{
+		F.addDependencyResolver((prj,spec)=>{
 			if (spec.namespace==="kernel" && !spec.url && WebSite.compiledKernel) {
-				return Debugger.ProjectFactory.fromDependencySpec(prj, {
+				return F.fromDependencySpec(prj, {
 					url: WebSite.compiledKernel, namespace:spec.namespace
 				});
 			}

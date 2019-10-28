@@ -283,7 +283,7 @@ var reqConf={
             },
             "reqConf": 1,
             "runtime": {
-                "DebuggerCore": 1,
+                //"DebuggerCore": 1,
                 "Debugger": 1,
                 "SysDebugger": 1,
                 "Key": 1,

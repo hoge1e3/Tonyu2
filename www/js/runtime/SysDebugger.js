@@ -3,8 +3,9 @@ define(function (require,exports,module) {
     const runtime=require("runtime");
     const root=require("root");
     const Tonyu=require("Tonyu");
-    const FS=Debugger.FS;
-    const F=Debugger.ProjectFactory;
+    const FS=require("FS");
+    const F=require("ProjectFactory");
+    const CompiledProject=require("CompiledProject");
     const WebSite=require("WebSite");
     const sysMod=require("sysMod");
     const KeyEventChecker=require("KeyEventChecker");
@@ -25,7 +26,7 @@ define(function (require,exports,module) {
     start();
     async function start() {
         const prjDir=FS.get(getQueryString("prj"));
-        const prj=Debugger.ProjectFactory.create("compiled",{dir:prjDir});
+        const prj=CompiledProject.create({dir:prjDir});
         prj.include(sysMod);
         await Debugger.init(prj,Tonyu);
         window.onerror=function (a,b,c,d,e) {
