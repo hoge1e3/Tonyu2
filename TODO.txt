@@ -1,5 +1,17 @@
 Worker
- Debugger.init({Tonyu, FS});
+ OK Readme.md -> from tonyu2-compiler  use copyFromCompiler.sh
+ resetLoopCheck
+ thumbnail
+ change Kernel
+  Anim fail -> Tonyu.DeferredUtil
+  abolish Tonyu.runMode, Tonyu.currentProject, Tonyu.animationFrame
+  Tonyu.DeferredUtil.promise -> Tonyu.promise
+  edge cannot drag inside iframe
+    https://codepen.io/hoge1e3/pen/XWWbMzX
+  $Boot.autoReload=true -> 堆積しないように
+  request Picoaudio plugin in old(when Picoaudio was not a plugin) project.
+ check syntax(in ace)
+ OK Debugger.init({Tonyu, FS});
  OK utf8 -> utf-8  in index/east
  OK isKernel
  OK F2 stop when focused in iframe
@@ -9,18 +21,6 @@ Worker
    checkbox for IE
  OK concat SysDebugger
  OK does not work sub/*.tonyu
- Anim fail -> Tonyu.DeferredUtil
- mv tonyu2-compiler related to js/tonyu2-compiler
- resetLoopCheck
- thumbnail
- change Kernel
-  abolish Tonyu.runMode, Tonyu.currentProject, Tonyu.animationFrame
-  Tonyu.DeferredUtil.promise -> Tonyu.promise
-  edge cannot drag inside iframe
-    https://codepen.io/hoge1e3/pen/XWWbMzX
-  $Boot.autoReload=true -> 堆積しないように
-  request Picoaudio plugin in old(when Picoaudio was not a plugin) project.
- check syntax(in ace)
  OK runScript1
  OK concat index/project
  OK BodyActor: 死んだあとにbodyが作られていて，透明なものに当たっている感じ...(ahgtmpl11)

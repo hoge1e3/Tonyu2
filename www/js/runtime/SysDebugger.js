@@ -28,7 +28,7 @@ define(function (require,exports,module) {
         const prjDir=FS.get(getQueryString("prj"));
         const prj=CompiledProject.create({dir:prjDir});
         prj.include(sysMod);
-        await Debugger.init(prj,Tonyu);
+        await Debugger.init(prj);
         window.onerror=function (a,b,c,d,e) {
             //console.log(...arguments);
             if (e && e.stack) Tonyu.onRuntimeError(e);

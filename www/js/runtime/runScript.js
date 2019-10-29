@@ -68,7 +68,7 @@ requirejs(["FS","Tonyu","IDEProject","Shell","ScriptTagFS",
 			const r=await idePrj.fullCompile();// fullCompile exec compiled source when debugger is connected, but fails because kernel is not loaded yet
 			idePrj.setDebugger(Debugger);
 			//await SourceFiles.add(r).saveAs(idePrj.getOutputFile()); // does in fullCompile
-			await Debugger.init(debuggerPrj, Tonyu);// does debuggerPrj.loadClaasses
+			await Debugger.init(debuggerPrj);// does debuggerPrj.loadClaasses
 			//console.log("RO-DO");
 			Tonyu.globals.$debugger=Debugger;
 
