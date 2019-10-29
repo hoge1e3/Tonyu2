@@ -1,5 +1,6 @@
 Worker
  OK Readme.md -> from tonyu2-compiler  use copyFromCompiler.sh
+ UIDiag(prompt inside iframe / no css)
  resetLoopCheck
  thumbnail
  change Kernel
