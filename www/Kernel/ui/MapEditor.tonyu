@@ -79,6 +79,9 @@ if(fileExist){
             if(baseData.length>2){
                 chipWidth=baseData[baseData.length-2];
                 chipHeight=baseData[baseData.length-1];
+            } else {
+                chipWidth=32;
+                chipHeight=32;
             }
         }
     }
@@ -92,6 +95,8 @@ if(!loadMode){
     col=(col-0)||50;
     chipWidth=prompt("input chipWidth");
     chipHeight=prompt("input chipHeight");
+    chipWidth=(chipWidth-0)||32;
+    chipHeight=(chipHeight-0)||32;
     panel=new Panel{width:col*chipWidth,height:row*chipHeight};
     panel.x=panel.width/2+40;
     panel.y=panel.height/2+40;
@@ -104,7 +109,7 @@ if(!loadMode){
     }else{
         $map=new Map{row:mapData.length,col:mapData[0].length,chipWidth:32,chipHeight:32,mapData,mapOnData};
     }*/
-    $map=new Map{chipWidth:32,chipHeight:32};
+    $map=new Map{chipWidth,chipHeight};
     $map.load(fileName);
     panel=new Panel{width:$map.col*$map.chipWidth,height:$map.row*$map.chipHeight,zOrder:100};
     panel.x=panel.width/2+40;
