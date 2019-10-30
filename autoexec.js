@@ -19,12 +19,15 @@ sync(fixture.rel("TonyuRuntime.js"), www.rel("js/runtime/"));
 function sync(from,to) {
     to=to.rel(from.name());
     const header="";
+    function toContent() {
+        return (header+from.text()).replace(/\r/g,"").replace(/\n/g,"\r\n");
+    }
     function same() {
-        return to.text()===header+from.text();
+        return to.text()===toContent();
     }
     function copy() {
         console.log("Copy", from.path(), to.path());
-        to.text(header+from.text());
+        to.text(toContent());
     }
     function copyIfNotSame() {
         if (!same()) {
