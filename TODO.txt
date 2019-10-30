@@ -1,6 +1,7 @@
 Worker
- OK Readme.md -> from tonyu2-compiler  use copyFromCompiler.sh
- UIDiag(prompt inside iframe / no css)
+ MapEditor save on dialog close
+   editor.stop -> IDEProject.stop -> (Sys)Debugger.stop -> Tonyu.runningObj($Boot).stop()
+   DebugDialog.beforeClose  
  resetLoopCheck
  thumbnail
  change Kernel
@@ -12,6 +13,9 @@ Worker
   $Boot.autoReload=true -> 堆積しないように
   request Picoaudio plugin in old(when Picoaudio was not a plugin) project.
  check syntax(in ace)
+ [Known] MapEditor adds jquery_ui plugin
+ OK Readme.md -> from tonyu2-compiler  use copyFromCompiler.sh
+ Suspend UIDiag(prompt inside iframe)
  OK Debugger.init({Tonyu, FS});
  OK utf8 -> utf-8  in index/east
  OK isKernel
