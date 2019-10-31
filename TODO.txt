@@ -1,10 +1,13 @@
 Worker
- MapEditor save on dialog close
-   editor.stop -> IDEProject.stop -> (Sys)Debugger.stop -> Tonyu.runningObj($Boot).stop()
-   DebugDialog.beforeClose  
+ (Another bug *1) MapEditor save on dialog close
+    editor.stop -> IDEProject.stop -> (Sys)Debugger.stop -> Tonyu.runningObj($Boot).stop()
+    DebugDialog.beforeClose
+    F2(from IDE), F2(from Debugger), Close
+ delete/rename OK?
  resetLoopCheck
  thumbnail
  change Kernel
+  (*1) plugin add bug(debug Boot.stop)
   Anim fail -> Tonyu.DeferredUtil
   abolish Tonyu.runMode, Tonyu.currentProject, Tonyu.animationFrame
   Tonyu.DeferredUtil.promise -> Tonyu.promise

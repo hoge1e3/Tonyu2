@@ -102,11 +102,12 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     setDiagMode(false);
     //var screenH;
     //var runDialogMode,dialogClosed;
-    var runDialogParam={
+    const runDialogParam={
         screenH:200,
-        onClose: stop,
+        //onClose: stop,
         desktopEnv: desktopEnv,
-        prj: curPrjDir.path()
+        prj: curPrjDir.path(),
+        ide
     };
     function onResize() {
         //console.log($(window).height(), $("#navBar").height());
@@ -371,22 +372,24 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
             break;
         }
     }
-    var cmdrun;
+    let cmdStat;
     function setCmdStat(c) {
-        if (c && cmdrun) {
-            alert("他のコマンド("+cmdrun+")が実行されているのでお待ちください．\n"+
+        console.log("setCmtStat",cmdStat,"to",c);
+        if (c && cmdStat) {
+            alert("他のコマンド("+cmdStat+")が実行されているのでお待ちください．\n"+
                 "しばらくたってもこのメッセージが出る場合，一旦Homeに戻ってください．");
             return;
         }
-        cmdrun=c;
+        cmdStat=c;
         return c;
     }
-    function stop() {
+    function stop(opt) {
         if (!setCmdStat("stop")) return;
         return $.when(curPrj.stop()).then(function () {
             curPrj.disconnectDebugger();
             displayMode("edit");
             console.log("Boot stopped");
+            if (opt && opt.closeAfterStop) runDialog.close();
         }).finally(function () {
             setCmdStat();
         });

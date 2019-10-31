@@ -41,7 +41,7 @@ define(function (require,exports,module) {
         if (boot) {
             Tonyu.runningObj=Debugger.create(boot);
             Debugger.stop=()=>Tonyu.runningObj.stop();
-            KeyEventChecker.down(document,"F2",Debugger.stop);
+            KeyEventChecker.down(document,"F2",()=>Debugger.requestStop() );
         }
     }
     function getQueryString(key, default_)

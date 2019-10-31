@@ -41,13 +41,13 @@ class ErrorDialog {
                 if (typeof columnNumber!=="number") continue;
                 if (typeof lineNumber!=="number") continue;
                 fileName=compiler.convertFromWorkerPath(fileName);
-                if (fileName.match(/^http/)) continue; // for concat.js 
+                if (fileName.match(/^http/)) continue; // for concat.js
                 try {
                     src=FS.get(fileName);
                     pos={row:lineNumber, col:columnNumber};
                     if (src.exists()) break;
                 }catch(e){
-                    console.log("ErrorDialog","stack",e);
+                    //console.log("ErrorDialog","stack",e);
                 }
             }
         }

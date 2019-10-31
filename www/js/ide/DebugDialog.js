@@ -20,7 +20,9 @@ module.exports=class {
         t.iframe=d.$vars.iframe;
     }
     close() {
+        this.forceClose=true;
         this.dom.dialog("close");
+        this.forceClose=false;
     }
     show(reset) {
         const t=this;
@@ -65,8 +67,13 @@ module.exports=class {
                 },
                 close:function () {
                     t.opened=false;
-                    t.param.onClose();
+                    if (t.param.onClose) t.param.onClose();
                     t.iframe.attr("src","about:blank");
+                },
+                beforeClose: function () {
+                    if (t.forceClose) return true;
+                    t.param.ide.stop({closeAfterStop:true});
+                    return false;
                 }
             });
             t.shownOnce=true;

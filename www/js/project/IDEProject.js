@@ -33,6 +33,7 @@ define(function (require,exports,module) {
                 ide.showError(e);
             });
             curDebugger=d;
+            d.requestStop=o=>ide.stop(o);
             c.setDebugger(d);
         };
         res.setDebugger=d=>c.setDebugger(d);
@@ -48,7 +49,7 @@ define(function (require,exports,module) {
         res.include(sysMod).include(langMod);
         res.stop=()=>{
             try {
-                if (curDebugger) curDebugger.stop();
+                if (curDebugger) return curDebugger.stop();
             }catch(e) {
                 //Edge: Can't execute code from a freed script
                 console.error(e);

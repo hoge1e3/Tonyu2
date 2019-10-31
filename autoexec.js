@@ -20,6 +20,7 @@ function sync(from,to) {
     to=to.rel(from.name());
     const header="";
     function toContent() {
+        // Why CRLF? See https://qiita.com/ritsuka/items/e4e1b9aa36b83886ae17
         return (header+from.text()).replace(/\r/g,"").replace(/\n/g,"\r\n");
     }
     function same() {
