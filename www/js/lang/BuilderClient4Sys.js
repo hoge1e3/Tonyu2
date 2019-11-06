@@ -25,9 +25,7 @@ class BuilderClient {
     convertFromWorkerPath(path) {
         return this.fileMap.convert(path,"remote","local");
     }
-    async init() {
-        if (this.inited) return;
-        const fileMap=this.fileMap;
+    exportFiles() {
         const localPrjDir=this.getDir();
         const n2files=this.prj.sourceFiles();
         const exported={base:localPrjDir.path(),data:{}};
@@ -38,10 +36,17 @@ class BuilderClient {
         const opt=this.prj.getOptionsFile();
         exported.data[opt.relPath(localPrjDir)]=opt.text();
         console.log("exported",exported);
+        return exported;
+    }
+    async init() {
+        if (this.inited) return;
+        const fileMap=this.fileMap;
+        const localPrjDir=this.getDir();
+        const files=this.exportFiles();
         const ns2depspec=this.config.worker.ns2depspec;
         const {prjDir:remotePrjDir}=await this.w.run("compiler/init",{
             namespace:this.prj.getNamespace(),
-            files:exported, ns2depspec
+            files, ns2depspec
         });
         fileMap.add({local:localPrjDir, remote: remotePrjDir});
         const deps=this.prj.getDependingProjects();//TODO recursive
@@ -60,20 +65,36 @@ class BuilderClient {
         }
         this.inited=true;
     }
+    resetFiles() {
+        const files=this.exportFiles();
+        return this.w.run("compiler/resetFiles",{
+            namespace:this.prj.getNamespace(),
+            files
+        });
+    }
+    async clean() {// Stands for eclipse "Clean" menu.
+        await this.resetFiles();
+        return await this.fullCompile();
+    }
     async fullCompile() {
         try {
+            this.partialCompilable=false;
             await this.init();
             const compres=await this.w.run("compiler/fullCompile");
             console.log(compres);
             const sf=SourceFiles.add(compres);
             await sf.saveAs(this.getOutputFile());
             await this.exec(compres);
+            this.partialCompilable=true;
             return compres;
         } catch(e) {
             throw this.convertError(e);
         }
     }
     async partialCompile(f) {
+        if (!this.partialCompilable) {
+            return await this.clean();
+        }
         try {
             const files={};files[f.relPath(this.getDir())]=f.text();
             await this.init();

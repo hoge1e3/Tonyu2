@@ -25,12 +25,20 @@ F.addDependencyResolver(function (prj, spec) {
 WS.serv("compiler/init", params=>{
     Object.assign(ns2depspec,params.ns2depspec||{});
     const files=params.files;
-    const prjDir=ram.rel((params.namespace||"user")+"/");
+    const namespace=params.namespace||"user";
+    const prjDir=ram.rel(namespace+"/");
     prjDir.importFromObject(files);
     //console.log(ram.rel("options.json").text());
     prj=CompiledProject.create({dir:prjDir});
     builder=new Builder(prj);
     return {prjDir:prjDir.path()};
+});
+WS.serv("compiler/resetFiles", params=>{
+    const files=params.files;
+    const namespace=params.namespace||"user";
+    const prjDir=ram.rel(namespace+"/");
+    prjDir.recursive(f=>console.log("RM",f.path(),!f.isDir() && f.rm()));
+    prjDir.importFromObject(files);    
 });
 WS.serv("compiler/addDependingProject", params=>{
     // params: namespace, files
@@ -309,11 +317,11 @@ module.exports=class {
 			memory: true,
 			file: true
 		};
-
 		return this.loadDependingClasses(ctx).then(()=>{
 			baseClasses=ctx.classes;
 			env=this.getEnv();
 			env.aliases={};
+            Tonyu.klass.removeMetaAll(myNsp);// for removed files
 			//env.parsedNode=env.parsedNode||{};
 			env.classes=baseClasses;
 			//console.log("env.classes===Tonyu.classMetas",env.classes===Tonyu.classMetas);
@@ -3592,9 +3600,9 @@ module.exports=function () {
 	function disp(n) {return JSON.stringify(n);}
 	var num=tk("number").ret(function (n) {
 		n.type="number";
-		if (typeof n.text!="string") throw "No text for "+disp(n);
+		if (typeof n.text!="string") throw new Error("No text for "+disp(n));
 		n.value=(n.text-0);
-		if (isNaN(n.value)) throw "No value for "+disp(n);
+		if (isNaN(n.value)) throw new Error("No value for "+disp(n));
 		return n;
 	});
 	var symbol=tk("symbol");
@@ -7670,8 +7678,8 @@ module.exports=function () {
 			"extends":true,
 			"includes":true
 	};
-
-	var num=tk(/^[0-9][xb]?[0-9a-f\.]*/i).ret(function (n) {
+	// Tested at https://codepen.io/hoge1e3/pen/NWWaaPB?editors=1010
+	var num=tk(/^(?:0x[0-9a-f]+|0b[01]+|(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:e-?[0-9]+)?)/i).ret(function (n) {
 		n.type="number";
 		n.value=n.text-0;//parseInt(n.text);
 		return n;
@@ -12125,6 +12133,12 @@ module.exports=function () {
 	}
 	klass.removeMeta=function (n) {
 		delete classMetas[n];
+	};
+	klass.removeMetaAll=function (ns) {
+		ns+=".";
+		for (let n in classMetas) {
+			if (n.substring(0,ns.length)===ns) delete classMetas[n];
+		}
 	};
 	klass.getMeta=function (k) {// Class or fullName
 		if (typeof k=="function") {

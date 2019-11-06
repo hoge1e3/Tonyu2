@@ -46,6 +46,7 @@ define(function (require,exports,module) {
         res.fullCompile=c.fullCompile.bind(c);
         res.partialCompile=c.partialCompile.bind(c);
         res.renameClassName=c.renameClassName.bind(c);
+        res.resetFiles=c.resetFiles.bind(c);
         res.include(sysMod).include(langMod);
         res.stop=()=>{
             try {

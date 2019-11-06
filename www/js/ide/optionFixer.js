@@ -17,6 +17,7 @@ define(["Tonyu"],function (Tonyu) {
                 $soundLoadAndDecode:false
             }
         },
+        plugins: {},
         kernelEditable: false,
         language:"tonyu",
         version: Tonyu.VERSION

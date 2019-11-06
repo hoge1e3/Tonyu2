@@ -109,7 +109,7 @@ var FileMenu=function () {
     };
     FM.mv=function () {
         FM.onMenuStart("mv");
-        var curFile=FM.on.getCurFile();
+        const curFile=FM.on.getCurFile();
         if (!curFile) return;
         var oldName=FM.on.displayName(curFile);
         /*var oldName,  mode;
@@ -125,10 +125,10 @@ var FileMenu=function () {
             var t=curFile.text();
             curFile.rm();
             FM.on.close(curFile);
-            curFile=nf;
             nf.text(t);
             FM.on.ls();
-            FM.on.open(curFile);
+            FM.on.open(nf);
+            if (FM.on.mvComplete) FM.on.mvComplete(curFile, nf);
         }});
     };
     FM.rm=function (){
@@ -139,6 +139,7 @@ var FileMenu=function () {
         curFile.rm();
         FM.on.ls();
         FM.on.close(curFile);
+        if (FM.on.rmComplete) FM.on.rmComplete(curFile);
     };
     /*$(function () {
         $("#newFile").click(FM.create);

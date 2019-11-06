@@ -1,10 +1,11 @@
 Worker
- (Another bug *1) MapEditor save on dialog close
+ OK MapEditor save on dialog close
     editor.stop -> IDEProject.stop -> (Sys)Debugger.stop -> Tonyu.runningObj($Boot).stop()
     DebugDialog.beforeClose
     F2(from IDE), F2(from Debugger), Close
- delete/rename OK?
- resetLoopCheck
+ OK delete/rename OK?
+ OK new project plugin missing
+ OK resetLoopCheck
  thumbnail
  change Kernel
   (*1) plugin add bug(debug Boot.stop)

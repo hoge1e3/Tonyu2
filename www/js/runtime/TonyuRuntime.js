@@ -259,6 +259,12 @@ module.exports=function () {
 	klass.removeMeta=function (n) {
 		delete classMetas[n];
 	};
+	klass.removeMetaAll=function (ns) {
+		ns+=".";
+		for (let n in classMetas) {
+			if (n.substring(0,ns.length)===ns) delete classMetas[n];
+		}
+	};
 	klass.getMeta=function (k) {// Class or fullName
 		if (typeof k=="function") {
 			return k.meta;

@@ -29,16 +29,8 @@ $(function () {
     $.get("https://edit.tonyu.jp/doc/welcome_edit.html?a").then(function (t) {
         $("#welcome").append(t);
     });
-
-    /*
-    location.href
-"chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/index.html"
-window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/index.html")
-    */
-
     var F=EC.f;
     root.$LASTPOS=0;
-    //copySample();
     var mobile=WebSite.mobile || FS.get(WebSite.tonyuHome).rel("mobile.txt").exists();
     if (mobile) {
         $("#fileViewer").hide();
@@ -49,21 +41,10 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     var home=FS.get(WebSite.tonyuHome);
     //if (!Tonyu.ide)  Tonyu.ide={};
     var kernelDir;
-    /*if (WebSite.kernelDir && !PathUtil.isURL(WebSite.kernelDir)){
-        kernelDir=FS.get(WebSite.kernelDir);//home.rel("Kernel/");
-        if (kernelDir.exists()) {
-            TPRC(kernelDir).loadClasses().fail(function (e) {
-                console.log(e);
-                alert("Kernel compile error!");
-            });
-        }
-    }*/
     var dir=Util.getQueryString("dir", "/Tonyu/Projects/SandBox/");
     var curPrjDir=FS.get(dir);
     const optionFile=curPrjDir.rel("options.json");
     optionFixer.fixFile(optionFile);
-    //var curProjectDir=curPrjDir;
-    //console.log("F",F,root);
     const ide={restart,stop,displayMode,jump};
     const curPrj=IDEProject.create({dir:curPrjDir,ide});//, kernelDir);
     ide.project=curPrj;
@@ -95,13 +76,7 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     };
     const resf=curPrj.getResourceFile();
     if (!resf.exists()) resf.obj(Tonyu.defaultResource);
-    /*if (location.href.match(/^file/)) {
-       Tonyu.defaultResource.images.splice(1,1);
-   }*/
-
     setDiagMode(false);
-    //var screenH;
-    //var runDialogMode,dialogClosed;
     const runDialogParam={
         screenH:200,
         //onClose: stop,
@@ -153,7 +128,8 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     $("#runDialog").click(F(function () {
         runDialog.show(true);
     }));
-
+    FM.on.mvComplete=resetFiles;// called only non-refactor
+    FM.on.rmComplete=resetFiles;
     FM.on.close=close;
     FM.on.ls=ls;
     FM.on.validateName=fixName;
@@ -205,6 +181,9 @@ window.open("chrome-extension://olbcdbbkoeedndbghihgpljnlppogeia/Demo/Explode/in
     F(FM.on);
     fl.ls(curPrjDir);
     refreshRunMenu();
+    function resetFiles() {
+        curPrj.resetFiles();
+    }
     function ls(){
         fl.ls(curPrjDir);
         refreshRunMenu();
