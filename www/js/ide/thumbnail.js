@@ -1,8 +1,8 @@
-define(["ImageRect","Content"],function (IR,Content) {
+define(["ImageRect","Content","root"],function (IR,Content,root) {
     var TN={};
     var createThumbnail;
     var NAME="$icon_thumbnail";
-    var WIDTH=200;HEIGHT=200;
+    var WIDTH=200,HEIGHT=200;
     TN.set=function (prj,delay) {
         setTimeout(function () { crt(prj);} ,delay);
     };
@@ -19,7 +19,7 @@ define(["ImageRect","Content"],function (IR,Content) {
     };
     function crt(prj) {
         try {
-            var img=Tonyu.globals.$Screen.buf[0];
+            var img=root.Tonyu.globals.$Screen.buf[0];
             var cv=$("<canvas>").attr({width:WIDTH,height:HEIGHT});
             IR(img, cv[0]);
             var url=cv[0].toDataURL();
@@ -48,6 +48,6 @@ define(["ImageRect","Content"],function (IR,Content) {
             console.log("Create thumbnail failed",e);
             console.log(e.stack);
         }
-    };
+    }
     return TN;
 });

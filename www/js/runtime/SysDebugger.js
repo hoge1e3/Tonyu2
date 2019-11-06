@@ -10,6 +10,7 @@ define(function (require,exports,module) {
     const sysMod=require("sysMod");
     const KeyEventChecker=require("KeyEventChecker");
     const runScript_common=require("runScript_common");
+    const thumbnail=require("thumbnail");
     F.addDependencyResolver((prj,spec)=>{
         if (spec.namespace==="kernel") {
             return F.create("compiled",{namespace:"kernel",url:WebSite.compiledKernel});
@@ -42,6 +43,7 @@ define(function (require,exports,module) {
             Tonyu.runningObj=Debugger.create(boot);
             Debugger.stop=()=>Tonyu.runningObj.stop();
             KeyEventChecker.down(document,"F2",()=>Debugger.requestStop() );
+            thumbnail.set(prj, 2000);
         }
     }
     function getQueryString(key, default_)

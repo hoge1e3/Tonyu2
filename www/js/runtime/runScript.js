@@ -82,6 +82,7 @@ requirejs(["FS","Tonyu","IDEProject","Shell","ScriptTagFS",
 			debuggerPrj.runScriptMode=true;// TODO
 			Tonyu.runMode=true;//TODO
 			console.log("RAWBoot");
+			debuggerPrj.fixBootRunClasses();
 			debuggerPrj.rawBoot(o.run.bootClass);
 			prjDir.watch((type, file)=>{
 				if (!file.endsWith(".tonyu")) return;

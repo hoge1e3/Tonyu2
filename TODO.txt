@@ -1,12 +1,4 @@
 Worker
- OK MapEditor save on dialog close
-    editor.stop -> IDEProject.stop -> (Sys)Debugger.stop -> Tonyu.runningObj($Boot).stop()
-    DebugDialog.beforeClose
-    F2(from IDE), F2(from Debugger), Close
- OK delete/rename OK?
- OK new project plugin missing
- OK resetLoopCheck
- thumbnail
  change Kernel
   (*1) plugin add bug(debug Boot.stop)
   Anim fail -> Tonyu.DeferredUtil
@@ -18,6 +10,14 @@ Worker
   request Picoaudio plugin in old(when Picoaudio was not a plugin) project.
  check syntax(in ace)
  [Known] MapEditor adds jquery_ui plugin
+ OK MapEditor save on dialog close
+    editor.stop -> IDEProject.stop -> (Sys)Debugger.stop -> Tonyu.runningObj($Boot).stop()
+    DebugDialog.beforeClose
+    F2(from IDE), F2(from Debugger), Close
+ OK delete/rename OK?
+ OK new project plugin missing
+ OK resetLoopCheck
+ OK thumbnail
  OK Readme.md -> from tonyu2-compiler  use copyFromCompiler.sh
  Suspend UIDiag(prompt inside iframe)
  OK Debugger.init({Tonyu, FS});
