@@ -100,12 +100,13 @@ class ErrorDialog {
         console.error(e);
         const ide=this.ide;
         const pluginAdded=this.pluginAdded;
-        if (e.pluginName && !pluginAdded[e.pluginName]) {
-            pluginAdded[e.pluginName]=true;
+        const pluginName=e.pluginName || (e.error && e.error.pluginName);
+        if (pluginName && !pluginAdded[pluginName]) {
+            pluginAdded[pluginName]=true;
             ide.restart();
             return;
         }
-        if (e.pluginName) {
+        if (pluginName) {
             alert(e.message);
         } else {
             const diag=this.showErrorPos($("#errorPos"),e);

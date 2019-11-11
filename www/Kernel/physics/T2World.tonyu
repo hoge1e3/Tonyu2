@@ -7,8 +7,9 @@ native Tonyu;
 \onAppear() {
     $currentProject.requestPlugin("box2d");
     initWorld();
+    parallel(loop);
 }
-loop();
+//loop();
 
 
 \initWorld() {
