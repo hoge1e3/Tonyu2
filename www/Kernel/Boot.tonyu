@@ -15,6 +15,7 @@ native Array;
 native UIDiag;
 native performance;
 native Mezonet;
+native FS;
 
 // old browser support
 if (typeof performance==="undefined") {
@@ -127,6 +128,7 @@ mainLoop();
     $Keys=new Keys;
     $Math=Math;
     $JSON=JSON;
+    $DeferredUtil=FS.DeferredUtil;
     $consolePanel=new ConsolePanel{align:"center",x:465/2,y:465/2,width:465,height:465,zOrder:-10,layer:$FrontSprites};
     $printColor=null;
     $printSize=20;
@@ -258,6 +260,7 @@ mainLoop();
         die: \{
             die();
             res.resolve();
+            //print("ISDEAD",isDead());
         },
         preventDefault: \{evt.defaultPrevented=true;}
     };
@@ -345,6 +348,7 @@ mainLoop();
     }
     //debug("beforeWaitRAF");
 	waitRAF();
+    if (isDead()) print("DEAD but continue...");
     //debug("afterWaitRAF");
     //elapsed = now()-start;
     //var cnt=rafCount-1;

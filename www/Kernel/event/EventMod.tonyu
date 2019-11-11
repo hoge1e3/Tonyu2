@@ -95,7 +95,7 @@ nowait \sendEvent(type, arg) {
 }
 \runPromise(f) {
     if (!_thread) {
-        return Tonyu.DeferredUtil.promise (f);
+        return $DeferredUtil.promise (f);
     } else {
         var r;
         try {
