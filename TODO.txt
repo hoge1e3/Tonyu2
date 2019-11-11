@@ -1,4 +1,5 @@
 Worker
+ fails on create empty file and run it
  change Kernel  node index.js ..\Tonyu2\www\Kernel
   OK plugin add bug(debug Boot.stop)
   OK Anim fail -> Tonyu.DeferredUtil($DeferredUtil=FS.DeferredUtil;)

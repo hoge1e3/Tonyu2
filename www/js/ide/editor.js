@@ -1,4 +1,3 @@
-/*global global*/
 define(function (require) {
 const Util=require("Util");
 const Tonyu=require("Tonyu");
@@ -27,7 +26,6 @@ const root=require("root");
 const IDEProject=require("IDEProject");
 const optionFixer=require("optionFixer");
 const SourceFiles=require("SourceFiles");
-const kernelChecker=require("kernelChecker");
 $(function () {
     if (!WebSite.isNW) {
         FS.mount(location.protocol+"//"+location.host+"/", new WebFS());
@@ -54,19 +52,20 @@ $(function () {
     var curPrjDir=FS.get(dir);
     const optionFile=curPrjDir.rel("options.json");
     optionFixer.fixFile(optionFile);
-    const ide={restart,stop,displayMode,jump};
+    const editors={};
+    const ide={restart,stop,save,displayMode,dispName,jump,refreshRunMenu,editors};
     const curPrj=IDEProject.create({dir:curPrjDir,ide});//, kernelDir);
     ide.project=curPrj;
+    const EXT=curPrj.getEXT();
     const NSP_USR=curPrj.getNamespace();
 
     root.curPrj=curPrj;
-    var resEditors=new ResEditors(curPrj);
+    const resEditors=new ResEditors(curPrj);
     Tonyu.globals.$currentProject=curPrj;
     Tonyu.currentProject=curPrj;
-    var EXT=curPrj.getEXT();
-    var desktopEnv=loadDesktopEnv();
-    var runMenuOrd=desktopEnv.runMenuOrd;
-    var exportHTMLDialog=new ExportHTMLDialog(curPrj);
+    const desktopEnv=loadDesktopEnv();
+    const runMenuOrd=desktopEnv.runMenuOrd;
+    const exportHTMLDialog=new ExportHTMLDialog(curPrj);
     function setDiagMode(d) {
         var opt=curPrj.getOptions();
         if (opt.compiler.diagnose!=d) {
@@ -103,7 +102,6 @@ $(function () {
         $("#fileItemList").height(h);
     }
     onResize();
-    var editors={};
     KeyEventChecker.down(document,"F9",F(run));
     KeyEventChecker.down(document,"F2",F(stop));
     KeyEventChecker.down(document,"ctrl+s",F(function (e) {
@@ -123,7 +121,7 @@ $(function () {
             displayName: dispName
         }
     });
-    var FM=FileMenu();
+    var FM=FileMenu(ide);
     FM.fileList=fl;
     $("#newFile").click(F(FM.create));
     $("#mvFile").click(F(FM.mv));
@@ -137,66 +135,8 @@ $(function () {
     $("#runDialog").click(F(function () {
         runDialog.show(true);
     }));
-    FM.on.mvComplete=resetFiles;// called only non-refactor
-    FM.on.rmComplete=resetFiles;
-    FM.on.close=close;
-    FM.on.ls=ls;
-    FM.on.validateName=fixName;
-    FM.on.createContent=function (f) {
-        var k=isKernel(f.truncExt(EXT));
-        if (k) {
-            f.text(k.text());
-        } else {
-            f.text("");
-        }
-    };
-    FM.on.displayName=function (f) {
-        var r=dispName(f);
-        if (r) {
-            return r;
-        }
-        return f.name();
-    };
-    var refactorUI;
-    FM.on.mvExtraUI=function (d) {
-        refactorUI=UI("div",["input",{type:"checkbox",$var:"chk",checked:"true",value:"chked"}],"プログラム中のクラス名も変更する");
-        d.append(refactorUI);
-    };
-    FM.on.mv=async function (old,_new) {
-        if (!refactorUI) return;
-        const refactor=refactorUI.$vars.chk.prop("checked");
-        await save();
-        if (refactor) {
-            var oldCN=old.truncExt(EXT);
-            var newCN=_new.truncExt(EXT);
-            try {
-                const ren=await curPrj.renameClassName(oldCN,newCN);
-                console.log("REN",ren);
-                FM.on.ls();
-                FM.on.open(_new);
-            } catch(e) {
-                alert("プログラム内にエラーがあります．エラーを修正するか，「プログラム中のクラス名も変更する」のチェックを外してもう一度やり直してください．");
-                console.error(e);
-                console.log(e);
-            }
-        } else {
-            reloadFromFiles();
-        }
-        refactorUI=null;
-        if (root.SplashScreen) root.SplashScreen.hide();
-        console.log("REN2",!refactor);
-        return !refactor;
-    };
-    F(FM.on);
     fl.ls(curPrjDir);
     refreshRunMenu();
-    function resetFiles() {
-        curPrj.resetFiles();
-    }
-    function ls(){
-        fl.ls(curPrjDir);
-        refreshRunMenu();
-    }
     function refreshRunMenu() {
         curPrjDir.each(function (f) {
             if (f.endsWith(EXT)) {
@@ -272,39 +212,6 @@ $(function () {
         if (f.isDir()) return name;
         if (f.endsWith(EXT)) return f.truncExt(EXT);
         return null;
-    }
-    function isKernel(n) {
-        return kernelChecker.isKernel(n);
-    }
-    function fixName(name/*, options*/) {
-        var upcased=false;
-        //if (name=="aaaa") throw new Error("iikagen name error "+EC.enter);
-        if (name.match(/^[a-z]/)) {
-            name= name.substring(0,1).toUpperCase()+name.substring(1);
-            upcased=true;
-        }
-        if (name.match(/^[A-Z_][a-zA-Z0-9_]*$/)) {
-            var dir=fl.curDir();
-            var sysdir={files:1, static:1 ,maps:1};
-            if (sysdir[dir.relPath(curPrjDir).replace(/\/*/,"")]) {
-                return {ok:false, reason:dir.name()+"はシステムで利用されているフォルダなので使用できません"};
-            }
-            if (isKernel(name)) {
-                /*if (curPrj.getOptions().kernelEditable) {
-                    return {ok:true, file: dir.rel(name+EXT),
-                        note: options.action=="create"? "Kernelから"+name+"をコピーします" :""};
-                } else {*/
-                    return {ok:false, reason:name+"はシステムで利用されている名前なので使用できません"};
-                //}
-            }
-            if (upcased) {
-                //name= name.substring(0,1).toUpperCase()+name.substring(1);
-                return {ok:true, file: dir.rel(name+EXT), note: "先頭を大文字("+name+") にして作成します．"};
-            }
-            return {ok:true, file: dir.rel(name+EXT)};
-        } else {
-            return {ok:false, reason:"名前は，半角英数字とアンダースコア(_)のみが使えます．先頭は英大文字にしてください．"};
-        }
     }
     function getCurrentEditorInfo() {
         var f=fl.curFile();
@@ -466,17 +373,6 @@ $(function () {
             },50);
         });
     }));
-    function close(rm) { // rm or mv
-        var i=editors[rm.path()]; //getCurrentEditorInfo();
-        if (i) {
-            i.editor.destroy();
-            i.dom.remove();
-            delete editors[rm.path()];
-            var remains;
-            for (var k in editors) remains=true||k;
-            if (!remains) $("#welcome").show();
-        }
-    }
     function fixEditorIndent(prog) {
         var cur=prog.getCursorPosition();
         var orig=prog.getValue();
@@ -485,17 +381,6 @@ $(function () {
             prog.setValue(fixed);
             prog.clearSelection();
             prog.moveCursorTo(cur.row, cur.column);
-        }
-    }
-    function reloadFromFiles() {
-        for (var path in editors) {
-            var inf=editors[path];
-            var curFile=inf.file; //fl.curFile();
-            var prog=inf.editor; //getCurrentEditor();
-            if (curFile.exists() && prog) {
-                prog.setValue(curFile.text());
-                prog.clearSelection();
-            }
         }
     }
     function save() {
@@ -580,7 +465,7 @@ $(function () {
             res={};
         }
         if (!res.runMenuOrd) res.runMenuOrd=[];
-        desktopEnv=res;
+        //desktopEnv=res;
         return res;
     }
     function saveDesktopEnv() {
@@ -666,7 +551,6 @@ $(function () {
     sh.curFile=function () {
         return fl.curFile();
     };
-    FM.onMenuStart=save;
     if (root.SplashScreen) root.SplashScreen.hide();
     extLink.all();
 });
