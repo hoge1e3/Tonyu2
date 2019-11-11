@@ -6,6 +6,7 @@ window.SplashScreen=(function () {
     SS.show=function (mesg) {
     	if (!s) return;
         s.text(mesg||"Please wait...");
+        s.prepend($("<img>").attr({src:"images/wait.gif"}));
     	if (SS.showing) return;
     	SS.showing=true;
     	console.log("Show");
