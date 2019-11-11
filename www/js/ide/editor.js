@@ -1,24 +1,33 @@
-/*global requirejs, require*/
-requirejs(["Util", "Tonyu", "FS", "PathUtil","FileList", "FileMenu",
-           "ErrorDialog", "fixIndent", "Wiki",
-           "Shell","Shell2","ProjectOptionsEditor","copyToKernel","KeyEventChecker",
-           "IFrameDialog","runtime", "KernelDiffDialog","Sync","searchDialog","syncWithKernel",
-           "UI","ResEditors","WebSite","exceptionCatcher",
-           "Log","MainClassDialog","DeferredUtil","NWMenu",
-           "mkrunDiag","zip","LSFS","WebFS",
-           "extLink","DiagAdjuster","ExportHTMLDialog","DebugDialog","GlobalDialog",
-           "root","IDEProject","optionFixer","SourceFiles","kernelChecker"
-          ],
-function (Util, Tonyu, FS, PathUtil, FileList, FileMenu,
-          ErrorDialog, fixIndent, Wiki,
-          sh,sh2, ProjectOptionsEditor, ctk, KeyEventChecker,
-          IFrameDialog, rt , KDD,Sync,searchDialog,swk,
-          UI,ResEditors,WebSite,EC,
-          Log,MainClassDialog,DU,NWMenu,
-          mkrunDiag,zip,LSFS,WebFS,
-          extLink,DiagAdjuster,ExportHTMLDialog,DebugDialog,GlobalDialog,
-          root,IDEProject,optionFixer,SourceFiles,kernelChecker
-          ) {
+/*global global*/
+define(function (require) {
+const Util=require("Util");
+const Tonyu=require("Tonyu");
+const FS=require("FS");
+const FileList=require("FileList");
+const FileMenu=require("FileMenu");
+const ErrorDialog=require("ErrorDialog");
+const fixIndent=require("fixIndent");
+const ProjectOptionsEditor=require("ProjectOptionsEditor");
+const KeyEventChecker=require("KeyEventChecker");
+const IFrameDialog=require("IFrameDialog");
+const searchDialog=require("searchDialog");
+const UI=require("UI");
+const sh=require("Shell");
+const ResEditors=require("ResEditors");
+const WebSite=require("WebSite");
+const EC=require("exceptionCatcher");
+const Log=require("Log");
+const MainClassDialog=require("MainClassDialog");
+const mkrunDiag=require("mkrunDiag");
+const WebFS=require("WebFS");
+const extLink=require("extLink");
+const ExportHTMLDialog=require("ExportHTMLDialog");
+const DebugDialog=require("DebugDialog");
+const root=require("root");
+const IDEProject=require("IDEProject");
+const optionFixer=require("optionFixer");
+const SourceFiles=require("SourceFiles");
+const kernelChecker=require("kernelChecker");
 $(function () {
     if (!WebSite.isNW) {
         FS.mount(location.protocol+"//"+location.host+"/", new WebFS());
@@ -38,9 +47,9 @@ $(function () {
         $("#mainArea").attr("class","col-xs-12");
         $("#fileSel").show();
     }
-    var home=FS.get(WebSite.tonyuHome);
+    //var home=FS.get(WebSite.tonyuHome);
     //if (!Tonyu.ide)  Tonyu.ide={};
-    var kernelDir;
+    //var kernelDir;
     var dir=Util.getQueryString("dir", "/Tonyu/Projects/SandBox/");
     var curPrjDir=FS.get(dir);
     const optionFile=curPrjDir.rel("options.json");
@@ -267,7 +276,7 @@ $(function () {
     function isKernel(n) {
         return kernelChecker.isKernel(n);
     }
-    function fixName(name, options) {
+    function fixName(name/*, options*/) {
         var upcased=false;
         //if (name=="aaaa") throw new Error("iikagen name error "+EC.enter);
         if (name.match(/^[a-z]/)) {
@@ -308,7 +317,7 @@ $(function () {
         return null;
     }
     var runDialog=new DebugDialog(runDialogParam);
-    function displayMode(mode, next) {
+    function displayMode(mode/*, next*/) {
         // mode == run     compile_error     runtime_error    edit
         var prog=getCurrentEditor();
         switch(mode) {
@@ -464,7 +473,7 @@ $(function () {
             i.dom.remove();
             delete editors[rm.path()];
             var remains;
-            for (var k in editors) remains=true;
+            for (var k in editors) remains=true||k;
             if (!remains) $("#welcome").show();
         }
     }
@@ -651,8 +660,8 @@ $(function () {
     }));
     $("#openFolder").click(F(function () {
         var f=curPrjDir;
-        var gui = require("nw.gui");//(global.nwDispatcher||global.nw).requireNwGui();
-        gui.Shell.showItemInFolder(f.path().replace(/\//g,require("path").sep));
+        var gui = root.require("nw.gui");//(global.nwDispatcher||global.nw).requireNwGui();
+        gui.Shell.showItemInFolder(f.path().replace(/\//g,root.require("path").sep));
     }));
     sh.curFile=function () {
         return fl.curFile();
