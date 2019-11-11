@@ -2,7 +2,7 @@ extends null;
 native Tonyu;
 \new (options) {
     if (typeof options=="object") extend(options);
-    if (Tonyu.runMode) this.main();
+    this.main();
 }
 nowait \extend(obj) {
     return Tonyu.extend(this,obj);

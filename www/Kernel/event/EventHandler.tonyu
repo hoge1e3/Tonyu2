@@ -6,7 +6,7 @@ native Tonyu;
 var listeners,target,released;
 \new(param) {
     super(param);
-    if (Tonyu.runMode) listeners=[];
+    listeners=[];
 }
 
 nowait \toListener(f) {
@@ -56,7 +56,7 @@ nowait \removeAllListeners() {
 }
 \fire(args) {
     if (released) return;
-    // prevent remove listeners element while invoking(mainly on die) 
+    // prevent remove listeners element while invoking(mainly on die)
     for (var listener of listeners.slice()) {
         callEventHandler(listener.action, args);
     }

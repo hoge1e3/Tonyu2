@@ -18,7 +18,7 @@ native Tonyu;
         direction,position,scale:(_prescale||1),actor:this,
     };
     */
-    if (Tonyu.runMode) addToLayer();
+    addToLayer();
     initAnimMod();
 }
 \rotate(mode,angle,unit) {

@@ -21,7 +21,7 @@ native console;
     if (layer.group instanceof SpriteGroup) layer=layer.group;
     crashScale=1;
     initSpriteMod();
-    if (Tonyu.runMode) addToLayer();
+    addToLayer();
     initAnimMod();
 }
 nowait \extend(obj) {
