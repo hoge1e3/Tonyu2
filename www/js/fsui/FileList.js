@@ -1,5 +1,8 @@
 define(function(require,exports,module) {
 const FS=require("FS");
+const root=require("root");
+const EC=require("exceptionCatcher");
+const F=EC.f;
 module.exports=function FileList(elem, options) {
     var _curDir=null;
     var _curFile=null;
@@ -7,6 +10,9 @@ module.exports=function FileList(elem, options) {
     var selbox=elem[0].tagName.toLowerCase()=="select";
     //console.log(elem);
     if (!options) options={};
+    const ide=options.ide;
+    const runDialogParam=options.runDialogParam;
+    const desktopEnv=runDialogParam.desktopEnv;
     var FL={select:select, ls:ls, on:(options.on?options.on:{}), curFile:curFile, curDir: curDir,
     		setModified:setModified, isModified:isModified};
     var path=$("<div>");
@@ -28,7 +34,7 @@ module.exports=function FileList(elem, options) {
     	return res;
     }
     function select(f) {
-        if (FL.on.select && FL.on.select(f)) return;
+        if (open(f)) return;
         if (!f) return;
         _mod=false;
         if (f.isDir()) {
@@ -126,6 +132,51 @@ module.exports=function FileList(elem, options) {
     function curDir() {
         return _curDir;
     }
+    let curDOM;
+    function open(f) {
+	// do not call directly !!  it doesnt change fl.curFile
+        if (f.isDir()) {
+            return;
+        }
+        $("#welcome").hide();
+        ide.save();
+        const editors=ide.editors;
+        if (curDOM) curDOM.hide();
+        var inf=editors[f.path()];
+        if (!inf) {
+            var progDOM=$("<pre>").css("height", runDialogParam.screenH+"px").text(f.text()).appendTo("#progs");
+            var prog=root.ace.edit(progDOM[0]);
+            window.lastEditor=prog;
+            if (typeof desktopEnv.editorFontSize=="number") prog.setFontSize(desktopEnv.editorFontSize);
+            else prog.setFontSize(16);
+            prog.setTheme("ace/theme/eclipse");
+            prog.getSession().setMode("ace/mode/tonyu");
+            inf=editors[f.path()]={file:f , editor: prog, dom:progDOM};
+            progDOM.click(F(function () {
+                ide.displayMode("edit");
+            }));
+            prog.setReadOnly(false);
+            prog.clearSelection();
+            prog.focus();
+            try {
+                prog.commands.removeCommand("toggleFoldWidget");
+                prog.setOptions({fixedWidthGutter:true});
+            }catch(e){}// F2
+
+            curDOM=progDOM;
+        } else {
+            if (inf.lastTimeStamp<inf.file.lastUpdate()) {
+                inf.editor.setValue(inf.file.text());
+                inf.editor.clearSelection();
+                inf.lastTimeStamp=inf.file.lastUpdate();
+            }
+            inf.dom.show();
+            inf.editor.focus();
+            curDOM=inf.dom;
+        }
+        inf.lastTimeStamp=inf.file.lastUpdate();
+    }
+
     return FL;
 };
 });

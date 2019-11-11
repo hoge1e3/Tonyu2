@@ -45,9 +45,6 @@ $(function () {
         $("#mainArea").attr("class","col-xs-12");
         $("#fileSel").show();
     }
-    //var home=FS.get(WebSite.tonyuHome);
-    //if (!Tonyu.ide)  Tonyu.ide={};
-    //var kernelDir;
     var dir=Util.getQueryString("dir", "/Tonyu/Projects/SandBox/");
     var curPrjDir=FS.get(dir);
     const optionFile=curPrjDir.rel("options.json");
@@ -58,7 +55,6 @@ $(function () {
     ide.project=curPrj;
     const EXT=curPrj.getEXT();
     const NSP_USR=curPrj.getNamespace();
-
     root.curPrj=curPrj;
     const resEditors=new ResEditors(curPrj);
     Tonyu.globals.$currentProject=curPrj;
@@ -87,17 +83,14 @@ $(function () {
     setDiagMode(false);
     const runDialogParam={
         screenH:200,
-        //onClose: stop,
         desktopEnv: desktopEnv,
         prj: curPrjDir.path(),
         ide
     };
     function onResize() {
-        //console.log($(window).height(), $("#navBar").height());
         var h=$(window).height()-$("#navBar").height();
         h-=20;
         runDialogParam.screenH=h;
-        //if (!runDialogMode) resizeCanvas($("#runArea").width(),screenH);
         $("#progs pre").css("height",h+"px");
         $("#fileItemList").height(h);
     }
@@ -113,11 +106,11 @@ $(function () {
     $(window).resize(F(onResize));
     $("body")[0].spellcheck=false;
     sh.cd(curPrjDir);
-
     var fl=FileList($(mobile?"#fileSel":"#fileItemList"),{
         topDir: curPrjDir,
+        ide,
+        runDialogParam,
         on:{
-            select: F(open),
             displayName: dispName
         }
     });
@@ -231,9 +224,6 @@ $(function () {
         case "run":
             if (prog) prog.blur();
             errorDialog.close();
-            //showErrorPos($("#errorPos"));
-            //$("#errorPos").hide();// (1000,next);
-            //$("#runArea").slideDown(1000, next);
             if (mobile) {
                 //$("#fileViewer").hide();
                 $("#runAreaParent").show().attr("class","col-xs-12");
@@ -245,11 +235,9 @@ $(function () {
             }
             break;
         case "compile_error":
-            //$("#errorPos").show();// slideDown(1000, next);
             if (root.SplashScreen) root.SplashScreen.hide();
             break;
         case "runtime_error":
-            //$("#errorPos").slideDown(1000, next);
             if (root.SplashScreen) root.SplashScreen.hide();
             break;
         case "edit":
@@ -257,8 +245,6 @@ $(function () {
                 delete runDialog.modified;
                 saveDesktopEnv();
             }
-            //$("#runArea").slideUp(1000);
-            //$("#errorPos").slideUp(1000, next);
             if (mobile) {
                 //$("#fileViewer").hide();
                 $("#runAreaParent").hide();//.attr("class","col-xs-12");
@@ -412,50 +398,6 @@ $(function () {
     	fl.setModified(inf.file.text()!=inf.editor.getValue());
     }
     setInterval(watchModified,1000);
-    var curDOM;
-    function open(f) {
-	// do not call directly !!  it doesnt change fl.curFile
-        if (f.isDir()) {
-            return;
-        }
-        $("#welcome").hide();
-        save();
-        if (curDOM) curDOM.hide();
-        var inf=editors[f.path()];
-        if (!inf) {
-            var progDOM=$("<pre>").css("height", runDialogParam.screenH+"px").text(f.text()).appendTo("#progs");
-            var prog=root.ace.edit(progDOM[0]);
-            window.lastEditor=prog;
-            if (typeof desktopEnv.editorFontSize=="number") prog.setFontSize(desktopEnv.editorFontSize);
-            else prog.setFontSize(16);
-            prog.setTheme("ace/theme/eclipse");
-            prog.getSession().setMode("ace/mode/tonyu");
-            inf=editors[f.path()]={file:f , editor: prog, dom:progDOM};
-            progDOM.click(F(function () {
-                displayMode("edit");
-            }));
-            prog.setReadOnly(false);
-            prog.clearSelection();
-            prog.focus();
-            try {
-                prog.commands.removeCommand("toggleFoldWidget");
-                prog.setOptions({fixedWidthGutter:true});
-            }catch(e){}// F2
-
-            curDOM=progDOM;
-        } else {
-            if (inf.lastTimeStamp<inf.file.lastUpdate()) {
-                inf.editor.setValue(inf.file.text());
-                inf.editor.clearSelection();
-                inf.lastTimeStamp=inf.file.lastUpdate();
-            }
-            inf.dom.show();
-            inf.editor.focus();
-            curDOM=inf.dom;
-        }
-        inf.lastTimeStamp=inf.file.lastUpdate();
-    }
-
     function loadDesktopEnv() {
         var d=curPrjDir.rel(".desktop");
         var res;
@@ -515,7 +457,6 @@ $(function () {
         if (!helpd) helpd=IFrameDialog.create(WebSite.top+"/doc/tutorial.html");
     	helpd.show();
     });
-    //if (typeof progBar=="object") {progBar.clear();}
     $("#rmPRJ").click(F(function () {
         if (prompt(curPrjDir+"内のファイルをすべて削除しますか？削除する場合はDELETE と入力してください．","")!="DELETE") {
             return;
