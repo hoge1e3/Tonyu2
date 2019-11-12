@@ -142,6 +142,17 @@ mainLoop();
     debugCnt=50;
     newLimit=1000;
     $printLimit=500;
+    if ($debugger) {
+        $debugger.on("classChanged") \{
+            getMainClass();// Should be reload because old class(before compile) are not same
+            if (typeof autoReload==="function") {
+                return autoReload{mainClass};
+            }
+            if (autoReload===true && mainClass) {
+                loadPage(mainClass);
+            }
+        };
+    }
 }
 \initLayers() {
     $screenWidth=465;
@@ -237,7 +248,7 @@ mainLoop();
     if (para) progress();
 }
 
-\createMainObject() {
+\getMainClass(){
     var o=$currentProject.getOptions();
     var mainClassName=o.run.mainClass;
     progress("MainClass= "+mainClassName);
@@ -245,6 +256,9 @@ mainLoop();
     if (!mainClass) {
         throw new Error( mainClassName+" というクラスはありません");
     }
+}
+\createMainObject() {
+    getMainClass();
     $excludeFromAll=$Screen.all();
     new mainClass();
 }
