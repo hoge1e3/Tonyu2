@@ -1,6 +1,6 @@
 Worker
  OK after change options
- change Kernel  node index.js ..\Tonyu2\www\Kernel
+ OK change Kernel  node index.js ..\Tonyu2\www\Kernel
   OK plugin add bug(debug Boot.stop)
   OK Anim fail -> Tonyu.DeferredUtil($DeferredUtil=FS.DeferredUtil;)
   OK? Tonyu.DeferredUtil.promise -> Tonyu.promise
@@ -9,8 +9,8 @@ Worker
   OK Tonyu.animationFrame
   OK edge cannot drag inside iframe
     https://codepen.io/hoge1e3/pen/XWWbMzX
-  $Boot.autoReload=true -> 堆積しないように
-  request Picoaudio plugin in old(when Picoaudio was not a plugin) project.
+  OK $Boot.autoReload=true -> 堆積しないように
+  OK request Picoaudio plugin in old(when Picoaudio was not a plugin) project.
  check syntax(in ace)
  OK fails on create empty file and run it
  [Known] MapEditor adds jquery_ui plugin

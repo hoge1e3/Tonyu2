@@ -75,6 +75,10 @@ native console;
     var callbacks={};
     callbacks.succ=func;
     callbacks.err=func;
+    for (s of r.sounds) {
+        url=Tonyu.Assets.resolve(s.url, prj);
+        if (url.match(/\.midi?$/)) $currentProject.requestPlugin("PicoAudio");
+    }
     for (var i=0; i<jobs; i++) {
         if (i >= r.sounds.length) break;
         s = r.sounds[i];
