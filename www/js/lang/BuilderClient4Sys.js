@@ -362,7 +362,7 @@ module.exports={
             tr.forEach(t=>{
                 try {
                     const sf=SourceFiles.url2SourceFile[t.fileName];
-                    console.log("sf", t.fileName, sf, SourceFiles.url2SourceFile);
+                    //console.log("sf", t.fileName, sf, SourceFiles.url2SourceFile);
                     if (sf) {
                         const opt={
                             line: t.lineNumber, column:t.columnNumber,
