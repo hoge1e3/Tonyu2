@@ -41,6 +41,9 @@ native T2MediaLib;
         if ($t2MediaLib) $t2MediaLib.activate();
         // for inside iframe (preventDefault prevents also focus into this iframe)
         // e.preventDefault();
+        e.preventDefault();
+        window.focus();
+        //----
         var p=cvj.offset();
         var mp={x:e.clientX-p.left, y:e.clientY-p.top,layer:$Screen.layer};
         mp=$Screen.convert(mp,defaultLayer);// $Screen.canvas2buf(mp);

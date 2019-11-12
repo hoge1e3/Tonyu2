@@ -216,7 +216,7 @@ $(function () {
         if (i) return i.editor;
         return null;
     }
-    var runDialog=new DebugDialog(runDialogParam);
+    const runDialog=new DebugDialog(runDialogParam);
     function displayMode(mode/*, next*/) {
         // mode == run     compile_error     runtime_error    edit
         var prog=getCurrentEditor();
