@@ -347,8 +347,8 @@ mainLoop();
         afterDraw{drawn:true};// was false ... why?
     }
     //debug("beforeWaitRAF");
-	waitRAF();
-    if (isDead()) print("DEAD but continue...");
+	runPromise(requestAnimationFrame);
+    //if (isDead()) print("DEAD but continue...");
     //debug("afterWaitRAF");
     //elapsed = now()-start;
     //var cnt=rafCount-1;
@@ -358,12 +358,6 @@ mainLoop();
 	//	if (elapsedRAF>1) cnt-=(elapsedRAF-1); // 2回以上の時間かかっていたらその分は減らす
     //}
     //rafCntDebug=cnt;
-}
-\waitRAF() {
-    waitFor(Tonyu.animationFrame());
-    //var rafStart=now();
-    //if (pRafStart) detectRAFResolution(rafStart-pRafStart);
-    //pRafStart=rafStart;
 }
 \loopTimer() {
     moveFrame();
