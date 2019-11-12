@@ -2,7 +2,7 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu","splashElement"
         function (FS,Util,assert,WebSite,plugins,sh,Tonyu,splashElement) {
     var MkRun={};
     sh.mkrun=function (dest) {
-        return MkRun.run( Tonyu.currentProject, FS.get(dest));
+        return MkRun.run( Tonyu.globals.$currentProject, FS.get(dest));
     };
     MkRun.run2=function (prj,type,options) {
         // type: zip , prj, dir

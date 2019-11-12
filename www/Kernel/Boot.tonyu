@@ -91,7 +91,7 @@ mainLoop();
     waitFor(Tonyu.timeout(50));
 }
 \initGlobals() {
-  var opt=Tonyu.currentProject.getOptions();
+  var opt=$currentProject.getOptions();
   if (opt.run && opt.run.globals) {
     var g=opt.run.globals;
     for (var name in g) {
@@ -238,7 +238,7 @@ mainLoop();
 }
 
 \createMainObject() {
-    var o=Tonyu.currentProject.getOptions();
+    var o=$currentProject.getOptions();
     var mainClassName=o.run.mainClass;
     progress("MainClass= "+mainClassName);
     mainClass=Tonyu.getClass(mainClassName);

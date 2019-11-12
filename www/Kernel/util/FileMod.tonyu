@@ -1,6 +1,6 @@
 native Tonyu;
 \file(path) {
-    var d=Tonyu.currentProject.getDir();
+    var d=$currentProject.getDir();
     if (path.isSFile && path.isSFile()) return path;
     var files=d.rel("files/");
     return files.rel(path).setPolicy {topDir:d};

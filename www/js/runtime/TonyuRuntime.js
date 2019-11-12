@@ -539,7 +539,7 @@ module.exports=function () {
 		var boot=new bootClass();
 		//var th=thread();
 		//th.apply(boot,"main");
-		var TPR=Tonyu.currentProject;
+		var TPR=Tonyu.globals.$currentProject||Tonyu.currentProject;
 		if (TPR) {
 			//TPR.runningThread=th;
 			TPR.runningObj=boot;
