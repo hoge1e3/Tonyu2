@@ -1,20 +1,6 @@
 define(["UI","GlobalDialog"], function (UI,GlobalDialog) {
     return function (TPR) {
-        var opt=TPR.getOptions();
-        //opt.id=Math.random();
-        //console.log("Project got",opt);
-        /*   Tonyu.defaultOptions={
-                compiler: { defaultSuperClass: "Actor"},
-                bootClass: "Boot",
-                kernelEditable: false
-             };
-         */
-        var FType={
-                fromVal: function (val){
-                    return val;
-                },
-                toVal: function (v){ return val;}
-        };
+        const opt=TPR.getOptions();
         if (!TPR.odiag) {
             TPR.odiag=UI("div",{title:"プロジェクト オプション"},
                     ["h5","コンパイラ"],
@@ -51,8 +37,8 @@ define(["UI","GlobalDialog"], function (UI,GlobalDialog) {
                 OK: function () {
                     TPR.odiag.dialog("close");
                     //console.log("Project opt Saved ",JSON.stringify(opt));
-                    TPR.setOptions();
-                    TPR.requestRebuild();
+                    TPR.setOptions(opt);
+                    TPR.resetFiles();// does requestRebuild() by BuilderWorker
                     //console.log("new opt ",JSON.stringify(TPR.getOptions()));
                 }
             }
