@@ -827,7 +827,7 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
         FadeMax = 256,
 
         div = function(x, y) {
-            return Math.trunc(x/y);
+            return Math.floor(x/y);
             //return Math.trunc(chkn(x,"x") / chkn(y,"y") );
         },
         chkn = function (x,mesg) {
@@ -874,7 +874,7 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
             0x1b, 0x19, 0x18, 0x16, 0x15, 0x14, 0x13, 0x12, 0x11, 0x10, 0xf, 0xe
         ],//  From: Tbl5-1 of [1]
         //[1]  http://ngs.no.coocan.jp/doc/wiki.cgi/TechHan?page=1%BE%CF+PSG%A4%C8%B2%BB%C0%BC%BD%D0%CE%CF
-        Trunc = Math.trunc.bind(),
+        //Trunc = Math.trunc.bind(),
         stEmpty = -1,
         stFreq = 1,
         stVol = 2,
@@ -1032,7 +1032,7 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
         InitSin: function(t) {
             var i; //:Integer;
             for (i = 0; i < sinMax; i++) {
-                sinT[i] = Math.trunc(Math.sin(3.1415926 * 2 * i / sinMax) * 127);
+                sinT[i] = Math.floor(Math.sin(3.1415926 * 2 * i / sinMax) * 127);
             }
         },
         InitEnv: function(t) {
@@ -1049,7 +1049,7 @@ define("SEnv", ["Klass", "assert","promise","Tones.wdt"], function(Klass, assert
             var i; //:Integer;
             m2tInt=[];
             for (i = 0; i < 96; i++) {
-                m2tInt[i] = Math.trunc(DivClock * 65536 / m2t[i] * 65536 / t.sampleRate);
+                m2tInt[i] = Math.floor(DivClock * 65536 / m2t[i] * 65536 / t.sampleRate);
             }
         },
         InitWave: function(t) {
