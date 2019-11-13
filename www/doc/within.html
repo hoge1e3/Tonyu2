@@ -12,15 +12,27 @@
 <pre><code class="lang-JS">within(obj,d)
 </code></pre>
 <p>このオブジェクトと<em>obj</em>との距離が<em>d</em>以下であれば<code>true</code>，そうでなければ<code>false</code>を返します．</p>
-<h1 id="-2">書式2</h1>
-<pre><code class="lang-JS">within(Class,d)
-</code></pre>
-<p>このオブジェクトが<em>Class</em>で指定されるクラスのオブジェクトのうちどれかとの距離が<em>d</em>以下であれば，そのうちどれか1つのオブジェクトを返します．そうでなければ<code>null</code>を返します</p>
-<h1 id="-">例</h1>
-<pre><code class="lang-JS">// $playerというオブジェクトとの距離が10以下なら，$playerを消します
+<h3 id="-1">例 - 書式1</h3>
+<pre><code class="lang-JS">// $playerというオブジェクトとの距離が10以下なら，$playerを消す
 if (within($player,10)) {
    $player.die();
 }
+</code></pre>
+<h2 id="-2">書式2</h2>
+<pre><code class="lang-JS">within(Class,d)
+</code></pre>
+<p>このオブジェクトが<em>Class</em>で指定されるクラスのオブジェクトのうちどれかとの距離が<em>d</em>以下であれば，そのうちどれか1つのオブジェクトを返します．そうでなければ<code>undefined</code>を返します</p>
+<h3 id="-2">例 - 書式2</h3>
+<pre><code class="lang-JS">    //Enemyオブジェクトのうちどれかと距離が10以下か？
+    e=within(Enemy,10);
+    if(e){//eがundefined以外だったら
+        die();//自身を消す
+    }
+    //Itemオブジェクトのうちどれかと距離が10以下か？
+    it=within(Item,10);
+    if(it){//itがundefined以外だったら
+        it.die();//ぶつかったItemオブジェクトを消す
+    }
 </code></pre>
 <h1 id="-">参考</h1>
 <ul>

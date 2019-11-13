@@ -12,7 +12,7 @@
 new Chara1{x:200, y:100};
 while(true){
     // 画面内にいるすべてのChara1クラスのオブジェクトに対して繰り返す
-    for (c in all(Chara1)) {
+    for (c of all(Chara1)) {
         // 各Chara1オブジェクトをcに代入しながら繰り返し
         c.x++;//cを1ピクセル右に移動させる
     }

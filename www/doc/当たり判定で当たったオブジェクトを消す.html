@@ -12,13 +12,17 @@
 <li>当たってる場合は当たったオブジェクトを返します（if文で判定した場合<code>true</code>扱いになります）</li>
 <li>当たっていない場合は<code>undefined</code>を返します（if文で判定した場合<code>false</code>扱いになります）</li>
 </ul>
-<p>次の例では，PlayerオブジェクトにEnemyオブジェクトがぶつかると，ぶつかったEnemyオブジェクトが消えます。</p>
+<p>次の例では，</p>
+<ul>
+<li>PlayerオブジェクトにEnemyオブジェクトがぶつかると，Playerオブジェクト自身が消えます。</li>
+<li>PlayerオブジェクトにItemオブジェクトがぶつかると，ぶつかったItemオブジェクトが消えます。</li>
+</ul>
 <p>Player</p>
-<pre><code class="lang-JS">x=$screenWidth/2;
-y=$screenHeight/2;
-new Enemy{x:100, y:100, p:4};
-new Enemy{x:100, y:200, p:4};
-new Enemy{x:100, y:300, p:4};
+<pre><code class="lang-JS">x=300;
+y=300;
+new Enemy{x:100, y:100, p:$pat_neko+49};
+new Enemy{x:100, y:200, p:$pat_neko+49};
+new Item{x:100, y:300, p:$pat_neko+30};
 while(true){
     if(getkey(&quot;right&quot;)&gt;0)    x+=3;
     if(getkey(&quot;left&quot;)&gt;0)    x-=3;
@@ -29,13 +33,21 @@ while(true){
     // eがundefined以外→ぶつかったEnemyオブジェクトがeに格納される
     e=crashTo(Enemy);
     if(e){//eがundefined以外だったら
-        e.die();//ぶつかったEnemyオブジェクトを消す
+        die();//プレイヤー自身を消す
+    }
+    //Itemオブジェクトにぶつかっているか？
+    it=crashTo(Item);
+    if(it){//itがundefined以外だったら
+        it.die();//ぶつかったItemオブジェクトを消す
     }
     update();
 }
 </code></pre>
 <p>Enemy</p>
 <pre><code class="lang-JS">// 敵の動作を書く。（とりあえず何も書かなくてもよい）
+</code></pre>
+<p>Item</p>
+<pre><code class="lang-JS">// アイテムの動作を書く。（とりあえず何も書かなくてもよい）
 </code></pre>
 <p>※当たり判定を変更するには<a href="BaseActor">crashScale</a>の値を変更します（1なら画像の大きさと同じ）<br>→<a href="当たり判定を変更する">実例</a></p>
 <h1 id="-">参考</h1>
@@ -48,6 +60,7 @@ while(true){
 </li>
 <li><a href="画面外に出たかどうかの判定">画面外に出たオブジェクトを消す</a></li>
 <li><a href="すべてのオブジェクトを消す">すべてのオブジェクトを消す</a></li>
+<li><a href="複数のクラスのオブジェクトに対して当たり判定を設定する">複数のクラスのオブジェクトに対して当たり判定を設定する</a></li>
 </ul>
 <h1 id="backlink">Backlink</h1>
 <ul>

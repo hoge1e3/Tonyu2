@@ -30,7 +30,23 @@ dy=$mouseY-y;
 d=dist(dx,dy);//マウスの座標までの距離
 vx=dx/d*5; // 移動速度(x座標)
 vy=dy/d*5; // 移動速度(y座標)
-while(y&gt;0){
+while(!screenOut()){
+  x+=vx;//移動速度の分だけxを変化させる
+  y+=vy;//移動速度の分だけyを変化させる
+  update();
+}
+die();
+</code></pre>
+<h2 id="-">角度を指定して発射</h2>
+<p>Bulletオブジェクトは次のように書くこともできます．特定の座標から角度をずらして発射<br>したい場合はこちらのほうが便利です．</p>
+<p>Bullet</p>
+<pre><code class="lang-JS">// マウスの座標と自分の座標を比較
+dx=$mouseX-x;
+dy=$mouseY-y;
+dir=atanxy(dx,dy);//マウス座標との角度を計算
+vx=cos(dir)*5;//角度に応じてvx,vyを設定
+vy=sin(dir)*5;
+while(!screenOut()){
   x+=vx;//移動速度の分だけxを変化させる
   y+=vy;//移動速度の分だけyを変化させる
   update();

@@ -18,22 +18,24 @@
 <p>このオブジェクトが<em>Class</em>で指定されるクラスのオブジェクトのうちどれかと衝突していれば，そのうちどれか1つのオブジェクトを返します．そうでなければ<code>undefined</code>を返します</p>
 <p>※自分の属するクラスが指定された場合，自分自身が結果に含まれることはありません．</p>
 <h1 id="-">例</h1>
-<pre><code class="lang-JS">// $playerというオブジェクトにぶつかっていたら，$playerを消します
-if (crashTo($player)) {
-   $player.die();
-}
-</code></pre>
+<ul>
+<li><a href="当たり判定で当たったオブジェクトを消す">当たったオブジェクトを消す</a></li>
+</ul>
+<h1 id="-">当たり判定の形状と大きさについて</h1>
+<p>crashToでは，表示している画像の領域（四角形）をもとに当たり判定を行います．</p>
+<ul>
+<li>領域の大きさを変更したい場合は，<a href="当たり判定を変更する">crashScale</a>を設定してください．</li>
+<li>判定を円形（オブジェクト同士の距離）で行いたい場合は，<a href="within">within</a>メソッドを使用してください．</li>
+</ul>
 <h1 id="-">参考</h1>
 <ul>
 <li><a href="crashTo1">crashTo1</a></li>
 <li><a href="allCrash">allCrash</a></li>
 <li><a href="getCrashRect">getCrashRect</a></li>
-<li><a href="当たり判定で敵に当たったらプレイヤーを消す">例： 敵に当たったらプレイヤーを消す</a></li>
 </ul>
 <h1 id="backlink">Backlink</h1>
 <ul>
 <li><a href="diffTonyu1">Tonyu1 と Tonyu2 の違い</a></li>
 <li><a href="eventTypes">Actorが処理できるイベントの種類一覧</a></li>
-<li><a href="当たり判定で当たったオブジェクトを消す">当たり判定で当たったオブジェクトを消す</a></li>
 </ul>
 </body></html>
