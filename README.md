@@ -25,3 +25,21 @@ Windows 7/8/10
 cd /path/to/tonyu2-compiler/
 node index.js /path/to/Tonyu2/www/Kernel/
 ~~~
+- To run as a native application, download nw.js and add follwing files
+~~~
+d3dcompiler_47.dll
+ffmpeg.dll
+icudtl.dat
+libEGL.dll
+libGLESv2.dll
+locales/*
+natives_blob.bin
+node.dll
+nw.dll
+nw_100_percent.pak
+nw_200_percent.pak
+nw_elf.dll
+resources.pak
+v8_context_snapshot.bin 
+nw.exe -> rename as Tonyu2.exe, change icon by resouce editors
+~~~
