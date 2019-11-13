@@ -25,7 +25,7 @@ Windows 7/8/10
 cd /path/to/tonyu2-compiler/
 node index.js /path/to/Tonyu2/www/Kernel/
 ~~~
-- To run as a native application, download nw.js and add follwing files
+- To run as a native application, download nw.js and add follwing files in /path/to/Tonyu2/
 ~~~
 d3dcompiler_47.dll
 ffmpeg.dll
