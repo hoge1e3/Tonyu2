@@ -36,7 +36,7 @@ requirejs.config(reqConf);
 var isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
 if (isNW || localStorage.noconcat) {
 	requirejs(
-		["ide/selProject","buildAll"],
+		["selProject"],
 	function (){});
 } else {
 	requirejs(

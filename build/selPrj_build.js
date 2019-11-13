@@ -11,7 +11,7 @@
 	   const conf=nodeRequire(`${js}/reqConf2`).conf;
 	   const entry="selProject";
 	   const filename=`${entry}_concat`;
-	   const urlPrefix="js";
+	   //const urlPrefix="js";
 	   function uglifyWithSourceMap(str,url) {
 		   try {
 			var UglifyJS = nodeRequire("uglify-es");
@@ -30,8 +30,9 @@
 	   }
 
 	return {
-	    name: 'js/almond',
-	    include: [`ide/${entry}`],
+		name: `${entry}`,
+	    //name: 'js/almond',
+	    //include: [`${entry}`],
 	    optimize:"none",
 	    baseUrl: www,
 	    wrap: {

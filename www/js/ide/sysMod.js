@@ -131,6 +131,7 @@ return {
     },
     addPlugin: function (name) {
         var opt=this.getOptions();
+        opt.plugins=opt.plugins||{};
         if (!opt.plugins[name]) {
             opt.plugins[name]=1;
             this.setOptions(opt);

@@ -43,13 +43,13 @@ var isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
 if (isNW || localStorage.noconcat) {
 	requirejs(
 		(localStorage.doProfile?["Profiler"]:[]).concat(
-			["ide/editor","buildAll"]
+			["editor"]
 		),
 	function (){});
 } else {
-	requirejs(
-		["editor_concat"],
-	function (){});
+	requirejs(["editor_concat"],function (){
+		requirejs(["editor"], function(){});
+	});
 }
 </script>
 

@@ -20,7 +20,7 @@ nw_100_percent.pak
 nw_200_percent.pak
 nw_elf.dll
 resources.pak
-v8_context_snapshot.bin 
+v8_context_snapshot.bin
 );
 #swiftshader/libGLESv2.dll
 #swiftshader/libEGL.dll
