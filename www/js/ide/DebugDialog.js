@@ -64,6 +64,7 @@ module.exports=class {
                         size.top=ngeom.position.top;
                         t.modified=true;
                     }
+                    t.iframe.focus();
                 },
                 close:function () {
                     t.opened=false;
@@ -74,6 +75,10 @@ module.exports=class {
                     if (t.forceClose) return true;
                     t.param.ide.stop({closeAfterStop:true});
                     return false;
+                },
+                focus: function () {
+                    console.log("fo-casu");
+
                 }
             });
             t.shownOnce=true;
