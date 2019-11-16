@@ -129,12 +129,7 @@ $(function () {
     $("#newFile").click(F(FM.create));
     $("#mvFile").click(F(FM.mv));
     $("#rmFile").click(F(FM.rm));
-    $("#closeFile").click(F(function () {
-        var inf=getCurrentEditorInfo();
-        if (inf) {
-            close(inf.file);
-        }
-    }));
+    $("#closeFile").click(F(FM.close));
     $("#runDialog").click(F(function () {
         runDialog.show(true);
     }));

@@ -1,5 +1,5 @@
 Worker
- 「閉じる」closes all Tonyu
+ OK 「閉じる」closes all Tonyu
  (half) focus iframe after DebugDialog titlebar click
  OK after change options
  OK change Kernel  node index.js ..\Tonyu2\www\Kernel

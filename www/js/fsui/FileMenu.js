@@ -169,11 +169,18 @@ module.exports=function (ide) {
             i.editor.destroy();
             i.dom.remove();
             delete editors[rm.path()];
-            var remains;
-            for (var k in editors) remains=true||k;
+            let remains;
+            for (remains in editors);
             if (!remains) $("#welcome").show();
+            else open(editors[remains].file);
         }
     }
+    FM.close=function () {
+        var inf=ide.getCurrentEditorInfo();
+        if (inf) {
+            close(inf.file);
+        }
+    };
     function fixName(name/*, options*/) {
         const fl=FM.fileList;
         var upcased=false;
