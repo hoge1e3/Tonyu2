@@ -1,6 +1,7 @@
 define(function (require,exports, module) {
     const EditorPopupMarker=require("EditorPopupMarker");
-    const Range = ace.require('ace/range').Range;
+    const root= require("root");
+    const Range = root.ace.require('ace/range').Range;
     module.exports=ide=>{
         setTimeout(check,1000);
         async function check() {
@@ -12,6 +13,7 @@ define(function (require,exports, module) {
                         for (let marker of inf.markers) marker.remove();
                     }
                     inf.markers=[];
+                    //console.log("Parse");
                     try {
                         await ide.project.compiler.parse(inf.file, curVal);
                     }catch (e) {
@@ -22,6 +24,7 @@ define(function (require,exports, module) {
                         }
                         //console.log("Mark!ERROR!",e);
                     }
+                    //console.log("Parse Done");
                     inf.lastParsed=curVal;
                 }
             }

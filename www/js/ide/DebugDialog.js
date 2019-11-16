@@ -85,21 +85,43 @@ module.exports=class {
         } else {
             d.dialog();
         }
+        t.titleBar=d.closest(".ui-widget").find(".ui-dialog-title");
+        t.autoReloadCheck=UI("input",{type:"checkbox",on:{change}});
+        t.titleBar.append(UI("span",t.autoReloadCheck,"自動再実行"));
         t.iframe.attr("src","debug.html?prj="+param.prj);
         t.opened=true;
         $(".ui-dialog-titlebar-close").blur();
         t.iframe.focus();
         t.resizeCanvas(d.width(),d.height());
         console.log("Diag",size);
+        function change() {
+            try {
+                const ch=t.autoReloadCheck.prop("checked");
+                console.log(ch);
+                t.iframeGlobals().$Boot.autoReload=ch;
+            }catch(e){
+                console.log(e);
+            }
+        }
+        setInterval(()=>{
+            try {
+                t.autoReloadCheck.prop("checked",!!t.iframeGlobals().$Boot.autoReload);
+            }catch(e){
+                console.log(e);
+            }
+        },1000);
     }
     resizeCanvas(w,h) {
         //console.log("canvas size",w,h);
         this.iframe.attr("height", h).attr("width",w);
         try {
-            this.iframe[0].contentWindow.Tonyu.globals.$mainCanvas.attr("height", h).attr("width",w);
+            this.iframeGlobals().$mainCanvas.attr("height", h).attr("width",w);
         }catch(e) {
             console.log(e);
         }
+    }
+    iframeGlobals() {
+        return this.iframe[0].contentWindow.Tonyu.globals;
     }
 };
 });
