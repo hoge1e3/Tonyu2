@@ -54,7 +54,7 @@ define(function(require, exports) {
                 });
             });
             $(markerElement).mouseleave(() => popup.hide());
-            markerLayer.element.appendChild(markerElement);
+            //markerLayer.element.appendChild(markerElement);
         };
     }
 });

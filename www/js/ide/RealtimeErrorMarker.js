@@ -25,7 +25,7 @@ define(function (require,exports, module) {
                     inf.lastParsed=curVal;
                 }
             }
-            setTimeout(check,1000);
+            setTimeout(check,200);
         }
     };
 });
