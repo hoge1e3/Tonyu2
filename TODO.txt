@@ -1,4 +1,5 @@
 Worker
+ runScript1 fails on codepen by if (root.parent && root.parent.onTonyuDebuggerReady) { cause CORS
  OK 「閉じる」closes all Tonyu
  (half) focus iframe after DebugDialog titlebar click
  OK after change options

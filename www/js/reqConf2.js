@@ -174,6 +174,7 @@ var reqConf={
                 "wikiExporter": 1,
                 "wikiFullScreen": 1
             },
+            dialogs:{Dialogs:1},
             "ide": {
                 RealtimeErrorMarker:1,
                 EditorPopupMarker:1,

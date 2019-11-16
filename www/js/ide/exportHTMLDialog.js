@@ -3,7 +3,7 @@ define(["exportAsScriptTags","UI","Klass","root"], function (east,UI,Klass,root)
         $this:true,
         $:["prj"],
         show: function (t,options) {
-            var dir=t.prj.getDir();
+            //var dir=t.prj.getDir();
             t.options=options||{IE:false};
             t.createDOM();
             t.dom.dialog({width:800,height:400});
@@ -22,14 +22,21 @@ define(["exportAsScriptTags","UI","Klass","root"], function (east,UI,Klass,root)
             t.dom=UI("div",{title:"HTML生成"},
                 ["div","このHTMLをcodepenなどのJS共有サイトに張り付けて実行できます．"],
                 ["div",
-                    ["input", {id:"ie",$edit:"IE",type:"checkbox"
+                    ["input", {id:"ie",$var:"IE",$edit:"IE",type:"checkbox"
                     }],
                     ["label",{"for":"ie"},"Internet Explorer 11でも動作させる（一部機能が使えない可能性があります）"],
                 ],
                 ["textarea",{$var:"prog",rows:20,cols:60,placeholder:"Please wait..."}]
             );
             t.dom.$edits.load(t.options);
-            t.dom.$edits.on.writeToModel=r=>t.write();
+            /*t.dom.$edits.on.writeToModel=(name,val)=>{
+                console.log(name,val);
+                t.write();
+            };*/
+            t.dom.$vars.IE.on("change",()=> {
+                t.options.IE=t.dom.$vars.IE.prop("checked");
+                t.write();
+            });
             t.prog=t.dom.$vars.prog;
             return t.dom;
         }

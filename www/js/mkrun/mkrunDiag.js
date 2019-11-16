@@ -1,5 +1,5 @@
-define(["UI","extLink","mkrun","Tonyu","zip","DeferredUtil","FS"],
-function (UI,extLink,mkrun,Tonyu,zip,DU,FS) {
+define(["UI","UIDiag","WebSite","extLink","mkrun","Tonyu","zip","DeferredUtil","FS","root"],
+function (UI,UIDiag, WebSite, extLink,mkrun,Tonyu,zip,DU,FS,root) {
     var res={};
     res.show=function (prj,dest,options) {
         var d=res.embed(prj,dest,options);
@@ -157,7 +157,7 @@ function (UI,extLink,mkrun,Tonyu,zip,DU,FS) {
             });
             function openFolder() {
                 var f=FS.get(model.dest);
-                var gui = require("nw.gui");//nwDispatcher.requireNwGui();
+                var gui = root.require("nw.gui");//nwDispatcher.requireNwGui();
                 gui.Shell.showItemInFolder(f.path().replace(/\//g,"\\"));
             }
         };

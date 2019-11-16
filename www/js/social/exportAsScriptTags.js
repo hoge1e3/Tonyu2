@@ -1,6 +1,7 @@
 define(["FS","Util","WebSite","splashElement"], function (FS,Util,WebSite,splashElement) {
     var east=function (dir,options) {
         options=options||{};
+        console.log("east options",options);
         var excludes=options.excludes||{};
         var includeJSScript=options.includeJSScript;
         var buf="<!DOCTYPE html>\n<html><head>\n";

@@ -8,19 +8,14 @@ const ErrorDialog=require("ErrorDialog");
 const fixIndent=require("fixIndent");
 const ProjectOptionsEditor=require("ProjectOptionsEditor");
 const KeyEventChecker=require("KeyEventChecker");
-const IFrameDialog=require("IFrameDialog");
-const searchDialog=require("searchDialog");
-const UI=require("UI");
 const sh=require("Shell");
+const sh2=require("Shell2");// Open shell
 const ResEditors=require("ResEditors");
 const WebSite=require("WebSite");
 const EC=require("exceptionCatcher");
 const Log=require("Log");
-const MainClassDialog=require("MainClassDialog");
-const mkrunDiag=require("mkrunDiag");
 const WebFS=require("WebFS");
 const extLink=require("extLink");
-const ExportHTMLDialog=require("ExportHTMLDialog");
 const DebugDialog=require("DebugDialog");
 const root=require("root");
 const IDEProject=require("IDEProject");
@@ -28,6 +23,7 @@ const optionFixer=require("optionFixer");
 const SourceFiles=require("SourceFiles");
 const EditorPopupMarker=require("EditorPopupMarker");
 const RealtimeErrorMarker=require("RealtimeErrorMarker");
+const Dialogs=require("Dialogs");
 $(function () {
     //https://codepen.io/oatssss/pen/oYxJQV?editors=0010
     if (!WebSite.isNW) {
@@ -53,7 +49,8 @@ $(function () {
     const optionFile=curPrjDir.rel("options.json");
     optionFixer.fixFile(optionFile);
     const editors={};
-    const ide={restart,stop,save,displayMode,dispName,jump,refreshRunMenu,editors,getCurrentEditorInfo};
+    const ide={restart,stop,save,displayMode,dispName,jump,refreshRunMenu,
+        editors,getCurrentEditorInfo,saveDesktopEnv,run};
     const curPrj=IDEProject.create({dir:curPrjDir,ide});//, kernelDir);
     ide.project=curPrj;
     const EXT=curPrj.getEXT();
@@ -63,8 +60,9 @@ $(function () {
     Tonyu.globals.$currentProject=curPrj;
     Tonyu.currentProject=curPrj;
     const desktopEnv=loadDesktopEnv();
+    ide.desktopEnv=desktopEnv;
     const runMenuOrd=desktopEnv.runMenuOrd;
-    const exportHTMLDialog=new ExportHTMLDialog(curPrj);
+    //const exportHTMLDialog=new ExportHTMLDialog(curPrj);
     function setDiagMode(d) {
         var opt=curPrj.getOptions();
         if (opt.compiler.diagnose!=d) {
@@ -126,6 +124,9 @@ $(function () {
     });
     var FM=FileMenu(ide);
     FM.fileList=fl;
+    ide.fileList=fl;
+    ide.fileMenu=FM;
+    const dialogs=Dialogs(ide);
     $("#newFile").click(F(FM.create));
     $("#mvFile").click(F(FM.mv));
     $("#rmFile").click(F(FM.rm));
@@ -178,30 +179,10 @@ $(function () {
                         }))));
         $("#runMenu").append(
                 $("<li>").append(
-                        $("<a>").attr("href","#").text("実行するファイルを選択...").click(F(function () {
-                            var diag=MainClassDialog.show(curPrj,{on:{done:function (n,dorun) {
-                                var ii=runMenuOrd.indexOf(n);
-                                if (ii>0) {
-                                    runMenuOrd.splice(ii, 1);
-                                    runMenuOrd.unshift(n);
-                                    refreshRunMenu();
-                                    saveDesktopEnv();
-                                }
-                                if (dorun) run(n);
-                            }}});
-                            diag.$vars.mainClass.empty();
-                            runMenuOrd.forEach(function (m) {
-                                diag.$vars.mainClass.append(UI("option",{value:m},m));
-                            });
-                        }))));
-
+                        $("<a>").attr("href","#").text("実行するファイルを選択...").click(F(dialogs.selectMain))
+                    ));
         //saveDesktopEnv();
-        $("#exportToJsdoit").attr("href", "javascriptoo".replace("oo",":;")).click(function () {
-            exportHTMLDialog.show({
-                excludes:{"js/concat.js":1,"js/concat.js.map":1},
-                includeJSScript:true
-            });
-        });
+        $("#exportToJsdoit").attr("href", "javascriptoo".replace("oo",":;")).click(dialogs.exportHTML);
         //$("#exportToJsdoit").attr("href", "exportToJsdoit.html?dir="+curPrjDir.path());//+"&main="+runMenuOrd[0]);
         $("#exportToExe").attr("href", "exportToExe.html?dir="+curPrjDir.path());//+"&main="+runMenuOrd[0]);
     }
@@ -354,16 +335,7 @@ $(function () {
         console.log("run map");
         run("kernel.MapEditor");
     }));
-    $("#search").click(F(function () {
-        console.log("src diag");
-        searchDialog.show(curPrjDir,function (info){
-            fl.select(info.file);
-            setTimeout(function () {
-                var prog=getCurrentEditor();
-                if (prog) prog.gotoLine(info.lineNo);
-            },50);
-        });
-    }));
+    $("#search").click(F(dialogs.search));
     function fixEditorIndent(prog) {
         var cur=prog.getCursorPosition();
         var orig=prog.getValue();
@@ -419,30 +391,7 @@ $(function () {
         var d=curPrjDir.rel(".desktop");
         d.obj(desktopEnv);
     }
-    $("#mkrun").click(F(function () {
-        var dest;
-        if (WebSite.isNW) {
-            if (desktopEnv && desktopEnv.runtimeConfig) {
-                dest=desktopEnv.runtimeConfig.dest;
-            } else {
-                dest=FS.get(WebSite.cwd).rel("Runtimes/").rel( curPrjDir.name());
-            }
-            mkrunDiag.show(curPrj,{
-                dest: dest,
-                onComplete: function (e) {
-                    if (e.type==="dir" && desktopEnv) {
-                        desktopEnv.runtimeConfig=e.config;
-                        saveDesktopEnv();
-                    }
-                }
-            });
-        } else {
-            mkrunDiag.show(curPrj, {
-                hiddenFolder:true,
-                onEnd:function () {}
-            });
-        }
-    }));
+    $("#mkrun").click(F(dialogs.mkrun));
     $("#imgResEditor").click(F(function () {
         resEditors.open("image");
     }));
@@ -452,16 +401,9 @@ $(function () {
     $("#prjOptEditor").click(F(function () {
         ProjectOptionsEditor(curPrj);
     }));
-    var helpd=null;
-    $("#refHelp").click(F(function () {
-    	//if (!helpd) helpd=WikiDialog.create(home.rel("doc/tonyu2/"));
-        if (!helpd) helpd=IFrameDialog.create(WebSite.top+"/doc/index.html");
-    	helpd.show();
-    }));
-    window.startTutorial=F(function () {
-        if (!helpd) helpd=IFrameDialog.create(WebSite.top+"/doc/tutorial.html");
-    	helpd.show();
-    });
+    //var helpd=null;
+    $("#refHelp").click(F(dialogs.helpDialog));
+    window.startTutorial=F(dialogs.startTutorial);
     $("#rmPRJ").click(F(function () {
         if (prompt(curPrjDir+"内のファイルをすべて削除しますか？削除する場合はDELETE と入力してください．","")!="DELETE") {
             return;
