@@ -59,6 +59,7 @@ define(["UI"],function (UI) {
     UIDiag.prompt=function (mesg,value,geom) {
         mesg=parseMesg(mesg,"入力");
         geom=geom||{};
+        let position;
         if (typeof geom.left==="number" && typeof geom.top==="number") {
             position={my:"left top",at:"left+"+geom.left+" top+"+geom.top, of:"body"};
         } else {

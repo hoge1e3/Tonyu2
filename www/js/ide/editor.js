@@ -24,7 +24,9 @@ const SourceFiles=require("SourceFiles");
 const EditorPopupMarker=require("EditorPopupMarker");
 const RealtimeErrorMarker=require("RealtimeErrorMarker");
 const Dialogs=require("Dialogs");
+const jshint=require("jshint");
 $(function () {
+    jshint.use(sh2);
     //https://codepen.io/oatssss/pen/oYxJQV?editors=0010
     if (!WebSite.isNW) {
         FS.mount(location.protocol+"//"+location.host+"/", new WebFS());
@@ -182,7 +184,7 @@ $(function () {
                         $("<a>").attr("href","#").text("実行するファイルを選択...").click(F(dialogs.selectMain))
                     ));
         //saveDesktopEnv();
-        $("#exportToJsdoit").attr("href", "javascriptoo".replace("oo",":;")).click(dialogs.exportHTML);
+        $("#exportToJsdoit").attr("href", jshint.scriptURL(";")).click(dialogs.exportHTML);
         //$("#exportToJsdoit").attr("href", "exportToJsdoit.html?dir="+curPrjDir.path());//+"&main="+runMenuOrd[0]);
         $("#exportToExe").attr("href", "exportToExe.html?dir="+curPrjDir.path());//+"&main="+runMenuOrd[0]);
     }

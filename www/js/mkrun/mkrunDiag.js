@@ -1,5 +1,5 @@
-define(["UI","UIDiag","WebSite","extLink","mkrun","Tonyu","zip","DeferredUtil","FS","root"],
-function (UI,UIDiag, WebSite, extLink,mkrun,Tonyu,zip,DU,FS,root) {
+define(["UI","UIDiag","WebSite","extLink","mkrun","Tonyu","zip","DeferredUtil","FS","root","jshint"],
+function (UI,UIDiag, WebSite, extLink,mkrun,Tonyu,zip,DU,FS,root,jshint) {
     var res={};
     res.show=function (prj,dest,options) {
         var d=res.embed(prj,dest,options);
@@ -21,7 +21,7 @@ function (UI,UIDiag, WebSite, extLink,mkrun,Tonyu,zip,DU,FS,root) {
         if (!res.d) {
             res.d=UI("div",{title:"ランタイム作成"},
                   // ["span", {$var:"hiddenFolder"},
-                  ["form",{action:"javascript:;",$var:"form",name:"mkrunform"},
+                  ["form",{action:jshint.scriptURL(";"),$var:"form",name:"mkrunform"},
                 ["h1","出力方法"],
                     ["div",
                         ["input", {type:"radio",name:"outtype",value:"zip",on:ote}],
@@ -91,7 +91,7 @@ function (UI,UIDiag, WebSite, extLink,mkrun,Tonyu,zip,DU,FS,root) {
                 case "dir":
                 UIDiag.alert(UI("div",
                     ["p",
-                    ["a",{href:"javascript:;",
+                    ["a",{href:jshint.scriptURL(";"),
                     style:"color: blue;",on:{click:openFolder}},model.dest],
                     "にランタイムを作成しました。"],
                     ["p","次のいずれかの方法でWebアプリとして公開することができます。"],
