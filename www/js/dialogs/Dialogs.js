@@ -7,6 +7,7 @@ define(function (require, exports, module) {
     const UI=require("UI");
     const WebSite=require("WebSite");
     const FS=require("FS");
+    const root=require("root");
     module.exports=ide=>{
         let helpd;
         const project=ide.project;
@@ -86,6 +87,19 @@ define(function (require, exports, module) {
             startTutorial() {
                 if (!helpd) helpd=IFrameDialog.create(WebSite.top+"/doc/tutorial.html");
                 helpd.show();
+            },
+            editorEditor() {
+                var prog=getCurrentEditor();
+                const desktopEnv=ide.desktopEnv;
+                var s=prompt("エディタの文字の大きさ", desktopEnv.editorFontSize||16);
+                desktopEnv.editorFontSize=parseInt(s);
+                if (prog) prog.setFontSize(desktopEnv.editorFontSize||16);
+                ide.saveDesktopEnv();
+            },
+            openFolder() {
+                var f=curPrjDir;
+                var gui = root.require("nw.gui");//(global.nwDispatcher||global.nw).requireNwGui();
+                gui.Shell.showItemInFolder(f.path().replace(/\//g,root.require("path").sep));
             }
         };
     };

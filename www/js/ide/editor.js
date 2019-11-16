@@ -184,10 +184,10 @@ $(function () {
                         $("<a>").attr("href","#").text("実行するファイルを選択...").click(F(dialogs.selectMain))
                     ));
         //saveDesktopEnv();
-        $("#exportToJsdoit").attr("href", jshint.scriptURL(";")).click(dialogs.exportHTML);
         //$("#exportToJsdoit").attr("href", "exportToJsdoit.html?dir="+curPrjDir.path());//+"&main="+runMenuOrd[0]);
-        $("#exportToExe").attr("href", "exportToExe.html?dir="+curPrjDir.path());//+"&main="+runMenuOrd[0]);
+        //$("#exportToExe").attr("href", "exportToExe.html?dir="+curPrjDir.path());//+"&main="+runMenuOrd[0]);
     }
+    $("#exportToJsdoit").attr("href", jshint.scriptURL(";")).click(dialogs.exportHTML);
     function dispName(f) {
         var name=f.name();
         if (f.isDir()) return name;
@@ -426,18 +426,8 @@ $(function () {
         sh.rm(curPrjDir,{r:1});
         document.location.href="project.html?dir="+npd;
     }));
-    $("#editorEditor").click(F(function () {
-        var prog=getCurrentEditor();
-        var s=prompt("エディタの文字の大きさ", desktopEnv.editorFontSize||16);
-        desktopEnv.editorFontSize=parseInt(s);
-        if (prog) prog.setFontSize(desktopEnv.editorFontSize||16);
-        saveDesktopEnv();
-    }));
-    $("#openFolder").click(F(function () {
-        var f=curPrjDir;
-        var gui = root.require("nw.gui");//(global.nwDispatcher||global.nw).requireNwGui();
-        gui.Shell.showItemInFolder(f.path().replace(/\//g,root.require("path").sep));
-    }));
+    $("#editorEditor").click(F(dialogs.editorEditor));
+    $("#openFolder").click(F(dialogs.openFolder));
     sh.curFile=function () {
         return fl.curFile();
     };
