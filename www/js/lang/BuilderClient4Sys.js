@@ -66,11 +66,20 @@ class BuilderClient {
         this.inited=true;
     }
     resetFiles() {
+        if (!this.inited) return this.init();
         const files=this.exportFiles();
         return this.w.run("compiler/resetFiles",{
-            namespace:this.prj.getNamespace(),
+            //namespace:this.prj.getNamespace(),
             files
         });
+    }
+    async parse(f,content=false){// use content when check not-yet-saved file
+        if (content===false) content=f.text();
+        await this.init();
+        const filePath=f.relPath(this.getDir());
+        const files={};
+        files[filePath]=content;
+        return await this.w.run("compiler/parse", {files});
     }
     async clean() {// Stands for eclipse "Clean" menu.
         await this.resetFiles();

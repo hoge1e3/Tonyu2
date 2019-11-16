@@ -1,4 +1,4 @@
-define(function (require,exports,module) {
+define(function (require,exports) {
     const F=require("ProjectFactory");
     //const A=require("assert");
     const BuilderClient=require("BuilderClient");

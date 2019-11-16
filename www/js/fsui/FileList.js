@@ -174,6 +174,7 @@ module.exports=function FileList(elem, options) {
             inf.editor.focus();
             curDOM=inf.dom;
         }
+        window.curEditor=inf.editor;
         inf.lastTimeStamp=inf.file.lastUpdate();
     }
 

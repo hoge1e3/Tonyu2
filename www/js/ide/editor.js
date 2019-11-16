@@ -26,7 +26,10 @@ const root=require("root");
 const IDEProject=require("IDEProject");
 const optionFixer=require("optionFixer");
 const SourceFiles=require("SourceFiles");
+const EditorPopupMarker=require("EditorPopupMarker");
+const RealtimeErrorMarker=require("RealtimeErrorMarker");
 $(function () {
+    //https://codepen.io/oatssss/pen/oYxJQV?editors=0010
     if (!WebSite.isNW) {
         FS.mount(location.protocol+"//"+location.host+"/", new WebFS());
     }
@@ -50,7 +53,7 @@ $(function () {
     const optionFile=curPrjDir.rel("options.json");
     optionFixer.fixFile(optionFile);
     const editors={};
-    const ide={restart,stop,save,displayMode,dispName,jump,refreshRunMenu,editors};
+    const ide={restart,stop,save,displayMode,dispName,jump,refreshRunMenu,editors,getCurrentEditorInfo};
     const curPrj=IDEProject.create({dir:curPrjDir,ide});//, kernelDir);
     ide.project=curPrj;
     const EXT=curPrj.getEXT();
@@ -95,6 +98,13 @@ $(function () {
         $("#fileItemList").height(h);
     }
     onResize();
+    const Range = root.ace.require('ace/range').Range;
+    KeyEventChecker.down(document,"ctrl+w",()=> {
+        const inf=getCurrentEditorInfo();
+        console.log(inf);
+        EditorPopupMarker.mark(inf.editor, new Range(3,0,3,9),"errorMarker","hoge");
+    });
+    RealtimeErrorMarker(ide);
     KeyEventChecker.down(document,"F9",F(run));
     KeyEventChecker.down(document,"F2",F(stop));
     KeyEventChecker.down(document,"ctrl+s",F(function (e) {

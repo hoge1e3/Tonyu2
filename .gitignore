@@ -25,3 +25,4 @@ natives_blob*
 *.dll
 *.pak
 git_find_big.sh
+www/js/lib/ace-noconflict/ace_orig.js

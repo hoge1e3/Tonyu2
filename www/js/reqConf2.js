@@ -175,6 +175,8 @@ var reqConf={
                 "wikiFullScreen": 1
             },
             "ide": {
+                RealtimeErrorMarker:1,
+                EditorPopupMarker:1,
                 kernelChecker:1,
                 "ErrorDialog":1,
                 "RunDialog": 1,

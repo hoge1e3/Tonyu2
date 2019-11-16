@@ -35,8 +35,8 @@ WS.serv("compiler/init", params=>{
 });
 WS.serv("compiler/resetFiles", params=>{
     const files=params.files;
-    const namespace=params.namespace||"user";
-    const prjDir=ram.rel(namespace+"/");
+    //const namespace=params.namespace||"user";
+    const prjDir=prj.getDir();// ram.rel(namespace+"/");
     prjDir.recursive(f=>console.log("RM",f.path(),!f.isDir() && f.rm()));
     prjDir.importFromObject(files);
     builder.requestRebuild();
@@ -52,6 +52,19 @@ WS.serv("compiler/addDependingProject", params=>{
     };
     return {prjDir:prjDir.path()};
 });
+WS.serv("compiler/parse", async ({files})=>{
+    try {
+        // params.files:: relPath=>cont
+        const prjDir=prj.getDir();
+        prjDir.importFromObject({base:prjDir.path(), data:files});
+        for (let k in files) {
+            builder.parse(prjDir.rel(k));
+        }
+    } catch(e) {
+        throw convertTError(e);
+    }
+});
+
 WS.serv("compiler/fullCompile", async params=>{
     try {
         const res=await builder.fullCompile({destinations:{memory:1}});
@@ -61,7 +74,7 @@ WS.serv("compiler/fullCompile", async params=>{
     }
 });
 WS.serv("compiler/postChange", async params=>{
-    // postChange is for file(s), modify files before call
+    // postChange is for file(s), modify files before call(at Builder.js)
     try {
         // But it changes files inside postchange...
         const fs=params.files;// "relpath"=>"content"
@@ -216,6 +229,7 @@ module.exports=class {
     getEnv() {
         this.env=this.env||{};
         this.env.options=this.env.options||this.getOptions();
+        this.env.aliases=this.env.aliases||{};
         return this.env;
     }
 	requestRebuild () {
@@ -293,6 +307,10 @@ module.exports=class {
 		console.log("revdep",dep);
 		return dep;
 	}
+    parse(f) {
+        const klass=this.addMetaFromFile(f);
+        return Semantics.parse(klass);
+    }
 	addMetaFromFile(f) {
 		const env=this.getEnv();
 		const shortCn=f.truncExt(this.getEXT());
@@ -2388,24 +2406,40 @@ function visitSub(node) {//S
 		t.visit(e);
 	});
 }
+function getSourceFile(klass) {
+	return A(klass.src && klass.src.tonyu,"File for "+klass.fullName+" not found.");
+}
+function parse(klass) {
+	const s=getSourceFile(klass);//.src.tonyu; //file object
+	let node;
+	if (klass.node && klass.nodeTimestamp==s.lastUpdate()) {
+		node=klass.node;
+	}
+	if (!node) {
+		//console.log("Parse "+s);
+		node=TonyuLang.parse(s);
+		klass.nodeTimestamp=s.lastUpdate();
+	}
+	return node;
+}
 //-----------
 function initClassDecls(klass, env ) {//S
 	// The main task of initClassDecls is resolve 'dependency', it calls before orderByInheritance
-	var s=klass.src.tonyu; //file object
-	var node;
+	var s=getSourceFile(klass); //file object
 	klass.hasSemanticError=true;
 	if (klass.src && klass.src.js) {
 		// falsify on generateJS. if some class hasSemanticError, it remains true
 		klass.jsNotUpToDate=true;
 	}
-	if (klass.node && klass.nodeTimestamp==s.lastUpdate()) {
+	const node=parse(klass);
+	/*if (klass.node && klass.nodeTimestamp==s.lastUpdate()) {
 		node=klass.node;
 	}
 	if (!node) {
 		console.log("Parse "+s);
 		node=TonyuLang.parse(s);
 		klass.nodeTimestamp=s.lastUpdate();
-	}
+	}*/
 	//console.log(s+"",  !!klass.node, klass.nodeTimestamp, s.lastUpdate());
 	//if (!klass.testid) klass.testid=Math.random();
 	//console.log(klass.testid);
@@ -3108,7 +3142,7 @@ function annotateSource2(klass, env) {//B
 	annotateSource();
 	delete klass.hasSemanticError;
 }//B  end of annotateSource2
-return {initClassDecls:initClassDecls, annotate:annotateSource2};
+return {initClassDecls:initClassDecls, annotate:annotateSource2,parse};
 })();
 
 },{"../lib/assert":22,"../lib/root":23,"../runtime/TError":26,"../runtime/TonyuRuntime":27,"./Grammar":5,"./IndentBuffer":6,"./ObjectMatcher":8,"./Visitor":12,"./compiler":13,"./context":14,"./parse_tonyu2":16}],10:[function(require,module,exports){
