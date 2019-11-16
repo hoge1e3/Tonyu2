@@ -139,6 +139,7 @@ mainLoop();
     $Navigator=new Navigator;
     $mouseX=$mouseX||0;
     $mouseY=$mouseY||0;
+    $imageList=[];// temporary before load assets(for customLoading)
     debugCnt=50;
     newLimit=1000;
     $printLimit=500;
