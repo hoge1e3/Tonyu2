@@ -13,13 +13,24 @@ define(function(require, exports) {
         range.start = doc.createAnchor(range.start);
         range.end = doc.createAnchor(range.end);
         const highlight1 = {};
-        highlight1.update = customUpdateWithOverlay.call(
-            highlight1,
-            markerClass,
-            range,
-            mesg,
-        );
-        const marker1 = session.addDynamicMarker(highlight1);
+        highlight1.update = (html, markerLayer, session, config) => {
+            const markerElement = getMarkerHTML(html, markerLayer, session, config, range, markerClass);
+            $(markerElement).css('pointer-events', 'auto');
+            $(markerElement).mouseenter(() => {
+                const o = $(markerElement).offset();
+                popup.show();
+                popup.text(mesg).css({
+                    left: o.left + "px",
+                    top: (o.top - popup.height()) + "px"
+                });
+            });
+            //console.log(range.start);
+            //const p=session.documentToScreenPosition(range.start.row, range.start.column);
+            //console.log(p);
+            //session.addGutterDecoration(range.start.row,"errorGutter");
+            $(markerElement).mouseleave(() => popup.hide());
+        };
+        const marker1 = session.addDynamicMarker(highlight1, true);
         marker1.remove = () => session.removeMarker(marker1.id);
         return marker1;
     };
@@ -35,26 +46,5 @@ define(function(require, exports) {
         //console.log("ML",marked);
         return marked;
         //return stringBuilder;
-    }
-    function customUpdateWithOverlay(markerClass, markerRange, mesg) {
-        return (html, markerLayer, session, config) => {
-            //console.log(html, markerLayer, session, config);
-            const markerElement = getMarkerHTML(html, markerLayer, session, config, markerRange, markerClass);
-            //console.log(markerHTML);
-            //const markerElement = markerLayer2.element;//$.parseHTML(markerHTML.join(''))[0];
-            $(markerElement).css('pointer-events', 'auto');
-            $(markerElement).mouseenter(() => {
-                //console.log(mesg, markerElement);
-                const o = $(markerElement).offset();
-                //console.log(o);
-                popup.show();
-                popup.text(mesg).css({
-                    left: o.left + "px",
-                    top: (o.top - popup.height()) + "px"
-                });
-            });
-            $(markerElement).mouseleave(() => popup.hide());
-            //markerLayer.element.appendChild(markerElement);
-        };
     }
 });

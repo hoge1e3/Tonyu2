@@ -3,12 +3,20 @@ define(function (require,exports, module) {
     const root= require("root");
     const Range = root.ace.require('ace/range').Range;
     module.exports=ide=>{
-        setTimeout(check,1000);
+        const interval=200;
+        setTimeout(check,interval);
+        let charge=0;
         async function check() {
             const inf=ide.getCurrentEditorInfo();
             if (inf) {
                 const curVal=inf.editor.getValue();
                 if (inf.lastParsed!==curVal) {
+                    charge+=interval;
+                } else {
+                    charge=0;
+                }
+                if (charge>1000) {
+                    charge=0;
                     if (inf.markers) {
                         for (let marker of inf.markers) marker.remove();
                     }
@@ -28,7 +36,7 @@ define(function (require,exports, module) {
                     inf.lastParsed=curVal;
                 }
             }
-            setTimeout(check,200);
+            setTimeout(check,interval);
         }
     };
 });

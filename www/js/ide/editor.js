@@ -21,7 +21,6 @@ const root=require("root");
 const IDEProject=require("IDEProject");
 const optionFixer=require("optionFixer");
 const SourceFiles=require("SourceFiles");
-const EditorPopupMarker=require("EditorPopupMarker");
 const RealtimeErrorMarker=require("RealtimeErrorMarker");
 const Dialogs=require("Dialogs");
 const jshint=require("jshint");
@@ -98,12 +97,6 @@ $(function () {
         $("#fileItemList").height(h);
     }
     onResize();
-    const Range = root.ace.require('ace/range').Range;
-    KeyEventChecker.down(document,"ctrl+w",()=> {
-        const inf=getCurrentEditorInfo();
-        console.log(inf);
-        EditorPopupMarker.mark(inf.editor, new Range(3,0,3,9),"errorMarker","hoge");
-    });
     RealtimeErrorMarker(ide);
     KeyEventChecker.down(document,"F9",F(run));
     KeyEventChecker.down(document,"F2",F(stop));

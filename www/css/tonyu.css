@@ -38,7 +38,10 @@ textarea{
     position: absolute;
     background-color: rgba(255, 0, 0, 0.4);
 }
-
+.errorGutter {
+    background-color: #f00;
+    content: "X";
+}
 .runArea {
    background-color: #888888;
 }
