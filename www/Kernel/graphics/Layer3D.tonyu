@@ -24,7 +24,11 @@ var spx,spy,camera,screen;
     c2.restore();
 }
 \world2screen(obj) {// world<=>group
-    throw new Error("cannot call world2screen for Layer3D");
+    var r=camera.to2D(camera.transform.inverse.childToSibling(obj));
+    r.x+=spx;
+    r.y+=spy;
+    return r;
+    //throw new Error("cannot call world2screen for Layer3D");
 }
 \screen2world(obj) {
     throw new Error("cannot call screen2world for Layer3D");
