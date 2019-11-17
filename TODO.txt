@@ -1,7 +1,7 @@
 Worker
  runScript1 fails on codepen by if (root.parent && root.parent.onTonyuDebuggerReady) { cause CORS
  OK 「閉じる」closes all Tonyu
- (half) focus iframe after DebugDialog titlebar click
+ OK focus iframe after DebugDialog titlebar click
  OK after change options
  OK change Kernel  node index.js ..\Tonyu2\www\Kernel
   OK plugin add bug(debug Boot.stop)
@@ -14,7 +14,8 @@ Worker
     https://codepen.io/hoge1e3/pen/XWWbMzX
   OK $Boot.autoReload=true -> 堆積しないように
   OK request Picoaudio plugin in old(when Picoaudio was not a plugin) project.
- check syntax(in ace)
+ OK check syntax(in ace)
+ check semantics
  OK fails on create empty file and run it
  [Known] MapEditor adds jquery_ui plugin
  OK MapEditor save on dialog close

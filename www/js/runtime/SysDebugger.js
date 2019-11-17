@@ -1,7 +1,7 @@
-define(function (require,exports,module) {
+define(function (require/*,exports,module*/) {
     const Debugger=require("Debugger");
     const runtime=require("runtime");
-    const root=require("root");
+    //const root=require("root");
     const Tonyu=require("Tonyu");
     const FS=require("FS");
     const F=require("ProjectFactory");
@@ -11,6 +11,8 @@ define(function (require,exports,module) {
     const KeyEventChecker=require("KeyEventChecker");
     const runScript_common=require("runScript_common");
     const thumbnail=require("thumbnail");
+    const jshint=require("jshint");
+    jshint.use(runtime);// UIDiag etc... needed
     F.addDependencyResolver((prj,spec)=>{
         if (spec.namespace==="kernel") {
             return F.create("compiled",{namespace:"kernel",url:WebSite.compiledKernel});

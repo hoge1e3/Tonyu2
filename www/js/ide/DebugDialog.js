@@ -85,9 +85,10 @@ module.exports=class {
         } else {
             d.dialog();
         }
-        t.titleBar=d.closest(".ui-widget").find(".ui-dialog-title");
+        t.titleArea=d.closest(".ui-widget").find(".ui-dialog-title");
         t.autoReloadCheck=UI("input",{type:"checkbox",on:{change}});
-        t.titleBar.append(UI("span",t.autoReloadCheck,"自動再実行"));
+        t.titleArea.append(UI("span",t.autoReloadCheck,"自動再実行"));
+        d.closest(".ui-widget").find(".ui-dialog-titlebar").click(()=>t.iframe.focus());
         t.iframe.attr("src","debug.html?prj="+param.prj);
         t.opened=true;
         $(".ui-dialog-titlebar-close").blur();
