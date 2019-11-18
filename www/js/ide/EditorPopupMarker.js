@@ -19,6 +19,7 @@ define(function(require, exports) {
             $(markerElement).mouseenter(() => {
                 const o = $(markerElement).offset();
                 popup.show();
+                popup.$showing=highlight1;
                 popup.text(mesg).css({
                     left: o.left + "px",
                     top: (o.top - popup.height()) + "px"
@@ -31,7 +32,10 @@ define(function(require, exports) {
             $(markerElement).mouseleave(() => popup.hide());
         };
         const marker1 = session.addDynamicMarker(highlight1, true);
-        marker1.remove = () => session.removeMarker(marker1.id);
+        marker1.remove = () => {
+            session.removeMarker(marker1.id);
+            if (popup.$showing===highlight1) popup.hide();
+        };
         return marker1;
     };
 
