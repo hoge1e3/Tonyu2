@@ -86,7 +86,7 @@ $(function () {
     const runDialogParam={
         screenH:200,
         desktopEnv: desktopEnv,
-        prj: curPrjDir.path(),
+        prj: curPrjDir.path(),//???
         ide
     };
     function onResize() {
@@ -100,12 +100,12 @@ $(function () {
     RealtimeErrorMarker(ide);
     KeyEventChecker.down(document,"F9",F(run));
     KeyEventChecker.down(document,"F2",F(stop));
-    KeyEventChecker.down(document,"ctrl+s",F(function (e) {
+    KeyEventChecker.down(document,"ctrl+s",F(save));/*function (e) {
     	save();
     	e.stopPropagation();
     	e.preventDefault();
     	return false;
-    }));
+    }));*/
     $(window).resize(F(onResize));
     $("body")[0].spellcheck=false;
     sh.cd(curPrjDir);
@@ -198,6 +198,7 @@ $(function () {
         return null;
     }
     const runDialog=new DebugDialog(runDialogParam);
+    window.runDialog=runDialog;
     function displayMode(mode/*, next*/) {
         // mode == run     compile_error     runtime_error    edit
         var prog=getCurrentEditor();

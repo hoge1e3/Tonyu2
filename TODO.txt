@@ -1,5 +1,8 @@
 Worker
+ F3
+ F9 rerun when focused in iframe
  runScript1 fails on codepen by if (root.parent && root.parent.onTonyuDebuggerReady) { cause CORS
+ check semantics
  OK 「閉じる」closes all Tonyu
  OK focus iframe after DebugDialog titlebar click
  OK after change options
@@ -15,7 +18,6 @@ Worker
   OK $Boot.autoReload=true -> 堆積しないように
   OK request Picoaudio plugin in old(when Picoaudio was not a plugin) project.
  OK check syntax(in ace)
- check semantics
  OK fails on create empty file and run it
  [Known] MapEditor adds jquery_ui plugin
  OK MapEditor save on dialog close

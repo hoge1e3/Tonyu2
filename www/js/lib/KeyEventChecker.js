@@ -4,6 +4,8 @@ define([],function () {
 		if (!(elem instanceof $)) elem=$(elem);
 		elem.bind("keydown", function (e) {
 			if (KEC.is(e, name)) {
+				e.stopPropagation();
+				e.preventDefault();
 				return handler.call(elem[0],e);
 			}
 		});
