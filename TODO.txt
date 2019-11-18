@@ -1,7 +1,7 @@
 Worker
  F3
  F9 rerun when focused in iframe
- runScript1 fails on codepen by if (root.parent && root.parent.onTonyuDebuggerReady) { cause CORS
+ OK runScript1 fails on codepen by if (root.parent && root.parent.onTonyuDebuggerReady) { cause CORS
  check semantics
  OK 「閉じる」closes all Tonyu
  OK focus iframe after DebugDialog titlebar click

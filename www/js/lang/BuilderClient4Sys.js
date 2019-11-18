@@ -251,8 +251,11 @@ root.Debugger={
     },
     on:Events.on.bind(Events)
 };
-if (root.parent && root.parent.onTonyuDebuggerReady) {
+try {
+    //if (root.parent && root.parent.onTonyuDebuggerReady) <- fails CORS
     root.parent.onTonyuDebuggerReady(root.Debugger);
+} catch(e) {
+    console.log(e);
 }
 return root.Debugger;
 };//--------

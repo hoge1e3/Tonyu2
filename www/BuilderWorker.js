@@ -111,7 +111,7 @@ function convertTError(e) {
 }
 WS.ready();
 
-},{"../lang/Builder":3,"../lang/langMod":15,"../lib/FS":20,"../lib/WorkerServiceW":21,"../lib/root":23,"../project/CompiledProject":24,"../project/ProjectFactory":25,"../runtime/TonyuRuntime":27}],3:[function(require,module,exports){
+},{"../lang/Builder":3,"../lang/langMod":15,"../lib/FS":20,"../lib/WorkerServiceW":22,"../lib/root":24,"../project/CompiledProject":25,"../project/ProjectFactory":26,"../runtime/TonyuRuntime":28}],3:[function(require,module,exports){
 const Tonyu=require("../runtime/TonyuRuntime");
 const JSGenerator=require("./JSGenerator");
 const Semantics=require("./Semantics");
@@ -530,7 +530,7 @@ module.exports=class {
 
 };
 
-},{"../lib/FS":20,"../lib/assert":22,"../runtime/TError":26,"../runtime/TonyuRuntime":27,"./IndentBuffer":6,"./JSGenerator":7,"./Semantics":9,"./SourceFiles":10,"./TypeChecker":11,"./source-map":18}],4:[function(require,module,exports){
+},{"../lib/FS":20,"../lib/assert":23,"../runtime/TError":27,"../runtime/TonyuRuntime":28,"./IndentBuffer":6,"./JSGenerator":7,"./Semantics":9,"./SourceFiles":10,"./TypeChecker":11,"./source-map":18}],4:[function(require,module,exports){
 // parser.js の補助ライブラリ．式の解析を担当する
 module.exports=function () {
 	const Parser=require("./parser");
@@ -907,6 +907,7 @@ module.exports=Grammar;
 },{"./parser":17}],6:[function(require,module,exports){
 const A=require("../lib/assert");
 const S=require("./source-map");
+const StringBuilder=require("../lib/StringBuilder");
 
 const Pos2RC=function (src) {
 	var $={};
@@ -941,6 +942,7 @@ const Pos2RC=function (src) {
 };
 module.exports=function (options) {
 	options=options||{};
+	options.fixLazyLength=options.fixLazyLength||6;
 	var $=function () {
 		var args=arguments;
 		var fmt=args[0];
@@ -1079,7 +1081,7 @@ module.exports=function (options) {
 		$.srcmap.setSourceContent(f.path(),f.text());
 	};
 	$.print=function (v) {
-		$.buf+=v;
+		$.buf.append(v);
 		var a=(v+"").split("\n");
 		a.forEach(function (line,i) {
 			if (i<a.length-1) {// has \n
@@ -1094,13 +1096,13 @@ module.exports=function (options) {
 	$.dstFile=options.dstFile;
 	$.mapFile=options.mapFile;
 	$.printf=$;
-	$.buf="";
+	$.buf=StringBuilder();
 	$.bufRow=1;
 	$.bufCol=1;
 	$.srcmap=new S.SourceMapGenerator();
 	$.lazy=function (place) {
 		if (!place) place={};
-		if (options.fixLazyLength) {
+		//if (options.fixLazyLength) {
 			place.length=place.length||options.fixLazyLength;
 			place.pad=place.pad||" ";
 			place.gen=(function () {
@@ -1110,12 +1112,12 @@ module.exports=function (options) {
 			})();
 			place.puts=[];
 			$.useLengthPlace=true;
-		} else {
+		/*} else {
 			//cannot use with sourcemap
 			place.gen=("GENERETID"+Math.random()+"DITERENEG").replace(/\W/g,"");
 			place.reg=new RegExp(place.gen,"g");
 			A(!$.useLengthPlace,"GENERETID cannot be used");
-		}
+		}*/
 		place.inited=true;
 		//place.src=place.gen;
 		place.put=function (val) {
@@ -1129,18 +1131,19 @@ module.exports=function (options) {
 				}
 				var place=this;
 				this.puts.forEach(function (i) {
-					var pl=$.buf.length;
+					$.buf.replace(i, place.val);
+					/*var pl=$.buf.length;
 					$.buf=$.buf.substring(0,i)+place.val+$.buf.substring(i+place.length);
-					A.eq(pl,$.buf.length);
+					A.eq(pl,$.buf.length);*/
 				});
 			}
-			if (this.reg) {
+			/*if (this.reg) {
 				$.buf=$.buf.replace(this.reg, val);
-			}
+			}*/
 			return this.val;
 		};
 		place.print=function () {
-			if (this.puts) this.puts.push($.buf.length);
+			if (this.puts) this.puts.push($.buf.getLength());
 			$.print(this.gen);
 		};
 		return place;
@@ -1155,11 +1158,11 @@ module.exports=function (options) {
 	};
 	$.dedent = function () {
 		var len=$.indentStr.length;
-		if (!$.buf.substring($.buf.length-len).match(/^\s*$/)) {
+		if (!$.buf.last(len).match(/^\s*$/)) {
 			console.log($.buf);
 			throw new Error ("Non-space truncated ");
 		}
-		$.buf=$.buf.substring(0,$.buf.length-len);
+		$.buf.truncate(len);//=$.buf.substring(0,$.buf.length-len);
 		$.indentBuf=$.indentBuf.substring(0 , $.indentBuf.length-len);
 	};
 	$.toLiteral= function (s, quote) {
@@ -1183,15 +1186,16 @@ module.exports=function (options) {
 			$.mapFile.text($.mapStr);
 			$.printf("%n//# sourceMappingURL=%s%n",$.mapFile.relPath($.dstFile.up()));
 		}
+		const gen=$.buf+"";
 		if ($.dstFile) {
-			$.dstFile.text($.buf);
+			$.dstFile.text(gen);
 		}
-		return $.buf;
+		return gen;
 	};
 	return $;
 };
 
-},{"../lib/assert":22,"./source-map":18}],7:[function(require,module,exports){
+},{"../lib/StringBuilder":21,"../lib/assert":23,"./source-map":18}],7:[function(require,module,exports){
 /*define(["Tonyu", "Tonyu.Iterator", "TonyuLang", "ObjectMatcher", "TError", "IndentBuffer",
 		"context", "Visitor","Tonyu.Compiler","assert"],
 function(Tonyu, Tonyu_iterator, TonyuLang, ObjectMatcher, TError, IndentBuffer,
@@ -2304,7 +2308,7 @@ function genJS(klass, env, genOptions) {//B
 return {genJS:genJS};
 })();
 
-},{"../lib/assert":22,"../runtime/TError":26,"../runtime/TonyuRuntime":27,"./IndentBuffer":6,"./ObjectMatcher":8,"./Visitor":12,"./compiler":13,"./context":14}],8:[function(require,module,exports){
+},{"../lib/assert":23,"../runtime/TError":27,"../runtime/TonyuRuntime":28,"./IndentBuffer":6,"./ObjectMatcher":8,"./Visitor":12,"./compiler":13,"./context":14}],8:[function(require,module,exports){
 module.exports=(function () {
 	var OM={};
 	var VAR="$var",THIZ="$this";
@@ -3145,7 +3149,7 @@ function annotateSource2(klass, env) {//B
 return {initClassDecls:initClassDecls, annotate:annotateSource2,parse};
 })();
 
-},{"../lib/assert":22,"../lib/root":23,"../runtime/TError":26,"../runtime/TonyuRuntime":27,"./Grammar":5,"./IndentBuffer":6,"./ObjectMatcher":8,"./Visitor":12,"./compiler":13,"./context":14,"./parse_tonyu2":16}],10:[function(require,module,exports){
+},{"../lib/assert":23,"../lib/root":24,"../runtime/TError":27,"../runtime/TonyuRuntime":28,"./Grammar":5,"./IndentBuffer":6,"./ObjectMatcher":8,"./Visitor":12,"./compiler":13,"./context":14,"./parse_tonyu2":16}],10:[function(require,module,exports){
 //define(function (require,exports,module) {
 /*const root=require("root");*/
 const root=require("../lib/root");
@@ -3247,7 +3251,7 @@ class SourceFiles {
 module.exports=new SourceFiles();
 //});/*--end of define--*/
 
-},{"../lib/root":23}],11:[function(require,module,exports){
+},{"../lib/root":24}],11:[function(require,module,exports){
 /*if (typeof define!=="function") {
 	define=require("requirejs").define;
 }
@@ -3563,7 +3567,7 @@ module.exports=Visitor;
 	cu.getParams=getParams;
 	module.exports=cu;
 
-},{"../lib/root":23,"../runtime/TonyuRuntime":27,"./ObjectMatcher":8}],14:[function(require,module,exports){
+},{"../lib/root":24,"../runtime/TonyuRuntime":28,"./ObjectMatcher":8}],14:[function(require,module,exports){
 module.exports=function () {
 	var c={};
 	c.ovrFunc=function (from , to) {
@@ -3950,7 +3954,7 @@ module.exports=function () {
 	return $;
 }();
 
-},{"../runtime/TError":26,"./ExpressionParser2":4,"./Grammar":5,"./IndentBuffer":6,"./parser":17,"./tonyu2_token":19}],17:[function(require,module,exports){
+},{"../runtime/TError":27,"./ExpressionParser2":4,"./Grammar":5,"./IndentBuffer":6,"./parser":17,"./tonyu2_token":19}],17:[function(require,module,exports){
 module.exports=function () {
 	function extend(dst, src) {
 		var i;
@@ -7612,11 +7616,46 @@ module.exports=function () {
 			tbl[c].profile();//(c+" of "+tbl[name);
 		}
 	}
+	function skipSpace(str,pos) {
+		const spos=pos;
+		const max=str.length;
+		//https://www.w3schools.com/jsref/jsref_regexp_whitespace.asp
+		const spcs={9:1,10:1,11:1,12:1,13:1,32:1};
+		for(;pos<max;pos++) {
+		    if (spcs[str.charCodeAt(pos)]) continue;
+		    if (str[pos]==="/") {
+		      	if (str[pos+1]==="*" && readMultiComment()) continue;
+		      	else if (str[pos+1]==="/" && readSingleComment()) continue;
+		    }
+		    break;
+		}
+		return {len:pos-spos};
 
+		function readSingleComment(cmt) {
+		   	/* <pos>//....<pos>\n */
+		   	for(;pos<max;pos++) {
+		      	if (str[pos]=="\n") {return true;}
+		   	}
+		    pos--;
+		    return true;
+		}
+		function readMultiComment(cmt){
+		    // <pos>/*....*<pos>/
+		    const spos=pos;
+		    pos+=2;
+		    for(;pos<max;pos++) {
+		    	if (str[pos]==="*" && str[pos+1]==="/") {
+		        	pos++;return true;
+		      	}
+		    }
+		    pos=spos;
+		}
+	}
 	var sp=Parser.StringParser;
 	var SAMENAME="SAMENAME";
 	var DIV=1,REG=2;
-	var space=sp.reg(/^(\s*(\/\*\/?([^\/]|[^*]\/|\r|\n)*\*\/)*(\/\/.*\r?\n)*)*/).setName("space");
+	//var space=sp.reg(/^(\s*(\/\*\/?([^\/]|[^*]\/|\r|\n)*\*\/)*(\/\/.*\r?\n)*)*/).setName("space");
+	var space=sp.strLike(skipSpace).setName("space");
 	function tk(r, name) {
 		var pat;
 		var fst;
@@ -11590,6 +11629,97 @@ define('FS',["FSClass","NativeFS","LSFS", "WebFS", "PathUtil","Env","assert","SF
 //})(window);
 
 },{"fs":1}],21:[function(require,module,exports){
+//from https://codepen.io/hoge1e3/pen/OJJaKyV?editors=0010
+module.exports=function (bufSize=1024) {
+    const buf=[""];
+    function rest(lastIdx) {
+        return bufSize-buf[lastIdx].length;
+    }
+    function validate() {
+        for (let i=0;i<buf.length-1;i++) {
+            if (buf[i].length!==bufSize) {console.log(buf); throw new Error("NO!"); }
+        }
+    }
+    function append(content) {
+        content=content+"";
+        while(content) {
+            let lastIdx=buf.length-1;
+            let r=rest(lastIdx);
+            if (content.length<=r) {
+                buf[lastIdx]+=content;
+                break;
+            } else {
+                buf[lastIdx]+=content.substring(0,r);
+                buf.push("");
+                content=content.substring(r);
+            }
+        }
+        validate();
+    }
+    function rowcol(index) {
+        const row=Math.floor(index/bufSize);
+        const col=index % bufSize;
+        return {row,col};
+    }
+    function replace(index, replacement) {//replacement.length<= bufSize
+        replacement=replacement+"";
+        if (replacement.length>bufSize) {
+            throw new Error("Cannot replace over len="+bufSize);
+        }
+        let start=rowcol(index);
+        let end=rowcol(index+replacement.length);
+        if (start.row===end.row) {
+            const line=buf[start.row];
+            buf[start.row]=line.substring(0,start.col)+replacement+line.substring(end.col);
+        } else {
+            const line1=buf[start.row];
+            const line2=buf[end.row];
+            const len1=bufSize-start.col;
+            const len2=replacement.length-len1;
+            buf[start.row]=line1.substring(0,start.col)+replacement.substring(0, len1);
+            buf[end.row]=replacement.substring(len1)+line2.substring(len2);
+        }
+        validate();
+    }
+    function truncate(length) {
+        while(true) {
+            let lastIdx=buf.length-1;
+            let dec=buf[lastIdx].length-length;
+            //console.log(buf,length, lastIdx,dec);
+            if (dec>=0) {
+                buf[lastIdx]=buf[lastIdx].substring(0,dec);
+                break;
+            } else {
+                buf.pop();
+                length=-dec;// <=> l-=bl <=> l=l-bl <=> l=-(bl-l) <=> l=-dec
+            }
+        }
+        validate();
+
+    }
+    function getLength() {
+        const lastIdx=buf.length-1;
+        return bufSize*lastIdx+buf[lastIdx].length;
+    }
+    function last(len) {
+        if (len>bufSize) {
+            throw new Error("Cannot replace over len="+bufSize);
+        }
+        const lastIdx=buf.length-1;
+        const deced=buf[lastIdx].length-len;
+        if (deced>=0) {
+            return buf[lastIdx].substring(deced);
+        } else {
+            return buf[lastIdx-1].substring(bufSize+deced)+buf[lastIdx];
+        }
+    }
+    function toString() {
+        return buf.join("");
+    }
+    return {append, replace, truncate,toString,getLength,last};
+};
+
+},{}],22:[function(require,module,exports){
 /*global self*/
 // Worker Side
     var idseq=1;
@@ -11669,7 +11799,7 @@ define('FS',["FSClass","NativeFS","LSFS", "WebFS", "PathUtil","Env","assert","SF
     }
     module.exports=self.WorkerService;
 
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
     const Assertion=function(failMesg) {
         this.failMesg=flatten(failMesg || "Assertion failed: ");
     };
@@ -11863,7 +11993,7 @@ define('FS',["FSClass","NativeFS","LSFS", "WebFS", "PathUtil","Env","assert","SF
     }
     module.exports=assert;
 
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 /*global window,self,global*/
 (function (deps, factory) {
     module.exports=factory();
@@ -11874,7 +12004,7 @@ define('FS',["FSClass","NativeFS","LSFS", "WebFS", "PathUtil","Env","assert","SF
     return (function (){return this;})();
 });
 
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 /*define(function (require,exports,module) {
     const F=require("ProjectFactory");
     const root=require("root");
@@ -11936,7 +12066,7 @@ define('FS',["FSClass","NativeFS","LSFS", "WebFS", "PathUtil","Env","assert","SF
     });
 //});/*--end of define--*/
 
-},{"../lang/SourceFiles":10,"../lang/langMod":15,"../lib/root":23,"./ProjectFactory":25}],25:[function(require,module,exports){
+},{"../lang/SourceFiles":10,"../lang/langMod":15,"../lib/root":24,"./ProjectFactory":26}],26:[function(require,module,exports){
 //define(function (require,exports,module) {
     // This factory will be widely used, even BitArrow.
 
@@ -12067,7 +12197,7 @@ define('FS',["FSClass","NativeFS","LSFS", "WebFS", "PathUtil","Env","assert","SF
     };
 //});/*--end of define--*/
 
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 var TError=function (message, src, pos) {
 	let rc;
 	if (typeof src=="string") {
@@ -12122,7 +12252,7 @@ TError.calcRowCol=function (text,pos) {// returns 1 origin row,col
 };
 module.exports=TError;
 
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 //		function (assert,TT,IT,DU) {
 var assert=require("../lib/assert");
 var root=require("../lib/root");
@@ -12508,7 +12638,7 @@ module.exports=function () {
 	return Tonyu;
 }();
 
-},{"../lib/assert":22,"../lib/root":23,"./TonyuThread":28,"./tonyuIterator":29}],28:[function(require,module,exports){
+},{"../lib/assert":23,"../lib/root":24,"./TonyuThread":29,"./tonyuIterator":30}],29:[function(require,module,exports){
 //	var Klass=require("../lib/Klass");
 module.exports=function (Tonyu) {
 	var cnts={enterC:{},exitC:0};
@@ -12773,7 +12903,7 @@ module.exports=function (Tonyu) {
 	return TonyuThread;
 };
 
-},{}],29:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 //define(["Klass"], function (Klass) {
 	//var Klass=require("../lib/Klass");
 	class ArrayValueIterator {
