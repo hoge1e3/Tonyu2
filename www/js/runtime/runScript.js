@@ -65,12 +65,12 @@ requirejs(["FS","Tonyu","IDEProject","Shell","ScriptTagFS",
 		start().then(NOP,e=>console.error(e));
 		async function start() {
 			//console.log("STA-TO");
-			const r=await idePrj.fullCompile();// fullCompile exec compiled source when debugger is connected, but fails because kernel is not loaded yet
+			await idePrj.fullCompile();// fullCompile exec compiled source when debugger is connected, but fails because kernel is not loaded yet
 			idePrj.setDebugger(Debugger);
 			//await SourceFiles.add(r).saveAs(idePrj.getOutputFile()); // does in fullCompile
 			await Debugger.init(debuggerPrj);// does debuggerPrj.loadClaasses
 			//console.log("RO-DO");
-			Tonyu.globals.$debugger=Debugger;
+			Tonyu.globals.$debugger=Debugger;// does also in Debugger.init ...
 
 			Tonyu.currentProject=Tonyu.globals.$currentProject=debuggerPrj;
 			debuggerPrj.detectPlugins();

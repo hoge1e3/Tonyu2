@@ -34,9 +34,11 @@ define(function (require,exports) {
             });
             curDebugger=d;
             d.requestStop=o=>ide.stop(o);
+            d.startWithAutoReload=res.startWithAutoReload;
             c.setDebugger(d);
         };
-        res.setDebugger=d=>c.setDebugger(d);
+        res.getDebugger=()=>curDebugger;
+        res.setDebugger=d=>{curDebugger=d;c.setDebugger(d);};
         res.compiler=c;
         res.getIframeProject=()=>{
             const ifrm=root.document.querySelector("iframe");

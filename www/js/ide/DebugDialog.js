@@ -18,6 +18,7 @@ module.exports=class {
         );
         t.dom=d;
         t.iframe=d.$vars.iframe;
+        t.project=param.ide.project;
     }
     close() {
         this.forceClose=true;
@@ -64,7 +65,7 @@ module.exports=class {
                         size.top=ngeom.position.top;
                         t.modified=true;
                     }
-                    t.iframe.focus();
+                    t.focusToIframe();
                 },
                 close:function () {
                     t.opened=false;
@@ -81,36 +82,39 @@ module.exports=class {
 
                 }
             });
+            t.titleArea=d.closest(".ui-widget").find(".ui-dialog-title");
+            t.autoReloadCheck=UI("input",{type:"checkbox",on:{change}});
+            t.titleArea.append(UI("span",t.autoReloadCheck,"自動再実行"));
+            d.closest(".ui-widget").find(".ui-dialog-titlebar").click(()=>t.focusToIframe());
             t.shownOnce=true;
         } else {
             d.dialog();
         }
-        t.titleArea=d.closest(".ui-widget").find(".ui-dialog-title");
-        t.autoReloadCheck=UI("input",{type:"checkbox",on:{change}});
-        t.titleArea.append(UI("span",t.autoReloadCheck,"自動再実行"));
-        d.closest(".ui-widget").find(".ui-dialog-titlebar").click(()=>t.iframe.focus());
         t.iframe.attr("src","debug.html?prj="+param.prj);
         t.opened=true;
         $(".ui-dialog-titlebar-close").blur();
-        t.iframe.focus();
+        t.focusToIframe();
         t.resizeCanvas(d.width(),d.height());
         console.log("Diag",size);
         function change() {
             try {
                 const ch=t.autoReloadCheck.prop("checked");
-                console.log(ch);
+                //console.log(ch);
                 t.iframeGlobals().$Boot.autoReload=ch;
+                t.project.startWithAutoReload=ch;
             }catch(e){
                 console.log(e);
             }
         }
-        setInterval(()=>{
+        /*setInterval(()=>{
             try {
-                t.autoReloadCheck.prop("checked",!!t.iframeGlobals().$Boot.autoReload);
+                const ar=t.iframeGlobals().$Boot.autoReload;
+                t.autoReloadCheck.prop("checked",!!ar);
+                if (ar===true) t.iframeGlobals.$autoReloadWasTrue=ar;
             }catch(e){
                 console.log(e);
             }
-        },1000);
+        },1000);*/
     }
     resizeCanvas(w,h) {
         //console.log("canvas size",w,h);
@@ -123,6 +127,13 @@ module.exports=class {
     }
     iframeGlobals() {
         return this.iframe[0].contentWindow.Tonyu.globals;
+    }
+    focusToIframe() {
+        try {
+            this.iframe[0].contentWindow.focus();
+        } catch(e){
+            console.log(e);
+        }
     }
 };
 });
