@@ -3,7 +3,9 @@ $(function () {
         var url=$(this).attr("href");
         if (url && !url.match(/^http/) &&
             !url.match(/\.html$/)) {
-            url=url+".html";
+            var anc="";
+            url=url.replace(/#.*$/, function (a) { anc=a;return "";});
+            url=url+".html"+anc;
             $(this).attr("href",url);
         }
         if (url && url.match(/^http/) && typeof process!=="undefined") {

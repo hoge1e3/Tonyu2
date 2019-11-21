@@ -1,4 +1,15 @@
+Replace https://github.com/codemirror/codemirror ?
+Button text=undefined -> empty
+set WebSite_runType to debug.html
 Worker
+ ctrl+q quick run
+ ctrl+w focus to iframe
+ ">" button on debugdialog, ■ when runtime error
+ もしかして： $screenWidth (highlight with yellow)
+ close dialog when run(F9)
+ OK zenkaku space is \s?
+ OK Duplicate checkbox in dialog reset
+ Stop bgm in autoReload
  F3
  F9 rerun when focused in iframe
  OK runScript1 fails on codepen by if (root.parent && root.parent.onTonyuDebuggerReady) { cause CORS

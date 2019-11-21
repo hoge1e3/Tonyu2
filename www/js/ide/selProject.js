@@ -2,11 +2,11 @@
 requirejs(["FS","Wiki","Shell","Shell2",
            /*"copySample",*/"NewProjectDialog","UI","Sync","Auth",
            "zip","requestFragment","WebSite","extLink","DeferredUtil",
-       "ZipImporter","ProjectItem","ImportHTMLDialog"],
+       "ZipImporter","ProjectItem","ImportHTMLDialog","Util","root"],
   function (FS, Wiki,   sh,sh2,
             /*copySample,  */NPD,           UI, Sync, Auth,
             zip,requestFragment,WebSite,extLink,DU,
-        ZipImporter,ProjectItem,ImportHTMLDialog) {
+        ZipImporter,ProjectItem,ImportHTMLDialog,Util,root) {
 $(function () {
     var HNOP="javascript_:;".replace(/_/,"");
     //copySample();
@@ -124,37 +124,6 @@ $(function () {
             return DU.timeout(10);
         });
     }
-    /*Auth.currentUser(function (r){
-        if (r) {
-            $(".while-logged-out").hide();
-            $("#login").text(r);
-        } else {
-            $(".while-logged-in").hide();
-        }
-    });*/
-    /*var help=$("<iframe>").attr("src",WebSite.top+"/doc/index.html");
-    help.height($(window).height()-$("#navBar").height());
-    $("#wikiViewArea").append(help);
-*/
-
-    /*$("#newPrj").click(function (){
-    	NPD.show(FS.get(WebSite.projects[0]), function (prjDir) {
-            prjDir.mkdir();
-            document.location.href="project.html?dir="+prjDir.path();
-    	});
-    })*/;
-    SplashScreen.hide();
-    /*$("body").on("keydown",function (e) {
-        if (e.keyCode==77 && WebSite.devMode) {
-            WebSite.mobile=!WebSite.mobile;
-            console.log("Mobile mode", WebSite.mobile);
-            if (WebSite.mobile) {
-                home.rel("mobile.txt").text("true");
-            } else {
-                home.rel("mobile.txt").rm();
-            }
-        }
-    });*/
     var importHTMLDialog=new ImportHTMLDialog({
         onComplete: function (){
             //prjDirs.forEach(ls);
@@ -172,5 +141,6 @@ $(function () {
     extLink.all();
     sh.wikiEditor=function () {document.location.href="wikiEditor.html";};
     $($("button.showAll").get(0)).click();
+    root.SplashScreen.hide();
 });
 });
