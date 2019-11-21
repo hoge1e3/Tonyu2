@@ -2,7 +2,6 @@
 define(["FS","Platform"], function (FS,Platform) {
 	var P=FS.PathUtil;
 	var loc=document.location.href;
-	var devMode=!!loc.match(/html\/dev\//) && !!loc.match(/localhost:3/);
 	var WebSite;
 	var prot=location.protocol;
 	var k;
@@ -31,7 +30,6 @@ define(["FS","Platform"], function (FS,Platform) {
 		WebSite.tonyuHome="/Tonyu/";
 		WebSite.PathSep="/";
 		if (WebSite.isNW) {
-			WebSite.noconcat=true;
 			WebSite.PathSep=require("path").sep;
 			WebSite.cwd=P.directorify(process.cwd().replace(/\\/g,"/"));
 			//WebSite.exeDir=WebSite.execDir=P.up(P.fixSep(process.execPath)); not suitable when mac
@@ -87,7 +85,6 @@ define(["FS","Platform"], function (FS,Platform) {
 			WebSite.scriptServer="https://edit.tonyu.jp/";
 		}
 		WebSite.version=2;
-		WebSite.hoge="fuga";
 		FS.setEnvProvider(new FS.Env(WebSite));
 		window.WebSite=WebSite;
 		return WebSite;
@@ -149,7 +146,7 @@ define(["FS","Platform"], function (FS,Platform) {
 				"images/Sample.png":"http:"+"//jsrun.it/assets/s/V/S/l/sVSlZ.png",
 				"images/neko.png":"http:"+"//jsrun.it/assets/f/D/z/z/fDzze.png",
 				"images/mapchip.png":"http:"+"//jsrun.it/assets/f/u/N/v/fuNvz.png"
-			},top:"",devMode:devMode,
+			},top:"",
 			pluginTop: "https://edit.tonyu.jp/js/plugins",
 			removeJSOutput:true
 		};
@@ -180,7 +177,7 @@ define(["FS","Platform"], function (FS,Platform) {
 				"images/sound_mid.png":"../../images/sound_mid.png",
 				"images/sound_wav.png":"../../images/sound_wav.png",
 					"images/ecl.png":"../../images/ecl.png"
-			},top:"../..",devMode:devMode
+			},top:"../..",
 		};
 	} else if (
 		loc.match(/bitarrow/) ||
@@ -205,7 +202,7 @@ define(["FS","Platform"], function (FS,Platform) {
 		};
 	} else {
 		WebSite={
-			urlAliases: {}, top: ".",devMode:devMode
+			urlAliases: {}, top: ".",
 		};
 	}
 	if (typeof BuiltinAssets==="object") {
@@ -217,6 +214,7 @@ define(["FS","Platform"], function (FS,Platform) {
 		"images/Ball.png":1,
 		"images/base.png":1,
 		"images/Sample.png":1,
+		"images/inputPad.png":1,
 		"images/neko.png":1,
 		"images/mapchip.png":1
 	};
@@ -239,10 +237,6 @@ define(["FS","Platform"], function (FS,Platform) {
 	if (!WebSite.pluginTop) {
 		WebSite.pluginTop=WebSite.top+"/js/plugins";
 	}
-	WebSite.disableROM={};
-	/*if (loc.match(/tonyuedit\.appspot\.com/) || loc.match(/localhost:8888/) ) {
-		//WebSite.disableROM={"ROM_d.js":true};
-	}*/
 	if (loc.match(/\.appspot\.com/) ||  loc.match(/localhost:888[87]/)) {
 		WebSite.serverType="GAE";
 	}
@@ -329,11 +323,6 @@ define(["FS","Platform"], function (FS,Platform) {
 
 	if (loc.match(/((index)|(project))2/)) {
 		WebSite.version=2;
-		if (WebSite.isNW) {
-			WebSite.devMode=true;
-		} else {
-			WebSite.devMode=false;
-		}
 	}
 	FS.setEnvProvider(new FS.Env(WebSite));
 	window.WebSite=WebSite;
