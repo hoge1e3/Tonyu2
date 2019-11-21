@@ -10,10 +10,11 @@ define(function (require,exports, module) {
             const inf=ide.getCurrentEditorInfo();
             if (inf) {
                 const curVal=inf.editor.getValue();
-                if (inf.lastParsed!==curVal) {
-                    charge+=interval;
-                } else {
+                if (ide.lastVal!==curVal) {
+                    ide.lastVal=curVal;
                     charge=0;
+                } else {
+                    charge+=interval;
                 }
                 if (charge>1000) {
                     charge=0;
@@ -33,7 +34,7 @@ define(function (require,exports, module) {
                         //console.log("Mark!ERROR!",e);
                     }
                     //console.log("Parse Done");
-                    inf.lastParsed=curVal;
+                    //inf.lastParsed=curVal;
                 }
             }
             setTimeout(check,interval);
