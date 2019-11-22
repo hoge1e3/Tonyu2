@@ -1,5 +1,22 @@
-*** ace_orig.js	Thu Oct 17 10:24:38 2019
---- ace.js	Fri Nov 15 18:14:56 2019
+*** ace_orig.js	Fri Nov 22 12:15:30 2019
+--- ace.js	Fri Nov 22 12:13:27 2019
+*************** if (typeof document !== "undefined") {
+*** 1240,1246 ****
+      div = null;
+  }
+  
+! if (exports.HAS_CSS_TRANSFORMS) {
+      exports.translate = function(element, tx, ty) {
+          element.style.transform = "translate(" + Math.round(tx) + "px, " + Math.round(ty) +"px)";
+      };
+--- 1240,1246 ----
+      div = null;
+  }
+  
+! if (false && exports.HAS_CSS_TRANSFORMS) {
+      exports.translate = function(element, tx, ty) {
+          element.style.transform = "translate(" + Math.round(tx) + "px, " + Math.round(ty) +"px)";
+      };
 *************** var Marker = function(parentEl) {
 *** 16193,16198 ****
 --- 16193,16199 ----
@@ -40,7 +57,7 @@
           var top = this.$getTop(range.start.row, config);
           var left = this.$padding + range.start.column * config.characterWidth;
   
-!         return this.elt(
+!         return this.elt(
               clazz,
               "height:"+ height+ "px;"+
               "width:"+ width+ "px;"+
