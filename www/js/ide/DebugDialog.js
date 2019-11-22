@@ -13,7 +13,7 @@ module.exports=class {
             ["iframe",{
                 $var:"iframe",id:"iframe",src:"about:blank",width:465,height:465,
                 class:"tonyu-canvas",
-                style:" margin-left : auto ; margin-right : auto ;"
+                style:" margin-left : auto ; margin-right : auto ; border: 0px;"
             }]
         );
         t.dom=d;

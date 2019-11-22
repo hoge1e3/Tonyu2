@@ -1,6 +1,7 @@
 Replace https://github.com/codemirror/codemirror ?
+ace position ace_composition -> $moveTextAreaToCursor -> getPixelPosition (At Cursor)
 Button text=undefined -> empty
-set WebSite_runType to debug.html
+OK set WebSite_runType to debug.html
 Worker
  ctrl+q quick run
  ctrl+w focus to iframe
