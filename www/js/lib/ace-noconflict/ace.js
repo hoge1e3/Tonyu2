@@ -1240,7 +1240,7 @@ if (typeof document !== "undefined") {
     div = null;
 }
 
-if (false && exports.HAS_CSS_TRANSFORMS) {
+if (exports.HAS_CSS_TRANSFORMS) {
     exports.translate = function(element, tx, ty) {
         element.style.transform = "translate(" + Math.round(tx) + "px, " + Math.round(ty) +"px)";
     };
