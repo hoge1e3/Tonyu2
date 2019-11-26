@@ -22734,6 +22734,7 @@ Tonyu.klass.define({
         var url;
         var func;
         var callbacks;
+        var reqP;
         var _it_781;
         var i;
         
@@ -22788,15 +22789,23 @@ Tonyu.klass.define({
         
         callbacks.succ=func;
         callbacks.err=func;
+        
         _it_781=Tonyu.iterator(r.sounds,1);
         while(_it_781.next()) {
           s=_it_781[0];
           
-          url=Tonyu.Assets.resolve(s.url,prj);
+          url=s.url;
           if (url.match(/\.midi?$/)) {
-            Tonyu.globals.$currentProject.requestPlugin("PicoAudio");
+            reqP=true;
+          }
+          url=Tonyu.Assets.resolve(url,prj);
+          if (url.match(/\.midi?$/)) {
+            reqP=true;
           }
           
+        }
+        if (reqP) {
+          Tonyu.globals.$currentProject.requestPlugin("PicoAudio");
         }
         i = 0;
         for (; i<jobs ; i++) {
@@ -22829,6 +22838,7 @@ Tonyu.klass.define({
         var url;
         var func;
         var callbacks;
+        var reqP;
         var _it_781;
         var i;
         
@@ -22892,15 +22902,23 @@ Tonyu.klass.define({
               
               callbacks.succ=func;
               callbacks.err=func;
+              
               _it_781=Tonyu.iterator(r.sounds,1);
               while(_it_781.next()) {
                 s=_it_781[0];
                 
-                url=Tonyu.Assets.resolve(s.url,prj);
+                url=s.url;
                 if (url.match(/\.midi?$/)) {
-                  Tonyu.globals.$currentProject.requestPlugin("PicoAudio");
+                  reqP=true;
+                }
+                url=Tonyu.Assets.resolve(url,prj);
+                if (url.match(/\.midi?$/)) {
+                  reqP=true;
                 }
                 
+              }
+              if (reqP) {
+                Tonyu.globals.$currentProject.requestPlugin("PicoAudio");
               }
               i = 0;
               
@@ -25334,11 +25352,11 @@ Tonyu.klass.define({
         "use strict";
         var _this=this;
         var t;
-        var _it_809;
+        var _it_810;
         
-        _it_809=Tonyu.iterator(Tonyu.globals.$touches,1);
-        while(_it_809.next()) {
-          t=_it_809[0];
+        _it_810=Tonyu.iterator(Tonyu.globals.$touches,1);
+        while(_it_810.next()) {
+          t=_it_810[0];
           
           if ((! _this.touchRadius||_this.dist(t)<_this.touchRadius)&&t.touched==1) {
             return t;
@@ -33057,13 +33075,13 @@ Tonyu.klass.define({
         }),releaseAll: (function anonymous_1647() {
           var a;
           var e;
-          var _it_920;
+          var _it_921;
           
           a = Tonyu.globals.$Screen.all();
           
-          _it_920=Tonyu.iterator(a,1);
-          while(_it_920.next()) {
-            e=_it_920[0];
+          _it_921=Tonyu.iterator(a,1);
+          while(_it_921.next()) {
+            e=_it_921[0];
             
             res.release(e);
             
@@ -33106,13 +33124,13 @@ Tonyu.klass.define({
         }),releaseAll: (function anonymous_1647() {
           var a;
           var e;
-          var _it_920;
+          var _it_921;
           
           a = Tonyu.globals.$Screen.all();
           
-          _it_920=Tonyu.iterator(a,1);
-          while(_it_920.next()) {
-            e=_it_920[0];
+          _it_921=Tonyu.iterator(a,1);
+          while(_it_921.next()) {
+            e=_it_921[0];
             
             res.release(e);
             
@@ -33158,16 +33176,16 @@ Tonyu.klass.define({
         var opt;
         var g;
         var name;
-        var _it_924;
+        var _it_925;
         
         opt = Tonyu.globals.$currentProject.getOptions();
         
         if (opt.run&&opt.run.globals) {
           g = opt.run.globals;
           
-          _it_924=Tonyu.iterator(g,1);
-          while(_it_924.next()) {
-            name=_it_924[0];
+          _it_925=Tonyu.iterator(g,1);
+          while(_it_925.next()) {
+            name=_it_925[0];
             
             Tonyu.setGlobal(name,g[name]);
             
@@ -33184,16 +33202,16 @@ Tonyu.klass.define({
         var opt;
         var g;
         var name;
-        var _it_924;
+        var _it_925;
         
         opt = Tonyu.globals.$currentProject.getOptions();
         
         if (opt.run&&opt.run.globals) {
           g = opt.run.globals;
           
-          _it_924=Tonyu.iterator(g,1);
-          while(_it_924.next()) {
-            name=_it_924[0];
+          _it_925=Tonyu.iterator(g,1);
+          while(_it_925.next()) {
+            name=_it_925[0];
             
             Tonyu.setGlobal(name,g[name]);
             
@@ -33507,7 +33525,7 @@ Tonyu.klass.define({
         var r;
         var name;
         var val;
-        var _it_933;
+        var _it_934;
         
         _this.progress("Loading pats..");
         rs = Tonyu.globals.$currentProject.getResource();
@@ -33518,10 +33536,10 @@ Tonyu.klass.define({
           ImageList.load(rs.images,succ,{baseDir: Tonyu.globals.$currentProject.getDir(),prj: Tonyu.globals.$currentProject});
         }));
         Tonyu.globals.$imageList=r[0];
-        _it_933=Tonyu.iterator(r[0].names,2);
-        while(_it_933.next()) {
-          name=_it_933[0];
-          val=_it_933[1];
+        _it_934=Tonyu.iterator(r[0].names,2);
+        while(_it_934.next()) {
+          name=_it_934[0];
+          val=_it_934[1];
           
           Tonyu.setGlobal(name,val);
           
@@ -33537,7 +33555,7 @@ Tonyu.klass.define({
         var r;
         var name;
         var val;
-        var _it_933;
+        var _it_934;
         
         
         _thread.enter(function _trc_Boot_ent_loadImages(_thread) {
@@ -33561,10 +33579,10 @@ Tonyu.klass.define({
               r=_thread.retVal;
               
               Tonyu.globals.$imageList=r[0];
-              _it_933=Tonyu.iterator(r[0].names,2);
-              while(_it_933.next()) {
-                name=_it_933[0];
-                val=_it_933[1];
+              _it_934=Tonyu.iterator(r[0].names,2);
+              while(_it_934.next()) {
+                name=_it_934[0];
+                val=_it_934[1];
                 
                 Tonyu.setGlobal(name,val);
                 
