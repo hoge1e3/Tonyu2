@@ -140,7 +140,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
                     v.url=itemRelPath;
                     renameUnique(v);
                     tempFiles.push(v);
-                    if (useBlob) {
+                    if (useBlob) {//TODO replace GAE with BA
                         Auth.assertLogin({
                             showLoginLink:function (u) {
                                 dragPoint.css("border","solid red 2px").empty().append(

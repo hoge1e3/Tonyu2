@@ -1,8 +1,8 @@
 define(["Tonyu", "FS", "ImageList",
-        "Blob","thumbnail","WebSite","plugins",
+        "thumbnail","WebSite","plugins",
         "DeferredUtil"],
         function (Tonyu, FS, ImageList,
-                Blob,thumbnail,WebSite,plugins,
+                thumbnail,WebSite,plugins,
                 DU) {
 // (was TonyuProject)
 return {
