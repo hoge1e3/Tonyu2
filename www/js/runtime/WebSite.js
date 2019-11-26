@@ -136,8 +136,8 @@ define(["FS","Platform"], function (FS,Platform) {
 		FS.setEnvProvider(new FS.Env(WebSite));
 		window.WebSite=WebSite;
 		return WebSite;
-	case "manual":
-		return;
+	case "manual":// for BitArrow
+		return window.WebSite;
 	default:
 		throw new Error("WebSite_runType is not set");
 	}

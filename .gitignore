@@ -26,3 +26,6 @@ natives_blob*
 *.pak
 git_find_big.sh
 www/js/lib/ace-noconflict/ace_orig.js
+www/js/g2/*.js
+www/js/g2/*.map
+www/js/g2/send.bat

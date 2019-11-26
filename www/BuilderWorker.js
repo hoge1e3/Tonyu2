@@ -7616,11 +7616,17 @@ module.exports=function () {
 			tbl[c].profile();//(c+" of "+tbl[name);
 		}
 	}
+	//const spcs={};for(i=0;i<=0xffff;i++) if (String.fromCharCode(i).match(/\s/)) spcs[i]=1;
+	const spcs={
+		9: 1, 10: 1, 11: 1, 12: 1, 13: 1, 32: 1, 160: 1, 5760: 1,
+		8192: 1, 8193: 1, 8194: 1, 8195: 1, 8196: 1, 8197: 1, 8198: 1, 8199: 1,
+		8200: 1, 8201: 1, 8202: 1, 8232: 1, 8233: 1, 8239: 1, 8287: 1,
+		12288: 1, 65279: 1
+	};
 	function skipSpace(str,pos) {
 		const spos=pos;
 		const max=str.length;
-		//https://www.w3schools.com/jsref/jsref_regexp_whitespace.asp
-		const spcs={9:1,10:1,11:1,12:1,13:1,32:1};
+		//const spcs={9:1,10:1,11:1,12:1,13:1,32:1};
 		for(;pos<max;pos++) {
 		    if (spcs[str.charCodeAt(pos)]) continue;
 		    if (str[pos]==="/") {
