@@ -3,6 +3,7 @@ define(function (require/*,exports,module*/) {
     const runtime=require("runtime");
     //const root=require("root");
     const Tonyu=require("Tonyu");
+    const root=require("root");
     const FS=require("FS");
     const F=require("ProjectFactory");
     const CompiledProject=require("CompiledProject");
@@ -28,7 +29,7 @@ define(function (require/*,exports,module*/) {
     Tonyu.animationFrame=()=>new Promise(requestAnimationFrame);
     start();
     async function start() {
-        const prjDir=FS.get(getQueryString("prj"));
+        const prjDir=FS.get(getQueryString("prj")||root.Tonyu_StartProject);
         const prj=CompiledProject.create({dir:prjDir});
         prj.include(sysMod);
         await Debugger.init(prj);
