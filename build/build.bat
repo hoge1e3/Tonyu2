@@ -5,6 +5,7 @@ rem cd ..\www\js
 
 rem del ..\g2\runScript2_concat.js
 rem -o is option, not output
+node setVersion.js
 call r_js -o selPrj_build.js
 call r_js -o editor_build.js
 call r_js -o run2_build.js

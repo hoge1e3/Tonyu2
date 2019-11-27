@@ -1,4 +1,4 @@
-define(["Tonyu"],function (Tonyu) {
+define(["Tonyu","WebSite"],function (Tonyu,WebSite) {
     const NSP_USR="user",NSP_KER="kernel";
     const defaultOptions={
         compiler: {
@@ -20,7 +20,7 @@ define(["Tonyu"],function (Tonyu) {
         plugins: {},
         kernelEditable: false,
         language:"tonyu",
-        version: Tonyu.VERSION
+        version: WebSite.sysVersion
     };
     Tonyu.defaultOptions=defaultOptions;
     return {
