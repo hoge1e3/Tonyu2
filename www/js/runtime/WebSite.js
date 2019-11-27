@@ -5,6 +5,7 @@ define(["FS","Platform"], function (FS,Platform) {
 	var WebSite;
 	var prot=location.protocol;
 	var k;
+	var VER=1000000;
 	if (!prot.match(/^http/)) prot="https:";
 	switch(window.WebSite_runType) {
 	case "IDE":
@@ -84,6 +85,7 @@ define(["FS","Platform"], function (FS,Platform) {
 			WebSite.newVersionUrl=prot+"//www.tonyu.jp/project/newVersion.cgi";
 			WebSite.scriptServer="https://edit.tonyu.jp/";
 		}
+		WebSite.sysVersion=VER;
 		WebSite.version=2;
 		FS.setEnvProvider(new FS.Env(WebSite));
 		window.WebSite=WebSite;
@@ -112,6 +114,7 @@ define(["FS","Platform"], function (FS,Platform) {
 		WebSite.PathSep="/";
 		WebSite.compiledKernel=WebSite.scriptServer+"Kernel/js/concat.js";
 		FS.setEnvProvider(new FS.Env(WebSite));
+		WebSite.sysVersion=VER;
 		window.WebSite=WebSite;
 		return WebSite;
 	case "multiHTML":
@@ -134,6 +137,7 @@ define(["FS","Platform"], function (FS,Platform) {
 		//WebSite.compiledKernel=WebSite.top+"/js/kernel.js";
 		//-------------
 		FS.setEnvProvider(new FS.Env(WebSite));
+		WebSite.sysVersion=VER;
 		window.WebSite=WebSite;
 		return WebSite;
 	case "manual":// for BitArrow
