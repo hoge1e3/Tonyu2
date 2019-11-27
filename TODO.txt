@@ -1,4 +1,14 @@
+MAC
+  download nw.js to $TMP
+  makeicns -in tonyu.png -out tonyu.icns
+  replace $TMP/nwjs.app/Content/Resources/app.icns <- tonyu.icns
+  rename $TMP/nwjs.app -> Tonyu2.app
+  copy www and package.json to $TMP
+  rm chromedriver credits.html minidump_stackwalk nwjc payload natives_blob.bin
+  mkdir $TMP/Projects
+Stall when image url is changed
 OK request Picoaudio plugin in old(when Picoaudio was not a plugin) project.
+Error pos 日本語あると mis<HERE>placed
 [suspend] Replace https://github.com/codemirror/codemirror ?
 OK ace position ace_composition -> $moveTextAreaToCursor -> getPixelPosition (At Cursor)
 Button text=undefined -> empty

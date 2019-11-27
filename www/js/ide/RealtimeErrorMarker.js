@@ -12,13 +12,13 @@ define(function (require,exports, module) {
                 const curVal=inf.editor.getValue();
                 if (inf.lastParsed===curVal) {
                     charge=0;
-                } else if (ide.lastVal!==curVal) {
-                    ide.lastVal=curVal;
+                } else if (inf.lastVal!==curVal) {
+                    inf.lastVal=curVal;
                     charge=0;
                 } else {
                     charge+=interval;
                 }
-                if (charge>1000) {
+                if (charge>500) {
                     charge=0;
                     if (inf.markers) {
                         for (let marker of inf.markers) marker.remove();
