@@ -88,6 +88,7 @@ define(["FS","Platform"], function (FS,Platform) {
 		WebSite.sysVersion=VER;
 		WebSite.version=2;
 		FS.setEnvProvider(new FS.Env(WebSite));
+		setDefaultResource(WebSite);
 		window.WebSite=WebSite;
 		return WebSite;
 	case "singleHTML":
@@ -115,6 +116,7 @@ define(["FS","Platform"], function (FS,Platform) {
 		WebSite.compiledKernel=WebSite.scriptServer+"Kernel/js/concat.js";
 		FS.setEnvProvider(new FS.Env(WebSite));
 		WebSite.sysVersion=VER;
+		setDefaultResource(WebSite);
 		window.WebSite=WebSite;
 		return WebSite;
 	case "multiHTML":
@@ -144,6 +146,17 @@ define(["FS","Platform"], function (FS,Platform) {
 		return window.WebSite;
 	default:
 		throw new Error("WebSite_runType is not set");
+	}
+	function setDefaultResource(WebSite) {
+		WebSite.defaultResource={
+	       images:[
+	          {name:"$pat_base", url: "images/base.png", pwidth:32, pheight:32},
+	          {name:"$pat_sample", url: "images/Sample.png"},
+	          {name:"$pat_neko", url: "images/neko.png", pwidth:32, pheight:32},
+	          {name:"$pat_mapchip", url: "images/mapchip.png", pwidth:32, pheight:32}
+	       ],
+	       sounds:[]
+	    };
 	}
 	//WebSite.blobPath=WebSite.serverTop+"/serveBlob";        //TODO: urlchange!
 	/*WebSite.url={

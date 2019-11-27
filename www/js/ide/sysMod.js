@@ -45,7 +45,7 @@ return {
             if (chg) this.setResource(res);
             return res;
         }
-        return Tonyu.defaultResource;
+        return WebSite.defaultResource;
     },
     hasSoundResource: function () {
         var res=this.getResource();

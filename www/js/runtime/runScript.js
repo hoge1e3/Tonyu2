@@ -9,15 +9,6 @@ requirejs(["FS","Tonyu","IDEProject","Shell","ScriptTagFS",
 		var home=FS.get(WebSite.tonyuHome);
 		var ramHome=FS.get("/ram/");
 		FS.mount(ramHome.path(), FS.LSFS.ramDisk() );
-		Tonyu.defaultResource={
-				images:[
-						{name:"$pat_base", url: "images/base.png", pwidth:32, pheight:32},
-						{name:"$pat_sample", url: "images/Sample.png"},
-						{name:"$pat_neko", url: "images/neko.png", pwidth:32, pheight:32},
-						],
-						sounds:[]
-		};
-
 		var cv=com.initCanvas();
 
 

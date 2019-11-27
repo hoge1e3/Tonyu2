@@ -71,17 +71,8 @@ $(function () {
             curPrj.setOptions(opt);
         }
     }
-    Tonyu.defaultResource={
-       images:[
-          {name:"$pat_base", url: "images/base.png", pwidth:32, pheight:32},
-          {name:"$pat_sample", url: "images/Sample.png"},
-          {name:"$pat_neko", url: "images/neko.png", pwidth:32, pheight:32},
-          {name:"$pat_mapchip", url: "images/mapchip.png", pwidth:32, pheight:32}
-       ],
-       sounds:[]
-    };
     const resf=curPrj.getResourceFile();
-    if (!resf.exists()) resf.obj(Tonyu.defaultResource);
+    if (!resf.exists()) resf.obj(WebSite.defaultResource);
     setDiagMode(false);
     const runDialogParam={
         screenH:200,
