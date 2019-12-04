@@ -1,3 +1,5 @@
+OK runScript1 missing builtin.png.js
+importHTML does not go project page
 MAC
   download nw.js to $TMP
   makeicns -in tonyu.png -out tonyu.icns
@@ -6,7 +8,27 @@ MAC
   copy www and package.json to $TMP
   rm chromedriver credits.html minidump_stackwalk nwjc payload natives_blob.bin
   mkdir $TMP/Projects
-Stall when image url is changed
+  clean up files
+    Tonyu2.app/Contents/Frameworks/nwjs Framework.framework
+        cd Versions
+        rm -rf Current
+        ln -s 78.0.3904.108 Current
+        cd ..
+        rm -rf Helpers
+        ln -s Versions/Current/Helpers .
+        rm -rf Libraries
+        ln -s Versions/Current/Libraries .
+        rm -rf Resources
+        ln -s Versions/Current/Resources .
+        rm -rf XPCServices
+        ln -s Versions/Current/XPCServices .
+        rm -rf Internet\ Plug-Ins
+        ln -s Versions/Current/Internet\ Plug-Ins .
+        rm -rf nwjs\ Framework
+        ln -s Versions/Current/nwjs\ Framework .
+
+  xattr -cr Tonyu2.app
+OK Stall when image url is changed
 OK request Picoaudio plugin in old(when Picoaudio was not a plugin) project.
 Error pos 日本語あると mis<HERE>placed
 [suspend] Replace https://github.com/codemirror/codemirror ?
