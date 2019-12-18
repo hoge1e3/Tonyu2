@@ -1,9 +1,10 @@
-define(["ImageRect","root"],function (IR,root) {
+define(["ImageRect","root","WebSite"],function (IR,root,WebSite) {
     var TN={};
     //var createThumbnail;
     var NAME="$icon_thumbnail";
     var WIDTH=200,HEIGHT=200;
     TN.set=function (prj,delay) {
+        if (WebSite.surpressCreateThumbnail) return;
         setTimeout(function () { crt(prj);} ,delay);
     };
     TN.get=function (prj) {

@@ -47,6 +47,27 @@ return {
         }
         return WebSite.defaultResource;
     },
+    removeThumbnail: function () {
+        try {
+            const prj=this;
+            const dir=prj.getDir && prj.getDir();
+            const resc=prj.getResource();
+            if (resc.images) {
+                const cnt=resc.images.length;
+                resc.images=resc.images.filter(item=>{
+                    if (item.name!=="$icon_thumbnail") return true;
+                    if (item.url && item.url.match(/^ls:/)) {
+                        const tfile=dir.rel(item.url.substring(3));
+                        if (tfile.exists()) tfile.rm();
+                    }
+                    return false;
+                });
+                if (resc.images.length<cnt) prj.setResource(resc);
+            }
+        }catch(e) {
+            console.log(e);
+        }
+    },
     hasSoundResource: function () {
         var res=this.getResource();
         return res && res.sounds && res.sounds.length>0;

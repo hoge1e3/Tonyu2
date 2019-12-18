@@ -5,6 +5,7 @@ define(["exportAsScriptTags","UI","Klass","root"], function (east,UI,Klass,root)
         show: function (t,options) {
             //var dir=t.prj.getDir();
             t.options=options||{IE:false};
+            t.prj.removeThumbnail();
             t.createDOM();
             t.dom.dialog({width:800,height:400});
             t.write();
