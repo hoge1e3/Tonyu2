@@ -2,26 +2,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
 "ImageDetailEditor","Util","Assets"],
         function (FS, Tonyu, UI,IL,Blob,Auth,WebSite,
                 ImageDetailEditor,Util,Assets) {
-    /*var mediaInfos={
-        image:{name:"画像",exts:["png","gif","jpg"],path:"images/",key:"images",
-            extPattern:/\.(png|gif|jpe?g)$/i,contentType:/image\/(png|gif|jpe?g)/,
-            newItem:function (name) {
-                var r={type:"single"};//pwidth:32,pheight:32};
-                if (name) r.name="$pat_"+name;
-                return r;
-            }
-        },
-        sound:{name:"音声",exts:["mp3","ogg","mp4","m4a","mid","wav","mzo"],path:"sounds/",key:"sounds",
-            extPattern:/\.(mp3|ogg|mp4|m4a|midi?|wav|mzo)$/i,contentType:/((audio\/(mp3|ogg|x-m4a|midi?|wav|mzo))|(video\/mp4))/,
-            newItem:function (name) {
-                var r={};
-                if (name) r.name="$se_"+name;
-                return r;
-            }
-        }
-    };*/
     var ResEditor=function (prj, mediaInfo) {
-        //var mediaInfo=mediaInfos[mediaType||"image"];
         var d=UI("div", {title:mediaInfo.name+"リスト"});
         d.css({height:200+"px", "overflow-v":"scroll"});
         var rsrc=prj.getResource();
@@ -88,7 +69,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
                         itemUI.appendTo(itemTbl);
                     });
                     d.append(UI("div",{style:"clear:left;"},
-                                ["button", {on:{click:function (){ add();}}}, "追加"],
+                                (mediaInfo.builtins?["button", {on:{click:function (){ add();}}}, "追加"]:""),
                                 ["button", {on:{click:function (){ d.dialog("close"); }}}, "完了"]
                     ));
                 }
@@ -147,14 +128,17 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
                                         UI("div","大きい"+mediaInfo.name+"を追加するには，ログインが必要です：",
                                            ["a",{href:u,target:"login",style:"color: blue;"},"ログインする"])
                                 );
-                            },success:function (u) {
+                            },success:async function (u) {
                                 dragPoint.text("アップロード中...");
-                                var prjN=prj.getName();
-                                Blob.upload(u,prjN,file,{success:function (){
+                                var prjN=prj.getName()+"/";
+                                console.log("uploading", prjN, v.url,u);
+                                const r=await Blob.upload(prjN, v.url ,file);/*,{success:function (){
                                     dragPoint.text(dragMsg);
                                     v.url="${blobPath}/"+u+"/"+prjN+"/"+file.name;
                                     add(v);
-                                }});
+                                }});*/
+                                console.log(r);
+                                add(v);
                             }
                         });
                     } else {
@@ -349,10 +333,10 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
             });
             console.log(cleanFile);
         }*/
-        function toi(s) {
+        /*function toi(s) {
             if (!s || s=="") return undefined;
             return parseInt(s);
-        }
+        }*/
         return {
             dropAdd:function (e) {
                 _dropAdd(e);
