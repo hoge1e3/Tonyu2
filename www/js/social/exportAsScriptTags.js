@@ -42,7 +42,7 @@ define(["FS","Util","WebSite","splashElement"], function (FS,Util,WebSite,splash
                 return;
             }
             //var name=f.truncExt(".tonyu");
-            var m="";//(name==main?" data-main='true'":"");
+            //var m="";//(name==main?" data-main='true'":"");
             var lu=" data-lastupdate='"+f.lastUpdate()+"' ";
             buf+="<script language='text/tonyu' type='text/tonyu' data-filename='"+rel+"'"+lu+">";
             buf+=escapeLoosely(f.text());

@@ -1,10 +1,10 @@
 /*global requirejs*/
 requirejs(["FS","Tonyu","IDEProject","Shell","ScriptTagFS",
 			"runtime","WebSite","root","runScript_common",
-			"Debugger","SourceFiles","sysMod","ProjectFactory","CompiledProject"],
+			"Debugger","SourceFiles","sysMod","ProjectFactory","CompiledProject","optionFixer"],
 		function (FS,  Tonyu, IDEProject, sh, ScriptTagFS,
 				rt,WebSite,root,com,
-				Debugger,SourceFiles,sysMod,F,CompiledProject) {
+				Debugger,SourceFiles,sysMod,F,CompiledProject,optionFixer) {
 	$(function () {
 		var home=FS.get(WebSite.tonyuHome);
 		var ramHome=FS.get("/ram/");
@@ -50,10 +50,11 @@ requirejs(["FS","Tonyu","IDEProject","Shell","ScriptTagFS",
 			}
 		});
 		const ide={restart:NOP,stop:NOP,displayMode:NOP,jump:NOP};
+		const optionFile=prjDir.rel("options.json");
+		optionFixer.fixFile(optionFile);
 		var idePrj=IDEProject.create({dir:prjDir,ide});//, kernelDir);
 		Tonyu.animationFrame=()=>new Promise(requestAnimationFrame);// abolish
-
-		start().then(NOP,e=>console.error(e));
+		addImageScript().then(start).then(NOP,e=>console.error(e));
 		async function start() {
 			//console.log("STA-TO");
 			await idePrj.fullCompile();// fullCompile exec compiled source when debugger is connected, but fails because kernel is not loaded yet
@@ -81,6 +82,35 @@ requirejs(["FS","Tonyu","IDEProject","Shell","ScriptTagFS",
 				idePrj.partialCompile(file).catch(e=>{
 					console.error(e);
 				});
+			});
+		}
+		async function addImageScript() {
+			const res=idePrj.getResource();
+			try {
+				root.BuiltinAssets=root.BuiltinAssets||{};
+				const B=root.BuiltinAssets;
+				//console.log("B",B);
+				//console.log(res,);
+				for (let im of res.images) {
+					if (im.url.match(/^ls:/)) continue;
+					if (!prjDir.rel(im.url).exists() && !B[im.url] && !WebSite.urlAliases[im.url]) {
+						await loadScript(WebSite.scriptServer+im.url+".js");
+						//console.log("BA",B);
+						WebSite.urlAliases[im.url]=B[im.url];
+					}
+				}
+			}catch(e) {
+
+			}
+		}
+		function loadScript(url) {
+			console.log("Loading script dynamically",url);
+			return new Promise((succ,err)=>{
+				var s=document.createElement("script");
+	            s.src=url;
+	            s.onload=succ;
+				s.onerror=err;
+	            document.body.appendChild(s);
 			});
 		}
 	});

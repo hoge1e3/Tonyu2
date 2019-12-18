@@ -2,10 +2,10 @@
 <html><head>
 <meta http-equiv="Content-type" content="text/html; charset=utf8"/>
 <script>WebSite_runType='singleHTML';</script>
-<!--script src="http://localhost/tonyu2/images/base.png.js"></script>
+<script src="http://localhost/tonyu2/images/base.png.js"></script>
 <script src="http://localhost/tonyu2/images/Sample.png.js"></script>
 <script src="http://localhost/tonyu2/images/neko.png.js"></script>
-<script src="http://localhost/tonyu2/images/mapchip.png.js"></script-->
+<script src="http://localhost/tonyu2/images/mapchip.png.js"></script>
 <script src="http://localhost/tonyu2/js/lib/jquery-1.10.1.js" type="text/javascript"></script>
 <!-- final
 <script src="http://localhost/tonyu2/js/g2/runScript_concat.min.js" type="text/javascript"></script>
@@ -18,6 +18,7 @@ end of test-->
 <script src="http://localhost/tonyu2/js/lib/require.js" type="text/javascript"></script>
 <script src="http://localhost/tonyu2/js/reqConf2.js" type="text/javascript"></script>
 <script>
+reqConf.baseUrl="../";
 requirejs.config(reqConf);
 requirejs(["runScript"],function () {
 });
@@ -68,6 +69,7 @@ while(true) {
     update();
 }</script>
 
+<!--
 <script language='text/tonyu' type='text/tonyu' data-filename='options.json' data-lastupdate='1570599268484' >
 {
     "compiler": {
@@ -84,7 +86,7 @@ while(true) {
         "mainClass": "user.Main",
         "bootClass": "kernel.Boot",
         "globals": {
-            "$defaultFPS": 60,
+            "$defaultFPS": 30,
             "$imageSmoothingDisabled": true,
             "$soundLoadAndDecode": false
         }
@@ -122,5 +124,5 @@ while(true) {
         }
     ],
     "sounds": []
-}</script>
+}</script>-->
 </head><body></body></html>

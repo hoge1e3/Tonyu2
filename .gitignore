@@ -29,3 +29,4 @@ www/js/lib/ace-noconflict/ace_orig.js
 www/js/g2/*.js
 www/js/g2/*.map
 www/js/g2/send.bat
+www/html/BuilderWorker.js
