@@ -5,6 +5,7 @@ define(["FS","Platform"], function (FS,Platform) {
 	var WebSite;
 	var prot=location.protocol;
 	var k;
+
 	var VER=1575030437194;
 	if (!prot.match(/^http/)) prot="https:";
 	switch(window.WebSite_runType) {
@@ -14,13 +15,14 @@ define(["FS","Platform"], function (FS,Platform) {
 			tablet:Platform.tablet,
 			mobile:Platform.mobile
 		};
+
 		WebSite.builtinAssetNames={
-			"images/Ball.png":1,
-			"images/base.png":1,
-			"images/Sample.png":1,
-			"images/inputPad.png":1,
-			"images/neko.png":1,
-			"images/mapchip.png":1
+			"images/Ball.png":{name:"$pat_ball", url: "images/Ball.png"},
+			"images/base.png":{name:"$pat_base", url: "images/base.png", pwidth:32, pheight:32},
+			"images/Sample.png":{name:"$pat_sample", url: "images/Sample.png"},
+			"images/inputPad.png":{name:"$pat_inputPad", url: "images/inputPad.png"},
+			"images/neko.png":{name:"$pat_neko", url: "images/neko.png", pwidth:32, pheight:32},
+			"images/mapchip.png":{name:"$pat_mapchip", url: "images/mapchip.png", pwidth:32, pheight:32}
 		};
 		if (!WebSite.pluginTop) {
 			WebSite.pluginTop=WebSite.top+"/js/plugins";

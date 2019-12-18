@@ -1,7 +1,8 @@
 define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
-"ImageDetailEditor","Util","Assets"],
+"ImageDetailEditor","Util","Assets","jshint"],
         function (FS, Tonyu, UI,IL,Blob,Auth,WebSite,
-                ImageDetailEditor,Util,Assets) {
+                ImageDetailEditor,Util,Assets,jshint) {
+    var HNOP=jshint.scriptURL("");
     var ResEditor=function (prj, mediaInfo) {
         var d=UI("div", {title:mediaInfo.name+"リスト"});
         d.css({height:200+"px", "overflow-v":"scroll"});
@@ -11,6 +12,8 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
         var rsrcDir=prj.getDir().rel(mediaInfo.path);
         var itemUIs=[];
         var _dropAdd;
+        let buttons;
+
         if (!rsrc) prj.setResource({images:[],sounds:[]});
         function convURL(u) {
             function cvs(u) {
@@ -68,11 +71,40 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
                         itemUIs.push(itemUI);
                         itemUI.appendTo(itemTbl);
                     });
-                    d.append(UI("div",{style:"clear:left;"},
-                                (mediaInfo.builtins?["button", {on:{click:function (){ add();}}}, "追加"]:""),
-                                ["button", {on:{click:function (){ d.dialog("close"); }}}, "完了"]
-                    ));
+                    buttons=UI("div",{style:"clear:left;"},
+                        (mediaInfo.builtins?
+                        ["span",{class:"dropdown"},
+                            ["button",{
+                                //href:HNOP,
+                                class:"submenu",
+                                on:{click:addBuiltin}},"追加"],
+                            ["span",{$var:"addMenu",class:"dropdown-content"},
+                                //["a",{href:HNOP,class:"submenu",on:{click:function(){}}},"名前変更"],
+                            ]
+                        ]:""),
+                        //["button", {on:{click:function (){ addBuiltin(this);}}}, "追加"]:""),
+                        ["button", {on:{click:function (){ d.dialog("close"); }}}, "完了"]
+                    );
+                    d.append(buttons);
                 }
+            }
+            function addBuiltin() {
+                //const menus=[];
+                const addMenu=buttons.$vars.addMenu;
+                addMenu.empty();
+                const addF=item=>()=>{
+                    addMenu.removeClass("show");
+                    add(item);
+                };
+                for (let k in mediaInfo.builtins) {
+                    const item=mediaInfo.builtins[k];
+                    addMenu.append(
+                        UI("a",{href:HNOP,class:"submenu",on:{click:addF(item)}},k)
+                    );
+                }
+                addMenu.toggleClass("show");
+                //const m=UI("ul",{class:"dropdown"},...menus).appendTo(d);
+                //m.offset($(btn).position());
             }
             _dropAdd=dropAdd;
             function dropAdd(e) {

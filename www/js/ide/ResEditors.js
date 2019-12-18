@@ -1,5 +1,5 @@
-define(["ResEditor","Klass","OggConverter"],
-function (ResEditor,Klass,OggConverter) {
+define(["ResEditor","Klass","OggConverter","WebSite"],
+function (ResEditor,Klass,OggConverter,WebSite) {
     var mediaInfos={
         image:{name:"画像",exts:["png","gif","jpg"],path:"images/",key:"images",
             extPattern:/\.(png|gif|jpe?g)$/i,contentType:/image\/(png|gif|jpe?g)/,
@@ -7,7 +7,8 @@ function (ResEditor,Klass,OggConverter) {
                 var r={type:"single"};//pwidth:32,pheight:32};
                 if (name) r.name="$pat_"+name;
                 return r;
-            }
+            },
+            builtins:WebSite.builtinAssetNames
         },
         sound:{name:"音声",exts:["mp3","ogg","mp4","m4a","mid","wav","mzo"],path:"sounds/",key:"sounds",
             extPattern:/\.(mp3|ogg|mp4|m4a|midi?|wav|mzo)$/i,contentType:/((audio\/(mp3|ogg|x-m4a|midi?|wav|mzo))|(video\/mp4))/,
