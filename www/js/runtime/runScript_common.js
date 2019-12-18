@@ -1,4 +1,4 @@
-define(["root"], function (root) {
+define(["root","WebSite"], function (root,WebSite) {
     root.SplashScreen={
         hide: function () {$("#splash").hide();},
         show:function(){},
@@ -22,6 +22,7 @@ define(["root"], function (root) {
                     u.indexOf("ipad") == -1 &&
                     u.indexOf("ipod") == -1
                 ) && (!window.parent || window === window.parent);
+                if (WebSite.doResize!=null) doResize=WebSite.doResize;
             }
             if (doResize) {
                 $(window).resize(onResize);
