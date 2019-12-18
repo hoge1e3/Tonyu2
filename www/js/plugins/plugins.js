@@ -68,7 +68,7 @@ define(["WebSite","root"],function (WebSite,root){
             if (requireSimulator.real) reqj=requireSimulator.real.requirejs;
         }*/
         if (reqj) {
-            src=src.replace(/\.js$/,"");
+            if (!src.match(/^https?:/)) src=src.replace(/\.js$/,"");
             console.log("Loading plugin via requirejs",src);
             reqj([src], function (res) {
                 if (!window[i.symbol] && res) window[i.symbol]=res;
