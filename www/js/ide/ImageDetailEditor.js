@@ -2,8 +2,8 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite","Assets"],
         function (UI,ImageList,ImageRect,PP,WebSite,Assets) {
     var d=UI("div",{title:"画像詳細"},
             ["div",
-             ["div","URL:",["input",{$var:"url",size:40,on:{change:setURL}}],
-               ["a",{$var:"openImg",target:"_blank"},"画像を確認..."]],
+             ["div","URL:",["span",{$var:"url"}]],//,size:40,on:{change:setURL}}]],
+             //["a",{$var:"openImg",target:"_blank"},"画像を確認..."]],
              ["canvas",{$edit:"cv",width:500,height:250,on:{mousemove:cvMouse,mousedown:cvClick}}] ],
              ["form",{$var:"theForm"},
                ["div",radio("single"),"１枚絵"],
@@ -48,9 +48,9 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite","Assets"],
     var canvasRect;
     var chipRects, curChipIndex=-1;
     var curItemName;
-    function setURL() {
+    /*function setURL() {
         if (item) item.url=v.url.val();
-    }
+    }*/
     function selRC() {
         v.theForm[0].type.value="rc";
     }
@@ -66,8 +66,8 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite","Assets"],
         item=_item;
         curItemName=itemName;
         d.dialog({width:600,height:520});
-        v.url.val(item.url);
-        var url=Assets.resolve(item.url,prj);
+        v.url.text(item.url);
+        var url=Assets.resolve(item.url, prj);
 
         if (WebSite.isNW) {
             var path;
@@ -87,19 +87,19 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite","Assets"],
                 "images/sound_mid.png":"www/images/sound_mid.png",
                 "images/sound_wav.png":"www/images/sound_wav.png",
                 "images/ecl.png":"www/images/ecl.png"
-            }
+            };
             try {
                 path=urlAliases[item.url];
                 if(!path)path=url;
             }catch(e) {
                 path=url;
             }
-            var urlScript = "javascript:nw.Window.open('"+path+"', {}, function(w) {w.y=20;w.width=700;w.height=600;})";
-            v.openImg.attr("href",urlScript);
+            //var urlScript = "javascript:nw.Window.open('"+path+"', {}, function(w) {w.y=20;w.width=700;w.height=600;})";
+            //v.openImg.attr("href",urlScript);
         } else {
-            v.openImg.attr("href",url);
+            //v.openImg.attr("href",url);
         }
-        
+
         ImageRect(url, v.cv[0])(function (res) {
             canvasRect=res;
             console.log(res);
@@ -171,7 +171,7 @@ define(["UI","ImageList","ImageRect","PatternParser","WebSite","Assets"],
                 curChipIndex=i;
                 rect(ctx,cr,"#ff0");
             }
-        })
+        });
     }
     function cvClick() {
         var pc=chipRects[curChipIndex];
