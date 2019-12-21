@@ -1,0 +1,496 @@
+dialogs\Dialogs.js:94
+Befor                 var s=prompt("エディタの文字の大きさ", desktopEnv.editorFontSize||16);
+After                 var s=prompt(R.editorFontSize(), desktopEnv.editorFontSize||16);
+fsui\FileMenu.js:32
+Befor              "ファイル名を入力してください",["br"],
+After              R.inputFileName(),["br"],
+fsui\FileMenu.js:84
+Befor         FM.dialogOpt({title:"新規作成", action:"create", onend:function (f) {
+After         FM.dialogOpt({title:R.newFile(), action:"create", onend:function (f) {
+fsui\FileMenu.js:98
+Befor         FM.dialogOpt({title:"名前変更", name:oldName, action:"mv", extraUI:mvExtraUI, onend:async function (nf) {
+After         FM.dialogOpt({title:R.renameFile(), name:oldName, action:"mv", extraUI:mvExtraUI, onend:async function (nf) {
+fsui\FileMenu.js:116
+Befor         refactorUI=UI("div",["input",{type:"checkbox",$var:"chk",checked:"true",value:"chked"}],"プログラム中のクラス名も変更する");
+After         refactorUI=UI("div",["input",{type:"checkbox",$var:"chk",checked:"true",value:"chked"}],R.refactorClassName());
+fsui\FileMenu.js:128
+Befor             alert("プログラム内にエラーがあります．エラーを修正するか，「プログラム中のクラス名も変更する」のチェックを外してもう一度やり直してください．");
+After             alert(R.someFilesHaveErrorOnRefactor());
+fsui\FileMenu.js:207
+Befor             return {ok:false, reason:"名前は，半角英数字とアンダースコア(_)のみが使えます．先頭は英大文字にしてください．"};
+After             return {ok:false, reason:R.namingNotice()};
+ide\DebugDialog.js:88
+Befor                 t.titleArea.append(UI("span",t.autoReloadCheck,"自動再実行"));
+After                 t.titleArea.append(UI("span",t.autoReloadCheck,R.autoReload()));
+ide\editor.js:163
+Befor                         $("<a>").attr("href","#").text("停止(F2)").click(F(function () {
+After                         $("<a>").attr("href","#").text(R.stop()).click(F(function () {
+ide\editor.js:168
+Befor                         $("<a>").attr("href","#").text("実行するファイルを選択...").click(F(dialogs.selectMain))
+After                         $("<a>").attr("href","#").text(R.selectMain()).click(F(dialogs.selectMain))
+ide\editor.js:263
+Befor                 alert("ファイルを作成してください");
+After                 alert(R.createAtLeastOneFile());
+ide\editor.js:402
+Befor         var np=prompt("新しいプロジェクトの名前を入れてください", curPrjDir.name().replace(/\//g,""));
+After         var np=prompt(R.inputNewProjectName(), curPrjDir.name().replace(/\//g,""));
+ide\ErrorDialog.js:33
+Befor             src={name:function (){return "不明";},text:()=>null};
+After             src={name:function (){return R.unknown();},text:()=>null};
+ide\ErrorDialog.js:58
+Befor             mesgd.append($("<button>").text("エラー箇所に移動").click(jump));
+After             mesgd.append($("<button>").text(R.jumpToErrorPosition()).click(jump));
+ide\ErrorDialog.js:82
+Befor         elem.attr("title","エラー");
+After         elem.attr("title",R.error());
+ide\ErrorDialog.js:115
+Befor                 UI("button",{on:{click:showTrace}},"トレース表示"));
+After                 UI("button",{on:{click:showTrace}},R.showTrace()));
+ide\ErrorPos.js:17
+Befor         src={name:function (){return "不明";},text:function () {
+After         src={name:function (){return R.unknown();},text:function () {
+ide\exportHTMLDialog.js:23
+Befor             t.dom=UI("div",{title:"HTML生成"},
+After             t.dom=UI("div",{title:R.generateSingleHTML()},
+ide\exportHTMLDialog.js:24
+Befor                 ["div","このHTMLをcodepenなどのJS共有サイトに張り付けて実行できます．"],
+After                 ["div",R.thisIsExecutableInSingleHTML()],
+ide\exportHTMLDialog.js:28
+Befor                     ["label",{"for":"ie"},"Internet Explorer 11でも動作させる（一部機能が使えない可能性があります）"],
+After                     ["label",{"for":"ie"},R.runnableInIE11()],
+ide\GlobalDialog.js:23
+Befor             t.dom=UI("div",{title:"グローバル変数設定"},
+After             t.dom=UI("div",{title:R.globalVariables()},
+ide\GlobalDialog.js:25
+Befor                 ["li","実行時に，これらのグローバル変数が指定した値に初期化されます．"],
+After                 ["li",R.theseGlobalVariablesAreInitializedOnStart()],
+ide\GlobalDialog.js:26
+Befor                   ["li","「値」欄には文字列またはJSON形式で記入してください．"]
+After                   ["li",R.variablesShouldBeStringOrJSON()]
+ide\GlobalDialog.js:30
+Befor                 ["div",["button",{on:{click:t.$bind.save}},"保存"]]
+After                 ["div",["button",{on:{click:t.$bind.save}},R.save()]]
+ide\GlobalDialog.js:36
+Befor                 placeHolderKey:"グローバル変数名",
+After                 placeHolderKey:R.varableName(),
+ide\GlobalDialog.js:37
+Befor                 placeHolderValue:"値",
+After                 placeHolderValue:R.value(),
+ide\GlobalDialog.js:45
+Befor                     alert("変数名には半角英数字を使ってください");
+After                     alert(R.varableNameShouldBeAlphabetOrNumber());
+ide\GlobalDialog.js:62
+Befor                         alert("解釈できない値です．この値をそのまま文字列として登録したい場合，前後をダブルクォーテーションで囲ってください．\n"+
+After                         alert(R.cannotBeParsedAsValue()+
+ide\GlobalDialog.js:63
+Befor                         "ダブルクォーテーション自身を文字列に含める場合は \\\" と書いてください．\n"+
+After                         R.ifYouWantContainDoubleQuoteAsTheValue()+
+ide\GlobalDialog.js:64
+Befor                         "\\自身を文字列に含める場合は \\\\ と書いてください．\n"
+After                         R.ifYouWantContainBackslash()
+ide\ImageDetailEditor.js:3
+Befor     var d=UI("div",{title:"画像詳細"},
+After     var d=UI("div",{title:R.imageDetails()},
+ide\ImageDetailEditor.js:9
+Befor                ["div",radio("single"),"１枚絵"],
+After                ["div",radio("single"),R.singlePicture()],
+ide\ImageDetailEditor.js:10
+Befor                ["div",radio("rc"),"分割数指定：",
+After                ["div",radio("rc"),R.rowsAndColumns(),
+ide\ImageDetailEditor.js:13
+Befor                ["div",radio("wh"),"1パターンの大きさ指定：",
+After                ["div",radio("wh"),R.chipWidthAndHeight(),
+ide\ImageDetailEditor.js:16
+Befor                ["div",radio("t1"),"Tonyu1互換",
+After                ["div",radio("t1"),R.compatibleWithTonyu1(),
+ide\ImageDetailEditor.js:17
+Befor                  ["button",{on:{click:tonyu1}},"解析"]],
+After                  ["button",{on:{click:tonyu1}},R.parse()]],
+ide\ImageDetailEditor.js:18
+Befor                ["div","パターン番号:",["input",{$var:"patName"}] ],
+After                ["div",R.chipNo(),["input",{$var:"patName"}] ],
+ide\ImageResEditor.js:6
+Befor         var d=UI("div", {title:"画像リスト"});
+After         var d=UI("div", {title:R.imageList()});
+ide\ImageResEditor.js:43
+Befor             var dragMsg="ここに画像ファイル(png/gif/jpg)をドラッグ＆ドロップして追加";
+After             var dragMsg=R.dragImageFilesHere();
+ide\ImageResEditor.js:51
+Befor             var itemTbl=UI("table",["tr",["th"],["th","名前"],["th","URL"],["th","1個の大きさ"],["th",""]]).appendTo(d);
+After             var itemTbl=UI("table",["tr",["th"],["th",R.name()],["th","URL"],["th",R.sizePerChip()],["th",""]]).appendTo(d);
+ide\ImageResEditor.js:57
+Befor             d.append(UI("button", {on:{click:function (){ add();}}}, "追加"));
+After             d.append(UI("button", {on:{click:function (){ add();}}}, R.add()));
+ide\ImageResEditor.js:58
+Befor             d.append(UI("button", {on:{click:function (){ d.dialog("close"); }}}, "完了"));
+After             d.append(UI("button", {on:{click:function (){ d.dialog("close"); }}}, R.ok()));
+ide\ImportHTMLDialog.js:13
+Befor             t.dom=UI("div",{title:"HTMLからインポート"},
+After             t.dom=UI("div",{title:R.importFromHTML()},
+ide\ImportHTMLDialog.js:15
+Befor                     ["div","ここにHTMLを貼り付けます"],
+After                     ["div",R.pasteHTMLHere()],
+ide\ImportHTMLDialog.js:37
+Befor             t.vars.selDir.append($("<h1>").text("インポート先のフォルダを入力してください"));
+After             t.vars.selDir.append($("<h1>").text(R.inputFolderPathForImport()));
+ide\ImportHTMLDialog.js:55
+Befor             t.vars.confirm.append(UI("div",["button",{on:{click:t.$bind.complete}},"インポート開始"]));
+After             t.vars.confirm.append(UI("div",["button",{on:{click:t.$bind.complete}},R.startImport()]));
+ide\ImportHTMLDialog.js:59
+Befor                 var ex=f.exists()?"上書":"新規";
+After                 var ex=f.exists()?R.ovr():R.new();
+ide\ImportHTMLDialog.js:72
+Befor             t.vars.complete.append(UI("h1","インポート完了"));
+After             t.vars.complete.append(UI("h1",R.importComplete()));
+ide\MainClassDialog.js:12
+Befor             res.d=UI("div",{title:"実行するクラスを選択"},
+After             res.d=UI("div",{title:R.selectMainClass()},
+ide\MainClassDialog.js:21
+Befor                           }}}, "実行"]
+After                           }}}, R.run()]
+ide\NewProjectDialog.js:17
+Befor         	res.d=UI("div",{title:(options.ren?"プロジェクト名の変更":"新規プロジェクト")},
+After         	res.d=UI("div",{title:(options.ren?R.renameProject():R.newProject())},
+ide\NewProjectDialog.js:19
+Befor         			 ["span","プロジェクト名"],
+After         			 ["span",R.newProjectName()],
+ide\NewProjectDialog.js:25
+Befor         			 ["span","親フォルダ"],
+After         			 ["span",R.parentFolder()],
+ide\NewProjectDialog.js:28
+Befor         			   ["span","作成先フォルダ："],
+After         			   ["span",R.willCreateAt()],
+ide\NewProjectDialog.js:42
+Befor     			this.addError("name","名前を入力してください");
+After     			this.addError("name",R.inputProjectName());
+ide\NewProjectDialog.js:47
+Befor                 this.addError("name","このフォルダはすでに存在します");
+After                 this.addError("name",R.folderExists());
+ide\ProjectItem.js:60
+Befor             ["a",{href:HNOP,class:"submenu",on:{click:t.$bind.rename}},"名前変更"],
+After             ["a",{href:HNOP,class:"submenu",on:{click:t.$bind.rename}},R.rename()],
+ide\ProjectItem.js:61
+Befor             ["a",{href:HNOP,class:"submenu",on:{click:t.$bind.download}},"ZIPダウンロード"],
+After             ["a",{href:HNOP,class:"submenu",on:{click:t.$bind.download}},R.downloadAsZip()],
+ide\ProjectItem.js:62
+Befor             ["a",{href:HNOP,class:"submenu nwmenu",on:{click:t.$bind.openFolder}},"フォルダを開く"],
+After             ["a",{href:HNOP,class:"submenu nwmenu",on:{click:t.$bind.openFolder}},R.openFolder()],
+ide\ProjectItem.js:63
+Befor             ["a",{href:HNOP,class:"submenu",on:{click:t.$bind.remove}},"削除"]
+After             ["a",{href:HNOP,class:"submenu",on:{click:t.$bind.remove}},R.delete()]
+ide\ProjectItem.js:73
+Befor     if (!t.rmd) t.rmd=UI("div",{title:"プロジェクトの削除"},
+After     if (!t.rmd) t.rmd=UI("div",{title:R.deleteProject()},
+ide\ProjectItem.js:77
+Befor             ["label",{for:"dl"},"削除前にZIPでダウンロードする"]
+After             ["label",{for:"dl"},R.downloadAsZipBeforeDeletion()]
+ide\ProjectItem.js:80
+Befor             ["button",{on:{click:doRemove}},"はい"],
+After             ["button",{on:{click:doRemove}},R.yes()],
+ide\ProjectItem.js:81
+Befor             ["button",{on:{click:cancel}},"いいえ"]
+After             ["button",{on:{click:cancel}},R.no()]
+ide\ProjectItem.js:103
+Befor     var np=prompt("新しいプロジェクトの名前を入れてください",
+After     var np=prompt(R.inputNewProjectName(),
+ide\ProjectOptionsEditor.js:5
+Befor             TPR.odiag=UI("div",{title:"プロジェクト オプション"},
+After             TPR.odiag=UI("div",{title:R.projectOptions()},
+ide\ProjectOptionsEditor.js:6
+Befor                     ["h5","コンパイラ"],
+After                     ["h5",R.compiler()],
+ide\ProjectOptionsEditor.js:9
+Befor                      "診断モード(速度が落ちますが，プログラムの不具合を見つけやすくします)"],
+After                      R.diagMode()],
+ide\ProjectOptionsEditor.js:12
+Befor                      "無限ループチェックをしない（チェックすると速度が速くなることがあります）"],
+After                      R.disableInfiniteLoopCheck()],
+ide\ProjectOptionsEditor.js:15
+Befor                       "フィールド宣言を明示的に行う(var n; のような宣言が必要になります)"],
+After                       R.requireFieldDeclaration()],
+ide\ProjectOptionsEditor.js:16
+Befor                     ["div", "デフォルトの親クラス",
+After                     ["div", R.defaultSuperClass(),
+ide\ProjectOptionsEditor.js:18
+Befor                      ["h5","実行"],
+After                      ["h5",R.runtimes()],
+ide\ProjectOptionsEditor.js:19
+Befor                      ["div", "Main クラス", ["input", {$edit: "run.mainClass"}] ],
+After                      ["div", R.mainClass(), ["input", {$edit: "run.mainClass"}] ],
+ide\ProjectOptionsEditor.js:20
+Befor                      ["div", "Boot クラス", ["input", {$edit: "run.bootClass"}] ],
+After                      ["div", R.bootClass(), ["input", {$edit: "run.bootClass"}] ],
+ide\ProjectOptionsEditor.js:21
+Befor                      ["div", "グローバル変数",["button", {on:{click: editG}},"編集..."] ],
+After                      ["div", R.globalVariables(),["button", {on:{click: editG}},R.edit()] ],
+ide\ResEditor.js:80
+Befor                                 on:{click:addBuiltin}},"追加"],
+After                                 on:{click:addBuiltin}},R.add()],
+ide\ResEditor.js:86
+Befor                         ["button", {on:{click:function (){ d.dialog("close"); }}}, "完了"]
+After                         ["button", {on:{click:function (){ d.dialog("close"); }}}, R.done()]
+ide\ResEditor.js:206
+Befor                     mes="このファイルは追加できません：\n";
+After                     mes=R.thisFileCannotBeAdded();
+ide\ResEditor.js:213
+Befor                     mes="同じ名前のファイルが既に登録されています：\n";
+After                     mes=R.fileExists();
+ide\ResEditors.js:4
+Befor         image:{name:"画像",exts:["png","gif","jpg"],path:"images/",key:"images",
+After         image:{name:R.image(),exts:["png","gif","jpg"],path:"images/",key:"images",
+ide\ResEditors.js:13
+Befor         sound:{name:"音声",exts:["mp3","ogg","mp4","m4a","mid","wav","mzo"],path:"sounds/",key:"sounds",
+After         sound:{name:R.sound(),exts:["mp3","ogg","mp4","m4a","mid","wav","mzo"],path:"sounds/",key:"sounds",
+ide\searchDialog.js:9
+Befor             res.d=UI("div",{title:"検索"},
+After             res.d=UI("div",{title:R.find()},
+ide\searchDialog.js:11
+Befor                      ["span","検索語"],
+After                      ["span",R.wordToFind()],
+ide\searchDialog.js:18
+Befor                      }}}, "検索"],
+After                      }}}, R.find()],
+ide\selProject.js:60
+Befor             ["div", "新規作成"]
+After             ["div", R.newProject()]
+ide\selProject.js:82
+Befor         }},"すべて見る..."]);
+After         }},R.showAllProjects()]);
+mkrun\mkrun.js:95
+Befor                     "このフォルダは、Webサーバにアップロードしないと正常に動作しない可能性があります。\n"+
+After                     R.thisFolderShouldBeUploadedToWebServer()+
+mkrun\mkrun.js:96
+Befor                     "詳しくは\nhttps://www.tonyu.jp/tonyu2/runtime.html\nを御覧ください。\n"
+After                     R.seeRuntime()
+mkrun\mkrunDiag.js:22
+Befor             res.d=UI("div",{title:"ランタイム作成"},
+After             res.d=UI("div",{title:R.createExecutable()},
+mkrun\mkrunDiag.js:25
+Befor                 ["h1","出力方法"],
+After                 ["h1",R.howToOutput()],
+mkrun\mkrunDiag.js:28
+Befor                         ["label",{"for":"outtype"},"ZIP圧縮したものを保存する"]
+After                         ["label",{"for":"outtype"},R.saveExecutableAsZip()]
+mkrun\mkrunDiag.js:32
+Befor                         ["label",{"for":"outtype"},"プロジェクトボードにアップロードする"]
+After                         ["label",{"for":"outtype"},R.uploadToProjectBoard()]
+mkrun\mkrunDiag.js:36
+Befor                         ["label",{"for":"dest"},"次のフォルダに出力："],["br"],
+After                         ["label",{"for":"dest"},R.saveExecutableAtFolder()],["br"],
+mkrun\mkrunDiag.js:39
+Befor                 ["h1","オプション"],
+After                 ["h1",R.executableOptions()],
+mkrun\mkrunDiag.js:42
+Befor                         ["label",{"for":"ie"},"Internet Explorer 11でも動作させる（一部機能が使えない可能性があります）"],
+After                         ["label",{"for":"ie"},R.RunInIE11()],
+mkrun\mkrunDiag.js:46
+Befor                         ["label",{"for":"src"},"ソースを添付する"],
+After                         ["label",{"for":"src"},R.attachSourceFiles()],
+mkrun\mkrunDiag.js:49
+Befor                         "ソースを添付すると，アップロードしたファイルを"+
+After                         R.ifSourceFilesAreAttached()+
+mkrun\mkrunDiag.js:50
+Befor                         "プロジェクトボード上で直接編集できます．"]
+After                         R.ItCanBeEditableInProjectBoard()]
+mkrun\mkrunDiag.js:54
+Befor                     }}}, "作成"],
+After                     }}}, R.createExecutable()],
+mkrun\mkrunDiag.js:97
+Befor                     ["p","次のいずれかの方法でWebアプリとして公開することができます。"],
+After                     ["p",R.youCanPublishThisExecutableAsWebApplicationBy()],
+mkrun\mkrunDiag.js:99
+Befor                     ["li","フォルダをお手持ちのWebサーバにアップロードする"],
+After                     ["li",R.uploadTheFolderIntoYourWebSite()],
+mkrun\mkrunDiag.js:100
+Befor                     ["li","上のフォルダをZIPで圧縮したものを",
+After                     ["li",R.uploadZippedFileInto(),
+mkrun\mkrunDiag.js:102
+Befor                               "プロジェクトボード",{style:"color: blue;"}),
+After                               R.projectBoard(),{style:"color: blue;"}),
+mkrun\mkrunDiag.js:103
+Befor                     "にアップロードする"]]
+After                     R.afterProjectBoard()]]
+mkrun\mkrunDiag.js:109
+Befor                     ["p","ランタイムを作成しました。"],
+After                     ["p",R.executableCreated()],
+mkrun\mkrunDiag.js:110
+Befor                     ["p","次のいずれかの方法でWebアプリとして公開することができます。"],
+After                     ["p",R.youCanPublishThisExecutableAsWebApplicationBy()],
+mkrun\mkrunDiag.js:112
+Befor                     ["li","解凍したフォルダをお手持ちのWebサーバにアップロードする"],
+After                     ["li",R.uploadTheExtractedFolderIntoYourWebSite()],
+mkrun\mkrunDiag.js:113
+Befor                     ["li","保存したZIPファイルを",
+After                     ["li",R.uploadTheZipFileInto(),
+mkrun\mkrunDiag.js:115
+Befor                               "プロジェクトボード",{style:"color: blue;"}),
+After                               R.projectBoard(),{style:"color: blue;"}),
+mkrun\mkrunDiag.js:116
+Befor                     "にアップロードする"]]
+After                     R.afterProjectBoard()]]
+mkrun\mkrunDiag.js:123
+Befor                     ["p",["strong","まだアップロードは完了していません"]],
+After                     ["p",["strong",R.uploadHasNotBeenDoneYet()]],
+mkrun\mkrunDiag.js:126
+Befor                         "新規バージョンページ",{
+After                         R.youHaveToDescribeAboutThisVersion(),{
+mkrun\mkrunDiag.js:134
+Befor                         "に必要事項を記入して，アップロードを完了させてください"
+After                         R.toCompleteTheUpload()
+runtime\TonyuRuntime.js:556
+Befor 			throw new Error("無限ループをストップしました。\n"+
+After 			throw new Error(R.infiniteLoopDetected()+
+runtime\TonyuRuntime.js:557
+Befor 				"   プロジェクト オプションで無限ループチェックの有無を設定できます。\n"+
+After 				R.youCanConfigureAboutInfinteLoopDetection()+
+runtime\TonyuRuntime.js:558
+Befor 				"   [参考]https://edit.tonyu.jp/doc/options.html\n");
+After 				R.seeProjectOption());
+social\ZipImporter.js:45
+Befor             mesg=mesg||"ZIPからインポート中です...";
+After             mesg=mesg||R.importingFromZip();
+social\ZipImporter.js:47
+Befor                 t.dialog=UI("div",{title:"Zipからインポート"},
+After                 t.dialog=UI("div",{title:R.importFromZip()},
+ui\UIDiag.js:30
+Befor         mesg=parseMesg(mesg,"確認");
+After         mesg=parseMesg(mesg,R.confirm());
+ui\UIDiag.js:33
+Befor                 ["button",{on:{click:sendF(false)}},"キャンセル"]).dialog({width:"auto",close:sendF(false)});
+After                 ["button",{on:{click:sendF(false)}},R.cancel()]).dialog({width:"auto",close:sendF(false)});
+ui\UIDiag.js:41
+Befor         mesg=parseMesg(mesg,"確認");
+After         mesg=parseMesg(mesg,R.confirm());
+ui\UIDiag.js:60
+Befor         mesg=parseMesg(mesg,"入力");
+After         mesg=parseMesg(mesg,R.input());
+ui\UIDiag.js:71
+Befor                 ["button",{on:{click:cancel}},"キャンセル"]).dialog({
+After                 ["button",{on:{click:cancel}},R.cancel()]).dialog({
+"editorFontSize": "エディタの文字の大きさ",
+"inputFileName": "ファイル名を入力してください",
+"newFile": "新規作成",
+"renameFile": "名前変更",
+"refactorClassName": "プログラム中のクラス名も変更する",
+"someFilesHaveErrorOnRefactor": "プログラム内にエラーがあります．エラーを修正するか，「プログラム中のクラス名も変更する」のチェックを外してもう一度やり直してください．",
+"namingNotice": "名前は，半角英数字とアンダースコア(_)のみが使えます．先頭は英大文字にしてください．",
+"autoReload": "自動再実行",
+"stop": "停止(F2)",
+"selectMain": "実行するファイルを選択...",
+"createAtLeastOneFile": "ファイルを作成してください",
+"inputNewProjectName": "新しいプロジェクトの名前を入れてください",
+"unknown": "不明",
+"jumpToErrorPosition": "エラー箇所に移動",
+"error": "エラー",
+"showTrace": "トレース表示",
+"unknown": "不明",
+"generateSingleHTML": "HTML生成",
+"thisIsExecutableInSingleHTML": "このHTMLをcodepenなどのJS共有サイトに張り付けて実行できます．",
+"runnableInIE11": "Internet Explorer 11でも動作させる（一部機能が使えない可能性があります）",
+"globalVariables": "グローバル変数設定",
+"theseGlobalVariablesAreInitializedOnStart": "実行時に，これらのグローバル変数が指定した値に初期化されます．",
+"variablesShouldBeStringOrJSON": "「値」欄には文字列またはJSON形式で記入してください．",
+"save": "保存",
+"varableName": "グローバル変数名",
+"value": "値",
+"varableNameShouldBeAlphabetOrNumber": "変数名には半角英数字を使ってください",
+"cannotBeParsedAsValue": "解釈できない値です．この値をそのまま文字列として登録したい場合，前後をダブルクォーテーションで囲ってください．\n",
+"ifYouWantContainDoubleQuoteAsTheValue": "ダブルクォーテーション自身を文字列に含める場合は \\\" と書いてください．\n",
+"ifYouWantContainBackslash": "\\自身を文字列に含める場合は \\\\ と書いてください．\n",
+"imageDetails": "画像詳細",
+"singlePicture": "１枚絵",
+"rowsAndColumns": "分割数指定：",
+"chipWidthAndHeight": "1パターンの大きさ指定：",
+"compatibleWithTonyu1": "Tonyu1互換",
+"parse": "解析",
+"chipNo": "パターン番号:",
+"imageList": "画像リスト",
+"dragImageFilesHere": "ここに画像ファイル(png/gif/jpg)をドラッグ＆ドロップして追加",
+"name": "名前",
+"sizePerChip": "1個の大きさ",
+"add": "追加",
+"ok": "完了",
+"importFromHTML": "HTMLからインポート",
+"pasteHTMLHere": "ここにHTMLを貼り付けます",
+"inputFolderPathForImport": "インポート先のフォルダを入力してください",
+"startImport": "インポート開始",
+"ovr": "上書",
+"new": "新規",
+"importComplete": "インポート完了",
+"selectMainClass": "実行するクラスを選択",
+"run": "実行",
+"renameProject": "プロジェクト名の変更",
+"newProject": "新規プロジェクト",
+"newProjectName": "プロジェクト名",
+"parentFolder": "親フォルダ",
+"willCreateAt": "作成先フォルダ：",
+"inputProjectName": "名前を入力してください",
+"folderExists": "このフォルダはすでに存在します",
+"rename": "名前変更",
+"downloadAsZip": "ZIPダウンロード",
+"openFolder": "フォルダを開く",
+"delete": "削除",
+"deleteProject": "プロジェクトの削除",
+"downloadAsZipBeforeDeletion": "削除前にZIPでダウンロードする",
+"yes": "はい",
+"no": "いいえ",
+"inputNewProjectName": "新しいプロジェクトの名前を入れてください",
+"projectOptions": "プロジェクト オプション",
+"compiler": "コンパイラ",
+"diagMode": "診断モード(速度が落ちますが，プログラムの不具合を見つけやすくします)",
+"disableInfiniteLoopCheck": "無限ループチェックをしない（チェックすると速度が速くなることがあります）",
+"requireFieldDeclaration": "フィールド宣言を明示的に行う(var n; のような宣言が必要になります)",
+"defaultSuperClass": "デフォルトの親クラス",
+"runtimes": "実行",
+"mainClass": "Main クラス",
+"bootClass": "Boot クラス",
+"globalVariables": "グローバル変数",
+"edit": "編集...",
+"add": "追加",
+"done": "完了",
+"thisFileCannotBeAdded": "このファイルは追加できません：\n",
+"fileExists": "同じ名前のファイルが既に登録されています：\n",
+"image": "画像",
+"sound": "音声",
+"find": "検索",
+"wordToFind": "検索語",
+"find": "検索",
+"newProject": "新規作成",
+"showAllProjects": "すべて見る...",
+"thisFolderShouldBeUploadedToWebServer": "このフォルダは、Webサーバにアップロードしないと正常に動作しない可能性があります。\n",
+"seeRuntime": "詳しくは\nhttps://www.tonyu.jp/tonyu2/runtime.html\nを御覧ください。\n",
+"createExecutable": "ランタイム作成",
+"howToOutput": "出力方法",
+"saveExecutableAsZip": "ZIP圧縮したものを保存する",
+"uploadToProjectBoard": "プロジェクトボードにアップロードする",
+"saveExecutableAtFolder": "次のフォルダに出力：",
+"executableOptions": "オプション",
+"RunInIE11": "Internet Explorer 11でも動作させる（一部機能が使えない可能性があります）",
+"attachSourceFiles": "ソースを添付する",
+"ifSourceFilesAreAttached": "ソースを添付すると，アップロードしたファイルを",
+"ItCanBeEditableInProjectBoard": "プロジェクトボード上で直接編集できます．",
+"createExecutable": "作成",
+"youCanPublishThisExecutableAsWebApplicationBy": "次のいずれかの方法でWebアプリとして公開することができます。",
+"uploadTheFolderIntoYourWebSite": "フォルダをお手持ちのWebサーバにアップロードする",
+"uploadZippedFileInto": "上のフォルダをZIPで圧縮したものを",
+"projectBoard": "プロジェクトボード",
+"afterProjectBoard": "にアップロードする",
+"executableCreated": "ランタイムを作成しました。",
+"youCanPublishThisExecutableAsWebApplicationBy": "次のいずれかの方法でWebアプリとして公開することができます。",
+"uploadTheExtractedFolderIntoYourWebSite": "解凍したフォルダをお手持ちのWebサーバにアップロードする",
+"uploadTheZipFileInto": "保存したZIPファイルを",
+"projectBoard": "プロジェクトボード",
+"afterProjectBoard": "にアップロードする",
+"uploadHasNotBeenDoneYet": "まだアップロードは完了していません",
+"youHaveToDescribeAboutThisVersion": "新規バージョンページ",
+"toCompleteTheUpload": "に必要事項を記入して，アップロードを完了させてください",
+"infiniteLoopDetected": "無限ループをストップしました。\n",
+"youCanConfigureAboutInfinteLoopDetection": "   プロジェクト オプションで無限ループチェックの有無を設定できます。\n",
+"seeProjectOption": "   [参考]https://edit.tonyu.jp/doc/options.html\n",
+"importingFromZip": "ZIPからインポート中です...",
+"importFromZip": "Zipからインポート",
+"confirm": "確認",
+"cancel": "キャンセル",
+"confirm": "確認",
+"input": "入力",
+"cancel": "キャンセル"
