@@ -1,0 +1,244 @@
+dialogs\Dialogs.js:94●                var s=prompt("エディタの文字の大きさ", desktopEnv.editorFontSize||16);
+fs\auth.js:18●        if (!options.confirm) options.confirm="この操作を行なうためにはログインが必要です．ログインしますか？";
+fs\syncProjects.js:10●                $("#head").text(user+"のファイルを同期中");
+fs\syncProjects.js:34●                    ["div","同期をスキップするにはOKを押してください．"],
+fs\syncProjects.js:35●                    ["div","※ブラウザ側とサーバ側のファイルに違いが残っている可能性があります "],
+fs\syncProjects.js:43●    var msgs={getDirInfo:"サーバ側のファイルの情報を取得中...", File2LSSync:"サーバからファイルをダウンロード中...",
+fs\syncProjects.js:44●            LS2FileSync:"ブラウザのファイルをアップロード中..."}
+fs\syncProjects.js:50●        $("#res").text("エラー："+text+": "+thrown);
+fs\syncProjects.js:58●                ["div",["a",{href:"index.html"},"Homeへ"]],
+fs\syncProjects.js:59●                ["h2","ダウンロードされたファイル"],
+fs\syncProjects.js:61●                ["h2","アップロードされたファイル"],
+fs\syncProjects.js:65●            if (res.downloads.length==0) return "ダウンロードされたファイルはありません";
+fs\syncProjects.js:73●            if (res.uploads.length==0) return "アップロードされたファイルはありません";
+fs2raw\Content.js:124●   var s="てすとabc";
+fsui\FileMenu.js:32●             "ファイル名を入力してください",["br"],
+fsui\FileMenu.js:65●            if (r.ok && r.file.exists()) r={ok:false, reason:s+"は存在します"};
+fsui\FileMenu.js:84●        FM.dialogOpt({title:"新規作成", action:"create", onend:function (f) {
+fsui\FileMenu.js:98●        FM.dialogOpt({title:"名前変更", name:oldName, action:"mv", extraUI:mvExtraUI, onend:async function (nf) {
+fsui\FileMenu.js:116●        refactorUI=UI("div",["input",{type:"checkbox",$var:"chk",checked:"true",value:"chked"}],"プログラム中のクラス名も変更する");
+fsui\FileMenu.js:128●            alert("プログラム内にエラーがあります．エラーを修正するか，「プログラム中のクラス名も変更する」のチェックを外してもう一度やり直してください．");
+fsui\FileMenu.js:139●        if (!confirm(curFile.name()+"を削除しますか？")) return;
+fsui\FileMenu.js:196●                return {ok:false, reason:dir.name()+"はシステムで利用されているフォルダなので使用できません"};
+fsui\FileMenu.js:199●                return {ok:false, reason:name+"はシステムで利用されている名前なので使用できません"};
+fsui\FileMenu.js:203●                return {ok:true, file: dir.rel(name+EXT), note: "先頭を大文字("+name+") にして作成します．"};
+fsui\FileMenu.js:207●            return {ok:false, reason:"名前は，半角英数字とアンダースコア(_)のみが使えます．先頭は英大文字にしてください．"};
+help\wiki.js:6●    var refers={figures:"図", plists: "リスト"};
+help\wiki.js:45●            if (prev) navBar+="[[前へ>"+prev+"]]";
+help\wiki.js:47●            if (next) navBar+=" - [[次へ>"+next+"]]";
+help\wiki.js:49●            if (idx!=0) navBar+=" - [[目次>"+top+"]]";
+help\wiki.js:91●- リスト1
+help\wiki.js:92●    - ネスト リスト1_1
+help\wiki.js:93●        - ネスト リスト1_1_1
+help\wiki.js:94●        - ネスト リスト1_1_2
+help\wiki.js:95●    - ネスト リスト1_2
+help\wiki.js:96●- リスト2
+help\wiki.js:97●- リスト3
+help\wiki.js:127●MD 半角スペース4個もしくはタブで、コードブロックをpre表示できます
+help\wiki.js:278●                    "ここに画像ファイル(png/gif/jpg)をドラッグ＆ドロップして追加"
+help\wiki.js:339●    		alert(nameOrFile+" というページはありません");
+help\wikiExporter.js:33●            src+="<button onclick='javascript:history.back();'>←Back</button><br/>\n";
+help\wikiExporter.js:35●            src+="<br/><button onclick='javascript:history.back();'>←Back</button>\n";
+ide\DebugDialog.js:88●                t.titleArea.append(UI("span",t.autoReloadCheck,"自動再実行"));
+ide\DiffDialog.js:15●        	res.d=UI("div",{title:"比較"},
+ide\DiffDialog.js:26●                 }}}, "比較"],
+ide\DiffDialog.js:38●    	        this.addError("new",newFile+"は存在しないか，ディレクトリです");
+ide\DiffDialog.js:40●                this.addError("base",baseFile+"は存在しないか，ディレクトリです");
+ide\editor.js:149●                            $("<a>").attr("href","#").text(n+"を実行"+(i==0?"(F9)":"")).click(F(function () {
+ide\editor.js:163●                        $("<a>").attr("href","#").text("停止(F2)").click(F(function () {
+ide\editor.js:168●                        $("<a>").attr("href","#").text("実行するファイルを選択...").click(F(dialogs.selectMain))
+ide\editor.js:233●            alert("他のコマンド("+cmdStat+")が実行されているのでお待ちください．\n"+
+ide\editor.js:234●                "しばらくたってもこのメッセージが出る場合，一旦Homeに戻ってください．");
+ide\editor.js:263●                alert("ファイルを作成してください");
+ide\editor.js:395●        if (prompt(curPrjDir+"内のファイルをすべて削除しますか？削除する場合はDELETE と入力してください．","")!="DELETE") {
+ide\editor.js:402●        var np=prompt("新しいプロジェクトの名前を入れてください", curPrjDir.name().replace(/\//g,""));
+ide\editor.js:407●            alert(npd+" はすでに存在します");
+ide\ErrorDialog.js:33●            src={name:function (){return "不明";},text:()=>null};
+ide\ErrorDialog.js:56●        const mesgd=$("<div>").text(message+" 場所："+src.name()+(typeof row=="number"?":"+row+":"+col:""));
+ide\ErrorDialog.js:58●            mesgd.append($("<button>").text("エラー箇所に移動").click(jump));
+ide\ErrorDialog.js:82●        elem.attr("title","エラー");
+ide\ErrorDialog.js:115●                UI("button",{on:{click:showTrace}},"トレース表示"));
+ide\ErrorPos.js:17●        src={name:function (){return "不明";},text:function () {
+ide\ErrorPos.js:38●    var mesgd=$("<div>").text(mesg+" 場所："+src.name()+(typeof row=="number"?":"+row+":"+col:""));
+ide\ErrorPos.js:40●        mesgd.append($("<button>").text("エラー箇所に移動").click(jump));
+ide\ErrorPos.js:62●    elem.attr("title","エラー");
+ide\exportHTMLDialog.js:23●            t.dom=UI("div",{title:"HTML生成"},
+ide\exportHTMLDialog.js:24●                ["div","このHTMLをcodepenなどのJS共有サイトに張り付けて実行できます．"],
+ide\exportHTMLDialog.js:28●                    ["label",{"for":"ie"},"Internet Explorer 11でも動作させる（一部機能が使えない可能性があります）"],
+ide\GlobalDialog.js:23●            t.dom=UI("div",{title:"グローバル変数設定"},
+ide\GlobalDialog.js:25●                ["li","実行時に，これらのグローバル変数が指定した値に初期化されます．"],
+ide\GlobalDialog.js:26●                  ["li","「値」欄には文字列またはJSON形式で記入してください．"]
+ide\GlobalDialog.js:30●                ["div",["button",{on:{click:t.$bind.save}},"保存"]]
+ide\GlobalDialog.js:36●                placeHolderKey:"グローバル変数名",
+ide\GlobalDialog.js:37●                placeHolderValue:"値",
+ide\GlobalDialog.js:45●                    alert("変数名には半角英数字を使ってください");
+ide\GlobalDialog.js:62●                        alert("解釈できない値です．この値をそのまま文字列として登録したい場合，前後をダブルクォーテーションで囲ってください．\n"+
+ide\GlobalDialog.js:63●                        "ダブルクォーテーション自身を文字列に含める場合は \\\" と書いてください．\n"+
+ide\GlobalDialog.js:64●                        "\\自身を文字列に含める場合は \\\\ と書いてください．\n"
+ide\GlobalDialog.js:93●                if (v.key in res) throw new Error("変数名'"+v.key+"'が重複しています．");
+ide\GlobalDialog.js:95●                    throw new Error("変数名'"+v.key+"'はグローバル変数名として使えません．");
+ide\ImageDetailEditor.js:3●    var d=UI("div",{title:"画像詳細"},
+ide\ImageDetailEditor.js:9●               ["div",radio("single"),"１枚絵"],
+ide\ImageDetailEditor.js:10●               ["div",radio("rc"),"分割数指定：",
+ide\ImageDetailEditor.js:13●               ["div",radio("wh"),"1パターンの大きさ指定：",
+ide\ImageDetailEditor.js:16●               ["div",radio("t1"),"Tonyu1互換",
+ide\ImageDetailEditor.js:17●                 ["button",{on:{click:tonyu1}},"解析"]],
+ide\ImageDetailEditor.js:18●               ["div","パターン番号:",["input",{$var:"patName"}] ],
+ide\ImageResEditor.js:6●        var d=UI("div", {title:"画像リスト"});
+ide\ImageResEditor.js:43●            var dragMsg="ここに画像ファイル(png/gif/jpg)をドラッグ＆ドロップして追加";
+ide\ImageResEditor.js:51●            var itemTbl=UI("table",["tr",["th"],["th","名前"],["th","URL"],["th","1個の大きさ"],["th",""]]).appendTo(d);
+ide\ImageResEditor.js:57●            d.append(UI("button", {on:{click:function (){ add();}}}, "追加"));
+ide\ImageResEditor.js:58●            d.append(UI("button", {on:{click:function (){ d.dialog("close"); }}}, "完了"));
+ide\ImageResEditor.js:78●                                    UI("div","大きいイメージを追加するには，ログインが必要です：",
+ide\ImageResEditor.js:79●                                       ["a",{href:u,target:"login",style:"color: blue;"},"ログインする"])
+ide\ImageResEditor.js:82●                            dragPoint.text("アップロード中...");
+ide\ImageResEditor.js:120●                                  ["option",{value:"fix", selected:isFix}, "固定サイズ分割"],
+ide\ImageResEditor.js:121●                                  ["option",{value:"t1",  selected:!isFix}, "Tonyu1互換"],
+ide\ImageResEditor.js:122●                                  ["option",{value:"full",  selected:false}, "分割なし"]
+ide\ImageResEditor.js:128●                                ["td",["button",{on:{click:del}}, "削除"]]
+ide\ImageResEditor.js:132●                        "画像をクリックして詳細設定..."
+ide\ImportHTMLDialog.js:13●            t.dom=UI("div",{title:"HTMLからインポート"},
+ide\ImportHTMLDialog.js:15●                    ["div","ここにHTMLを貼り付けます"],
+ide\ImportHTMLDialog.js:37●            t.vars.selDir.append($("<h1>").text("インポート先のフォルダを入力してください"));
+ide\ImportHTMLDialog.js:55●            t.vars.confirm.append(UI("div",["button",{on:{click:t.$bind.complete}},"インポート開始"]));
+ide\ImportHTMLDialog.js:59●                var ex=f.exists()?"上書":"新規";
+ide\ImportHTMLDialog.js:72●            t.vars.complete.append(UI("h1","インポート完了"));
+ide\ImportHTMLDialog.js:75●                dst.path()+"を開く"]
+ide\KernelDiffDialog.js:9●        	res.d=UI("div",{title:"Kernel比較"},
+ide\KernelDiffDialog.js:13●                 }}}, "更新"]
+ide\KernelDiffDialog.js:24●    					out.append(UI("div",kerf.name(),"(同一)"));
+ide\MainClassDialog.js:12●            res.d=UI("div",{title:"実行するクラスを選択"},
+ide\MainClassDialog.js:21●                          }}}, "実行"]
+ide\NewProjectDialog.js:17●        	res.d=UI("div",{title:(options.ren?"プロジェクト名の変更":"新規プロジェクト")},
+ide\NewProjectDialog.js:19●        			 ["span","プロジェクト名"],
+ide\NewProjectDialog.js:25●        			 ["span","親フォルダ"],
+ide\NewProjectDialog.js:28●        			   ["span","作成先フォルダ："],
+ide\NewProjectDialog.js:42●    			this.addError("name","名前を入力してください");
+ide\NewProjectDialog.js:47●                this.addError("name","このフォルダはすでに存在します");
+ide\noviceEditor.js:37●    var closedMsg="←左のリストからファイルを選択してください．\nファイルがない場合はメニューの「ファイル」→「新規」を選んでください";
+ide\noviceEditor.js:108●                            $("<a>").attr("href","#").text(n+"を実行"+(i==0?"(F9)":"")).click(function () {
+ide\noviceEditor.js:129●            return {ok:false, reason:"名前は，半角英数字とアンダースコア(_)のみが使えます．先頭は英大文字にしてください．"};
+ide\noviceEditor.js:167●                alert("ファイルを作成してください");
+ide\noviceEditor.js:256●    var name=prompt("ファイル名を入力してください","");
+ide\noviceEditor.js:277●        var newName=prompt("新しいファイル名を入力してください",name);
+ide\noviceEditor.js:282●            alert(newName+" は存在します");
+ide\noviceEditor.js:294●        if (!confirm(curFile.name()+"を削除しますか？")) return;
+ide\noviceSelProject.js:16●        var n=prompt("新しいプロジェクトの名前","");
+ide\ProjectItem.js:60●            ["a",{href:HNOP,class:"submenu",on:{click:t.$bind.rename}},"名前変更"],
+ide\ProjectItem.js:61●            ["a",{href:HNOP,class:"submenu",on:{click:t.$bind.download}},"ZIPダウンロード"],
+ide\ProjectItem.js:62●            ["a",{href:HNOP,class:"submenu nwmenu",on:{click:t.$bind.openFolder}},"フォルダを開く"],
+ide\ProjectItem.js:63●            ["a",{href:HNOP,class:"submenu",on:{click:t.$bind.remove}},"削除"]
+ide\ProjectItem.js:73●    if (!t.rmd) t.rmd=UI("div",{title:"プロジェクトの削除"},
+ide\ProjectItem.js:74●        ["div","プロジェクト",t.name,"を削除しますか？"],
+ide\ProjectItem.js:77●            ["label",{for:"dl"},"削除前にZIPでダウンロードする"]
+ide\ProjectItem.js:80●            ["button",{on:{click:doRemove}},"はい"],
+ide\ProjectItem.js:81●            ["button",{on:{click:cancel}},"いいえ"]
+ide\ProjectItem.js:103●    var np=prompt("新しいプロジェクトの名前を入れてください",
+ide\ProjectItem.js:110●            alert(np+" はすでに存在します");
+ide\ProjectOptionsEditor.js:5●            TPR.odiag=UI("div",{title:"プロジェクト オプション"},
+ide\ProjectOptionsEditor.js:6●                    ["h5","コンパイラ"],
+ide\ProjectOptionsEditor.js:9●                     "診断モード(速度が落ちますが，プログラムの不具合を見つけやすくします)"],
+ide\ProjectOptionsEditor.js:12●                     "無限ループチェックをしない（チェックすると速度が速くなることがあります）"],
+ide\ProjectOptionsEditor.js:15●                      "フィールド宣言を明示的に行う(var n; のような宣言が必要になります)"],
+ide\ProjectOptionsEditor.js:16●                    ["div", "デフォルトの親クラス",
+ide\ProjectOptionsEditor.js:18●                     ["h5","実行"],
+ide\ProjectOptionsEditor.js:19●                     ["div", "Main クラス", ["input", {$edit: "run.mainClass"}] ],
+ide\ProjectOptionsEditor.js:20●                     ["div", "Boot クラス", ["input", {$edit: "run.bootClass"}] ],
+ide\ProjectOptionsEditor.js:21●                     ["div", "グローバル変数",["button", {on:{click: editG}},"編集..."] ],
+ide\ProjectOptionsEditor.js:22●                     ["h5","開発"],
+ide\ProjectOptionsEditor.js:25●                      "Kernelの開発を行う"],
+ide\ResEditor.js:7●        var d=UI("div", {title:mediaInfo.name+"リスト"});
+ide\ResEditor.js:64●                    var dragMsg="ここに"+mediaInfo.name+"ファイル("+mediaInfo.exts.join("/")+")をドラッグ＆ドロップして追加";
+ide\ResEditor.js:80●                                on:{click:addBuiltin}},"追加"],
+ide\ResEditor.js:86●                        ["button", {on:{click:function (){ d.dialog("close"); }}}, "完了"]
+ide\ResEditor.js:160●                                        UI("div","大きい"+mediaInfo.name+"を追加するには，ログインが必要です：",
+ide\ResEditor.js:161●                                           ["a",{href:u,target:"login",style:"color: blue;"},"ログインする"])
+ide\ResEditor.js:164●                                dragPoint.text("アップロード中...");
+ide\ResEditor.js:206●                    mes="このファイルは追加できません：\n";
+ide\ResEditor.js:213●                    mes="同じ名前のファイルが既に登録されています：\n";
+ide\ResEditor.js:218●                            mes+=f.name+" ⇒ "+fName+"("+f.existsFile.name+") と重複\n";
+ide\ResEditor.js:281●                        ["button",{on:{click:del}}, "×"],["br"],
+ide\ResEditor.js:282●                        ["button",{on:{click:up}}, "←"],["br"],
+ide\ResEditor.js:283●                        ["button",{on:{click:down}}, "→"]],
+ide\ResEditors.js:4●        image:{name:"画像",exts:["png","gif","jpg"],path:"images/",key:"images",
+ide\ResEditors.js:13●        sound:{name:"音声",exts:["mp3","ogg","mp4","m4a","mid","wav","mzo"],path:"sounds/",key:"sounds",
+ide\searchDialog.js:9●            res.d=UI("div",{title:"検索"},
+ide\searchDialog.js:11●                     ["span","検索語"],
+ide\searchDialog.js:18●                     }}}, "検索"],
+ide\selProject.js:17●        $("#ls").text(Math.floor(capacity.max/1024)+"KB中"+Math.floor(capacity.using/1024)+"KB使用中。");
+ide\selProject.js:60●            ["div", "新規作成"]
+ide\selProject.js:82●        }},"すべて見る..."]);
+ide\sysMod.js:171●        var req=new Error("必要なプラグイン"+name+"を追加しました。もう一度実行してください");
+mkrun\mkrun.js:43●                        throw new Error("アップロード失敗: "+r);
+mkrun\mkrun.js:95●                    "このフォルダは、Webサーバにアップロードしないと正常に動作しない可能性があります。\n"+
+mkrun\mkrun.js:96●                    "詳しくは\nhttps://www.tonyu.jp/tonyu2/runtime.html\nを御覧ください。\n"
+mkrun\mkrunDiag.js:22●            res.d=UI("div",{title:"ランタイム作成"},
+mkrun\mkrunDiag.js:25●                ["h1","出力方法"],
+mkrun\mkrunDiag.js:28●                        ["label",{"for":"outtype"},"ZIP圧縮したものを保存する"]
+mkrun\mkrunDiag.js:32●                        ["label",{"for":"outtype"},"プロジェクトボードにアップロードする"]
+mkrun\mkrunDiag.js:36●                        ["label",{"for":"dest"},"次のフォルダに出力："],["br"],
+mkrun\mkrunDiag.js:39●                ["h1","オプション"],
+mkrun\mkrunDiag.js:42●                        ["label",{"for":"ie"},"Internet Explorer 11でも動作させる（一部機能が使えない可能性があります）"],
+mkrun\mkrunDiag.js:46●                        ["label",{"for":"src"},"ソースを添付する"],
+mkrun\mkrunDiag.js:49●                        "ソースを添付すると，アップロードしたファイルを"+
+mkrun\mkrunDiag.js:50●                        "プロジェクトボード上で直接編集できます．"]
+mkrun\mkrunDiag.js:54●                    }}}, "作成"],
+mkrun\mkrunDiag.js:96●                    "にランタイムを作成しました。"],
+mkrun\mkrunDiag.js:97●                    ["p","次のいずれかの方法でWebアプリとして公開することができます。"],
+mkrun\mkrunDiag.js:99●                    ["li","フォルダをお手持ちのWebサーバにアップロードする"],
+mkrun\mkrunDiag.js:100●                    ["li","上のフォルダをZIPで圧縮したものを",
+mkrun\mkrunDiag.js:102●                              "プロジェクトボード",{style:"color: blue;"}),
+mkrun\mkrunDiag.js:103●                    "にアップロードする"]]
+mkrun\mkrunDiag.js:109●                    ["p","ランタイムを作成しました。"],
+mkrun\mkrunDiag.js:110●                    ["p","次のいずれかの方法でWebアプリとして公開することができます。"],
+mkrun\mkrunDiag.js:112●                    ["li","解凍したフォルダをお手持ちのWebサーバにアップロードする"],
+mkrun\mkrunDiag.js:113●                    ["li","保存したZIPファイルを",
+mkrun\mkrunDiag.js:115●                              "プロジェクトボード",{style:"color: blue;"}),
+mkrun\mkrunDiag.js:116●                    "にアップロードする"]]
+mkrun\mkrunDiag.js:123●                    ["p",["strong","まだアップロードは完了していません"]],
+mkrun\mkrunDiag.js:126●                        "新規バージョンページ",{
+mkrun\mkrunDiag.js:134●                        "に必要事項を記入して，アップロードを完了させてください"
+runtime\TonyuRuntime.js:246●			if (root.alert) root.alert("エラー! メッセージ  : "+e);
+runtime\TonyuRuntime.js:484●					else throw new Error("曖昧なクラス名： "+nn+"."+n+", "+found);
+runtime\TonyuRuntime.js:505●		if (!t) throw new Error(objName+"(="+t+")のメソッド "+name+"を呼び出せません");
+runtime\TonyuRuntime.js:507●		if (typeof f!="function") throw new Error((objName=="this"? "": objName+".")+name+"(="+f+")はメソッドではありません");
+runtime\TonyuRuntime.js:511●		if (typeof f!="function") throw new Error(fName+"は関数ではありません");
+runtime\TonyuRuntime.js:515●		if (v!=v || v==null) throw new Error(name+"(="+v+")は初期化されていません");
+runtime\TonyuRuntime.js:526●		throw new Error("クラス名"+c+"はnewをつけて呼び出して下さい。");
+runtime\TonyuRuntime.js:537●		if (!bootClass) throw new Error( bootClassName+" というクラスはありません");
+runtime\TonyuRuntime.js:556●			throw new Error("無限ループをストップしました。\n"+
+runtime\TonyuRuntime.js:557●				"   プロジェクト オプションで無限ループチェックの有無を設定できます。\n"+
+runtime\TonyuRuntime.js:558●				"   [参考]https://edit.tonyu.jp/doc/options.html\n");
+runtime\TonyuRuntime.js:648●					throw new Error("メソッド"+methodName+"が見つかりません");
+runtime\TonyuRuntime.js:655●					throw new Error("メソッド"+n+"は待機可能メソッドではありません");
+social\exportToExe.js:56●                       "---- Fork元より ----\n"+
+social\exportToExe.js:69●               var button=$("<button>").text("公開する").click(bClk);
+social\forkBlobs.js:11●                        UI("div","Forkを完了させるためには，ログインが必要です：",
+social\forkBlobs.js:12●                           ["a",{href:url,target:"login",style:"color: blue;"},"ログインする"])
+social\importFromJsdoit.js:9●	$("#diag").append($("<h1>").text("インポート先のフォルダを入力してください"));
+social\importFromJsdoit.js:13●	    $("#prog").attr("placeholder", "コードを取得中です．しばらくお待ちください．");
+social\importFromJsdoit.js:48●		$("#confirm").append(UI("div",["button",{on:{click:run}},"インポート開始"]));
+social\importFromJsdoit.js:52●			var ex=f.exists()?"上書":"新規";
+social\importFromJsdoit.js:76●	        $("#complete").append(UI("h1","インポート完了"));
+social\importFromJsdoit.js:78●	        		["a",{href:"project.html?dir="+dst.path()},dst.path()+"を開く"]
+social\importFromJsdoit.js:82●	                    "※画像などのデータが準備できるまで数分間かかる場合があります．",
+social\importFromJsdoit.js:83●	                    "実行できない場合は少し待ってからプロジェクトのページを再読み込みしてみてください．"
+social\splashElement.js:3●    <!--ここに，ロード中に表示する内容を記述できます。-->
+social\splashElement.js:6●        <!-- ここにロード中の進捗が表示されます．表示したくない場合はこのdiv要素を削除してください。 -->
+social\splashElement.js:10●        <!-- ここに非対応ブラウザ向けメッセージが表示されます．表示したくない場合はこのdiv要素を削除してください。 -->
+social\splashElement.js:12●        <p>お使いのブラウザではこのプログラムは動作しません．他のブラウザをお試しください．</p>
+social\ZipImporter.js:45●            mesg=mesg||"ZIPからインポート中です...";
+social\ZipImporter.js:47●                t.dialog=UI("div",{title:"Zipからインポート"},
+social\ZipImporter.js:69●            t.showDialog(file.name()+"を展開中...");
+social\ZipImporter.js:73●                    t.showDialog(file.name()+"を展開中...");
+social\ZipImporter.js:88●                    "にはTonyu2の編集可能なプロジェクトが含まれていません.");
+social\ZipImporter.js:96●                t.showDialog(f.name()+"をチェック中...");
+social\ZipImporter.js:128●            t.showDialog(src.name()+ "から"+ dst.name()+"にコピー");
+social\ZipImporter.js:171●            t.showDialog("プロジェクトボードから"+fileName+"をダウンロード....");
+tonyu1\importFromTonyu1.js:5●    var dragMsg="ここにTonyu1プロジェクトフォルダのzipファイルをドラッグ＆ドロップ";
+tonyu1\importFromTonyu1.js:49●        append($("<h1>").text("インポート先のフォルダを入力してください")).
+ui\UIDiag.js:30●        mesg=parseMesg(mesg,"確認");
+ui\UIDiag.js:33●                ["button",{on:{click:sendF(false)}},"キャンセル"]).dialog({width:"auto",close:sendF(false)});
+ui\UIDiag.js:41●        mesg=parseMesg(mesg,"確認");
+ui\UIDiag.js:60●        mesg=parseMesg(mesg,"入力");
+ui\UIDiag.js:71●                ["button",{on:{click:cancel}},"キャンセル"]).dialog({
