@@ -24,7 +24,8 @@ js.recursive(f=>{
 	if (f.path().match(/\bace-noconflict\b/)) return;
 	if (f.name().match(/_concat/)) return;
 	if (f.name().match(/\.min\./)) return;
-	let ln=1;
+	let ln=1,changed=false;
+    const buf=[];
 	for (let line of f.lines()) {
 	   if (ismb(line.replace(/\/\/.*/,""))) {
 	      const key=f.relPath(js)+":"+ln;
@@ -39,10 +40,17 @@ js.recursive(f=>{
 		      console.log(key);
 		      console.log("Befor", line);
 		      console.log("After", replaced);
+              line=replaced;
+              changed=true;
 	      }//console.log(+"●"+line);
 	   }
+       buf.push(line);
 	   ln++;
 	}
+    if (changed) {
+        f.text(buf.join("\r\n"));
+        throw new Error("Kowareta!");
+    }
 });
 console.log(R.join(",\n"));
 function parseCMD(line, cmd) {
@@ -52,11 +60,10 @@ function parseCMD(line, cmd) {
        R.push(`"${a}": ${b}`);
    });
    return line;
-} 
+}
 function ismb(str) {
     for (let i=0;i<str.length;i++) {
         if (str.charCodeAt(i)>=128)return true;
     }
     return false;
 }
-
