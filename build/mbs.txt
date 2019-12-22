@@ -198,19 +198,6 @@ mkrun\mkrunDiag.js:116●                    "にアップロードする"]]
 mkrun\mkrunDiag.js:123●                    ["p",["strong","まだアップロードは完了していません"]],
 mkrun\mkrunDiag.js:126●                        "新規バージョンページ",{
 mkrun\mkrunDiag.js:134●                        "に必要事項を記入して，アップロードを完了させてください"
-runtime\TonyuRuntime.js:246●			if (root.alert) root.alert("エラー! メッセージ  : "+e);
-runtime\TonyuRuntime.js:484●					else throw new Error("曖昧なクラス名： "+nn+"."+n+", "+found);
-runtime\TonyuRuntime.js:505●		if (!t) throw new Error(objName+"(="+t+")のメソッド "+name+"を呼び出せません");
-runtime\TonyuRuntime.js:507●		if (typeof f!="function") throw new Error((objName=="this"? "": objName+".")+name+"(="+f+")はメソッドではありません");
-runtime\TonyuRuntime.js:511●		if (typeof f!="function") throw new Error(fName+"は関数ではありません");
-runtime\TonyuRuntime.js:515●		if (v!=v || v==null) throw new Error(name+"(="+v+")は初期化されていません");
-runtime\TonyuRuntime.js:526●		throw new Error("クラス名"+c+"はnewをつけて呼び出して下さい。");
-runtime\TonyuRuntime.js:537●		if (!bootClass) throw new Error( bootClassName+" というクラスはありません");
-runtime\TonyuRuntime.js:556●			throw new Error("無限ループをストップしました。\n"+
-runtime\TonyuRuntime.js:557●				"   プロジェクト オプションで無限ループチェックの有無を設定できます。\n"+
-runtime\TonyuRuntime.js:558●				"   [参考]https://edit.tonyu.jp/doc/options.html\n");
-runtime\TonyuRuntime.js:648●					throw new Error("メソッド"+methodName+"が見つかりません");
-runtime\TonyuRuntime.js:655●					throw new Error("メソッド"+n+"は待機可能メソッドではありません");
 social\exportToExe.js:56●                       "---- Fork元より ----\n"+
 social\exportToExe.js:69●               var button=$("<button>").text("公開する").click(bClk);
 social\forkBlobs.js:11●                        UI("div","Forkを完了させるためには，ログインが必要です：",

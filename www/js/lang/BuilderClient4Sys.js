@@ -3715,10 +3715,6 @@ module.exports=WorkerService;
         types[n]=f;
     };
     exports.fromDependencySpec=function (prj,spec) {
-        if (typeof spec=="string") {
-            var prjDir=prj.resolve(spec);
-            return this.fromDir(prjDir);
-        }
         for (let f of resolvers) {
             const res=f(prj,spec);
             if (res) return res;
@@ -3737,7 +3733,7 @@ module.exports=WorkerService;
         return types[type](params);
     };
     class ProjectCore {
-        getPublishedURL(){}//TODO
+        getPublishedURL(){}//override in BAProject
         getOptions(opt) {return {};}//stub
         getName() {
             return this.dir.name().replace(/\/$/,"");
@@ -3797,6 +3793,9 @@ module.exports=WorkerService;
         },
         setOptions(opt) {// not in compiledProject
             return this.getOptionsFile().obj(opt);
+        },
+        fixOptions(TPR,opt) {// required in BAProject
+            if (!opt.compiler) opt.compiler={};
         },
         getOutputFile(lang) {// not in compiledProject
             var opt=this.getOptions();

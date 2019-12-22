@@ -111,12 +111,13 @@ function convertTError(e) {
 }
 WS.ready();
 
-},{"../lang/Builder":3,"../lang/langMod":15,"../lib/FS":20,"../lib/WorkerServiceW":22,"../lib/root":24,"../project/CompiledProject":25,"../project/ProjectFactory":26,"../runtime/TonyuRuntime":28}],3:[function(require,module,exports){
+},{"../lang/Builder":3,"../lang/langMod":15,"../lib/FS":20,"../lib/WorkerServiceW":23,"../lib/root":25,"../project/CompiledProject":26,"../project/ProjectFactory":27,"../runtime/TonyuRuntime":29}],3:[function(require,module,exports){
 const Tonyu=require("../runtime/TonyuRuntime");
 const JSGenerator=require("./JSGenerator");
 const Semantics=require("./Semantics");
 //const ttb=require("./");
 const FS=require("../lib/FS");
+const R=require("../lib/R");
 const A=require("../lib/assert");
 //,DU,
 //const CPR=require("./compiledProject");
@@ -154,7 +155,7 @@ function orderByInheritance(classes) {/*ENVC*/
                     break;
                 }
             }
-            throw TError( "次のクラス間に循環参照があります: "+loop.join("->"), "不明" ,0);
+            throw TError( R("circularDependencyDetected",loop.join("->")), "Unknown" ,0);
         }
     }
     function dep1(c) {
@@ -173,7 +174,7 @@ function orderByInheritance(classes) {/*ENVC*/
         function pushPath(c) {
             path.push(c.fullName);
             if (visited[c.fullName]) {
-                throw TError( "次のクラス間に循環参照があります: "+path.join("->"), "不明" ,0);
+                throw TError( R("circularDependencyDetected",path.join("->")), "Unknown" ,0);
             }
             visited[c.fullName]=true;
         }
@@ -530,7 +531,7 @@ module.exports=class {
 
 };
 
-},{"../lib/FS":20,"../lib/assert":23,"../runtime/TError":27,"../runtime/TonyuRuntime":28,"./IndentBuffer":6,"./JSGenerator":7,"./Semantics":9,"./SourceFiles":10,"./TypeChecker":11,"./source-map":18}],4:[function(require,module,exports){
+},{"../lib/FS":20,"../lib/R":21,"../lib/assert":24,"../runtime/TError":28,"../runtime/TonyuRuntime":29,"./IndentBuffer":6,"./JSGenerator":7,"./Semantics":9,"./SourceFiles":10,"./TypeChecker":11,"./source-map":18}],4:[function(require,module,exports){
 // parser.js の補助ライブラリ．式の解析を担当する
 module.exports=function () {
 	const Parser=require("./parser");
@@ -1195,7 +1196,7 @@ module.exports=function (options) {
 	return $;
 };
 
-},{"../lib/StringBuilder":21,"../lib/assert":23,"./source-map":18}],7:[function(require,module,exports){
+},{"../lib/StringBuilder":22,"../lib/assert":24,"./source-map":18}],7:[function(require,module,exports){
 /*define(["Tonyu", "Tonyu.Iterator", "TonyuLang", "ObjectMatcher", "TError", "IndentBuffer",
 		"context", "Visitor","Tonyu.Compiler","assert"],
 function(Tonyu, Tonyu_iterator, TonyuLang, ObjectMatcher, TError, IndentBuffer,
@@ -1208,6 +1209,7 @@ const context=require("./context");
 const Visitor=require("./Visitor");
 const cu=require("./compiler");
 const A=require("../lib/assert");
+const R=require("../lib/R");
 
 module.exports=cu.JSGenerator=(function () {
 // TonyuソースファイルをJavascriptに変換する
@@ -1355,7 +1357,7 @@ function genJS(klass, env, genOptions) {//B
 		funcDecl: function (node) {
 		},
 		"return": function (node) {
-			if (ctx.inTry) throw TError("現実装では、tryの中にreturnは書けません",srcFile,node.pos);
+			if (ctx.inTry) throw TError(R("cannotWriteReturnInTryStatement"),srcFile,node.pos);
 			if (!ctx.noWait) {
 				if (node.value) {
 					var t=annotation(node.value).fiberCall;
@@ -1593,11 +1595,11 @@ function genJS(klass, env, genOptions) {//B
 		},
 		"break": function (node) {
 			if (!ctx.noWait) {
-				if (ctx.inTry && ctx.exitTryOnJump) throw TError("現実装では、tryの中にbreak;は書けません",srcFile,node.pos);
+				if (ctx.inTry && ctx.exitTryOnJump) throw TError(R("cannotWriteBreakInTryStatement"),srcFile,node.pos);
 				if (ctx.closestBrk) {
 					buf.printf("%s=%z; break;%n", FRMPC, ctx.closestBrk);
 				} else {
-					throw TError( "break； は繰り返しの中で使います" , srcFile, node.pos);
+					throw TError( R("breakShouldBeUsedInIterationOrSwitchStatement") , srcFile, node.pos);
 				}
 			} else {
 				buf.printf("break;%n");
@@ -1605,13 +1607,13 @@ function genJS(klass, env, genOptions) {//B
 		},
 		"continue": function (node) {
 			if (!ctx.noWait) {
-				if (ctx.inTry && ctx.exitTryOnJump) throw TError("現実装では、tryの中にcontinue;は書けません",srcFile,node.pos);
+				if (ctx.inTry && ctx.exitTryOnJump) throw TError(R("cannotWriteContinueInTryStatement"),srcFile,node.pos);
 				if ( typeof (ctx.closestCnt)=="number" ) {
 					buf.printf("%s=%s; break;%n", FRMPC, ctx.closestCnt);
 				} else if (ctx.closestCnt) {
 					buf.printf("%s=%z; break;%n", FRMPC, ctx.closestCnt);
 				} else {
-					throw TError( "continue； は繰り返しの中で使います" , srcFile, node.pos);
+					throw TError( R("continueShouldBeUsedInIterationStatement") , srcFile, node.pos);
 				}
 			} else {
 				buf.printf("continue;%n");
@@ -1623,7 +1625,7 @@ function genJS(klass, env, genOptions) {//B
 					(an.fiberCallRequired || an.hasJump || an.hasReturn)) {
 				//buf.printf("/*try catch in wait mode is not yet supported*/%n");
 				if (node.catches.length!=1 || node.catches[0].type!="catch") {
-					throw TError("現実装では、catch節1個のみをサポートしています",srcFile,node.pos);
+					throw TError(R("cannotWriteTwoOrMoreCatch"),srcFile,node.pos);
 				}
 				var ct=node.catches[0];
 				var catchPos={},finPos={};
@@ -2308,7 +2310,7 @@ function genJS(klass, env, genOptions) {//B
 return {genJS:genJS};
 })();
 
-},{"../lib/assert":23,"../runtime/TError":27,"../runtime/TonyuRuntime":28,"./IndentBuffer":6,"./ObjectMatcher":8,"./Visitor":12,"./compiler":13,"./context":14}],8:[function(require,module,exports){
+},{"../lib/R":21,"../lib/assert":24,"../runtime/TError":28,"../runtime/TonyuRuntime":29,"./IndentBuffer":6,"./ObjectMatcher":8,"./Visitor":12,"./compiler":13,"./context":14}],8:[function(require,module,exports){
 module.exports=(function () {
 	var OM={};
 	var VAR="$var",THIZ="$this";
@@ -2379,6 +2381,7 @@ const cu=require("./compiler");
 const A=require("../lib/assert");
 const Grammar=require("./Grammar");
 const root=require("../lib/root");
+const R=require("../lib/R");
 
 module.exports=cu.Semantics=(function () {
 /*var ScopeTypes={FIELD:"field", METHOD:"method", NATIVE:"native",//B
@@ -2476,7 +2479,7 @@ function initClassDecls(klass, env ) {//S
 				var n=i.text;/*ENVC*/
 				var p=i.pos;
 				var incc=env.classes[env.aliases[n] || n];/*ENVC*/ //CFN env.classes[env.aliases[n]]
-				if (!incc) throw TError ( "クラス "+n+"は定義されていません", s, p);
+				if (!incc) throw TError ( R("classIsUndefined",n), s, p);
 				klass.includes.push(incc);
 			});
 		}
@@ -2485,7 +2488,7 @@ function initClassDecls(klass, env ) {//S
 		} else if (spcn) {
 			var spc=env.classes[env.aliases[spcn] || spcn];/*ENVC*/  //CFN env.classes[env.aliases[spcn]]
 			if (!spc) {
-				throw TError ( "親クラス "+spcn+"は定義されていません", s, pos);
+				throw TError ( R("superClassIsUndefined",spcn), s, pos);
 			}
 			klass.superclass=spc;
 		} else {
@@ -2735,7 +2738,7 @@ function annotateSource2(klass, env) {//B
 			return true;
 		}
 		console.log("LVal",node);
-		throw TError( "'"+getSource(node)+"'は左辺には書けません．" , srcFile, node.pos);
+		throw TError( R("invalidLeftValue",getSource(node)) , srcFile, node.pos);
 	}
 	function getScopeInfo(n) {//S
 		var node=n;
@@ -2750,7 +2753,7 @@ function annotateSource2(klass, env) {//B
 			} else {
 				var isg=n.match(/^\$/);
 				if (env.options.compiler.field_strict || klass.directives.field_strict) {
-					if (!isg) throw new TError(n+"は宣言されていません（フィールドの場合，明示的に宣言してください）．",srcFile,node.pos);
+					if (!isg) throw new TError(R("fieldDeclarationRequired",n),srcFile,node.pos);
 				}
 				t=isg?ST.GLOBAL:ST.FIELD;
 			}
@@ -2852,7 +2855,7 @@ function annotateSource2(klass, env) {//B
 					kn=e.key.text;
 				}
 				if (dup[kn]) {
-					throw TError( "オブジェクトリテラルのキー名'"+kn+"'が重複しています" , srcFile, e.pos);
+					throw TError( R("duplicateKeyInObjectLiteral",kn) , srcFile, e.pos);
 				}
 				dup[kn]=1;
 				//console.log("objlit",e.key.text);
@@ -2864,7 +2867,7 @@ function annotateSource2(klass, env) {//B
 				this.visit(node.value);
 			} else {
 				if (node.key.type=="literal") {
-					throw TError( "オブジェクトリテラルのパラメタに単独の文字列は使えません" , srcFile, node.pos);
+					throw TError( R("cannotUseStringLiteralAsAShorthandOfObjectValue") , srcFile, node.pos);
 				}
 				var si=getScopeInfo(node.key);
 				annotation(node,{scopeInfo:si});
@@ -2932,11 +2935,11 @@ function annotateSource2(klass, env) {//B
 			this.visit(node.value);
 		},
 		"break": function (node) {
-			if (!ctx.brkable) throw TError( "break； は繰り返しまたはswitch文の中で使います." , srcFile, node.pos);
+			if (!ctx.brkable) throw TError( R("breakShouldBeUsedInIterationOrSwitchStatement") , srcFile, node.pos);
 			if (!ctx.noWait) annotateParents(this.path,{hasJump:true});
 		},
 		"continue": function (node) {
-			if (!ctx.contable) throw TError( "continue； は繰り返しの中で使います." , srcFile, node.pos);
+			if (!ctx.contable) throw TError( R("continueShouldBeUsedInIterationStatement") , srcFile, node.pos);
 			if (!ctx.noWait) annotateParents(this.path,{hasJump:true});
 		},
 		"reservedConst": function (node) {
@@ -2971,7 +2974,7 @@ function annotateSource2(klass, env) {//B
 		exprstmt: function (node) {
 			var t,m;
 			if (node.expr.type==="objlit") {
-				throw TError( "オブジェクトリテラル単独の式文は書けません．" , srcFile, node.pos);
+				throw TError( R("cannotUseObjectLiteralAsTheExpressionOfStatement") , srcFile, node.pos);
 			}
 			if (!ctx.noWait &&
 					(t=OM.match(node,noRetFiberCallTmpl)) &&
@@ -2989,7 +2992,7 @@ function annotateSource2(klass, env) {//B
 					(t=OM.match(node,noRetSuperFiberCallTmpl)) &&
 					t.S.name) {
 				m=getMethod(t.S.name.text);
-				if (!m) throw new Error("メソッド"+t.S.name.text+" はありません。");
+				if (!m) throw new Error(R("undefinedMethod",t.S.name.text));
 				if (!m.nowait) {
 					t.type="noRetSuper";
 					t.superclass=klass.superclass;
@@ -3000,7 +3003,7 @@ function annotateSource2(klass, env) {//B
 					(t=OM.match(node,retSuperFiberCallTmpl)) &&
 					t.S.name) {
 				m=getMethod(t.S.name.text);
-				if (!m) throw new Error("メソッド"+t.S.name.text+" はありません。");
+				if (!m) throw new Error(R("undefinedMethod",t.S.name.text));
 				if (!m.nowait) {
 					t.type="retSuper";
 					t.superclass=klass.superclass;
@@ -3149,7 +3152,7 @@ function annotateSource2(klass, env) {//B
 return {initClassDecls:initClassDecls, annotate:annotateSource2,parse};
 })();
 
-},{"../lib/assert":23,"../lib/root":24,"../runtime/TError":27,"../runtime/TonyuRuntime":28,"./Grammar":5,"./IndentBuffer":6,"./ObjectMatcher":8,"./Visitor":12,"./compiler":13,"./context":14,"./parse_tonyu2":16}],10:[function(require,module,exports){
+},{"../lib/R":21,"../lib/assert":24,"../lib/root":25,"../runtime/TError":28,"../runtime/TonyuRuntime":29,"./Grammar":5,"./IndentBuffer":6,"./ObjectMatcher":8,"./Visitor":12,"./compiler":13,"./context":14,"./parse_tonyu2":16}],10:[function(require,module,exports){
 //define(function (require,exports,module) {
 /*const root=require("root");*/
 const root=require("../lib/root");
@@ -3251,7 +3254,7 @@ class SourceFiles {
 module.exports=new SourceFiles();
 //});/*--end of define--*/
 
-},{"../lib/root":24}],11:[function(require,module,exports){
+},{"../lib/root":25}],11:[function(require,module,exports){
 /*if (typeof define!=="function") {
 	define=require("requirejs").define;
 }
@@ -3567,7 +3570,7 @@ module.exports=Visitor;
 	cu.getParams=getParams;
 	module.exports=cu;
 
-},{"../lib/root":24,"../runtime/TonyuRuntime":28,"./ObjectMatcher":8}],14:[function(require,module,exports){
+},{"../lib/root":25,"../runtime/TonyuRuntime":29,"./ObjectMatcher":8}],14:[function(require,module,exports){
 module.exports=function () {
 	var c={};
 	c.ovrFunc=function (from , to) {
@@ -3635,6 +3638,7 @@ const Grammar=require("./Grammar");
 const IndentBuffer=require("./IndentBuffer");
 const TT=require("./tonyu2_token");
 const Parser=require("./parser");
+const R=require("../lib/R");
 const ExpressionParser=require("./ExpressionParser2");
 const TError=require("../runtime/TError");
 module.exports=function () {
@@ -3925,7 +3929,7 @@ module.exports=function () {
 		if (!tokenRes.isSuccess() ) {
 			//return "ERROR\nToken error at "+tokenRes.src.maxPos+"\n"+
 			//	str.substring(0,tokenRes.src.maxPos)+"!!HERE!!"+str.substring(tokenRes.src.maxPos);
-			throw TError("文法エラー(Token)", file ,  tokenRes.src.maxPos);
+			throw TError(R("lexicalError"), file ,  tokenRes.src.maxPos);
 		}
 		var tokens=tokenRes.result[0];
 		//console.log("Tokens: "+tokens.join(","));
@@ -3941,7 +3945,7 @@ module.exports=function () {
 		}
 		var lt=tokens[res.src.maxPos];
 		var mp=(lt?lt.pos+lt.len: str.length);
-		throw TError("文法エラー", file ,  mp );
+		throw TError(R("parseError"), file ,  mp );
 		/*return "ERROR\nSyntax error at "+mp+"\n"+
 		str.substring(0,mp)+"!!HERE!!"+str.substring(mp);*/
 	};
@@ -3954,7 +3958,7 @@ module.exports=function () {
 	return $;
 }();
 
-},{"../runtime/TError":27,"./ExpressionParser2":4,"./Grammar":5,"./IndentBuffer":6,"./parser":17,"./tonyu2_token":19}],17:[function(require,module,exports){
+},{"../lib/R":21,"../runtime/TError":28,"./ExpressionParser2":4,"./Grammar":5,"./IndentBuffer":6,"./parser":17,"./tonyu2_token":19}],17:[function(require,module,exports){
 module.exports=function () {
 	function extend(dst, src) {
 		var i;
@@ -11635,6 +11639,58 @@ define('FS',["FSClass","NativeFS","LSFS", "WebFS", "PathUtil","Env","assert","SF
 //})(window);
 
 },{"fs":1}],21:[function(require,module,exports){
+const ja={
+    superClassIsUndefined:"親クラス {1}は定義されていません",
+    classIsUndefined:"クラス {1}は定義されていません",
+    invalidLeftValue:"'{1}'は左辺には書けません．",
+    fieldDeclarationRequired: "{1}は宣言されていません（フィールドの場合，明示的に宣言してください）．",
+    duplicateKeyInObjectLiteral:"オブジェクトリテラルのキー名'{1}'が重複しています",
+    cannotUseStringLiteralAsAShorthandOfObjectValue:"オブジェクトリテラルのパラメタに単独の文字列は使えません",
+    breakShouldBeUsedInIterationOrSwitchStatement:"break； は繰り返しまたはswitch文の中で使います." ,
+    continueShouldBeUsedInIterationStatement:"continue； は繰り返しの中で使います.",
+    cannotUseObjectLiteralAsTheExpressionOfStatement:"オブジェクトリテラル単独の式文は書けません．",
+    undefinedMethod:"メソッド{1}はありません．",
+    notAWaitableMethod: "メソッド{1}は待機可能メソッドではありません",
+    circularDependencyDetected: "次のクラス間に循環参照があります: {1}",
+    cannotWriteReturnInTryStatement: "現実装では、tryの中にreturnは書けません",
+    cannotWriteBreakInTryStatement: "現実装では、tryの中にbreakは書けません",
+    cannotWriteContinueInTryStatement: "現実装では、tryの中にcontinueは書けません",
+    cannotWriteTwoOrMoreCatch: "現実装では、catch節1個のみをサポートしています",
+    lexicalError:"文法エラー(Token)",
+    parseError:"文法エラー",
+    ambiguousClassName: "曖昧なクラス名： {1}.{2}, {3}",
+    cannotInvokeMethod: "{1}(={2})のメソッド {3}を呼び出せません",
+    notAMethod :"{1}{2}(={3})はメソッドではありません",
+    notAFunction: "{1}は関数ではありません",
+    uninitialized: "{1}(={2})は初期化されていなません",
+    newIsRequiredOnInstanciate: "クラス名{1}はnewをつけて呼び出して下さい。",
+    bootClassIsNotFound: "{1}というクラスはありません．",
+    infiniteLoopDetected: "無限ループをストップしました。\n"+
+        "   プロジェクト オプションで無限ループチェックの有無を設定できます。\n"+
+        "   [参考]https://edit.tonyu.jp/doc/options.html\n",
+};
+let dict=ja;
+function R(name,...params) {
+    let mesg=dict[name];
+    if (!mesg) {
+        return name+": "+params.join(",");
+    }
+    return buildMesg(mesg, ...params);//+"です！";
+}
+function buildMesg() {
+    var a=Array.prototype.slice.call(arguments);
+    var format=a.shift();
+    if (a.length===1 && a[0] instanceof Array) a=a[0];
+    var P="vroijvowe0r324";
+    format=format.replace(/\{([0-9])\}/g,P+"$1"+P);
+    format=format.replace(new RegExp(P+"([0-9])"+P,"g"),function (_,n) {
+        return a[parseInt(n)-1]+"";
+    });
+    return format;
+}
+module.exports=R;
+
+},{}],22:[function(require,module,exports){
 //from https://codepen.io/hoge1e3/pen/OJJaKyV?editors=0010
 module.exports=function (bufSize=1024) {
     const buf=[""];
@@ -11725,7 +11781,7 @@ module.exports=function (bufSize=1024) {
     return {append, replace, truncate,toString,getLength,last};
 };
 
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 /*global self*/
 // Worker Side
     var idseq=1;
@@ -11805,7 +11861,7 @@ module.exports=function (bufSize=1024) {
     }
     module.exports=self.WorkerService;
 
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
     const Assertion=function(failMesg) {
         this.failMesg=flatten(failMesg || "Assertion failed: ");
     };
@@ -11999,7 +12055,7 @@ module.exports=function (bufSize=1024) {
     }
     module.exports=assert;
 
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 /*global window,self,global*/
 (function (deps, factory) {
     module.exports=factory();
@@ -12010,7 +12066,7 @@ module.exports=function (bufSize=1024) {
     return (function (){return this;})();
 });
 
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 /*define(function (require,exports,module) {
     const F=require("ProjectFactory");
     const root=require("root");
@@ -12072,7 +12128,7 @@ module.exports=function (bufSize=1024) {
     });
 //});/*--end of define--*/
 
-},{"../lang/SourceFiles":10,"../lang/langMod":15,"../lib/root":24,"./ProjectFactory":26}],26:[function(require,module,exports){
+},{"../lang/SourceFiles":10,"../lang/langMod":15,"../lib/root":25,"./ProjectFactory":27}],27:[function(require,module,exports){
 //define(function (require,exports,module) {
     // This factory will be widely used, even BitArrow.
 
@@ -12087,10 +12143,6 @@ module.exports=function (bufSize=1024) {
         types[n]=f;
     };
     exports.fromDependencySpec=function (prj,spec) {
-        if (typeof spec=="string") {
-            var prjDir=prj.resolve(spec);
-            return this.fromDir(prjDir);
-        }
         for (let f of resolvers) {
             const res=f(prj,spec);
             if (res) return res;
@@ -12109,7 +12161,7 @@ module.exports=function (bufSize=1024) {
         return types[type](params);
     };
     class ProjectCore {
-        getPublishedURL(){}//TODO
+        getPublishedURL(){}//override in BAProject
         getOptions(opt) {return {};}//stub
         getName() {
             return this.dir.name().replace(/\/$/,"");
@@ -12170,6 +12222,9 @@ module.exports=function (bufSize=1024) {
         setOptions(opt) {// not in compiledProject
             return this.getOptionsFile().obj(opt);
         },
+        fixOptions(TPR,opt) {// required in BAProject
+            if (!opt.compiler) opt.compiler={};
+        },
         getOutputFile(lang) {// not in compiledProject
             var opt=this.getOptions();
             var outF=this.resolve(opt.compiler.outputFile||"js/concat.js");
@@ -12203,7 +12258,7 @@ module.exports=function (bufSize=1024) {
     };
 //});/*--end of define--*/
 
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 var TError=function (message, src, pos) {
 	let rc;
 	if (typeof src=="string") {
@@ -12258,12 +12313,13 @@ TError.calcRowCol=function (text,pos) {// returns 1 origin row,col
 };
 module.exports=TError;
 
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 //		function (assert,TT,IT,DU) {
 var assert=require("../lib/assert");
 var root=require("../lib/root");
 var TonyuThreadF=require("./TonyuThread");
 var IT=require("./tonyuIterator");
+const R=require("../lib/R");
 module.exports=function () {
 	// old browser support
 	if (!root.performance) {
@@ -12298,7 +12354,7 @@ module.exports=function () {
 			Tonyu.onRuntimeError(e);
 		} else {
 			//if (typeof $LASTPOS=="undefined") $LASTPOS=0;
-			if (root.alert) root.alert("エラー! メッセージ  : "+e);
+			if (root.alert) root.alert("Error: "+e);
 			console.log(e.stack);
 			throw e;
 		}
@@ -12536,7 +12592,7 @@ module.exports=function () {
 				var nr=classes[nn][n];
 				if (nr) {
 					if (!res) { res=nr; found=nn+"."+n; }
-					else throw new Error("曖昧なクラス名： "+nn+"."+n+", "+found);
+					else throw new Error(R("ambiguousClassName",nn,n,found));
 				}
 			}
 		}
@@ -12557,17 +12613,17 @@ module.exports=function () {
 		return res;
 	}
 	function invokeMethod(t, name, args, objName) {
-		if (!t) throw new Error(objName+"(="+t+")のメソッド "+name+"を呼び出せません");
+		if (!t) throw new Error(R("cannotInvokeMethod",objName,t,name));
 		var f=t[name];
-		if (typeof f!="function") throw new Error((objName=="this"? "": objName+".")+name+"(="+f+")はメソッドではありません");
+		if (typeof f!="function") throw new Error(R("notAMethod", (objName=="this"? "": objName+"."),name,f));
 		return f.apply(t,args);
 	}
 	function callFunc(f,args, fName) {
-		if (typeof f!="function") throw new Error(fName+"は関数ではありません");
+		if (typeof f!="function") throw new Error(R("notAFunction",fName));
 		return f.apply({},args);
 	}
 	function checkNonNull(v, name) {
-		if (v!=v || v==null) throw new Error(name+"(="+v+")は初期化されていません");
+		if (v!=v || v==null) throw new Error(R("uninitialized",name,v));
 		return v;
 	}
 	function A(args) {
@@ -12578,7 +12634,7 @@ module.exports=function () {
 		return res;
 	}
 	function useNew(c) {
-		throw new Error("クラス名"+c+"はnewをつけて呼び出して下さい。");
+		throw new Error(R("newIsRequiredOnInstanciate",c));
 	}
 	function not_a_tonyu_object(o) {
 		console.log("Not a tonyu object: ",o);
@@ -12589,7 +12645,7 @@ module.exports=function () {
 	}
 	function run(bootClassName) {
 		var bootClass=getClass(bootClassName);
-		if (!bootClass) throw new Error( bootClassName+" というクラスはありません");
+		if (!bootClass) throw new Error( R("bootClassIsNotFound",bootClassName));
 		Tonyu.runMode=true;
 		var boot=new bootClass();
 		//var th=thread();
@@ -12608,9 +12664,7 @@ module.exports=function () {
 		var now=root.performance.now();
 		if (now-lastLoopCheck>1000) {
 			resetLoopCheck(10000);
-			throw new Error("無限ループをストップしました。\n"+
-				"   プロジェクト オプションで無限ループチェックの有無を設定できます。\n"+
-				"   [参考]https://edit.tonyu.jp/doc/options.html\n");
+			throw new Error(R("infiniteLoopDetected"));
 		}
 		prevCheckLoopCalled=now;
 	}
@@ -12644,8 +12698,9 @@ module.exports=function () {
 	return Tonyu;
 }();
 
-},{"../lib/assert":23,"../lib/root":24,"./TonyuThread":29,"./tonyuIterator":30}],29:[function(require,module,exports){
+},{"../lib/R":21,"../lib/assert":24,"../lib/root":25,"./TonyuThread":30,"./tonyuIterator":31}],30:[function(require,module,exports){
 //	var Klass=require("../lib/Klass");
+const R=require("../lib/R");
 module.exports=function (Tonyu) {
 	var cnts={enterC:{},exitC:0};
 	var idSeq=1;
@@ -12700,14 +12755,14 @@ module.exports=function (Tonyu) {
 			if (typeof methodName=="string") {
 				method=obj["fiber$"+methodName];
 				if (!method) {
-					throw new Error("メソッド"+methodName+"が見つかりません");
+					throw new Error(R("undefinedMethod",methodName));
 				}
 			}
 			if (typeof methodName=="function") {
 				method=methodName.fiber;
 				if (!method) {
 					var n=methodName.methodInfo ? methodName.methodInfo.name : methodName.name;
-					throw new Error("メソッド"+n+"は待機可能メソッドではありません");
+					throw new Error(R("notAWaitableMethod",n));
 				}
 			}
 			args=[this].concat(args);
@@ -12909,7 +12964,7 @@ module.exports=function (Tonyu) {
 	return TonyuThread;
 };
 
-},{}],30:[function(require,module,exports){
+},{"../lib/R":21}],31:[function(require,module,exports){
 //define(["Klass"], function (Klass) {
 	//var Klass=require("../lib/Klass");
 	class ArrayValueIterator {

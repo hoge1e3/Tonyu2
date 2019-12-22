@@ -1,6 +1,5 @@
 define(function (require,exports,module) {
-
-    const jp={
+    const ja={
         "editorFontSize": "エディタの文字の大きさ",
         "inputFileName": "ファイル名を入力してください",
         "newFile": "新規作成",
@@ -117,5 +116,24 @@ define(function (require,exports,module) {
         "cancel": "キャンセル",
         "input": "入力",
     };
-
+    let dict=ja;
+    function R(name,...params) {
+        let mesg=dict[name];
+        if (!mesg) {
+            return name+": "+params.join(",");
+        }
+        return buildMesg(mesg, ...params);//+"です！";
+    }
+    function buildMesg() {
+        var a=Array.prototype.slice.call(arguments);
+        var format=a.shift();
+        if (a.length===1 && a[0] instanceof Array) a=a[0];
+        var P="vroijvowe0r324";
+        format=format.replace(/\{([0-9])\}/g,P+"$1"+P);
+        format=format.replace(new RegExp(P+"([0-9])"+P,"g"),function (_,n) {
+            return a[parseInt(n)-1]+"";
+        });
+        return format;
+    }
+    module.exports=R;
 });

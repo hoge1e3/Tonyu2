@@ -1,4 +1,56 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+const ja={
+    superClassIsUndefined:"親クラス {1}は定義されていません",
+    classIsUndefined:"クラス {1}は定義されていません",
+    invalidLeftValue:"'{1}'は左辺には書けません．",
+    fieldDeclarationRequired: "{1}は宣言されていません（フィールドの場合，明示的に宣言してください）．",
+    duplicateKeyInObjectLiteral:"オブジェクトリテラルのキー名'{1}'が重複しています",
+    cannotUseStringLiteralAsAShorthandOfObjectValue:"オブジェクトリテラルのパラメタに単独の文字列は使えません",
+    breakShouldBeUsedInIterationOrSwitchStatement:"break;は繰り返しまたはswitch文の中で使います." ,
+    continueShouldBeUsedInIterationStatement:"continue;は繰り返しの中で使います.",
+    cannotUseObjectLiteralAsTheExpressionOfStatement:"オブジェクトリテラル単独の式文は書けません．",
+    undefinedMethod:"メソッド{1}はありません．",
+    notAWaitableMethod: "メソッド{1}は待機可能メソッドではありません",
+    circularDependencyDetected: "次のクラス間に循環参照があります: {1}",
+    cannotWriteReturnInTryStatement: "現実装では、tryの中にreturnは書けません",
+    cannotWriteBreakInTryStatement: "現実装では、tryの中にbreakは書けません",
+    cannotWriteContinueInTryStatement: "現実装では、tryの中にcontinueは書けません",
+    cannotWriteTwoOrMoreCatch: "現実装では、catch節1個のみをサポートしています",
+    lexicalError:"文法エラー(Token)",
+    parseError:"文法エラー",
+    ambiguousClassName: "曖昧なクラス名： {1}.{2}, {3}",
+    cannotInvokeMethod: "{1}(={2})のメソッド {3}を呼び出せません",
+    notAMethod :"{1}{2}(={3})はメソッドではありません",
+    notAFunction: "{1}は関数ではありません",
+    uninitialized: "{1}(={2})は初期化されていなません",
+    newIsRequiredOnInstanciate: "クラス名{1}はnewをつけて呼び出して下さい。",
+    bootClassIsNotFound: "{1}というクラスはありません．",
+    infiniteLoopDetected: "無限ループをストップしました。\n"+
+        "   プロジェクト オプションで無限ループチェックの有無を設定できます。\n"+
+        "   [参考]https://edit.tonyu.jp/doc/options.html\n",
+};
+let dict=ja;
+function R(name,...params) {
+    let mesg=dict[name];
+    if (!mesg) {
+        return name+": "+params.join(",");
+    }
+    return buildMesg(mesg, ...params);//+"です！";
+}
+function buildMesg() {
+    var a=Array.prototype.slice.call(arguments);
+    var format=a.shift();
+    if (a.length===1 && a[0] instanceof Array) a=a[0];
+    var P="vroijvowe0r324";
+    format=format.replace(/\{([0-9])\}/g,P+"$1"+P);
+    format=format.replace(new RegExp(P+"([0-9])"+P,"g"),function (_,n) {
+        return a[parseInt(n)-1]+"";
+    });
+    return format;
+}
+module.exports=R;
+
+},{}],2:[function(require,module,exports){
     const Assertion=function(failMesg) {
         this.failMesg=flatten(failMesg || "Assertion failed: ");
     };
@@ -192,7 +244,7 @@
     }
     module.exports=assert;
 
-},{}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 /*global window,self,global*/
 (function (deps, factory) {
     module.exports=factory();
@@ -203,12 +255,13 @@
     return (function (){return this;})();
 });
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 //		function (assert,TT,IT,DU) {
 var assert=require("../lib/assert");
 var root=require("../lib/root");
 var TonyuThreadF=require("./TonyuThread");
 var IT=require("./tonyuIterator");
+const R=require("../lib/R");
 module.exports=function () {
 	// old browser support
 	if (!root.performance) {
@@ -243,7 +296,7 @@ module.exports=function () {
 			Tonyu.onRuntimeError(e);
 		} else {
 			//if (typeof $LASTPOS=="undefined") $LASTPOS=0;
-			if (root.alert) root.alert("エラー! メッセージ  : "+e);
+			if (root.alert) root.alert("Error: "+e);
 			console.log(e.stack);
 			throw e;
 		}
@@ -481,7 +534,7 @@ module.exports=function () {
 				var nr=classes[nn][n];
 				if (nr) {
 					if (!res) { res=nr; found=nn+"."+n; }
-					else throw new Error("曖昧なクラス名： "+nn+"."+n+", "+found);
+					else throw new Error(R("ambiguousClassName",nn,n,found));
 				}
 			}
 		}
@@ -502,17 +555,17 @@ module.exports=function () {
 		return res;
 	}
 	function invokeMethod(t, name, args, objName) {
-		if (!t) throw new Error(objName+"(="+t+")のメソッド "+name+"を呼び出せません");
+		if (!t) throw new Error(R("cannotInvokeMethod",objName,t,name));
 		var f=t[name];
-		if (typeof f!="function") throw new Error((objName=="this"? "": objName+".")+name+"(="+f+")はメソッドではありません");
+		if (typeof f!="function") throw new Error(R("notAMethod", (objName=="this"? "": objName+"."),name,f));
 		return f.apply(t,args);
 	}
 	function callFunc(f,args, fName) {
-		if (typeof f!="function") throw new Error(fName+"は関数ではありません");
+		if (typeof f!="function") throw new Error(R("notAFunction",fName));
 		return f.apply({},args);
 	}
 	function checkNonNull(v, name) {
-		if (v!=v || v==null) throw new Error(name+"(="+v+")は初期化されていません");
+		if (v!=v || v==null) throw new Error(R("uninitialized",name,v));
 		return v;
 	}
 	function A(args) {
@@ -523,7 +576,7 @@ module.exports=function () {
 		return res;
 	}
 	function useNew(c) {
-		throw new Error("クラス名"+c+"はnewをつけて呼び出して下さい。");
+		throw new Error(R("newIsRequiredOnInstanciate",c));
 	}
 	function not_a_tonyu_object(o) {
 		console.log("Not a tonyu object: ",o);
@@ -534,7 +587,7 @@ module.exports=function () {
 	}
 	function run(bootClassName) {
 		var bootClass=getClass(bootClassName);
-		if (!bootClass) throw new Error( bootClassName+" というクラスはありません");
+		if (!bootClass) throw new Error( R("bootClassIsNotFound",bootClassName));
 		Tonyu.runMode=true;
 		var boot=new bootClass();
 		//var th=thread();
@@ -553,9 +606,7 @@ module.exports=function () {
 		var now=root.performance.now();
 		if (now-lastLoopCheck>1000) {
 			resetLoopCheck(10000);
-			throw new Error("無限ループをストップしました。\n"+
-				"   プロジェクト オプションで無限ループチェックの有無を設定できます。\n"+
-				"   [参考]https://edit.tonyu.jp/doc/options.html\n");
+			throw new Error(R("infiniteLoopDetected"));
 		}
 		prevCheckLoopCalled=now;
 	}
@@ -589,8 +640,9 @@ module.exports=function () {
 	return Tonyu;
 }();
 
-},{"../lib/assert":1,"../lib/root":2,"./TonyuThread":4,"./tonyuIterator":5}],4:[function(require,module,exports){
+},{"../lib/R":1,"../lib/assert":2,"../lib/root":3,"./TonyuThread":5,"./tonyuIterator":6}],5:[function(require,module,exports){
 //	var Klass=require("../lib/Klass");
+const R=require("../lib/R");
 module.exports=function (Tonyu) {
 	var cnts={enterC:{},exitC:0};
 	var idSeq=1;
@@ -645,14 +697,14 @@ module.exports=function (Tonyu) {
 			if (typeof methodName=="string") {
 				method=obj["fiber$"+methodName];
 				if (!method) {
-					throw new Error("メソッド"+methodName+"が見つかりません");
+					throw new Error(R("undefinedMethod",methodName));
 				}
 			}
 			if (typeof methodName=="function") {
 				method=methodName.fiber;
 				if (!method) {
 					var n=methodName.methodInfo ? methodName.methodInfo.name : methodName.name;
-					throw new Error("メソッド"+n+"は待機可能メソッドではありません");
+					throw new Error(R("notAWaitableMethod",n));
 				}
 			}
 			args=[this].concat(args);
@@ -854,7 +906,7 @@ module.exports=function (Tonyu) {
 	return TonyuThread;
 };
 
-},{}],5:[function(require,module,exports){
+},{"../lib/R":1}],6:[function(require,module,exports){
 //define(["Klass"], function (Klass) {
 	//var Klass=require("../lib/Klass");
 	class ArrayValueIterator {
@@ -941,4 +993,4 @@ module.exports=function (Tonyu) {
 //	return IT;
 //});
 
-},{}]},{},[3]);
+},{}]},{},[4]);
