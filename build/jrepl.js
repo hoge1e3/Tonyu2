@@ -48,7 +48,7 @@ console.log(R.join(",\n"));
 function parseCMD(line, cmd) {
    cmd.replace(/@@([^@]+)@@([^@]+)@@/g, (_,b,a) => {
 //   console.log("R",b,a);
-       line=line.replace(b,`R.${a}()`);
+       line=line.replace(b,`R("${a}")`);
        R.push(`"${a}": ${b}`);
    });
    return line;
