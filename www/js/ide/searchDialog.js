@@ -1,4 +1,4 @@
-define(["UI","Shell"], function (UI,sh) {
+define(["UI","Shell","R"], function (UI,sh,R) {
     var res={};
     res.show=function (prjDir, onLineClick) {
         var d=res.embed(prjDir,onLineClick);
@@ -6,16 +6,16 @@ define(["UI","Shell"], function (UI,sh) {
     };
     res.embed=function (prjDir, onLineClick) {
         if (!res.d) {
-            res.d=UI("div",{title:"検索"},
+            res.d=UI("div",{title:R("find")},
                     ["div",
-                     ["span","検索語"],
+                     ["span",R("wordToFind")],
                      ["input",{$edit:"word",on:{enterkey:function () {
                          res.d.start();
                      }}}]],
                      ["div", {$var:"validationMessage", css:{color:"red"}}],
                      ["button", {$var:"OKButton", on:{click: function () {
                          res.d.start();
-                     }}}, "検索"],
+                     }}}, R("find")],
                      ["div",{style:"overflow-y:scroll; height:200px"},
                       ["table",{$var:"searchRes"}]]
             );

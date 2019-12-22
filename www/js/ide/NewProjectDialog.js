@@ -1,4 +1,4 @@
-define(["UI"], function (UI) {
+define(["UI","R"], function (UI,R) {
     var res={};
 	res.show=function (prjDir, onOK,options) {
     	var d=res.embed(prjDir,onOK,options);
@@ -14,18 +14,18 @@ define(["UI"], function (UI) {
                     },
                     toVal: function (v){ return v ? v.path() : "";}
             };
-        	res.d=UI("div",{title:(options.ren?"プロジェクト名の変更":"新規プロジェクト")},
+        	res.d=UI("div",{title:(options.ren?R("renameProject"):R("newProject"))},
         			["div",
-        			 ["span","プロジェクト名"],
+        			 ["span",R("newProjectName")],
         			 ["input",{$edit:"name",value:options.defName||"",
         			     on:{enterkey:function () {
                 		     res.d.done();
 				 }}}]],
          			["div",
-        			 ["span","親フォルダ"],
+        			 ["span",R("parentFolder")],
         			 ["input",{$edit:{name:"parentDir",type:FType}}]],
         			 ["div",
-        			   ["span","作成先フォルダ："],
+        			   ["span",R("willCreateAt")],
         			   ["span",{$var:"dstDir"}]
         			  ],
                  ["div", {$var:"validationMessage", css:{color:"red"}}],
@@ -39,12 +39,12 @@ define(["UI"], function (UI) {
         d.$edits.load(model);
     	d.$edits.validator.on.validate=function (model) {
     		if (model.name=="") {
-    			this.addError("name","名前を入力してください");
+    			this.addError("name",R("inputProjectName"));
     			return;
     		}
     		model.dstDir=model.parentDir.rel(model.name+"/");
             if (model.dstDir.exists()) {
-                this.addError("name","このフォルダはすでに存在します");
+                this.addError("name",R("folderExists"));
                 return;
             }
     		this.allOK();

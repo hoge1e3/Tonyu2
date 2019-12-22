@@ -49,7 +49,7 @@ js.recursive(f=>{
 	}
     if (changed) {
         f.text(buf.join("\r\n"));
-        throw new Error("Kowareta!");
+        //throw new Error("Kowareta!");
     }
 });
 console.log(R.join(",\n"));

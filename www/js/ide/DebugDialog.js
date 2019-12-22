@@ -1,5 +1,6 @@
 define(function (require,exports, module) {
 const UI=require("UI");
+const R=require("R");
 module.exports=class {
     constructor(param) {
         const t=this;
@@ -85,7 +86,7 @@ module.exports=class {
             if (!t.shownOnce) {
                 t.titleArea=d.closest(".ui-widget").find(".ui-dialog-title");
                 t.autoReloadCheck=UI("input",{type:"checkbox",on:{change}});
-                t.titleArea.append(UI("span",t.autoReloadCheck,"自動再実行"));
+                t.titleArea.append(UI("span",t.autoReloadCheck,R("autoReload")));
                 d.closest(".ui-widget").find(".ui-dialog-titlebar").click(()=>t.focusToIframe());
             }
             t.shownOnce=true;

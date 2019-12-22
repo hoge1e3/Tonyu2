@@ -1,4 +1,4 @@
-define(["UI","Klass"], function (UI,Klass) {
+define(["UI","Klass","R"], function (UI,Klass,R) {
     GlobalDialog=Klass.define({
         $this:true,
         $:["prj"],
@@ -20,21 +20,21 @@ define(["UI","Klass"], function (UI,Klass) {
         },
         createDOM:function (t) {
             if (t.dom) return t.dom;
-            t.dom=UI("div",{title:"グローバル変数設定"},
+            t.dom=UI("div",{title:R("globalVariables")},
                 ["ul",
-                ["li","実行時に，これらのグローバル変数が指定した値に初期化されます．"],
-                  ["li","「値」欄には文字列またはJSON形式で記入してください．"]
+                ["li",R("theseGlobalVariablesAreInitializedOnStart")],
+                  ["li",R("variablesShouldBeStringOrJSON")]
                   //["li","JSONとして解釈できない場合は，前後にダブルクォーテーションを自動的に追加し，文字列とみなします．"]
                 ],
                 ["div",{$var:"editor",css:{height:"350px","overflow-y":"scroll"}}],
-                ["div",["button",{on:{click:t.$bind.save}},"保存"]]
+                ["div",["button",{on:{click:t.$bind.save}},R("save")]]
             );
             t.vars=$.data(t.dom,"vars");
             console.log(t.vars,t.dom.$vars);
             t.editor=t.vars.editor;
             var params = {
-                placeHolderKey:"グローバル変数名",
-                placeHolderValue:"値",
+                placeHolderKey:R("varableName"),
+                placeHolderValue:R("value"),
                 toggleButton: null,
                 deleteButton:'<img class="deleteButton" src="images/delete.png">'
             };
@@ -42,7 +42,7 @@ define(["UI","Klass"], function (UI,Klass) {
             t.editor.on('change', '.keyvalueeditor-key', function () {
                 var val=this.value;
                 if (!val.match(/^[a-zA-Z0-9_$]+$/)) {
-                    alert("変数名には半角英数字を使ってください");
+                    alert(R("varableNameShouldBeAlphabetOrNumber"));
                     return;
                 }
                 if (!val.match(/^\$/)) {
@@ -59,9 +59,9 @@ define(["UI","Klass"], function (UI,Klass) {
                     var qval=JSON.stringify(val);
                     if (qval==='"'+val+'"') this.value=qval;
                     else {
-                        alert("解釈できない値です．この値をそのまま文字列として登録したい場合，前後をダブルクォーテーションで囲ってください．\n"+
-                        "ダブルクォーテーション自身を文字列に含める場合は \\\" と書いてください．\n"+
-                        "\\自身を文字列に含める場合は \\\\ と書いてください．\n"
+                        alert(R("cannotBeParsedAsValue")+
+                        R("ifYouWantContainDoubleQuoteAsTheValue")+
+                        R("ifYouWantContainBackslash")
                         );
                         e.stopPropagation();
                     }

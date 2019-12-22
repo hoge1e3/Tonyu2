@@ -1,7 +1,7 @@
 define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
-"ImageDetailEditor","Util","Assets","jshint"],
+"ImageDetailEditor","Util","Assets","jshint","R"],
         function (FS, Tonyu, UI,IL,Blob,Auth,WebSite,
-                ImageDetailEditor,Util,Assets,jshint) {
+                ImageDetailEditor,Util,Assets,jshint,R) {
     var HNOP=jshint.scriptURL("");
     var ResEditor=function (prj, mediaInfo) {
         var d=UI("div", {title:mediaInfo.name+"リスト"});
@@ -77,13 +77,13 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
                             ["button",{
                                 //href:HNOP,
                                 class:"submenu",
-                                on:{click:addBuiltin}},"追加"],
+                                on:{click:addBuiltin}},R("add")],
                             ["span",{$var:"addMenu",class:"dropdown-content"},
                                 //["a",{href:HNOP,class:"submenu",on:{click:function(){}}},"名前変更"],
                             ]
                         ]:""),
                         //["button", {on:{click:function (){ addBuiltin(this);}}}, "追加"]:""),
-                        ["button", {on:{click:function (){ d.dialog("close"); }}}, "完了"]
+                        ["button", {on:{click:function (){ d.dialog("close"); }}}, R("done")]
                     );
                     d.append(buttons);
                 }
@@ -203,14 +203,14 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
                 }
                 var mes;
                 if (notReadFiles.length>0) {
-                    mes="このファイルは追加できません：\n";
+                    mes=R("thisFileCannotBeAdded");
                     notReadFiles.forEach(function(f){
                         if (f) mes+=f.name+"\n";
                     });
                     alert(mes);
                 }
                 if (existsFiles.length>0) {
-                    mes="同じ名前のファイルが既に登録されています：\n";
+                    mes=R("fileExists");
                     existsFiles.forEach(function(f){
                         if (f) {
                             var fNameTemp=f.existsFile.url;

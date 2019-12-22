@@ -1,21 +1,21 @@
-define(["UI","ImageList","ImageRect","PatternParser","WebSite","Assets"],
-        function (UI,ImageList,ImageRect,PP,WebSite,Assets) {
-    var d=UI("div",{title:"画像詳細"},
+define(["UI","ImageList","ImageRect","PatternParser","WebSite","Assets","R"],
+        function (UI,ImageList,ImageRect,PP,WebSite,Assets,R) {
+    var d=UI("div",{title:R("imageDetails")},
             ["div",
              ["div","URL:",["span",{$var:"url"}]],//,size:40,on:{change:setURL}}]],
              //["a",{$var:"openImg",target:"_blank"},"画像を確認..."]],
              ["canvas",{$edit:"cv",width:500,height:250,on:{mousemove:cvMouse,mousedown:cvClick}}] ],
              ["form",{$var:"theForm"},
-               ["div",radio("single"),"１枚絵"],
-               ["div",radio("rc"),"分割数指定：",
+               ["div",radio("single"),R("singlePicture")],
+               ["div",radio("rc"),R("rowsAndColumns"),
                 ["input",{$var:"cols",size:5,on:{realtimechange:setRC,focus:selRC}}],"x",
                 ["input",{$var:"rows",size:5,on:{realtimechange:setRC,focus:selRC}}]],
-               ["div",radio("wh"),"1パターンの大きさ指定：",
+               ["div",radio("wh"),R("chipWidthAndHeight"),
                 ["input",{$var:"pwidth",size:5,on:{realtimechange:setWH,focus:selWH}}],"x",
                 ["input",{$var:"pheight",size:5,on:{realtimechange:setWH,focus:selWH}}]],
-               ["div",radio("t1"),"Tonyu1互換",
-                 ["button",{on:{click:tonyu1}},"解析"]],
-               ["div","パターン番号:",["input",{$var:"patName"}] ],
+               ["div",radio("t1"),R("compatibleWithTonyu1"),
+                 ["button",{on:{click:tonyu1}},R("parse")]],
+               ["div",R("chipNo"),["input",{$var:"patName"}] ],
                ["button",{on:{click:close}},"OK"]]
     );
     function radio(v) {

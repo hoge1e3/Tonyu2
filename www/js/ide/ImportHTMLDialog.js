@@ -1,5 +1,5 @@
-define(["exportAsScriptTags","UI","Klass","NewProjectDialog","ScriptTagFS"],
-function (east,UI,Klass,NPD,STF) {
+define(["exportAsScriptTags","UI","Klass","NewProjectDialog","ScriptTagFS","R"],
+function (east,UI,Klass,NPD,STF,R) {
     ImportHTMLDialog=Klass.define({
         $this:true,
         show: function (t,options) {
@@ -10,9 +10,9 @@ function (east,UI,Klass,NPD,STF) {
         },
         createDOM:function (t) {
             if (t.dom) return t.dom;
-            t.dom=UI("div",{title:"HTMLからインポート"},
+            t.dom=UI("div",{title:R("importFromHTML")},
                 ["div",{$var:"src"},
-                    ["div","ここにHTMLを貼り付けます"],
+                    ["div",R("pasteHTMLHere")],
                     ["div",["button",{on:{click:t.$bind.selDir}},"Next->"]],
                     ["div",
                         ["textarea",{
@@ -34,7 +34,7 @@ function (east,UI,Klass,NPD,STF) {
         },
         selDir: function (t) {
             t.vars.selDir.empty();
-            t.vars.selDir.append($("<h1>").text("インポート先のフォルダを入力してください"));
+            t.vars.selDir.append($("<h1>").text(R("inputFolderPathForImport")));
             t.vars.selDir.append( NPD.embed(
                 t.prjDirs[0],t.$bind.confirm,{}
             ));
@@ -52,11 +52,11 @@ function (east,UI,Klass,NPD,STF) {
             t.vars.files.html(buf);
             t.mode("confirm");
             t.vars.confirm.empty();
-            t.vars.confirm.append(UI("div",["button",{on:{click:t.$bind.complete}},"インポート開始"]));
+            t.vars.confirm.append(UI("div",["button",{on:{click:t.$bind.complete}},R("startImport")]));
             var o=STF.toObj();
             for (var fn in o) {
                 var f=dir.rel(fn);
-                var ex=f.exists()?"上書":"新規";
+                var ex=f.exists()?R("ovr"):R("new");
                 t.vars.confirm.append(UI("div","[", ex,"]", f.path()));
             }
         },
@@ -69,7 +69,7 @@ function (east,UI,Klass,NPD,STF) {
                 f.text(o[fn].text);
             }
             t.vars.complete.empty();
-            t.vars.complete.append(UI("h1","インポート完了"));
+            t.vars.complete.append(UI("h1",R("importComplete")));
             /*t.vars.complete.append(UI("div",
                 ["a",{href:"project.html?dir="+dst.path()},
                 dst.path()+"を開く"]

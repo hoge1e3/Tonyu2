@@ -1,4 +1,5 @@
 define(function (require) {
+const R=require("R");
 const Util=require("Util");
 const Tonyu=require("Tonyu");
 const FS=require("FS");
@@ -160,12 +161,12 @@ $(function () {
         });
         $("#runMenu").append(
                 $("<li>").append(
-                        $("<a>").attr("href","#").text("停止(F2)").click(F(function () {
+                        $("<a>").attr("href","#").text(R("stop")).click(F(function () {
                             stop();
                         }))));
         $("#runMenu").append(
                 $("<li>").append(
-                        $("<a>").attr("href","#").text("実行するファイルを選択...").click(F(dialogs.selectMain))
+                        $("<a>").attr("href","#").text(R("selectMain")).click(F(dialogs.selectMain))
                     ));
         //saveDesktopEnv();
         //$("#exportToJsdoit").attr("href", "exportToJsdoit.html?dir="+curPrjDir.path());//+"&main="+runMenuOrd[0]);
@@ -260,7 +261,7 @@ $(function () {
     function run2(fullName) {
         if (typeof fullName!="string") {
             if (runMenuOrd.length==0) {
-                alert("ファイルを作成してください");
+                alert(R("createAtLeastOneFile"));
                 return;
             }
             fullName=`${NSP_USR}.${runMenuOrd[0]}`;// curFile.name().replace(/\.tonyu$/,"");
@@ -399,7 +400,7 @@ $(function () {
         document.location.href="index.html";
     }));
     $("#mvPRJ").click(F(function () {
-        var np=prompt("新しいプロジェクトの名前を入れてください", curPrjDir.name().replace(/\//g,""));
+        var np=prompt(R("inputNewProjectName"), curPrjDir.name().replace(/\//g,""));
         if (!np || np=="") return;
         if (!np.match(/\/$/)) np+="/";
         var npd=curPrjDir.up().rel(np);

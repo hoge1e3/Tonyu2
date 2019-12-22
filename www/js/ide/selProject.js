@@ -2,11 +2,11 @@
 requirejs(["FS","Wiki","Shell","Shell2",
            /*"copySample",*/"NewProjectDialog","UI","Sync","Auth",
            "zip","requestFragment","WebSite","extLink","DeferredUtil",
-       "ZipImporter","ProjectItem","ImportHTMLDialog","Util","root"],
+       "ZipImporter","ProjectItem","ImportHTMLDialog","Util","root","R"],
   function (FS, Wiki,   sh,sh2,
             /*copySample,  */NPD,           UI, Sync, Auth,
             zip,requestFragment,WebSite,extLink,DU,
-        ZipImporter,ProjectItem,ImportHTMLDialog,Util,root) {
+        ZipImporter,ProjectItem,ImportHTMLDialog,Util,root,R) {
 $(function () {
     var HNOP="javascript_:;".replace(/_/,"");
     //copySample();
@@ -57,7 +57,7 @@ $(function () {
         var u=UI("div", {"class":"project newprj"},
             ["a", {href:HNOP, on:{click:newDiag}},
             ["img",{$var:"t",src:WebSite.top+"/images/tonew.png"}],
-            ["div", "新規作成"]
+            ["div", R("newProject")]
         ]);
         u.appendTo(prj1dirList);
         function newDiag() {
@@ -79,7 +79,7 @@ $(function () {
                 showAll.remove();
                 dols(curDir,prj1dirList);
             }
-        }},"すべて見る..."]);
+        }},R("showAllProjects")]);
         prj1dirList.append(showAll);
         //$("#prjItemList").append(UI("div",["h2",{"class":"prjDirHeader"},"----"]));
     }

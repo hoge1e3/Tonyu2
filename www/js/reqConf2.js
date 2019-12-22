@@ -241,6 +241,7 @@ var reqConf={
                 "StackDecoder":1,
             },
             "lib": {
+                R:1,
                 jshint:1,
                 "miniJSLoader":1,
                 "Class": 1,

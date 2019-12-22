@@ -1,4 +1,4 @@
-define(["UI"],function (UI) {
+define(["UI","R"],function (UI,R) {
     var res={};
     res.show=function (prj, options) {
         var d=res.embed(prj, options);
@@ -9,7 +9,7 @@ define(["UI"],function (UI) {
         if (!options) options={};
 
         if (!res.d) {
-            res.d=UI("div",{title:"実行するクラスを選択"},
+            res.d=UI("div",{title:R("selectMainClass")},
                     ["div",
                           ["select",{$var:"mainClass"}],
                           ["div", {$var:"validationMessage", css:{color:"red"}}],
@@ -18,7 +18,7 @@ define(["UI"],function (UI) {
                           }}}, "OK"],
                           ["button", {$var:"RunButton", on:{click: function () {
                               res.d.done(true);
-                          }}}, "実行"]
+                          }}}, R("run")]
                     ]
             );
         }

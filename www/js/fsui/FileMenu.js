@@ -4,6 +4,7 @@ const UI=require("UI");
 //const F=EC.f;
 const kernelChecker=require("kernelChecker");
 const root=require("root");
+const R=require("R");
 
 module.exports=function (ide) {
     const FM={};
@@ -29,7 +30,7 @@ module.exports=function (ide) {
     	var onend=options.onend || function (){};
         //var t;
         if (!FM.d) FM.d=UI(["div"], {title: title},
-             "ファイル名を入力してください",["br"],
+             R("inputFileName"),["br"],
              ["input", {
                  $var: "name",
                  on:{
@@ -81,7 +82,7 @@ module.exports=function (ide) {
 
     FM.create=function () {
         save();
-        FM.dialogOpt({title:"新規作成", action:"create", onend:function (f) {
+        FM.dialogOpt({title:R("newFile"), action:"create", onend:function (f) {
             if (!f.exists()) {
                 createContent(f); //f.text("");
                 ls();
@@ -95,7 +96,7 @@ module.exports=function (ide) {
         const curFile=getCurFile();
         if (!curFile) return;
         var oldName=displayName(curFile);
-        FM.dialogOpt({title:"名前変更", name:oldName, action:"mv", extraUI:mvExtraUI, onend:async function (nf) {
+        FM.dialogOpt({title:R("renameFile"), name:oldName, action:"mv", extraUI:mvExtraUI, onend:async function (nf) {
             if (!nf) return;
             const doRefactor=refactorUI.$vars.chk.prop("checked");
             if (doRefactor) {
@@ -113,7 +114,7 @@ module.exports=function (ide) {
     };
     let refactorUI;
     function mvExtraUI(d) {
-        refactorUI=UI("div",["input",{type:"checkbox",$var:"chk",checked:"true",value:"chked"}],"プログラム中のクラス名も変更する");
+        refactorUI=UI("div",["input",{type:"checkbox",$var:"chk",checked:"true",value:"chked"}],R("refactorClassName"));
         d.append(refactorUI);
     }
     async function refactor(old,_new) {
@@ -125,7 +126,7 @@ module.exports=function (ide) {
             ls();
             open(_new);
         } catch(e) {
-            alert("プログラム内にエラーがあります．エラーを修正するか，「プログラム中のクラス名も変更する」のチェックを外してもう一度やり直してください．");
+            alert(R("someFilesHaveErrorOnRefactor"));
             console.error(e);
             console.log(e);
         }
@@ -204,7 +205,7 @@ module.exports=function (ide) {
             }
             return {ok:true, file: dir.rel(name+EXT)};
         } else {
-            return {ok:false, reason:"名前は，半角英数字とアンダースコア(_)のみが使えます．先頭は英大文字にしてください．"};
+            return {ok:false, reason:R("namingNotice")};
         }
     }
     function isKernel(n) {

@@ -1,4 +1,5 @@
-define(["exportAsScriptTags","UI","Klass","root"], function (east,UI,Klass,root) {
+define(["exportAsScriptTags","UI","Klass","root","R"],
+function (east,UI,Klass,root,R) {
     root.ExportHTMLDialog=Klass.define({
         $this:true,
         $:["prj"],
@@ -20,12 +21,12 @@ define(["exportAsScriptTags","UI","Klass","root"], function (east,UI,Klass,root)
         },
         createDOM:function (t) {
             if (t.dom) return t.dom;
-            t.dom=UI("div",{title:"HTML生成"},
-                ["div","このHTMLをcodepenなどのJS共有サイトに張り付けて実行できます．"],
+            t.dom=UI("div",{title:R("generateSingleHTML")},
+                ["div",R("thisIsExecutableInSingleHTML")],
                 ["div",
                     ["input", {id:"ie",$var:"IE",$edit:"IE",type:"checkbox"
                     }],
-                    ["label",{"for":"ie"},"Internet Explorer 11でも動作させる（一部機能が使えない可能性があります）"],
+                    ["label",{"for":"ie"},R("runnableInIE11")],
                 ],
                 ["textarea",{$var:"prog",rows:20,cols:60,placeholder:"Please wait..."}]
             );

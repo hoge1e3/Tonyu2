@@ -1,4 +1,5 @@
 define(function (require, exports, module) {
+const R=require("R");
 const FS=require("FS");
 const UI=require("UI");
 class ErrorDialog {
@@ -30,7 +31,7 @@ class ErrorDialog {
             row=err.row;
             col=err.col;
         } else {
-            src={name:function (){return "不明";},text:()=>null};
+            src={name:function (){return R("unknown");},text:()=>null};
             pos=0;
         }
         if (err.stack && err.stack.length>0 && err.stack[0].fileName) {
@@ -55,7 +56,7 @@ class ErrorDialog {
         elem.empty();
         const mesgd=$("<div>").text(message+" 場所："+src.name()+(typeof row=="number"?":"+row+":"+col:""));
         if(typeof row==="number" && typeof col==="number") {
-            mesgd.append($("<button>").text("エラー箇所に移動").click(jump));
+            mesgd.append($("<button>").text(R("jumpToErrorPosition")).click(jump));
         }
         //mesgd.append($("<button>").text("閉じる").click(close));
         elem.append(mesgd);
@@ -79,7 +80,7 @@ class ErrorDialog {
             srcd.append($("<span>").text(str.substring(pos)));
             elem.append(srcd);
         }
-        elem.attr("title","エラー");
+        elem.attr("title",R("error"));
         elem.dialog({width:600,height:400});
         $.data(elem,"opened",true);
         return elem;
@@ -112,7 +113,7 @@ class ErrorDialog {
             const diag=this.showErrorPos($("#errorPos"),e);
             ide.displayMode("runtime_error");
             $("#errorPos").find(".quickFix").append(
-                UI("button",{on:{click:showTrace}},"トレース表示"));
+                UI("button",{on:{click:showTrace}},R("showTrace")));
         }
         ide.stop();
     }

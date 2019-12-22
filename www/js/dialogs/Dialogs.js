@@ -8,6 +8,7 @@ define(function (require, exports, module) {
     const WebSite=require("WebSite");
     const FS=require("FS");
     const root=require("root");
+    const R=require("R");
     module.exports=ide=>{
         let helpd;
         const project=ide.project;
@@ -91,7 +92,7 @@ define(function (require, exports, module) {
             editorEditor() {
                 var prog=getCurrentEditor();
                 const desktopEnv=ide.desktopEnv;
-                var s=prompt("エディタの文字の大きさ", desktopEnv.editorFontSize||16);
+                var s=prompt(R("editorFontSize"), desktopEnv.editorFontSize||16);
                 desktopEnv.editorFontSize=parseInt(s);
                 if (prog) prog.setFontSize(desktopEnv.editorFontSize||16);
                 ide.saveDesktopEnv();

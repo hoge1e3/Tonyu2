@@ -1,5 +1,5 @@
-define(["Klass","UI","FS","DeferredUtil","WebSite"],
-function (Klass,UI,FS,DU,WebSite) {
+define(["Klass","UI","FS","DeferredUtil","WebSite","R"],
+function (Klass,UI,FS,DU,WebSite,R) {
     var HNOP="javascript:;";
     var S;
     ProjectItem=S=Klass.define({
@@ -57,10 +57,10 @@ submenuExpr:function submenuExpr(t) {
             class:"submenu prjMenuButton",
             on:{click:t.$bind.openSubmenu},"data-path":f.path() }," "],
         ["span",{class:"dropdown-content"},
-            ["a",{href:HNOP,class:"submenu",on:{click:t.$bind.rename}},"名前変更"],
-            ["a",{href:HNOP,class:"submenu",on:{click:t.$bind.download}},"ZIPダウンロード"],
-            ["a",{href:HNOP,class:"submenu nwmenu",on:{click:t.$bind.openFolder}},"フォルダを開く"],
-            ["a",{href:HNOP,class:"submenu",on:{click:t.$bind.remove}},"削除"]
+            ["a",{href:HNOP,class:"submenu",on:{click:t.$bind.rename}},R("rename")],
+            ["a",{href:HNOP,class:"submenu",on:{click:t.$bind.download}},R("downloadAsZip")],
+            ["a",{href:HNOP,class:"submenu nwmenu",on:{click:t.$bind.openFolder}},R("openFolder")],
+            ["a",{href:HNOP,class:"submenu",on:{click:t.$bind.remove}},R("delete")]
         ]
     ];
 },
@@ -70,15 +70,15 @@ download: function (t) {
 },
 remove: function (t) {
     S.closeSubmenu();
-    if (!t.rmd) t.rmd=UI("div",{title:"プロジェクトの削除"},
+    if (!t.rmd) t.rmd=UI("div",{title:R("deleteProject")},
         ["div","プロジェクト",t.name,"を削除しますか？"],
         ["div",
             ["input",{$var:"dl",type:"checkbox",checked:true}],
-            ["label",{for:"dl"},"削除前にZIPでダウンロードする"]
+            ["label",{for:"dl"},R("downloadAsZipBeforeDeletion")]
         ],
         ["div",
-            ["button",{on:{click:doRemove}},"はい"],
-            ["button",{on:{click:cancel}},"いいえ"]
+            ["button",{on:{click:doRemove}},R("yes")],
+            ["button",{on:{click:cancel}},R("no")]
         ]
     );
     t.rmd.$vars.dl.prop("checked",true);
@@ -100,7 +100,7 @@ remove: function (t) {
 },
 rename: function (t) {
     S.closeSubmenu();
-    var np=prompt("新しいプロジェクトの名前を入れてください",
+    var np=prompt(R("inputNewProjectName"),
     t.name);
     if (!np || np=="") return;
     np=FS.PathUtil.truncSEP(np);

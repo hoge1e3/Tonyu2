@@ -1,9 +1,9 @@
-define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
-        ,"ImageDetailEditor","Assets"],
+define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
+        "ImageDetailEditor","Assets","R"],
         function (FS, Tonyu, UI,IL,Blob,Auth,WebSite,
-                ImageDetailEditor,Assets) {
+                ImageDetailEditor,Assets,R) {
     var ImageResEditor=function (prj) {
-        var d=UI("div", {title:"画像リスト"});
+        var d=UI("div", {title:R("imageList")});
         d.css({height:200+"px", "overflow-v":"scroll"});
         var rsrc=prj.getResource();
         var imgDir=prj.getDir().rel("images/");
@@ -40,7 +40,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
 
         function reload() {
             d.empty();
-            var dragMsg="ここに画像ファイル(png/gif/jpg)をドラッグ＆ドロップして追加";
+            var dragMsg=R("dragImageFilesHere");
             var dragPoint=UI("div", {style:"margin:10px; padding:10px; border:solid blue 2px;",
                 on:{dragover: s, dragenter: s, drop:dropAdd}},dragMsg
             ).appendTo(d);
@@ -48,14 +48,14 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite"
             rsrc=prj.getResource();
             var ims=rsrc.images;
             itemUIs=[];
-            var itemTbl=UI("table",["tr",["th"],["th","名前"],["th","URL"],["th","1個の大きさ"],["th",""]]).appendTo(d);
+            var itemTbl=UI("table",["tr",["th"],["th",R("name")],["th","URL"],["th",R("sizePerChip")],["th",""]]).appendTo(d);
             ims.forEach(function (im){
                 var itemUI=imgItem(im);
                 itemUIs.push(itemUI);
                 itemUI.appendTo(itemTbl);
             });
-            d.append(UI("button", {on:{click:function (){ add();}}}, "追加"));
-            d.append(UI("button", {on:{click:function (){ d.dialog("close"); }}}, "完了"));
+            d.append(UI("button", {on:{click:function (){ add();}}}, R("add")));
+            d.append(UI("button", {on:{click:function (){ d.dialog("close"); }}}, R("ok")));
             function dropAdd(e) {
                 eo=e.originalEvent;
                 var file = eo.dataTransfer.files[0];

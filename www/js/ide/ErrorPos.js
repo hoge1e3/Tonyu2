@@ -1,4 +1,4 @@
-define(["Log","FS"],function (Log,FS) {//MODJSL
+define(["Log","FS","R"],function (Log,FS,R) {//MODJSL
 return function showErrorPos(elem, err, options) {
     options=options||{};
     var mesg, src, pos;
@@ -14,7 +14,7 @@ return function showErrorPos(elem, err, options) {
         row=err.row+1;
         col=err.col+1;
     } else {
-        src={name:function (){return "不明";},text:function () {
+        src={name:function (){return R("unknown");},text:function () {
             return null;
         }};
         pos=0;
@@ -23,7 +23,7 @@ return function showErrorPos(elem, err, options) {
     function close(){
         if ($.data(elem,"opened")) {
             elem.dialog("close");
-            $.data(elem,"opened",false);            
+            $.data(elem,"opened",false);
         }
         //elem.empty();
     }
