@@ -143,13 +143,13 @@ define(function (require,exports,module) {
         "deleteProjectFromItem":"プロジェクト{1}を削除しますか？"
     };
     let dict=ja;
-    const test=x=>`【${x}】`;
+    //const test=x=>`【${x}】`;
     function R(name,...params) {
         let mesg=dict[name];
         if (!mesg) {
             return englishify(name)+(params.length?": "+params.join(","):"");
         }
-        return test(buildMesg(mesg, ...params));
+        return (buildMesg(mesg, ...params));
     }
     function englishify(name) {
         name=name.replace(/([A-Z])/g," $1");
