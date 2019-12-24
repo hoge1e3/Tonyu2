@@ -1,0 +1,318 @@
+Dialogs.js:11     const R=require("R");
+エディタの文字の大きさ
+Dialogs.js:95                 var s=prompt(R("editorFontSize"), desktopEnv.editorFontSize||16);
+FileMenu.js:7 const R=require("R");
+ファイル名を入力してください
+FileMenu.js:33              R("inputFileName"),["br"],
+ファイル{1}は存在します
+FileMenu.js:66             if (r.ok && r.file.exists()) r={ok:false, reason:R("fileExists",r.file.name())};
+新規作成
+FileMenu.js:85         FM.dialogOpt({title:R("newFile"), action:"create", onend:function (f) {
+名前変更
+FileMenu.js:99         FM.dialogOpt({title:R("renameFile"), name:oldName, action:"mv", extraUI:mvExtraUI, onend:async function (nf) {
+プログラム中のクラス名も変更する
+FileMenu.js:117         refactorUI=UI("div",["input",{type:"checkbox",$var:"chk",checked:"true",value:"chked"}],R("refactorClassName"));
+プログラム内にエラーがあります．エラーを修正するか，「プログラム中のクラス名も変更する」のチェックを外してもう一度やり直してください．
+FileMenu.js:129             alert(R("someFilesHaveErrorOnRefactor"));
+{1}を削除しますか？
+FileMenu.js:140         if (!confirm(R("deleteFileConfirm",curFile.name()))) return;
+{1}はシステムで利用されているフォルダなので使用できません
+FileMenu.js:197                 return {ok:false, reason:R("cannotUseKernelFiles",dir.name())};
+{1}はシステムで利用されているフォルダなので使用できません
+FileMenu.js:200                 return {ok:false, reason:R("cannotUseKernelFiles",name)};
+先頭を大文字({1}) にして作成します．
+FileMenu.js:204                 return {ok:true, file: dir.rel(name+EXT), note: R("upCased",name)};
+名前は，半角英数字とアンダースコア(_)のみが使えます．先頭は英大文字にしてください．
+FileMenu.js:208             return {ok:false, reason:R("namingNotice")};
+DebugDialog.js:3 const R=require("R");
+自動再実行
+DebugDialog.js:89                 t.titleArea.append(UI("span",t.autoReloadCheck,R("autoReload")));
+editor.js:2 const R=require("R");
+{1}を実行
+editor.js:150                             $("<a>").attr("href","#").text(R("runClass",n)+(i==0?"(F9)":"")).click(F(function () {
+停止(F2)
+editor.js:164                         $("<a>").attr("href","#").text(R("stop")).click(F(function () {
+実行するファイルを選択...
+editor.js:169                         $("<a>").attr("href","#").text(R("selectMain")).click(F(dialogs.selectMain))
+他のコマンド({1})が実行されているのでお待ちください．
+しばらくたってもこのメッセージが出る場合，一旦Homeに戻ってください．
+editor.js:234             alert(R("otherCommandInProgress",cmdStat));
+ファイルを作成してください
+editor.js:263                 alert(R("createAtLeastOneFile"));
+{1}内のファイルをすべて削除しますか？削除する場合はDELETE と入力してください．
+editor.js:395         if (prompt(R("deleteProjectConfirm",curPrjDir),"")!="DELETE") {
+新しいプロジェクトの名前を入れてください
+editor.js:402         var np=prompt(R("inputNewProjectName"), curPrjDir.name().replace(/\//g,""));
+{1}はすでに存在します．
+editor.js:407             alert(R("renamedProjectExists",npd));
+ErrorDialog.js:2 const R=require("R");
+不明
+ErrorDialog.js:34             src={name:function (){return R("unknown");},text:()=>null};
+ 場所：
+ErrorDialog.js:57         const mesgd=$("<div>").text(message+R("at")+src.name()+(typeof row=="number"?":"+row+":"+col:""));
+エラー箇所に移動
+ErrorDialog.js:59             mesgd.append($("<button>").text(R("jumpToErrorPosition")).click(jump));
+エラー
+ErrorDialog.js:83         elem.attr("title",R("error"));
+トレース表示
+ErrorDialog.js:116                 UI("button",{on:{click:showTrace}},R("showTrace")));
+exportHTMLDialog.js:1 define(["exportAsScriptTags","UI","Klass","root","R"],
+HTML生成
+exportHTMLDialog.js:24             t.dom=UI("div",{title:R("generateSingleHTML")},
+このHTMLをcodepenなどのJS共有サイトに張り付けて実行できます．
+exportHTMLDialog.js:25                 ["div",R("thisIsExecutableInSingleHTML")],
+Internet Explorer 11でも動作させる（一部機能が使えない可能性があります）
+exportHTMLDialog.js:29                     ["label",{"for":"ie"},R("runnableInIE11")],
+GlobalDialog.js:1 define(["UI","Klass","R"], function (UI,Klass,R) {
+グローバル変数
+GlobalDialog.js:23             t.dom=UI("div",{title:R("globalVariables")},
+実行時に，これらのグローバル変数が指定した値に初期化されます．
+GlobalDialog.js:25                 ["li",R("theseGlobalVariablesAreInitializedOnStart")],
+「値」欄には文字列またはJSON形式で記入してください．
+GlobalDialog.js:26                   ["li",R("variablesShouldBeStringOrJSON")]
+保存
+GlobalDialog.js:30                 ["div",["button",{on:{click:t.$bind.save}},R("save")]]
+グローバル変数名
+GlobalDialog.js:36                 placeHolderKey:R("varableName"),
+値
+GlobalDialog.js:37                 placeHolderValue:R("value"),
+変数名には半角英数字を使ってください
+GlobalDialog.js:45                     alert(R("varableNameShouldBeAlphabetOrNumber"));
+解釈できない値です．この値をそのまま文字列として登録したい場合，前後をダブルクォーテーションで囲ってください．
+
+GlobalDialog.js:62                         alert(R("cannotBeParsedAsValue")+
+ダブルクォーテーション自身を文字列に含める場合は \" と書いてください．
+
+GlobalDialog.js:63                         R("ifYouWantContainDoubleQuoteAsTheValue")+
+\自身を文字列に含める場合は \\ と書いてください．
+
+GlobalDialog.js:64                         R("ifYouWantContainBackslash")
+変数名'{1}'が重複しています．
+GlobalDialog.js:94                 if (v.key in res) throw new Error(R("duplicateGlobalVariable",v.key));
+変数名'{1}'はグローバル変数名として使えません．
+GlobalDialog.js:96                     throw new Error(R("invalidGlobalVariableName",v.key));
+ImageDetailEditor.js:1 define(["UI","ImageList","ImageRect","PatternParser","WebSite","Assets","R"],
+画像詳細
+ImageDetailEditor.js:3     var d=UI("div",{title:R("imageDetails")},
+１枚絵
+ImageDetailEditor.js:9                ["div",radio("single"),R("singlePicture")],
+分割数指定：
+ImageDetailEditor.js:10                ["div",radio("rc"),R("rowsAndColumns"),
+1パターンの大きさ指定：
+ImageDetailEditor.js:13                ["div",radio("wh"),R("chipWidthAndHeight"),
+Tonyu1互換
+ImageDetailEditor.js:16                ["div",radio("t1"),R("compatibleWithTonyu1"),
+解析
+ImageDetailEditor.js:17                  ["button",{on:{click:tonyu1}},R("parse")]],
+パターン番号:
+ImageDetailEditor.js:18                ["div",R("chipNo"),["input",{$var:"patName"}] ],
+ImportHTMLDialog.js:1 define(["exportAsScriptTags","UI","Klass","NewProjectDialog","ScriptTagFS","R"],
+HTMLからインポート
+ImportHTMLDialog.js:13             t.dom=UI("div",{title:R("importFromHTML")},
+ここにHTMLを貼り付けます
+ImportHTMLDialog.js:15                     ["div",R("pasteHTMLHere")],
+インポート先のフォルダを入力してください
+ImportHTMLDialog.js:37             t.vars.selDir.append($("<h1>").text(R("inputFolderPathForImport")));
+インポート開始
+ImportHTMLDialog.js:55             t.vars.confirm.append(UI("div",["button",{on:{click:t.$bind.complete}},R("startImport")]));
+上書
+新規
+ImportHTMLDialog.js:59                 var ex=f.exists()?R("ovr"):R("new");
+インポート完了
+ImportHTMLDialog.js:72             t.vars.complete.append(UI("h1",R("importComplete")));
+MainClassDialog.js:1 define(["UI","R"],function (UI,R) {
+実行するクラスを選択
+MainClassDialog.js:12             res.d=UI("div",{title:R("selectMainClass")},
+実行
+MainClassDialog.js:21                           }}}, R("run")]
+NewProjectDialog.js:1 define(["UI","R"], function (UI,R) {
+プロジェクト名の変更
+新規プロジェクト
+NewProjectDialog.js:17         	res.d=UI("div",{title:(options.ren?R("renameProject"):R("newProject"))},
+プロジェクト名
+NewProjectDialog.js:19         			 ["span",R("newProjectName")],
+親フォルダ
+NewProjectDialog.js:25         			 ["span",R("parentFolder")],
+作成先フォルダ：
+NewProjectDialog.js:28         			   ["span",R("willCreateAt")],
+名前を入力してください
+NewProjectDialog.js:42     			this.addError("name",R("inputProjectName"));
+このフォルダはすでに存在します
+NewProjectDialog.js:47                 this.addError("name",R("folderExists"));
+ProjectItem.js:1 define(["Klass","UI","FS","DeferredUtil","WebSite","R","jshint"],
+名前変更
+ProjectItem.js:59             ["a",{href:HNOP,class:"submenu",on:{click:t.$bind.rename}},R("rename")],
+ZIPダウンロード
+ProjectItem.js:60             ["a",{href:HNOP,class:"submenu",on:{click:t.$bind.download}},R("downloadAsZip")],
+フォルダを開く
+ProjectItem.js:61             ["a",{href:HNOP,class:"submenu nwmenu",on:{click:t.$bind.openFolder}},R("openFolder")],
+削除
+ProjectItem.js:62             ["a",{href:HNOP,class:"submenu",on:{click:t.$bind.remove}},R("delete")]
+プロジェクトの削除
+ProjectItem.js:72     if (!t.rmd) t.rmd=UI("div",{title:R("deleteProject")},
+プロジェクト{1}を削除しますか？
+ProjectItem.js:73         ["div",R("deleteProjectFromItem",t.name)],
+削除前にZIPでダウンロードする
+ProjectItem.js:76             ["label",{for:"dl"},R("downloadAsZipBeforeDeletion")]
+はい
+ProjectItem.js:79             ["button",{on:{click:doRemove}},R("yes")],
+いいえ
+ProjectItem.js:80             ["button",{on:{click:cancel}},R("no")]
+新しいプロジェクトの名前を入れてください
+ProjectItem.js:102     var np=prompt(R("inputNewProjectName"),
+{1}はすでに存在します．
+ProjectItem.js:109             alert(R("renamedProjectExists",np));
+ProjectOptionsEditor.js:1 define(["UI","GlobalDialog","R"], function (UI,GlobalDialog,R) {
+プロジェクト オプション
+ProjectOptionsEditor.js:5             TPR.odiag=UI("div",{title:R("projectOptions")},
+コンパイラ
+ProjectOptionsEditor.js:6                     ["h5",R("compiler")],
+診断モード(速度が落ちますが，プログラムの不具合を見つけやすくします)
+ProjectOptionsEditor.js:9                      R("diagMode")],*/
+無限ループチェックをしない（チェックすると速度が速くなることがあります）
+ProjectOptionsEditor.js:12                      R("disableInfiniteLoopCheck")],
+フィールド宣言を明示的に行う(var n; のような宣言が必要になります)
+ProjectOptionsEditor.js:15                       R("requireFieldDeclaration")],
+デフォルトの親クラス
+ProjectOptionsEditor.js:16                     ["div", R("defaultSuperClass"),
+実行
+ProjectOptionsEditor.js:18                      ["h5",R("runtimes")],
+Main クラス
+ProjectOptionsEditor.js:19                      ["div", R("mainClass"), ["input", {$edit: "run.mainClass"}] ],
+Boot クラス
+ProjectOptionsEditor.js:20                      ["div", R("bootClass"), ["input", {$edit: "run.bootClass"}] ],
+グローバル変数
+編集...
+ProjectOptionsEditor.js:21                      ["div", R("globalVariables"),["button", {on:{click: editG}},R("edit")] ],
+ResEditor.js:2 "ImageDetailEditor","Util","Assets","jshint","R"],
+{1}リスト
+ResEditor.js:7         var d=UI("div", {title:R("resouceList",mediaInfo.name)});
+ここに{1}ファイル({2})をドラッグ＆ドロップして追加
+ResEditor.js:64                     var dragMsg=R("dragFileHere",mediaInfo.name, mediaInfo.exts.join("/"));
+追加
+ResEditor.js:80                                 on:{click:addBuiltin}},R("add")],
+完了
+ResEditor.js:86                         ["button", {on:{click:function (){ d.dialog("close"); }}}, R("done")]
+このファイルは追加できません：
+
+ResEditor.js:206                     mes=R("thisFileCannotBeAdded");
+同じ名前のファイルが既に登録されています：
+
+ResEditor.js:213                     mes=R("resourceFileExists");
+{1} ⇒ {2}({3}) と重複
+
+ResEditor.js:218                             mes+=R("duplicatedFiles",f.name, fName, f.existsFile.name);
+ResEditors.js:1 define(["ResEditor","Klass","OggConverter","WebSite","R"],
+画像
+ResEditors.js:4         image:{name:R("image"),exts:["png","gif","jpg"],path:"images/",key:"images",
+音声
+ResEditors.js:13         sound:{name:R("sound"),exts:["mp3","ogg","mp4","m4a","mid","wav","mzo"],path:"sounds/",key:"sounds",
+searchDialog.js:1 define(["UI","Shell","R"], function (UI,sh,R) {
+検索
+searchDialog.js:9             res.d=UI("div",{title:R("find")},
+検索語
+searchDialog.js:11                      ["span",R("wordToFind")],
+検索
+searchDialog.js:18                      }}}, R("find")],
+selProject.js:5        "ZipImporter","ProjectItem","ImportHTMLDialog","Util","root","R"],
+{1}KB中{2}KB使用中．
+selProject.js:17         $("#ls").text(R("storageUsage",Math.floor(capacity.max/1024), Math.floor(capacity.using/1024)));
+新規プロジェクト
+selProject.js:60             ["div", R("newProject")]
+すべて見る...
+selProject.js:82         }},R("showAllProjects")]);
+sysMod.js:3         "DeferredUtil","R"],
+必要なプラグイン{1}を追加しました。もう一度実行してください
+sysMod.js:171         var req=new Error(R("pluginAddedAndRestart",name));
+mkrun.js:1 define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu","splashElement","R"],
+アップロード失敗: {1}
+mkrun.js:43                         throw new Error(R("uploadFailed",r));
+このフォルダは、Webサーバにアップロードしないと正常に動作しない可能性があります。
+
+mkrun.js:95                     R("thisFolderShouldBeUploadedToWebServer")+
+詳しくは
+https://www.tonyu.jp/tonyu2/runtime.html
+を御覧ください。
+
+mkrun.js:96                     R("seeRuntime")
+mkrunDiag.js:1 define(["UI","UIDiag","WebSite","extLink","mkrun","Tonyu","zip","DeferredUtil","FS","root","jshint","R"],
+ランタイム作成
+mkrunDiag.js:22             res.d=UI("div",{title:R("createExecutable")},
+出力方法
+mkrunDiag.js:25                 ["h1",R("howToOutput")],
+ZIP圧縮したものを保存する
+mkrunDiag.js:28                         ["label",{"for":"outtype"},R("saveExecutableAsZip")]
+プロジェクトボードにアップロードする
+mkrunDiag.js:32                         ["label",{"for":"outtype"},R("uploadToProjectBoard")]
+次のフォルダに出力：
+mkrunDiag.js:36                         ["label",{"for":"dest"},R("saveExecutableAtFolder")],["br"],
+オプション
+mkrunDiag.js:39                 ["h1",R("executableOptions")],
+Internet Explorer 11でも動作させる（一部機能が使えない可能性があります）
+mkrunDiag.js:42                         ["label",{"for":"ie"},R("RunInIE11")],
+ソースを添付する
+mkrunDiag.js:46                         ["label",{"for":"src"},R("attachSourceFiles")],
+ソースを添付すると，アップロードしたファイルを
+mkrunDiag.js:49                         R("ifSourceFilesAreAttached")+
+プロジェクトボード上で直接編集できます．
+mkrunDiag.js:50                         R("ItCanBeEditableInProjectBoard")]
+ランタイム作成
+mkrunDiag.js:54                     }}}, R("createExecutable")],
+ランタイムを作成しました：
+mkrunDiag.js:93                     ["p",R("runtimeCreatedAt"),
+次のいずれかの方法でWebアプリとして公開することができます。
+mkrunDiag.js:97                     ["p",R("youCanPublishThisExecutableAsWebApplicationBy")],
+フォルダをお手持ちのWebサーバにアップロードする
+mkrunDiag.js:99                     ["li",R("uploadTheFolderIntoYourWebSite")],
+上のフォルダをZIPで圧縮したものを
+mkrunDiag.js:100                     ["li",R("uploadZippedFileInto"),
+プロジェクトボード
+mkrunDiag.js:102                               R("projectBoard"),{style:"color: blue;"}),
+にアップロードする
+mkrunDiag.js:103                     R("afterProjectBoard")]]
+ランタイムを作成しました。
+mkrunDiag.js:109                     ["p",R("executableCreated")],
+次のいずれかの方法でWebアプリとして公開することができます。
+mkrunDiag.js:110                     ["p",R("youCanPublishThisExecutableAsWebApplicationBy")],
+解凍したフォルダをお手持ちのWebサーバにアップロードする
+mkrunDiag.js:112                     ["li",R("uploadTheExtractedFolderIntoYourWebSite")],
+保存したZIPファイルを
+mkrunDiag.js:113                     ["li",R("uploadTheZipFileInto"),
+プロジェクトボード
+mkrunDiag.js:115                               R("projectBoard"),{style:"color: blue;"}),
+にアップロードする
+mkrunDiag.js:116                     R("afterProjectBoard")]]
+まだアップロードは完了していません
+mkrunDiag.js:123                     ["p",["strong",R("uploadHasNotBeenDoneYet")]],
+新規バージョンページ
+mkrunDiag.js:126                         R("youHaveToDescribeAboutThisVersion"),{
+に必要事項を記入して，アップロードを完了させてください
+mkrunDiag.js:134                         R("toCompleteTheUpload")
+ZipImporter.js:1 define(["Klass","FS","Util","DragDrop","DeferredUtil","UI","R"],
+Zipからインポート中です...
+ZipImporter.js:45             mesg=mesg||R("importingFromZip");
+Zipからインポート
+ZipImporter.js:47                 t.dialog=UI("div",{title:R("importFromZip")},
+{1}を展開中...
+ZipImporter.js:69             t.showDialog(R("unzipping",file.name()));
+{1}を展開中...
+ZipImporter.js:73                     t.showDialog(R("unzipping",file.name()));
+{1}にはTonyu2の編集可能なプロジェクトが含まれていません.
+ZipImporter.js:87                     R("doesNotContainTonyu2Project",file.name())
+{1}をチェック中...
+ZipImporter.js:96                 t.showDialog(R("checking",f.name()));
+{1}から{2}にコピー
+ZipImporter.js:128             t.showDialog(R("copying",src.name(),dst.name()));
+プロジェクトボードから{1}をダウンロード....
+ZipImporter.js:171             t.showDialog(R("downloadFromProjectBoard",fileName));
+UIDiag.js:1 define(["UI","R"],function (UI,R) {
+確認
+UIDiag.js:30         mesg=parseMesg(mesg,R("confirm"));
+キャンセル
+UIDiag.js:33                 ["button",{on:{click:sendF(false)}},R("cancel")]).dialog({width:"auto",close:sendF(false)});
+確認
+UIDiag.js:41         mesg=parseMesg(mesg,R("confirm"));
+入力
+UIDiag.js:60         mesg=parseMesg(mesg,R("input"));
+キャンセル
+UIDiag.js:71                 ["button",{on:{click:cancel}},R("cancel")]).dialog({
