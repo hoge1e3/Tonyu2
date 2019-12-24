@@ -4,9 +4,9 @@ define(["UI","GlobalDialog","R"], function (UI,GlobalDialog,R) {
         if (!TPR.odiag) {
             TPR.odiag=UI("div",{title:R("projectOptions")},
                     ["h5",R("compiler")],
-                    ["div",
+                    /*["div",
                      ["input", {type:"checkbox", $edit: "compiler.diagnose"}],
-                     R("diagMode")],
+                     R("diagMode")],*/
                     ["div",
                      ["input", {type:"checkbox", $edit: "compiler.noLoopCheck"}],
                      R("disableInfiniteLoopCheck")],
@@ -19,16 +19,16 @@ define(["UI","GlobalDialog","R"], function (UI,GlobalDialog,R) {
                      ["div", R("mainClass"), ["input", {$edit: "run.mainClass"}] ],
                      ["div", R("bootClass"), ["input", {$edit: "run.bootClass"}] ],
                      ["div", R("globalVariables"),["button", {on:{click: editG}},R("edit")] ],
-                     ["h5","開発"],
+                     /*["h5","開発"],
                      ["div",
                       ["input", {type:"checkbox", $edit: "kernelEditable"}],
-                      "Kernelの開発を行う"],
+                      "Kernelの開発を行う"],*/
                       ["div", {$var:"validationMessage", css:{color:"red"}}]
             );
         }
         var gdiag=new GlobalDialog(TPR);
         function editG() {
-          gdiag.show();
+          gdiag.show(opt);
         }
         TPR.odiag.$edits.load(opt);
         TPR.odiag.dialog({

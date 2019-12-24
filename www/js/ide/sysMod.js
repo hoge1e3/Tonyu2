@@ -1,9 +1,9 @@
 define(["Tonyu", "FS", "ImageList",
         "thumbnail","WebSite","plugins",
-        "DeferredUtil"],
+        "DeferredUtil","R"],
         function (Tonyu, FS, ImageList,
                 thumbnail,WebSite,plugins,
-                DU) {
+                DU,R) {
 // (was TonyuProject)
 return {
     /*stop:function () {
@@ -168,7 +168,7 @@ return {
     requestPlugin: function (name) {
         this.addPlugin(name);
         if (plugins.loaded(name)) return;
-        var req=new Error("必要なプラグイン"+name+"を追加しました。もう一度実行してください");
+        var req=new Error(R("pluginAddedAndRestart",name));
         req.pluginName=name;
         throw req;
     },

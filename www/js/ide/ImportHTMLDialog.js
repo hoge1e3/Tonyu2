@@ -1,8 +1,8 @@
 define(["exportAsScriptTags","UI","Klass","NewProjectDialog","ScriptTagFS","R"],
 function (east,UI,Klass,NPD,STF,R) {
-    ImportHTMLDialog=Klass.define({
+    const ImportHTMLDialog=Klass.define({
         $this:true,
-        show: function (t,options) {
+        show: function (t/*,options*/) {
             t.createDOM();
             t.dom.dialog({width:800,height:600});
             //console.log("imp.dom.data",$.data(t.dom[0],"ui-dialog"));
@@ -70,12 +70,6 @@ function (east,UI,Klass,NPD,STF,R) {
             }
             t.vars.complete.empty();
             t.vars.complete.append(UI("h1",R("importComplete")));
-            /*t.vars.complete.append(UI("div",
-                ["a",{href:"project.html?dir="+dst.path()},
-                dst.path()+"を開く"]
-            ));*/
-            //console.log("close",t.dom);
-            //console.log("imp.dom.data2",$.data(t.dom[0],"ui-dialog"));
             t.dom.dialog("close");
             t.onComplete();
         },

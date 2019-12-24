@@ -1,7 +1,7 @@
-define(["Klass","FS","Util","DragDrop","DeferredUtil","UI"],
-function (Klass,FS,Util,DD,DU,UI) {
+define(["Klass","FS","Util","DragDrop","DeferredUtil","UI","R"],
+function (Klass,FS,Util,DD,DU,UI,R) {
     FS.mount("/ram/","ram");
-    var zip=FS.zip;
+    //var zip=FS.zip;
     var tmpDir=FS.get("/ram/");
     var ZipImporter=Klass.define({
         $: function (dir, elem, options) {
@@ -42,9 +42,9 @@ function (Klass,FS,Util,DD,DU,UI) {
         },
         showDialog: function (mesg) {
             var t=this;
-            mesg=mesg||"ZIPからインポート中です...";
+            mesg=mesg||R("importingFromZip");
             if (!t.dialog) {
-                t.dialog=UI("div",{title:"Zipからインポート"},
+                t.dialog=UI("div",{title:R("importFromZip")},
                     ["span",{$var:"mesg"}, mesg]
                 );
                 t.mesg=t.dialog.$vars.mesg;
@@ -66,11 +66,11 @@ function (Klass,FS,Util,DD,DU,UI) {
         unzip: function (file,ctx) {
             // ctx.dstDir is set when fromPrjB, /Tonyu/Project/prjfile_0.00/
             var t=this;
-            t.showDialog(file.name()+"を展開中...");
+            t.showDialog(R("unzipping",file.name()));
             var zipexdir=t.tmpDir.rel(file.truncExt()+"/");
             var opt={
                 progress: function (file) {
-                    t.showDialog(file.name()+"を展開中...");
+                    t.showDialog(R("unzipping",file.name()));
                     return DU.timeout(0);
                 }
             };
@@ -84,16 +84,16 @@ function (Klass,FS,Util,DD,DU,UI) {
                 return t.traverse(zipexdir,ctx);
             }).then(function (ctx) {
                 if (ctx.from==="prjB" && ctx.imported===0) throw new Error(
-                    file.name()+
-                    "にはTonyu2の編集可能なプロジェクトが含まれていません.");
+                    R("doesNotContainTonyu2Project",file.name())
+                );
             });
         },
         traverse: function (zipexdir,ctx) {
             var t=this;
-            var ctx=ctx||{};
+            ctx=ctx||{};
             ctx.imported=ctx.imported||0;
             return zipexdir.each(function (f) {
-                t.showDialog(f.name()+"をチェック中...");
+                t.showDialog(R("checking",f.name()));
                 console.log("traverse",f.path());
                 if (f.isDir()) {
                     return t.traverse(f,ctx);
@@ -125,7 +125,7 @@ function (Klass,FS,Util,DD,DU,UI) {
                     dst=dstParent.rel(name);
                 }
             }
-            t.showDialog(src.name()+ "から"+ dst.name()+"にコピー");
+            t.showDialog(R("copying",src.name(),dst.name()));
             console.log("importFrom",src.path(), "to", dst.path());
             return src.copyTo(dst).then(function () {
                 if (t.prjID) {
@@ -168,8 +168,8 @@ function (Klass,FS,Util,DD,DU,UI) {
             var t=this;
             var f=FS.get("https://edit.tonyu.jp/cgi-bin/dl.cgi?file="+fileName);
             var tmp=FS.get("/ram/").rel(fileName);
-            t.showDialog("プロジェクトボードから"+fileName+"をダウンロード....");
-            return f.copyTo(tmp).then(function (r) {
+            t.showDialog(R("downloadFromProjectBoard",fileName));
+            return f.copyTo(tmp).then(function (/*r*/) {
                 return t.unzip(tmp,ctx);
             });
         }

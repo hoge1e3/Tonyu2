@@ -1,5 +1,5 @@
-define(["UI","UIDiag","WebSite","extLink","mkrun","Tonyu","zip","DeferredUtil","FS","root","jshint"],
-function (UI,UIDiag, WebSite, extLink,mkrun,Tonyu,zip,DU,FS,root,jshint) {
+define(["UI","UIDiag","WebSite","extLink","mkrun","Tonyu","zip","DeferredUtil","FS","root","jshint","R"],
+function (UI,UIDiag, WebSite, extLink,mkrun,Tonyu,zip,DU,FS,root,jshint,R) {
     var res={};
     res.show=function (prj,dest,options) {
         var d=res.embed(prj,dest,options);
@@ -19,39 +19,39 @@ function (UI,UIDiag, WebSite, extLink,mkrun,Tonyu,zip,DU,FS,root,jshint) {
             }
         };
         if (!res.d) {
-            res.d=UI("div",{title:"ランタイム作成"},
+            res.d=UI("div",{title:R("createExecutable")},
                   // ["span", {$var:"hiddenFolder"},
                   ["form",{action:jshint.scriptURL(";"),$var:"form",name:"mkrunform"},
-                ["h1","出力方法"],
+                ["h1",R("howToOutput")],
                     ["div",
                         ["input", {type:"radio",name:"outtype",value:"zip",on:ote}],
-                        ["label",{"for":"outtype"},"ZIP圧縮したものを保存する"]
+                        ["label",{"for":"outtype"},R("saveExecutableAsZip")]
                     ],//],
                     ["div",
                         ["input", {type:"radio",name:"outtype",value:"prj",on:ote}],
-                        ["label",{"for":"outtype"},"プロジェクトボードにアップロードする"]
+                        ["label",{"for":"outtype"},R("uploadToProjectBoard")]
                     ],//],
                     ["div",{$var:"folder"},
                         ["input",{type:"radio",name:"outtype",value:"dir",on:ote}],
-                        ["label",{"for":"dest"},"次のフォルダに出力："],["br"],
+                        ["label",{"for":"dest"},R("saveExecutableAtFolder")],["br"],
                         ["input", {$var:"dest",id:"dest",$edit:"dest",size:60}]
                     ],
-                ["h1","オプション"],
+                ["h1",R("executableOptions")],
                     ["div",
                         ["input", {id:"ie",$edit:"IE",type:"checkbox"}],
-                        ["label",{"for":"ie"},"Internet Explorer 11でも動作させる（一部機能が使えない可能性があります）"],
+                        ["label",{"for":"ie"},R("RunInIE11")],
                     ],
                     ["div",
                         ["input", {id:"src",$edit:"src",type:"checkbox"}],
-                        ["label",{"for":"src"},"ソースを添付する"],
+                        ["label",{"for":"src"},R("attachSourceFiles")],
                         ["div",
                         {"class":"srcwarn"},
-                        "ソースを添付すると，アップロードしたファイルを"+
-                        "プロジェクトボード上で直接編集できます．"]
+                        R("ifSourceFilesAreAttached")+
+                        R("ItCanBeEditableInProjectBoard")]
                     ],
                     ["button", {$var:"OKButton", on:{click: function () {
                          res.run();
-                    }}}, "作成"],
+                    }}}, R("createExecutable")],
                     ["span",{$var:"progress"}]
                 ]
             );
@@ -90,40 +90,40 @@ function (UI,UIDiag, WebSite, extLink,mkrun,Tonyu,zip,DU,FS,root,jshint) {
                 switch(type) {
                 case "dir":
                 UIDiag.alert(UI("div",
-                    ["p",
+                    ["p",R("runtimeCreatedAt"),
                     ["a",{href:jshint.scriptURL(";"),
                     style:"color: blue;",on:{click:openFolder}},model.dest],
-                    "にランタイムを作成しました。"],
-                    ["p","次のいずれかの方法でWebアプリとして公開することができます。"],
+                    ],
+                    ["p",R("youCanPublishThisExecutableAsWebApplicationBy")],
                     ["ul",
-                    ["li","フォルダをお手持ちのWebサーバにアップロードする"],
-                    ["li","上のフォルダをZIPで圧縮したものを",
+                    ["li",R("uploadTheFolderIntoYourWebSite")],
+                    ["li",R("uploadZippedFileInto"),
                       extLink("http://www.tonyu.jp/project/",
-                              "プロジェクトボード",{style:"color: blue;"}),
-                    "にアップロードする"]]
+                              R("projectBoard"),{style:"color: blue;"}),
+                    R("afterProjectBoard")]]
                     ),{width:"auto"}
                 );
                 break;
                 case "zip":
                 UIDiag.alert(UI("div",
-                    ["p","ランタイムを作成しました。"],
-                    ["p","次のいずれかの方法でWebアプリとして公開することができます。"],
+                    ["p",R("executableCreated")],
+                    ["p",R("youCanPublishThisExecutableAsWebApplicationBy")],
                     ["ul",
-                    ["li","解凍したフォルダをお手持ちのWebサーバにアップロードする"],
-                    ["li","保存したZIPファイルを",
+                    ["li",R("uploadTheExtractedFolderIntoYourWebSite")],
+                    ["li",R("uploadTheZipFileInto"),
                       extLink("http://www.tonyu.jp/project/",
-                              "プロジェクトボード",{style:"color: blue;"}),
-                    "にアップロードする"]]
+                              R("projectBoard"),{style:"color: blue;"}),
+                    R("afterProjectBoard")]]
                     ),{width:"auto"}
                 );
                 break;
                 case "prj":
                 var diag;
                 diag=UI("div",
-                    ["p",["strong","まだアップロードは完了していません"]],
+                    ["p",["strong",R("uploadHasNotBeenDoneYet")]],
                     ["p",
                       extLink(WebSite.newVersionUrl+"?tmpFile="+r.tmpFileName,
-                        "新規バージョンページ",{
+                        R("youHaveToDescribeAboutThisVersion"),{
                             style:"color: blue;",
                             on:{
                                 click: function () {
@@ -131,7 +131,7 @@ function (UI,UIDiag, WebSite, extLink,mkrun,Tonyu,zip,DU,FS,root,jshint) {
                                 }
                             }
                         }),
-                        "に必要事項を記入して，アップロードを完了させてください"
+                        R("toCompleteTheUpload")
                     ],
                     ["button",{
                         $var:"button",

@@ -147,7 +147,7 @@ $(function () {
             if (ii>=15) return;
             $("#runMenu").append(
                     $("<li>").append(
-                            $("<a>").attr("href","#").text(n+"を実行"+(i==0?"(F9)":"")).click(F(function () {
+                            $("<a>").attr("href","#").text(R("runClass",n)+(i==0?"(F9)":"")).click(F(function () {
                                 if (typeof n!="string") {console.log(n); alert("not a string2: "+n);}
                                 run(`${NSP_USR}.${n}`);
                                 if (ii>0) {
@@ -231,8 +231,7 @@ $(function () {
     function setCmdStat(c) {
         console.log("setCmtStat",cmdStat,"to",c);
         if (c && cmdStat) {
-            alert("他のコマンド("+cmdStat+")が実行されているのでお待ちください．\n"+
-                "しばらくたってもこのメッセージが出る場合，一旦Homeに戻ってください．");
+            alert(R("otherCommandInProgress",cmdStat));
             return;
         }
         cmdStat=c;
@@ -393,7 +392,7 @@ $(function () {
     $("#refHelp").click(F(dialogs.helpDialog));
     window.startTutorial=F(dialogs.startTutorial);
     $("#rmPRJ").click(F(function () {
-        if (prompt(curPrjDir+"内のファイルをすべて削除しますか？削除する場合はDELETE と入力してください．","")!="DELETE") {
+        if (prompt(R("deleteProjectConfirm",curPrjDir),"")!="DELETE") {
             return;
         }
         sh.rm(curPrjDir,{r:1});
@@ -405,7 +404,7 @@ $(function () {
         if (!np.match(/\/$/)) np+="/";
         var npd=curPrjDir.up().rel(np);
         if (npd.exists()) {
-            alert(npd+" はすでに存在します");
+            alert(R("renamedProjectExists",npd));
             return;
         }
         sh.cp(curPrjDir,npd);

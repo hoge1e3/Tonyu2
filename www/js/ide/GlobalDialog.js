@@ -1,9 +1,9 @@
 define(["UI","Klass","R"], function (UI,Klass,R) {
-    GlobalDialog=Klass.define({
+    const GlobalDialog=Klass.define({
         $this:true,
         $:["prj"],
         show: function (t,options) {
-            t.opt=t.prj.getOptions();
+            t.opt=options;//t.prj.getOptions();
             t.createDOM();
             t.load();
             t.dom.dialog({width:800,height:500});
@@ -74,7 +74,8 @@ define(["UI","Klass","R"], function (UI,Klass,R) {
             var res=t.getValuesA();
             if (res) {
                 t.opt.run.globals=res;
-                t.prj.setOptions(t.opt);
+                //t.prj.setOptions(t.opt);
+                //console.log("setOpt",t.opt);
                 t.dom.dialog("close");
             }
         },
@@ -90,9 +91,9 @@ define(["UI","Klass","R"], function (UI,Klass,R) {
             var vs=t.editor.keyvalueeditor("getValues");
             var res={};
             vs.forEach(function (v) {
-                if (v.key in res) throw new Error("変数名'"+v.key+"'が重複しています．");
+                if (v.key in res) throw new Error(R("duplicateGlobalVariable",v.key));
                 if (!v.key.match(/^\$[a-zA-Z0-9_$]*$/)) {
-                    throw new Error("変数名'"+v.key+"'はグローバル変数名として使えません．");
+                    throw new Error(R("invalidGlobalVariableName",v.key));
                 }
                 try {
                     res[v.key]=JSON.parse(v.value);

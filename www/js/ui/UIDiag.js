@@ -1,4 +1,4 @@
-define(["UI"],function (UI) {
+define(["UI","R"],function (UI,R) {
     var UIDiag={};
     function isPrimitive(mesg) {
         return (typeof mesg==="string" ||
@@ -27,10 +27,10 @@ define(["UI"],function (UI) {
         })));
     }
     UIDiag.confirm=function (mesg) {
-        mesg=parseMesg(mesg,"確認");
+        mesg=parseMesg(mesg,R("confirm"));
         var di=UI("div",{title:mesg.title},["div",mesg.body],
                 ["button",{on:{click:sendF(true)}},"OK"],
-                ["button",{on:{click:sendF(false)}},"キャンセル"]).dialog({width:"auto",close:sendF(false)});
+                ["button",{on:{click:sendF(false)}},R("cancel")]).dialog({width:"auto",close:sendF(false)});
         var d=$.Deferred();
         function sendF(r) {
             return function () { d.resolve(r); di.dialog("close"); di.remove(); };
@@ -38,7 +38,7 @@ define(["UI"],function (UI) {
         return d.promise();
     };
     UIDiag.alert=function (mesg) {
-        mesg=parseMesg(mesg,"確認");
+        mesg=parseMesg(mesg,R("confirm"));
         var di=UI("div",{title:mesg.title},["div",mesg.body],
                 ["button",{on:{click:sendF(true)}},"OK"]).dialog({width:"auto",close:sendF(false)});
         var d=$.Deferred();
@@ -57,7 +57,7 @@ define(["UI"],function (UI) {
     UIDiag.getText=function () {return UIDiag.val? UIDiag.val.val():"";};
     //---
     UIDiag.prompt=function (mesg,value,geom) {
-        mesg=parseMesg(mesg,"入力");
+        mesg=parseMesg(mesg,R("input"));
         geom=geom||{};
         let position;
         if (typeof geom.left==="number" && typeof geom.top==="number") {
@@ -68,7 +68,7 @@ define(["UI"],function (UI) {
         var di=UI("div",{title:mesg.title},["div",mesg.body],
                 ["input",{on:{enterkey:ok},$var:"val", value:value}],["br"],
                 ["button",{on:{click:ok}},"OK"],
-                ["button",{on:{click:cancel}},"キャンセル"]).dialog({
+                ["button",{on:{click:cancel}},R("cancel")]).dialog({
                     width:geom.width||"auto",
                     height:geom.height||"auto",
                     position:position,

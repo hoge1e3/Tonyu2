@@ -54,7 +54,7 @@ class ErrorDialog {
         }
         if(typeof pos=="object") {row=pos.row; col=pos.col;}
         elem.empty();
-        const mesgd=$("<div>").text(message+" 場所："+src.name()+(typeof row=="number"?":"+row+":"+col:""));
+        const mesgd=$("<div>").text(message+R("at")+src.name()+(typeof row=="number"?":"+row+":"+col:""));
         if(typeof row==="number" && typeof col==="number") {
             mesgd.append($("<button>").text(R("jumpToErrorPosition")).click(jump));
         }

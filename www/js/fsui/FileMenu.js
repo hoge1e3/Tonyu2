@@ -63,7 +63,7 @@ module.exports=function (ide) {
         };
         v.chg=function (s) {
             r=fixName(s,options);
-            if (r.ok && r.file.exists()) r={ok:false, reason:s+"は存在します"};
+            if (r.ok && r.file.exists()) r={ok:false, reason:R("fileExists",r.file.name())};
             if (!r.ok) {
                 v.msg.css({"color":"red"});
                 v.msg.text(r.reason);
@@ -137,7 +137,7 @@ module.exports=function (ide) {
         save();
         var curFile=getCurFile();
         if (!curFile) return;
-        if (!confirm(curFile.name()+"を削除しますか？")) return;
+        if (!confirm(R("deleteFileConfirm",curFile.name()))) return;
         curFile.rm();
         ls();
         close(curFile);
@@ -194,14 +194,14 @@ module.exports=function (ide) {
             var dir=fl.curDir();
             var sysdir={files:1, static:1 ,maps:1};
             if (sysdir[dir.relPath(curPrjDir).replace(/\/*/,"")]) {
-                return {ok:false, reason:dir.name()+"はシステムで利用されているフォルダなので使用できません"};
+                return {ok:false, reason:R("cannotUseKernelFiles",dir.name())};
             }
             if (isKernel(name)) {
-                return {ok:false, reason:name+"はシステムで利用されている名前なので使用できません"};
+                return {ok:false, reason:R("cannotUseKernelFiles",name)};
             }
             if (upcased) {
                 //name= name.substring(0,1).toUpperCase()+name.substring(1);
-                return {ok:true, file: dir.rel(name+EXT), note: "先頭を大文字("+name+") にして作成します．"};
+                return {ok:true, file: dir.rel(name+EXT), note: R("upCased",name)};
             }
             return {ok:true, file: dir.rel(name+EXT)};
         } else {

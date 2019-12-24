@@ -4,7 +4,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
                 ImageDetailEditor,Util,Assets,jshint,R) {
     var HNOP=jshint.scriptURL("");
     var ResEditor=function (prj, mediaInfo) {
-        var d=UI("div", {title:mediaInfo.name+"リスト"});
+        var d=UI("div", {title:R("resouceList",mediaInfo.name)});
         d.css({height:200+"px", "overflow-v":"scroll"});
         var rsrc=prj.getResource();
         var items=rsrc[mediaInfo.key];
@@ -61,7 +61,7 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
                 tempFiles = items.slice();
                 itemUIs=[];
                 if (action!="close") { // ウィンドウ閉じるとき（画面更新は要らない）
-                    var dragMsg="ここに"+mediaInfo.name+"ファイル("+mediaInfo.exts.join("/")+")をドラッグ＆ドロップして追加";
+                    var dragMsg=R("dragFileHere",mediaInfo.name, mediaInfo.exts.join("/"));
                     var dragPoint=UI("div", {style:"margin:10px; padding:10px; border:solid blue 2px;",
                         on:{dragover: s, dragenter: s, drop:dropAdd}},dragMsg
                     ).appendTo(d);
@@ -210,12 +210,12 @@ define(["FS","Tonyu","UI","ImageList","Blob","Auth","WebSite",
                     alert(mes);
                 }
                 if (existsFiles.length>0) {
-                    mes=R("fileExists");
+                    mes=R("resourceFileExists");
                     existsFiles.forEach(function(f){
                         if (f) {
                             var fNameTemp=f.existsFile.url;
                             var fName=fNameTemp.substring(fNameTemp.lastIndexOf("/")+1,fNameTemp.length);
-                            mes+=f.name+" ⇒ "+fName+"("+f.existsFile.name+") と重複\n";
+                            mes+=R("duplicatedFiles",f.name, fName, f.existsFile.name);
                             //mes+=f.name+" ("+f.existsFile.name+")\n";
                         }
                     });

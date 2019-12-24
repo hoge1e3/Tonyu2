@@ -8,17 +8,18 @@ const mbsA=cwd.rel("mbs-after.txt");
 const mbss={};
 const R=[];
 for (let line of mbsB.lines()) {
-   const keys=line.split("●");
-   mbss[keys[0]]={
-      mbsB:keys[1]
-   };
+    const keys=line.split("●");
+    mbss[keys[0]]={
+        mbsB:keys[1]
+    };
 }
 for (let line of mbsA.lines()) {
-   const keys=line.split("●");
-   mbss[keys[0]].mbsA=keys[1];
+    const keys=line.split("●");
+    mbss[keys[0]].mbsA=keys[1];
 }
 
 js.recursive(f=>{
+try{
 	if (f.ext()!==".js" && f.ext()!==".html") return;
 	if (f.path().match(/\bgen\b/)) return;
 	if (f.path().match(/\bace-noconflict\b/)) return;
@@ -30,6 +31,10 @@ js.recursive(f=>{
 	   if (ismb(line.replace(/\/\/.*/,""))) {
 	      const key=f.relPath(js)+":"+ln;
 	      const mbe=mbss[key];
+          if (!mbe) {
+              console.log("Skipping ",f.name(),line);
+              continue;
+          }
 	      if (line!==mbe.mbsB) {
 	         console.log(key, mbe);
 	         throw new Error("NO match");
@@ -48,10 +53,14 @@ js.recursive(f=>{
 	   ln++;
 	}
     if (changed) {
-        f.text(buf.join("\r\n"));
-        //throw new Error("Kowareta!");
+        //f.text(buf.join("\r\n"));
     }
+}catch(e) {
+    console.log(f.path());
+    console.error(e);
+}
 });
+
 console.log(R.join(",\n"));
 function parseCMD(line, cmd) {
    cmd.replace(/@@([^@]+)@@([^@]+)@@/g, (_,b,a) => {

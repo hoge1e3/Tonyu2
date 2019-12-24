@@ -1,5 +1,5 @@
-define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu","splashElement"],
-        function (FS,Util,assert,WebSite,plugins,sh,Tonyu,splashElement) {
+define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu","splashElement","R"],
+        function (FS,Util,assert,WebSite,plugins,sh,Tonyu,splashElement,R) {
     var MkRun={};
     sh.mkrun=function (dest) {
         return MkRun.run( Tonyu.globals.$currentProject, FS.get(dest));
@@ -40,7 +40,7 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu","splashElement"
                     console.log(r);
                     if (!r.match(/^[\w\d\.]+\.zip$/)) {
                         //alert("アップロード失敗: "+r);
-                        throw new Error("アップロード失敗: "+r);
+                        throw new Error(R("uploadFailed",r));
                     }
                     //alert(r);
                     return {tmpFileName:r};
@@ -92,8 +92,8 @@ define(["FS","Util","assert","WebSite","plugins","Shell","Tonyu","splashElement"
 
         function genReadme() {
             dest.rel("Readme.txt").text(
-                    "このフォルダは、Webサーバにアップロードしないと正常に動作しない可能性があります。\n"+
-                    "詳しくは\nhttps://www.tonyu.jp/tonyu2/runtime.html\nを御覧ください。\n"
+                    R("thisFolderShouldBeUploadedToWebServer")+
+                    R("seeRuntime")
             );
         }
         function copyResources(dir) {

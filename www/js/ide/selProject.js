@@ -14,7 +14,7 @@ $(function () {
     //var projects=FS.get(WebSite.projects[0]);//home.rel("Projects/");
     if (!FS.NativeFS.available) {
         var capacity=FS.LSFS.getCapacity();
-        $("#ls").text(Math.floor(capacity.max/1024)+"KB中"+Math.floor(capacity.using/1024)+"KB使用中。");
+        $("#ls").text(R("storageUsage",Math.floor(capacity.max/1024), Math.floor(capacity.using/1024)));
     }
 
     $.get("https://edit.tonyu.jp/doc/welcome_sel.html").then(function (t) {

@@ -1,4 +1,5 @@
 define(function (require,exports,module) {
+    const root=require("root");
     const ja={
         "editorFontSize": "エディタの文字の大きさ",
         "inputFileName": "ファイル名を入力してください",
@@ -78,7 +79,7 @@ define(function (require,exports,module) {
         "edit": "編集...",
         "done": "完了",
         "thisFileCannotBeAdded": "このファイルは追加できません：\n",
-        "fileExists": "同じ名前のファイルが既に登録されています：\n",
+        "resourceFileExists": "同じ名前のファイルが既に登録されています：\n",
         "image": "画像",
         "sound": "音声",
         "find": "検索",
@@ -110,19 +111,50 @@ define(function (require,exports,module) {
         "infiniteLoopDetected": "無限ループをストップしました。\n",
         "youCanConfigureAboutInfinteLoopDetection": "   プロジェクト オプションで無限ループチェックの有無を設定できます。\n",
         "seeProjectOption": "   [参考]https://edit.tonyu.jp/doc/options.html\n",
-        "importingFromZip": "ZIPからインポート中です...",
+        "importingFromZip": "Zipからインポート中です...",
         "importFromZip": "Zipからインポート",
         "confirm": "確認",
         "cancel": "キャンセル",
         "input": "入力",
+        "fileExists": "ファイル{1}は存在します",
+        "deleteFileConfirm": "{1}を削除しますか？",
+        "duplicatedFiles": "{1} ⇒ {2}({3}) と重複\n",
+        "cannotUseKernelFiles": "{1}はシステムで利用されているフォルダなので使用できません",
+        "upCased": "先頭を大文字({1}) にして作成します．",
+        "resouceList": "{1}リスト",
+        "dragFileHere": "ここに{1}ファイル({2})をドラッグ＆ドロップして追加",
+        "storageUsage": "{1}KB中{2}KB使用中．",
+        "unzipping": "{1}を展開中...",
+        "doesNotContainTonyu2Project": "{1}にはTonyu2の編集可能なプロジェクトが含まれていません.",
+        "checking": "{1}をチェック中...",
+        "downloadFromProjectBoard":"プロジェクトボードから{1}をダウンロード....",
+        "copying": "{1}から{2}にコピー",
+        "runtimeCreatedAt":"ランタイムを作成しました：",
+        "uploadFailed":"アップロード失敗: {1}",
+        "duplicateGlobalVariable": "変数名'{1}'が重複しています．",
+        "invalidGlobalVariableName": "変数名'{1}'はグローバル変数名として使えません．",
+        "runClass": "{1}を実行",
+        "pluginAddedAndRestart":"必要なプラグイン{1}を追加しました。もう一度実行してください",
+        "otherCommandInProgress": "他のコマンド({1})が実行されているのでお待ちください．\n"+
+            "しばらくたってもこのメッセージが出る場合，一旦Homeに戻ってください．",
+        "deleteProjectConfirm": "{1}内のファイルをすべて削除しますか？削除する場合はDELETE と入力してください．",
+        "renamedProjectExists": "{1}はすでに存在します．",
+        "at":" 場所：",
+        "deleteProjectFromItem":"プロジェクト{1}を削除しますか？"
     };
     let dict=ja;
+    const test=x=>`【${x}】`;
     function R(name,...params) {
         let mesg=dict[name];
         if (!mesg) {
-            return name+": "+params.join(",");
+            return englishify(name)+(params.length?": "+params.join(","):"");
         }
-        return buildMesg(mesg, ...params);//+"です！";
+        return test(buildMesg(mesg, ...params));
+    }
+    function englishify(name) {
+        name=name.replace(/([A-Z])/g," $1");
+        name=name[0].toUpperCase()+name.substring(1);
+        return name;
     }
     function buildMesg() {
         var a=Array.prototype.slice.call(arguments);
@@ -135,5 +167,6 @@ define(function (require,exports,module) {
         });
         return format;
     }
+    root.R=R;
     module.exports=R;
 });

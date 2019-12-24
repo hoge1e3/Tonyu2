@@ -1,8 +1,7 @@
-define(["Klass","UI","FS","DeferredUtil","WebSite","R"],
-function (Klass,UI,FS,DU,WebSite,R) {
-    var HNOP="javascript:;";
-    var S;
-    ProjectItem=S=Klass.define({
+define(["Klass","UI","FS","DeferredUtil","WebSite","R","jshint"],
+function (Klass,UI,FS,DU,WebSite,R,jshint) {
+    var HNOP=jshint.scriptURL();
+    const S=Klass.define({
 //----METHODS
 $this:true,
 $:function (t,projectDir,prjList) {
@@ -71,7 +70,7 @@ download: function (t) {
 remove: function (t) {
     S.closeSubmenu();
     if (!t.rmd) t.rmd=UI("div",{title:R("deleteProject")},
-        ["div","プロジェクト",t.name,"を削除しますか？"],
+        ["div",R("deleteProjectFromItem",t.name)],
         ["div",
             ["input",{$var:"dl",type:"checkbox",checked:true}],
             ["label",{for:"dl"},R("downloadAsZipBeforeDeletion")]
@@ -107,7 +106,7 @@ rename: function (t) {
     var npd=t.projectDir.sibling(np+"/");
     return npd.exists(function (e) {
         if (e) {
-            alert(np+" はすでに存在します");
+            alert(R("renamedProjectExists",np));
             return;
         }
         //link.attr("href",HNOP).text("Wait...");
@@ -122,8 +121,9 @@ rename: function (t) {
     });
 },
 openFolder: function (t){
+    /*global require*/
     var gui = require("nw.gui");//(global.nwDispatcher||global.nw).requireNwGui();
-    var SEP = process.execPath;
+    //var SEP = process.execPath;
     gui.Shell.showItemInFolder(t.projectDir.path().replace(/\//g,require("path").sep));
     S.closeSubmenu();
 },
