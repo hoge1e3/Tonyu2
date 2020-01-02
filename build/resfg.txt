@@ -1,0 +1,399 @@
+----rel----
+build\buildAll.js:14●            embedVersion(genHome.rel("js/runtime/TonyuLib.js"));
+dialogs\Dialogs.js:65●                        dest=FS.get(WebSite.cwd).rel("Runtimes/").rel( curPrjDir.name());
+dialogs\Dialogs.js:65●                        dest=FS.get(WebSite.cwd).rel("Runtimes/").rel( curPrjDir.name());
+fs\Assets.js:14●            var f=baseDir.rel(rel);
+fs\Assets.js:20●                var oggf=baseDir.rel(rel.replace(/\.(mp3|mp4|m4a)$/,".ogg"));
+fs\DragDrop.js:50●                var itemFile=dst.rel(itemName),actFile;
+fs\fs2stub.js:28●            return FS.get(base).rel(path);
+fs\ScriptTagFS.js:40●            var f=dir.rel(fn);
+fs\Shell.js:48●        return c.rel(v);
+fs\Shell.js:72●            f=f.rel(t.name());
+fsui\FileMenu.js:204●                return {ok:true, file: dir.rel(name+EXT), note: R("upCased",name)};
+fsui\FileMenu.js:206●            return {ok:true, file: dir.rel(name+EXT)};
+help\wikiFullScreen.js:3●    var w=Wiki($("body"),home.rel("doc/"),{useAnchor:true});
+help\wikiFullScreen.js:5●    if (!f) f=home.rel("doc/index.txt");
+ide\compiledTonyuProject.js:8●            resolve(rdir){return this.getDir().rel(rdir);},
+ide\compiledTonyuProject.js:10●            getOptionsFile() {return this.getDir().rel("options.json");},
+ide\compiledTonyuProject.js:12●            getOutputFile(lang) {return this.getDir().rel("js/concat.js");},
+ide\copySample.js:3●    var samples=home.rel("SampleROM/");
+ide\copySample.js:4●    var projects=home.rel("Projects/");
+ide\copySample.js:11●        return samples.rel(n).exists() && projects.equals(dir.up());
+ide\copySample.js:16●        var src=samples.rel(n);
+ide\copySample.js:17●        var dst=projects.rel(n);
+ide\editor.js:42●    var mobile=WebSite.mobile || FS.get(WebSite.tonyuHome).rel("mobile.txt").exists();
+ide\editor.js:51●    const optionFile=curPrjDir.rel("options.json");
+ide\editor.js:137●            var f=curPrjDir.rel(runMenuOrd[i]+EXT);
+ide\editor.js:366●        var d=curPrjDir.rel(".desktop");
+ide\editor.js:378●        var d=curPrjDir.rel(".desktop");
+ide\editor.js:405●        var npd=curPrjDir.up().rel(np);
+ide\ImportHTMLDialog.js:58●                var f=dir.rel(fn);
+ide\ImportHTMLDialog.js:68●                var f=dir.rel(fn);
+ide\log.js:10●        return logHome.rel(y+"/").rel(m+"/").rel(da+"/");
+ide\log.js:10●        return logHome.rel(y+"/").rel(m+"/").rel(da+"/");
+ide\log.js:10●        return logHome.rel(y+"/").rel(m+"/").rel(da+"/");
+ide\log.js:17●        return Log.todayDir().rel(y+"-"+m+"-"+da+".log");
+ide\log.js:24●        return Log.todayDir().rel("Project/").rel(digit(h,2)+"_"+digit(m,2)+"_"+digit(s,2)+"/");
+ide\log.js:24●        return Log.todayDir().rel("Project/").rel(digit(h,2)+"_"+digit(m,2)+"_"+digit(s,2)+"/");
+ide\NewProjectDialog.js:45●    		model.dstDir=model.parentDir.rel(model.name+"/");
+ide\OggConverter.js:16●                var dst=src.up().rel(src.truncExt(ext)+".ogg");
+ide\ProjectItem.js:17●        var tn=f.rel("images/").rel("icon_thumbnail.png");
+ide\ProjectItem.js:17●        var tn=f.rel("images/").rel("icon_thumbnail.png");
+ide\ResEditor.js:12●        var rsrcDir=prj.getDir().rel(mediaInfo.path);
+ide\ResEditor.js:136●                    var itemFile=rsrcDir.rel(itemName+itemExt);
+ide\ResEditor.js:186●                                var itemFile=rsrcDir.rel(target.temp_itemName+target.temp_itemExt);
+ide\selProject.js:110●            /*var r=f.rel("options.json");
+ide\sysMod.js:29●        return this.getDir().rel("res.json");
+ide\sysMod.js:60●                        const tfile=dir.rel(item.url.substring(3));
+ide\thumbnail.js:17●        var imfile= prjdir.rel("images/").rel("icon_thumbnail.png");
+ide\thumbnail.js:17●        var imfile= prjdir.rel("images/").rel("icon_thumbnail.png");
+ide\wikiEditor.js:5●    var home=FS.get(Util.getQueryString("home",thome.rel("doc/").path()));
+----text----
+build\buildAll.js:31●        var r=f.text().replace(/(VERSION:)([0-9]+)(,\/\/EMBED_VERSION)/, function (t,a,b,c) {
+build\buildAll.js:34●        f.text(r);
+build\genROM.js:19●        file.text(buf.buf);
+fs\import.js:9●        var go=$("<button>").addClass("btn").addClass("btn-danger").text("OK").click(function () {
+fs\import.js:15●            $(this).text("Completed");
+fs\import.js:18●                $("<span>").text("Wipe existent data")
+fs\import.js:23●            $("<li>").text(f).appendTo(ul);
+fs\import.js:41●                f.text("");
+fs\ScriptTagFS.js:42●                f.text(o[fn].text);
+fs\Shell.js:151●    	f.text(f.exists() ? f.text() : "");
+fs\Shell.js:151●    	f.text(f.exists() ? f.text() : "");
+fsui\FileList.js:58●       	item(_curFile).text(itemText(_curFile,m));
+fsui\FileList.js:67●            path.text(dir.name()).attr({title:dir.path()});
+fsui\FileList.js:72●        var wait=$("<div>").text("Wait..");
+fsui\FileList.js:76●            elem.append($("<option>").text("Select..."));
+fsui\FileList.js:87●                        $("<span>").addClass("fileItem").text("[Up]")
+fsui\FileList.js:113●                var s=$("<span>").addClass("fileItem").text(itemText(f)).data("filename",f.path());
+fsui\FileList.js:147●            var progDOM=$("<pre>").css("height", runDialogParam.screenH+"px").text(f.text()).appendTo("#progs");
+fsui\FileList.js:147●            var progDOM=$("<pre>").css("height", runDialogParam.screenH+"px").text(f.text()).appendTo("#progs");
+fsui\FileList.js:169●                inf.editor.setValue(inf.file.text());
+fsui\FileMenu.js:69●                v.msg.text(r.reason);
+fsui\FileMenu.js:73●                v.msg.text(r.note || "");
+fsui\FileMenu.js:106●            var t=curFile.text();
+fsui\FileMenu.js:109●            nf.text(t);
+fsui\FileMenu.js:147●        f.text("");
+fsui\FileMenu.js:221●                prog.setValue(curFile.text());
+fsui\Shell2.js:137●                cand.text(canda.join(", "));
+help\HttpHelper.js:18●                s=$("<span>").text(s);
+ide\editor.js:150●                            $("<a>").attr("href","#").text(R("runClass",n)+(i==0?"(F9)":"")).click(F(function () {
+ide\editor.js:164●                        $("<a>").attr("href","#").text(R("stop")).click(F(function () {
+ide\editor.js:169●                        $("<a>").attr("href","#").text(R("selectMain")).click(F(dialogs.selectMain))
+ide\editor.js:343●            var old=curFile.text();
+ide\editor.js:346●                curFile.text(nw);
+ide\editor.js:358●            inf.editor.setValue(inf.file.text());
+ide\editor.js:362●    	fl.setModified(inf.file.text()!=inf.editor.getValue());
+ide\EditorPopupMarker.js:23●                popup.text(mesg).css({
+ide\ErrorDialog.js:57●        const mesgd=$("<div>").text(message+R("at")+src.name()+(typeof row=="number"?":"+row+":"+col:""));
+ide\ErrorDialog.js:59●            mesgd.append($("<button>").text(R("jumpToErrorPosition")).click(jump));
+ide\ErrorDialog.js:66●        const str=src.text();
+ide\ErrorDialog.js:78●            srcd.append($("<span>").text(str.substring(0,pos)));
+ide\ErrorDialog.js:80●            srcd.append($("<span>").text(str.substring(pos)));
+ide\ImageDetailEditor.js:69●        v.url.text(item.url);
+ide\ImportHTMLDialog.js:37●            t.vars.selDir.append($("<h1>").text(R("inputFolderPathForImport")));
+ide\ImportHTMLDialog.js:69●                f.text(o[fn].text);
+ide\log.js:47●        var t=(f.exists()?f.text():"");
+ide\log.js:48●        f.text(t+line+"\n");
+ide\NewProjectDialog.js:51●    		d.$vars.dstDir.text(model.dstDir+"");
+ide\optionFixer.js:32●            const t=f.text();
+ide\optionFixer.js:36●            if(t!==ft) f.text(ft);
+ide\optionFixer.js:50●                        plugins.detectNeeded(  f.text(), opt.plugins);
+ide\ProjectItem.js:116●            t.u.find(".projectName").text(np);
+ide\ResEditor.js:164●                                dragPoint.text("アップロード中...");
+ide\ResEditor.js:168●                                    dragPoint.text(dragMsg);
+ide\selProject.js:17●        $("#ls").text(R("storageUsage",Math.floor(capacity.max/1024), Math.floor(capacity.using/1024)));
+ide\selProject.js:33●                if (kw=="" || nd[0] && nd.text().toLowerCase().indexOf(kw)>=0 ) {
+ide\TextEditor.js:15●        fn.text(f.path());
+ide\TextEditor.js:16●        text.val(modw=orig=f.text());
+ide\TextEditor.js:47●            curF.text(text.val());
+ide\TextEditor.js:49●            orig=curF.text();
+ide\TextEditor.js:66●        if (tx!=fn.text()) {
+ide\TextEditor.js:67●            fn.text(tx);
+ide\thumbnail.js:13●        return f.text();
+ide\thumbnail.js:30●            imfile.text( url );
+lang\IndentBuffer.js:166●		$.srcRCM=Pos2RC(f.text());
+lang\IndentBuffer.js:167●		$.srcmap.setSourceContent(f.path(),f.text());
+lang\IndentBuffer.js:271●			$.mapFile.text($.mapStr);
+lang\IndentBuffer.js:275●			$.dstFile.text($.buf);
+----relPath----
+build\genROM.js:15●            var p=FS.get(dir).relPath(FS.get(WebSite.tonyuHome));
+fsui\FileMenu.js:196●            if (sysdir[dir.relPath(curPrjDir).replace(/\/*/,"")]) {
+ide\ResEditor.js:137●                    var itemRelPath="ls:"+itemFile.relPath(prj.getDir());
+ide\ResEditor.js:188●                                target.temp_v.url="ls:"+itemFile.relPath(prj.getDir());// fileContent;
+ide\ResEditor.js:358●                    cleanFile["ls:"+f.relPath(prj.getDir())]=f;
+ide\thumbnail.js:34●                url:"ls:"+imfile.relPath(prjdir)
+----name----
+build\genROM.js:18●        }, file.name());
+dialogs\Dialogs.js:65●                        dest=FS.get(WebSite.cwd).rel("Runtimes/").rel( curPrjDir.name());
+fs\Shell.js:72●            f=f.rel(t.name());
+fsui\FileList.js:67●            path.text(dir.name()).attr({title:dir.path()});
+fsui\FileList.js:127●        return f.name();
+fsui\FileMenu.js:66●            if (r.ok && r.file.exists()) r={ok:false, reason:R("fileExists",r.file.name())};
+fsui\FileMenu.js:140●        if (!confirm(R("deleteFileConfirm",curFile.name()))) return;
+fsui\FileMenu.js:154●        return f.name();
+fsui\FileMenu.js:197●                return {ok:false, reason:R("cannotUseKernelFiles",dir.name())};
+fsui\Shell2.js:125●                        canda.push(e.name());
+ide\copySample.js:10●        var n=dir.name();
+ide\editor.js:177●        var name=f.name();
+ide\editor.js:402●        var np=prompt(R("inputNewProjectName"), curPrjDir.name().replace(/\//g,""));
+ide\ErrorDialog.js:57●        const mesgd=$("<div>").text(message+R("at")+src.name()+(typeof row=="number"?":"+row+":"+col:""));
+ide\ErrorDialog.js:65●        console.log("src.name",src.name());
+ide\ProjectItem.js:9●    var name=FS.PathUtil.truncSEP(f.name());
+ide\searchDialog.js:30●                if (l.file.name().match(/^concat\.js/)) {
+ide\searchDialog.js:35●                                ["td",{on:{click:doLineClick}},l.file.name()+"("+l.lineNo+")"],
+ide\wikiEditor.js:39●        var n=f.name();
+----path----
+dialogs\Dialogs.js:103●                gui.Shell.showItemInFolder(f.path().replace(/\//g,root.require("path").sep));
+fs\DragDrop.js:55●                        status[itemFile.path()]={
+fs\DragDrop.js:66●                        status[itemFile.path()]={
+fs\DragDrop.js:70●                        if (actFile.path()!==itemFile.path()) {
+fs\DragDrop.js:70●                        if (actFile.path()!==itemFile.path()) {
+fs\DragDrop.js:71●                            status[itemFile.path()].redirectedTo=actFile;
+fsui\FileList.js:27●    	var fn=f.path();
+fsui\FileList.js:45●            if (_curDir.path()!=nDir.path() ) {
+fsui\FileList.js:45●            if (_curDir.path()!=nDir.path() ) {
+fsui\FileList.js:67●            path.text(dir.name()).attr({title:dir.path()});
+fsui\FileList.js:82●                        attr("value",p.path()).
+fsui\FileList.js:106●            var isCur=_curFile && _curFile.path()==f.path();
+fsui\FileList.js:106●            var isCur=_curFile && _curFile.path()==f.path();
+fsui\FileList.js:109●                        attr("value",f.path()).
+fsui\FileList.js:113●                var s=$("<span>").addClass("fileItem").text(itemText(f)).data("filename",f.path());
+fsui\FileList.js:145●        var inf=editors[f.path()];
+fsui\FileList.js:154●            inf=editors[f.path()]={file:f , editor: prog, dom:progDOM};
+fsui\FileMenu.js:168●        var i=editors[rm.path()]; //getCurrentEditorInfo();
+fsui\FileMenu.js:172●            delete editors[rm.path()];
+fsui\Shell2.js:124●                    if ( Util.startsWith(e.path(), f.path()) ) {
+fsui\Shell2.js:124●                    if ( Util.startsWith(e.path(), f.path()) ) {
+ide\editor.js:81●        prj: curPrjDir.path(),//???
+ide\editor.js:185●        return editors[f.path()];
+ide\ImportHTMLDialog.js:60●                t.vars.confirm.append(UI("div","[", ex,"]", f.path()));
+ide\log.js:34●        Log.append("Dumped project to "+out.path());
+ide\NewProjectDialog.js:15●                    toVal: function (v){ return v ? v.path() : "";}
+ide\OggConverter.js:9●        console.log("Convert mpx->ogg ",dir.path());
+ide\OggConverter.js:18●                    console.log("running",ffmpeg.path(),"-i",src.path(),dst.path());
+ide\OggConverter.js:18●                    console.log("running",ffmpeg.path(),"-i",src.path(),dst.path());
+ide\OggConverter.js:18●                    console.log("running",ffmpeg.path(),"-i",src.path(),dst.path());
+ide\OggConverter.js:19●                    var proc=spawn(ffmpeg.path(),["-i",src.path(),dst.path()]);
+ide\OggConverter.js:19●                    var proc=spawn(ffmpeg.path(),["-i",src.path(),dst.path()]);
+ide\OggConverter.js:19●                    var proc=spawn(ffmpeg.path(),["-i",src.path(),dst.path()]);
+ide\ProjectItem.js:34●            return "project2.html?dir="+f.path();
+ide\ProjectItem.js:36●        return "project.html?dir="+f.path();
+ide\ProjectItem.js:57●            on:{click:t.$bind.openSubmenu},"data-path":f.path() }," "],
+ide\ProjectItem.js:127●    gui.Shell.showItemInFolder(t.projectDir.path().replace(/\//g,require("path").sep));
+ide\ResEditor.js:247●                                    console.log(r.path()," is removed.");
+ide\selProject.js:56●        prj1dirList.append(UI("h2",{"class":"prjDirHeader"},curDir.path()));
+ide\selProject.js:68●                    location.href="project2.html?dir="+prjDir.path();
+ide\selProject.js:70●                    location.href="project.html?dir="+prjDir.path();
+ide\TextEditor.js:15●        fn.text(f.path());
+ide\TextEditor.js:65●        var tx=(_isModified?"*":"") + curF.path() + " - "+p.row+":"+p.col;
+ide\wikiEditor.js:5●    var home=FS.get(Util.getQueryString("home",thome.rel("doc/").path()));
+lang\IndentBuffer.js:167●		$.srcmap.setSourceContent(f.path(),f.text());
+----startsWith----
+fs\Assets.js:11●        if (Util.startsWith(url,"ls:")) {
+fs\blob.js:35●        if (Util.startsWith(url,BLOB_PATH_EXPR)) {
+fsui\Shell2.js:114●                    if (typeof sh[k]=="function" && Util.startsWith(k, fn)) {
+fsui\Shell2.js:124●                    if ( Util.startsWith(e.path(), f.path()) ) {
+----exists----
+fs\Assets.js:15●            if (!f.exists()) throw new Error("Resource file not found: "+f);
+fs\Assets.js:21●                if (oggf.exists()) {
+fs\DragDrop.js:28●                    if (f.exists()) return false;
+fs\import.js:40●            if (!f.exists()) {
+fs\Shell.js:41●        if (mustExist && !r.exists()) throw new Error(r+": no such file or directory");
+fs\Shell.js:71●        if (f.isDir() && f.exists()) {
+fs\Shell.js:74●        if (f.exists()) {
+fs\Shell.js:91●                if (f.exists()) {
+fs\Shell.js:104●        if (file.exists()) throw new Error(file+" : exists");
+fs\Shell.js:151●    	f.text(f.exists() ? f.text() : "");
+fs\Shell.js:188●        return f.exists();
+fsui\FileList.js:93●        if (_curFile && !_curFile.exists()) {
+fsui\FileMenu.js:66●            if (r.ok && r.file.exists()) r={ok:false, reason:R("fileExists",r.file.name())};
+fsui\FileMenu.js:86●            if (!f.exists()) {
+fsui\FileMenu.js:220●            if (curFile.exists() && prog) {
+ide\copySample.js:6●        if (!samples.exists()) return;
+ide\copySample.js:11●        return samples.rel(n).exists() && projects.equals(dir.up());
+ide\copySample.js:19●        if (src.exists() && !dst.exists()) {
+ide\copySample.js:19●        if (src.exists() && !dst.exists()) {
+ide\editor.js:42●    var mobile=WebSite.mobile || FS.get(WebSite.tonyuHome).rel("mobile.txt").exists();
+ide\editor.js:76●    if (!resf.exists()) resf.obj(WebSite.defaultResource);
+ide\editor.js:138●            if (!f.exists()) {
+ide\editor.js:356●        if (!inf.file.exists()) return;
+ide\editor.js:368●        if (d.exists()) {
+ide\editor.js:406●        if (npd.exists()) {
+ide\ErrorDialog.js:49●                    if (src.exists()) break;
+ide\ImportHTMLDialog.js:59●                var ex=f.exists()?R("ovr"):R("new");
+ide\log.js:4●    var doLog=logHome && logHome.exists();
+ide\log.js:38●        if (varlog.exists() && varlog.fs.storage===localStorage) {
+ide\log.js:47●        var t=(f.exists()?f.text():"");
+ide\NewProjectDialog.js:46●            if (model.dstDir.exists()) {
+ide\OggConverter.js:8●        if (!ffmpeg.exists()) return;
+ide\OggConverter.js:17●                if (!dst.exists()) {
+ide\optionFixer.js:28●            if (!f.exists()) {
+ide\ProjectItem.js:18●        if (tn.exists()) {
+ide\ProjectItem.js:107●    return npd.exists(function (e) {
+ide\ResEditor.js:356●            if (rsrcDir.exists()) {
+ide\ResEditors.js:34●                if (rsrcDir.exists()) {
+ide\selProject.js:48●        if (!curDir.exists()) {
+ide\selProject.js:111●            if (r.exists()) {
+ide\sysMod.js:18●            if (o.exists()) o.rm();
+ide\sysMod.js:33●        if (resFile.exists()) {
+ide\sysMod.js:61●                        if (tfile.exists()) tfile.rm();
+ide\thumbnail.js:12●        if (!f.exists()) return null;
+----getURL----
+fs\Assets.js:25●            url=f.getURL();
+ide\ProjectItem.js:19●            u.$vars.t.attr("src",tn.getURL());
+----each----
+fs\DragDrop.js:48●            DU.each(files,function (file) {
+fs\import.js:39●        dir.each(function (f) {
+fs\ScriptTagFS.js:6●	    scrs.each(function (){
+fs\Shell.js:90●            dir.each(function (f) {
+fs\Shell.js:128●            file.each(function (e) {
+fsui\FileList.js:28●    	items.find(selbox?"option":"span").each(function () {
+fsui\Shell2.js:123●                d.each(function (e) {
+ide\editor.js:127●        curPrjDir.each(function (f) {
+ide\NWMenu.js:61●        parent.$("iframe").each(function () {
+ide\OggConverter.js:10●        dir.each(function (src) {
+ide\optionFixer.js:48●                /*dir.each(function (f) {
+ide\ResEditor.js:357●                rsrcDir.each(function (f) {
+ide\selProject.js:30●            $(".project").each(function () {
+ide\selProject.js:107●        curDir.each(function (f) {
+ide\selProject.js:119●        return DU.each(d,function (e) {
+----setBytes----
+fs\DragDrop.js:65●                        actFile.setBytes(fileContent);
+fs\ScriptTagFS.js:44●                f.setBytes(Content.url(o[fn].text).toByteArray() );
+ide\ResEditor.js:187●                                itemFile.setBytes(fileContent);
+----isDir----
+fs\import.js:43●            if (f.isDir()) {
+fs\Shell.js:71●        if (f.isDir() && f.exists()) {
+fs\Shell.js:87●        if (file.isDir() && options.r) {
+fs\Shell.js:127●        if (file.isDir()) {
+fsui\FileList.js:40●        if (f.isDir()) {
+fsui\FileList.js:70●        if (!_curDir.isDir()) return;
+fsui\FileList.js:138●        if (f.isDir()) {
+fsui\Shell2.js:122●                var d=(f.isDir() ? f : f.up());
+ide\editor.js:178●        if (f.isDir()) return name;
+ide\selProject.js:108●            if (!f.isDir()) return;
+ide\selProject.js:121●            if (!f.isDir()) return;
+ide\wikiEditor.js:18●        if (!file.isDir()) {
+----rm----
+fs\import.js:46●                f.rm();
+fs\import.js:49●        dir.rm();
+fs\Shell.js:92●                    sum+=Shell.rm(f, options);
+fs\Shell.js:95●            dir.rm();
+fs\Shell.js:98●            file.rm();
+fsui\FileMenu.js:107●            curFile.rm();
+fsui\FileMenu.js:141●        curFile.rm();
+ide\editor.js:398●        sh.rm(curPrjDir,{r:1});
+ide\editor.js:411●        sh.rm(curPrjDir,{r:1});
+ide\ProjectItem.js:89●            t.projectDir.rm({r:1});
+ide\ResEditor.js:248●                                    r.rm();
+ide\sysMod.js:18●            if (o.exists()) o.rm();
+ide\sysMod.js:61●                        if (tfile.exists()) tfile.rm();
+----isText----
+fs\ScriptTagFS.js:41●            if (f.isText()) {
+fs\Shell.js:111●            if (file.isText()) {
+----err----
+fs\Shell.js:20●            sh.err("-t=("+fst.join("|")+") should be specified.");
+fsui\Shell2.js:102●                sh.err(e);
+----ls----
+fs\Shell.js:56●        return dir.ls();
+fsui\FileMenu.js:160●        FM.fileList.ls(dir);
+ide\copySample.js:7●        samples.ls().forEach(cs);
+ide\editor.js:124●    fl.ls(curPrjDir);
+ide\wikiEditor.js:22●            f.ls();
+ide\wikiEditor.js:45●    f.ls(home);
+----copyTo----
+fs\Shell.js:66●        return f.copyTo(t,options);
+----link----
+fs\Shell.js:77●        return f.link(t,options);
+----removeWithoutTrash----
+fs\Shell.js:83●            file.removeWithoutTrash();
+ide\log.js:39●            varlog.removeWithoutTrash({r:true});
+----mkdir----
+fs\Shell.js:105●        return file.mkdir();
+ide\selProject.js:50●                curDir.mkdir();
+ide\selProject.js:65●                prjDir.mkdir();
+----getContent----
+fs\Shell.js:110●        return Shell.echo(file.getContent(function (c) {
+fsui\Shell2.js:153●            return file.getContent(function (c) {
+----lines----
+fs\Shell.js:133●                file.lines().forEach(function (line, i) {
+----download----
+fs\Shell.js:192●        return f.download();
+ide\ProjectItem.js:88●        return (dl?t.download():DU.resolve()).then(function () {
+----up----
+fsui\FileList.js:44●            var nDir=f.up();
+fsui\FileList.js:78●        var p=_curDir.up();
+fsui\Shell2.js:122●                var d=(f.isDir() ? f : f.up());
+ide\copySample.js:11●        return samples.rel(n).exists() && projects.equals(dir.up());
+ide\editor.js:405●        var npd=curPrjDir.up().rel(np);
+ide\OggConverter.js:16●                var dst=src.up().rel(src.truncExt(ext)+".ogg");
+----equals----
+fsui\FileList.js:79●        if (p && !_curDir.equals(options.topDir)) {
+ide\copySample.js:11●        return samples.rel(n).exists() && projects.equals(dir.up());
+----listFiles----
+fsui\FileList.js:97●        var dirs=_curDir.listFiles();
+----isReadOnly----
+fsui\FileList.js:123●    	return (mod?"*":"")+(f.isReadOnly()?"[RO]":"")+displayName(f);
+ide\editor.js:341●        if (curFile && prog && !curFile.isReadOnly()) {
+----lastUpdate----
+fsui\FileList.js:168●            if (inf.lastTimeStamp<inf.file.lastUpdate()) {
+fsui\FileList.js:171●                inf.lastTimeStamp=inf.file.lastUpdate();
+fsui\FileList.js:178●        inf.lastTimeStamp=inf.file.lastUpdate();
+ide\editor.js:348●                inf.lastTimeStamp=curFile.lastUpdate();
+ide\editor.js:357●        if (inf.lastTimeStamp<inf.file.lastUpdate()) {
+ide\editor.js:360●            inf.lastTimeStamp=inf.file.lastUpdate();
+ide\selProject.js:109●            var l=f.lastUpdate();
+ide\selProject.js:112●                l=r.lastUpdate();
+----truncExt----
+fsui\FileMenu.js:121●        var oldCN=old.truncExt(EXT);
+fsui\FileMenu.js:122●        var newCN=_new.truncExt(EXT);
+ide\editor.js:129●                var n=f.truncExt(EXT);
+ide\editor.js:179●        if (f.endsWith(EXT)) return f.truncExt(EXT);
+ide\OggConverter.js:16●                var dst=src.up().rel(src.truncExt(ext)+".ogg");
+----contentType----
+fsui\Shell2.js:152●        if (file.contentType().match(/^image\//)) {
+----endsWith----
+graphics\gif\GIFEncoder.js:207●			filename= filename !== undefined ? ( filename.endsWith(".gif")? filename: filename+".gif" ): "download.gif";
+ide\editor.js:128●            if (f.endsWith(EXT)) {
+ide\editor.js:179●        if (f.endsWith(EXT)) return f.truncExt(EXT);
+ide\OggConverter.js:11●            if (/*src.endsWith(".mp3") ||*/ src.endsWith(".mp4") || src.endsWith(".m4a")) {
+ide\OggConverter.js:11●            if (/*src.endsWith(".mp3") ||*/ src.endsWith(".mp4") || src.endsWith(".m4a")) {
+ide\OggConverter.js:11●            if (/*src.endsWith(".mp3") ||*/ src.endsWith(".mp4") || src.endsWith(".m4a")) {
+ide\OggConverter.js:13●                if (src.endsWith(".mp3")) ext=".mp3";
+ide\OggConverter.js:14●                if (src.endsWith(".mp4")) ext=".mp4";
+ide\OggConverter.js:15●                if (src.endsWith(".m4a")) ext=".m4a";
+ide\optionFixer.js:49●                    if (f.endsWith(TPR.EXT)) {
+ide\ResEditor.js:23●                if (Util.endsWith(u,".ogg")) {
+ide\ResEditor.js:25●                } else if (Util.endsWith(u,".mp3")) {
+ide\ResEditor.js:27●                } else if (Util.endsWith(u,".mzo")) {
+ide\ResEditor.js:29●                } else if (Util.endsWith(u,".mp4")) {
+ide\ResEditor.js:31●                } else if (Util.endsWith(u,".m4a")) {
+ide\ResEditor.js:33●                } else if (Util.endsWith(u,".mid") || Util.endsWith(u,".midi")) {
+ide\ResEditor.js:33●                } else if (Util.endsWith(u,".mid") || Util.endsWith(u,".midi")) {
+ide\ResEditor.js:35●                } else if (Util.endsWith(u,".wav")) {
+ide\wikiEditor.js:40●        if (f.endsWith(".txt")) {
+----obj----
+ide\compiledTonyuProject.js:9●            getOptions(opt) {return this.getOptionsFile().obj();},
+ide\compiledTonyuProject.js:11●            setOptions(opt) {return this.getOptionsFile().obj(opt);},
+ide\editor.js:76●    if (!resf.exists()) resf.obj(WebSite.defaultResource);
+ide\editor.js:369●            res=d.obj();
+ide\editor.js:379●        d.obj(desktopEnv);
+ide\optionFixer.js:29●                f.obj(defaultOptions);
+ide\sysMod.js:34●            var res=resFile.obj();
+ide\sysMod.js:77●        resFile.obj(rsrc);
+----touch----
+ide\editor.js:280●        curPrjDir.touch();
+----moveTo----
+ide\ImageDetailEditor.js:187●        ctx.moveTo(rect.left,rect.top);
+ide\ProjectItem.js:113●        return t.projectDir.moveTo(npd).then(function () {
+----sibling----
+ide\ProjectItem.js:106●    var npd=t.projectDir.sibling(np+"/");
+----contains----
+ide\ResEditor.js:246●                                if (FS.isFile(r) && rsrcDir.contains(r)) {
+----getBlob----
+lib\jszip.js:2738●            exports.blob = builder.getBlob('application/zip').size === 0;
+lib\jszip.js:3085●            return builder.getBlob(type);
+----observe----
+lib\jszip.js:4502●    observer.observe(element, {
+----constructor----

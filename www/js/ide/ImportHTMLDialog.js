@@ -7,6 +7,11 @@ function (east,UI,Klass,NPD,STF,R) {
             t.dom.dialog({width:800,height:600});
             //console.log("imp.dom.data",$.data(t.dom[0],"ui-dialog"));
             t.mode("src");
+            if ($("#importing").length) {
+                t.vars.prog.val($("#importing").val());
+                $("#importing").remove();
+                t.selDir();
+            }
         },
         createDOM:function (t) {
             if (t.dom) return t.dom;
