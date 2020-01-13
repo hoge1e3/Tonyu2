@@ -1,21 +1,23 @@
 /*global process, require, BuiltinAssets */
-define(["FS","Platform"], function (FS,Platform) {
+define(["FS","Platform","root"], function (FS,Platform,root) {
 	var P=FS.PathUtil;
 	var loc=document.location.href;
-	var WebSite;
+	const WebSite=root.WebSite||{};
+	root.WebSite=WebSite;
+	WebSite.runType=WebSite.runType||root.WebSite_runType;
 	var prot=location.protocol;
 	var k;
 
 	var VER=1577939333917;
+	FS.setEnvProvider(new FS.Env(WebSite));
 	if (!prot.match(/^http/)) prot="https:";
-	switch(window.WebSite_runType) {
+	switch(WebSite.runType) {
 	case "IDE":
-		WebSite={
+		Object.assign(WebSite,{
 			urlAliases: {}, top: ".",
 			tablet:Platform.tablet,
 			mobile:Platform.mobile
-		};
-
+		});
 		WebSite.builtinAssetNames={
 			"images/Ball.png":{name:"$pat_ball", url: "images/Ball.png"},
 			"images/base.png":{name:"$pat_base", url: "images/base.png", pwidth:32, pheight:32},
@@ -89,16 +91,14 @@ define(["FS","Platform"], function (FS,Platform) {
 		}
 		WebSite.sysVersion=VER;
 		WebSite.version=2;
-		FS.setEnvProvider(new FS.Env(WebSite));
 		setDefaultResource(WebSite);
-		window.WebSite=WebSite;
 		return WebSite;
 	case "singleHTML":
-		WebSite={
+		Object.assign(WebSite,{
 			urlAliases: {}, top: ".",
 			tablet:Platform.tablet,
 			mobile:Platform.mobile
-		};
+		});
 		if (typeof BuiltinAssets==="object") {
 			for (k in BuiltinAssets) {
 				WebSite.urlAliases[k]=BuiltinAssets[k];
@@ -116,17 +116,15 @@ define(["FS","Platform"], function (FS,Platform) {
 		WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
 		WebSite.PathSep="/";
 		WebSite.compiledKernel=WebSite.scriptServer+"Kernel/js/concat.js";
-		FS.setEnvProvider(new FS.Env(WebSite));
 		WebSite.sysVersion=VER;
 		setDefaultResource(WebSite);
-		window.WebSite=WebSite;
 		return WebSite;
 	case "multiHTML":
-		WebSite={
+		Object.assign(WebSite,{
 			urlAliases: {}, top: ".",
 			tablet:Platform.tablet,
 			mobile:Platform.mobile
-		};
+		});
 		WebSite.tonyuHome="/Tonyu/";
 		WebSite.pluginTop=WebSite.top+"/js/plugins";
 		WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
@@ -140,14 +138,12 @@ define(["FS","Platform"], function (FS,Platform) {
 		// this sets at runScript2.js
 		//WebSite.compiledKernel=WebSite.top+"/js/kernel.js";
 		//-------------
-		FS.setEnvProvider(new FS.Env(WebSite));
 		WebSite.sysVersion=VER;
-		window.WebSite=WebSite;
 		return WebSite;
 	case "manual":// for BitArrow
-		return window.WebSite;
+		return WebSite;
 	default:
-		throw new Error("WebSite_runType is not set");
+		throw new Error("WebSite.runType is not set");
 	}
 	function setDefaultResource(WebSite) {
 		WebSite.defaultResource={
