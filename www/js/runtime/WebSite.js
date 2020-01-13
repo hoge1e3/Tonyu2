@@ -9,7 +9,6 @@ define(["FS","Platform","root"], function (FS,Platform,root) {
 	var k;
 
 	var VER=1577939333917;
-	FS.setEnvProvider(new FS.Env(WebSite));
 	if (!prot.match(/^http/)) prot="https:";
 	switch(WebSite.runType) {
 	case "IDE":
@@ -89,6 +88,7 @@ define(["FS","Platform","root"], function (FS,Platform,root) {
 			WebSite.newVersionUrl=prot+"//www.tonyu.jp/project/newVersion.cgi";
 			WebSite.scriptServer="https://edit.tonyu.jp/";
 		}
+		FS.setEnvProvider(new FS.Env(WebSite));
 		WebSite.sysVersion=VER;
 		WebSite.version=2;
 		setDefaultResource(WebSite);
@@ -116,6 +116,7 @@ define(["FS","Platform","root"], function (FS,Platform,root) {
 		WebSite.isNW=(typeof process=="object" && (process.__node_webkit||process.__nwjs));
 		WebSite.PathSep="/";
 		WebSite.compiledKernel=WebSite.scriptServer+"Kernel/js/concat.js";
+		FS.setEnvProvider(new FS.Env(WebSite));
 		WebSite.sysVersion=VER;
 		setDefaultResource(WebSite);
 		return WebSite;
@@ -138,6 +139,7 @@ define(["FS","Platform","root"], function (FS,Platform,root) {
 		// this sets at runScript2.js
 		//WebSite.compiledKernel=WebSite.top+"/js/kernel.js";
 		//-------------
+		FS.setEnvProvider(new FS.Env(WebSite));
 		WebSite.sysVersion=VER;
 		return WebSite;
 	case "manual":// for BitArrow
