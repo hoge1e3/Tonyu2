@@ -1,4 +1,4 @@
-const FS=require("./FS");
+const FS=require("./SoyFS");
 const js=FS.get(process.cwd()).rel("../www/js/");
 
 const exclude={"R.js":1,"TonyuRuntime.js":1,
