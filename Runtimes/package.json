@@ -1,6 +1,6 @@
 {
   "name": "Tonyu2-runtime",
-  "main": "Demo/index.html",
+  "main": "Tamaotosi/index.html",
   "single-instance": false,
   "window": {
     "width": 1024,

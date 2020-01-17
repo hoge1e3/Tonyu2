@@ -1,4 +1,4 @@
-/*global process, require, BuiltinAssets */
+/*global process, require, BuiltinAssets, requirejs, global */
 define(["FS","Platform","root"], function (FS,Platform,root) {
 	var P=FS.PathUtil;
 	var loc=document.location.href;
@@ -8,7 +8,7 @@ define(["FS","Platform","root"], function (FS,Platform,root) {
 	var prot=location.protocol;
 	var k;
 
-	var VER=1577939333917;
+	var VER=1579225723333;
 	if (!prot.match(/^http/)) prot="https:";
 	switch(WebSite.runType) {
 	case "IDE":
@@ -132,7 +132,7 @@ define(["FS","Platform","root"], function (FS,Platform,root) {
 		WebSite.PathSep="/";
 		WebSite.mp4Disabled=WebSite.isNW;
 		if (WebSite.isNW) {
-			WebSite.PathSep=require("path").sep;
+			WebSite.PathSep=getPathSep();
 			WebSite.cwd=P.directorify(process.cwd().replace(/\\/g,"/"));
 			WebSite.platform=process.platform;
 		}
@@ -164,5 +164,19 @@ define(["FS","Platform","root"], function (FS,Platform,root) {
 		getFiles:WebSite.serverTop+"/File2LSSync",
 		putFiles:WebSite.serverTop+"/LS2FileSync"
 	};*/
-
+	function getPathSep() {
+		const requireTries=[
+			()=>require("path"),
+			()=>requirejs.nodeRequire("path"),
+			()=>global.require("path")
+		];
+		for (let fsf of requireTries) {
+			try {
+				const path=fsf();
+				if (typeof path.sep==="string") return path.sep;
+			} catch(e){
+			}
+		}
+		return "/";
+	}
 });
