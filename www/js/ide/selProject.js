@@ -125,9 +125,13 @@ $(function () {
         });
     }
     var importHTMLDialog=new ImportHTMLDialog({
-        onComplete: function (){
+        onComplete: function ({dir}){
             //prjDirs.forEach(ls);
-            location.reload();
+            if (dir) {
+                location.href="project2.html?dir="+dir.path()+"&autoRun=1";
+            } else {
+                location.reload();
+            }
         },
         prjDirs:prjDirs
     });
@@ -137,6 +141,17 @@ $(function () {
     if (Util.getQueryString("importFromHTML")) {
         importHTMLDialog.show();
     }
+    window.addEventListener("message",function (e) {
+        console.log(e);
+        switch(e.data.type) {
+        case "ping":
+            e.source.postMessage({type:"pong"},e.origin);
+            break;
+        case "import":
+            importHTMLDialog.show(e.data);
+            break;
+        }
+    });
     sh.cd(FS.get(WebSite.projects[0]));
     extLink.all();
     sh.wikiEditor=function () {document.location.href="wikiEditor.html";};

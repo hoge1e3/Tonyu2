@@ -1,9 +1,9 @@
 /*global requirejs*/
 requirejs(["FS","Tonyu","IDEProject","Shell","ScriptTagFS",
-			"runtime","WebSite","root","runScript_common",
+			"runtime","WebSite","root","runScript_common","EditButton",
 			"Debugger","SourceFiles","sysMod","ProjectFactory","CompiledProject","optionFixer"],
 		function (FS,  Tonyu, IDEProject, sh, ScriptTagFS,
-				rt,WebSite,root,com,
+				rt,WebSite,root,com,EditButton,
 				Debugger,SourceFiles,sysMod,F,CompiledProject,optionFixer) {
 	$(function () {
 		var home=FS.get(WebSite.tonyuHome);
@@ -76,6 +76,7 @@ requirejs(["FS","Tonyu","IDEProject","Shell","ScriptTagFS",
 			console.log("RAWBoot");
 			debuggerPrj.fixBootRunClasses();
 			debuggerPrj.rawBoot(o.run.bootClass);
+			EditButton.show();
 			prjDir.watch((type, file)=>{
 				if (!file.endsWith(".tonyu")) return;
 				console.log("modifai",type,file,arguments);

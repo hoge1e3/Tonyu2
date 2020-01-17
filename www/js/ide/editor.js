@@ -47,6 +47,7 @@ $(function () {
         $("#fileSel").show();
     }
     var dir=Util.getQueryString("dir", "/Tonyu/Projects/SandBox/");
+    const autoRun=Util.getQueryString("autoRun");
     var curPrjDir=FS.get(dir);
     const optionFile=curPrjDir.rel("options.json");
     optionFixer.fixFile(optionFile);
@@ -124,11 +125,16 @@ $(function () {
     fl.ls(curPrjDir);
     refreshRunMenu();
     function refreshRunMenu() {
+        const runMenuOrdWasEmpty=runMenuOrd.length==0;
         curPrjDir.each(function (f) {
             if (f.endsWith(EXT)) {
                 var n=f.truncExt(EXT);
                 if (runMenuOrd.indexOf(n)<0) {
-                    runMenuOrd.push(n);
+                    if (runMenuOrdWasEmpty && n==="Main") {
+                        runMenuOrd.unshift(n);
+                    } else {
+                        runMenuOrd.push(n);
+                    }
                 }
             }
         });
@@ -418,5 +424,12 @@ $(function () {
     };
     if (root.SplashScreen) root.SplashScreen.hide();
     extLink.all();
+    if (autoRun) {
+        run(runMenuOrd[0]);
+        const file=curPrjDir.rel(runMenuOrd[0]+EXT);
+        if (file.exists()) {
+            fl.select(file);
+        }
+    }
 });
 });

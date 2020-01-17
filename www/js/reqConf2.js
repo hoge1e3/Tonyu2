@@ -309,6 +309,7 @@ var reqConf={
                 "workerLoader": 1
             },
             "social": {
+                EditButton:1,
                 splashElement:1,
                 "exportAsScriptTags": 1,
                 "exportToExe": 1,

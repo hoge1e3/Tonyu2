@@ -2,15 +2,19 @@ define(["exportAsScriptTags","UI","Klass","NewProjectDialog","ScriptTagFS","R"],
 function (east,UI,Klass,NPD,STF,R) {
     const ImportHTMLDialog=Klass.define({
         $this:true,
-        show: function (t/*,options*/) {
+        show: function (t,options) {
+            options=options||{};
             t.createDOM();
             t.dom.dialog({width:800,height:600});
             //console.log("imp.dom.data",$.data(t.dom[0],"ui-dialog"));
             t.mode("src");
-            if ($("#importing").length) {
-                t.vars.prog.val($("#importing").val());
+            const src=($("#importing").length && $("#importing").val())||
+                options.content;
+            if (src) {
+                console.log(src);
+                t.vars.prog.val(src);
                 $("#importing").remove();
-                t.selDir();
+                t.selDir({defName:options.defName});
             }
         },
         createDOM:function (t) {
@@ -37,12 +41,21 @@ function (east,UI,Klass,NPD,STF,R) {
             t.vars=t.dom.$vars;
             return t.dom;
         },
-        selDir: function (t) {
-            t.vars.selDir.empty();
-            t.vars.selDir.append($("<h1>").text(R("inputFolderPathForImport")));
-            t.vars.selDir.append( NPD.embed(
-                t.prjDirs[0],t.$bind.confirm,{}
-            ));
+        selDir: function (t,options) {
+            options=options||{};
+            if (options.defName) {
+                const defDir=t.prjDirs[0].rel(options.defName.replace(/\/$/,"")+"/");
+                t.confirm(defDir);
+                return;
+            } 
+            //t.vars.selDir.empty();
+            if (!t.selDirShown) {
+                t.vars.selDir.append($("<h1>").text(R("inputFolderPathForImport")));
+                t.vars.selDir.append( NPD.embed(
+                    t.prjDirs[0],t.$bind.confirm,{defName: options.defName}
+                ));
+                t.selDirShown=true;
+            }
             t.mode("selDir");
         },
         confirm: function confirm(t,dir) {
@@ -54,15 +67,23 @@ function (east,UI,Klass,NPD,STF,R) {
                     buf+=l+"\n";
                 }
             });
+            console.log("buf",buf);
             t.vars.files.html(buf);
             t.mode("confirm");
             t.vars.confirm.empty();
-            t.vars.confirm.append(UI("div",["button",{on:{click:t.$bind.complete}},R("startImport")]));
+            t.vars.confirm.append(UI("div",dir.path(),":",R("folderExists")));
+            t.vars.confirm.append(UI("div",["button",{on:{click:t.$bind.selDir}},R("selectOtherFolder")]));
+            t.vars.confirm.append(UI("div",["button",{on:{click:t.$bind.complete}},R("overwriteFolder")]));
             var o=STF.toObj();
+            let hasOvr;
             for (var fn in o) {
                 var f=dir.rel(fn);
+                if (f.exists()) hasOvr=true;
                 var ex=f.exists()?R("ovr"):R("new");
                 t.vars.confirm.append(UI("div","[", ex,"]", f.path()));
+            }
+            if (!hasOvr) {
+                t.complete();
             }
         },
         complete: function run(t) {
@@ -76,7 +97,7 @@ function (east,UI,Klass,NPD,STF,R) {
             t.vars.complete.empty();
             t.vars.complete.append(UI("h1",R("importComplete")));
             t.dom.dialog("close");
-            t.onComplete();
+            t.onComplete({dir});
         },
         mode:function mode(t,n) {
             ["src","selDir","confirm","complete"].forEach(function (k) {

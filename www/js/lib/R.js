@@ -44,6 +44,8 @@ define(function (require,exports,module) {
         "add": "追加",
         "ok": "完了",
         "importFromHTML": "HTMLからインポート",
+        "overwriteFolder": "フォルダを上書きする",
+        "selectOtherFolder": "他のフォルダを選択する",
         "pasteHTMLHere": "ここにHTMLを貼り付けます",
         "inputFolderPathForImport": "インポート先のフォルダを入力してください",
         "startImport": "インポート開始",
