@@ -243,6 +243,7 @@ var reqConf={
             "lib": {
                 R:1,
                 jshint:1,
+                "Mesg":1, 
                 "miniJSLoader":1,
                 "Class": 1,
                 "FileSaver.min": "FileSaver",

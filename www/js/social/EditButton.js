@@ -1,27 +1,30 @@
 define(function (require, exports) {
     const WebSite=require("WebSite");
+    const Mesg=require("Mesg");
+    let sender,button;
     exports.show=function () {
         if (WebSite.useEditButton) {
-            $("<button>").text("Edit...").click(doEdit).
-            css({"position":"absolute",left:0,top:0}).appendTo("body");
+            Mesg.init().then(()=>{
+                button=$("<button>").text("Edit...").click(doEdit).
+                css({"position":"absolute",left:0,top:0}).appendTo("body");
+            });
         }
     };
-    let commOK,wnd;
-    window.addEventListener("message",function (e) {
+    //let commOK,wnd;
+    /*window.addEventListener("message",function (e) {
         console.log(e);
         if (e.data.type=="pong") {
             commOK=true;
         }
-    });
-    function doEdit() {
-        commOK=false;
-        wnd=window.open(WebSite.scriptServer);
-        sendPing();
-    }
-    function sendPing() {
-        wnd.postMessage({type:"ping"}, WebSite.scriptServer.replace(/\/tonyu2\/?/,""));
-        if (!commOK) setTimeout(sendPing,500);
-        else startComm();
+    });*/
+    async function doEdit() {
+        button.prop("disabled",true);
+        sender=Mesg.createSender();
+        const url=sender.genURL(WebSite.scriptServer);
+        console.log(url);
+        window.open(url);
+        await sender.waitForReceiver();
+        startComm();
     }
     function startComm() {
         let buf="";
@@ -36,13 +39,15 @@ define(function (require, exports) {
             defName=_1;
         });
         defName=defName.replace(/[^a-zA-Z0-9\-]/g,"");
-
-        wnd.postMessage({
+        sender.postMessage({
             type:"import",
             url,
             defName,
             content:buf//"<html>"+document.querySelector("html").innerHTML+"</html>"
-        },WebSite.scriptServer);
+        });
+        sender.dispose();
+        sender=null;
+        button.prop("disabled",false);
     }
     //exports={};
 });

@@ -47,7 +47,7 @@ function (east,UI,Klass,NPD,STF,R) {
                 const defDir=t.prjDirs[0].rel(options.defName.replace(/\/$/,"")+"/");
                 t.confirm(defDir);
                 return;
-            } 
+            }
             //t.vars.selDir.empty();
             if (!t.selDirShown) {
                 t.vars.selDir.append($("<h1>").text(R("inputFolderPathForImport")));
@@ -71,19 +71,27 @@ function (east,UI,Klass,NPD,STF,R) {
             t.vars.files.html(buf);
             t.mode("confirm");
             t.vars.confirm.empty();
-            t.vars.confirm.append(UI("div",dir.path(),":",R("folderExists")));
-            t.vars.confirm.append(UI("div",["button",{on:{click:t.$bind.selDir}},R("selectOtherFolder")]));
-            t.vars.confirm.append(UI("div",["button",{on:{click:t.$bind.complete}},R("overwriteFolder")]));
+            t.vars.confirm.append(UI("div",R("followingFilesWillBeOverwritten")));
             var o=STF.toObj();
             let hasOvr;
             for (var fn in o) {
                 var f=dir.rel(fn);
-                if (f.exists()) hasOvr=true;
-                var ex=f.exists()?R("ovr"):R("new");
-                t.vars.confirm.append(UI("div","[", ex,"]", f.path()));
+                const w=willBeOverwritten(f, o[fn].text);
+                if (w) {
+                    hasOvr=true;
+                    t.vars.confirm.append(UI("div", f.path()));
+                }
+                //var ex=f.exists()?R("ovr"):R("new");
+                //t.vars.confirm.append(UI("div","[", ex,"]", f.path()));
             }
+            t.vars.confirm.append(UI("div",["button",{on:{click:t.$bind.selDir}},R("selectOtherFolder")]));
+            t.vars.confirm.append(UI("div",["button",{on:{click:t.$bind.complete}},R("overwriteTheseFiles")]));
+            t.vars.confirm.append(UI("div",["button",{on:{click:doNotOverrite}},R("openTheProjectWithoutOverwrite")]));
             if (!hasOvr) {
                 t.complete();
+            }
+            function doNotOverrite() {
+                t.onComplete({dir});
             }
         },
         complete: function run(t) {
@@ -106,5 +114,9 @@ function (east,UI,Klass,NPD,STF,R) {
             t.vars[n].show();
         }
     });
+    function willBeOverwritten(f, text) {
+        if (!f.exists()) return false;
+        return (f.text()!==text);
+    }
     return ImportHTMLDialog;
 });

@@ -1,11 +1,11 @@
 /*global requirejs*/
 requirejs(["FS","Wiki","Shell","Shell2",
            /*"copySample",*/"NewProjectDialog","UI","Sync","Auth",
-           "zip","requestFragment","WebSite","extLink","DeferredUtil",
+           "zip","requestFragment","WebSite","extLink","DeferredUtil","Mesg",
        "ZipImporter","ProjectItem","ImportHTMLDialog","Util","root","R"],
   function (FS, Wiki,   sh,sh2,
             /*copySample,  */NPD,           UI, Sync, Auth,
-            zip,requestFragment,WebSite,extLink,DU,
+            zip,requestFragment,WebSite,extLink,DU,Mesg,
         ZipImporter,ProjectItem,ImportHTMLDialog,Util,root,R) {
 $(function () {
     var HNOP="javascript_:;".replace(/_/,"");
@@ -141,21 +141,18 @@ $(function () {
     if (Util.getQueryString("importFromHTML")) {
         importHTMLDialog.show();
     }
-    window.addEventListener("message",function (e) {
-        console.log(e);
-        switch(e.data.type) {
-        case "ping":
-            e.source.postMessage({type:"pong"},e.origin);
-            break;
-        case "import":
-            importHTMLDialog.show(e.data);
-            break;
-        }
+    let hideSplashScreenOnImport;
+    Mesg.init().then(async ()=>{
+        if (!Mesg.receiver) return;
+        hideSplashScreenOnImport=true;
+        const e=await Mesg.receiver.waitForSender();
+        importHTMLDialog.show(e.data);
+        root.SplashScreen.hide();
     });
     sh.cd(FS.get(WebSite.projects[0]));
     extLink.all();
     sh.wikiEditor=function () {document.location.href="wikiEditor.html";};
     $($("button.showAll").get(0)).click();
-    root.SplashScreen.hide();
+    if (!hideSplashScreenOnImport) root.SplashScreen.hide();
 });
 });
