@@ -6,7 +6,8 @@ define(["FS","Util","WebSite","splashElement"], function (FS,Util,WebSite,splash
         var includeJSScript=options.includeJSScript;
         var buf="<!DOCTYPE html>\n<html><head>\n";
         buf+='<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>\n';
-        buf+="<script>WebSite_runType='singleHTML';</script>\n";
+        buf+=`<script>WebSite={runType:'singleHTML', useEditButton:${!!options.editButton}};</script>`;
+        //"<script>WebSite_runType='singleHTML';</script>\n";
         if (includeJSScript) {
             var resFile=dir.rel("res.json");
             var resObj=resFile.obj();

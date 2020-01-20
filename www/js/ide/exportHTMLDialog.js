@@ -28,17 +28,23 @@ function (east,UI,Klass,root,R) {
                     }],
                     ["label",{"for":"ie"},R("runnableInIE11")],
                 ],
+                ["div",
+                    ["input", {id:"ie",$var:"editButton",type:"checkbox"
+                    }],
+                    ["label",{"for":"ie"},R("showEditButton")],
+                ],
                 ["textarea",{$var:"prog",rows:20,cols:60,placeholder:"Please wait..."}]
             );
             t.dom.$edits.load(t.options);
-            /*t.dom.$edits.on.writeToModel=(name,val)=>{
-                console.log(name,val);
-                t.write();
-            };*/
             t.dom.$vars.IE.on("change",()=> {
                 t.options.IE=t.dom.$vars.IE.prop("checked");
                 t.write();
             });
+            t.dom.$vars.editButton.on("change",()=> {
+                t.options.editButton=t.dom.$vars.editButton.prop("checked");
+                t.write();
+            });
+
             t.prog=t.dom.$vars.prog;
             return t.dom;
         }

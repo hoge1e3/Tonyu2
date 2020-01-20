@@ -1,6 +1,7 @@
 define(function (require,exports,module) {
     const root=require("root");
     const ja={
+        "showEditButton": "「Edit」ボタンを設置する(ブラウザ版で編集可能になります)",
         "editorFontSize": "エディタの文字の大きさ",
         "inputFileName": "ファイル名を入力してください",
         "newFile": "新規作成",
