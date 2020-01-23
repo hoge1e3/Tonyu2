@@ -1,5 +1,15 @@
-define(["UI","R"],function (UI,R) {
+define(["UI","R","root"],function (UI,R,root) {
     var UIDiag={};
+    function requestJQueryUI() {
+        let curPrj;
+        try {
+            curPrj=root.Tonyu.globals.$currentProject;
+        }catch(e) {
+        }
+        if (curPrj && typeof curPrj.requestPlugin==="function") {
+            curPrj.requestPlugin("jquery_ui");
+        }
+    }
     function isPrimitive(mesg) {
         return (typeof mesg==="string" ||
         typeof mesg==="number" ||
@@ -27,6 +37,7 @@ define(["UI","R"],function (UI,R) {
         })));
     }
     UIDiag.confirm=function (mesg) {
+        requestJQueryUI();
         mesg=parseMesg(mesg,R("confirm"));
         var di=UI("div",{title:mesg.title},["div",mesg.body],
                 ["button",{on:{click:sendF(true)}},"OK"],
@@ -38,6 +49,7 @@ define(["UI","R"],function (UI,R) {
         return d.promise();
     };
     UIDiag.alert=function (mesg) {
+        requestJQueryUI();
         mesg=parseMesg(mesg,R("confirm"));
         var di=UI("div",{title:mesg.title},["div",mesg.body],
                 ["button",{on:{click:sendF(true)}},"OK"]).dialog({width:"auto",close:sendF(false)});
@@ -57,6 +69,7 @@ define(["UI","R"],function (UI,R) {
     UIDiag.getText=function () {return UIDiag.val? UIDiag.val.val():"";};
     //---
     UIDiag.prompt=function (mesg,value,geom) {
+        requestJQueryUI();
         mesg=parseMesg(mesg,R("input"));
         geom=geom||{};
         let position;
