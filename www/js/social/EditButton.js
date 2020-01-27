@@ -35,10 +35,10 @@ define(function (require, exports) {
         const link=document.querySelector('link[rel="canonical"]');
         if (link) url=link.href;
         let defName=url.replace(/\?.*/,"").replace(/\/$/,"").replace(/.html?$/i,"");
-        defName.replace(/([a-zA-Z0-9\-]+)$/,(_0,_1)=>{
+        defName.replace(/([a-zA-Z0-9\-\._]+)$/,(_0,_1)=>{
             defName=_1;
         });
-        defName=defName.replace(/[^a-zA-Z0-9\-]/g,"");
+        defName=defName.replace(/[^a-zA-Z0-9\-\.\_]/g,"");
         if (defName==="") defName="example";
         sender.postMessage({
             type:"import",
