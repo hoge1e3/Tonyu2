@@ -249,7 +249,8 @@ root.Debugger={
             //StackDecoder.decode(e);
         }
     },
-    on:Events.on.bind(Events)
+    on:Events.on.bind(Events),
+    fire:Events.fire.bind(Events)
 };
 try {
     //if (root.parent && root.parent.onTonyuDebuggerReady) <- fails CORS

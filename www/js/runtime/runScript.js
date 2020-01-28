@@ -82,6 +82,7 @@ requirejs(["FS","Tonyu","IDEProject","Shell","ScriptTagFS",
 				console.log("modifai",type,file,arguments);
 				idePrj.partialCompile(file).catch(e=>{
 					console.error(e);
+					Debugger.fire("compileError",e);
 				});
 			});
 		}
