@@ -1,6 +1,34 @@
 define(function (require,exports,module) {
+/*
+$(".dropdown-menu a");
+$(".dropdown-toggle");
+*/
     const root=require("root");
     const ja={
+        "file": "ファイル",
+        "closeFile": "閉じる",
+        "removeFile": "削除",
+        "renameProject": "プロジェクト名を変更",
+        "removeProject": "このプロジェクト自身を削除",
+        "mapEditor": "マップエディタ",
+        "searchFiles": "検索",
+        "imageList": "画像リスト",
+        "soundList": "音声リスト",
+        "projectOptions": "プロジェクト オプション",
+        "editorConfig": "エディタの設定",
+        "openFolder": "フォルダを開く",
+        "resetRunDialog": "実行ダイアログをリセット",
+        "exportAsHTML": "HTML生成",
+        "openHelpInThisWindow": "ヘルプ(この画面)",
+        "import": "インポート",
+        "tools": "ツール",
+        "window":"ウィンドウ",
+        "publish": "公開",
+        "help": "ヘルプ",
+        "openHelpWithNewTab": "ヘルプ(別ウィンドウ)",
+        "projects": "プロジェクト一覧",
+        "publisedProjects": "公開されているプロジェクト",
+        "WebSite": "Webサイト",
         "showEditButton": "「Edit」ボタンを設置する(ブラウザ版で編集可能になります)",
         "editorFontSize": "エディタの文字の大きさ",
         "inputFileName": "ファイル名を入力してください",
@@ -38,7 +66,6 @@ define(function (require,exports,module) {
         "compatibleWithTonyu1": "Tonyu1互換",
         "parse": "解析",
         "chipNo": "パターン番号:",
-        "imageList": "画像リスト",
         "dragImageFilesHere": "ここに画像ファイル(png/gif/jpg)をドラッグ＆ドロップして追加",
         "name": "名前",
         "sizePerChip": "1個の大きさ",
@@ -58,7 +85,6 @@ define(function (require,exports,module) {
         "importComplete": "インポート完了",
         "selectMainClass": "実行するクラスを選択",
         "run": "実行",
-        "renameProject": "プロジェクト名の変更",
         "newProject": "新規プロジェクト",
         "newProjectName": "プロジェクト名",
         "parentFolder": "親フォルダ",
@@ -67,13 +93,11 @@ define(function (require,exports,module) {
         "folderExists": "このフォルダはすでに存在します",
         "rename": "名前変更",
         "downloadAsZip": "ZIPダウンロード",
-        "openFolder": "フォルダを開く",
         "delete": "削除",
         "deleteProject": "プロジェクトの削除",
         "downloadAsZipBeforeDeletion": "削除前にZIPでダウンロードする",
         "yes": "はい",
         "no": "いいえ",
-        "projectOptions": "プロジェクト オプション",
         "compiler": "コンパイラ",
         "diagMode": "診断モード(速度が落ちますが，プログラムの不具合を見つけやすくします)",
         "disableInfiniteLoopCheck": "無限ループチェックをしない（チェックすると速度が速くなることがあります）",
@@ -172,6 +196,15 @@ define(function (require,exports,module) {
             return a[parseInt(n)-1]+"";
         });
         return format;
+    }
+    R.renderMenu=()=>{
+        $("[data-r]").each(function () {
+            const e=$(this);
+            e.text(R(e.attr("data-r")));
+        });
+    };
+    if (typeof $==="function") {
+        $(R.renderMenu);
     }
     root.R=R;
     module.exports=R;

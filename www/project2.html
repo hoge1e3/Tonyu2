@@ -68,49 +68,49 @@ if (isNW || localStorage.noconcat) {
 			<div class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
 					<li class="active"><a href="index2.html">Home</a></li>
-					<li><a id="fileMenu" href="#" class="dropdown-toggle" data-toggle="dropdown">ファイル</a>
+					<li><a data-r="file" id="fileMenu" href="#" class="dropdown-toggle" data-toggle="dropdown">ファイル</a>
 						<ul class="dropdown-menu">
-							<li><a href="#" id="newFile">新規</a></li>
-							<li><a href="#" id="mvFile">名前変更</a></li>
-							<li><a href="#" id="closeFile">閉じる</a></li>
-							<li><a href="#" id="rmFile">削除</a></li>
+							<li><a data-r="newFile" href="#" id="newFile">新規</a></li>
+							<li><a data-r="renameFile" href="#" id="mvFile">名前変更</a></li>
+							<li><a data-r="closeFile" href="#" id="closeFile">閉じる</a></li>
+							<li><a data-r="removeFile" href="#" id="rmFile">削除</a></li>
 							<!--li><a href="#" id="restore">初期状態に戻す</a></li-->
-							<li><a href="#" id="mvPRJ">プロジェクト名を変更</a></li>
-							<li><a href="#" id="rmPRJ">このプロジェクト自身を削除</a></li>
+							<li><a data-r="renameProject" href="#" id="mvPRJ">プロジェクト名を変更</a></li>
+							<li><a data-r="removeProject" href="#" id="rmPRJ">このプロジェクト自身を削除</a></li>
 						</ul>
 					</li>
-					<li><a href="#" id="run" class="dropdown-toggle" data-toggle="dropdown">実行</a>
+					<li><a data-r="run" href="#" id="run" class="dropdown-toggle" data-toggle="dropdown">実行</a>
 						<ul class="dropdown-menu" id="runMenu">
 						</ul>
 					</li>
-					<li><a href="#" id="tool" class="dropdown-toggle" data-toggle="dropdown">ツール</a>
+					<li><a href="#" data-r="tools" id="tool" class="dropdown-toggle" data-toggle="dropdown">ツール</a>
 						<ul class="dropdown-menu" id="toolMenu">
-							<li><a href="#" id="mapEditor">マップエディタ</a></li>
-							<li><a href="#" id="search">検索</a></li>
+							<li><a data-r="mapEditor" href="#" id="mapEditor">マップエディタ</a></li>
+							<li><a data-r="searchFiles" href="#" id="search">検索</a></li>
                             <li><a href="#" onclick="sh.window()">Open shell</a></li>
 						</ul>
 					</li>
-					<li><a href="#" id="window" class="dropdown-toggle" data-toggle="dropdown">ウィンドウ</a>
+					<li><a href="#" data-r="window" id="window" class="dropdown-toggle" data-toggle="dropdown">ウィンドウ</a>
 						<ul class="dropdown-menu">
-							<li><a href="#" id="imgResEditor">画像リスト</a></li>
-                            <li><a href="#" id="soundResEditor">音声リスト</a></li>
-							<li><a href="#" id="prjOptEditor">プロジェクト オプション</a></li>
-							<li><a href="#" id="editorEditor">エディタの設定</a></li>
-							<li><a href="#" id="openFolder">フォルダを開く</a></li>
-							<li><a href="#" id="runDialog">実行ダイアログをリセット</a></li>
+							<li><a data-r="imageList" href="#" id="imgResEditor">画像リスト</a></li>
+                            <li><a data-r="soundList" href="#" id="soundResEditor">音声リスト</a></li>
+							<li><a data-r="projectOptions" href="#" id="prjOptEditor">プロジェクト オプション</a></li>
+							<li><a data-r="editorConfig" href="#" id="editorEditor">エディタの設定</a></li>
+							<li><a data-r="openFolder" href="#" id="openFolder">フォルダを開く</a></li>
+							<li><a data-r="resetRunDialog" href="#" id="runDialog">実行ダイアログをリセット</a></li>
 						</ul>
 					</li>
-					<li><a href="#" id="publish" class="dropdown-toggle" data-toggle="dropdown">公開</a>
+					<li><a href="#" data-r="publish" id="publish" class="dropdown-toggle" data-toggle="dropdown">公開</a>
 						<ul class="dropdown-menu" id="publishMenu">
-                            <li><a href="#" id="mkrun">ランタイム作成</a></li>
+                            <li><a data-r="createExecutable" href="#" id="mkrun">ランタイム作成</a></li>
                             <!--li><a href="#" id="exportToExe">tonyuexeで公開する</a></li-->
-							<li><a href="#" id="exportToJsdoit">HTML生成</a></li>
+							<li><a data-r="exportAsHTML" href="#" id="exportToJsdoit">HTML生成</a></li>
 						</ul>
 					</li>
-					<li><a href="#" id="publish" class="dropdown-toggle" data-toggle="dropdown">ヘルプ</a>
+					<li><a href="#" data-r="help" id="publish" class="dropdown-toggle" data-toggle="dropdown">ヘルプ</a>
 						<ul class="dropdown-menu" id="helpMenu">
-                            <li><a href="#" id="refHelp">この画面でヘルプを見る</a></li>
-                            <li><a href="doc/index.html" target="helpext">別画面でヘルプを見る</a></li>
+                            <li><a data-r="openHelpInThisWindow" href="#" id="refHelp">この画面でヘルプを見る</a></li>
+                            <li><a data-r="openHelpWithNewTab" href="doc/index.html" target="helpext">別画面でヘルプを見る</a></li>
 						</ul>
 					</li>
 				</ul>

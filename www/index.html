@@ -61,19 +61,19 @@ if (isNW || localStorage.noconcat) {
 			<div class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
 					<li class="active"><a href="#">Home</a></li>
-					<li><a href="#" id="import" class="dropdown-toggle" data-toggle="dropdown">インポート</a>
+					<li><a data-r="import" href="#" id="import" class="dropdown-toggle" data-toggle="dropdown">インポート</a>
 						<ul class="dropdown-menu" id="publishMenu">
-							<li><a href="javascript:importFromHTML();">HTMLからインポート</a></li>
+							<li><a data-r="importFromHTML" href="javascript:importFromHTML();">HTMLからインポート</a></li>
 						</ul>
 					</li>
-                    <li><a href="#" id="dev" class="dropdown-toggle" data-toggle="dropdown">ツール</a>
+                    <li><a data-r="tools" href="#" id="dev" class="dropdown-toggle" data-toggle="dropdown">ツール</a>
                         <ul class="dropdown-menu" id="openShellWndMenu">
                             <li><a href="#" onclick="sh.window()">Open shell</a></li>
                         </ul>
                     </li>
-					<li><a href="#" id="help" class="dropdown-toggle" data-toggle="dropdown">ヘルプ</a>
+					<li><a data-r="help" href="#" id="help" class="dropdown-toggle" data-toggle="dropdown">ヘルプ</a>
                         <ul class="dropdown-menu" id="helpMenu">
-							<li><a href="doc/index.html" target="helpext">ヘルプ(別ウィンドウ)</a></li>
+							<li><a data-r="openHelpWithNewTab" href="doc/index.html" target="helpext">ヘルプ(別ウィンドウ)</a></li>
                         </ul>
                     </li>
 				</ul>
@@ -85,10 +85,10 @@ if (isNW || localStorage.noconcat) {
 	<div class="container">
 		<div class="row">
 			<div id=prjViewer class="col-xs-12">
-			<h1>プロジェクト一覧</h1>
+			<h1 data-r="projects" >プロジェクト一覧</h1>
 			<!-- button id="newPrj" class="btn btn-primary">新規作成</button-->
-            <a href="https://www.tonyu.jp/project/" target="exe">公開されているプロジェクト</a> |
-			<a href="https://www.tonyu.jp/" target="top">Webサイト</a> |
+            <a data-r="publisedProjects"  href="https://www.tonyu.jp/project/" target="exe">公開されているプロジェクト</a> |
+			<a data-r="WebSite"  href="https://www.tonyu.jp/" target="top">Webサイト</a> |
 			<span id="ls"></span>
 				<div id="prjItemList"></div>
 			</div>
