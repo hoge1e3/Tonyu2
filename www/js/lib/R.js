@@ -351,7 +351,9 @@ $(".dropdown-toggle");
         "at" : "at:", // 場所：
         "deleteProjectFromItem" : "Delete Project {1}?", //プロジェクト{1}を削除しますか？
     };
-    let dict=localStorage.locale=="en"? en: ja;
+    let localeStr=localStorage.locale || navigator.language;
+    localeStr=localeStr.substring(0,2);
+    let dict=localeStr=="en"? en: ja;
     //const test=x=>`【${x}】`;
     function R(name,...params) {
         let mesg=dict[name];
@@ -385,6 +387,11 @@ $(".dropdown-toggle");
     if (typeof $==="function") {
         $(R.renderMenu);
     }
+    R.setLocale=locale=>{
+        localStorage.locale=locale;
+        dict=localStorage.locale=="en"? en: ja;
+        R.renderMenu();
+    };
     root.R=R;
     module.exports=R;
 });

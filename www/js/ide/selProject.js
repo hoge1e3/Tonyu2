@@ -7,6 +7,8 @@ requirejs(["FS","Wiki","Shell","Shell2",
             /*copySample,  */NPD,           UI, Sync, Auth,
             zip,requestFragment,WebSite,extLink,DU,Mesg,
         ZipImporter,ProjectItem,ImportHTMLDialog,Util,root,R) {
+    const lang=Util.getQueryString("lang");
+    if (lang) R.setLocale(lang);
 $(function () {
     var HNOP="javascript_:;".replace(/_/,"");
     //copySample();

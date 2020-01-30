@@ -18,7 +18,9 @@ body {
 .ace_editor {
     padding: 0px;
 }
-
+.lang {
+    float:right;
+}
 .prjDirHeader {
 	background-color: #af8;
 }
