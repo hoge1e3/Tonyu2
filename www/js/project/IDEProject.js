@@ -48,6 +48,7 @@ define(function (require,exports) {
         };
         res.disconnectDebugger=()=>c.setDebugger();
         res.fullCompile=c.fullCompile.bind(c);
+        res.clean=c.clean.bind(c);
         res.partialCompile=c.partialCompile.bind(c);
         res.renameClassName=c.renameClassName.bind(c);
         res.resetFiles=c.resetFiles.bind(c);
