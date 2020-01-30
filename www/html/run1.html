@@ -36,41 +36,385 @@ requirejs(["runScript"],function () {
 Open this site when editing this game:
 https://edit.tonyu.jp/index.html?importFromHTML=1
 -->
-<script language='text/tonyu' type='text/tonyu' data-filename='Chara.tonyu' data-lastupdate='1570587860000' >vx=5;vy=0.2;
-
-p=$pat_neko+rnd(3)*10+9;
-vr=1;//rnd(40)+1;
-scaleX=rndFloat(0.8,1.2);
-//a.b.c;
-//break;
-while(!screenOut()){
-    x+=vx;
-    if (getkey("a")==1) vr=10;
-    vr*=0.98;
-    rotation+=vr;
-    y+=vy+cos($frameCount*2)*3;
-
-    //if (getkey("r")) rotation++;
+<script language='text/tonyu' type='text/tonyu' data-filename='Chara.tonyu' data-lastupdate='1580354350275' >x=10;
+y=200;
+while(x<400) {
+    x+=1;
+    y+=0.5;
+    rotation+=2;
     update();
 }
 die();</script>
 
-<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu' data-lastupdate='1570587860000' >
-if ($debugger) {
-    $debugger.on("classChanged") \{
-    //print("Changed!");
-        loadPage(Main);
-    };
-}
+<script language='text/tonyu' type='text/tonyu' data-filename='Cursor.tonyu' data-lastupdate='1580354306206' >"field strict";
+var c:DotConsole;
+var f=file("../Chara.tonyu");
+var buf=f.lines();
+var sx=0,sy=0;
+fillStyle="#ddd";
+alpha=128;
+var pitch=16;
+var tx=0,ty=0;
+//print(c.row,c.col);
+width=height=pitch;
+remap();
 while(true) {
-    if($frameCount%10==0) new Chara{x:100,y:200};
-    if (getkey("z")==1) new Chara{x:100,y:300};
+    for (var k in $keys) {
+        if (chkKey(k)) {
+            var b=$keys[k];
+            switch (k) {
+                case "up":
+                moveCur(tx,ty-1);
+                break;
+                case "down":
+                moveCur(tx,ty+1);
+                break;
+                case "left":
+                moveCur(tx-1,ty);
+                break;
+                case "right":
+                moveCur(tx+1,ty);
+                break;
+                case "En":
+                enter();
+                break;
+            }
+            if (!b.ctrl) {
+                keyin(b.text.replace(/ /," "));
+            }
+        }
+    }
 
+    showCur();
     update();
+}
+\save() {
+    if (cont!==f.text()) {
+        f.text(cont);
+        $currentProject.compiler.partialCompile(f).then(\(r) {
+            print("Succ",r);  
+        },\(e) {
+            print("Err",e);  
+        });
+    }
+}
+\cont {
+    return buf.join("\n");
+}
+\keyin(ch) {
+    while (buf.length<=ty) buf.push("");
+    while(buf[ty].length<tx) buf[ty]+=" ";
+    buf[ty]=buf[ty].substring(0,tx)+ch+buf[ty].substring(tx);
+    moveCur(tx+1,ty);
+    remap();
+}
+\bs() {
+    if (tx==0) {
+        if (ty>0) {
+            var nx=buf[ty-1].length;
+            buf[ty-1]+=buf[ty];
+            buf.splice(ty,1);
+            moveCur(nx,ty-1);
+            remap();
+        }
+    } else if (buf[ty] && buf[ty][tx-1]) {
+        buf[ty]=buf[ty].substring(0,tx-1)+buf[ty].substring(tx);
+        remap();
+        moveCur(tx-1,ty);
+    }
+}
+\enter() {
+    while (buf.length<=ty) buf.push("");
+    var ind=getIndentSpace(buf[ty]);
+    var n=buf[ty].substring(0,tx);
+    buf.splice(ty+1,0,ind+buf[ty].substring(tx));
+    buf[ty]=n;
+    remap();
+    moveCur(ind.length,ty+1);
+}
+\getIndentSpace(line) {
+    var m=/^ */.exec(line);
+    return m[0];
+}
+\showCur() {
+    x=(tx-sx)*pitch+pitch/2;
+    y=(ty-sy)*pitch+pitch/2;
+}
+\chkKey(name) {
+    var b=$keys[name],v;
+    if (b) v=b.clicked;
+    else v=getkey(name);
+    return v==1 || v>30;
+}
+\remap() {
+    for (var i=0;i<c.row;i++) {
+        var line=buf[sy+i];
+        for (var j=0;j<c.col;j++) {
+            if (line && line[sx+j]) c.poke(j,i,line.charCodeAt(sx+j));
+            else c.poke(j,i,0);
+        }
+    }
+}
+\inScreen() {
+    return clamped(tx,sx,sx+c.col-1)==0 && clamped(ty,sy,sy+c.row-1)==0;
+}
+\moveCur(x,y) {
+    tx=clamp(x,0,1024);ty=clamp(y,0,buf.length);
+    chkScroll();
+}
+\chkScroll() {
+    if (inScreen()) return;
+    sx-=clamped(tx,sx,sx+c.col-1);
+    sy-=clamped(ty,sy,sy+c.row-1);
+    remap();
 }</script>
 
-<!--
-<script language='text/tonyu' type='text/tonyu' data-filename='options.json' data-lastupdate='1570599268484' >
+<script language='text/tonyu' type='text/tonyu' data-filename='DotConsole.tonyu' data-lastupdate='1539152254787' >extends Panel;
+"field strict";
+var size,row,col,cx,cy,mat,font;
+\new(p) {
+    p=p||{};
+    p.size=p.size||16;
+    p.width=p.width||$screenWidth;
+    p.height=p.height||$screenHeight;
+    p.row=p.row||floor(p.height/p.size);
+    p.col=p.col||floor(p.width/p.size);
+    p.width=p.col*p.size;
+    p.height=p.row*p.size;
+    super(p);
+    cx=0;cy=0;
+    fillStyle="white";
+    mat=new Matrix;
+}
+
+\locate(x,y) {
+    cx=x;cy=y;
+}
+
+\print(s) {
+    for (var i=0;i<s.length;i++) {
+        var ch=s.charCodeAt(i);
+        putchar(ch);
+    }
+}
+\putchar(ch) {
+    if (ch!==10) {
+        poke(cx,cy,ch);
+        cx++;
+    }
+    if (cx>=col || ch===10) {
+        cx=0;
+        cy++;
+        if (cy>=row) {
+            scroll();
+            cy=row-1;
+        }
+    }   
+}
+\cls() {
+    for (var i=0;i<row;i++) {
+        for (var j=0;j<col;j++) {
+            poke(j,i,0);
+        }
+    }
+    cx=cy=0;
+}
+\poke(cx,cy,ch) {
+    if (mat.get(cx,cy)===ch) return;
+    if (cx<0 || cx>=col || cy<0 || cy>=row) return;
+    var ctx=context;
+    ctx.save();
+    ctx.textBaseline="top";
+    ctx.font=size+"px Monospace";
+    ctx.beginPath();
+    ctx.moveTo(cx*size,cy*size);
+    ctx.lineTo((cx+1)*size,cy*size);
+    ctx.lineTo((cx+1)*size,(cy+1)*size);
+    ctx.lineTo(cx*size,(cy+1)*size);
+    ctx.closePath();
+    ctx.clip();
+    ctx.clearRect(cx*size,cy*size,size,size);
+    var pImg=$imageList[ch+font];
+    if (ch<128 && pImg) {
+        ctx.drawImage(
+        pImg.image, pImg.x, pImg.y, pImg.width, pImg.height,
+        cx*size, cy*size, size, size);
+        ctx.globalCompositeOperation="source-in";
+        ctx.fill();
+    } else {
+        ctx.fillText(String.fromCharCode(ch),cx*size,cy*size);
+    }
+    mat.set(cx,cy,ch);
+    ctx.restore();
+}
+\peek(cx,cy) {
+    return mat.get(cx,cy);
+}
+\scroll() {
+    var nm=new Matrix;
+    for (var x,y,c in mat) {
+        if (y>0) nm.set(x,y-1,c);
+    }
+    mat=nm;
+    context.save();
+    context.globalCompositeOperation="copy";
+    context.drawImage(image,0,size,width,height-size,0,0,width,height-size);
+    context.restore();
+}
+\defaultLayer{
+    return $frontLayer;
+}</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='Main.tonyu' data-lastupdate='1580293601020' >"field strict";
+$Screen.resize(400,630);
+$sz={w:$screenWidth/6,h:$screenWidth/6-10};
+$keyTop=$screenHeight-$sz.h*6;
+$d=new DotConsole{font=$pat_font_b, row=floor($keyTop/16)};
+$keys={};
+$d.locate(2,2);
+$d.print("TEST");
+$caps=false;
+new Button{
+    top:$keyTop,text:"Aa",left:0,width:$sz.w, 
+func:true, onClick:alphaMode};
+new Button{
+    top:$keyTop,text:"1+",left:$sz.w*1,width:$sz.w, 
+func:true, onClick:numMode};
+new Button{
+    top:$keyTop,text:"Ed",left:$sz.w*2,width:$sz.w, 
+func:true, onClick:editMode};
+new Button{
+    top:$keyTop,text:"sv",left:$sz.w*3,width:$sz.w, 
+    func:true,onClick=\{$c.save();}
+};
+
+new Button{
+    top:$keyTop,text:"←",left:$sz.w*5,width:$sz.w, 
+    func:true,onClick=\{$c.bs();}
+};
+
+editMode();
+\editMode() {
+    $curMode="edit";
+    for (var b of $frontLayer.all(Button)) {
+        if (!b.func) b.die();
+    }
+    var ck={
+        top:$keyTop+$sz.h,
+        left:300,
+        sz:$sz
+    };
+    $keys={};
+    Object.assign($keys){
+        up: new Button{
+            width:ck.sz.w, height:ck.sz.h, 
+            left:ck.left, top:ck.top,text:"↑",key:"up",
+            ctrl:true
+        },  
+        down: new Button{
+            width:ck.sz.w, height:ck.sz.h, 
+            left:ck.left,top:ck.top+ck.sz.h*2,text:"↓",key:"down",
+            ctrl:true
+        },  
+        left: new Button{
+            width:ck.sz.w, height:ck.sz.h, 
+            left:ck.left-ck.sz.w/2,
+            top:ck.top+ck.sz.h,
+            text:"←",key:"left", 
+            ctrl:true
+        },  
+        right: new Button{
+            left:ck.left+ck.sz.w/2, height:ck.sz.h,
+            width:ck.sz.w, top:ck.top+ck.sz.h ,
+            text:"→",key:"right",
+            ctrl:true
+        },
+        En: new Button{
+            left:$screenWidth-ck.sz.w,
+            width:ck.sz.w, top:$screenHeight-ck.sz.h,
+            height:ck.sz.h,
+            text:"En", key:"enter", ctrl:true
+        }
+    };
+}
+\alphaMode() {
+    if ($curMode=="alpha") $caps=!$caps; else $caps=false;
+    $curMode="alpha";
+    for (var b of $frontLayer.all(Button)) {
+        if (!b.func) b.die();
+    }
+    var a={
+        top:$keyTop+$sz.h,
+        left:0,
+        sz:$sz
+    };
+    $keys={};
+    
+    for(var i=0;i<30;i++) {
+        var ch=String.fromCharCode(i+($caps?65:97));
+        switch(i) {
+            case 26:ch="$";break;
+            case 27:ch="_";break;
+            case 28:ch="?";break;
+            case 29:ch="En";break;
+        }
+        $keys[ch]=new Button{
+            left:a.left+(i%6)*a.sz.w,
+            width:a.sz.w, top:a.top+floor(i/6)*a.sz.h,
+            height:a.sz.h,
+            text:ch, key:ch, ctrl:i>=29
+        };
+    }
+}
+
+\numMode() {
+    if ($curMode=="num") $caps=!$caps; else $caps=false;
+    $curMode="num";
+    for (var b of $frontLayer.all(Button)) {
+        if (!b.func) b.die();
+    }
+    var a={
+        top:$keyTop+$sz.h,
+        left:0,
+        sz:$sz
+    };
+    $keys={};
+    var k=[
+    "0","1","2","3","4","/",
+    "5","6","7","8","9","*",
+    "!","<","=",">","%","-",
+    ";",".",",","&","|","+",
+    "{}","()","[]","\"","?","En",
+    ];
+    if ($caps) {
+        k=[
+        "0","1","2","3","4","/",
+        "5","6","7","8","9","*",
+        "@","#","^","~","\\","-",
+        "?",":",",",".","`","+",
+        "{","(","[","'","?","En",
+        ];
+    }
+    for(var i=0;i<30;i++) {
+        var ch=k[i];
+        $keys[k[i]]=new Button{
+            left:a.left+(i%6)*a.sz.w,
+            width:a.sz.w, top:a.top+floor(i/6)*a.sz.h,
+            height:a.sz.h,
+            text:ch, key:ch, ctrl:i>=29
+        };
+    }
+}
+
+
+$c=new Cursor{x:8,y:8,pitch:16,c:$d};
+while(true) {
+    new Chara;
+    updateEx(60);
+}
+</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='options.json' data-lastupdate='1580293587623' >
 {
     "compiler": {
         "namespace": "user",
@@ -80,24 +424,26 @@ while(true) {
                 "namespace": "kernel"
             }
         ],
-        "diagnose": false
+        "diagnose": false,
+        "noLoopCheck": true,
+        "field_strict": false
     },
     "run": {
         "mainClass": "user.Main",
         "bootClass": "kernel.Boot",
         "globals": {
-            "$defaultFPS": 30,
+            "$defaultFPS": 60,
             "$imageSmoothingDisabled": true,
             "$soundLoadAndDecode": false
         }
     },
+    "plugins": {},
     "kernelEditable": false,
     "language": "tonyu",
-    "version": 1566181559095,
-    "plugins": {}
+    "version": 1579838370933
 }</script>
 
-<script language='text/tonyu' type='text/tonyu' data-filename='res.json' data-lastupdate='1566996500003' >
+<script language='text/tonyu' type='text/tonyu' data-filename='res.json' data-lastupdate='1580354671697' >
 {
     "images": [
         {
@@ -105,10 +451,6 @@ while(true) {
             "url": "images/base.png",
             "pwidth": 32,
             "pheight": 32
-        },
-        {
-            "name": "$pat_sample",
-            "url": "images/Sample.png"
         },
         {
             "name": "$pat_neko",
@@ -121,8 +463,99 @@ while(true) {
             "url": "images/mapchip.png",
             "pwidth": 32,
             "pheight": 32
+        },
+        {
+            "type": "wh",
+            "name": "$pat_font_b",
+            "url": "ls:images/font_b.png",
+            "pwidth": 16,
+            "pheight": 16
         }
     ],
     "sounds": []
-}</script>-->
-</head><body></body></html>
+}</script>
+
+<script language='text/tonyu' type='text/tonyu' data-filename='images/font_b.png' data-wrap='80' data-lastupdate='1580212762070' >data:image/png;base64,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
+</script>
+
+</head><body><div id='splash' style='position:relative; height: 100%;'>
+    <!--ここに，ロード中に表示する内容を記述できます。-->
+    <!--You can write here what you want to show while loading. -->
+    <div class='progress'>
+        <!-- ここにロード中の進捗が表示されます．表示したくない場合はこのdiv要素を削除してください。 -->
+        <!-- This shows progress. If you don't want to show, remove this element. -->
+    </div>
+    <div class='unsupported' style="display:none;">
+        <!-- ここに非対応ブラウザ向けメッセージが表示されます．表示したくない場合はこのdiv要素を削除してください。 -->
+        <!-- This shows message for unsupported browsers. If you don't want to show, remove this element. -->
+        <p>お使いのブラウザではこのプログラムは動作しません．他のブラウザをお試しください．</p>
+        <p>The program does not run in this browser. Try another browser.</p>
+    </div>
+</div>
+<!--
+Open this site when editing this game:
+https://edit.tonyu.jp/index.html?importFromHTML=1
+--></body></html>

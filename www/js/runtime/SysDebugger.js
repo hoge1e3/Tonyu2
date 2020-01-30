@@ -1,7 +1,6 @@
 define(function (require/*,exports,module*/) {
     const Debugger=require("Debugger");
     const runtime=require("runtime");
-    //const root=require("root");
     const Tonyu=require("Tonyu");
     const root=require("root");
     const FS=require("FS");
@@ -32,7 +31,10 @@ define(function (require/*,exports,module*/) {
         const prjDir=FS.get(getQueryString("prj")||root.Tonyu_StartProject);
         const prj=CompiledProject.create({dir:prjDir});
         prj.include(sysMod);
-        await Debugger.init(prj);
+        await Debugger.init(prj);// sets $currentProject=prj
+        try {
+            prj.compiler=root.parent.Tonyu.globals.$currentProject;
+        } catch(e){console.log(e);}
         window.onerror=function (a,b,c,d,e) {
             //console.log(...arguments);
             if (e && e.stack) Tonyu.onRuntimeError(e);

@@ -64,7 +64,8 @@ requirejs(["FS","Tonyu","IDEProject","Shell","ScriptTagFS",
 			//console.log("RO-DO");
 			Tonyu.globals.$debugger=Debugger;// does also in Debugger.init ...
 
-			Tonyu.currentProject=Tonyu.globals.$currentProject=debuggerPrj;
+			Tonyu.currentProject=Tonyu.globals.$currentProject=debuggerPrj;// does also...??
+			debuggerPrj.compiler=idePrj;
 			debuggerPrj.detectPlugins();
 			var o=debuggerPrj.getOptions();
 			if (o.compiler && o.compiler.diagnose) {
@@ -77,14 +78,14 @@ requirejs(["FS","Tonyu","IDEProject","Shell","ScriptTagFS",
 			debuggerPrj.fixBootRunClasses();
 			debuggerPrj.rawBoot(o.run.bootClass);
 			EditButton.show();
-			prjDir.watch((type, file)=>{
+			/*prjDir.watch((type, file)=>{
 				if (!file.endsWith(".tonyu")) return;
 				console.log("modifai",type,file,arguments);
 				idePrj.partialCompile(file).catch(e=>{
 					console.error(e);
 					Debugger.fire("compileError",e);
 				});
-			});
+			});*/
 		}
 		async function addImageScript() {
 			const res=idePrj.getResource();
