@@ -208,7 +208,7 @@ $(".dropdown-toggle");
         "newFile" : "New File", //新規作成
         "renameFile" : "Rename File", //名前変更
         "refactorClassName" : "Refactor Class Name", //プログラム中のクラス名も変更する
-        "someFilesHaveErrorOnRefactor" : "Error occured during Refactoring. Correct Erro or uncheck 'Refactor Class Name'.", //プログラム内にエラーがあります．エラーを修正するか，「プログラム中のクラス名も変更する」のチェックを外してもう一度やり直してください．
+        "someFilesHaveErrorOnRefactor" : "Error occured during Refactoring. Correct Error or uncheck 'Refactor Class Name'.", //プログラム内にエラーがあります．エラーを修正するか，「プログラム中のクラス名も変更する」のチェックを外してもう一度やり直してください．
         "namingNotice" : "Alphabets, Numbers or Underscores can be used as a name.", //名前は，半角英数字とアンダースコア(_)のみが使えます．先頭は英大文字にしてください．
         "autoReload" : "Auto Reload", //自動再実行
         "stop" : "Stop", //停止(F2)
@@ -277,7 +277,7 @@ $(".dropdown-toggle");
         "compiler" : "Compiler", //コンパイラ
         "diagMode" : "Diagnostic Mode", //診断モード(速度が落ちますが，プログラムの不具合を見つけやすくします)
         "disableInfiniteLoopCheck" : "Disable Infinite Loop Check(Sometimes faster)", //無限ループチェックをしない（チェックすると速度が速くなることがあります）
-        "requireFieldDeclaration" : "Require Implicit Field Declaration(such as var n; )", //フィールド宣言を明示的に行う(var n; のような宣言が必要になります)
+        "requireFieldDeclaration" : "Require Explicit Field Declaration(such as var n; )", //フィールド宣言を明示的に行う(var n; のような宣言が必要になります)
         "defaultSuperClass" : "Default Super Class", //デフォルトの親クラス
         "runtimes" : "Runtimes", //実行
         "mainClass" : "Main Class", //Main クラス
@@ -387,6 +387,10 @@ $(".dropdown-toggle");
     if (typeof $==="function") {
         $(R.renderMenu);
     }
+    R.getLocale=()=>{
+        if (dict===en)return "en";
+        return "ja";
+    };
     R.setLocale=locale=>{
         localStorage.locale=locale;
         dict=localStorage.locale=="en"? en: ja;

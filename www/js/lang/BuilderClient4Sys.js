@@ -13,7 +13,7 @@ class BuilderClient {
         let url=config.worker.url;
         if (!url.match(/^blob/)) url+="?"+Math.random();
         this.w=new WS.Wrapper(new Worker(url));
-        this.config=config;
+        this.config=config||{};
         this.fileMap=new FileMap();
     }
     getOutputFile(...f) {return this.prj.getOutputFile(...f);}
@@ -46,7 +46,7 @@ class BuilderClient {
         const ns2depspec=this.config.worker.ns2depspec;
         const {prjDir:remotePrjDir}=await this.w.run("compiler/init",{
             namespace:this.prj.getNamespace(),
-            files, ns2depspec
+            files, ns2depspec, locale: this.config.locale
         });
         fileMap.add({local:localPrjDir, remote: remotePrjDir});
         const deps=this.prj.getDependingProjects();//TODO recursive

@@ -11,7 +11,7 @@ root.FS=FS;
 const F=require("../project/ProjectFactory");
 const CompiledProject=require("../project/CompiledProject");
 const langMod=require("../lang/langMod");
-
+const R=require("../lib/R");
 
 let prj,builder;
 const ns2depspec={};
@@ -31,6 +31,7 @@ WS.serv("compiler/init", params=>{
     //console.log(ram.rel("options.json").text());
     prj=CompiledProject.create({dir:prjDir});
     builder=new Builder(prj);
+    if (params.locale) R.setLocale(params.locale);
     return {prjDir:prjDir.path()};
 });
 WS.serv("compiler/resetFiles", params=>{
@@ -111,7 +112,7 @@ function convertTError(e) {
 }
 WS.ready();
 
-},{"../lang/Builder":3,"../lang/langMod":15,"../lib/FS":20,"../lib/WorkerServiceW":23,"../lib/root":25,"../project/CompiledProject":26,"../project/ProjectFactory":27,"../runtime/TonyuRuntime":29}],3:[function(require,module,exports){
+},{"../lang/Builder":3,"../lang/langMod":15,"../lib/FS":20,"../lib/R":21,"../lib/WorkerServiceW":23,"../lib/root":25,"../project/CompiledProject":26,"../project/ProjectFactory":27,"../runtime/TonyuRuntime":29}],3:[function(require,module,exports){
 const Tonyu=require("../runtime/TonyuRuntime");
 const JSGenerator=require("./JSGenerator");
 const Semantics=require("./Semantics");
@@ -11669,11 +11670,45 @@ const ja={
         "   プロジェクト オプションで無限ループチェックの有無を設定できます。\n"+
         "   [参考]https://edit.tonyu.jp/doc/options.html\n",
 };
-let dict=ja;
+const en={
+    "superClassIsUndefined" : "Super Class {1} ss Undefined", //親クラス {1}は定義されていません
+    "classIsUndefined" : "Class {1} is Undefined", //クラス {1}は定義されていません
+    "invalidLeftValue" : "{1} is not a valid Left Value", //'{1}'は左辺には書けません．
+    "fieldDeclarationRequired" : "'{1}' is not declared, If you have meant it is a Field, Declare Explicitly.", //{1}は宣言されていません（フィールドの場合，明示的に宣言してください）．
+    "duplicateKeyInObjectLiteral" : "Duplicate Key In Object Literal: {1}", //オブジェクトリテラルのキー名'{1}'が重複しています
+    "cannotUseStringLiteralAsAShorthandOfObjectValue" : "Cannot Use String Literal as a Shorthand of Object Value", //オブジェクトリテラルのパラメタに単独の文字列は使えません
+    "breakShouldBeUsedInIterationOrSwitchStatement" : "break; Should be Used In Iteration or switch Statement", //break； は 繰り返しまたはswitch文の中で使います.
+    "continueShouldBeUsedInIterationStatement" : "continue; Should be Used In Iteration Statement", //continue； は繰り返しの中で使います.
+    "cannotUseObjectLiteralAsTheExpressionOfStatement" : "Cannot Use Object Literal As The Expression Of Statement", //オブ ジェクトリテラル単独の式文は書けません．
+    "undefinedMethod" : "Undefined Method: '{1}'", //メソッド{1}はありません．
+    "notAWaitableMethod" : "Not A Waitable Method: '{1}'", //メソッド{1}は待機可能メソッドではありません
+    "circularDependencyDetected" : "Circular Dependency Detected: {1}", //次のクラス間に循環参照があります: {1}
+    "cannotWriteReturnInTryStatement" : "Cannot Write Return In Try Statement", //現実装では、tryの中にreturnは書けません
+    "cannotWriteBreakInTryStatement" : "Cannot Write Break In Try Statement", //現実装では、tryの中にbreakは書けません
+    "cannotWriteContinueInTryStatement" : "Cannot Write Continue In Try Statement", //現実装では、tryの中にcontinueは書けま せん
+    "cannotWriteTwoOrMoreCatch" : "Cannot Write Two Or More Catch", //現実装では、catch節1個のみをサポートしています
+    "lexicalError" : "Lexical Error", //文法エラー(Token)
+    "parseError" : "Parse Error", //文法エラー
+    "ambiguousClassName" : "Ambiguous Class Name: {1}.{2} vs {3}", //曖昧なクラス名： {1}.{2}, {3}
+    "cannotInvokeMethod" : "Cannot Invoke Method {1}(={2}).{3}", //{1}(={2})のメソッド {3}を呼び出せません
+    "notAMethod" : "Not A Method: {1}{2}(={3})", //{1}{2}(={3})はメソッドではありません
+    "notAFunction" : "Not A Function: {1}", //{1}は関数ではありません
+    "uninitialized" : "Uninitialized: {1}(={2})", //{1}(={2})は初期化されていなません
+    "newIsRequiredOnInstanciate" : "new is required to Instanciate {1}", //クラス名{1}はnewをつけて呼び出して下さい。
+    "bootClassIsNotFound" : "Boot Class {1} Is Not Found", //{1}というクラスはありません．
+    "infiniteLoopDetected" : "Infinite Loop Detected",
+};
+/*let buf="";
+    for (let k of Object.keys(ja)) {
+        buf+=`"${k}" : "${englishify(k)}", //${ja[k]}\n`;
+    }
+    console.log(buf);*/
+
+let dict=en;
 function R(name,...params) {
     let mesg=dict[name];
     if (!mesg) {
-        return name+": "+params.join(",");
+        return englishify(name)+(params.length?": "+params.join(","):"");
     }
     return buildMesg(mesg, ...params);//+"です！";
 }
@@ -11688,6 +11723,15 @@ function buildMesg() {
     });
     return format;
 }
+function englishify(name) {
+    name=name.replace(/([A-Z])/g," $1");
+    name=name[0].toUpperCase()+name.substring(1);
+    return name;
+}
+R.setLocale=locale=>{
+    if (locale==="ja") dict=ja;
+    if (locale==="en") dict=en;
+};
 module.exports=R;
 
 },{}],22:[function(require,module,exports){

@@ -6,6 +6,7 @@ define(function (require,exports) {
     const sysMod=require("sysMod");
     const CP=require("CompiledProject");
     const WebSite=require("WebSite");
+    const R=require("R");
     const langMod=BuilderClient.langMod;
     F.addType("IDE",params=>{
         const ide=params.ide;
@@ -14,7 +15,8 @@ define(function (require,exports) {
             kernel: {namespace:"kernel", url: WebSite.compiledKernel}
         };
         const c=new BuilderClient(res ,{
-            worker: {ns2depspec, url: "BuilderWorker.js"/*WORKER_URL*/}
+            worker: {ns2depspec, url: "BuilderWorker.js"/*WORKER_URL*/},
+            locale:R.getLocale()
         });
         F.addDependencyResolver((prj,spec)=>{
             if (ns2depspec[spec.namespace]) {
