@@ -22,16 +22,15 @@ var screen;
 \getTouchables(layer) {
     return layer.__touchables;
 }
-\findActor(p,scale) {
+\findActor(shape) {
     for (var layer of screen.layers) {
-        var pp=p;//screen.convert(p, layer);
         var ts=getTouchables(layer);
         if (!ts) continue;
-        p.layer=layer;
+        var localShape=shape.layerChanged(layer);
         ts=ts.sort\(a,b) {return a.zOrder-b.zOrder;};
         for (var t of ts) {
-            var c=t.getTouchShape(scale);
-            if (c.contains(pp)) return t;
+            var c=t.getTouchShape();
+            if (c.intersects(localShape)) return t;
         }
     }
     return null;

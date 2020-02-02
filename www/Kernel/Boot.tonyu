@@ -115,7 +115,15 @@ mainLoop();
     $Screen.multiLayerTouches=new MultiLayerTouches{screen:$Screen};
     // TODO: $Screen.on("touchstart")  -> move to MultiLayerTouches
     $InputDevice.on("touchstart") \(e) {
-        var a=$Screen.multiLayerTouches.findActor(e.finger, e.byMouse?1:2);
+        var shape;
+        var f=e.finger;
+        if (e.byMouse) {
+            shape=new PointShape{x:f.x, y:f.y, layer:f.layer};
+        } else {
+            shape=new RectShape{x:f.x, y:f.y, width:32, height:32, layer:f.layer};
+        }
+        e.shape=shape;
+        var a=$Screen.multiLayerTouches.findActor(shape);
         if (a) {
             e.actor=a;
             a.fireEvent("touch",e);
