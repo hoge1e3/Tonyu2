@@ -1,0 +1,65 @@
+extends EventHandler;
+"field strict";
+
+\createEvent(raw) {
+    var e={};
+    e.keyCode=e.code=raw.keyCode;
+    e.keyName=e.name=$Keys.codesRev[e.keyCode];
+    if (!e.name) e.keyName=e.name=e.code+"";
+    e.sendUps=[];
+    e.on=\(name,f) {
+        if (name==="keyUp"||name==="up") {
+            e.sendUps.push(f);
+        }  
+    };
+    e.sendUp=\() {
+        for (var f of e.sendUps) f();
+    };
+    return e;   
+}
+var handlers,pressState;
+\new() {
+    super();
+    handlers={};
+    pressState={};
+    $InputDevice.on("keyDownRaw") \(raw) {
+        if (pressState[raw.keyCode]) return;
+        var a=pressState[raw.keyCode]=[];
+        var e=createEvent(raw);
+        a.push(e);
+        if (handlers[raw.keyCode]) {
+            for (var f of handlers[raw.keyCode]) {
+                f(e);
+            }
+        }
+        if (handlers.all) {
+            for (var f of handlers.all) {
+                f(e);
+            }
+        }
+    };
+    $InputDevice.on("keyUpRaw") \(e) {
+        var a=pressState[e.keyCode]=pressState[e.keyCode]||[];
+        delete pressState[e.keyCode];
+        for (var e of a) {
+            e.sendUp();
+        }
+    };
+}
+\newListener(keyName, f) {
+    var keyCode=$Keys.codes[keyName];
+    var a;
+    if (!f) {
+        f=keyName;
+        a=handlers.all=handlers.all||[];
+    } else {
+        a=handlers[keyCode]=handlers[keyCode]||[];
+    }
+    a.push(f);
+    return {
+        dispose: \{
+            var i=a.indexOf(f);
+            a.splice(i,1);
+        }  
+    };
+}

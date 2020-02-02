@@ -9,5 +9,6 @@ includes SpriteMod2D,QueryMod2D,OneframeSpriteMod;
 }
 \findEventHandlerClass(type) {
     if (type==="touch") return ActorTouch;
+    if (type==="keyDown") return KeyDownHandler;
     return super.findEventHandlerClass(type);
 }

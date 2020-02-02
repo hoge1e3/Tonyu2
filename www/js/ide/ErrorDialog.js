@@ -54,7 +54,7 @@ class ErrorDialog {
         }
         if(typeof pos=="object") {row=pos.row; col=pos.col;}
         elem.empty();
-        const mesgd=$("<div>").text(message+R("at")+src.name()+(typeof row=="number"?":"+row+":"+col:""));
+        const mesgd=$("<div>").text(message+" "+R("at")+src.name()+(typeof row=="number"?":"+row+":"+col:""));
         if(typeof row==="number" && typeof col==="number") {
             mesgd.append($("<button>").text(R("jumpToErrorPosition")).click(jump));
         }
@@ -110,7 +110,7 @@ class ErrorDialog {
         if (pluginName) {
             alert(e.message);
         } else {
-            const diag=this.showErrorPos($("#errorPos"),e);
+            /*const diag=*/this.showErrorPos($("#errorPos"),e);
             ide.displayMode("runtime_error");
             $("#errorPos").find(".quickFix").append(
                 UI("button",{on:{click:showTrace}},R("showTrace")));

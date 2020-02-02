@@ -7,7 +7,7 @@ native console;
 stats={};
 codes={
     left: 37 , up:38 , right: 39, down:40, space:32, enter:13,
-    shift:16, ctrl:17, alt:18,
+    shift:16, ctrl:17, alt:18, esc:27,
     mouseleft: 1,mouseright:2, mousewheel: 4,
 };
 for (var i=65 ; i<65+26; i++) {
@@ -16,6 +16,8 @@ for (var i=65 ; i<65+26; i++) {
 for (var i=48 ; i<58; i++) {
     codes[String.fromCharCode(i)]=i;
 }
+codesRev={};
+for (var k,v in codes) codesRev[v]=k;
 if (!$.data(document,"key_event")) {
     var bmap=[1,4,2];
     $.data(document,"key_event",true);
@@ -70,11 +72,13 @@ function update() {
     if (!s) {
         stats[e.keyCode]=1;
     }
+    $InputDevice.fireEvent("keyDownRaw",e);
     $InputDevice.handleListeners();
 }
 \keyup(e) {
     //if (e.preventDefault) e.preventDefault();
     if ($t2MediaLib) $t2MediaLib.activate();
     stats[e.keyCode]=0;
+    $InputDevice.fireEvent("keyUpRaw",e);
     $InputDevice.handleListeners();
 }
